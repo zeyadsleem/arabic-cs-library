@@ -1,0 +1,631 @@
+const s="hello-algo",n="chapter_computational_complexity",a="تحليل التعقيد",l="time_complexity",p="التعقيد الزمني",c=[{depth:2,id:"إحصاء-اتجاه-نمو-الزمن",text:"إحصاء اتجاه نمو الزمن"},{depth:2,id:"الحد-الأعلى-التقاربي-للدوال",text:"الحد الأعلى التقاربي للدوال"},{depth:2,id:"طريقة-الاشتقاق",text:"طريقة الاشتقاق"},{depth:3,id:"الخطوة-1-إحصاء-عدد-العمليات",text:"الخطوة 1: إحصاء عدد العمليات"},{depth:3,id:"الخطوة-2-تحديد-الحد-الأعلى-التقاربي",text:"الخطوة 2: تحديد الحد الأعلى التقاربي"},{depth:2,id:"الأنواع-الشائعة",text:"الأنواع الشائعة"},{depth:3,id:"الرتبة-الثابتة-o1",text:"الرتبة الثابتة $O(1)$"},{depth:3,id:"الرتبة-الخطية-on",text:"الرتبة الخطية $O(n)$"},{depth:3,id:"الرتبة-التربيعية-on2",text:"الرتبة التربيعية $O(n^2)$"},{depth:3,id:"الرتبة-الأسية-o2n",text:"الرتبة الأسية $O(2^n)$"},{depth:3,id:"الرتبة-اللوغاريتمية-olog-n",text:"الرتبة اللوغاريتمية $O(\\log n)$"},{depth:3,id:"الرتبة-الخطية-اللوغاريتمية-on-log-n",text:"الرتبة الخطية اللوغاريتمية $O(n \\log n)$"},{depth:3,id:"الرتبة-العاملية-on",text:"الرتبة العاملية $O(n!)$"},{depth:2,id:"أسوأ-التعقيدات-الزمنية-وأفضلها-والمتوسطة",text:"أسوأ التعقيدات الزمنية وأفضلها والمتوسطة"}],t=`<p>يعكس زمن التشغيل كفاءة الخوارزمية بطريقة بديهية ودقيقة. وإذا أردنا تقدير زمن تشغيل قطعة شيفرة تقديراً دقيقاً، فكيف نفعل ذلك؟</p>
+<ol>
+<li><strong>حدّد منصة التشغيل</strong>، بما فيها تكوين العتاد ولغة البرمجة وبيئة النظام وغيرها، لأن هذه العوامل كلها تؤثر في كفاءة تنفيذ الشيفرة.</li>
+<li><strong>قدّر الزمن اللازم لمختلف العمليات الحسابية</strong>، فمثلاً تحتاج عملية جمع <code>+</code> إلى 1 ns، وتحتاج عملية ضرب <code>*</code> إلى 10 ns، وتحتاج عملية طباعة <code>print()</code> إلى 5 ns، وهكذا.</li>
+<li><strong>أحصِ جميع العمليات الحسابية في الشيفرة</strong>، واجمع أزمنة تنفيذ جميع العمليات للحصول على زمن التشغيل.</li>
+</ol>
+<p>فمثلاً، في الشيفرة التالية، حجم بيانات الإدخال هو $n$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">// على منصة تشغيل معينة</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    a := <span class="hljs-number">2</span>     <span class="hljs-comment">// 1 ns</span>
+    a = a + <span class="hljs-number">1</span>  <span class="hljs-comment">// 1 ns</span>
+    a = a * <span class="hljs-number">2</span>  <span class="hljs-comment">// 10 ns</span>
+    <span class="hljs-comment">// حلقة n مرة</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {  <span class="hljs-comment">// 1 ns</span>
+        fmt.Println(a)        <span class="hljs-comment">// 5 ns</span>
+    }
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// على منصة تشغيل معينة</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">var</span> <span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span> = <span class="hljs-number">2</span>; <span class="hljs-comment">// 1 ns</span>
+    a = a + <span class="hljs-number">1</span>; <span class="hljs-comment">// 1 ns</span>
+    a = a * <span class="hljs-number">2</span>; <span class="hljs-comment">// 10 ns</span>
+    <span class="hljs-comment">// حلقة n مرة</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) { <span class="hljs-comment">// 1 ns</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 5 ns</span>
+    }
+}
+</code></pre>
+</div>
+<p>وبحسب الطريقة أعلاه، يمكن الحصول على زمن تشغيل الخوارزمية وهو $(6n + 12)$ ns:</p>
+<p>$$
+1 + 1 + 10 + (1 + 5) \\times n = 6n + 12
+$$</p>
+<p>غير أن الواقع، <strong>محاولة حساب زمن تشغيل الخوارزمية حساباً دقيقاً ليست عملية ولا واقعية</strong>. فمن جهة، لا نريد ربط الزمن المقدَّر بمنصة التشغيل، لأن الخوارزميات تحتاج إلى العمل على منصات مختلفة كثيرة. ومن جهة أخرى، يصعب معرفة زمن تشغيل كل نوع من العمليات، مما يجعل عملية التقدير صعبة للغاية.</p>
+<h2 id="إحصاء-اتجاه-نمو-الزمن">إحصاء اتجاه نمو الزمن</h2>
+<p>لا يحصي تحليل التعقيد الزمني زمن تشغيل الخوارزمية، <strong>بل يحصي اتجاه نمو زمن تشغيل الخوارزمية مع زيادة حجم البيانات</strong>.</p>
+<p>مفهوم «اتجاه نمو الزمن» مجرّد بعض الشيء؛ ولنفهمه عبر مثال. لنفترض أن حجم بيانات الإدخال هو $n$، وبمعطى ثلاث خوارزميات <code>A</code> و<code>B</code> و<code>C</code>:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">// التعقيد الزمني للخوارزمية A: رتبة ثابتة</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm_A</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    fmt.Println(<span class="hljs-number">0</span>)
+}
+<span class="hljs-comment">// التعقيد الزمني للخوارزمية B: رتبة خطية</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm_B</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+        fmt.Println(<span class="hljs-number">0</span>)
+    }
+}
+<span class="hljs-comment">// التعقيد الزمني للخوارزمية C: رتبة ثابتة</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm_C</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000000</span>; i++ {
+        fmt.Println(<span class="hljs-number">0</span>)
+    }
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// التعقيد الزمني للخوارزمية A: رتبة ثابتة</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm_A</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>);
+}
+<span class="hljs-comment">// التعقيد الزمني للخوارزمية B: رتبة خطية</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm_B</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>);
+    }
+}
+<span class="hljs-comment">// التعقيد الزمني للخوارزمية C: رتبة ثابتة</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm_C</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000000</span>; i++) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>);
+    }
+}
+</code></pre>
+</div>
+<p>يوضح الشكل أدناه التعقيد الزمني لدوال الخوارزميات الثلاث أعلاه.</p>
+<ul>
+<li>تحتوي الخوارزمية <code>A</code> على عملية طباعة واحدة فقط، ولا ينمو زمن تشغيل الخوارزمية مع زيادة $n$. ونسمّي التعقيد الزمني لهذه الخوارزمية «الرتبة الثابتة».</li>
+<li>في الخوارزمية <code>B</code>، تحتاج عملية الطباعة إلى تكرار $n$ مرة، وينمو زمن تشغيل الخوارزمية خطياً مع زيادة $n$. ويُسمى التعقيد الزمني لهذه الخوارزمية «الرتبة الخطية».</li>
+<li>في الخوارزمية <code>C</code>، تحتاج عملية الطباعة إلى تكرار $1000000$ مرة. ورغم أن زمن التشغيل طويل جداً، فهو مستقل عن حجم بيانات الإدخال $n$. لذلك يكون التعقيد الزمني لـ<code>C</code> هو نفسه التعقيد الزمني لـ<code>A</code>، أي «الرتبة الثابتة» أيضاً.</li>
+</ul>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_simple_example.png" alt="اتجاهات نمو الزمن للخوارزميات A وB وC"></p>
+<p>مقارنةً بحساب زمن تشغيل الخوارزمية مباشرةً، فما خصائص تحليل التعقيد الزمني؟</p>
+<ul>
+<li><strong>يستطيع التعقيد الزمني تقييم كفاءة الخوارزمية تقييماً فعالاً</strong>. فمثلاً، ينمو زمن تشغيل الخوارزمية <code>B</code> خطياً؛ فعندما $n &gt; 1$ تكون أبطأ من الخوارزمية <code>A</code>، وعندما $n &gt; 1000000$ تكون أبطأ من الخوارزمية <code>C</code>. وفي الواقع، ما دام حجم بيانات الإدخال $n$ كبيراً بما يكفي، فإن خوارزمية بتعقيد «الرتبة الثابتة» تكون دائماً أفضل من خوارزمية بتعقيد «الرتبة الخطية»، وهذا هو بالضبط معنى اتجاه نمو الزمن.</li>
+<li><strong>طريقة اشتقاق التعقيد الزمني أبسط</strong>. فمن الواضح أن منصة التشغيل وأنواع العمليات الحسابية لا علاقة لهما باتجاه نمو زمن تشغيل الخوارزمية. لذلك يمكننا في تحليل التعقيد الزمني أن نعامل ببساطة زمن تنفيذ جميع العمليات الحسابية على أنه «زمن وحدة» واحد، فنختصر «تتبع زمن تشغيل كل عملية» إلى «إحصاء عدد العمليات»، مما يقلل صعوبة التقدير تقليلاً كبيراً.</li>
+<li><strong>للتعقيد الزمني أيضاً قيود معينة</strong>. فمثلاً، رغم أن الخوارزميتين <code>A</code> و<code>C</code> لهما التعقيد الزمني نفسه، فإن زمن تشغيلهما الفعلي يختلف اختلافاً كبيراً. وبالمثل، رغم أن التعقيد الزمني للخوارزمية <code>B</code> أعلى من تعقيد <code>C</code>، فعندما يكون حجم بيانات الإدخال $n$ صغيراً تكون الخوارزمية <code>B</code> أفضل بوضوح من الخوارزمية <code>C</code>. وفي مثل هذه الحالات، يصعب غالباً الحكم على كفاءة الخوارزميات بالاعتماد على التعقيد الزمني وحده. وبالطبع، رغم المشكلات أعلاه، يظل تحليل التعقيد أنجع الطرق وأكثرها شيوعاً لتقييم كفاءة الخوارزميات.</li>
+</ul>
+<h2 id="الحد-الأعلى-التقاربي-للدوال">الحد الأعلى التقاربي للدوال</h2>
+<p>بمعطى دالة حجم إدخالها $n$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    a := <span class="hljs-number">1</span>      <span class="hljs-comment">// +1</span>
+    a = a + <span class="hljs-number">1</span>   <span class="hljs-comment">// +1</span>
+    a = a * <span class="hljs-number">2</span>   <span class="hljs-comment">// +1</span>
+    <span class="hljs-comment">// حلقة n مرة</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {   <span class="hljs-comment">// +1</span>
+        fmt.Println(a)         <span class="hljs-comment">// +1</span>
+    }
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span>{
+    <span class="hljs-keyword">var</span> <span class="hljs-attr">a</span>: <span class="hljs-built_in">number</span> = <span class="hljs-number">1</span>; <span class="hljs-comment">// +1</span>
+    a += <span class="hljs-number">1</span>; <span class="hljs-comment">// +1</span>
+    a *= <span class="hljs-number">2</span>; <span class="hljs-comment">// +1</span>
+    <span class="hljs-comment">// حلقة n مرة</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++){ <span class="hljs-comment">// +1 (يُنفَّذ i++ في كل جولة)</span>
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// +1</span>
+    }
+}
+</code></pre>
+</div>
+<p>ولتكن عدد عمليات الخوارزمية دالةً في حجم بيانات الإدخال $n$، ويرمز إليها بـ$T(n)$. عندئذٍ يكون عدد عمليات الدالة أعلاه:</p>
+<p>$$
+T(n) = 3 + 2n
+$$</p>
+<p>$T(n)$ دالة خطية، مما يدل على أن اتجاه نمو زمن تشغيلها خطي، ومن ثمّ فإن تعقيدها الزمني من الرتبة الخطية.</p>
+<p>ونرمز للتعقيد الزمني من الرتبة الخطية بـ$O(n)$. ويُسمى هذا الرمز الرياضي <u>ترميز $O$ الكبير</u>، وهو يمثّل <u>الحد الأعلى التقاربي</u> للدالة $T(n)$.</p>
+<p>يحسب تحليل التعقيد الزمني في جوهره الحد الأعلى التقاربي لـ«عدد العمليات $T(n)$»، ولهذا تعريف رياضي واضح.</p>
+<div class="note">
+<p class="note__title">الحد الأعلى التقاربي للدوال</p>
+<p>إذا وُجد عددان حقيقيان موجبان $c$ و$n_0$ بحيث يتحقق $T(n) \\leq c \\cdot f(n)$ لكل $n &gt; n_0$، فيمكن اعتبار $f(n)$ حداً أعلى تقاربياً لـ$T(n)$، ويُرمز إلى ذلك بـ$T(n) = O(f(n))$.</p>
+</div>
+<p>وكما هو موضح في الشكل أدناه، فإن حساب الحد الأعلى التقاربي هو إيجاد دالة $f(n)$ بحيث عندما يؤول $n$ إلى اللانهاية يكون $T(n)$ و$f(n)$ في المستوى نفسه من النمو، ولا يختلفان إلا بمعامل ثابت $c$.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--asymptotic_upper_bound.png" alt="الحد الأعلى التقاربي لدالة"></p>
+<h2 id="طريقة-الاشتقاق">طريقة الاشتقاق</h2>
+<p>فكرة الحد الأعلى التقاربي رياضية بعض الشيء. وإذا شعرت أنك لم تفهمها فهماً كاملاً، فلا تقلق. يمكننا أولاً إتقان طريقة الاشتقاق، ثم استيعاب معناها الرياضي تدريجياً بالممارسة المستمرة.</p>
+<p>وفقاً للتعريف، بعد تحديد $f(n)$ يمكننا الحصول على التعقيد الزمني $O(f(n))$. فكيف نحدد الحد الأعلى التقاربي $f(n)$؟ إجمالاً، ينقسم ذلك إلى خطوتين: أولاً إحصاء عدد العمليات، ثم تحديد الحد الأعلى التقاربي.</p>
+<h3 id="الخطوة-1-إحصاء-عدد-العمليات">الخطوة 1: إحصاء عدد العمليات</h3>
+<p>بالنسبة إلى الشيفرة، أُحصِ من الأعلى إلى الأسفل سطراً سطراً. غير أنه بما أن المعامل الثابت $c$ في $c \\cdot f(n)$ أعلاه يمكن أن يكون بأي مقدار، فإن <strong>المعاملات والحدود الثابتة في عدد العمليات $T(n)$ يمكن تجاهلها جميعاً</strong>. ووفقاً لهذا المبدأ، يمكن تلخيص تقنيات التبسيط التالية في الإحصاء.</p>
+<ol>
+<li><strong>تجاهل الثوابت في $T(n)$</strong>. لأنها كلها مستقلة عن $n$، فلا تؤثر في التعقيد الزمني.</li>
+<li><strong>احذف جميع المعاملات</strong>. فمثلاً، تكرار الحلقة $2n$ مرة أو $5n + 1$ مرة وغير ذلك يمكن تبسيطه كله إلى $n$ مرة، لأن المعامل قبل $n$ لا يؤثر في التعقيد الزمني.</li>
+<li><strong>استخدم الضرب في الحلقات المتداخلة</strong>. فعدد العمليات الإجمالي يساوي حاصل ضرب عدد العمليات في الحلقتين الخارجية والداخلية، مع إمكان تطبيق التقنيتين <code>1.</code> و<code>2.</code> على كل طبقة من الحلقة على حدة.</li>
+</ol>
+<p>بمعطى دالة، يمكننا استخدام التقنيات أعلاه لإحصاء عدد العمليات:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">algorithm</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> {
+    a := <span class="hljs-number">1</span>     <span class="hljs-comment">// +0 (التقنية 1)</span>
+    a = a + n  <span class="hljs-comment">// +0 (التقنية 1)</span>
+    <span class="hljs-comment">// +n (التقنية 2)</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span> * n + <span class="hljs-number">1</span>; i++ {
+        fmt.Println(<span class="hljs-number">0</span>)
+    }
+    <span class="hljs-comment">// +n*n (التقنية 3)</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span> * n; i++ {
+        <span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; n + <span class="hljs-number">1</span>; j++ {
+            fmt.Println(<span class="hljs-number">0</span>)
+        }
+    }
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">algorithm</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">let</span> a = <span class="hljs-number">1</span>;  <span class="hljs-comment">// +0 (التقنية 1)</span>
+    a = a + n;  <span class="hljs-comment">// +0 (التقنية 1)</span>
+    <span class="hljs-comment">// +n (التقنية 2)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span> * n + <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>);
+    }
+    <span class="hljs-comment">// +n*n (التقنية 3)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span> * n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; n + <span class="hljs-number">1</span>; j++) {
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">0</span>);
+        }
+    }
+}
+</code></pre>
+</div>
+<p>تعرض الصيغة التالية نتائج الإحصاء قبل استخدام التقنيات أعلاه وبعدها؛ وكلاهما يؤدي إلى تعقيد زمني $O(n^2)$.</p>
+<p>$$
+\\begin{aligned}
+T(n) &amp; = 2n(n + 1) + (5n + 1) + 2 &amp; \\text{Complete count (-.-|||)} \\newline
+&amp; = 2n^2 + 7n + 3 \\newline
+T(n) &amp; = n^2 + n &amp; \\text{Simplified count (o.O)}
+\\end{aligned}
+$$</p>
+<h3 id="الخطوة-2-تحديد-الحد-الأعلى-التقاربي">الخطوة 2: تحديد الحد الأعلى التقاربي</h3>
+<p><strong>يتحدد التعقيد الزمني بالحد الأعلى رتبةً في $T(n)$</strong>. ويعود السبب إلى أنه عندما يؤول $n$ إلى اللانهاية، سيؤدي الحد الأعلى رتبةً دوراً مهيمناً، ويمكن تجاهل تأثير الحدود الأخرى.</p>
+<p>يعرض الجدول أدناه بعض الأمثلة، وقد استُخدمت فيه بعض القيم المبالغ فيها لتأكيد الاستنتاج القائل إن «المعاملات لا تزحزح الرتبة». فعندما يؤول $n$ إلى اللانهاية، تصبح هذه الثوابت ضئيلة.</p>
+<p align="center"> الجدول <id> &nbsp; التعقيدات الزمنية المقابلة لأعداد مختلفة من العمليات </p>
+<table>
+<thead>
+<tr>
+<th>عدد العمليات $T(n)$</th>
+<th>التعقيد الزمني $O(f(n))$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$100000$</td>
+<td>$O(1)$</td>
+</tr>
+<tr>
+<td>$3n + 2$</td>
+<td>$O(n)$</td>
+</tr>
+<tr>
+<td>$2n^2 + 3n + 2$</td>
+<td>$O(n^2)$</td>
+</tr>
+<tr>
+<td>$n^3 + 10000n^2$</td>
+<td>$O(n^3)$</td>
+</tr>
+<tr>
+<td>$2^n + 10000n^{10000}$</td>
+<td>$O(2^n)$</td>
+</tr>
+</tbody>
+</table>
+<h2 id="الأنواع-الشائعة">الأنواع الشائعة</h2>
+<p>وليكن حجم بيانات الإدخال $n$. ويوضح الشكل أدناه أنواع التعقيد الزمني الشائعة (مرتبة من الأدنى إلى الأعلى).</p>
+<p>$$
+\\begin{aligned}
+&amp; O(1) &lt; O(\\log n) &lt; O(n) &lt; O(n \\log n) &lt; O(n^2) &lt; O(2^n) &lt; O(n!) \\newline
+&amp; \\text{Constant} &lt; \\text{Logarithmic} &lt; \\text{Linear} &lt; \\text{Linearithmic} &lt; \\text{Quadratic} &lt; \\text{Exponential} &lt; \\text{Factorial}
+\\end{aligned}
+$$</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_common_types.png" alt="أنواع التعقيد الزمني الشائعة"></p>
+<h3 id="الرتبة-الثابتة-o1">الرتبة الثابتة $O(1)$</h3>
+<p>لا يعتمد عدد العمليات في الرتبة الثابتة على حجم بيانات الإدخال $n$، أي إنه لا يتغير بتغير $n$.</p>
+<p>في الدالة التالية، رغم أن قيمة <code>size</code> قد تكون كبيرة، فهي مستقلة عن حجم بيانات الإدخال $n$، لذا يبقى التعقيد الزمني $O(1)$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الثابتة */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">constant</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span>
+	size := <span class="hljs-number">100000</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; size; i++ {
+		count++
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الثابتة */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">constant</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">const</span> size = <span class="hljs-number">100000</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) count++;
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<h3 id="الرتبة-الخطية-on">الرتبة الخطية $O(n)$</h3>
+<p>ينمو عدد العمليات في الرتبة الخطية خطياً مع حجم بيانات الإدخال $n$. وتظهر الرتبة الخطية عادةً في الحلقات أحادية الطبقة:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الخطية */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">linear</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+		count++
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الخطية */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">linear</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) count++;
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p>عمليات مثل اجتياز المصفوفات واجتياز القوائم المترابطة لها تعقيد زمني $O(n)$، حيث $n$ طول المصفوفة أو القائمة المترابطة:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الخطية (اجتياز مصفوفة) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">arrayTraversal</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// عدد التكرارات يتناسب مع طول المصفوفة</span>
+	<span class="hljs-keyword">for</span> <span class="hljs-keyword">range</span> nums {
+		count++
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الخطية (اجتياز مصفوفة) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">arrayTraversal</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// عدد التكرارات يتناسب مع طول المصفوفة</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; nums.<span class="hljs-property">length</span>; i++) {
+        count++;
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p>ومن الجدير بالذكر أن <strong>حجم بيانات الإدخال $n$ ينبغي أن يُحدَّد وفق نوع بيانات الإدخال</strong>. فمثلاً، في المثال الأول يكون المتغير $n$ هو حجم بيانات الإدخال؛ وفي المثال الثاني يكون طول المصفوفة $n$ هو حجم البيانات.</p>
+<h3 id="الرتبة-التربيعية-on2">الرتبة التربيعية $O(n^2)$</h3>
+<p>ينمو عدد العمليات في الرتبة التربيعية تربيعياً مع حجم بيانات الإدخال $n$. وتظهر الرتبة التربيعية عادةً في الحلقات المتداخلة، حيث يكون التعقيد الزمني للحلقتين الخارجية والداخلية $O(n)$، فيكون التعقيد الزمني الإجمالي $O(n^2)$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الأسية */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">quadratic</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// عدد التكرارات يرتبط تربيعياً بحجم البيانات n</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+		<span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; n; j++ {
+			count++
+		}
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الأسية */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">quadratic</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// عدد التكرارات يرتبط تربيعياً بحجم البيانات n</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            count++;
+        }
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p>يقارن الشكل أدناه التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_constant_linear_quadratic.png" alt="التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية"></p>
+<p>وبأخذ الترتيب الفقاعي مثالاً، تنفّذ الحلقة الخارجية $n - 1$ مرة، وتنفّذ الحلقة الداخلية $n-1$ ثم $n-2$ ثم $\\dots$ ثم $2$ ثم $1$ مرة، بمتوسط $n / 2$ مرة، فيكون التعقيد الزمني $O((n - 1) n / 2) = O(n^2)$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة التربيعية (الترتيب الفقاعي) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bubbleSort</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span> <span class="hljs-comment">// عدّاد</span>
+	<span class="hljs-comment">// الحلقة الخارجية: الجزء غير المرتب هو [0, i]</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i-- {
+		<span class="hljs-comment">// الحلقة الداخلية: بدّل أكبر عنصر في الجزء غير المرتب [0, i] إلى الطرف الأيمن من ذلك الجزء</span>
+		<span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; i; j++ {
+			<span class="hljs-keyword">if</span> nums[j] &gt; nums[j+<span class="hljs-number">1</span>] {
+				<span class="hljs-comment">// بدّل nums[j] وnums[j + 1]</span>
+				tmp := nums[j]
+				nums[j] = nums[j+<span class="hljs-number">1</span>]
+				nums[j+<span class="hljs-number">1</span>] = tmp
+				count += <span class="hljs-number">3</span> <span class="hljs-comment">// تبديل العنصر يتضمن 3 عمليات وحدة</span>
+			}
+		}
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة التربيعية (الترتيب الفقاعي) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bubbleSort</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>; <span class="hljs-comment">// عدّاد</span>
+    <span class="hljs-comment">// الحلقة الخارجية: الجزء غير المرتب هو [0, i]</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = nums.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-comment">// الحلقة الداخلية: بدّل أكبر عنصر في الجزء غير المرتب [0, i] إلى الطرف الأيمن من ذلك الجزء</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; i; j++) {
+            <span class="hljs-keyword">if</span> (nums[j] &gt; nums[j + <span class="hljs-number">1</span>]) {
+                <span class="hljs-comment">// بدّل nums[j] وnums[j + 1]</span>
+                <span class="hljs-keyword">let</span> tmp = nums[j];
+                nums[j] = nums[j + <span class="hljs-number">1</span>];
+                nums[j + <span class="hljs-number">1</span>] = tmp;
+                count += <span class="hljs-number">3</span>; <span class="hljs-comment">// تبديل العنصر يتضمن 3 عمليات وحدة</span>
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<h3 id="الرتبة-الأسية-o2n">الرتبة الأسية $O(2^n)$</h3>
+<p>يُعدّ «انقسام الخلايا» البيولوجي مثالاً نموذجياً على النمو بالرتبة الأسية: فالحالة الابتدائية خلية واحدة، وبعد جولة انقسام واحدة تصبح $2$، وبعد جولتين تصبح $4$، وهكذا؛ وبعد $n$ جولة من الانقسام توجد $2^n$ خلية.</p>
+<p>يحاكي الشكل أدناه والشيفرة التالية عملية انقسام الخلايا، بتعقيد زمني $O(2^n)$. لاحظ أن المدخل $n$ يمثّل عدد جولات الانقسام، وأن القيمة المعادة <code>count</code> تمثّل العدد الإجمالي للانقسامات.</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الأسية (تنفيذ بحلقة) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">exponential</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count, base := <span class="hljs-number">0</span>, <span class="hljs-number">1</span>
+	<span class="hljs-comment">// تنقسم الخلايا إلى خليتين في كل جولة، فتكوّن المتتالية 1, 2, 4, 8, ..., 2^(n-1)</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+		<span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; base; j++ {
+			count++
+		}
+		base *= <span class="hljs-number">2</span>
+	}
+	<span class="hljs-comment">// count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1</span>
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الأسية (تنفيذ بحلقة) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">exponential</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>,
+        base = <span class="hljs-number">1</span>;
+    <span class="hljs-comment">// تنقسم الخلايا إلى خليتين في كل جولة، فتكوّن المتتالية 1, 2, 4, 8, ..., 2^(n-1)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; base; j++) {
+            count++;
+        }
+        base *= <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-comment">// count = 1 + 2 + 4 + 8 + .. + 2^(n-1) = 2^n - 1</span>
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png" alt="التعقيد الزمني للرتبة الأسية"></p>
+<p>وفي الخوارزميات الفعلية، تظهر الرتبة الأسية غالباً في الدوال التعاودية. فمثلاً، في الشيفرة التالية، تنقسم الدالة تعاودياً إلى قسمين، وتتوقف بعد $n$ انقسام:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الأسية (تنفيذ تعاودي) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">expRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+	}
+	<span class="hljs-keyword">return</span> expRecur(n<span class="hljs-number">-1</span>) + expRecur(n<span class="hljs-number">-1</span>) + <span class="hljs-number">1</span>
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الأسية (تنفيذ تعاودي) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">expRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">if</span> (n === <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">expRecur</span>(n - <span class="hljs-number">1</span>) + <span class="hljs-title function_">expRecur</span>(n - <span class="hljs-number">1</span>) + <span class="hljs-number">1</span>;
+}
+</code></pre>
+</div>
+<p>نمو الرتبة الأسية سريع جداً، وهو شائع في الطرق الاستنفادية (البحث الشامل، والتتبّع الرجعي، وغيرها). وبالنسبة إلى المسائل ذات أحجام البيانات الكبيرة، لا تُقبل الرتبة الأسية، وتتطلب عادةً حلولاً بالبرمجة الديناميكية أو الخوارزميات الجشعة.</p>
+<h3 id="الرتبة-اللوغاريتمية-olog-n">الرتبة اللوغاريتمية $O(\\log n)$</h3>
+<p>وبالمقابل للرتبة الأسية، تعكس الرتبة اللوغاريتمية حالة «التنصيف في كل جولة». وليكن حجم بيانات الإدخال $n$. وبما أنه يُنصَّف في كل جولة، فعدد دورات الحلقة هو $\\log_2 n$، وهو الدالة العكسية لـ$2^n$.</p>
+<p>يحاكي الشكل أدناه والشيفرة التالية عملية «التنصيف في كل جولة»، بتعقيد زمني $O(\\log_2 n)$، ويُختصر إلى $O(\\log n)$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة اللوغاريتمية (تنفيذ بحلقة) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">logarithmic</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	count := <span class="hljs-number">0</span>
+	<span class="hljs-keyword">for</span> n &gt; <span class="hljs-number">1</span> {
+		n = n / <span class="hljs-number">2</span>
+		count++
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة اللوغاريتمية (تنفيذ بحلقة) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">logarithmic</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (n &gt; <span class="hljs-number">1</span>) {
+        n = n / <span class="hljs-number">2</span>;
+        count++;
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png" alt="التعقيد الزمني للرتبة اللوغاريتمية"></p>
+<p>وعلى غرار الرتبة الأسية، تظهر الرتبة اللوغاريتمية أيضاً في الدوال التعاودية. وتشكّل الشيفرة التالية شجرة تعاود ارتفاعها $\\log_2 n$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة اللوغاريتمية (تنفيذ تعاودي) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">logRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+	}
+	<span class="hljs-keyword">return</span> logRecur(n/<span class="hljs-number">2</span>) + <span class="hljs-number">1</span>
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة اللوغاريتمية (تنفيذ تعاودي) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">logRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">logRecur</span>(n / <span class="hljs-number">2</span>) + <span class="hljs-number">1</span>;
+}
+</code></pre>
+</div>
+<p>تظهر الرتبة اللوغاريتمية عادةً في الخوارزميات القائمة على استراتيجية التقسيم والتغلب، وتعكس فكرة تقسيم المسألة وتبسيطها مراراً. وهي تنمو ببطء، وهي التعقيد الزمني المثالي بعد الرتبة الثابتة.</p>
+<div class="note">
+<p class="note__title">ما أساس $O(\\log n)$؟</p>
+<p>للتدقيق، إن «التقسيم إلى $m$» يقابل تعقيداً زمنياً $O(\\log_m n)$. وباستخدام صيغة تغيير أساس اللوغاريتم، نحصل على تعقيدات زمنية مختلفة الأساسات لكنها متساوية:</p>
+<p>$$
+O(\\log_m n) = O(\\log_k n / \\log_k m) = O(\\log_k n)
+$$</p>
+<p>أي إن الأساس $m$ يمكن تغييره دون التأثير في التعقيد. لذلك نحذف عادةً الأساس $m$ ونكتب الرتبة اللوغاريتمية ببساطة $O(\\log n)$.</p>
+</div>
+<h3 id="الرتبة-الخطية-اللوغاريتمية-on-log-n">الرتبة الخطية اللوغاريتمية $O(n \\log n)$</h3>
+<p>تظهر الرتبة الخطية اللوغاريتمية عادةً في الحلقات المتداخلة، حيث يكون التعقيد الزمني لطبقتي الحلقة $O(\\log n)$ و$O(n)$ على التوالي. والشيفرة ذات الصلة كما يلي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة الخطية اللوغاريتمية */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">linearLogRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+	}
+	count := linearLogRecur(n/<span class="hljs-number">2</span>) + linearLogRecur(n/<span class="hljs-number">2</span>)
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+		count++
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة الخطية اللوغاريتمية */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">linearLogRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">let</span> count = <span class="hljs-title function_">linearLogRecur</span>(n / <span class="hljs-number">2</span>) + <span class="hljs-title function_">linearLogRecur</span>(n / <span class="hljs-number">2</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        count++;
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p>يوضح الشكل أدناه كيف تنشأ الرتبة الخطية اللوغاريتمية. فكل مستوى من الشجرة الثنائية يحتوي في المجموع على $n$ عملية، وللشجرة $\\log_2 n + 1$ مستوى، فيكون التعقيد الزمني $O(n \\log n)$.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic_linear.png" alt="التعقيد الزمني للرتبة الخطية اللوغاريتمية"></p>
+<p>التعقيد الزمني لخوارزميات الترتيب السائدة هو عادةً $O(n \\log n)$، مثل الترتيب السريع وترتيب الدمج والترتيب بالكومة.</p>
+<h3 id="الرتبة-العاملية-on">الرتبة العاملية $O(n!)$</h3>
+<p>تقابل الرتبة العاملية مسألة «التباديل» الرياضية. فبمعطى $n$ عنصراً مختلفاً، أوجد جميع مخططات التباديل الممكنة؛ وعدد المخططات هو:</p>
+<p>$$
+n! = n \\times (n - 1) \\times (n - 2) \\times \\dots \\times 2 \\times 1
+$$</p>
+<p>يُنفَّذ المضروب عادةً بالتعاود. وكما هو موضح في الشكل أدناه والشيفرة التالية، يتفرع المستوى الأول إلى $n$ فرعاً، ويتفرع المستوى الثاني إلى $n - 1$ فرعاً، وهكذا، حتى المستوى $n$ حيث يتوقف التفرع:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الرتبة العاملية (تنفيذ تعاودي) */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">factorialRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+	}
+	count := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// التفرع من 1 إلى n</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ {
+		count += factorialRecur(n - <span class="hljs-number">1</span>)
+	}
+	<span class="hljs-keyword">return</span> count
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الرتبة العاملية (تنفيذ تعاودي) */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">factorialRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">if</span> (n === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">let</span> count = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// التفرع من 1 إلى n</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        count += <span class="hljs-title function_">factorialRecur</span>(n - <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> count;
+}
+</code></pre>
+</div>
+<p><img src="/images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png" alt="التعقيد الزمني للرتبة العاملية"></p>
+<p>لاحظ أنه بما أن $n! &gt; 2^n$ دائماً عندما $n \\geq 4$، فإن الرتبة العاملية تنمو أسرع من الرتبة الأسية، وهي أيضاً غير مقبولة لأجل $n$ الكبيرة.</p>
+<h2 id="أسوأ-التعقيدات-الزمنية-وأفضلها-والمتوسطة">أسوأ التعقيدات الزمنية وأفضلها والمتوسطة</h2>
+<p><strong>كفاءة الزمن في الخوارزمية ليست ثابتة غالباً، بل ترتبط بتوزيع بيانات الإدخال</strong>. لنفترض أننا ندخل مصفوفة <code>nums</code> طولها $n$، حيث تتكوّن <code>nums</code> من الأعداد من $1$ إلى $n$، ويظهر كل عدد مرة واحدة فقط، لكن ترتيب العناصر مبعثر عشوائياً. والمطلوب إعادة فهرس العنصر $1$. ويمكننا استخلاص الاستنتاجات التالية.</p>
+<ul>
+<li>عندما تكون <code>nums = [?, ?, ..., 1]</code>، أي عندما يكون العنصر الأخير هو $1$، يلزم اجتياز المصفوفة كاملة، <strong>فيبلغ التعقيد الزمني في أسوأ حالة $O(n)$</strong>.</li>
+<li>وعندما تكون <code>nums = [1, ?, ?, ...]</code>، أي عندما يكون العنصر الأول هو $1$، فلا حاجة إلى مواصلة الاجتياز مهما كان طول المصفوفة، <strong>فيبلغ التعقيد الزمني في أفضل حالة $\\Omega(1)$</strong>.</li>
+</ul>
+<p>يقابل «التعقيد الزمني في أسوأ حالة» الحد الأعلى التقاربي للدالة، ويُرمز إليه بترميز $O$ الكبير. وبالمقابل، يقابل «التعقيد الزمني في أفضل حالة» الحد الأدنى التقاربي للدالة، ويُرمز إليه بترميز $\\Omega$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* ابحث عن فهرس العدد 1 في المصفوفة nums */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findOne</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(nums); i++ {
+		<span class="hljs-comment">// عندما يكون العنصر 1 في رأس المصفوفة، نحصل على أفضل تعقيد زمني O(1)</span>
+		<span class="hljs-comment">// عندما يكون العنصر 1 في ذيل المصفوفة، نحصل على أسوأ تعقيد زمني O(n)</span>
+		<span class="hljs-keyword">if</span> nums[i] == <span class="hljs-number">1</span> {
+			<span class="hljs-keyword">return</span> i
+		}
+	}
+	<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* ابحث عن فهرس العدد 1 في المصفوفة nums */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">findOne</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; nums.<span class="hljs-property">length</span>; i++) {
+        <span class="hljs-comment">// عندما يكون العنصر 1 في رأس المصفوفة، نحصل على أفضل تعقيد زمني O(1)</span>
+        <span class="hljs-comment">// عندما يكون العنصر 1 في ذيل المصفوفة، نحصل على أسوأ تعقيد زمني O(n)</span>
+        <span class="hljs-keyword">if</span> (nums[i] === <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+</code></pre>
+</div>
+<p>ومن الجدير بالذكر أننا نادراً ما نستخدم التعقيد الزمني في أفضل حالة عملياً، لأنه لا يتحقق عادةً إلا باحتمال ضئيل جداً وقد يكون مضللاً بعض الشيء. <strong>أما التعقيد الزمني في أسوأ حالة فهو أكثر عملية لأنه يعطي قيمة أمان للكفاءة</strong>، مما يتيح لنا استخدام الخوارزمية بثقة.</p>
+<p>ومن المثال أعلاه نرى أن التعقيد الزمني في أسوأ حالة وفي أفضل حالة ينشأ كلاهما فقط في ظل توزيعات إدخال معينة، قد تحدث باحتمال منخفض جداً وقد لا تعكس كفاءة تشغيل الخوارزمية انعكاساً حقيقياً. وفي المقابل، <strong>يستطيع التعقيد الزمني المتوسط أن يعكس كفاءة تشغيل الخوارزمية في ظل بيانات إدخال عشوائية</strong>، ويُرمز إليه بترميز $\\Theta$.</p>
+<p>وبالنسبة إلى بعض الخوارزميات، يمكننا اشتقاق الحالة المتوسطة في ظل توزيع بيانات عشوائي ببساطة. فمثلاً، في المثال أعلاه، بما أن مصفوفة الإدخال مبعثرة عشوائياً، فإن احتمال ظهور العنصر $1$ عند أي فهرس متساوٍ، لذا يكون متوسط عدد دورات الحلقة في الخوارزمية نصف طول المصفوفة $n / 2$، فيكون التعقيد الزمني المتوسط $\\Theta(n / 2) = \\Theta(n)$.</p>
+<p>لكن بالنسبة إلى خوارزميات أكثر تعقيداً، يكون حساب التعقيد الزمني المتوسط صعباً جداً غالباً، لأن تحليل التوقع الرياضي الإجمالي في ظل توزيع البيانات أمر عسير. وفي هذه الحالة، نستخدم عادةً التعقيد الزمني في أسوأ حالة معياراً للحكم على كفاءة الخوارزمية.</p>
+<div class="note">
+<p class="note__title">لماذا يُرى الرمز $\\Theta$ نادراً؟</p>
+<p>قد يعود السبب إلى أن الرمز $O$ عالق في الأذهان أكثر، فنستخدمه غالباً للدلالة على التعقيد الزمني المتوسط. لكن هذا الاستخدام ليس معيارياً بالمعنى الدقيق. وفي هذا الكتاب ومواد أخرى، إذا صادفت عبارات مثل «التعقيد الزمني المتوسط $O(n)$»، فافهمها مباشرةً على أنها $\\Theta(n)$.</p>
+</div>
+`,e={book:s,chapter:n,chapterTitle:a,slug:l,title:p,headings:c,html:t};export{s as book,n as chapter,a as chapterTitle,e as default,c as headings,t as html,l as slug,p as title};

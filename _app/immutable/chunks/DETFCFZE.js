@@ -1,0 +1,355 @@
+const s="hello-algo",n="chapter_computational_complexity",a="تحليل التعقيد",l="iteration_and_recursion",p="التكرار والتعاود",t=[{depth:2,id:"التكرار",text:"التكرار"},{depth:3,id:"حلقة-for",text:"حلقة for"},{depth:3,id:"حلقة-while",text:"حلقة while"},{depth:3,id:"الحلقات-المتداخلة",text:"الحلقات المتداخلة"},{depth:2,id:"التعاود",text:"التعاود"},{depth:3,id:"مكدس-الاستدعاء",text:"مكدس الاستدعاء"},{depth:3,id:"التعاود-الذيل",text:"التعاود الذيل"},{depth:3,id:"شجرة-التعاود",text:"شجرة التعاود"},{depth:2,id:"مقارنة-بين-الاثنين",text:"مقارنة بين الاثنين"}],c=`<p>في الخوارزميات، يكون تنفيذ مهمة مراراً أمراً شائعاً جداً ومرتبطاً ارتباطاً وثيقاً بتحليل التعقيد. لذا، وقبل تقديم التعقيد الزمني والتعقيد المكاني، لنفهم أولاً كيفية تنفيذ المهام المتكرر في البرامج، أي بنيتي التحكم الأساسيتين في البرنامج: التكرار والتعاود.</p>
+<h2 id="التكرار">التكرار</h2>
+<p><u>التكرار</u> بنية تحكم لتنفيذ مهمة مراراً. وفي التكرار، ينفّذ البرنامج مقطعاً من الشيفرة مراراً في ظل شروط معينة حتى تتوقف تلك الشروط عن التحقق.</p>
+<h3 id="حلقة-for">حلقة for</h3>
+<p>حلقة <code>for</code> من أكثر أشكال التكرار شيوعاً، <strong>وتصلح للاستخدام عندما يكون عدد التكرارات معروفاً مسبقاً</strong>.</p>
+<p>تنفّذ الدالة التالية عملية الجمع $1 + 2 + \\dots + n$ باستخدام حلقة <code>for</code>، وتُخزَّن النتيجة في المتغير <code>res</code>. لاحظ أن <code>range(a, b)</code> في Python يقابل مجالاً «مغلقاً من اليسار مفتوحاً من اليمين»، ويكون نطاق الاجتياز $a, a + 1, \\dots, b-1$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* حلقة for */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">forLoop</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	res := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// اجمع 1, 2, ..., n-1, n</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= n; i++ {
+		res += i
+	}
+	<span class="hljs-keyword">return</span> res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* حلقة for */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">forLoop</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> res = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// اجمع 1, 2, ..., n-1, n</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        res += i;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+</div>
+<p>يوضح الشكل أدناه مخطط سير هذه الدالة الجمعية.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--iteration.png" alt="مخطط سير الدالة الجمعية"></p>
+<p>ويتناسب عدد العمليات في هذه الدالة الجمعية مع حجم بيانات الإدخال $n$، أو له «علاقة خطية». وفي الواقع، <strong>يصف التعقيد الزمني هذه «العلاقة الخطية» تحديداً</strong>. وسيُقدَّم المحتوى المتعلق بذلك بالتفصيل في القسم التالي.</p>
+<h3 id="حلقة-while">حلقة while</h3>
+<p>وعلى غرار حلقة <code>for</code>، تُعَدّ حلقة <code>while</code> أيضاً طريقة لتنفيذ التكرار. وفي حلقة <code>while</code>، يتحقق البرنامج أولاً من الشرط في كل جولة؛ فإن كان الشرط صحيحاً واصل التنفيذ، وإلا أنهى الحلقة.</p>
+<p>وفيما يلي نستخدم حلقة <code>while</code> لتنفيذ الجمع $1 + 2 + \\dots + n$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* حلقة while */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">whileLoop</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	res := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// هيّئ متغير الشرط</span>
+	i := <span class="hljs-number">1</span>
+	<span class="hljs-comment">// اجمع 1, 2, ..., n-1, n</span>
+	<span class="hljs-keyword">for</span> i &lt;= n {
+		res += i
+		<span class="hljs-comment">// حدّث متغير الشرط</span>
+		i++
+	}
+	<span class="hljs-keyword">return</span> res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* حلقة while */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">whileLoop</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-keyword">let</span> res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; <span class="hljs-comment">// هيّئ متغير الشرط</span>
+    <span class="hljs-comment">// اجمع 1, 2, ..., n-1, n</span>
+    <span class="hljs-keyword">while</span> (i &lt;= n) {
+        res += i;
+        i++; <span class="hljs-comment">// حدّث متغير الشرط</span>
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+</div>
+<p><strong>تتمتع حلقة <code>while</code> بمرونة أكبر من حلقة <code>for</code></strong>. ففي حلقة <code>while</code> يمكننا تصميم خطوتي تهيئة متغير الشرط وتحديثه بحرية.</p>
+<p>على سبيل المثال، في الشيفرة التالية يُحدَّث متغير الشرط $i$ مرتين في كل جولة، وهو أمر غير مريح التنفيذ باستخدام حلقة <code>for</code>:</p>
+<p>وعموماً، <strong>شيفرة حلقات <code>for</code> أكثر إحكاماً، بينما حلقات <code>while</code> أكثر مرونة</strong>؛ وكلتاهما تستطيع تنفيذ بنى تكرارية. ويجب تحديد أيّهما تُستخدم بناءً على متطلبات المسألة المحددة.</p>
+<h3 id="الحلقات-المتداخلة">الحلقات المتداخلة</h3>
+<p>يمكننا تداخل بنية حلقية داخل أخرى. وفيما يلي مثال باستخدام حلقات <code>for</code>:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* حلقة for متداخلة */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">nestedForLoop</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">string</span> {
+	res := <span class="hljs-string">&quot;&quot;</span>
+	<span class="hljs-comment">// حلقة i = 1, 2, ..., n-1, n</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= n; i++ {
+		<span class="hljs-keyword">for</span> j := <span class="hljs-number">1</span>; j &lt;= n; j++ {
+			<span class="hljs-comment">// حلقة j = 1, 2, ..., n-1, n</span>
+			res += fmt.Sprintf(<span class="hljs-string">&quot;(%d, %d), &quot;</span>, i, j)
+		}
+	}
+	<span class="hljs-keyword">return</span> res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* حلقة for متداخلة */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">nestedForLoop</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">let</span> res = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-comment">// حلقة i = 1, 2, ..., n-1, n</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-comment">// حلقة j = 1, 2, ..., n-1, n</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            res += <span class="hljs-string">\`(<span class="hljs-subst">\${i}</span>, <span class="hljs-subst">\${j}</span>), \`</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+</div>
+<p>ويوضح الشكل أدناه مخطط سير هذه الحلقة المتداخلة.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--nested_iteration.png" alt="مخطط سير الحلقات المتداخلة"></p>
+<p>وفي هذه الحالة يتناسب عدد عمليات الدالة مع $n^2$، أو يكون لزمن تشغيل الخوارزمية «علاقة تربيعية» بحجم بيانات الإدخال $n$.</p>
+<p>ويمكننا مواصلة إضافة حلقات متداخلة، حيث يمكن النظر إلى كل مستوى تداخل إضافي على أنه زيادة في الأبعاد، ترفع التعقيد الزمني إلى «علاقة تكعيبية» و«علاقة من الدرجة الرابعة» وهكذا.</p>
+<h2 id="التعاود">التعاود</h2>
+<p><u>التعاود</u> استراتيجية خوارزمية تحل المسائل بجعل دالة تستدعي نفسها. ويتكوّن أساساً من مرحلتين.</p>
+<ol>
+<li><strong>النزول</strong>: تستدعي الدالة نفسها باستمرار إلى عمق أكبر، وتمرّر عادةً معاملات أصغر أو أكثر تبسيطاً، حتى تصل إلى «شرط التوقف».</li>
+<li><strong>الصعود</strong>: بعد تحقّق «شرط التوقف»، تعود الدالة طبقةً طبقة من أعمق دالة تعاودية، وتجمع نتيجة كل طبقة.</li>
+</ol>
+<p>ومن منظور التنفيذ، تتكوّن الشيفرة التعاودية أساساً من ثلاثة عناصر.</p>
+<ol>
+<li><strong>شرط التوقف</strong>: يُستخدم لتحديد متى ننتقل من «النزول» إلى «الصعود».</li>
+<li><strong>الاستدعاء التعاودي</strong>: يقابل «النزول»، حيث تستدعي الدالة نفسها، عادةً بمعاملات أصغر أو أكثر تبسيطاً.</li>
+<li><strong>إعادة النتيجة</strong>: تقابل «الصعود»، حيث تُعاد نتيجة مستوى التعاود الحالي إلى الطبقة السابقة.</li>
+</ol>
+<p>لاحظ الشيفرة التالية. لا يلزمنا سوى استدعاء الدالة <code>recur(n)</code> لإكمال حساب $1 + 2 + \\dots + n$:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* التعاود */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-comment">// شرط التوقف</span>
+	<span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+	}
+	<span class="hljs-comment">// النزول: الاستدعاء التعاودي</span>
+	res := recur(n - <span class="hljs-number">1</span>)
+	<span class="hljs-comment">// الصعود: إعادة النتيجة</span>
+	<span class="hljs-keyword">return</span> n + res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* التعاود */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">recur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// شرط التوقف</span>
+    <span class="hljs-keyword">if</span> (n === <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-comment">// النزول: الاستدعاء التعاودي</span>
+    <span class="hljs-keyword">const</span> res = <span class="hljs-title function_">recur</span>(n - <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// الصعود: إعادة النتيجة</span>
+    <span class="hljs-keyword">return</span> n + res;
+}
+</code></pre>
+</div>
+<p>ويوضح الشكل أدناه العملية التعاودية لهذه الدالة.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--recursion_sum.png" alt="العملية التعاودية للدالة الجمعية"></p>
+<p>ورغم أن التكرار والتعاود يستطيعان من منظور حسابي تحقيق النتائج نفسها، <strong>فهما يمثّلان نموذجين مختلفين تماماً للتفكير في المسائل وحلها</strong>.</p>
+<ul>
+<li><strong>التكرار</strong>: يحل المسائل «من الأسفل إلى الأعلى». فيبدأ من أبسط الخطوات، ثم تُنفَّذ هذه الخطوات مراراً أو تُجمَّع حتى تكتمل المهمة.</li>
+<li><strong>التعاود</strong>: يحل المسائل «من الأعلى إلى الأسفل». فتُفكَّك المسألة الأصلية إلى مسائل فرعية أصغر لها الصيغة نفسها، وتستمر هذه المسائل الفرعية في التفكك إلى مسائل فرعية أصغر حتى الوصول إلى الحالة الأساسية (حيث يكون الحل معروفاً).</li>
+</ul>
+<p>وباتخاذ الدالة الجمعية أعلاه مثالاً، لتكن المسألة $f(n) = 1 + 2 + \\dots + n$.</p>
+<ul>
+<li><strong>التكرار</strong>: يحاكي عملية الجمع في حلقة، فيجتاز من $1$ إلى $n$، وينفّذ عملية الجمع في كل جولة للحصول على $f(n)$.</li>
+<li><strong>التعاود</strong>: يفكّك المسألة إلى المسألة الفرعية $f(n) = n + f(n-1)$، ويستمر في التفكيك (تعاودياً) حتى يتوقف عند الحالة الأساسية $f(1) = 1$.</li>
+</ul>
+<h3 id="مكدس-الاستدعاء">مكدس الاستدعاء</h3>
+<p>في كل مرة تستدعي فيها دالة تعاودية نفسها، يخصّص النظام ذاكرة للدالة المستدعاة حديثاً لتخزين المتغيرات المحلية وعناوين الاستدعاء وغيرها من المعلومات. وهذا يؤدي إلى نتيجتين.</p>
+<ul>
+<li>تُخزَّن بيانات سياق الدالة في منطقة ذاكرة تسمى «مساحة إطار المكدس»، ولا تُحرَّر حتى تعود الدالة. لذلك، <strong>يستهلك التعاود عادةً مساحة ذاكرة أكبر من التكرار</strong>.</li>
+<li>تترتب على استدعاءات الدوال التعاودية تكلفة إضافية. <strong>لذلك، يكون التعاود عادةً أقل كفاءة زمنياً من الحلقات</strong>.</li>
+</ul>
+<p>وكما يوضح الشكل أدناه، قبل تحقّق شرط التوقف توجد $n$ من الدوال التعاودية غير العائدة في الوقت نفسه، <strong>بعمق تعاود $n$</strong>.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--recursion_sum_depth.png" alt="عمق استدعاء التعاود"></p>
+<p>وفي الممارسة العملية، يكون عمق التعاود المسموح به في لغات البرمجة محدوداً عادةً، وقد يؤدي التعاود العميق جداً إلى أخطاء تجاوز سعة المكدس.</p>
+<h3 id="التعاود-الذيل">التعاود الذيل</h3>
+<p>ومن المثير للاهتمام أن <strong>الدالة إذا جعلت الاستدعاء التعاودي آخر خطوة قبل العودة</strong>، فقد يحسّنه المترجم أو المفسّر بحيث تصبح كفاءته المكانية مماثلة للتكرار. وتسمى هذه الحالة <u>التعاود الذيل</u>.</p>
+<ul>
+<li><strong>التعاود العادي</strong>: عندما تعود الدالة إلى الطبقة السابقة، يلزمها مواصلة تنفيذ الشيفرة، لذا يحتاج النظام إلى حفظ سياق استدعاء الطبقة السابقة.</li>
+<li><strong>التعاود الذيل</strong>: الاستدعاء التعاودي هو آخر عملية قبل عودة الدالة، أي أنه بعد العودة إلى الطبقة السابقة لا حاجة إلى مواصلة تنفيذ عمليات أخرى، لذا لا يحتاج النظام إلى حفظ سياق دالة الطبقة السابقة.</li>
+</ul>
+<p>وباتخاذ حساب $1 + 2 + \\dots + n$ مثالاً، يمكننا تعيين متغير النتيجة <code>res</code> معاملاً للدالة لتنفيذ التعاود الذيل:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* التعاود الذيل */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tailRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>, res <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-comment">// شرط التوقف</span>
+	<span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> {
+		<span class="hljs-keyword">return</span> res
+	}
+	<span class="hljs-comment">// الاستدعاء التعاودي الذيل</span>
+	<span class="hljs-keyword">return</span> tailRecur(n<span class="hljs-number">-1</span>, res+n)
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* التعاود الذيل */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">tailRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">res</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// شرط التوقف</span>
+    <span class="hljs-keyword">if</span> (n === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> res;
+    <span class="hljs-comment">// الاستدعاء التعاودي الذيل</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">tailRecur</span>(n - <span class="hljs-number">1</span>, res + n);
+}
+</code></pre>
+</div>
+<p>وتظهر عملية تنفيذ التعاود الذيل في الشكل أدناه. وبمقارنة التعاود العادي بالتعاود الذيل، تُنفَّذ عملية الجمع في نقطتين مختلفتين.</p>
+<ul>
+<li><strong>التعاود العادي</strong>: تُنفَّذ عملية الجمع أثناء عملية «الصعود»، وتتطلب عملية جمع إضافية بعد عودة كل طبقة.</li>
+<li><strong>التعاود الذيل</strong>: تُنفَّذ عملية الجمع أثناء عملية «النزول»؛ ولا تحتاج عملية «الصعود» إلا إلى العودة طبقةً طبقة.</li>
+</ul>
+<p><img src="/images/hello-algo/chapter_computational_complexity--tail_recursion_sum.png" alt="عملية التعاود الذيل"></p>
+<div class="note">
+<p>يرجى ملاحظة أن كثيراً من المترجمات أو المفسّرات لا تدعم تحسين التعاود الذيل. فمثلاً لا يدعم Python تحسين التعاود الذيل افتراضياً، لذا حتى إذا كانت الدالة في صيغة التعاود الذيل، فقد تواجه مع ذلك مشكلات تجاوز سعة المكدس.</p>
+</div>
+<h3 id="شجرة-التعاود">شجرة التعاود</h3>
+<p>عند التعامل مع مسائل خوارزمية مرتبطة بـ«التقسيم والتغلب»، يوفر التعاود غالباً نهجاً أكثر حدساً وشيفرة أكثر قابلية للقراءة من التكرار. ولنأخذ «متتالية فيبوناتشي» مثالاً.</p>
+<div class="note">
+<p>بمعطى متتالية فيبوناتشي $0, 1, 1, 2, 3, 5, 8, 13, \\dots$، ابحث عن العدد رقم $n$ في المتتالية.</p>
+</div>
+<p>ولتكن القيمة رقم $n$ في متتالية فيبوناتشي $f(n)$. يمكن الحصول بسهولة على نتيجتين.</p>
+<ul>
+<li>العددان الأولان في المتتالية هما $f(1) = 0$ و$f(2) = 1$.</li>
+<li>كل عدد في المتتالية هو مجموع العددين السابقين له، أي $f(n) = f(n - 1) + f(n - 2)$.</li>
+</ul>
+<p>وباتباع علاقة التعاود لإجراء استدعاءات تعاودية، مع اعتبار العددين الأولين شرطي توقف، يمكننا كتابة الشيفرة التعاودية. فاستدعاء <code>fib(n)</code> سيعطينا العدد رقم $n$ من متتالية فيبوناتشي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* متتالية فيبوناتشي: التعاود */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fib</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-comment">// شرط التوقف f(1) = 0, f(2) = 1</span>
+	<span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span> || n == <span class="hljs-number">2</span> {
+		<span class="hljs-keyword">return</span> n - <span class="hljs-number">1</span>
+	}
+	<span class="hljs-comment">// الاستدعاء التعاودي f(n) = f(n-1) + f(n-2)</span>
+	res := fib(n<span class="hljs-number">-1</span>) + fib(n<span class="hljs-number">-2</span>)
+	<span class="hljs-comment">// أعد النتيجة f(n)</span>
+	<span class="hljs-keyword">return</span> res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* متتالية فيبوناتشي: التعاود */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">fib</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// شرط التوقف f(1) = 0, f(2) = 1</span>
+    <span class="hljs-keyword">if</span> (n === <span class="hljs-number">1</span> || n === <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> n - <span class="hljs-number">1</span>;
+    <span class="hljs-comment">// الاستدعاء التعاودي f(n) = f(n-1) + f(n-2)</span>
+    <span class="hljs-keyword">const</span> res = <span class="hljs-title function_">fib</span>(n - <span class="hljs-number">1</span>) + <span class="hljs-title function_">fib</span>(n - <span class="hljs-number">2</span>);
+    <span class="hljs-comment">// أعد النتيجة f(n)</span>
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+</div>
+<p>وبمراقبة الشيفرة أعلاه، نُجري استدعاءين تعاوديين داخل الدالة، <strong>أي أن الاستدعاء الواحد يُنتج فرعي استدعاء</strong>. وكما يوضح الشكل أدناه، يؤدي هذا الاستدعاء التعاودي المتكرر في النهاية إلى توليد <u>شجرة تعاود</u> من $n$ مستوى.</p>
+<p><img src="/images/hello-algo/chapter_computational_complexity--recursion_tree.png" alt="شجرة التعاود لمتتالية فيبوناتشي"></p>
+<p>وفي جوهره، يجسّد التعاود نموذج «تفكيك المسألة إلى مسائل فرعية أصغر»، وهذه الاستراتيجية القائمة على التقسيم والتغلب بالغة الأهمية.</p>
+<ul>
+<li>من منظور خوارزمي، تطبّق استراتيجيات خوارزمية مهمة كثيرة، مثل البحث والترتيب والتتبّع الرجعي والتقسيم والتغلب والبرمجة الديناميكية، طريقة التفكير هذه تطبيقاً مباشراً أو غير مباشر.</li>
+<li>من منظور بنى البيانات، يلائم التعاود بطبيعته معالجة المسائل المتعلقة بالقوائم المترابطة والأشجار والرسوم البيانية، لأنها ملائمة للتحليل بطريقة التفكير التقسيمية.</li>
+</ul>
+<h2 id="مقارنة-بين-الاثنين">مقارنة بين الاثنين</h2>
+<p>وبتلخيص المحتوى أعلاه، وكما يوضح الجدول أدناه، يختلف التكرار والتعاود في التنفيذ والأداء وقابلية التطبيق.</p>
+<p align="center"> جدول <id> &nbsp; مقارنة خصائص التكرار والتعاود </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>التكرار</th>
+<th>التعاود</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>التنفيذ</td>
+<td>بنية حلقية</td>
+<td>دالة تستدعي نفسها</td>
+</tr>
+<tr>
+<td>الكفاءة الزمنية</td>
+<td>أكثر كفاءة عموماً، بلا تكلفة استدعاء دوال</td>
+<td>كل استدعاء دالة تترتب عليه تكلفة</td>
+</tr>
+<tr>
+<td>استخدام الذاكرة</td>
+<td>يستخدم عادةً مقداراً ثابتاً من مساحة الذاكرة</td>
+<td>قد تستخدم الاستدعاءات المتراكمة قدراً كبيراً من مساحة إطار المكدس</td>
+</tr>
+<tr>
+<td>المسائل الملائمة</td>
+<td>تصلح لمهام حلقية بسيطة، بشيفرة حدسية قابلة للقراءة</td>
+<td>تصلح لتفكيك المسائل الفرعية، مثل الأشجار والرسوم البيانية والتقسيم والتغلب والتتبّع الرجعي وغيرها، ببنية شيفرة موجزة وواضحة</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p>إذا وجدت المحتوى التالي صعب الفهم، يمكنك مراجعته بعد قراءة فصل «المكدس».</p>
+</div>
+<p>فما العلاقة الجوهرية بين التكرار والتعاود؟ باتخاذ الدالة التعاودية أعلاه مثالاً، تُنفَّذ عملية الجمع أثناء مرحلة «الصعود» في التعاود. وهذا يعني أن الدالة المستدعاة أولاً تُكمل عملية جمعها أخيراً فعلاً، <strong>وتشبه آلية العمل هذه مبدأ «آخر ما يدخل يخرج أولاً» في المكدس</strong>.</p>
+<p>وفي الواقع، أصبحت المصطلحات التعاودية مثل «مكدس الاستدعاء» و«مساحة إطار المكدس» توحي أصلاً بالعلاقة الوثيقة بين التعاود والمكدس.</p>
+<ol>
+<li><strong>النزول</strong>: عند استدعاء دالة، يخصّص النظام إطار مكدس جديداً على «مكدس الاستدعاء» لتلك الدالة لتخزين متغيراتها المحلية ومعاملاتها وعنوان العودة وبيانات أخرى.</li>
+<li><strong>الصعود</strong>: عند اكتمال تنفيذ الدالة وعودتها، يُزال إطار المكدس المقابل من «مكدس الاستدعاء»، فتُستعاد بيئة تنفيذ الدالة السابقة.</li>
+</ol>
+<p>لذلك، <strong>يمكننا استخدام مكدس صريح لمحاكاة سلوك مكدس الاستدعاء</strong>، فنحوّل التعاود بذلك إلى صيغة تكرارية:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* حاكِ التعاود باستخدام التكرار */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">forLoopRecur</span><span class="hljs-params">(n <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> {
+	<span class="hljs-comment">// استخدم مكدساً صريحاً لمحاكاة مكدس استدعاء النظام</span>
+	stack := list.New()
+	res := <span class="hljs-number">0</span>
+	<span class="hljs-comment">// النزول: الاستدعاء التعاودي</span>
+	<span class="hljs-keyword">for</span> i := n; i &gt; <span class="hljs-number">0</span>; i-- {
+		<span class="hljs-comment">// حاكِ «النزول» بـ«الدفع»</span>
+		stack.PushBack(i)
+	}
+	<span class="hljs-comment">// الصعود: إعادة النتيجة</span>
+	<span class="hljs-keyword">for</span> stack.Len() != <span class="hljs-number">0</span> {
+		<span class="hljs-comment">// حاكِ «الصعود» بـ«السحب»</span>
+		res += stack.Back().Value.(<span class="hljs-type">int</span>)
+		stack.Remove(stack.Back())
+	}
+	<span class="hljs-comment">// res = 1+2+3+...+n</span>
+	<span class="hljs-keyword">return</span> res
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* حاكِ التعاود باستخدام التكرار */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">forLoopRecur</span>(<span class="hljs-params"><span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-built_in">number</span> {
+    <span class="hljs-comment">// استخدم مكدساً صريحاً لمحاكاة مكدس استدعاء النظام</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">stack</span>: <span class="hljs-built_in">number</span>[] = [];
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">res</span>: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// النزول: الاستدعاء التعاودي</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = n; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-comment">// حاكِ «النزول» بـ«الدفع»</span>
+        stack.<span class="hljs-title function_">push</span>(i);
+    }
+    <span class="hljs-comment">// الصعود: إعادة النتيجة</span>
+    <span class="hljs-keyword">while</span> (stack.<span class="hljs-property">length</span>) {
+        <span class="hljs-comment">// حاكِ «الصعود» بـ«السحب»</span>
+        res += stack.<span class="hljs-title function_">pop</span>();
+    }
+    <span class="hljs-comment">// res = 1+2+3+...+n</span>
+    <span class="hljs-keyword">return</span> res;
+}
+</code></pre>
+</div>
+<p>وبمراقبة الشيفرة أعلاه، عندما يُحوَّل التعاود إلى تكرار تصبح الشيفرة أكثر تعقيداً. ورغم إمكان تحويل التكرار والتعاود إلى بعضهما في كثير من الحالات، فقد لا يكون ذلك مجدياً للسببين التاليين.</p>
+<ul>
+<li>قد تكون الشيفرة المحوَّلة أصعب في الفهم وأقل قابلية للقراءة.</li>
+<li>في بعض المسائل المعقدة، قد تكون محاكاة سلوك مكدس استدعاء النظام صعبة جداً.</li>
+</ul>
+<p>وخلاصة القول، <strong>يعتمد الاختيار بين التكرار والتعاود على طبيعة المسألة المحددة</strong>. وفي ممارسة البرمجة، من الجوهري الموازنة بين مزايا الطريقتين وعيوبهما واختيار الطريقة المناسبة وفق السياق.</p>
+`,e={book:s,chapter:n,chapterTitle:a,slug:l,title:p,headings:t,html:c};export{s as book,n as chapter,a as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

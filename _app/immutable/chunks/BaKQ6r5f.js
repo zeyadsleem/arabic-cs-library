@@ -1,0 +1,92 @@
+const s="hello-algo",n="chapter_sorting",a="الترتيب",l="bucket_sort",p="ترتيب الدلاء",t=[{depth:2,id:"تدفق-الخوارزمية",text:"تدفق الخوارزمية"},{depth:2,id:"خصائص-الخوارزمية",text:"خصائص الخوارزمية"},{depth:2,id:"كيف-نحقق-توزيعا-متساويا",text:"كيف نحقق توزيعاً متساوياً"}],c=`<p>خوارزميات الترتيب التي ناقشناها سابقاً كلها خوارزميات ترتيب قائمة على المقارنة، وهي ترتّب عبر مقارنة الترتيب النسبي للعناصر. الحد الأدنى للتعقيد الزمني لهذه الخوارزميات في أسوأ الحالات هو $\\Omega(n \\log n)$. بعد ذلك، سنستكشف عدة خوارزميات ترتيب لا تعتمد على المقارنة، يمكن أن يكون تعقيدها الزمني خطياً.</p>
+<p><u>ترتيب الدلاء</u> تطبيق نموذجي لاستراتيجية التقسيم والتغلب. وهو يعمل عبر إنشاء سلسلة من الدلاء المرتبة، يقابل كل منها نطاقاً من البيانات، وتوزيع البيانات عليها بالتساوي. ثم تُرتَّب العناصر داخل كل دلو على حدة. وأخيراً تُدمج جميع الدلاء بالترتيب.</p>
+<h2 id="تدفق-الخوارزمية">تدفق الخوارزمية</h2>
+<p>لنأخذ مصفوفة طولها $n$، عناصرها أعداد عشرية عائمة في النطاق $[0, 1)$. يظهر تدفق ترتيب الدلاء في الشكل التالي.</p>
+<ol>
+<li>هيّئ $k$ من الدلاء ووزّع العناصر $n$ على الدلاء $k$.</li>
+<li>رتّب كل دلو على حدة (نستخدم هنا دالة الترتيب المدمجة في لغة البرمجة).</li>
+<li>ادمج النتائج بالترتيب من أصغر دلو إلى أكبرها.</li>
+</ol>
+<p><img src="/images/hello-algo/chapter_sorting--bucket_sort_overview.png" alt="تدفق خوارزمية ترتيب الدلاء"></p>
+<p>الشيفرة كما يلي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* ترتيب الدلاء */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bucketSort</span><span class="hljs-params">(nums []<span class="hljs-type">float64</span>)</span></span> {
+	<span class="hljs-comment">// تهيئة k = n/2 دلو، ومن المتوقع تخصيص عنصرين لكل دلو</span>
+	k := <span class="hljs-built_in">len</span>(nums) / <span class="hljs-number">2</span>
+	buckets := <span class="hljs-built_in">make</span>([][]<span class="hljs-type">float64</span>, k)
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; k; i++ {
+		buckets[i] = <span class="hljs-built_in">make</span>([]<span class="hljs-type">float64</span>, <span class="hljs-number">0</span>)
+	}
+	<span class="hljs-comment">// 1. وزّع عناصر المصفوفة على الدلاء المختلفة</span>
+	<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums {
+		<span class="hljs-comment">// نطاق بيانات الإدخال هو [0, 1)، استخدم num * k للتعيين إلى نطاق الفهارس [0, k-1]</span>
+		i := <span class="hljs-type">int</span>(num * <span class="hljs-type">float64</span>(k))
+		<span class="hljs-comment">// أضف num إلى الدلو i</span>
+		buckets[i] = <span class="hljs-built_in">append</span>(buckets[i], num)
+	}
+	<span class="hljs-comment">// 2. رتّب كل دلو</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; k; i++ {
+		<span class="hljs-comment">// استخدم دالة ترتيب الشرائح المدمجة، ويمكن استبدالها بخوارزميات ترتيب أخرى</span>
+		sort.Float64s(buckets[i])
+	}
+	<span class="hljs-comment">// 3. اجتز الدلاء لدمج النتائج</span>
+	i := <span class="hljs-number">0</span>
+	<span class="hljs-keyword">for</span> _, bucket := <span class="hljs-keyword">range</span> buckets {
+		<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> bucket {
+			nums[i] = num
+			i++
+		}
+	}
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* ترتيب الدلاء */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">bucketSort</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// تهيئة k = n/2 دلو، ومن المتوقع تخصيص عنصرين لكل دلو</span>
+    <span class="hljs-keyword">const</span> k = nums.<span class="hljs-property">length</span> / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">buckets</span>: <span class="hljs-built_in">number</span>[][] = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        buckets.<span class="hljs-title function_">push</span>([]);
+    }
+    <span class="hljs-comment">// 1. وزّع عناصر المصفوفة على الدلاء المختلفة</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> num <span class="hljs-keyword">of</span> nums) {
+        <span class="hljs-comment">// نطاق بيانات الإدخال هو [0, 1)، استخدم num * k للتعيين إلى نطاق الفهارس [0, k-1]</span>
+        <span class="hljs-keyword">const</span> i = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(num * k);
+        <span class="hljs-comment">// أضف num إلى الدلو i</span>
+        buckets[i].<span class="hljs-title function_">push</span>(num);
+    }
+    <span class="hljs-comment">// 2. رتّب كل دلو</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> bucket <span class="hljs-keyword">of</span> buckets) {
+        <span class="hljs-comment">// استخدم دالة الترتيب المدمجة، ويمكن استبدالها بخوارزميات ترتيب أخرى</span>
+        bucket.<span class="hljs-title function_">sort</span>(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a - b);
+    }
+    <span class="hljs-comment">// 3. اجتز الدلاء لدمج النتائج</span>
+    <span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> bucket <span class="hljs-keyword">of</span> buckets) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> num <span class="hljs-keyword">of</span> bucket) {
+            nums[i++] = num;
+        }
+    }
+}
+</code></pre>
+</div>
+<h2 id="خصائص-الخوارزمية">خصائص الخوارزمية</h2>
+<p>يناسب ترتيب الدلاء معالجة مجموعات بيانات ضخمة جداً. على سبيل المثال، لنفترض أن الإدخال يحتوي على مليون عنصر، وتمنع محدودية الذاكرة النظام من تحميلها كلها دفعة واحدة. في هذه الحالة يمكن تقسيم البيانات على 1000 دلو، وترتيب كل دلو على حدة، ثم دمج النتائج.</p>
+<ul>
+<li><strong>التعقيد الزمني هو $O(n + k)$</strong>: بافتراض توزيع العناصر بالتساوي على الدلاء، يحتوي كل دلو على $\\frac{n}{k}$ عنصراً. وإذا استغرق ترتيب دلو واحد زمن $O(\\frac{n}{k} \\log\\frac{n}{k})$، فإن ترتيب جميع الدلاء يستغرق زمن $O(n \\log\\frac{n}{k})$. <strong>وعندما يكون عدد الدلاء $k$ كبيراً نسبياً، يقترب التعقيد الزمني من $O(n)$</strong>. ويتطلب دمج النتائج اجتياز جميع الدلاء والعناصر، وهو ما يستغرق زمن $O(n + k)$. وفي أسوأ الحالات، تُوضع كل البيانات في دلو واحد، ويستغرق ترتيبه زمن $O(n^2)$.</li>
+<li><strong>التعقيد المكاني هو $O(n + k)$، وترتيب الدلاء ليس في المكان</strong>: فهو يتطلب مساحة إضافية لمقدار $k$ من الدلاء و$n$ من العناصر إجمالاً.</li>
+<li>يعتمد استقرار ترتيب الدلاء على ما إذا كانت الخوارزمية المستخدمة لترتيب العناصر داخل الدلاء مستقرة.</li>
+</ul>
+<h2 id="كيف-نحقق-توزيعا-متساويا">كيف نحقق توزيعاً متساوياً</h2>
+<p>نظرياً، يمكن لترتيب الدلاء تحقيق تعقيد زمني $O(n)$. <strong>المفتاح هو توزيع العناصر بالتساوي على الدلاء</strong>، لأن بيانات العالم الواقعي غالباً لا تكون موزعة بانتظام. على سبيل المثال، لنفترض أننا نريد تقسيم جميع المنتجات على Taobao بالتساوي إلى 10 دلاء حسب نطاق السعر، لكن توزيع الأسعار غير متساوٍ: فهناك منتجات كثيرة يقل سعرها عن 100 يوان، ومنتجات قليلة جداً يتجاوز سعرها 1000 يوان. وإذا قُسّم نطاق السعر بالتساوي إلى 10 فترات، فستتباين أعداد المنتجات في الدلاء تبايناً كبيراً.</p>
+<p>لتحقيق توزيع أكثر تساوياً، يمكننا أولاً اختيار حد تقريبي وتقسيم البيانات إلى 3 دلاء. <strong>بعد ذلك، يمكن تقسيم الدلاء التي تحتوي على منتجات أكثر إلى 3 دلاء أخرى، حتى تصبح أعداد العناصر في جميع الدلاء متقاربة</strong>.</p>
+<p>كما يظهر في الشكل التالي، تبني هذه الطريقة في جوهرها شجرة تعاودية هدفها جعل العقد الورقية متوازنة قدر الإمكان. وبالطبع، لا يلزم تقسيم البيانات إلى 3 دلاء في كل جولة؛ إذ يمكن اختيار استراتيجية التقسيم المحددة بمرونة بناءً على خصائص البيانات.</p>
+<p><img src="/images/hello-algo/chapter_sorting--scatter_in_buckets_recursively.png" alt="تقسيم الدلاء تعاودياً"></p>
+<p>إذا عرفنا التوزيع الاحتمالي لأسعار المنتجات مسبقاً، <strong>يمكننا ضبط حدود الأسعار لكل دلو وفقاً لهذا التوزيع</strong>. ومن الجدير بالذكر أن توزيع البيانات لا يلزم قياسه بدقة؛ إذ يمكن أيضاً تقريبه بنموذج احتمالي يُختار ليلائم خصائص البيانات.</p>
+<p>كما يظهر في الشكل التالي، نفترض أن أسعار المنتجات تتبع توزيعاً طبيعياً، مما يتيح لنا ضبط فترات الأسعار بشكل معقول لتوزيع المنتجات بالتساوي على كل دلو.</p>
+<p><img src="/images/hello-algo/chapter_sorting--scatter_in_buckets_distribution.png" alt="تقسيم الدلاء بناءً على التوزيع الاحتمالي"></p>
+`,e={book:s,chapter:n,chapterTitle:a,slug:l,title:p,headings:t,html:c};export{s as book,n as chapter,a as chapterTitle,e as default,t as headings,c as html,l as slug,p as title};

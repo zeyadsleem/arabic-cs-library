@@ -1,0 +1,258 @@
+const s="hello-algo",a="chapter_graph",n="الرسوم البيانية",l="graph_operations",p="العمليات الأساسية على الرسوم البيانية",t=[{depth:2,id:"التنفيذ-باستخدام-مصفوفة-التجاور",text:"التنفيذ باستخدام مصفوفة التجاور"},{depth:2,id:"التنفيذ-باستخدام-قائمة-التجاور",text:"التنفيذ باستخدام قائمة التجاور"},{depth:2,id:"مقارنة-الكفاءة",text:"مقارنة الكفاءة"}],e=`<p>يمكن تقسيم العمليات الأساسية على الرسوم البيانية إلى عمليات على «الأضلاع» وعمليات على «الرؤوس». وتختلف تطبيقاتها حسب ما إذا كان الرسم البياني ممثّلاً بـ«مصفوفة تجاور» أو «قائمة تجاور».</p>
+<h2 id="التنفيذ-باستخدام-مصفوفة-التجاور">التنفيذ باستخدام مصفوفة التجاور</h2>
+<p>بمعطى رسم بياني غير موجّه فيه $n$ من الرؤوس، تُنفَّذ العمليات المختلفة كما يوضح الشكل أدناه.</p>
+<ul>
+<li><strong>إضافة ضلع أو حذفه</strong>: عدّل الضلع المحدد مباشرةً في مصفوفة التجاور، بزمن $O(1)$. وبما أن الرسم البياني غير موجّه، يلزم تحديث اتجاهي الضلع معاً.</li>
+<li><strong>إضافة رأس</strong>: أضف صفاً وعموداً في نهاية مصفوفة التجاور واملأهما جميعاً بالقيمة $0$، بزمن $O(n)$.</li>
+<li><strong>حذف رأس</strong>: احذف صفاً وعموداً في مصفوفة التجاور. وتحدث أسوأ حالة عند حذف الصف والعمود الأولين، حيث يلزم «نقل $(n-1)^2$ عنصراً إلى الأعلى واليسار»، وبذلك يكون الزمن $O(n^2)$.</li>
+<li><strong>التهيئة</strong>: بمعطى $n$ من الرؤوس، هيّئ قائمة رؤوس <code>vertices</code> طولها $n$، بزمن $O(n)$؛ وهيّئ مصفوفة تجاور <code>adjMat</code> حجمها $n \\times n$، بزمن $O(n^2)$.</li>
+</ul>
+<p>وفيما يلي شيفرة تنفيذ الرسوم البيانية الممثلة بمصفوفة التجاور:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* فئة الرسم البياني غير الموجّه القائمة على مصفوفة التجاور */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GraphAdjMat</span> {
+    <span class="hljs-attr">vertices</span>: <span class="hljs-built_in">number</span>[]; <span class="hljs-comment">// قائمة الرؤوس، حيث يمثل العنصر &quot;قيمة الرأس&quot; ويمثل الفهرس &quot;فهرس الرأس&quot;</span>
+    <span class="hljs-attr">adjMat</span>: <span class="hljs-built_in">number</span>[][]; <span class="hljs-comment">// مصفوفة التجاور، حيث يقابل فهرسا الصف والعمود &quot;فهرس الرأس&quot;</span>
+
+    <span class="hljs-comment">/* المُنشئ */</span>
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">vertices</span>: <span class="hljs-built_in">number</span>[], <span class="hljs-attr">edges</span>: <span class="hljs-built_in">number</span>[][]</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span> = [];
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span> = [];
+        <span class="hljs-comment">// إضافة الرؤوس</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> val <span class="hljs-keyword">of</span> vertices) {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addVertex</span>(val);
+        }
+        <span class="hljs-comment">// إضافة الأضلاع</span>
+        <span class="hljs-comment">// لاحظ أن عناصر edges تمثل فهارس الرؤوس، أي أنها تقابل فهارس عناصر vertices</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> e <span class="hljs-keyword">of</span> edges) {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addEdge</span>(e[<span class="hljs-number">0</span>], e[<span class="hljs-number">1</span>]);
+        }
+    }
+
+    <span class="hljs-comment">/* الحصول على عدد الرؤوس */</span>
+    <span class="hljs-title function_">size</span>(): <span class="hljs-built_in">number</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-property">length</span>;
+    }
+
+    <span class="hljs-comment">/* إضافة رأس */</span>
+    <span class="hljs-title function_">addVertex</span>(<span class="hljs-attr">val</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">const</span> <span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>();
+        <span class="hljs-comment">// إضافة قيمة الرأس الجديد إلى قائمة الرؤوس</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-title function_">push</span>(val);
+        <span class="hljs-comment">// إضافة صف إلى مصفوفة التجاور</span>
+        <span class="hljs-keyword">const</span> <span class="hljs-attr">newRow</span>: <span class="hljs-built_in">number</span>[] = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> <span class="hljs-attr">j</span>: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            newRow.<span class="hljs-title function_">push</span>(<span class="hljs-number">0</span>);
+        }
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>.<span class="hljs-title function_">push</span>(newRow);
+        <span class="hljs-comment">// إضافة عمود إلى مصفوفة التجاور</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> row <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>) {
+            row.<span class="hljs-title function_">push</span>(<span class="hljs-number">0</span>);
+        }
+    }
+
+    <span class="hljs-comment">/* حذف رأس */</span>
+    <span class="hljs-title function_">removeVertex</span>(<span class="hljs-attr">index</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>()) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RangeError</span>(<span class="hljs-string">&#x27;Index Out Of Bounds Exception&#x27;</span>);
+        }
+        <span class="hljs-comment">// حذف الرأس عند الفهرس index من قائمة الرؤوس</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>.<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);
+
+        <span class="hljs-comment">// حذف الصف عند الفهرس index من مصفوفة التجاور</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>.<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// حذف العمود عند الفهرس index من مصفوفة التجاور</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> row <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>) {
+            row.<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-comment">/* إضافة ضلع */</span>
+    <span class="hljs-comment">// المعاملان i وj يقابلان فهارس عناصر vertices</span>
+    <span class="hljs-title function_">addEdge</span>(<span class="hljs-attr">i</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">j</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-comment">// معالجة تجاوز حدود الفهارس والتساوي</span>
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || j &lt; <span class="hljs-number">0</span> || i &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() || j &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() || i === j) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RangeError</span>(<span class="hljs-string">&#x27;Index Out Of Bounds Exception&#x27;</span>);
+        }
+        <span class="hljs-comment">// في الرسم البياني غير الموجّه، مصفوفة التجاور متماثلة حول القطر الرئيسي، أي أنها تحقق (i, j) === (j, i)</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>[i][j] = <span class="hljs-number">1</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>[j][i] = <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-comment">/* حذف ضلع */</span>
+    <span class="hljs-comment">// المعاملان i وj يقابلان فهارس عناصر vertices</span>
+    <span class="hljs-title function_">removeEdge</span>(<span class="hljs-attr">i</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">j</span>: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-comment">// معالجة تجاوز حدود الفهارس والتساوي</span>
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">0</span> || j &lt; <span class="hljs-number">0</span> || i &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() || j &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">size</span>() || i === j) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RangeError</span>(<span class="hljs-string">&#x27;Index Out Of Bounds Exception&#x27;</span>);
+        }
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>[i][j] = <span class="hljs-number">0</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>[j][i] = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">/* طباعة مصفوفة التجاور */</span>
+    <span class="hljs-title function_">print</span>(): <span class="hljs-built_in">void</span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Vertex list = &#x27;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">vertices</span>);
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Adjacency matrix =&#x27;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjMat</span>);
+    }
+}
+</code></pre>
+</div>
+<h2 id="التنفيذ-باستخدام-قائمة-التجاور">التنفيذ باستخدام قائمة التجاور</h2>
+<p>بمعطى رسم بياني غير موجّه فيه $n$ من الرؤوس إجمالاً و$m$ من الأضلاع، يمكن تنفيذ العمليات المختلفة كما يوضح الشكل أدناه.</p>
+<ul>
+<li><strong>إضافة ضلع</strong>: أضف الضلع في نهاية القائمة المترابطة للرأس المقابل، بزمن $O(1)$. وبما أن الرسم البياني غير موجّه، يلزم إضافة الضلعين في الاتجاهين معاً.</li>
+<li><strong>حذف ضلع</strong>: ابحث عن الضلع المحدد في القائمة المترابطة للرأس المقابل واحذفه، بزمن $O(m)$. وفي الرسم البياني غير الموجّه، يلزم حذف الضلعين في الاتجاهين معاً.</li>
+<li><strong>إضافة رأس</strong>: أضف قائمة مترابطة إلى قائمة التجاور، ويكون الرأس الجديد هو العقدة الرأسية، بزمن $O(1)$.</li>
+<li><strong>حذف رأس</strong>: اجتز قائمة التجاور كاملة واحذف جميع الأضلاع التي تحتوي على الرأس المحدد، بزمن $O(n + m)$.</li>
+<li><strong>التهيئة</strong>: أنشئ $n$ من الرؤوس و$2m$ من الأضلاع في قائمة التجاور، بزمن $O(n + m)$.</li>
+</ul>
+<p>تعرض الشيفرة التالية تنفيذ قائمة التجاور. وبالمقارنة بالشكل أعلاه، تختلف الشيفرة الفعلية في النقاط التالية.</p>
+<ul>
+<li>لتسهيل إضافة الرؤوس وحذفها ولتبسيط الشيفرة، نستخدم قوائم (مصفوفات ديناميكية) بدلاً من القوائم المترابطة.</li>
+<li>يُستخدم جدول تجزئة لتخزين قائمة التجاور، حيث يكون <code>key</code> نسخة الرأس و<code>value</code> قائمة (القائمة المترابطة) الرؤوس المجاورة لذلك الرأس.</li>
+</ul>
+<p>وإضافة إلى ذلك، نستخدم الفئة <code>Vertex</code> لتمثيل الرؤوس في قائمة التجاور للسبب التالي: لو استخدمنا فهارس القائمة للتمييز بين الرؤوس المختلفة، كما في مصفوفات التجاور، لاحتجنا عند حذف الرأس عند الفهرس $i$ إلى اجتياز قائمة التجاور كاملة وإنقاص جميع الفهارس الأكبر من $i$ بمقدار $1$، وهو أمر شديد الانخفاض في الكفاءة. أما إذا كان كل رأس نسخة <code>Vertex</code> فريدة، فلن يتطلب حذف رأس واحد تعديل الرؤوس الأخرى.</p>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* فئة الرسم البياني غير الموجّه القائمة على قائمة التجاور */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GraphAdjList</span> {
+    <span class="hljs-comment">// قائمة التجاور، key: الرأس، value: جميع الرؤوس المجاورة لذلك الرأس</span>
+    <span class="hljs-attr">adjList</span>: <span class="hljs-title class_">Map</span>&lt;<span class="hljs-title class_">Vertex</span>, <span class="hljs-title class_">Vertex</span>[]&gt;;
+
+    <span class="hljs-comment">/* المُنشئ */</span>
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params"><span class="hljs-attr">edges</span>: <span class="hljs-title class_">Vertex</span>[][]</span>) {
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+        <span class="hljs-comment">// إضافة جميع الرؤوس والأضلاع</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> edge <span class="hljs-keyword">of</span> edges) {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addVertex</span>(edge[<span class="hljs-number">0</span>]);
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addVertex</span>(edge[<span class="hljs-number">1</span>]);
+            <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">addEdge</span>(edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>]);
+        }
+    }
+
+    <span class="hljs-comment">/* الحصول على عدد الرؤوس */</span>
+    <span class="hljs-title function_">size</span>(): <span class="hljs-built_in">number</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-property">size</span>;
+    }
+
+    <span class="hljs-comment">/* إضافة ضلع */</span>
+    <span class="hljs-title function_">addEdge</span>(<span class="hljs-attr">vet1</span>: <span class="hljs-title class_">Vertex</span>, <span class="hljs-attr">vet2</span>: <span class="hljs-title class_">Vertex</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">if</span> (
+            !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet1) ||
+            !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet2) ||
+            vet1 === vet2
+        ) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Illegal Argument Exception&#x27;</span>);
+        }
+        <span class="hljs-comment">// إضافة الضلع vet1 - vet2</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet1).<span class="hljs-title function_">push</span>(vet2);
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet2).<span class="hljs-title function_">push</span>(vet1);
+    }
+
+    <span class="hljs-comment">/* حذف ضلع */</span>
+    <span class="hljs-title function_">removeEdge</span>(<span class="hljs-attr">vet1</span>: <span class="hljs-title class_">Vertex</span>, <span class="hljs-attr">vet2</span>: <span class="hljs-title class_">Vertex</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">if</span> (
+            !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet1) ||
+            !<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet2) ||
+            vet1 === vet2 ||
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet1).<span class="hljs-title function_">indexOf</span>(vet2) === -<span class="hljs-number">1</span>
+        ) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Illegal Argument Exception&#x27;</span>);
+        }
+        <span class="hljs-comment">// حذف الضلع vet1 - vet2</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet1).<span class="hljs-title function_">splice</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet1).<span class="hljs-title function_">indexOf</span>(vet2), <span class="hljs-number">1</span>);
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet2).<span class="hljs-title function_">splice</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">get</span>(vet2).<span class="hljs-title function_">indexOf</span>(vet1), <span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-comment">/* إضافة رأس */</span>
+    <span class="hljs-title function_">addVertex</span>(<span class="hljs-attr">vet</span>: <span class="hljs-title class_">Vertex</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet)) <span class="hljs-keyword">return</span>;
+        <span class="hljs-comment">// إضافة قائمة مترابطة جديدة في قائمة التجاور</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">set</span>(vet, []);
+    }
+
+    <span class="hljs-comment">/* حذف رأس */</span>
+    <span class="hljs-title function_">removeVertex</span>(<span class="hljs-attr">vet</span>: <span class="hljs-title class_">Vertex</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">has</span>(vet)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Illegal Argument Exception&#x27;</span>);
+        }
+        <span class="hljs-comment">// حذف القائمة المترابطة المقابلة للرأس vet في قائمة التجاور</span>
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">delete</span>(vet);
+        <span class="hljs-comment">// اجتياز القوائم المترابطة للرؤوس الأخرى وحذف جميع الأضلاع التي تحتوي على vet</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> set <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">values</span>()) {
+            <span class="hljs-keyword">const</span> <span class="hljs-attr">index</span>: <span class="hljs-built_in">number</span> = set.<span class="hljs-title function_">indexOf</span>(vet);
+            <span class="hljs-keyword">if</span> (index &gt; -<span class="hljs-number">1</span>) {
+                set.<span class="hljs-title function_">splice</span>(index, <span class="hljs-number">1</span>);
+            }
+        }
+    }
+
+    <span class="hljs-comment">/* طباعة قائمة التجاور */</span>
+    <span class="hljs-title function_">print</span>(): <span class="hljs-built_in">void</span> {
+        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Adjacency list =&#x27;</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">adjList</span>.<span class="hljs-title function_">entries</span>()) {
+            <span class="hljs-keyword">const</span> tmp = [];
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> vertex <span class="hljs-keyword">of</span> value) {
+                tmp.<span class="hljs-title function_">push</span>(vertex.<span class="hljs-property">val</span>);
+            }
+            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(key.<span class="hljs-property">val</span> + <span class="hljs-string">&#x27;: &#x27;</span> + tmp.<span class="hljs-title function_">join</span>());
+        }
+    }
+}
+</code></pre>
+</div>
+<h2 id="مقارنة-الكفاءة">مقارنة الكفاءة</h2>
+<p>بافتراض أن الرسم البياني فيه $n$ من الرؤوس و$m$ من الأضلاع، يقارن الجدول أدناه الكفاءة الزمنية والكفاءة المكانية لمصفوفات التجاور وقوائم التجاور. لاحظ أن قائمة التجاور (القائمة المترابطة) تقابل التنفيذ المستخدم في هذا القسم، بينما تشير قائمة التجاور (جدول التجزئة) تحديداً إلى التنفيذ الذي تُستبدل فيه جميع القوائم المترابطة بجداول تجزئة.</p>
+<p align="center"> جدول <id> &nbsp; مقارنة بين مصفوفة التجاور وقائمة التجاور </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>مصفوفة التجاور</th>
+<th>قائمة التجاور (قائمة مترابطة)</th>
+<th>قائمة التجاور (جدول تجزئة)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تحديد التجاور</td>
+<td>$O(1)$</td>
+<td>$O(n)$</td>
+<td>$O(1)$</td>
+</tr>
+<tr>
+<td>إضافة ضلع</td>
+<td>$O(1)$</td>
+<td>$O(1)$</td>
+<td>$O(1)$</td>
+</tr>
+<tr>
+<td>حذف ضلع</td>
+<td>$O(1)$</td>
+<td>$O(n)$</td>
+<td>$O(1)$</td>
+</tr>
+<tr>
+<td>إضافة رأس</td>
+<td>$O(n)$</td>
+<td>$O(1)$</td>
+<td>$O(1)$</td>
+</tr>
+<tr>
+<td>حذف رأس</td>
+<td>$O(n^2)$</td>
+<td>$O(n + m)$</td>
+<td>$O(n)$</td>
+</tr>
+<tr>
+<td>استهلاك مساحة الذاكرة</td>
+<td>$O(n^2)$</td>
+<td>$O(n + m)$</td>
+<td>$O(n + m)$</td>
+</tr>
+</tbody>
+</table>
+<p>وبمراقبة الجدول أعلاه، يبدو أن قائمة التجاور (جدول التجزئة) هي الأفضل في الكفاءة الزمنية والكفاءة المكانية. غير أن العمل على الأضلاع في مصفوفة التجاور أكثر كفاءة في الممارسة العملية، إذ لا يتطلب سوى عملية وصول واحدة إلى المصفوفة أو إسناد واحد. وإجمالاً، تجسّد مصفوفات التجاور مبدأ «المقايضة بين المساحة والزمن»، بينما تجسّد قوائم التجاور «المقايضة بين الزمن والمساحة».</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,t as headings,e as html,l as slug,p as title};

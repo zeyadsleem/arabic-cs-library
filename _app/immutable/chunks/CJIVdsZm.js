@@ -1,0 +1,162 @@
+const s="hello-algo",n="chapter_sorting",a="الترتيب",l="counting_sort",p="الترتيب بالعد",c=[{depth:2,id:"تنفيذ-بسيط",text:"تنفيذ بسيط"},{depth:2,id:"تنفيذ-كامل",text:"تنفيذ كامل"},{depth:2,id:"خصائص-الخوارزمية",text:"خصائص الخوارزمية"},{depth:2,id:"القيود",text:"القيود"}],e=`<p><u>الترتيب بالعد</u> (counting sort) يرتّب عبر عدّ مرات ظهور العناصر، ويُطبَّق عادةً على مصفوفات الأعداد الصحيحة.</p>
+<h2 id="تنفيذ-بسيط">تنفيذ بسيط</h2>
+<p>لنبدأ بمثال بسيط. بمعطى مصفوفة <code>nums</code> طولها $n$، وجميع عناصرها «أعداد صحيحة غير سالبة»، يوضح الشكل أدناه التدفق الإجمالي للترتيب بالعد.</p>
+<ol>
+<li>اجتز المصفوفة لإيجاد أكبر عدد، ورمزه $m$، ثم أنشئ مصفوفة مساعدة <code>counter</code> طولها $m + 1$.</li>
+<li><strong>استخدم <code>counter</code> لعدّ عدد مرات ظهور كل عدد في <code>nums</code></strong>، حيث يخزّن <code>counter[num]</code> عدد مرات ظهور <code>num</code>. وهذا بسيط: اجتز <code>nums</code> (ورمز العدد الحالي بـ<code>num</code>) وزد <code>counter[num]</code> بمقدار $1$ في كل مرة.</li>
+<li><strong>وبما أن فهارس <code>counter</code> مرتّبة ترتيباً طبيعياً، فإن الأعداد تكون فعلياً مرتّبة بالفعل</strong>. بعد ذلك، اجتز <code>counter</code> واكتب الأعداد مرة أخرى في <code>nums</code> بترتيب تصاعدي وفقاً لأعداد ظهورها.</li>
+</ol>
+<p><img src="/images/hello-algo/chapter_sorting--counting_sort_overview.png" alt="تدفق الترتيب بالعد"></p>
+<p>والشيفرة كما يلي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الترتيب بالعد */</span>
+<span class="hljs-comment">// تنفيذ بسيط، لا يصلح لترتيب الكائنات</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countingSortNaive</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> {
+	<span class="hljs-comment">// 1. عدّ أكبر عنصر m في المصفوفة</span>
+	m := <span class="hljs-number">0</span>
+	<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums {
+		<span class="hljs-keyword">if</span> num &gt; m {
+			m = num
+		}
+	}
+	<span class="hljs-comment">// 2. عدّ مرات ظهور كل عدد</span>
+	<span class="hljs-comment">// يمثّل counter[num] عدد مرات ظهور num</span>
+	counter := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, m+<span class="hljs-number">1</span>)
+	<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums {
+		counter[num]++
+	}
+	<span class="hljs-comment">// 3. اجتز counter، واكتب كل عنصر مرة أخرى في المصفوفة الأصلية nums</span>
+	<span class="hljs-keyword">for</span> i, num := <span class="hljs-number">0</span>, <span class="hljs-number">0</span>; num &lt; m+<span class="hljs-number">1</span>; num++ {
+		<span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; counter[num]; j++ {
+			nums[i] = num
+			i++
+		}
+	}
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الترتيب بالعد */</span>
+<span class="hljs-comment">// تنفيذ بسيط، لا يصلح لترتيب الكائنات</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">countingSortNaive</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// 1. عدّ أكبر عنصر m في المصفوفة</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">m</span>: <span class="hljs-built_in">number</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(...nums);
+    <span class="hljs-comment">// 2. عدّ مرات ظهور كل عدد</span>
+    <span class="hljs-comment">// يمثّل counter[num] عدد مرات ظهور num</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">counter</span>: <span class="hljs-built_in">number</span>[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;(m + <span class="hljs-number">1</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> num <span class="hljs-keyword">of</span> nums) {
+        counter[num]++;
+    }
+    <span class="hljs-comment">// 3. اجتز counter، واكتب كل عنصر مرة أخرى في المصفوفة الأصلية nums</span>
+    <span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> num = <span class="hljs-number">0</span>; num &lt; m + <span class="hljs-number">1</span>; num++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = <span class="hljs-number">0</span>; j &lt; counter[num]; j++, i++) {
+            nums[i] = num;
+        }
+    }
+}
+</code></pre>
+</div>
+<div class="note">
+<p class="note__title">الصلة بين الترتيب بالعد وترتيب الدلاء</p>
+<p>من منظور ترتيب الدلاء، يمكن النظر إلى كل فهرس في مصفوفة العدّ <code>counter</code> باعتباره دلو، ويمكن اعتبار عملية العدّ توزيعاً للعناصر على الدلاء المقابلة لها. وفي جوهر الأمر، الترتيب بالعد حالة خاصة من ترتيب الدلاء لبيانات الأعداد الصحيحة.</p>
+</div>
+<h2 id="تنفيذ-كامل">تنفيذ كامل</h2>
+<p>ربما لاحظ القراء المتنبّهون أن <strong>عملية الإدخال إذا كانت تتكوّن من كائنات، فإن الخطوة <code>3.</code> أعلاه لم تعد صالحة</strong>. لنفترض أن الإدخال يتكوّن من كائنات منتجات ونريد ترتيبها حسب السعر (وهو متغير عضو في الصنف)؛ فإن الخوارزمية أعلاه لن تنتج إلا ترتيب الأسعار نفسها.</p>
+<p>فكيف يمكننا الحصول على ترتيب البيانات الأصلية؟ نحسب أولاً المجاميع البادئة (prefix sums) لـ<code>counter</code>. وكما يوحي الاسم، فإن المجموع البادئ عند الفهرس $i$، أي <code>prefix[i]</code>، يساوي مجموع العناصر من الفهرس <code>0</code> حتى <code>i</code>:</p>
+<p>$$
+\\text{prefix}[i] = \\sum_{j=0}^i \\text{counter[j]}
+$$</p>
+<p><strong>وللمجموع البادئ تفسير واضح: <code>prefix[num] - 1</code> يعطي فهرس آخر ظهور للعنصر <code>num</code> في المصفوفة الناتجة <code>res</code></strong>. وهذه المعلومة بالغة الأهمية لأنها تخبرنا بالمكان الذي ينبغي أن يوضع فيه كل عنصر في المصفوفة الناتجة. بعد ذلك، نجتاز المصفوفة الأصلية <code>nums</code> بترتيب عكسي، ولكل عنصر <code>num</code> ننفّذ الخطوتين التاليتين.</p>
+<ol>
+<li>ضع <code>num</code> عند الفهرس <code>prefix[num] - 1</code> في المصفوفة <code>res</code>.</li>
+<li>قلّل المجموع البادئ <code>prefix[num]</code> بمقدار $1$ للحصول على فهرس الموضع التالي لـ<code>num</code>.</li>
+</ol>
+<p>وبعد اكتمال الاجتياز، تحتوي المصفوفة <code>res</code> على النتيجة المرتّبة، وأخيراً يُستخدم <code>res</code> لاستبدال المصفوفة الأصلية <code>nums</code>. ويوضح الشكل أدناه تدفق الترتيب بالعد الكامل.</p>
+<p>ويُعرض تنفيذ الترتيب بالعد أدناه:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الترتيب بالعد */</span>
+<span class="hljs-comment">// تنفيذ كامل، يمكنه ترتيب الكائنات وهو ترتيب مستقر</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countingSort</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> {
+	<span class="hljs-comment">// 1. عدّ أكبر عنصر m في المصفوفة</span>
+	m := <span class="hljs-number">0</span>
+	<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums {
+		<span class="hljs-keyword">if</span> num &gt; m {
+			m = num
+		}
+	}
+	<span class="hljs-comment">// 2. عدّ مرات ظهور كل عدد</span>
+	<span class="hljs-comment">// يمثّل counter[num] عدد مرات ظهور num</span>
+	counter := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, m+<span class="hljs-number">1</span>)
+	<span class="hljs-keyword">for</span> _, num := <span class="hljs-keyword">range</span> nums {
+		counter[num]++
+	}
+	<span class="hljs-comment">// 3. احسب المجموع البادئ لـcounter، وحوّل «عدد مرات الظهور» إلى «فهرس الذيل»</span>
+	<span class="hljs-comment">// counter[num]-1 هو آخر فهرس يظهر فيه num في res</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; m; i++ {
+		counter[i+<span class="hljs-number">1</span>] += counter[i]
+	}
+	<span class="hljs-comment">// 4. اجتز nums بترتيب عكسي، وضع كل عنصر في المصفوفة الناتجة res</span>
+	<span class="hljs-comment">// هيّئ المصفوفة res لتسجيل النتائج</span>
+	n := <span class="hljs-built_in">len</span>(nums)
+	res := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, n)
+	<span class="hljs-keyword">for</span> i := n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- {
+		num := nums[i]
+		<span class="hljs-comment">// ضع num عند الفهرس المقابل</span>
+		res[counter[num]<span class="hljs-number">-1</span>] = num
+		<span class="hljs-comment">// قلّل المجموع البادئ بمقدار 1 للحصول على الفهرس التالي لوضع num</span>
+		counter[num]--
+	}
+	<span class="hljs-comment">// استخدم المصفوفة الناتجة res لاستبدال المصفوفة الأصلية nums</span>
+	<span class="hljs-built_in">copy</span>(nums, res)
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الترتيب بالعد */</span>
+<span class="hljs-comment">// تنفيذ كامل، يمكنه ترتيب الكائنات وهو ترتيب مستقر</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">countingSort</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// 1. عدّ أكبر عنصر m في المصفوفة</span>
+    <span class="hljs-keyword">let</span> <span class="hljs-attr">m</span>: <span class="hljs-built_in">number</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(...nums);
+    <span class="hljs-comment">// 2. عدّ مرات ظهور كل عدد</span>
+    <span class="hljs-comment">// يمثّل counter[num] عدد مرات ظهور num</span>
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">counter</span>: <span class="hljs-built_in">number</span>[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;(m + <span class="hljs-number">1</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> num <span class="hljs-keyword">of</span> nums) {
+        counter[num]++;
+    }
+    <span class="hljs-comment">// 3. احسب المجموع البادئ لـcounter، وحوّل «عدد مرات الظهور» إلى «فهرس الذيل»</span>
+    <span class="hljs-comment">// counter[num]-1 هو آخر فهرس يظهر فيه num في res</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        counter[i + <span class="hljs-number">1</span>] += counter[i];
+    }
+    <span class="hljs-comment">// 4. اجتز nums بترتيب عكسي، وضع كل عنصر في المصفوفة الناتجة res</span>
+    <span class="hljs-comment">// هيّئ المصفوفة res لتسجيل النتائج</span>
+    <span class="hljs-keyword">const</span> n = nums.<span class="hljs-property">length</span>;
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">res</span>: <span class="hljs-built_in">number</span>[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;(n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">const</span> num = nums[i];
+        res[counter[num] - <span class="hljs-number">1</span>] = num; <span class="hljs-comment">// ضع num عند الفهرس المقابل</span>
+        counter[num]--; <span class="hljs-comment">// قلّل المجموع البادئ بمقدار 1 للحصول على الفهرس التالي لوضع num</span>
+    }
+    <span class="hljs-comment">// استخدم المصفوفة الناتجة res لاستبدال المصفوفة الأصلية nums</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        nums[i] = res[i];
+    }
+}
+</code></pre>
+</div>
+<h2 id="خصائص-الخوارزمية">خصائص الخوارزمية</h2>
+<ul>
+<li><strong>التعقيد الزمني $O(n + m)$، والترتيب بالعد غير تكيّفي (non-adaptive)</strong>: يستغرق اجتياز <code>nums</code> و<code>counter</code> زمناً خطياً. وبشكل عام، عندما $n \\gg m$، يقترب التعقيد الزمني من $O(n)$.</li>
+<li><strong>التعقيد المكاني $O(n + m)$، وترتيب ليس في المكان (non-in-place)</strong>: يستخدم المصفوفتين <code>res</code> و<code>counter</code> بطولين $n$ و$m$ على التوالي.</li>
+<li><strong>ترتيب مستقر</strong>: بما أن العناصر تُملأ في <code>res</code> بترتيب «من اليمين إلى اليسار»، فإن اجتياز <code>nums</code> بترتيب عكسي يمكن أن يمنع تغيّر المواضع النسبية للعناصر المتساوية، وبذلك يتحقق ترتيب مستقر. وفي الواقع، يمكن أن يؤدي اجتياز <code>nums</code> بالترتيب الأمامي أيضاً إلى نتائج ترتيب صحيحة، لكن النتيجة ستكون غير مستقرة.</li>
+</ul>
+<h2 id="القيود">القيود</h2>
+<p>في هذه المرحلة، قد تظن أن الترتيب بالعد بالغ البراعة، لأنه يحقق ترتيباً فعّالاً بمجرد عدّ مرات الظهور. غير أن المتطلبات المسبقة لاستخدام الترتيب بالعد مقيّدة إلى حد كبير.</p>
+<p><strong>لا ينطبق الترتيب بالعد إلا على الأعداد الصحيحة غير السالبة</strong>. ولتطبيقه على أنواع أخرى من البيانات، عليك التأكد من إمكانية تحويلها إلى أعداد صحيحة غير سالبة دون تغيير الترتيب النسبي للعناصر. فمثلاً، بالنسبة إلى مصفوفة أعداد صحيحة تحتوي على أعداد سالبة، يمكنك أولاً إضافة ثابت إلى كل عدد لإزاحتها إلى النطاق غير السالب، ثم إزاحتها مرة أخرى بعد الترتيب.</p>
+<p><strong>يناسب الترتيب بالعد الحالات التي تحتوي على عناصر كثيرة لكن نطاق قيمها صغير</strong>. فمثلاً، في السيناريو أعلاه، لا يمكن أن يكون $m$ كبيراً جداً؛ وإلا فسيستهلك مساحة كبيرة جداً. وعندما $n \\ll m$، يستغرق الترتيب بالعد زمن $O(m)$، وقد يكون أبطأ من خوارزميات ترتيب بتعقيد زمني $O(n \\log n)$.</p>
+`,t={book:s,chapter:n,chapterTitle:a,slug:l,title:p,headings:c,html:e};export{s as book,n as chapter,a as chapterTitle,t as default,c as headings,e as html,l as slug,p as title};
