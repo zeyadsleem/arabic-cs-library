@@ -1,0 +1,715 @@
+{
+  "chapters": [
+    {
+      "key": "chapter_hello_algo",
+      "title": "Before Starting",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface",
+          "order": 0
+        }
+      ],
+      "titleAr": "قبل أن تبدأ"
+    },
+    {
+      "key": "chapter_preface",
+      "title": "Preface",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface",
+          "order": 1
+        },
+        {
+          "slug": "about_the_book",
+          "title": "About This Book",
+          "order": 2
+        },
+        {
+          "slug": "suggestions",
+          "title": "How to Use This Book",
+          "order": 3
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 4
+        }
+      ],
+      "titleAr": "المقدمة"
+    },
+    {
+      "key": "chapter_introduction",
+      "title": "Encounter with Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Encounter with Algorithms",
+          "order": 5
+        },
+        {
+          "slug": "algorithms_are_everywhere",
+          "title": "Algorithms Are Everywhere",
+          "order": 6
+        },
+        {
+          "slug": "what_is_dsa",
+          "title": "What Is an Algorithm",
+          "order": 7
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 8
+        }
+      ],
+      "titleAr": "لقاء مع الخوارزميات"
+    },
+    {
+      "key": "chapter_computational_complexity",
+      "title": "Complexity Analysis",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Complexity Analysis",
+          "order": 9
+        },
+        {
+          "slug": "performance_evaluation",
+          "title": "Algorithm Efficiency Evaluation",
+          "order": 10
+        },
+        {
+          "slug": "iteration_and_recursion",
+          "title": "Iteration and Recursion",
+          "order": 11
+        },
+        {
+          "slug": "time_complexity",
+          "title": "Time Complexity",
+          "order": 12
+        },
+        {
+          "slug": "space_complexity",
+          "title": "Space Complexity",
+          "order": 13
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 14
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 15
+        }
+      ],
+      "titleAr": "تحليل التعقيد"
+    },
+    {
+      "key": "chapter_data_structure",
+      "title": "Data Structures",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data Structures",
+          "order": 16
+        },
+        {
+          "slug": "classification_of_data_structure",
+          "title": "Classification of Data Structures",
+          "order": 17
+        },
+        {
+          "slug": "basic_data_types",
+          "title": "Basic Data Types",
+          "order": 18
+        },
+        {
+          "slug": "number_encoding",
+          "title": "Number Encoding *",
+          "order": 19
+        },
+        {
+          "slug": "character_encoding",
+          "title": "Character Encoding *",
+          "order": 20
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 21
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 22
+        }
+      ],
+      "titleAr": "بنى البيانات"
+    },
+    {
+      "key": "chapter_array_and_linkedlist",
+      "title": "Arrays and Linked Lists",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Arrays and Linked Lists",
+          "order": 23
+        },
+        {
+          "slug": "array",
+          "title": "Array",
+          "order": 24
+        },
+        {
+          "slug": "linked_list",
+          "title": "Linked List",
+          "order": 25
+        },
+        {
+          "slug": "list",
+          "title": "List",
+          "order": 26
+        },
+        {
+          "slug": "ram_and_cache",
+          "title": "Random-Access Memory and Cache *",
+          "order": 27
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 28
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 29
+        }
+      ],
+      "titleAr": "المصفوفات والقوائم المترابطة"
+    },
+    {
+      "key": "chapter_stack_and_queue",
+      "title": "Stacks and Queues",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Stacks and Queues",
+          "order": 30
+        },
+        {
+          "slug": "stack",
+          "title": "Stack",
+          "order": 31
+        },
+        {
+          "slug": "queue",
+          "title": "Queue",
+          "order": 32
+        },
+        {
+          "slug": "deque",
+          "title": "Deque",
+          "order": 33
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 34
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 35
+        }
+      ],
+      "titleAr": "الأكوام والطوابير"
+    },
+    {
+      "key": "chapter_hashing",
+      "title": "Hashing",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hashing",
+          "order": 36
+        },
+        {
+          "slug": "hash_map",
+          "title": "Hash Table",
+          "order": 37
+        },
+        {
+          "slug": "hash_collision",
+          "title": "Hash Collision",
+          "order": 38
+        },
+        {
+          "slug": "hash_algorithm",
+          "title": "Hash Algorithm",
+          "order": 39
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 40
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 41
+        }
+      ],
+      "titleAr": "التجزئة"
+    },
+    {
+      "key": "chapter_tree",
+      "title": "Tree",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Tree",
+          "order": 42
+        },
+        {
+          "slug": "binary_tree",
+          "title": "Binary Tree",
+          "order": 43
+        },
+        {
+          "slug": "binary_tree_traversal",
+          "title": "Binary Tree Traversal",
+          "order": 44
+        },
+        {
+          "slug": "array_representation_of_tree",
+          "title": "Array Representation of Binary Trees",
+          "order": 45
+        },
+        {
+          "slug": "binary_search_tree",
+          "title": "Binary Search Tree",
+          "order": 46
+        },
+        {
+          "slug": "avl_tree",
+          "title": "AVL Tree *",
+          "order": 47
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 48
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 49
+        }
+      ],
+      "titleAr": "الأشجار"
+    },
+    {
+      "key": "chapter_heap",
+      "title": "Heap",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Heap",
+          "order": 50
+        },
+        {
+          "slug": "heap",
+          "title": "Heap",
+          "order": 51
+        },
+        {
+          "slug": "build_heap",
+          "title": "Heap Construction Operation",
+          "order": 52
+        },
+        {
+          "slug": "top_k",
+          "title": "Top-k Problem",
+          "order": 53
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 54
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 55
+        }
+      ],
+      "titleAr": "الأكوام (Heaps)"
+    },
+    {
+      "key": "chapter_graph",
+      "title": "Graph",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Graph",
+          "order": 56
+        },
+        {
+          "slug": "graph",
+          "title": "Graph",
+          "order": 57
+        },
+        {
+          "slug": "graph_operations",
+          "title": "Basic Operations on Graphs",
+          "order": 58
+        },
+        {
+          "slug": "graph_traversal",
+          "title": "Graph Traversal",
+          "order": 59
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 60
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 61
+        }
+      ],
+      "titleAr": "الرسوم البيانية"
+    },
+    {
+      "key": "chapter_searching",
+      "title": "Searching",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Searching",
+          "order": 62
+        },
+        {
+          "slug": "binary_search",
+          "title": "Binary Search",
+          "order": 63
+        },
+        {
+          "slug": "binary_search_insertion",
+          "title": "Binary Search Insertion Point",
+          "order": 64
+        },
+        {
+          "slug": "binary_search_edge",
+          "title": "Binary Search Boundaries",
+          "order": 65
+        },
+        {
+          "slug": "replace_linear_by_hashing",
+          "title": "Hash Optimization Strategy",
+          "order": 66
+        },
+        {
+          "slug": "searching_algorithm_revisited",
+          "title": "Searching Algorithms Revisited",
+          "order": 67
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 68
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 69
+        }
+      ],
+      "titleAr": "البحث"
+    },
+    {
+      "key": "chapter_sorting",
+      "title": "Sorting",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sorting",
+          "order": 70
+        },
+        {
+          "slug": "sorting_algorithm",
+          "title": "Sorting Algorithm",
+          "order": 71
+        },
+        {
+          "slug": "selection_sort",
+          "title": "Selection Sort",
+          "order": 72
+        },
+        {
+          "slug": "bubble_sort",
+          "title": "Bubble Sort",
+          "order": 73
+        },
+        {
+          "slug": "insertion_sort",
+          "title": "Insertion Sort",
+          "order": 74
+        },
+        {
+          "slug": "quick_sort",
+          "title": "Quick Sort",
+          "order": 75
+        },
+        {
+          "slug": "merge_sort",
+          "title": "Merge Sort",
+          "order": 76
+        },
+        {
+          "slug": "heap_sort",
+          "title": "Heap Sort",
+          "order": 77
+        },
+        {
+          "slug": "bucket_sort",
+          "title": "Bucket Sort",
+          "order": 78
+        },
+        {
+          "slug": "counting_sort",
+          "title": "Counting Sort",
+          "order": 79
+        },
+        {
+          "slug": "radix_sort",
+          "title": "Radix Sort",
+          "order": 80
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 81
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 82
+        }
+      ],
+      "titleAr": "الترتيب"
+    },
+    {
+      "key": "chapter_divide_and_conquer",
+      "title": "Divide and Conquer",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Divide and Conquer",
+          "order": 83
+        },
+        {
+          "slug": "divide_and_conquer",
+          "title": "Divide and Conquer Algorithms",
+          "order": 84
+        },
+        {
+          "slug": "binary_search_recur",
+          "title": "Divide and Conquer Search Strategy",
+          "order": 85
+        },
+        {
+          "slug": "build_binary_tree_problem",
+          "title": "Building a Binary Tree Problem",
+          "order": 86
+        },
+        {
+          "slug": "hanota_problem",
+          "title": "Hanota Problem",
+          "order": 87
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 88
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 89
+        }
+      ],
+      "titleAr": "التقسيم والتغلب"
+    },
+    {
+      "key": "chapter_backtracking",
+      "title": "Backtracking",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Backtracking",
+          "order": 90
+        },
+        {
+          "slug": "backtracking_algorithm",
+          "title": "Backtracking Algorithm",
+          "order": 91
+        },
+        {
+          "slug": "permutations_problem",
+          "title": "Permutations Problem",
+          "order": 92
+        },
+        {
+          "slug": "subset_sum_problem",
+          "title": "Subset-Sum Problem",
+          "order": 93
+        },
+        {
+          "slug": "n_queens_problem",
+          "title": "N-Queens Problem",
+          "order": 94
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 95
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 96
+        }
+      ],
+      "titleAr": "التتبّع الرجعي"
+    },
+    {
+      "key": "chapter_dynamic_programming",
+      "title": "Dynamic Programming",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dynamic Programming",
+          "order": 97
+        },
+        {
+          "slug": "intro_to_dynamic_programming",
+          "title": "Introduction to Dynamic Programming",
+          "order": 98
+        },
+        {
+          "slug": "dp_problem_features",
+          "title": "Characteristics of Dynamic Programming Problems",
+          "order": 99
+        },
+        {
+          "slug": "dp_solution_pipeline",
+          "title": "Dynamic Programming Problem-Solving Approach",
+          "order": 100
+        },
+        {
+          "slug": "knapsack_problem",
+          "title": "0-1 Knapsack Problem",
+          "order": 101
+        },
+        {
+          "slug": "unbounded_knapsack_problem",
+          "title": "Unbounded Knapsack Problem",
+          "order": 102
+        },
+        {
+          "slug": "edit_distance_problem",
+          "title": "Edit Distance Problem",
+          "order": 103
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 104
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 105
+        }
+      ],
+      "titleAr": "البرمجة الديناميكية"
+    },
+    {
+      "key": "chapter_greedy",
+      "title": "Greedy",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Greedy",
+          "order": 106
+        },
+        {
+          "slug": "greedy_algorithm",
+          "title": "Greedy Algorithm",
+          "order": 107
+        },
+        {
+          "slug": "fractional_knapsack_problem",
+          "title": "Fractional Knapsack Problem",
+          "order": 108
+        },
+        {
+          "slug": "max_capacity_problem",
+          "title": "Max Capacity Problem",
+          "order": 109
+        },
+        {
+          "slug": "max_product_cutting_problem",
+          "title": "Maximum Product Cutting Problem",
+          "order": 110
+        },
+        {
+          "slug": "summary",
+          "title": "Summary",
+          "order": 111
+        },
+        {
+          "slug": "exercises",
+          "title": "Exercises",
+          "order": 112
+        }
+      ],
+      "titleAr": "الخوارزميات الجشعة"
+    },
+    {
+      "key": "chapter_appendix",
+      "title": "Appendix",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix",
+          "order": 113
+        },
+        {
+          "slug": "installation",
+          "title": "Programming Environment Installation",
+          "order": 114
+        },
+        {
+          "slug": "contribution",
+          "title": "Contributing Together",
+          "order": 115
+        },
+        {
+          "slug": "terminology",
+          "title": "Glossary",
+          "order": 116
+        }
+      ],
+      "titleAr": "الملاحق"
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "title": "المكتبة العربية لعلوم الحاسوب",
+  "subtitle": "ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب",
+  "books": [
+    {
+      "id": "hello-algo",
+      "title": "مرحباً بالخوارزميات",
+      "titleEn": "Hello Algo",
+      "author": "krahets",
+      "description": "بنى البيانات والخوارزميات بأسلوب مرئي تفاعلي، مع شيفرة جاهزة بلغتي Go وTypeScript. يغطي التعقيد، والبنى الخطية، والأشجار، والأكوام، والرسوم البيانية، والترتيب والبحث، والبرمجة الديناميكية.",
+      "sourceUrl": "https://www.hello-algo.com/en/",
+      "repoUrl": "https://github.com/krahets/hello-algo",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "languages": ["Go", "TypeScript"],
+      "status": "translated"
+    },
+    {
+      "id": "sicp",
+      "title": "SICP: بنية وتفسير برامج الحاسوب",
+      "titleEn": "Structure and Interpretation of Computer Programs",
+      "author": "Abelson & Sussman",
+      "description": "الكتاب الكلاسيكي لفهم البرمجة: التجريد، والتعاود، والمفسّرات، ونماذج الحساب بلغة Scheme.",
+      "sourceUrl": "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html",
+      "license": "CC BY-NC 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "status": "planned"
+    },
+    {
+      "id": "discrete-math",
+      "title": "الرياضيات المتقطعة: مقدمة مفتوحة",
+      "titleEn": "Discrete Mathematics: An Open Introduction",
+      "author": "Oscar Levin",
+      "description": "المنطق، والبراهين، والمجموعات، والدوال، والتوافقيات، والاستقراء، ونظرية الرسوم.",
+      "sourceUrl": "https://discrete.openmathbooks.org/dmoi4.html",
+      "license": "CC BY-NC-SA",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "open-data-structures",
+      "title": "بنى البيانات المفتوحة",
+      "titleEn": "Open Data Structures",
+      "author": "Pat Morin",
+      "description": "دراسة أكاديمية لبنى البيانات: القوائم، وجداول التجزئة، والأشجار، والأكوام، والرسوم البيانية.",
+      "sourceUrl": "https://opendatastructures.org/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.5/ca/",
+      "status": "planned"
+    },
+    {
+      "id": "introtcs",
+      "title": "مقدمة في علوم الحاسوب النظرية",
+      "titleEn": "Introduction to Theoretical Computer Science",
+      "author": "Boaz Barak",
+      "description": "الآلات المجردة، والقابلية للحساب، وآلات تورينج، والتعقيد، ومسألتا P وNP.",
+      "sourceUrl": "https://introtcs.org/",
+      "license": "CC BY-NC-SA",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "nand2tetris-1",
+      "title": "Nand2Tetris — الجزء الأول",
+      "titleEn": "Nand2Tetris Part I",
+      "author": "Nisan & Schocken",
+      "description": "من المنطق البولياني إلى البوابات، ثم ALU والذاكرة ولغة الآلة والمعالج والمجمّع.",
+      "sourceUrl": "https://www.nand2tetris.org/",
+      "status": "planned"
+    },
+    {
+      "id": "dive-into-systems",
+      "title": "الغوص في الأنظمة",
+      "titleEn": "Dive into Systems",
+      "author": "Suzanne J. Matthews et al.",
+      "description": "لغة C، والثنائي، والذاكرة، ولغة التجميع، ومعمارية الحاسوب، ومفاهيم أنظمة التشغيل، والتوازي.",
+      "sourceUrl": "https://diveintosystems.org/book/",
+      "license": "CC BY-NC-ND",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "ostep",
+      "title": "أنظمة التشغيل: ثلاث قطع سهلة",
+      "titleEn": "Operating Systems: Three Easy Pieces",
+      "author": "Remzi & Andrea Arpaci-Dusseau",
+      "description": "العمليات، والجدولة، والذاكرة الافتراضية، والتزامن، وأنظمة الملفات، والاستمرارية.",
+      "sourceUrl": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+      "license": "CC BY-NC-SA",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "xv6",
+      "title": "xv6 — نظام يونكس تعليمي",
+      "titleEn": "xv6",
+      "author": "MIT PDOS",
+      "description": "دراسة نظام يونكس صغير حقيقي وفهم شيفرة النواة.",
+      "sourceUrl": "https://pdos.csail.mit.edu/6.828/2019/xv6.html",
+      "license": "MIT",
+      "licenseUrl": "https://opensource.org/licenses/MIT",
+      "status": "planned"
+    },
+    {
+      "id": "networks-systems-approach",
+      "title": "شبكات الحاسوب: مقاربة الأنظمة",
+      "titleEn": "Computer Networks: A Systems Approach",
+      "author": "Peterson & Davie",
+      "description": "إيثرنت، وبروتوكول IP، والتوجيه، وTCP وUDP، وDNS، والتحكم بالازدحام، ومعمارية الشبكات.",
+      "sourceUrl": "https://book.systemsapproach.org/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "db-design",
+      "title": "تصميم قواعد البيانات — الطبعة الثانية",
+      "titleEn": "Database Design — 2nd Edition",
+      "author": "Adrienne Watt",
+      "description": "النموذج العلائقي، ونمذجة الكيانات والعلاقات، والتطبيع، والمفاتيح، والقيود، وSQL.",
+      "sourceUrl": "https://opentextbc.ca/dbdesign01/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "database-foundations",
+      "title": "أسس قواعد البيانات",
+      "titleEn": "Database Foundations",
+      "author": "UCLL",
+      "description": "مكمل ممتاز لدراسة قواعد البيانات العلائقية وSQL بشكل منظم.",
+      "sourceUrl": "https://df.webontwerp.ucll.be/EN/",
+      "status": "planned"
+    },
+    {
+      "id": "use-the-index-luke",
+      "title": "استخدم الفهرس يا لوقا!",
+      "titleEn": "Use The Index, Luke!",
+      "author": "Markus Winand",
+      "description": "الفهارس، وأشجار B، وأداء الاستعلامات، وعمليات الربط، والترقيم، وكفاءة التنفيذ.",
+      "sourceUrl": "https://use-the-index-luke.com/",
+      "license": "CC BY-NC-ND",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/3.0/",
+      "status": "planned"
+    },
+    {
+      "id": "postgres-internals",
+      "title": "داخل PostgreSQL",
+      "titleEn": "The Internals of PostgreSQL",
+      "author": "Hironobu Suzuki",
+      "description": "معالجة الاستعلامات، وMVCC، والمعاملات، ومدير المخزن المؤقت، وWAL، والاستعادة، والنسخ المتماثل.",
+      "sourceUrl": "https://www.interdb.jp/pg/",
+      "status": "planned"
+    },
+    {
+      "id": "crafting-interpreters",
+      "title": "صناعة المفسّرات",
+      "titleEn": "Crafting Interpreters",
+      "author": "Robert Nystrom",
+      "description": "من المحلل المعجمي إلى المحلل النحوي وشجرة الصياغة، ثم المفسّر والإغلاقات وآلة البايت كود وجمع النفايات.",
+      "sourceUrl": "https://craftinginterpreters.com/",
+      "license": "CC BY-NC 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "status": "planned"
+    },
+    {
+      "id": "nand2tetris-2",
+      "title": "Nand2Tetris — الجزء الثاني",
+      "titleEn": "Nand2Tetris Part II",
+      "author": "Nisan & Schocken",
+      "description": "الآلة الافتراضية، ثم المصرّف، ثم لغة برمجة كاملة، ثم نظام التشغيل.",
+      "sourceUrl": "https://www.nand2tetris.org/",
+      "status": "planned"
+    },
+    {
+      "id": "mit-6.5840",
+      "title": "الأنظمة الموزعة (MIT 6.5840)",
+      "titleEn": "MIT 6.5840 Distributed Systems",
+      "author": "MIT PDOS",
+      "description": "النسخ المتماثل، وتحمل الأخطاء، والإجماع، وخوارزمية Raft، والتخزين الموزع، والاتساق.",
+      "sourceUrl": "https://pdos.csail.mit.edu/6.824/",
+      "status": "planned"
+    },
+    {
+      "id": "cryptopals",
+      "title": "تحديات كريبتوبالز",
+      "titleEn": "The Cryptopals Crypto Challenges",
+      "author": "Cryptopals",
+      "description": "تطبيق عملي في التشفير والهجمات والمفاهيم الأمنية عبر مجموعات تحديات متدرجة.",
+      "sourceUrl": "https://cryptopals.com/",
+      "status": "planned"
+    },
+    {
+      "id": "network-security",
+      "title": "أمن الشبكات: مقاربة الأنظمة",
+      "titleEn": "Network Security: A Systems Approach",
+      "author": "Peterson & Davie",
+      "description": "أمن الشبكات ومعمارية الأمن بشكل أعمق.",
+      "sourceUrl": "https://security.systemsapproach.org/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "status": "planned"
+    },
+    {
+      "id": "aosabook",
+      "title": "معمارية تطبيقات المصادر المفتوحة",
+      "titleEn": "The Architecture of Open Source Applications",
+      "author": "Amy Brown & Greg Wilson",
+      "description": "دراسة معمارية أنظمة وبرامج حقيقية من الداخل.",
+      "sourceUrl": "https://aosabook.org/en/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "status": "planned"
+    },
+    {
+      "id": "500-lines",
+      "title": "500 سطر أو أقل",
+      "titleEn": "500 Lines or Less",
+      "author": "Amy Brown & Greg Wilson",
+      "description": "بناء وفهم أنظمة صغيرة كاملة: قاعدة بيانات، ومصرّف، ومحرّر، وغيرها.",
+      "sourceUrl": "https://aosabook.org/en/500L/",
+      "license": "CC BY",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "status": "planned"
+    },
+    {
+      "id": "game-programming-patterns",
+      "title": "أنماط برمجة الألعاب",
+      "titleEn": "Game Programming Patterns",
+      "author": "Robert Nystrom",
+      "description": "أنماط التصميم، وطوابير الأحداث، والحالة، والمكوّنات، ومحلية البيانات وغيرها.",
+      "sourceUrl": "https://gameprogrammingpatterns.com/",
+      "license": "CC BY-NC 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "status": "planned"
+    }
+  ]
+}
