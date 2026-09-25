@@ -12,7 +12,10 @@
       "repoUrl": "https://github.com/krahets/hello-algo",
       "license": "CC BY-NC-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-      "languages": ["Go", "TypeScript"],
+      "languages": [
+        "Go",
+        "TypeScript"
+      ],
       "status": "translated",
       "stage": "foundations",
       "order": 2,
@@ -30,7 +33,9 @@
       "sourceUrl": "https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/full-text/book/book.html",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "languages": ["Scheme"],
+      "languages": [
+        "Scheme"
+      ],
       "status": "planned",
       "stage": "foundations",
       "order": 1,
@@ -50,7 +55,10 @@
       "translationRepo": "https://github.com/zeyadsleem/missing.cs-ar",
       "license": "CC BY-NC-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-      "languages": ["Shell", "Git"],
+      "languages": [
+        "Shell",
+        "Git"
+      ],
       "status": "translated",
       "stage": "tools",
       "order": 1,
@@ -71,7 +79,9 @@
       "siteUrl": "https://zeyadsleem.github.io/gobyexample-ar/",
       "license": "CC BY 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "status": "translated",
       "stage": "go",
       "order": 1,
@@ -92,14 +102,18 @@
       "siteUrl": "https://zeyadsleem.github.io/learn-go-with-tests-ar/",
       "license": "MIT",
       "licenseUrl": "https://opensource.org/licenses/MIT",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "status": "translated",
       "stage": "go",
       "order": 2,
       "format": "markdown",
       "pages": 250,
       "completeCourse": true,
-      "prerequisites": ["gobyexample-ar"]
+      "prerequisites": [
+        "gobyexample-ar"
+      ]
     },
     {
       "id": "go101-ar",
@@ -113,14 +127,18 @@
       "siteUrl": "https://zeyadsleem.github.io/go101-ar/",
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "languages": ["Go"],
+      "languages": [
+        "Go"
+      ],
       "status": "translated",
       "stage": "go",
       "order": 3,
       "format": "markdown",
       "pages": 400,
       "completeCourse": true,
-      "prerequisites": ["learn-go-with-tests-ar"]
+      "prerequisites": [
+        "learn-go-with-tests-ar"
+      ]
     },
     {
       "id": "patterns-dev",
@@ -131,14 +149,21 @@
       "sourceUrl": "https://www.patterns.dev/",
       "license": "CC BY-NC 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc/4.0/",
-      "languages": ["JavaScript", "TypeScript", "React", "Vue"],
+      "languages": [
+        "JavaScript",
+        "TypeScript",
+        "React",
+        "Vue"
+      ],
       "status": "translated",
       "stage": "web",
       "order": 2,
       "format": "web",
       "pages": 53,
       "completeCourse": true,
-      "prerequisites": ["eloquent-javascript-ar"]
+      "prerequisites": [
+        "eloquent-javascript-ar"
+      ]
     },
     {
       "id": "ahastack",
@@ -156,7 +181,9 @@
       "format": "html",
       "pages": 25,
       "completeCourse": true,
-      "prerequisites": ["patterns-dev"]
+      "prerequisites": [
+        "patterns-dev"
+      ]
     },
     {
       "id": "eloquent-javascript-ar",
@@ -170,7 +197,9 @@
       "siteUrl": "https://zeyadsleem.github.io/eloquent-javascript-ar/",
       "license": "CC BY-NC 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
-      "languages": ["JavaScript"],
+      "languages": [
+        "JavaScript"
+      ],
       "status": "translated",
       "stage": "javascript",
       "order": 1,
@@ -191,14 +220,19 @@
       "siteUrl": "https://zeyadsleem.github.io/fullstack-open-ar/",
       "license": "CC BY-NC-SA 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
-      "languages": ["JavaScript", "TypeScript"],
+      "languages": [
+        "JavaScript",
+        "TypeScript"
+      ],
       "status": "translated",
       "stage": "web",
       "order": 1,
       "format": "web",
       "pages": 600,
       "completeCourse": true,
-      "prerequisites": ["eloquent-javascript-ar"]
+      "prerequisites": [
+        "eloquent-javascript-ar"
+      ]
     },
     {
       "id": "discrete-math",
@@ -216,7 +250,9 @@
       "format": "latex",
       "pages": 549,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "mathematics-for-cs",
@@ -233,7 +269,9 @@
       "format": "pdf",
       "pages": 1048,
       "completeCourse": true,
-      "prerequisites": ["discrete-math"]
+      "prerequisites": [
+        "discrete-math"
+      ]
     },
     {
       "id": "open-data-structures",
@@ -245,14 +283,19 @@
       "repoUrl": "https://github.com/patmorin/ods",
       "license": "CC BY 2.5 CA",
       "licenseUrl": "https://creativecommons.org/licenses/by/2.5/ca/",
-      "languages": ["Java", "C++"],
+      "languages": [
+        "Java",
+        "C++"
+      ],
       "status": "planned",
       "stage": "datastructures",
       "order": 1,
       "format": "latex",
       "pages": 334,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "nand2tetris-1",
@@ -270,7 +313,9 @@
       "format": "projects",
       "pages": 40,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "nand2tetris-2",
@@ -288,7 +333,9 @@
       "format": "projects",
       "pages": 40,
       "completeCourse": true,
-      "prerequisites": ["nand2tetris-1"]
+      "prerequisites": [
+        "nand2tetris-1"
+      ]
     },
     {
       "id": "xv6",
@@ -300,14 +347,18 @@
       "repoUrl": "https://github.com/mit-pdos/xv6-riscv-book",
       "license": "MIT",
       "licenseUrl": "https://opensource.org/licenses/MIT",
-      "languages": ["C"],
+      "languages": [
+        "C"
+      ],
       "status": "planned",
       "stage": "systems",
       "order": 3,
       "format": "html",
       "pages": 150,
       "completeCourse": true,
-      "prerequisites": ["nand2tetris-2"]
+      "prerequisites": [
+        "nand2tetris-2"
+      ]
     },
     {
       "id": "ostep",
@@ -318,14 +369,17 @@
       "sourceUrl": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
       "license": "ملكية خاصة — متاح للقراءة والتحميل المجاني دون ترخيص إعادة استخدام",
       "licenseUrl": "https://pages.cs.wisc.edu/~remzi/OSTEP/preface.pdf",
-      "status": "reference",
-      "note": "المؤلفان ينصان صراحة على أن مجانية القراءة لا تعني ترخيصاً لإعادة الاستخدام، ويطلبان التواصل معهما قبل أي ترجمة. متاح هنا كمرجع للقراءة فقط.",
+      "status": "planned",
+      "note": "المؤلفان يطلبان التواصل قبل إعادة الاستخدام. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "systems",
       "order": 4,
       "format": "pdf",
       "pages": 714,
       "completeCourse": true,
-      "prerequisites": ["xv6"]
+      "prerequisites": [
+        "xv6"
+      ],
+      "translationInitiative": true
     },
     {
       "id": "dive-into-systems",
@@ -336,15 +390,18 @@
       "sourceUrl": "https://diveintosystems.org/book/",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "status": "blocked",
-      "note": "بند NoDerivatives يمنع الترجمة. البديل في هذه المكتبة: Missing Semester + Nand2Tetris + xv6 لتغطية نفس المحتوى عملياً.",
+      "status": "planned",
+      "note": "ترخيص CC BY-NC-ND يمنع النشر العلني للترجمة. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "systems",
       "order": 5,
       "format": "web",
       "pages": 190,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"],
-      "replacement": "missing-semester"
+      "prerequisites": [
+        "hello-algo"
+      ],
+      "replacement": "missing-semester",
+      "translationInitiative": true
     },
     {
       "id": "networks-systems-approach",
@@ -363,7 +420,9 @@
       "format": "rst",
       "pages": 920,
       "completeCourse": true,
-      "prerequisites": ["nand2tetris-1"]
+      "prerequisites": [
+        "nand2tetris-1"
+      ]
     },
     {
       "id": "db-design",
@@ -374,14 +433,18 @@
       "sourceUrl": "https://opentextbc.ca/dbdesign01/",
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "languages": ["SQL"],
+      "languages": [
+        "SQL"
+      ],
       "status": "planned",
       "stage": "databases",
       "order": 1,
       "format": "html",
       "pages": 153,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "db-performance-at-scale",
@@ -392,14 +455,18 @@
       "sourceUrl": "https://link.springer.com/book/10.1007/978-1-4842-9711-7",
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-      "languages": ["SQL"],
+      "languages": [
+        "SQL"
+      ],
       "status": "planned",
       "stage": "databases",
       "order": 2,
       "format": "pdf",
       "pages": 270,
       "completeCourse": true,
-      "prerequisites": ["db-design"]
+      "prerequisites": [
+        "db-design"
+      ]
     },
     {
       "id": "database-foundations",
@@ -410,14 +477,17 @@
       "sourceUrl": "https://df.webontwerp.ucll.be/EN/",
       "license": "بلا ترخيص معلن",
       "licenseUrl": "https://df.webontwerp.ucll.be/EN/",
-      "status": "reference",
-      "note": "لا يوجد ترخيص إعادة استخدام معلن؛ متاح كمرجع للقراءة فقط.",
+      "status": "planned",
+      "note": "بلا ترخيص معلن. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "databases",
       "order": 3,
       "format": "html",
       "pages": 200,
       "completeCourse": true,
-      "prerequisites": ["db-design"]
+      "prerequisites": [
+        "db-design"
+      ],
+      "translationInitiative": true
     },
     {
       "id": "postgres-internals",
@@ -428,14 +498,17 @@
       "sourceUrl": "https://www.interdb.jp/pg/",
       "license": "كل الحقوق محفوظة",
       "licenseUrl": "https://www.interdb.jp/pg/",
-      "status": "reference",
-      "note": "المؤلف يحتفظ بكل الحقوق (مع استثناء للمؤسسات التعليمية)، ولا يسمح بترجمة منشورة دون إذن.",
+      "status": "planned",
+      "note": "كل الحقوق محفوظة (استثناء المؤسسات التعليمية). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "databases",
       "order": 4,
       "format": "html",
       "pages": 200,
       "completeCourse": true,
-      "prerequisites": ["db-performance-at-scale"]
+      "prerequisites": [
+        "db-performance-at-scale"
+      ],
+      "translationInitiative": true
     },
     {
       "id": "use-the-index-luke",
@@ -446,15 +519,18 @@
       "sourceUrl": "https://use-the-index-luke.com/",
       "license": "كل الحقوق محفوظة",
       "licenseUrl": "https://use-the-index-luke.com/legal",
-      "status": "reference",
-      "note": "كل الحقوق محفوظة بلا ترخيص إعادة استخدام. البديل القابل للترجمة: أداء قواعد البيانات على نطاق واسع.",
+      "status": "planned",
+      "note": "كل الحقوق محفوظة. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "databases",
       "order": 5,
       "format": "html",
       "pages": 200,
       "completeCourse": true,
-      "prerequisites": ["db-design"],
-      "replacement": "db-performance-at-scale"
+      "prerequisites": [
+        "db-design"
+      ],
+      "replacement": "db-performance-at-scale",
+      "translationInitiative": true
     },
     {
       "id": "learn-ocaml",
@@ -465,14 +541,18 @@
       "sourceUrl": "https://usr.lmf.cnrs.fr/lpo/",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "languages": ["OCaml"],
+      "languages": [
+        "OCaml"
+      ],
       "status": "planned",
       "stage": "languages",
       "order": 1,
       "format": "pdf",
       "pages": 431,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "ocaml-cs3110",
@@ -484,16 +564,21 @@
       "repoUrl": "https://github.com/cs3110/textbook",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "languages": ["OCaml"],
-      "status": "reference",
-      "note": "ترخيص CC BY-NC-ND لا يسمح بالأعمال المشتقة، والترجمة عمل مشتق. متاح كمرجع، والبديل القابل للترجمة هو «تعلّم البرمجة بلغة OCaml».",
+      "languages": [
+        "OCaml"
+      ],
+      "status": "planned",
+      "note": "ترخيص CC BY-NC-ND لا يسمح بنشر الترجمة علناً. ويبقى المصدر الأصلي هو المرجع المعتمد.",
       "stage": "languages",
       "order": 2,
       "format": "web",
       "pages": 400,
       "completeCourse": true,
-      "prerequisites": ["learn-ocaml"],
-      "replacement": "learn-ocaml"
+      "prerequisites": [
+        "learn-ocaml"
+      ],
+      "replacement": "learn-ocaml",
+      "translationInitiative": true
     },
     {
       "id": "ocaml-manual",
@@ -504,14 +589,18 @@
       "sourceUrl": "https://ocaml.org/manual/5.5/",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "languages": ["OCaml"],
+      "languages": [
+        "OCaml"
+      ],
       "status": "planned",
       "stage": "languages",
       "order": 3,
       "format": "html",
       "pages": 1158,
       "completeCourse": true,
-      "prerequisites": ["learn-ocaml"]
+      "prerequisites": [
+        "learn-ocaml"
+      ]
     },
     {
       "id": "crafting-interpreters",
@@ -523,16 +612,22 @@
       "repoUrl": "https://github.com/munificent/craftinginterpreters",
       "license": "CC BY-NC-ND 4.0 (النص) / MIT (الشيفرة)",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "languages": ["C", "Java"],
-      "status": "blocked",
-      "note": "نص الكتاب تحت CC BY-NC-ND فلا يُترجم. شيفرته تحت MIT وتبقى متاحة للاستخدام. بديلنا العملي: Nand2Tetris الجزء الثاني (مصرّف كامل) + 500 Lines.",
+      "languages": [
+        "C",
+        "Java"
+      ],
+      "status": "planned",
+      "note": "نص الكتاب CC BY-NC-ND (الشيفرة MIT). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "languages",
       "order": 4,
       "format": "html",
       "pages": 640,
       "completeCourse": true,
-      "prerequisites": ["nand2tetris-2"],
-      "replacement": "nand2tetris-2"
+      "prerequisites": [
+        "nand2tetris-2"
+      ],
+      "replacement": "nand2tetris-2",
+      "translationInitiative": true
     },
     {
       "id": "500-lines",
@@ -550,7 +645,9 @@
       "format": "markdown",
       "pages": 470,
       "completeCourse": true,
-      "prerequisites": ["hello-algo"]
+      "prerequisites": [
+        "hello-algo"
+      ]
     },
     {
       "id": "aosabook",
@@ -568,7 +665,9 @@
       "format": "latex",
       "pages": 800,
       "completeCourse": true,
-      "prerequisites": ["500-lines"]
+      "prerequisites": [
+        "500-lines"
+      ]
     },
     {
       "id": "game-programming-patterns",
@@ -580,16 +679,21 @@
       "repoUrl": "https://github.com/munificent/game-programming-patterns",
       "license": "CC BY-NC-ND 4.0 (النص) / MIT (الشيفرة)",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "languages": ["C++"],
-      "status": "blocked",
-      "note": "نص الكتاب تحت CC BY-NC-ND فلا يُترجم؛ شيفرته تحت MIT. الأنماط العملية مغطاة في 500 Lines وNand2Tetris.",
+      "languages": [
+        "C++"
+      ],
+      "status": "planned",
+      "note": "نص الكتاب CC BY-NC-ND (الشيفرة MIT). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "architecture",
       "order": 3,
       "format": "html",
       "pages": 250,
       "completeCourse": true,
-      "prerequisites": ["500-lines"],
-      "replacement": "500-lines"
+      "prerequisites": [
+        "500-lines"
+      ],
+      "replacement": "500-lines",
+      "translationInitiative": true
     },
     {
       "id": "crypto-101",
@@ -607,7 +711,9 @@
       "format": "markdown",
       "pages": 254,
       "completeCourse": true,
-      "prerequisites": ["discrete-math"]
+      "prerequisites": [
+        "discrete-math"
+      ]
     },
     {
       "id": "open-workbook-cryptology",
@@ -624,7 +730,9 @@
       "format": "latex",
       "pages": 92,
       "completeCourse": false,
-      "prerequisites": ["discrete-math"]
+      "prerequisites": [
+        "discrete-math"
+      ]
     },
     {
       "id": "network-security",
@@ -636,14 +744,18 @@
       "repoUrl": "https://github.com/SystemsApproach/security",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "status": "reference",
-      "note": "ND يمنع الترجمة، لكن المؤلفان يدعوان صراحةً إلى مناقشة الترجمات معهما. نرسل طلب إذن قبل أي نشر.",
+      "status": "planned",
+      "note": "CC BY-NC-ND مع دعوة المؤلفين لمناقشة الترجمات. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "security",
       "order": 3,
       "format": "html",
       "pages": 170,
       "completeCourse": true,
-      "prerequisites": ["networks-systems-approach", "crypto-101"]
+      "prerequisites": [
+        "networks-systems-approach",
+        "crypto-101"
+      ],
+      "translationInitiative": true
     },
     {
       "id": "cryptopals",
@@ -654,15 +766,18 @@
       "sourceUrl": "https://cryptopals.com/",
       "license": "بلا ترخيص",
       "licenseUrl": "https://cryptopals.com/",
-      "status": "reference",
-      "note": "الموقع بلا ترخيص إعادة استخدام، لذا نعرضه كمرابط فقط. البديل القابل للترجمة: تشفير 101.",
+      "status": "planned",
+      "note": "بلا ترخيص على نص التحديات. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "security",
       "order": 4,
       "format": "web",
       "pages": 40,
       "completeCourse": true,
-      "prerequisites": ["crypto-101"],
-      "replacement": "crypto-101"
+      "prerequisites": [
+        "crypto-101"
+      ],
+      "replacement": "crypto-101",
+      "translationInitiative": true
     },
     {
       "id": "introtcs",
@@ -673,15 +788,19 @@
       "sourceUrl": "https://introtcs.org/public/index.html",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "status": "blocked",
-      "note": "ND يمنع الترجمة، والكتاب نفسه غير مكتمل (فصلان ناقصان). الأساس الرياضي متاح عبر «رياضيات لعلوم الحاسوب» و«الرياضيات المتقطعة».",
+      "status": "planned",
+      "note": "ترخيص CC BY-NC-ND + الكتاب ناقص (فصلان). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "math",
       "order": 3,
       "format": "markdown",
       "pages": 656,
       "completeCourse": false,
-      "prerequisites": ["discrete-math", "mathematics-for-cs"],
-      "replacement": "mathematics-for-cs"
+      "prerequisites": [
+        "discrete-math",
+        "mathematics-for-cs"
+      ],
+      "replacement": "mathematics-for-cs",
+      "translationInitiative": true
     }
   ]
 }
