@@ -247,6 +247,17 @@
   color: #274a7a;
 }
 
+.badge--blocked {
+  background: #f5dede;
+  color: #8a2b2b;
+}
+
+.badge--plain {
+  background: #eef1f6;
+  color: #4a5568;
+  font-weight: 500;
+}
+
 html[data-theme='dark'] .badge--done {
   background: #14351f;
   color: #7fd6a2;
@@ -260,6 +271,155 @@ html[data-theme='dark'] .badge--planned {
 html[data-theme='dark'] .badge--reference {
   background: #16233a;
   color: #9dc0ef;
+}
+
+html[data-theme='dark'] .badge--blocked {
+  background: #3a1c1c;
+  color: #efa3a3;
+}
+
+html[data-theme='dark'] .badge--plain {
+  background: #232a35;
+  color: #aab4c2;
+}
+
+.path {
+  padding-block: 2rem 4rem;
+}
+
+.path-stage {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e4e8ef;
+}
+
+html[data-theme='dark'] .path-stage {
+  border-bottom-color: #29313d;
+}
+
+.path-stage__header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.path-stage__icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8eef8;
+  color: #274a7a;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+html[data-theme='dark'] .path-stage__icon {
+  background: #1b2433;
+  color: #9dc0ef;
+}
+
+.path-stage__title {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.path-stage__description {
+  margin: 0.35rem 0 0;
+  color: #55637a;
+  line-height: 1.8;
+}
+
+html[data-theme='dark'] .path-stage__description {
+  color: #a8b4c8;
+}
+
+.path-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.path-item {
+  background: #fff;
+  border: 1px solid #e4e8ef;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+}
+
+html[data-theme='dark'] .path-item {
+  background: #161c25;
+  border-color: #29313d;
+}
+
+.path-item__title {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.path-item__meta {
+  display: block;
+  margin-top: 0.2rem;
+  color: #6b7688;
+  font-size: 0.85rem;
+}
+
+html[data-theme='dark'] .path-item__meta {
+  color: #98a3b3;
+}
+
+.path-item__description {
+  margin: 0.6rem 0 0;
+  line-height: 1.85;
+}
+
+.path-item__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0.6rem 0 0;
+  color: #6b7688;
+  font-size: 0.82rem;
+}
+
+.path-item__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.path-item__badges .badge {
+  margin-top: 0.65rem;
+}
+
+.path-item__links {
+  margin: 0.6rem 0 0;
+  font-size: 0.9rem;
+}
+
+.lecture-video {
+  position: relative;
+  padding-top: 56.25%;
+  margin: 0 0 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.lecture-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .book-note {

@@ -11,6 +11,7 @@
 
   const navItems = [
     { href: withBasePath('/'), label: 'المكتبة' },
+    { href: withBasePath('/path'), label: 'خارطة التعلم' },
     { href: withBasePath('/book/hello-algo'), label: 'مرحباً بالخوارزميات' },
     { href: withBasePath('/about'), label: 'عن المكتبة' },
     { href: withBasePath('/search'), label: 'البحث' },
@@ -97,6 +98,7 @@
     </div>
     <nav class="site-footer__links">
       <a href={withBasePath('/')}>الكتب</a>
+      <a href={withBasePath('/path')}>خارطة التعلم</a>
       <a href={withBasePath('/about')}>عن المكتبة</a>
       <a href={withBasePath('/search')}>البحث</a>
     </nav>

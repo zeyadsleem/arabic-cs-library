@@ -1,0 +1,160 @@
+{
+  "chapters": [
+    {
+      "key": "course-shell",
+      "title": "نظرة عامة على المقرر + مقدمة إلى الصدفة",
+      "titleAr": "نظرة عامة على المقرر + مقدمة إلى الصدفة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة على المقرر + مقدمة إلى الصدفة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "command-line-environment",
+      "title": "بيئة سطر الأوامر",
+      "titleAr": "بيئة سطر الأوامر",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "بيئة سطر الأوامر",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "development-environment",
+      "title": "بيئة التطوير والأدوات",
+      "titleAr": "بيئة التطوير والأدوات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "بيئة التطوير والأدوات",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "debugging-profiling",
+      "title": "التنقيح وتوصيف الأداء",
+      "titleAr": "التنقيح وتوصيف الأداء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التنقيح وتوصيف الأداء",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "version-control",
+      "title": "التحكم في الإصدارات وGit",
+      "titleAr": "التحكم في الإصدارات وGit",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التحكم في الإصدارات وGit",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "shipping-code",
+      "title": "تغليف الشيفرة ونشرها",
+      "titleAr": "تغليف الشيفرة ونشرها",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تغليف الشيفرة ونشرها",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "agentic-coding",
+      "title": "البرمجة بالوكلاء",
+      "titleAr": "البرمجة بالوكلاء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البرمجة بالوكلاء",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "beyond-code",
+      "title": "ما وراء الشيفرة",
+      "titleAr": "ما وراء الشيفرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "ما وراء الشيفرة",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "code-quality",
+      "title": "جودة الشيفرة",
+      "titleAr": "جودة الشيفرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "جودة الشيفرة",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "data-wrangling",
+      "title": "معالجة وصقل البيانات",
+      "titleAr": "معالجة وصقل البيانات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "معالجة وصقل البيانات",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "potpourri",
+      "title": "خليط من المواضيع",
+      "titleAr": "خليط من المواضيع",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خليط من المواضيع",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "qa",
+      "title": "أسئلة وأجوبة",
+      "titleAr": "أسئلة وأجوبة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أسئلة وأجوبة",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "security",
+      "title": "الأمان والتشفير",
+      "titleAr": "الأمان والتشفير",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأمان والتشفير",
+          "order": 12
+        }
+      ]
+    }
+  ]
+}

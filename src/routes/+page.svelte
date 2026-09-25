@@ -1,5 +1,6 @@
 <script>
   import { books, bookPath, library } from '$lib/content.js';
+  import { withBasePath } from '$lib/html.js';
 </script>
 
 <svelte:head>
@@ -13,6 +14,7 @@
       {library.subtitle}. نبدأ بكتاب «مرحباً بالخوارزميات» بلغتي Go وTypeScript،
       ثم تتوالى بقية الكتب تباعاً.
     </p>
+    <p><a class="button" href={withBasePath('/path')}>خارطة التعلّم المقترحة</a></p>
   </div>
 </section>
 
@@ -32,6 +34,8 @@
               ? ` — ${book.languages.join(' + ')}`
               : ''}
           </span>
+        {:else if book.status === 'blocked'}
+          <span class="badge badge--blocked">غير قابل للترجمة</span>
         {:else if book.status === 'reference'}
           <span class="badge badge--reference">مرجع — للقراءة بالأصل</span>
         {:else}

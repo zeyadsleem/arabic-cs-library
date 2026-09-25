@@ -13,8 +13,8 @@ const generatedDir = path.join(root, 'src', 'lib', 'generated');
 const library = JSON.parse(
   fs.readFileSync(path.join(contentDir, 'library.json'), 'utf8')
 );
-const helloAlgo = JSON.parse(
-  fs.readFileSync(path.join(contentDir, 'hello-algo-structure.json'), 'utf8')
+const learningPath = JSON.parse(
+  fs.readFileSync(path.join(contentDir, 'learning-path.json'), 'utf8')
 );
 
 const markdown = new MarkdownIt({
@@ -83,86 +83,135 @@ const run = () => {
   fs.rmSync(generatedDir, { recursive: true, force: true });
   fs.mkdirSync(path.join(generatedDir, 'sections'), { recursive: true });
 
-  const chapters = [];
   const searchIndex = [];
-  let total = 0;
-  let missing = 0;
-
   const flatSections = [];
+  const chaptersByBook = new Map();
 
-  for (const chapter of helloAlgo.chapters) {
-    const chapterEntry = {
-      key: chapter.key,
-      title: chapter.titleAr || chapter.title,
-      sections: [],
-    };
+  const contentBooks = library.books.filter((book) =>
+    fs.existsSync(path.join(contentDir, `${book.id}-structure.json`))
+  );
 
-    let first = true;
-    for (const section of chapter.sections) {
-      const slug = first ? 'index' : section.slug;
-      first = false;
-      const file = path.join(contentDir, 'hello-algo', `${chapter.key}--${slug}.md`);
-      if (!fs.existsSync(file)) {
-        console.log(`missing: ${chapter.key}--${slug}`);
-        missing += 1;
-        continue;
-      }
-      const raw = fs.readFileSync(file, 'utf8');
-      const { data, content } = matter(raw);
-      let html = markdown.render(content);
-      html = addHeadingIds(html);
+  for (const book of contentBooks) {
+    const structure = JSON.parse(
+      fs.readFileSync(path.join(contentDir, `${book.id}-structure.json`), 'utf8')
+    );
+    const chapters = [];
+    let missing = 0;
+    let count = 0;
 
-      const entry = {
-        book: 'hello-algo',
-        chapter: chapter.key,
-        chapterTitle: chapterEntry.title,
-        slug,
-        title: data.title || section.title,
-        headings: extractHeadings(html),
-        html,
+    for (const chapter of structure.chapters) {
+      const chapterEntry = {
+        key: chapter.key,
+        title: chapter.titleAr || chapter.title,
+        sections: [],
       };
 
-      fs.writeFileSync(
-        path.join(generatedDir, 'sections', `${chapter.key}--${slug}.json`),
-        JSON.stringify(entry)
-      );
+      let first = true;
+      for (const section of chapter.sections) {
+        const slug = first ? 'index' : section.slug;
+        first = false;
+        const file = path.join(
+          contentDir,
+          book.id,
+          `${chapter.key}--${slug}.md`
+        );
+        if (!fs.existsSync(file)) {
+          console.log(`missing: ${book.id}/${chapter.key}--${slug}`);
+          missing += 1;
+          continue;
+        }
+        const raw = fs.readFileSync(file, 'utf8');
+        const { data, content } = matter(raw);
+        if (data.lang && data.lang !== 'ar') {
+          console.log(`not translated yet: ${book.id}/${chapter.key}--${slug}`);
+        }
+        let html = markdown.render(content);
+        html = addHeadingIds(html);
 
-      chapterEntry.sections.push({ slug, title: entry.title });
-      searchIndex.push({
-        book: 'hello-algo',
-        bookTitle: 'مرحباً بالخوارزميات',
-        chapter: chapter.key,
-        chapterTitle: chapterEntry.title,
-        slug,
-        title: entry.title,
-        text: normalizeText(stripHtml(html)).slice(0, 3000),
-      });
-      flatSections.push({
-        chapter: chapter.key,
-        chapterTitle: chapterEntry.title,
-        slug,
-        title: entry.title,
-      });
-      total += 1;
+        const entry = {
+          book: book.id,
+          chapter: chapter.key,
+          chapterTitle: chapterEntry.title,
+          slug,
+          title: data.title || section.title,
+          headings: extractHeadings(html),
+          html,
+        };
+
+        fs.writeFileSync(
+          path.join(
+            generatedDir,
+            'sections',
+            `${book.id}__${chapter.key}--${slug}.json`
+          ),
+          JSON.stringify(entry)
+        );
+
+        chapterEntry.sections.push({ slug, title: entry.title });
+        searchIndex.push({
+          book: book.id,
+          bookTitle: book.title,
+          chapter: chapter.key,
+          chapterTitle: chapterEntry.title,
+          slug,
+          title: entry.title,
+          text: normalizeText(stripHtml(html)).slice(0, 3000),
+        });
+        flatSections.push({
+          book: book.id,
+          chapter: chapter.key,
+          chapterTitle: chapterEntry.title,
+          slug,
+          title: entry.title,
+        });
+        count += 1;
+      }
+
+      chapters.push(chapterEntry);
     }
 
-    chapters.push(chapterEntry);
+    chaptersByBook.set(book.id, chapters);
+    console.log(
+      `Generated ${count} sections for ${book.id} (missing ${missing})`
+    );
   }
 
-  for (let i = 0; i < flatSections.length; i += 1) {
-    const item = flatSections[i];
-    delete item.chapterTitle;
+  const books = library.books.map((book) => {
+    const chapters = chaptersByBook.get(book.id);
+    return chapters ? { ...book, chapters } : book;
+  });
+
+  const stageIds = new Set(learningPath.stages.map((stage) => stage.id));
+  for (const book of books) {
+    if (book.stage && !stageIds.has(book.stage)) {
+      throw new Error(`مرحلة غير معروفة للكتاب ${book.id}: ${book.stage}`);
+    }
+    if (book.replacement && !books.some((item) => item.id === book.replacement)) {
+      throw new Error(`بديل غير موجود للكتاب ${book.id}: ${book.replacement}`);
+    }
   }
+
+  for (const book of books) {
+    for (const prerequisite of book.prerequisites || []) {
+      if (!books.some((item) => item.id === prerequisite)) {
+        throw new Error(`متطلب غير موجود للكتاب ${book.id}: ${prerequisite}`);
+      }
+    }
+  }
+
+  const stages = learningPath.stages.map((stage) => ({
+    ...stage,
+    books: books
+      .filter((book) => book.stage === stage.id)
+      .sort((a, b) => a.order - b.order)
+      .map((book) => book.id),
+  }));
 
   const manifest = {
     library: library.title,
     subtitle: library.subtitle,
-    books: library.books.map((book) => {
-      if (book.id === 'hello-algo') {
-        return { ...book, chapters };
-      }
-      return book;
-    }),
+    path: { title: learningPath.title, intro: learningPath.intro, stages },
+    books,
     sections: flatSections,
   };
 
@@ -173,10 +222,6 @@ const run = () => {
   fs.writeFileSync(
     path.join(generatedDir, 'search-index.json'),
     JSON.stringify({ sections: searchIndex })
-  );
-
-  console.log(
-    `Generated ${total} sections for hello-algo (missing ${missing})`
   );
 };
 

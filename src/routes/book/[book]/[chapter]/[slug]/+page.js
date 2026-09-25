@@ -7,12 +7,18 @@ import {
 } from '$lib/content.js';
 
 export const entries = () =>
-  getBook('hello-algo').chapters.flatMap((chapter) =>
-    chapter.sections.map((section) => ({
-      book: 'hello-algo',
-      chapter: chapter.key,
-      slug: section.slug,
-    }))
+  import('$lib/content.js').then(({ books }) =>
+    books
+      .filter((book) => book.chapters)
+      .flatMap((book) =>
+        book.chapters.flatMap((chapter) =>
+          chapter.sections.map((section) => ({
+            book: book.id,
+            chapter: chapter.key,
+            slug: section.slug,
+          }))
+        )
+      )
   );
 
 export async function load({ params }) {
@@ -28,7 +34,7 @@ export async function load({ params }) {
   if (!section) {
     throw error(404, 'القسم غير موجود');
   }
-  const content = await loadSection(params.chapter, params.slug);
-  const { prev, next } = getPrevNext(params.chapter, params.slug);
+  const content = await loadSection(params.book, params.chapter, params.slug);
+  const { prev, next } = getPrevNext(params.book, params.chapter, params.slug);
   return { book, chapter, section, content, prev, next, sectionPath };
 }

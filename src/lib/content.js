@@ -13,24 +13,22 @@ export const sectionPath = (book, chapter, slug) =>
 
 export const getBook = (id) => books.find((book) => book.id === id) || null;
 
-export const loadSection = async (chapter, slug) => {
-  const key = `/src/lib/generated/sections/${chapter}--${slug}.json`;
+export const loadSection = async (book, chapter, slug) => {
+  const key = `/src/lib/generated/sections/${book}__${chapter}--${slug}.json`;
   const loader = sectionModules[key];
   if (!loader) return null;
   const mod = await loader();
   return mod.default;
 };
 
-export const getPrevNext = (chapter, slug) => {
-  const index = manifest.sections.findIndex(
+export const getPrevNext = (book, chapter, slug) => {
+  const sections = manifest.sections.filter((item) => item.book === book);
+  const index = sections.findIndex(
     (item) => item.chapter === chapter && item.slug === slug
   );
   return {
-    prev: index > 0 ? manifest.sections[index - 1] : null,
-    next:
-      index >= 0 && index < manifest.sections.length - 1
-        ? manifest.sections[index + 1]
-        : null,
+    prev: index > 0 ? sections[index - 1] : null,
+    next: index >= 0 && index < sections.length - 1 ? sections[index + 1] : null,
   };
 };
 
