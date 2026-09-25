@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.BphmHV3y.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/mLPeQ1Bk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DQQuBaJz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.RnxBTaHY.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BZxbzh5i.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BO_NacTK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DKiA0yvK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Bpsbq-9i.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="بيئة سطر الأوامر — بيئة سطر الأوامر"/><!----><title>بيئة سطر الأوامر | الفصل المفقود في تعليم علوم الحاسوب</title>
+		<link href="../../../../_app/immutable/assets/0.gpwEXkfN.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>نظرة عامة على المقرر + مقدمة إلى الصدفة</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/course-shell/index">نظرة عامة على المقرر + مقدمة إلى الصدفة</a></li><!--]--></ul><h3>بيئة سطر الأوامر</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/command-line-environment/index" class="active">بيئة سطر الأوامر</a></li><!--]--></ul><h3>بيئة التطوير والأدوات</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/development-environment/index">بيئة التطوير والأدوات</a></li><!--]--></ul><h3>التنقيح وتوصيف الأداء</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/debugging-profiling/index">التنقيح وتوصيف الأداء</a></li><!--]--></ul><h3>التحكم في الإصدارات وGit</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/version-control/index">التحكم في الإصدارات وGit</a></li><!--]--></ul><h3>تغليف الشيفرة ونشرها</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/shipping-code/index">تغليف الشيفرة ونشرها</a></li><!--]--></ul><h3>البرمجة بالوكلاء</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/agentic-coding/index">البرمجة بالوكلاء</a></li><!--]--></ul><h3>ما وراء الشيفرة</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/beyond-code/index">ما وراء الشيفرة</a></li><!--]--></ul><h3>جودة الشيفرة</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/code-quality/index">جودة الشيفرة</a></li><!--]--></ul><h3>معالجة وصقل البيانات</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/data-wrangling/index">معالجة وصقل البيانات</a></li><!--]--></ul><h3>خليط من المواضيع</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/potpourri/index">خليط من المواضيع</a></li><!--]--></ul><h3>أسئلة وأجوبة</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/qa/index">أسئلة وأجوبة</a></li><!--]--></ul><h3>الأمان والتشفير</h3> <ul><!--[--><li><a href="../../../../book/missing-semester/security/index">الأمان والتشفير</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">بيئة سطر الأوامر</p> <h1>بيئة سطر الأوامر</h1></div> <div class="reader-content"><!----><p class="lecture-video"><iframe src="https://www.youtube-nocookie.com/embed/ccBGsPedE9Q" title="بيئة سطر الأوامر" loading="lazy" allowfullscreen></iframe></p>
+<p>كما تناولنا في المحاضرة السابقة، فإن معظم مُعالِجات الأوامر (Shells) ليست مجرد أداة إطلاق لبرامج أخرى،
+بل توفّر في الواقع لغة برمجة كاملة مليئة بالأنماط والتجريدات الشائعة.
+لكن على عكس معظم لغات البرمجة، فإن كل شيء في نصوص مُعالج الأوامر (Shell Scripting) مصمَّم حول تشغيل البرامج وجعلها تتواصل مع بعضها البعض ببساطة وكفاءة.</p>
+<p>على وجه الخصوص، يرتبط نصوص مُعالج الأوامر ارتباطًا وثيقًا بـ <em>الاصطلاحات</em> (Conventions). لكي يتعامل برنامج واجهة سطر الأوامر (Command Line Interface - CLI) بشكل جيد مع بيئة مُعالج الأوامر الأوسع، هناك بعض الأنماط الشائعة التي يجب أن يتبعها.
+سنغطي الآن الكثير من المفاهيم المطلوبة لفهم كيفية عمل برامج سطر الأوامر، بالإضافة إلى الاصطلاحات الشائعة لكيفية استخدامها وتكوينها.</p>
+<h1>واجهة سطر الأوامر (The Command Line Interface)</h1>
+<p>كتابة دالة في معظم لغات البرمجة تبدو تقريبًا هكذا:</p>
+<pre><code>def add(x: int, y: int) -&gt; int:
+    return x + y
+</code></pre>
+<p>هنا نستطيع أن نرى بوضوح مدخلات ومخرجات البرنامج.
+في المقابل، قد تبدو نصوص مُعالج الأوامر مختلفة تمامًا عند النظر الأول.</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/usr/bin/env bash</span>
+
+if [[ -f $1 ]]; then
+    echo &quot;Target file already exists&quot;
+    exit 1
+else
+    if $DEBUG; then
+        grep &#x27;error&#x27; - | tee $1
+    else
+        grep &#x27;error&#x27; - &gt; $1
+    fi
+    exit 0
+fi
+</code></pre>
+<p>لفهم ما يحدث بشكل صحيح في نصوص مثل هذا، نحتاج أولًا إلى تقديم بعض المفاهيم التي تظهر كثيرًا عندما تتواصل برامج مُعالج الأوامر مع بعضها البعض أو مع بيئة مُعالج الأوامر:</p>
+<ul>
+<li>الوسائط (Arguments)</li>
+<li>التدفقات (Streams)</li>
+<li>متغيرات البيئة (Environment variables)</li>
+<li>أكواد الإرجاع (Return codes)</li>
+<li>الإشارات (Signals)</li>
+</ul>
+<h2 id="الوسائط-arguments">الوسائط (Arguments)</h2>
+<p>تستقبل برامج مُعالج الأوامر قائمة من الوسائط عند تنفيذها.
+الوسائط هي نصوص (Strings) بسيطة في مُعالج الأوامر، والأمر متروك للبرنامج لتفسيرها.
+على سبيل المثال، عندما ننفّذ <code>ls -l folder/</code>، فإننا نشغّل البرنامج <code>/bin/ls</code> بوسائط <code>['-l', 'folder/']</code>.</p>
+<p>من داخل نص مُعالج الأوامر، نصل إلى هذه الوسائط عبر صيغة خاصة. للوصول إلى الوسيطة الأولى نستخدم المتغير <code>$1</code>، والثانية <code>$2</code> وهكذا حتى <code>$9</code>. وللوصول إلى جميع الوسائط كقائمة نستخدم <code>$@</code>، ولجلب عدد الوسائط <code>$#</code>. كما يمكننا أيضًا الوصول إلى اسم البرنامج عبر <code>$0</code>.</p>
+<p>بالنسبة لمعظم البرامج، تتكون الوسائط من مزيج من <em>العلامات</em> (Flags) والنصوص العادية.
+يمكن التعرف على العلامات لأنها تسبق بشرطة (<code>-</code>) أو شرطتين (<code>--</code>).
+العلامات عادة ما تكون اختيارية ودورها تعديل سلوك البرنامج.
+على سبيل المثال، <code>ls -l</code> يغيّر طريقة تنسيق <code>ls</code> لمخرجاته.</p>
+<p>سترى علامات بشرطتين بأسماء طويلة مثل <code>--all</code>، وعلامات بشرطة واحدة مثل <code>-a</code>، والتي غالبًا ما يتبعها حرف واحد.
+قد يتم تحديد نفس الخيار بالصيغتين، فـ <code>ls -a</code> و <code>ls --all</code> متكافئان.
+غالبًا ما تُجمَّع العلامات ذات الشرطة الواحدة، لذلك <code>ls -l -a</code> و <code>ls -la</code> متكافئان أيضًا.
+ترتيب العلامات عادةً لا يهم كذلك، فـ <code>ls -la</code> و <code>ls -al</code> يعطيان نفس النتيجة.
+بعض العلامات شائعة جدًا، وكلما أصبحت أكثر دراية ببيئة مُعالج الأوامر ستصل إليها بشكل بديهي، مثل (<code>--help</code>، <code>--verbose</code>، <code>--version</code>).</p>
+<blockquote>
+<p>العلامات هي أول مثال جيد على اصطلاحات مُعالج الأوامر. لغة مُعالج الأوامر لا تتطلب أن يستخدم برنامجنا <code>-</code> أو <code>--</code> بهذه الطريقة المعينة.
+لا شيء يمنعنا من كتابة برنامج بصيغة <code>myprogram +myoption myfile</code>، لكن ذلك سيؤدي إلى ارتباك لأن التوقّع هو أن نستخدم الشرطات.
+عمليًا، توفر معظم لغات البرمجة مكتبات لتحليل علامات CLI (مثل <code>argparse</code> في بايثون لتحليل الوسائط بصيغة الشرطات).</p>
+</blockquote>
+<p>اصطلاح شائع آخر في برامج CLI هو أن تقبل البرامج عددًا متغيرًا من الوسائط من نفس النوع. عندما تُعطى الوسائط بهذه الطريقة، ينفّذ الأمر نفس العملية على كل واحدة منها.</p>
+<pre><code class="language-shell">mkdir src
+mkdir docs
+<span class="hljs-meta prompt_"># </span><span class="language-bash">is equivalent to</span>
+mkdir src docs
+</code></pre>
+<p>قد يبدو هذا التبسيط الاصطلاحي (Syntax Sugar) غير ضروري في البداية، لكنه يصبح قويًا جدًا عند دمجه مع <em>التوسيع بأنماط المطابقة</em> (Globbing).
+التوسيع بأنماط المطابقة أو ما يُسمى Globs هي أنماط خاصة يقوم مُعالج الأوامر بتوسيعها قبل استدعاء البرنامج.</p>
+<p>لنفترض أننا نريد حذف جميع ملفات <code>.py</code> في المجلد الحالي دون استخدام العودية (Recursion). مما تعلمناه في المحاضرة السابقة يمكننا تحقيق ذلك بتنفيذ</p>
+<pre><code class="language-shell">for file in $(ls | grep -P &#x27;\.py$&#x27;); do
+    rm &quot;$file&quot;
+done
+</code></pre>
+<p>ولكن يمكننا استبدال ذلك بـ <code>rm *.py</code> فقط!</p>
+<p>عندما نكتب <code>rm *.py</code> في الطرفية، لن يستدعي مُعالج الأوامر البرنامج <code>/bin/rm</code> بوسائط <code>['*.py']</code>.
+بدلًا من ذلك، سيبحث مُعالج الأوامر عن الملفات في المجلد الحالي المطابقة للنمط <code>*.py</code> حيث يمكن لـ <code>*</code> مطابقة أي سلسلة مكونة من صفر أو أكثر من الأحرف من أي نوع.
+لذا إذا كان مجلدنا يحتوي على <code>main.py</code> و <code>utils.py</code>، فسيستقبل برنامج <code>rm</code> الوسائط <code>['main.py', 'utils.py']</code>.</p>
+<p>أكثر أنماط Globs شيوعًا ستجدها هي أحرف البدل <code>*</code> (صفر أو أكثر من أي شيء)، و <code>?</code> (حرف واحد بالضبط من أي شيء)، والأقواس المتعرجة.
+الأقواس المتعرجة <code>{}</code> توسّع قائمة مفصولة بفواصل من الأنماط إلى وسائط متعددة.</p>
+<p>عمليًا، تُفهم Globs بشكل أفضل مع أمثلة توضيحية.</p>
+<pre><code class="language-shell">touch folder/{a,b,c}.py
+<span class="hljs-meta prompt_"># </span><span class="language-bash">Will <span class="hljs-built_in">expand</span> to</span>
+touch folder/a.py folder/b.py folder/c.py
+
+convert image.{png,jpg}
+<span class="hljs-meta prompt_"># </span><span class="language-bash">Will <span class="hljs-built_in">expand</span> to</span>
+convert image.png image.jpg
+
+cp /path/to/project/{setup,build,deploy}.sh /newpath
+<span class="hljs-meta prompt_"># </span><span class="language-bash">Will <span class="hljs-built_in">expand</span> to</span>
+cp /path/to/project/setup.sh /path/to/project/build.sh /path/to/project/deploy.sh /newpath
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Globbing techniques can also be combined</span>
+mv *{.py,.sh} folder
+<span class="hljs-meta prompt_"># </span><span class="language-bash">Will move all *.py and *.sh files</span>
+</code></pre>
+<blockquote>
+<p>بعض مُعالجات الأوامر (مثل zsh) تدعم أشكالًا أكثر تقدمًا من Globbing مثل <code>**</code> التي تتوسع لتشمل المسارات العودية. لذا فإن <code>rm **/*.py</code> سيحذف جميع ملفات <code>.py</code> بشكل عودي.</p>
+</blockquote>
+<h2 id="التدفقات-streams">التدفقات (Streams)</h2>
+<p>عندما ننفّذ خط أنابيب (Pipeline) مثل</p>
+<pre><code class="language-shell">cat myfile | grep -P &#x27;\d+&#x27; | uniq -c
+</code></pre>
+<p>نرى أن برنامج <code>grep</code> يتواصل مع برنامجي <code>cat</code> و <code>uniq</code>.</p>
+<p>ملاحظة مهمة هنا هي أن البرامج الثلاثة تُنفَّذ في وقت واحد.
+أي أن مُعالج الأوامر لا يستدعي <code>cat</code> أولًا ثم <code>grep</code> ثم <code>uniq</code>.
+بدلًا من ذلك، يتم إطلاق البرامج الثلاثة جميعًا ويقوم مُعالج الأوامر بربط مخرجات <code>cat</code> بمدخلات <code>grep</code> ومخرجات <code>grep</code> بمدخلات <code>uniq</code>.
+عند استخدام عامل الأنبوب <code>|</code>، يتعامل مُعالج الأوامر مع تدفقات من البيانات تتدفق من برنامج إلى التالي في السلسلة.</p>
+<p>يمكننا إثبات هذا التزامن — جميع الأوامر في خط الأنابيب تبدأ فورًا:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">(<span class="hljs-built_in">sleep</span> 15 &amp;&amp; <span class="hljs-built_in">cat</span> numbers.txt) | grep -P <span class="hljs-string">&#x27;^\d$&#x27;</span> | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span>  &amp;</span>
+[1] 12345
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">ps | grep -P <span class="hljs-string">&#x27;(sleep|cat|grep|sort|uniq)&#x27;</span></span>
+  32930 pts/1    00:00:00 sleep
+  32931 pts/1    00:00:00 grep
+  32932 pts/1    00:00:00 sort
+  32933 pts/1    00:00:00 uniq
+  32948 pts/1    00:00:00 grep
+</code></pre>
+<p>يمكننا أن نرى أن جميع العمليات باستثناء <code>cat</code> تعمل فورًا. يُنشئ مُعالج الأوامر جميع العمليات ويصل تدفقاتها قبل أن تنتهي أي منها. لن يبدأ <code>cat</code> إلا بعد انتهاء <code>sleep</code>، وسيُرسل مخرجات <code>cat</code> إلى <code>grep</code> وهكذا دواليك.</p>
+<p>كل برنامج لديه تدفق إدخال، يُسمى stdin (للإدخال القياسي). عند استخدام الأنابيب، يتم توصيل stdin تلقائيًا. داخل النصوص، تقبل العديد من البرامج <code>-</code> كاسم ملف بمعنى &quot;اقرأ من stdin&quot;:</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">These are equivalent when data comes from a pipe</span>
+echo &quot;hello&quot; | grep &quot;hello&quot;
+echo &quot;hello&quot; | grep &quot;hello&quot; -
+</code></pre>
+<p>بالمثل، كل برنامج لديه تدفقا إخراج: stdout و stderr.
+الإخراج القياسي (Standard Output) هو الأكثر شيوعًا، وهو المستخدم لتمرير إخراج البرنامج إلى الأمر التالي في خط الأنابيب.
+الخطأ القياسي (Standard Error) هو تدفق بديل مخصص للبرامج لتقرير التحذيرات وأنواع أخرى من المشكلات، دون أن يُحلَّل هذا الإخراج بواسطة الأمر التالي في السلسلة.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /nonexistent</span>
+ls: cannot access &#x27;/nonexistent&#x27;: No such file or directory
+<span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /nonexistent | grep <span class="hljs-string">&quot;pattern&quot;</span></span>
+ls: cannot access &#x27;/nonexistent&#x27;: No such file or directory
+<span class="hljs-meta prompt_"># </span><span class="language-bash">The error message still appears because stderr is not piped</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> /nonexistent 2&gt;/dev/null</span>
+<span class="hljs-meta prompt_"># </span><span class="language-bash">No output - stderr was redirected to /dev/null</span>
+</code></pre>
+<p>يوفر مُعالج الأوامر صيغة لإعادة توجيه هذه التدفقات. إليك بعض الأمثلة التوضيحية.</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Redirect stdout to a file (overwrite)</span>
+echo &quot;hello&quot; &gt; output.txt
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Redirect stdout to a file (append)</span>
+echo &quot;world&quot; &gt;&gt; output.txt
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Redirect stderr to a file</span>
+ls foobar 2&gt; errors.txt
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Redirect both stdout and stderr to the same file</span>
+ls foobar &amp;&gt; all_output.txt
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Redirect stdin from a file</span>
+grep &quot;pattern&quot; &lt; input.txt
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">Discard output by redirecting to /dev/null</span>
+cmd &gt; /dev/null 2&gt;&amp;1
+</code></pre>
+<p>أداة قوية أخرى تجسّد فلسفة يونكس هي <a href="https://github.com/junegunn/fzf"><code>fzf</code></a>، وهي أداة بحث ضبابي (Fuzzy Finder). تقرأ الأسطر من stdin وتوفّر واجهة تفاعلية للتصفية والاختيار:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> | fzf</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cat</span> ~/.bash_history | fzf</span>
+</code></pre>
+<p>يمكن دمج <code>fzf</code> مع العديد من عمليات مُعالج الأوامر. سنرى المزيد من استخداماته عندما نتحدث عن تخصيص مُعالج الأوامر.</p>
+<h2 id="متغيرات-البيئة-environment-variables">متغيرات البيئة (Environment Variables)</h2>
+<p>لتعيين متغيرات في bash نستخدم الصيغة <code>foo=bar</code>، ثم نصل إلى قيمة المتغير بصيغة <code>$foo</code>.
+لاحظ أن <code>foo = bar</code> صيغة غير صالحة لأن مُعالج الأوامر سيحلّلها كاستدعاء للبرنامج <code>foo</code> بوسائط <code>['=', 'bar']</code>.
+في نصوص مُعالج الأوامر، دور الحرف المسافة هو تنفيذ تقسيم الوسائط (Argument Splitting).
+قد يكون هذا السلوك محيرًا ويصعب التعود عليه، لذا ضعه في اعتبارك.</p>
+<p>متغيرات مُعالج الأوامر ليس لها أنواع، فهي جميعًا نصوص (Strings).
+لاحظ أنه عند كتابة تعبيرات نصية في مُعالج الأوامر، فإن الاقتباسات المفردة والمزدوجة ليست قابلة للتبادل.
+النصوص المحددة بـ <code>'</code> هي نصوص حرفية ولن توسّع المتغيرات، أو تنفّذ استبدال الأوامر، أو تعالج تسلسلات الهروب، بينما النصوص المحددة بـ <code>&quot;</code> ستفعل ذلك.</p>
+<pre><code class="language-shell">foo=bar
+echo &quot;$foo&quot;
+<span class="hljs-meta prompt_"># </span><span class="language-bash">prints bar</span>
+echo &#x27;$foo&#x27;
+<span class="hljs-meta prompt_"># </span><span class="language-bash">prints <span class="hljs-variable">$foo</span></span>
+</code></pre>
+<p>لالتقاط مخرجات أمر في متغير نستخدم <em>استبدال الأوامر</em> (Command Substitution).
+عندما ننفّذ</p>
+<pre><code class="language-shell">files=$(ls)
+echo &quot;$files&quot; | grep README
+echo &quot;$files&quot; | grep &quot;.py&quot;
+</code></pre>
+<p>يتم وضع الإخراج (تحديدًا stdout) لأمر <code>ls</code> في المتغير <code>$files</code> الذي يمكننا الوصول إليه لاحقًا.
+محتوى المتغير <code>$files</code> يتضمن أسطر الأسطر الجديدة (Newlines) من إخراج <code>ls</code>، وهذا ما يسمح لبرامج مثل <code>grep</code> بالعمل على كل عنصر على حدة.</p>
+<p>ميزة مشابهة أقل شهرة هي <em>استبدال العمليات</em> (Process Substitution)؛ فـ <code>&lt;( CMD )</code> ستنفّذ <code>CMD</code> وتضع الإخراج في ملف مؤقت وتستبدل <code>()</code> بإسم ذلك الملف.
+هذا مفيد عندما تتوقع الأوامر أن تُمرَّر القيم عبر ملف بدلًا من STDIN.
+على سبيل المثال، <code>diff &lt;(ls src) &lt;(ls docs)</code> سيُظهر الفروقات بين الملفات في المجلدين <code>src</code> و <code>docs</code>.</p>
+<p>عندما يستدعي برنامج في مُعالج الأوامر برنامجًا آخر، فإنه يمرّر مجموعة من المتغيرات يُشار إليها غالبًا باسم <em>متغيرات البيئة</em> (Environment Variables).
+من داخل مُعالج الأوامر يمكننا إيجاد متغيرات البيئة الحالية بتشغيل <code>printenv</code>.
+لتمرير متغير بيئة بشكل صريح، يمكننا أن نُسبق الأمر بتعيين متغير</p>
+<blockquote>
+<p>تُكتب متغيرات البيئة تقليديًا بالأحرف الكبيرة (مثل <code>HOME</code>، <code>PATH</code>، <code>DEBUG</code>). هذا اصطلاح وليس متطلبًا تقنيًا، لكن اتباعه يساعد على التمييز بين متغيرات البيئة ومتغيرات مُعالج الأوامر المحلية التي عادةً ما تكون بالأحرف الصغيرة.</p>
+</blockquote>
+<pre><code class="language-shell">TZ=Asia/Tokyo date  # prints the current time in Tokyo
+echo $TZ  # this will be empty, since TZ was only set for the child command
+</code></pre>
+<p>بدلًا من ذلك، يمكننا استخدام الدالة المدمجة <code>export</code> التي ستعدّل بيئتنا الحالية وبالتالي سترث جميع العمليات الفرعية المتغير:</p>
+<pre><code class="language-shell">export DEBUG=1
+<span class="hljs-meta prompt_"># </span><span class="language-bash">All programs from this point onwards will have DEBUG=1 <span class="hljs-keyword">in</span> their environment</span>
+bash -c &#x27;echo $DEBUG&#x27;
+<span class="hljs-meta prompt_"># </span><span class="language-bash">prints 1</span>
+</code></pre>
+<p>لحذف متغير استخدم الأمر المدمج <code>unset</code>، مثل <code>unset DEBUG</code>.</p>
+<blockquote>
+<p>متغيرات البيئة هي اصطلاح آخر من اصطلاحات مُعالج الأوامر. يمكن استخدامها لتعديل سلوك العديد من البرامج بشكل ضمني بدلًا من الصريح. على سبيل المثال، يضع مُعالج الأوامر متغير البيئة <code>$HOME</code> بمسار مجلد الصفحة الرئيسية للمستخدم الحالي. ثم تستطيع البرامج الوصول إلى هذا المتغير للحصول على هذه المعلومة بدلًا من طلب <code>--home /home/alice</code> صراحةً. مثال شائع آخر هو <code>$TZ</code>، الذي تستخدمه برامج كثيرة لتنسيق التواريخ والأوقات وفقًا للمنطقة الزمنية المحددة.</p>
+</blockquote>
+<h2 id="أكواد-الإرجاع-return-codes">أكواد الإرجاع (Return Codes)</h2>
+<p>كما رأينا سابقًا، يتم نقل الإخراج الرئيسي لبرنامج مُعالج الأوامر عبر تدفقي stdout/stderr وآثار جانبية على نظام الملفات.</p>
+<p>افتراضيًا، يعيد نص مُعالج الأوامر كود خروج صفرًا.
+الاصطلاح هو أن الصفر يعني أن كل شيء سار على ما يرام بينما القيم غير الصفرية تعني وجود بعض المشكلات.
+لإعادة كود خروج غير صفري يجب علينا استخدام الأداة المدمجة <code>exit NUM</code>.
+يمكننا الوصول إلى كود الإرجاع لآخر أمر تم تشغيله عبر المتغير الخاص <code>$?</code>.</p>
+<p>يمتلك مُعالج الأوامر معاملات منطقية <code>&amp;&amp;</code> و <code>||</code> لتنفيذ عمليات AND و OR على التوالي.
+على عكس تلك الموجودة في لغات البرمجة العادية، تعمل هذه المعاملات في مُعالج الأوامر على كود الإرجاع للبرامج.
+كلا المعاملين <a href="https://en.wikipedia.org/wiki/Short-circuit_evaluation">قصيرا الدائرة (Short-circuiting)</a>.
+هذا يعني أنه يمكن استخدامهما لتشغيل الأوامر شرطيًا بناءً على نجاح أو فشل الأوامر السابقة، حيث يُحدَّد النجاح بناءً على ما إذا كان كود الإرجاع صفرًا أم لا. بعض الأمثلة:</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-built_in">echo</span> will only run <span class="hljs-keyword">if</span> grep succeeds (finds a match)</span>
+grep -q &quot;pattern&quot; file.txt &amp;&amp; echo &quot;Pattern found&quot;
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash"><span class="hljs-built_in">echo</span> will only run <span class="hljs-keyword">if</span> grep fails (no match)</span>
+grep -q &quot;pattern&quot; file.txt || echo &quot;Pattern not found&quot;
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash"><span class="hljs-literal">true</span> is a shell program that always succeeds</span>
+true &amp;&amp; echo &quot;This will always print&quot;
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">and <span class="hljs-literal">false</span> is a shell program that always fails</span>
+false || echo &quot;This will always print&quot;
+</code></pre>
+<p>نفس المبدأ ينطبق على عبارات <code>if</code> و <code>while</code>، فكلاهما يستخدم أكواد الإرجاع لاتخاذ القرارات:</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-keyword">if</span> uses the <span class="hljs-built_in">return</span> code of the condition <span class="hljs-built_in">command</span> (0 = <span class="hljs-literal">true</span>, nonzero = <span class="hljs-literal">false</span>)</span>
+if grep -q &quot;pattern&quot; file.txt; then
+    echo &quot;Found&quot;
+fi
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash"><span class="hljs-keyword">while</span> loops <span class="hljs-built_in">continue</span> as long as the <span class="hljs-built_in">command</span> returns 0</span>
+while read line; do
+    echo &quot;$line&quot;
+done &lt; file.txt
+</code></pre>
+<h2 id="الإشارات-signals">الإشارات (Signals)</h2>
+<p>في بعض الحالات ستحتاج إلى مقاطعة برنامج أثناء تنفيذه، على سبيل المثال إذا كان الأمر يستغرق وقتًا طويلًا لإكماله.
+أبسط طريقة لمقاطعة برنامج هي الضغط على <code>Ctrl-C</code> وسيتوقف الأمر غالبًا.
+ولكن كيف يعمل هذا فعليًا ولماذا يفشل أحيانًا في إيقاف العملية؟</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sleep</span> 100</span>
+^C
+<span class="hljs-meta prompt_">$</span><span class="language-bash">
+</span></code></pre>
+<blockquote>
+<p>لاحظ أن <code>^C</code> هنا هو الشكل الذي يُعرض به <code>Ctrl-C</code> عند كتابته في الطرفية.</p>
+</blockquote>
+<p>تحت الغطاء، إليك ما حدث هنا:</p>
+<ol>
+<li>ضغطنا على <code>Ctrl-C</code></li>
+<li>تعرّف مُعالج الأوامر على التركيبة الخاصة من الأحرف</li>
+<li>أرسلت عملية مُعالج الأوامر إشارة SIGINT إلى عملية <code>sleep</code></li>
+<li>قاطعت الإشارة تنفيذ عملية <code>sleep</code></li>
+</ol>
+<p>الإشارات هي آلية اتصال خاصة.
+عندما تستقبل عملية إشارة، فإنها توقف تنفيذها وتتعامل مع الإشارة وربما تغيّر مسار التنفيذ بناءً على المعلومات التي وصلت بها الإشارة. لهذا السبب، الإشارات هي <em>مقاطعات برمجية</em> (Software Interrupts).</p>
+<p>في حالتنا، عند كتابة <code>Ctrl-C</code> يدفع هذا مُعالج الأوامر إلى تسليم إشارة <code>SIGINT</code> للعملية.
+إليك مثالًا بسيطًا على برنامج بايثون يلتقط <code>SIGINT</code> ويتجاهلها، فلا يتوقف بعدها. لإيقاف هذا البرنامج يمكننا الآن استخدام إشارة <code>SIGQUIT</code> بدلًا منها، بكتابة <code>Ctrl-\</code>.</p>
+<pre><code class="language-python"><span class="hljs-comment">#!/usr/bin/env python</span>
+<span class="hljs-keyword">import</span> signal, time
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">signum, time</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nI got a SIGINT, but I am not stopping&quot;</span>)
+
+signal.signal(signal.SIGINT, handler)
+i = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    time.sleep(<span class="hljs-number">.1</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\r{}&quot;</span>.<span class="hljs-built_in">format</span>(i), end=<span class="hljs-string">&quot;&quot;</span>)
+    i += <span class="hljs-number">1</span>
+</code></pre>
+<p>إليك ما يحدث إذا أرسلنا <code>SIGINT</code> مرتين لهذا البرنامج، متبوعًا بـ <code>SIGQUIT</code>. لاحظ أن <code>^</code> هو الشكل الذي يُعرض به <code>Ctrl</code> عند كتابته في الطرفية.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">python sigint.py</span>
+24^C
+I got a SIGINT, but I am not stopping
+26^C
+I got a SIGINT, but I am not stopping
+30^\[1]    39913 quit       python sigint.py
+</code></pre>
+<p>بينما ترتبط كل من <code>SIGINT</code> و <code>SIGQUIT</code> عادةً بطلبات متعلقة بالطرفية، فإن الإشارة الأكثر عمومية لطلب إنهاء عملية بشكل متزن (Gracefully) هي إشارة <code>SIGTERM</code>.
+لإرسال هذه الإشارة يمكننا استخدام أمر <a href="https://www.man7.org/linux/man-pages/man1/kill.1.html"><code>kill</code></a>، بالصيغة <code>kill -TERM &lt;PID&gt;</code>.</p>
+<p>يمكن للإشارات أن تفعل أشياء أخرى تتجاوز إيقاف عملية. على سبيل المثال، <code>SIGSTOP</code> تُوقِف عملية مؤقتًا. في الطرفية، كتابة <code>Ctrl-Z</code> ستُدفع مُعالج الأوامر لإرسال إشارة <code>SIGTSTP</code>، اختصارًا لـ Terminal Stop (أي نسخة الطرفية من <code>SIGSTOP</code>).</p>
+<p>يمكننا بعد ذلك متابعة المهمة المتوقفة في المقدمة (Foreground) أو في الخلفية (Background) باستخدام <a href="https://www.man7.org/linux/man-pages/man1/fg.1p.html"><code>fg</code></a> أو <a href="https://man7.org/linux/man-pages/man1/bg.1p.html"><code>bg</code></a>، على التوالي.</p>
+<p>أمر <a href="https://www.man7.org/linux/man-pages/man1/jobs.1p.html"><code>jobs</code></a> يعرض قائمة المهام غير المكتملة المرتبطة بجلسة الطرفية الحالية.
+يمكنك الإشارة إلى هذه المهام باستخدام pid الخاص بها (يمكنك استخدام <a href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code>pgrep</code></a> لمعرفة ذلك).
+بشكل أكثر بديهية، يمكنك أيضًا الإشارة إلى عملية باستخدام علامة النسبة المئوية متبوعة برقم المهمة (المعروض بواسطة <code>jobs</code>). للإشارة إلى آخر مهمة تم نقلها للخلفية يمكنك استخدام المعامل الخاص <code>$!</code>.</p>
+<p>أمر آخر يجب معرفته هو أن اللاحقة <code>&amp;</code> في أمر ما ستشغّله في الخلفية، معيدًا لك المطالبة (Prompt)، على الرغم من أنها ستستخدم STDOUT الخاص بمُعالج الأوامر وهو ما قد يكون مزعجًا (استخدم إعادة التوجيه في هذه الحالة). وبالمثل، لنقل برنامج يعمل بالفعل إلى الخلفية يمكنك تنفيذ <code>Ctrl-Z</code> متبوعًا بـ <code>bg</code>.</p>
+<p>لاحظ أن العمليات في الخلفية ما زالت عمليات فرعية للطرفية الخاصة بك وستموت إذا أغلقت الطرفية (وهذا سيرسل إشارة أخرى، <code>SIGHUP</code>).
+لمنع ذلك يمكنك تشغيل البرنامج مع <a href="https://www.man7.org/linux/man-pages/man1/nohup.1.html"><code>nohup</code></a> (وهو غلاف يتجاهل <code>SIGHUP</code>)، أو استخدام <code>disown</code> إذا كانت العملية قد بدأت بالفعل.
+بدلًا من ذلك، يمكنك استخدام مُضاعِف الطرفية (Terminal Multiplexer) كما سنرى في القسم التالي.</p>
+<p>إليك جلسة نموذجية لعرض بعض هذه المفاهيم.</p>
+<pre><code>$ sleep 1000
+^Z
+[1]  + 18653 suspended  sleep 1000
+
+$ nohup sleep 2000 &amp;
+[2] 18745
+appending output to nohup.out
+
+$ jobs
+[1]  + suspended  sleep 1000
+[2]  - running    nohup sleep 2000
+
+$ kill -SIGHUP %1
+[1]  + 18653 hangup     sleep 1000
+
+$ kill -SIGHUP %2   # nohup protects from SIGHUP
+
+$ jobs
+[2]  + running    nohup sleep 2000
+
+$ kill %2
+[2]  + 18745 terminated  nohup sleep 2000
+</code></pre>
+<p>إشارة خاصة هي <code>SIGKILL</code> لأنها لا يمكن التقاطها بواسطة العملية وستنهيها دائمًا فورًا. ومع ذلك، يمكن أن يكون لها آثار جانبية سيئة مثل ترك عمليات فرعية يتيمة (Orphaned).</p>
+<p>يمكنك معرفة المزيد عن هذه الإشارات وغيرها <a href="https://en.wikipedia.org/wiki/Signal_(IPC)">هنا</a> أو بكتابة <a href="https://www.man7.org/linux/man-pages/man7/signal.7.html"><code>man signal</code></a> أو <code>kill -l</code>.</p>
+<p>داخل نصوص مُعالج الأوامر، يمكنك استخدام الأداة المدمجة <code>trap</code> لتنفيذ أوامر عند استلام الإشارات. هذا مفيد لعمليات التنظيف:</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/usr/bin/env bash</span>
+cleanup() {
+    echo &quot;Cleaning up temporary files...&quot;
+    rm -f /tmp/mytemp.*
+}
+trap cleanup EXIT  # Run cleanup when script exits
+trap cleanup SIGINT SIGTERM  # Also on Ctrl-C or kill
+</code></pre>
+<h1>الأجهزة البعيدة (Remote Machines)</h1>
+<p>أصبح من الشائع أكثر فأكثر أن يعمل المبرمجون مع الخوادم البعيدة (Remote Servers) في عملهم اليومي. الأداة الأكثر شيوعًا لهذا الغرض هي SSH (اختصارًا لـ Secure Shell - غلاف آمن) التي ستساعدنا على الاتصال بخادم بعيد وتوفير واجهة مُعالج الأوامر المألوفة الآن. نتصل بالخادم بأمر مثل:</p>
+<pre><code class="language-bash">ssh alice@server.mit.edu
+</code></pre>
+<p>هنا نحاول الاتصال عبر ssh كمستخدم <code>alice</code> في الخادم <code>server.mit.edu</code>.</p>
+<p>ميزة تُغفل غالبًا لأمر <code>ssh</code> هي القدرة على تشغيل الأوامر دون تفاعلية. يتعامل <code>ssh</code> بشكل صحيح مع إرسال stdin واستقبال stdout للأمر، لذا يمكننا دمجه مع أوامر أخرى</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">here <span class="hljs-built_in">ls</span> runs <span class="hljs-keyword">in</span> the remote, and <span class="hljs-built_in">wc</span> runs locally</span>
+ssh alice@server ls | wc -l
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">here both <span class="hljs-built_in">ls</span> and <span class="hljs-built_in">wc</span> run <span class="hljs-keyword">in</span> the server</span>
+ssh alice@server &#x27;ls | wc -l&#x27;
+
+</code></pre>
+<blockquote>
+<p>جرّب تثبيت <a href="https://mosh.org/">Mosh</a> كبديل لـ SSH يتعامل مع انقطاع الاتصالات، والدخول/الخروج من وضع السكون (Sleep)، وتغيير الشبكات، والتعامل مع الروابط عالية التأخير (Latency).</p>
+</blockquote>
+<p>لكي يسمح لنا <code>ssh</code> بتشغيل أوامر في الخادم البعيد، نحتاج إلى إثبات أننا مصرح لنا بذلك.
+يمكننا القيام بذلك عبر كلمات المرور أو مفاتيح ssh.
+المصادقة بالمفاتيح (Key-based Authentication) تستخدم تشفير المفتاح العام (Public-key Cryptography) لإثبات للخادم أن العميل يملك المفتاح الخاص السري دون كشف المفتاح.
+المصادقة بالمفاتيح هي أكثر ملاءمة وأكثر أمانًا، لذا يجب أن تفضّلها.
+لاحظ أن المفتاح الخاص (غالبًا <code>~/.ssh/id_rsa</code> ومؤخرًا <code>~/.ssh/id_ed25519</code>) هو فعليًا كلمة مرورك، فعاملها كذلك ولا تشارك محتواه أبدًا.</p>
+<p>لتوليد زوج من المفاتيح يمكنك تشغيل <a href="https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html"><code>ssh-keygen</code></a>.</p>
+<pre><code class="language-bash">ssh-keygen -a 100 -t ed25519 -f ~/.ssh/id_ed25519
+</code></pre>
+<p>إذا قمت يومًا بتكوين الدفع (Push) إلى GitHub باستخدام مفاتيح SSH، فمن المحتمل أنك أنجزت الخطوات الموضحة <a href="https://help.github.com/articles/connecting-to-github-with-ssh/">هنا</a> ولديك بالفعل زوج مفاتيح صالح. للتحقق مما إذا كانت لديك عبارة سرية (Passphrase) والتحقق منها يمكنك تشغيل <code>ssh-keygen -y -f /path/to/key</code>.</p>
+<p>في جانب الخادم، سيبحث <code>ssh</code> في <code>.ssh/authorized_keys</code> لتحديد أي العملاء يجب أن يدخل. لنسخ المفتاح العام يمكنك استخدام:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">cat</span> .ssh/id_ed25519.pub | ssh alice@remote <span class="hljs-string">&#x27;cat &gt;&gt; ~/.ssh/authorized_keys&#x27;</span>
+
+<span class="hljs-comment"># or more simply (if ssh-copy-id is available)</span>
+
+ssh-copy-id -i .ssh/id_ed25519 alice@remote
+</code></pre>
+<p>إلى جانب تشغيل الأوامر، يمكن استخدام الاتصال الذي ينشئه ssh لنقل الملفات من وإلى الخادم بأمان. <a href="https://www.man7.org/linux/man-pages/man1/scp.1.html"><code>scp</code></a> هو الأداة الأكثر تقليدية وصيغته هي <code>scp path/to/local_file remote_host:path/to/remote_file</code>. يحسّن <a href="https://www.man7.org/linux/man-pages/man1/rsync.1.html"><code>rsync</code></a> على <code>scp</code> باكتشاف الملفات المتطابقة محليًا وعن بُعد، ومنع نسخها مرة أخرى. كما يوفر تحكمًا أدق في الروابط الرمزية (Symlinks) والأذونات وله ميزات إضافية مثل العلامة <code>--partial</code> التي يمكنها الاستئناف من نسخة متقطعة سابقًا. <code>rsync</code> له صيغة مشابهة لـ <code>scp</code>.</p>
+<p>توجد إعدادات عميل SSH في <code>~/.ssh/config</code> وتتيح لنا تعريف المضيفات (Hosts) وضبط الإعدادات الافتراضية لها. هذا الملف الإعدادي لا يُقرأ بواسطة <code>ssh</code> فحسب بل أيضًا بواسطة برامج أخرى مثل <code>scp</code> و <code>rsync</code> و <code>mosh</code> وغيرها.</p>
+<pre><code class="language-bash">Host vm
+    User alice
+    HostName 172.16.174.141
+    Port 2222
+    IdentityFile ~/.ssh/id_ed25519
+
+<span class="hljs-comment"># Configs can also take wildcards</span>
+Host *.mit.edu
+    User alice
+</code></pre>
+<h1>مُضاعِفات الطرفية (Terminal Multiplexers)</h1>
+<p>عند استخدام واجهة سطر الأوامر، غالبًا ما سترغب في تشغيل أكثر من شيء في وقت واحد.
+على سبيل المثال، قد ترغب في تشغيل محررك وبرنامجك جنبًا إلى جنب.
+على الرغم من إمكانية تحقيق ذلك بفتح نوافذ طرفية جديدة، فإن استخدام مُضاعِف الطرفية هو حل أكثر تنوعًا.</p>
+<p>مُضاعِفات الطرفية مثل <a href="https://www.man7.org/linux/man-pages/man1/tmux.1.html"><code>tmux</code></a> تتيح لك مضاعفة نوافذ الطرفية باستخدام المقاطع (Panes) والتبويبات (Tabs) لتتفاعل مع جلسات مُعالج أوامر متعددة بكفاءة.
+علاوة على ذلك، تتيح لك مُضاعِفات الطرفية فصل (Detach) جلسة الطرفية الحالية وإعادة الالتحاق (Reattach) بها في وقت لاحق.
+بسبب ذلك، تُعد مُضاعِفات الطرفية مريحة جدًا عند العمل مع الأجهزة البعيدة، إذ تتجنب الحاجة لاستخدام <code>nohup</code> وحيل مماثلة.</p>
+<p>أشهر مُضاعِف طرفية هذه الأيام هو <a href="https://www.man7.org/linux/man-pages/man1/tmux.1.html"><code>tmux</code></a>. <code>tmux</code> قابل للتكوين بدرجة كبيرة، وباستخدام اختصارات المفاتيح المرتبطة به يمكنك إنشاء تبويبات ومقاطع متعددة والتنقل عبرها بسرعة.</p>
+<p><code>tmux</code> يتوقع أن تعرف اختصارات المفاتيح الخاصة به، وجميعها بالصيغة <code>&lt;C-b&gt; x</code> حيث يعني ذلك (1) اضغط <code>Ctrl+b</code>، (2) حرّر <code>Ctrl+b</code>، ثم (3) اضغط <code>x</code>. <code>tmux</code> لديه التسلسل التالي من الكائنات:</p>
+<ul>
+<li>
+<p><strong>الجلسات (Sessions)</strong> - الجلسة هي مساحة عمل مستقلة تحتوي على نافذة واحدة أو أكثر</p>
+<ul>
+<li><code>tmux</code> يبدأ جلسة جديدة.</li>
+<li><code>tmux new -s NAME</code> يبدأها بهذا الاسم.</li>
+<li><code>tmux ls</code> يعرض الجلسات الحالية</li>
+<li>داخل <code>tmux</code> كتابة <code>&lt;C-b&gt; d</code> تفصل الجلسة الحالية</li>
+<li><code>tmux a</code> يلتحق بآخر جلسة. يمكنك استخدام العلامة <code>-t</code> لتحديد أيها</li>
+</ul>
+</li>
+<li>
+<p><strong>النوافذ (Windows)</strong> - مكافئة للتبويبات في المحررات أو المتصفحات، وهي أجزاء منفصلة بصريًا من نفس الجلسة</p>
+<ul>
+<li><code>&lt;C-b&gt; c</code> ينشئ نافذة جديدة. لإغلاقها يمكنك ببساطة إنهاء الأغلفة بتنفيذ <code>&lt;C-d&gt;</code></li>
+<li><code>&lt;C-b&gt; N</code> ينتقل إلى النافذة <em>N</em> ث. لاحظ أنها مرقمة</li>
+<li><code>&lt;C-b&gt; p</code> يذهب إلى النافذة السابقة</li>
+<li><code>&lt;C-b&gt; n</code> يذهب إلى النافذة التالية</li>
+<li><code>&lt;C-b&gt; ,</code> يعيد تسمية النافذة الحالية</li>
+<li><code>&lt;C-b&gt; w</code> يعرض النوافذ الحالية</li>
+</ul>
+</li>
+<li>
+<p><strong>المقاطع (Panes)</strong> - مثل تقسيمات vim، تتيح لك المقاطع تشغيل عدة أغلفة في نفس العرض المرئي.</p>
+<ul>
+<li><code>&lt;C-b&gt; &quot;</code> يقسم المقطع الحالي أفقيًا</li>
+<li><code>&lt;C-b&gt; %</code> يقسم المقطع الحالي رأسيًا</li>
+<li><code>&lt;C-b&gt; &lt;direction&gt;</code> ينتقل إلى المقطع في <em>الاتجاه</em> المحدد. الاتجاه هنا يعني مفاتيح الأسهم.</li>
+<li><code>&lt;C-b&gt; z</code> يبدّل التكبير (Zoom) للمقطع الحالي</li>
+<li><code>&lt;C-b&gt; [</code> يبدأ التمرير الخلفي (Scrollback). يمكنك بعدها الضغط على <code>&lt;space&gt;</code> لبدء تحديد و <code>&lt;enter&gt;</code> لنسخ ذلك التحديد.</li>
+<li><code>&lt;C-b&gt; &lt;space&gt;</code> يتنقل عبر ترتيبات المقاطع.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>لتعلم المزيد عن tmux، فكّر في قراءة <a href="https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">هذا</a> الدرس السريع و<a href="https://linuxcommand.org/lc3_adv_termmux.php">هذا</a> الشرح الأكثر تفصيلًا.</p>
+</blockquote>
+<p>بامتلاك tmux و SSH في حقيبة أدواتك، سترغب في جعل بيئتك تبدو وكأنها وطن لك على أي جهاز. وهنا يأتي دور تخصيص مُعالج الأوامر.</p>
+<h1>تخصيص مُعالج الأوامر (Customizing the Shell)</h1>
+<p>يتم تكوين مجموعة واسعة من برامج سطر الأوامر باستخدام ملفات نصية عادية تُعرف باسم <em>ملفات النقاط</em> (Dotfiles)
+(لأن أسماء الملفات تبدأ بنقطة <code>.</code>، مثل <code>~/.vimrc</code>، بحيث تكون
+مخفية في قائمة <code>ls</code> افتراضيًا).</p>
+<blockquote>
+<p>ملفات النقاط هي اصطلاح آخر من اصطلاحات مُعالج الأوامر. النقطة في المقدمة الغرض منها &quot;إخفاؤها&quot; عند السرد (نعم، اصطلاح آخر).</p>
+</blockquote>
+<p>مُعالجات الأوامر هي مثال واحد على برامج تُكوَّن بمثل هذه الملفات. عند الإقلاع، سيقوم مُعالج الأوامر بقراءة العديد من الملفات لتحميل إعداداته.
+اعتمادًا على مُعالج الأوامر وما إذا كنت تبدأ جلسة تسجيل دخول (Login) و/أو جلسة تفاعلية (Interactive)، قد تكون العملية بأكملها معقدة جدًا.
+<a href="https://web.archive.org/web/20260329133158/https://blog.flowblok.id.au/2013-02/shell-startup-scripts.html">هنا</a> مصدر ممتاز حول هذا الموضوع.</p>
+<p>بالنسبة لـ <code>bash</code>، فإن تعديل <code>.bashrc</code> أو <code>.bash_profile</code> سيعمل في معظم الأنظمة.
+بعض الأمثلة الأخرى للأدوات التي يمكن تكوينها عبر ملفات النقاط:</p>
+<ul>
+<li><code>bash</code> - <code>~/.bashrc</code>، <code>~/.bash_profile</code></li>
+<li><code>git</code> - <code>~/.gitconfig</code></li>
+<li><code>vim</code> - <code>~/.vimrc</code> ومجلد <code>~/.vim</code></li>
+<li><code>ssh</code> - <code>~/.ssh/config</code></li>
+<li><code>tmux</code> - <code>~/.tmux.conf</code></li>
+</ul>
+<p>تغيير شائع في التكوين هو إضافة مواقع جديدة ليبحث فيها مُعالج الأوامر عن البرامج. ستواجه هذا النمط عند تثبيت البرمجيات:</p>
+<pre><code class="language-shell">export PATH=&quot;$PATH:path/to/append&quot;
+</code></pre>
+<p>هنا، نخبر مُعالج الأوامر بتعيين قيمة المتغير $PATH إلى قيمته الحالية بالإضافة إلى مسار جديد، وجعل جميع العمليات الفرعية ترث هذه القيمة الجديدة لـ PATH.
+سيسمح هذا للعمليات الفرعية بإيجاد البرامج الموجودة تحت <code>path/to/append</code>.</p>
+<p>تخصيص مُعالج الأوامر غالبًا يعني تثبيت أدوات سطر أوامر جديدة. تُسهل مديرو الحزم (Package Managers) ذلك. فهم يتعاملون مع تنزيل وتثبيت وتحديث البرمجيات. أنظمة التشغيل المختلفة لديها مديرو حزم مختلفون: macOS يستخدم <a href="https://brew.sh/">Homebrew</a> و Ubuntu/Debian يستخدمان <code>apt</code> و Fedora يستخدم <code>dnf</code> و Arch يستخدم <code>pacman</code>. سنغطي مديري الحزم بمزيد من العمق في محاضرة شحن الكود (Shipping Code).</p>
+<p>إليك كيفية تثبيت أداتين مفيدتين باستخدام Homebrew على macOS:</p>
+<pre><code class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">ripgrep: a faster grep with better defaults</span>
+brew install ripgrep
+<span class="hljs-meta prompt_">
+# </span><span class="language-bash">fd: a faster, user-friendly find</span>
+brew install fd
+</code></pre>
+<p>مع تثبيت هذه، يمكنك استخدام <code>rg</code> بدلًا من <code>grep</code> و <code>fd</code> بدلًا من <code>find</code>.</p>
+<blockquote>
+<p><strong>تحذير بشأن <code>curl | bash</code></strong>: سترى غالبًا تعليمات تثبيت مثل <code>curl -fsSL https://example.com/install.sh | bash</code>. هذا النمط ينزّل نصًا وينفّذه فورًا، وهو أمر مريح لكنه محفوف بالمخاطر؛ فأنت تشغّل كودًا لم تفحصه. النهج الأكثر أمانًا هو التنزيل أولًا ثم المراجعة ثم التنفيذ:</p>
+<pre><code class="language-shell">curl -fsSL https://example.com/install.sh -o install.sh
+less install.sh  # review the script
+bash install.sh
+</code></pre>
+<p>بعض برامج التثبيت تستخدم صيغة مختلفة أكثر أمانًا قليلًا: <code>/bin/bash -c &quot;$(curl -fsSL https://url)&quot;</code> التي تضمن على الأقل أن bash هو من يفسّر النص بدلًا من مُعالج الأوامر الحالي.</p>
+</blockquote>
+<p>عندما تحاول تشغيل أمر غير مثبت، سيُظهر مُعالج الأوامر <code>command not found</code>. موقع <a href="https://command-not-found.com">command-not-found.com</a> مورد مفيد يمكنك استخدامه للبحث عن أي أمر لمعرفة كيفية تثبيته عبر مديري الحزم والتوزيعات المختلفة.</p>
+<p>أداة مفيدة أخرى هي <a href="https://tldr.sh/"><code>tldr</code></a> التي توفّر صفحات دليل (Man Pages) مبسطة تركز على الأمثلة. بدلًا من قراءة وثائق طويلة، يمكنك رؤية أنماط الاستخدام الشائعة بسرعة:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">tldr fd</span>
+  An alternative to find.
+  Aims to be faster and easier to use than find.
+
+  Recursively find files matching a pattern in the current directory:
+      fd &quot;pattern&quot;
+
+  Find files that begin with &quot;foo&quot;:
+      fd &quot;^foo&quot;
+
+  Find files with a specific extension:
+      fd --extension txt
+</code></pre>
+<p>أحيانًا لا تحتاج إلى برنامج جديد كامل، بل مجرد اختصار لأمر موجود بعلامات معينة. وهنا تأتي الأسماء المستعارة (Aliases).</p>
+<p>يمكننا أيضًا إنشاء أسماء مستعارة خاصة بنا باستخدام الأداة المدمجة <code>alias</code>.
+الاسم المستعار في مُعالج الأوامر هو صيغة قصيرة لأمر آخر سيستبدله مُعالج الأوامر تلقائيًا قبل تقييم التعبير.
+على سبيل المثال، للاسم المستعار في bash البنية التالية:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">alias</span> alias_name=<span class="hljs-string">&quot;command_to_alias arg1 arg2&quot;</span>
+</code></pre>
+<blockquote>
+<p>لاحظ أنه لا توجد مسافة حول علامة المساواة <code>=</code>، لأن <a href="https://www.man7.org/linux/man-pages/man1/alias.1p.html"><code>alias</code></a> أمر مُعالج أوامر يأخذ وسيطة واحدة.</p>
+</blockquote>
+<p>الأسماء المستعارة لديها ميزات مريحة عديدة:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Make shorthands for common flags</span>
+<span class="hljs-built_in">alias</span> ll=<span class="hljs-string">&quot;ls -lh&quot;</span>
+
+<span class="hljs-comment"># Save a lot of typing for common commands</span>
+<span class="hljs-built_in">alias</span> gs=<span class="hljs-string">&quot;git status&quot;</span>
+<span class="hljs-built_in">alias</span> gc=<span class="hljs-string">&quot;git commit&quot;</span>
+
+<span class="hljs-comment"># Save you from mistyping</span>
+<span class="hljs-built_in">alias</span> sl=<span class="hljs-built_in">ls</span>
+
+<span class="hljs-comment"># Overwrite existing commands for better defaults</span>
+<span class="hljs-built_in">alias</span> <span class="hljs-built_in">mv</span>=<span class="hljs-string">&quot;mv -i&quot;</span>           <span class="hljs-comment"># -i prompts before overwrite</span>
+<span class="hljs-built_in">alias</span> <span class="hljs-built_in">mkdir</span>=<span class="hljs-string">&quot;mkdir -p&quot;</span>     <span class="hljs-comment"># -p make parent dirs as needed</span>
+<span class="hljs-built_in">alias</span> <span class="hljs-built_in">df</span>=<span class="hljs-string">&quot;df -h&quot;</span>           <span class="hljs-comment"># -h prints human readable format</span>
+
+<span class="hljs-comment"># Alias can be composed</span>
+<span class="hljs-built_in">alias</span> la=<span class="hljs-string">&quot;ls -A&quot;</span>
+<span class="hljs-built_in">alias</span> lla=<span class="hljs-string">&quot;la -l&quot;</span>
+
+<span class="hljs-comment"># To ignore an alias run it prepended with \</span>
+\<span class="hljs-built_in">ls</span>
+<span class="hljs-comment"># Or disable an alias altogether with unalias</span>
+<span class="hljs-built_in">unalias</span> la
+
+<span class="hljs-comment"># To get an alias definition just call it with alias</span>
+<span class="hljs-built_in">alias</span> ll
+<span class="hljs-comment"># Will print ll=&#x27;ls -lh&#x27;</span>
+</code></pre>
+<p>الأسماء المستعارة لها قيود: لا يمكنها أخذ وسائط في منتصف الأمر. للسلوك الأكثر تعقيدًا، يجب استخدام دوال مُعالج الأوامر (Shell Functions) بدلًا منها.</p>
+<p>معظم مُعالجات الأوامر تدعم <code>Ctrl-R</code> للبحث العكسي في السجل (Reverse History Search). اضغط <code>Ctrl-R</code> وابدأ الكتابة للبحث في الأوامر السابقة. قدّمنا سابقًا <code>fzf</code> كأداة بحث ضبابي؛ مع تكوين دمج fzf مع مُعالج الأوامر، يصبح <code>Ctrl-R</code> بحثًا ضبابيًا تفاعليًا عبر سجلك بالكامل، أقوى بكثير من الافتراضي.</p>
+<p>كيف يجب أن تنظم ملفات النقاط الخاصة بك؟ يجب أن تكون في مجلد خاص بها،
+تحت نظام التحكم بالنسخ (Version Control)، و<strong>مرتبطة بصلات رمزية (Symlinked)</strong> في مكانها باستخدام نص. وهذا له فوائد:</p>
+<ul>
+<li><strong>تثبيت سهل</strong>: إذا سجلت الدخول إلى جهاز جديد، فإن تطبيق تخصيصاتك سيستغرق دقيقة واحدة فقط.</li>
+<li><strong>قابلية النقل (Portability)</strong>: أدواتك ستعمل بنفس الطريقة في كل مكان.</li>
+<li><strong>المزامنة (Synchronization)</strong>: يمكنك تحديث ملفات النقاط الخاصة بك في أي مكان وإبقائها متزامنة كلها.</li>
+<li><strong>تتبع التغييرات</strong>: من المحتمل أنك ستحافظ على ملفات النقاط الخاصة بك طوال مسيرتك البرمجية، والسجل الإصدارات أمر لطيف وجوده للمشاريع طويلة العمر.</li>
+</ul>
+<p>ماذا يجب أن تضع في ملفات النقاط الخاصة بك؟
+يمكنك التعرف على إعدادات أداتك بقراءة الوثائق عبر الإنترنت أو
+<a href="https://en.wikipedia.org/wiki/Man_page">صفحات الرجل (Man Pages)</a>. طريقة رائعة أخرى هي البحث في الإنترنت عن منشورات المدونات حول برامج محددة، حيث يخبرك المؤلفون عن تخصيصاتهم المفضلة. هناك طريقة أخرى للتعرف على التخصيصات وهي الاطلاع على ملفات النقاط الخاصة بأشخاص آخرين: يمكنك العثور على الكثير من
+<a href="https://github.com/search?o=desc&amp;q=dotfiles&amp;s=stars&amp;type=Repositories">مستودعات ملفات النقاط</a>
+على GitHub — انظر الأكثر شهرة
+<a href="https://github.com/mathiasbynens/dotfiles">هنا</a> (ننصحك بعدم نسخ الإعدادات بشكل أعمى).
+<a href="https://dotfiles.github.io/">هنا</a> مورد جيد آخر حول هذا الموضوع.</p>
+<p>جميع محاضري المقرر لديهم ملفات نقاط متاحة علنًا على GitHub: <a href="https://github.com/anishathalye/dotfiles">Anish</a>،
+<a href="https://github.com/jonhoo/configs">Jon</a>،
+<a href="https://github.com/jjgo/dotfiles">Jose</a>.</p>
+<p><strong>الأطر والمكونات الإضافية (Frameworks and plugins)</strong> يمكنها تحسين مُعالج الأوامر أيضًا. بعض الأطر العامة الشائعة هي <a href="https://github.com/sorin-ionescu/prezto">prezto</a> أو <a href="https://ohmyz.sh/">oh-my-zsh</a> والمكونات الأصغر التي تركز على ميزات محددة:</p>
+<ul>
+<li><a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> - تلوين الأوامر الصالحة/غير الصالحة أثناء الكتابة</li>
+<li><a href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a> - اقتراح أوامر من السجل أثناء الكتابة</li>
+<li><a href="https://github.com/zsh-users/zsh-completions">zsh-completions</a> - تعريفات إكمال إضافية</li>
+<li><a href="https://github.com/zsh-users/zsh-history-substring-search">zsh-history-substring-search</a> - بحث في السجل بأسلوب fish</li>
+<li><a href="https://github.com/romkatv/powerlevel10k">powerlevel10k</a> - سمة مطالبة سريعة وقابلة للتخصيص</li>
+</ul>
+<p>مُعالجات أوامر مثل <a href="https://fishshell.com/">fish</a> تتضمن العديد من هذه الميزات افتراضيًا.</p>
+<blockquote>
+<p>لا تحتاج إلى إطار ضخم مثل oh-my-zsh للحصول على هذه الميزات. تثبيت المكونات الفردية غالبًا أسرع ويمنحك تحكمًا أكبر. الأطر الكبيرة يمكن أن تبطئ وقت إقلاع مُعالج الأوامر بشكل كبير، ففكّر في تثبيت ما تستخدمه فعليًا فقط.</p>
+</blockquote>
+<h1>الذكاء الاصطناعي في مُعالج الأوامر (AI in the Shell)</h1>
+<p>هناك طرق عديدة لدمج أدوات الذكاء الاصطناعي في مُعالج الأوامر. إليك بعض الأمثلة على مستويات مختلفة من التكامل:</p>
+<p><strong>توليد الأوامر (Command generation)</strong>: أدوات مثل <a href="https://github.com/simonw/llm"><code>simonw/llm</code></a> يمكنها المساعدة في توليد أوامر مُعالج الأوامر من أوصاف اللغة الطبيعية:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">llm cmd <span class="hljs-string">&quot;find all python files modified in the last week&quot;</span></span>
+find . -name &quot;*.py&quot; -mtime -7
+</code></pre>
+<p><strong>تكامل خط الأنابيب</strong>: يمكن دمج نماذج اللغة الكبيرة (LLMs) في خطوط أنابيب مُعالج الأوامر لمعالجة وتحويل البيانات. تكون مفيدة بشكل خاص عندما تحتاج إلى استخراج معلومات من صيغ غير متسقة حيث يكون التعبير النمطي (Regex) مؤلمًا:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cat</span> users.txt</span>
+Contact: john.doe@example.com
+User &#x27;alice_smith&#x27; logged in at 3pm
+Posted by: @bob_jones on Twitter
+Author: Jane Doe (jdoe)
+Message from mike_wilson yesterday
+Submitted by user: sarah.connor
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">INSTRUCTIONS=<span class="hljs-string">&quot;Extract just the username from each line, one per line, nothing else&quot;</span></span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">llm <span class="hljs-string">&quot;<span class="hljs-variable">$INSTRUCTIONS</span>&quot;</span> &lt; users.txt</span>
+john.doe
+alice_smith
+bob_jones
+jdoe
+mike_wilson
+sarah.connor
+</code></pre>
+<p>لاحظ كيف نستخدم <code>&quot;$INSTRUCTIONS&quot;</code> (مقتبسًا) لأن المتغير يحتوي على مسافات، و <code>&lt; users.txt</code> لإعادة توجيه محتوى الملف إلى stdin.</p>
+<p><strong>أغلفة الذكاء الاصطناعي (AI shells)</strong>: أدوات مثل <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> تعمل كغلاف فوقي (Meta-shell) يقبل أوامر باللغة الإنجليزية ويترجمها إلى عمليات مُعالج أوامر وتعديلات ملفات ومهام متعددة الخطوات أكثر تعقيدًا.</p>
+<h1>المُحاكيات الطرفية (Terminal Emulators)</h1>
+<p>إلى جانب تخصيص مُعالج الأوامر، يستحق الأمر قضاء بعض الوقت في تحديد اختيارك لـ <strong>المُحاكي الطرفي</strong> (Terminal Emulator) وإعداداته.
+المُحاكي الطرفي هو برنامج واجهة رسومية (GUI) يوفّر الواجهة النصية التي يعمل فيها مُعالج الأوامر.
+هناك العديد من المُحاكيات الطرفية.</p>
+<p>بما أنك قد تقضي مئات إلى آلاف الساعات في الطرفية الخاصة بك، فمن المجدي النظر في إعداداتها. بعض الجوانب التي قد ترغب في تعديلها في الطرفية تتضمن:</p>
+<ul>
+<li>اختيار الخط (Font)</li>
+<li>نظام الألوان (Color Scheme)</li>
+<li>اختصارات لوحة المفاتيح</li>
+<li>دعم التبويبات/المقاطع (Tab/Pane support)</li>
+<li>إعداد التمرير الخلفي (Scrollback configuration)</li>
+<li>الأداء (بعض الطرفيات الأحدث مثل <a href="https://github.com/alacritty/alacritty">Alacritty</a> أو <a href="https://ghostty.org/">Ghostty</a> توفّر تسريع وحدة معالجة الرسوميات GPU).</li>
+</ul>
+<h1>تمارين (Exercises)</h1>
+<h2 id="الوسائط-والتوسيع-بأنماط-المطابقة-arguments-and-globs">الوسائط والتوسيع بأنماط المطابقة (Arguments and Globs)</h2>
+<ol>
+<li>
+<p>قد ترى أوامر مثل <code>cmd --flag -- --notaflag</code>. الوسيطة <code>--</code> هي وسيطة خاصة تخبر البرنامج بالتوقف عن تحليل العلامات. كل ما بعد <code>--</code> يُعامل كوسيطة موضعية (Positional Argument). لماذا قد يكون هذا مفيدًا؟ جرّب تشغيل <code>touch -- -myfile</code> ثم إزالته دون <code>--</code>.</p>
+</li>
+<li>
+<p>اقرأ <a href="https://www.man7.org/linux/man-pages/man1/ls.1.html"><code>man ls</code></a> واكتب أمر <code>ls</code> بعرض الملفات بالتالي:</p>
+<ul>
+<li>يشمل جميع الملفات، بما فيها المخفية</li>
+<li>تُعرض الأحجام بصيغة مقروءة للبشر (مثل 454M بدلًا من 454279954)</li>
+<li>تُرتب الملفات حسب الأحدث</li>
+<li>الإخراج ملون</li>
+</ul>
+<p>عينة من الإخراج ستبدو هكذا:</p>
+<pre><code>-rw-r--r--   1 user group 1.1M Jan 14 09:53 baz
+drwxr-xr-x   5 user group  160 Jan 14 09:53 .
+-rw-r--r--   1 user group  514 Jan 14 06:42 bar
+-rw-r--r--   1 user group 106M Jan 13 12:12 foo
+drwx------+ 47 user group 1.5K Jan 12 18:08 ..
+</code></pre>
+</li>
+<li>
+<p>استبدال العمليات <code>&lt;(command)</code> يتيح لك استخدام إخراج أمر ما كما لو كان ملفًا. استخدم <code>diff</code> مع استبدال العمليات لمقارنة إخراج <code>printenv</code> و <code>export</code>. لماذا يختلفان؟ (تلميح: جرّب <code>diff &lt;(printenv | sort) &lt;(export | sort)</code>).</p>
+</li>
+</ol>
+<h2 id="متغيرات-البيئة-environment-variables">متغيرات البيئة (Environment Variables)</h2>
+<ol>
+<li>اكتب دالتي bash <code>marco</code> و <code>polo</code> تقومان بالتالي: كلما نفّذت <code>marco</code> يجب حفظ مجلد العمل الحالي بطريقة ما، ثم عندما تنفّذ <code>polo</code>، أينما كنت في أي مجلد، يجب أن تعيد <code>polo</code> توجيهك بـ <code>cd</code> إلى المجلد الذي نفّذت فيه <code>marco</code>. لسهولة التصحيح يمكنك كتابة الكود في ملف <code>marco.sh</code> وإعادة (تحميل) التعريفات إلى مُعالج الأوامر بتنفيذ <code>source marco.sh</code>.</li>
+</ol>
+<h2 id="أكواد-الإرجاع-return-codes">أكواد الإرجاع (Return Codes)</h2>
+<ol>
+<li>
+<p>لنفترض أن لديك أمرًا يفشل نادرًا. لتصحيحه تحتاج إلى التقاط مخرجاته لكن الحصول على تشغيل فاشل قد يستغرق وقتًا. اكتب نص bash يشغّل النص التالي حتى يفشل ويلتقط تدفقي الإخراج القياسي والخطأ القياسي في ملفات ويطبع كل شيء في النهاية. نقاط إضافية إذا تمكنت أيضًا من الإبلاغ عن عدد مرات التشغيل التي استغرقها النص ليفشل.</p>
+<pre><code class="language-bash"><span class="hljs-meta">#!/usr/bin/env bash</span>
+
+n=$(( RANDOM % <span class="hljs-number">100</span> ))
+
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$n</span> -eq 42 ]]; <span class="hljs-keyword">then</span>
+   <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Something went wrong&quot;</span>
+   &gt;&amp;2 <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The error was using magic numbers&quot;</span>
+   <span class="hljs-built_in">exit</span> 1
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Everything went according to plan&quot;</span>
+</code></pre>
+</li>
+</ol>
+<h2 id="الإشارات-والتحكم-بالمهام-signals-and-job-control">الإشارات والتحكم بالمهام (Signals and Job Control)</h2>
+<ol>
+<li>
+<p>ابدأ مهمة <code>sleep 10000</code> في طرفية، انقلها للخلفية بـ <code>Ctrl-Z</code> واستمر في تنفيذها بـ <code>bg</code>. الآن استخدم <a href="https://www.man7.org/linux/man-pages/man1/pgrep.1.html"><code>pgrep</code></a> لإيجاد pid الخاص بها و <a href="https://man7.org/linux/man-pages/man1/pgrep.1.html"><code>pkill</code></a> لقتلها دون كتابة pid نفسه أبدًا. (تلميح: استخدم العلامتين <code>-lf</code>).</p>
+</li>
+<li>
+<p>لنفترض أنك لا تريد بدء عملية حتى تكتمل أخرى. كيف يمكنك تحقيق ذلك؟ في هذا التمرين، ستكون عمليتنا المحدودة دائمًا <code>sleep 60 &amp;</code>. إحدى طرق تحقيق ذلك هي استخدام أمر <a href="https://www.man7.org/linux/man-pages/man1/wait.1p.html"><code>wait</code></a>. جرّب إطلاق أمر sleep وجعل أمر <code>ls</code> ينتظر حتى تنتهي العملية الخلفية.</p>
+<p>ومع ذلك، ستفشل هذه الاستراتيجية إذا بدأنا في جلسة bash مختلفة، لأن <code>wait</code> يعمل فقط مع العمليات الفرعية. ميزة لم نناقشها في الملاحظات هي أن حالة خروج أمر <code>kill</code> ستكون صفرًا عند النجاح وغير صفرية بخلاف ذلك. <code>kill -0</code> لا يرسل إشارة لكنه سيعطي حالة خروج غير صفرية إذا لم تكن العملية موجودة. اكتب دالة bash باسم <code>pidwait</code> تأخذ pid وتنتظر حتى تكتمل العملية المعطاة. يجب أن تستخدم <code>sleep</code> لتجنب إهدار CPU دون داعٍ.</p>
+</li>
+</ol>
+<h2 id="الملفات-والأذونات-files-and-permissions">الملفات والأذونات (Files and Permissions)</h2>
+<ol>
+<li>(متقدم) اكتب أمرًا أو نصًا لإيجاد الملف المُعدَّل مؤخرًا في مجلد بشكل عودي. بشكل أعم، هل يمكنك سرد جميع الملفات حسب الأحدث؟</li>
+</ol>
+<h2 id="مضاعفات-الطرفية-terminal-multiplexers">مُضاعِفات الطرفية (Terminal Multiplexers)</h2>
+<ol>
+<li>تابع درس <code>tmux</code> هذا <a href="https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">الدرس التعليمي</a> ثم تعلّم كيفية القيام ببعض التخصيصات الأساسية باتباع <a href="https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/">هذه الخطوات</a>.</li>
+</ol>
+<h2 id="الأسماء-المستعارة-وملفات-النقاط-aliases-and-dotfiles">الأسماء المستعارة وملفات النقاط (Aliases and Dotfiles)</h2>
+<ol>
+<li>
+<p>أنشئ اسمًا مستعارًا <code>dc</code> يحل إلى <code>cd</code> لأوقات كتابته بالخطأ.</p>
+</li>
+<li>
+<p>شغّل <code>history | awk '{$1=&quot;&quot;;print substr($0,2)}' | sort | uniq -c | sort -n | tail -n 10</code> للحصول على أوامرك العشرة الأكثر استخدامًا وفكّر في كتابة أسماء مستعارة أقصر لها. ملاحظة: هذا يعمل مع Bash؛ إذا كنت تستخدم ZSH فاستخدم <code>history 1</code> بدلًا من <code>history</code> فقط.</p>
+</li>
+<li>
+<p>أنشئ مجلدًا لملفات النقاط الخاصة بك وأعد ضبط التحكم بالنسخ (Version Control).</p>
+</li>
+<li>
+<p>أضِف إعدادًا لبرنامج واحد على الأقل، مثل مُعالج الأوامر، مع بعض التخصيص (للبدء، يمكن أن يكون شيئًا بسيطًا مثل تخصيص مطالبة مُعالج الأوامر بضبط <code>$PS1</code>).</p>
+</li>
+<li>
+<p>أعد استعداد طريقة لتثبيت ملفات النقاط الخاصة بك بسرعة (ودون مجهود يدوي) على جهاز جديد. يمكن أن يكون هذا ببساطة نصًا يستدعي <code>ln -s</code> لكل ملف، أو يمكنك استخدام <a href="https://dotfiles.github.io/utilities/">أداة متخصصة</a>.</p>
+</li>
+<li>
+<p>اختبر نص التثبيت الخاص بك على آلة افتراضية جديدة.</p>
+</li>
+<li>
+<p>رحّل جميع إعدادات أدواتك الحالية إلى مستودع ملفات النقاط الخاص بك.</p>
+</li>
+<li>
+<p>انشر ملفات النقاط الخاصة بك على GitHub.</p>
+</li>
+</ol>
+<h2 id="الأجهزة-البعيدة-ssh">الأجهزة البعيدة (SSH)</h2>
+<p>ثبّت آلة افتراضية (Virtual Machine) لينكس (أو استخدم واحدة موجودة بالفعل) لهذه التمارين. إذا لم تكن على دراية بالآلات الافتراضية، فراجع هذا <a href="https://hibbard.eu/install-ubuntu-virtual-box/">الدروس التعليمي</a> لتثبيت واحدة.</p>
+<ol>
+<li>
+<p>انتقل إلى <code>~/.ssh/</code> وتحقق مما إذا كان لديك زوج من مفاتيح SSH هناك. إذا لم يكن كذلك، فولّدهما بـ <code>ssh-keygen -a 100 -t ed25519</code>. يُنصح باستخدام عبارة سرية واستخدام <code>ssh-agent</code>، مزيد من المعلومات <a href="https://www.ssh.com/ssh/agent">هنا</a>.</p>
+</li>
+<li>
+<p>حرّر <code>.ssh/config</code> بحيث يحتوي مدخلًا مثل التالي:</p>
+<pre><code class="language-bash">Host vm
+    User username_goes_here
+    HostName ip_goes_here
+    IdentityFile ~/.ssh/id_ed25519
+    LocalForward 9999 localhost:8888
+</code></pre>
+</li>
+<li>
+<p>استخدم <code>ssh-copy-id vm</code> لنسخ مفتاح ssh إلى الخادم.</p>
+</li>
+<li>
+<p>ابدأ خادم ويب في جهازك الافتراضي بتنفيذ <code>python -m http.server 8888</code>. ادخل إلى خادم الويب بالانتقال إلى <code>http://localhost:9999</code> في جهازك.</p>
+</li>
+<li>
+<p>حرّر إعدادات خادم SSH الخاص بك بتنفيذ <code>sudo vim /etc/ssh/sshd_config</code> وعطّل مصادقة كلمة المرور بتعديل قيمة <code>PasswordAuthentication</code>. عطّل تسجيل دخول الجذر (Root) بتعديل قيمة <code>PermitRootLogin</code>. أعد تشغيل خدمة <code>ssh</code> بـ <code>sudo service sshd restart</code>. حاول الاتصال عبر ssh مرة أخرى.</p>
+</li>
+<li>
+<p>(تحدٍّ) ثبّت <a href="https://mosh.org/"><code>mosh</code></a> في الجهاز الافتراضي وأنشئ اتصالًا. ثم افصل محوّل الشبكة (Network Adapter) الخاص بالخادم/الجهاز الافتراضي. هل يمكن لـ mosh التعافي من ذلك بشكل صحيح؟</p>
+</li>
+<li>
+<p>(تحدٍّ) ابحث في ما تفعله العلامتان <code>-N</code> و <code>-f</code> في <code>ssh</code> وتحقق من أمر لتحقيق إعادة توجيه المنافذ في الخلفية (Background Port Forwarding).</p>
+</li>
+</ol>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/missing-semester/course-shell/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">نظرة عامة على المقرر + مقدمة إلى الصدفة</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/missing-semester/development-environment/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">بيئة التطوير والأدوات</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_15ond25 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.BphmHV3y.js"),
+						import("../../../../_app/immutable/entry/app.DQQuBaJz.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
