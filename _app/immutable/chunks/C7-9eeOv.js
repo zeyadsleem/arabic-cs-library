@@ -1,0 +1,161 @@
+const e="missing-semester",s="data-wrangling",n="معالجة وصقل البيانات",o="index",c="معالجة وصقل البيانات",a=[{depth:2,id:"التعبيرات-النمطية",text:"التعبيرات النمطية"},{depth:2,id:"العودة-إلى-معالجة-البيانات",text:"العودة إلى معالجة البيانات"},{depth:2,id:"awk-محرر-آخر",text:"awk — محررٌ آخر"},{depth:2,id:"تحليل-البيانات",text:"تحليل البيانات"},{depth:2,id:"معالجة-البيانات-لصنع-الوسائط",text:"معالجة البيانات لصنع الوسائط"},{depth:2,id:"معالجة-البيانات-الثنائية",text:"معالجة البيانات الثنائية"}],d=`<p class="lecture-video"><iframe src="https://www.youtube-nocookie.com/embed/sz_dsktIjt4" title="معالجة وصقل البيانات" loading="lazy" allowfullscreen></iframe></p>
+<p>هل تساءلت يومًا عن إمكانية أخذ البيانات بصيغةٍ ما وتحويلها إلى صيغةٍ مختلفة؟ بالتأكيد! هذا، بعباراتٍ عامةٍ جدًا، هو موضوع هذه المحاضرة. وتحديدًا، صقل البيانات (data wrangling)، سواءً كانت بصيغة نصيةٍ أو ثنائية، حتى تصل إلى ما أردته بالضبط.</p>
+<p>لقد رأينا بالفعل بعض معالجة البيانات الأساسية في المحاضرات السابقة. في كل مرةٍ تستخدم فيها عامِل الأنابيب <code>|</code>، فأنت تقوم بنوعٍ من معالجة البيانات. تأمل أمرًا مثل <code>journalctl | grep -i intel</code>. إنه يجد جميع إدخالات سجل النظام التي تذكر Intel (بدون حساسيةٍ لحالة الأحرف). قد لا تعتبر ذلك معالجة بياناتٍ، لكنه انتقالٌ من صيغةٍ (سجل نظامك بالكامل) إلى صيغةٍ أكثر فائدةً لك (فقط إدخالات Intel). معظم معالجة البيانات تتعلق بمعرفة الأدوات المتاحة لديك، وكيفية دمجها.</p>
+<p>لنبدأ من البداية. لمعالجة البيانات، نحتاج إلى شيئين: بياناتٌ لمعالجتها، وشيءٌ نفعله بها. غالبًا ما تكون السجلات (logs) حالة استخدامٍ جيدة، لأنك تريد في كثيرٍ من الأحيان التحقيق في أمورٍ تتعلق بها، وقراءة السجل بأكمله غير مجديةٍ. لنكتشف من يحاول تسجيل الدخول إلى خادمي من خلال النظر في سجل الخادم:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+</code></pre>
+<p>هذا قدرٌ كبيرٌ من المحتوى. لنقصره على أمور ssh:</p>
+<pre><code class="language-bash">ssh myserver journalctl | grep sshd
+</code></pre>
+<p>لاحظ أننا نستخدم أنبوبًا لتدفق ملفٍ <em>بعيدٍ</em> عبر <code>grep</code> على حاسوبك المحلي! <code>ssh</code> ساحرٌ، وسنتحدث عنه أكثر في المحاضرة القادمة عن بيئة سطر الأوامر. لا يزال هذا أكثر بكثير مما أردناه. ويصعب قراءته أيضًا. لنحسّن:</p>
+<pre><code class="language-bash">ssh myserver <span class="hljs-string">&#x27;journalctl | grep sshd | grep &quot;Disconnected from&quot;&#x27;</span> | less
+</code></pre>
+<p>لماذا الاقتباس الإضافي؟ حسنًا، قد تكون سجلاتنا كبيرةً جدًا، ومن المهدر تدفقها كلها إلى حاسوبك ثم إجراء التصفية. بدلًا من ذلك، يمكننا إجراء التصفية على الخادم البعيد، ثم صقل البيانات محليًا. يمنحنا <code>less</code> &quot;مُصفِّحًا&quot; (pager) يسمح لنا بالتمرير لأعلى ولأسفل عبر المخرجات الطويلة. لتوفير بعض الحركة الإضافية أثناء تصفية أخطاء سطر الأوامر، يمكننا حتى لصق السجلات المصفاة الحالية في ملفٍ حتى لا نضطر إلى الوصول إلى الشبكة أثناء التطوير:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">ssh myserver <span class="hljs-string">&#x27;journalctl | grep sshd | grep &quot;Disconnected from&quot;&#x27;</span> &gt; ssh.log</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">less ssh.log</span>
+</code></pre>
+<p>لا يزال هناك الكثير من الضجيج هنا. توجد <em>طرقٌ كثيرة</em> للتخلص من ذلك، لكن لننظر إلى واحدةٍ من أقوى الأدوات في أدواتك: <code>sed</code>.</p>
+<p><code>sed</code> هو &quot;محرر تدفقٍ&quot; (stream editor) مبنيٌّ على محرر <code>ed</code> القديم. فيه، تعطي أوامر قصيرةً أساسًا لكيفية تعديل الملف، بدلًا من التلاعب بمحتواه مباشرةً (وإن كان يمكنك فعل ذلك أيضًا). توجد أوامرٌ كثيرة، لكن أحد أكثرها شيوعًا هو <code>s</code>: الاستبدال (substitution). على سبيل المثال، يمكننا كتابة:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed <span class="hljs-string">&#x27;s/.*Disconnected from //&#x27;</span>
+</code></pre>
+<p>ما كتبناه للتو كان <em>تعبيرًا نمطيًا</em> بسيطًا؛ بنيةً قويةً تسمح لك بمطابقة النص مقابل أنماطٍ. أمر <code>s</code> يُكتب بالصيغة: <code>s/REGEX/SUBSTITUTION/</code>، حيث <code>REGEX</code> هو التعبير النمطي الذي تريد البحث عنه، و<code>SUBSTITUTION</code> هو النص الذي تريد استبدال النص المطابق به.</p>
+<p>(قد تتعرف على هذه الصيغة من قسم &quot;البحث والاستبدال&quot; في <a href="/book/missing-semester/development-environment/index">ملاحظات محاضرة</a> Vim! بالفعل، يستخدم Vim صيغةً للبحث والاستبدال تشبه أمر الاستبدال في <code>sed</code>. تعلّم أداةٍ واحدةٍ يساعدك غالبًا على أن تصبح أكثر كفاءةً مع أدواتٍ أخرى.)</p>
+<h2 id="التعبيرات-النمطية">التعبيرات النمطية</h2>
+<p>التعبيرات النمطية شائعةٌ ومفيدةٌ بما يكفي ليكون من الجدير قضاء بعض الوقت لفهم كيفية عملها. لنبدأ بالنظر إلى التعبير الذي استخدمناه أعلاه: <code>/.*Disconnected from /</code>. تُحاط التعبيرات النمطية عادةً (وإن لم يكن دائمًا) بـ<code>/</code>. تحمل معظم أحرف ASCII معناها الطبيعي، لكن بعض الأحرف لها سلوك &quot;مطابقةٍ&quot; خاص. أي الأحرف بالضبط تقوم بماذا يختلف نوعًا ما بين التنفيذات المختلفة للتعبيرات النمطية، وهو مصدر إحباطٍ كبيرٍ. الأنماط الشائعة جدًا هي:</p>
+<ul>
+<li><code>.</code> تعني &quot;أي حرفٍ واحد&quot; باستثناء السطر الجديد</li>
+<li><code>*</code> صفرٌ أو أكثر من المطابقة السابقة</li>
+<li><code>+</code> واحدٌ أو أكثر من المطابقة السابقة</li>
+<li><code>[abc]</code> أي حرفٍ واحدٍ من <code>a</code> و<code>b</code> و<code>c</code></li>
+<li><code>(RX1|RX2)</code> إما شيءٌ يطابق <code>RX1</code> أو <code>RX2</code></li>
+<li><code>^</code> بداية السطر</li>
+<li><code>$</code> نهاية السطر</li>
+</ul>
+<p>تعبيرات <code>sed</code> النمطية غريبةٌ نوعًا ما، وستتطلب منك وضع <code>\\</code> قبل معظم هذه لإعطائها معناها الخاص. أو يمكنك تمرير <code>-E</code>.</p>
+<p>إذن، بالنظر إلى الوراء إلى <code>/.*Disconnected from /</code>، نرى أنه يطابق أي نصٍ يبدأ بأي عددٍ من الأحرف، متبوعًا بالنص الحرفي &quot;Disconnected from &quot;. وهذا ما أردناه. لكن احذر، فالتعبيرات النمطية خادعة. ماذا لو حاول شخصٌ تسجيل الدخول باسم مستخدمٍ &quot;Disconnected from&quot;؟ سيكون لدينا:</p>
+<pre><code>Jan 17 03:13:00 thesquareplanet.com sshd[2631]: Disconnected from invalid user Disconnected from 46.97.239.16 port 55920 [preauth]
+</code></pre>
+<p>ماذا سنحصل في النهاية؟ حسنًا، <code>*</code> و<code>+</code> هما، افتراضيًا، &quot;جشعان&quot; (greedy). سيطابقان أكبر قدرٍ ممكنٍ من النص. لذا، في المثال أعلاه، سنحصل في النهاية على فقط</p>
+<pre><code>46.97.239.16 port 55920 [preauth]
+</code></pre>
+<p>وهذا قد لا يكون ما أردناه. في بعض تنفيذات التعبيرات النمطية، يمكنك فقط إلحاق <code>?</code> بـ<code>*</code> أو <code>+</code> لجعلها غير جشعة (non-greedy)، لكن للأسف لا يدعم <code>sed</code> ذلك. لكن يمكننا التبديل إلى وضع سطر الأوامر في perl، والذي <em>يدعم</em> تلك البنية:</p>
+<pre><code class="language-bash">perl -pe <span class="hljs-string">&#x27;s/.*?Disconnected from //&#x27;</span>
+</code></pre>
+<p>سنلتزم بـ<code>sed</code> لبقية هذه المحاضرة، لأنه بفارقٍ كبيرٍ الأداة الأكثر شيوعًا لهذه الأنواع من المهام. يمكن لـ<code>sed</code> أيضًا القيام بأشياء مفيدةٍ أخرى مثل طباعة الأسطر التي تلي مطابقةً معينةً، وإجراء استبدالاتٍ متعددةٍ في استدعاءٍ واحدٍ، والبحث عن الأشياء، إلخ. لكننا لن نغطي ذلك كثيرًا هنا. <code>sed</code> أساسًا موضوعٌ كاملٌ بحد ذاته، لكن غالبًا ما توجد أدواتٌ أفضل.</p>
+<p>حسنًا، لدينا أيضًا لاحقةٌ نود التخلص منها. كيف يمكننا فعل ذلك؟ إنه أمرٌ صعبٌ نوعًا ما لمطابقة النص الذي يتبع اسم المستخدم فقط، خاصةً إذا كان اسم المستخدم يمكن أن يحتوي على مسافاتٍ وما شابه! ما نحتاج إلى فعله هو مطابقة السطر <em>بالكامل</em>:</p>
+<pre><code class="language-bash"> | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user .* [^ ]+ port [0-9]+( \\[preauth\\])?$//&#x27;</span>
+</code></pre>
+<p>لننظر إلى ما يجري باستخدام <a href="https://regex101.com/r/qqbZqh/2">مُصفِّي أخطاء تعبيراتٍ نمطية</a>. حسنًا، البداية كما كانت سابقًا. ثم نطابق أيًّا من متغيرات &quot;user&quot; (يوجد بادئتان في السجلات). ثم نطابق أي سلسلة أحرفٍ حيث يكون اسم المستخدم. ثم نطابق أي كلمةٍ واحدةٍ (<code>[^ ]+</code>؛ أي تسلسلٌ غير فارغٍ من الأحرف غير المسافة). ثم كلمة &quot;port&quot; متبوعةً بتسلسلٍ من الأرقام. ثم ربما اللاحقة <code>[preauth]</code>، ثم نهاية السطر.</p>
+<p>لاحظ أنه بهذه التقنية، لن يربكنا اسم المستخدم &quot;Disconnected from&quot; بعد الآن. هل يمكنك رؤية السبب؟</p>
+<p>لكن هناك مشكلةٌ واحدةٌ في هذا، وهي أن السجل بأكمله يصبح فارغًا. نريد في النهاية <em>الاحتفاظ</em> باسم المستخدم. لهذا، يمكننا استخدام &quot;مجموعات الالتقاط&quot; (capture groups). أي نصٍ تطابقه تعبيرٌ نمطيٌّ محاطٌ بأقواسٍ يُخزَّن في مجموعة التقاطٍ مرقمة. وهي متاحةٌ في الاستبدال (وفي بعض المحركات، حتى في النمط نفسه!) بصفتها <code>\\1</code> و<code>\\2</code> و<code>\\3</code> إلخ. إذن:</p>
+<pre><code class="language-bash"> | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+</code></pre>
+<p>كما يمكنك أن تتخيل على الأرجح، يمكنك الخروج بتعبيراتٍ نمطيةٍ <em>معقدةٍ حقًا</em>. على سبيل المثال، إليك مقالٌ حول كيفية مطابقة <a href="https://www.regular-expressions.info/email.html">عنوان بريدٍ إلكتروني</a>. إنه <a href="https://web.archive.org/web/20221223174323/http://emailregex.com/">ليس سهلًا</a>. وهناك <a href="https://stackoverflow.com/questions/201323/how-to-validate-an-email-address-using-a-regular-expression/1917982">الكثير من النقاش</a>. وقد <a href="https://fightingforalostcause.net/content/misc/2006/compare-email-regex.php">كتب الناس اختباراتٍ</a>. و<a href="https://mathiasbynens.be/demo/url-regex">مصفوفات اختبار</a>. يمكنك حتى كتابة تعبيرٍ نمطيٍّ لتحديد ما إذا كان رقمٌ معيّنٌ <a href="https://www.noulakaz.net/2007/03/18/a-regular-expression-to-check-for-prime-numbers/">عددًا أوليًا</a>.</p>
+<p>من المعروف أن التعبيرات النمطية يصعب إتقانها، لكن من المفيد أيضًا امتلاكها في صندوق أدواتك!</p>
+<h2 id="العودة-إلى-معالجة-البيانات">العودة إلى معالجة البيانات</h2>
+<p>حسنًا، لدينا الآن</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+</code></pre>
+<p>يمكن لـ<code>sed</code> القيام بجميع أنواع الأشياء المثيرة الأخرى، مثل حقن النص (بأمر <code>i</code>)، وطباعة الأسطر صراحةً (بأمر <code>p</code>)، واختيار الأسطر حسب الفهرس، والكثير من الأشياء الأخرى. اطّلع على <code>man sed</code>!</p>
+<p>على أي حال. ما لدينا الآن يمنحنا قائمةً بجميع أسماء المستخدمين الذين حاولوا تسجيل الدخول. لكن هذا غير مفيدٍ إلى حدٍّ كبير. لنبحث عن الأسماء الشائعة:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+ | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c
+</code></pre>
+<p>سيقوم <code>sort</code>، حسنًا، بفرز مدخلاته. وسيدمج <code>uniq -c</code> الأسطر المتتالية المتطابقة في سطرٍ واحدٍ، مسبوقًا بعدد التكرارات. ربما نريد فرز ذلك أيضًا والاحتفاظ فقط بأسماء المستخدمين الأكثر شيوعًا:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+ | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c
+ | <span class="hljs-built_in">sort</span> -nk1,1 | <span class="hljs-built_in">tail</span> -n10
+</code></pre>
+<p><code>sort -n</code> سيرتّب بترتيبٍ رقميٍّ (بدلًا من المعجمي). و<code>-k1,1</code> تعني &quot;رتّب حسب العمود الأول المفصول بمسافاتٍ فقط&quot;. الجزء <code>,n</code> يقول &quot;رتّب حتى الحقل <code>n</code>، حيث الافتراضي هو نهاية السطر. في هذا المثال <em>المحدد</em>، لن يهم الفرز حسب السطر بأكمله، لكننا هنا لنتعلم!</p>
+<p>إذا أردنا الأسماء <em>الأقل</em> شيوعًا، فيمكننا استخدام <code>head</code> بدلًا من <code>tail</code>. ويوجد أيضًا <code>sort -r</code>، الذي يرتّب بترتيبٍ عكسي.</p>
+<p>حسنًا، هذا رائعٌ جدًا، لكن ماذا لو أردنا استخراج أسماء المستخدمين فقط كقائمةٍ مفصولةٍ بفواصل بدلًا من واحدةٍ لكل سطر، ربما لملف إعدادات؟</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+ | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c
+ | <span class="hljs-built_in">sort</span> -nk1,1 | <span class="hljs-built_in">tail</span> -n10
+ | awk <span class="hljs-string">&#x27;{print $2}&#x27;</span> | <span class="hljs-built_in">paste</span> -sd,
+</code></pre>
+<p>إذا كنت تستخدم macOS: لاحظ أن الأمر كما هو معروض لن يعمل مع <code>paste</code> الخاص بنظام BSD المرفق مع macOS. راجع <a href="/book/missing-semester/command-line-environment/index">التمرين 4 من محاضرة أدوات المُعالِج</a> لمزيدٍ من التفاصيل حول الفرق بين BSD وGNU coreutils وتعليمات تثبيت GNU coreutils على macOS.</p>
+<p>لنبدأ بـ<code>paste</code>: إنه يتيح لك دمج الأسطر (<code>-s</code>) وفق محددٍ أحرفٍ واحدٍ (<code>-d</code>؛ <code>,</code> في هذه الحالة). لكن ما هذا الأمر <code>awk</code>؟</p>
+<h2 id="awk-محرر-آخر">awk — محررٌ آخر</h2>
+<p><code>awk</code> لغةُ برمجةٍ تصادف أنها جيدةٌ جدًا في معالجة تدفقات النصوص. يوجد <em>الكثير</em> مما يمكن قوله عن <code>awk</code> إذا كنت ستتعلمه بشكلٍ صحيحٍ، لكن كما هو الحال مع أشياءَ كثيرةٍ أخرى هنا، سنمر فقط على الأساسيات.</p>
+<p>أولًا، ماذا يفعل <code>{print $2}</code>؟ حسنًا، تتخذ برامج <code>awk</code> شكل نمطٍ اختياريٍّ بالإضافة إلى كتلةٍ تقول ماذا تفعل إذا طابق النمط سطرًا معيّنًا. النمط الافتراضي (الذي استخدمناه أعلاه) يطابق جميع الأسطر. داخل الكتلة، يُضبط <code>$0</code> على محتوى السطر بأكمله، و<code>$1</code> حتى <code>$n</code> على <em>الحقل</em> <code>n</code> من ذلك السطر، عند الفصل بفاصل حقول <code>awk</code> (المسافات افتراضيًا، يُغيَّر بـ<code>-F</code>). في هذه الحالة، نقول إنه، لكل سطرٍ، اطبع محتوى الحقل الثاني، والذي تصادف أنه اسم المستخدم!</p>
+<p>لنرَ ما إذا كان يمكننا القيام بشيءٍ أذكى. لنحسب عدد أسماء المستخدمين ذات الاستخدام الواحد التي تبدأ بـ<code>c</code> وتنتهي بـ<code>e</code>:</p>
+<pre><code class="language-bash"> | awk <span class="hljs-string">&#x27;$1 == 1 &amp;&amp; $2 ~ /^c[^ ]*e$/ { print $2 }&#x27;</span> | <span class="hljs-built_in">wc</span> -l
+</code></pre>
+<p>هناك الكثير لتفكيكه هنا. أولًا، لاحظ أن لدينا الآن نمطًا (الأشياء التي تسبق <code>{...}</code>). يقول النمط إن الحقل الأول من السطر يجب أن يساوي 1 (هذا هو العد من <code>uniq -c</code>)، وأن الحقل الثاني يجب أن يطابق التعبير النمطي المعطى. والكتلة تقول فقط اطبع اسم المستخدم. ثم نحسب عدد الأسطر في المخرجات بـ<code>wc -l</code>.</p>
+<p>ومع ذلك، تذكّر أن <code>awk</code> لغةُ برمجةٍ، أليس كذلك؟</p>
+<pre><code class="language-awk"><span class="hljs-keyword">BEGIN</span> { rows = <span class="hljs-number">0</span> }
+<span class="hljs-variable">$1</span> == <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-variable">$2</span> ~ <span class="hljs-regexp">/^c[^ ]*e$/</span> { rows += <span class="hljs-variable">$1</span> }
+<span class="hljs-keyword">END</span> { print rows }
+</code></pre>
+<p><code>BEGIN</code> نمطٌ يطابق بداية المدخلات (و<code>END</code> يطابق النهاية). الآن، الكتلة الخاصة بكل سطرٍ تضيف فقط العد من الحقل الأول (وإن كان سيكون دائمًا 1 في هذه الحالة)، ثم نطبعه في النهاية. في الواقع، يمكننا <em>التخلص</em> من <code>grep</code> و<code>sed</code> تمامًا، لأن <code>awk</code> <a href="https://web.archive.org/web/20251210045942/https://backreference.org/2010/02/10/idiomatic-awk/">يمكنه فعل كل شيء</a>، لكننا سنترك ذلك كتمرينٍ للقارئ.</p>
+<h2 id="تحليل-البيانات">تحليل البيانات</h2>
+<p>يمكنك إجراء عملياتٍ حسابيةٍ مباشرةً في المُعالج باستخدام <code>bc</code>، وهي آلة حاسبة يمكنها القراءة من STDIN! على سبيل المثال، اجمع الأرقام في كل سطرٍ معًا بربطها ببعضها، مفصولةً بـ<code>+</code>:</p>
+<pre><code class="language-bash"> | <span class="hljs-built_in">paste</span> -sd+ | bc -l
+</code></pre>
+<p>أو أنتج تعبيراتٍ أكثر تفصيلًا:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;2*(<span class="hljs-subst">$(data | paste -sd+)</span>)&quot;</span> | bc -l
+</code></pre>
+<p>يمكنك الحصول على الإحصاءات بطرقٍ متنوعةٍ. <a href="https://github.com/nferraz/st"><code>st</code></a> أنيقٌ جدًا، لكن إذا كان لديك بالفعل <a href="https://www.r-project.org/">R</a>:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+ | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c
+ | awk <span class="hljs-string">&#x27;{print $1}&#x27;</span> | R --no-echo -e <span class="hljs-string">&#x27;x &lt;- scan(file=&quot;stdin&quot;, quiet=TRUE); summary(x)&#x27;</span>
+</code></pre>
+<p>R لغةُ برمجةٍ أخرى (غريبةٌ) رائعةٌ في تحليل البيانات و<a href="https://ggplot2.tidyverse.org/">الرسم</a>. لن نتعمق في الكثير من التفاصيل، لكن يكفي القول إن <code>summary</code> تطبع إحصاءاتٍ مختصرةً لمتجهٍ (vector)، وقد أنشأنا متجهًا يحتوي على تدفق المدخلات من الأرقام، لذا يمنحنا R الإحصاءات التي أردناها!</p>
+<p>إذا كنت تريد فقط بعض الرسم البسيط، فإن <code>gnuplot</code> صديقك:</p>
+<pre><code class="language-bash">ssh myserver journalctl
+ | grep sshd
+ | grep <span class="hljs-string">&quot;Disconnected from&quot;</span>
+ | sed -E <span class="hljs-string">&#x27;s/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \\[preauth\\])?$/\\2/&#x27;</span>
+ | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c
+ | <span class="hljs-built_in">sort</span> -nk1,1 | <span class="hljs-built_in">tail</span> -n10
+ | gnuplot -p -e <span class="hljs-string">&#x27;set boxwidth 0.5; plot &quot;-&quot; using 1:xtic(2) with boxes&#x27;</span>
+</code></pre>
+<h2 id="معالجة-البيانات-لصنع-الوسائط">معالجة البيانات لصنع الوسائط</h2>
+<p>أحيانًا تريد معالجة البيانات للعثور على أشياءَ لتثبيتها أو إزالتها استنادًا إلى قائمةٍ أطول. معالجة البيانات التي تحدثنا عنها حتى الآن + <code>xargs</code> يمكن أن تكون مزيجًا قويًا.</p>
+<p>على سبيل المثال، كما رأينا في المحاضرة، يمكنني استخدام الأمر التالي لإلغاء تثبيت الإصدارات الليلية القديمة (nightly builds) من Rust من نظامي عن طريق استخراج أسماء البناءات القديمة باستخدام أدوات معالجة البيانات ثم تمريرها عبر <code>xargs</code> إلى برنامج إلغاء التثبيت:</p>
+<pre><code class="language-bash">rustup toolchain list | grep nightly | grep -vE <span class="hljs-string">&quot;nightly-x86&quot;</span> | sed <span class="hljs-string">&#x27;s/-x86.*//&#x27;</span> | xargs rustup toolchain uninstall
+</code></pre>
+<h2 id="معالجة-البيانات-الثنائية">معالجة البيانات الثنائية</h2>
+<p>حتى الآن، تحدثنا في الغالب عن معالجة البيانات النصية، لكن الأنابيب مفيدةٌ بنفس القدر للبيانات الثنائية. على سبيل المثال، يمكننا استخدام ffmpeg لالتقاط صورةٍ من كاميرتنا، وتحويلها إلى تدرجٍ رمادي، وضغطها، وإرسالها إلى جهازٍ بعيدٍ عبر SSH، وفك ضغطها هناك، وعمل نسخةٍ منها، ثم عرضها.</p>
+<pre><code class="language-bash">ffmpeg -loglevel panic -i /dev/video0 -frames 1 -f image2 -
+ | convert - -colorspace gray -
+ | gzip
+ | ssh mymachine <span class="hljs-string">&#x27;gzip -d | tee copy.jpg | env DISPLAY=:0 feh -&#x27;</span>
+</code></pre>
+<div class="exercises"><h1>تمارين</h1>
+<ol>
+<li>خُذ هذا <a href="https://regexone.com/">الدرس التفاعلي القصير للتعبيرات النمطية</a>.</li>
+<li>ابحث عن عدد الكلمات (في <code>/usr/share/dict/words</code>) التي تحتوي على ثلاثة أحرف <code>a</code> على الأقل ولا تنتهي بـ<code>'s</code>. ما أكثر حرفين نهائيين شيوعًا في تلك الكلمات؟ قد يساعدك أمر <code>y</code> في <code>sed</code>، أو برنامج <code>tr</code>، في عدم حساسية حالة الأحرف. كم عدد تلك التركيبات المكونة من حرفين؟ وللتحدي: أي التركيبات لا تحدث؟</li>
+<li>للاستبدال الموضعي، من المغرِي جدًا فعل شيءٍ مثل <code>sed s/REGEX/SUBSTITUTION/ input.txt &gt; input.txt</code>. لكن هذه فكرةٌ سيئة، لماذا؟ هل هذا خاصٌّ بـ<code>sed</code>؟ استخدم <code>man sed</code> لمعرفة كيفية إنجاز ذلك.</li>
+<li>ابحث عن متوسط ووسيط وأقصى زمن إقلاع نظامك عبر عمليات الإقلاع العشر الأخيرة. استخدم <code>journalctl</code> على لينكس و<code>log show</code> على macOS، وابحث عن طوابع زمنية في السجل بالقرب من بداية ونهاية كل إقلاعٍ. على لينكس، قد تبدو مثل:<pre><code>Logs begin at ...
+</code></pre>
+و<pre><code>systemd[577]: Startup finished in ...
+</code></pre>
+على macOS، <a href="https://eclecticlight.co/2018/03/21/macos-unified-log-3-finding-your-way/">ابحث عن</a>:<pre><code>=== system boot:
+</code></pre>
+و<pre><code>Previous shutdown cause: 5
+</code></pre>
+</li>
+<li>ابحث عن رسائل الإقلاع التي <em>ليست</em> مشتركةً بين إعادة تشغيلاتك الثلاث السابقة (راجع علمة <code>-b</code> في <code>journalctl</code>). قسّم هذه المهمة إلى خطواتٍ متعددة. أولًا، ابحث عن طريقةٍ للحصول فقط على السجلات من عمليات الإقلاع الثلاث الماضية. قد توجد علمةٌ قابلةٌ للتطبيق على الأداة التي تستخدمها لاستخراج سجلات الإقلاع، أو يمكنك استخدام <code>sed '0,/STRING/d'</code> لإزالة جميع الأسطر التي تسبق سطرًا يطابق <code>STRING</code>. بعد ذلك، أزل أي أجزاءٍ من السطر تتغير <em>دائمًا</em> (مثل الطابع الزمني). ثم، أزل التكرارات من أسطر الإدخال واحتفظ بعدٍّ لكلٍّ منها (<code>uniq</code> صديقك). وأخيرًا، تخلص من أي سطرٍ عدّه 3 (لأنه <em>كان</em> مشتركًا بين جميع عمليات الإقلاع).</li>
+<li>ابحث عن مجموعة بياناتٍ عبر الإنترنت مثل <a href="https://commons.wikimedia.org/wiki/Data:Wikipedia_statistics/data.tab">هذه</a>، أو <a href="https://ucr.fbi.gov/crime-in-the-u.s/2016/crime-in-the-u.s.-2016/topic-pages/tables/table-1">هذه</a>، أو ربما واحدةٌ <a href="https://www.springboard.com/blog/data-science/free-public-data-sets-data-science-project/">من هنا</a>. اجلبها باستخدام <code>curl</code> واستخرج عمودين فقط من البيانات الرقمية. إذا كنت تجلب بيانات HTML، فقد يكون <a href="https://github.com/EricChiang/pup"><code>pup</code></a> مفيدًا. للبيانات JSON، جرّب <a href="https://stedolan.github.io/jq/"><code>jq</code></a>. ابحث عن أدنى وأقصى قيمةٍ في عمودٍ واحدٍ بأمرٍ واحدٍ، والفرق بين مجموع كل عمودٍ في أمرٍ آخر.</li>
+</ol>
+</div>`,p={book:e,chapter:s,chapterTitle:n,slug:o,title:c,headings:a,html:d};export{e as book,s as chapter,n as chapterTitle,p as default,a as headings,d as html,o as slug,c as title};

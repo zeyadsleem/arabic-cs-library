@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.D-wSzHHK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D5LYHf0q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.B8gBS73N.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BE5kT3lG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-v837FGo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/I9MyXR3J.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DALGGqHN.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfJcPA2D.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="نمط الوحدة (module) — أنماط JavaScript"/><!----><title>نمط الوحدة (module) | أنماط تصميم تطبيقات الويب</title>
+		<link href="../../../../_app/immutable/assets/0.DahrPYdV.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern" class="active">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل موارد الأطراف الخارجية (Third-party)</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>نمط الوحدة (module)</h1></div> <div class="reader-content"><!----><p>الوحدة (module) ملف يملك جزءًا من السلوك، ويحدد ما ينبغي مشاركته، ويحتفظ بما عداه لنفسه. اليوم، تعني «وحدة» في JavaScript <strong>وحدات ES</strong> — مواصفة حقيقية مدمجة في اللغة، ويدعمها كل متصفح حديث (browser) وNode.js بصورة أصلية. أما الأنماط والمقايضات التي كانت تحدد أنظمة الوحدات قبل 2015، مثل الإغلاقات التي تحاكي الخصوصية ومحملات AMD وغلاف CommonJS، فبقيت فضولًا تاريخيًا في معظمها. البديل الذي حل محلها أكثر إثارة للاهتمام، وهو محور هذا المقال.</p>
+<p>النموذج الذهني مختصر:</p>
+<ul>
+<li>الوحدة ملف، والملف نطاق الوحدة (module scope) الخاص به.</li>
+<li>كل ما لا يتم تصديره عبر <code>export</code> خاص بالملف.</li>
+<li>تُقوَّم الوحدة <strong>مرة واحدة</strong> لكل نطاق واقع (realm). يرى كل مستورد الارتباطات نفسها.</li>
+<li>عبارات <code>import</code> (الاستيراد) ثابتة ومرفوعة؛ أما <code>import()</code> فديناميكية وتعيد وعدًا (promise).</li>
+</ul>
+<p>تمسك بهذه النقاط الأربع؛ فكل ما عداها مجرد تنويعات عليها.</p>
+<h2 id="الصادرات-والاستيرادات-الصيغة-الحديثة">الصادرات والاستيرادات، الصيغة الحديثة</h2>
+<pre><code>// inventory.js
+const cache = new Map();
+
+export function get(sku) {
+  return cache.get(sku);
+}
+
+export async function refresh() {
+  const response = await fetch(&quot;/api/inventory&quot;);
+  const items = await response.json();
+  cache.clear();
+  for (const item of items) cache.set(item.sku, item);
+}
+
+export const ready = refresh(); // top-level await also works in modules
+</code></pre>
+<p>هناك أمران لاحظتهما. أولًا، لا يمكن بلوغ <code>cache</code> من خارج هذا الملف. لا حاجة إلى <code>Object.freeze</code> ولا حيلة إغلاق ولا اصطلاح تسمية؛ فاللغة تمنحك الخصوصية مجانًا. ثانيًا، <code>ready</code> هي نتيجة تعبير <code>await</code> على المستوى الأعلى، وهي ميزة من ES2022: إذا أراد المستورد انتظار الجلب الأولي، فيمكنه تنفيذ <code>await</code> على التصدير.</p>
+<p>على جانب المستهلك:</p>
+<pre><code>// app.js
+import { get, refresh, ready } from &quot;./inventory.js&quot;;
+
+await ready;
+console.log(get(&quot;ABC-123&quot;));
+</code></pre>
+<p>تعد الصادرات المسماة الأسلوب الافتراضي منذ عام 2024 فصاعدًا. ولا تزال الصادرات الافتراضية موجودة (<code>export default Foo</code>) ولها مكانها، وهي أكثر نفعًا عندما يمثل الملف شيئًا واحدًا، مثل مكون React أو صنف أو نقطة دخول مكتبة. أما ملفات الأدوات متعددة الدوال، فصادراتها المسماة أسهل في إعادة الهيكلة وإزالة الشيفرة الميتة (tree shaking).</p>
+<h2 id="وحدات-esm-في-nodejs">وحدات ESM في Node.js</h2>
+<p>يقرر Node ما إذا كان الملف وحدة بالنظر إلى ثلاثة أمور، بالترتيب:</p>
+<ul>
+<li>امتداد الملف. تُعد <code>.mjs</code> وحدة دائمًا، بينما يُعد <code>.cjs</code> بصيغة CommonJS دائمًا.</li>
+<li>أقرب ملف <code>package.json</code>. إذا كان يحتوي على <code>&quot;type&quot;: &quot;module&quot;</code>، تصبح ملفات <code>.js</code> وحدات. وإذا كان يحتوي على <code>&quot;type&quot;: &quot;commonjs&quot;</code> أو أهمل الحقل، تصبح ملفات <code>.js</code> بصيغة CommonJS.</li>
+<li>الخيار <code>--input-type</code> لـ stdin.</li>
+</ul>
+<p>تبدو حزمة Node حديثة هكذا:</p>
+<pre><code>{
+  &quot;name&quot;: &quot;@example/inventory&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;exports&quot;: {
+    &quot;.&quot;: &quot;./dist/index.js&quot;,
+    &quot;./schema&quot;: &quot;./dist/schema.js&quot;,
+    &quot;./package.json&quot;: &quot;./package.json&quot;
+  },
+  &quot;imports&quot;: {
+    &quot;#config&quot;: &quot;./src/config.js&quot;,
+    &quot;#test/*&quot;: &quot;./test/helpers/*.js&quot;
+  }
+}
+</code></pre>
+<p>حقل <code>exports</code> هو البديل الحديث للحقل <code>main</code>. وهو يؤدي أمرين مهمين: يتحكم في <strong>المسارات الفرعية التي يمكن للمستهلكين استيرادها</strong> (كل ما لم يُدرج خاص بالحزمة)، ويمكنه تعيين المسار الفرعي نفسه إلى ملفات مختلفة حسب البيئة (<code>import</code> مقابل <code>require</code>، والمتصفح مقابل node، والتطوير مقابل الإنتاج).</p>
+<pre><code>&quot;exports&quot;: {
+  &quot;.&quot;: {
+    &quot;types&quot;:  &quot;./dist/index.d.ts&quot;,
+    &quot;browser&quot;: &quot;./dist/index.browser.js&quot;,
+    &quot;node&quot;:    &quot;./dist/index.node.js&quot;,
+    &quot;default&quot;: &quot;./dist/index.js&quot;
+  }
+}
+</code></pre>
+<p>هذه <strong>صادرات مشروطة</strong>. يختار وقت التشغيل أول شرط مطابق من الأعلى إلى الأسفل — لذا يهم الترتيب، وينبغي أن يأتي <code>&quot;types&quot;</code> أولًا لأن TypeScript يقرأه.</p>
+<p>يوفّر حقل <code>imports</code> ميزة <strong>للاستيراد بمسارات فرعية داخل حزمتك</strong>. في أي مكان داخل الحزمة، يحل <code>import config from &quot;#config&quot;</code> إلى كل ما تعين إليه <code>imports[&quot;#config&quot;]</code>. وهو بديل أنظف من مسارات مثل <code>../../../../config.js</code>، ويمنحك مكانًا واحدًا لتبديل التنفيذ أثناء الاختبار.</p>
+<h2 id="التوافق-بين-esm-وcjs-باختصار">التوافق بين ESM وCJS، باختصار</h2>
+<p>ستصادف هذا الأمر. القواعد هي:</p>
+<ul>
+<li><strong>استيراد ESM لـ CJS:</strong> مسموح. يصبح <code>module.exports</code> الخاص بـ CJS هو التصدير <code>default</code> في ESM. تعمل الاستيرادات المسماة مع الصادرات المسماة التي يمكن تحليلها ثابتًا، لكن أي عنصر ديناميكي في <code>module.exports</code> لا يمكن الوصول إليه إلا عبر الافتراضي.</li>
+<li><strong>CJS الذي يتطلب ESM:</strong> كان محظورًا تاريخيًا، لكن Node 22+ يسمح بـ<code>require()</code> لـ ESM عندما لا تحوي الوحدة الهدف <code>await</code> على المستوى الأعلى. وإلا، فاستخدم <code>await import()</code> داخل دالة غير متزامنة.</li>
+<li><strong>حزم ثنائية:</strong> انشر الصيغتين من حزمة واحدة باستخدام الصادرات المشروطة. أبقِ الحالة خارج الحزمة، وإلا فستحصل في النهاية ستحصل على نسختين منها في وقت التشغيل — وهي «خطر الحزمة الثنائية».</li>
+</ul>
+<p>يبدو التصدير الثنائي العامل هكذا:</p>
+<pre><code>&quot;exports&quot;: {
+  &quot;.&quot;: {
+    &quot;import&quot;: &quot;./dist/index.mjs&quot;,
+    &quot;require&quot;: &quot;./dist/index.cjs&quot;
+  }
+}
+</code></pre>
+<p>تؤتمت أدوات البناء (tsup وunbuild وrollup) إنشاء الحزمتين تلقائيًا.</p>
+<h2 id="وحدات-esm-في-المتصفح">وحدات ESM في المتصفح</h2>
+<p>يخبر `` المتصفح بأن يحلل الملف كوحدة. تُؤجل الوحدات افتراضيًا، وتُنفذ بالترتيب، وتُجلب باستخدام CORS:</p>
+<pre><code>&lt;script type=&quot;module&quot; src=&quot;/app.js&quot;&gt;&lt;/script&gt;
+&lt;script nomodule src=&quot;/legacy-bundle.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>تُعد <code>nomodule</code> خطة بديلة للمتصفحات التي لا تدعم الوحدات، وهي أقل عددًا يومًا بعد يوم؛ ويمكن لمعظم المشاريع الاستغناء عن الحزمة (bundle) القديمة تمامًا.</p>
+<h3 id="خرائط-الاستيراد-import-maps">خرائط الاستيراد (import maps)</h3>
+<p>أهم تحسين في جانب المتصفح هو <strong>خرائط الاستيراد</strong>. تتيح لك استخدام المواصفات المجردة (<code>import { x } from &quot;lodash-es&quot;</code>) في المتصفح من دون أداة تجميع، إذ تعطي المتصفح تعيين JSON من الاسم إلى عنوان URL.</p>
+<pre><code>&lt;script type=&quot;importmap&quot;&gt;
+{
+  &quot;imports&quot;: {
+    &quot;lit&quot;: &quot;https://cdn.jsdelivr.net/npm/lit@3/index.js&quot;,
+    &quot;@app/&quot;: &quot;/src/app/&quot;
+  },
+  &quot;scopes&quot;: {
+    &quot;/legacy/&quot;: { &quot;lit&quot;: &quot;https://cdn.jsdelivr.net/npm/lit@2/index.js&quot; }
+  }
+}
+&lt;/script&gt;
+
+&lt;script type=&quot;module&quot;&gt;
+  import { LitElement } from &quot;lit&quot;;
+  import { Router } from &quot;@app/router.js&quot;;
+&lt;/script&gt;
+</code></pre>
+<p>تتيح لك <code>scopes</code> تجاوز التعيينات تحت بادئات URL محددة، وهو أمر مفيد عندما يحتاج جزء من تطبيقك إلى إصدار أقدم من تبعية. تتوفر خرائط الاستيراد في كل متصفح حديث منذ عام 2023.</p>
+<h3 id="التحميل-المسبق-للوحدات">التحميل المسبق للوحدات</h3>
+<p>يوقف <code>import</code> الثابت التنفيذ بينما تُجلب التبعية. وللوحدات الحرجة، تُستخدم `` لتسخين ذاكرة المتصفح المؤقتة (cache) حتى يُحل الاستيراد فورًا:</p>
+<pre><code>&lt;link rel=&quot;modulepreload&quot; href=&quot;/app.js&quot;&gt;
+&lt;link rel=&quot;modulepreload&quot; href=&quot;/router.js&quot;&gt;
+&lt;link rel=&quot;modulepreload&quot; href=&quot;/inventory.js&quot;&gt;
+</code></pre>
+<p>يجلب المتصفح الوحدات المدرجة ويحللها ويصرّفها بالتوازي مع بقية الصفحة. وحين تعمل <code>app.js</code>، تكون تبعياتها موجودة بالفعل في الذاكرة.</p>
+<h2 id="الاستيرادات-الديناميكية">الاستيرادات الديناميكية</h2>
+<p>تعيد <code>import()</code>، التي تشبه الدوال، وعدًا باسم مساحة الوحدة. وهي الأداة الأساسية لتقسيم الشيفرة (code splitting) حسب المسارات وتحميل الميزات عند الحاجة.</p>
+<pre><code>// Route-based: load the editor only when the user navigates to /edit
+router.on(&quot;/edit/:id&quot;, async ({ id }) =&gt; {
+  const { mount } = await import(&quot;./editor.js&quot;);
+  mount(document.querySelector(&quot;#root&quot;), { id });
+});
+
+// Interaction-based: load a heavy library only when the user clicks
+button.addEventListener(&quot;click&quot;, async () =&gt; {
+  const { default: confetti } = await import(&quot;canvas-confetti&quot;);
+  confetti();
+});
+</code></pre>
+<p>تعرف أدوات التجميع استدعاءات <code>import()</code> وتقسم الهدف تلقائيًا إلى حزمة (chunk) خاصة به. فكل أداة تجميع حديثة، من Vite وesbuild وRollup وwebpack وRspack، تفعل ذلك من دون إعداد.</p>
+<p>يمكن دمج <code>import()</code> مع <code>Promise.all</code> للتوازي:</p>
+<pre><code>const [{ default: heavy }, { utils }] = await Promise.all([
+  import(&quot;./heavy.js&quot;),
+  import(&quot;./utils.js&quot;),
+]);
+</code></pre>
+<p>كما تقبل متغيرات، ما يتيح لك حساب المسار في وقت التشغيل:</p>
+<pre><code>const lang = navigator.language.split(&quot;-&quot;)[0];
+const { messages } = await import(`./i18n/${lang}.js`);
+</code></pre>
+<p>كن حذرًا هنا: ستضم معظم أدوات التجميع كل ملف يطابق النمط في البناء، لأنها لا تستطيع التنبؤ بالقيمة ثابتًا. قيّد النمط، مثل استخدام مجلد معروف أو امتداد ثابت، لإبقاء عدد الحزم منطقيًا.</p>
+<h2 id="سمات-الاستيراد">سمات الاستيراد</h2>
+<p>ميزة من عام 2024 (في المرحلة 3، وشائعة في V8 وJavaScriptCore) هي <strong>سمات الاستيراد (import attributes)</strong>، التي تتيح لك استيراد موارد غير مكتوبة بلغة JavaScript عبر تحديد نوعها:</p>
+<pre><code>import config from &quot;./config.json&quot; with { type: &quot;json&quot; };
+import sheet  from &quot;./styles.css&quot;   with { type: &quot;css&quot; };
+</code></pre>
+<p>الصيغة الديناميكية تأخذ السمات كوسيط ثانٍ:</p>
+<pre><code>const data = await import(&quot;./data.json&quot;, { with: { type: &quot;json&quot; } });
+</code></pre>
+<p>تستبدل صيغة <code>with</code> كلمة <code>assert</code> الأسبق من المقترح الأصلي. إذا كانت لديك شيفرة أقدم تستخدم <code>assert { type: &quot;json&quot; }</code>، فحدّثها؛ إذ تُزال <code>assert</code>.</p>
+<p>تمثل وحدات JSON حالة الاستخدام الأبرز، لكن الصيغة نفسها تتوسع نحو CSS Module Scripts، وفي المقترحات نحو وحدات WebAssembly.</p>
+<h2 id="أدوات-التجميع-وإزالة-الشيفرة-الميتة-ومخرجات-البناء">أدوات التجميع وإزالة الشيفرة الميتة ومخرجات البناء</h2>
+<p>توفر ESM الأصلية تجربة تطوير رائعة لكنها تشحن ملفات صغيرة كثيرة. في الإنتاج، تدمج أدوات التجميع الوحدات وتحذف ما لا يستخدم. تتمثل خطوة التقليم — <strong>إزالة الشيفرة الميتة (tree shaking)</strong> — في بعض ثوابت مستوى الوحدة:</p>
+<ul>
+<li>تكون الاستيرادات والصادرات ثابتة، ما يتيح لأداة التجميع تحديد الصادرات المشار إليها ثابتًا.</li>
+<li>تكون الوحدة خالية من الآثار الجانبية، أو تضع الحزمة <code>&quot;sideEffects&quot;: false</code> (أو قائمة بالملفات ذات الآثار الجانبية) في <code>package.json</code>.</li>
+<li>تُتابع عمليات إعادة التصدير (<code>export { foo } from &quot;./bar.js&quot;</code>) عبر المستويات.</li>
+</ul>
+<p>لقد تقارب النظام البيئي:</p>
+<table>
+<thead>
+<tr>
+<th>أداة التجميع</th>
+<th>المحرك</th>
+<th>ملاحظات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vite</strong></td>
+<td>Rollup للبناء + esbuild للتطوير</td>
+<td>الافتراضية لتطبيقات SPA الجديدة؛ ESM أصلية في التطوير</td>
+</tr>
+<tr>
+<td><strong>esbuild</strong></td>
+<td>Go الأصلية</td>
+<td>سريعة للغاية؛ تُستخدم غالبًا كمكتبة من أدوات أخرى</td>
+</tr>
+<tr>
+<td><strong>Rollup</strong></td>
+<td>JavaScript</td>
+<td>مخرجات المكتبات هي مجال قوتها</td>
+</tr>
+<tr>
+<td><strong>Rspack</strong></td>
+<td>منفذ webpack إلى Rust</td>
+<td>بديل مباشر لـwebpack وأسرع بكثير</td>
+</tr>
+<tr>
+<td><strong>Turbopack</strong></td>
+<td>Rust</td>
+<td>أداة تجميع Next.js؛ تزايدة وذاكرة مؤقتة دائمة</td>
+</tr>
+<tr>
+<td><strong>Parcel</strong></td>
+<td>JavaScript / Rust</td>
+<td>بلا إعداد</td>
+</tr>
+</tbody>
+</table>
+<p>لا يلزمك اختيار «الأسرع»؛ فاختر ما يناسب إطارك. المخرجات عبر أدوات التجميع الحديثة متشابهة بما يكفي، ما يعني أن فروق الأداء (performance) تقع غالبًا وقت البناء لا وقت التشغيل.</p>
+<p>تستحق فخّ صغير معرفتُه: ملفات البرميل التي تعيد تصدير كل شيء (مثل <code>index.js</code> الذي يعيد تصدير كل ملف في مجلد) يمكنها تعطيل إزالة الشيفرة الميتة إذا كان في أي وحدة ضمن البرميل أثر جانبي. ضع علامة على الحزمة بأنها خالية من الآثار الجانبية، أو استورد مباشرة من الملف الورقي.</p>
+<h2 id="hmr-استبدال-الوحدات-الساخنة">HMR (استبدال الوحدات الساخنة)</h2>
+<p>تلائم ESM HMR بصورة تكاد تكون مثالية لأن رسم الوحدات صريح. عند تغيير ملف، يمكن لخادم التطوير استبدال تلك الوحدة من دون إعادة تحميل الصفحة، ويمكن للإطار أن يقرر كيف يعيد تشغيل أي شيفرة تعتمد عليها.</p>
+<p>الراية القياسية في Vite ومعظم أدوات التجميع الأصلية في ESM هي <code>undefined</code>:</p>
+<pre><code>// some-feature.js
+export function mount(root) { /* ... */ }
+
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) =&gt; {
+    // Re-run with the updated implementation
+    newModule?.mount(document.querySelector(&quot;#root&quot;));
+  });
+
+  import.meta.hot.dispose(() =&gt; {
+    // Tear down state before the new module takes over
+    document.querySelector(&quot;#root&quot;).innerHTML = &quot;&quot;;
+  });
+}
+</code></pre>
+<p><code>import.meta</code> هو كائن البيانات الوصفية لكل وحدة — وهو أيضًا المكان الذي تجد فيه <code>import.meta.url</code> (عنوان URL للوحدة الحالية)، وفي Node تجد <code>import.meta.dirname</code> / <code>import.meta.filename</code> (أُضيفت في Node 21+).</p>
+<h2 id="المزالق-الشائعة">المزالق الشائعة</h2>
+<h3 id="الارتباطات-الحية-تفاجئ-الناس">الارتباطات الحية تفاجئ الناس</h3>
+<p>صادرات ESM هي <strong>ارتباطات حية (live bindings)</strong>، لا نسخ قيم. إذا صدّرت وحدة قيمة <code>let</code>، فسيرى المستوردون القيمة الحالية، لا قيمة وقت الاستيراد. ويعمل CommonJS بصورة معاكسة:</p>
+<pre><code>// counter.js
+export let count = 0;
+export function inc() { count++; }
+
+// app.js
+import { count, inc } from &quot;./counter.js&quot;;
+inc();
+console.log(count); // 1, not 0
+</code></pre>
+<p>عادةً ما يكون هذا هو السلوك الذي تريده، لكنه قد يفاجئ القادمين من CommonJS.</p>
+<h3 id="الدورات-الدائرية-تعمل-مع-تحذيرات">الدورات الدائرية تعمل، مع تحذيرات</h3>
+<p>تستورد A الوحدة B، وتستورد B الوحدة A. تتعامل ESM مع هذا — فكلتا الوحدتين تُقوَّمان جزئيًا قبل أن تكتمل أي منهما — لكن إذا أشرت إلى تصدير من الوحدة الشريكة <strong>أثناء التهيئة</strong> (لا داخل دالة)، فقد ترى <code>undefined</code> لارتباطات لم تُسنَد بعد. أعد الهيكلة لتجنب الوصول عبر دورة دائرية وقت التهيئة.</p>
+<h3 id="اختلاف-حل-المسارات-عن-commonjs">اختلاف حل المسارات عن CommonJS</h3>
+<p>حل ESM في Node أكثر صرامة: الامتدادات مطلوبة (<code>./foo.js</code> لا <code>./foo</code>)، وفهارس المجلدات ليست ضمنية، وقواعد مواصفة الوحدة تتبع مواصفة WHATWG URL. يضبط خيار TypeScript <code>moduleResolution: &quot;bundler&quot;</code> أو <code>&quot;node16&quot;</code> المُصرّف ليطابق ما سيفعله حل وقت التشغيل فعلًا.</p>
+<h3 id="انتظار-المستوى-الأعلى-يعيق-المستوردين">انتظار المستوى الأعلى يعيق المستوردين</h3>
+<p>يوقف <code>await</code> في أعلى الوحدة اكتمالها، ما يعني أن كل مستورد ينتظر أيضًا. ويكون أنيقًا عند استخدامه بحكمة (تحميل الإعدادات، وكشف القدرات)، لكنه يسرّل بدء التطبيق بعناية (استدعاء شبكة في أعلى كل وحدة طرفية).</p>
+<h2 id="متى-تقسم-إلى-وحدة-جديدة">متى تقسم إلى وحدة جديدة</h2>
+<p>الوحدة هي الوحدة المناسبة عندما تملك جزءًا من الحالة أو السلوك له واجهة برمجية نظيفة. وفيما يلي بعض القواعد العملية:</p>
+<ul>
+<li><strong>مفهوم واحد لكل ملف.</strong> إذا وجدت صعوبة في تسمية الملف بأقل من أربع كلمات، فربما يحتوي مفهومين.</li>
+<li><strong>أخفِ ما لا يحتاجه المستدعون.</strong> كلما قل عدد الصادرات المسماة، سهل استخدام الوحدة وإعادة هيكلتها.</li>
+<li><strong>لا تقسم مقدمًا.</strong> يمكن أن تعيش ثلاث دوال مترابطة في ملف واحد. وتقسيمها يزيد المساحة من دون أن يشتري لك أي شيء.</li>
+<li><strong>قسّم عندما يكون إعادة الاستخدام واقعية</strong>، لا نظرية. فالوحدات المبكرة مكلفة تمامًا مثل التجريد المبكر.</li>
+</ul>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">وحدات JavaScript — MDN</a></li>
+<li><a href="https://nodejs.org/api/esm.html">وحدات ECMAScript — Node.js</a></li>
+<li><a href="https://nodejs.org/api/packages.html#package-entry-points">نقاط دخول الحزم — Node.js</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap">خرائط الاستيراد — MDN</a></li>
+<li><a href="https://github.com/tc39/proposal-import-attributes">سمات الاستيراد — TC39</a></li>
+<li><a href="https://vitejs.dev/guide/api-hmr.html">Vite — واجهة HMR</a></li>
+</ul>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/patterns-dev/vanilla/mixin-pattern"><span class="prev-next__label">السابق</span> <span class="prev-next__title">نمط المزيج (mixin)</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/patterns-dev/vanilla/observer-pattern"><span class="prev-next__label">التالي</span> <span class="prev-next__title">نمط المراقب (observer)</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1pf10gp = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.D-wSzHHK.js"),
+						import("../../../../_app/immutable/entry/app.B8gBS73N.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

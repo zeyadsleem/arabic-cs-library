@@ -1,0 +1,237 @@
+const e="missing-semester",o="course-shell",c="نظرة عامة على المقرر + مقدمة إلى الصدفة",s="index",d="نظرة عامة على المقرر + مقدمة إلى الصدفة",n=[{depth:2,id:"ما-هو-معالج-الأوامر",text:"ما هو مُعالِج الأوامر؟"},{depth:2,id:"لماذا-ينبغي-أن-تهتم-به",text:"لماذا ينبغي أن تهتمّ به؟"},{depth:2,id:"التنقل-في-معالج-الأوامر",text:"التنقّل في مُعالج الأوامر"},{depth:2,id:"ما-المتاح-في-معالج-الأوامر",text:"ما المتاح في مُعالج الأوامر؟"},{depth:2,id:"لغة-معالج-الأوامر-bash",text:"لغة مُعالج الأوامر (bash)"}],a=`<p class="lecture-video"><iframe src="https://www.youtube-nocookie.com/embed/MSgoeuMqUmU" title="نظرة عامة على المقرر + مقدمة إلى الصدفة" loading="lazy" allowfullscreen></iframe></p>
+<h1>من نحن؟</h1>
+<p>يُدرَّس هذا المقرر بشكلٍ مشترك بواسطة <a href="https://anish.io/">Anish</a> و<a href="https://thesquareplanet.com/">Jon</a> و<a href="http://josejg.com/">Jose</a>. نحن جميعًا طلاب MIT سابقون بدأنا هذا المقرر ضمن برنامج MIT IAP عندما كنّا طلابًا. يمكنكم الوصول إلينا جميعًا عبر <a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+<p>لا نتقاضى أجرًا مقابل تدريس هذا المقرر، ولا نُدرّ من ورائه أي دخلٍ بأي شكل. نجعل جميع <a href="https://missing.csail.mit.edu/">موادّ المقرر</a> و<a href="https://www.youtube.com/@MissingSemester">تسجيلات المحاضرات</a> متاحةً مجانًا على الإنترنت. إذا أردت دعم عملنا، فخير طريقةٍ لفعل ذلك هي ببساطةٍ نشر الخبر عن المقرر. إذا كنت شركةً أو جامعةً أو أيّ جهةٍ أخرى تُقدّم هذا المحتوى لمجموعاتٍ أكبر، فيُرجى إرسال تقارير تجربتك أو شهاداتك عبر البريد لنطّلع عليها :)</p>
+<h1>الدافع (Motivation)</h1>
+<p>كعلماء حاسوب، نعرف أن الحواسيب بارعةٌ في المساعدة في المهام المتكررة. لكن في كثيرٍ من الأحيان ننسى أن هذا ينطبق على طريقة <em>استخدامنا</em> للحاسوب تمامًا كما ينطبق على الحسابات التي نريد أن تُجريها برامجنا. لدينا مجموعةٌ واسعةٌ من الأدوات في متناول أيدينا تتيح لنا أن نكون أكثر إنتاجيةً وأن نحلّ مشكلاتٍ أعقد عند العمل على أي مشكلةٍ متعلقةٍ بالحاسوب. ومع ذلك، لا يستخدم كثيرٌ منّا إلا جزءًا يسيرًا من تلك الأدوات؛ إذ لا نعرف سوى ما يكفي من العبارات السحرية المحفوظة ظهرًا عن ظهر قلب لنتمكن من تدبر أمورنا، ونلجأ إلى نسخ الأوامر ولصقها عشوائيًا من الإنترنت عندما نتعثر.</p>
+<p>هذا المقرر محاولةٌ <a href="/book/missing-semester/course-shell/index">لمعالجة هذه المشكلة</a>.</p>
+<p>نريد أن نعلّمك كيف تحصل على أقصى فائدةٍ من الأدوات التي تعرفها، وأن نريك أدواتٍ جديدةً تضيفها إلى صندوق أدواتك، ونأمل أن نغرس فيك بعضًا من الحماس لاستكشاف المزيد من الأدوات (وربما بنائها) بنفسك. هذا ما نؤمن بأنه الفصل المفقود (the missing semester) من معظم المناهج الجامعية في علوم الحاسوب.</p>
+<h1>هيكل المقرر</h1>
+<p>يتكوّن المقرر (غير المعتمد في التقدير) من تسع محاضراتٍ مدة كلٍّ منها ساعةً واحدة، وتركّز كل محاضرةٍ على <a href="/book/missing-semester/course-shell/index">موضوعٍ معيّن</a>. المحاضرات مستقلةٌ إلى حدٍّ كبير، غير أنّه مع تقدّم المقرر سنفترض أنّك ملمٌّ بمحتوى المحاضرات السابقة. لدينا ملاحظات المحاضرات على الإنترنت، لكن قد يكون هناك محتوى يُغطّى داخل المحاضرة نفسها (مثل العروض التوضيحية) لا يوجد في الملاحظات. وكما في الأعوام السابقة، سنقوم بتسجيل المحاضرات ونشر التسجيلات <a href="https://www.youtube.com/@MissingSemester">على الإنترنت</a>.</p>
+<p>نحاول تغطية قدرٍ كبيرٍ من المادة في بضع محاضراتٍ فقط مدة كلٍّ منها ساعة، لذا تكون المحاضرات كثيفةً نسبيًا. لكي نتيح لك بعض الوقت للتعوّد على المحتوى بوتيرةٍ تناسبك، تتضمّن كل محاضرةٍ مجموعةً من التمارين ترشدك خلال النقاط الأساسية للمحاضرة. لن نخصّص ساعاتٍ مكتبيةً للمراجعة، لكنّنا نشجّعك على طرح الأسئلة على <a href="https://ossu.dev/#community">Discord الخاص بـ OSSU</a> في قناة <code>#missing-semester-forum</code>، أو مراسلتنا على <a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+<p>نظرًا للوقت المحدود المتاح، لن نتمكّن من تغطية جميع الأدوات بالمستوى نفسه من التفصيل الذي قد يقدّمه مقررٌ متكامل. وحيثما أمكن، سنحاول توجيهك نحو مواردٍ تتيح لك التعمّق في أداةٍ أو موضوعٍ ما، لكن إذا استحوذ عليك أمرٌ بشكلٍ خاص، فلا تتردّد في التواصل معنا وطلب الإرشادات!</p>
+<p>أخيرًا، إذا كانت لديك أيّ ملاحظات حول المقرر، فيُرجى إرسالها إلينا عبر البريد على <a href="mailto:missing-semester@mit.edu">missing-semester@mit.edu</a>.</p>
+<h1>الموضوع الأوّل: مُعالِج الأوامر (The Shell)</h1>
+<h2 id="ما-هو-معالج-الأوامر">ما هو مُعالِج الأوامر؟</h2>
+<p>تمتلك الحواسيب هذه الأيام أنواعًا متعددةً من الواجهات (interfaces) لإعطائها الأوامر؛ واجهات مستخدمٍ رسوميةٍ متقنة، وواجهات صوتية، وواقعًا معززًا وافتراضيًا، ومؤخرًا: نماذج اللغة واسعة النطاق (LLMs). هذه الواجهات رائعةٌ في 80% من حالات الاستخدام، لكنها غالبًا مقيّدةٌ جوهريًا فيما تتيح لك القيام به؛ فلا يمكنك الضغط على زرٍّ غير موجود، ولا إعطاء أمرٍ صوتيٍّ لم تتم برمجته. للاستفادة الكاملة من الأدوات التي يوفّرها حاسوبك، علينا أن نعود إلى الطريقة التقليدية وننزل إلى واجهةٍ نصية: ألا وهي مُعالِج الأوامر (the Shell).</p>
+<p>جميع المنصّات التي تقع بين يديك تقريبًا لديها مُعالج أوامرٍ بشكلٍ أو بآخر، وكثيرٌ منها يوفّر لك عدّة معالجاتٍ للاختيار من بينها. ورغم أنّها قد تختلف في التفاصيل، فهي في جوهرها متشابهةٌ كلها: تتيح لك تشغيل البرامج، وإمدادها بالمدخلات، وفحص مخرجاتها بطريقةٍ شبه منظّمة.</p>
+<p>لفتح <em>موجِّه</em> (prompt) مُعالج الأوامر (حيث يمكنك كتابة الأوامر)، تحتاج أولًا إلى <em>مُحاكٍ طرفي</em> (terminal)، وهو الواجهة البصرية لمُعالج الأوامر. على الأرجح أنّ جهازك يأتي مع واحدٍ مثبّتٍ مسبقًا، أو يمكنك تثبيت واحدٍ بسهولةٍ كبيرة:</p>
+<ul>
+<li><strong>Linux:</strong> اضغط <code>Ctrl Alt T</code> (يعمل على معظم التوزيعات). أو ابحث عن «Terminal» في قائمة التطبيقات.</li>
+<li><strong>Windows:</strong> اضغط <code>Win R</code>، ثم اكتب <code>cmd</code> أو <code>powershell</code> واضغط Enter. بدلًا من ذلك، ابحث عن «Terminal» أو «Command Prompt» في قائمة ابدأ.</li>
+<li><strong>macOS:</strong> اضغط <code>Cmd Space</code> لفتح Spotlight، ثم اكتب «Terminal» واضغط Enter. أو ابحث عنه في التطبيقات ← الأدوات ← Terminal.</li>
+</ul>
+<p>على Linux وmacOS، سيفتح هذا عادةً مُعالج أوامر Bourne Again SHell، أو «bash» اختصارًا. هذا واحدٌ من أكثر معالجات الأوامر استخدامًا، وصياغته (syntax) مشابهةٌ لما ستراه في كثيرٍ من معالجات الأوامر الأخرى. على Windows، سيستقبلك مُعالجا الأوامر «batch» أو «powershell»، وذلك حسب الأمر الذي شغّلته. هذان خاصّان بـ Windows، ولن نركّز عليهما في هذا المقرر، رغم وجود ما يناظر معظم ما سنعلّمه في غيرهما. ستحتاج بدلًا منهما إلى <a href="https://docs.microsoft.com/en-us/windows/wsl/">نظام Windows الفرعي لـ Linux</a> (Windows Subsystem for Linux) أو جهازٍ افتراضيٍّ يعمل بنظام Linux.</p>
+<p>توجد معالجات أوامر أخرى، كثيرٌ منها يقدّم تحسيناتٍ مريحةٍ على bash (من أكثرها شيوعًا fish وzsh). ورغم أنّها شائعةٌ جدًا (جميع المحاضرين يستخدمون أحدها)، فهي أبعد ما تكون عن الانتشار الواسع الذي بلغه bash، وتعتمد على كثيرٍ من المفاهيم نفسها، لذا لن نركّز عليها في هذه المحاضرة.</p>
+<h2 id="لماذا-ينبغي-أن-تهتم-به">لماذا ينبغي أن تهتمّ به؟</h2>
+<p>لا يقتصر الأمر على أنّ مُعالج الأوامر (عادةً) أسرع بكثيرٍ من «النقر هنا وهناك»، بل إنّه أيضًا يمتلك قوةً تعبيريةً يصعب العثور عليها في أيّ برنامجٍ رسوميٍّ واحد. كما سنرى، يمنحك مُعالج الأوامر القدرة على <em>دمج</em> البرامج بطرقٍ خلّاقة لأتمتة أيّ مهمةٍ تقريبًا.</p>
+<p>الإلمام بمُعالج الأوامر مفيدٌ جدًا أيضًا للتجوال في عالم البرمجيات مفتوحة المصدر (التي غالبًا ما تأتي مع تعليمات تثبيتٍ تتطلب مُعالج الأوامر)، ولبناء التكامل المستمر (continuous integration) لمشاريعك البرمجية (كما هو موصوف في <a href="/book/missing-semester/code-quality/index">محاضرة جودة الكود</a>)، ولتشخيص الأخطاء عندما تفشل البرامج الأخرى.</p>
+<h2 id="التنقل-في-معالج-الأوامر">التنقّل في مُعالج الأوامر</h2>
+<p>عند تشغيل مُحاكيك الطرفي، سترى <em>موجِّهًا</em> (prompt) يبدو غالبًا هكذا تقريبًا:</p>
+<pre><code class="language-console">missing:~$
+</code></pre>
+<p>هذه هي الواجهة النصية الرئيسية لمُعالج الأوامر. تخبرك بأنّك على الجهاز المسمّى <code>missing</code>، وأنّ «مجلد العمل الحالي» (current working directory) — أي المكان الذي تتواجد فيه الآن — هو <code>~</code> (اختصارٌ لكلمة «home» أي المنزل). يُخبرك الرمز <code>$</code> بأنّك لست المستخدم الجذر (root user) (سنأتي لذلك لاحقًا). عند هذا الموجّه يمكنك كتابة <em>أمرٍ</em> (command) يُفسّره مُعالج الأوامر. الأمر الأساسي هو تشغيل برنامج:</p>
+<pre><code class="language-console">missing:~$ date
+Fri 10 Jan 2020 11:49:31 AM EST
+missing:~$
+</code></pre>
+<p>هنا، أجرينا برنامج <code>date</code>، الذي (ربما دون مفاجأة) يطبع التاريخ والوقت الحاليين. ثم يطلب منّا مُعالج الأوامر أمرًا آخر لتنفيذه. يمكننا أيضًا تنفيذ أمرٍ مع <em>وسائط</em> (arguments):</p>
+<pre><code class="language-console">missing:~$ echo hello
+hello
+</code></pre>
+<p>في هذه الحالة، أخبرنا مُعالج الأوامر أن يُنفّذ البرنامج <code>echo</code> مع الوسيط <code>hello</code>. برنامج <code>echo</code> يطبع وسائطه ببساطةٍ. ينسّق مُعالج الأوامر الأمرَ بتقسيمه على المسافات البيضاء، ثم يشغّل البرنامج المشار إليه بالكلمة الأولى، مُسلّمًا كل كلمةٍ لاحقةٍ كوسيطٍ يمكن للبرنامج الوصول إليه. إذا أردت تمرير وسيطٍ يحتوي مسافاتٍ أو رموزًا خاصةً (مثل مجلدٍ اسمه «My Photos»)، فإمّا أن تضع الوسيط بين علامتَي اقتباس <code>'</code> أو <code>&quot;</code> (مثل <code>&quot;My Photos&quot;</code>)، أو تُفلت (escape) الحروف ذات الصلة فقط بخطٍ مائلٍ عكسيّ <code>\\</code> (مثل <code>My\\ Photos</code>).</p>
+<p>ربما يكون أهم أمرٍ عند البدء هو <code>man</code>، والمختصر لـ «manual» أي الدليل. يتيح لك برنامج <code>man</code>، ضمن أشياء أخرى، البحث عن معلوماتٍ إضافية حول أيّ أمرٍ في نظامك. على سبيل المثال، إذا شغّلت <code>man date</code>، فسيوضّح لك ما هو <code>date</code> وكلّ الوسائط المختلفة التي يمكنك تمريرها إليه لتغيير سلوكه. وعادةً يمكنك أيضًا الحصول على نسخةٍ قصيرةٍ من المساعدة بتمرير <code>--help</code> كوسيطٍ لأغلب الأوامر.</p>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://tldr.sh/"><code>tldr</code></a> إلى جانب <code>man</code>، إذ يعرض لك أمثلة الاستخدام الشائعة هناك مباشرةً في المُحاكي الطرفي. كما أنّ نماذج اللغة (LLMs) عادةً بارعةٌ جدًا في شرح كيف تعمل الأوامر وكيف يمكنك استدعاؤها لتحقيق ما تريد إنجازه.</p>
+</blockquote>
+<p>بعد <code>man</code>، أهم أمرٍ يجب تعلّمه هو <code>cd</code>، أي «تغيير المجلد» (change directory). هذا الأمر مدمجٌ فعلًا في مُعالج الأوامر، وهو ليس برنامجًا منفصلًا (أي أنّ <code>which cd</code> ستقول «no cd found»). تمرّر له مسارًا، فيصبح ذلك المسار هو مجلد عملك الحالي. وسترى أيضًا مجلدَ العمل منعكسًا في موجّه مُعالج الأوامر:</p>
+<pre><code class="language-console">missing:~$ cd /bin
+missing:/bin$ cd /
+missing:/$ cd ~
+missing:~$
+</code></pre>
+<blockquote>
+<p>لاحظ أنّ مُعالج الأوامر يأتي مع إكمالٍ تلقائي، لذا يمكنك غالبًا إكمال المسارات بشكلٍ أسرع بالضغط على <code>&lt;TAB&gt;</code>!</p>
+</blockquote>
+<p>كثيرٌ من الأوامر تعمل على مجلد العمل الحالي إذا لم يُحدَّد شيءٌ آخر. إذا لم تكن متأكدًا في أي وقتٍ من مكانك، يمكنك تشغيل <code>pwd</code> أو طباعة المتغير البيئي (environment variable) <code>$PWD</code> (باستخدام <code>echo $PWD</code>)، وكلاهما يُخرج مجلد العمل الحالي.</p>
+<p>كما أنّ مجلد العمل الحالي مفيدٌ في أنه يتيح لنا استخدام مساراتٍ <em>نسبية</em> (relative). جميع المسارات التي رأيناها حتى الآن كانت <em>مطلقة</em> (absolute)؛ فهي تبدأ بـ <code>/</code> وتُعطي السلسلة الكاملة من المجلدات اللازمة للانتقال إلى موقعٍ ما انطلاقًا من جذر نظام الملفات (<code>/</code>). عمليًا، ستتعامل غالبًا مع المسارات النسبية؛ إذ تُسمّى كذلك لأنها نسبيةٌ إلى مجلد العمل الحالي. في المسار النسبيّ (أيّ شيءٍ <em>لا</em> يبدأ بـ <code>/</code>)، يُبحث عن المكوّن الأول للمسار في مجلد العمل الحالي، وتعبُر المكوّنات اللاحقة كالمعتاد. على سبيل المثال:</p>
+<pre><code class="language-console">missing:~$ cd /
+missing:/$ cd bin
+missing:/bin$
+</code></pre>
+<p>هناك أيضًا مكوّنان «خاصّان» موجودان في كلّ مجلد: <code>.</code> و<code>..</code>. حيث <code>.</code> تعني «هذا المجلد»، و<code>..</code> تعني «المجلد الأب» (parent directory). إذًا:</p>
+<pre><code class="language-console">missing:~$ cd /
+missing:/$ cd bin/../bin/../bin/././../bin/..
+missing:/$
+</code></pre>
+<p>يمكنك عادةً استخدام المسارات المطلقة والنسبية بالتبادل مع أيّ وسيطٍ للأوامر، فقط تذكّر مجلدَ عملك الحالي عند استخدام مسارٍ نسبيّ!</p>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://github.com/ajeetdsouza/zoxide"><code>zoxide</code></a> لتسريع تنقّلاتك بـ <code>cd</code>؛ إذ سيتذكر <code>z</code> المسارات التي تتردّد عليها كثيرًا ويتيح لك الوصول إليها بكتابةٍ أقلّ.</p>
+</blockquote>
+<h2 id="ما-المتاح-في-معالج-الأوامر">ما المتاح في مُعالج الأوامر؟</h2>
+<p>لكن كيف يعرف مُعالج الأوامر كيفية العثور على برامجٍ مثل <code>date</code> أو <code>echo</code>؟ عندما يُطلب من مُعالج الأوامر تنفيذ أمرٍ، فإنّه يستشير <em>متغيرًا بيئيًا</em> يُسمّى <code>$PATH</code> يدرج الأدلةَ (directories) التي ينبغي لمُعالج الأوامر أن يبحث فيها عن البرامج عندما يُعطى أمرًا:</p>
+<pre><code class="language-console">missing:~$ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+missing:~$ which echo
+/bin/echo
+missing:~$ /bin/echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</code></pre>
+<p>عندما نشغّل أمر <code>echo</code>، يرى مُعالج الأوامر أنّه ينبغي تنفيذ البرنامج <code>echo</code>، ثم يبحث في القائمة المفصولة بالفواصل النقطية <code>:</code> للأدلة داخل <code>$PATH</code> عن ملفٍ بهذا الاسم. وعندما يجده، يشغّله (بافتراض أنّ الملف <em>قابل للتنفيذ</em> executable؛ سنأتي لذلك لاحقًا). يمكننا معرفة الملف الذي يُنفَّذ لاسم برنامجٍ معيّن باستخدام برنامج <code>which</code>. يمكننا أيضًا تجاوز <code>$PATH</code> كليًا بإعطاء <em>مسار</em> الملف الذي نريد تنفيذه.</p>
+<p>يعطينا هذا أيضًا فكرةً عن كيفية تحديد <em>كل</em> البرامج التي يمكننا تنفيذها في مُعالج الأوامر: بسرد محتويات جميع الأدلة الواقعة على <code>$PATH</code>. يمكننا ذلك بتمرير مسار دليلٍ معيّن إلى برنامج <code>ls</code>، الذي يعرض قائمة الملفات:</p>
+<pre><code class="language-console">missing:~$ ls /bin
+</code></pre>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://eza.rocks/"><code>eza</code></a> للحصول على <code>ls</code> أكثر ودًّا مع البشر.</p>
+</blockquote>
+<p>سيعرض هذا — على أغلب الحواسيب — قدرًا <em>كبيرًا</em> من البرامج، لكننا سنركّز هنا على بعضٍ من أهمّها فقط. أولًا، بعض الأوامر البسيطة:</p>
+<ul>
+<li><code>cat file</code>، الذي يطبع محتويات <code>file</code>.</li>
+<li><code>sort file</code>، الذي يطبع أسطر <code>file</code> بترتيبٍ مُفرز.</li>
+<li><code>uniq file</code>، الذي يزيل الأسطر المتطابقة المتتالية من <code>file</code>.</li>
+<li><code>head file</code> و<code>tail file</code>، اللذان يطبعان أول وآخر بضعة أسطرٍ من <code>file</code> على الترتيب.</li>
+</ul>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://github.com/sharkdp/bat"><code>bat</code></a> بدلًا من <code>cat</code> لأجل تلوين الصياغة (syntax highlighting) وإمكانية التمرير.</p>
+</blockquote>
+<p>هناك أيضًا <code>grep pattern file</code>، الذي يعثر على الأسطر المطابقة للنمط <code>pattern</code> في <code>file</code>. هذا الأمر يستحقّ اهتمامًا أكبر قليلًا لأنه <em>مفيدٌ جدًا</em> وفي الوقت نفسه يتميّز بمجموعة ميزاتٍ أوسع مما قد تتوقّع. <code>pattern</code> هو في الحقيقة <em>تعبيرٌ نمطيّ</em> (regular expression) يمكنه التعبير عن أنماطٍ معقدةٍ للغاية؛ وسنتناول <a href="/book/missing-semester/code-quality/index">تلك الأنماط</a> في محاضرة جودة الكود. يمكنك أيضًا تحديد دليلٍ بدلًا من ملف (أو تركه فارغًا للمجلد <code>.</code>)، وتمرير <code>-r</code> للبحث المتكرّر في جميع ملفات الدليل.</p>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a> بدلًا من <code>grep</code> للحصول على بديلٍ أسرع وأكثر ودًّا مع البشر (لكنّه أقلّ قابليةً للنقل). كما أنّ <code>ripgrep</code> سيبحث بشكلٍ متكرّر في مجلد العمل الحالي افتراضيًا!</p>
+</blockquote>
+<p>ثمّة أيضًا بعض الأدوات المفيدة جدًا ذات واجهةٍ أكثر تعقيدًا قليلًا. أولاها <code>sed</code>، وهو محرّر ملفاتٍ برمجيّ (programmatic). لديه لغة برمجةٍ خاصة به لإجراء تعديلاتٍ مؤتمتةٍ على الملفات، لكنّ أكثر استخداماته شيوعًا هو:</p>
+<pre><code class="language-console">missing:~$ sed -i &#x27;s/pattern/replacement/g&#x27; file
+</code></pre>
+<p>يستبدل هذا جميع حالات <code>pattern</code> بـ <code>replacement</code> في <code>file</code>. يشير <code>-i</code> إلى رغبتنا في إجراء الاستبدالات داخل الملف نفسه (inline) (بدلًا من ترك <code>file</code> دون تعديلٍ وطباعة المحتويات المستبدلة). ويعبّر <code>s/</code> عن رغبتنا، في لغة برمجة sed، في إجراء استبدال. ويفصل <code>/</code> بين النمط والبديل. وتشير اللاحقة <code>/g</code> إلى رغبتنا في استبدال <em>جميع</em> الوقوعات في كل سطرٍ وليس الأول فحسب. وكما في <code>grep</code>، فإنّ <code>pattern</code> هنا تعبيرٌ نمطيّ، وهو ما يمنحك قوةً تعبيريةً كبيرة. كما تسمح استبدالات التعبيرات النمطية للبديل <code>replacement</code> بالإحالة إلى أجزاءٍ من النمط المطابَق؛ سنرى مثالًا على ذلك بعد قليل.</p>
+<p>بعد ذلك لدينا <code>find</code>، الذي يتيح لك العثور على ملفاتٍ (بشكلٍ متكرّر) تطابق شروطًا معيّنة. على سبيل المثال:</p>
+<pre><code class="language-console">missing:~$ find ~/Downloads -type f -name &quot;*.zip&quot; -mtime +30
+</code></pre>
+<p>يعثر على ملفات ZIP في مجلد التنزيلات الأقدم من 30 يومًا.</p>
+<pre><code class="language-console">missing:~$ find ~ -type f -size +100M -exec ls -lh {} \\;
+</code></pre>
+<p>يعثر على الملفات الأكبر من 100 ميجابايت في مجلد منزلك ويعرضها. لاحظ أنّ <code>-exec</code> يأخذ <em>أمرًا</em> يُختتم بفاصلةٍ منقوطةٍ منفردة <code>;</code> (نحتاج لإفلاتها تمامًا مثل المسافة) حيث يُستبدل <code>{}</code> بمسار كلّ ملفٍ مطابَق بواسطة <code>find</code>.</p>
+<pre><code class="language-console">missing:~$ find . -name &quot;*.py&quot; -exec grep -l &quot;TODO&quot; {} \\;
+</code></pre>
+<p>يعثر على أيّ ملفات <code>.py</code> تحتوي عناصر TODO فيها.</p>
+<p>قد تكون صياغة <code>find</code> شاقةً بعض الشيء، لكن نأمل أن يمنحك هذا إحساسًا بمدى فائدته!</p>
+<blockquote>
+<p>ننصحك بتثبيت واستخدام <a href="https://github.com/sharkdp/fd"><code>fd</code></a> بدلًا من <code>find</code> للحصول على تجربةٍ أكثر ودًّا مع البشر (ولكنها أقلّ قابليةً للنقل!).</p>
+</blockquote>
+<p>التالي في القائمة هو <code>awk</code>، الذي لديه — مثل <code>sed</code> — لغة برمجةٍ خاصة به. حيث بُني <code>sed</code> لتحرير الملفات، بينما بُني <code>awk</code> لتحليلها (parsing). أكثر استخدامات <code>awk</code> شيوعًا بدرجةٍ كبيرةٍ هي لملفات البيانات ذات الصياغة المنتظمة (مثل ملفات CSV) حيث تريد استخراج أجزاءٍ معيّنة فقط من كلّ سجلّ (أي سطر):</p>
+<pre><code class="language-console">missing:~$ awk &#x27;{print $2}&#x27; file
+</code></pre>
+<p>يطبع العمود الثاني (الفاصل بين أجزائه مسافاتٌ بيضاء) من كل سطرٍ في <code>file</code>. وإذا أضفت <code>-F,</code>، فسيطبع العمود الثاني المفصول بفواصلَ من كل سطر. يمكن لـ <code>awk</code> أن يفعل أكثر بكثير — تصفية الصفوف، وحساب المجاميع، والمزيد — راجع التمارين لكي تتذوّق شيئًا من ذلك.</p>
+<p>إذا جمعنا هذه الأدوات معًا، يمكننا القيام بأمورٍ فاخرةٍ مثل:</p>
+<pre><code class="language-console">missing:~$ ssh myserver &#x27;journalctl -u sshd -b-1 | grep &quot;Disconnected from&quot;&#x27; \\
+  | sed -E &#x27;s/.*Disconnected from .* user (.*) [^ ]+ port.*/\\1/&#x27; \\
+  | sort | uniq -c \\
+  | sort -nk1,1 | tail -n10 \\
+  | awk &#x27;{print $2}&#x27; | paste -sd,
+postgres,mysql,oracle,dell,ubuntu,inspur,test,admin,user,root
+</code></pre>
+<p>وهذا يجلب سجلات SSH من خادمٍ بعيد (سنتحدث أكثر عن <code>ssh</code> في المحاضرة التالية)، ويبحث عن رسائل قطع الاتصال، ويستخرج اسم المستخدم من كلّ رسالةٍ من تلك الرسائل، ويطبع أسماء المستخدمين العشرة الأوائل مفصولةً بفواصل. كل ذلك في أمرٍ واحد! وسنترك تشريح كل خطوةٍ من هذه الخطوات كتمرينٍ لك.</p>
+<h2 id="لغة-معالج-الأوامر-bash">لغة مُعالج الأوامر (bash)</h2>
+<p>قدّم المثال السابق مفهومًا جديدًا: الأنابيب (<code>|</code>). هذه تتيح لك وصل مخرجات برنامجٍ ما بمدخلات برنامجٍ آخر. ويعمل هذا لأنّ معظم برامج سطر الأوامر ستتعامل مع «المدخل القياسي» (standard input) (حيث تذهب ضغطاتك على لوحة المفاتيح عادةً) إذا لم يُعطَ الوسيط <code>file</code>. يأخذ <code>|</code> «المخرج القياسي» (standard output) (ما يُطبع عادةً على مُحاكيك الطرفي) للبرنامج الذي يسبق <code>|</code> ويجعله هو المدخل القياسي للبرنامج الذي يليه <code>|</code>. يتيح لك هذا <em>تأليف</em> (compose) برامج مُعالج الأوامر، وهو جزءٌ مما يجعل مُعالج الأوامر بيئةَ عملٍ منتجةً للغاية!</p>
+<p>في الحقيقة، تنفّذ معظم معالجات الأوامر لغة برمجةٍ كاملة (مثل bash)، تمامًا مثل Python أو Ruby. فهي تملك متغيراتٍ وجملَ شرطيةً وحلقاتٍ ودوالّ. عندما تشغّل أوامرَ في مُعالج الأوامر الخاص بك، فأنت في الحقيقة تكتب قدرًا يسيرًا من التعليمات البرمجية التي يفسّرها مُعالج الأوامر. لن نعلّمك كل bash اليوم، لكن هناك بعض الأجزاء التي ستجدها مفيدةً بشكلٍ خاص:</p>
+<p>أولًا، عمليات إعادة التوجيه (redirections): يتيح لك <code>&gt;file</code> أخذ المخرج القياسي لبرنامجٍ ما وكتابته إلى <code>file</code> بدلًا من مُحاكيك الطرفي. وهذا يجعل تحليله لاحقًا أسهل. بينما يلحق <code>&gt;&gt;file</code> بـ <code>file</code> بدلًا من الكتابة فوقه. وهناك أيضًا <code>&lt;file</code> الذي يخبر مُعالج الأوامر بالقراءة من <code>file</code> بدلًا من لوحة المفاتيح كمدخلٍ قياسيٍّ لبرنامجٍ ما.</p>
+<blockquote>
+<p>هذا وقتٌ مناسبٌ لذكر برنامج <code>tee</code>. سيطبع <code>tee</code> المدخل القياسي إلى المخرج القياسي (تمامًا مثل <code>cat</code>!)، لكنه سيكتبه <em>أيضًا</em> إلى ملف. إذًا ستحفظ جملة <code>verbose cmd | tee verbose.log | grep CRITICAL</code> السجلّ الكامل المفصّل إلى ملفٍ مع إبقاء مُحاكيك الطرفي نظيفًا!</p>
+</blockquote>
+<p>بعد ذلك، الجمل الشرطية: ستنفّذ <code>if command1; then command2; command3; fi</code> الأمرَ <code>command1</code>، وإذا لم ينتج عن ذلك خطأً، فستشغّل <code>command2</code> و<code>command3</code>. ويمكنك أيضًا الحصول على فرع آخر <code>else</code> إذا رغبت. أكثر أمرٍ استخدامًا بصفتها <code>command1</code> هو أمر <code>test</code>، والذي يُختصر غالبًا ببساطةٍ إلى <code>[</code>، ويتيح لك تقييم شروطٍ مثل «هل يوجد ملف؟» (<code>test -f file</code> أو <code>[ -f file ]</code>) أو «هل تساوي سلسلةٌ أخرى؟» (<code>[ &quot;$var&quot; = &quot;string&quot; ]</code>). في bash، يوجد أيضًا <code>[[ ]]</code>، وهي نسخةٌ مدمجةٌ «أكثر أمانًا» من <code>test</code> ولديها سلوكياتٌ غريبةٌ أقلّ حيال الاقتباس.</p>
+<p>لدى bash أيضًا نموذجان من الحلقات، <code>while</code> و<code>for</code>. تعمل <code>while command1; do command2; command3; done</code> تمامًا مثل المقابل الشرطي <code>if</code>، باستثناء أنها ستعيد تنفيذ كلّ شيءٍ مرارًا وتكرارًا ما دام <code>command1</code> لا ينتج خطأً. تنفّذ <code>for varname in a b c d; do command; done</code> الأمرَ <code>command</code> أربع مرات، وفي كل مرةٍ يُضبط <code>$varname</code> على واحدٍ من <code>a</code> و<code>b</code> و<code>c</code> و<code>d</code>. وبدلًا من سرد العناصر صراحةً، ستستخدم غالبًا «استبدال الأوامر» (command substitution)، مثل:</p>
+<pre><code class="language-bash"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 1 10); <span class="hljs-keyword">do</span>
+</code></pre>
+<p>ينفّذ هذا الأمرَ <code>seq 1 10</code> (الذي يطبع الأرقام من 1 إلى 10 شاملةً) ثم يستبدل كامل <code>$()</code> بمخرج ذلك الأمر، مانحًا إياك حلقةً من 10 تكرارات. في التعليمات البرمجية الأقدم سترى أحيانًا علاماتِ اقتباسٍ خلفيةً حرفية (مثل <code>for i in \`seq 1 10\`; do</code>) بدلًا من <code>$()</code>، لكن ينبغي أن تُفضّل وبشدّةٍ صيغة <code>$()</code> لأنها قابلةٌ للتضمين (nesting).</p>
+<p>رغم أنه يمكنك كتابة نصوصٍ برمجيةٍ (scripts) طويلةٍ مباشرةً في الموجّه، ستريد عادةً كتابتها في ملفٍ <code>.sh</code> بدلًا من ذلك. على سبيل المثال، هذا نصّ برمجيٌّ سيشغّل برنامجًا في حلقةٍ حتى يفشل، طابعًا مخرج التشغيل الفاشل فقط، مع إجهاد معالجك في الخلفية (مفيدٌ لإعادة إنتاج الاختبارات غير المستقرة مثلًا):</p>
+<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">set</span> -euo pipefail
+
+<span class="hljs-comment"># Start CPU stress in background</span>
+stress --cpu 8 &amp;
+STRESS_PID=$!
+
+<span class="hljs-comment"># Setup log file</span>
+LOGFILE=<span class="hljs-string">&quot;test_runs_<span class="hljs-subst">$(date +%s)</span>.log&quot;</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Logging to <span class="hljs-variable">$LOGFILE</span>&quot;</span>
+
+<span class="hljs-comment"># Run tests until one fails</span>
+RUN=1
+<span class="hljs-keyword">while</span> cargo <span class="hljs-built_in">test</span> my_test &gt; <span class="hljs-string">&quot;<span class="hljs-variable">$LOGFILE</span>&quot;</span> 2&gt;&amp;1; <span class="hljs-keyword">do</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Run <span class="hljs-variable">$RUN</span> passed&quot;</span>
+    ((RUN++))
+<span class="hljs-keyword">done</span>
+
+<span class="hljs-comment"># Cleanup and report</span>
+<span class="hljs-built_in">kill</span> <span class="hljs-variable">$STRESS_PID</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Test failed on run <span class="hljs-variable">$RUN</span>&quot;</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Last 20 lines of output:&quot;</span>
+<span class="hljs-built_in">tail</span> -n 20 <span class="hljs-string">&quot;<span class="hljs-variable">$LOGFILE</span>&quot;</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Full log: <span class="hljs-variable">$LOGFILE</span>&quot;</span>
+</code></pre>
+<p>يحتوي هذا على عددٍ من الأمور الجديدة التي أنصحك بقضاء بعض الوقت في استكشافها، إذ إنها مفيدةٌ جدًا في صياغة استدعاءات مُعالج أوامر مفيدةٍ مثل الوظائف الخلفية (<code>&amp;</code>) لتشغيل البرامج بالتزامن، وعمليات <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html">إعادة توجيه مُعالج الأوامر</a> الأكثر تعقيدًا، و<a href="https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html">التوسيع الحسابي</a> (arithmetic expansion).</p>
+<p>لكن من الجدير قضاء ثانيةٍ في أول سطرين من البرنامج. الأول هو «الـ shebang»؛ سترى هذا في أعلى ملفاتٍ أخرى غير نصوص مُعالج الأوامر أيضًا. عندما يُنفَّذ ملفٌ يبدأ بالعبارة السحرية <code>#!/path</code>، سيشغّل مُعالج الأوامر البرنامجَ الموجود في <code>/path</code>، ويُمرّر إليه محتويات الملف كمدخل. وفي حالة نصٍ برمجيّ لمُعالج الأوامر، فهذا يعني تمرير محتويات النصّ البرمجيّ إلى <code>/bin/bash</code>، لكن يمكنك أيضًا كتابة نصوصٍ برمجيةٍ Python مع سطر shebang من <code>/usr/bin/python</code>!</p>
+<p>أما السطر الثاني فيُعدّ وسيلةً لجعل bash «أكثر تشدّدًا»، وتخفيف عددٍ من مصادر الخلل (footguns) عند كتابة النصوص البرمجية. يمكن لـ <code>set</code> أن تأخذ عددًا كبيرًا من الوسائط، لكن باختصار: يجعل <code>-e</code> النص البرمجي يخرج مبكرًا إذا فشل أيّ أمر؛ ويجعل <code>-u</code> استخدامَ المتغيرات غير المعرّفة يُسقط النص بدلًا من مجرد استخدام سلسلةٍ فارغة؛ ويجعل <code>-o pipefail</code> النص البرمجي ككلًّا يخرج مبكرًا إذا فشلت البرامج في تسلسل <code>|</code>.</p>
+<blockquote>
+<p>البرمجة بمُعالج الأوامر موضوعٌ عميقٌ، تمامًا كما أيّ لغة برمجة، لكن حذارِ: يمتلك bash عددًا غير عاديّ من المزالق، إلى حدّ وجود <a href="https://tldp.org/LDP/abs/html/gotchas.html">عدة</a> مواقع <a href="https://mywiki.wooledge.org/BashPitfalls">مخصّصةٍ لسردها</a>. أنصح بشدّةٍ باستخدام مكثّفٍ لـ <a href="https://www.shellcheck.net/">shellcheck</a> عند كتابتها. كما أنّ نماذج اللغة (LLMs) رائعةٌ في كتابة نصوص مُعالج الأوامر وتصحيح أخطائها، وكذلك في ترجمتها إلى «لغة برمجة حقيقية» (مثل Python) عندما تكبر أكثر من اللازم ليحتملها bash (أكثر من 100 سطر).</p>
+</blockquote>
+<h1>الخطوات التالية</h1>
+<p>عند هذه النقطة، أصبحت تعرف طريقك حول مُعالج الأوامر بما يكفي لإنجاز المهام الأساسية. يجب أن تكون قادرًا على التجوال للعثور على الملفات التي تهمّك، واستخدام الوظائف الأساسية لمعظم البرامج. في المحاضرة التالية، سنتحدث عن كيفية تنفيذ وأتمتة المهام الأكثر تعقيدًا باستخدام مُعالج الأوامر وبرامج سطر الأوامر المتعددة المفيدة الموجودة هناك.</p>
+<div class="exercises"><h1>تمارين</h1>
+<p>تصاحب كلّ محاضرات هذا المقرر سلسلةٌ من التمارين. بعضها يعطيك مهمةً محدّدةً للقيام بها، بينما البعض الآخر مفتوح النهاية، مثل «جرّب استخدام X وY». نشجّعك بشدّةٍ على تجربتها.</p>
+<p>لم نكتب حلولًا للتمارين. إذا كنت عالقًا في أمرٍ معيّن، فلا تتردّد في النشر في <code>#missing-semester-forum</code> على <a href="https://ossu.dev/#community">Discord</a> أو في مراسلتنا عبر البريد موصوفًا ما جربته حتى الآن، وسنحاول مساعدتك. من المرجّح أيضًا أن تعمل هذه التمارين جيدًا كأوامر أولية (prompts) في محادثةٍ مع نموذج لغة (LLM) حيث يمكنك الانغماس فيها تفاعليًا مع الموضوع. القيمة الحقيقية في هذه التمارين هي رحلة اكتشاف الإجابات، لا الإجابة نفسها. نشجّعك على تتبّع الفروع الجانبية وطرح سؤال «لماذا» أثناء العمل عليها، بدلًا من مجرد البحث عن أقصر طريقٍ إلى الحل.</p>
+<ol>
+<li>
+<p>لهذا المقرر، يجب أن تستخدم مُعالج أوامر يونكس (Unix) مثل Bash أو ZSH. إذا كنت على Linux أو macOS، فلست مضطرًا لفعل أيّ شيءٍ خاص. أما إذا كنت على Windows، فعليك التأكد من أنّك لا تشغّل <code>cmd.exe</code> أو PowerShell؛ يمكنك استخدام <a href="https://docs.microsoft.com/en-us/windows/wsl/">نظام Windows الفرعي لـ Linux</a> أو جهازٍ افتراضيٍّ يعمل بنظام Linux لاستخدام أدوات سطر الأوامر بنمط يونكس. وللتأكد من تشغيلك لمُعالج أوامرٍ مناسب، يمكنك تجربة الأمر <code>echo $SHELL</code>. إذا طبع شيئًا مثل <code>/bin/bash</code> أو <code>/usr/bin/zsh</code>، فهذا يعني أنّك تشغّل البرنامج الصحيح.</p>
+</li>
+<li>
+<p>ماذا يفعل العَلم (flag) <code>-l</code> الخاص بـ <code>ls</code>؟ شغّل <code>ls -l /</code> وافحص المخرجات. ماذا تعني أول 10 رموزٍ في كل سطر؟ (تلميح: <code>man ls</code>)</p>
+</li>
+<li>
+<p>في الأمر <code>find ~/Downloads -type f -name &quot;*.zip&quot; -mtime +30</code>، فإنّ <code>*.zip</code> هو «glob». ما هو glob؟ أنشئ مجلد تجاربٍ يحتوي بعض الملفات، وجرّب أنماطًا مثل <code>ls *.txt</code> و<code>ls file?.txt</code> و<code>ls {a,b,c}.txt</code>. راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html">مطابقة الأنماط</a> في دليل Bash.</p>
+</li>
+<li>
+<p>ما الفرق بين <code>'علامات الاقتباس المفردة'</code> (single quotes)، و<code>&quot;علامات الاقتباس المزدوجة&quot;</code> (double quotes)، و<code>$'علامات اقتباس ANSI'</code>؟ اكتب أمرًا يصدّر سلسلةً تحتوي <code>$</code> حرفيًا و<code>!</code> وحرف سطرٍ جديد. راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Quoting.html">الاقتباس</a> (Quoting).</p>
+</li>
+<li>
+<p>يملك مُعالج الأوامر ثلاثة دفقاتٍ (streams) قياسية: stdin (0)، وstdout (1)، وstderr (2). شغّل <code>ls /nonexistent /tmp</code> وأعد توجيه stdout إلى ملفٍ وstderr إلى ملفٍ آخر. كيف تعيد توجيه كلاهما إلى الملف نفسه؟ راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html">عمليات إعادة التوجيه</a>.</p>
+</li>
+<li>
+<p>يحمل <code>$?</code> حالة الخروج (exit status) للأمر الأخير (0 تعني النجاح). ينفّذ <code>&amp;&amp;</code> الأمرَ التالي فقط إذا نجح السابق؛ وينفّذه <code>||</code> فقط إذا فشل السابق. اكتب سطرًا واحدًا يُنشئ <code>/tmp/mydir</code> فقط إذا لم يكن موجودًا فعلًا. راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html">حالة الخروج</a>.</p>
+</li>
+<li>
+<p>لماذا يجب أن يكون <code>cd</code> مدمجًا في مُعالج الأوامر نفسه بدلًا من أن يكون برنامجًا مستقلًا؟ (تلميح: فكّر فيما يمكن للعملية الفرعية (child process) وما لا يمكنها أن تؤثّر فيه داخل عمليتها الأصلية.)</p>
+</li>
+<li>
+<p>اكتب نصًّا برمجيًا (script) يأخذ اسم ملفٍ كوسيطٍ (<code>$1</code>) ويتحقق مما إذا كان الملف موجودًا باستخدام <code>test -f</code> أو <code>[ -f ... ]</code>. يجب أن يطبع رسائلَ مختلفةً بحسب وجود الملف. راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html">التعبيرات الشرطية في Bash</a>.</p>
+</li>
+<li>
+<p>احفظ النص البرمجي من التمرين السابق في ملفٍ (مثلًا <code>check.sh</code>). جرّب تشغيله باستخدام <code>./check.sh somefile</code>. ماذا يحدث؟ الآن شغّل <code>chmod +x check.sh</code> وجرّب مرةً أخرى. لماذا هذه الخطوة ضرورية؟ (تلميح: انظر إلى <code>ls -l check.sh</code> قبل <code>chmod</code> وبعده.)</p>
+</li>
+<li>
+<p>ماذا يحدث إذا أضفت <code>-x</code> إلى أعلام (flags) <code>set</code> في نصٍّ برمجي؟ جرّب ذلك مع نصٍّ برمجيٍّ بسيطٍ ولاحظ المخرجات. راجع <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">المدمجة Set</a>.</p>
+</li>
+<li>
+<p>اكتب أمرًا ينسخ ملفًا إلى نسخةٍ احتياطية (backup) يحمل تاريخ اليوم في اسم الملف (مثلًا <code>notes.txt</code> ← <code>notes_2026-01-12.txt</code>). (تلميح: <code>$(date +%Y-%m-%d)</code>). راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html">استبدال الأوامر</a>.</p>
+</li>
+<li>
+<p>عدّل نصّ الاختبار غير المستقر (flaky test script) من المحاضرة ليقبل أمر الاختبار نفسه كوسيطٍ بدلًا من ترميز <code>cargo test my_test</code> بنصٍّ ثابت (hardcoded). (تلميح: <code>$1</code> أو <code>$@</code>). راجع <a href="https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html">المعلمات الخاصة</a>.</p>
+</li>
+<li>
+<p>استخدم أنابيب (pipes) للعثور على امتدادات الملفات (file extensions) الخمسة الأكثر شيوعًا في مجلد منزلك. (تلميح: ادمج <code>find</code> و<code>grep</code> أو <code>sed</code> أو <code>awk</code> و<code>sort</code> و<code>uniq -c</code> و<code>head</code>).</p>
+</li>
+<li>
+<p>يحوّل <code>xargs</code> الأسطر من stdin إلى وسائط أوامر. استخدم <code>find</code> و<code>xargs</code> معًا (وليس <code>find -exec</code>) للعثور على جميع ملفات <code>.sh</code> في مجلدٍ ما وإحصاء الأسطر في كلٍّ منها باستخدام <code>wc -l</code>. مكافأة: اجعله يتعامل مع أسماء الملفات التي تحتوي مسافات. (تلميح: <code>-print0</code> و<code>-0</code>). راجع <code>man xargs</code>.</p>
+</li>
+<li>
+<p>استخدم <code>curl</code> لجلب HTML الخاص بموقع المقرر (<code>https://missing.csail.mit.edu/</code>) وتوجيهه إلى <code>grep</code> لإحصاء عدد المحاضرات المدرجة. (تلميح: ابحث عن نمطٍ يظهر مرةً واحدةً لكل محاضرة؛ واستخدم <code>curl -s</code> لإسكات مخرجات التقدّم.)</p>
+</li>
+<li>
+<p><a href="https://jqlang.github.io/jq/"><code>jq</code></a> أداةٌ قويةٌ لمعالجة بيانات JSON. اجلب بيانات العيّنة من <code>https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json</code> باستخدام <code>curl</code> واستخدم <code>jq</code> لاستخراج أسماء الأشخاص الذين إصدارهم أكبر من 6 فقط. (تلميح: مرّر إلى <code>jq .</code> أولًا لرؤية البنية؛ ثم جرّب <code>jq '.[] | select(...) | .name'</code>)</p>
+</li>
+<li>
+<p>يمكن لـ <code>awk</code> تصفية الأسطر اعتمادًا على قيم الأعمدة ومعالجة المخرجات. على سبيل المثال، تطبع جملة <code>awk '$3 ~ /pattern/ {$4=&quot;&quot;; print}'</code> الأسطر الوحيدة التي يطابق عمودها الثالث <code>pattern</code>، مع حذف العمود الرابع. اكتب أمر <code>awk</code> يطبع الأسطر الوحيدة التي يكون عمودها الثاني أكبر من 100، ويُبدّل العمودين الأول والثالث. جرّب باستخدام: <code>printf 'a 50 x\\nb 150 y\\nc 200 z\\n'</code></p>
+</li>
+<li>
+<p>شتّت خط أنابيب سجلات SSH من المحاضرة: ماذا تفعل كل خطوة؟ ثم ابنِ شيئًا مشابهًا للعثور على أوامر مُعالج الأوامر الأكثر استخدامًا لديك من <code>~/.bash_history</code> (أو <code>~/.zsh_history</code>).</p>
+</li>
+</ol>
+</div>`,t={book:e,chapter:o,chapterTitle:c,slug:s,title:d,headings:n,html:a};export{e as book,o as chapter,c as chapterTitle,t as default,n as headings,a as html,s as slug,d as title};

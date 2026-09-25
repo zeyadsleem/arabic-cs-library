@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.D-wSzHHK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D5LYHf0q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.B8gBS73N.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BE5kT3lG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-v837FGo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/I9MyXR3J.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DALGGqHN.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfJcPA2D.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="نمط المفرد (singleton) — أنماط JavaScript"/><!----><title>نمط المفرد (singleton) | أنماط تصميم تطبيقات الويب</title>
+		<link href="../../../../_app/immutable/assets/0.DahrPYdV.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern" class="active">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل موارد الأطراف الخارجية (Third-party)</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>نمط المفرد (singleton)</h1></div> <div class="reader-content"><!----><p>نمط المفرد (singleton) هو كائن موجود مرة واحدة فقط طوال عمر التطبيق. يحصل كل مستدعٍ عليه على النسخة نفسها — الحالة نفسها، والطرق نفسها، والهوية نفسها. يظهر هذا النمط متى كان هناك مورد مشترك فعلًا: مجموعة اتصالات بقاعدة بيانات، أو عميل أعلام ميزات يستعلم عن خدمة بعيدة، أو WebSocket يوزع الرسائل الواردة على مشتركين كثيرين، أو عميل تحليلات يجمع الأحداث قبل إرسالها.</p>
+<p>في كل هذه الحالات، لا تريد وجود نسختين من الشيء نفسه. مجموعتا اتصالات تضاعفان عدد الاتصالات. أما عميلان للتحليلات فسيتنافسان عند الإرسال. إن نمط المفرد هو الإجابة التقليدية على: «تأكد من وجود نسخة واحدة، مهما تعددت الأماكن التي تطلبها».</p>
+<p>مع ذلك، قبل استخدام النمط، من المفيد طرح سؤال سيعود إليه المقال: <strong>هل تحتاج فعلًا إلى نمط مفرد، أم تحتاج فقط إلى قيمة تعيش في نطاق الوحدة (module scope)؟</strong> في JavaScript الحديثة يُخلط غالبًا بين الأمرين، والخيار الثاني هو الأفضل في الغالبية العظمى من الحالات.</p>
+<h2 id="خط-أساس-نمط-المفرد-القائم-على-الأصناف">خط أساس: نمط المفرد القائم على الأصناف</h2>
+<p>إليك تنفيذًا كلاسيكية حُدِّثت باستخدام حقول الأصناف الخاصة وواصف ثابت. سنستخدم عميل أعلام ميزات كمثال متواصل — وهي خدمة تحمّل قيم الأعلام مرة واحدة وتقدمها إلى بقية التطبيق.</p>
+<pre><code>class FeatureFlags {
+  // Private static slot for the one instance
+  static #instance = null;
+
+  // Private state — invisible outside the class
+  #flags = new Map();
+  #loaded = false;
+
+  constructor() {
+    if (FeatureFlags.#instance) {
+      return FeatureFlags.#instance;
+    }
+    FeatureFlags.#instance = this;
+  }
+
+  static getInstance() {
+    return (FeatureFlags.#instance ??= new FeatureFlags());
+  }
+
+  async load(url) {
+    if (this.#loaded) return;
+    const res = await fetch(url);
+    const data = await res.json();
+    for (const [key, value] of Object.entries(data)) {
+      this.#flags.set(key, value);
+    }
+    this.#loaded = true;
+  }
+
+  isEnabled(name) {
+    return this.#flags.get(name) === true;
+  }
+}
+
+export default FeatureFlags;
+</code></pre>
+<p>هناك أمران يستحقان الانتباه. يستخدم الحقل <code>#instance</code> حقلًا ساكنًا خاصًا وفق ES2022، ولذلك لا يمكن لأي شيفرة خارجية استبداله. كما يبقي الإسناد المنطقي <code>??=</code> (ES2021) فرع التهيئة الكسولة في سطر واحد واضح — أما <code>getInstance()</code> فيعيد النسخة الموجودة أو ينشئها.</p>
+<p>لا ينشئ أي مستدعٍ هذه النسخة مباشرة:</p>
+<pre><code>import FeatureFlags from &quot;./feature-flags.js&quot;;
+
+const flags = FeatureFlags.getInstance();
+await flags.load(&quot;/config/flags.json&quot;);
+
+if (flags.isEnabled(&quot;new-checkout&quot;)) {
+  // render the new flow
+}
+</code></pre>
+<p>إذا استدعى مستدعٍ عنيد <code>new FeatureFlags()</code> مرتين، فإن الدالة المنشئة تختصر المسار وتعيد النسخة الموجودة — مع الحفاظ على هويتها وفق <code>===</code>. هذا الضمان هو جوهر النمط كله.</p>
+<h2 id="البديل-الحديث-الحالة-في-نطاق-الوحدة">البديل الحديث: الحالة في نطاق الوحدة</h2>
+<p>إليك عميل أعلام الميزات نفسه مكتوبًا دون أي من آليات نمط المفرد.</p>
+<pre><code>// feature-flags.js
+const flags = new Map();
+let loaded = false;
+
+export async function load(url) {
+  if (loaded) return;
+  const res = await fetch(url);
+  const data = await res.json();
+  for (const [key, value] of Object.entries(data)) {
+    flags.set(key, value);
+  }
+  loaded = true;
+}
+
+export function isEnabled(name) {
+  return flags.get(name) === true;
+}
+</code></pre>
+<p>تضمن مواصفة ESM تقييم الوحدة <strong>مرة واحدة بالضبط</strong> لكل نطاق واقع (realm). وكل ما يُعلن في المستوى الأعلى هو، بحكم التعريف، نسخة مفردة — تعيش المتغيرات طوال عمر سجل الوحدة، ويرى كل <code>import</code> من هذا الملف خريطة <code>flags</code> نفسها. لا توجد دالة منشئة ينبغي الدفاع عنها، ولا <code>getInstance</code> ينبغي تذكره، ولا خطر من استدعاء <code>new</code> عن طريق الخطأ.</p>
+<p>في معظم مشكلات «أحتاج إلى واحد من هذه» داخل قاعدة شيفرة حديثة، تكون هذه هي الإجابة الصحيحة. يستحق النمط القائم على الأصناف التبرير عندما تحتاج حقًا إلى التغليف (الحقول الخاصة، والوراثة، وتعدد الأشكال)، أو عندما يلزم إنشاء النسخة كسولًا بإعدادات لا تتوفر وقت الاستيراد (import).</p>
+<h2 id="متى-لا-تستخدم-نمط-المفرد">متى لا تستخدم نمط المفرد</h2>
+<p>استخدم شيئًا آخر إذا صادفت أيًا من الحالات التالية:</p>
+<ul>
+<li><strong>تحتاج إلى حالة لكل طلب (request) أو لكل مستخدم.</strong> النمط المفرد صالح على مستوى العملية كلها. في سياق العرض من الخادم (SSR) أو بلا خادم (serverless)، ستتسرب هذه الحالة عبر الطلبات — وهو مصدر كلاسيكي لأخطاء «لماذا يرى المستخدم A بيانات المستخدم B؟».</li>
+<li><strong>تحتاج إلى تبديل التنفيذ في الاختبارات.</strong> يجعل ترميز <code>MyService.getInstance()</code> بعمق في شيفرتك استبدال النسخة مستحيلًا دون استخدام monkey-patching. احقن التبعية بدلًا من ذلك (المزيد عن ذلك أدناه).</li>
+<li><strong>ضمان «نسخة واحدة» مفروض بالاتفاق، لا بالضرورة.</strong> إذا لم يحدث أي خلل عند وجود نسختين، فلد لديك كائن عادي، لا نمط مفرد.</li>
+<li><strong>أنت مغري باستخدامه كحاوية لكل حالات التطبيق.</strong> هذه حزمة عالمية قابلة للتغيير بخطوات إضافية. استخدم حاوية حالة حقيقية.</li>
+</ul>
+<h2 id="بدائل-تستحق-المعرفة">بدائل تستحق المعرفة</h2>
+<h3 id="حاويات-حقن-التبعيات-dependency-injection">حاويات حقن التبعيات (dependency injection)</h3>
+<p>تتيح مكتبات مثل <a href="https://inversify.io/">InversifyJS</a> و<a href="https://github.com/microsoft/tsyringe">tsyringe</a> تسجيل خدمة مرة واحدة وحلها في أي مكان، لكن الربط يُضبط في مكان واحد — عادةً عند جذر تركيب التطبيق (composition root).</p>
+<pre><code>import { container, singleton, inject } from &quot;tsyringe&quot;;
+
+@singleton()
+class AnalyticsClient {
+  track(event: string, props: Record&lt;string, unknown&gt;) { /* ... */ }
+}
+
+class CheckoutService {
+  constructor(@inject(AnalyticsClient) private analytics: AnalyticsClient) {}
+
+  complete(orderId: string) {
+    this.analytics.track(&quot;order_completed&quot;, { orderId });
+  }
+}
+
+const checkout = container.resolve(CheckoutService);
+</code></pre>
+<p>توفر حاوية حقن التبعيات ضمان «نسخة واحدة في كل مكان» نفسه، لكنها تتيح للاختبارات تسجيل ربط وهمي قبل الحل. هذا التغيير الواحد يتيح اختبارات وحدات معزولة بطريقة لا يستطيع نمط مفرد مصنوع يدويًا تحقيقها.</p>
+<h3 id="سياق-react-لنطاق-شجرة-المكونات">سياق React لنطاق شجرة المكونات</h3>
+<p>في React، تعني «العالمية» عادةً «متاح لكل مكون في هذه الشجرة». يتيح لك كل من <code>createContext</code> والمزود (Provider) تحديد ذلك، مع ميزة إضافية هي أن النطاق هو الشجرة الفرعية؛ يمكنك تركيب قيمة مختلفة في اختبار أو قصة Storybook دون المساس بشيفرة الإنتاج.</p>
+<pre><code>const FeatureFlagsContext = createContext(null);
+
+export function FeatureFlagsProvider({ client, children }) {
+  return (
+    &lt;FeatureFlagsContext.Provider value={client}&gt;
+      {children}
+    &lt;/FeatureFlagsContext.Provider&gt;
+  );
+}
+
+export function useFeatureFlag(name) {
+  const client = useContext(FeatureFlagsContext);
+  return client.isEnabled(name);
+}
+</code></pre>
+<h3 id="المخازن-الخفيفة-zustand-وjotai-وvaltio">المخازن الخفيفة: Zustand وJotai وValtio</h3>
+<p>للحالة على مستوى التطبيق مع الاشتراكات، حلّت المخازن الحديثة إلى حد كبير محل الأنماط المفردة العشوائية. فمخزن Zustand، على سبيل المثال، دالة — لا صنف — تعيد خطّافًا مرتبطًا بحالة واحدة:</p>
+<pre><code>import { create } from &quot;zustand&quot;;
+
+export const useSession = create((set) =&gt; ({
+  user: null,
+  login: (user) =&gt; set({ user }),
+  logout: () =&gt; set({ user: null }),
+}));
+</code></pre>
+<p>يستطيع أي مكون قراءة الجلسة أو تحديثها من دون مزود أو استدعاء <code>getInstance</code>، كما يمكن محاكاة المخزن بسهولة في الاختبارات.</p>
+<h2 id="المزايا-والتكاليف">المزايا والتكاليف</h2>
+<h3 id="الاختبارات-هي-الجزء-الصعب">الاختبارات هي الجزء الصعب</h3>
+<p>يحتفظ النمط المفرد بالحالة عبر الاختبارات بحكم تعريفه. إذا غيّر الاختبار A علمًا وقرأه الاختبار B، فقد ربطت اختباراتك معًا من خلال حالة عالمية خفية — ونمط الفشل هنا هو تذبذب يعتمد على ترتيب التنفيذ ويصعب تشخيصه بشدة. تشمل التخفيفات ما يلي:</p>
+<ul>
+<li>وفر دالة <code>reset()</code> وابداها في <code>beforeEach</code>.</li>
+<li>احقن النسخة المفردة عبر وسيط في الدالة المنشئة أو مصنع، كي تتمكن الاختبارات من تمرير نسخة جديدة.</li>
+<li>استخدم إعادة تعيين الوحدات في Vitest أو Jest (<code>vi.resetModules()</code> / <code>jest.resetModules()</code>) — لكن انتبه إلى أنها تعمل بسلاسة مع الحالة الموجودة في نطاق الوحدة، لا مع الأصناف التي تحتفظ بمرجع ساكن خاص بها.</li>
+</ul>
+<h3 id="الاقتران-المخفي">الاقتران المخفي</h3>
+<p>الدالة التي تستدعي <code>Logger.getInstance()</code> في أعماق جسمها تملك تبعية لا تظهر في توقيعها. وبعد شهرين، عندما يحاول أحدهم استخدام الدالة في سياق مختلف، يكتشف الاقتران بالطريقة الصعبة. الأفضل تمرير التبعية صراحةً:</p>
+<pre><code>// Hidden dependency
+function processOrder(order) {
+  Logger.getInstance().info(&quot;processing&quot;, order.id);
+}
+
+// Explicit — the contract is in the signature
+function processOrder(order, logger) {
+  logger.info(&quot;processing&quot;, order.id);
+}
+</code></pre>
+<h3 id="تسرب-الحالة-على-الخادم">تسرّب الحالة على الخادم</h3>
+<p>في عملية Node طويلة العمر تخدم طلبات كثيرة، تتشارك ذاكرة مؤقتة أو عداد على مستوى الوحدة عبر الطلبات. هذا مقبول للأدوات عديمة الحالة مثل مسجل مضبوط، لكنه كارثي لأي شيء ينبغي أن يكون خاصًا بكل طلب. توثق أطر مثل Next.js صراحةً أي الأنماط المفردة آمنة عبر الطلبات وأيها يحتاج إلى نطاق عبر <code>AsyncLocalStorage</code> أو ذاكرة React المؤقتة الخاصة بكل طلب.</p>
+<h3 id="الوراثة-والتهيئة-الكسولة">الوراثة والتهيئة الكسولة</h3>
+<p>تجعل تطبيقات النمط المفرد الكلاسيكي الوراثة محرجة — إذ يعيد الصنف الأب نسخته المخزنة بدلًا من إنشاء الصنف الفرعي. إذا كنت تحتاج حقًا إلى مصنع متعدد الأشكال («أعطني تنفيذ العميل المناسب»)، فذلك نمط مصنع (factory)، لا نمط مفرد.</p>
+<h2 id="النمط-المفرد-مقابل-الحالة-في-نطاق-الوحدة-مقابل-الحالة-العالمية">النمط المفرد مقابل الحالة في نطاق الوحدة مقابل الحالة العالمية</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>صنف المفرد</th>
+<th>الحالة في نطاق الوحدة</th>
+<th>متغير عالمي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>نسخة واحدة لكل نطاق واقع</strong></td>
+<td>نعم (مفروض)</td>
+<td>نعم (ضمان ESM)</td>
+<td>نعم</td>
+</tr>
+<tr>
+<td><strong>التغليف</strong></td>
+<td>قوي (حقول خاصة)</td>
+<td>قوي (نطاق الوحدة)</td>
+<td>لا شيء</td>
+</tr>
+<tr>
+<td><strong>التهيئة الكسولة</strong></td>
+<td>نعم</td>
+<td>نعم (<code>await</code> على المستوى الأعلى)</td>
+<td>لا</td>
+</tr>
+<tr>
+<td><strong>قابل للاكتشاف في الاستيرادات</strong></td>
+<td>نعم</td>
+<td>نعم</td>
+<td>لا (يُتاح عبر <code>window</code> / <code>globalThis</code>)</td>
+</tr>
+<tr>
+<td><strong>قابل للاختبار بمعزل</strong></td>
+<td>صعب</td>
+<td>متوسط (إعادة تعيين الوحدة)</td>
+<td>صعب</td>
+</tr>
+<tr>
+<td><strong>الوراثة / تعدد الأشكال</strong></td>
+<td>نعم</td>
+<td>لا</td>
+<td>لا</td>
+</tr>
+</tbody>
+</table>
+<p>الخلاصة: إذا كنت لا تحتاج ميزات الصنف، فالوحدة هي الإجابة الأبسط. وإذا كنت تحتاج إليها، فابنِ النمط المفرد على <code>#instance</code> وواصف ثابت — واحقنه عبر جذر تركيب التطبيق كي تتمكن الاختبارات من استبداله.</p>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">وحدات JavaScript — MDN</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties">ميزات الأصناف الخاصة — MDN</a></li>
+<li><a href="https://github.com/microsoft/tsyringe">tsyringe — Microsoft</a></li>
+<li><a href="https://github.com/pmndrs/zustand">Zustand</a></li>
+<li><a href="https://refactoring.guru/design-patterns/singleton">نمط المفرد — Refactoring Guru</a></li>
+</ul>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/patterns-dev/vanilla/route-based"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التقسيم حسب المسار (Route Based Splitting)</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/patterns-dev/vanilla/static-import"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الاستيراد الساكن (Static Import)</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1pf10gp = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.D-wSzHHK.js"),
+						import("../../../../_app/immutable/entry/app.B8gBS73N.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

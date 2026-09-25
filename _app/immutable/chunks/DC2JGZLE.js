@@ -1,0 +1,144 @@
+const o="patterns-dev",p="vue",n="أنماط Vue",e="container-presentational",t="نمط الحاوية/العرضية",s=[{depth:2,id:"المكون-العرضي-presentational-component",text:"المكوّن العرضي (Presentational Component)"},{depth:2,id:"المكونات-الحاوية-container-components",text:"المكوّنات الحاوية (Container Components)"},{depth:2,id:"دوال-التركيب-composables",text:"دوال التركيب (Composables)"},{depth:2,id:"مصادر-مفيدة",text:"مصادر مفيدة"}],a=`<p>في عام 2015، كتب Dan Abramov مقالًا بعنوان <a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">“المكوّنات العرضية والحاويات” (Presentational and Container Components)</a> غيّر طريقة تفكير كثير من المطوّرين في بنية المكوّنات (component architecture) داخل React. وقد طرح نمطًا يقسم المكوّنات إلى فئتين:</p>
+<ul>
+<li><strong>المكوّنات العرضية (Presentational Components) أو “الغبيّة” (Dumb Components)</strong>: تهتمّ بكيفية ظهور الأشياء. فهي لا تحدّد كيفية تحميل البيانات أو تعديلها، بل تتلقّى البيانات والاستدعاءات (callbacks) حصريًا عبر الخصائص (props).</li>
+<li><strong>المكوّنات الحاوية (Container Components) أو “الذكية” (Smart Components)</strong>: تهتمّ بكيفية عمل الأشياء. فهي توفّر البيانات والسلوك للمكوّنات العرضية أو لمكوّنات حاوية أخرى.</li>
+</ul>
+<p>رغم أن هذا النمط ارتبط في الأصل بـ React، فإن مبدئه الأساسي تمّ تبنّيه وتكييفه بصيغ مختلفة عبر مكتبات وأطر عمل أخرى.</p>
+<p>قدّم تمييز Dan طريقة أوضح وأكثر قابلية للتوسّع لهيكلة تطبيقات JavaScript. فبتحديد مسؤوليات أنواع المكوّنات المختلفة بوضوح، تمكّن المطوّرون من ضمان قابلية استخدام أفضل لعناصر الواجهة (العرضية) والمنطق (الحاويات). وكانت الفكرة أنه إذا أردنا تغيير طريقة ظهور شيء ما (مثل تصميم زر)، فيمكننا فعل ذلك دون المساس بمنطق التطبيق. وبالمقابل، إذا احتجنا تغيير كيفية تدفّق البيانات أو معالجتها، فإن المكوّنات العرضية تبقى دون مساس، مما يضمن بقاء الواجهة متّسقة.</p>
+<p>لكن مع ظهور <a href="https://react.dev/learn/reusing-logic-with-custom-hooks">الخطافات (hooks)</a> في React و<a href="https://vuejs.org/guide/extras/composition-api-faq.html">Composition API</a> في Vue 3، بدأت حدود الفصل الواضحة بين المكوّنات العرضية والحاوية تتلاشى. فقد أتاحت الخطافات وComposition API للمطوّرين تغليف الحالة والمنطق وإعادة استخدامهما دون أن يكونوا ملتزمين بالضرورة بمكوّن حاوية قائم على الأصناف (class-based) أو بـ Options API. ونتيجةً لذلك، لم يعد نمط الحاوية/العرضية مُتّبعًا بهذه الدرجة من الصرامة التي كان عليها. ومع ذلك، سنقضي بعض الوقت في هذا المقال في مناقشة النمط، لأنه لا يزال مفيدًا في أوقات معيّنة.</p>
+<p>لنفترض أننا نريد إنشاء تطبيق يجلب 6 صور لكلاب، ويعرض هذه الصور على الشاشة.</p>
+<p>ولكي نتبع نمط الحاوية/العرضية، نريد فرض الفصل بين المسؤوليات (separation of concerns) بفصل هذه العملية إلى جزأين:</p>
+<ul>
+<li><strong>المكوّنات العرضية (presentational components)</strong>: مكوّنات تهتمّ بكيفية عرض البيانات للمستخدم. وفي هذا المثال، يكون ذلك بعرض قائمة صور الكلاب.</li>
+<li><strong>المكوّنات الحاوية (container components)</strong>: مكوّنات تهتمّ بأيّ بيانات تُعرض للمستخدم. وفي هذا المثال، يكون ذلك بجلب صور الكلاب.</li>
+</ul>
+<p>يتعلّم جلب صور الكلاب بـ<strong>منطق التطبيق (application logic)</strong>، بينما يقتصر عرض الصور على <strong>العرض (view)</strong> فقط.</p>
+<h2 id="المكون-العرضي-presentational-component">المكوّن العرضي (Presentational Component)</h2>
+<p>يتلقّى المكوّن العرضي بياناته عبر الخصائص (<code>props</code>). وتتمثّل وظيفته الأساسية ببساطة في <strong>عرض البيانات التي يتلقّاها</strong> بالطريقة التي نريدها، بما في ذلك الأنماط (styles)، <em>دون تعديل</em> تلك البيانات.</p>
+<p>لننظر إلى المثال الذي يعرض صور الكلاب. وعند عرض صور الكلاب، نريد ببساطة المرور على كل صورة كلاب تمّ جلبها من الواجهة البرمجية وعرض تلك الصور. ولِفعل ذلك، يمكننا إنشاء مكوّن <code>DogImages</code> يتلقّى البيانات عبر الخصائص ويعرض ما يتلقّاه.</p>
+<pre><code>&lt;!-- DogImages.vue --&gt;
+
+&lt;template&gt;
+  &lt;img v-for=&quot;(dog, index) in dogs&quot; :src=&quot;dog&quot; :key=&quot;index&quot; alt=&quot;Dog&quot; /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+  import { defineProps } from &quot;vue&quot;;
+  const { dogs } = defineProps([&quot;dogs&quot;]);
+&lt;/script&gt;
+</code></pre>
+<p>يمكن اعتبار مكوّن <code>DogImages</code> مكوّنًا عرضيًا. والمكوّنات العرضية عادةً عديمة الحالة (stateless): فهي لا تحتوي على حالتها الخاصة، إلا إذا احتاجت إلى حالة لأغراض الواجهة. والبيانات التي تتلقّاها لا يغيّرها المكوّنات العرضية نفسها.</p>
+<p>وتتلقّى المكوّنات العرضية بياناتها من <strong>المكوّنات الحاوية (container components)</strong>.</p>
+<h2 id="المكونات-الحاوية-container-components">المكوّنات الحاوية (Container Components)</h2>
+<p>الوظيفة الأساسية للمكوّنات الحاوية هي <strong>تمرير البيانات (pass data)</strong> إلى المكوّنات العرضية التي تحتوي عليها. أما المكوّنات الحاوية نفسها فعادةً لا تعرض أيّ مكوّنات أخرى سوى المكوّنات العرضية التي تهتمّ ببياناتها. ولأنها لا تعرض أيّ شيء بنفسها، فإنها عادةً لا تحتوي على أيّ أنماط (styling) أيضًا.</p>
+<p>في مثالنا، نريد تمرير صور الكلاب إلى المكوّن العرضي <code>DogsImages</code>. وقبل أن نتمكّن من ذلك، نحتاج إلى جلب الصور من واجهة برمجية خارجية (API). نحتاج إلى إنشاء <strong>مكوّن حاوية</strong> يجلب هذه البيانات، ويمرّرها إلى المكوّن العرضي <code>DogImages</code> لعرضها على الشاشة. وسنسمّي هذا المكوّن الحاوية <code>DogImagesContainer</code>.</p>
+<pre><code>&lt;!-- DogImagesContainer.vue --&gt;
+
+&lt;template&gt;
+  &lt;DogImages :dogs=&quot;dogs&quot; /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+  import { ref, onMounted } from &quot;vue&quot;;
+  import DogImages from &quot;./DogImages.vue&quot;;
+
+  const dogs = ref([]);
+
+  onMounted(async () =&gt; {
+    const response = await fetch(
+      &quot;https://dog.ceo/api/breed/labrador/images/random/6&quot;
+    );
+    const { message } = await response.json();
+    dogs.value = message;
+  });
+&lt;/script&gt;
+</code></pre>
+<p>يجمع هذان المكوّنان معًا بين جعل معالجة منطق التطبيق مفصولة عن العرض ممكنة.</p>
+<p>ولباختصار، هذا هو نمط الحاوية/العرضية. وعند التكامل مع حلول إدارة الحالة مثل <a href="https://pinia.vuejs.org/">Pinia</a>، يمكن الاستفادة من المكوّنات الحاوية للتفاعل مباشرةً مع المخزن (store)، بجلب الحالة أو تعديلها حسب الحاجة. ويتيح ذلك أن تظل المكوّنات العرضية نقية (pure) وغير واعية بمنطق التطبيق الأوسع، فلا تركز إلا على عرض واجهة المستخدم بناءً على الخصائص التي تتلقّاها.</p>
+<p>JavaScript iconDogImagesContainer.vue</p>
+<pre><code>&lt;template&gt;
+  &lt;DogImages :dogs=&quot;dogs&quot; /&gt;
+&lt;/template&gt;
+
+
+&lt;script setup&gt;
+import { ref, onMounted } from &quot;vue&quot;;
+/* eslint-disable-next-line no-unused-vars */
+import DogImages from &quot;./DogImages.vue&quot;;
+
+
+const dogs = ref([]);
+
+
+onMounted(async () =&gt; {
+  const response = await fetch(
+    &quot;https://dog.ceo/api/breed/labrador/images/random/6&quot;
+  );
+  const { message } = await response.json();
+  dogs.value = message;
+});
+&lt;/script&gt;
+</code></pre>
+<p><a href="https://codesandbox.io/embed/container-presentational-1-p7xssh">فتح CodeSandbox</a></p>
+<h2 id="دوال-التركيب-composables">دوال التركيب (Composables)</h2>
+<blockquote>
+<p>اقرأ أيضًا دليل <a href="/book/patterns-dev/vue/composables">دوال التركيب (Composables)</a> لتتعمّق في فهم دوال التركيب.</p>
+</blockquote>
+<p>في حالات كثيرة، يمكن استبدال نمط الحاوية/العرضية بدوال التركيب (composables). فقد جعل تقديم دوال التركيب من السهل على المطوّرين إضافة حالة ذاتها <strong>دون الحاجة إلى مكوّن حاوية يوفّر تلك الحالة</strong>.</p>
+<p>بدلًا من وضع منطق جلب البيانات داخل مكوّن <code>DogImagesContainer</code>، يمكننا إنشاء دالة تركيب تجلب الصور وتُعيد مصفوفة الكلاب.</p>
+<pre><code>import { ref, onMounted } from &quot;vue&quot;;
+
+export default function useDogImages() {
+  const dogs = ref([]);
+
+  onMounted(async () =&gt; {
+    const response = await fetch(
+      &quot;https://dog.ceo/api/breed/labrador/images/random/6&quot;
+    );
+    const { message } = await response.json();
+    dogs.value = message;
+  });
+
+  return { dogs };
+}
+</code></pre>
+<p>باستخدام هذا الخطّاف، لم نعد بحاجة إلى مكوّن الحاوية <code>DogImagesContainer</code> المغلِّف لجلب البيانات وإرسالها إلى المكوّن العرضي <code>DogImages</code>. وبدلًا من ذلك، يمكننا استخدام هذا الخطّاف مباشرةً داخل مكوّننا العرضي <code>DogImages</code>!</p>
+<pre><code>&lt;template&gt;
+  &lt;img v-for=&quot;(dog, index) in dogs&quot; :src=&quot;dog&quot; :key=&quot;index&quot; alt=&quot;Dog&quot; /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+  import useDogImages from &quot;../composables/useDogImages&quot;;
+
+  /* eslint-disable-next-line no-unused-vars */
+  const { dogs } = useDogImages();
+&lt;/script&gt;
+</code></pre>
+<p>باستخدام الخطّاف <code>useDogImages()</code>، فإننا ما زلنا نفصل منطق التطبيق عن العرض. فنحن نكتفي باستخدام البيانات المُعادة من الخطّاف <code>useDogImages</code>، دون تعديل تلك البيانات داخل مكوّن <code>DogImages</code>.</p>
+<p>ومع كل التغييرات التي أجريناها، يمكن تلخيص تطبيقنا على النحو التالي.</p>
+<p>JavaScript iconuseDogImages.js</p>
+<pre><code>import { ref, onMounted } from &amp;#x27;vue&amp;#x27;;
+
+
+export default function useDogImages() {
+  const dogs = ref([]);
+
+
+  onMounted(async () =&gt; {
+    const response = await fetch(&quot;https://dog.ceo/api/breed/labrador/images/random/6&quot;);
+    const { message } = await response.json();
+    dogs.value = message;
+  });
+
+
+  return { dogs };
+}
+</code></pre>
+<p><a href="https://codesandbox.io/embed/container-presentational-2-7sllj7">فتح CodeSandbox</a></p>
+<p>تجعل دوال التركيب فصل المنطق عن العرض داخل المكوّن سهلًا، تمامًا كما يفعل نمط الحاوية/العرضية. وهي توفر علينا الطبقة الإضافية التي كانت ضرورية لتغليف المكوّن العرضي داخل المكوّن الحاوية.</p>
+<h2 id="مصادر-مفيدة">مصادر مفيدة</h2>
+<ul>
+<li><a href="/book/patterns-dev/vue/composables">دوال التركيب في Vue | Patterns.dev</a></li>
+</ul>
+<p><img src="/images/patterns-dev/vue-container-presentational-63-browse_dogs.webp" alt="نمط الحاوية/العرضية"></p>
+`,r={book:o,chapter:"vue",chapterTitle:n,slug:e,title:t,headings:s,html:a};export{o as book,p as chapter,n as chapterTitle,r as default,s as headings,a as html,e as slug,t as title};

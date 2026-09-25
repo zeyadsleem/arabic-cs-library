@@ -1,0 +1,369 @@
+const t="patterns-dev",e="vanilla",n="أنماط JavaScript",a="third-party",o="تحسين تحميل موارد الأطراف الخارجية (Third-party)",r=[{depth:2,id:"تقييم-تأثير-موارد-3p-على-الأداء",text:"تقييم تأثير موارد 3P على الأداء"},{depth:2,id:"استراتيجيات-التحسين",text:"استراتيجيات التحسين"},{depth:3,id:"تحميل-سكربتات-3p-بكفاءة",text:"تحميل سكربتات 3P بكفاءة"},{depth:3,id:"إنشاء-اتصالات-مبكرة-مع-المصادر-المطلوبة-باستخدام-تلميحات-الموارد",text:"إنشاء اتصالات مبكرة مع المصادر المطلوبة باستخدام تلميحات الموارد"},{depth:3,id:"التحميل-الكسول-لموارد-3p-الموجودة-أسفل-الطية",text:"التحميل الكسول لموارد 3P الموجودة أسفل الطية"},{depth:3,id:"استضافة-سكربتات-3p-ذاتيا-لمنع-رحلات-الذهاب-والإياب",text:"استضافة سكربتات 3P ذاتيًا لمنع رحلات الذهاب والإياب"},{depth:3,id:"استخدام-عمال-الخدمة-لتخزين-السكربتات-مؤقتا-حيثما-أمكن",text:"استخدام عمال الخدمة لتخزين السكربتات مؤقتًا حيثما أمكن"},{depth:3,id:"اتباع-تسلسل-التحميل-المثالي",text:"اتباع تسلسل التحميل المثالي"},{depth:2,id:"ممارسات-أفضل-حسب-نوع-السكربت",text:"ممارسات أفضل حسب نوع السكربت"},{depth:3,id:"javascript-غير-الحرج",text:"JavaScript غير الحرج"},{depth:3,id:"اكتشاف-الروبوتاتrecaptcha",text:"اكتشاف الروبوتات/ReCaptcha"},{depth:3,id:"google-tag-manager-gtm",text:"Google Tag Manager (GTM)"},{depth:3,id:"اختبارات-ab-والتخصيص",text:"اختبارات A/B والتخصيص"},{depth:3,id:"تضمينات-youtube-والخرائط",text:"تضمينات YouTube والخرائط"},{depth:3,id:"تضمينات-وسائل-التواصل-الاجتماعي",text:"تضمينات وسائل التواصل الاجتماعي"},{depth:2,id:"تحسين-جاهز-للاستخدام",text:"تحسين جاهز للاستخدام"},{depth:2,id:"مكون-nextjs-script",text:"مكوّن Next.js Script"},{depth:3,id:"تحميل-polyfills-مبكرا",text:"تحميل polyfills مبكرًا"},{depth:3,id:"التحميل-الكسول-لتضمينات-وسائل-التواصل-الاجتماعي",text:"التحميل الكسول لتضمينات وسائل التواصل الاجتماعي"},{depth:3,id:"تنفيذ-الشيفرة-بشكل-مشروط-عند-التحميل",text:"تنفيذ الشيفرة بشكل مشروط عند التحميل"},{depth:3,id:"استخدام-السكربتات-المضمنة-داخل-وسم-script",text:"استخدام السكربتات المضمّنة داخل وسم script"},{depth:3,id:"تمرير-السمات-إلى-سكربتات-الأطراف-الخارجية",text:"تمرير السمات إلى سكربتات الأطراف الخارجية"},{depth:3,id:"تحميل-سكربتات-التحليلات",text:"تحميل سكربتات التحليلات"},{depth:2,id:"الخاتمة",text:"الخاتمة"}],p=`<blockquote>
+<p>tl;dr: يمكن لموارد الأطراف الخارجية (third-party) أن تبطئ المواقع وأن تمثل تحديًا في تحسين الأداء (performance). يمكنك اتباع ممارسات أفضل محددة لتحميل أو تأجيل أنواع مختلفة من الأطراف الخارجية بكفاءة. ويمكنك أيضًا استخدام مكونات على مستوى الإطار مثل <a href="https://nextjs.org/docs/basic-features/script">Next.js Script component</a>، الذي يوفر قالبًا لتحديد «متى» و«كيف» لتحميل سكربتات الأطراف الخارجية. أو قد تكون الأفكار التجريبية مثل <a href="https://github.com/BuilderIO/partytown">Partytown</a> محل اهتمام.</p>
+</blockquote>
+<p>من الصعب العثور على موقع حديث يعمل في عزلة. يتعايش معظم المواقع ويعتمد على عدة مصادر أخرى على الويب للحصول على البيانات والوظائف والمحتوى وغيرها. أي مورد يقع على نطاق مختلف ويستهلكه موقعك هو مورد من طرف ثالث (3P) بالنسبة إلى موقعك. وتشمل موارد الأطراف الخارجية النموذجية المضمنة في المواقع:</p>
+<ul>
+<li>تضمينات الخرائط والفيديو ووسائل التواصل الاجتماعي وخدمات الدردشة</li>
+<li>الإعلانات</li>
+<li>مكوّنات التحليلات ومديري الوسوم</li>
+<li>سكربتات اختبارات A/B والتخصيص</li>
+<li>مكتبات أدوات تقدم دوالًا مساعدة جاهزة، مثل مكتبات عرض البيانات والرسوم المتحركة.</li>
+<li><a href="https://www.google.com/recaptcha/about/">reCAPTCHA</a> أو CAPTCHA لاكتشاف الروبوتات.</li>
+</ul>
+<p>يمكنك استخدام الأطراف الخارجية لدمج ميزات أخرى تضيف قيمة إلى محتواك أو تقلل بعض المهام المرهقة لبناء موقع من الصفر. ووفق تقرير Web Almanac لعام 2021، يستخدم أكثر من <a href="https://almanac.httparchive.org/en/2021/third-parties#prevalence">94% من الصفحات</a> على الويب أطرافًا خارجية؛ وتُعد <a href="https://almanac.httparchive.org/en/2020/third-parties#content-types">الصور وJavaScript</a> المساهمين الأكثر أهمية في محتوى الأطراف الخارجية. وفيما يلي <a href="https://almanac.httparchive.org/en/2021/third-parties#fig-10">تفصيل مفيد</a> لطلبات الأطراف الخارجية حسب نوع المحتوى والفئة:</p>
+<p>بينما يمكن للموارد الخارجية إثراء موقعك بميزات قيّمة، يمكنها أيضًا إبطاؤه إذا:</p>
+<ul>
+<li>سببت رحلات ذهاب وإياب إضافية إلى نطاق الطرف الثالث لكل مورد مطلوب.</li>
+<li>استخدمت JavaScript بكثافة عالية (ما يؤثر في زمن التنزيل والتنفيذ) أو كانت ضخمة الحجم بسبب صور أو مقاطع فيديو غير محسّنة.</li>
+<li>لا يستطيع مالكو المواقع التحكم في التنفيذ، وقد يكون سلوكها غير متوقع.</li>
+<li>يمكنها حجب عرض الموارد الحرجة الأخرى في الصفحة والتأثير في <a href="https://web.dev/vitals/">Core Web Vitals</a> (CWV).</li>
+</ul>
+<p>على الرغم من هذه المشكلات، قد تكون الأطراف الخارجية ضرورية لأعمالك. وإذا لم تستطع التخلص من موارد 3P، فالأفضل التالي هو تحسينها لتقليل تأثيرها على الأداء، وهو ما سنغطيه في هذا القسم.</p>
+<p>أدرجنا استراتيجيات وممارسات أفضل تنطبق على أنواع مختلفة من سكربتات الأطراف الخارجية. ويضم مكوّن Next.js Script هذه الممارسات. فلنر أولًا كيف نكتشف تأثير هذه السكربتات في أداء الصفحة.</p>
+<h2 id="تقييم-تأثير-موارد-3p-على-الأداء">تقييم تأثير موارد 3P على الأداء</h2>
+<p>يمكنك استخدام مجموعة من التقنيات لمعرفة كيف تؤثر شيفرة الأطراف الخارجية في موقعك.</p>
+<ul>
+<li>
+<p>تساعد عمليات تدقيق Lighthouse على تحديد سكربتات الأطراف الخارجية البطيئة. راجع <a href="https://web.dev/third-party-summary/">تقليل تأثير شيفرة الأطراف الخارجية</a> للسكربتات التي تحجب الخيط الرئيسي.</p>
+</li>
+<li>
+<p><a href="https://web.dev/bootup-time/">تقليل زمن تنفيذ JavaScript</a> للسكربتات التي تستغرق وقتًا طويلًا للتنفيذ</p>
+</li>
+<li>
+<p><a href="https://web.dev/total-byte-weight/">تجنب أحجام بيانات الشبكة الهائلة</a> للسكربتات الكبيرة</p>
+</li>
+<li>
+<p>استخدم مخطط شلال Waterfall من WebPageTest (WPT) لتحديد <a href="https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#third-party-blocking-javascript">سكربتات الأطراف الخارجية الحاجبة</a> أو مقارنة WPT جنبًا إلى جنب ل<a href="https://andydavies.me/blog/2018/02/19/using-webpagetest-to-measure-the-impact-of-3rd-party-tags/">قياس تأثير وسوم الأطراف الخارجية</a>.</p>
+</li>
+<li>
+<p>تساعد مواقع مثل <a href="https://bundlephobia.com/">Bundlephobia</a> على تقييم تكلفة إضافة حزم npm المتاحة إلى حزمك. ويمكنك أيضًا معرفة الحجم والاعتماديات في أي حزمة باستخدام <a href="https://www.npmjs.com/package/">npm package search</a>.</p>
+</li>
+</ul>
+<p>بعد تشخيص شيفرة الأطراف الخارجية المشكلة، فلنستكشف طرق تحسينها.</p>
+<h2 id="استراتيجيات-التحسين">استراتيجيات التحسين</h2>
+<p>نظرًا لأن شيفرة الأطراف الخارجية ليست تحت سيطرتك، لا يمكنك تحسين المكتبات مباشرة. وهذا يترك لك خيارين.</p>
+<ul>
+<li><strong>الاستبدال أو الإزالة</strong>: إذا كانت القيمة التي توفرها سكربتات الطرف الثالث لا تتناسب مع تكلفة أدائها، ففكر في إزالته. يمكنك أيضًا تقييم بدائل أخرى خفيفة الوزن تقدم وظائف مماثلة. في <a href="https://www.patterns.dev/posts/nextjs-casestudy/#packages-switched">هذه</a> دراسة حالة، نناقش كيف حسّنا أداء تطبيق أفلام باستبدال الحزم ببدائل أخف وميزات مماثلة.</li>
+<li><strong>تحسين تسلسل التحميل</strong>: تتضمن عملية التحميل تحميل عدة موارد من الطرف الأول والطرف الثالث في المتصفح. ولتصميم استراتيجية تحميل مثالية، ستحتاج إلى التفكير في الأولوية التي يخصصها المتصفح للموارد المختلفة، ومواضعها في الصفحة، وقيمة كل مورد لصفحة الويب. وقد اقترحنا <a href="https://www.patterns.dev/posts/loading-sequence/#what-is-the-ideal-loading-sequence">تسلسل تحميل مثاليًا لتطبيق React/Next.js</a>. سنرى الآن كيف ينطبق ذلك على موارد الأطراف المختلفة والخطوات التي يمكننا اتخاذها لتحميلها على النحو الأمثل.</li>
+</ul>
+<h3 id="تحميل-سكربتات-3p-بكفاءة">تحميل سكربتات 3P بكفاءة</h3>
+<p>فيما يلي ممارسات أفضل مجرَّب على مر الزمن يمكن أن تقلل تأثير موارد الأطراف الخارجية على الأداء عند استخدامها بشكل صحيح.</p>
+<h4>استخدم <code>async</code> أو <code>defer</code> لمنع السكربتات من حجب المحتوى الآخر.</h4>
+<p><strong>ينطبق على:</strong> السكربتات غير الحرجة (مديرو الوسوم والتحليلات)</p>
+<p>تنزيل وتنفيذ JavaScript متزامن افتراضيًا، وقد يحجب محلّل HTML وبناء DOM على الخيط الرئيسي. استخدام سمتي <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async">async</a> أو <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer">defer</a> في عنصر <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">\`\`</a> يخبر المتصفح بتنزيل السكربتات بصورة غير متزامنة. يمكنك استخدامهما لتنزيل أي سكربت ليس ضروريًا لمسار العرض الحرج (مثل المكوّن الرئيسي لواجهة المستخدم).</p>
+<ul>
+<li><strong><code>defer</code></strong>: يُجلب السكربت بالتوازي أثناء تنفيذ المحلل، ويؤجل تنفيذ السكربت حتى اكتمال التحليل. يجب أن يكون <code>defer</code> الخيار الافتراضي لتأجيل التنفيذ حتى بعد بناء DOM.</li>
+<li><strong><code>async</code></strong>: يُجلب السكربت بالتوازي وينفَّذ فور توفره. تُنفَّذ سكربتات الوحدات ذات الاعتماديات في طابور <code>defer</code>. استخدم <code>async</code> للسكربتات التي يجب أن تعمل مبكرًا.</li>
+</ul>
+<pre><code>&lt;script src=&quot;https://example.com/deferthis.js&quot; defer&gt;&lt;/script&gt;
+&lt;script src=&quot;https://example.com/asyncthis.js&quot; async&gt;&lt;/script&gt;
+</code></pre>
+<blockquote>
+<p>المصدر: <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript">developers.google.com</a></p>
+</blockquote>
+<p>ملاحظة مهمة: إن <code>async</code> و<code>defer</code> يخفضان أولوية الموارد في المتصفح، وقد يؤخر تحميلها كثيرًا. يمكن أن تساعد <a href="https://web.dev/priority-hints/">تلميحات الأولوية</a> في معالجة هذه المشكلة.</p>
+<h3 id="إنشاء-اتصالات-مبكرة-مع-المصادر-المطلوبة-باستخدام-تلميحات-الموارد">إنشاء اتصالات مبكرة مع المصادر المطلوبة باستخدام تلميحات الموارد</h3>
+<p><strong>ينطبق على:</strong> السكربتات والخطوط وCSS والصور الحرجة من شبكات CDN التابعة لأطراف ثالثة</p>
+<p>قد يكون الاتصال بمصادر الأطراف الخارجية بطيئًا بسبب عمليات بحث DNS وإعادة التوجيه ورحلات الذهاب والإياب المتعددة التي قد تكون مطلوبة لكل خادم من خوادم الأطراف الخارجية. تساعد تلميحات الموارد <code>dns-prefetch</code> و<code>preconnect</code> على تقليل الوقت اللازم لهذا الإعداد عبر بدء الاتصالات مبكرًا في دورة الحياة.</p>
+<p>يقلّل <a href="https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch">dns-prefetch</a> وقت بحث DNS. استخدمه مع <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect">preconnect</a> للموارد المهمة؛ يبدأ الاتصال مبكرًا ويعالج TLS أيضًا.</p>
+<pre><code>&lt;head&gt;
+  &lt;link rel=&quot;preconnect&quot; href=&quot;http://example.com&quot; /&gt;
+  &lt;link rel=&quot;dns-prefetch&quot; href=&quot;http://example.com&quot; /&gt;
+&lt;/head&gt;
+</code></pre>
+<p>توفر مقالتنا عن <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p">تسلسل التحميل المثالي</a> قائمة بموارد الأطراف الخارجية التي ينبغي استخدام preconnect معها.</p>
+<p>تكشف دراسة حالة ناقشها Andy Davies كيف ساعد استخدام <a href="https://andydavies.me/blog/2019/03/22/improving-perceived-performance-with-a-link-rel-equals-preconnect-http-header/">preconnect على تقليل زمن التحميل</a> لصورة المنتج الرئيسية عبر بدء اتصال مبكر مع شبكة CDN لصور الأطراف الخارجية.</p>
+<blockquote>
+<p>«أظهرت المقاييس الواقعية تحسنًا بنسبة 400ms في الوسيط، وتحسنًا أكبر من ثانية واحدة عند المئين الـ95.»</p>
+</blockquote>
+<p>يمكنك استخدام تلميحات الموارد مع اكتشاف الروبوتات (reCaptcha) وإدارة الموافقة.</p>
+<h3 id="التحميل-الكسول-لموارد-3p-الموجودة-أسفل-الطية">التحميل الكسول لموارد 3P الموجودة أسفل الطية</h3>
+<p><strong>ينطبق على:</strong> التضمينات مثل YouTube وMaps والإعلانات ووسائل التواصل الاجتماعي</p>
+<p>يمكن لتضمينات الأطراف الخارجية مثل تلك المستخدمة في تغذيات وسائل التواصل الاجتماعي والإعلانات وفيديوهات YouTube والخرائط أن تبطئ صفحات الويب. لكن هذه التضمينات قد لا تكون مرئية للمستخدمين عند تحميل الصفحة، ويمكن تحميلها كسولًا عندما يمرر المستخدم إليها. يمكنك استخدام طرق تحميل كسول مختلفة بحسب مستوى دعم المتصفح المطلوب.</p>
+<ul>
+<li>يمكن استخدام السمة <a href="https://web.dev/iframe-lazy-loading/">loading</a> مع الصور و<code>iframes</code> الشائعة في تحميل تضمينات الأطراف الخارجية مثل YouTube أو Google Maps.</li>
+<li>تتيح لك تنفيذ مخصصة باستخدام <a href="https://developers.google.com/web/updates/2016/04/intersectionobserver">IntersectionObserver API</a> اكتشاف الوقت الذي يدخل فيه العنصر المراقب إطار العرض أو يخرج منه.</li>
+<li><a href="https://github.com/aFarkas/lazysizes">Lazy-sizes</a> — مكتبة JavaScript شائعة تنفذ التحميل الكسول نيابةً عنك.</li>
+</ul>
+<p>تستخدم إحدى تنويعات تحميل التضمينات كسولًا facade ثابتًا أو ديناميكيًا يُعرض للمستخدمين عند تحميل الصفحة. بدلاً من تضمين الخريطة، يمكنك استخدام صورة ثابتة للتضمين نفسه لإظهار منطقة محددة في خريطة الخريطة. وبدلًا من ذلك، يمكنك استخدام facade يبدو مثل التضمين لكنه لا يُحمَّل إلا عندما ينقر المستخدم عليه أو يتفاعل معه. تشمل بعض طرق تنفيذ facades للتضمينات الشائعة <a href="https://developers.google.com/maps/documentation/maps-static/overview">Map Static API</a> للخرائط، و<a href="https://tweetpik.com/">Tweetpik</a> لتضمينات Twitter، و<a href="https://github.com/paulirish/lite-youtube-embed">lite-youtube-embed</a> لـ YouTube، و<a href="https://github.com/calibreapp/react-live-chat-loader">React-live-chat-loader</a> لعناصر الدردشة. تتوفر مناقشة شاملة لهذه التقنيات <a href="https://web.dev/embed-best-practices/">هنا</a>.</p>
+<p><strong>تنبيهات تتعلق بالتحميل الكسول وواجهات facade</strong></p>
+<ul>
+<li>يختلف سلوك facade الخاص بـ YouTube قليلًا على iOS وSafari على macOS 11+. يؤدي النقر أول مرة إلى تحميل تضمين الفيديو الفعلي. وسيحتاج المستخدم إلى النقر مرة أخرى لتشغيل الفيديو.</li>
+<li>يمكن أن يؤدي التحميل الكسول إلى تحولات في التخطيط ويؤثر في تجربة المستخدم إذا لم يحدَّد حجم التضمين. لمنع تحولات التخطيط، يجب أن تحدد حجم جميع التضمينات المحمّلة كسولًا أو عناصر حاويتها.</li>
+</ul>
+<h3 id="استضافة-سكربتات-3p-ذاتيا-لمنع-رحلات-الذهاب-والإياب">استضافة سكربتات 3P ذاتيًا لمنع رحلات الذهاب والإياب</h3>
+<p><strong>ينطبق على:</strong> ملفات JavaScript والخطوط</p>
+<p>تتيح <code>preconnect</code> و<code>dns-prefetch</code> بدء الاتصالات مبكرًا، لكن الاتصال ما زال مطلوبًا. كما يجب الاعتماد على استراتيجية التخزين لدى الطرف خارجي، وقد لا تكون مثالية.</p>
+<p>تتيح لك استضافة نسخة من السكربتات على المصدر نفسه تحكمًا أكبر في عملية التحميل والتخزين المؤقت المستخدمة للسكربتات. تقلل الاستضافة الذاتية الوقت اللازم لبحث DNS وتتيح لك تحسين استراتيجية التخزين المؤقت للسكربتات باستخدام <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching">HTTP caching</a>. ويمكنك أيضًا استخدام <a href="https://www.smashingmagazine.com/2017/04/guide-http2-server-push/">HTTP/2 server push</a> لدفع السكربتات التي تعرف أن المستخدم سيحتاجها. هناك <a href="https://medium.com/caspertechteam/we-shaved-1-7-seconds-off-casper-com-by-self-hosting-optimizely-2704bcbff8ec">مثال رائع</a> على كيفية استضافة سكربتات الأطراف الخارجية ذاتيًا هو <a href="https://casper.com/">Casper.com</a>، الذي حسّن زمن بدء العرض لصفحته الرئيسية بمقدار 1.7 ثانية عبر استضافة السكربتات التي يوفرها <a href="https://www.optimizely.com/">Optimizely</a> ذاتيًا.</p>
+<p>مع وجود نسخ مستضافة ذاتيًا من سكربتات الأطراف الخارجية، عليك التأكد من تحديث نسختك بانتظام وفقًا للتغييرات في الأصل. من دون تحديثات، قد تصبح السكربت قديمة أو تفقد إصلاحات مهمة أو تغييرات مقابلة للاعتماديات. كما أن الاستضافة على خادم بدلاً من CDN ستمنعك من الاستفادة من آليات <a href="https://www.cloudflare.com/learning/cdn/glossary/edge-server/">edge-caching</a> التي تستخدمها شبكات CDN.</p>
+<h3 id="استخدام-عمال-الخدمة-لتخزين-السكربتات-مؤقتا-حيثما-أمكن">استخدام عمال الخدمة لتخزين السكربتات مؤقتًا حيثما أمكن</h3>
+<p><strong>ينطبق على:</strong> ملفات JavaScript والخطوط</p>
+<p>قد لا تكون الاستضافة الذاتية مناسبة للسكربتات المتغيرة كثيرًا. استخدم عمال الخدمة مع التخزين على حافة CDN، وادمج ذلك مع <code>preconnect</code> لتقليل تكلفة الشبكة. يمكن تأجيل الطلبات غير الأساسية حتى يحدث تفاعل مهم.</p>
+<h3 id="اتباع-تسلسل-التحميل-المثالي">اتباع تسلسل التحميل المثالي</h3>
+<p>ضع الإرشادات السابقة لأنواع مختلفة من الأطراف الخارجية وقيمتها للصفحة في الاعتبار. وبناءً على الاستخدام المقصود لكل مورد، يمكنك اتباع <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p">تسلسل تحميل الموارد المثالي</a> لمزج موارد الطرف الأول والطرف الثالث على النحو الأمثل من أجل تحميل أسرع للصفحة.</p>
+<h2 id="ممارسات-أفضل-حسب-نوع-السكربت">ممارسات أفضل حسب نوع السكربت</h2>
+<p>بعض السكربتات أسهل في التحسين من غيرها. ناقش خبراء أداء الويب هذا الموضوع، وخلصوا إلى أن معظم المستخدمين لا يتفاعلون قبل ظهور قدر معين من المحتوى. وفيما يلي إرشادات حسب نوع السكربت.</p>
+<h3 id="javascript-غير-الحرج">JavaScript غير الحرج</h3>
+<p>معظم الأطراف الخارجية مثل عناصر الدردشة أو سكربتات التحليلات ليست حرجة لتجربة المستخدم ويمكن تأجيلها. باستخدام سمة السكربت <code>defer</code> تكون الطريقة الأكثر شيوعًا لتأجيل تحميل هذه السكربتات وتنفيذها.</p>
+<p>قد تقلق فرق الإعلانات أو التحليلات من تأثير تأجيل السكربتات على رؤية التطبيق وإعلاناته. غالبًا ما تُذكر <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5">دراسة حالة Telegraph</a> في هذا السياق، حيث لم يؤدِ تأجيل جميع السكربتات إلى تشويه أي مقاييس تحليلات أو إعلانات. بل تحسّن مقياس First Ad Loaded بمعدل 4 ثوانٍ في المتوسط. وقد صمم بعض المطوّرين حلولًا <a href="https://www.renderbetter.com/guides/improving-shopify-site-speed-can-increase-conversions-case-study">لتأجيل تحميل الأطراف الخارجية حتى تصبح الصفحة تفاعلية</a>.</p>
+<h3 id="اكتشاف-الروبوتاتrecaptcha">اكتشاف الروبوتات/ReCaptcha</h3>
+<p>لمنع الروبوتات من الوصول إلى النماذج، تُحمّل ReCaptcha مبكرًا. لكنها ثقيلة، لذلك يمكن تأجيل تحميلها. طرق التحسين:</p>
+<ul>
+<li>حمّل ReCaptcha فقط في الصفحات التي تحتوي على نماذج قد يرسلها الروبوتات.</li>
+<li><a href="https://dev.to/uf4no/improve-page-performance-lazy-loading-recaptcha-442o">حمّل السكربت كسولًا</a> عندما يتفاعل المستخدم مع عناصر النموذج، على سبيل المثال عند التركيز على النموذج.</li>
+<li>استخدم تلميحات الموارد لإنشاء اتصالات مبكرة عندما تحتاج السكربت إلى التنفيذ عند تحميل الصفحة.</li>
+</ul>
+<h3 id="google-tag-manager-gtm">Google Tag Manager (GTM)</h3>
+<p>غالبًا ما توفر المواقع الكبيرة <a href="https://marketingplatform.google.com/about/resources/tag-manager-product-overview/">Google Tag Manager</a> وصولًا لفرق التسويق أو الوكالات. يتيح لهم ذلك إضافة وسوم تسويقية جديدة إلى جميع صفحات الموقع لتحسين التتبع. الأداء ليس همًا أساسيًا لفريق التسويق، وقد لا يعرف الجميع أن إضافة الوسوم عشوائيًا قد تبطئ الموقع. ويركز تحسين GTM على <a href="https://www.tunetheweb.com/blog/adding-controls-to-google-tag-manager/">التحكم في الوصول إلى GTM</a> ومراقبة التغييرات.</p>
+<p>يمكنك البدء بالتأكد من أن مالك الموقع يملك الحساب، بدلًا من وكالة خارجية. يتيح لك ذلك تحديد أذونات وصول دقيقة لكل من يمكنه إضافة الوسوم وتحريرها ونشرها. ويمكن إعداد <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5">تعاون أفضل</a> بين إدارتي التطوير والتسويق لتدقيق الوسوم الجديدة وإزالة الوسوم غير المستخدمة.</p>
+<p>قد لا يحتاج موقعك إلى GTM في جميع الصفحات. (على سبيل المثال، لا يوجد سبب لفريق التسويق لتتبع الأحداث في صفحة الدفع في موقع تجارة إلكترونية). ينبغي تدقيق الصفحات على حدة حتى يمكن إزالة تضمينات GTM غير الضرورية. ويمكن للمواقع التي تستخدم لافتات ملفات تعريف الارتباط ألا تحمّل GTM إذا رفض المستخدم ملفات تعريف الارتباط. وأخيرًا، إذا كان عليك تحميل GTM في صفحة، فيمكنك تأجيل السكربتات حتى تعمل بعد تحميل المحتوى الرئيسي.</p>
+<p>يتعلق تحسين وسوم السكربتات القديمة بـ <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/write">document.write()</a>. قد يكون حقن السكربتات به غير آمن. يوفر GTM خيارًا آمنًا في <a href="https://support.google.com/tagmanager/answer/6107167?hl=en">واجهة Custom HTML</a>.</p>
+<h3 id="اختبارات-ab-والتخصيص">اختبارات A/B والتخصيص</h3>
+<p>تجري المواقع <a href="https://www.optimizely.com/optimization-glossary/ab-testing/">اختبارات A/B</a> لاختيار نسخة الصفحة الأفضل. قد تضيف كل اختبار ثانية إلى زمن التحميل. غالبًا تأتي الاختبارات من أطراف خارجية، ويتحكم المطورون قليلًا في شيفرتها.</p>
+<p><a href="https://www.dynamicyield.com/lesson/web-personalization/">تخصيص الموقع</a> يعني تشغيل سكربتات لتقديم تجربة مختلفة لكل مستخدم. السكربتات ثقيلة وصعبة التحسين. تطوير <a href="https://www.fasterize.com/en/blog/a-b-testing-imperative-to-marketing-perilous-to-web-performance/">حل مخصص قائم على خادم لاختبارات A/B والتخصيص</a> هو الطريقة المثلى لتحسين اختبارات A/B، إذا كان ذلك ممكنًا.</p>
+<p>لتحسين سكربتات اختبارات A/B التابعة لأطراف خارجية، يمكنك الحد من عدد المستخدمين الذين يتلقون السكربت. يحدد السكربت النسخة التي ستُعرض استنادًا إلى استدلالات ويمكّن الإصدار الصحيح للمستخدم. وقد يبطئ هذا الصفحة لجميع المستخدمين. يسمح Google Optimize بتهيئة <a href="https://support.google.com/optimize/answer/6283420#zippy=%2Cin-this-article">قواعد استهداف المستخدمين</a>. ويمكن تقييم كثير من هذه القواعد على خوادم Google، بحيث يكون <a href="https://support.google.com/optimize/answer/7071747?hl=en">تأثير الأداء منخفضًا</a> للمستخدمين غير المستهدفين.</p>
+<h3 id="تضمينات-youtube-والخرائط">تضمينات YouTube والخرائط</h3>
+<p>هذه التضمينات ثقيلة، لذلك استخدم التحميل الكسول أو النقر للتحميل. يُشجع على <a href="https://github.com/paulirish/lite-youtube-embed">lite-youtube-embed</a>، مع النقر المزدوج في iOS وmacOS-Safari.</p>
+<h3 id="تضمينات-وسائل-التواصل-الاجتماعي">تضمينات وسائل التواصل الاجتماعي</h3>
+<p>توفر بعض تضمينات وسائل التواصل الاجتماعي خيارًا لتحميل سكربتاتها كسولًا (مثل <a href="https://developers.facebook.com/docs/plugins/embedded-posts/">data-lazy في تضمينات Facebook</a>). يمكنك استكشاف ذلك لتحسين الأداء. والبديل هو استخدام واجهات facade للصور تم إنشاؤها يدويًا أو باستخدام أدوات مثل <a href="https://tweetpik.com/">tweetpik</a>.</p>
+<h2 id="تحسين-جاهز-للاستخدام">تحسين جاهز للاستخدام</h2>
+<p>لتحسين الأطراف الخارجية، ينبغي لفرق التطوير فهم الفروق الدقيقة في تلميحات الموارد والتحميل الكسول والتخزين المؤقت لـ HTTP وعمال الخدمة، ثم تنفيذ ذلك في حلولهم. وقد غلفت بعض الأطر والمكتبات ممارسات الأفضل هذه بطريقة يمكن للمطورين استخدامها بسهولة.</p>
+<p><a href="https://github.com/BuilderIO/partytown">Partytown</a> مكتبة تجريبية تشغّل السكربتات الثقيلة في <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">web worker</a>. يبقى الخيط الرئيسي مخصصًا لشيفرتك، وتُعزل السكربتات غير الحرجة. يمكن تسجيل استدعاءات API لفهم سلوكها.</p>
+<p>تتعامل وكلاء JavaScript وعامل خدمة مع الاتصال بين web worker والخيط الرئيسي. يجب أن تكون سكربتات Partytown مستضافة ذاتيًا على الخادم نفسه الذي يستضيف مستندات HTML. ويمكن استخدامها مع تطبيقات React أو Next.js أو حتى دون أي إطار عمل. يجب أن تضبط كل سكربتات الأطراف الخارجية التي يمكنها التنفيذ في خادم الويب سمة <code>type</code> في وسم السكربت الافتتاحي على <code>text/partytown</code> كما يلي.</p>
+<pre><code>&lt;script type=&quot;text/partytown&quot;&gt;// Third-party analytics scripts&lt;/script&gt;
+</code></pre>
+<p>توفر المكتبة <a href="https://github.com/BuilderIO/partytown#react">مكوّن React Partytown</a> يمكنك تضمينه مباشرة في مشاريع React أو Next.js داخل مستند \`\`.</p>
+<pre><code>import { Partytown } from '@builder.io/partytown/react';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+export default class MyDocument extends Document {
+ render() {
+   return (
+     &lt;Html&gt;
+       &lt;Head&gt;
+         &lt;Partytown /&gt;
+       &lt;/Head&gt;
+       &lt;body&gt;
+         &lt;Main /&gt;
+         &lt;NextScript /&gt;
+       &lt;/body&gt;
+     &lt;/Html&gt;
+   );
+ }
+</code></pre>
+<p>توفر المكتبة مكونات React لمكتبات التحليلات مثل <a href="https://github.com/BuilderIO/partytown#integrations">Google Tag Manager</a>. ويوضح المثال التالي إضافتها إلى مشروع React/Next.js.</p>
+<pre><code>import { Partytown, GoogleTagManager, GoogleTagManagerNoScript } from '@builder.io/partytown/react';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+export default class MyDocument extends Document {
+ render() {
+   return (
+     &lt;Html&gt;
+       &lt;Head&gt;
+         &lt;GoogleTagManager containerId={'GTM-XXXXX'} /&gt;
+         &lt;Partytown /&gt;
+       &lt;/Head&gt;
+       &lt;body&gt;
+         &lt;GoogleTagManagerNoScript containerId={'GTM-XXXXX'} /&gt;
+         &lt;Main /&gt;
+         &lt;NextScript /&gt;
+       &lt;/body&gt;
+     &lt;/Html&gt;
+   );
+ }
+</code></pre>
+<p>يوفر Next.js نفسه تحسينًا جاهزًا للاستخدام لسكربتات الأطراف الخارجية من خلال مكوّن Script. فلنر كيف يتيح لنا ذلك تحسين أداء التحميل لمختلف الأطراف الخارجية.</p>
+<h2 id="مكون-nextjs-script">مكوّن Next.js <code>Script</code></h2>
+<p>صدر Next.js 11 مع مكونات تعتمد على منهجية <a href="https://web.dev/conformance/">Conformance</a> من فريق Aurora في Google. تقدم المنهجية حلولًا وقواعد لدعم التحميل الأمثل وCore Web Vitals، وتحول ممارسات أفضل إلى قواعد قابلة للتطبيق.</p>
+<p>يستخدم <a href="https://nextjs.org/docs/basic-features/script">مكوّن Next.js Script</a> منهجية conformance من خلال توفير قالب قابل للتخصيص يحسّن أداء التحميل. يضم مكوّن Script وسم \`\` ويتيح لك ضبط أولوية التحميل لسكربتات الأطراف الخارجية باستخدام سمة <code>strategy</code>. ويمكن لسمة strategy أن تأخذ ثلاث قيم.</p>
+<ul>
+<li>beforeInteractive: استخدمها للسكربتات الحرجة التي يجب أن ينفذها المتصفح قبل تفاعل الصفحة، مثل اكتشاف الروبوتات.</li>
+<li>afterInteractive: استخدمها للسكربتات التي يمكن تشغيلها بعد تفاعل الصفحة، مثل مديري الوسوم. هذه هي الاستراتيجية الافتراضية، وتعادل <code>defer</code>.</li>
+<li>lazyOnload: استخدمها للسكربتات التي يمكن تحميلها كسولًا عندما يكون المتصفح خاملًا.</li>
+</ul>
+<p>تساعد الاستراتيجية Next.js على تطبيق التحسينات وممارسات التحميل تلقائيًا مع ضمان أفضل تسلسل. استخدم وسم السكربت مع سمة <code>strategy</code>. لا تضع <code>next/script</code> داخل <code>next/head</code> أو <code>pages/document.js</code>.</p>
+<p>قبل:</p>
+<pre><code>import Head from &quot;next/head&quot;;
+
+export default function Home() {
+  return (
+    &lt;&gt;
+      &lt;Head&gt;
+        &lt;script async src=&quot;https://example.com/samplescript.js&quot; /&gt;
+      &lt;/Head&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<p>بعد:</p>
+<pre><code>// pages/index.js
+// default strategy afterinteractive will apply when strategy not specified.
+import Script from 'next/script'
+&lt;br&gt;
+export default function Home() {
+ return (
+   &lt;&gt;
+     &lt;Script src=&quot;https://example.com/samplescript.js&quot; /&gt;
+   &lt;/&gt;
+ )
+}
+</code></pre>
+<p>يسمح مكوّن Script بمعالجة حالات الاستخدام السابقة، مثل التحليلات ووسائل التواصل الاجتماعي والمكتبات المساعدة، مع تطبيق الاستراتيجيات المناسبة لكل نوع.</p>
+<h3 id="تحميل-polyfills-مبكرا">تحميل polyfills مبكرًا</h3>
+<p>في الحالات التي تريد فيها تحميل polyfills محددة تنطبق على المحتوى الأساسي مبكرًا، يمكنك استخدام استراتيجية beforeInteractive لتحميل polyfill كما هو موضح في المثال التالي من <a href="https://nextjs.org/docs/basic-features/script#loading-polyfills">وثائق Next.js</a>.</p>
+<pre><code>import Script from &quot;next/script&quot;;
+
+export default function Home() {
+  return (
+    &lt;&gt;
+      &lt;Script
+        src=&quot;https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver&quot;
+        strategy=&quot;beforeInteractive&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h3 id="التحميل-الكسول-لتضمينات-وسائل-التواصل-الاجتماعي">التحميل الكسول لتضمينات وسائل التواصل الاجتماعي</h3>
+<p>يمكن تأخير تضمينات وسائل التواصل الاجتماعي غير المرئية أو تحميلها كسولًا عند التمرير أو الخمول. استخدم استراتيجية <code>lazyonload</code> كما في <a href="https://nextjs.org/docs/basic-features/script#lazy-loading">المقتطف</a>.</p>
+<pre><code>import Script from &quot;next/script&quot;;
+
+export default function Home() {
+  return (
+    &lt;&gt;
+      &lt;Script
+        src=&quot;https://connect.facebook.net/en_US/sdk.js&quot;
+        strategy=&quot;lazyOnload&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h3 id="تنفيذ-الشيفرة-بشكل-مشروط-عند-التحميل">تنفيذ الشيفرة بشكل مشروط عند التحميل</h3>
+<p>قد تكون هناك شيفرة يجب تنفيذها بعد تحميل طرف ثالث محدد. يمكن تحديد ذلك في سمة <code>onload</code> الخاصة بمكوّن السكربت. على سبيل المثال، يوضح <a href="https://nextjs.org/blog/next-11#script-optimization">المقتطف</a> التالي كيفية تضمين شيفرة ستنفذ بناءً على موافقة المستخدمين.</p>
+<pre><code>&lt;Script
+  src={url} // consent management
+  strategy=&quot;beforeInteractive&quot;
+  onLoad={() =&gt; {
+    // If loaded successfully, then you can load other scripts in sequence
+  }}
+/&gt;
+</code></pre>
+<h3 id="استخدام-السكربتات-المضمنة-داخل-وسم-script">استخدام السكربتات المضمّنة داخل وسم script</h3>
+<p>يمكن أيضًا تضمين السكربتات المضمّنة التي يجب تنفيذها بناءً على تحميل مكوّن من طرف ثالث في مكوّن Script كما هو موضح <a href="https://nextjs.org/docs/basic-features/script#inline-scripts">هنا</a>.</p>
+<pre><code>import Script from 'next/script'
+
+&lt;Script id=&quot;show-banner&quot; strategy=&quot;lazyOnload&quot;&gt;
+ {\`document.getElementById('banner').removeClass('hidden')\`}
+&lt;/Script&gt;
+
+// or
+
+&lt;Script
+ id=&quot;show-banner&quot;
+ dangerouslySetInnerHTML={{
+   __html: \`document.getElementById('banner').removeClass('hidden')\`
+ }}
+/&gt;
+</code></pre>
+<p>يُستخدم السكربت المضمّن لتغيير ظهور إعلان من طرف ثالث بعد تحميله كسولًا. ولاحظ أن السكربتات المضمّنة يمكن أيضًا إدراجها باستخدام السمة <code>dangerouslySetInnerHTML</code>.</p>
+<h3 id="تمرير-السمات-إلى-سكربتات-الأطراف-الخارجية">تمرير السمات إلى سكربتات الأطراف الخارجية</h3>
+<p>يمكنك ضبط قيم سمات محددة يمكن أن يستخدمها سكربت الطرف الثالث في مكوّن Script. ويعرض <a href="https://nextjs.org/docs/basic-features/script#forwarding-attributes">المثال</a> التالي كيفية تمرير سمتين من هذا النوع إلى سكربت تحليلات.</p>
+<pre><code>import Script from &quot;next/script&quot;;
+
+export default function Home() {
+  return (
+    &lt;&gt;
+      &lt;Script
+        src=&quot;https://www.google-analytics.com/analytics.js&quot;
+        id=&quot;analytics&quot;
+        nonce=&quot;XUENAJFW&quot;
+        data-test=&quot;analytics&quot;
+      /&gt;
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h3 id="تحميل-سكربتات-التحليلات">تحميل سكربتات التحليلات</h3>
+<p>هناك طرق مختلفة لتضمين التحليلات في موقعك باستخدام Google Analytics (GA) وGoogle Tag Manager (GTM). يمكنك استخدام مكوّن Script لتحميل <a href="https://developers.google.com/analytics/devguides/collection/gtagjs">gtag.js</a> أو <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs">analytics.js</a> على النحو الأمثل في موقع Next.js. وبحسب المكان الذي تريد تنفيذ هذه السكربتات فيه، يمكنك تحميلها في <code>_app.js</code> (ينطبق على جميع الصفحات) أو في صفحات محددة.</p>
+<p>يمكن تمكين GTM لجميع صفحات الموقع من خلال تضمين مكوّن السكربت داخل <code>_app.js</code> كما يلي:</p>
+<pre><code>import Script from &quot;next/script&quot;;
+// + other imports
+
+function MyApp({ Component, pageProps }) {
+  // Other app code
+
+  return (
+    &lt;&gt;
+      {/* Google Tag Manager - Global base code */}
+      &lt;Script
+        strategy=&quot;afterInteractive&quot;
+        dangerouslySetInnerHTML={{
+          __html: \`
+           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+           j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+           })(window,document,'script','dataLayer', '\${GTM_ID}');
+         \`,
+        }}
+      /&gt;
+      &lt;Component {...pageProps} /&gt;
+    &lt;/&gt;
+  );
+}
+export default MyApp;
+</code></pre>
+<p>بدلاً من ذلك، يمكن تحميل analytics.js في صفحات محددة، كما هو موضح.</p>
+<pre><code>import Script from &quot;next/script&quot;;
+//other imports
+
+const Home = () =&gt; {
+  return (
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Script id=&quot;google-analytics&quot; strategy=&quot;afterInteractive&quot;&gt;
+        {\`
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-XXXXX-Y', 'auto');
+         ga('send', 'pageview');
+       \`}
+      &lt;/Script&gt;
+    &lt;/div&gt;
+    //Other UI related HTML
+  );
+};
+</code></pre>
+<pre><code>import Script from &quot;next/script&quot;;
+//other imports
+
+const Home = () =&gt; {
+  return (
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;Script id=&quot;google-analytics&quot; strategy=&quot;afterInteractive&quot;&gt;
+        {\`
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-XXXXX-Y', 'auto');
+         ga('send', 'pageview');
+       \`}
+      &lt;/Script&gt;
+    &lt;/div&gt;
+    //Other UI related HTML
+  );
+};
+
+export default Home;
+</code></pre>
+<p>لاحظ أن السكربتات في كلا المثالين أعلاه يتم تحميلها باستخدام strategy = afterInteractive.</p>
+<h2 id="الخاتمة">الخاتمة</h2>
+<p>عند إنشاء صفحات الويب الخاصة بك ودمج موارد من خوادمك مع موارد من أنحاء أخرى من الويب، عليك مراقبة التفاعل بين هذه الموارد كثيرًا. ويمكنك البدء بفرز الموارد بشكل صحيح واتباع ممارسات الأفضل. ويمكنك أيضًا الاعتماد على أطر أو حلول تتضمن ممارسات الأفضل هذه في تصميمها.</p>
+<p>مع نمو الموقع، يمكن لتقارير الأداء والتدقيقات المنتظمة المساعدة على إزالة التكرار وتحسين السكربتات التي تؤثر في الأداء. وأخيرًا، يمكننا دائمًا الأمل في أن تحسّن الأطراف الخارجية ذات مشكلات الأداء المعروفة شيفرتها من جانبها أو تكشف واجهات برمجية تتيح الحلول الالتفافية لمعالجة هذه المشكلات.</p>
+<p><img src="/images/patterns-dev/vanilla-third-party-37-optimizingthir__wwfbjeoqhxl.webp" alt="Optimize loading third-parties"> <img src="/images/patterns-dev/vanilla-third-party-38-optimizingthir__3tr5286cg4z.webp" alt="Optimize loading third-parties"> <img src="/images/patterns-dev/vanilla-third-party-39-optimizingthir__t68otdbvv1.webp" alt="Optimize loading third-parties"> <img src="/images/patterns-dev/vanilla-third-party-40-optimizingthir__aaavejhhjgm.webp" alt="Optimize loading third-parties"> <img src="/images/patterns-dev/vanilla-third-party-41-optimizingthir__k6owmtevvl.webp" alt="Optimize loading third-parties"></p>
+`,i={book:t,chapter:e,chapterTitle:n,slug:a,title:o,headings:r,html:p};export{t as book,e as chapter,n as chapterTitle,i as default,r as headings,p as html,a as slug,o as title};

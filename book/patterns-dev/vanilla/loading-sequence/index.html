@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.D-wSzHHK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D5LYHf0q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.B8gBS73N.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BE5kT3lG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-v837FGo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/I9MyXR3J.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DALGGqHN.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfJcPA2D.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="تحسين تسلسل التحميل لديك — أنماط JavaScript"/><!----><title>تحسين تسلسل التحميل لديك | أنماط تصميم تطبيقات الويب</title>
+		<link href="../../../../_app/immutable/assets/0.DahrPYdV.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence" class="active">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل موارد الأطراف الخارجية (Third-party)</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>تحسين تسلسل التحميل لديك</h1></div> <div class="reader-content"><!----><p><strong>ملاحظة:</strong> يتأثر هذا المقال بشدة برؤى <a href="https://web.dev/introducing-aurora/">فريق Aurora</a> في Chrome، ولا سيما <a href="http://twitter.com/shubhie">Shubhie Panicker</a> الذي يبحث في أفضل تسلسل تحميل.</p>
+<p>في كل تحميل ناجح لصفحة ويب، تصبح بعض المكونات والموارد الحرجة متاحة في الوقت المناسب تمامًا لتقديم تجربة تحميل سلسة. ويضمن هذا أن يدرك المستخدمون أن أداء التطبيق (performance) ممتاز. وينبغي أن يترجم ذلك إلى اجتياز <a href="https://web.dev/vitals/">مؤشرات Web Vitals الأساسية</a>.</p>
+<p>تعتمد <a href="https://web.dev/metrics/">المقاييس</a> المهمة مثل <a href="https://web.dev/fcp/">First Content Paint</a> و<a href="https://web.dev/lcp/">Largest Contentful Paint</a> و<a href="https://web.dev/fid/">First Input Delay</a> وغيرها، المستخدمة في قياس الأداء، مباشرةً على تسلسل تحميل الموارد الحرجة. فمثلًا، لا يمكن للصفحة أن تحقق LCP إذا لم تُحمّل مورد حرج مثل <a href="https://en.wikipedia.org/wiki/Hero_image">الصورة الرئيسية</a>. يتناول هذا المقال العلاقة بين تسلسل تحميل الموارد ومؤشرات الويب الأساسية. هدفنا تقديم إرشادات واضحة حول كيفية تحسين تسلسل التحميل للحصول على مؤشرات أفضل.</p>
+<p>قبل أن نضع تسلسل تحميل مثاليًا، لنحاول أولًا فهم سبب صعوبة الحصول على التسلسل الصحيح.</p>
+<h2 id="لماذا-يصعب-تحقيق-التحميل-الأمثل">لماذا يصعب تحقيق التحميل الأمثل؟</h2>
+<p>حظينا بفرصة فريدة للعمل على تحليل الأداء للعديد من مواقع الشركاء. حددنا مشكلات متعددة متشابهة كانت تعيق التحميل الفعال للصفحات عبر مواقع الشركاء المختلفين.</p>
+<p>غالبًا ما توجد فجوة حرجة بين توقعات المطورين وكيفية أولوية المتصفح للموارد في الصفحة. ويؤدي هذا غالبًا إلى درجات أداء دون المستوى. حللنا الأمر أكثر واكتشفنا سبب هذه الفجوة، وتلخص النقاط التالية جوهر التحليل.</p>
+<p><strong>تسلسل دون المستوى الأمثل</strong></p>
+<p>يتطلب تحسين <a href="https://web.dev/vitals">مؤشرات Web Vitals</a> ليس فقط فهمًا جيدًا لما يمثله كل مقياس، بل أيضًا الترتيب الذي تحدث به والعلاقة بينه وبين الموارد الحرجة المختلفة. تحدث FCP قبل LCP، وتحدث LCP قبل FID. ومن ثم، ينبغي أولوية الموارد اللازمة لتحقيق FCP على الموارد التي يتطلبها LCP، ثم الموارد التي يتطلبها FID.</p>
+<p>كثيرًا ما لا تُرتب الموارد ولا تُنسق في الترتيب الصحيح. قد يكون السبب أن المطورين لا يعرفون اعتماد المقاييس على تحميل الموارد. ونتيجة لذلك، لا تكون الموارد ذات الصلة متاحة أحيانًا في الوقت المناسب لإطلاق المقياس المقابل.</p>
+<p><strong>أمثلة</strong>:</p>
+<p>أ) عندما تُطلق FCP، ينبغي أن تكون الصورة الرئيسية متاحة لإطلاق LCP. ب) عندما تُطلق LCP، ينبغي أن يكون JavaScript (JS) قد نُزّل وحُلّل وكان جاهزًا، أو يكون قيد التنفيذ بالفعل، لإتاحة التفاعل (FID).</p>
+<p><strong>استخدام الشبكة ووحدة المعالجة المركزية (CPU)</strong></p>
+<p>لا تُنسق الموارد بصورة كافية أيضًا لضمان الاستفادة المثلى من وحدة المعالجة المركزية والشبكة. ويؤدي ذلك إلى «وقت ميت» على المعالج عندما تكون العملية مقيّدة بالشبكة، والعكس.</p>
+<p>مثال رائع لذلك هو السكربتات التي قد تُنزّل بصورة متزامنة أو متتابعة. عند تقسيم النطاق الترددي أثناء التنزيل المتزامن، يكون الوقت الإجمالي لتنزيل جميع السكربتات نفسه للتنزيل المتسلسل والمتزامن. وإذا نزّلت السكربتات بصورة متزامنة، فلا نستفيد بشكل كافٍ من المعالج أثناء التنزيل. أما إذا نزّلتها بصورة متتابعة، فيستطيع المعالج بدء معالجة أولها فور تنزيله. ويؤدي ذلك إلى استفادة أفضل من المعالج والشبكة.</p>
+<p><strong>منتجات الأطراف الثالثة (3P)</strong></p>
+<p>غالبًا ما تلزم مكتبات الأطراف الثالثة لإضافة ميزات ووظائف شائعة إلى الموقع. تشمل الأطراف الثالثة الإعلانات والتحليلات وأدوات التواصل الاجتماعي والمحادثة الحية والتضمينات الأخرى التي تدعم الموقع. ويأتي كل مكتبة مع JavaScript وصور وخطوط خاصة بها.</p>
+<p>لا تميل منتجات الأطراف الثالثة عادةً إلى حافز لتحسين دعمها لأداء التحميل في الموقع المستهلك. فقد تكون تكلفة تنفيذ JavaScript فيها ثقيلة فتؤخر التفاعلية، أو تعترض تنزيل الموارد الحرجة الأخرى.</p>
+<p>قد يميل المطورون الذين يضيفون منتجات الأطراف الثالثة إلى التركيز أكثر على القيمة التي تضيفها من حيث الميزات بدلًا من آثار الأداء. ونتيجة لذلك، تُضاف موارد الأطراف الثالثة أحيانًا بعشوائية، من دون مراعاة كاملة لكيفية اندماجها في تسلسل التحميل الكلي. وهذا يجعل من الصعب التحكم فيها وجدولتها.</p>
+<p><strong>خصوصيات المنصات</strong></p>
+<p>قد تختلف المتصفحات في كيفية أولوية الطلبات وتطبيق الإشارات. يصبح التحسين أسهل إذا كانت لديك معرفة عميقة بالمنصة وخصوصياتها. فالسلوك الخاص بمتصفح معين يجعل تحقيق تسلسل التحميل المرغوب بصورة متسقة أمرًا صعبًا.</p>
+<p>من أمثل ذلك <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=788757">خطأ preload</a> على منصة Chromium. ويمكن استخدام تعليمات <a href="https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf">Preload</a> (<code>) لإخبار المتصفح بتنزيل الموارد المهمة في أقرب وقت ممكن. ولا ينبغي استخدامها إلا عندما تكون متأكدًا من أن المورد سيُستخدم في الصفحة الحالية. ويجعل الخلل في Chromium الطلبات الصادرة عبر </code> تبدأ دائمًا قبل الطلبات الأخرى التي يراها ماسح التحميل، حتى لو كانت تلك الطلبات ذات أولوية أعلى. وتتعطل مثل هذه تعطل خطط التحسين.</p>
+<p><strong>أولوية HTTP2</strong></p>
+<p>لا توفر المواصفة نفسها خيارات أو مفاتيح تعديل كثيرة لترتيب الموارد وأولويتها. حتى لو توفرت بدائل أولوية أفضل، فهناك <a href="https://github.com/andydavies/http2-prioritization-issues">مشكلات كامنة في أولوية HTTP2</a> تجعل التسلسل الأمثل صعبًا. والأهم أننا لا نستطيع التنبؤ بالترتيب الذي سترتب به الخوادم أو شبكات CDN الطلبات لكل مورد. فبعض شبكات CDN تعيد ترتيب الطلبات، بينما تنفذ أخرى أولوية جزئية أو معيبة أو لا تنفذ أولوية على الإطلاق.</p>
+<p><strong>التحسين على مستوى الموارد</strong></p>
+<p>يحتاج التسلسل الفعال إلى تقديم الموارد التي يجري تسلسلها بأفضل صورة حتى تُحمّل سريعًا. ينبغي تضمين CSS الحرج، وضبط أحجام الصور، وتقسيم شيفرة JS وتقديمها تدريجيًا.</p>
+<p>يفتقر الإطار نفسه إلى بنى تسمح بتقسيم الشيفرة (code splitting) وتقديم JS والبيانات تدريجيًا. وعلى المستخدمين الاعتماد على إحدى الآتيتين لتقسيم دفعات 1P JS الكبيرة:</p>
+<ul>
+<li>React الحديثة (<a href="https://reactjs.org/docs/concurrent-mode-reference.html">Suspense / Concurrent mode / Data Fetching</a>) - لا تزال متاحة للتجربة فقط</li>
+<li>التحميل الكسول (lazy loading) باستخدام <a href="https://reactjs.org/docs/code-splitting.html">الاستيرادات الديناميكية</a> - ليست بديهية، ويحتاج المطورون إلى تحديد حدود تقسيم الشيفرة يدويًا.</li>
+</ul>
+<p>عند تقسيم الشيفرة، يحتاج المطورون إلى تحقيق دقة مناسبة في حجم الدفعات بسبب المقايضة بين الدقة والأداء.</p>
+<p>الدقة الأعلى مستحسنة لأنها</p>
+<ul>
+<li>تقلل JS المطلوب لكل مسار وفي تفاعلات المستخدم اللاحقة</li>
+<li>تسمح بالتخزين المؤقت للتبعيات الشائعة. ويضمن ذلك أن تغييرًا في المكتبة لا يتطلب إعادة جلب الحزمة (bundle) بأكملها.</li>
+</ul>
+<p>في الوقت نفسه، قد تكون الدقة المفرطة عند تقسيم الشيفرة ضارة، لأن عددًا كبيرًا جدًا من الدفعات الصغيرة يخفض نسب الضغط لكل دفعة ويؤثر في أداء المتصفح.</p>
+<p>يتطلب تحسين الموارد أيضًا إزالة الشيفرة الميتة أو غير المستخدمة. وكثيرًا ما تشحن شيفرة JS غير الضرورية أو المهجورة إلى المتصفحات الحديثة ما يؤثر سلبًا في الأداء. وJS المترجم إلى ES5 والمضمَّن مع polyfills غير ضروري للمتصفحات الحديثة. وغالبًا ما لا تنشر المكتبات وحزم npm بصيغة ES module، مما يجعل من الصعب على أدوات التجميع تنفيذ إزالة الشفظات الميتة (tree shaking) والتحسين.</p>
+<p>ربما لاحظت أن هذه المشكلات لا تقتصر على مجموعة محددة من الموارد أو المنصات. للتعامل معها، يحتاج المرء إلى فهم حزمة التقنية الكاملة وكيف يمكن دمج الموارد المختلفة لتحقيق المقاييس المثلى. وقبل أن نضع استراتيجية تحسين شاملة، فلننظر إلى كيف يمكن لمتطلبات الموارد الفردية أن تفسد هدفنا.</p>
+<h2 id="المزيد-عن-الموارد-العلاقات-والقيود-والأولويات">المزيد عن الموارد — العلاقات والقيود والأولويات**</h2>
+<p>في القسم السابق، قدمنا أمثلة قليلة على كيفية الحاجة إلى موارد محددة لإطلاق حدث مثل FCP أو LCP. لنحاول أولًا فهم كل هذه التبعيات قبل مناقشة طريقة التعامل معها. وفيما يلي قائمة موارد تلو التوصيات والقيود والمزالق التي ينبغي مراعاتها قبل تحديد تسلسل مثالي.</p>
+<p><strong>CSS الحرج</strong></p>
+<p>يشير <a href="https://web.dev/extract-critical-css/">CSS الحرج</a> إلى الحد الأدنى من CSS اللازم لـFCP. من الأفضل تضمين هذا CSS داخل HTML بدلًا من استيراده من ملف CSS آخر. ينبغي ألا يُنزَّل سوى CSS اللازم للمسار في أي وقت، وينبغي تقسيم جميع CSS الحرجة تبعًا لذلك.</p>
+<p>إذا لم يكن التضمين ممكنًا، ينبغي تحميل CSS الحرج مسبقًا وتقديمه من أصل مطابق لأصل المستند. تجنب تقديم CSS الحرج من نطاقات متعددة أو استخدام CSS حرج من طرف ثالث مباشرةً مثل Google Fonts. بدلًا من ذلك، يمكن لخادمك أن يكون وسيطًا (proxy) لـCSS الحرج من طرف ثالث.</p>
+<p>يمكن لتأخير جلب CSS أو ترتيب الجلب على نحو خاطئ أن يؤثر في FCP وLCP. ولتجنب ذلك، ينبغي أولوية CSS غير المضمّن وترتيبه فوق 1P JS وصور ATF على الشبكة.</p>
+<p>يمكن للكميات المفرطة من CSS المضمّن أن تسبب تضخم HTML وأزمنة طويلة لتحليل الأنماط في الخيط الرئيسي. وقد يضر ذلك بـFCP. ومن ثم، فإن تحديد ما هو حرج وتقسيم الشيفرة أمران ضروريان.</p>
+<p>لا يمكن تخزين CSS المضمّن مؤقتًا. أحد الحلول هو تقديم طلب نسخة مكررة من CSS يمكن تخزينها. لكن لاحظ أن هذا قد يؤدي إلى عمليات تخطيط كاملة متعددة للصفحة، ما قد يؤثر في FID.</p>
+<p><strong>الخطوط</strong></p>
+<p>مثل CSS الحرج، ينبغي أيضًا تضمين CSS الخاص بـ<a href="https://web.dev/font-best-practices/">الخطوط الحرجة</a>. وإذا لم يكن التضمين ممكنًا، ينبغي تحميل السكربت مع تحديد <a href="https://web.dev/uses-rel-preconnect/">preconnect</a>. ويمكن لتأخير جلب الخطوط، مثل خطوط Google أو الخطوط من نطاق مختلف، أن يؤثر في FCP. يطلب preconnect من المتصفح إنشاء اتصالات بهذه الموارد مبكرًا.</p>
+<p>يمكن لتضمين الخطوط أن يضخّم HTML بصورة كبيرة ويؤخر بدء عمليات جلب الموارد الحرجة الأخرى. ويمكن استخدام <a href="https://css-tricks.com/css-basics-fallback-font-stacks-robust-web-typography/">الخطوط الاحتياطية</a> لإلغاء حجب FCP وإتاح النص. لكن استخدام خط احتياطي يمكن أن يؤثر في <a href="https://web.dev/cls/">CLS</a> بسبب اهتزاز الخطوط. ويمكنه أن يؤثر في FID بسبب مهمة محتملة كبيرة لتحليل الأنماط وتخطيطها في الخيط الرئيسي عند وصول الخط الحقيقي.</p>
+<p><strong>صور ATF (فوق الطية)</strong></p>
+<p>هذه صور تكون مرئية أولًا للمستخدم عند تحميل الصفحة لأنها تقع ضمن إطار العرض. وتُعد الصورة الرئيسية للصورة حالة خاصة من صور ATF. ينبغي ضبط أحجام جميع صور ATF. وتضر الصور غير المضبوطة بمقياس CLS بسبب إزاحة التخطيط التي تحدث عند عرضها بالكامل. وينبغي أن يعرض الخادم العناصر النائبة لصور ATF.</p>
+<p>قد يؤدي تأخير الصورة الرئيسية أو العناصر النائبة الفارغة إلى حدوث LCP متأخر. وزيادة على ذلك، ستُطلق LCP من جديد إذا لم يطابق حجم العنصر النائب الحجم الداخلي للصورة الرئيسية الفعلية ولم توضع الصورة فوقه عند الاستبدال. من المثالي ألا تؤثر صور ATF في FCP، لكن من الناحية العملية يمكن للصورة أن تطلق FCP.</p>
+<p><strong>صور BTF (تحت الطية)</strong></p>
+<p>هذه صور لا تكون مرئية فورًا للمستخدم عند تحميل الصفحة. ولذلك فهي مرشحة مثالية للتحميل الكسول (lazy loading). وهذا يضمن أنها لا تتنافس مع 1P JS أو 3P المهمين في الصفحة. وإذا حُمِّلت صور BTF قبل 1P JS أو موارد 3P المهمة، لتأخرت FID.</p>
+<p><strong>JavaScript للطرف الأول (1P)</strong></p>
+<p>يؤثر 1P JS في جاهزية التطبيق للتفاعل. قد يتأخر على الشبكة خلف الصور و3P JS، وفي الخيط الرئيسي خلف 3P JS. ومن ثم، ينبغي أن يبدأ تحميله على الشبكة قبل صور ATF، وأن ينفذ في الخيط الرئيسي قبل 3P JS. ولا يحجب 1P JS القياسين FCP وLCP في الصفحات المعروضة على الخادم.</p>
+<p><strong>JavaScript للأطراف الثالثة (3P)</strong></p>
+<p>يمكن لسكربت 3P المتزامن في head HTML أن يحجب تحليل CSS والخطوط، وبالتالي FCP. كما يحجب السكربت المتزامن في head تحليل جسم HTML. ويمكن لتنفيذ 3P JS في الخيط الرئيسي أن يؤخر تنفيذ 1P JS ويؤخر الترطيب (hydration) وFID. ومن ثم، يلزم تحكم أفضل في تحميل سكربتات 3P.</p>
+<p>تنطبق هذه التوصيات والقيود عادةً بصرف النظر عن حزمة التقنية والمتصفح. ولاحظ كيف يمكن أن يتحول التوصية إلى قيد. فمثلًا، تضمين CSS والخطوط مفيد، لكن الإفراط فيه يسبب التضخم. والمفتاح هو إيجاد توازن بين «قليل جدًا ومتأخر جدًا» و«كثير جدًا وسريع جدًا».</p>
+<p>يوضح المخطط التالي أولويات Chrome لتحميل الموارد المختلفة. وسيساعدنا الجمع بين المعلومات حول الأولويات والنقاش حول أنواع الموارد على فهم تسلسل التحميل المقترح في القسم التالي.</p>
+<p>فيما يلي أبرز الخلاصات من هذا الجدول.</p>
+<ul>
+<li>تُحمّل CSS والخطوات ذات الأولوية الأعلى. وينبغي أن يساعدنا ذلك في أولوية CSS والخطوط الحرجة.</li>
+<li>تحصل السكربتات على أولويات مختلفة وفق موضعها في المستند وهل كانت async أو defer أو حاجبة. تُمنح السكربتات الحاجبة المطلوبة قبل الصورة الأولى (أو صورة مبكرة في المستند) أولوية أعلى من السكربتات الحاجبة المطلوبة بعد جلب الصورة الأولى. أما السكربتات async/defer/المُدخلة، أينما كانت في المستند، فلها أدنى أولوية. ومن ثم، يمكننا تحديد أولويات السكربتات المختلفة باستخدام السمات المناسبة لـ<a href="https://javascript.info/script-async-defer">async وdefer</a>.</li>
+<li>الصور المرئية الموجودة في إطار العرض لها أولوية أعلى (صافي: متوسط) من الصور غير الموجودة فيه (صافي: الأدنى). يساعدنا ذلك في إعطاء صور ATF أولوية على صور BTF.</li>
+</ul>
+<p>لنرَ الآن كيف يمكن تجميع كل التفاصيل السابقة لتعريف تسلسل تحميل أمثل.</p>
+<h2 id="ما-هو-تسلسل-التحميل-المثالي">ما هو تسلسل التحميل المثالي؟</h2>
+<p>بهذه الخلفية، يمكننا الآن اقتراح تسلسل تحميل ينبغي أن يحسن تحميل موارد 1P و3P معًا. ويعتمد التسلسل المقترح على العرض من الخادم (Server Side Rendering, SSR) في <a href="https://nextjs.org/">Next.js</a> بوصفه مرجعًا للتحسين.</p>
+<h3 id="الحالة-الحالية">الحالة الحالية</h3>
+<p>من واقع خبرتنا، هذا هو تسلسل التحميل المعتاد الذي لاحظناه لتطبيق Next.js يستخدم SSR قبل التحسين.</p>
+<table>
+<thead>
+<tr>
+<th>CSS</th>
+<th>يتم تحميل CSS مسبقًا قبل JS لكنه غير مضمَّن</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JavaScript</td>
+<td>يتم تحميل 1P JS مسبقًا.لا تتم إدارة 3P JS، ولا يزال بإمكانها حجب العرض في أي موضع بالمستند.</td>
+</tr>
+<tr>
+<td>Fonts</td>
+<td>الخطوط غير مضمَّنة ولا تستخدم preconnect.تُحمَّل الخطوط عبر أوراق أنماط خارجية، ما يؤخر التحميل.قد تكون الخطوط حاجبة للعرض أو لا تكون كذلك.</td>
+</tr>
+<tr>
+<td>Images</td>
+<td>لا تُعطى الصور الرئيسية أولوية.لا تُحسّن كل من صور ATF وBTF.</td>
+</tr>
+</tbody>
+</table>
+<p>فيما يلي مثال على تسلسل كهذا في أحد مواقع الشركاء. وتُدرج تعليقات توضح الإيجابيات والسلبيات في تسلسل التحميل.</p>
+<h3 id="التسلسل-المقترح-من-دون-3p">التسلسل المقترح من دون 3P</h3>
+<p>فيما يلي تسلسل تحميل يراعي كل القيود التي ناقشناها سابقًا. لنبدأ أولًا بتسلسل من دون 3P. سنرى بعد ذلك كيف يمكن تشابك موارد 3P ضمن هذا التسلسل. ولاحظ أننا اعتبرنا Google Fonts من نوع 1P هنا.</p>
+<table>
+<thead>
+<tr>
+<th><strong>تسلسل الأحداث في خيط المتصفح الرئيسي</strong></th>
+<th></th>
+<th><strong>تسلسل الطلبات على الشبكة.</strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>تحليل HTML</td>
+<td>سكربتات 1P صغيرة مضمَّنة.</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>تنفيذ سكربتات 1P صغيرة مضمَّنة</td>
+<td>CSS الحرج المضمَّن (Preload إذا كان خارجيًا)</td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>الخطوط الحرجة المضمَّنة (Preconnect إذا كانت خارجية)</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>تحليل موارد FCP (CSS الحرج، الخط)</td>
+<td>صورة LCP (Preconnect إذا كانت خارجية)</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>First Contentful Paint (FCP)</strong></td>
+<td></td>
+<td>الخطوط (مُستدعاة من خلال CSS للخطوط مضمَّن (Preconnect))</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>عرض موارد LCP (الصورة الرئيسية، النص)</td>
+<td>CSS غير حرج (async)</td>
+<td>6</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>JS للطرف الأول للتفاعلية</td>
+<td>7</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>صور فوق الطية (preconnect)</td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>Largest Contentful Paint (LCP)</strong></td>
+<td></td>
+<td>صور تحت الطية</td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>عرض صور ATF المهمة</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Visually Complete</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>تحليل CSS غير الحرج (async)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>تنفيذ 1P JS والترطيب</td>
+<td>دفعات JS المحمَّلة كسولًا</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>First Input Delay (FID)</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>قد تكون بعض أجزاء هذا التسلسل بديهية، لكن النقاط التالية تساعد على تبريره أكثر.</p>
+<ul>
+<li>نوصي بتجنب preload قدر الإمكان، لأنه يفرض preload يدويًا على كل مورد سابق ويؤدي أيضًا إلى اختيار الترتيب يدويًا. ينبغي تجنب preload على الخطوط بدرجة خاصة، لأن تحديد الخطوط الحرجة أمر معقد.</li>
+<li>ينبغي تضمين CSS للخطوط مثاليًا. أما الخطوط من أصل آخر فيجب جلبها باستخدام preconnect.</li>
+<li>يُوصى باستخدام preconnect لكل الموارد من أصل آخر. ويضمن ذلك إنشاء الاتصال مسبقًا لتنزيل هذه الموارد.</li>
+<li>ينبغي جلب CSS غير الحرج قبل بدء تفاعل المستخدم (FID). سيتجنب ذلك مشكلات التنسيق الناتجة عن العرض اللاحق لمثل هذا CSS.</li>
+<li>ابدأ جلب JS للطرف الأول قبل صور ATF على الشبكة. فتنزيل JS وتحليله يستغرقان بعض الوقت.</li>
+<li>يمكن أن يستمر تحليل HTML في الخيط الرئيسي وتنزيل صور ATF بالتوازي أثناء تحليل 1P JS.</li>
+</ul>
+<h3 id="التسلسل-المقترح-مع-3p">التسلسل المقترح مع 3P</h3>
+<p>أخيرًا، بلغنا المرحلة التي يمكننا عندها اقتراح تسلسل لكل الموارد الرئيسية التي تُحمَّل عادةً في تطبيق ويب حديث. وفيما يلي شكل تسلسل الأحداث في خيط المتصفح الرئيسي وطلبات الجلب على الشبكة عند وجود موارد 3P.</p>
+<table>
+<thead>
+<tr>
+<th>تسلسل الأحداث</th>
+<th>تسلسل الطلبات</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>تحليل HTML</td>
+<td>موارد 3P الحاجبة لـFCP</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td>سكربتات 1P صغيرة مضمَّنة.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>تنفيذ سكربتات 1P صغيرة مضمَّنة</td>
+<td>CSS الحرج المضمَّن (Preload إذا كان خارجيًا)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>تحليل موارد 3P الحاجبة لـFCP</td>
+<td>الخطوط الحرجة المضمَّنة (Preconnect إذا كانت خارجية)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>تحليل موارد FCP (CSS الحرج، الخط)</td>
+<td>صورة 3P المخصصة فوق الطية واللازمة لـLCP</td>
+</tr>
+<tr>
+<td>7</td>
+<td>First Contentful Paint (FCP)</td>
+<td>صورة LCP (Preconnect إذا كانت خارجية)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>عرض صورة 3P المخصصة فوق الطية واللازمة لـLCP</td>
+<td>الخطوط (مُستدعاة من خلال CSS للخطوط مضمَّن (Preconnect))</td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td>CSS غير حرج (async)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>عرض موارد LCP (الصورة الرئيسية، النص)</td>
+<td>3P التي يجب تنفيذها قبل تفاعل المستخدم الأول</td>
+</tr>
+<tr>
+<td>11</td>
+<td></td>
+<td>JS للطرف الأول للتفاعلية</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Largest Contentful Paint (LCP)</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>عرض صور ATF المهمة</td>
+<td>3P JS الافتراضي</td>
+</tr>
+<tr>
+<td>14</td>
+<td>تحليل CSS غير الحرج (async)</td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>تنفيذ 3P اللازم لتفاعل المستخدم الأول</td>
+<td>صور تحت الطية</td>
+</tr>
+<tr>
+<td>16</td>
+<td>تنفيذ 1P JS والترطيب</td>
+<td>دفعات JS المحمَّلة كسولًا</td>
+</tr>
+<tr>
+<td><strong>First Input Delay (FID)</strong></td>
+<td></td>
+<td>3P JS الأقل أهمية</td>
+</tr>
+</tbody>
+</table>
+<p>المشكلة الرئيسية هنا هي كيفية ضمان تنزيل سكربتات 3P على النحو الأمثل وفي التسلسل المطلوب.</p>
+<p>لأن طلب السكربت يذهب إلى نطاق آخر، يُوصى باستخدام preconnect لطلبات 3P التالية. ويساعد ذلك في تحسين التنزيل.</p>
+<ul>
+<li>#1 - موارد 3P الحاجبة لـFCP</li>
+<li>#5 - صورة 3P المخصصة فوق الطية واللازمة لـLCP</li>
+<li>#9 - 3P التي يجب تنفيذها قبل تفاعل المستخدم الأول</li>
+<li>#12 - 3P JS الافتراضي</li>
+</ul>
+<p>لتحقيق التسلسل المطلوب، نوصي باستخدام <a href="https://github.com/vercel/next.js/discussions/18172">مكون ScriptLoader for Next</a>. صُمم هذا المكون «لتحسين مسار العرض الحرج والتأكد من أن السكربتات الخارجية لا تصبح اختناقًا لتحميل الصفحة الأمثل». وأهم ميزة ذات صلة بنقاشنا هي أولويات التحميل. تتيح لنا جدولة السكربتات عند معالم مختلفة لدعم حالات استخدام مختلفة. وفيما يلي قيم أولوية التحميل المتاحة:</p>
+<p><strong>After-Interactive</strong>: يحمّل سكربت 3P محددًا بعد الترطيب التالي مباشرة. يمكن استخدام ذلك لتحميل سكربتات مديري الوسوم أو الإعلانات أو التحليلات التي نريد تنفيذها في أبكر وقت ممكن، لكن بعد سكربتات 1P.</p>
+<p><strong>Before-Interactive</strong>: يحمّل سكربت 3P محددًا قبل الترطيب. يمكن استخدامه عندما نريد تنفيذ سكربت 3P قبل سكربت 1P، مثل polyfill.io أو كشف الروبوتات أو الأمن والمصادقة أو إدارة موافقة المستخدم (GDPR) وغيرها.</p>
+<p><strong>Lazy-Onload</strong>: يعطي أولوية لكل الموارد الأخرى على سكربت 3P المحدد، ثم يحمّله بالتحميل الكسول. يمكن استخدامه لمكونات CRM مثل Google Feedback أو سكربتات مخصصة لشبكات اجتماعية مثل المستخدمة في أزرار المشاركة والتعليقات وغيرها.</p>
+<p>من ثم، يمكن أن يساعدنا الجمع بين preconnect وسمات السكربت وScriptLoader for Next.js في الحصول على التسلسل المطلوب لجميع سكربتاتنا.</p>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>تقع مسؤولية تحسين التطبيقات على عاتق مطوري المنصات المستخدمة، وعلى المطورين الذين يستخدمونها..نحتاج معالجة المشكلات الشائعة. نهدف إلى جعل التسلسل أسهل من الداخل إلى الخارج. وتساعد مجموعة مُختبرة من التوصيات للحالات والمبادرات المختلفة، مثل أداة تحميل السكربتات، على تحقيق ذلك في حزمة React وNext.js. والخطوة التالية هي ضمان امتثال التطبيقات الجديدة للتوصيات أعلاه.</p>
+<p><em>مع شكر خاص لـ<a href="https://www.linkedin.com/in/leena-sohoni-0636b2">Leena Sohoni</a> (محللة/كاتبة تقنية)، على مساهماتها في هذه المقالة.</em></p>
+<p><img src="../../../../images/patterns-dev/vanilla-loading-sequence-35-optimizeyourlo__0juvmukudzfo.webp" alt="Optimize your loading sequence"> <img src="../../../../images/patterns-dev/vanilla-loading-sequence-36-optimizeyourlo__6e5x6tn54ob.webp" alt="Optimize your loading sequence"></p>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/patterns-dev/vanilla/import-on-visibility"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الاستيراد عند الظهور (Import On Visibility)</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/patterns-dev/vanilla/mediator-pattern"><span class="prev-next__label">التالي</span> <span class="prev-next__title">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1pf10gp = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.D-wSzHHK.js"),
+						import("../../../../_app/immutable/entry/app.B8gBS73N.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

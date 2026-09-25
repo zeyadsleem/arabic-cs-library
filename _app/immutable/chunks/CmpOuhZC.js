@@ -1,0 +1,177 @@
+const o="patterns-dev",c="vue",n="أنماط Vue",e="async-components",t="المكوّنات غير المتزامنة",d=[{depth:2,id:"defineasynccomponent",text:"defineAsyncComponent"},{depth:2,id:"واجهة-التحميل-وواجهة-الخطأ",text:"واجهة التحميل وواجهة الخطأ"},{depth:3,id:"loadingcomponent",text:"loadingComponent"},{depth:3,id:"errorcomponent",text:"errorComponent"},{depth:2,id:"مصادر-مفيدة",text:"مصادر مفيدة"}],p=`<p>عند تطوير تطبيقات ويب كبيرة، يكون الأداء في الصدارة. فسرعة تحميل الصفحة وسرعة استجابة عناصرها التفاعلية يمكن أن يؤثّرا كثيرًا في تجربة المستخدم. ومع نمو تطبيقات الويب في الحجم والتعقيد، يصبح من المهمّ ضمان تحميل حزم الشيفرة الكبيرة فقط عند الحاجة إليها. وهنا تدخل المكوّنات غير المتزامنة في Vue.</p>
+<p>من <a href="/book/patterns-dev/vue/components">مقالنا السابق</a>، توصّلنا إلى فهم أنّ المكوّنات هي لبنات البناء الأساسية لبناء واجهة المستخدم. وعادةً، حين نستخدم المكوّنات، يتم تحميلها وتحليلها تلقائيًا، حتى لو لم تكن مطلوبة فورًا.</p>
+<p>أما المكوّنات غير المتزامنة، منجهة أخرى، فتتيح لنا تعريف المكوّنات بطريقة لا يتم تحميلها وتحليلها إلا عندما تكون مطلوبة أو عندما تتحقّق شروط معيّنة. ولنمرّ على تمرين لفهم هذا فهمًا أفضل.</p>
+<p>لنفترض لدينا مكوّن نافذة منبثقة (modal) بسيط يُعرض عند النقر على زرّ من المكوّن الأصل. وسيحتوي ملف المكوّن <code>Modal.vue</code> على القالب والأنماط فقط التي تحدّد كيف تظهر النافذة المنبثقة.</p>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;modal-mask&quot;&gt;
+    &lt;div class=&quot;modal-container&quot;&gt;
+      &lt;div class=&quot;modal-body&quot;&gt;
+        &lt;h3&gt;This is the modal!&lt;/h3&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;modal-footer&quot;&gt;
+        &lt;button class=&quot;modal-default-button&quot; @click=&quot;$emit('close')&quot;&gt;OK&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style&gt;
+  .modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal-container {
+    width: 300px;
+    margin: auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+  }
+
+  .modal-body h3 {
+    margin-top: 0;
+    color: #42b983;
+  }
+
+  .modal-default-button {
+    float: right;
+  }
+&lt;/style&gt;
+</code></pre>
+<p>في المكوّن الأصل <code>App</code>، يمكننا عرض مكوّن النافذة المنبثقة مع زرّ يبدّل مرئية مكوّن النافذة المنبثقة عند النقر عليه، بمساعدة قيمة منطقية تفاعلية (<code>showModal</code>). يتم إظهار النافذة المنبثقة أو إخفاؤها بشكل مشروط بناءً على قيمة الخاصية التفاعلية <code>showModal</code>.</p>
+<pre><code>&lt;template&gt;
+  &lt;button id=&quot;show-modal&quot; @click=&quot;showModal = true&quot;&gt;Show Modal&lt;/button&gt;
+  &lt;Modal v-if=&quot;showModal&quot; :show=&quot;showModal&quot; @close=&quot;showModal = false&quot; /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+  import { ref } from &quot;vue&quot;;
+  import Modal from &quot;./components/Modal.vue&quot;;
+
+  const showModal = ref(false);
+&lt;/script&gt;
+</code></pre>
+<p>عند النقر على الزر <code>Show Modal</code>، تظهر النافذة المنبثقة على الصفحة.</p>
+<p>ومن هذا المثال يمكننا أن نرى أن مكوّن النافذة المنبثقة لا يظهر إلّا في ظرف معيّن — عندما ينقر المستخدم على الزر <code>Show Modal</code>. ومع ذلك، فإن حزمة JavaScript المرتبطة بالمكوّن <strong>تُحمَّل تلقائيًا عند تحميل صفحة الويب بالكامل</strong> حتى قبل جعل النافذة المنبثقة مرئية. ويمكن رؤية ذلك من سجلّات الشبكة في المتصفّح.</p>
+<p>هذا مقبول في أغلب الحالات. لكن في الظروف التي يكون فيها حجم حزمة النافذة المنبثقة كبيرًا حقًا و/أو يحتوي التطبيق على هذا النوع من المكوّنات بكثرة، فإن ذلك قد يؤدّي إلى تأخّر في زمن التحميل الأوّلي. ومع كل حزمة مضافة، حتى لو كانت berkaitan بمكوّنات نادرًا ما تُستخدم، يزداد الوقت الذي يستغرقه تحميل الصفحة الأوّلي.</p>
+<h2 id="defineasynccomponent">defineAsyncComponent</h2>
+<p>هنا يتيح لنا Vue تقسيم التطبيق إلى أجزاء أصغر عبر تحميل المكوّنات بشكل غير متزامن، بمساعدة الدالة <a href="https://vuejs.org/api/general.html#defineasynccomponent"><code>defineAsyncComponent()</code></a>.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+
+const AsyncComp = defineAsyncComponent(() =&gt; {
+  return new Promise((resolve, reject) =&gt; {
+    // ...load component from the server
+    resolve(/* loaded component */);
+  });
+});
+</code></pre>
+<p>تقبل الدالة <code>defineAsyncComponent()</code> دالة تحميل (loader function) تُعيد Promise يُحلّ إلى المكوّن المستورد. أمّا دالة <code>resolve</code> الخاصة بالـ Promise فيُفترض استدعاؤها عندما يكون المكوّن قد حُمِّل بنجاح، بينما تُستدعى دالة <code>reject</code> في حال وجود أي أخطاء أثناء عملية التحميل.</p>
+<p>لكن بدلًا من تعريف دالة المكوّن غير المتزامن كما في الأعلى، يمكننا الاستفادة من <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import">الاستيراد الديناميكي</a> لتحميل وحدة ECMAScript (أي مكوّن في حالتنا) بشكل غير متزامن. ويتم ذلك باستخدام صيغة <code>import()</code>.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+
+export const AsyncComp = defineAsyncComponent(() =&gt;
+  import(&quot;./components/MyComponent.vue&quot;)
+);
+</code></pre>
+<p>لنرَ ذلك عمليًا في مثال النافذة المنبثقة لدينا. سننشئ ملفًا جديدًا بعنوان <code>AsyncModal.js</code>، وفي هذا الملف سنستورد الدالة <code>defineAsyncComponent()</code> من مكتبة <code>vue</code> ونُسند ثابتًا اسمه <code>AsyncModal</code> إلى استدعاء الدالة <code>defineAsyncComponent()</code>.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+
+export const AsyncModal = defineAsyncComponent();
+</code></pre>
+<p>في استدعاء الدالة <code>defineAsyncComponent()</code> لدينا، سنستخدم صيغة <code>import()</code> لاستيراد مكوّن <code>Modal</code> الذي أنشأناه في وقت سابق بشكل غير متزامن.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+
+export const AsyncModal = defineAsyncComponent(() =&gt; import(&quot;./Modal.vue&quot;));
+</code></pre>
+<p>وفي المكوّن الأصل <code>App</code> لدينا، سنستورد الآن مكوّن <code>AsyncModal</code> غير المتزامن ونستخدمه بدلًا من المكوّن <code>Modal</code>.</p>
+<pre><code>&lt;template&gt;
+  &lt;button id=&quot;show-modal&quot; @click=&quot;showModal = true&quot;&gt;Show Modal&lt;/button&gt;
+  &lt;AsyncModal v-if=&quot;showModal&quot; :show=&quot;showModal&quot; @close=&quot;showModal = false&quot; /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+  import { ref } from &quot;vue&quot;;
+  import { AsyncModal } from &quot;./components/AsyncModal&quot;;
+
+  const showModal = ref(false);
+&lt;/script&gt;
+</code></pre>
+<p>مع هذا التغيير البسيط، سيصبح مكوّن النافذة المنبثقة لدينا محمَّلًا بشكل غير متزامن! فعند تحميل صفحة التطبيق الأوّلي، سنلاحظ أن حزمة المكوّن <code>Modal</code> <em>لم تعد تُحمَّل تلقائيًا عند تحميل الصفحة</em>.</p>
+<p>وعند نقرنا على الزرّ الذي يشغّل إظهار النافذة المنبثقة، سنلاحظ أن الحزمة تُحمَّل عندئذٍ بشكل غير متزامن أثناء تصيير مكوّن النافذة المنبثقة.</p>
+<h2 id="واجهة-التحميل-وواجهة-الخطأ">واجهة التحميل وواجهة الخطأ</h2>
+<p>مع <code>defineAsyncComponent()</code>، لا يقدّم Vue للمطوّرين وسيلة لتحميل المكوّنات بشكل غير متزامن فحسب، بل يوفّر أيضًا إمكانات لعرض تغذية راجعة للمستخدم أثناء عملية التحميل وللتعامل مع أي أخطاء محتملة. ويضمن ذلك تجربة مستخدم سلسة حتى في ظروف الشبكة غير المثالية و/أو في حال وقوع أي أخطاء أثناء عملية التحميل غير المتزامن.</p>
+<h3 id="loadingcomponent">loadingComponent</h3>
+<p>قد تكون هناك أوقات نرغب فيها بتقديم تغذية راجعة مرئية للمستخدم أثناء جلب المكوّن، ولا سيما إذا كان زمن التحميل طويلًا. ولتحقيق ذلك، تمتلك <code>defineAsyncComponent()</code> خيارًا اسمه <code>loadingComponent</code> يتيح لنا تحديد مكوّن نعرضه أثناء مرحلة التحميل.</p>
+<p>ولأننا سنصرّح بخيارات إضافية في دالتنا <code>defineAsyncComponent()</code>، سنستخدم خيار الدالة <code>loader()</code> لاستيراد مكوّن النافذة المنبثقة بشكل غير متزامن.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+
+export const AsyncModal = defineAsyncComponent({
+  loader: () =&gt; import(&quot;./Modal.vue&quot;),
+});
+</code></pre>
+<p>لنفترض لدينا قالب مكوّن تحميل بسيط معرّف في ملف مكوّن اسمه <code>Loading.vue</code> على النحو التالي:</p>
+<pre><code>&lt;template&gt;
+  &lt;p&gt;Loading...&lt;/p&gt;
+&lt;/template&gt;
+</code></pre>
+<p>ويمكننا بعد ذلك تحديد مكوّن التحميل هذا كقيمة لخيار <code>loadingComponent</code> في دالتنا <code>defineAsyncComponent()</code>.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+import Loading from &quot;./Loading.vue&quot;;
+
+export const AsyncModal = defineAsyncComponent({
+  loader: () =&gt; import(&quot;./Modal.vue&quot;),
+  loadingComponent: Loading,
+});
+</code></pre>
+<p>ومع أن يبدأ تحميل مكوّن النافذة المنبثقة بشكل غير متزامن، سيُعرض للمستخدم الآن رسالة <code>Loading...</code>. وقد يكون من الصعب رؤيتها على اتصالات الإنترنت السريعة، لذا سنحاكي شبكة <code>Slow 3G</code> في سجلّات الشبكة داخل المتصفّح حتى نلاحظ سلوك ظهور رسالة <code>Loading...</code> أثناء ما زالت حزمة مكوّن النافذة المنبثقة قيد التحميل.</p>
+<h3 id="errorcomponent">errorComponent</h3>
+<p>في ظروف معيّنة (مثل اتصالات الإنترنت الضعيفة الإنترنت)، قد توجد احتمالات يفشل فيها تحميل المكوّن غير المتزامن. وفي هذه السيناريوهات، فإن تقديم تغذية راجعة عن الخطأ مهمّ للحصول على تجربة مستخدم جيّدة. وتوفّر الدالة <code>defineAsyncComponent()</code> خيارًا اسمه <code>errorComponent</code> للتعامل مع هذه المواقف، ويتيح لنا تحديد مكوّن يُعرض عند حدوث خطأ في التحميل.</p>
+<p>لنفترض لدينا قالب مكوّن خطأ معرّف في ملف مكوّن اسمه <code>Error.vue</code> على النحو التالي:</p>
+<pre><code>&lt;template&gt;
+  &lt;p&gt;Error!&lt;/p&gt;
+&lt;/template&gt;
+</code></pre>
+<p>ولدمج هذا المكوّن في إعداد النافذة المنبثقة غير المتزامنة لدينا، يمكننا تحديده كقيمة لخيار <code>errorComponent</code>.</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+import Loading from &quot;./Loading.vue&quot;;
+import Error from &quot;./Error.vue&quot;;
+
+export const AsyncModal = defineAsyncComponent({
+  loader: () =&gt; import(&quot;./Modal.vue&quot;),
+  loadingComponent: Loading,
+  errorComponent: Error,
+});
+</code></pre>
+<p>ولتصوير هذا عمليًا، يمكننا محاكاة وضع الشبكة <code>Offline</code> في أدوات مطوّر المتصفّح ومحاولة تشغيل النافذة المنبثقة. وسنلاحظ أنه عندما يفشل تحميل مكوّن النافذة المنبثقة، سيُعرض قالب المكوّن <code>Error</code>.</p>
+<p>ومع كل التغييرات التي أجريناها، يمكن رؤية تطبيقنا على النحو التالي.</p>
+<p>JavaScript iconAsyncModal.js</p>
+<pre><code>import { defineAsyncComponent } from &quot;vue&quot;;
+  import Loading from &quot;./Loading.vue&quot;;
+  import Error from &quot;./Error.vue&quot;;
+  
+  export const AsyncModal = defineAsyncComponent({
+    loader: () =&gt; import(&quot;./Modal.vue&quot;),
+    loadingComponent: Loading,
+    errorComponent: Error
+  });
+</code></pre>
+<p><a href="https://codesandbox.io/embed/async-components-g5ldxc">Open CodeSandbox</a></p>
+<p>تقبل الدالة <code>defineAsyncComponent()</code> خيارات إضافيّة مثل <code>delay</code> و<code>timeout</code> و<code>suspensible</code> و<code>onError()</code> التي تمنح المطوّرين تحكّمًا أدقّ في سلوك التحميل غير المتزامن وفي تجربة المستخدم. وبالتأكّد من الاطّلاع على <a href="https://vuejs.org/api/general.html#defineasynccomponent">توثيق الواجهة البرمجية</a> للحصول على مزيد من التفاصيل حول هذه الخصائص.</p>
+<p>ويمكن للدالة <code>defineAsyncComponent()</code> أن تساعد في تقسيم التحميل الأوّلي لتطبيق Vue إلى أجزاء قابلة للإدارة عبر تأجيل تحميل مكوّنات معيّنة حتى الحاجة إليها. ويمكن أن يساعد هذا في تحسين زمن تحميل الصفحة وفي الأداء العام للتطبيق، ولا سيما عندما يحتوي التطبيق على مكوّنات عديدة ذات أحجام حزم كبيرة.</p>
+<h2 id="مصادر-مفيدة">مصادر مفيدة</h2>
+<ul>
+<li><a href="https://vuejs.org/guide/components/async.html#async-components">المكوّنات غير المتزامنة | توثيق Vue</a></li>
+</ul>
+<p><img src="/images/patterns-dev/vue-async-components-48-simple_modal.webp" alt="المكوّنات غير المتزامنة"> <img src="/images/patterns-dev/vue-async-components-49-modal_bundle_initial_load.webp" alt="المكوّنات غير المتزامنة"> <img src="/images/patterns-dev/vue-async-components-50-modal_bundle_no_initial_load.webp" alt="المكوّنات غير المتزامنة"> <img src="/images/patterns-dev/vue-async-components-51-modal_async_load.webp" alt="المكوّنات غير المتزامنة"> <img src="/images/patterns-dev/vue-async-components-52-modal_loading_component.webp" alt="المكوّنات غير المتزامنة"> <img src="/images/patterns-dev/vue-async-components-53-modal_error_component.webp" alt="المكوّنات غير المتزامنة"></p>
+`,r={book:o,chapter:"vue",chapterTitle:n,slug:e,title:t,headings:d,html:p};export{o as book,c as chapter,n as chapterTitle,r as default,d as headings,p as html,e as slug,t as title};

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.D-wSzHHK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D5LYHf0q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.B8gBS73N.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BE5kT3lG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-v837FGo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/I9MyXR3J.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DALGGqHN.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfJcPA2D.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="نمط الوزن الخفيف (flyweight) — أنماط JavaScript"/><!----><title>نمط الوزن الخفيف (flyweight) | أنماط تصميم تطبيقات الويب</title>
+		<link href="../../../../_app/immutable/assets/0.DahrPYdV.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern" class="active">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل موارد الأطراف الخارجية (Third-party)</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>نمط الوزن الخفيف (flyweight)</h1></div> <div class="reader-content"><!----><p>الوزن الخفيف (flyweight) نمط هيكلي للمواقف التي يحتاج فيها تطبيق إلى <strong>العرض (rendering)</strong> أو تتبّع <em>عدد هائل</em> من الكائنات التي تبدو متشابهة في الغالبية العظمى. وبدلًا من أن يملك كل كائن مجموعة البيانات الكاملة التي يحتاجها للعرض، تستخرج الأجزاء التي لا تتغير أبدًا وتخزنها مرة واحدة، متتركة بين جميع المستهلكين.</p>
+<p>لم يصبح النمط «نمط تصميم» (design pattern) إلا لأنه له شكل يمكن التعرف عليه: مجموعة صغيرة وثابتة من الكائنات المشتركة (<strong>الأوزان الخفيفة</strong>) إضافة إلى سياق لكل نسخة (<strong>الحالة الخارجية</strong>) يُقدم عند الاستدعاء. يظهر هذا الشكل اليوم بأسماء كثيرة — العرض بنسخ مثلثة، وAtomic CSS، ومجمعات الكائنات، والأصناف المخفية، وذاكرة مؤقتة للقواعد — ولا يظل ذا معنى في عام 2025، لكن نادرًا ما يكون للسبب الذي روّج له GoF أصلًا.</p>
+<h2 id="الحالة-الداخلية-مقابل-الحالة-الخارجية">الحالة الداخلية مقابل الحالة الخارجية</h2>
+<p>تتمثل حيلة التعرف على الوزن الخفيف في تقسيم الكائن إلى مجموعتين:</p>
+<ul>
+<li><strong>الداخلية</strong> — قيم تكون نفسها لكل مستهلك. آمنة للمشاركة.</li>
+<li><strong>الخارجية</strong> — قيم تختلف حسب المستهلك. تُقدم من الخارج في كل عملية.</li>
+</ul>
+<p>إذا استطعت إجراء هذا التقسيم بوضوح، فيمكن عادةً تقليص المجموعة الداخلية من «آلاف الكائنات» إلى «حفنة»، وهذا هو جوهر الفكرة.</p>
+<h2 id="عارض-لرسائل-المحادثة">عارض لرسائل المحادثة</h2>
+<p>تخيل واجهة محادثة تعرض 50,000 رسالة بينما يتصفح المستخدم السجل. لكل رسالة مؤلف وصورة رمزية ولون دور واسم عرض — إضافة إلى جسم ووقت ختم وموضع على الشاشة.</p>
+<p>يخزن التطبيق الساذج كل ذلك في كل رسالة:</p>
+<pre><code>// Naive: each message owns a full copy of the author info
+const messages = history.map((m) =&gt; ({
+  body: m.body,
+  timestamp: m.timestamp,
+  authorName: m.user.name,
+  authorAvatar: m.user.avatarUrl,
+  authorColor: m.user.color,
+  authorRole: m.user.role,
+}));
+</code></pre>
+<p>إذا كتب 30 مستخدمًا تلك الرسائل الخمسين ألفًا، تتكرر سلاسل الاسم/الصورة الرمزية/اللون نفسها عشرات الآلاف من المرات. ويضطر جامع القمامة إلى المرور على كل ذلك. كما يجب أن يقارنه التحليل في قائمة افتراضية.</p>
+<p>تقسيم الوزن الخفيف: <strong>الملف التعريفي للمؤلف</strong> حالة داخلية (فهو نفسه لكل رسالة أرسلها ذلك المستخدم)، بينما <strong>الجسم ووقت الختم والموضع</strong> حالة خارجية.</p>
+<pre><code>// A WeakMap-backed pool keyed by user id.
+// We use a plain Map here because user ids are primitives.
+const authorPool = new Map();
+
+function getAuthor(user) {
+  let flyweight = authorPool.get(user.id);
+  if (flyweight) return flyweight;
+
+  flyweight = Object.freeze({
+    id: user.id,
+    name: user.name,
+    avatarUrl: user.avatarUrl,
+    color: user.color,
+    role: user.role,
+  });
+  authorPool.set(user.id, flyweight);
+  return flyweight;
+}
+
+// Each message is now mostly extrinsic state plus a pointer to a shared author.
+function makeMessage(raw) {
+  return {
+    author: getAuthor(raw.user),
+    body: raw.body,
+    timestamp: raw.timestamp,
+  };
+}
+</code></pre>
+<p>الاستخدام التفصيلي لـ <code>Object.freeze</code> مهم؛ فهو يوضح النية بأن لا يعدّل شيء وزنًا خفيفًا مشتركًا، وستتخطى معظم المحركات بعض الفحوص للكائنات المجمدة.</p>
+<p>تشارك الآن 50,000 رسالة نحو 30 كائنًا للمؤلف. تقرأ كل عملية عرض <code>message.author.color</code> بدلًا من البحث عن سلسلة جديدة. يقصر ذلك المسار الساخن ويهدئ الكومة.</p>
+<h2 id="لماذا-المصنع-factory">لماذا المصنع (factory)؟</h2>
+<p>الجزء الخاص بـ«المصنع» في الوزن الخفيف يؤدي مهمة واحدة: فرض الثابت <em>مفتاح داخلي واحد → كائن واحد</em>. إذا بنى موقعا استدعاء كائنَي مؤلف خاصين بهما للمستخدم نفسه، فسيكون لديك وزنان خفيفان، وتكون ذاكرة مؤقتة خاطئة، وستفشل مقارنات الهوية (<code>a.author === b.author</code>) بصمت.</p>
+<p>تعمل <code>Map</code> عندما تكون المفاتيح قيمًا أولية مستقرة، مثل معرّفات المستخدمين والرموز الدولية ونقاط ترميز المحارف. وتعمل <code>WeakMap</code> عندما يكون المفتاح <em>هو</em> الكائن الذي تجري إزالة تكراره، وتريد أن تختفي قيم المجمع عند جمع المفتاح. ويعمل سجل مفاتيحه بـ <code>Symbol</code> عندما تريد مقبضًا خاصًا لا يحتمل تصادمًا للوزن الخفيف من مواضع أخرى في قاعدة الشيفرة.</p>
+<h2 id="أماكن-أهمية-الوزن-الخفيف-اليوم">أماكن أهمية الوزن الخفيف اليوم</h2>
+<p>في الأجهزة الحديثة، نادرًا ما تكون وفرات الذاكرة التي شدد عليها GoF هي القدر المهيمن. ولا يزال النمط يستحق الاستخدام في الحالات التالية:</p>
+<ul>
+<li><strong>حلقة عرض محكمة</strong> تخصّص ذاكرة في كل إطار (canvas، WebGL، محركات الألعاب).</li>
+<li><strong>قائمة أو شبكة افتراضية</strong> تعرض عشرات الآلاف من الخلايا.</li>
+<li><strong>تكلفة إنشاء</strong> للكائن المشترك لا تريد دفعها مرارًا (ترجمة التعبيرات النمطية، ومنسقات <code>Intl</code>، والمخططات المحللة).</li>
+</ul>
+<p>في الحالات الثلاث، التكلفة التي جرى توزيعها هي <em>الإنشاء وضغط جمع القمامة</em>، لا عدد البايتات الخام.</p>
+<h2 id="الصيغ-الحديثة-التي-استخدمتها-على-الأرجح">الصيغ الحديثة التي استخدمتها على الأرجح</h2>
+<h3 id="التخزين-المؤقت-لـintlnumberformat-وintlcollator">التخزين المؤقت لـ<code>Intl.NumberFormat</code> و<code>Intl.Collator</code></h3>
+<p>إنشاء <code>new Intl.NumberFormat(&quot;en-US&quot;, { style: &quot;currency&quot;, currency: &quot;USD&quot; })</code> مكلف؛ فهو يحمّل بيانات اللغة المحلية من ICU. وتنفيذه داخل عملية عرض أو دالة مقارنة ترتيب يدمّر الأداء (performance). الحل النموذجي هو مجمع وزن خفيف صغير مفتاحه الخيارات:</p>
+<pre><code>const formatterPool = new Map();
+
+function currency(locale, currency) {
+  const key = `${locale}:${currency}`;
+  let f = formatterPool.get(key);
+  if (!f) {
+    f = new Intl.NumberFormat(locale, { style: &quot;currency&quot;, currency });
+    formatterPool.set(key, f);
+  }
+  return f;
+}
+
+currency(&quot;en-US&quot;, &quot;USD&quot;).format(42); // &quot;$42.00&quot;
+</code></pre>
+<p>ينبغي لأي عرض قائمة منسق أرقام أن يفعل شيئًا مثل هذا. معظمها لا يفعل، ويمثل ذلك سبب بطئها.</p>
+<h3 id="مجمعات-الكائنات-في-webgl-ومحركات-الألعاب">مجمعات الكائنات في WebGL ومحرّكات الألعاب</h3>
+<p>كل من <code>InstancedMesh</code> في Three.js، و<code>ParticleContainer</code> في PixiJS، والنسخ الخفيفة في Babylon.js هو في الواقع وزن خفيف متنكر: جزء واحد من الهندسة ومادة واحدة، يُرسمان N مرة مع N من مصفوفات التحويل المختلفة. الهندسة حالة داخلية، والتحويل حالة خارجية، وتقوم وحدة معالجة الرسوميات بالضرب. ويكون تخصيص <code>Mesh</code> جديد لكل جسيم مدمرة؛ أما العرض بنسخ مثلثة فيتيح لمكالمة رسم واحدة معالجة آلاف العناصر.</p>
+<p>تأخذ أنظمة الجسيمات الفكرة نفسها أبعد من ذلك باستخدام مجمعات كائنات صريحة — فعند موت الجسيمات تعود إلى قائمة حرة بدلًا من جمعها في القمامة، يتيح للإطار التالي إعادة استخدام الكائن نفسه بدلًا من طلب كائن جديد من الموزع.</p>
+<h3 id="atomic-css-كوزن-خفيف-للتنسيق">Atomic CSS كوزن خفيف للتنسيق</h3>
+<p>Tailwind وUnoCSS وAtomizer هي في الجوهر مجمع وزن خفيف لقواعد CSS. توجد <code>p-4</code> في ورقة الأنماط مرة واحدة بالضبط؛ وتحمل العناصر التي تستخدمها الملايين اسم الصنف فقط، لا إعلان <code>padding: 1rem;</code> مكررًا. الداخلي = القاعدة، والخارجي = العنصر الذي تنطبق عليه.</p>
+<h3 id="المشاركة-البنيوية-في-immer-وimmutablejs">المشاركة البنيوية في Immer وImmutable.js</h3>
+<p>عند تحديث عقدة واحدة عميقة في شجرة غير قابلة للتغيير، لا تستنسخ الشجرة كلها؛ بل تستنسخ المسار إلى تلك العقدة وتشارك كل فرع آخر مع الإصدار السابق. هذه المشاركة هي الوزن الخفيف مطبقًا على أشجار الحالة: الأشجار الفرعية غير المتغيرة أوزان خفيفة داخلية تشير إليها إصدارات متعددة من الجذر.</p>
+<h3 id="الأصناف-المخفية-داخل-v8">الأصناف المخفية داخل V8</h3>
+<p>هذه تفصيل تتعلق بوقت التشغيل لا بشيء تكتبه، لكن من المفيد معرفتها. يرفق محرك V8 ( والمحركات الحديثة الأخرى) <em>شكلًا</em> لكل كائن — مجموعة الخصائص وإزاحاتها. تشارك الكائنات ذات الأشكال المتطابقة الصنف المخفي نفسه، ما يجعل الوصول إلى الخصائص سريعًا. وحين تنشئ كائنات بالحقول نفسها بالترتيب نفسه، فأنت فعليًا تطلب المحرك استخدام شكل بوصفه وزنًا خفيفًا. وأنشئها بترتيبات مختلفة فتجزّئ الأشكال، وتؤدي إلى إلغاء تحسين ذاكرات التخزين المؤقت السطرية، وتخسر الأداء لأسباب لا تشبه إطلاقًا خطأ في الذاكرة.</p>
+<p>النصيحة العملية: في الدوال المنشئة الساخنة، هيّئ الخصائص بترتيب ثابت، وتجنب إضافة خصائص جديدة لاحقًا. هذا انضباط الوزن الخفيف الذي يفرضه المحرك.</p>
+<h2 id="عرض-المحارف-المثال-الكلاسيكي-في-علوم-الحاسوب">عرض المحارف: المثال الكلاسيكي في علوم الحاسوب</h2>
+<p>السبب الوحيد الذي جعل الوزن الخفيف يدخل كتاب «الجماعة الأربعة» هو نظام TeX الخاص بـ Knuth، حيث يُعرض كل محرف في الصفحة من أطلس محارف مشترك. قد يحتوي كتاب على مليون <code>e</code>، لكن يوجد كائن محرف واحد بالضبط يصف كيفية رسم <code>e</code> بخط Computer Modern بحجم 12 نقطة — ومليون موضع <code>(x, y)</code> تخبر العارض أين يضعه. ولا يزال العرض النصي الحديث، بما فيه عرض خطوط canvas وتشكيل الخطوط عبر HarfBuzz، مبنيًا على هذا التقسيم نفسه.</p>
+<h2 id="محاذير">محاذير</h2>
+<ul>
+<li><strong>لا تجمع في المجمع أشياء تتغير.</strong> الكائن المشترك القابل للتغيير خطأ في انتظار الإبلاغ. جمّد الوزن الخفيف، أو لا تجمع إلا قيمًا غير قابلة للتغيير بعمق.</li>
+<li><strong>لا تجمع في المجمع أشياء رخيصة.</strong> عادة ما يكلف مجمع <code>{ x, y }</code> أكثر مما يوفره التخصيص المباشر؛ فبحث <code>Map</code> أغلى من التخصيص الذي يوفره.</li>
+<li><strong>راقب التسريبات.</strong> <code>Map</code> طويلة العمر تحمل مرجعًا قويًا طويل العمر. إذا أمكن جمع مفاتيح المجمع، ففضّل الإخراج عبر <code>WeakMap</code> أو <code>WeakRef</code>.</li>
+</ul>
+<h2 id="المقايضات">المقايضات</h2>
+<table>
+<thead>
+<tr>
+<th>الفائدة</th>
+<th>التكلفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تخصيصات أقل وضغط أقل على جمع القمامة في المسارات الساخنة</td>
+<td>توجيه إضافي عبر مصنع</td>
+</tr>
+<tr>
+<td>يسهل التفكير في الهوية (<code>===</code> تعمل على الكائنات المشتركة)</td>
+<td>يجب التمييز بعناية بين الحالة الداخلية والخارجية</td>
+</tr>
+<tr>
+<td>تلائم القوائم والشبكات الافتراضية والعرض بنسخ مثلثة</td>
+<td>يحتاج المجمع نفسه إلى استراتيجية إخراج إذا كانت المفاتيح غير محدودة</td>
+</tr>
+<tr>
+<td>توافق طبيعي مع تحسينات المحرك (الأصناف المخفية)</td>
+<td>تعديل وزن خفيف يكسر جميع المستهلكين في الوقت نفسه</td>
+</tr>
+</tbody>
+</table>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://refactoring.guru/design-patterns/flyweight">الوزن الخفيف</a> - Refactoring Guru</li>
+<li><a href="https://threejs.org/docs/#api/en/objects/InstancedMesh">Three.js InstancedMesh</a> - وثائق three.js</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat">Intl.NumberFormat</a> - MDN</li>
+<li><a href="https://v8.dev/blog/fast-properties">الأصناف المخفية وذاكرات التخزين المؤقت السطرية في V8</a> - مدونة V8</li>
+</ul>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/patterns-dev/vanilla/factory-pattern"><span class="prev-next__label">السابق</span> <span class="prev-next__title">نمط المصنع (factory)</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/patterns-dev/vanilla/import-on-interaction"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الاستيراد عند التفاعل (Import On Interaction)</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1pf10gp = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.D-wSzHHK.js"),
+						import("../../../../_app/immutable/entry/app.B8gBS73N.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
