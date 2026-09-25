@@ -32,6 +32,8 @@
               ? ` — ${book.languages.join(' + ')}`
               : ''}
           </span>
+        {:else if book.status === 'reference'}
+          <span class="badge badge--reference">مرجع — للقراءة بالأصل</span>
         {:else}
           <span class="badge badge--planned">قيد الإعداد</span>
         {/if}

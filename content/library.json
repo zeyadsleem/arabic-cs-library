@@ -16,6 +16,20 @@
       "status": "translated"
     },
     {
+      "id": "ocaml-cs3110",
+      "title": "البرمجة بلغة OCaml: صحيحة وفعّالة وجميلة",
+      "titleEn": "OCaml Programming: Correct + Efficient + Beautiful",
+      "author": "Michael R. Clarkson et al. — Cornell CS 3110",
+      "description": "كتاب جامعي في البرمجة الوظيفية وبنى البيانات بلغة OCaml مع تركيز على الدلالات وهندسة البرمجيات: البرمجة من الرتبة العليا، والتطابق النمطي، والوحدات، والقابلية للتغيير، والتزامن، وإثبات الصحة، وجداول التجزئة وأشجار الأحمر والأسود، وبنى المعطيات الوظيفية، والمفسّرات، والاستدلال على الأنواع.",
+      "sourceUrl": "https://cs3110.github.io/textbook/cover.html",
+      "repoUrl": "https://github.com/cs3110/textbook",
+      "license": "CC BY-NC-ND 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "languages": ["OCaml"],
+      "status": "reference",
+      "note": "ترخيص CC BY-NC-ND لا يسمح بالأعمال المشتقة، والترجمة عمل مشتق، لذا يُتاح الكتاب هنا كمرجع للقراءة بلغته الأصلية فقط دون ترجمة."
+    },
+    {
       "id": "sicp",
       "title": "SICP: بنية وتفسير برامج الحاسوب",
       "titleEn": "Structure and Interpretation of Computer Programs",

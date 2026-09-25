@@ -242,6 +242,11 @@
   color: #7a5a12;
 }
 
+.badge--reference {
+  background: #dde5f2;
+  color: #274a7a;
+}
+
 html[data-theme='dark'] .badge--done {
   background: #14351f;
   color: #7fd6a2;
@@ -250,6 +255,26 @@ html[data-theme='dark'] .badge--done {
 html[data-theme='dark'] .badge--planned {
   background: #33290f;
   color: #e0c07a;
+}
+
+html[data-theme='dark'] .badge--reference {
+  background: #16233a;
+  color: #9dc0ef;
+}
+
+.book-note {
+  max-width: 60ch;
+  margin-top: 1rem;
+  padding-right: 0.9rem;
+  border-right: 3px solid #c9d6ea;
+  color: #55637a;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+html[data-theme='dark'] .book-note {
+  border-right-color: #2f4160;
+  color: #a8b4c8;
 }
 
 .section-title {

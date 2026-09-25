@@ -39,10 +39,16 @@
         href={sectionPath(book.id, book.chapters[0].key, firstSection.slug)}
         >ابدأ القراءة</a
       >
+    {:else if book.status === 'reference'}
+      <span class="badge badge--reference">مرجع — للقراءة بلغته الأصلية</span>
     {:else}
       <span class="badge badge--planned"
         >هذا الكتاب قيد الإعداد وسيُنشر تباعاً</span
       >
+    {/if}
+
+    {#if book.note}
+      <p class="book-note">{book.note}</p>
     {/if}
   </div>
 </section>
