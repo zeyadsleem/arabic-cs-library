@@ -26,25 +26,37 @@ Outside of these unique cases, Vue’s template syntax should remain the go-to m
 
 Assume we had the following component that contains a `` element encompassing a `` element. The text content of the `` element simply displays the value of a `message` prop.
 
-```
+```javascript
 <template>
+
   <div class="render-card">
+
     <header class="card-header card-header-title">{{ message }}</header>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   const { message } = defineProps(["message"]);
+
 </script>
 ```
 
 We’ll recreate the markup of the component step by step with the help of the render function — i.e. the `h()` function.
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
 
+
+
   const { message } = defineProps(["message"]);
+
 </script>
 ```
 
@@ -58,31 +70,49 @@ The `h()` function takes three arguments of its own:
 
 The HTML tag name for the parent node we want to construct is a `` element. We’ll assign the result of the `h()` function to a constant labeled `render` and pass in a string of value `'div'` as the first argument:
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
+
+
 
   const { message } = defineProps(["message"]);
 
+
+
   const render = () => {
+
     return h("div");
+
   };
+
 </script>
 ```
 
 We’ll be interested in applying a `.render-card` CSS class to the parent `` element. To do this, we’ll declare the data object in the second argument of the `h()` function to have a `class` property that has a string value of ‘render-card’:
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
+
+
 
   const { message } = defineProps(["message"]);
 
+
+
   const render = () => {
+
     return h("div", {
+
       class: "render-card",
+
     });
+
   };
+
 </script>
 ```
 
@@ -92,129 +122,219 @@ We’ll want the parent `` element to have a child `` element of its own. In the
 
 Since we’ll be rendering another generated element as the child, we’ll declare the `h()` function within the child nodes array and give it a string value of ‘header’:
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
+
+
 
   const { message } = defineProps(["message"]);
 
+
+
   const render = () => {
+
     return h(
+
       "div",
+
       {
+
         class: "render-card",
+
       },
+
       [h("header")]
+
     );
+
   };
+
 </script>
 ```
 
 The header child element is to have classes of its own so we’ll pass in an attributes object in the nested `h()` function to declare the classes the header element should have:
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
+
+
 
   const { message } = defineProps(["message"]);
 
+
+
   const render = () => {
+
     return h(
+
       "div",
+
       {
+
         class: "render-card",
+
       },
+
       [
+
         h("header", {
+
           class: "card-header card-header-title",
+
         }),
+
       ]
+
     );
+
   };
+
 </script>
 ```
 
 The child header element is to contain no child elements of its own and instead is to simply display the value of the `message` prop. To have the header element display the `message` prop as its child content we’ll declare the value of `message` in the third argument of the nested `h()` function.
 
-```
+```javascript
 <script setup>
+
   import { h } from "vue";
+
+
 
   const { message } = defineProps(["message"]);
 
+
+
   const render = () => {
+
     return h(
+
       "div",
+
       {
+
         class: "render-card",
+
       },
+
       [
+
         h(
+
           "header",
+
           {
+
             class: "card-header card-header-title",
+
           },
+
           message
+
         ),
+
       ]
+
     );
+
   };
+
 </script>
 ```
 
 And that’s it! The last thing left for us to do is to place the `render` virtual node element we’ve created in the template section of the component.
 
-```
+```javascript
 <template>
+
   <render />
+
 </template>
 
+
+
 <script setup>
+
   import { h } from "vue";
 
+
+
   /* eslint-disable-next-line no-undef, no-unused-vars */
+
   const { message } = defineProps(["message"]);
 
+
+
   /* eslint-disable-next-line no-unused-vars */
+
   const render = () => {
+
     return h(
+
       "div",
+
       {
+
         class: "render-card",
+
       },
+
       [
+
         h(
+
           "header",
+
           {
+
             class: "card-header card-header-title",
+
           },
+
           message
+
         ),
+
       ]
+
     );
+
   };
+
 </script>
 ```
 
 We can now go ahead render the above component in the parent `App.vue` instance and pass a value of `"Hello World!"` to the `message` prop.
 
-```
+```javascript
 <template>
+
   <RenderComponent message="Hello world!" />
+
 </template>
 
+
+
 <script setup>
+
   import RenderComponent from "./components/RenderComponent.vue";
+
 </script>
 ```
 
 When saving these changes, we’ll be presented with the `“Hello World!” message in the UI which tells us we’ve appropriately rendered the child component.
 
+![Badge component](/images/patterns-dev/vue-render-functions-0-render_function.webp)
+
 Whew. If you’re feeling confused here, no need to worry. Though render functions give us more power in how we’d want to tailor the markup of our components, using standard templates is usually a *lot easier* the vast majority of the time. Only in unique cases where complex dynamic rendering or customization is required, would one opt for render functions.
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 <template>
   <render />
 </template>
@@ -259,19 +379,31 @@ A large reason why the implementation we’ve done above might be seen as somewh
 
 JSX can help recreate our render implementation in a way that is a lot easier to read since we can safely write HTML in the render function:
 
-```
+```javascript
 <template>
+
   <render />
+
 </template>
 
+
+
 <script setup lang="jsx">
+
   const { message } = defineProps(["message"]);
 
+
+
   const render = (
+
     <div class="render-card">
+
       <header class="card-header card-header-title">{message}</header>
+
     </div>
+
   );
+
 </script>
 ```
 
@@ -279,7 +411,7 @@ With JSX, our render function doesn’t look too difficult! It’s important to 
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 <template>
   <render />
 </template>
@@ -301,50 +433,82 @@ Functional components, a type of render function, provide a way to define compon
 
 To construct a functional component, we employ a simple function instead of an options object. This function essentially serves as the render function responsible for generating the component’s output.
 
-```
+```javascript
 function RenderComponent(props, { slots, emit, attrs }) {
+
   // ...
+
 }
+
+
 
 export default RenderComponent;
 ```
 
 We can use the `h()` function to create the template of our component as we’ve seen earlier.
 
-```
+```javascript
 import { h } from "vue";
 
+
+
 function RenderComponent(props) {
+
   return h(
+
     "div",
+
     {
+
       class: "render-card",
+
     },
+
     [
+
       h(
+
         "header",
+
         {
+
           class: "card-header card-header-title",
+
         },
+
         props.message
+
       ),
+
     ]
+
   );
+
 }
+
+
 
 export default RenderComponent;
 ```
 
 Additionally, we can also use JSX to render the template of the component in an easier-to-read manner.
 
-```
+```javascript
 function RenderComponent(props) {
+
   return (
+
     <div class="render-card">
+
       <header class="card-header card-header-title">{props.message}</header>
+
     </div>
+
   );
+
 }
+
+
 
 export default RenderComponent;
 ```
@@ -353,7 +517,7 @@ With this functional component setting, our component will render the same “He
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 function RenderComponent(props) {
     return (
       <div class="render-card">
@@ -377,5 +541,3 @@ While render functions offer flexibility and customization, they can be more com
 
 - [Render Functions & JSX | Vue Documentation](https://vuejs.org/guide/extras/render-function.html)
 - [Rendering Mechanism | Vue Documentation](https://vuejs.org/guide/extras/rendering-mechanism.html)
-
-![Render functions](/images/patterns-dev/vue-render-functions-73-render_function.webp)

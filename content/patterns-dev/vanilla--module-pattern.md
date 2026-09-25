@@ -3,7 +3,6 @@ title: نمط الوحدة (module)
 lang: ar
 source: https://www.patterns.dev/vanilla/module-pattern/
 ---
-
 الوحدة (module) ملف يملك جزءًا من السلوك، ويحدد ما ينبغي مشاركته، ويحتفظ بما عداه لنفسه. اليوم، تعني «وحدة» في JavaScript **وحدات ES** — مواصفة حقيقية مدمجة في اللغة، ويدعمها كل متصفح حديث (browser) وNode.js بصورة أصلية. أما الأنماط والمقايضات التي كانت تحدد أنظمة الوحدات قبل 2015، مثل الإغلاقات التي تحاكي الخصوصية ومحملات AMD وغلاف CommonJS، فبقيت فضولًا تاريخيًا في معظمها. البديل الذي حل محلها أكثر إثارة للاهتمام، وهو محور هذا المقال.
 
 النموذج الذهني مختصر:
@@ -17,19 +16,27 @@ source: https://www.patterns.dev/vanilla/module-pattern/
 
 ## الصادرات والاستيرادات، الصيغة الحديثة
 
-```
+```javascript
 // inventory.js
+
 const cache = new Map();
 
 export function get(sku) {
-  return cache.get(sku);
+
+return cache.get(sku);
+
 }
 
 export async function refresh() {
-  const response = await fetch("/api/inventory");
-  const items = await response.json();
-  cache.clear();
-  for (const item of items) cache.set(item.sku, item);
+
+const response = await fetch("/api/inventory");
+
+const items = await response.json();
+
+cache.clear();
+
+for (const item of items) cache.set(item.sku, item);
+
 }
 
 export const ready = refresh(); // top-level await also works in modules
@@ -39,11 +46,13 @@ export const ready = refresh(); // top-level await also works in modules
 
 على جانب المستهلك:
 
-```
+```javascript
 // app.js
+
 import { get, refresh, ready } from "./inventory.js";
 
 await ready;
+
 console.log(get("ABC-123"));
 ```
 
@@ -59,33 +68,53 @@ console.log(get("ABC-123"));
 
 تبدو حزمة Node حديثة هكذا:
 
-```
+```json
 {
-  "name": "@example/inventory",
-  "version": "1.0.0",
-  "type": "module",
-  "exports": {
-    ".": "./dist/index.js",
-    "./schema": "./dist/schema.js",
-    "./package.json": "./package.json"
-  },
-  "imports": {
-    "#config": "./src/config.js",
-    "#test/*": "./test/helpers/*.js"
-  }
+
+"name": "@example/inventory",
+
+"version": "1.0.0",
+
+"type": "module",
+
+"exports": {
+
+".": "./dist/index.js",
+
+"./schema": "./dist/schema.js",
+
+"./package.json": "./package.json"
+
+},
+
+"imports": {
+
+"#config": "./src/config.js",
+
+"#test/*": "./test/helpers/*.js"
+
+}
+
 }
 ```
 
 حقل `exports` هو البديل الحديث للحقل `main`. وهو يؤدي أمرين مهمين: يتحكم في **المسارات الفرعية التي يمكن للمستهلكين استيرادها** (كل ما لم يُدرج خاص بالحزمة)، ويمكنه تعيين المسار الفرعي نفسه إلى ملفات مختلفة حسب البيئة (`import` مقابل `require`، والمتصفح مقابل node، والتطوير مقابل الإنتاج).
 
-```
+```javascript
 "exports": {
-  ".": {
-    "types":  "./dist/index.d.ts",
-    "browser": "./dist/index.browser.js",
-    "node":    "./dist/index.node.js",
-    "default": "./dist/index.js"
-  }
+
+".": {
+
+"types":  "./dist/index.d.ts",
+
+"browser": "./dist/index.browser.js",
+
+"node":    "./dist/index.node.js",
+
+"default": "./dist/index.js"
+
+}
+
 }
 ```
 
@@ -103,12 +132,17 @@ console.log(get("ABC-123"));
 
 يبدو التصدير الثنائي العامل هكذا:
 
-```
+```javascript
 "exports": {
-  ".": {
-    "import": "./dist/index.mjs",
-    "require": "./dist/index.cjs"
-  }
+
+".": {
+
+"import": "./dist/index.mjs",
+
+"require": "./dist/index.cjs"
+
+}
+
 }
 ```
 
@@ -118,8 +152,9 @@ console.log(get("ABC-123"));
 
 يخبر `` المتصفح بأن يحلل الملف كوحدة. تُؤجل الوحدات افتراضيًا، وتُنفذ بالترتيب، وتُجلب باستخدام CORS:
 
-```
+```javascript
 <script type="module" src="/app.js"></script>
+
 <script nomodule src="/legacy-bundle.js"></script>
 ```
 
@@ -129,22 +164,35 @@ console.log(get("ABC-123"));
 
 أهم تحسين في جانب المتصفح هو **خرائط الاستيراد**. تتيح لك استخدام المواصفات المجردة (`import { x } from "lodash-es"`) في المتصفح من دون أداة تجميع، إذ تعطي المتصفح تعيين JSON من الاسم إلى عنوان URL.
 
-```
+```javascript
 <script type="importmap">
+
 {
-  "imports": {
-    "lit": "https://cdn.jsdelivr.net/npm/lit@3/index.js",
-    "@app/": "/src/app/"
-  },
-  "scopes": {
-    "/legacy/": { "lit": "https://cdn.jsdelivr.net/npm/lit@2/index.js" }
-  }
+
+"imports": {
+
+"lit": "https://cdn.jsdelivr.net/npm/lit@3/index.js",
+
+"@app/": "/src/app/"
+
+},
+
+"scopes": {
+
+"/legacy/": { "lit": "https://cdn.jsdelivr.net/npm/lit@2/index.js" }
+
 }
+
+}
+
 </script>
 
 <script type="module">
-  import { LitElement } from "lit";
-  import { Router } from "@app/router.js";
+
+import { LitElement } from "lit";
+
+import { Router } from "@app/router.js";
+
 </script>
 ```
 
@@ -154,9 +202,11 @@ console.log(get("ABC-123"));
 
 يوقف `import` الثابت التنفيذ بينما تُجلب التبعية. وللوحدات الحرجة، تُستخدم `` لتسخين ذاكرة المتصفح المؤقتة (cache) حتى يُحل الاستيراد فورًا:
 
-```
+```javascript
 <link rel="modulepreload" href="/app.js">
+
 <link rel="modulepreload" href="/router.js">
+
 <link rel="modulepreload" href="/inventory.js">
 ```
 
@@ -166,17 +216,25 @@ console.log(get("ABC-123"));
 
 تعيد `import()`، التي تشبه الدوال، وعدًا باسم مساحة الوحدة. وهي الأداة الأساسية لتقسيم الشيفرة (code splitting) حسب المسارات وتحميل الميزات عند الحاجة.
 
-```
+```javascript
 // Route-based: load the editor only when the user navigates to /edit
+
 router.on("/edit/:id", async ({ id }) => {
-  const { mount } = await import("./editor.js");
-  mount(document.querySelector("#root"), { id });
+
+const { mount } = await import("./editor.js");
+
+mount(document.querySelector("#root"), { id });
+
 });
 
 // Interaction-based: load a heavy library only when the user clicks
+
 button.addEventListener("click", async () => {
-  const { default: confetti } = await import("canvas-confetti");
-  confetti();
+
+const { default: confetti } = await import("canvas-confetti");
+
+confetti();
+
 });
 ```
 
@@ -184,17 +242,21 @@ button.addEventListener("click", async () => {
 
 يمكن دمج `import()` مع `Promise.all` للتوازي:
 
-```
+```javascript
 const [{ default: heavy }, { utils }] = await Promise.all([
-  import("./heavy.js"),
-  import("./utils.js"),
+
+import("./heavy.js"),
+
+import("./utils.js"),
+
 ]);
 ```
 
 كما تقبل متغيرات، ما يتيح لك حساب المسار في وقت التشغيل:
 
-```
+```javascript
 const lang = navigator.language.split("-")[0];
+
 const { messages } = await import(`./i18n/${lang}.js`);
 ```
 
@@ -204,14 +266,15 @@ const { messages } = await import(`./i18n/${lang}.js`);
 
 ميزة من عام 2024 (في المرحلة 3، وشائعة في V8 وJavaScriptCore) هي **سمات الاستيراد (import attributes)**، التي تتيح لك استيراد موارد غير مكتوبة بلغة JavaScript عبر تحديد نوعها:
 
-```
+```javascript
 import config from "./config.json" with { type: "json" };
+
 import sheet  from "./styles.css"   with { type: "css" };
 ```
 
 الصيغة الديناميكية تأخذ السمات كوسيط ثانٍ:
 
-```
+```javascript
 const data = await import("./data.json", { with: { type: "json" } });
 ```
 
@@ -248,20 +311,29 @@ const data = await import("./data.json", { with: { type: "json" } });
 
 الراية القياسية في Vite ومعظم أدوات التجميع الأصلية في ESM هي `undefined`:
 
-```
+```javascript
 // some-feature.js
+
 export function mount(root) { /* ... */ }
 
 if (import.meta.hot) {
-  import.meta.hot.accept((newModule) => {
-    // Re-run with the updated implementation
-    newModule?.mount(document.querySelector("#root"));
-  });
 
-  import.meta.hot.dispose(() => {
-    // Tear down state before the new module takes over
-    document.querySelector("#root").innerHTML = "";
-  });
+import.meta.hot.accept((newModule) => {
+
+// Re-run with the updated implementation
+
+newModule?.mount(document.querySelector("#root"));
+
+});
+
+import.meta.hot.dispose(() => {
+
+// Tear down state before the new module takes over
+
+document.querySelector("#root").innerHTML = "";
+
+});
+
 }
 ```
 
@@ -273,14 +345,19 @@ if (import.meta.hot) {
 
 صادرات ESM هي **ارتباطات حية (live bindings)**، لا نسخ قيم. إذا صدّرت وحدة قيمة `let`، فسيرى المستوردون القيمة الحالية، لا قيمة وقت الاستيراد. ويعمل CommonJS بصورة معاكسة:
 
-```
+```javascript
 // counter.js
+
 export let count = 0;
+
 export function inc() { count++; }
 
 // app.js
+
 import { count, inc } from "./counter.js";
+
 inc();
+
 console.log(count); // 1, not 0
 ```
 

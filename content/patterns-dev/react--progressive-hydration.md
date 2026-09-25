@@ -3,12 +3,9 @@ title: الترطيب التدريجي
 lang: ar
 source: https://www.patterns.dev/react/progressive-hydration/
 ---
-
 الصفحة المعروضة في الخادم تُرسم بسرعة. يظهر HTML على الشاشة قبل تشغيل أي شيفرة React بوقت طويل. لكن الصفحة لا تصبح *تفاعلية* إلا بعد أن ينزّل React حزمة JS ويمر على DOM كامل ويطابق كل عقدة بمكوّن ويربط مستمعي الأحداث. تحدث هذه الخطوة — وهي الترطيب (hydration) — دفعة واحدة بصورة متزامنة، وتنمو خطيًا مع حجم شجرة المكوّنات.
 
 النتيجة وضع فشل مألوف: تبدو صفحة كاملة على الشاشة لمدة نصف ثانية أو أكثر، فتفقد النقرات وتبدو معطلة. والمقياس الذي يستخدمه Google لقياس ذلك هو **Interaction to Next Paint (INP)**، الذي حل محل First Input Delay في Core Web Vitals في مارس 2024. ويعد الترطيب أحد أكبر المساهمين في درجات INP السيئة على المواقع التي بُنيت جيدًا بخلاف ذلك.
-
-
 
 الترطيب التدريجي (progressive hydration) هو مجموعة التقنيات التي تقسّم الترطيب إلى أجزاء وتشغّل كل جزء في اللحظة التي تهم فيها فعلًا — عند وصول JavaScript الخاص به، أو عندما يمرره المستخدم إلى مجال الرؤية، أو عندما يحاول التفاعل معه. والهدف هو النتيجة نفسها للترطيب مع عمل أقل بكثير على المسار الحرج للصفحة.
 
@@ -21,8 +18,6 @@ source: https://www.patterns.dev/react/progressive-hydration/
 - يظل الخيط الرئيسي محجوبًا طوال الوقت، ما يعني أن النقرات والتمرير وتحركات CSS تتلعثم أو تنتظر في طابور.
 
 إذا تم ترطيب القسم الرئيسي وشريط التنقل وعنصر دردشة مضمّن في التذييل معًا، فإن عنصر الدردشة — وهو الجزء الذي لا يلمسه أحد لمدة 30 ثانية — يكون جزءًا من ميزانية حجب INP لديك منذ لحظة تحميل الصفحة. وتفترض الترطيب التدريجي على أن هذا تصرف سخيف. ارطّب ما هو تفاعلي *الآن*، وأجّل الباقي.
-
-
 
 ## شكل التقنية
 
@@ -40,26 +35,45 @@ source: https://www.patterns.dev/react/progressive-hydration/
 
 إذا كنت تستخدم `hydrateRoot` مع `` بالفعل، فأنت تمارس أبسط أشكال الترطيب التدريجي. كل شجرة ملفوفة بـ `` تُرطَّب *بشكل مستقل* عن بقية الصفحة. وإذا ضغط المستخدم داخل منطقة لم تُرطَّب بعد، فإن React يعيد ترتيب الأولويات؛ فتقفز تلك المنطقة إلى مقدمة الطابور.
 
-```
+```javascript
 import { Suspense, lazy } from "react";\n
+
 const ProductReviews = lazy(() => import("./ProductReviews"));
+
 const RelatedProducts = lazy(() => import("./RelatedProducts"));
+
 const Comments = lazy(() => import("./Comments"));\n
+
 export default function ProductPage({ product }) {
-  return (
-    <>
-      <ProductDetails product={product} /> {/* hydrates first */}\n
-      <Suspense fallback={<ReviewsSkeleton />}>
-        <ProductReviews productId={product.id} />
-      </Suspense>\n
-      <Suspense fallback={<RelatedSkeleton />}>
-        <RelatedProducts productId={product.id} />
-      </Suspense>\n
-      <Suspense fallback={null}>
-        <Comments productId={product.id} />
-      </Suspense>
-    </>
-  );
+
+return (
+
+<>
+
+<ProductDetails product={product} /> {/* hydrates first */}\n
+
+<Suspense fallback={<ReviewsSkeleton />}>
+
+<ProductReviews productId={product.id} />
+
+</Suspense>\n
+
+<Suspense fallback={<RelatedSkeleton />}>
+
+<RelatedProducts productId={product.id} />
+
+</Suspense>\n
+
+<Suspense fallback={null}>
+
+<Comments productId={product.id} />
+
+</Suspense>
+
+</>
+
+);
+
 }
 ```
 
@@ -77,42 +91,71 @@ export default function ProductPage({ product }) {
 
 إليك غلافًا صغيرًا لـ `` باستخدام `IntersectionObserver`:
 
-```
+```javascript
 "use client";
+
 import { useState, useEffect, useRef, Suspense } from "react";\n
+
 export function LazyHydrate({ children, rootMargin = "200px" }) {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);\n
-  useEffect(() => {
-    if (visible) return;
-    const node = ref.current;
-    if (!node) return;\n
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [visible]);\n
-  return (
-    <div ref={ref}>
-      {visible ? <Suspense fallback={null}>{children}</Suspense> : null}
-    </div>
-  );
+
+const [visible, setVisible] = useState(false);
+
+const ref = useRef(null);\n
+
+useEffect(() => {
+
+if (visible) return;
+
+const node = ref.current;
+
+if (!node) return;\n
+
+const observer = new IntersectionObserver(
+
+([entry]) => {
+
+if (entry.isIntersecting) {
+
+setVisible(true);
+
+observer.disconnect();
+
+}
+
+},
+
+{ rootMargin }
+
+);
+
+observer.observe(node);
+
+return () => observer.disconnect();
+
+}, [visible]);\n
+
+return (
+
+<div ref={ref}>
+
+{visible ? <Suspense fallback={null}>{children}</Suspense> : null}
+
+</div>
+
+);
+
 }
 ```
 
 في Next.js، النسخة الأكثر ملاءمة هي `next/dynamic`:
 
-```
+```javascript
 import dynamic from "next/dynamic";\n
+
 const HeavyChart = dynamic(() => import("./HeavyChart"), {
-  loading: () => <ChartSkeleton />,
+
+loading: () => <ChartSkeleton />,
+
 });
 ```
 
@@ -124,22 +167,37 @@ const HeavyChart = dynamic(() => import("./HeavyChart"), {
 
 في تطبيق Next.js يمكنك محاكاته بغلاف صغير:
 
-```
+```javascript
 "use client";
+
 import { useState, lazy, Suspense } from "react";\n
+
 const SearchModal = lazy(() => import("./SearchModal"));\n
+
 export function SearchTrigger() {
-  const [open, setOpen] = useState(false);\n
-  return (
-    <>
-      <button onClick={() => setOpen(true)}>Search</button>
-      {open && (
-        <Suspense fallback={<p>Loading search...</p>}>
-          <SearchModal onClose={() => setOpen(false)} />
-        </Suspense>
-      )}
-    </>
-  );
+
+const [open, setOpen] = useState(false);\n
+
+return (
+
+<>
+
+<button onClick={() => setOpen(true)}>Search</button>
+
+{open && (
+
+<Suspense fallback={<p>Loading search...</p>}>
+
+<SearchModal onClose={() => setOpen(false)} />
+
+</Suspense>
+
+)}
+
+</>
+
+);
+
 }
 ```
 
@@ -153,21 +211,35 @@ export function SearchTrigger() {
 - تشغّل `Actions API` إرسال النماذج عبر انتقال تلقائيًا، لذا يظل النقر الذي يرسل نموذجًا مستجيبًا حتى عندما تكون المكوّنات المرتبطة ما تزال قيد الترطيب.
 - تتيح `useActionState` و`useFormStatus` معالجة نماذج ملائمة للتحسين التدريجي؛ إذ يعمل النموذج قبل تحميل JavaScript أصلًا.
 
-```
+```javascript
 "use client";
+
 import { useActionState } from "react";
+
 import { subscribeAction } from "./actions";\n
+
 export function SubscribeForm() {
-  const [state, formAction, isPending] = useActionState(subscribeAction, null);\n
-  return (
-    <form action={formAction}>
-      <input type="email" name="email" required />
-      <button disabled={isPending}>
-        {isPending ? "Subscribing..." : "Subscribe"}
-      </button>
-      {state?.error && <p>{state.error}</p>}
-    </form>
-  );
+
+const [state, formAction, isPending] = useActionState(subscribeAction, null);\n
+
+return (
+
+<form action={formAction}>
+
+<input type="email" name="email" required />
+
+<button disabled={isPending}>
+
+{isPending ? "Subscribing..." : "Subscribe"}
+
+</button>
+
+{state?.error && <p>{state.error}</p>}
+
+</form>
+
+);
+
 }
 ```
 
@@ -177,20 +249,33 @@ export function SubscribeForm() {
 
 الشكل الأكثر عدوانية لـ«لا ترطّب هذا» هو «لا ترسل JavaScript الخاص به إطلاقًا». يُعرض مكوّن React الخادمي (server component) بالكامل على الخادم، ولا ينتج حزمة عميل، ولا يوجد ما يحتاج إلى ترطيب. تكلفة ترطيب RSC تساوي الصفر تمامًا.
 
-```
+```javascript
 // app/page.tsx  -- Server Component by default
+
 import ClientCounter from "./ClientCounter";\n
+
 export default async function Home() {
-  const posts = await db.posts.findMany();\n
-  return (
-    <main>
-      <h1>Latest posts</h1>
-      <ul>
-        {posts.map((p) => <li key={p.id}>{p.title}</li>)} {/* no client JS */}
-      </ul>
-      <ClientCounter /> {/* the only thing that hydrates */}
-    </main>
-  );
+
+const posts = await db.posts.findMany();\n
+
+return (
+
+<main>
+
+<h1>Latest posts</h1>
+
+<ul>
+
+{posts.map((p) => <li key={p.id}>{p.title}</li>)} {/* no client JS */}
+
+</ul>
+
+<ClientCounter /> {/* the only thing that hydrates */}
+
+</main>
+
+);
+
 }
 ```
 

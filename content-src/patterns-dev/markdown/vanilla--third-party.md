@@ -17,6 +17,8 @@ It would be hard to find a modern site that operates in silos. Most sites coexis
 
 You can use third-parties to integrate other features that add value to your content or to reduce some drudgery involved in building a site from scratch. As per the Web Almanac report for 2021, more than [94% of the pages](https://almanac.httparchive.org/en/2021/third-parties#prevalence) on the web use third-parties - [images and JavaScript](https://almanac.httparchive.org/en/2020/third-parties#content-types) forming the most significant contributors to third-party content. Below is a helpful [breakdown](https://almanac.httparchive.org/en/2021/third-parties#fig-10) of third-party requests by content type and category:
 
+![third-party requests by content type and category](/images/patterns-dev/vanilla-third-party-0-optimizingthir__wwfbjeoqhxl.webp)
+
 While third-party resources can enrich your site with valuable features, they can also slow it down if:
 
 - They cause additional round trips to the third-party domain for every required resource.
@@ -36,7 +38,7 @@ You can use a combination of techniques to find how third-party code is affectin
 - [Reduce JavaScript execution time](https://web.dev/bootup-time/) for scripts that take long to execute
 - [Avoid enormous network payloads](https://web.dev/total-byte-weight/) for large scripts
 
-
+![Reduce the impact of third-party code](/images/patterns-dev/vanilla-third-party-1-optimizingthir__3tr5286cg4z.webp) ![Reduce JavaScript execution time](/images/patterns-dev/vanilla-third-party-2-optimizingthir__t68otdbvv1.webp) ![Avoid enormous network payloads](/images/patterns-dev/vanilla-third-party-3-optimizingthir__aaavejhhjgm.webp)
 
 - Use the WebPageTest (WPT) waterfall chart to identify [third-party blocking scripts](https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#third-party-blocking-javascript) or WPT side-by-side comparison to [measure the impact of 3rd party tags](https://andydavies.me/blog/2018/02/19/using-webpagetest-to-measure-the-impact-of-3rd-party-tags/).
 - Sites like [Bundlephobia](https://bundlephobia.com/) help to assess the cost of adding available npm packages to your bundles. You can also find size and dependencies included in any package using [npm package search](https://www.npmjs.com/package/).
@@ -63,10 +65,13 @@ JavaScript download and execution is synchronous by default and can block the HT
 - **`defer`**: the script is fetched in parallel as the parser executes, and script execution is delayed till the parsing is complete. Defer should be the default choice for delaying execution until after DOM construction.
 - **`async`**: the script is fetched in parallel while parsing but executed as soon as it is available when it blocks the parser. For module scripts with dependencies, the script and all its dependencies are executed in the defer queue. Use `async` for scripts that need to run earlier in the loading process. For example, you may want to execute specific analytics scripts early without missing any early page-load data.
 
-```
+```javascript
 <script src="https://example.com/deferthis.js" defer></script>
+
 <script src="https://example.com/asyncthis.js" async></script>
 ```
+
+![async/defer comparison](/images/patterns-dev/vanilla-third-party-4-optimizingthir__k6owmtevvl.webp)
 
 > Credit: [developers.google.com](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript)
 
@@ -80,10 +85,13 @@ Connecting to third-party origins can be slow due to the DNS lookups, redirects,
 
 Including a [dns-prefetch](https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch) resource hint corresponding to a domain will perform the DNS lookup early, thus reducing the latency associated with dns lookups. You can pair this with [preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect) for the most critical resources. The preconnect initiates a connection with the third-party domain by performing TCP round trips and handling TLS negotiations in addition to the DNS lookup.
 
-```
+```javascript
 <head>
+
   <link rel="preconnect" href="http://example.com" />
+
   <link rel="dns-prefetch" href="http://example.com" />
+
 </head>
 ```
 
@@ -184,53 +192,87 @@ To optimize third-parties, development teams should understand the nuances of re
 
 JavaScript proxies and a service worker handle communication between the web worker and the main thread. Partytown scripts must be self-hosted on the same server as the HTML documents. It may be used with React or Next.js apps or even without any framework. Each third-party script that can execute in a web server should set the type attribute of its opening script tag to text/partytown as follows.
 
-```
+```javascript
 <script type="text/partytown">// Third-party analytics scripts</script>
 ```
 
 The library also provides a [React Partytown component](https://github.com/BuilderIO/partytown#react) that you can directly include in your React or Next.js projects. It can be included in the document `` as shown below for a Next.js document.
 
-```
+```javascript
 import { Partytown } from '@builder.io/partytown/react';
+
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
+
+
 export default class MyDocument extends Document {
+
  render() {
+
    return (
+
      <Html>
+
        <Head>
+
          <Partytown />
+
        </Head>
+
        <body>
+
          <Main />
+
          <NextScript />
+
        </body>
+
      </Html>
+
    );
+
  }
 ```
 
 Partytown also includes React components for common analytics libraries such as [Google Tag Manager](https://github.com/BuilderIO/partytown#integrations). The following example shows how you can add this to your React/Next.js projects.
 
-```
+```javascript
 import { Partytown, GoogleTagManager, GoogleTagManagerNoScript } from '@builder.io/partytown/react';
+
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
+
+
 export default class MyDocument extends Document {
+
  render() {
+
    return (
+
      <Html>
+
        <Head>
+
          <GoogleTagManager containerId={'GTM-XXXXX'} />
+
          <Partytown />
+
        </Head>
+
        <body>
+
          <GoogleTagManagerNoScript containerId={'GTM-XXXXX'} />
+
          <Main />
+
          <NextScript />
+
        </body>
+
      </Html>
+
    );
+
  }
 ```
 
@@ -250,33 +292,53 @@ Setting the strategy helps Next.js automatically apply the optimizations and bes
 
 Before:
 
-```
+```javascript
 import Head from "next/head";
 
+
+
 export default function Home() {
+
   return (
+
     <>
+
       <Head>
+
         <script async src="https://example.com/samplescript.js" />
+
       </Head>
+
     </>
+
   );
+
 }
 ```
 
 After:
 
-```
+```javascript
 // pages/index.js
+
 // default strategy afterinteractive will apply when strategy not specified.
+
 import Script from 'next/script'
+
 <br>
+
 export default function Home() {
+
  return (
+
    <>
+
      <Script src="https://example.com/samplescript.js" />
+
    </>
+
  )
+
 }
 ```
 
@@ -286,18 +348,29 @@ The Script component allows you to address many of the use cases discussed earli
 
 In situations where you want specific polyfills that apply to core content to be loaded early, you can use the beforeInteractive strategy to load the polyfill as shown in the following example from [Next.js docs](https://nextjs.org/docs/basic-features/script#loading-polyfills).
 
-```
+```javascript
 import Script from "next/script";
 
+
+
 export default function Home() {
+
   return (
+
     <>
+
       <Script
+
         src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver"
+
         strategy="beforeInteractive"
+
       />
+
     </>
+
   );
+
 }
 ```
 
@@ -305,18 +378,29 @@ export default function Home() {
 
 Social media embeds, especially those not visible on page load, can be delayed or lazy-loaded as the user scrolls to them or during periods of inactivity. You can use the `lazyonload` strategy as shown in the following [snippet](https://nextjs.org/docs/basic-features/script#lazy-loading).
 
-```
+```javascript
 import Script from "next/script";
 
+
+
 export default function Home() {
+
   return (
+
     <>
+
       <Script
+
         src="https://connect.facebook.net/en_US/sdk.js"
+
         strategy="lazyOnload"
+
       />
+
     </>
+
   );
+
 }
 ```
 
@@ -324,13 +408,19 @@ export default function Home() {
 
 There may be some code that needs to execute after a specific third-party has been loaded. This can be specified in the onload attribute of the script component. For example, the following [snippet](https://nextjs.org/blog/next-11#script-optimization) shows how to include code that will execute based on users’ consent.
 
-```
+```javascript
 <Script
+
   src={url} // consent management
+
   strategy="beforeInteractive"
+
   onLoad={() => {
+
     // If loaded successfully, then you can load other scripts in sequence
+
   }}
+
 />
 ```
 
@@ -338,20 +428,33 @@ There may be some code that needs to execute after a specific third-party has be
 
 Inline scripts that need to execute based on load of a third-party component may also be included in the Script component as shown [here](https://nextjs.org/docs/basic-features/script#inline-scripts).
 
-```
+```javascript
 import Script from 'next/script'
 
+
+
 <Script id="show-banner" strategy="lazyOnload">
+
  {`document.getElementById('banner').removeClass('hidden')`}
+
 </Script>
+
+
 
 // or
 
+
+
 <Script
+
  id="show-banner"
+
  dangerouslySetInnerHTML={{
+
    __html: `document.getElementById('banner').removeClass('hidden')`
+
  }}
+
 />
 ```
 
@@ -361,20 +464,33 @@ Here the inline script is used to change the visibility of a third-party banner 
 
 You can set specific attribute values that can be used by the third-party script in the Script component. The following [example](https://nextjs.org/docs/basic-features/script#forwarding-attributes) shows how two such attributes are passed to an analytics script.
 
-```
+```javascript
 import Script from "next/script";
 
+
+
 export default function Home() {
+
   return (
+
     <>
+
       <Script
+
         src="https://www.google-analytics.com/analytics.js"
+
         id="analytics"
+
         nonce="XUENAJFW"
+
         data-test="analytics"
+
       />
+
     </>
+
   );
+
 }
 ```
 
@@ -384,83 +500,150 @@ There are different ways to include analytics on your site, using Google Analyti
 
 GTM may be enabled for all the pages on the site by including the script component inside _app.js as follows:
 
-```
+```python
 import Script from "next/script";
+
 // + other imports
 
+
+
 function MyApp({ Component, pageProps }) {
+
   // Other app code
 
+
+
   return (
+
     <>
+
       {/* Google Tag Manager - Global base code */}
+
       <Script
+
         strategy="afterInteractive"
+
         dangerouslySetInnerHTML={{
+
           __html: `
+
            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+
            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+
            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+
            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+
            })(window,document,'script','dataLayer', '${GTM_ID}');
+
          `,
+
         }}
+
       />
+
       <Component {...pageProps} />
+
     </>
+
   );
+
 }
+
 export default MyApp;
 ```
 
 Instead, if you want to load analytics.js on specific pages, you can include it on the page as shown.
 
-```
+```javascript
 import Script from "next/script";
+
 //other imports
 
+
+
 const Home = () => {
+
   return (
+
     <div class="container">
+
       <Script id="google-analytics" strategy="afterInteractive">
+
         {`
+
          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+
          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+
+
          ga('create', 'UA-XXXXX-Y', 'auto');
+
          ga('send', 'pageview');
+
        `}
+
       </Script>
+
     </div>
+
     //Other UI related HTML
+
   );
+
 };
 ```
 
-```
+```javascript
 import Script from "next/script";
+
 //other imports
 
+
+
 const Home = () => {
+
   return (
+
     <div class="container">
+
       <Script id="google-analytics" strategy="afterInteractive">
+
         {`
+
          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+
          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+
+
          ga('create', 'UA-XXXXX-Y', 'auto');
+
          ga('send', 'pageview');
+
        `}
+
       </Script>
+
     </div>
+
     //Other UI related HTML
+
   );
+
 };
+
+
 
 export default Home;
 ```
@@ -472,5 +655,3 @@ Note that in both examples above, the analytics scripts are loaded with strategy
 When composing your web pages combining resources from your servers with those from other corners of the web, you must monitor the interplay between these resources frequently. You could start by sequencing the resources correctly and following best practices. You can also rely on frameworks or solutions that have built-in these best practices into their design.
 
 As the site grows, performance reporting and regular audits can help eliminate redundancies and optimize scripts that affect performance. Lastly, we can always hope that third-parties with commonly known performance issues will optimize code at their end or expose APIs that enable workarounds to address these issues.
-
-![Optimize loading third-parties](/images/patterns-dev/vanilla-third-party-37-optimizingthir__wwfbjeoqhxl.webp) ![Optimize loading third-parties](/images/patterns-dev/vanilla-third-party-38-optimizingthir__3tr5286cg4z.webp) ![Optimize loading third-parties](/images/patterns-dev/vanilla-third-party-39-optimizingthir__t68otdbvv1.webp) ![Optimize loading third-parties](/images/patterns-dev/vanilla-third-party-40-optimizingthir__aaavejhhjgm.webp) ![Optimize loading third-parties](/images/patterns-dev/vanilla-third-party-41-optimizingthir__k6owmtevvl.webp)

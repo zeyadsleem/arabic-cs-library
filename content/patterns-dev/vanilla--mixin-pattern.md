@@ -3,7 +3,6 @@ title: نمط المزيج (mixin)
 lang: ar
 source: https://www.patterns.dev/vanilla/mixin-pattern/
 ---
-
 **المزيج (mixin)** حزمة من السلوك قابلة لإعادة الاستخدام يمكن دمجها في صنف أو كائن ليكتسب قدرات من دون أن يكون جزءًا من سلسلة وراثة. تسمح JavaScript بوراثة صنف واحد فقط، لذلك تسد المزيجات هذه الفجوة: تتيح لك مشاركة مسؤوليات مستقلة — مثل التسجيل وتتبع الاتساخ والتحليل التسلسلي وإدارة الأحداث — عبر أصناف لا تشترك في شيء آخر.
 
 لا يزال النمط ظاهرًا في قواعد الشيفرة الحديثة، من «أصناف المزيج» في TypeScript إلى `mixins` في Vue 2 و`Object.extend` في Backbone وحتى تفاصيل المتصفح مثل `WindowOrWorkerGlobalScope`، لكنه نادرًا ما يكون الخيار الأول في عام 2024. فالتركيب والخطافات ووحدات الأدوات الصغيرة تغطي معظم ما صُممت المزيجات لحلها، عادةً مع مفاجآت أقل.
@@ -12,51 +11,79 @@ source: https://www.patterns.dev/vanilla/mixin-pattern/
 
 لنفترض لدينا صنف `Document` لتطبيق ملاحظات. نريد معرفة ما إذا كان المستند يحتوي على تعديلات غير محفوظة، ومتى آخر تعديل، ونريد «إعادة تعيين» حالة التغيير بعد الحفظ. يمكننا كتابة ذلك مباشرة على الصنف، لكن السلوك نفسه مفيد في `Note` و`Folder` و`Tag` وكل ما يستطيع المستخدم تحريره. وهذا يجعله مرشحًا مثاليًا لمزيج.
 
-```
+```javascript
 class Document {
-  constructor(title, body) {
-    this.title = title;
-    this.body = body;
-  }
+
+constructor(title, body) {
+
+this.title = title;
+
+this.body = body;
+
+}
+
 }
 ```
 
 نبدأ بكائن سمة عادي يلتقط سلوك تتبّع التغييرات:
 
-```
+```javascript
 const dirtyTrackable = {
-  markDirty() {
-    this._dirty = true;
-    this._lastModified = Date.now();
-  },
-  markClean() {
-    this._dirty = false;
-  },
-  isDirty() {
-    return Boolean(this._dirty);
-  },
-  lastModified() {
-    return this._lastModified ?? null;
-  },
+
+markDirty() {
+
+this._dirty = true;
+
+this._lastModified = Date.now();
+
+},
+
+markClean() {
+
+this._dirty = false;
+
+},
+
+isDirty() {
+
+return Boolean(this._dirty);
+
+},
+
+lastModified() {
+
+return this._lastModified ?? null;
+
+},
+
 };
 ```
 
 لطبيقه، نثبت السمة على النموذج الأولي باستخدام `Object.assign`. تحصل الآن كل نسخة من `Document` وكل صنف فرعي على الطرق الأربعة مجانًا:
 
-```
+```javascript
 class Document {
-  constructor(title, body) {
-    this.title = title;
-    this.body = body;
-  }
+
+constructor(title, body) {
+
+this.title = title;
+
+this.body = body;
+
+}
+
 }
 
 Object.assign(Document.prototype, dirtyTrackable);
 
 const draft = new Document("Patterns", "Mixins, composition, hooks...");
+
 draft.markDirty();
+
 draft.isDirty(); // true
+
 draft.markClean();
+
 draft.isDirty(); // false
 ```
 
@@ -66,41 +93,67 @@ draft.isDirty(); // false
 
 عمليًا، تريد عادةً تطبيق عدة سمات بترتيب معلوم، مع وجود عنصر صريح في موقع الاستدعاء. تقوم مساعدة صغيرة اسمها `applyTraits` بالأمرين:
 
-```
+```javascript
 function applyTraits(target, ...traits) {
-  for (const trait of traits) {
-    for (const key of Reflect.ownKeys(trait)) {
-      if (key === "constructor") continue;
-      if (Object.prototype.hasOwnProperty.call(target.prototype, key)) {
-        throw new Error(`Trait conflict on "${String(key)}"`);
-      }
-      Object.defineProperty(
-        target.prototype,
-        key,
-        Object.getOwnPropertyDescriptor(trait, key)
-      );
-    }
-  }
-  return target;
+
+for (const trait of traits) {
+
+for (const key of Reflect.ownKeys(trait)) {
+
+if (key === "constructor") continue;
+
+if (Object.prototype.hasOwnProperty.call(target.prototype, key)) {
+
+throw new Error(`Trait conflict on "${String(key)}"`);
+
+}
+
+Object.defineProperty(
+
+target.prototype,
+
+key,
+
+Object.getOwnPropertyDescriptor(trait, key)
+
+);
+
+}
+
+}
+
+return target;
+
 }
 ```
 
 يمكننا الآن تراكم عدة سمات على صنف والحصول على خطأ صريح إذا تعارض اثنتان منها بدلًا من أن تفوز إحداهما بصمت:
 
-```
+```javascript
 const serializable = {
-  toJSON() {
-    return { title: this.title, body: this.body };
-  },
+
+toJSON() {
+
+return { title: this.title, body: this.body };
+
+},
+
 };
 
 const eventEmitting = {
-  on(event, handler) {
-    (this._handlers ??= new Map()).set(event, handler);
-  },
-  emit(event, payload) {
-    this._handlers?.get(event)?.(payload);
-  },
+
+on(event, handler) {
+
+(this._handlers ??= new Map()).set(event, handler);
+
+},
+
+emit(event, payload) {
+
+this._handlers?.get(event)?.(payload);
+
+},
+
 };
 
 applyTraits(Document, dirtyTrackable, serializable, eventEmitting);
@@ -110,34 +163,55 @@ applyTraits(Document, dirtyTrackable, serializable, eventEmitting);
 
 يغطي كائن السمة معظم الحالات، لكنه لا يستطيع توسيع السلوك؛ إذ لا يمكن للسمة استدعاء إصدار `super` من دالة، لعدم وجود صنف أب تشير إليه. وتصحح صيغة مصنع الصنف الفرعي ذلك. يصبح المزيج دالة تأخذ صنفًا أبًا وتعيد صنفًا فرعيًا جديدًا:
 
-```
+```javascript
 const Timestamped = (Base) =>
-  class extends Base {
-    constructor(...args) {
-      super(...args);
-      this.createdAt = new Date();
-    }
-    touch() {
-      this.updatedAt = new Date();
-    }
-  };
+
+class extends Base {
+
+constructor(...args) {
+
+super(...args);
+
+this.createdAt = new Date();
+
+}
+
+touch() {
+
+this.updatedAt = new Date();
+
+}
+
+};
 
 const Versioned = (Base) =>
-  class extends Base {
-    constructor(...args) {
-      super(...args);
-      this.version = 1;
-    }
-    bump() {
-      this.version += 1;
-    }
-  };
+
+class extends Base {
+
+constructor(...args) {
+
+super(...args);
+
+this.version = 1;
+
+}
+
+bump() {
+
+this.version += 1;
+
+}
+
+};
 
 class Note {}
+
 class TrackedNote extends Versioned(Timestamped(Note)) {}
 
 const n = new TrackedNote();
+
 n.touch();
+
 n.bump();
 ```
 

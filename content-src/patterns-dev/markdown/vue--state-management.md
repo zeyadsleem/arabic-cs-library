@@ -8,17 +8,27 @@ source: https://www.patterns.dev/vue/state-management/
 
 Here’s an example of a Single-File component that displays a series of numbers from a data property:
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>The numbers are {{ numbers }}!</h2>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
 
+
+
   const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
@@ -34,36 +44,57 @@ Before we address how we can manage state in an application, we’ll begin by lo
 
 Assume we have a hypothetical application, that at first only contains a parent component and a child component. Vue gives us the ability to use **props** to pass data from the parent down to the child.
 
+![Props](/images/patterns-dev/vue-state-management-0-props.webp)
+
 Using props is fairly simple. All we essentially need to do is bind a value to the prop attribute where the child component is being rendered. Here’s an example of using props to pass an array of values down with the help of the [v-bind](https://vuejs.org/api/built-in-directives.html#v-bind) directive:
 
 **ParentComponent**
 
-```
+```javascript
 <template>
+
   <div>
+
     <ChildComponent :numbers="numbers" />
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import ChildComponent from "./ChildComponent";
 
+
+
   const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
 **ChildComponent**
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>{{ numbers }}</h2>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   const { buttonText } = defineProps(["numbers"]);
+
 </script>
 ```
 
@@ -71,7 +102,7 @@ The `ParentComponent` passes the `numbers` array as props of the same name down 
 
 JavaScript iconParentComponent.vue
 
-```
+```javascript
 <template>
   <div>
     <ChildComponent :numbers="numbers" />
@@ -96,42 +127,67 @@ What if we needed to find a way to communicate information in the opposite direc
 
 We can’t use `props` since `props` can only be used to pass data in a uni-directional format (from parent down to child down to grandchild…). To facilitate having the child component notify the parent about something, we can use custom events.
 
+![Custom Events](/images/patterns-dev/vue-state-management-1-custom_events.webp)
+
 Custom events in Vue are dispatched as native [CustomEvents](https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events#adding_custom_data_%E2%80%93_customevent) and are used for communication between components.
 
 Here’s an example of using custom events to have a `ChildComponent` be able to facilitate a change to a `ParentComponent`’s `numbers` data property:
 
 **ChildComponent**
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>{{ numbers }}</h2>
+
     <input v-model="number" type="number" />
+
     <button @click="$emit('number-added', Number(number))">
+
       Add new number
+
     </button>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   const { numbers } = defineProps(["numbers"]);
+
 </script>
 ```
 
 **ParentComponent**
 
-```
+```javascript
 <template>
+
   <div>
+
     <ChildComponent :numbers="numbers" @number-added="(n) => numbers.push(n)" />
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import ChildComponent from "./ChildComponent";
 
+
+
   const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
@@ -141,7 +197,7 @@ On the `ParentComponent`, a custom event listener denoted by `@number-added`, is
 
 JavaScript iconParentComponent.vue
 
-```
+```javascript
 <template>
   <div>
     <ChildComponent :numbers="numbers" @number-added="(n) => numbers.push(n)" />
@@ -168,20 +224,29 @@ const numbers = ref([1, 2, 3]);
 
 We can use props to pass data downwards and custom events to send messages upwards. How would we be able to either pass data or facilitate communication between two different sibling components?
 
+![Sibling components communication](/images/patterns-dev/vue-state-management-2-sibling_components_communication.webp)
+
 We can’t use custom events the way we have above because those events are emitted within the interface of a particular component, and as a result the custom event listener needs to be declared on where the component is being rendered. In two isolated components, one component isn’t being rendered within the other.
 
 A simple way to manage application-level state is to create a store pattern that involves sharing a data store between components. The store can manage the state of our application as well as the methods that are responsible for changing the state.
 
 For example, we can have a simple store like the following:
 
-```
+```javascript
 import { reactive } from "vue";
 
+
+
 export const store = reactive({
+
   numbers: [1, 2, 3],
+
   addNumber(newNumber) {
+
     this.numbers.push(newNumber);
+
   },
+
 });
 ```
 
@@ -193,15 +258,23 @@ We can have one component that’s responsible for displaying the `numbers` arra
 
 **NumberDisplay**:
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>{{ store.numbers }}</h2>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { store } from "../store.js";
+
 </script>
 ```
 
@@ -209,19 +282,31 @@ We can now have another component, called `NumberSubmit`, that will allow the us
 
 **NumberSubmit**:
 
-```
+```javascript
 <template>
+
   <div>
+
     <input v-model="numberInput" type="number" />
+
     <button @click="store.addNumber(numberInput)">Add new number</button>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import { store } from "../store.js";
 
+
+
   const numberInput = ref(0);
+
 </script>
 ```
 
@@ -231,7 +316,7 @@ The store method receives the payload and directly mutates the `store.numbers` a
 
 JavaScript iconstore.js
 
-```
+```javascript
 import { reactive } from "vue";
 
 
@@ -246,6 +331,8 @@ import { reactive } from "vue";
 [Open CodeSandbox](https://codesandbox.io/embed/state-management-3-78vzcy)
 
 When we say components interact with one another here, we’re using the term ‘interact’ loosely. The components aren’t going to do anything to each other but instead invoke changes to one another *through* the store.
+
+![Simple reactive store](/images/patterns-dev/vue-state-management-3-simple_store.webp)
 
 If we take a closer look at all the pieces that directly interact with the store, we can establish a pattern:
 
@@ -263,18 +350,29 @@ Pinia is an alternative to other state management solutions like [Vuex](https://
 
 In Pinia, we can define a store using the `defineStore()` function. Pinia allows us to define a store with a syntax that mimics the Options API or Composition API. Here we’re using the Composition API syntax to define a `useNumbersStore()` function to create a `numbers` store.
 
-```
+```javascript
 import { ref } from "vue";
+
 import { defineStore } from "pinia";
 
+
+
 export const useNumbersStore = defineStore("numbers", () => {
+
   const numbers = ref([1, 2, 3]);
 
+
+
   function addNumber(newNumber) {
+
     this.numbers.push(newNumber);
+
   }
 
+
+
   return { numbers, addNumber };
+
 });
 ```
 
@@ -282,51 +380,83 @@ In the above example, we define a store called `numbers` with an initial state c
 
 We can then create a Pinia instance and install it in our Vue app.
 
-```
+```javascript
 import { createApp } from "vue";
+
 import { createPinia } from "pinia";
+
 import App from "./App.vue";
+
 import "./styles.css";
 
+
+
 const app = createApp(App);
+
 const pinia = createPinia();
 
+
+
 app.use(pinia);
+
 app.mount("#app");
 ```
 
 At this moment, we’ll be able to use our newly created store in our components. In the `NumberDisplay` component, we’ll import the `useNumbersStore()` function from the store file and invoke it to get access to the store instance. We can then reference the store `numbers` value in the component template.
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>{{ store.numbers }}</h2>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { useNumbersStore } from "../store";
 
+
+
   const store = useNumbersStore();
+
 </script>
 ```
 
 In the `NumberSubmit` component, we can do the same as the above to access the store `addNumber()` method that will be used to update the store `numbers` property.
 
-```
+```javascript
 <template>
+
   <div>
+
     <input v-model="numberInput" type="number" />
+
     <button @click="store.addNumber(numberInput)">Add new number</button>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import { useNumbersStore } from "../store";
 
+
+
   const store = useNumbersStore();
+
   const numberInput = ref(0);
+
 </script>
 ```
 
@@ -334,7 +464,7 @@ With these changes, our app will behave just as it did before.
 
 JavaScript iconstore.js
 
-```
+```javascript
 import { defineStore } from "pinia";
   import { ref } from "vue";
   
@@ -352,6 +482,8 @@ import { defineStore } from "pinia";
 [Open CodeSandbox](https://codesandbox.io/embed/state-management-4-3tr5qr)
 
 For such a simple implementation like this, a Pinia store may not really be necessary and behaves very similarly to just using a store created with the `reactive()` function. With that said, Pinia offers additional capabilities for more complex use-cases such as the ability to [extend Pinia features with plugins](https://pinia.vuejs.org/core-concepts/plugins.html), have devtools support, and have more appropriate [TypeScript support](https://pinia.vuejs.org/core-concepts/state.html#typescript) and [server-side rendering support](https://pinia.vuejs.org/ssr/nuxt.html).
+
+![Pinia | Vue devtools](/images/patterns-dev/vue-state-management-4-pinia_vue_devtools.webp)
 
 ## What’s the correct way?
 
@@ -375,5 +507,3 @@ At the end of the day, it’s up to us to understand what’s needed in our appl
 - [Component Events | Vue Documentation](https://vuejs.org/guide/components/events.html#component-events)
 - [Simple State Management with Reactivity API | Vue Documentation](https://vuejs.org/guide/scaling-up/state-management.html#simple-state-management-with-reactivity-api)
 - [Core concepts | Pinia](https://pinia.vuejs.org/core-concepts/)
-
-![State Management](/images/patterns-dev/vue-state-management-78-props.webp) ![State Management](/images/patterns-dev/vue-state-management-79-custom_events.webp) ![State Management](/images/patterns-dev/vue-state-management-80-sibling_components_communication.webp) ![State Management](/images/patterns-dev/vue-state-management-81-simple_store.webp) ![State Management](/images/patterns-dev/vue-state-management-82-pinia_vue_devtools.webp)

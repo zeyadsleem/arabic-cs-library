@@ -34,7 +34,7 @@ Here is the smallest meaningful CSR example using the current React 18+ API. `Re
 
 JavaScript iconmain.jsxJavaScript iconApp.jsxJavaScript iconindex.html
 
-```
+```javascript
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";

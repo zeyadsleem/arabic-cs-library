@@ -17,20 +17,34 @@ Hold onto those four points — everything else is variations on them.
 
 ## Exports and imports, the modern shape
 
-```
+```javascript
 // inventory.js
+
 const cache = new Map();
 
+
+
 export function get(sku) {
+
   return cache.get(sku);
+
 }
 
+
+
 export async function refresh() {
+
   const response = await fetch("/api/inventory");
+
   const items = await response.json();
+
   cache.clear();
+
   for (const item of items) cache.set(item.sku, item);
+
 }
+
+
 
 export const ready = refresh(); // top-level await also works in modules
 ```
@@ -39,11 +53,15 @@ Two things to notice. First, `cache` is unreachable from outside this file. Ther
 
 On the consumer side:
 
-```
+```javascript
 // app.js
+
 import { get, refresh, ready } from "./inventory.js";
 
+
+
 await ready;
+
 console.log(get("ABC-123"));
 ```
 
@@ -59,33 +77,53 @@ Node decides whether a file is a module by looking at three things, in order:
 
 A modern Node package looks like this:
 
-```
+```json
 {
+
   "name": "@example/inventory",
+
   "version": "1.0.0",
+
   "type": "module",
+
   "exports": {
+
     ".": "./dist/index.js",
+
     "./schema": "./dist/schema.js",
+
     "./package.json": "./package.json"
+
   },
+
   "imports": {
+
     "#config": "./src/config.js",
+
     "#test/*": "./test/helpers/*.js"
+
   }
+
 }
 ```
 
 The `exports` field is the modern replacement for `main`. It does two important things: it controls **which subpaths consumers can import** (anything not listed is private to the package), and it can map the same subpath to different files depending on the environment (`import` vs `require`, browser vs node, development vs production).
 
-```
+```javascript
 "exports": {
+
   ".": {
+
     "types":  "./dist/index.d.ts",
+
     "browser": "./dist/index.browser.js",
+
     "node":    "./dist/index.node.js",
+
     "default": "./dist/index.js"
+
   }
+
 }
 ```
 
@@ -103,12 +141,17 @@ You will run into this. The rules:
 
 A working dual export looks like:
 
-```
+```javascript
 "exports": {
+
   ".": {
+
     "import": "./dist/index.mjs",
+
     "require": "./dist/index.cjs"
+
   }
+
 }
 ```
 
@@ -118,8 +161,9 @@ Build tools (tsup, unbuild, rollup) automate producing both bundles.
 
 A `` tells the browser to parse the file as a module. Modules are deferred by default, executed in order, and fetched with CORS:
 
-```
+```javascript
 <script type="module" src="/app.js"></script>
+
 <script nomodule src="/legacy-bundle.js"></script>
 ```
 
@@ -129,22 +173,37 @@ A `` tells the browser to parse the file as a module. Modules are deferred by de
 
 The big browser‑side improvement is **import maps**. They let you use bare specifiers (`import { x } from "lodash-es"`) in the browser without a bundler, by giving the browser a JSON mapping from name to URL.
 
-```
+```javascript
 <script type="importmap">
+
 {
+
   "imports": {
+
     "lit": "https://cdn.jsdelivr.net/npm/lit@3/index.js",
+
     "@app/": "/src/app/"
+
   },
+
   "scopes": {
+
     "/legacy/": { "lit": "https://cdn.jsdelivr.net/npm/lit@2/index.js" }
+
   }
+
 }
+
 </script>
 
+
+
 <script type="module">
+
   import { LitElement } from "lit";
+
   import { Router } from "@app/router.js";
+
 </script>
 ```
 
@@ -154,9 +213,11 @@ The big browser‑side improvement is **import maps**. They let you use bare spe
 
 A static `import` pauses execution while the dependency is fetched. For critical modules, `` warms the cache so the import resolves instantly:
 
-```
+```javascript
 <link rel="modulepreload" href="/app.js">
+
 <link rel="modulepreload" href="/router.js">
+
 <link rel="modulepreload" href="/inventory.js">
 ```
 
@@ -166,17 +227,27 @@ The browser fetches, parses, and compiles the listed modules in parallel with th
 
 A function‑like `import()` returns a promise for the module namespace. It’s the bread and butter of route‑based code splitting and on‑demand feature loading.
 
-```
+```javascript
 // Route-based: load the editor only when the user navigates to /edit
+
 router.on("/edit/:id", async ({ id }) => {
+
   const { mount } = await import("./editor.js");
+
   mount(document.querySelector("#root"), { id });
+
 });
 
+
+
 // Interaction-based: load a heavy library only when the user clicks
+
 button.addEventListener("click", async () => {
+
   const { default: confetti } = await import("canvas-confetti");
+
   confetti();
+
 });
 ```
 
@@ -184,17 +255,21 @@ Bundlers recognize `import()` calls and split the target into its own chunk auto
 
 `import()` can be combined with `Promise.all` to parallelize:
 
-```
+```javascript
 const [{ default: heavy }, { utils }] = await Promise.all([
+
   import("./heavy.js"),
+
   import("./utils.js"),
+
 ]);
 ```
 
 And it accepts variables, which lets you compute the path at runtime:
 
-```
+```javascript
 const lang = navigator.language.split("-")[0];
+
 const { messages } = await import(`./i18n/${lang}.js`);
 ```
 
@@ -204,14 +279,15 @@ Be careful with this one: most bundlers will include every file that matches the
 
 A 2024 feature (Stage 3, shipping in V8 and JavaScriptCore) is **import attributes**, which let you import non‑JavaScript resources by specifying their type:
 
-```
+```javascript
 import config from "./config.json" with { type: "json" };
+
 import sheet  from "./styles.css"   with { type: "css" };
 ```
 
 The dynamic form takes the attributes as a second argument:
 
-```
+```javascript
 const data = await import("./data.json", { with: { type: "json" } });
 ```
 
@@ -248,20 +324,33 @@ ESM is a near‑perfect fit for HMR because the module graph is explicit. When a
 
 The standard hook in Vite and most ESM‑native bundlers is `undefined`:
 
-```
+```javascript
 // some-feature.js
+
 export function mount(root) { /* ... */ }
 
+
+
 if (import.meta.hot) {
+
   import.meta.hot.accept((newModule) => {
+
     // Re-run with the updated implementation
+
     newModule?.mount(document.querySelector("#root"));
+
   });
 
+
+
   import.meta.hot.dispose(() => {
+
     // Tear down state before the new module takes over
+
     document.querySelector("#root").innerHTML = "";
+
   });
+
 }
 ```
 
@@ -273,14 +362,21 @@ if (import.meta.hot) {
 
 ESM exports are **live bindings**, not value copies. If a module exports a `let`, importers see the current value, not the value at the time of import. CommonJS works the opposite way:
 
-```
+```javascript
 // counter.js
+
 export let count = 0;
+
 export function inc() { count++; }
 
+
+
 // app.js
+
 import { count, inc } from "./counter.js";
+
 inc();
+
 console.log(count); // 1, not 0
 ```
 

@@ -3,7 +3,6 @@ title: دوال العرض
 lang: ar
 source: https://www.patterns.dev/vue/render-functions/
 ---
-
 يوصي Vue بأن نستخدم القوالب (أي صيغة ``) لبناء ترميز (markup) مكوّنات Vue. غير أننا نُتاح لنا أيضًا فرصة استخدام ما يُعرف بـ **دوال العرض** (render functions) مباشرة لبناء ترميز مكوّناتنا كذلك.
 
 يأخذ Vue القوالب التي ننشئها لمكوّناتنا وقت البناء (build time) ويترجمها إلى دوال عرض. وعند دوال العرض المترجمة هذه، يبني Vue تمثيلًا افتراضيًا للعقد التي تشكّل الـ DOM الافتراضي (virtual DOM).
@@ -26,25 +25,33 @@ source: https://www.patterns.dev/vue/render-functions/
 
 لنفترض لدينا المكوّن التالي الذي يحتوي على عنصر `` يضمّ عنصر `` بداخله. ويعرض المحتوى النصّي للعنصر `` ببساطة قيمة الخاصية `message`.
 
-```
+```javascript
 <template>
-  <div class="render-card">
-    <header class="card-header card-header-title">{{ message }}</header>
-  </div>
+
+<div class="render-card">
+
+<header class="card-header card-header-title">{{ message }}</header>
+
+</div>
+
 </template>
 
 <script setup>
-  const { message } = defineProps(["message"]);
+
+const { message } = defineProps(["message"]);
+
 </script>
 ```
 
 سنعيد إنشاء ترميز المكوّن خطوةً بخطوة بمساعدة دالة العرض — أي الدالة `h()`.
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
+
+const { message } = defineProps(["message"]);
+
 </script>
 ```
 
@@ -58,31 +65,41 @@ source: https://www.patterns.dev/vue/render-functions/
 
 اسم وسم HTML للعقدة الأصل التي نريد إنشاءها هو عنصر ``. سنُسند نتيجة الدالة `h()` إلى ثابت يحمل الاسم `render` ونمرّر سلسلة قيمتها `'div'` كوسيط أول:
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  const render = () => {
-    return h("div");
-  };
+const { message } = defineProps(["message"]);
+
+const render = () => {
+
+return h("div");
+
+};
+
 </script>
 ```
 
 سنهتمّ بتطبيق صنف CSS ذا الاسم `.render-card` على عنصر `` الأصل. ولتحقيق ذلك، سنصرّح في الوسيط الثاني من الدالة `h()` بأن كائن البيانات يحتوي على خاصية `class` قيمتها سلسلة نصّية هي `'render-card'`:
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  const render = () => {
-    return h("div", {
-      class: "render-card",
-    });
-  };
+const { message } = defineProps(["message"]);
+
+const render = () => {
+
+return h("div", {
+
+class: "render-card",
+
+});
+
+};
+
 </script>
 ```
 
@@ -92,141 +109,208 @@ source: https://www.patterns.dev/vue/render-functions/
 
 ولأننا سنعرض عنصرًا آخر مُولَّدًا كعنصر فرعي، سنصرّح بالدالة `h()` داخل مصفوفة العقد الفرعية ونعطيها قيمة سلسلة نصّية هي `'header'`:
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  const render = () => {
-    return h(
-      "div",
-      {
-        class: "render-card",
-      },
-      [h("header")]
-    );
-  };
+const { message } = defineProps(["message"]);
+
+const render = () => {
+
+return h(
+
+"div",
+
+{
+
+class: "render-card",
+
+},
+
+[h("header")]
+
+);
+
+};
+
 </script>
 ```
 
 العنصر الفرعي `header` ينبغي أن يكون له أصناف خاصة به، لذا سنمرّر كائن سمات في الدالة `h()` المتداخلة تصريحًا بالأصناف التي ينبغي أن يحملها عنصر `header`:
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  const render = () => {
-    return h(
-      "div",
-      {
-        class: "render-card",
-      },
-      [
-        h("header", {
-          class: "card-header card-header-title",
-        }),
-      ]
-    );
-  };
+const { message } = defineProps(["message"]);
+
+const render = () => {
+
+return h(
+
+"div",
+
+{
+
+class: "render-card",
+
+},
+
+[
+
+h("header", {
+
+class: "card-header card-header-title",
+
+}),
+
+]
+
+);
+
+};
+
 </script>
 ```
 
 العنصر الفرعي `header` ينبغي ألّا يحتوي على أي عناصر فرعية خاصة به، وأن يعرض ببساطة قيمة الخاصية `message`. ولكي يعرض عنصر `header` الخاصية `message` كمحتوى فرعي له، سنصرّح بقيمة `message` في الوسيط الثالث من الدالة `h()` المتداخلة.
 
-```
+```javascript
 <script setup>
-  import { h } from "vue";
 
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  const render = () => {
-    return h(
-      "div",
-      {
-        class: "render-card",
-      },
-      [
-        h(
-          "header",
-          {
-            class: "card-header card-header-title",
-          },
-          message
-        ),
-      ]
-    );
-  };
+const { message } = defineProps(["message"]);
+
+const render = () => {
+
+return h(
+
+"div",
+
+{
+
+class: "render-card",
+
+},
+
+[
+
+h(
+
+"header",
+
+{
+
+class: "card-header card-header-title",
+
+},
+
+message
+
+),
+
+]
+
+);
+
+};
+
 </script>
 ```
 
 وهذا كل شيء! آخر ما تبقى لنا فعله هو وضع عنصر العقدة الافتراضية `render` الذي أنشأناه في قسم القالب داخل المكوّن.
 
-```
+```javascript
 <template>
-  <render />
+
+<render />
+
 </template>
 
 <script setup>
-  import { h } from "vue";
 
-  /* eslint-disable-next-line no-undef, no-unused-vars */
-  const { message } = defineProps(["message"]);
+import { h } from "vue";
 
-  /* eslint-disable-next-line no-unused-vars */
-  const render = () => {
-    return h(
-      "div",
-      {
-        class: "render-card",
-      },
-      [
-        h(
-          "header",
-          {
-            class: "card-header card-header-title",
-          },
-          message
-        ),
-      ]
-    );
-  };
+/* eslint-disable-next-line no-undef, no-unused-vars */
+
+const { message } = defineProps(["message"]);
+
+/* eslint-disable-next-line no-unused-vars */
+
+const render = () => {
+
+return h(
+
+"div",
+
+{
+
+class: "render-card",
+
+},
+
+[
+
+h(
+
+"header",
+
+{
+
+class: "card-header card-header-title",
+
+},
+
+message
+
+),
+
+]
+
+);
+
+};
+
 </script>
 ```
 
 يمكنك الآن المضي قدمًا وعرض المكوّن أعلاه في نسخة `App.vue` الأصل وتمرير قيمة `"Hello World!"` إلى الخاصية `message`.
 
-```
+```javascript
 <template>
-  <RenderComponent message="Hello world!" />
+
+<RenderComponent message="Hello world!" />
+
 </template>
 
 <script setup>
-  import RenderComponent from "./components/RenderComponent.vue";
+
+import RenderComponent from "./components/RenderComponent.vue";
+
 </script>
 ```
 
 عند حفظ هذه التغييرات، سيُعرض لنا في واجهة المستخدم `“Hello World!”` ما يخبرنا أننا قد عرضنا المكوّن الفرعي على النحو المناسب.
 
+![دالة العرض التي تُنتج العنصر](/images/patterns-dev/vue-render-functions-0-render_function.webp)
+
 يا إلهي. إذا كنت تشعر بالارتباك هنا، فلا داعي للقلق. فرغم أن دوال العرض تمنحنا قوة أكبر في تخصيص ترميز مكوّناتنا كما نرغب، فإن استخدام القوالب القياسية يكون عادةً *أسهل بكثير* في الغالبية العظمى من الوقت. ولا يُلجأ إلى دوال العرض إلا في الحالات الفريدة التي تتطلّب عرضًا ديناميكيًا معقّدًا أو تخصيصًا.
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 <template>
   <render />
 </template>
 
-
 <script setup>
 import { h } from "vue";
 
-
 /* eslint-disable-next-line no-undef, no-unused-vars */
 const { message } = defineProps(["message"]);
-
 
 /* eslint-disable-next-line no-unused-vars */
 const render = () => {
@@ -259,19 +343,27 @@ const render = () => {
 
 يمكن أن يساعد JSX على إعادة إنشاء تطبيق العرض الخاص بنا بطريقة أسهل بكثير في القراءة، لأننا نستطيع الكتابة بأمان داخل دالة العرض بصيغة HTML:
 
-```
+```javascript
 <template>
-  <render />
+
+<render />
+
 </template>
 
 <script setup lang="jsx">
-  const { message } = defineProps(["message"]);
 
-  const render = (
-    <div class="render-card">
-      <header class="card-header card-header-title">{message}</header>
-    </div>
-  );
+const { message } = defineProps(["message"]);
+
+const render = (
+
+<div class="render-card">
+
+<header class="card-header card-header-title">{message}</header>
+
+</div>
+
+);
+
 </script>
 ```
 
@@ -279,15 +371,13 @@ const render = () => {
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 <template>
   <render />
 </template>
 
-
 <script setup lang="jsx">
 const { message } = defineProps(["message"]);
-
 
 const render = <div class="render-card"><header class="card-header card-header-title">{message}</header></div>
 </script>
@@ -301,9 +391,11 @@ const render = <div class="render-card"><header class="card-header card-header-t
 
 ولإنشاء مكوّن وظيفي، نستخدم دالة بسيطة بدلًا من كائن خيارات (options). وتؤدي هذه الدالة فعليًا دور دالة العرض المسؤولة عن توليد ناتج المكوّن.
 
-```
+```javascript
 function RenderComponent(props, { slots, emit, attrs }) {
-  // ...
+
+// ...
+
 }
 
 export default RenderComponent;
@@ -311,25 +403,41 @@ export default RenderComponent;
 
 يمكنك استخدام الدالة `h()` لإنشاء قالب مكوّننا كما رأينا سابقًا.
 
-```
+```javascript
 import { h } from "vue";
 
 function RenderComponent(props) {
-  return h(
-    "div",
-    {
-      class: "render-card",
-    },
-    [
-      h(
-        "header",
-        {
-          class: "card-header card-header-title",
-        },
-        props.message
-      ),
-    ]
-  );
+
+return h(
+
+"div",
+
+{
+
+class: "render-card",
+
+},
+
+[
+
+h(
+
+"header",
+
+{
+
+class: "card-header card-header-title",
+
+},
+
+props.message
+
+),
+
+]
+
+);
+
 }
 
 export default RenderComponent;
@@ -337,13 +445,19 @@ export default RenderComponent;
 
 بالإضافة إلى ذلك، يمكننا أيضًا استخدام JSX لعرض قالب المكوّن بطريقة أسهل في القراءة.
 
-```
+```javascript
 function RenderComponent(props) {
-  return (
-    <div class="render-card">
-      <header class="card-header card-header-title">{props.message}</header>
-    </div>
-  );
+
+return (
+
+<div class="render-card">
+
+<header class="card-header card-header-title">{props.message}</header>
+
+</div>
+
+);
+
 }
 
 export default RenderComponent;
@@ -353,7 +467,7 @@ export default RenderComponent;
 
 JavaScript iconRenderComponent.vue
 
-```
+```javascript
 function RenderComponent(props) {
     return (
       <div class="render-card">
@@ -377,5 +491,3 @@ function RenderComponent(props) {
 
 - [دوال العرض وJSX | توثيق Vue](https://vuejs.org/guide/extras/render-function.html)
 - [آلية العرض | توثيق Vue](https://vuejs.org/guide/extras/rendering-mechanism.html)
-
-![دوال العرض](/images/patterns-dev/vue-render-functions-73-render_function.webp)

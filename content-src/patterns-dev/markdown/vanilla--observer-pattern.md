@@ -12,22 +12,37 @@ That is the Observer pattern. A **subject** maintains a list of **observers** an
 
 At minimum, a subject needs three things: somewhere to keep observers, a way to add and remove them, and a way to push updates. Here’s a small implementation that uses a `Set` so we get O(1) removal and deduplication for free.
 
-```
+```javascript
 class Subject {
+
   #observers = new Set();
 
+
+
   subscribe(observer) {
+
     this.#observers.add(observer);
+
     // Hand back an unsubscribe function — easier than asking
+
     // the caller to hold onto the reference they passed in.
+
     return () => this.#observers.delete(observer);
+
   }
 
+
+
   notify(payload) {
+
     for (const observer of this.#observers) {
+
       observer(payload);
+
     }
+
   }
+
 }
 ```
 
@@ -37,42 +52,77 @@ The return value of `subscribe` is a small ergonomic win that pays for itself th
 
 Let’s wire the subject to a stream of prices and a few consumers that want to know about them.
 
-```
+```javascript
 const ticker = new Subject();
 
+
+
 // A chart that buffers ticks and redraws every animation frame.
+
 const chartQueue = [];
+
 let pending = false;
+
 const drawChart = (tick) => {
+
   chartQueue.push(tick);
+
   if (pending) return;
+
   pending = true;
+
   requestAnimationFrame(() => {
+
     renderChart(chartQueue);
+
     chartQueue.length = 0;
+
     pending = false;
+
   });
+
 };
+
+
 
 // A watchlist row that flashes when its symbol updates.
+
 const flashRow = ({ symbol, price, previous }) => {
+
   if (symbol !== "AAPL") return;
+
   document
+
     .querySelector('[data-symbol="AAPL"]')
+
     ?.classList.toggle("up", price > previous);
+
 };
 
+
+
 // A logger that records every tick for replay.
+
 const logTick = (tick) => console.debug("[tick]", tick);
 
+
+
 const unsubChart = ticker.subscribe(drawChart);
+
 const unsubRow   = ticker.subscribe(flashRow);
+
 const unsubLog   = ticker.subscribe(logTick);
 
+
+
 // Somewhere else, the WebSocket pushes new prices in:
+
 socket.addEventListener("message", (event) => {
+
   const tick = JSON.parse(event.data);
+
   ticker.notify(tick);
+
 });
 ```
 
@@ -82,30 +132,47 @@ Each consumer is a small, focused function. The ticker doesn’t know any of the
 
 You don’t always need to write your own `Subject`. Since 2017, every browser has shipped a constructable `EventTarget` — the same machinery the DOM uses for `addEventListener`, available for arbitrary objects.
 
-```
+```javascript
 class Ticker extends EventTarget {
+
   push(tick) {
+
     this.dispatchEvent(new CustomEvent("tick", { detail: tick }));
+
   }
+
 }
+
+
 
 const ticker = new Ticker();
 
+
+
 ticker.addEventListener("tick", (e) => drawChart(e.detail));
+
 ticker.addEventListener("tick", (e) => flashRow(e.detail));
 ```
 
 This gets you a ready‑made pub/sub mechanism with one significant bonus: **`AbortSignal` integration**. Cleanup becomes a one‑liner regardless of how many listeners you registered.
 
-```
+```javascript
 const controller = new AbortController();
+
 const { signal } = controller;
 
+
+
 ticker.addEventListener("tick", drawChart, { signal });
+
 ticker.addEventListener("tick", flashRow,  { signal });
+
 ticker.addEventListener("tick", logTick,   { signal });
 
+
+
 // Later, when the dashboard unmounts:
+
 controller.abort(); // every listener attached with `signal` is removed
 ```
 
@@ -126,19 +193,31 @@ In the stock ticker above, `ticker` is the subject and every subscriber receives
 
 A minimal Pub/Sub built on `EventTarget`:
 
-```
+```javascript
 class EventBus {
+
   #target = new EventTarget();
 
+
+
   publish(topic, data) {
+
     this.#target.dispatchEvent(new CustomEvent(topic, { detail: data }));
+
   }
 
+
+
   subscribe(topic, handler, { signal } = {}) {
+
     const listener = (e) => handler(e.detail);
+
     this.#target.addEventListener(topic, listener, { signal });
+
     return () => this.#target.removeEventListener(topic, listener);
+
   }
+
 }
 ```
 
@@ -148,20 +227,33 @@ class EventBus {
 
 If your “events” are really a sequence, an async iterator turns them into a `for await...of` loop — readable top‑to‑bottom code that pauses at each iteration:
 
-```
+```javascript
 async function* watchTicks(socket, { signal }) {
+
   while (!signal.aborted) {
+
     const message = await new Promise((resolve, reject) => {
+
       socket.addEventListener("message", resolve, { once: true, signal });
+
       socket.addEventListener("error",   reject,  { once: true, signal });
+
     });
+
     yield JSON.parse(message.data);
+
   }
+
 }
 
+
+
 const controller = new AbortController();
+
 for await (const tick of watchTicks(socket, { signal: controller.signal })) {
+
   drawChart(tick);
+
 }
 ```
 
@@ -171,16 +263,25 @@ This composes well with `AsyncIterator.prototype.map` and friends — proposals 
 
 A different take on Observer is the **signal**: a small reactive primitive that knows which functions read it and re‑runs them when it changes. Preact, Solid, Angular, and Vue have all converged on a similar shape, and a TC39 proposal is exploring a standardized version.
 
-```
+```javascript
 import { signal, computed, effect } from "@preact/signals-core";
 
+
+
 const price    = signal(100);
+
 const quantity = signal(2);
+
 const total    = computed(() => price.value * quantity.value);
+
+
 
 effect(() => console.log(`Total: $${total.value}`));
 
+
+
 price.value = 110;   // logs "Total: $220"
+
 quantity.value = 3;  // logs "Total: $330"
 ```
 
@@ -190,18 +291,29 @@ The subscription is invisible — `effect` simply re‑runs whenever any signal 
 
 When the relationship between events matters — debouncing a search box, merging two streams, retrying on failure — RxJS earns its weight. Here’s a typeahead that waits for the user to stop typing, ignores duplicate searches, and cancels stale requests:
 
-```
+```javascript
 import { fromEvent, switchMap, debounceTime, distinctUntilChanged, map } from "rxjs";
+
+
 
 const input = document.querySelector("#search");
 
+
+
 fromEvent(input, "input").pipe(
+
   map((e) => e.target.value.trim()),
+
   debounceTime(250),
+
   distinctUntilChanged(),
+
   switchMap((q) =>
+
     q ? fetch(`/api/search?q=${encodeURIComponent(q)}`).then((r) => r.json()) : []
+
   )
+
 ).subscribe(renderResults);
 ```
 

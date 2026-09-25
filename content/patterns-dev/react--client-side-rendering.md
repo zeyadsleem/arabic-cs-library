@@ -3,7 +3,6 @@ title: العرض في جانب العميل
 lang: ar
 source: https://www.patterns.dev/react/client-side-rendering/
 ---
-
 العرض في جانب العميل (Client-side rendering) يرسل مستند HTML شبه فارغ. فبرنامج بوتستراب صغير ينزّل شيفرة JavaScript ويفرّها وينفّذها، وهي تبني DOM وتجلب البيانات وتربط التوجيه (routing) وترسم كل بكسل يراه المستخدم. الدور الوحيد للخادم (server) هو تسليم هيكل HTML وشيفرة JavaScript اللازمة لتشغيل التطبيق في المتصفح.
 
 هذا النموذج هو ما دفع ظهور تطبيقات الصفحة الواحدة (single-page applications). جعل تطبيقات الويب تبدو كبرمجيات مثبّتة — انتقالات فورية بين المسارات، وتحديثات متفائلة (optimistic updates)، وتفاعل غني دون أن تُحمَّل الصفحة من جديد أبدًا. لكن الثمن هو أن أول رسم يعتمد كليًا على سرعة قدرة العميل (client) على تنزيل الحزمة (bundle) وتنفيذها.
@@ -34,15 +33,13 @@ source: https://www.patterns.dev/react/client-side-rendering/
 
 JavaScript iconmain.jsxJavaScript iconApp.jsxJavaScript iconindex.html
 
-```
+```javascript
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
-
 const container = document.getElementById("root");
 const root = createRoot(container);
-
 
 root.render(
   <StrictMode>
@@ -50,8 +47,6 @@ root.render(
   </StrictMode>
 );
 ```
-
-
 
 يستلم المتصفح عنصرًا فارغًا ``، وينزّل `main.jsx` (وما يستورده)، ثم تُركّب React الشجرة. كل بايت من الواجهة والبيانات والسلوك ينتقل عبر الشبكة كشيفرة JavaScript.
 

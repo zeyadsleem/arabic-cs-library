@@ -3,7 +3,6 @@ title: ضغط JavaScript (Compressing JavaScript)
 lang: ar
 source: https://www.patterns.dev/vanilla/compression/
 ---
-
 > اضغط JavaScript وراقب أحجام الأجزاء (chunks) للحصول على أفضل أداء. قد تساعد دقة الأجزاء العالية في حزمة JavaScript على إزالة التكرار والتخزين المؤقت، لكنها قد تعتمد ضغطًا أضعف وتؤثر في التحميل عندما يكون عدد الأجزاء بين 50 و100. اختر في النهاية استراتيجية الضغط الأنسب لك.
 
 JavaScript هو ثاني أكبر [مساهم في حجم الصفحة](https://almanac.httparchive.org/en/2020/page-weight#fig-2) وثاني أكثر [مورد ويب مطلوب](https://almanac.httparchive.org/en/2020/page-weight#fig-4) على الإنترنت بعد الصور. نستخدم أنماطًا تقلل زمن نقل JavaScript وتحميله وتنفيذه لتحسين أداء المواقع. ويمكن أن يساعد الضغط في تقليل الزمن اللازم لنقل السكربتات عبر الشبكة.
@@ -57,6 +56,8 @@ JavaScript هو ثاني أكبر [مساهم في حجم الصفحة](https://
 
 تحدد خوارزمية LZ77 السلاسل المكررة وتستبدلها بإشارة مرجعية، وهي مؤشر إلى الموضع الذي ظهرت فيه من قبل، يتبعه طول السلسلة. ثم يحدد ترميز Huffman المراجع الشائعة ويستبدلها بمراجع ذات تسلسلات بت أقصر. وتستخدم التسلسلات الأطول للمراجع النادرة.
 
+![حجم ملف JavaScript قبل الضغط](/images/patterns-dev/vanilla-compression-0-compressingjav__zhfjmtap05.webp)
+
 مصدر الصورة: [https://www.youtube.com/watch?v=whGwm0Lky2s&t=851s](https://www.youtube.com/watch?v=whGwm0Lky2s&t=851s)
 
 تدعم جميع المتصفحات الرئيسية Gzip. و[Zopfli](https://github.com/google/zopfli) خوارزمية أبطأ لكن محسنة من Deflate/Gzip، تنتج ملفات GZip متوافقة أصغر. وهي مناسبة للضغط الساكن، حيث توفر مكاسب أكبر.
@@ -73,6 +74,8 @@ JavaScript هو ثاني أكبر [مساهم في حجم الصفحة](https://
 
 يعرض [الجدول التالي](https://paulcalvano.com/2018-07-25-brotli-compression-how-much-will-it-reduce-your-content/) مقارنة معيارية لنسب وسرعات ضغط Brotli وGzip عند مستويات مختلفة.
 
+![حجم ملف JavaScript بعد الضغط](/images/patterns-dev/vanilla-compression-1-compressingjav__zz1j9i0tui.webp)
+
 إليك بعض النتائج من بحث Chrome حول ضغط JS باستخدام Gzip وBrotli.
 
 - يحقق Gzip 9 أفضل نسبة ضغط مع سرعة جيدة، وينبغي التفكير في استخدامه قبل مستويات Gzip الأخرى.
@@ -87,13 +90,19 @@ JavaScript هو ثاني أكبر [مساهم في حجم الصفحة](https://
 
 يمكنك تمكين الضغط الساكن أثناء البناء. إذا استخدمت Webpack لتجميع الشيفرة، فيمكنك استخدام [CompressionPlugin](https://github.com/webpack-contrib/compression-webpack-plugin) لضغط Gzip أو [BrotliWebpackPlugin](https://github.com/mynameiswhm/brotli-webpack-plugin) لضغط Brotli. ويمكن إضافة الإضافة إلى ملف إعداد Webpack كما يلي.
 
-```
+```javascript
 module.exports = {
-  //...
-  plugins: [
-    //...
-    new CompressionPlugin(),
-  ],
+
+//...
+
+plugins: [
+
+//...
+
+new CompressionPlugin(),
+
+],
+
 };
 ```
 
@@ -109,7 +118,11 @@ module.exports = {
 
 يمكنك التحقق مما إذا كان الخادم ضغط السكربتات أو النصوص التي نزلتها في Chrome -> DevTools -> network -> Headers. وتعرض DevTools ترميز المحتوى المستخدم في الاستجابة كما هو موضح أدناه.
 
+![مقارنة الأحجام قبل الضغط وبعده](/images/patterns-dev/vanilla-compression-2-compressingjav__4gwntp0et8s.webp)
+
 يتضمن تقرير Lighthouse تدقيق أداء لـ «Enable Text Compression» يبحث عن موارد نصية وصلت دون رأس content-encoding المضبوط على br أو gzip أو deflate. ويستخدم Lighthouse Gzip لحساب الوفر الممكن.
+
+![أثر الضغط على زمن التحليل](/images/patterns-dev/vanilla-compression-3-compressingjav__qmwdq1rskk8.webp)
 
 مصدر الصورة: [https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server](https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server)
 
@@ -131,6 +144,8 @@ module.exports = {
 - **الجزء (Chunk)**: مصطلح مستعار من Webpack، ويشير إلى الناتج النهائي لعملية التجميع وتقسيم الشيفرة. ويمكن لـ Webpack تقسيم الحزم إلى أجزاء وفق إعداد [entry](https://webpack.js.org/configuration/entry-context/) أو [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) أو [الاستيرادات الديناميكية](https://webpack.js.org/plugins/split-chunks-plugin/).
 
 إذا كانت الوحدات موجودة في ملفات المصدر، فإن الناتج النهائي لعملية البناء بعد تقسيم الشيفرة أو الحزمة يسمى **جزءًا (chunk)**. ولاحظ أن ملفات المصدر والأجزاء قد يعتمد كل منهما على الآخر.
+
+![إحصاء ملفات JavaScript حسب الحجم](/images/patterns-dev/vanilla-compression-4-compressingjav__50dz6giz2pa.webp)
 
 مصدر الصورة: [https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29](https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29)
 
@@ -165,6 +180,8 @@ module.exports = {
 - لا ينبغي تنفيذ سوى الشيفرة التي تحتاجها الصفحة أو المسار. وهذا يتطلب عدم تنزيل أو تنفيذ شيفرة إضافية. قد تحتوي جزء `commons` على اعتماديات تحتاجها معظم الصفحات لا كلها، إزالة التكرار تتطلب أجزاء مستقلة أصغر.
 - يمكن للمهام الطويلة على الخيط الرئيسي أن تحجبه وقتًا طويلًا، لذلك يجب تقسيمها إلى أجزاء أصغر.
 
+![أكبر الملفات قبل الضغط](/images/patterns-dev/vanilla-compression-5-compressingjav__oj44b7q1hxl.webp)
+
 مصدر الصورة: [https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29](https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29)
 
 كما يوضح المثلث أعلاه، فإن دقة التحميل التي تحاول تحسين أحد هذه الأهداف قد تبتعد عن الأهداف الأخرى. هذه هي مشكلة مقايضة الدقة.
@@ -196,10 +213,10 @@ module.exports = {
 
 ساعدت استراتيجية التقسيم الدقيق عدة تطبيقات Next.js على تقليل إجمالي JavaScript المستخدم في الموقع.
 
+![أكبر الملفات بعد الضغط](/images/patterns-dev/vanilla-compression-6-compressingjav__ja7cji39g8m.webp)
+
 طُبقت استراتيجية التقسيم الدقيق أيضًا في [Gatsby](https://github.com/gatsbyjs/gatsby/pull/22253) ولوحظت فوائد مماثلة.
 
 ## الخاتمة
 
 لا يمكن للضغط وحده حل مشكلات أداء JavaScript كلها، لكن فهم طريقة عمل المتصفحات وأدوات التجميع في الخلفية يساعد على إنشاء استراتيجية تجميع أفضل تدعم ضغطًا أفضل. ويجب معالجة مشكلة دقة التحميل عبر منصات مختلفة في النظام البيئي. قد يكون التقسيم الدقيق خطوة في هذا الاتجاه، لكننا ما زلنا بعيدين عن الحل.
-
-![Compressing JavaScript](/images/patterns-dev/vanilla-compression-11-compressingjav__zhfjmtap05.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-12-compressingjav__zz1j9i0tui.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-13-compressingjav__4gwntp0et8s.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-14-compressingjav__qmwdq1rskk8.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-15-compressingjav__50dz6giz2pa.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-16-compressingjav__oj44b7q1hxl.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-17-compressingjav__ja7cji39g8m.webp)

@@ -3,7 +3,6 @@ title: تحسين تسلسل التحميل لديك
 lang: ar
 source: https://www.patterns.dev/vanilla/loading-sequence/
 ---
-
 **ملاحظة:** يتأثر هذا المقال بشدة برؤى [فريق Aurora](https://web.dev/introducing-aurora/) في Chrome، ولا سيما [Shubhie Panicker](http://twitter.com/shubhie) الذي يبحث في أفضل تسلسل تحميل.
 
 في كل تحميل ناجح لصفحة ويب، تصبح بعض المكونات والموارد الحرجة متاحة في الوقت المناسب تمامًا لتقديم تجربة تحميل سلسة. ويضمن هذا أن يدرك المستخدمون أن أداء التطبيق (performance) ممتاز. وينبغي أن يترجم ذلك إلى اجتياز [مؤشرات Web Vitals الأساسية](https://web.dev/vitals/).
@@ -118,6 +117,8 @@ source: https://www.patterns.dev/vanilla/loading-sequence/
 
 يوضح المخطط التالي أولويات Chrome لتحميل الموارد المختلفة. وسيساعدنا الجمع بين المعلومات حول الأولويات والنقاش حول أنواع الموارد على فهم تسلسل التحميل المقترح في القسم التالي.
 
+![ترتيب تحميل الموارد في الصفحة](/images/patterns-dev/vanilla-loading-sequence-0-optimizeyourlo__0juvmukudzfo.webp)
+
 فيما يلي أبرز الخلاصات من هذا الجدول.
 
 - تُحمّل CSS والخطوات ذات الأولوية الأعلى. وينبغي أن يساعدنا ذلك في أولوية CSS والخطوط الحرجة.
@@ -141,6 +142,8 @@ source: https://www.patterns.dev/vanilla/loading-sequence/
 | Images | لا تُعطى الصور الرئيسية أولوية.لا تُحسّن كل من صور ATF وBTF. |
 
 فيما يلي مثال على تسلسل كهذا في أحد مواقع الشركاء. وتُدرج تعليقات توضح الإيجابيات والسلبيات في تسلسل التحميل.
+
+![أولوية تحميل الموارد حسب الأهمية](/images/patterns-dev/vanilla-loading-sequence-1-optimizeyourlo__6e5x6tn54ob.webp)
 
 ### التسلسل المقترح من دون 3P
 
@@ -221,5 +224,3 @@ source: https://www.patterns.dev/vanilla/loading-sequence/
 تقع مسؤولية تحسين التطبيقات على عاتق مطوري المنصات المستخدمة، وعلى المطورين الذين يستخدمونها..نحتاج معالجة المشكلات الشائعة. نهدف إلى جعل التسلسل أسهل من الداخل إلى الخارج. وتساعد مجموعة مُختبرة من التوصيات للحالات والمبادرات المختلفة، مثل أداة تحميل السكربتات، على تحقيق ذلك في حزمة React وNext.js. والخطوة التالية هي ضمان امتثال التطبيقات الجديدة للتوصيات أعلاه.
 
 *مع شكر خاص لـ[Leena Sohoni](https://www.linkedin.com/in/leena-sohoni-0636b2) (محللة/كاتبة تقنية)، على مساهماتها في هذه المقالة.*
-
-![Optimize your loading sequence](/images/patterns-dev/vanilla-loading-sequence-35-optimizeyourlo__0juvmukudzfo.webp) ![Optimize your loading sequence](/images/patterns-dev/vanilla-loading-sequence-36-optimizeyourlo__6e5x6tn54ob.webp)

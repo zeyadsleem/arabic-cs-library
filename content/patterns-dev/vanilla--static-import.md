@@ -3,30 +3,23 @@ title: الاستيراد الساكن (Static Import)
 lang: ar
 source: https://www.patterns.dev/vanilla/static-import/
 ---
-
 تتيح لنا الكلمة المفتاحية `import` استيراد الشيفرة التي تم تصديرها من وحدة أخرى. بشكل افتراضي، تُضاف جميع الوحدات التي نقوم بـ*استيرادها بشكل ساكن* (static import) إلى حزمة التحميل الأولية (bundle). وأي وحدة يتم استيرادها باستخدام صيغة الاستيراد الافتراضية في ES2015، أي `import module from 'module'`، فهي مستوردة بشكل ساكن.
-
-
 
 لننظر إلى مثال! يحتوي تطبيق دردشة بسيط على مكوّن `Chat`، نقوم فيه باستيراد ثلاثة مكونات بشكل ساكن وعرضها: `UserProfile` و`ChatList` و`ChatInput` لكتابة الرسائل وإرسالها! وداخل وحدة `ChatInput`، نقوم باستيراد مكوّن `EmojiPicker` بشكل ساكن كي نتمكّن من إظهار منتقي الإيموجي للمستخدم عندما يُبدّل حالة زر الإيموجي.
 
 JavaScript iconApp.js
 
-```
+```javascript
 import React from "react";
-
 
 // Statically import Chatlist, ChatInput and UserInfo
 import UserInfo from "./components/UserInfo";
 import ChatList from "./components/ChatList";
 import ChatInput from "./components/ChatInput";
 
-
 import "./styles.css";
 
-
 console.log("App loading", Date.now());
-
 
 const App = () => (
   <div className="App">
@@ -35,7 +28,6 @@ const App = () => (
     <ChatInput />
   </div>
 );
-
 
 export default App;
 ```
@@ -46,21 +38,17 @@ export default App;
 
 JavaScript iconApp.js
 
-```
+```javascript
 import React from "react";
-
 
 // Statically import Chatlist, ChatInput and UserInfo
 import UserInfo from "./components/UserInfo";
 import ChatList from "./components/ChatList";
 import ChatInput from "./components/ChatInput";
 
-
 import "./styles.css";
 
-
 console.log("App loading", Date.now());
-
 
 const App = () => (
   <div className="App">
@@ -70,7 +58,6 @@ const App = () => (
   </div>
 );
 
-
 export default App;
 ```
 
@@ -78,8 +65,9 @@ export default App;
 
 ولأن المكونات تم استيرادها بشكل ساكن، قام Webpack بتجميع الوحدات في حزمة التحميل الأولية. يمكننا رؤية الحزمة التي ينشئها Webpack بعد بناء التطبيق:
 
-```
+```javascript
 Asset           Size      Chunks            Chunk Names
+
 main.bundle.js  1.5 MiB    main  [emitted]  main
 ```
 

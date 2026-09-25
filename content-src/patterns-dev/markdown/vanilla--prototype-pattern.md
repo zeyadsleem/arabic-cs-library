@@ -16,18 +16,29 @@ Every JavaScript object has an internal slot, `[[Prototype]]`, that’s either `
 
 You can see the chain directly:
 
-```
+```javascript
 const widget = {
+
   render() {
+
     return `<div class="${this.theme}">${this.label}</div>`;
+
   },
+
 };
 
+
+
 const button = Object.create(widget);
+
 button.label = "Save";
+
 button.theme = "primary";
 
+
+
 button.render();             // "<div class=\"primary\">Save</div>"
+
 Object.getPrototypeOf(button) === widget; // true
 ```
 
@@ -35,20 +46,33 @@ Object.getPrototypeOf(button) === widget; // true
 
 Classes are sugar on the same machinery. When you write:
 
-```
+```javascript
 class Widget {
+
   render() {
+
     return `<div class="${this.theme}">${this.label}</div>`;
+
   }
+
 }
 
+
+
 class IconButton extends Widget {
+
   constructor({ label, theme, icon }) {
+
     super();
+
     this.label = label;
+
     this.theme = theme;
+
     this.icon = icon;
+
   }
+
 }
 ```
 
@@ -64,12 +88,18 @@ Three options in increasing order of fidelity.
 
 ### 1. Spread for shallow copy plus overrides
 
-```
+```javascript
 const baseConfig = {
+
   retries: 3,
+
   timeoutMs: 5000,
+
   headers: { "User-Agent": "patterns.dev" },
+
 };
+
+
 
 const prodConfig = { ...baseConfig, timeoutMs: 30_000 };
 ```
@@ -80,15 +110,23 @@ This is the pattern you reach for 90% of the time. Just remember `prodConfig.hea
 
 Native and standardized; supported in every modern browser, Node 17+, Deno, and Bun. It handles `Date`, `Map`, `Set`, `RegExp`, typed arrays, and cyclic graphs — none of which `JSON.parse(JSON.stringify(x))` survives.
 
-```
+```javascript
 const config = {
+
   createdAt: new Date(),
+
   tags: new Set(["beta", "internal"]),
+
   endpoints: new Map([["read", "/r"], ["write", "/w"]]),
+
 };
 
+
+
 const copy = structuredClone(config);
+
 copy.tags.add("experimental");
+
 config.tags.has("experimental"); // false — independent
 ```
 
@@ -98,10 +136,13 @@ It doesn’t clone functions, DOM nodes, or class instances (you get a plain obj
 
 Cloning a class instance with its prototype intact takes a tiny helper:
 
-```
+```javascript
 function cloneInstance(instance) {
+
   const copy = Object.create(Object.getPrototypeOf(instance));
+
   return Object.assign(copy, structuredClone({ ...instance }));
+
 }
 ```
 
@@ -111,24 +152,38 @@ function cloneInstance(instance) {
 
 The browser ships a built-in prototype pattern for DOM nodes. Put inert markup inside a ``, clone it whenever you need a new instance, and stamp the clone into the live tree:
 
-```
+```javascript
 <template id="card">
+
   <article class="card">
+
     <h3 class="card-title"></h3>
+
     <p class="card-body"></p>
+
   </article>
+
 </template>
 ```
 
-```
+```javascript
 const cardTemplate = document.getElementById("card");
 
+
+
 function makeCard({ title, body }) {
+
   const node = cardTemplate.content.cloneNode(true);
+
   node.querySelector(".card-title").textContent = title;
+
   node.querySelector(".card-body").textContent = body;
+
   return node;
+
 }
+
+
 
 list.append(makeCard({ title: "Hello", body: "World" }));
 ```
@@ -139,18 +194,29 @@ The template’s DOM is parsed once. `cloneNode(true)` produces a deep copy of t
 
 A surprisingly large amount of test code is the prototype pattern wearing a different hat. Libraries like `fishery`, `factory-bot`, and Vitest’s `createBuilder` patterns all follow the same shape:
 
-```
+```javascript
 function buildUser(overrides = {}) {
+
   return {
+
     id: crypto.randomUUID(),
+
     email: "user@example.com",
+
     role: "viewer",
+
     createdAt: new Date(),
+
     ...overrides,
+
   };
+
 }
 
+
+
 const admin = buildUser({ role: "admin" });
+
 const banned = buildUser({ role: "viewer", bannedAt: new Date() });
 ```
 
@@ -160,9 +226,11 @@ The base object is the prototype. Each call deep-merges (or shallow-spreads) ove
 
 When you want a plain key/value map and *don’t* want lookups to fall through to `Object.prototype`, create the object with no prototype at all:
 
-```
+```javascript
 const headers = Object.create(null);
+
 headers.toString = "I'm just a header value, not the toString method";
+
 headers["__proto__"] = "and this is just a string, not a security hole";
 ```
 

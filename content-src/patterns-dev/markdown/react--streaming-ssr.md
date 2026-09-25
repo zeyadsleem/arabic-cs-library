@@ -25,61 +25,109 @@ The older `renderToNodeStream` was removed in React 19. If you’re maintaining 
 
 Here’s a complete streaming SSR setup for an analytics dashboard page. The shell renders immediately; the chart and recent-activity feed each suspend on their own fetches and stream in independently.
 
-```
+```javascript
 // server.jsx
+
 import express from "express";
+
 import { renderToPipeableStream } from "react-dom/server";
+
 import Dashboard from "./Dashboard";\n
+
 const app = express();\n
+
 app.get("/", (req, res) => {
+
   let didError = false;\n
+
   const { pipe, abort } = renderToPipeableStream(<Dashboard />, {
+
     bootstrapModules: ["/static/client.js"],
+
     onShellReady() {
+
       res.statusCode = didError ? 500 : 200;
+
       res.setHeader("Content-Type", "text/html");
+
       pipe(res);
+
     },
+
     onShellError(error) {
+
       res.statusCode = 500;
+
       res.setHeader("Content-Type", "text/html");
+
       res.send("<h1>Dashboard unavailable</h1>");
+
     },
+
     onError(error) {
+
       didError = true;
+
       console.error(error);
+
     },
+
   });\n
+
   // Drop the connection if a client hangs for too long.
+
   setTimeout(abort, 10_000);
+
 });\n
+
 app.listen(3000);
 ```
 
 And the page itself, with two suspending data dependencies:
 
-```
+```javascript
 // Dashboard.jsx
+
 import { Suspense } from "react";
+
 import ChartCard from "./ChartCard";
+
 import ActivityFeed from "./ActivityFeed";\n
+
 export default function Dashboard() {
+
   return (
+
     <html>
+
       <body>
+
         <header>
+
           <h1>Analytics</h1>
+
           <nav>{/* always-fast nav */}</nav>
+
         </header>\n
+
         <Suspense fallback={<ChartCardSkeleton />}>
+
           <ChartCard /> {/* fetches a slow time series */}
+
         </Suspense>\n
+
         <Suspense fallback={<ActivityFeedSkeleton />}>
+
           <ActivityFeed /> {/* fetches the last 50 events */}
+
         </Suspense>
+
       </body>
+
     </html>
+
   );
+
 }
 ```
 
@@ -100,19 +148,31 @@ These two callbacks model fundamentally different intents:
 
 A common pattern is to detect the user-agent and pick the right callback:
 
-```
+```javascript
 const isCrawler = /bot|crawler|spider|crawling/i.test(req.headers["user-agent"] || "");\n
+
 const { pipe } = renderToPipeableStream(<App />, {
+
   bootstrapModules: ["/static/client.js"],
+
   [isCrawler ? "onAllReady" : "onShellReady"]() {
+
     res.statusCode = didError ? 500 : 200;
+
     res.setHeader("Content-Type", "text/html");
+
     pipe(res);
+
   },
+
   onError(err) {
+
     didError = true;
+
     console.error(err);
+
   },
+
 });
 ```
 
@@ -120,29 +180,51 @@ const { pipe } = renderToPipeableStream(<App />, {
 
 Edge runtimes don’t have Node streams; they speak Web Streams. The shape is similar but the API is promise-based:
 
-```
+```python
 // edge-handler.jsx
+
 import { renderToReadableStream } from "react-dom/server";
+
 import App from "./App";\n
+
 export default {
+
   async fetch(request) {
+
     let didError = false;\n
+
     const stream = await renderToReadableStream(<App />, {
+
       bootstrapModules: ["/static/client.js"],
+
       onError(err) {
+
         didError = true;
+
         console.error(err);
+
       },
+
     });\n
+
     // Wait for the shell before responding — analogous to onShellReady.
+
     await stream.allReady; // omit this to flush as early as possible
+
     // Or, for crawlers, wait for the whole tree:
+
     // await stream.allReady;\n
+
     return new Response(stream, {
+
       status: didError ? 500 : 200,
+
       headers: { "content-type": "text/html" },
+
     });
+
   },
+
 };
 ```
 
@@ -157,10 +239,13 @@ Hydration in a streaming world is the dual of rendering: as each chunk arrives, 
 
 On the client side, use `hydrateRoot`:
 
-```
+```javascript
 // client.jsx
+
 import { hydrateRoot } from "react-dom/client";
+
 import App from "./App";\n
+
 hydrateRoot(document, <App />);
 ```
 
@@ -170,11 +255,15 @@ hydrateRoot(document, <App />);
 
 When the shell has already flushed, an error in a deeper component can’t change the HTTP status code. Your only options are to (a) replace the affected region with a fallback in the stream, or (b) let React tear it down on the client during hydration. Both require an Error Boundary.
 
-```
+```javascript
 <ErrorBoundary fallback={<p>Could not load reviews.</p>}>
+
   <Suspense fallback={<ReviewSkeleton />}>
+
     <Reviews productId={id} />
+
   </Suspense>
+
 </ErrorBoundary>
 ```
 
@@ -186,14 +275,21 @@ For graceful error recovery, the `onError` callback of `renderToPipeableStream` 
 
 The App Router does all of this for you. Any `loading.tsx` file in a route segment becomes a `` boundary automatically; any async server component that suspends streams in when its data resolves.
 
-```
+```javascript
 app/dashboard/
+
   layout.tsx       <-- always renders, flushed first
+
   loading.tsx      <-- Suspense fallback for the page
+
   page.tsx         <-- async, can fetch data
+
   @analytics/
+
     loading.tsx
+
     page.tsx       <-- parallel route, streams independently
+
   error.tsx        <-- error boundary
 ```
 

@@ -3,6 +3,7 @@ title: نظرة عامة على React.js
 lang: ar
 source: https://www.patterns.dev/react/
 ---
+![شعار React](/images/patterns-dev/react-index-0-react_logo_3x.webp)
 
 على مر السنين، تضاعف الطلب على طرق مباشرة **لتركيب** واجهات المستخدم باستخدام JavaScript. صُمّم [React](https://reactjs.org)، ويُشار إليه أيضًا بـReact.js، ليكون مكتبة JavaScript مفتوحة المصدر من تطوير Facebook، ويُستخدم لبناء واجهات المستخدم أو مكوّنات واجهة المستخدم.
 
@@ -28,11 +29,15 @@ React ليس بالطبع مكتبة واجهة المستخدم الوحيدة.
 
 سنستخدم JSX في عدد من أمثلتنا. JSX امتداد لـJavaScript يضم HTML القالبية داخل JavaScript باستخدام اصطلاحات شبيهة بـXML. يُقصد تحويله إلى JavaScript صالح، مع أن دلالات هذا التحويل تعتمد على التنفيذ. اكتسبت JSX شهرتها مع مكتبة React، لكن ظهرت لها منذ ذلك الحين تنفيذات أخرى أيضًا.
 
+![كيف يعمل JSX](/images/patterns-dev/react-index-1-jsx.webp)
+
 ## المكوّنات والخصائص والحالة
 
 المكوّنات والخصائص والحالة هي المفاهيم الأساسية الثلاثة في React. ويمكن تصنيف كل ما ستراه أو ستفعله في React تقريبًا ضمن واحد أو أكثر من هذه المفاهيم الأساسية، وفيما يلي نظرة سريعة عليها:
 
 ### 1. المكوّنات
+
+![مكوّنات React وتركيبها](/images/patterns-dev/react-index-2-react_components_1.5x.webp)
 
 المكوّنات هي لبنات البناء في أي تطبيق React. وهي أشبه بدوال JavaScript تقبل إدخالًا عشوائيًا (*Props*) وتعيد عناصر React التي تصف ما ينبغي عرضه على الشاشة.
 
@@ -42,21 +47,29 @@ React ليس بالطبع مكتبة واجهة المستخدم الوحيدة.
 
 الطريقة المباشرة لتعريف مكوّن هي كتابة دالة JavaScript.
 
-```
+```javascript
 function Badge(props) {
-  return <h1>Hello, my name is {props.name}</h1>;
+
+return <h1>Hello, my name is {props.name}</h1>;
+
 }
 ```
 
 هذه الدالة مكوّن React صالح لأنها تقبل وسيطًا واحدًا من نوع كائن الخصائص (*properties*) يحتوي على البيانات، وتعيد عنصر React. تسمى هذه المكوّنات *مكوّنات دالية* لأنها حرفيًا دوال JavaScript.
 
+![شارة ترحيب React](/images/patterns-dev/react-index-3-react_badge_2x.webp)
+
 إلى جانب المكوّنات الدالية، يوجد نوع آخر من المكوّنات هو *المكوّنات الصنفية*. ويختلف المكوّن الصنفي عن المكوّن الدالي في أنه يُعرّف بواسطة صنف ES6، كما هو ظاهر أدناه:
 
-```
+```javascript
 class Badge extends React.Component {
-  render() {
-    return <h1>Hello, my name is {this.props.name}</h1>;
-  }
+
+render() {
+
+return <h1>Hello, my name is {this.props.name}</h1>;
+
+}
+
 }
 ```
 
@@ -66,29 +79,51 @@ class Badge extends React.Component {
 
 لبيان أن المكوّنات يمكن فصلها إلى مكوّنات أصغر، ضع المكوّن `Tweet` التالي في الحسبان:
 
+![مكوّن التغريدة](/images/patterns-dev/react-index-4-tweet_component_2x.webp)
+
 ويمكن تنفيذه على النحو التالي:
 
-```
+```javascript
 function Tweet(props) {
-  return (
-    <div className="Tweet">
-      <div className="User">
-        <Image
-          className="Avatar"
-          src={props.author.avatarUrl}
-          alt={props.author.name}
-        />
-        <div className="User-name">{props.author.name}</div>
-      </div>
-      <div className="Tweet-text">{props.text}</div>
-      <Image
-        className="Tweet-image"
-        src={props.image.imageUrl}
-        alt={props.image.description}
-      />
-      <div className="Tweet-date">{formatDate(props.date)}</div>
-    </div>
-  );
+
+return (
+
+<div className="Tweet">
+
+<div className="User">
+
+<Image
+
+className="Avatar"
+
+src={props.author.avatarUrl}
+
+alt={props.author.name}
+
+/>
+
+<div className="User-name">{props.author.name}</div>
+
+</div>
+
+<div className="Tweet-text">{props.text}</div>
+
+<Image
+
+className="Tweet-image"
+
+src={props.image.imageUrl}
+
+alt={props.image.description}
+
+/>
+
+<div className="Tweet-date">{formatDate(props.date)}</div>
+
+</div>
+
+);
+
 }
 ```
 
@@ -96,15 +131,23 @@ function Tweet(props) {
 
 أول ما سنفعله هو استخراج *Avatar*:
 
-```
+```javascript
 function Avatar(props) {
-  return (
-    <Image
-      className="Avatar"
-      src={props.user.avatarUrl}
-      alt={props.user.name}
-    />
-  );
+
+return (
+
+<Image
+
+className="Avatar"
+
+src={props.user.avatarUrl}
+
+alt={props.user.name}
+
+/>
+
+);
+
 }
 ```
 
@@ -112,55 +155,91 @@ function Avatar(props) {
 
 الآن سنبسّط التعليق قليلًا:
 
-```
+```javascript
 function Tweet(props) {
-  return (
-    <div className="Tweet">
-      <div className="User">
-        <Avatar user={props.author} />
-        <div className="User-name">{props.author.name}</div>
-      </div>
-      <div className="Tweet-text">{props.text}</div>
-      <Image
-        className="Tweet-image"
-        src={props.image.imageUrl}
-        alt={props.image.description}
-      />
-      <div className="Tweet-date">{formatDate(props.date)}</div>
-    </div>
-  );
+
+return (
+
+<div className="Tweet">
+
+<div className="User">
+
+<Avatar user={props.author} />
+
+<div className="User-name">{props.author.name}</div>
+
+</div>
+
+<div className="Tweet-text">{props.text}</div>
+
+<Image
+
+className="Tweet-image"
+
+src={props.image.imageUrl}
+
+alt={props.image.description}
+
+/>
+
+<div className="Tweet-date">{formatDate(props.date)}</div>
+
+</div>
+
+);
+
 }
 ```
 
 الأمر التالي الذي سنفعله هو إنشاء مكوّن `User` يعرض Avatar بجوار اسم المستخدم:
 
-```
+```javascript
 function User(props) {
-  return (
-    <div className="User">
-      <Avatar user={props.user} />
-      <div className="User-name">{props.user.name}</div>
-    </div>
-  );
+
+return (
+
+<div className="User">
+
+<Avatar user={props.user} />
+
+<div className="User-name">{props.user.name}</div>
+
+</div>
+
+);
+
 }
 ```
 
 الآن سنبسّط `Tweet` أكثر:
 
-```
+```javascript
 function Tweet(props) {
-  return (
-    <div className="Tweet">
-      <User user={props.author} />
-      <div className="Tweet-text">{props.text}</div>
-      <Image
-        className="Tweet-image"
-        src={props.image.imageUrl}
-        alt={props.image.description}
-      />
-      <div className="Tweet-date">{formatDate(props.date)}</div>
-    </div>
-  );
+
+return (
+
+<div className="Tweet">
+
+<User user={props.author} />
+
+<div className="Tweet-text">{props.text}</div>
+
+<Image
+
+className="Tweet-image"
+
+src={props.image.imageUrl}
+
+alt={props.image.description}
+
+/>
+
+<div className="Tweet-date">{formatDate(props.date)}</div>
+
+</div>
+
+);
+
 }
 ```
 
@@ -176,6 +255,8 @@ function Tweet(props) {
 
 الحالة كائن يحتوي على معلومات قد تتغير طوال عمر المكوّن. أي أنها لقطة حالية من البيانات المخزنة في خصائص المكوّن. ويمكن للبيانات أن تتغير بمرور الوقت، لذا تصبح تقنيات إدارة طريقة تغير تلك البيانات ضرورية لضمان ظهور المكوّن على النحو الذي يريده المهندسون في الوقت المناسب تمامًا، وهذا ما يُسمى *إدارة الحالة (state management).*
 
+![تمرير الحالة على شكل خصائص (props) إلى المكوّنات](/images/patterns-dev/react-index-5-state_props.webp)
+
 يكاد يكون من المستحيل قراءة فقرة عن React دون المرور بفكرة إدارة الحالة. يحب المطوّرين التوسع في هذا الموضوع، لكن جوهر الأمر هو أن إدارة الحالة ليست معقدة بقدر ما تبدو.
 
 في React، يمكن تتبع الحالة عالميًا أيضًا، ويمكن مشاركة البيانات بين المكوّنات عند الحاجة. وبعبارة جوهرية، هذا يعني أن تحميل البيانات في أماكن جديدة داخل تطبيقات React ليس مكلفًا كما هو مع التقنيات الأخرى. ف تطبيقات React أذكى بشأن البيانات التي تحفظها وتحملها ومتى تفعل ذلك. وهذا يتيح فرصًا لبناء واجهات تستخدم البيانات بطرق جديدة.
@@ -189,42 +270,73 @@ function Tweet(props) {
 
 > **ملاحظة (React 18+):** في React الحديث، تدير تطبيقات كثيرة الحالة عبر **السياق والخطافات، مثل `useReducer` و`useContext`،** أو مكتبات خفيفة الوزن مثل Zustand وJotai للحالات البسيطة. ويظل Redux صالحًا للحالة العالمية المعقدة، لكن الحلول المدمجة في React غالبًا ما تكفي للحالة المحلية أو المشتركة. ويجعل التجميع التلقائي في React 18 وتحسينات مصرّف React إدارة تحديثات الحالة أكثر كفاءة من دون مكتبات إضافية في كثير من السيناريوهات.
 
+![تفاصيل إدارة الحالة عبر Redux](/images/patterns-dev/react-index-6-redux_details.webp)
+
 في المثال أدناه، يمكن أن يكون موضع الحالة هو `LoginContainer` نفسه. فلنستخدم خطافات React (hooks) لهذا الغرض، وسنناقشها في القسم التالي:
 
-```
+```javascript
 const LoginContainer = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
-  const login = async (event) => {
-    event.preventDefault();
-    const response = await fetch("/api", {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-    // Here we could check response.status to login or show error
-  };
+const [username, setUsername] = useState("");
 
-  return (
-    <LoginForm onSubmit={login}>
-      <FormInput
-        name="username"
-        title="Username"
-        onChange={(event) => setUsername(event.currentTarget.value)}
-        value={username}
-      />
-      <FormPasswordInput
-        name="password"
-        title="Password"
-        onChange={(event) => setPassword(event.currentTarget.value)}
-        value={password}
-      />
-      <SubmitButton>Login</SubmitButton>
-    </LoginForm>
-  );
+const [password, setPassword] = useState("");
+
+const login = async (event) => {
+
+event.preventDefault();
+
+const response = await fetch("/api", {
+
+method: "POST",
+
+body: JSON.stringify({
+
+username,
+
+password,
+
+}),
+
+});
+
+// Here we could check response.status to login or show error
+
+};
+
+return (
+
+<LoginForm onSubmit={login}>
+
+<FormInput
+
+name="username"
+
+title="Username"
+
+onChange={(event) => setUsername(event.currentTarget.value)}
+
+value={username}
+
+/>
+
+<FormPasswordInput
+
+name="password"
+
+title="Password"
+
+onChange={(event) => setPassword(event.currentTarget.value)}
+
+value={password}
+
+/>
+
+<SubmitButton>Login</SubmitButton>
+
+</LoginForm>
+
+);
+
 };
 ```
 
@@ -275,40 +387,69 @@ const LoginContainer = () => {
 
 الخطافات (hooks) هي دوال تتيح لك «الانضمام إلى» ميزات حالة React ودورة الحياة من المكوّنات الدالية. وتتيح لك استخدام الحالة وميزات React الأخرى من دون كتابة صنف. ويمكنك التعلم المزيد عنها في دليل [الخطافات](/book/patterns-dev/react/hooks-pattern).
 
+![طريقتان لإنشاء المكوّنات](/images/patterns-dev/react-index-7-two_ways.webp)
+
 ## التفكير في React
 
 أمر مذهل حقًا في React هو كيف يجعلك تفكر في التطبيقات أثناء بنائها. في هذا القسم، سنرشدك إلى عملية التفكير في بناء *جدول بيانات منتجات قابل للبحث* باستخدام خطافات React.
 
 **الخطوة 1: ابدأ بنموذج أولي (mock)** تخيّل أننا لدينا بالفعل واجهة API بصيغة JSON ونموذج أولي لواجهتنا:
 
+![نتائج بحث التغريدات التجريبية](/images/patterns-dev/react-index-8-mock_tweet_results_3x.webp)
+
 تعيد واجهة JSON بعض البيانات التي تبدو هكذا:
 
-```
+```json
 [
-  {
-    category: "Entertainment",
-    retweets: "54",
-    isLocal: false,
-    text: "Omg. A tweet.",
-  },
-  {
-    category: "Entertainment",
-    retweets: "100",
-    isLocal: false,
-    text: "Omg. Another.",
-  },
-  {
-    category: "Technology",
-    retweets: "32",
-    isLocal: false,
-    text: "New ECMAScript features!",
-  },
-  {
-    category: "Technology",
-    retweets: "88",
-    isLocal: true,
-    text: "Wow, learning React!",
-  },
+
+{
+
+category: "Entertainment",
+
+retweets: "54",
+
+isLocal: false,
+
+text: "Omg. A tweet.",
+
+},
+
+{
+
+category: "Entertainment",
+
+retweets: "100",
+
+isLocal: false,
+
+text: "Omg. Another.",
+
+},
+
+{
+
+category: "Technology",
+
+retweets: "32",
+
+isLocal: false,
+
+text: "New ECMAScript features!",
+
+},
+
+{
+
+category: "Technology",
+
+retweets: "88",
+
+isLocal: true,
+
+text: "Wow, learning React!",
+
+},
+
 ];
 ```
 
@@ -319,6 +460,8 @@ const LoginContainer = () => {
 بعد أن يكون لديك النموذج الأولي، الخطوة التالية هي رسم مربعات حول كل مكوّن (ومكوّن فرعي) في النموذج وتسميتها جميعًا، كما هو ظاهر أدناه.
 
 استخدم مبدأ المسؤولية المفردة: ينبغي أن يكون لكل مكوّن وظيفة واحدة في الأفضل. وإذا اتسع، فينبغي تقسيمه إلى مكوّنات فرعية أصغر. واستخدم التقنية نفسها لتقرّر ما إذا كان ينبغي لك إنشاء دالة أو كائن جديد.
+
+![ألوان نتائج بحث التغريدات التجريبية](/images/patterns-dev/react-index-9-mock_tweet_colors_3x.webp)
 
 سترى في الصورة أعلاه أن لدينا خمسة مكونات في تطبيقنا. وقد عددنا البيانات التي يمثلها كل مكوّن.
 
@@ -334,125 +477,205 @@ const LoginContainer = () => {
 - **TweetList** **TweetCategory**
 - **TweetRow**
 
-
-
 **الخطوة 3: نفّذ المكوّنات في React** بعد إكمال التسلسل الهرمي للمكوّنات، تتمثل الخطوة التالية في تنفيذ تطبيقك. قبل العام الماضي، كانت أسرع طريقة هي بناء نسخة تأخذ نموذج بياناتك وتعرض واجهة المستخدم، لكن من دون أي تفاعل. ومنذ إدخال خطافات React، أصبحت طريقة أسهل لتنفيذ تطبيقك هي استخدام الخطافات كما هو ظاهر أدناه:
 
 **i. قائمة تغريدات قابلة للتصفية**
 
-```
+```javascript
 const TweetSearchResults = ({ tweets }) => {
-  const [filterText, setFilterText] = useState("");
-  const [inThisLocation, setInThisLocation] = useState(false);
-  return (
-    <div>
-      <SearchBar
-        filterText={filterText}
-        inThisLocation={inThisLocation}
-        setFilterText={setFilterText}
-        setInThisLocation={setInThisLocation}
-      />
-      <TweetList
-        tweets={tweets}
-        filterText={filterText}
-        inThisLocation={inThisLocation}
-      />
-    </div>
-  );
+
+const [filterText, setFilterText] = useState("");
+
+const [inThisLocation, setInThisLocation] = useState(false);
+
+return (
+
+<div>
+
+<SearchBar
+
+filterText={filterText}
+
+inThisLocation={inThisLocation}
+
+setFilterText={setFilterText}
+
+setInThisLocation={setInThisLocation}
+
+/>
+
+<TweetList
+
+tweets={tweets}
+
+filterText={filterText}
+
+inThisLocation={inThisLocation}
+
+/>
+
+</div>
+
+);
+
 };
 ```
 
 **ii. SearchBar**
 
-```
+```javascript
 const SearchBar = ({
-  filterText,
-  inThisLocation,
-  setFilterText,
-  setInThisLocation,
+
+filterText,
+
+inThisLocation,
+
+setFilterText,
+
+setInThisLocation,
+
 }) => (
-  <form>
-    <input
-      type="text"
-      placeholder="Search..."
-      value={filterText}
-      onChange={(e) => setFilterText(e.target.value)}
-    />
-    <p>
-      <label>
-        <input
-          type="checkbox"
-          checked={inThisLocation}
-          onChange={(e) => setInThisLocation(e.target.checked)}
-        />{" "}
-        Only show tweets in your current location
-      </label>
-    </p>
-  </form>
+
+<form>
+
+<input
+
+type="text"
+
+placeholder="Search..."
+
+value={filterText}
+
+onChange={(e) => setFilterText(e.target.value)}
+
+/>
+
+<p>
+
+<label>
+
+<input
+
+type="checkbox"
+
+checked={inThisLocation}
+
+onChange={(e) => setInThisLocation(e.target.checked)}
+
+/>{" "}
+
+Only show tweets in your current location
+
+</label>
+
+</p>
+
+</form>
+
 );
 ```
 
 **iii. قائمة التغريدات (قائمة التغريدات)**
 
-```
+```javascript
 const TweetList = ({ tweets, filterText, inThisLocation }) => {
-  const rows = [];
-  let lastCategory = null;
 
-  tweets.forEach((tweet) => {
-    if (tweet.text.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
-      return;
-    }
-    if (inThisLocation && !tweet.isLocal) {
-      return;
-    }
-    if (tweet.category !== lastCategory) {
-      rows.push(
-        <TweetCategory category={tweet.category} key={tweet.category} />
-      );
-    }
-    rows.push(<TweetRow tweet={tweet} key={tweet.text} />);
-    lastCategory = tweet.category;
-  });
+const rows = [];
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Tweet Text</th>
-          <th>Retweets</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
-  );
+let lastCategory = null;
+
+tweets.forEach((tweet) => {
+
+if (tweet.text.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+
+return;
+
+}
+
+if (inThisLocation && !tweet.isLocal) {
+
+return;
+
+}
+
+if (tweet.category !== lastCategory) {
+
+rows.push(
+
+<TweetCategory category={tweet.category} key={tweet.category} />
+
+);
+
+}
+
+rows.push(<TweetRow tweet={tweet} key={tweet.text} />);
+
+lastCategory = tweet.category;
+
+});
+
+return (
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Tweet Text</th>
+
+<th>Retweets</th>
+
+</tr>
+
+</thead>
+
+<tbody>{rows}</tbody>
+
+</table>
+
+);
+
 };
 ```
 
 **iv. صف فئة التغريدة**
 
-```
+```javascript
 const TweetCategory = ({ category }) => (
-  <tr>
-    <th colSpan="2">{category}</th>
-  </tr>
+
+<tr>
+
+<th colSpan="2">{category}</th>
+
+</tr>
+
 );
 ```
 
 **v. صف التغريدة**
 
-```
+```javascript
 const TweetRow = ({ tweet }) => {
-  const color = tweet.isLocal ? "inherit" : "red";
 
-  return (
-    <tr>
-      <td>
-        <span style="">{tweet.text}</span>
-      </td>
-      <td>{tweet.retweets}</td>
-    </tr>
-  );
+const color = tweet.isLocal ? "inherit" : "red";
+
+return (
+
+<tr>
+
+<td>
+
+<span style="">{tweet.text}</span>
+
+</td>
+
+<td>{tweet.retweets}</td>
+
+</tr>
+
+);
+
 };
 ```
 
@@ -461,8 +684,6 @@ const TweetRow = ({ tweet }) => {
 - **TweetSearchResults** **SearchBar**
 - **TweetList** **TweetCategory**
 - **TweetRow**
-
-
 
 ## البداية
 
@@ -486,6 +707,3 @@ const TweetRow = ({ tweet }) => {
 - [React للمصممين](https://reactfordesigners.com/)
 
 *لن يكون هذا الدليل ممكنًا لولا أساليب التدريس التي تُشاركها [الوثائق الرسمية لمكوّنات React وخصائصها](https://reactjs.org/docs/components-and-props.html)، و[التفكير في React](https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18)، و[التفكير في خطافات React](https://davidpfahler.com/thinking-in-react-hooks)، ووثائق [scriptverse](https://scriptverse.academy/tutorials/reactjs-pass-props-to-functional-component.html).*
-
-![Overview of React.js](/images/patterns-dev/react-index-0-react_logo_3x.webp) ![Overview of React.js](/images/patterns-dev/react-index-1-jsx.webp) ![Overview of React.js](/images/patterns-dev/react-index-2-react_components_1.5x.webp) ![Overview of React.js](/images/patterns-dev/react-index-3-react_badge_2x.webp) ![Overview of React.js](/images/patterns-dev/react-index-4-tweet_component_2x.webp) ![Overview of React.js](/images/patterns-dev/react-index-5-state_props.webp) ![Overview of React.js](/images/patterns-dev/react-index-6-redux_details.webp) ![Overview of React.js](/images/patterns-dev/react-index-7-two_ways.webp) ![Overview of React.js](/images/patterns-dev/react-index-8-mock_tweet_results_3x.webp) ![Overview of React.js](/images/patterns-dev/react-index-9-mock_tweet_colors_3x.webp)
-

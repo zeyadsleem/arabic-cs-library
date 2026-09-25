@@ -3,12 +3,11 @@ title: التحميل المسبق (Preload)
 lang: ar
 source: https://www.patterns.dev/vanilla/preload/
 ---
-
 [التحميل المسبق](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content) (preload) (``) هو [تحسين للمتصفح](https://web.dev/uses-rel-preload/) يتيح طلب الموارد الحرجة (التي قد يُتعرَّف عليها متأخرًا) في وقت أبكر. إذا كنت مرتاحًا للتفكير في كيفية ترتيب تحميل مواردك الأساسية يدويًا، فيمكنه أن يكون له أثر إيجابي على أداء التحميل والمقاييس في [Core Web Vitals](https://web.dev/vitals). ومع ذلك، فإن التحميل المسبق ليس حلًا سحريًا ويتطلب الإلمام ببعض المفاضلات.
 
 HTML5 iconindex.html
 
-```
+```xml
 <link rel="preload" href="emoji-picker.js" as="script">
   ...
   </head>
@@ -31,7 +30,7 @@ HTML5 iconindex.html
 
 لنفترض أن مكوّن `EmojiPicker` لدينا ينبغي أن يكون ظاهرًا فورًا عند العرض الأولي. ورغم أنه لا ينبغي أن يكون مشمولًا في الحزمة الرئيسية (bundle)، فلا بد من أن يتم تحميله *بالتوازي*. ومثل تمامًا *الجلب المسبق*، يمكننا إضافة تعليق سحري كي نعلم Webpack بأن هذه الوحدة ينبغي أن يتم تحميلها مسبقًا.
 
-```
+```javascript
 const EmojiPicker = import(/* webpackPreload: true */ "./EmojiPicker");
 ```
 
@@ -42,13 +41,11 @@ import React, { Suspense, lazy } from "react";
 import Send from "./icons/Send";
 import Emoji from "./icons/Emoji";
 
-
 const EmojiPicker = lazy(() => import("./EmojiPicker"));
 const ChatInput = () => {
   const [pickerOpen, togglePicker] = React.useReducer(state => !state, true);
 
-
-  return (
+return (
     <div className="chat-input-container">
       <input type="text" placeholder="Type a message..." />
       <Emoji onClick={togglePicker} />
@@ -62,9 +59,7 @@ const ChatInput = () => {
   );
 };
 
-
 console.log("ChatInput loading", Date.now());
-
 
 export default ChatInput;
 ```
@@ -73,30 +68,31 @@ export default ChatInput;
 
 > يسمح Webpack 4.6.0+ بالتحميل المسبق للموارد عبر إضافة `/* webpackPreload: true */` إلى الاستيراد. ولجعل التحميل المسبق يعمل في الإصدارات الأقدم من webpack، ستحتاج إلى إضافة [`preload-webpack-plugin`](https://github.com/GoogleChromeLabs/preload-webpack-plugin) إلى إعداد webpack لديك.
 
-
-
 بعد بناء التطبيق، يمكننا أن نرى أن `EmojiPicker` سيتم جلبه مسبقًا.
 
-```
+```javascript
  Asset                             Size       Chunks                          Chunk Names
-    emoji-picker.bundle.js         1.49 KiB   emoji-picker [emitted]          emoji-picker
-    vendors~emoji-picker.bundle.js 171 KiB    vendors~emoji-picker [emitted]  vendors~emoji-picker
-    main.bundle.js                 1.34 MiB   main  [emitted]                 main
+
+emoji-picker.bundle.js         1.49 KiB   emoji-picker [emitted]          emoji-picker
+
+vendors~emoji-picker.bundle.js 171 KiB    vendors~emoji-picker [emitted]  vendors~emoji-picker
+
+main.bundle.js                 1.34 MiB   main  [emitted]                 main
 
 Entrypoint main = main.bundle.js
+
 (preload: vendors~emoji-picker.bundle.js emoji-picker.bundle.js)
 ```
 
 يظهر الناتج الفعلي على شكل وسم `link` يحمل `rel="preload"` في `head` الخاص بمستندنا.
 
-```
+```javascript
 <link rel="prefetch" href="emoji-picker.bundle.js" as="script" />
+
 <link rel="prefetch" href="vendors~emoji-picker.bundle.js" as="script" />
 ```
 
 يمكن تحميل `EmojiPicker` المحمَّل مسبقًا بالتوازي مع حزمة التحميل الأولية. وبخلاف `prefetch`، حيث كان للمتصفح دور في تحديد ما إذا كان يظن أنه يملك اتصال إنترنت وعرض نطاق كافيين لجلب المورد فعليًا، فإن المورد **المحمَّل مسبقًا** سيُحمَّل مسبقًا في كل الأحوال.
-
-
 
 بدلًا مناضطرارنا إلى انتظار تحميل `EmojiPicker` بعد العرض الأولي، سيكون المورد متاحًا لنا فورًا! ولأننا نحمّل الأصول بترتيب أذكى، فإن زمن التحميل الأولي قد يزداد بدرجة كبيرة اعتمادًا على جهاز المستخدم واتصاله بالإنترنت. لا تُحمِّل مسبقًا إلا الموارد التي يلزم أن تكون مرئية بعد نحو ثانية واحدة من العرض الأولي.
 
@@ -104,8 +100,9 @@ Entrypoint main = main.bundle.js
 
 إذا أردت أن تقوم المتصفحات بتنزيل سكربت بأولوية عالية، من دون أن تعيق المحلل (parser) في انتظار السكربت، فيمكنك الاستفادة من حيلة التحميل المسبق مع async أدناه. وسيؤدي التحميل المسبق في هذه الحالة إلى تأخير تنزيل الموارد الأخرى، لكن هذه مفاضلة على المطوّر أن يجريها:
 
-```
+```javascript
 <link rel="preload" href="emoji-picker.js" as="script">
+
 <script src="emoji-picker.js" async>
 ```
 

@@ -8,17 +8,27 @@ Before we delve into the `` syntax and what it is, let’s quickly recap two con
 
 In Vue, SFCs help couple logic by giving us the ability to define HTML/CSS and JS of a component all within a single **`.vue`** file. A single-file component consists of three parts:
 
-```
+```javascript
 <template>
+
   <!-- HTML template goes here -->
+
 </template>
 
+
+
 <script>
+
   // JavaScript logic goes here
+
 </script>
 
+
+
 <style>
+
   /* CSS styles go here */
+
 </style>
 ```
 
@@ -26,17 +36,28 @@ In Vue, SFCs help couple logic by giving us the ability to define HTML/CSS and J
 
 The Composition API provides standalone functions representing Vue’s core capabilities. These functions are primarily used within a single `setup()` option which serves as the entry point for utilizing the Composition API.
 
-```
+```javascript
 <!-- Template -->
 
+
+
 <script>
+
   export default {
+
     name: "MyComponent",
+
     setup() {
+
       // the setup function
+
     },
+
   };
+
 </script>
+
+
 
 <!-- Styles -->
 ```
@@ -49,9 +70,11 @@ The Composition API provides standalone functions representing Vue’s core capa
 
 By utilizing the `` block, we can condense our component logic into a single block, eliminating the need for an explicit `setup()` function. To use the `` syntax, we simply need to introduce the `setup` attribute to the `` block.
 
-```
+```javascript
 <script setup>
+
   // ...
+
 </script>
 ```
 
@@ -63,63 +86,113 @@ With the `` syntax, we no longer need to define a `return` statement at the end 
 
 #### Before
 
-```
+```javascript
 <template>
+
   <div>
+
     <p>Count: {{ count }}</p>
+
     <p>Username: {{ state.username }}</p>
+
     <button @click="increment">Increment Count</button>
+
   </div>
+
 </template>
 
+
+
 <script>
+
   import { ref, reactive, onMounted } from "vue";
 
+
+
   setup() {
+
     const count = ref(0);
+
     const state = reactive({username: "John"});
 
+
+
     const increment = () => {
+
       count.value++;
+
     };
+
+
 
     onMounted(() => {
+
       console.log("Component mounted");
+
     });
 
+
+
     return {
+
       count,
+
       state,
+
       increment
+
     };
+
   },
+
 </script>
 ```
 
 #### After
 
-```
+```javascript
 <template>
+
   <div>
+
     <p>Count: {{ count }}</p>
+
     <p>Username: {{ state.username }}</p>
+
     <button @click="increment">Increment Count</button>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref, reactive, onMounted } from "vue";
 
+
+
   const count = ref(0);
+
   const state = reactive({ username: "John" });
 
+
+
   const increment = () => {
+
     count.value++;
+
   };
 
+
+
   onMounted(() => {
+
     console.log("Component mounted");
+
   });
+
 </script>
 ```
 
@@ -129,34 +202,55 @@ Component imports are automatically recognized and resolved within the `` block 
 
 #### Before
 
-```
+```javascript
 <template>
+
   <ButtonComponent />
+
 </template>
 
+
+
 <script>
+
   import ButtonComponent from "./components/ButtonComponent.vue";
 
+
+
   export default {
+
     setup() {
+
       // the setup function
+
     },
+
     components: {
+
       ButtonComponent,
+
     },
+
   };
+
 </script>
 ```
 
 #### After
 
-```
+```javascript
 <template>
+
   <ButtonComponent />
+
 </template>
 
+
+
 <script setup>
+
   import { ButtonComponent } from "./components/Button";
+
 </script>
 ```
 
@@ -166,57 +260,89 @@ Props can be accessed directly within the `` block by using the `defineProps()` 
 
 #### Before
 
-```
+```javascript
 <template>
+
   <button>{{ buttonText }}</button>
+
 </template>
 
+
+
 <script>
+
   export default {
+
     props: {
+
       buttonText: String,
+
     },
+
   };
+
 </script>
 ```
 
 #### After
 
-```
+```javascript
 <template>
+
   <button>{{ buttonText }}</button>
+
 </template>
 
+
+
 <script setup>
+
   const { buttonText } = defineProps({
+
     buttonText: String,
+
   });
+
 </script>
 ```
 
 `defineProps()` also allow us to declare the shape of our props with pure TypeScript.
 
-```
+```javascript
 <template>
+
   <button>{{ buttonText }}</button>
+
 </template>
 
+
+
 <script setup lang="ts">
+
   const { buttonText } = defineProps<{ buttonText: string }>();
+
 </script>
 ```
 
 To provide default prop values in the type-only declaration we have above, we can use the `withDefaults()` compiler macro to achieve this.
 
-```
+```javascript
 <template>
+
   <button>{{ buttonText }}</button>
+
 </template>
 
+
+
 <script setup lang="ts">
+
   const { buttonText } = withDefaults(defineProps<{ buttonText: string }>(), {
+
     buttonText: "Initial button text",
+
   });
+
 </script>
 ```
 
@@ -228,54 +354,85 @@ Similar to props, custom events can be emitted directly within the `` block by u
 
 #### Before
 
-```
+```javascript
 <template>
+
   <button @click="closeButton">Button Text</button>
+
 </template>
 
+
+
 <script>
+
   export default {
+
     emits: ["close"],
+
     setup(props, { emit }) {
+
       const closeButton = () => emit("close");
 
+
+
       return {
+
         closeButton,
+
       };
+
     },
+
   };
+
 </script>
 ```
 
 #### After
 
-```
+```javascript
 <template>
+
   <button @click="closeButton">Button Text</button>
+
 </template>
 
+
+
 <script setup>
+
   const emit = defineEmits(["close"]);
+
   const closeButton = () => emit("close");
+
 </script>
 ```
 
 Like `defineProps`, `defineEmits` is a special keyword available only in `` and can also be used without having to be imported. It also allows us to pass in types directly when working within a TypeScript setting.
 
-```
+```javascript
 <template>
+
   <button @click="closeButton">Button Text</button>
+
 </template>
 
+
+
 <script setup lang="ts">
+
   const emit = defineEmits<{ (e: "close"): void }>(["close"]);
+
   const closeButton = () => emit("close");
+
 </script>
 ```
 
 ## `` vs. `setup()`
 
 For larger components that have a large number of returned options and many locally registered child components, the `` syntax helps remove a lot of boilerplate code which leads to cleaner and more focused component definitions that subsequently helps make the codebase more readable and maintainable.
+
+![Flow chart](/images/patterns-dev/vue-script-setup-0-script_setup_breakdown.webp)
 
 Outside of reducing boilerplate, the `` syntax also provides better runtime performance, better IDE-type inference performance, and the ability to declare the shape of props and emitted events with TypeScript.
 
@@ -284,5 +441,3 @@ For a full list of changes that need to be kept in mind when working with the ``
 ## Helpful Resources
 
 - [`` | Vue Documentation](https://vuejs.org/api/sfc-script-setup.html)
-
-![<script setup>](/images/patterns-dev/vue-script-setup-77-script_setup_breakdown.webp)

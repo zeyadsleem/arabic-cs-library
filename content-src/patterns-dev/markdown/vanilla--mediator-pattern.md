@@ -12,58 +12,109 @@ Without a mediator, a system with N components that all need to talk to each oth
 
 Here’s a small mediator that coordinates the steps of a multi‑step form wizard. The wizard has independent step components (personal info, shipping address, payment), and somebody needs to decide what “next” means based on the current state. That decision belongs in the mediator, not duplicated in each step.
 
-```
+```javascript
 class WizardMediator {
+
   #steps = [];
+
   #current = 0;
+
   #data = {};
+
   #listeners = new Set();
 
+
+
   registerSteps(steps) {
+
     this.#steps = steps;
+
   }
+
+
 
   notify(sender, event, payload) {
+
     switch (event) {
+
       case "submit": {
+
         Object.assign(this.#data, payload);
+
         const nextIndex = this.#computeNext(sender, payload);
+
         if (nextIndex >= this.#steps.length) {
+
           this.#emit({ type: "complete", data: this.#data });
+
         } else {
+
           this.#current = nextIndex;
+
           this.#emit({ type: "advance", step: this.#steps[nextIndex] });
+
         }
+
         break;
+
       }
+
       case "back":
+
         this.#current = Math.max(0, this.#current - 1);
+
         this.#emit({ type: "advance", step: this.#steps[this.#current] });
+
         break;
+
       case "cancel":
+
         this.#data = {};
+
         this.#current = 0;
+
         this.#emit({ type: "reset" });
+
         break;
+
     }
+
   }
+
+
 
   // The conditional flow lives here, not in any one step.
+
   #computeNext(sender, payload) {
+
     if (sender === "personal" && payload.accountType === "guest") {
+
       return this.#steps.indexOf("payment"); // skip address-on-file
+
     }
+
     return this.#current + 1;
+
   }
+
+
 
   subscribe(fn) {
+
     this.#listeners.add(fn);
+
     return () => this.#listeners.delete(fn);
+
   }
 
+
+
   #emit(event) {
+
     for (const fn of this.#listeners) fn(event);
+
   }
+
 }
 ```
 
@@ -77,48 +128,84 @@ Middleware — Redux middleware, Apollo Link, Hono, fastify, server frameworks o
 
 Here is a tiny middleware engine, the same shape every Express‑like framework uses internally:
 
-```
+```javascript
 function createPipeline(...middleware) {
+
   return function dispatch(ctx) {
+
     let index = -1;
 
+
+
     function runFrom(i) {
+
       if (i <= index) throw new Error("next() called multiple times");
+
       index = i;
+
       const fn = middleware[i];
+
       if (!fn) return Promise.resolve();
+
       return Promise.resolve(fn(ctx, () => runFrom(i + 1)));
+
     }
 
+
+
     return runFrom(0);
+
   };
+
 }
 ```
 
 A handler is `(context, next) => ...`. Calling `next()` yields to the next link in the chain; not calling it short‑circuits the rest. Because each step gets the same `ctx`, mutations stack the same way they do in Express, Koa, or Hono.
 
-```
+```javascript
 const handle = createPipeline(
-  async (ctx, next) => {
-    const started = performance.now();
-    await next();
-    console.log(`${ctx.path} ${performance.now() - started}ms`);
-  },
 
   async (ctx, next) => {
-    const token = ctx.headers.authorization;
-    if (!token) {
-      ctx.response = { status: 401, body: "Unauthorized" };
-      return; // short-circuit
-    }
-    ctx.user = await verify(token);
+
+    const started = performance.now();
+
     await next();
+
+    console.log(`${ctx.path} ${performance.now() - started}ms`);
+
   },
+
+
+
+  async (ctx, next) => {
+
+    const token = ctx.headers.authorization;
+
+    if (!token) {
+
+      ctx.response = { status: 401, body: "Unauthorized" };
+
+      return; // short-circuit
+
+    }
+
+    ctx.user = await verify(token);
+
+    await next();
+
+  },
+
+
 
   async (ctx) => {
+
     ctx.response = { status: 200, body: `Hello, ${ctx.user.name}` };
+
   }
+
 );
+
+
 
 await handle({ path: "/me", headers: { authorization: "Bearer ..." } });
 ```
@@ -131,35 +218,63 @@ For genuinely complex coordination — a checkout flow with retries, an upload w
 
 [XState](https://stately.ai/docs/xstate) makes this explicit:
 
-```
+```javascript
 import { setup, createActor } from "xstate";
 
+
+
 const uploadMachine = setup({
+
   actions: {
+
     sendBytes: ({ context }) => api.upload(context.file),
+
     cleanup:   ({ context }) => api.abort(context.uploadId),
+
   },
+
 }).createMachine({
+
   id: "upload",
+
   initial: "idle",
+
   context: { file: null, uploadId: null, progress: 0 },
+
   states: {
+
     idle:     { on: { START:  "uploading" } },
+
     uploading: {
+
       entry: "sendBytes",
+
       on: {
+
         PROGRESS: { actions: ({ context, event }) => (context.progress = event.value) },
+
         DONE:    "success",
+
         ERROR:   "failed",
+
         CANCEL:  { target: "idle", actions: "cleanup" },
+
       },
+
     },
+
     success: { type: "final" },
+
     failed:  { on: { RETRY: "uploading" } },
+
   },
+
 });
 
+
+
 const upload = createActor(uploadMachine).start();
+
 upload.send({ type: "START" });
 ```
 

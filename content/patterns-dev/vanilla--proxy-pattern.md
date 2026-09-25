@@ -3,28 +3,35 @@ title: نمط الوسيط (proxy)
 lang: ar
 source: https://www.patterns.dev/vanilla/proxy-pattern/
 ---
-
 باستخدام كائن Proxy، نحصل على تحكم أكبر في التفاعلات مع كائنات معينة. ويمكن لكائن الوسيط (proxy) أن يحدد السلوك في كل مرة نتفاعل فيها مع الكائن، على سبيل المثال عندما نحصل على قيمة أو عندما نضبط قيمة.
 
 عمومًا، الوساطة تعني وجود شخص يحل محل شخص آخر. وبدلًا من التحدث إلى ذلك الشخص مباشرةً، فإنك ستتحدث إلى شخص الوسيط الذي سيمثل الشخص الذي كنت تحاول الوصول إليه. ويحدث الشيء نفسه في JavaScript: بدلًا من التفاعل مع الكائن الهدف مباشرةً، سنتفاعل مع كائن Proxy.
 
 لننشئ كائن `person` الذي يمثل John Doe.
 
-```
+```javascript
 const person = {
-  name: "John Doe",
-  age: 42,
-  nationality: "American",
+
+name: "John Doe",
+
+age: 42,
+
+nationality: "American",
+
 };
 ```
 
 بدلًا من التفاعل مع هذا الكائن مباشرةً، نريد التفاعل مع كائن وسيط. وفي JavaScript، يمكننا بسهولة إنشاء وسيط جديد عبر إنشاء نسخة جديدة من `Proxy`.
 
-```
+```javascript
 const person = {
-  name: "John Doe",
-  age: 42,
-  nationality: "American",
+
+name: "John Doe",
+
+age: 42,
+
+nationality: "American",
+
 };
 
 const personProxy = new Proxy(person, {});
@@ -37,21 +44,27 @@ const personProxy = new Proxy(person, {});
 
 وبالفعالية، فإن ما سيحدث في نهاية المطاف هو الآتي:
 
-
-
 بدلًا من التفاعل مع كائن `person` مباشرةً، سنتفاعل مع `personProxy`.
 
 لنضِف معالجات إلى كائن Proxy أي `personProxy`. فعند محاولة تعديل خاصية، أي استدعاء الأسلوب `set` على `Proxy`، نريد أن يسجّل الوسيط القيمة السابقة والقيمة الجديدة للخاصية. وعند محاولة الوصول إلى خاصية، أي استدعاء الأسلوب `get` على `Proxy`، نريد أن يسجّل الوسيط جملة أكثر قابلية للقراءة تحتوي على اسم الخاصية وقيمتها.
 
-```
+```javascript
 const personProxy = new Proxy(person, {
-  get: (obj, prop) => {
-    console.log(`The value of ${prop} is ${obj[prop]}`);
-  },
-  set: (obj, prop, value) => {
-    console.log(`Changed ${prop} from ${obj[prop]} to ${value}`);
-    obj[prop] = value;
-  },
+
+get: (obj, prop) => {
+
+console.log(`The value of ${prop} is ${obj[prop]}`);
+
+},
+
+set: (obj, prop, value) => {
+
+console.log(`Changed ${prop} from ${obj[prop]} to ${value}`);
+
+obj[prop] = value;
+
+},
+
 });
 ```
 
@@ -59,13 +72,12 @@ const personProxy = new Proxy(person, {
 
 JavaScript iconindex.js
 
-```
+```javascript
 const person = {
   name: "John Doe",
   age: 42,
   nationality: "American"
 };
-
 
 const personProxy = new Proxy(person, {
   get: (obj, prop) => {
@@ -77,7 +89,6 @@ const personProxy = new Proxy(person, {
     return true;
   }
 });
-
 
 personProxy.name;
 personProxy.age = 43;
@@ -91,27 +102,47 @@ personProxy.age = 43;
 
 يمكن أن يكون الوسيط مفيدًا لإضافة **التحقق من صحة البيانات** (validation). فلا ينبغي أن يستطيع المستخدم تغيير عمر `person` إلى قيمة نصية، أو أن يعطيه اسمًا فارغًا. وأيضًا، إذا كان المستخدم يحاول الوصول إلى خاصية على الكائن غير موجودة، فينبغي أن نخبره بذلك.
 
-```
+```javascript
 const personProxy = new Proxy(person, {
-  get: (obj, prop) => {
-    if (!obj[prop]) {
-      console.log(
-        `Hmm.. this property doesn't seem to exist on the target object`
-      );
-    } else {
-      console.log(`The value of ${prop} is ${obj[prop]}`);
-    }
-  },
-  set: (obj, prop, value) => {
-    if (prop === "age" && typeof value !== "number") {
-      console.log(`Sorry, you can only pass numeric values for age.`);
-    } else if (prop === "name" && value.length < 2) {
-      console.log(`You need to provide a valid name.`);
-    } else {
-      console.log(`Changed ${prop} from ${obj[prop]} to ${value}.`);
-      obj[prop] = value;
-    }
-  },
+
+get: (obj, prop) => {
+
+if (!obj[prop]) {
+
+console.log(
+
+`Hmm.. this property doesn't seem to exist on the target object`
+
+);
+
+} else {
+
+console.log(`The value of ${prop} is ${obj[prop]}`);
+
+}
+
+},
+
+set: (obj, prop, value) => {
+
+if (prop === "age" && typeof value !== "number") {
+
+console.log(`Sorry, you can only pass numeric values for age.`);
+
+} else if (prop === "name" && value.length < 2) {
+
+console.log(`You need to provide a valid name.`);
+
+} else {
+
+console.log(`Changed ${prop} from ${obj[prop]} to ${value}.`);
+
+obj[prop] = value;
+
+}
+
+},
+
 });
 ```
 
@@ -119,13 +150,12 @@ const personProxy = new Proxy(person, {
 
 JavaScript iconindex.js
 
-```
+```javascript
 const person = {
   name: "John Doe",
   age: 42,
   nationality: "American"
 };
-
 
 const personProxy = new Proxy(person, {
   get: (obj, prop) => {
@@ -148,7 +178,6 @@ const personProxy = new Proxy(person, {
   }
 });
 
-
 personProxy.nonExistentProperty;
 personProxy.age = "44";
 personProxy.name = "";
@@ -166,15 +195,23 @@ personProxy.name = "";
 
 بدلًا من الوصول إلى الخصائص عبر `obj[prop]` أو ضبط الخصائص عبر `obj[prop] = value`، يمكننا الوصول إلى الخصائص على الكائن الهدف أو تعديلها عبر `Reflect.get()` و`Reflect.set()`. وتستقبل هذه الأساليب المعطيات نفسها التي تستقبلها أساليب كائن المعالج.
 
-```
+```javascript
 const personProxy = new Proxy(person, {
-  get: (obj, prop) => {
-    console.log(`The value of ${prop} is ${Reflect.get(obj, prop)}`);
-  },
-  set: (obj, prop, value) => {
-    console.log(`Changed ${prop} from ${obj[prop]} to ${value}`);
-    Reflect.set(obj, prop, value);
-  },
+
+get: (obj, prop) => {
+
+console.log(`The value of ${prop} is ${Reflect.get(obj, prop)}`);
+
+},
+
+set: (obj, prop, value) => {
+
+console.log(`Changed ${prop} from ${obj[prop]} to ${value}`);
+
+Reflect.set(obj, prop, value);
+
+},
+
 });
 ```
 
@@ -182,13 +219,12 @@ const personProxy = new Proxy(person, {
 
 JavaScript iconindex.js
 
-```
+```javascript
 const person = {
   name: "John Doe",
   age: 42,
   nationality: "American"
 };
-
 
 const personProxy = new Proxy(person, {
   get: (obj, prop) => {
@@ -199,7 +235,6 @@ const personProxy = new Proxy(person, {
     return Reflect.set(obj, prop, value);
   }
 });
-
 
 personProxy.name;
 personProxy.age = 43;

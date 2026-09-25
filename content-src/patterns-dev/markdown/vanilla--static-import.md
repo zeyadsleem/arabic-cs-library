@@ -12,7 +12,7 @@ Let’s look at an example! A simple chat app contains a `Chat` component, in wh
 
 JavaScript iconApp.js
 
-```
+```javascript
 import React from "react";
 
 
@@ -46,7 +46,7 @@ The modules get executed as soon as the engine reaches the line on which we impo
 
 JavaScript iconApp.js
 
-```
+```javascript
 import React from "react";
 
 
@@ -78,8 +78,9 @@ export default App;
 
 Since the components were statically imported, Webpack bundled the modules into the initial bundle. We can see the bundle that Webpack creates after building the application:
 
-```
+```javascript
 Asset           Size      Chunks            Chunk Names
+
 main.bundle.js  1.5 MiB    main  [emitted]  main
 ```
 

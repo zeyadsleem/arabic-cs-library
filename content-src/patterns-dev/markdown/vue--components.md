@@ -12,10 +12,13 @@ Reusability and maintainability are some of the main reasons why building an app
 
 To get a better understanding of components, we’ll go ahead and create one. The simplest way to create a Vue component in an application that doesn’t contain a build process (e.g. Webpack) is to create a plain JavaScript object that contains Vue specific options.
 
-```
+```javascript
 export default {
+
   props: ["name"],
+
   template: `<h1>Hello, my name is {{ name }}</h1>`,
+
 };
 ```
 
@@ -23,15 +26,23 @@ The component has a `props` property defined, which accepts a single prop named 
 
 The `template` property defines the HTML template for the component. In this case, it contains an `` heading tag that displays the text `"Hello, my name is"` followed by the value of the `name` prop, which is rendered using Vue’s double curly braces syntax `{{ }}`.
 
+![Badge component](/images/patterns-dev/vue-components-0-badge.webp)
+
 Aside from defining components as plain JavaScript objects, the most common way of creating components in Vue are with single-file components (SFCs). Single-file components are components that allow us to define the HTML, CSS, and JS of a component all within a special `.vue` file, as shown below:
 
-```
+```javascript
 <template>
+
   <h1>Hello, my name is {{ name }}</h1>
+
 </template>
 
+
+
 <script setup>
+
   const { name } = defineProps(["name"]);
+
 </script>
 ```
 
@@ -41,89 +52,147 @@ Aside from defining components as plain JavaScript objects, the most common way 
 
 We’ll go through a simple exercise to illustrate how components can be split into smaller components. Consider the following fictional `Tweet` component:
 
+![Tweet component](/images/patterns-dev/vue-components-1-tweet_component.webp)
+
 The above component can be implemented with something as follows:
 
-```
+```javascript
 <template>
+
   <div class="Tweet">
+
     <image class="Tweet-image" :src="image.imageUrl" :alt="image.description" />
+
     <div class="User">
+
       <image class="Avatar" :src="author.avatarUrl" :alt="author.name" />
+
       <div class="User-name">{{ author.name }}</div>
+
     </div>
+
     <div class="Details">
+
       <div class="Tweet-text">{{ text }}</div>
+
       <div class="Tweet-date">{{ formatDate(date) }}</div>
+
       <!-- ... -->
+
     </div>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   // ...
+
 </script>
 ```
 
 One can look at the above component and consider it difficult to manipulate because of how clustered it is, and reusing individual parts of it may also prove difficult. To make things more composable, we can extract a few components from this one component.
 
+![Tweet component](/images/patterns-dev/vue-components-2-tweet_component_diagram_breakdown.webp)
+
 We can have the main `Tweet` component be the parent to the `TweetUser` and `TweetDetails` components. `TweetUser` will display the user’s information and be a parent to a `TweetAvatar` component that displays the user’s avatar. `TweetDetails` will simply display additional information in the tweet such as the tweet text and the date of submission. The component tree will look like the following:
+
+![Tweet component hierarchy](/images/patterns-dev/vue-components-3-tweet_component_breakdown_diagram.webp)
 
 We can first create the child `TweetAvatar` component to contain the avatar image element.
 
-```
+```javascript
 <template>
+
   <image class="Avatar" :src="author.avatarUrl" :alt="author.name" />
+
 </template>
 
+
+
 <script setup>
+
   // ...
+
 </script>
 ```
 
 We can then create the `TweetUser` component that renders the `TweetAvatar` component and relevant user information.
 
-```
+```javascript
 <template>
+
   <div class="User">
+
     <TweetAvatar />
+
     <div class="User-name">{{ author.name }}</div>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { TweetAvatar } from "./TweetAvatar.vue";
+
 </script>
 ```
 
 We can create the `TweetDetails` component to render the remaining information in the tweet.
 
-```
+```javascript
 <template>
+
   <div class="Details">
+
     <div class="Tweet-text">{{ text }}</div>
+
     <div class="Tweet-date">{{ formatDate(date) }}</div>
+
     <!-- ... -->
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   // ...
+
 </script>
 ```
 
 Finally, we can use these newly created child components to simplify the template of the parent `Tweet` component.
 
-```
+```javascript
 <template>
+
   <div class="Tweet">
+
     <image class="Tweet-image" :src="image.imageUrl" :alt="image.description" />
+
     <TweetUser :author="author" />
+
     <TweetDetails :text="text" :date="date" />
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   // ...
+
 </script>
 ```
 
@@ -135,27 +204,47 @@ Reactive state is a fundamental concept in Vue components that enables dynamic a
 
 In Vue, we can define reactive data properties with the `ref()` function (for standalone primitive values) and the `reactive()` function (for objects). Let’s consider a simple example of a counter component:
 
-```
+```javascript
 <template>
+
   <div>
+
     <h2>Counter: {{ count }}</h2>
+
     <button @click="increment">Increment</button>
+
     <button @click="decrement">Decrement</button>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
+
 
   const count = ref(0);
 
+
+
   const increment = () => {
+
     count.value++;
+
   };
 
+
+
   const decrement = () => {
+
     count.value--;
+
   };
+
 </script>
 ```
 
@@ -163,11 +252,13 @@ In the above example, we define a reactive property `count` and initialize it wi
 
 The template also includes two buttons: `"Increment"` and `"Decrement"`, which are bound to the corresponding `increment()` and `decrement()` methods using the `@click` directive. Inside these methods, we access and modify the value of the reactive `count` property. **Vue detects the changes and automatically updates the component’s rendering to reflect the new value.**
 
+![Incrementing and decrementing count](/images/patterns-dev/vue-components-4-components_reactivity.webp)
+
 Reactive state in Vue components provides a seamless way to manage and track data changes, making it easier to build interactive and dynamic user interfaces.
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="demo tab">
     <h2>Counter: {{ count }}</h2>
@@ -213,5 +304,3 @@ This article aims to be a simple introduction to the concept of components. In t
 
 - [Components Basics | Vue Documentation](https://vuejs.org/guide/essentials/component-basics.html#components-basics)
 - [Reactivity Fundamentals | Vue Documentation](https://vuejs.org/guide/essentials/reactivity-fundamentals.html)
-
-![Components](/images/patterns-dev/vue-components-54-badge.webp) ![Components](/images/patterns-dev/vue-components-55-tweet_component.webp) ![Components](/images/patterns-dev/vue-components-56-tweet_component_diagram_breakdown.webp) ![Components](/images/patterns-dev/vue-components-57-tweet_component_breakdown_diagram.webp) ![Components](/images/patterns-dev/vue-components-58-components_reactivity.webp)

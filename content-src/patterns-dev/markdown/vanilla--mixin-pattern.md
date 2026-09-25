@@ -12,51 +12,83 @@ The pattern still shows up in modern codebases (TypeScript’s “mixin classes�
 
 Suppose we have a `Document` class for a notes app. We want to know whether a document has unsaved edits, when it was last modified, and we want to “reset” the dirty state after a save. We could write this directly on the class, but the same behavior is useful on `Note`, `Folder`, `Tag`, and anything else the user can edit. That makes it a perfect candidate for a mixin.
 
-```
+```javascript
 class Document {
+
   constructor(title, body) {
+
     this.title = title;
+
     this.body = body;
+
   }
+
 }
 ```
 
 We start with a plain trait object that captures the dirty-tracking behavior:
 
-```
+```javascript
 const dirtyTrackable = {
+
   markDirty() {
+
     this._dirty = true;
+
     this._lastModified = Date.now();
+
   },
+
   markClean() {
+
     this._dirty = false;
+
   },
+
   isDirty() {
+
     return Boolean(this._dirty);
+
   },
+
   lastModified() {
+
     return this._lastModified ?? null;
+
   },
+
 };
 ```
 
 To apply it, we install the trait onto the prototype with `Object.assign`. Every instance of `Document` (and every subclass) now gets the four methods for free:
 
-```
+```javascript
 class Document {
+
   constructor(title, body) {
+
     this.title = title;
+
     this.body = body;
+
   }
+
 }
+
+
 
 Object.assign(Document.prototype, dirtyTrackable);
 
+
+
 const draft = new Document("Patterns", "Mixins, composition, hooks...");
+
 draft.markDirty();
+
 draft.isDirty(); // true
+
 draft.markClean();
+
 draft.isDirty(); // false
 ```
 
@@ -66,42 +98,72 @@ This is the simplest form of the pattern: a trait object plus an `Object.assign`
 
 In practice you usually want to apply several traits in a known order and have something explicit at the call site. A tiny `applyTraits` helper does both:
 
-```
+```javascript
 function applyTraits(target, ...traits) {
+
   for (const trait of traits) {
+
     for (const key of Reflect.ownKeys(trait)) {
+
       if (key === "constructor") continue;
+
       if (Object.prototype.hasOwnProperty.call(target.prototype, key)) {
+
         throw new Error(`Trait conflict on "${String(key)}"`);
+
       }
+
       Object.defineProperty(
+
         target.prototype,
+
         key,
+
         Object.getOwnPropertyDescriptor(trait, key)
+
       );
+
     }
+
   }
+
   return target;
+
 }
 ```
 
 Now we can layer multiple traits onto a class and get a loud error if two of them collide instead of one silently winning:
 
-```
+```javascript
 const serializable = {
+
   toJSON() {
+
     return { title: this.title, body: this.body };
+
   },
+
 };
 
+
+
 const eventEmitting = {
+
   on(event, handler) {
+
     (this._handlers ??= new Map()).set(event, handler);
+
   },
+
   emit(event, payload) {
+
     this._handlers?.get(event)?.(payload);
+
   },
+
 };
+
+
 
 applyTraits(Document, dirtyTrackable, serializable, eventEmitting);
 ```
@@ -110,34 +172,61 @@ applyTraits(Document, dirtyTrackable, serializable, eventEmitting);
 
 The trait-object form covers most cases, but it cannot extend behavior - traits cannot call a “super” version of a method, because there is no parent to point at. The subclass-factory form fixes that. A mixin becomes a function that takes a superclass and returns a new subclass:
 
-```
+```javascript
 const Timestamped = (Base) =>
+
   class extends Base {
+
     constructor(...args) {
+
       super(...args);
+
       this.createdAt = new Date();
+
     }
+
     touch() {
+
       this.updatedAt = new Date();
+
     }
+
   };
+
+
 
 const Versioned = (Base) =>
+
   class extends Base {
+
     constructor(...args) {
+
       super(...args);
+
       this.version = 1;
+
     }
+
     bump() {
+
       this.version += 1;
+
     }
+
   };
 
+
+
 class Note {}
+
 class TrackedNote extends Versioned(Timestamped(Note)) {}
 
+
+
 const n = new TrackedNote();
+
 n.touch();
+
 n.bump();
 ```
 

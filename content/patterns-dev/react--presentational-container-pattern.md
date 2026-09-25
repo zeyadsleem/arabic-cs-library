@@ -3,7 +3,6 @@ title: نمط الحاوية/العرض التقديمي
 lang: ar
 source: https://www.patterns.dev/react/presentational-container-pattern/
 ---
-
 في React، إحدى الطرق لتفرض فصل المسؤوليات (separation of concerns) هي استخدام **نمط الحاوية/المكوّن التقديمي (Container/Presentational pattern)**. وبهذا النمط يمكننا فصل العرض (view) عن منطق التطبيق.
 
 لنفترض أننا نريد إنشاء تطبيق يجلب 6 صور لكلاب، ويعرض هذه الصور على الشاشة.
@@ -12,7 +11,6 @@ JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
 
 ```javascript
 import React from "react";
-
 
 export default function DogImages({ dogs }) {
   return dogs.map((dog, i) => <img src={dog} key={i} alt="Dog" />);
@@ -26,8 +24,6 @@ export default function DogImages({ dogs }) {
 - **المكوّنات التقديمية (Presentational Components)**: مكوّنات تهتم بـ ***كيفية*** عرض البيانات للمستخدم. في هذا المثال، هو *عرض قائمة صور الكلاب*.
 - **مكوّنات الحاوية (Container Components)**: مكوّنات تهتم بـ ***ما هي*** البيانات التي تُعرض للمستخدم. في هذا المثال، هو *جلب صور الكلاب*.
 
-
-
 أما جلب صور الكلاب فيتعلّق بـ **منطق التطبيق (application logic)**، في حين أن عرض الصور لا يتعلّق إلا بـ **العرض (view)**.
 
 ## المكوّن التقديمي (Presentational Component)
@@ -40,7 +36,6 @@ JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
 
 ```javascript
 import React from "react";
-
 
 export default function DogImages({ dogs }) {
   return dogs.map((dog, i) => <img src={dog} key={i} alt="Dog" />);
@@ -65,7 +60,6 @@ JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
 import React from "react";
 import DogImages from "./DogImages";
 
-
 export default class DogImagesContainer extends React.Component {
   constructor() {
     super();
@@ -74,15 +68,13 @@ export default class DogImagesContainer extends React.Component {
     };
   }
 
-
-  componentDidMount() {
+componentDidMount() {
     fetch("https://dog.ceo/api/breed/labrador/images/random/6")
       .then(res => res.json())
       .then(({ message }) => this.setState({ dogs: message }));
   }
 
-
-  render() {
+render() {
     return <DogImages dogs={this.state.dogs} />;
   }
 }
@@ -92,25 +84,29 @@ export default class DogImagesContainer extends React.Component {
 
 يدمج هذان المكوّنان معًا إمكانية فصل التعامل مع منطق التطبيق عن العرض.
 
-
-
 ## الخطّافات (Hooks)
 
 في كثير من الحالات، يمكن استبدال نمط الحاوية/العرض التقديمي بخطّافات React. فقد جعل إدخال الخطّافات من السهل على المطوّرين إضافة حالة (state) من دون الحاجة إلى مكوّن حاوية يوفّر تلك الحالة.
 
 بدلًا من وضع منطق جلب البيانات في المكوّن `DogImagesContainer`، يمكننا إنشاء خطّاف مخصّص (custom hook) يجلب الصور ويُعيد مصفوفة الكلاب.
 
-```
+```javascript
 export default function useDogImages() {
-  const [dogs, setDogs] = useState([]);
 
-  useEffect(() => {
-    fetch("https://dog.ceo/api/breed/labrador/images/random/6")
-      .then((res) => res.json())
-      .then(({ message }) => setDogs(message));
-  }, []);
+const [dogs, setDogs] = useState([]);
 
-  return dogs;
+useEffect(() => {
+
+fetch("https://dog.ceo/api/breed/labrador/images/random/6")
+
+.then((res) => res.json())
+
+.then(({ message }) => setDogs(message));
+
+}, []);
+
+return dogs;
+
 }
 ```
 
@@ -122,20 +118,16 @@ JavaScript iconDogImages.jsJavaScript iconuseDogImages.js
 import React from "react";
 import useDogImages from "./useDogImages";
 
-
 export default function DogImages() {
   const dogs = useDogImages();
 
-
-  return dogs.map((dog, i) => <img src={dog} key={i} alt="Dog" />);
+return dogs.map((dog, i) => <img src={dog} key={i} alt="Dog" />);
 }
 ```
 
 [افتح CodeSandbox](https://codesandbox.io/embed/rough-brook-tzp7i)
 
 باستخدام خطّاف `useDogImages`، فإننا لا زلنا نفصل منطق التطبيق عن العرض. فنحن نكتفي باستخدام البيانات المُعادة من خطّاف `useDogImages`، من دون تعديل تلك البيانات داخل المكوّن `DogImages`.
-
-
 
 تجعل الخطّافات من السهل فصل المنطق عن العرض داخل المكوّن، تمامًا كما يفعل نمط الحاوية/العرض التقديمي. وهي توفر علينا الطبقة الإضافية التي كانت ضرورية لتغليف المكوّن التقديمي داخل مكوّن الحاوية.
 

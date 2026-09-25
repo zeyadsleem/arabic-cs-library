@@ -67,23 +67,39 @@ In practice, if you opt for a custom stack (Vite or similar), **we recommend Tan
 
 To give a flavor, here’s how a simple route is defined with TanStack Router in code (no framework needed):
 
-```
+```javascript
 import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 
+
+
 // Define a root route and a child route
+
 const rootRoute = createRootRoute();
+
 const indexRoute = createRoute({
+
   getParentRoute: () => rootRoute,
+
   path: '/',
+
   component: () => <div>Hello, world!</div>,  // component to render at this route
+
 });
 
+
+
 // Compose the route tree and create the router
+
 const routeTree = rootRoute.addChildren([indexRoute]);
+
 const router = createRouter({ routeTree });
 
+
+
 export default function App() {
+
   return <RouterProvider router={router} />;  // provide the router to the app
+
 }
 ```
 
@@ -105,14 +121,21 @@ Beyond routing, any non-trivial app needs to manage state (both **client state**
 
 **Server State and Data Fetching - React Query (TanStack Query) et al.:** Managing **server state** (data that comes from an API) has its own set of challenges: you need to fetch, cache, update, and possibly re-fetch or invalidate data. In early React days, many used global state (like Redux) for this, or did manual `useEffect` calls on each component and stored in local state. By 2025, a category of libraries has made this far easier. The leader here is **TanStack Query** (formerly **React Query**). TanStack Query provides hooks like `useQuery` and `useMutation` to declaratively fetch and cache data. For example, to fetch a list of todos you might do:
 
-```
+```javascript
 import { useQuery } from '@tanstack/react-query';
 
+
+
 function TodoList() {
+
   const { data: todos, error, isLoading } = useQuery(['todos'], fetchTodos);
+
   if (isLoading) return <div>Loading...</div>;
+
   if (error) return <div>Error: {error.message}</div>;
+
   return <ul>{todos.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+
 }
 ```
 

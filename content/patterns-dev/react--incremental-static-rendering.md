@@ -3,7 +3,6 @@ title: التوليد الساكن التزايدي
 lang: ar
 source: https://www.patterns.dev/react/incremental-static-rendering/
 ---
-
 للتوليد الساكن (static generation) الصِرف حدٌّ صارم: أي تغيير في الصفحة يستلزم إعادة البناء والنشر بالكامل. بالنسبة إلى موقع توثيق صغير، يستغرق ذلك بضع ثوانٍ ولا يلاحظه أحد. أما في سوق تضم مئة ألف صفحة منتج، فهو خط أنابيب يستغرق ساعات ويوقف إصلاح كل خطأ مطبعي.
 
 يخفف **التوليد الساكن التزايدي (Incremental Static Regeneration، ISR)** هذا القيد. يظل الموقع معروضًا إلى HTML ويُقدَّم من ذاكرة CDN المؤقتة (cache)، لكن يمكن تحديث مدخلات الذاكرة *بعد* النشر — إما وفق مؤقت، أو استجابة مباشرة لحدث ما، مثل «جرى تحرير منتج، فأبطِل هذه الصفحة». ويمكن عرض المسارات (routes) الجديدة التي لم تكن جزءًا من البناء عند أول طلب، ثم تخزينها لكل من يأتي بعدها.
@@ -25,30 +24,47 @@ source: https://www.patterns.dev/react/incremental-static-rendering/
 
 في App Router، تضبط ذلك إما على مستوى المسار أو لكل عملية جلب.
 
-```
+```javascript
 // app/blog/page.tsx
+
 // Re-render at most once every 5 minutes.
+
 export const revalidate = 300;\n
+
 export default async function BlogIndex() {
-  const posts = await getAllPosts();
-  return <PostList posts={posts} />;
+
+const posts = await getAllPosts();
+
+return <PostList posts={posts} />;
+
 }
 ```
 
 تمنحك إعادة التحقق لكل عملية جلب تحكمًا أدق؛ إذ يمكن لبيانات مختلفة في الصفحة نفسها أن تمتلك نوافذ حداثة مختلفة:
 
-```
+```javascript
 // app/dashboard/page.tsx
+
 export default async function Dashboard() {
-  // Hourly: company-wide stats
-  const stats = await fetch("/api/stats", {
-    next: { revalidate: 3600 },
-  }).then((r) => r.json());\n
-  // Every 30 seconds: live notifications
-  const alerts = await fetch("/api/alerts", {
-    next: { revalidate: 30 },
-  }).then((r) => r.json());\n
-  return <DashboardView stats={stats} alerts={alerts} />;
+
+// Hourly: company-wide stats
+
+const stats = await fetch("/api/stats", {
+
+next: { revalidate: 3600 },
+
+}).then((r) => r.json());\n
+
+// Every 30 seconds: live notifications
+
+const alerts = await fetch("/api/alerts", {
+
+next: { revalidate: 30 },
+
+}).then((r) => r.json());\n
+
+return <DashboardView stats={stats} alerts={alerts} />;
+
 }
 ```
 
@@ -62,17 +78,27 @@ ISR على أساس الوقت مناسب لفهرس مدونة يُسمح له 
 
 **`revalidatePath`** يبطّل عنوان URL محددًا.
 
-```
+```javascript
 // app/api/revalidate/route.ts
+
 import { revalidatePath } from "next/cache";
+
 import { NextResponse } from "next/server";\n
+
 export async function POST(req: Request) {
-  const { secret, slug } = await req.json();
-  if (secret !== process.env.REVALIDATE_SECRET) {
-    return NextResponse.json({ ok: false }, { status: 401 });
-  }\n
-  revalidatePath(`/blog/${slug}`);
-  return NextResponse.json({ revalidated: true });
+
+const { secret, slug } = await req.json();
+
+if (secret !== process.env.REVALIDATE_SECRET) {
+
+return NextResponse.json({ ok: false }, { status: 401 });
+
+}\n
+
+revalidatePath(`/blog/${slug}`);
+
+return NextResponse.json({ revalidated: true });
+
 }
 ```
 
@@ -80,15 +106,21 @@ export async function POST(req: Request) {
 
 **`revalidateTag`** يبطّل *كل* عملية جلب وُسمت بالسلسلة المعطاة، مهما كان المسار الذي تقع فيه.
 
-```
+```javascript
 // app/products/[id]/page.tsx
-export default async function Product({ params }) {
-  const { id } = await params;
-  const product = await fetch(`https://api/products/${id}`, {
-    next: { tags: [`product:${id}`, "products"] },
-  }).then((r) => r.json());
 
-  return <ProductView product={product} />;
+export default async function Product({ params }) {
+
+const { id } = await params;
+
+const product = await fetch(`https://api/products/${id}`, {
+
+next: { tags: [`product:${id}`, "products"] },
+
+}).then((r) => r.json());
+
+return <ProductView product={product} />;
+
 }
 ```
 
@@ -96,16 +128,25 @@ export default async function Product({ params }) {
 
 يمكنك أيضًا استدعاء `revalidateTag` و`revalidatePath` مباشرة من **Server Action**، وهي الطريقة غالبًا أنظف من إنشاء نقطة نهاية منفصلة لإعادة التحقق:
 
-```
+```javascript
 "use server";
+
 import { revalidateTag } from "next/cache";\n
+
 export async function publishPost(formData: FormData) {
-  const post = await db.posts.create({
-    title: formData.get("title"),
-    body: formData.get("body"),
-  });
-  revalidateTag("posts");
-  return post;
+
+const post = await db.posts.create({
+
+title: formData.get("title"),
+
+body: formData.get("body"),
+
+});
+
+revalidateTag("posts");
+
+return post;
+
 }
 ```
 
@@ -113,22 +154,37 @@ export async function publishPost(formData: FormData) {
 
 بالنسبة إلى المواقع التي تملك عددًا كبيرًا جدًا من المسارات الممكنة يتعذر عرضها جميعًا مسبقًا — مثل سوق يضم ملايين وحدات المخزون أو CMS بأسماء غير محدودة — فاعرض المسارات الشائعة مسبقًا ودع الباقي يُعرض عند أول طلب.
 
-```
+```javascript
 // app/products/[id]/page.tsx\n
+
 // Prerender the top 1,000 most-viewed products at build time.
+
 export async function generateStaticParams() {
-  const top = await getTopProducts(1000);
-  return top.map((p) => ({ id: p.id }));
+
+const top = await getTopProducts(1000);
+
+return top.map((p) => ({ id: p.id }));
+
 }\n
+
 // Allow other ids to render on demand and be cached afterward.
+
 export const dynamicParams = true;\n
+
 // Re-render any cached entry at most once an hour.
+
 export const revalidate = 3600;\n
+
 export default async function Product({ params }) {
-  const { id } = await params;
-  const product = await getProduct(id);
-  if (!product) notFound();
-  return <ProductView product={product} />;
+
+const { id } = await params;
+
+const product = await getProduct(id);
+
+if (!product) notFound();
+
+return <ProductView product={product} />;
+
 }
 ```
 

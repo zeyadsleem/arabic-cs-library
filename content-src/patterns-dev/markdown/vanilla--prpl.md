@@ -35,20 +35,27 @@ What replaced it:
 
 **``** declares a high-priority fetch directly in the HTML. It is the workhorse for telling the browser, “you are going to need this font/script/image - don’t wait until you parse far enough to discover it.”
 
-```
+```javascript
 <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+
 <link rel="modulepreload" href="/assets/app.js">
 ```
 
 **HTTP `103 Early Hints`** is the modern successor to server push - and the one that actually solves the round-trip problem PRPL cared about. Before the server has finished generating the full response, it can send a `103` interim response with `Link` headers telling the browser what to start fetching:
 
-```
+```javascript
 HTTP/1.1 103 Early Hints
+
 Link: </assets/app.js>; rel=preload; as=script
+
 Link: </assets/app.css>; rel=preload; as=style
 
+
+
 HTTP/1.1 200 OK
+
 Content-Type: text/html
+
 ...
 ```
 
@@ -78,22 +85,37 @@ The third pillar uses idle time to prepare for the user’s *next* request. Ther
 
 **Runtime caching with a service worker.** [Workbox](https://developer.chrome.com/docs/workbox) is the de-facto library: pick a strategy per route (`StaleWhileRevalidate` for the app shell, `CacheFirst` with expiration for images, `NetworkFirst` for API responses), and Workbox generates the service worker for you. This is the layer that gives you a useful offline experience.
 
-```
+```javascript
 import { registerRoute } from "workbox-routing";
+
 import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
+
 import { ExpirationPlugin } from "workbox-expiration";
 
-registerRoute(
-  ({ request }) => request.destination === "script",
-  new StaleWhileRevalidate({ cacheName: "scripts" })
-);
+
 
 registerRoute(
+
+  ({ request }) => request.destination === "script",
+
+  new StaleWhileRevalidate({ cacheName: "scripts" })
+
+);
+
+
+
+registerRoute(
+
   ({ request }) => request.destination === "image",
+
   new CacheFirst({
+
     cacheName: "images",
+
     plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })],
+
   })
+
 );
 ```
 

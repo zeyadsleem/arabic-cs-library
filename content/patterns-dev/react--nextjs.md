@@ -3,7 +3,6 @@ title: نظرة عامة على Next.js
 lang: ar
 source: https://www.patterns.dev/react/nextjs/
 ---
-
 Next.js، الذي أنشأته Vercel، هو إطار عمل React (framework) كامل المكدس ومحسّن للإنتاج. مع التحديثات الحديثة، يركّز Next.js على بنية App Router ومكوّنات React الخادمية (React Server Components) وإمكانات المكدس الكامل السلسة. لنستكشف ميزات Next.js وأنماطه الحديثة.
 
 ## البنية الأساسية
@@ -12,27 +11,46 @@ Next.js، الذي أنشأته Vercel، هو إطار عمل React (framework) 
 
 قدّم Next.js 13+ [App Router](https://nextjs.org/docs/app) بوصفه الأسلوب الموصى به لبناء التطبيقات، بما يجلبه من إمكانات قوية للتوجيه وتنظيم الشيفرة:
 
-```
+```javascript
 app/
-  layout.tsx         # Root layout (applies to all routes)
-  page.tsx          # Home page (/)
-  about/
-    page.tsx        # About page (/about)
-  blog/
-    layout.tsx      # Blog layout
-    page.tsx        # Blog list (/blog)
-    [slug]/
-      page.tsx      # Dynamic blog post (/blog/post-1)
-    categories/
-      [...slug]/    # Catch-all segments (/blog/categories/a/b/c)
-        page.tsx
-  (marketing)/      # Route groups
-    page.tsx
-  @modal/          # Parallel routes
-    page.tsx
-  not-found.tsx    # Custom 404 page
-  error.tsx        # Error boundary
-  loading.tsx      # Loading UI
+
+layout.tsx         # Root layout (applies to all routes)
+
+page.tsx          # Home page (/)
+
+about/
+
+page.tsx        # About page (/about)
+
+blog/
+
+layout.tsx      # Blog layout
+
+page.tsx        # Blog list (/blog)
+
+[slug]/
+
+page.tsx      # Dynamic blog post (/blog/post-1)
+
+categories/
+
+[...slug]/    # Catch-all segments (/blog/categories/a/b/c)
+
+page.tsx
+
+(marketing)/      # Route groups
+
+page.tsx
+
+@modal/          # Parallel routes
+
+page.tsx
+
+not-found.tsx    # Custom 404 page
+
+error.tsx        # Error boundary
+
+loading.tsx      # Loading UI
 ```
 
 ميزات التوجيه (routing) الأساسية:
@@ -64,19 +82,27 @@ app/
 - التحسين الساكن التلقائي كلما أمكن
 - **التقسيم على مستوى المكوّنات**:
 
-```
+```javascript
 // Dynamic imports for components
+
 import dynamic from 'next/dynamic'
 
 const DynamicChart = dynamic(() => import('@/components/Chart'), {
-  loading: () => <p>Loading chart...</p>,
-  ssr: false // Disable server-rendering
+
+loading: () => <p>Loading chart...</p>,
+
+ssr: false // Disable server-rendering
+
 })
 
 // Conditional imports
-const AdminPanel = dynamic(() => 
-  import('@/components/Admin').then(mod => mod.AdminPanel), {
-  loading: () => <p>Loading admin panel...</p>
+
+const AdminPanel = dynamic(() =>
+
+import('@/components/Admin').then(mod => mod.AdminPanel), {
+
+loading: () => <p>Loading admin panel...</p>
+
 })
 ```
 
@@ -98,17 +124,25 @@ const AdminPanel = dynamic(() =>
 
 النمط الحديث:
 
-```
+```javascript
 // app/page.tsx
+
 export default async function Home() {
-  const data = await fetchData(); // Server-side fetch
-  
-  return (
-    <main>
-      <StaticContent data={data} />
-      <ClientComponent />
-    </main>
-  )
+
+const data = await fetchData(); // Server-side fetch
+
+return (
+
+<main>
+
+<StaticContent data={data} />
+
+<ClientComponent />
+
+</main>
+
+)
+
 }
 ```
 
@@ -124,11 +158,15 @@ export default async function Home() {
 
 مثال على التوليد الساكن:
 
-```
+```javascript
 // app/blog/[slug]/page.tsx
+
 export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+
+const posts = await getPosts();
+
+return posts.map((post) => ({ slug: post.slug }));
+
 }
 ```
 
@@ -136,26 +174,39 @@ export async function generateStaticParams() {
 
 يقدّم Next.js 14 [Server Actions](https://nextjs.org/docs/app/api-reference/functions/server-actions) لعمليات الخلفية الآمنة:
 
-```
+```javascript
 // app/actions.ts
+
 'use server'
 
 export async function createPost(formData: FormData) {
-  await db.post.create({
-    data: { title: formData.get('title') }
-  });
+
+await db.post.create({
+
+data: { title: formData.get('title') }
+
+});
+
 }
 
 // app/page.tsx
+
 import { createPost } from './actions';
 
 export default function Page() {
-  return (
-    <form action={createPost}>
-      <input name="title" />
-      <button type="submit">Create</button>
-    </form>
-  )
+
+return (
+
+<form action={createPost}>
+
+<input name="title" />
+
+<button type="submit">Create</button>
+
+</form>
+
+)
+
 }
 ```
 
@@ -165,16 +216,23 @@ export default function Page() {
 
 الاستخدام الحديث لمكوّن Image:
 
-```
+```javascript
 import Image from 'next/image';
 
 <Image
-  src="/hero.jpg"
-  alt="Hero Image"
-  width={1200}
-  height={800}
-  priority
-  className="rounded-lg"
+
+src="/hero.jpg"
+
+alt="Hero Image"
+
+width={1200}
+
+height={800}
+
+priority
+
+className="rounded-lg"
+
 />
 ```
 
@@ -188,17 +246,23 @@ import Image from 'next/image';
 
 نظام الخطوط المدمج:
 
-```
+```javascript
 import { Inter } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Layout({ children }) {
-  return (
-    <html lang="en" className={inter.className}>
-      {children}
-    </html>
-  )
+
+return (
+
+<html lang="en" className={inter.className}>
+
+{children}
+
+</html>
+
+)
+
 }
 ```
 
@@ -208,23 +272,33 @@ export default function Layout({ children }) {
 
 Middleware جاهز لـEdge:
 
-```
+```javascript
 // middleware.ts
+
 export function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    return validateUserSession(request);
-  }
+
+if (request.nextUrl.pathname.startsWith('/dashboard')) {
+
+return validateUserSession(request);
+
+}
+
 }
 ```
 
 معالجات المسارات الديناميكية:
 
-```
+```javascript
 // app/api/route.ts
+
 export async function GET(request: Request) {
-  return new Response(JSON.stringify({ data: 'Hello' }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+
+return new Response(JSON.stringify({ data: 'Hello' }), {
+
+headers: { 'Content-Type': 'application/json' }
+
+});
+
 }
 ```
 
@@ -232,13 +306,17 @@ export async function GET(request: Request) {
 
 قدّم Next.js 14 [Partial Prerendering](https://nextjs.org/blog/next-14#partial-prerendering) للصفحات الساكنة الديناميكية:
 
-```
+```javascript
 // app/dashboard/page.tsx
+
 import { unstable_noStore as noStore } from 'next/cache';
 
 export default function Page() {
-  noStore(); // Opt-out of static rendering
-  return <RealTimeDashboard />;
+
+noStore(); // Opt-out of static rendering
+
+return <RealTimeDashboard />;
+
 }
 ```
 
@@ -246,23 +324,27 @@ export default function Page() {
 
 - أنشئ مشروعًا جديدًا:
 
-```
+```bash
 npx create-next-app@latest
 ```
 
 - اختر الإعداد الحديث:
 
-```
+```javascript
 ✔ Would you like to use TypeScript? … Yes
+
 ✔ Would you like to use App Router? … Yes
+
 ✔ Would you like to customize the default import alias? … No
 ```
 
 - سير العمل أثناء التطوير:
 
-```
+```bash
 npm run dev    # Local development
+
 npm run build  # Production build
+
 npm run start  # Start production server
 ```
 

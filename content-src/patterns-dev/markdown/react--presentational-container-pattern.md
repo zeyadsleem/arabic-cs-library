@@ -100,17 +100,27 @@ In many cases, the Container/Presentational pattern can be replaced with React H
 
 Instead of having the data fetching logic in the `DogImagesContainer` component, we can create a custom hook that fetches the images, and returns the array of dogs.
 
-```
+```javascript
 export default function useDogImages() {
+
   const [dogs, setDogs] = useState([]);
 
+
+
   useEffect(() => {
+
     fetch("https://dog.ceo/api/breed/labrador/images/random/6")
+
       .then((res) => res.json())
+
       .then(({ message }) => setDogs(message));
+
   }, []);
 
+
+
   return dogs;
+
 }
 ```
 

@@ -23,15 +23,23 @@ Picture a chat UI rendering 50,000 messages while a user scrolls through the his
 
 A naive implementation stores all of that on every message:
 
-```
+```javascript
 // Naive: each message owns a full copy of the author info
+
 const messages = history.map((m) => ({
+
   body: m.body,
+
   timestamp: m.timestamp,
+
   authorName: m.user.name,
+
   authorAvatar: m.user.avatarUrl,
+
   authorColor: m.user.color,
+
   authorRole: m.user.role,
+
 }));
 ```
 
@@ -39,33 +47,59 @@ If 30 users wrote those 50,000 messages, the same name/avatar/color strings get 
 
 The Flyweight split: the **author profile** is intrinsic (it’s the same for every message that user sent), and the **body, timestamp, and position** are extrinsic.
 
-```
+```javascript
 // A WeakMap-backed pool keyed by user id.
+
 // We use a plain Map here because user ids are primitives.
+
 const authorPool = new Map();
 
+
+
 function getAuthor(user) {
+
   let flyweight = authorPool.get(user.id);
+
   if (flyweight) return flyweight;
 
+
+
   flyweight = Object.freeze({
+
     id: user.id,
+
     name: user.name,
+
     avatarUrl: user.avatarUrl,
+
     color: user.color,
+
     role: user.role,
+
   });
+
   authorPool.set(user.id, flyweight);
+
   return flyweight;
+
 }
 
+
+
 // Each message is now mostly extrinsic state plus a pointer to a shared author.
+
 function makeMessage(raw) {
+
   return {
+
     author: getAuthor(raw.user),
+
     body: raw.body,
+
     timestamp: raw.timestamp,
+
   };
+
 }
 ```
 
@@ -95,18 +129,30 @@ In all three, the cost being amortized is *creation and GC pressure*, not raw by
 
 Constructing `new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })` is expensive — it loads ICU locale data. Doing it inside a render or a sort comparator devastates performance. The textbook fix is a tiny Flyweight pool keyed on the options:
 
-```
+```javascript
 const formatterPool = new Map();
 
+
+
 function currency(locale, currency) {
+
   const key = `${locale}:${currency}`;
+
   let f = formatterPool.get(key);
+
   if (!f) {
+
     f = new Intl.NumberFormat(locale, { style: "currency", currency });
+
     formatterPool.set(key, f);
+
   }
+
   return f;
+
 }
+
+
 
 currency("en-US", "USD").format(42); // "$42.00"
 ```

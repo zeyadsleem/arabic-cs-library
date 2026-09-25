@@ -12,74 +12,133 @@ Asynchronous components, on the other hand, allow us to define components in a w
 
 Assume we had a simple modal component that becomes rendered when a button is clicked from the parent. The `Modal.vue` component file will only contain template and styles that dictate how the modal appears.
 
-```
+```javascript
 <template>
+
   <div class="modal-mask">
+
     <div class="modal-container">
+
       <div class="modal-body">
+
         <h3>This is the modal!</h3>
+
       </div>
+
+
 
       <div class="modal-footer">
+
         <button class="modal-default-button" @click="$emit('close')">OK</button>
+
       </div>
+
     </div>
+
   </div>
+
 </template>
 
+
+
 <style>
+
   .modal-mask {
+
     position: fixed;
+
     z-index: 9998;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     background-color: rgba(0, 0, 0, 0.5);
+
     display: flex;
+
     transition: opacity 0.3s ease;
+
   }
+
+
 
   .modal-container {
+
     width: 300px;
+
     margin: auto;
+
     padding: 20px 30px;
+
     background-color: #fff;
+
     border-radius: 2px;
+
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+
     transition: all 0.3s ease;
+
   }
+
+
 
   .modal-body h3 {
+
     margin-top: 0;
+
     color: #42b983;
+
   }
 
+
+
   .modal-default-button {
+
     float: right;
+
   }
+
 </style>
 ```
 
 In the parent `App` component, we can render the modal component and a button that when clicked toggles the visibility of the modal component with the help of a reactive boolean value (`showModal`). The modal is conditionally shown or hidden based on the value of the `showModal` reactive property.
 
-```
+```javascript
 <template>
+
   <button id="show-modal" @click="showModal = true">Show Modal</button>
+
   <Modal v-if="showModal" :show="showModal" @close="showModal = false" />
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import Modal from "./components/Modal.vue";
 
+
+
   const showModal = ref(false);
+
 </script>
 ```
 
 When we click the `Show Modal` button, the modal is shown on the page.
 
+![Open and close modal](/images/patterns-dev/vue-async-components-0-simple_modal.webp)
+
 From this example, we can see that the modal component is shown only under a specific circumstance — when the user clicks the `Show Modal` button. Despite this, the JavaScript bundle associated with the component **is loaded automatically when the entire webpage is loaded** even before the modal is made visible. This can be seen from our browser’s network logs.
+
+![Modal bundle loaded on initial page load](/images/patterns-dev/vue-async-components-1-modal_bundle_initial_load.webp)
 
 This is fine for the majority of cases. However, under conditions where the bundle size of the modal is really large and/or the application has a multitude of such components, this can lead to a delayed initial load time. With every added bundle, even if it’s related to components that are rarely used, the time it takes for the initial page to load grows.
 
@@ -87,14 +146,21 @@ This is fine for the majority of cases. However, under conditions where the bund
 
 This is where Vue allows us to divide an app into smaller chunks by loading components asynchronously with the help of the [`defineAsyncComponent()`](https://vuejs.org/api/general.html#defineasynccomponent) function.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
 
+
+
 const AsyncComp = defineAsyncComponent(() => {
+
   return new Promise((resolve, reject) => {
+
     // ...load component from the server
+
     resolve(/* loaded component */);
+
   });
+
 });
 ```
 
@@ -102,49 +168,71 @@ The `defineAsyncComponent()` function accepts a loader function that returns a P
 
 However, instead of defining our async component function like the above, we can leverage [dynamic imports](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) to load an ECMAScript module (i.e. in our case, a component) asynchronously. This is achieved with the `import()` syntax.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
 
+
+
 export const AsyncComp = defineAsyncComponent(() =>
+
   import("./components/MyComponent.vue")
+
 );
 ```
 
 Let’s see this in action for our modal example. We’ll create a new file titled `AsyncModal.js` and in the file, we’ll import the `defineAsyncComponent()` function from the `vue` library and assign an `AsyncModal` constant to the `defineAsyncComponent()` function call.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
+
+
 
 export const AsyncModal = defineAsyncComponent();
 ```
 
 In our `defineAsyncComponent()` function call, we’ll use the `import()` syntax to asynchronously import the `Modal` component we created earlier.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
+
+
 
 export const AsyncModal = defineAsyncComponent(() => import("./Modal.vue"));
 ```
 
 In our parent `App` component, we’ll now import and use the `AsyncModal` asynchronous component in place of the `Modal` component.
 
-```
+```javascript
 <template>
+
   <button id="show-modal" @click="showModal = true">Show Modal</button>
+
   <AsyncModal v-if="showModal" :show="showModal" @close="showModal = false" />
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
   import { AsyncModal } from "./components/AsyncModal";
 
+
+
   const showModal = ref(false);
+
 </script>
 ```
 
 With this small change, our modal component will now be asynchronously loaded! When our application webpage initially loads, we’ll recognize that the bundle for the `Modal` component *is no longer loaded automatically upon page load*.
 
+![Modal bundle not initially loaded on initial page load](/images/patterns-dev/vue-async-components-2-modal_bundle_no_initial_load.webp)
+
 When we click the button to trigger the modal to be shown, we’ll notice the bundle is then asynchronously loaded as the modal component is being rendered.
+
+![Modal bundle asynchronously loaded](/images/patterns-dev/vue-async-components-3-modal_async_load.webp)
 
 ## Loading and error UI
 
@@ -156,35 +244,49 @@ There may be times we may want to provide visual feedback to users while a compo
 
 Since we’ll be declaring additional options in our `defineAsyncComponent()` function, we’ll use the `loader()` function option to asynchronously import the modal component.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
 
+
+
 export const AsyncModal = defineAsyncComponent({
+
   loader: () => import("./Modal.vue"),
+
 });
 ```
 
 Assume we have a simple loading component template defined in a `Loading.vue` component file as follows:
 
-```
+```javascript
 <template>
+
   <p>Loading...</p>
+
 </template>
 ```
 
 We can then specify this loading component as the value of our `loadingComponent` option in our `defineAsyncComponent()` function.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
+
 import Loading from "./Loading.vue";
 
+
+
 export const AsyncModal = defineAsyncComponent({
+
   loader: () => import("./Modal.vue"),
+
   loadingComponent: Loading,
+
 });
 ```
 
 As the modal component becomes asynchronously loaded, the user will now be presented with a `Loading...` message. This may be hard to see in fast internet connections, so we’ll emulate a `Slow 3G` network in our browser network logs to observe the behavior of seeing the `Loading...` message while the modal component bundle is still being loaded.
+
+![loading component](/images/patterns-dev/vue-async-components-4-modal_loading_component.webp)
 
 ### errorComponent
 
@@ -192,33 +294,45 @@ In certain conditions (e.g. poor internet connections), there may be chances tha
 
 Assume we have an error component template defined in an `Error.vue` component file like this:
 
-```
+```javascript
 <template>
+
   <p>Error!</p>
+
 </template>
 ```
 
 To integrate this component into our async modal setup, we can specify it as the value of our `errorComponent` option.
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
+
 import Loading from "./Loading.vue";
+
 import Error from "./Error.vue";
 
+
+
 export const AsyncModal = defineAsyncComponent({
+
   loader: () => import("./Modal.vue"),
+
   loadingComponent: Loading,
+
   errorComponent: Error,
+
 });
 ```
 
 To visualize this in action, we can simulate the `Offline` network mode in our browser devtools and attempt to launch the modal. We’ll notice that when the modal component fails to load, the `Error` component template will be shown.
 
+![error component](/images/patterns-dev/vue-async-components-5-modal_error_component.webp)
+
 With all the changes we’ve made, our app can be seen as below.
 
 JavaScript iconAsyncModal.js
 
-```
+```javascript
 import { defineAsyncComponent } from "vue";
   import Loading from "./Loading.vue";
   import Error from "./Error.vue";
@@ -239,5 +353,3 @@ The `defineAsyncComponent()` function can help in breaking down the initial load
 ## Helpful Resources
 
 - [Async Components | Vue Documentation](https://vuejs.org/guide/components/async.html#async-components)
-
-![Async Components](/images/patterns-dev/vue-async-components-48-simple_modal.webp) ![Async Components](/images/patterns-dev/vue-async-components-49-modal_bundle_initial_load.webp) ![Async Components](/images/patterns-dev/vue-async-components-50-modal_bundle_no_initial_load.webp) ![Async Components](/images/patterns-dev/vue-async-components-51-modal_async_load.webp) ![Async Components](/images/patterns-dev/vue-async-components-52-modal_loading_component.webp) ![Async Components](/images/patterns-dev/vue-async-components-53-modal_error_component.webp)

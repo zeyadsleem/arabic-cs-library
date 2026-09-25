@@ -3,7 +3,6 @@ title: مكوّنات React الخادمية
 lang: ar
 source: https://www.patterns.dev/react/react-server-components/
 ---
-
 مكوّنات React الخادمية (React Server Components، RSC) هي مكوّنات React تعمل حصريًا على الخادم، ولا ترسل شيفرتها إلى المتصفح أبدًا، وتنتج ناتجًا تستطيع شجرة العميل عرضه ودمجه مع مكوّنات العميل العادية. وهي ليست بديلًا عن العرض في جانب الخادم (server-side rendering، SSR)؛ بل طبقة مختلفة في بنية العرض. يحوّل SSR مخرجات React إلى HTML للعرض الأول، بينما تتيح RSC لبعض أجزاء شجرتك ألا تتحول إلى JavaScript للعميل أصلًا.
 
 إن التغيّر في النموذج الذهني كبير. في تطبيق React كلاسيكي يعمل كل مكوّن في المتصفح. ومع RSC تُقسَّم المكوّنات وفق *موضع تشغيلها*: خادم، وهو الوضع الافتراضي، أو عميل، ويُفعّل ذلك بـ `'use client'`. يطبق نظام البناء هذا التقسيم، والحد بين الطرفين واجهة خصائص (props) معتادة؛ إذ يمكن للمكوّن الخادمي أن يمرر خصائص، بما فيها بيانات سبق جلبها، إلى مكوّن عميل، تمامًا كما في تركيب مكوّنات React عادي.
@@ -34,36 +33,61 @@ source: https://www.patterns.dev/react/react-server-components/
 
 في إطار عمل يفهم المكوّنات الخادمية، يصبح الملف الذي لا يحتوي أيًا من التوجيهين مكوّنًا خادميًا افتراضيًا. يمكن أن يكون `async`، ويمكنه استخدام `await` لجلب البيانات، وقراءة قاعدة البيانات مباشرة، واستخدام أسرار مخصصة للخادم، ولا يمكنه استخدام خطافات أو معالجات الأحداث.
 
-```
+```javascript
 // app/posts/page.tsx  -- Server Component (no directive)
+
 import LikeButton from "./LikeButton";\n
+
 export default async function Posts() {
-  const posts = await db.posts.findMany({ orderBy: { createdAt: "desc" } });\n
-  return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.excerpt}</p>
-          <LikeButton postId={post.id} initialCount={post.likes} />
-        </li>
-      ))}
-    </ul>
-  );
+
+const posts = await db.posts.findMany({ orderBy: { createdAt: "desc" } });\n
+
+return (
+
+<ul>
+
+{posts.map((post) => (
+
+<li key={post.id}>
+
+<h2>{post.title}</h2>
+
+<p>{post.excerpt}</p>
+
+<LikeButton postId={post.id} initialCount={post.likes} />
+
+</li>
+
+))}
+
+</ul>
+
+);
+
 }
 ```
 
-```
+```javascript
 // app/posts/LikeButton.tsx
+
 "use client";
+
 import { useState } from "react";\n
+
 export default function LikeButton({ postId, initialCount }) {
-  const [count, setCount] = useState(initialCount);
-  return (
-    <button onClick={() => setCount((c) => c + 1)}>
-      Likes: {count}
-    </button>
-  );
+
+const [count, setCount] = useState(initialCount);
+
+return (
+
+<button onClick={() => setCount((c) => c + 1)}>
+
+Likes: {count}
+
+</button>
+
+);
+
 }
 ```
 
@@ -88,34 +112,57 @@ export default function LikeButton({ postId, initialCount }) {
 
 مكوّنات الخادم تميل بطبيعتها إلى القراءة أكثر من الكتابة. أما عمليات الكتابة — إرسال نموذج أو حذف صف أو تبديل إعداد — فقد استقرت لها **Server Actions** في React 19: دوال خادم تستوردها مباشرة في مكوّنات العميل وتستدعيها كأي دالة غير متزامنة أخرى.
 
-```
+```javascript
 // app/posts/actions.ts
+
 "use server";
+
 import { revalidateTag } from "next/cache";
+
 import { auth } from "@/lib/auth";\n
+
 export async function likePost(postId: string) {
-  const user = await auth();
-  if (!user) throw new Error("Not authenticated");\n
-  await db.likes.create({ data: { postId, userId: user.id } });
-  revalidateTag(\`post:\${postId}\`);
+
+const user = await auth();
+
+if (!user) throw new Error("Not authenticated");\n
+
+await db.likes.create({ data: { postId, userId: user.id } });
+
+revalidateTag(\`post:\${postId}\`);
+
 }
 ```
 
-```
+```javascript
 // app/posts/LikeButton.tsx
+
 "use client";
+
 import { useTransition } from "react";
+
 import { likePost } from "./actions";\n
+
 export default function LikeButton({ postId }) {
-  const [isPending, startTransition] = useTransition();\n
-  return (
-    <button
-      disabled={isPending}
-      onClick={() => startTransition(() => likePost(postId))}
-    >
-      {isPending ? "Liking..." : "Like"}
-    </button>
-  );
+
+const [isPending, startTransition] = useTransition();\n
+
+return (
+
+<button
+
+disabled={isPending}
+
+onClick={() => startTransition(() => likePost(postId))}
+
+>
+
+{isPending ? "Liking..." : "Like"}
+
+</button>
+
+);
+
 }
 ```
 
@@ -127,23 +174,39 @@ export default function LikeButton({ postId }) {
 
 تعمل Server Actions أيضًا بوصفها قيمة `action` في النموذج، وفي هذه الحالة تتراجع بسلاسة؛ إذ يظل النموذج قابلًا للإرسال حتى قبل تحميل JavaScript.
 
-```
+```javascript
 // app/comments/CommentForm.tsx
+
 "use client";
+
 import { useActionState } from "react";
+
 import { postComment } from "./actions";\n
+
 export function CommentForm({ postId }) {
-  const [state, formAction, isPending] = useActionState(postComment, null);\n
-  return (
-    <form action={formAction}>
-      <input type="hidden" name="postId" value={postId} />
-      <textarea name="body" required />
-      <button disabled={isPending}>
-        {isPending ? "Posting..." : "Post comment"}
-      </button>
-      {state?.error && <p>{state.error}</p>}
-    </form>
-  );
+
+const [state, formAction, isPending] = useActionState(postComment, null);\n
+
+return (
+
+<form action={formAction}>
+
+<input type="hidden" name="postId" value={postId} />
+
+<textarea name="body" required />
+
+<button disabled={isPending}>
+
+{isPending ? "Posting..." : "Post comment"}
+
+</button>
+
+{state?.error && <p>{state.error}</p>}
+
+</form>
+
+);
+
 }
 ```
 
@@ -159,43 +222,75 @@ export function CommentForm({ postId }) {
 
 النمط رقم 2 هو مصدر التعثر الأكثر شيوعًا. والحل هو قاعدة «الالتفاف، لا الاستيراد»:
 
-```
+```javascript
 // Bad: ClientLayout imports a Server Component
+
 "use client";
+
 import ServerSidebar from "./ServerSidebar"; // ERROR\n
+
 export default function ClientLayout({ children }) {
-  return (
-    <div>
-      <ServerSidebar />
-      {children}
-    </div>
-  );
+
+return (
+
+<div>
+
+<ServerSidebar />
+
+{children}
+
+</div>
+
+);
+
 }
 ```
 
-```
+```python
 // Good: ClientLayout takes the Server Component as a child
+
 "use client";
+
 export default function ClientLayout({ sidebar, children }) {
-  return (
-    <div>
-      {sidebar}
-      {children}
-    </div>
-  );
+
+return (
+
+<div>
+
+{sidebar}
+
+{children}
+
+</div>
+
+);
+
 }\n
+
 // And the parent (a Server Component) composes them:
+
 // app/layout.tsx
+
 import ClientLayout from "./ClientLayout";
+
 import ServerSidebar from "./ServerSidebar";\n
+
 export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        <ClientLayout sidebar={<ServerSidebar />}>{children}</ClientLayout>
-      </body>
-    </html>
-  );
+
+return (
+
+<html>
+
+<body>
+
+<ClientLayout sidebar={<ServerSidebar />}>{children}</ClientLayout>
+
+</body>
+
+</html>
+
+);
+
 }
 ```
 

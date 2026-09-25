@@ -3,7 +3,6 @@ title: نمط الوزن الخفيف (flyweight)
 lang: ar
 source: https://www.patterns.dev/vanilla/flyweight-pattern/
 ---
-
 الوزن الخفيف (flyweight) نمط هيكلي للمواقف التي يحتاج فيها تطبيق إلى **العرض (rendering)** أو تتبّع *عدد هائل* من الكائنات التي تبدو متشابهة في الغالبية العظمى. وبدلًا من أن يملك كل كائن مجموعة البيانات الكاملة التي يحتاجها للعرض، تستخرج الأجزاء التي لا تتغير أبدًا وتخزنها مرة واحدة، متتركة بين جميع المستهلكين.
 
 لم يصبح النمط «نمط تصميم» (design pattern) إلا لأنه له شكل يمكن التعرف عليه: مجموعة صغيرة وثابتة من الكائنات المشتركة (**الأوزان الخفيفة**) إضافة إلى سياق لكل نسخة (**الحالة الخارجية**) يُقدم عند الاستدعاء. يظهر هذا الشكل اليوم بأسماء كثيرة — العرض بنسخ مثلثة، وAtomic CSS، ومجمعات الكائنات، والأصناف المخفية، وذاكرة مؤقتة للقواعد — ولا يظل ذا معنى في عام 2025، لكن نادرًا ما يكون للسبب الذي روّج له GoF أصلًا.
@@ -23,15 +22,23 @@ source: https://www.patterns.dev/vanilla/flyweight-pattern/
 
 يخزن التطبيق الساذج كل ذلك في كل رسالة:
 
-```
+```javascript
 // Naive: each message owns a full copy of the author info
+
 const messages = history.map((m) => ({
-  body: m.body,
-  timestamp: m.timestamp,
-  authorName: m.user.name,
-  authorAvatar: m.user.avatarUrl,
-  authorColor: m.user.color,
-  authorRole: m.user.role,
+
+body: m.body,
+
+timestamp: m.timestamp,
+
+authorName: m.user.name,
+
+authorAvatar: m.user.avatarUrl,
+
+authorColor: m.user.color,
+
+authorRole: m.user.role,
+
 }));
 ```
 
@@ -39,33 +46,53 @@ const messages = history.map((m) => ({
 
 تقسيم الوزن الخفيف: **الملف التعريفي للمؤلف** حالة داخلية (فهو نفسه لكل رسالة أرسلها ذلك المستخدم)، بينما **الجسم ووقت الختم والموضع** حالة خارجية.
 
-```
+```javascript
 // A WeakMap-backed pool keyed by user id.
+
 // We use a plain Map here because user ids are primitives.
+
 const authorPool = new Map();
 
 function getAuthor(user) {
-  let flyweight = authorPool.get(user.id);
-  if (flyweight) return flyweight;
 
-  flyweight = Object.freeze({
-    id: user.id,
-    name: user.name,
-    avatarUrl: user.avatarUrl,
-    color: user.color,
-    role: user.role,
-  });
-  authorPool.set(user.id, flyweight);
-  return flyweight;
+let flyweight = authorPool.get(user.id);
+
+if (flyweight) return flyweight;
+
+flyweight = Object.freeze({
+
+id: user.id,
+
+name: user.name,
+
+avatarUrl: user.avatarUrl,
+
+color: user.color,
+
+role: user.role,
+
+});
+
+authorPool.set(user.id, flyweight);
+
+return flyweight;
+
 }
 
 // Each message is now mostly extrinsic state plus a pointer to a shared author.
+
 function makeMessage(raw) {
-  return {
-    author: getAuthor(raw.user),
-    body: raw.body,
-    timestamp: raw.timestamp,
-  };
+
+return {
+
+author: getAuthor(raw.user),
+
+body: raw.body,
+
+timestamp: raw.timestamp,
+
+};
+
 }
 ```
 
@@ -95,17 +122,25 @@ function makeMessage(raw) {
 
 إنشاء `new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })` مكلف؛ فهو يحمّل بيانات اللغة المحلية من ICU. وتنفيذه داخل عملية عرض أو دالة مقارنة ترتيب يدمّر الأداء (performance). الحل النموذجي هو مجمع وزن خفيف صغير مفتاحه الخيارات:
 
-```
+```javascript
 const formatterPool = new Map();
 
 function currency(locale, currency) {
-  const key = `${locale}:${currency}`;
-  let f = formatterPool.get(key);
-  if (!f) {
-    f = new Intl.NumberFormat(locale, { style: "currency", currency });
-    formatterPool.set(key, f);
-  }
-  return f;
+
+const key = `${locale}:${currency}`;
+
+let f = formatterPool.get(key);
+
+if (!f) {
+
+f = new Intl.NumberFormat(locale, { style: "currency", currency });
+
+formatterPool.set(key, f);
+
+}
+
+return f;
+
 }
 
 currency("en-US", "USD").format(42); // "$42.00"

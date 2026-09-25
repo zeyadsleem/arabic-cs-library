@@ -3,7 +3,6 @@ title: التقسيم حسب المسار (Route Based Splitting)
 lang: ar
 source: https://www.patterns.dev/vanilla/route-based/
 ---
-
 نستطيع طلب الموارد التي لا تلزم إلا لمسارات (routes) محددة، وذلك بإضافة *التقسيم حسب المسار* (route-based splitting). ومن خلال الجمع بين **React Suspense** أو `loadable-components` مع مكتبات مثل `react-router`، يمكننا تحميل المكوّنات ديناميكيًا (dynamic import) بناءً على المسار الحالي.
 
 JavaScript iconindex.js
@@ -13,7 +12,6 @@ import React, { lazy, Suspense } from "react";
 import { render } from "react-dom";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 
-
 const App = lazy(() => import(/* webpackChunkName: "home" */ "./App"));
 const Overview = lazy(() =>
   import(/* webpackChunkName: "overview" */ "./Overview")
@@ -21,7 +19,6 @@ const Overview = lazy(() =>
 const Settings = lazy(() =>
   import(/* webpackChunkName: "settings" */ "./Settings")
 );
-
 
 render(
   <Router>
@@ -41,7 +38,6 @@ render(
   </Router>,
   document.getElementById("root")
 );
-
 
 module.hot.accept();
 ```

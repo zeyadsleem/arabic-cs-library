@@ -22,17 +22,27 @@ Using the Compound component pattern with React’s [Context API](https://reactj
 
 First, let’s create the `FlyOut` component. This component keeps the state, and returns a `FlyOutProvider` with the value of the toggle to all the children it receives.
 
-```
+```javascript
 const FlyOutContext = createContext();
 
+
+
 function FlyOut(props) {
+
   const [open, toggle] = useState(false);
 
+
+
   return (
+
     <FlyOutContext.Provider value={{ open, toggle }}>
+
       {props.children}
+
     </FlyOutContext.Provider>
+
   );
+
 }
 ```
 
@@ -40,129 +50,221 @@ We now have a stateful `FlyOut` component that can pass the value of `open` and 
 
 Let’s create the `Toggle` component. This component simply renders the component on which the user can click in order to toggle the menu.
 
-```
+```javascript
 function Toggle() {
+
   const { open, toggle } = useContext(FlyOutContext);
 
+
+
   return (
+
     <div onClick={() => toggle(!open)}>
+
       <Icon />
+
     </div>
+
   );
+
 }
 ```
 
 In order to actually give `Toggle` access to the `FlyOutContext` provider, we need to render it as a child component of `FlyOut`! We *could* just simply render this as a child component. However, we can also make the `Toggle` component a property of the `FlyOut` component!
 
-```
+```javascript
 const FlyOutContext = createContext();
 
+
+
 function FlyOut(props) {
+
   const [open, toggle] = useState(false);
 
+
+
   return (
+
     <FlyOutContext.Provider value={{ open, toggle }}>
+
       {props.children}
+
     </FlyOutContext.Provider>
+
   );
+
 }
+
+
 
 function Toggle() {
+
   const { open, toggle } = useContext(FlyOutContext);
 
+
+
   return (
+
     <div onClick={() => toggle(!open)}>
+
       <Icon />
+
     </div>
+
   );
+
 }
+
+
 
 FlyOut.Toggle = Toggle;
 ```
 
 This means that if we ever want to use the `FlyOut` component in any file, we only have to import `FlyOut`!
 
-```
+```javascript
 import React from "react";
+
 import { FlyOut } from "./FlyOut";
 
+
+
 export default function FlyoutMenu() {
+
   return (
+
     <FlyOut>
+
       <FlyOut.Toggle />
+
     </FlyOut>
+
   );
+
 }
 ```
 
 Just a toggle is not enough. We also need to have a `List` with list items, which open and close based on the value of `open`.
 
-```
+```javascript
 function List({ children }) {
+
   const { open } = React.useContext(FlyOutContext);
+
   return open && <ul>{children}</ul>;
+
 }
 
+
+
 function Item({ children }) {
+
   return <li>{children}</li>;
+
 }
 ```
 
 The `List` component renders its children based on whether the value of `open` is `true` or `false`. Let’s make `List` and `Item` a property of the `FlyOut` component, just like we did with the `Toggle` component.
 
-```
+```javascript
 const FlyOutContext = createContext();
 
+
+
 function FlyOut(props) {
+
   const [open, toggle] = useState(false);
 
+
+
   return (
+
     <FlyOutContext.Provider value={{ open, toggle }}>
+
       {props.children}
+
     </FlyOutContext.Provider>
+
   );
+
 }
+
+
 
 function Toggle() {
+
   const { open, toggle } = useContext(FlyOutContext);
 
+
+
   return (
+
     <div onClick={() => toggle(!open)}>
+
       <Icon />
+
     </div>
+
   );
+
 }
+
+
 
 function List({ children }) {
+
   const { open } = useContext(FlyOutContext);
+
   return open && <ul>{children}</ul>;
+
 }
+
+
 
 function Item({ children }) {
+
   return <li>{children}</li>;
+
 }
 
+
+
 FlyOut.Toggle = Toggle;
+
 FlyOut.List = List;
+
 FlyOut.Item = Item;
 ```
 
 We can now use them as properties on the `FlyOut` component! In this case, we want to show two options to the user: **Edit** and **Delete**. Let’s create a `FlyOut.List` that renders two `FlyOut.Item` components, one for the **Edit** option, and one for the **Delete** option.
 
-```
+```javascript
 import React from "react";
+
 import { FlyOut } from "./FlyOut";
 
+
+
 export default function FlyoutMenu() {
+
   return (
+
     <FlyOut>
+
       <FlyOut.Toggle />
+
       <FlyOut.List>
+
         <FlyOut.Item>Edit</FlyOut.Item>
+
         <FlyOut.Item>Delete</FlyOut.Item>
+
       </FlyOut.List>
+
     </FlyOut>
+
   );
+
 }
 ```
 
@@ -170,7 +272,7 @@ Perfect! We just created an entire `FlyOut` component without adding any state i
 
 JavaScript iconindex.jsJavaScript iconFlyOut.jsJavaScript iconFlyoutMenu.jsJavaScript iconImages.js
 
-```
+```javascript
 import React from "react";
 import "./styles.css";
 import { FlyOut } from "./FlyOut";
@@ -197,17 +299,27 @@ The compound pattern is great when you’re building a component library. You’
 
 We can also implement the Compound Component pattern by mapping over the children of the component. We can add the `open` and `toggle` properties to these elements, by [cloning](https://reactjs.org/docs/react-api.html#cloneelement) them with the additional props.
 
-```
+```javascript
 export function FlyOut(props) {
+
   const [open, toggle] = React.useState(false);
 
+
+
   return (
+
     <div>
+
       {React.Children.map(props.children, (child) =>
+
         React.cloneElement(child, { open, toggle })
+
       )}
+
     </div>
+
   );
+
 }
 ```
 
@@ -275,19 +387,31 @@ When importing a compound component, we don’t have to explicitly import the ch
 
 > **Note (React 18+):** The compound component pattern using React’s Context API remains a **recommended pattern** for related components that share state. The implementation using Hooks (`useState`, `useContext`) is modern and aligns with current best practices. When using context, avoid unnecessary re-renders by not re-creating context values each render. In complex scenarios, you might optimize by memoizing the context value or splitting context (e.g., a context for the `open` boolean and another for the `toggle` function). The pattern is fully compatible with React’s upcoming features like Server Components—just ensure the context provider and consumers are all either server or client components as needed.
 
-```
+```javascript
 import { FlyOut } from "./FlyOut";
 
+
+
 export default function FlyoutMenu() {
+
   return (
+
     <FlyOut>
+
       <FlyOut.Toggle />
+
       <FlyOut.List>
+
         <FlyOut.Item>Edit</FlyOut.Item>
+
         <FlyOut.Item>Delete</FlyOut.Item>
+
       </FlyOut.List>
+
     </FlyOut>
+
   );
+
 }
 ```
 
@@ -295,20 +419,33 @@ export default function FlyoutMenu() {
 
 When using the `React.Children.map` to provide the values, the component nesting is limited. Only *direct children* of the parent component will have access to the `open` and `toggle` props, meaning we can’t wrap any of these components in another component.
 
-```
+```javascript
 export default function FlyoutMenu() {
+
   return (
+
     <FlyOut>
+
       {/* This breaks */}
+
       <div>
+
         <FlyOut.Toggle />
+
         <FlyOut.List>
+
           <FlyOut.Item>Edit</FlyOut.Item>
+
           <FlyOut.Item>Delete</FlyOut.Item>
+
         </FlyOut.List>
+
       </div>
+
     </FlyOut>
+
   );
+
 }
 ```
 

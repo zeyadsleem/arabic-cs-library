@@ -3,7 +3,6 @@ title: نمط خصائص العرض (render props)
 lang: ar
 source: https://www.patterns.dev/react/render-props-pattern/
 ---
-
 ## مشهد يحفّز الحاجة إلى هذا النمط
 
 أنت تبني `GeolocationProvider` لتطبيق الخرائط. يحتاج المزوّد إلى أن يطلب الإذن من المتصفح، ويشترك في تحديثات الموقع، ويتعامل مع الأخطاء عندما يكون المستخدم غير متصل، وينظّف المراقب عندما يفكّ المستهلك تركيب المكوّن. *المنطق* متطابق في كل مكان يظهر فيه داخل التطبيق، لكن واجهة المستخدم المحيطة به تختلف في كل شاشة: لافتة في صفحة، وعلامة خريطة في أخرى، ولوحة تشخيص مخفية أثناء التطوير.
@@ -12,24 +11,33 @@ source: https://www.patterns.dev/react/render-props-pattern/
 
 **نمط خصائص العرض (render props)** إحدى الإجابات. لا يقرّر المكوّن الذي يغلّف السلوك كيفية عرض النتيجة. بل يقبل دالة كخاصية، ويستدعي تلك الدالة بالبيانات المتوفرة لديه، ويعرض ما تعيده الدالة بصيغة JSX.
 
-```
+```javascript
 type RenderProp<T> = (value: T) => React.ReactNode;
 
 function Geolocation({ render }: { render: RenderProp<GeoState> }) {
-  const state = useGeolocation(); // does the actual work
-  return <>{render(state)}</>;
+
+const state = useGeolocation(); // does the actual work
+
+return <>{render(state)}</>;
+
 }
 ```
 
 يوصل المستهلك هذا المكوّن عند موضع الاستدعاء، ويقرّر شكل واجهة المستخدم في *هذه* الصفحة:
 
-```
+```javascript
 <Geolocation
-  render={({ coords, error, status }) => {
-    if (status === "pending") return <Spinner />;
-    if (error) return <PermissionPrompt error={error} />;
-    return <MapMarker lat={coords.latitude} lng={coords.longitude} />;
-  }}
+
+render={({ coords, error, status }) => {
+
+if (status === "pending") return <Spinner />;
+
+if (error) return <PermissionPrompt error={error} />;
+
+return <MapMarker lat={coords.latitude} lng={coords.longitude} />;
+
+}}
+
 />
 ```
 
@@ -39,83 +47,139 @@ function Geolocation({ render }: { render: RenderProp<GeoState> }) {
 
 تخيّل مكوّنًا `` يملك القواعد وحالة (state) الحقول، لكنه يترك للصفحة المستدعية أن تقرّر شكل حقول الإدخال ورسائل الخطأ.
 
-```
+```javascript
 import { useState } from "react";
 
 type Errors<T> = Partial<Record<keyof T, string>>;
 
 type FormApi<T> = {
-  values: T;
-  errors: Errors<T>;
-  isValid: boolean;
-  setField: <K extends keyof T>(key: K, value: T[K]) => void;
-  submit: () => void;
+
+values: T;
+
+errors: Errors<T>;
+
+isValid: boolean;
+
+setField: <K extends keyof T>(key: K, value: T[K]) => void;
+
+submit: () => void;
+
 };
 
 type Props<T> = {
-  initialValues: T;
-  validate: (values: T) => Errors<T>;
-  onSubmit: (values: T) => void;
-  children: (api: FormApi<T>) => React.ReactNode;
+
+initialValues: T;
+
+validate: (values: T) => Errors<T>;
+
+onSubmit: (values: T) => void;
+
+children: (api: FormApi<T>) => React.ReactNode;
+
 };
 
 export function FormValidator<T extends Record<string, unknown>>({
-  initialValues,
-  validate,
-  onSubmit,
-  children,
+
+initialValues,
+
+validate,
+
+onSubmit,
+
+children,
+
 }: Props<T>) {
-  const [values, setValues] = useState<T>(initialValues);
-  const errors = validate(values);
-  const isValid = Object.keys(errors).length === 0;
 
-  const setField = <K extends keyof T>(key: K, value: T[K]) =>
-    setValues((prev) => ({ ...prev, [key]: value }));
+const [values, setValues] = useState<T>(initialValues);
 
-  const submit = () => {
-    if (isValid) onSubmit(values);
-  };
+const errors = validate(values);
 
-  return <>{children({ values, errors, isValid, setField, submit })}</>;
+const isValid = Object.keys(errors).length === 0;
+
+const setField = <K extends keyof T>(key: K, value: T[K]) =>
+
+setValues((prev) => ({ ...prev, [key]: value }));
+
+const submit = () => {
+
+if (isValid) onSubmit(values);
+
+};
+
+return <>{children({ values, errors, isValid, setField, submit })}</>;
+
 }
 ```
 
 المستهلك حر في عرض النموذج كيفما يشاء، سواء باستخدام نظام تصميم أو تخطيط مخصص أو غلاف معروض على الخادم أو أي شيء آخر:
 
-```
+```javascript
 <FormValidator
-  initialValues={{ email: "", password: "" }}
-  validate={(v) => ({
-    email: v.email.includes("@") ? undefined : "Not an email",
-    password: v.password.length >= 8 ? undefined : "Too short",
-  })}
-  onSubmit={(v) => signIn(v)}
+
+initialValues={{ email: "", password: "" }}
+
+validate={(v) => ({
+
+email: v.email.includes("@") ? undefined : "Not an email",
+
+password: v.password.length >= 8 ? undefined : "Too short",
+
+})}
+
+onSubmit={(v) => signIn(v)}
+
 >
-  {({ values, errors, isValid, setField, submit }) => (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        submit();
-      }}
-    >
-      <TextField
-        label="Email"
-        value={values.email}
-        error={errors.email}
-        onChange={(v) => setField("email", v)}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        value={values.password}
-        error={errors.password}
-        onChange={(v) => setField("password", v)}
-      />
-      <PrimaryButton type="submit" disabled={!isValid}>
-        Sign in
-      </PrimaryButton>
-    </form>
-  )}
+
+{({ values, errors, isValid, setField, submit }) => (
+
+<form
+
+onSubmit={(e) => {
+
+e.preventDefault();
+
+submit();
+
+}}
+
+>
+
+<TextField
+
+label="Email"
+
+value={values.email}
+
+error={errors.email}
+
+onChange={(v) => setField("email", v)}
+
+/>
+
+<TextField
+
+label="Password"
+
+type="password"
+
+value={values.password}
+
+error={errors.password}
+
+onChange={(v) => setField("password", v)}
+
+/>
+
+<PrimaryButton type="submit" disabled={!isValid}>
+
+Sign in
+
+</PrimaryButton>
+
+</form>
+
+)}
+
 </FormValidator>
 ```
 
@@ -127,13 +191,17 @@ export function FormValidator<T extends Record<string, unknown>>({
 
 سترى الصيغتين في الاستخدامات العملية:
 
-```
+```javascript
 // Explicit render prop
+
 <Subscribe topic="orders" render={(orders) => <OrderList orders={orders} />} />
 
 // children-as-function
+
 <Subscribe topic="orders">
-  {(orders) => <OrderList orders={orders} />}
+
+{(orders) => <OrderList orders={orders} />}
+
 </Subscribe>
 ```
 
@@ -143,22 +211,35 @@ export function FormValidator<T extends Record<string, unknown>>({
 
 يمكن أن يقبل المكوّن عدة خصائص عرض، تكون كل واحدة مسؤولة عن موضع مختلف. هذا في جوهره واجهة «مواضع» (slots) مكتوبة الأنواع:
 
-```
+```javascript
 type ListProps<T> = {
-  items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
-  renderEmpty?: () => React.ReactNode;
-  renderHeader?: () => React.ReactNode;
+
+items: T[];
+
+renderItem: (item: T, index: number) => React.ReactNode;
+
+renderEmpty?: () => React.ReactNode;
+
+renderHeader?: () => React.ReactNode;
+
 };
 
 function List<T>({ items, renderItem, renderEmpty, renderHeader }: ListProps<T>) {
-  if (items.length === 0) return <>{renderEmpty?.()}</>;
-  return (
-    <section>
-      {renderHeader?.()}
-      <ul>{items.map((it, i) => <li key={i}>{renderItem(it, i)}</li>)}</ul>
-    </section>
-  );
+
+if (items.length === 0) return <>{renderEmpty?.()}</>;
+
+return (
+
+<section>
+
+{renderHeader?.()}
+
+<ul>{items.map((it, i) => <li key={i}>{renderItem(it, i)}</li>)}</ul>
+
+</section>
+
+);
+
 }
 ```
 
@@ -186,35 +267,57 @@ function List<T>({ items, renderItem, renderEmpty, renderHeader }: ListProps<T>)
 
 إليك مشكلة `Geolocation` نفسها في أعلى هذه المقالة، لكن هذه المرة في صورة خطاف مخصص:
 
-```
+```javascript
 function useGeolocation() {
-  const [state, setState] = useState<GeoState>({ status: "pending" });
 
-  useEffect(() => {
-    if (!("geolocation" in navigator)) {
-      setState({ status: "error", error: new Error("Unsupported") });
-      return;
-    }
-    const id = navigator.geolocation.watchPosition(
-      (pos) =>
-        setState({
-          status: "ok",
-          coords: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
-        }),
-      (err) => setState({ status: "error", error: err }),
-    );
-    return () => navigator.geolocation.clearWatch(id);
-  }, []);
+const [state, setState] = useState<GeoState>({ status: "pending" });
 
-  return state;
+useEffect(() => {
+
+if (!("geolocation" in navigator)) {
+
+setState({ status: "error", error: new Error("Unsupported") });
+
+return;
+
+}
+
+const id = navigator.geolocation.watchPosition(
+
+(pos) =>
+
+setState({
+
+status: "ok",
+
+coords: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
+
+}),
+
+(err) => setState({ status: "error", error: err }),
+
+);
+
+return () => navigator.geolocation.clearWatch(id);
+
+}, []);
+
+return state;
+
 }
 
 // At the call site:
+
 function NearbyStores() {
-  const geo = useGeolocation();
-  if (geo.status === "pending") return <Spinner />;
-  if (geo.status === "error") return <PermissionPrompt error={geo.error} />;
-  return <StoreMap lat={geo.coords.latitude} lng={geo.coords.longitude} />;
+
+const geo = useGeolocation();
+
+if (geo.status === "pending") return <Spinner />;
+
+if (geo.status === "error") return <PermissionPrompt error={geo.error} />;
+
+return <StoreMap lat={geo.coords.latitude} lng={geo.coords.longitude} />;
+
 }
 ```
 

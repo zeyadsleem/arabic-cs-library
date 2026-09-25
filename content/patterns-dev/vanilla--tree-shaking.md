@@ -3,10 +3,7 @@ title: إزالة الشيفرة الميتة (Tree Shaking)
 lang: ar
 source: https://www.patterns.dev/vanilla/tree-shaking/
 ---
-
 يمكن أن نضيف شيفرة إلى حزمتنا لا تُستخدم في أي مكان في تطبيقنا. يمكن إزالة هذه الشيفرة الميتة لتقليل حجم الحزمة ومنع تحميل بيانات إضافية دون حاجة. وتُسمى عملية إزالة الشيفرة الميتة قبل إضافتها إلى حزمتنا بـ **إزالة الشيفرة الميتة (tree shaking)**.
-
-
 
 على الرغم من أن إزالة الشيفرة الميتة تعمل مع الوحدات البسيطة مثل وحدة `math`، هناك بعض الحالات التي قد تكون فيها صعبة.
 
@@ -24,23 +21,33 @@ source: https://www.patterns.dev/vanilla/tree-shaking/
 
 تبدأ إزالة الشيفرة الميتة بزيارة جميع أجزاء ملف نقطة الدخول التي لها آثار جانبية، ثم تعبر حواف الرسم البياني حتى يتم الوصول إلى أقسام جديدة. بمجرد اكتمال الاجتياز، لا تتضمن حزمة JavaScript إلا الأجزاء التي تم الوصول إليها أثناء الاجتياز. وتُترك بقية الأجزاء خارجها. لنقل إننا نعرّف ملف `utilities.js` التالي:
 
-```
+```javascript
 export function read(props) {⁣⁣
-    return props.book⁣⁣
+
+return props.book⁣⁣
+
 }⁣⁣
+
 ⁣⁣
+
 export function nap(props) {⁣⁣
-   return props.winks⁣⁣
+
+return props.winks⁣⁣
+
 }⁣⁣
 ```
 
 ثم لدينا ملف index.js التالي:
 
-```
+```javascript
 import { read } from 'utilities';⁣⁣
+
 ⁣⁣
+
 eventHandler = (e) => {⁣⁣
-  read({ book: e.target.value })⁣⁣
+
+read({ book: e.target.value })⁣⁣
+
 }⁣⁣
 ```
 

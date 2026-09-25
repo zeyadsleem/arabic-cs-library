@@ -34,36 +34,61 @@ The whole RSC system is governed by two file-level directives:
 
 A file with neither directive, in a server-component-aware framework, is a Server Component by default. It can be `async`, can `await` data fetches, can read from the database directly, can use server-only secrets, and cannot use hooks or event handlers.
 
-```
+```javascript
 // app/posts/page.tsx  -- Server Component (no directive)
+
 import LikeButton from "./LikeButton";\n
+
 export default async function Posts() {
+
   const posts = await db.posts.findMany({ orderBy: { createdAt: "desc" } });\n
+
   return (
+
     <ul>
+
       {posts.map((post) => (
+
         <li key={post.id}>
+
           <h2>{post.title}</h2>
+
           <p>{post.excerpt}</p>
+
           <LikeButton postId={post.id} initialCount={post.likes} />
+
         </li>
+
       ))}
+
     </ul>
+
   );
+
 }
 ```
 
-```
+```javascript
 // app/posts/LikeButton.tsx
+
 "use client";
+
 import { useState } from "react";\n
+
 export default function LikeButton({ postId, initialCount }) {
+
   const [count, setCount] = useState(initialCount);
+
   return (
+
     <button onClick={() => setCount((c) => c + 1)}>
+
       Likes: {count}
+
     </button>
+
   );
+
 }
 ```
 
@@ -88,34 +113,57 @@ And things they can’t do:
 
 Server Components are read-heavy by nature. For writes — submitting a form, deleting a row, toggling a setting — React 19 stabilized **Server Actions**: server functions you import directly into client components and call like any other async function.
 
-```
+```javascript
 // app/posts/actions.ts
+
 "use server";
+
 import { revalidateTag } from "next/cache";
+
 import { auth } from "@/lib/auth";\n
+
 export async function likePost(postId: string) {
+
   const user = await auth();
+
   if (!user) throw new Error("Not authenticated");\n
+
   await db.likes.create({ data: { postId, userId: user.id } });
+
   revalidateTag(\`post:\${postId}\`);
+
 }
 ```
 
-```
+```javascript
 // app/posts/LikeButton.tsx
+
 "use client";
+
 import { useTransition } from "react";
+
 import { likePost } from "./actions";\n
+
 export default function LikeButton({ postId }) {
+
   const [isPending, startTransition] = useTransition();\n
+
   return (
+
     <button
+
       disabled={isPending}
+
       onClick={() => startTransition(() => likePost(postId))}
+
     >
+
       {isPending ? "Liking..." : "Like"}
+
     </button>
+
   );
+
 }
 ```
 
@@ -127,23 +175,39 @@ A few things happen here that are worth naming:
 
 Server Actions also work as a form’s `action` attribute, in which case they degrade gracefully — the form submits even before JavaScript loads.
 
-```
+```javascript
 // app/comments/CommentForm.tsx
+
 "use client";
+
 import { useActionState } from "react";
+
 import { postComment } from "./actions";\n
+
 export function CommentForm({ postId }) {
+
   const [state, formAction, isPending] = useActionState(postComment, null);\n
+
   return (
+
     <form action={formAction}>
+
       <input type="hidden" name="postId" value={postId} />
+
       <textarea name="body" required />
+
       <button disabled={isPending}>
+
         {isPending ? "Posting..." : "Post comment"}
+
       </button>
+
       {state?.error && <p>{state.error}</p>}
+
     </form>
+
   );
+
 }
 ```
 
@@ -159,43 +223,75 @@ The rules for mixing server and client components are simple but have a couple o
 
 Pattern #2 is the most common stumble. The fix is the “wrap, don’t import” rule:
 
-```
+```javascript
 // Bad: ClientLayout imports a Server Component
+
 "use client";
+
 import ServerSidebar from "./ServerSidebar"; // ERROR\n
+
 export default function ClientLayout({ children }) {
+
   return (
+
     <div>
+
       <ServerSidebar />
+
       {children}
+
     </div>
+
   );
+
 }
 ```
 
-```
+```python
 // Good: ClientLayout takes the Server Component as a child
+
 "use client";
+
 export default function ClientLayout({ sidebar, children }) {
+
   return (
+
     <div>
+
       {sidebar}
+
       {children}
+
     </div>
+
   );
+
 }\n
+
 // And the parent (a Server Component) composes them:
+
 // app/layout.tsx
+
 import ClientLayout from "./ClientLayout";
+
 import ServerSidebar from "./ServerSidebar";\n
+
 export default function RootLayout({ children }) {
+
   return (
+
     <html>
+
       <body>
+
         <ClientLayout sidebar={<ServerSidebar />}>{children}</ClientLayout>
+
       </body>
+
     </html>
+
   );
+
 }
 ```
 

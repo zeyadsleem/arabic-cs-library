@@ -3,33 +3,45 @@ title: نمط المصنع (factory)
 lang: ar
 source: https://www.patterns.dev/vanilla/factory-pattern/
 ---
-
 المصنع (factory) دالة تتمثل مهمتها في *إعادة كائن* — ربما بأشكال كائن مختلفة وفق ما تمرره — من دون أن يضطر المستدع إلى التعامل مع `new` أو تسلسلات الأصناف أو معرفة النوع الملموس الذي يستلمه.
 
 في JavaScript الحديثة، لا تحتاج تقريبًا إلى صنف لفعل ذلك. تكفي دالة تلتقط بعض الإعدادات وتعيد كائنًا حرفيًا. لم تعد الأسئلة المهمة «كيف أنفذ مصنعًا»، بل «متى يتفوق المصنع على صنف، ومتى يتفوق على اتحاد مميز أو حاوية حقن تبعيات؟»
 
 ## دالة مصنع بسيطة
 
-```
+```javascript
 const createLogger = ({ level = "info", prefix = "" } = {}) => {
-  const ranks = { debug: 0, info: 1, warn: 2, error: 3 };
-  const threshold = ranks[level];
 
-  const log = (lvl, msg, ...rest) => {
-    if (ranks[lvl] < threshold) return;
-    console[lvl](`${prefix}${msg}`, ...rest);
-  };
+const ranks = { debug: 0, info: 1, warn: 2, error: 3 };
 
-  return {
-    debug: (m, ...r) => log("debug", m, ...r),
-    info:  (m, ...r) => log("info", m, ...r),
-    warn:  (m, ...r) => log("warn", m, ...r),
-    error: (m, ...r) => log("error", m, ...r),
-  };
+const threshold = ranks[level];
+
+const log = (lvl, msg, ...rest) => {
+
+if (ranks[lvl] < threshold) return;
+
+console[lvl](`${prefix}${msg}`, ...rest);
+
+};
+
+return {
+
+debug: (m, ...r) => log("debug", m, ...r),
+
+info:  (m, ...r) => log("info", m, ...r),
+
+warn:  (m, ...r) => log("warn", m, ...r),
+
+error: (m, ...r) => log("error", m, ...r),
+
+};
+
 };
 
 const log = createLogger({ level: "warn", prefix: "[api] " });
+
 log.info("ignored");          // silenced by threshold
+
 log.warn("rate limit hit");   // [api] rate limit hit
 ```
 
@@ -42,34 +54,55 @@ log.warn("rate limit hit");   // [api] rate limit hit
 
 الإعدادات التي تختلف حسب البيئة أو المستأجر أو الخدمة هي الحالة النموذجية للمصنع:
 
-```
+```javascript
 const createApiClient = ({ baseUrl, auth, fetch = globalThis.fetch }) => {
-  const headers = () => ({
-    "Content-Type": "application/json",
-    ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
-  });
 
-  const request = async (method, path, body) => {
-    const res = await fetch(`${baseUrl}${path}`, {
-      method,
-      headers: headers(),
-      body: body && JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    return res.status === 204 ? null : res.json();
-  };
+const headers = () => ({
 
-  return {
-    get:  (p)     => request("GET", p),
-    post: (p, b)  => request("POST", p, b),
-    put:  (p, b)  => request("PUT", p, b),
-    del:  (p)     => request("DELETE", p),
-  };
+"Content-Type": "application/json",
+
+...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
+
+});
+
+const request = async (method, path, body) => {
+
+const res = await fetch(`${baseUrl}${path}`, {
+
+method,
+
+headers: headers(),
+
+body: body && JSON.stringify(body),
+
+});
+
+if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+
+return res.status === 204 ? null : res.json();
+
+};
+
+return {
+
+get:  (p)     => request("GET", p),
+
+post: (p, b)  => request("POST", p, b),
+
+put:  (p, b)  => request("PUT", p, b),
+
+del:  (p)     => request("DELETE", p),
+
+};
+
 };
 
 const api = createApiClient({
-  baseUrl: "https://api.example.com",
-  auth: { token: process.env.API_TOKEN },
+
+baseUrl: "https://api.example.com",
+
+auth: { token: process.env.API_TOKEN },
+
 });
 ```
 
@@ -79,18 +112,27 @@ const api = createApiClient({
 
 إذا كانت مهمة المصنع هي «اختيار التنفيذ المناسب بناءً على وسم نصي»، فلا تستسلم لرغبة كتابة `switch`. فجدول البحث أقصر وأسهل في التوسعة، وأصعب في نسيان تحديثه:
 
-```
+```javascript
 const fieldFactories = {
-  text:     (props) => ({ type: "text",     ...props, validate: nonEmpty }),
-  email:    (props) => ({ type: "email",    ...props, validate: isEmail }),
-  number:   (props) => ({ type: "number",   ...props, validate: isFinite }),
-  checkbox: (props) => ({ type: "checkbox", ...props, validate: () => true }),
+
+text:     (props) => ({ type: "text",     ...props, validate: nonEmpty }),
+
+email:    (props) => ({ type: "email",    ...props, validate: isEmail }),
+
+number:   (props) => ({ type: "number",   ...props, validate: isFinite }),
+
+checkbox: (props) => ({ type: "checkbox", ...props, validate: () => true }),
+
 };
 
 const createField = ({ type, ...rest }) => {
-  const make = fieldFactories[type];
-  if (!make) throw new Error(`Unknown field type: ${type}`);
-  return make(rest);
+
+const make = fieldFactories[type];
+
+if (!make) throw new Error(`Unknown field type: ${type}`);
+
+return make(rest);
+
 };
 ```
 
@@ -114,25 +156,37 @@ const createField = ({ type, ...rest }) => {
 
 أكبر مكسب للمصنع في TypeScript هو **الاتحاد المميز (discriminated union)** مع **أنواع إرجاع شرطية**. يحصل المستدعي على نوع دقيق وفق الوسم الذي مرره:
 
-```
+```javascript
 type FieldSpec =
-  | { type: "text"; placeholder?: string }
-  | { type: "number"; min?: number; max?: number }
-  | { type: "checkbox"; defaultChecked?: boolean };
+
+| { type: "text"; placeholder?: string }
+
+| { type: "number"; min?: number; max?: number }
+
+| { type: "checkbox"; defaultChecked?: boolean };
 
 type Field<T extends FieldSpec["type"]> = Extract<FieldSpec, { type: T }> & {
-  id: string;
-  validate(value: unknown): boolean;
+
+id: string;
+
+validate(value: unknown): boolean;
+
 };
 
 function createField<T extends FieldSpec["type"]>(
-  spec: Extract<FieldSpec, { type: T }>
+
+spec: Extract<FieldSpec, { type: T }>
+
 ): Field<T> {
-  // implementation
-  return { id: crypto.randomUUID(), validate: () => true, ...spec } as Field<T>;
+
+// implementation
+
+return { id: crypto.randomUUID(), validate: () => true, ...spec } as Field<T>;
+
 }
 
 const a = createField({ type: "number", min: 0 }); // typed with `min`/`max`
+
 const b = createField({ type: "text" });           // typed with `placeholder`
 ```
 
@@ -142,15 +196,21 @@ const b = createField({ type: "text" });           // typed with `placeholder`
 
 للكائنات ذات الدالة الواحدة، تكون الدالة المجففة *هي* المصنع:
 
-```
+```javascript
 const withRetries = (n) => async (fn) => {
-  for (let i = 0; i < n; i++) {
-    try { return await fn(); }
-    catch (e) { if (i === n - 1) throw e; }
-  }
+
+for (let i = 0; i < n; i++) {
+
+try { return await fn(); }
+
+catch (e) { if (i === n - 1) throw e; }
+
+}
+
 };
 
 const retry3 = withRetries(3);
+
 await retry3(() => fetch("/flaky"));
 ```
 

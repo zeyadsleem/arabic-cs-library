@@ -10,26 +10,45 @@ In modern JavaScript you almost never need a class to do this. A function that c
 
 ## A minimal factory function
 
-```
+```javascript
 const createLogger = ({ level = "info", prefix = "" } = {}) => {
+
   const ranks = { debug: 0, info: 1, warn: 2, error: 3 };
+
   const threshold = ranks[level];
 
+
+
   const log = (lvl, msg, ...rest) => {
+
     if (ranks[lvl] < threshold) return;
+
     console[lvl](`${prefix}${msg}`, ...rest);
+
   };
+
+
 
   return {
+
     debug: (m, ...r) => log("debug", m, ...r),
+
     info:  (m, ...r) => log("info", m, ...r),
+
     warn:  (m, ...r) => log("warn", m, ...r),
+
     error: (m, ...r) => log("error", m, ...r),
+
   };
+
 };
 
+
+
 const log = createLogger({ level: "warn", prefix: "[api] " });
+
 log.info("ignored");          // silenced by threshold
+
 log.warn("rate limit hit");   // [api] rate limit hit
 ```
 
@@ -42,34 +61,61 @@ Two things make this work as a factory rather than just “a function that retur
 
 Configuration that varies per environment, per tenant, or per service is the prototypical factory case:
 
-```
+```javascript
 const createApiClient = ({ baseUrl, auth, fetch = globalThis.fetch }) => {
+
   const headers = () => ({
+
     "Content-Type": "application/json",
+
     ...(auth?.token && { Authorization: `Bearer ${auth.token}` }),
+
   });
 
+
+
   const request = async (method, path, body) => {
+
     const res = await fetch(`${baseUrl}${path}`, {
+
       method,
+
       headers: headers(),
+
       body: body && JSON.stringify(body),
+
     });
+
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+
     return res.status === 204 ? null : res.json();
+
   };
+
+
 
   return {
+
     get:  (p)     => request("GET", p),
+
     post: (p, b)  => request("POST", p, b),
+
     put:  (p, b)  => request("PUT", p, b),
+
     del:  (p)     => request("DELETE", p),
+
   };
+
 };
 
+
+
 const api = createApiClient({
+
   baseUrl: "https://api.example.com",
+
   auth: { token: process.env.API_TOKEN },
+
 });
 ```
 
@@ -79,18 +125,29 @@ Note what *isn’t* here: no `this`, no `new`, no inheritance, no `bind` calls. 
 
 When the factory’s job is “pick the right implementation based on a string tag,” resist the urge to write a `switch`. A lookup table is shorter, easier to extend, and harder to forget to update:
 
-```
+```javascript
 const fieldFactories = {
+
   text:     (props) => ({ type: "text",     ...props, validate: nonEmpty }),
+
   email:    (props) => ({ type: "email",    ...props, validate: isEmail }),
+
   number:   (props) => ({ type: "number",   ...props, validate: isFinite }),
+
   checkbox: (props) => ({ type: "checkbox", ...props, validate: () => true }),
+
 };
 
+
+
 const createField = ({ type, ...rest }) => {
+
   const make = fieldFactories[type];
+
   if (!make) throw new Error(`Unknown field type: ${type}`);
+
   return make(rest);
+
 };
 ```
 
@@ -114,25 +171,43 @@ A useful heuristic: if you’d reach for `new SomeClass()` from more than a coup
 
 The factory’s biggest payoff in TypeScript is **discriminated unions** plus **conditional return types**. The caller gets a precise type back based on the tag they passed:
 
-```
+```javascript
 type FieldSpec =
+
   | { type: "text"; placeholder?: string }
+
   | { type: "number"; min?: number; max?: number }
+
   | { type: "checkbox"; defaultChecked?: boolean };
 
+
+
 type Field<T extends FieldSpec["type"]> = Extract<FieldSpec, { type: T }> & {
+
   id: string;
+
   validate(value: unknown): boolean;
+
 };
 
+
+
 function createField<T extends FieldSpec["type"]>(
+
   spec: Extract<FieldSpec, { type: T }>
+
 ): Field<T> {
+
   // implementation
+
   return { id: crypto.randomUUID(), validate: () => true, ...spec } as Field<T>;
+
 }
 
+
+
 const a = createField({ type: "number", min: 0 }); // typed with `min`/`max`
+
 const b = createField({ type: "text" });           // typed with `placeholder`
 ```
 
@@ -142,15 +217,23 @@ The compiler narrows the return shape based on the input discriminator. This is 
 
 For one-method “objects,” a curried function *is* the factory:
 
-```
+```javascript
 const withRetries = (n) => async (fn) => {
+
   for (let i = 0; i < n; i++) {
+
     try { return await fn(); }
+
     catch (e) { if (i === n - 1) throw e; }
+
   }
+
 };
 
+
+
 const retry3 = withRetries(3);
+
 await retry3(() => fetch("/flaky"));
 ```
 

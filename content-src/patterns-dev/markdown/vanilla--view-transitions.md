@@ -16,16 +16,25 @@ The JavaScript API centers around `document.startViewTransition(callback)`, wher
 
 Let’s take toggling a `` element as a simple example:
 
-```
+```javascript
 if (document.startViewTransition) {
+
   // (check for browser support)
+
   document.addEventListener("click", function (event) {
+
     if (event.target.matches("summary")) {
+
       event.preventDefault(); // (we'll toggle the element ourselves)
+
       const details = event.target.closest("details");
+
       document.startViewTransition(() => details.toggleAttribute("open"));
+
     }
+
   });
+
 }
 ```
 
@@ -35,10 +44,13 @@ if (document.startViewTransition) {
 
 These old and new versions are presented as pseudo elements and can be referenced in CSS with `::view-transition-old(root)` and `::view-transition-new(root)` respectively. For example, to emphasize the transition, we can lengthen the `animation-duration` like so:
 
-```
+```javascript
 ::view-transition-old(root),
+
 ::view-transition-new(root) {
+
   animation-duration: 2s;
+
 }
 ```
 
@@ -56,32 +68,51 @@ The photo details beneath require a little more styling. If you notice, there’
 
 We give each line element has it’s own `view-transition-name`:
 
-```
+```javascript
 figcaption h2 {
+
   contain: layout;
+
   view-transition-name: photo-heading;
+
 }
+
 figcaption div {
+
   contain: layout;
+
   view-transition-name: photo-location-time;
+
 }
+
 figcaption dl {
+
   contain: layout;
+
   view-transition-name: photo-meta;
+
 }
 ```
 
 This generates *transition groups* for each area, which are just like the new/old screenshots mentioned earlier, but only cover an area of the page rather than the whole document. And just as the whole document transition elements could be targeted with `::view-transition-old(root)` and `::view-transition-new(root)`, these transition groups can be targeted with `::view-transition-old(NAME)` and `::view-transition-new(NAME)`. Note that the details text is not present on the photo grid page, therefore when transitioning from the grid to the photo page, there’ll only by a `::view-transition-new(NAME)`, *not* a `::view-transition-old(NAME)`, and vice versa when navigating the other way. So we can target these cases using the `:only-child` pseudo class and customize the animation. For the `photo-heading` group:
 
-```
+```javascript
 /* Enter */
+
 ::view-transition-new(photo-heading):only-child {
+
   animation: 300ms ease 50ms both fade-in, 300ms ease 50ms both slide-up;
+
 }
 
+
+
 /* Exit */
+
 ::view-transition-old(photo-heading):only-child {
+
   animation: 200ms ease 150ms both fade-out, 200ms ease 150ms both slide-down;
+
 }
 ```
 
@@ -113,38 +144,69 @@ To tackle the issues above, we’ll create a React class component as it’s eas
 
 Here’s how it looks:
 
-```
+```javascript
 import { Component } from "react";
 
+
+
 export default class ViewTransition extends Component {
+
   shouldComponentUpdate() {
+
     if (!document.startViewTransition) return true; // skip when not supported
 
+
+
     document.startViewTransition(() => this.#updateDOM());
+
     return false; // don't update the component, we'll do this manually
+
   }
+
+
 
   #updateDOM() {
+
     // now we know the screenshot has been taken, we can force render
+
     // (which skips `shouldComponentUpdate`)
+
     this.forceUpdate();
+
     // set up a promise that will resolve when the component renders
+
     return new Promise((resolve) => {
+
       this.#rendered = resolve;
+
     });
+
   }
 
+
+
   render() {
+
     return this.props.children;
+
   }
+
+
 
   #rendered = () => {};
 
+
+
   componentDidUpdate() {
+
     // resolve the `updateDOM` promise to notify the View Transition API
+
     // that the DOM has been updated
+
     this.#rendered();
+
   }
+
 }
 ```
 
@@ -152,31 +214,49 @@ export default class ViewTransition extends Component {
 
 To use this in a Next.js app, first we’ll disable React strict mode in development. Strict mode runs its checks by rendering the component twice. This interferes with the `ViewTransition` rendering flow in development so we’ll disable it globally and re-enable it for child components with the `StrictMode` component.
 
-```
+```javascript
 // next.config.js
+
 const nextConfig = {
+
   reactStrictMode: false,
+
 };
+
+
 
 module.exports = nextConfig;
 ```
 
 Next, in `pages/_app.js`, we’ll wrap `Component` in our `ViewTransition` and `StrictMode` component, and we should begin to see animated transitions:
 
-```
+```javascript
 // pages/_app.js
+
 import "@/styles/globals.css";
+
 import { StrictMode } from "react";
+
 import ViewTransition from "@/components/ViewTransition";
 
+
+
 export default function App({ Component, pageProps }) {
+
   return (
+
     <ViewTransition>
+
       <StrictMode>
+
         <Component {...pageProps} />
+
       </StrictMode>
+
     </ViewTransition>
+
   );
+
 }
 ```
 
@@ -209,35 +289,63 @@ To implement this, we’ll need to hook into routing events, which will depend o
 
 To get it working, add `data-turn-exit` and `data-turn-enter` attributes to the elements you wish to animate, then apply your CSS styles. For example, for a fade-in/fade-out:
 
-```
+```javascript
 html.turn-exit [data-turn-exit] {
+
   animation-name: fade-out;
+
   animation-duration: 0.3s;
+
   animation-fill-mode: forwards;
+
 }
+
+
 
 html.turn-enter [data-turn-enter] {
+
   animation-name: fade-in;
+
   animation-duration: 0.6s;
+
   animation-fill-mode: forwards;
+
 }
+
+
 
 @keyframes fade-out {
+
   0% {
+
     opacity: 1;
+
   }
+
   100% {
+
     opacity: 0;
+
   }
+
 }
 
+
+
 @keyframes fade-in {
+
   0% {
+
     opacity: 0;
+
   }
+
   100% {
+
     opacity: 1;
+
   }
+
 }
 ```
 
@@ -273,3 +381,5 @@ Website
 
 
 Github
+
+

@@ -25,19 +25,29 @@ It’s a poor fit when:
 - Build times grow large enough to slow your deploy loop (more on this below).
 - You need to respect the user’s geography, cookies, or A/B-test cohort in the HTML.
 
+![](/images/patterns-dev/react-static-rendering-0-Screen_Shot_2021_04_03_at_5.52.41_PM.webp)
+
 ## Static pages in the App Router
 
 In the Next.js App Router, a server component without any dynamic data sources is statically rendered automatically. There is no `getStaticProps` to call — the component itself runs at build time.
 
-```
+```javascript
 // app/pricing/page.tsx
+
 export default function Pricing() {
+
   return (
+
     <main>
+
       <h1>Pricing</h1>
+
       <p>Three tiers, no surprises.</p>
+
     </main>
+
   );
+
 }
 ```
 
@@ -56,20 +66,33 @@ If none of those happen, the route is static.
 
 Most real sites pull content from a CMS, a database, or a filesystem. In the App Router this is a plain async server component — Next runs it at build time and caches the result.
 
-```
+```javascript
 // app/blog/page.tsx
+
 import Link from "next/link";\n
+
 export default async function BlogIndex() {
+
   const posts = await getAllPosts();
+
   return (
+
     <ul>
+
       {posts.map((post) => (
+
         <li key={post.slug}>
+
           <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+
         </li>
+
       ))}
+
     </ul>
+
   );
+
 }
 ```
 
@@ -79,25 +102,43 @@ Next.js will detect this has no request-scoped inputs and prerender `/blog` at b
 
 The App Router replacement for `getStaticPaths` is `generateStaticParams`. Export it from a dynamic-segment route file and Next renders one HTML file per returned param set.
 
-```
+```javascript
 // app/blog/[slug]/page.tsx
+
 import { notFound } from "next/navigation";\n
+
 export async function generateStaticParams() {
+
   const posts = await getAllPosts();
+
   return posts.map((post) => ({ slug: post.slug }));
+
 }\n
+
 // Reject params not returned above. Default in Next 15 is true.
+
 export const dynamicParams = false;\n
+
 export default async function Post({ params }) {
+
   const { slug } = await params; // params is async in Next 15
+
   const post = await getPost(slug);
+
   if (!post) notFound();\n
+
   return (
+
     <article>
+
       <h1>{post.title}</h1>
+
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
+
     </article>
+
   );
+
 }
 ```
 
@@ -107,23 +148,39 @@ Set `dynamicParams = true` (or omit it) to render unknown slugs on demand at req
 
 When most of the page is static but one slice is genuinely per-request — a “currently watching” count, a personalized recommendation strip, a logged-in greeting — you can keep the page static and let a client component fill in the dynamic part after hydration.
 
-```
+```javascript
 // app/products/[id]/page.tsx
+
 import RecommendationsClient from "./RecommendationsClient";\n
+
 export async function generateStaticParams() {
+
   const products = await getAllProducts();
+
   return products.map((p) => ({ id: p.id }));
+
 }\n
+
 export default async function Product({ params }) {
+
   const { id } = await params;
+
   const product = await getProduct(id);\n
+
   return (
+
     <>
+
       <ProductDetails product={product} />
+
       {/* hydrated separately, fetches at runtime */}
+
       <RecommendationsClient productId={product.id} />
+
     </>
+
   );
+
 }
 ```
 
@@ -133,28 +190,49 @@ The HTML still ships pre-rendered. The recommendations widget hydrates and runs 
 
 Partial Prerendering (PPR) is an experimental Next.js feature that blends static and dynamic into a *single* render. The static parts of the page ship as a prerendered shell. Dynamic parts — wrapped in `` — stream in from the server runtime within the same response.
 
-```
+```javascript
 // app/page.tsx
+
 import { Suspense } from "react";
+
 import { cookies } from "next/headers";\n
+
 export const experimental_ppr = true;\n
+
 async function GreetingForUser() {
+
   const cookieStore = await cookies(); // dynamic
+
   const session = cookieStore.get("session");
+
   const name = session ? await lookupName(session.value) : "there";
+
   return <p>Hello, {name}</p>;
+
 }\n
+
 export default function Home() {
+
   return (
+
     <main>
+
       <h1>Welcome to the store</h1> {/* static */}
+
       <Hero /> {/* static */}\n
+
       <Suspense fallback={<p>Hello...</p>}>
+
         <GreetingForUser /> {/* dynamic, streamed */}
+
       </Suspense>\n
+
       <FeaturedProducts /> {/* static, data fetched at build */}
+
     </main>
+
   );
+
 }
 ```
 
@@ -184,5 +262,3 @@ Static rendering has one operational cost that scales with content volume: build
 ## When static rendering isn’t enough
 
 Static rendering’s central constraint — same HTML for every visitor, only updated at build — is what makes it cheap and fast. When the constraint chafes, the next pattern, **Incremental Static Regeneration (ISR)**, relaxes the “only updated at build” half. After that, **Streaming SSR** and **React Server Components** address the “same HTML for everyone” half.
-
-![Static Rendering](/images/patterns-dev/react-static-rendering-10-Screen_Shot_2021_04_03_at_5.52.41_PM.webp)

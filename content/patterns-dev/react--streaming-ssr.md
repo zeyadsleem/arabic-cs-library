@@ -3,12 +3,9 @@ title: البث مع العرض في جانب الخادم
 lang: ar
 source: https://www.patterns.dev/react/streaming-ssr/
 ---
-
 للعرض في جانب الخادم (server-side rendering، SSR) الكلاسيكي مشكلة حجز للاستجابة (buffering). ينفذ الخادم العرض كاملًا — بما في ذلك كل عملية جلب بيانات غير متزامنة تحتاجها الصفحة — ولا يكتب استجابة HTML واحدة إلا بعدها. إذا استغرق أبطأ جلب في الصفحة 800 مللي ثانية، سينتظر المستخدم 800 مللي ثانية على الأقل قبل رسم *أي* محتوى. إذ تحتجز أسرع أجزاء الصفحة رهينة لأبطئها.
 
 يعالج SSR بالبث (streaming SSR) ذلك بالسماح لـ React بإرسال HTML إلى المتصفح فور توفّره. يُرسل الهيكل (shell)، أي الترويسة والتنقل وواجهة التخطيط وكل ما لا يعتمد على بيانات غير متزامنة، فورًا. أما الأجزاء البطيئة — المغلّفة بـ `` — فتُبث لاحقًا كقطع ضمن استجابة HTTP نفسها، ويحل كل جزء محل بديل احتياطي (fallback) كان ظاهرًا مسبقًا.
-
-
 
 يبدأ المتصفح التحليل فور وصول البايتات. ينخفض TTFB لأن الخادم لا ينتظر. وينخفض LCP عادةً لأن المحتوى الرئيسي موجود في المقطع الأول. يرى المستخدم حركة — تتحول العناصر النائبة إلى محتوى حقيقي — بدلًا من التحديق في علامة تبويب فارغة.
 
@@ -25,61 +22,109 @@ source: https://www.patterns.dev/react/streaming-ssr/
 
 إليك إعدادًا كاملًا لـ SSR بالبث في صفحة لوحة معلومات تحليلية. يُعرض الهيكل فورًا، بينما يعلّق كل من الرسم البياني وخلاصة النشاط الأخير تنفيذه على عمليات الجلب الخاصة به ويُبث كل منهما بصورة مستقلة.
 
-```
+```javascript
 // server.jsx
+
 import express from "express";
+
 import { renderToPipeableStream } from "react-dom/server";
+
 import Dashboard from "./Dashboard";\n
+
 const app = express();\n
+
 app.get("/", (req, res) => {
-  let didError = false;\n
-  const { pipe, abort } = renderToPipeableStream(<Dashboard />, {
-    bootstrapModules: ["/static/client.js"],
-    onShellReady() {
-      res.statusCode = didError ? 500 : 200;
-      res.setHeader("Content-Type", "text/html");
-      pipe(res);
-    },
-    onShellError(error) {
-      res.statusCode = 500;
-      res.setHeader("Content-Type", "text/html");
-      res.send("<h1>Dashboard unavailable</h1>");
-    },
-    onError(error) {
-      didError = true;
-      console.error(error);
-    },
-  });\n
-  // Drop the connection if a client hangs for too long.
-  setTimeout(abort, 10_000);
+
+let didError = false;\n
+
+const { pipe, abort } = renderToPipeableStream(<Dashboard />, {
+
+bootstrapModules: ["/static/client.js"],
+
+onShellReady() {
+
+res.statusCode = didError ? 500 : 200;
+
+res.setHeader("Content-Type", "text/html");
+
+pipe(res);
+
+},
+
+onShellError(error) {
+
+res.statusCode = 500;
+
+res.setHeader("Content-Type", "text/html");
+
+res.send("<h1>Dashboard unavailable</h1>");
+
+},
+
+onError(error) {
+
+didError = true;
+
+console.error(error);
+
+},
+
 });\n
+
+// Drop the connection if a client hangs for too long.
+
+setTimeout(abort, 10_000);
+
+});\n
+
 app.listen(3000);
 ```
 
 وها هي الصفحة نفسها، مع اعتمادَي بيانات يعلّقان التنفيذ:
 
-```
+```javascript
 // Dashboard.jsx
+
 import { Suspense } from "react";
+
 import ChartCard from "./ChartCard";
+
 import ActivityFeed from "./ActivityFeed";\n
+
 export default function Dashboard() {
-  return (
-    <html>
-      <body>
-        <header>
-          <h1>Analytics</h1>
-          <nav>{/* always-fast nav */}</nav>
-        </header>\n
-        <Suspense fallback={<ChartCardSkeleton />}>
-          <ChartCard /> {/* fetches a slow time series */}
-        </Suspense>\n
-        <Suspense fallback={<ActivityFeedSkeleton />}>
-          <ActivityFeed /> {/* fetches the last 50 events */}
-        </Suspense>
-      </body>
-    </html>
-  );
+
+return (
+
+<html>
+
+<body>
+
+<header>
+
+<h1>Analytics</h1>
+
+<nav>{/* always-fast nav */}</nav>
+
+</header>\n
+
+<Suspense fallback={<ChartCardSkeleton />}>
+
+<ChartCard /> {/* fetches a slow time series */}
+
+</Suspense>\n
+
+<Suspense fallback={<ActivityFeedSkeleton />}>
+
+<ActivityFeed /> {/* fetches the last 50 events */}
+
+</Suspense>
+
+</body>
+
+</html>
+
+);
+
 }
 ```
 
@@ -100,19 +145,31 @@ export default function Dashboard() {
 
 النمط الشائع هو اكتشاف `user-agent` واختيار الاستدعاء المناسب:
 
-```
+```javascript
 const isCrawler = /bot|crawler|spider|crawling/i.test(req.headers["user-agent"] || "");\n
+
 const { pipe } = renderToPipeableStream(<App />, {
-  bootstrapModules: ["/static/client.js"],
-  [isCrawler ? "onAllReady" : "onShellReady"]() {
-    res.statusCode = didError ? 500 : 200;
-    res.setHeader("Content-Type", "text/html");
-    pipe(res);
-  },
-  onError(err) {
-    didError = true;
-    console.error(err);
-  },
+
+bootstrapModules: ["/static/client.js"],
+
+[isCrawler ? "onAllReady" : "onShellReady"]() {
+
+res.statusCode = didError ? 500 : 200;
+
+res.setHeader("Content-Type", "text/html");
+
+pipe(res);
+
+},
+
+onError(err) {
+
+didError = true;
+
+console.error(err);
+
+},
+
 });
 ```
 
@@ -120,29 +177,51 @@ const { pipe } = renderToPipeableStream(<App />, {
 
 لا تملك بيئات الحافة تدفقات Node؛ بل تستخدم `Web Streams`. الشكل مشابه، لكن الواجهة قائمة على `Promise`:
 
-```
+```python
 // edge-handler.jsx
+
 import { renderToReadableStream } from "react-dom/server";
+
 import App from "./App";\n
+
 export default {
-  async fetch(request) {
-    let didError = false;\n
-    const stream = await renderToReadableStream(<App />, {
-      bootstrapModules: ["/static/client.js"],
-      onError(err) {
-        didError = true;
-        console.error(err);
-      },
-    });\n
-    // Wait for the shell before responding — analogous to onShellReady.
-    await stream.allReady; // omit this to flush as early as possible
-    // Or, for crawlers, wait for the whole tree:
-    // await stream.allReady;\n
-    return new Response(stream, {
-      status: didError ? 500 : 200,
-      headers: { "content-type": "text/html" },
-    });
-  },
+
+async fetch(request) {
+
+let didError = false;\n
+
+const stream = await renderToReadableStream(<App />, {
+
+bootstrapModules: ["/static/client.js"],
+
+onError(err) {
+
+didError = true;
+
+console.error(err);
+
+},
+
+});\n
+
+// Wait for the shell before responding — analogous to onShellReady.
+
+await stream.allReady; // omit this to flush as early as possible
+
+// Or, for crawlers, wait for the whole tree:
+
+// await stream.allReady;\n
+
+return new Response(stream, {
+
+status: didError ? 500 : 200,
+
+headers: { "content-type": "text/html" },
+
+});
+
+},
+
 };
 ```
 
@@ -157,10 +236,13 @@ export default {
 
 في جانب العميل، استخدم `hydrateRoot`:
 
-```
+```javascript
 // client.jsx
+
 import { hydrateRoot } from "react-dom/client";
+
 import App from "./App";\n
+
 hydrateRoot(document, <App />);
 ```
 
@@ -170,11 +252,15 @@ hydrateRoot(document, <App />);
 
 بعد إرسال الهيكل، لا يستطيع خطأ في مكوّن أعمق تغيير رمز حالة HTTP. الخيارات المتاحة هي فقط: (أ) استبدال المنطقة المتأثرة بديل احتياطي في التدفق، أو (ب) ترك React تفككها في العميل أثناء الترطيب. ويتطلب الخياران Error Boundary.
 
-```
+```javascript
 <ErrorBoundary fallback={<p>Could not load reviews.</p>}>
-  <Suspense fallback={<ReviewSkeleton />}>
-    <Reviews productId={id} />
-  </Suspense>
+
+<Suspense fallback={<ReviewSkeleton />}>
+
+<Reviews productId={id} />
+
+</Suspense>
+
 </ErrorBoundary>
 ```
 
@@ -186,15 +272,22 @@ hydrateRoot(document, <App />);
 
 يتولى App Router كل ذلك نيابةً عنك. يتحول أي ملف `loading.tsx` في مقطع مسار تلقائيًا إلى حد ``، وأي مكوّن خادمي غير متزامن يعلّق التنفيذ يُبث عند حل بياناته.
 
-```
+```javascript
 app/dashboard/
-  layout.tsx       <-- always renders, flushed first
-  loading.tsx      <-- Suspense fallback for the page
-  page.tsx         <-- async, can fetch data
-  @analytics/
-    loading.tsx
-    page.tsx       <-- parallel route, streams independently
-  error.tsx        <-- error boundary
+
+layout.tsx       <-- always renders, flushed first
+
+loading.tsx      <-- Suspense fallback for the page
+
+page.tsx         <-- async, can fetch data
+
+@analytics/
+
+loading.tsx
+
+page.tsx       <-- parallel route, streams independently
+
+error.tsx        <-- error boundary
 ```
 
 لا تكتب `renderToPipeableStream` مباشرة؛ فـ Next.js تستدعيه، أو تكافئه على الحافة، نيابةً عنك وتربط البث وفق اصطلاحات الملفات هذه. وتكون النتيجة هي نفسها: يُرسل التخطيط الساكن فورًا، وتُبث البيانات البطيئة، ويتولى الترطيب الانتقائي التفاعلية.

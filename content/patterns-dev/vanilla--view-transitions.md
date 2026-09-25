@@ -3,52 +3,55 @@ title: تحريك انتقال العرض (view transition)
 lang: ar
 source: https://www.patterns.dev/vanilla/view-transitions/
 ---
-
 **ملاحظة:** واجهة View Transitions API لتطبيقات الصفحة الواحدة متاحة في Chrome 111+.
 
 ## مقدمة إلى انتقال العرض
 
 تقدّم [View Transitions API](https://developer.chrome.com/docs/web-platform/view-transitions/) طريقة بسيطة لانتقال أي تغيير بصري في DOM من حالة إلى الحالة التالية. وقد يشمل ذلك تغييرات صغيرة مثل إظهار محتوى أو إخفائه، أو تغييرات أوسع مثل الانتقال من صفحة إلى أخرى. وفيما يلي [عرض توضيحي](https://astro-movies.pages.dev/) لـ View Transitions API في تطبيق SPA (تطبيق صفحة واحدة) [src](https://github.com/Charca/astro-movies):
 
-
-
 تتمركز واجهة JavaScript حول `document.startViewTransition(callback)`، حيث `callback` دالة تنشئ DOM عادةً ليحدّثه إلى الحالة الجديدة.
 
 لنأخذ إظهار عنصر `` وإخفائه مثالًا بسيطًا:
 
-```
+```javascript
 if (document.startViewTransition) {
-  // (check for browser support)
-  document.addEventListener("click", function (event) {
-    if (event.target.matches("summary")) {
-      event.preventDefault(); // (we'll toggle the element ourselves)
-      const details = event.target.closest("details");
-      document.startViewTransition(() => details.toggleAttribute("open"));
-    }
-  });
+
+// (check for browser support)
+
+document.addEventListener("click", function (event) {
+
+if (event.target.matches("summary")) {
+
+event.preventDefault(); // (we'll toggle the element ourselves)
+
+const details = event.target.closest("details");
+
+document.startViewTransition(() => details.toggleAttribute("open"));
+
+}
+
+});
+
 }
 ```
 
 يأخذ `document.startViewTransition` لقطة شاشة من DOM الحالي قبل استدعاء `callback`. وفي مثالنا، لا يفعل `callback` سوى تبديل السمة `open`. وبعد الاكتمال، يستطيع المتصفح الانتقال بين لقطة الشاشة الأولية والإصدار الجديد.
 
-
-
 تُعرض النسختان القديمة والجديدة كعناصر زائفة، ويمكن الإشارة إليهما في CSS باستخدام `::view-transition-old(root)` و`::view-transition-new(root)` على الترتيب. وعلى سبيل المثال، لإبراز الانتقال، يمكننا إطالة `animation-duration` هكذا:
 
-```
+```javascript
 ::view-transition-old(root),
+
 ::view-transition-new(root) {
-  animation-duration: 2s;
+
+animation-duration: 2s;
+
 }
 ```
-
-
 
 يمكن أيضًا لانتقالات العرض تحريك تغييرات متعددة بحركات أكثر تقدمًا تتجاوز التلاشي المتبادل الافتراضي. ومنح عناصر محددة اسم CSS خاصًا بـ`view-transition-name`، مع `containment` بقيمة `layout` أو `paint`، يمنح المطوّرين تحكمًا دقيقًا في كيفية انتقال العناصر، بما في ذلك عرضها وارتفاعها وموضعها. ويمكن لهذه الانتقالات المتقدمة أن تساعد فعليًا في توضيح التدفق من صفحة إلى أخرى.
 
 لنأخذ [معرض الصور](https://charming-crumble-af45ba.netlify.app/) مثالًا:
-
-
 
 أوضح انتقال هو حجم الصورة وموضعها، إذ يتحقق تلقائيًا عند منح عنصر `` في كل صفحة الاسم الفريد نفسه `view-transition-name`، وقيمة CSS `containment` بقيمة `layout`. وفي هذا العرض التوضيحي، تكون أسماء `view-transition-name` مكتوبة مباشرة في سمتَي `style`، لكن يمكنك إضافتها ديناميكيًا أيضًا، مثلًا في معالج `onclick`، طالما كانت فريدة داخل الصفحة وأُضيفت قبل بدء الانتقال.
 
@@ -56,32 +59,49 @@ if (document.startViewTransition) {
 
 نمنح كل عنصر سطر اسم `view-transition-name` خاصًا به:
 
-```
+```javascript
 figcaption h2 {
-  contain: layout;
-  view-transition-name: photo-heading;
+
+contain: layout;
+
+view-transition-name: photo-heading;
+
 }
+
 figcaption div {
-  contain: layout;
-  view-transition-name: photo-location-time;
+
+contain: layout;
+
+view-transition-name: photo-location-time;
+
 }
+
 figcaption dl {
-  contain: layout;
-  view-transition-name: photo-meta;
+
+contain: layout;
+
+view-transition-name: photo-meta;
+
 }
 ```
 
 يولّد ذلك *مجموعات انتقال* لكل منطقة، وهي مثل لقطات الشاشة الجديدة والقديمة التي ذُكرت سابقًا، لكنها تغطي جزءًا من الصفحة بدل المستند بأكمله. ومثلما يمكن استهداف عناصر انتقال المستند كاملًا باستخدام `::view-transition-old(root)` و`::view-transition-new(root)`، يمكن استهداف مجموعات الانتقال هذه باستخدام `::view-transition-old(NAME)` و`::view-transition-new(NAME)`. لاحظ أن نص التفاصيل غير موجود في صفحة شبكة الصور، لذلك عند الانتقال من الشبكة إلى صفحة الصورة، سيوجد فقط `::view-transition-new(NAME)`، *ولا يوجد* `::view-transition-old(NAME)`، والعكس عند الانتقال بالاتجاه الآخر. يمكننا استهداف هذه الحالات باستخدام الصنف الزائف `:only-child` وتخصيص الحركة. وبالنسبة إلى مجموعة `photo-heading`:
 
-```
+```javascript
 /* Enter */
+
 ::view-transition-new(photo-heading):only-child {
-  animation: 300ms ease 50ms both fade-in, 300ms ease 50ms both slide-up;
+
+animation: 300ms ease 50ms both fade-in, 300ms ease 50ms both slide-up;
+
 }
 
 /* Exit */
+
 ::view-transition-old(photo-heading):only-child {
-  animation: 200ms ease 150ms both fade-out, 200ms ease 150ms both slide-down;
+
+animation: 200ms ease 150ms both fade-out, 200ms ease 150ms both slide-down;
+
 }
 ```
 
@@ -113,38 +133,57 @@ figcaption dl {
 
 إليك الشكل:
 
-```
+```javascript
 import { Component } from "react";
 
 export default class ViewTransition extends Component {
-  shouldComponentUpdate() {
-    if (!document.startViewTransition) return true; // skip when not supported
 
-    document.startViewTransition(() => this.#updateDOM());
-    return false; // don't update the component, we'll do this manually
-  }
+shouldComponentUpdate() {
 
-  #updateDOM() {
-    // now we know the screenshot has been taken, we can force render
-    // (which skips `shouldComponentUpdate`)
-    this.forceUpdate();
-    // set up a promise that will resolve when the component renders
-    return new Promise((resolve) => {
-      this.#rendered = resolve;
-    });
-  }
+if (!document.startViewTransition) return true; // skip when not supported
 
-  render() {
-    return this.props.children;
-  }
+document.startViewTransition(() => this.#updateDOM());
 
-  #rendered = () => {};
+return false; // don't update the component, we'll do this manually
 
-  componentDidUpdate() {
-    // resolve the `updateDOM` promise to notify the View Transition API
-    // that the DOM has been updated
-    this.#rendered();
-  }
+}
+
+#updateDOM() {
+
+// now we know the screenshot has been taken, we can force render
+
+// (which skips `shouldComponentUpdate`)
+
+this.forceUpdate();
+
+// set up a promise that will resolve when the component renders
+
+return new Promise((resolve) => {
+
+this.#rendered = resolve;
+
+});
+
+}
+
+render() {
+
+return this.props.children;
+
+}
+
+#rendered = () => {};
+
+componentDidUpdate() {
+
+// resolve the `updateDOM` promise to notify the View Transition API
+
+// that the DOM has been updated
+
+this.#rendered();
+
+}
+
 }
 ```
 
@@ -152,10 +191,13 @@ export default class ViewTransition extends Component {
 
 لاستخدامه في تطبيق Next.js، سنعطل أولًا وضع React الصارم في التطوير. يشغّل الوضع الصارم فحوصاته بعرض المكون مرتين. وهذا يتعارض مع تدفق العرض في `ViewTransition` أثناء التطوير، لذا سنعطله عالميًا ثم نعيد تفعيله للمكونات الفرعية بمكون `StrictMode`.
 
-```
+```javascript
 // next.config.js
+
 const nextConfig = {
-  reactStrictMode: false,
+
+reactStrictMode: false,
+
 };
 
 module.exports = nextConfig;
@@ -163,20 +205,31 @@ module.exports = nextConfig;
 
 بعد ذلك، في `pages/_app.js`، سنغلّف `Component` بمكونات `ViewTransition` و`StrictMode`، ونبدأ برؤية انتقالات متحركة:
 
-```
+```javascript
 // pages/_app.js
+
 import "@/styles/globals.css";
+
 import { StrictMode } from "react";
+
 import ViewTransition from "@/components/ViewTransition";
 
 export default function App({ Component, pageProps }) {
-  return (
-    <ViewTransition>
-      <StrictMode>
-        <Component {...pageProps} />
-      </StrictMode>
-    </ViewTransition>
-  );
+
+return (
+
+<ViewTransition>
+
+<StrictMode>
+
+<Component {...pageProps} />
+
+</StrictMode>
+
+</ViewTransition>
+
+);
+
 }
 ```
 
@@ -208,35 +261,58 @@ export default function App({ Component, pageProps }) {
 [Turn](https://github.com/domchristie/turn) مكتبة لتحريك التنقل بين الصفحات باستخدام Turbo. وهي تدعم منهجَي الحركة، رغم أن انتقالات العرض تجريبية حاليًا. يضيف Turn الصنفين `turn-before-exit` و`turn-exit` و`turn-enter` إلى عنصر `` في الأوقات المناسبة، مما يتيح للمطورين تخصيص الحركات.
 
 لتشغيله، أضف السمتين `data-turn-exit` و`data-turn-enter` إلى العناصر التي تريد تحريكها، ثم طبّق أنماط CSS. على سبيل المثال، لحركة التلاشي عند الدخول والخروج:
-```
+
+```javascript
 html.turn-exit [data-turn-exit] {
-  animation-name: fade-out;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
+
+animation-name: fade-out;
+
+animation-duration: 0.3s;
+
+animation-fill-mode: forwards;
+
 }
 
 html.turn-enter [data-turn-enter] {
-  animation-name: fade-in;
-  animation-duration: 0.6s;
-  animation-fill-mode: forwards;
+
+animation-name: fade-in;
+
+animation-duration: 0.6s;
+
+animation-fill-mode: forwards;
+
 }
 
 @keyframes fade-out {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+
+0% {
+
+opacity: 1;
+
+}
+
+100% {
+
+opacity: 0;
+
+}
+
 }
 
 @keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+
+0% {
+
+opacity: 0;
+
+}
+
+100% {
+
+opacity: 1;
+
+}
+
 }
 ```
 
@@ -257,22 +333,12 @@ html.turn-enter [data-turn-enter] {
 
 الأسلوب البديل، أو التكميلي، هو تنفيذ حركات الخروج فور أن ينقر المستخدم على رابط. وتفيد هذه الطريقة في كسب بعض الوقت ليكتمل الطلب قبل وصول HTML الجديد.
 
-
-
 #### Dom Christie
 
 مهندس برمجيات
 
 Twitter
 
-
-
-
-
 الموقع
-
-
-
-
 
 Github

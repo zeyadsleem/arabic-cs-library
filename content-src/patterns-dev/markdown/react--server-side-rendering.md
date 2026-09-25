@@ -99,20 +99,33 @@ Three patterns reduce hydration cost:
 
 In the App Router, server rendering is the default and there is no `getServerSideProps`. A page is dynamic — that is, rendered per request — as soon as it reads request-time data. Reading `cookies()`, `headers()`, or `searchParams` opts the route into dynamic rendering automatically. (In Next.js 15, these APIs became async and must be awaited.)
 
-```
+```javascript
 // app/dashboard/page.tsx
+
 import { cookies } from "next/headers";\n
+
 export default async function Dashboard() {
+
   const cookieStore = await cookies();
+
   const session = cookieStore.get("session");\n
+
   const user = await fetchUser(session?.value);
+
   const widgets = await fetchWidgets(user.id);\n
+
   return (
+
     <section>
+
       <h1>Welcome back, {user.name}</h1>
+
       <WidgetGrid widgets={widgets} />
+
     </section>
+
   );
+
 }`
 ```
 

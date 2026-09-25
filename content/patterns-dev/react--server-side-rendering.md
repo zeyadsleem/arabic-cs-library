@@ -3,12 +3,9 @@ title: العرض في جانب الخادم
 lang: ar
 source: https://www.patterns.dev/react/server-side-rendering/
 ---
-
 العرض في جانب الخادم (Server-side rendering) يحوّل شجرة مكوّنات (component) React إلى HTML على الخادم (server) ويرسل ذلك HTML ضمن الاستجابة الأولية. يرسم المتصفح شيئًا ذا معنى قبل تحليل أي شيفرة JavaScript من التطبيق. وبعد وصول المستند، تعمل React مرة أخرى في جانب العميل (client) وتُطبّق الترطيب (hydration) على ترميز الصفحة — فترفق مستمعي الأحداث وتعيد ربط DOM بشجرة المكوّنات حتى يصبح تفاعليًا.
 
 العرض في جانب الخادم هو الخيار الافتراضي المناسب عندما تعتمد محتويات الصفحة على الطلب — المستخدم المسجّل الدخول، أو كعكة (cookie)، أو مجموعة في اختبار A/B، أو ترويسة تحديد موقع جغرافي — *و* عندما تُقرأ الصفحة بكثرة تكفي لأن يستحق العرض لكل طلب تكلفته. صفحة تفاصيل منتج مخصّصة لمنطقة المشاهد، ولوحة تحكم تتطلب مصادقة، وصفحة نتائج بحث مُعامَلة بسلسلة الاستعلام (query string): هذه هي موطن العرض في جانب الخادم.
-
-
 
 ## ما الذي يكسبك إياه العرض في جانب الخادم
 
@@ -38,16 +35,13 @@ import express from "express";
 import { renderToPipeableStream } from "react-dom/server";
 import ProductPage from "./ProductPage";
 
-
 const app = express();
 app.use("/static", express.static("dist"));
-
 
 app.get("/products/:id", async (req, res) => {
   const product = await loadProduct(req.params.id);
 
-
-  let didError = false;
+let didError = false;
   const { pipe } = renderToPipeableStream(
     <ProductPage product={product} />,
     {
@@ -70,11 +64,8 @@ app.get("/products/:id", async (req, res) => {
   );
 });
 
-
 app.listen(3000);
 ```
-
-
 
 هناك بعض التفاصيل التي تستحق إبرازها:
 
@@ -99,20 +90,33 @@ app.listen(3000);
 
 في App Router، يكون العرض من الخادم هو الوضع الافتراضي ولا وجود لـ `getServerSideProps`. تصبح الصفحة ديناميكية — أي معروضة لكل طلب — فور قراءتها لبيانات وقت الطلب. وقراءة `cookies()` أو `headers()` أو `searchParams` تُدخل المسار تلقائيًا في العرض الديناميكي. (وفي Next.js 15 أصبحت هذه الواجهات غير متزامنة ويجب انتظارها.)
 
-```
+```javascript
 // app/dashboard/page.tsx
+
 import { cookies } from "next/headers";\n
+
 export default async function Dashboard() {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("session");\n
-  const user = await fetchUser(session?.value);
-  const widgets = await fetchWidgets(user.id);\n
-  return (
-    <section>
-      <h1>Welcome back, {user.name}</h1>
-      <WidgetGrid widgets={widgets} />
-    </section>
-  );
+
+const cookieStore = await cookies();
+
+const session = cookieStore.get("session");\n
+
+const user = await fetchUser(session?.value);
+
+const widgets = await fetchWidgets(user.id);\n
+
+return (
+
+<section>
+
+<h1>Welcome back, {user.name}</h1>
+
+<WidgetGrid widgets={widgets} />
+
+</section>
+
+);
+
 }`
 ```
 

@@ -3,7 +3,6 @@ title: نمط المراقب (observer)
 lang: ar
 source: https://www.patterns.dev/vanilla/observer-pattern/
 ---
-
 تخيل أنك تبني لوحة بيانات للأسعار. تصل حركة السعر عبر WebSocket، وتحتاج عدة أجزاء غير مترابطة من واجهة المستخدم إلى التفاعل: يعيد مخطط الرسم، ويومض صف في قائمة المتابعة باللون الأخضر أو الأحمر، ويُعاد حساب إجمالي المحفظة، ويسجل سجل تدقيق حركة السعر. ولا شأن لـ WebSocket بهذه المستهلكات. ما يحتاجه هو طريقة لقول «هنا حركة سعر جديدة» ثم ترك الأطراف المهتمة تقرر ما الذي يعنيه ذلك بالنسبة لها.
 
 هذا هو نمط المراقب (observer). يحتفظ **الموضوع (subject)** بقائمة من **المراقبين (observers)** ويبث لهم التحديثات عند حدوث تغيير. يمكن للمراقبين الجدد الارتباط وقتما يشاؤون، ويمكن للمراقبين القائمين فك الارتباط عند انتهاء عملهم. لا يحتوي الموضوع على أي ارتباط ثابت بمستهلك بعينه.
@@ -12,22 +11,33 @@ source: https://www.patterns.dev/vanilla/observer-pattern/
 
 يحتاج الموضوع على الأقل إلى ثلاثة أمور: مكان لحفظ المراقبين، وطريقة لإضافتهم وإزالتهم، وطريقة لدفع التحديثات. إليك تطبيقًا صغيرًا يستخدم `Set` لنحصل على إزالة بتعقيد O(1) ومنع التكرار مجانًا.
 
-```
+```javascript
 class Subject {
-  #observers = new Set();
 
-  subscribe(observer) {
-    this.#observers.add(observer);
-    // Hand back an unsubscribe function — easier than asking
-    // the caller to hold onto the reference they passed in.
-    return () => this.#observers.delete(observer);
-  }
+#observers = new Set();
 
-  notify(payload) {
-    for (const observer of this.#observers) {
-      observer(payload);
-    }
-  }
+subscribe(observer) {
+
+this.#observers.add(observer);
+
+// Hand back an unsubscribe function — easier than asking
+
+// the caller to hold onto the reference they passed in.
+
+return () => this.#observers.delete(observer);
+
+}
+
+notify(payload) {
+
+for (const observer of this.#observers) {
+
+observer(payload);
+
+}
+
+}
+
 }
 ```
 
@@ -37,42 +47,67 @@ class Subject {
 
 لنوصل الموضوع بتدفق أسعار وبضعة مستهلكين يريدون معرفتها.
 
-```
+```javascript
 const ticker = new Subject();
 
 // A chart that buffers ticks and redraws every animation frame.
+
 const chartQueue = [];
+
 let pending = false;
+
 const drawChart = (tick) => {
-  chartQueue.push(tick);
-  if (pending) return;
-  pending = true;
-  requestAnimationFrame(() => {
-    renderChart(chartQueue);
-    chartQueue.length = 0;
-    pending = false;
-  });
+
+chartQueue.push(tick);
+
+if (pending) return;
+
+pending = true;
+
+requestAnimationFrame(() => {
+
+renderChart(chartQueue);
+
+chartQueue.length = 0;
+
+pending = false;
+
+});
+
 };
 
 // A watchlist row that flashes when its symbol updates.
+
 const flashRow = ({ symbol, price, previous }) => {
-  if (symbol !== "AAPL") return;
-  document
-    .querySelector('[data-symbol="AAPL"]')
-    ?.classList.toggle("up", price > previous);
+
+if (symbol !== "AAPL") return;
+
+document
+
+.querySelector('[data-symbol="AAPL"]')
+
+?.classList.toggle("up", price > previous);
+
 };
 
 // A logger that records every tick for replay.
+
 const logTick = (tick) => console.debug("[tick]", tick);
 
 const unsubChart = ticker.subscribe(drawChart);
+
 const unsubRow   = ticker.subscribe(flashRow);
+
 const unsubLog   = ticker.subscribe(logTick);
 
 // Somewhere else, the WebSocket pushes new prices in:
+
 socket.addEventListener("message", (event) => {
-  const tick = JSON.parse(event.data);
-  ticker.notify(tick);
+
+const tick = JSON.parse(event.data);
+
+ticker.notify(tick);
+
 });
 ```
 
@@ -82,30 +117,39 @@ socket.addEventListener("message", (event) => {
 
 لا تحتاج دائمًا إلى كتابة `Subject` خاص بك. منذ عام 2017، أتت كل المتصفحات بكائن `EventTarget` قابل للإنشاء — وهي الآلية نفسها التي يستخدمها DOM في `addEventListener`، لكنها متاحة الآن للكائنات العشوائية.
 
-```
+```javascript
 class Ticker extends EventTarget {
-  push(tick) {
-    this.dispatchEvent(new CustomEvent("tick", { detail: tick }));
-  }
+
+push(tick) {
+
+this.dispatchEvent(new CustomEvent("tick", { detail: tick }));
+
+}
+
 }
 
 const ticker = new Ticker();
 
 ticker.addEventListener("tick", (e) => drawChart(e.detail));
+
 ticker.addEventListener("tick", (e) => flashRow(e.detail));
 ```
 
 يوفر لك هذا آلية نشر/اشتراك (pub/sub) جاهزة مع ميزة مهمة: **التكامل مع `AbortSignal`**. يصبح التنظيف سطرًا واحدًا مهما كان عدد المستمعين الذين سجلتهم.
 
-```
+```javascript
 const controller = new AbortController();
+
 const { signal } = controller;
 
 ticker.addEventListener("tick", drawChart, { signal });
+
 ticker.addEventListener("tick", flashRow,  { signal });
+
 ticker.addEventListener("tick", logTick,   { signal });
 
 // Later, when the dashboard unmounts:
+
 controller.abort(); // every listener attached with `signal` is removed
 ```
 
@@ -126,19 +170,27 @@ controller.abort(); // every listener attached with `signal` is removed
 
 إليك نظام نشر/اشتراك مصغرًا مبنيًا على `EventTarget`:
 
-```
+```javascript
 class EventBus {
-  #target = new EventTarget();
 
-  publish(topic, data) {
-    this.#target.dispatchEvent(new CustomEvent(topic, { detail: data }));
-  }
+#target = new EventTarget();
 
-  subscribe(topic, handler, { signal } = {}) {
-    const listener = (e) => handler(e.detail);
-    this.#target.addEventListener(topic, listener, { signal });
-    return () => this.#target.removeEventListener(topic, listener);
-  }
+publish(topic, data) {
+
+this.#target.dispatchEvent(new CustomEvent(topic, { detail: data }));
+
+}
+
+subscribe(topic, handler, { signal } = {}) {
+
+const listener = (e) => handler(e.detail);
+
+this.#target.addEventListener(topic, listener, { signal });
+
+return () => this.#target.removeEventListener(topic, listener);
+
+}
+
 }
 ```
 
@@ -148,20 +200,31 @@ class EventBus {
 
 إذا كانت «أحداثك» تسلسلًا في الواقع، فإن متكررًا غير متزامن يحوّلها إلى حلقة `for await...of` — شيفرة تُقرأ من الأعلى إلى الأسفل وتتوقف عند كل تكرار:
 
-```
+```javascript
 async function* watchTicks(socket, { signal }) {
-  while (!signal.aborted) {
-    const message = await new Promise((resolve, reject) => {
-      socket.addEventListener("message", resolve, { once: true, signal });
-      socket.addEventListener("error",   reject,  { once: true, signal });
-    });
-    yield JSON.parse(message.data);
-  }
+
+while (!signal.aborted) {
+
+const message = await new Promise((resolve, reject) => {
+
+socket.addEventListener("message", resolve, { once: true, signal });
+
+socket.addEventListener("error",   reject,  { once: true, signal });
+
+});
+
+yield JSON.parse(message.data);
+
+}
+
 }
 
 const controller = new AbortController();
+
 for await (const tick of watchTicks(socket, { signal: controller.signal })) {
-  drawChart(tick);
+
+drawChart(tick);
+
 }
 ```
 
@@ -171,16 +234,19 @@ for await (const tick of watchTicks(socket, { signal: controller.signal })) {
 
 تتمثل صيغة مختلفة للمراقب في **الإشارة (signal)**: عنصر تفاعلي صغير يعرف الدوال التي تقرأه ويعيد تشغيلها عند تغيره. لقد تقاربت أنماط Preact وSolid وAngular وVue جميعها على شكل مشابه، وهناك مقترح من TC39 يستكشف صيغة معيارية.
 
-```
+```javascript
 import { signal, computed, effect } from "@preact/signals-core";
 
 const price    = signal(100);
+
 const quantity = signal(2);
+
 const total    = computed(() => price.value * quantity.value);
 
 effect(() => console.log(`Total: $${total.value}`));
 
 price.value = 110;   // logs "Total: $220"
+
 quantity.value = 3;  // logs "Total: $330"
 ```
 
@@ -190,18 +256,25 @@ quantity.value = 3;  // logs "Total: $330"
 
 عندما تهم العلاقة بين الأحداث — مثل تأخير تجميع مربع بحث، أو دمج تدفقين، أو إعادة المحاولة عند الفشل — تبرر RxJS تكلفتها. إليك بحثًا فوريًا ينتظر المستخدم حتى يتوقف عن الكتابة، ويتجاهل عمليات البحث المكررة، ويلغي الطلبات القديمة:
 
-```
+```javascript
 import { fromEvent, switchMap, debounceTime, distinctUntilChanged, map } from "rxjs";
 
 const input = document.querySelector("#search");
 
 fromEvent(input, "input").pipe(
-  map((e) => e.target.value.trim()),
-  debounceTime(250),
-  distinctUntilChanged(),
-  switchMap((q) =>
-    q ? fetch(`/api/search?q=${encodeURIComponent(q)}`).then((r) => r.json()) : []
-  )
+
+map((e) => e.target.value.trim()),
+
+debounceTime(250),
+
+distinctUntilChanged(),
+
+switchMap((q) =>
+
+q ? fetch(`/api/search?q=${encodeURIComponent(q)}`).then((r) => r.json()) : []
+
+)
+
 ).subscribe(renderResults);
 ```
 

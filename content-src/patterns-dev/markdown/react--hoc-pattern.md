@@ -10,8 +10,9 @@ You have a sprawling React codebase. Every screen needs to fire an analytics eve
 
 The Higher-Order Component (HOC) pattern is one of React’s oldest answers to this kind of cross-cutting problem. A HOC is just a function: it accepts a component and returns a new component that wraps the original with extra behavior. Think of it as a decorator for components.
 
-```
+```javascript
 // The shape of every HOC
+
 type HOC<P> = (Wrapped: React.ComponentType<P>) => React.ComponentType<P>;
 ```
 
@@ -27,37 +28,62 @@ Let’s implement `withAnalytics`. It should:
 - Accept an `eventName` so the same HOC can be reused for any screen.
 - Pass every prop through to the wrapped component untouched.
 
-```
+```javascript
 import { useEffect } from "react";
+
 import { track } from "./analytics";
 
+
+
 export function withAnalytics<P extends object>(
+
   Wrapped: React.ComponentType<P>,
+
   eventName: string,
+
 ) {
+
   function WithAnalytics(props: P) {
+
     useEffect(() => {
+
       track(eventName, { path: window.location.pathname });
+
     }, []);
 
+
+
     return <Wrapped {...props} />;
+
   }
 
+
+
   // Helpful in React DevTools
+
   WithAnalytics.displayName = `withAnalytics(${
+
     Wrapped.displayName ?? Wrapped.name ?? "Component"
+
   })`;
 
+
+
   return WithAnalytics;
+
 }
 ```
 
 Usage is a one-liner at the export site:
 
-```
+```javascript
 function CheckoutPage(props: CheckoutPageProps) {
+
   return <main>{/* ...checkout UI... */}</main>;
+
 }
+
+
 
 export default withAnalytics(CheckoutPage, "checkout_viewed");
 ```
@@ -72,25 +98,43 @@ A few details that the example above demonstrates and that you will copy into al
 
 HOCs become more interesting when they *inject* props that the wrapped component can read. `withFeatureFlag` is a classic example: ship two variants of a component, let the HOC decide which one to render based on a remote flag service.
 
-```
+```javascript
 import { useFlag } from "./flagsClient";
 
+
+
 export function withFeatureFlag<P extends object>(
+
   flagKey: string,
+
   Treatment: React.ComponentType<P>,
+
   Control: React.ComponentType<P>,
+
 ) {
+
   return function WithFeatureFlag(props: P) {
+
     const enabled = useFlag(flagKey);
+
     return enabled ? <Treatment {...props} /> : <Control {...props} />;
+
   };
+
 }
 
+
+
 // At the call site:
+
 export const PricingPage = withFeatureFlag(
+
   "pricing_redesign_2025",
+
   PricingPageNew,
+
   PricingPageLegacy,
+
 );
 ```
 
@@ -100,37 +144,57 @@ Notice that `withFeatureFlag` doesn’t render anything itself. It is purely a s
 
 The whole point of the pattern is that HOCs are *just functions*, and functions compose. A common production layering looks like this:
 
-```
+```javascript
 export default withErrorBoundary(
+
   withAuthorization(
+
     withAnalytics(CheckoutPage, "checkout_viewed"),
+
     { requiredRole: "customer" },
+
   ),
+
   { fallback: <SomethingWentWrong /> },
+
 );
 ```
 
 Once you start nesting three or four of these, the call site becomes hard to read. Two common ways teams clean this up:
 
-```
+```javascript
 // 1. Pipe-style composition with a tiny helper
+
 const compose =
+
   (...hocs) =>
+
   (Component) =>
+
     hocs.reduceRight((acc, hoc) => hoc(acc), Component);
 
+
+
 export default compose(
+
   withErrorBoundary({ fallback: <SomethingWentWrong /> }),
+
   withAuthorization({ requiredRole: "customer" }),
+
   withAnalyticsEvent("checkout_viewed"),
+
 )(CheckoutPage);
 ```
 
-```
+```javascript
 // 2. A decorator-like factory: each HOC takes its config first,
+
 //    returns the actual (Component) => Component function.
+
 const withAnalyticsEvent = (eventName: string) =>
+
   <P extends object>(C: React.ComponentType<P>) =>
+
     withAnalytics(C, eventName);
 ```
 
@@ -144,13 +208,19 @@ The HOC pattern has a handful of failure modes that are easy to trip over. Knowi
 
 If your HOC injects a prop with the same name as one the parent passes in, *somebody* loses. The behavior depends on the order of your spreads:
 
-```
+```javascript
 function withTheme<P extends { theme?: Theme }>(Wrapped: React.ComponentType<P>) {
+
   return (props: Omit<P, "theme">) => {
+
     const theme = useTheme();
+
     // Parent-supplied props win because they are spread last
+
     return <Wrapped theme={theme} {...(props as P)} />;
+
   };
+
 }
 ```
 
@@ -164,15 +234,23 @@ Wrapping `MyComponent` with a HOC produces a brand-new component. Any `MyCompone
 
 Every HOC adds another node to the component tree. Three or four layers is usually fine; ten is where DevTools starts looking like a Russian doll and stack traces become indecipherable.
 
-```
+```javascript
 <WithRouter>
+
   <WithAuth>
+
     <WithTheme>
+
       <WithAnalytics>
+
         <CheckoutPage />
+
       </WithAnalytics>
+
     </WithTheme>
+
   </WithAuth>
+
 </WithRouter>
 ```
 
@@ -195,10 +273,13 @@ Reach for a different tool when:
 
 Here is the same `useFeatureFlag` idea, rewritten as a hook:
 
-```
+```javascript
 function PricingPage(props: PricingPageProps) {
+
   const showRedesign = useFlag("pricing_redesign_2025");
+
   return showRedesign ? <PricingPageNew {...props} /> : <PricingPageLegacy {...props} />;
+
 }
 ```
 
@@ -220,21 +301,36 @@ That said, HOCs still earn their keep in a few situations:
 
 React Redux is the canonical example of HOC use in the wild. For a decade, the way to give a component access to the store was [`connect`](https://react-redux.js.org/api/connect):
 
-```
+```javascript
 function CartSummary({ itemCount, total, checkout }) {
+
   return (
+
     <button onClick={checkout}>
+
       Checkout ({itemCount}) — ${total}
+
     </button>
+
   );
+
 }
 
+
+
 const mapState = (state) => ({
+
   itemCount: state.cart.items.length,
+
   total: selectCartTotal(state),
+
 });
 
+
+
 const mapDispatch = { checkout: checkoutAction };
+
+
 
 export default connect(mapState, mapDispatch)(CartSummary);
 ```
@@ -243,17 +339,27 @@ export default connect(mapState, mapDispatch)(CartSummary);
 
 After React 16.8, React Redux shipped a hook-based API. The same component becomes:
 
-```
+```javascript
 function CartSummary() {
+
   const itemCount = useSelector((state) => state.cart.items.length);
+
   const total = useSelector(selectCartTotal);
+
   const dispatch = useDispatch();
 
+
+
   return (
+
     <button onClick={() => dispatch(checkoutAction())}>
+
       Checkout ({itemCount}) — ${total}
+
     </button>
+
   );
+
 }
 ```
 

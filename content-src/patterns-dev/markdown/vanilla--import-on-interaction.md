@@ -27,6 +27,8 @@ The different ways to load resources are, at a high-level:
 
 Lazily importing feature code on interaction is a pattern used in many contexts we will cover in this post. One place you may have used it before is Google Docs, where they save loading 500KB of script for the share feature by deferring its load until user-interaction.
 
+![Clicking a Share button in Google Docs triggers a download of code needed for this highly interactive feature. It weighs in at 500KB of script, which is better loaded on-demand rather than eagerly with the rest of Google Docs on page load](/images/patterns-dev/vanilla-import-on-interaction-0-image1_ohziu6_c_scale_w_1280.webp)
+
 Another place where import-on-interaction can be a good fit is loading third-party widgets.
 
 ## “Fake” loading third-party UI with a facade
@@ -41,30 +43,47 @@ When a user clicks on the “preview” (the facade), the code for the resource 
 
 A good example of a “facade” is the [YouTube Lite Embed](https://github.com/paulirish/lite-youtube-embed) by Paul Irish. This provides a Custom Element which takes a YouTube Video ID and presents a minimal thumbnail and play button. Clicking the element dynamically loads the full YouTube embed code, meaning users who never click play don’t pay the cost of fetching and processing it.
 
+![The lite-youtube component only loads up 3KB of script on page load and the full-fat YouTube payload on interaction](/images/patterns-dev/vanilla-import-on-interaction-1-image2_egy8ct_c_scale_w_1280.webp)
+
 A similar technique is used in production on a few Google sites. On Android.com, rather than eagerly loading the YouTube video player embed, a thumbnail with a fake player button is shown to users. When they click it, a modal loads which auto-plays the video using the full-fat YouTube video player embed:
+
+![Android.com loads code for their video embeds on demand when a user clicks on a thumbnail for one of these videos](/images/patterns-dev/vanilla-import-on-interaction-2-image3_zykzg7_c_scale_w_1280.webp)
 
 ## Authentication
 
 Apps may need to support authentication with a service via a client-side JavaScript SDK. These can occasionally be large with heavy JS execution costs and one might rather not eagerly load them up front if a user isn’t going to login. Instead, dynamically import authentication libraries when a user clicks on a “Login” button, keeping the main thread more free during initial load.
 
+![A HTML and CSS only version of a Google sign-in button which loads the full client-side SDK and actual button on interaction](/images/patterns-dev/vanilla-import-on-interaction-3-image4_qeskzi_c_scale_w_1280.webp)
+
 ## Chat widgets
 
 Calibre app [improved performance of their Intercom-based live chat by 30%](https://calibreapp.com/blog/fast-live-chat) through usage of a similar facade approach. They implemented a “fake” fast loading live chat button using just CSS and HTML, which when clicked would load their Intercom bundles.
 
+![An simulated version of the Intercom chat widget button which loads the full chat widget on page interaction](/images/patterns-dev/vanilla-import-on-interaction-4-image5_x7d5a9_c_scale_w_1280.webp)
+
 [Postmark](https://wildbit.com/blog/2020/09/30/getting-postmark-lighthouse-performance-score-to-100) noted that their Help chat widget was always eagerly loaded, even though it was only occasionally used by customers. The widget would pull in 314KB of script, more than their whole home page. To improve user-experience, they replaced the widget with a fake replica using HTML and CSS, loading the real-thing on click. This change reduced Time to Interactive from 7.7s to 3.7s.
+
+![A HTML+CSS approximate of the customer help widget](/images/patterns-dev/vanilla-import-on-interaction-5-image6_wtsthu_c_scale_w_1280.webp)
 
 ## Others
 
 [Ne-digital](https://medium.com/ne-digital/how-to-reduce-next-js-bundle-size-68f7ac70c375) used a React library for animated scrolling back to the top of a page when a user clicks on a “scroll to top” button. Rather than eagerly loading the react-scroll dependency for this, they load it on interaction with the button, saving ~7KB:
 
-```
+```javascript
 handleScrollToTop() {
+
     import('react-scroll').then(scroll => {
+
       scroll.animateScroll.scrollToTop({
+
       })
+
     })
+
 }
 ```
+
+![Loading resources on interaction with DevTools showing the resource being fetched](/images/patterns-dev/vanilla-import-on-interaction-6-animation.webp)
 
 ## How do you import-on-interaction?
 
@@ -72,32 +91,51 @@ handleScrollToTop() {
 
 In JavaScript, [dynamic import()](https://v8.dev/features/dynamic-import) enables lazy-loading modules and returns a promise and can be quite powerful when applied correctly. Below is an example where dynamic import is used in a button event listener to import the lodash.sortby module and then use it.
 
-```
+```javascript
 const btn = document.querySelector("button");
 
+
+
 btn.addEventListener("click", (e) => {
+
   e.preventDefault();
+
   import("lodash.sortby")
+
     .then((module) => module.default)
+
     .then(sortInput()) // use the imported dependency
+
     .catch((err) => {
+
       console.log(err);
+
     });
+
 });
 ```
 
 Prior to dynamic import or for use-cases it doesn’t fit as well, dynamically injecting scripts into the page using a Promise-based script loader was also an option (see [here for full implementation](https://glitch.com/edit/#!/tree-fluffy-stop?path=script.js%3A1%3A0) that demonstrates a sign-in facade):
 
-```
+```javascript
 const loginBtn = document.querySelector("#login");
 
+
+
 loginBtn.addEventListener("click", () => {
+
   const loader = new scriptLoader();
+
   loader
+
     .load(["//apis.google.com/js/client:platform.js?onload=showLoginScreen"])
+
     .then(({ length }) => {
+
       console.log(`${length} scripts loaded!`);
+
     });
+
 });
 ```
 
@@ -105,84 +143,151 @@ loginBtn.addEventListener("click", () => {
 
 Let’s imagine we have a Chat application which has a ``, `` and an `` component (powered by [emoji-mart](https://bundlephobia.com/result?p=emoji-mart@3.0.0), which is 98KB minified and gzipped). It can be common to eagerly load all of these components on initial page-load.
 
-```
+```javascript
 import MessageList from './MessageList';
+
 import MessageInput from './MessageInput';
+
 import EmojiPicker from './EmojiPicker';
 
+
+
 const Channel = () => {
+
   ...
+
   return (
+
     <div>
+
       <MessageList />
+
       <MessageInput />
+
       {emojiPickerOpen && <EmojiPicker />}
+
     </div>
+
   );
+
 };
 ```
 
+![Showing different components that are loaded separately](/images/patterns-dev/vanilla-import-on-interaction-7-image8_pft4f0_c_scale_w_1280.webp)
+
 Breaking the loading of this work up is relatively straight-forward with [code-splitting](https://web.dev/reduce-javascript-payloads-with-code-splitting/). The `React.lazy` method makes it easy to code-split a React application on a component level using dynamic imports. The `React.lazy` function provides a built-in way to separate components in an application into separate chunks of JavaScript with very little legwork. You can then take care of loading states when you couple it with the Suspense component.
 
-```
+```javascript
 import React, { lazy, Suspense } from 'react';
+
 import MessageList from './MessageList';
+
 import MessageInput from './MessageInput';
 
+
+
 const EmojiPicker = lazy(
+
   () => import('./EmojiPicker')
+
 );
 
+
+
 const Channel = () => {
+
   ...
+
   return (
+
     <div>
+
       <MessageList />
+
       <MessageInput />
+
       {emojiPickerOpen && (
+
         <Suspense fallback={<div>Loading...</div>}>
+
           <EmojiPicker />
+
         </Suspense>
+
       )}
+
     </div>
+
   );
+
 };
 ```
 
 We can extend this idea to only import code for the Emoji Picker component when the Emoji icon is clicked in a ``, rather than eagerly when the application initially loads:
 
-```
+```javascript
 import React, { useState, createElement } from "react";
+
 import MessageList from "./MessageList";
+
 import MessageInput from "./MessageInput";
+
 import ErrorBoundary from "./ErrorBoundary";
 
+
+
 const Channel = () => {
+
   const [emojiPickerEl, setEmojiPickerEl] = useState(null);
 
+
+
   const openEmojiPicker = () => {
+
     import(/* webpackChunkName: "emoji-picker" */ "./EmojiPicker")
+
       .then((module) => module.default)
+
       .then((emojiPicker) => {
+
         setEmojiPickerEl(createElement(emojiPicker));
+
       });
+
   };
+
+
 
   const closeEmojiPickerHandler = () => {
+
     setEmojiPickerEl(null);
+
   };
 
+
+
   return (
+
     <ErrorBoundary>
+
       <div>
+
         <MessageList />
+
         <MessageInput onClick={openEmojiPicker} />
+
         {emojiPickerEl}
+
       </div>
+
     </ErrorBoundary>
+
   );
+
 };
 ```
+
+![Lazy-load the Emoji component on interaction](/images/patterns-dev/vanilla-import-on-interaction-8-image9_h0g6sw_c_scale_w_1280.webp)
 
 ## Vue
 
@@ -190,23 +295,39 @@ In Vue.js, a similar import-on-interaction pattern can be accomplished in a few 
 
 We can then gate lazy-loading behind a user-interaction. Using a conditional `v-if` on the picker’s parent `div` which is toggled by clicking a button, we can then both conditionally fetch and render the `Emojipicker` component when the user clicks.
 
-```
+```javascript
 <template>
+
   <div>
+
     <button @click="show = true">Load Emoji Picker</button>
+
     <div v-if="show">
+
       <emojipicker></emojipicker>
+
     </div>
+
   </div>
+
 </template>
 
+
+
 <script>
+
   export default {
+
     data: () => ({ show: false }),
+
     components: {
+
       Emojipicker: () => import("./Emojipicker"),
+
     },
+
   };
+
 </script>
 ```
 
@@ -218,9 +339,15 @@ Loading code on interaction also happens to be a key part of how Google handles 
 
 Imagine a user is planning a trip to Mumbai, India and they visit Google Hotels to look at prices. All of the resources needed for this interaction could be loaded eagerly upfront, but if a user hasn’t selected any destination, the HTML/CSS/JS required for the map would be unnecessary.
 
+![Google Hotels on mobile web](/images/patterns-dev/vanilla-import-on-interaction-9-image10_ofj3bz_c_scale_w_1280.webp)
+
 In the simplest download scenario, imagine Google Hotels is using naive [client-side rendering](https://developers.google.com/web/updates/2019/02/rendering-on-the-web#csr) (CSR). All the code would be downloaded and processed upfront: HTML, followed by JS, CSS and then fetching the data, only to render once we have everything. However, this leaves the user waiting a long time with nothing displayed on-screen. A big chunk of the JavaScript and CSS may be unnecessary.
 
+![Basic client-side rendering](/images/patterns-dev/vanilla-import-on-interaction-10-image11.webp)
+
 Next, imagine this experience moved to [server-side rendering](https://developers.google.com/web/updates/2019/02/rendering-on-the-web#server-vs-static) (SSR). We would allow the user to get a visually complete page sooner, which is great, however it wouldn’t be interactive until the data is fetched from the server and the client framework completes hydration.
+
+![Basic server-side rendering](/images/patterns-dev/vanilla-import-on-interaction-11-image12.webp)
 
 SSR can be an improvement, but the user may have an uncanny valley experience where the page looks ready, but they are unable to tap on anything. Sometimes this is referred to as rage clicks as users tend to click over and over again repeatedly in frustration.
 
@@ -230,11 +357,15 @@ Returning to the Google Hotels search example, if we zoom in to the UI a little 
 
 Let’s take a closer look at this loading scenario.
 
+![Interacting with filters pulling in 30KB of JS and data on interaction](/images/patterns-dev/vanilla-import-on-interaction-12-image13.webp)
+
 There are a number of important aspects to interaction-driven late-loading:
 
 - First, we download the minimal code initially so the page is visually complete quickly.
 - Next, as the user starts interacting with the page we use those interactions to determine which other code to load. For example loading the code for the “more filters” component.
 - This means code for many features on the page are never sent down to the browser, as the user didn’t need to use them.
+
+![Interaction driven late loading](/images/patterns-dev/vanilla-import-on-interaction-13-image14.webp)
 
 ### How do we avoid losing early clicks?
 
@@ -249,11 +380,15 @@ Other potential heuristics one could use include, loading component code:
 - On user mouse hover over the relevant UI/button/call to action
 - Based on a sliding scale of eagerness based on browser signals (e.g network speed, Data Saver mode etc).
 
+![Tiny event library included with the initial HTML](/images/patterns-dev/vanilla-import-on-interaction-14-image15.webp)
+
 ### What about data?
 
 The initial data which is used to render the page is included in the initial page’s SSR HTML and streamed. Data that is late loaded is downloaded based on user interactions as we know what component it goes with.
 
 This completes the import-on-interaction picture with data-fetching working similar to how CSS and JS function. As the component is aware of what code and data it needs, all of its resources are never more than a request away.
+
+![How does data-fetching work? By component](/images/patterns-dev/vanilla-import-on-interaction-15-image16.webp)
 
 This functions as we create a graph of components and their dependencies during build time. The web application is able to refer to this graph at any point and quickly fetch the resources (code and data) needed for any component. It also means we code-split based on the component rather than the route.
 
@@ -281,6 +416,8 @@ The final rendered content from an embed may be needed immediately in some cases
 
 If optimizing for performance, it’s possible to entirely replace an embed with a static variant that looks similar, linking out to a more interactive version (e.g the original social media post). At build time, the data for the embed can be pulled in and transformed into a static HTML version.
 
+![An original heavy-weight JavaScript embed compared to a statically rendered alternative](/images/patterns-dev/vanilla-import-on-interaction-16-janesocial.webp)
+
 [This](https://twitter.com/wongmjane/status/1330676158724116481) is the approach [@wongmjane](https://twitter.com/@wongmjane) [leveraged](https://twitter.com/wongmjane/status/1330273157245243394) on their blog for one type of social media embed, improving both page load performance and removing the [Cumulative Layout Shift](https://web.dev/cls) experienced due to the embed code enhancing the fallback text, causing layout shifts.
 
 While static replacements can be good for performance, they do often require doing something custom so keep this in mind when evaluating your options.
@@ -292,5 +429,3 @@ First-party JavaScript often impacts the interaction readiness of modern pages o
 In general, avoid synchronous third-party scripts in the document head and aim to load non-blocking third-party scripts after first-party JS has finished loading. Patterns like import-on-interaction give us a way to defer the loading of non-critical resources to a point when a user is much more likely to need the UI they power.
 
 *With special thanks to Shubhie Panicker, Connor Clark, Patrick Hulce, Anton Karlovskiy and Adam Raine for their input.*
-
-![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-18-image1_ohziu6_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-19-image2_egy8ct_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-20-image3_zykzg7_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-21-image4_qeskzi_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-22-image5_x7d5a9_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-23-image6_wtsthu_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-24-animation.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-25-image8_pft4f0_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-26-image9_h0g6sw_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-27-image10_ofj3bz_c_scale_w_1280.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-28-image11.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-29-image12.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-30-image13.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-31-image14.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-32-image15.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-33-image16.webp) ![Import On Interaction](/images/patterns-dev/vanilla-import-on-interaction-34-janesocial.webp)

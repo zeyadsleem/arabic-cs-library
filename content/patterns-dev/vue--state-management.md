@@ -3,22 +3,27 @@ title: إدارة الحالة
 lang: ar
 source: https://www.patterns.dev/vue/state-management/
 ---
-
 **مكوّنات Vue هي لبنات البناء الأساسية لتطبيقات Vue**، إذ تتيح لنا دمج الترميز (HTML) والمنطق (JS) والأنماط (CSS) داخلها.
 
 إليك مثالًا على مكوّن أحادي الملف (Single-File component) يعرض سلسلة من الأعداد انطلاقًا من خاصية بيانات:
 
-```
+```javascript
 <template>
-  <div>
-    <h2>The numbers are {{ numbers }}!</h2>
-  </div>
+
+<div>
+
+<h2>The numbers are {{ numbers }}!</h2>
+
+</div>
+
 </template>
 
 <script setup>
-  import { ref } from "vue";
 
-  const numbers = ref([1, 2, 3]);
+import { ref } from "vue";
+
+const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
@@ -34,36 +39,51 @@ source: https://www.patterns.dev/vue/state-management/
 
 لنفترض لدينا تطبيقًا افتراضيًا يحتوي في البداية على مكوّن أصل ومكوّن فرعي فقط. ويمنحنا Vue القدرة على استخدام **الخصائص** (props) لتمرير البيانات من المكوّن الأصل إلى المكوّن الفرعي.
 
+![إدارة الحالة عبر الخصائص](/images/patterns-dev/vue-state-management-0-props.webp)
+
 استخدام الخصائص بسيط إلى حدٍّ كبير. فكل ما نحتاج إليه فعليًا هو ربط قيمة بسمة الخاصية في الموضع الذي يُعرض فيه المكوّن الفرعي. وإليك مثالًا على استخدام الخصائص لتمرير مصفوفة قيم إلى الأسفل بمساعدة التوجيه [v-bind](https://vuejs.org/api/built-in-directives.html#v-bind):
 
 **ParentComponent**
 
-```
+```javascript
 <template>
-  <div>
-    <ChildComponent :numbers="numbers" />
-  </div>
+
+<div>
+
+<ChildComponent :numbers="numbers" />
+
+</div>
+
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import ChildComponent from "./ChildComponent";
 
-  const numbers = ref([1, 2, 3]);
+import { ref } from "vue";
+
+import ChildComponent from "./ChildComponent";
+
+const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
 **ChildComponent**
 
-```
+```javascript
 <template>
-  <div>
-    <h2>{{ numbers }}</h2>
-  </div>
+
+<div>
+
+<h2>{{ numbers }}</h2>
+
+</div>
+
 </template>
 
 <script setup>
-  const { buttonText } = defineProps(["numbers"]);
+
+const { buttonText } = defineProps(["numbers"]);
+
 </script>
 ```
 
@@ -71,20 +91,18 @@ source: https://www.patterns.dev/vue/state-management/
 
 JavaScript iconParentComponent.vue
 
-```
+```javascript
 <template>
   <div>
     <ChildComponent :numbers="numbers" />
   </div>
 </template>
 
-
 <script setup>
   import { ref } from "vue";
   import ChildComponent from "./ChildComponent";
 
-
-  const numbers = ref([1, 2, 3]);
+const numbers = ref([1, 2, 3]);
 </script>
 ```
 
@@ -96,42 +114,61 @@ JavaScript iconParentComponent.vue
 
 لا يمكننا استخدام `props` لأن `props` لا يمكن استخدامها إلّا لتمرير البيانات بصيغة أحادية الاتجاه (من الأصل إلى الفرعي إلى حفيد…). ولتسهيل إعلام المكوّن الفرعي للمكوّن الأصل بشيء ما، يمكننا استخدام الأحداث المخصّصة.
 
+![إدارة الحالة عبر الأحداث المخصّصة](/images/patterns-dev/vue-state-management-1-custom_events.webp)
+
 تُرسَل الأحداث المخصّصة في Vue كأحداث [CustomEvents](https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events#adding_custom_data_%E2%80%93_customevent) أصيلة، وتُستخدم للتواصل بين المكوّنات.
 
 إليك مثالًا على استخدام الأحداث المخصّصة لتمكين `ChildComponent` من تيسير تغيير في خاصية بيانات `numbers` الخاصة بـ `ParentComponent`:
 
 **ChildComponent**
 
-```
+```javascript
 <template>
-  <div>
-    <h2>{{ numbers }}</h2>
-    <input v-model="number" type="number" />
-    <button @click="$emit('number-added', Number(number))">
-      Add new number
-    </button>
-  </div>
+
+<div>
+
+<h2>{{ numbers }}</h2>
+
+<input v-model="number" type="number" />
+
+<button @click="$emit('number-added', Number(number))">
+
+Add new number
+
+</button>
+
+</div>
+
 </template>
 
 <script setup>
-  const { numbers } = defineProps(["numbers"]);
+
+const { numbers } = defineProps(["numbers"]);
+
 </script>
 ```
 
 **ParentComponent**
 
-```
+```javascript
 <template>
-  <div>
-    <ChildComponent :numbers="numbers" @number-added="(n) => numbers.push(n)" />
-  </div>
+
+<div>
+
+<ChildComponent :numbers="numbers" @number-added="(n) => numbers.push(n)" />
+
+</div>
+
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import ChildComponent from "./ChildComponent";
 
-  const numbers = ref([1, 2, 3]);
+import { ref } from "vue";
+
+import ChildComponent from "./ChildComponent";
+
+const numbers = ref([1, 2, 3]);
+
 </script>
 ```
 
@@ -141,21 +178,18 @@ JavaScript iconParentComponent.vue
 
 JavaScript iconParentComponent.vue
 
-```
+```javascript
 <template>
   <div>
     <ChildComponent :numbers="numbers" @number-added="(n) => numbers.push(n)" />
   </div>
 </template>
 
-
 <script setup>
 import { ref } from "vue";
 
-
 // eslint-disable-next-line no-unused-vars
 import ChildComponent from "./ChildComponent";
-
 
 // eslint-disable-next-line no-unused-vars
 const numbers = ref([1, 2, 3]);
@@ -168,20 +202,27 @@ const numbers = ref([1, 2, 3]);
 
 يمكننا استخدام الخصائص لتمرير البيانات إلى الأسفل والأحداث المخصّصة لإرسال الرسائل إلى الأعلى. وكيف يمكننا تمرير البيانات أو تيسير التواصل بين مكوّنين مختلفين شقيقين؟
 
+![التواصل بين المكوّنات الشقيقة](/images/patterns-dev/vue-state-management-2-sibling_components_communication.webp)
+
 لا يمكننا استخدام الأحداث المخصّصة بالطريقة التي استخدمناها أعلاه، لأن تلك الأحداث تُصدر داخل واجهة مكوّن معيّن، ونتيجة لذلك فإن مستمع الحدث المخصّص يحتاج إلى التصريح عند الموضع الذي يُعرض فيه المكوّن. وفي مكوّنين منعزلين، لا يُعرض أحدهما داخل الآخر.
 
 إحدى الطرق البسيطة لإدارة حالة مستوى التطبيق هي إنشاء نمط مخزن (store) قائم على مشاركة مخزن بيانات بين المكوّنات. ويمكن للمخزن إدارة حالة تطبيقنا فضلًا عن الطرق المسؤولة عن تغيير الحالة.
 
 على سبيل المثال، يمكننا أن يكون لدينا مخزن بسيط على النحو التالي:
 
-```
+```javascript
 import { reactive } from "vue";
 
 export const store = reactive({
-  numbers: [1, 2, 3],
-  addNumber(newNumber) {
-    this.numbers.push(newNumber);
-  },
+
+numbers: [1, 2, 3],
+
+addNumber(newNumber) {
+
+this.numbers.push(newNumber);
+
+},
+
 });
 ```
 
@@ -193,15 +234,21 @@ export const store = reactive({
 
 **NumberDisplay**:
 
-```
+```javascript
 <template>
-  <div>
-    <h2>{{ store.numbers }}</h2>
-  </div>
+
+<div>
+
+<h2>{{ store.numbers }}</h2>
+
+</div>
+
 </template>
 
 <script setup>
-  import { store } from "../store.js";
+
+import { store } from "../store.js";
+
 </script>
 ```
 
@@ -209,19 +256,27 @@ export const store = reactive({
 
 **NumberSubmit**:
 
-```
+```javascript
 <template>
-  <div>
-    <input v-model="numberInput" type="number" />
-    <button @click="store.addNumber(numberInput)">Add new number</button>
-  </div>
+
+<div>
+
+<input v-model="numberInput" type="number" />
+
+<button @click="store.addNumber(numberInput)">Add new number</button>
+
+</div>
+
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import { store } from "../store.js";
 
-  const numberInput = ref(0);
+import { ref } from "vue";
+
+import { store } from "../store.js";
+
+const numberInput = ref(0);
+
 </script>
 ```
 
@@ -231,11 +286,10 @@ export const store = reactive({
 
 JavaScript iconstore.js
 
-```
+```javascript
 import { reactive } from "vue";
 
-
-  export const store = reactive({
+export const store = reactive({
     numbers: [1, 2, 3],
     addNumber(newNumber) {
       this.numbers.push(newNumber);
@@ -246,6 +300,8 @@ import { reactive } from "vue";
 [Open CodeSandbox](https://codesandbox.io/embed/state-management-3-78vzcy)
 
 حين نقول هنا إن المكوّنات تتفاعل بعضها مع بعض، فإننا نستخدم كلمة «تفاعل» بالمعنى الواسع. فالمكوّنات لن تفعل شيئًا تجاه بعضها، بل ستُحدث تغييرات على بعضها الآخر *عبر* المخزن.
+
+![مخزن حالة تفاعلي بسيط](/images/patterns-dev/vue-state-management-3-simple_store.webp)
 
 وإذا أمعنا النظر في جميع القطع التي تتفاعل مباشرةً مع المخزن، يمكننا حينها من المسى:
 
@@ -263,18 +319,23 @@ import { reactive } from "vue";
 
 في Pinia، يمكننا تعريف مخزن باستخدام الدالة `defineStore()`. ويتيح لنا Pinia تعريف مخزن بصيغة تحاكي واجهة الخيارات (Options API) أو واجهة التركيب (Composition API). وهنا نستخدم صيغة واجهة التركيب لتعريف دالة `useNumbersStore()` لإنشاء مخزن `numbers`.
 
-```
+```javascript
 import { ref } from "vue";
+
 import { defineStore } from "pinia";
 
 export const useNumbersStore = defineStore("numbers", () => {
-  const numbers = ref([1, 2, 3]);
 
-  function addNumber(newNumber) {
-    this.numbers.push(newNumber);
-  }
+const numbers = ref([1, 2, 3]);
 
-  return { numbers, addNumber };
+function addNumber(newNumber) {
+
+this.numbers.push(newNumber);
+
+}
+
+return { numbers, addNumber };
+
 });
 ```
 
@@ -282,51 +343,71 @@ export const useNumbersStore = defineStore("numbers", () => {
 
 ويمكننا بعد ذلك إنشاء نسخة Pinia وتثبيتها في تطبيق Vue لدينا.
 
-```
+```javascript
 import { createApp } from "vue";
+
 import { createPinia } from "pinia";
+
 import App from "./App.vue";
+
 import "./styles.css";
 
 const app = createApp(App);
+
 const pinia = createPinia();
 
 app.use(pinia);
+
 app.mount("#app");
 ```
 
 في هذه اللحظة، يمكننا استخدام المخزن الذي أنشأناه حديثًا في مكوّناتنا. وفي المكوّن `NumberDisplay`، سنستورد الدالة `useNumbersStore()` من ملف المخزن ونستدعيها للحصول على الوصول إلى نسخة المخزن. ويمكننا بعد ذلك الإشارة إلى قيمة `numbers` في المخزن داخل قالب المكوّن.
 
-```
+```javascript
 <template>
-  <div>
-    <h2>{{ store.numbers }}</h2>
-  </div>
+
+<div>
+
+<h2>{{ store.numbers }}</h2>
+
+</div>
+
 </template>
 
 <script setup>
-  import { useNumbersStore } from "../store";
 
-  const store = useNumbersStore();
+import { useNumbersStore } from "../store";
+
+const store = useNumbersStore();
+
 </script>
 ```
 
 وفي المكوّن `NumberSubmit`، يمكننا فعل الشيء نفسه كما في الأعلى للوصول إلى طريقة المخزن `addNumber()` التي ستُستخدم لتحديث خاصية `numbers` في المخزن.
 
-```
+```javascript
 <template>
-  <div>
-    <input v-model="numberInput" type="number" />
-    <button @click="store.addNumber(numberInput)">Add new number</button>
-  </div>
+
+<div>
+
+<input v-model="numberInput" type="number" />
+
+<button @click="store.addNumber(numberInput)">Add new number</button>
+
+</div>
+
 </template>
 
 <script setup>
-  import { ref } from "vue";
-  import { useNumbersStore } from "../store";
 
-  const store = useNumbersStore();
-  const numberInput = ref(0);
+import { ref } from "vue";
+
+import { useNumbersStore } from "../store";
+
+const store = useNumbersStore();
+
+const numberInput = ref(0);
+
 </script>
 ```
 
@@ -334,7 +415,7 @@ app.mount("#app");
 
 JavaScript iconstore.js
 
-```
+```javascript
 import { defineStore } from "pinia";
   import { ref } from "vue";
   
@@ -352,6 +433,8 @@ import { defineStore } from "pinia";
 [Open CodeSandbox](https://codesandbox.io/embed/state-management-4-3tr5qr)
 
 بالنسبة إلى تطبيق بسيط كتطبيق، قد لا يكون مخزن Pinia ضروريًا حقًا، وسلوكه قريب جدًا من مجرد استخدام مخزن أُنشئ بالدالة `reactive()` ومع ذلك، يقدّم Pinia قدرات إضافية لحالات الاستخدام الأكثر تعقيدًا، مثل القدرة على [توسيع ميزات Pinia عبر الإضافات](https://pinia.vuejs.org/core-concepts/plugins.html)، والحصول على دعم لأدوات المطوّر (devtools)، وامتياز [دعم TypeScript](https://pinia.vuejs.org/core-concepts/state.html#typescript) و[دعم العرض في الخادم](https://pinia.vuejs.org/ssr/nuxt.html) الأكثر ملاءمة.
+
+![Pinia داخل أدوات مطوّر Vue](/images/patterns-dev/vue-state-management-4-pinia_vue_devtools.webp)
 
 ## ما هي الطريقة الصحيحة؟
 
@@ -375,5 +458,3 @@ import { defineStore } from "pinia";
 - [أحداث المكوّنات | توثيق Vue](https://vuejs.org/guide/components/events.html#component-events)
 - [إدارة حالة بسيطة عبر واجهة التفاعلية | توثيق Vue](https://vuejs.org/guide/scaling-up/state-management.html#simple-state-management-with-reactivity-api)
 - [المفاهيم الأساسية | Pinia](https://pinia.vuejs.org/core-concepts/)
-
-![إدارة الحالة](/images/patterns-dev/vue-state-management-78-props.webp) ![إدارة الحالة](/images/patterns-dev/vue-state-management-79-custom_events.webp) ![إدارة الحالة](/images/patterns-dev/vue-state-management-80-sibling_components_communication.webp) ![إدارة الحالة](/images/patterns-dev/vue-state-management-81-simple_store.webp) ![إدارة الحالة](/images/patterns-dev/vue-state-management-82-pinia_vue_devtools.webp)

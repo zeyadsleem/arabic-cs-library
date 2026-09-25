@@ -3,7 +3,6 @@ title: نمط PRPL (PRPL Pattern)
 lang: ar
 source: https://www.patterns.dev/vanilla/prpl/
 ---
-
 PRPL — **الدفع، العرض، التخزين المسبق، التحميل الكسول (Push, Render, Pre-cache, Lazy-load)** — هي استراتيجية طورتها Google عام 2016 لجعل تطبيقات الويب قابلة للاستخدام على شبكات الهاتف المحمول المتقطعة والهواتف ضعيفة الإمكانات. كان هذا النمط سائدًا في التسليم ذو الأولوية الأولى من نحو 2016 حتى 2019؛ ولا تزال أعمدتها نصائح جيدة اليوم، لكن *التنفيذات* تطورت. زال دفع الخادم (server push) من Chrome، وامتزجت هياكل التطبيقات (app shells) إلى حد كبير مع SSR الحديث مع البث، وأصبحت المقاييس التي نقيسها LCP وINP بدلاً من تقديرات time-to-interactive.
 
 يحافظ هذا المقال على تأطير الأعمدة الأربعة الأصلي لأنه لا يزال قائمة تحقق مفيدة، ثم يوضح شكل كل عمود اليوم.
@@ -21,8 +20,6 @@ PRPL — **الدفع، العرض، التخزين المسبق، التحمي�
 
 تحميل صفحة ساذج هو سلسلة من رحلات الذهاب والإياب. يطلب المتصفح HTML، يحلله، يكتشف ورقة أنماط، يطلبها، يكتشف سكربتًا، يطلبه، يكتشف خطًا، وهكذا. في اتصال 4G بزمن استجابة دائري يزيد على 100ms، تكون كل خطوة ظاهرة للمستخدم. كان PRPL استجابة لذلك: افعل كل ما تستطيع لتقليل تلك الرحلات، ثم خزّن النتيجة بقوة بحيث تدفع *الزيارة التالية* تكلفة أقل.
 
-
-
 اعتمد مقال PRPL الأصلي بقوة على دفع خادم HTTP/2 كحل لمشكلة رحلات الذهاب والإياب. لقد تغيرت هذه القصة.
 
 ## الدفع: من دفع الخادم إلى Early Hints
@@ -35,20 +32,25 @@ PRPL — **الدفع، العرض، التخزين المسبق، التحمي�
 
 **``** يعلن جلبًا عالي الأولوية مباشرة في HTML. إنه الأداة الأساسية لإخبار المتصفح: «سوف تحتاج إلى هذا الخط أو السكربت أو الصورة؛ لا تنتظر حتى تحلل ما يكفي لاكتشافه».
 
-```
+```javascript
 <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+
 <link rel="modulepreload" href="/assets/app.js">
 ```
 
 **`103 Early Hints` عبر HTTP** هو الوريث الحديث لدفع الخادم، وهو الحل الذي يعالج فعلاً مشكلة رحلات الذهاب والإياب التي كان PRPL يهتم بها. قبل أن ينتهي الخادم من إنشاء الاستجابة الكاملة، يمكنه إرسال استجابة مؤقتة `103` مع رؤوس `Link` تخبر المتصفح بما يبدأ في جلبه:
 
-```
+```javascript
 HTTP/1.1 103 Early Hints
+
 Link: </assets/app.js>; rel=preload; as=script
+
 Link: </assets/app.css>; rel=preload; as=style
 
 HTTP/1.1 200 OK
+
 Content-Type: text/html
+
 ...
 ```
 
@@ -78,22 +80,33 @@ Content-Type: text/html
 
 **التخزين المؤقت وقت التشغيل باستخدام عامل خدمة.** [Workbox](https://developer.chrome.com/docs/workbox) هي المكتبة الفعلية: اختر استراتيجية لكل مسار (`StaleWhileRevalidate` لهيكل التطبيق، و`CacheFirst` مع انتهاء الصلاحية للصور، و`NetworkFirst` لاستجابات API)، ويولّد Workbox عامل الخدمة نيابةً عنك. هذه هي الطبقة التي توفر لك تجربة غير متصلة مفيدة.
 
-```
+```javascript
 import { registerRoute } from "workbox-routing";
+
 import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
+
 import { ExpirationPlugin } from "workbox-expiration";
 
 registerRoute(
-  ({ request }) => request.destination === "script",
-  new StaleWhileRevalidate({ cacheName: "scripts" })
+
+({ request }) => request.destination === "script",
+
+new StaleWhileRevalidate({ cacheName: "scripts" })
+
 );
 
 registerRoute(
-  ({ request }) => request.destination === "image",
-  new CacheFirst({
-    cacheName: "images",
-    plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })],
-  })
+
+({ request }) => request.destination === "image",
+
+new CacheFirst({
+
+cacheName: "images",
+
+plugins: [new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })],
+
+})
+
 );
 ```
 

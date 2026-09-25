@@ -40,26 +40,45 @@ React 18 ships most of this out of the box. The next sections show how to use it
 
 If you’re already using `hydrateRoot` with ``, you’re already doing the simplest form of progressive hydration. Any tree wrapped in `` hydrates *independently* of the rest of the page. And if the user clicks inside a region that hasn’t hydrated yet, React reprioritizes — that region jumps the queue.
 
-```
+```javascript
 import { Suspense, lazy } from "react";\n
+
 const ProductReviews = lazy(() => import("./ProductReviews"));
+
 const RelatedProducts = lazy(() => import("./RelatedProducts"));
+
 const Comments = lazy(() => import("./Comments"));\n
+
 export default function ProductPage({ product }) {
+
   return (
+
     <>
+
       <ProductDetails product={product} /> {/* hydrates first */}\n
+
       <Suspense fallback={<ReviewsSkeleton />}>
+
         <ProductReviews productId={product.id} />
+
       </Suspense>\n
+
       <Suspense fallback={<RelatedSkeleton />}>
+
         <RelatedProducts productId={product.id} />
+
       </Suspense>\n
+
       <Suspense fallback={null}>
+
         <Comments productId={product.id} />
+
       </Suspense>
+
     </>
+
   );
+
 }
 ```
 
@@ -77,42 +96,71 @@ For below-the-fold content, you can do better than “load it eventually” — 
 
 A small `` wrapper using `IntersectionObserver` looks like this:
 
-```
+```javascript
 "use client";
+
 import { useState, useEffect, useRef, Suspense } from "react";\n
+
 export function LazyHydrate({ children, rootMargin = "200px" }) {
+
   const [visible, setVisible] = useState(false);
+
   const ref = useRef(null);\n
+
   useEffect(() => {
+
     if (visible) return;
+
     const node = ref.current;
+
     if (!node) return;\n
+
     const observer = new IntersectionObserver(
+
       ([entry]) => {
+
         if (entry.isIntersecting) {
+
           setVisible(true);
+
           observer.disconnect();
+
         }
+
       },
+
       { rootMargin }
+
     );
+
     observer.observe(node);
+
     return () => observer.disconnect();
+
   }, [visible]);\n
+
   return (
+
     <div ref={ref}>
+
       {visible ? <Suspense fallback={null}>{children}</Suspense> : null}
+
     </div>
+
   );
+
 }
 ```
 
 In Next.js, the more idiomatic version is `next/dynamic`:
 
-```
+```javascript
 import dynamic from "next/dynamic";\n
+
 const HeavyChart = dynamic(() => import("./HeavyChart"), {
+
   loading: () => <ChartSkeleton />,
+
 });
 ```
 
@@ -124,22 +172,37 @@ For UI that the user *might* engage with — a search dropdown, a date picker, a
 
 In a Next.js app you can replicate it with a small wrapper:
 
-```
+```javascript
 "use client";
+
 import { useState, lazy, Suspense } from "react";\n
+
 const SearchModal = lazy(() => import("./SearchModal"));\n
+
 export function SearchTrigger() {
+
   const [open, setOpen] = useState(false);\n
+
   return (
+
     <>
+
       <button onClick={() => setOpen(true)}>Search</button>
+
       {open && (
+
         <Suspense fallback={<p>Loading search...</p>}>
+
           <SearchModal onClose={() => setOpen(false)} />
+
         </Suspense>
+
       )}
+
     </>
+
   );
+
 }
 ```
 
@@ -153,21 +216,35 @@ Hydration competes for the main thread with everything else the browser is doing
 - The Actions API runs form submissions through a transition automatically, so a click that submits a form remains responsive even while related components are still hydrating.
 - `useActionState` and `useFormStatus` give progressive-enhancement-friendly form handling — the form works before JavaScript loads at all.
 
-```
+```javascript
 "use client";
+
 import { useActionState } from "react";
+
 import { subscribeAction } from "./actions";\n
+
 export function SubscribeForm() {
+
   const [state, formAction, isPending] = useActionState(subscribeAction, null);\n
+
   return (
+
     <form action={formAction}>
+
       <input type="email" name="email" required />
+
       <button disabled={isPending}>
+
         {isPending ? "Subscribing..." : "Subscribe"}
+
       </button>
+
       {state?.error && <p>{state.error}</p>}
+
     </form>
+
   );
+
 }
 ```
 
@@ -177,20 +254,33 @@ Because the form’s `action` is a real Server Action, the form submits even bef
 
 The most aggressive form of “don’t hydrate this” is “don’t ship its JS at all”. A React Server Component renders entirely on the server, never produces a client bundle, and has nothing to hydrate. Hydration cost for an RSC is exactly zero.
 
-```
+```javascript
 // app/page.tsx  -- Server Component by default
+
 import ClientCounter from "./ClientCounter";\n
+
 export default async function Home() {
+
   const posts = await db.posts.findMany();\n
+
   return (
+
     <main>
+
       <h1>Latest posts</h1>
+
       <ul>
+
         {posts.map((p) => <li key={p.id}>{p.title}</li>)} {/* no client JS */}
+
       </ul>
+
       <ClientCounter /> {/* the only thing that hydrates */}
+
     </main>
+
   );
+
 }
 ```
 

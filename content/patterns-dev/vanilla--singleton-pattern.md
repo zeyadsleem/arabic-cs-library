@@ -3,7 +3,6 @@ title: نمط المفرد (singleton)
 lang: ar
 source: https://www.patterns.dev/vanilla/singleton-pattern/
 ---
-
 نمط المفرد (singleton) هو كائن موجود مرة واحدة فقط طوال عمر التطبيق. يحصل كل مستدعٍ عليه على النسخة نفسها — الحالة نفسها، والطرق نفسها، والهوية نفسها. يظهر هذا النمط متى كان هناك مورد مشترك فعلًا: مجموعة اتصالات بقاعدة بيانات، أو عميل أعلام ميزات يستعلم عن خدمة بعيدة، أو WebSocket يوزع الرسائل الواردة على مشتركين كثيرين، أو عميل تحليلات يجمع الأحداث قبل إرسالها.
 
 في كل هذه الحالات، لا تريد وجود نسختين من الشيء نفسه. مجموعتا اتصالات تضاعفان عدد الاتصالات. أما عميلان للتحليلات فسيتنافسان عند الإرسال. إن نمط المفرد هو الإجابة التقليدية على: «تأكد من وجود نسخة واحدة، مهما تعددت الأماكن التي تطلبها».
@@ -14,39 +13,61 @@ source: https://www.patterns.dev/vanilla/singleton-pattern/
 
 إليك تنفيذًا كلاسيكية حُدِّثت باستخدام حقول الأصناف الخاصة وواصف ثابت. سنستخدم عميل أعلام ميزات كمثال متواصل — وهي خدمة تحمّل قيم الأعلام مرة واحدة وتقدمها إلى بقية التطبيق.
 
-```
+```javascript
 class FeatureFlags {
-  // Private static slot for the one instance
-  static #instance = null;
 
-  // Private state — invisible outside the class
-  #flags = new Map();
-  #loaded = false;
+// Private static slot for the one instance
 
-  constructor() {
-    if (FeatureFlags.#instance) {
-      return FeatureFlags.#instance;
-    }
-    FeatureFlags.#instance = this;
-  }
+static #instance = null;
 
-  static getInstance() {
-    return (FeatureFlags.#instance ??= new FeatureFlags());
-  }
+// Private state — invisible outside the class
 
-  async load(url) {
-    if (this.#loaded) return;
-    const res = await fetch(url);
-    const data = await res.json();
-    for (const [key, value] of Object.entries(data)) {
-      this.#flags.set(key, value);
-    }
-    this.#loaded = true;
-  }
+#flags = new Map();
 
-  isEnabled(name) {
-    return this.#flags.get(name) === true;
-  }
+#loaded = false;
+
+constructor() {
+
+if (FeatureFlags.#instance) {
+
+return FeatureFlags.#instance;
+
+}
+
+FeatureFlags.#instance = this;
+
+}
+
+static getInstance() {
+
+return (FeatureFlags.#instance ??= new FeatureFlags());
+
+}
+
+async load(url) {
+
+if (this.#loaded) return;
+
+const res = await fetch(url);
+
+const data = await res.json();
+
+for (const [key, value] of Object.entries(data)) {
+
+this.#flags.set(key, value);
+
+}
+
+this.#loaded = true;
+
+}
+
+isEnabled(name) {
+
+return this.#flags.get(name) === true;
+
+}
+
 }
 
 export default FeatureFlags;
@@ -56,14 +77,17 @@ export default FeatureFlags;
 
 لا ينشئ أي مستدعٍ هذه النسخة مباشرة:
 
-```
+```javascript
 import FeatureFlags from "./feature-flags.js";
 
 const flags = FeatureFlags.getInstance();
+
 await flags.load("/config/flags.json");
 
 if (flags.isEnabled("new-checkout")) {
-  // render the new flow
+
+// render the new flow
+
 }
 ```
 
@@ -73,23 +97,35 @@ if (flags.isEnabled("new-checkout")) {
 
 إليك عميل أعلام الميزات نفسه مكتوبًا دون أي من آليات نمط المفرد.
 
-```
+```javascript
 // feature-flags.js
+
 const flags = new Map();
+
 let loaded = false;
 
 export async function load(url) {
-  if (loaded) return;
-  const res = await fetch(url);
-  const data = await res.json();
-  for (const [key, value] of Object.entries(data)) {
-    flags.set(key, value);
-  }
-  loaded = true;
+
+if (loaded) return;
+
+const res = await fetch(url);
+
+const data = await res.json();
+
+for (const [key, value] of Object.entries(data)) {
+
+flags.set(key, value);
+
+}
+
+loaded = true;
+
 }
 
 export function isEnabled(name) {
-  return flags.get(name) === true;
+
+return flags.get(name) === true;
+
 }
 ```
 
@@ -112,20 +148,27 @@ export function isEnabled(name) {
 
 تتيح مكتبات مثل [InversifyJS](https://inversify.io/) و[tsyringe](https://github.com/microsoft/tsyringe) تسجيل خدمة مرة واحدة وحلها في أي مكان، لكن الربط يُضبط في مكان واحد — عادةً عند جذر تركيب التطبيق (composition root).
 
-```
+```javascript
 import { container, singleton, inject } from "tsyringe";
 
 @singleton()
+
 class AnalyticsClient {
-  track(event: string, props: Record<string, unknown>) { /* ... */ }
+
+track(event: string, props: Record<string, unknown>) { /* ... */ }
+
 }
 
 class CheckoutService {
-  constructor(@inject(AnalyticsClient) private analytics: AnalyticsClient) {}
 
-  complete(orderId: string) {
-    this.analytics.track("order_completed", { orderId });
-  }
+constructor(@inject(AnalyticsClient) private analytics: AnalyticsClient) {}
+
+complete(orderId: string) {
+
+this.analytics.track("order_completed", { orderId });
+
+}
+
 }
 
 const checkout = container.resolve(CheckoutService);
@@ -137,20 +180,29 @@ const checkout = container.resolve(CheckoutService);
 
 في React، تعني «العالمية» عادةً «متاح لكل مكون في هذه الشجرة». يتيح لك كل من `createContext` والمزود (Provider) تحديد ذلك، مع ميزة إضافية هي أن النطاق هو الشجرة الفرعية؛ يمكنك تركيب قيمة مختلفة في اختبار أو قصة Storybook دون المساس بشيفرة الإنتاج.
 
-```
+```javascript
 const FeatureFlagsContext = createContext(null);
 
 export function FeatureFlagsProvider({ client, children }) {
-  return (
-    <FeatureFlagsContext.Provider value={client}>
-      {children}
-    </FeatureFlagsContext.Provider>
-  );
+
+return (
+
+<FeatureFlagsContext.Provider value={client}>
+
+{children}
+
+</FeatureFlagsContext.Provider>
+
+);
+
 }
 
 export function useFeatureFlag(name) {
-  const client = useContext(FeatureFlagsContext);
-  return client.isEnabled(name);
+
+const client = useContext(FeatureFlagsContext);
+
+return client.isEnabled(name);
+
 }
 ```
 
@@ -158,13 +210,17 @@ export function useFeatureFlag(name) {
 
 للحالة على مستوى التطبيق مع الاشتراكات، حلّت المخازن الحديثة إلى حد كبير محل الأنماط المفردة العشوائية. فمخزن Zustand، على سبيل المثال، دالة — لا صنف — تعيد خطّافًا مرتبطًا بحالة واحدة:
 
-```
+```javascript
 import { create } from "zustand";
 
 export const useSession = create((set) => ({
-  user: null,
-  login: (user) => set({ user }),
-  logout: () => set({ user: null }),
+
+user: null,
+
+login: (user) => set({ user }),
+
+logout: () => set({ user: null }),
+
 }));
 ```
 
@@ -184,15 +240,21 @@ export const useSession = create((set) => ({
 
 الدالة التي تستدعي `Logger.getInstance()` في أعماق جسمها تملك تبعية لا تظهر في توقيعها. وبعد شهرين، عندما يحاول أحدهم استخدام الدالة في سياق مختلف، يكتشف الاقتران بالطريقة الصعبة. الأفضل تمرير التبعية صراحةً:
 
-```
+```javascript
 // Hidden dependency
+
 function processOrder(order) {
-  Logger.getInstance().info("processing", order.id);
+
+Logger.getInstance().info("processing", order.id);
+
 }
 
 // Explicit — the contract is in the signature
+
 function processOrder(order, logger) {
-  logger.info("processing", order.id);
+
+logger.info("processing", order.id);
+
 }
 ```
 

@@ -6,7 +6,11 @@ source: https://www.patterns.dev/vue/provide-inject/
 
 When managing data between parent and child components, Vue gives us the ability to use something known as **props** to pass data down from parent to child. Props can only flow in one direction, from parent components to child components (and further down). When state changes occur on parent elements, Vue will re-render components that depend on those values.
 
+![Props](/images/patterns-dev/vue-provide-inject-0-props.webp)
+
 Using props works well in most cases. However, when working in large applications with a large number of components in the component tree, props can become hard to maintain since props need to be declared in *each and every component* in the component tree.
+
+![Props](/images/patterns-dev/vue-provide-inject-1-nested_props.webp)
 
 When considering how data can be managed between a large number of components, it’s often best to work towards a solution that allows the management of application-level state in a maintainable and manageable manner (e.g. creating a reusable store, using Pinia, etc.). We talk about this in more detail in the [State Management](/vue/state-management) guide.
 
@@ -16,36 +20,59 @@ However, Vue also provides a certain pattern to help avoid the need for complex 
 
 The `provide()` function in Vue allows us to pass data through a component tree without the need to *prop-drill* (i.e., pass props down manually at every level). On the other hand, the `inject()` option is used in child components to access the provided data or methods from their parent or any ancestor component.
 
+![Props](/images/patterns-dev/vue-provide-inject-2-provide_inject.webp)
+
 We’ll go through a simple example to illustrate how this can be done. Suppose we have a parent component called `App` that wants to share a piece of data with its child component, `ChildComponent`. Instead of passing this data as a prop, we can use `provide()` in the parent component to make the data available to all its child components.
 
-```
+```javascript
 <template>
+
   <div id="app">
+
     <ChildComponent />
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { provide } from "vue";
+
   import ChildComponent from "./components/ChildComponent";
 
+
+
   provide("data", "Data from parent!");
+
 </script>
 ```
 
 We can then access this provided data in the `ChildComponent` with the help of the `inject()` function.
 
-```
+```javascript
 <template>
+
   <div>
+
     <p>{{ data }}</p>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { inject } from "vue";
 
+
+
   const data = inject("data");
+
 </script>
 ```
 
@@ -53,7 +80,7 @@ By specifying `inject("data")` in the child component (`ChildComponent`), we dir
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div id="app">
     <ChildComponent />
@@ -74,73 +101,139 @@ provide("data", "Data from parent!");
 
 With provide/inject, we would notice the same behavior as we’ve seen above even if we had numerous child components within the component hierarchy tree. As an example, assume we had ``, ``, ``, `` and `` components where each child component is a parent to the other.
 
-```
+```javascript
 <!-- ChildComponent5 -->
+
 <template>
+
   <div>
+
     <p>{{ data }}</p>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { inject } from "vue";
+
   const data = inject("data");
+
 </script>
+
 <!--  ------------- -->
+
+
 
 <!-- ChildComponent4 -->
+
 <template>
+
   <ChildComponent5 />
+
 </template>
 
+
+
 <script setup>
+
   import ChildComponent5 from "./ChildComponent5";
+
 </script>
+
 <!--  ------------- -->
+
+
 
 <!-- ChildComponent3 -->
+
 <template>
+
   <ChildComponent4 />
+
 </template>
 
+
+
 <script setup>
+
   import ChildComponent4 from "./ChildComponent4";
+
 </script>
+
 <!--  ------------- -->
+
+
 
 <!-- ChildComponent2 -->
+
 <template>
+
   <ChildComponent3 />
+
 </template>
 
+
+
 <script setup>
+
   import ChildComponent3 from "./ChildComponent3";
+
 </script>
+
 <!--  ------------- -->
+
+
 
 <!-- ChildComponent -->
+
 <template>
+
   <ChildComponent2 />
+
 </template>
 
+
+
 <script setup>
+
   import ChildComponent2 from "./ChildComponent2";
+
 </script>
+
 <!--  ------------- -->
 
+
+
 <!-- App -->
+
 <template>
+
   <div id="app">
+
     <ChildComponent />
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { provide } from "vue";
+
   import ChildComponent from "./components/ChildComponent";
 
+
+
   provide("data", "Data from parent!");
+
 </script>
+
 <!--  ------------- -->
 ```
 
@@ -148,7 +241,7 @@ Data from the parent `` component will be rendered in the `` component without t
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div id="app">
     <ChildComponent />
@@ -169,15 +262,24 @@ provide("data", "Data from parent!");
 
 In addition to being able to `provide()` data from a parent component, we can lift the `provide()` up to the app level as well (i.e. where we instantiate our Vue application).
 
-```
+```javascript
 import { createApp } from "vue";
+
 import App from "./App.vue";
+
 import "./styles.css";
+
+
 
 const app = createApp(App);
 
+
+
 // app-level provide
+
 app.provide("data", "Data from parent!");
+
+
 
 app.mount("#app");
 ```
@@ -205,5 +307,3 @@ On the other hand, props are ideal when data needs to be isolated within a speci
 ## Helpful resources
 
 - [Provide / Inject | Vue Documentation](https://vuejs.org/guide/components/provide-inject.html)
-
-![Provide/Inject](/images/patterns-dev/vue-provide-inject-70-props.webp) ![Provide/Inject](/images/patterns-dev/vue-provide-inject-71-nested_props.webp) ![Provide/Inject](/images/patterns-dev/vue-provide-inject-72-provide_inject.webp)

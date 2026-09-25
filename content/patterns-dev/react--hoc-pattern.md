@@ -3,15 +3,15 @@ title: نمط المكوّن من رتبة عليا (HOC)
 lang: ar
 source: https://www.patterns.dev/react/hoc-pattern/
 ---
-
 ## مشهد يحفّز الحاجة إلى هذا النمط
 
 لديك قاعدة شيفرة React واسعة النطاق. تحتاج كل شاشة إلى إطلاق حدث تحليلي عند التركيب (mount)، لكن فقط عندما يكون المستخدم الحالي قد وافق على التتبّع. رشّ هذا المنطق في كل مكوّن صفحة سيكون مكررًا وسهل النسيان وكارثةً حين تتحدّث حزمة التحليلات.
 
 نمط المكوّن من رتبة عليا (Higher-Order Component، HOC) هو أحد أقدم الحلول في React لمعالجة هذه المشكلات العابرة للطبقات. المكوّن من رتبة عليا مجرد دالة: يقبل مكوّنًا ويعيد مكوّنًا جديدًا يلفّ المكوّن الأصلي بسلوك إضافي. فكّر فيه كأنّه مزخرف (decorator) للمكوّنات.
 
-```
+```javascript
 // The shape of every HOC
+
 type HOC<P> = (Wrapped: React.ComponentType<P>) => React.ComponentType<P>;
 ```
 
@@ -27,36 +27,51 @@ type HOC<P> = (Wrapped: React.ComponentType<P>) => React.ComponentType<P>;
 - يقبل `eventName` حتى يمكن إعادة استخدام HOC نفسه لأي شاشة.
 - يمرّر كل خاصية إلى المكوّن الملفوف دون تغيير.
 
-```
+```javascript
 import { useEffect } from "react";
+
 import { track } from "./analytics";
 
 export function withAnalytics<P extends object>(
-  Wrapped: React.ComponentType<P>,
-  eventName: string,
+
+Wrapped: React.ComponentType<P>,
+
+eventName: string,
+
 ) {
-  function WithAnalytics(props: P) {
-    useEffect(() => {
-      track(eventName, { path: window.location.pathname });
-    }, []);
 
-    return <Wrapped {...props} />;
-  }
+function WithAnalytics(props: P) {
 
-  // Helpful in React DevTools
-  WithAnalytics.displayName = `withAnalytics(${
-    Wrapped.displayName ?? Wrapped.name ?? "Component"
-  })`;
+useEffect(() => {
 
-  return WithAnalytics;
+track(eventName, { path: window.location.pathname });
+
+}, []);
+
+return <Wrapped {...props} />;
+
+}
+
+// Helpful in React DevTools
+
+WithAnalytics.displayName = `withAnalytics(${
+
+Wrapped.displayName ?? Wrapped.name ?? "Component"
+
+})`;
+
+return WithAnalytics;
+
 }
 ```
 
 الاستخدام عبارة عن سطر واحد عند التصدير:
 
-```
+```javascript
 function CheckoutPage(props: CheckoutPageProps) {
-  return <main>{/* ...checkout UI... */}</main>;
+
+return <main>{/* ...checkout UI... */}</main>;
+
 }
 
 export default withAnalytics(CheckoutPage, "checkout_viewed");
@@ -72,25 +87,39 @@ export default withAnalytics(CheckoutPage, "checkout_viewed");
 
 يصبح HOCs أكثر إثارة للاهتمام عندما يحقن خصائص (props) يستطيع المكوّن الملفوف قراءتها. يعد `withFeatureFlag` مثالًا كلاسيكيًا: يوفّر متغيرين من المكوّن، ويدع HOC يقرّر أيّهما يُعرض استنادًا إلى خدمة رايات بعيدة.
 
-```
+```javascript
 import { useFlag } from "./flagsClient";
 
 export function withFeatureFlag<P extends object>(
-  flagKey: string,
-  Treatment: React.ComponentType<P>,
-  Control: React.ComponentType<P>,
+
+flagKey: string,
+
+Treatment: React.ComponentType<P>,
+
+Control: React.ComponentType<P>,
+
 ) {
-  return function WithFeatureFlag(props: P) {
-    const enabled = useFlag(flagKey);
-    return enabled ? <Treatment {...props} /> : <Control {...props} />;
-  };
+
+return function WithFeatureFlag(props: P) {
+
+const enabled = useFlag(flagKey);
+
+return enabled ? <Treatment {...props} /> : <Control {...props} />;
+
+};
+
 }
 
 // At the call site:
+
 export const PricingPage = withFeatureFlag(
-  "pricing_redesign_2025",
-  PricingPageNew,
-  PricingPageLegacy,
+
+"pricing_redesign_2025",
+
+PricingPageNew,
+
+PricingPageLegacy,
+
 );
 ```
 
@@ -100,38 +129,56 @@ export const PricingPage = withFeatureFlag(
 
 الغرض الكامل من هذا النمط هو أن HOCs مجرد دوال، والدوال قابلة للتركيب. تبدو طبقة إنتاجية شائعة بالشكل الآتي:
 
-```
+```javascript
 export default withErrorBoundary(
-  withAuthorization(
-    withAnalytics(CheckoutPage, "checkout_viewed"),
-    { requiredRole: "customer" },
-  ),
-  { fallback: <SomethingWentWrong /> },
+
+withAuthorization(
+
+withAnalytics(CheckoutPage, "checkout_viewed"),
+
+{ requiredRole: "customer" },
+
+),
+
+{ fallback: <SomethingWentWrong /> },
+
 );
 ```
 
 فور بدء تداخل ثلاثة أو أربعة منها، يصبح موضع الاستدعاء صعب القراءة. وفي ما يلي طريقتان شائعتان لتنظيفه:
 
-```
+```javascript
 // 1. Pipe-style composition with a tiny helper
+
 const compose =
-  (...hocs) =>
-  (Component) =>
-    hocs.reduceRight((acc, hoc) => hoc(acc), Component);
+
+(...hocs) =>
+
+(Component) =>
+
+hocs.reduceRight((acc, hoc) => hoc(acc), Component);
 
 export default compose(
-  withErrorBoundary({ fallback: <SomethingWentWrong /> }),
-  withAuthorization({ requiredRole: "customer" }),
-  withAnalyticsEvent("checkout_viewed"),
+
+withErrorBoundary({ fallback: <SomethingWentWrong /> }),
+
+withAuthorization({ requiredRole: "customer" }),
+
+withAnalyticsEvent("checkout_viewed"),
+
 )(CheckoutPage);
 ```
 
-```
+```javascript
 // 2. A decorator-like factory: each HOC takes its config first,
+
 //    returns the actual (Component) => Component function.
+
 const withAnalyticsEvent = (eventName: string) =>
-  <P extends object>(C: React.ComponentType<P>) =>
-    withAnalytics(C, eventName);
+
+<P extends object>(C: React.ComponentType<P>) =>
+
+withAnalytics(C, eventName);
 ```
 
 شاع هذا الأسلوب عبر المكتبة [`recompose`](https://github.com/acdlite/recompose). ويوصي ملف README الخاص بها الآن باستخدام الخطافات (hooks) للشيفرة الجديدة، وقد توقّفت صيانة الحزمة منذ سنوات، وهي إشارة مفيدة إلى المكان الذي تبوأه مجتمع React.
@@ -144,13 +191,19 @@ const withAnalyticsEvent = (eventName: string) =>
 
 إذا كان HOC الخاص بك يحقن خاصية تحمل الاسم نفسه الذي يمرّره أحد الوالدين، فهناك خاسر. يعتمد السلوك على ترتيب نشر الخصائص:
 
-```
+```javascript
 function withTheme<P extends { theme?: Theme }>(Wrapped: React.ComponentType<P>) {
-  return (props: Omit<P, "theme">) => {
-    const theme = useTheme();
-    // Parent-supplied props win because they are spread last
-    return <Wrapped theme={theme} {...(props as P)} />;
-  };
+
+return (props: Omit<P, "theme">) => {
+
+const theme = useTheme();
+
+// Parent-supplied props win because they are spread last
+
+return <Wrapped theme={theme} {...(props as P)} />;
+
+};
+
 }
 ```
 
@@ -164,15 +217,23 @@ function withTheme<P extends { theme?: Theme }>(Wrapped: React.ComponentType<P>)
 
 يضيف كل HOC عقدة أخرى إلى شجرة المكوّنات. عادةً ما تكون ثلاث أو أربع طبقات مقبولة؛ أما عشر طبقات فيبدأ DevTools فيبدو كدمية روسية وتصبح آثار المكدس مستعصية على الفهم.
 
-```
+```javascript
 <WithRouter>
-  <WithAuth>
-    <WithTheme>
-      <WithAnalytics>
-        <CheckoutPage />
-      </WithAnalytics>
-    </WithTheme>
-  </WithAuth>
+
+<WithAuth>
+
+<WithTheme>
+
+<WithAnalytics>
+
+<CheckoutPage />
+
+</WithAnalytics>
+
+</WithTheme>
+
+</WithAuth>
+
 </WithRouter>
 ```
 
@@ -195,10 +256,13 @@ function withTheme<P extends { theme?: Theme }>(Wrapped: React.ComponentType<P>)
 
 إليك فكرة `useFeatureFlag` نفسها، معادة صياغتها في صورة خطاف:
 
-```
+```javascript
 function PricingPage(props: PricingPageProps) {
-  const showRedesign = useFlag("pricing_redesign_2025");
-  return showRedesign ? <PricingPageNew {...props} /> : <PricingPageLegacy {...props} />;
+
+const showRedesign = useFlag("pricing_redesign_2025");
+
+return showRedesign ? <PricingPageNew {...props} /> : <PricingPageLegacy {...props} />;
+
 }
 ```
 
@@ -220,18 +284,27 @@ function PricingPage(props: PricingPageProps) {
 
 يعد React Redux المثال المرجعي لاستخدام HOC في العالم الحقيقي. طوال عقد من الزمن، كانت طريقة منح مكوّن وصولًا إلى المخزن هي [`connect`](https://react-redux.js.org/api/connect):
 
-```
+```javascript
 function CartSummary({ itemCount, total, checkout }) {
-  return (
-    <button onClick={checkout}>
-      Checkout ({itemCount}) — ${total}
-    </button>
-  );
+
+return (
+
+<button onClick={checkout}>
+
+Checkout ({itemCount}) — ${total}
+
+</button>
+
+);
+
 }
 
 const mapState = (state) => ({
-  itemCount: state.cart.items.length,
-  total: selectCartTotal(state),
+
+itemCount: state.cart.items.length,
+
+total: selectCartTotal(state),
+
 });
 
 const mapDispatch = { checkout: checkoutAction };
@@ -243,17 +316,25 @@ export default connect(mapState, mapDispatch)(CartSummary);
 
 بعد React 16.8، أطلقت React Redux واجهة قائمة على الخطافات. ويصبح المكوّن نفسه:
 
-```
+```javascript
 function CartSummary() {
-  const itemCount = useSelector((state) => state.cart.items.length);
-  const total = useSelector(selectCartTotal);
-  const dispatch = useDispatch();
 
-  return (
-    <button onClick={() => dispatch(checkoutAction())}>
-      Checkout ({itemCount}) — ${total}
-    </button>
-  );
+const itemCount = useSelector((state) => state.cart.items.length);
+
+const total = useSelector(selectCartTotal);
+
+const dispatch = useDispatch();
+
+return (
+
+<button onClick={() => dispatch(checkoutAction())}>
+
+Checkout ({itemCount}) — ${total}
+
+</button>
+
+);
+
 }
 ```
 

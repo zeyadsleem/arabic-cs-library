@@ -3,7 +3,6 @@ title: نمط الوسيط/البرمجيات الوسيطة (mediator/middlewar
 lang: ar
 source: https://www.patterns.dev/vanilla/mediator-pattern/
 ---
-
 الوسيط (mediator) هو الكائن الموجود في الوسط. بدلًا من أن تعرف المكونات بعضها بعضًا، تتحدث المكونات إلى الوسيط، الذي يقرر ما ينبغي أن يحدث تاليًا. تخيل مشرفًا في غرفة محادثة مزدحمة: تمر كل رسالة عبره، وهو يفرض القواعد — من يحق له التحدث، ومن يُكتم، وأي رسالة تُثبت. لا يحتاج المشاركون إلى معرفة الآخرين بالاسم. كل ما يحتاجونه هو معرفة وجود مشرف يستمع إليهم.
 
 من دون وسيط، ينتهي نظام فيه N مكونات يحتاج كل منها إلى التحدث مع جميع الآخرين إلى عدد اتصالات من رتبة N². يعرف كل مكون بقية المكونات، وتغيير واحد يجعل نطاق الضرر كل شيء. أما مع الوسيط، فلدى كل مكون قناة اتصال واحدة: إلى الوسط. والوسط هو الشيء الوحيد الذي عليه أن يفهم رقصة التنسيق.
@@ -12,58 +11,99 @@ source: https://www.patterns.dev/vanilla/mediator-pattern/
 
 إليك وسيطًا صغيرًا ينسق خطوات معالج نموذج متعدد الخطوات. لدى المعالج مكونات خطوات مستقلة (المعلومات الشخصية، وعنوان الشحن، والدفع)، ويحتاج أحدها إلى تحديد معنى «التالي» وفق الحالة الحالية. هذا القرار يقع على الوسيط، ولا يتكرر في كل خطوة.
 
-```
+```javascript
 class WizardMediator {
-  #steps = [];
-  #current = 0;
-  #data = {};
-  #listeners = new Set();
 
-  registerSteps(steps) {
-    this.#steps = steps;
-  }
+#steps = [];
 
-  notify(sender, event, payload) {
-    switch (event) {
-      case "submit": {
-        Object.assign(this.#data, payload);
-        const nextIndex = this.#computeNext(sender, payload);
-        if (nextIndex >= this.#steps.length) {
-          this.#emit({ type: "complete", data: this.#data });
-        } else {
-          this.#current = nextIndex;
-          this.#emit({ type: "advance", step: this.#steps[nextIndex] });
-        }
-        break;
-      }
-      case "back":
-        this.#current = Math.max(0, this.#current - 1);
-        this.#emit({ type: "advance", step: this.#steps[this.#current] });
-        break;
-      case "cancel":
-        this.#data = {};
-        this.#current = 0;
-        this.#emit({ type: "reset" });
-        break;
-    }
-  }
+#current = 0;
 
-  // The conditional flow lives here, not in any one step.
-  #computeNext(sender, payload) {
-    if (sender === "personal" && payload.accountType === "guest") {
-      return this.#steps.indexOf("payment"); // skip address-on-file
-    }
-    return this.#current + 1;
-  }
+#data = {};
 
-  subscribe(fn) {
-    this.#listeners.add(fn);
-    return () => this.#listeners.delete(fn);
-  }
+#listeners = new Set();
 
-  #emit(event) {
-    for (const fn of this.#listeners) fn(event);
-  }
+registerSteps(steps) {
+
+this.#steps = steps;
+
+}
+
+notify(sender, event, payload) {
+
+switch (event) {
+
+case "submit": {
+
+Object.assign(this.#data, payload);
+
+const nextIndex = this.#computeNext(sender, payload);
+
+if (nextIndex >= this.#steps.length) {
+
+this.#emit({ type: "complete", data: this.#data });
+
+} else {
+
+this.#current = nextIndex;
+
+this.#emit({ type: "advance", step: this.#steps[nextIndex] });
+
+}
+
+break;
+
+}
+
+case "back":
+
+this.#current = Math.max(0, this.#current - 1);
+
+this.#emit({ type: "advance", step: this.#steps[this.#current] });
+
+break;
+
+case "cancel":
+
+this.#data = {};
+
+this.#current = 0;
+
+this.#emit({ type: "reset" });
+
+break;
+
+}
+
+}
+
+// The conditional flow lives here, not in any one step.
+
+#computeNext(sender, payload) {
+
+if (sender === "personal" && payload.accountType === "guest") {
+
+return this.#steps.indexOf("payment"); // skip address-on-file
+
+}
+
+return this.#current + 1;
+
+}
+
+subscribe(fn) {
+
+this.#listeners.add(fn);
+
+return () => this.#listeners.delete(fn);
+
+}
+
+#emit(event) {
+
+for (const fn of this.#listeners) fn(event);
+
+}
+
 }
 ```
 
@@ -77,47 +117,73 @@ class WizardMediator {
 
 إليك محركًا صغيرًا للبرمجيات الوسيطة، بالشكل نفسه الذي تستخدمه كل أطر تحاكي Express في داخلها:
 
-```
+```javascript
 function createPipeline(...middleware) {
-  return function dispatch(ctx) {
-    let index = -1;
 
-    function runFrom(i) {
-      if (i <= index) throw new Error("next() called multiple times");
-      index = i;
-      const fn = middleware[i];
-      if (!fn) return Promise.resolve();
-      return Promise.resolve(fn(ctx, () => runFrom(i + 1)));
-    }
+return function dispatch(ctx) {
 
-    return runFrom(0);
-  };
+let index = -1;
+
+function runFrom(i) {
+
+if (i <= index) throw new Error("next() called multiple times");
+
+index = i;
+
+const fn = middleware[i];
+
+if (!fn) return Promise.resolve();
+
+return Promise.resolve(fn(ctx, () => runFrom(i + 1)));
+
+}
+
+return runFrom(0);
+
+};
+
 }
 ```
 
 المعالج هو `(context, next) => ...`. ويفوض استدعاء `next()` التنفيذ إلى الحلقة التالية في السلسلة، بينما عدم استدعائه يقطع بقية المسار. ولأن كل خطوة تحصل على `ctx` نفسه، تتراكم التعديلات بالطريقة نفسها في Express أو Koa أو Hono.
 
-```
+```javascript
 const handle = createPipeline(
-  async (ctx, next) => {
-    const started = performance.now();
-    await next();
-    console.log(`${ctx.path} ${performance.now() - started}ms`);
-  },
 
-  async (ctx, next) => {
-    const token = ctx.headers.authorization;
-    if (!token) {
-      ctx.response = { status: 401, body: "Unauthorized" };
-      return; // short-circuit
-    }
-    ctx.user = await verify(token);
-    await next();
-  },
+async (ctx, next) => {
 
-  async (ctx) => {
-    ctx.response = { status: 200, body: `Hello, ${ctx.user.name}` };
-  }
+const started = performance.now();
+
+await next();
+
+console.log(`${ctx.path} ${performance.now() - started}ms`);
+
+},
+
+async (ctx, next) => {
+
+const token = ctx.headers.authorization;
+
+if (!token) {
+
+ctx.response = { status: 401, body: "Unauthorized" };
+
+return; // short-circuit
+
+}
+
+ctx.user = await verify(token);
+
+await next();
+
+},
+
+async (ctx) => {
+
+ctx.response = { status: 200, body: `Hello, ${ctx.user.name}` };
+
+}
+
 );
 
 await handle({ path: "/me", headers: { authorization: "Bearer ..." } });
@@ -131,35 +197,59 @@ await handle({ path: "/me", headers: { authorization: "Bearer ..." } });
 
 تجعل [XState](https://stately.ai/docs/xstate) ذلك صريحًا:
 
-```
+```javascript
 import { setup, createActor } from "xstate";
 
 const uploadMachine = setup({
-  actions: {
-    sendBytes: ({ context }) => api.upload(context.file),
-    cleanup:   ({ context }) => api.abort(context.uploadId),
-  },
+
+actions: {
+
+sendBytes: ({ context }) => api.upload(context.file),
+
+cleanup:   ({ context }) => api.abort(context.uploadId),
+
+},
+
 }).createMachine({
-  id: "upload",
-  initial: "idle",
-  context: { file: null, uploadId: null, progress: 0 },
-  states: {
-    idle:     { on: { START:  "uploading" } },
-    uploading: {
-      entry: "sendBytes",
-      on: {
-        PROGRESS: { actions: ({ context, event }) => (context.progress = event.value) },
-        DONE:    "success",
-        ERROR:   "failed",
-        CANCEL:  { target: "idle", actions: "cleanup" },
-      },
-    },
-    success: { type: "final" },
-    failed:  { on: { RETRY: "uploading" } },
-  },
+
+id: "upload",
+
+initial: "idle",
+
+context: { file: null, uploadId: null, progress: 0 },
+
+states: {
+
+idle:     { on: { START:  "uploading" } },
+
+uploading: {
+
+entry: "sendBytes",
+
+on: {
+
+PROGRESS: { actions: ({ context, event }) => (context.progress = event.value) },
+
+DONE:    "success",
+
+ERROR:   "failed",
+
+CANCEL:  { target: "idle", actions: "cleanup" },
+
+},
+
+},
+
+success: { type: "final" },
+
+failed:  { on: { RETRY: "uploading" } },
+
+},
+
 });
 
 const upload = createActor(uploadMachine).start();
+
 upload.send({ type: "START" });
 ```
 

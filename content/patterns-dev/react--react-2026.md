@@ -3,7 +3,6 @@ title: أنماط حزمة React
 lang: ar
 source: https://www.patterns.dev/react/react-2026/
 ---
-
 قطع React طريقًا طويلًا منذ بداياته كمكتبات مكوّنات بسيطة. وبحلول أواخر عام 2025، أصبحت منظومة React **غنية لكنها معقدة**، وتوفر طرقًا متعددة لاختيار حزمتك لبناء التطبيقات. ويواجه مطوّرو React المعاصرون خيارات في كل طبقة من الحزمة، من **أدوات البناء (build tools)** و**أطر العمل (frameworks)** إلى **الموجّهات** والمكتبات الأخرى. وتشجّع وثائق React الرسمية (والتي انتقلت الآن إلى **react.dev**) على استخدام أطر العمل الأعلى مستوى للمشاريع الجديدة[[1]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#:~:text=Today%2C%20we%E2%80%99re%20deprecating%20Create%20React,like%20Vite%2C%20Parcel%2C%20or%20RSBuild)[[2]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#how-to-migrate-to-a-framework#:~:text=How%20to%20Migrate%20to%20a,Framework). وفي الواقع، أُوقف دعم **Create React App (CRA)**، الذي كان أداة التهيئة المفضلة، في مطلع عام 2025، في إشارة إلى تحول في طريقة بدء تطبيقات React[[1]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#:~:text=Today%2C%20we%E2%80%99re%20deprecating%20Create%20React,like%20Vite%2C%20Parcel%2C%20or%20RSBuild)[[3]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#:~:text=Although%20Create%20React%20App%20makes,it%20into%20a%20%2018).
 
 بدلًا من تجميع أدواتك الخاصة من الصفر، فإن التوصية هي إما **استخدام إطار عمل React** مثل Next.js أو Remix، أو، إذا كانت لديك متطلبات خاصة، البدء بأداة بناء حديثة (build tool) مثل Vite أو Parcel[[1]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#:~:text=Today%2C%20we%E2%80%99re%20deprecating%20Create%20React,like%20Vite%2C%20Parcel%2C%20or%20RSBuild)[[4]](https://react.dev/blog/2025/02/14/sunsetting-create-react-app#:~:text=If%20your%20app%20has%20unusual,using%20Vite%2C%20Parcel%2C%20or%20Rsbuild). وفي هذا الدليل الذي يحمل رأيًا صريحًا، سنستكشف مشهد React في عام 2025: **سلسلة الأدوات والحزمة** التي نقترحها للمطورين من المستوى المتوسط إلى المتقدم، بما في ذلك أدوات البناء (Vite وTurbopack وWebpack)، وحلول التوجيه (React Router مقابل TanStack Router)، وأطر العمل الشائعة (Next.js وRemix وغيرها)، والمكتبات الأساسية للحالة وإدارة البيانات، وحتى كيفية **تأثير الذكاء الاصطناعي على تطوير React**. وفي أثناء ذلك، سنشير إلى أنماط وموارد مفيدة، بما في ذلك عدة مقالات من **Patterns.dev**، للتعمق في مواضيع محددة.
@@ -69,23 +68,33 @@ Next.js متعدد الاستخدامات: يمكنك نشره بلا خادم،
 
 لنأخذ لمحة عن كيفية تعريف مسار بسيط باستخدام TanStack Router في الشيفرة (من دون الحاجة إلى إطار عمل):
 
-```
+```javascript
 import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 
 // Define a root route and a child route
+
 const rootRoute = createRootRoute();
+
 const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: () => <div>Hello, world!</div>,  // component to render at this route
+
+getParentRoute: () => rootRoute,
+
+path: '/',
+
+component: () => <div>Hello, world!</div>,  // component to render at this route
+
 });
 
 // Compose the route tree and create the router
+
 const routeTree = rootRoute.addChildren([indexRoute]);
+
 const router = createRouter({ routeTree });
 
 export default function App() {
-  return <RouterProvider router={router} />;  // provide the router to the app
+
+return <RouterProvider router={router} />;  // provide the router to the app
+
 }
 ```
 
@@ -107,19 +116,26 @@ export default function App() {
 
 **حالة الخادم وجلب البيانات — React Query (TanStack Query) وما شابه:** إن إدارة **حالة الخادم** (البيانات القادمة من واجهة API) لها تحدياتها الخاصة: تحتاج إلى الجلب والتخزين المؤقت والتحديث، وربما إعادة الجلب أو إبطال البيانات. وفي أيام React الأولى، استخدم كثيرون الحالة العالمية (مثل Redux) لهذا الغرض، أو استدعوا `useEffect` يدويًا في كل مكوّن وحفظوا النتائج في حالة محلية. وبحلول عام 2025، جعلت فئة من المكتبات هذا الأمر أسهل بكثير.
 "ويتصدر **TanStack Query** (المسمى سابقًا **React Query**) هذا المجال. ويوفر TanStack Query خطافات مثل `useQuery` و`useMutation` لجلب البيانات وتخزينها مؤقتًا بصورة تصريحية. على سبيل المثال، لجلب قائمة مهام يمكنك كتابة:"
-```
+
+```javascript
 import { useQuery } from '@tanstack/react-query';
 
 function TodoList() {
-  const { data: todos, error, isLoading } = useQuery(['todos'], fetchTodos);
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  return <ul>{todos.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+
+const { data: todos, error, isLoading } = useQuery(['todos'], fetchTodos);
+
+if (isLoading) return <div>Loading...</div>;
+
+if (error) return <div>Error: {error.message}</div>;
+
+return <ul>{todos.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+
 }
 ```
+
 يضبط هذا المقتطف البسيط استعلامًا لجلب البيانات من الدالة `fetchTodos` ويخزن النتيجة تحت المفتاح `['todos']`. ويتولى React Query التحديث في الخلفية والتخزين المؤقت (فإذا انتقلت بعيدًا وعُدت، فيستطيع استخدام البيانات المخزنة)، ويوفر حالتي `isLoading` و`error` المريحتين. وهو مكسب إنتاجي كبير ويمنع أخطاء مثل نسيان معالجة التحميل أو إعادة الجلب. وهناك بدائل: **SWR** (من Vercel) مكتبة خطافات شائعة أخرى لجلب البيانات بهدف مماثل، و**Apollo Client** إذا كنت تستخدم GraphQL (Apollo أثقل لكنه يوفر ذاكرة مؤقتة مُطبَّعة لاستعلامات GraphQL). وحتى Redux Toolkit يوفر **RTK Query**، وهو مشابه في الروح لـReact Query لكنه مدمج في Redux (فإذا كنت تستخدم Redux، فقد تستخدمه لجلب البيانات لتجنب مكتبة إضافية).
 
- ومع ذلك، إذا استخدمت إطارًا كاملًا مثل Next.js مع **مكوّنات React الخادمية أو أدوات تحميل البيانات**، فهل تحتاج إلى React Query؟ هذا سؤال جيد. فالنظام البيئي في حالة تغير؛ إذ تحاول أطر العمل جعل جلب البيانات أكثر تلقائية (فتمكّنك مكوّنات Next الخادمية من انتظار البيانات على الخادم ثم بث الواجهة). وإذا تبنيت هذا النهج بالكامل، تقل الحاجة إلى مكتبة تخزين مؤقت على العميل للتحميل الأول. لكن التفاعلات على العميل (بعد العرض الأول) قد تستفيد من React Query. فمثلًا، إذا كان تطبيقك يعرض قائمة عناصر (تُجلب على الخادم عبر RSC للعرض الأول) ثم يتيح تحرير عنصر أو إضافته من دون تحديث الصفحة الكامل، يمكن لـReact Query على العميل تخزين القائمة وتحديثها أثناء تفاعل المستخدم من دون العودة إلى الخادم في كل مرة. إذن، **تبقى React Query وأمثالها ذات صلة** حتى في عصر RSC، لكنها قد تُستخدم أكثر *للتعديلات والتحديثات الآنية* بينما تنتقل التحميلات الأولية إلى الخادم.
+ومع ذلك، إذا استخدمت إطارًا كاملًا مثل Next.js مع **مكوّنات React الخادمية أو أدوات تحميل البيانات**، فهل تحتاج إلى React Query؟ هذا سؤال جيد. فالنظام البيئي في حالة تغير؛ إذ تحاول أطر العمل جعل جلب البيانات أكثر تلقائية (فتمكّنك مكوّنات Next الخادمية من انتظار البيانات على الخادم ثم بث الواجهة). وإذا تبنيت هذا النهج بالكامل، تقل الحاجة إلى مكتبة تخزين مؤقت على العميل للتحميل الأول. لكن التفاعلات على العميل (بعد العرض الأول) قد تستفيد من React Query. فمثلًا، إذا كان تطبيقك يعرض قائمة عناصر (تُجلب على الخادم عبر RSC للعرض الأول) ثم يتيح تحرير عنصر أو إضافته من دون تحديث الصفحة الكامل، يمكن لـReact Query على العميل تخزين القائمة وتحديثها أثناء تفاعل المستخدم من دون العودة إلى الخادم في كل مرة. إذن، **تبقى React Query وأمثالها ذات صلة** حتى في عصر RSC، لكنها قد تُستخدم أكثر *للتعديلات والتحديثات الآنية* بينما تنتقل التحميلات الأولية إلى الخادم.
 
 **حالة النماذج والتحقق:** إدارة النماذج جزء آخر من إدارة الحالة. وبحلول عام 2025، رسخت **React Hook Form** مكتبة ممتازة للنماذج. فهي فعالة (تقلل عمليات إعادة العرض)، وتستخدم نموذج ref/register لتتبع المدخلات، وتجعل أشياء مثل التحقق من النماذج (غالبًا عبر مكتبة مخططات مثل Yup أو Zod) مباشرةً. إذا كان تطبيقك يحتوي على أي نماذج غير بسيطة، فيمكن أن يوفر لك استخدام React Hook Form أو Formik جهدًا هائلًا. وتنسجم React Hook Form خصوصًا مع المكوّنات الدالية والخطافات. ومع مكتبة مثل **Zod** لتعريف مخططات البيانات، يمكنك التحقق من المدخلات تصريحيًا بل ومشاركة تلك المخططات مع الخادم.
 
@@ -148,7 +164,7 @@ function TodoList() {
 
 **رأيـنا:** تبنَّ الذكاء الاصطناعي كأداة في سير عمل تطوير React، لكن ذلك بعينين مفتوحتين. ويمكنه أن يخفض زمن الإعداد بشدة، بل ويساعد حتى في عمليات الترحيل المعقدة (هل تريد نقل منطق Redux القديم إلى Zustand؟ يمكنك أن تطلب من الذكاء الاصطناعي إعادة هيكلة ابتدائية). لكن **لا تتعامل مع الشيفرة المولّدة بالذكاء الاصطناعي كأنها حق يقين**. وبصفتك مطورًا متقدمًا، استخدم خبرتك لتوجيه الذكاء الاصطناعي: أنت تحدد البنية، ثم يملأ الذكاء الاصطناعي الشيفرة المتكررة، ثم تحسّن النتائج. وستحصل الفرق التي تتقن هذا التعاون بين الإنسان والذكاء الاصطناعي على ميزة في سرعة التنفيذ. وفي الوقت نفسه، واصل بناء مهاراتك الأساسية؛ ومن المفارقات أن كلما جعل الذكاء الاصطناعي إنتاج شيفرة «مقبولة» أسهل، ازدادت قيمة الفهم العميق لـReact، حتى تتمكن من التمييز بين الحلول الجيدة والسيئة. **عصر الذكاء الاصطناعي** مثير ومجنون قليلًا، لكنه ينبغي في النهاية أن يتيح لنا التركيز أكثر على الجوانب الإبداعية والمعقدة من التطوير مع تفريغ المهام المتكررة.
 
-*(لمزيد من القراءة حول أنماط التطوير بمساعدة الذكاء الاصطناعي، راجع مقالة a16z حول أنماط المطوّرين الناشئة[[54]](https://a16z.com/nine-emerging-developer-patterns-for-the-ai-era/#:~:text=Now%2C%20that%20dynamic%20is%20shifting,intent%20and%20their%20chosen%20stack)[[68]](https://a16z.com/nine-emerging-developer-patterns-for-the-ai-era/#:~:text=composable%2C%20stack,both%20get%20working%20scaffolds%20instantly)، ولتنفيذ الذكاء الاصطناعي في واجهات React، راجع دليل Patterns.dev «أنماط واجهات الذكاء الاصطناعي»[[62]](https://www.patterns.dev/react/ai-ui-patterns/#:~:text=Building%20AI,for%20building%20polished%20chat%20UIs)[[63]](https://www.patterns.dev/react/ai-ui-patterns/#:~:text=AI,and%20stream%20responses%20in%20real).)* 
+*(لمزيد من القراءة حول أنماط التطوير بمساعدة الذكاء الاصطناعي، راجع مقالة a16z حول أنماط المطوّرين الناشئة[[54]](https://a16z.com/nine-emerging-developer-patterns-for-the-ai-era/#:~:text=Now%2C%20that%20dynamic%20is%20shifting,intent%20and%20their%20chosen%20stack)[[68]](https://a16z.com/nine-emerging-developer-patterns-for-the-ai-era/#:~:text=composable%2C%20stack,both%20get%20working%20scaffolds%20instantly)، ولتنفيذ الذكاء الاصطناعي في واجهات React، راجع دليل Patterns.dev «أنماط واجهات الذكاء الاصطناعي»[[62]](https://www.patterns.dev/react/ai-ui-patterns/#:~:text=Building%20AI,for%20building%20polished%20chat%20UIs)[[63]](https://www.patterns.dev/react/ai-ui-patterns/#:~:text=AI,and%20stream%20responses%20in%20real).)*
 
 ## الخاتمة
 

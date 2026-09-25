@@ -97,25 +97,78 @@ const toTable = (html) => {
   ].join('\n');
 };
 
-const convert = (html) => {
+const languageMap = {
+  js: 'javascript',
+  jsx: 'javascript',
+  javascript: 'javascript',
+  ts: 'typescript',
+  tsx: 'typescript',
+  typescript: 'typescript',
+  sh: 'bash',
+  shell: 'bash',
+  bash: 'bash',
+  html: 'xml',
+  xml: 'xml',
+  svg: 'xml',
+  css: 'css',
+  scss: 'css',
+  json: 'json',
+  json5: 'json',
+  py: 'python',
+  python: 'python',
+  sql: 'sql',
+  yaml: 'yaml',
+  yml: 'yaml',
+  php: 'php',
+  go: 'go',
+  rust: 'rust',
+  diff: 'diff',
+};
+
+const detectLanguage = (code) => {
+  const value = code.trim();
+  if (!value) return '';
+  if (/^<(\?xml|!DOCTYPE|html|svg)/i.test(value)) return 'xml';
+  if (/^diff --git|^--- |\+\+\+ /m.test(value)) return 'diff';
+  if (/^(\$\s|#!|\s*sudo |\s*apt |\s*npm |\s*npx |\s*curl |\s*git |\s*cd |\s*echo )/m.test(value))
+    return 'bash';
+  if (/^(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER)\b/im.test(value)) return 'sql';
+  if (/\b(def |import \w+|print\(|self\.)/.test(value) && /:\s*\n\s+\S/.test(value))
+    return 'python';
+  if (/^[\w./-]+:\s/m.test(value) && /^\s{2,}\S/m.test(value) && !/[{};]/.test(value))
+    return 'yaml';
+  if (/\b(interface |type \w+ =|enum \w+)\b/.test(value)) return 'typescript';
+  if (/\b(import |export |const |let |function |=>|document\.|console\.)/.test(value))
+    return 'javascript';
+  if (/^\s*[{[]/.test(value) && /[}\]]/.test(value)) return 'json';
+  if (/\b(public|private|protected)\s+\w+|System\.out|#include/.test(value))
+    return 'java';
+  if (/package |func main|:= /m.test(value)) return 'go';
+  return 'javascript';
+};
+
+const convert = (html, images = []) => {
   const codeBlocks = [];
-  const rest = html.replace(
-    /<pre[^>]*>([\s\S]*?)<\/pre>/g,
-    (_, code) => {
-      const language = code.match(/language-([\w-]+)/)?.[1] || '';
-      const cleaned = code
-        .replace(/<span[^>]*user-select:none[^>]*>[\s\S]*?<\/span>/g, '')
-        .replace(/<div class="token-line"[^>]*>/g, '\n')
-        .replace(/<\/div>\s*<div class="token-line"[^>]*>/g, '\n');
-      const text = decode(
-        cleaned
-          .replace(/<[^>]+>/g, '')
-          .replace(/^\n+/, '')
-          .replace(/\s+$/, '')
-      );
-      codeBlocks.push({ language, text });
-      return ` CODE${codeBlocks.length - 1}END `;
-    }
+  const rest0 = html.replace(/<pre([^>]*)>([\s\S]*?)<\/pre>/g, (_, attrs, code) => {
+    const raw = `${attrs} ${code}`;
+    const found = raw.match(/language-([\w-]+)/)?.[1] || '';
+    const cleaned = code
+      .replace(/<span[^>]*user-select:none[^>]*>[\s\S]*?<\/span>/g, '')
+      .replace(/<div class="token-line"[^>]*>/g, '\n')
+      .replace(/<\/div>\s*<div class="token-line"[^>]*>/g, '\n')
+      .replace(/<span class="line"[^>]*>/g, '\n')
+      .replace(/<\/span>(?=\s*<span class="line")/g, '');
+    const text = decode(
+      cleaned.replace(/<[^>]+>/g, '').replace(/^\n+/, '').replace(/\s+$/, '')
+    );
+    const language = languageMap[found] || found || detectLanguage(text);
+    codeBlocks.push({ language, text });
+    return ` CODE${codeBlocks.length - 1}END `;
+  });
+
+  const rest = rest0.replace(
+    / IMAGE(\d+)END /g,
+    (match, index) => ` ![${images[Number(index)]?.alt || ''}](${images[Number(index)]?.local || ''}) `
   );
 
   const chunks = [];
@@ -250,21 +303,28 @@ for (const page of pages) {
   article = article.replace(/<(style|script)[\s\S]*?<\/\1>/g, '');
   article = article.replace(/<header[\s\S]*?<\/header>/, '');
 
-  for (const match of [...article.matchAll(/<img[^>]+src="([^"]+)"/g)]) {
-    const src = match[1];
-    if (!src.startsWith('/')) continue;
-    const name = `${group}-${slug}-${images}-${path
-      .basename(src)
+  const imageMeta = [];
+  article = article.replace(/<img[^>]*>/g, (tag) => {
+    const src = tag.match(/src="([^"]+)"/)?.[1];
+    const alt = (tag.match(/alt="([^"]*)"/)?.[1] || '').trim();
+    if (!src || /pages\/(about|home)\//.test(src) || /team member/i.test(alt)) {
+      return '';
+    }
+    imageMeta.push({ src, alt, local: src });
+    return ` IMAGE${imageMeta.length - 1}END `;
+  });
+
+  for (const [index, image] of imageMeta.entries()) {
+    if (!image.src.startsWith('/')) continue;
+    const name = `${group}-${slug}-${index}-${path
+      .basename(image.src)
       .replace(/[^.\w]/g, '_')
       .replace(/\.\w+$/, '')}`;
-    const local = await saveImage(src, name);
-    article += `\n\n![${title}](${local})`;
+    imageMeta[index].local = await saveImage(image.src, name);
     images += 1;
   }
 
-  article = article.replace(/<img[^>]*>/g, '');
-
-  const markdown = convert(article);
+  const markdown = convert(article, imageMeta);
   const sourceFile = path.join(sourceDir, 'markdown', `${group}--${slug}.md`);
   fs.mkdirSync(path.dirname(sourceFile), { recursive: true });
   fs.writeFileSync(

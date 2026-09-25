@@ -3,7 +3,6 @@ title: تحسين تطبيقات Next.js وفق Core Web Vitals
 lang: ar
 source: https://www.patterns.dev/react/nextjs-vitals/
 ---
-
 يتطلب تحسين تجربة المستخدم (user experience) وفق [Core Web Vitals](https://web.dev/vitals) تحسين سرعة الصفحة وتفاعليتها واستقرارها البصري. ويتيح Next.js، عبر عدة مكوّنات بُنيت بالتعاون مع [فريق Chrome](https://web.dev/aurora)، تحسين مقاييس Core Web Vitals.
 
 - `next/image`: مكوّن `next/image` المصمم لتحسين الصور وتحسين [Largest Contentful Paint](https://web.dev/lcp) (LCP) و[Cumulative Layout Shift](https://web.dev/cls) (CLS) تلقائيًا عبر تغيير حجمها وضغطها وتحميلها كسولًا. ويمكن أيضًا استخدامه لعرض صور متجاوبة تتكيف مع أحجام الشاشات المختلفة.
@@ -33,7 +32,7 @@ source: https://www.patterns.dev/react/nextjs-vitals/
 
 لإضافة صورة إلى تطبيقك، استورد مكوّن `next/image`:
 
-```
+```javascript
 import Image from "next/image";
 ```
 
@@ -41,7 +40,7 @@ import Image from "next/image";
 
 **الصور المحلية** لاستخدام صورة محلية، استورد ملفات `.jpg` أو `.png` أو `.webp`:
 
-```
+```javascript
 import profilePic from "../public/me.png";
 ```
 
@@ -49,25 +48,41 @@ import profilePic from "../public/me.png";
 
 يحدد Next.js تلقائيًا عرض الصورة وارتفاعها بناءً على الملف المستورد. وتستخدم هذه القيم لمنع Cumulative Layout Shift أثناء تحميل الصورة.
 
-```
+```javascript
 import Image from "next/image";
+
 import profilePic from "../public/me.png";
 
 function Home() {
-  return (
-    &#x3C;>
-      &#x3C;h1>My Homepage&#x3C;/h1>
-      &#x3C;Image
-        src={profilePic}
-        alt="Picture of the author"
-        // width={500} automatically provided
-        // height={500} automatically provided
-        // blurDataURL="data:..." automatically provided
-        // placeholder="blur" // Optional blur-up while loading
-      />
-      &#x3C;p>Welcome to my homepage!&#x3C;/p>
-    &#x3C;/>
-  );
+
+return (
+
+&#x3C;>
+
+&#x3C;h1>My Homepage&#x3C;/h1>
+
+&#x3C;Image
+
+src={profilePic}
+
+alt="Picture of the author"
+
+// width={500} automatically provided
+
+// height={500} automatically provided
+
+// blurDataURL="data:..." automatically provided
+
+// placeholder="blur" // Optional blur-up while loading
+
+/>
+
+&#x3C;p>Welcome to my homepage!&#x3C;/p>
+
+&#x3C;/>
+
+);
+
 }
 ```
 
@@ -75,22 +90,35 @@ function Home() {
 
 لاستخدام صورة بعيدة، يجب أن تكون الخاصية `src` سلسلة URL، نسبية أو مطلقة. ولأن Next.js لا يمكنه الوصول إلى الملفات البعيدة أثناء عملية البناء، فستحتاج إلى توفير خصائص العرض والارتفاع و`blurDataURL` الاختيارية يدويًا:
 
-```
+```javascript
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    &#x3C;>
-      &#x3C;h1>My Homepage&#x3C;/h1>
-      &#x3C;Image
-        src="/me.png"
-        alt="Picture of the author"
-        width={500}
-        height={500}
-      />
-      &#x3C;p>Welcome to my homepage!&#x3C;/p>
-    &#x3C;/>
-  );
+
+return (
+
+&#x3C;>
+
+&#x3C;h1>My Homepage&#x3C;/h1>
+
+&#x3C;Image
+
+src="/me.png"
+
+alt="Picture of the author"
+
+width={500}
+
+height={500}
+
+/>
+
+&#x3C;p>Welcome to my homepage!&#x3C;/p>
+
+&#x3C;/>
+
+);
+
 }
 ```
 
@@ -110,25 +138,41 @@ export default function Home() {
 
 على سبيل المثال، إذا أردت عرض صورة بعيدة بنسبة عرض إلى ارتفاع 16:9 وأردت لمكوّن Image أن يملأ حاويته، فيمكنك استخدام الشيفرة التالية:
 
-```
+```javascript
 import Image from "next/image";
 
 function Home() {
-  return (
-    &#x3C;>
-      &#x3C;h1>My Homepage&#x3C;/h1>
-      &#x3C;div style={{ width: "100%", height: "50vh" }}>
-        &#x3C;Image
-          src="https://example.com/my-image.jpg"
-          alt="My Image"
-          layout="fill"
-          objectFit="cover"
-          aspectRatio={16 / 9}
-        />
-      &#x3C;/div>
-      &#x3C;p>Welcome to my homepage!&#x3C;/p>
-    &#x3C;/>
-  );
+
+return (
+
+&#x3C;>
+
+&#x3C;h1>My Homepage&#x3C;/h1>
+
+&#x3C;div style={{ width: "100%", height: "50vh" }}>
+
+&#x3C;Image
+
+src="https://example.com/my-image.jpg"
+
+alt="My Image"
+
+layout="fill"
+
+objectFit="cover"
+
+aspectRatio={16 / 9}
+
+/>
+
+&#x3C;/div>
+
+&#x3C;p>Welcome to my homepage!&#x3C;/p>
+
+&#x3C;/>
+
+);
+
 }
 ```
 
@@ -147,27 +191,43 @@ function Home() {
 
 إليك مثالًا على دالة مُحمِّل مخصصة تولّد عناوين URL للصور المخزّنة في AWS S3:
 
-```
+```javascript
 import Image from "next/image";
 
 function myLoader({ src, width, quality }) {
-  return `https://example.com/images/${src}?w=${width}&#x26;q=${quality || 75}`;
+
+return `https://example.com/images/${src}?w=${width}&#x26;q=${quality || 75}`;
+
 }
 
 function Home() {
-  return (
-    &#x3C;>
-      &#x3C;h1>My Homepage&#x3C;/h1>
-      &#x3C;Image
-        loader={myLoader}
-        src="my-image.jpg"
-        alt="My Image"
-        width={500}
-        height={500}
-      />
-      &#x3C;p>Welcome to my homepage!&#x3C;/p>
-    &#x3C;/>
-  );
+
+return (
+
+&#x3C;>
+
+&#x3C;h1>My Homepage&#x3C;/h1>
+
+&#x3C;Image
+
+loader={myLoader}
+
+src="my-image.jpg"
+
+alt="My Image"
+
+width={500}
+
+height={500}
+
+/>
+
+&#x3C;p>Welcome to my homepage!&#x3C;/p>
+
+&#x3C;/>
+
+);
+
 }
 ```
 
@@ -201,15 +261,21 @@ function Home() {
 
 استخدم الخاصية `async` أو `defer` مع وسوم `&#x3C;script>` لتخبر المتصفح بتحميل سكربتات الأطراف الثالثة غير الحرجة من دون حجب محلّل المستند. ويمكن اعتبار السكربتات غير المطلوبة للتحميل الأولي للصفحة أو لأول تفاعل للمستخدم غير حرجة.
 
-```
+```javascript
 &#x3C;script src="https://example.com/script1.js" defer>&#x3C;/script>
+
 &#x3C;script src="https://example.com/script2.js" async>&#x3C;/script>
+
 Establish early connections to required origins using preconnect and
+
 dns-prefetch. This allows critical scripts to start downloading earlier.
 
 &#x3C;head>
-  &#x3C;link rel="preconnect" href="http://PreconnThis.com" />
-  &#x3C;link rel="dns-prefetch" href="http://PrefetchThis.com" />
+
+&#x3C;link rel="preconnect" href="http://PreconnThis.com" />
+
+&#x3C;link rel="dns-prefetch" href="http://PrefetchThis.com" />
+
 &#x3C;/head>
 ```
 
@@ -219,18 +285,23 @@ dns-prefetch. This allows critical scripts to start downloading earlier.
 
 يبني مكوّن Script في Next.js على وسم HTML `&#x3C;script>` ويوفر خيارًا لتعيين أولوية التحميل لسكربتات الأطراف الثالثة باستخدام الخاصية `strategy`. وبمجرد تحديد الاستراتيجية المناسبة، سيُحمَّل بأكفأ طريقة من دون حجب الموارد الحرجة الأخرى.
 
-```
+```javascript
 // Example for beforeInteractive:
 
 &#x3C;script
-  src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver"
-  strategy="beforeInteractive"
+
+src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver"
+
+strategy="beforeInteractive"
+
 />
 
 // Example for afterInteractive (default):
+
 &#x3C;script src="https://example.com/samplescript.js" />
 
 // Example for lazyonload:
+
 &#x3C;script src="https://connect.facebook.net/en_US/sdk.js" strategy="lazyOnload" />
 ```
 
@@ -242,7 +313,7 @@ dns-prefetch. This allows critical scripts to start downloading earlier.
 
 يوفر مكوّن Script كذلك آلية لتضمين سكربتات الأطراف الثالثة داخل الصفحة باستخدام الخاصية `inline`. ويمكن لتضمين السكربتات أن يقلل عدد الطلبات التي يرسلها الموقع، وقد يكون ذلك مفيدًا 특히ًا مع السكربتات الصغيرة. ومع ذلك، لا يُستحسن تضمين السكربتات الكبيرة لأنها قد تزيد حجم مستند HTML فتجعل تنزيله أبطأ.
 
-```
+```javascript
 // Example for inlining a script:
 
 &#x3C;script inline src="https://example.com/inlinescript.js" />
@@ -266,45 +337,67 @@ dns-prefetch. This allows critical scripts to start downloading earlier.
 
 لنفترض أنك تستخدم خط Roboto. عادةً ما تعرّفه في CSS هكذا:
 
-```
+```javascript
 @font-face {
-  font-family: "Roboto";
-  font-display: swap;
-  src: url("/fonts/Roboto.woff2") format("woff2"), url("/fonts/Roboto.woff")
-      format("woff");
-  font-weight: 700;
+
+font-family: "Roboto";
+
+font-display: swap;
+
+src: url("/fonts/Roboto.woff2") format("woff2"), url("/fonts/Roboto.woff")
+
+format("woff");
+
+font-weight: 700;
+
 }
 
 body {
-  font-family: Roboto;
+
+font-family: Roboto;
+
 }
 ```
 
 للانتقال إلى مكوّن Font في Next.js، انقل تعريف خط Roboto إلى JavaScript عن طريق استيراد دالة `Roboto` من `next/font`. وستعيد الدالة اسم `class` يمكنك الاستفادة منه في قالب المكوّن. تذكر إضافة `display: swap` إلى كائن الإعداد لتفعيل الميزة.
 
-```
+```javascript
 import { Roboto } from "@next/font/google";
 
 const roboto = Roboto({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap", // Using display swap automatically enables the feature
+
+weight: "400",
+
+subsets: ["latin"],
+
+display: "swap", // Using display swap automatically enables the feature
+
 });
 ```
 
 في المكوّن، استخدم اسم `class` المولّد:
 
-```
+```javascript
 export default function RootLayout({
-  children,
+
+children,
+
 }: {
-  children: React.ReactNode,
+
+children: React.ReactNode,
+
 }) {
-  return (
-    &#x3C;html lang="en" className={roboto.className}>
-      &#x3C;body>{children}&#x3C;/body>
-    &#x3C;/html>
-  );
+
+return (
+
+&#x3C;html lang="en" className={roboto.className}>
+
+&#x3C;body>{children}&#x3C;/body>
+
+&#x3C;/html>
+
+);
+
 }
 ```
 
@@ -324,30 +417,45 @@ export default function RootLayout({
 
 إليك مثالًا على استخدام خط مخصص مع مكوّن `@next/font`:
 
-```
+```javascript
 // In your component
+
 import { MyCustomFont } from "@next/font/local";
 
 const myCustomFont = MyCustomFont({
-  weight: "normal",
-  src: 'url("/fonts/MyCustomFont.woff2") format("woff2")',
+
+weight: "normal",
+
+src: 'url("/fonts/MyCustomFont.woff2") format("woff2")',
+
 });
 
 export default function MyComponent() {
-  return (
-    &#x3C;div className={myCustomFont.className}>
-      &#x3C;h1>Hello World&#x3C;/h1>
-    &#x3C;/div>
-  );
+
+return (
+
+&#x3C;div className={myCustomFont.className}>
+
+&#x3C;h1>Hello World&#x3C;/h1>
+
+&#x3C;/div>
+
+);
+
 }
 ```
 
-```
+```javascript
 // In your CSS
+
 @font-face {
-  font-family: "MyCustomFont";
-  font-weight: normal;
-  src: url("/fonts/MyCustomFont.woff2") format("woff2");
+
+font-family: "MyCustomFont";
+
+font-weight: normal;
+
+src: url("/fonts/MyCustomFont.woff2") format("woff2");
+
 }
 ```
 
@@ -355,25 +463,39 @@ export default function MyComponent() {
 
 إليك مثالًا على استخدام Font Observer API مع مكوّن `@next/font`:
 
-```
+```javascript
 // In your component
+
 import { useFontObserver } from "@next/font";
 
 export default function MyComponent() {
-  const [isFontReady, fontClassName] = useFontObserver("Inter", {
-    weight: "400",
-    subsets: ["latin"],
-  });
 
-  return (
-    &#x3C;div className={fontClassName}>
-      {isFontReady ? (
-        &#x3C;h1>Hello World&#x3C;/h1>
-      ) : (
-        &#x3C;h1 style={{ fontFamily: "sans-serif" }}>Hello World&#x3C;/h1>
-      )}
-    &#x3C;/div>
-  );
+const [isFontReady, fontClassName] = useFontObserver("Inter", {
+
+weight: "400",
+
+subsets: ["latin"],
+
+});
+
+return (
+
+&#x3C;div className={fontClassName}>
+
+{isFontReady ? (
+
+&#x3C;h1>Hello World&#x3C;/h1>
+
+) : (
+
+&#x3C;h1 style={{ fontFamily: "sans-serif" }}>Hello World&#x3C;/h1>
+
+)}
+
+&#x3C;/div>
+
+);
+
 }
 ```
 

@@ -24,23 +24,33 @@ Only modules defined with the ES2015 module syntax (`import` and `export`) can b
 
 Tree shaking starts by visiting all parts of the entry point file with side effects, and proceeds to traverse the edges of the graph until new sections are reached. Once the traversal is completed, the JavaScript bundle includes only the parts that were reached during the traversal. The other pieces are left out. ⁣ ⁣⁣ Let’s say we define the following `utilities.js` file:⁣⁣ ⁣⁣
 
-```
+```javascript
 export function read(props) {⁣⁣
+
     return props.book⁣⁣
+
 }⁣⁣
+
 ⁣⁣
+
 export function nap(props) {⁣⁣
+
    return props.winks⁣⁣
+
 }⁣⁣
 ```
 
 ⁣⁣ Then we have the following index.js file:⁣⁣ ⁣⁣
 
-```
+```javascript
 import { read } from 'utilities';⁣⁣
+
 ⁣⁣
+
 eventHandler = (e) => {⁣⁣
+
   read({ book: e.target.value })⁣⁣
+
 }⁣⁣
 ```
 

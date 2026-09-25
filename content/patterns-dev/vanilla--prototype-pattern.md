@@ -3,7 +3,6 @@ title: نمط النموذج الأولي (prototype)
 lang: ar
 source: https://www.patterns.dev/vanilla/prototype-pattern/
 ---
-
 في أدبيات أنماط التصميم (design patterns) الكلاسيكية، يتعلق **النموذج الأولي (prototype)** بـ*الاستنساخ*: تحتفظ بكائن قالب، ثم تستخرج نسخًا منه كلما احتجت نسخة جديدة. كان هذا التصور منطقيًا في C++ وSmalltalk، حيث كان إنشاء كائن من صنف يعني استدعاء دالة منشئة تعيد تشغيل شيفرة الإعداد في كل مرة.
 
 يعكس JavaScript هذا النمط. فالاستنساخ ما زال مهمًا — سننظر لاحقًا إلى `structuredClone` وHTML `` — لكن *اللغة نفسها* مبنية على آلية نموذج أولي تفعل شيئًا لا يستطيع الاستنساخ الكلاسيكي فعله: **التفويض (delegation)**. يمكن للكائن أن يسلّل عمليات البحث إلى كائن آخر في وقت التشغيل، من دون أي نسخة. هذه هي الآلية التي تجعل `class` تعمل، وهي الجزء المحدد من النمط الذي يجعله مثيرًا للاهتمام في JavaScript.
@@ -16,18 +15,25 @@ source: https://www.patterns.dev/vanilla/prototype-pattern/
 
 يمكنك رؤية السلسلة مباشرة:
 
-```
+```javascript
 const widget = {
-  render() {
-    return `<div class="${this.theme}">${this.label}</div>`;
-  },
+
+render() {
+
+return `<div class="${this.theme}">${this.label}</div>`;
+
+},
+
 };
 
 const button = Object.create(widget);
+
 button.label = "Save";
+
 button.theme = "primary";
 
 button.render();             // "<div class=\"primary\">Save</div>"
+
 Object.getPrototypeOf(button) === widget; // true
 ```
 
@@ -35,20 +41,31 @@ Object.getPrototypeOf(button) === widget; // true
 
 الأصناف مجرد سكر نحوي فوق الآلية نفسها. عندما تكتب:
 
-```
+```javascript
 class Widget {
-  render() {
-    return `<div class="${this.theme}">${this.label}</div>`;
-  }
+
+render() {
+
+return `<div class="${this.theme}">${this.label}</div>`;
+
+}
+
 }
 
 class IconButton extends Widget {
-  constructor({ label, theme, icon }) {
-    super();
-    this.label = label;
-    this.theme = theme;
-    this.icon = icon;
-  }
+
+constructor({ label, theme, icon }) {
+
+super();
+
+this.label = label;
+
+this.theme = theme;
+
+this.icon = icon;
+
+}
+
 }
 ```
 
@@ -64,11 +81,15 @@ class IconButton extends Widget {
 
 ### 1. عامل الانتشار (spread) للنسخ السطحي مع الاستبدالات
 
-```
+```javascript
 const baseConfig = {
-  retries: 3,
-  timeoutMs: 5000,
-  headers: { "User-Agent": "patterns.dev" },
+
+retries: 3,
+
+timeoutMs: 5000,
+
+headers: { "User-Agent": "patterns.dev" },
+
 };
 
 const prodConfig = { ...baseConfig, timeoutMs: 30_000 };
@@ -80,15 +101,21 @@ const prodConfig = { ...baseConfig, timeoutMs: 30_000 };
 
 دالة أصلية وموحّدة المعايير؛ مدعومة في كل متصفح حديث وNode 17+ وDeno وBun. تتعامل مع `Date` و`Map` و`Set` و`RegExp` والمصفوفات المكتوبة والرسوم البيانية الدورية، ولا ينجو أي منها من `JSON.parse(JSON.stringify(x))`.
 
-```
+```javascript
 const config = {
-  createdAt: new Date(),
-  tags: new Set(["beta", "internal"]),
-  endpoints: new Map([["read", "/r"], ["write", "/w"]]),
+
+createdAt: new Date(),
+
+tags: new Set(["beta", "internal"]),
+
+endpoints: new Map([["read", "/r"], ["write", "/w"]]),
+
 };
 
 const copy = structuredClone(config);
+
 copy.tags.add("experimental");
+
 config.tags.has("experimental"); // false — independent
 ```
 
@@ -98,10 +125,13 @@ config.tags.has("experimental"); // false — independent
 
 يتطلب استنساخ نسخة من صنف مع إبقاء النموذج الأولي سليمًا مساعدة صغيرة:
 
-```
+```javascript
 function cloneInstance(instance) {
-  const copy = Object.create(Object.getPrototypeOf(instance));
-  return Object.assign(copy, structuredClone({ ...instance }));
+
+const copy = Object.create(Object.getPrototypeOf(instance));
+
+return Object.assign(copy, structuredClone({ ...instance }));
+
 }
 ```
 
@@ -111,23 +141,33 @@ function cloneInstance(instance) {
 
 يأتي المتصفح بنمط نموذج أولي مدمج لعُقد DOM. ضع ترميزًا خاملًا داخل ``، واستنسخه كلما احتجت نسخة جديدة، ثم أدرجه في الشجرة الحية:
 
-```
+```javascript
 <template id="card">
-  <article class="card">
-    <h3 class="card-title"></h3>
-    <p class="card-body"></p>
-  </article>
+
+<article class="card">
+
+<h3 class="card-title"></h3>
+
+<p class="card-body"></p>
+
+</article>
+
 </template>
 ```
 
-```
+```javascript
 const cardTemplate = document.getElementById("card");
 
 function makeCard({ title, body }) {
-  const node = cardTemplate.content.cloneNode(true);
-  node.querySelector(".card-title").textContent = title;
-  node.querySelector(".card-body").textContent = body;
-  return node;
+
+const node = cardTemplate.content.cloneNode(true);
+
+node.querySelector(".card-title").textContent = title;
+
+node.querySelector(".card-body").textContent = body;
+
+return node;
+
 }
 
 list.append(makeCard({ title: "Hello", body: "World" }));
@@ -139,18 +179,27 @@ list.append(makeCard({ title: "Hello", body: "World" }));
 
 كمية كبيرة بشكل مفاجئ من شيفرة الاختبار هي نمط النموذج الأولي بارتداء قبعة مختلفة. تتبع مكتبات مثل `fishery` و`factory-bot` وأنماط `createBuilder` في Vitest الشكل نفسه:
 
-```
+```javascript
 function buildUser(overrides = {}) {
-  return {
-    id: crypto.randomUUID(),
-    email: "user@example.com",
-    role: "viewer",
-    createdAt: new Date(),
-    ...overrides,
-  };
+
+return {
+
+id: crypto.randomUUID(),
+
+email: "user@example.com",
+
+role: "viewer",
+
+createdAt: new Date(),
+
+...overrides,
+
+};
+
 }
 
 const admin = buildUser({ role: "admin" });
+
 const banned = buildUser({ role: "viewer", bannedAt: new Date() });
 ```
 
@@ -160,9 +209,11 @@ const banned = buildUser({ role: "viewer", bannedAt: new Date() });
 
 عندما تريد خريطة مفتاح/قيمة عادية ولا تريد أن تنتقل عمليات البحث إلى `Object.prototype`، فأنشئ الكائن من دون نموذج أولي على الإطلاق:
 
-```
+```javascript
 const headers = Object.create(null);
+
 headers.toString = "I'm just a header value, not the toString method";
+
 headers["__proto__"] = "and this is just a string, not a security hole";
 ```
 

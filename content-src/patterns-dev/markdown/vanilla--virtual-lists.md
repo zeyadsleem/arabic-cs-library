@@ -20,13 +20,19 @@ Not RenderedNot RenderedRenderedRenderedRenderedRenderedNot RenderedNot Rendered
 
 Rather than rendering 1000s of elements from a list at once (which can cause slower initial rendering or impact scroll performance), **virtualization focuses on rendering just items visible to the user**.
 
+![Impact of virtualization leading to a faster frame-rate vs rendering all at once](/images/patterns-dev/vanilla-virtual-lists-0-frame_rate_10k_2x.webp)
+
 This can help keep list rendering fast on mid to low-end devices. You can fetch/display more items as the user scrolls, unloading previous entries and replacing them with new ones.
 
 ## A smaller alternative to react-virtualized
 
 [react-window](https://react-window.now.sh/) is a rewrite of react-virtualized by the same author aiming to be **smaller**, faster and more [tree-shakeable](https://developers.google.com/web/fundamentals/performance/optimizing-javascript/tree-shaking/).
 
+![Bundlephobia showing a 34KB gzipped size for react-virtualized vs 5KB for react-window](/images/patterns-dev/vanilla-virtual-lists-1-bundlephobia_2x.webp)
+
 In a tree-shakeable library, size is a function of which API surfaces you choose to use. I’ve seen ~20-30KB (gzipped) savings using it in place of react-virtualized:
+
+![Webpack bundle analyzer showing a ~20KB size difference](/images/patterns-dev/vanilla-virtual-lists-2-wbpa_2x.webp)
 
 The APIs for both packages are similar and where they differ, react-window tends to be simpler. react-window’s components include:
 
@@ -40,41 +46,76 @@ RowRowRowRowRowRowNot RenderedNot Rendered
 
 Here’s an example of rendering a list of simple data (`itemsArray`) using React:
 
-```
+```javascript
 import React from "react";
+
 import ReactDOM from "react-dom";
 
+
+
 const itemsArray = [
+
   { name: "Drake" },
+
   { name: "Halsey" },
+
   { name: "Camillo Cabello" },
+
   { name: "Travis Scott" },
+
   { name: "Bazzi" },
+
   { name: "Flume" },
+
   { name: "Nicki Minaj" },
+
   { name: "Kodak Black" },
+
   { name: "Tyga" },
+
   { name: "Buno Mars" },
+
   { name: "Lil Wayne" }, ...
+
 ]; // our data
 
+
+
 const Row = ({ index, style }) => (
+
   <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
+
     {itemsArray[index].name}
+
   </div>
+
 );
 
+
+
 const Example = () => (
+
   <div
+
     style={{
+
       height: 150,
+
       width: 300
+
     }}
+
     class="List"
+
   >
+
     {itemsArray.map((item, index) => Row({ index }))}
+
   </div>
+
 );
+
+
 
 ReactDOM.render(<Example />, document.getElementById("root"));
 ```
@@ -83,30 +124,54 @@ ReactDOM.render(<Example />, document.getElementById("root"));
 
 …and here’s the same example using react-window’s `FixedSizeList`, which takes a few props (`width`, `height`, `itemCount`, `itemSize`) and a row rendering function passed as a child:
 
-```
+```javascript
 import React from "react";
+
 import ReactDOM from "react-dom";
+
 import { FixedSizeList as List } from "react-window";
+
+
 
 const itemsArray = [...]; // our data
 
+
+
 const Row = ({ index, style }) => (
+
   <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
+
     {itemsArray[index].name}
+
   </div>
+
 );
 
+
+
 const Example = () => (
+
   <List
+
     className="List"
+
     height={150}
+
     itemCount={itemsArray.length}
+
     itemSize={35}
+
     width={300}
+
   >
+
     {Row}
+
   </List>
+
 );
+
+
 
 ReactDOM.render(<Example />, document.getElementById("root"));
 ```
@@ -121,48 +186,90 @@ CellCellCellCellCellCellCellCellCellNot RenderedNot RenderedNot RenderedNot Rend
 
 If we wanted to render the same list as earlier with a grid layout, assuming our input is a multi-dimensional array, we could accomplish this using `FixedSizeGrid` as follows:
 
-```
+```javascript
 import React from 'react';
+
 import ReactDOM from 'react-dom';
+
 import { FixedSizeGrid as Grid } from 'react-window';
 
+
+
 const itemsArray = [
+
   [{},{},{},...],
+
   [{},{},{},...],
+
   [{},{},{},...],
+
   [{},{},{},...],
+
 ];
 
+
+
 const Cell = ({ columnIndex, rowIndex, style }) => (
+
   <div
+
     className={
+
       columnIndex % 2
+
         ? rowIndex % 2 === 0
+
           ? 'GridItemOdd'
+
           : 'GridItemEven'
+
         : rowIndex % 2
+
           ? 'GridItemOdd'
+
           : 'GridItemEven'
+
     }
+
     style={style}
+
   >
+
     {itemsArray[rowIndex][columnIndex].name}
+
   </div>
+
 );
 
+
+
 const Example = () => (
+
   <Grid
+
     className="Grid"
+
     columnCount={5}
+
     columnWidth={100}
+
     height={150}
+
     rowCount={5}
+
     rowHeight={35}
+
     width={300}
+
   >
+
     {Cell}
+
   </Grid>
+
 );
+
+
 
 ReactDOM.render(<Example />, document.getElementById('root'));
 ```
@@ -179,35 +286,63 @@ Pitchfork scraper uses [react-window-infinite-loader](https://github.com/bvaughn
 
 Here’s a snippet of how react-window-infinite-loader is incorporated in this app:
 
-```
+```javascript
 import React, { Component } from 'react';
+
 import { FixedSizeGrid as Grid } from 'react-window';
+
 import InfiniteLoader from 'react-window-infinite-loader';
+
 ...
+
   render() {
+
     return (
+
       <InfiniteLoader
+
         isItemLoaded={this.isItemLoaded}
+
         loadMoreItems={this.loadMoreItems}
+
         itemCount={this.state.count + 1}
+
       >
+
         {({ onItemsRendered, ref }) => (
+
           <Grid
+
             onItemsRendered={this.onItemsRendered(onItemsRendered)}
+
             columnCount={COLUMN_SIZE}
+
             columnWidth={180}
+
             height={800}
+
             rowCount={Math.max(this.state.count / COLUMN_SIZE)}
+
             rowHeight={220}
+
             width={1024}
+
             ref={ref}
+
           >
+
             {this.renderCell}
+
           </Grid>
+
         )}
+
       </InfiniteLoader>
+
     );
+
   }
+
 }
 ```
 
@@ -219,28 +354,49 @@ An implementation of Pitchfork scraper using `FixedSizeList` is also available (
 
 And here’s a snippet of the implementation:
 
-```
+```javascript
 return (
+
   <InfiniteLoader
+
     isItemLoaded={this.isItemLoaded}
+
     loadMoreItems={this.loadMoreItems}
+
     itemCount={this.state.count}
+
   >
+
     {({ onItemsRendered, ref }) => (
+
       <section>
+
         <FixedSizeList
+
           itemCount={this.state.count}
+
           itemSize={ROW_HEIGHT}
+
           onItemsRendered={onItemsRendered}
+
           height={this.state.height}
+
           width={this.state.width}
+
           ref={ref}
+
         >
+
           {this.renderCell}
+
         </FixedSizeList>
+
       </section>
+
     )}
+
   </InfiniteLoader>
+
 );
 ```
 
@@ -248,25 +404,39 @@ What if we have even more complex needs for a grid virtualization solution? We f
 
 [Porting](https://github.com/addyosmani/tmdb-viewer/blob/master/src/components/InfiniteMoviesList.js) it over to react-window and react-window-infinite-loader didn’t take long, but we did discover a few components were not yet supported. Regardless, the final functionality is [pretty close](https://tmdb-viewer.firebaseapp.com/).
 
-[](https://tmdb-viewer.firebaseapp.com/)
+[![TMDB Viewer](/images/patterns-dev/vanilla-virtual-lists-3-tmdb_2x.webp)](https://tmdb-viewer.firebaseapp.com/)
 
 The missing components were WindowScroller and AutoSizer…which we’ll look at next.
 
-```
+```javascript
 ...
+
     return (
+
       <section>
+
         <AutoSizer disableHeight>
+
           {({width}) => {
+
             const {movies, hasMore} = this.props;
+
             const rowCount = getRowsAmount(width, movies.length, hasMore);
+
             ...
+
             return (
+
               <InfiniteLoader
+
                 ref={this.infiniteLoaderRef}
+
                 ...
+
                 {({onRowsRendered, registerChild}) => (
+
                   <WindowScroller>
+
                     {({height, scrollTop}) => (
 ```
 
@@ -294,5 +464,3 @@ For further reading about react-window and react-virtualized, check out:
 - [Creating More Efficient React Views with Windowing](https://www.youtube.com/watch?v=t4tuhg7b50I)
 - [Rendering lists with react-virtualized](https://css-tricks.com/rendering-lists-using-react-virtualized/)
 - [Rendering large lists with react-virtualized](https://blog.logrocket.com/rendering-large-lists-with-react-virtualized-82741907a6b3)
-
-![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-43-frame_rate_10k_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-44-bundlephobia_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-45-wbpa_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-46-tmdb_2x.webp)

@@ -3,10 +3,13 @@ title: التوفير/الحقن
 lang: ar
 source: https://www.patterns.dev/vue/provide-inject/
 ---
-
 عند إدارة البيانات بين المكوّنات الأم والمكوّنات الفرعية، تمنحنا Vue القدرة على استخدام ما يُعرف بـ**الخصائص (props)** لتمرير البيانات من الأب إلى الابن. ولا يمكن أن تتدفّق الخصائص إلا في اتجاه واحد، من المكوّنات الأم إلى المكوّنات الفرعية (وما دونها). وعندما تحدث تغييرات في الحالة على العناصر الأمّية، فإن Vue ستعيد عرض المكوّنات التي تعتمد على تلك القيم.
 
+![تمرير الخصائص من الأعلى إلى الأسفل](/images/patterns-dev/vue-provide-inject-0-props.webp)
+
 تعمل الخصائص (props) بشكل جيّد في معظم الحالات. لكن عند العمل في تطبيقات كبيرة تحتوي على عدد كبير من المكوّنات في شجرة المكوّنات، قد يصبح صعبًا صيانة الخصائص، إذ يلزم التصريح بها في *كل مكوّن على حدة* ضمن شجرة المكوّنات.
+
+![خصائص متداخلة عبر مستويات متعددة](/images/patterns-dev/vue-provide-inject-1-nested_props.webp)
 
 وعند التفكير في كيفية إدارة البيانات بين عدد كبير من المكوّنات، فإن الأفضل غالبًا هو التوجّه نحو حلّ يتيح إدارة حالة على مستوى التطبيق بطريقة قابلة للصيانة والتسيير (مثل إنشاء مخزن قابل لإعادة الاستخدام، أو استخدام Pinia، إلخ). وقد تناولنا هذا بالتفصيل في دليل [إدارة الحالة](/book/patterns-dev/vue/state-management).
 
@@ -16,36 +19,51 @@ source: https://www.patterns.dev/vue/provide-inject/
 
 تتيح لنا الدالة `provide()` في Vue تمرير البيانات عبر شجرة مكوّنات دون الحاجة إلى *حَفْر الخصائص* (أي تمرير الخصائص يدويًا في كل مستوى). ومن جهة أخرى، يُستخدم الخيار `inject()` في المكوّنات الفرعية للوصول إلى البيانات أو الدوال الموفَّرة من المكوّن الأب أو أيّ مكوّن سلف (ancestor).
 
+![مقارنة بين تمرير الخصائص والتوفير والحقن](/images/patterns-dev/vue-provide-inject-2-provide_inject.webp)
+
 لنمرّ على مثال بسيط لتوضيح كيفية accomplishing ذلك. لنفترض لدينا مكوّن أب اسمه `App` يريد مشاركة جزء من البيانات مع مكوّنه الابن `ChildComponent`. وبدلًا من تمرير هذه البيانات كخاصية (prop)، يمكننا استخدام `provide()` في المكوّن الأب لجعل البيانات متاحة لجميع مكوّناته الفرعية.
 
-```
+```javascript
 <template>
-  <div id="app">
-    <ChildComponent />
-  </div>
+
+<div id="app">
+
+<ChildComponent />
+
+</div>
+
 </template>
 
 <script setup>
-  import { provide } from "vue";
-  import ChildComponent from "./components/ChildComponent";
 
-  provide("data", "Data from parent!");
+import { provide } from "vue";
+
+import ChildComponent from "./components/ChildComponent";
+
+provide("data", "Data from parent!");
+
 </script>
 ```
 
 يمكننا عندها الوصول إلى هذه البيانات الموفَّرة في `ChildComponent` بفضل الدالة `inject()`.
 
-```
+```javascript
 <template>
-  <div>
-    <p>{{ data }}</p>
-  </div>
+
+<div>
+
+<p>{{ data }}</p>
+
+</div>
+
 </template>
 
 <script setup>
-  import { inject } from "vue";
 
-  const data = inject("data");
+import { inject } from "vue";
+
+const data = inject("data");
+
 </script>
 ```
 
@@ -53,18 +71,16 @@ source: https://www.patterns.dev/vue/provide-inject/
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div id="app">
     <ChildComponent />
   </div>
 </template>
 
-
 <script setup>
 import { provide } from "vue";
 import ChildComponent from "./components/ChildComponent";
-
 
 provide("data", "Data from parent!");
 </script>
@@ -74,73 +90,115 @@ provide("data", "Data from parent!");
 
 مع provide/inject، سنلاحظ السلوك نفسه الذي رأيناه أعلاه حتى لو كان لدينا عدد كبير من المكوّنات الفرعية ضمن شجرة التسلسل الهرمي للمكوّنات. وكمثال، لنفترض لدينا المكوّنات `` و`` و`` و`` و`` بحيث يكون كل مكوّن فرعي أبًا للمكوّن الذي يليه.
 
-```
+```javascript
 <!-- ChildComponent5 -->
+
 <template>
-  <div>
-    <p>{{ data }}</p>
-  </div>
+
+<div>
+
+<p>{{ data }}</p>
+
+</div>
+
 </template>
 
 <script setup>
-  import { inject } from "vue";
-  const data = inject("data");
+
+import { inject } from "vue";
+
+const data = inject("data");
+
 </script>
+
 <!--  ------------- -->
 
 <!-- ChildComponent4 -->
+
 <template>
-  <ChildComponent5 />
+
+<ChildComponent5 />
+
 </template>
 
 <script setup>
-  import ChildComponent5 from "./ChildComponent5";
+
+import ChildComponent5 from "./ChildComponent5";
+
 </script>
+
 <!--  ------------- -->
 
 <!-- ChildComponent3 -->
+
 <template>
-  <ChildComponent4 />
+
+<ChildComponent4 />
+
 </template>
 
 <script setup>
-  import ChildComponent4 from "./ChildComponent4";
+
+import ChildComponent4 from "./ChildComponent4";
+
 </script>
+
 <!--  ------------- -->
 
 <!-- ChildComponent2 -->
+
 <template>
-  <ChildComponent3 />
+
+<ChildComponent3 />
+
 </template>
 
 <script setup>
-  import ChildComponent3 from "./ChildComponent3";
+
+import ChildComponent3 from "./ChildComponent3";
+
 </script>
+
 <!--  ------------- -->
 
 <!-- ChildComponent -->
+
 <template>
-  <ChildComponent2 />
+
+<ChildComponent2 />
+
 </template>
 
 <script setup>
-  import ChildComponent2 from "./ChildComponent2";
+
+import ChildComponent2 from "./ChildComponent2";
+
 </script>
+
 <!--  ------------- -->
 
 <!-- App -->
+
 <template>
-  <div id="app">
-    <ChildComponent />
-  </div>
+
+<div id="app">
+
+<ChildComponent />
+
+</div>
+
 </template>
 
 <script setup>
-  import { provide } from "vue";
-  import ChildComponent from "./components/ChildComponent";
 
-  provide("data", "Data from parent!");
+import { provide } from "vue";
+
+import ChildComponent from "./components/ChildComponent";
+
+provide("data", "Data from parent!");
+
 </script>
+
 <!--  ------------- -->
 ```
 
@@ -148,18 +206,16 @@ provide("data", "Data from parent!");
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div id="app">
     <ChildComponent />
   </div>
 </template>
 
-
 <script setup>
 import { provide } from "vue";
 import ChildComponent from "./components/ChildComponent";
-
 
 provide("data", "Data from parent!");
 </script>
@@ -169,14 +225,17 @@ provide("data", "Data from parent!");
 
 إلى جانب قدرتنا على استدعاء `provide()` بالبيانات من مكوّن أب، يمكننا رفع `provide()` إلى مستوى التطبيق أيضًا (أي الموضع الذي أنشئ فيه تطبيق Vue).
 
-```
+```javascript
 import { createApp } from "vue";
+
 import App from "./App.vue";
+
 import "./styles.css";
 
 const app = createApp(App);
 
 // app-level provide
+
 app.provide("data", "Data from parent!");
 
 app.mount("#app");
@@ -205,5 +264,3 @@ app.mount("#app");
 ## مصادر مفيدة
 
 - [Provide / Inject | توثيق Vue](https://vuejs.org/guide/components/provide-inject.html)
-
-![التوفير/الحقن](/images/patterns-dev/vue-provide-inject-70-props.webp) ![التوفير/الحقن](/images/patterns-dev/vue-provide-inject-71-nested_props.webp) ![التوفير/الحقن](/images/patterns-dev/vue-provide-inject-72-provide_inject.webp)

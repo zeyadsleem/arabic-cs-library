@@ -8,33 +8,60 @@ source: https://www.patterns.dev/vue/composables/
 
 Before the introduction of the Composition API in Vue, developers relied on the **Options API** to organize component logic which include reactive data, lifecycle methods, computed properties, and more. The Options API allowed defining these aspects within specific options, as shown in the example below:
 
-```
+```javascript
 <!-- Template -->
 
+
+
 <script>
+
   export default {
+
     name: "MyComponent",
+
     props: {
+
       // props
+
     },
+
     data() {
+
       // data
+
     },
+
     computed: {
+
       // computed properties
+
     },
+
     watch: {
+
       // properties to watch
+
     },
+
     methods: {
+
       // methods
+
     },
+
     created() {
+
       // lifecyle methods like created
+
     },
+
     // ...
+
   };
+
 </script>
+
+
 
 <!-- Styles -->
 ```
@@ -43,50 +70,93 @@ While this approach served its purpose and is still applicable in Vue v3, it can
 
 Let’s take a look at a simple example of an `App` component that renders two individual child components — `Count` and `Width`.
 
-```
+```javascript
 <template>
+
   <div class="App">
+
     <Count :count="count" :increment="increment" :decrement="decrement" />
+
     <div id="divider" />
+
     <Width :width="width" />
+
   </div>
+
 </template>
 
+
+
 <script>
+
   import Count from "./components/Count.vue";
+
   import Width from "./components/Width.vue";
 
+
+
   export default {
+
     name: "App",
+
     data() {
+
       return {
+
         count: 0,
+
         width: 0,
+
       };
+
     },
+
     mounted() {
+
       this.handleResize();
+
       window.addEventListener("resize", this.handleResize);
+
     },
+
     beforeUnmount() {
+
       window.removeEventListener("resize", this.handleResize);
+
     },
+
     methods: {
+
       increment() {
+
         this.count++;
+
       },
+
       decrement() {
+
         this.count--;
+
       },
+
       handleResize() {
+
         this.width = window.innerWidth;
+
       },
+
     },
+
     components: {
+
       Count,
+
       Width,
+
     },
+
   };
+
 </script>
 ```
 
@@ -103,7 +173,7 @@ The `` section contains the JavaScript code for the component. It starts by impo
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -154,9 +224,15 @@ JavaScript iconApp.vue
 
 When the app is run, the current count and the window’s inner width are displayed in real-time. The user can interact with the component by incrementing and decrementing the count using the buttons in the `` component.
 
+![Incrementing and decrementing count](/images/patterns-dev/vue-composables-0-composables_count.webp)
+
 Similarly, the width is automatically updated whenever the window is resized.
 
+![Increasing and decreasing window width](/images/patterns-dev/vue-composables-1-composables_width.webp)
+
 The way the `App.vue` single-file component is structured can be visualized as the following:
+
+![Flow chart](/images/patterns-dev/vue-composables-2-options_api_breakdown.webp)
 
 Even though this component is small in size, the logic inside it is already intertwined. Some parts are dedicated to the functionality of the counter, while others pertain to the width logic. As the component grows, organizing and locating related logic within the component would become more challenging.
 
@@ -166,17 +242,28 @@ To address these challenges, the Vue team introduced the Composition API in Vue 
 
 The Composition API can be seen as an **API that provides standalone functions representing Vue’s core capabilities**. These functions are primarily used within a single `setup()` option which serves as the entry point for utilizing the Composition API.
 
-```
+```javascript
 <!-- Template -->
 
+
+
 <script>
+
   export default {
+
     name: "MyComponent",
+
     setup() {
+
       // the setup function
+
     },
+
   };
+
 </script>
+
+
 
 <!-- Styles -->
 ```
@@ -185,59 +272,111 @@ The `setup()` function is executed before a component is created and when the pr
 
 With the Composition API, we can import standalone functions to help us access Vue’s core capabilities within our component. Let’s rewrite the counter and width example we’ve seen above while relying on the Composition API syntax.
 
-```
+```javascript
 <template>
+
   <div class="App">
+
     <Count :count="count" :increment="increment" :decrement="decrement" />
+
     <div id="divider" />
+
     <Width :width="width" />
+
   </div>
+
 </template>
 
+
+
 <script>
+
   import { ref, onMounted, onBeforeUnmount } from "vue";
+
   import Count from "./components/Count.vue";
+
   import Width from "./components/Width.vue";
 
+
+
   export default {
+
     name: "App",
+
     setup() {
+
       const count = ref(0);
+
       const width = ref(0);
 
+
+
       const increment = () => {
+
         count.value++;
+
       };
+
+
 
       const decrement = () => {
+
         count.value--;
+
       };
+
+
 
       const handleResize = () => {
+
         width.value = window.innerWidth;
+
       };
+
+
 
       onMounted(() => {
+
         handleResize();
+
         window.addEventListener("resize", handleResize);
+
       });
+
+
 
       onBeforeUnmount(() => {
+
         window.removeEventListener("resize", handleResize);
+
       });
 
+
+
       return {
+
         count,
+
         width,
+
         increment,
+
         decrement,
+
       };
+
     },
+
     components: {
+
       Count,
+
       Width,
+
     },
+
   };
+
 </script>
 ```
 
@@ -252,7 +391,7 @@ Inside the `setup()` function, we:
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -330,90 +469,161 @@ First, let’s create a composable function called `useCounter`, a composable th
 
 > By convention, composable function names start with the “use” keyword.
 
-```
+```javascript
 import { ref } from "vue";
 
+
+
 export function useCounter(initialCount = 0) {
+
   const count = ref(initialCount);
 
+
+
   function increment() {
+
     count.value++;
+
   }
+
+
 
   function decrement() {
+
     count.value--;
+
   }
 
+
+
   return {
+
     count,
+
     increment,
+
     decrement,
+
   };
+
 }
 ```
 
 Similarly, we can create a composable called `useWidth()` that encapsulates the width functionality of our app.
 
-```
+```javascript
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
+
+
 export function useWidth() {
+
   const width = ref(0);
 
+
+
   function handleResize() {
+
     width.value = window.innerWidth;
+
   }
 
+
+
   onMounted(() => {
+
     handleResize();
+
     window.addEventListener("resize", handleResize);
+
   });
+
+
 
   onBeforeUnmount(() => {
+
     window.removeEventListener("resize", handleResize);
+
   });
 
+
+
   return {
+
     width,
+
   };
+
 }
 ```
 
 In our `App` component, we can now use the composable functions to achieve the same outcome:
 
-```
+```javascript
 <template>
+
   <div class="App">
+
     <Count :count="count" :increment="increment" :decrement="decrement" />
+
     <div id="divider" />
+
     <Width :width="width" />
+
   </div>
+
 </template>
 
+
+
 <script>
+
   import Count from "./components/Count.vue";
+
   import Width from "./components/Width.vue";
+
   import { useCounter } from "./composables/useCounter";
+
   import { useWidth } from "./composables/useWidth";
 
+
+
   export default {
+
     name: "App",
+
     components: {
+
       Count,
+
       Width,
+
     },
+
     setup() {
+
       const { count, increment, decrement } = useCounter(0);
+
       const { width } = useWidth();
 
+
+
       return {
+
         count,
+
         increment,
+
         decrement,
+
         width,
+
       };
+
     },
+
   };
+
 </script>
 ```
 
@@ -421,7 +631,7 @@ With these changes, our app will function the same as it did before but in a mor
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -466,6 +676,8 @@ By using composable functions in the Composition API setting, we were able to br
 
 Let’s visualize the changes we just made, compared to the initial Options API example component.
 
+![Flow chart](/images/patterns-dev/vue-composables-3-composables_breakdown.webp)
+
 Using composable functions in Vue made it easier to separate the logic of our component into several smaller pieces. Reusing the same stateful logic now becomes easy since we are no longer confined to organizing our code within specific options in the Options API.
 
 With composable functions, we have the flexibility to extract and reuse shared logic across components. This separation of concerns allows us to focus on specific functionality within each composable function making our code **more modular and maintainable**.
@@ -480,5 +692,3 @@ Lastly, building Vue apps with the Composition API allows for **better type infe
 
 - [Composables | Vue Documentation](https://vuejs.org/guide/reusability/composables.html)
 - [Collection of Vue Composition Utilities | VueUse](https://vueuse.org/)
-
-![Composables](/images/patterns-dev/vue-composables-59-composables_count.webp) ![Composables](/images/patterns-dev/vue-composables-60-composables_width.webp) ![Composables](/images/patterns-dev/vue-composables-61-options_api_breakdown.webp) ![Composables](/images/patterns-dev/vue-composables-62-composables_breakdown.webp)

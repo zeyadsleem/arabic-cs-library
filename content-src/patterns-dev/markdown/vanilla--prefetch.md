@@ -6,8 +6,9 @@ source: https://www.patterns.dev/vanilla/prefetch/
 
 Prefetch (``) is a browser optimization which allows us to fetch resources that may be needed for subsequent routes or pages before they are needed. Prefetching can be achieved in a few ways. It can be done declaratively in HTML (such as in the example below), via a HTTP Header (`Link: ; rel=prefetch`), [Service Workers](https://googlechrome.github.io/samples/service-worker/prefetch/) or via more custom means such as through Webpack.
 
-```
+```javascript
 <link rel="prefetch" href="/pages/next-page.html" />
+
 <link rel="prefetch" href="/js/emoji-picker.js" />
 ```
 
@@ -21,7 +22,7 @@ In many cases, we know that users will request certain resources soon after the 
 
 Components or resources that we know are likely to be used at some point in the application can be **prefetched**. We can let Webpack know that certain bundles need to be prefetched, by adding a [magic comment](https://webpack.js.org/api/module-methods/#magic-comments) to the import statement: `/* webpackPrefetch: true */`.
 
-```
+```javascript
 const EmojiPicker = import(/* webpackPrefetch: true */ "./EmojiPicker");
 ```
 
@@ -67,20 +68,27 @@ export default ChatInput;
 
 After building the application, we can see that the `EmojiPicker` will be prefetched.
 
-```
+```javascript
  Asset                             Size       Chunks                          Chunk Names
+
     emoji-picker.bundle.js         1.49 KiB   emoji-picker [emitted]          emoji-picker
+
     vendors~emoji-picker.bundle.js 171 KiB    vendors~emoji-picker [emitted]  vendors~emoji-picker
+
     main.bundle.js                 1.34 MiB   main  [emitted]                 main
 
+
+
 Entrypoint main = main.bundle.js
+
 (prefetch: vendors~emoji-picker.bundle.js emoji-picker.bundle.js)
 ```
 
 The actual output is visible as a `link` tag with `rel="prefetch"` in the `head` of our document.
 
-```
+```javascript
 <link rel="prefetch" href="emoji-picker.bundle.js" as="script" />
+
 <link rel="prefetch" href="vendors~emoji-picker.bundle.js" as="script" />
 ```
 

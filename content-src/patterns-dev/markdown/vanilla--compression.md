@@ -57,6 +57,8 @@ The Gzip compression format has been around for almost 30 years and is a lossles
 
 The LZ77 algorithm identifies duplicate strings and replaces them with a backreference, which is a pointer to the place where it previously appeared, followed by the length of the string. Subsequently, Huffman coding identifies the commonly used references and replaces them with references with shorter bit sequences. Longer bit sequences are used to represent infrequently used references.
 
+![](/images/patterns-dev/vanilla-compression-0-compressingjav__zhfjmtap05.webp)
+
 Image Courtesy: [https://www.youtube.com/watch?v=whGwm0Lky2s&t=851s](https://www.youtube.com/watch?v=whGwm0Lky2s&t=851s)
 
 All major browsers support Gzip. The [Zopfli](https://github.com/google/zopfli) compression algorithm is a slower but improved version of Deflate/Gzip, producing smaller GZip compatible files. It is most suitable for static compression, where it can provide more significant gains.
@@ -73,6 +75,8 @@ Websites with a large user base, such as [OYO](https://tech.oyorooms.com/how-bro
 
 The [following table](https://paulcalvano.com/2018-07-25-brotli-compression-how-much-will-it-reduce-your-content/) shows a benchmark comparison of Brotli and Gzip compression ratios and speeds at different compression levels.
 
+![](/images/patterns-dev/vanilla-compression-1-compressingjav__zz1j9i0tui.webp)
+
 Additionally, here are a few insights from Chrome research into compression of JS using Gzip and Brotli
 
 - Gzip 9 has the best compression rate with a good compression speed, and you should consider using it before other levels of Gzip.
@@ -87,13 +91,19 @@ Let us now take a look at the communication about chosen compression format betw
 
 You can enable static compression as part of the build. If you use Webpack to bundle your code, you can use the [CompressionPlugin](https://github.com/webpack-contrib/compression-webpack-plugin) for Gzip compression or the [BrotliWebpackPlugin](https://github.com/mynameiswhm/brotli-webpack-plugin) for Brotli compression. The plugin can be included in the Webpack config file as follows.
 
-```
+```javascript
 module.exports = {
+
   //...
+
   plugins: [
+
     //...
+
     new CompressionPlugin(),
+
   ],
+
 };
 ```
 
@@ -109,7 +119,11 @@ Brotli is recommended over other compression algorithms because it generates sma
 
 You can check if the server compressed the downloaded scripts or text in Chrome -> DevTools -> network -> Headers. DevTools displays the content-encoding used in the response, as shown below.
 
+![](/images/patterns-dev/vanilla-compression-2-compressingjav__4gwntp0et8s.webp)
+
 The lighthouse report includes a performance audit for “Enable Text Compression” that checks for text-based resource types received without the content-encoding header set to ‘br’, ‘gzip’ or ‘deflate’. Lighthouse uses Gzip to compute the potential savings for the resource.
+
+![](/images/patterns-dev/vanilla-compression-3-compressingjav__qmwdq1rskk8.webp)
 
 Image courtesy: [https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server](https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server)
 
@@ -131,6 +145,8 @@ Following are some of the key terms relevant to our discussion.
 - **Chunk**: Adopted from Webpack terminology, a chunk is the final output of the bundling and code-splitting process. Webpack can split bundles into chunks based on the [entry](https://webpack.js.org/configuration/entry-context/) configuration, [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/), or [dynamic imports](https://webpack.js.org/plugins/split-chunks-plugin/).
 
 If modules are contained in source files, then the final output of the build process after code or bundle splitting is known as a **chunk**. Note that both the source files and the chunks may be dependent on each other.
+
+![](/images/patterns-dev/vanilla-compression-4-compressingjav__50dz6giz2pa.webp)
 
 Image courtesy: ​​[https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29](https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29)
 
@@ -165,6 +181,8 @@ In an ideal world, the granularity and chunking strategy should aim to achieve t
 - Only the code needed by the page/route should execute. This requires that no extra code is downloaded or executed. A `commons` chunk that includes common dependencies may have dependencies required by most but not all pages. De-duplication of code requires smaller independent chunks.
 - Long tasks on the main thread can block it for a long time. As such, these need to be broken up into smaller chunks.
 
+![](/images/patterns-dev/vanilla-compression-5-compressingjav__oj44b7q1hxl.webp)
+
 Image courtesy: [https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29](https://www.youtube.com/watch?v=ImjzA7EMI6I&list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&index=29)
 
 As indicated by the triangle above, a loading granularity that tries to optimize one of the above goals can take you away from the other goals. This is the problem of granularity trade-off
@@ -196,10 +214,10 @@ Emitting multiple shared chunks instead of a single one minimizes the amount of 
 
 The granular chunking strategy helped several Next JS apps reduce the total JavaScript used by the site.
 
+![](/images/patterns-dev/vanilla-compression-6-compressingjav__ja7cji39g8m.webp)
+
 The granular chunking strategy was also implemented in [Gatsby](https://github.com/gatsbyjs/gatsby/pull/22253) with similar benefits observed.
 
 ## Conclusion
 
 Compression alone cannot solve all JavaScript performance issues, but understanding how browsers and bundlers work behind the scenes can help create a better bundling strategy that will support better compression. The loading granularity problem needs to be addressed across different platforms in the ecosystem. Granular chunking may be one step in that direction, but we have a long way to go.
-
-![Compressing JavaScript](/images/patterns-dev/vanilla-compression-11-compressingjav__zhfjmtap05.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-12-compressingjav__zz1j9i0tui.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-13-compressingjav__4gwntp0et8s.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-14-compressingjav__qmwdq1rskk8.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-15-compressingjav__50dz6giz2pa.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-16-compressingjav__oj44b7q1hxl.webp) ![Compressing JavaScript](/images/patterns-dev/vanilla-compression-17-compressingjav__ja7cji39g8m.webp)

@@ -12,47 +12,77 @@ Renderless components are particularly useful when we need to create reusable lo
 
 Imagine you have a toggle UI element that needs to be used in different parts of your application, but each instance may have a different visual representation. Some toggles might be displayed as buttons, while others might be checkboxes or switches.
 
+![Different toggles](/images/patterns-dev/vue-renderless-components-0-renderless_toggles.webp)
+
 We could just create three different toggle components for the example above, however, we can observe that each toggle element has the same logic and behavior. Each toggle has an inactive and active state that’s being tracked with a component data property (e.g. `checked`). When a toggle is clicked, its component state is switched from inactive to active and vice versa (i.e. `checked = !checked`).
 
 Here’s a visual that displays how each component’s `` and `` sections are constructed:
+
+![Visuals of different toggles](/images/patterns-dev/vue-renderless-components-1-renderless_toggles_visual.webp)
 
 Right away, we can see that we can create a more reusable pattern by extracting the common logic and behavior in such a way that we don’t have to repeatedly define the state and toggle methods in each individual toggle component. This is a great case to use [composables](/vue/composables) since composables will allow us to encapsulate and share the common stateful logic across the different toggle components.
 
 **useCheckboxToggle**:
 
-```
+```javascript
 import { ref } from "vue";
 
+
+
 export function useCheckboxToggle() {
+
   const checkbox = ref(false);
 
+
+
   const toggleCheckbox = () => {
+
     checkbox.value = !checkbox.value;
+
   };
 
+
+
   return {
+
     checkbox,
+
     toggleCheckbox,
+
   };
+
 }
 ```
 
 **A toggle component**:
 
-```
+```javascript
 <template>
+
   <div class="comp">
+
     <label class="switch">
+
       <input type="checkbox" :value="checkbox" @click="toggleCheckbox" />
+
       <div class="slider rounded" :class="checkbox ? 'active' : ''"></div>
+
     </label>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { useCheckboxToggle } from "./composables/useCheckboxToggle";
 
+
+
   const { checkbox, toggleCheckbox } = useCheckboxToggle();
+
 </script>
 ```
 
@@ -68,51 +98,83 @@ Slots allow the parent component to inject template content into a child compone
 
 Let’s begin creating our renderless toggle component. In the `` section of the component, we’ll have the stateful logic responsible in toggling a `checkbox` state value.
 
-```
+```javascript
 <script setup>
+
   import { ref } from "vue";
+
+
 
   const checkbox = ref(false);
 
+
+
   const toggleCheckbox = () => {
+
     checkbox.value = !checkbox.value;
+
   };
+
 </script>
 ```
 
 In the `` section of the component, we’ll use the special `` element to dictate that this is where the parent-provided template content will be.
 
-```
+```javascript
 <template>
+
   <slot></slot>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
+
 
   const checkbox = ref(false);
 
+
+
   const toggleCheckbox = () => {
+
     checkbox.value = !checkbox.value;
+
   };
+
 </script>
 ```
 
 We’ll need the `checkbox` and `toggleCheckbox()` properties available in the parent when we declare the template we want to be rendered in the child. To do this, we can pass these properties to the `` outlet like we pass down props to a component.
 
-```
+```javascript
 <template>
+
   <slot :checkbox="checkbox" :toggleCheckbox="toggleCheckbox"></slot>
+
 </template>
 
+
+
 <script setup>
+
   import { ref } from "vue";
+
+
 
   const checkbox = ref(false);
 
+
+
   const toggleCheckbox = () => {
+
     checkbox.value = !checkbox.value;
+
   };
+
 </script>
 ```
 
@@ -122,136 +184,235 @@ Notice how the component we’ve created has no template of its own? This is wha
 
 In the parent component, we’ll now attempt to render three different toggle elements each with their own unique user experience. We’ll first import the renderless `ToggleComponent` component we’ve created above.
 
-```
+```javascript
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
 Now, we can attempt to render the `` and whatever we place in the children of the component will be the template slot content rendered.
 
-```
+```javascript
 <template>
+
   <ToggleComponent>
+
     <!-- slot content -->
+
     <!-- (i.e. what gets rendered as the ToggleComponent template) -->
+
   </ToggleComponent>
+
 </template>
 
+
+
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
 As we render the component slot content, we’ll need access to the properties in the child component scope (`checkbox` and `toggleCheckbox()`). Since we’ve passed these attributes to the slot outlet earlier (``), we can use the `v-slot` directive to receive these slot props.
 
-```
+```javascript
 <template>
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <!-- slot content -->
+
     <!-- (i.e. what gets rendered as the ToggleComponent template) -->
+
   </ToggleComponent>
+
 </template>
 
+
+
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
 With the relevant slot props available to us, we can now render the first toggle element. This toggle element will be a switch toggle that goes from the inactive to active state depending on the value of the `checkbox` property.
 
-```
+```javascript
 <template>
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <label class="switch">
+
         <input type="checkbox" :value="checkbox" @click="toggleCheckbox" />
+
         <div class="slider rounded" :class="checkbox ? 'active' : ''"></div>
+
       </label>
+
     </div>
+
   </ToggleComponent>
+
 </template>
 
+
+
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
 When saving our changes, we’ll be presented with the switch toggle in our app.
 
+![Switch toggle](/images/patterns-dev/vue-renderless-components-2-toggle_element_1.webp)
+
 We can go ahead and create the other two toggle elements in a very similar fashion. The second toggle element will be a button that when clicked, toggles between the text of `Toggle | Yes 😀` and `Toggle | No 😔`.
 
-```
+```javascript
 <template>
+
   <!-- Toggle element 1 -->
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <label class="switch">
+
         <input type="checkbox" :value="checkbox" @click="toggleCheckbox" />
+
         <div class="slider rounded" :class="checkbox ? 'active' : ''"></div>
+
       </label>
+
     </div>
+
   </ToggleComponent>
+
+
 
   <!-- Toggle element 2 -->
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <button class="toggle-button" @click="toggleCheckbox">
+
         Toggle | <span>{{ checkbox ? "Yes 😀" : "No 😔" }}</span>
+
       </button>
+
     </div>
+
   </ToggleComponent>
+
 </template>
 
+
+
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
 Finally, our third toggle element will be two tabbed buttons that when either is clicked toggles the active state of both buttons.
 
-```
+```javascript
 <template>
+
   <!-- Toggle element 1 -->
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <label class="switch">
+
         <input type="checkbox" :value="checkbox" @click="toggleCheckbox" />
+
         <div class="slider rounded" :class="checkbox ? 'active' : ''"></div>
+
       </label>
+
     </div>
+
   </ToggleComponent>
+
+
 
   <!-- Toggle element 2 -->
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <button class="toggle-button" @click="toggleCheckbox">
+
         Toggle | <span>{{ checkbox ? "Yes 😀" : "No 😔" }}</span>
+
       </button>
+
     </div>
+
   </ToggleComponent>
+
+
 
   <!-- Toggle element 3 -->
+
   <ToggleComponent v-slot="{ checkbox, toggleCheckbox }">
+
     <div class="comp">
+
       <button
+
         :class="['tab-button', { active: checkbox }]"
+
         @click="toggleCheckbox"
+
       >
+
         On
+
       </button>
+
       <button
+
         :class="['tab-button', { active: !checkbox }]"
+
         @click="toggleCheckbox"
+
       >
+
         Off
+
       </button>
+
     </div>
+
   </ToggleComponent>
+
 </template>
 
+
+
 <script setup>
+
   import ToggleComponent from "./components/ToggleComponent";
+
 </script>
 ```
 
@@ -259,7 +420,7 @@ With these changes saved, we’ll be presented with the three toggle elements th
 
 JavaScript iconToggleComponent.vue
 
-```
+```javascript
 <template>
   <slot :checkbox="checkbox" :toggleCheckbox="toggleCheckbox"></slot>
 </template>
@@ -293,5 +454,3 @@ The [Vue documentation](https://vuejs.org/guide/reusability/composables.html#vs-
 
 - [Slots | Vue Documentation](https://vuejs.org/guide/components/slots.html#slots)
 - [Renderless Components | Vue Documentation](https://vuejs.org/guide/components/slots.html#scoped-slots)
-
-![Renderless components](/images/patterns-dev/vue-renderless-components-74-renderless_toggles.webp) ![Renderless components](/images/patterns-dev/vue-renderless-components-75-renderless_toggles_visual.webp) ![Renderless components](/images/patterns-dev/vue-renderless-components-76-toggle_element_1.webp)

@@ -3,37 +3,59 @@ title: دوال التركيب
 lang: ar
 source: https://www.patterns.dev/vue/composables/
 ---
-
 ## Options API
 
 قبل تقديم Composition API في Vue، كان المطوّرون يعتمدون على **Options API** لتنظيم منطق المكوّنات، والذي يشمل البيانات التفاعلية (reactive data)، ودورات الحياة، والخصائص المحسوبة (computed properties)، وغيرها. سمحت Options API بتعريف هذه الجوانب ضمن خيارات محدّدة، كما هو موضح في المثال أدناه:
 
-```
+```javascript
 <!-- Template -->
 
 <script>
-  export default {
-    name: "MyComponent",
-    props: {
-      // props
-    },
-    data() {
-      // data
-    },
-    computed: {
-      // computed properties
-    },
-    watch: {
-      // properties to watch
-    },
-    methods: {
-      // methods
-    },
-    created() {
-      // lifecyle methods like created
-    },
-    // ...
-  };
+
+export default {
+
+name: "MyComponent",
+
+props: {
+
+// props
+
+},
+
+data() {
+
+// data
+
+},
+
+computed: {
+
+// computed properties
+
+},
+
+watch: {
+
+// properties to watch
+
+},
+
+methods: {
+
+// methods
+
+},
+
+created() {
+
+// lifecyle methods like created
+
+},
+
+// ...
+
+};
+
 </script>
 
 <!-- Styles -->
@@ -43,50 +65,89 @@ source: https://www.patterns.dev/vue/composables/
 
 لننظر إلى مثال بسيط لمكوّن `App` يعرض مكوّنين فرديين تابعين له — `Count` و`Width`.
 
-```
+```javascript
 <template>
-  <div class="App">
-    <Count :count="count" :increment="increment" :decrement="decrement" />
-    <div id="divider" />
-    <Width :width="width" />
-  </div>
+
+<div class="App">
+
+<Count :count="count" :increment="increment" :decrement="decrement" />
+
+<div id="divider" />
+
+<Width :width="width" />
+
+</div>
+
 </template>
 
 <script>
-  import Count from "./components/Count.vue";
-  import Width from "./components/Width.vue";
 
-  export default {
-    name: "App",
-    data() {
-      return {
-        count: 0,
-        width: 0,
-      };
-    },
-    mounted() {
-      this.handleResize();
-      window.addEventListener("resize", this.handleResize);
-    },
-    beforeUnmount() {
-      window.removeEventListener("resize", this.handleResize);
-    },
-    methods: {
-      increment() {
-        this.count++;
-      },
-      decrement() {
-        this.count--;
-      },
-      handleResize() {
-        this.width = window.innerWidth;
-      },
-    },
-    components: {
-      Count,
-      Width,
-    },
-  };
+import Count from "./components/Count.vue";
+
+import Width from "./components/Width.vue";
+
+export default {
+
+name: "App",
+
+data() {
+
+return {
+
+count: 0,
+
+width: 0,
+
+};
+
+},
+
+mounted() {
+
+this.handleResize();
+
+window.addEventListener("resize", this.handleResize);
+
+},
+
+beforeUnmount() {
+
+window.removeEventListener("resize", this.handleResize);
+
+},
+
+methods: {
+
+increment() {
+
+this.count++;
+
+},
+
+decrement() {
+
+this.count--;
+
+},
+
+handleResize() {
+
+this.width = window.innerWidth;
+
+},
+
+},
+
+components: {
+
+Count,
+
+Width,
+
+},
+
+};
+
 </script>
 ```
 
@@ -103,7 +164,7 @@ source: https://www.patterns.dev/vue/composables/
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -154,9 +215,15 @@ JavaScript iconApp.vue
 
 عند تشغيل التطبيق، يُعرض العدد الحالي والعرض الداخلي للنافذة في الوقت الفعلي. ويمكن للمستخدم التفاعل مع المكوّن عبر زيادة العدد أو إنقاصه باستخدام الأزرار في مكوّن ``.
 
+![دالة تركيب تُدار العدّاد](/images/patterns-dev/vue-composables-0-composables_count.webp)
+
 وبالمثل، يُحدَّث العرض تلقائيًا كلما أُعيد تغيير حجم النافذة.
 
+![توسيع وتصغير عرض النافذة](/images/patterns-dev/vue-composables-1-composables_width.webp)
+
 يمكن تصور بنية مكوّن `App.vue` أحادي الملف على النحو التالي:
+
+![مخطط تدفّق يوضّح الخيارات وOptions API](/images/patterns-dev/vue-composables-2-options_api_breakdown.webp)
 
 رغم أن حجم هذا المكوّن صغير، فإن المنطق بداخله أصبح متشابكًا بالفعل. فبعض الأجزاء مخصّصة لوظيفة العدّاد، بينما تتعلّق أجزاء أخرى بمنطق العرض. ومع نمو المكوّن، يصبح تنظيم المنطق المرتبط داخله والعثور عليه أكثر صعوبة.
 
@@ -166,16 +233,23 @@ JavaScript iconApp.vue
 
 يمكن النظر إلى Composition API على أنها **واجهة برمجية توفّر دوال مستقلة تمثّل القدرات الأساسية لـ Vue**. وتُستخدم هذه الدوال أساسًا داخل خيار `setup()` واحد يعمل كنقطة دخول لاستخدام Composition API.
 
-```
+```javascript
 <!-- Template -->
 
 <script>
-  export default {
-    name: "MyComponent",
-    setup() {
-      // the setup function
-    },
-  };
+
+export default {
+
+name: "MyComponent",
+
+setup() {
+
+// the setup function
+
+},
+
+};
+
 </script>
 
 <!-- Styles -->
@@ -185,59 +259,95 @@ JavaScript iconApp.vue
 
 مع Composition API، يمكننا استيراد دوال مستقلة تساعدنا على الوصول إلى القدرات الأساسية لـ Vue داخل مكوّننا. لنُعِد كتابة مثال العدّاد والعرض الذي رأيناه أعلاه مع الاعتماد على صيغة Composition API.
 
-```
+```javascript
 <template>
-  <div class="App">
-    <Count :count="count" :increment="increment" :decrement="decrement" />
-    <div id="divider" />
-    <Width :width="width" />
-  </div>
+
+<div class="App">
+
+<Count :count="count" :increment="increment" :decrement="decrement" />
+
+<div id="divider" />
+
+<Width :width="width" />
+
+</div>
+
 </template>
 
 <script>
-  import { ref, onMounted, onBeforeUnmount } from "vue";
-  import Count from "./components/Count.vue";
-  import Width from "./components/Width.vue";
 
-  export default {
-    name: "App",
-    setup() {
-      const count = ref(0);
-      const width = ref(0);
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-      const increment = () => {
-        count.value++;
-      };
+import Count from "./components/Count.vue";
 
-      const decrement = () => {
-        count.value--;
-      };
+import Width from "./components/Width.vue";
 
-      const handleResize = () => {
-        width.value = window.innerWidth;
-      };
+export default {
 
-      onMounted(() => {
-        handleResize();
-        window.addEventListener("resize", handleResize);
-      });
+name: "App",
 
-      onBeforeUnmount(() => {
-        window.removeEventListener("resize", handleResize);
-      });
+setup() {
 
-      return {
-        count,
-        width,
-        increment,
-        decrement,
-      };
-    },
-    components: {
-      Count,
-      Width,
-    },
-  };
+const count = ref(0);
+
+const width = ref(0);
+
+const increment = () => {
+
+count.value++;
+
+};
+
+const decrement = () => {
+
+count.value--;
+
+};
+
+const handleResize = () => {
+
+width.value = window.innerWidth;
+
+};
+
+onMounted(() => {
+
+handleResize();
+
+window.addEventListener("resize", handleResize);
+
+});
+
+onBeforeUnmount(() => {
+
+window.removeEventListener("resize", handleResize);
+
+});
+
+return {
+
+count,
+
+width,
+
+increment,
+
+decrement,
+
+};
+
+},
+
+components: {
+
+Count,
+
+Width,
+
+},
+
+};
+
 </script>
 ```
 
@@ -252,7 +362,7 @@ JavaScript iconApp.vue
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -261,12 +371,10 @@ JavaScript iconApp.vue
   </div>
 </template>
 
-
 <script>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Count from "./components/Count.vue";
 import Width from "./components/Width.vue";
-
 
 export default {
   name: "App",
@@ -274,34 +382,28 @@ export default {
     const count = ref(0);
     const width = ref(0);
 
-
-    const increment = () => {
+const increment = () => {
       count.value++;
     };
 
-
-    const decrement = () => {
+const decrement = () => {
       count.value--;
     };
 
-
-    const handleResize = () => {
+const handleResize = () => {
       width.value = window.innerWidth;
     };
 
-
-    onMounted(() => {
+onMounted(() => {
       handleResize();
       window.addEventListener("resize", handleResize);
     });
 
-
-    onBeforeUnmount(() => {
+onBeforeUnmount(() => {
       window.removeEventListener("resize", handleResize);
     });
 
-
-    return {
+return {
       count,
       width,
       increment,
@@ -330,90 +432,137 @@ export default {
 
 > بحكم العرف، تبدأ أسماء دوال التركيب بكلمة المفتاح "use".
 
-```
+```javascript
 import { ref } from "vue";
 
 export function useCounter(initialCount = 0) {
-  const count = ref(initialCount);
 
-  function increment() {
-    count.value++;
-  }
+const count = ref(initialCount);
 
-  function decrement() {
-    count.value--;
-  }
+function increment() {
 
-  return {
-    count,
-    increment,
-    decrement,
-  };
+count.value++;
+
+}
+
+function decrement() {
+
+count.value--;
+
+}
+
+return {
+
+count,
+
+increment,
+
+decrement,
+
+};
+
 }
 ```
 
 وبالمثل، يمكننا إنشاء دالة تركيب اسمها `useWidth()` تُغلّف وظيفة العرض في تطبيقنا.
 
-```
+```javascript
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 export function useWidth() {
-  const width = ref(0);
 
-  function handleResize() {
-    width.value = window.innerWidth;
-  }
+const width = ref(0);
 
-  onMounted(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-  });
+function handleResize() {
 
-  onBeforeUnmount(() => {
-    window.removeEventListener("resize", handleResize);
-  });
+width.value = window.innerWidth;
 
-  return {
-    width,
-  };
+}
+
+onMounted(() => {
+
+handleResize();
+
+window.addEventListener("resize", handleResize);
+
+});
+
+onBeforeUnmount(() => {
+
+window.removeEventListener("resize", handleResize);
+
+});
+
+return {
+
+width,
+
+};
+
 }
 ```
 
 في مكوّن `App` لدينا، يمكننا الآن استخدام دوال التركيب لتحقيق النتيجة نفسها:
 
-```
+```javascript
 <template>
-  <div class="App">
-    <Count :count="count" :increment="increment" :decrement="decrement" />
-    <div id="divider" />
-    <Width :width="width" />
-  </div>
+
+<div class="App">
+
+<Count :count="count" :increment="increment" :decrement="decrement" />
+
+<div id="divider" />
+
+<Width :width="width" />
+
+</div>
+
 </template>
 
 <script>
-  import Count from "./components/Count.vue";
-  import Width from "./components/Width.vue";
-  import { useCounter } from "./composables/useCounter";
-  import { useWidth } from "./composables/useWidth";
 
-  export default {
-    name: "App",
-    components: {
-      Count,
-      Width,
-    },
-    setup() {
-      const { count, increment, decrement } = useCounter(0);
-      const { width } = useWidth();
+import Count from "./components/Count.vue";
 
-      return {
-        count,
-        increment,
-        decrement,
-        width,
-      };
-    },
-  };
+import Width from "./components/Width.vue";
+
+import { useCounter } from "./composables/useCounter";
+
+import { useWidth } from "./composables/useWidth";
+
+export default {
+
+name: "App",
+
+components: {
+
+Count,
+
+Width,
+
+},
+
+setup() {
+
+const { count, increment, decrement } = useCounter(0);
+
+const { width } = useWidth();
+
+return {
+
+count,
+
+increment,
+
+decrement,
+
+width,
+
+};
+
+},
+
+};
+
 </script>
 ```
 
@@ -421,7 +570,7 @@ export function useWidth() {
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="App">
     <Count :count="count" :increment="increment" :decrement="decrement" />
@@ -430,13 +579,11 @@ JavaScript iconApp.vue
   </div>
 </template>
 
-
 <script>
 import Count from "./components/Count.vue";
 import Width from "./components/Width.vue";
 import { useCounter } from "./composables/useCounter";
 import { useWidth } from "./composables/useWidth";
-
 
 export default {
   name: "App",
@@ -448,8 +595,7 @@ export default {
     const { count, increment, decrement } = useCounter(0);
     const { width } = useWidth();
 
-
-    return {
+return {
       count,
       increment,
       decrement,
@@ -466,6 +612,8 @@ export default {
 
 لنُصوِّر التغييرات التي أجريناها للتو مقارنةً بمثال المكوّن الأول في Options API.
 
+![مخطط تدفّق لتفكيك دالة التركيب إلى أجزاء](/images/patterns-dev/vue-composables-3-composables_breakdown.webp)
+
 أدى استخدام دوال التركيب في Vue إلى تسهيل فصل منطق مكوّننا إلى عدة أجزاء أصغر. وأصبحت إعادة استخدام المنطق ذي الحالة نفسه سهلة الآن، إذ لم نعد مقيدين بتنظيم شيفرتنا ضمن خيارات محدّدة في Options API.
 
 مع دوال التركيب، لدينا المرونة لاستخراج المنطق المشترك وإعادة استخدامه عبر المكوّنات. وهذا الفصل بين المسؤوليات يتيح لنا التركيز على وظيفة محدّدة داخل كل دالة تركيب، مما يجعل شيفرتنا **أكثر وحداتية وأسهل في الصيانة**.
@@ -480,5 +628,3 @@ export default {
 
 - [دوال التركيب | توثيق Vue](https://vuejs.org/guide/reusability/composables.html)
 - [مجموعة من أدوات Utility الخاصة بـ Vue Composition API | VueUse](https://vueuse.org/)
-
-![دوال التركيب](/images/patterns-dev/vue-composables-59-composables_count.webp) ![دوال التركيب](/images/patterns-dev/vue-composables-60-composables_width.webp) ![دوال التركيب](/images/patterns-dev/vue-composables-61-options_api_breakdown.webp) ![دوال التركيب](/images/patterns-dev/vue-composables-62-composables_breakdown.webp)

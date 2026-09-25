@@ -14,10 +14,13 @@ Instead of unnecessarily adding `EmojiPicker` to the initial bundle, we can spli
 
 A smaller initial bundle size means a faster initial load: the user doesn’t have to stare at a blank loading screen for as long. The `fallback` component lets the user know that our application hasn’t frozen: they simply need to wait a little while for the module to be processed and executed.
 
-```
+```javascript
 Asset                             Size         Chunks            Chunk Names
+
 emoji-picker.bundle.js           1.48 KiB      1    [emitted]    emoji-picker
+
 main.bundle.js                   1.33 MiB      main [emitted]    main
+
 vendors~emoji-picker.bundle.js   171 KiB       2    [emitted]    vendors~emoji-picker
 ```
 

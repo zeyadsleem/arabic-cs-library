@@ -12,24 +12,35 @@ How do you ship the logic once and let each consumer decide what to render?
 
 The **Render Props pattern** is one answer. The component encapsulating the behavior doesn’t decide how the result is displayed. It accepts a function as a prop, calls that function with whatever data it has, and renders whatever JSX the function returns.
 
-```
+```javascript
 type RenderProp<T> = (value: T) => React.ReactNode;
 
+
+
 function Geolocation({ render }: { render: RenderProp<GeoState> }) {
+
   const state = useGeolocation(); // does the actual work
+
   return <>{render(state)}</>;
+
 }
 ```
 
 The consumer wires it up at the call site, deciding what the UI looks like for *this* page:
 
-```
+```javascript
 <Geolocation
+
   render={({ coords, error, status }) => {
+
     if (status === "pending") return <Spinner />;
+
     if (error) return <PermissionPrompt error={error} />;
+
     return <MapMarker lat={coords.latitude} lng={coords.longitude} />;
+
   }}
+
 />
 ```
 
@@ -39,83 +50,153 @@ The “render prop” doesn’t have to be called `render`. Any prop whose value
 
 Imagine a `` that owns the rules and the field state but lets the calling page decide what the inputs and error messages look like.
 
-```
+```javascript
 import { useState } from "react";
+
+
 
 type Errors<T> = Partial<Record<keyof T, string>>;
 
+
+
 type FormApi<T> = {
+
   values: T;
+
   errors: Errors<T>;
+
   isValid: boolean;
+
   setField: <K extends keyof T>(key: K, value: T[K]) => void;
+
   submit: () => void;
+
 };
+
+
 
 type Props<T> = {
+
   initialValues: T;
+
   validate: (values: T) => Errors<T>;
+
   onSubmit: (values: T) => void;
+
   children: (api: FormApi<T>) => React.ReactNode;
+
 };
 
+
+
 export function FormValidator<T extends Record<string, unknown>>({
+
   initialValues,
+
   validate,
+
   onSubmit,
+
   children,
+
 }: Props<T>) {
+
   const [values, setValues] = useState<T>(initialValues);
+
   const errors = validate(values);
+
   const isValid = Object.keys(errors).length === 0;
 
+
+
   const setField = <K extends keyof T>(key: K, value: T[K]) =>
+
     setValues((prev) => ({ ...prev, [key]: value }));
 
+
+
   const submit = () => {
+
     if (isValid) onSubmit(values);
+
   };
 
+
+
   return <>{children({ values, errors, isValid, setField, submit })}</>;
+
 }
 ```
 
 The consumer is free to render the form however it wants — using a design system, custom layout, server-rendered shell, anything:
 
-```
+```javascript
 <FormValidator
+
   initialValues={{ email: "", password: "" }}
+
   validate={(v) => ({
+
     email: v.email.includes("@") ? undefined : "Not an email",
+
     password: v.password.length >= 8 ? undefined : "Too short",
+
   })}
+
   onSubmit={(v) => signIn(v)}
+
 >
+
   {({ values, errors, isValid, setField, submit }) => (
+
     <form
+
       onSubmit={(e) => {
+
         e.preventDefault();
+
         submit();
+
       }}
+
     >
+
       <TextField
+
         label="Email"
+
         value={values.email}
+
         error={errors.email}
+
         onChange={(v) => setField("email", v)}
+
       />
+
       <TextField
+
         label="Password"
+
         type="password"
+
         value={values.password}
+
         error={errors.password}
+
         onChange={(v) => setField("password", v)}
+
       />
+
       <PrimaryButton type="submit" disabled={!isValid}>
+
         Sign in
+
       </PrimaryButton>
+
     </form>
+
   )}
+
 </FormValidator>
 ```
 
@@ -127,13 +208,19 @@ The example above already uses the children-as-a-function variant. It is the mor
 
 You’ll see both styles in the wild:
 
-```
+```javascript
 // Explicit render prop
+
 <Subscribe topic="orders" render={(orders) => <OrderList orders={orders} />} />
 
+
+
 // children-as-function
+
 <Subscribe topic="orders">
+
   {(orders) => <OrderList orders={orders} />}
+
 </Subscribe>
 ```
 
@@ -143,22 +230,37 @@ Some libraries (Formik historically, [Downshift](https://github.com/downshift-js
 
 A component can accept several render props, each responsible for a different slot. This is essentially a typed “slots” API:
 
-```
+```javascript
 type ListProps<T> = {
+
   items: T[];
+
   renderItem: (item: T, index: number) => React.ReactNode;
+
   renderEmpty?: () => React.ReactNode;
+
   renderHeader?: () => React.ReactNode;
+
 };
 
+
+
 function List<T>({ items, renderItem, renderEmpty, renderHeader }: ListProps<T>) {
+
   if (items.length === 0) return <>{renderEmpty?.()}</>;
+
   return (
+
     <section>
+
       {renderHeader?.()}
+
       <ul>{items.map((it, i) => <li key={i}>{renderItem(it, i)}</li>)}</ul>
+
     </section>
+
   );
+
 }
 ```
 
@@ -186,35 +288,63 @@ Most libraries that championed the render-props pattern have shipped a hooks API
 
 Here is the same `Geolocation` problem from the top of the article, this time as a custom hook:
 
-```
+```javascript
 function useGeolocation() {
+
   const [state, setState] = useState<GeoState>({ status: "pending" });
 
+
+
   useEffect(() => {
+
     if (!("geolocation" in navigator)) {
+
       setState({ status: "error", error: new Error("Unsupported") });
+
       return;
+
     }
+
     const id = navigator.geolocation.watchPosition(
+
       (pos) =>
+
         setState({
+
           status: "ok",
+
           coords: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
+
         }),
+
       (err) => setState({ status: "error", error: err }),
+
     );
+
     return () => navigator.geolocation.clearWatch(id);
+
   }, []);
 
+
+
   return state;
+
 }
 
+
+
 // At the call site:
+
 function NearbyStores() {
+
   const geo = useGeolocation();
+
   if (geo.status === "pending") return <Spinner />;
+
   if (geo.status === "error") return <PermissionPrompt error={geo.error} />;
+
   return <StoreMap lat={geo.coords.latitude} lng={geo.coords.longitude} />;
+
 }
 ```
 

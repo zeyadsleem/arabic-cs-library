@@ -17,6 +17,8 @@ However, with the emergence of [hooks](https://react.dev/learn/reusing-logic-wit
 
 Let’s say we want to create an application that fetches 6 dog images, and renders these images on the screen.
 
+![Browse dogs application](/images/patterns-dev/vue-container-presentational-0-browse_dogs.webp)
+
 To follow the container/presentational pattern, we want to enforce the separation of concerns by separating this process into two parts:
 
 - **Presentational Components**: Components that care about ***how*** data is shown to the user. In this example, that’s the rendering of the list of dog images.
@@ -32,16 +34,25 @@ A presentational component receives its data through `props`. Its primary functi
 
 Let’s take a look at the example that displays the dog images. When rendering the dog images, we simply want to map over each dog image that was fetched from the API and render those images. To do so, we can create a `DogImages` component that receives the data through props and renders the data it receives.
 
-```
+```javascript
 <!-- DogImages.vue -->
 
+
+
 <template>
+
   <img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
 </template>
 
+
+
 <script setup>
+
   import { defineProps } from "vue";
+
   const { dogs } = defineProps(["dogs"]);
+
 </script>
 ```
 
@@ -55,26 +66,45 @@ The primary function of container components is to **pass data** to presentation
 
 In our example, we want to pass dog images to the `DogsImages` presentational component. Before being able to do so, we need to fetch the images from an external API. We need to create a **container component** that fetches this data, and passes this data to the presentational component `DogImages` to display it on the screen. We’ll call this container component `DogImagesContainer`.
 
-```
+```javascript
 <!-- DogImagesContainer.vue -->
 
+
+
 <template>
+
   <DogImages :dogs="dogs" />
+
 </template>
 
+
+
 <script setup>
+
   import { ref, onMounted } from "vue";
+
   import DogImages from "./DogImages.vue";
+
+
 
   const dogs = ref([]);
 
+
+
   onMounted(async () => {
+
     const response = await fetch(
+
       "https://dog.ceo/api/breed/labrador/images/random/6"
+
     );
+
     const { message } = await response.json();
+
     dogs.value = message;
+
   });
+
 </script>
 ```
 
@@ -86,7 +116,7 @@ This in a nutshell is the container/presentational pattern. When integrating wit
 
 JavaScript iconDogImagesContainer.vue
 
-```
+```javascript
 <template>
   <DogImages :dogs="dogs" />
 </template>
@@ -121,36 +151,59 @@ In many cases, the container/presentational pattern can be replaced with composa
 
 Instead of having the data fetching logic in the `DogImagesContainer` component, we can create a composable that fetches the images, and returns the array of dogs.
 
-```
+```javascript
 import { ref, onMounted } from "vue";
 
+
+
 export default function useDogImages() {
+
   const dogs = ref([]);
 
+
+
   onMounted(async () => {
+
     const response = await fetch(
+
       "https://dog.ceo/api/breed/labrador/images/random/6"
+
     );
+
     const { message } = await response.json();
+
     dogs.value = message;
+
   });
 
+
+
   return { dogs };
+
 }
 ```
 
 By using this hook, we no longer need the wrapping `DogImagesContainer` container component to fetch the data and send this to the presentational `DogImages` component. Instead, we can use this hook directly in our presentational `DogImages` component!
 
-```
+```javascript
 <template>
+
   <img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
 </template>
 
+
+
 <script setup>
+
   import useDogImages from "../composables/useDogImages";
 
+
+
   /* eslint-disable-next-line no-unused-vars */
+
   const { dogs } = useDogImages();
+
 </script>
 ```
 
@@ -162,7 +215,7 @@ With all the changes we’ve made, our app can be seen as below.
 
 JavaScript iconuseDogImages.js
 
-```
+```javascript
 import { ref, onMounted } from &#x27;vue&#x27;;
 
 
@@ -188,5 +241,3 @@ Composables make it easy to separate logic and view in a component, just like th
 ## Helpful Resources
 
 - [Vue Composables | Patterns.dev](/vue/composables)
-
-![Container/Presentational Pattern](/images/patterns-dev/vue-container-presentational-63-browse_dogs.webp)

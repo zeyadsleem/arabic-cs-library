@@ -4,6 +4,8 @@ lang: en
 source: https://www.patterns.dev/react/
 ---
 
+![React logo](/images/patterns-dev/react-index-0-react_logo_3x.webp)
+
 Over the years, there has been an increased demand for straight-forward ways to **compose** user-interfaces using JavaScript. [React](https://reactjs.org), also referred to as React.js, is an open-source JavaScript library designed by Facebook, used for building user interfaces or UI components.
 
 React is of course not the only UI library out there. [Preact](https://preactjs.com), [Vue](https://vuejs.org), [Angular](https://angular.io), [Svelte](https://svelte.dev), [Lit](https://lit.dev) and many others are also great for composing interfaces from reusable elements. Given React’s popularity, it’s worth walking through how it works given we will be using it to walk through some of the design, rendering and performance patterns in this guide.
@@ -28,11 +30,15 @@ Because React is composition-focused, it can, perfectly map to the elements of y
 
 We will be using JSX in a number of our examples. JSX is an extension to JavaScript which embeds template HTML in JS using XML-like syntax. It is meant to be transformed into valid JavaScript, though the semantics of that transformation are implementation-specific. JSX rose to popularity with the React library, but has since seen other implementations as well.
 
+![how JSX works](/images/patterns-dev/react-index-1-jsx.webp)
+
 ## Components, Props, and State
 
 Components, props, and state are the three key concepts in React. Virtually everything you’re going to see or do in React can be classified into at least one of these key concepts, and here’s a quick look at these key concepts:
 
 ### 1. Components
+
+![React components and composition](/images/patterns-dev/react-index-2-react_components_1.5x.webp)
 
 Components are the building blocks of any React app. They are like JavaScript functions that accept arbitrary input (*Props*) and return React elements describing what should be displayed on the screen.
 
@@ -42,21 +48,29 @@ Components let you split your UI into independent, reusable pieces. If you’re 
 
 The most direct way to define a component is to write a JavaScript function.
 
-```
+```javascript
 function Badge(props) {
+
   return <h1>Hello, my name is {props.name}</h1>;
+
 }
 ```
 
 This function is a valid React component because it accepts a single prop (*which stands for properties*) object argument with data and returns a React element. Such components are called ”*function components*” because they are literally JavaScript functions.
 
+![React welcome badge](/images/patterns-dev/react-index-3-react_badge_2x.webp)
+
 Aside from function components, another type of component are ”*class components*.” A class component is different from a function component in that it is defined by an ES6 class, as shown below:
 
-```
+```javascript
 class Badge extends React.Component {
+
   render() {
+
     return <h1>Hello, my name is {this.props.name}</h1>;
+
   }
+
 }
 ```
 
@@ -66,29 +80,51 @@ class Badge extends React.Component {
 
 To illustrate the facts that components can be split into smaller components, consider the following `Tweet` component:
 
+![Tweet component](/images/patterns-dev/react-index-4-tweet_component_2x.webp)
+
 Which can be implemented as follows:
 
-```
+```javascript
 function Tweet(props) {
+
   return (
+
     <div className="Tweet">
+
       <div className="User">
+
         <Image
+
           className="Avatar"
+
           src={props.author.avatarUrl}
+
           alt={props.author.name}
+
         />
+
         <div className="User-name">{props.author.name}</div>
+
       </div>
+
       <div className="Tweet-text">{props.text}</div>
+
       <Image
+
         className="Tweet-image"
+
         src={props.image.imageUrl}
+
         alt={props.image.description}
+
       />
+
       <div className="Tweet-date">{formatDate(props.date)}</div>
+
     </div>
+
   );
+
 }
 ```
 
@@ -96,15 +132,23 @@ This component can be a bit difficult to manipulate because of how clustered it 
 
 The first thing we will do is extract* Avatar*:
 
-```
+```javascript
 function Avatar(props) {
+
   return (
+
     <Image
+
       className="Avatar"
+
       src={props.user.avatarUrl}
+
       alt={props.user.name}
+
     />
+
   );
+
 }
 ```
 
@@ -112,55 +156,91 @@ function Avatar(props) {
 
 Now we will simplify the comment a little:
 
-```
+```javascript
 function Tweet(props) {
+
   return (
+
     <div className="Tweet">
+
       <div className="User">
+
         <Avatar user={props.author} />
+
         <div className="User-name">{props.author.name}</div>
+
       </div>
+
       <div className="Tweet-text">{props.text}</div>
+
       <Image
+
         className="Tweet-image"
+
         src={props.image.imageUrl}
+
         alt={props.image.description}
+
       />
+
       <div className="Tweet-date">{formatDate(props.date)}</div>
+
     </div>
+
   );
+
 }
 ```
 
 The next thing we will do is to a `User` component that renders an_ Avatar _next to the user’s name:
 
-```
+```javascript
 function User(props) {
+
   return (
+
     <div className="User">
+
       <Avatar user={props.user} />
+
       <div className="User-name">{props.user.name}</div>
+
     </div>
+
   );
+
 }
 ```
 
 Now we will simplify `Tweet` further:
 
-```
+```javascript
 function Tweet(props) {
+
   return (
+
     <div className="Tweet">
+
       <User user={props.author} />
+
       <div className="Tweet-text">{props.text}</div>
+
       <Image
+
         className="Tweet-image"
+
         src={props.image.imageUrl}
+
         alt={props.image.description}
+
       />
+
       <div className="Tweet-date">{formatDate(props.date)}</div>
+
     </div>
+
   );
+
 }
 ```
 
@@ -176,6 +256,8 @@ The way you access a prop is by referencing it via the “this.props” property
 
 State is an object that holds some information that may change over the lifetime of the component. Meaning it is just the current snapshot of data stored in a component’s Props. The data can change over time, so techniques to manage the way that data changes become necessary to ensure the component looks the way engineers want it to, at just the right time — this is called *State management.*
 
+![](/images/patterns-dev/react-index-5-state_props.webp)
+
 It’s almost impossible to read one paragraph about React without coming across the idea of state-management. Developers love expounding upon this topic, but at its core, state management isn’t really as complex as it sounds.
 
 In React, state can also be tracked globally, and data can be shared between components as needed. Essentially, this means that in React apps, loading data in new places is not as expensive as it is with other technologies. React apps are smarter about which data they save and load, and when. This opens up opportunities to make interfaces that use data in new ways.
@@ -188,42 +270,77 @@ When designing, Including state is a task that you should save for last. It is m
 
 > **Note (React 18+):** In modern React, many applications manage state with **Context and Hooks (e.g., `useReducer`, `useContext`)** or lightweight libraries (Zustand, Jotai, etc.) for simpler use cases. Redux remains valid for complex global state, but React’s built-in solutions are often sufficient for local/shared state. Automatic batching in React 18 and the React Compiler’s optimizations make it easier to manage state updates efficiently without additional libraries in many scenarios.
 
+![](/images/patterns-dev/react-index-6-redux_details.webp)
+
 In the example below, the place for the state could be *LoginContainer* itself. Let’s use React Hooks (this will be discussed in the next section) for this:
 
-```
+```javascript
 const LoginContainer = () => {
+
   const [username, setUsername] = useState("");
+
   const [password, setPassword] = useState("");
 
+
+
   const login = async (event) => {
+
     event.preventDefault();
+
     const response = await fetch("/api", {
+
       method: "POST",
+
       body: JSON.stringify({
+
         username,
+
         password,
+
       }),
+
     });
+
     // Here we could check response.status to login or show error
+
   };
 
+
+
   return (
+
     <LoginForm onSubmit={login}>
+
       <FormInput
+
         name="username"
+
         title="Username"
+
         onChange={(event) => setUsername(event.currentTarget.value)}
+
         value={username}
+
       />
+
       <FormPasswordInput
+
         name="password"
+
         title="Password"
+
         onChange={(event) => setPassword(event.currentTarget.value)}
+
         value={password}
+
       />
+
       <SubmitButton>Login</SubmitButton>
+
     </LoginForm>
+
   );
+
 };
 ```
 
@@ -274,40 +391,69 @@ In a typical React app, data is passed down via props, but this can be cumbersom
 
 Hooks are functions that let you “hook into” React state and lifecycle features from functional components. They let you use state and other React features without writing a class. You can learn more about Hooks in our [Hooks](/posts/hooks-pattern) guide.
 
+![two ways of creating components](/images/patterns-dev/react-index-7-two_ways.webp)
+
 ## Thinking in React
 
 One thing that is really amazing about React is how it makes you think about apps as you build them. In this section, we’ll walk you through the thought process of building a *Searchable product data table* using React Hooks.
 
 **Step 1: Start with a Mock** Imagine that we already have a JSON API and a mock of our interface:
 
+![Mock tweet Search Results](/images/patterns-dev/react-index-8-mock_tweet_results_3x.webp)
+
 Our JSON API returns some data that looks like this:
 
-```
+```json
 [
+
   {
+
     category: "Entertainment",
+
     retweets: "54",
+
     isLocal: false,
+
     text: "Omg. A tweet.",
+
   },
+
   {
+
     category: "Entertainment",
+
     retweets: "100",
+
     isLocal: false,
+
     text: "Omg. Another.",
+
   },
+
   {
+
     category: "Technology",
+
     retweets: "32",
+
     isLocal: false,
+
     text: "New ECMAScript features!",
+
   },
+
   {
+
     category: "Technology",
+
     retweets: "88",
+
     isLocal: true,
+
     text: "Wow, learning React!",
+
   },
+
 ];
 ```
 
@@ -318,6 +464,8 @@ Tip: You may find free tools like [Excalidraw](https://excalidraw.com) useful fo
 When you have your mock, the next thing to do is to draw boxes around every component (and subcomponent) in the mock and name all of them, as shown below.
 
 Use the single responsibility principle: a component should ideally have a single function. If it ends up growing, it should be broken down into smaller subcomponents. Use this same technique for deciding if you should create a new function or object.
+
+![Mock tweet Search Results colors](/images/patterns-dev/react-index-9-mock_tweet_colors_3x.webp)
 
 You’ll see in the image above that we have five components in our app. We’ve listed the data each component represents.
 
@@ -339,119 +487,207 @@ Now that the components in the mock have been identified, the next thing to do w
 
 **i. Filterable list of tweets**
 
-```
+```javascript
 const TweetSearchResults = ({ tweets }) => {
+
   const [filterText, setFilterText] = useState("");
+
   const [inThisLocation, setInThisLocation] = useState(false);
+
   return (
+
     <div>
+
       <SearchBar
+
         filterText={filterText}
+
         inThisLocation={inThisLocation}
+
         setFilterText={setFilterText}
+
         setInThisLocation={setInThisLocation}
+
       />
+
       <TweetList
+
         tweets={tweets}
+
         filterText={filterText}
+
         inThisLocation={inThisLocation}
+
       />
+
     </div>
+
   );
+
 };
 ```
 
 **ii. SearchBar**
 
-```
+```javascript
 const SearchBar = ({
+
   filterText,
+
   inThisLocation,
+
   setFilterText,
+
   setInThisLocation,
+
 }) => (
+
   <form>
+
     <input
+
       type="text"
+
       placeholder="Search..."
+
       value={filterText}
+
       onChange={(e) => setFilterText(e.target.value)}
+
     />
+
     <p>
+
       <label>
+
         <input
+
           type="checkbox"
+
           checked={inThisLocation}
+
           onChange={(e) => setInThisLocation(e.target.checked)}
+
         />{" "}
+
         Only show tweets in your current location
+
       </label>
+
     </p>
+
   </form>
+
 );
 ```
 
 **iii. Tweet list (list of tweets)**
 
-```
+```javascript
 const TweetList = ({ tweets, filterText, inThisLocation }) => {
+
   const rows = [];
+
   let lastCategory = null;
 
+
+
   tweets.forEach((tweet) => {
+
     if (tweet.text.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+
       return;
+
     }
+
     if (inThisLocation && !tweet.isLocal) {
+
       return;
+
     }
+
     if (tweet.category !== lastCategory) {
+
       rows.push(
+
         <TweetCategory category={tweet.category} key={tweet.category} />
+
       );
+
     }
+
     rows.push(<TweetRow tweet={tweet} key={tweet.text} />);
+
     lastCategory = tweet.category;
+
   });
 
+
+
   return (
+
     <table>
+
       <thead>
+
         <tr>
+
           <th>Tweet Text</th>
+
           <th>Retweets</th>
+
         </tr>
+
       </thead>
+
       <tbody>{rows}</tbody>
+
     </table>
+
   );
+
 };
 ```
 
 **iv. Tweet category row**
 
-```
+```javascript
 const TweetCategory = ({ category }) => (
+
   <tr>
+
     <th colSpan="2">{category}</th>
+
   </tr>
+
 );
 ```
 
 **v. Tweet Row**
 
-```
+```javascript
 const TweetRow = ({ tweet }) => {
+
   const color = tweet.isLocal ? "inherit" : "red";
 
+
+
   return (
+
     <tr>
+
       <td>
+
         <span style="">{tweet.text}</span>
+
       </td>
+
       <td>{tweet.retweets}</td>
+
     </tr>
+
   );
+
 };
 ```
 
@@ -485,5 +721,3 @@ If you’re interested in further reading on the React fundamentals, see:
 - [React for designers](https://reactfordesigners.com/)
 
 *This guide would not have been possible without the teaching styles shared in the [official React components and props](https://reactjs.org/docs/components-and-props.html), [thinking in React](https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18), [thinking in React Hooks](https://davidpfahler.com/thinking-in-react-hooks) and the [scriptverse](https://scriptverse.academy/tutorials/reactjs-pass-props-to-functional-component.html) docs*
-
-![Overview of React.js](/images/patterns-dev/react-index-0-react_logo_3x.webp) ![Overview of React.js](/images/patterns-dev/react-index-1-jsx.webp) ![Overview of React.js](/images/patterns-dev/react-index-2-react_components_1.5x.webp) ![Overview of React.js](/images/patterns-dev/react-index-3-react_badge_2x.webp) ![Overview of React.js](/images/patterns-dev/react-index-4-tweet_component_2x.webp) ![Overview of React.js](/images/patterns-dev/react-index-5-state_props.webp) ![Overview of React.js](/images/patterns-dev/react-index-6-redux_details.webp) ![Overview of React.js](/images/patterns-dev/react-index-7-two_ways.webp) ![Overview of React.js](/images/patterns-dev/react-index-8-mock_tweet_results_3x.webp) ![Overview of React.js](/images/patterns-dev/react-index-9-mock_tweet_colors_3x.webp)

@@ -3,7 +3,6 @@ title: افتراضية القوائم (List Virtualization)
 lang: ar
 source: https://www.patterns.dev/vanilla/virtual-lists/
 ---
-
 في هذا الدليل، سنناقش افتراضية القوائم (list virtualization)، المعروفة أيضًا باسم النوافذ (windowing). الفكرة هي عرض الصفوف المرئية فقط من قائمة ديناميكية بدلًا من القائمة كاملة. وتكون الصفوف المعروضة جزءًا صغيرًا فقط، مع تحريك الجزء المرئي (النافذة) عندما يمرر المستخدم. ويمكن أن يحسّن هذا أداء العرض (rendering performance).
 
 إذا كنت تستخدم React وتحتاج إلى **عرض قائمة كبيرة من البيانات بكفاءة**، فقد تكون على دراية بـ [react-virtualized](https://bvaughn.github.io/react-virtualized/). هذه مكتبة نوافذ أنشأها [Brian Vaughn](https://twitter.com/brian_d_vaughn)، وتعرض العناصر المرئية فقط داخل قائمة قابلة للتمرير. هذا يعني أنك لا تدفع تكلفة عرض آلاف الصفوف مرة واحدة. ويرافق هذا الدليل [فيديو](https://www.youtube.com/embed/QhPn6hLGljU) عن افتراضية القوائم باستخدام react-window.
@@ -40,40 +39,67 @@ source: https://www.patterns.dev/vanilla/virtual-lists/
 
 إليك مثالًا لعرض قائمة بيانات بسيطة (`itemsArray`) باستخدام React:
 
-```
+```javascript
 import React from "react";
+
 import ReactDOM from "react-dom";
 
 const itemsArray = [
-  { name: "Drake" },
-  { name: "Halsey" },
-  { name: "Camillo Cabello" },
-  { name: "Travis Scott" },
-  { name: "Bazzi" },
-  { name: "Flume" },
-  { name: "Nicki Minaj" },
-  { name: "Kodak Black" },
-  { name: "Tyga" },
-  { name: "Buno Mars" },
-  { name: "Lil Wayne" }, ...
+
+{ name: "Drake" },
+
+{ name: "Halsey" },
+
+{ name: "Camillo Cabello" },
+
+{ name: "Travis Scott" },
+
+{ name: "Bazzi" },
+
+{ name: "Flume" },
+
+{ name: "Nicki Minaj" },
+
+{ name: "Kodak Black" },
+
+{ name: "Tyga" },
+
+{ name: "Buno Mars" },
+
+{ name: "Lil Wayne" }, ...
+
 ]; // our data
 
 const Row = ({ index, style }) => (
-  <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
-    {itemsArray[index].name}
-  </div>
+
+<div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
+
+{itemsArray[index].name}
+
+</div>
+
 );
 
 const Example = () => (
-  <div
-    style={{
-      height: 150,
-      width: 300
-    }}
-    class="List"
-  >
-    {itemsArray.map((item, index) => Row({ index }))}
-  </div>
+
+<div
+
+style={{
+
+height: 150,
+
+width: 300
+
+}}
+
+class="List"
+
+>
+
+{itemsArray.map((item, index) => Row({ index }))}
+
+</div>
+
 );
 
 ReactDOM.render(<Example />, document.getElementById("root"));
@@ -83,29 +109,45 @@ ReactDOM.render(<Example />, document.getElementById("root"));
 
 وهذا هو المثال نفسه باستخدام `FixedSizeList` من react-window، الذي يأخذ بعض الخصائص (`width` و`height` و`itemCount` و`itemSize`) ودالة عرض صف تُمرر كطفل:
 
-```
+```javascript
 import React from "react";
+
 import ReactDOM from "react-dom";
+
 import { FixedSizeList as List } from "react-window";
 
 const itemsArray = [...]; // our data
 
 const Row = ({ index, style }) => (
-  <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
-    {itemsArray[index].name}
-  </div>
+
+<div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={style}>
+
+{itemsArray[index].name}
+
+</div>
+
 );
 
 const Example = () => (
-  <List
-    className="List"
-    height={150}
-    itemCount={itemsArray.length}
-    itemSize={35}
-    width={300}
-  >
-    {Row}
-  </List>
+
+<List
+
+className="List"
+
+height={150}
+
+itemCount={itemsArray.length}
+
+itemSize={35}
+
+width={300}
+
+>
+
+{Row}
+
+</List>
+
 );
 
 ReactDOM.render(<Example />, document.getElementById("root"));
@@ -121,47 +163,81 @@ ReactDOM.render(<Example />, document.getElementById("root"));
 
 إذا أردنا عرض القائمة نفسها السابقة بتخطيط شبكي، مع افتراض أن مدخلاتنا مصفوفة متعددة الأبعاد، فيمكننا استخدام `FixedSizeGrid` كما يلي:
 
-```
+```javascript
 import React from 'react';
+
 import ReactDOM from 'react-dom';
+
 import { FixedSizeGrid as Grid } from 'react-window';
 
 const itemsArray = [
-  [{},{},{},...],
-  [{},{},{},...],
-  [{},{},{},...],
-  [{},{},{},...],
+
+[{},{},{},...],
+
+[{},{},{},...],
+
+[{},{},{},...],
+
+[{},{},{},...],
+
 ];
 
 const Cell = ({ columnIndex, rowIndex, style }) => (
-  <div
-    className={
-      columnIndex % 2
-        ? rowIndex % 2 === 0
-          ? 'GridItemOdd'
-          : 'GridItemEven'
-        : rowIndex % 2
-          ? 'GridItemOdd'
-          : 'GridItemEven'
-    }
-    style={style}
-  >
-    {itemsArray[rowIndex][columnIndex].name}
-  </div>
+
+<div
+
+className={
+
+columnIndex % 2
+
+? rowIndex % 2 === 0
+
+? 'GridItemOdd'
+
+: 'GridItemEven'
+
+: rowIndex % 2
+
+? 'GridItemOdd'
+
+: 'GridItemEven'
+
+}
+
+style={style}
+
+>
+
+{itemsArray[rowIndex][columnIndex].name}
+
+</div>
+
 );
 
 const Example = () => (
-  <Grid
-    className="Grid"
-    columnCount={5}
-    columnWidth={100}
-    height={150}
-    rowCount={5}
-    rowHeight={35}
-    width={300}
-  >
-    {Cell}
-  </Grid>
+
+<Grid
+
+className="Grid"
+
+columnCount={5}
+
+columnWidth={100}
+
+height={150}
+
+rowCount={5}
+
+rowHeight={35}
+
+width={300}
+
+>
+
+{Cell}
+
+</Grid>
+
 );
 
 ReactDOM.render(<Example />, document.getElementById('root'));
@@ -173,41 +249,67 @@ ReactDOM.render(<Example />, document.getElementById('root'));
 
 نفّذ [Scott Taylor](https://github.com/staylor) أداة [Pitchfork music reviews scraper](http://pitchfork.highforthis.com/) مفتوحة المصدر [(المصدر)](https://github.com/staylor/pitchfork-scraper) باستخدام `react-window` و`FixedSizeGrid`. وفيما يلي فيديو للتطبيق أثناء عمله:
 
-
-
 يستخدم Pitchfork scraper مكتبة [react-window-infinite-loader](https://github.com/bvaughn/react-window-infinite-loader) ([عرض تجريبي](https://codesandbox.io/s/5wqo7z2np4))، التي تساعد على تقسيم مجموعات البيانات الكبيرة إلى أجزاء يمكن تحميلها عند التمرير إليها.
 
 إليك مقطعًا من طريقة دمج react-window-infinite-loader في هذا التطبيق:
 
-```
+```javascript
 import React, { Component } from 'react';
+
 import { FixedSizeGrid as Grid } from 'react-window';
+
 import InfiniteLoader from 'react-window-infinite-loader';
+
 ...
-  render() {
-    return (
-      <InfiniteLoader
-        isItemLoaded={this.isItemLoaded}
-        loadMoreItems={this.loadMoreItems}
-        itemCount={this.state.count + 1}
-      >
-        {({ onItemsRendered, ref }) => (
-          <Grid
-            onItemsRendered={this.onItemsRendered(onItemsRendered)}
-            columnCount={COLUMN_SIZE}
-            columnWidth={180}
-            height={800}
-            rowCount={Math.max(this.state.count / COLUMN_SIZE)}
-            rowHeight={220}
-            width={1024}
-            ref={ref}
-          >
-            {this.renderCell}
-          </Grid>
-        )}
-      </InfiniteLoader>
-    );
-  }
+
+render() {
+
+return (
+
+<InfiniteLoader
+
+isItemLoaded={this.isItemLoaded}
+
+loadMoreItems={this.loadMoreItems}
+
+itemCount={this.state.count + 1}
+
+>
+
+{({ onItemsRendered, ref }) => (
+
+<Grid
+
+onItemsRendered={this.onItemsRendered(onItemsRendered)}
+
+columnCount={COLUMN_SIZE}
+
+columnWidth={180}
+
+height={800}
+
+rowCount={Math.max(this.state.count / COLUMN_SIZE)}
+
+rowHeight={220}
+
+width={1024}
+
+ref={ref}
+
+>
+
+{this.renderCell}
+
+</Grid>
+
+)}
+
+</InfiniteLoader>
+
+);
+
+}
+
 }
 ```
 
@@ -215,32 +317,51 @@ import InfiniteLoader from 'react-window-infinite-loader';
 
 تتوفر أيضًا تنفيذات لـ Pitchfork scraper تستخدم `FixedSizeList` ([عرض تجريبي](https://node-ntdprbnulc.now.sh)، [عرض على Pixel](https://youtu.be/CImWBbBeQXU)):
 
-
-
 وهذا مقطع من التنفيذ:
 
-```
+```javascript
 return (
-  <InfiniteLoader
-    isItemLoaded={this.isItemLoaded}
-    loadMoreItems={this.loadMoreItems}
-    itemCount={this.state.count}
-  >
-    {({ onItemsRendered, ref }) => (
-      <section>
-        <FixedSizeList
-          itemCount={this.state.count}
-          itemSize={ROW_HEIGHT}
-          onItemsRendered={onItemsRendered}
-          height={this.state.height}
-          width={this.state.width}
-          ref={ref}
-        >
-          {this.renderCell}
-        </FixedSizeList>
-      </section>
-    )}
-  </InfiniteLoader>
+
+<InfiniteLoader
+
+isItemLoaded={this.isItemLoaded}
+
+loadMoreItems={this.loadMoreItems}
+
+itemCount={this.state.count}
+
+>
+
+{({ onItemsRendered, ref }) => (
+
+<section>
+
+<FixedSizeList
+
+itemCount={this.state.count}
+
+itemSize={ROW_HEIGHT}
+
+onItemsRendered={onItemsRendered}
+
+height={this.state.height}
+
+width={this.state.width}
+
+ref={ref}
+
+>
+
+{this.renderCell}
+
+</FixedSizeList>
+
+</section>
+
+)}
+
+</InfiniteLoader>
+
 );
 ```
 
@@ -252,22 +373,36 @@ return (
 
 كانت المكونات الناقصة هي WindowScroller وAutoSizer، وسننظر إليها تاليًا.
 
-```
+```javascript
 ...
-    return (
-      <section>
-        <AutoSizer disableHeight>
-          {({width}) => {
-            const {movies, hasMore} = this.props;
-            const rowCount = getRowsAmount(width, movies.length, hasMore);
-            ...
-            return (
-              <InfiniteLoader
-                ref={this.infiniteLoaderRef}
-                ...
-                {({onRowsRendered, registerChild}) => (
-                  <WindowScroller>
-                    {({height, scrollTop}) => (
+
+return (
+
+<section>
+
+<AutoSizer disableHeight>
+
+{({width}) => {
+
+const {movies, hasMore} = this.props;
+
+const rowCount = getRowsAmount(width, movies.length, hasMore);
+
+...
+
+return (
+
+<InfiniteLoader
+
+ref={this.infiniteLoaderRef}
+
+...
+
+{({onRowsRendered, registerChild}) => (
+
+<WindowScroller>
+
+{({height, scrollTop}) => (
 ```
 
 ## ما الذي ينقص react-window؟
@@ -295,4 +430,10 @@ return (
 - [عرض القوائم باستخدام react-virtualized](https://css-tricks.com/rendering-lists-using-react-virtualized/)
 - [عرض القوائم الكبيرة باستخدام react-virtualized](https://blog.logrocket.com/rendering-large-lists-with-react-virtualized-82741907a6b3)
 
-![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-43-frame_rate_10k_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-44-bundlephobia_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-45-wbpa_2x.webp) ![List Virtualization](/images/patterns-dev/vanilla-virtual-lists-46-tmdb_2x.webp)
+![أثر افترافية القوائم: معدل إطارات أعلى مقارنةً بالعرض دفعة واحدة](/images/patterns-dev/vanilla-virtual-lists-0-frame_rate_10k_2x.webp)
+
+![حجم حزمة react-virtualized (34 كيلوبايت مضغوطة) مقابل react-window (5 كيلوبايت)](/images/patterns-dev/vanilla-virtual-lists-1-bundlephobia_2x.webp)
+
+![محلّل حزم Webpack يُظهر فرقاً يقارب 20 كيلوبايت](/images/patterns-dev/vanilla-virtual-lists-2-wbpa_2x.webp)
+
+![عارض TMDB يعرض آلاف العناصر](/images/patterns-dev/vanilla-virtual-lists-3-tmdb_2x.webp)

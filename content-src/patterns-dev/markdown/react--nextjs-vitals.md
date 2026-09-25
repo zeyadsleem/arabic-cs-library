@@ -33,7 +33,7 @@ Some of the optimizations built into the Image component include:
 
 To add an image to your application, import the `next/image` component:
 
-```
+```javascript
 import Image from "next/image";
 ```
 
@@ -41,7 +41,7 @@ Now, you can define the src for your image (either local or remote).
 
 **Local Images** To use a local image, import your .jpg, .png, or .webp files:
 
-```
+```javascript
 import profilePic from "../public/me.png";
 ```
 
@@ -49,25 +49,43 @@ The import must be static so it can be analyzed at build time.
 
 Next.js will automatically determine the width and height of your image based on the imported file. These values are used to prevent Cumulative Layout Shift while your image is loading.
 
-```
+```javascript
 import Image from "next/image";
+
 import profilePic from "../public/me.png";
 
+
+
 function Home() {
+
   return (
+
     &#x3C;>
+
       &#x3C;h1>My Homepage&#x3C;/h1>
+
       &#x3C;Image
+
         src={profilePic}
+
         alt="Picture of the author"
+
         // width={500} automatically provided
+
         // height={500} automatically provided
+
         // blurDataURL="data:..." automatically provided
+
         // placeholder="blur" // Optional blur-up while loading
+
       />
+
       &#x3C;p>Welcome to my homepage!&#x3C;/p>
+
     &#x3C;/>
+
   );
+
 }
 ```
 
@@ -75,22 +93,37 @@ function Home() {
 
 To use a remote image, the src property should be a URL string, which can be relative or absolute. Because Next.js does not have access to remote files during the build process, you’ll need to provide the width, height and optional blurDataURL props manually:
 
-```
+```javascript
 import Image from "next/image";
 
+
+
 export default function Home() {
+
   return (
+
     &#x3C;>
+
       &#x3C;h1>My Homepage&#x3C;/h1>
+
       &#x3C;Image
+
         src="/me.png"
+
         alt="Picture of the author"
+
         width={500}
+
         height={500}
+
       />
+
       &#x3C;p>Welcome to my homepage!&#x3C;/p>
+
     &#x3C;/>
+
   );
+
 }
 ```
 
@@ -110,25 +143,43 @@ If you are using a remote image, you need to provide the width and height proper
 
 For example, if you want to display a remote image with a 16:9 aspect ratio and you want the Image component to fill its container, you can use the following code:
 
-```
+```javascript
 import Image from "next/image";
 
+
+
 function Home() {
+
   return (
+
     &#x3C;>
+
       &#x3C;h1>My Homepage&#x3C;/h1>
+
       &#x3C;div style={{ width: "100%", height: "50vh" }}>
+
         &#x3C;Image
+
           src="https://example.com/my-image.jpg"
+
           alt="My Image"
+
           layout="fill"
+
           objectFit="cover"
+
           aspectRatio={16 / 9}
+
         />
+
       &#x3C;/div>
+
       &#x3C;p>Welcome to my homepage!&#x3C;/p>
+
     &#x3C;/>
+
   );
+
 }
 ```
 
@@ -147,27 +198,47 @@ A loader function is a function that generates URLs for your images. It takes a 
 
 Here’s an example of a custom loader function that generates URLs for images stored on AWS S3:
 
-```
+```javascript
 import Image from "next/image";
 
+
+
 function myLoader({ src, width, quality }) {
+
   return `https://example.com/images/${src}?w=${width}&#x26;q=${quality || 75}`;
+
 }
 
+
+
 function Home() {
+
   return (
+
     &#x3C;>
+
       &#x3C;h1>My Homepage&#x3C;/h1>
+
       &#x3C;Image
+
         loader={myLoader}
+
         src="my-image.jpg"
+
         alt="My Image"
+
         width={500}
+
         height={500}
+
       />
+
       &#x3C;p>Welcome to my homepage!&#x3C;/p>
+
     &#x3C;/>
+
   );
+
 }
 ```
 
@@ -201,15 +272,23 @@ The available guidance provides the following methods for efficiently loading an
 
 Use the async or defer attribute with `&#x3C;script>` tags that tell the browser to load non-critical third-party scripts without blocking the document parser. Scripts not required for initial page load or the first user interaction may be considered non-critical.
 
-```
+```javascript
 &#x3C;script src="https://example.com/script1.js" defer>&#x3C;/script>
+
 &#x3C;script src="https://example.com/script2.js" async>&#x3C;/script>
+
 Establish early connections to required origins using preconnect and
+
 dns-prefetch. This allows critical scripts to start downloading earlier.
 
+
+
 &#x3C;head>
+
   &#x3C;link rel="preconnect" href="http://PreconnThis.com" />
+
   &#x3C;link rel="dns-prefetch" href="http://PrefetchThis.com" />
+
 &#x3C;/head>
 ```
 
@@ -219,18 +298,29 @@ Lazy-load third-party resources and embeds after the main page content has finis
 
 The Next.js Script component builds on the HTML `&#x3C;script>` tag and provides an option to set the loading priority for third-party scripts using the strategy attribute. Once the suitable strategy is specified, it will load optimally without blocking other critical resources.
 
-```
+```javascript
 // Example for beforeInteractive:
 
+
+
 &#x3C;script
+
   src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver"
+
   strategy="beforeInteractive"
+
 />
 
+
+
 // Example for afterInteractive (default):
+
 &#x3C;script src="https://example.com/samplescript.js" />
 
+
+
 // Example for lazyonload:
+
 &#x3C;script src="https://connect.facebook.net/en_US/sdk.js" strategy="lazyOnload" />
 ```
 
@@ -242,8 +332,10 @@ The strategy attribute can take three values:
 
 The Script component also provides a mechanism for inlining third-party scripts using the inline attribute. Inlining scripts can help reduce the number of requests made by a website, which can be particularly useful for small scripts. However, it is not recommended to inline large scripts as they can increase the size of the HTML document, making it slower to download.
 
-```
+```javascript
 // Example for inlining a script:
+
+
 
 &#x3C;script inline src="https://example.com/inlinescript.js" />
 ```
@@ -266,45 +358,71 @@ When used, the fallback font metrics are automatically calculated and injected i
 
 Let’s say you are using the Roboto font. Typically, you would define it in CSS as follows:
 
-```
+```javascript
 @font-face {
+
   font-family: "Roboto";
+
   font-display: swap;
+
   src: url("/fonts/Roboto.woff2") format("woff2"), url("/fonts/Roboto.woff")
+
       format("woff");
+
   font-weight: 700;
+
 }
 
+
+
 body {
+
   font-family: Roboto;
+
 }
 ```
 
 To migrate to the Next.js Font Component, move the Roboto font declaration into your JavaScript by importing the ‘Roboto’ function from ‘next/font’. The function’s return value will be a class name you can leverage in your component template. Remember to add display: swap to the configuration object to enable the feature.
 
-```
+```javascript
 import { Roboto } from "@next/font/google";
 
+
+
 const roboto = Roboto({
+
   weight: "400",
+
   subsets: ["latin"],
+
   display: "swap", // Using display swap automatically enables the feature
+
 });
 ```
 
 In your component, use the generated class name:
 
-```
+```javascript
 export default function RootLayout({
+
   children,
+
 }: {
+
   children: React.ReactNode,
+
 }) {
+
   return (
+
     &#x3C;html lang="en" className={roboto.className}>
+
       &#x3C;body>{children}&#x3C;/body>
+
     &#x3C;/html>
+
   );
+
 }
 ```
 
@@ -324,30 +442,49 @@ With the @next/font component, you can also import custom fonts into your pages.
 
 Here’s an example of how to use a custom font with the @next/font component:
 
-```
+```javascript
 // In your component
+
 import { MyCustomFont } from "@next/font/local";
 
+
+
 const myCustomFont = MyCustomFont({
+
   weight: "normal",
+
   src: 'url("/fonts/MyCustomFont.woff2") format("woff2")',
+
 });
 
+
+
 export default function MyComponent() {
+
   return (
+
     &#x3C;div className={myCustomFont.className}>
+
       &#x3C;h1>Hello World&#x3C;/h1>
+
     &#x3C;/div>
+
   );
+
 }
 ```
 
-```
+```javascript
 // In your CSS
+
 @font-face {
+
   font-family: "MyCustomFont";
+
   font-weight: normal;
+
   src: url("/fonts/MyCustomFont.woff2") format("woff2");
+
 }
 ```
 
@@ -355,25 +492,43 @@ With the @next/font component, you can also optimize your font loading by loadin
 
 Here’s an example of how to use the Font Observer API with the @next/font component:
 
-```
+```javascript
 // In your component
+
 import { useFontObserver } from "@next/font";
 
+
+
 export default function MyComponent() {
+
   const [isFontReady, fontClassName] = useFontObserver("Inter", {
+
     weight: "400",
+
     subsets: ["latin"],
+
   });
 
+
+
   return (
+
     &#x3C;div className={fontClassName}>
+
       {isFontReady ? (
+
         &#x3C;h1>Hello World&#x3C;/h1>
+
       ) : (
+
         &#x3C;h1 style={{ fontFamily: "sans-serif" }}>Hello World&#x3C;/h1>
+
       )}
+
     &#x3C;/div>
+
   );
+
 }
 ```
 

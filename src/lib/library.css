@@ -461,7 +461,7 @@ html[data-theme='dark'] .exercises > h3 {
 .exercises ol > li {
   counter-increment: exercise;
   position: relative;
-  padding: 0.9rem 1rem 0.9rem 3.1rem;
+  padding: 0.9rem 3.2rem 0.9rem 1rem;
   border-radius: 10px;
   background: #fff;
   border: 1px solid #e4ebf4;
@@ -509,7 +509,7 @@ html[data-theme='dark'] .exercises ol > li {
 }
 
 .exercises ol ol > li {
-  padding: 0.35rem 0.7rem 0.35rem 2.6rem;
+  padding: 0.35rem 2.6rem 0.35rem 0.7rem;
   background: transparent;
   border: none;
   border-inline-start: 2px solid #d9e2ef;

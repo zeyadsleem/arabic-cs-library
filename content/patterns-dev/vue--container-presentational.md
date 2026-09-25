@@ -3,7 +3,6 @@ title: نمط الحاوية/العرضية
 lang: ar
 source: https://www.patterns.dev/vue/container-presentational/
 ---
-
 في عام 2015، كتب Dan Abramov مقالًا بعنوان [“المكوّنات العرضية والحاويات” (Presentational and Container Components)](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) غيّر طريقة تفكير كثير من المطوّرين في بنية المكوّنات (component architecture) داخل React. وقد طرح نمطًا يقسم المكوّنات إلى فئتين:
 
 - **المكوّنات العرضية (Presentational Components) أو “الغبيّة” (Dumb Components)**: تهتمّ بكيفية ظهور الأشياء. فهي لا تحدّد كيفية تحميل البيانات أو تعديلها، بل تتلقّى البيانات والاستدعاءات (callbacks) حصريًا عبر الخصائص (props).
@@ -17,14 +16,12 @@ source: https://www.patterns.dev/vue/container-presentational/
 
 لنفترض أننا نريد إنشاء تطبيق يجلب 6 صور لكلاب، ويعرض هذه الصور على الشاشة.
 
+![تطبيق «تصفّح الكلاب»](/images/patterns-dev/vue-container-presentational-0-browse_dogs.webp)
+
 ولكي نتبع نمط الحاوية/العرضية، نريد فرض الفصل بين المسؤوليات (separation of concerns) بفصل هذه العملية إلى جزأين:
 
 - **المكوّنات العرضية (presentational components)**: مكوّنات تهتمّ بكيفية عرض البيانات للمستخدم. وفي هذا المثال، يكون ذلك بعرض قائمة صور الكلاب.
 - **المكوّنات الحاوية (container components)**: مكوّنات تهتمّ بأيّ بيانات تُعرض للمستخدم. وفي هذا المثال، يكون ذلك بجلب صور الكلاب.
-
-
-
-
 
 يتعلّم جلب صور الكلاب بـ**منطق التطبيق (application logic)**، بينما يقتصر عرض الصور على **العرض (view)** فقط.
 
@@ -34,16 +31,21 @@ source: https://www.patterns.dev/vue/container-presentational/
 
 لننظر إلى المثال الذي يعرض صور الكلاب. وعند عرض صور الكلاب، نريد ببساطة المرور على كل صورة كلاب تمّ جلبها من الواجهة البرمجية وعرض تلك الصور. ولِفعل ذلك، يمكننا إنشاء مكوّن `DogImages` يتلقّى البيانات عبر الخصائص ويعرض ما يتلقّاه.
 
-```
+```javascript
 <!-- DogImages.vue -->
 
 <template>
-  <img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
+<img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
 </template>
 
 <script setup>
-  import { defineProps } from "vue";
-  const { dogs } = defineProps(["dogs"]);
+
+import { defineProps } from "vue";
+
+const { dogs } = defineProps(["dogs"]);
+
 </script>
 ```
 
@@ -57,51 +59,57 @@ source: https://www.patterns.dev/vue/container-presentational/
 
 في مثالنا، نريد تمرير صور الكلاب إلى المكوّن العرضي `DogsImages`. وقبل أن نتمكّن من ذلك، نحتاج إلى جلب الصور من واجهة برمجية خارجية (API). نحتاج إلى إنشاء **مكوّن حاوية** يجلب هذه البيانات، ويمرّرها إلى المكوّن العرضي `DogImages` لعرضها على الشاشة. وسنسمّي هذا المكوّن الحاوية `DogImagesContainer`.
 
-```
+```javascript
 <!-- DogImagesContainer.vue -->
 
 <template>
-  <DogImages :dogs="dogs" />
+
+<DogImages :dogs="dogs" />
+
 </template>
 
 <script setup>
-  import { ref, onMounted } from "vue";
-  import DogImages from "./DogImages.vue";
 
-  const dogs = ref([]);
+import { ref, onMounted } from "vue";
 
-  onMounted(async () => {
-    const response = await fetch(
-      "https://dog.ceo/api/breed/labrador/images/random/6"
-    );
-    const { message } = await response.json();
-    dogs.value = message;
-  });
+import DogImages from "./DogImages.vue";
+
+const dogs = ref([]);
+
+onMounted(async () => {
+
+const response = await fetch(
+
+"https://dog.ceo/api/breed/labrador/images/random/6"
+
+);
+
+const { message } = await response.json();
+
+dogs.value = message;
+
+});
+
 </script>
 ```
 
 يجمع هذان المكوّنان معًا بين جعل معالجة منطق التطبيق مفصولة عن العرض ممكنة.
 
-
-
 ولباختصار، هذا هو نمط الحاوية/العرضية. وعند التكامل مع حلول إدارة الحالة مثل [Pinia](https://pinia.vuejs.org/)، يمكن الاستفادة من المكوّنات الحاوية للتفاعل مباشرةً مع المخزن (store)، بجلب الحالة أو تعديلها حسب الحاجة. ويتيح ذلك أن تظل المكوّنات العرضية نقية (pure) وغير واعية بمنطق التطبيق الأوسع، فلا تركز إلا على عرض واجهة المستخدم بناءً على الخصائص التي تتلقّاها.
 
 JavaScript iconDogImagesContainer.vue
 
-```
+```javascript
 <template>
   <DogImages :dogs="dogs" />
 </template>
-
 
 <script setup>
 import { ref, onMounted } from "vue";
 /* eslint-disable-next-line no-unused-vars */
 import DogImages from "./DogImages.vue";
 
-
 const dogs = ref([]);
-
 
 onMounted(async () => {
   const response = await fetch(
@@ -123,63 +131,71 @@ onMounted(async () => {
 
 بدلًا من وضع منطق جلب البيانات داخل مكوّن `DogImagesContainer`، يمكننا إنشاء دالة تركيب تجلب الصور وتُعيد مصفوفة الكلاب.
 
-```
+```javascript
 import { ref, onMounted } from "vue";
 
 export default function useDogImages() {
-  const dogs = ref([]);
 
-  onMounted(async () => {
-    const response = await fetch(
-      "https://dog.ceo/api/breed/labrador/images/random/6"
-    );
-    const { message } = await response.json();
-    dogs.value = message;
-  });
+const dogs = ref([]);
 
-  return { dogs };
+onMounted(async () => {
+
+const response = await fetch(
+
+"https://dog.ceo/api/breed/labrador/images/random/6"
+
+);
+
+const { message } = await response.json();
+
+dogs.value = message;
+
+});
+
+return { dogs };
+
 }
 ```
 
 باستخدام هذا الخطّاف، لم نعد بحاجة إلى مكوّن الحاوية `DogImagesContainer` المغلِّف لجلب البيانات وإرسالها إلى المكوّن العرضي `DogImages`. وبدلًا من ذلك، يمكننا استخدام هذا الخطّاف مباشرةً داخل مكوّننا العرضي `DogImages`!
 
-```
+```javascript
 <template>
-  <img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
+<img v-for="(dog, index) in dogs" :src="dog" :key="index" alt="Dog" />
+
 </template>
 
 <script setup>
-  import useDogImages from "../composables/useDogImages";
 
-  /* eslint-disable-next-line no-unused-vars */
-  const { dogs } = useDogImages();
+import useDogImages from "../composables/useDogImages";
+
+/* eslint-disable-next-line no-unused-vars */
+
+const { dogs } = useDogImages();
+
 </script>
 ```
 
 باستخدام الخطّاف `useDogImages()`، فإننا ما زلنا نفصل منطق التطبيق عن العرض. فنحن نكتفي باستخدام البيانات المُعادة من الخطّاف `useDogImages`، دون تعديل تلك البيانات داخل مكوّن `DogImages`.
 
-
-
- ومع كل التغييرات التي أجريناها، يمكن تلخيص تطبيقنا على النحو التالي.
+ومع كل التغييرات التي أجريناها، يمكن تلخيص تطبيقنا على النحو التالي.
 
 JavaScript iconuseDogImages.js
 
-```
+```javascript
 import { ref, onMounted } from &#x27;vue&#x27;;
-
 
 export default function useDogImages() {
   const dogs = ref([]);
 
-
-  onMounted(async () => {
+onMounted(async () => {
     const response = await fetch("https://dog.ceo/api/breed/labrador/images/random/6");
     const { message } = await response.json();
     dogs.value = message;
   });
 
-
-  return { dogs };
+return { dogs };
 }
 ```
 
@@ -190,5 +206,3 @@ export default function useDogImages() {
 ## مصادر مفيدة
 
 - [دوال التركيب في Vue | Patterns.dev](/book/patterns-dev/vue/composables)
-
-![نمط الحاوية/العرضية](/images/patterns-dev/vue-container-presentational-63-browse_dogs.webp)

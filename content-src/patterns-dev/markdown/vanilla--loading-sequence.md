@@ -118,6 +118,8 @@ These recommendations and constraints would generally apply irrespective of the 
 
 The following chart gives us an understanding of Chrome’s priorities for loading different resources. Combining the information on priorities and the discussion on resource types will help to better understand the loading sequence that is proposed in the next section.
 
+![image](/images/patterns-dev/vanilla-loading-sequence-0-optimizeyourlo__0juvmukudzfo.webp)
+
 Following are the key takeaways from this table.
 
 - CSS and Fonts are loaded with the highest priority. This should help us prioritize critical CSS and fonts.
@@ -141,6 +143,8 @@ Based on our experience, the following is the typical loading sequence we have o
 | Images | Hero images are not prioritizedBoth ATF and BTF images are not optimized |
 
 The following is an example of one such sequence from one of our partner sites. The positives and negatives about the loading sequence are included as annotations.
+
+![image](/images/patterns-dev/vanilla-loading-sequence-1-optimizeyourlo__6e5x6tn54ob.webp)
 
 ### Proposed Sequence without 3P
 
@@ -221,5 +225,3 @@ Thus, preconnect, script attributes and ScriptLoader for Next.js together can he
 The responsibility of optimizing apps falls on the shoulders of the creators of the platforms used as well as the developers who use it. Common issues need to be addressed. We aim to make sequencing easier from the inside out. A tried and tested set of recommendations for different use cases and initiatives like the Script Loader help to achieve this for the React-Next.js stack. The next step would be to ensure that new apps conform to the recommendations above.
 
 *With special thanks to [Leena Sohoni](https://www.linkedin.com/in/leena-sohoni-0636b2) (Technical Analyst/Writer), for all her contributions to this write-up.*
-
-![Optimize your loading sequence](/images/patterns-dev/vanilla-loading-sequence-35-optimizeyourlo__0juvmukudzfo.webp) ![Optimize your loading sequence](/images/patterns-dev/vanilla-loading-sequence-36-optimizeyourlo__6e5x6tn54ob.webp)

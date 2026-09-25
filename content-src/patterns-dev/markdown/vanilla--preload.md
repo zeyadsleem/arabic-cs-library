@@ -8,7 +8,7 @@ source: https://www.patterns.dev/vanilla/preload/
 
 HTML5 iconindex.html
 
-```
+```xml
 <link rel="preload" href="emoji-picker.js" as="script">
   ...
   </head>
@@ -31,7 +31,7 @@ While **prefetching** is a great way to cache resources that may be requested so
 
 Say our `EmojiPicker` component should be visible instantly on the initial render. Although it should not be included in the main bundle, it *should* get loaded in parallel. Just like *prefetch*, we can add a magic comment in order to let Webpack know that this module should be preloaded.
 
-```
+```javascript
 const EmojiPicker = import(/* webpackPreload: true */ "./EmojiPicker");
 ```
 
@@ -77,20 +77,27 @@ export default ChatInput;
 
 After building the application, we can see that the `EmojiPicker` will be prefetched.
 
-```
+```javascript
  Asset                             Size       Chunks                          Chunk Names
+
     emoji-picker.bundle.js         1.49 KiB   emoji-picker [emitted]          emoji-picker
+
     vendors~emoji-picker.bundle.js 171 KiB    vendors~emoji-picker [emitted]  vendors~emoji-picker
+
     main.bundle.js                 1.34 MiB   main  [emitted]                 main
 
+
+
 Entrypoint main = main.bundle.js
+
 (preload: vendors~emoji-picker.bundle.js emoji-picker.bundle.js)
 ```
 
 The actual output is visible as a `link` tag with `rel="preload"` in the `head` of our document.
 
-```
+```javascript
 <link rel="prefetch" href="emoji-picker.bundle.js" as="script" />
+
 <link rel="prefetch" href="vendors~emoji-picker.bundle.js" as="script" />
 ```
 
@@ -104,8 +111,9 @@ Instead of having to wait until the `EmojiPicker` gets loaded after the initial 
 
 Should you wish for browsers to download a script as high-priority, but not block the parser waiting for a script, you can take advantage of the preload + async hack below. The download of other resources may be delayed by the preload in this case, but this is a trade-off a developer has to make:
 
-```
+```javascript
 <link rel="preload" href="emoji-picker.js" as="script">
+
 <script src="emoji-picker.js" async>
 ```
 

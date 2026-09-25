@@ -14,40 +14,74 @@ Before reaching for it, though, it’s worth asking a question that the rest of 
 
 Here is the textbook implementation, modernized with private class fields and a static accessor. We’ll use a feature‑flag client as the running example — a service that loads flag values once and serves them to the rest of the app.
 
-```
+```javascript
 class FeatureFlags {
+
   // Private static slot for the one instance
+
   static #instance = null;
 
+
+
   // Private state — invisible outside the class
+
   #flags = new Map();
+
   #loaded = false;
 
+
+
   constructor() {
+
     if (FeatureFlags.#instance) {
+
       return FeatureFlags.#instance;
+
     }
+
     FeatureFlags.#instance = this;
+
   }
+
+
 
   static getInstance() {
+
     return (FeatureFlags.#instance ??= new FeatureFlags());
+
   }
+
+
 
   async load(url) {
+
     if (this.#loaded) return;
+
     const res = await fetch(url);
+
     const data = await res.json();
+
     for (const [key, value] of Object.entries(data)) {
+
       this.#flags.set(key, value);
+
     }
+
     this.#loaded = true;
+
   }
 
+
+
   isEnabled(name) {
+
     return this.#flags.get(name) === true;
+
   }
+
 }
+
+
 
 export default FeatureFlags;
 ```
@@ -56,14 +90,21 @@ Two things deserve attention. The `#instance` field uses an ES2022 private stati
 
 A caller never instantiates this directly:
 
-```
+```javascript
 import FeatureFlags from "./feature-flags.js";
 
+
+
 const flags = FeatureFlags.getInstance();
+
 await flags.load("/config/flags.json");
 
+
+
 if (flags.isEnabled("new-checkout")) {
+
   // render the new flow
+
 }
 ```
 
@@ -73,23 +114,39 @@ If a stubborn caller does call `new FeatureFlags()` twice, the constructor short
 
 Here is the same feature‑flag client written without any of the Singleton machinery.
 
-```
+```javascript
 // feature-flags.js
+
 const flags = new Map();
+
 let loaded = false;
 
+
+
 export async function load(url) {
+
   if (loaded) return;
+
   const res = await fetch(url);
+
   const data = await res.json();
+
   for (const [key, value] of Object.entries(data)) {
+
     flags.set(key, value);
+
   }
+
   loaded = true;
+
 }
 
+
+
 export function isEnabled(name) {
+
   return flags.get(name) === true;
+
 }
 ```
 
@@ -112,21 +169,36 @@ Reach for something else if you encounter any of the following:
 
 Libraries like [InversifyJS](https://inversify.io/) and [tsyringe](https://github.com/microsoft/tsyringe) let you register a service once and resolve it anywhere, but the binding is configured in one place — usually at the application’s composition root.
 
-```
+```javascript
 import { container, singleton, inject } from "tsyringe";
 
+
+
 @singleton()
+
 class AnalyticsClient {
+
   track(event: string, props: Record<string, unknown>) { /* ... */ }
+
 }
+
+
 
 class CheckoutService {
+
   constructor(@inject(AnalyticsClient) private analytics: AnalyticsClient) {}
 
+
+
   complete(orderId: string) {
+
     this.analytics.track("order_completed", { orderId });
+
   }
+
 }
+
+
 
 const checkout = container.resolve(CheckoutService);
 ```
@@ -137,20 +209,33 @@ The DI container gives you the same “one instance everywhere” guarantee but 
 
 In React, “global” usually means “available to every component in this tree.” `createContext` plus a Provider gives you exactly that, with the bonus that the scope is the subtree — you can mount a different value in a test or in a Storybook story without touching the production code.
 
-```
+```javascript
 const FeatureFlagsContext = createContext(null);
 
+
+
 export function FeatureFlagsProvider({ client, children }) {
+
   return (
+
     <FeatureFlagsContext.Provider value={client}>
+
       {children}
+
     </FeatureFlagsContext.Provider>
+
   );
+
 }
 
+
+
 export function useFeatureFlag(name) {
+
   const client = useContext(FeatureFlagsContext);
+
   return client.isEnabled(name);
+
 }
 ```
 
@@ -158,13 +243,19 @@ export function useFeatureFlag(name) {
 
 For app‑wide state with subscriptions, modern stores have largely replaced ad‑hoc Singletons. A Zustand store, for instance, is a function — not a class — that returns a hook bound to a single piece of state:
 
-```
+```javascript
 import { create } from "zustand";
 
+
+
 export const useSession = create((set) => ({
+
   user: null,
+
   login: (user) => set({ user }),
+
   logout: () => set({ user: null }),
+
 }));
 ```
 
@@ -184,15 +275,23 @@ A Singleton holds state across tests by definition. If test A flips a flag and t
 
 A function that calls `Logger.getInstance()` deep inside its body has a dependency that doesn’t appear in its signature. Two months later, when someone tries to use that function in a different context, they discover the coupling the hard way. Prefer passing the dependency explicitly:
 
-```
+```javascript
 // Hidden dependency
+
 function processOrder(order) {
+
   Logger.getInstance().info("processing", order.id);
+
 }
 
+
+
 // Explicit — the contract is in the signature
+
 function processOrder(order, logger) {
+
   logger.info("processing", order.id);
+
 }
 ```
 

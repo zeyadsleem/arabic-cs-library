@@ -14,34 +14,53 @@ The data provider pattern is a design pattern that complements the renderless co
 
 In the data provider pattern, a data provider component encapsulates the logic for fetching, managing, and exposing data to its child components. The child components can then consume this data and use it in their own rendering or behavior.
 
+![Data provider pattern](/images/patterns-dev/vue-data-provider-0-data_provider_pattern.webp)
+
 This pattern promotes separation of concerns, as the data provider component takes care of data-related tasks, while the child components can focus on presentation and interaction.
 
 Let’s illustrate the data provider pattern with an example. Consider a simple application that displays the setup of a funny joke followed by its punchline. To help us show different jokes randomly, we’ll use the free public API endpoint [https://official-joke-api.appspot.com/random_joke](https://official-joke-api.appspot.com/random_joke) that returns a random joke in JSON format.
 
-```
+```javascript
 # https://official-joke-api.appspot.com/random_joke
 
+
+
 {
+
   "type": "general",
+
   "setup": "How good are you at Power Point?",
+
   "punchline": "I Excel at it.",
+
   "id": 129
+
 }
 ```
 
 We’ll first create a data provider component called `DataProvider` that will hold the responsibility of fetching the joke from the API. In the `` section of the component, we’ll import the `ref()` and `reactive()` functions from the Vue library, assign the endpoint URL value to a constant, and set up `data` and `loading` reactive properties to capture the data and loading status of our API request.
 
-```
+```javascript
 <script setup>
+
   import { ref, reactive } from "vue";
+
+
 
   const API_ENDPOINT_URL = "https://official-joke-api.appspot.com/random_joke";
 
+
+
   const data = reactive({
+
     setup: null,
+
     punchline: null,
+
   });
+
   const loading = ref(false);
+
 </script>
 ```
 
@@ -55,30 +74,53 @@ We’ll then create an asynchronous function called `fetchJoke()` responsible fo
 
 With these changes, our `fetchJoke()` function will look like the following:
 
-```
+```javascript
 <script setup>
+
   import { ref, reactive } from "vue";
+
+
 
   const API_ENDPOINT_URL = "https://official-joke-api.appspot.com/random_joke";
 
+
+
   const data = reactive({
+
     setup: null,
+
     punchline: null,
+
   });
+
   const loading = ref(false);
 
+
+
   const fetchJoke = async () => {
+
     loading.value = true;
 
+
+
     const response = await fetch(API_ENDPOINT_URL);
+
     const responseData = await response.json();
 
+
+
     data.setup = responseData.setup;
+
     data.punchline = responseData.punchline;
+
     loading.value = false;
+
   };
 
+
+
   fetchJoke();
+
 </script>
 ```
 
@@ -86,48 +128,83 @@ Notice we trigger the `fetchJoke()` function at the end of the `` section? This 
 
 The last thing left for us to do is to make the `data` and `loading` properties available in the consumer of the `DataProvider` component. To do this, we can pass these properties to a `` element we’ll place in the `` section.
 
-```
+```javascript
 <template>
+
   <slot :checkbox="checkbox" :toggleCheckbox="toggleCheckbox"></slot>
+
 </template>
 
+
+
 <script setup>
+
   import { ref, reactive } from "vue";
+
+
 
   const API_ENDPOINT_URL = "https://official-joke-api.appspot.com/random_joke";
 
+
+
   const data = reactive({
+
     setup: null,
+
     punchline: null,
+
   });
+
   const loading = ref(false);
 
+
+
   const fetchJoke = async () => {
+
     loading.value = true;
 
+
+
     const response = await fetch(API_ENDPOINT_URL);
+
     const responseData = await response.json();
 
+
+
     data.setup = responseData.setup;
+
     data.punchline = responseData.punchline;
+
     loading.value = false;
+
   };
 
+
+
   fetchJoke();
+
 </script>
 ```
 
 With our renderless data provider component complete, we can now utilize it in our application. In the parent app component, we’ll import the `DataProvider` component and place it in the template.
 
-```
+```javascript
 <template>
+
   <DataProvider v-slot="{ data, loading }">
+
     <!-- ... -->
+
   </DataProvider>
+
 </template>
 
+
+
 <script setup>
+
   import DataProvider from "./components/DataProvider.vue";
+
 </script>
 ```
 
@@ -135,59 +212,97 @@ By simply rendering the `` component, we make a request to the endpoint to fetch
 
 Within the `` component declaration, we can create the UI that would show a loading message if the request is in the loading state or display the joke setup and punchline when the data is available.
 
-```
+```javascript
 <template>
+
   <DataProvider v-slot="{ data, loading }">
+
     <div class="joke-section">
+
       <p v-if="loading">Joke is loading...</p>
+
       <p v-if="!loading">{{ data.setup }}</p>
+
       <p v-if="!loading">{{ data.punchline }}</p>
+
     </div>
+
   </DataProvider>
+
 </template>
 
+
+
 <script setup>
+
   import DataProvider from "./components/DataProvider.vue";
+
 </script>
 ```
 
 When saving our changes, we’ll be presented with a brief loading message followed by a random joke.
 
+![Data provider example](/images/patterns-dev/vue-data-provider-1-data_provider_example.webp)
+
 If we need to render another instance of a joke setup and punchline, perhaps even with a different template, we can simply reuse the `` component and create the new child elements we’d like to show.
 
-```
+```javascript
 <template>
-  <DataProvider v-slot="{ data, loading }">
-    <div class="joke-section">
-      <p v-if="loading">Joke is loading...</p>
-      <p v-if="!loading">{{ data.setup }}</p>
-      <p v-if="!loading">{{ data.punchline }}</p>
-    </div>
-  </DataProvider>
 
   <DataProvider v-slot="{ data, loading }">
-    <p v-if="loading">Hold on one sec...</p>
-    <div v-else class="joke-section">
-      <details>
-        <summary>{{ data.setup }}</summary>
-        <p>{{ data.punchline }}</p>
-      </details>
+
+    <div class="joke-section">
+
+      <p v-if="loading">Joke is loading...</p>
+
+      <p v-if="!loading">{{ data.setup }}</p>
+
+      <p v-if="!loading">{{ data.punchline }}</p>
+
     </div>
+
   </DataProvider>
+
+
+
+  <DataProvider v-slot="{ data, loading }">
+
+    <p v-if="loading">Hold on one sec...</p>
+
+    <div v-else class="joke-section">
+
+      <details>
+
+        <summary>{{ data.setup }}</summary>
+
+        <p>{{ data.punchline }}</p>
+
+      </details>
+
+    </div>
+
+  </DataProvider>
+
 </template>
 
+
+
 <script setup>
+
   import DataProvider from "./components/DataProvider.vue";
+
 </script>
 ```
 
 In our newly rendered UI, we’re now placing the punchline of the joke within a disclosure element with the help of the HTML `` and `` elements.
 
+![Data provider example](/images/patterns-dev/vue-data-provider-2-data_provider_example_2.webp)
+
 With the data provider pattern, we’re able to manage and provide data to different elements/components in a decoupled and reusable manner. By abstracting the API fetch logic into a renderless component, we can reuse the request of API data in various contexts without duplicating code.
 
 JavaScript iconDataProvider.vue
 
-```
+```javascript
 <template>
   <slot :data="data" :loading="loading"></slot>
 </template>
@@ -231,50 +346,87 @@ fetchJoke();
 
 Yes! Instead of using the data provider pattern, we could just leverage composables to extract the fetching logic into a reusable function.
 
-```
+```javascript
 import { ref, reactive } from "vue";
+
+
 
 const API_ENDPOINT_URL = "https://official-joke-api.appspot.com/random_joke";
 
+
+
 export function useGetJoke() {
+
   const data = reactive({
+
     setup: null,
+
     punchline: null,
+
   });
+
   const loading = ref(false);
 
+
+
   const fetchJoke = async () => {
+
     loading.value = true;
 
+
+
     const response = await fetch(API_ENDPOINT_URL);
+
     const responseData = await response.json();
 
+
+
     data.setup = responseData.setup;
+
     data.punchline = responseData.punchline;
+
     loading.value = false;
+
   };
+
+
 
   fetchJoke();
 
+
+
   return { data, loading };
+
 }
 ```
 
 In our component instances, we can then import and use the composable function to get the `data` and `loading` status of a certain request.
 
-```
+```javascript
 <template>
+
   <div class="joke-section">
+
     <p v-if="loading">Joke is loading...</p>
+
     <p v-if="!loading">{{ data.setup }}</p>
+
     <p v-if="!loading">{{ data.punchline }}</p>
+
   </div>
+
 </template>
 
+
+
 <script setup>
+
   import { useGetJoke } from "./composables/useGetJoke";
 
+
+
   const { data, loading } = useGetJoke();
+
 </script>
 ```
 
@@ -282,7 +434,7 @@ Our application will now behave just as it did before with our data provider exa
 
 JavaScript iconApp.vue
 
-```
+```javascript
 <template>
   <div class="joke-section">
     <p v-if="loading">Joke is loading...</p>
@@ -311,5 +463,3 @@ Additionally, if you’re using a state management tool like [Pinia](https://pin
 ## Helpful Resources
 
 - [Renderless Components | Vue Documentation](https://vuejs.org/guide/components/slots.html#scoped-slots)
-
-![Data Provider Pattern](/images/patterns-dev/vue-data-provider-64-data_provider_pattern.webp) ![Data Provider Pattern](/images/patterns-dev/vue-data-provider-65-data_provider_example.webp) ![Data Provider Pattern](/images/patterns-dev/vue-data-provider-66-data_provider_example_2.webp)
