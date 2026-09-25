@@ -1,0 +1,512 @@
+const s="patterns-dev",a="vanilla",n="أنماط JavaScript",t="third-party",e="تحسين تحميل الأطراف الثالثة",p=[{depth:2,id:"تقييم-تأثير-موارد-الأطراف-الثالثة-3p-على-الأداء",text:"تقييم تأثير موارد الأطراف الثالثة (3P) على الأداء"},{depth:2,id:"استراتيجيات-التحسين",text:"استراتيجيات التحسين"},{depth:3,id:"تحميل-سكربتات-الأطراف-الثالثة-3p-بكفاءة",text:"تحميل سكربتات الأطراف الثالثة (3P) بكفاءة"},{depth:3,id:"إنشاء-اتصالات-مبكرة-بالمصادر-المطلوبة-باستخدام-تلميحات-الموارد-resource-hints",text:"إنشاء اتصالات مبكرة بالمصادر المطلوبة باستخدام تلميحات الموارد (resource hints)"},{depth:3,id:"التحميل-الكسول-lazy-لموارد-الأطراف-الثالثة-أسفل-الطية",text:"التحميل الكسول (lazy) لموارد الأطراف الثالثة أسفل الطية"},{depth:3,id:"استضافة-سكربتات-الأطراف-الثالثة-3p-ذاتيا-لمنع-الرحلات-ذهابا-وإيابا",text:"استضافة سكربتات الأطراف الثالثة (3P) ذاتيًا لمنع الرحلات ذهابًا وإيابًا"},{depth:3,id:"استخدم-service-workers-لتخزين-السكربتات-مؤقتا-حيثما-أمكن",text:"استخدم service workers لتخزين السكربتات مؤقتًا حيثما أمكن"},{depth:3,id:"اتباع-تسلسل-التحميل-المثالي",text:"اتباع تسلسل التحميل المثالي"},{depth:2,id:"أفضل-الممارسات-حسب-نوع-السكربت",text:"أفضل الممارسات حسب نوع السكربت"},{depth:3,id:"javascript-غير-الحرج",text:"JavaScript غير الحرج"},{depth:3,id:"الكشف-عن-الروبوتات-recaptcha",text:"الكشف عن الروبوتات / ReCaptcha"},{depth:3,id:"google-tag-manager-gtm",text:"Google Tag Manager (GTM)"},{depth:3,id:"اختبارات-ab-والتخصيص",text:"اختبارات A/B والتخصيص"},{depth:3,id:"تضمينات-youtube-والخرائط",text:"تضمينات YouTube والخرائط"},{depth:3,id:"تضمينات-وسائل-التواصل-الاجتماعي",text:"تضمينات وسائل التواصل الاجتماعي"},{depth:2,id:"التحسين-الجاهز-مسبقا",text:"التحسين الجاهز مسبقًا"},{depth:2,id:"مكون-nextjs-script",text:"مكوّن Next.js Script"},{depth:3,id:"تحميل-polyfills-مبكرا",text:"تحميل polyfills مبكرًا"},{depth:3,id:"التحميل-الكسول-لتضمينات-وسائل-التواصل-الاجتماعي",text:"التحميل الكسول لتضمينات وسائل التواصل الاجتماعي"},{depth:3,id:"تنفيذ-التعليمات-البرمجية-بشكل-مشروط-عند-التحميل",text:"تنفيذ التعليمات البرمجية بشكل مشروط عند التحميل"},{depth:3,id:"استخدام-السكربتات-المضمنة-داخل-وسم-script",text:"استخدام السكربتات المضمَّنة داخل وسم script"},{depth:3,id:"تمرير-السمات-إلى-سكربتات-الأطراف-الثالثة",text:"تمرير السمات إلى سكربتات الأطراف الثالثة"},{depth:3,id:"تحميل-سكربتات-التحليلات",text:"تحميل سكربتات التحليلات"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],l=`<blockquote>
+<p>tl;dr: يمكن للموارد من طرف ثالث (third-party) أن تُبطئ المواقع وأن تكون تحديًا في التحسين. يمكنك اتباع أفضل ممارسات معينة لتحميل أنواع مختلفة من الأطراف الثالثة أو تأخيرها (delay) بكفاءة. ويمكنك أيضًا استخدام مكوّنات على مستوى الأطر مثل <a href="https://nextjs.org/docs/basic-features/script">مكوّن Script في Next.js</a>، الذي يوفّر قالبًا لتحديد «متى» و«كيف» لتحميل سكربتات الأطراف الثالثة. وبدلًا من ذلك، قد تكون أفكار تجريبية مثل <a href="https://github.com/BuilderIO/partytown">Partytown</a> موضع اهتمام.</p>
+</blockquote>
+<p>من الصعب العثور على موقع حديث يعمل في عزلة. معظم المواقع تتعايش وتعتمد على عدة مصادر أخرى على الويب للحصول على البيانات والوظائف والمحتوى وغيرها الكثير. وأي مورد يقع على نطاق (domain) آخر ويستهلكه موقعك يُعد موردًا من طرف ثالث (3P) لموقعك. ومن بين موارد الأطراف الثالثة المعتادة التي تُضمَّن في المواقع:</p>
+<ul>
+<li>تضمينات الخرائط والفيديوهات ووسائل التواصل الاجتماعي وخدمات المحادثة</li>
+<li>الإعلانات</li>
+<li>مكوّنات التحليلات ومديرو الوسوم (tag managers)</li>
+<li>سكربتات اختبارات A/B والتخصيص</li>
+<li>مكتبات الأدوات المساعدة التي تقدّم دوالّ مساعدة جاهزة للاستخدام مثل المستخدمة في تصوير البيانات أو الرسوم المتحركة.</li>
+<li><a href="https://www.google.com/recaptcha/about/">reCAPTCHA</a> أو CAPTCHA للكشف عن الروبوتات (bots).</li>
+</ul>
+<p>يمكنك استخدام الأطراف الثالثة لدمج ميزات أخرى تضيف قيمة إلى محتواك أو لتقليل بعض الأعمال المرهقة التي تنطوي عليها بناء موقع من الصفر. ووفقًا لتقرير Web Almanac لعام 2021، فإن أكثر من <a href="https://almanac.httparchive.org/en/2021/third-parties#prevalence">94% من الصفحات</a> على الويب تستخدم الأطراف الثالثة — وتُشكّل <a href="https://almanac.httparchive.org/en/2020/third-parties#content-types">الصور وJavaScript</a> المساهمين الأكثر أهمية في محتوى الأطراف الثالثة. وفيما يلي <a href="https://almanac.httparchive.org/en/2021/third-parties#fig-10">تفصيل مفيد</a> لطلبات (requests) الأطراف الثالثة حسب نوع المحتوى (content type) والفئة (category):</p>
+<p><img src="/images/patterns-dev/vanilla-third-party-0-optimizingthir__wwfbjeoqhxl.webp" alt="طلبات الطرف الثالث حسب نوع المحتوى والفئة"></p>
+<p>رغم أن موارد الأطراف الثالثة تضيف إلى موقعك ميزات قيّمة، فإنها يمكن أيضاً أن تُبطّئه في الحالات التالية:</p>
+<ul>
+<li>تسبب رحلات ذهاب وإياب إضافية إلى نطاق الطرف الثالث لكل مورد مطلوب.</li>
+<li>تستهلك كثيرًا من JavaScript (ما يؤثر في زمن التنزيل والتنفيذ (execution)) أو تكون ضخمة الحجم بسبب صور/فيديوهات غير محسّنة.</li>
+<li>لا يستطيع مالكو المواقع الأفراد التأثير في التنفيذ، وقد يكون سلوكهم غير متوقع.</li>
+<li>يمكنها حجب العرض (render) لموارد حرجة أخرى في الصفحة والتأثير في <a href="https://web.dev/vitals/">مؤشرات Web Vitals الأساسية</a> (CWV).</li>
+</ul>
+<p>على الرغم من هذه المشكلات، قد تكون الأطراف الثالثة ضرورية لأعمالك. وإذا لم تستطع الاستغناء عن الأطراف الثالثة (3P)، فإن ثاني أفضل شيء هو تحسينها لتقليل تأثيرها على الأداء — وهذا ما سنتناوله في هذا القسم.</p>
+<p>لقد أدرجنا بعض الاستراتيجيات وأفضل الممارسات التي تنطبق على أنواع مختلفة من سكربتات الأطراف الثالثة. ويضم مكوّن Script في Next.js كثيرًا من أفضل الممارسات هذه، ويمكنك التعرّف عليه في النصف الثاني من هذه المقالة. لنرَ أولًا كيف يمكنك اكتشاف ما إذا كان سكربت من طرف ثالث يضر بأداء الصفحة.</p>
+<h2 id="تقييم-تأثير-موارد-الأطراف-الثالثة-3p-على-الأداء">تقييم تأثير موارد الأطراف الثالثة (3P) على الأداء</h2>
+<p>يمكنك استخدام مجموعة من التقنيات لمعرفة كيف يؤثر كود الأطراف الثالثة في موقعك.</p>
+<ul>
+<li>تساعد عمليات تدقيق Lighthouse التالية في تحديد سكربتات الأطراف الثالثة البطيئة التي تؤثر في CWV: <a href="https://web.dev/third-party-summary/">تقليل تأثير كود الأطراف الثالثة</a> للسكربتات التي تحجب الخيط الرئيسي (main thread).</li>
+<li><a href="https://web.dev/bootup-time/">تقليل زمن تنفيذ JavaScript</a> للسكربتات التي تستغرق وقتًا طويلًا في التنفيذ</li>
+<li><a href="https://web.dev/total-byte-weight/">تجنّب أحمال الشبكة (network payloads) الضخمة</a> للسكربتات الكبيرة</li>
+</ul>
+<p><img src="/images/patterns-dev/vanilla-third-party-1-optimizingthir__3tr5286cg4z.webp" alt="تقليل أثر شيفرة الطرف الثالث"></p>
+<p><img src="/images/patterns-dev/vanilla-third-party-2-optimizingthir__t68otdbvv1.webp" alt="تقليل زمن تنفيذ JavaScript"></p>
+<p><img src="/images/patterns-dev/vanilla-third-party-3-optimizingthir__aaavejhhjgm.webp" alt="تجنّب حِمل شبكة ضخم"></p>
+<ul>
+<li>استخدم مخطط شلال Waterfall الخاص بـ WebPageTest (WPT) لتحديد <a href="https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#third-party-blocking-javascript">سكربتات الأطراف الثالثة التي تحجب</a>، أو استخدم مقارنة WPT جنبًا إلى جنب لـ<a href="https://andydavies.me/blog/2018/02/19/using-webpagetest-to-measure-the-impact-of-3rd-party-tags/">قياس تأثير وسوم الأطراف الثالثة</a>.</li>
+<li>تساعد مواقع مثل <a href="https://bundlephobia.com/">Bundlephobia</a> في تقييم تكلفة إضافة حزم npm المتاحة إلى حزمك (bundles). ويمكنك أيضًا معرفة الحجم والاعتماديات المتضمّنة في أي حزمة باستخدام <a href="https://www.npmjs.com/package/">بحث حزم npm</a>.</li>
+</ul>
+<p>بعد هذا الطرح حول تحديد كود الأطراف الثالثة الذي يمثّل مشكلة، فلنستكشف طرق تحسينه.</p>
+<h2 id="استراتيجيات-التحسين">استراتيجيات التحسين</h2>
+<p>نظرًا لأن كود الأطراف الثالثة ليس تحت سيطرتك، فلا يمكنك تحسين المكتبات مباشرة. وهذا يترك لك خيارين.</p>
+<ul>
+<li><strong>الاستبدال أو الإزالة</strong>: إذا كانت القيمة التي يقدّمها سكربت الطرف الثالث لا تتناسب مع تكلفته من حيث الأداء، ففكّر في إزالته. ويمكنك أيضًا تقييم بدائل أخرى خفيفة الوزن لكنها تقدّم وظائف مماثلة. وفي <a href="https://www.patterns.dev/posts/nextjs-casestudy/#packages-switched">دراسة الحالة هذه</a>، نناقش كيف حسّنا أداء تطبيق أفلام بالاستبدال إلى بدائل أخف وزنًا ذات ميزات مماثلة.</li>
+<li><strong>تحسين تسلسل التحميل</strong>: تتضمن عملية تحميل عدة موارد من الطرف الأول (first-party) ومن أطراف ثالثة في المتصفح. ولتصميم استراتيجية تحميل مثلى، ستحتاج إلى مراعاة الأولوية التي يمنحها المتصفح للموارد المختلفة، وموضعها في الصفحة، وقيمة كل مورد بالنسبة إلى صفحة الويب. وقد اقترحنا <a href="https://www.patterns.dev/posts/loading-sequence/#what-is-the-ideal-loading-sequence">تسلسل تحميل مثاليًا لتطبيق React/Next.js</a>. وسنرى الآن كيف ينطبق هذا على موارد الأطراف الثالثة المختلفة والخطوات التي يمكننا اتخاذها لتحميلها على النحو الأمثل.</li>
+</ul>
+<h3 id="تحميل-سكربتات-الأطراف-الثالثة-3p-بكفاءة">تحميل سكربتات الأطراف الثالثة (3P) بكفاءة</h3>
+<p>فيما يلي أفضل الممارسات المجرَّبة عبر الزمن التي يمكن أن تقلل تأثير موارد الأطراف الثالثة على الأداء عند استخدامها بصورة صحيحة.</p>
+<h4>استخدم async أو defer لمنع السكربتات من حجب بقية المحتوى</h4>
+<p><strong>ينطبق على:</strong> السكربتات غير الحرجة (مديرو الوسوم، التحليلات)</p>
+<p>تنزيل JavaScript وتنفيذه متزامن افتراضيًا، ويمكنه حجب محلّل HTML وبناء DOM في الخيط الرئيسي (main thread). ويؤدي استخدام سمتَي <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async">async</a> أو <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer">defer</a> في العنصر <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script">\`\`</a> إلى إخبار المتصفح بتنزيل السكربتات بشكل غير متزامن (async). ويمكنك استخدامهما لتنزيل أي سكربت ليس ضروريًا لمسار العرض الحرج (critical rendering path) (مثل المكوّن الرئيسي لواجهة المستخدم)</p>
+<ul>
+<li><strong><code>defer</code></strong>: يُجلب السكربت بالتوازي أثناء تنفيذ المحلّل، ويصبح تنفيذ السكربت مؤجَّلًا (defer) حتى يكتمل التحليل (parse). وينبغي أن يكون التأجيل هو الخيار الافتراضي لتأجيل التنفيذ حتى ما بعد بناء DOM.</li>
+<li><strong><code>async</code></strong>: يُجلب السكربت بالتوازي أثناء التحليل، لكن يُنفَّذ فور توفره عندما يحجب المحلّل. أما سكربتات الوحدات ذات الاعتماديات، فيُنفَّذ السكربت وجميع اعتمادياته في طابور التأجيل (defer queue). استخدم <code>async</code> للسكربتات التي تحتاج إلى التشغيل مبكرًا في عملية التحميل. على سبيل المثال، قد ترغب في تنفيذ سكربتات تحليلات معيّنة مبكرًا دون فقدان أي بيانات تحميل مبكر للصفحة.</li>
+</ul>
+<pre><code class="language-javascript">&lt;script src=<span class="hljs-string">&quot;https://example.com/deferthis.js&quot;</span> defer&gt;&lt;/script&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://example.com/asyncthis.js&quot;</span> <span class="hljs-attr">async</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p><img src="/images/patterns-dev/vanilla-third-party-4-optimizingthir__k6owmtevvl.webp" alt="مقارنة بين async وdefer"></p>
+<blockquote>
+<p>المصدر: <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript">developers.google.com</a></p>
+</blockquote>
+<p>من التحذيرات التي تستحق الإشارة هنا أن async وdefer يخفضان الأولوية التي يمنحها المتصفح للموارد، مما يجعلها تُحمَّل متأخرًا بشكل ملحوظ. ويمكن أن تساعد ميزة جديدة من ميزات <a href="https://web.dev/priority-hints/">تلميحات الأولوية (priority hints)</a> في تجاوز هذه المشكلة.</p>
+<h3 id="إنشاء-اتصالات-مبكرة-بالمصادر-المطلوبة-باستخدام-تلميحات-الموارد-resource-hints">إنشاء اتصالات مبكرة بالمصادر المطلوبة باستخدام تلميحات الموارد (resource hints)</h3>
+<p><strong>ينطبق على:</strong> السكربتات الحرجة والخطوط وCSS والصور من شبكات CDN الخاصة بالأطراف الثالثة</p>
+<p>قد يكون الاتصال بمصادر الأطراف الثالثة بطيئًا بسبب عمليات بحث DNS وإعادة التوجيه والرحلات المتعددة ذهابًا وإيابًا التي قد تكون مطلوبة لكل خادم من خوادم الأطراف الثالثة. وتساعد تلميحات الموارد dns-prefetch وpreconnect على تقليل الوقت اللازم لهذا الإعداد عبر بدء الاتصالات مبكرًا في دورة الحياة.</p>
+<p>سيؤدي تضمين تلميح مورد من نوع <a href="https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch">dns-prefetch</a> يقابل نطاقًا ما إلى إجراء بحث DNS مبكرًا، مما يقلل زمن الاستجابة المرتبط بعمليات بحث DNS. ويمكنك الجمع بين هذا و<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect">preconnect</a> للموارد الأكثر أهمية. ويبدأ preconnect اتصالًا مع نطاق الطرف الثالث عبر إجراء رحلات TCP ذهابًا وإيابًا والتعامل مع مفاوضات TLS، بالإضافة إلى بحث DNS.</p>
+<pre><code class="language-javascript">&lt;head&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;preconnect&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://example.com&quot;</span> /&gt;</span></span>
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;dns-prefetch&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://example.com&quot;</span> /&gt;</span></span>
+
+&lt;/head&gt;
+</code></pre>
+<p>توفّر مقالتنا حول <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p">تسلسل التحميل المثالي</a> قائمة بموارد الأطراف الثالثة حيث ينبغي استخدام preconnect.</p>
+<p>فوائد استخدام تلميحات الموارد واضحة في دراسة الحالة هذه، حيث يناقش Andy Davies كيف ساعد استخدام <a href="https://andydavies.me/blog/2019/03/22/improving-perceived-performance-with-a-link-rel-equals-preconnect-http-header/">preconnect في تقليل زمن التحميل</a> لصورة المنتج الرئيسية عبر بدء اتصال مبكر مع شبكة CDN لصور الأطراف الثالثة.</p>
+<blockquote>
+<p>«أظهرت المقاييس الواقعية تحسّنًا بمقدار 400 مللي ثانية عند الوسيط (median)، وتحسّنًا يتجاوز ثانية واحدة عند المئين 95 (95th percentile).»</p>
+</blockquote>
+<p>على نحو مماثل، يمكنك استخدام تلميحات الموارد لتحسين زمن التحميل للأطراف الثالثة الحرجة مثل الكشف عن الروبوتات (reCaptcha) وإدارة الموافقة على ملفات تعريف الارتباط (consent management).</p>
+<h3 id="التحميل-الكسول-lazy-لموارد-الأطراف-الثالثة-أسفل-الطية">التحميل الكسول (lazy) لموارد الأطراف الثالثة أسفل الطية</h3>
+<p><strong>ينطبق على:</strong> تضمينات مثل YouTube والخرائط والإعلانات ووسائل التواصل الاجتماعي</p>
+<p>يمكن للتضمينات من الأطراف الثالثة، مثل المستخدمة في تغذيات وسائل التواصل الاجتماعي والإعلانات وفيديوهات YouTube والخرائط، أن تُبطئ صفحات الويب. لكن هذه التضمينات ليست جميعها مرئية للمستخدمين عند تحميل الصفحة، ويمكن تحميلها كسولًا عندما يمرّر المستخدم إليها. ويمكنك استخدام طرق تحميل كسول مختلفة حسب مستوى دعم المتصفح المطلوب.</p>
+<ul>
+<li>يمكن استخدام السمة <a href="https://web.dev/iframe-lazy-loading/">loading</a> مع الصور وإطارات iframe المستخدمة عادةً لتحميل تضمينات الأطراف الثالثة مثل تضمينات YouTube أو خرائط Google.</li>
+<li>تتيح لك تنفيذية مخصصة باستخدام <a href="https://developers.google.com/web/updates/2016/04/intersectionobserver">IntersectionObserver API</a> كشف اللحظة التي يدخل فيها العنصر المرصود نطاق عرض المتصفح أو يخرج منه.</li>
+<li><a href="https://github.com/aFarkas/lazysizes">Lazy-sizes</a> — مكتبة JavaScript شائعة تنفّذ التحميل الكسول نيابةً عنك.</li>
+</ul>
+<p>أحد صيغ التحميل الكسول للتضمينات يستخدم واجهة ثابتة أو ديناميكية (facade) تُعرض للمستخدمين عند تحميل الصفحات. بدلاً من تضمين الخريطة، يمكنك استخدام صورة ثابتة للتضمين الفعلي لإظهار منطقة محددة في تضمين الخريطة. وبدلًا من ذلك، يمكنك استخدام واجهة تبدو مثل التضمين لكنها لا تُحمَّل إلا عندما ينقر المستخدم عليها أو يتفاعل معها. من بين طرق تنفيذ الواجهات للتضمينات الشائعة: <a href="https://developers.google.com/maps/documentation/maps-static/overview">Map Static API</a> للخرائط، و<a href="https://tweetpik.com/">Tweetpik</a> لتضمينات Twitter، و<a href="https://github.com/paulirish/lite-youtube-embed">lite-youtube-embed</a> لـYouTube، و<a href="https://github.com/calibreapp/react-live-chat-loader">React-live-chat-loader</a> لأدوات المحادثة. ويتوفر نقاش شامل حول هذه التقنيات <a href="https://web.dev/embed-best-practices/">هنا</a>.</p>
+<p>بعض التحذيرات المتعلقة بالتحميل الكسول والواجهات</p>
+<ul>
+<li>يختلف سلوك واجهة YouTube قليلًا على iOS وعلى Safari في macOS 11+. والنقر/اللمس في المرة الأولى يحمّل تضمين الفيديو الفعلي. وسيحتاج المستخدمون إلى النقر مرة أخرى لتشغيل الفيديو.</li>
+<li>قد يؤدي التحميل الكسول إلى إزاحات في التخطيط (layout shifts) تؤثر في تجربة المستخدم إذا لم يُحدَّد حجم التضمين. ولمنع إزاحات التخطيط، ينبغي أن تحدد الحجم لجميع التضمينات المحمَّلة كسولًا أو لعناصر حاوياتها.</li>
+</ul>
+<h3 id="استضافة-سكربتات-الأطراف-الثالثة-3p-ذاتيا-لمنع-الرحلات-ذهابا-وإيابا">استضافة سكربتات الأطراف الثالثة (3P) ذاتيًا لمنع الرحلات ذهابًا وإيابًا</h3>
+<p><strong>ينطبق على:</strong> ملفات JavaScript والخطوط</p>
+<p>على الرغم من أن preconnect أو dns-prefetch يتيح لك بدء اتصالات بمصادر الأطراف الثالثة مبكرًا، فإن هذه الاتصالات لا تزال مطلوبة. كذلك، مع مصادر الأطراف الثالثة، عليك الاعتماد على استراتيجية التخزين المؤقت الخاصة بها، والتي قد لا تكون مثلى.</p>
+<p>تمنحك استضافة نسخة من السكربتات على المصدر نفسه ذاتيًا تحكمًا أكبر في عملية التحميل والتخزين المؤقت المستخدمة للسكربتات. وتقلل الاستضافة الذاتية الوقت اللازم لبحث DNS وتتيح لك تحسين استراتيجية التخزين المؤقت للسكربتات باستخدام <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching">التخزين المؤقت عبر HTTP</a>. ويمكنك أيضًا استخدام <a href="https://www.smashingmagazine.com/2017/04/guide-http2-server-push/">HTTP/2 server push</a> لدفع السكربتات التي تعرف أن المستخدم سيحتاجها. و<a href="https://casper.com/">Casper.com</a> هو <a href="https://medium.com/caspertechteam/we-shaved-1-7-seconds-off-casper-com-by-self-hosting-optimizely-2704bcbff8ec">مثال رائع</a> على كيفية استضافة سكربتات الأطراف الثالثة ذاتيًا، حيث حسّن زمن بدء العرض لصفحته الرئيسية بمقدار 1.7 ثانية عبر استضافة سكربتات الأطراف الثالثة التي يوفّرها <a href="https://www.optimizely.com/">Optimizely</a> ذاتيًا.</p>
+<p>مع وجود نسخ مستضافة ذاتيًا من سكربتات الأطراف الثالثة، عليك التأكد من تحديث نسختك بانتظام وفق التغييرات في الأصل. وبدون تحديثات، قد تصبح السكربت قديمة وتفتقد إصلاحات أو تغييرات مهمة مرتبطة بالاعتماديات. وستمنعك الاستضافة الذاتية على خادم بدلًا من CDN أيضًا من الاستفادة من آليات <a href="https://www.cloudflare.com/learning/cdn/glossary/edge-server/">التخزين المؤقت على الحافة (edge-caching)</a> التي تستخدمها شبكات CDN.</p>
+<h3 id="استخدم-service-workers-لتخزين-السكربتات-مؤقتا-حيثما-أمكن">استخدم service workers لتخزين السكربتات مؤقتًا حيثما أمكن</h3>
+<p><strong>ينطبق على:</strong> ملفات JavaScript والخطوط</p>
+<p>قد لا تكون الاستضافة الذاتية خيارًا متاحًا للسكربتات التي تتغير كثيرًا. يمكنك استخدام service workers لتحسين التخزين المؤقت لمثل هذه السكربتات من الأطراف الثالثة مع الاستفادة أيضًا من التخزين المؤقت على حافة CDN. وتمنحك هذه التقنية تحكمًا أفضل في تكرار إعادة الجلب عبر الشبكة. ويمكن جمع هذه التقنية مع preconnect لتقليل تكلفة الشبكة لعملية الجلب. ويمكنك أيضًا تحميل الموارد بحيث تُؤجَّل طلبات السكربتات غير الأساسية من الأطراف الثالثة حتى تصل الصفحة إلى لحظة تفاعل رئيسية لدى المستخدم.</p>
+<h3 id="اتباع-تسلسل-التحميل-المثالي">اتباع تسلسل التحميل المثالي</h3>
+<p>خذ الإرشادات أعلاه بالحسبان وفق أنواع الأطراف الثالثة المختلفة وقيمتها للصفحة. وبناءً على الاستخدام المقصود لكل مورد، يمكنك اتباع <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p">تسلسل تحميل الموارد المثالي</a> لمزج موارد الطرف الأول والأطراف الثالثة بصورة مثالية من أجل تحميلات أسرع للصفحة.</p>
+<h2 id="أفضل-الممارسات-حسب-نوع-السكربت">أفضل الممارسات حسب نوع السكربت</h2>
+<p>بعض السكربتات أسهل في التحسين من غيرها. وقد أدت مناقشة مع خبراء أداء الويب حول تحسين الأطراف الثالثة المختلفة، وبعض القيود المعتادة التي لوحظت، وقائمة أمنياتهم لتحميل الأطراف الثالثة، إلى بعض الاستنتاجات المثيرة للاهتمام. وكان الاتفاق العام أن معظم المستخدمين لا يتفاعلون (interaction) مع الموقع حتى تصبح نسبة معينة من المحتوى مرئية. وفيما يلي الإرشادات الخاصة بأنواع السكربتات المختلفة.</p>
+<h3 id="javascript-غير-الحرج">JavaScript غير الحرج</h3>
+<p>معظم الأطراف الثالثة مثل أدوات المحادثة أو سكربتات التحليلات ليست حرجة لتجربة المستخدم ويمكن تأخيرها. واستخدام سمة <code>defer</code> هو الطريقة الأكثر شيوعًا لتأخير تحميل هذه السكربتات وتنفيذها.</p>
+<p>قد تقلق فرق الإعلانات أو التحليلات من أثر تأجيل السكربتات في ظهور التطبيق وإيرادات الإعلانات. وتُذكر <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5">دراسة حالة The Telegraph</a> كثيرًا في هذا السياق، حيث لم يُحِد أيًا من مقاييس التحليلات أو الإعلانات عند تأجيل جميع السكربتات. بل تحسّن مقياس First Ad Loaded بمتوسط 4 ثوانٍ. وقد صمم بعض المطورين أيضًا حلولًا لـ<a href="https://www.renderbetter.com/guides/improving-shopify-site-speed-can-increase-conversions-case-study">تأجيل تحميل الأطراف الثالثة حتى تصبح الصفحة تفاعلية</a>.</p>
+<h3 id="الكشف-عن-الروبوتات-recaptcha">الكشف عن الروبوتات / ReCaptcha</h3>
+<p>نظرًا لأنك ترغب في منع الروبوتات من الوصول إلى نماذج الويب، فإن المطورين يعمَّدون عادةً على تحميل هذه السكربتات في أقرب وقت ممكن. لكن لدى ReCaptcha حِمل JS كبير وبصمة كبيرة على الخيط الرئيسي، لذا هناك دوافع لتأجيل تحميله حتى الحاجة إليه. ومن بين طرق قليلة لتحسين هذا السكربت:</p>
+<ul>
+<li>حمّله فقط في عدد قليل من الصفحات التي تحتوي على حقول إدخال نموذج من المستخدم قد تتعرض للإرسال العشوائي من روبوت.</li>
+<li><a href="https://dev.to/uf4no/improve-page-performance-lazy-loading-recaptcha-442o">حمّل السكربت كسولًا</a> عندما يتفاعل المستخدم مع عناصر النموذج، على سبيل المثال، عند التركيز على النموذج.</li>
+<li>استخدم تلميحات الموارد لإنشاء اتصالات مبكرة عندما تحتاج السكربت إلى التنفيذ عند تحميل الصفحة.</li>
+</ul>
+<h3 id="google-tag-manager-gtm">Google Tag Manager (GTM)</h3>
+<p>تمنح المواقع الكبيرة غالبًا وصول <a href="https://marketingplatform.google.com/about/resources/tag-manager-product-overview/">Google Tag Manager</a> لفرق التسويق أو الوكالات. ويتيح لهم ذلك إضافة وسوم تسويقية جديدة إلى جميع صفحات الموقع لتحسين التتبّع. والأداء ليس اعتبارًا أوليًا لدى فريق التسويق، وقد لا يعرف جميعهم أن إضافة الوسوم دون اعتبار يمكن أن تُبطئ الموقع. وتحسين سكربتات GTM يتعلق أكثر بـ<a href="https://www.tunetheweb.com/blog/adding-controls-to-google-tag-manager/">التحكم في من يمكنه الوصول إلى GTM</a> ومراقبة التغييرات التي يجرونها.</p>
+<p>يمكنك البدء بالتأكد من أن الحساب مملوك لمالكي الموقع لا لوكالة خارجية. يتيح لك ذلك تحديد أذونات وصول دقيقة لمن يمكنه إضافة الوسوم وتحريرها ونشرها. ويمكن إعداد <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5">تعاون أفضل</a> بين إدارتي التطوير والتسويق لتدقيق الوسوم الجديدة وإزالة الوسوم غير المستخدمة.</p>
+<p>قد لا يحتاج موقعك إلى GTM في جميع الصفحات. (على سبيل المثال، لا يوجد سبب يدفع فريق التسويق لتتبع الأحداث في صفحة الدفع لموقع تجارة إلكترونية). وينبغي تدقيق الصفحات على حدة بحيث يمكن إزالة تضمينات GTM غير الضرورية. ويمكن للمواقع التي تستخدم لافتات ملفات تعريف الارتباط (cookie banners) أيضًا ألا تحمّل GTM إذا رفض المستخدم ملفات تعريف الارتباط. وأخيرًا، إذا كان عليك تحميل GTM في صفحة ما، فيمكنك تأجيل السكربتات لتُنفَّذ بعد تحميل المحتوى الرئيسي.</p>
+<p>ويعتبط تحسين آخر ينطبق على وسوم السكربتات القديمة من الأطراف الثالثة بـ <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/write">document.write()</a>. فحقن السكربتات باستخدام document.write() غير آمن وقد يؤدي إلى تحذيرات أو أخطاء بحسب المتصفح ونوع السكربت. وما زالت بعض سكربتات الأطراف الثالثة تستخدم هذه الطريقة. ويوفّر GTM إعدادًا في <a href="https://support.google.com/tagmanager/answer/6107167?hl=en">واجهة إنشاء وسم HTML المخصص</a> يُسمى <em>Support document.write()</em>. وإذا كان هذا مفعّلًا، فإن Google Tag Manager يستبدل مؤقتًا الدالة الافتراضية document.write() بنسخة آمنة خاصة به.</p>
+<h3 id="اختبارات-ab-والتخصيص">اختبارات A/B والتخصيص</h3>
+<p>تجري المواقع <a href="https://www.optimizely.com/optimization-glossary/ab-testing/">اختبارات A/B</a> للتحقق من أي نسخة من صفحة الويب أفضل أداءً. وتُحمَّل إحدى نسختَي الصفحة لمستخدمين مختلفين ضمن العينة المحدَّدة من المستخدمين. ويمكن لاختبارات A/B أن تؤثر بشكل كبير في أداء الصفحات التي تُجرى عليها، مع إضافة كل اختبار لما يصل إلى ثانية واحدة إلى زمن التحميل. وفي الوقت الحالي، يُمثَّل كثير من اختبارات A/B من مصادر خارجية عبر الأطراف الثالثة، ويتحكم المطورون تحكمًا ضئيلًا في كود JavaScript الذي يُنفَّذ لتغيير واجهة المستخدم لهذه الاختبارات.</p>
+<p><a href="https://www.dynamicyield.com/lesson/web-personalization/">تخصيص الموقع</a> هو مفهوم مرتبط ينطوي على تشغيل سكربتات لتوفير تجربة مخصصة لمستخدمين مختلفين بناءً على بيانات معروفة. وهذه السكربتات ثقيلة أيضًا وصعبة التحسين. ومثل سكربتات اختبارات A/B، تحتاج سكربتات التخصيص أيضًا إلى التشغيل مبكرًا لأن واجهة المستخدم المعروضة تعتمد على مخرجات السكربت. وتطوير <a href="https://www.fasterize.com/en/blog/a-b-testing-imperative-to-marketing-perilous-to-web-performance/">حل مخصص قائم على الخادم لاختبارات A/B</a> والتخصيص هو الطريقة المثلى لتحسين اختبارات A/B. لكن هذا قد لا يكون قابلًا للتنفيذ دائمًا.</p>
+<p>لتحسين سكربتات اختبارات A/B من الأطراف الثالثة، يمكنك الحدّ من عدد المستخدمين الذين يتلقون السكربت. ويحدّد السكربت النسخة التي ستُعرض استنادًا إلى قواعد استدلال، ويمكّن النسخة الصحيحة للمستخدم. وقد يبطئ هذا الصفحة لجميع المستخدمين. وتتيح أداة Optimize من Google إعداد <a href="https://support.google.com/optimize/answer/6283420#zippy=%2Cin-this-article">قواعد لاستهداف المستخدمين</a>. ويمكن تقييم كثير من هذه القواعد على خوادم Google، بحيث يكون <a href="https://support.google.com/optimize/answer/7071747?hl=en">تأثير الأداء منخفضًا</a> للمستخدمين غير المستهدفين.</p>
+<h3 id="تضمينات-youtube-والخرائط">تضمينات YouTube والخرائط</h3>
+<p>هذه التضمينات ثقيلة، ويجب على المطورين استكشاف أنماط التحميل الكسول أو التحميل عند النقر لتحميل التضمينات وتحسينها. ويُشجَّع على استخدام حلول مثل <a href="https://github.com/paulirish/lite-youtube-embed">lite-youtube-embed</a>، مع التنبيه إلى أن النقر/اللمس المزدوج مطلوب في iOS/macOS-Safari لتشغيل الفيديو باستخدام هذه الواجهة.</p>
+<h3 id="تضمينات-وسائل-التواصل-الاجتماعي">تضمينات وسائل التواصل الاجتماعي</h3>
+<p>توفّر بعض تضمينات وسائل التواصل الاجتماعي خيارًا لتحميل سكربتاتها كسولًا (مثل <a href="https://developers.facebook.com/docs/plugins/embedded-posts/">data-lazy في تضمينات Facebook</a>). ويمكنك استكشاف ذلك لتحسين الأداء. والبديل الآخر هو استخدام واجهات صور تُنشأ يدويًا أو باستخدام أدوات مثل <a href="https://tweetpik.com/">tweetpik</a>.</p>
+<h2 id="التحسين-الجاهز-مسبقا">التحسين الجاهز مسبقًا</h2>
+<p>لتحسين الأطراف الثالثة، ينبغي أن تفهم فرق التطوير الفروق الدقيقة لتلميحات الموارد والتحميل الكسول والتخزين المؤقت عبر HTTP وservice workers ثم أن تنفّذها في حلولها. وقد ضمّت بعض الأطر والمكتبات أفضل الممارسات هذه بحيث يمكن للمطورين استخدامها بسهولة.</p>
+<p><a href="https://github.com/BuilderIO/partytown">Partytown من إنشاء Builder.io</a> هي مكتبة تجريبية تساعد على تشغيل السكربتات كثيفة الموارد على <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">web worker</a> بدلاً من الخيط الرئيسي. وفلسفتهم أن الخيط الرئيسي يجب أن يكون مخصصًا لكودك، وأن أي سكربتات ليست مطلوبة من المسار الحرج يمكن وضعها في بيئة معزولة (sandbox) وعزلها داخل web worker. ويتيح لك Partytown ضبط الوصول إلى واجهات الخيط الرئيسي مثل ملفات تعريف الارتباط وlocalStorage وuserAgent وغيرها. وقد تُسجَّل استدعاءات الواجهات مع وسائطها للحصول على فهم أفضل لما تفعله السكربتات.</p>
+<p>تتولى وكلاء JavaScript (JavaScript proxies) مع service worker إدارة الاتصال بين web worker والخيط الرئيسي. ويجب أن تكون سكربتات Partytown مستضافة ذاتيًا على الخادم نفسه الذي يحمل مستندات HTML. ويمكن استخدامها مع تطبيقات React أو Next.js أو حتى دون أي إطار. وينبغي لكل سكربت من طرف ثالث يمكن تنفيذه في web worker أن يضبط سمة type في وسم script الافتتاحي له على text/partytown كما يلي.</p>
+<pre><code class="language-javascript">&lt;script type=<span class="hljs-string">&quot;text/partytown&quot;</span>&gt;<span class="hljs-comment">// Third-party analytics scripts&lt;/script&gt;</span>
+</code></pre>
+<p>توفّر المكتبة أيضًا <a href="https://github.com/BuilderIO/partytown#react">مكوّن Partytown لـReact</a> يمكنك تضمينه مباشرة في مشاريع React أو Next.js. ويمكن تضمينه في المستند \`\` كما هو موضح أدناه لمستند Next.js.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Partytown</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@builder.io/partytown/react&#x27;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Document</span>, { <span class="hljs-title class_">Html</span>, <span class="hljs-title class_">Head</span>, <span class="hljs-title class_">Main</span>, <span class="hljs-title class_">NextScript</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;next/document&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDocument</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Document</span> {
+
+<span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Html</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Partytown</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Main</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">NextScript</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Html</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>يتضمن Partytown أيضًا مكوّنات React لمكتبات التحليلات الشائعة مثل <a href="https://github.com/BuilderIO/partytown#integrations">Google Tag Manager</a>. ويوضح المثال التالي كيف يمكنك إضافة هذا إلى مشاريع React/Next.js الخاصة بك.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Partytown</span>, <span class="hljs-title class_">GoogleTagManager</span>, <span class="hljs-title class_">GoogleTagManagerNoScript</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@builder.io/partytown/react&#x27;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Document</span>, { <span class="hljs-title class_">Html</span>, <span class="hljs-title class_">Head</span>, <span class="hljs-title class_">Main</span>, <span class="hljs-title class_">NextScript</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;next/document&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDocument</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Document</span> {
+
+<span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Html</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">GoogleTagManager</span> <span class="hljs-attr">containerId</span>=<span class="hljs-string">{</span>&#x27;<span class="hljs-attr">GTM-XXXXX</span>&#x27;} /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Partytown</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">GoogleTagManagerNoScript</span> <span class="hljs-attr">containerId</span>=<span class="hljs-string">{</span>&#x27;<span class="hljs-attr">GTM-XXXXX</span>&#x27;} /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Main</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">NextScript</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Html</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>يوفّر Next.js نفسه تحسينًا جاهزًا مسبقًا لسكربتات الأطراف الثالثة من خلال مكوّن Script. ولنتعرّف كيف يتيح لنا ذلك تحسين أداء التحميل لمختلف الأطراف الثالثة.</p>
+<h2 id="مكون-nextjs-script">مكوّن Next.js <code>Script</code></h2>
+<p>صدر Next.js 11 في منتصف عام 2021 مع مكوّنات قائمة على منهجية <a href="https://web.dev/conformance/">Conformance</a> التي قدّمها فريق Aurora من Google. وConformance نظام يوفّر حلولًا وقواعد مصمَّمة بعناية لدعم التحميل الأمثل ومؤشرات Web Vitals الأساسية. ويحوّل Conformance أفضل الممارسات إلى مجموعات قواعد يمكن للمطورين تنفيذها بسهولة. وتشكل الإعدادات الافتراضية القوية والقواعد القابلة للتنفيذ أساس هذا النظام. فهي تجعل من السهل على المطورين فعل الصواب وتمنع تسلل الأنماط المضادة.</p>
+<p>ويستخدم <a href="https://nextjs.org/docs/basic-features/script">مكوّن Script في Next.js</a> منهجية conformance من خلال توفير قالب قابل للتخصيص يحسّن أداء التحميل. ويغلّف مكوّن Script الوسم \`\` ويتيح لك ضبط أولوية التحميل لسكربتات الأطراف الثالثة باستخدام السمة strategy. ويمكن أن تأخذ السمة strategy ثلاث قيم.</p>
+<ul>
+<li>beforeInteractive: استخدم هذا مع السكربتات الحرجة التي ينبغي أن ينفّذها المتصفح قبل أن تصبح الصفحة تفاعلية (interaction). (مثل الكشف عن الروبوتات)</li>
+<li>afterInteractive: استخدم هذا مع السكربتات التي يمكن للمتصفح تشغيلها بعد أن تصبح الصفحة تفاعلية. (مثل مديري الوسوم) وهذه هي الاستراتيجية الافتراضية المطبَّقة، وهي مكافئة لتحميل السكربت باستخدام <code>defer</code></li>
+<li>lazyOnload: استخدم هذا مع السكربتات التي يمكن تحميلها كسولًا عندما يكون المتصفح خاملًا.</li>
+</ul>
+<p>يساعد ضبط الاستراتيجية Next.js على تطبيق التحسينات وأفضل الممارسات تلقائيًا لتحميل السكربت مع ضمان أفضل تسلسل تحميل. ويمكنك استخدام وسم script مع السمة strategy، كما هو موضح أدناه. وخلافًا لوسم script الأصلي في HTML، يجب ألا تضع وسم next/script في المكوّن <code>next/head</code> أو في <code>pages/document.js</code>.</p>
+<p>قبل:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Head</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/head&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Head</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">async</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://example.com/samplescript.js&quot;</span> /&gt;</span><span class="language-javascript">
+
+&lt;/<span class="hljs-title class_">Head</span>&gt;
+
+&lt;/&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>بعد:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// pages/index.js</span>
+
+<span class="hljs-comment">// default strategy afterinteractive will apply when strategy not specified.</span>
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;next/script&#x27;</span>
+
+&lt;br&gt;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://example.com/samplescript.js&quot;</span> /&gt;</span><span class="language-javascript">
+
+&lt;/&gt;</span></span>
+
+)
+
+}
+</code></pre>
+<p>يسمح لك مكوّن Script بمعالجة العديد من حالات الاستخدام التي ناقشناها سابقًا. ويمكنك استخدامه لتحميل سكربتات الأطراف الثالثة للتحليلات ووسائل التواصل الاجتماعي والمكتبات المساعدة وغيرها. وتوضح الأمثلة التالية كيف يمكنك تطبيق الاستراتيجيات أعلاه على أنواع مختلفة من سكربتات الأطراف الثالثة.</p>
+<h3 id="تحميل-polyfills-مبكرا">تحميل polyfills مبكرًا</h3>
+<p>في الحالات التي تريد فيها تحميل polyfills معيّنة تنطبق على المحتوى الأساسي مبكرًا، يمكنك استخدام استراتيجية beforeInteractive لتحميل polyfill كما هو موضح في المثال التالي من <a href="https://nextjs.org/docs/basic-features/script#loading-polyfills">وثائق Next.js</a>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver&quot;</span>
+
+<span class="hljs-attr">strategy</span>=<span class="hljs-string">&quot;beforeInteractive&quot;</span>
+
+/&gt;</span><span class="language-javascript">
+
+&lt;/&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<h3 id="التحميل-الكسول-لتضمينات-وسائل-التواصل-الاجتماعي">التحميل الكسول لتضمينات وسائل التواصل الاجتماعي</h3>
+<p>يمكن تأخير تضمينات وسائل التواصل الاجتماعي، وخاصة تلك غير المرئية عند تحميل الصفحة، أو تحميلها كسولًا عندما يمرّر المستخدم إليها أو أثناء فترات الخمول. ويمكنك استخدام استراتيجية <code>lazyonload</code> كما هو موضح في <a href="https://nextjs.org/docs/basic-features/script#lazy-loading">المقتطف</a> التالي.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://connect.facebook.net/en_US/sdk.js&quot;</span>
+
+<span class="hljs-attr">strategy</span>=<span class="hljs-string">&quot;lazyOnload&quot;</span>
+
+/&gt;</span><span class="language-javascript">
+
+&lt;/&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<h3 id="تنفيذ-التعليمات-البرمجية-بشكل-مشروط-عند-التحميل">تنفيذ التعليمات البرمجية بشكل مشروط عند التحميل</h3>
+<p>قد تكون هناك بعض التعليمات البرمجية التي تحتاج إلى التنفيذ بعد تحميل طرف ثالث معيّن. ويمكن تحديد ذلك في السمة onload الخاصة بمكوّن script. فعلى سبيل المثال، يوضح <a href="https://nextjs.org/blog/next-11#script-optimization">المقتطف</a> التالي كيفية تضمين تعليمات برمجية ستُنفَّذ بناءً على موافقة المستخدمين.</p>
+<pre><code class="language-javascript">&lt;<span class="hljs-title class_">Script</span>
+
+src={url} <span class="hljs-comment">// consent management</span>
+
+strategy=<span class="hljs-string">&quot;beforeInteractive&quot;</span>
+
+onLoad={<span class="hljs-function">() =&gt;</span> {
+
+<span class="hljs-comment">// If loaded successfully, then you can load other scripts in sequence</span>
+
+}}
+
+/&gt;
+</code></pre>
+<h3 id="استخدام-السكربتات-المضمنة-داخل-وسم-script">استخدام السكربتات المضمَّنة داخل وسم script</h3>
+<p>يمكن أيضًا تضمين السكربتات المضمَّنة التي تحتاج إلى التنفيذ بناءً على تحميل مكوّن من طرف ثالث في مكوّن Script كما هو موضح <a href="https://nextjs.org/docs/basic-features/script#inline-scripts">هنا</a>.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;next/script&#x27;</span>
+
+&lt;<span class="hljs-title class_">Script</span> id=<span class="hljs-string">&quot;show-banner&quot;</span> strategy=<span class="hljs-string">&quot;lazyOnload&quot;</span>&gt;
+
+{<span class="hljs-string">\`document.getElementById(&#x27;banner&#x27;).removeClass(&#x27;hidden&#x27;)\`</span>}
+
+&lt;/<span class="hljs-title class_">Script</span>&gt;
+
+<span class="hljs-comment">// or</span>
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Script</span>
+
+<span class="hljs-attr">id</span>=<span class="hljs-string">&quot;show-banner&quot;</span>
+
+<span class="hljs-attr">dangerouslySetInnerHTML</span>=<span class="hljs-string">{{</span>
+
+<span class="hljs-attr">__html:</span> \`<span class="hljs-attr">document.getElementById</span>(&#x27;<span class="hljs-attr">banner</span>&#x27;)<span class="hljs-attr">.removeClass</span>(&#x27;<span class="hljs-attr">hidden</span>&#x27;)\`
+
+}}
+
+/&gt;</span></span>
+</code></pre>
+<p>هنا يُستخدم السكربت المضمَّن لتغيير وضوح إعلان بانر من طرف ثالث بعد تحميله كسولًا. ولاحظ أنه يمكن أيضًا تضمين السكربتات المضمَّنة باستخدام السمة dangerouslySetInnerHTML.</p>
+<h3 id="تمرير-السمات-إلى-سكربتات-الأطراف-الثالثة">تمرير السمات إلى سكربتات الأطراف الثالثة</h3>
+<p>يمكنك ضبط قيم سمات معيّنة يمكن لسكربت الطرف الثالث استخدامها في مكوّن Script. ويعرض <a href="https://nextjs.org/docs/basic-features/script#forwarding-attributes">المثال</a> التالي كيفية تمرير سمتَي كهاتين إلى سكربت تحليلات.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://www.google-analytics.com/analytics.js&quot;</span>
+
+<span class="hljs-attr">id</span>=<span class="hljs-string">&quot;analytics&quot;</span>
+
+<span class="hljs-attr">nonce</span>=<span class="hljs-string">&quot;XUENAJFW&quot;</span>
+
+<span class="hljs-attr">data-test</span>=<span class="hljs-string">&quot;analytics&quot;</span>
+
+/&gt;</span><span class="language-javascript">
+
+&lt;/&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<h3 id="تحميل-سكربتات-التحليلات">تحميل سكربتات التحليلات</h3>
+<p>هناك طرق مختلفة لتضمين التحليلات في موقعك، باستخدام Google Analytics (GA) وGoogle Tag Manager (GTM). ويمكنك استخدام مكوّن Script لتحميل سكربتات <a href="https://developers.google.com/analytics/devguides/collection/gtagjs">gtag.js</a> أو <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs">analytics.js</a> على نحو أمثل في موقع Next.js الخاص بك. وبناءً على المكان الذي تريد تنفيذ هذه السكربتات فيه، يمكنك تحميلها في _app.js (ينطبق على جميع الصفحات) أو في صفحات محددة.</p>
+<p>يمكن تفعيل GTM لجميع صفحات الموقع من خلال تضمين مكوّن script داخل _app.js كما يلي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> Script <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+// + other imports
+
+function MyApp({ Component, pageProps }) {
+
+// Other app code
+
+<span class="hljs-keyword">return</span> (
+
+&lt;&gt;
+
+{/* Google Tag Manager - Global base code */}
+
+&lt;Script
+
+strategy=<span class="hljs-string">&quot;afterInteractive&quot;</span>
+
+dangerouslySetInnerHTML={{
+
+__html: \`
+
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({<span class="hljs-string">&#x27;gtm.start&#x27;</span>:
+
+new Date().getTime(),event:<span class="hljs-string">&#x27;gtm.js&#x27;</span>});var f=d.getElementsByTagName(s)[<span class="hljs-number">0</span>],
+
+j=d.createElement(s),dl=l!=<span class="hljs-string">&#x27;dataLayer&#x27;</span>?<span class="hljs-string">&#x27;&amp;l=&#x27;</span>+l:<span class="hljs-string">&#x27;&#x27;</span>;j.<span class="hljs-keyword">async</span>=true;j.src=
+
+<span class="hljs-string">&#x27;https://www.googletagmanager.com/gtm.js?id=&#x27;</span>+i+dl;f.parentNode.insertBefore(j,f);
+
+})(window,document,<span class="hljs-string">&#x27;script&#x27;</span>,<span class="hljs-string">&#x27;dataLayer&#x27;</span>, <span class="hljs-string">&#x27;\${GTM_ID}&#x27;</span>);
+
+\`,
+
+}}
+
+/&gt;
+
+&lt;Component {...pageProps} /&gt;
+
+&lt;/&gt;
+
+);
+
+}
+
+export default MyApp;
+</code></pre>
+<p>وبدلًا من ذلك، إذا أردت تحميل analytics.js في صفحات محددة، فيمكنك تضمينه في الصفحة كما هو موضح.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+<span class="hljs-comment">//other imports</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Home</span> = (<span class="hljs-params"></span>) =&gt; {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;google-analytics&quot;</span> <span class="hljs-attr">strategy</span>=<span class="hljs-string">&quot;afterInteractive&quot;</span>&gt;</span><span class="language-javascript">
+
+{<span class="hljs-string">\`
+
+(function(i,s,o,g,r,a,m){i[&#x27;GoogleAnalyticsObject&#x27;]=r;i[r]=i[r]||function(){
+
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+})(window,document,&#x27;script&#x27;,&#x27;https://www.google-analytics.com/analytics.js&#x27;,&#x27;ga&#x27;);
+
+ga(&#x27;create&#x27;, &#x27;UA-XXXXX-Y&#x27;, &#x27;auto&#x27;);
+
+ga(&#x27;send&#x27;, &#x27;pageview&#x27;);
+
+\`</span>}
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">Script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+<span class="hljs-comment">//Other UI related HTML</span>
+
+);
+
+};
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Script</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/script&quot;</span>;
+
+<span class="hljs-comment">//other imports</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">Home</span> = (<span class="hljs-params"></span>) =&gt; {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;google-analytics&quot;</span> <span class="hljs-attr">strategy</span>=<span class="hljs-string">&quot;afterInteractive&quot;</span>&gt;</span><span class="language-javascript">
+
+{<span class="hljs-string">\`
+
+(function(i,s,o,g,r,a,m){i[&#x27;GoogleAnalyticsObject&#x27;]=r;i[r]=i[r]||function(){
+
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+
+})(window,document,&#x27;script&#x27;,&#x27;https://www.google-analytics.com/analytics.js&#x27;,&#x27;ga&#x27;);
+
+ga(&#x27;create&#x27;, &#x27;UA-XXXXX-Y&#x27;, &#x27;auto&#x27;);
+
+ga(&#x27;send&#x27;, &#x27;pageview&#x27;);
+
+\`</span>}
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">Script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+<span class="hljs-comment">//Other UI related HTML</span>
+
+);
+
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">Home</span>;
+</code></pre>
+<p>ولاحظ أن في كلا المثالين أعلاه، يتم تحميل سكربتات التحليلات مع strategy = afterInteractive.</p>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>عند تأليف صفحات الويب الخاصة بك ودمج موارد خوادمك مع موارد من أنحاء أخرى من الويب، عليك مراقبة التفاعل بين هذه الموارد بشكل متكرر. ويمكنك البدء بترتيب الموارد تسلسلًا صحيحًا واتباع أفضل الممارسات. ويمكنك أيضًا الاعتماد على أطر أو حلول طبّقت أفضل الممارسات هذه في تصميمها.</p>
+<p>ومع نمو الموقع، يمكن لتقارير الأداء والتدقيقات الدورية أن تساعد في إزالة التكرار وتحسين السكربتات التي تؤثر في الأداء. وأخيرًا، يمكننا دائمًا الأمل بأن تحسّن الأطراف الثالثة ذات مشكلات الأداء المعروفة شيفرتها من جانبها، أو توفّر واجهات برمجية (APIs) تتيح حلولاً عملية للتعامل مع هذه المشكلات.</p>
+`,r={book:s,chapter:a,chapterTitle:n,slug:t,title:e,headings:p,html:l};export{s as book,a as chapter,n as chapterTitle,r as default,p as headings,l as html,t as slug,e as title};

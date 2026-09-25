@@ -1,0 +1,292 @@
+const s="patterns-dev",n="react",a="أنماط React وNext.js",e="streaming-ssr",l="البث مع العرض في جانب الخادم",t=[{depth:2,id:"واجهتا-البث-في-react-18",text:"واجهتا البث في React 18+"},{depth:2,id:"البث-على-node-باستخدام-rendertopipeablestream",text:"البث على Node باستخدام renderToPipeableStream"},{depth:2,id:"onshellready-مقابل-onallready",text:"onShellReady مقابل onAllReady"},{depth:2,id:"البث-على-الحافة-edge-باستخدام-rendertoreadablestream",text:"البث على الحافة (edge) باستخدام renderToReadableStream"},{depth:2,id:"الترطيب-مع-البث",text:"الترطيب مع البث"},{depth:2,id:"حدود-الأخطاء-ليست-اختيارية-مع-البث",text:"حدود الأخطاء ليست اختيارية مع البث"},{depth:2,id:"البث-في-nextjs",text:"البث في Next.js"},{depth:2,id:"تكلفة-البث",text:"تكلفة البث"},{depth:2,id:"متى-يكون-ssr-بالبث-الخيار-الصحيح",text:"متى يكون SSR بالبث الخيار الصحيح"}],p=`<p>للعرض في جانب الخادم (server-side rendering، SSR) الكلاسيكي مشكلة حجز للاستجابة (buffering). ينفذ الخادم العرض كاملًا — بما في ذلك كل عملية جلب بيانات غير متزامنة تحتاجها الصفحة — ولا يكتب استجابة HTML واحدة إلا بعدها. إذا استغرق أبطأ جلب في الصفحة 800 مللي ثانية، سينتظر المستخدم 800 مللي ثانية على الأقل قبل رسم <em>أي</em> محتوى. إذ تحتجز أسرع أجزاء الصفحة رهينة لأبطئها.</p>
+<p>يعالج SSR بالبث (streaming SSR) ذلك بالسماح لـ React بإرسال HTML إلى المتصفح فور توفّره. يُرسل الهيكل (shell)، أي الترويسة والتنقل وواجهة التخطيط وكل ما لا يعتمد على بيانات غير متزامنة، فورًا. أما الأجزاء البطيئة — المغلّفة بـ \`\` — فتُبث لاحقًا كقطع ضمن استجابة HTTP نفسها، ويحل كل جزء محل بديل احتياطي (fallback) كان ظاهرًا مسبقًا.</p>
+<p>يبدأ المتصفح التحليل فور وصول البايتات. ينخفض TTFB لأن الخادم لا ينتظر. وينخفض LCP عادةً لأن المحتوى الرئيسي موجود في المقطع الأول. يرى المستخدم حركة — تتحول العناصر النائبة إلى محتوى حقيقي — بدلًا من التحديق في علامة تبويب فارغة.</p>
+<h2 id="واجهتا-البث-في-react-18">واجهتا البث في React 18+</h2>
+<p>أعادت React 18 تصميم واجهات الخادم حول البث. وهناك واجهتان حسب بيئة التشغيل:</p>
+<ul>
+<li><strong><code>renderToPipeableStream</code></strong> — لـ Node.js. تُعيد تدفقًا قابلًا للتوجيه (Pipeable stream) تستدعي <code>pipe()</code> لإرساله في الاستجابة. وتستخدم الاستدعاءات <code>onShellReady</code> و<code>onAllReady</code> و<code>onError</code>.</li>
+<li><strong><code>renderToReadableStream</code></strong> — لبيئات Web/Edge مثل Cloudflare Workers وVercel Edge وDeno وBun. تُعيد <code>Promise</code> تحتوي على <code>ReadableStream</code> من Web يمكنك إعادته بوصفه جسم الاستجابة.</li>
+</ul>
+<p>أُزيلت <code>renderToNodeStream</code> الأقدم في React 19. إذا كنت تصون خادمًا ما زال يستخدمها، فهذه هي عملية الانتقال المطلوبة؛ لأنها لا تدعم \`\` أو أيًا من ضمانات البث الموضحة أدناه.</p>
+<h2 id="البث-على-node-باستخدام-rendertopipeablestream">البث على Node باستخدام <code>renderToPipeableStream</code></h2>
+<p>إليك إعدادًا كاملًا لـ SSR بالبث في صفحة لوحة معلومات تحليلية. يُعرض الهيكل فورًا، بينما يعلّق كل من الرسم البياني وخلاصة النشاط الأخير تنفيذه على عمليات الجلب الخاصة به ويُبث كل منهما بصورة مستقلة.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// server.jsx</span>
+
+<span class="hljs-keyword">import</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;express&quot;</span>;
+
+<span class="hljs-keyword">import</span> { renderToPipeableStream } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom/server&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Dashboard</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Dashboard&quot;</span>;\\n
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();\\n
+
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+
+<span class="hljs-keyword">let</span> didError = <span class="hljs-literal">false</span>;\\n
+
+<span class="hljs-keyword">const</span> { pipe, abort } = <span class="hljs-title function_">renderToPipeableStream</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Dashboard</span> /&gt;</span></span>, {
+
+<span class="hljs-attr">bootstrapModules</span>: [<span class="hljs-string">&quot;/static/client.js&quot;</span>],
+
+<span class="hljs-title function_">onShellReady</span>(<span class="hljs-params"></span>) {
+
+res.<span class="hljs-property">statusCode</span> = didError ? <span class="hljs-number">500</span> : <span class="hljs-number">200</span>;
+
+res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/html&quot;</span>);
+
+<span class="hljs-title function_">pipe</span>(res);
+
+},
+
+<span class="hljs-title function_">onShellError</span>(<span class="hljs-params">error</span>) {
+
+res.<span class="hljs-property">statusCode</span> = <span class="hljs-number">500</span>;
+
+res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/html&quot;</span>);
+
+res.<span class="hljs-title function_">send</span>(<span class="hljs-string">&quot;&lt;h1&gt;Dashboard unavailable&lt;/h1&gt;&quot;</span>);
+
+},
+
+<span class="hljs-title function_">onError</span>(<span class="hljs-params">error</span>) {
+
+didError = <span class="hljs-literal">true</span>;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error);
+
+},
+
+});\\n
+
+<span class="hljs-comment">// Drop the connection if a client hangs for too long.</span>
+
+<span class="hljs-built_in">setTimeout</span>(abort, <span class="hljs-number">10_000</span>);
+
+});\\n
+
+app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);
+</code></pre>
+<p>وها هي الصفحة نفسها، مع اعتمادَي بيانات يعلّقان التنفيذ:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Dashboard.jsx</span>
+
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Suspense</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">ChartCard</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ChartCard&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">ActivityFeed</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ActivityFeed&quot;</span>;\\n
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Dashboard</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Analytics<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>{/* always-fast nav */}<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span>\\n
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">ChartCardSkeleton</span> /&gt;</span>}&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">ChartCard</span> /&gt;</span> {/* fetches a slow time series */}
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>\\n
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">ActivityFeedSkeleton</span> /&gt;</span>}&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">ActivityFeed</span> /&gt;</span> {/* fetches the last 50 events */}
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>ما يراه المتصفح، بالترتيب:</p>
+<ul>
+<li><strong>الهيكل</strong>، أي HTML والترويسة والتنقل وهيكلَي التحميل — يُرسل عند إطلاق <code>onShellReady</code>.</li>
+<li><strong>أيهما ينتهي أولًا من البيانات</strong> — يُبث HTML الخاص به مع سكربت مضمّن يستبدل الهيكل المقابل.</li>
+<li><strong>الآخر</strong>، عند جاهزيته.</li>
+</ul>
+<p>إذا حُلّت خلاصة النشاط خلال 80 مللي ثانية والرسم البياني خلال 600 مللي ثانية، فسيرى المستخدم خلاصة النشاط عند 80 مللي ثانية بدلًا من انتظار 600 كاملة. بدت الصفحة أسرع سبع مرات.</p>
+<h2 id="onshellready-مقابل-onallready"><code>onShellReady</code> مقابل <code>onAllReady</code></h2>
+<p>تمثل الاستدعاءان نوايا مختلفة جوهريًا:</p>
+<ul>
+<li><strong><code>onShellReady</code></strong> يُطلق في اللحظة التي يصبح فيها كل ما هو <em>خارج</em> حدود \`\` قابلًا للعرض. وهذا هو الخيار الذي تريده للمستخدمين؛ أرسل الهيكل في أقرب وقت ممكن ودع البقية تبث.</li>
+<li><strong><code>onAllReady</code></strong> لا يُطلق إلا عند عرض الشجرة كاملة، بما في ذلك محتوى كل حدود \`\`. استخدمه مع العملاء الذين لا يستطيعون معالجة التحديثات المبثوطة أو لا يريدون ذلك، مثل بعض زواحف البحث وعرض البريد الإلكتروني وأدوات جلب معاينات بطاقات التواصل ومصدّرات RSS.</li>
+</ul>
+<p>النمط الشائع هو اكتشاف <code>user-agent</code> واختيار الاستدعاء المناسب:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> isCrawler = <span class="hljs-regexp">/bot|crawler|spider|crawling/i</span>.<span class="hljs-title function_">test</span>(req.<span class="hljs-property">headers</span>[<span class="hljs-string">&quot;user-agent&quot;</span>] || <span class="hljs-string">&quot;&quot;</span>);\\n
+
+<span class="hljs-keyword">const</span> { pipe } = <span class="hljs-title function_">renderToPipeableStream</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span></span>, {
+
+<span class="hljs-attr">bootstrapModules</span>: [<span class="hljs-string">&quot;/static/client.js&quot;</span>],
+
+[isCrawler ? <span class="hljs-string">&quot;onAllReady&quot;</span> : <span class="hljs-string">&quot;onShellReady&quot;</span>]() {
+
+res.<span class="hljs-property">statusCode</span> = didError ? <span class="hljs-number">500</span> : <span class="hljs-number">200</span>;
+
+res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;text/html&quot;</span>);
+
+<span class="hljs-title function_">pipe</span>(res);
+
+},
+
+<span class="hljs-title function_">onError</span>(<span class="hljs-params">err</span>) {
+
+didError = <span class="hljs-literal">true</span>;
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(err);
+
+},
+
+});
+</code></pre>
+<h2 id="البث-على-الحافة-edge-باستخدام-rendertoreadablestream">البث على الحافة (edge) باستخدام <code>renderToReadableStream</code></h2>
+<p>لا تملك بيئات الحافة تدفقات Node؛ بل تستخدم <code>Web Streams</code>. الشكل مشابه، لكن الواجهة قائمة على <code>Promise</code>:</p>
+<pre><code class="language-python">// edge-handler.jsx
+
+<span class="hljs-keyword">import</span> { renderToReadableStream } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom/server&quot;</span>;
+
+<span class="hljs-keyword">import</span> App <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App&quot;</span>;\\n
+
+export default {
+
+<span class="hljs-keyword">async</span> fetch(request) {
+
+let didError = false;\\n
+
+const stream = <span class="hljs-keyword">await</span> renderToReadableStream(&lt;App /&gt;, {
+
+bootstrapModules: [<span class="hljs-string">&quot;/static/client.js&quot;</span>],
+
+onError(err) {
+
+didError = true;
+
+console.error(err);
+
+},
+
+});\\n
+
+// Wait <span class="hljs-keyword">for</span> the shell before responding — analogous to onShellReady.
+
+<span class="hljs-keyword">await</span> stream.allReady; // omit this to flush <span class="hljs-keyword">as</span> early <span class="hljs-keyword">as</span> possible
+
+// Or, <span class="hljs-keyword">for</span> crawlers, wait <span class="hljs-keyword">for</span> the whole tree:
+
+// <span class="hljs-keyword">await</span> stream.allReady;\\n
+
+<span class="hljs-keyword">return</span> new Response(stream, {
+
+status: didError ? <span class="hljs-number">500</span> : <span class="hljs-number">200</span>,
+
+headers: { <span class="hljs-string">&quot;content-type&quot;</span>: <span class="hljs-string">&quot;text/html&quot;</span> },
+
+});
+
+},
+
+};
+</code></pre>
+<p>تُحل Promise التي تعيدها <code>renderToReadableStream</code> فور جاهزية الهيكل. أما التدفق نفسه فيملك Promise اسمها <code>allReady</code> يمكنك انتظارها متى احتجت الشجرة كاملة، كما في حالة زاحف البحث. وإذا لم تنتظر أي شيء بعد Promise الأولية، يبدأ بث الاستجابة فورًا.</p>
+<h2 id="الترطيب-مع-البث">الترطيب مع البث</h2>
+<p>الترطيب في عالم البث هو نظير العرض: فور وصول كل مقطع، يطابق React في العميل عقد DOM الجديدة بشيفرة المكوّنات ويربط مستمعي أحداثها. وهذه هي <strong>الترطيب الانتقائي (selective hydration)</strong>، ولها خاصيتان مهمتان:</p>
+<ul>
+<li><strong>يتم الترطيب على شكل مقاطع.</strong> تُرطَّب حدود \`\` بصورة مستقلة عن بقية الصفحة. فيستطيع المستخدم التفاعل مع التنقل بينما لا يزال الرسم البياني قيد التحميل.</li>
+<li><strong>تفوق إدخال المستخدم.</strong> إذا ضغط المستخدم زرًا في منطقة لم تُرطَّب بعد، فإن React يعطي أولوية لترطيب <em>تلك</em> المنطقة أولًا. ويمنع الترطيب الانتقائي أسوأ أشكال الوادي الغريب، حيث تضيع نقرة بصمت لأن الترطيب كان مشغولًا في مكان آخر.</li>
+</ul>
+<p>في جانب العميل، استخدم <code>hydrateRoot</code>:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// client.jsx</span>
+
+<span class="hljs-keyword">import</span> { hydrateRoot } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-dom/client&quot;</span>;
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./App&quot;</span>;\\n
+
+<span class="hljs-title function_">hydrateRoot</span>(<span class="hljs-variable language_">document</span>, <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">App</span> /&gt;</span></span>);
+</code></pre>
+<p>أُزيلت <code>ReactDOM.hydrate</code> في React 19. إذا ما زلت تستخدمها، فالتبديل إلى <code>hydrateRoot</code> هو مسار الترقية.</p>
+<h2 id="حدود-الأخطاء-ليست-اختيارية-مع-البث">حدود الأخطاء ليست اختيارية مع البث</h2>
+<p>بعد إرسال الهيكل، لا يستطيع خطأ في مكوّن أعمق تغيير رمز حالة HTTP. الخيارات المتاحة هي فقط: (أ) استبدال المنطقة المتأثرة بديل احتياطي في التدفق، أو (ب) ترك React تفككها في العميل أثناء الترطيب. ويتطلب الخياران Error Boundary.</p>
+<pre><code class="language-javascript">&lt;<span class="hljs-title class_">ErrorBoundary</span> fallback={<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Could not load reviews.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>}&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Suspense</span> <span class="hljs-attr">fallback</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">ReviewSkeleton</span> /&gt;</span>}&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Reviews</span> <span class="hljs-attr">productId</span>=<span class="hljs-string">{id}</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">Suspense</span>&gt;</span></span>
+
+&lt;/<span class="hljs-title class_">ErrorBoundary</span>&gt;
+</code></pre>
+<p>النمط هو: لُف كل منطقة مبثوطة داخل <em>حد أخطاء</em> وحد Suspense معًا. يتولى حد Suspense حالة «ما زال قيد التحميل»، ويتولى حد الأخطاء حالة «اكتمل التحميل لكن فشل».</p>
+<p>لاسترجاع الأخطاء بأمان، خصّص <code>onError</code> في <code>renderToPipeableStream</code> مكان التسجيل؛ أما حد الأخطاء فهو المكان الذي تعرض فيه واجهة بديلة.</p>
+<h2 id="البث-في-nextjs">البث في Next.js</h2>
+<p>يتولى App Router كل ذلك نيابةً عنك. يتحول أي ملف <code>loading.tsx</code> في مقطع مسار تلقائيًا إلى حد \`\`، وأي مكوّن خادمي غير متزامن يعلّق التنفيذ يُبث عند حل بياناته.</p>
+<pre><code class="language-javascript">app/dashboard/
+
+layout.<span class="hljs-property">tsx</span>       &lt;-- always renders, flushed first
+
+loading.<span class="hljs-property">tsx</span>      &lt;-- <span class="hljs-title class_">Suspense</span> fallback <span class="hljs-keyword">for</span> the page
+
+page.<span class="hljs-property">tsx</span>         &lt;-- <span class="hljs-keyword">async</span>, can fetch data
+
+@analytics/
+
+loading.<span class="hljs-property">tsx</span>
+
+page.<span class="hljs-property">tsx</span>       &lt;-- parallel route, streams independently
+
+error.<span class="hljs-property">tsx</span>        &lt;-- error boundary
+</code></pre>
+<p>لا تكتب <code>renderToPipeableStream</code> مباشرة؛ فـ Next.js تستدعيه، أو تكافئه على الحافة، نيابةً عنك وتربط البث وفق اصطلاحات الملفات هذه. وتكون النتيجة هي نفسها: يُرسل التخطيط الساكن فورًا، وتُبث البيانات البطيئة، ويتولى الترطيب الانتقائي التفاعلية.</p>
+<h2 id="تكلفة-البث">تكلفة البث</h2>
+<p>البث ليس مجانيًا. وفيما يلي بعض الأمور التي ينبغي الانتباه إليها:</p>
+<ul>
+<li><strong>لا يمكنك تغيير ترويسات الاستجابة بعد المقطع الأول.</strong> رمز الحالة و<code>Set-Cookie</code> وإعادة التوجيه وترويسات الأمان — تتخذ كلها قراراتها قبل الإرسال الأول. إذا كان مكوّن أعمق سيؤدي إلى 404، فيمكنك عرض رسالة خطأ داخل البث، لكن رمز حالة الاستجابة يثبت عند 200.</li>
+<li><strong>تتعطل بعض البرمجيات الوسيطة.</strong> أي شيء يجمع الاستجابة كاملة، كضغط被执行 بصورة خاطئة أو إعدادات معينة لـ WAF أو CDN، يبطل البث كليًا. تحقق باستخدام <code>curl</code> وراقب أن <code>Transfer-Encoding: chunked</code> يتصرف فعليًا كتدفق.</li>
+<li><strong>يبدو TTFB أقل من التجربة الفعلية.</strong> تصل البايتة الأولى سريعًا، لكنها قد تكون الهيكل وحده. قارن SSR بالبث بـ SSR من دون بث عبر LCP وINP، لا TTFB وحده.</li>
+<li><strong>يغير Suspense أنماط جلب البيانات.</strong> يجب أن يستخدم المكوّن الذي يعلّق التنفيذ طبقة بيانات متوافقة مع Suspense، إما hook <code>use()</code> في React، أو وسيط إطار عمل مثل <code>fetch</code> في Next.js و<code>useLoaderData</code> في Remix، أو مكتبة تتكيف مثل <code>useSuspenseQuery</code> في TanStack Query. ولا يعلّق <code>useEffect</code> العادي التنفيذ.</li>
+</ul>
+<h2 id="متى-يكون-ssr-بالبث-الخيار-الصحيح">متى يكون SSR بالبث الخيار الصحيح</h2>
+<table>
+<thead>
+<tr>
+<th>ملف الصفحة</th>
+<th>هل تستخدم SSR بالبث؟</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>لوحة معلومات تضم عدة عمليات جلب بطيئة</td>
+<td>نعم — أكبر مكسب.</td>
+</tr>
+<tr>
+<td>صفحة تسويق وكل بياناتها ساكنة</td>
+<td>لا — استخدم SSG أو PPR.</td>
+</tr>
+<tr>
+<td>صفحة محمية بالمصادقة وتضم عملية جلب سريعة واحدة</td>
+<td>اختياري — المكاسب صغيرة إذا لم يكن هناك ما يتداخل زمنيًا.</td>
+</tr>
+<tr>
+<td>تحديثات بيانات مباشرة وآنية</td>
+<td>يتولى SSR بالبث الرسم الأولي؛ استخدم WebSocket أو SSE للتحديثات المستمرة.</td>
+</tr>
+<tr>
+<td>صفحات تحتاج زواحف البحث إلى عرضها كاملة</td>
+<td>نعم، لكن استخدم <code>onAllReady</code> لهذا النوع من العملاء.</td>
+</tr>
+</tbody>
+</table>
+<p>ينسجم SSR بالبث بصفة خاصة مع <strong>العرض الجزئي المسبق (Partial Prerendering)</strong>، حيث يُبث هيكل ساكن قبل بدء أي عمل ديناميكي، ومع <strong>مكوّنات React الخادمية (React Server Components)</strong>، التي تستطيع تنفيذ جلب بياناتها في الخادم من دون المساهمة في حزمة العميل. ويبدأ النمط التالي في هذه السلسلة، <strong>الترطيب التدريجي (Progressive Hydration)</strong>، من حيث يتوقف SSR بالبث — في حل مسألة <em>كم</em> من JavaScript ينبغي إرساله كي تصبح الصفحة تفاعلية، لا مجرد كيفية رسم HTML لها.</p>
+`,r={book:s,chapter:n,chapterTitle:a,slug:e,title:l,headings:t,html:p};export{s as book,n as chapter,a as chapterTitle,r as default,t as headings,p as html,e as slug,l as title};

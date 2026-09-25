@@ -19,96 +19,133 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.DMffU_qU.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.DaVuikZY.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BkZeioTM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dwp1CfxU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BkjEk--V.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.leH8d20y.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.Dsxgixua.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/t9kBb5vM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/3WzIuwna.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.ohpsBG_R.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Bmh3NnA-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DSR4V203.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.GXhWbriS.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Be2F2tSr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DRko1C_R.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Bcgl2mQX.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="نمط المفرد (singleton) — أنماط JavaScript"/><!----><title>نمط المفرد (singleton) | أنماط تصميم تطبيقات الويب</title>
-		<link href="../../../../_app/immutable/assets/0.DahrPYdV.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
-    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern" class="active">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل موارد الأطراف الخارجية (Third-party)</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>نمط المفرد (singleton)</h1></div> <div class="reader-content"><!----><p>نمط المفرد (singleton) هو كائن موجود مرة واحدة فقط طوال عمر التطبيق. يحصل كل مستدعٍ عليه على النسخة نفسها — الحالة نفسها، والطرق نفسها، والهوية نفسها. يظهر هذا النمط متى كان هناك مورد مشترك فعلًا: مجموعة اتصالات بقاعدة بيانات، أو عميل أعلام ميزات يستعلم عن خدمة بعيدة، أو WebSocket يوزع الرسائل الواردة على مشتركين كثيرين، أو عميل تحليلات يجمع الأحداث قبل إرسالها.</p>
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>أنماط JavaScript</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vanilla/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vanilla/bundle-splitting">تقسيم الحزمة (Bundle Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/compression">ضغط JavaScript (Compressing JavaScript)</a></li><li><a href="../../../../book/patterns-dev/vanilla/dynamic-import">الاستيراد الديناميكي (Dynamic Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/factory-pattern">نمط المصنع (factory)</a></li><li><a href="../../../../book/patterns-dev/vanilla/flyweight-pattern">نمط الوزن الخفيف (flyweight)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-interaction">الاستيراد عند التفاعل (Import On Interaction)</a></li><li><a href="../../../../book/patterns-dev/vanilla/import-on-visibility">الاستيراد عند الظهور (Import On Visibility)</a></li><li><a href="../../../../book/patterns-dev/vanilla/loading-sequence">تحسين تسلسل التحميل لديك</a></li><li><a href="../../../../book/patterns-dev/vanilla/mediator-pattern">نمط الوسيط/البرمجيات الوسيطة (mediator/middleware)</a></li><li><a href="../../../../book/patterns-dev/vanilla/mixin-pattern">نمط المزيج (mixin)</a></li><li><a href="../../../../book/patterns-dev/vanilla/module-pattern">نمط الوحدة (module)</a></li><li><a href="../../../../book/patterns-dev/vanilla/observer-pattern">نمط المراقب (observer)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prefetch">الجلب المسبق (Prefetch)</a></li><li><a href="../../../../book/patterns-dev/vanilla/preload">التحميل المسبق (Preload)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prototype-pattern">نمط النموذج الأولي (prototype)</a></li><li><a href="../../../../book/patterns-dev/vanilla/proxy-pattern">نمط الوسيط (proxy)</a></li><li><a href="../../../../book/patterns-dev/vanilla/prpl">نمط PRPL (PRPL Pattern)</a></li><li><a href="../../../../book/patterns-dev/vanilla/route-based">التقسيم حسب المسار (Route Based Splitting)</a></li><li><a href="../../../../book/patterns-dev/vanilla/singleton-pattern" class="active">نمط المفرد (singleton)</a></li><li><a href="../../../../book/patterns-dev/vanilla/static-import">الاستيراد الساكن (Static Import)</a></li><li><a href="../../../../book/patterns-dev/vanilla/third-party">تحسين تحميل الأطراف الثالثة</a></li><li><a href="../../../../book/patterns-dev/vanilla/tree-shaking">إزالة الشيفرة الميتة (Tree Shaking)</a></li><li><a href="../../../../book/patterns-dev/vanilla/view-transitions">تحريك انتقال العرض (view transition)</a></li><li><a href="../../../../book/patterns-dev/vanilla/virtual-lists">افتراضية القوائم (List Virtualization)</a></li><!--]--></ul><h3>أنماط React وNext.js</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/react/index">نظرة عامة على React.js</a></li><li><a href="../../../../book/patterns-dev/react/client-side-rendering">العرض في جانب العميل</a></li><li><a href="../../../../book/patterns-dev/react/compound-pattern">النمط المركّب</a></li><li><a href="../../../../book/patterns-dev/react/hoc-pattern">نمط المكوّن من رتبة عليا (HOC)</a></li><li><a href="../../../../book/patterns-dev/react/hooks-pattern">نمط الخطافات (Hooks Pattern)</a></li><li><a href="../../../../book/patterns-dev/react/incremental-static-rendering">التوليد الساكن التزايدي</a></li><li><a href="../../../../book/patterns-dev/react/nextjs">نظرة عامة على Next.js</a></li><li><a href="../../../../book/patterns-dev/react/nextjs-vitals">تحسين تطبيقات Next.js وفق Core Web Vitals</a></li><li><a href="../../../../book/patterns-dev/react/presentational-container-pattern">نمط الحاوية/العرض التقديمي</a></li><li><a href="../../../../book/patterns-dev/react/progressive-hydration">الترطيب التدريجي</a></li><li><a href="../../../../book/patterns-dev/react/react-2026">أنماط حزمة React</a></li><li><a href="../../../../book/patterns-dev/react/react-server-components">مكوّنات React الخادمية</a></li><li><a href="../../../../book/patterns-dev/react/render-props-pattern">نمط خصائص العرض (render props)</a></li><li><a href="../../../../book/patterns-dev/react/server-side-rendering">العرض في جانب الخادم</a></li><li><a href="../../../../book/patterns-dev/react/static-rendering">العرض الساكن</a></li><li><a href="../../../../book/patterns-dev/react/streaming-ssr">البث مع العرض في جانب الخادم</a></li><!--]--></ul><h3>أنماط Vue</h3> <ul><!--[--><li><a href="../../../../book/patterns-dev/vue/index">مقدمة</a></li><li><a href="../../../../book/patterns-dev/vue/async-components">المكوّنات غير المتزامنة</a></li><li><a href="../../../../book/patterns-dev/vue/components">المكوّنات</a></li><li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب</a></li><li><a href="../../../../book/patterns-dev/vue/container-presentational">نمط الحاوية/العرضية</a></li><li><a href="../../../../book/patterns-dev/vue/data-provider">نمط مزوّد البيانات</a></li><li><a href="../../../../book/patterns-dev/vue/dynamic-components">المكوّنات الديناميكية</a></li><li><a href="../../../../book/patterns-dev/vue/provide-inject">التوفير/الحقن</a></li><li><a href="../../../../book/patterns-dev/vue/render-functions">دوال العرض</a></li><li><a href="../../../../book/patterns-dev/vue/renderless-components">المكوّنات بلا عرض</a></li><li><a href="../../../../book/patterns-dev/vue/script-setup">إعداد السكربت</a></li><li><a href="../../../../book/patterns-dev/vue/state-management">إدارة الحالة</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">أنماط JavaScript</p> <h1>نمط المفرد (singleton)</h1></div> <div class="reader-content"><!----><p>نمط المفرد (singleton) هو كائن موجود مرة واحدة فقط طوال عمر التطبيق. يحصل كل مستدعٍ عليه على النسخة نفسها — الحالة نفسها، والطرق نفسها، والهوية نفسها. يظهر هذا النمط متى كان هناك مورد مشترك فعلًا: مجموعة اتصالات بقاعدة بيانات، أو عميل أعلام ميزات يستعلم عن خدمة بعيدة، أو WebSocket يوزع الرسائل الواردة على مشتركين كثيرين، أو عميل تحليلات يجمع الأحداث قبل إرسالها.</p>
 <p>في كل هذه الحالات، لا تريد وجود نسختين من الشيء نفسه. مجموعتا اتصالات تضاعفان عدد الاتصالات. أما عميلان للتحليلات فسيتنافسان عند الإرسال. إن نمط المفرد هو الإجابة التقليدية على: «تأكد من وجود نسخة واحدة، مهما تعددت الأماكن التي تطلبها».</p>
 <p>مع ذلك، قبل استخدام النمط، من المفيد طرح سؤال سيعود إليه المقال: <strong>هل تحتاج فعلًا إلى نمط مفرد، أم تحتاج فقط إلى قيمة تعيش في نطاق الوحدة (module scope)؟</strong> في JavaScript الحديثة يُخلط غالبًا بين الأمرين، والخيار الثاني هو الأفضل في الغالبية العظمى من الحالات.</p>
 <h2 id="خط-أساس-نمط-المفرد-القائم-على-الأصناف">خط أساس: نمط المفرد القائم على الأصناف</h2>
 <p>إليك تنفيذًا كلاسيكية حُدِّثت باستخدام حقول الأصناف الخاصة وواصف ثابت. سنستخدم عميل أعلام ميزات كمثال متواصل — وهي خدمة تحمّل قيم الأعلام مرة واحدة وتقدمها إلى بقية التطبيق.</p>
-<pre><code>class FeatureFlags {
-  // Private static slot for the one instance
-  static #instance = null;
+<pre><code class="language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FeatureFlags</span> {
 
-  // Private state — invisible outside the class
-  #flags = new Map();
-  #loaded = false;
+<span class="hljs-comment">// Private static slot for the one instance</span>
 
-  constructor() {
-    if (FeatureFlags.#instance) {
-      return FeatureFlags.#instance;
-    }
-    FeatureFlags.#instance = this;
-  }
+<span class="hljs-keyword">static</span> #instance = <span class="hljs-literal">null</span>;
 
-  static getInstance() {
-    return (FeatureFlags.#instance ??= new FeatureFlags());
-  }
+<span class="hljs-comment">// Private state — invisible outside the class</span>
 
-  async load(url) {
-    if (this.#loaded) return;
-    const res = await fetch(url);
-    const data = await res.json();
-    for (const [key, value] of Object.entries(data)) {
-      this.#flags.set(key, value);
-    }
-    this.#loaded = true;
-  }
+#flags = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
 
-  isEnabled(name) {
-    return this.#flags.get(name) === true;
-  }
+#loaded = <span class="hljs-literal">false</span>;
+
+<span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">if</span> (<span class="hljs-title class_">FeatureFlags</span>.#instance) {
+
+<span class="hljs-keyword">return</span> <span class="hljs-title class_">FeatureFlags</span>.#instance;
+
 }
 
-export default FeatureFlags;
+<span class="hljs-title class_">FeatureFlags</span>.#instance = <span class="hljs-variable language_">this</span>;
+
+}
+
+<span class="hljs-keyword">static</span> <span class="hljs-title function_">getInstance</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> (<span class="hljs-title class_">FeatureFlags</span>.#instance ??= <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeatureFlags</span>());
+
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">url</span>) {
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.#loaded) <span class="hljs-keyword">return</span>;
+
+<span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(url);
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(data)) {
+
+<span class="hljs-variable language_">this</span>.#flags.<span class="hljs-title function_">set</span>(key, value);
+
+}
+
+<span class="hljs-variable language_">this</span>.#loaded = <span class="hljs-literal">true</span>;
+
+}
+
+<span class="hljs-title function_">isEnabled</span>(<span class="hljs-params">name</span>) {
+
+<span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.#flags.<span class="hljs-title function_">get</span>(name) === <span class="hljs-literal">true</span>;
+
+}
+
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">FeatureFlags</span>;
 </code></pre>
 <p>هناك أمران يستحقان الانتباه. يستخدم الحقل <code>#instance</code> حقلًا ساكنًا خاصًا وفق ES2022، ولذلك لا يمكن لأي شيفرة خارجية استبداله. كما يبقي الإسناد المنطقي <code>??=</code> (ES2021) فرع التهيئة الكسولة في سطر واحد واضح — أما <code>getInstance()</code> فيعيد النسخة الموجودة أو ينشئها.</p>
 <p>لا ينشئ أي مستدعٍ هذه النسخة مباشرة:</p>
-<pre><code>import FeatureFlags from &quot;./feature-flags.js&quot;;
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">FeatureFlags</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./feature-flags.js&quot;</span>;
 
-const flags = FeatureFlags.getInstance();
-await flags.load(&quot;/config/flags.json&quot;);
+<span class="hljs-keyword">const</span> flags = <span class="hljs-title class_">FeatureFlags</span>.<span class="hljs-title function_">getInstance</span>();
 
-if (flags.isEnabled(&quot;new-checkout&quot;)) {
-  // render the new flow
+<span class="hljs-keyword">await</span> flags.<span class="hljs-title function_">load</span>(<span class="hljs-string">&quot;/config/flags.json&quot;</span>);
+
+<span class="hljs-keyword">if</span> (flags.<span class="hljs-title function_">isEnabled</span>(<span class="hljs-string">&quot;new-checkout&quot;</span>)) {
+
+<span class="hljs-comment">// render the new flow</span>
+
 }
 </code></pre>
 <p>إذا استدعى مستدعٍ عنيد <code>new FeatureFlags()</code> مرتين، فإن الدالة المنشئة تختصر المسار وتعيد النسخة الموجودة — مع الحفاظ على هويتها وفق <code>===</code>. هذا الضمان هو جوهر النمط كله.</p>
 <h2 id="البديل-الحديث-الحالة-في-نطاق-الوحدة">البديل الحديث: الحالة في نطاق الوحدة</h2>
 <p>إليك عميل أعلام الميزات نفسه مكتوبًا دون أي من آليات نمط المفرد.</p>
-<pre><code>// feature-flags.js
-const flags = new Map();
-let loaded = false;
+<pre><code class="language-javascript"><span class="hljs-comment">// feature-flags.js</span>
 
-export async function load(url) {
-  if (loaded) return;
-  const res = await fetch(url);
-  const data = await res.json();
-  for (const [key, value] of Object.entries(data)) {
-    flags.set(key, value);
-  }
-  loaded = true;
+<span class="hljs-keyword">const</span> flags = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();
+
+<span class="hljs-keyword">let</span> loaded = <span class="hljs-literal">false</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">url</span>) {
+
+<span class="hljs-keyword">if</span> (loaded) <span class="hljs-keyword">return</span>;
+
+<span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(url);
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(data)) {
+
+flags.<span class="hljs-title function_">set</span>(key, value);
+
 }
 
-export function isEnabled(name) {
-  return flags.get(name) === true;
+loaded = <span class="hljs-literal">true</span>;
+
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">isEnabled</span>(<span class="hljs-params">name</span>) {
+
+<span class="hljs-keyword">return</span> flags.<span class="hljs-title function_">get</span>(name) === <span class="hljs-literal">true</span>;
+
 }
 </code></pre>
 <p>تضمن مواصفة ESM تقييم الوحدة <strong>مرة واحدة بالضبط</strong> لكل نطاق واقع (realm). وكل ما يُعلن في المستوى الأعلى هو، بحكم التعريف، نسخة مفردة — تعيش المتغيرات طوال عمر سجل الوحدة، ويرى كل <code>import</code> من هذا الملف خريطة <code>flags</code> نفسها. لا توجد دالة منشئة ينبغي الدفاع عنها، ولا <code>getInstance</code> ينبغي تذكره، ولا خطر من استدعاء <code>new</code> عن طريق الخطأ.</p>
@@ -124,49 +161,69 @@ export function isEnabled(name) {
 <h2 id="بدائل-تستحق-المعرفة">بدائل تستحق المعرفة</h2>
 <h3 id="حاويات-حقن-التبعيات-dependency-injection">حاويات حقن التبعيات (dependency injection)</h3>
 <p>تتيح مكتبات مثل <a href="https://inversify.io/">InversifyJS</a> و<a href="https://github.com/microsoft/tsyringe">tsyringe</a> تسجيل خدمة مرة واحدة وحلها في أي مكان، لكن الربط يُضبط في مكان واحد — عادةً عند جذر تركيب التطبيق (composition root).</p>
-<pre><code>import { container, singleton, inject } from &quot;tsyringe&quot;;
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { container, singleton, inject } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;tsyringe&quot;</span>;
 
-@singleton()
-class AnalyticsClient {
-  track(event: string, props: Record&lt;string, unknown&gt;) { /* ... */ }
+@<span class="hljs-title function_">singleton</span>()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">AnalyticsClient</span> {
+
+<span class="hljs-title function_">track</span>(<span class="hljs-params">event: string, props: Record&lt;string, unknown&gt;</span>) { <span class="hljs-comment">/* ... */</span> }
+
 }
 
-class CheckoutService {
-  constructor(@inject(AnalyticsClient) private analytics: AnalyticsClient) {}
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckoutService</span> {
 
-  complete(orderId: string) {
-    this.analytics.track(&quot;order_completed&quot;, { orderId });
-  }
+<span class="hljs-title function_">constructor</span>(<span class="hljs-params">@inject(AnalyticsClient) private analytics: AnalyticsClient</span>) {}
+
+<span class="hljs-title function_">complete</span>(<span class="hljs-params">orderId: string</span>) {
+
+<span class="hljs-variable language_">this</span>.<span class="hljs-property">analytics</span>.<span class="hljs-title function_">track</span>(<span class="hljs-string">&quot;order_completed&quot;</span>, { orderId });
+
 }
 
-const checkout = container.resolve(CheckoutService);
+}
+
+<span class="hljs-keyword">const</span> checkout = container.<span class="hljs-title function_">resolve</span>(<span class="hljs-title class_">CheckoutService</span>);
 </code></pre>
 <p>توفر حاوية حقن التبعيات ضمان «نسخة واحدة في كل مكان» نفسه، لكنها تتيح للاختبارات تسجيل ربط وهمي قبل الحل. هذا التغيير الواحد يتيح اختبارات وحدات معزولة بطريقة لا يستطيع نمط مفرد مصنوع يدويًا تحقيقها.</p>
 <h3 id="سياق-react-لنطاق-شجرة-المكونات">سياق React لنطاق شجرة المكونات</h3>
 <p>في React، تعني «العالمية» عادةً «متاح لكل مكون في هذه الشجرة». يتيح لك كل من <code>createContext</code> والمزود (Provider) تحديد ذلك، مع ميزة إضافية هي أن النطاق هو الشجرة الفرعية؛ يمكنك تركيب قيمة مختلفة في اختبار أو قصة Storybook دون المساس بشيفرة الإنتاج.</p>
-<pre><code>const FeatureFlagsContext = createContext(null);
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">FeatureFlagsContext</span> = <span class="hljs-title function_">createContext</span>(<span class="hljs-literal">null</span>);
 
-export function FeatureFlagsProvider({ client, children }) {
-  return (
-    &lt;FeatureFlagsContext.Provider value={client}&gt;
-      {children}
-    &lt;/FeatureFlagsContext.Provider&gt;
-  );
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">FeatureFlagsProvider</span>(<span class="hljs-params">{ client, children }</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">FeatureFlagsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{client}</span>&gt;</span>
+
+{children}
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">FeatureFlagsContext.Provider</span>&gt;</span></span>
+
+);
+
 }
 
-export function useFeatureFlag(name) {
-  const client = useContext(FeatureFlagsContext);
-  return client.isEnabled(name);
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useFeatureFlag</span>(<span class="hljs-params">name</span>) {
+
+<span class="hljs-keyword">const</span> client = <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">FeatureFlagsContext</span>);
+
+<span class="hljs-keyword">return</span> client.<span class="hljs-title function_">isEnabled</span>(name);
+
 }
 </code></pre>
 <h3 id="المخازن-الخفيفة-zustand-وjotai-وvaltio">المخازن الخفيفة: Zustand وJotai وValtio</h3>
 <p>للحالة على مستوى التطبيق مع الاشتراكات، حلّت المخازن الحديثة إلى حد كبير محل الأنماط المفردة العشوائية. فمخزن Zustand، على سبيل المثال، دالة — لا صنف — تعيد خطّافًا مرتبطًا بحالة واحدة:</p>
-<pre><code>import { create } from &quot;zustand&quot;;
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zustand&quot;</span>;
 
-export const useSession = create((set) =&gt; ({
-  user: null,
-  login: (user) =&gt; set({ user }),
-  logout: () =&gt; set({ user: null }),
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useSession = <span class="hljs-title function_">create</span>(<span class="hljs-function">(<span class="hljs-params">set</span>) =&gt;</span> ({
+
+<span class="hljs-attr">user</span>: <span class="hljs-literal">null</span>,
+
+<span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params">user</span>) =&gt;</span> <span class="hljs-title function_">set</span>({ user }),
+
+<span class="hljs-attr">logout</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">set</span>({ <span class="hljs-attr">user</span>: <span class="hljs-literal">null</span> }),
+
 }));
 </code></pre>
 <p>يستطيع أي مكون قراءة الجلسة أو تحديثها من دون مزود أو استدعاء <code>getInstance</code>، كما يمكن محاكاة المخزن بسهولة في الاختبارات.</p>
@@ -180,14 +237,20 @@ export const useSession = create((set) =&gt; ({
 </ul>
 <h3 id="الاقتران-المخفي">الاقتران المخفي</h3>
 <p>الدالة التي تستدعي <code>Logger.getInstance()</code> في أعماق جسمها تملك تبعية لا تظهر في توقيعها. وبعد شهرين، عندما يحاول أحدهم استخدام الدالة في سياق مختلف، يكتشف الاقتران بالطريقة الصعبة. الأفضل تمرير التبعية صراحةً:</p>
-<pre><code>// Hidden dependency
-function processOrder(order) {
-  Logger.getInstance().info(&quot;processing&quot;, order.id);
+<pre><code class="language-javascript"><span class="hljs-comment">// Hidden dependency</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processOrder</span>(<span class="hljs-params">order</span>) {
+
+<span class="hljs-title class_">Logger</span>.<span class="hljs-title function_">getInstance</span>().<span class="hljs-title function_">info</span>(<span class="hljs-string">&quot;processing&quot;</span>, order.<span class="hljs-property">id</span>);
+
 }
 
-// Explicit — the contract is in the signature
-function processOrder(order, logger) {
-  logger.info(&quot;processing&quot;, order.id);
+<span class="hljs-comment">// Explicit — the contract is in the signature</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">processOrder</span>(<span class="hljs-params">order, logger</span>) {
+
+logger.<span class="hljs-title function_">info</span>(<span class="hljs-string">&quot;processing&quot;</span>, order.<span class="hljs-property">id</span>);
+
 }
 </code></pre>
 <h3 id="تسرب-الحالة-على-الخادم">تسرّب الحالة على الخادم</h3>
@@ -258,7 +321,7 @@ function processOrder(order, logger) {
 			
 			<script>
 				{
-					__sveltekit_1i6c5w5 = {
+					__sveltekit_18h134v = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -266,8 +329,8 @@ function processOrder(order, logger) {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.DMffU_qU.js"),
-						import("../../../../_app/immutable/entry/app.BkjEk--V.js")
+						import("../../../../_app/immutable/entry/start.DaVuikZY.js"),
+						import("../../../../_app/immutable/entry/app.leH8d20y.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

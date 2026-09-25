@@ -1,0 +1,340 @@
+const s="patterns-dev",e="vue",a="أنماط Vue",n="data-provider",l="نمط مزوّد البيانات",p=[{depth:2,id:"نمط-مزود-البيانات-data-provider-pattern",text:"نمط مزوّد البيانات (Data Provider Pattern)"},{depth:2,id:"هل-يمكننا-استخدام-دوال-التركيب-composables-بدلا-من-ذلك",text:"هل يمكننا استخدام دوال التركيب (Composables) بدلًا من ذلك؟"},{depth:2,id:"مصادر-مفيدة",text:"مصادر مفيدة"}],t=`<p>في <a href="/book/patterns-dev/vue/renderless-components">مقال</a> سابق، تعلّمنا كيف تساعدنا المكوّنات بلا عرض (renderless components) على فصل منطق المكوّن عن عرضه. ويصبح هذا مفيدًا عندما نحتاج إلى إنشاء منطق قابل لإعادة الاستخدام يمكن تطبيقه على تنفيذات واجهة مستخدم (UI) مختلفة.</p>
+<p>كما تتيح لنا المكوّنات بلا عرض الاستفادة من نمط مفيد آخر يُعرف بـ<strong>نمط مزوّد البيانات (data provider pattern)</strong>.</p>
+<h2 id="نمط-مزود-البيانات-data-provider-pattern">نمط مزوّد البيانات (Data Provider Pattern)</h2>
+<p>نمط مزوّد البيانات هو نمط تصميم (design pattern) يكمّل نمط المكوّنات بلا عرض في Vue، إذ يركّز على توفير البيانات وقدرات إدارة الحالة للمكوّنات <em>دون preoccupation بكيفية عرض البيانات أو إظهارها</em>.</p>
+<p>في نمط مزوّد البيانات، يتغلّف مكوّن مزوّد البيانات منطق جلب البيانات وإدارتها وإتاحتها لمكوّناته التابعة. ثم يمكن للمكوّنات التابعة استهلاك هذه البيانات واستخدامها في عرضها أو سلوكها الخاص.</p>
+<p><img src="/images/patterns-dev/vue-data-provider-0-data_provider_pattern.webp" alt="مخطط نمط مزوّد البيانات"></p>
+<p>يشجّع هذا النمط على الفصل بين المسؤوليات (separation of concerns)، إذ يتولّى مكوّن مزوّد البيانات المهامّ المتعلقة بالبيانات، بينما يمكن للمكوّنات التابعة التركيز على العرض والتفاعل.</p>
+<p>لنوضّح نمط مزوّد البيانات بمثال. تخيّل تطبيقًا بسيطًا يعرض مقدّمة نكتة طريفة يتبعها ردّها الطريف (punchline). وللمساعدة في إظهار نكتات مختلفة عشوائيًا، سنستخدم نقطة نهاية الواجهة البرمجية العامة المجانية <a href="https://official-joke-api.appspot.com/random_joke">https://official-joke-api.appspot.com/random_joke</a> التي تُعيد نكتة عشوائية بصيغة JSON.</p>
+<pre><code class="language-javascript"># <span class="hljs-attr">https</span>:<span class="hljs-comment">//official-joke-api.appspot.com/random_joke</span>
+
+{
+
+<span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;general&quot;</span>,
+
+<span class="hljs-string">&quot;setup&quot;</span>: <span class="hljs-string">&quot;How good are you at Power Point?&quot;</span>,
+
+<span class="hljs-string">&quot;punchline&quot;</span>: <span class="hljs-string">&quot;I Excel at it.&quot;</span>,
+
+<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">129</span>
+
+}
+</code></pre>
+<p>سننشئ أولًا مكوّن مزوّد للبيانات اسمه <code>DataProvider</code> يتولّى مسؤولية جلب النكتة من الواجهة البرمجية. وفي قسم \`\` من المكوّن، سنستورد الدالتين <code>ref()</code> و<code>reactive()</code> من مكتبة Vue، ونسنِد قيمة عنوان نقطة النهاية إلى ثابت، ونضبط خصائص <code>data</code> و<code>loading</code> التفاعليّتين لالتقاط البيانات وحالة التحميل لطلب الواجهة البرمجية.</p>
+<pre><code class="language-javascript">&lt;script setup&gt;
+
+<span class="hljs-keyword">import</span> { ref, reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API_ENDPOINT_URL</span> = <span class="hljs-string">&quot;https://official-joke-api.appspot.com/random_joke&quot;</span>;
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">reactive</span>({
+
+<span class="hljs-attr">setup</span>: <span class="hljs-literal">null</span>,
+
+<span class="hljs-attr">punchline</span>: <span class="hljs-literal">null</span>,
+
+});
+
+<span class="hljs-keyword">const</span> loading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);
+
+&lt;/script&gt;
+</code></pre>
+<p>سننشئ بعد ذلك دالة غير متزامنة (async) اسمها <code>fetchJoke()</code> مسؤولة عن جلب نكتة من نقطة نهاية الواجهة البرمجية المحدّدة. وستقوم الدالة بما يلي:</p>
+<ul>
+<li>تبدأ بضبط القيمة التفاعلية <code>loading</code> على <code>true</code>، ما يشير إلى أن النكتة قيد الجلب.</li>
+<li>تستخدم الدالة الأصلية في المتصفّح <a href="https://developer.mozilla.org/en-US/docs/Web/API/fetch">fetch()</a> لإرسال طلب GET إلى نقطة نهاية الواجهة البرمجية.</li>
+<li>تحوّل الاستجابة من الواجهة البرمجية إلى صيغة JSON باستخدام الدالة <code>response.json()</code>.</li>
+<li>تستخرج قيمتَي <code>setup</code> و<code>punchline</code> من بيانات الطلب التي تمّ الحصول عليها وتسنيدهما إلى الخصائص المقابلة في كائن <code>data</code>.</li>
+<li>وأخيرًا، تعيد ضبط القيمة <code>loading</code> إلى <code>false</code>، ما يشير إلى أنه تمّ جلب النكتة.</li>
+</ul>
+<p>مع هذه التغييرات، ستبدو دالتنا <code>fetchJoke()</code> على النحو التالي:</p>
+<pre><code class="language-javascript">&lt;script setup&gt;
+
+<span class="hljs-keyword">import</span> { ref, reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API_ENDPOINT_URL</span> = <span class="hljs-string">&quot;https://official-joke-api.appspot.com/random_joke&quot;</span>;
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">reactive</span>({
+
+<span class="hljs-attr">setup</span>: <span class="hljs-literal">null</span>,
+
+<span class="hljs-attr">punchline</span>: <span class="hljs-literal">null</span>,
+
+});
+
+<span class="hljs-keyword">const</span> loading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchJoke</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-variable constant_">API_ENDPOINT_URL</span>);
+
+<span class="hljs-keyword">const</span> responseData = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+data.<span class="hljs-property">setup</span> = responseData.<span class="hljs-property">setup</span>;
+
+data.<span class="hljs-property">punchline</span> = responseData.<span class="hljs-property">punchline</span>;
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;
+
+};
+
+<span class="hljs-title function_">fetchJoke</span>();
+
+&lt;/script&gt;
+</code></pre>
+<p>لاحظ أننا نستدعي الدالة <code>fetchJoke()</code> في نهاية قسم \`\`؟ هذا يضمن جلب النكتة فور عرض مكوّن <code>DataProvider</code>.</p>
+<p>آخر ما تبقّى علينا فعله هو جعل الخصائص <code>data</code> و<code>loading</code> متاحة في المستهلك (المكوّن الذي يستهلك) لمكوّن <code>DataProvider</code>. وللقيام بذلك، يمكننا تمرير هذه الخصائص إلى عنصر <code>سنضعه في قسم</code>.</p>
+<pre><code class="language-javascript">&lt;template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">:checkbox</span>=<span class="hljs-string">&quot;checkbox&quot;</span> <span class="hljs-attr">:toggleCheckbox</span>=<span class="hljs-string">&quot;toggleCheckbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span></span>
+
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+
+<span class="hljs-keyword">import</span> { ref, reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API_ENDPOINT_URL</span> = <span class="hljs-string">&quot;https://official-joke-api.appspot.com/random_joke&quot;</span>;
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">reactive</span>({
+
+<span class="hljs-attr">setup</span>: <span class="hljs-literal">null</span>,
+
+<span class="hljs-attr">punchline</span>: <span class="hljs-literal">null</span>,
+
+});
+
+<span class="hljs-keyword">const</span> loading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchJoke</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-variable constant_">API_ENDPOINT_URL</span>);
+
+<span class="hljs-keyword">const</span> responseData = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+data.<span class="hljs-property">setup</span> = responseData.<span class="hljs-property">setup</span>;
+
+data.<span class="hljs-property">punchline</span> = responseData.<span class="hljs-property">punchline</span>;
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;
+
+};
+
+<span class="hljs-title function_">fetchJoke</span>();
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>مع اكتمال مكوّن مزوّد البيانات بلا عرض، يمكننا الآن استخدامه في تطبيقنا. وفي مكوّن التطبيق الأب، سنستورد مكوّن <code>DataProvider</code> ونضعه داخل القالب.</p>
+<pre><code class="language-javascript">&lt;template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataProvider</span> <span class="hljs-attr">v-slot</span>=<span class="hljs-string">&quot;{ data, loading }&quot;</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- ... --&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataProvider</span>&gt;</span></span>
+
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">DataProvider</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./components/DataProvider.vue&quot;</span>;
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>بمجرد عرض مكوّن \`\`، فإننا نُجري طلبًا إلى نقطة النهاية لجلب نكتة، ويمكننا الوصول إلى قيمتَي <code>data</code> و<code>loading</code> الخاصتين بالطلب بفضل التوجيه <code>v-slot</code>.</p>
+<p>داخل تصريح المكوّن \`\`، يمكننا إنشاء واجهة المستخدم التي تعرض رسالة تحميل إذا كان الطلب في حالة التحميل، أو تعرض مقدّمة النكتة وردّها الطريف عندما تكون البيانات متاحة.</p>
+<pre><code class="language-javascript">&lt;template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataProvider</span> <span class="hljs-attr">v-slot</span>=<span class="hljs-string">&quot;{ data, loading }&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;joke-section&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span>Joke is loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.setup }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.punchline }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataProvider</span>&gt;</span></span>
+
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">DataProvider</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./components/DataProvider.vue&quot;</span>;
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>عند حفظ تغييراتنا، ستظهر لنا رسالة تحميل قصيرة يتبعها نكتة عشوائية.</p>
+<p><img src="/images/patterns-dev/vue-data-provider-1-data_provider_example.webp" alt="مثال تطبيقي لمزوّد البيانات"></p>
+<p>وإذا احتجنا عرض نسخة أخرى من مقدّمة النكتة وردّها، ربما حتى بقالب مختلف، يمكننا ببساطة إعادة استخدام مكوّن \`\` وإنشاء العناصر الفرعية الجديدة التي نرغب في إظهارها.</p>
+<pre><code class="language-javascript">&lt;template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataProvider</span> <span class="hljs-attr">v-slot</span>=<span class="hljs-string">&quot;{ data, loading }&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;joke-section&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span>Joke is loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.setup }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.punchline }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataProvider</span>&gt;</span></span>
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">DataProvider</span> <span class="hljs-attr">v-slot</span>=<span class="hljs-string">&quot;{ data, loading }&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span>Hold on one sec...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-else</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;joke-section&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">details</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">summary</span>&gt;</span>{{ data.setup }}<span class="hljs-tag">&lt;/<span class="hljs-name">summary</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ data.punchline }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">details</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">DataProvider</span>&gt;</span></span>
+
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">DataProvider</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./components/DataProvider.vue&quot;</span>;
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>في واجهة المستخدم التي عرضناها للتو، نضع الآن ردّ النكتة الطريف داخل عنصر كشف (disclosure element) بفضل عنصري HTML <code> و</code>.</p>
+<p><img src="/images/patterns-dev/vue-data-provider-2-data_provider_example_2.webp" alt="مثال تطبيقي آخر لمزوّد البيانات"></p>
+<p>مع نمط مزوّد البيانات، أصبح بإمكاننا إدارة البيانات وتوفيرها لعناصر/مكوّنات مختلفة بطريقة مفكوكة (decoupled) وقابلة لإعادة الاستخدام. وبتجريد منطق جلب الواجهة البرمجية في مكوّن بلا عرض، يمكننا إعادة استخدام طلب بيانات الواجهة البرمجية في سياقات مختلفة دون تكرار الشيفرة.</p>
+<p>JavaScript iconDataProvider.vue</p>
+<pre><code class="language-javascript">&lt;template&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">slot</span> <span class="hljs-attr">:data</span>=<span class="hljs-string">&quot;data&quot;</span> <span class="hljs-attr">:loading</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span></span>
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+<span class="hljs-keyword">import</span> { ref, reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API_ENDPOINT_URL</span> = <span class="hljs-string">&quot;https://official-joke-api.appspot.com/random_joke&quot;</span>;
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">reactive</span>({
+  <span class="hljs-attr">setup</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-attr">punchline</span>: <span class="hljs-literal">null</span>,
+});
+<span class="hljs-keyword">const</span> loading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchJoke</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+  loading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-variable constant_">API_ENDPOINT_URL</span>);
+  <span class="hljs-keyword">const</span> responseData = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+data.<span class="hljs-property">setup</span> = responseData.<span class="hljs-property">setup</span>;
+  data.<span class="hljs-property">punchline</span> = responseData.<span class="hljs-property">punchline</span>;
+  loading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;
+};
+
+<span class="hljs-title function_">fetchJoke</span>();
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p><a href="https://codesandbox.io/embed/data-provider-1-5s36xn">فتح CodeSandbox</a></p>
+<h2 id="هل-يمكننا-استخدام-دوال-التركيب-composables-بدلا-من-ذلك">هل يمكننا استخدام دوال التركيب (Composables) بدلًا من ذلك؟</h2>
+<p>نعم! بدلًا من استخدام نمط مزوّد البيانات، يمكننا ببساطة الاستفادة من دوال التركيب (composables) لاستخراج منطق الجلب إلى دالة قابلة لإعادة الاستخدام.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { ref, reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API_ENDPOINT_URL</span> = <span class="hljs-string">&quot;https://official-joke-api.appspot.com/random_joke&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useGetJoke</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">const</span> data = <span class="hljs-title function_">reactive</span>({
+
+<span class="hljs-attr">setup</span>: <span class="hljs-literal">null</span>,
+
+<span class="hljs-attr">punchline</span>: <span class="hljs-literal">null</span>,
+
+});
+
+<span class="hljs-keyword">const</span> loading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchJoke</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; {
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-variable constant_">API_ENDPOINT_URL</span>);
+
+<span class="hljs-keyword">const</span> responseData = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();
+
+data.<span class="hljs-property">setup</span> = responseData.<span class="hljs-property">setup</span>;
+
+data.<span class="hljs-property">punchline</span> = responseData.<span class="hljs-property">punchline</span>;
+
+loading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;
+
+};
+
+<span class="hljs-title function_">fetchJoke</span>();
+
+<span class="hljs-keyword">return</span> { data, loading };
+
+}
+</code></pre>
+<p>في نسخ المكوّنات لدينا، يمكننا عندها استيراد دالة التركيب واستخدامها للحصول على بيانات <code>data</code> وحالة <code>loading</code> لطلب معيّن.</p>
+<pre><code class="language-javascript">&lt;template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;joke-section&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span>Joke is loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.setup }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.punchline }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+
+<span class="hljs-keyword">import</span> { useGetJoke } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./composables/useGetJoke&quot;</span>;
+
+<span class="hljs-keyword">const</span> { data, loading } = <span class="hljs-title function_">useGetJoke</span>();
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p>سيتصرّف تطبيقنا الآن تمامًا كما كان قبله مع مثال مزوّد البيانات الخاص بنا.</p>
+<p>JavaScript iconApp.vue</p>
+<pre><code class="language-javascript">&lt;template&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;joke-section&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;loading&quot;</span>&gt;</span>Joke is loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.setup }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;!loading&quot;</span>&gt;</span>{{ data.punchline }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+&lt;/template&gt;
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">setup</span>&gt;</span><span class="language-javascript">
+<span class="hljs-keyword">import</span> { useGetJoke } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./composables/useGetJoke&quot;</span>;
+
+<span class="hljs-keyword">const</span> { data, loading } = <span class="hljs-title function_">useGetJoke</span>();
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+</code></pre>
+<p><a href="https://codesandbox.io/embed/data-provider-2-s3r847">فتح CodeSandbox</a></p>
+<p>يساعد نمط مزوّد البيانات على فصل منطق المكوّن عن عرضه،eby جعل المكوّن الأب يتولّى عرض واجهة المستخدم المناسبة بناءً على البيانات والسلوك المُتاحَين من المكوّن بلا عرض. لكن مع القدرة على إنشاء دوال تركيب قابلة لإعادة الاستخدام في Vue 3، يمكن استخدام دوال التركيب بالمثل في أغلب الحالات التي يمكن أن يُستخدم فيها نمط مزوّد البيانات.</p>
+<p>وعند المفاضلة بين استخدام نمط مزوّد البيانات أو استخدام دوال التركيب بدلًا منه، نوصي باستخدام دوال التركيب كلما أمكن، لأن ذلك يتجنّب الحاجة إلى عرض نسخة من المكوّن في كل مرة يجب فيها جلب البيانات (وهذا قد يسبب <a href="https://vuejs.org/guide/reusability/composables.html#vs-renderless-components">عبء أداء (performance overhead)</a>).</p>
+<p>إضافةً إلى ذلك، إذا كنت تستخدم أداة إدارة حالة مثل <a href="https://pinia.vuejs.org/">Pinia</a> لإدارة كيفية توفير البيانات للمكوّنات، فمن المرجّح أن تكون طلبات الواجهة البرمجية لديك موجودة في <a href="https://pinia.vuejs.org/core-concepts/actions.html#actions">actions()</a> الخاصة بمخزنك (store). ومع وجود نمط إدارة الحالة هذا بالفعل، تصبح الحاجة إلى استخدام نمط مكوّن مزوّد البيانات أقل أهمية.</p>
+<h2 id="مصادر-مفيدة">مصادر مفيدة</h2>
+<ul>
+<li><a href="https://vuejs.org/guide/components/slots.html#scoped-slots">المكوّنات بلا عرض | توثيق Vue</a></li>
+</ul>
+`,c={book:s,chapter:"vue",chapterTitle:a,slug:n,title:l,headings:p,html:t};export{s as book,e as chapter,a as chapterTitle,c as default,p as headings,t as html,n as slug,l as title};

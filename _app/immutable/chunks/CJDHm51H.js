@@ -1,0 +1,615 @@
+const s="patterns-dev",a="react",n="أنماط React وNext.js",t="index",p="نظرة عامة على React.js",l=[{depth:2,id:"المصطلحات-التي-سنستخدمها",text:"المصطلحات التي سنستخدمها"},{depth:2,id:"العرض-باستخدام-jsx",text:"العرض باستخدام JSX"},{depth:2,id:"المكونات-والخصائص-والحالة",text:"المكوّنات والخصائص والحالة"},{depth:3,id:"1-المكونات",text:"1. المكوّنات"},{depth:3,id:"استخراج-المكونات",text:"استخراج المكوّنات"},{depth:3,id:"2-الخصائص-props",text:"2. الخصائص (props)"},{depth:3,id:"3-الحالة",text:"3. الحالة"},{depth:3,id:"الخصائص-مقابل-الحالة",text:"الخصائص مقابل الحالة"},{depth:2,id:"مفاهيم-أخرى-في-react",text:"مفاهيم أخرى في React"},{depth:3,id:"1-دورة-الحياة",text:"1. دورة الحياة"},{depth:3,id:"2-المكون-من-رتبة-عليا-hoc",text:"2. المكوّن من رتبة عليا (HOC)"},{depth:3,id:"3-السياق",text:"3. السياق"},{depth:2,id:"خطافات-react",text:"خطافات React"},{depth:2,id:"التفكير-في-react",text:"التفكير في React"},{depth:2,id:"البداية",text:"البداية"},{depth:2,id:"الخاتمة",text:"الخاتمة"}],e=`<p><img src="/images/patterns-dev/react-index-0-react_logo_3x.webp" alt="شعار React"></p>
+<p>على مر السنين، تضاعف الطلب على طرق مباشرة <strong>لتركيب</strong> واجهات المستخدم باستخدام JavaScript. صُمّم <a href="https://reactjs.org">React</a>، ويُشار إليه أيضًا بـReact.js، ليكون مكتبة JavaScript مفتوحة المصدر من تطوير Facebook، ويُستخدم لبناء واجهات المستخدم أو مكوّنات واجهة المستخدم.</p>
+<p>React ليس بالطبع مكتبة واجهة المستخدم الوحيدة. فـ<a href="https://preactjs.com">Preact</a> و<a href="https://vuejs.org">Vue</a> و<a href="https://angular.io">Angular</a> و<a href="https://svelte.dev">Svelte</a> و<a href="https://lit.dev">Lit</a> وكثير غيرها ممتازة أيضًا لتركيب الواجهات من عناصر قابلة لإعادة الاستخدام. ونظرًا لشعبية React، يستحق الأمر أن نستعرض كيف يعمل، وسنستخدمه لشرح بعض أنماط التصميم (patterns) والعرض والأداء في هذا الدليل.</p>
+<p>عندما يتحدث مطوّرو الواجهة الأمامية (front-end) عن الشيفرة، فغالبًا ما يكون ذلك في سياق تصميم واجهات للويب. ونفكر في تركيب الواجهات على هيئة عناصر، مثل الأزرار والقوائم والتنقل وما شابه. توفر React طريقة محسّنة ومبسّطة للتعبير عن الواجهات بهذه العناصر. كما تساعد على بناء واجهات معقدة وصعبة、التصميم من خلال تنظيم الواجهة في ثلاثة مفاهيم رئيسية: <em>المكوّنات والخصائص (props) والحالة (state).</em></p>
+<p>ولأن React يركّز على التركيب، يمكنه مطابقة عناصر نظام التصميم لديك بدقة. وبذلك، فإن التصميم من أجل React يكافئك في التفكير بطريقة معيارية. فهو يتيح لك تصميم المكوّنات الفردية قبل تجميع صفحة أو عرض، لتفهم نطاق كل مكوّن وغرضه تمامًا، وهي عملية تسمى <em>التجميع المعتمد على المكوّنات</em> (componentization).</p>
+<h2 id="المصطلحات-التي-سنستخدمها">المصطلحات التي سنستخدمها</h2>
+<ul>
+<li><strong>React / React.js / ReactJS</strong> - مكتبة React، التي أنشأتها Facebook عام 2013</li>
+<li><strong>ReactDOM</strong> - الحزمة الخاصة بـDOM والعرض على الخادم</li>
+<li><strong>JSX</strong> - امتداد بناء جملة لـJavaScript</li>
+<li><strong>Redux</strong> - حاوية حالة مركزية</li>
+<li><strong>الخطافات (hooks)</strong> - طريقة جديدة لاستخدام الحالة وميزات React الأخرى من دون كتابة أصناف</li>
+<li><strong>ReactNative</strong> - المكتبة لتطوير تطبيقات أصلية عبر الأنظمة باستخدام Javascript</li>
+<li><strong>Webpack</strong> - حازم وحدات JavaScript، شائع في مجتمع React.</li>
+<li><strong>CRA (Create React App)</strong> - أداة CLI لإنشاء هيكل تطبيق React بغرض بدء المشروع.</li>
+<li><strong>Next.js</strong> - إطار عمل (framework) في React يضم أفضل الميزات من فئات متعددة، بما فيها SSR وتقسيم الشيفرة وتحسين الأداء وغيرها.</li>
+</ul>
+<h2 id="العرض-باستخدام-jsx">العرض باستخدام JSX</h2>
+<p>سنستخدم JSX في عدد من أمثلتنا. JSX امتداد لـJavaScript يضم HTML القالبية داخل JavaScript باستخدام اصطلاحات شبيهة بـXML. يُقصد تحويله إلى JavaScript صالح، مع أن دلالات هذا التحويل تعتمد على التنفيذ. اكتسبت JSX شهرتها مع مكتبة React، لكن ظهرت لها منذ ذلك الحين تنفيذات أخرى أيضًا.</p>
+<p><img src="/images/patterns-dev/react-index-1-jsx.webp" alt="كيف يعمل JSX"></p>
+<h2 id="المكونات-والخصائص-والحالة">المكوّنات والخصائص والحالة</h2>
+<p>المكوّنات والخصائص والحالة هي المفاهيم الأساسية الثلاثة في React. ويمكن تصنيف كل ما ستراه أو ستفعله في React تقريبًا ضمن واحد أو أكثر من هذه المفاهيم الأساسية، وفيما يلي نظرة سريعة عليها:</p>
+<h3 id="1-المكونات">1. المكوّنات</h3>
+<p><img src="/images/patterns-dev/react-index-2-react_components_1.5x.webp" alt="مكوّنات React وتركيبها"></p>
+<p>المكوّنات هي لبنات البناء في أي تطبيق React. وهي أشبه بدوال JavaScript تقبل إدخالًا عشوائيًا (<em>Props</em>) وتعيد عناصر React التي تصف ما ينبغي عرضه على الشاشة.</p>
+<p>أول ما ينبغي فهمه هو أن كل شيء على الشاشة في تطبيق React هو جزء من مكوّن. وبعبارة جوهرية، تطبيق React مجرد مكوّنات داخل مكوّنات داخل مكوّنات. لذلك لا يبني المطوّرو الصفحات في React، بل المكوّنات.</p>
+<p>تتيح لك المكوّنات تقسيم واجهة المستخدم إلى أجزاء مستقلة قابلة لإعادة الاستخدام. إن كنت معتادًا على تصميم الصفحات، فقد يبدو التفكير بهذه الطريقة المعيارية تغييرًا كبيرًا. لكن إن كنت تستخدم نظام تصميم أو دليل أنماط؟ فقد لا يكون تحول الأيديولوجية هذا بحجم ما يبدو.</p>
+<p>الطريقة المباشرة لتعريف مكوّن هي كتابة دالة JavaScript.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Badge</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello, my name is {props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+
+}
+</code></pre>
+<p>هذه الدالة مكوّن React صالح لأنها تقبل وسيطًا واحدًا من نوع كائن الخصائص (<em>properties</em>) يحتوي على البيانات، وتعيد عنصر React. تسمى هذه المكوّنات <em>مكوّنات دالية</em> لأنها حرفيًا دوال JavaScript.</p>
+<p><img src="/images/patterns-dev/react-index-3-react_badge_2x.webp" alt="شارة ترحيب React"></p>
+<p>إلى جانب المكوّنات الدالية، يوجد نوع آخر من المكوّنات هو <em>المكوّنات الصنفية</em>. ويختلف المكوّن الصنفي عن المكوّن الدالي في أنه يُعرّف بواسطة صنف ES6، كما هو ظاهر أدناه:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Badge</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">React.Component</span> {
+
+<span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+
+<span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello, my name is {this.props.name}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>;
+
+}
+
+}
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة (React 18+):</strong> لا تزال المكوّنات الصنفية تعمل، لكن React الحديث (v16.8+، وخاصة React 18+) يوصي باستخدام <strong>المكوّنات الدالية مع الخطافات</strong> في الشيفرة الجديدة. المكوّنات الدالية أبسط، وتتجنب تعقيد <code>this</code> وطرق دورة الحياة، وتعمل بسلاسة مع الميزات الجديدة مثل مصرّف React والعرض المتزامن. وتنص <a href="https://react.dev/reference/react/Component">وثائق React</a> صراحةً على عدم توصية باستخدام المكوّنات الصنفية في الشيفرة الجديدة.</p>
+</blockquote>
+<h3 id="استخراج-المكونات">استخراج المكوّنات</h3>
+<p>لبيان أن المكوّنات يمكن فصلها إلى مكوّنات أصغر، ضع المكوّن <code>Tweet</code> التالي في الحسبان:</p>
+<p><img src="/images/patterns-dev/react-index-4-tweet_component_2x.webp" alt="مكوّن التغريدة"></p>
+<p>ويمكن تنفيذه على النحو التالي:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Tweet</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+
+<span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Avatar&quot;</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">{props.author.avatarUrl}</span>
+
+<span class="hljs-attr">alt</span>=<span class="hljs-string">{props.author.name}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User-name&quot;</span>&gt;</span>{props.author.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-text&quot;</span>&gt;</span>{props.text}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+
+<span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-image&quot;</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">{props.image.imageUrl}</span>
+
+<span class="hljs-attr">alt</span>=<span class="hljs-string">{props.image.description}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-date&quot;</span>&gt;</span>{formatDate(props.date)}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>قد يكون التعامل مع هذا المكوّن صعبًا بعض الشيء بسبب تكدّس محتواه، وقد تكون إعادة استخدام أجزاءه الفردية صعبة أيضًا. لكننا ما زلنا نستطيع استخراج بعض المكوّنات منه.</p>
+<p>أول ما سنفعله هو استخراج <em>Avatar</em>:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Avatar</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+
+<span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Avatar&quot;</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">{props.user.avatarUrl}</span>
+
+<span class="hljs-attr">alt</span>=<span class="hljs-string">{props.user.name}</span>
+
+/&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>لا يحتاج <code>Avatar</code> إلى معرفة أنه يُعرض داخل <code>Comment</code>. لهذا السبب اخترنا لخصيته اسمًا أكثر عمومية: <em>user</em> بدلًا من <em>author</em>.</p>
+<p>الآن سنبسّط التعليق قليلًا:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Tweet</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Avatar</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{props.author}</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User-name&quot;</span>&gt;</span>{props.author.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-text&quot;</span>&gt;</span>{props.text}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+
+<span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-image&quot;</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">{props.image.imageUrl}</span>
+
+<span class="hljs-attr">alt</span>=<span class="hljs-string">{props.image.description}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-date&quot;</span>&gt;</span>{formatDate(props.date)}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>الأمر التالي الذي سنفعله هو إنشاء مكوّن <code>User</code> يعرض Avatar بجوار اسم المستخدم:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">User</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Avatar</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{props.user}</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;User-name&quot;</span>&gt;</span>{props.user.name}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>الآن سنبسّط <code>Tweet</code> أكثر:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Tweet</span>(<span class="hljs-params">props</span>) {
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">User</span> <span class="hljs-attr">user</span>=<span class="hljs-string">{props.author}</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-text&quot;</span>&gt;</span>{props.text}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">Image</span>
+
+<span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-image&quot;</span>
+
+<span class="hljs-attr">src</span>=<span class="hljs-string">{props.image.imageUrl}</span>
+
+<span class="hljs-attr">alt</span>=<span class="hljs-string">{props.image.description}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;Tweet-date&quot;</span>&gt;</span>{formatDate(props.date)}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+);
+
+}
+</code></pre>
+<p>يبدو استخراج المكوّنات مهمة مملة، لكن المكوّنات القابلة لإعادة الاستخدام تجعل الأمور أسهل عند البرمجة للتطبيقات الأكبر. ومن المعايير الجيدة التي يمكن وضعها في الحسبان عند تبسيط المكوّنات: إذا استُخدم جزء من واجهة المستخدم عدة مرات (<em>Button أو Panel أو Avatar</em>)، أو كان معقدًا بما يكفي في حد ذاته (<em>App أو FeedStory أو Comment</em>)، فإنه مرشّح جيد لاستخراجه إلى مكوّن منفصل.</p>
+<h3 id="2-الخصائص-props">2. الخصائص (props)</h3>
+<p>الخصائص (props) اختصار لكلمة properties، وهي تشير ببساطة إلى البيانات الداخلية للمكوّن في React. تُكتب داخل استدعاءات المكوّنات وتُمرّر إليها. كما تستخدم الصيغة نفسها المستخدمة في سمات HTML، مثل <code>prop=“value”</code>. وهناك أمران يستحقان التذكر بشأن الخصائص: أولًا، نحدّد قيمة الخاصية ونستخدمها كجزء من المخطط قبل بناء المكوّن. ثانيًا، لا تتغير قيمة الخاصية أبدًا، أي أن الخصائص للقراءة فقط بعد تمريرها إلى المكوّنات.</p>
+<p>تصل إلى الخاصية بالإشارة إليها عبر الخاصية <code>this.props</code> التي يمكن لكل مكوّن الوصول إليها.</p>
+<h3 id="3-الحالة">3. الحالة</h3>
+<p>الحالة كائن يحتوي على معلومات قد تتغير طوال عمر المكوّن. أي أنها لقطة حالية من البيانات المخزنة في خصائص المكوّن. ويمكن للبيانات أن تتغير بمرور الوقت، لذا تصبح تقنيات إدارة طريقة تغير تلك البيانات ضرورية لضمان ظهور المكوّن على النحو الذي يريده المهندسون في الوقت المناسب تمامًا، وهذا ما يُسمى <em>إدارة الحالة (state management).</em></p>
+<p><img src="/images/patterns-dev/react-index-5-state_props.webp" alt="تمرير الحالة على شكل خصائص (props) إلى المكوّنات"></p>
+<p>يكاد يكون من المستحيل قراءة فقرة عن React دون المرور بفكرة إدارة الحالة. يحب المطوّرين التوسع في هذا الموضوع، لكن جوهر الأمر هو أن إدارة الحالة ليست معقدة بقدر ما تبدو.</p>
+<p>في React، يمكن تتبع الحالة عالميًا أيضًا، ويمكن مشاركة البيانات بين المكوّنات عند الحاجة. وبعبارة جوهرية، هذا يعني أن تحميل البيانات في أماكن جديدة داخل تطبيقات React ليس مكلفًا كما هو مع التقنيات الأخرى. ف تطبيقات React أذكى بشأن البيانات التي تحفظها وتحملها ومتى تفعل ذلك. وهذا يتيح فرصًا لبناء واجهات تستخدم البيانات بطرق جديدة.</p>
+<p>تخيل مكوّنات React تطبيقاتًا مصغرة لكل منها بياناتها ومنطقها وعرضها. ينبغي أن يكون لكل مكوّن غرض واحد. وبصفتك مهندسًا، أنت من يقرّر ذلك الغرض وتتحكم تحكمًا كاملًا في كيفية سلوك كل مكوّن والبيانات المستخدمة. لم تعد مقيدًا ببيانات بقية الصفحة. وفي تصميمك، يمكنك الاستفادة من ذلك بطرق متعددة.
+هناك فرص لعرض بيانات إضافية يمكنها تحسين تجربة المستخدم أو جعل أجزاء من التصميم أكثر سياقًا.</p>
+<h4>كيفية إضافة الحالة في React</h4>
+<p>عند التصميم، أجّل تضمين الحالة إلى المرحلة الأخيرة. من الأفضل تصميم كل شيء خاليًا من الحالة بقدر الإمكان، باستخدام الخصائص والأحداث. يجعل هذا المكوّنات أسهل في الصيانة والاختبار والفهم. وينبغي أن تتم إضافة الحالات إمّا عبر حاويات حالة مثل <a href="https://redux.js.org/">Redux</a> و<a href="https://mobx.js.org/README.html">MobX</a>، أو عبر مكوّن حاوية/غلاف. وRedux نظام شائع لإدارة الحالة في أطر العمل التفاعلية الأخرى. فهو ينفّذ آلة حالة مركزية تعمل بالأفعال.</p>
+<blockquote>
+<p><strong>ملاحظة (React 18+):</strong> في React الحديث، تدير تطبيقات كثيرة الحالة عبر <strong>السياق والخطافات، مثل <code>useReducer</code> و<code>useContext</code>،</strong> أو مكتبات خفيفة الوزن مثل Zustand وJotai للحالات البسيطة. ويظل Redux صالحًا للحالة العالمية المعقدة، لكن الحلول المدمجة في React غالبًا ما تكفي للحالة المحلية أو المشتركة. ويجعل التجميع التلقائي في React 18 وتحسينات مصرّف React إدارة تحديثات الحالة أكثر كفاءة من دون مكتبات إضافية في كثير من السيناريوهات.</p>
+</blockquote>
+<p><img src="/images/patterns-dev/react-index-6-redux_details.webp" alt="تفاصيل إدارة الحالة عبر Redux"></p>
+<p>في المثال أدناه، يمكن أن يكون موضع الحالة هو <code>LoginContainer</code> نفسه. فلنستخدم خطافات React (hooks) لهذا الغرض، وسنناقشها في القسم التالي:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">LoginContainer</span> = (<span class="hljs-params"></span>) =&gt; {
+
+<span class="hljs-keyword">const</span> [username, setUsername] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+<span class="hljs-keyword">const</span> [password, setPassword] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">login</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params">event</span>) =&gt; {
+
+event.<span class="hljs-title function_">preventDefault</span>();
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;/api&quot;</span>, {
+
+<span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+
+<span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({
+
+username,
+
+password,
+
+}),
+
+});
+
+<span class="hljs-comment">// Here we could check response.status to login or show error</span>
+
+};
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">LoginForm</span> <span class="hljs-attr">onSubmit</span>=<span class="hljs-string">{login}</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">FormInput</span>
+
+<span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span>
+
+<span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Username&quot;</span>
+
+<span class="hljs-attr">onChange</span>=<span class="hljs-string">{(event)</span> =&gt;</span> setUsername(event.currentTarget.value)}
+
+value={username}
+
+/&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">FormPasswordInput</span>
+
+<span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span>
+
+<span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Password&quot;</span>
+
+<span class="hljs-attr">onChange</span>=<span class="hljs-string">{(event)</span> =&gt;</span> setPassword(event.currentTarget.value)}
+
+value={password}
+
+/&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">SubmitButton</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">SubmitButton</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">LoginForm</span>&gt;</span></span>
+
+);
+
+};
+</code></pre>
+<p>لمزيد من الأمثلة مثل ما سبق، راجع <a href="https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18">التفكير في React 2020</a>.</p>
+<h3 id="الخصائص-مقابل-الحالة">الخصائص مقابل الحالة</h3>
+<p>قد يُخلط بين الخصائص والحالة أحيانًا بسبب تشابههما. وفيما يلي بعض الفروق الرئيسية بينهما:</p>
+<table>
+<thead>
+<tr>
+<th><strong>الخصائص</strong></th>
+<th><strong>الحالة</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>تبقى البيانات دون تغيير من مكوّن إلى آخر.</td>
+<td>البيانات هي لقطة حالية من البيانات المخزنة في خصائص المكوّن، وتتغير خلال دورة حياة المكوّن.</td>
+</tr>
+<tr>
+<td>البيانات للقراءة فقط</td>
+<td>يمكن أن تكون البيانات غير متزامنة</td>
+</tr>
+<tr>
+<td>لا يمكن تعديل البيانات الموجودة في الخصائص</td>
+<td>يمكن تعديل البيانات الموجودة في الحالة باستخدام <em>this.setState</em></td>
+</tr>
+<tr>
+<td>الخصائص هي ما يُمرَّر إلى المكوّن</td>
+<td>تُدار الحالة داخل المكوّن</td>
+</tr>
+</tbody>
+</table>
+<h2 id="مفاهيم-أخرى-في-react">مفاهيم أخرى في React</h2>
+<p>المكوّنات والخصائص والحالة هي المفاهيم الأساسية الثلاثة لكل ما ستفعله في React. لكن هناك مفاهيم أخرى ينبغي تعلمها:</p>
+<h3 id="1-دورة-الحياة">1. دورة الحياة</h3>
+<p>يمر كل مكوّن React بثلاث مراحل: التركيب، والعرض، وفك التركيب. ويمكن الإشارة إلى سلسلة الأحداث التي تحدث خلال هذه المراحل الثلاث إلى دورة حياة المكوّن. ورغم أن هذه الأحداث ترتبط جزئيًا بحالة المكوّن (بياناته الداخلية)، فإن دورة الحياة شيء مختلف بعض الشيء. تحتوي React على شيفرة داخلية تحمّل المكوّنات وتفكّها عند الحاجة، وقد يوجد المكوّن في عدة مراحل استخدام داخل تلك الشيفرة الداخلية.</p>
+<p>توجد طرق كثيرة لدورة الحياة، لكن أكثرها شيوعًا هي:</p>
+<p><strong><code>render()</code></strong> - هذه الدالة هي الدالة الوحيدة المطلوبة داخل المكوّن الصنفي في React، وهي الأكثر استخدامًا. وكما يوحي اسمها، فهي تتولى عرض المكوّن في واجهة المستخدم، وتحدث أثناء تركيب المكوّن وعرضه.</p>
+<p>عندما يُنشأ المكوّن أو يُزال:</p>
+<ul>
+<li><strong><code>componentDidMount()</code></strong> تعمل بعد عرض ناتج المكوّن في DOM.</li>
+<li><strong><code>componentWillUnmount()</code></strong> تُستدعى مباشرةً قبل فك تركيب المكوّن وتدميره</li>
+</ul>
+<p>عندما تتحدث الخصائص أو الحالات:</p>
+<ul>
+<li><strong><code>shouldComponentUpdate()</code></strong> تُستدعى قبل العرض عند استلام خصائص أو حالة جديدة.</li>
+<li><strong><code>componentDidUpdate()</code></strong> تُستدعى مباشرةً بعد حدوث التحديث. ولا تُستدعى هذه الدالة عند العرض الأولي.</li>
+</ul>
+<h3 id="2-المكون-من-رتبة-عليا-hoc">2. المكوّن من رتبة عليا (HOC)</h3>
+<p><a href="/book/patterns-dev/react/hoc-pattern">المكوّنات من رتبة عليا (HOC)</a> هي تقنية متقدمة في React لإعادة استخدام منطق المكوّنات. أي أن المكوّن من رتبة عليا دالة تأخذ مكوّنًا وتعيد مكوّنًا جديدًا. وهي أنماط تنبع من الطبيعة التركيبية لـReact. وفي حين يحوّل المكوّن الخصائص إلى واجهة مستخدم، يحوّل المكوّن من رتبة عليا مكوّنًا إلى مكوّن آخر، وتحظى هذه التقنية عادةً بالشعبية في مكتبات الطرف الثالث.</p>
+<h3 id="3-السياق">3. السياق</h3>
+<p>في تطبيق React النموذجي، تُمرَّر البيانات عبر الخصائص، لكن هذا قد يكون مرهقًا لبعض أنواع الخصائص التي تحتاج إليها مكونات كثيرة داخل التطبيق. ويوفر السياق طريقة لمشاركة هذه الأنواع من البيانات بين المكوّنات من دون تمرير خاصية عبر كل مستوى من التسلسل الهرمي. أي أننا مع السياق نستطيع تجنب تمرير الخصائص عبر العناصر الوسيطة.</p>
+<h2 id="خطافات-react">خطافات React</h2>
+<p>الخطافات (hooks) هي دوال تتيح لك «الانضمام إلى» ميزات حالة React ودورة الحياة من المكوّنات الدالية. وتتيح لك استخدام الحالة وميزات React الأخرى من دون كتابة صنف. ويمكنك التعلم المزيد عنها في دليل <a href="/book/patterns-dev/react/hooks-pattern">الخطافات</a>.</p>
+<p><img src="/images/patterns-dev/react-index-7-two_ways.webp" alt="طريقتان لإنشاء المكوّنات"></p>
+<h2 id="التفكير-في-react">التفكير في React</h2>
+<p>أمر مذهل حقًا في React هو كيف يجعلك تفكر في التطبيقات أثناء بنائها. في هذا القسم، سنرشدك إلى عملية التفكير في بناء <em>جدول بيانات منتجات قابل للبحث</em> باستخدام خطافات React.</p>
+<p><strong>الخطوة 1: ابدأ بنموذج أولي (mock)</strong> تخيّل أننا لدينا بالفعل واجهة API بصيغة JSON ونموذج أولي لواجهتنا:</p>
+<p><img src="/images/patterns-dev/react-index-8-mock_tweet_results_3x.webp" alt="نتائج بحث التغريدات التجريبية"></p>
+<p>تعيد واجهة JSON بعض البيانات التي تبدو هكذا:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>
+
+<span class="hljs-punctuation">{</span>
+
+category<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Entertainment&quot;</span><span class="hljs-punctuation">,</span>
+
+retweets<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;54&quot;</span><span class="hljs-punctuation">,</span>
+
+isLocal<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+
+text<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Omg. A tweet.&quot;</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">{</span>
+
+category<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Entertainment&quot;</span><span class="hljs-punctuation">,</span>
+
+retweets<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;100&quot;</span><span class="hljs-punctuation">,</span>
+
+isLocal<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+
+text<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Omg. Another.&quot;</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">{</span>
+
+category<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Technology&quot;</span><span class="hljs-punctuation">,</span>
+
+retweets<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;32&quot;</span><span class="hljs-punctuation">,</span>
+
+isLocal<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+
+text<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;New ECMAScript features!&quot;</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">{</span>
+
+category<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Technology&quot;</span><span class="hljs-punctuation">,</span>
+
+retweets<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;88&quot;</span><span class="hljs-punctuation">,</span>
+
+isLocal<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+
+text<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Wow, learning React!&quot;</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+
+<span class="hljs-punctuation">]</span>;
+</code></pre>
+<p>نصيحة: قد تجد أدوات مجانية مثل <a href="https://excalidraw.com">Excalidraw</a> مفيدة لرسم نموذج أولي عالي المستوى لواجهة المستخدم ومكوّناتك.</p>
+<p><strong>الخطوة 2: قسّم واجهة المستخدم إلى مكوّن هرمي</strong></p>
+<p>بعد أن يكون لديك النموذج الأولي، الخطوة التالية هي رسم مربعات حول كل مكوّن (ومكوّن فرعي) في النموذج وتسميتها جميعًا، كما هو ظاهر أدناه.</p>
+<p>استخدم مبدأ المسؤولية المفردة: ينبغي أن يكون لكل مكوّن وظيفة واحدة في الأفضل. وإذا اتسع، فينبغي تقسيمه إلى مكوّنات فرعية أصغر. واستخدم التقنية نفسها لتقرّر ما إذا كان ينبغي لك إنشاء دالة أو كائن جديد.</p>
+<p><img src="/images/patterns-dev/react-index-9-mock_tweet_colors_3x.webp" alt="ألوان نتائج بحث التغريدات التجريبية"></p>
+<p>سترى في الصورة أعلاه أن لدينا خمسة مكونات في تطبيقنا. وقد عددنا البيانات التي يمثلها كل مكوّن.</p>
+<ul>
+<li><strong>TweetSearchResults (برتقالي):</strong> حاوية المكوّن الكامل</li>
+<li><strong>SearchBar (أزرق):</strong> إدخال المستخدم لما يريد البحث عنه</li>
+<li><strong>TweetList (أخضر):</strong> يعرض التغريدات ويصفيها وفق إدخال المستخدم</li>
+<li><strong>TweetCategory (فيروزي):</strong> يعرض عنوانًا لكل فئة</li>
+<li><strong>TweetRow (أحمر):</strong> يعرض صفًا لكل تغريدة</li>
+</ul>
+<p>بعد تحديد المكوّنات في النموذج الأولي، تتمثل الخطوة التالية في ترتيبها في تسلسل هرمي. وينبغي أن تظهر المكوّنات الموجودة داخل مكوّن آخر في النموذج كأبناء في التسلسل الهرمي. مثل هذا:</p>
+<ul>
+<li><strong>TweetSearchResults</strong> <strong>SearchBar</strong></li>
+<li><strong>TweetList</strong> <strong>TweetCategory</strong></li>
+<li><strong>TweetRow</strong></li>
+</ul>
+<p><strong>الخطوة 3: نفّذ المكوّنات في React</strong> بعد إكمال التسلسل الهرمي للمكوّنات، تتمثل الخطوة التالية في تنفيذ تطبيقك. قبل العام الماضي، كانت أسرع طريقة هي بناء نسخة تأخذ نموذج بياناتك وتعرض واجهة المستخدم، لكن من دون أي تفاعل. ومنذ إدخال خطافات React، أصبحت طريقة أسهل لتنفيذ تطبيقك هي استخدام الخطافات كما هو ظاهر أدناه:</p>
+<p><strong>i. قائمة تغريدات قابلة للتصفية</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">TweetSearchResults</span> = (<span class="hljs-params">{ tweets }</span>) =&gt; {
+
+<span class="hljs-keyword">const</span> [filterText, setFilterText] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);
+
+<span class="hljs-keyword">const</span> [inThisLocation, setInThisLocation] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">SearchBar</span>
+
+<span class="hljs-attr">filterText</span>=<span class="hljs-string">{filterText}</span>
+
+<span class="hljs-attr">inThisLocation</span>=<span class="hljs-string">{inThisLocation}</span>
+
+<span class="hljs-attr">setFilterText</span>=<span class="hljs-string">{setFilterText}</span>
+
+<span class="hljs-attr">setInThisLocation</span>=<span class="hljs-string">{setInThisLocation}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">TweetList</span>
+
+<span class="hljs-attr">tweets</span>=<span class="hljs-string">{tweets}</span>
+
+<span class="hljs-attr">filterText</span>=<span class="hljs-string">{filterText}</span>
+
+<span class="hljs-attr">inThisLocation</span>=<span class="hljs-string">{inThisLocation}</span>
+
+/&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+
+);
+
+};
+</code></pre>
+<p><strong>ii. SearchBar</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">SearchBar</span> = (<span class="hljs-params">{
+
+filterText,
+
+inThisLocation,
+
+setFilterText,
+
+setInThisLocation,
+
+}</span>) =&gt; (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+
+<span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>
+
+<span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search...&quot;</span>
+
+<span class="hljs-attr">value</span>=<span class="hljs-string">{filterText}</span>
+
+<span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setFilterText(e.target.value)}
+
+/&gt;
+
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+
+<span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>
+
+<span class="hljs-attr">checked</span>=<span class="hljs-string">{inThisLocation}</span>
+
+<span class="hljs-attr">onChange</span>=<span class="hljs-string">{(e)</span> =&gt;</span> setInThisLocation(e.target.checked)}
+
+/&gt;{&quot; &quot;}
+
+Only show tweets in your current location
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+
+);
+</code></pre>
+<p><strong>iii. قائمة التغريدات (قائمة التغريدات)</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">TweetList</span> = (<span class="hljs-params">{ tweets, filterText, inThisLocation }</span>) =&gt; {
+
+<span class="hljs-keyword">const</span> rows = [];
+
+<span class="hljs-keyword">let</span> lastCategory = <span class="hljs-literal">null</span>;
+
+tweets.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">tweet</span>) =&gt;</span> {
+
+<span class="hljs-keyword">if</span> (tweet.<span class="hljs-property">text</span>.<span class="hljs-title function_">toLowerCase</span>().<span class="hljs-title function_">indexOf</span>(filterText.<span class="hljs-title function_">toLowerCase</span>()) === -<span class="hljs-number">1</span>) {
+
+<span class="hljs-keyword">return</span>;
+
+}
+
+<span class="hljs-keyword">if</span> (inThisLocation &amp;&amp; !tweet.<span class="hljs-property">isLocal</span>) {
+
+<span class="hljs-keyword">return</span>;
+
+}
+
+<span class="hljs-keyword">if</span> (tweet.<span class="hljs-property">category</span> !== lastCategory) {
+
+rows.<span class="hljs-title function_">push</span>(
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TweetCategory</span> <span class="hljs-attr">category</span>=<span class="hljs-string">{tweet.category}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{tweet.category}</span> /&gt;</span></span>
+
+);
+
+}
+
+rows.<span class="hljs-title function_">push</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">TweetRow</span> <span class="hljs-attr">tweet</span>=<span class="hljs-string">{tweet}</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{tweet.text}</span> /&gt;</span></span>);
+
+lastCategory = tweet.<span class="hljs-property">category</span>;
+
+});
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">thead</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Tweet Text<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>Retweets<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">thead</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">tbody</span>&gt;</span>{rows}<span class="hljs-tag">&lt;/<span class="hljs-name">tbody</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span></span>
+
+);
+
+};
+</code></pre>
+<p><strong>iv. صف فئة التغريدة</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">TweetCategory</span> = (<span class="hljs-params">{ category }</span>) =&gt; (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">colSpan</span>=<span class="hljs-string">&quot;2&quot;</span>&gt;</span>{category}<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span></span>
+
+);
+</code></pre>
+<p><strong>v. صف التغريدة</strong></p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title function_">TweetRow</span> = (<span class="hljs-params">{ tweet }</span>) =&gt; {
+
+<span class="hljs-keyword">const</span> color = tweet.<span class="hljs-property">isLocal</span> ? <span class="hljs-string">&quot;inherit&quot;</span> : <span class="hljs-string">&quot;red&quot;</span>;
+
+<span class="hljs-keyword">return</span> (
+
+<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span>{tweet.text}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{tweet.retweets}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span></span>
+
+);
+
+};
+</code></pre>
+<p>سيكون التنفيذ النهائي هو كامل الشيفرة السابقة مجتمعة وفق التسلسل الهرمي المذكور:</p>
+<ul>
+<li><strong>TweetSearchResults</strong> <strong>SearchBar</strong></li>
+<li><strong>TweetList</strong> <strong>TweetCategory</strong></li>
+<li><strong>TweetRow</strong></li>
+</ul>
+<h2 id="البداية">البداية</h2>
+<p>توجد طرق متعددة لبدء استخدام React.</p>
+<p><strong>التحميل مباشرةً في صفحة الويب:</strong> هذه أبسط طريقة لإعداد React. أضف JavaScript الخاص بـReact إلى صفحتك، سواء كاعتمادية <code>npm</code> أو عبر <code>CDN</code>.</p>
+<p><strong>استخدام <code>create-react-app</code>:</strong> مشروع <code>create-react-app</code> يهدف إلى تمكينك من استخدام React في أقرب وقت ممكن، وأي تطبيق React يحتاج إلى تجاوز صفحة واحدة سيجد أن <code>create-react-app</code> يفي بهذا الاحتياج بسهولة تامة. وينبغي لتطبيقات الإنتاج الجادة أن تفكر في استخدام <a href="/book/patterns-dev/react/nextjs">Next.js</a> لأن له افتراضات أقوى، مثل تقسيم الشيفرة، مدمجة فيه.</p>
+<p><strong>Code Sandbox:</strong> طريقة سهلة للحصول على بنية create-react-app من دون تثبيتها، هي الذهاب إلى <a href="https://codesandbox.io/s">https://codesandbox.io/s</a> واختيار «React».</p>
+<p><strong>Codepen:</strong> إذا كنت تبني نموذجًا أوليًا لمكوّن React وتستمتع باستخدام Codepen، فهناك أيضًا <a href="https://codepen.io/topic/react/templates">عدد</a> من <a href="https://codepen.io/flaviocopes/pen/VqeaxB">نقاط بداية</a> React يمكنك استخدامها.</p>
+<h2 id="الخاتمة">الخاتمة</h2>
+<p>صُممت مكتبة React.js لجعل عملية بناء مكوّنات واجهة المستخدم المعيارية والقابلة لإعادة الاستخدام بسيطة وبديهية. ونأمل أن تكون هذه المقدمة المختصرة مفيدة بوصفها نظرة عامة عالية المستوى.</p>
+<p>إذا كنت مهتمًا بمزيد من القراءة عن أساسيات React، فراجع:</p>
+<ul>
+<li><a href="https://reactjs.org/docs/getting-started.html#learn-react">الوثائق الرسمية</a></li>
+<li><a href="https://reactfordesigners.com/">React للمصممين</a></li>
+</ul>
+<p><em>لن يكون هذا الدليل ممكنًا لولا أساليب التدريس التي تُشاركها <a href="https://reactjs.org/docs/components-and-props.html">الوثائق الرسمية لمكوّنات React وخصائصها</a>، و<a href="https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18">التفكير في React</a>، و<a href="https://davidpfahler.com/thinking-in-react-hooks">التفكير في خطافات React</a>، ووثائق <a href="https://scriptverse.academy/tutorials/reactjs-pass-props-to-functional-component.html">scriptverse</a>.</em></p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:p,headings:l,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,l as headings,e as html,t as slug,p as title};

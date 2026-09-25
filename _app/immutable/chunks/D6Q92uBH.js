@@ -1,0 +1,288 @@
+const s="patterns-dev",n="vanilla",a="أنماط JavaScript",t="observer-pattern",l="نمط المراقب (observer)",e=[{depth:2,id:"الشكل-الأساسي",text:"الشكل الأساسي"},{depth:2,id:"مثال-ملموس-مؤشر-أسعار",text:"مثال ملموس: مؤشر أسعار"},{depth:2,id:"استخدام-المراقب-المدمج-في-المتصفح-browser-eventtarget",text:"استخدام المراقب المدمج في المتصفح (browser): EventTarget"},{depth:2,id:"المراقب-مقابل-النشرالاشتراك",text:"المراقب مقابل النشر/الاشتراك"},{depth:2,id:"الصيغ-الحديثة-التي-ينبغي-معرفتها",text:"الصيغ الحديثة التي ينبغي معرفتها"},{depth:3,id:"المتكررون-غير-المتزامنون-async-iterators",text:"المتكررون غير المتزامنون (async iterators)"},{depth:3,id:"الإشارات-التفاعلية-reactive-signals",text:"الإشارات التفاعلية (reactive signals)"},{depth:3,id:"rxjs-لتركيب-التدفقات",text:"RxJS لتركيب التدفقات"},{depth:2,id:"المزالق-الشائعة",text:"المزالق الشائعة"},{depth:3,id:"تسريبات-الذاكرة-بسبب-الاشتراكات-المنسية",text:"تسريبات الذاكرة بسبب الاشتراكات المنسية"},{depth:3,id:"افتراضات-ترتيب-الإشعارات",text:"افتراضات ترتيب الإشعارات"},{depth:3,id:"عواصف-الإشعارات-المتزامنة",text:"عواصف الإشعارات المتزامنة"},{depth:3,id:"إشعارات-إعادة-الدخول",text:"إشعارات إعادة الدخول"},{depth:2,id:"متى-لا-تستخدم-المراقب",text:"متى لا تستخدم المراقب"},{depth:2,id:"المراجع",text:"المراجع"}],p=`<p>تخيل أنك تبني لوحة بيانات للأسعار. تصل حركة السعر عبر WebSocket، وتحتاج عدة أجزاء غير مترابطة من واجهة المستخدم إلى التفاعل: يعيد مخطط الرسم، ويومض صف في قائمة المتابعة باللون الأخضر أو الأحمر، ويُعاد حساب إجمالي المحفظة، ويسجل سجل تدقيق حركة السعر. ولا شأن لـ WebSocket بهذه المستهلكات. ما يحتاجه هو طريقة لقول «هنا حركة سعر جديدة» ثم ترك الأطراف المهتمة تقرر ما الذي يعنيه ذلك بالنسبة لها.</p>
+<p>هذا هو نمط المراقب (observer). يحتفظ <strong>الموضوع (subject)</strong> بقائمة من <strong>المراقبين (observers)</strong> ويبث لهم التحديثات عند حدوث تغيير. يمكن للمراقبين الجدد الارتباط وقتما يشاؤون، ويمكن للمراقبين القائمين فك الارتباط عند انتهاء عملهم. لا يحتوي الموضوع على أي ارتباط ثابت بمستهلك بعينه.</p>
+<h2 id="الشكل-الأساسي">الشكل الأساسي</h2>
+<p>يحتاج الموضوع على الأقل إلى ثلاثة أمور: مكان لحفظ المراقبين، وطريقة لإضافتهم وإزالتهم، وطريقة لدفع التحديثات. إليك تطبيقًا صغيرًا يستخدم <code>Set</code> لنحصل على إزالة بتعقيد O(1) ومنع التكرار مجانًا.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subject</span> {
+
+#observers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();
+
+<span class="hljs-title function_">subscribe</span>(<span class="hljs-params">observer</span>) {
+
+<span class="hljs-variable language_">this</span>.#observers.<span class="hljs-title function_">add</span>(observer);
+
+<span class="hljs-comment">// Hand back an unsubscribe function — easier than asking</span>
+
+<span class="hljs-comment">// the caller to hold onto the reference they passed in.</span>
+
+<span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.#observers.<span class="hljs-title function_">delete</span>(observer);
+
+}
+
+<span class="hljs-title function_">notify</span>(<span class="hljs-params">payload</span>) {
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> observer <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.#observers) {
+
+<span class="hljs-title function_">observer</span>(payload);
+
+}
+
+}
+
+}
+</code></pre>
+<p>القيمة التي تعيدها <code>subscribe</code> تمثل مكسبًا صغيرًا في سهولة الاستخدام يغطي تكلفته أول مرة تنسى فيها ما مررته. يخزن المستدعي الدالة المعادة ويستدعيها عند انتهائه — من دون بحث أو مقارنة مساواة أو وجود دالة <code>unsubscribe</code> على الموضوع أصلًا.</p>
+<h2 id="مثال-ملموس-مؤشر-أسعار">مثال ملموس: مؤشر أسعار</h2>
+<p>لنوصل الموضوع بتدفق أسعار وبضعة مستهلكين يريدون معرفتها.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> ticker = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Subject</span>();
+
+<span class="hljs-comment">// A chart that buffers ticks and redraws every animation frame.</span>
+
+<span class="hljs-keyword">const</span> chartQueue = [];
+
+<span class="hljs-keyword">let</span> pending = <span class="hljs-literal">false</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">drawChart</span> = (<span class="hljs-params">tick</span>) =&gt; {
+
+chartQueue.<span class="hljs-title function_">push</span>(tick);
+
+<span class="hljs-keyword">if</span> (pending) <span class="hljs-keyword">return</span>;
+
+pending = <span class="hljs-literal">true</span>;
+
+<span class="hljs-title function_">requestAnimationFrame</span>(<span class="hljs-function">() =&gt;</span> {
+
+<span class="hljs-title function_">renderChart</span>(chartQueue);
+
+chartQueue.<span class="hljs-property">length</span> = <span class="hljs-number">0</span>;
+
+pending = <span class="hljs-literal">false</span>;
+
+});
+
+};
+
+<span class="hljs-comment">// A watchlist row that flashes when its symbol updates.</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">flashRow</span> = (<span class="hljs-params">{ symbol, price, previous }</span>) =&gt; {
+
+<span class="hljs-keyword">if</span> (symbol !== <span class="hljs-string">&quot;AAPL&quot;</span>) <span class="hljs-keyword">return</span>;
+
+<span class="hljs-variable language_">document</span>
+
+.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;[data-symbol=&quot;AAPL&quot;]&#x27;</span>)
+
+?.<span class="hljs-property">classList</span>.<span class="hljs-title function_">toggle</span>(<span class="hljs-string">&quot;up&quot;</span>, price &gt; previous);
+
+};
+
+<span class="hljs-comment">// A logger that records every tick for replay.</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">logTick</span> = (<span class="hljs-params">tick</span>) =&gt; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">debug</span>(<span class="hljs-string">&quot;[tick]&quot;</span>, tick);
+
+<span class="hljs-keyword">const</span> unsubChart = ticker.<span class="hljs-title function_">subscribe</span>(drawChart);
+
+<span class="hljs-keyword">const</span> unsubRow   = ticker.<span class="hljs-title function_">subscribe</span>(flashRow);
+
+<span class="hljs-keyword">const</span> unsubLog   = ticker.<span class="hljs-title function_">subscribe</span>(logTick);
+
+<span class="hljs-comment">// Somewhere else, the WebSocket pushes new prices in:</span>
+
+socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+
+<span class="hljs-keyword">const</span> tick = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(event.<span class="hljs-property">data</span>);
+
+ticker.<span class="hljs-title function_">notify</span>(tick);
+
+});
+</code></pre>
+<p>كل مستهلك دالة صغيرة ومركزة. لا يعرف مؤشر الأسعار أيًا منها بالاسم. وإذا قررت لاحقًا أن صف قائمة المتابعة ينبغي أن يستخدم تأخير التجميع (debounce)، أو أن المسجل ينبغي أن يلتقط حركة واحدة من كل عشر، فستغير المستهلك — ويبقى مؤشر الأسعار دون مساس. هذا الفصل هو المكسب الكامل للنمط.</p>
+<h2 id="استخدام-المراقب-المدمج-في-المتصفح-browser-eventtarget">استخدام المراقب المدمج في المتصفح (browser): <code>EventTarget</code></h2>
+<p>لا تحتاج دائمًا إلى كتابة <code>Subject</code> خاص بك. منذ عام 2017، أتت كل المتصفحات بكائن <code>EventTarget</code> قابل للإنشاء — وهي الآلية نفسها التي يستخدمها DOM في <code>addEventListener</code>، لكنها متاحة الآن للكائنات العشوائية.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Ticker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">EventTarget</span> {
+
+<span class="hljs-title function_">push</span>(<span class="hljs-params">tick</span>) {
+
+<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">dispatchEvent</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomEvent</span>(<span class="hljs-string">&quot;tick&quot;</span>, { <span class="hljs-attr">detail</span>: tick }));
+
+}
+
+}
+
+<span class="hljs-keyword">const</span> ticker = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ticker</span>();
+
+ticker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tick&quot;</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> <span class="hljs-title function_">drawChart</span>(e.<span class="hljs-property">detail</span>));
+
+ticker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tick&quot;</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> <span class="hljs-title function_">flashRow</span>(e.<span class="hljs-property">detail</span>));
+</code></pre>
+<p>يوفر لك هذا آلية نشر/اشتراك (pub/sub) جاهزة مع ميزة مهمة: <strong>التكامل مع <code>AbortSignal</code></strong>. يصبح التنظيف سطرًا واحدًا مهما كان عدد المستمعين الذين سجلتهم.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();
+
+<span class="hljs-keyword">const</span> { signal } = controller;
+
+ticker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tick&quot;</span>, drawChart, { signal });
+
+ticker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tick&quot;</span>, flashRow,  { signal });
+
+ticker.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;tick&quot;</span>, logTick,   { signal });
+
+<span class="hljs-comment">// Later, when the dashboard unmounts:</span>
+
+controller.<span class="hljs-title function_">abort</span>(); <span class="hljs-comment">// every listener attached with \`signal\` is removed</span>
+</code></pre>
+<p>إذا نسيت يومًا إزالة مستمع وتتبعت تسريب ذاكرة عبر لقطات الذاكرة في Chrome DevTools، سيبدو هذا كمعجزة صغيرة. تحوّل الإشارة عبارة «تذكر كل اشتراك كي تنظفه» إلى استدعاء <code>abort()</code> واحد.</p>
+<h2 id="المراقب-مقابل-النشرالاشتراك">المراقب مقابل النشر/الاشتراك</h2>
+<p>النمطان شقيقان، وكثيرًا ما يختلطان. لكن التمييز بينهما حقيقي ومفيد.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>المراقب</th>
+<th>النشر/الاشتراك</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>الاقتران</strong></td>
+<td>المراقب يعرف الموضوع</td>
+<td>الناشر والمشترك يعرفان الوسيط فقط</td>
+</tr>
+<tr>
+<td><strong>التوجيه</strong></td>
+<td>موضوع واحد؛ يتلقى كل المراقبين كل إشعار</td>
+<td>موضوع أو قناة — يشترك المشتركون في أسماء محددة</td>
+</tr>
+<tr>
+<td><strong>التنفيذ</strong></td>
+<td>دالة على الموضوع</td>
+<td>كائن وسيط منفصل (ناقل أحداث)</td>
+</tr>
+<tr>
+<td><strong>الاستخدام المعتاد</strong></td>
+<td>كائن مجال يعلم مراقبيه</td>
+<td>ناقل أحداث على مستوى التطبيق عبر وحدات غير مترابطة</td>
+</tr>
+</tbody>
+</table>
+<p>في مؤشر الأسعار أعلاه، يكون <code>ticker</code> هو الموضوع، ويتلقى كل مشترك حركة السعر — وهذا نمط المراقب الكلاسيكي. لكن لو كان لدينا بدلًا من ذلك <code>bus.publish(&quot;ticks/AAPL&quot;, price)</code> واختار المشتركون حسب الموضوع، فسيكون ذلك نشرًا/اشتراكًا.</p>
+<p>إليك نظام نشر/اشتراك مصغرًا مبنيًا على <code>EventTarget</code>:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">class</span> <span class="hljs-title class_">EventBus</span> {
+
+#target = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventTarget</span>();
+
+<span class="hljs-title function_">publish</span>(<span class="hljs-params">topic, data</span>) {
+
+<span class="hljs-variable language_">this</span>.#target.<span class="hljs-title function_">dispatchEvent</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomEvent</span>(topic, { <span class="hljs-attr">detail</span>: data }));
+
+}
+
+<span class="hljs-title function_">subscribe</span>(<span class="hljs-params">topic, handler, { signal } = {}</span>) {
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">listener</span> = (<span class="hljs-params">e</span>) =&gt; <span class="hljs-title function_">handler</span>(e.<span class="hljs-property">detail</span>);
+
+<span class="hljs-variable language_">this</span>.#target.<span class="hljs-title function_">addEventListener</span>(topic, listener, { signal });
+
+<span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">this</span>.#target.<span class="hljs-title function_">removeEventListener</span>(topic, listener);
+
+}
+
+}
+</code></pre>
+<h2 id="الصيغ-الحديثة-التي-ينبغي-معرفتها">الصيغ الحديثة التي ينبغي معرفتها</h2>
+<h3 id="المتكررون-غير-المتزامنون-async-iterators">المتكررون غير المتزامنون (async iterators)</h3>
+<p>إذا كانت «أحداثك» تسلسلًا في الواقع، فإن متكررًا غير متزامن يحوّلها إلى حلقة <code>for await...of</code> — شيفرة تُقرأ من الأعلى إلى الأسفل وتتوقف عند كل تكرار:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span>* <span class="hljs-title function_">watchTicks</span>(<span class="hljs-params">socket, { signal }</span>) {
+
+<span class="hljs-keyword">while</span> (!signal.<span class="hljs-property">aborted</span>) {
+
+<span class="hljs-keyword">const</span> message = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+
+socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;message&quot;</span>, resolve, { <span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>, signal });
+
+socket.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;error&quot;</span>,   reject,  { <span class="hljs-attr">once</span>: <span class="hljs-literal">true</span>, signal });
+
+});
+
+<span class="hljs-keyword">yield</span> <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(message.<span class="hljs-property">data</span>);
+
+}
+
+}
+
+<span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();
+
+<span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> (<span class="hljs-keyword">const</span> tick <span class="hljs-keyword">of</span> <span class="hljs-title function_">watchTicks</span>(socket, { <span class="hljs-attr">signal</span>: controller.<span class="hljs-property">signal</span> })) {
+
+<span class="hljs-title function_">drawChart</span>(tick);
+
+}
+</code></pre>
+<p>يتألف هذا جيدًا مع <code>AsyncIterator.prototype.map</code> وأمثالها — مقترحات تتقدم عبر TC39 وتعمل بالفعل في المحركات الحديثة عبر مكتبات مساعدة.</p>
+<h3 id="الإشارات-التفاعلية-reactive-signals">الإشارات التفاعلية (reactive signals)</h3>
+<p>تتمثل صيغة مختلفة للمراقب في <strong>الإشارة (signal)</strong>: عنصر تفاعلي صغير يعرف الدوال التي تقرأه ويعيد تشغيلها عند تغيره. لقد تقاربت أنماط Preact وSolid وAngular وVue جميعها على شكل مشابه، وهناك مقترح من TC39 يستكشف صيغة معيارية.</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { signal, computed, effect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@preact/signals-core&quot;</span>;
+
+<span class="hljs-keyword">const</span> price    = <span class="hljs-title function_">signal</span>(<span class="hljs-number">100</span>);
+
+<span class="hljs-keyword">const</span> quantity = <span class="hljs-title function_">signal</span>(<span class="hljs-number">2</span>);
+
+<span class="hljs-keyword">const</span> total    = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> price.<span class="hljs-property">value</span> * quantity.<span class="hljs-property">value</span>);
+
+<span class="hljs-title function_">effect</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">\`Total: $<span class="hljs-subst">\${total.value}</span>\`</span>));
+
+price.<span class="hljs-property">value</span> = <span class="hljs-number">110</span>;   <span class="hljs-comment">// logs &quot;Total: $220&quot;</span>
+
+quantity.<span class="hljs-property">value</span> = <span class="hljs-number">3</span>;  <span class="hljs-comment">// logs &quot;Total: $330&quot;</span>
+</code></pre>
+<p>الاشتراك غير مرئي — فـ<code>effect</code> يعيد التشغيل ببساطة عند تغير أي إشارة قرأها. وتحت السطح، لا يزال هذا مراقبًا: الإشارة هي الموضوع، والتأثير هو المراقب.</p>
+<h3 id="rxjs-لتركيب-التدفقات">RxJS لتركيب التدفقات</h3>
+<p>عندما تهم العلاقة بين الأحداث — مثل تأخير تجميع مربع بحث، أو دمج تدفقين، أو إعادة المحاولة عند الفشل — تبرر RxJS تكلفتها. إليك بحثًا فوريًا ينتظر المستخدم حتى يتوقف عن الكتابة، ويتجاهل عمليات البحث المكررة، ويلغي الطلبات القديمة:</p>
+<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { fromEvent, switchMap, debounceTime, distinctUntilChanged, map } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;rxjs&quot;</span>;
+
+<span class="hljs-keyword">const</span> input = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#search&quot;</span>);
+
+<span class="hljs-title function_">fromEvent</span>(input, <span class="hljs-string">&quot;input&quot;</span>).<span class="hljs-title function_">pipe</span>(
+
+<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>.<span class="hljs-title function_">trim</span>()),
+
+<span class="hljs-title function_">debounceTime</span>(<span class="hljs-number">250</span>),
+
+<span class="hljs-title function_">distinctUntilChanged</span>(),
+
+<span class="hljs-title function_">switchMap</span>(<span class="hljs-function">(<span class="hljs-params">q</span>) =&gt;</span>
+
+q ? <span class="hljs-title function_">fetch</span>(<span class="hljs-string">\`/api/search?q=<span class="hljs-subst">\${<span class="hljs-built_in">encodeURIComponent</span>(q)}</span>\`</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">r</span>) =&gt;</span> r.<span class="hljs-title function_">json</span>()) : []
+
+)
+
+).<span class="hljs-title function_">subscribe</span>(renderResults);
+</code></pre>
+<p>يلغي <code>switchMap</code> تلقائيًا الجلب السابق عند وصول استعلام جديد — وهو السلوك المطلوب تمامًا في البحث الفوري. ويمكن تنفيذ ذلك يدويًا فوق مراقب عادي، لكنه مرهق؛ تجعل RxJS الأمر تصريحيًا.</p>
+<h2 id="المزالق-الشائعة">المزالق الشائعة</h2>
+<h3 id="تسريبات-الذاكرة-بسبب-الاشتراكات-المنسية">تسريبات الذاكرة بسبب الاشتراكات المنسية</h3>
+<p>هذا هو نمط الفشل الخاص بالنمط. كل اشتراك مرجع من الموضوع إلى المراقب؛ وإلى أن تلغي الاشتراك، لا يمكن جمع المراقب (ولا أي شيء يغلقه) في الذاكرة. وهناك ثلاثة طرق للتخفيف:</p>
+<ul>
+<li><strong>استخدم <code>AbortSignal</code></strong> مع <code>EventTarget</code> ليكون التنظيف باستدعاء <code>abort()</code> واحد.</li>
+<li><strong>أعد دالة إلغاء اشتراك من <code>subscribe</code></strong> كي لا يحتاج المستدعون إلى البحث عن معالجهم من جديد.</li>
+<li><strong>اربط الاشتراكات بدورات حياة المكونات</strong> في أطر العمل — تنظيف <code>useEffect</code> في React، و<code>onScopeDispose</code> في Vue، و<code>onDestroy</code> في Svelte.</li>
+</ul>
+<h3 id="افتراضات-ترتيب-الإشعارات">افتراضات ترتيب الإشعارات</h3>
+<p>يتلقى المراقبون الإشعارات بترتيب الاشتراك في معظم التطبيقات، لكن لا ينبغي الاعتماد على ذلك في صحة البرنامج. إذا كان المراقب B يحتاج فعلًا إلى التنفيذ بعد المراقب A، فهذه تبعية لا يستطيع النمط التعبير عنها؛ صُرّح بها بدلًا من ذلك.</p>
+<h3 id="عواصف-الإشعارات-المتزامنة">عواصف الإشعارات المتزامنة</h3>
+<p>ينفذ <code>notify</code> كل مراقب بصورة متزامنة. إذا استغرق مراقب 200 مللي ثانية، فسينتظر كل المراقبين الذين يأتون بعده. وإذا وصلت حركة كل 16 مللي ثانية واستغرق مراقبوك وقتًا أطول من ذلك، فأنت على وشك فقدان إطارات العرض أو انفجار الطابور. فكّر في المعالجة على دفعات (كما في المثال السابق للمخطط) أو نقل الأعمال الثقيلة إلى <code>queueMicrotask</code> / <code>setTimeout</code>.</p>
+<h3 id="إشعارات-إعادة-الدخول">إشعارات إعادة الدخول</h3>
+<p>إذا كان معالج المراقب يطلق إشعار <code>notify</code> جديدًا على الموضوع نفسه، فقد تنتهي إلى تكرار غير متوقع. إذا كان هذا خطرًا حقيقيًا في مجالك، فاضبط الإشعارات في طابور بدلًا من إرسالها مباشرة.</p>
+<h2 id="متى-لا-تستخدم-المراقب">متى لا تستخدم المراقب</h2>
+<ul>
+<li><strong>عندما يكفي تدفق بيانات لمرة واحدة.</strong> <code>Promise</code> هو الشكل المناسب لعبارة «أخبرني عندما ينتهي هذا، مرة واحدة». المراقب للأحداث المتكررة.</li>
+<li><strong>عندما يبقى الموضوع والمراقب معًا دائمًا.</strong> إذا لم يراقب الموضوع سوى شيء واحد دائمًا وأنشئا معًا في المكان نفسه، فاستدعاء دالة مباشرة أبسط وأسهل في الفهم.</li>
+<li><strong>عندما تحتاج إلى ذهاب وإياب بين الطلب (request) والاستجابة (response).</strong> المراقب إرسال بلا انتظار. إذا كان المستدعون يتوقعون إجابة، فاستخدم استدعاء دالة أو وعدًا أو ناقل أوامر.</li>
+</ul>
+<h2 id="المراجع">المراجع</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget">EventTarget — MDN</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">AbortController — MDN</a></li>
+<li><a href="https://rxjs.dev">RxJS</a></li>
+<li><a href="https://github.com/tc39/proposal-signals">مقترح Signals — TC39</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of">المتكررون غير المتزامنون — MDN</a></li>
+</ul>
+`,c={book:s,chapter:n,chapterTitle:a,slug:t,title:l,headings:e,html:p};export{s as book,n as chapter,a as chapterTitle,c as default,e as headings,p as html,t as slug,l as title};
