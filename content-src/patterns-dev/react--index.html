@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="react">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/react/">
+
+    <!-- Primary Meta Tags -->
+    <title>Overview of React.js</title>
+    <meta name="title" content="Overview of React.js">
+    <meta name="description" content="A UI library for building reusable user interface components">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/react/">
+    <meta property="og:title" content="Overview of React.js">
+    <meta property="og:description" content="A UI library for building reusable user interface components">
+    <meta property="og:image" content="http://localhost:3000/media/overviewReact.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/react/">
+    <meta property="twitter:title" content="Overview of React.js">
+    <meta property="twitter:description" content="A UI library for building reusable user interface components">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="XpDdc" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;AI UI Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/ai-ui-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compound Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/compound-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;HOC Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hoc-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Hooks Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hooks-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Container/Presentational Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/presentational-container-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Stack Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-2026\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Render Props Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/render-props-pattern\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Client-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/client-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Incremental Static Generation\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/incremental-static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Progressive Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/progressive-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Selective Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-selective-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Server Components\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-server-components\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Server-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/server-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Streaming Server-Side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/streaming-ssr\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/react/&quot;],&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Z1Av3oz" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" height="25" class="h-4 w-4 mr-4 inline-block"><title>React Logo</title><circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse></g></svg>React<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/hoc-pattern" class="relative">
+                    <a href="/react/hoc-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      HOC Pattern
+                    </a>
+                  </li><li key="/react/hooks-pattern" class="relative">
+                    <a href="/react/hooks-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Hooks Pattern
+                    </a>
+                  </li><li key="/react/compound-pattern" class="relative">
+                    <a href="/react/compound-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compound Pattern
+                    </a>
+                  </li><li key="/react/presentational-container-pattern" class="relative">
+                    <a href="/react/presentational-container-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Container/Presentational Pattern
+                    </a>
+                  </li><li key="/react/render-props-pattern" class="relative">
+                    <a href="/react/render-props-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Render Props Pattern
+                    </a>
+                  </li><li key="/react/ai-ui-patterns" class="relative">
+                    <a href="/react/ai-ui-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      AI UI Patterns
+                    </a>
+                  </li><li key="/react/react-2026" class="relative">
+                    <a href="/react/react-2026" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Stack Patterns
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/client-side-rendering" class="relative">
+                    <a href="/react/client-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Client-side Rendering
+                    </a>
+                  </li><li key="/react/server-side-rendering" class="relative">
+                    <a href="/react/server-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Server-side Rendering
+                    </a>
+                  </li><li key="/react/static-rendering" class="relative">
+                    <a href="/react/static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Rendering
+                    </a>
+                  </li><li key="/react/incremental-static-rendering" class="relative">
+                    <a href="/react/incremental-static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Incremental Static Generation
+                    </a>
+                  </li><li key="/react/progressive-hydration" class="relative">
+                    <a href="/react/progressive-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Progressive Hydration
+                    </a>
+                  </li><li key="/react/streaming-ssr" class="relative">
+                    <a href="/react/streaming-ssr" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Streaming Server-Side Rendering
+                    </a>
+                  </li><li key="/react/react-server-components" class="relative">
+                    <a href="/react/react-server-components" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Server Components
+                    </a>
+                  </li><li key="/react/react-selective-hydration" class="relative">
+                    <a href="/react/react-selective-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Selective Hydration
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Overview of React.js
+                </h1>
+            </header>
+        <img src="/img/reactjs/react-logo@3x.svg" height="407" width="732" alt="React logo"/>
+<p>Over the years, there has been an increased demand for straight-forward ways to <strong>compose</strong> user-interfaces using JavaScript. <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a>, also referred to as React.js, is an open-source JavaScript library designed by Facebook, used for building user interfaces or UI components.</p>
+<p>React is of course not the only UI library out there. <a href="https://preactjs.com" target="_blank" rel="noopener noreferrer">Preact</a>, <a href="https://vuejs.org" target="_blank" rel="noopener noreferrer">Vue</a>, <a href="https://angular.io" target="_blank" rel="noopener noreferrer">Angular</a>, <a href="https://svelte.dev" target="_blank" rel="noopener noreferrer">Svelte</a>, <a href="https://lit.dev" target="_blank" rel="noopener noreferrer">Lit</a> and many others are also great for composing interfaces from reusable elements. Given React’s popularity, it’s worth walking through how it works given we will be using it to walk through some of the design, rendering and performance patterns in this guide.</p>
+<p>When front-end developers talk about code, it’s most often in the context of designing interfaces for the web. And the way we think of interface composition is in elements, like buttons, lists, navigation, and the likes. React provides an optimized and simplified way of expressing interfaces in these elements. It also helps build complex and tricky interfaces by organizing your interface into three key concepts— <em>components, props,</em> and <em>state.</em></p>
+<p>Because React is composition-focused, it can, perfectly map to the elements of your design system. So, in essence, designing for React actually rewards you for thinking in a modular way. It allows you to design individual components before putting together a page or view, so you fully understand each component’s scope and purpose—a process referred to as <em>componentization</em>.</p>
+<h2 id="terminology-we-will-use">Terminology we will use</h2>
+<ul>
+<li><strong>React / React.js / ReactJS</strong> - React library, created by Facebook in 2013</li>
+<li><strong>ReactDOM</strong> - The package for DOM and server rendering</li>
+<li><strong>JSX</strong> - Syntax extension to JavaScript</li>
+<li><strong>Redux</strong> - Centralized state container</li>
+<li><strong>Hooks</strong> - A new way to use state and other React features without writing a class</li>
+<li><strong>ReactNative</strong> - The library to develop cross-platform native apps with Javascript</li>
+<li><strong>Webpack</strong> - JavaScript module bundler, popular in React community.</li>
+<li><strong>CRA (Create React App)</strong> - A CLI tool to create a scaffolding React app for bootstrapping a project.</li>
+<li><strong>Next.js</strong> - A React framework with many best-in-class features including SSR, Code-splitting, optimized for performance, etc.</li>
+</ul>
+<h2 id="rendering-with-jsx">Rendering with JSX</h2>
+<p>We will be using JSX in a number of our examples. JSX is an extension to JavaScript which embeds template HTML in JS using XML-like syntax. It is meant to be transformed into valid JavaScript, though the semantics of that transformation are implementation-specific. JSX rose to popularity with the React library, but has since seen other implementations as well.</p>
+<img src="/img/reactjs/jsx.png" alt="how JSX works"/>
+<h2 id="components-props-and-state">Components, Props, and State</h2>
+<p>Components, props, and state are the three key concepts in React. Virtually everything you’re going to see or do in React can be classified into at least one of these key concepts, and here’s a quick look at these key concepts:</p>
+<h3 id="1-components">1. Components</h3>
+<img src="/img/reactjs/react-components@1.5x.svg" width="1600" height="892" loading="lazy" alt="React components and composition"/>
+<p>Components are the building blocks of any React app. They are like JavaScript functions that accept arbitrary input (<em>Props</em>) and return React elements describing what should be displayed on the screen.</p>
+<p>The first thing to understand is that everything on screen in a React app is part of a component. Essentially, a React app is just components within components within components. So developers don’t build pages in React; they build components.</p>
+<p>Components let you split your UI into independent, reusable pieces. If you’re used to designing pages, thinking in this modular way might seem like a big change. But if you use a design system or style guide? Then this might not be as big of a paradigm shift as it seems.</p>
+<p>The most direct way to define a component is to write a JavaScript function.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Badge</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;Hello, my name is {props.name}&lt;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This function is a valid React component because it accepts a single prop (<em>which stands for properties</em>) object argument with data and returns a React element. Such components are called ”<em>function components</em>” because they are literally JavaScript functions.</p>
+<img src="/img/reactjs/react-badge@2x.png" width="auto" height="200" loading="lazy" alt="React welcome badge"/>
+<p>Aside from function components, another type of component are ”<em>class components</em>.” A class component is different from a function component in that it is defined by an ES6 class, as shown below:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Badge</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Component</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;Hello, my name is {</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.props.name}&lt;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<blockquote>
+<p><strong>Note (React 18+):</strong> While class components still work, modern React (v16.8+ and especially React 18+) recommends using <strong>function components with Hooks</strong> for new code. Function components are simpler, avoid the complexity of <code>this</code> and lifecycle methods, and work seamlessly with new features like React’s compiler and Concurrent Rendering. The <a href="https://react.dev/reference/react/Component" target="_blank" rel="noopener noreferrer">React documentation</a> explicitly states that class components are not recommended in new code.</p>
+</blockquote>
+<h3 id="extracting-components">Extracting components</h3>
+<p>To illustrate the facts that components can be split into smaller components, consider the following <code>Tweet</code> component:</p>
+<img src="/img/reactjs/tweet-component@2x.png" width="1600" height="846" loading="lazy" alt="Tweet component"/>
+<p>Which can be implemented as follows:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Tweet</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Image</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Avatar&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.author.avatarUrl}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.author.name}</span></span>
+<span class="line"><span style="color:#E1E4E8">        /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User-name&quot;</span><span style="color:#E1E4E8">&gt;{props.author.name}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-text&quot;</span><span style="color:#E1E4E8">&gt;{props.text}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Image</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-image&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.imageUrl}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.description}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-date&quot;</span><span style="color:#E1E4E8">&gt;{</span><span style="color:#B392F0">formatDate</span><span style="color:#E1E4E8">(props.date)}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This component can be a bit difficult to manipulate because of how clustered it is, and reusing individual parts of it would also prove difficult. But, we can still extract a few components from it.</p>
+<p>The first thing we will do is extract* Avatar*:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Avatar</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#79B8FF">Image</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Avatar&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.user.avatarUrl}</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.user.name}</span></span>
+<span class="line"><span style="color:#E1E4E8">    /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><code>Avatar</code> doesn’t need to know that it is being rendered inside a <code>Comment</code>. This is why we have given its prop a more generic name: <em>user</em> rather than <em>author</em>.</p>
+<p>Now we will simplify the comment a little:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Tweet</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Avatar</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">user</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.author} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User-name&quot;</span><span style="color:#E1E4E8">&gt;{props.author.name}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-text&quot;</span><span style="color:#E1E4E8">&gt;{props.text}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Image</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-image&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.imageUrl}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.description}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-date&quot;</span><span style="color:#E1E4E8">&gt;{</span><span style="color:#B392F0">formatDate</span><span style="color:#E1E4E8">(props.date)}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The next thing we will do is to a <code>User</code> component that renders an_ Avatar _next to the user’s name:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">User</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Avatar</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">user</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.user} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;User-name&quot;</span><span style="color:#E1E4E8">&gt;{props.user.name}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Now we will simplify <code>Tweet</code> further:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Tweet</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">User</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">user</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.author} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-text&quot;</span><span style="color:#E1E4E8">&gt;{props.text}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Image</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-image&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.imageUrl}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">alt</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{props.image.description}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Tweet-date&quot;</span><span style="color:#E1E4E8">&gt;{</span><span style="color:#B392F0">formatDate</span><span style="color:#E1E4E8">(props.date)}&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Extracting components seems like a tedious job, but having reusable components makes things easier when coding for larger apps. A good criterion to consider when simplifying components is this: if a part of your UI is used several times (<em>Button, Panel, Avatar</em>), or is complex enough on its own (<em>App, FeedStory, Comment</em>), it is a good candidate to be extracted to a separate component.</p>
+<h3 id="2-props">2. Props</h3>
+<p>Props are a short form for properties, and they simply refer to the internal data of a component in React. They are written inside component calls and are passed into components. They also use the same syntax as HTML attributes, e.g._ prop=“value”. Two things that are worth remembering about props; Firstly, we determine the value of a prop and use it as part of the blueprint before the component is built. Secondly, the value of a prop will never change, i.e. props are read-only once they are passed into components.</p>
+<p>The way you access a prop is by referencing it via the “this.props” property that every component has access to.</p>
+<h3 id="3-state">3. State</h3>
+<p>State is an object that holds some information that may change over the lifetime of the component. Meaning it is just the current snapshot of data stored in a component’s Props. The data can change over time, so techniques to manage the way that data changes become necessary to ensure the component looks the way engineers want it to, at just the right time — this is called <em>State management.</em></p>
+<img src="/img/reactjs/state-props.svg" loading="lazy"/>
+<p>It’s almost impossible to read one paragraph about React without coming across the idea of state-management. Developers love expounding upon this topic, but at its core, state management isn’t really as complex as it sounds.</p>
+<p>In React, state can also be tracked globally, and data can be shared between components as needed. Essentially, this means that in React apps, loading data in new places is not as expensive as it is with other technologies. React apps are smarter about which data they save and load, and when. This opens up opportunities to make interfaces that use data in new ways.</p>
+<p>Think of React components like micro-applications with their own data, logic, and presentation. Each component should have a single purpose. As an engineer, you get to decide that purpose and have complete control over how each component behaves and what data is used. You’re no longer limited by the data on the rest of the page. In your design, you can take advantage of this in all kinds of ways. There are opportunities to present additional data that can improve the user experience or make areas within the design more contextual.</p>
+<h4 id="how-to-add-state-in-react">How to add State in React</h4>
+<p>When designing, Including state is a task that you should save for last. It is much better to design everything as stateless as possible, using props and events. This makes components easier to maintain, test, and understand. Adding states should be done through either state containers such as <a href="https://redux.js.org/" target="_blank" rel="noopener noreferrer">Redux</a> and <a href="https://mobx.js.org/README.html" target="_blank" rel="noopener noreferrer">MobX</a>, or a container/wrapper component. Redux is a popular state management system for other reactive frameworks. It implements a centralized state machine driven by actions.</p>
+<blockquote>
+<p><strong>Note (React 18+):</strong> In modern React, many applications manage state with <strong>Context and Hooks (e.g., <code>useReducer</code>, <code>useContext</code>)</strong> or lightweight libraries (Zustand, Jotai, etc.) for simpler use cases. Redux remains valid for complex global state, but React’s built-in solutions are often sufficient for local/shared state. Automatic batching in React 18 and the React Compiler’s optimizations make it easier to manage state updates efficiently without additional libraries in many scenarios.</p>
+</blockquote>
+<img src="/img/reactjs/redux-details.svg" loading="lazy"/>
+<p>In the example below, the place for the state could be <em>LoginContainer</em> itself. Let’s use React Hooks (this will be discussed in the next section) for this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">LoginContainer</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">username</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setUsername</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">password</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setPassword</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">login</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    event.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">response</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/api&quot;</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">      method: </span><span style="color:#9ECBFF">&quot;POST&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      body: </span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">        username,</span></span>
+<span class="line"><span style="color:#E1E4E8">        password,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">// Here we could check response.status to login or show error</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#79B8FF">LoginForm</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onSubmit</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{login}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">FormInput</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;username&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">title</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Username&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setUsername</span><span style="color:#E1E4E8">(event.currentTarget.value)}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{username}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">FormPasswordInput</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;password&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">title</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Password&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setPassword</span><span style="color:#E1E4E8">(event.currentTarget.value)}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{password}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">SubmitButton</span><span style="color:#E1E4E8">&gt;Login&lt;/</span><span style="color:#79B8FF">SubmitButton</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#79B8FF">LoginForm</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>For further examples such as the above, see <a href="https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18" target="_blank" rel="noopener noreferrer">Thinking in React 2020</a>.</p>
+<hr/>
+<h3 id="props-vs-state">Props vs State</h3>
+<p>Props and state can sometimes be confused with each other because of how similar they are. Here are some key differences between them:</p>
+<table><thead><tr><th><strong>Props</strong></th><th><strong>State</strong></th></tr></thead><tbody><tr><td>The data remains unchanged from component to component. </td><td><p>Data is the current snapshot of data stored in a component’s Props. It
+changes over the lifecycle of the component.</p></td></tr><tr><td>The data is read-only</td><td>The data can be asynchronous </td></tr><tr><td>The data in props cannot be modified</td><td><p>The data in state can be modified using <em>this.setState</em></p></td></tr><tr><td>Props are what is passed on to the component</td><td>State is managed within the component</td></tr></tbody></table>
+<hr/>
+<h2 id="other-concepts-in-react">Other Concepts in React</h2>
+<p>Components, props, and state are the three key concepts for everything you’ll be doing in react. But there are also other concepts to learn about:</p>
+<h3 id="1-lifecycle">1. Lifecycle</h3>
+<p>Every react component goes through three stages; mounting, rendering, and dismounting. The series of events that occur during these three stages can be referred to as the component’s lifecycle. While these events are partially related to the component’s state (its internal data), the lifecycle is a bit different. React has internal code that loads and unloads components as needed, and a component can exist in several stages of use within that internal code.</p>
+<p>There are a lot of lifecycle methods, but the most common ones are:</p>
+<p><strong><code>render()</code></strong> - This method is the only required method within a class component in React and is the most used. As the name suggests, it handles the rendering of your component to the UI, and it happens during the mounting and rendering of your component.</p>
+<p>When the component is created or removed:</p>
+<ul>
+<li><strong><code>componentDidMount()</code></strong> runs after the component output has been rendered to the DOM.</li>
+<li><strong><code>componentWillUnmount()</code></strong> is invoked immediately before a component is unmounted and destroyed</li>
+</ul>
+<p>When the props or states get updated:</p>
+<ul>
+<li><strong><code>shouldComponentUpdate()</code></strong> is invoked before rendering when new props or state are being received.</li>
+<li><strong><code>componentDidUpdate()</code></strong> is invoked immediately after updating occurs. This method is not called for the initial render.</li>
+</ul>
+<h3 id="2-higher-order-componenthoc">2. Higher-order component(HOC)</h3>
+<p><a href="/posts/hoc-pattern">Higher-order components</a> (HOC) are an advanced technique in React for reusing component logic. Meaning a higher-order component is a function that takes a component and returns a new component. They are patterns that emerge from React’s compositional nature. While a component transforms props into UI, a higher-order component transforms a component into another component, and they tend to be popular in third-party libraries.</p>
+<h3 id="3-context">3. Context</h3>
+<p>In a typical React app, data is passed down via props, but this can be cumbersome for some types of props that are required by many components within an application. Context provides a way to share these types of data between components without having to explicitly pass a prop through every level of hierarchy. Meaning with context, we can avoid passing props through intermediate elements.</p>
+<h2 id="react-hooks">React Hooks</h2>
+<p>Hooks are functions that let you “hook into” React state and lifecycle features from functional components. They let you use state and other React features without writing a class. You can learn more about Hooks in our <a href="/posts/hooks-pattern">Hooks</a> guide.</p>
+<img src="/img/reactjs/two-ways.png" alt="two ways of creating components" loading="lazy"/>
+<h2 id="thinking-in-react">Thinking in React</h2>
+<p>One thing that is really amazing about React is how it makes you think about apps as you build them. In this section, we’ll walk you through the thought process of building a <em>Searchable product data table</em> using React Hooks.</p>
+<p><strong>Step 1: Start with a Mock</strong>
+Imagine that we already have a JSON API and a mock of our interface:</p>
+<img src="/img/reactjs/mock-tweet-results@3x.png" alt="Mock tweet Search Results" loading="lazy" width="1600" height="956"/>
+<p>Our JSON API returns some data that looks like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    category: </span><span style="color:#9ECBFF">&quot;Entertainment&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    retweets: </span><span style="color:#9ECBFF">&quot;54&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    isLocal: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    text: </span><span style="color:#9ECBFF">&quot;Omg. A tweet.&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    category: </span><span style="color:#9ECBFF">&quot;Entertainment&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    retweets: </span><span style="color:#9ECBFF">&quot;100&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    isLocal: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    text: </span><span style="color:#9ECBFF">&quot;Omg. Another.&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    category: </span><span style="color:#9ECBFF">&quot;Technology&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    retweets: </span><span style="color:#9ECBFF">&quot;32&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    isLocal: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    text: </span><span style="color:#9ECBFF">&quot;New ECMAScript features!&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    category: </span><span style="color:#9ECBFF">&quot;Technology&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    retweets: </span><span style="color:#9ECBFF">&quot;88&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    isLocal: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    text: </span><span style="color:#9ECBFF">&quot;Wow, learning React!&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
+<p>Tip: You may find free tools like <a href="https://excalidraw.com" target="_blank" rel="noopener noreferrer">Excalidraw</a> useful for drawing out a high-level mock of your UI and components.</p>
+<p><strong>Step 2: Break the UI into a Hierarchy Component</strong></p>
+<p>When you have your mock, the next thing to do is to draw boxes around every component (and subcomponent) in the mock and name all of them, as shown below.</p>
+<p>Use the single responsibility principle: a component should ideally have a single function. If it ends up growing, it should be broken down into smaller subcomponents. Use this same technique for deciding if you should create a new function or object.</p>
+<img src="/img/reactjs/mock-tweet-colors@3x.png" alt="Mock tweet Search Results colors" loading="lazy" width="1600" height="956"/>
+<p>You’ll see in the image above that we have five components in our app. We’ve listed the data each component represents.</p>
+<ul>
+<li><strong>TweetSearchResults (orange):</strong> container for the full component</li>
+<li><strong>SearchBar (blue):</strong> user input for what to search for</li>
+<li><strong>TweetList (green):</strong> displays and filters tweets based on user input</li>
+<li><strong>TweetCategory (turquoise):</strong> displays a heading for each category</li>
+<li><strong>TweetRow (red):</strong> displays a row for each tweet</li>
+</ul>
+<p>Now that the components in the mock have been identified, the next thing to do would be to sort them into a hierarchy. Components that are found within another component in the mock should appear as a child in the hierarchy. Like this:</p>
+<ul>
+<li><strong>TweetSearchResults</strong>
+<ul>
+<li><strong>SearchBar</strong></li>
+<li><strong>TweetList</strong>
+<ul>
+<li><strong>TweetCategory</strong></li>
+<li><strong>TweetRow</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Step 3: Implement the components in React</strong>
+The next step after completing the component hierarchy is to implement your app. Before last year, the quickest way was to build a version that takes your data model and renders the UI but has zero interactivity, but since the introduction of React Hooks, an easier way to implement your app is to use the Hooks as seen below:</p>
+<p><strong>i. Filterable list of tweets</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">TweetSearchResults</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">tweets</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">filterText</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setFilterText</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">inThisLocation</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setInThisLocation</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">SearchBar</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">filterText</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{filterText}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">inThisLocation</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{inThisLocation}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">setFilterText</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{setFilterText}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">setInThisLocation</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{setInThisLocation}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">TweetList</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">tweets</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tweets}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">filterText</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{filterText}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">inThisLocation</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{inThisLocation}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p><strong>ii. SearchBar</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">SearchBar</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({</span></span>
+<span class="line"><span style="color:#E1E4E8">  filterText,</span></span>
+<span class="line"><span style="color:#E1E4E8">  inThisLocation,</span></span>
+<span class="line"><span style="color:#E1E4E8">  setFilterText,</span></span>
+<span class="line"><span style="color:#E1E4E8">  setInThisLocation,</span></span>
+<span class="line"><span style="color:#E1E4E8">}) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">input</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;text&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">placeholder</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Search...&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{filterText}</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setFilterText</span><span style="color:#E1E4E8">(e.target.value)}</span></span>
+<span class="line"><span style="color:#E1E4E8">    /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">label</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">input</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;checkbox&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">checked</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{inThisLocation}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setInThisLocation</span><span style="color:#E1E4E8">(e.target.checked)}</span></span>
+<span class="line"><span style="color:#E1E4E8">        /&gt;{</span><span style="color:#9ECBFF">&quot; &quot;</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">        Only show tweets in your current location</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">label</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p><strong>iii. Tweet list (list of tweets)</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">TweetList</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">tweets</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">filterText</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">inThisLocation</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">rows</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> lastCategory </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  tweets.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">tweet</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (tweet.text.</span><span style="color:#B392F0">toLowerCase</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(filterText.</span><span style="color:#B392F0">toLowerCase</span><span style="color:#E1E4E8">()) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (inThisLocation </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">!</span><span style="color:#E1E4E8">tweet.isLocal) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (tweet.category </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> lastCategory) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      rows.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">TweetCategory</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">category</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tweet.category} </span><span style="color:#B392F0">key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tweet.category} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      );</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    rows.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">TweetRow</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">tweet</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tweet} </span><span style="color:#B392F0">key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tweet.text} /&gt;);</span></span>
+<span class="line"><span style="color:#E1E4E8">    lastCategory </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tweet.category;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">table</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">thead</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8">&gt;Tweet Text&lt;/</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8">&gt;Retweets&lt;/</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">thead</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">tbody</span><span style="color:#E1E4E8">&gt;{rows}&lt;/</span><span style="color:#85E89D">tbody</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">table</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p><strong>iv. Tweet category row</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">TweetCategory</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">category</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">colSpan</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;2&quot;</span><span style="color:#E1E4E8">&gt;{category}&lt;/</span><span style="color:#85E89D">th</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p><strong>v. Tweet Row</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">TweetRow</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">tweet</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">color</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> tweet.isLocal </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;inherit&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;red&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">style</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">&gt;{tweet.text}&lt;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">&gt;{tweet.retweets}&lt;/</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>The final implementation would be all the code written together in the previously stated hierarchy :</p>
+<ul>
+<li><strong>TweetSearchResults</strong>
+<ul>
+<li><strong>SearchBar</strong></li>
+<li><strong>TweetList</strong>
+<ul>
+<li><strong>TweetCategory</strong></li>
+<li><strong>TweetRow</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>There are various ways to start using React.</p>
+<p><strong>Load directly on the web page:</strong> This is the simplest way to set up React. Add the React JavaScript to your page, either as an <code>npm</code> dependency or via a CDN.</p>
+<p><strong>Use create-react-app:</strong> create-react-app is a project aimed at getting you to use React as soon as possible, and any React app that needs to outgrow a single page will find that create-react-app meets that need quite easily. More serious production applications should consider using <a href="/posts/nextjs">Next.js</a> as it has stronger defaults (like code-splitting) baked in.</p>
+<p><strong>Code Sandbox:</strong> An easy way to have the create-react-app structure, without installing it, is to go to <a href="https://codesandbox.io/s" target="_blank" rel="noopener noreferrer">https://codesandbox.io/s</a> and choose “React.”</p>
+<p><strong>Codepen:</strong> If you are prototyping a React component and enjoy using Codepen, a <a href="https://codepen.io/topic/react/templates" target="_blank" rel="noopener noreferrer">number</a> of React <a href="https://codepen.io/flaviocopes/pen/VqeaxB" target="_blank" rel="noopener noreferrer">starting points</a> are also available for use.</p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>The React.js library was designed to make the process of building modular, reusable user interface components simple and intuitive. As you read through some of our other guides, we hope you found this brief introduction a helpful high-level overview.</p>
+<p>If you’re interested in further reading on the React fundamentals, see:</p>
+<ul>
+<li><a href="https://reactjs.org/docs/getting-started.html#learn-react" target="_blank" rel="noopener noreferrer">Official docs</a></li>
+<li><a href="https://reactfordesigners.com/" target="_blank" rel="noopener noreferrer">React for designers</a></li>
+</ul>
+<p><em>This guide would not have been possible without the teaching styles shared in the <a href="https://reactjs.org/docs/components-and-props.html" target="_blank" rel="noopener noreferrer">official React components and props</a>, <a href="https://dev.to/lukeshiru/thinking-in-react-the-2020-version-4c18" target="_blank" rel="noopener noreferrer">thinking in React</a>, <a href="https://davidpfahler.com/thinking-in-react-hooks" target="_blank" rel="noopener noreferrer">thinking in React Hooks</a> and the <a href="https://scriptverse.academy/tutorials/reactjs-pass-props-to-functional-component.html" target="_blank" rel="noopener noreferrer">scriptverse</a> docs</em></p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

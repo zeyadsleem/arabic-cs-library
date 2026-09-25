@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="react">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/react/progressive-hydration/">
+
+    <!-- Primary Meta Tags -->
+    <title>Progressive Hydration</title>
+    <meta name="title" content="Progressive Hydration">
+    <meta name="description" content="Delay loading JavaScript for less important parts of the page">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/react/progressive-hydration/">
+    <meta property="og:title" content="Progressive Hydration">
+    <meta property="og:description" content="Delay loading JavaScript for less important parts of the page">
+    <meta property="og:image" content="http://localhost:3000/media/progressive-rehydration.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/react/progressive-hydration/">
+    <meta property="twitter:title" content="Progressive Hydration">
+    <meta property="twitter:description" content="Delay loading JavaScript for less important parts of the page">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="Z2hIVmV" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;AI UI Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/ai-ui-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compound Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/compound-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;HOC Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hoc-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Hooks Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hooks-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Container/Presentational Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/presentational-container-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Stack Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-2026\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Render Props Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/render-props-pattern\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Client-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/client-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Incremental Static Generation\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/incremental-static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Progressive Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/progressive-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Selective Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-selective-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Server Components\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-server-components\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Server-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/server-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Streaming Server-Side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/streaming-ssr\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/react/progressive-hydration/&quot;],&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Z1Av3oz" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" height="25" class="h-4 w-4 mr-4 inline-block"><title>React Logo</title><circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse></g></svg>React<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/hoc-pattern" class="relative">
+                    <a href="/react/hoc-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      HOC Pattern
+                    </a>
+                  </li><li key="/react/hooks-pattern" class="relative">
+                    <a href="/react/hooks-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Hooks Pattern
+                    </a>
+                  </li><li key="/react/compound-pattern" class="relative">
+                    <a href="/react/compound-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compound Pattern
+                    </a>
+                  </li><li key="/react/presentational-container-pattern" class="relative">
+                    <a href="/react/presentational-container-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Container/Presentational Pattern
+                    </a>
+                  </li><li key="/react/render-props-pattern" class="relative">
+                    <a href="/react/render-props-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Render Props Pattern
+                    </a>
+                  </li><li key="/react/ai-ui-patterns" class="relative">
+                    <a href="/react/ai-ui-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      AI UI Patterns
+                    </a>
+                  </li><li key="/react/react-2026" class="relative">
+                    <a href="/react/react-2026" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Stack Patterns
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/client-side-rendering" class="relative">
+                    <a href="/react/client-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Client-side Rendering
+                    </a>
+                  </li><li key="/react/server-side-rendering" class="relative">
+                    <a href="/react/server-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Server-side Rendering
+                    </a>
+                  </li><li key="/react/static-rendering" class="relative">
+                    <a href="/react/static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Rendering
+                    </a>
+                  </li><li key="/react/incremental-static-rendering" class="relative">
+                    <a href="/react/incremental-static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Incremental Static Generation
+                    </a>
+                  </li><li key="/react/progressive-hydration" class="relative">
+                    <a href="/react/progressive-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Progressive Hydration
+                    </a>
+                  </li><li key="/react/streaming-ssr" class="relative">
+                    <a href="/react/streaming-ssr" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Streaming Server-Side Rendering
+                    </a>
+                  </li><li key="/react/react-server-components" class="relative">
+                    <a href="/react/react-server-components" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Server Components
+                    </a>
+                  </li><li key="/react/react-selective-hydration" class="relative">
+                    <a href="/react/react-selective-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Selective Hydration
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Rendering Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Progressive Hydration
+                </h1>
+            </header>
+        <p>A server-rendered page paints fast. The HTML is on screen long before any React code runs. But the page isn’t <em>interactive</em> until React has downloaded the JS bundle, walked the entire DOM, matched every node to a component, and attached event listeners. That step — hydration — happens all at once, synchronously, and it grows linearly with the size of your component tree.</p>
+<p>The result is a familiar failure mode: a complete-looking page sits on screen for a half-second or more, dropping clicks and looking broken. The metric Google uses to capture this is <strong>Interaction to Next Paint (INP)</strong>, which replaced First Input Delay in Core Web Vitals in March 2024. Hydration is one of the largest contributors to bad INP scores on otherwise well-built sites.</p>
+<div class="group aspect-video w-full rounded-2xl bg-neutral-950 dark:bg-neutral-900"><video src="/media/prog-rehy-1.mp4" preload="metadata" controls="" class="aspect-video w-full rounded-2xl sm:group-data-[offscreen]:data-[playing]:fixed sm:group-data-[offscreen]:data-[playing]:bottom-4 sm:group-data-[offscreen]:data-[playing]:right-4 sm:group-data-[offscreen]:data-[playing]:z-10 sm:group-data-[offscreen]:data-[playing]:max-w-md sm:group-data-[offscreen]:data-[playing]:rounded-xl sm:group-data-[offscreen]:data-[playing]:shadow-lg"><source src="/media/prog-rehy-1.mp4" type="video/mp4"/></video></div>
+<p>Progressive hydration is the family of techniques that splits hydration into pieces and runs each piece at the moment it actually matters — when its JS arrives, when the user scrolls it into view, or when the user tries to interact with it. The goal is the same hydration outcome with much less work on the page’s critical path.</p>
+<hr/>
+<h2 id="what-all-at-once-actually-costs">What “all at once” actually costs</h2>
+<p>A few numbers to ground the discussion. On a 2019 mid-range Android phone:</p>
+<ul>
+<li>Parsing 200 KB of compressed JS takes roughly 300–500 ms.</li>
+<li>Hydrating a moderately complex page (say, 1,500 React nodes) takes another 150–300 ms.</li>
+<li>The main thread is blocked the entire time, which means clicks, scrolls, and CSS animations all stutter or queue.</li>
+</ul>
+<p>If your hero, your nav, and a footer-mounted chat widget all hydrate together, the chat widget — the part nobody touches for 30 seconds — is part of your INP-blocking budget right from page load. Progressive hydration’s premise is that this is silly. Hydrate what’s interactive <em>now</em>; defer the rest.</p>
+<div class="group aspect-video w-full rounded-2xl bg-neutral-950 dark:bg-neutral-900"><video src="/media/prog-rehy-2.mp4" preload="metadata" controls="" class="aspect-video w-full rounded-2xl sm:group-data-[offscreen]:data-[playing]:fixed sm:group-data-[offscreen]:data-[playing]:bottom-4 sm:group-data-[offscreen]:data-[playing]:right-4 sm:group-data-[offscreen]:data-[playing]:z-10 sm:group-data-[offscreen]:data-[playing]:max-w-md sm:group-data-[offscreen]:data-[playing]:rounded-xl sm:group-data-[offscreen]:data-[playing]:shadow-lg"><source src="/media/prog-rehy-2.mp4" type="video/mp4"/></video></div>
+<hr/>
+<h2 id="the-shape-of-the-technique">The shape of the technique</h2>
+<p>A holistic progressive-hydration system needs five things:</p>
+<ol>
+<li>The server renders the full HTML for every component (no missing content while waiting for hydration).</li>
+<li>Each component’s JavaScript is in its own code-split chunk.</li>
+<li>Hydration runs per chunk, in a defined or trigger-based order.</li>
+<li>Already-hydrated regions stay interactive while other regions are still hydrating.</li>
+<li>There is a visible, non-jarring loading state when needed.</li>
+</ol>
+<p>React 18 ships most of this out of the box. The next sections show how to use it.</p>
+<hr/>
+<h2 id="selective-hydration-the-built-in-baseline">Selective hydration: the built-in baseline</h2>
+<p>If you’re already using <code>hydrateRoot</code> with <code>&lt;Suspense&gt;</code>, you’re already doing the simplest form of progressive hydration. Any tree wrapped in <code>&lt;Suspense&gt;</code> hydrates <em>independently</em> of the rest of the page. And if the user clicks inside a region that hasn’t hydrated yet, React reprioritizes — that region jumps the queue.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Suspense, lazy } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">ProductReviews</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./ProductReviews&quot;</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">RelatedProducts</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./RelatedProducts&quot;</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">Comments</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./Comments&quot;</span><span style="color:#E1E4E8">));\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ProductPage</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">product</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">ProductDetails</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">product</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{product} /&gt; {</span><span style="color:#6A737D">/* hydrates first */</span><span style="color:#E1E4E8">}\n</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#79B8FF">ReviewsSkeleton</span><span style="color:#E1E4E8"> /&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">ProductReviews</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">productId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{product.id} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#79B8FF">RelatedSkeleton</span><span style="color:#E1E4E8"> /&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">RelatedProducts</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">productId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{product.id} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Comments</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">productId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{product.id} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The result on the wire:</p>
+<ul>
+<li><code>ProductDetails</code> hydrates as part of the main bundle.</li>
+<li>The other three regions each fetch their own chunk and hydrate when it arrives.</li>
+<li>If the user clicks “post a comment” before the comments chunk has loaded, React loads and hydrates <em>that</em> region first.</li>
+</ul>
+<p>This is enough for most sites. You don’t need a custom hydrator or a third-party library — <code>&lt;Suspense&gt;</code> plus <code>lazy()</code> plus <code>hydrateRoot</code> is the entire mechanism.</p>
+<hr/>
+<h2 id="visibility-based-hydration">Visibility-based hydration</h2>
+<p>For below-the-fold content, you can do better than “load it eventually” — you can wait until the user actually scrolls it into view. This is the same idea as image lazy-loading, applied to JavaScript.</p>
+<p>A small <code>&lt;LazyHydrate&gt;</code> wrapper using <code>IntersectionObserver</code> looks like this:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#9ECBFF">&quot;use client&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useState, useEffect, useRef, Suspense } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">LazyHydrate</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">children</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">rootMargin</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;200px&quot;</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">visible</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setVisible</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">ref</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useRef</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (visible) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">node</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ref.current;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">node) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">observer</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">IntersectionObserver</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      ([</span><span style="color:#FFAB70">entry</span><span style="color:#E1E4E8">]) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (entry.isIntersecting) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">setVisible</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">          observer.</span><span style="color:#B392F0">disconnect</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { rootMargin }</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">    observer.</span><span style="color:#B392F0">observe</span><span style="color:#E1E4E8">(node);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> observer.</span><span style="color:#B392F0">disconnect</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, [visible]);\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ref</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{ref}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {visible </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">}&gt;{children}&lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>In Next.js, the more idiomatic version is <code>next/dynamic</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> dynamic </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/dynamic&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">HeavyChart</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">dynamic</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./HeavyChart&quot;</span><span style="color:#E1E4E8">), {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">loading</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">ChartSkeleton</span><span style="color:#E1E4E8"> /&gt;,</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>By default this still ships server-side. Use <code>{ ssr: false }</code> to skip server rendering for genuinely client-only widgets (a Mapbox map, a code editor), letting their JS download and execute completely off the critical path.</p>
+<hr/>
+<h2 id="interaction-based-hydration-hydrate-on-hover-hydrate-on-click">Interaction-based hydration (“hydrate on hover”, “hydrate on click”)</h2>
+<p>For UI that the user <em>might</em> engage with — a search dropdown, a date picker, a complex menu — you can delay even loading the chunk until the user signals intent. This is what frameworks like Astro and Qwik formalize as <code>client:idle</code>, <code>client:visible</code>, <code>client:media</code>, <code>client:only</code>.</p>
+<p>In a Next.js app you can replicate it with a small wrapper:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#9ECBFF">&quot;use client&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useState, lazy, Suspense } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">SearchModal</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./SearchModal&quot;</span><span style="color:#E1E4E8">));\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">SearchTrigger</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">open</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setOpen</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setOpen</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">)}&gt;Search&lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {open </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;Loading search...&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#79B8FF">SearchModal</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onClose</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setOpen</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">)} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      )}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The trigger button is hydrated as part of the main bundle (it’s tiny). The modal — which carries the heavy dependencies (fuzzy-search library, recent-history state, telemetry) — doesn’t ship to the client until the user clicks. Zero hydration cost up front; small latency on first interaction.</p>
+<hr/>
+<h2 id="react-19-transitions-help-here-too">React 19 transitions help here too</h2>
+<p>Hydration competes for the main thread with everything else the browser is doing. React 19 stabilized <strong>async transitions</strong> and <strong>Actions</strong>, which give you tools to keep hydration from blocking interaction:</p>
+<ul>
+<li>Mark heavy state updates as transitions with <code>startTransition</code> so React can interrupt them.</li>
+<li>The Actions API runs form submissions through a transition automatically, so a click that submits a form remains responsive even while related components are still hydrating.</li>
+<li><code>useActionState</code> and <code>useFormStatus</code> give progressive-enhancement-friendly form handling — the form works before JavaScript loads at all.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#9ECBFF">&quot;use client&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useActionState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { subscribeAction } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./actions&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">SubscribeForm</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">state</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">formAction</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">isPending</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useActionState</span><span style="color:#E1E4E8">(subscribeAction, </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">action</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{formAction}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">input</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">required</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">disabled</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{isPending}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {isPending </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Subscribing...&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Subscribe&quot;</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {state?.error </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;{state.error}&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Because the form’s <code>action</code> is a real Server Action, the form submits even before this component hydrates. Progressive enhancement gives you a no-hydration baseline; React 19’s hooks let you upgrade to the rich UX after.</p>
+<hr/>
+<h2 id="react-server-components-hydrations-other-escape-hatch">React Server Components: hydration’s other escape hatch</h2>
+<p>The most aggressive form of “don’t hydrate this” is “don’t ship its JS at all”. A React Server Component renders entirely on the server, never produces a client bundle, and has nothing to hydrate. Hydration cost for an RSC is exactly zero.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// app/page.tsx  -- Server Component by default</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ClientCounter </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./ClientCounter&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">posts</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> db.posts.</span><span style="color:#B392F0">findMany</span><span style="color:#E1E4E8">();\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">main</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;Latest posts&lt;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {posts.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">p</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{p.id}&gt;{p.title}&lt;/</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">&gt;)} {</span><span style="color:#6A737D">/* no client JS */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">ClientCounter</span><span style="color:#E1E4E8"> /&gt; {</span><span style="color:#6A737D">/* the only thing that hydrates */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">main</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This is the framing the React team has been pushing toward: instead of optimizing how hydration works, eliminate it for the parts of the page that don’t need it. Combine RSCs (for static and data-driven parts) with <code>&#39;use client&#39;</code> islands (for genuinely interactive parts) and you reduce hydration to a tiny fraction of the page.</p>
+<hr/>
+<h2 id="what-to-measure">What to measure</h2>
+<p>Progressive hydration is invisible if you’re not measuring the right things. Track:</p>
+<ul>
+<li><strong>INP (Interaction to Next Paint)</strong> — the headline metric. Anything under 200 ms is good; over 500 ms is poor.</li>
+<li><strong>Total Blocking Time (TBT)</strong> in lab tests (Lighthouse, WebPageTest). High TBT during hydration shows up here.</li>
+<li><strong>Long Animation Frames (LoAF)</strong> — newer API that surfaces specific JS tasks blocking the main thread.</li>
+<li><strong>JS bytes per route</strong> — track per-route bundle size in CI so regressions don’t sneak in.</li>
+</ul>
+<hr/>
+<h2 id="the-decision-tree">The decision tree</h2>
+<p>For each component on a server-rendered page:</p>
+<ol>
+<li>Does it need to be interactive at all? If no, make it a Server Component (or pure HTML).</li>
+<li>Is it above the fold and immediately useful? Hydrate it in the main bundle.</li>
+<li>Is it below the fold but eventually likely to be used? <code>next/dynamic</code> or visibility-based hydration.</li>
+<li>Is it triggered by an explicit user action (modal, dropdown)? Interaction-based hydration.</li>
+<li>Is it conditional on viewport, network, or other media? Conditional client directives.</li>
+</ol>
+<p>Apply this to every region of your page and the total cost of becoming interactive collapses. Progressive hydration is less a single feature than a posture: assume hydration is expensive, and treat every component’s hydration moment as a decision rather than a default.</p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

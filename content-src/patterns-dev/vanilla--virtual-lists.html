@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="vanilla">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/vanilla/virtual-lists/">
+
+    <!-- Primary Meta Tags -->
+    <title>List Virtualization</title>
+    <meta name="title" content="List Virtualization">
+    <meta name="description" content="Optimize list performance with list virtualization">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/vanilla/virtual-lists/">
+    <meta property="og:title" content="List Virtualization">
+    <meta property="og:description" content="Optimize list performance with list virtualization">
+    <meta property="og:image" content="http://localhost:3000/media/listvirtualization.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/vanilla/virtual-lists/">
+    <meta property="twitter:title" content="List Virtualization">
+    <meta property="twitter:description" content="Optimize list performance with list virtualization">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="1XP9nl" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Command Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/command-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Factory Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/factory-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Flyweight Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/flyweight-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mediator/Middleware Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mediator-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mixin Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mixin-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Module Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/module-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Observer Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/observer-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prototype Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prototype-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Provider Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/provider-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Proxy Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/proxy-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Singleton Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/singleton-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/static-import\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Islands Architecture\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/islands-architecture\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Introduction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/rendering-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Animating View Transitions\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/view-transitions\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Bundle Splitting\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/bundle-splitting\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compressing JavaScript\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/compression\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Dynamic Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/dynamic-import\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Interaction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-interaction\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Visibility\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-visibility\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize your loading sequence\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/loading-sequence\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prefetch\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prefetch\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Preload\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/preload\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;PRPL Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prpl\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize loading third-parties\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/third-party\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Tree Shaking\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/tree-shaking\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;List Virtualization\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/virtual-lists\\\&quot;]}]]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/vanilla/virtual-lists/&quot;],&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Zk2h3v" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 630" height="25" class="h-4 w-4 mr-4 inline-block"><rect width="630" height="630" fill="#f7df1e"></rect><path d="m423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 38.1 30.45 19.45 0 31.72-7.61 31.72-37.2v-201.3h59.2v202.1c0 61.3-35.94 89.2-88.4 89.2-47.4 0-74.85-24.53-88.81-54.075z"></path></svg>Vanilla<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/singleton-pattern" class="relative">
+                    <a href="/vanilla/singleton-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Singleton Pattern
+                    </a>
+                  </li><li key="/vanilla/proxy-pattern" class="relative">
+                    <a href="/vanilla/proxy-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Proxy Pattern
+                    </a>
+                  </li><li key="/vanilla/prototype-pattern" class="relative">
+                    <a href="/vanilla/prototype-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prototype Pattern
+                    </a>
+                  </li><li key="/vanilla/observer-pattern" class="relative">
+                    <a href="/vanilla/observer-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Observer Pattern
+                    </a>
+                  </li><li key="/vanilla/module-pattern" class="relative">
+                    <a href="/vanilla/module-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Module Pattern
+                    </a>
+                  </li><li key="/vanilla/mixin-pattern" class="relative">
+                    <a href="/vanilla/mixin-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mixin Pattern
+                    </a>
+                  </li><li key="/vanilla/mediator-pattern" class="relative">
+                    <a href="/vanilla/mediator-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mediator/Middleware Pattern
+                    </a>
+                  </li><li key="/vanilla/flyweight-pattern" class="relative">
+                    <a href="/vanilla/flyweight-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Flyweight Pattern
+                    </a>
+                  </li><li key="/vanilla/factory-pattern" class="relative">
+                    <a href="/vanilla/factory-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Factory Pattern
+                    </a>
+                  </li><li key="/vanilla/command-pattern" class="relative">
+                    <a href="/vanilla/command-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Command Pattern
+                    </a>
+                  </li><li key="/vanilla/provider-pattern" class="relative">
+                    <a href="/vanilla/provider-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Provider Pattern
+                    </a>
+                  </li><li key="/vanilla/static-import" class="relative">
+                    <a href="/vanilla/static-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Import
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/islands-architecture" class="relative">
+                    <a href="/vanilla/islands-architecture" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Islands Architecture
+                    </a>
+                  </li><li key="/vanilla/view-transitions" class="relative">
+                    <a href="/vanilla/view-transitions" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Animating View Transitions
+                    </a>
+                  </li><li key="/vanilla/rendering-patterns" class="relative">
+                    <a href="/vanilla/rendering-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Introduction
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Performance Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Performance Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/loading-sequence" class="relative">
+                    <a href="/vanilla/loading-sequence" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize your loading sequence
+                    </a>
+                  </li><li key="/vanilla/dynamic-import" class="relative">
+                    <a href="/vanilla/dynamic-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Dynamic Import
+                    </a>
+                  </li><li key="/vanilla/import-on-visibility" class="relative">
+                    <a href="/vanilla/import-on-visibility" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Visibility
+                    </a>
+                  </li><li key="/vanilla/import-on-interaction" class="relative">
+                    <a href="/vanilla/import-on-interaction" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Interaction
+                    </a>
+                  </li><li key="/vanilla/bundle-splitting" class="relative">
+                    <a href="/vanilla/bundle-splitting" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Bundle Splitting
+                    </a>
+                  </li><li key="/vanilla/prpl" class="relative">
+                    <a href="/vanilla/prpl" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      PRPL Pattern
+                    </a>
+                  </li><li key="/vanilla/tree-shaking" class="relative">
+                    <a href="/vanilla/tree-shaking" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Tree Shaking
+                    </a>
+                  </li><li key="/vanilla/preload" class="relative">
+                    <a href="/vanilla/preload" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Preload
+                    </a>
+                  </li><li key="/vanilla/prefetch" class="relative">
+                    <a href="/vanilla/prefetch" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prefetch
+                    </a>
+                  </li><li key="/vanilla/third-party" class="relative">
+                    <a href="/vanilla/third-party" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize loading third-parties
+                    </a>
+                  </li><li key="/vanilla/virtual-lists" class="relative">
+                    <a href="/vanilla/virtual-lists" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      List Virtualization
+                    </a>
+                  </li><li key="/vanilla/compression" class="relative">
+                    <a href="/vanilla/compression" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compressing JavaScript
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Performance Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  List Virtualization
+                </h1>
+            </header>
+        <p>In this guide, we will discuss list virtualization (also known as windowing). This is the idea of rendering only visible rows of content in a dynamic list instead of the entire list. The rows rendered are only a small subset of the full list with what is visible (the window) moving as the user scrolls. This can improve rendering performance.</p>
+<p>If you use React and need to <strong>display large lists of data efficiently</strong>, you may be familiar with <a href="https://bvaughn.github.io/react-virtualized/" target="_blank" rel="noopener noreferrer">react-virtualized</a>. It’s a windowing library by <a href="https://twitter.com/brian_d_vaughn" target="_blank" rel="noopener noreferrer">Brian Vaughn</a> that renders only the items currently visible in a list (within a scrolling “viewport”). This means you don’t need to pay the cost of thousands of rows of data being rendered at once. A <a href="https://www.youtube.com/embed/QhPn6hLGljU" target="_blank" rel="noopener noreferrer">video</a> walkthrough of list virtualization with react-window accompanies this write-up.</p>
+<h2 id="how-does-list-virtualization-work">How does list virtualization work?</h2>
+<style jsx="true">
+  .LabeledSvgText {
+    font-size: 14px
+}
+.NotRenderedLabeledSvgText {
+    font-size: 12px
+}
+.LabeledSvgTextMono {
+    font-family: monospace
+}
+.scuFalse {
+    fill: #aaa
+}
+.scuTrue {
+    fill: #c0e0d0
+}
+.scuAnimatedLine,.scuFrozenLine {
+    stroke-width: 1px;
+    stroke-dasharray: 2,4;
+    stroke: #222
+}
+.scuAnimatedLine {
+    -webkit-animation: dash .5s linear;
+    animation: dash .5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes dash {
+    0% {
+        stroke-dashoffset: 6
+    }
+    to {
+        stroke-dashoffset: 0
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 6
+    }
+    to {
+        stroke-dashoffset: 0
+    }
+}
+.scuArrow {
+    fill: #222
+}
+.scuText {
+    font-family: monospace;
+    font-size: 12px
+}
+.CrossHatchRectPattern {
+    stroke: #fff;
+    stroke-width: 10
+}
+.CrossHatchRectHidden,.CrossHatchRectVisible {
+    -webkit-transition: all 2.5s ease;
+    transition: all 2.5s ease
+}
+.CrossHatchRectHidden {
+    opacity: 0
+}
+.CrossHatchRectVisible {
+    opacity: .25
+}
+.HowWorksGroup {
+    -webkit-transform: skewX(0deg);
+    -ms-transform: skewX(0deg);
+    transform: skewX(0deg)
+}
+.HowWorksGroupSkewed {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+    -webkit-transform: skewX(15deg);
+    -ms-transform: skewX(15deg);
+    transform: skewX(15deg)
+}
+.HowWorksOuterGroup {
+    -webkit-transform: translate(-75px,-68px);
+    -ms-transform: translate(-75px,-68px);
+    transform: translate(-75px,-68px)
+}
+.HowWorksOuterGroup,.HowWorksOuterRect {
+    -webkit-transition: -webkit-transform 1s ease;
+    transition: -webkit-transform 1s ease;
+    transition: transform 1s ease;
+    transition: transform 1s ease,-webkit-transform 1s ease
+}
+.HowWorksOuterRect {
+    rx: 8px;
+    ry: 8px;
+    stroke-width: 4px;
+    fill: transparent;
+    stroke: #222
+}
+.HowWorksOuterRectShifted {
+    -webkit-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    transform: translateY(-30px)
+}
+.HowWorksHidden {
+    opacity: 0
+}
+.HowWorksHidden,.HowWorksVisible {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease
+}
+.HowWorksVisible {
+    opacity: 1
+}
+.HowWorksInnerLineAnimated {
+    -webkit-animation: scrolling 1s linear;
+    animation: scrolling 1s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes scrolling {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    to {
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px)
+    }
+}
+@keyframes scrolling {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    to {
+        -webkit-transform: translateY(30px);
+        transform: translateY(30px)
+    }
+}
+.HowWorksInnerLine,.HowWorksInnerRect {
+    fill: transparent;
+    stroke-width: 1px;
+    stroke-dasharray: 2,4;
+    stroke: #222
+}
+.HowWorksRowGroup {
+    font-size: 10px
+}
+.HowWorksRowEstimated,.HowWorksRowNotRendered,.HowWorksRowRendered {
+    stroke-width: 2px;
+    stroke: #fff
+}
+.HowWorksRowEstimated {
+    fill: #ddd
+}
+.HowWorksRowRendered {
+    fill: #a2d4da
+}
+.HowWorksRowNotRendered {
+    fill: #aaa
+}
+.HowWorksViewportLine {
+    stroke-width: 1px;
+    stroke-dasharray: 2,4;
+    stroke: #222;
+    -webkit-transition-delay: 1s;
+    transition-delay: 1s
+}
+.HowWorksScrollTrack {
+    fill: rgba(0,0,0,.1)
+}
+.HowWorksScrollThumb {
+    fill: rgba(0,0,0,.5)
+}
+.HowWorksScrollingLoop {
+    -webkit-animation: scrollingLoop 2.5s linear;
+    animation: scrollingLoop 2.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes scrollingLoop {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(-40px);
+        transform: translateY(-40px)
+    }
+    to {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+@keyframes scrollingLoop {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(-40px);
+        transform: translateY(-40px)
+    }
+    to {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+.HowWorksScrollingThumbLoop {
+    -webkit-animation: scrollingThumbLoop 2.5s linear;
+    animation: scrollingThumbLoop 2.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes scrollingThumbLoop {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(15px);
+        transform: translateY(15px)
+    }
+    to {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+@keyframes scrollingThumbLoop {
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+    50% {
+        -webkit-transform: translateY(15px);
+        transform: translateY(15px)
+    }
+    to {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+}
+.HowWorksTopConditionalScrollingFill {
+    -webkit-animation: topConditionalScrollingFill 2.5s linear;
+    animation: topConditionalScrollingFill 2.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes topConditionalScrollingFill {
+    0% {
+        fill: #a2d4da
+    }
+    14% {
+        fill: #a2d4da
+    }
+    15% {
+        fill: #aaa
+    }
+    84% {
+        fill: #aaa
+    }
+    85% {
+        fill: #a2d4da
+    }
+}
+@keyframes topConditionalScrollingFill {
+    0% {
+        fill: #a2d4da
+    }
+    14% {
+        fill: #a2d4da
+    }
+    15% {
+        fill: #aaa
+    }
+    84% {
+        fill: #aaa
+    }
+    85% {
+        fill: #a2d4da
+    }
+}
+.HowWorksBottomConditionalScrollingFill {
+    -webkit-animation: bottomConditionalScrollingFill 2.5s linear;
+    animation: bottomConditionalScrollingFill 2.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+}
+@-webkit-keyframes bottomConditionalScrollingFill {
+    0% {
+        fill: #aaa
+    }
+    14% {
+        fill: #aaa
+    }
+    15% {
+        fill: #a2d4da
+    }
+    84% {
+        fill: #a2d4da
+    }
+    85% {
+        fill: #aaa
+    }
+}
+@keyframes bottomConditionalScrollingFill {
+    0% {
+        fill: #aaa
+    }
+    14% {
+        fill: #aaa
+    }
+    15% {
+        fill: #a2d4da
+    }
+    84% {
+        fill: #a2d4da
+    }
+    85% {
+        fill: #aaa
+    }
+}
+.List {
+    width: 15rem;
+    height: 15rem;
+    overflow: auto;
+    font-size: 12px;
+    border: 1px solid #cfd8dc;
+    margin: 1rem 0
+}
+.ListWithBorderRadius {
+    border-radius: 1rem;
+    border-width: 4px;
+    overflow: auto
+}
+.ListRow {
+    padding: 0 .5rem;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    -webkit-transition: all 0;
+    transition: all 0;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #e9e9e9
+}
+.ListRowActived {
+    background-color: #e9e9e9
+}
+.RowNumber {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 2rem;
+    -ms-flex: 0 0 2rem;
+    flex: 0 0 2rem;
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    color: #fff
+}
+.RowStack {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 5.25rem;
+    -ms-flex: 1 0 5.25rem;
+    flex: 1 0 5.25rem;
+    margin: 0 .5rem;
+    font-size: 20px
+}
+.RowName {
+    font-size: .8rem;
+    line-height: .8rem;
+    font-weight: 700
+}
+.RowRowNumber {
+    font-size: .6rem;
+    line-height: .6rem;
+    margin-top: .25rem
+}
+.RowStar {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    font-size: 1rem!important;
+    color: #ff502f!important
+}
+.ListScrolling {
+    font-style: italic;
+    opacity: .5
+}
+.BuildingBlocksSvgWrapper {
+    max-width: 100%
+}
+.svgOuterBox {
+    fill: transparent;
+    stroke: #222;
+    stroke-width: 4px;
+    rx: 8px;
+    ry: 8px
+}
+.svgCollectionBoxNotRendered,.svgGridBoxNotRendered,.svgListRowNotRendered,.svgTableColumnNotRendered {
+    fill: #aaa;
+    stroke: transparent
+}
+.svgCollectionBox,.svgGridBox,.svgListRow,.svgTableColumn {
+    fill: #c0e0d0;
+    stroke: transparent
+}
+.svgTableHeader {
+    fill: transparent;
+    stroke: #222
+}
+.svgNotRenderedDimmer {
+    fill: #fff;
+    opacity: .65
+}
+.AnimatedListRow {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 .5rem;
+    background-color: #a2d4da;
+    width: 100%;
+    height: 26px;
+    margin: 2px 0;
+    -webkit-transition: all 0;
+    transition: all 0
+}
+.AnimatedList--Overscan {
+    background-color: #c0e0d0
+}
+.AnimatedList--Invisible {
+    background-color: #aaa
+}
+.AnimatedList--Invisible,.AnimatedList--Overscan {
+    -webkit-transition: all .5s;
+    transition: all .5s
+}
+.AnimatedList {
+    position: relative;
+    width: 150px;
+    height: 300px;
+    margin: 8px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+    font-size: 12px
+}
+.AnimatedList,.Positioned {
+    overflow: visible
+}
+.InnerFrame {
+    position: absolute;
+    top: 100px;
+    height: 100px;
+    left: -8px;
+    right: -8px;
+    border: 4px solid #222;
+    border-radius: 8px
+}
+.AnimatedListDimmerBottom,.AnimatedListDimmerTop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    opacity: .35
+}
+.AnimatedListDimmerBottom {
+    top: 200px;
+    height: 130px
+}
+.AnimatedListDimmerTop {
+    top: 0;
+    height: 100px
+}
+.BottomGroup,.MiddleGroup,.TopGroup {
+    -webkit-transition: all .25s linear;
+    transition: all .25s linear
+}
+.MiddleGroup {
+    position: relative;
+    z-index: 2
+}
+.BottomGroupScaled {
+    -webkit-transform: scaleY(.5) translateY(-137px);
+    -ms-transform: scaleY(.5) translateY(-137px);
+    transform: scaleY(.5) translateY(-137px)
+}
+.MiddleGroupScaled {
+    -webkit-transform: translateY(-35px);
+    -ms-transform: translateY(-35px);
+    transform: translateY(-35px)
+}
+.TopGroupScaled {
+    -webkit-transform: scaleY(.5) translateY(-30px);
+    -ms-transform: scaleY(.5) translateY(-30px);
+    transform: scaleY(.5) translateY(-30px)
+}
+.OuterScrollContainer {
+    position: absolute;
+    top: 5px;
+    width: 100px;
+    height: 100px;
+    border: 4px solid #222;
+    border-radius: 8px
+}
+.UnscaledListItem,.UnscaledListItemActive {
+    display: block;
+    width: 88px;
+    height: 26px;
+    margin: 2px 6px
+}
+.UnscaledListItem {
+    background-color: #aaa
+}
+.UnscaledListItemActive {
+    background-color: #c0e0d0
+}
+.SortableListRow {
+    cursor: pointer;
+    font-size: 12px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-bottom: 1px solid #e9e9e9
+}
+.SortableListRow:hover {
+    background-color: #e9e9e9
+}
+.SortableListRowActive {
+    font-size: 13px;
+    background-color: #c0e0d0;
+    overflow: hidden
+}
+.ResizableListRow {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding: 0 .5rem;
+    border-bottom: 1px solid #e9e9e9
+}
+.DragHandle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 16px;
+    z-index: 2;
+    cursor: row-resize;
+    color: rgba(0,0,0,.2)
+}
+.DragHandle:hover {
+    background-color: rgba(0,0,0,.1)
+}
+.DragHandleActive,.DragHandleActive:hover {
+    color: rgba(0,0,0,.6);
+    z-index: 3
+}
+.DragHandleIcon {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 12px;
+    -ms-flex: 0 0 12px;
+    flex: 0 0 12px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center
+}
+.GridContainer {
+    height: 300px;
+    position: relative;
+    border: 1px solid #dadada;
+    overflow: hidden
+}
+.TopLeftCell {
+    height: 40px;
+    width: 50px;
+    background-color: #f3f3f3;
+    border-bottom: 4px solid #bcbcbc;
+    border-right: 4px solid #bcbcbc
+}
+.MainGrid {
+    position: absolute!important;
+    left: 50px;
+    top: 40px
+}
+.MainGridCell {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    padding: .25rem;
+    outline: 0;
+    border: none;
+    border-right: 1px solid #dadada;
+    border-bottom: 1px solid #dadada;
+    background-color: #fff;
+    font-size: 1rem
+}
+.MainGridCellFocused {
+    box-shadow: inset 0 0 0 2px #4285fa
+}
+.LeftGrid {
+    left: 0;
+    top: 40px
+}
+.LeftGrid,.TopGrid {
+    position: absolute!important;
+    overflow: hidden!important
+}
+.TopGrid {
+    left: 50px;
+    top: 0;
+    height: 40px
+}
+.FixedGridCell {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc
+}
+.FixedGridCellFocused {
+    background-color: #ddd
+}
+.Collection {
+    border: 1px solid #ddd
+}
+.CollectionCell {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff
+}
+.CollectionCellCircle {
+    border-radius: 100%
+}
+</style>
+<svg height="304" width="300" viewBox="0 0 300 304" preserveAspectRatio="xMinYMax meet"><g class="HowWorksGroup HowWorksGroupSkewed"><g class="HowWorksHidden HowWorksVisible"><line x1="25" y1="2" x2="125" y2="2" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="32" x2="125" y2="32" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="62" x2="125" y2="62" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="92" x2="125" y2="92" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="122" x2="125" y2="122" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="152" x2="125" y2="152" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="182" x2="125" y2="182" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="212" x2="125" y2="212" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="242" x2="125" y2="242" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><line x1="25" y1="272" x2="125" y2="272" class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"></line><rect x="25" y="2" width="100" height="300" class="HowWorksInnerRect HowWorksHidden"></rect></g><g class="HowWorksRowGroup HowWorksHidden HowWorksVisible HowWorksScrollingLoop"><g><rect x="25" y="2" width="100" height="30" class="HowWorksRowNotRendered"></rect><text x="75" y="17" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g><g><rect x="25" y="32" width="100" height="30" class="HowWorksRowNotRendered"></rect><text x="75" y="47" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g><g><rect x="25" y="62" width="100" height="30" class="HowWorksTopConditionalScrollingFill HowWorksRowRendered"></rect><text x="75" y="77" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Rendered</text></g><g><rect x="25" y="92" width="100" height="30" class="HowWorksRowRendered"></rect><text x="75" y="107" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Rendered</text></g><g><rect x="25" y="122" width="100" height="30" class="HowWorksRowRendered"></rect><text x="75" y="137" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Rendered</text></g><g><rect x="25" y="152" width="100" height="30" class="HowWorksRowRendered"></rect><text x="75" y="167" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Rendered</text></g><g><rect x="25" y="182" width="100" height="30" class="HowWorksBottomConditionalScrollingFill HowWorksRowNotRendered"></rect><text x="75" y="197" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g><g><rect x="25" y="212" width="100" height="30" class="HowWorksRowNotRendered"></rect><text x="75" y="227" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g><g><rect x="25" y="242" width="100" height="30" class="HowWorksRowNotRendered"></rect><text x="75" y="257" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g><g><rect x="25" y="272" width="100" height="30" class="HowWorksRowNotRendered"></rect><text x="75" y="287" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText HowWorksHidden">Not Rendered</text></g></g><g><g><defs><pattern id="crossHatchRectPattern" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" class="CrossHatchRectPattern"></line></pattern></defs><rect x="25" y="0" width="100" height="80" class="CrossHatchRectHidden" fill="url(#crossHatchRectPattern)"></rect></g><g><defs><pattern id="crossHatchRectPattern" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" class="CrossHatchRectPattern"></line></pattern></defs><rect x="25" y="170" width="100" height="134" class="CrossHatchRectHidden" fill="url(#crossHatchRectPattern)"></rect></g></g><g class="HowWorksOuterGroup HowWorksHidden HowWorksVisible HowWorksOuterRectShifted"><g><line x1="102" y1="72" x2="25" y2="112" class="HowWorksViewportLine HowWorksHidden HowWorksVisible"></line><line x1="102" y1="158" x2="25" y2="198" class="HowWorksViewportLine HowWorksHidden HowWorksVisible"></line><line x1="198" y1="72" x2="125" y2="112" class="HowWorksViewportLine HowWorksHidden HowWorksVisible"></line><line x1="198" y1="158" x2="125" y2="198" class="HowWorksViewportLine HowWorksHidden HowWorksVisible"></line></g><g class="HowWorksHidden HowWorksVisible"><rect x="190" y="72" width="10" height="86" class="HowWorksScrollTrack"></rect><rect x="192" y="100" width="5" rx="3" ry="3" height="15" class="HowWorksScrollThumb HowWorksScrollingThumbLoop"></rect></g><g><rect x="100" y="70" width="100" height="90" class="HowWorksOuterRect"></rect><text x="150" y="115" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText LabeledSvgTextMono">&lt;ul&gt;</text></g></g></g></svg>
+<p>“Virtualizing” a list of items involves <strong>maintaining a window</strong> and <strong>moving that window around your list</strong>. Windowing in react-virtualized works by:</p>
+<ul>
+<li>Having a small container DOM element (e.g <code>&lt;ul&gt;</code>) with relative positioning (window)</li>
+<li>Having a big DOM element for scrolling</li>
+<li>Absolutely positioning children inside the container, setting their styles for top, left, width and height.</li>
+</ul>
+<p>Rather than rendering 1000s of elements from a list at once (which can cause slower initial rendering or impact scroll performance), <strong>virtualization focuses on rendering just items visible to the user</strong>.</p>
+<img src="/media/frame-rate-10k_2x.png" alt="Impact of virtualization leading to a faster frame-rate vs rendering all at once"/>
+<p>This can help keep list rendering fast on mid to low-end devices. You can fetch/display more items as the user scrolls, unloading previous entries and replacing them with new ones.</p>
+<h2 id="a-smaller-alternative-to-react-virtualized">A smaller alternative to react-virtualized</h2>
+<p><a href="https://react-window.now.sh/" target="_blank" rel="noopener noreferrer">react-window</a> is a rewrite of react-virtualized by the same author aiming to be <strong>smaller</strong>, faster and more <a href="https://developers.google.com/web/fundamentals/performance/optimizing-javascript/tree-shaking/" target="_blank" rel="noopener noreferrer">tree-shakeable</a>.</p>
+<img src="/media/bundlephobia_2x.png" alt="Bundlephobia showing a 34KB gzipped size for react-virtualized vs 5KB for react-window"/>
+<p>In a tree-shakeable library, size is a function of which API surfaces you choose to use. I’ve seen ~20-30KB (gzipped) savings using it in place of react-virtualized:</p>
+<img src="/media/wbpa_2x.png" alt="Webpack bundle analyzer showing a ~20KB size difference"/>
+<p>The APIs for both packages are similar and where they differ, react-window tends to be simpler. react-window’s components include:</p>
+<h3 id="list">List</h3>
+<p>Lists render a <strong>windowed list (row) of elements</strong> meaning that only the visible rows are displayed to users (e.g <a href="https://react-window.now.sh/#/examples/list/fixed-size" target="_blank" rel="noopener noreferrer">FixedSizeList</a>, <a href="https://react-window.now.sh/#/examples/list/variable-size" target="_blank" rel="noopener noreferrer">VariableSizeList</a>). Lists use a Grid (internally) to render rows, relaying props to that inner Grid.</p>
+<svg class="BuildingBlocksSvgWrapper" height="405" width="280" viewBox="0 0 280 405" preserveAspectRatio="xMinYMax meet"><g><g><rect x="10" y="10" width="260" height="45" class="svgListRow"></rect><text x="140" y="32.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="60" width="260" height="45" class="svgListRow"></rect><text x="140" y="82.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="110" width="260" height="45" class="svgListRow"></rect><text x="140" y="132.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="160" width="260" height="45" class="svgListRow"></rect><text x="140" y="182.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="210" width="260" height="45" class="svgListRow"></rect><text x="140" y="232.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="260" width="260" height="45" class="svgListRow"></rect><text x="140" y="282.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Row</text></g><g><rect x="10" y="310" width="260" height="45" class="svgListRowNotRendered"></rect><text x="140" y="332.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="10" y="360" width="260" height="45" class="svgListRowNotRendered"></rect><text x="140" y="382.5" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><rect x="0" y="274" width="280" height="131" class="svgNotRenderedDimmer"></rect><rect x="4" y="4" width="272" height="272" class="svgOuterBox"></rect></g></svg>
+<p><strong>Rendering a list of data using React</strong></p>
+<p>Here’s an example of rendering a list of simple data (<code>itemsArray</code>) using React:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ReactDOM </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">itemsArray</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Drake&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Halsey&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Camillo Cabello&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Travis Scott&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Bazzi&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Flume&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Nicki Minaj&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Kodak Black&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Tyga&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Buno Mars&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { name: </span><span style="color:#9ECBFF">&quot;Lil Wayne&quot;</span><span style="color:#E1E4E8"> }, </span><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">]; </span><span style="color:#6A737D">// our data</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Row</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">index</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">style</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{index </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;ListItemOdd&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;ListItemEven&quot;</span><span style="color:#E1E4E8">} </span><span style="color:#B392F0">style</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{style}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {itemsArray[index].name}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Example</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">div</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">style</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{{</span></span>
+<span class="line"><span style="color:#E1E4E8">      height: </span><span style="color:#79B8FF">150</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      width: </span><span style="color:#79B8FF">300</span></span>
+<span class="line"><span style="color:#E1E4E8">    }}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;List&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {itemsArray.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">item</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">index</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Row</span><span style="color:#E1E4E8">({ index }))}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ReactDOM.</span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">Example</span><span style="color:#E1E4E8"> /&gt;, document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;root&quot;</span><span style="color:#E1E4E8">));</span></span></code></pre>
+<p><strong>Rendering a list using react-window</strong></p>
+<p>…and here’s the same example using react-window’s <code>FixedSizeList</code>, which takes a few props (<code>width</code>, <code>height</code>, <code>itemCount</code>, <code>itemSize</code>) and a row rendering function passed as a child:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ReactDOM </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { FixedSizeList </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> List } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-window&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">itemsArray</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">]; </span><span style="color:#6A737D">// our data</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Row</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">index</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">style</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{index </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;ListItemOdd&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;ListItemEven&quot;</span><span style="color:#E1E4E8">} </span><span style="color:#B392F0">style</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{style}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {itemsArray[index].name}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Example</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#79B8FF">List</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;List&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">height</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">150</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">itemCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{itemsArray.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">itemSize</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">35</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">width</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">300</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {Row}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#79B8FF">List</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ReactDOM.</span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">Example</span><span style="color:#E1E4E8"> /&gt;, document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;root&quot;</span><span style="color:#E1E4E8">));</span></span></code></pre>
+<p>You can try out <code>FixedSizeList</code> on <a href="https://codesandbox.io/s/github/bvaughn/react-window/tree/master/website/sandboxes/fixed-size-list-vertical" target="_blank" rel="noopener noreferrer">CodeSandbox</a>.</p>
+<h3 id="grid">Grid</h3>
+<p>Grid renders <strong>tabular data</strong> with virtualization along the vertical and horizontal axes (e.g <a href="https://react-window.now.sh/#/examples/grid/fixed-size" target="_blank" rel="noopener noreferrer">FizedSizeGrid</a>, <a href="https://react-window.now.sh/#/examples/grid/variable-size" target="_blank" rel="noopener noreferrer">VariableSizeGid</a>). It only renders the Grid cells needed to fill itself based on current horizontal/vertical scroll positions.</p>
+<svg class="BuildingBlocksSvgWrapper" height="385" width="385" viewBox="0 0 385 385" preserveAspectRatio="xMinYMax meet"><g><g><rect x="10" y="10" width="90" height="90" class="svgGridBox"></rect><text x="55" y="55" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="10" y="105" width="90" height="90" class="svgGridBox"></rect><text x="55" y="150" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="10" y="200" width="90" height="90" class="svgGridBox"></rect><text x="55" y="245" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="105" y="10" width="90" height="90" class="svgGridBox"></rect><text x="150" y="55" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="105" y="105" width="90" height="90" class="svgGridBox"></rect><text x="150" y="150" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="105" y="200" width="90" height="90" class="svgGridBox"></rect><text x="150" y="245" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="200" y="10" width="90" height="90" class="svgGridBox"></rect><text x="245" y="55" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="200" y="105" width="90" height="90" class="svgGridBox"></rect><text x="245" y="150" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="200" y="200" width="90" height="90" class="svgGridBox"></rect><text x="245" y="245" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText">Cell</text></g><g><rect x="295" y="10" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="340" y="55" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="295" y="105" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="340" y="150" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="295" y="200" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="340" y="245" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="10" y="295" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="55" y="340" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="105" y="295" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="150" y="340" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="200" y="295" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="245" y="340" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><g><rect x="295" y="295" width="90" height="90" class="svgGridBoxNotRendered"></rect><text x="340" y="340" text-anchor="middle" alignment-baseline="central" class="LabeledSvgText NotRenderedLabeledSvgText">Not Rendered</text></g><rect x="274" y="0" width="111" height="274" class="svgNotRenderedDimmer"></rect><rect x="0" y="274" width="385" height="111" class="svgNotRenderedDimmer"></rect><rect x="4" y="4" width="272" height="272" class="svgOuterBox"></rect></g></svg>
+<p>If we wanted to render the same list as earlier with a grid layout, assuming our input is a multi-dimensional array, we could accomplish this using <code>FixedSizeGrid</code> as follows:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ReactDOM </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react-dom&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { FixedSizeGrid </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> Grid } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react-window&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">itemsArray</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  [{},{},{},</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  [{},{},{},</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  [{},{},{},</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  [{},{},{},</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Cell</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">columnIndex</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">rowIndex</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">style</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">div</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#E1E4E8">      columnIndex </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> rowIndex </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">0</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;GridItemOdd&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;GridItemEven&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> rowIndex </span><span style="color:#F97583">%</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;GridItemOdd&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;GridItemEven&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">style</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{style}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {itemsArray[rowIndex][columnIndex].name}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Example</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#79B8FF">Grid</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">className</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Grid&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">columnCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">columnWidth</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">height</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">150</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">rowCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">rowHeight</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">35</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">width</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">300</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {Cell}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#79B8FF">Grid</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">ReactDOM.</span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">Example</span><span style="color:#E1E4E8"> /&gt;, document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;root&#39;</span><span style="color:#E1E4E8">));</span></span></code></pre>
+<p>You can also try out <code>FixedSizeGrid</code> on <a href="https://codesandbox.io/s/github/bvaughn/react-window/tree/master/website/sandboxes/fixed-size-grid" target="_blank" rel="noopener noreferrer">CodeSandbox</a>.</p>
+<h2 id="more-in-depth-react-window-examples">More in-depth react-window examples</h2>
+<p><a href="https://github.com/staylor" target="_blank" rel="noopener noreferrer">Scott Taylor</a> implemented an open-source <a href="http://pitchfork.highforthis.com/" target="_blank" rel="noopener noreferrer">Pitchfork music reviews scraper</a> <a href="https://github.com/staylor/pitchfork-scraper" target="_blank" rel="noopener noreferrer">(src)</a> using <code>react-window</code> and <code>FixedSizeGrid</code>. Here’s a video of the app in action:</p>
+<iframe loading="lazy" width="100%" height="400" src="https://www.youtube.com/embed/jLtr4tpFKQE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Pitchfork scraper uses <a href="https://github.com/bvaughn/react-window-infinite-loader" target="_blank" rel="noopener noreferrer">react-window-infinite-loader</a> (<a href="https://codesandbox.io/s/5wqo7z2np4" target="_blank" rel="noopener noreferrer">demo</a>) which helps break large data sets down into chunks that can be loaded as they are scrolled into view.</p>
+<p>Here’s a snippet of how react-window-infinite-loader is incorporated in this app:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { Component } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { FixedSizeGrid </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> Grid } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react-window&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> InfiniteLoader </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react-window-infinite-loader&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">InfiniteLoader</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">isItemLoaded</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.isItemLoaded}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">loadMoreItems</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.loadMoreItems}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">itemCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.count </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {({ </span><span style="color:#FFAB70">onItemsRendered</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ref</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#79B8FF">Grid</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">onItemsRendered</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">onItemsRendered</span><span style="color:#E1E4E8">(onItemsRendered)}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">columnCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">COLUMN_SIZE</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">columnWidth</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">180</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">height</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">800</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">rowCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{Math.</span><span style="color:#B392F0">max</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.count </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">COLUMN_SIZE</span><span style="color:#E1E4E8">)}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">rowHeight</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">220</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">width</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">1024</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#B392F0">ref</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{ref}</span></span>
+<span class="line"><span style="color:#E1E4E8">          &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">            {</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.renderCell}</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;/</span><span style="color:#79B8FF">Grid</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        )}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">InfiniteLoader</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>You might find the <a href="https://github.com/staylor/pitchfork-scraper/commit/d9bff69e332ad9de8351c67f4848fc7968209eff" target="_blank" rel="noopener noreferrer">commit</a> porting the app over from <code>react-virtualized</code> useful.</p>
+<p>An implementation of Pitchfork scraper using <code>FixedSizeList</code> is also available (<a href="https://node-ntdprbnulc.now.sh" target="_blank" rel="noopener noreferrer">demo</a>, <a href="https://youtu.be/CImWBbBeQXU" target="_blank" rel="noopener noreferrer">demo on Pixel</a>):</p>
+<iframe loading="lazy" width="100%" height="400" src="https://www.youtube.com/embed/joYOccsf6_k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>And here’s a snippet of the implementation:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#79B8FF">InfiniteLoader</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">isItemLoaded</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.isItemLoaded}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">loadMoreItems</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.loadMoreItems}</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">itemCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.count}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    {({ </span><span style="color:#FFAB70">onItemsRendered</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ref</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">section</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">FixedSizeList</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">itemCount</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.count}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">itemSize</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">ROW_HEIGHT</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">onItemsRendered</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{onItemsRendered}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">height</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.height}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">width</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.width}</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">ref</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{ref}</span></span>
+<span class="line"><span style="color:#E1E4E8">        &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          {</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.renderCell}</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#79B8FF">FixedSizeList</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">section</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    )}</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#79B8FF">InfiniteLoader</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>What if we have even more complex needs for a grid virtualization solution? We found a <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">The Movie Database</a> <a href="https://tmdb-viewer.surge.sh/" target="_blank" rel="noopener noreferrer">demo app</a> that used react-virtualized and Infinite Loader under the hood.</p>
+<p><a href="https://github.com/addyosmani/tmdb-viewer/blob/master/src/components/InfiniteMoviesList.js" target="_blank" rel="noopener noreferrer">Porting</a> it over to react-window and react-window-infinite-loader didn’t take long, but we did discover a few components were not yet supported. Regardless, the final functionality is <a href="https://tmdb-viewer.firebaseapp.com/" target="_blank" rel="noopener noreferrer">pretty close</a>.</p>
+<a href="https://tmdb-viewer.firebaseapp.com/"><img loading="lazy" src="/media/tmdb_2x.jpg" alt="TMDB Viewer"/></a>
+<p>The missing components were WindowScroller and AutoSizer…which we’ll look at next.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">section</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">AutoSizer</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">disableHeight</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          {({</span><span style="color:#FFAB70">width</span><span style="color:#E1E4E8">}) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> {</span><span style="color:#79B8FF">movies</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">hasMore</span><span style="color:#E1E4E8">} </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.props;</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">rowCount</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">getRowsAmount</span><span style="color:#E1E4E8">(width, movies.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">, hasMore);</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">            </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">              &lt;</span><span style="color:#79B8FF">InfiniteLoader</span></span>
+<span class="line"><span style="color:#E1E4E8">                </span><span style="color:#B392F0">ref</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.infiniteLoaderRef}</span></span>
+<span class="line"><span style="color:#E1E4E8">                </span><span style="color:#FDAEB7;font-style:italic">...</span></span>
+<span class="line"><span style="color:#E1E4E8">                {({</span><span style="color:#FFAB70">onRowsRendered</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">registerChild</span><span style="color:#E1E4E8">}) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">                  &lt;</span><span style="color:#79B8FF">WindowScroller</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">                    {({</span><span style="color:#FFAB70">height</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">scrollTop</span><span style="color:#E1E4E8">}) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span></code></pre>
+<h2 id="whats-missing-from-react-window">What’s missing from react-window?</h2>
+<p>react-window does not yet have the complete API surface of react-virtualized, so do check the <a href="https://github.com/bvaughn/react-window#how-is-react-window-different-from-react-virtualized" target="_blank" rel="noopener noreferrer">comparison docs</a> if considering it. What’s missing?</p>
+<ul>
+<li><a href="https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md" target="_blank" rel="noopener noreferrer">WindowScroller</a> - This is a <code>react-virtualized</code> component that enables Lists to be scrolled based on the window’s scroll positions. There are currently <a href="https://github.com/bvaughn/react-window/issues/30" target="_blank" rel="noopener noreferrer">no plans</a> to implement this for react-window so you’ll need to solve this in userland.</li>
+<li><a href="https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md" target="_blank" rel="noopener noreferrer">AutoSizer</a> - HOC that grows to fit all of the available space, automatically adjusting the width and height of a single child. Brian implemented this as a <a href="https://www.npmjs.com/package/react-virtualized-auto-sizer" target="_blank" rel="noopener noreferrer">standalone</a> package. Follow <a href="https://github.com/bvaughn/react-window/issues/5" target="_blank" rel="noopener noreferrer">this issue</a> for the latest.</li>
+<li><a href="https://github.com/bvaughn/react-virtualized/blob/master/docs/CellMeasurer.md" target="_blank" rel="noopener noreferrer">CellMeasurer</a> - HOC automatically measuring a cell’s content by rendering it in a way that is not visible to the user. Follow <a href="https://github.com/bvaughn/react-window/issues/6" target="_blank" rel="noopener noreferrer">here</a> for discussion on support.</li>
+</ul>
+<p>That said, we found react-window sufficient for most of our needs with what it includes out of the box.</p>
+<h2 id="improvements-in-the-web-platform">Improvements in the web platform</h2>
+<p>Some modern browsers now support <a href="https://web.dev/content-visibility/" target="_blank" rel="noopener noreferrer">CSS content-visibility</a>. <code>content-visibility:auto</code> allows you to skip rendering &amp; painting offscreen content until needed. If you have a long HTML document with costly rendering, consider trying the property out.</p>
+<p>For rendering lists of dynamic content, I still recommend using a library like react-window. It would be hard to have a <code>content-visbility:hidden</code> version of such a library that beats a version aggressively using <code>display:none</code> or removing DOM nodes when offscreen like many list virtualization libraries may do today.</p>
+<h2 id="further-reading">Further reading</h2>
+<p>For further reading about react-window and react-virtualized, check out:</p>
+<ul>
+<li><a href="https://alligator.io/react/lists-with-react-window/" target="_blank" rel="noopener noreferrer">Rendering performant lists with react-window</a></li>
+<li><a href="https://www.youtube.com/watch?v=t4tuhg7b50I" target="_blank" rel="noopener noreferrer">Creating More Efficient React Views with Windowing</a></li>
+<li><a href="https://css-tricks.com/rendering-lists-using-react-virtualized/" target="_blank" rel="noopener noreferrer">Rendering lists with react-virtualized</a></li>
+<li><a href="https://blog.logrocket.com/rendering-large-lists-with-react-virtualized-82741907a6b3" target="_blank" rel="noopener noreferrer">Rendering large lists with react-virtualized</a></li>
+</ul>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

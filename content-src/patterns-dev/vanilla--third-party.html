@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="vanilla">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/vanilla/third-party/">
+
+    <!-- Primary Meta Tags -->
+    <title>Optimize loading third-parties</title>
+    <meta name="title" content="Optimize loading third-parties">
+    <meta name="description" content="Reduce the performance impact third-party scripts have on your site.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/vanilla/third-party/">
+    <meta property="og:title" content="Optimize loading third-parties">
+    <meta property="og:description" content="Reduce the performance impact third-party scripts have on your site.">
+    <meta property="og:image" content="http://localhost:3000/media/thirdParties.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/vanilla/third-party/">
+    <meta property="twitter:title" content="Optimize loading third-parties">
+    <meta property="twitter:description" content="Reduce the performance impact third-party scripts have on your site.">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="nujIx" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Command Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/command-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Factory Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/factory-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Flyweight Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/flyweight-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mediator/Middleware Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mediator-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mixin Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mixin-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Module Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/module-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Observer Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/observer-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prototype Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prototype-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Provider Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/provider-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Proxy Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/proxy-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Singleton Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/singleton-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/static-import\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Islands Architecture\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/islands-architecture\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Introduction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/rendering-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Animating View Transitions\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/view-transitions\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Bundle Splitting\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/bundle-splitting\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compressing JavaScript\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/compression\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Dynamic Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/dynamic-import\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Interaction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-interaction\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Visibility\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-visibility\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize your loading sequence\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/loading-sequence\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prefetch\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prefetch\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Preload\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/preload\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;PRPL Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prpl\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize loading third-parties\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/third-party\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Tree Shaking\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/tree-shaking\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;List Virtualization\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/virtual-lists\\\&quot;]}]]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/vanilla/third-party/&quot;],&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Zk2h3v" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 630" height="25" class="h-4 w-4 mr-4 inline-block"><rect width="630" height="630" fill="#f7df1e"></rect><path d="m423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 38.1 30.45 19.45 0 31.72-7.61 31.72-37.2v-201.3h59.2v202.1c0 61.3-35.94 89.2-88.4 89.2-47.4 0-74.85-24.53-88.81-54.075z"></path></svg>Vanilla<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/singleton-pattern" class="relative">
+                    <a href="/vanilla/singleton-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Singleton Pattern
+                    </a>
+                  </li><li key="/vanilla/proxy-pattern" class="relative">
+                    <a href="/vanilla/proxy-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Proxy Pattern
+                    </a>
+                  </li><li key="/vanilla/prototype-pattern" class="relative">
+                    <a href="/vanilla/prototype-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prototype Pattern
+                    </a>
+                  </li><li key="/vanilla/observer-pattern" class="relative">
+                    <a href="/vanilla/observer-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Observer Pattern
+                    </a>
+                  </li><li key="/vanilla/module-pattern" class="relative">
+                    <a href="/vanilla/module-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Module Pattern
+                    </a>
+                  </li><li key="/vanilla/mixin-pattern" class="relative">
+                    <a href="/vanilla/mixin-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mixin Pattern
+                    </a>
+                  </li><li key="/vanilla/mediator-pattern" class="relative">
+                    <a href="/vanilla/mediator-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mediator/Middleware Pattern
+                    </a>
+                  </li><li key="/vanilla/flyweight-pattern" class="relative">
+                    <a href="/vanilla/flyweight-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Flyweight Pattern
+                    </a>
+                  </li><li key="/vanilla/factory-pattern" class="relative">
+                    <a href="/vanilla/factory-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Factory Pattern
+                    </a>
+                  </li><li key="/vanilla/command-pattern" class="relative">
+                    <a href="/vanilla/command-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Command Pattern
+                    </a>
+                  </li><li key="/vanilla/provider-pattern" class="relative">
+                    <a href="/vanilla/provider-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Provider Pattern
+                    </a>
+                  </li><li key="/vanilla/static-import" class="relative">
+                    <a href="/vanilla/static-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Import
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/islands-architecture" class="relative">
+                    <a href="/vanilla/islands-architecture" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Islands Architecture
+                    </a>
+                  </li><li key="/vanilla/view-transitions" class="relative">
+                    <a href="/vanilla/view-transitions" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Animating View Transitions
+                    </a>
+                  </li><li key="/vanilla/rendering-patterns" class="relative">
+                    <a href="/vanilla/rendering-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Introduction
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Performance Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Performance Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/loading-sequence" class="relative">
+                    <a href="/vanilla/loading-sequence" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize your loading sequence
+                    </a>
+                  </li><li key="/vanilla/dynamic-import" class="relative">
+                    <a href="/vanilla/dynamic-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Dynamic Import
+                    </a>
+                  </li><li key="/vanilla/import-on-visibility" class="relative">
+                    <a href="/vanilla/import-on-visibility" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Visibility
+                    </a>
+                  </li><li key="/vanilla/import-on-interaction" class="relative">
+                    <a href="/vanilla/import-on-interaction" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Interaction
+                    </a>
+                  </li><li key="/vanilla/bundle-splitting" class="relative">
+                    <a href="/vanilla/bundle-splitting" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Bundle Splitting
+                    </a>
+                  </li><li key="/vanilla/prpl" class="relative">
+                    <a href="/vanilla/prpl" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      PRPL Pattern
+                    </a>
+                  </li><li key="/vanilla/tree-shaking" class="relative">
+                    <a href="/vanilla/tree-shaking" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Tree Shaking
+                    </a>
+                  </li><li key="/vanilla/preload" class="relative">
+                    <a href="/vanilla/preload" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Preload
+                    </a>
+                  </li><li key="/vanilla/prefetch" class="relative">
+                    <a href="/vanilla/prefetch" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prefetch
+                    </a>
+                  </li><li key="/vanilla/third-party" class="relative">
+                    <a href="/vanilla/third-party" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Optimize loading third-parties
+                    </a>
+                  </li><li key="/vanilla/virtual-lists" class="relative">
+                    <a href="/vanilla/virtual-lists" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      List Virtualization
+                    </a>
+                  </li><li key="/vanilla/compression" class="relative">
+                    <a href="/vanilla/compression" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compressing JavaScript
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Performance Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Optimize loading third-parties
+                </h1>
+            </header>
+        <blockquote>
+<p>tl;dr: Third-party resources can slow down sites and can be a challenge to optimize. You can follow certain best practices to load or delay different types of third-parties efficiently. You can also use framework-level components such as the <a href="https://nextjs.org/docs/basic-features/script" target="_blank" rel="noopener noreferrer">Next.js Script component</a>, which provides a template for framing the “when” and “how” for loading third-party scripts. Alternatively, experimental ideas like <a href="https://github.com/BuilderIO/partytown" target="_blank" rel="noopener noreferrer">Partytown</a> may be of interest.</p>
+</blockquote>
+<p>It would be hard to find a modern site that operates in silos. Most sites coexist and depend on several other sources on the web for data, functions, content, and much more. Any resource located on another domain and consumed by your site is a third-party (3P) resource for your site. Typical third-party resources that are included on sites include</p>
+<ul>
+<li>Embeds for maps, videos, social media, and chat services</li>
+<li>Advertisements</li>
+<li>Analytics components and tag managers</li>
+<li>A/B testing and personalization scripts</li>
+<li>Utility libraries that provide ready-to-use helper functions such as those used for data visualization or animations.</li>
+<li><a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener noreferrer">reCAPTCHA</a> or CAPTCHA for bot detection.</li>
+</ul>
+<p>You can use third-parties to integrate other features that add value to your content or to reduce some drudgery involved in building a site from scratch. As per the Web Almanac report for 2021, more than <a href="https://almanac.httparchive.org/en/2021/third-parties#prevalence" target="_blank" rel="noopener noreferrer">94% of the pages</a> on the web use third-parties - <a href="https://almanac.httparchive.org/en/2020/third-parties#content-types" target="_blank" rel="noopener noreferrer">images and JavaScript</a> forming the most significant contributors to third-party content. Below is a helpful <a href="https://almanac.httparchive.org/en/2021/third-parties#fig-10" target="_blank" rel="noopener noreferrer">breakdown</a> of third-party requests by content type and category:</p>
+<img src="/img/thirdparty/optimizingthir--wwfbjeoqhxl.png" width="auto" height="200" alt="third-party requests by content type and category"/>
+<p>While third-party resources can enrich your site with valuable features, they can also slow it down if:</p>
+<ul>
+<li>They cause additional round trips to the third-party domain for every required resource.</li>
+<li>They make heavy usage of JavaScript (impacting download and execution time)or are bulky in size because of unoptimized images/videos.</li>
+<li>Individual site owners cannot influence the implementation, and their behavior can be unpredictable.</li>
+<li>They can block the rendering of other critical resources on the page and affect <a href="https://web.dev/vitals/" target="_blank" rel="noopener noreferrer">Core Web Vitals</a> (CWV).</li>
+</ul>
+<p>Despite these issues, third-parties may be essential to your business. If you cannot do away with 3P’s, the next best thing is to optimize them to reduce performance impact - and that is what we will cover in this section.</p>
+<p>We have included some strategies and best practices that apply to different types of third-party scripts. The Next.js Script component incorporates many of these best practices, and you can learn about it in the second half of this post. Let’s first see how you would find out if a third-party script is harming the performance of a page.</p>
+<hr/>
+<h2 id="assessing-the-performance-impact-of-3p-resources">Assessing the performance impact of 3P resources</h2>
+<p>You can use a combination of techniques to find how third-party code is affecting your site.</p>
+<ul>
+<li>
+<p>The following Lighthouse audits help identify slow third-party scripts that affect CWV.</p>
+<ul>
+<li><a href="https://web.dev/third-party-summary/" target="_blank" rel="noopener noreferrer">Reduce the impact of third-party code</a> for scripts that block the main thread.</li>
+<li><a href="https://web.dev/bootup-time/" target="_blank" rel="noopener noreferrer">Reduce JavaScript execution time</a> for scripts that take long to execute</li>
+<li><a href="https://web.dev/total-byte-weight/" target="_blank" rel="noopener noreferrer">Avoid enormous network payloads</a> for large scripts</li>
+</ul>
+</li>
+</ul>
+<img src="/img/thirdparty/optimizingthir--3tr5286cg4z.png" width="auto" height="200" loading="lazy" alt="Reduce the impact of third-party code"/>
+<img src="/img/thirdparty/optimizingthir--t68otdbvv1.png" width="auto" height="200" loading="lazy" alt="Reduce JavaScript execution time"/>
+<img src="/img/thirdparty/optimizingthir--aaavejhhjgm.png" width="auto" height="200" loading="lazy" alt="Avoid enormous network payloads"/>
+<ul>
+<li>Use the WebPageTest (WPT) waterfall chart to identify <a href="https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#third-party-blocking-javascript" target="_blank" rel="noopener noreferrer">third-party blocking scripts</a> or WPT side-by-side comparison to <a href="https://andydavies.me/blog/2018/02/19/using-webpagetest-to-measure-the-impact-of-3rd-party-tags/" target="_blank" rel="noopener noreferrer">measure the impact of 3rd party tags</a>.</li>
+<li>Sites like <a href="https://bundlephobia.com/" target="_blank" rel="noopener noreferrer">Bundlephobia</a> help to assess the cost of adding available npm packages to your bundles. You can also find size and dependencies included in any package using <a href="https://www.npmjs.com/package/" target="_blank" rel="noopener noreferrer">npm package search</a>.</li>
+</ul>
+<p>With that background on identifying problematic third-party code, let’s explore ways to optimize it.</p>
+<hr/>
+<h2 id="optimization-strategies">Optimization strategies</h2>
+<p>Since third-party code is not under your control, you cannot optimize the libraries directly. This leaves you with two options.</p>
+<ol>
+<li>
+<p><strong>Replace or remove</strong>: If the value provided by the third-party script is not proportional to its performance cost, consider removing it. You can also evaluate other alternatives that are lightweight but provide similar functionality. In <a href="https://www.patterns.dev/posts/nextjs-casestudy/#packages-switched" target="_blank" rel="noopener noreferrer">this</a> case study, we discuss how we improved the performance of a movies app by switching packages with lighter alternatives and similar features.</p>
+</li>
+<li>
+<p><strong>Optimize the loading sequence</strong>: The loading process involves loading several first-party and third-party resources in the browser. To design an optimal loading strategy, you would need to consider the browser assigned priority for different resources, their position on the page, and the value of each resource for the web page. We have proposed an <a href="https://www.patterns.dev/posts/loading-sequence/#what-is-the-ideal-loading-sequence" target="_blank" rel="noopener noreferrer">optimal loading sequence for a React/Next.js app</a>. We will now see how this applies to various third-party resources and the steps we can take to load them optimally.</p>
+</li>
+</ol>
+<h3 id="load-3p-scripts-efficiently">Load 3P scripts efficiently</h3>
+<p>Following are the time-tested best practices that can reduce the performance impact of third-party resources when used correctly.</p>
+<h4 id="use-async-or-defer-to-prevent-scripts-from-blocking-other-content">Use async or defer to prevent scripts from blocking other content.</h4>
+<p><strong>Applicable to:</strong> Non-critical scripts (tag managers, analytics)</p>
+<p>JavaScript download and execution is synchronous by default and can block the HTML parser and DOM construction on the main thread. Use of <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-async" target="_blank" rel="noopener noreferrer">async</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer" target="_blank" rel="noopener noreferrer">defer</a> attributes in the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script" target="_blank" rel="noopener noreferrer"><code>&lt;script&gt;</code></a> element tells the browser to download scripts asynchronously. You can use these to download any script that is not necessary for the critical rendering path (e.g., the main UI component)</p>
+<ul>
+<li><strong><code>defer</code></strong>: the script is fetched in parallel as the parser executes, and script execution is delayed till the parsing is complete. Defer should be the default choice for delaying execution until after DOM construction.</li>
+<li><strong><code>async</code></strong>: the script is fetched in parallel while parsing but executed as soon as it is available when it blocks the parser. For module scripts with dependencies, the script and all its dependencies are executed in the defer queue. Use <code>async</code> for scripts that need to run earlier in the loading process. For example, you may want to execute specific analytics scripts early without missing any early page-load data.</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://example.com/deferthis.js&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">defer</span><span style="color:#E1E4E8">&gt;&lt;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://example.com/asyncthis.js&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">async</span><span style="color:#E1E4E8">&gt;&lt;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<img src="/img/thirdparty/optimizingthir--k6owmtevvl.png" width="auto" height="200" loading="lazy" alt="async/defer comparison"/>
+<blockquote>
+<p>Credit: <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript" target="_blank" rel="noopener noreferrer">developers.google.com</a></p>
+</blockquote>
+<p>One caveat worth mentioning here is that async and defer lower the browser assigned priority of the resources causing it to load significantly later. A new feature for <a href="https://web.dev/priority-hints/" target="_blank" rel="noopener noreferrer">priority hints</a> can help to work around this problem.</p>
+<h3 id="establish-early-connections-to-required-origins-using-resource-hints">Establish early connections to required origins using resource hints</h3>
+<p><strong>Applicable to:</strong> Critical scripts, fonts, CSS, images from third-party CDNs</p>
+<p>Connecting to third-party origins can be slow due to the DNS lookups, redirects, and multiple round trips that may be required for each third-party server. Resource hints dns-prefetch and preconnect help cut down the time needed for this setup by initiating the connections early in the life cycle.</p>
+<p>Including a <a href="https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch" target="_blank" rel="noopener noreferrer">dns-prefetch</a> resource hint corresponding to a domain will perform the DNS lookup early, thus reducing the latency associated with dns lookups. You can pair this with <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect" target="_blank" rel="noopener noreferrer">preconnect</a> for the most critical resources. The preconnect initiates a connection with the third-party domain by performing TCP round trips and handling TLS negotiations in addition to the DNS lookup.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">rel</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;preconnect&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;http://example.com&quot;</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">link</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">rel</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;dns-prefetch&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;http://example.com&quot;</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>Our post on the <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p" target="_blank" rel="noopener noreferrer">ideal loading sequence</a>, provides a list of third-party resources where preconnect should be used.</p>
+<p>Benefits of using resource hints are evident in this case study where Andy Davies discusses how using <a href="https://andydavies.me/blog/2019/03/22/improving-perceived-performance-with-a-link-rel-equals-preconnect-http-header/" target="_blank" rel="noopener noreferrer">preconnect helped reduce the loading time</a> for the main product image by initiating an early connection to the third-party image CDN.</p>
+<blockquote>
+<p>“The real-world metrics showed a 400ms improvement at the median and greater than 1s improvement at the 95th percentile.”</p>
+</blockquote>
+<p>Similarly, you may use resource hints to optimize loading time for critical third-parties like bot detection (reCaptcha) and consent management.</p>
+<h3 id="lazy-load-below-the-fold-3p-resources">Lazy load below-the-fold 3P resources</h3>
+<p><strong>Applicable to:</strong> Embeds such as YouTube, Maps, Advertisements and Social media</p>
+<p>Third-party embeds like those used for social media feeds, advertisements, YouTube videos, and maps can slow down web pages. However, all such embeds may not be visible to users on page load and may be lazy-loaded as the user scrolls down to them. You can use different lazy-loading methods depending on desired browser support.</p>
+<ol>
+<li>The <a href="https://web.dev/iframe-lazy-loading/" target="_blank" rel="noopener noreferrer">loading</a> attribute can be used with images and iframes commonly used to load third-party embeds like those for YouTube or Google Maps.</li>
+<li>A custom implementation using the <a href="https://developers.google.com/web/updates/2016/04/intersectionobserver" target="_blank" rel="noopener noreferrer">IntersectionObserver API</a> allows you to detect when the observed element enters or exits the browser’s viewport.</li>
+<li><a href="https://github.com/aFarkas/lazysizes" target="_blank" rel="noopener noreferrer">Lazy-sizes</a> - a popular JavaScript library that implements lazy-loading for you.</li>
+</ol>
+<p>A variation of lazy-loading embeds uses a static or dynamic facade displayed to users on page loads. Instead of the map embed, you can use a static image of the actual embed to show a specific area on the map embed. Alternatively, you could use a facade that looks like the embed but loads only when the user clicks or interacts with it. Some methods for implementing facades for popular embeds include the <a href="https://developers.google.com/maps/documentation/maps-static/overview" target="_blank" rel="noopener noreferrer">Map Static API</a> for maps, <a href="https://tweetpik.com/" target="_blank" rel="noopener noreferrer">Tweetpik</a> for Twitter embeds, <a href="https://github.com/paulirish/lite-youtube-embed" target="_blank" rel="noopener noreferrer">lite-youtube-embed</a> for YouTube, <a href="https://github.com/calibreapp/react-live-chat-loader" target="_blank" rel="noopener noreferrer">React-live-chat-loader</a> for chat widgets. A comprehensive discussion on these techniques is available <a href="https://web.dev/embed-best-practices/" target="_blank" rel="noopener noreferrer">here</a>.</p>
+<p>A few caveats concerning lazy-loading and facades</p>
+<ul>
+<li>The behavior for the YouTube facade is slightly different on iOS and Safari on macOS 11+. Tapping/clicking the first time loads the actual video embed. Users will have to tap again to play the video.</li>
+<li>Lazy loading can lead to layout shifts and affect the user experience if the size of the embed is not specified. To prevent layout shifts, you should specify the size for all lazy-loaded embeds or their container elements.</li>
+</ul>
+<h3 id="self-host-3p-scripts-to-prevent-round-trips">Self-host 3P scripts to prevent round trips</h3>
+<p><strong>Applicable to:</strong> JavaScript files, fonts</p>
+<p>Although preconnect or dns-prefetch allows you to initiate connections to third-party origins early, the connections are still required. Also, with third-party origins, you need to rely on their caching strategy, which may not be optimal.</p>
+<p>Self-hosting a copy of the scripts on the same origin offers you more control over the loading and caching process used for the scripts. Self-hosting reduces the time required for DNS lookup and allows you to improve the caching strategy for the scripts using <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching" target="_blank" rel="noopener noreferrer">HTTP caching</a>. You can also use <a href="https://www.smashingmagazine.com/2017/04/guide-http2-server-push/" target="_blank" rel="noopener noreferrer">HTTP/2 server push</a> to push scripts that you know the user will need. A<a href="https://medium.com/caspertechteam/we-shaved-1-7-seconds-off-casper-com-by-self-hosting-optimizely-2704bcbff8ec" target="_blank" rel="noopener noreferrer"> great example</a> of how self-hosting third-party scripts is <a href="https://casper.com/" target="_blank" rel="noopener noreferrer">Casper.com</a> which improved the start render time for its home page by 1.7 seconds by self-hosting third-party scripts provided by <a href="https://www.optimizely.com/" target="_blank" rel="noopener noreferrer">Optimizely</a>.</p>
+<p>With self-hosted copies of third-party scripts, you have to ensure that you update your copy regularly based on changes to the original. Without updates, the script may become outdated, missing important fixes or changes corresponding to dependencies. Self-hosting on a server instead of a CDN will also prevent you from taking advantage of <a href="https://www.cloudflare.com/learning/cdn/glossary/edge-server/" target="_blank" rel="noopener noreferrer">edge-caching</a> mechanisms employed by CDNs.</p>
+<h3 id="use-service-workers-to-cache-scripts-where-possible">Use service workers to cache scripts where possible</h3>
+<p><strong>Applicable to:</strong> JavaScript files, fonts</p>
+<p>Self-hosting may not be an option for scripts that change frequently. You can use service workers to improve caching for such third-party scripts while also utilizing CDN edge caching. This technique gives you better control over the frequency of re-fetches over the network. This technique can be combined with preconnects to further reduce the network cost of the fetch operation. You can also load resources such that requests for non-essential third-party scripts are deferred till the page reaches a key user moment.</p>
+<h3 id="follow-the-ideal-loading-sequence">Follow the ideal loading sequence</h3>
+<p>Consider the above guidance for different types of third-parties and their value to the page. Based on the intended use for each resource, you can follow the <a href="https://www.patterns.dev/posts/loading-sequence/#proposed-sequence-with-3p" target="_blank" rel="noopener noreferrer">ideal resource loading sequence</a> to interlace first-party and third-party resources optimally for faster page loads.</p>
+<hr/>
+<h2 id="best-practices-by-script-type">Best practices by script type</h2>
+<p>Some scripts are easier to optimize than others. A discussion with web performance experts on optimizing different third-parties, some of the typical constraints observed, and their wish list for loading third-parties led us to some interesting conclusions. The general consensus was that most users do not interact with a site until a certain threshold of content is visible. Following was the guidance specific to different script types.</p>
+<h3 id="non-critical-javascript">Non-critical JavaScript</h3>
+<p>Most third-parties like chat widgets or analytics scripts are not critical to the user experience and can be delayed. Using the <code>defer</code> script attribute is the most common method to delay the loading and execution of these scripts.</p>
+<p>Advertising or analytics teams may worry about the impact of deferring scripts on the visibility and advertising revenue of the app. The <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5" target="_blank" rel="noopener noreferrer">Telegraph case study</a> is often cited in this context, where deferring all scripts did not skew any analytics or advertising metrics. Instead, the First Ad Loaded metric improved by an average of 4 seconds. Some developers have also designed solutions to <a href="https://www.renderbetter.com/guides/improving-shopify-site-speed-can-increase-conversions-case-study" target="_blank" rel="noopener noreferrer">delay the load of third-parties till after the page becomes interactive</a>.</p>
+<h3 id="bot-detectionrecaptcha">Bot detection/ReCaptcha</h3>
+<p>Since you would want to prevent bots from accessing web forms, developers would usually load these scripts as early as possible. However, ReCaptcha has a sizable JS payload and main thread footprint, so there is motivation to defer loading it until required. Few methods to optimize this script are</p>
+<ol>
+<li>Load it only on a few pages with form inputs from the user that may get spammed by a bot.</li>
+<li><a href="https://dev.to/uf4no/improve-page-performance-lazy-loading-recaptcha-442o" target="_blank" rel="noopener noreferrer">Lazy load the script</a> when the user interacts with form elements, for example, on form focus.</li>
+<li>Use resource hints to establish early connections when you need the script to execute on page load.</li>
+</ol>
+<h3 id="google-tag-manager-gtm">Google Tag Manager (GTM)</h3>
+<p>Large sites often provide <a href="https://marketingplatform.google.com/about/resources/tag-manager-product-overview/" target="_blank" rel="noopener noreferrer">Google Tag Manager</a> access to marketing teams or agencies. This allows them to add new marketing tags to all pages on the site for better tracking. Performance is not a primary concern for the marketing team, and all of them may not know that inconsiderately adding tags can slow down the site. Optimization of GTM scripts is more about <a href="https://www.tunetheweb.com/blog/adding-controls-to-google-tag-manager/" target="_blank" rel="noopener noreferrer">controlling who accesses GTM</a> and monitoring the changes that they make.</p>
+<p>You can start by ensuring that the site owners own the account rather than an external agency. This allows you to define granular access permissions for who can add, edit and publish tags. <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5" target="_blank" rel="noopener noreferrer">Better collaboration</a> between development and marketing departments can be set up to audit new tags and remove unused tags.</p>
+<p>Your site may not need GTM on all pages. (for example, there is no reason for the marketing team to track events on the checkout page of an e-commerce site). Pages should be audited individually so that unnecessary GTM inclusions can be removed. Sites that use cookie banners can also opt not to load GTM if the user declines cookies. Finally, if you must load GTM on a page, you can defer the scripts to fire after loading the main content.</p>
+<p>Another optimization that applies to older third-party script tags is related to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/write" target="_blank" rel="noopener noreferrer">document.write()</a>. Injecting scripts using document.write() is unsafe and may result in warnings or errors based on the browser and type of script. Some third-party scripts still use this method. GTM provides a configuration in its <a href="https://support.google.com/tagmanager/answer/6107167?hl=en" target="_blank" rel="noopener noreferrer">Custom HTML tag creation interface </a>called <em>Support document.write()</em>. If this is enabled, Google Tag Manager temporarily replaces the default document.write() function with a secure version of its own.</p>
+<h3 id="ab-testing-and-personalization">A/B Testing and Personalization</h3>
+<p>Sites conduct <a href="https://www.optimizely.com/optimization-glossary/ab-testing/" target="_blank" rel="noopener noreferrer">A/B tests</a> to check which version of the webpage performs better. One of the two variants of the page is loaded for different users in the identified sample of users. A/B tests can significantly affect the performance of pages on which they are run, with each test adding as much as 1 sec to the loading time. Currently, many A/B tests are sourced externally through third-parties, and developers have little control over the JavaScript code executed to alter the UI for these tests.</p>
+<p><a href="https://www.dynamicyield.com/lesson/web-personalization/" target="_blank" rel="noopener noreferrer">Site personalization</a> is a related concept which involves running scripts to provide a tailored experience for different users based on known data. These scripts are again heavy and difficult to optimize. Like A/B testing scripts, personalization scripts also need to run early as the rendered UI depends on the script’s output. Developing a <a href="https://www.fasterize.com/en/blog/a-b-testing-imperative-to-marketing-perilous-to-web-performance/" target="_blank" rel="noopener noreferrer">custom server-based solution for A/B testing</a> and personalization is the ideal method to optimize A/B testing. However, it may not always be feasible.</p>
+<p>To optimize third-party A/B testing scripts, you can limit the number of users who receive the script. The script identifies which version to display based on heuristics and enables the correct version for the user. This can slow down the page for all users. Google’s Optimize allows the configuration of <a href="https://support.google.com/optimize/answer/6283420#zippy=%2Cin-this-article" target="_blank" rel="noopener noreferrer">rules for targeting users</a>. Many of these rules can be evaluated on Google servers, so that <a href="https://support.google.com/optimize/answer/7071747?hl=en" target="_blank" rel="noopener noreferrer">performance impact is low</a> for users who are not targeted.</p>
+<h3 id="youtube-and-map-embeds">YouTube and map embeds</h3>
+<p>These embeds are heavy, and developers must explore lazy-loading or click-to-load patterns to load the embeds to optimize them. Use of solutions like <a href="https://github.com/paulirish/lite-youtube-embed" target="_blank" rel="noopener noreferrer">lite-youtube-embed</a> is encouraged while noting that double-tap/click is required in iOS/macOS-Safari to play the video using this facade.</p>
+<h3 id="social-media-embeds">Social media embeds</h3>
+<p>Some social media embeds provide an option to lazy-load their scripts (e.g., <a href="https://developers.facebook.com/docs/plugins/embedded-posts/" target="_blank" rel="noopener noreferrer">data-lazy in Facebook</a> embeds). You can explore this to improve performance. Another alternative is to use image facades created manually or using tools like <a href="https://tweetpik.com/" target="_blank" rel="noopener noreferrer">tweetpik</a>.</p>
+<hr/>
+<h2 id="out-of-the-box-optimization">Out-of-the-box optimization</h2>
+<p>To optimize third-parties, development teams should understand the nuances of resource hints, lazy loading, HTTP caching, and service workers and then implement these in their solutions. Some frameworks and libraries have encapsulated these best practices in a way that developers can easily use.</p>
+<p><a href="https://github.com/BuilderIO/partytown" target="_blank" rel="noopener noreferrer">Partytown created by Builder.io</a> is an experimental library that helps run resource-intensive scripts on a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noopener noreferrer">web worker</a> instead of the main thread. Their philosophy is that the main thread should be dedicated to your code, and any scripts that are not required by the critical path can be sandboxed and isolated to a web worker. Partytown allows you to configure access to the main thread APIs such as cookies, localStorage, userAgent, etc. API calls may also be logged with arguments to get a better insight into what the scripts do.</p>
+<p>JavaScript proxies and a service worker handle communication between the web worker and the main thread. Partytown scripts must be self-hosted on the same server as the HTML documents. It may be used with React or Next.js apps or even without any framework. Each third-party script that can execute in a web server should set the type attribute of its opening script tag to text/partytown as follows.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;text/partytown&quot;</span><span style="color:#E1E4E8">&gt;// Third-party analytics scripts&lt;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>The library also provides a <a href="https://github.com/BuilderIO/partytown#react" target="_blank" rel="noopener noreferrer">React Partytown component</a> that you can directly include in your React or Next.js projects. It can be included in the document <code>&lt;head&gt;</code> as shown below for a Next.js document.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Partytown } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;@builder.io/partytown/react&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Document, { Html, Head, Main, NextScript } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;next/document&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">class</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">MyDocument</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Document</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">   </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">     &lt;</span><span style="color:#79B8FF">Html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">Partytown</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;/</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">Main</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">NextScript</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">     &lt;/</span><span style="color:#79B8FF">Html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">   );</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span></code></pre>
+<p>Partytown also includes React components for common analytics libraries such as <a href="https://github.com/BuilderIO/partytown#integrations" target="_blank" rel="noopener noreferrer">Google Tag Manager</a>. The following example shows how you can add this to your React/Next.js projects.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Partytown, GoogleTagManager, GoogleTagManagerNoScript } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;@builder.io/partytown/react&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Document, { Html, Head, Main, NextScript } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;next/document&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">class</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">MyDocument</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Document</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">   </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">     &lt;</span><span style="color:#79B8FF">Html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">GoogleTagManager</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">containerId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">&#39;GTM-XXXXX&#39;</span><span style="color:#E1E4E8">} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">Partytown</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;/</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">GoogleTagManagerNoScript</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">containerId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#9ECBFF">&#39;GTM-XXXXX&#39;</span><span style="color:#E1E4E8">} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">Main</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">         &lt;</span><span style="color:#79B8FF">NextScript</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">       &lt;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">     &lt;/</span><span style="color:#79B8FF">Html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">   );</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span></code></pre>
+<p>Next.js itself provides out-of-the-box optimization for third-party scripts through its Script component. Let’s see how this allows us to improve loading performance for different third-parties.</p>
+<hr/>
+<h2 id="nextjs-script-component">Next.js <code>Script</code> component</h2>
+<p>Next.js 11 was released in mid-2021 with components based on the <a href="https://web.dev/conformance/" target="_blank" rel="noopener noreferrer">Conformance</a> methodology introduced by Google’s Aurora team. Conformance is a system that provides well-designed solutions and rules to support optimal loading and Core Web Vitals. Conformance codifies best practices into rulesets that developers can easily implement. Strong defaults and actionable rules form the basis of this system. They make it easy for developers to do the right thing and prevent anti-patterns from creeping in.</p>
+<p>The <a href="https://nextjs.org/docs/basic-features/script" target="_blank" rel="noopener noreferrer">Next.js Script component</a> uses conformance by providing a customizable template that improves loading performance. The Script component encapsulates the <code>&lt;script&gt;</code> tag and allows you to set the loading priority for third-party scripts using the strategy attribute. The strategy attribute can take three values.</p>
+<ol>
+<li>beforeInteractive: Use this for critical scripts that the browser should execute before the page becomes interactive. (e.g., bot detection)</li>
+<li>afterInteractive: Use this for scripts that the browser can run after the page is interactive. (e.g., tag managers) This is the default strategy applied and is equivalent to loading the script with <code>defer</code></li>
+<li>lazyOnload: Use this for scripts that can be lazily loaded when the browser is idle.</li>
+</ol>
+<p>Setting the strategy helps Next.js automatically apply the optimizations and best practices to load the script while ensuring the best loading sequence. You can use the script tag with the strategy attribute, as shown below. Unlike the native HTML script tag, you must not place the next/script tag in the <code>next/head</code> component or <code>pages/document.js</code>.</p>
+<p>Before:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Head </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/head&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">async</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://example.com/samplescript.js&quot;</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Head</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>After:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// pages/index.js</span></span>
+<span class="line"><span style="color:#6A737D">// default strategy afterinteractive will apply when strategy not specified.</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;next/script&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">br</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">export default function Home() {</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span><span style="color:#B392F0">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">   &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">     &lt;</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://example.com/samplescript.js&quot;</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">   &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8"> )</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The Script component allows you to address many of the use cases discussed earlier. You can use it to load third-party scripts for analytics, social media, utility libraries, and others. The following examples demonstrate how you can apply the above strategies to different types of third-party scripts.</p>
+<h3 id="load-polyfills-early">Load polyfills early</h3>
+<p>In situations where you want specific polyfills that apply to core content to be loaded early, you can use the beforeInteractive strategy to load the polyfill as shown in the following example from <a href="https://nextjs.org/docs/basic-features/script#loading-polyfills" target="_blank" rel="noopener noreferrer">Next.js docs</a>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserverEntry%2CIntersectionObserver&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;beforeInteractive&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="lazy-load-social-media-embeds">Lazy-load social media embeds</h3>
+<p>Social media embeds, especially those not visible on page load, can be delayed or lazy-loaded as the user scrolls to them or during periods of inactivity. You can use the <code>lazyonload</code> strategy as shown in the following <a href="https://nextjs.org/docs/basic-features/script#lazy-loading" target="_blank" rel="noopener noreferrer">snippet</a>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://connect.facebook.net/en_US/sdk.js&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;lazyOnload&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="execute-code-conditionally-on-load">Execute code conditionally on load</h3>
+<p>There may be some code that needs to execute after a specific third-party has been loaded. This can be specified in the onload attribute of the script component. For example, the following <a href="https://nextjs.org/blog/next-11#script-optimization" target="_blank" rel="noopener noreferrer">snippet</a> shows how to include code that will execute based on users’ consent.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{url} </span><span style="color:#6A737D">// consent management</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;beforeInteractive&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">onLoad</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">// If loaded successfully, then you can load other scripts in sequence</span></span>
+<span class="line"><span style="color:#E1E4E8">  }}</span></span>
+<span class="line"><span style="color:#E1E4E8">/&gt;</span></span></code></pre>
+<h3 id="using-inline-scripts-within-the-script-tag">Using inline scripts within the script tag</h3>
+<p>Inline scripts that need to execute based on load of a third-party component may also be included in the Script component as shown <a href="https://nextjs.org/docs/basic-features/script#inline-scripts" target="_blank" rel="noopener noreferrer">here</a>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;next/script&#39;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;show-banner&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;lazyOnload&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8"> {</span><span style="color:#9ECBFF">`document.getElementById(&#39;banner&#39;).removeClass(&#39;hidden&#39;)`</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// or</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;show-banner&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8"> </span><span style="color:#B392F0">dangerouslySetInnerHTML</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{{</span></span>
+<span class="line"><span style="color:#E1E4E8">   __html: </span><span style="color:#9ECBFF">`document.getElementById(&#39;banner&#39;).removeClass(&#39;hidden&#39;)`</span></span>
+<span class="line"><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">/&gt;</span></span></code></pre>
+<p>Here the inline script is used to change the visibility of a third-party banner ad after it is lazy-loaded. Note that inline scripts may also be included using the dangerouslySetInnerHTML attribute.</p>
+<h3 id="forward-attributes-to-third-party-scripts">Forward attributes to third-party scripts</h3>
+<p>You can set specific attribute values that can be used by the third-party script in the Script component. The following <a href="https://nextjs.org/docs/basic-features/script#forwarding-attributes" target="_blank" rel="noopener noreferrer">example</a> shows how two such attributes are passed to an analytics script.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">src</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;https://www.google-analytics.com/analytics.js&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;analytics&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">nonce</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;XUENAJFW&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">data-test</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;analytics&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="load-analytics-scripts">Load analytics scripts</h3>
+<p>There are different ways to include analytics on your site, using Google Analytics(GA) and Google Tag Manager(GTM). You can use the Script component to load <a href="https://developers.google.com/analytics/devguides/collection/gtagjs" target="_blank" rel="noopener noreferrer">gtag.js</a> or <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs" target="_blank" rel="noopener noreferrer">analytics.js</a> scripts optimally on your Next.js site. Depending on where you want to execute these scripts, you can load them in _app.js (applicable to all the pages) or on specific pages.</p>
+<p>GTM may be enabled for all the pages on the site by including the script component inside _app.js as follows:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// + other imports</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">MyApp</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">Component</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">pageProps</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#6A737D">// Other app code</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#6A737D">/* Google Tag Manager - Global base code */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;afterInteractive&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">dangerouslySetInnerHTML</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{{</span></span>
+<span class="line"><span style="color:#E1E4E8">          __html: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({&#39;gtm.start&#39;:</span></span>
+<span class="line"><span style="color:#9ECBFF">           new Date().getTime(),event:&#39;gtm.js&#39;});var f=d.getElementsByTagName(s)[0],</span></span>
+<span class="line"><span style="color:#9ECBFF">           j=d.createElement(s),dl=l!=&#39;dataLayer&#39;?&#39;&amp;l=&#39;+l:&#39;&#39;;j.async=true;j.src=</span></span>
+<span class="line"><span style="color:#9ECBFF">           &#39;https://www.googletagmanager.com/gtm.js?id=&#39;+i+dl;f.parentNode.insertBefore(j,f);</span></span>
+<span class="line"><span style="color:#9ECBFF">           })(window,document,&#39;script&#39;,&#39;dataLayer&#39;, &#39;${</span><span style="color:#79B8FF">GTM_ID</span><span style="color:#9ECBFF">}&#39;);</span></span>
+<span class="line"><span style="color:#9ECBFF">         `</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        }}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Component</span><span style="color:#E1E4E8"> {</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">pageProps} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> MyApp;</span></span></code></pre>
+<p>Instead, if you want to load analytics.js on specific pages, you can include it on the page as shown.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">//other imports</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;container&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;google-analytics&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;afterInteractive&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">         (function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){</span></span>
+<span class="line"><span style="color:#9ECBFF">         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),</span></span>
+<span class="line"><span style="color:#9ECBFF">         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)</span></span>
+<span class="line"><span style="color:#9ECBFF">         })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">         ga(&#39;create&#39;, &#39;UA-XXXXX-Y&#39;, &#39;auto&#39;);</span></span>
+<span class="line"><span style="color:#9ECBFF">         ga(&#39;send&#39;, &#39;pageview&#39;);</span></span>
+<span class="line"><span style="color:#9ECBFF">       `</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">//Other UI related HTML</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Script </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;next/script&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">//other imports</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Home</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;container&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;google-analytics&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">strategy</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;afterInteractive&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {</span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">         (function(i,s,o,g,r,a,m){i[&#39;GoogleAnalyticsObject&#39;]=r;i[r]=i[r]||function(){</span></span>
+<span class="line"><span style="color:#9ECBFF">         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),</span></span>
+<span class="line"><span style="color:#9ECBFF">         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)</span></span>
+<span class="line"><span style="color:#9ECBFF">         })(window,document,&#39;script&#39;,&#39;https://www.google-analytics.com/analytics.js&#39;,&#39;ga&#39;);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">         ga(&#39;create&#39;, &#39;UA-XXXXX-Y&#39;, &#39;auto&#39;);</span></span>
+<span class="line"><span style="color:#9ECBFF">         ga(&#39;send&#39;, &#39;pageview&#39;);</span></span>
+<span class="line"><span style="color:#9ECBFF">       `</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">Script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">//Other UI related HTML</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> Home;</span></span></code></pre>
+<p>Note that in both examples above, the analytics scripts are loaded with strategy = afterInteractive.</p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>When composing your web pages combining resources from your servers with those from other corners of the web, you must monitor the interplay between these resources frequently. You could start by sequencing the resources correctly and following best practices. You can also rely on frameworks or solutions that have built-in these best practices into their design.</p>
+<p>As the site grows, performance reporting and regular audits can help eliminate redundancies and optimize scripts that affect performance. Lastly, we can always hope that third-parties with commonly known performance issues will optimize code at their end or expose APIs that enable workarounds to address these issues.</p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

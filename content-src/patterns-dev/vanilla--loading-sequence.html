@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="vanilla">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/vanilla/loading-sequence/">
+
+    <!-- Primary Meta Tags -->
+    <title>Optimize your loading sequence</title>
+    <meta name="title" content="Optimize your loading sequence">
+    <meta name="description" content="Learn how to optimize your loading sequence to improve how quickly your app is usable">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/vanilla/loading-sequence/">
+    <meta property="og:title" content="Optimize your loading sequence">
+    <meta property="og:description" content="Learn how to optimize your loading sequence to improve how quickly your app is usable">
+    <meta property="og:image" content="http://localhost:3000/media/loading-sequence.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/vanilla/loading-sequence/">
+    <meta property="twitter:title" content="Optimize your loading sequence">
+    <meta property="twitter:description" content="Learn how to optimize your loading sequence to improve how quickly your app is usable">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="U8uwL" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Command Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/command-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Factory Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/factory-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Flyweight Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/flyweight-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mediator/Middleware Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mediator-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mixin Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mixin-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Module Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/module-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Observer Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/observer-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prototype Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prototype-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Provider Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/provider-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Proxy Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/proxy-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Singleton Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/singleton-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/static-import\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Islands Architecture\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/islands-architecture\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Introduction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/rendering-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Animating View Transitions\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/view-transitions\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Bundle Splitting\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/bundle-splitting\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compressing JavaScript\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/compression\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Dynamic Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/dynamic-import\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Interaction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-interaction\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Visibility\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-visibility\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize your loading sequence\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/loading-sequence\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prefetch\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prefetch\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Preload\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/preload\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;PRPL Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prpl\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize loading third-parties\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/third-party\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Tree Shaking\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/tree-shaking\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;List Virtualization\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/virtual-lists\\\&quot;]}]]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/vanilla/loading-sequence/&quot;],&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Zk2h3v" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 630" height="25" class="h-4 w-4 mr-4 inline-block"><rect width="630" height="630" fill="#f7df1e"></rect><path d="m423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 38.1 30.45 19.45 0 31.72-7.61 31.72-37.2v-201.3h59.2v202.1c0 61.3-35.94 89.2-88.4 89.2-47.4 0-74.85-24.53-88.81-54.075z"></path></svg>Vanilla<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/singleton-pattern" class="relative">
+                    <a href="/vanilla/singleton-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Singleton Pattern
+                    </a>
+                  </li><li key="/vanilla/proxy-pattern" class="relative">
+                    <a href="/vanilla/proxy-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Proxy Pattern
+                    </a>
+                  </li><li key="/vanilla/prototype-pattern" class="relative">
+                    <a href="/vanilla/prototype-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prototype Pattern
+                    </a>
+                  </li><li key="/vanilla/observer-pattern" class="relative">
+                    <a href="/vanilla/observer-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Observer Pattern
+                    </a>
+                  </li><li key="/vanilla/module-pattern" class="relative">
+                    <a href="/vanilla/module-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Module Pattern
+                    </a>
+                  </li><li key="/vanilla/mixin-pattern" class="relative">
+                    <a href="/vanilla/mixin-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mixin Pattern
+                    </a>
+                  </li><li key="/vanilla/mediator-pattern" class="relative">
+                    <a href="/vanilla/mediator-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mediator/Middleware Pattern
+                    </a>
+                  </li><li key="/vanilla/flyweight-pattern" class="relative">
+                    <a href="/vanilla/flyweight-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Flyweight Pattern
+                    </a>
+                  </li><li key="/vanilla/factory-pattern" class="relative">
+                    <a href="/vanilla/factory-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Factory Pattern
+                    </a>
+                  </li><li key="/vanilla/command-pattern" class="relative">
+                    <a href="/vanilla/command-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Command Pattern
+                    </a>
+                  </li><li key="/vanilla/provider-pattern" class="relative">
+                    <a href="/vanilla/provider-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Provider Pattern
+                    </a>
+                  </li><li key="/vanilla/static-import" class="relative">
+                    <a href="/vanilla/static-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Import
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/islands-architecture" class="relative">
+                    <a href="/vanilla/islands-architecture" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Islands Architecture
+                    </a>
+                  </li><li key="/vanilla/view-transitions" class="relative">
+                    <a href="/vanilla/view-transitions" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Animating View Transitions
+                    </a>
+                  </li><li key="/vanilla/rendering-patterns" class="relative">
+                    <a href="/vanilla/rendering-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Introduction
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Performance Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Performance Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/loading-sequence" class="relative">
+                    <a href="/vanilla/loading-sequence" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Optimize your loading sequence
+                    </a>
+                  </li><li key="/vanilla/dynamic-import" class="relative">
+                    <a href="/vanilla/dynamic-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Dynamic Import
+                    </a>
+                  </li><li key="/vanilla/import-on-visibility" class="relative">
+                    <a href="/vanilla/import-on-visibility" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Visibility
+                    </a>
+                  </li><li key="/vanilla/import-on-interaction" class="relative">
+                    <a href="/vanilla/import-on-interaction" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Interaction
+                    </a>
+                  </li><li key="/vanilla/bundle-splitting" class="relative">
+                    <a href="/vanilla/bundle-splitting" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Bundle Splitting
+                    </a>
+                  </li><li key="/vanilla/prpl" class="relative">
+                    <a href="/vanilla/prpl" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      PRPL Pattern
+                    </a>
+                  </li><li key="/vanilla/tree-shaking" class="relative">
+                    <a href="/vanilla/tree-shaking" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Tree Shaking
+                    </a>
+                  </li><li key="/vanilla/preload" class="relative">
+                    <a href="/vanilla/preload" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Preload
+                    </a>
+                  </li><li key="/vanilla/prefetch" class="relative">
+                    <a href="/vanilla/prefetch" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prefetch
+                    </a>
+                  </li><li key="/vanilla/third-party" class="relative">
+                    <a href="/vanilla/third-party" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize loading third-parties
+                    </a>
+                  </li><li key="/vanilla/virtual-lists" class="relative">
+                    <a href="/vanilla/virtual-lists" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      List Virtualization
+                    </a>
+                  </li><li key="/vanilla/compression" class="relative">
+                    <a href="/vanilla/compression" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compressing JavaScript
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Performance Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Optimize your loading sequence
+                </h1>
+            </header>
+        <p><strong>Note:</strong> This article is heavily influenced by insights from the <a href="https://web.dev/introducing-aurora/" target="_blank" rel="noopener noreferrer">Aurora team</a> in Chrome, in particular <a href="http://twitter.com/shubhie" target="_blank" rel="noopener noreferrer">Shubhie Panicker</a> who has been researching the optimal loading sequence.</p>
+<p>In every successful web page load, some critical components and resources become available at just the right time to give you a smooth loading experience. This ensures users perceive the performance of the application to be excellent. This excellent user experience should generally also translate to passing the <a href="https://web.dev/vitals/" target="_blank" rel="noopener noreferrer">Core Web Vitals</a>.</p>
+<p>Key <a href="https://web.dev/metrics/" target="_blank" rel="noopener noreferrer">metrics</a> such as <a href="https://web.dev/fcp/" target="_blank" rel="noopener noreferrer">First Content Paint</a>, <a href="https://web.dev/lcp/" target="_blank" rel="noopener noreferrer">Largest Contentful Paint</a>, <a href="https://web.dev/fid/" target="_blank" rel="noopener noreferrer">First Input Delay</a>, etc used to measure performance are directly dependent on the loading sequence of critical resources. For example, the page cannot have its LCP if a critical resource like the <a href="https://en.wikipedia.org/wiki/Hero_image" target="_blank" rel="noopener noreferrer">hero image</a> is not loaded. This article talks about the relationship between the loading sequence of resources and web vitals. Our objective is to provide clear guidance on how to optimize the loading sequence for better web vitals.</p>
+<p>Before we establish an ideal loading sequence, let us first try to understand why it is so difficult to get the loading sequence right.</p>
+<h2 id="why-is-optimal-loading-difficult-to-achieve">Why is optimal loading difficult to achieve?</h2>
+<p>We have had the unique opportunity to work on performance analysis for many of our partner’s websites. We identified multiple similar issues that plagued the efficient loading of pages across different partner sites.</p>
+<p>There is often a critical gap between developers’ expectations and how the browser prioritizes resources on the page. This often results in sub-optimal performance scores. We analyzed further to discover what caused this gap and the following points summarise the essence of our analysis.</p>
+<p><strong>Sub-optimal sequencing</strong></p>
+<p><a href="https://web.dev/vitals" target="_blank" rel="noopener noreferrer">Web Vitals</a> optimization requires not only a good understanding of what each metrics stands for but also the order in which they occur and how they relate to different critical resources. FCP occurs before LCP which occurs before FID. As such, resources required for achieving FCP should be prioritized over those required by LCP followed by those required by FID.</p>
+<p>Resources are often not sequenced and pipelined in the correct order. This may be because developers are not aware of the dependency of metrics on resource loads. As a result, relevant resources are sometimes not available at the right time for the corresponding metric to trigger.</p>
+<p><strong>Examples</strong>:</p>
+<p>a) By the time FCP fires, the hero image should be available for firing LCP.<br/>
+b) By the time LCP fires, the JavaScript (JS) should be downloaded, parsed and ready (or already executing) to unblock interaction (FID).</p>
+<p><strong>Network/CPU Utilization</strong></p>
+<p>Resources are also not pipelined appropriately to ensure full CPU and Network utilization. This results in “Dead Time” on the CPU when the process is network bound and vice versa.</p>
+<p>A great example of this is scripts that may be downloaded concurrently or sequentially. As the bandwidth gets divided during concurrent download, the total time for downloading all scripts is the same for both sequential and concurrent downloads. If you download scripts concurrently, the CPU is underutilized during the download. However, if you download the scripts sequentially, the CPU can start processing the first one as soon as it is downloaded. This results in better CPU and Network utilization.</p>
+<p><strong>Third-Party (3P) Products</strong></p>
+<p>3P libraries are often required to add common features and functionality to the website. Third parties include ads, analytics, social widgets, live chat, and other embeds that power a website. A third party library comes with its own JavaScript, images, fonts etc</p>
+<p>3P products don’t usually have an incentive to optimize for and support the consumer site’s loading performance. They could have a heavy JavaScript execution cost that delays interactivity, or gets in the way of other critical resources being downloaded.</p>
+<p>Developers who include 3P products may tend to focus more on the value they add in terms of features rather than performance implications. As a result, 3P resources are sometimes added haphazardly, without full consideration in terms of how it fits into the overall loading sequence. This makes them hard to control and schedule.</p>
+<p><strong>Platform Quirks</strong></p>
+<p>Browsers may differ in how they prioritize requests and implement hints. Optimization is easier if you have a deep knowledge of the platform and its quirks. Behavior particular to a specific browser makes it difficult to achieve the desired loading sequence consistently.</p>
+<p>An example of this is the<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=788757" target="_blank" rel="noopener noreferrer"> preload bug</a> on the chromium platform. The <a href="https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf" target="_blank" rel="noopener noreferrer">Preload</a> (<code>&lt;link rel=preload&gt;</code>) instruction can be used to tell the browser to download key resources as soon as possible. It should only be used when you are sure that the resource will be used on the current page. The bug in Chromium causes it to behave such that requests issued via <code>&lt;link rel=preload&gt;</code> always start before other requests seen by the preload scanner even if those have higher priority. Issues such as these put a wrench in optimization plans.</p>
+<p><strong>HTTP2 Prioritization</strong></p>
+<p>The protocol itself does not provide many options or knobs for adjusting the order and priority of resources. Even if better prioritization primitives were to be made available, there are underlying <a href="https://github.com/andydavies/http2-prioritization-issues" target="_blank" rel="noopener noreferrer">problems with HTTP2 prioritization that</a> make optimal sequencing difficult. Mainly, we cannot predict in what order servers or CDN’s will prioritize requests for individual resources. Some CDN’s re-prioritize requests while others implement partial, flawed, or no prioritization.</p>
+<p><strong>Resource level optimization</strong></p>
+<p>Effective sequencing needs that the resources that are being sequenced to be served optimally so that they will load quickly. Critical CSS should be inlined, Images should be sized correctly and JS should be code-split and delivered incrementally.</p>
+<p>The framework itself is lacking constructs that allow code-splitting and serve JS and data incrementally. Users must rely on one of the following to split large chunks of 1P JS</p>
+<ol>
+<li>Modern React (<a href="https://reactjs.org/docs/concurrent-mode-reference.html" target="_blank" rel="noopener noreferrer">Suspense / Concurrent mode / Data Fetching</a>) - This is still available for experimentation only</li>
+<li>Lazy loading using <a href="https://reactjs.org/docs/code-splitting.html" target="_blank" rel="noopener noreferrer">dynamic imports</a> - This is not intuitive and developers need to manually identify the boundaries along which to split the code.</li>
+</ol>
+<p>When code-splitting, developers need to achieve just the right granularity of chunks because of a granularity vs performance trade-off.</p>
+<p>Higher granularity is desirable because it</p>
+<ol>
+<li>Minimizes JS needed for individual route and on subsequent user interactions</li>
+<li>Allows for caching of common dependencies. This ensures that a change in the library doesn’t require re-fetching of the entire bundle.</li>
+</ol>
+<p>At the same time too much granularity when code-splitting can be bad because too many small chunks lower compression rates for individual chunks and affect browser performance.</p>
+<p>Resource optimization also requires the elimination of dead or unused code. Unnecessary or obsolete JS may be often shipped to modern browsers which negatively affects performance. JS transpiled to ES5 and bundled with polyfills is unnecessary for modern browsers. Libraries and npm packages are often not published in ES module format. This makes it hard for bundlers to tree shake and optimize</p>
+<p>As you might have noticed, these issues are not limited to a particular set of resources or platforms. To work around these problems, one requires an understanding of the entire tech stack and how different resources can be coalesced to achieve optimal metrics. Before we define an overall optimization strategy, let us look at how individual resource requirements can defeat our purpose.</p>
+<h2 id="more-on-resources---relations-constraints-and-priorities">More on Resources - Relations, Constraints, and Priorities</h2>
+<p>In the previous section, we gave a few examples of how certain resources are required for a specific event like FCP or LCP to fire. Let us try to understand all such dependencies first before we discuss a way to work with them. Following is a resource-wise list of recommendations, constraints, and gotchas that need to be considered before we define an ideal sequence.</p>
+<p><strong>Critical CSS</strong></p>
+<p><a href="https://web.dev/extract-critical-css/" target="_blank" rel="noopener noreferrer">Critical CSS</a> refers to the minimum CSS required for FCP. It is better to inline such CSS within HTML rather than import it from another CSS file. Only the CSS required for the route should be downloaded at any given time and all critical CSS should be split accordingly.</p>
+<p>If inlining is not possible, critical CSS should be preloaded and served from the same origin as the document. Avoid serving critical CSS from multiple domains or direct use of 3rd party critical CSS like Google Fonts. Your own server could serve as a proxy for 3rd party critical CSS instead.</p>
+<p>Delay in fetching CSS or incorrect order of fetching CSS could impact FCP and LCP. To avoid this, non-inlined CSS should be prioritized and ordered above 1P JS and ATF images on the network.</p>
+<p>Too much inlined CSS can cause HTML bloating and long style parsing times on the main thread. This can hurt the FCP. As such identifying what is critical and code-splitting are essential.</p>
+<p>Inlined CSS cannot be cached. One workaround for this is to have a duplicate request for the CSS that can be cached. Note however, that this can result in multiple full-page layouts which could impact FID.</p>
+<p><strong>Fonts</strong></p>
+<p>Like critical CSS, the CSS for <a href="https://web.dev/font-best-practices/" target="_blank" rel="noopener noreferrer">critical fonts</a> should also be inlined. If inlining is not possible the script should be loaded with a <a href="https://web.dev/uses-rel-preconnect/" target="_blank" rel="noopener noreferrer">preconnect</a> specified. Delay in fetching fonts, e.g., google fonts or fonts from a different domain can affect FCP. Preconnect tells the browser to set up connections to these resources earlier.</p>
+<p>Inlining fonts can bloat the HTML significantly and delay initiating other critical resource fetches. <a href="https://css-tricks.com/css-basics-fallback-font-stacks-robust-web-typography/" target="_blank" rel="noopener noreferrer">Font fallback</a> may be used to unblock FCP and make the text available. However, using font fallback can affect <a href="https://web.dev/cls/" target="_blank" rel="noopener noreferrer">CLS</a> due to jumping fonts. It can also affect FID due to a potentially large style and layout task on the main thread when the real font arrives.</p>
+<p><strong>Above the Fold (ATF) Images</strong></p>
+<p>This refers to images that are initially visible to the user on page load because they are within the viewport. A special case for ATF images is the hero image for the page. All ATF images should be sized. Unsized images hurt the CLS metric because of the layout shift that occurs when they are fully rendered. Placeholders for ATF images should be rendered by the server.</p>
+<p>Delayed hero image or blank placeholders would result in a late LCP. Moreover, LCP will re-trigger, if the placeholder size does not match with the intrinsic size of the actual hero image and the image is not overlaid on replacement. Ideally, there should be no impact on FCP due to ATF images but in practice, an image can fire FCP.</p>
+<p><strong>Below the Fold (BTF) Images</strong></p>
+<p>These are images that are not immediately visible to the user on page load. As such they are ideal candidates for lazy loading. This ensures that they do not contend with 1P JS or important 3P needed on the page. If BTF images were to be loaded before 1P JS or important 3P resources, FID would get delayed.</p>
+<p><strong>1P JavaScript</strong></p>
+<p>1P JS impacts the interaction readiness of the application. It can get delayed on the network behind images &amp; 3P JS and on the main thread behind 3P JS. As such it should start loading before ATF images on the network and execute before 3P JS on the main thread. 1P JS does not block FCP and LCP in pages that are rendered on the server-side.</p>
+<p><strong>3P JavaScript</strong></p>
+<p>3P sync script in HTML head could block CSS &amp; font parsing and therefore FCP. Sync script in the head also blocks HTML body parsing. 3P script execution on the main thread can delay 1P script execution and push out hydration and FID. As such, better control is required for loading 3P scripts.</p>
+<p>These recommendations and constraints would generally apply irrespective of the tech stack and browser. Note, how something that is a recommendation can also become a constraint. For example, inlining fonts and CSS is great, but too much of it can cause bloating. The trick is to find a balance between ‘Too little Too late’ and ‘Too much Too soon’.</p>
+<p>The following chart gives us an understanding of Chrome’s priorities for loading different resources. Combining the information on priorities and the discussion on resource types will help to better understand the loading sequence that is proposed in the next section.</p>
+<p><img src="/img/loadingSequence/optimizeyourlo--0juvmukudzfo.png" alt="image"/></p>
+<p>Following are the key takeaways from this table.</p>
+<ul>
+<li>CSS and Fonts are loaded with the highest priority. This should help us prioritize critical CSS and fonts.</li>
+<li>Scripts get different priorities based on where they are in the document and whether they are async, defer, or blocking. Blocking scripts requested before the first image ( or an image early in the document) are given higher priority over blocking scripts requested after the first image is fetched. Async/defer/injected scripts, regardless of where they are in the document, have the lowest priority. Thus we can prioritize different scripts by using the appropriate attributes for <a href="https://javascript.info/script-async-defer" target="_blank" rel="noopener noreferrer">async and defer</a>.</li>
+<li>Images that are visible and in the viewport have a higher priority (Net: Medium) than those that are not in the viewport (Net: Lowest). This helps us prioritize ATF images over BTF images.</li>
+</ul>
+<p>Let us now see how all of the above details can be put together to define an optimal loading sequence.</p>
+<h2 id="what-is-the-ideal-loading-sequence">What is the Ideal Loading Sequence</h2>
+<p>With that background, we can now propose a loading sequence that should optimize the loading of both 1P and 3P resources. The proposed sequence uses <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">Next.js</a> Server Side Rendering (SSR) as a reference for optimization.</p>
+<h3 id="current-state">Current State</h3>
+<p>Based on our experience, the following is the typical loading sequence we have observed for a Next.js SSR application before optimization.</p>
+<table><thead><tr><th>CSS</th><th>CSS is preloaded before JS but is not inlined</th></tr></thead><tbody><tr><td>JavaScript</td><td><p>1P JS is preloaded</p><p><p>3P JS is not managed and can still be render-blocking anywhere in the
+document.</p></p></td></tr><tr><td>Fonts</td><td><p>Fonts are neither in-lined nor do they use preconnect</p><p><p>Fonts are loaded via external stylesheets which delays the loading</p></p><p>Fonts may or may not be display blocking.</p></td></tr><tr><td>Images</td><td><p>Hero images are not prioritized</p><p>Both ATF and BTF images are not optimized</p></td></tr></tbody></table>
+<p>The following is an example of one such sequence from one of our partner sites. The positives and negatives about the loading sequence are included as annotations.</p>
+<p><img src="/img/loadingSequence/optimizeyourlo--6e5x6tn54ob.png" alt="image"/></p>
+<h3 id="proposed-sequence-without-3p">Proposed Sequence without 3P</h3>
+<p>Following is a loading sequence that takes into account all of the constraints discussed previously. Let us first tackle a sequence without 3P. We will then see how 3P resources can be interleaved in this sequence. Note that, we have considered Google Fonts as 1P here.</p>
+<table><thead><tr><th><p><strong>Sequence of events on the main browser thread</strong></p></th><th></th><th><p><strong>Sequence of requests on the network.</strong></p></th><th></th></tr></thead><tbody><tr><td>1</td><td>Parse the HTML </td><td>Small inline 1P scripts.</td><td>1</td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td>2</td><td>Execute small inline 1P scripts</td><td>Inlined critical CSS (Preload if external)</td><td>2</td></tr><tr><td></td><td></td><td>Inlined critical Fonts (Preconnect if external)</td><td>3</td></tr><tr><td>3</td><td>Parse FCP resources (critical CSS, font)</td><td>LCP Image (Preconnect if external)</td><td>4</td></tr><tr><td><strong>First Contentful Paint (FCP)</strong></td><td></td><td>Fonts (triggered from inline font-css (Preconnect)</td><td>5</td></tr><tr><td>4</td><td>Render LCP resources (Hero image, text)</td><td>Non-critical (async) CSS</td><td>6</td></tr><tr><td></td><td></td><td>First-party JS for interactivity</td><td>7</td></tr><tr><td></td><td></td><td>Above the fold images (preconnect)</td><td>8</td></tr><tr><td><strong>Largest Contentful Paint (LCP)</strong></td><td></td><td><p>Below the fold images</p></td><td><p><p> </p>9</p></td></tr><tr><td>5</td><td>Render important ATF images </td><td></td><td></td></tr><tr><td><strong>Visually Complete</strong></td><td></td><td></td><td></td></tr><tr><td>6</td><td>Parse Non-critical (async) CSS </td><td></td><td></td></tr><tr><td>7</td><td>Execute 1P JS and hydrate</td><td><p>Lazy-loaded JS chunks</p></td><td>10</td></tr><tr><td><strong>First Input Delay (FID)</strong></td><td></td><td></td><td></td></tr></tbody></table>
+<p>While some parts of this sequence may be intuitive, the following points will help to justify it further.</p>
+<ol>
+<li>We recommend avoiding preload as much as possible because it forces manual preload on every preceding resource and also causes manual curation of ordering. Preload should be especially avoided on fonts, as it is tricky to detect critical fonts.</li>
+<li>Font-CSS should be ideally inlined. Fonts from another origin should be fetched using preconnect.</li>
+<li>Preconnect is recommended for all resources from another origin. This will ensure that a connection is established in advance for downloading these resources.</li>
+<li>Non-critical CSS should be fetched before user interaction begins (FID). This would avoid styling problems due to subsequent rendering of such CSS.</li>
+<li>Start fetching first-party JS before ATF images on the network. It will take some time to download and parse the JS.</li>
+<li>Parsing of the HTML on the main thread and download of ATF images can continue in parallel while 1P JS is parsed.</li>
+</ol>
+<h3 id="proposed-sequence-with-3p">Proposed Sequence with 3P</h3>
+<p>Finally, we have reached the stage where we can propose a sequence for all key resources that are commonly loaded in a modern web application. Following is what the sequence for events on the main browser thread and network fetch requests will look like with 3P resources in the picture.</p>
+<table><thead><tr><th>Sequence of events</th><th>Sequence of requests</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>Parse the HTML</td><td>FCP blocking 3P resources</td></tr><tr><td>2</td><td></td><td></td></tr><tr><td>3</td><td></td><td>Small inline 1P scripts. </td></tr><tr><td>4</td><td>Execute small inline 1P scripts</td><td>Inlined critical CSS (Preload if external)</td></tr><tr><td>5</td><td>Parse FCP blocking 3P resources</td><td>Inlined critical Fonts (Preconnect if external)</td></tr><tr><td>6</td><td>Parse FCP resources (critical CSS, font) </td><td>3P personalized ATF image required for LCP</td></tr><tr><td>7</td><td>First Contentful Paint (FCP)</td><td>LCP Image (Preconnect if external)</td></tr><tr><td>8</td><td>Render 3P personalized ATF image required for LCP</td><td>Fonts (triggered from inline font-css (Preconnect)</td></tr><tr><td>9</td><td></td><td>Non-critical (async) CSS</td></tr><tr><td>10</td><td>Render LCP resources (Hero image, text)</td><td>3P that must execute before first user interaction</td></tr><tr><td>11</td><td></td><td>First-party JS for interactivity</td></tr><tr><td>12</td><td><strong>Largest Contentful Paint (LCP)</strong></td><td></td></tr><tr><td>13</td><td>Render important ATF images</td><td>Default 3P JS</td></tr><tr><td>14</td><td>Parse Non-critical (async) CSS</td><td></td></tr><tr><td>15</td><td>Execute 3P required for first user interaction</td><td>Below the fold images</td></tr><tr><td>16</td><td>Execute 1P JS and hydrate</td><td>Lazy-loaded JS chunks</td></tr><tr><td><strong>First Input Delay (FID)</strong></td><td></td><td>Less important 3P JS</td></tr></tbody></table>
+<p>The main concern here is how do you ensure that 3P scripts are downloaded optimally and in the required sequence.</p>
+<p>Since the script request goes to another domain, preconnect is recommended for the following 3P requests. This helps to optimize the download.</p>
+<ul>
+<li>#1 - FCP blocking 3P resources</li>
+<li>#5 - 3P personalized ATF image required for LCP</li>
+<li>#9 - 3P that must execute before first user interaction</li>
+<li>#12 - Default 3P JS</li>
+</ul>
+<p>To achieve the desired sequence, we recommend using the <a href="https://github.com/vercel/next.js/discussions/18172" target="_blank" rel="noopener noreferrer">ScriptLoader component for Next</a>. This component is designed to “optimize the critical rendering path and ensure external scripts don’t become a bottleneck to optimal page load.” The feature most relevant to our discussion is Loading Priorities. This allows us to schedule the scripts at different milestones to support different use cases. Following are the loading priority values available</p>
+<p><strong>After-Interactive</strong>: Loads the specific 3P script after the next hydration. This can be used to load Tag-managers, Ads, or Analytics scripts that we want to execute as early as possible but after 1P scripts.</p>
+<p><strong>Before-Interactive</strong>: Loads the specific 3P script before hydration. It can be used in cases where we want the 3P script to execute before the 1P script. Eg., polyfill.io, bot detection, security and authentication, user consent management (GDPR), etc.</p>
+<p><strong>Lazy-Onload</strong>: Prioritize all other resources over the specified 3P script and lazy load the script. It can be used for CRM components like Google Feedback or Social Network specific scripts like those used for share buttons, comments, etc.</p>
+<p>Thus, preconnect, script attributes and ScriptLoader for Next.js together can help us get the desired sequence for all our scripts.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The responsibility of optimizing apps falls on the shoulders of the creators of the platforms used as well as the developers who use it. Common issues need to be addressed. We aim to make sequencing easier from the inside out. A tried and tested set of recommendations for different use cases and initiatives like the Script Loader help to achieve this for the React-Next.js stack. The next step would be to ensure that new apps conform to the recommendations above.</p>
+<p><em>With special thanks to <a href="https://www.linkedin.com/in/leena-sohoni-0636b2" target="_blank" rel="noopener noreferrer">Leena Sohoni</a> (Technical Analyst/Writer), for all her contributions to this write-up.</em></p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

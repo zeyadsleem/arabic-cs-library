@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="react">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/react/render-props-pattern/">
+
+    <!-- Primary Meta Tags -->
+    <title>Render Props Pattern</title>
+    <meta name="title" content="Render Props Pattern">
+    <meta name="description" content="Give a component its rendering logic from the outside via a function-as-prop">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/react/render-props-pattern/">
+    <meta property="og:title" content="Render Props Pattern">
+    <meta property="og:description" content="Give a component its rendering logic from the outside via a function-as-prop">
+    <meta property="og:image" content="http://localhost:3000/media/render-props.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/react/render-props-pattern/">
+    <meta property="twitter:title" content="Render Props Pattern">
+    <meta property="twitter:description" content="Give a component its rendering logic from the outside via a function-as-prop">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="Z2nRlPH" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;AI UI Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/ai-ui-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compound Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/compound-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;HOC Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hoc-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Hooks Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hooks-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Container/Presentational Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/presentational-container-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Stack Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-2026\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Render Props Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/render-props-pattern\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Client-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/client-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Incremental Static Generation\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/incremental-static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Progressive Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/progressive-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Selective Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-selective-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Server Components\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-server-components\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Server-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/server-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Streaming Server-Side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/streaming-ssr\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/react/render-props-pattern/&quot;],&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Z1Av3oz" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" height="25" class="h-4 w-4 mr-4 inline-block"><title>React Logo</title><circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse></g></svg>React<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/hoc-pattern" class="relative">
+                    <a href="/react/hoc-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      HOC Pattern
+                    </a>
+                  </li><li key="/react/hooks-pattern" class="relative">
+                    <a href="/react/hooks-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Hooks Pattern
+                    </a>
+                  </li><li key="/react/compound-pattern" class="relative">
+                    <a href="/react/compound-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compound Pattern
+                    </a>
+                  </li><li key="/react/presentational-container-pattern" class="relative">
+                    <a href="/react/presentational-container-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Container/Presentational Pattern
+                    </a>
+                  </li><li key="/react/render-props-pattern" class="relative">
+                    <a href="/react/render-props-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Render Props Pattern
+                    </a>
+                  </li><li key="/react/ai-ui-patterns" class="relative">
+                    <a href="/react/ai-ui-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      AI UI Patterns
+                    </a>
+                  </li><li key="/react/react-2026" class="relative">
+                    <a href="/react/react-2026" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Stack Patterns
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/client-side-rendering" class="relative">
+                    <a href="/react/client-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Client-side Rendering
+                    </a>
+                  </li><li key="/react/server-side-rendering" class="relative">
+                    <a href="/react/server-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Server-side Rendering
+                    </a>
+                  </li><li key="/react/static-rendering" class="relative">
+                    <a href="/react/static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Rendering
+                    </a>
+                  </li><li key="/react/incremental-static-rendering" class="relative">
+                    <a href="/react/incremental-static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Incremental Static Generation
+                    </a>
+                  </li><li key="/react/progressive-hydration" class="relative">
+                    <a href="/react/progressive-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Progressive Hydration
+                    </a>
+                  </li><li key="/react/streaming-ssr" class="relative">
+                    <a href="/react/streaming-ssr" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Streaming Server-Side Rendering
+                    </a>
+                  </li><li key="/react/react-server-components" class="relative">
+                    <a href="/react/react-server-components" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Server Components
+                    </a>
+                  </li><li key="/react/react-selective-hydration" class="relative">
+                    <a href="/react/react-selective-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Selective Hydration
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Design Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Render Props Pattern
+                </h1>
+            </header>
+        <h2 id="a-motivating-scenario">A motivating scenario</h2>
+<p>You’re building a <code>GeolocationProvider</code> for a mapping app. The provider needs to ask the browser for permission, subscribe to position updates, handle errors when the user is offline, and clean up the watcher when the consumer unmounts. The <em>logic</em> is identical everywhere it appears in the app — but the UI around it is different on every screen: a banner on one page, a map marker on another, a hidden debug panel during development.</p>
+<p>How do you ship the logic once and let each consumer decide what to render?</p>
+<p>The <strong>Render Props pattern</strong> is one answer. The component encapsulating the behavior doesn’t decide how the result is displayed. It accepts a function as a prop, calls that function with whatever data it has, and renders whatever JSX the function returns.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">RenderProp</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Geolocation</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">render</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">render</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">RenderProp</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">GeoState</span><span style="color:#E1E4E8">&gt; }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">state</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useGeolocation</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// does the actual work</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;&gt;{</span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">(state)}&lt;/&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The consumer wires it up at the call site, deciding what the UI looks like for <em>this</em> page:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Geolocation</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">render</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{({ </span><span style="color:#FFAB70">coords</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">error</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">status</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (status </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;pending&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">Spinner</span><span style="color:#E1E4E8"> /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (error) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">PermissionPrompt</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">error</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{error} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">MapMarker</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lat</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{coords.latitude} </span><span style="color:#B392F0">lng</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{coords.longitude} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }}</span></span>
+<span class="line"><span style="color:#E1E4E8">/&gt;</span></span></code></pre>
+<p>The “render prop” doesn’t have to be called <code>render</code>. Any prop whose value is a function returning JSX qualifies — <code>children</code>, <code>renderItem</code>, <code>renderEmpty</code>, you name it.</p>
+<hr/>
+<h2 id="a-complete-example-a-reusable-form-validator">A complete example: a reusable form validator</h2>
+<p>Imagine a <code>&lt;FormValidator&gt;</code> that owns the rules and the field state but lets the calling page decide what the inputs and error messages look like.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Errors</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Partial</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">Record</span><span style="color:#E1E4E8">&lt;</span><span style="color:#F97583">keyof</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">&gt;&gt;;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">FormApi</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">values</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">errors</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Errors</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">isValid</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">boolean</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">setField</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">keyof</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;(</span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">]) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">submit</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Props</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">initialValues</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">validate</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">values</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Errors</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">onSubmit</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">values</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">void</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">children</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">api</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">FormApi</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">FormValidator</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Record</span><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">unknown</span><span style="color:#E1E4E8">&gt;&gt;({</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">initialValues</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">validate</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">onSubmit</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">children</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Props</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">values</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setValues</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;(initialValues);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">errors</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">validate</span><span style="color:#E1E4E8">(values);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">isValid</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(errors).</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setField</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">keyof</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;(</span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">[</span><span style="color:#B392F0">K</span><span style="color:#E1E4E8">]) </span><span style="color:#F97583">=&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">setValues</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">prev</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> ({ </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">prev, [key]: value }));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (isValid) </span><span style="color:#B392F0">onSubmit</span><span style="color:#E1E4E8">(values);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;&gt;{</span><span style="color:#B392F0">children</span><span style="color:#E1E4E8">({ values, errors, isValid, setField, submit })}&lt;/&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The consumer is free to render the form however it wants — using a design system, custom layout, server-rendered shell, anything:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">FormValidator</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">initialValues</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{{ email: </span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">, password: </span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8"> }}</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">validate</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> ({</span></span>
+<span class="line"><span style="color:#E1E4E8">    email: v.email.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;@&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Not an email&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    password: v.password.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">&gt;=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">undefined</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Too short&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  })}</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">onSubmit</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">signIn</span><span style="color:#E1E4E8">(v)}</span></span>
+<span class="line"><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  {({ </span><span style="color:#FFAB70">values</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">errors</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">isValid</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">setField</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">submit</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">form</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">onSubmit</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      }}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">TextField</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">label</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Email&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{values.email}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">error</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{errors.email}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setField</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8">, v)}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">TextField</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">label</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;Password&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;password&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{values.password}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">error</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{errors.password}</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">onChange</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setField</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;password&quot;</span><span style="color:#E1E4E8">, v)}</span></span>
+<span class="line"><span style="color:#E1E4E8">      /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">PrimaryButton</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;submit&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">disabled</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">isValid}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        Sign in</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#79B8FF">PrimaryButton</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  )}</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#79B8FF">FormValidator</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>Notice that <code>FormValidator</code> does no rendering of inputs, labels, or buttons. It is pure logic with a render hatch.</p>
+<hr/>
+<h2 id="the-children-as-a-function-variant">The “children as a function” variant</h2>
+<p>The example above already uses the children-as-a-function variant. It is the more idiomatic of the two — most modern libraries pick it because passing JSX between opening and closing tags reads more naturally than an explicit <code>render={...}</code> prop. The mechanics are identical: <code>children</code> is just a prop whose value happens to be the function you pass between the tags.</p>
+<p>You’ll see both styles in the wild:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Explicit render prop</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Subscribe</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">topic</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;orders&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">render</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{(</span><span style="color:#FFAB70">orders</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">OrderList</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">orders</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{orders} /&gt;} /&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// children-as-function</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">Subscribe</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">topic</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;orders&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  {(</span><span style="color:#FFAB70">orders</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">OrderList</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">orders</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{orders} /&gt;}</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#79B8FF">Subscribe</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>Some libraries (Formik historically, <a href="https://github.com/downshift-js/downshift" target="_blank" rel="noopener noreferrer">Downshift</a>) expose both for backwards compatibility. Pick one style per codebase and stay consistent.</p>
+<hr/>
+<h2 id="multiple-render-props-on-one-component">Multiple render props on one component</h2>
+<p>A component can accept several render props, each responsible for a different slot. This is essentially a typed “slots” API:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ListProps</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt; </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">items</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">[];</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">renderItem</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">item</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">index</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">renderEmpty</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">renderHeader</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">List</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;({ </span><span style="color:#FFAB70">items</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">renderItem</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">renderEmpty</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">renderHeader</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ListProps</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (items.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;&gt;{</span><span style="color:#B392F0">renderEmpty</span><span style="color:#E1E4E8">?.()}&lt;/&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">section</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#B392F0">renderHeader</span><span style="color:#E1E4E8">?.()}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;{items.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">it</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">i</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{i}&gt;{</span><span style="color:#B392F0">renderItem</span><span style="color:#E1E4E8">(it, i)}&lt;/</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">&gt;)}&lt;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">section</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This style — small, well-typed render slots — has aged better than monolithic render-prop wrappers. It is essentially how React Native’s <code>&lt;FlatList&gt;</code> (<code>renderItem</code>, <code>ListEmptyComponent</code>, <code>ListHeaderComponent</code>) has worked for years.</p>
+<hr/>
+<h2 id="where-render-props-still-shine">Where render props still shine</h2>
+<p>In a 2025 codebase, render props are no longer the default tool for sharing logic — custom hooks are. But the pattern stays useful in a few situations where hooks struggle:</p>
+<ul>
+<li><strong>Components that need to own a subtree and slot consumer JSX into it.</strong> Think drag-and-drop wrappers like <a href="https://github.com/atlassian/react-beautiful-dnd" target="_blank" rel="noopener noreferrer"><code>react-beautiful-dnd</code></a>, which gives you <code>provided</code> and <code>snapshot</code> arguments to wire into your own JSX. A hook can give you state, but it cannot wrap your JSX in <code>&lt;Droppable&gt;</code>/<code>&lt;Draggable&gt;</code> boundaries.</li>
+<li><strong>Headless component libraries.</strong> <a href="https://github.com/downshift-js/downshift" target="_blank" rel="noopener noreferrer">Downshift</a>, <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer">React Aria</a> (its <code>*Builder</code> APIs), and <a href="https://tanstack.com/table" target="_blank" rel="noopener noreferrer">TanStack Table</a> all use render props or children-as-functions so they can ship the <em>behavior</em> (a11y, keyboard handling, focus management) without dictating the markup.</li>
+<li><strong>Animation primitives.</strong> <a href="https://www.framer.com/motion/" target="_blank" rel="noopener noreferrer">Framer Motion</a>’s <code>&lt;AnimatePresence&gt;</code> and React Spring’s <code>Transition</code> use children-as-functions to thread interpolated values into your JSX every frame.</li>
+</ul>
+<p>The common thread: render props win when the wrapper needs to <em>be</em> part of your tree (because it provides context, refs, or a portal) and <em>also</em> needs the consumer to author the JSX inside it.</p>
+<hr/>
+<h2 id="when-not-to-use-render-props">When NOT to use render props</h2>
+<ul>
+<li><strong>For pure data sharing.</strong> If a wrapper component only exists to call <code>props.children(data)</code>, a custom hook is almost always cleaner. <code>const data = useThing()</code> beats <code>&lt;Thing&gt;{(data) =&gt; ...}&lt;/Thing&gt;</code> for readability.</li>
+<li><strong>When you’ll have to nest several of them.</strong> Two <code>&lt;Mutation&gt;</code> components inside a <code>&lt;Query&gt;</code> quickly become the <a href="https://en.wikipedia.org/wiki/Pyramid_of_doom_(programming)" target="_blank" rel="noopener noreferrer">callback-pyramid pain</a> that hooks were partly designed to solve.</li>
+<li><strong>When the consumer always renders the same thing.</strong> That is what a regular component plus props is for. Render props pay off only when the rendered output legitimately varies between call sites.</li>
+</ul>
+<hr/>
+<h2 id="modernizing-render-props-with-hooks">Modernizing render props with hooks</h2>
+<p>Most libraries that championed the render-props pattern have shipped a hooks API alongside it. Apollo’s <code>&lt;Query&gt;</code> and <code>&lt;Mutation&gt;</code> components are still exported, but the docs now lead with <code>useQuery</code> and <code>useMutation</code>. React Router replaced <code>&lt;Route render={...}&gt;</code> with <code>&lt;Outlet /&gt;</code> and the <code>useParams</code>/<code>useLoaderData</code> hooks. Formik users have moved largely to React Hook Form’s hook-first API.</p>
+<p>Here is the same <code>Geolocation</code> problem from the top of the article, this time as a custom hook:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useGeolocation</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">state</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setState</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">GeoState</span><span style="color:#E1E4E8">&gt;({ status: </span><span style="color:#9ECBFF">&quot;pending&quot;</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;geolocation&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> navigator)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">setState</span><span style="color:#E1E4E8">({ status: </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">, error: </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Unsupported&quot;</span><span style="color:#E1E4E8">) });</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> navigator.geolocation.</span><span style="color:#B392F0">watchPosition</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      (</span><span style="color:#FFAB70">pos</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">setState</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">          status: </span><span style="color:#9ECBFF">&quot;ok&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          coords: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },</span></span>
+<span class="line"><span style="color:#E1E4E8">        }),</span></span>
+<span class="line"><span style="color:#E1E4E8">      (</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setState</span><span style="color:#E1E4E8">({ status: </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">, error: err }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    );</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> navigator.geolocation.</span><span style="color:#B392F0">clearWatch</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, []);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> state;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// At the call site:</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">NearbyStores</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">geo</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useGeolocation</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (geo.status </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;pending&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">Spinner</span><span style="color:#E1E4E8"> /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (geo.status </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">PermissionPrompt</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">error</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{geo.error} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">StoreMap</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lat</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{geo.coords.latitude} </span><span style="color:#B392F0">lng</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{geo.coords.longitude} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Two fewer indirections, no extra node in the tree, no closure-over-arguments to reason about. This is why most teams now reach for a hook first.</p>
+<hr/>
+<h2 id="trade-offs-at-a-glance">Trade-offs at a glance</h2>
+<p><strong>Strengths</strong></p>
+<ul>
+<li><strong>No naming collisions.</strong> Unlike HOCs, render props pass data explicitly as function arguments. There is no implicit prop merge, and the data flow is visible at the call site.</li>
+<li><strong>Maximum flexibility for the consumer.</strong> The component owning the logic doesn’t dictate any markup, which is exactly why headless libraries love the pattern.</li>
+<li><strong>Plays nicely with TypeScript generics.</strong> A <code>&lt;List&lt;T&gt; renderItem={item =&gt; ...}&gt;</code> gets you a fully typed <code>item</code> parameter for free.</li>
+</ul>
+<p><strong>Weaknesses</strong></p>
+<ul>
+<li><strong>Callback pyramids.</strong> Nesting multiple render-prop components for multiple data sources quickly becomes hard to read; flat hook calls are easier.</li>
+<li><strong>Re-render cost.</strong> A fresh inline function on every parent render is fine in almost every app, but in tight performance-critical paths it can defeat memoization. The React Compiler helps here, but it is not magic.</li>
+<li><strong>One more concept to teach.</strong> A new contributor has to recognise that <code>children</code> is sometimes a function.</li>
+</ul>
+<hr/>
+<h2 id="what-to-remember">What to remember</h2>
+<ul>
+<li>A render prop is a function-valued prop that returns JSX. The owner component runs the logic and calls the prop to display it.</li>
+<li>The pattern shines in <strong>headless</strong> libraries — drag and drop, animation, accessibility, table builders — where the library can’t dictate markup.</li>
+<li>For ordinary data-sharing, a custom hook is usually clearer, flatter, and friendlier to the React Compiler.</li>
+<li>If you find yourself writing a wrapper whose only job is <code>return props.children(data)</code>, that wrapper wants to be a hook.</li>
+</ul>
+<hr/>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://legacy.reactjs.org/docs/render-props.html" target="_blank" rel="noopener noreferrer">Render Props — React (legacy docs)</a></li>
+<li><a href="https://reactjs.org/docs/hooks-faq.html#do-hooks-replace-render-props-and-higher-order-components" target="_blank" rel="noopener noreferrer">Do Hooks replace render props and higher-order components? — React FAQ</a></li>
+<li><a href="https://github.com/downshift-js/downshift" target="_blank" rel="noopener noreferrer">Downshift — a headless combobox library built on render props</a></li>
+<li><a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer">React Aria — accessible primitives that use render props for behavior</a></li>
+</ul>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

@@ -1,0 +1,290 @@
+{
+  "chapters": [
+    {
+      "key": "vanilla",
+      "title": "أنماط JavaScript",
+      "titleAr": "أنماط JavaScript",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction",
+          "order": 0
+        },
+        {
+          "slug": "bundle-splitting",
+          "title": "Bundle Splitting",
+          "order": 1
+        },
+        {
+          "slug": "compression",
+          "title": "Compressing JavaScript",
+          "order": 2
+        },
+        {
+          "slug": "dynamic-import",
+          "title": "Dynamic Import",
+          "order": 3
+        },
+        {
+          "slug": "factory-pattern",
+          "title": "Factory Pattern",
+          "order": 4
+        },
+        {
+          "slug": "flyweight-pattern",
+          "title": "Flyweight Pattern",
+          "order": 5
+        },
+        {
+          "slug": "import-on-interaction",
+          "title": "Import On Interaction",
+          "order": 6
+        },
+        {
+          "slug": "import-on-visibility",
+          "title": "Import On Visibility",
+          "order": 7
+        },
+        {
+          "slug": "loading-sequence",
+          "title": "Optimize your loading sequence",
+          "order": 8
+        },
+        {
+          "slug": "mediator-pattern",
+          "title": "Mediator/Middleware Pattern",
+          "order": 9
+        },
+        {
+          "slug": "mixin-pattern",
+          "title": "Mixin Pattern",
+          "order": 10
+        },
+        {
+          "slug": "module-pattern",
+          "title": "Module Pattern",
+          "order": 11
+        },
+        {
+          "slug": "observer-pattern",
+          "title": "Observer Pattern",
+          "order": 12
+        },
+        {
+          "slug": "prefetch",
+          "title": "Prefetch",
+          "order": 13
+        },
+        {
+          "slug": "preload",
+          "title": "Preload",
+          "order": 14
+        },
+        {
+          "slug": "prototype-pattern",
+          "title": "Prototype Pattern",
+          "order": 15
+        },
+        {
+          "slug": "proxy-pattern",
+          "title": "Proxy Pattern",
+          "order": 16
+        },
+        {
+          "slug": "prpl",
+          "title": "PRPL Pattern",
+          "order": 17
+        },
+        {
+          "slug": "route-based",
+          "title": "Route Based Splitting",
+          "order": 18
+        },
+        {
+          "slug": "singleton-pattern",
+          "title": "Singleton Pattern",
+          "order": 19
+        },
+        {
+          "slug": "static-import",
+          "title": "Static Import",
+          "order": 20
+        },
+        {
+          "slug": "third-party",
+          "title": "Optimize loading third-parties",
+          "order": 21
+        },
+        {
+          "slug": "tree-shaking",
+          "title": "Tree Shaking",
+          "order": 22
+        },
+        {
+          "slug": "view-transitions",
+          "title": "Animating View Transitions",
+          "order": 23
+        },
+        {
+          "slug": "virtual-lists",
+          "title": "List Virtualization",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "react",
+      "title": "أنماط React وNext.js",
+      "titleAr": "أنماط React وNext.js",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Overview of React.js",
+          "order": 0
+        },
+        {
+          "slug": "client-side-rendering",
+          "title": "Client-side Rendering",
+          "order": 1
+        },
+        {
+          "slug": "compound-pattern",
+          "title": "Compound Pattern",
+          "order": 2
+        },
+        {
+          "slug": "hoc-pattern",
+          "title": "HOC Pattern",
+          "order": 3
+        },
+        {
+          "slug": "hooks-pattern",
+          "title": "Hooks Pattern",
+          "order": 4
+        },
+        {
+          "slug": "incremental-static-rendering",
+          "title": "Incremental Static Generation",
+          "order": 5
+        },
+        {
+          "slug": "nextjs",
+          "title": "Overview of Next.js",
+          "order": 6
+        },
+        {
+          "slug": "nextjs-vitals",
+          "title": "Optimize Next.js apps for the Core Web Vitals",
+          "order": 7
+        },
+        {
+          "slug": "presentational-container-pattern",
+          "title": "Container/Presentational Pattern",
+          "order": 8
+        },
+        {
+          "slug": "progressive-hydration",
+          "title": "Progressive Hydration",
+          "order": 9
+        },
+        {
+          "slug": "react-2026",
+          "title": "React Stack Patterns",
+          "order": 10
+        },
+        {
+          "slug": "react-server-components",
+          "title": "React Server Components",
+          "order": 11
+        },
+        {
+          "slug": "render-props-pattern",
+          "title": "Render Props Pattern",
+          "order": 12
+        },
+        {
+          "slug": "server-side-rendering",
+          "title": "Server-side Rendering",
+          "order": 13
+        },
+        {
+          "slug": "static-rendering",
+          "title": "Static Rendering",
+          "order": 14
+        },
+        {
+          "slug": "streaming-ssr",
+          "title": "Streaming Server-Side Rendering",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "vue",
+      "title": "أنماط Vue",
+      "titleAr": "أنماط Vue",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction",
+          "order": 0
+        },
+        {
+          "slug": "async-components",
+          "title": "Async Components",
+          "order": 1
+        },
+        {
+          "slug": "components",
+          "title": "Components",
+          "order": 2
+        },
+        {
+          "slug": "composables",
+          "title": "Composables",
+          "order": 3
+        },
+        {
+          "slug": "container-presentational",
+          "title": "Container/Presentational Pattern",
+          "order": 4
+        },
+        {
+          "slug": "data-provider",
+          "title": "Data Provider Pattern",
+          "order": 5
+        },
+        {
+          "slug": "dynamic-components",
+          "title": "Dynamic Components",
+          "order": 6
+        },
+        {
+          "slug": "provide-inject",
+          "title": "Provide/Inject",
+          "order": 7
+        },
+        {
+          "slug": "render-functions",
+          "title": "Render functions",
+          "order": 8
+        },
+        {
+          "slug": "renderless-components",
+          "title": "Renderless components",
+          "order": 9
+        },
+        {
+          "slug": "script-setup",
+          "title": "&lt;script setup&gt;",
+          "order": 10
+        },
+        {
+          "slug": "state-management",
+          "title": "State Management",
+          "order": 11
+        }
+      ]
+    }
+  ]
+}

@@ -422,6 +422,116 @@ html[data-theme='dark'] .path-item__meta {
   border: 0;
 }
 
+.exercises {
+  margin: 2.5rem 0 1rem;
+  padding: 1.5rem 1.6rem;
+  border: 1px solid #d9e2ef;
+  border-radius: 14px;
+  background: #f7fafd;
+}
+
+html[data-theme='dark'] .exercises {
+  border-color: #29384d;
+  background: #151d28;
+}
+
+.exercises > h1,
+.exercises > h2,
+.exercises > h3 {
+  margin-top: 0;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed #c6d4e6;
+}
+
+html[data-theme='dark'] .exercises > h1,
+html[data-theme='dark'] .exercises > h2,
+html[data-theme='dark'] .exercises > h3 {
+  border-bottom-color: #2c3c53;
+}
+
+.exercises ol {
+  counter-reset: exercise;
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.exercises ol > li {
+  counter-increment: exercise;
+  position: relative;
+  padding: 0.9rem 1rem 0.9rem 3.1rem;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #e4ebf4;
+  line-height: 2;
+}
+
+html[data-theme='dark'] .exercises ol > li {
+  background: #1a222d;
+  border-color: #2a3542;
+}
+
+.exercises ol > li::before {
+  content: counter(exercise);
+  position: absolute;
+  top: 0.85rem;
+  right: 0.9rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #274a7a;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.exercises ol > li > p {
+  margin: 0;
+}
+
+.exercises ol > li > p + p {
+  margin-top: 0.6rem;
+}
+
+.exercises ol > li pre {
+  margin-top: 0.8rem;
+}
+
+.exercises ol ol {
+  counter-reset: subtask;
+  margin-top: 0.7rem;
+  gap: 0.4rem;
+}
+
+.exercises ol ol > li {
+  padding: 0.35rem 0.7rem 0.35rem 2.6rem;
+  background: transparent;
+  border: none;
+  border-inline-start: 2px solid #d9e2ef;
+  border-radius: 0;
+  line-height: 1.9;
+}
+
+html[data-theme='dark'] .exercises ol ol > li {
+  border-inline-start-color: #2a3542;
+}
+
+.exercises ol ol > li::before {
+  content: '–';
+  top: 0.35rem;
+  right: 0.9rem;
+  width: auto;
+  height: auto;
+  background: none;
+  color: #7a8ba3;
+  font-size: 1rem;
+}
+
 .book-note {
   max-width: 60ch;
   margin-top: 1rem;

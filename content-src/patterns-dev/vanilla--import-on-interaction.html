@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="vanilla">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/vanilla/import-on-interaction/">
+
+    <!-- Primary Meta Tags -->
+    <title>Import On Interaction</title>
+    <meta name="title" content="Import On Interaction">
+    <meta name="description" content="Load non-critical resources when a user interacts with UI requiring it">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/vanilla/import-on-interaction/">
+    <meta property="og:title" content="Import On Interaction">
+    <meta property="og:description" content="Load non-critical resources when a user interacts with UI requiring it">
+    <meta property="og:image" content="http://localhost:3000/media/importOnInteraction.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/vanilla/import-on-interaction/">
+    <meta property="twitter:title" content="Import On Interaction">
+    <meta property="twitter:description" content="Load non-critical resources when a user interacts with UI requiring it">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="Z2pCKt7" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Command Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/command-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Factory Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/factory-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Flyweight Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/flyweight-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mediator/Middleware Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mediator-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Mixin Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/mixin-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Module Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/module-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Observer Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/observer-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prototype Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prototype-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Provider Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/provider-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Proxy Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/proxy-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Singleton Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/singleton-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/static-import\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Islands Architecture\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/islands-architecture\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Introduction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/rendering-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Animating View Transitions\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/view-transitions\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Bundle Splitting\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/bundle-splitting\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compressing JavaScript\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/compression\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Dynamic Import\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/dynamic-import\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Interaction\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-interaction\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Import On Visibility\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/import-on-visibility\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize your loading sequence\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/loading-sequence\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Prefetch\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prefetch\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Preload\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/preload\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;PRPL Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/prpl\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Optimize loading third-parties\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/third-party\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Tree Shaking\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/tree-shaking\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;List Virtualization\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/vanilla/virtual-lists\\\&quot;]}]]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/vanilla/import-on-interaction/&quot;],&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Zk2h3v" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;vanilla&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 630" height="25" class="h-4 w-4 mr-4 inline-block"><rect width="630" height="630" fill="#f7df1e"></rect><path d="m423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 38.1 30.45 19.45 0 31.72-7.61 31.72-37.2v-201.3h59.2v202.1c0 61.3-35.94 89.2-88.4 89.2-47.4 0-74.85-24.53-88.81-54.075z"></path></svg>Vanilla<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/singleton-pattern" class="relative">
+                    <a href="/vanilla/singleton-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Singleton Pattern
+                    </a>
+                  </li><li key="/vanilla/proxy-pattern" class="relative">
+                    <a href="/vanilla/proxy-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Proxy Pattern
+                    </a>
+                  </li><li key="/vanilla/prototype-pattern" class="relative">
+                    <a href="/vanilla/prototype-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prototype Pattern
+                    </a>
+                  </li><li key="/vanilla/observer-pattern" class="relative">
+                    <a href="/vanilla/observer-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Observer Pattern
+                    </a>
+                  </li><li key="/vanilla/module-pattern" class="relative">
+                    <a href="/vanilla/module-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Module Pattern
+                    </a>
+                  </li><li key="/vanilla/mixin-pattern" class="relative">
+                    <a href="/vanilla/mixin-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mixin Pattern
+                    </a>
+                  </li><li key="/vanilla/mediator-pattern" class="relative">
+                    <a href="/vanilla/mediator-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Mediator/Middleware Pattern
+                    </a>
+                  </li><li key="/vanilla/flyweight-pattern" class="relative">
+                    <a href="/vanilla/flyweight-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Flyweight Pattern
+                    </a>
+                  </li><li key="/vanilla/factory-pattern" class="relative">
+                    <a href="/vanilla/factory-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Factory Pattern
+                    </a>
+                  </li><li key="/vanilla/command-pattern" class="relative">
+                    <a href="/vanilla/command-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Command Pattern
+                    </a>
+                  </li><li key="/vanilla/provider-pattern" class="relative">
+                    <a href="/vanilla/provider-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Provider Pattern
+                    </a>
+                  </li><li key="/vanilla/static-import" class="relative">
+                    <a href="/vanilla/static-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Import
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/islands-architecture" class="relative">
+                    <a href="/vanilla/islands-architecture" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Islands Architecture
+                    </a>
+                  </li><li key="/vanilla/view-transitions" class="relative">
+                    <a href="/vanilla/view-transitions" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Animating View Transitions
+                    </a>
+                  </li><li key="/vanilla/rendering-patterns" class="relative">
+                    <a href="/vanilla/rendering-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Introduction
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Performance Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Performance Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/vanilla/loading-sequence" class="relative">
+                    <a href="/vanilla/loading-sequence" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize your loading sequence
+                    </a>
+                  </li><li key="/vanilla/dynamic-import" class="relative">
+                    <a href="/vanilla/dynamic-import" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Dynamic Import
+                    </a>
+                  </li><li key="/vanilla/import-on-visibility" class="relative">
+                    <a href="/vanilla/import-on-visibility" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Import On Visibility
+                    </a>
+                  </li><li key="/vanilla/import-on-interaction" class="relative">
+                    <a href="/vanilla/import-on-interaction" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Import On Interaction
+                    </a>
+                  </li><li key="/vanilla/bundle-splitting" class="relative">
+                    <a href="/vanilla/bundle-splitting" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Bundle Splitting
+                    </a>
+                  </li><li key="/vanilla/prpl" class="relative">
+                    <a href="/vanilla/prpl" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      PRPL Pattern
+                    </a>
+                  </li><li key="/vanilla/tree-shaking" class="relative">
+                    <a href="/vanilla/tree-shaking" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Tree Shaking
+                    </a>
+                  </li><li key="/vanilla/preload" class="relative">
+                    <a href="/vanilla/preload" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Preload
+                    </a>
+                  </li><li key="/vanilla/prefetch" class="relative">
+                    <a href="/vanilla/prefetch" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Prefetch
+                    </a>
+                  </li><li key="/vanilla/third-party" class="relative">
+                    <a href="/vanilla/third-party" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Optimize loading third-parties
+                    </a>
+                  </li><li key="/vanilla/virtual-lists" class="relative">
+                    <a href="/vanilla/virtual-lists" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      List Virtualization
+                    </a>
+                  </li><li key="/vanilla/compression" class="relative">
+                    <a href="/vanilla/compression" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compressing JavaScript
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Performance Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Import On Interaction
+                </h1>
+            </header>
+        <blockquote>
+<p>tl;dr: lazy-load non-critical resources when a user interacts with UI requiring it</p>
+</blockquote>
+<p>Your page may contain code or data for a component or resource that isn’t immediately necessary. For example, part of the user-interface a user doesn’t see unless they click or scroll on parts of the page. This can apply to many kinds of first-party code you author, but this also applies to third-party widgets such as video players or chat widgets where you typically need to click a button to display the main interface.</p>
+<p>Loading these resources eagerly (i.e right away) can <a href="https://web.dev/long-tasks-devtools/" target="_blank" rel="noopener noreferrer">block the main thread</a> if they are costly, pushing out how soon a user can interact with more critical parts of a page. This can impact interaction readiness metrics like <a href="https://web.dev/fid/" target="_blank" rel="noopener noreferrer">First Input Delay</a>, <a href="https://web.dev/lighthouse-total-blocking-time/" target="_blank" rel="noopener noreferrer">Total Blocking Time</a> and <a href="https://web.dev/interactive/" target="_blank" rel="noopener noreferrer">Time to Interactive</a>. Instead of loading these resources immediately, you can load them at a more opportune moment, such as:</p>
+<ul>
+<li>When the user clicks to interact with that component for the first time</li>
+<li>Scrolls the component into view</li>
+<li>or deferring load of that component until the browser is idle (via <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback" rel="noopener">requestIdleCallback</a>).</li>
+</ul>
+<p>The different ways to load resources are, at a high-level:</p>
+<ul>
+<li>Eager - load resource right away (the normal way of loading scripts)</li>
+<li>Lazy (<a href="https://web.dev/code-splitting-with-dynamic-imports-in-nextjs/#route-based-and-component-based-code-splitting" target="_blank" rel="noopener noreferrer">Route-based</a>) - load when a user navigates to a route or component</li>
+<li>Lazy (On interaction) - load when the user clicks UI (e.g Show Chat)</li>
+<li>Lazy (In viewport) - load when the user scrolls towards the component</li>
+<li><a href="https://web.dev/link-prefetch/" target="_blank" rel="noopener noreferrer">Prefetch</a> - load prior to needed, but after critical resources are loaded</li>
+<li><a href="https://web.dev/preload-critical-assets/" target="_blank" rel="noopener noreferrer">Preload</a> - eagerly, with a greater level of urgency</li>
+</ul>
+<blockquote>
+<p>Import-on-interaction for first-party code should only be done if you’re unable to prefetch resources prior to interaction. The pattern is however very relevant for third-party code, where you generally want to defer it if non-critical to a later point in time. This can be achieved in many ways (defer until interaction, until the browser is idle or using other heuristics).</p>
+</blockquote>
+<p>Lazily importing feature code on interaction is a pattern used in many contexts we will cover in this post. One place you may have used it before is Google Docs, where they save loading 500KB of script for the share feature by deferring its load until user-interaction.</p>
+<img alt="Clicking a Share button in Google Docs triggers a download of code needed for this highly interactive feature. It weighs in at 500KB of script, which is better loaded on-demand rather than eagerly with the rest of Google Docs on page load" sizes="(max-width: 1280px) 100vw, 1280px" srcSet="/media/import-on-interaction/image1_ohziu6_c_scale_w_200.png 200w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_358.png 358w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_486.png 486w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_600.png 600w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_703.png 703w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_794.png 794w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_886.png 886w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_966.png 966w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_1047.png 1047w,
+/media/import-on-interaction/image1_ohziu6_c_scale_w_1280.png 1280w" loading="lazy" src="/media/import-on-interaction/image1_ohziu6_c_scale_w_1280.png"/>
+<p>Another place where import-on-interaction can be a good fit is loading third-party widgets.</p>
+<hr/>
+<h2 id="fake-loading-third-party-ui-with-a-facade">“Fake” loading third-party UI with a facade</h2>
+<p>You might be importing a third-party script and have less control over what it renders or when it loads code. One option for implementing load-on-interaction is straight-forward: use a <a href="https://github.com/patrickhulce/third-party-web/blob/10ec0f8f30bbbb73e2de5640cb652a07dd4d7d11/facades.md" target="_blank" rel="noopener noreferrer">facade</a>. A facade is a simple “preview” or “placeholder” for a more costly component where you simulate the basic experience, such as with an image or screenshot. It’s terminology we’ve been using for this idea on the Lighthouse team.</p>
+<p>When a user clicks on the “preview” (the facade), the code for the resource is loaded. This limits users needing to pay the experience cost for a feature if they’re not going to use it. Similarly, facades can <a href="https://web.dev/uses-rel-preconnect/" target="_blank" rel="noopener noreferrer">preconnect</a> to necessary resources on hover.</p>
+<blockquote>
+<p>Third-party resources are often added to pages without full consideration for how they fit into the overall loading of a site. Synchronously-loaded third-party scripts block the browser parser and can delay hydration. If possible, 3P script should be loaded with async/defer (or other approaches) to ensure 1P scripts aren’t starved of network bandwidth. Unless they are critical, they can be a good candidate for shifting to deferred late-loading using patterns like import-on-interaction.</p>
+</blockquote>
+<hr/>
+<h2 id="video-player-embeds">Video Player Embeds</h2>
+<p>A good example of a “facade” is the <a href="https://github.com/paulirish/lite-youtube-embed" target="_blank" rel="noopener noreferrer">YouTube Lite Embed</a> by Paul Irish. This provides a Custom Element which takes a YouTube Video ID and presents a minimal thumbnail and play button. Clicking the element dynamically loads the full YouTube embed code, meaning users who never click play don’t pay the cost of fetching and processing it.</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image2_egy8ct_c_scale_w_200.png 200w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_363.png 363w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_492.png 492w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_603.png 603w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_722.png 722w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_816.png 816w,
+/media/import-on-interaction/image2_egy8ct_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image2_egy8ct_c_scale_w_1280.png" loading="lazy" alt="The lite-youtube component only loads up 3KB of script on page load and the full-fat YouTube payload on interaction"/>
+<p>A similar technique is used in production on a few Google sites. On Android.com, rather than eagerly loading the YouTube video player embed, a thumbnail with a fake player button is shown to users. When they click it, a modal loads which auto-plays the video using the full-fat YouTube video player embed:</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image3_zykzg7_c_scale_w_200.png 200w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_318.png 318w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_413.png 413w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_499.png 499w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_578.png 578w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_651.png 651w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_716.png 716w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_779.png 779w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_836.png 836w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_895.png 895w,
+/media/import-on-interaction/image3_zykzg7_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image3_zykzg7_c_scale_w_1280.png" loading="lazy" alt="Android.com loads code for their video embeds on demand when a user clicks on a thumbnail for one of these videos"/>
+<hr/>
+<h2 id="authentication">Authentication</h2>
+<p>Apps may need to support authentication with a service via a client-side JavaScript SDK. These can occasionally be large with heavy JS execution costs and one might rather not eagerly load them up front if a user isn’t going to login. Instead, dynamically import authentication libraries when a user clicks on a “Login” button, keeping the main thread more free during initial load.</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image4_qeskzi_c_scale_w_200.png 200w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_380.png 380w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_522.png 522w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_636.png 636w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_753.png 753w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_856.png 856w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_947.png 947w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_1036.png 1036w,
+/media/import-on-interaction/image4_qeskzi_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image4_qeskzi_c_scale_w_1280.png" loading="lazy" alt="A HTML and CSS only version of a Google sign-in button which loads the full client-side SDK and actual button on interaction"/>
+<hr/>
+<h2 id="chat-widgets">Chat widgets</h2>
+<p>Calibre app <a href="https://calibreapp.com/blog/fast-live-chat" target="_blank" rel="noopener noreferrer">improved performance of their Intercom-based live chat by 30%</a> through usage of a similar facade approach. They implemented a “fake” fast loading live chat button using just CSS and HTML, which when clicked would load their Intercom bundles.</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_200.png 200w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_348.png 348w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_470.png 470w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_579.png 579w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_665.png 665w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_742.png 742w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_960.png 960w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_909.png 909w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_1005.png 1005w,
+/media/import-on-interaction/image5_x7d5a9_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image5_x7d5a9_c_scale_w_1280.png" loading="lazy" alt="An simulated version of the Intercom chat widget button which loads the full chat widget on page interaction"/>
+<p><a href="https://wildbit.com/blog/2020/09/30/getting-postmark-lighthouse-performance-score-to-100" target="_blank" rel="noopener noreferrer">Postmark</a> noted that their Help chat widget was always eagerly loaded, even though it was only occasionally used by customers. The widget would pull in 314KB of script, more than their whole home page. To improve user-experience, they replaced the widget with a fake replica using HTML and CSS, loading the real-thing on click. This change reduced Time to Interactive from 7.7s to 3.7s.</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image6_wtsthu_c_scale_w_200.png 200w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_323.png 323w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_424.png 424w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_509.png 509w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_589.png 589w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_664.png 664w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_737.png 737w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_796.png 796w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_859.png 859w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_915.png 915w,
+/media/import-on-interaction/image6_wtsthu_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image6_wtsthu_c_scale_w_1280.png" loading="lazy" alt="A HTML+CSS approximate of the customer help widget"/>
+<hr/>
+<h2 id="others">Others</h2>
+<p><a href="https://medium.com/ne-digital/how-to-reduce-next-js-bundle-size-68f7ac70c375" target="_blank" rel="noopener noreferrer">Ne-digital</a> used a React library for animated scrolling back to the top of a page when a user clicks on a “scroll to top” button. Rather than eagerly loading the react-scroll dependency for this, they load it on interaction with the button, saving ~7KB:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#B392F0">handleScrollToTop</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;react-scroll&#39;</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">scroll</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      scroll.animateScroll.</span><span style="color:#B392F0">scrollToTop</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<img src="/media/import-on-interaction/animation.gif" alt="Loading resources on interaction with DevTools showing the resource being fetched" loading="lazy"/>
+<hr/>
+<h2 id="how-do-you-import-on-interaction">How do you import-on-interaction?</h2>
+<h3 id="vanilla-javascript">Vanilla JavaScript</h3>
+<p>In JavaScript, <a href="https://v8.dev/features/dynamic-import" target="_blank" rel="noopener noreferrer">dynamic import()</a> enables lazy-loading modules and returns a promise and can be quite powerful when applied correctly. Below is an example where dynamic import is used in a button event listener to import the lodash.sortby module and then use it.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">btn</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;button&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">btn.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;click&quot;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;lodash.sortby&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">module</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.default)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">sortInput</span><span style="color:#E1E4E8">()) </span><span style="color:#6A737D">// use the imported dependency</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>Prior to dynamic import or for use-cases it doesn’t fit as well, dynamically injecting scripts into the page using a Promise-based script loader was also an option (see <a href="https://glitch.com/edit/#!/tree-fluffy-stop?path=script.js%3A1%3A0" target="_blank" rel="noopener noreferrer">here for full implementation</a> that demonstrates a sign-in facade):</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">loginBtn</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;#login&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">loginBtn.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;click&quot;</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">loader</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">scriptLoader</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  loader</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">load</span><span style="color:#E1E4E8">([</span><span style="color:#9ECBFF">&quot;//apis.google.com/js/client:platform.js?onload=showLoginScreen&quot;</span><span style="color:#E1E4E8">])</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(({ </span><span style="color:#FFAB70">length</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">length</span><span style="color:#9ECBFF">} scripts loaded!`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr/>
+<h2 id="react">React</h2>
+<p>Let’s imagine we have a Chat application which has a <code>&lt;MessageList&gt;</code>, <code>&lt;MessageInput&gt;</code> and an <code>&lt;EmojiPicker&gt;</code> component (powered by <a href="https://bundlephobia.com/result?p=emoji-mart@3.0.0" target="_blank" rel="noopener noreferrer">emoji-mart</a>, which is 98KB minified and gzipped). It can be common to eagerly load all of these components on initial page-load.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageList </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;./MessageList&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageInput </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;./MessageInput&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> EmojiPicker </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;./EmojiPicker&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Channel</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">MessageList</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">MessageInput</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {emojiPickerOpen </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">EmojiPicker</span><span style="color:#E1E4E8"> /&gt;}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image8_pft4f0_c_scale_w_200.png 200w,
+/media/import-on-interaction/image8_pft4f0_c_scale_w_473.png 473w,
+/media/import-on-interaction/image8_pft4f0_c_scale_w_671.png 671w,
+/media/import-on-interaction/image8_pft4f0_c_scale_w_840.png 840w,
+/media/import-on-interaction/image8_pft4f0_c_scale_w_1017.png 1017w,
+/media/import-on-interaction/image8_pft4f0_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image8_pft4f0_c_scale_w_1280.png" loading="lazy" alt="Showing different components that are loaded separately"/>
+<p>Breaking the loading of this work up is relatively straight-forward with <a href="https://web.dev/reduce-javascript-payloads-with-code-splitting/" target="_blank" rel="noopener noreferrer">code-splitting</a>. The <code>React.lazy</code> method makes it easy to code-split a React application on a component level using dynamic imports. The <code>React.lazy</code> function provides a built-in way to separate components in an application into separate chunks of JavaScript with very little legwork. You can then take care of loading states when you couple it with the Suspense component.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { lazy, Suspense } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;react&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageList </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;./MessageList&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageInput </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&#39;./MessageInput&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">EmojiPicker</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">lazy</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;./EmojiPicker&#39;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Channel</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">MessageList</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">MessageInput</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {emojiPickerOpen </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;Loading...&lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#79B8FF">EmojiPicker</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      )}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>We can extend this idea to only import code for the Emoji Picker component when the Emoji icon is clicked in a <code>&lt;MessageInput&gt;</code>, rather than eagerly when the application initially loads:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> React, { useState, createElement } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageList </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./MessageList&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> MessageInput </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./MessageInput&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ErrorBoundary </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./ErrorBoundary&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Channel</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">emojiPickerEl</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setEmojiPickerEl</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">openEmojiPicker</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">import</span><span style="color:#E1E4E8">(</span><span style="color:#6A737D">/* webpackChunkName: &quot;emoji-picker&quot; */</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./EmojiPicker&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">      .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">module</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.default)</span></span>
+<span class="line"><span style="color:#E1E4E8">      .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">emojiPicker</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">setEmojiPickerEl</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(emojiPicker));</span></span>
+<span class="line"><span style="color:#E1E4E8">      });</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">closeEmojiPickerHandler</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">setEmojiPickerEl</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#79B8FF">ErrorBoundary</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">MessageList</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">MessageInput</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{openEmojiPicker} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {emojiPickerEl}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#79B8FF">ErrorBoundary</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_200.png 200w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_395.png 395w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_539.png 539w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_672.png 672w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_792.png 792w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_904.png 904w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_1014.png 1014w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_1110.png 1110w,
+/media/import-on-interaction/image9_h0g6sw_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image9_h0g6sw_c_scale_w_1280.png" loading="lazy" alt="Lazy-load the Emoji component on interaction"/>
+<hr/>
+<h2 id="vue">Vue</h2>
+<p>In Vue.js, a similar import-on-interaction pattern can be accomplished in a few different ways. One way is to dynamically import the <code>Emojipicker</code> Vue component using dynamic import wrapped in a function i.e <code>() =&gt; import(&quot;./Emojipicker&quot;)</code>. Typically doing this will have Vue.js lazy-load the component when it needs to be rendered.</p>
+<p>We can then gate lazy-loading behind a user-interaction. Using a conditional <code>v-if</code> on the picker’s parent <code>div</code> which is toggled by clicking a button, we can then both conditionally fetch and render the <code>Emojipicker</code> component when the user clicks.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">@click</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;show = true&quot;</span><span style="color:#E1E4E8">&gt;Load Emoji Picker&lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">v-if</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;show&quot;</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#FDAEB7;font-style:italic">emojipicker</span><span style="color:#E1E4E8">&gt;&lt;/</span><span style="color:#FDAEB7;font-style:italic">emojipicker</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">template</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">data</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> ({ show: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8"> }),</span></span>
+<span class="line"><span style="color:#E1E4E8">    components: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">Emojipicker</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">import</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;./Emojipicker&quot;</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>The import-on-interaction pattern should be possible with most frameworks and libraries that support dynamic component loading, including <a href="https://johnpapa.net/angular-9-lazy-loading-components/" target="_blank" rel="noopener noreferrer">Angular</a>.</p>
+<hr/>
+<h2 id="import-on-interaction-for-first-party-code-as-part-of-progressive-loading">Import-on-interaction for first-party code as part of progressive loading</h2>
+<p>Loading code on interaction also happens to be a key part of how Google handles progressive loading in large applications like Flights and Photos. To illustrate this, let’s take a look at an example previously presented by Shubhie Panicker.</p>
+<p>Imagine a user is planning a trip to Mumbai, India and they visit Google Hotels to look at prices. All of the resources needed for this interaction could be loaded eagerly upfront, but if a user hasn’t selected any destination, the HTML/CSS/JS required for the map would be unnecessary.</p>
+<img sizes="(max-width: 1280px) 100vw, 1280px" srcSet="
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_200.png 200w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_325.png 325w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_423.png 423w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_507.png 507w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_585.png 585w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_654.png 654w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_718.png 718w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_782.png 782w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_846.png 846w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_899.png 899w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_951.png 951w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1005.png 1005w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1050.png 1050w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1100.png 1100w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1149.png 1149w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1196.png 1196w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1249.png 1249w,
+/media/import-on-interaction/image10_ofj3bz_c_scale_w_1280.png 1280w" src="/media/import-on-interaction/image10_ofj3bz_c_scale_w_1280.png" loading="lazy" alt="Google Hotels on mobile web"/>
+<p>In the simplest download scenario, imagine Google Hotels is using naive <a href="https://developers.google.com/web/updates/2019/02/rendering-on-the-web#csr" target="_blank" rel="noopener noreferrer">client-side rendering</a> (CSR). All the code would be downloaded and processed upfront: HTML, followed by JS, CSS and then fetching the data, only to render once we have everything. However, this leaves the user waiting a long time with nothing displayed on-screen. A big chunk of the JavaScript and CSS may be unnecessary.</p>
+<img src="/media/import-on-interaction/image11.png" alt="Basic client-side rendering" loading="lazy"/>
+<p>Next, imagine this experience moved to <a href="https://developers.google.com/web/updates/2019/02/rendering-on-the-web#server-vs-static" target="_blank" rel="noopener noreferrer">server-side rendering</a> (SSR). We would allow the user to get a visually complete page sooner, which is great, however it wouldn’t be interactive until the data is fetched from the server and the client framework completes hydration.</p>
+<img src="/media/import-on-interaction/image12.png" alt="Basic server-side rendering" loading="lazy"/>
+<p>SSR can be an improvement, but the user may have an uncanny valley experience where the page looks ready, but they are unable to tap on anything. Sometimes this is referred to as rage clicks as users tend to click over and over again repeatedly in frustration.</p>
+<p>Returning to the Google Hotels search example, if we zoom in to the UI a little we can see that when a user clicks on “more filters” to find exactly the right hotel, the code required for that component is downloaded.</p>
+<h3 id="only-very-minimal-code-is-downloaded-initially-and-beyond-this-user-interaction-dictates-which-code-is-sent-down-when">Only very minimal code is downloaded initially and beyond this, user interaction dictates which code is sent down when.</h3>
+<p>Let’s take a closer look at this loading scenario.</p>
+<img src="/media/import-on-interaction/image13.png" alt="Interacting with filters pulling in 30KB of JS and data on interaction" loading="lazy"/>
+<p>There are a number of important aspects to interaction-driven late-loading:</p>
+<ul>
+<li>First, we download the minimal code initially so the page is visually complete quickly.</li>
+<li>Next, as the user starts interacting with the page we use those interactions to determine which other code to load. For example loading the code for the “more filters” component.</li>
+<li>This means code for many features on the page are never sent down to the browser, as the user didn’t need to use them.</li>
+</ul>
+<img src="/media/import-on-interaction/image14.png" alt="Interaction driven late loading" loading="lazy"/>
+<h3 id="how-do-we-avoid-losing-early-clicks">How do we avoid losing early clicks?</h3>
+<p>In the framework stack used by these Google teams, we can track clicks early because the first chunk of HTML includes a small event library (<a href="https://github.com/google/jsaction" target="_blank" rel="noopener noreferrer">JSAction</a>) which tracks all clicks before the framework is bootstrapped. The events are used for two things:</p>
+<ul>
+<li>Triggering download of component code based on user interactions</li>
+<li>Replaying user interactions when the framework finishes bootstrapping</li>
+</ul>
+<p>Other potential heuristics one could use include, loading component code:</p>
+<ul>
+<li>A period after idle time</li>
+<li>On user mouse hover over the relevant UI/button/call to action</li>
+<li>Based on a sliding scale of eagerness based on browser signals (e.g network speed, Data Saver mode etc).</li>
+</ul>
+<img src="/media/import-on-interaction/image15.png" alt="Tiny event library included with the initial HTML" loading="lazy"/>
+<h3 id="what-about-data">What about data?</h3>
+<p>The initial data which is used to render the page is included in the initial page’s SSR HTML and streamed. Data that is late loaded is downloaded based on user interactions as we know what component it goes with.</p>
+<p>This completes the import-on-interaction picture with data-fetching working similar to how CSS and JS function. As the component is aware of what code and data it needs, all of its resources are never more than a request away.</p>
+<img src="/media/import-on-interaction/image16.png" alt="How does data-fetching work? By component" loading="lazy"/>
+<p>This functions as we create a graph of components and their dependencies during build time. The web application is able to refer to this graph at any point and quickly fetch the resources (code and data) needed for any component. It also means we code-split based on the component rather than the route.</p>
+<p>For a walkthrough of the above example, see <a href="https://www.youtube.com/watch?v=-xZHWK-vHbQ" target="_blank" rel="noopener noreferrer">Elevating the Web Platform with the JavaScript Community</a>.</p>
+<hr/>
+<h2 id="trade-offs">Trade-offs</h2>
+<p>Shifting costly work closer to user-interaction can optimize how quickly pages initially load, however the technique is not without trade-offs.</p>
+<p><strong>What happens if it takes a long time to load a script after the user clicks?</strong></p>
+<p>In the Google Hotels example, small granular chunks minimize the chance a user is going to wait long for code and data to fetch and execute. In some of the other cases, a large dependency may indeed introduce this concern on slower networks.</p>
+<p>One way to reduce the chance of this happening is to better break-up the loading of, or prefetch these resources after critical content in the page is done loading. I’d encourage measuring the impact of this to determine how much it’s a real application in your apps.</p>
+<p><strong>What about lack of functionality before user interaction?</strong></p>
+<p>Another trade-off with facades is a lack of functionality prior to user interaction. An embedded video player for example will not be able to autoplay media. If such functionality is key, you might consider alternative approaches to loading the resources, such as lazy-loading these third-party iframes on the user scrolling them into view rather than deferring load until interaction.</p>
+<hr/>
+<h2 id="replacing-interactive-embeds-with-a-static-variant">Replacing interactive embeds with a static variant</h2>
+<p>We have discussed the import-on-interaction pattern and progressive loading, but what about going entirely static for the embeds use-case?.</p>
+<p>The final rendered content from an embed may be needed immediately in some cases e.g a social media post that is visible in the initial viewport. This can also introduce its own challenges when the embed brings in 2-3MB of JavaScript. Because the embed content is needed right away, lazy-loading and facades may be less applicable.</p>
+<p>If optimizing for performance, it’s possible to entirely replace an embed with a static variant that looks similar, linking out to a more interactive version (e.g the original social media post). At build time, the data for the embed can be pulled in and transformed into a static HTML version.</p>
+<img src="/media/import-on-interaction/janesocial.png" alt="An original heavy-weight JavaScript embed compared to a statically rendered alternative" loading="lazy"/>
+<p><a href="https://twitter.com/wongmjane/status/1330676158724116481" target="_blank" rel="noopener noreferrer">This</a> is the approach <a href="https://twitter.com/@wongmjane" target="_blank" rel="noopener noreferrer">@wongmjane</a> <a href="https://twitter.com/wongmjane/status/1330273157245243394" target="_blank" rel="noopener noreferrer">leveraged</a> on their blog for one type of social media embed, improving both page load performance and removing the <a href="https://web.dev/cls" target="_blank" rel="noopener noreferrer">Cumulative Layout Shift</a> experienced due to the embed code enhancing the fallback text, causing layout shifts.</p>
+<p>While static replacements can be good for performance, they do often require doing something custom so keep this in mind when evaluating your options.</p>
+<hr/>
+<h2 id="conclusions">Conclusions</h2>
+<p>First-party JavaScript often impacts the interaction readiness of modern pages on the web, but it can often get delayed on the network behind non-critical JS from either first or third-party sources that keep the main thread busy.</p>
+<p>In general, avoid synchronous third-party scripts in the document head and aim to load non-blocking third-party scripts after first-party JS has finished loading. Patterns like import-on-interaction give us a way to defer the loading of non-critical resources to a point when a user is much more likely to need the UI they power.</p>
+<p><em>With special thanks to Shubhie Panicker, Connor Clark, Patrick Hulce, Anton Karlovskiy and Adam Raine for their input.</em></p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

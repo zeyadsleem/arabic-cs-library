@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="react">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/react/hooks-pattern/">
+
+    <!-- Primary Meta Tags -->
+    <title>Hooks Pattern</title>
+    <meta name="title" content="Hooks Pattern">
+    <meta name="description" content="Compose stateful and side-effect logic into plain functions you can reuse across components">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/react/hooks-pattern/">
+    <meta property="og:title" content="Hooks Pattern">
+    <meta property="og:description" content="Compose stateful and side-effect logic into plain functions you can reuse across components">
+    <meta property="og:image" content="http://localhost:3000/media/hooks-pattern.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/react/hooks-pattern/">
+    <meta property="twitter:title" content="Hooks Pattern">
+    <meta property="twitter:description" content="Compose stateful and side-effect logic into plain functions you can reuse across components">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="AkIjl" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;AI UI Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/ai-ui-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compound Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/compound-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;HOC Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hoc-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Hooks Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hooks-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Container/Presentational Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/presentational-container-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Stack Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-2026\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Render Props Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/render-props-pattern\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Client-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/client-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Incremental Static Generation\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/incremental-static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Progressive Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/progressive-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Selective Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-selective-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Server Components\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-server-components\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Server-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/server-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Streaming Server-Side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/streaming-ssr\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/react/hooks-pattern/&quot;],&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Z1Av3oz" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" height="25" class="h-4 w-4 mr-4 inline-block"><title>React Logo</title><circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse></g></svg>React<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/hoc-pattern" class="relative">
+                    <a href="/react/hoc-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      HOC Pattern
+                    </a>
+                  </li><li key="/react/hooks-pattern" class="relative">
+                    <a href="/react/hooks-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Hooks Pattern
+                    </a>
+                  </li><li key="/react/compound-pattern" class="relative">
+                    <a href="/react/compound-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compound Pattern
+                    </a>
+                  </li><li key="/react/presentational-container-pattern" class="relative">
+                    <a href="/react/presentational-container-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Container/Presentational Pattern
+                    </a>
+                  </li><li key="/react/render-props-pattern" class="relative">
+                    <a href="/react/render-props-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Render Props Pattern
+                    </a>
+                  </li><li key="/react/ai-ui-patterns" class="relative">
+                    <a href="/react/ai-ui-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      AI UI Patterns
+                    </a>
+                  </li><li key="/react/react-2026" class="relative">
+                    <a href="/react/react-2026" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Stack Patterns
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/client-side-rendering" class="relative">
+                    <a href="/react/client-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Client-side Rendering
+                    </a>
+                  </li><li key="/react/server-side-rendering" class="relative">
+                    <a href="/react/server-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Server-side Rendering
+                    </a>
+                  </li><li key="/react/static-rendering" class="relative">
+                    <a href="/react/static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Rendering
+                    </a>
+                  </li><li key="/react/incremental-static-rendering" class="relative">
+                    <a href="/react/incremental-static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Incremental Static Generation
+                    </a>
+                  </li><li key="/react/progressive-hydration" class="relative">
+                    <a href="/react/progressive-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Progressive Hydration
+                    </a>
+                  </li><li key="/react/streaming-ssr" class="relative">
+                    <a href="/react/streaming-ssr" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Streaming Server-Side Rendering
+                    </a>
+                  </li><li key="/react/react-server-components" class="relative">
+                    <a href="/react/react-server-components" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Server Components
+                    </a>
+                  </li><li key="/react/react-selective-hydration" class="relative">
+                    <a href="/react/react-selective-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Selective Hydration
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Design Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Hooks Pattern
+                </h1>
+            </header>
+        <h2 id="why-hooks-reshaped-react">Why hooks reshaped React</h2>
+<p>When React 16.8 shipped hooks in early 2019, it quietly retired most of the design patterns React developers had been arguing about for years. Higher-order components, render props, mixins, container/presentational splits — all of those existed primarily to answer one question: <em>how do I share stateful logic between components without rewriting it?</em></p>
+<p>A hook is just a function. It can hold state, run side effects, read context, subscribe to external stores. Components call hooks; hooks call other hooks. There is no wrapping component, no extra node in the tree, no <code>this</code> binding, no implicit prop merging. That deceptive simplicity is the whole story.</p>
+<p>By now hooks have moved from “the new thing” to “the only way most React code is written.” React 19, released in December 2024, doubles down on the model with several new hooks — <code>use</code>, <code>useOptimistic</code>, <code>useActionState</code>, <code>useFormStatus</code> — that lean on Suspense and Actions to handle async work that used to require a state library.</p>
+<p>This article covers the core hooks you’ll use every day, the rules that govern them, the React 19 additions, and the patterns that emerge when you start composing your own.</p>
+<hr/>
+<h2 id="the-two-rules-that-govern-every-hook">The two rules that govern every hook</h2>
+<p>Before any API surface, the rules. Both are enforced by the <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks" target="_blank" rel="noopener noreferrer"><code>eslint-plugin-react-hooks</code></a> package — install it on day one.</p>
+<ol>
+<li><strong>Only call hooks at the top level.</strong> Never inside loops, conditions, or nested functions. React identifies each hook call by its <em>position</em> in the call order, so the order has to be stable across renders.</li>
+<li><strong>Only call hooks from React functions.</strong> That means components (<code>function MyComponent()</code>) or other hooks (<code>function useMyThing()</code>). A plain utility function cannot call <code>useState</code>.</li>
+</ol>
+<p>A convention follows from rule 2: any function that calls hooks must start with <code>use</code>. The linter uses that prefix to know which rules apply.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Allowed: hook calling a hook</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useDarkMode</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">isDark</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setIsDark</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#6A737D">// ...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// NOT allowed: condition wraps the hook</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Avatar</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">user</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (user) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">hovered</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setHovered</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// breaks rule 1</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr/>
+<h2 id="the-built-in-hooks-organised">The built-in hooks, organised</h2>
+<p>There are more built-in hooks than most people remember. Grouping them by purpose helps:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Purpose</th><th>Hooks</th></tr></thead><tbody><tr><td><strong>State</strong></td><td><code>useState</code>, <code>useReducer</code></td></tr><tr><td><strong>Effects &amp; lifecycle</strong></td><td><code>useEffect</code>, <code>useLayoutEffect</code>, <code>useInsertionEffect</code></td></tr><tr><td><strong>Context</strong></td><td><code>useContext</code>, <code>use</code> (React 19)</td></tr><tr><td><strong>Refs &amp; DOM</strong></td><td><code>useRef</code>, <code>useImperativeHandle</code></td></tr><tr><td><strong>Performance</strong></td><td><code>useMemo</code>, <code>useCallback</code>, <code>useTransition</code>, <code>useDeferredValue</code></td></tr><tr><td><strong>External stores</strong></td><td><code>useSyncExternalStore</code>, <code>useDebugValue</code></td></tr><tr><td><strong>Forms &amp; Actions (React 19)</strong></td><td><code>useActionState</code>, <code>useFormStatus</code>, <code>useOptimistic</code></td></tr><tr><td><strong>IDs</strong></td><td><code>useId</code></td></tr></tbody></table>
+<p>You will use perhaps four of these on a given workday — <code>useState</code>, <code>useEffect</code>, <code>useRef</code>, and one of the React 19 form hooks. The rest exist for specific problems; reach for them when you hit those problems.</p>
+<hr/>
+<h2 id="state-without-classes">State without classes</h2>
+<p>Adding state to a function component is two lines: a destructured tuple and the initial value.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Counter</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">count</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setCount</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setCount</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">c</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      Clicked {count} times</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Two details worth noting:</p>
+<ul>
+<li><strong>Pass an updater function when the new state depends on the old.</strong> <code>setCount((c) =&gt; c + 1)</code> is safe under React’s automatic batching; <code>setCount(count + 1)</code> is not.</li>
+<li><strong>Initial values can be computed lazily.</strong> Pass a function — <code>useState(() =&gt; expensiveDefault())</code> — when computing the default itself is expensive. React only invokes it on the first render.</li>
+</ul>
+<p>For state with multiple sub-values that update together, prefer <code>useReducer</code>. The reducer collects all the transitions in one place and makes them straightforward to unit-test:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">State</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">status</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;idle&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;loading&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;ok&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">; </span><span style="color:#FFAB70">data</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Order</span><span style="color:#E1E4E8">[]; </span><span style="color:#FFAB70">error</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Error</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#F97583">type</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Action</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">type</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;fetch&quot;</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">type</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;success&quot;</span><span style="color:#E1E4E8">; </span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Order</span><span style="color:#E1E4E8">[] }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">type</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;failure&quot;</span><span style="color:#E1E4E8">; </span><span style="color:#FFAB70">error</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Error</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">reducer</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">state</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">State</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">action</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Action</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">State</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">switch</span><span style="color:#E1E4E8"> (action.type) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">case</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;fetch&quot;</span><span style="color:#E1E4E8">:   </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { status: </span><span style="color:#9ECBFF">&quot;loading&quot;</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">case</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;success&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { status: </span><span style="color:#9ECBFF">&quot;ok&quot;</span><span style="color:#E1E4E8">, data: action.data };</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">case</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;failure&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { status: </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">, error: action.error };</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Orders</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">state</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">dispatch</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useReducer</span><span style="color:#E1E4E8">(reducer, { status: </span><span style="color:#9ECBFF">&quot;idle&quot;</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#6A737D">// ...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr/>
+<h2 id="effects-and-why-most-effects-shouldnt-be-effects">Effects, and why most “effects” shouldn’t be effects</h2>
+<p><code>useEffect</code> is the escape hatch for talking to the world <em>outside</em> React: subscriptions, browser APIs, network logging, manual DOM measurements. The React docs are emphatic on this:</p>
+<blockquote>
+<p>If there is no external system involved, you shouldn’t need an Effect. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
+— <a href="https://react.dev/learn/you-might-not-need-an-effect" target="_blank" rel="noopener noreferrer">react.dev — <em>You Might Not Need an Effect</em></a></p>
+</blockquote>
+<p>A few of the most common misuses, with their fixes:</p>
+<p><strong>1. Computing derived state in an Effect.</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Anti-pattern</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">fullName</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setFullName</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">setFullName</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">first</span><span style="color:#9ECBFF">} ${</span><span style="color:#E1E4E8">last</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, [first, last]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Fix: just compute it</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">fullName</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">first</span><span style="color:#9ECBFF">} ${</span><span style="color:#E1E4E8">last</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<p><strong>2. Resetting state when a prop changes.</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Anti-pattern: extra render after every prop change</span></span>
+<span class="line"><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">setSelection</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, [list]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Fix: use a `key` to remount the subtree, or store derived state with the prop value</span></span></code></pre>
+<p><strong>3. Handling user events.</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Anti-pattern: an effect that &quot;watches&quot; a form submission</span></span>
+<span class="line"><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (justSubmitted) </span><span style="color:#B392F0">postOrder</span><span style="color:#E1E4E8">(values);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, [justSubmitted]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Fix: do the work in the event handler itself</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onSubmit</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">postOrder</span><span style="color:#E1E4E8">(values);</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>When you <em>do</em> need an effect, the shape is almost always the same: subscribe in the body, return a cleanup function.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">id</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setInterval</span><span style="color:#E1E4E8">(tick, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">clearInterval</span><span style="color:#E1E4E8">(id);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, []);</span></span></code></pre>
+<p>The dependency array is not optional decoration. Anything you read inside the effect that comes from props, state, or context must appear in it, or you will get stale closures. The linter will tell you which ones are missing.</p>
+<hr/>
+<h2 id="custom-hooks-where-the-pattern-earns-its-keep">Custom hooks: where the pattern earns its keep</h2>
+<p>The point of hooks isn’t <code>useState</code>; it’s the ability to extract any stateful logic into a function and reuse it. A custom hook is just a function whose name starts with <code>use</code> and which is allowed to call other hooks.</p>
+<p>Two examples that earn their place in almost every codebase.</p>
+<h3 id="uselocalstorage"><code>useLocalStorage</code></h3>
+<p>Mirror a piece of state in <code>localStorage</code> so it survives a page reload.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useEffect, useState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useLocalStorage</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;(</span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">initial</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">value</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setValue</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">&gt;(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;undefined&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> initial; </span><span style="color:#6A737D">// SSR-safe</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">stored</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> window.localStorage.</span><span style="color:#B392F0">getItem</span><span style="color:#E1E4E8">(key);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> stored </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(stored) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">T</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> initial;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.localStorage.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(key, </span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(value));</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, [key, value]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> [value, setValue] </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">const</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Using it reads exactly like <code>useState</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ThemeToggle</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">theme</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setTheme</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useLocalStorage</span><span style="color:#E1E4E8">&lt;</span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">|</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;dark&quot;</span><span style="color:#E1E4E8">&gt;(</span><span style="color:#9ECBFF">&quot;theme&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setTheme</span><span style="color:#E1E4E8">(theme </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;dark&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8">)}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      Switch to {theme </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;dark&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;light&quot;</span><span style="color:#E1E4E8">} mode</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<blockquote>
+<p><strong>Going to production?</strong> Subscribe to <code>window</code>’s <code>&quot;storage&quot;</code> event to keep multiple open tabs in sync, and consider <a href="https://react.dev/reference/react/useSyncExternalStore" target="_blank" rel="noopener noreferrer"><code>useSyncExternalStore</code></a> instead of the manual <code>useState</code> + <code>useEffect</code> pair. That hook was designed precisely for “reflect this external thing into React” cases.</p>
+</blockquote>
+<h3 id="usemediaquery"><code>useMediaQuery</code></h3>
+<p>Render branches based on a CSS media query. Useful for adapting to user preferences such as <code>prefers-reduced-motion</code> or <code>prefers-color-scheme</code>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useEffect, useState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useMediaQuery</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">query</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">matches</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setMatches</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> window </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;undefined&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(query).matches,</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">mql</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> window.</span><span style="color:#B392F0">matchMedia</span><span style="color:#E1E4E8">(query);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onChange</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">MediaQueryListEvent</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setMatches</span><span style="color:#E1E4E8">(e.matches);</span></span>
+<span class="line"><span style="color:#E1E4E8">    mql.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;change&quot;</span><span style="color:#E1E4E8">, onChange);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> mql.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;change&quot;</span><span style="color:#E1E4E8">, onChange);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, [query]);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> matches;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Usage</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">MotionAwareIntro</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">reduceMotion</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useMediaQuery</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;(prefers-reduced-motion: reduce)&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> reduceMotion </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">StaticHero</span><span style="color:#E1E4E8"> /&gt; </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">AnimatedHero</span><span style="color:#E1E4E8"> /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>A few more hooks you will be glad you have on hand: <code>useDebounce</code>, <code>useOnlineStatus</code>, <code>useClipboard</code>, <code>usePrevious</code>, <code>useIntersectionObserver</code>. Rather than write all of them yourself, browse a curated collection:</p>
+<ul>
+<li><a href="https://usehooks-ts.com/" target="_blank" rel="noopener noreferrer"><code>usehooks-ts</code></a> — TypeScript-first, well-tested</li>
+<li><a href="https://github.com/streamich/react-use" target="_blank" rel="noopener noreferrer"><code>react-use</code></a> — large kitchen-sink library</li>
+<li><a href="https://usehooks.com/" target="_blank" rel="noopener noreferrer"><code>usehooks.com</code></a> — copy-paste recipes</li>
+</ul>
+<hr/>
+<h2 id="react-19-hooks-for-async-forms-and-actions">React 19: hooks for async, forms, and Actions</h2>
+<p>React 19 (stable December 2024) introduces several hooks that change how you handle async work and forms. They are designed to work together with <strong>Actions</strong> — async functions you pass directly to <code>&lt;form action={...}&gt;</code> or call from a transition.</p>
+<h3 id="use--read-promises-and-context-conditionally"><code>use()</code> — read promises and context conditionally</h3>
+<p><code>use</code> is a special function (not bound by the “no conditional hooks” rule for promise unwrapping) that suspends until a promise resolves, then returns its value. It can also read context, replacing many <code>useContext</code> calls.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { use, Suspense } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Comments</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">commentsPromise</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">commentsPromise</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Promise</span><span style="color:#E1E4E8">&lt;</span><span style="color:#B392F0">Comment</span><span style="color:#E1E4E8">[]&gt; }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#6A737D">// Suspends here until the promise settles</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">comments</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(commentsPromise);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;{comments.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">c</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">key</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{c.id}&gt;{c.text}&lt;/</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">&gt;)}&lt;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Post</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">id</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">id</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">commentsPromise</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fetchComments</span><span style="color:#E1E4E8">(id); </span><span style="color:#6A737D">// started during render</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;Loading…&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#79B8FF">Comments</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">commentsPromise</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{commentsPromise} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>In Server Components, <code>use</code> lets you drop in async data without lifting it into a separate <code>useEffect</code> round-trip.</p>
+<h3 id="useactionstate--manage-form-submission-state"><code>useActionState</code> — manage form submission state</h3>
+<p><code>useActionState</code> replaces a lot of <code>useState</code> boilerplate for forms. Pair it with an async action and it returns the latest result, a wrapped action, and a pending flag.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useActionState } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">subscribeAction</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">_prev</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">State</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">formData</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">FormData</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">email</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> formData.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">subscribe</span><span style="color:#E1E4E8">(email);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { ok: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">const</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (err) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> { ok: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">, error: (err </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Error</span><span style="color:#E1E4E8">).message } </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">const</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">NewsletterForm</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">state</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">formAction</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">isPending</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useActionState</span><span style="color:#E1E4E8">(subscribeAction, { ok: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">action</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{formAction}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">input</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;email&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">required</span><span style="color:#E1E4E8"> /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;submit&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">disabled</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{isPending}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        {isPending </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Subscribing…&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;Subscribe&quot;</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {state.ok </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;You&#39;re in.&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">state.ok </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> state </span><span style="color:#F97583">&amp;&amp;</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;{state.error}&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="useformstatus--read-the-parent-forms-submission-state"><code>useFormStatus</code> — read the parent form’s submission state</h3>
+<p>Useful inside a button or input that needs to know whether the enclosing form is currently being submitted, without having to thread props down.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useFormStatus } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">SubmitButton</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">children</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">children</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">ReactNode</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">pending</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useFormStatus</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;submit&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">disabled</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{pending} </span><span style="color:#B392F0">aria-busy</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{pending}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {children}</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="useoptimistic--instant-ui-before-the-server-confirms"><code>useOptimistic</code> — instant UI before the server confirms</h3>
+<p>Show the result immediately, reconcile when the real response arrives.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { useOptimistic, useTransition } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">LikeButton</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">post</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">post</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Post</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">optimisticLikes</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">addOptimistic</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useOptimistic</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    post.likes,</span></span>
+<span class="line"><span style="color:#E1E4E8">    (</span><span style="color:#FFAB70">current</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">delta</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> current </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> delta,</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [, </span><span style="color:#79B8FF">startTransition</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useTransition</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">button</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">onClick</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{() </span><span style="color:#F97583">=&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        </span><span style="color:#B392F0">startTransition</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#B392F0">addOptimistic</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">          </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">like</span><span style="color:#E1E4E8">(post.id);</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    &gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      {optimisticLikes} likes</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr/>
+<h2 id="the-react-compiler-and-the-end-of-manual-memoization">The React Compiler and the end of manual memoization</h2>
+<p>For years, <code>useMemo</code>, <code>useCallback</code>, and <code>React.memo</code> were the standard tools for keeping renders cheap. They are also a perennial source of bugs (stale closures, missing deps) and noise (every callback wrapped in <code>useCallback</code> just in case).</p>
+<p>The <a href="https://react.dev/learn/react-compiler" target="_blank" rel="noopener noreferrer">React Compiler</a>, released alongside React 19, statically analyses your components and inserts the equivalent memoization automatically. The official docs put it plainly: the compiler <em>“handles memoization for you, eliminating the need for manual <code>useMemo</code>, <code>useCallback</code>, and <code>React.memo</code>”</em> in most cases.</p>
+<p>Practical implications:</p>
+<ul>
+<li><strong>In new projects with the compiler enabled,</strong> drop manual memoization unless profiling proves you need it.</li>
+<li><strong>In existing projects,</strong> leave existing memoization in place; the compiler is designed to coexist.</li>
+<li><strong>Write idiomatic code.</strong> The compiler is most effective when components are pure, side effects live in effects, and you don’t mutate props or state.</li>
+</ul>
+<hr/>
+<h2 id="a-worked-refactor-class-to-hooks">A worked refactor: class to hooks</h2>
+<p>To make the comparison concrete, here is a small class component that tracks the user’s scroll position and saves it to session storage on unmount.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ScrollTracker</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">extends</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">React</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Component</span><span style="color:#E1E4E8">&lt;{ </span><span style="color:#FFAB70">pageId</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8"> }, { </span><span style="color:#FFAB70">y</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8"> }&gt; {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#FFAB70">state</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { y: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">onScroll</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">setState</span><span style="color:#E1E4E8">({ y: window.scrollY });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">componentDidMount</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;scroll&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.onScroll, { passive: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">componentWillUnmount</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;scroll&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.onScroll);</span></span>
+<span class="line"><span style="color:#E1E4E8">    sessionStorage.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`scroll:${</span><span style="color:#79B8FF">this</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">props</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">pageId</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">String</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.y));</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">ScrollIndicator</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">y</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.y} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>As a function component with a custom hook, the <em>behavior</em> gets a name (<code>useScrollPosition</code>) and is trivially reusable.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useScrollPosition</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">y</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">setY</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useState</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">onScroll</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">setY</span><span style="color:#E1E4E8">(window.scrollY);</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;scroll&quot;</span><span style="color:#E1E4E8">, onScroll, { passive: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;scroll&quot;</span><span style="color:#E1E4E8">, onScroll);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, []);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> y;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">ScrollTracker</span><span style="color:#E1E4E8">({ </span><span style="color:#FFAB70">pageId</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">pageId</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">string</span><span style="color:#E1E4E8"> }) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">y</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">useScrollPosition</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> sessionStorage.</span><span style="color:#B392F0">setItem</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`scroll:${</span><span style="color:#E1E4E8">pageId</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">String</span><span style="color:#E1E4E8">(y));</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, [pageId, y]);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> &lt;</span><span style="color:#79B8FF">ScrollIndicator</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">y</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{y} /&gt;;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>The hook version is shorter, has no <code>this</code>, no method binding, no lifecycle method to remember, and the scroll-tracking logic is now a unit you can drop into any component.</p>
+<hr/>
+<h2 id="trade-offs-and-gotchas">Trade-offs and gotchas</h2>
+<p>Hooks aren’t free. The patterns they replaced (HOCs, render props, classes) had real benefits in certain situations, and hooks have their own failure modes worth knowing.</p>
+<ul>
+<li><strong>Stale closures.</strong> Every render captures its own snapshot of state and props. An interval set up in an effect with no dependencies will always see the <em>first</em> render’s values. The fix is usually a ref or a correctly-populated dependency array.</li>
+<li><strong>Effect overuse.</strong> This is the single most common hook mistake. If you’re using <code>useEffect</code> to derive state from props, react to a click, or sync two pieces of local state, you almost certainly don’t need an effect.</li>
+<li><strong>Hidden ordering rules.</strong> “Only call hooks at the top level” sounds obvious until you try to early-return before a hook, or call one inside a <code>try/catch</code>. The linter is your friend; trust it.</li>
+<li><strong>Test ergonomics.</strong> Hooks have to be called inside a component. Test them through a component or with <a href="https://testing-library.com/docs/react-testing-library/intro/" target="_blank" rel="noopener noreferrer"><code>@testing-library/react</code></a>’s <code>renderHook</code> utility — don’t try to invoke them directly.</li>
+</ul>
+<hr/>
+<h2 id="what-to-remember">What to remember</h2>
+<ul>
+<li>Hooks let you extract any stateful logic into a plain function that other components — or other hooks — can compose.</li>
+<li>Two rules: top level only, React functions only. The lint plugin will keep you honest.</li>
+<li><code>useEffect</code> is for talking to the outside world, not for deriving state from props or reacting to user events.</li>
+<li>React 19 adds first-class hooks for async work (<code>use</code>), forms (<code>useActionState</code>, <code>useFormStatus</code>), and optimistic UI (<code>useOptimistic</code>).</li>
+<li>The React Compiler removes most of the need for manual <code>useMemo</code>/<code>useCallback</code> — write clean components and let the optimizer do the rest.</li>
+<li>When a component starts to feel tangled, look for the verbs hiding inside it (<code>useScrollPosition</code>, <code>useDebouncedSearch</code>, <code>useFeatureFlag</code>) and lift them into hooks.</li>
+</ul>
+<hr/>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://react.dev/reference/react/hooks" target="_blank" rel="noopener noreferrer">Hooks reference — react.dev</a></li>
+<li><a href="https://react.dev/reference/rules/rules-of-hooks" target="_blank" rel="noopener noreferrer">Rules of Hooks</a></li>
+<li><a href="https://react.dev/learn/you-might-not-need-an-effect" target="_blank" rel="noopener noreferrer">You Might Not Need an Effect</a></li>
+<li><a href="https://react.dev/blog/2024/12/05/react-19" target="_blank" rel="noopener noreferrer">React 19 release notes</a></li>
+<li><a href="https://react.dev/learn/react-compiler" target="_blank" rel="noopener noreferrer">React Compiler</a></li>
+<li><a href="https://usehooks-ts.com/" target="_blank" rel="noopener noreferrer"><code>usehooks-ts</code></a> — a TypeScript-first hooks library</li>
+</ul>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>

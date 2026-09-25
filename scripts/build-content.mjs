@@ -55,6 +55,15 @@ const addHeadingIds = (html) =>
     }
   );
 
+const wrapExercises = (html) => {
+  const heading = (html.match(/<h[1-4][^>]*>[\s\S]*?<\/h[1-4]>/g) || []).find(
+    (tag) => /exercises|تمارين/i.test(tag)
+  );
+  if (!heading) return html;
+  const index = html.indexOf(heading);
+  return `${html.slice(0, index)}<div class="exercises">${html.slice(index)}</div>`;
+};
+
 const extractHeadings = (html) => {
   const headings = [];
   const regex = /<h([23])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[23]>/gs;
@@ -127,6 +136,7 @@ const run = () => {
         }
         let html = markdown.render(content);
         html = addHeadingIds(html);
+        html = wrapExercises(html);
 
         const entry = {
           book: book.id,

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html class="antialiased [font-feature-settings:'ss01']" lang="en" lang-theme="react">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/img/favicon/favicon.ico">
+    <meta name="generator" content="Astro v2.7.2">
+    <meta content="max-snippet:-1, max-image-preview: large, max-video-preview: -1" name="robots">
+    <link rel="preload" href="/fonts/lexend.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.patterns.dev/react/streaming-ssr/">
+
+    <!-- Primary Meta Tags -->
+    <title>Streaming Server-Side Rendering</title>
+    <meta name="title" content="Streaming Server-Side Rendering">
+    <meta name="description" content="Generate HTML to be rendered on the server in response to a user request">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.patterns.dev/react/streaming-ssr/">
+    <meta property="og:title" content="Streaming Server-Side Rendering">
+    <meta property="og:description" content="Generate HTML to be rendered on the server in response to a user request">
+    <meta property="og:image" content="http://localhost:3000/media/ssr-1.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.patterns.dev/react/streaming-ssr/">
+    <meta property="twitter:title" content="Streaming Server-Side Rendering">
+    <meta property="twitter:description" content="Generate HTML to be rendered on the server in response to a user request">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195058122-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-195058122-1");
+    </script>
+    <script>
+      let isDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function updateTheme(theme) {
+        theme = theme ?? window.localStorage.theme ?? "system";
+
+        if (theme === "dark" || (theme === "system" && isDarkMode.matches)) {
+          document.documentElement.classList.add("dark");
+        } else if (
+          theme === "light" ||
+          (theme === "system" && !isDarkMode.matches)
+        ) {
+          document.documentElement.classList.remove("dark");
+        }
+
+        return theme;
+      }
+
+      function updateThemeWithoutTransitions(theme) {
+        updateTheme(theme);
+        document.documentElement.classList.add("[&_*]:!transition-none");
+        window.setTimeout(() => {
+          document.documentElement.classList.remove("[&_*]:!transition-none");
+        }, 0);
+      }
+
+      document.documentElement.setAttribute("data-theme", updateTheme());
+
+      new MutationObserver(([{ oldValue }]) => {
+        let newValue = document.documentElement.getAttribute("data-theme");
+        if (newValue !== oldValue) {
+          try {
+            window.localStorage.setItem("theme", newValue);
+          } catch {}
+          updateThemeWithoutTransitions(newValue);
+        }
+      }).observe(document.documentElement, {
+        attributeFilter: ["data-theme"],
+        attributeOldValue: true,
+      });
+
+      isDarkMode.addEventListener("change", () =>
+        updateThemeWithoutTransitions()
+      );
+    </script>
+  <link rel="stylesheet" href="/_astro/_...slug_.32a7c2c9.css" /></head>
+  <body class="bg-white dark:bg-neutral-900">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between bg-black px-4 py-2 shadow-md shadow-neutral-900/5 transition duration-500 dark:shadow-none sm:px-6 lg:px-8 dark:bg-neutral-900">
+  <div class="mr-6 flex text-white md:hidden">
+    <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var d;{let h={0:t=>t,1:t=>JSON.parse(t,a),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,a)),5:t=>new Set(JSON.parse(t,a)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},a=(t,e)=>{if(t===""||!Array.isArray(e))return e;let[s,n]=e;return s in h?h[s](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(d=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=async()=>{var i;if(!this.hydrator||!this.isConnected)return;let e=(i=this.parentElement)==null?void 0:i.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let s=this.querySelectorAll("astro-slot"),n={},c=this.querySelectorAll("template[data-astro-template]");for(let r of c){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let o=r.closest(this.tagName);!o||!o.isSameNode(this)||(n[r.getAttribute("name")||"default"]=r.innerHTML)}let l=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),a):{};await this.hydrator(this)(this.Component,l,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,s)=>{s.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),s=this.getAttribute("client");if(Astro[s]===void 0){window.addEventListener(`astro:${s}`,()=>this.start(),{once:!0});return}Astro[s](async()=>{let n=this.getAttribute("renderer-url"),[c,{default:l}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=c[i];else{this.Component=c;for(let r of i.split("."))this.Component=this.Component[r]}return this.hydrator=l,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d.observedAttributes=["props"],d))}})();</script><astro-island uid="Z2lwVzB" prefix="r2" component-url="/_astro/MobileNav.bbe700c3.js" component-export="MobileNavigation" renderer-url="/_astro/client.eb502723.js" props="{&quot;navigation&quot;:[1,&quot;[[0,{\&quot;title\&quot;:[0,\&quot;Design Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;AI UI Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/ai-ui-patterns\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Compound Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/compound-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;HOC Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hoc-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Hooks Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/hooks-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Container/Presentational Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/presentational-container-pattern\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Stack Patterns\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-2026\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Render Props Pattern\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/render-props-pattern\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Rendering Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Client-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/client-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Incremental Static Generation\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/incremental-static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Progressive Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/progressive-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Selective Hydration\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-selective-hydration\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;React Server Components\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/react-server-components\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Server-side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/server-side-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Static Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/static-rendering\\\&quot;]}],[0,{\\\&quot;title\\\&quot;:[0,\\\&quot;Streaming Server-Side Rendering\\\&quot;],\\\&quot;href\\\&quot;:[0,\\\&quot;/react/streaming-ssr\\\&quot;]}]]\&quot;]}],[0,{\&quot;title\&quot;:[0,\&quot;Performance Patterns\&quot;],\&quot;links\&quot;:[1,\&quot;[]\&quot;]}]]&quot;],&quot;pathname&quot;:[0,&quot;/react/streaming-ssr/&quot;],&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;MobileNavigation&quot;,&quot;value&quot;:true}" await-children=""><button type="button" class="relative" aria-label="Open navigation"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" class="h-6 w-6 stroke-current"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></astro-island>
+  </div>
+  <div class="relative flex flex-grow basis-0 items-center">
+    <a href="/" aria-label="Home page" class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="122" height="20" viewBox="0 0 122 28" class="fill-white overflow-visible"><g stroke="none"><g transform="translate(-215 -16)"><path d="M221.372 43.136v-8.82h.085a4.67 4.67 0 00.975 1.485c.423.437.934.782 1.534 1.034s1.284.378 2.051.378a5.94 5.94 0 003.212-.916c.977-.61 1.758-1.538 2.344-2.78.586-1.244.879-2.81.879-4.699 0-1.974-.307-3.58-.922-4.815-.614-1.236-1.41-2.141-2.386-2.717-.977-.575-2.005-.863-3.084-.863-.81 0-1.52.14-2.131.421-.61.28-1.122.654-1.534 1.119a5.004 5.004 0 00-.938 1.528h-.127v-2.855h-5.839v22.5h5.881zm2.472-10.44c-.54 0-1.003-.158-1.39-.474-.388-.316-.686-.764-.895-1.342-.21-.58-.315-1.266-.315-2.062 0-.81.105-1.504.315-2.083.21-.578.507-1.022.894-1.331.388-.31.851-.464 1.39-.464.54 0 1 .155 1.38.464.38.309.672.753.874 1.331.202.58.304 1.274.304 2.083 0 .81-.102 1.504-.304 2.083-.202.579-.494 1.023-.874 1.332-.38.309-.84.463-1.38.463zm14.78 4.56A7.06 7.06 0 00240.58 37a4.449 4.449 0 001.588-.82c.465-.377.861-.87 1.188-1.481h.128V37h5.497V25.793c0-.76-.173-1.465-.517-2.115-.344-.65-.843-1.218-1.497-1.705-.653-.486-1.445-.866-2.376-1.14-.93-.273-1.981-.41-3.153-.41-1.626 0-2.983.254-4.07.762-1.086.508-1.912 1.183-2.476 2.024a5.579 5.579 0 00-.954 2.754h5.412c.071-.504.282-.879.634-1.124.351-.245.808-.367 1.369-.367.511 0 .93.113 1.257.34.327.228.49.554.49.98v.043a.895.895 0 01-.373.751c-.248.189-.651.334-1.209.437-.558.103-1.294.19-2.21.261-.846.064-1.632.203-2.36.416a6.027 6.027 0 00-1.913.926 4.135 4.135 0 00-1.278 1.561c-.305.636-.458 1.401-.458 2.296 0 1.087.227 1.981.682 2.685a4.127 4.127 0 001.88 1.571c.799.344 1.72.517 2.765.517zm1.918-3.708c-.497 0-.905-.12-1.225-.362-.32-.241-.48-.59-.48-1.044 0-.284.07-.542.208-.772a1.66 1.66 0 01.64-.586c.287-.16.658-.275 1.113-.346.234-.036.46-.075.676-.118.217-.042.423-.088.618-.138.196-.05.38-.103.554-.16.174-.057.34-.117.496-.181v1.364c0 .497-.125.92-.373 1.267-.249.348-.57.615-.964.8a2.94 2.94 0 01-1.263.276zm14.195 3.266c.916.351 2.05.491 3.399.42.667-.035 1.244-.11 1.73-.223.487-.114.862-.21 1.125-.288l-.853-4.134c-.113.029-.289.064-.527.107a3.596 3.596 0 01-.623.064 1.52 1.52 0 01-.629-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.117-.57l-.001-6.84h2.813v-4.262l-2.813.001v-3.921H252v3.921h-2.088v4.26l2.088.001v7.393c-.013 1.04.171 1.92.551 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm11.287 0c.916.351 2.049.491 3.398.42.668-.035 1.245-.11 1.731-.223.487-.114.861-.21 1.124-.288l-.852-4.134c-.114.029-.29.064-.527.107a3.596 3.596 0 01-.624.064 1.52 1.52 0 01-.628-.112.737.737 0 01-.362-.34 1.244 1.244 0 01-.118-.57v-6.84h2.813v-4.262l-2.813.001v-3.921h-5.88l-.001 3.921h-2.087v4.26l2.087.001v7.393c-.012 1.04.172 1.92.552 2.643l.12.212c.462.76 1.15 1.316 2.067 1.668zm15.153.484c1.513 0 2.836-.229 3.969-.687 1.133-.458 2.043-1.104 2.732-1.939.69-.834 1.126-1.82 1.31-2.956h-5.369a1.95 1.95 0 01-.532.783c-.242.217-.531.382-.869.495a3.47 3.47 0 01-1.113.17c-.582 0-1.08-.116-1.491-.35a2.395 2.395 0 01-.948-.97c-.22-.412-.33-.88-.33-1.407l-.001-.255h10.654v-1.364c0-1.3-.192-2.468-.576-3.505-.383-1.037-.93-1.92-1.64-2.647a7.064 7.064 0 00-2.568-1.667c-1.001-.384-2.12-.576-3.356-.576-1.69 0-3.156.352-4.4 1.055a7.309 7.309 0 00-2.886 2.951c-.682 1.264-1.023 2.741-1.023 4.432 0 1.761.339 3.272 1.017 4.533a6.936 6.936 0 002.909 2.898c1.26.67 2.764 1.006 4.511 1.006zm-2.642-10.355c.014-.476.14-.891.378-1.246s.556-.634.954-.837a2.847 2.847 0 011.31-.303c.49 0 .929.101 1.316.303.387.203.696.483.927.842.23.359.35.772.357 1.241h-5.242zM296.597 37v-8.523c0-.625.132-1.17.395-1.635a2.814 2.814 0 011.08-1.087c.459-.259.976-.389 1.55-.389.306 0 .672.025 1.098.075.426.05.785.124 1.076.224v-5.018a5.324 5.324 0 00-.73-.165 4.968 4.968 0 00-.761-.059c-.874 0-1.636.267-2.285.8-.65.532-1.124 1.374-1.423 2.524h-.17v-3.11h-5.71V37h5.88zm12.14 0v-9.205c.006-.54.106-1.003.297-1.39.192-.387.467-.685.826-.895.359-.21.78-.314 1.263-.314.738 0 1.315.23 1.73.692.416.462.62 1.098.613 1.907V37h5.881V26.56c.007-1.186-.226-2.241-.698-3.164a5.394 5.394 0 00-1.992-2.179c-.856-.53-1.863-.794-3.02-.794-1.2 0-2.25.295-3.148.885a4.627 4.627 0 00-1.88 2.44h-.171v-3.112h-5.583V37h5.881zm20.15.298c1.512 0 2.86-.232 4.042-.698 1.183-.465 2.117-1.125 2.802-1.981.686-.856 1.032-1.866 1.039-3.03-.007-1.208-.421-2.172-1.241-2.893-.82-.721-2.069-1.234-3.745-1.54l-3.324-.596c-.625-.114-1.046-.274-1.262-.48-.217-.206-.322-.43-.315-.67-.007-.342.17-.605.533-.79.362-.184.796-.276 1.3-.276.39 0 .747.065 1.07.197.324.131.588.318.794.56.206.24.323.528.352.862h5.412c-.071-1.733-.79-3.09-2.158-4.07-1.367-.98-3.233-1.47-5.598-1.47-1.555 0-2.9.208-4.032.624-1.133.415-2.003 1.019-2.61 1.81-.608.793-.908 1.757-.9 2.893-.008 1.286.404 2.337 1.235 3.153.831.817 2.081 1.371 3.75 1.662l2.898.512c.64.113 1.11.262 1.412.447.301.185.456.433.463.746-.007.34-.187.604-.538.788-.352.185-.797.277-1.337.277-.668 0-1.22-.14-1.657-.42a1.655 1.655 0 01-.772-1.2h-5.838c.163 1.677.95 3.026 2.36 4.05 1.41 1.022 3.364 1.533 5.864 1.533z"></path></g></g>
+      </svg>
+      
+    </a>
+  </div>
+
+  <div class="relative flex basis-0 justify-end gap-6 sm:gap-8 md:flex-grow">
+    <nav class="hidden md:flex md:flex-grow">
+      <ul class="flex flex-grow items-center justify-end">
+        
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/book">Book</a>
+        </li>
+        <li>
+          <a class="text-sm font-medium text-white hover:text-neutral-300 px-3 py-3 flex items-center transition duration-150 ease-in-out" href="/about">About</a>
+        </li>
+        <li>
+          <astro-island uid="1cdfBQ" prefix="r1" component-url="/_astro/AiNavDropdown.6d7921e0.js" component-export="AiNavDropdown" renderer-url="/_astro/client.eb502723.js" props="{&quot;variant&quot;:[0,&quot;dark&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;AiNavDropdown&quot;,&quot;value&quot;:true}" await-children=""><div class="relative inline-block text-left" data-headlessui-state=""><button class="inline-flex items-center gap-x-1 px-3 py-3 text-sm font-medium transition duration-150 ease-in-out text-white hover:text-neutral-300" id="headlessui-menu-button-:r1R1:" type="button" aria-haspopup="menu" aria-expanded="false" data-headlessui-state="">AI<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4 shrink-0 opacity-70 transition-transform duration-150 ease-out"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path></svg></button></div></astro-island>
+        </li>
+        <li class="ml-3">
+          <a class="flex items-center px-3 py-3 text-sm font-semibold text-white transition duration-150 ease-in-out hover:text-neutral-300" href="/newsletter">Newsletter</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+    
+  <div class="relative mx-auto flex max-w-8xl justify-center sm:px-2 lg:px-8 xl:px-12">
+    <div class="hidden lg:sticky lg:block lg:flex-none h-screen overflow-scroll top-24 pb-24">
+      <div class="absolute inset-y-0 right-0 w-[50vw] bg-neutral-50 dark:hidden">
+      </div>
+      <div class="absolute bottom-0 right-0 top-16 hidden h-12 w-px bg-gradient-to-t from-neutral-800 dark:block">
+      </div>
+      <div class="absolute bottom-0 right-0 top-28 hidden w-px bg-neutral-800 dark:block">
+      </div>
+      <div class="sticky top-[4.5rem] -ml-0.5 w-64 overflow-y-auto overflow-x-hidden py-4 pl-0.5 pr-8 xl:w-72 xl:pr-16">
+        <nav class="text-base lg:text-sm pb-20">
+  <astro-island uid="Z1Av3oz" prefix="r0" component-url="/_astro/ThemeSelector.13c58c7b.js" component-export="ThemeSelector" renderer-url="/_astro/client.eb502723.js" props="{&quot;framework&quot;:[0,&quot;react&quot;]}" ssr="" client="load" opts="{&quot;name&quot;:&quot;ThemeSelector&quot;,&quot;value&quot;:true}" await-children=""><div class="relative mt-1 z-10"><button class="relative w-full cursor-default rounded-lg bg-white text-neutral-900 ring-1 ring-inset ring-neutral-300 shadow-sm dark:bg-neutral-800 dark:text-white dark:ring-0 py-2 pl-4 pr-10 text-left focus-visible:outline-none focus-visible:ring sm:text-sm" id="headlessui-listbox-button-:r0R6:" type="button" aria-haspopup="listbox" aria-expanded="false" data-headlessui-state=""><span class="flex items-center block truncate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" height="25" class="h-4 w-4 mr-4 inline-block"><title>React Logo</title><circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle><g stroke="#61dafb" stroke-width="1" fill="none"><ellipse rx="11" ry="4.2"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse><ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse></g></svg>React<!-- --> Patterns</span><span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg></span></button></div></astro-island>
+  <ul role="list" class="space-y-9 mt-10 ml-0.5">
+    <li key="Design Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Design Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/hoc-pattern" class="relative">
+                    <a href="/react/hoc-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      HOC Pattern
+                    </a>
+                  </li><li key="/react/hooks-pattern" class="relative">
+                    <a href="/react/hooks-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Hooks Pattern
+                    </a>
+                  </li><li key="/react/compound-pattern" class="relative">
+                    <a href="/react/compound-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Compound Pattern
+                    </a>
+                  </li><li key="/react/presentational-container-pattern" class="relative">
+                    <a href="/react/presentational-container-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Container/Presentational Pattern
+                    </a>
+                  </li><li key="/react/render-props-pattern" class="relative">
+                    <a href="/react/render-props-pattern" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Render Props Pattern
+                    </a>
+                  </li><li key="/react/ai-ui-patterns" class="relative">
+                    <a href="/react/ai-ui-patterns" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      AI UI Patterns
+                    </a>
+                  </li><li key="/react/react-2026" class="relative">
+                    <a href="/react/react-2026" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Stack Patterns
+                    </a>
+                  </li>
+            </ul>
+          </li><li key="Rendering Patterns">
+            <h2 class="font-display font-medium text-neutral-900 dark:text-white">
+              Rendering Patterns
+            </h2>
+            <ul role="list" class="mt-2 space-y-2 border-l-2 border-neutral-100 dark:border-neutral-800 lg:mt-4 lg:space-y-4 lg:border-neutral-700">
+              <li key="/react/client-side-rendering" class="relative">
+                    <a href="/react/client-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Client-side Rendering
+                    </a>
+                  </li><li key="/react/server-side-rendering" class="relative">
+                    <a href="/react/server-side-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Server-side Rendering
+                    </a>
+                  </li><li key="/react/static-rendering" class="relative">
+                    <a href="/react/static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Static Rendering
+                    </a>
+                  </li><li key="/react/incremental-static-rendering" class="relative">
+                    <a href="/react/incremental-static-rendering" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Incremental Static Generation
+                    </a>
+                  </li><li key="/react/progressive-hydration" class="relative">
+                    <a href="/react/progressive-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Progressive Hydration
+                    </a>
+                  </li><li key="/react/streaming-ssr" class="relative">
+                    <a href="/react/streaming-ssr" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  font-semibold text-primary before:bg-primary">
+                      Streaming Server-Side Rendering
+                    </a>
+                  </li><li key="/react/react-server-components" class="relative">
+                    <a href="/react/react-server-components" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      React Server Components
+                    </a>
+                  </li><li key="/react/react-selective-hydration" class="relative">
+                    <a href="/react/react-selective-hydration" class="
+                  block w-full pl-3.5 before:pointer-events-none before:absolute before:-left-1 before:top-1/2 before:h-1.5 before:w-1.5 before:-translate-y-1/2 before:rounded-full
+                  text-neutral-500 before:hidden before:bg-neutral-300 hover:text-neutral-600 hover:before:block dark:text-neutral-400 dark:before:bg-neutral-700 dark:hover:text-neutral-300">
+                      Selective Hydration
+                    </a>
+                  </li>
+            </ul>
+          </li>
+  </ul>
+</nav>
+      </div>
+    </div>
+    <div class="min-w-0 max-w-2xl min-h-[1700px] flex-auto px-4 py-4 lg:max-w-none lg:pl-8 lg:pr-0 xl:px-16">
+      <article class="pb-20 prose prose-slate max-w-none dark:prose-invert dark:text-neutral-300 prose-headings:scroll-mt-28 prose-headings:font-display prose-headings:font-normal lg:prose-headings:scroll-mt-[8.5rem] prose-lead:text-neutral-500 dark:prose-lead:text-neutral-400 prose-a:font-semibold dark:prose-a:text-primary prose-a:no-underline prose-a:shadow-[inset_0_-2px_0_0_var(--tw-prose-background,#fff),inset_0_calc(-1*(var(--tw-prose-underline-size,4px)+2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] hover:prose-a:[--tw-prose-underline-size:6px] dark:[--tw-prose-background:theme(colors.slate.900)] dark:prose-a:shadow-[inset_0_calc(-1*var(--tw-prose-underline-size,2px))_0_0_var(--tw-prose-underline,theme(colors.primary))] dark:hover:prose-a:[--tw-prose-underline-size:6px] prose-pre:rounded-xl prose-pre:bg-neutral-900 prose-pre:shadow-lg dark:prose-pre:bg-neutral-800/60 dark:prose-pre:shadow-none dark:prose-pre:ring-1 dark:prose-pre:ring-neutral-300/10 dark:prose-hr:border-neutral-800">
+        <header class="space-y-1">
+              <p class="font-display text-sm font-medium text-primary " style="margin-bottom:0">
+                  Rendering Pattern
+                </p>
+              <h1 class="font-display text-3xl tracking-tight text-neutral-900 dark:text-white initial">
+                  Streaming Server-Side Rendering
+                </h1>
+            </header>
+        <p>Classic SSR has a buffering problem. The server runs the full render — including every async data fetch the page needs — and only then writes a single HTML response. If the slowest fetch on the page takes 800 ms, the user waits at least 800 ms for <em>any</em> content to paint. The page’s fastest parts are held hostage by its slowest.</p>
+<p>Streaming SSR fixes this by letting React send HTML to the browser as it becomes available. The shell (header, navigation, layout chrome, anything that doesn’t depend on async data) flushes immediately. The slow parts — wrapped in <code>&lt;Suspense&gt;</code> — stream in as later chunks of the same HTTP response, each replacing a fallback that was already visible.</p>
+<div class="group aspect-video w-full rounded-2xl bg-neutral-950 dark:bg-neutral-900"><video src="/media/ssr-1.mp4" preload="metadata" controls="" class="aspect-video w-full rounded-2xl sm:group-data-[offscreen]:data-[playing]:fixed sm:group-data-[offscreen]:data-[playing]:bottom-4 sm:group-data-[offscreen]:data-[playing]:right-4 sm:group-data-[offscreen]:data-[playing]:z-10 sm:group-data-[offscreen]:data-[playing]:max-w-md sm:group-data-[offscreen]:data-[playing]:rounded-xl sm:group-data-[offscreen]:data-[playing]:shadow-lg"><source src="/media/ssr-1.mp4" type="video/mp4"/></video></div>
+<p>The browser begins parsing as soon as bytes arrive. Time to First Byte drops because the server doesn’t wait. Largest Contentful Paint usually drops because the main content is in the first chunk. And the user sees movement — fallback placeholders becoming real content — instead of staring at a blank tab.</p>
+<hr/>
+<h2 id="the-two-streaming-apis-in-react-18">The two streaming APIs in React 18+</h2>
+<p>React 18 redesigned the server APIs around streaming. There are two depending on your runtime:</p>
+<ul>
+<li><strong><code>renderToPipeableStream</code></strong> — for Node.js. Returns a Pipeable stream you <code>pipe()</code> into the response. Uses <code>onShellReady</code> / <code>onAllReady</code> / <code>onError</code> callbacks.</li>
+<li><strong><code>renderToReadableStream</code></strong> — for Web/Edge runtimes (Cloudflare Workers, Vercel Edge, Deno, Bun). Returns a Promise of a Web <code>ReadableStream</code> you return as the response body.</li>
+</ul>
+<p>The older <code>renderToNodeStream</code> was removed in React 19. If you’re maintaining a server that still uses it, this is the migration to do — it does not support <code>&lt;Suspense&gt;</code> or any of the streaming guarantees described below.</p>
+<hr/>
+<h2 id="streaming-on-node-with-rendertopipeablestream">Streaming on Node with <code>renderToPipeableStream</code></h2>
+<p>Here’s a complete streaming SSR setup for an analytics dashboard page. The shell renders immediately; the chart and recent-activity feed each suspend on their own fetches and stream in independently.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// server.jsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> express </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;express&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { renderToPipeableStream } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom/server&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Dashboard </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./Dashboard&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">app</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">express</span><span style="color:#E1E4E8">();\n</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;/&quot;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> didError </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">pipe</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">abort</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">renderToPipeableStream</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">Dashboard</span><span style="color:#E1E4E8"> /&gt;, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    bootstrapModules: [</span><span style="color:#9ECBFF">&quot;/static/client.js&quot;</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">onShellReady</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">      res.statusCode </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> didError </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      res.</span><span style="color:#B392F0">setHeader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Content-Type&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;text/html&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">pipe</span><span style="color:#E1E4E8">(res);</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">onShellError</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      res.statusCode </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      res.</span><span style="color:#B392F0">setHeader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Content-Type&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;text/html&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      res.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;&lt;h1&gt;Dashboard unavailable&lt;/h1&gt;&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">onError</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      didError </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(error);</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">  });\n</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#6A737D">// Drop the connection if a client hangs for too long.</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(abort, </span><span style="color:#79B8FF">10_000</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});\n</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">listen</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3000</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>And the page itself, with two suspending data dependencies:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// Dashboard.jsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { Suspense } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ChartCard </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./ChartCard&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ActivityFeed </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./ActivityFeed&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Dashboard</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#85E89D">header</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;Analytics&lt;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#85E89D">nav</span><span style="color:#E1E4E8">&gt;{</span><span style="color:#6A737D">/* always-fast nav */</span><span style="color:#E1E4E8">}&lt;/</span><span style="color:#85E89D">nav</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#85E89D">header</span><span style="color:#E1E4E8">&gt;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#79B8FF">ChartCardSkeleton</span><span style="color:#E1E4E8"> /&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#79B8FF">ChartCard</span><span style="color:#E1E4E8"> /&gt; {</span><span style="color:#6A737D">/* fetches a slow time series */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#79B8FF">ActivityFeedSkeleton</span><span style="color:#E1E4E8"> /&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">          &lt;</span><span style="color:#79B8FF">ActivityFeed</span><span style="color:#E1E4E8"> /&gt; {</span><span style="color:#6A737D">/* fetches the last 50 events */</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">        &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">      &lt;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  );</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>What the browser sees, in order:</p>
+<ol>
+<li><strong>The shell</strong> (HTML, header, navigation, both skeletons) — flushed when <code>onShellReady</code> fires.</li>
+<li><strong>Whichever data finishes first</strong> — its HTML streams in, along with an inline script that swaps the corresponding skeleton out.</li>
+<li><strong>The other one</strong>, when ready.</li>
+</ol>
+<p>If the activity feed resolves in 80 ms and the chart in 600 ms, the user sees the activity feed at 80 ms instead of waiting the full 600. The page felt 7× faster.</p>
+<hr/>
+<h2 id="onshellready-vs-onallready"><code>onShellReady</code> vs <code>onAllReady</code></h2>
+<p>These two callbacks model fundamentally different intents:</p>
+<ul>
+<li><strong><code>onShellReady</code></strong> fires the moment everything <em>outside</em> of any <code>&lt;Suspense&gt;</code> boundary can render. This is what you want for users — flush the shell ASAP and let the rest stream.</li>
+<li><strong><code>onAllReady</code></strong> fires only when the entire tree is rendered, including all <code>&lt;Suspense&gt;</code> content. Use this for clients that can’t or won’t process streamed updates: crawlers (some of them), email rendering, social-card preview fetchers, RSS exporters.</li>
+</ul>
+<p>A common pattern is to detect the user-agent and pick the right callback:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">isCrawler</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#DBEDFF"> </span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">bot</span><span style="color:#F97583">|</span><span style="color:#DBEDFF">crawler</span><span style="color:#F97583">|</span><span style="color:#DBEDFF">spider</span><span style="color:#F97583">|</span><span style="color:#DBEDFF">crawling</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">i</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(req.headers[</span><span style="color:#9ECBFF">&quot;user-agent&quot;</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;&quot;</span><span style="color:#E1E4E8">);\n</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">pipe</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">renderToPipeableStream</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">App</span><span style="color:#E1E4E8"> /&gt;, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  bootstrapModules: [</span><span style="color:#9ECBFF">&quot;/static/client.js&quot;</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  [isCrawler </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;onAllReady&quot;</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;onShellReady&quot;</span><span style="color:#E1E4E8">]() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.statusCode </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> didError </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.</span><span style="color:#B392F0">setHeader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;Content-Type&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;text/html&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#B392F0">pipe</span><span style="color:#E1E4E8">(res);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#B392F0">onError</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    didError </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr/>
+<h2 id="streaming-on-the-edge-with-rendertoreadablestream">Streaming on the edge with <code>renderToReadableStream</code></h2>
+<p>Edge runtimes don’t have Node streams; they speak Web Streams. The shape is similar but the API is promise-based:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// edge-handler.jsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { renderToReadableStream } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom/server&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> App </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./App&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">default</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fetch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">request</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> didError </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">const</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">stream</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">renderToReadableStream</span><span style="color:#E1E4E8">(&lt;</span><span style="color:#79B8FF">App</span><span style="color:#E1E4E8"> /&gt;, {</span></span>
+<span class="line"><span style="color:#E1E4E8">      bootstrapModules: [</span><span style="color:#9ECBFF">&quot;/static/client.js&quot;</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">      </span><span style="color:#B392F0">onError</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        didError </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });\n</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">// Wait for the shell before responding — analogous to onShellReady.</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">await</span><span style="color:#E1E4E8"> stream.allReady; </span><span style="color:#6A737D">// omit this to flush as early as possible</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">// Or, for crawlers, wait for the whole tree:</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#6A737D">// await stream.allReady;\n</span></span>
+<span class="line"><span style="color:#E1E4E8">    </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">new</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">Response</span><span style="color:#E1E4E8">(stream, {</span></span>
+<span class="line"><span style="color:#E1E4E8">      status: didError </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8"> </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      headers: { </span><span style="color:#9ECBFF">&quot;content-type&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;text/html&quot;</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<p>The Promise returned by <code>renderToReadableStream</code> resolves once the shell is ready. The stream itself has an <code>allReady</code> Promise you can await when you need the whole tree (the crawler case). If you don’t await anything past the initial Promise, the response starts streaming immediately.</p>
+<hr/>
+<h2 id="hydration-with-streaming">Hydration with streaming</h2>
+<p>Hydration in a streaming world is the dual of rendering: as each chunk arrives, React on the client matches the new DOM nodes to component code and attaches their event listeners. This is <strong>selective hydration</strong>, and it has two important properties:</p>
+<ol>
+<li><strong>Hydration happens in chunks.</strong> A <code>&lt;Suspense&gt;</code> boundary hydrates independently of the rest of the page. The user can interact with the navigation while the chart is still loading.</li>
+<li><strong>User input wins.</strong> If the user clicks a button in a region that hasn’t hydrated yet, React prioritizes hydrating <em>that</em> region first. Selective hydration prevents the worst form of the uncanny-valley — a click being silently dropped because hydration was busy elsewhere.</li>
+</ol>
+<p>On the client side, use <code>hydrateRoot</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">// client.jsx</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { hydrateRoot } </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;react-dom/client&quot;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> App </span><span style="color:#F97583">from</span><span style="color:#E1E4E8"> </span><span style="color:#9ECBFF">&quot;./App&quot;</span><span style="color:#E1E4E8">;\n</span></span>
+<span class="line"><span style="color:#B392F0">hydrateRoot</span><span style="color:#E1E4E8">(document, &lt;</span><span style="color:#79B8FF">App</span><span style="color:#E1E4E8"> /&gt;);</span></span></code></pre>
+<p><code>ReactDOM.hydrate</code> was removed in React 19. If you’re still using it, switching to <code>hydrateRoot</code> is the upgrade path.</p>
+<hr/>
+<h2 id="error-boundaries-are-not-optional-with-streaming">Error boundaries are not optional with streaming</h2>
+<p>When the shell has already flushed, an error in a deeper component can’t change the HTTP status code. Your only options are to (a) replace the affected region with a fallback in the stream, or (b) let React tear it down on the client during hydration. Both require an Error Boundary.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#79B8FF">ErrorBoundary</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;Could not load reviews.&lt;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">fallback</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{&lt;</span><span style="color:#79B8FF">ReviewSkeleton</span><span style="color:#E1E4E8"> /&gt;}&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">    &lt;</span><span style="color:#79B8FF">Reviews</span><span style="color:#E1E4E8"> </span><span style="color:#B392F0">productId</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{id} /&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">  &lt;/</span><span style="color:#79B8FF">Suspense</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#79B8FF">ErrorBoundary</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<p>The pattern is: wrap each streaming region in <em>both</em> an error boundary and a suspense boundary. The suspense boundary handles the “still loading” state. The error boundary handles the “loaded, but failed” state.</p>
+<p>For graceful error recovery, the <code>onError</code> callback of <code>renderToPipeableStream</code> is where you log; the error boundary is where you render an alternative UI.</p>
+<hr/>
+<h2 id="streaming-in-nextjs">Streaming in Next.js</h2>
+<p>The App Router does all of this for you. Any <code>loading.tsx</code> file in a route segment becomes a <code>&lt;Suspense&gt;</code> boundary automatically; any async server component that suspends streams in when its data resolves.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#e1e4e8">app/dashboard/</span></span>
+<span class="line"><span style="color:#e1e4e8">  layout.tsx       &lt;-- always renders, flushed first</span></span>
+<span class="line"><span style="color:#e1e4e8">  loading.tsx      &lt;-- Suspense fallback for the page</span></span>
+<span class="line"><span style="color:#e1e4e8">  page.tsx         &lt;-- async, can fetch data</span></span>
+<span class="line"><span style="color:#e1e4e8">  @analytics/</span></span>
+<span class="line"><span style="color:#e1e4e8">    loading.tsx</span></span>
+<span class="line"><span style="color:#e1e4e8">    page.tsx       &lt;-- parallel route, streams independently</span></span>
+<span class="line"><span style="color:#e1e4e8">  error.tsx        &lt;-- error boundary</span></span></code></pre>
+<p>You don’t write <code>renderToPipeableStream</code> directly — Next.js calls it (or its edge equivalent) for you and wires up streaming based on those file conventions. The result is the same: the static layout flushes immediately, slow data streams in, and selective hydration handles interactivity.</p>
+<hr/>
+<h2 id="what-streaming-costs">What streaming costs</h2>
+<p>Streaming isn’t free. A few things to be aware of:</p>
+<ul>
+<li><strong>You can’t change response headers after the first chunk.</strong> Status code, <code>Set-Cookie</code>, redirects, security headers — all decided before the first flush. If a deeper component would have triggered a 404, you can render an in-band error message, but the response status is locked at 200.</li>
+<li><strong>Some middleware breaks.</strong> Anything that buffers the full response (compression done wrong, certain WAF or CDN configurations) defeats streaming entirely. Verify by curling and watching <code>Transfer-Encoding: chunked</code> actually behave like a stream.</li>
+<li><strong>TTFB looks lower than the actual experience.</strong> The first byte arrives quickly, but it might be just the <code>&lt;head&gt;</code>. Track LCP and INP, not TTFB alone, when comparing streaming SSR to non-streaming SSR.</li>
+<li><strong>Suspense changes data fetching patterns.</strong> A component that suspends must use a Suspense-compatible data layer — React’s <code>use()</code> hook, a framework primitive (Next.js <code>fetch</code>, Remix <code>useLoaderData</code>), or a library that adapts (TanStack Query’s <code>useSuspenseQuery</code>). Plain <code>useEffect</code> doesn’t suspend.</li>
+</ul>
+<hr/>
+<h2 id="when-streaming-ssr-is-the-right-call">When streaming SSR is the right call</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Page profile</th><th>Use streaming SSR?</th></tr></thead><tbody><tr><td>Dashboard with several slow fetches</td><td>Yes — biggest win.</td></tr><tr><td>Marketing page, all static data</td><td>No — use SSG or PPR.</td></tr><tr><td>Auth-gated page with one fast fetch</td><td>Optional — gains are small if there’s nothing to overlap.</td></tr><tr><td>Live, real-time data updates</td><td>Streaming SSR handles the initial paint; use WebSocket or SSE for ongoing updates.</td></tr><tr><td>Pages crawlers need fully rendered</td><td>Yes, but use <code>onAllReady</code> for those user agents.</td></tr></tbody></table>
+<p>Streaming SSR pairs especially well with <strong>Partial Prerendering</strong> (a static shell streamed before any dynamic work begins) and with <strong>React Server Components</strong> (which can do their data fetching server-side without contributing to the client bundle). The next pattern in this series, <strong>Progressive Hydration</strong>, picks up where streaming SSR leaves off — solving the question of <em>how much</em> JavaScript needs to ship for the page to become interactive, not just how to get its HTML painted.</p>
+      </article>
+    </div>
+  </div>
+
+  
+<script async id="netlify-rum-container" src="/.netlify/scripts/rum" data-netlify-rum-site-id="f3a38afa-1558-4014-96d4-cea9e241bead" data-netlify-deploy-branch="main" data-netlify-deploy-context="production" data-netlify-cwv-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaXRlX2lkIjoiZjNhMzhhZmEtMTU1OC00MDE0LTk2ZDQtY2VhOWUyNDFiZWFkIiwiYWNjb3VudF9pZCI6IjViOTI4OWUzMzgxM2YwMjg5NTdhZTYyZCIsImRlcGxveV9pZCI6IjZhOTRhODdmNTMzNWQ3MDAwOGEzOTMwMCIsImlzc3VlciI6Im5mc2VydmVyIn0.UoLAY1i6tuqgEgfEOnecudddX2DEKRtQSNIRyRyhCgU"></script>
+</body></html>
