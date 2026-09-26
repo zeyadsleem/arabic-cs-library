@@ -1,0 +1,512 @@
+const s="db-design",n="chapter-sql",a="Structured Query Language",e="index",l="لغة الاستعلامات البنيوية",p=[{depth:2,id:"إنشاء-قاعدة-البيانات",text:"إنشاء قاعدة البيانات"},{depth:3,id:"columnname",text:"ColumnName"},{depth:2,id:"نوع-البيانات",text:"نوع البيانات"},{depth:2,id:"قيود-الأعمدة-الاختيارية",text:"قيود الأعمدة الاختيارية"},{depth:2,id:"قيود-الجدول",text:"قيود الجدول"},{depth:3,id:"قيد-identity",text:"قيد IDENTITY"},{depth:3,id:"قيد-foreign-key-مفتاح-أجنبي",text:"قيد FOREIGN KEY (مفتاح أجنبي)"},{depth:3,id:"قيد-check",text:"قيد CHECK"},{depth:3,id:"قيد-default",text:"قيد DEFAULT"},{depth:2,id:"الأنواع-المعرفة-من-المستخدم",text:"الأنواع المعرَّفة من المستخدم"},{depth:3,id:"alter-table",text:"ALTER TABLE"},{depth:3,id:"drop-table",text:"DROP TABLE"},{depth:2,id:"المراجع",text:"المراجع"}],r=`<p>المتن الرئيسي</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-operator">&lt;</span>tablename<span class="hljs-operator">&gt;</span>
+
+(
+
+ColumnName, Datatype, Optional <span class="hljs-keyword">Column</span> <span class="hljs-keyword">Constraint</span>,
+
+ColumnName, Datatype, Optional <span class="hljs-keyword">Column</span> <span class="hljs-keyword">Constraint</span>,
+
+Optional <span class="hljs-keyword">table</span> Constraints
+
+);
+</code></pre>
+<p>لغة الاستعلامات البنيوية (Structured Query Language)‏ (SQL) هي لغة قواعد بيانات صُمِّمت لإدارة البيانات المخزَّنة في نظام إدارة قواعد بيانات علائقي (relational database management system). طُوِّرت لغة SQL في البداية شركة IBM في مطلع السبعينيات من القرن الماضي (Date 1986). أما النسخة الأولى، وقد سمّيت SEQUEL (Structured English Query Language)، فقد صُمِّمت لمعالجة البيانات المخزَّنة في نظام إدارة قواعد البيانات شبه العلائقي (quasi-relational) لشركة IBM وهو System R. ثم في أواخر السبعينيات،قدَّمت شركة Relational Software Inc.‏ التي هي الآن شركة Oracle Corporation، أول تنفيذ تجاري متاح للغة SQL وهو Oracle V2 لحاسوبات VAX.</p>
+<pre><code class="language-sql">USE SW
+
+<span class="hljs-keyword">CREATE TABLE</span> EMPLOYEES
+
+(
+
+EmployeeNo                      <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>)             <span class="hljs-keyword">NOT NULL</span>           <span class="hljs-keyword">UNIQUE</span>,
+
+DepartmentName            <span class="hljs-type">CHAR</span>(<span class="hljs-number">30</span>)             <span class="hljs-keyword">NOT NULL</span>           <span class="hljs-keyword">DEFAULT</span> “Human Resources”,
+
+FirstName                           <span class="hljs-type">CHAR</span>(<span class="hljs-number">25</span>)             <span class="hljs-keyword">NOT NULL</span>,
+
+LastName                            <span class="hljs-type">CHAR</span>(<span class="hljs-number">25</span>)             <span class="hljs-keyword">NOT NULL</span>,
+
+Category                              <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>)             <span class="hljs-keyword">NOT NULL</span>,
+
+HourlyRate                         CURRENCY          <span class="hljs-keyword">NOT NULL</span>,
+
+TimeCard                             LOGICAL              <span class="hljs-keyword">NOT NULL</span>,
+
+HourlySalaried                   <span class="hljs-type">CHAR</span>(<span class="hljs-number">1</span>)               <span class="hljs-keyword">NOT NULL</span>,
+
+EmpType                             <span class="hljs-type">CHAR</span>(<span class="hljs-number">1</span>)               <span class="hljs-keyword">NOT NULL</span>,
+
+Terminated                         LOGICAL              <span class="hljs-keyword">NOT NULL</span>,
+
+ExemptCode                       <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>)               <span class="hljs-keyword">NOT NULL</span>,
+
+Supervisor                           LOGICAL              <span class="hljs-keyword">NOT NULL</span>,
+
+SupervisorName                <span class="hljs-type">CHAR</span>(<span class="hljs-number">50</span>)             <span class="hljs-keyword">NOT NULL</span>,
+
+BirthDate                             <span class="hljs-type">DATE</span>                     <span class="hljs-keyword">NOT NULL</span>,
+
+CollegeDegree                     <span class="hljs-type">CHAR</span>(<span class="hljs-number">5</span>)               <span class="hljs-keyword">NOT NULL</span>,
+
+<span class="hljs-keyword">CONSTRAINT</span>                     Employee_PK    <span class="hljs-keyword">PRIMARY KEY</span>(EmployeeNo
+
+);
+</code></pre>
+<p>يستخدم كثير من أنظمة إدارة قواعد البيانات العلائقية (DBMS) المتاحة اليوم، مثل Oracle Database وMicrosoft SQL Server (المبيَّنة في الشكل 15.1) وMySQL وIBM DB2 وIBM Informix وMicrosoft Access، لغة SQL.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CONSTRAINT</span>     EmployeePK      <span class="hljs-keyword">PRIMARY KEY</span>(EmployeeNo)
+</code></pre>
+<p><img src="/images/db-design/chapter-sql-0-SQLServer.webp" alt="صورة توضيحية من الكتاب: SQLServer"></p>
+<pre><code class="language-sql">USE SW
+
+<span class="hljs-keyword">CREATE TABLE</span> DEPARTMENT
+
+(
+
+DepartmentName <span class="hljs-type">Char</span>(<span class="hljs-number">35</span>)  <span class="hljs-keyword">NOT NULL</span>,
+
+BudgetCode     <span class="hljs-type">Char</span>(<span class="hljs-number">30</span>)  <span class="hljs-keyword">NOT NULL</span>,
+
+OfficeNumber   <span class="hljs-type">Char</span>(<span class="hljs-number">15</span>)  <span class="hljs-keyword">NOT NULL</span>,
+
+Phone          <span class="hljs-type">Char</span>(<span class="hljs-number">15</span>)  <span class="hljs-keyword">NOT NULL</span>,
+
+<span class="hljs-keyword">CONSTRAINT</span> DEPARTMENT_PK <span class="hljs-keyword">PRIMARY KEY</span>(DepartmentName)
+
+);
+</code></pre>
+<p>في نظام إدارة قواعد البيانات (DBMS)، تُستخدم لغة قواعد البيانات SQL من أجل:</p>
+<pre><code class="language-sql">USE SW
+
+<span class="hljs-keyword">CREATE TABLE</span> PROJECT
+
+(
+
+ProjectID       <span class="hljs-type">Int</span>  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">IDENTITY</span> (<span class="hljs-number">1000</span>,<span class="hljs-number">100</span>),
+
+ProjectName     <span class="hljs-type">Char</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+
+Department      <span class="hljs-type">Char</span>(<span class="hljs-number">35</span>) <span class="hljs-keyword">NOT NULL</span>,
+
+MaxHours        <span class="hljs-type">Numeric</span>(<span class="hljs-number">8</span>,<span class="hljs-number">2</span>)  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">100</span>,
+
+StartDate       DateTime <span class="hljs-keyword">NULL</span>,
+
+EndDate         DateTime <span class="hljs-keyword">NULL</span>,
+
+<span class="hljs-keyword">CONSTRAINT</span>      ASSIGNMENT_PK  <span class="hljs-keyword">PRIMARY KEY</span>(ProjectID)
+
+);
+</code></pre>
+<ul>
+<li>إنشاء قاعدة البيانات وبنى الجداول</li>
+<li>القيام بأعمال إدارة البيانات الأساسية (إضافة وحذف وتعديل)</li>
+<li>تنفيذ استعلامات (query) معقّدة لتحويل البيانات الخام إلى معلومات مفيدة</li>
+</ul>
+<pre><code class="language-sql">USE SW
+
+<span class="hljs-keyword">CREATE TABLE</span> ASSIGNMENT
+
+(
+
+ProjectID       <span class="hljs-type">Int</span>  <span class="hljs-keyword">NOT NULL</span>,
+
+EmployeeNumber  <span class="hljs-type">Int</span>  <span class="hljs-keyword">NOT NULL</span>,
+
+HoursWorked     <span class="hljs-type">Numeric</span>(<span class="hljs-number">6</span>,<span class="hljs-number">2</span>)  <span class="hljs-keyword">NULL</span>,
+
+);
+</code></pre>
+<p>في هذا الفصل، سنركّز على استخدام SQL لإنشاء قاعدة البيانات وبنى الجداول، أي بصفتها أساسًا لغة تعريف البيانات (data definition language)‏ (DDL). وفي الفصل 16، سنستخدم SQL بصفتها لغة معالجة البيانات (data manipulation language)‏ (DML) لإدراج البيانات وحذفها واختيارها وتحديثها داخل جداول قاعدة البيانات.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span>  tblHotel
+
+(
+
+HotelNo                 <span class="hljs-type">Int</span>                    <span class="hljs-keyword">IDENTITY</span> (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>),
+
+Name                    <span class="hljs-type">Char</span>(<span class="hljs-number">50</span>)          <span class="hljs-keyword">NOT NULL</span>,
+
+Address                 <span class="hljs-type">Char</span>(<span class="hljs-number">50</span>)          <span class="hljs-keyword">NULL</span>,
+
+City                       <span class="hljs-type">Char</span>(<span class="hljs-number">25</span>)          <span class="hljs-keyword">NULL</span>,
+
+)
+</code></pre>
+<h2 id="إنشاء-قاعدة-البيانات">إنشاء قاعدة البيانات</h2>
+<pre><code class="language-sql">[<span class="hljs-keyword">CONSTRAINT</span> constraint_name]
+
+<span class="hljs-keyword">UNIQUE</span> [CLUSTERED <span class="hljs-operator">|</span> NONCLUSTERED]
+
+(col_name [, col_name2 […, col_name16]])
+
+[<span class="hljs-keyword">ON</span> segment_name]
+</code></pre>
+<p>عبارات DDL الأساسية في SQL هي CREATE DATABASE وCREATE/DROP/ALTER TABLE. وتُستخدم عبارة CREATE في SQL لإنشاء قاعدة البيانات وبنى الجداول.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> EMPLOYEES
+
+(
+
+EmployeeNo                      <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>)             <span class="hljs-keyword">NOT NULL</span>           <span class="hljs-keyword">UNIQUE</span>,
+
+)
+</code></pre>
+<p>مثال: CREATE DATABASE SW</p>
+<pre><code class="language-sql">[<span class="hljs-keyword">CONSTRAINT</span> constraint_name]
+
+[<span class="hljs-keyword">FOREIGN KEY</span> (col_name [, col_name2 […, col_name16]])]
+
+<span class="hljs-keyword">REFERENCES</span> [owner.]ref_table [(ref_col [, ref_col2 […, ref_col16]])]
+</code></pre>
+<p>تُنشئ عبارة SQL CREATE DATABASE SW قاعدة بيانات جديدة اسمها SW. وبعد إنشاء قاعدة البيانات، تكون الخطوة التالية إنشاء جداول قاعدة البيانات.</p>
+<pre><code class="language-sql">USE HOTEL
+
+GO
+
+<span class="hljs-keyword">CREATE TABLE</span>  tblRoom
+
+(
+
+HotelNo           <span class="hljs-type">Int</span>                    <span class="hljs-keyword">NOT NULL</span> ,
+
+RoomNo  <span class="hljs-type">Int</span>                    <span class="hljs-keyword">NOT NULL</span>,
+
+Type                    <span class="hljs-type">Char</span>(<span class="hljs-number">50</span>)          <span class="hljs-keyword">NULL</span>,
+
+Price                   Money             <span class="hljs-keyword">NULL</span>,
+
+<span class="hljs-keyword">PRIMARY KEY</span> (HotelNo, RoomNo),
+
+<span class="hljs-keyword">FOREIGN KEY</span> (HotelNo) <span class="hljs-keyword">REFERENCES</span> tblHotel
+
+)
+</code></pre>
+<p>الصيغة العامة لأمر CREATE TABLE هي:</p>
+<pre><code class="language-sql">[<span class="hljs-keyword">CONSTRAINT</span> constraint_name]
+
+<span class="hljs-keyword">CHECK</span> [<span class="hljs-keyword">NOT</span> <span class="hljs-keyword">FOR</span> REPLICATION] (expression)
+</code></pre>
+<p>CREATE TABLE <tablename> ( ColumnName, Datatype, Optional Column Constraint, ColumnName, Datatype, Optional Column Constraint, Optional table Constraints );</p>
+<pre><code class="language-sql">USE HOTEL
+
+GO
+
+<span class="hljs-keyword">CREATE TABLE</span>  tblRoom
+
+(
+
+HotelNo           <span class="hljs-type">Int</span>                    <span class="hljs-keyword">NOT NULL</span>,
+
+RoomNo  <span class="hljs-type">Int</span>                    <span class="hljs-keyword">NOT NULL</span>,
+
+Type                    <span class="hljs-type">Char</span>(<span class="hljs-number">50</span>)          <span class="hljs-keyword">NULL</span>,
+
+Price       Money                         <span class="hljs-keyword">NULL</span>,
+
+<span class="hljs-keyword">PRIMARY KEY</span> (HotelNo, RoomNo),
+
+<span class="hljs-keyword">FOREIGN KEY</span> (HotelNo) <span class="hljs-keyword">REFERENCES</span> tblHotel
+
+<span class="hljs-keyword">CONSTRAINT</span> Valid_Type
+
+<span class="hljs-keyword">CHECK</span> (Type <span class="hljs-keyword">IN</span> (‘Single’, ‘<span class="hljs-keyword">Double</span>’, ‘Suite’, ‘Executive’))
+
+)
+</code></pre>
+<p>وTablename هو اسم جدول قاعدة البيانات مثل Employee. ولكل حقل في CREATE TABLE ثلاثة أجزاء (انظر أعلاه):</p>
+<pre><code class="language-sql">GO
+
+<span class="hljs-keyword">CREATE TABLE</span> SALESREPS
+
+(
+
+Empl_num     <span class="hljs-type">Int</span> <span class="hljs-keyword">Not Null</span>
+
+<span class="hljs-keyword">CHECK</span> (Empl_num <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">101</span> <span class="hljs-keyword">and</span> <span class="hljs-number">199</span>),
+
+Name              <span class="hljs-type">Char</span> (<span class="hljs-number">15</span>),
+
+Age      <span class="hljs-type">Int</span>        <span class="hljs-keyword">CHECK</span> (Age <span class="hljs-operator">&gt;=</span> <span class="hljs-number">21</span>),
+
+Quota                         Money                         <span class="hljs-keyword">CHECK</span> (Quota <span class="hljs-operator">&gt;=</span> <span class="hljs-number">0.0</span>),
+
+HireDate       DateTime,
+
+<span class="hljs-keyword">CONSTRAINT</span>  QuotaCap <span class="hljs-keyword">CHECK</span> ((HireDate <span class="hljs-operator">&lt;</span> “<span class="hljs-number">01</span><span class="hljs-number">-01</span><span class="hljs-number">-2004</span>”) <span class="hljs-keyword">OR</span> (Quota <span class="hljs-operator">&lt;=</span><span class="hljs-number">300000</span>))
+
+)
+</code></pre>
+<ul>
+<li>ColumnName</li>
+<li>نوع البيانات</li>
+<li>قيد العمود الاختياري</li>
+</ul>
+<pre><code class="language-sql">[<span class="hljs-keyword">CONSTRAINT</span> constraint_name]
+
+<span class="hljs-keyword">DEFAULT</span> {constant_expression <span class="hljs-operator">|</span> niladic<span class="hljs-operator">-</span><span class="hljs-keyword">function</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">NULL</span>}
+
+[<span class="hljs-keyword">FOR</span> col_name]
+</code></pre>
+<h3 id="columnname">ColumnName</h3>
+<pre><code class="language-sql">USE HOTEL
+
+<span class="hljs-keyword">ALTER TABLE</span> tblHotel
+
+<span class="hljs-keyword">Add CONSTRAINT</span> df_city <span class="hljs-keyword">DEFAULT</span> ‘Vancouver’ <span class="hljs-keyword">FOR</span> City
+</code></pre>
+<p>يجب أن يكون ColumnName فريدًا داخل الجدول. ومن أمثلة أسماء الأعمدة FirstName وLastName.</p>
+<pre><code class="language-sql">sp_addtype ssn, ‘<span class="hljs-type">varchar</span>(<span class="hljs-number">11</span>)’, ‘<span class="hljs-keyword">NOT NULL</span>’
+</code></pre>
+<h2 id="نوع-البيانات">نوع البيانات</h2>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> SINTable
+
+(
+
+EmployeeID        <span class="hljs-type">INT</span> <span class="hljs-keyword">Primary Key</span>,
+
+EmployeeSIN    SIN,
+
+<span class="hljs-keyword">CONSTRAINT</span> CheckSIN
+
+<span class="hljs-keyword">CHECK</span> (EmployeeSIN <span class="hljs-keyword">LIKE</span>
+
+‘ [<span class="hljs-number">0</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>] – [<span class="hljs-number">0</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>] [<span class="hljs-number">0</span><span class="hljs-number">-9</span>] – [<span class="hljs-number">0</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>] ‘)
+
+)
+</code></pre>
+<p>نوع البيانات، كما هو موضح أدناه، يجب أن يكون نوع بيانات نظاميًا أو نوع بيانات معرَّفًا من المستخدم. ولكثير من أنواع البيانات حجم مثل CHAR(35) أو Numeric(8,2).</p>
+<pre><code class="language-sql">USE HOTEL
+
+GO
+
+<span class="hljs-keyword">ALTER TABLE</span>  tblHotel
+
+<span class="hljs-keyword">ADD CONSTRAINT</span> unqName <span class="hljs-keyword">UNIQUE</span> (Name)
+</code></pre>
+<p>Bit – بيانات عدد صحيح (integer) قيمتها 1 أو 0</p>
+<pre><code class="language-sql"><span class="hljs-keyword">ADD</span>
+
+ColumnName         <span class="hljs-type">int</span>    <span class="hljs-keyword">IDENTITY</span>(seed, increment)
+</code></pre>
+<p>Int – بيانات عدد صحيح (whole number) من -2^31 (-2,147,483,648) إلى 2^31 – 1 (2,147,483,647)</p>
+<pre><code class="language-sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> tblHotel
+</code></pre>
+<p>Smallint – بيانات عدد صحيح من 2^15 (-32,768) إلى 2^15 – 1 (32,767)</p>
+<pre><code class="language-sql">Key Terms
+
+DDL: abbreviation <span class="hljs-keyword">for</span> data definition <span class="hljs-keyword">language</span>
+
+DML: abbreviation <span class="hljs-keyword">for</span> data manipulation <span class="hljs-keyword">language</span>
+
+SEQUEL: acronym <span class="hljs-keyword">for</span> Structured English Query <span class="hljs-keyword">Language</span>; designed <span class="hljs-keyword">to</span> manipulate <span class="hljs-keyword">and</span> retrieve data stored <span class="hljs-keyword">in</span> IBM’s quasi<span class="hljs-operator">-</span>relational database management <span class="hljs-keyword">system</span>, <span class="hljs-keyword">System</span> R
+
+Structured Query <span class="hljs-keyword">Language</span> (<span class="hljs-keyword">SQL</span>): a database <span class="hljs-keyword">language</span> designed <span class="hljs-keyword">for</span> managing data held <span class="hljs-keyword">in</span> a relational database management <span class="hljs-keyword">system</span>
+</code></pre>
+<p>Tinyint – بيانات عدد صحيح من 0 إلى 255</p>
+<pre><code class="language-sql">Exercises
+
+<span class="hljs-keyword">Using</span> the information <span class="hljs-keyword">for</span> the Chapter <span class="hljs-number">9</span> exercise, implement the schema <span class="hljs-keyword">using</span> Transact <span class="hljs-keyword">SQL</span> (<span class="hljs-keyword">show</span> <span class="hljs-keyword">SQL</span> statements <span class="hljs-keyword">for</span> <span class="hljs-keyword">each</span> <span class="hljs-keyword">table</span>). Implement the constraints <span class="hljs-keyword">as</span> well.
+<span class="hljs-keyword">Create</span> the <span class="hljs-keyword">table</span> shown here <span class="hljs-keyword">in</span> <span class="hljs-keyword">SQL</span> Server <span class="hljs-keyword">and</span> <span class="hljs-keyword">show</span> the statements you used.
+
+<span class="hljs-keyword">Table</span>: Employee
+
+ATTRIBUTE (FIELD) NAME
+DATA DECLARATION
+
+EMP_NUM
+<span class="hljs-type">CHAR</span>(<span class="hljs-number">3</span>)
+
+EMP_LNAME
+<span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>)
+
+EMP_FNAME
+<span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>)
+
+EMP_INITIAL
+<span class="hljs-type">CHAR</span>(<span class="hljs-number">1</span>)
+
+EMP_HIREDATE
+<span class="hljs-type">DATE</span>
+
+JOB_CODE
+<span class="hljs-type">CHAR</span>(<span class="hljs-number">3</span>)
+
+<span class="hljs-keyword">Having</span> created the <span class="hljs-keyword">table</span> structure <span class="hljs-keyword">in</span> question <span class="hljs-number">2</span>, write the <span class="hljs-keyword">SQL</span> code <span class="hljs-keyword">to</span> enter the <span class="hljs-keyword">rows</span> <span class="hljs-keyword">for</span> the <span class="hljs-keyword">table</span> shown <span class="hljs-keyword">in</span> Figure <span class="hljs-number">15.1</span>.
+
+ IMAGE1END Figure <span class="hljs-number">15.2</span>. Employee <span class="hljs-keyword">table</span> <span class="hljs-keyword">with</span> data <span class="hljs-keyword">for</span> questions <span class="hljs-number">4</span><span class="hljs-number">-10</span>, <span class="hljs-keyword">by</span> A. Watt.
+Use Figure <span class="hljs-number">15.2</span> <span class="hljs-keyword">to</span> answer questions <span class="hljs-number">4</span> <span class="hljs-keyword">to</span> <span class="hljs-number">10.</span>
+Write the <span class="hljs-keyword">SQL</span> code <span class="hljs-keyword">to</span> change the job code <span class="hljs-keyword">to</span> <span class="hljs-number">501</span> <span class="hljs-keyword">for</span> the person whose personnel number <span class="hljs-keyword">is</span> <span class="hljs-number">107.</span> After you have completed the task, examine the results, <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> reset the job code <span class="hljs-keyword">to</span> its original value.
+Assuming that the data shown <span class="hljs-keyword">in</span> the Employee <span class="hljs-keyword">table</span> have been entered, write the <span class="hljs-keyword">SQL</span> code that lists <span class="hljs-keyword">all</span> attributes <span class="hljs-keyword">for</span> a job code <span class="hljs-keyword">of</span> <span class="hljs-number">502.</span>
+Write the <span class="hljs-keyword">SQL</span> code <span class="hljs-keyword">to</span> <span class="hljs-keyword">delete</span> the <span class="hljs-type">row</span> <span class="hljs-keyword">for</span> the person named William Smithfield, who was hired <span class="hljs-keyword">on</span> June <span class="hljs-number">22</span>, <span class="hljs-number">2004</span>, <span class="hljs-keyword">and</span> whose job code classification <span class="hljs-keyword">is</span> <span class="hljs-number">500.</span> (Hint: Use logical operators <span class="hljs-keyword">to</span> include <span class="hljs-keyword">all</span> the information given <span class="hljs-keyword">in</span> this problem.)
+<span class="hljs-keyword">Add</span> the attributes EMP_PCT <span class="hljs-keyword">and</span> PROJ_NUM <span class="hljs-keyword">to</span> the Employee table. The EMP_PCT <span class="hljs-keyword">is</span> the bonus percentage <span class="hljs-keyword">to</span> be paid <span class="hljs-keyword">to</span> <span class="hljs-keyword">each</span> employee.
+<span class="hljs-keyword">Using</span> a single command, write the <span class="hljs-keyword">SQL</span> code that will enter the project number (PROJ_NUM) <span class="hljs-operator">=</span> <span class="hljs-number">18</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">all</span> employees whose job classification (JOB_CODE) <span class="hljs-keyword">is</span> <span class="hljs-number">500.</span>
+<span class="hljs-keyword">Using</span> a single command, write the <span class="hljs-keyword">SQL</span> code that will enter the project number (PROJ_NUM) <span class="hljs-operator">=</span> <span class="hljs-number">25</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">all</span> employees whose job classification (JOB_CODE) <span class="hljs-keyword">is</span> <span class="hljs-number">502</span> <span class="hljs-keyword">or</span> higher.
+Write the <span class="hljs-keyword">SQL</span> code that will change the PROJ_NUM <span class="hljs-keyword">to</span> <span class="hljs-number">14</span> <span class="hljs-keyword">for</span> those employees who were hired before January <span class="hljs-number">1</span>, <span class="hljs-number">1994</span>, <span class="hljs-keyword">and</span> whose job code <span class="hljs-keyword">is</span> <span class="hljs-keyword">at</span> least <span class="hljs-number">501.</span> (You may assume that the <span class="hljs-keyword">table</span> will be restored <span class="hljs-keyword">to</span> its original <span class="hljs-keyword">condition</span> preceding this question.)
+
+Also see  Appendix C: <span class="hljs-keyword">SQL</span> Lab <span class="hljs-keyword">with</span> Solution
+</code></pre>
+<p>Decimal – بيانات عددية ذات دقة ومقياس ثابتين من -10^38 -1 إلى 10^38</p>
+<p>Numeric – مرادف للكلمة decimal</p>
+<p>Timestamp – رقم فريد على مستوى قاعدة البيانات</p>
+<p>Uniqueidentifier – معرّف فريد عالميًا (GUID)</p>
+<p>Money – قيم بيانات نقدية من -2^63 (-922,337,203,685,477.5808) إلى 2^63 – 1 (+922,337,203,685,477.5807)، بدقة تصل إلى جزء من عشرة آلاف من الوحدة النقدية</p>
+<p>Smallmoney – قيم بيانات نقدية من -214,748.3648 إلى +214,748.3647، بدقة تصل إلى جزء من عشرة آلاف من الوحدة النقدية</p>
+<p>Float – بيانات أرقام بدقة الفاصلة العائمة من -1.79E + 308 إلى 1.79E + 308</p>
+<p>Real – بيانات أرقام بدقة الفاصلة العائمة من -3.40E + 38 إلى 3.40E + 38</p>
+<p>Datetime – بيانات التاريخ والوقت من 1 يناير 1753 إلى 31 ديسمبر 9999، بدقة مقدارها ثلاثُمئة جزء من الثانية، أي 3.33 ميلي ثانية</p>
+<p>Smalldatetime – بيانات التاريخ والوقت من 1 يناير 1900 إلى 6 يونيو 2079، بدقة مقدارها دقيقة واحدة</p>
+<p>Char – بيانات محارف غير Unicode بطول ثابت لا يتجاوز 8,000 محرف</p>
+<p>Varchar – بيانات غير Unicode بطول متغير لا يتجاوز 8,000 محرف</p>
+<p>Text – بيانات غير Unicode بطول متغير لا يتجاوز 2^31 – 1 (2,147,483,647) محرف</p>
+<p>Binary – بيانات ثنائية بطول ثابت لا يتجاوز 8,000 بايت</p>
+<p>Varbinary – بيانات ثنائية بطول متغير لا يتجاوز 8,000 بايت</p>
+<p>Image – بيانات ثنائية بطول متغير لا يتجاوز 2^31 – 1 (2,147,483,647) بايت</p>
+<h2 id="قيود-الأعمدة-الاختيارية">قيود الأعمدة الاختيارية</h2>
+<p>قيود الأعمدة الاختيارية (Optional ColumnConstraints) هي NULL وNOT NULL وUNIQUE وPRIMARY KEY وDEFAULT، وتُستخدم لتهيئة قيمة للسجل الجديد. ويشير قيد العمود NULL إلى أن القيم الفارغة (null) مسموح بها، أي أنه يمكن إنشاء صف من دون قيمة لهذا العمود. أما قيد العمود NOT NULL فيشير إلى أنه يجب تزويد قيمة عند إنشاء صف جديد.</p>
+<p>وللتوضيح، سنستخدم عبارة SQL CREATE TABLE EMPLOYEES لإنشاء جدول الموظفين (employees) بـ 16 خاصية أو حقلًا.</p>
+<p>USE SW CREATE TABLE EMPLOYEES ( EmployeeNo CHAR(10) NOT NULL UNIQUE, DepartmentName CHAR(30) NOT NULL DEFAULT “Human Resources”, FirstName CHAR(25) NOT NULL, LastName CHAR(25) NOT NULL, Category CHAR(20) NOT NULL, HourlyRate CURRENCY NOT NULL, TimeCard LOGICAL NOT NULL, HourlySalaried CHAR(1) NOT NULL, EmpType CHAR(1) NOT NULL, Terminated LOGICAL NOT NULL, ExemptCode CHAR(2) NOT NULL, Supervisor LOGICAL NOT NULL, SupervisorName CHAR(50) NOT NULL, BirthDate DATE NOT NULL, CollegeDegree CHAR(5) NOT NULL, CONSTRAINT Employee_PK PRIMARY KEY(EmployeeNo );</p>
+<p>الحقل الأول هو EmployeeNo ومن نوعه CHAR. وبالنسبة إلى هذا الحقل، فإن طول الحقل 10 محارف، ولا يمكن للمستخدم ترك هذا الحقل فارغًا (NOT NULL).</p>
+<p>وبالمثل، الحقل الثاني هو DepartmentName ومن نوع CHAR بطول 30. وبعد تعريف جميع أعمدة الجدول، يُستخدم قيد جدول (table constraint)، يحدده الكلمة CONSTRAINT، لإنشاء المفتاح الأساسي (primary key):</p>
+<p>CONSTRAINT EmployeePK PRIMARY KEY(EmployeeNo)</p>
+<p>وسنتناول خاصية القيد (constraint) بمزيد من التفصيل لاحقًا في هذا الفصل.</p>
+<p>وبالمثل أيضًا، يمكننا إنشاء جدول Department وجدول Project وجدول Assignment باستخدام أمر DDL الخاص بـ SQL وهو CREATE TABLE، كما هو موضح في المثال أدناه.</p>
+<p>USE SW CREATE TABLE DEPARTMENT ( DepartmentName Char(35) NOT NULL, BudgetCode Char(30) NOT NULL, OfficeNumber Char(15) NOT NULL, Phone Char(15) NOT NULL, CONSTRAINT DEPARTMENT_PK PRIMARY KEY(DepartmentName) );</p>
+<p>في هذا المثال، أُنشئ جدول للمشاريع بسبعة حقول: ProjectID وProjectName وDepartment وMaxHours وStartDate وEndDate.</p>
+<p>USE SW CREATE TABLE PROJECT ( ProjectID Int NOT NULL IDENTITY (1000,100), ProjectName Char(50) NOT NULL, Department Char(35) NOT NULL, MaxHours Numeric(8,2) NOT NULL DEFAULT 100, StartDate DateTime NULL, EndDate DateTime NULL, CONSTRAINT ASSIGNMENT_PK PRIMARY KEY(ProjectID) );</p>
+<p>وفي هذا المثال الأخير، أُنشئ جدول للإسنادات (assignment) بثلاثة حقول: ProjectID وEmployeeNumber وHoursWorked. ويُستخدم جدول الإسنادات لتسجيل من (EmployeeNumber) وكم من الوقت (HoursWorked) عمل فيه موظف في المشروع المعيّن (ProjectID).</p>
+<p>USE SW CREATE TABLE ASSIGNMENT ( ProjectID Int NOT NULL, EmployeeNumber Int NOT NULL, HoursWorked Numeric(6,2) NULL, );</p>
+<h2 id="قيود-الجدول">قيود الجدول</h2>
+<p>تُحدَّد قيود الجدول بالكلمة المفتاحية CONSTRAINT، ويمكن استخدامها لتطبيق القيود المختلفة الموصوفة أدناه.</p>
+<h3 id="قيد-identity">قيد IDENTITY</h3>
+<p>يمكننا استخدام قيد العمود الاختياري IDENTITY لتوفير قيمة فريدة متزايدة لذلك العمود. وتُستخدم أعمدة الهوية (identity) غالبًا مع قيود PRIMARY KEY لتكون معرّفًا فريدًا للصف في الجدول. ويمكن إسناد خاصية IDENTITY إلى عمود من نوع tinyint أو smallint أو int أو decimal أو numeric. ويمتنع هذا القيد:</p>
+<ul>
+<li>توليد أرقام متسلسلة</li>
+<li>فرض سلامة الكيان (entity integrity)</li>
+<li>أن تكتسب خاصية IDENTITY أكثر من عمود واحد</li>
+<li>من أن يُعرَّف من نوع بيانات عدد صحيح أو numeric أو decimal</li>
+<li>من تحديث عمود يحمل خاصية IDENTITY</li>
+<li>من أن يحتوي على قيم NULL</li>
+<li>من ربط قيود افتراضية (default constraints) أو قيم افتراضية بالعمود</li>
+</ul>
+<p>وبالنسبة إلى IDENTITY[(seed, increment)] فإن:</p>
+<ul>
+<li>Seed – القيمة الابتدائية لعمود الهوية</li>
+<li>Increment – القيمة التي تُضاف إلى آخر قيمة في عمود الهوية</li>
+</ul>
+<p>وسنستخدم مثالًا آخر لقاعدة البيانات لتوضيح عبارات DDL الخاصة بـ SQL أكثر من ذلك بإنشاء الجدول tblHotel في قاعدة بيانات HOTEL هذه.</p>
+<p>CREATE TABLE tblHotel ( HotelNo Int IDENTITY (1,1), Name Char(50) NOT NULL, Address Char(50) NULL, City Char(25) NULL, )</p>
+<p>قيد UNIQUE</p>
+<p>يمنع قيد UNIQUE إدخال قيم مكرَّرة في العمود.</p>
+<ul>
+<li>تُستخدم قيود PK وUNIQUE معًا لفرض سلامة الكيان.</li>
+<li>يمكن تعريف قيود UNIQUE متعددة لجدول واحد.</li>
+<li>عند إضافة قيد UNIQUE إلى جدول قائم، تُتحقَّق البيانات الموجودة دائمًا.</li>
+<li>يمكن وضع قيد UNIQUE على أعمدة تقبل القيم الفارغة (nulls). ولا يمكن أن يكون أكثر من صف واحد بقيمة NULL.</li>
+<li>ينشئ قيد UNIQUE فهرسًا (index) فريدًا تلقائيًا على العمود المحدَّد.</li>
+</ul>
+<p>هذه هي الصيغة العامة لقيد UNIQUE:</p>
+<p>[CONSTRAINT constraint_name] UNIQUE [CLUSTERED | NONCLUSTERED] (col_name [, col_name2 […, col_name16]]) [ON segment_name]</p>
+<p>وهذا مثال على استخدام قيد UNIQUE.</p>
+<p>CREATE TABLE EMPLOYEES ( EmployeeNo CHAR(10) NOT NULL UNIQUE, )</p>
+<h3 id="قيد-foreign-key-مفتاح-أجنبي">قيد FOREIGN KEY (مفتاح أجنبي)</h3>
+<p>يعرّف قيد FOREIGN KEY‏ (FK) عمودًا أو مجموعة أعمدة تقابل قيمها المفتاح الأساسي (PRIMARY KEY)‏ (PK) لجدول آخر.</p>
+<ul>
+<li>تُحدَّث قيم المفتاح الأجنبي (FK) تلقائيًا عند تحديث قيم المفتاح الأساسي (PK) في الجدول المرتبط.</li>
+<li>يجب أن تشير قيود FK إلى PK أو قيد UNIQUE في جدول آخر.</li>
+<li>يجب أن يكون عدد أعمدة FK مساويًا لعدد أعمدة PK أو القيد UNIQUE.</li>
+<li>إذا استُخدم خيار WITH NOCHECK فإن قيد FK لن يتحقق من البيانات الموجودة في الجدول.</li>
+<li>لا يُنشأ أي فهرس على الأعمدة المشاركة في قيد FK.</li>
+</ul>
+<p>هذه هي الصيغة العامة لقيد FOREIGN KEY:</p>
+<p>[CONSTRAINT constraint_name] [FOREIGN KEY (col_name [, col_name2 […, col_name16]])] REFERENCES [owner.]ref_table [(ref_col [, ref_col2 […, ref_col16]])]</p>
+<p>في هذا المثال، الحقل HotelNo في الجدول tblRoom هو مفتاح أجنبي (FK) يشير إلى الحقل HotelNo في الجدول tblHotel الذي سبق عرضه.</p>
+<p>USE HOTEL GO CREATE TABLE tblRoom ( HotelNo Int NOT NULL , RoomNo Int NOT NULL, Type Char(50) NULL, Price Money NULL, PRIMARY KEY (HotelNo, RoomNo), FOREIGN KEY (HotelNo) REFERENCES tblHotel )</p>
+<h3 id="قيد-check">قيد CHECK</h3>
+<p>يقيد قيد CHECK القيم التي يمكن إدخالها في الجدول.</p>
+<ul>
+<li>يمكن أن يحتوي على شروط بحث مشابهة لعبارة WHERE.</li>
+<li>يمكن أن يشير إلى أعمدة في الجدول نفسه.</li>
+<li>يجب أن تُقيَّم قاعدة التحقق من البيانات الخاصة بقيد CHECK إلى تعبير منطقي (boolean expression).</li>
+<li>يمكن أن يُعرَّف لعمود له قاعدة مرتبطة به.</li>
+</ul>
+<p>هذه هي الصيغة العامة لقيد CHECK:</p>
+<p>[CONSTRAINT constraint_name] CHECK [NOT FOR REPLICATION] (expression)</p>
+<p>في هذا المثال، يقتصر الحقل Type على الأنواع ‘Single’ و‘Double’ و‘Suite’ أو ‘Executive’ فقط.</p>
+<p>USE HOTEL GO CREATE TABLE tblRoom ( HotelNo Int NOT NULL, RoomNo Int NOT NULL, Type Char(50) NULL, Price Money NULL, PRIMARY KEY (HotelNo, RoomNo), FOREIGN KEY (HotelNo) REFERENCES tblHotel CONSTRAINT Valid_Type CHECK (Type IN (‘Single’, ‘Double’, ‘Suite’, ‘Executive’)) )</p>
+<p>وفي هذا المثال الثاني، يجب أن يكون تاريخ توظيف الموظف قبل 1 يناير 2004، أو أن يكون لديه حد أقصى للراتب قدره 300,000 دولار.</p>
+<p>GO CREATE TABLE SALESREPS ( Empl_num Int Not Null CHECK (Empl_num BETWEEN 101 and 199), Name Char (15), Age Int CHECK (Age &gt;= 21), Quota Money CHECK (Quota &gt;= 0.0), HireDate DateTime, CONSTRAINT QuotaCap CHECK ((HireDate &lt; “01-01-2004”) OR (Quota &lt;=300000)) )</p>
+<h3 id="قيد-default">قيد DEFAULT</h3>
+<p>يُستخدم قيد DEFAULT لتزويد قيمة تُضاف تلقائيًا إلى العمود إذا لم يزوّد المستخدم بقيمة.</p>
+<ul>
+<li>يمكن أن يكون للعمود قيد DEFAULT واحد فقط.</li>
+<li>لا يمكن استخدام قيد DEFAULT على الأعمدة التي من نوع timestamp أو التي تحمل خاصية identity.</li>
+<li>تُربط قيود DEFAULT بالعمود تلقائيًا عند إنشائها.</li>
+</ul>
+<p>الصيغة العامة لقيد DEFAULT هي:</p>
+<p>[CONSTRAINT constraint_name] DEFAULT {constant_expression | niladic-function | NULL} [FOR col_name]</p>
+<p>يضبط هذا المثال القيمة الافتراضية لحقل المدينة على ‘Vancouver’.</p>
+<p>USE HOTEL ALTER TABLE tblHotel Add CONSTRAINT df_city DEFAULT ‘Vancouver’ FOR City</p>
+<h2 id="الأنواع-المعرفة-من-المستخدم">الأنواع المعرَّفة من المستخدم</h2>
+<p>دائمًا تستند الأنواع المعرَّفة من المستخدم (user defined types) إلى نوع بيانات يوفّره النظام. وهي تستطيع فرض سلامة البيانات وتسمح بالقيم الفارغة (nulls).</p>
+<p>ولإنشاء نوع بيانات معرَّف من المستخدم في SQL Server، اختر الأنواع ضمن “Programmability” في قاعدة بياناتك. ثم انقر بزر الفأرة الأيمن واختر ‘New’ –&gt;‘User-defined data type’، أو نفّذ الإجراء المخزَّنة في النظام sp_addtype. وبعد ذلك اكتب:</p>
+<p>sp_addtype ssn, ‘varchar(11)’, ‘NOT NULL’</p>
+<p>وهذا سيضيف نوع بيانات معرَّفًا من المستخدم جديدًا اسمُه SIN من تسعة محارف.</p>
+<p>وفي هذا المثال، يستخدم الحقل EmployeeSIN نوع البيانات المعرَّف من المستخدم SIN.</p>
+<p>CREATE TABLE SINTable ( EmployeeID INT Primary Key, EmployeeSIN SIN, CONSTRAINT CheckSIN CHECK (EmployeeSIN LIKE ‘ [0-9][0-9][0-9] – [0-9][0-9] [0-9] – [0-9][0-9][0-9] ‘) )</p>
+<h3 id="alter-table">ALTER TABLE</h3>
+<p>يمكنك استخدام عبارات ALTER TABLE لإضافة القيود وحذفها.</p>
+<ul>
+<li>تتيح ALTER TABLE إزالة الأعمدة.</li>
+<li>عند إضافة قيد، تُفحص جميع البيانات القائمة للتأكد من عدم وجود مخالفات.</li>
+</ul>
+<p>في هذا المثال، نستخدم عبارة ALTER TABLE مع الخاصية IDENTITY على حقل ColumnName.</p>
+<p>USE HOTEL GO ALTER TABLE tblHotel ADD CONSTRAINT unqName UNIQUE (Name)</p>
+<p>استخدم عبارة ALTER TABLE لإضافة عمود يحمل خاصية IDENTITY، مثل ALTER TABLE TableName.</p>
+<p>ADD ColumnName int IDENTITY(seed, increment)</p>
+<h3 id="drop-table">DROP TABLE</h3>
+<p>ستزيل عبارة DROP TABLE جدولًا من قاعدة البيانات. تأكد من أن قاعدة البيانات الصحيحة هي المحدَّدة.</p>
+<p>DROP TABLE tblHotel</p>
+<p>سيؤدي تنفيذ عبارة SQL DROP TABLE أعلاه إلى إزالة الجدول tblHotel من قاعدة البيانات.</p>
+<p>DDL: اختصار للغة تعريف البيانات</p>
+<p>DML: اختصار للغة معالجة البيانات</p>
+<p>SEQUEL: اختصار لعبارة Structured English Query Language؛ صُمِّمت لمعالجة البيانات المخزَّنة في نظام إدارة قواعد البيانات شبه العلائقي لشركة IBM وهو System R</p>
+<p>لغة الاستعلامات البنيوية (Structured Query Language)‏ (SQL): لغة قواعد بيانات صُمِّمت لإدارة البيانات المخزَّنة في نظام إدارة قواعد بيانات علائقي</p>
+<p>استخدم معلومات تمرين الفصل 9 لتنفيذ المخطط (schema) باستخدام Transact SQL (اعرض عبارات SQL لكل جدول). ونفّذ القيود أيضًا. وأنشئ الجدول الموضَّح هنا في SQL Server واعرض العبارات التي استخدمتها. الجدول: Employee</p>
+<table>
+<thead>
+<tr>
+<th>اسم الخاصية (الحقل)</th>
+<th>تعريف البيانات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EMP_NUM</td>
+<td>CHAR(3)</td>
+</tr>
+<tr>
+<td>EMP_LNAME</td>
+<td>VARCHAR(15)</td>
+</tr>
+<tr>
+<td>EMP_FNAME</td>
+<td>VARCHAR(15)</td>
+</tr>
+<tr>
+<td>EMP_INITIAL</td>
+<td>CHAR(1)</td>
+</tr>
+<tr>
+<td>EMP_HIREDATE</td>
+<td>DATE</td>
+</tr>
+<tr>
+<td>JOB_CODE</td>
+<td>CHAR(3)</td>
+</tr>
+</tbody>
+</table>
+<p>بعد إنشاء بنية الجدول في السؤال 2، اكتب شيفرة SQL لإدخال الصفوف في الجدول الموضَّح في الشكل 15.1.</p>
+<p><img src="/images/db-design/chapter-sql-1-Ch15_Exercise_Fig15.1.webp" alt="صورة توضيحية من الكتاب: Ch15 Exercise Fig15.1"></p>
+<p>استخدم الشكل 15.2 للإجابة عن الأسئلة من 4 إلى 10. اكتب شيفرة SQL لتغيير رمز الوظيفة (job code) إلى 501 للموظف الذي رقمه الوظيفي (personnel number) هو 107. وبعد إتمام المهمة، افحص النتائج، ثم أعِد رمز الوظيفة إلى قيمته الأصلية. وبافتراض أن البيانات المبيَّنة في جدول Employee قد أُدخلت، اكتب شيفرة SQL التي تسرد جميع الخصائص لرمز وظيفة قدره 502. اكتب شيفرة SQL لحذف صف الشخص المعروف باسم William Smithfield، الذي توظّف في 22 يونيو 2004، والذي تصنيف رمز وظيفته هو 500. (تلميح: استخدم المعاملات المنطقية (logical operators) لتضمّن كل المعطيات الواردة في هذه المسألة.) أضف الخاصيتين EMP_PCT وPROJ_NUM إلى جدول Employee. وتُعدّ EMP_PCT نسبة المكافأة التي تُدفع لكل موظف. باستخدام أمر واحد، اكتب شيفرة SQL التي تُدخل رقم المشروع (PROJ_NUM) = 18 لكل الموظفين الذين تصنيف وظيفتهم (JOB_CODE) هو 500. باستخدام أمر واحد، اكتب شيفرة SQL التي تُدخل رقم المشروع (PROJ_NUM) = 25 لكل الموظفين الذين تصنيف وظيفتهم (JOB_CODE) هو 502 أو أعلى. اكتب شيفرة SQL التي تغيّر قيمة PROJ_NUM إلى 14 لهؤلاء الموظفين الذين توظّفوا قبل 1 يناير 1994، والذين رمز وظيفتهم 501 على الأقل. (يمكنك افتراض أن الجدول سيُعاد إلى حالته الأصلية السابقة لهذا السؤال.) وانظر أيضًا الملحق C: مختبر SQL مع الحل</p>
+<h2 id="المراجع">المراجع</h2>
+<p>Date, C.J. Relational Database Selected Writings. Reading: Mass: Addison-Wesley Publishing Company Inc., 1986, p. 269-311.</p>
+`,o={book:s,chapter:n,chapterTitle:a,slug:e,title:l,headings:p,html:r};export{s as book,n as chapter,a as chapterTitle,o as default,p as headings,r as html,e as slug,l as title};
