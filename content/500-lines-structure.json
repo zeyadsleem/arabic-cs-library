@@ -1,0 +1,280 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "blockcode",
+      "title": "Blockcode: A visual programming toolkit",
+      "titleAr": "Blockcode: A visual programming toolkit",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Blockcode: A visual programming toolkit",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "ci",
+      "title": "A Continuous Integration System",
+      "titleAr": "A Continuous Integration System",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Continuous Integration System",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "cluster",
+      "title": "Clustering by Consensus",
+      "titleAr": "Clustering by Consensus",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Clustering by Consensus",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "contingent",
+      "title": "Contingent: A Fully Dynamic Build System",
+      "titleAr": "Contingent: A Fully Dynamic Build System",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Contingent: A Fully Dynamic Build System",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "crawler",
+      "title": "A Web Crawler With asyncio Coroutines",
+      "titleAr": "A Web Crawler With asyncio Coroutines",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Web Crawler With asyncio Coroutines",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "dagoba",
+      "title": "Dagoba: an in-memory graph database",
+      "titleAr": "Dagoba: an in-memory graph database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dagoba: an in-memory graph database",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "data-store",
+      "title": "DBDB: Dog Bed Database",
+      "titleAr": "DBDB: Dog Bed Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "DBDB: Dog Bed Database",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "event-web-framework",
+      "title": "An Event-Driven Web Framework",
+      "titleAr": "An Event-Driven Web Framework",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "An Event-Driven Web Framework",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "flow-shop",
+      "title": "A Flow Shop Scheduler",
+      "titleAr": "A Flow Shop Scheduler",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Flow Shop Scheduler",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "functionalDB",
+      "title": "An Archaeology-Inspired Database",
+      "titleAr": "An Archaeology-Inspired Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "An Archaeology-Inspired Database",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "image-filters",
+      "title": "Making Your Own Image Filters",
+      "titleAr": "Making Your Own Image Filters",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Making Your Own Image Filters",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "interpreter",
+      "title": "A Python Interpreter Written in Python",
+      "titleAr": "A Python Interpreter Written in Python",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Python Interpreter Written in Python",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "modeller",
+      "title": "A 3D Modeller",
+      "titleAr": "A 3D Modeller",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A 3D Modeller",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "objmodel",
+      "title": "A Simple Object Model",
+      "titleAr": "A Simple Object Model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Simple Object Model",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "ocr",
+      "title": "Optical Character Recognition (OCR)",
+      "titleAr": "Optical Character Recognition (OCR)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optical Character Recognition (OCR)",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "pedometer",
+      "title": "A Pedometer in the Real World",
+      "titleAr": "A Pedometer in the Real World",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Pedometer in the Real World",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "same-origin-policy",
+      "title": "The Same-Origin Policy",
+      "titleAr": "The Same-Origin Policy",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Same-Origin Policy",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "sampler",
+      "title": "A Rejection Sampler",
+      "titleAr": "A Rejection Sampler",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Rejection Sampler",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "spreadsheet",
+      "title": "Web Spreadsheet",
+      "titleAr": "Web Spreadsheet",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Web Spreadsheet",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "static-analysis",
+      "title": "Static Analysis",
+      "titleAr": "Static Analysis",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Static Analysis",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "template-engine",
+      "title": "A Template Engine",
+      "titleAr": "A Template Engine",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Template Engine",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "web-server",
+      "title": "A Simple Web Server",
+      "titleAr": "A Simple Web Server",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Simple Web Server",
+          "order": 22
+        }
+      ]
+    }
+  ]
+}
