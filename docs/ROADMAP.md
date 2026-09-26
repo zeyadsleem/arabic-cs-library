@@ -7,7 +7,7 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 مترجم بالكامل داخل المكتبة: **8 كتب / 268 صفحة**
-`Hello Algo` (117) · `Missing Semester` (13) · `patterns.dev` (53) · `500 Lines` (23) ·
+`Hello Algo` (117) · `patterns.dev` (53) · `500 Lines` (23) · `Database Design` (19) · `Missing Semester` (13) ·
 `Eloquent JavaScript` (22) · `Full Stack open` (68) · `Go by Example` (84 مثالاً) ·
 `Learn Go with Tests` · `Go 101` (136 مقالاً).
 
@@ -116,7 +116,7 @@
 | --- | --- | --- | --- | --- |
 | 1 | AHA Stack (ahastack.dev) | كشط HTML | 25 صفحة | في الطابور |
 | 2 | 500 Lines or Less | Markdown على GitHub | 22 فصلاً | ✅ مترجم (23 فصلاً) |
-| 3 | Database Design 2e | Pressbooks XHTML | 16 فصلاً | في الطابور |
+| 3 | Database Design 2e | Pressbooks (عبر archive.org) | 16 فصلاً + 3 ملاحق | ✅ مترجم |
 | 4 | Discrete Math (Levin) | PreTeXt + 306 SVG | 7 فصول | في الطابور |
 | 5 | SICP | HTML (38 صفحة) | 5 فصول | في الطابور |
 | 6 | Nand2Tetris I + II | صفحات المشاريع + PDF | 12 مشروعاً | في الطابور |

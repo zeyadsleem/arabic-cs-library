@@ -429,14 +429,14 @@
       "title": "تصميم قواعد البيانات — الطبعة الثانية",
       "titleEn": "Database Design — 2nd Edition",
       "author": "Adrienne Watt & Nelson Eng",
-      "description": "النموذج العلائقي، ونمذجة الكيانات والعلاقات، والتطبيع، والمفاتيح، والقيود، وSQL، وتمارين تصميم — 16 فصلاً مع مختبر SQL وحلول.",
+      "description": "النموذج العلائقي، ونمذجة الكيانات والعلاقات، والتطبيع، والمفاتيح، والقيود، وSQL — 16 فصلاً مع ثلاثة ملاحق (منها مختبر SQL كامل مع الحلول) وتمارين تصميم.",
       "sourceUrl": "https://opentextbc.ca/dbdesign01/",
       "license": "CC BY 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
       "languages": [
         "SQL"
       ],
-      "status": "planned",
+      "status": "translated",
       "stage": "databases",
       "order": 1,
       "format": "html",

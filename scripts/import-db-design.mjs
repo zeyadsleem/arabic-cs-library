@@ -11,6 +11,8 @@ const contentDir = path.join(root, 'content');
 const sourceDir = path.join(root, 'content-src', 'db-design');
 const imageDir = path.join(root, 'static', 'images', 'db-design');
 const origin = 'https://opentextbc.ca';
+const stamp = '2024';
+const fetchUrl = (path) => `https://web.archive.org/web/${stamp}id_/${origin}${path}`;
 
 const pages = [
   { slug: 'chapter-1', path: '/dbdesign01/chapter/chapter-1-before-the-advent-of-database-systems/', title: 'Before the Advent of Database Systems' },
@@ -29,17 +31,17 @@ const pages = [
   { slug: 'chapter-14', path: '/dbdesign01/chapter/chapter-14-database-users/', title: 'Database Users' },
   { slug: 'chapter-sql', path: '/dbdesign01/chapter/sql-structured-query-language/', title: 'Structured Query Language' },
   { slug: 'chapter-sql-dml', path: '/dbdesign01/chapter/chapter-sql-dml/', title: 'SQL Data Manipulation' },
-  { slug: 'appendix-a', path: '/dbdesign01/backmatter/appendix-a/', title: 'Appendix A: The relational model' },
-  { slug: 'appendix-b', path: '/dbdesign01/backmatter/appendix-b/', title: 'Appendix B: ERD exercises' },
-  { slug: 'appendix-c', path: '/dbdesign01/backmatter/appendix-c/', title: 'Appendix C: SQL lab' },
+  { slug: 'appendix-a', path: '/dbdesign01/back-matter/appendix-a-university-registration-data-model-example/', title: 'Appendix A: A university registration data model' },
+  { slug: 'appendix-b', path: '/dbdesign01/back-matter/appendix-b-erd-exercises/', title: 'Appendix B: ERD exercises' },
+  { slug: 'appendix-d', path: '/dbdesign01/back-matter/appendix-d-sql-lab-with-solution/', title: 'Appendix D: SQL lab with solutions' },
 ];
 
-const get = async (url, attempts = 4) => {
+const get = async (url, attempts = 7) => {
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
       const body = execFileSync(
         'curl',
-        ['-sL', '--compressed', '-m', '60', '-w', '\n%{http_code}', url],
+        ['-sL', '--compressed', '-m', '90', '-w', '\n%{http_code}', url],
         { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }
       );
       const split = body.lastIndexOf('\n');
@@ -50,7 +52,7 @@ const get = async (url, attempts = 4) => {
     } catch (error) {
       if (attempt === attempts) throw error;
     }
-    await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+    await new Promise((resolve) => setTimeout(resolve, attempt * 3000));
   }
   throw new Error(`تعذّر التحميل: ${url}`);
 };
@@ -116,83 +118,150 @@ const toTable = (html) => {
 
 const convert = (html, images) => {
   const codeBlocks = [];
-  const rest0 = html.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/g, (_, code) => {
-    const text = decode(
-      code
-        .replace(/<[^>]+>/g, '')
-        .replace(/&amp;/g, '&')
-        .replace(/^\n+/, '')
-        .replace(/\s+$/, '')
-    );
-    codeBlocks.push(text);
-    return ` CODE${codeBlocks.length - 1}END `;
-  });
+  const textboxes = [];
+  const pattern =
+    /<(h[1-6]|p|ul|ol|blockquote|table|figure|pre)[^>]*>([\s\S]*?)<\/\1>|<hr\s*\/?>|<br\s*\/?>/g;
 
-  const rest = rest0.replace(
-    / IMAGE(\d+)END /g,
-    (match, index) => ` ![${images[Number(index)]?.alt || ''}](${images[Number(index)]?.local || ''}) `
+  const withTextboxes = html.replace(
+    /<div class="textbox[^"]*"[^>]*>([\s\S]*?)<\/div>/g,
+    (match, inner) => {
+      const code = decode(
+        inner
+          .replace(/<br\s*\/?>/g, '\n')
+          .replace(/<\/p>/g, '\n')
+          .replace(/<[^>]+>/g, '')
+          .replace(/\u00a0/g, ' ')
+          .replace(/\n{3,}/g, '\n\n')
+          .replace(/^\n+|\n+$/g, '')
+      );
+      return ` TEXTBOX${textboxes.push(code) - 1}END `;
+    }
   );
 
-  const chunks = [];
-  const segments = rest.split(/( CODE\d+END )/);
-  const pattern =
-    /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)[^>]*>([\s\S]*?)<\/\1>|<hr\s*\/?>/g;
+  const withImages = withTextboxes.replace(/ IMAGE(\d+)END /g, (token, index) => {
+    const image = images[Number(index)];
+    return image ? ` ![${image.alt}](${image.local}) ` : '';
+  });
 
-  for (const [index, segment] of segments.entries()) {
-    if (index % 2 === 1) {
-      chunks.push(`\`\`\`sql\n${codeBlocks[Number(segment.match(/CODE(\d+)END/)[1])]}\n\`\`\``);
+  const withCode = withTextboxes
+    .replace(/ TEXTBOX(\d+)END /g, (match, index) =>
+      ` CODE${codeBlocks.push(textboxes[Number(index)]) - 1}END `
+    )
+    .replace(/TEXTBOX(\d+)END/g, (match, index) =>
+      ` CODE${codeBlocks.push(textboxes[Number(index)]) - 1}END `
+    );
+
+  const flat = withCode
+    .replace(/<\/?(script|style|form|aside|nav|header|footer)[\s\S]*?<\/\1>/g, '')
+    .replace(/<\/?(div|section|article|main|span|sup|sub|strong|em|b|i|em|dl|dt|dd|figcaption|label|button|select|option|span)[^>]*>/g, '');
+
+  const chunks = [];
+  let cursor = 0;
+  let match;
+  while ((match = pattern.exec(flat)) !== null) {
+    if (match[0].includes('TEXTBOX')) {
+      const before = flat
+        .slice(cursor, match.index)
+        .replace(/ IMAGE(\d+)END /g, (token, index) => {
+          const image = images[Number(index)];
+          return image ? ` ![${image.alt}](${image.local}) ` : '';
+        });
+      if (before.trim()) {
+        const value = inline(before);
+        if (value) chunks.push(value);
+      }
+      cursor = match.index + match[0].length;
+      chunks.push(` CODE${codeBlocks.push(textboxes[Number(match[0].match(/TEXTBOX(\d+)END/)[1])]) - 1}END `);
       continue;
     }
-    const pushText = (text) => {
-      const clean = text.replace(/CODE\d+END/g, '').trim();
-      if (clean) chunks.push(inline(clean));
-    };
-    let cursor = 0;
-    let match;
-    while ((match = pattern.exec(segment)) !== null) {
-      pushText(segment.slice(cursor, match.index));
-      cursor = match.index + match[0].length;
-      const tag = match[1];
-      const inner = match[2] || '';
-      if (tag === 'hr') chunks.push('---');
-      else if (/^h[1-6]$/.test(tag)) {
-        const level = Number(tag[1]);
-        chunks.push(`${'#'.repeat(Math.min(level, 4))} ${inline(inner)}`);
-      } else if (tag === 'p') {
-        const value = inline(inner);
-        if (value) chunks.push(value);
-      } else if (tag === 'ul' || tag === 'ol') {
-        const value = list(inner);
-        if (value) chunks.push(value);
-      } else if (tag === 'blockquote') {
-        const value = inner
-          .split(/\n{2,}/)
-          .map((line) => `> ${inline(line)}`)
-          .join('\n> ');
-        if (value) chunks.push(value);
-      } else if (tag === 'table') {
-        const value = toTable(inner);
-        if (value) chunks.push(value);
-      } else if (tag === 'figure') {
-        const caption = inner.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/);
-        if (caption) chunks.push(`*${inline(caption[1])}*`);
-      }
+    const text = flat
+      .slice(cursor, match.index)
+      .replace(/ IMAGE(\d+)END /g, (token, index) => {
+        const image = images[Number(index)];
+        return image ? `\n\n![${image.alt}](${image.local})\n\n` : '';
+      });
+    if (text.trim()) {
+      const value = inline(text);
+      if (value) chunks.push(value);
     }
-    pushText(segment.slice(cursor));
+    cursor = match.index + match[0].length;
+    const tag = match[1];
+    const inner = match[2] || '';
+    if (tag === 'hr') {
+      chunks.push('---');
+    } else if (tag === 'pre') {
+      const code = decode(
+        inner.replace(/<[^>]+>/g, '').replace(/^\n+/, '').replace(/\s+$/, '')
+      );
+      codeBlocks.push(code);
+      chunks.push(` CODE${codeBlocks.length - 1}END `);
+    } else if (/^h[1-6]$/.test(tag)) {
+      const level = Number(tag[1]);
+      chunks.push(`${'#'.repeat(Math.min(level, 4))} ${inline(inner)}`);
+    } else if (tag === 'p') {
+      const value = inline(inner);
+      if (value) chunks.push(value);
+    } else if (tag === 'ul' || tag === 'ol') {
+      const value = list(inner);
+      if (value) chunks.push(value);
+    } else if (tag === 'blockquote') {
+      const value = inner
+        .split(/\n{2,}/)
+        .map((line) => `> ${inline(line)}`)
+        .join('\n> ');
+      if (value) chunks.push(value);
+    } else if (tag === 'table') {
+      const value = toTable(inner);
+      if (value) chunks.push(value);
+    } else if (tag === 'figure') {
+      const imagesInside = [...inner.matchAll(/!\[[^\]]*\]\([^)]+\)/g)].map(
+        (item) => item[0]
+      );
+      const caption = inner.match(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/);
+      const pieces = [
+        ...imagesInside,
+        ...(caption ? [`*${inline(caption[1])}*`] : []),
+      ];
+      const value = pieces.filter(Boolean).join('\n\n');
+      if (value) chunks.push(value);
+    }
   }
-  return chunks.join('\n\n');
+  const tail = flat.slice(cursor)
+    .replace(/ TEXTBOX(\d+)END /g, (match2, index) =>
+      ' CODE' + (codeBlocks.push(textboxes[Number(index)]) - 1) + 'END '
+    )
+    .replace(/ IMAGE(\d+)END /g, (token, index) => {
+    const image = images[Number(index)];
+    return image ? `\n\n![${image.alt}](${image.local})\n\n` : '';
+  });
+  if (tail.trim()) {
+    const value = inline(tail);
+    if (value) chunks.push(value);
+  }
+
+  return chunks.join('\n\n').replace(/CODE(\d+)END/g, (match, index) => {
+    const code = codeBlocks[Number(index)];
+    return code === undefined ? '' : '```sql\n' + code + '\n```';
+  });
 };
 
 const download = (url) =>
-  execFileSync('curl', ['-sL', '--compressed', '-m', '60', url], {
+  execFileSync('curl', ['-sL', '--compressed', '-m', '90', url], {
     maxBuffer: 64 * 1024 * 1024,
+    stdio: ['ignore', 'pipe', 'ignore'],
   });
 
 const saveImage = async (src, name) => {
   const target = path.join(imageDir, `${name}.webp`);
   const local = `/images/db-design/${name}.webp`;
   if (fs.existsSync(target)) return local;
-  const buffer = download(new URL(src, origin).href);
+  let buffer;
+  try {
+    buffer = download(fetchUrl(new URL(src, origin).pathname));
+  } catch (error) {
+    console.warn(`تعذّر تنزيل ${src}: ${error.message}`);
+    return local;
+  }
   const rawPath = path.join(imageDir, `${name}.raw`);
   fs.writeFileSync(rawPath, buffer);
   try {
@@ -217,7 +286,7 @@ const structure = { chapters: [] };
 let images = 0;
 
 for (const page of pages) {
-  const response = await get(`${origin}${page.path}`);
+  const response = await get(fetchUrl(page.path));
   const html = await response.text();
   fs.writeFileSync(path.join(sourceDir, `${page.slug}.html`), html);
 
@@ -234,15 +303,23 @@ for (const page of pages) {
 
   const imageMeta = [];
   article = article.replace(/<img[^>]*>/g, (tag) => {
-    const src = tag.match(/src="([^"]+)"/)?.[1];
+    const src =
+      tag.match(/data-lazy-src="([^"]+)"/)?.[1] ??
+      tag.match(/data-src="([^"]+)"/)?.[1] ??
+      tag.match(/src="([^"]+)"/)?.[1];
     const alt = (tag.match(/alt="([^"]*)"/)?.[1] || '').trim();
-    if (!src) return '';
+    if (!src || src.startsWith('data:')) return '';
     imageMeta.push({ src, alt, local: src });
     return ` IMAGE${imageMeta.length - 1}END `;
   });
 
+  article = article.replace(
+    /<a[^>]*href="[^"]*"[^>]*>\s*( IMAGE\d+END )\s*<\/a>/g,
+    '$1'
+  );
+
   for (const [index, image] of imageMeta.entries()) {
-    if (!image.src.startsWith('/')) continue;
+    if (!/^(https?:)?\/\//.test(image.src) && !image.src.startsWith('/')) continue;
     const name = `${page.slug}-${index}-${path
       .basename(image.src)
       .replace(/[^.\w]/g, '_')
@@ -257,7 +334,12 @@ for (const page of pages) {
     .replace(/Skip to main content[^\n]*\n/g, '')
     .trim();
 
-  const file = path.join(contentDir, 'db-design', `${page.slug}.md`);
+  fs.writeFileSync(
+    path.join(sourceDir, `${page.slug}.md`),
+    `---\ntitle: "${page.title.replace(/"/g, '')}"\nlang: en\n---\n\n${body}\n`
+  );
+
+  const file = path.join(contentDir, 'db-design', `${page.slug}--index.md`);
   const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
   if (!/lang: ar/.test(existing)) {
     fs.writeFileSync(

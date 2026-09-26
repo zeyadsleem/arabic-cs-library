@@ -1,0 +1,232 @@
+{
+  "chapters": [
+    {
+      "key": "chapter-1",
+      "title": "Before the Advent of Database Systems",
+      "titleAr": "Before the Advent of Database Systems",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Before the Advent of Database Systems",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "chapter-2",
+      "title": "Fundamental Concepts",
+      "titleAr": "Fundamental Concepts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Fundamental Concepts",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "chapter-3",
+      "title": "Characteristics and Benefits of a Database",
+      "titleAr": "Characteristics and Benefits of a Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Characteristics and Benefits of a Database",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "chapter-4",
+      "title": "Types of Database Models",
+      "titleAr": "Types of Database Models",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Types of Database Models",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "chapter-5",
+      "title": "Data Modelling",
+      "titleAr": "Data Modelling",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data Modelling",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "chapter-6",
+      "title": "Classification of Database Systems",
+      "titleAr": "Classification of Database Systems",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Classification of Database Systems",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "chapter-7",
+      "title": "The Relational Data Model",
+      "titleAr": "The Relational Data Model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Relational Data Model",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "chapter-8",
+      "title": "Entity Relationship Model",
+      "titleAr": "Entity Relationship Model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Entity Relationship Model",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "chapter-9",
+      "title": "Integrity Rules and Constraints",
+      "titleAr": "Integrity Rules and Constraints",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Integrity Rules and Constraints",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "chapter-10",
+      "title": "ER Modelling",
+      "titleAr": "ER Modelling",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "ER Modelling",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "chapter-11",
+      "title": "Functional Dependencies",
+      "titleAr": "Functional Dependencies",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Functional Dependencies",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "chapter-12",
+      "title": "Normalization",
+      "titleAr": "Normalization",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Normalization",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "chapter-13",
+      "title": "The Database Development Process",
+      "titleAr": "The Database Development Process",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Database Development Process",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "chapter-14",
+      "title": "Database Users",
+      "titleAr": "Database Users",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Database Users",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "chapter-sql",
+      "title": "Structured Query Language",
+      "titleAr": "Structured Query Language",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Structured Query Language",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "chapter-sql-dml",
+      "title": "SQL Data Manipulation",
+      "titleAr": "SQL Data Manipulation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Data Manipulation",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "appendix-a",
+      "title": "Appendix A: A university registration data model",
+      "titleAr": "Appendix A: A university registration data model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix A: A university registration data model",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "appendix-b",
+      "title": "Appendix B: ERD exercises",
+      "titleAr": "Appendix B: ERD exercises",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix B: ERD exercises",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "appendix-d",
+      "title": "Appendix D: SQL lab with solutions",
+      "titleAr": "Appendix D: SQL lab with solutions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix D: SQL lab with solutions",
+          "order": 18
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const contentDir = path.join(root, 'content', 'db-design');
+
+const altByFile = {
+  'chapter-9-0-Access_Referential_Integrity_Window_300x212.webp': 'لقطة لنافذة Edit Relationships في MS Access',
+  'chapter-9-1-Connectivity_and_Cardinality_300x202.webp': 'الاتصال والتعددية بين الكيانات',
+  'chapter-9-2-Ch_9_oneToMany_1.webp': 'علاقة واحد إلى متعدد (1)',
+  'chapter-9-3-Ch_9_oneToMany_2.webp': 'علاقة واحد إلى متعدد (2)',
+  'chapter-9-4-Ch_9_Identifying_and_Non_Identifying_relationship_300x298.webp': 'الشكل 9.5: علاقة مُعرِّفة وغير مُعرِّفة',
+  'chapter-9-5-Ch_9_Zero_or_Many_1.webp': 'تعددية «صفر أو متعدد» (1)',
+  'chapter-9-6-Cardinality_Optional_0_or_more_300x189.webp': 'تعددية اختيارية: صفر أو أكثر',
+  'chapter-9-7-Ch_9_Optional_Arrow_2.webp': 'سهم التدقيق في العلاقة الاختيارية (2)',
+  'chapter-9-8-Cardinality_Optional_0_or_1_300x188.webp': 'تعددية اختيارية: صفر أو واحد',
+  'chapter-9-9-Ch_9_oneToOne_1.webp': 'علاقة واحد إلى واحد (1)',
+  'chapter-9-10-Ch_9_Mandatory_Cardinality_one_to_one_300x188.webp': 'تعددية إلزامية واحد إلى واحد',
+  'chapter-9-11-Ch_9_oneToMany_3.webp': 'علاقة واحد إلى متعدد (3)',
+  'chapter-9-12-Ch_9_Mandatory_Cardinality_one_to_Many_300x188.webp': 'تعددية إلزامية واحد إلى متعدد',
+  'chapter-9-14-Ch_9_Zero_or_Many_2.webp': 'تعددية «صفر أو متعدد» (2)',
+  'chapter-9-15-Ch_9_Cust_to_Order_ERD_300x168.webp': 'مخطط الكيانات والعلاقات بين العميل والطلب',
+  'chapter-9-16-SwimClubDatabase.webp': 'مخطط قاعدة بيانات نادي السباحة',
+  'appendix-a-0-Ch_14_University_Example_ERD_300x189.webp': 'مخطط الكيانات والعلاقات لنموذج تسجيل الجامعة',
+  'appendix-a-1-Ch_14_Student_one_to_Many_Enrollment_300x145.webp': 'علاقة طالب إلى تسجيلات متعددة',
+  'appendix-a-2-Ch_14_Staff_to_Student_300x174.webp': 'علاقة عضو هيئة التدريس إلى الطالب',
+  'appendix-a-3-Ch_14_Staff_to_Course_300x172.webp': 'علاقة عضو هيئة التدريس إلى المقرر',
+  'appendix-a-4-Ch_14_Course_to_Enrollment_300x138.webp': 'علاقة المقرر إلى التسجيل',
+  'appendix-a-5-Ch_14_Enrollment_to_Assignment_300x118.webp': 'علاقة التسجيل إلى الواجب',
+  'chapter-4-0-Network_data_model_300x244.webp': 'مخطط النموذج الشبكي: مربعات وأسهم متقاطعة تصل بينها',
+  'chapter-4-1-Hierarchical_Data_Model_300x116.webp': 'مخطط النموذج الهرمي بعناوين مترابطة بخطوط',
+  'chapter-2-0-RDBMS_300x2091.webp': 'مخطط يوضّح استخدام نظام إدارة قواعد البيانات العلائقية في المؤسسات',
+  'chapter-2-1-MemFormAug2014.webp': 'لقطة لنموذج عضوية إلكترونية، وتحته جدول بأسماء وباركودات',
+  'chapter-2-2-Banking_Systems_RDBMS_300x1951.webp': 'ثلاثة مخططات: مستخدمون في فرع، ونظام مركزي، وموظف فرع يتصل بالمركز',
+  'chapter-5-0-Data_Abstraction_300x226.webp': 'ثلاثة مستويات تجريد البيانات: المستخدمون النهائيون، والتطبيقات، وإدارة البيانات',
+  'chapter-6-0-Centralized_Systems_300x174.webp': 'مخطط أنظمة مركزية: حاسوب مركزي كبير وأربعة محطات عمل',
+};
+
+let changed = 0;
+let replaced = 0;
+
+for (const file of fs.readdirSync(contentDir).filter((name) => name.endsWith('.md'))) {
+  const target = path.join(contentDir, file);
+  const raw = fs.readFileSync(target, 'utf8');
+  const next = raw.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+    const name = path.basename(src);
+    const arabic = altByFile[name];
+    if (arabic) {
+      replaced += 1;
+      return `![${arabic}](${src})`;
+    }
+    if (/[\u0600-\u06FF]/.test(alt)) return match;
+    replaced += 1;
+    return `![صورة توضيحية من الكتاب: ${alt}](${src})`;
+  });
+  if (next !== raw) {
+    fs.writeFileSync(target, next);
+    changed += 1;
+  }
+}
+
+fs.writeFileSync(
+  path.join(root, 'content-src', 'db-design', 'image-alt-ar.json'),
+  JSON.stringify(altByFile, null, 2)
+);
+
+console.log(`files changed: ${changed}, alt texts localized: ${replaced}`);
