@@ -1,0 +1,731 @@
+const s="500-lines",a="event-web-framework",n="An Event-Driven Web Framework",e="index",l="إطار عمل ويب قائم على الأحداث",p=[{depth:2,id:"أساسيات-خوادم-http",text:"أساسيات خوادم HTTP"},{depth:3,id:"cometالاستطلاع-الطويل",text:"Comet/الاستطلاع الطويل"},{depth:3,id:"الأحداث-المرسلة-من-الخادم-sse",text:"الأحداث المُرسَلة من الخادم (SSE)"},{depth:3,id:"websockets",text:"WebSockets"},{depth:3,id:"الاتصالات-طويلة-العمر",text:"الاتصالات طويلة العمر"},{depth:3,id:"بنية-خادم-http-التقليدية",text:"بنية خادم HTTP التقليدية"},{depth:3,id:"القرارات-المعمارية",text:"القرارات المعمارية"},{depth:2,id:"بناء-خادم-ويب-قائم-على-الأحداث",text:"بناء خادم ويب قائم على الأحداث"},{depth:3,id:"حلقة-الأحداث",text:"حلقة الأحداث"},{depth:3,id:"clos-والدوال-العامة",text:"CLOS والدوال العامة"},{depth:3,id:"معالجة-المقابس",text:"معالجة المقابس"},{depth:3,id:"معالجة-الاتصالات-دون-حجب",text:"معالجة الاتصالات دون حجب"},{depth:3,id:"تفسير-الطلبات",text:"تفسير الطلبات"},{depth:3,id:"عرض-الاستجابات",text:"عرض الاستجابات"},{depth:3,id:"استجابات-الأخطاء",text:"استجابات الأخطاء"},{depth:2,id:"توسيع-الخادم-ليصبح-إطار-عمل-ويب",text:"توسيع الخادم ليصبح إطار عمل ويب"},{depth:3,id:"لغة-dsl-للمعالجات",text:"لغة DSL للمعالِجات"},{depth:3,id:"توسيع-معالج",text:"توسيع معالِج"},{depth:3,id:"أنواع-http",text:"«أنواع» HTTP"},{depth:3,id:"كل-شيء-معا-الآن",text:"كل شيء معًا الآن"}],c=`<p><em>Leo (المعروف أكثر على الإنترنت باسم inaimathi) هو مصمم جرافيك سابق يحكم على نفسه بأنه يواصل التعلّم، وقد كتب مهنياً بلغات Scheme وCommon Lisp وErlang وJavascript وHaskell وClojure وGo وPython وPHP وC. وهو حالياً يكتب مدونة عن البرمجة، ويلعب ألعاب اللوح، ويعمل في شركة ناشئة قائمة على Ruby في تورونتو، أونتاريو.</em></p>
+<p>في عام 2013، قرّرت أن أكتب <a href="https://github.com/Inaimathi/deal">أداة أولية لنمذجة الألعاب عبر الويب</a> لألعاب البطاقات وألعاب اللوح، وسمّيتها <em>House</em>. في هذا النوع من الألعاب، من الشائع أن ينتظر لاعبٌ آخرَ لاعباً ليقوم بخطوة؛ غير أن حين يتخذ اللاعب الآخر قراره في النهاية، نودّ لو أُبلغ اللاعب المنتظر بتلك الخطوة بسرعة تالية.</p>
+<p>تبيّن أن هذه المشكلة أعقد مما تبدو للوهلة الأولى. في هذا الفصل، سنستعرض المشكلات التي تنشأ عن استخدام HTTP لبناء هذا النوع من التفاعل، ثم سنبني <em>إطار عمل ويب</em> (web framework) بلغة Common Lisp يتيح لنا حل مشكلات مماثلة في المستقبل.</p>
+<h2 id="أساسيات-خوادم-http">أساسيات خوادم HTTP</h2>
+<p>في أبسط مستوياته، يتمثّل التبادل عبر HTTP من طلب (request) واحد يليه استجابة (response) واحدة. يُرسل <em>عميل</em> (client) طلباً يتضمن مُعرِّف مورد، ووسم إصدار HTTP، وبعض الترويسات (headers)، وبعض المعاملات (parameters). يحلّل <em>الخادم</em> (server) ذلك الطلب، ويقرّر ما العمل حياله، ثم يرسل استجابة تتضمن وسم إصدار HTTP نفسه، وشيفرة استجابة، وبعض الترويسات، وجسم استجابة.</p>
+<p>لاحظ أن هذا الوصف يجعل الخادم يستجيب لطلب وارد من عميل محدد. أما في حالتنا فنحن نريد لكل لاعب أن يُحدَّث بـ_أي_ خطوات بمجرد حدوثها، لا أن يتلقى إشعارات فقط حين تكون حركته هي التي قُدِّمت. وهذا يعني أننا نحتاج إلى أن <em>يدفع</em> (push) الخادم الرسائل إلى العملاء دون أن يتلقى أولاً طلباً يطلب هذه المعلومات.[^polling]</p>
+<p>[^polling]: أحد الحلول لهذه المشكلة هو إجبار العملاء على <em>الاستطلاع</em> (polling) للخادم. أي أن كل عميل يرسل إلى الخادم طلباً دورياً يسأله فيه هل تغيّر شيء. هذا قد ينجح مع التطبيقات البسيطة، لكن في هذا الفصل سنركّز على الحلول المتاحة أمامك عندما يتوقف هذا النموذج عن العمل.</p>
+<p>هناك عدة مقاربات قياسية لتفعيل الدفع من الخادم (server push) عبر HTTP.</p>
+<h3 id="cometالاستطلاع-الطويل">Comet/الاستطلاع الطويل</h3>
+<p>تقنية «الاستطلاع الطويل» (long poll) تجعل العميل يرسل إلى الخادم طلباً جديداً بمجرد أن يتلقى استجابة. وبدلاً من الوفاء بذلك الطلب فوراً، ينتظر الخادم حدوثَ حدثٍ لاحق كي يستجيب. وهذا فرقٌ دقيق في المعنى، لأن العميل يظل يبدأ طلبًا جديدًا مع كل تحديث.</p>
+<h3 id="الأحداث-المرسلة-من-الخادم-sse">الأحداث المُرسَلة من الخادم (SSE)</h3>
+<p>تتطلب الأحداث المُرسَلة من الخادم (Server-Sent Events) أن يبدأ العميل اتصالاً ثم يبقيه مفتوحاً. ويكتب الخادم بيانات جديدة دورياً في هذا الاتصال دون إغلاقه، ويفسّر العميل الرسائل الواردة الجديدة فور وصولها بدلاً من انتظار انتهاء اتصال الاستجابة. وهذا أكثر كفاءة قليلاً من مقاربة Comet/الاستطلاع الطويل، لأن كل رسالة لا تتحمّل عبء ترويسات HTTP جديدة.</p>
+<h3 id="websockets">WebSockets</h3>
+<p>WebSockets بروتوكول اتصالات مبني فوق HTTP. يفتح الخادم والعميل محادثة عبر HTTP، ثم يُجريان مصافحة (handshake) ويجريان ترقية البروتوكول. والنتيجة النهائية أنهما لا يزالان يتواصلان عبر TCP/IP، لكنهما لا يستخدمان HTTP في ذلك على الإطلاق. وميزة هذا الأمر على SSE هي إمكانية تخصيص البروتوكول لأجل الكفاءة.</p>
+<h3 id="الاتصالات-طويلة-العمر">الاتصالات طويلة العمر</h3>
+<p>هذه المقاربات الثلاث تختلف كثيراً عن بعضها، لكنها تشترك جميعها في صفة مهمة: فهي جميعها تعتمد على اتصالات طويلة العمر. فالاستطلاع الطويل يعتمد على إبقاء الخادم الطلبات عالقة حتى تتوفر بيانات جديدة، وSSE يبقي تدفقاً مفتوحاً بين العميل والخادم تُكتب فيه البيانات دورياً، وWebSockets تغيّر البروتوكول الذي تستخدمه إمكانية بعينها ثم تتركها مفتوحة.</p>
+<p>ولكي نرى لماذا قد يسبب هذا مشكلات لخادم HTTP عادي، لننظر في كيفية عمل التنفيذ الأساسي.</p>
+<h3 id="بنية-خادم-http-التقليدية">بنية خادم HTTP التقليدية</h3>
+<p>\\label{sec.eventsweb.serverarch}</p>
+<p>يعالج خادم HTTP واحد طلبات كثيرة على التوازي. وتاريخياً، استخدمت خوادم HTTP كثيرة بنية <em>خيط لكل طلب</em> (thread-per-request). أي أن الخادم، لكل طلب وارد، ينشئ خيطاً (thread) يقوم بالعمل اللازم للردّ.</p>
+<p>ولأن كل واحد من هذه الاتصالات مقصود به أن يكون قصير العمر، فلا نحتاج إلى خيوط كثيرة تعمل على التوازي للتعامل معها جميعاً. كما أن هذا النموذج يُبسّط <em>التنفيذ</em> (implementation) للخادم، إذ يتيح لمبرمج الخادم أن يكتب الشيفرة وكأنه يعالج اتصالاً واحداً فقط في كل لحظة. وهو أيضاً يمنحنا حرية التنظيف من الاتصالات الفاشلة أو «الزومبية» ومواردها المرتبطة، بقتل الخيط المقابل وترك جامع القمامة يؤدي عمله.</p>
+<p>الملاحظة الجوهرية هي أن خادم HTTP الذي يستضيف تطبيق ويب «تقليدياً» لديه $N$ مستخدم متزامن قد لا يحتاج سوى معالجة نسبة صغيرة جداً من طلبات $N$ <em>على التوازي</em> كي ينجح. أما نوع التطبيق التفاعلي الذي نحاول بناءه، فإن $N$ من المستخدمين ستتطلب بالتأكيد أن يحافظ التطبيق على $N$ اتصال على الأقل على التوازي، في وقت واحد.</p>
+<p>النتيجة للإبقاء على الاتصالات طويلة العمر هي أننا سنحتاج إما إلى:</p>
+<ul>
+<li>منصة تكون فيها الخيوط «رخيصة» بما يكفي ل يمكننا استخدام أعداد كبيرة منها في وقت واحد.</li>
+<li>بنية خادم قادرة على معالجة اتصالات كثيرة بخيط واحد.</li>
+</ul>
+<p>هناك بيئات برمجية مثل <a href="http://racket-lang.org/">Racket</a> و<a href="http://www.erlang.org/">Erlang</a> و<a href="http://hackage.haskell.org/package/base-4.7.0.1/docs/Control-Concurrent.html">Haskell</a> توفّر بِنَى شبيهة بالخيوط «خفيفة» بما يكفي للنظر في الخيار الأول. ويتطلب هذا الأسلوب من المبرمج أن يتعامل صراحةً مع مشكلات التزامن (synchronization)، التي ستكون أكثر انتشاراً بكثير في نظام تبقى فيه الاتصالات مفتوحة وقتاً طويلاً ويحتمل أن يتنافس فيها الجميع على موارد متشابهة. وتحديداً، إذا كان لدينا نوع من البيانات المركزية تتشاركها عدة مستخدمين في وقت واحد، فسنحتاج إلى تنسيق عمليات القراءة والكتابة على تلك البيانات بطريقة ما.</p>
+<p>وإن لم تكن الخيوط الرخيصة متاحة لنا، أو كنا غير مستعدين للعمل مع التزامن الصريح، فعلينا أن نضع في الحسبان أن يتولى خيط واحد معالجة اتصالات كثيرة.[^mn] وفي هذا النموذج، سيكون خيطنا الفردي يتعامل في الوقت نفسه مع «شذرات» (slices) دقيقة من طلبات كثيرة، مبدّلاً بينها بأكبر قدر ممكن من الكفاءة. ويُشار إلى نمط بنية النظام هذا عادةً بأنه <em>قائم على الأحداث</em> (event-driven) أو <em>مبني على الأحداث</em> (event-based).[^eventbased]</p>
+<p>[^mn]: يمكننا أن نضع في الحسبان نظاماً أكثر عمومية يتعامل مع $N$ مستخدماً متزامناً باستخدام $M$ خيطاً بالنسبة لقيمة $M$ قابلة للتهيئة؛ في هذا النموذج، يُقال إن اتصالات $N$ مُوزَّعة تعددياً (multiplexed) على الخيوط $M$. وفي هذا الفصل، سنركّز على كتابة برنامج تكون فيه $M$ ثابتة عند 1؛ غير أن الدروس المستفادة هنا قد تنطبق جزئياً على النموذج الأكثر عمومية.</p>
+<p>[^eventbased]: هذه التسمية مربكة بعض الشيء، ومصدرها أبحاث أنظمة التشغيل المبكرة. فهي تشير إلى كيفية إتمام الاتصال بين العمليات المتزامنة المتعددة. وفي نظام قائم على الخيوط، يتم الاتصال عبر مورد مُزامن مثل الذاكرة المشتركة. أما في نظام قائم على الأحداث، فتتواصل العمليات عموماً عبر طابور (queue) تنشر فيه عناصر تصف ما فعلته أو ما تريد فعله، وهو ما يتولى صيانته خيط التنفيذ الفردي لدينا. وبما أن هذه العناصر تصف عموماً إجراءات مطلوبة أو سابقة،فيُشار إليها بـ«الأحداث» (events).</p>
+<p>وبما أننا لا ندير سوى خيط واحد، فلا نحتاج إلى القدر نفسه من القلق بشأن حماية الموارد المشتركة من الوصول المتزامن. غير أن لدينا مشكلة فريدة خاصة بنا في هذا النموذج. وبما أن خيطنا الفردي يعمل على جميع الطلبات الجاري تنفيذها في وقت واحد، فيجب أن نتأكد من أنه <strong>لا يحجب أبداً</strong> (never blocks). فالحجب على أي اتصال يحجب الخادم بأكمله عن إحراز التقدم في أي طلب آخر. علينا أن نكون قادرين على الانتقال إلى عميل آخر إذا تعذّرت خدمة الحالي، وأن نكون قادرين على ذلك بطريقة لا تُهدِر العمل الذي أُنجز حتى الآن.[^crawler]</p>
+<p>[^crawler]: انظر \\aosachapref{s:crawler} لمقاربة أخرى لهذه المشكلة.</p>
+<p>ورغم أنه من غير المعتاد أن يطلب مبرمج من خيط صراحةً أن يتوقف عن العمل، فإن كثيراً من العمليات الشائعة تحمل خطر الحجب. ولأن الخيوط منتشرة إلى هذا الحد، ولأن التفكير في اللاتزامنية عبء ثقيل على المبرمج، تفترض كثير من اللغات وأطرها أن الحجب على الإدخال/الإخراج (I/O) صفة مرغوبة. وهذا يجعل من السهل جداً أن تحجب في مكان ما <em>عرضاً</em>. لحسن الحظ، توفّر لنا Common Lisp مجموعة دنيا من أوّليات الإدخال/الإخراج اللاتزامني (asynchronous I/O) التي يمكننا البناء فوقها.</p>
+<h3 id="القرارات-المعمارية">القرارات المعمارية</h3>
+<p>الآن وقد درسنا خلفية هذه المشكلة، وصلنا إلى النقطة التي يجب أن نتخذ عندها قرارات مبنية على المعرفة بشأن <em>ماذا</em> نبني.</p>
+<p>في الوقت الذي بدأت فيه التفكير في هذا المشروع، لم تكن Common Lisp تملك تنفيذاً كاملاً لـgreen-thread، كما أن <a href="http://common-lisp.net/project/bordeaux-threads/">مكتبة الخيوط القياسية القابلة للنقل</a> لا تستوفي شرط «really REALLY cheap» أي الرخيصة حقًا. وانحصر الخياران في إما اختيار لغة أخرى، أو بناء خادم ويب قائم على الأحداث لغرضي. وقد اخترت الثاني.</p>
+<p>إلى جانب بنية الخادم، نحتاج أيضاً إلى اختيار أيّ من مقاربات الدفع من الخادم الثلاث نستخدم. إن حالة الاستخدام التي نفكر فيها (لعبة لوح جماعية تفاعلية) تتطلب تحديثات متكررة لكل عميل، لكن طلبات <em>صادرة</em> عن كل عميل ومتباعدة نسبياً، وهذا يناسب مقاربة SSE في دفع التحديثات، لذا سنعتمد عليها.</p>
+<p>الآن وقد بررنا قرارنا المعماري وقررنا آلية لمحاكاة الاتصال ثنائي الاتجاه بين العملاء والخادم، فلنبدأ في بناء إطار عمل الويب. سنبدأ أولًا ببناء خادم «غبي» نسبيًا، ثم نوسّعه ليصبح إطار عمل لتطبيقات الويب يتيح لنا التركيز على <em>ماذا</em> يحتاج برنامجنا شديد التفاعل أن يفعله، لا على <em>كيف</em> يقوم بذلك.</p>
+<h2 id="بناء-خادم-ويب-قائم-على-الأحداث">بناء خادم ويب قائم على الأحداث</h2>
+<p>معظم البرامج التي تستخدم عملية واحدة لإدارة تدفقات عمل متزامنة
+تستخدم نمطاً يسمى <em>حلقة الأحداث</em> (event loop). لننظر في شكل حلقة الأحداث
+التي قد تكون لخادم الويب لدينا.</p>
+<h3 id="حلقة-الأحداث">حلقة الأحداث</h3>
+<p>تحتاج حلقة الأحداث لدينا إلى:</p>
+<ul>
+<li>الاستماع إلى الاتصالات الواردة؛</li>
+<li>معالجة كل المصافحات الجديدة أو البيانات الواردة على الاتصالات القائمة؛</li>
+<li>تنظيف المقابس المعلقة التي قُتلت بشكل غير متوقع (مثلًا بسبب مقاطعة)</li>
+</ul>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> start ((<span class="hljs-name">port</span> integer))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">server</span> (<span class="hljs-name">socket-listen</span>
+		 usocket<span class="hljs-symbol">:*wildcard-host*</span> port
+		 <span class="hljs-symbol">:reuse-address</span> <span class="hljs-literal">t</span>
+		 <span class="hljs-symbol">:element-type</span> &#x27;octet))
+	(<span class="hljs-name">conns</span> (<span class="hljs-name">make-hash-table</span>)))
+    (<span class="hljs-name">unwind-protect</span>
+	 (<span class="hljs-name">loop</span> (<span class="hljs-name">loop</span> for ready
+		  in (<span class="hljs-name">wait-for-input</span>
+		      (<span class="hljs-name">cons</span> server (<span class="hljs-name">alexandria</span><span class="hljs-symbol">:hash-table-keys</span> conns))
+		      <span class="hljs-symbol">:ready-only</span> <span class="hljs-literal">t</span>)
+		  do (<span class="hljs-name">process-ready</span> ready conns)))
+      (<span class="hljs-name">loop</span> for c being the hash-keys of conns
+	 do (<span class="hljs-name">loop</span> while (<span class="hljs-name">socket-close</span> c)))
+      (<span class="hljs-name">loop</span> while (<span class="hljs-name">socket-close</span> server)))))
+</code></pre>
+<p>إذا لم تكن قد كتبت برنامج Common Lisp من قبل، فإن كتلة الشيفرة هذه تحتاج إلى بعض الشرح. ما كتبناه هنا هو <em>تعريف دالة</em> (method definition). ولئن كانت Lisp معروفة على أنها لغة وظيفية، فإنها تمتلك أيضًا نظامها الخاص للبرمجة كائنية التوجه اسمه «نظام كائنات Common Lisp»، ويختصر عادةً بـ«CLOS».[^CLOSpronounce]</p>
+<p>[^CLOSpronounce]: تُنطق «kloss» أو «see-loss» أو «see-lows»، تبعًا لمن تسأله.</p>
+<h3 id="clos-والدوال-العامة">CLOS والدوال العامة</h3>
+<p>في CLOS، بدلاً من التركيز على الأصناف (classes) والدوال، نكتب <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html"><em>دوالاً عامة</em></a> تُنفَّذ كمجموعات من <em>دوال</em> (methods). وفي هذا النموذج، لا <em>تنتمي</em> الدوال إلى الأصناف، بل <em>تتخصص على</em> (specialize on) الأنواع.[^juliachap] ودالة <code>start</code> التي كتبناها للتو هي دالة أحادية (unary method) يكون فيها الوسيط <code>port</code> <em>متخصصاً على</em> النوع <code>integer</code>. وهذا يعني أننا نستطيع أن نمتلك عدة تطبيقات (implementations) لدالة <code>start</code> يختلف فيها نوع <code>port</code>، وسيختار وقت التشغيل أي تطبيق يستخدمه بحسب نوع <code>port</code> عند استدعاء <code>start</code>.</p>
+<p>[^juliachap]: لغة البرمجة Julia تتبنى مقاربة مشابهة للبرمجة كائنية التوجه؛ يمكنك التعلم المزيد عنها في \\aosachapref{s:static-analysis}.</p>
+<p>وبشكل أعم، يمكن للدوال أن تتخصص على أكثر من وسيط واحد. فعند استدعاء <code>method</code>، يقوم وقت التشغيل بـ:</p>
+<ul>
+<li>التوجيه (dispatch) على نوع وسائطه ليقرّر أي جسم دالة ينبغي تشغيله، و</li>
+<li>تشغيل الدالة المناسبة.</li>
+</ul>
+<h3 id="معالجة-المقابس">معالجة المقابس</h3>
+<p>سنرى دالة عامة أخرى تعمل في <code>process-ready</code>، والتي استُدعيت في وقت سابق من حلقة الأحداث لدينا. وهي تعالج مقبساً جاهزاً بإحدى دالتين، بحسب نوع المقبس الذي نعينه.</p>
+<p>النوعان اللذان نهتم بهما هما <code>stream-usocket</code>، الذي يمثّل مقبس عميل سيقوم بطلب ويتوقع إرسال بعض البيانات إليه في المقابل، و<code>stream-server-usocket</code>، الذي يمثّل مستمع TCP المحلي لدينا وستصلنا اتصالات عملاء جدد نتعامل معها.</p>
+<p>إذا كان <code>stream-server-socket</code> في حالة <code>ready</code>، فهذا يعني وجود مقبس عميل جديد في انتظار بدء محادثة. نستدعي <code>socket-accept</code> لقبول الاتصال، ثم نضع النتيجة في جدول الاتصالات لدينا كي تبدأ حلقة الأحداث بمعالجته مع البقية.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> process-ready ((<span class="hljs-name">ready</span> stream-server-usocket) (<span class="hljs-name">conns</span> hash-table))
+  (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> (<span class="hljs-name">socket-accept</span> ready <span class="hljs-symbol">:element-type</span> &#x27;octet) conns) <span class="hljs-literal">nil</span>))
+</code></pre>
+<p>عندما يكون <code>stream-usocket</code> في حالة <code>ready</code>، فهذا يعني أنه لدينا بعض البايتات جاهزة للقراءة. (ومن الممكن أيضاً أن يكون الطرف الآخر قد أنهى الاتصال.)</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> process-ready ((<span class="hljs-name">ready</span> stream-usocket) (<span class="hljs-name">conns</span> hash-table))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">buf</span> (<span class="hljs-name">or</span> (<span class="hljs-name">gethash</span> ready conns)
+		 (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> ready conns)
+		       (<span class="hljs-name">make-instance</span> &#x27;buffer <span class="hljs-symbol">:bi-stream</span> (<span class="hljs-name">flex-stream</span> ready))))))
+    (<span class="hljs-name">if</span> (<span class="hljs-name">eq</span> <span class="hljs-symbol">:eof</span> (<span class="hljs-name">buffer!</span> buf))
+	(<span class="hljs-name">ignore-errors</span>
+	  (<span class="hljs-name">remhash</span> ready conns)
+	  (<span class="hljs-name">socket-close</span> ready))
+	(<span class="hljs-name">let</span> ((<span class="hljs-name">too-big</span>?
+	       (<span class="hljs-name">&gt;</span> (<span class="hljs-name">total-buffered</span> buf)
+		  +max-request-size+))
+	      (<span class="hljs-name">too-old</span>?
+	       (<span class="hljs-name">&gt;</span> (<span class="hljs-name">-</span> (<span class="hljs-name">get-universal-time</span>) (<span class="hljs-name">started</span> buf))
+		  +max-request-age+))
+	      (<span class="hljs-name">too-needy</span>?
+	       (<span class="hljs-name">&gt;</span> (<span class="hljs-name">tries</span> buf)
+		  +max-buffer-tries+)))
+	  (<span class="hljs-name">cond</span> (<span class="hljs-name">too-big</span>?
+		 (<span class="hljs-name">error!</span> <span class="hljs-number">+413</span>+ ready)
+		 (<span class="hljs-name">remhash</span> ready conns))
+		((<span class="hljs-name">or</span> too-old? too-needy?)
+		 (<span class="hljs-name">error!</span> <span class="hljs-number">+400</span>+ ready)
+		 (<span class="hljs-name">remhash</span> ready conns))
+		((<span class="hljs-name">and</span> (<span class="hljs-name">request</span> buf) (<span class="hljs-name">zerop</span> (<span class="hljs-name">expecting</span> buf)))
+		 (<span class="hljs-name">remhash</span> ready conns)
+		 (<span class="hljs-name">when</span> (<span class="hljs-name">contents</span> buf)
+		   (<span class="hljs-name">setf</span> (<span class="hljs-name">parameters</span> (<span class="hljs-name">request</span> buf))
+			 (<span class="hljs-name">nconc</span> (<span class="hljs-name">parse</span> buf) (<span class="hljs-name">parameters</span> (<span class="hljs-name">request</span> buf)))))
+		 (<span class="hljs-name">handler-case</span>
+		     (<span class="hljs-name">handle-request</span> ready (<span class="hljs-name">request</span> buf))
+		   (<span class="hljs-name">http-assertion-error</span> () (<span class="hljs-name">error!</span> <span class="hljs-number">+400</span>+ ready))
+		   ((<span class="hljs-name">and</span> (<span class="hljs-name">not</span> warning)
+		     (<span class="hljs-name">not</span> simple-error)) (<span class="hljs-name">e</span>)
+		     (<span class="hljs-name">error!</span> <span class="hljs-number">+500</span>+ ready e))))
+		(<span class="hljs-name">t</span>
+		 (<span class="hljs-name">setf</span> (<span class="hljs-name">contents</span> buf) <span class="hljs-literal">nil</span>)))))))
+</code></pre>
+<p>هذا أكثر تعقيداً من الحالة الأولى. نحن:</p>
+<ol>
+<li>نأخذ المخزن المؤقت (buffer) المرتبط بهذا المقبس، أو ننشئه إن لم يكن موجوداً بعد؛</li>
+<li>نقرأ المخرجات في ذلك المخزن المؤقت، وهو ما يحدث في الاستدعاء إلى <code>buffer!</code>؛</li>
+<li>إذا كانت تلك القراءة قد أعطتنا <code>:eof</code>، فإن الطرف الآخر قد أغلق الخط، لذا نتخلص من المقبس <em>ومن</em> مخزنه المؤقت؛</li>
+<li>وإلا، فنحن نتحقق مما إذا كان المخزن المؤقت واحداً من <code>complete?</code> أو <code>too-big?</code> أو <code>too-old?</code> أو <code>too-needy?</code>. وإن كان كذلك، فنزيله من جدول الاتصالات ونعيد استجابة HTTP المناسبة.</li>
+</ol>
+<p>هذه أول مرة نرى فيها الإدخال/الإخراج في حلقة الأحداث لدينا. وفي مناقشتنا في \\aosasecref{sec.eventsweb.serverarch}، ذكرنا أننا يجب أن نكون حذرين للغاية بشأن الإدخال/الإخراج في نظام قائم على الأحداث، لأننا قد نحجب خيطنا الفردي من باب الحظ. إذن، ماذا نفعل هنا لضمان عدم حدوث ذلك؟ علينا أن نستكشف تنفيذنا لدالة <code>buffer!</code> لنعرف بدقة كيف يعمل هذا.</p>
+<h3 id="معالجة-الاتصالات-دون-حجب">معالجة الاتصالات دون حجب</h3>
+<p>أساس مقاربتنا في معالجة الاتصالات دون حجب هو دالة المكتبة <a href="http://clhs.lisp.se/Body/f_rd_c_1.htm"><code>read-char-no-hang</code></a>، التي تُعيد <code>nil</code> فوراً عند استدعائها على تدفق لا تتوفر فيه بيانات. وحيثما توجد بيانات للقراءة، نستخدم مخزناً مؤقتاً لتخزين المدخلات الوسيطة لهذا الاتصال.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> buffer! ((<span class="hljs-name">buffer</span> buffer))
+  (<span class="hljs-name">handler-case</span>
+      (<span class="hljs-name">let</span> ((<span class="hljs-name">stream</span> (<span class="hljs-name">bi-stream</span> buffer)))
+    	(<span class="hljs-name">incf</span> (<span class="hljs-name">tries</span> buffer))
+    	(<span class="hljs-name">loop</span> for char = (<span class="hljs-name">read-char-no-hang</span> stream) until (<span class="hljs-name">null</span> char)
+    	   do (<span class="hljs-name">push</span> char (<span class="hljs-name">contents</span> buffer))
+    	   do (<span class="hljs-name">incf</span> (<span class="hljs-name">total-buffered</span> buffer))
+    	   when (<span class="hljs-name">request</span> buffer) do (<span class="hljs-name">decf</span> (<span class="hljs-name">expecting</span> buffer))
+    	   when (<span class="hljs-name">line-terminated</span>? (<span class="hljs-name">contents</span> buffer))
+    	   do (<span class="hljs-name">multiple-value-bind</span> (<span class="hljs-name">parsed</span> expecting) (<span class="hljs-name">parse</span> buffer)
+    		(<span class="hljs-name">setf</span> (<span class="hljs-name">request</span> buffer) parsed
+    		      (<span class="hljs-name">expecting</span> buffer) expecting)
+    		(<span class="hljs-name">return</span> char))
+    	   when (<span class="hljs-name">&gt;</span> (<span class="hljs-name">total-buffered</span> buffer) +max-request-size+) return char
+    	   finally (<span class="hljs-name">return</span> char)))
+    (<span class="hljs-name">error</span> () <span class="hljs-symbol">:eof</span>)))
+</code></pre>
+<p>عندما تُستدعى <code>buffer!</code> على <code>buffer</code> فإنها:</p>
+<ul>
+<li>تزيد عدّاد <code>tries</code>، كي نتمكن من إخراج المخازن «المُتعِشة» (needy) في <code>process-ready</code>؛</li>
+<li>تدور في حلقة لقراءة المحارف من تدفق الإدخال، و</li>
+<li>تُعيد آخر محرفقرأته إذا كانت قد قرأت كل المدخلات المتاحة.</li>
+</ul>
+<p>كما أنها تتتبع أي تسلسلات <code>\\r\\n\\r\\n</code> حتى نتمكن لاحقاً من اكتشاف الطلبات المكتملة. وأخيراً، إذا نتج أي خطأ فإنها تُعيد <code>:eof</code> للإشارة إلى أن <code>process-ready</code> ينبغي أن يتخلص من هذا الاتصال.</p>
+<p>النوع <code>buffer</code> هو <em>صنف</em> (class) في CLOS. تتيح لنا الأصناف في CLOS تعريف نوع بحقول تُسمى <code>slots</code> (الخانات). لا نرى السلوكيات المرتبطة بـ<code>buffer</code> في تعريف الصنف، لأننا (كما تعلّمنا من قبل) نقوم بذلك باستخدام دوال عامة مثل <code>buffer!</code>.</p>
+<p>وتتيح <code>defclass</code> لنا تحديد getters/setters (وهي <code>reader</code>s و<code>accessor</code>s)، ومهيّئات الخانات؛ فـ<code>:initform</code> يحدد قيمة افتراضية، بينما تحدد <code>:initarg</code> خطّافاً (hook) يمكن لمُنشئ \\newline <code>make-instance</code> أن يستخدمه لتوفير قيمة افتراضية.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defclass</span> buffer ()
+  ((<span class="hljs-name">tries</span> <span class="hljs-symbol">:accessor</span> tries <span class="hljs-symbol">:initform</span> <span class="hljs-number">0</span>)
+   (<span class="hljs-name">contents</span> <span class="hljs-symbol">:accessor</span> contents <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+   (<span class="hljs-name">bi-stream</span> <span class="hljs-symbol">:reader</span> bi-stream <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:bi-stream</span>)
+   (<span class="hljs-name">total-buffered</span> <span class="hljs-symbol">:accessor</span> total-buffered <span class="hljs-symbol">:initform</span> <span class="hljs-number">0</span>)
+   (<span class="hljs-name">started</span> <span class="hljs-symbol">:reader</span> started <span class="hljs-symbol">:initform</span> (<span class="hljs-name">get-universal-time</span>))
+   (<span class="hljs-name">request</span> <span class="hljs-symbol">:accessor</span> request <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+   (<span class="hljs-name">expecting</span> <span class="hljs-symbol">:accessor</span> expecting <span class="hljs-symbol">:initform</span> <span class="hljs-number">0</span>)))
+</code></pre>
+<p>يحتوي صنف <code>buffer</code> لدينا على سبع خانات:</p>
+<ul>
+<li><code>tries</code>، التي تعدّ كم مرة حاولنا القراءة في هذا المخزن المؤقت</li>
+<li><code>contents</code>، التي تضم ما قرأناه حتى الآن</li>
+<li><code>bi-stream</code>، وهي تجاوز (hack) لبعض مشكلات الإدخال/الإخراج غير المحجب الخاصة بـCommon Lisp التي ذكرتها في وقت سابق</li>
+<li><code>total-buffered</code>، وهي عدّاد للمحارف التي قرأناها حتى الآن</li>
+<li><code>started</code>، وهي ختم زمني يخبرنا متى أنشأنا هذا المخزن المؤقت</li>
+<li><code>request</code>، التي ستحتوي في النهاية على الطلب الذي نبنيه من البيانات المخزَّنة</li>
+<li><code>expecting</code>، التي ستُظهر كم محرفاً إضافياً نتوقعه (إن وُجد) بعد أن نخزّن ترويسات الطلب</li>
+</ul>
+<h3 id="تفسير-الطلبات">تفسير الطلبات</h3>
+<p>\\label{sec.eventsweb.handlerfunc}
+الآن وقد رأينا كيف نجمّع الطلبات الكاملة تِباعًا من قطع صغيرة من البيانات (bits) تُجمَّع في مخازننا المؤقتة، فماذا يحدث حين يتوفر لدينا طلب كامل جاهز للمعالجة؟ يحدث هذا في الدالة <code>handle-request</code>.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> handle-request ((<span class="hljs-name">socket</span> usocket) (<span class="hljs-name">req</span> request))
+  (<span class="hljs-name">aif</span> (<span class="hljs-name">lookup</span> (<span class="hljs-name">resource</span> req) <span class="hljs-variable">*handlers*</span>)
+       (<span class="hljs-name">funcall</span> it socket (<span class="hljs-name">parameters</span> req))
+       (<span class="hljs-name">error!</span> <span class="hljs-number">+404</span>+ socket)))
+</code></pre>
+<p>تضيف هذه الدالة طبقة أخرى من معالجة الأخطاء، بحيث إذا كان الطلب قديمًا أو كبيرًا أو مُتعِشًا نستطيع إرسال استجابة <code>400</code> للدلالة على أن العميل قدّم لنا بيانات سيئة أو بطيئة. غير أن إن حدث أي خطأ <em>آخر</em> هنا، فذلك لأن المبرمج أخطأ في تعريف <em>معالِج</em> (handler)، وينبغي أن يُعامَل كخطأ <code>500</code>. وسيُخبر هذا العميل بأن شيئًا ما قد حدث خطأً في الخادم نتيجةً لطلبه الشرعي.</p>
+<p>وإذا كان الطلب حسن الصياغة، فإننا نقوم بالمهمة الصغيرة والبديهية، وهي البحث عن المورد المطلوب في جدول <code>*handlers*</code>. وإذا وجدناه، فإننا نستدعي <code>funcall</code> على <code>it</code>، معِدِّين إياه الوسيط <code>socket</code> الخاص بالعميل إضافة إلى معاملات الطلب المُحلَّلة. وإذا لم يكن في جدول <code>*handlers*</code> معالِج مطابق، فإننا نرسل بدلاً منه خطأ <code>404</code>. وسيكون نظام المعالِجات جزءًا من إطار عمل الويب الكامل لدينا، وسنتناوله في قسم لاحق.</p>
+<p>ولم نَرَ بعد كيف تُحلَّل الطلبات وتُفسَّر انطلاقًا من أحد مخازننا المؤقتة. لننظر في ذلك تاليًا:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> parse ((<span class="hljs-name">buf</span> buffer))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">str</span> (<span class="hljs-name">coerce</span> (<span class="hljs-name">reverse</span> (<span class="hljs-name">contents</span> buf)) &#x27;string)))
+    (<span class="hljs-name">if</span> (<span class="hljs-name">request</span> buf)
+	    (<span class="hljs-name">parse-params</span> str)
+	    (<span class="hljs-name">parse</span> str))))
+</code></pre>
+<p>تفوّض هذه الدالة عالية المستوى العمل إلى تخصّص من <code>parse</code> يعمل مع النصوص العادية، أو إلى <code>parse-params</code> الذي يفسّر محتويات المخزن المؤقت بوصفها معاملات HTTP. ويتم استدعاء أيّهما بحسب مقدار ما عالجناه من الطلب؛ إذ إن <code>parse</code> الأخيرة تحدث حين يكون لدينا بالفعل <code>request</code> جزئي محفوظ في <code>buffer</code>، وعندها لا نبحث إلا عن تحليل جسم الطلب.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> parse ((<span class="hljs-name">str</span> string))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">lines</span> (<span class="hljs-name">split</span> <span class="hljs-string">&quot;\\\\r?\\\\n&quot;</span> str)))
+    (<span class="hljs-name">destructuring-bind</span> (<span class="hljs-name">req-type</span> path http-version) (<span class="hljs-name">split</span> <span class="hljs-string">&quot; &quot;</span> (<span class="hljs-name">pop</span> lines))
+      (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> req-type))
+      (<span class="hljs-name">assert-http</span> (<span class="hljs-name">string=</span> http-version <span class="hljs-string">&quot;HTTP/1.1&quot;</span>))
+      (<span class="hljs-name">let*</span> ((<span class="hljs-name">path-pieces</span> (<span class="hljs-name">split</span> <span class="hljs-string">&quot;\\\\?&quot;</span> path))
+	     (<span class="hljs-name">resource</span> (<span class="hljs-name">first</span> path-pieces))
+	     (<span class="hljs-name">parameters</span> (<span class="hljs-name">second</span> path-pieces))
+	     (<span class="hljs-name">req</span> (<span class="hljs-name">make-instance</span> &#x27;request <span class="hljs-symbol">:resource</span> resource)))
+	(<span class="hljs-name">loop</span>
+	   for header = (<span class="hljs-name">pop</span> lines)
+	   for (<span class="hljs-name">name</span> value) = (<span class="hljs-name">split</span> <span class="hljs-string">&quot;: &quot;</span> header)
+	   until (<span class="hljs-name">null</span> name)
+	   do (<span class="hljs-name">push</span> (<span class="hljs-name">cons</span> (<span class="hljs-name">-&gt;keyword</span> name) value) (<span class="hljs-name">headers</span> req)))
+	(<span class="hljs-name">setf</span> (<span class="hljs-name">parameters</span> req) (<span class="hljs-name">parse-params</span> parameters))
+	req))))
+
+(<span class="hljs-name">defmethod</span> parse-params ((<span class="hljs-name">params</span> null)) <span class="hljs-literal">nil</span>)
+
+(<span class="hljs-name">defmethod</span> parse-params ((<span class="hljs-name">params</span> string))
+  (<span class="hljs-name">loop</span> for pair in (<span class="hljs-name">split</span> <span class="hljs-string">&quot;&amp;&quot;</span> params)
+     for (<span class="hljs-name">name</span> val) = (<span class="hljs-name">split</span> <span class="hljs-string">&quot;=&quot;</span> pair)
+     collect (<span class="hljs-name">cons</span> (<span class="hljs-name">-&gt;keyword</span> name) (<span class="hljs-name">or</span> val <span class="hljs-string">&quot;&quot;</span>))))
+</code></pre>
+<p>في الدالة <code>parse</code> المتخصصة على <code>string</code>، نحوّل المحتوى إلى أجزاء قابلة للاستخدام. ونقوم بذلك على النصوص بدلاً من العمل مباشرة مع المخازن المؤقتة لأن ذلك يجعل اختبار شيفرة التحليل الفعلية أسهل في بيئة مثل مفسّر (interpreter) أو REPL.</p>
+<p>عملية التحليل هي:</p>
+<ol>
+<li>التقسيم عند <code>&quot;\\\\r?\\\\n&quot;</code>.</li>
+<li>تقسيم السطر الأول من ذلك عند <code>&quot; &quot;</code> للحصول على نوع الطلب (<code>POST</code> أو <code>GET</code> أو ما شابه) ومسار URI وإصدار HTTP.</li>
+<li>التأكيد من أننا نتعامل مع طلب <code>HTTP/1.1</code>.</li>
+<li>تقسيم مسار URI عند <code>&quot;?&quot;</code>، مما يعطينا المورد المجرد منفصلاً عن أي معاملات <code>GET</code>.</li>
+<li>إنشاء نسخة جديدة من <code>request</code> مع المورد في موضعه.</li>
+<li>ملء نسخة <code>request</code> تلك بسطر الترويسة بعد تفكيكه.</li>
+<li>ضبط معاملات <code>request</code> تلك على نتيجة تحليل معاملات <code>GET</code>.</li>
+</ol>
+<p>وكما قد خمّنت في هذه المرحلة، فإن <code>request</code> هي نسخة من صنف في CLOS:</p>
+<pre><code class="language-lisp">	(<span class="hljs-name">defclass</span> request ()
+	  ((<span class="hljs-name">resource</span> <span class="hljs-symbol">:accessor</span> resource <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:resource</span>)
+	   (<span class="hljs-name">headers</span> <span class="hljs-symbol">:accessor</span> headers <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:headers</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+	   (<span class="hljs-name">parameters</span> <span class="hljs-symbol">:accessor</span> parameters <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:parameters</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)))
+</code></pre>
+<p>لقد رأينا الآن كيف يمكن لعملائنا إرسال الطلبات وكأن خادمنا يفسّرها ويعالجها. وآخر ما علينا تنفيذه كجزء من واجهة خادمنا الأساسية هو القدرة على كتابة الاستجابات عائدةً إلى العميل.</p>
+<h3 id="عرض-الاستجابات">عرض الاستجابات</h3>
+<p>قبل أن نتناول عرض الاستجابات، علينا أن نأخذ في الحسبان أن هناك نوعين من الاستجابات قد نعيدها إلى عملائنا. الأول هو استجابة HTTP «طبيعية» كاملة بترويسات HTTP وجسم. وندلّل هذا النوع من الاستجابات بنسخ من الصنف <code>response</code>:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defclass</span> response ()
+  ((<span class="hljs-name">content-type</span>
+    <span class="hljs-symbol">:accessor</span> content-type <span class="hljs-symbol">:initform</span> <span class="hljs-string">&quot;text/html&quot;</span> <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:content-type</span>)
+   (<span class="hljs-name">charset</span>
+    <span class="hljs-symbol">:accessor</span> charset <span class="hljs-symbol">:initform</span> <span class="hljs-string">&quot;utf-8&quot;</span>)
+   (<span class="hljs-name">response-code</span>
+    <span class="hljs-symbol">:accessor</span> response-code <span class="hljs-symbol">:initform</span> <span class="hljs-string">&quot;200 OK&quot;</span> <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:response-code</span>)
+   (<span class="hljs-name">keep-alive</span>?
+    <span class="hljs-symbol">:accessor</span> keep-alive? <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:keep-alive</span>?)
+   (<span class="hljs-name">body</span>
+    <span class="hljs-symbol">:accessor</span> body <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:body</span>)))
+</code></pre>
+<p>والثاني هو <a href="http://www.w3.org/TR/eventsource/">رسالة SSE</a>، التي سنستخدمها لإرسال تحديث تزايدي إلى عملائنا.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defclass</span> sse ()
+  ((<span class="hljs-name">id</span> <span class="hljs-symbol">:reader</span> id <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:id</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+   (<span class="hljs-name">event</span> <span class="hljs-symbol">:reader</span> event <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:event</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+   (<span class="hljs-name">retry</span> <span class="hljs-symbol">:reader</span> retry <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:retry</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span>)
+   (<span class="hljs-name">data</span> <span class="hljs-symbol">:reader</span> data <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:data</span>)))
+</code></pre>
+<p>سنرسل استجابة HTTP كلما استلمنا طلب HTTP كاملاً؛ غير كيف نعرف متى وأين نرسل رسائل SSE دون وجود طلب أصلي من العميل؟</p>
+<p>أحد الحلول البسيطة هو تسجيل <em>قنوات</em> (channels)[^defparameter]، سنشترك فيها في مقابس <code>socket</code> حسب الحاجة.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defparameter</span> <span class="hljs-variable">*channels*</span> (<span class="hljs-name">make-hash-table</span>))
+
+(<span class="hljs-name">defmethod</span> subscribe! ((<span class="hljs-name">channel</span> symbol) (<span class="hljs-name">sock</span> usocket))
+  (<span class="hljs-name">push</span> sock (<span class="hljs-name">gethash</span> channel <span class="hljs-variable">*channels*</span>))
+  <span class="hljs-literal">nil</span>)
+</code></pre>
+<p>[^defparameter]: نحن نقدّم هنا بعض الصياغة الجديدة على سبيل المجاملة. هذه هي طريقتنا في إعلان متغيّر قابل للتعديل. وهي على الصورة <code>(defparameter &lt;name&gt; &lt;value&gt; &lt;optional docstring&gt;)</code>.</p>
+<p>يمكننا عندئذٍ أن ننشر الإشعارات عبر <code>publish!</code> إلى تلك القنوات بمجرد توفرها.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> publish! ((<span class="hljs-name">channel</span> symbol) (<span class="hljs-name">message</span> string))
+  (<span class="hljs-name">awhen</span> (<span class="hljs-name">gethash</span> channel <span class="hljs-variable">*channels*</span>)
+	 (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> channel <span class="hljs-variable">*channels*</span>)
+	       (<span class="hljs-name">loop</span> with msg = (<span class="hljs-name">make-instance</span> &#x27;sse <span class="hljs-symbol">:data</span> message)
+		  for sock in it
+		  when (<span class="hljs-name">ignore-errors</span>
+			 (<span class="hljs-name">write!</span> msg sock)
+			 (<span class="hljs-name">force-output</span> (<span class="hljs-name">socket-stream</span> sock))
+			 sock)
+		  collect it))))
+</code></pre>
+<p>في <code>publish!</code>، نستدعي <code>write!</code> للكتابة فعلًا لكائن <code>sse</code> إلى مقبس. وسنحتاج أيضًا إلى تخصّص لـ<code>write!</code> على <code>response</code>s لكتابة استجابات HTTP الكاملة. لنتعامل مع حالة HTTP أولًا.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> write! ((<span class="hljs-name">res</span> response) (<span class="hljs-name">socket</span> usocket))
+  (<span class="hljs-name">handler-case</span>
+      (<span class="hljs-name">with-timeout</span> (.<span class="hljs-number">2</span>)
+	(<span class="hljs-name">let</span> ((<span class="hljs-name">stream</span> (<span class="hljs-name">flex-stream</span> socket)))
+	  (<span class="hljs-name">flet</span> ((<span class="hljs-name">write-ln</span> (<span class="hljs-name">&amp;rest</span> sequences)
+		   (<span class="hljs-name">mapc</span> (<span class="hljs-name">lambda</span> (<span class="hljs-name">seq</span>) (<span class="hljs-name">write-sequence</span> seq stream)) sequences)
+		   (<span class="hljs-name">crlf</span> stream)))
+	    (<span class="hljs-name">write-ln</span> <span class="hljs-string">&quot;HTTP/1.1 &quot;</span> (<span class="hljs-name">response-code</span> res))
+	    (<span class="hljs-name">write-ln</span>
+	     <span class="hljs-string">&quot;Content-Type: &quot;</span> (<span class="hljs-name">content-type</span> res) <span class="hljs-string">&quot;; charset=&quot;</span> (<span class="hljs-name">charset</span> res))
+	    (<span class="hljs-name">write-ln</span> <span class="hljs-string">&quot;Cache-Control: no-cache, no-store, must-revalidate&quot;</span>)
+	    (<span class="hljs-name">when</span> (<span class="hljs-name">keep-alive</span>? res)
+	      (<span class="hljs-name">write-ln</span> <span class="hljs-string">&quot;Connection: keep-alive&quot;</span>)
+	      (<span class="hljs-name">write-ln</span> <span class="hljs-string">&quot;Expires: Thu, 01 Jan 1970 00:00:01 GMT&quot;</span>))
+	    (<span class="hljs-name">awhen</span> (<span class="hljs-name">body</span> res)
+	      (<span class="hljs-name">write-ln</span> <span class="hljs-string">&quot;Content-Length: &quot;</span> (<span class="hljs-name">write-to-string</span> (<span class="hljs-name">length</span> it)))
+	      (<span class="hljs-name">crlf</span> stream)
+	      (<span class="hljs-name">write-ln</span> it))
+	    (<span class="hljs-name">values</span>))))
+    (<span class="hljs-name">trivial-timeout</span><span class="hljs-symbol">:timeout-error</span> ()
+      (<span class="hljs-name">values</span>))))
+</code></pre>
+<p>تأخذ هذه النسخة من <code>write!</code> كائن <code>response</code> و<code>usocket</code> باسم <code>sock</code>، وتكتب المحتوى إلى تدفق يوفّره <code>sock</code>. ونعرّف محليًا الدالة <code>write-ln</code> التي تأخذ عددًا ما من التسلسلات، وتكتبها إلى التدفق متبوعة بـ<code>crlf</code>. وهذا من أجل سهولة القراءة؛ كان بإمكاننا بدلًا من ذلك استدعاء <code>write-sequence</code>/<code>crlf</code> مباشرة.</p>
+<p>لاحظ أننا ننفّذ أمر «يجب ألا يحجب» من جديد. فرغم أن عمليات الكتابة من المرجح أن تكون مخزَّنة مؤقتًا وأن خطرها في الحجب أقل من القراءة، إلا أننا لا نريد أن يتوقف خادمنا عن العمل إذا حدث خطأ ما هنا. فإذا استغرقت الكتابة أكثر من 0.2 ثانية[^timeout]، فإننا نتابع فقط (نرمِي بالمقبس الحالي) بدلًا من الانتظار أكثر.</p>
+<p>[^timeout]: لدى <code>with-timeout</code> تطبيقات مختلفة في بيئات Lisp المختلفة. ففي بعض البيئات قد ينشئ خيطًا أو عملية أخرى لمراقبة الخيط أو العملية التي استدعته. ولرغم أننا لن ننشئ أكثر من واحد من هذه في المرة الواحدة، إلا أن ذلك عملية ثقيلة نسبيًا لتُنفَّذ مع كل كتابة. قد نرغب في التفكير في مقاربة بديلة في تلك البيئات.</p>
+<p>والكتابة كائن <code>SSE</code> مشابهة، من الناحية المفاهيمية، لكتابة كائن <code>response</code>:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> write! ((<span class="hljs-name">res</span> sse) (<span class="hljs-name">socket</span> usocket))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">stream</span> (<span class="hljs-name">flex-stream</span> socket)))
+    (<span class="hljs-name">handler-case</span>
+    (<span class="hljs-name">with-timeout</span> (.<span class="hljs-number">2</span>)
+      (<span class="hljs-name">format</span>
+       stream <span class="hljs-string">&quot;~@[id: ~a~%~]~@[event: ~a~%~]~@[retry: ~a~%~]data: ~a~%~%&quot;</span>
+       (<span class="hljs-name">id</span> res) (<span class="hljs-name">event</span> res) (<span class="hljs-name">retry</span> res) (<span class="hljs-name">data</span> res)))
+      (<span class="hljs-name">trivial-timeout</span><span class="hljs-symbol">:timeout-error</span> ()
+        (<span class="hljs-name">values</span>)))))
+</code></pre>
+<p>هذا أبسط من العمل مع استجابات HTTP الكاملة، إذ إن معيار رسائل SSE لا يحدّد نهايات الأسطر بـ<code>CRLF</code>، لذا يمكننا الاكتفاء باستدعاء <code>format</code> واحد. أما الكتل <code>~@[</code>...<code>~]</code> فهي <em>توجيهات شرطية</em> (conditional directives)، تتيح لنا التعامل بسلاسة مع الخانات ذات القيمة <code>nil</code>. فمثلًا، إذا كانت <code>(id res)</code> غير <code>nil</code>، فسنُخرج <code>id: &lt;the id here&gt; </code>، وإلا تجاهلنا التوجيه كليًا. وحمولة تحديثنا التزايدي <code>data</code> هي الخانة الوحيدة الإلزامية في <code>sse</code>، لذا يمكننا تضمينها دون قلق من أن تكون <code>nil</code>. مرة أخرى، نحن لا ننتظر مدة <em>طويلة</em>. فبعد 0.2 ثانية، ستنتهي المهلة وننتقل إلى الأمر التالي إن لم تكتمل الكتابة بحلول ذلك الحين.</p>
+<h3 id="استجابات-الأخطاء">استجابات الأخطاء</h3>
+<p>لم يغطي تعاملنا مع دورة الطلب/الاستجابة حتى الآن ما يحدث عندما يسوء شيء ما. وتحديدًا، لقد استخدمنا الدالة <code>error!</code> في <code>handle-request</code> و<code>process-ready</code> دون أن نصف ما تفعله.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">define-condition</span> http-assertion-error (<span class="hljs-name">error</span>)
+  ((<span class="hljs-name">assertion</span> <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:assertion</span> <span class="hljs-symbol">:initform</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:reader</span> assertion))
+  (<span class="hljs-symbol">:report</span> (<span class="hljs-name">lambda</span> (<span class="hljs-name">condition</span> stream)
+	     (<span class="hljs-name">format</span> stream <span class="hljs-string">&quot;Failed assertions &#x27;~s&#x27;&quot;</span>
+		     (<span class="hljs-name">assertion</span> condition)))))
+</code></pre>
+<p>تُنشئ <code>define-condition</code> أصناف أخطاء جديدة في Common Lisp. وفي حالتنا هذه، نحن نعرّف خطأ تحقق من نوع HTTP (HTTP assertion error)، ونصرّح بأنه سيحتاج تحديدًا إلى معرفة التحقق الفعلي الذي يعمل عليه، وإلى وسيلة لإخراج نفسه إلى تدفق. وفي اللغات الأخرى، كنت ستسمّي هذا دالة. أما هنا، فهو دالة تصادف أنها قيمة خانة في صنف.</p>
+<p>كيف نمثّل الأخطاء أمام العميل؟ لنعرّف أخطاء HTTP من صنفَي <code>4xx</code> و<code>5xx</code> التي سنستخدمها كثيرًا:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defparameter</span> <span class="hljs-number">+404</span>+
+  (<span class="hljs-name">make-instance</span>
+   &#x27;response <span class="hljs-symbol">:response-code</span> <span class="hljs-string">&quot;404 Not Found&quot;</span>
+   <span class="hljs-symbol">:content-type</span> <span class="hljs-string">&quot;text/plain&quot;</span>
+   <span class="hljs-symbol">:body</span> <span class="hljs-string">&quot;Resource not found...&quot;</span>))
+
+(<span class="hljs-name">defparameter</span> <span class="hljs-number">+400</span>+
+  (<span class="hljs-name">make-instance</span>
+   &#x27;response <span class="hljs-symbol">:response-code</span> <span class="hljs-string">&quot;400 Bad Request&quot;</span>
+   <span class="hljs-symbol">:content-type</span> <span class="hljs-string">&quot;text/plain&quot;</span>
+   <span class="hljs-symbol">:body</span> <span class="hljs-string">&quot;Malformed, or slow HTTP request...&quot;</span>))
+
+(<span class="hljs-name">defparameter</span> <span class="hljs-number">+413</span>+
+  (<span class="hljs-name">make-instance</span>
+   &#x27;response <span class="hljs-symbol">:response-code</span> <span class="hljs-string">&quot;413 Request Entity Too Large&quot;</span>
+   <span class="hljs-symbol">:content-type</span> <span class="hljs-string">&quot;text/plain&quot;</span>
+   <span class="hljs-symbol">:body</span> <span class="hljs-string">&quot;Your request is too long...&quot;</span>))
+
+(<span class="hljs-name">defparameter</span> <span class="hljs-number">+500</span>+
+  (<span class="hljs-name">make-instance</span>
+   &#x27;response <span class="hljs-symbol">:response-code</span> <span class="hljs-string">&quot;500 Internal Server Error&quot;</span>
+   <span class="hljs-symbol">:content-type</span> <span class="hljs-string">&quot;text/plain&quot;</span>
+   <span class="hljs-symbol">:body</span> <span class="hljs-string">&quot;Something went wrong on our end...&quot;</span>))
+</code></pre>
+<p>والآن يمكننا أن نرى ما تفعله <code>error!</code>:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> error! ((<span class="hljs-name">err</span> response) (<span class="hljs-name">sock</span> usocket) <span class="hljs-symbol">&amp;optional</span> instance)
+  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignorable</span> instance))
+  (<span class="hljs-name">ignore-errors</span>
+    (<span class="hljs-name">write!</span> err sock)
+    (<span class="hljs-name">socket-close</span> sock)))
+</code></pre>
+<p>إنها تأخذ استجابة خطأ ومقبسًا، وتكتب الاستجابة إلى المقبس ثم تغلقه (متجاهلة الأخطاء، تحسبًا لأن الطرف الآخر ربما يكون قد انقطع بالفعل). والوسيط <code>instance</code> هنا لأغراض التسجيل وتصحيح الأخطاء.</p>
+<p>وبهذا، لدينا خادم ويب قائم على الأحداث قادر على الاستجابة لطلبات HTTP أو إرسال رسائل SSE، مع معالجة أخطاء كاملة!</p>
+<h2 id="توسيع-الخادم-ليصبح-إطار-عمل-ويب">توسيع الخادم ليصبح إطار عمل ويب</h2>
+<p>لقد بنينا الآن خادم ويب يعمل إلى حدٍّ معقول، بحيث ينقل الطلبات والاستجابات والرسائل إلى العملاء ومنهم. والعمل الفعلي لأي تطبيق ويب يستضيفه هذا الخادم يتم عبر التفويض إلى دوال المعالجة (handler functions)، التي قُدِّمت في \\aosasecref{sec.eventsweb.handlerfunc} وتركت دون تحديد كافٍ.</p>
+<p>الواجهة بين خادمنا والتطبيق المُستضاف هي واجهة مهمة، لأنها تحدد مدى سهولة عمل مبرمجي التطبيقات مع بنتنا التحتية. وفي الحالة المثلى، كانت واجهة المعالِج لدينا ستربط معاملات الطلب بدالة تؤدّي العمل الحقيقي:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">define-handler</span> (<span class="hljs-name">source</span> <span class="hljs-symbol">:is-stream</span>? <span class="hljs-literal">nil</span>) (<span class="hljs-name">room</span>)
+  (<span class="hljs-name">subscribe!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>) sock))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">send-message</span>) (<span class="hljs-name">room</span> name message)
+  (<span class="hljs-name">publish!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>)
+	    (<span class="hljs-name">encode-json-to-string</span>
+	     \`((:name . ,name) (:message . ,message)))))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">index</span>) ()
+  (<span class="hljs-name">with-html-output-to-string</span> (<span class="hljs-name">s</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:prologue</span> <span class="hljs-literal">t</span> <span class="hljs-symbol">:indent</span> <span class="hljs-literal">t</span>)
+    (<span class="hljs-symbol">:html</span>
+     (<span class="hljs-symbol">:head</span> (<span class="hljs-symbol">:script</span>
+	     <span class="hljs-symbol">:type</span> <span class="hljs-string">&quot;text/javascript&quot;</span>
+	     <span class="hljs-symbol">:src</span> <span class="hljs-string">&quot;/static/js/interface.js&quot;</span>))
+     (<span class="hljs-symbol">:body</span> (<span class="hljs-symbol">:div</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;messages&quot;</span>)
+	    (<span class="hljs-symbol">:textarea</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;input&quot;</span>)
+	    (<span class="hljs-symbol">:button</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;send&quot;</span> <span class="hljs-string">&quot;Send&quot;</span>)))))
+</code></pre>
+<p>كان أحد ما كنت أشغل به بالي وأنا أكتب House أنه، مثل أي تطبيق مفتوح أمام الإنترنت الأوسع، سيعالج طلبات واردة من عملاء غير موثوقين. وكان من الجيد لو استطعنا تحديد نوع البيانات التي يجب أن يحتوي عليها كل طلب <em>على نحو</em> (<em>type</em>) محدد، وذلك عن طريق توفير <em>مخطط</em> (schema) صغير يصف البيانات. عندئذٍ ستبدو قائمة المعالِجات السابقة لدينا هكذا:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defun</span> len-between (<span class="hljs-name">min</span> thing max)
+  (<span class="hljs-name">&gt;=</span> max (<span class="hljs-name">length</span> thing) min))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">source</span> <span class="hljs-symbol">:is-stream</span>? <span class="hljs-literal">nil</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">0</span> room <span class="hljs-number">16</span>)))
+  (<span class="hljs-name">subscribe!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>) sock))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">send-message</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">0</span> room <span class="hljs-number">16</span>))
+     (<span class="hljs-name">name</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">1</span> name <span class="hljs-number">64</span>))
+     (<span class="hljs-name">message</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">5</span> message <span class="hljs-number">256</span>)))
+  (<span class="hljs-name">publish!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>)
+	    (<span class="hljs-name">encode-json-to-string</span>
+	     \`((:name . ,name) (:message . ,message)))))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">index</span>) ()
+  (<span class="hljs-name">with-html-output-to-string</span> (<span class="hljs-name">s</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:prologue</span> <span class="hljs-literal">t</span> <span class="hljs-symbol">:indent</span> <span class="hljs-literal">t</span>)
+    (<span class="hljs-symbol">:html</span>
+     (<span class="hljs-symbol">:head</span> (<span class="hljs-symbol">:script</span>
+	     <span class="hljs-symbol">:type</span> <span class="hljs-string">&quot;text/javascript&quot;</span>
+	     <span class="hljs-symbol">:src</span> <span class="hljs-string">&quot;/static/js/interface.js&quot;</span>))
+     (<span class="hljs-symbol">:body</span> (<span class="hljs-symbol">:div</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;messages&quot;</span>)
+	    (<span class="hljs-symbol">:textarea</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;input&quot;</span>)
+	    (<span class="hljs-symbol">:button</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;send&quot;</span> <span class="hljs-string">&quot;Send&quot;</span>)))))
+</code></pre>
+<p>ولرغم أننا ما زلنا نعمل بشيفرة Lisp، فإن هذه الواجهة بدأت تبدو مثل <em>لغة تصريحية</em> (declarative language) تقريبًا، نُصرّح فيها <em>بما</em> نريد من معالِجاتنا أن تتحقق منه دون التفكير كثيرًا في <em>كيف</em> ستقوم بذلك. وما نفعله هو بناء <em>لغة خاصة بمجال محدد</em> (domain-specific language، DSL) لدوال المعالجة؛ أي أننا نُنشئ اصطلاحًا وصياغة محددين يتيحان لنا التعبير بإيجاز ودقة عمّا نريد من معالِجاتنا أن تتحقق منه. وهذا الأسلوب في بناء لغة صغيرة لحل المشكلة المطروحة كثيرًا ما يستخدمه مبرمجو Lisp، وهي تقنية مفيدة يمكن تطبيقها في لغات برمجة أخرى.</p>
+<h3 id="لغة-dsl-للمعالجات">لغة DSL للمعالِجات</h3>
+<p>الآن وبعد أن لدينا مواصفة تقريبية لشكل DSL المعالِجات الذي نريده، فكيف ننفّذه؟ أي، ماذا تحديدًا نتوقع أن يحدث عند استدعاء <code>define-handler</code>؟ لننظر في تعريف <code>send-message</code> السابق:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">define-handler</span> (<span class="hljs-name">send-message</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">0</span> room <span class="hljs-number">16</span>))
+     (<span class="hljs-name">name</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">1</span> name <span class="hljs-number">64</span>))
+     (<span class="hljs-name">message</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">5</span> message <span class="hljs-number">256</span>)))
+  (<span class="hljs-name">publish!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>)
+	    (<span class="hljs-name">encode-json-to-string</span>
+	     \`((:name . ,name) (:message . ,message)))))
+</code></pre>
+<p>ما نودّ أن يفعله <code>define-handler</code> هنا هو:</p>
+<ol>
+<li>ربط الإجراء <code>(publish! ...)</code> بمسار URI ‏<code>/send-message</code> في جدول المعالِجات.</li>
+<li>عند ورود طلب إلى مسار URI هذا:
+<ul>
+<li>التأكد من تضمين معاملات HTTP ‏<code>room</code> و<code>name</code> و<code>message</code>.</li>
+<li>التحقق من أن <code>room</code> نص طوله لا يتجاوز 16 محرفًا، وأن <code>name</code>
+نص طوله بين 1 و64 محرفًا (شاملاً الطرفين)، وأن <code>message</code>
+نص طوله بين 5 و256 محرفًا (شاملاً الطرفين أيضًا).</li>
+</ul>
+</li>
+<li>بعد إعادة الاستجابة، إغلاق القناة.</li>
+</ol>
+<p>ورغم أننا نستطيع كتابة دوال Lisp للقيام بكل هذه الأمور ثم تجميع القطع يدويًا بأنفسنا، إلا أن المقاربة الأكثر شيوعًا هي استخدام وسيلة في Lisp اسمها <code>macros</code> من أجل أن <em>تولّد</em> شيفرة Lisp نيابةً عنا. هذا يتيح لنا التعبير بإيجاز عمّا نريد أن يفعله DSL لدينا، دون اضطرارنا إلى صيانة كثير من الشيفرة للقيام بذلك. ويمكنك أن تتصوّر الماكرو (macro) على أنه «قالب قابل للتنفيذ» يُوسَّع إلى شيفرة Lisp في وقت التشغيل.</p>
+<p>وها هو الماكرو <code>define-handler</code> لدينا[^indentation]:</p>
+<p>[^indentation]: يجدر بي أن أوضح أن كتلة الشيفرة أدناه تستخدم مسافة بادئة غير مألوفة إطلاقًا بالنسبة إلى Common Lisp. فقوائم الوسائط (Arglists) لا تُقسَّم عادةً على عدّة أسطر، وتُبقى غالبًا على السطر نفسه الذي يحمل اسم الماكرو أو الدالة. اضطررت إلى فعل ذلك للالتزام بإرشادات عرض السطر في هذا الكتاب، ولكني كنت سأفضّل بدون ذلك أسطرًا أطول تنكسر طبيعيًا عند المواضع التي يحددها محتوى الشيفرة.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> define-handler
+    ((<span class="hljs-name">name</span> <span class="hljs-symbol">&amp;key</span> (<span class="hljs-name">is-stream</span>? <span class="hljs-literal">t</span>) (<span class="hljs-name">content-type</span> <span class="hljs-string">&quot;text/html&quot;</span>)) (<span class="hljs-name">&amp;rest</span> args)
+     <span class="hljs-symbol">&amp;body</span> body)
+  (<span class="hljs-name">if</span> is-stream?
+      \`(bind-handler
+	,name (make-closing-handler
+	       (:content-type ,content-type)
+	       ,args ,@body))
+      \`(bind-handler
+	,name (make-stream-handler ,args ,@body))))
+</code></pre>
+<p>إنها تفوّض العمل إلى ثلاثة ماكروهات أخرى (<code>bind-handler</code> و<code>make-closing-handler</code>، \\newline <code>make-stream-handler</code>) سنعرّفها لاحقًا. وستُنشئ <code>make-closing-handler</code> معالِجًا لدورة طلب/استجابة HTTP كاملة؛ في المقابل تعالج <code>make-stream-handler</code> رسالة SSE. والمُنبِه <code>is-stream?</code> يميّز بين الحالتين نيابةً عنا. أما مشعار الفاصلة المائلة العكسية (<code>backtick</code>) والفاصلة، فهما معاملان خاصان بالماكروهات يمكننا استخدامهما «ثقب الأشواك» (to &quot;cut holes&quot;) في شيفرتنا، تُملأ بقيم تحددها شيفرة Lisp لدينا لحظة استخدمنا الفعلي لـ<code>define-handler</code>.</p>
+<p>ولاحِظ مدى انصياع ماكرونا لمواصفة ما أردناه أن يفعله <code>define-handler</code>: فلو كنا سنكتب سلسلة من دوال Lisp للقيام بكل هذه الأمور، لاستطعنا تمييز نيّة الشيفرة بالفحص البصري بصعوبة أكبر بكثير.</p>
+<h3 id="توسيع-معالج">توسيع معالِج</h3>
+<p>لنمر خطوة بخطوة على توسيع معالِج <code>send-message</code> كي نفهم على نحو أفضل ما يحدث فعليًا حين «يوسّع» Lisp ماكرونا نيابةً عنا. وسنستخدم خاصية توسيع الماكروهات من وضع Emacs ‏<a href="https://common-lisp.net/project/slime/">SLIME</a> للقيام بذلك. إن استدعاء <code>macro-expander</code> على <code>define-handler</code> سيوسّع ماكرونا «درجة» واحدة، تاركًا ماكروهاتنا المساعدة في صورتها المحشوّة بعد:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">BIND-HANDLER</span>
+ SEND-MESSAGE
+ (<span class="hljs-name">MAKE-CLOSING-HANDLER</span>
+  (<span class="hljs-symbol">:CONTENT-TYPE</span> <span class="hljs-string">&quot;text/html&quot;</span>)
+  ((<span class="hljs-name">ROOM</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">0</span> ROOM <span class="hljs-number">16</span>))
+   (<span class="hljs-name">NAME</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">1</span> NAME <span class="hljs-number">64</span>))
+   (<span class="hljs-name">MESSAGE</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">5</span> MESSAGE <span class="hljs-number">256</span>)))
+  (<span class="hljs-name">PUBLISH!</span> (<span class="hljs-name">INTERN</span> ROOM <span class="hljs-symbol">:KEYWORD</span>)
+	    (<span class="hljs-name">ENCODE-JSON-TO-STRING</span>
+	     \`((:NAME ,@NAME) (:MESSAGE ,@MESSAGE))))))
+</code></pre>
+<p>لقد وفّر لنا ماكرونا بالفعل بعض الكتابة عبر استبدال شيفرتنا الخاصة بـ<code>send-message</code> داخل قالب المعالِج لدينا. و<code>bind-handler</code> هو ماكرو آخر يربط مسار URI بدالة معالِج على جدول المعالِجات لدينا؛ ولأنه صار الآن في جذر توسيعنا، فلنرَ كيف هو معرّف قبل أن نوسّع هذا أكثر.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> bind-handler (<span class="hljs-name">name</span> handler)
+  (<span class="hljs-name">assert</span> (<span class="hljs-name">symbolp</span> name) <span class="hljs-literal">nil</span> <span class="hljs-string">&quot;\`name\` must be a symbol&quot;</span>)
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">uri</span> (<span class="hljs-name">if</span> (<span class="hljs-name">eq</span> name &#x27;root) <span class="hljs-string">&quot;/&quot;</span> (<span class="hljs-name">format</span> <span class="hljs-literal">nil</span> <span class="hljs-string">&quot;/~(~a~)&quot;</span> name))))
+    \`(progn
+       (when (gethash ,uri *handlers*)
+	 (warn ,(format <span class="hljs-literal">nil</span> <span class="hljs-string">&quot;Redefining handler &#x27;~a&#x27;&quot;</span> uri)))
+       (setf (gethash ,uri *handlers*) ,handler))))
+</code></pre>
+<p>يحدث الربط في السطر الأخير: <code>(setf (gethash ,uri *handlers*) ,handler)</code>، وهو ما تبدو عليه إسنادات جداول التجزئة (hash tables) في Common Lisp (باستثناء الفواصل، فهي جزء من ماكرونا). ولاحظ أن <code>assert</code> يقع خارج المنطقة المقتبسة، وهذا يعني أنه سيُنفَّذ بمجرد <em>استدعاء</em> الماكرو لا حين تُقيَّم نتيجته.</p>
+<p>وحين نوسّع بدوره توسيعنا لـ<code>define-handler</code> الخاص بـ<code>send-message</code> أعلاه، نحصل على:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">PROGN</span>
+  (<span class="hljs-name">WHEN</span> (<span class="hljs-name">GETHASH</span> <span class="hljs-string">&quot;/send-message&quot;</span> <span class="hljs-variable">*HANDLERS*</span>)
+    (<span class="hljs-name">WARN</span> <span class="hljs-string">&quot;Redefining handler &#x27;/send-message&#x27;&quot;</span>))
+  (<span class="hljs-name">SETF</span> (<span class="hljs-name">GETHASH</span> <span class="hljs-string">&quot;/send-message&quot;</span> <span class="hljs-variable">*HANDLERS*</span>)
+	(<span class="hljs-name">MAKE-CLOSING-HANDLER</span>
+	 (<span class="hljs-symbol">:CONTENT-TYPE</span> <span class="hljs-string">&quot;text/html&quot;</span>)
+	 ((<span class="hljs-name">ROOM</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">0</span> ROOM <span class="hljs-number">16</span>))
+	  (<span class="hljs-name">NAME</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">1</span> NAME <span class="hljs-number">64</span>))
+	  (<span class="hljs-name">MESSAGE</span> <span class="hljs-symbol">:STRING</span> (<span class="hljs-name">LEN-BETWEEN</span> <span class="hljs-number">5</span> MESSAGE <span class="hljs-number">256</span>)))
+	 (<span class="hljs-name">PUBLISH!</span> (<span class="hljs-name">INTERN</span> ROOM <span class="hljs-symbol">:KEYWORD</span>)
+		   (<span class="hljs-name">ENCODE-JSON-TO-STRING</span>
+		    \`((:NAME ,@NAME) (:MESSAGE ,@MESSAGE)))))))
+</code></pre>
+<p>هذا بدأ يبدو أشبه بتنفيذ مخصّص لما كنا سنكتبه لتوجيه طلب من مسار URI إلى دالة معالِج، لو كنا كتبناه كله بأنفسنا. لكننا لم نضطر إلى ذلك!</p>
+<p>وما زال أمامنا في توسيعنا <code>make-closing-handler</code>. إليك تعريفها:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> make-closing-handler
+    ((<span class="hljs-name">&amp;key</span> (<span class="hljs-name">content-type</span> <span class="hljs-string">&quot;text/html&quot;</span>)) (<span class="hljs-name">&amp;rest</span> args) <span class="hljs-symbol">&amp;body</span> body)
+  \`(lambda (sock parameters)
+     (declare (ignorable parameters))
+     ,(arguments
+       args
+       \`(let ((res (make-instance
+		    &#x27;response
+		    :content-type ,content-type
+		    :body (progn ,@body))))
+	  (write! res sock)
+	  (socket-close sock)))))
+</code></pre>
+<p>إذن، فإن إنشاء معالِج من نوع closing-handler ينطوي على إنشاء <code>lambda</code>، وهو ما تسمّيه الدوال المجهولة في Common Lisp. ونحن أيضاً ننشئ نطاقًا داخليًا يصنع <code>response</code> من الوسيط <code>body</code> الذي نمرّره، ثم ينفّذ <code>write!</code> على المقبس الطالب، ثم يغلقه. والسؤال المتبقي هو: ما هي <code>arguments</code>؟</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defun</span> arguments (<span class="hljs-name">args</span> body)
+  (<span class="hljs-name">loop</span> with res = body
+     for arg in args
+     do (<span class="hljs-name">match</span> arg
+	 ((<span class="hljs-name">guard</span> arg-sym (<span class="hljs-name">symbolp</span> arg-sym))
+	  (<span class="hljs-name">setf</span> res \`(let ((,arg-sym ,(arg-exp arg-sym))) ,res)))
+	 ((<span class="hljs-name">list*</span> arg-sym type restrictions)
+	  (<span class="hljs-name">setf</span> res
+		(<span class="hljs-name">let</span> ((<span class="hljs-name">sym</span> (<span class="hljs-name">or</span> (<span class="hljs-name">type-expression</span>
+				(<span class="hljs-name">arg-exp</span> arg-sym)
+				type restrictions)
+			       (<span class="hljs-name">arg-exp</span> arg-sym))))
+		  \`(let ((,arg-sym ,sym))
+		     ,@(awhen (type-assertion arg-sym type restrictions)
+			 \`((assert-http ,it)))
+		     ,res)))))
+     finally (<span class="hljs-name">return</span> res)))
+</code></pre>
+<p>أهلاً بك في الجزء الصعب. تحوّل <code>arguments</code> المدقِّقات (validators) التي سجّلناها مع معالِجنا إلى شجرة من محاولات تحليل وتأكيدات. وتُستخدم <code>type-expression</code> و<code>arg-exp</code> و<code>type-assertion</code> لتنفيذ «نظام أنواع» وفرضه على أنواع البيانات التي نتوقعها في استجاباتنا؛ وسنتناولها في \\aosasecref{sec.eventsweb.types}. واستخدام هذا مع <code>make-closing-handler</code> من شأنه أن ينفّذ قواعد التحقق التي كتبناها هنا:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">define-handler</span> (<span class="hljs-name">send-message</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">16</span> (<span class="hljs-name">length</span> room)))
+     (<span class="hljs-name">name</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">64</span> (<span class="hljs-name">length</span> name) <span class="hljs-number">1</span>))
+     (<span class="hljs-name">message</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">256</span> (<span class="hljs-name">length</span> message) <span class="hljs-number">5</span>)))
+  (<span class="hljs-name">publish!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>)
+	    (<span class="hljs-name">encode-json-to-string</span>
+	     \`((:name . ,name) (:message . ,message)))))
+</code></pre>
+<p>...بوصفها تسلسلًا من الفحوص «مبسوطًا» (unrolled) يلزم للتحقق من الطلب:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">LAMBDA</span> (<span class="hljs-name">SOCK</span> #<span class="hljs-symbol">:COOKIE</span>?<span class="hljs-number">1111</span> SESSION PARAMETERS)
+  (<span class="hljs-name">DECLARE</span> (<span class="hljs-name">IGNORABLE</span> SESSION PARAMETERS))
+  (<span class="hljs-name">LET</span> ((<span class="hljs-name">ROOM</span> (<span class="hljs-name">AIF</span> (<span class="hljs-name">CDR</span> (<span class="hljs-name">ASSOC</span> <span class="hljs-symbol">:ROOM</span> PARAMETERS))
+		   (<span class="hljs-name">URI-DECODE</span> IT)
+		   (<span class="hljs-name">ERROR</span> (<span class="hljs-name">MAKE-INSTANCE</span>
+			   &#x27;HTTP-ASSERTION-ERROR
+			   <span class="hljs-symbol">:ASSERTION</span> &#x27;ROOM)))))
+    (<span class="hljs-name">ASSERT-HTTP</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">16</span> (<span class="hljs-name">LENGTH</span> ROOM)))
+    (<span class="hljs-name">LET</span> ((<span class="hljs-name">NAME</span> (<span class="hljs-name">AIF</span> (<span class="hljs-name">CDR</span> (<span class="hljs-name">ASSOC</span> <span class="hljs-symbol">:NAME</span> PARAMETERS))
+		     (<span class="hljs-name">URI-DECODE</span> IT)
+		     (<span class="hljs-name">ERROR</span> (<span class="hljs-name">MAKE-INSTANCE</span>
+			     &#x27;HTTP-ASSERTION-ERROR
+			     <span class="hljs-symbol">:ASSERTION</span> &#x27;NAME)))))
+      (<span class="hljs-name">ASSERT-HTTP</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">64</span> (<span class="hljs-name">LENGTH</span> NAME) <span class="hljs-number">1</span>))
+      (<span class="hljs-name">LET</span> ((<span class="hljs-name">MESSAGE</span> (<span class="hljs-name">AIF</span> (<span class="hljs-name">CDR</span> (<span class="hljs-name">ASSOC</span> <span class="hljs-symbol">:MESSAGE</span> PARAMETERS))
+			  (<span class="hljs-name">URI-DECODE</span> IT)
+			  (<span class="hljs-name">ERROR</span> (<span class="hljs-name">MAKE-INSTANCE</span>
+				  &#x27;HTTP-ASSERTION-ERROR
+				  <span class="hljs-symbol">:ASSERTION</span> &#x27;MESSAGE)))))
+	(<span class="hljs-name">ASSERT-HTTP</span> (<span class="hljs-name">&gt;=</span> <span class="hljs-number">256</span> (<span class="hljs-name">LENGTH</span> MESSAGE) <span class="hljs-number">5</span>))
+	(<span class="hljs-name">LET</span> ((<span class="hljs-name">RES</span> (<span class="hljs-name">MAKE-INSTANCE</span>
+		    &#x27;RESPONSE <span class="hljs-symbol">:CONTENT-TYPE</span> <span class="hljs-string">&quot;text/html&quot;</span>
+		    <span class="hljs-symbol">:COOKIE</span> (<span class="hljs-name">UNLESS</span> #<span class="hljs-symbol">:COOKIE</span>?<span class="hljs-number">1111</span>
+			      (<span class="hljs-name">TOKEN</span> SESSION))
+		    <span class="hljs-symbol">:BODY</span> (<span class="hljs-name">PROGN</span>
+			    (<span class="hljs-name">PUBLISH!</span>
+			     (<span class="hljs-name">INTERN</span> ROOM <span class="hljs-symbol">:KEYWORD</span>)
+			     (<span class="hljs-name">ENCODE-JSON-TO-STRING</span>
+			      \`((:NAME ,@NAME)
+				(:MESSAGE ,@MESSAGE))))))))
+	  (<span class="hljs-name">WRITE!</span> RES SOCK)
+	  (<span class="hljs-name">SOCKET-CLOSE</span> SOCK))))))
+</code></pre>
+<p>يوفّر هذا التحقق الذي نحتاجه لدورات طلب/استجابة HTTP الكاملة. وماذا عن رسائل SSE لدينا؟ تفعل <code>make-stream-handler</code> الشيء الأساسي نفسه الذي تفعله <code>make-closing-handler</code>، إلا أنها تكتب <code>SSE</code> بدلاً من <code>RESPONSE</code>، وتستدعي <code>force-output</code> بدلاً من <code>socket-close</code>، لأننا نريد تفريغ البيانات عبر الاتصال دون إغلاقه:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> make-stream-handler ((<span class="hljs-name">&amp;rest</span> args) <span class="hljs-symbol">&amp;body</span> body)
+  \`(lambda (sock parameters)
+     (declare (ignorable parameters))
+     ,(arguments
+       args
+       \`(let ((res (progn ,@body)))
+	  (write! (make-instance
+		   &#x27;response
+		   :keep-alive? <span class="hljs-literal">t</span>
+		   :content-type <span class="hljs-string">&quot;text/event-stream&quot;</span>)
+		  sock)
+	  (write!
+	   (make-instance &#x27;sse :data (or res <span class="hljs-string">&quot;Listening...&quot;</span>))
+	   sock)
+	  (force-output
+	   (socket-stream sock))))))
+
+(<span class="hljs-name">defmacro</span> assert-http (<span class="hljs-name">assertion</span>)
+  \`(unless ,assertion
+     (error (make-instance
+	     &#x27;http-assertion-error
+	     :assertion &#x27;,assertion))))
+</code></pre>
+<p><code>assert-http</code> هو ماكرو ينشئ شيفرة القالب الجاهزة (boilerplate) التي نحتاجها في حالات الخطأ. وهو يتوسّع إلى فحص للتأكيد المُعطى، ويرمي <code>http-assertion-error</code> عند فشل ذلك الفحص، ويحزم التأكيد الأصلي داخل ذلك الحدث.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> assert-http (<span class="hljs-name">assertion</span>)
+  \`(unless ,assertion
+     (error (make-instance
+	     &#x27;http-assertion-error
+	     :assertion &#x27;,assertion))))
+</code></pre>
+<h3 id="أنواع-http">«أنواع» HTTP</h3>
+<p>\\label{sec.eventsweb.types}</p>
+<p>في القسم السابق، لمّنا بإيجاز إلى ثلاثة تعبيرات نستخدمها لتنفيذ نظام التحقق من أنواع HTTP لدينا: <code>arg-exp</code> و<code>type-expression</code> و<code>type-assertion</code>. ومتى فهمتَ هذه، لن يبقى في إطار عملنا أي سحر. سنبدأ بالسهل أولًا.</p>
+<h4>arg-exp</h4>
+<p>تأخذ <code>arg-exp</code> رمزًا (symbol) وتنشئ تعبير <code>aif</code> يتحقق من وجود وسيط.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defun</span> arg-exp (<span class="hljs-name">arg-sym</span>)
+  \`(aif (cdr (assoc ,(-&gt;keyword arg-sym) parameters))
+	(uri-decode it)
+	(error (make-instance
+		&#x27;http-assertion-error
+		:assertion &#x27;,arg-sym))))
+</code></pre>
+<p>يبدو تقييم <code>arg-exp</code> على رمز كالتالي:</p>
+<pre><code class="language-lisp">HOUSE&gt; (<span class="hljs-name">arg-exp</span> &#x27;room)
+(<span class="hljs-name">AIF</span> (<span class="hljs-name">CDR</span> (<span class="hljs-name">ASSOC</span> <span class="hljs-symbol">:ROOM</span> PARAMETERS))
+     (<span class="hljs-name">URI-DECODE</span> IT)
+     (<span class="hljs-name">ERROR</span> (<span class="hljs-name">MAKE-INSTANCE</span>
+	     &#x27;HTTP-ASSERTION-ERROR
+	     <span class="hljs-symbol">:ASSERTION</span> &#x27;ROOM)))
+HOUSE&gt;
+</code></pre>
+<p>لقد كنا نستخدم صيغًا مثل <code>aif</code> و<code>awhen</code> دون فهم كيفية عملها، فلنخصّص بعض الوقت لاستكشافها الآن.</p>
+<p>وتذكّر أن شيفرة Lisp ممثَّلة في ذاتها على هيئة شجرة. هذا هو ما تفعله الأقواس؛ فهي تبيّن لنا كيف تتترابط الأوراق والأغصان معًا. فإذا عدنا خطوة إلى ما كنا نفعله في القسم السابق، فإن <code>make-closing-handler</code> تستدعي دالة اسمها <code>arguments</code> لتوليد جزء من شجرة Lisp التي تبنيها، وهي بدورها تستدعي بعض دوال المساعدة التي تتلاعب بالشجرة، ومنها <code>arg-exp</code>، لتوليد قيمة إرجاعها.</p>
+<p>بمعنى آخر، لقد بنينا نظامًا صغيرًا يأخذ تعبير Lisp كمدخل، وينتج تعبير Lisp مختلفًا كمخرج. وعلى الأرجح فإن أبسط طريقة لتخييل هذا هي رؤيته بوصفه مُصرِّفًا بسيطًا من Common Lisp إلى Common Lisp، مخصَّصًا للمشكلة بعينها.</p>
+<p>وتصنيفٌ شائع الاستخدام لهكذا من المُصرِّفين هو أنها <em>ماكروهات إحالة</em> (<em>anaphoric macros</em>). وتأتي هذه التسمية من المفهوم اللغوي <em>الضمير المرجعي</em> (<em>anaphor</em>)، وهو استخدام كلمة واحدة بديلاً عن مجموعة كلمات سبقتها. و<code>aif</code> و<code>awhen</code> ماكروهات إحالة، وهما الوحيدتان التي أكثُر من استخدامهما. وهناك الكثير غيرهما في حزمة <a href="http://www.cliki.net/Anaphora"><code>anaphora</code></a>.</p>
+<p>وعلى حدّ علمي، فقد عُرِّفت ماكروهات الإحالة أول مرة من قِبل Paul Graham في <a href="http://dunsmor.com/lisp/onlisp/onlisp_18.html">فصل من OnLisp</a>. وحالة الاستخدام التي يقدّمها هي موقف تريد فيه إجراء نوع ما من الفحص المكلف أو شبه المكلف، ثم تفعل شيئًا بشكل مشروط على أساس النتيجة. وفي السياق أعلاه، نستخدم <code>aif</code> لإجراء فحص على نتيجة اجتياز <code>alist</code>.</p>
+<pre><code class="language-lisp">(<span class="hljs-name">aif</span> (<span class="hljs-name">cdr</span> (<span class="hljs-name">assoc</span> <span class="hljs-symbol">:room</span> parameters))
+     (<span class="hljs-name">uri-decode</span> it)
+     (<span class="hljs-name">error</span> (<span class="hljs-name">make-instance</span>
+	     &#x27;http-assertion-error
+	     <span class="hljs-symbol">:assertion</span> &#x27;room)))
+</code></pre>
+<p>يأخذ هذا <code>cdr</code> للبحث عن الرمز <code>:room</code> في قائمة الارتباط <code>parameters</code>. فإذا أعاد ذلك قيمة غير <code>nil</code> فإننا نفكّ ترميزها بـ<code>uri-decode</code>، وإلا فرمِ خطأً من النوع <code>http-assertion-error</code>.</p>
+<p>بعبارة أخرى، ما سبق يعادل:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">let</span> ((<span class="hljs-name">it</span> (<span class="hljs-name">cdr</span> (<span class="hljs-name">assoc</span> <span class="hljs-symbol">:room</span> parameters))))
+  (<span class="hljs-name">if</span> it
+      (<span class="hljs-name">uri-decode</span> it)
+      (<span class="hljs-name">error</span> (<span class="hljs-name">make-instance</span>
+	      &#x27;http-assertion-error
+	      <span class="hljs-symbol">:assertion</span> &#x27;room))))
+</code></pre>
+<p>غالبًا ما تستخدم اللغات الوظيفية المُنمَّطة بشدة مثل Haskell نوع <code>Maybe</code> في هذا الموقف. أما في Common Lisp، فنحن نلتقط الرمز <code>it</code> في التوسيع بوصفه اسمًا لنتيجة الفحص.</p>
+<p>والآن بعد فهمنا لهذا، ينبغي أن نتمكّن من رؤية أن <code>arg-exp</code> يولّد جزءًا محدّدًا ومتكررًا من شجرة الشيفرة نريد في النهاية تقييمها. وفي هذه الحالة، الجزء الذي يتحقق من وجود الوسيط المعطى ضمن <code>parameters</code> الخاصة بالمعالِجات. الآن، فلننتقل إلى...</p>
+<h4>type-expression</h4>
+<pre><code class="language-lisp">(<span class="hljs-name">defgeneric</span> type-expression (<span class="hljs-name">parameter</span> type)
+  (<span class="hljs-symbol">:documentation</span>
+   <span class="hljs-string">&quot;A type-expression will tell the server
+how to convert a parameter from a string to
+a particular, necessary type.&quot;</span>))
+...
+(<span class="hljs-name">defmethod</span> type-expression (<span class="hljs-name">parameter</span> type) <span class="hljs-literal">nil</span>)
+</code></pre>
+<p>هذه دالة عامة تولّد هياكل شجرية جديدة (وهي شيفرة Lisp بالمناسبة)، لا مجرد دالة فحسب. وكل ما يخبرك به أعلاه هو أن <code>type-expression</code> تكون <code>NIL</code> افتراضيًا. أي بمعنى آخر، أننا لا نملك واحدة. وإذا صادفنا <code>NIL</code> فإننا نستخدم المخرج الخام لـ<code>arg-exp</code>، لكن ذلك لا يخبرنا الكثير عن الحالة الأكثر شيوعًا. ولرؤية ذلك، فلننظر في تعبير <code>define-http-type</code> مدمج (في <code>:house</code>).</p>
+<pre><code class="language-lisp">(<span class="hljs-name">define-http-type</span> (<span class="hljs-symbol">:integer</span>)
+    <span class="hljs-symbol">:type-expression</span> \`(parse-integer ,parameter <span class="hljs-symbol">:junk-allowed</span> t)
+    <span class="hljs-symbol">:type-assertion</span> \`(numberp ,parameter))
+</code></pre>
+<p>إن <code>:integer</code> هو شيء نصنعه من <code>parameter</code> باستخدام <code>parse-integer</code>. ويخبر الوسيط <code>junk-allowed</code> دالة <code>parse-integer</code> أننا لسنا واثقين من أن البيانات التي نمرّرها قابلة للتحليل فعلاً، لذا نحتاج إلى التأكد من أن النتيجة المُعادة عدد صحيح. فإذا لم تكن كذلك، نحصل على هذا السلوك:</p>
+<pre><code>HOUSE&gt; (type-expression 'blah :integer)
+(PARSE-INTEGER BLAH :JUNK-ALLOWED T)
+HOUSE&gt;
+</code></pre>
+<p>تُعد <code>define-http-handler</code>[^readable] أحد الرموز المُصدَّرة لإطار عملنا. وهذا يتيح لمبرمجي تطبيقاتنا تعريف أنواعهم الخاصة لتبسيط التحليل فوق عدد قليل من «الأنواع المدمجة» التي نوفّرها لهم (<code>:string</code> و<code>:integer</code> و<code>:keyword</code> و<code>:json</code> و<code>:list-of-keyword</code> و<code>:list-of-integer</code>).</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> define-http-type ((<span class="hljs-name">type</span>) <span class="hljs-symbol">&amp;key</span> type-expression type-assertion)
+  (<span class="hljs-name">with-gensyms</span> (<span class="hljs-name">tp</span>)
+    \`(let ((,tp ,type))
+       ,@(when type-expression
+	  \`((defmethod type-expression (parameter (type (eql ,tp)))
+	      ,type-expression)))
+       ,@(when type-assertion
+	  \`((defmethod type-assertion (parameter (type (eql ,tp)))
+	      ,type-assertion))))))
+</code></pre>
+<p>[^readable]: هذا الماكرو صعب القراءة لأنه يحاول بجهد أن يجعل مخرجه قابلًا للقراءة من الإنسان، عبر توسيع <code>NIL</code>s بعيدًا باستخدام <code>,@</code> متى أمكن.</p>
+<p>ويعمل عن طريق إنشاء تعريفات دوال لـ<code>type-expression</code> و<code>type-assertion</code> للنوع الجاري تعريفه. يمكننا أن نترك لمستخدمَي إطار عملنا تنفيذ ذلك يدويًا دون عناء يذكر؛ غير أن إضافة هذا المستوى الإضافي من التوجيه تمنحنا، نحن مبرمجي إطار العمل، حرية تغيير <em>كيف</em> تُنفَّذ الأنواع دون إجبار مستخدمينا على إعادة كتابة مواصفاتهم. وليس هذا اعتبارًا أكاديميًا فحسب؛ فقد أجريتُ بنفسي تغييرات جذرية في هذا الجزء من النظام حين بنيته أول مرة، وسعدت بأن عدد التعديلات التي اضطررت إليها في التطبيقات المعتمدة عليه كان ضئيلًا جدًا.</p>
+<p>فلننظر في توسيع تعريف العدد الصحيح ذلك لنرى كيف يعمل بالتفصيل:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">LET</span> ((<span class="hljs-name">#</span><span class="hljs-symbol">:TP1288</span> <span class="hljs-symbol">:INTEGER</span>))
+  (<span class="hljs-name">DEFMETHOD</span> TYPE-EXPRESSION (<span class="hljs-name">PARAMETER</span> (<span class="hljs-name">TYPE</span> (<span class="hljs-name">EQL</span> #<span class="hljs-symbol">:TP1288</span>)))
+    \`(PARSE-INTEGER ,PARAMETER <span class="hljs-symbol">:JUNK-ALLOWED</span> T))
+  (<span class="hljs-name">DEFMETHOD</span> TYPE-ASSERTION (<span class="hljs-name">PARAMETER</span> (<span class="hljs-name">TYPE</span> (<span class="hljs-name">EQL</span> #<span class="hljs-symbol">:TP1288</span>)))
+    \`(NUMBERP ,PARAMETER)))
+</code></pre>
+<p>وكما قلنا، فإن هذا لا يقلّص حجم الشيفرة كثيرًا، لكنه يمنعنا من الحاجة إلى الاهتمام بما هي معاملات تلك الدوال تحديدًا، أو حتى أنها دوال من الأساس.</p>
+<h4>type-assertion</h4>
+<p>الآن وبعد أن أصبح بإمكاننا تعريف الأنواع، فلننظر في كيف نستخدم <code>type-assertion</code> للتحقق من أن عملية تحليل ما تُستوفي متطلباتنا. وهي أيضًا تأخذ صورة زوج متكامل من <code>defgeneric</code> و<code>defmethod</code> تماماً مثل <code>type-expression</code>:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defgeneric</span> type-assertion (<span class="hljs-name">parameter</span> type)
+  (<span class="hljs-symbol">:documentation</span>
+   <span class="hljs-string">&quot;A lookup assertion is run on a parameter
+immediately after conversion. Use it to restrict
+ the space of a particular parameter.&quot;</span>))
+...
+(<span class="hljs-name">defmethod</span> type-assertion (<span class="hljs-name">parameter</span> type) <span class="hljs-literal">nil</span>)
+</code></pre>
+<p>وهذا ما يُخرجه هذا:</p>
+<pre><code class="language-lisp">HOUSE&gt; (<span class="hljs-name">type-assertion</span> &#x27;blah <span class="hljs-symbol">:integer</span>)
+(<span class="hljs-name">NUMBERP</span> BLAH)
+HOUSE&gt;
+</code></pre>
+<p>هناك حالات لا يحتاج فيها <code>type-assertion</code> إلى فعل أي شيء. فمثلًا، بما أن معاملات HTTP تُعطى لنا كنصوص، فلا يوجد ما يتحقق منه تأكيد النوع <code>:string</code> لدينا:</p>
+<pre><code class="language-lisp">HOUSE&gt; (<span class="hljs-name">type-assertion</span> &#x27;blah <span class="hljs-symbol">:string</span>)
+NIL
+HOUSE&gt;
+</code></pre>
+<h3 id="كل-شيء-معا-الآن">كل شيء معًا الآن</h3>
+<p>نجحنا! لقد بنينا إطار عمل ويب فوق تنفيذ خادم ويب قائم على الأحداث. ويحدد إطار عملنا (وDSL المعالِجات) تطبيقات جديدة عن طريق:</p>
+<ul>
+<li>ربط عناوين URL بالمعالِجات؛</li>
+<li>تعريف المعالِجات لتطبيق قواعد سلامة الأنواع والتحقق على الطلبات؛</li>
+<li>تحديد أنواع جديدة للمعالِجات عند الحاجة، بشكل اختياري.</li>
+</ul>
+<p>والآن يمكننا أن نصف تطبيقنا هكذا:</p>
+<pre><code class="language-lisp">(<span class="hljs-name">defun</span> len-between (<span class="hljs-name">min</span> thing max)
+  (<span class="hljs-name">&gt;=</span> max (<span class="hljs-name">length</span> thing) min))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">source</span> <span class="hljs-symbol">:is-stream</span>? <span class="hljs-literal">nil</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">0</span> room <span class="hljs-number">16</span>)))
+  (<span class="hljs-name">subscribe!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>) sock))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">send-message</span>)
+    ((<span class="hljs-name">room</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">0</span> room <span class="hljs-number">16</span>))
+     (<span class="hljs-name">name</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">1</span> name <span class="hljs-number">64</span>))
+     (<span class="hljs-name">message</span> <span class="hljs-symbol">:string</span> (<span class="hljs-name">len-between</span> <span class="hljs-number">5</span> message <span class="hljs-number">256</span>)))
+  (<span class="hljs-name">publish!</span> (<span class="hljs-name">intern</span> room <span class="hljs-symbol">:keyword</span>)
+	    (<span class="hljs-name">encode-json-to-string</span>
+	     \`((:name . ,name) (:message . ,message)))))
+
+(<span class="hljs-name">define-handler</span> (<span class="hljs-name">index</span>) ()
+  (<span class="hljs-name">with-html-output-to-string</span> (<span class="hljs-name">s</span> <span class="hljs-literal">nil</span> <span class="hljs-symbol">:prologue</span> <span class="hljs-literal">t</span> <span class="hljs-symbol">:indent</span> <span class="hljs-literal">t</span>)
+    (<span class="hljs-symbol">:html</span>
+     (<span class="hljs-symbol">:head</span> (<span class="hljs-symbol">:script</span>
+	     <span class="hljs-symbol">:type</span> <span class="hljs-string">&quot;text/javascript&quot;</span>
+	     <span class="hljs-symbol">:src</span> <span class="hljs-string">&quot;/static/js/interface.js&quot;</span>))
+     (<span class="hljs-symbol">:body</span> (<span class="hljs-symbol">:div</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;messages&quot;</span>)
+	    (<span class="hljs-symbol">:textarea</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;input&quot;</span>)
+	    (<span class="hljs-symbol">:button</span> <span class="hljs-symbol">:id</span> <span class="hljs-string">&quot;send&quot;</span> <span class="hljs-string">&quot;Send&quot;</span>)))))
+
+(<span class="hljs-name">start</span> <span class="hljs-number">4242</span>)
+</code></pre>
+<p>ومتى كتبنا <code>interface.js</code> لتوفير التفاعل في جانب العميل، سيقوم هذا بتشغيل خادم دردشة HTTP على المنفذ <code>4242</code> والاستماع للاتصالات الواردة.</p>
+`,t={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,t as default,p as headings,c as html,e as slug,l as title};

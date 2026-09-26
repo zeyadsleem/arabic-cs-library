@@ -1,0 +1,406 @@
+const s="500-lines",a="blockcode",n="Blockcode: A visual programming toolkit",l="index",p="بلوك كود: مجموعة أدوات برمجة بصرية",e=[{depth:2,id:"الأهداف-والبنية",text:"الأهداف والبنية"},{depth:3,id:"طبيعة-السكربتات",text:"طبيعة السكربتات"},{depth:3,id:"تطبيقات-الويب",text:"تطبيقات الويب"},{depth:2,id:"المرور-على-الشيفرة-خطوة-بخطوة",text:"المرور على الشيفرة خطوةً بخطوة"},{depth:3,id:"blocksjs",text:"blocks.js"},{depth:3,id:"dragjs",text:"drag.js"},{depth:3,id:"menujs",text:"menu.js"},{depth:3,id:"turtlejs",text:"turtle.js"},{depth:2,id:"الدروس-المستفادة",text:"الدروس المستفادة"},{depth:3,id:"لماذا-لا-نستخدم-mvc",text:"لماذا لا نستخدم MVC؟"},{depth:3,id:"التغييرات-اللعبية-قد-تقود-إلى-تغييرات-حقيقية",text:"التغييرات اللعبية قد تقود إلى تغييرات حقيقية"}],t=`<p><em><a href="https://twitter.com/dethe">ديتي</a> هو أب يعشق التقنية، ومبرمج يعنى بالجماليات، ومرشد، ومبتكر أداة البرمجة البصرية <a href="http://waterbearlang.com/">واتربير</a>. وهو يستضيف صالونات «صنّاع النماذج» التعليمية في فانكوفر، ويرغب في ملء العالم بأرانب أوريغامي روبوتية.</em></p>
+<p>في لغات البرمجة القائمة على الكُتل (blocks)، تكتب البرامج بسحب الكتل التي تمثّل أجزاء من البرنامج وربطها ببعضها. وتختلف اللغات القائمة على الكتل عن لغات البرمجة التقليدية التي تكتب فيها الكلمات والرموز.</p>
+<p>قد يكون تعلّم لغة برمجة صعباً لأنها شديدة الحساسية حتى لأصغر خطأ إملائي. معظم لغات البرمجة حسّاسة لحالة الأحرف، ذات نحو غامض، وترفض التنفيذ إن وضعت فاصلة منقوطة في المكان الخطأ بمقدار ما - أو أسوأ من ذلك، إن أهملتها تماماً. وإضافةً إلى ذلك، فإن معظم لغات البرمجة المستخدمة اليوم مبنية على الإنجليزية ولا يمكن تعريب صياغتها.</p>
+<p>على النقيض من ذلك، يمكن للغة كتل مصمَّمة بإتقان أن تقضي على أخطاء الصياغة تماماً. فما زال بإمكانك إنشاء برنامج يفعل الشيء الخطأ، لكن لا يمكنك إنشاء واحد بصياغة خاطئة: فالكتل ببساطة لن تتّسع بهذا الشكل. كما أن لغات الكتل أكثر قابلية للاكتشاف: يمكنك أن ترى جميع بِنَى اللغة ومكتباتها (libraries) في قائمة الكتل مباشرة. وإضافةً إلى ذلك، يمكن تعريب الكتل إلى أي لغة بشرية دون تغيير معنى لغة البرمجة.</p>
+<p>\\aosafigure[240pt]/images/500-lines/blockcode-0-blockcode_ide.webp{بيئة التطوير المتكاملة (IDE) لبلوك كود أثناء الاستخدام}{500l.blockcode.ide}</p>
+<p>للغات القائمة على الكتل تاريخ طويل، ومن أبرزها <a href="http://www.lego.com/en-us/mindstorms/">ليغو مايستورمز</a> و<a href="http://www.alice.org/index.php">أليس ثري دي</a> و<a href="http://education.mit.edu/projects/starlogo-tng">ستارلوغو</a> و<a href="http://scratch.mit.edu/">خُصّصاً سكراتش</a>. وهناك أيضاً عدة أدوات للبرمجة بالكتل على الويب: <a href="https://developers.google.com/blockly/">بلوكلي</a> و<a href="http://appinventor.mit.edu/explore/">آب إنفنتور</a> و<a href="http://www.tynker.com/">تينكر</a> و<a href="http://en.wikipedia.org/wiki/Visual_programming_language">وأدوات أخرى كثيرة</a>.</p>
+<p>الشيفرة في هذا الفصل مستندة بصورة عامة إلى مشروع مفتوح المصدر اسمه <a href="http://waterbearlang.com/">واتربير</a>، وهو ليس لغة بل أداة لتغليف لغات قائمة بصياغة معتمدة على الكتل. ومن مزايا هذا التغليف ما سبق ذكره: إلغاء أخطاء الصياغة، والعرض المرئي للمكوّنات المتاحة، وسهولة التعريب. وإضافةً إلى ذلك، أحياناً ما تكون الشيفرة المرئية أسهل في القراءة والتنقيح، ويمكن للأطفال قبل أن يتعلّموا القراءة أن يستخدموا الكتل. (ولنا في الحقيقة أن نذهب أبعد من ذلك فنضع أيقونات على الكتل، إما إلى جانب الأسماء النصية أو بدلاً منها، ليتمكّن الأطفال غير القادرين على القراءة من كتابة برامج، لكننا لا نذهب إلى هذا الحد في هذا المثال.)</p>
+<p>يعود اختيار رسومات السلحفاة (turtle graphics) لهذه اللغة إلى لغة لوغو، التي أُنشئت تحديداً لتعليم البرمجة للأطفال. وتتضمن عدة من اللغات القائمة على الكتل المذكورة أعلاه رسومات السلحفاة، وهو مجال صغير بما يكفي ليمكن أن يُلتقَط في مشروع محدَّد الضوابط مثل هذا.</p>
+<p>إذا رغبت في التعرّف على طابع ما تن عليه لغة قائمة على الكتل، فيمكنك التجربة بالبرنامج المبني في هذا الفصل من <a href="https://dethe.github.io/500lines/blockcode/">مستودع GitHub للمؤلف</a>.</p>
+<h2 id="الأهداف-والبنية">الأهداف والبنية</h2>
+<p>أريد أن أحقّق شيئين بهذه الشيفرة. أولاً وفوق كل شيء، أريد أن أنفّذ لغة كتل لرسومات السلحفاة، تكتب بها شيفرة لإنشاء الصور عبر سحب الكتل وإفلاتها ببساطة، باستخدام أبسط بنية ممكنة من HTML وCSS وJavaScript. وثانياً، وهو أمر لا يقل أهمية، أريد أن أُظهر كيف يمكن للكتل نفسها أن تصبّح إطار عمل (framework) للغات أخرى غير لغتنا المصغّرة للسلحفاة.</p>
+<p>ولتحقيق ذلك، نغلّف كل ما يخصّ لغة السلحفاة تحديداً في ملف واحد \\newline (<code>turtle.js</code>) يمكننا استبداله بسهولة بملف آخر. ولا ينبغي أن يكون أي شيء آخر خاصاً بلغة السلحفاة؛ فبقية الملفات إمّا أن تتعلّق بمعالجة الكتل (<code>blocks.js</code> و<code>menu.js</code>) أو تكون أدوات ويب عامة النفع (<code>util.js</code> و<code>drag.js</code> و<code>file.js</code>). هذه هي الهدف، غير أن الحفاظ على صغر حجم المشروع استلزم أن تكون بعض تلك الأدوات أقل عمومية وأكثر ارتباطاً باستعمالها مع الكتل.</p>
+<p>أمر واحد لفت انتباهي وأنا أكتب لغة كتل هو أن اللغة هي بيئة التطوير المتكاملة (IDE) الخاصة بها. فلا يمكنك ببساطة أن تكتب شيفرة الكتل في محرّر النصوص المفضّل لديك؛ بل يجب أن تُصمَّم بيئة التطوير وتُطوَّر بالتوازي مع لغة الكتل. ولهذا الأمر إيجابيات وسلبيات. من الإيجابيات أن الجميع سيستخدم بيئة متسقة، ولا مجال لحروب دينية حول أي محرّر ينبغي استخدامه. ومن السلبيات أنه قد يشتّت انتباهك بشدة عن بناء لغة الكتل نفسها.</p>
+<h3 id="طبيعة-السكربتات">طبيعة السكربتات</h3>
+<p>سكربت في بلوك كود، مثله مثل سكربت في أي لغة (سواء كانت قائمة على الكتل أم على النص)، هو سلسلة عمليات يجب اتباعها. وفي حالة بلوك كود، يتكوّن السكربت من عناصر HTML يتم التكرار عليها، ويرتبط كل منها بدالة JavaScript بعينها تُنفَّذ حين يحين دور تلك الكتلة. ويمكن لبعض الكتل أن تحتوي كتلاً أخرى (وأن تكون مسؤولة عن تشغيلها)، ويمكن لبعض الكتل أن تحتوي وسائط عددية تُمرَّر إلى الدوال.</p>
+<p>في معظم اللغات (القائمة على النص) يمرّ السكربت بعدة مراحل: حيث يحوّل المُرمِّز (lexer) النص إلى رموز (tokens) معروفة، وينظّم المحلّل (parser) تلك الرموز في شجرة صياغة مجرّدة، ثم - بحسب اللغة - قد يُصرَّف البرنامج إلى شيفرة آلة أو يُمرَّر إلى مفسّر (interpreter). هذه تبسيط؛ إذ قد تكون هناك خطوات أخرى. أما في بلوك كود، فإن تخطيط الكتل في منطقة السكربت يمثّل شجرة الصياغة المجرّدة بالفعل، ولذلك لا نضطر إلى المرور بمرحلتي الترميز والتحليل. ونستخدم نمط الزائر (Visitor pattern) للتكرار على تلك الكتل واستدعاء دوال JavaScript المُعرَّفة مسبقاً المرتبطة بكل كتلة من أجل تشغيل البرنامج.</p>
+<p>لا شيء يمنعنا من إضافة مراحل أخرى لتصبح أقرب إلى اللغة التقليدية. بدلاً من مجرد استدعاء دوال JavaScript المرتبطة، يمكننا استبدال <code>turtle.js</code> بلغة كتل تُصدر شيفرة بايت (byte code) لآلة افتراضية (virtual machine) مختلفة، أو حتى شيفرة C++ لمصرّف (compiler). وتوجد لغات كتل (كجزء من مشروع واتربير) لتوليد شيفرة روبوتات Java، ولبرمجة أردوينو، وللكتابة النصية على ماينكرافت التي تعمل على راسبيري باي.</p>
+<h3 id="تطبيقات-الويب">تطبيقات الويب</h3>
+<p>كي تكون الأداة متاحة لأوسع جمهور ممكن، فإنها وليدة للويب (web-native). فهي مكتوبة بـ HTML وCSS وJavaScript، لذا ينبغي أن تعمل في معظم المتصفحات والمنصات.</p>
+<p>متصفحات الويب الحديثة منصّات قوية، تتيح مجموعة غنية من الأدوات لبناء تطبيقات رائعة. فإذا أصبح شيء ما في التنفّذ معقّداً أكثر من اللازم، فإنني أفسّر ذلك على أنه إشارة إلى أنني لم أضعه «بطريقة الويب»، وأحاول عند الإمكان أن أعيد التفكير في كيفية الاستفادة من أدوات المتصفح على نحو أفضل.</p>
+<p>من الفروق المهمة بين تطبيقات الويب وتطبيقات سطح المكتب أو تطبيقات الخادم التقليدية هو غياب <code>main()</code> أو أي نقطة دخول أخرى. فلا توجد حلقة تشغيل (run loop) صريحة لأن ذلك مبنيّ أصلاً في المتصفح ضمنياً في كل صفحة ويب. وستُحلَّل جميع شيفرتنا وتُنفَّذ عند التحميل، وعندها يمكننا تسجيل اهتمامنا بأحداث معيّنة للتفاعل مع المستخدم. وبعد التشغيل الأول، يكون كل تفاعل لاحق مع شيفرتنا عبر دوال استدعاء (callbacks) نقيمها ونسجّلها، سواء كانت مسجّلة لأحداث (مثل حركة الفأرة) أو لمهل زمنية (تُطلق بالوتيرة التي نحدّدها) أو لمعالِج إطارات (تُستدعى عند كل إعادة رسم للشاشة، أي ستين إطاراً في الثانية عموماً). كما أن المتصفح لا يوفّر خيوطاً (threads) كاملة الإمكانات (إنما عمّال ويب لا يشتركون في شيء فحسب).</p>
+<h2 id="المرور-على-الشيفرة-خطوة-بخطوة">المرور على الشيفرة خطوةً بخطوة</h2>
+<p>حاولت أن أتبع بعض الأعراف وأفضل الممارسات في هذا المشروع كله. كل ملف JavaScript ملفوف داخل دالة تفادياً لتسريب المتغيّرات إلى البيئة العامّة. وإذا احتاج إلى كشف متغيّرات لملفات أخرى، فإنه يعرّف متغيّراً عامّاً واحداً لكل ملف، مستندةً إلى اسم الملف، تحيط به الدوال المكشوفة. وسيكون ذلك قرب نهاية الملف، يليه أي معالِجات أحداث ضبطها ذلك الملف، لتتمكّن دائماً من إلقاء نظرة سريعة على نهاية الملف لمعرفة الأحداث التي يعالجها والدوال التي يكشفها.</p>
+<p>أسلوب الشيفرة إجرائي (procedural)، لا كائني التوجه ولا وظيفي. يمكننا فعل الشيء نفسه بأي من هذه النماذج، لكن ذلك سيتطلب شيفرة تهيئة أكبر وأغلفة تُفرض على ما هو قائم أصلاً في DOM. وقد جعلت الأعمال الحديثة على <a href="http://webcomponents.org/">العناصر المخصَّصة</a> العمل مع DOM بنمط كائني التوجه أسهل، وهناك كتابات ممتازة كثيرة عن <a href="https://leanpub.com/javascript-allonge/read">JavaScript الوظيفي</a>، لكن أيّهما يتطلب قدراً من القسر والتلفيف، فبدا ببساطة أن إبقاءه إجرائياً هو الأنسب.</p>
+<p>هناك ثمانية ملفات مصدر في هذا المشروع، لكن <code>index.html</code> و<code>blocks.css</code> بنياءٌ أساسي ونمط للتطبيق ولن نتناولهما بالحديث. كذلك لن نتناول بالتفصيل أيّ من ملفي JavaScript: فـ <code>util.js</code> يحتوي على بعض دوال المساعدة ويصنع جسراً بين مختلف تطبيقات المتصفح - شبيه بمكتبة مثل jQuery لكن في أقل من خمسين سطراً من الشيفرة. أما <code>file.js</code> فأداة مماثلة تُستخدم لتحميل الملفات وحفظها وتسلسل السكربتات.</p>
+<p>وهذه هي الملفات المتبقية:</p>
+<ul>
+<li><code>block.js</code> هو التمثيل المجرّد للغة قائمة على الكتل.</li>
+<li><code>drag.js</code> ينفّذ التفاعل الأساسي للغة: السماح للمستخدم بسحب الكتل من قائمة الكتل المتاحة (القائمة «menu») وتجميعها في برنامج (السكربت «script»).</li>
+<li><code>menu.js</code> يضمّ بعض شيفرة المساعدة وهو أيضاً مسؤول عن تشغيل برنامج المستخدم فعلياً.</li>
+<li><code>turtle.js</code> يعرّف خصوصيات لغتنا القائمة على الكتل (رسومات السلحفاة) ويهيّئ كتلها المخصّصة. وهذا هو الملف الذي يُستبدل لإنشاء لغة كتل مختلفة.</li>
+</ul>
+<h3 id="blocksjs"><code>blocks.js</code></h3>
+<p>تتكوّن كل كتلة من بضعة عناصر HTML، منسَّقة بـ CSS، مع بعض معالِجات أحداث JavaScript للسحب والإفلات وتعديل وسائط الإدخال. ويساعد ملف <code>blocks.js</code> على إنشاء هذه التجمّعات من العناصر وإدارتها بوصفها كائنات (objects) مفردة. وحين يُضاف نوع من الكتل إلى قائمة الكتل، يُربط بدالة JavaScript تُنفِّذ اللغة، ولذلك يجب أن تمكّن كل كتلة في السكربت من العثور على دالتها المرتبطة واستدعائها عند تشغيل السكربت.</p>
+<p>\\aosafigure[144pt]/images/500-lines/blockcode-1-block.webp{مثال على كتلة}{500l.blockcode.block}</p>
+<p>للكتل جزءان اختياريان من البنية. يمكن أن يكون لها وسيط عددي واحد (بقيمة افتراضية)، ويمكن أن تكون حاويةً لكتل أخرى. وهذه حدود صارمة للعمل ضمنها، لكنها ستخفّ في نظام أكبر. ففي واتربير توجد أيضاً كتل تعابير يمكن تمريرها كوسائط، وتدعم عدة وسائط من مختلف الأنواع. أما هنا، في عالم القيود الضيقة، فسنرى ما يمكننا فعله بنوع واحد فقط من الوسائط.</p>
+<pre><code class="language-html"><span class="hljs-comment">&lt;!-- The HTML structure of a block --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;block&quot;</span> <span class="hljs-attr">draggable</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">data-name</span>=<span class="hljs-string">&quot;Right&quot;</span>&gt;</span>
+    Right
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;number&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;5&quot;</span>&gt;</span>
+    degrees
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>من المهم أن نلاحظ أنه لا يوجد تمييز حقيقي بين الكتل في القائمة والكتل في السكربت. يعامل السحبُها معاملةً مختلفة قليلاً بحسب المكان الذي تُسحب منه، وحين نشغّل سكربتاً لا ينظر إلا إلى الكتل الموجودة في منطقة السكربت، لكنها في جوهرها البنى نفسها، ما يعني أننا نستطيع استنساخ الكتل عند السحب من القائمة إلى السكربت.</p>
+<p>تُرجع الدالة <code>createBlock(name, value, contents)</code> كتلةً كعنصر DOM مملوءاً بجميع عناصره الداخلية، جاهزةً للإدراج في المستند. ويمكن استخدام هذا لإنشاء كتل القائمة، أو لاستعادة كتل سكربت محفوظة في ملفات أو في <code>localStorage</code>. ورغم مرونتها بهذه الطريقة، فإنها مصمَّمة خصيصاً لـ«لغة» بلوك كود وتبني افتراضات عليها، فإذا وُجدت قيمة فإنها تفترض أن القيمة تمثّل وسيطاً عددياً وتنشئ حقل إدخال من نوع «number». ولأن هذا قيدٌ في بلوك كود فإن الأمر مقبول، لكن لو وسّعنا الكتل لدعم أنواع أخرى من الوسائط، أو لأكثر من وسيط واحد، لكان على الشيفرة أن تتغيّر.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">createBlock</span>(<span class="hljs-params">name, value, contents</span>){
+        <span class="hljs-keyword">var</span> item = <span class="hljs-title function_">elem</span>(<span class="hljs-string">&#x27;div&#x27;</span>,
+            {<span class="hljs-string">&#x27;class&#x27;</span>: <span class="hljs-string">&#x27;block&#x27;</span>, <span class="hljs-attr">draggable</span>: <span class="hljs-literal">true</span>, <span class="hljs-string">&#x27;data-name&#x27;</span>: name},
+            [name]
+        );
+        <span class="hljs-keyword">if</span> (value !== <span class="hljs-literal">undefined</span> &amp;&amp; value !== <span class="hljs-literal">null</span>){
+            item.<span class="hljs-title function_">appendChild</span>(<span class="hljs-title function_">elem</span>(<span class="hljs-string">&#x27;input&#x27;</span>, {<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-attr">value</span>: value}));
+        }
+        <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(contents)){
+            item.<span class="hljs-title function_">appendChild</span>(
+                <span class="hljs-title function_">elem</span>(<span class="hljs-string">&#x27;div&#x27;</span>, {<span class="hljs-string">&#x27;class&#x27;</span>: <span class="hljs-string">&#x27;container&#x27;</span>}, contents.<span class="hljs-title function_">map</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">block</span>){
+                <span class="hljs-keyword">return</span> createBlock.<span class="hljs-title function_">apply</span>(<span class="hljs-literal">null</span>, block);
+            })));
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> contents === <span class="hljs-string">&#x27;string&#x27;</span>){
+            <span class="hljs-comment">// Add units (degrees, etc.) specifier</span>
+            item.<span class="hljs-title function_">appendChild</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(<span class="hljs-string">&#x27; &#x27;</span> + contents));
+        }
+        <span class="hljs-keyword">return</span> item;
+    }
+</code></pre>
+<p>لدينا بعض الأدوات التي تتعامل مع الكتل بوصفها عناصر DOM:</p>
+<ul>
+<li><code>blockContents(block)</code> تسترجع الكتل الفرعية لكتلة حاوية. فهي تُرجع قائمة دائماً إذا استُدعيت على كتلة حاوية، وتُرجع null دائماً على كتلة بسيطة</li>
+<li><code>blockValue(block)</code> تُرجع القيمة العددية لحقل الإدخال في الكتلة إذا كانت الكتلة تملك حقل إدخال من نوع number، أو null إن لم يكن هناك عنصر إدخال لتلك الكتلة</li>
+<li><code>blockScript(block)</code> تُرجع بنيةً مناسبة للتسلسل باستخدام JSON، لحفظ الكتل في صورة يمكن استعادتها منها بسهولة</li>
+<li><code>runBlocks(blocks)</code> معالجٌ يشغّل كل كتلة في مصفوفة كتل</li>
+</ul>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">blockContents</span>(<span class="hljs-params">block</span>){
+        <span class="hljs-keyword">var</span> container = block.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.container&#x27;</span>);
+        <span class="hljs-keyword">return</span> container ? [].<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(container.<span class="hljs-property">children</span>) : <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">blockValue</span>(<span class="hljs-params">block</span>){
+        <span class="hljs-keyword">var</span> input = block.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;input&#x27;</span>);
+        <span class="hljs-keyword">return</span> input ? <span class="hljs-title class_">Number</span>(input.<span class="hljs-property">value</span>) : <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">blockUnits</span>(<span class="hljs-params">block</span>){
+        <span class="hljs-keyword">if</span> (block.<span class="hljs-property">children</span>.<span class="hljs-property">length</span> &gt; <span class="hljs-number">1</span> &amp;&amp;
+            block.<span class="hljs-property">lastChild</span>.<span class="hljs-property">nodeType</span> === <span class="hljs-title class_">Node</span>.<span class="hljs-property">TEXT_NODE</span> &amp;&amp;
+            block.<span class="hljs-property">lastChild</span>.<span class="hljs-property">textContent</span>){
+            <span class="hljs-keyword">return</span> block.<span class="hljs-property">lastChild</span>.<span class="hljs-property">textContent</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">blockScript</span>(<span class="hljs-params">block</span>){
+        <span class="hljs-keyword">var</span> script = [block.<span class="hljs-property">dataset</span>.<span class="hljs-property">name</span>];
+        <span class="hljs-keyword">var</span> value = <span class="hljs-title function_">blockValue</span>(block);
+        <span class="hljs-keyword">if</span> (value !== <span class="hljs-literal">null</span>){
+            script.<span class="hljs-title function_">push</span>(<span class="hljs-title function_">blockValue</span>(block));
+        }
+        <span class="hljs-keyword">var</span> contents = <span class="hljs-title function_">blockContents</span>(block);
+        <span class="hljs-keyword">var</span> units = <span class="hljs-title function_">blockUnits</span>(block);
+        <span class="hljs-keyword">if</span> (contents){script.<span class="hljs-title function_">push</span>(contents.<span class="hljs-title function_">map</span>(blockScript));}
+        <span class="hljs-keyword">if</span> (units){script.<span class="hljs-title function_">push</span>(units);}
+        <span class="hljs-keyword">return</span> script.<span class="hljs-title function_">filter</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">notNull</span>){ <span class="hljs-keyword">return</span> notNull !== <span class="hljs-literal">null</span>; });
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">runBlocks</span>(<span class="hljs-params">blocks</span>){
+        blocks.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;run&#x27;</span>, block); });
+    }
+</code></pre>
+<h3 id="dragjs"><code>drag.js</code></h3>
+<p>الغرض من <code>drag.js</code> هو تحويل كتل HTML الساكنة إلى لغة برمجة حيّة عبر تنفيذ التفاعلات بين قسم القائمة في الواجهة وقسم السكربت. يبني المستخدم برنامجه بسحب الكتل من القائمة إلى السكربت، ويشغّل النظامُ الكتلَ الموجودة في منطقة السكربت.</p>
+<p>نحن نستخدم السحب والإفلات في HTML5؛ ومعالِجات أحداث JavaScript التي يحتاجها معرَّفة هنا. (لمزيد من المعلومات عن استخدام السحب والإفلات في HTML5، راجع <a href="http://www.html5rocks.com/en/tutorials/dnd/basics/">مقال إريك بيدلمان</a>.) ورغم أن الدعم المدمج للسحب والإفلات أمر لطيف، إلا أنه له بعض الطرافات وبعض القيود الكبرى، مثل عدم تنفيذه في أي متصفح على الهواتف المحمولة وقت كتابة هذا الكتاب.</p>
+<p>نعرّف بعض المتغيّرات في أعلى الملف. وأثناء السحب، سنحتاج إلى الإشارة إليها من مراحل مختلفة في رقصة دالة الاستدعاء الخاصة بالسحب.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">var</span> dragTarget = <span class="hljs-literal">null</span>; <span class="hljs-comment">// Block we&#x27;re dragging</span>
+    <span class="hljs-keyword">var</span> dragType = <span class="hljs-literal">null</span>; <span class="hljs-comment">// Are we dragging from the menu or from the script?</span>
+    <span class="hljs-keyword">var</span> scriptBlocks = []; <span class="hljs-comment">// Blocks in the script, sorted by position</span>
+</code></pre>
+<p>وبحسب مكان بداية السحب ونهايته، سيكون لـ <code>drop</code> آثار مختلفة:</p>
+<ul>
+<li>إذا كان السحب من السكربت إلى القائمة، فاحذف <code>dragTarget</code> (أزل الكتلة من السكربت).</li>
+<li>إذا كان السحب من السكربت إلى السكربت، فانقل <code>dragTarget</code> (انقل كتلة سكربت موجودة).</li>
+<li>إذا كان السحب من القائمة إلى السكربت، فانسخ <code>dragTarget</code> (أدرج كتلة جديدة في السكربت).</li>
+<li>إذا كان السحب من القائمة إلى القائمة، فلا تفعل شيئاً.</li>
+</ul>
+<p>أثناء معالج <code>dragStart(evt)</code> نبدأ بتتبّع ما إذا كانت الكتلة تُنسخ من القائمة أم تُنقل من السكربت (أو داخله). كما نلتقط قائمة بجميع الكتل الموجودة في السكربت والتي لا يجري سحبها، لاستخدامها لاحقاً. أمّا الاستدعاء <code>evt.dataTransfer.setData</code> فيُستخدم للسحب بين المتصفح والتطبيقات الأخرى (أو سطح المكتب)، وهو أمر لا نستعمله، لكننا نستدعيه على أي حال للتخلّص من خطأ ما.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">dragStart</span>(<span class="hljs-params">evt</span>){
+        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">matches</span>(evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.block&#x27;</span>)) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">matches</span>(evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.menu .block&#x27;</span>)){
+            dragType = <span class="hljs-string">&#x27;menu&#x27;</span>;
+        }<span class="hljs-keyword">else</span>{
+            dragType = <span class="hljs-string">&#x27;script&#x27;</span>;
+        }
+        evt.<span class="hljs-property">target</span>.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">&#x27;dragging&#x27;</span>);
+        dragTarget = evt.<span class="hljs-property">target</span>;
+        scriptBlocks = [].<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(
+            <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;.script .block:not(.dragging)&#x27;</span>));
+        <span class="hljs-comment">// For dragging to take place in Firefox, we have to set this, even if</span>
+        <span class="hljs-comment">// we don&#x27;t use it</span>
+        evt.<span class="hljs-property">dataTransfer</span>.<span class="hljs-title function_">setData</span>(<span class="hljs-string">&#x27;text/html&#x27;</span>, evt.<span class="hljs-property">target</span>.<span class="hljs-property">outerHTML</span>);
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">matches</span>(evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.menu .block&#x27;</span>)){
+            evt.<span class="hljs-property">dataTransfer</span>.<span class="hljs-property">effectAllowed</span> = <span class="hljs-string">&#x27;copy&#x27;</span>;
+        }<span class="hljs-keyword">else</span>{
+            evt.<span class="hljs-property">dataTransfer</span>.<span class="hljs-property">effectAllowed</span> = <span class="hljs-string">&#x27;move&#x27;</span>;
+        }
+    }
+</code></pre>
+<p>ووأثناء السحب، تتيح لنا الأحداث <code>dragenter</code> و<code>dragover</code> و<code>dragout</code> فرصاً لإضافة إشارات بصرية عبر إبراز أهداف الإفلات الصالحة وغيرها. ومن بينها لا نستثمر سوى <code>dragover</code>.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">dragOver</span>(<span class="hljs-params">evt</span>){
+        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">matches</span>(evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.menu, .menu *, .script, .script *, .content&#x27;</span>)) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-comment">// Necessary. Allows us to drop.</span>
+        <span class="hljs-keyword">if</span> (evt.<span class="hljs-property">preventDefault</span>) { evt.<span class="hljs-title function_">preventDefault</span>(); }
+        <span class="hljs-keyword">if</span> (dragType === <span class="hljs-string">&#x27;menu&#x27;</span>){
+            <span class="hljs-comment">// See the section on the DataTransfer object.</span>
+            evt.<span class="hljs-property">dataTransfer</span>.<span class="hljs-property">dropEffect</span> = <span class="hljs-string">&#x27;copy&#x27;</span>;  
+        }<span class="hljs-keyword">else</span>{
+            evt.<span class="hljs-property">dataTransfer</span>.<span class="hljs-property">dropEffect</span> = <span class="hljs-string">&#x27;move&#x27;</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+</code></pre>
+<p>حين نُفلت زر الفأرة، نتلقّى حدث <code>drop</code>. وهنا تحدث المعجزة. علينا أن نتحقّق من المكان الذي سحبنا منه (وهو ما ضُبط في <code>dragStart</code>) والمكان الذي سحبنا إليه. ثم إمّا أن ننسخ الكتلة أو ننقلها أو نحذفها حسب الحاجة. ونطلق بعض الأحداث المخصَّصة باستخدام <code>trigger()</code> (المعرَّفة في <code>util.js</code>) لاستعمالنا في منطق الكتل، حتى نتمكّن من تحديث السكربت عندما يتغيّر.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">drop</span>(<span class="hljs-params">evt</span>){
+        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">matches</span>(evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.menu, .menu *, .script, .script *&#x27;</span>)) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">var</span> dropTarget = <span class="hljs-title function_">closest</span>(
+            evt.<span class="hljs-property">target</span>, <span class="hljs-string">&#x27;.script .container, .script .block, .menu, .script&#x27;</span>);
+        <span class="hljs-keyword">var</span> dropType = <span class="hljs-string">&#x27;script&#x27;</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">matches</span>(dropTarget, <span class="hljs-string">&#x27;.menu&#x27;</span>)){ dropType = <span class="hljs-string">&#x27;menu&#x27;</span>; }
+        <span class="hljs-comment">// stops the browser from redirecting.</span>
+        <span class="hljs-keyword">if</span> (evt.<span class="hljs-property">stopPropagation</span>) { evt.<span class="hljs-title function_">stopPropagation</span>(); }
+        <span class="hljs-keyword">if</span> (dragType === <span class="hljs-string">&#x27;script&#x27;</span> &amp;&amp; dropType === <span class="hljs-string">&#x27;menu&#x27;</span>){
+            <span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;blockRemoved&#x27;</span>, dragTarget.<span class="hljs-property">parentElement</span>, dragTarget);
+            dragTarget.<span class="hljs-property">parentElement</span>.<span class="hljs-title function_">removeChild</span>(dragTarget);
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dragType ===<span class="hljs-string">&#x27;script&#x27;</span> &amp;&amp; dropType === <span class="hljs-string">&#x27;script&#x27;</span>){
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">matches</span>(dropTarget, <span class="hljs-string">&#x27;.block&#x27;</span>)){
+                dropTarget.<span class="hljs-property">parentElement</span>.<span class="hljs-title function_">insertBefore</span>(
+                    dragTarget, dropTarget.<span class="hljs-property">nextSibling</span>);
+            }<span class="hljs-keyword">else</span>{
+                dropTarget.<span class="hljs-title function_">insertBefore</span>(dragTarget, dropTarget.<span class="hljs-property">firstChildElement</span>);
+            }
+            <span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;blockMoved&#x27;</span>, dropTarget, dragTarget);
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dragType === <span class="hljs-string">&#x27;menu&#x27;</span> &amp;&amp; dropType === <span class="hljs-string">&#x27;script&#x27;</span>){
+            <span class="hljs-keyword">var</span> newNode = dragTarget.<span class="hljs-title function_">cloneNode</span>(<span class="hljs-literal">true</span>);
+            newNode.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">&#x27;dragging&#x27;</span>);
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">matches</span>(dropTarget, <span class="hljs-string">&#x27;.block&#x27;</span>)){
+                dropTarget.<span class="hljs-property">parentElement</span>.<span class="hljs-title function_">insertBefore</span>(
+                    newNode, dropTarget.<span class="hljs-property">nextSibling</span>);
+            }<span class="hljs-keyword">else</span>{
+                dropTarget.<span class="hljs-title function_">insertBefore</span>(newNode, dropTarget.<span class="hljs-property">firstChildElement</span>);
+            }
+            <span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;blockAdded&#x27;</span>, dropTarget, newNode);
+        }
+    }
+</code></pre>
+<p>تُستدعى الدالة <code>dragEnd(evt)</code> حين نرفع زر الفأرة، لكن بعد أن نتعامل مع حدث <code>drop</code>. وهنا يمكننا التنظيف، وإزالة الأصناف (classes) من العناصر، وإعادة ضبط الأمور من أجل السحب التالي.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">_findAndRemoveClass</span>(<span class="hljs-params">klass</span>){
+        <span class="hljs-keyword">var</span> elem = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.&#x27;</span> + klass);
+        <span class="hljs-keyword">if</span> (elem){ elem.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(klass); }
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">dragEnd</span>(<span class="hljs-params">evt</span>){
+        <span class="hljs-title function_">_findAndRemoveClass</span>(<span class="hljs-string">&#x27;dragging&#x27;</span>);
+        <span class="hljs-title function_">_findAndRemoveClass</span>(<span class="hljs-string">&#x27;over&#x27;</span>);
+        <span class="hljs-title function_">_findAndRemoveClass</span>(<span class="hljs-string">&#x27;next&#x27;</span>);
+    }
+</code></pre>
+<h3 id="menujs"><code>menu.js</code></h3>
+<p>الملف <code>menu.js</code> هو المكان الذي تُربط فيه الكتل بالدوال التي تُستدعى عند تشغيلها، ويحتوي على شيفرة تشغيل السكربت فعلياً بينما يبنيه المستخدم. وكلما عُدِّل السكربت، يُعاد تشغيله تلقائياً.</p>
+<p>«القائمة» في هذا السياق ليست قائمة منسدلة (أو منبثقة) كما في معظم التطبيقات، بل هي قائمة الكتل التي يمكنك اختيارها لسكربتك. وهذا الملف هو الذي يهيّئها، ويبدأ القائمة بكتلة تكرار عمومية النفع (وبالتالي ليست جزءاً من لغة السلحفاة نفسها). هذا ملف أشبه بملف لمتفرّقات، للأشياء التي قد لا تنتمي إلى أي مكان آخر.</p>
+<p>وجود ملف واحد نجمع فيه الدوال المتناثرة أمر مفيد، وخصوصاً حين تكون البنية المعمارية قيد التطوير. فالنظريّة التي أراها لتوثيق البيت النظيف هي تخصيص أماكن للفوضى، وينطبق ذلك أيضاً على بناء بنية برنامج. يصبح ملف أو وحدة (module) ما سلة شاملة (catch-all) للأشياء التي ليس لها موضع واضح بعد. ومع نمو هذا الملف من المهم أن نراقب البِنى النامية: إذ يمكن استخراج عدة دوال متعلقة في وحدة منفصلة (أو ضمّها معاً في دالة أكثر عمومية). ولا تريد للحاوية الشاملة أن تكبر بلا حدّ، بل أن تكون مكان حجز مؤقت حتى تجد الطريقة الصحيحة لتنظيم الشيفرة.</p>
+<p>نُبقي على مراجع إلى <code>menu</code> و<code>script</code> لأننا نستعملهما كثيراً؛ فلا فائدة من مطاردة DOM بحثاً عنهما مراراً. وسنستعمل أيضاً <code>scriptRegistry</code> حيث نخزّن سكربتات الكتل في القائمة. ونستخدم ربطاً بسيطاً جداً بين الاسم والسكربت، وهو لا يدعم تعدّد كتل القائمة ذات الاسم الواحد ولا إعادة تسمية الكتل. أما بيئة سكربت أكثر تعقيداً فتحتاج إلى شيء أكثر متانة.</p>
+<p>نستعمل <code>scriptDirty</code> لتتبّع ما إذا كان السكربت قد عُدِّل منذ آخر مرة شُغِّل فيها، كي لا نواصل محاولة تشغيله باستمرار.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">var</span> menu = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.menu&#x27;</span>);
+    <span class="hljs-keyword">var</span> script = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.script&#x27;</span>);
+    <span class="hljs-keyword">var</span> scriptRegistry = {};
+    <span class="hljs-keyword">var</span> scriptDirty = <span class="hljs-literal">false</span>;
+</code></pre>
+<p>حين نرغب في إخبار النظام بأن يشغّل السكربت في معالج الإطار التالي، نستدعي <code>runSoon()</code> التي تضبط راية <code>scriptDirty</code> على <code>true</code>. ويستدعي النظام <code>run()</code> في كل إطار، لكنه يعود فوراً ما لم تكن <code>scriptDirty</code> مضبوطة. وحين تكون <code>scriptDirty</code> مضبوطة، يشغّل جميع كتل السكربت، كما يطلق أحداثاً لتتيح للغة المخصّصة معالجة أي مهام تحتاجها قبل تشغيل السكربت وبعده. وهذا يفصل الكتل بوصفها حقيبة أدوات عن لغة السلحفاة، ليصبح بالإمكان إعادة استخدام الكتل (أو جعل اللغة قابلة للتبديل، بحسب منظورك).</p>
+<p>كجزء من تشغيل السكربت، نكرّر على كل كتلة، مستدعين <code>runEach(evt)</code> عليها، وهي تضبط صنفاً (class) على الكتلة، ثم تجد الدالة المرتبطة بها وتنفّذها. وإذا أبطأنا الأمور، ينبغي أن تتمكّن من مشاهدة الشيفرة تُنفَّذ بينما تومض كل كتلة لتبيّن وقت تشغيلها.</p>
+<p>أمّا الدالة <code>requestAnimationFrame</code> أدناه فيوفّرها المتصفح من أجل الرسوم المتحركة. وهي تأخذ دالةً تُستدعى من أجل الإطار التالي الذي سيعيد المتصفح رسمه (بمعدل ستين إطاراً في الثانية) بعد إجراء الاستدعاء. أما عدد الإطارات التي نحصل عليها فعلاً فيتوقّف على مدى سرعتنا في إنجاز العمل داخل ذلك الاستدعاء.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">runSoon</span>(<span class="hljs-params"></span>){ scriptDirty = <span class="hljs-literal">true</span>; }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">run</span>(<span class="hljs-params"></span>){
+        <span class="hljs-keyword">if</span> (scriptDirty){
+            scriptDirty = <span class="hljs-literal">false</span>;
+            <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;beforeRun&#x27;</span>, script);
+            <span class="hljs-keyword">var</span> blocks = [].<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(
+                <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;.script &gt; .block&#x27;</span>));
+            <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">run</span>(blocks);
+            <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;afterRun&#x27;</span>, script);
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">trigger</span>(<span class="hljs-string">&#x27;everyFrame&#x27;</span>, script);
+        }
+        <span class="hljs-title function_">requestAnimationFrame</span>(run);
+    }
+    <span class="hljs-title function_">requestAnimationFrame</span>(run);
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">runEach</span>(<span class="hljs-params">evt</span>){
+        <span class="hljs-keyword">var</span> elem = evt.<span class="hljs-property">target</span>;
+        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">matches</span>(elem, <span class="hljs-string">&#x27;.script .block&#x27;</span>)) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">if</span> (elem.<span class="hljs-property">dataset</span>.<span class="hljs-property">name</span> === <span class="hljs-string">&#x27;Define block&#x27;</span>) <span class="hljs-keyword">return</span>;
+        elem.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">&#x27;running&#x27;</span>);
+        scriptRegistry[elem.<span class="hljs-property">dataset</span>.<span class="hljs-property">name</span>](<span class="hljs-attr">https</span>:<span class="hljs-comment">//github.com/aosabook/500lines/blob/master/elem);</span>
+        elem.<span class="hljs-property">classList</span>.<span class="hljs-title function_">remove</span>(<span class="hljs-string">&#x27;running&#x27;</span>);
+    }
+</code></pre>
+<p>نضيف الكتل إلى القائمة باستخدام <code>menuItem(name, fn, value, contents)</code> التي تأخذ كتلة عادية، وتربطها بدالة، وتضعها في عمود القائمة.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">menuItem</span>(<span class="hljs-params">name, fn, value, units</span>){
+        <span class="hljs-keyword">var</span> item = <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">create</span>(name, value, units);
+        scriptRegistry[name] = fn;
+        menu.<span class="hljs-title function_">appendChild</span>(item);
+        <span class="hljs-keyword">return</span> item;
+    }
+</code></pre>
+<p>نعرّف <code>repeat(block)</code> هنا، خارج لغة السلحفاة، لأنها مفيدة عموماً في اللغات المختلفة. ولو كان لدينا كتل للشروط ولكتابة المتغيّرات وقراءتها، لاستطاعت هي أيضاً أن تكون هنا، أو في وحدة منفصلة عابرة للغات، لكن لدينا الآن كتلة واحدة فقط من هذا النوع المخصَّص للاستعمال العام.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">repeat</span>(<span class="hljs-params">block</span>){
+        <span class="hljs-keyword">var</span> count = <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block);
+        <span class="hljs-keyword">var</span> children = <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">contents</span>(block);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; count; i++){
+            <span class="hljs-title class_">Block</span>.<span class="hljs-title function_">run</span>(children);
+        }
+    }
+    <span class="hljs-title function_">menuItem</span>(<span class="hljs-string">&#x27;Repeat&#x27;</span>, repeat, <span class="hljs-number">10</span>, []);
+</code></pre>
+<h3 id="turtlejs"><code>turtle.js</code></h3>
+<p><code>turtle.js</code> هو تطبيق لغة كتل السلحفاة. وهو لا يكشف أي دوال لبقية الشيفرة، فلا يستطيع أي شيء آخر الاعتماد عليه. وبهذه الطريقة يمكننا استبدال هذا الملف الواحد لإنشاء لغة كتل جديدة مع اليقين بأن لا شيء في النواة سينكسر.</p>
+<p>\\aosafigure[240pt]/images/500-lines/blockcode-2-turtle_example.webp{مثال على تشغيل شيفرة السلحفاة}{500l.blockcode.turtle}</p>
+<p>برمجة السلحفاة هي أسلوب في برمجة الرسوم، شاعه أوّلاً لوغو، حيث يكون لديك سلحفاة خيالية تحمل قلماً تمشي على الشاشة. ويمكنك أن تطلب من السلحفاة أن ترفع القلم (فتتوقّف عن الرسم مع بقاء الحركة)، أو تضع القلم (فتترك خطاً أينما ذهبت)، أو تتقدّم إلى الأمام بعدد من الخطوات، أو تلتف بعدد من الدرجات. وهذه الأوامر وحدها، مع التكرار، قادرة على إنشاء صور مذهلة التعقيد.</p>
+<p>في هذه النسخة من رسومات السلحفاة لدينا بضع كتل إضافية. ومن الناحية التقنية لا نحتاج إلى كلٍّ من <code>turn right</code> و<code>turn left</code>، إذ يمكننا الاكتفاء بواحدة والحصول على الأخرى بأعداد سالبة. وعلى نحو مماثل يمكن تنفيذ <code>move back</code> باستخدام <code>move forward</code> وأعداد سالبة. لكن في هذه الحالة بدا أكثر توازناً أن يتوفّر كلاهما.</p>
+<p>تشكّلت الصورة أعلاه بوضع حلقتين داخل حلقة أخرى، وإضافة <code>move forward</code> و<code>turn right</code> إلى كل حلقة، ثم العب بالمعاملات تفاعلياً حتى أعجبتني الصورة الناتجة.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">var</span> <span class="hljs-variable constant_">PIXEL_RATIO</span> = <span class="hljs-variable language_">window</span>.<span class="hljs-property">devicePixelRatio</span> || <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">var</span> canvasPlaceholder = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.canvas-placeholder&#x27;</span>);
+    <span class="hljs-keyword">var</span> canvas = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.canvas&#x27;</span>);
+    <span class="hljs-keyword">var</span> script = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;.script&#x27;</span>);
+    <span class="hljs-keyword">var</span> ctx = canvas.<span class="hljs-title function_">getContext</span>(<span class="hljs-string">&#x27;2d&#x27;</span>);
+    <span class="hljs-keyword">var</span> cos = <span class="hljs-title class_">Math</span>.<span class="hljs-property">cos</span>, sin = <span class="hljs-title class_">Math</span>.<span class="hljs-property">sin</span>, sqrt = <span class="hljs-title class_">Math</span>.<span class="hljs-property">sqrt</span>, <span class="hljs-variable constant_">PI</span> = <span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span>;
+    <span class="hljs-keyword">var</span> <span class="hljs-variable constant_">DEGREE</span> = <span class="hljs-variable constant_">PI</span> / <span class="hljs-number">180</span>;
+    <span class="hljs-keyword">var</span> <span class="hljs-variable constant_">WIDTH</span>, <span class="hljs-variable constant_">HEIGHT</span>, position, direction, visible, pen, color;
+</code></pre>
+<p>تُصفّر الدالة <code>reset()</code> جميع متغيّرات الحالة إلى قيمها الافتراضية. ولو أردنا دعم عدة سلاحف، لجرى تغليف هذه المتغيّرات داخل كائن. ولدينا أيضاً أداة <code>deg2rad(deg)</code>، لأننا نعمل بالدرجات في واجهة المستخدم لكننا نرسم بالراديان. وأخيراً، ترسم <code>drawTurtle()</code> السلحفاة نفسها. أما السلحفاة الافتراضية فمجرد مثلّث، لكن يمكنك تجاوز ذلك لرسم سلحفاة أجمل.</p>
+<p>لاحظ أن <code>drawTurtle</code> تستخدم العمليات الأولية نفسها التي عرّفناها لتنفيذ رسم السلحفاة. وأحياناً لا ترغب في إعادة استخدام الشيفرة على مستويات تجريد مختلفة، لكن حين يكون المعنى واضحاً، يمكن أن يكون ذلك مكسباً كبيراً في حجم الشيفرة والأداء.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">reset</span>(<span class="hljs-params"></span>){
+        <span class="hljs-title function_">recenter</span>();
+        direction = <span class="hljs-title function_">deg2rad</span>(<span class="hljs-number">90</span>); <span class="hljs-comment">// facing &quot;up&quot;</span>
+        visible = <span class="hljs-literal">true</span>;
+        pen = <span class="hljs-literal">true</span>; <span class="hljs-comment">// when pen is true we draw, otherwise we move without drawing</span>
+        color = <span class="hljs-string">&#x27;black&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">deg2rad</span>(<span class="hljs-params">degrees</span>){ <span class="hljs-keyword">return</span> <span class="hljs-variable constant_">DEGREE</span> * degrees; }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">drawTurtle</span>(<span class="hljs-params"></span>){
+        <span class="hljs-keyword">var</span> userPen = pen; <span class="hljs-comment">// save pen state</span>
+        <span class="hljs-keyword">if</span> (visible){
+            <span class="hljs-title function_">penUp</span>(); <span class="hljs-title function_">_moveForward</span>(<span class="hljs-number">5</span>); <span class="hljs-title function_">penDown</span>();
+            <span class="hljs-title function_">_turn</span>(-<span class="hljs-number">150</span>); <span class="hljs-title function_">_moveForward</span>(<span class="hljs-number">12</span>);
+            <span class="hljs-title function_">_turn</span>(-<span class="hljs-number">120</span>); <span class="hljs-title function_">_moveForward</span>(<span class="hljs-number">12</span>);
+            <span class="hljs-title function_">_turn</span>(-<span class="hljs-number">120</span>); <span class="hljs-title function_">_moveForward</span>(<span class="hljs-number">12</span>);
+            <span class="hljs-title function_">_turn</span>(<span class="hljs-number">30</span>);
+            <span class="hljs-title function_">penUp</span>(); <span class="hljs-title function_">_moveForward</span>(-<span class="hljs-number">5</span>);
+            <span class="hljs-keyword">if</span> (userPen){
+                <span class="hljs-title function_">penDown</span>(); <span class="hljs-comment">// restore pen state</span>
+            }
+        }
+    }
+</code></pre>
+<p>لدينا كتلة خاصة لرسم دائرة ذات نصف قطر معيّن عند موضع الفأرة الحالي. ونُعالج <code>drawCircle</code> على نحو خاص، لأنك مع أن بإمكانك بالتأكيد رسم دائرة بتكرار <code>MOVE 1 RIGHT 1</code> ثلاثمئة وستّين مرّة، إلا أن التحكم في حجم الدائرة على تلك الطريقة صعب جداً.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">drawCircle</span>(<span class="hljs-params">radius</span>){
+        <span class="hljs-comment">// Math for this is from http://www.mathopenref.com/polygonradius.html</span>
+        <span class="hljs-keyword">var</span> userPen = pen; <span class="hljs-comment">// save pen state</span>
+        <span class="hljs-keyword">if</span> (visible){
+            <span class="hljs-title function_">penUp</span>(); <span class="hljs-title function_">_moveForward</span>(-radius); <span class="hljs-title function_">penDown</span>();
+            <span class="hljs-title function_">_turn</span>(-<span class="hljs-number">90</span>);
+            <span class="hljs-keyword">var</span> steps = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">6</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(radius / <span class="hljs-number">2</span>)), <span class="hljs-number">360</span>);
+            <span class="hljs-keyword">var</span> theta = <span class="hljs-number">360</span> / steps;
+            <span class="hljs-keyword">var</span> side = radius * <span class="hljs-number">2</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">sin</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-property">PI</span> / steps);
+            <span class="hljs-title function_">_moveForward</span>(side / <span class="hljs-number">2</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; steps; i++){
+                <span class="hljs-title function_">_turn</span>(theta); <span class="hljs-title function_">_moveForward</span>(side);
+            }
+            <span class="hljs-title function_">_turn</span>(theta); <span class="hljs-title function_">_moveForward</span>(side / <span class="hljs-number">2</span>);
+            <span class="hljs-title function_">_turn</span>(<span class="hljs-number">90</span>);
+            <span class="hljs-title function_">penUp</span>(); <span class="hljs-title function_">_moveForward</span>(radius); <span class="hljs-title function_">penDown</span>();
+            <span class="hljs-keyword">if</span> (userPen){
+                <span class="hljs-title function_">penDown</span>(); <span class="hljs-comment">// restore pen state</span>
+            }
+        }
+    }
+</code></pre>
+<p>عمليتنا الأساسية هي <code>moveForward</code>، ويجب أن تتعامل مع بعض المثلثيات الأولية وأن تفحص ما إذا كان القلم مرفوعاً أم موضوعاً.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">_moveForward</span>(<span class="hljs-params">distance</span>){
+        <span class="hljs-keyword">var</span> start = position;
+        position = {
+            <span class="hljs-attr">x</span>: <span class="hljs-title function_">cos</span>(direction) * distance * <span class="hljs-variable constant_">PIXEL_RATIO</span> + start.<span class="hljs-property">x</span>,
+            <span class="hljs-attr">y</span>: -<span class="hljs-title function_">sin</span>(direction) * distance * <span class="hljs-variable constant_">PIXEL_RATIO</span> + start.<span class="hljs-property">y</span>
+        };
+        <span class="hljs-keyword">if</span> (pen){
+            ctx.<span class="hljs-property">lineStyle</span> = color;
+            ctx.<span class="hljs-title function_">beginPath</span>();
+            ctx.<span class="hljs-title function_">moveTo</span>(start.<span class="hljs-property">x</span>, start.<span class="hljs-property">y</span>);
+            ctx.<span class="hljs-title function_">lineTo</span>(position.<span class="hljs-property">x</span>, position.<span class="hljs-property">y</span>);
+            ctx.<span class="hljs-title function_">stroke</span>();
+        }
+    }
+</code></pre>
+<p>يمكن تعريف معظم بقية أوامر السلحفاة بسهولة بعبارة عمّا بنيناه أعلاه.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">penUp</span>(<span class="hljs-params"></span>){ pen = <span class="hljs-literal">false</span>; }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">penDown</span>(<span class="hljs-params"></span>){ pen = <span class="hljs-literal">true</span>; }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">hideTurtle</span>(<span class="hljs-params"></span>){ visible = <span class="hljs-literal">false</span>; }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">showTurtle</span>(<span class="hljs-params"></span>){ visible = <span class="hljs-literal">true</span>; }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">_moveForward</span>(<span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block)); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">back</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">_moveForward</span>(-<span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block)); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">circle</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">drawCircle</span>(<span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block)); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">_turn</span>(<span class="hljs-params">degrees</span>){ direction += <span class="hljs-title function_">deg2rad</span>(degrees); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">left</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">_turn</span>(<span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block)); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">right</span>(<span class="hljs-params">block</span>){ <span class="hljs-title function_">_turn</span>(-<span class="hljs-title class_">Block</span>.<span class="hljs-title function_">value</span>(block)); }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">recenter</span>(<span class="hljs-params"></span>){ position = {<span class="hljs-attr">x</span>: <span class="hljs-variable constant_">WIDTH</span>/<span class="hljs-number">2</span>, <span class="hljs-attr">y</span>: <span class="hljs-variable constant_">HEIGHT</span>/<span class="hljs-number">2</span>}; }
+</code></pre>
+<p>حين نريد بدايةً نظيفة، تعيد الدالة <code>clear</code> كل شيء إلى ما كنّا بدأنا منه.</p>
+<pre><code class="language-javascript">    <span class="hljs-keyword">function</span> <span class="hljs-title function_">clear</span>(<span class="hljs-params"></span>){
+        ctx.<span class="hljs-title function_">save</span>();
+        ctx.<span class="hljs-property">fillStyle</span> = <span class="hljs-string">&#x27;white&#x27;</span>;
+        ctx.<span class="hljs-title function_">fillRect</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-variable constant_">WIDTH</span>,<span class="hljs-variable constant_">HEIGHT</span>);
+        ctx.<span class="hljs-title function_">restore</span>();
+        <span class="hljs-title function_">reset</span>();
+        ctx.<span class="hljs-title function_">moveTo</span>(position.<span class="hljs-property">x</span>, position.<span class="hljs-property">y</span>);
+    }
+</code></pre>
+<p>حين يُحمَّل هذا السكربت ويُنفَّذ لأول مرة، نستخدم <code>reset</code> و<code>clear</code> لتهيئة كل شيء ورسم السلحفاة.</p>
+<pre><code class="language-javascript">    <span class="hljs-title function_">onResize</span>();
+    <span class="hljs-title function_">clear</span>();
+    <span class="hljs-title function_">drawTurtle</span>();
+</code></pre>
+<p>الآن يمكننا استخدام الدوال أعلاه، مع الدالة <code>Menu.item</code> من <code>menu.js</code>، لإنشاء كتل يبني منها المستخدم سكربتاته. وتُسحب هذه الكتل إلى أماكنها لتصنع برامج المستخدم.</p>
+<pre><code class="language-javascript">    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Left&#x27;</span>, left, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;degrees&#x27;</span>);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Right&#x27;</span>, right, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;degrees&#x27;</span>);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Forward&#x27;</span>, forward, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;steps&#x27;</span>);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Back&#x27;</span>, back, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;steps&#x27;</span>);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Circle&#x27;</span>, circle, <span class="hljs-number">20</span>, <span class="hljs-string">&#x27;radius&#x27;</span>);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Pen up&#x27;</span>, penUp);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Pen down&#x27;</span>, penDown);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Back to center&#x27;</span>, recenter);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Hide turtle&#x27;</span>, hideTurtle);
+    <span class="hljs-title class_">Menu</span>.<span class="hljs-title function_">item</span>(<span class="hljs-string">&#x27;Show turtle&#x27;</span>, showTurtle);
+</code></pre>
+<h2 id="الدروس-المستفادة">الدروس المستفادة</h2>
+<h3 id="لماذا-لا-نستخدم-mvc">لماذا لا نستخدم MVC؟</h3>
+<p>كان نمط النموذج-العرض-المتحكم (Model-View-Controller) خياراً تصميمياً جيداً لبرامج سمالتوك (Smalltalk) في الثمانينيات، ويمكن أن ينفع بأي شكل أو بآخر في تطبيقات الويب، لكنه ليس الأداة المناسبة لكل مسألة. فحالة النظام كلها (وهي «النموذج» في MVC) يلتقطها في لغة الكتل عناصر الكتل على أي حال، لذا فإن نقلها إلى Javascript له فائدة ضئيلة ما لم تكن هناك حاجة أخرى إلى النموذج (لو كنّا مثلاً نحرّر شيفرة مشتركة وموزّعة).</p>
+<p>سعى إصدار مبكر من واتربير إلى أبعد حدّ للإبقاء على النموذج في JavaScript ومزامنته مع DOM، حتى لاحظت أن أكثر من نصف الشيفرة و90% من الأخطاء كان سببها إبقاء النموذج متزامناً مع DOM. وإلغاء هذا التكرار أتاح للشيفرة أن تكون أبسط وأكثر متانة، ومع وجود الحالة كلها على عناصر DOM أمكن اكتشاف كثير من الأخطاء بمجرد النظر في DOM في أدوات المطوّر. لذا في هذه الحالة لا فائدة تُذكر من بناء فصلٍ أكثر بين مكوّنات MVC مما لدينا بالفعل في HTML/CSS/JavaScript.</p>
+<h3 id="التغييرات-اللعبية-قد-تقود-إلى-تغييرات-حقيقية">التغييرات اللعبية قد تقود إلى تغييرات حقيقية</h3>
+<p>كان بناء نسخة صغيرة ومحدودة النطاق من النظام الأكبر الذي أعمل عليه تمريناً ممتعاً. ففي نظام كبير أحياناً ما تكون هناك أمور تتردّد في تغييرها لأنها تؤثّر في أمور كثيرة أخرى. أما في نسخة صغيرة لُعبية فيمكنك أن تجرّب بحرّية وتتعلّم أشياء يمكنك إعادتها بعدها إلى النظام الأكبر. بالنسبة إليّ النظام الأكبر هو واتربير، وقد كان لهذا المشروع أثر هائل في طريقة بناء بنية واتربير.</p>
+<h4>التجارب الصغيرة تجعل الفشل مقبولاً</h4>
+<p>كانت بعض التجارب التي استطعت إجراءها بهذه اللغة المجرّدة من الكتل ما يلي:</p>
+<ul>
+<li>استخدام السحب والإفلات في HTML5،</li>
+<li>تشغيل الكتل مباشرة بالتكرار على DOM واستدعاء الدوال المرتبطة،</li>
+<li>فصل الشيفرة التي تعمل نقياً عن HTML DOM،</li>
+<li>تبسيط اختبار الإصابة (hit testing) أثناء السحب،</li>
+<li>بناء مكتباتنا المصغّرة الخاصة بالمتجهات والأفاتار (للكتل الخاصة باللعبة)، و</li>
+<li>«البرمجة الحيّة» حيث تظهر النتائج كلما غيّرت سكربت الكتل.</li>
+</ul>
+<p>أمر التجارب أنها لا تحتاج إلى أن تنجح. فنحن نميل إلى تجاوز الإخفاقات والنهايات المسدودة في أعمالنا، حيث يُعاقَب الإخفاق بدل أن يُعامَل كعربة مهمة للتعلّم، لكن الإخفاق جوهري إن كنت تنوي المضي قدماً. ورغم أنني نجحت في جعل السحب والإفلات في HTML5 يعمل، فإن عدم دعمه إطلاقاً في أي متصفح على الهواتف المحمولة يجعله خياراً غير قابل للبدء بالنسبة إلى واتربير. أما فصل الشيفرة خارجاً وتشغيل الشيفرة بالتكرار على الكتل فقد نجح إلى حدّ بعيد لدرجة أنني بدأت بالفعل أنقل تلك الأفكار إلى واتربير، مع تحسينات ممتازة في الاختبار والتنقيح. واختبار الإصابة المبسّط، مع بعض التعديلات، عاد أيضاً إلى واتربير، وكذلك مكتبات المتجهات والأفاتار المصغّرة. أما البرمجة الحيّة فلم تصل إلى واتربير بعد، لكن ما إن يستقر جولة التغييرات الحالية قد أُقدّمها.</p>
+<h4>ما الذي نحاول بناءه فعلاً؟</h4>
+<p>بناء نسخة صغيرة من نظام أكبر يركّز التركيز بدقّة على ما إذا كانت الأجزاء المهمة فعلاً. هل هناك أجزاء باقية لأسباب تاريخية لا تخدم أي غرض (أو أسوأ من ذلك، تشتّت عن الغرض)؟ هل هناك ميزات لا يستخدمها أحد لكن عليك أن تدفع ثمن صيانتها؟ هل يمكن تبسيط واجهة المستخدم؟ كل هذه أسئلة ممتازة لطرحها أثناء بناء نسخة صغيرة. أما التغييرات الجذرية، مثل إعادة تنظيم التخطيط، فيمكن إجراؤها دون القلق من تداعياتها التي تتسرّب عبر نظام أكثر تعقيداً، بل قد تكون في حدّ ذاتها دليلاً على إعادة هيكلة النظام المعقّد نفسه.</p>
+<h4>البرنامج عملية لا شيء</h4>
+<p>هناك أمور لم أتمكّن من تجربتها ضمن نطاق هذا المشروع وقد أستخدم شيفرة بلوك كود لاختبارها في المستقبل. سيكون من المثير إنشاء كتل «دالة» تصنع كتلاً جديدة من كتل قائمة. وتنفيذ التراجع/الإعادة سيكون أسهل في بيئة مقيّدة. وجعل الكتل تقبل وسائط متعددة دون توسيع التعقيد بشكل جذري سيكون أمراً مفيداً. أما إيجاد طرق متنوّعة لمشاركة سكربتات الكتل على الإنترنت فيُكمل دورة كون الأداة على الويب تماماً.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:e,html:t};export{s as book,a as chapter,n as chapterTitle,c as default,e as headings,t as html,l as slug,p as title};

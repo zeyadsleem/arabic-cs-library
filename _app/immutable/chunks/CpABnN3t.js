@@ -1,0 +1,826 @@
+const s="500-lines",a="objmodel",n="A Simple Object Model",l="index",e="نموذج كائنات بسيط",p=[{depth:2,id:"مقدمة",text:"مقدّمة"},{depth:2,id:"النموذج-القائم-على-الدوال",text:"النموذج القائم على الدوال"},{depth:3,id:"فحص-isinstance",text:"فحص isinstance"},{depth:3,id:"استدعاء-الدوال",text:"استدعاء الدوال"},{depth:2,id:"النموذج-القائم-على-الخصائص",text:"النموذج القائم على الخصائص"},{depth:2,id:"بروتوكولات-الكائنات-الوسيطة",text:"بروتوكولات الكائنات الوسيطة"},{depth:3,id:"تخصيص-القراءة-والكتابة-والخاصية",text:"تخصيص القراءة والكتابة والخاصية"},{depth:3,id:"بروتوكول-الواصفات",text:"بروتوكول الواصفات"},{depth:2,id:"تحسين-النسخ",text:"تحسين النسخ"},{depth:2,id:"الامتدادات-الممكنة",text:"الامتدادات الممكنة"},{depth:2,id:"الخاتمة",text:"الخاتمة"}],t=`<p><em>كارل فريدريش بولتس باحث في كلية الملك في لندن، وهو مهتمّ على نطاق واسع
+بتنفيذ وتحسين جميع أنواع اللغات الديناميكية. وهو أحد المؤلفين الرئيسيين
+لـPyPy/RPython، وقد عمل على تنفيذ لغات Prolog وRacket وSmalltalk
+وPHP وRuby. ومعرّفه على
+تويتر هو <a href="https://twitter.com/cfbolz">@cfbolz</a>.</em></p>
+<h2 id="مقدمة">مقدّمة</h2>
+<p>البرمجة الموجّهة نحو الكائنات هي أحد أنماط البرمجة الرئيسة المستخدمة
+اليوم، إذ تقدّم كثير من اللغات صورة ما من التوجّه نحو الكائنات. وبينما
+تبدو على السطح الآليات التي تقدّمها لغارات البرمجة الموجّهة نحو
+الكائنات المختلفة للمبرمج متشابهة جدًا، فإن التفاصيل قد تتباين كثيرًا.
+ومن السمات المشتركة لمعظم اللغات وجود الكائنات ونوع ما من آلية
+الوراثة. غير أن الأصناف ميزة لا تدعمها كل اللغات مباشرةً. فمثلًا، في اللغات
+المعتمدة على النماذج الأوّلية (prototypes) مثل Self أو
+JavaScript، لا وجود لمفهوم الصنف، بل ترث الكائنات
+من بعضها مباشرةً.</p>
+<p>قد يكون فهم الفروق بين نماذج الكائنات (object models) المختلفة
+ممتعًا. فهي غالبًا تكشف القرابة العائلية بين اللغات
+المختلفة.</p>
+<p>قد يكون من المفيد وضع نموذج لغة جديدة في
+سياق نماذج اللغات الأخرى،
+سواء لفهم النموذج الجديد بسرعة، ولمنحنا
+شعورًا أفضل بمجال تصميم لغات البرمجة.</p>
+<p>يستكشف هذا الفصل تنفيذ سلسلة من نماذج كائنات شديدة البساطة.
+ويبدأ بنسخات (instances) بسيطة وأصناف، مع القدرة
+على استدعاء الدوال على النسخات. وهذه هي المقاربة
+«الكلاسيكية» الموجّهة نحو الكائنات التي تأسست في لغات OO
+المبكرة مثل Simula 67 وSmalltalk. ثم يُوسَّع هذا النموذج خطوةً خطوة، وتستكشف
+الخطوتان التاليتان خيارات تصميم لغوية مختلفة، والخطوة الأخيرة تحسّن
+كفاءة نموذج الكائنات. أما النموذج النهائي فليس نموذج لغة حقيقية،
+بل نسخة مثالية ومبسّطة من نموذج كائنات بايثون.</p>
+<p>ستُنفَّذ نماذج الكائنات المعروضة في هذا الفصل بلغة بايثون.
+وتعمل الشيفرة على كل من Python 2.7 و3.4.
+ولفهم السلوك وخيارات التصميم على نحو أفضل، سيقدّم الفصل أيضًا
+اختبارات لنموذج الكائنات. ويمكن تشغيل هذه الاختبارات إما بـpy.test أو nose.</p>
+<p>أما اختيار بايثون كلغة تنفيذ
+فغير واقعي إلى حدٍّ كبير. فـ«آلة افتراضية» حقيقية تُنفَّذ عادةً بلغة
+منخفضة المستوى مثل C/C++ وتحتاج إلى كثير من العناية
+بتفاصيل الهندسة لتكون فعّالة. غير أن لغة التنفيذ
+الأبسط تجعل من الأسهل التركيز على فروق السلوك الفعلية بدلًا من
+الانشغال بتفاصيل التنفيذ.</p>
+<h2 id="النموذج-القائم-على-الدوال">النموذج القائم على الدوال</h2>
+<p>نموذج الكائنات الذي سنبدأ به هو نسخة مبسّطة إلى حدٍّ كبير
+من نموذج Smalltalk. وكانت Smalltalk لغة برمجة موجّهة نحو الكائنات
+صمّمها فريق آلان كاي في Xerox PARC في السبعينيات. فهي هيّجت
+البرمجة الموجّهة نحو الكائنات، وهي مصدر كثير من الميزات الموجودة في لغات
+البرمجة اليوم. ومن المبادئ الجوهرية في تصميم لغة Smalltalk
+أن «كل شيء كائن». أما أقرب خلفاء Smalltalk من حيث الاستخدام
+اليوم فهو Ruby، الذي يستخدم صياغة أقرب إلى C لكنه يحتفظ بأغلب نموذج
+كائنات Smalltalk.</p>
+<p>سيحتوي نموذج الكائنات في هذا القسم على أصناف ونسخ منها، وعلى القدرة على قراءة
+الخصائص
+وكتابتها
+في الكائنات، والقدرة على استدعاء الدوال على الكائنات، وعلى
+القدرة على أن يكون الصنف صنفًا فرعيًا من صنف آخر. منذ البداية
+ستكون الأصناف كائنات عادية تمامًا يمكن أن تكون لها هيتها
+خصائص ودوال.</p>
+<p>ملاحظة حول المصطلحات: في هذا الفصل سأستخدم كلمة «نسخة» بمعنى
+-«كائن ليس صنفًا».</p>
+<p>من المفيد أن نبدأ بكتابة اختبار يحدّد
+ما ينبغي أن يكون السلوك المراد تنفيذه. وكل الاختبارات المعروضة في هذا
+الفصل تتكوّن من جزأين. أولًا، بقليل من شيفرة بايثون
+العادية تُعرّف بضعة أصناف وتستخدمها، وتستفيد بشكل متزايد من
+ميزات نموذج كائنات بايثون المتطوّرة. ثانيًا،
+الاختبار المقابل باستخدام نموذج الكائنات الذي سننفّذه في هذا الفصل،
+بدلًا من أصناف بايثون العادية.</p>
+<p>سيجري الربط بين استخدام أصناف بايثون العادية واستخدام نموذج كائناتنا
+يدويًا في الاختبارات. فمثلًا، بدلًا من كتابة <code>obj.attribute</code> في
+بايثون، سنستخدم في نموذج الكائنات الدالة <code>obj.read_attr(&quot;attribute&quot;)</code>.
+وهذا الربط، في تنفيذٍ للغة حقيقية، يجريه
+مفسّر اللغة أو مصرّفها.</p>
+<p>وثمّة تبسيط إضافي في
+هذا الفصل: وهو أننا لا نضع تمييزًا حادًّا بين الشيفرة التي
+تنفّذ نموذج الكائنات والشيفرة المستخدَمة لكتابة الدوال المستعملة
+في الكائنات. وفي نظام حقيقي، كثيرًا ما تُنفَّذ الاثنتان بلغتَي برمجة مختلفتين.</p>
+<p>لنبدأ باختبار بسيط لقراءة حقول الكائنات وكتابتها.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_read_write_field</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">pass</span>
+    obj = A()
+    obj.a = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.a == <span class="hljs-number">1</span>
+
+    obj.b = <span class="hljs-number">5</span>
+    <span class="hljs-keyword">assert</span> obj.a == <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.b == <span class="hljs-number">5</span>
+
+    obj.a = <span class="hljs-number">2</span>
+    <span class="hljs-keyword">assert</span> obj.a == <span class="hljs-number">2</span>
+    <span class="hljs-keyword">assert</span> obj.b == <span class="hljs-number">5</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={}, metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;a&quot;</span>) == <span class="hljs-number">1</span>
+
+    obj.write_attr(<span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-number">5</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;a&quot;</span>) == <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;b&quot;</span>) == <span class="hljs-number">5</span>
+
+    obj.write_attr(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;a&quot;</span>) == <span class="hljs-number">2</span>
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;b&quot;</span>) == <span class="hljs-number">5</span>
+</code></pre>
+<p>يستخدم الاختبار ثلاثة أمطر علينا تنفيذها.
+تمثّل الأصناف <code>Class</code> و<code>Instance</code> أصناف نموذج الكائنات
+ونسخَه على التوالي. وهناك نسختان خاصتان من الصنف: <code>OBJECT</code>
+و<code>TYPE</code>. وتطابق <code>OBJECT</code> ما يقابله
+<code>object</code> في بايثون، وهي الصنف الأساسي النهائي لتسلسل
+الوراثة. وتطابق <code>TYPE</code> ما يقابله <code>type</code> في بايثون، وهي نوع جميع
+الأصناف.</p>
+<p>كي نتمكّن من فعل أي شيء بنسخ <code>Class</code> و<code>Instance</code>، فإنها تنفّذ
+واجهة مشتركة بالوراثة من صنف أساسي مشترك هو <code>Base</code>
+يكشف عددًا من الدوال:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-string">&quot;&quot;&quot; The base class that all of the object model classes inherit from. &quot;&quot;&quot;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, cls, fields</span>):
+        <span class="hljs-string">&quot;&quot;&quot; Every object has a class. &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.cls = cls
+        <span class="hljs-variable language_">self</span>._fields = fields
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">read_attr</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-string">&quot;&quot;&quot; read field &#x27;fieldname&#x27; out of the object &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._read_dict(fieldname)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">write_attr</span>(<span class="hljs-params">self, fieldname, value</span>):
+        <span class="hljs-string">&quot;&quot;&quot; write field &#x27;fieldname&#x27; into the object &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>._write_dict(fieldname, value)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isinstance</span>(<span class="hljs-params">self, cls</span>):
+        <span class="hljs-string">&quot;&quot;&quot; return True if the object is an instance of class cls &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.cls.<span class="hljs-built_in">issubclass</span>(cls)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">callmethod</span>(<span class="hljs-params">self, methname, *args</span>):
+        <span class="hljs-string">&quot;&quot;&quot; call method &#x27;methname&#x27; with arguments &#x27;args&#x27; on object &quot;&quot;&quot;</span>
+        meth = <span class="hljs-variable language_">self</span>.cls._read_from_class(methname)
+        <span class="hljs-keyword">return</span> meth(<span class="hljs-variable language_">self</span>, *args)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_read_dict</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-string">&quot;&quot;&quot; read an field &#x27;fieldname&#x27; out of the object&#x27;s dict &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._fields.get(fieldname, MISSING)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_write_dict</span>(<span class="hljs-params">self, fieldname, value</span>):
+        <span class="hljs-string">&quot;&quot;&quot; write a field &#x27;fieldname&#x27; into the object&#x27;s dict &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>._fields[fieldname] = value
+
+MISSING = <span class="hljs-built_in">object</span>()
+
+</code></pre>
+<p>ينفّذ صنف <code>Base</code> تخزين صنف الكائن، وقاموسًا
+يحتوي على قيم حقول الكائن.
+والآن علينا تنفيذ <code>Class</code> و<code>Instance</code>. ويتلقّى مُنشئ
+<code>Instance</code> الصنف الذي
+ستُنشأ نسخته، ويهيّئ <code>fields</code> <code>dict</code> على أن يكون قاموسًا فارغًا.
+وأما فيما عدا ذلك، فـ<code>Instance</code> مجرد صنف فرعي رقيق جدًا يلتفّ حول <code>Base</code> ولا
+يضيف أي وظيفة إضافية.</p>
+<p>يتلقّى مُنشئ <code>Class</code> اسم الصنف،
+وصنفه الأساسي، وقاموس الصنف، وصنفه الفوقي (metaclass).
+وبالنسبة إلى الأصناف، تُمرَّر الحقول
+إلى المُنشئ من مستخدم نموذج الكائنات. ويتلقّى مُنشئ
+الصنف أيضًا صنفًا أساسيًا لا تحتاجه الاختبارات حتى الآن،
+لكننا سنستفيد منه في القسم التالي.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Instance</span>(<span class="hljs-title class_ inherited__">Base</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Instance of a user-defined class. &quot;&quot;&quot;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, cls</span>):
+        <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(cls, Class)
+        Base.__init__(<span class="hljs-variable language_">self</span>, cls, {})
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Class</span>(<span class="hljs-title class_ inherited__">Base</span>):
+    <span class="hljs-string">&quot;&quot;&quot; A User-defined class. &quot;&quot;&quot;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name, base_class, fields, metaclass</span>):
+        Base.__init__(<span class="hljs-variable language_">self</span>, metaclass, fields)
+        <span class="hljs-variable language_">self</span>.name = name
+        <span class="hljs-variable language_">self</span>.base_class = base_class
+</code></pre>
+<p>ولأن الأصناف أيضًا نوع من
+الكائنات، فإنها (بشكل غير مباشر) ترث من <code>Base</code>. وعليه، يحتاج الصنف إلى أن يكون نسخة من
+صنف آخر: صنفه الفوقي.</p>
+<p>الآن، يكاد اختبارنا الأول ينجح. والشيء الوحيد الناقص هو تعريف
+الصنفين الأساسيين <code>TYPE</code> و<code>OBJECT</code>، وكلاهما نسختان من
+<code>Class</code>. وهنا سنبتعد كثيرًا عن نموذج Smalltalk،
+ذو نظام الأصناف الفوقية المعقّد إلى حدٍّ ما. وبدلًا من ذلك سنستخدم النموذج الذي
+استحدثه ObjVlisp[^objvlisp] والذي
+اعتمدته بايثون.
+[^objvlisp]: P. Cointe، «الأصناف الفوقية من الدرجة الأولى: نموذج ObjVlisp»، مجلة SIGPLAN، المجلد 22، العدد 12، الصفحات 156–162، 1987.</p>
+<p>في نموذج ObjVlisp، يتشابك <code>OBJECT</code> و<code>TYPE</code>. فـ<code>OBJECT</code> هو الصنف
+الأساسي لجميع الأصناف، أي أنه لا يملك صنفًا أساسيًا. و<code>TYPE</code> هو صنف فرعي من
+<code>OBJECT</code>.
+افتراضيًا، كل صنف هو نسخة من <code>TYPE</code>. وبخاصة، فإن <code>TYPE</code>
+و<code>OBJECT</code> كلاهما نسختان من <code>TYPE</code>. غير أن بإمكان المبرمج
+أيضًا أن يجعل <code>TYPE</code> صنفًا فرعيًا ليصنع صنفًا فوقيًا جديدًا:</p>
+<pre><code class="language-python"><span class="hljs-comment"># set up the base hierarchy as in Python (the ObjVLisp model)</span>
+<span class="hljs-comment"># the ultimate base class is OBJECT</span>
+OBJECT = Class(name=<span class="hljs-string">&quot;object&quot;</span>, base_class=<span class="hljs-literal">None</span>, fields={}, metaclass=<span class="hljs-literal">None</span>)
+<span class="hljs-comment"># TYPE is a subclass of OBJECT</span>
+TYPE = Class(name=<span class="hljs-string">&quot;type&quot;</span>, base_class=OBJECT, fields={}, metaclass=<span class="hljs-literal">None</span>)
+<span class="hljs-comment"># TYPE is an instance of itself</span>
+TYPE.cls = TYPE
+<span class="hljs-comment"># OBJECT is an instance of TYPE</span>
+OBJECT.cls = TYPE
+</code></pre>
+<p>ولتعريف أصناف فوقية جديدة، يكفي جعل <code>TYPE</code> صنفًا فرعيًا. غير أن
+بقية هذا الفصل لن نفعل ذلك؛ سنكتفي دائمًا باستخدام <code>TYPE</code> بوصفه
+الصنف الفوقي لكل صنف.</p>
+<p>\\aosafigure[240pt]/images/500-lines/objmodel-0-inheritance.webp{الوراثة}{500l.objmodel.inheritance}</p>
+<p>والآن ينجح الاختبار الأول. ويفحص الاختبار الثاني أن قراءة الخصائص وكتابتها تعمل على الأصناف أيضًا. وهو سهل الكتابة، وينجح فورًا. \\newpage</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_read_write_field_class</span>():
+    <span class="hljs-comment"># classes are objects too</span>
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">pass</span>
+    A.a = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> A.a == <span class="hljs-number">1</span>
+    A.a = <span class="hljs-number">6</span>
+    <span class="hljs-keyword">assert</span> A.a == <span class="hljs-number">6</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={<span class="hljs-string">&quot;a&quot;</span>: <span class="hljs-number">1</span>}, metaclass=TYPE)
+    <span class="hljs-keyword">assert</span> A.read_attr(<span class="hljs-string">&quot;a&quot;</span>) == <span class="hljs-number">1</span>
+    A.write_attr(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-number">5</span>)
+    <span class="hljs-keyword">assert</span> A.read_attr(<span class="hljs-string">&quot;a&quot;</span>) == <span class="hljs-number">5</span>
+</code></pre>
+<h3 id="فحص-isinstance">فحص <code>isinstance</code></h3>
+<p>حتى الآن لم نستفد من كون للكائنات أصنافًا. والاختبار
+التالي ينفّذ آلية <code>isinstance</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_isinstance</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>(<span class="hljs-title class_ inherited__">A</span>):
+        <span class="hljs-keyword">pass</span>
+    b = B()
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(b, B)
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(b, A)
+    <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(b, <span class="hljs-built_in">object</span>)
+    <span class="hljs-keyword">assert</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(b, <span class="hljs-built_in">type</span>)
+
+    <span class="hljs-comment"># Object model code</span>
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={}, metaclass=TYPE)
+    B = Class(name=<span class="hljs-string">&quot;B&quot;</span>, base_class=A, fields={}, metaclass=TYPE)
+    b = Instance(B)
+    <span class="hljs-keyword">assert</span> b.<span class="hljs-built_in">isinstance</span>(B)
+    <span class="hljs-keyword">assert</span> b.<span class="hljs-built_in">isinstance</span>(A)
+    <span class="hljs-keyword">assert</span> b.<span class="hljs-built_in">isinstance</span>(OBJECT)
+    <span class="hljs-keyword">assert</span> <span class="hljs-keyword">not</span> b.<span class="hljs-built_in">isinstance</span>(TYPE)
+</code></pre>
+<p>للتحقّق مما إذا كان كائن <code>obj</code> نسخة من صنف معيّن <code>cls</code>، يكفي
+التحقّق مما إذا كان <code>cls</code> صنفًا فوقيًا لصنف <code>obj</code>، أو
+الصنف نفسه.
+وللتحقّق مما إذا كان صنف ما صنفًا فوقيًا لصنف آخر، نمرّ على سلسلة
+الأصناف الفوقية لذلك الصنف. ولا يكون الصنف الآخر صنفًا فوقيًا إلا إذا وُجد في
+تلك السلسلة. وتُسمّى سلسلة الأصناف الفوقية لصنف، بما في ذلك
+الصنف نفسه،
+بـ«ترتيب حلّ الدوال» (method resolution order) لذلك الصنف. ويمكن حسابها
+بسهولة تكراريًا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Class</span>(<span class="hljs-title class_ inherited__">Base</span>):
+    ...
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">method_resolution_order</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot; compute the method resolution order of the class &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.base_class <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> [<span class="hljs-variable language_">self</span>]
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> [<span class="hljs-variable language_">self</span>] + <span class="hljs-variable language_">self</span>.base_class.method_resolution_order()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">issubclass</span>(<span class="hljs-params">self, cls</span>):
+        <span class="hljs-string">&quot;&quot;&quot; is self a subclass of cls? &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> cls <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.method_resolution_order()
+</code></pre>
+<p>بهذه الشيفرة، ينجح الاختبار.</p>
+<h3 id="استدعاء-الدوال">استدعاء الدوال</h3>
+<p>الميزة الناقصة المتبقّية في هذا الإصدار الأول من نموذج الكائنات هي
+القدرة على استدعاء الدوال على الكائنات. وسننفّذ في هذا الفصل نموذج وراثة
+بسيط أحادي.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_callmethod_simple</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">self</span>):
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.x + <span class="hljs-number">1</span>
+    obj = A()
+    obj.x = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.f() == <span class="hljs-number">2</span>
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>(<span class="hljs-title class_ inherited__">A</span>):
+        <span class="hljs-keyword">pass</span>
+    obj = B()
+    obj.x = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.f() == <span class="hljs-number">2</span> <span class="hljs-comment"># works on subclass too</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f_A</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.read_attr(<span class="hljs-string">&quot;x&quot;</span>) + <span class="hljs-number">1</span>
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={<span class="hljs-string">&quot;f&quot;</span>: f_A}, metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">assert</span> obj.callmethod(<span class="hljs-string">&quot;f&quot;</span>) == <span class="hljs-number">2</span>
+
+    B = Class(name=<span class="hljs-string">&quot;B&quot;</span>, base_class=A, fields={}, metaclass=TYPE)
+    obj = Instance(B)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">assert</span> obj.callmethod(<span class="hljs-string">&quot;f&quot;</span>) == <span class="hljs-number">3</span>
+</code></pre>
+<p>للعثور على التنفيذ الصحيح لدالة تُرسَل إلى كائن، نمرّ على
+ترتيب حلّ الدوال الخاص بصنف ذلك الكائن. وأول دالة
+تُعثر عليها في قاموس أحد الأصناف الموجودة في ترتيب حلّ الدوال
+هي التي تُستدعى:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Class</span>(<span class="hljs-title class_ inherited__">Base</span>):
+    ...
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_read_from_class</span>(<span class="hljs-params">self, methname</span>):
+        <span class="hljs-keyword">for</span> cls <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.method_resolution_order():
+            <span class="hljs-keyword">if</span> methname <span class="hljs-keyword">in</span> cls._fields:
+                <span class="hljs-keyword">return</span> cls._fields[methname]
+        <span class="hljs-keyword">return</span> MISSING
+
+</code></pre>
+<p>بإضافة شيفرة <code>callmethod</code> في تنفيذ <code>Base</code>، ينجح
+الاختبار.</p>
+<p>وللتأكّد من أن الدوال التي لها وسائط تعمل أيضًا، وأن إعادة تعريف
+الدوال مُنفَّذة على نحو صحيح، يمكننا استخدام الاختبار التالي الأكثر تعقيدًا
+قليلًا، وهو ينجح بالفعل:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_callmethod_subclassing_and_arguments</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">self, arg</span>):
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.x + arg
+    obj = A()
+    obj.x = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">assert</span> obj.g(<span class="hljs-number">4</span>) == <span class="hljs-number">5</span>
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>(<span class="hljs-title class_ inherited__">A</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">self, arg</span>):
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.x + arg * <span class="hljs-number">2</span>
+    obj = B()
+    obj.x = <span class="hljs-number">4</span>
+    <span class="hljs-keyword">assert</span> obj.g(<span class="hljs-number">4</span>) == <span class="hljs-number">12</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">g_A</span>(<span class="hljs-params">self, arg</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.read_attr(<span class="hljs-string">&quot;x&quot;</span>) + arg
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={<span class="hljs-string">&quot;g&quot;</span>: g_A}, metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">assert</span> obj.callmethod(<span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-number">4</span>) == <span class="hljs-number">5</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">g_B</span>(<span class="hljs-params">self, arg</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.read_attr(<span class="hljs-string">&quot;x&quot;</span>) + arg * <span class="hljs-number">2</span>
+    B = Class(name=<span class="hljs-string">&quot;B&quot;</span>, base_class=A, fields={<span class="hljs-string">&quot;g&quot;</span>: g_B}, metaclass=TYPE)
+    obj = Instance(B)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">4</span>)
+    <span class="hljs-keyword">assert</span> obj.callmethod(<span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-number">4</span>) == <span class="hljs-number">12</span>
+</code></pre>
+<h2 id="النموذج-القائم-على-الخصائص">النموذج القائم على الخصائص</h2>
+<p>الآن وبعد أن عمل أبسط إصدار من نموذج كائناتنا، يمكننا التفكير في
+طرق لتغييره. سيقدّم هذا القسم
+التمييز بين النموذج القائم على الدوال والنموذج القائم على الخصائص. وهذه
+إحدى الفروق الجوهرية بين Smalltalk وRuby وJavaScript من جهة
+وPython وLua من جهة أخرى.</p>
+<p>يضع النموذج القائم على الدوال استدعاء الدوال بوصفه العملية الأولية لتنفيذ البرنامج:</p>
+<pre><code class="language-python">result = obj.f(arg1, arg2)
+</code></pre>
+<p>أما النموذج القائم على الخصائص
+فيقسّم استدعاء الدوال إلى خطوتين: البحث عن خاصية
+ثم استدعاء النتيجة:</p>
+<pre><code class="language-python">method = obj.f
+result = method(arg1, arg2)
+</code></pre>
+<p>ويمكن إظهار هذا الفرق في الاختبار التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_bound_method</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">self, a</span>):
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.x + a + <span class="hljs-number">1</span>
+    obj = A()
+    obj.x = <span class="hljs-number">2</span>
+    m = obj.f
+    <span class="hljs-keyword">assert</span> m(<span class="hljs-number">4</span>) == <span class="hljs-number">7</span>
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span>(<span class="hljs-title class_ inherited__">A</span>):
+        <span class="hljs-keyword">pass</span>
+    obj = B()
+    obj.x = <span class="hljs-number">1</span>
+    m = obj.f
+    <span class="hljs-keyword">assert</span> m(<span class="hljs-number">10</span>) == <span class="hljs-number">12</span> <span class="hljs-comment"># works on subclass too</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f_A</span>(<span class="hljs-params">self, a</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.read_attr(<span class="hljs-string">&quot;x&quot;</span>) + a + <span class="hljs-number">1</span>
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT, fields={<span class="hljs-string">&quot;f&quot;</span>: f_A}, metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">2</span>)
+    m = obj.read_attr(<span class="hljs-string">&quot;f&quot;</span>)
+    <span class="hljs-keyword">assert</span> m(<span class="hljs-number">4</span>) == <span class="hljs-number">7</span>
+
+    B = Class(name=<span class="hljs-string">&quot;B&quot;</span>, base_class=A, fields={}, metaclass=TYPE)
+    obj = Instance(B)
+    obj.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">1</span>)
+    m = obj.read_attr(<span class="hljs-string">&quot;f&quot;</span>)
+    <span class="hljs-keyword">assert</span> m(<span class="hljs-number">10</span>) == <span class="hljs-number">12</span>
+</code></pre>
+<p>ولرغم أن الإعداد هو نفسه الموجود في الاختبار المقابل
+لاستدعاءات الدوال، فإن طريقة استدعاء الدوال مختلفة. أولًا،
+يُبحث عن الخاصية التي تحمل اسم الدالة على الكائن. ونتيجة
+عملية البحث هذه هي <em>دالة مربوطة</em> (bound method)، وهي كائن يضمّ الكائن
+نفسه فضلًا عن الدالة الموجودة في الصنف. ثم تُستدعى تلك الدالة المربوطة
+بعملية استدعاء[^attributenote].</p>
+<p>[^attributenote]: يبدو أن النموذج القائم على الخصائص أكثر تعقيدًا من الناحية
+المفاهيمية، لأنه يحتاج إلى البحث عن الدالة وإلى استدعائها. ومن الناحية العملية، فإن
+استدعاء شيء ما يُعرَّف بالبحث عن خاصية خاصة
+هي <code>__call__</code> ثم استدعائها، وبذلك تُستعاد البساطة المفاهيمية. لن يُنفَّذ هذا
+غير ذلك في هذا الفصل.)</p>
+<p>ولتنفيذ هذا السلوك، علينا تغيير تنفيذ <code>Base.read_attr</code>.
+إذا لم يُعثر على الخاصية في القاموس، فيُبحث
+عنها في الصنف. وإذا وُجدت في الصنف وكانت الخاصية قابلة للاستدعاء،
+فيجب تحويلها إلى دالة مربوطة. ولمحاكاة الدالة المربوطة، نكتفي
+باستخدام إغلاق (closure). وإلى جانب تغيير <code>Base.read_attr</code>، يمكننا أيضًا تغيير
+<code>Base.callmethod</code> ليستخدم مقاربة استدعاء الدوال الجديدة، ولنتأكّد من أن جميع الاختبارات
+لا تزال تنجح.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>(<span class="hljs-title class_ inherited__">object</span>):
+    ...
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">read_attr</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-string">&quot;&quot;&quot; read field &#x27;fieldname&#x27; out of the object &quot;&quot;&quot;</span>
+        result = <span class="hljs-variable language_">self</span>._read_dict(fieldname)
+        <span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> MISSING:
+            <span class="hljs-keyword">return</span> result
+        result = <span class="hljs-variable language_">self</span>.cls._read_from_class(fieldname)
+        <span class="hljs-keyword">if</span> _is_bindable(result):
+            <span class="hljs-keyword">return</span> _make_boundmethod(result, <span class="hljs-variable language_">self</span>)
+        <span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> MISSING:
+            <span class="hljs-keyword">return</span> result
+        <span class="hljs-keyword">raise</span> AttributeError(fieldname)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">callmethod</span>(<span class="hljs-params">self, methname, *args</span>):
+        <span class="hljs-string">&quot;&quot;&quot; call method &#x27;methname&#x27; with arguments &#x27;args&#x27; on object &quot;&quot;&quot;</span>
+        meth = <span class="hljs-variable language_">self</span>.read_attr(methname)
+        <span class="hljs-keyword">return</span> meth(*args)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_bindable</span>(<span class="hljs-params">meth</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">callable</span>(meth)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_make_boundmethod</span>(<span class="hljs-params">meth, self</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bound</span>(<span class="hljs-params">*args</span>):
+        <span class="hljs-keyword">return</span> meth(<span class="hljs-variable language_">self</span>, *args)
+    <span class="hljs-keyword">return</span> bound
+
+</code></pre>
+<p>لا تحتاج بقية الشيفرة إلى أي تغيير على الإطلاق.</p>
+<h2 id="بروتوكولات-الكائنات-الوسيطة">بروتوكولات الكائنات الوسيطة</h2>
+<p>إلى جانب الدوال «العادية» التي يستدعيها البرنامج مباشرةً، تدعم كثير من
+اللغات الديناميكية <em>دوالًا خاصة</em>. وهذه دوال لا يقصد استدعاءها مباشرةً،
+بل يستدعيها نظام الكائنات. وفي بايثون، تحمل هذه
+الدوال الخاصة عادةً أسماء تبدأ وتنتهي بشرطتين سفليتين؛ مثل
+<code>__init__</code>. ويمكن استخدام الدوال الخاصة لإعادة تعريف العمليات الأولية
+وتوفير سلوك مخصّص لها بدلًا من ذلك. وبذلك فهي خطّافات تخبار
+آلية نموذج الكائنات بدقة كيفية فعل أشياء بعينها. ويمتلك نموذج كائنات بايثون
+<a href="https://docs.python.org/2/reference/datamodel.html#special-method-names">عشرات الدوال الخاصة</a>.</p>
+<p>قدَّمت Smalltalk بروتوكولات الكائنات الوسيطة، لكن أنظمة
+Common Lisp المستخدِمة، مثل CLOS، استعملتها أكثر من ذلك. وهناك أيضًا
+صاغ اسم <em>بروتوكول الكائن الوسيط</em>، بالمعنى الذي يشير إلى
+مجموعات الدوال الخاصة[^kiczales].</p>
+<p>[^kiczales]: G. Kiczales وJ. des Rivieres وD. G. Bobrow، <em>فن بروتوكول الكائن الوسيط</em>. كامبريدج، ماساتشوستس: مطبعة MIT، 1991.</p>
+<p>سنضيف في هذا الفصل ثلاثة خطّافات وسيطة كهذه إلى نموذج كائناتنا. وهي
+تُستخدم لضبط ما يحدث تمامًا عند قراءة الخصائص وكتابتها. أما
+الدوال الخاصة التي سنضيفها أولًا فهي <code>__getattr__</code> و<code>__setattr__</code>، وهما
+تتبعان عن قرب سلوك نظيرتيهما في بايثون.</p>
+<h3 id="تخصيص-القراءة-والكتابة-والخاصية">تخصيص القراءة والكتابة والخاصية</h3>
+<p>يستدعي نموذج الكائنات الدالة <code>__getattr__</code> حين لا يُعثر على الخاصية
+التي يجري البحث عنها بالطرق المعتادة؛ أي لا على
+النسخة ولا على الصنف. وهي تتلقّى اسم الخاصية التي يجري البحث عنها كوسيط.
+وكان نظير للدالة الخاصة <code>__getattr__</code> جزءًا من
+أنظمة Smalltalk المبكرة[^smalltalk] باسم <code>doesNotUnderstand:</code>.</p>
+<p>[^smalltalk]: A. Goldberg، <em>Smalltalk-80: اللغة وتنفيذها</em>. Addison-Wesley، 1983، الصفحة 61.</p>
+<p>حالة <code>__setattr__</code> مختلفة قليلًا. ولأن ضبط خاصية
+ينشئها دائمًا، \\newline فإن <code>__setattr__</code> تُستدعى دائمًا عند ضبط
+خاصية. ولضمان وجود دالة <code>__setattr__</code> دائمًا، فإن
+صنف <code>OBJECT</code> لديه تعريف لـ<code>__setattr__</code>. ويكتفي هذا التنفيذ
+الأساسي بما كان ضبط الخاصية يفعله حتى الآن، أي كتابة الخاصية
+في قاموس الكائن. وهذا أيضًا يجعل من الممكن لِـ<code>__setattr__</code> المعرَّف
+من المستخدم أن يفوّض الأمر في بعض الحالات إلى <code>OBJECT.__setattr__</code> الأساسي.</p>
+<p>الاختبار الخاص بهاتين الدالتين الخاصتين هو التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_getattr</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name</span>):
+            <span class="hljs-keyword">if</span> name == <span class="hljs-string">&quot;fahrenheit&quot;</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.celsius * <span class="hljs-number">9.</span> / <span class="hljs-number">5.</span> + <span class="hljs-number">32</span>
+            <span class="hljs-keyword">raise</span> AttributeError(name)
+
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__setattr__</span>(<span class="hljs-params">self, name, value</span>):
+            <span class="hljs-keyword">if</span> name == <span class="hljs-string">&quot;fahrenheit&quot;</span>:
+                <span class="hljs-variable language_">self</span>.celsius = (value - <span class="hljs-number">32</span>) * <span class="hljs-number">5.</span> / <span class="hljs-number">9.</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># call the base implementation</span>
+                <span class="hljs-built_in">object</span>.__setattr__(<span class="hljs-variable language_">self</span>, name, value)
+    obj = A()
+    obj.celsius = <span class="hljs-number">30</span>
+    <span class="hljs-keyword">assert</span> obj.fahrenheit == <span class="hljs-number">86</span> <span class="hljs-comment"># test __getattr__</span>
+    obj.celsius = <span class="hljs-number">40</span>
+    <span class="hljs-keyword">assert</span> obj.fahrenheit == <span class="hljs-number">104</span>
+
+    obj.fahrenheit = <span class="hljs-number">86</span> <span class="hljs-comment"># test __setattr__</span>
+    <span class="hljs-keyword">assert</span> obj.celsius == <span class="hljs-number">30</span>
+    <span class="hljs-keyword">assert</span> obj.fahrenheit == <span class="hljs-number">86</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getattr__</span>(<span class="hljs-params">self, name</span>):
+        <span class="hljs-keyword">if</span> name == <span class="hljs-string">&quot;fahrenheit&quot;</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.read_attr(<span class="hljs-string">&quot;celsius&quot;</span>) * <span class="hljs-number">9.</span> / <span class="hljs-number">5.</span> + <span class="hljs-number">32</span>
+        <span class="hljs-keyword">raise</span> AttributeError(name)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__setattr__</span>(<span class="hljs-params">self, name, value</span>):
+        <span class="hljs-keyword">if</span> name == <span class="hljs-string">&quot;fahrenheit&quot;</span>:
+            <span class="hljs-variable language_">self</span>.write_attr(<span class="hljs-string">&quot;celsius&quot;</span>, (value - <span class="hljs-number">32</span>) * <span class="hljs-number">5.</span> / <span class="hljs-number">9.</span>)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># call the base implementation</span>
+            OBJECT.read_attr(<span class="hljs-string">&quot;__setattr__&quot;</span>)(<span class="hljs-variable language_">self</span>, name, value)
+
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT,
+              fields={<span class="hljs-string">&quot;__getattr__&quot;</span>: __getattr__, <span class="hljs-string">&quot;__setattr__&quot;</span>: __setattr__},
+              metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;celsius&quot;</span>, <span class="hljs-number">30</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;fahrenheit&quot;</span>) == <span class="hljs-number">86</span> <span class="hljs-comment"># test __getattr__</span>
+    obj.write_attr(<span class="hljs-string">&quot;celsius&quot;</span>, <span class="hljs-number">40</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;fahrenheit&quot;</span>) == <span class="hljs-number">104</span>
+    obj.write_attr(<span class="hljs-string">&quot;fahrenheit&quot;</span>, <span class="hljs-number">86</span>) <span class="hljs-comment"># test __setattr__</span>
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;celsius&quot;</span>) == <span class="hljs-number">30</span>
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;fahrenheit&quot;</span>) == <span class="hljs-number">86</span>
+</code></pre>
+<p>لتجاوز هذه الاختبارات، نحتاج إلى تغيير دالتي
+<code>Base.read_attr</code> و<code>Base.write_attr</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>(<span class="hljs-title class_ inherited__">object</span>):
+    ...
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">read_attr</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-string">&quot;&quot;&quot; read field &#x27;fieldname&#x27; out of the object &quot;&quot;&quot;</span>
+        result = <span class="hljs-variable language_">self</span>._read_dict(fieldname)
+        <span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> MISSING:
+            <span class="hljs-keyword">return</span> result
+        result = <span class="hljs-variable language_">self</span>.cls._read_from_class(fieldname)
+        <span class="hljs-keyword">if</span> _is_bindable(result):
+            <span class="hljs-keyword">return</span> _make_boundmethod(result, <span class="hljs-variable language_">self</span>)
+        <span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> MISSING:
+            <span class="hljs-keyword">return</span> result
+        meth = <span class="hljs-variable language_">self</span>.cls._read_from_class(<span class="hljs-string">&quot;__getattr__&quot;</span>)
+        <span class="hljs-keyword">if</span> meth <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> MISSING:
+            <span class="hljs-keyword">return</span> meth(<span class="hljs-variable language_">self</span>, fieldname)
+        <span class="hljs-keyword">raise</span> AttributeError(fieldname)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">write_attr</span>(<span class="hljs-params">self, fieldname, value</span>):
+        <span class="hljs-string">&quot;&quot;&quot; write field &#x27;fieldname&#x27; into the object &quot;&quot;&quot;</span>
+        meth = <span class="hljs-variable language_">self</span>.cls._read_from_class(<span class="hljs-string">&quot;__setattr__&quot;</span>)
+        <span class="hljs-keyword">return</span> meth(<span class="hljs-variable language_">self</span>, fieldname, value)
+</code></pre>
+<p>يتغيّر إجراء قراءة الخاصية لتُستدعى الدالة <code>__getattr__</code> مع اسم
+الحقل كوسيط، إن كانت الدالة موجودة، بدلًا من إطلاق خطأ. ولاحظ
+أن <code>__getattr__</code> (وإن كان كل الدوال الخاصة في بايثون) يُبحث عنها على
+الصنف فقط، بدلًا من الاستدعاء التكراري لـ
+<code>self.read_attr(&quot;__getattr__&quot;)</code>. وذلك لأن الأخير سيؤدي
+إلى تعاود لا نهائي في <code>read_attr</code> إذا لم تكن <code>__getattr__</code> معرَّفة
+على الكائن.</p>
+<p>أما كتابة الخصائص فتُؤجَّل بالكامل إلى الدالة <code>__setattr__</code>. ولجعل
+هذا يعمل، يحتاج <code>OBJECT</code> إلى دالة <code>__setattr__</code> تستدعي
+السلوك الافتراضي، على النحو التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">OBJECT__setattr__</span>(<span class="hljs-params">self, fieldname, value</span>):
+    <span class="hljs-variable language_">self</span>._write_dict(fieldname, value)
+OBJECT = Class(<span class="hljs-string">&quot;object&quot;</span>, <span class="hljs-literal">None</span>, {<span class="hljs-string">&quot;__setattr__&quot;</span>: OBJECT__setattr__}, <span class="hljs-literal">None</span>)
+</code></pre>
+<h3 id="بروتوكول-الواصفات">بروتوكول الواصفات</h3>
+<p>نجح الاختبار أعلاه الذي يوفّر التحويل التلقائي بين
+مقاييس حرارة مختلفة، لكنه كان مرهقًا في الكتابة، لأن اسم الخاصية
+كان يحتاج إلى فحص صريح داخل دالتَي <code>__getattr__</code> و<code>__setattr__</code>.
+ولكي نتفادى ذلك، فقد قُدِّم في بايثون
+<em>بروتوكول الواصفات</em>
+(descriptor protocol).</p>
+<p>بينما تُستدعى <code>__getattr__</code> و<code>__setattr__</code> على الكائن الذي تُقرأ منه الخاصية،
+فإن بروتوكول الواصفات يستدعي دالة خاصة على
+<em>نتيجة</em> الحصول على خاصية من كائن. ويمكن رؤيته على أنه
+تعميم لربط دالة بكائن – بل إن ربط دالة بكائن
+يتم فعلًا باستخدام بروتوكول الواصفات. وإلى جانب الدوال المربوطة،
+فأهمّ حالة استخدام لبروتوكول الواصفات في بايثون هي
+تنفيذ <code>staticmethod</code> و<code>classmethod</code> و<code>property</code>.</p>
+<p>سنقدّم في هذا القسم الفرع من بروتوكول الواصفات الذي يتعلق بربط الكائنات. ويتم ذلك
+بالدالة الخاصة <code>__get__</code>، وأفضل طريقة لشرحه هي اختبار مثال:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_get</span>():
+    <span class="hljs-comment"># Python code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">FahrenheitGetter</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__get__</span>(<span class="hljs-params">self, inst, cls</span>):
+            <span class="hljs-keyword">return</span> inst.celsius * <span class="hljs-number">9.</span> / <span class="hljs-number">5.</span> + <span class="hljs-number">32</span>
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span>(<span class="hljs-title class_ inherited__">object</span>):
+        fahrenheit = FahrenheitGetter()
+    obj = A()
+    obj.celsius = <span class="hljs-number">30</span>
+    <span class="hljs-keyword">assert</span> obj.fahrenheit == <span class="hljs-number">86</span>
+
+    <span class="hljs-comment"># Object model code</span>
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">FahrenheitGetter</span>(<span class="hljs-title class_ inherited__">object</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__get__</span>(<span class="hljs-params">self, inst, cls</span>):
+            <span class="hljs-keyword">return</span> inst.read_attr(<span class="hljs-string">&quot;celsius&quot;</span>) * <span class="hljs-number">9.</span> / <span class="hljs-number">5.</span> + <span class="hljs-number">32</span>
+
+    A = Class(name=<span class="hljs-string">&quot;A&quot;</span>, base_class=OBJECT,
+              fields={<span class="hljs-string">&quot;fahrenheit&quot;</span>: FahrenheitGetter()},
+              metaclass=TYPE)
+    obj = Instance(A)
+    obj.write_attr(<span class="hljs-string">&quot;celsius&quot;</span>, <span class="hljs-number">30</span>)
+    <span class="hljs-keyword">assert</span> obj.read_attr(<span class="hljs-string">&quot;fahrenheit&quot;</span>) == <span class="hljs-number">86</span>
+</code></pre>
+<p>تُستدعى الدالة <code>__get__</code> على نسخة <code>FahrenheitGetter</code> بعد أن
+جري البحث عنها في صنف <code>obj</code>. والوسائط الممرَّرة إلى <code>__get__</code> هي
+النسخة التي جرى البحث فيها[^secondarg].</p>
+<p>[^secondarg]: في بايثون، الوسيط الثاني هو الصنف الذي وُجدت فيه الخاصية،
+غير أننا سنتجاهله هنا.</p>
+<p>تنفيذ هذا السلوك سهل. فنحن بحاجة إلى تغيير <code>_is_bindable</code>
+\\newline و<code>_make_boundmethod</code> فحسب:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_bindable</span>(<span class="hljs-params">meth</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">hasattr</span>(meth, <span class="hljs-string">&quot;__get__&quot;</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_make_boundmethod</span>(<span class="hljs-params">meth, self</span>):
+    <span class="hljs-keyword">return</span> meth.__get__(<span class="hljs-variable language_">self</span>, <span class="hljs-literal">None</span>)
+</code></pre>
+<p>وهذا يجعل الاختبار ينجح. ولا تزال الاختبارات السابقة الخاصة بالدوال المربوطة
+تنجح، لأن دوال بايثون لديها دالة <code>__get__</code> تُعيد كائن دالة
+مربوطة.</p>
+<p>وفي الممارسة، بروتوكول الواصفات أعقد بكثير. فهو أيضًا
+يدعم <code>__set__</code> لإعادة تعريف معنى ضبط الخاصية على أساس
+كل خاصية على حدة. كما أن التنفيذ الحالي يختصر بعض الأمور. ولاحظ
+أن <code>_make_boundmethod</code> تستدعي الدالة <code>__get__</code> على مستوى
+التنفيذ، بدلًا من استخدام <code>meth.read_attr(&quot;__get__&quot;)</code>. وهذا ضروري لأن
+نموذج كائناتنا يستعير الدوال، وبالتالي دوالَ الطرق، من بايثون، بدلًا
+من أن يكون له تمثيله الخاص الذي يستخدم نموذج الكائنات. وسيكون على نموذج
+كائنات أكمل أن يحلّ هذه المشكلة.</p>
+<h2 id="تحسين-النسخ">تحسين النسخ</h2>
+<p>بينما كانت الصيغ الثلاث الأولى من نموذج الكائنات تهتمّ
+باختلاف السلوك، سنتناول في هذا القسم الأخير تحسينًا
+لا أثر له على السلوك إطلاقًا. ويُسمّى هذا التحسين <em>الخرائط</em> (maps) وقد
+رُوِّج له في الآلة الافتراضية للغة Self[^self]. وما زال
+أهم تحسينات نموذج الكائنات: فهو مستخدَم في PyPy وفي كل
+الآلات الافتراضية الحديثة لجافاسكربت، مثل V8 (حيث يُسمّى هذا التحسين <em>الأصناف
+الخفية</em>).</p>
+<p>[^self]: C. Chambers وD. Ungar وE. Lee، «تنفيذ فعّال لـ
+SELF، لغة برمجة موجّهة نحو الكائنات ومكتوبة بأنواع ديناميكية قائمة على النماذج الأوّلية»، في
+OOPSLA، 1989، المجلد 24.</p>
+<p>ينطلق هذا التحسين من الملاحظة التالية: في نموذج الكائنات المطبَّق
+حتى الآن، تستخدم كل النسخ قاموسًا كاملًا لتخزين
+خصائصها. ويُنفَّذ القاموس باستخدام خريطة تجزئة، وهو ما يستهلك قدرًا كبيرًا من
+الذاكرة. وإضافةً إلى ذلك، فإن قاموسات نسخ الصنف نفسه تحمل عادةً
+المفاتيح نفسها أيضًا. فمثلًا، إذا كان لدينا صنف <code>Point</code>، فمن المرجّح
+أن تكون مفاتيح قاموسات كل نسخه هي <code>&quot;x&quot;</code> و<code>&quot;y&quot;</code>.</p>
+<p>يستغل تحسين الخرائط هذه الحقيقة. فهو بفعالية يقسم
+قاموس كل نسخة إلى جزأين. جزء يخزّن المفاتيح (وهي الخريطة)
+والذي يمكن مشاركته بين كل النسخ التي لها مجموعة أسماء الخصائص نفسها.
+أمّا النسخة
+فلا تخزّن سوى مرجع إلى الخريطة المشتركة وإلى قيم الخصائص
+في قائمة (وهي أكثر إحكامًا في الذاكرة بكثير من القاموس). وتخزّن الخريطة
+ربطًا من
+أسماء الخصائص إلى الفهارس في تلك القائمة.</p>
+<p>يبدو اختبار بسيط لهذا السلوك على النحو التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_maps</span>():
+    <span class="hljs-comment"># white box test inspecting the implementation</span>
+    Point = Class(name=<span class="hljs-string">&quot;Point&quot;</span>, base_class=OBJECT, fields={}, metaclass=TYPE)
+    p1 = Instance(Point)
+    p1.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">1</span>)
+    p1.write_attr(<span class="hljs-string">&quot;y&quot;</span>, <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">assert</span> p1.storage == [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+    <span class="hljs-keyword">assert</span> p1.<span class="hljs-built_in">map</span>.attrs == {<span class="hljs-string">&quot;x&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;y&quot;</span>: <span class="hljs-number">1</span>}
+
+    p2 = Instance(Point)
+    p2.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">5</span>)
+    p2.write_attr(<span class="hljs-string">&quot;y&quot;</span>, <span class="hljs-number">6</span>)
+    <span class="hljs-keyword">assert</span> p1.<span class="hljs-built_in">map</span> <span class="hljs-keyword">is</span> p2.<span class="hljs-built_in">map</span>
+    <span class="hljs-keyword">assert</span> p2.storage == [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+
+    p1.write_attr(<span class="hljs-string">&quot;x&quot;</span>, -<span class="hljs-number">1</span>)
+    p1.write_attr(<span class="hljs-string">&quot;y&quot;</span>, -<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">assert</span> p1.<span class="hljs-built_in">map</span> <span class="hljs-keyword">is</span> p2.<span class="hljs-built_in">map</span>
+    <span class="hljs-keyword">assert</span> p1.storage == [-<span class="hljs-number">1</span>, -<span class="hljs-number">2</span>]
+
+    p3 = Instance(Point)
+    p3.write_attr(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">100</span>)
+    p3.write_attr(<span class="hljs-string">&quot;z&quot;</span>, -<span class="hljs-number">343</span>)
+    <span class="hljs-keyword">assert</span> p3.<span class="hljs-built_in">map</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> p1.<span class="hljs-built_in">map</span>
+    <span class="hljs-keyword">assert</span> p3.<span class="hljs-built_in">map</span>.attrs == {<span class="hljs-string">&quot;x&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;z&quot;</span>: <span class="hljs-number">1</span>}
+</code></pre>
+<p>لاحظ أن هذا اختبار من نوع مختلف عن الاختبارات التي كتبناها
+من قبل. فقد كانت جميع الاختبارات السابقة تختبر سلوك الأصناف عبر
+الواجهات المكشوفة. أما هذا الاختبار فيفحص بدلًا من ذلك تفاصيل تنفيذ صنف
+<code>Instance</code> بقراءة الخصائص الداخلية ومقارنتها
+بقيم معرَّفة مسبقًا. ولذلك يمكن تسمية هذا الاختبار اختبار <em>صندوق أبيض</em> (white-box).</p>
+<p>تصف الخاصية <code>attrs</code> في خريطة <code>p1</code> تخطيط النسخة
+على أنها تملك خاصيتين هما <code>&quot;x&quot;</code> و<code>&quot;y&quot;</code> مخزَّنَتين في
+الموضعين 0 و1 من <code>storage</code> الخاصة بـ<code>p1</code>. وإنشاء نسخة ثانية <code>p2</code>
+وإضافة الخصائص نفسها إليها بالترتيب نفسه سيجعلها تنتهي إلى
+الخريطة نفسها. أما إذا أُضيفت خاصية مختلفة، فالخريطة بالطبع
+لن تكون مشتركة.</p>
+<p>يبدو صنف <code>Map</code> على النحو التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Map</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, attrs</span>):
+        <span class="hljs-variable language_">self</span>.attrs = attrs
+        <span class="hljs-variable language_">self</span>.next_maps = {}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_index</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.attrs.get(fieldname, -<span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next_map</span>(<span class="hljs-params">self, fieldname</span>):
+        <span class="hljs-keyword">assert</span> fieldname <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.attrs
+        <span class="hljs-keyword">if</span> fieldname <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.next_maps:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.next_maps[fieldname]
+        attrs = <span class="hljs-variable language_">self</span>.attrs.copy()
+        attrs[fieldname] = <span class="hljs-built_in">len</span>(attrs)
+        result = <span class="hljs-variable language_">self</span>.next_maps[fieldname] = Map(attrs)
+        <span class="hljs-keyword">return</span> result
+
+EMPTY_MAP = Map({})
+</code></pre>
+<p>للخرائط دالتان، <code>get_index</code> و<code>next_map</code>. تُستخدم الأولى
+للعثور على فهرس اسم الخاصية في تخزين الكائن. وتُستخدم الثانية
+عند إضافة خاصية جديدة إلى كائن. وفي تلك الحالة يحتاج الكائن إلى استخدام
+خريطة مختلفة، وهي الخريطة التي تحسبها <code>next_map</code>. وتستخدم الدالة قاموس
+<code>next_maps</code> لتخزين الخرائط التي أُنشئت بالفعل مؤقتًا. وبهذه الطريقة،
+تنتهي الكائنات التي لها التخطيط نفسه إلى استخدام كائن <code>Map</code> نفسه.</p>
+<p>\\aosafigure[166pt]/images/500-lines/objmodel-1-maptransition.webp{انتقالات الخريطة}{500l.objmodel.maptransition}</p>
+<p>يبدو تنفيذ <code>Instance</code> الذي يستخدم الخرائط على النحو التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Instance</span>(<span class="hljs-title class_ inherited__">Base</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Instance of a user-defined class. &quot;&quot;&quot;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, cls</span>):
+        <span class="hljs-keyword">assert</span> <span class="hljs-built_in">isinstance</span>(cls, Class)
+        Base.__init__(<span class="hljs-variable language_">self</span>, cls, <span class="hljs-literal">None</span>)
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span> = EMPTY_MAP
+        <span class="hljs-variable language_">self</span>.storage = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_read_dict</span>(<span class="hljs-params">self, fieldname</span>):
+        index = <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>.get_index(fieldname)
+        <span class="hljs-keyword">if</span> index == -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> MISSING
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.storage[index]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_write_dict</span>(<span class="hljs-params">self, fieldname, value</span>):
+        index = <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>.get_index(fieldname)
+        <span class="hljs-keyword">if</span> index != -<span class="hljs-number">1</span>:
+            <span class="hljs-variable language_">self</span>.storage[index] = value
+        <span class="hljs-keyword">else</span>:
+            new_map = <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>.next_map(fieldname)
+            <span class="hljs-variable language_">self</span>.storage.append(value)
+            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span> = new_map
+</code></pre>
+<p>يمرّر الصنف الآن <code>None</code> بوصفه قاموس الحقول إلى <code>Base</code>، لأن <code>Instance</code>
+سيخزّن محتوى القاموس بطريقة أخرى. ولهذا يحتاج إلى
+إعادة تعريف الدالتين <code>_read_dict</code> و<code>_write_dict</code>. وفي تنفيذ
+حقيقي، لقنا بإعادة هيكلة صنف <code>Base</code> بحيث لا يعود مسؤولًا عن
+تخزين قاموس الحقول، أما الآن فكون النسخ تخزّن القيمة <code>None</code> هناك يكفي.</p>
+<p>تبدأ النسخة المُنشأة حديثًا باستخدام <code>EMPTY_MAP</code>، وهو
+بلا خصائص وبتخزين فارغ. ولتنفيذ <code>_read_dict</code>، يُسأل
+خريطة النسخة عن فهرس اسم الخاصية. ثم تُعاد
+الخانة المقابلة من قائمة التخزين.</p>
+<p>الكتابة في قاموس الحقول لها حالتان. من جهة، يمكن تغيير قيمة
+خاصية موجودة. ويتم ذلك ببساطة بتغيير
+التخزين عند الفهرس المقابل. ومن جهة أخرى، إذا لم تكن الخاصية
+موجودة بعد، فإن <em>انتقال الخريطة</em> (\\aosafigref{500l.objmodel.maptransition})
+يلزم باستخدام الدالة <code>next_map</code>. وتُضاف قيمة الخاصية الجديدة
+إلى قائمة التخزين.</p>
+<p>ماذا يحقّق هذا التحسين؟ فهو يحسّن استهلاك الذاكرة في الحالة
+الشائعة التي توجد فيها نسخ كثيرة لها التخطيط نفسه. وهو ليس تحسينًا
+شموليًا: فشيفرة تُنشئ نسخًا ذات مجموعات خصائص شديدة الاختلاف
+ستكون استهلاكها للذاكرة أكبر مما لو اكتفينا بالقواميس.</p>
+<p>وهذه مشكلة شائعة عند تحسين اللغات الديناميكية. وغالبًا ما لا
+يمكن العثور على تحسينات أسرع أو أقل استهلاكًا للذاكرة في جميع
+الحالات. ومن الناحية العملية، تنطبق التحسينات المختارة
+على كيفية استخدام اللغة <em>عادةً</em>، مع احتمال
+جعل السلوك أسوأ للبرامج التي تستخدم ميزات ديناميكية إلى حدٍّ كبير.</p>
+<p>ومن جوانب الخرائط الأخرى اللافتة أنها، بينما تُحسّن هنا
+استهلاك الذاكرة فقط، فإنها في الآلات الافتراضية الحقيقية التي تستخدم مصرّفًا فوريًا (JIT) تحسّن
+أداء البرنامج أيضًا. ولتحقيق ذلك، يستخدم المصرّف الفوري الخرائط
+ليصرّف عمليات البحث عن الخصائص فتصبح عمليات بحث في تخزين الكائنات
+عند إزاحة ثابتة، فتتخلّص تمامًا من كل عمليات البحث في القواميس[^lookups].</p>
+<p>[^lookups]: إن كيفية عمل ذلك خارج نطاق هذا الفصل. وقد حاولت أن
+أعطي عرضًا معقولًا للقراءة عنه في ورقة كتبتها قبل بضع سنوات. وهي تستخدم
+نموذج كائنات جوهرًا ضروبًا من النموذج الوارد في هذا الفصل: C. F.
+Bolz وA. Cuni وM. Fijałkowski وM. Leuschel وS. Pedroni وA. Rigo، «التغذية الراجعة
+في وقت التنفيذ في مصرّف JIT يتتبّع البيانات الوصفية من أجل لغات ديناميكية
+فعّالة»، في وقائع
+الورشة السادسة حول التنفيذ والترجمة وتحسين
+اللغات والبرامج والأنظمة الموجّهة نحو الكائنات، نيويورك، ولاية نيويورك، الولايات المتحدة، 2011، الصفحات
+9:1–9:8.</p>
+<h2 id="الامتدادات-الممكنة">الامتدادات الممكنة</h2>
+<p>من سهل توسيع نموذج كائناتنا وتجربة خيارات تصميم لغوية
+متنوّعة. وفيما يلي بعض الاحتمالات:</p>
+<ul>
+<li>
+<p>من أسهل ما يمكن فعله إضافة مزيد من الدوال الخاصة. وبعض الدوال
+السهلة والمثيرة للاهتمام لإضافتها هي <code>__init__</code> و<code>__getattribute__</code> و<code>__set__</code>.</p>
+</li>
+<li>
+<p>يمكن توسيع النموذج بسهولة شديدة لدعم الوراثة المتعددة. ولتحقيق
+ذلك، يحصل كل صنف على قائمة من الأصناف الأساسية. عندئذٍ تحتاج دالة
+<code>Class.method_resolution_order</code> إلى التغيير لت دعم البحث عن الدوال. ويمكن حساب
+ترتيب حلّ دوال بسيط باستخدام بحث بعمق أول مع إزالة
+التكرارات. وهناك ترتيب أكثر تعقيدًا لكنه أفضل، وهو
+<a href="https://www.python.org/download/releases/2.3/mro/">خوارزمية C3</a>، التي تضيف
+معالجة أفضل في أساس تسلسلات الوراثة المتعددة المعيّنة على شكل ماسي،
+وترفض أنماط الوراثة غير المعقولة.</p>
+</li>
+<li>
+<p>تغيير أشدّ هو التحوّل إلى نموذج أوّلي، بما ينطوي على إزالة
+التمييز بين الأصناف والنسخ.</p>
+</li>
+</ul>
+<h2 id="الخاتمة">الخاتمة</h2>
+<p>من الجوانب الجوهرية لتصميم لغة
+برمجة موجّهة نحو الكائنات هي تفاصيل نموذج كائناتها. وكتابة نماذج أولية صغيرة لنماذج الكائنات
+طريقة سهلة وممتعة لفهم الأعمال الداخلية للغارات القائمة
+على نحو أفضل، والحصول على رؤى في مجال تصميم اللغات الموجّهة نحو الكائنات.
+والعبث بنماذج الكائنات طريقة جيدة لتجريب أفكار
+تصميم لغوية مختلفة دون أن نضطر للقلق بشأن الأجزاء الأكثر مملًا في تنفيذ
+اللغة، مثل تحليل الشيفرة وتنفيذها.</p>
+<p>وتنفع نماذج الكائنات هذه أيضًا في الممارسة، لا بوصفها مجرد مركبات
+للتجريب فحسب. إذ يمكن تضمينها واستخدامها من لغات أخرى. ومن أمثلة
+هذا النهج شائعة: نموذج كائنات GObject المكتوب بلغة C،
+ويُستخدم في GLib ومكتبات Gnome الأخرى؛ أو مختلف تنفيذات
+أنظمة الأصناف في JavaScript.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:e,headings:p,html:t};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,t as html,l as slug,e as title};

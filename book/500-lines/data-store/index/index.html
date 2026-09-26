@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.B2xm9FgE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/mTqhygW8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DiF48pvl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DxmZye1s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-mudvJQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DKWacZ6w.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.uECh119c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7O3W4JC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="DBDB: قاعدة بيانات سرير الكلب — DBDB: Dog Bed Database"/><!----><title>DBDB: قاعدة بيانات سرير الكلب | 500 سطر أو أقل</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/500-lines/introduction/index">مقدّمة</a></li><!--]--></ul><h3>Blockcode: A visual programming toolkit</h3> <ul><!--[--><li><a href="../../../../book/500-lines/blockcode/index">بلوك كود: مجموعة أدوات برمجة بصرية</a></li><!--]--></ul><h3>A Continuous Integration System</h3> <ul><!--[--><li><a href="../../../../book/500-lines/ci/index">نظام تكامل مستمر</a></li><!--]--></ul><h3>Clustering by Consensus</h3> <ul><!--[--><li><a href="../../../../book/500-lines/cluster/index">التجميع بالتوافق</a></li><!--]--></ul><h3>Contingent: A Fully Dynamic Build System</h3> <ul><!--[--><li><a href="../../../../book/500-lines/contingent/index">Contingent: نظام بناء ديناميكي بالكامل</a></li><!--]--></ul><h3>A Web Crawler With asyncio Coroutines</h3> <ul><!--[--><li><a href="../../../../book/500-lines/crawler/index">زاحف ويب بكوروتينات asyncio</a></li><!--]--></ul><h3>Dagoba: an in-memory graph database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/dagoba/index">داغوبا: قاعدة بيانات رسومية في الذاكرة</a></li><!--]--></ul><h3>DBDB: Dog Bed Database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/data-store/index" class="active">DBDB: قاعدة بيانات سرير الكلب</a></li><!--]--></ul><h3>An Event-Driven Web Framework</h3> <ul><!--[--><li><a href="../../../../book/500-lines/event-web-framework/index">إطار عمل ويب قائم على الأحداث</a></li><!--]--></ul><h3>A Flow Shop Scheduler</h3> <ul><!--[--><li><a href="../../../../book/500-lines/flow-shop/index">مجدول ورشة التدفق</a></li><!--]--></ul><h3>An Archaeology-Inspired Database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/functionalDB/index">قاعدة بيانات مستوحاة من علم الآثار</a></li><!--]--></ul><h3>Making Your Own Image Filters</h3> <ul><!--[--><li><a href="../../../../book/500-lines/image-filters/index">صناعة مرشِّحات الصور الخاصة بك</a></li><!--]--></ul><h3>A Python Interpreter Written in Python</h3> <ul><!--[--><li><a href="../../../../book/500-lines/interpreter/index">مفسّر بايثون مكتوب بلغة بايثون</a></li><!--]--></ul><h3>A 3D Modeller</h3> <ul><!--[--><li><a href="../../../../book/500-lines/modeller/index">مصمّم ثلاثي الأبعاد</a></li><!--]--></ul><h3>A Simple Object Model</h3> <ul><!--[--><li><a href="../../../../book/500-lines/objmodel/index">نموذج كائنات بسيط</a></li><!--]--></ul><h3>Optical Character Recognition (OCR)</h3> <ul><!--[--><li><a href="../../../../book/500-lines/ocr/index">التعرّف الضوئي على الحروف (OCR)</a></li><!--]--></ul><h3>A Pedometer in the Real World</h3> <ul><!--[--><li><a href="../../../../book/500-lines/pedometer/index">عدّاد خطوات في العالم الحقيقي</a></li><!--]--></ul><h3>The Same-Origin Policy</h3> <ul><!--[--><li><a href="../../../../book/500-lines/same-origin-policy/index">سياسة الأصل نفسه</a></li><!--]--></ul><h3>A Rejection Sampler</h3> <ul><!--[--><li><a href="../../../../book/500-lines/sampler/index">أخذ عيّنات بالارفض</a></li><!--]--></ul><h3>Web Spreadsheet</h3> <ul><!--[--><li><a href="../../../../book/500-lines/spreadsheet/index">ورقة حساب على الويب</a></li><!--]--></ul><h3>Static Analysis</h3> <ul><!--[--><li><a href="../../../../book/500-lines/static-analysis/index">التحليل الساكن</a></li><!--]--></ul><h3>A Template Engine</h3> <ul><!--[--><li><a href="../../../../book/500-lines/template-engine/index">محرّك القوالب</a></li><!--]--></ul><h3>A Simple Web Server</h3> <ul><!--[--><li><a href="../../../../book/500-lines/web-server/index">خادم ويب بسيط</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">DBDB: Dog Bed Database</p> <h1>DBDB: قاعدة بيانات سرير الكلب</h1></div> <div class="reader-content"><!----><p><em>كأحدث عازف باس (وأحياناً تينور) في <a href="http://www.countermeasuremusic.com">Countermeasure</a>، يسعى تافي إلى كسر القالب... وأحياناً ببساطة تجاهل وجوده. وهذا صحيح بلا شك عبر تنوع أماكن عمله في مسيرته: IBM (يعمل بلغة C و Perl)، و FreshBooks (كل ما في ذلك)، و Points.com (يعمل بلغة Python)، والآن في PagerDuty (يعمل بلغة Scala).  إلى جانب ذلك—حين لا يكون يركض بدراجته القابلة للطي من نوع Brompton—قد تجده يلعب Minecraft مع ابنه أو يمارس رياضة الباركور (أو تسلق الصخور، أو غيرها من المغامرات) مع زوجته. إنه يحيك بالطريقة القارية.</em></p>
+<h2 id="مقدمة">مقدمة</h2>
+<p>DBDB (Dog Bed Database) مكتبة Python تطبّق قاعدة بيانات بسيطة من نوع المفتاح/القيمة.
+تتيح لك ربط مفتاح بقيمة،
+وتخزين هذا الارتباط على القرص لاسترجاعه لاحقاً.</p>
+<p>تسعى DBDB إلى الحفاظ على البيانات في مواجهة أعطال الحاسوب
+وحالات الخطأ.
+كما تتجنب الاحتفاظ بكل البيانات في الذاكرة العشوائية (RAM) في وقت واحد،
+تمكينك من تخزين بيانات أكثر مما تملك من ذاكرة عشوائية.</p>
+<h2 id="الذاكرة">الذاكرة</h2>
+<p>أتذكر أول مرة انحشرت فيها حقاً بسبب خلل. حين أتممت
+كتابة برنامجي بـ BASIC ثم شغّلته، ظهرت بكسلات لامعة غريبة على
+الشاشة، وتوقف البرنامج مبكراً. حين رجعت لأنظر في الشيفرة،
+كانت الأسطر القليلة الأخيرة من البرنامج قد اختفت.</p>
+<p>كانت إحدى صديقات أمي تعرف البرمجة، فاتصلنا بها. وخلال دقائق
+من التحدث إليها، وجدت المشكلة: كان البرنامج كبيراً جداً، وقد
+تعدّى حدود ذاكرة الفيديو. كان مسح الشاشة يقتطع البرنامج،
+وكان ذلك البريق ناتجاً عن سلوك Applesoft BASIC الذي يخزّن
+حالة البرنامج في الذاكرة العشوائية خارج نهاية البرنامج تماماً.</p>
+<p>من تلك اللحظة فصاعداً، اهتتمت بتخصيص الذاكرة. تعلمت
+عن المؤشرات (pointers) وكيفية تخصيص الذاكرة عبر malloc. تعلمت كيف
+كانت بنى بياناتي موزَّعة في الذاكرة. وتعلمت أن أكون حذراً جداً
+في كيفية تغييرها.</p>
+<p>بعد بضع سنوات، وأنا أقرأ عن لغة موجَّهة بالعمليات اسمها
+Erlang، تعلمت أنها لا تحتاج فعلاً إلى نسخ البيانات لإرسال الرسائل
+بين العمليات، لأن كل شيء غير قابل للتغيير. ثم اكتشفت
+بنى البيانات غير القابلة للتغيير في Clojure، وبدأ الأمر ينغرس فعلاً.</p>
+<p>حين قرأت عن CouchDB عام 2013، إنما ابتسمت وأومأت برأسي،
+متعترفاً بالبنى والآليات الخاصة بإدارة البيانات المعقدة
+وهي تتغير.</p>
+<p>تعلمت أنه بإمكانك تصميم أنظمة مبنية حول بيانات غير قابلة للتغيير.</p>
+<p>ثم وافقت على كتابة فصل (chapter) من كتاب.</p>
+<p>ظننت أن وصف مفاهيم تخزين البيانات الأساسية في CouchDB
+(بحسب ما فهمته)
+سيكون ممتعاً.</p>
+<p>أثناء محاولتي كتابة خوارزمية (algorithm) لشجرة ثنائية
+تُعدِّل الشجرة في مكانها، انزعجت من مدى تعقيد الأمور. كان
+عدد الحالات الحدّية، ومحاولة استنتاج كيفية تأثير التغييرات في جزء
+من الشجرة على أجزاء أخرى، يلوي رأسي. لم
+أكن أعرف على الإطلاق كيف سأشرح كل ذلك.</p>
+<p>وتذكر الدروس المستفادة، ألقيت نظرة على خوارزمية تكرارية (recursive)
+لتحديث أشجار ثنائية غير قابلة للتغيير،
+فإذا بها مباشرة نسبياً.</p>
+<p>تعلمت، مرة أخرى، أن استنتاج الأمور التي لا تتغير أسهل بكثير.</p>
+<p>هكذا تبدأ القصة.</p>
+<h2 id="لماذا-هو-مثير-للاهتمام">لماذا هو مثير للاهتمام؟</h2>
+<p>معظم المشاريع تحتاج إلى نوع ما من قواعد البيانات.
+لا ينبغي لك حقاً أن تكتب قواعد بيانات خاصة بك؛
+فهناك حالات حدّية كثيرة ستصيبك،
+حتى لو كنت تكتب JSON إلى القرص فحسب:</p>
+<ul>
+<li>ماذا يحدث إذا نفد من نظام الملفات لديك المساحة؟</li>
+<li>ماذا يحدث إذا ماتت بطارية حاسوبك المحمول أثناء الحفظ؟</li>
+<li>ماذا لو تجاوز حجم بياناتك الذاكرة المتاحة؟
+(غير مرجّح لمعظم التطبيقات على أجهزة الحاسوب المكتبية الحديثة&amp;hellip؛ لكنه
+غير مرجّح إطلاقاً بالنسبة إلى جهاز محمول أو تطبيق ويب من جهة الخادم.)</li>
+</ul>
+<p>لكن إذا كنت تريد أن <em>تفهم</em> كيف تتعامل قاعدة البيانات مع كل هذه
+المشكلات، فإن كتابة واحدة بنفسك قد تكون فكرة جيدة.</p>
+<p>التقنيات والمفاهيم التي نتناقش هنا
+ينبغي أن تنطبق على أي مشكلة
+تحتاج إلى سلوك عقلاني يمكن التنبؤ به
+عند مواجهة الفشل.</p>
+<p>وبمناسبة الفشل...</p>
+<h2 id="توصيف-الفشل">توصيف الفشل</h2>
+<p>غالباً ما توصَّف قواعد البيانات مدى التزامها بخصائص
+ACID:
+الذرّية، والاتساق، والعزل، والمتانة.</p>
+<p>التحديثات في DBDB ذرّية ومتينة،
+وهما سمتان تُشرحان لاحقاً في هذا الفصل.
+لا تقدّم DBDB أي ضمانات للاتساق
+لأنه لا توجد قيود على البيانات المخزَّنة.
+كما أن العزل غير مُنفَّذ.</p>
+<latex>
+شيفرة التطبيق يمكنها، بالطبع، أن تفرض ضمانات اتساق خاصة بها، لكن
+العزل السليم يتطلب مدير معاملات. لن نحاول ذلك هنا؛
+غير أنك تستطيع أن تتعلم المزيد عن إدارة المعاملات في فصل
+CircleDB (\aosachapref{s:functionalDB}).
+</latex>
+<p>شيفرة التطبيق يمكنها، بالطبع، أن تفرض ضمانات اتساق خاصة بها، لكن
+العزل السليم يتطلب مدير معاملات. لن نحاول ذلك هنا؛
+غير أنك تستطيع أن تتعلم المزيد عن إدارة المعاملات في <a href="http://aosabook.org/en/500L/an-archaeology-inspired-database.html">فصل CircleDB</a>.</p>
+<p>لدينا أيضاً مشكلات أخرى في صيانة النظام علينا التفكير فيها.
+البيانات المهملة (stale) لا تُستعاد في هذه النسخة التنفيذية،
+لذا فإن التحديثات المتكررة
+(حتى على المفتاح نفسه)
+ستستهلك في النهاية كل مساحة القرص. (وستكتشف بعد قليل سبب حدوث ذلك.)
+تسمّي <a href="http://www.postgresql.org/">PostgreSQL</a> عملية استعادة المساحة هذه «تنظيفاً» (vacuuming)
+(بحيث تصبح مساحة الصفوف القديمة متاحة لإعادة الاستخدام)،
+وتسمّيها <a href="http://couchdb.apache.org/">CouchDB</a> «ضغطاً» (compaction)
+(بإعادة كتابة أجزاء البيانات «الحيّة» في ملف جديد،
+ثم نقلها فوق القديمة بشكل ذرّي).</p>
+<p>يمكن توسيع DBDB بإضافة ميزة ضغط،
+لكنها تُركت تمريناً للقارئ[^bonus].</p>
+<p>[^bonus]: ميزة إضافية: هل تستطيع أن تضمن أن بنية الشجرة بعد الضغط
+متوازنة؟  وهذا يساعد في الحفاظ على الأداء مع مرور الوقت.</p>
+<h2 id="معمارية-dbdb">معمارية DBDB</h2>
+<p>تفصل DBDB بين هموم «ضع هذا على القرص في مكان ما»
+(كيف تُوزَّع البيانات داخل ملف؛ الطبقة الفيزيائية)
+والبنية المنطقية للبيانات
+(شجرة ثنائية في هذا المثال؛ الطبقة المنطقية)
+عن محتوى مخزن المفتاح/القيمة
+(ارتباط المفتاح <code>a</code> بالقيمة <code>foo</code>؛ واجهة API العامة).</p>
+<p>تفصل كثير من قواعد البيانات بين الجوانب المنطقية والفيزيائية،
+لأن من المفيد غالباً توفير تنفيذات بديلة لكل جانب
+للحصول على خصائص أداء مختلفة،
+مثل مساحات الجداول في DB2: SMS (ملفات داخل نظام ملفات) مقابل DMS (جهاز كتل خام)،
+أو <a href="http://dev.mysql.com/doc/refman/5.7/en/storage-engines.html">تنفيذات محركات بديلة</a> في MySQL.</p>
+<h2 id="اكتشاف-التصميم">اكتشاف التصميم</h2>
+<p>تصف معظم فصول هذا الكتاب كيف بُني برنامج من بدايته
+حتى اكتماله. لكن هذا ليس الطريقة التي يتعامل بها
+معظمنا مع الشيفرة التي نعمل عليها.
+غالباً ما نكتشف شيفرة كتبها آخرون،
+ونحلّل كيفية تعديلها أو توسيعها كي نفعل شيئاً مختلفاً.</p>
+<p>في هذا الفصل، سنفترض أن DBDB مشروع مكتمل، ونسير
+في أرجائه لتعلّم كيف يعمل. فلنستكشف بنية المشروع
+كاملاً أولاً.</p>
+<h3 id="الوحدات-التنظيمية">الوحدات التنظيمية</h3>
+<p>الوحدات مرتبة هنا بحسب البُعد عن المستخدم النهائي؛ أي أن الوحدة الأولى
+هي التي يحتاج مستخدم هذا البرنامج إلى معرفتها أكثر من غيرها،
+بينما الأخيرة شيء ينبغي أن يكون تفاعله معها
+ضئيلاً جداً.</p>
+<ul>
+<li>
+<p>يعرّف <code>tool.py</code>
+أداة سطر أوامر
+لاستكشاف قاعدة بيانات
+من نافذة طرفية.</p>
+</li>
+<li>
+<p>يعرّف <code>interface.py</code>
+صنفاً (<code>DBDB</code>)
+يطبّق واجهة API قاموس Python
+باستخدام التنفيذ الملموس <code>BinaryTree</code>.
+هكذا تستخدم DBDB داخل برنامج Python.</p>
+</li>
+<li>
+<p>يعرّف <code>logical.py</code>
+الطبقة المنطقية.
+إنها واجهة مجرّدة إلى مخزن مفتاح/قيمة.</p>
+<ul>
+<li>
+<p>توفّر <code>LogicalBase</code> واجهة API للتحديثات المنطقية
+(مثل get و set و commit)
+وتُحيل التنفيذ الفعلي للتحديثات
+إلى صنف فرعي ملموس.
+كما تتولى إدارة أقفال التخزين
+وإحالة العقد الداخلية.</p>
+</li>
+<li>
+<p><code>ValueRef</code> كائن Python يشير إلى
+كتلة ثنائية (blob) مخزَّنة في قاعدة البيانات.
+تتيح هذه الوساطة تفادي تحميل
+مخزن البيانات بأكمله إلى الذاكرة دفعة واحدة.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>يعرّف <code>binary_tree.py</code>
+خوارزمية شجرة ثنائية ملموسة
+تقع خلف الواجهة المنطقية.</p>
+<ul>
+<li>
+<p>توفّر <code>BinaryTree</code> تنفيذاً ملموساً
+لشجرة ثنائية، مع توابع لـ
+جلب أزواج المفتاح/القيمة وإدراجها وحذفها.
+تمثّل <code>BinaryTree</code> شجرة غير قابلة للتغيير؛
+تُنفَّذ التحديثات بإعادة شجرة جديدة
+تتشارك بنية مشتركة مع الشجرة القديمة.</p>
+</li>
+<li>
+<p><code>BinaryNode</code> ينفّذ عقدة في الشجرة الثنائية.</p>
+</li>
+<li>
+<p><code>BinaryNodeRef</code> نوع متخصص من <code>ValueRef</code>
+يعرف كيف يهيّئ <code>BinaryNode</code> للتحويل إلى صيغة نصية
+واستعادتها منها.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>يعرّف <code>physical.py</code>
+الطبقة الفيزيائية.
+يوفّر الصنف <code>Storage</code>
+تخزين سجلات دائم (persistent)، (في معظمه) للإلحاق فقط (append-only).</p>
+</li>
+</ul>
+<p>نمت هذه الوحدات من محاولة
+إعطاء كل صنف مسؤولية واحدة.
+بعبارة أخرى،
+ينبغي أن يكون لكل صنف سبب واحد فقط للتغييّر.</p>
+<h3 id="قراءة-قيمة">قراءة قيمة</h3>
+<p>سنبدأ بأبسط حالة: قراءة قيمة من قاعدة البيانات. فلنرَ ما يحدث
+حين نحاول جلب القيمة المرتبطة بالمفتاح <code>foo</code> في <code>example.db</code>:</p>
+<pre><code class="language-bash">$ python -m dbdb.tool example.db get foo
+</code></pre>
+<p>هذا يشغّل الدالة <code>main()</code> من الوحدة <code>dbdb.tool</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/tool.py</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">argv</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (<span class="hljs-number">4</span> &lt;= <span class="hljs-built_in">len</span>(argv) &lt;= <span class="hljs-number">5</span>):
+        usage()
+        <span class="hljs-keyword">return</span> BAD_ARGS
+    dbname, verb, key, value = (argv[<span class="hljs-number">1</span>:] + [<span class="hljs-literal">None</span>])[:<span class="hljs-number">4</span>]
+    <span class="hljs-keyword">if</span> verb <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> {<span class="hljs-string">&#x27;get&#x27;</span>, <span class="hljs-string">&#x27;set&#x27;</span>, <span class="hljs-string">&#x27;delete&#x27;</span>}:
+        usage()
+        <span class="hljs-keyword">return</span> BAD_VERB
+    db = dbdb.connect(dbname)          <span class="hljs-comment"># CONNECT</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">if</span> verb == <span class="hljs-string">&#x27;get&#x27;</span>:
+            sys.stdout.write(db[key])  <span class="hljs-comment"># GET VALUE</span>
+        <span class="hljs-keyword">elif</span> verb == <span class="hljs-string">&#x27;set&#x27;</span>:
+            db[key] = value
+            db.commit()
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">del</span> db[key]
+            db.commit()
+    <span class="hljs-keyword">except</span> KeyError:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Key not found&quot;</span>, file=sys.stderr)
+        <span class="hljs-keyword">return</span> BAD_KEY
+    <span class="hljs-keyword">return</span> OK
+</code></pre>
+<p>تفتح الدالة <code>connect()</code>
+ملف قاعدة البيانات
+(ربما تنشئه،
+لكنها لا تكتب فوقه أبداً)
+وتعيد نسخة من <code>DBDB</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/__init__.py</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">dbname</span>):
+    <span class="hljs-keyword">try</span>:
+        f = <span class="hljs-built_in">open</span>(dbname, <span class="hljs-string">&#x27;r+b&#x27;</span>)
+    <span class="hljs-keyword">except</span> IOError:
+        fd = os.<span class="hljs-built_in">open</span>(dbname, os.O_RDWR | os.O_CREAT)
+        f = os.fdopen(fd, <span class="hljs-string">&#x27;r+b&#x27;</span>)
+    <span class="hljs-keyword">return</span> DBDB(f)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/interface.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DBDB</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, f</span>):
+        <span class="hljs-variable language_">self</span>._storage = Storage(f)
+        <span class="hljs-variable language_">self</span>._tree = BinaryTree(<span class="hljs-variable language_">self</span>._storage)
+</code></pre>
+<p>نرى مباشرةً أن <code>DBDB</code> لديه مرجع إلى نسخة من <code>Storage</code>، لكنه
+أيضاً يشارك ذلك المرجع مع <code>self._tree</code>. لماذا؟ ألَا يستطيع <code>self._tree</code>
+أن يدير الوصول إلى التخزين بنفسه؟</p>
+<p>سؤال أي الكائنات «تملك» مورداً ما هو غالباً سؤال مهم في
+التصميم، لأنه يمنحنا القرائن حول التغييرات التي قد تكون غير آمنة. فلنبقي
+هذا السؤال في أذهاننا بصدد المضي قدماً.</p>
+<p>ما إن نتوفّر على نسخة من DBDB، يصبح جلب القيمة عند <code>key</code> عبر
+بحث في قاموس (<code>db[key]</code>)، مما يجعل مفسّر Python يستدعي
+<code>DBDB.__getitem__()</code>.</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/interface.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DBDB</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, key</span>):
+        <span class="hljs-variable language_">self</span>._assert_not_closed()
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._tree.get(key)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_assert_not_closed</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._storage.closed:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&#x27;Database closed.&#x27;</span>)
+</code></pre>
+<p>يتحقق <code>__getitem__()</code> من أن قاعدة البيانات ما زالت مفتوحة عبر استدعاء
+<code>_assert_not_closed</code>. آه! هنا نرى على الأقل سبباً واحداً يحتاج <code>DBDB</code> من
+أجله وصولاً مباشراً إلى نسخة <code>Storage</code> عندنا: كي يفرض الشروط
+المسبقة. (هل توافق على هذا التصميم؟ هل تستطيع أن تتخيّل طريقة أخرى
+لتحقيق ذلك؟)</p>
+<p>ثم يسترجع DBDB القيمة المرتبطة بـ <code>key</code> في <code>_tree</code> الداخلي
+عبر استدعاء <code>_tree.get()</code>، وهو مقدَّم من <code>LogicalBase</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LogicalBase</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, key</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._storage.locked:
+            <span class="hljs-variable language_">self</span>._refresh_tree_ref()
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._get(<span class="hljs-variable language_">self</span>._follow(<span class="hljs-variable language_">self</span>._tree_ref), key)
+</code></pre>
+<p>يتحقق <code>get()</code> مما إذا كنا قد أقفلنا التخزين. لسنا متأكدين تماماً من
+<em>سبب</em> وجود قفل هنا، لكن يمكننا أن نخمّن أنه موجود على الأرجح للسماح
+للكاتبين بتسلسل الوصول إلى البيانات. وماذا يحدث إذا لم يكن التخزين مقفلاً؟</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LogicalBase</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_refresh_tree_ref</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>._tree_ref = <span class="hljs-variable language_">self</span>.node_ref_class(
+            address=<span class="hljs-variable language_">self</span>._storage.get_root_address())
+</code></pre>
+<p>تعيد <code>_refresh_tree_ref</code> تعيين «منظور» الشجرة على البيانات إلى ما هو
+موجود حالياً على القرص، مما يتيح لنا إجراء قراءة محدَّثة تماماً.</p>
+<p>وماذا لو كان التخزين مقفلاً <em>فعلاً</em> حين نحاول القراءة؟ يعني هذا أن هناك على
+الأرجح عملية أخرى تغيّر البيانات التي نريد قراءتها الآن؛ ومن غير المرجح
+أن تكون قراءتنا محدَّثة مع الحالة الحالية للبيانات. يُعرف
+هذا عموماً بـ«القراءة المهملة» (dirty read). يتيح هذا النمط للقراء
+الكثيرين الوصول إلى البيانات دون أن يقلقهم الأمر يوماً
+بالحجب، على حساب أن تكون القراءة قديمة قليلاً.</p>
+<p>لننظر الآن إلى كيفية استرجاعنا للبيانات فعلياً:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/binary_tree.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTree</span>(<span class="hljs-title class_ inherited__">LogicalBase</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_get</span>(<span class="hljs-params">self, node, key</span>):
+        <span class="hljs-keyword">while</span> node <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">if</span> key &lt; node.key:
+                node = <span class="hljs-variable language_">self</span>._follow(node.left_ref)
+            <span class="hljs-keyword">elif</span> node.key &lt; key:
+                node = <span class="hljs-variable language_">self</span>._follow(node.right_ref)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._follow(node.value_ref)
+        <span class="hljs-keyword">raise</span> KeyError
+</code></pre>
+<p>هذا بحث قياسي في شجرة ثنائية، يتبع المراجع إلى عقدها. نعلم
+من قراءة توثيق <code>BinaryTree</code> أن
+<code>Node</code>s و <code>NodeRef</code>s كائنات قيمية (value objects):
+فهي غير قابلة للتغيير ولا يتغير محتواها إطلاقاً.
+تُنشأ <code>Node</code>s
+بمفتاح وقيمة مرتبطين،
+وابنَين يسار ويمين.
+ولا تتغير تلك الارتباطات أيضاً.
+لا يتغيّر محتوى <code>BinaryTree</code> بالكامل بصورة مرئية
+إلا عند استبدال عقدة الجذر.
+وهذا يعني أننا لا نحتاج للقلق بشأن محتوى شجرتنا وهو يتغير
+أثناء أدائك للبحث.</p>
+<p>ما إن تُعثر على القيمة المرتبطة،
+حتى تُكتب إلى <code>stdout</code> بواسطة <code>main()</code>
+دون إضافة أي أسطر جديدة إضافية،
+حفاظاً على بيانات المستخدم تماماً.</p>
+<h4>الإدراج والتحديث</h4>
+<p>الآن سنضبط المفتاح <code>foo</code> على القيمة <code>bar</code> في <code>example.db</code>:</p>
+<pre><code class="language-bash">$ python -m dbdb.tool example.db <span class="hljs-built_in">set</span> foo bar
+</code></pre>
+<p>مرة أخرى، هذا يشغّل الدالة <code>main()</code> من الوحدة <code>dbdb.tool</code>. وبما أننا
+رأينا هذه الشيفرة من قبل، فسنكتفي بإبراز الأجزاء المهمة:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/tool.py</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">argv</span>):
+    ...
+    db = dbdb.connect(dbname)          <span class="hljs-comment"># CONNECT</span>
+    <span class="hljs-keyword">try</span>:
+        ...
+        <span class="hljs-keyword">elif</span> verb == <span class="hljs-string">&#x27;set&#x27;</span>:
+            db[key] = value            <span class="hljs-comment"># SET VALUE</span>
+            db.commit()                <span class="hljs-comment"># COMMIT</span>
+        ...
+    <span class="hljs-keyword">except</span> KeyError:
+        ...
+</code></pre>
+<p>هذه المرة نضبط القيمة عبر <code>db[key] = value</code>،
+وهو ما يستدعي <code>DBDB.__setitem__()</code>.</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/interface.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DBDB</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__setitem__</span>(<span class="hljs-params">self, key, value</span>):
+        <span class="hljs-variable language_">self</span>._assert_not_closed()
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._tree.<span class="hljs-built_in">set</span>(key, value)
+</code></pre>
+<p>يتحقق <code>__setitem__</code> من أن قاعدة البيانات ما زالت مفتوحة،
+ثم يخزّن الارتباط من <code>key</code> إلى <code>value</code>
+في <code>_tree</code> الداخلي عبر استدعاء <code>_tree.set()</code>.</p>
+<p>أما <code>_tree.set()</code> فيقدّمه <code>LogicalBase</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LogicalBase</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set</span>(<span class="hljs-params">self, key, value</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._storage.lock():
+            <span class="hljs-variable language_">self</span>._refresh_tree_ref()
+        <span class="hljs-variable language_">self</span>._tree_ref = <span class="hljs-variable language_">self</span>._insert(
+            <span class="hljs-variable language_">self</span>._follow(<span class="hljs-variable language_">self</span>._tree_ref), key, <span class="hljs-variable language_">self</span>.value_ref_class(value))
+</code></pre>
+<p>يتحقق <code>set()</code> أولاً من قفل التخزين:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/storage.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Storage</span>(<span class="hljs-title class_ inherited__">object</span>):
+    ...
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lock</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.locked:
+            portalocker.lock(<span class="hljs-variable language_">self</span>._f, portalocker.LOCK_EX)
+            <span class="hljs-variable language_">self</span>.locked = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre>
+<p>وهناك أمران مهمان ينبغي ملاحظتهما هنا:</p>
+<ul>
+<li>قفلنا مقدَّم من مكتبة خارجية لأقفال الملفات اسمها
+<a href="https://pypi.python.org/pypi/portalocker">portalocker</a>.</li>
+<li>تُعيد <code>lock()</code> القيمة <code>False</code> إذا كانت قاعدة البيانات مقفلة مسبقاً، و<code>True</code>
+في غير ذلك.</li>
+</ul>
+<p>بالعودة إلى <code>_tree.set()</code>، يمكننا الآن أن نفهم لماذا فحص قيمة
+إرجاع <code>lock()</code> من الأساس: فهو يتيح لنا استدعاء
+<code>_refresh_tree_ref</code> للحصول على أحدث مرجع لعقدة الجذر
+حتى لا نفقد تحديثات قد تكون قد أجرتها عملية أخرى
+منذ آخر مرة حدّثنا فيها الشجرة من القرص.
+ثم يستبدل عقدة جذر الشجرة
+بشجرة جديدة تحتوي زوج المفتاح/القيمة المُدرَج (أو المحدَّث).</p>
+<p>إدراج مفاتيح الشجرة أو تحديثها لا يغيّر أي عقدة،
+لأن <code>_insert()</code> يعيد شجرة جديدة.
+تشارك الشجرة الجديدة الأجزاء غير المتغيرة مع الشجرة السابقة
+توفيراً للذاكرة وزمن التنفيذ.
+ومن الطبيعي تنفيذ هذا بشكل تكراري:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/binary_tree.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTree</span>(<span class="hljs-title class_ inherited__">LogicalBase</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_insert</span>(<span class="hljs-params">self, node, key, value_ref</span>):
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            new_node = BinaryNode(
+                <span class="hljs-variable language_">self</span>.node_ref_class(), key, value_ref, <span class="hljs-variable language_">self</span>.node_ref_class(), <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">elif</span> key &lt; node.key:
+            new_node = BinaryNode.from_node(
+                node,
+                left_ref=<span class="hljs-variable language_">self</span>._insert(
+                    <span class="hljs-variable language_">self</span>._follow(node.left_ref), key, value_ref))
+        <span class="hljs-keyword">elif</span> node.key &lt; key:
+            new_node = BinaryNode.from_node(
+                node,
+                right_ref=<span class="hljs-variable language_">self</span>._insert(
+                    <span class="hljs-variable language_">self</span>._follow(node.right_ref), key, value_ref))
+        <span class="hljs-keyword">else</span>:
+            new_node = BinaryNode.from_node(node, value_ref=value_ref)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.node_ref_class(referent=new_node)
+</code></pre>
+<p>لاحظ أننا نعيد دائماً عقدة جديدة
+(مغلَّفة داخل <code>NodeRef</code>).
+بدلاً من تحديث عقدة لتشير إلى شجرة فرعية جديدة،
+نصنع عقدة جديدة تتشارك الشجرة الفرعية غير المتغيرة.
+هذا بالضبط هو ما يجعل شجرة الثنائية هذه بنية بيانات غير قابلة للتغيير.</p>
+<p>ربما لاحظت شيئاً غريباً هنا: لم نُجرِ أي تغيير على
+أي شيء على القرص بعد. كل ما فعلناه هو تعديل منظورنا للبيانات الموجودة
+على القرص بنقل عقد الشجرة إلى مواضع جديدة.</p>
+<p>لكي نكتب هذه التغييرات فعلاً على القرص، نحتاج إلى استدعاء صريح لـ
+<code>commit()</code>، وقد رأيناه كجزء ثانٍ من عملية <code>set</code> في <code>tool.py</code>
+في بداية هذا القسم.</p>
+<p>ينطوي التثبيت على كتابة كل الحالة المهملة الموجودة في الذاكرة،
+ثم حفظ عنوان القرص لعقدة جذر الشجرة الجديدة.</p>
+<p>انطلاقاً من واجهة API:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/interface.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DBDB</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">commit</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>._assert_not_closed()
+        <span class="hljs-variable language_">self</span>._tree.commit()
+</code></pre>
+<p>أما تنفيذ <code>_tree.commit()</code> فيأتي من <code>LogicalBase</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LogicalBase</span>(<span class="hljs-title class_ inherited__">object</span>)
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">commit</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>._tree_ref.store(<span class="hljs-variable language_">self</span>._storage)
+        <span class="hljs-variable language_">self</span>._storage.commit_root_address(<span class="hljs-variable language_">self</span>._tree_ref.address)
+</code></pre>
+<p>تعرف جميع <code>NodeRef</code>s كيف تهيّئ نفسها للتحويل إلى صيغة نصية على القرص
+عبر طلب من أبنائها أن يفعلوا الشيء نفسه عبر <code>prepare_to_store()</code>:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ValueRef</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">store</span>(<span class="hljs-params">self, storage</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._referent <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._address:
+            <span class="hljs-variable language_">self</span>.prepare_to_store(storage)
+            <span class="hljs-variable language_">self</span>._address = storage.write(<span class="hljs-variable language_">self</span>.referent_to_string(<span class="hljs-variable language_">self</span>._referent))
+</code></pre>
+<p>أما <code>self._tree_ref</code> في <code>LogicalBase</code> فهو في الواقع <code>BinaryNodeRef</code>
+(صنف فرعي من <code>ValueRef</code>) في هذه الحالة،
+لذا فإن التنفيذ الملموس لـ <code>prepare_to_store()</code> هو:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/binary_tree.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryNodeRef</span>(<span class="hljs-title class_ inherited__">ValueRef</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">prepare_to_store</span>(<span class="hljs-params">self, storage</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._referent:
+            <span class="hljs-variable language_">self</span>._referent.store_refs(storage)
+</code></pre>
+<p>أما <code>BinaryNode</code> المعني، أي <code>_referent</code>،
+فيطلب من مراجعه أن تخزّن نفسها:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/binary_tree.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">store_refs</span>(<span class="hljs-params">self, storage</span>):
+        <span class="hljs-variable language_">self</span>.value_ref.store(storage)
+        <span class="hljs-variable language_">self</span>.left_ref.store(storage)
+        <span class="hljs-variable language_">self</span>.right_ref.store(storage)
+</code></pre>
+<p>وهذا يتكرر إلى أسفل الشجرة لأي <code>NodeRef</code>
+يحمل تغييرات لم تُكتب بعد (أي لا يملك <code>_address</code>).</p>
+<p>ها نحن من جديد في أعلى المكدس ضمن طريقة <code>store</code> في <code>ValueRef</code>.
+الخطوة الأخيرة من <code>store()</code> هي تحويل هذه العقدة
+إلى صيغة نصية وحفظ عنوان تخزينها:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/logical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ValueRef</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">store</span>(<span class="hljs-params">self, storage</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._referent <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>._address:
+            <span class="hljs-variable language_">self</span>.prepare_to_store(storage)
+            <span class="hljs-variable language_">self</span>._address = storage.write(<span class="hljs-variable language_">self</span>.referent_to_string(<span class="hljs-variable language_">self</span>._referent))
+</code></pre>
+<p>في هذه اللحظة
+يُضمن أن <code>_referent</code> الخاص بـ <code>NodeRef</code> يملك عناوين متاحة لجميع مراجعه
+الخاصة، فنحوّله إلى صيغة نصية بإنشاء سلسلة بايتات تمثّل هذه العقدة:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/binary_tree.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryNodeRef</span>(<span class="hljs-title class_ inherited__">ValueRef</span>):
+<span class="hljs-comment"># ...</span>
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">referent_to_string</span>(<span class="hljs-params">referent</span>):
+        <span class="hljs-keyword">return</span> pickle.dumps({
+            <span class="hljs-string">&#x27;left&#x27;</span>: referent.left_ref.address,
+            <span class="hljs-string">&#x27;key&#x27;</span>: referent.key,
+            <span class="hljs-string">&#x27;value&#x27;</span>: referent.value_ref.address,
+            <span class="hljs-string">&#x27;right&#x27;</span>: referent.right_ref.address,
+            <span class="hljs-string">&#x27;length&#x27;</span>: referent.length,
+        })
+</code></pre>
+<p>يُعدّ تحديث العنوان في طريقة <code>store()</code>
+تقنياً تغييراً لـ <code>ValueRef</code>.
+ولأنه لا أثر له على القيمة المرئية للمستخدم،
+فيمكننا اعتباره غير قابل للتغيير.</p>
+<p>ما إن يكتمل <code>store()</code> على <code>_tree_ref</code> الجذري
+(داخل <code>LogicalBase.commit()</code>)،
+نعلم أن جميع البيانات قد كُتبت على القرص.
+أصبح بإمكاننا الآن تثبيت عنوان الجذر عبر استدعاء:</p>
+<pre><code class="language-python"><span class="hljs-comment"># dbdb/physical.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Storage</span>(<span class="hljs-title class_ inherited__">object</span>):
+<span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">commit_root_address</span>(<span class="hljs-params">self, root_address</span>):
+        <span class="hljs-variable language_">self</span>.lock()
+        <span class="hljs-variable language_">self</span>._f.flush()
+        <span class="hljs-variable language_">self</span>._seek_superblock()
+        <span class="hljs-variable language_">self</span>._write_integer(root_address)
+        <span class="hljs-variable language_">self</span>._f.flush()
+        <span class="hljs-variable language_">self</span>.unlock()
+</code></pre>
+<p>نحرص على إفراغ مقبض الملف (flush)
+(كي يعرف نظام التشغيل أننا نريد حفظ كل البيانات في تخزين دائم مثل قرص SSD)
+ونكتب عنوان عقدة الجذر.
+ونعلم أن الكتابة الأخيرة هذه ذرّية لأننا نخزّن عنوان القرص على حدود قطاع.
+إنه أول شيء في الملف،
+فهذا صحيح بغض النظر عن حجم القطاع،
+والكتابات أحادية القطاع على القرص مضمونة الذرّية من قبل عتاد القرص نفسه.</p>
+<p>لأن عنوان عقدة الجذر إما أن يحمل القيمة القديمة أو الجديدة
+(وليس مزيجاً من جزء قديم وجديد)،
+يستطيع العمليات الأخرى القراءة من قاعدة البيانات دون الحاجة إلى قفل.
+قد ترى عملية خارجية الشجرة القديمة أو الجديدة،
+لكنها لن ترى مزيجاً منهما أبداً.
+بهذه الطريقة تكون عمليات التثبيت ذرّية.</p>
+<p>لأننا نكتب البيانات الجديدة على القرص ونستدعي استدعاء النظام <code>fsync</code>[^fsync]
+قبل أن نكتب عنوان عقدة الجذر،
+تصبح البيانات غير المثبَّتة غير قابلة للوصول.
+وبالمقابل، ما إن يُحدَّث عنوان عقدة الجذر،
+نعلم أن جميع البيانات التي يشير إليها موجودة أيضاً على القرص.
+بهذه الطريقة تكون عمليات التثبيت متينة أيضاً.</p>
+<p>[^fsync]: استدعاء <code>fsync</code> على واصف ملف
+يطلب من نظام التشغيل والقرص الصلب (أو قرص SSD)
+كتابة كل البيانات المخزَّنة فوراً.
+لا تكتب أنظمة التشغيل والأقراص كل شيء فوراً عادةً
+من أجل تحسين الأداء.</p>
+<p>انتهينا!</p>
+<h3 id="كيف-توفر-noderefs-الذاكرة">كيف توفّر NodeRefs الذاكرة</h3>
+<p>لتجنّب الاحتفاظ ببنية الشجرة كاملةً في الذاكرة في الوقت نفسه،
+حين تُقرأ عقدة منطقية من القرص
+يُحمَّل عنوانا قرص ابنيها الأيسر والأيمن
+(وكذلك قيمتها)
+إلى الذاكرة.
+يتطلب الوصول إلى الأبناء وقيمهم
+استدعاء دالة إضافياً واحدة هي <code>NodeRef.get()</code>
+لإحالة البيانات (أي «جلبها فعلاً»).</p>
+<p>كل ما نحتاجه لبناء <code>NodeRef</code> هو عنوان:</p>
+<pre><code>+---------+
+| NodeRef |
+| ------- |
+| addr=3  |
+| get()   |
++---------+
+</code></pre>
+<p>استدعاء <code>get()</code> عليه سيعيد العقدة الملموسة،
+مع مراجع تلك العقدة في صورة <code>NodeRef</code>:</p>
+<pre><code>+---------+     +---------+     +---------+
+| NodeRef |     | Node    |     | NodeRef |
+| ------- |     | ------- | +-&gt; | ------- |
+| addr=3  |     | key=A   | |   | addr=1  |
+| get() ------&gt; | value=B | |   +---------+
++---------+     | left  ----+
+                | right ----+   +---------+
+                +---------+ |   | NodeRef |
+                            +-&gt; | ------- |
+                                | addr=2  |
+                                +---------+
+</code></pre>
+<p>حين لا تُثبَّت تغييرات الشجرة،
+فإنها موجودة في الذاكرة
+بمراجع من الجذر نزولاً إلى الأوراق المتغيّرة.
+لم تُحفظ التغييرات على القرص بعد،
+لذا فالعقد المتغيّرة تحتوي مفاتيح وقيماً ملموسة
+لا عناوين قرص.
+يستطيع العملية التي تكتب أن ترى التغييرات غير المثبَّتة
+وأن تجري المزيد من التغييرات قبل إصدار أمر تثبيت،
+لأن <code>NodeRef.get()</code> سيعيد القيمة غير المثبَّتة إن وُجدت؛
+فلا فرق بين البيانات المثبَّتة وغير المثبَّتة
+عند الوصول إليها عبر واجهة API.
+ستظهر جميع التحديثات للقراء الآخرين على أنها ذرّية
+لأن التغييرات لا تصبح مرئية
+حتى يُكتب عنوان عقدة الجذر الجديدة على القرص.
+تُحجب التحديثات المتزامنة بواسطة ملف قفل (lockfile) على القرص.
+يُكتسب القفل عند أول تحديث، ويُحرَّر بعد التثبيت.</p>
+<div class="exercises"><h3 id="تمارين-للقارئ">تمارين للقارئ</h3>
+<p>تسمح DBDB للعمليات العديدة بقراءة قاعدة البيانات نفسها في وقت واحد دون
+حجب؛ والمقابل هو أن القراء قد يسترجعون أحياناً بيانات مهملة. ماذا لو
+احتجنا إلى القدرة على قراءة بعض البيانات باتساق؟  حالة استخدام شائعة
+هي قراءة قيمة ثم تحديثها بناءً على تلك القيمة. كيف تكتب
+تابعاً على <code>DBDB</code> لتنفيذ ذلك؟ وما المقايضات التي ستحتاج إلى
+قبولها لتوفير هذه الوظيفة؟</p>
+<p>يمكن تغيير الخوارزمية المستخدمة في تحديث مخزن البيانات
+تماماً
+باستبدال السلسلة النصية <code>BinaryTree</code> في <code>interface.py</code>.
+تميل مخازن البيانات إلى استخدام أنواع أكثر تعقيداً من أشجار البحث
+مثل أشجار B وأشجار B+ وغيرها
+لتحسين الأداء.
+بينما تحتاج الشجرة الثنائية المتوازنة
+(وهذه ليست كذلك)
+إلى $O(log_2(n))$ من قراءات العقد العشوائية (random access) للعثور على قيمة،
+تحتاج شجرة B+ إلى عدد أقل بكثير، على سبيل المثال $O(log_{32}(n))$،
+لأن كل عقدة تنقسم إلى 32 اتجاهاً بدلاً من 2 فحسب.
+وهذا يصنع فرقاً هائلاً في الواقع العملي،
+إذ ينزل البحث ضمن 4 مليارات مُدخل من
+$log_2(2^{32}) = 32$ إلى $log_{32}(2^{32}) \approx 6.4$ عملية بحث.
+كل عملية بحث هي وصول عشوائي،
+وهي باهظة للغاية للأقراص الصلب ذات الأقراص الدوارة.
+تساعد أقراص SSD في خفض الكمون، لكن توفيرات الإدخال/الإخراج (I/O) تبقى قائمة.</p>
+<p>افتراضياً، تُخزَّن القيم بواسطة <code>ValueRef</code>
+الذي يتوقع بايتات كقيم
+(تُمرَّر مباشرة إلى <code>Storage</code>).
+أما عقد الشجرة الثنائية نفسها
+فهي مجرد صنف فرعي من <code>ValueRef</code>.
+وتخزين بيانات أغنى
+عبر <a href="http://json.org">json</a> أو <a href="http://msgpack.org">msgpack</a> مسألة كتابتك مصنفك الخاص
+و تعيينه كـ <code>value_ref_class</code>.
+و <code>BinaryNodeRef</code> مثال على استخدام
+<a href="https://docs.python.org/3.4/library/pickle.html">pickle</a>
+لتحويل البيانات إلى صيغة نصية.</p>
+<p>ضغط قاعدة البيانات تمرين مثير آخر.
+يمكن تنفيذ الضغط عبر اجتياز «وسيط» (infix-of-median) للشجرة مع كتابة
+العناصر أثناء التقدم.
+من الأفضل على الأرجح أن تذهب عقد الشجرة جميعها معاً،
+لأنها ما يجتازه البحث
+للوصول إلى أي قطعة من البيانات.
+وحزم أكبر عدد ممكن من العقد الوسيطة
+في قطاع قرص واحد
+ينبغي أن يحسّن أداء القراءة،
+على الأقل مباشرة بعد الضغط.
+وهناك بعض المسائل الدقيقة هنا
+(مثل استهلاك الذاكرة)
+إن حاولت تنفيذ ذلك بنفسك.
+وتذكّر:
+قِس أداء التحسينات قبل وبعد دائماً!
+غالباً ما ستفاجأ بالنتائج.</p>
+<h3 id="الأنماط-والمبادئ">الأنماط والمبادئ</h3>
+<p>اختبر الواجهات البرمجية، لا التنفيذات.
+كجزء من تطوير DBDB،
+كتبت عدداً من الاختبارات
+التي وصفت كيف أردت أن أتمكن من استخدامه.
+شغّلت الاختبارات الأولى مقابل نسخة من قاعدة البيانات موجودة في الذاكرة،
+ثم وسّعت DBDB لتكون دائمة على القرص،
+ثم أضفت لاحقاً حتى مفهوم NodeRefs.
+لم تكن معظم الاختبارات بحاجة إلى تغيير،
+وهذا منحني الثقة بأن الأمور ما زالت تعمل.</p>
+<p>احترم مبدأ المسؤولية المفردة.
+ينبغي أن يكون لكل صنف سبب واحد على الأكثر للتغيير.
+هذا ليس هو الحال تماماً في DBDB،
+لكن هناك مسارات متعددة للتوسّع
+لا تتطلب سوى تغييرات موضعية.
+كان إعادة الهيكلة أثناء إضافة الميزات متعةً!</p>
+<h3 id="الخلاصة">الخلاصة</h3>
+<p>DBDB قاعدة بيانات بسيطة تقدّم ضمانات بسيطة، ومع ذلك
+بقيت الأمور معقدة بسرعة. أهم شيء فعلته للتعامل
+مع هذا التعقيد هو تنفيذ كائن يبدو قابلاً للتغيير ببنية بيانات غير
+قابلة للتغيير. وأشجعك على أن تتذكّر هذه التقنية في المرة
+القادمة التي تجد نفسك فيها في منتصف مشكلة صعبة تبدو وكأن
+لديها من الحالات الحدّية أكثر مما تستطيع حصره.</p>
+</div><!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/500-lines/dagoba/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">داغوبا: قاعدة بيانات رسومية في الذاكرة</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/500-lines/event-web-framework/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">إطار عمل ويب قائم على الأحداث</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_clnj0b = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.B2xm9FgE.js"),
+						import("../../../../_app/immutable/entry/app.DiF48pvl.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

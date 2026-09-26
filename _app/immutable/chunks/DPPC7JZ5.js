@@ -1,0 +1,615 @@
+const s="500-lines",n="sampler",a="A Rejection Sampler",e="index",t="أخذ عيّنات بالارفض",p=[{depth:2,id:"مقدمة",text:"مقدمة"},{depth:3,id:"ما-هو-أخذ-العينات",text:"ما هو أخذ العينات؟"},{depth:3,id:"البرمجة-بالعينات-والاحتمالات",text:"البرمجة بالعيّنات والاحتمالات"},{depth:2,id:"أخذ-عينات-العناصر-السحرية",text:"أخذ عيّنات العناصر السحرية"},{depth:2,id:"التوزيع-المتعدد-الحدود",text:"التوزيع المتعدّد الحدود"},{depth:3,id:"صنف-multinomialdistribution",text:"صنف MultinomialDistribution"},{depth:3,id:"أخذ-عينات-من-توزيع-متعدد-الحدود",text:"أخذ عيّنات من توزيع متعدّد الحدود"},{depth:3,id:"تقييم-دالة-الكتلة-الاحتمالية-المتعددة-الحدود",text:"تقييم دالة الكتلة الاحتمالية المتعدّدة الحدود"},{depth:2,id:"أخذ-عينات-العناصر-السحرية-من-جديد",text:"أخذ عيّنات العناصر السحرية، من جديد"},{depth:2,id:"تقدير-ضرر-الهجوم",text:"تقدير ضرر الهجوم"},{depth:3,id:"تطبيق-توزيع-على-الضرر",text:"تطبيق توزيع على الضرر"},{depth:3,id:"تقريب-التوزيع",text:"تقريب التوزيع"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],l=`<p><em>جيس طالبة دكتوراه في جامعة كاليفورنيا في بيركلي، حيث تدرس الإدراك البشري عبر الجمع بين النماذج الاحتمالية من التعلّم الآلي والتجارب السلوكية من علم النفس المعرفي. وفي وقت فراغها، جيس مساهِمة أساسية في IPython وJupyter. كما أنها حاصلة على بكالوريوس وماجستير هندسة في علوم الحاسوب من معهد التقنية (MIT).</em></p>
+<h2 id="مقدمة">مقدمة</h2>
+<p>كثيراً ما نصطدم، في علوم الحاسوب والهندسة، بمشاكل لا يمكن حلّها باستخدام معادلة. وعادةً ما تنتج هذه المشكلات عن أنظمة معقّدة أو مدخلات مشوّشة (noisy inputs) أو كليهما. وإليك بعض الأمثلة على مشكلات في العالم الحقيقي لا تملك حلولاً تحليلية دقيقة:</p>
+<ol>
+<li>
+<p>لقد بنيت نموذجاً حاسوبياً لطائرة، وتريد أن تعرف مدى تحمّل الطائرة لظروف الطقس المختلفة.</p>
+</li>
+<li>
+<p>تريد أن تعرف ما إذا كانت التصريفات الكيميائية من مصنع مقترح ستؤثّر في إمداد المياه لسكان المنطقة القريبة، انطلاقاً من نموذج لانتشار المياه الجوفية.</p>
+</li>
+<li>
+<p>لديك روبوت يلتقط صوراً مشوّشة من كاميرته، وتريد استعادة البنية ثلاثية الأبعاد للشيء الذي تصوّره تلك الصور.</p>
+</li>
+<li>
+<p>تريد حساب احتمال فوزك في الشطرنج إذا اتّخذت حركة معيّنة.</p>
+</li>
+</ol>
+<p>ولرغم أن هذه الأنواع من المشاكل لا يمكن حلّها بدقة، يمكننا في الغالب الحصول على حلّ تقريبي لها باستخدام تقنيات تُعرف بطرق <em>أخذ العينات في مونت كارلو</em> (Monte Carlo sampling). وفي طرق مونت كارلو، تكمن الفكرة الأساسية في أخذ كثير من <em>العيّنات</em> (samples)، مما يتيح لك بدوره تقدير الحلّ.[^note]</p>
+<p>[^note]: يفترض هذا الفصل قدراً من الإلمام بالإحصاء ونظرية الاحتمالات.</p>
+<h3 id="ما-هو-أخذ-العينات">ما هو أخذ العينات؟</h3>
+<p>المصطلح <em>أخذ العينات</em> (sampling) يعني توليد قيم عشوائية من توزيع احتمالي. فمثلاً، القيمة التي تحصل عليها من رمي نرد بستة أوجه هي عيّنة. والبطاقة التي تسحبها من أعلى المجموعة بعد خلطها هي عيّنة. والموضع الذي تصيب فيه السهام اللوح هو عيّنة أيضاً. والاختلاف الوحيد بين هذه العيّنات المختلفة أنها مُولَّدة من <em>توزيعات احتمالية</em> مختلفة. ففي حالة النرد، يضع التوزيع وزناً متساوياً على ست قيم. وفي حالة البطاقة، يضع التوزيع وزناً متساوياً على 52 قيمة. وفي حالة لوح السهام، يضع التوزيع وزناً على منطقة دائرية (مع أنه قد لا يكون موزّعاً بانتظام، بحسب مهارتك كلاعب سهام).</p>
+<p>هناك طريقتان نودّ عادةً استعمال العيّنات فيهما. الأولى هي ببساطة توليد قيمة عشوائية تُستعمل لاحقاً: فمثلاً سحب البطاقات عشوائياً في لعبة بوكر حاسوبية. أما الطريقة الثانية التي تُستعمل بها العيّنات فهي للتقدير. فمثلاً، إن اشتبهت في أن صديقك يلعب بنردٍ مغشوش (loaded dice)، فقد تريد رمي النردمرات كثيرة لمعرفة ما إذا كانت أرقام معيّنة تطلع أكثر مما هو متوقّع. أو قد تريد ببساطة تحديد نطاق الاحتمالات، كما في مثال الطائرة أعلاه. الطقس نظام فوضوي إلى حدّ كبير، ما يعني أنه يستحيل حساب ما إذا كانت ستنجُ الطائرة في موقف طقس معيّن <em>بدقّة</em>. وبدلاً من ذلك، يمكنك محاكاة سلوك الطائرة تحت ظروف طقس مختلفة كثيرة، مراراً وتكراراً، مما يتيح لك أن ترى في أي الظروف تكون الطائرة أكثر عرضة للفشل.</p>
+<h3 id="البرمجة-بالعينات-والاحتمالات">البرمجة بالعيّنات والاحتمالات</h3>
+<p>كما في معظم تطبيقات علوم الحاسوب، يمكنك اتخاذ قرارات تصميمية عند البرمجة بالعيّنات والاحتمالات ستؤثّر في نظافة شيفرتك وتماسكها وصحّتها الإجمالية. وسنمرّ في هذا الفصل على مثال بسيط لكيفية أخذ عيّنات عشوائية من عناصر في لعبة حاسوبية. ولأن الأمر جوهري هنا، سنركّز على قرارات التصميم الخاصة بالعمل بالاحتمالات، بما في ذلك دوالّ المعاينة وأخرى لتقييم الاحتمالات، والتعامل مع اللوغاريتمات، وإتاحة إمكانية إعادة الإنتاج، وفصل عملية توليد العيّنات عن التطبيق تحديداً.</p>
+<h4>ملاحظة وجيزة عن الترميز</h4>
+<p>سنستعمل ترميزاً رياضياً مثل $p(x)$ للإشارة إلى أن $p$ هي <em>دالة كثافة الاحتمال</em> (PDF) أو <em>دالة كتلة الاحتمال</em> (PMF) على قيم $x$ لمتغيّر عشوائي. فدالة الكثافة هي دالة $p(x)$ <em>متصلة</em> بحيث $\\int_{-\\infty}^\\infty p(x)\\ \\mathrm{d}x=1$، في حين أن دالة الكتلة هي دالة $p(x)$ <em>متقطّعة</em> بحيث $\\sum_{x\\in\\mathbb{Z}} p(x)=1$، حيث $\\mathbb{Z}$ هي مجموعة الأعداد الصحيحة كلّها.</p>
+<p>سيكون التوزيع الاحتمالي في حالة لوح السهام دالة كثافة متصلة، بينما سيكون التوزيع الاحتمالي في حالة النرد دالة كتلة متقطّعة. وفي الحالتين معاً، يكون $p(x) \\geq 0$ لكل $x$؛ أي أن الاحتمالات يجب أن تكون غير سالبة.</p>
+<p>هناك أمران قد نودّ فعلهما بتوزيع احتمالي. فومعطًى قيمة (أو موضع) $x$، قد نودّ أن <em>نقيّم</em> ما هي كثافة الاحتمال (أو كتلته) عند ذلك الموضع. وفي الترميز الرياضي، نكتب هذا على صورة $p(x)$ (كثافة الاحتمال عند القيمة $x$).</p>
+<p>ومعطى دالة الكثافة أو دالة الكتلة، قد نودّ أيضاً أن <em>نأخذ عيّنة</em> من قيمة $x$ بطريقة متناسبة مع التوزيع (بحيث نكون أكثر عرضة للحصول على عيّنة في المواضع التي يكون فيها الاحتمال أعلى). وفي الترميز الرياضي، نكتب هذا على صورة $x\\sim p$، ما يدلّ على أن $x$ قد أُخذت عيّنة بما يتناسب مع $p$.</p>
+<h2 id="أخذ-عينات-العناصر-السحرية">أخذ عيّنات العناصر السحرية</h2>
+<p>ولنأتَ بمثال بسيط لتوضيح قرارات التصميم المختلفة التي تنطوي عليها البرمجة بالاحتمالات، ولنفترض أننا نكتب لعبة لعب أدوار (RPG). ونودّ طريقة لتوليد إحصاءات إضافية للعناصر السحرية التي تُسقطها الوحوش عشوائياً. وقد نقرّر أن أقصى زيادة نريد أن يمنحه عنصر هو ‎+5، وأن الزيادات الأكبر أقل احتمالاً من الأصغر. فإذا كان $B$ متغيّراً عشوائياً على قيم الزيادة، فإن:</p>
+<p>$$
+p(B=\\mathrm{+1}) = 0.55\\
+p(B=\\mathrm{+2}) = 0.25\\
+p(B=\\mathrm{+3}) = 0.12\\
+p(B=\\mathrm{+4}) = 0.06\\
+p(B=\\mathrm{+5}) = 0.02
+$$</p>
+<p>ويمكننا أيضاً أن نحدّد أن هناك ست إحصاءات (الرشاقة، والبنية، والقوة، والذكاء، والحكمة، والكاريزما) نريد أن تُوزَّع الزيادة بينها. فعنصر ذو زيادة قدرها ‎+5 يمكن أن تكون نقاطه موزَّعة على إحصاءات مختلفة (مثل ‎+2 حكمة و ‎+3 ذكاء) أو مركَّزة في إحصاء واحد (مثل ‎+5 كاريزما).</p>
+<p>فكيف يمكننا أن نأخذ عيّنة عشوائية من هذا التوزيع؟ ولعلّ أسهل طريقة هي أن نأخذ أولاً الزيادة الإجمالية للعنصر، ثم نأخذ طريقة توزيع الزيادة على الإحصاءات. ولحسن الحظ، فإن التوزيعين الاحتماليين الخاصين بالزيادة وبطريقة توزيعها كلاهما حالة من <em>التوزيع المتعدّد الحدود</em> (multinomial distribution).</p>
+<h2 id="التوزيع-المتعدد-الحدود">التوزيع المتعدّد الحدود</h2>
+<p>يُستعمل التوزيع المتعدّد الحدود عندما تكون لديك نتائج محتملة متعدّدة، وتريد تحديد احتمال حدوث كل نتيجة من تلك النتائج. والمثال الكلاسيكي المستخدم في شرح التوزيع المتعدّد الحدود هو <em>الكرة والصندوق</em> (ball and urn). وتتمثّل الفكرة في أن لديك صندوقاً يحوي كرات بألوان مختلفة (مثلاً، 30% حمراء، و20% زرقاء، و50% خضراء). فتسحب كرة، وتسجّل لونها، ثم تضعها مرّة أخرى في الصندوق، ثم تكرّر هذا مرات عديدة. في هذه الحالة، تقابل <em>النتيجة</em> (outcome) سحب كرة بلون معيّن، ويقابل احتمال كل نتيجة نسبة الكرات من ذلك اللون (فمثلاً، لنتيجة سحب كرة زرقاء، الاحتمال هو $p(\\mathrm{blue})=0.20$). ومن ثمّ يُستعمل التوزيع المتعدّد الحدود لوصف التركيبات الممكنة للنتائج عند سحب كرات متعدّدة (مثل كرتين خضراوين وكرة زرقاء).</p>
+<p>تقع الشيفرة في هذا القسم في الملف <code>multinomial.py</code>.</p>
+<h3 id="صنف-multinomialdistribution">صنف <code>MultinomialDistribution</code></h3>
+<p>بوجه عام، هناك حالتا استعمال للتوزيع: قد نودّ أن <em>نأخذ عيّنة</em> من ذلك التوزيع، وقد نودّ أن <em>نقيّم احتمال</em> عيّنة (أو عيّنات) تحت دالة الكتلة الاحتمالية أو دالة الكثافة الاحتمالية لذلك التوزيع. ورغم أن الحسابات الفعلية اللازمة لأداء هذين الدورين مختلفة إلى حدّ كبير، فإنهما يعتمدان على معلومة مشتركة واحدة: ما هي <em>معاملات</em> (parameters) التوزيع. وفي حالة التوزيع المتعدّد الحدود، تكون المعاملات هي احتمالات الأحداث، $p$ (التي تقابل نسب الكرات الملوّنة المختلفة في مثال الصندوق أعلاه).</p>
+<p>والحل الأبسط سيكون ببساطة إنشاء دالتين تأخذان المعاملات نفسها، لكنهما مستقلتان فيما بينهما. غير أنني عادةً ما أفضّل استعمال صنف لتمثيل توزيعاتي. وهناك عدة فوائد ذلك:</p>
+<ol>
+<li>
+<p>لا تحتاج إلا إلى تمرير المعاملات مرّة واحدة، عند إنشاء الصنف.</p>
+</li>
+<li>
+<p>هناك صفات إضافية قد نودّ معرفتها عن التوزيع: المعدّل، والتباين، والمشتقّة، وغيرها. وبمجرد أن يتوفّر لدينا حتى حفنة صغيرة من الدوال التي تعمل على كائن مشترك، يصبح استعمال الصنف أكثر ملاءمة من تمرير المعاملات نفسها إلى دوال مختلفة كثيرة.</p>
+</li>
+<li>
+<p>من الأفضل عادةً التحقّق من صحّة قيم المعاملات (ففي حالة التوزيع المتعدّد الحدود، مثلاً، يجب أن يكون متجه $p$ لاحتمالات الأحداث مجموعه 1). ويؤدّى هذا الفحص مرّة واحدة، في بانِي الصنف، أكفأ بكثير من فعله في كل مرّة تُستدعى فيها إحدى الدوال.</p>
+</li>
+<li>
+<p>أحياناً ما ينطوي حساب PMF أو PDF على حساب قيم ثابتة (معطاة المعاملات). ومع الصنف، يمكننا أن نحسب هذه الثوابت مسبقاً في الباني، بدلاً من اضطرارنا إلى حسابها في كل مرّة تُستدعى فيها دالة PMF أو PDF.</p>
+</li>
+</ol>
+<p>وهذه في الممارسة العملية طريقة عمل كثير من حزم الإحصاء، بما فيها توزيعات SciPy نفسها، الموجودة في الوحدة <code>scipy.stats</code>. لكننا بينما نستعمل دوال SciPy الأخرى، لا نستعمل توزيعاتها الاحتمالية، وذلك لأجل التوضيح، ولأن SciPy لا تحتوي حالياً على توزيع متعدّد الحدود.</p>
+<p>وهذه هي شيفرة الباني (constructor) للصنف:</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MultinomialDistribution</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, p, rso=np.random</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize the multinomial random variable.
+
+        Parameters
+        ----------
+        p: numpy array of length \`k\`
+            The event probabilities
+        rso: numpy RandomState object (default: None)
+            The random number generator
+
+        &quot;&quot;&quot;</span>
+
+        <span class="hljs-comment"># Check that the probabilities sum to 1. If they don&#x27;t, then</span>
+        <span class="hljs-comment"># something is wrong! We use \`np.isclose\` rather than checking</span>
+        <span class="hljs-comment"># for exact equality because in many cases, we won&#x27;t have</span>
+        <span class="hljs-comment"># exact equality due to floating-point error.</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> np.isclose(np.<span class="hljs-built_in">sum</span>(p), <span class="hljs-number">1.0</span>):
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;event probabilities do not sum to 1&quot;</span>)
+
+        <span class="hljs-comment"># Store the parameters that were passed in</span>
+        <span class="hljs-variable language_">self</span>.p = p
+        <span class="hljs-variable language_">self</span>.rso = rso
+
+        <span class="hljs-comment"># Precompute log probabilities, for use by the log-PMF, for</span>
+        <span class="hljs-comment"># each element of \`self.p\` (the function \`np.log\` operates</span>
+        <span class="hljs-comment"># elementwise over NumPy arrays, as well as on scalars.)</span>
+        <span class="hljs-variable language_">self</span>.logp = np.log(<span class="hljs-variable language_">self</span>.p)
+</code></pre>
+<p>يأخذ الصنف كوسيطين احتمالات الأحداث، $p$، ومتغيّراً اسمه <code>rso</code>. أولاً، يتحقّق الباني من صحّة المعاملات، أي أن <code>p</code> مجموعه 1. ثم يخزّن الوسائط التي مُرِّرت إليه، ويستخدم احتمالات الأحداث لحساب احتمالات الأحداث <em>اللوغاريتمية</em>. (وسنعود إلى سبب الحاجة إلى ذلك بعد قليل). أما كائن <code>rso</code> فهو ما سنستعمله لاحقاً لإنتاج أرقام عشوائية. (وسنتحدّث أكثر عمّا هو لاحقاً أيضاً).</p>
+<p>قبل أن ننتقل إلى بقية الصنف، لنراجع أمرين يتعلقان بالباني.</p>
+<h4>أسماء المتغيّرات الوصفية مقابل الرياضية</h4>
+<p>عادةً ما يُشجَّع المبرمجون على استعمال أسماء متغيّرات وصفية: فمثلاً، يُعدّ من الممارسات الأفضل استعمال الاسمين <code>independent_variable</code> و<code>dependent_variable</code> بدل <code>x</code> و<code>y</code>. وقاعدة إرشادية شائعة هي ألا نستعمل أبداً أسماء متغيّرات لا تتجاوز حرفاً أو حرفين. لكنك ستلاحظ أن في باني صنف <code>MultinomialDistribution</code> نستعمل اسم المتغيّر <code>p</code>، وهو ما يخالف اصطلاحات التسمية المعتادة.</p>
+<p>ورغم أنني أتفق على أن اصطلاحات التسمية هذه ينبغي أن تنطبق في كل المجالات تقريباً، هناك استثناء واحد: الرياضيات. والصعوبة في ترميز المعادلات الرياضية أن تلك المعادلات تحمل عادةً أسماء متغيّرات لا تتجاوز حرفاً واحداً: $x$ و$y$ و$\\alpha$ وغيرها. فإذا كنت ستترجمها مباشرةً إلى شيفرة، لأصبحت أسماء المتغيّرات الأسهل هي <code>x</code> و<code>y</code> و<code>alpha</code>. ومن الواضح أن هذه ليست أسماء المتغيّرات الأكثر إفادة (فاسم <code>x</code> لا ينقل الكثير من المعلومات)، لكن استعمال أسماء متغيّرات أكثر وصفاً قد يجعل التنقّل بين الشيفرة والمعادلة أصعب أيضاً.</p>
+<p>أعتقد أن حين تكتب شيفرة تنفّذ معادلةً مباشرة، ينبغي أن تُستعمل أسماء المتغيّرات نفسها المستعملة في المعادلة. فإن ذلك يجعل من السهل رؤية أي أجزاء من الشيفرة تنفّذ أي أجزاء من المعادلة. وهذا بالطبع قد يجعل الشيفرة أصعب في الفهم منفرداً، لذا من المهمّة خاصةً أن تقوم التعليقات بوظيفتها التوضيحية على نحو جيّد. وإذا كانت المعادلة مدرجة في ورقة علمية، فينبغي أن تشير التعليقات إلى رقم المعادلة ليسهل الرجوع إليه.</p>
+<h4>استيراد NumPy</h4>
+<p>لعلّك لاحظت أننا استوردنا الوحدة <code>numpy</code> باسم <code>np</code>. وهذه ممارسة معتادة في عالم الحوسبة العددية، لأن NumPy تقدّم عدداً هائلاً من الدوال المفيدة، كثير منها قد يُستعمل حتى في ملف واحد. وفي الأمثلة البسيطة من هذا الفصل، نستعمل إحدى عشرة دالة من دوال NumPy فقط، لكن العدد قد يكون أكبر بكثير: ف ليس من غير المألوف أن أستعمل نحو أربعين دالة مختلفة من دوال NumPy في مشروع كامل!</p>
+<p>وهناك بعض الخيارات لاستيراد NumPy. يمكننا استعمال <code>from numpy import *</code>، لكن هذه عادةً أسلوب سيّئ لأنها تجعل تحديد مصدر الدوال صعباً. يمكننا استيراد الدوال فرادى على الصورة <code>from numpy import array, log, ...</code>، لكن ذلك يصبح مرتجلاً سريعاً. يمكننا ببساطة استعمال <code>import numpy</code>، لكن هذا يؤدّي غالباً إلى شيفرة أصعب في القراءة بكثير. وكلا المثالين التاليين صعب في القراءة، لكن المثال الذي يستعمل <code>np</code> بدل <code>numpy</code> أوضح بدرجة كبيرة:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>numpy.sqrt(numpy.<span class="hljs-built_in">sum</span>(numpy.dot(numpy.array(a), numpy.array(b))))
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.sqrt(np.<span class="hljs-built_in">sum</span>(np.dot(np.array(a), np.array(b))))
+</code></pre>
+<h3 id="أخذ-عينات-من-توزيع-متعدد-الحدود">أخذ عيّنات من توزيع متعدّد الحدود</h3>
+<p>أخذ عيّنة من توزيع متعدّد الحدود أمر في الواقع بسيط إلى حدّ كبير، لأن NumPy تقدّم لنا دالة تفعله: <code>np.random.multinomial</code>[^multinomial].</p>
+<p>[^multinomial]: تضمّ NumPy دوالّ لسحب عيّنات من أنواع كثيرة مختلفة من التوزيعات. ولمعرفة القائمة الكاملة، انظر وحدة أخذ العينات العشوائية <code>np.random</code>.</p>
+<p>ورغم أن هذه الدالة موجودة بالفعل، هناك بعض قرارات التصميم المتعلقة بها يمكننا اتخاذها.</p>
+<h4>تهيئة مولّد الأرقام العشوائية</h4>
+<p>رغم أننا نريد فعلاً سحب <em>عيّنة عشوائية</em>، فإننا نريد أحياناً أن تكون نتائجنا قابلة لإعادة الإنتاج: فرغم أن الأرقام تبدو عشوائية، إذا أعدنا تشغيل البرنامج فقد نريد منه أن يستعمل <em>التسلسل</em> نفسه من الأرقام «العشوائية».</p>
+<p>ولتتيح توليد مثل هذه الأرقام «العشوائية القابلة لإعادة الإنتاج»، نحتاج إلى أن نخبر دالة أخذ العينات لدينا <em>بكيفية</em> توليد الأرقام العشوائية. يمكننا تحقيق ذلك باستعمال كائن <code>RandomState</code> من NumPy، وهو في جوهره كائن مولّد أرقام عشوائية يمكن تمريره هنا وهناك. ولديه معظم الدوال نفسها الموجودة في <code>np.random</code>؛ والفرق أن موضع مصدر الأرقام العشوائية يصبح بأيدينا. ننشئه على الصورة التالية:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso = np.random.RandomState(<span class="hljs-number">230489</span>)
+</code></pre>
+<p>\\noindent حيث يكون الرقم المُمرَّر إلى باني <code>RandomState</code> هو <em>البذرة</em> (seed) الخاصة بمولّد الأرقام العشوائية. ما دامّنا ننشئه بالبذرة نفسها، فإن كائن <code>RandomState</code> سينتج الأرقام «العشوائية» نفسها بالترتيب نفسه، مما يضمن إمكانية التكرار:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>rso.rand()
+<span class="hljs-number">0.5356709186237074</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso.rand()
+<span class="hljs-number">0.6190581888276206</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso.rand()
+<span class="hljs-number">0.23143573416770336</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso.seed(<span class="hljs-number">230489</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso.rand()
+<span class="hljs-number">0.5356709186237074</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso.rand()
+<span class="hljs-number">0.6190581888276206</span>
+</code></pre>
+<p>راجعنا سابقاً أن الباني كان يأخذ وسيطاً اسمه <code>rso</code>. وهذا المتغيّر <code>rso</code> هو كائن <code>RandomState</code> مهيّأ بالفعل. وأنا أحبّ أن أجعل كائن <code>RandomState</code> وسيطاً اختيارياً: فبينما يكون من غير الملائم في بعض الأحيان ألّا تكون <em>مضطرّاً</em> إلى استعماله، فإنني أودّ أن تكون لديّ <em>الخيار</em> في استعماله (وهو أمر لن أستطيعه لو اكتشفت الاكتفاء باستعمال وحدة <code>np.random</code>).</p>
+<p>فإذا لم يُعطَ المتغيّر <code>rso</code>، فإن الباني يرجع افتراضياً إلى <code>np.random.multinomial</code>. وإلّا فإنه يستعمل دالّة أخذ العينات المتعدّدة الحدود من كائن <code>RandomState</code> نفسه[^rng].</p>
+<p>[^rng]: تعتمد الدوال في <code>np.random</code> في الواقع على مولّد أرقام عشوائية يمكننا التحكّم فيه، وهو مولّد الأرقام العشوائية العام في NumPy. ويمكنك ضبط البذرة العامة بـ <code>np.seed</code>. وهناك مقايضة بين استعمال المولّد العام وبين استعمال كائن <code>RandomState</code> محلّي. فإذا استعملت المولّد العام، فلن تحتاج إلى تمرير كائن <code>RandomState</code> في كل مكان. غير أنك في المقابل تتعرّض لخطر الاعتماد على شيفرة طرف ثالث تستعمل المولّد العام أيضاً دون علمك. وإذا استعملت كائناً محلّياً، يصبح من الأسهل أيّهما كان يعرف ما إذا كان ما إذا كان عدم الحتمية يأتي من مكان آخر غير شيفرتك أنت.</p>
+<h4>ما المقصود بالمعامل؟</h4>
+<p>بعد أن قرّرنا ما إذا كنّا سنستعمل <code>np.random.multinomial</code> أم <code>rso.multinomial</code>، لا يصير أخذ العيّنات سوى مسألة استدعاء الدالة المناسبة. غير أن هناك قراراً آخر قد نودّ اتخاذه: ما الذي يُعدّ معاملاً؟</p>
+<p>لقد قلت سابقاً إن احتمالات النتائج، $p$، هي معاملات التوزيع المتعدّد الحدود. غير أنه، بحسب من تسأله، قد يكون عدد الأحداث، $n$، <em>أيضاً</em> معاملاً للتوزيع المتعدّد الحدود. فلماذا إذن لم نُدرِج $n$ كوسيط للباني؟</p>
+<p>هذا السؤال، وإن كان نوعاً ما خاصاً بالتوزيع المتعدّد الحدود، يتكرّر في الواقع إلى حدّ كبير عند التعامل مع التوزيعات الاحتمالية، والإجابة تعتمد فعلياً على حالة الاستعمال. بالنسبة إلى متعدّد الحدود، هل يمكنك أن تفترض أن عدد الأحداث يبقى نفسه دائماً؟ إن كان كذلك، فقد يكون من الأفضل تمرير $n$ كوسيط إلى الباني. وإن لم يكن كذلك، فإن اشتراط تحديد $n$ وقت إنشاء الكائن قد يكون مقيّداً جداً، وقد يستلزم حتى إنشاء كائن توزيع جديد في كل مرّة تحتاج فيها إلى سحب عيّنة!</p>
+<p>أنا عادةً لا أحبّ أن أكون مقيّداً إلى هذا الحدّ بواسطة شيفرتي، وأختار من ثمّ أن يكون <code>n</code> وسيطاً لدالة <code>sample</code>، بدلاً من أن يكون وسيطاً للباني. ويمكن أن يكون الحل البديل هو جعل <code>n</code> وسيطاً للباني، مع تضمين توابع تسمح بتغيير قيمة <code>n</code>، دون الحاجة إلى إنشاء كائن جديد تماماً. لكن لأغراضنا، من المرجّح أن يكون هذا الحل مبالغاً فيه، لذا سنكتفي بجعله وسيطاً لـ <code>sample</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sample</span>(<span class="hljs-params">self, n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Samples draws of \`n\` events from a multinomial distribution with
+    outcome probabilities \`self.p\`.
+
+    Parameters
+    ----------
+    n: integer
+        The number of total events
+
+    Returns
+    -------
+    numpy array of length \`k\`
+        The sampled number of occurrences for each outcome
+
+    &quot;&quot;&quot;</span>
+    x = <span class="hljs-variable language_">self</span>.rso.multinomial(n, <span class="hljs-variable language_">self</span>.p)
+    <span class="hljs-keyword">return</span> x
+</code></pre>
+<h3 id="تقييم-دالة-الكتلة-الاحتمالية-المتعددة-الحدود">تقييم دالة الكتلة الاحتمالية المتعدّدة الحدود</h3>
+<p>رغم أننا لا نحتاج صراحةً إلى حساب احتمال العناصر السحرية التي نولّدها، فإن من الأفضل دائماً تقريباً كتابة دالة تستطيع حساب دالة كتلة الاحتمال (PMF) أو دالة كثافة الاحتمال (PDF) الخاصة بالتوزيع. لماذا؟</p>
+<p>أحد الأسباب هو أننا نستطيع استعمالها في الاختبار: فإذا أخذنا كثيراً من العيّنات بدالتنا، فينبغي أن تقارب دالة الكثافة أو دالة الكتلة الدقيقة. فإذا كانت التقارب سيّئاً أو خاطئاً على نحو واضح بعد أخذ عيّنات كثيرة، نعرف عندئذٍ أن في شيفرتنا خللاً في مكان ما.</p>
+<p>وسبب آخر لتطبيق PMF أو PDF هو أنك كثيراً ما ستحتاج إليها لاحقاً في الطريق دون أن تنتبه لها في البداية. فمثلاً، قد نودّ تصنيف عناصرنا المولَّدة عشوائياً إلى <em>شائعة</em> (common) و<em>غير شائعة</em> (uncommon) و<em>نادرة</em> (rare)، بحسب احتمال توليدها. ولتحديد ذلك، نحتاج إلى القدرة على حساب PMF.</p>
+<p>وأخيراً، في كثير من الحالات، ستدفعك حالة استعمالك تحديداً إلى تطبيق PMF أو PDF منذ البداية على أي حال.</p>
+<h4>معادلة PMF المتعدّدة الحدود</h4>
+<p>رسمياً، يتمتع التوزيع المتعدّد الحدود بالمعادلة التالية:</p>
+<p>$$
+p(\\mathbf{x}; \\mathbf{p}) = \\frac{(\\sum_{i=1}^k x_i)!}{x_1!\\cdots{}x_k!}p_1^{x_1}\\cdots{}p_k^{x_k}
+$$</p>
+<p>\\noindent حيث $\\mathbf{x}=[x_1, \\ldots{}, x_k]$ متجه طوله $k$ يحدّد عدد مرّات حدوث كل حدث، و$\\mathbf{p}=[p_1, \\ldots{}, p_k]$ متجه يحدّد احتمال حدوث كل حدث. وكما ذُكر أعلاه، فإن احتمالات الأحداث $\\mathbf{p}$ هي <em>معاملات</em> التوزيع.</p>
+<p>يمكن في الواقع التعبير عن العوامل (factorials) في المعادلة أعلاه بدالة خاصة، $\\Gamma$، تُسمّى <em>دالة غاما</em> (gamma function). وعندما نصل إلى كتابة الشيفرة، سيكون استعمال دالة غاما بدل العوامل أكثر ملاءمة وكفاءة، لذا سنعيد كتابة المعادلة باستعمال $\\Gamma$:</p>
+<p>$$
+p(\\mathbf{x}; \\mathbf{p}) = \\frac{\\Gamma((\\sum_{i=1}^k x_i)+1)}{\\Gamma(x_1+1)\\cdots{}\\Gamma(x_k+1)}p_1^{x_1}\\cdots{}p_k^{x_k}
+$$</p>
+<h4>العمل بالقيم اللوغاريتمية</h4>
+<p>قبل الدخول في الشيفرة الفعلية اللازمة لتطبيق المعادلة أعلاه، أودّ أن أُشدّد على واحدة من أهم قرارات التصميم عند كتابة شيفرة بالاحتمالات: العمل بالقيم اللوغاريتمية. ويعني ذلك أننا بدل العمل مباشرةً بالاحتمالات $p(x)$، ينبغي أن نعمل بـ<em>احتمالات لوغاريتمية</em>، $\\log{p(x)}$. والسبب في ذلك أن الاحتمالات قد تصير صغيرة جداً بسرعة فائقة، مما يؤدّي إلى أخطاء في نزول القيم تحت الحدّ الأدنى (underflow).</p>
+<p>ولإبراز هذا، لاحظ أن الاحتمالات يجب أن تقع في المدى بين 0 و1 (شاملةً الطرفين). ولدى NumPy دالة مفيدة هي <code>finfo</code> تخبرنا بحدود قيم الفاصلة العائمة في نظامنا. فمثلاً، على آلة 64-بت، نرى أن أصغر عدد موجب صالح للاستعمال (الذي تعطيه <code>tiny</code>) هو:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.finfo(<span class="hljs-built_in">float</span>).tiny
+<span class="hljs-number">2.2250738585072014e-308</span>
+</code></pre>
+<p>ورغم أن ذلك قد يبدو صغيراً جداً، إلا أنه ليس من غير المألوف مصادفة احتمالات بهذا المقدار، أو حتى أصغر. وإضافةً إلى ذلك، فإن ضرب الاحتمالات عملية شائعة، غير أن محاولة فعل ذلك باحتمالات صغيرة جداً تسبّب لنا مشكلات في الفيض:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>tiny = np.finfo(<span class="hljs-built_in">float</span>).tiny
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># if we multiply numbers that are too small, we lose all precision</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>tiny * tiny
+<span class="hljs-number">0.0</span>
+</code></pre>
+<p>غير أن أخذ اللوغاريتم يمكن أن يساعد في التخفيف من هذه المشكلة، لأننا نستطيع تمثيل مدى أوسع بكثير من الأعداد باللوغاريتمات مقارنةً بما هو ممكن عادةً. رسمياً، تقع القيم اللوغاريتمية في المدى من $-\\infty$ إلى الصفر.لكن الممارسة العملية، تقع في المدى من قيمة <code>min</code> التي يعيدها <code>finfo</code>، وهي أصغر عدد يمكن تمثيله، إلى الصفر. وقيمة <code>min</code> <em>أصغر بكثير</em> من لوغاريتم قيمة <code>tiny</code> (والذي سيكون حدّنا الأدنى لو لم نعمل في الفضاء اللوغاريتمي):</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># this is our lower bound normally</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.log(tiny)
+-<span class="hljs-number">708.39641853226408</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># this is our lower bound when using logs</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.finfo(<span class="hljs-built_in">float</span>).<span class="hljs-built_in">min</span>
+-<span class="hljs-number">1.7976931348623157e+308</span>
+</code></pre>
+<p>وعملنا بالقيم اللوغاريتمية يوسّع إلى حدّ بعيد مدى الأعداد التي نستطيع تمثيلها. وإضافةً إلى ذلك، يمكننا إجراء الضرب باللوغاريتمات باستعمال الجمع، لأن $\\log(x\\cdot{}y) = \\log(x) + \\log(y)$. فإذا أنجزنا المضروب أعلاه باللوغاريتمات، فلن نضطر إلى القلق (إلى هذا الحدّ) بشأن فقدان الدقّة نتيجة لنزول القيم تحت الحدّ الأدنى:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># the result of multiplying small probabilities</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.log(tiny * tiny)
+-inf
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># the result of adding small log probabilities</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.log(tiny) + np.log(tiny)
+-<span class="hljs-number">1416.7928370645282</span>
+</code></pre>
+<p>وبطبيعة الحال، هذا الحل ليس رصاصة سحرية. فإذا احتجنا اشتقاق العدد من اللوغاريتم (مثلاً،لإضافة الاحتمالات بدلاً من ضربها)، فإننا نعود إلى مشكلة نزول القيم تحت الحدّ الأدنى:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>tiny*tiny
+<span class="hljs-number">0.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.exp(np.log(tiny) + np.log(tiny))
+<span class="hljs-number">0.0</span>
+</code></pre>
+<p>ومع ذلك، فإن إجراء كل حساباتنا باللوغاريتمات يوفّر علينا عناءً كبيراً. قد نضطر إلى فقدان تلك الدقّة إذا احتجنا العودة إلى الأعداد الأصلية، لكننا على الأقل نحتفظ بـ<em>بعض</em> المعلومات عن الاحتمالات—تكفي للمقارنة بينها مثلاً—وهو ما كان يضيع لولا ذلك.</p>
+<h4>كتابة شيفرة PMF</h4>
+<p>الآن وقد رأينا أهمية العمل باللوغاريتمات، يمكننا فعلاً كتابة دالتنا لحساب log-PMF:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">log_pmf</span>(<span class="hljs-params">self, x</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Evaluates the log-probability mass function (log-PMF) of a
+    multinomial with outcome probabilities \`self.p\` for a draw \`x\`.
+
+    Parameters
+    ----------
+    x: numpy array of length \`k\`
+        The number of occurrences of each outcome
+
+    Returns
+    -------
+    The evaluated log-PMF for draw \`x\`
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Get the total number of events</span>
+    n = np.<span class="hljs-built_in">sum</span>(x)
+
+    <span class="hljs-comment"># equivalent to log(n!)</span>
+    log_n_factorial = gammaln(n + <span class="hljs-number">1</span>)
+    <span class="hljs-comment"># equivalent to log(x1! * ... * xk!)</span>
+    sum_log_xi_factorial = np.<span class="hljs-built_in">sum</span>(gammaln(x + <span class="hljs-number">1</span>))
+
+    <span class="hljs-comment"># If one of the values of self.p is 0, then the corresponding</span>
+    <span class="hljs-comment"># value of self.logp will be -inf. If the corresponding value</span>
+    <span class="hljs-comment"># of x is 0, then multiplying them together will give nan, but</span>
+    <span class="hljs-comment"># we want it to just be 0.</span>
+    log_pi_xi = <span class="hljs-variable language_">self</span>.logp * x
+    log_pi_xi[x == <span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+    <span class="hljs-comment"># equivalent to log(p1^x1 * ... * pk^xk)</span>
+    sum_log_pi_xi = np.<span class="hljs-built_in">sum</span>(log_pi_xi)
+
+    <span class="hljs-comment"># Put it all together</span>
+    log_pmf = log_n_factorial - sum_log_xi_factorial + sum_log_pi_xi
+    <span class="hljs-keyword">return</span> log_pmf
+</code></pre>
+<p>في معظمها، هذه تنفيذ مباشر للمعادلة أعلاه الخاصة بـ PMF المتعدّدة الحدود. ودالة <code>gammaln</code> تأتي من <code>scipy.special</code>، وتحسب دالة غاما اللوغاريتمية، $\\log{\\Gamma(x)}$. وكما ذُكر أعلاه، استعمال دالة غاما بدل دالة العوامل هو أكثر ملاءمة؛ والسبب في ذلك أن SciPy توفّر لنا دالة غاما لوغاريتمية، لكنها لا توفّر دالة عوامل لوغاريتمية.</p>
+<pre><code class="language-python">log_n_factorial = np.<span class="hljs-built_in">sum</span>(np.log(np.arange(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>)))
+sum_log_xi_factorial = np.<span class="hljs-built_in">sum</span>([np.<span class="hljs-built_in">sum</span>(np.log(np.arange(<span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>))) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> x])
+</code></pre>
+<p>لكنه أسهل في الفهم، وأسهل في الترميز، وأكثر كفاءة حسابية، إذا استعملنا دالة غاما الموجودة أصلاً في SciPy.</p>
+<p>هناك حالة حدّية واحدة علينا معالجتها: عندما تكون إحدى احتمالاتنا صفراً. فعند $p_i=0$، يكون $\\log{p_i}=-\\infty$. وسيكون هذا حسناً، لولا السلوك التالي عند ضرب ما لا نهاية في الصفر:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># it&#x27;s fine to multiply infinity by integers...</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>-np.inf * <span class="hljs-number">2.0</span>
+-inf
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># ...but things break when we try to multiply by zero</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>-np.inf * <span class="hljs-number">0.0</span>
+nan
+</code></pre>
+<p>تعني <code>nan</code> «ليس رقماً» (not a number)، وهي في الغالب عبءٌ في التعامل معها، لأن معظم الحسابات التي تجري على <code>nan</code> تنتج <code>nan</code> أخرى. فإذا لم نتعامل مع الحالة التي يكون فيها $p_i=0$ و$x_i=0$، فسننتهي إلى <code>nan</code>. وسيُجمع ذلك مع أعداد أخرى، مما ينتج <code>nan</code> أخرى، وهو أمر غير مفيد على الإطلاق. ولمعالجة ذلك، نفحص تحديداً الحالة التي يكون فيها $x_i=0$، ونضبط $x_i\\cdot{}\\log(p_i)$ الناتجة لتكون صفراً أيضاً.</p>
+<p>لنعد لحظةً إلى مناقشتنا استعمال اللوغاريتمات. وحتى لو كنا لا نحتاج فعلياً إلا إلى PMF لا إلى log-PMF، فإن الأفضل عموماً أن نحسبها <em>أولاً</em> باللوغاريتمات، ثم نرفعها إلى أُسّ إن احتجنا إلى ذلك:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">pmf</span>(<span class="hljs-params">self, x</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Evaluates the probability mass function (PMF) of a multinomial
+    with outcome probabilities \`self.p\` for a draw \`x\`.
+
+    Parameters
+    ----------
+    x: numpy array of length \`k\`
+        The number of occurrences of each outcome
+
+    Returns
+    -------
+    The evaluated PMF for draw \`x\`
+
+    &quot;&quot;&quot;</span>
+    pmf = np.exp(<span class="hljs-variable language_">self</span>.log_pmf(x))
+    <span class="hljs-keyword">return</span> pmf
+</code></pre>
+<p>ولإبراز أهمية العمل باللوغاريتمات أكثر من ذلك، يمكننا النظر في مثال يتضمّن متعدّد الحدود فقط:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>dist = MultinomialDistribution(np.array([<span class="hljs-number">0.25</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.25</span>]))
+<span class="hljs-meta">&gt;&gt;&gt; </span>dist.log_pmf(np.array([<span class="hljs-number">1000</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>])
+-<span class="hljs-number">1386.2943611198905</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>dist.log_pmf(np.array([<span class="hljs-number">999</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>])
+-<span class="hljs-number">1384.9080667587707</span>
+</code></pre>
+<p>في هذه الحالة، نحصل على احتمالات <em>شديدة</em> الصغر (ولن تلاحظ، فهي أصغر بكثير من قيمة <code>tiny</code> التي ناقشناها أعلاه). والسبب في ذلك أن البسط في PMF ضخم: فمضروب 1000 لا يمكن حتى حسابه بسبب تجاوز الحدّ الأعلى. لكن <em>لوغاريتم</em> المضروب يمكن حسابه:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> scipy.special <span class="hljs-keyword">import</span> gamma, gammaln
+<span class="hljs-meta">&gt;&gt;&gt; </span>gamma(<span class="hljs-number">1000</span> + <span class="hljs-number">1</span>)
+inf
+<span class="hljs-meta">&gt;&gt;&gt; </span>gammaln(<span class="hljs-number">1000</span> + <span class="hljs-number">1</span>)
+<span class="hljs-number">5912.1281784881639</span>
+</code></pre>
+<p>ولو حاولنا حساب PMF وحده باستعمال دالة <code>gamma</code>، لانتهينا إلى <code>gamma(1000 + 1) / gamma(1000 + 1)</code>، وهو ما ينتج قيمة <code>nan</code> (مع أننا نستطيع أن نرى أنها ينبغي أن تكون 1). لكن بما أننا نُجري الحساب باللوغاريتمات، فليست هذه مشكلة ولا نحتاج إلى القلق بشأنها!</p>
+<h2 id="أخذ-عينات-العناصر-السحرية-من-جديد">أخذ عيّنات العناصر السحرية، من جديد</h2>
+<p>الآن وقد كتبنا دوالّ التوزيع المتعدّد الحدود، يمكننا أن نضعها في العمل لتوليد عناصرنا السحرية. ولهذا سننشئ صنفاً اسمه <code>MagicItemDistribution</code>، يوجد في الملف <code>rpg.py</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MagicItemDistribution</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-comment"># these are the names (and order) of the stats that all magical</span>
+    <span class="hljs-comment"># items will have</span>
+    stats_names = (<span class="hljs-string">&quot;dexterity&quot;</span>, <span class="hljs-string">&quot;constitution&quot;</span>, <span class="hljs-string">&quot;strength&quot;</span>,
+                   <span class="hljs-string">&quot;intelligence&quot;</span>, <span class="hljs-string">&quot;wisdom&quot;</span>, <span class="hljs-string">&quot;charisma&quot;</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, bonus_probs, stats_probs, rso=np.random</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize a magic item distribution parameterized by \`bonus_probs\`
+        and \`stats_probs\`.
+
+        Parameters
+        ----------
+        bonus_probs: numpy array of length m
+            The probabilities of the overall bonuses. Each index in
+            the array corresponds to the bonus of that amount (e.g.,
+            index 0 is +0, index 1 is +1, etc.)
+
+        stats_probs: numpy array of length 6
+            The probabilities of how the overall bonus is distributed
+            among the different stats. \`stats_probs[i]\` corresponds to
+            the probability of giving a bonus point to the ith stat;
+            i.e., the value at \`MagicItemDistribution.stats_names[i]\`.
+
+        rso: numpy RandomState object (default: np.random)
+            The random number generator
+
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Create the multinomial distributions we&#x27;ll be using</span>
+        <span class="hljs-variable language_">self</span>.bonus_dist = MultinomialDistribution(bonus_probs, rso=rso)
+        <span class="hljs-variable language_">self</span>.stats_dist = MultinomialDistribution(stats_probs, rso=rso)
+</code></pre>
+<p>يأخذ باني صنف <code>MagicItemDistribution</code> معاملات لاحتمالات الزيادة، واحتمالات الإحصاءات، ومولّد الأرقام العشوائية. ورغم أننا حدّدنا أعلاه ما نريد أن تكون عليه احتمالات الزيادة، فمن الأفضل عموماً ترميز المعاملات كوسائط تُمرَّر إلى الدالة. وهذا يترك الباب مفتوحاً لاحتمال أخذ عيّنات من عناصر تحت توزيعات مختلفة. (فمثلاً، ربما تتغيّر احتمالات الزيادة مع ارتفاع مستوى اللاعب.) ونرمّز <em>أسماء</em> الإحصاءات كمتغيّر في الصنف، <code>stats_names</code>، مع أن هذا يمكن أن يكون بسهولة معاملاً آخر للباني.</p>
+<p>وكما ذُكر سابقاً، هناك خطوتان لأخذ عيّنة عنصر سحري: أولاً أخذ الزيادة الإجمالية، ثم أخذ توزيع الزيادة على الإحصاءات. ولهذا نرمّز هاتين الخطوتين كدالتين: <code>_sample_bonus</code> و<code>_sample_stats</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_sample_bonus</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Sample a value of the overall bonus.
+
+    Returns
+    -------
+    integer
+        The overall bonus
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># The bonus is essentially just a sample from a multinomial</span>
+    <span class="hljs-comment"># distribution with n=1; i.e., only one event occurs.</span>
+    sample = <span class="hljs-variable language_">self</span>.bonus_dist.sample(<span class="hljs-number">1</span>)
+
+    <span class="hljs-comment"># \`sample\` is an array of zeros and a single one at the</span>
+    <span class="hljs-comment"># location corresponding to the bonus. We want to convert this</span>
+    <span class="hljs-comment"># one into the actual value of the bonus.</span>
+    bonus = np.argmax(sample)
+    <span class="hljs-keyword">return</span> bonus
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">_sample_stats</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Sample the overall bonus and how it is distributed across the
+    different stats.
+
+    Returns
+    -------
+    numpy array of length 6
+        The number of bonus points for each stat
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># First we need to sample the overall bonus</span>
+    bonus = <span class="hljs-variable language_">self</span>._sample_bonus()
+
+    <span class="hljs-comment"># Then, we use a different multinomial distribution to sample</span>
+    <span class="hljs-comment"># how that bonus is distributed. The bonus corresponds to the</span>
+    <span class="hljs-comment"># number of events.</span>
+    stats = <span class="hljs-variable language_">self</span>.stats_dist.sample(bonus)
+    <span class="hljs-keyword">return</span> stats
+</code></pre>
+<p>كان من الممكن أن ندمج هاتين الدالتين في دالة واحدة—ولا سيما أن <code>_sample_stats</code> هي الدالة الوحيدة التي تعتمد على <code>_sample_bonus</code>—غير أنني اخترت إبقاءهما منفصلتين، أولاً لأن ذلك يجعل إجراء أخذ العينات أسهل في الفهم، وثانياً لأن تقسيمه إلى أجزاء أصغر يجعل الشيفرة أسهل في الاختبار.</p>
+<p>ولن تلاحظ أيضاً أن هاتين الدالتين مسبقتان بشرطة سفلية، ما يدلّ على أنهما ليس مقصوداً استعمالهما في خارج الصنف حقاً. وبدلاً من ذلك، نوفّر الدالة <code>sample</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sample</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Sample a random magical item.
+
+    Returns
+    -------
+    dictionary
+        The keys are the names of the stats, and the values are
+        the bonus conferred to the corresponding stat.
+
+    &quot;&quot;&quot;</span>
+    stats = <span class="hljs-variable language_">self</span>._sample_stats()
+    item_stats = <span class="hljs-built_in">dict</span>(<span class="hljs-built_in">zip</span>(<span class="hljs-variable language_">self</span>.stats_names, stats))
+    <span class="hljs-keyword">return</span> item_stats
+</code></pre>
+<p>وتقوم دالة <code>sample</code> بالشيء نفسه تقريباً الذي تقوم به <code>_sample_stats</code>، إلا أنها تُعيد قاموساً مفاتيحه أسماء الإحصاءات. وهذا يوفّر واجهة نظيفة ومفهومة لأخذ عيّنات العناصر—فمن الواضح أي الإحصاءات كعدد نقاط الزيادة—لكنه يترك أيضاً الخيار مفتوحاً لاستعمال <code>_sample_stats</code> وحدها إذا احتاج أحدهم إلى أخذ عيّنات كثيرة وكان الأداء ضرورياً.</p>
+<p>ونستعمل تصميماً مماثلاً لتقييم احتمال العناصر. فمرة أخرى نكشف توابع عالية المستوى هي <code>pmf</code> و<code>log_pmf</code> التي تأخذ قاميصاً من الشكل الذي تنتجه <code>sample</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">log_pmf</span>(<span class="hljs-params">self, item</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Compute the log probability of the given magical item.
+
+    Parameters
+    ----------
+    item: dictionary
+        The keys are the names of the stats, and the values are
+        the bonuses conferred to the corresponding stat.
+
+    Returns
+    -------
+    float
+        The value corresponding to log(p(item))
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># First pull out the bonus points for each stat, in the</span>
+    <span class="hljs-comment"># correct order, then pass that to _stats_log_pmf.</span>
+    stats = np.array([item[stat] <span class="hljs-keyword">for</span> stat <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.stats_names])
+    log_pmf = <span class="hljs-variable language_">self</span>._stats_log_pmf(stats)
+    <span class="hljs-keyword">return</span> log_pmf
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">pmf</span>(<span class="hljs-params">self, item</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Compute the probability the given magical item.
+
+    Parameters
+    ----------
+    item: dictionary
+        The keys are the names of the stats, and the values are
+        the bonus conferred to the corresponding stat.
+
+    Returns
+    -------
+    float
+        The value corresponding to p(item)
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> np.exp(<span class="hljs-variable language_">self</span>.log_pmf(item))
+</code></pre>
+<p>وتعتمد هذه التوابع على <code>_stats_log_pmf</code>، التي تحسب احتمال الإحصاءات (لكنها تأخذ متجه بدلاً من قاموس):</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_stats_log_pmf</span>(<span class="hljs-params">self, stats</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Evaluate the log-PMF for the given distribution of bonus points
+    across the different stats.
+
+    Parameters
+    ----------
+    stats: numpy array of length 6
+        The distribution of bonus points across the stats
+
+    Returns
+    -------
+    float
+        The value corresponding to log(p(stats))
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># There are never any leftover bonus points, so the sum of the</span>
+    <span class="hljs-comment"># stats gives us the total bonus.</span>
+    total_bonus = np.<span class="hljs-built_in">sum</span>(stats)
+
+    <span class="hljs-comment"># First calculate the probability of the total bonus</span>
+    logp_bonus = <span class="hljs-variable language_">self</span>._bonus_log_pmf(total_bonus)
+
+    <span class="hljs-comment"># Then calculate the probability of the stats</span>
+    logp_stats = <span class="hljs-variable language_">self</span>.stats_dist.log_pmf(stats)
+
+    <span class="hljs-comment"># Then multiply them together (using addition, because we are</span>
+    <span class="hljs-comment"># working with logs)</span>
+    log_pmf = logp_bonus + logp_stats
+    <span class="hljs-keyword">return</span> log_pmf
+</code></pre>
+<p>وتعتمد الدالة <code>_stats_log_pmf</code> بدورها على <code>_bonus_log_pmf</code>، التي تحسب احتمال الزيادة الإجمالية:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_bonus_log_pmf</span>(<span class="hljs-params">self, bonus</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Evaluate the log-PMF for the given bonus.
+
+    Parameters
+    ----------
+    bonus: integer
+        The total bonus.
+
+    Returns
+    -------
+    float
+        The value corresponding to log(p(bonus))
+
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Make sure the value that is passed in is within the</span>
+    <span class="hljs-comment"># appropriate bounds</span>
+    <span class="hljs-keyword">if</span> bonus &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> bonus &gt;= <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.bonus_dist.p):
+        <span class="hljs-keyword">return</span> -np.inf
+
+    <span class="hljs-comment"># Convert the scalar bonus value into a vector of event</span>
+    <span class="hljs-comment"># occurrences</span>
+    x = np.zeros(<span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.bonus_dist.p))
+    x[bonus] = <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.bonus_dist.log_pmf(x)
+</code></pre>
+<p>ويمكننا الآن إنشاء توزيعنا على الصورة التالية:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> rpg <span class="hljs-keyword">import</span> MagicItemDistribution
+<span class="hljs-meta">&gt;&gt;&gt; </span>bonus_probs = np.array([<span class="hljs-number">0.0</span>, <span class="hljs-number">0.55</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.12</span>, <span class="hljs-number">0.06</span>, <span class="hljs-number">0.02</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>stats_probs = np.ones(<span class="hljs-number">6</span>) / <span class="hljs-number">6.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>rso = np.random.RandomState(<span class="hljs-number">234892</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>item_dist = MagicItemDistribution(bonus_probs, stats_probs, rso=rso)
+</code></pre>
+<p>وبعد إنشائه، يمكننا استعماله لتوليد بضعة عناصر مختلفة:</p>
+<pre><code>&gt;&gt;&gt; item_dist.sample()
+{'dexterity': 0, 'strength': 0, 'constitution': 0, 
+ 'intelligence': 0, 'wisdom': 0, 'charisma': 1}
+&gt;&gt;&gt; item_dist.sample()
+{'dexterity': 0, 'strength': 0, 'constitution': 1, 
+ 'intelligence': 0, 'wisdom': 2, 'charisma': 0}
+&gt;&gt;&gt; item_dist.sample()
+{'dexterity': 1, 'strength': 0, 'constitution': 1, 
+ 'intelligence': 0, 'wisdom': 0, 'charisma': 0}
+</code></pre>
+<p>وإن أردنا، يمكننا تقييم احتمال عنصر أخذت عيّنة منه:</p>
+<pre><code>&gt;&gt;&gt; item = item_dist.sample()
+&gt;&gt;&gt; item
+{'dexterity': 0, 'strength': 0, 'constitution': 0, 
+ 'intelligence': 0, 'wisdom': 2, 'charisma': 0}
+&gt;&gt;&gt; item_dist.log_pmf(item)
+-4.9698132995760007
+&gt;&gt;&gt; item_dist.pmf(item)
+0.0069444444444444441
+</code></pre>
+<h2 id="تقدير-ضرر-الهجوم">تقدير ضرر الهجوم</h2>
+<p>لقد رأينا تطبيقاً واحداً لأخذ العينات: توليد عناصر عشوائية تُسقطها الوحوش. وقد أشرتُ سابقاً إلى أن أخذ العينات يمكن أن يُستعمل أيضاً حين تريد تقدير شيء ما من التوزيع ككل، وهناك بالتأكيد حالات يمكننا فيها استعمال <code>MagicItemDistribution</code> لهذا الغرض. فمثلاً، لنفترض أن الضرر في لعبتنا للأدوار يعمل برمي عدد ما من نرد D12 (نرد باثني عشر وجهاً). يحصل اللاعب على رمية نرد واحدة افتراضياً، ثم يضيف نرداً بحسب زيادة قوته. فمثلاً، إذا كانت لديه زيادة قوة ‎+2، فيستطيع رمي ثلاث نردات. والضرر الذي يُلحق يكون بعد ذلك مجموع النردات.</p>
+<p>قد نودّ معرفة مقدار الضرر الذي قد يُلحقه اللاعب بعد العثور على عدد ما من الأسلحة؛ فمثلاً، بوصفه عاملاً في ضبط صعوبة الوحوش. ولنقل إنه بعد جمع عنصرين، نريد للاعب أن يستطيع هزيمة الوحوش في ثلاث ضربات في نحو 50% من المعارك. فكم يجب أن تكون نقاط الحياة (hit points) للوحش؟</p>
+<p>وإجابةً عن هذا السؤال، إحدى الطرق هي عن طريق أخذ العينات. يمكننا استعمال المخطط التالي:</p>
+<ol>
+<li>اختر عنصراً سحرياً عشوائياً.</li>
+<li>بناءً على زيادات العنصر، احسب عدد النردات التي ستُرمى عند الهجوم.</li>
+<li>بناءً على عدد النردات التي ستُرمى، ولّد عيّنة للضرر الذي يُلحق خلال ثلاث ضربات.</li>
+<li>كرّر الخطوات 1-3 مرّات كثيرة. وسيؤدّي ذلك إلى تقريب للتوزيع على الضرر.</li>
+</ol>
+<h3 id="تطبيق-توزيع-على-الضرر">تطبيق توزيع على الضرر</h3>
+<p>يُظهر الصنف <code>DamageDistribution</code> (أيضاً في <code>rpg.py</code>) تطبيقاً لهذا المخطط:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DamageDistribution</span>(<span class="hljs-title class_ inherited__">object</span>):
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, num_items, item_dist,
+                 num_dice_sides=<span class="hljs-number">12</span>, num_hits=<span class="hljs-number">1</span>, rso=np.random</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize a distribution over attack damage. This object can
+        sample possible values for the attack damage dealt over
+        \`num_hits\` hits when the player has \`num_items\` items, and
+        where attack damage is computed by rolling dice with
+        \`num_dice_sides\` sides.
+
+        Parameters
+        ----------
+        num_items: int
+            The number of items the player has.
+        item_dist: MagicItemDistribution object
+            The distribution over magic items.
+        num_dice_sides: int (default: 12)
+            The number of sides on each die.
+        num_hits: int (default: 1)
+            The number of hits across which we want to calculate damage.
+        rso: numpy RandomState object (default: np.random)
+            The random number generator
+
+        &quot;&quot;&quot;</span>
+
+        <span class="hljs-comment"># This is an array of integers corresponding to the sides of a</span>
+        <span class="hljs-comment"># single die.</span>
+        <span class="hljs-variable language_">self</span>.dice_sides = np.arange(<span class="hljs-number">1</span>, num_dice_sides + <span class="hljs-number">1</span>)
+
+        <span class="hljs-comment"># Create a multinomial distribution corresponding to one of</span>
+        <span class="hljs-comment"># these dice.  Each side has equal probabilities.</span>
+        <span class="hljs-variable language_">self</span>.dice_dist = MultinomialDistribution(
+            np.ones(num_dice_sides) / <span class="hljs-built_in">float</span>(num_dice_sides), rso=rso)
+
+        <span class="hljs-variable language_">self</span>.num_hits = num_hits
+        <span class="hljs-variable language_">self</span>.num_items = num_items
+        <span class="hljs-variable language_">self</span>.item_dist = item_dist
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sample</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Sample the attack damage.
+
+        Returns
+        -------
+        int
+            The sampled damage
+
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># First, we need to randomly generate items (the number of</span>
+        <span class="hljs-comment"># which was passed into the constructor).</span>
+        items = [<span class="hljs-variable language_">self</span>.item_dist.sample() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> xrange(<span class="hljs-variable language_">self</span>.num_items)]
+
+        <span class="hljs-comment"># Based on the item stats (in particular, strength), compute</span>
+        <span class="hljs-comment"># the number of dice we get to roll.</span>
+        num_dice = <span class="hljs-number">1</span> + np.<span class="hljs-built_in">sum</span>([item[<span class="hljs-string">&#x27;strength&#x27;</span>] <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items])
+
+        <span class="hljs-comment"># Roll the dice and compute the resulting damage.</span>
+        dice_rolls = <span class="hljs-variable language_">self</span>.dice_dist.sample(<span class="hljs-variable language_">self</span>.num_hits * num_dice)
+        damage = np.<span class="hljs-built_in">sum</span>(<span class="hljs-variable language_">self</span>.dice_sides * dice_rolls)
+        <span class="hljs-keyword">return</span> damage
+</code></pre>
+<p>يأخذ الباني كوسائط عدد أوجه النردات، وعدد الضربات التي نريد حساب الضرر عليها، وعدد العناصر التي يملكها اللاعب، وتوزيعاً على العناصر السحرية (من نوع <code>MagicItemDistribution</code>)، وكائن حالة عشوائية. وافتراضياً، نضبط <code>num_dice_sides</code> على 12، لأنه رغم أنه معامل تقنياً، فمن المرجّح ألّا يتغيّر. وعلى نحو مماثل، نضبط <code>num_hits</code> على 1 كقيمة افتراضية، لأن حالة الاستعمال الأكثر ترجيحاً هي أننا نريد فقط أخذ عيّنة واحدة من الضرر لضربة واحدة.</p>
+<p>ثم نطبّق منطق أخذ العينات الفعلي في <code>sample</code>. (لاحظ التشابه البنيوي مع <code>MagicItemDistribution</code>.) أولاً، نولّد مجموعة من العناصر السحرية الممكنة التي يملكها اللاعب. ثم ننظر إلى إحصاء القوة في تلك العناصر، ونحسب منه عدد النردات المراد رميها. وأخيراً، نرمي النردات (معتمدين مرة أخرى على دوالّ التوزيع المتعدّد الحدود التي نثق بها) ونحسب الضرر من ذلك.</p>
+<h4>ما الذي حدث لتقييم الاحتمالات؟</h4>
+<p>لعلّك لاحظت أننا لم نُدرج دالة <code>log_pmf</code> أو <code>pmf</code> في <code>DamageDistribution</code>. والسبب في ذلك أننا لا نعرف في الواقع ما الذي ينبغي أن تكون عليه PMF! وهذه هي المعادلة:</p>
+<p>$$
+\\sum_{{item}_1, \\ldots{}, {item}_m} p(\\mathrm{damage} \\vert \\mathrm{item}_1,\\ldots{},\\mathrm{item}_m)p(\\mathrm{item}_1)\\cdots{}p(\\mathrm{item}_m)
+$$</p>
+<p>تقول هذه المعادلة إننا سنحتاج إلى حساب احتمال كل مقدار ممكن للضرر، معطى كل مجموعة ممكنة من $m$ عناصر. يمكننا في الواقع <em>أن نحسب</em> هذا بالقوة الغاشمة (brute force)، لكن ذلك لن يكون جميلاً. وهذه في الحقيقة مثال مثالي على حالة نريد فيها استعمال أخذ العينات لتقريب حلّ لمشكلة لا يمكننا حسابها بدقة (أو التي سيكون حسابها دقيقاً صعباً جداً). فبدلاً من وجود دالة لـ PMF، سنُظهر في القسم التالي كيف يمكننا تقريب التوزيع بعدد كبير من العيّنات.</p>
+<h3 id="تقريب-التوزيع">تقريب التوزيع</h3>
+<p>لدينا الآن الأدوات للإجابة عن سؤالنا السابق: إذا كان اللاعب يملك عنصرين، وأردنا للاعب أن يستطيع هزيمة الوحش في ثلاث ضربات 50% من الوقت، فكم يجب أن تكون نقاط حياة الوحش؟</p>
+<p>أولاً، ننشئ كائن التوزيع، باستعمال <code>item_dist</code> و<code>rso</code> نفسها التي أنشأناها سابقاً:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> rpg <span class="hljs-keyword">import</span> DamageDistribution
+<span class="hljs-meta">&gt;&gt;&gt; </span>damage_dist = DamageDistribution(<span class="hljs-number">2</span>, item_dist, num_hits=<span class="hljs-number">3</span>, rso=rso)
+</code></pre>
+<p>والآن يمكننا سحب حفنة من العيّنات، وحساب المئين الخمسين (قيمة الضرر التي تفوق 50% من العيّنات):</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>samples = np.array([damage_dist.sample() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> xrange(<span class="hljs-number">100000</span>)])
+<span class="hljs-meta">&gt;&gt;&gt; </span>samples.<span class="hljs-built_in">min</span>()
+<span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>samples.<span class="hljs-built_in">max</span>()
+<span class="hljs-number">154</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.percentile(samples, <span class="hljs-number">50</span>)
+<span class="hljs-number">27.0</span>
+</code></pre>
+<p>ولو رسمنا مخطّطاً تكرارياً (histogram) لعدد العيّنات التي حصلنا عليها لكل مقدار من مقادير الضرر، لكان شيئاً من هذا الشكل \\aosafigref{500l.sampler.damage}.</p>
+<p>\\aosafigure[180pt]/images/500-lines/sampler-0-damage_distribution.webp{توزيع الضرر}{500l.sampler.damage}</p>
+<p>هناك مدى واسع إلى حدّ ما من الضرر يمكن أن يُلحقه اللاعب، لكن له ذيلاً طويلاً: فالمئين الخمسين يقع عند 27 نقطة، ما يعني أن في نصف العيّنات لم يُلحق اللاعب أكثر من 27 نقطة من الضرر. وعليه، إن أردنا استعمال هذا المعيار لضبط صعوبة الوحش، لجعلنا له 27 نقطة حياة.</p>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>في هذا الفصل، رأينا كيف نكتب شيفرة لتوليد عيّنات من توزيع احتمالي غير قياسي، وكيف نحسب احتمالات تلك العيّنات أيضاً. وفي معرض العمل على هذا المثال، غطّينا عدة قرارات تصميمية تنطبق في الحالة العامة:</p>
+<ol>
+<li>تمثيل التوزيعات الاحتمالية باستعمال صنف، مع تضمين دوالّ للمعاينة وأخرى لتقييم PMF (أو PDF).</li>
+<li>حساب PMF (أو PDF) باستعمال اللوغاريتمات.</li>
+<li>توليد العيّنات من كائن مولّد أرقام عشوائية لإتاحة عشوائية قابلة لإعادة الإنتاج.</li>
+<li>كتابة دوالّ تكون مدخلاتها ومخرجاتها واضحة ومفهومة (مثلاً، باستعمال قاموس كمخرج لـ <code>MagicItemDistribution.sample</code>)، مع الإبقاء في الوقت نفسه على النسخة الأقل وضوحاً لكن الأكثر كفاءة والرقمية بالكامل من تلك الدوالّ <latex>\\linebreak</latex> (مثل <code>MagicItemDistribution._sample_stats</code>).</li>
+</ol>
+<p>وإضافةً إلى ذلك، رأينا كيف يكون أخذ العيّنات من توزيع احتمالي مفيداً سواء لإنتاج قيمة عشوائية مفردة (مثل توليد عنصر سحري واحد بعد هزيمة وحش) أو لحساب معلومات عن توزيع لا نعرفه لولا ذلك (مثل اكتشاف مقدار الضرر الذي يُنشّده لاعب يملك عنصرين على الأرجح). وتقريباً كل نوع من أنواع أخذ العينات الذي قد تصادفه يندرج تحت إحدى هاتين الفئتين؛ ولا الاختلافات إلا فيما يتعلق بالتوزيعات التي تأخذ منها عيّنات. ويبقى الهيكل العام للشيفرة—مستقلاً عن تلك التوزيعات—على حاله.</p>
+`,o={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:p,html:l};export{s as book,n as chapter,a as chapterTitle,o as default,p as headings,l as html,e as slug,t as title};

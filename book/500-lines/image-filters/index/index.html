@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.B2xm9FgE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/mTqhygW8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DiF48pvl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DxmZye1s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-mudvJQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DKWacZ6w.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.uECh119c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7O3W4JC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="صناعة مرشِّحات الصور الخاصة بك — Making Your Own Image Filters"/><!----><title>صناعة مرشِّحات الصور الخاصة بك | 500 سطر أو أقل</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/500-lines/introduction/index">مقدّمة</a></li><!--]--></ul><h3>Blockcode: A visual programming toolkit</h3> <ul><!--[--><li><a href="../../../../book/500-lines/blockcode/index">بلوك كود: مجموعة أدوات برمجة بصرية</a></li><!--]--></ul><h3>A Continuous Integration System</h3> <ul><!--[--><li><a href="../../../../book/500-lines/ci/index">نظام تكامل مستمر</a></li><!--]--></ul><h3>Clustering by Consensus</h3> <ul><!--[--><li><a href="../../../../book/500-lines/cluster/index">التجميع بالتوافق</a></li><!--]--></ul><h3>Contingent: A Fully Dynamic Build System</h3> <ul><!--[--><li><a href="../../../../book/500-lines/contingent/index">Contingent: نظام بناء ديناميكي بالكامل</a></li><!--]--></ul><h3>A Web Crawler With asyncio Coroutines</h3> <ul><!--[--><li><a href="../../../../book/500-lines/crawler/index">زاحف ويب بكوروتينات asyncio</a></li><!--]--></ul><h3>Dagoba: an in-memory graph database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/dagoba/index">داغوبا: قاعدة بيانات رسومية في الذاكرة</a></li><!--]--></ul><h3>DBDB: Dog Bed Database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/data-store/index">DBDB: قاعدة بيانات سرير الكلب</a></li><!--]--></ul><h3>An Event-Driven Web Framework</h3> <ul><!--[--><li><a href="../../../../book/500-lines/event-web-framework/index">إطار عمل ويب قائم على الأحداث</a></li><!--]--></ul><h3>A Flow Shop Scheduler</h3> <ul><!--[--><li><a href="../../../../book/500-lines/flow-shop/index">مجدول ورشة التدفق</a></li><!--]--></ul><h3>An Archaeology-Inspired Database</h3> <ul><!--[--><li><a href="../../../../book/500-lines/functionalDB/index">قاعدة بيانات مستوحاة من علم الآثار</a></li><!--]--></ul><h3>Making Your Own Image Filters</h3> <ul><!--[--><li><a href="../../../../book/500-lines/image-filters/index" class="active">صناعة مرشِّحات الصور الخاصة بك</a></li><!--]--></ul><h3>A Python Interpreter Written in Python</h3> <ul><!--[--><li><a href="../../../../book/500-lines/interpreter/index">مفسّر بايثون مكتوب بلغة بايثون</a></li><!--]--></ul><h3>A 3D Modeller</h3> <ul><!--[--><li><a href="../../../../book/500-lines/modeller/index">مصمّم ثلاثي الأبعاد</a></li><!--]--></ul><h3>A Simple Object Model</h3> <ul><!--[--><li><a href="../../../../book/500-lines/objmodel/index">نموذج كائنات بسيط</a></li><!--]--></ul><h3>Optical Character Recognition (OCR)</h3> <ul><!--[--><li><a href="../../../../book/500-lines/ocr/index">التعرّف الضوئي على الحروف (OCR)</a></li><!--]--></ul><h3>A Pedometer in the Real World</h3> <ul><!--[--><li><a href="../../../../book/500-lines/pedometer/index">عدّاد خطوات في العالم الحقيقي</a></li><!--]--></ul><h3>The Same-Origin Policy</h3> <ul><!--[--><li><a href="../../../../book/500-lines/same-origin-policy/index">سياسة الأصل نفسه</a></li><!--]--></ul><h3>A Rejection Sampler</h3> <ul><!--[--><li><a href="../../../../book/500-lines/sampler/index">أخذ عيّنات بالارفض</a></li><!--]--></ul><h3>Web Spreadsheet</h3> <ul><!--[--><li><a href="../../../../book/500-lines/spreadsheet/index">ورقة حساب على الويب</a></li><!--]--></ul><h3>Static Analysis</h3> <ul><!--[--><li><a href="../../../../book/500-lines/static-analysis/index">التحليل الساكن</a></li><!--]--></ul><h3>A Template Engine</h3> <ul><!--[--><li><a href="../../../../book/500-lines/template-engine/index">محرّك القوالب</a></li><!--]--></ul><h3>A Simple Web Server</h3> <ul><!--[--><li><a href="../../../../book/500-lines/web-server/index">خادم ويب بسيط</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">Making Your Own Image Filters</p> <h1>صناعة مرشِّحات الصور الخاصة بك</h1></div> <div class="reader-content"><!----><p><em>تركت كيت صناعة التقنية وأنفقت سنة تبحث عن طريقها إلى العودة بينما تبني مشروعها الشغوف Show &amp; Hide. وهي مديرة الهندسة المتنقلة في Ride، وتتحدث دوليًا عن التطوير المتنقل وثقافة الهندسة، وتُنسّق معًا سلسلة Technically Speaking، وهي مستشارة في Glowforge. لا تعيش كيت في كولومبيا تحديدًا لكنها تقضي فيها وقتًا طويلًا، وقد عاشت وعملت في المملكة المتحدة وأستراليا وكندا والصين والولايات المتحدة، وقد عملت سابقًا كمهندسة في Google، ومتدربة في برنامج Extreme Blue في IBM، ومعلمة تزلج. تكتب كيت في مدونة <a href="http://www.catehuston.com/blog/">Accidentally in Code</a> وهي على تويتر <a href="https://twitter.com/catehstn">@catehstn</a>.</em></p>
+<h2 id="فكرة-عبقرية-لم-تكن-عبقرية-إلى-هذا-الحد">فكرة عبقرية (لم تكن عبقرية إلى هذا الحد)</h2>
+<p>عندما كنت مسافرًا في الصين كثيرًا ما رأيت سلاسل من أربع لوحات تُظهر المكان
+نفسه في فصول مختلفة. واللون—أبيض البرد الباردة، وتدرجات الربيع الباهتة،
+وأخضر الصيف الكثيف، وأحمر الخريف وصفاره—هو ما
+يميّز
+الفصول بصريًا. وفي عام 2011 تقريبًا، خطرت لي فكرة ظننتها عبقرية:
+أردت أن أستطيع تمثيل سلسلة صور على هيئة سلسلة ألوان. ظننت
+أنها ستُظهر السفر، والتقدّم عبر الفصول.</p>
+<p>لكنني لم أعرف كيف أحسب اللون الغالب من صورة. فكّرت
+في تصغير الصورة حتى مربّع 1x1 والنظر إلى ما يتبقّى، لكن ذلك
+بدا لي غشًّا. غير أنني كنت أعرف كيف أريد عرض الصور، وهو في
+تخطيط يسمى <a href="http://www.catehuston.com/applets/Sunflower/index.html">تخطيط
+Sunflower</a>. إنه أكثر
+تخطيط كفاءة لرصف الدوائر.</p>
+<p>تركت هذا المشروع سنوات، وانشغلت بالعمل والحياة والسفر والمحاضرات.
+وفي النهاية عدتُ إليه، وعرفت كيف أحسب اللون
+الغالب، و<a href="http://www.catehuston.com/blog/2013/09/02/visualising-a-photo-series/">أكملت
+تمثيلي البصري</a>.
+وهنا فقط اكتشفت أن هذه الفكرة لم تكن عبقرية في الواقع.
+لم يكن التقدّم واضحًا كما توقعت، ولم يكن اللون
+الغالب المستخرج هو عادةً الدرجة الأكثر جاذبية، واستغرق الإنشاء وقتًا
+طويلًا (بضع ثوانٍ لكل صورة)، واحتجت مئات الصور لأصنع
+شيئًا رائعًا (\aosafigref{500l.imagefilters.sunflower}).</p>
+<p>\aosafigure[180pt]/images/500-lines/image-filters-0-sunflower.webp{Sunflower layout}{500l.imagefilters.sunflower}</p>
+<p>قد تظن أن هذا محبط، لكن حين وصلت إلى هذه النقطة كنت قد تعلمت
+الكثير من الأمور التي لم تأتني من قبل — عن فضاءات
+الألوان ومعالجة البكسلات — وكنت قد بدأت في صنع تلك الصور
+ملوّنة جزئيًا الرائعة، من النوع الذي تجده على بطاقات لندن
+بالحافلات الحمراء أو أكشاك الهاتف وكل ما عداه بالأبيض والأسود.</p>
+<p>استخدمت إطار عمل اسمه <a href="https://processing.org/">Processing</a> لأنني كنت
+متمرسًا عليه من تطوير مناهج البرمجة، ولأنني كنت أعرف أنه
+يجعل إنشاء التطبيقات البصرية سهلًا. إنه أداة صُمّمت
+أصلًا للفنانين، لذا فهي تُخفي عنك كثيرًا من شيفرة القالب الجاهزة (boilerplate). وقد سمح
+لي أن ألعب وأجرّب.</p>
+<p>الجامعة، ثم العمل لاحقًا، ملأت وقتي بأفكار أولويات
+الآخرين. وكان جزء من إتمام هذا المشروع هو تعلّم كيف تحجز وقتًا
+لتحقيق تقدّم في أفكارك الخاصة؛ فقد احتجت
+حوالي أربع ساعات من الوقت الذهني الجيد أسبوعيًا. وإذن فالأداة التي تتيح لي
+أن أتحرك بسرعة أكبر مفيدة حقًا، بل ضرورية—مع أنها جاءت
+بمجموعة مشكلاتها الخاصة، ولا سيما حول كتابة الاختبارات.</p>
+<p>شعرت بأن الاختبارات
+الشاملة مهمة على نحو خاص للتحقق من أن المشروع يعمل، ولجعل
+من الأسهل استئناف مشروع كثيرًا ما يجمَّد في الجليد
+لأسابيع، بل لأشهر في كل مرة. وشكّلت الاختبارات (ومشاركات المدونة!)
+توثيق هذا المشروع. فيمكنني ترك اختبارات فاشلة توثّق ما ينبغي أن يحدث
+ولم أصل إليه بعد، وأُجري تغييرات بثقة من أن إن
+غيّرت شيئًا كنت قد نسيت أنه حاسم،
+فستذكّرني الاختبارات بذلك.</p>
+<p>سيغطي هذا الفصل بعض التفاصيل عن Processing، ويرشدك عبر فضاءات
+الألوان، وتفكيك الصورة إلى بكسلات ومعالجتها، والاختبار
+الوحدوي لشيء لم يُصمَّم مراعاةً للاختبار. لكنني آمل أيضًا أنه
+سيحفّزك على أن تحقق بعض التقدّم في أي فكرة لم تجد لها وقتًا
+مؤخرًا؛ حتى لو انتهت فكرتك بالسوء الذي انتهت به فكرتي،
+فقد تصنع شيئًا رائعًا وتتعلم شيئًا مثيرًا في
+أثناء ذلك.</p>
+<h2 id="التطبيق">التطبيق</h2>
+<p>سيعرض هذا الفصل كيف تنشئ تطبيق مرشِّح صور
+يمكنك استخدامه
+لمعالجة صورك الرقمية باستخدام مرشِّحات تنشئها أنت.
+وسنستخدم Processing، وهي لغة برمجة وبيئة تطوير مبنية على
+Java.
+وسنغطي تهيئة التطبيق في Processing، وبعض
+ميزات Processing، وجوانب تمثيل اللون، وكيف تنشئ مرشِّحات لونية (تحاكي ما كان
+مستخدمًا في التصوير التقليدي). وسننشئ أيضًا نوعًا خاصًا من المرشِّح
+لا يمكن إلا إنشاؤه رقميًا: تحديد درجة اللون الغالبة في صورة
+وإظهارها أو إخفاءها، لإنشاء صور ملوّنة جزئيًا ذات طابع مريب.</p>
+<p>وأخيرًا، سنضيف مجموعة اختبارات شاملة، ونغطي كيفية التعامل مع بعض
+قيود Processing فيما يتعلق بقابلية الاختبار.</p>
+<h2 id="الخلفية">الخلفية</h2>
+<p>اليوم يمكننا التقاط صورة ومعالجتها ومشاركتها مع كل أصدقائنا في
+أمر من ثوانٍ. غير أن زمنًا طويلًا جدًا (بالمعنى الرقمي)،
+كانت عملية تستغرق أسابيع.</p>
+<p>في الأيام القديمة، كنا نلتقط الصورة، ثم حين نستهلك لفافة كاملة من الفيلم، كنا
+نأخذها لتُطوَّر (غالبًا في الصيدلية). ثم نلتقط الصور المطوّرة بعد أيام
+أخرى—ونكتشف أن كثيرًا منها به خلل.
+أيدينا لم تستقر بما يكفي؟ شخص أو شيء عشوائي لم نلاحظه في
+ذلك الحين؟ زيادة تعرض؟ نقص تعرض؟ وبالطبع فقد كان الوقت قد فات حينئذٍ لإصلاح المشكلة.</p>
+<p>كانت العملية التي تحوّل الفيلم إلى صور عمليةً لا يفهمها معظم
+الناس. كان الضوء مشكلة، لذا كان عليك أن تكون حذرًا مع الفيلم.
+وهناك عملية تنطوي على غرف معتمة ومواد كيميائية، كانوا
+يعرضونها أحيانًا في الأفلام أو على التلفزيون.</p>
+<p>لكن ربما كان عدد أقل من الناس يفهمون كيف ننتقل من
+الضغط على زر في كاميرا هاتفنا الذكي إلى صورة على Instagram.
+وهناك في الواقع أوجه تشابه كثيرة.</p>
+<h3 id="التصوير-بالطريقة-القديمة">التصوير بالطريقة القديمة</h3>
+<p>تُنشأ الصور الفوتوغرافية بفعل الضوء على سطح حساس للضوء.
+ويكون الفيلم الفوتوغرافي مغطّى ببلورات هاليد الفضة. (تُستخدم طبقات إضافية
+لإنشاء الصور الملوّنة — ولتبسيط الأمر سنلتزم هنا
+بالتصوير بالأبيض والأسود.)</p>
+<p>عند الحديث عن صورة فوتوغرافية تقليدية — بفيلم — فإن الضوء يصيب
+الفيلم وفقًا لما تصوّبه إليه، وتتغيّر البلورات عند تلك النقاط
+بدرجات متفاوتة، بحسب كمية الضوء. ثم إن عملية
+<a href="http://photography.tutsplus.com/tutorials/step-by-step-guide-to-developing-black-and-white-t-max-film--photo-2580">عملية
+التطوير</a>
+تحوّل الأملاح الفضية إلى فضة معدنية، فتُنتج السالب. يتمتع
+السالب بمناطق الصورة الفاتحة والداكنة معكوسة. ومجرد
+أن تُطوَّر الأسبار، تتوالى سلسلة أخرى من الخطوات لعكس
+الصورة وطباعتها.</p>
+<h3 id="التصوير-بالطريقة-الرقمية">التصوير بالطريقة الرقمية</h3>
+<p>عند التقاط الصور بهواتفنا الذكية أو الكاميرات الرقمية، لا يوجد
+فيلم. فهناك شيء اسمه <em>مستشعر البكسل النشط</em> يعمل بطريقة
+مماثلة. وحيث كنا نملك بلورات الفضة، نملك الآن بكسلات — مربعات
+صغيرة. (وبالفعل، كلمة pixel اختصار لعبارة &quot;picture element&quot;.) والصور الرقمية
+مكوَّنة من بكسلات، وكلما زادت الدقة زاد عدد البكسلات.
+وهذا هو سبب وصف الصور منخفضة الدقة بأنها &quot;منقّطة&quot; (pixelated) — إذ تبدأ
+أن ترى المربعات. وتُخزَّن هذه البكسلات في مصفوفة، ويحتوي الرقم
+في كل «خانة» في المصفوفة على اللون.</p>
+<p>في \aosafigref{500l.imagefilters.animals}، نرى صورة عالية الدقة لبعض الحيوانات
+المكبَّرة الملتُقطة في MoMA في نيويورك. أما \aosafigref{500l.imagefilters.pixelanimals} فهو
+الصورة نفسها مكبَّرة، لكن بـ 24 × 32 بكسلًا فقط.</p>
+<p>\aosafigure[220pt]/images/500-lines/image-filters-1-animals.webp{Blow-up animals at MoMA NY}{500l.imagefilters.animals}</p>
+<p>\aosafigure[220pt]/images/500-lines/image-filters-2-pixelanimals.webp{Blow-up animals, blown up}{500l.imagefilters.pixelanimals}</p>
+<p>انظر كيف تبدو ضبابية إلى هذا الحد؟ إننا نسمّي ذلك
+<em>التنقيطَ</em> (<em>pixelation</em>)، أي أن الصورة أكبر من عدد البكسلات التي
+تحتويها فتصبح المربعات مرئية. يمكننا هنا أن نستفيد منه لنحصل على
+فهم أفضل لدورة مكونة من مربعات لونية.</p>
+<p>فكيف تبدو هذه البكسلات؟ إن طبعنا ألوان بعض
+البكسلات في الوسط (من 10,10 إلى 10,14) مستخدمين الدالة العملية <code>Integer.toHexString</code>
+في Java، تحصل على ألوان سداسية:</p>
+<pre><code>FFE8B1
+FFFAC4
+FFFCC3
+FFFCC2
+FFF5B7
+</code></pre>
+<p>الألوان السداسية ستة محارف طويلة. أول محرفين يمثلان قيمة الأحمر، والمحرفان
+الثانيان قيمة الأخضر، والمحرفان الثالثان قيمة الأزرق. وأحيانًا يوجد
+محرفان إضافيان يمثلان قيمة الشفافية (alpha). في هذه الحالة تعني <code>FFFAC4</code>:</p>
+<p>\newpage</p>
+<ul>
+<li>red = FF (hex) = 255 (base 10)</li>
+<li>green = FA (hex) = 250 (base 10)</li>
+<li>blue = C4 (hex) = 196 (base 10)</li>
+</ul>
+<h2 id="تشغيل-التطبيق">تشغيل التطبيق</h2>
+<p>في \aosafigref{500l.imagefilters.app}، لدينا صورة لتطبيقنا قيد التشغيل.
+أعرف أنه مصمَّم إلى حدٍّ كبير من منظور المبرمجين، لكن لدينا 500 سطر
+من Java فحسب لنعمل بها، لذا كان لا بد من أن يُضحَّى بشيء ما! يمكنك أن ترى قائمة الأوامر على اليمين.
+وإليك بعض ما يمكننا فعله:</p>
+<ul>
+<li>ضبط مرشِّحات RGB.</li>
+<li>ضبط «تسامح درجة اللون».</li>
+<li>ضبط مرشِّحات درجة اللون الغالبة، إما لإظهار درجة اللون الغالبة أو لإخفائها.</li>
+<li>تطبيق إعدادنا الحالي (من غير عملي تشغيله عند كل ضغطة مفتاح).</li>
+<li>إعادة تعيين الصورة.</li>
+<li>حفظ الصورة التي صنعناها.</li>
+</ul>
+<p>\aosafigure[266pt]/images/500-lines/image-filters-3-app.webp{The App}{500l.imagefilters.app}</p>
+<p>تجعل Processing إنشاء تطبيق
+صغير ومعالجة الصور أمرًا بسيطًا؛
+فهي ذات تركيز بصري شديد. وسنعمل مع النسخة المبنية على Java، مع أن Processing
+تم نقلها الآن إلى لغات أخرى.</p>
+<p>في هذا الدليل، أستخدم Processing داخل Eclipse بإضافة <code>core.jar</code> إلى مسار البناء. فإذا
+رغبت في ذلك، يمكنك استخدام بيئة التطوير المتكاملة الخاصة بـ Processing، مما يلغي
+الحاجة إلى كثير من شيفرة Java الجاهزة. وإذا أردت لاحقًا نقله إلى Processing.js
+ورفعه إلى الإنترنت، فستحتاج إلى استبدال منتقي الملفات بشيء آخر.</p>
+<p>هناك تعليمات مفصّلة مصحوبة بلقطات شاشة في
+<a href="https://github.com/aosabook/500lines/blob/master/image-filters/SETUP.MD">مستودع المشروع</a>.
+فإن كنت على دراية بـEclipse وJava بالفعل فلن تحتاج إليها.</p>
+<h2 id="أساسيات-processing">أساسيات Processing</h2>
+<h3 id="الحجم-واللون">الحجم واللون</h3>
+<p>لا نريد أن يكون تطبيقنا نافذة رمادية صغيرة، لذا فإن الدالتين الأساسيتين
+الذين سنبدأ بتجاوزهما هما
+<a href="http://processing.org/reference/setup_.html"><code>setup()</code></a> و
+<a href="http://processing.org/reference/draw_.html"><code>draw()</code></a>. وتُستدعى الدالة <code>setup()</code>
+عند بدء التطبيق فقط، وهي المكان الذي نفعل فيه أشياء مثل ضبط حجم
+نافذة التطبيق. وتُستدعى الدالة <code>draw()</code> لكل إطار متحرك، أو بعد
+إطلاق إجراء ما باستدعاء <code>redraw()</code>. (وكما ورد في
+توثيق Processing، فلا ينبغي استدعاء <code>draw()</code> صراحةً.)</p>
+<p>صُمّمت Processing لتعمل بشكل جيد في إنشاء الرسوم المتحرّكة، لكن في هذه
+الحالة لا نريد حركة[^noanim]، بل نريد الاستجابة لضغطات المفاتيح. ولمنع
+الحركة (التي كانت ستُثقل الأداء) سنستدعي
+<a href="http://www.processing.org/reference/noLoop_.html"><code>noLoop()</code></a> من setup. وهذا
+يعني أن <code>draw()</code> لن تُستدعى إلا مباشرة بعد <code>setup()</code>، وكلما
+استدعينا <code>redraw()</code>.</p>
+<p>[^noanim]: لو أردنا إنشاء رسم متحرك لما استدعينا
+<code>noLoop()</code> (أو، لو أردنا بدء الحركة لاحقًا، لاستدعينا <code>loop()</code>).
+وتحدّد <code>frameRate()</code> تكرار الإطارات المتحركة.</p>
+<pre><code class="language-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">WIDTH</span> <span class="hljs-operator">=</span> <span class="hljs-number">360</span>;
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">HEIGHT</span> <span class="hljs-operator">=</span> <span class="hljs-number">240</span>;
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setup</span><span class="hljs-params">()</span> {
+  noLoop();
+
+  <span class="hljs-comment">// Set up the view.</span>
+  size(WIDTH, HEIGHT);
+  background(<span class="hljs-number">0</span>);
+}
+    
+<span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">draw</span><span class="hljs-params">()</span> {
+  background(<span class="hljs-number">0</span>);
+}
+</code></pre>
+<p>لا تفعل هاتان الدالتان الكثير حتى الآن، لكن جرّب تشغيل التطبيق من جديد، واضبط الثابتين
+في <code>WIDTH</code> و<code>HEIGHT</code>، لترى مقاسات مختلفة.</p>
+<p>تحدّد <code>background(0)</code> خلفية سوداء. جرّب تغيير الرقم الممرَّر
+إلى <code>background()</code> وانظر ما يحدث — إنها قيمة الشفافية، لذا فإن مرورك
+برقم واحد فقط يعني أنها دائمًا بتدرّج رمادي. وبدلًا من ذلك يمكنك استدعاء
+<code>background(int r, int g, int b)</code>.</p>
+<h3 id="pimage">PImage</h3>
+<p><a href="http://processing.org/reference/PImage.html">kائن PImage</a> هو
+كائن Processing الذي يمثّل صورة. وسنستخدمه كثيرًا،
+لذا فإن قراءة توثيقه تستحق العناء. لديه ثلاثة حقول
+(\aosatblref{500l.imagefilters.pimagefields}) إضافة إلى بعض الدوال التي
+سنستخدمها (\aosatblref{500l.imagefilters.pimagemethods}).</p>
+<table>
+  <tr>
+    <td>`pixels[]`</td>
+    <td>مصفوفة تحتوي على لون كل بكسل في الصورة</td>
+  </tr>
+  <tr>
+    <td>`width`</td>
+    <td>عرض الصورة بالبكسلات</td>
+  </tr>
+  <tr>
+    <td>`height`</td>
+    <td>ارتفاع الصورة بالبكسلات</td>
+  </tr>
+</table>
+: \label{500l.imagefilters.pimagefields} حقول PImage
+<latex>
+\begin{table}
+\centering
+{\footnotesize
+\rowcolors{2}{TableOdd}{TableEven}
+\begin{tabular}{ll}
+\hline
+pixels[] & Array containing the color of every pixel in the image \\
+width & Image width in pixels \\
+height & Image height in pixels \\
+\hline
+\end{tabular}
+}
+\caption{PImage fields}
+\label{500l.imagefilters.pimagefields}
+\end{table}
+</latex>
+<table>
+  <tr>
+    <td>`loadPixels`</td>
+    <td>يُحمّل بيانات بكسلات الصورة في مصفوفة `pixels[]` الخاصة بها</td>
+  </tr>
+  <tr>
+    <td>`updatePixels`</td>
+    <td>يحدّث الصورة بالبيانات الموجودة في مصفوفة `pixels[]`</td>
+  </tr>
+  <tr>
+    <td>`resize`</td>
+    <td>يغيّر حجم الصورة إلى عرض وارتفاع جديدين</td>
+  </tr>
+  <tr>
+    <td>`get`</td>
+    <td>يقرأ لون أي بكسل أو يلتقط مستطيلًا من البكسلات</td>
+  </tr>
+  <tr>
+    <td>`set`</td>
+    <td>يكتب لونًا في أي بكسل أو يكتب صورة في أخرى</td>
+  </tr>
+  <tr>
+    <td>`save`</td>
+    <td>يحفظ الصورة في ملف بصيغة TIFF أو TARGA أو PNG أو JPEG</td>
+  </tr>
+</table>
+: \label{500l.imagefilters.pimagemethods} دوال PImage
+<latex>
+\begin{table}
+\centering
+{\footnotesize
+\rowcolors{2}{TableOdd}{TableEven}
+\begin{tabular}{ll}
+\hline
+loadPixels & Loads the pixel data for the image into its `pixels[]` array \\
+updatePixels & Updates the image with the data in its `pixels[]` array \\
+resize & Changes the size of an image to a new width and height \\
+get & Reads the color of any pixel or grabs a rectangle of pixels \\
+set & Writes a color to any pixel or writes an image into another \\
+save & Saves the image to a TIFF, TARGA, PNG, or JPEG file \\
+\hline
+\end{tabular}
+}
+\caption{PImage methods}
+\label{500l.imagefilters.pimagemethods}
+\end{table}
+</latex>
+<h3 id="منتقي-الملفات">منتقي الملفات</h3>
+<p>تتولى Processing معظم عملية اختيار الملف؛ كل ما نحتاجه هو استدعاء
+<a href="http://www.processing.org/reference/selectInput_.html"><code>selectInput()</code></a>، و
+تنفيذ دالة استدعاء (callback) (يجب أن تكون public).</p>
+<p>قد يبدو هذا غريبًا لمن اعتاد Java؛ إذ قد يبدو المستمع أو تعبير
+lambda سيبدو منطقيًا أكثر. لكن بما أن Processing طُوّرت كأداة
+للفنانين، فإن هذه الأمور اختُزلت في الغالب بواسطة اللغة
+حتى تبقى غير مخيفة. وهذا خيار اتخذه
+المصمّمون: تقديم الأولوية للبساطة وسهولة الإقبال على حساب القوة
+والمرونة. فإن استخدمت محرر Processing المجرّد، بدلًا من
+استخدام Processing كمكتبة داخل Eclipse، فلن تحتاج حتى إلى تعريف أسماء الأصناف.</p>
+<p>ومصممو اللغات الآخرون، ذوو الجماهير المستهدفة المختلفة، يتخذون خيارات
+مختلفة، كما ينبغي. فمثلًا، في Haskell، وهي لغة
+وظيفية خالصة، يُقدَّم فيها نقاء النماذج البرمجية الوظيفية على كل
+شيء آخر. وهذا يجعلها أداة أفضل للمشكلات الرياضية
+مما هي عليه لأي شيء يتطلب الإدخال/الإخراج.</p>
+<pre><code class="language-java"><span class="hljs-comment">// Called on key press.</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">chooseFile</span><span class="hljs-params">()</span> {
+  <span class="hljs-comment">// Choose the file.</span>
+  selectInput(<span class="hljs-string">&quot;Select a file to process:&quot;</span>, <span class="hljs-string">&quot;fileSelected&quot;</span>);
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">fileSelected</span><span class="hljs-params">(File file)</span> {
+  <span class="hljs-keyword">if</span> (file == <span class="hljs-literal">null</span>) {
+    println(<span class="hljs-string">&quot;User hit cancel.&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// save the image</span>
+    redraw(); <span class="hljs-comment">// update the display</span>
+  }
+}
+</code></pre>
+<h3 id="الاستجابة-لضغطات-المفاتيح">الاستجابة لضغطات المفاتيح</h3>
+<p>عادةً في Java، تتطلب الاستجابة لضغطات المفاتيح إضافة مستمعات وتنفيذ
+دوال مجهولة. لكن، كما في منتقي الملفات، تتولى Processing الكثير
+من ذلك نيابةً عنا. كل ما نحتاجه هو تنفيذ
+<a href="https://www.processing.org/reference/keyPressed_.html"><code>keyPressed()</code></a>.</p>
+<pre><code class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">keyPressed</span><span class="hljs-params">()</span> {
+  print(“key pressed: ” + key);
+}
+</code></pre>
+<p>إذا شغّلت التطبيق من جديد، فسيُخرج كل مفتاح تضغطه إلى
+وحدة التحكم. لاحقًا سترغب في فعل أشياء مختلفة تبعًا للمفتاح الذي
+ضغطته، يكفي أن تبدّل على قيمة المفتاح. (وهذا موجود في
+الصنف الأعلى <code>PApplet</code>، ويحوي آخر مفتاح ضُغط.)</p>
+<h2 id="كتابة-الاختبارات">كتابة الاختبارات</h2>
+<p>لا يفعل هذا التطبيق الكثير حتى الآن، لكننا نستطيع بالفعل أن نرى عددًا من المواضع التي
+قد تسوء فيها الأمور؛ مثل إطلاق الإجراء الخطأ عند ضغط المفاتيح.
+ومع ازدياد التعقيد، نضيف مشكلات محتملة أكثر، مثل تحديث
+حالة الصورة على نحو خاطئ، أو حساب ألوان البكسلات خطأً بعد تطبيق
+مرشِّح. كما أنني أستمتع ببساطة (وإن كان بعضهم يظنها غريبة) بكتابة اختبارات وحدوية. ورغم
+أن بعض الناس يبدو أنهم يظنون أن الاختبار شيء يؤخّر التحقق من إدخال الشيفرة، إلا أنني
+أرى في الاختبارات أداة تصحيح الأخطاء رقم واحد عندي، وفرصة لفهم عميق لما
+يجري في شيفرتي.</p>
+<p>أُعجب بـProcessing كثيرًا، لكنها مصمَّمة
+لإنشاء التطبيقات البصرية، وفي هذا المجال ربما لا تكون الاختبارات الوحدوية
+مصدر قلق كبير. ومن الواضح أنها لم تُكتب بقابلية الاختبار في الحسبان؛ بل إنها مكتوبة
+بطريقة تجعلها غير قابلة للاختبار بطبيعتها. وجزء من ذلك أنها تخفي
+تعقيدًا، وبعض ذلك التعقيد المخفي مفيد فعلًا في كتابة الاختبارات
+الوحدوية. فاستخدام الدوال الساكنة (static) والنهائية (final) يجعل من
+الصعب جدًا استخدام الكائنات الوهمية (mocks)
+(وهي كائنات تسجّل التفاعل وتتيح لك انتحال جزء من نظامك للتحقق
+من سلوك جزء آخر على نحو صحيح)، إذ تعتمد تلك على القدرة على الوراثة.</p>
+<p>قد نبدأ مشروعًا جديدًا بنوايا حسنة لممارسة التطوير المُوجَّه
+بالاختبارات (TDD) وتحقيق تغطية اختبارية مثالية، لكن الواقع أننا
+عادة ما ننظر إلى كتل من الشيفرة كتبها أشخاص متنوعون ونحاول
+أن نكتشف ما يفترض أن يفعله، وكيف ولماذا
+يذهب إلى الخطأ. لم نكتب اختبارات مثالية، لكن كتابة الاختبارات
+بحد ذاتها ستساعدنا على اجتياز الموقف، وتوثيق ما يجري، والمضي
+قُدُمًا.</p>
+<p>ننشئ «مِلعَمات» (<em>seams</em>) تتيح لنا تفكيك شيء ما من
+كتلته المشابكة والتحقق منه على أجزاء. ولهذا سننشئ أحيانًا
+أصناف غلاف يمكن إحداث كائنات وهمية لها. وهذه الأصناف لا تفعل أكثر من
+احتواء مجموعة من الدوال المتشابهة، أو تحويل الاستدعاءات إلى كائن آخر
+لا يمكن إحداث كائن وهمي له (بسبب دوال نهائية أو ساكنة)، ومن ثم فهي
+ممل جدًا في الكتابة، لكنه جوهري في إنشاء المِلعَمات وجعل الشيفرة قابلة
+للاختبار.</p>
+<p>استخدمت JUnit للاختبارات، لأنني كنت أعمل في Java مع Processing كمكتبة.
+ولإحداث الكائنات الوهمية استخدمت Mockito. يمكنك تنزيل
+<a href="https://code.google.com/p/mockito/downloads/list">Mockito</a> وإضافة ملف JAR إلى
+مسار البناء بالطريقة نفسها التي أضفت بها <code>core.jar</code>. وأنشأت صنفَي
+مساعدة يتيحان إمكانية إحداث كائنات وهمية للتطبيق واختباره (وإلا لم نتمكن من اختبار
+السلوك الذي يشمل دوال <code>PImage</code> أو <code>PApplet</code>).</p>
+<p><code>IFAImage</code> هو غلاف رقيق حول PImage. أما <code>PixelColorHelper</code> فهو غلاف
+حول دوال ألوان البكسل في applet. تستدعي هذه الأغلفة الدوال النهائية
+والساكنة، لكن دوال المستدعي ليست نهائية ولا ساكنة بذاتها — وهذا
+يسمح بإحداث كائنات وهمية لها. وهذه الأغلفة خفيفة الوزن عن قصد، وكان بوسعنا
+أن نذهب أبعد من ذلك، لكن هذا يكفي لمعالجة المشكلة الكبرى في
+قابلية الاختبار عند استخدام Processing — الدوال الساكنة
+والنهائية. فكان الهدف هو إنشاء تطبيق، بعد كل شيء — لا إطار اختبار وحدوي لـProcessing!</p>
+<p>ويشكّل صنف اسمه <code>ImageState</code> «نموذج» (<em>model</em>) لهذا التطبيق، فهو يزيل
+أقصى قدر ممكن من المنطق من الصنف الممتد من <code>PApplet</code>، من أجل قابلية
+اختبار أفضل. كما أنه ينتج تصميمًا أنظف وفصلًا أفضل للمسؤوليات:
+فـ<code>App</code> يتحكم في التفاعلات وواجهة المستخدم، لا في معالجة
+الصورة.</p>
+<h2 id="مرشحات-تصنعها-بنفسك">مرشِّحات تصنعها بنفسك</h2>
+<h3 id="مرشحات-rgb">مرشِّحات RGB</h3>
+<p>قبل أن نبدأ في كتابة معالجة بكسلات أعقد، يمكننا أن نبدأ بتمرين
+قصير سيجعلنا مرتاحين في معالجة البكسلات. سننشئ
+مرشِّحات لونية قياسية (أحمر، أخضر، أزرق) تتيح لنا خلق
+الأثر نفسه الذي ينتج عن وضع لوح ملوّن أمام عدسة الكاميرا، وهي لاتمرّر
+إلا الضوء الذي يحتوي على قدر كافٍ من الأحمر (أو الأخضر، أو الأزرق).</p>
+<p>بتطبيق مرشِّحات مختلفة على هذه الصورة
+\aosafigref{500l.imagefilters.frankfurt} (التُقطت في رحلة ربيعية إلى فرانكفورت)
+يكاد الأمر يكون كأن الفصول مختلفة. (أتذكر لوحات الفصول الأربعة
+التي تخيلناها في وقت سابق؟) لاحظ كم تصير الشجرة أكثر خضرة
+عند تطبيق المرشِّح الأحمر.</p>
+<p>\aosafigure[240pt]/images/500-lines/image-filters-4-frankfurt.webp{Four (Simulated) Seasons in Frankfurt}{500l.imagefilters.frankfurt}</p>
+<latex>
+By applying different RGB filters to an image we can make it almost seem like
+the seasons are different depending which colors are filtered out 
+and which are emphasized. (Remember the four-seasons paintings
+we imagined earlier?) 
+</latex>
+<p>كيف نفعل ذلك؟</p>
+<ul>
+<li>
+<p>اضبط المرشِّح. (يمكنك أن تجمع مرشِّحات الأحمر والأخضر والأزرق كما في الصورة
+السابقة؛ لم أفعل ذلك في هذه الأمثلة حتى يكون الأثر أوضح.)</p>
+</li>
+<li>
+<p>لكل بكسل في الصورة، افحص قيمة RGB الخاصة به.</p>
+</li>
+<li>
+<p>إذا كان الأحمر أقل من مرشِّح الأحمر، فاضبط الأحمر على الصفر.</p>
+</li>
+<li>
+<p>إذا كان الأخضر أقل من مرشِّح الأخضر، فاضبط الأخضر على الصفر.</p>
+</li>
+<li>
+<p>إذا كان الأزرق أقل من مرشِّح الأزرق، فاضبط الأزرق على الصفر.</p>
+</li>
+<li>
+<p>أي بكسل يفتقر إلى هذه الألوان جميعها سيكون أسود.</p>
+</li>
+</ul>
+<p>رغم أن صورتنا ثنائية الأبعاد، فإن البكسلات تعيش في مصفوفة
+أحادية البعد تبدأ من أعلى اليسار وتتحرك <a href="https://processing.org/tutorials/pixels/">من اليسار إلى اليمين، ومن أعلى إلى
+أسفل</a>. وتُبيَّن هنا فهارس المصفوفة
+لصورة 4×4:</p>
+<table>
+  <tr>
+    <td>0</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>9</td>
+    <td>10</td>
+    <td>11</td>
+  </tr>
+  <tr>
+    <td>12</td>
+    <td>13</td>
+    <td>14</td>
+    <td>15</td>
+  </tr>
+</table>
+: \label{500l.imagefilters.pixelindices} فهارس البكسلات في صورة 4×4
+<latex>
+\begin{table}
+\centering
+{\footnotesize
+\rowcolors{2}{TableOdd}{TableOdd}
+\begin{tabular}{cccc}
+\hline
+0 & 1 & 2 & 3 \\
+4 & 5 & 6 & 7 \\
+8 & 9 & 10 & 11 \\
+12 & 13 & 14 & 15 \\
+\hline
+\end{tabular}
+}
+\caption{Pixel indices for a 4x4 image}
+\label{500l.imagefilters.pixelindices}
+\end{table}
+</latex>
+<pre><code class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">applyColorFilter</span><span class="hljs-params">(PApplet applet, IFAImage img, <span class="hljs-type">int</span> minRed,
+      <span class="hljs-type">int</span> minGreen, <span class="hljs-type">int</span> minBlue, <span class="hljs-type">int</span> colorRange)</span> {  
+  img.loadPixels();
+  <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> img.getPixels().length;
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> img.getPixel(i);
+    <span class="hljs-type">float</span> <span class="hljs-variable">alpha</span> <span class="hljs-operator">=</span> pixelColorHelper.alpha(applet, pixel);
+    <span class="hljs-type">float</span> <span class="hljs-variable">red</span> <span class="hljs-operator">=</span> pixelColorHelper.red(applet, pixel);
+    <span class="hljs-type">float</span> <span class="hljs-variable">green</span> <span class="hljs-operator">=</span> pixelColorHelper.green(applet, pixel);
+    <span class="hljs-type">float</span> <span class="hljs-variable">blue</span> <span class="hljs-operator">=</span> pixelColorHelper.blue(applet, pixel);
+      
+    red = (red &gt;= minRed) ? red : <span class="hljs-number">0</span>;
+    green = (green &gt;= minGreen) ? green : <span class="hljs-number">0</span>;
+    blue = (blue &gt;= minBlue) ? blue : <span class="hljs-number">0</span>;
+    
+    image.setPixel(i, pixelColorHelper.color(applet, red, green, blue, alpha));
+  }
+}
+</code></pre>
+<h3 id="اللون">اللون</h3>
+<p>وكما أظهر مثالنا الأول لمرشِّح صور، فإن مفهوم اللون وتمثيله
+في برنامج مهم إلى حدٍّ كبير لفهم كيفية عمل مرشِّحاتنا.
+ولكي نستعد للعمل على مرشِّحنا التالي، فلنستكشف مفهوم
+اللون بمزيد قليل.</p>
+<p>كنا نستخدم مفهومًا
+في القسم السابق اسمه «فضاء اللون» (<em>color space</em>)، وهو طريقة لتمثيل
+اللون رقميًا. ويتعلم الأطفال الذين يخلطون الألوان أن الألوان يمكن أن تُصنع من
+ألوان أخرى؛ والأمور تعمل بصورة مشابهة لكن مختلفة قليلًا في العالم
+الرقمي (مع مخاطرة أقل بالتغطية بالطلاء!). وتجعل Processing من العمل
+مع أي فضاء ألوان تريده أمرًا سهلًا حقًا، لكن عليك أن تعرف أيّها
+تختار، لذا من المهم أن تفهم كيف تعمل.</p>
+<h4>ألوان RGB</h4>
+<p>فضاء الألوان الذي يعرفه معظم المبرمجين هو RGBA: الأحمر والأخضر
+والأزرق والشفافية؛ وهو ما كنا نستخدمه أعلاه. وفي النظام السداسي (الأساس 16)، يكون أول محرفين هو مقدار
+الأحمر، والمحرفان الثانيان الأزرق، والمحرفان الثالثان الأخضر، والمحرفان الأخيران
+(إن وُجدا) هما قيمة الشفافية. وتتراوح القيم من 00 في الأساس 16 (أي 0 في الأساس
+10) وصولًا إلى FF (أي 255 في الأساس 10). ويمثّل الـalpha
+العتامة، حيث 0 شفاف و100% معتم.</p>
+<h4>ألوان HSB أو HSV</h4>
+<p>فضاء الألوان هذا ليس معروفًا إلى حدٍّ بقدر RGB. يمثل الرقم الأول
+درجة اللون، والرقم الثاني التشبّع (إلى أي حدٍّ كثيف اللون)، والرقم
+الثالث السطوع. ويمكن تمثيل فضاء ألوان HSB بمخروط: فدرجة اللون
+هي الموضع حول المخروط، والتشبّع هو البعد عن المركز، و
+السطوع هو الارتفاع (السطوع صفر يعني الأسود).</p>
+<h3 id="استخراج-درجة-اللون-الغالبة-من-صورة">استخراج درجة اللون الغالبة من صورة</h3>
+<p>الآن وقد ارتحنا إلى معالجة البكسلات، فلنفعل شيئًا لا يمكننا
+فعله إلا رقميًا. ويمكننا أن نعالج الصورة بطريقة ليست
+موحّدة إلى هذا الحد.</p>
+<p>عندما أتصفح مجرى صوري أستطيع أن أرى الموضوعات
+منبثقة. سلسلة الليل التي التقطتها عند الغروب من مركب في ميناء
+هونغ كونغ، والرمادي في كوريا الشمالية، والأخضر الكثيف في بالي، والأبيض الجليدي
+والأزرق الباهت في شتاء آيسلندي. فهل يمكننا التقاط صورة واستخراج ذلك
+اللون الرئيسي الذي يهيمن على المشهد؟</p>
+<p>من المنطقي استخدام فضاء ألوان HSB هنا — فنحن مهتمون بدرجة اللون
+حين نحدّد ما هو اللون
+الرئيسي. ومن الممكن فعل ذلك باستخدام قيم RGB، لكنه أصعب (فقد
+نضطر إلى مقارنة القيم الثلاث) وكان أكثر حساسية للظلام.
+و يمكننا الانتقال إلى فضاء ألوان HSB باستخدام
+<a href="http://processing.org/reference/colorMode_.html">colorMode</a>.</p>
+<p>وبعد أن استقرّينا على فضاء الألوان هذا، صار الأمر أبسط مما كان سيكون
+مع RGB. فنحتاج إلى معرفة درجة لون كل بكسل، ومعرفة أيّها «الأكثر
+شيوعًا». وعلى الأرجح لا نريد الدقة التامة — بل نريد تجميع درجات
+الألوان المتشابهة جدًا معًا، يمكننا التعامل مع هذا باستخدام استراتيجيتين.</p>
+<p>أولًا، سنقرّب الكسور العشرية التي تعود بنا إلى أعداد صحيحة، لأن هذا
+يجعل من البسيط تحديد أي «دلو» نضع فيه كل بكسل. ثانيًا يمكننا
+تغيير مدى درجات الألوان. فإذا استرجعنا في أذهاننا تمثيل المخروط أعلاه، فقد
+نتعامل مع درجات الألوان على أنها تملك 360 درجة (مثل دائرة). وتستخدم Processing 255
+افتراضيًا، وهو الأمر المعتاد في RGB أيضًا (255 هي FF في النظام السداسي).
+وكلما كان المدى الذي نستخدمه أكبر، كانت درجات الألوان في الصورة أكثر
+تمييزًا. واسمخدام مدى أصغر سنتمكن من تجميع درجات الألوان المتشابهة معًا. فباستخدام مدى 360
+درجة، من المستبعدل أن نتمكن من التمييز بين
+درجة لون 224 ودرجة لون 225، لأن الفرق صغير جدًا. وإذا جعلنا
+المدى ثلث ذلك، أي 120، تصبح الدرجتان كلتاهما 75 بعد التقريب.</p>
+<p>ويمكننا تغيير مدى درجات الألوان باستخدام <code>colorMode</code>. فإذا استدعينا <code>colorMode(HSB, 120)</code>
+فقد جعلنا كشف درجة اللون أقل دقة بمقدار النصف تقريبًا مما لو استخدمنا
+مدى 255. ونعلم أيضًا أن درجات ألواننا ستقع في 120 «دلوًا»، لذا يمكننا
+ببساطة أن نمر على صورتنا، ونأخذ درجة لون البكسل، ونضيف واحدًا إلى
+العدّاد المقابل في مصفوفة. وسيكون هذا $O(n)$، حيث $n$ هو
+عدد البكسلات، لأنه يتطلب إجراءً مع كل واحد منها.</p>
+<pre><code class="language-java"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> px in pixels) {
+  <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> Math.round(hue(px));
+  hues[hue]++;
+}
+</code></pre>
+<p>في النهاية يمكننا طباعة درجة اللون هذه على الشاشة، أو عرضها بجوار
+الصورة (\aosafigref{500l.imagefilters.hueranges}).</p>
+<p>\aosafigure[240pt]/images/500-lines/image-filters-5-hueranges.webp{Dominant hue versus size of range (number of buckets) used}{500l.imagefilters.hueranges}</p>
+<latex>
+At the end we can print this hue to the screen, or display it next to the
+picture. 
+</latex>
+<p>بمجرد أن استخرجنا درجة اللون «الغالبة»، يمكننا أن نختار إما إظهارها أو
+إخفائها في الصورة. ويمكننا إظهار درجة اللون الغالبة بدرجات تسامح متفاوتة (مجالات
+حولها نقبلها). ويمكن تغيير البكسلات التي لا تقع في هذا المجال إلى
+تدرّج رمادي عبر ضبط القيمة بناءً على السطوع.
+يُظهر \aosafigref{500l.imagefilters.showdominant} درجة اللون الغالبة المحدَّدة
+باستخدام مدى 240، وبدرجات تسامح متفاوتة. أما التسامح فهو
+المقدار على جانبي درجة اللون الأكثر شيوعًا الذي يُجمَّع معًا.</p>
+<p>\aosafigure[240pt]/images/500-lines/image-filters-6-showdominant.webp{Showing dominant hue}{500l.imagefilters.showdominant}</p>
+<latex>
+Once we've extracted the "dominant" hue, we can choose to either show or hide
+it in the image. We can show the dominant hue with varying tolerance (ranges
+around it that we will accept). Pixels that don't fall into this range can be
+changed to grayscale by setting the value based on the brightness.
+Alternatively, we can hide the dominant hue by setting the color for pixels with that hue to greyscale, and leaving other pixels as they are. 
+</latex>
+<p>وبدلًا من ذلك، يمكننا إخفاء درجة اللون الغالبة. في
+\aosafigref{500l.imagefilters.hidedominant}، تكون الصور جنبًا إلى جنب:
+الأصل في الوسط، وعلى اليسار تُعرض درجة اللون الغالبة (اللون البني الفاتح
+للطريق)، وعلى اليمين تُخفى درجة اللون الغالبة (مدى 320، تسامح 20).</p>
+<p>\aosafigure[240pt]/images/500-lines/image-filters-7-hidedominant.webp{Hiding dominant hue}{500l.imagefilters.hidedominant}</p>
+<p>تتطلب كل صورة مرورًا مزدوجًا (النظر في كل بكسل مرتين)، لذا فإن الصور
+ذات العدد الكبير من البكسلات قد تستغرق وقتًا ملحوظًا.</p>
+<pre><code class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">HSBColor</span> <span class="hljs-title function_">getDominantHue</span><span class="hljs-params">(PApplet applet, IFAImage image, <span class="hljs-type">int</span> hueRange)</span> {
+  image.loadPixels();
+  <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> image.getPixels().length;
+  <span class="hljs-type">int</span>[] <span class="hljs-variable">hues</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[hueRange];
+  <span class="hljs-type">float</span>[] <span class="hljs-variable">saturations</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">float</span>[hueRange];
+  <span class="hljs-type">float</span>[] <span class="hljs-variable">brightnesses</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">float</span>[hueRange];
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> image.getPixel(i);
+    <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> Math.round(pixelColorHelper.hue(applet, pixel));
+    <span class="hljs-type">float</span> <span class="hljs-variable">saturation</span> <span class="hljs-operator">=</span> pixelColorHelper.saturation(applet, pixel);
+    <span class="hljs-type">float</span> <span class="hljs-variable">brightness</span> <span class="hljs-operator">=</span> pixelColorHelper.brightness(applet, pixel);
+    hues[hue]++;
+    saturations[hue] += saturation;
+    brightnesses[hue] += brightness;
+  }
+
+  <span class="hljs-comment">// Find the most common hue.</span>
+  <span class="hljs-type">int</span> <span class="hljs-variable">hueCount</span> <span class="hljs-operator">=</span> hues[<span class="hljs-number">0</span>];
+  <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; hues.length; i++) {
+    <span class="hljs-keyword">if</span> (hues[i] &gt; hueCount) {
+      hueCount = hues[i];
+      hue = i;
+    }
+  }
+
+  <span class="hljs-comment">// Return the color to display.</span>
+  <span class="hljs-type">float</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> saturations[hue] / hueCount;
+  <span class="hljs-type">float</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> brightnesses[hue] / hueCount;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HSBColor</span>(hue, s, b);
+}
+
+
+<span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">processImageForHue</span><span class="hljs-params">(PApplet applet, IFAImage image, <span class="hljs-type">int</span> hueRange,
+    <span class="hljs-type">int</span> hueTolerance, <span class="hljs-type">boolean</span> showHue)</span> {
+  applet.colorMode(PApplet.HSB, (hueRange - <span class="hljs-number">1</span>));
+  image.loadPixels();
+  <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> image.getPixels().length;
+  <span class="hljs-type">HSBColor</span> <span class="hljs-variable">dominantHue</span> <span class="hljs-operator">=</span> getDominantHue(applet, image, hueRange);
+  <span class="hljs-comment">// Manipulate photo, grayscale any pixel that isn&#x27;t close to that hue.</span>
+  <span class="hljs-type">float</span> <span class="hljs-variable">lower</span> <span class="hljs-operator">=</span> dominantHue.h - hueTolerance;
+  <span class="hljs-type">float</span> <span class="hljs-variable">upper</span> <span class="hljs-operator">=</span> dominantHue.h + hueTolerance;
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> image.getPixel(i);
+    <span class="hljs-type">float</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> pixelColorHelper.hue(applet, pixel);
+    <span class="hljs-keyword">if</span> (hueInRange(hue, hueRange, lower, upper) == showHue) {
+      <span class="hljs-type">float</span> <span class="hljs-variable">brightness</span> <span class="hljs-operator">=</span> pixelColorHelper.brightness(applet, pixel);
+      image.setPixel(i, pixelColorHelper.color(applet, brightness));
+    }
+  }
+  image.updatePixels();
+}
+</code></pre>
+<h3 id="دمج-المرشحات">دمج المرشِّحات</h3>
+<p>مع واجهة المستخدم كما هي، يستطيع المستخدم أن يجمع مرشِّحات الأحمر
+والأخضر والأزرق معًا. لكن إذا جُمعت مرشِّحات درجة اللون الغالبة مع
+مرشِّحات الأحمر والأخضر والأزرق، فقد تكون النتائج أحيانًا غير متوقعة قليلًا، بسبب
+تغيّر فضاءات الألوان.</p>
+<p>ولدى Processing بعض <a href="https://www.processing.org/reference/filter_.html">الدوال
+المدمجة</a> التي تدعم
+معالجة الصور؛ مثل <code>invert</code> و<code>blur</code>.</p>
+<p>ولتحقيق آثار مثل التفتيح أو التمويه أو التأثير السيبيا، فإننا نطبّق
+مصفوفات (matrices). فلكل بكسل في الصورة، خذ مجموع حاصلات الضرب، حيث كل
+حاصل ضرب هو قيمة لون البكسل الحالي أو أحد جيرانه، مضروبة في
+القيمة المقابلة في <a href="http://lodev.org/cgtutor/filtering.html">مصفوفة
+المرشِّح</a>. وهناك بعض المصفوفات
+الخاصة بقيم محددة تُحسِّن الصور.</p>
+<h2 id="البنية">البنية</h2>
+<p>هناك ثلاثة مكوّنات رئيسية للتطبيق (\aosafigref{500l.imagefilters.architecture}).</p>
+<h3 id="التطبيق">التطبيق</h3>
+<p>يتكوّن التطبيق من ملف واحد: <code>ImageFilterApp.java</code>. وهذا
+الصنف يمتد من <code>PApplet</code> (الصنف الأعلى لتطبيقات
+Processing) ويتولى التخطيط وتفاعل المستخدم وما إلى ذلك. وهذا الصنف
+هو الأصعب في الاختبار، لذا نريد إبقاءه صغيرًا قدر الإمكان.</p>
+<h3 id="النموذج">النموذج</h3>
+<p>يتكوّن النموذج من ثلاثة ملفات: <code>HSBColor.java</code> حاوية بسيطة لألوان HSB
+(المكوّنة من درجة اللون والتشبّع والسطوع). و<code>IFAImage</code> هو
+غلاف حول <code>PImage</code> من أجل قابلية الاختبار. (يحتوي <code>PImage</code> على عدد من الدوال النهائية
+التي لا يمكن إحداث كائنات وهمية لها.) وأخيرًا، <code>ImageState.java</code> هو الكائن
+الذي يصف حالة الصورة — أي مستوى المرشِّحات الذي ينبغي تطبيقه،
+وأي المرشِّحات — ويتولى تحميل الصورة. (لاحظ: تحتاج الصورة إلى إعادة التحميل
+في كل مرة تُخفَّض فيها مرشِّحات الألوان، وكلما أُعيد حساب درجة اللون الغالبة.
+ولأجل الوضوح، فإننا نعيد التحميل في كل مرة تُعالَج فيها الصورة.)</p>
+<h3 id="اللون">اللون</h3>
+<p>يتكوّن اللون من ملفين: <code>ColorHelper.java</code> هو المكان الذي تجري فيه كل
+معالجة الصور والترشيح، و<code>PixelColorHelper.java</code>
+يُجَرِّد دوال <code>PApplet</code> النهائية الخاصة بألوان البكسلات من أجل قابلية الاختبار.</p>
+<p>\aosafigure[240pt]/images/500-lines/image-filters-8-architecture.webp{Architecture diagram}{500l.imagefilters.architecture}</p>
+<h3 id="أصناف-الغلاف-والاختبارات">أصناف الغلاف والاختبارات</h3>
+<p>كما ذُكر بإيجاز أعلاه، هناك صنفا غلاف (<code>IFAImage</code> و
+<code>PixelColorHelper</code>) يغلّفان دوال المكتبة من أجل قابلية الاختبار. والسبب في ذلك أن
+كلمة &quot;final&quot; في Java تشير إلى دالة لا يمكن تجاوزها أو إخفاؤها بواسطة
+الأصناف الفرعية، ما يعني أنه لا يمكن إحداث كائنات وهمية لها.</p>
+<p>يغلّف <code>PixelColorHelper</code> دوال applet. وهذا يعني أننا نحتاج إلى تمرير applet
+في كل استدعاء دالة. (وبدلًا من ذلك، يمكننا جعله حقلًا
+وضبطه عند التهيئة.)</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.color;
+
+<span class="hljs-keyword">import</span> processing.core.PApplet;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PixelColorHelper</span> {
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">alpha</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.alpha(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">blue</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.blue(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">brightness</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.brightness(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">color</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">float</span> greyscale)</span> {
+    <span class="hljs-keyword">return</span> applet.color(greyscale);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">color</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">float</span> red, <span class="hljs-type">float</span> green, <span class="hljs-type">float</span> blue,
+           <span class="hljs-type">float</span> alpha)</span> {
+    <span class="hljs-keyword">return</span> applet.color(red, green, blue, alpha);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">green</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.green(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">hue</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.hue(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">red</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.red(pixel);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">float</span> <span class="hljs-title function_">saturation</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> pixel)</span> {
+    <span class="hljs-keyword">return</span> applet.saturation(pixel);
+  }
+}
+</code></pre>
+<p>و<code>IFAImage</code> هو غلاف حول <code>PImage</code>، لذا فإننا في تطبيقنا لا نهيّئ كائن
+<code>PImage</code> بل كائن <code>IFAImage</code> — مع أننا مضطرون إلى كشف
+<code>PImage</code> كي يمكن عرضه.</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.model;
+
+<span class="hljs-keyword">import</span> processing.core.PApplet;
+<span class="hljs-keyword">import</span> processing.core.PImage;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">IFAImage</span> {
+
+  <span class="hljs-keyword">private</span> PImage image;
+
+  <span class="hljs-type">public</span> <span class="hljs-title function_">IFAImage</span><span class="hljs-params">()</span> {
+    image = <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">PImage</span> <span class="hljs-title function_">image</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">return</span> image;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(PApplet applet, String filepath)</span> {
+    image = <span class="hljs-literal">null</span>;
+    image = applet.loadImage(filepath);
+  }
+
+  <span class="hljs-comment">// Wrapped methods from PImage.</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHeight</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">return</span> image.height;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getPixel</span><span class="hljs-params">(<span class="hljs-type">int</span> px)</span> {
+    <span class="hljs-keyword">return</span> image.pixels[px];
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] <span class="hljs-title function_">getPixels</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">return</span> image.pixels;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getWidth</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">return</span> image.width;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">loadPixels</span><span class="hljs-params">()</span> {
+    image.loadPixels();
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">resize</span><span class="hljs-params">(<span class="hljs-type">int</span> width, <span class="hljs-type">int</span> height)</span> {
+    image.resize(width, height);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">save</span><span class="hljs-params">(String filepath)</span> {
+    image.save(filepath);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setPixel</span><span class="hljs-params">(<span class="hljs-type">int</span> px, <span class="hljs-type">int</span> color)</span> {
+    image.pixels[px] = color;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">updatePixels</span><span class="hljs-params">()</span> {
+    image.updatePixels();
+  }
+}
+</code></pre>
+<p>وأخيرًا، لدينا صنف الحاوية البسيط <code>HSBColor</code>. ولاحظ أنه
+غير قابل للتغيير (فبمجرد إنشائه لا يمكن تغييره). والأصناف غير القابلة للتغيير أفضل
+لأجل سلامة الخيوط (وهو أمر لسنا بحاجة إليه هنا!) لكنها أيضًا أسهل
+في الفهم والاستدلال. وعلى العموم، أميل إلى جعل أصناف النموذج البسيطة
+غير قابلة للتغيير ما لم أجد سببًا جيدًا لغير ذلك.</p>
+<p>قد يعرف بعضكم أن هناك بالفعل أصنافًا تمثّل اللون في
+<a href="https://www.processing.org/reference/color_datatype.html">Processing</a> وفي
+<a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html">Java نفسها</a>.
+ودون الدخول في تفاصيلهما كثيرًا، كلاهما يركّز على
+لون RGB أكثر، وصنف Java تحديدًا يضيف تعقيدًا أكبر بكثير مما نحتاجه.
+ربما كان الأمر لائقًا لو أردنا استخدام <code>awt.Color</code> من Java؛ لكن
+<a href="http://processing.org/reference/javadoc/core/processing/core/PApplet.html">مكوّنات awt GUI لا يمكن استخدامها في
+Processing</a>،
+لذا فإن إنشاء صنف الحاوية البسيط هذا ليحمل قطع البيانات التي نحتاجها
+هو الأسهل لأغراضنا.</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.model;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HSBColor</span> {
+
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-type">float</span> h;
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-type">float</span> s;
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-type">float</span> b;
+
+  <span class="hljs-type">public</span> <span class="hljs-title function_">HSBColor</span><span class="hljs-params">(<span class="hljs-type">float</span> h, <span class="hljs-type">float</span> s, <span class="hljs-type">float</span> b)</span> {
+    <span class="hljs-built_in">this</span>.h = h;
+    <span class="hljs-built_in">this</span>.s = s;
+    <span class="hljs-built_in">this</span>.b = b;
+  }
+}
+</code></pre>
+<h3 id="colorhelper-والاختبارات-المرتبطة-به">ColorHelper والاختبارات المرتبطة به</h3>
+<p><code>ColorHelper</code> هو المكان الذي تعيش فيه كل معالجة الصور. ويمكن أن تكون دوال هذا
+الصنف ساكنة (static) لولا حاجتها إلى <code>PixelColorHelper</code>. (مع أننا
+لن ندخل في نقاش مزايا الدوال الساكنة هنا.)</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.color;
+
+<span class="hljs-keyword">import</span> processing.core.PApplet;
+
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.model.HSBColor;
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.model.IFAImage;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ColorHelper</span> {
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PixelColorHelper pixelColorHelper;
+
+  <span class="hljs-type">public</span> <span class="hljs-title function_">ColorHelper</span><span class="hljs-params">(PixelColorHelper pixelColorHelper)</span> {
+    <span class="hljs-built_in">this</span>.pixelColorHelper = pixelColorHelper;
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hueInRange</span><span class="hljs-params">(<span class="hljs-type">float</span> hue, <span class="hljs-type">int</span> hueRange, <span class="hljs-type">float</span> lower, <span class="hljs-type">float</span> upper)</span> {
+    <span class="hljs-comment">// Need to compensate for it being circular - can go around.</span>
+    <span class="hljs-keyword">if</span> (lower &lt; <span class="hljs-number">0</span>) {
+      lower += hueRange;
+    }
+    <span class="hljs-keyword">if</span> (upper &gt; hueRange) {
+      upper -= hueRange;
+    }
+    <span class="hljs-keyword">if</span> (lower &lt; upper) {
+      <span class="hljs-keyword">return</span> hue &lt; upper &amp;&amp; hue &gt; lower;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> hue &lt; upper || hue &gt; lower;
+    }
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">HSBColor</span> <span class="hljs-title function_">getDominantHue</span><span class="hljs-params">(PApplet applet, IFAImage image, <span class="hljs-type">int</span> hueRange)</span> {
+    image.loadPixels();
+    <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> image.getPixels().length;
+    <span class="hljs-type">int</span>[] <span class="hljs-variable">hues</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[hueRange];
+    <span class="hljs-type">float</span>[] <span class="hljs-variable">saturations</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">float</span>[hueRange];
+    <span class="hljs-type">float</span>[] <span class="hljs-variable">brightnesses</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">float</span>[hueRange];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+      <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> image.getPixel(i);
+      <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> Math.round(pixelColorHelper.hue(applet, pixel));
+      <span class="hljs-type">float</span> <span class="hljs-variable">saturation</span> <span class="hljs-operator">=</span> pixelColorHelper.saturation(applet, pixel);
+      <span class="hljs-type">float</span> <span class="hljs-variable">brightness</span> <span class="hljs-operator">=</span> pixelColorHelper.brightness(applet, pixel);
+      hues[hue]++;
+      saturations[hue] += saturation;
+      brightnesses[hue] += brightness;
+    }
+
+    <span class="hljs-comment">// Find the most common hue.</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">hueCount</span> <span class="hljs-operator">=</span> hues[<span class="hljs-number">0</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; hues.length; i++) {
+      <span class="hljs-keyword">if</span> (hues[i] &gt; hueCount) {
+        hueCount = hues[i];
+        hue = i;
+      }
+    }
+
+    <span class="hljs-comment">// Return the color to display.</span>
+    <span class="hljs-type">float</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> saturations[hue] / hueCount;
+    <span class="hljs-type">float</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> brightnesses[hue] / hueCount;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HSBColor</span>(hue, s, b);
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">processImageForHue</span><span class="hljs-params">(PApplet applet, IFAImage image, <span class="hljs-type">int</span> hueRange,
+      <span class="hljs-type">int</span> hueTolerance, <span class="hljs-type">boolean</span> showHue)</span> {
+    applet.colorMode(PApplet.HSB, (hueRange - <span class="hljs-number">1</span>));
+    image.loadPixels();
+    <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> image.getPixels().length;
+    <span class="hljs-type">HSBColor</span> <span class="hljs-variable">dominantHue</span> <span class="hljs-operator">=</span> getDominantHue(applet, image, hueRange);
+    <span class="hljs-comment">// Manipulate photo, grayscale any pixel that isn&#x27;t close to that hue.</span>
+    <span class="hljs-type">float</span> <span class="hljs-variable">lower</span> <span class="hljs-operator">=</span> dominantHue.h - hueTolerance;
+    <span class="hljs-type">float</span> <span class="hljs-variable">upper</span> <span class="hljs-operator">=</span> dominantHue.h + hueTolerance;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+      <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> image.getPixel(i);
+      <span class="hljs-type">float</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> pixelColorHelper.hue(applet, pixel);
+      <span class="hljs-keyword">if</span> (hueInRange(hue, hueRange, lower, upper) == showHue) {
+        <span class="hljs-type">float</span> <span class="hljs-variable">brightness</span> <span class="hljs-operator">=</span> pixelColorHelper.brightness(applet, pixel);
+        image.setPixel(i, pixelColorHelper.color(applet, brightness));
+      }
+    }
+    image.updatePixels();
+  }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">applyColorFilter</span><span class="hljs-params">(PApplet applet, IFAImage image, <span class="hljs-type">int</span> minRed,
+      <span class="hljs-type">int</span> minGreen, <span class="hljs-type">int</span> minBlue, <span class="hljs-type">int</span> colorRange)</span> {
+    applet.colorMode(PApplet.RGB, colorRange);
+    image.loadPixels();
+    <span class="hljs-type">int</span> <span class="hljs-variable">numberOfPixels</span> <span class="hljs-operator">=</span> image.getPixels().length;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numberOfPixels; i++) {
+      <span class="hljs-type">int</span> <span class="hljs-variable">pixel</span> <span class="hljs-operator">=</span> image.getPixel(i);
+      <span class="hljs-type">float</span> <span class="hljs-variable">alpha</span> <span class="hljs-operator">=</span> pixelColorHelper.alpha(applet, pixel);
+      <span class="hljs-type">float</span> <span class="hljs-variable">red</span> <span class="hljs-operator">=</span> pixelColorHelper.red(applet, pixel);
+      <span class="hljs-type">float</span> <span class="hljs-variable">green</span> <span class="hljs-operator">=</span> pixelColorHelper.green(applet, pixel);
+      <span class="hljs-type">float</span> <span class="hljs-variable">blue</span> <span class="hljs-operator">=</span> pixelColorHelper.blue(applet, pixel);
+
+      red = (red &gt;= minRed) ? red : <span class="hljs-number">0</span>;
+      green = (green &gt;= minGreen) ? green : <span class="hljs-number">0</span>;
+      blue = (blue &gt;= minBlue) ? blue : <span class="hljs-number">0</span>;
+
+      image.setPixel(i, pixelColorHelper.color(applet, red, green, blue, alpha));
+    }
+  }
+}
+</code></pre>
+<p>لا نريد اختبار هذا بصور كاملة، لأننا نريد صورًا نعرف
+خصائصها ونستطيع الاستدلال بشأنها. ونقارب ذلك بإحداث كائنات وهمية
+للصور تجعلها تُعيد مصفوفة بكسلات — في هذه الحالة، 5. وهذا
+يتيح لنا
+التحقق من أن السلوك هو السلوك المتوقع. وقد غطّينا سابقًا مفهوم الكائنات
+الوهمية، وهنا نرى استخدامها. ونحن نستخدم
+<a href="http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html">Mockito</a> بوصفه
+إطار عمل الكائنات الوهمية لدينا.</p>
+<p>ولإنشاء كائن وهمي نستخدم التعليق التوضيحي <code>@Mock</code> على متغيّر نسخة، وسيُحداث كائنه الوهمي في وقت التشغيل بواسطة
+<code>MockitoJUnitRunner</code>.</p>
+<p>ولتجهيز (ضبط سلوك) دالة، نستخدم:</p>
+<pre><code class="language-java">    <span class="hljs-keyword">when</span>(mock.methodCall()).thenReturn(value)
+</code></pre>
+<p>وللتحقق من أن دالة قد استُدعيت، نستخدم <code>verify(mock.methodCall())</code>.</p>
+<p>وسنعرض هنا بضع حالات اختبار نموذجية؛ فإذا رغبت في رؤية الباقي، فزر
+مجلد المصدر لهذا المشروع في <a href="https://github.com/aosabook/500lines/tree/master/image-filters">مستودع GitHub الخاص بـ_500 Lines or
+Less_</a>.</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.color;
+
+<span class="hljs-comment">/* ... Imports omitted ... */</span>
+
+<span class="hljs-meta">@RunWith(MockitoJUnitRunner.class)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ColorHelperTest</span> {
+
+  <span class="hljs-meta">@Mock</span> PApplet applet;
+  <span class="hljs-meta">@Mock</span> IFAImage image;
+  <span class="hljs-meta">@Mock</span> PixelColorHelper pixelColorHelper;
+
+  ColorHelper colorHelper;
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">px1</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">px2</span> <span class="hljs-operator">=</span> <span class="hljs-number">1010</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">px3</span> <span class="hljs-operator">=</span> <span class="hljs-number">1030</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">px4</span> <span class="hljs-operator">=</span> <span class="hljs-number">1040</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">px5</span> <span class="hljs-operator">=</span> <span class="hljs-number">1050</span>;
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[] <span class="hljs-variable">pixels</span> <span class="hljs-operator">=</span> { px1, px2, px3, px4, px5 };
+
+  <span class="hljs-meta">@Before</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setUp</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
+    colorHelper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ColorHelper</span>(pixelColorHelper);
+    <span class="hljs-keyword">when</span>(image.getPixels()).thenReturn(pixels);
+    setHsbValuesForPixel(<span class="hljs-number">0</span>, px1, <span class="hljs-number">30F</span>, <span class="hljs-number">5F</span>, <span class="hljs-number">10F</span>);
+    setHsbValuesForPixel(<span class="hljs-number">1</span>, px2, <span class="hljs-number">20F</span>, <span class="hljs-number">6F</span>, <span class="hljs-number">11F</span>);
+    setHsbValuesForPixel(<span class="hljs-number">2</span>, px3, <span class="hljs-number">30F</span>, <span class="hljs-number">7F</span>, <span class="hljs-number">12F</span>);
+    setHsbValuesForPixel(<span class="hljs-number">3</span>, px4, <span class="hljs-number">50F</span>, <span class="hljs-number">8F</span>, <span class="hljs-number">13F</span>);
+    setHsbValuesForPixel(<span class="hljs-number">4</span>, px5, <span class="hljs-number">30F</span>, <span class="hljs-number">9F</span>, <span class="hljs-number">14F</span>);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setHsbValuesForPixel</span><span class="hljs-params">(<span class="hljs-type">int</span> px, <span class="hljs-type">int</span> color, <span class="hljs-type">float</span> h, <span class="hljs-type">float</span> s, <span class="hljs-type">float</span> b)</span> {
+    <span class="hljs-keyword">when</span>(image.getPixel(px)).thenReturn(color);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.hue(applet, color)).thenReturn(h);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.saturation(applet, color)).thenReturn(s);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.brightness(applet, color)).thenReturn(b);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setRgbValuesForPixel</span><span class="hljs-params">(<span class="hljs-type">int</span> px, <span class="hljs-type">int</span> color, <span class="hljs-type">float</span> r, <span class="hljs-type">float</span> g, <span class="hljs-type">float</span> b, 
+            <span class="hljs-type">float</span> alpha)</span> {
+    <span class="hljs-keyword">when</span>(image.getPixel(px)).thenReturn(color);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.red(applet, color)).thenReturn(r);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.green(applet, color)).thenReturn(g);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.blue(applet, color)).thenReturn(b);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.alpha(applet, color)).thenReturn(alpha);
+  }
+
+    <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testHsbColorFromImage</span><span class="hljs-params">()</span> {
+    <span class="hljs-type">HSBColor</span> <span class="hljs-variable">color</span> <span class="hljs-operator">=</span> colorHelper.getDominantHue(applet, image, <span class="hljs-number">100</span>);
+    verify(image).loadPixels();
+
+    assertEquals(<span class="hljs-number">30F</span>, color.h, <span class="hljs-number">0</span>);
+    assertEquals(<span class="hljs-number">7F</span>, color.s, <span class="hljs-number">0</span>);
+    assertEquals(<span class="hljs-number">12F</span>, color.b, <span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testProcessImageNoHue</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">11F</span>)).thenReturn(<span class="hljs-number">11</span>);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">13F</span>)).thenReturn(<span class="hljs-number">13</span>);
+    colorHelper.processImageForHue(applet, image, <span class="hljs-number">60</span>, <span class="hljs-number">2</span>, <span class="hljs-literal">false</span>);
+    verify(applet).colorMode(PApplet.HSB, <span class="hljs-number">59</span>);
+    verify(image, times(<span class="hljs-number">2</span>)).loadPixels();
+    verify(image).setPixel(<span class="hljs-number">1</span>, <span class="hljs-number">11</span>);
+    verify(image).setPixel(<span class="hljs-number">3</span>, <span class="hljs-number">13</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testApplyColorFilter</span><span class="hljs-params">()</span> {
+    setRgbValuesForPixel(<span class="hljs-number">0</span>, px1, <span class="hljs-number">10F</span>, <span class="hljs-number">12F</span>, <span class="hljs-number">14F</span>, <span class="hljs-number">60F</span>);
+    setRgbValuesForPixel(<span class="hljs-number">1</span>, px2, <span class="hljs-number">20F</span>, <span class="hljs-number">22F</span>, <span class="hljs-number">24F</span>, <span class="hljs-number">70F</span>);
+    setRgbValuesForPixel(<span class="hljs-number">2</span>, px3, <span class="hljs-number">30F</span>, <span class="hljs-number">32F</span>, <span class="hljs-number">34F</span>, <span class="hljs-number">80F</span>);
+    setRgbValuesForPixel(<span class="hljs-number">3</span>, px4, <span class="hljs-number">40F</span>, <span class="hljs-number">42F</span>, <span class="hljs-number">44F</span>, <span class="hljs-number">90F</span>);
+    setRgbValuesForPixel(<span class="hljs-number">4</span>, px5, <span class="hljs-number">50F</span>, <span class="hljs-number">52F</span>, <span class="hljs-number">54F</span>, <span class="hljs-number">100F</span>);
+
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">0F</span>, <span class="hljs-number">0F</span>, <span class="hljs-number">0F</span>, <span class="hljs-number">60F</span>)).thenReturn(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">20F</span>, <span class="hljs-number">0F</span>, <span class="hljs-number">0F</span>, <span class="hljs-number">70F</span>)).thenReturn(<span class="hljs-number">15</span>);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">30F</span>, <span class="hljs-number">32F</span>, <span class="hljs-number">0F</span>, <span class="hljs-number">80F</span>)).thenReturn(<span class="hljs-number">25</span>);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">40F</span>, <span class="hljs-number">42F</span>, <span class="hljs-number">44F</span>, <span class="hljs-number">90F</span>)).thenReturn(<span class="hljs-number">35</span>);
+    <span class="hljs-keyword">when</span>(pixelColorHelper.color(applet, <span class="hljs-number">50F</span>, <span class="hljs-number">52F</span>, <span class="hljs-number">54F</span>, <span class="hljs-number">100F</span>)).thenReturn(<span class="hljs-number">45</span>);
+
+    colorHelper.applyColorFilter(applet, image, <span class="hljs-number">15</span>, <span class="hljs-number">25</span>, <span class="hljs-number">35</span>, <span class="hljs-number">100</span>);
+    verify(applet).colorMode(PApplet.RGB, <span class="hljs-number">100</span>);
+    verify(image).loadPixels();
+
+    verify(image).setPixel(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+    verify(image).setPixel(<span class="hljs-number">1</span>, <span class="hljs-number">15</span>);
+    verify(image).setPixel(<span class="hljs-number">2</span>, <span class="hljs-number">25</span>);
+    verify(image).setPixel(<span class="hljs-number">3</span>, <span class="hljs-number">35</span>);
+    verify(image).setPixel(<span class="hljs-number">4</span>, <span class="hljs-number">45</span>);
+  }
+}
+</code></pre>
+<p>\newpage</p>
+<p>لاحظ ما يلي:</p>
+<ul>
+<li>نستخدم مُشغِّل <code>MockitoJUnit</code>.</li>
+<li>نُحدث كائنات وهمية لـ<code>PApplet</code> و<code>IFAImage</code> (أُنشئ خصيصًا لهذا الغرض) و<code>ImageColorHelper</code>.</li>
+<li>دوال الاختبار موسومة بالتعليق التوضيحي <code>@Test</code>[^habits]. فإذا أردت تجاهل اختبار (مثلًا أثناء تصحيح الأخطاء) يمكنك إضافة التعليق التوضيحي <code>@Ignore</code>.</li>
+<li>في <code>setup()</code>، ننشئ مصفوفة البكسلات ونجعل الصورة الوهمية تعيدها دائمًا.</li>
+<li>دوال المساعدة تجعل ضبط التوقعات للمهام المتكررة أسهل (مثل <code>set*ForPixel()</code>).</li>
+</ul>
+<p>[^habits]: لم تعد أسماء الدوال في الاختبارات تحتاج إلى أن تبدأ بـ<code>test</code> منذ JUnit 4، لكن العادات صعبة الكسر.</p>
+<h3 id="حالة-الصورة-والاختبارات-المرتبطة-بها">حالة الصورة والاختبارات المرتبطة بها</h3>
+<p>تحمل <code>ImageState</code> «حالة» الصورة الحالية — الصورة نفسها، والإعدادات
+والمرشِّحات التي ستُطبَّق. وسنُغفل التنفيذ الكامل
+لـ<code>ImageState</code> هنا، لكننا سنعرض كيف يمكن اختباره. ويمكنك زيارة مستودع المصدر
+لهذا المشروع لرؤية التفاصيل الكاملة.</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.model;
+
+<span class="hljs-keyword">import</span> processing.core.PApplet;
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.color.ColorHelper;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageState</span> {
+
+  <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ColorMode</span> {
+    COLOR_FILTER,
+    SHOW_DOMINANT_HUE,
+    HIDE_DOMINANT_HUE
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ColorHelper colorHelper;
+  <span class="hljs-keyword">private</span> IFAImage image;
+  <span class="hljs-keyword">private</span> String filepath;
+
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">INITIAL_HUE_TOLERANCE</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
+
+  <span class="hljs-type">ColorMode</span> <span class="hljs-variable">colorModeState</span> <span class="hljs-operator">=</span> ColorMode.COLOR_FILTER;
+  <span class="hljs-type">int</span> <span class="hljs-variable">blueFilter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+  <span class="hljs-type">int</span> <span class="hljs-variable">greenFilter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+  <span class="hljs-type">int</span> <span class="hljs-variable">hueTolerance</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+  <span class="hljs-type">int</span> <span class="hljs-variable">redFilter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+  <span class="hljs-type">public</span> <span class="hljs-title function_">ImageState</span><span class="hljs-params">(ColorHelper colorHelper)</span> {
+    <span class="hljs-built_in">this</span>.colorHelper = colorHelper;
+    image = <span class="hljs-keyword">new</span> <span class="hljs-title class_">IFAImage</span>();
+    hueTolerance = INITIAL_HUE_TOLERANCE;
+  }
+  <span class="hljs-comment">/* ... getters &amp; setters */</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">updateImage</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> hueRange, <span class="hljs-type">int</span> rgbColorRange, 
+          <span class="hljs-type">int</span> imageMax)</span> { ... }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">processKeyPress</span><span class="hljs-params">(<span class="hljs-type">char</span> key, <span class="hljs-type">int</span> inc, <span class="hljs-type">int</span> rgbColorRange,
+          <span class="hljs-type">int</span> hueIncrement, <span class="hljs-type">int</span> hueRange)</span> { ... }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setUpImage</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> imageMax)</span> { ... }
+
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">resetImage</span><span class="hljs-params">(PApplet applet, <span class="hljs-type">int</span> imageMax)</span> { ... }
+
+  <span class="hljs-comment">// For testing purposes only.</span>
+  <span class="hljs-keyword">protected</span> <span class="hljs-type">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(IFAImage image, ColorMode colorModeState,
+            <span class="hljs-type">int</span> redFilter, <span class="hljs-type">int</span> greenFilter, <span class="hljs-type">int</span> blueFilter, <span class="hljs-type">int</span> hueTolerance)</span> { ... }
+}
+</code></pre>
+<p>وهنا يمكننا أن نختبر أن الإجراءات الملائمة تحدث للحالة المعطاة؛ وأن
+الحقول تُزاد وتُنقص على النحو المناسب.</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.model;
+
+<span class="hljs-comment">/* ... Imports omitted ... */</span>
+
+<span class="hljs-meta">@RunWith(MockitoJUnitRunner.class)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageStateTest</span> {
+
+  <span class="hljs-meta">@Mock</span> PApplet applet;
+  <span class="hljs-meta">@Mock</span> ColorHelper colorHelper;
+  <span class="hljs-meta">@Mock</span> IFAImage image;
+
+  <span class="hljs-keyword">private</span> ImageState imageState;
+
+  <span class="hljs-meta">@Before</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setUp</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
+    imageState = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ImageState</span>(colorHelper);
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">assertState</span><span class="hljs-params">(ColorMode colorMode, <span class="hljs-type">int</span> redFilter,
+      <span class="hljs-type">int</span> greenFilter, <span class="hljs-type">int</span> blueFilter, <span class="hljs-type">int</span> hueTolerance)</span> {
+    assertEquals(colorMode, imageState.getColorMode());
+    assertEquals(redFilter, imageState.redFilter());
+    assertEquals(greenFilter, imageState.greenFilter());
+    assertEquals(blueFilter, imageState.blueFilter());
+    assertEquals(hueTolerance, imageState.hueTolerance());
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testUpdateImageDominantHueHidden</span><span class="hljs-params">()</span> {
+    imageState.setFilepath(<span class="hljs-string">&quot;filepath&quot;</span>);
+    imageState.set(image, ColorMode.HIDE_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+
+    imageState.updateImage(applet, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">500</span>);
+
+    verify(image).update(applet, <span class="hljs-string">&quot;filepath&quot;</span>);
+    verify(colorHelper).processImageForHue(applet, image, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>, <span class="hljs-literal">false</span>);
+    verify(colorHelper).applyColorFilter(applet, image, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">100</span>);
+    verify(image).updatePixels();
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testUpdateDominantHueShowing</span><span class="hljs-params">()</span> {
+    imageState.setFilepath(<span class="hljs-string">&quot;filepath&quot;</span>);
+    imageState.set(image, ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+
+    imageState.updateImage(applet, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">500</span>);
+
+    verify(image).update(applet, <span class="hljs-string">&quot;filepath&quot;</span>);
+    verify(colorHelper).processImageForHue(applet, image, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>, <span class="hljs-literal">true</span>);
+    verify(colorHelper).applyColorFilter(applet, image, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">100</span>);
+    verify(image).updatePixels();
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testUpdateRGBOnly</span><span class="hljs-params">()</span> {
+    imageState.setFilepath(<span class="hljs-string">&quot;filepath&quot;</span>);
+    imageState.set(image, ColorMode.COLOR_FILTER, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+
+    imageState.updateImage(applet, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">500</span>);
+
+    verify(image).update(applet, <span class="hljs-string">&quot;filepath&quot;</span>);
+    verify(colorHelper, never()).processImageForHue(any(PApplet.class), 
+                any(IFAImage.class), anyInt(), anyInt(), anyBoolean());
+    verify(colorHelper).applyColorFilter(applet, image, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">100</span>);
+    verify(image).updatePixels();
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testKeyPress</span><span class="hljs-params">()</span> {
+    imageState.processKeyPress(<span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;g&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;v&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;h&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.HIDE_DOMINANT_HUE, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.HIDE_DOMINANT_HUE, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;u&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.HIDE_DOMINANT_HUE, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;h&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;s&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    imageState.processKeyPress(<span class="hljs-string">&#x27;s&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+
+    <span class="hljs-comment">// Random key should do nothing.</span>
+    imageState.processKeyPress(<span class="hljs-string">&#x27;z&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testSave</span><span class="hljs-params">()</span> {
+    imageState.set(image, ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+    imageState.setFilepath(<span class="hljs-string">&quot;filepath&quot;</span>);
+    imageState.processKeyPress(<span class="hljs-string">&#x27;w&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100</span>, <span class="hljs-number">2</span>, <span class="hljs-number">200</span>);
+
+    verify(image).save(<span class="hljs-string">&quot;filepath-new.png&quot;</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testSetupImageLandscape</span><span class="hljs-params">()</span> {
+    imageState.set(image, ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+    <span class="hljs-keyword">when</span>(image.getWidth()).thenReturn(<span class="hljs-number">20</span>);
+    <span class="hljs-keyword">when</span>(image.getHeight()).thenReturn(<span class="hljs-number">8</span>);
+    imageState.setUpImage(applet, <span class="hljs-number">10</span>);
+    verify(image).update(applet, <span class="hljs-literal">null</span>);
+    verify(image).resize(<span class="hljs-number">10</span>, <span class="hljs-number">4</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testSetupImagePortrait</span><span class="hljs-params">()</span> {
+    imageState.set(image, ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+    <span class="hljs-keyword">when</span>(image.getWidth()).thenReturn(<span class="hljs-number">8</span>);
+    <span class="hljs-keyword">when</span>(image.getHeight()).thenReturn(<span class="hljs-number">20</span>);
+    imageState.setUpImage(applet, <span class="hljs-number">10</span>);
+    verify(image).update(applet, <span class="hljs-literal">null</span>);
+    verify(image).resize(<span class="hljs-number">4</span>, <span class="hljs-number">10</span>);
+  }
+
+  <span class="hljs-meta">@Test</span> <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">testResetImage</span><span class="hljs-params">()</span> {
+    imageState.set(image, ColorMode.SHOW_DOMINANT_HUE, <span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>);
+    imageState.resetImage(applet, <span class="hljs-number">10</span>);
+    assertState(ColorMode.COLOR_FILTER, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>\newpage لاحظ ما يلي:</p>
+<ul>
+<li>كشفنا عن طريقة تهيئة محميّة اسمها <code>set</code> لأغراض الاختبار، تساعدنا على إدخال نظام الاختبار بسرعة في حالة معيّنة.</li>
+<li>نُحدث كائنات وهمية لـ<code>PApplet</code> و<code>ColorHelper</code> و<code>IFAImage</code> (أُنشئ خصيصًا لهذا الغرض).</li>
+<li>هذه المرة نستخدم دالة مساعدة (<code>assertState()</code>) لتبسيط التحقق من حالة الصورة.</li>
+</ul>
+<h4>قياس تغطية الاختبارات</h4>
+<p>أستخدم <a href="http://www.eclemma.org/installation.html#marketplace">EclEmma</a> لقياس
+تغطية الاختبارات داخل Eclipse. وعمومًا يبلغ تغطية اختبارات التطبيق
+لدي 81%، حيث لا شيء من <code>ImageFilterApp</code> مغطّى، و94.8% لـ<code>ImageState</code>،
+و100% لـ<code>ColorHelper</code>.</p>
+<h3 id="imagefilterapp">ImageFilterApp</h3>
+<p>هنا تجتمع كل الأمور معًا، لكننا نريد قدرًا ضئيلًا من الشيفرة هنا قدر الإمكان. فالتطبيق
+صعب الاختبار الوحدوي (كثير منه تخطيط)، لكن لأننا دفعنا قسمة كبيرة من</p>
+<p>نضبط حجم التطبيق ونقوم بالتخطيط. (تُتحقق هذه الأمور بتشغيل
+التطبيق والتأكد من أنه يبدو جيدًا مهما كان تغطية الاختبار جيدة،
+فيجب ألا تُتخطى هذه الخطوة!)</p>
+<pre><code class="language-java"><span class="hljs-keyword">package</span> com.catehuston.imagefilter.app;
+
+<span class="hljs-keyword">import</span> java.io.File;
+
+<span class="hljs-keyword">import</span> processing.core.PApplet;
+
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.color.ColorHelper;
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.color.PixelColorHelper;
+<span class="hljs-keyword">import</span> com.catehuston.imagefilter.model.ImageState;
+
+<span class="hljs-meta">@SuppressWarnings(&quot;serial&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ImageFilterApp</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">PApplet</span> {
+
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">INSTRUCTIONS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;...&quot;</span>;
+
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">FILTER_HEIGHT</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">FILTER_INCREMENT</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">HUE_INCREMENT</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">HUE_RANGE</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">IMAGE_MAX</span> <span class="hljs-operator">=</span> <span class="hljs-number">640</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">RGB_COLOR_RANGE</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">SIDE_BAR_PADDING</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">SIDE_BAR_WIDTH</span> <span class="hljs-operator">=</span> RGB_COLOR_RANGE + <span class="hljs-number">2</span> * SIDE_BAR_PADDING + <span class="hljs-number">50</span>;
+
+  <span class="hljs-keyword">private</span> ImageState imageState;
+
+  <span class="hljs-type">boolean</span> <span class="hljs-variable">redrawImage</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">setup</span><span class="hljs-params">()</span> {
+    noLoop();
+    imageState = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ImageState</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ColorHelper</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PixelColorHelper</span>()));
+
+    <span class="hljs-comment">// Set up the view.</span>
+    size(IMAGE_MAX + SIDE_BAR_WIDTH, IMAGE_MAX);
+    background(<span class="hljs-number">0</span>);
+
+    chooseFile();
+  }
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">draw</span><span class="hljs-params">()</span> {
+    <span class="hljs-comment">// Draw image.</span>
+    <span class="hljs-keyword">if</span> (imageState.image().image() != <span class="hljs-literal">null</span> &amp;&amp; redrawImage) {
+      background(<span class="hljs-number">0</span>);
+      drawImage();
+    }
+
+    colorMode(RGB, RGB_COLOR_RANGE);
+    fill(<span class="hljs-number">0</span>);
+    rect(IMAGE_MAX, <span class="hljs-number">0</span>, SIDE_BAR_WIDTH, IMAGE_MAX);
+    stroke(RGB_COLOR_RANGE);
+    line(IMAGE_MAX, <span class="hljs-number">0</span>, IMAGE_MAX, IMAGE_MAX);
+
+    <span class="hljs-comment">// Draw red line</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> IMAGE_MAX + SIDE_BAR_PADDING;
+    <span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span> * SIDE_BAR_PADDING;
+    stroke(RGB_COLOR_RANGE, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    line(x, y, x + RGB_COLOR_RANGE, y);
+    line(x + imageState.redFilter(), y - FILTER_HEIGHT,
+        x + imageState.redFilter(), y + FILTER_HEIGHT);
+
+    <span class="hljs-comment">// Draw green line</span>
+    y += <span class="hljs-number">2</span> * SIDE_BAR_PADDING;
+    stroke(<span class="hljs-number">0</span>, RGB_COLOR_RANGE, <span class="hljs-number">0</span>);
+    line(x, y, x + RGB_COLOR_RANGE, y);
+    line(x + imageState.greenFilter(), y - FILTER_HEIGHT,
+        x + imageState.greenFilter(), y + FILTER_HEIGHT);
+
+    <span class="hljs-comment">// Draw blue line</span>
+    y += <span class="hljs-number">2</span> * SIDE_BAR_PADDING;
+    stroke(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, RGB_COLOR_RANGE);
+    line(x, y, x + RGB_COLOR_RANGE, y);
+    line(x + imageState.blueFilter(), y - FILTER_HEIGHT,
+        x + imageState.blueFilter(), y + FILTER_HEIGHT);
+
+    <span class="hljs-comment">// Draw white line.</span>
+    y += <span class="hljs-number">2</span> * SIDE_BAR_PADDING;
+    stroke(HUE_RANGE);
+    line(x, y, x + <span class="hljs-number">100</span>, y);
+    line(x + imageState.hueTolerance(), y - FILTER_HEIGHT,
+        x + imageState.hueTolerance(), y + FILTER_HEIGHT);
+
+    y += <span class="hljs-number">4</span> * SIDE_BAR_PADDING;
+    fill(RGB_COLOR_RANGE);
+    text(INSTRUCTIONS, x, y);
+    updatePixels();
+  }
+
+  <span class="hljs-comment">// Callback for selectInput(), has to be public to be found.</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">fileSelected</span><span class="hljs-params">(File file)</span> {
+    <span class="hljs-keyword">if</span> (file == <span class="hljs-literal">null</span>) {
+      println(<span class="hljs-string">&quot;User hit cancel.&quot;</span>);
+    } <span class="hljs-keyword">else</span> {
+      imageState.setFilepath(file.getAbsolutePath());
+      imageState.setUpImage(<span class="hljs-built_in">this</span>, IMAGE_MAX);
+      redrawImage = <span class="hljs-literal">true</span>;
+      redraw();
+    }
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">drawImage</span><span class="hljs-params">()</span> {
+    imageMode(CENTER);
+    imageState.updateImage(<span class="hljs-built_in">this</span>, HUE_RANGE, RGB_COLOR_RANGE, IMAGE_MAX);
+    image(imageState.image().image(), IMAGE_MAX/<span class="hljs-number">2</span>, IMAGE_MAX/<span class="hljs-number">2</span>, 
+                imageState.image().getWidth(), imageState.image().getHeight());
+    redrawImage = <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">keyPressed</span><span class="hljs-params">()</span> {
+    <span class="hljs-keyword">switch</span>(key) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;c&#x27;</span>:
+      chooseFile();
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;p&#x27;</span>:
+      redrawImage = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">break</span>;
+    <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27; &#x27;</span>:
+      imageState.resetImage(<span class="hljs-built_in">this</span>, IMAGE_MAX);
+      redrawImage = <span class="hljs-literal">true</span>;
+      <span class="hljs-keyword">break</span>;
+    }
+    imageState.processKeyPress(key, FILTER_INCREMENT, RGB_COLOR_RANGE, 
+                HUE_INCREMENT, HUE_RANGE);
+    redraw();
+  }
+
+  <span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title function_">chooseFile</span><span class="hljs-params">()</span> {
+    <span class="hljs-comment">// Choose the file.</span>
+    selectInput(<span class="hljs-string">&quot;Select a file to process:&quot;</span>, <span class="hljs-string">&quot;fileSelected&quot;</span>);
+  }
+}
+</code></pre>
+<p>لاحظ ما يلي:</p>
+<ul>
+<li>تنفيذنا يمتد من <code>PApplet</code>.</li>
+<li>معظم العمل يُنجَز في <code>ImageState</code>.</li>
+<li><code>fileSelected()</code> هي دالة الاستدعاء (<em>callback</em>) الخاصة بـ<code>selectInput()</code>.</li>
+<li>تُعرَّف الثوابت <code>static final</code> في الأعلى.</li>
+</ul>
+<h2 id="قيمة-النمذجة-الأولية">قيمة النمذجة الأولية</h2>
+<p>في البرمجة الواقعية، نقضي وقتًا طويلًا في عمل الإنتاجية.
+في جعل الأشياء تبدو في حدّ الكمال. وفي صيانة 99.9%
+من زمن التشغيل. ونقضي وقتًا أطول في الحالات الحدية مما نقضيه في تنقيح الخوارزميات.</p>
+<p>هذه القيود والمتطلبات مهمة لمستخدمينا. غير أنه أيضًا
+متّسع لنحرّر أنفسنا منها لنلعب ونستكشف.</p>
+<p>وفي النهاية قرّرت أن أنقل هذا إلى تطبيق متنقل أصلي. لدى Processing
+مكتبة لـAndroid، لكن كما يفعل كثير من مطوّري التطبيقات المتنقلة، اخترت أن أبدأ بـiOS. فقد
+كانت لدي سنوات من الخبرة في iOS، مع أنني لم أفعل الكثير مع CoreGraphics، لكنني
+لا أظن أنني كنت سأتمكن من بنائه فورًا على iOS حتى لو خطرت لي هذه الفكرة في البداية.
+أجبرتني المنصة على العمل في فضاء ألوان RGB،
+وجعلت استخراج البكسلات من الصورة صعبًا (مرحبًا، C).
+كانت الذاكرة والانتظار خطرًا رئيسيًا.</p>
+<p>كانت هناك لحظات مذهلة،
+حين عمل الأمر لأول مرة. حين شغّل على جهازي أول مرة... دون
+انهيار. حين حسّنت استهلاك الذاكرة بنسبة 66% وقصرت ثوانٍ من زمن التشغيل.
+وكانت هناك فترات طويلة مقفلة في غرفة مظلمة، كنت
+لاعنًا بين حين وآخر.</p>
+<p>ولأنني كنت أملك النموذج الأولي، استطعت أن أشرح لشريكي في العمل ولمصمّمنا
+ما كنت أفكر فيه وما سيفعله التطبيق. وهذا يعني أنني فهمت بعمق كيف
+سيعمل، ولم يكن الأمر سوى جعله يعمل
+بصورة جميلة على هذه المنصة الأخرى. كنت أعرف ما كنت أستهدفه، لذا في نهاية
+يوم طويل مقفَل فيه أُصارعه وأشعر أن لديlittle ما أعرضه
+، كنت أواصل العمل… ثم أبلغ لحظة مذهلة ومحطة مهمة في
+صباح اليوم التالي.</p>
+<p>إذن، كيف تجد اللون الغالب في صورة؟ هناك تطبيق
+لذلك: <a href="http://showandhide.com">Show &amp; Hide</a>.</p>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/500-lines/functionalDB/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">قاعدة بيانات مستوحاة من علم الآثار</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/500-lines/interpreter/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مفسّر بايثون مكتوب بلغة بايثون</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_clnj0b = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.B2xm9FgE.js"),
+						import("../../../../_app/immutable/entry/app.DiF48pvl.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

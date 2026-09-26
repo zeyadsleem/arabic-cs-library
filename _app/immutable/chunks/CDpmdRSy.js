@@ -1,0 +1,689 @@
+const s="500-lines",n="static-analysis",a="Static Analysis",e="index",l="التحليل الساكن",p=[{depth:2,id:"مقدمة",text:"مقدّمة"},{depth:2,id:"مقدمة-سريعة-جدا-إلى-جوليا",text:"مقدّمة سريعة جدًا إلى جوليا"},{depth:2,id:"فحص-أنواع-المتغيرات-في-الحلقات",text:"فحص أنواع المتغيّرات في الحلقات"},{depth:3,id:"لماذا-هذا-مهم",text:"لماذا هذا مهمّ"},{depth:3,id:"تفاصيل-التنفيذ",text:"تفاصيل التنفيذ"},{depth:3,id:"جعل-هذا-قابلا-للاستخدام",text:"جعل هذا قابلًا للاستخدام"},{depth:2,id:"البحث-عن-متغيرات-غير-مستخدمة",text:"البحث عن متغيّرات غير مستخدمة"},{depth:3,id:"الجانب-الأيسر-والجانب-الأيمن",text:"الجانب الأيسر والجانب الأيمن"},{depth:3,id:"البحث-عن-المتغيرات-المستخدمة-مرة-واحدة",text:"البحث عن المتغيّرات المستخدَمة مرّة واحدة"},{depth:2,id:"الخلاصة",text:"الخلاصة"}],o=`<p><em>لياه هانسون خريجة مميزة من مدرسة هاكر، وتحبّ مساعدة الناس على التعلّم عن جوليا. تكتب مدونتها على <a href="http://blog.leahhanson.us/">http://blog.leahhanson.us/</a> وتغرّد على <a href="https://twitter.com/astrieanna">@astrieanna</a>.</em></p>
+<h2 id="مقدمة">مقدّمة</h2>
+<p>ربما تكون على معرفة بمحرّك متطوّر (IDE) فاخر يرسم خطوطًا حمراء تحت أجزاء من شيفرتك التي لا تُصرَّف. ربما شغّلت مدقّق تنسيق (linter) على شيفرتك للتحقق من مشكلات التنسيق أو الأسلوب. ربما تشغّل مُصرِّفك في وضع بالغ التدقيق مع كل التحذيرات مفعّلة. كل هذه الأدوات هي تطبيقات للتحليل الساكن (static analysis).</p>
+<p>التحليل الساكن هو طريقة للتحقق من وجود مشكلات في شيفرتك دون تشغيلها. تعني «ساكنة» وقت التصريف (compile time) لا وقت التشغيل (run time)، وتعني «التحليل» أننا نحلّل الشيفرة. وحين استخدمت الأدوات التي ذكرتها أعلاه، ربما شعرت أنها سحر. لكن تلك الأدوات مجرد برامج—فهي مبنيّة من شيفرة مصدرية كتبها إنسان، مبرمج مثلك. في هذا الفصل، سنتحدث عن كيفية تنفيذ بعض فحوص التحليل الساكن. ولكي نفعل ذلك، نحتاج إلى أن نعرف ما نريد أن يفعله الفحص وكيف نريد أن نفّذه.</p>
+<p>يمكن أن نكون أكثر تحديدًا فيما تحتاج إلى معرفته بوصف العملية ثلاث مراحل:</p>
+<h4>1. تحديد ما تريد أن تفحص عنه.</h4>
+<p>ينبغي أن تستطيع شرح المشكلة العامة التي تريد حلها، بصياغات يعرفها مستخدمو لغة البرمجة. من الأمثلة:</p>
+<ul>
+<li>العثور على أسماء المتغيّرات المكتوبة خطأً</li>
+<li>العثور على حالات السباق (race conditions) في الشيفرة المتوازية</li>
+<li>العثور على استدعاءات دوالّ غير مُنفَّذة</li>
+</ul>
+<h4>2. تحديد كيف تفحص عنه بدقّة.</h4>
+<p>أثناء ما نستطيع أن نطلب من صديق تنفيذ إحدى المهام المذكورة أعلاه، فإنّها ليست محدّدة بما يكفي لتُشرح لجهاز حاسوب. فمثلًا، ولمصطلح «أسماء المتغيّرات المكتوبة خطأً»، نحتاج إلى أن نقرّر ما الذي يعنيه «مكتوب خطأً» هنا. أحد الخيارات هو أن نطالب بأن تتكوّن أسماء المتغيّرات من كلمات إنجليزية موجودة في القاموس؛ وخيار آخر هو البحث عن متغيّرات لا تُستخدم إلا مرّة واحدة (المرة التي أخطأت فيها في الكتابة).</p>
+<p>إذا كنا نعرف أننا نبحث عن متغيّرات لا تُستخدم إلا مرّة واحدة، فيمكننا التحدث عن أنواع استخدامات المتغيّرات (إسناد قيمتها مقابل قراءتها) وعن أي شيفرة تُطلق تحذيرًا أو لا تُطلقه.</p>
+<h4>3. تفاصيل التنفيذ.</h4>
+<p>يغطّي هذا الفعل الفعلي لكتابة الشيفرة، والوقت المُقضى في قراءة توثيق المكتبات التي تستخدمها، والبحث عن كيفية الوصول إلى المعلومات التي تحتاجها لإجراء التحليل. وقد يشمل ذلك قراءة ملف شيفرة، وتحليله (parsing) لفهم بنيته، ثم إجراء فحصك المحدّد على تلك البنية.</p>
+<p>سنمرّ عبر هذه الخطوات لكل فحص من الفحوص المنفَّذة في هذا الفصل. تتطلب الخطوة الأولى فهمًا كافيًا للغة التي نحلّلها للتعاطف مع المشكلات التي يواجهها مستخدموها. كل الشيفرة في هذا الفصل هي شيفرة جوليا، كُتبت لتحليل شيفرة جوليا.</p>
+<h2 id="مقدمة-سريعة-جدا-إلى-جوليا">مقدّمة سريعة جدًا إلى جوليا</h2>
+<p>جوليا لغة فتيّة تستهدف الحوسبة التقنية. أُصدرت بالإصدار 0.1 في ربيع عام 2012؛ وفي بداية عام 2015 بلغت الإصدار 0.3. عمومًا، تبدو جوليا شبيهة جدًا بايثون، لكن مع بعض شروح الأنواع الاختيارية ودون أيّ أمور موجّهة نحو الكائنات. الميزة التي سيجد معظم المبرمجين جديدة في جوليا هي التوجيه المتعدّد (multiple dispatch)، الذي له تأثير بالغ على تصميم واجهات البرمجة (API) وعلى خيارات التصميم الأخرى في اللغة.</p>
+<p>إليك مقتطفًا من شيفرة جوليا:</p>
+<pre><code class="language-julia"><span class="hljs-comment"># A comment about increment</span>
+<span class="hljs-keyword">function</span> increment(x::<span class="hljs-built_in">Int64</span>)
+  <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+<span class="hljs-keyword">end</span>
+
+increment(<span class="hljs-number">5</span>)
+</code></pre>
+<p>تُعرّف هذه الشيفرة طريقة (method) للدالة <code>increment</code> تأخذ وسيطًا واحدًا اسمه <code>x</code> من النوع <code>Int64</code>. تُرجع الطريقة قيمة <code>x + 1</code>. ثم تُستدعى هذه الطريقة المُعرَّفة حديثًا بالقيمة <code>5</code>؛ وسيُقيَّم استدعاء الدالة، كما خمّنت، إلى <code>6</code>.</p>
+<p><code>Int64</code> هو نوع قيمه أعداد صحيحة مُوقّعة تُمثَّل في الذاكرة بـ 64 بت؛ وهي الأعداد الصحيحة التي يفهمها عتادك إذا كان حاسوبك بمعالج 64 بت. تُعرّف الأنواع في جوليا تمثيل البيانات في الذاكرة، فضلًا عن تأثيرها في توجيه الدوال.</p>
+<p>يشير الاسم <code>increment</code> إلى دالة عامة (generic function)، قد يكون لها عدّة طرق. لقد عرّفنا طريقة واحدة منها فقط. في كثرة من اللغات، تُستخدم مصطلحا «دالة» و«طريقة» بالتبادل؛ أما في جوليا فلهما معنيان مختلفان. سيصبح هذا الفصل أوضح إن خصّصت وقتك لفهم «الدالة» بوصفها مجموعةً مسمّاة من الطرق، حيث «الطريقة» هي تنفيذ محدّد لتوقيع نوع محدّد.</p>
+<p>لنُعرّف طريقة أخرى لدالة <code>increment</code>:</p>
+<pre><code class="language-julia"><span class="hljs-comment"># Increment x by y</span>
+<span class="hljs-keyword">function</span> increment(x::<span class="hljs-built_in">Int64</span>, y::<span class="hljs-built_in">Number</span>)
+  <span class="hljs-keyword">return</span> x + y
+<span class="hljs-keyword">end</span>
+
+increment(<span class="hljs-number">5</span>) <span class="hljs-comment"># =&gt; 6</span>
+increment(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) <span class="hljs-comment"># =&gt; 9</span>
+</code></pre>
+<p>أصبح للدالة <code>increment</code> الآن طريقتان. تقرّر جوليا أيّ طريقة تُنفَّذ لاستدعاء معيّن بناءً على عدد الوسائط وأنواعها؛ وهذا ما يُسمّى <em>التوجيه المتعدّد الديناميكي</em> (dynamic multiple dispatch):</p>
+<ul>
+<li><strong>ديناميكي</strong> لأنه مبنيّ على أنواع القيم المستخدَمة وقت التشغيل.</li>
+<li><strong>متعدّد</strong> لأنه ينظر إلى أنواع جميع الوسائط وترتيبها.</li>
+<li><strong>توجيه</strong> لأنه طريقة لمطابقة استدعاءات الدوالّ مع تعريفات الطرق.</li>
+</ul>
+<p>لوضع هذا في سياق اللغات التي قد تعرفها بالفعل، تستخدم اللغات الموجّهة نحو الكائنات التوجيه الأحادي لأنها لا تأخذ في الحسبان إلّا الوسيط الأول. (في <code>x.foo(y)</code>، الوسيط الأول هو <code>x</code>.)</p>
+<p>كلٌّ من التوجيه الأحادي والمتعدّد مبنيّ على أنواع الوسائط. أما <code>x::Int64</code> أعلاه فهو شرح نوع (type annotation) صِرف لأغراض التوجيه فحسب. في نظام الأنواع الديناميكي في جوليا، يمكنك إسناد قيمة من أي نوع إلى <code>x</code> أثناء الدالة دون أن يقع خطأ.</p>
+<p>لم نَرَ بعد الجزء «المتعدّد» حقًا، لكن إن كنت فضوليًا تجاه جوليا فستحتاج إلى البحث عن ذلك بنفسك. علينا أن نمضي إلى فحصنا الأول.</p>
+<h2 id="فحص-أنواع-المتغيرات-في-الحلقات">فحص أنواع المتغيّرات في الحلقات</h2>
+<p>كما في معظم لغات البرمجة، يتطلّب كتابة شيفرة سريعة جدًا في جوليا فهمَ كيفية عمل الحاسوب وكيفية عمل جوليا. والجزء المهم من مساعدة المُصرِّف على إنشاء شيفرة سريعة هو كتابة شيفرة مستقرّة الأنواع (type-stable)؛ وهذا مهمّ في جوليا وجافاسكريبت، وهو مفيد أيضًا في لغات JIT الأخرى. عندما يستطيع المُصرِّف أن يرى أن متغيّرًا في قسم من الشيفرة سيحتوي دائمًا على النوع المحدّد نفسه، يستطيع أن يُجري تحسينات (optimizations) أكثر مما لو اعتقد (بصواب أو بخطأ) أن هناك أنواعًا محتملة متعدّدة لذلك المتغيّر. يمكنك قراءة المزيد عن سبب أهمية استقرار الأنواع (والمعروف أيضًا بـ«الوحيدة الشكل»، أي monomorphism) في جافاسكريبت <a href="http://mrale.ph/blog/2015/01/11/whats-up-with-monomorphism.html">على الويب</a>.</p>
+<h3 id="لماذا-هذا-مهم">لماذا هذا مهمّ</h3>
+<p>لنكتب دالة تأخذ <code>Int64</code> وتزيده بمقدار ما. إذا كان العدد صغيرًا (أقل من 10) فلنزيده بعدد كبير (50)، لكن إن كان كبيرًا فلنزيده بـ 0.5 فقط.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> increment(x::<span class="hljs-built_in">Int64</span>)
+  <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">10</span>
+    x = x + <span class="hljs-number">50</span>
+  <span class="hljs-keyword">else</span>
+    x = x + <span class="hljs-number">0.5</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> x
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>تبدو هذه الدالة بسيطة إلى حدّ كبير، لكنّ نوع <code>x</code> غير مستقرّ. لقد اخترت عددين: 50 وهو <code>Int64</code>، و0.5 وهو <code>Float64</code>. وبناءً على قيمة <code>x</code>، قد يُضاف إلى أحدهما أو الآخر. إن أضفت <code>Int64</code> مثل 22 إلى <code>Float64</code> مثل 0.5، ستحصل على <code>Float64</code> (22.5). ولأنّ نوع المتغيّر في الدالة (<code>x</code>) يمكن أن يتغيّر تبعًا لقيمة وسائط الدالة (<code>x</code>)، فإنّ طريقة <code>increment</code> هذه، وعلى الأخصّ المتغيّر <code>x</code>، غير مستقرّة الأنواع.</p>
+<p><code>Float64</code> هو نوع يمثّل قيم الفاصلة العائمة المخزَّنة في 64 بت؛ وفي C تُسمّى <code>double</code>. وهذا أحد أنواع الفاصلة العائمة التي يفهمها المعالجات ذات 64 بت.</p>
+<p>وكما مع معظم مشكلات الكفاءة، تكون هذه المشكلة أكثر وضوحًا حين تحدث أثناء الحلقات. تُنفَّذ الشيفرة داخل حلقات <code>for</code> وحلقات <code>while</code> مرّاتٍ ومرّاتٍ، لذا فجعلها سريعة أهمّ من تسريع شيفرة لا تُنفَّذ إلّا مرّة أو مرّتين. لذلك فإنّ فحصنا الأول هو البحث عن متغيّرات ذات أنواع غير مستقرّة داخل الحلقات.</p>
+<p>أولًا، لننظر إلى مثال لما نريد التقاطه. سننظر إلى دالتين. كلتاهما تجمع الأعداد من 1 إلى 100، لكن بدلًا من جمع الأعداد الصحيحة، تقسم كل واحد منها على 2 قبل جمعه. كلتا الدالتين ستحصلان على الإجابة نفسها (2525.0)؛ وكلتاهما ستُرجع النوع نفسه (<code>Float64</code>). لكن الدالة الأولى، <code>unstable</code>، تعاني من عدم استقرار الأنواع، بينما الثانية، <code>stable</code>، لا تعاني.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> unstable()
+  sum = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>:<span class="hljs-number">100</span>
+    sum += i/<span class="hljs-number">2</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> sum
+<span class="hljs-keyword">end</span>
+</code></pre>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> stable()
+  sum = <span class="hljs-number">0.0</span>
+  <span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>:<span class="hljs-number">100</span>
+    sum += i/<span class="hljs-number">2</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> sum
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>الفرق النصّي الوحيد بين الدالتين هو في تهيئة <code>sum</code>: <code>sum = 0</code> مقابل <code>sum = 0.0</code>. في جوليا، <code>0</code> قيمة حرفية من نوع <code>Int64</code>، و<code>0.0</code> قيمة حرفية من نوع <code>Float64</code>. كم يمكن لهذا التغيير البسيط أن يُحدث من فرق؟</p>
+<p>لأنّ جوليا مُصرَّفة في اللحظة (Just-In-Time، JIT)، فإنّ التشغيل الأول للدالة سيستغرق وقتًا أطول من التشغيلات التالية. (يتضمّن التشغيل الأول الوقت اللازم لتصريف الدالة لهذه الأنواع من الوسائط.) وحين نقيس أداء الدوالّ، يجب أن نتأكّد من تشغيلها مرّة واحدة (أو تصريفها مسبقًا) قبل توقيتها.</p>
+<pre><code class="language-julia">julia&gt; unstable()
+<span class="hljs-number">2525.0</span>
+
+julia&gt; stable()
+<span class="hljs-number">2525.0</span>
+
+julia&gt; <span class="hljs-meta">@time</span> unstable()
+elapsed time: <span class="hljs-number">9.517e-6</span> seconds (<span class="hljs-number">3248</span> bytes allocated)
+<span class="hljs-number">2525.0</span>
+
+julia&gt; <span class="hljs-meta">@time</span> stable()
+elapsed time: <span class="hljs-number">2.285e-6</span> seconds (<span class="hljs-number">64</span> bytes allocated)
+<span class="hljs-number">2525.0</span>
+</code></pre>
+<p>تطبع ماكرو <code>@time</code> المدة التي استغرقتها الدالة في التنفيذ وعدد البايتات المخصَّصة أثناء تنفيذها. يزداد عدد البايتات المخصَّصة كلّما احتجنا ذاكرة جديدة؛ ولا ينخفض حين يمتصّ جامع القمامة الذاكرة التي لم تعد مستخدَمة. وهذا يعني أنّ البايتات المخصَّصة مرتبطة بمقدار الوقت الذي نقضيه في تخصيص الذاكرة وإدارتها، لكنّه لا يعني أنّنا استخدمنا كل تلك الذاكرة في الوقت نفسه.</p>
+<p>لو أردنا أرقامًا قاطعة لـ <code>stable</code> مقابل <code>unstable</code>، لكان علينا أن نجعل الحلقة أطول بكثير أو أن نشغّل الدوالّ مرّاتٍ كثيرة. لكن يبدو أنّ <code>unstable</code> على الأرجح أبطأ. والأمر الأكثر إثارة للاهتمام هو أنّنا نرى فجوة كبيرة في عدد البايتات المخصَّصة؛ فقد خُصِّصت لـ <code>unstable</code> نحو 3 كيلوبايت من الذاكرة، بينما تستخدم <code>stable</code> 64 بايت.</p>
+<p>بما أننا نرى مدى بساطة <code>unstable</code>، يمكننا أن نخمّن أنّ هذا التخصيص يحدث في الحلقة. ولاختبار ذلك، يمكننا أن نجعل الحلقة أطول ونرى إن كانت التخصيصات تزداد تبعًا لذلك. لنجعل الحلقة تذهب من 1 إلى 10000، أي مئة ضعف عدد التكرارات؛ وسنبحث عن أن يزداد عدد البايتات المخصَّصة نحو مئة ضعف أيضًا، أي إلى نحو 300 كيلوبايت.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> unstable()
+  sum = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>:<span class="hljs-number">10000</span>
+    sum += i/<span class="hljs-number">2</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> sum
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>بما أننا أعدنا تعريف الدالة، فسنحتاج إلى تشغيلها كي تُصرَّف قبل أن نقيسها. نتوقّع أن نحصل على إجابة مختلفة وأكبر من التعريف الجديد للدالة، لأنها تجمع الآن أعدادًا أكثر.</p>
+<pre><code class="language-julia">julia&gt; unstable()
+<span class="hljs-number">2.50025e7</span>
+
+julia&gt;<span class="hljs-meta">@time</span> unstable()
+elapsed time: <span class="hljs-number">0.000667613</span> seconds (<span class="hljs-number">320048</span> bytes allocated)
+<span class="hljs-number">2.50025e7</span>
+</code></pre>
+<p>خُصِّصت لـ <code>unstable</code> الجديدة نحو 320 كيلوبايت، وهو ما نتوقّعه إذا كانت التخصيصات تحدث في الحلقة. ولشرح ما يجري هنا، سننظر إلى كيفية عمل جوليا في الطبقة الداخلية من اليمين.</p>
+<p>يحدث هذا الفرق بين <code>unstable</code> و<code>stable</code> لأنّ <code>sum</code> في <code>unstable</code> يجب أن يُصنَّف في صندوق (boxed)، بينما يمكن أن يُخرَج من الصندوق (unboxed) في <code>stable</code>. تتكوّن القيم المصنَّفة في صندوق من وسم نوع وبتات القيمة الفعلية؛ أمّا القيم المخرَجة من الصندوق فلا تملك إلّا بتاتها الفعلية. لكن وسم النوع صغير، فليس هذا سبب تخصيص ذاكرة أكبر بكثير عند تصنيف القيم في صناديق.</p>
+<p>يأتي الفرق مما يمكن للمُصرِّف من إجرائه من تحسينات. عندما يكون للمتغيّر نوع ملموس غير قابل للتغيير، يمكن للمُصرِّف أن يُخرجه من الصندوق داخل الدالة. وإن لم يكن كذلك، فيجب تخصيص المتغيّر على الكومة (heap)، وأن يشارك في جامع القمامة. الأنواع غير القابلة للتغيير مفهوم خاصّ بجوليا. لا يمكن تغيير قيمة من نوع غير قابل للتغيير.</p>
+<p>الأنواع غير القابلة للتغيير عادةً هي أنواع تمثّل قيمًا لا مجموعات قيم. فمثلًا، معظم الأنواع العددية، بما فيها <code>Int64</code> و<code>Float64</code>، غير قابلة للتغيير. (الأنواع العددية في جوليا أنواع عادية وليست أنواعًا أولية خاصّة؛ يمكنك أن تُعرّف <code>MyInt64</code> جديدة تكون نفسها الموفَّرة.) ولأنّ الأنواع غير القابلة للتغيير لا يمكن تعديلها، يجب أن تُنشئ نسخة جديدة كلّما أردت تغيير واحدة. فمثلًا، يجب أن يُنشئ <code>4 + 6</code> قيمة <code>Int64</code> جديدةً لتخزين النتيجة. وعلى النقيض، يمكن تحديث أعضاء النوع القابل للتغيير في مكانه؛ وهذا يعني أنّك لست مضطرًا إلى إنشاء نسخة من الكل لتُجري تغييرًا واحدًا.</p>
+<p>من المحتمل أن تبدو فكرة أنّ <code>x = x + 2</code> تُخصّص ذاكرة غريبة حقًا؛ فلماذا تجعل عملية بهذه البسيطة بطيئة بجعل قيم <code>Int64</code> غير قابلة للتغيير؟ هنا تظهر تحسينات المُصرِّف تلك: فاستخدام الأنواع غير القابلة للتغيير لا يُبطئ هذا (عادةً). إن كان لـ <code>x</code> نوع ملموس مستقرّ (مثل <code>Int64</code>)، فالمُصرِّف حرّ في أن يخصّص <code>x</code> على المكدّس ويعدّل <code>x</code> في مكانه. والمشكلة تحدث فقط عندما يكون لـ <code>x</code> نوع غير مستقرّ (فلا يعرف المُصرِّف حجمه ولا نوعه)؛ ومتى صُنِّفت <code>x</code> في صندوق ووُضعت على الكومة، لا يكون المُصرِّف واثقًا تمامًا من أنّ قطعة شيفرة أخرى لا تستخدم القيمة، وبالتالي لا يستطيع تعديلها.</p>
+<p>ولأنّ <code>sum</code> في <code>stable</code> له نوع ملموس (<code>Float64</code>)، يعرف المُصرِّف أنّه يستطيع تخزينه محليًا مخرجًا من الصندوق داخل الدالة وتعديل قيمته؛ فلن تُخصَّص <code>sum</code> على الكومة ولن نحتاج إلى إنشاء نسخ جديدة كلّما أضفنا <code>i/2</code>.</p>
+<p>ولأنّ <code>sum</code> في <code>unstable</code> ليس له نوع ملموس، يخصّصه المُصرِّف على الكومة. وكلّما عدّلنا <code>sum</code>، خُصِّصت قيمة جديدة على الكومة. وكلّ هذا الوقت المُقضى في تخصيص القيم على الكومة (واسترجاعها كلّما أردنا قراءة قيمة <code>sum</code>) مكلف.</p>
+<p>استخدام <code>0</code> مقابل <code>0.0</code> خطأ يسهل ارتكابه، خاصّةً حين تكون جديدًا على جوليا. والفحص التلقائي من ثبات أنواع المتغيّرات المستخدَمة في الحلقات يساعد المبرمجين على فهم أعمق لأنواع متغيّراتهم في الأقسام الحرجة للأداء من شيفرتهم.</p>
+<h3 id="تفاصيل-التنفيذ">تفاصيل التنفيذ</h3>
+<p>سنحتاج إلى معرفة أيّ المتغيّرات تُستخدم داخل الحلقات، وسنحتاج إلى معرفة أنواع تلك المتغيّرات. ثمّ سنحتاج إلى أن نقرّر كيف نطبعها بصيغة مقروءة للبشر.</p>
+<ul>
+<li>كيف نجد الحلقات؟</li>
+<li>كيف نجد المتغيّرات في الحلقات؟</li>
+<li>كيف نجد نوع متغيّر؟</li>
+<li>كيف نطبع النتائج؟</li>
+<li>كيف نعرف إن كان النوع غير مستقرّ؟</li>
+</ul>
+<p>سأتناول السؤال الأخير أولًا، لأنّ هذه المحاولة بأكملها معلّقة عليه. لقد نظرنا إلى دالة غير مستقرّة ورأينا، كمبرمجَين، كيفية تعرّف متغيّر غير مستقرّ، لكننا بحاجة إلى أن يجد برنامجنا هذه المتغيّرات. هذا يبدو وكأنّه يتطلّب محاكاة الدالة للبحث عن متغيّرات قد تتغيّر قيمها—وهو ما يبدو وكأنّه سيستغرق جهدًا كبيرًا. لكنّ من حُسن حظّنا، فإنّ استنتاج الأنواع (type inference) في جوليا يتتبّع أصلًا تنفيذ الدالة لتحديد الأنواع.</p>
+<p>نوع <code>sum</code> في <code>unstable</code> هو <code>Union(Float64,Int64)</code>. وهذا <code>UnionType</code>، وهو نوع خاصّ يدلّ على أنّ المتغيّر قد يحمل أيًّا من مجموعة من الأنواع. يمكن لمتغيّر من نوع <code>Union(Float64,Int64)</code> أن يحمل قيمًا من نوع <code>Int64</code> أو <code>Float64</code>؛ ولا يمكن أن لقيمة واحدة إلّا أن يكون لها أحد النوعين. يَجمع <code>UnionType</code> أيّ عدد من الأنواع (مثلًا، <code>UnionType(Float64, Int64, Int32)</code> يجمع ثلاثة أنواع). وما سنبحث عنه هو المتغيّرات التي من نوع <code>UnionType</code> داخل الحلقات.</p>
+<p>تحليل الشيفرة إلى بنية تمثيلية عمل معقّد، ويصير أعقد مع نموّ اللغة. في هذا الفصل، سنعتمد على بنى البيانات الداخلية التي يستخدمها المُصرِّف. وهذا يعني أننا لا نضطر إلى قراءة الملفات أو تحليلها، لكنه يعني أيضًا أننا سنضطر إلى العمل مع بنى بيانات ليست تحت سيطرتنا وتبدو أحيانًا ثقيلة أو قبيحة.</p>
+<p>إلى جانب كلّ العمل الذي سنوفّره بعدم تحليل الشيفرة بأنفسنا، فإنّ العمل بنفس بنى البيانات التي يستخدمها المُصرِّف يعني أنّ فحوصنا ستكون مبنيّة على تقييم دقيق لفهم المُصرِّف—وهذا يعني أنّ فحصنا سيكون متّسقًا مع كيفية تشغيل الشيفرة فعليًا.</p>
+<p>تُسمّى هذه العملية بفحص شيفرة جوليا من داخل شيفرة جوليا بالتأمل الداخلي (introspection). عندما نُجري أنت أو أنا تأمّلًا داخليًا، فإنّنا نفكّر في كيفية تفكيرنا وإحساسنا ولماذا نفعل ذلك. وعندما يُجري الشيفرة تأمّلًا داخليًا، فإنّها تفحص تمثيل الشيفرة أو خصائص تنفيذها في اللغة نفسها (وربّما شيفرتها هي). وعندما يمتدّ التأمّل الداخلي ليشمل تعديل الشيفرة المفحوصة، فيُسمّى ذلك بالبرمجة الوصفية (metaprogramming)، أي البرامج التي تكتب أو تعدّل برامج.</p>
+<h4>التأمّل الداخلي في جوليا</h4>
+<p>تجعل جوليا التأمّل الداخلي سهلًا. هناك أربع دوالّ مدمجة تتيح لنا رؤية ما يفكّر فيه المُصرِّف: <code>code_lowered</code> و<code>code_typed</code> و<code>code_llvm</code> و<code>code_native</code>. وهي مرتّبة حسب المرحلة من عملية التصريف التي يأتي مخرجاتها منها؛ فأوّلها الأقرب إلى الشيفرة التي نكتبها، وآخرها الأقرب إلى ما ينفّذه معالج CPU. وسنتركّز في هذا الفصل على <code>code_typed</code>، التي تعطينا شجرة الصياغة المجرّدة (abstract syntax tree، AST) المحسَّنة والمستنتَجة الأنواع. <!-- FIXME @michaeldibernardo?: point to other 500 lines chapters that use ASTs--></p>
+<p>تأخذ <code>code_typed</code> وسيطين: الدالة محلّ الاهتمام، وطورًا من أنواع الوسائط. فمثلًا، إن أردنا رؤية شجرة الصياغة المجرّدة لدالة <code>foo</code> عند استدعائها وسيطين من نوع <code>Int64</code>، فعلينا استدعاء <code>code_typed(foo, (Int64,Int64))</code>.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> foo(x,y)
+  z = x + y
+  <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * z
+<span class="hljs-keyword">end</span>
+
+code_typed(foo,(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Int64</span>))
+</code></pre>
+<p>هذه هي البنية التي كانت <code>code_typed</code> ستُعيدها:</p>
+<pre><code>1-element Array{Any,1}:
+:($(Expr(:lambda, {:x,:y}, {{:z},{{:x,Int64,0},{:y,Int64,0},{:z,Int64,18}},{}},
+ :(begin  # none, line 2:
+        z = (top(box))(Int64,(top(add_int))(x::Int64,y::Int64))::Int64 # line 3:
+        return (top(box))(Int64,(top(mul_int))(2,z::Int64))::Int64
+    end::Int64))))
+</code></pre>
+<p>هذا <code>Array</code>؛ وهذا يسمح لـ <code>code_typed</code> بأن تُعيد عدّة طرق مطابقة. فبعض تركيبات الدوالّ وأنواع الوسائط قد لا تحدّد تمامًا أيّ طريقة ينبغي استدعاؤها. فمثلًا، يمكنك تمرير نوع مثل <code>Any</code> (بدلًا من <code>Int64</code>). و<code>Any</code> هو النوع في قمة التسلسل الهرمي للأنواع؛ فجميع الأنواع هي أنواع فرعية من <code>Any</code> (بما في ذلك <code>Any</code> نفسه). فإذا تضمّن طور أنواع وسائطنا <code>Any</code>، وكان هناك عدّة طرق مطابقة، فإنّ <code>Array</code> الآتية من <code>code_typed</code> ستحوي أكثر من عنصر واحد؛ وستحوي عنصرًا واحدًا لكل طريقة مطابقة.</p>
+<p>لنُخرج مثال <code>Expr</code> الذي لدينا ليسهل التحدث عنه.</p>
+<pre><code class="language-julia">julia&gt; e = code_typed(foo,(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Int64</span>))[<span class="hljs-number">1</span>]
+:($(<span class="hljs-built_in">Expr</span>(:lambda, {:x,:y}, {{:z},{{:x,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:y,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:z,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">18</span>}},{}},
+ :(<span class="hljs-keyword">begin</span>  <span class="hljs-comment"># none, line 2:</span>
+        z = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(x::<span class="hljs-built_in">Int64</span>,y::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span> <span class="hljs-comment"># line 3:</span>
+        <span class="hljs-keyword">return</span> (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(<span class="hljs-number">2</span>,z::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>
+    <span class="hljs-keyword">end</span>::<span class="hljs-built_in">Int64</span>))))
+</code></pre>
+<p>البنية التي تهمّنا موجودة داخل <code>Array</code>: إنها <code>Expr</code>. تستخدم جوليا <code>Expr</code> (وهي اختصار لعبارة expression، أي «تعبير») لتمثيل شجرة الصياغة المجرّدة (AST) الخاصة بها. (شجرة الصياغة المجرّدة هي الطريقة التي يفكّر بها المُصرِّف في معنى شيفرتك؛ إنها تشبه نوعًا ما الوقت الذي كنتَ تُجبَر فيه على رسم مخطّطات للجُمل في المدرسة الابتدائية.) ويمثّل <code>Expr</code> الذي نحصل عليه طريقة واحدة. وهو يحتوي على بعض البيانات الوصفية (عن المتغيّرات التي تظهر في الطريقة) والتعبيرات التي تشكّل جسم الطريقة.</p>
+<p>الآن يمكننا طرح بعض الأسئلة حول <code>e</code>.</p>
+<p>ويمكن أن نسأل ما الخصائص التي يملكها <code>Expr</code> باستخدام الدالة <code>names</code>، التي تعمل على أيّ قيمة أو نوع في جوليا. فهي تُعيد <code>Array</code> من الأسماء التي يعرّفها ذلك النوع (أو نوع القيمة).</p>
+<pre><code class="language-julia">julia&gt; names(e)
+<span class="hljs-number">3</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Symbol</span>,<span class="hljs-number">1</span>}:
+ :head
+ :args
+ :typ 
+</code></pre>
+<p>لقد سألنا <code>e</code> للتو عمّا إذا كان له أسماء، والآن يمكننا أن نسأل ما القيمة التي يقابلها كل اسم. لدى <code>Expr</code> ثلاث خصائص: <code>head</code> و<code>typ</code> و<code>args</code>.</p>
+<pre><code class="language-julia">julia&gt; e.head
+:lambda
+
+julia&gt; e.typ
+<span class="hljs-built_in">Any</span>
+
+julia&gt; e.args
+<span class="hljs-number">3</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Any</span>,<span class="hljs-number">1</span>}:
+ {:x,:y}                                                                                                                                                                                     
+ {{:z},{{:x,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:y,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:z,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">18</span>}},{}}                                                                                                                                         
+ :(<span class="hljs-keyword">begin</span>  <span class="hljs-comment"># none, line 2:</span>
+        z = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(x::<span class="hljs-built_in">Int64</span>,y::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span> <span class="hljs-comment"># line 3:</span>
+        <span class="hljs-keyword">return</span> (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(<span class="hljs-number">2</span>,z::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>
+    <span class="hljs-keyword">end</span>::<span class="hljs-built_in">Int64</span>)
+</code></pre>
+<p>لقد رأينا للتو بعض القيم مطبوعة، لكن ذلك لا يخبرنا كثيرًا عمّا تعنيه أو كيف تُستخدم.</p>
+<ul>
+<li>تخبرنا <code>head</code> بنوع التعبير الذي هو عليه؛ عادةً ما كنت ستستخدم أنواعًا منفصلة لهذا الغرض في جوليا، لكن <code>Expr</code> هو نوع يجسّد البنية المستخدَمة في المحلّل (parser). المحلّل مكتوب لهجةٍ من Scheme، تُنظّم كل شيء كقوائم متداخلة. وتخبرنا <code>head</code> بكيفية تنظيم بقية <code>Expr</code> وبنوع التعبير الذي يمثّله.</li>
+<li><code>typ</code> هو نوع الإرجاع المستنتج للتعبير؛ فعند تقييم أيّ تعبير، ينتج عن ذلك بعض القيمة. و<code>typ</code> هو نوع القيمة التي سيُقيَّم إليها التعبير. بالنسبة لمعظم <code>Expr</code>s تقريبًا، ستكون هذه القيمة <code>Any</code> (وهو صحيح دائمًا، إذ إنّ كل نوع ممكن هو نوع فرعي من <code>Any</code>). ولا يتغيّر هذا إلّا في <code>body</code> للطرق المستنتَجة الأنواع ومعظم التعبيرات داخلها، حيث يُضبط حقل <code>typ</code> فيه على شيء أكثر تحديدًا. (ولأنّ <code>type</code> كلمة محجوزة، لا يمكن لهذا الحقل أن يستخدم تلك الكلمة اسمًا له.)</li>
+<li><code>args</code> هي أكثر أجزاء <code>Expr</code> تعقيدًا؛ فبنيتها تتغيّر تبعًا لقيمة <code>head</code>. وهي دائمًا <code>Array{Any}</code> (مصفوفة غير مُنمَّطة)، لكنّ ما وراء ذلك تتغيّر البنية.</li>
+</ul>
+<p>في <code>Expr</code> يمثّل طريقة، ستكون هناك ثلاثة عناصر في <code>e.args</code>:</p>
+<pre><code class="language-julia">julia&gt; e.args[<span class="hljs-number">1</span>] <span class="hljs-comment"># names of arguments as symbols</span>
+<span class="hljs-number">2</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Any</span>,<span class="hljs-number">1</span>}:
+ :x
+ :y
+</code></pre>
+<p>الرموز (Symbols) هي نوع خاصّ لتمثيل أسماء المتغيّرات والثوابت والدوالّ والوحدات (modules). وهي نوع مختلف عن النصوص (strings) لأنها تمثّل اسم بنية برمجية (construct) تحديدًا.</p>
+<pre><code class="language-julia">julia&gt; e.args[<span class="hljs-number">2</span>] <span class="hljs-comment"># three lists of variable metadata</span>
+<span class="hljs-number">3</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Any</span>,<span class="hljs-number">1</span>}:
+ {:z}                                     
+ {{:x,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:y,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">0</span>},{:z,<span class="hljs-built_in">Int64</span>,<span class="hljs-number">18</span>}}
+ {}                                       
+</code></pre>
+<p>تحتوي القائمة الأولى أعلاه على أسماء جميع المتغيّرات المحلية؛ ولدينا هنا متغيّر واحد فقط (<code>z</code>). وتحتوي القائمة الثانية على طور لكل متغيّر محلي ولكل وسيط للطريقة؛ وكل طور يحوي اسم المتغيّر ونوعه المستنتج ورقمًا. ويؤدّي هذا الرقم إلى معلومة عن كيفية استخدام المتغيّر، بطريقة صالحة للآلة (لا للبشر). أمّا القائمة الأخيرة فهي أسماء المتغيّرات المُلتقَطة (captured)؛ وهي فارغة في هذا المثال.</p>
+<pre><code class="language-julia">julia&gt; e.args[<span class="hljs-number">3</span>] <span class="hljs-comment"># the body of the method</span>
+:(<span class="hljs-keyword">begin</span>  <span class="hljs-comment"># none, line 2:</span>
+        z = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(x::<span class="hljs-built_in">Int64</span>,y::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span> <span class="hljs-comment"># line 3:</span>
+        <span class="hljs-keyword">return</span> (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(<span class="hljs-number">2</span>,z::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>
+    <span class="hljs-keyword">end</span>::<span class="hljs-built_in">Int64</span>)
+</code></pre>
+<p>العنصران الأول والثاني من <code>args</code> هما بيانات وصفية عن الثالث. وبينما البيانات الوصفية مثيرة للاهتمام جدًّا، فإنّها ليست ضرورية الآن. الجزء المهمّ هو جسم الطريقة، وهو العنصر الثالث. وهذه <code>Expr</code> أخرى.</p>
+<pre><code class="language-julia">julia&gt; body = e.args[<span class="hljs-number">3</span>]
+:(<span class="hljs-keyword">begin</span>  <span class="hljs-comment"># none, line 2:</span>
+        z = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(x::<span class="hljs-built_in">Int64</span>,y::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span> <span class="hljs-comment"># line 3:</span>
+        <span class="hljs-keyword">return</span> (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(<span class="hljs-number">2</span>,z::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>
+    <span class="hljs-keyword">end</span>::<span class="hljs-built_in">Int64</span>)
+
+julia&gt; body.head
+:body
+</code></pre>
+<p>رأس هذا <code>Expr</code> هو <code>:body</code> لأنّه جسم الطريقة.</p>
+<pre><code class="language-julia">julia&gt; body.typ
+<span class="hljs-built_in">Int64</span>
+</code></pre>
+<p>و<code>typ</code> هو نوع الإرجاع المستنتج للطريقة.</p>
+<pre><code class="language-julia">julia&gt; body.args
+<span class="hljs-number">4</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Any</span>,<span class="hljs-number">1</span>}:
+ :( <span class="hljs-comment"># none, line 2:)                                              </span>
+ :(z = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(x::<span class="hljs-built_in">Int64</span>,y::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>)
+ :( <span class="hljs-comment"># line 3:)                                                    </span>
+ :(<span class="hljs-keyword">return</span> (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(<span class="hljs-number">2</span>,z::<span class="hljs-built_in">Int64</span>))::<span class="hljs-built_in">Int64</span>)    
+</code></pre>
+<p>تحتوي <code>args</code> على قائمة من التعبيرات: قائمة التعبيرات الموجودة في جسم الطريقة. وهناك عدد قليل من تعليقات أرقام الأسطر (أي <code>:( # line 3:)</code>)، لكن معظم الجسم يتضمّن ضبط قيمة <code>z</code> (<code>z = x + y</code>) وإرجاع <code>2 * z</code>. ولاحظ أنّ هذه العمليات استُبدلت بدوالّ جوهرية (intrinsic) خاصّة بـ <code>Int64</code>. أمّا <code>top(function-name)</code> فيدلّ على دالّة جوهرية؛ أي شيء مُنفَّذ في توليد شيفرة جوليا لا في جوليا نفسها.</p>
+<p>لم نَرَ بعد كيف تبدو الحلقة، فجرّب ذلك.</p>
+<pre><code class="language-julia">julia&gt; <span class="hljs-keyword">function</span> lloop(x)
+         <span class="hljs-keyword">for</span> x = <span class="hljs-number">1</span>:<span class="hljs-number">100</span>
+           x *= <span class="hljs-number">2</span>
+         <span class="hljs-keyword">end</span>
+       <span class="hljs-keyword">end</span>
+lloop (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)
+
+julia&gt; code_typed(lloop, (<span class="hljs-built_in">Int</span>,))[<span class="hljs-number">1</span>].args[<span class="hljs-number">3</span>]
+:(<span class="hljs-keyword">begin</span>  <span class="hljs-comment"># none, line 2:</span>
+        <span class="hljs-comment">#s120 = $(Expr(:new, UnitRange{Int64}, 1, :(((top(getfield))(Intrinsics,</span>
+         :select_value))((top(sle_int))(<span class="hljs-number">1</span>,<span class="hljs-number">100</span>)::<span class="hljs-built_in">Bool</span>,<span class="hljs-number">100</span>,(top(box))(<span class="hljs-built_in">Int64</span>,(top(
+         sub_int))(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))::<span class="hljs-built_in">Int64</span>)::<span class="hljs-built_in">Int64</span>)))::<span class="hljs-built_in">UnitRange</span>{<span class="hljs-built_in">Int64</span>}
+        <span class="hljs-comment">#s119 = (top(getfield))(#s120::UnitRange{Int64},:start)::Int64        unless </span>
+         (top(box))(<span class="hljs-built_in">Bool</span>,(top(not_int))(<span class="hljs-comment">#s119::Int64 === (top(box))(Int64,(top(</span>
+         add_int))((top(getfield))
+         (<span class="hljs-comment">#s120::UnitRange{Int64},:stop)::Int64,1))::Int64::Bool))::Bool goto 1</span>
+        <span class="hljs-number">2</span>: 
+        _var0 = <span class="hljs-comment">#s119::Int64</span>
+        _var1 = (top(box))(<span class="hljs-built_in">Int64</span>,(top(add_int))(<span class="hljs-comment">#s119::Int64,1))::Int64</span>
+        x = _var0::<span class="hljs-built_in">Int64</span>
+        <span class="hljs-comment">#s119 = _var1::Int64 # line 3:</span>
+        x = (top(box))(<span class="hljs-built_in">Int64</span>,(top(mul_int))(x::<span class="hljs-built_in">Int64</span>,<span class="hljs-number">2</span>))::<span class="hljs-built_in">Int64</span>
+        <span class="hljs-number">3</span>: 
+        unless (top(box))(<span class="hljs-built_in">Bool</span>,(top(not_int))((top(box))(<span class="hljs-built_in">Bool</span>,(top(not_int))
+         (<span class="hljs-comment">#s119::Int64 === (top(box))(Int64,(top(add_int))((top(getfield))(</span>
+         <span class="hljs-comment">#s120::UnitRange{Int64},:stop)::Int64,1))::Int64::Bool))::Bool))::Bool</span>
+         goto <span class="hljs-number">2</span>
+        <span class="hljs-number">1</span>:         <span class="hljs-number">0</span>: 
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>::<span class="hljs-built_in">Nothing</span>)
+</code></pre>
+<p>ستلاحظ أنّه لا توجد حلقة <code>for</code> ولا حلقة <code>while</code> في الجسم. فبينما يحوّل المُصرِّف الشيفرة مما كتبناه إلى التعليمات الثنائية التي يفهمها معالج CPU، تُحذف الميزات المفيدة للبشر التي لا يفهمها المعالج (مثل الحلقات). أُعيدت كتابة الحلقة كتعبيرات <code>label</code> و<code>goto</code>. ويحتوي <code>goto</code> على رقم؛ ولكل <code>label</code> رقم أيضًا. ويقفز <code>goto</code> إلى <code>label</code> ذات الرقم نفسه.</p>
+<h4>كشف الحلقات واستخراجها</h4>
+<p>سنجد الحلقات بالبحث عن تعبيرات <code>goto</code> التي تقفز إلى الخلف.</p>
+<p>سنحتاج إلى إيجاد التسميات (labels) والقفزات (gotos)، وتخمين أيّها متطابق. سأعطيك التنفيذ الكامل أولًا. وبعد جدار الشيفرة، سنفكّكها ونفحص قطعها.</p>
+<pre><code class="language-julia"><span class="hljs-comment"># This is a function for trying to detect loops in the body of a Method</span>
+<span class="hljs-comment"># Returns lines that are inside one or more loops</span>
+<span class="hljs-keyword">function</span> loopcontents(e::<span class="hljs-built_in">Expr</span>)
+  b = body(e)
+  loops = <span class="hljs-built_in">Int</span>[]
+  nesting = <span class="hljs-number">0</span>
+  lines = {}
+  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:length(b)
+    <span class="hljs-keyword">if</span> typeof(b[i]) == LabelNode
+      l = b[i].label
+      jumpback = findnext(x-&gt; (typeof(x) == GotoNode &amp;&amp; x.label == l) 
+                              || (Base.is_expr(x,:gotoifnot) &amp;&amp; x.args[<span class="hljs-keyword">end</span>] == l),
+                          b, i)
+      <span class="hljs-keyword">if</span> jumpback != <span class="hljs-number">0</span>
+        push!(loops,jumpback)
+        nesting += <span class="hljs-number">1</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> nesting &gt; <span class="hljs-number">0</span>
+      push!(lines,(i,b[i]))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">if</span> typeof(b[i]) == GotoNode &amp;&amp; <span class="hljs-keyword">in</span>(i,loops)
+      splice!(loops,findfirst(loops,i))
+      nesting -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  lines
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>والآن لنشرحها قطعةً قطعة:</p>
+<pre><code class="language-julia">b = body(e)
+</code></pre>
+<p>نبدأ بالحصول على جميع التعبيرات الموجودة في جسم الطريقة، في <code>Array</code>. و<code>body</code> هي دالة سبق لي تنفيذها:</p>
+<pre><code class="language-julia">  <span class="hljs-comment"># Return the body of a Method.</span>
+  <span class="hljs-comment"># Takes an Expr representing a Method,</span>
+  <span class="hljs-comment"># returns Vector{Expr}.</span>
+  <span class="hljs-keyword">function</span> body(e::<span class="hljs-built_in">Expr</span>)
+    <span class="hljs-keyword">return</span> e.args[<span class="hljs-number">3</span>].args
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ثم:</p>
+<pre><code class="language-julia">  loops = <span class="hljs-built_in">Int</span>[]
+  nesting = <span class="hljs-number">0</span>
+  lines = {}
+</code></pre>
+<p><code>loops</code> هي <code>Array</code> من أرقام أسطر التسميات التي تقع عندها قفزات تمثّل حلقات. أمّا <code>nesting</code> فتُشير إلى عدد الحلقات التي نحن داخلها حاليًّا. و<code>lines</code> هي <code>Array</code> من طور من الشكل (فهرس، <code>Expr</code>).</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>:length(b)
+    <span class="hljs-keyword">if</span> typeof(b[i]) == LabelNode
+      l = b[i].label
+      jumpback = findnext(
+        x-&gt; (typeof(x) == GotoNode &amp;&amp; x.label == l) 
+            || (Base.is_expr(x,:gotoifnot) &amp;&amp; x.args[<span class="hljs-keyword">end</span>] == l),
+        b, i)
+      <span class="hljs-keyword">if</span> jumpback != <span class="hljs-number">0</span>
+        push!(loops,jumpback)
+        nesting += <span class="hljs-number">1</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ننظر إلى كل تعبير في جسم <code>e</code>. إن كان تسمية (label)، فنتحقّق ممّا إذا كانت هناك قفزة (goto) تقفز إلى هذه التسمية (وتقع بعد الفهرس الحالي). فإذا كانت نتيجة <code>findnext</code> أكبر من صفر، فإنّ عقدة القفز تلك موجودة، ولذلك سنضيفها إلى <code>loops</code> (وهي <code>Array</code> الحلقات التي نحن داخلها حاليًّا) ونزيد مستوى <code>nesting</code> لدينا.</p>
+<pre><code class="language-julia">    <span class="hljs-keyword">if</span> nesting &gt; <span class="hljs-number">0</span>
+      push!(lines,(i,b[i]))
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>إن كنّا داخل حلقة حاليًّا، فندفع السطر الحالي إلى مصفوفة الأسطر التي سنُعيدها.</p>
+<pre><code class="language-julia">    <span class="hljs-keyword">if</span> typeof(b[i]) == GotoNode &amp;&amp; <span class="hljs-keyword">in</span>(i,loops)
+      splice!(loops,findfirst(loops,i))
+      nesting -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  lines
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>إن كنّا عند <code>GotoNode</code>، فنتحقّق ممّا إذا كانت نهاية حلقة. فإن كانت كذلك، نزيل المدخل من <code>loops</code> ونخفض مستوى التعشيش.</p>
+<p>نتيجة هذه الدالة هي مصفوفة <code>lines</code>، وهي مصفوفة من طور من الشكل (فهرس، قيمة). وهذا يعني أنّ كل قيمة في المصفوفة لها فهرس في جسم <code>Expr</code> الخاص بجسم الطريقة، والقيمة عند ذلك الفهرس. وكل عنصر من عناصر <code>lines</code> هو تعبير وقع داخل حلقة.</p>
+<h4>إيجاد المتغيّرات ونوعها</h4>
+<p>لقد فرغنا للتو من الدالة <code>loopcontents</code> التي تُعيد <code>Expr</code>s الموجودة داخل الحلقات. ودالتنا التالية ستكون <code>loosetypes</code>، التي تأخذ قائمة <code>Expr</code>s وتُعيد قائمة بالمتغيّرات ضعيفة النمط. لاحقًا، ستمرّر مخرجات <code>loopcontents</code> إلى <code>loosetypes</code>.</p>
+<p>في كل تعبير وقع داخل حلقة، تبحث <code>loosetypes</code> عن ظهورات الرموز (symbols) وأنواعها المرتبطة. وتظهر استخدامات المتغيّرات بوصفها <code>SymbolNode</code>s في شجرة الصياغة المجرّدة؛ وتحمل <code>SymbolNode</code>s اسم المتغيّر ونوعه المستنتج.</p>
+<p>لا يمكننا أن نكتفي بفحص كل تعبير جمعته <code>loopcontents</code> لمعرفة إن كان <code>SymbolNode</code>. فالمشكلة أنّ كل <code>Expr</code> قد يحتوي على <code>Expr</code> واحد أو أكثر؛ وكل <code>Expr</code> قد يحتوي على <code>SymbolNode</code>s واحد أو أكثر. وهذا يعني أننا بحاجة إلى استخراج أي <code>Expr</code>s متداخلة، كي نتمكن من البحث في كلٍّ منها عن <code>SymbolNode</code>s.</p>
+<pre><code class="language-julia"><span class="hljs-comment"># given \`lr\`, a Vector of expressions (Expr + literals, etc)</span>
+<span class="hljs-comment"># try to find all occurrences of a variables in \`lr\`</span>
+<span class="hljs-comment"># and determine their types</span>
+<span class="hljs-keyword">function</span> loosetypes(lr::<span class="hljs-built_in">Vector</span>)
+  symbols = SymbolNode[]
+  <span class="hljs-keyword">for</span> (i,e) <span class="hljs-keyword">in</span> lr
+    <span class="hljs-keyword">if</span> typeof(e) == <span class="hljs-built_in">Expr</span>
+      es = copy(e.args)
+      <span class="hljs-keyword">while</span> !isempty(es)
+        e1 = pop!(es)
+        <span class="hljs-keyword">if</span> typeof(e1) == <span class="hljs-built_in">Expr</span>
+          append!(es,e1.args)
+        <span class="hljs-keyword">elseif</span> typeof(e1) == SymbolNode
+          push!(symbols,e1)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  loose_types = SymbolNode[]
+  <span class="hljs-keyword">for</span> symnode <span class="hljs-keyword">in</span> symbols
+    <span class="hljs-keyword">if</span> !isleaftype(symnode.typ) &amp;&amp; typeof(symnode.typ) == UnionType
+      push!(loose_types, symnode)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> loose_types
+<span class="hljs-keyword">end</span>
+</code></pre>
+<pre><code class="language-julia">  symbols = SymbolNode[]
+  <span class="hljs-keyword">for</span> (i,e) <span class="hljs-keyword">in</span> lr
+    <span class="hljs-keyword">if</span> typeof(e) == <span class="hljs-built_in">Expr</span>
+      es = copy(e.args)
+      <span class="hljs-keyword">while</span> !isempty(es)
+        e1 = pop!(es)
+        <span class="hljs-keyword">if</span> typeof(e1) == <span class="hljs-built_in">Expr</span>
+          append!(es,e1.args)
+        <span class="hljs-keyword">elseif</span> typeof(e1) == SymbolNode
+          push!(symbols,e1)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>تمرّ حلقة <code>while</code> على ما في باطن جميع <code>Expr</code>s، بشكل متكرّر (recursive). وكلّما وجدت الحلقة <code>SymbolNode</code>، تضيفه إلى المتجّه <code>symbols</code>.</p>
+<pre><code class="language-julia">  loose_types = SymbolNode[]
+  <span class="hljs-keyword">for</span> symnode <span class="hljs-keyword">in</span> symbols
+    <span class="hljs-keyword">if</span> !isleaftype(symnode.typ) &amp;&amp; typeof(symnode.typ) == UnionType
+      push!(loose_types, symnode)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> loose_types
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>الآن لدينا قائمة بالمتغيّرات وأنواعها، لذا يسهل التحقّق ممّا إذا كان النوع ضعيفًا. و<code>loosetypes</code> تفعل ذلك بالبحث عن نوع خاصّ من الأنواع غير الملموسة، وهو <code>UnionType</code>. فنحن نحصل على نتائج «فاشلة» كثيرة جدًّا حين نتعامل مع جميع الأنواع غير الملموسة على أنها «فاشلة». وذلك لأنّنا نُقيّم كل طريقة بوسائطها الموصوفة بأنواعها، وهي على الأرجح مجرّدة (abstract).</p>
+<h3 id="جعل-هذا-قابلا-للاستخدام">جعل هذا قابلًا للاستخدام</h3>
+<p>الآن وقد أتممنا الفحص على تعبير، ينبغي أن نجعل استدعاءه على شيفرة المستخدم أسهل. سنُنشئ طريقتين لاستدعاء <code>checklooptypes</code>:</p>
+<ol>
+<li>
+<p>على دالة كاملة؛ وهذا يفحص كل طريقة من طرق الدالة المعطاة.</p>
+</li>
+<li>
+<p>على تعبير؛ وهذا يعمل إن استخرج المستخدم نتائج <code>code_typed</code> بنفسه.</p>
+</li>
+</ol>
+<pre><code class="language-julia"><span class="hljs-comment">## for a given Function, run checklooptypes on each Method</span>
+<span class="hljs-keyword">function</span> checklooptypes(f::Callable;kwargs...)
+  lrs = LoopResult[]
+  <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> code_typed(f)
+    lr = checklooptypes(e)
+    <span class="hljs-keyword">if</span> length(lr.lines) &gt; <span class="hljs-number">0</span> push!(lrs,lr) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  LoopResults(f.env.name,lrs)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment"># for an Expr representing a Method,</span>
+<span class="hljs-comment"># check that the type of each variable used in a loop</span>
+<span class="hljs-comment"># has a concrete type</span>
+checklooptypes(e::<span class="hljs-built_in">Expr</span>;kwargs...) = 
+ LoopResult(MethodSignature(e),loosetypes(loopcontents(e)))
+</code></pre>
+<p>نرى أنّ الخيارين يعملان تقريبًا بالطريقة نفسها لدالة ذات طريقة واحدة:</p>
+<pre><code class="language-julia">julia&gt; <span class="hljs-keyword">using</span> TypeCheck
+
+julia&gt; <span class="hljs-keyword">function</span> foo(x::<span class="hljs-built_in">Int</span>)
+         s = <span class="hljs-number">0</span>
+         <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>:x
+           s += i/<span class="hljs-number">2</span>
+         <span class="hljs-keyword">end</span>
+         <span class="hljs-keyword">return</span> s
+       <span class="hljs-keyword">end</span>
+foo (generic <span class="hljs-keyword">function</span> with <span class="hljs-number">1</span> method)
+
+julia&gt; checklooptypes(foo)
+foo(<span class="hljs-built_in">Int64</span>)::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+	s::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+	s::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+
+
+julia&gt; checklooptypes(code_typed(foo,(<span class="hljs-built_in">Int</span>,))[<span class="hljs-number">1</span>])
+(<span class="hljs-built_in">Int64</span>)::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+	s::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+	s::<span class="hljs-built_in">Union</span>(<span class="hljs-built_in">Int64</span>,<span class="hljs-built_in">Float64</span>)
+</code></pre>
+<h4>الطباعة الجميلة</h4>
+<p>لقد تجاوزتُ هنا تفصيلًا من تفاصيل التنفيذ: كيف حصلنا على النتائج لتُطبع في REPL؟</p>
+<p>أولًا، صنعتُ بعض الأنواع الجديدة. و<code>LoopResults</code> هي نتيجة فحص دالة كاملة؛ فهي تحوي اسم الدالة والنتائج لكل طريقة. أمّا <code>LoopResult</code> فهي نتيجة فحص طريقة واحدة؛ فهي تحوي أنواع الوسائط والمتغيّرات ضعيفة النمط.</p>
+<p>تُعيد الدالة <code>checklooptypes</code> كائن <code>LoopResults</code>. ولهذا النوع دالة اسمها <code>show</code> مُعرَّفة له. فيستدعي <code>display</code> على القيم التي يريد عرضها، ثمّ تستدعي <code>display</code> بدورها تنفيذي <code>show</code> لدينا.</p>
+<p>هذه الشيفرة مهمة لجعل هذا التحليل الساكن قابلًا للاستخدام، لكنها لا تُجري تحليلًا ساكنًا. ينبغي أن تستخدم الطريقة المفضَّلة لطباعة الأنواع والمخرجات بشكل جميل في لغة التنفيذ التي تختارها؛ فهذه ببساطة طريقة الأمر في جوليا.</p>
+<pre><code class="language-julia">type LoopResult
+  msig::MethodSignature
+  lines::<span class="hljs-built_in">Vector</span>{SymbolNode}
+  LoopResult(ms::MethodSignature,ls::<span class="hljs-built_in">Vector</span>{SymbolNode}) = new(ms,unique(ls))
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">function</span> Base.show(io::<span class="hljs-built_in">IO</span>, x::LoopResult)
+  display(x.msig)
+  <span class="hljs-keyword">for</span> snode <span class="hljs-keyword">in</span> x.lines
+    println(io,<span class="hljs-string">&quot;\\t&quot;</span>,string(snode.name),<span class="hljs-string">&quot;::&quot;</span>,string(snode.typ))
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+type LoopResults
+  name::<span class="hljs-built_in">Symbol</span>
+  methods::<span class="hljs-built_in">Vector</span>{LoopResult}
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">function</span> Base.show(io::<span class="hljs-built_in">IO</span>, x::LoopResults)
+  <span class="hljs-keyword">for</span> lr <span class="hljs-keyword">in</span> x.methods
+    print(io,string(x.name))
+    display(lr)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+</code></pre>
+<h2 id="البحث-عن-متغيرات-غير-مستخدمة">البحث عن متغيّرات غير مستخدمة</h2>
+<p>أحيانًا، وأنت تكتب شيفرتك، تُخطئ في كتابة اسم متغيّر. ولا يستطيع البرنامج أن يعرف أنّك قصدت أن يكون هذا هو المتغيّر نفسه الذي كتبتَه بشكل صحيح في السابق؛ فهو يرى متغيّرًا لا يُستخدم إلّا مرّة واحدة، حيث قد ترى أنت اسم متغيّر مكتوبًا خطأً. أما اللغات التي تتطلّب تعريفات للمتغيّرات فتلتقط هذه الأخطاء الإملائية طبيعيًّا، لكن كثيرًا من اللغات الديناميكية لا تتطلّب تعريفات، وتحتاج بالتالي إلى طبقة تحليل إضافية لالتقاطها.</p>
+<p>يمكنك أن تجد أسماء المتغيّرات المكتوبة خطأً (وغيرها من المتغيّرات غير المستخدمة) بالبحث عن متغيّرات لا تُستخدم إلّا مرّة واحدة—أو لا تُستخدم إلّا بطريقة واحدة.</p>
+<p>إليك مثالًا على قطعة شيفرة صغيرة فيها اسم واحد مكتوب خطأً.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> foo(variable_name::<span class="hljs-built_in">Int</span>)
+  sum = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> i=<span class="hljs-number">1</span>:variable_name
+    sum += variable_name
+  <span class="hljs-keyword">end</span>
+  variable_nme = sum
+  <span class="hljs-keyword">return</span> variable_name
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>يمكن لهذا النوع من الأخطاء أن يسبّب مشكلات في شيفرتك لا تُكتشَف إلّا عند تشغيلها. لنفترض أنك تخطئ في كتابة كل اسم متغيّر مرّة واحدة فقط. يمكننا فصل استخدامات المتغيّرات إلى كتابات وقراءات. فإذا كانت الكتابة الخاطئة كتابةً (أي <code>worng = 5</code>)، فلن يُطلَق أي خطأ؛ ستضع القيمة في المتغيّر الخطأ بصمت—وقد يكون إيجاد الخلل مزعجًا. أمّا إذا كانت الكتابة الخاطئة قراءةً (أي <code>right = worng + 2</code>)، فستحصل على خطأ وقت التشغيل عند تشغيل الشيفرة؛ ونودّ أن يكون لدينا تحذير ساكن لهذا، لتتمكّن من إيجاد هذا الخطأ في وقت أقرب، لكنّك ستظل مضطرًّا إلى الانتظار حتى تشغّل الشيفرة لترى المشكلة.</p>
+<p>ومع ازدياد الشيفرة طولًا وتعقيدًا، يصبح الخطأ أصعب في اكتشافه—إلّا إذا كان لديك مساعدة التحليل الساكن.</p>
+<h3 id="الجانب-الأيسر-والجانب-الأيمن">الجانب الأيسر والجانب الأيمن</h3>
+<p>هناك طريقة أخرى للتحدث عن استخدامات «القراءة» و«الكتابة» وهي تسميتهما «الجانب الأيمن» (RHS) و«الجانب الأيسر» (LHS). وهذا يشير إلى موضع المتغيّر بالنسبة لعلامة <code>=</code>.</p>
+<p>إليك بعض استخدامات <code>x</code>:</p>
+<ul>
+<li>الجانب الأيسر:
+<ul>
+<li><code>x = 2</code></li>
+<li><code>x = y + 22</code></li>
+<li><code>x = x + y + 2</code></li>
+<li><code>x += 2</code> (الذي يتحوّل إلى <code>x = x + 2</code>)</li>
+</ul>
+</li>
+<li>الجانب الأيمن:
+<ul>
+<li><code>y = x + 22</code></li>
+<li><code>x = x + y + 2</code></li>
+<li><code>x += 2</code> (الذي يتحوّل إلى <code>x = x + 2</code>)</li>
+<li><code>2 * x</code></li>
+<li><code>x</code></li>
+</ul>
+</li>
+</ul>
+<p>لاحظ أنّ تعبيرات مثل <code>x = x + y + 2</code> و<code>x += 2</code> تظهر في القسمين معًا، لأنّ <code>x</code> يظهر على جانبَي علامة <code>=</code>.</p>
+<h3 id="البحث-عن-المتغيرات-المستخدمة-مرة-واحدة">البحث عن المتغيّرات المستخدَمة مرّة واحدة</h3>
+<p>هناك حالتان نحتاج إلى البحث عنهما:</p>
+<ol>
+<li>متغيّرات تُستخدم مرّة واحدة.</li>
+<li>متغيّرات تُستخدم فقط على الجانب الأيسر أو فقط على الجانب الأيمن.</li>
+</ol>
+<p>سنبحث عن جميع استخدامات المتغيّرات، لكنّنا سنبحث عن استخدامات الجانب الأيسر والأيمن على حدة، لتغطية الحالتين.</p>
+<h4>إيجاد استخدامات الجانب الأيسر</h4>
+<p>ليكون على الجانب الأيسر، يجب أن يكون للمتغيّر علامة <code>=</code> على يساره. وهذا يعني يمكننا البحث عن علامات <code>=</code> في شجرة الصياغة المجرّدة، ثم النظر إلى يسارها لإيجاد المتغيّر ذي الصلة.</p>
+<p>في شجرة الصياغة المجرّدة، يكون <code>=</code> عبارة <code>Expr</code> ذات الرأس <code>:(=)</code>. (الأقواس موجودة لتوضيح أنّ هذا هو رمز <code>=</code> وليس معاملًا آخر، <code>:=</code>.) وستكون القيمة الأولى في <code>args</code> هي اسم المتغيّر على جهته اليسرى. ولأنّنا ننظر إلى شجرة صياغة مجرّدة نظّفها المُصرِّف بالفعل، فسيكون هناك (دائمًا تقريبًا) رمز واحد فقط على يسار علامة <code>=</code> لدينا.</p>
+<p>لنرَ ما الذي يعنيه ذلك في الشيفرة:</p>
+<pre><code class="language-julia">julia&gt; :(x = <span class="hljs-number">5</span>)
+:(x = <span class="hljs-number">5</span>)
+
+julia&gt; :(x = <span class="hljs-number">5</span>).head
+:(=)
+
+julia&gt; :(x = <span class="hljs-number">5</span>).args
+<span class="hljs-number">2</span>-element <span class="hljs-built_in">Array</span>{<span class="hljs-built_in">Any</span>,<span class="hljs-number">1</span>}:
+  :x
+ <span class="hljs-number">5</span>  
+
+julia&gt; :(x = <span class="hljs-number">5</span>).args[<span class="hljs-number">1</span>]
+:x
+</code></pre>
+<p>فيما يلي التنفيذ الكامل، يليه الشرح.</p>
+<pre><code class="language-julia"><span class="hljs-comment"># Return a list of all variables used on the left-hand-side of assignment (=)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Arguments:</span>
+<span class="hljs-comment">#   e: an Expr representing a Method, as from code_typed</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Returns:</span>
+<span class="hljs-comment">#   a Set{Symbol}, where each element appears on the LHS of an assignment in e.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-keyword">function</span> find_lhs_variables(e::<span class="hljs-built_in">Expr</span>)
+  output = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}()
+  <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> body(e)
+    <span class="hljs-keyword">if</span> Base.is_expr(ex,:(=))
+      push!(output,ex.args[<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> output
+<span class="hljs-keyword">end</span>
+</code></pre>
+<pre><code class="language-julia">  output = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}()
+</code></pre>
+<p>لدينا مجموعة من الرموز (Symbols)؛ وهذه هي أسماء المتغيّرات التي وجدناها على الجانب الأيسر.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> body(e)
+    <span class="hljs-keyword">if</span> Base.is_expr(ex,:(=))
+      push!(output,ex.args[<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لا نتعمّق أكثر في التعبيرات، لأنّ شجرة الصياغة المجرّدة الناتجة عن <code>code_typed</code> مسطّحة إلى حدّ كبير؛ فقد حُوّلت الحلقات والشروط إلى جمل مسطّحة مع قفزات لتدفّق التحكم. ولن تكون هناك أي إسنادات مختبئة داخل وسائط استدعاءات الدوالّ. وستفشل هذه الشيفرة إن كان على يسار علامة المساواة أيّ شيء غير رمز. وهذا يُفوّت حالتين حدّيتين محدّدتين: المصفوفات (مثل <code>a[5]</code>، التي ستُمثَّل كتعبير <code>:ref</code>) والخصائص (مثل <code>a.head</code>، التي ستُمثَّل كتعبير <code>:.</code>). وسيظل الرمز ذي الصلة هو القيمة الأولى في <code>args</code> لديهما دائمًا، لكن قد يكون مدفونًا بعض الشيء (كما في <code>a.property.name.head.other_property</code>). ولا تعالج هذه الشيفرة تلك الحالات، لكن يمكن إصلاح ذلك بسطرين من الشيفرة داخل جملة <code>if</code>.</p>
+<pre><code class="language-julia">      push!(output,ex.args[<span class="hljs-number">1</span>])
+</code></pre>
+<p>حين نجد استخدامًا لمتغيّر على الجانب الأيسر، ندفع اسم المتغيّر إلى <code>Set</code> عبر <code>push!</code>. وستتأكّد <code>Set</code> من أنّنا لا نملك إلّا نسخة واحدة من كل اسم.</p>
+<h4>إيجاد استخدامات الجانب الأيمن</h4>
+<p>لإيجاد جميع استخدامات المتغيّرات الأخرى، نحتاج أيضًا إلى النظر في كل <code>Expr</code>. وهذا أعقد قليلًا، لأنّنا نهتمّ في الأساس بكل <code>Expr</code>s، لا فقط بتلك من نوع <code>:(=)</code>، ولأنّنا نضطر إلى الحفر داخل <code>Expr</code>s المتداخلة (للتعامل مع استدعاءات الدوالّ المتداخلة).</p>
+<p>إليك التنفيذ الكامل، ويليه الشرح.</p>
+<pre><code class="language-julia"><span class="hljs-comment"># Given an Expression, finds variables used in it (on right-hand-side)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Arguments: e: an Expr</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Returns: a Set{Symbol}, where each e is used in a rhs expression in e</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-keyword">function</span> find_rhs_variables(e::<span class="hljs-built_in">Expr</span>)
+  output = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}()
+
+  <span class="hljs-keyword">if</span> e.head == :lambda
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> body(e)
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">elseif</span> e.head == :(=)
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args[<span class="hljs-number">2</span>:<span class="hljs-keyword">end</span>]  <span class="hljs-comment"># skip lhs</span>
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">elseif</span> e.head == :<span class="hljs-keyword">return</span>
+    output = find_rhs_variables(e.args[<span class="hljs-number">1</span>])
+  <span class="hljs-keyword">elseif</span> e.head == :call
+    start = <span class="hljs-number">2</span>  <span class="hljs-comment"># skip function name</span>
+    e.args[<span class="hljs-number">1</span>] == TopNode(:box) &amp;&amp; (start = <span class="hljs-number">3</span>)  <span class="hljs-comment"># skip type name</span>
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args[start:<span class="hljs-keyword">end</span>]
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">elseif</span> e.head == :<span class="hljs-keyword">if</span>
+   <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args <span class="hljs-comment"># want to check condition, too</span>
+     union!(output,find_rhs_variables(ex))
+   <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">elseif</span> e.head == :(::)
+    output = find_rhs_variables(e.args[<span class="hljs-number">1</span>])
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">return</span> output
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>البنية الرئيسية لهذه الدالة هي جملة if-else كبيرة، تتعامل فيها كل حالة مع رمز رأس مختلف.</p>
+<pre><code class="language-julia">  output = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}()
+</code></pre>
+<p><code>output</code> هي مجموعة أسماء المتغيّرات، التي سنُعيدها في نهاية الدالة. وبما أنّنا نهتمّ فقط بحقيقة أنّ كلًّا من هذه المتغيّرات قد قُرئ مرّة واحدة على الأقل، فإنّ استخدام <code>Set</code> يُعفينا من القلق بشأن تفرّد كل اسم.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">if</span> e.head == :lambda
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> body(e)
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>هذا هو الشرط الأول في جملة if-else. و<code>:lambda</code> يمثّل جسم دالة. ونستدعي بشكل متكرّر على جسم التعريف، وهو ما ينبغي أن يجمع كل استخدامات المتغيّرات على الجانب الأيمن في التعريف.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">elseif</span> e.head == :(=)
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args[<span class="hljs-number">2</span>:<span class="hljs-keyword">end</span>]  <span class="hljs-comment"># skip lhs</span>
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>إذا كان الرأس <code>:(=)</code>، فإنّ التعبير هو إسناد. ونتخطّى العنصر الأول من <code>args</code> لأنّه المتغيّر الذي يجري الإسناد إليه. ومن أجل كلٍّ من التعبيرات المتبقّية، نجد بشكل متكرّر متغيّرات الجانب الأيمن ونضيفها إلى مجموعتنا.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">elseif</span> e.head == :<span class="hljs-keyword">return</span>
+    output = find_rhs_variables(e.args[<span class="hljs-number">1</span>])
+</code></pre>
+<p>إذا كانت هذه جملة إرجاع، فإنّ العنصر الأول من <code>args</code> هو التعبير الذي ستُعاد قيمته؛ وسنضيف أي متغيّرات موجودة فيه إلى مجموعتنا.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">elseif</span> e.head == :call
+    <span class="hljs-comment"># skip function name</span>
+    <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args[<span class="hljs-number">2</span>:<span class="hljs-keyword">end</span>]
+      union!(output,find_rhs_variables(ex))
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>بالنسبة لاستدعاءات الدوالّ، نريد الحصول على جميع المتغيّرات المستخدَمة في جميع وسائط الاستدعاء. ونتخطّى اسم الدالة، وهو العنصر الأول من <code>args</code>.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">elseif</span> e.head == :<span class="hljs-keyword">if</span>
+   <span class="hljs-keyword">for</span> ex <span class="hljs-keyword">in</span> e.args <span class="hljs-comment"># want to check condition, too</span>
+     union!(output,find_rhs_variables(ex))
+   <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يملك <code>Expr</code> يمثّل جملة شرط قيمة <code>head</code> هي <code>:if</code>. نريد الحصول على استخدامات المتغيّرات من جميع التعبيرات في جسم جملة الشرط، لذا نستدعي بشكل متكرّر على كل عنصر من <code>args</code>.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">elseif</span> e.head == :(::)
+    output = find_rhs_variables(e.args[<span class="hljs-number">1</span>])
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يُستخدم المعامل <code>:(::)</code> لإضافة شروح الأنواع. والوسيط الأول هو التعبير أو المتغيّر الذي يجري وضع الشرح عليه؛ ونتحقّق من استخدامات المتغيّرات في التعبير الموصوف.</p>
+<pre><code class="language-julia">  <span class="hljs-keyword">return</span> output
+</code></pre>
+<p>في نهاية الدالة، نُعيد مجموعة استخدامات المتغيّرات على الجانب الأيمن.</p>
+<p>هناك المزيد قليلًا من الشيفرة التي تبسّط الدالة أعلاه. ولأنّ النسخة أعلاه لا تتعامل إلّا مع <code>Expr</code>s، بينما إنّ بعض القيم التي تُمرَّر بشكل متكرّر قد لا تكون <code>Expr</code>s، فنحتاج إلى بضع طرق أخرى للتعامل مع الأنواع الممكنة الأخرى على نحو مناسب.</p>
+<pre><code class="language-julia"><span class="hljs-comment"># Recursive Base Cases, to simplify control flow in the Expr version</span>
+find_rhs_variables(a) = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}()  <span class="hljs-comment"># unhandled, should be immediate val e.g. Int</span>
+find_rhs_variables(s::<span class="hljs-built_in">Symbol</span>) = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}([s])
+find_rhs_variables(s::SymbolNode) = <span class="hljs-built_in">Set</span>{<span class="hljs-built_in">Symbol</span>}([s.name])
+</code></pre>
+<h4>تجميع كلّ شيء معًا</h4>
+<p>الآن وقد عرّفنا الدالتين أعلاه، يمكننا استخدامهما معًا لإيجاد المتغيّرات التي إمّا أن تُقرأ منها فقط أو تُكتب إليها فقط. وسيُسمّى الدالة التي تجدها <code>unused_locals</code>.</p>
+<pre><code class="language-julia"><span class="hljs-keyword">function</span> unused_locals(e::<span class="hljs-built_in">Expr</span>)
+  lhs = find_lhs_variables(e)
+  rhs = find_rhs_variables(e)
+  setdiff(lhs,rhs)
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>ستُعيد <code>unused_locals</code> مجموعة من أسماء المتغيّرات. ومن السهل كتابة دالة تحدّد ما إذا كانت مخرجات <code>unused_locals</code> تُعدّ «ناجحة» أو لا. فإن كانت المجموعة فارغة، فإنّ الطريقة تنجح. وإن نجحت كل طرق دالة ما، فإنّ الدالة تنجح. وتُطبّق الدالة <code>check_locals</code> أدناه هذا المنطق.</p>
+<pre><code class="language-julia">check_locals(f::Callable) = all([check_locals(e) <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> code_typed(f)])
+check_locals(e::<span class="hljs-built_in">Expr</span>) = isempty(unused_locals(e))
+</code></pre>
+<h2 id="الخلاصة">الخلاصة</h2>
+<p>أجرينا تحليلين ساكنين لشيفرة جوليا—أحدهما مبنيّ على الأنواع والآخر مبنيّ على استخدامات المتغيّرات.</p>
+<p>اللغات ذات الأنواع الساكنة تؤدّي بالفعل النوع من العمل الذي أدّاه تحليلنا المبنيّ على الأنواع؛ والتحليل الساكن الإضافي المبنيّ على الأنواع مفيد غالبًا في اللغات ذات الأنواع الديناميكية. وقد كانت هناك مشاريع (أغلبها بحثية) لبناء أنظمة استنتاج أنواع ساكنة للغات تشمل بايثون وروبي ولغة Lisp. وتُبنى هذه الأنظمة عادةً حول شروح أنواع اختيارية؛ فيمكنك أن تكون لديك أنواع ساكنة حين تريدها، وترجع إلى التخصيص الديناميكي حين لا تريدها. وهذا مفيد خاصّةً لدمج بعض التخصيص الساكن في قواعد شيفرة قائمة.</p>
+<p>الفحوص غير المبنيّة على الأنواع، مثل فحصنا لاستخدامات المتغيّرات، تنطبق على اللغات ذات الأنواع الديناميكية والساكنة على السواء. لكنّ كثيرًا من اللغات ذات الأنواع الساكنة، مثل C++ وجافا، تتطلّب منك تعريف المتغيّرات، وتُعطي أصلًا تحذيرات أساسية مثل التي أنشأناها. وما تزال هناك فحوص مخصّصة يمكن كتابتها؛ فمثلًا، فحوص خاصّة بدليل أسلوب مشروعك أو احتياطيات سلامة إضافية مبنيّة على سياسات أمن.</p>
+<p>ولو أنّ جوليا تملك أدوات رائعة لتفعيل التحليل الساكن، فإنّها ليست وحدها. فـ Lisp بالطبع مشهورة بأنّ الشيفرة فيها بنية بيانات من قوائم متداخلة، لذا يسهل عادةً الوصول إلى شجرة الصياغة المجرّدة. كما تكشف جافا شجرتها أيضًا، وإنّ كانت شجرة جافا أكثر تعقيدًا بكثير من شجرة Lisp. وبعض اللغات أو أدوات اللغات غير مصمَّمة للسماح للمستخدمين العاديين بالتنقّل في التمثيلات الداخلية. وبالنسبة إلى أدوات مفتوحة المصدر (خاصّةً جيّدة التوثيق)، فإنّ أحد الخيارات هو إضافة خطّافات (hooks) إلى بيئة العمل تتيح لك الوصول إلى شجرة الصياغة المجرّدة.</p>
+<p>وفي الحالات التي لن تنجح فيها هذه الطريقة، فالحلّ الأخير الاحتياطي هو كتابة محلّل خاصّ بك؛ وهذا ما ينبغي تجنّبه متى أمكن. فتغطية القواعد النحوية الكاملة لمعظم لغات البرمجة عملٌ كبير، وستحتاج إلى تحديثها بنفسك مع إضافة ميزات جديدة إلى اللغة (بدلًا من تلقّي التحديثات تلقائيًّا من المصدر الأصلي). وبحسب الفحوص التي تريد إجراءها، قد يكفيك تحليل بعض الأسطر أو مجموعة فرعية من ميزات اللغة فقط، ما سيخفّض إلى حدّ كبير تكلفة كتابة محلّلك الخاصّ.</p>
+<p>نأمل أن يفيدك فهمك الجديد لكيفية كتابة أدوات التحليل الساكن في فهم الأدوات التي تستخدمها على شيفرتك، وربما يُلهمك كتابة واحدة من أدواتك.</p>
+`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:l,headings:p,html:o};export{s as book,n as chapter,a as chapterTitle,c as default,p as headings,o as html,e as slug,l as title};

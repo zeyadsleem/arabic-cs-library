@@ -1,0 +1,485 @@
+const s="500-lines",n="flow-shop",a="A Flow Shop Scheduler",e="index",p="مجدول ورشة التدفق",l=[{depth:2,id:"مجدول-ورشة-التدفق",text:"مجدول ورشة التدفق"},{depth:2,id:"الخلفية",text:"الخلفية"},{depth:3,id:"جدولة-ورشة-التدفق",text:"جدولة ورشة التدفق"},{depth:3,id:"البحث-المحلي",text:"البحث المحلي"},{depth:2,id:"الحلال-العام",text:"الحَلّال العام"},{depth:3,id:"تحليل-المسائل",text:"تحليل المسائل"},{depth:3,id:"ترجمة-الحلول",text:"ترجمة الحلول"},{depth:3,id:"طباعة-الحلول",text:"طباعة الحلول"},{depth:2,id:"الأحياء",text:"الأحياء"},{depth:2,id:"الاستدلالات",text:"الاستدلالات"},{depth:2,id:"الاختيار-الديناميكي-للاستراتيجية",text:"الاختيار الديناميكي للاستراتيجية"},{depth:2,id:"نقاش",text:"نقاش"}],t=`<p><em>@<a href="http://haz.ca">الدكتور كريستيان مويزه</a> باحث زميل في <a href="http://groups.csail.mit.edu/mers/">مجموعة MERS</a> في <a href="http://www.csail.mit.edu/">مختبر CSAIL بمعهد ماساتشوستس للتكنولوجيا</a>. وهو مهتم بمجموعة متنوعة من المواضيع تشمل الذكاء الاصطناعي، والمشاريع القائمة على البيانات، ورسم الخرائط، ونظرية الرسوم البيانية، وتصور البيانات، وكذلك الموسيقى السلتية، والنحت، وكرة القدم، والقهوة.</em></p>
+<h2 id="مجدول-ورشة-التدفق">مجدول ورشة التدفق</h2>
+<p><em>جدولة ورشة التدفق</em> (flow shop scheduling) إحدى أصعب المشكلات وأكثرها دراسةً في بحس العمليات. وكما في كثير من مشكلات التحسين الصعبة، فإن العثور على أفضل حل ببساطة غير ممكن في المشكلات ذات الحجم العملي. وفي هذا الفصل نبحث في تنفيذ حَلّال جدولة ورشة التدفق يستخدم تقنية تُدعى <em>البحث المحلي</em> (local search). يسمح البحث المحلي لنا بالعثور على حل «جيد بما يكفي» حين لا يمكن العثور على أفضل حل. وسيحاول الحَلّال إيجاد حلول جديدة للمشكلة لفترة زمنية محددة، ثم ينتهي بإعادة أفضل حل عثر عليه.</p>
+<p>الفكرة الكامنة وراء البحث المحلي هي تحسين حل قائم بشكل استدلالي، بالنظر في حلول مشابهة قد تكون أفضل قليلًا. ويستخدم الحَلّال مجموعة متنوعة من الاستراتيجيات كي (1) يحاول العثور على حلول مشابهة، و(2) يختار حلاً واعدًا باستكشافه تاليًا. وقد كُتب التنفيذ بلغة Python، وليس له أي متطلبات خارجية. ومن خلال الاستفادة من بعض إمكانات Python الأقل شهرة، يغيّر الحَلّال استراتيجية بحثه ديناميكيًا أثناء عملية الحل اعتمادًا على الاستراتيجيات التي تنجح.</p>
+<p>سنقدّم أولًا بعض المواد الخلفية عن مشكلة جدولة ورشة التدفق وتقنيات البحث المحلي. ثم ننظر بالتفصيل إلى شيفرة الحَلّال العامة، وإلى مختلف الاستدلالات (heuristics) واستراتيجيات اختيار الجوار التي نستخدمها. بعد ذلك نبحث في الاختيار الديناميكي للاستراتيجية الذي يستخدمه الحَلّال لربط كل ذلك معًا. وأخيرًا، نختم بملخص للمشروع وبعض الدروس المستفادة خلال عملية التنفيذ.</p>
+<h2 id="الخلفية">الخلفية</h2>
+<h3 id="جدولة-ورشة-التدفق">جدولة ورشة التدفق</h3>
+<p>مشكلة جدولة ورشة التدفق هي مشكلة تحسين نحدّد فيها زمن معالجة المهام المختلفة في عمل ما، من أجل جدولة تلك المهام بحيث نقلّل الزمن الكلي المستغرق في إتمام العمل. لنأخذ مثلًا شركة سيارات ذات خط تجميع، تُنجز فيه كل قطعة من السيارة تباعًا على آلات مختلفة. وقد تكون للطلبات المختلفة متطلبات خاصة، مما يجعل مهمة طلاء الهيكل مثلًا تختلف من سيارة إلى أخرى. وفي مثالنا، كل سيارة هي <em>عمل</em> (job) جديد، وكل قطعة من السيارة تُدعى <em>مهمة</em> (task). وسيكون لكل عمل تسلسل المهام نفسه لإكماله.</p>
+<p>الهدف في جدولة ورشة التدفق هو تقليل الزمن الكلي اللازم لمعالجة كل المهام في كل الأعمال حتى إتمامها. (وعادة ما يُشار إلى هذا الزمن الكلي بأنه <em>مدة الإنجاز الكلي</em> (makespan).) وهذه المشكلة لها تطبيقات عديدة، لكنها ترتبط أساسًا بتحسين منشآت الإنتاج.</p>
+<p>تتألف كل مشكلة من مسائل ورشة التدفق من $n$ آلة و$m$ عمل. وفي مثال السيارات لدينا، ستكون هناك $n$ محطات للعمل على السيارة و$m$ سيارة في الإجمالي. ويتكوّن كل عمل من $n$ مهمة بالضبط، ويمكننا أن نفترض أن المهمة رقم $i$ من عمل ما يجب أن تستخدم الآلة $i$ وتتطلب زمن معالجة محددًا مسبقًا: $p(j,i)$ هو زمن المعالجة للمهمة رقم $i$ في العمل $j$. وعلاوة على ذلك، ينبغي أن يتبع ترتيب المهام لأي عملٍ ما ترتيب الآلات المتاحة؛ فبالنسبة إلى عمل ما، يجب أن تُنجز المهمة $i$ قبل بدء المهمة $i+1$. وفي مثال السيارات، لا نريد أن نبدأ طلاء السيارة قبل أن تُجمَّع هيكلها. والقيود الأخير هو أنه لا يمكن معالجة مهمتين على آلة واحدة في الوقت نفسه.</p>
+<p>ولأن ترتيب المهام داخل العمل محدد مسبقًا، يمكن تمثيل حل مشكلة جدولة ورشة التدفق على هيئة تبادل (permutation) للأعمال. وسيكون ترتيب الأعمال المعالَجة على أي آلة هو نفسه لكل الآلات، وبالنظر إلى تبادل معيّن، تُجدوَل مهمة الآلة $i$ في العمل $j$ لتكون الأحدث من الاحتمالين التاليين:</p>
+<ol>
+<li>
+<p>إكمال مهمة الآلة $i$ في العمل $j-1$ (أي أحدث مهمة على الآلة نفسها)، أو</p>
+</li>
+<li>
+<p>إكمال مهمة الآلة $i-1$ في العمل $j$ (أي أحدث مهمة في العمل نفسه)</p>
+</li>
+</ol>
+<p>ولأننا نختار القيمة الكبرى من هاتين القيمتين، سيُنشأ زمن خمول (idle time) للآلة $i$ أو للعمل $j$، أي لأحدهما. وهو هذا الزمن الخامل هو ما نريد في النهاية تقليله، إذ سيؤدي إلى رفع مدة الإنجاز الكلي.</p>
+<p>ولأن ترتيب المهام داخل العمل محدد مسبقًا، يمكن تمثيل حل مشكلة جدولة ورشة التدفق على هيئة تبادل (permutation) للأعمال. وسيكون ترتيب الأعمال المعالَجة على أي آلة هو نفسه لكل الآلات، وبالنظر إلى تبادل معيّن، تُجدوَل مهمة الآلة $i$ في العمل $j$ لتكون الأحدث من الاحتمالين التاليين:</p>
+<p>لننظر في مثال بسيط فيه عملان وآلتان. لدى العمل الأول مهمتان $\\mathbf{A}$ و$\\mathbf{B}$، تستغرقان 1 و2 دقيقة على التوالي لإتمامهما. ولدى العمل الثاني مهمتان $\\mathbf{C}$ و$\\mathbf{D}$، تستغرقان 2 و1 دقيقة على التوالي. وتذكّر أن $\\mathbf{A}$ يجب أن تأتي قبل $\\mathbf{B}$ وأن $\\mathbf{C}$ يجب أن تأتي قبل $\\mathbf{D}$. ولأن لدينا عملين، فلدينا تبادلان فقط نأخذهما في الحسبان. إن رتّبنا العمل 2 قبل العمل 1، فإن مدة الإنجاز الكلي 5 (\\aosafigref{500l.flowshop.example1})؛ وفي المقابل، إن رتّبنا العمل 1 قبل العمل 2، فإن مدة الإنجاز الكلي 4 فقط (\\aosafigref{500l.flowshop.example2}).</p>
+<p>\\aosafigure[240pt]/images/500-lines/flow-shop-0-example1.webp{Flow Shop Example 1}{500l.flowshop.example1}</p>
+<p>\\aosafigure[240pt]/images/500-lines/flow-shop-1-example2.webp{Flow Shop Example 2}{500l.flowshop.example2}</p>
+<p>ولاحظ أنه لا توجد مساحة كافية لدفع أي من المهام إلى وقت أبكر. والمبدأ الإرشادي للتبادل الجيد هو تقليل الوقت الذي تبقى فيه أي آلة بلا مهمة تعالجها.</p>
+<h3 id="البحث-المحلي">البحث المحلي</h3>
+<p>البحث المحلي استراتيجية لحل مشكلات التحسين حين يكون حساب الحل الأمثل صعبًا جدًا. ومن الناحية الحدسية، فإنها تنتقل من حل يبدو جيدًا إلى حدٍّ كبير إلى حل يبدو أفضل. وبدلًا من فحص كل حل ممكن بوصفه مرشحًا للتركيز عليه تاليًا، فإننا نعرّف ما يُعرف بـ<em>الجوار</em> (neighbourhood): مجموعة الحلول التي نعتبرها مشابهة للحل الحالي. ولأن أي تبادل للأعمال حل صالح، يمكننا أن ننظر إلى أي آلية تُعيد ترتيب الأعمال على أنها إجراء بحث محلي (وهذا في الواقع ما نفعله أدناه).</p>
+<p>ولاستخدام البحث المحلي secara رسمية، علينا أن نجيب عن بضعة أسئلة:</p>
+<ol>
+<li>من أي حل ينبغي أن نبدأ؟</li>
+<li>معطى حلٌّ، ما هي الحلول المجاورة التي ينبغي أن نأخذها في الحسبان؟</li>
+<li>معطى مجموعة المرشحين المجاورين، أيّهم ينبغي أن ننتقل إليه تاليًا؟</li>
+</ol>
+<p>وتتناول الأقسام الثلاثة التالية هذه الأسئلة بالترتيب.</p>
+<h2 id="الحلال-العام">الحَلّال العام</h2>
+<p>في هذا القسم نقدّم الإطار العام لمجدول ورشة التدفق. نبدأ بالاستيرادات اللازمة في Python وإعدادات الحَلّال:</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> sys, os, time, random
+
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> partial
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> namedtuple
+<span class="hljs-keyword">from</span> itertools <span class="hljs-keyword">import</span> product
+
+<span class="hljs-keyword">import</span> neighbourhood <span class="hljs-keyword">as</span> neigh
+<span class="hljs-keyword">import</span> heuristics <span class="hljs-keyword">as</span> heur
+
+<span class="hljs-comment">##############</span>
+<span class="hljs-comment">## Settings ##</span>
+<span class="hljs-comment">##############</span>
+TIME_LIMIT = <span class="hljs-number">300.0</span> <span class="hljs-comment"># Time (in seconds) to run the solver</span>
+TIME_INCREMENT = <span class="hljs-number">13.0</span> <span class="hljs-comment"># Time (in seconds) in between heuristic measurements</span>
+DEBUG_SWITCH = <span class="hljs-literal">False</span> <span class="hljs-comment"># Displays intermediate heuristic info when True</span>
+MAX_LNS_NEIGHBOURHOODS = <span class="hljs-number">1000</span> <span class="hljs-comment"># Maximum number of neighbours to explore in LNS</span>
+</code></pre>
+<p>هناك إعدادان يستحقان شرحًا أكثر. سيُستخدم الإعداد <code>TIME_INCREMENT</code> كجزء من الاختيار الديناميكي للاستراتيجية، وسيُستخدم الإعداد <code>MAX_LNS_NEIGHBOURHOODS</code> كجزء من استراتيجية اختيار الجوار. وكلاهما موصوف بمزيد من التفصيل أدناه.</p>
+<p>يمكن كشف هذه الإعدادات للمستخدم كمعاملات سطر أوامر، لكن في هذه المرحلة نقدّم بيانات الإدخال بدلاً من ذلك بوصفها معاملات للبرنامج. ويُفترض أن مسألة الإدخال — مسألة من مجموعة Taillard المرجعية (benchmark) — تكون بصيغة قياسية لجدولة ورشة التدفق. وتُستخدم الشيفرة التالية كطريقة <code>__main__</code> لملف الحَلّال، وتستدعي الدوال المناسبة بناءً على عدد المعاملات المُدخلة إلى البرنامج:</p>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:
+        data = parse_problem(sys.argv[<span class="hljs-number">1</span>], <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:
+        data = parse_problem(sys.argv[<span class="hljs-number">1</span>], <span class="hljs-built_in">int</span>(sys.argv[<span class="hljs-number">2</span>]))
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nUsage: python flow.py &lt;Taillard problem file&gt; [&lt;instance number&gt;]\\n&quot;</span>
+        sys.exit(<span class="hljs-number">0</span>)
+
+    (perm, ms) = solve(data)
+    print_solution(data, perm)
+</code></pre>
+<p>وصفنا لتحليل ملفات مسائل Taillard وصفًا موجزًا. (والملفات <a href="http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/ordonnancement.html">متاحة على الإنترنت</a>.)</p>
+<p>تتوقع طريقة <code>solve</code> أن يكون المتغير <code>data</code> قائمة من الأعداد الصحيحة تحتوي على مدد الأنشطة لكل عمل. وتبدأ طريقة <code>solve</code> بتهيئة مجموعة عالمية من الاستراتيجيات (الموصوفة أدناه). والمفتاح هنا هو أننا نستخدم متغيرات <code>strat_*</code> للاحتفاظ بإحصاءات عن كل استراتيجية. وهذا يساعد في اختيار الاستراتيجية ديناميكيًا أثناء عملية الحل.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve</span>(<span class="hljs-params">data</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Solves an instance of the flow shop scheduling problem&quot;&quot;&quot;</span>
+
+    <span class="hljs-comment"># We initialize the strategies here to avoid cyclic import issues</span>
+    initialize_strategies()
+    <span class="hljs-keyword">global</span> STRATEGIES
+
+    <span class="hljs-comment"># Record the following for each strategy:</span>
+    <span class="hljs-comment">#  improvements: The amount a solution was improved by this strategy</span>
+    <span class="hljs-comment">#  time_spent: The amount of time spent on the strategy</span>
+    <span class="hljs-comment">#  weights: The weights that correspond to how good a strategy is</span>
+    <span class="hljs-comment">#  usage: The number of times we use a strategy</span>
+    strat_improvements = {strategy: <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+    strat_time_spent = {strategy: <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+    strat_weights = {strategy: <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+    strat_usage = {strategy: <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+</code></pre>
+<p>ومن السمات الجذابة في مشكلة جدولة ورشة التدفق أن <em>كل</em> تبادل يمثل حلاً صالحًا، وأن واحدًا منها على الأقل سيكون له مدة الإنجاز الكلي الأمثل (مع أن كثيرًا منها سيكون له مدة إنجاز فظيعة). وهذا يتيح لنا الاستغناء عن التحقق من أننا نبقى ضمن فضاء الحلول المجتملة (feasible) عند الانتقال من تبادل إلى آخر — فكل شيء مجتمل!</p>
+<p>غير أنه، لبدء بحث محلي في فضاء التباديل، علينا أن نملك تبادلًا ابتدائيًا. ولإبقاء الأمور بسيطة، نهيّئ بحثنا المحلي بخلط قائمة الأعمال عشوائيًا:</p>
+<pre><code class="language-python">    <span class="hljs-comment"># Start with a random permutation of the jobs</span>
+    perm = <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data))
+    random.shuffle(perm)
+</code></pre>
+<p>بعد ذلك، نهيّئ المتغيرات التي تتيح لنا متابعة أفضل تبادل عثرنا عليه حتى الآن، إضافة إلى معلومات التوقيت اللازمة لتقديم المخرجات. \\newpage</p>
+<pre><code class="language-python">    <span class="hljs-comment"># Keep track of the best solution</span>
+    best_make = makespan(data, perm)
+    best_perm = perm
+    res = best_make
+
+    <span class="hljs-comment"># Maintain statistics and timing for the iterations</span>
+    iteration = <span class="hljs-number">0</span>
+    time_limit = time.time() + TIME_LIMIT
+    time_last_switch = time.time()
+
+    time_delta = TIME_LIMIT / <span class="hljs-number">10</span>
+    checkpoint = time.time() + time_delta
+    percent_complete = <span class="hljs-number">10</span>
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nSolving...&quot;</span>
+</code></pre>
+<p>ولأن هذا حَلّال بحث محلي، فإننا ببساطة نواصل محاولة تحسين الحلول ما دام الحد الزمني لم يُبلغ. ونقدّم مخرجات تبيّن تقدّم الحَلّال، ونتابع عدد التكرارات التي حسبناها:</p>
+<pre><code class="language-python">    <span class="hljs-keyword">while</span> time.time() &lt; time_limit:
+
+        <span class="hljs-keyword">if</span> time.time() &gt; checkpoint:
+            <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; %d %%&quot;</span> % percent_complete
+            percent_complete += <span class="hljs-number">10</span>
+            checkpoint += time_delta
+
+        iteration += <span class="hljs-number">1</span>
+</code></pre>
+<p>وسنصف أدناه كيفية اختيار الاستراتيجية، لكنه يكفي في الوقت الحالي أن نعرف أن الاستراتيجية توفّر دالة <code>neighbourhood</code> ودالة <code>heuristic</code>. فالأولى تعطينا مجموعة من <em>المرشحين التاليين</em> نأخذهم في الحسبان، بينما تختار الثانية <em>أفضل مرشّح</em> من المجموعة. ومن هاتين الدالتين نحصل على تبادل جديد (<code>perm</code>) ونتيجة جديدة لمدة الإنجاز الكلي (<code>res</code>):</p>
+<pre><code class="language-python">        <span class="hljs-comment"># Heuristically choose the best strategy</span>
+        strategy = pick_strategy(STRATEGIES, strat_weights)
+
+        old_val = res
+        old_time = time.time()
+
+        <span class="hljs-comment"># Use the current strategy&#x27;s heuristic to pick the next permutation from</span>
+        <span class="hljs-comment"># the set of candidates generated by the strategy&#x27;s neighbourhood</span>
+        candidates = strategy.neighbourhood(data, perm)
+        perm = strategy.heuristic(data, candidates)
+        res = makespan(data, perm)
+</code></pre>
+<p>شيفرة حساب مدة الإنجاز الكلي بسيطة إلى حدٍّ كبير: يمكننا حسابها من تبادل بتقييم الوقت الذي يُتم عنده العمل الأخير. وسنرى أدناه كيف تعمل <code>compile_solution</code>، لكنه يكفي في الوقت الحالي أن نعلم أن مصفوفة ثنائية الأبعاد تُعاد، وأن العنصر عند <code>[-1][-1]</code> يوافق زمن بدء العمل الأخير في الجدولة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">makespan</span>(<span class="hljs-params">data, perm</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Computes the makespan of the provided solution&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> compile_solution(data, perm)[-<span class="hljs-number">1</span>][-<span class="hljs-number">1</span>] + data[perm[-<span class="hljs-number">1</span>]][-<span class="hljs-number">1</span>]
+</code></pre>
+<p>وللمساعدة في اختيار استراتيجية، نحتفظ بإحصاءات عن (1) مقدار ما خفّضته الاستراتيجية من الحل، و(2) مقدار الوقت الذي أمضته الاستراتيجية في حساب المعلومات، و(3) عدد المرات التي استُخدمت فيها الاستراتيجية. ونحدّث كذلك متغيرات أفضل تبادل إذا صادفنا حلًا أفضل:</p>
+<pre><code class="language-python">        <span class="hljs-comment"># Record the statistics on how the strategy did</span>
+        strat_improvements[strategy] += res - old_val
+        strat_time_spent[strategy] += time.time() - old_time
+        strat_usage[strategy] += <span class="hljs-number">1</span>
+
+        <span class="hljs-keyword">if</span> res &lt; best_make:
+            best_make = res
+            best_perm = perm[:]
+</code></pre>
+<p>وعلى فترات منتظمة، تُحدَّث إحصاءات استخدام الاستراتيجيات. وقد حذفنا المقطع المرتبط منها لأجل الوضوح، ونفصّل الشيفرة أدناه. وكخطوة أخيرة، بمجرد اكتمال حلقة while (أي بلوغ الحد الزمني) نُخرج بعض الإحصاءات عن عملية الحل ونعيد أفضل تبادل مع مدة إنجازه الكلي:</p>
+<pre><code class="language-python">    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot; %d %%\\n&quot;</span> % percent_complete
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nWent through %d iterations.&quot;</span> % iteration
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\n(usage) Strategy:&quot;</span>
+    results = <span class="hljs-built_in">sorted</span>([(strat_weights[STRATEGIES[i]], i)
+                      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(STRATEGIES))], reverse=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">for</span> (w, i) <span class="hljs-keyword">in</span> results:
+        <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;(%d) \\t%s&quot;</span> % (strat_usage[STRATEGIES[i]], STRATEGIES[i].name)
+
+    <span class="hljs-keyword">return</span> (best_perm, best_make)
+</code></pre>
+<h3 id="تحليل-المسائل">تحليل المسائل</h3>
+<p>كمدخل لإجراء التحليل، نقدّم اسم الملف الذي يمكن العثور على المدخلات فيه ورقم المثال الذي ينبغي استخدامه. (يحتوي كل ملف على عدد من الحالات.)</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_problem</span>(<span class="hljs-params">filename, k=<span class="hljs-number">1</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;Parse the kth instance of a Taillard problem file
+
+    The Taillard problem files are a standard benchmark set for the problem
+    of flow shop scheduling. 
+
+    print &quot;\\nParsing...&quot;
+</span></code></pre>
+<p>نبدأ التحليل بقراءة الملف وتحديد السطر الذي يفصل بين كل حالة من حالات المسألة:</p>
+<pre><code class="language-python">    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename, <span class="hljs-string">&#x27;r&#x27;</span>) <span class="hljs-keyword">as</span> f:
+        <span class="hljs-comment"># Identify the string that separates instances</span>
+        problem_line = (<span class="hljs-string">&#x27;/number of jobs, number of machines, initial seed, &#x27;</span>
+                        <span class="hljs-string">&#x27;upper bound and lower bound :/&#x27;</span>)
+
+        <span class="hljs-comment"># Strip spaces and newline characters from every line</span>
+        lines = <span class="hljs-built_in">map</span>(<span class="hljs-built_in">str</span>.strip, f.readlines())
+</code></pre>
+<p>ولتسهيل العثور على الحالة الصحيحة، نفترض أن الأسطر ستُفصل بمحرف '/'. ويتيح لنا ذلك تقسيم الملف على أساس نص شائع يظهر في أعلى كل حالة، وإضافة محرف '/' في بداية السطر الأول تتيح للمعالجة النصية أدناه أن تعمل بشكل صحيح بغض النظر عن الحالة التي نختارها. ونكتشف أيضًا متى يكون رقم الحالة المُقدَّم خارج النطاق بالنظر إلى مجموعة الحالات الموجودة في الملف.</p>
+<pre><code class="language-python">        <span class="hljs-comment"># We prep the first line for later</span>
+        lines[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;/&#x27;</span> + lines[<span class="hljs-number">0</span>]
+
+        <span class="hljs-comment"># We also know &#x27;/&#x27; does not appear in the files, so we can use it as</span>
+        <span class="hljs-comment">#  a separator to find the right lines for the kth problem instance</span>
+        <span class="hljs-keyword">try</span>:
+            lines = <span class="hljs-string">&#x27;/&#x27;</span>.join(lines).split(problem_line)[k].split(<span class="hljs-string">&#x27;/&#x27;</span>)[<span class="hljs-number">2</span>:]
+        <span class="hljs-keyword">except</span> IndexError:
+            max_instances = <span class="hljs-built_in">len</span>(<span class="hljs-string">&#x27;/&#x27;</span>.join(lines).split(problem_line)) - <span class="hljs-number">1</span>
+            <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nError: Instance must be within 1 and %d\\n&quot;</span> % max_instances
+            sys.exit(<span class="hljs-number">0</span>)
+</code></pre>
+<p>نحلّل البيانات مباشرة، محوِّلين زمن معالجة كل مهمة إلى عدد صحيح وتخزينه في قائمة. وأخيرًا فإننا نضغط البيانات (zip) لعكس الصفوف والأعمدة بحيث يتوافق الشكل مع ما تتوقعه شيفرة الحل أعلاه. (يجب أن يوافق كل عنصر في <code>data</code> عملًا بعينه.)</p>
+<pre><code class="language-python">        <span class="hljs-comment"># Split every line based on spaces and convert each item to an int</span>
+        data = [<span class="hljs-built_in">map</span>(<span class="hljs-built_in">int</span>, line.split()) <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines]
+
+    <span class="hljs-comment"># We return the zipped data to rotate the rows and columns, making each</span>
+    <span class="hljs-comment">#  item in data the durations of tasks for a particular job</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">zip</span>(*data)
+</code></pre>
+<h3 id="ترجمة-الحلول">ترجمة الحلول</h3>
+<p>يتكوّن حل مشكلة جدولة ورشة التدفق من توقيت دقيق لكل مهمة في كل عمل. ولأننا نمثّل الحل ضمنيًا على هيئة تبادل للأعمال، فإننا نقدّم الدالة <code>compile_solution</code> لتحويل التبادل إلى أوقات دقيقة. وكمدخلات، تأخذ الدالة بيانات المسألة (التي تعطينا مدد كل مهمة) وتبادلًا للأعمال.</p>
+<p>تبدأ الدالة بتهيئة بنية البيانات المستخدمة لتخزين زمن بدء كل مهمة، ثم بتضمين مهام العمل الأول في التبادل.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">compile_solution</span>(<span class="hljs-params">data, perm</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Compiles a scheduling on the machines given a permutation of jobs&quot;&quot;&quot;</span>
+
+    num_machines = <span class="hljs-built_in">len</span>(data[<span class="hljs-number">0</span>])
+
+    <span class="hljs-comment"># Note that using [[]] * m would be incorrect, as it would simply</span>
+    <span class="hljs-comment">#  copy the same list m times (as opposed to creating m distinct lists).</span>
+    machine_times = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_machines)]
+
+    <span class="hljs-comment"># Assign the initial job to the machines</span>
+    machine_times[<span class="hljs-number">0</span>].append(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">for</span> mach <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,num_machines):
+        <span class="hljs-comment"># Start the next task in the job when the previous finishes</span>
+        machine_times[mach].append(machine_times[mach-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] +
+                                   data[perm[<span class="hljs-number">0</span>]][mach-<span class="hljs-number">1</span>])
+</code></pre>
+<p>ثم نضيف كل مهام بقية الأعمال. وستبدأ المهمة الأولى في أي عمل دائمًا بمجرد اكتمال المهمة الأولى في العمل السابق. أما المهام المتبقية، فنجدولة العمل في أبكر وقت ممكن: القيمة الكبرى بين زمن اكتمال المهمة السابقة في العمل نفسه وزمن اكتمال المهمة السابقة على الآلة نفسها.</p>
+<pre><code class="language-python">    <span class="hljs-comment"># Assign the remaining jobs</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(perm)):
+
+        <span class="hljs-comment"># The first machine never contains any idle time</span>
+        job = perm[i]
+        machine_times[<span class="hljs-number">0</span>].append(machine_times[<span class="hljs-number">0</span>][-<span class="hljs-number">1</span>] + data[perm[i-<span class="hljs-number">1</span>]][<span class="hljs-number">0</span>])
+
+        <span class="hljs-comment"># For the remaining machines, the start time is the max of when the</span>
+        <span class="hljs-comment">#  previous task in the job completed, or when the current machine</span>
+        <span class="hljs-comment">#  completes the task for the previous job.</span>
+        <span class="hljs-keyword">for</span> mach <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, num_machines):
+            machine_times[mach].append(<span class="hljs-built_in">max</span>(
+                machine_times[mach-<span class="hljs-number">1</span>][i] + data[perm[i]][mach-<span class="hljs-number">1</span>],
+                machine_times[mach][i-<span class="hljs-number">1</span>] + data[perm[i-<span class="hljs-number">1</span>]][mach]))
+
+    <span class="hljs-keyword">return</span> machine_times
+</code></pre>
+<h3 id="طباعة-الحلول">طباعة الحلول</h3>
+<p>حين تكتمل عملية الحل، يُخرج البرنامج معلومات عن الحل بصيغة مختصرة. وبدلًا من تقديم التوقيت الدقيق لكل مهمة في كل عمل، فإننا نُخرج قطع المعلومات التالية:</p>
+<ol>
+<li>تبادل الأعمال الذي أنتج أفضل مدة إنجاز كلي</li>
+<li>مدة الإنجاز الكلي المحسوبة للتبادل</li>
+<li>زمن البدء وزمن الانتهاء وزمن الخمول لكل آلة</li>
+<li>زمن البدء وزمن الانتهاء وزمن الخمول لكل عمل</li>
+</ol>
+<p>ويوافق زمن بدء العمل أو الآلة بدء المهمة الأولى في العمل أو على الآلة. وبالمثل، يوافق زمن انتهاء العمل أو الآلة نهاية المهمة الأخيرة في العمل أو على الآلة. أما زمن الخمول فهو مقدار الفسحة بين المهام لعمل ما أو لآلة ما. وفي الحالة المثلى نودّ تقليل مقدار زمن الخمول، إذ يعني ذلك أن زمن العملية الكلي سينخفض أيضًا.</p>
+<p>لقد ناقشنا شيفرة ترجمة الحل (أي حساب أزمنة البدء لكل مهمة) بالفعل، أما إخراج التبادل ومدة الإنجاز الكلي فالأمر تافه:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_solution</span>(<span class="hljs-params">data, perm</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Prints statistics on the computed solution&quot;&quot;&quot;</span>
+
+    sol = compile_solution(data, perm)
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nPermutation: %s\\n&quot;</span> % <span class="hljs-built_in">str</span>([i+<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> perm])
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;Makespan: %d\\n&quot;</span> % makespan(data, perm)
+</code></pre>
+<p>بعد ذلك، نستخدم وظيفة تنسيق النصوص في Python لطباعة جدول أزمنة البدء والانتهاء والخمول لكل من الآلات والأعمال. ولاحظ أن زمن خمول العمل هو الزمن من بدء العمل حتى اكتماله، مطروحًا منه مجموع أزمنة المعالجة لكل مهمة في العمل. ونحسب زمن خمول الآلة بطريقة مماثلة.</p>
+<pre><code class="language-python">    row_format =<span class="hljs-string">&quot;{:&gt;15}&quot;</span> * <span class="hljs-number">4</span>
+    <span class="hljs-built_in">print</span> row_format.<span class="hljs-built_in">format</span>(<span class="hljs-string">&#x27;Machine&#x27;</span>, <span class="hljs-string">&#x27;Start Time&#x27;</span>, <span class="hljs-string">&#x27;Finish Time&#x27;</span>, <span class="hljs-string">&#x27;Idle Time&#x27;</span>)
+    <span class="hljs-keyword">for</span> mach <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data[<span class="hljs-number">0</span>])):
+        finish_time = sol[mach][-<span class="hljs-number">1</span>] + data[perm[-<span class="hljs-number">1</span>]][mach]
+        idle_time = (finish_time - sol[mach][<span class="hljs-number">0</span>]) - <span class="hljs-built_in">sum</span>([job[mach] <span class="hljs-keyword">for</span> job <span class="hljs-keyword">in</span> data])
+        <span class="hljs-built_in">print</span> row_format.<span class="hljs-built_in">format</span>(mach+<span class="hljs-number">1</span>, sol[mach][<span class="hljs-number">0</span>], finish_time, idle_time)
+
+    results = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+        finish_time = sol[-<span class="hljs-number">1</span>][i] + data[perm[i]][-<span class="hljs-number">1</span>]
+        idle_time = (finish_time - sol[<span class="hljs-number">0</span>][i]) - <span class="hljs-built_in">sum</span>([time <span class="hljs-keyword">for</span> time <span class="hljs-keyword">in</span> data[perm[i]]])
+        results.append((perm[i]+<span class="hljs-number">1</span>, sol[<span class="hljs-number">0</span>][i], finish_time, idle_time))
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\n&quot;</span>
+    <span class="hljs-built_in">print</span> row_format.<span class="hljs-built_in">format</span>(<span class="hljs-string">&#x27;Job&#x27;</span>, <span class="hljs-string">&#x27;Start Time&#x27;</span>, <span class="hljs-string">&#x27;Finish Time&#x27;</span>, <span class="hljs-string">&#x27;Idle Time&#x27;</span>)
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(results):
+        <span class="hljs-built_in">print</span> row_format.<span class="hljs-built_in">format</span>(*r)
+
+    <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\n\\nNote: Idle time does not include initial or final wait time.\\n&quot;</span>
+</code></pre>
+<h2 id="الأحياء">الأحياء</h2>
+<p>الفكرة الكامنة وراء البحث المحلي هي الانتقال <em>محليًا</em> (locally) من حل إلى حلول أخرى قريبة منه. ونُشير إلى <em>الجوار</em> (neighbourhood) لحل معيّن بأنه الحلول الأخرى المحلية بالنسبة إليه. وفي هذا القسم نفصّل أربعة أحياء محتملة، كل واحد منها أكثر تعقيدًا من سابقه.</p>
+<p>ينتج الجوار الأول عددًا معيّنًا من التباديل العشوائية. ولا يأخذ هذا الجوار في الحسبان حتى الحل الذي نبدأ منه، لذا فإن مصطلح «الجوار» يجرح الحقيقة قليلًا. غير أن إدخال بعض العشوائية في البحث ممارسة جيدة، لأنه يعزّز استكشاف فضاء البحث.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbours_random</span>(<span class="hljs-params">data, perm, num = <span class="hljs-number">1</span></span>):
+    <span class="hljs-comment"># Returns &lt;num&gt; random job permutations, including the current one</span>
+    candidates = [perm]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num):
+        candidate = perm[:]
+        random.shuffle(candidate)
+        candidates.append(candidate)
+    <span class="hljs-keyword">return</span> candidates
+</code></pre>
+<p>وبالنسبة للجوار التالي، فإننا نفكر في تبديل أي عملين في التبادل. وباستخدام الدالة <code>combinations</code> من حزمة <code>itertools</code>، يمكننا أن نمر بسهولة على كل زوج من الفهارس وأن ننشئ تبادلًا جديدًا يوافق تبديل الأعمال الموجود عند كل فهرس. وبمعنى ما، فإن هذا الجوار ينتج تبادلات مشابهة جدًا للذي بدأنا منه.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbours_swap</span>(<span class="hljs-params">data, perm</span>):
+    <span class="hljs-comment"># Returns the permutations corresponding to swapping every pair of jobs</span>
+    candidates = [perm]
+    <span class="hljs-keyword">for</span> (i,j) <span class="hljs-keyword">in</span> combinations(<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(perm)), <span class="hljs-number">2</span>):
+        candidate = perm[:]
+        candidate[i], candidate[j] = candidate[j], candidate[i]
+        candidates.append(candidate)
+    <span class="hljs-keyword">return</span> candidates
+</code></pre>
+<p>أما الجوار التالي الذي نأخذه في الحسبان فيستخدم معلومات خاصة بالمسألة المطروحة. فنجد الأعمال التي بها أكثر قدر من زمن الخمول ونفكر في تبديلها بكل طريقة ممكنة. ونأخذ قيمة <code>size</code> وهي عدد الأعمال التي نأخذها في الحسبان: أكثر <code>size</code> عملًا خمولًا. والخطوة الأولى في العملية هي حساب زمن الخمول لكل عمل في التبادل:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbours_idle</span>(<span class="hljs-params">data, perm, size=<span class="hljs-number">4</span></span>):
+    <span class="hljs-comment"># Returns the permutations of the &lt;size&gt; most idle jobs</span>
+    candidates = [perm]
+
+    <span class="hljs-comment"># Compute the idle time for each job</span>
+    sol = flow.compile_solution(data, perm)
+    results = []
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(data)):
+        finish_time = sol[-<span class="hljs-number">1</span>][i] + data[perm[i]][-<span class="hljs-number">1</span>]
+        idle_time = (finish_time - sol[<span class="hljs-number">0</span>][i]) - <span class="hljs-built_in">sum</span>([t <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> data[perm[i]]])
+        results.append((idle_time, i))
+</code></pre>
+<p>بعد ذلك، نحسب قائمة من <code>size</code> عملًا هي التي تملك أكثر قدر من زمن الخمول.</p>
+<pre><code class="language-python">    <span class="hljs-comment"># Take the &lt;size&gt; most idle jobs</span>
+    subset = [job_ind <span class="hljs-keyword">for</span> (idle, job_ind) <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(<span class="hljs-built_in">sorted</span>(results))][:size]
+</code></pre>
+<p>وأخيرًا، نبني الجوار بالنظر في كل تبادل للأعمال الأكثر خمولًا التي حددناها. وللعثور على التبادلات، نستفيد من الدالة <code>permutations</code> من حزمة <code>itertools</code>.</p>
+<pre><code class="language-python">    <span class="hljs-comment"># Enumerate the permutations of the idle jobs</span>
+    <span class="hljs-keyword">for</span> ordering <span class="hljs-keyword">in</span> permutations(subset):
+        candidate = perm[:]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(ordering)):
+            candidate[subset[i]] = perm[ordering[i]]
+        candidates.append(candidate)
+
+    <span class="hljs-keyword">return</span> candidates
+</code></pre>
+<p>ويُشار إلى الجوار الأخير الذي نأخذه في الحسبان عادةً بأنه <em>البحث في الحيّ الكبير</em> (Large Neighbourhood Search، LNS). ومن الناحية الحدسية، يعمل LNS بالنظر في مجموعات صغيرة من التبادل الحالي على حدة — فالعثور على أفضل تبادل لمجموعة الأعمال هذه يعطينا مرشحًا واحدًا لجوار LNS. وبإعادة هذه العملية لعدة مجموعات (أو جميعها) بحجم معيّن، يمكننا زيادة عدد المرشحين في الجوار. ونحدّ عدد الجيران الذي نأخذهم في الحسبان عبر المعامل <code>MAX_LNS_NEIGHBOURHOODS</code>، لأن عدد الجيران قد ينمو بسرعة كبيرة. والخطوة الأولى في حساب LNS هي حساب قائمة عشوائية بمجموعات الأعمال التي سنفكر في تبديلها، باستخدام الدالة <code>combinations</code> من حزمة <code>itertools</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">neighbours_LNS</span>(<span class="hljs-params">data, perm, size = <span class="hljs-number">2</span></span>):
+    <span class="hljs-comment"># Returns the Large Neighbourhood Search neighbours</span>
+    candidates = [perm]
+
+    <span class="hljs-comment"># Bound the number of neighbourhoods in case there are too many jobs</span>
+    neighbourhoods = <span class="hljs-built_in">list</span>(combinations(<span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(perm)), size))
+    random.shuffle(neighbourhoods)
+</code></pre>
+<p>بعد ذلك، نمر على المجموعات للعثور على أفضل تبادل للأعمال في كل واحدة منها. وقد رأينا شيفرة مماثلة أعلاه للمرور على كل تبادلات الأعمال الأكثر خمولًا. والفارق الجوهري هنا أننا نسجّل أفضل تبادل للمجموعة فقط، لأن الحيّ الأكبر يُبنى باختيار تبادل واحد لكل مجموعة من الأعمال التي نأخذها في الحسبان.</p>
+<pre><code class="language-python">    <span class="hljs-keyword">for</span> subset <span class="hljs-keyword">in</span> neighbourhoods[:flow.MAX_LNS_NEIGHBOURHOODS]:
+
+        <span class="hljs-comment"># Keep track of the best candidate for each neighbourhood</span>
+        best_make = flow.makespan(data, perm)
+        best_perm = perm
+
+        <span class="hljs-comment"># Enumerate every permutation of the selected neighbourhood</span>
+        <span class="hljs-keyword">for</span> ordering <span class="hljs-keyword">in</span> permutations(subset):
+            candidate = perm[:]
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(ordering)):
+                candidate[subset[i]] = perm[ordering[i]]
+            res = flow.makespan(data, candidate)
+            <span class="hljs-keyword">if</span> res &lt; best_make:
+                best_make = res
+                best_perm = candidate
+
+        <span class="hljs-comment"># Record the best candidate as part of the larger neighbourhood</span>
+        candidates.append(best_perm)
+
+    <span class="hljs-keyword">return</span> candidates
+</code></pre>
+<p>ولو ضبطنا المعامل <code>size</code> على أن يساوي عدد الأعمال، لأُخذ في الحسبان كل تبادل واختير أفضلها. غير أن في الواقع نحتاج إلى تحديد حجم المجموعة بنحو 3 أو 4؛ فأي حجم أكبر من ذلك سيجعل الدالة <code>neighbours_LNS</code> تستغرق زمنًا لا يُعتدّ به.</p>
+<h2 id="الاستدلالات">الاستدلالات</h2>
+<p>يُعيد الاستدلال (heuristic) تبادلًا واحدًا مرشحًا من مجموعة المرشحين المقدَّمة. كما يُمنح الاستدلال وصولًا إلى بيانات المسألة كي يقيّم أي مرشّح قد يكون مفضَّلًا.</p>
+<p>وأول استدلال نأخذه في الحسبان هو <code>heur_random</code>. وهذا الاستدلال يختار عشوائيًا مرشحًا من القائمة دون تقييم أيّها قد يكون مفضَّلًا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">heur_random</span>(<span class="hljs-params">data, candidates</span>):
+    <span class="hljs-comment"># Returns a random candidate choice</span>
+    <span class="hljs-keyword">return</span> random.choice(candidates)
+</code></pre>
+<p>ويستخدم الاستدلال التالي <code>heur_hillclimbing</code> الطرف المقابل تمامًا. فبدلًا من اختيار مرشّح عشوائيًا، فإنه يختار المرشح الذي لديه أفضل مدة إنجاز كلي. ولاحظ أن القائمة <code>scores</code> ستحتوي على ثنائيات من الشكل <code>(make,perm)</code> حيث <code>make</code> هي قيمة مدة الإنجاز الكلي للتبادل <code>perm</code>. وترتيب هذه القائمة يضع الثنائي ذو أفضل مدة إنجاز في بداية القائمة؛ ومن هذا الثنائي نعيد التبادل.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">heur_hillclimbing</span>(<span class="hljs-params">data, candidates</span>):
+    <span class="hljs-comment"># Returns the best candidate in the list</span>
+    scores = [(flow.makespan(data, perm), perm) <span class="hljs-keyword">for</span> perm <span class="hljs-keyword">in</span> candidates]
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(scores)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
+</code></pre>
+<p>أمّا الاستدلال الأخير، <code>heur_random_hillclimbing</code>، فيجمع بين الاستدلالين العشوائي وصعود التل أعلاه. فعند إجراء البحث المحلي، قد لا ترغب دائمًا في اختيار مرشّح عشوائي، ولا حتى أفضل واحد. ويُعيد الاستدلال <code>heur_random_hillclimbing</code> حلًا «جيدًا بما يكفي» باختيار أفضل مرشّح باحتمال 0.5، ثم الثاني الأفضل باحتمال 0.25، وهكذا. وتقوم حلقة while في جوهرها بإلقاء عملة معدنية في كل تكرار لترى ما إذا كان ينبغي لها أن تواصل زيادة الفهرس (مع وضع حدّ لحجم القائمة). ويقابل الفهرس النهائي المختار المرشح الذي يختاره الاستدلال.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">heur_random_hillclimbing</span>(<span class="hljs-params">data, candidates</span>):
+    <span class="hljs-comment"># Returns a candidate with probability proportional to its rank in sorted quality</span>
+    scores = [(flow.makespan(data, perm), perm) <span class="hljs-keyword">for</span> perm <span class="hljs-keyword">in</span> candidates]
+    i = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> (random.random() &lt; <span class="hljs-number">0.5</span>) <span class="hljs-keyword">and</span> (i &lt; <span class="hljs-built_in">len</span>(scores) - <span class="hljs-number">1</span>):
+        i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(scores)[i][<span class="hljs-number">1</span>]
+</code></pre>
+<p>ولأن مدة الإنجاز الكلي هي المعيار الذي نحاول تحسينه، فإن صعود التل سيوجّه عملية البحث المحلي نحو الحلول ذات مدة الإنجاز الأفضل. وإدخال العشوائية يتيح لنا استكشاف الجوار بدلاً من التوجه الأعمى نحو أفضل حل في كل خطوة.</p>
+<h2 id="الاختيار-الديناميكي-للاستراتيجية">الاختيار الديناميكي للاستراتيجية</h2>
+<p>في قلب البحث المحلي عن تبادل جيد يكمن استخدام استدلال ودالة جوار معيّنين للانتقال من حل إلى آخر. فكيف نختار مجموعة خيارات دون أخرى؟ وفي الواقع، فإن تبديل الاستراتيجيات أثناء البحث يعود بالفائدة كثيرًا. وسيبدّل الاختيار الديناميكي للاستراتيجية الذي نستخدمه بين تركيبات من دوال الاستدلال ودوال الجوار، محاولًا الانتقال ديناميكيًا إلى تلك الاستراتيجيات التي تنجح أكثر. وبالنسبة إلينا، <em>الاستراتيجية</em> هي تكوين معيّن لدوال الاستدلال ودوال الجوار (بما في ذلك قيم معاملاتها).</p>
+<p>لنبدأ، فشيفرتنا تبني مدى الاستراتيجيات التي نريد أخذها في الحسبان أثناء الحل. وفي تهيئة الاستراتيجيات، نستخدم الدالة <code>partial</code> من حزمة <code>functools</code> لإسناد المعاملات جزئيًا لكل من الأحياء. وإضافة إلى ذلك، نبني قائمة بدوال الاستدلال، وأخيرًا نستخدم عامل الضرب لإضافة كل تركيبة من دالة جوار ودالة استدلال كاستراتيجية جديدة.</p>
+<pre><code class="language-python"><span class="hljs-comment">################</span>
+<span class="hljs-comment">## Strategies ##</span>
+<span class="hljs-comment">#################################################</span>
+<span class="hljs-comment">## A strategy is a particular configuration</span>
+<span class="hljs-comment">##  of neighbourhood generator (to compute</span>
+<span class="hljs-comment">##  the next set of candidates) and heuristic</span>
+<span class="hljs-comment">##  computation (to select the best candidate).</span>
+<span class="hljs-comment">##</span>
+
+STRATEGIES = []
+
+<span class="hljs-comment"># Using a namedtuple is a little cleaner than using dictionaries.</span>
+<span class="hljs-comment">#  E.g., strategy[&#x27;name&#x27;] versus strategy.name</span>
+Strategy = namedtuple(<span class="hljs-string">&#x27;Strategy&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;neighbourhood&#x27;</span>, <span class="hljs-string">&#x27;heuristic&#x27;</span>])
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">initialize_strategies</span>():
+
+    <span class="hljs-keyword">global</span> STRATEGIES
+
+    <span class="hljs-comment"># Define the neighbourhoods (and parameters) that we would like to use</span>
+    neighbourhoods = [
+        (<span class="hljs-string">&#x27;Random Permutation&#x27;</span>, partial(neigh.neighbours_random, num=<span class="hljs-number">100</span>)),
+        (<span class="hljs-string">&#x27;Swapped Pairs&#x27;</span>, neigh.neighbours_swap),
+        (<span class="hljs-string">&#x27;Large Neighbourhood Search (2)&#x27;</span>, partial(neigh.neighbours_LNS, size=<span class="hljs-number">2</span>)),
+        (<span class="hljs-string">&#x27;Large Neighbourhood Search (3)&#x27;</span>, partial(neigh.neighbours_LNS, size=<span class="hljs-number">3</span>)),
+        (<span class="hljs-string">&#x27;Idle Neighbourhood (3)&#x27;</span>, partial(neigh.neighbours_idle, size=<span class="hljs-number">3</span>)),
+        (<span class="hljs-string">&#x27;Idle Neighbourhood (4)&#x27;</span>, partial(neigh.neighbours_idle, size=<span class="hljs-number">4</span>)),
+        (<span class="hljs-string">&#x27;Idle Neighbourhood (5)&#x27;</span>, partial(neigh.neighbours_idle, size=<span class="hljs-number">5</span>))
+    ]
+
+    <span class="hljs-comment"># Define the heuristics that we would like to use</span>
+    heuristics = [
+        (<span class="hljs-string">&#x27;Hill Climbing&#x27;</span>, heur.heur_hillclimbing),
+        (<span class="hljs-string">&#x27;Random Selection&#x27;</span>, heur.heur_random),
+        (<span class="hljs-string">&#x27;Biased Random Selection&#x27;</span>, heur.heur_random_hillclimbing)
+    ]
+
+    <span class="hljs-comment"># Combine every neighbourhood and heuristic strategy</span>
+    <span class="hljs-keyword">for</span> (n, h) <span class="hljs-keyword">in</span> product(neighbourhoods, heuristics):
+        STRATEGIES.append(Strategy(<span class="hljs-string">&quot;%s / %s&quot;</span> % (n[<span class="hljs-number">0</span>], h[<span class="hljs-number">0</span>]), n[<span class="hljs-number">1</span>], h[<span class="hljs-number">1</span>]))
+</code></pre>
+<p>وبعد تعريف الاستراتيجيات، لا نريد بالضرورة أن نتشبث بخيار واحد أثناء البحث. وبدلًا من ذلك، نختار عشوائيًا أيًّا من الاستراتيجيات، لكننا نُرجّح الاختيار (<em>weight the selection</em>) بحسب مدى أداء الاستراتيجية. سنصف هذا الترجيح أدناه، لكنه يكفي للدالة <code>pick_strategy</code> أن يكون لدينا قائمة استراتيجيات وقائمة أوزان متناظرة (أي رقم سيفي). ولاختيار استراتيجية عشوائية بالأوزان المعطاة، نختار عددًا بانتظام بين 0 ومجموع كل الأوزان. بعدها نجد أدنى فهرس $i$ بحيث يكون مجموع كل الأوزان ذات الفهارس الأصغر من $i$ أكبر من العدد العشوائي الذي اخترناه. وتُعرف هذه التقنية أحيانًا باسم <em>اختيار عجلة الرولت</em> (roulette wheel selection)، وهي تختار لنا استراتيجية عشوائيًا وتمنح فرصة أكبر للاستراتيجيات ذات الوزن الأعلى.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">pick_strategy</span>(<span class="hljs-params">strategies, weights</span>):
+    <span class="hljs-comment"># Picks a random strategy based on its weight: roulette wheel selection</span>
+    <span class="hljs-comment">#  Rather than selecting a strategy entirely at random, we bias the</span>
+    <span class="hljs-comment">#  random selection towards strategies that have worked well in the</span>
+    <span class="hljs-comment">#  past (according to the weight value).</span>
+    total = <span class="hljs-built_in">sum</span>([weights[strategy] <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> strategies])
+    pick = random.uniform(<span class="hljs-number">0</span>, total)
+    count = weights[strategies[<span class="hljs-number">0</span>]]
+
+    i = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> pick &gt; count:
+        count += weights[strategies[i+<span class="hljs-number">1</span>]]
+        i += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">return</span> strategies[i]
+</code></pre>
+<p>والآن يبقى وصف كيفية زيادة الأوزان أثناء البحث عن حل. ويحدث هذا في حلقة while الرئيسية في الحَلّال على فترات موقوتة بانتظام (تُعرَّف بالمتغير <code>TIME_INCREMENT</code>):</p>
+<pre><code class="language-python">
+        <span class="hljs-comment"># At regular intervals, switch the weighting on the strategies available.</span>
+        <span class="hljs-comment">#  This way, the search can dynamically shift towards strategies that have</span>
+        <span class="hljs-comment">#  proven more effective recently.</span>
+        <span class="hljs-keyword">if</span> time.time() &gt; time_last_switch + TIME_INCREMENT:
+
+            time_last_switch = time.time()
+</code></pre>
+<p>وتذكّر أن <code>strat_improvements</code> يخزّن مجموع كل التحسينات التي أحدثتها الاستراتيجية، بينما يخزّن <code>strat_time_spent</code> الوقت الذي مُنح للاستراتيجية خلال الفاصل الأخير. ونُطبّع التحسينات التي أُحدثت على الوقت الإجمالي المنقضي لكل استراتيجية للحصول على مقياس لأداء كل استراتيجية في الفاصل الأخير. ولأن الاستراتيجية قد لا تكون قد حصلت على فرصة للعمل إطلاقًا، فإننا نختار قدرًا صغيرًا من الزمن كقيمة افتراضية.</p>
+<pre><code class="language-python">            <span class="hljs-comment"># Normalize the improvements made by the time it takes to make them</span>
+            results = <span class="hljs-built_in">sorted</span>([
+                (<span class="hljs-built_in">float</span>(strat_improvements[s]) / <span class="hljs-built_in">max</span>(<span class="hljs-number">0.001</span>, strat_time_spent[s]), s)
+                <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> STRATEGIES])
+</code></pre>
+<p>والآن وقد أصبح لدينا ترتيبٌ لأداء كل استراتيجية، فإننا نضيف $k$ إلى وزن أفضل استراتيجية (بافتراض أننا كنا لدينا $k$ استراتيجيات)، و$k-1$ إلى الاستراتيجية التالية الأفضل، وهكذا. وستُزاد وزن كل استراتيجية، فيما سترى أضعف استراتيجية في القائمة زيادة قدرها 1 فقط.</p>
+<pre><code class="language-python">            <span class="hljs-comment"># Boost the weight for the successful strategies</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(STRATEGIES)):
+                strat_weights[results[i][<span class="hljs-number">1</span>]] += <span class="hljs-built_in">len</span>(STRATEGIES) - i
+</code></pre>
+<p>وكإجراء إضافي، فإننا نرفع أوزان كل الاستراتيجيات التي لم تُستخدم رفعًا اصطناعيًا. ويجري ذلك كي لا ننسى الاستراتيجية كليًا. فقد تبدو إحدى الاستراتيجيات سيئة الأداء في البداية، لكنها في وقت لاحق من البحث قد تثبت فائدتها إلى حدٍّ بعيد.</p>
+<pre><code class="language-python">                <span class="hljs-comment"># Additionally boost the unused strategies to avoid starvation</span>
+                <span class="hljs-keyword">if</span> results[i][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>:
+                    strat_weights[results[i][<span class="hljs-number">1</span>]] += <span class="hljs-built_in">len</span>(STRATEGIES)
+</code></pre>
+<p>وأخيرًا، نُخرج بعض المعلومات عن ترتيب الاستراتيجيات (إذا كان العَلَم <code>DEBUG_SWITCH</code> مضبوطًا)، ونعيد تعيين المتغيرين <code>strat_improvements</code> و<code>strat_time_spent</code> من أجل الفاصل التالي.</p>
+<pre><code class="language-python">            <span class="hljs-keyword">if</span> DEBUG_SWITCH:
+                <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\\nComputing another switch...&quot;</span>
+                <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;Best: %s (%d)&quot;</span> % (results[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>].name, results[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>])
+                <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;Worst: %s (%d)&quot;</span> % (results[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>].name, results[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>])
+                <span class="hljs-built_in">print</span> results
+                <span class="hljs-built_in">print</span> <span class="hljs-built_in">sorted</span>([strat_weights[STRATEGIES[i]] 
+                              <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(STRATEGIES))])
+
+            strat_improvements = {strategy: <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+            strat_time_spent = {strategy: <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> STRATEGIES}
+</code></pre>
+<h2 id="نقاش">نقاش</h2>
+<p>لقد رأينا في هذا الفصل ما يمكن إنجازه بكميات صغيرة نسبيًا من الشيفرة لحل مشكلة التحسين المعقدة وهي جدولة ورشة التدفق. وقد يكون العثور على أفضل حل لمشكلة تحسين كبيرة مثل ورشة التدفق صعبًا. وفي حالة مثل هذه، يمكننا أن نلجأ إلى تقنيات تقريب مثل البحث المحلي لحساب حل <em>جيد بما يكفي</em>. ومع البحث المحلي يمكننا الانتقال من حل إلى آخر، بهدف العثور على حل ذي جودة عالية.</p>
+<p>والحدس العام الكامن وراء البحث المحلي يمكن تطبيقه على مدى واسع من المشكلات. وقد ركّزنا على (1) توليد جوار من حلول مرتبطة بمسألة ما انطلاقًا من حل مرشح واحد، و(2) وضع طرق لتقييم الحلول ومقارنتها. ومع هذين المكوّنين في متناول اليد، يمكننا أن نستخدم نموذج البحث المحلي للعثور على حل ذي قيمة حين يكون الخيار الأفضل صعبًا جدًا في الحساب.</p>
+<p>وبدلًا من استخدام أي استراتيجية واحدة لحل المسألة، رأينا كيف يمكن اختيار استراتيجية ديناميكيًا بحيث تتبدّل أثناء عملية الحل. وهذه التقنية البسيطة القوية تمنح البرنامج القدرة على مزج الاستراتيجيات الجزئية ومطابقتها مع المسألة المطروحة، كما تعني أيضًا أن المطوّر ليس مضطرًا إلى تفصيل الاستراتيجية تكييفًا يدويًا.</p>
+`,i={book:s,chapter:n,chapterTitle:a,slug:e,title:p,headings:l,html:t};export{s as book,n as chapter,a as chapterTitle,i as default,l as headings,t as html,e as slug,p as title};
