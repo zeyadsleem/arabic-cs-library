@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="تصادم التجزئة — التجزئة"/><!----><title>تصادم التجزئة | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -47,7 +47,7 @@
 <p>والطريقتان الرئيسيتان لتحسين بنية جدول التجزئة هما السلسلة المنفصلة والعنونة المفتوحة.</p>
 <h2 id="السلسلة-المنفصلة">السلسلة المنفصلة</h2>
 <p>في جدول التجزئة الأصلي، يمكن لكل دلو تخزين زوج مفتاح-قيمة واحد فقط. وتستبدل <u>السلسلة المنفصلة</u> العنصر الواحد في كل دلو بقائمة مترابطة، بمعالجة كل زوج مفتاح-قيمة كعقدة وتخزين جميع أزواج المفتاح-القيمة المتصادمة في القائمة نفسها. ويوضح الشكل أدناه مثالاً على جدول تجزئة بالسلسلة المنفصلة.</p>
-<p><img src="../../../../images/hello-algo/chapter_hashing--hash_table_chaining.png" alt="جدول تجزئة بالسلسلة المنفصلة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_hashing--hash_table_chaining.png" alt="جدول تجزئة بالسلسلة المنفصلة"></p>
 <p>وفي جدول التجزئة المنفّذ بالسلسلة المنفصلة، تعمل العمليات الأساسية كما يلي:</p>
 <ul>
 <li><strong>الاستعلام عن العناصر</strong>: أدخِل <code>key</code>، واحسب فهرس الدلو باستخدام دالة التجزئة، وادخل إلى رأس القائمة المترابطة المقابلة، واجتز القائمة مقارناً المفاتيح حتى يُعثر على زوج المفتاح-القيمة الهدف.</li>
@@ -182,10 +182,10 @@
 <li><strong>البحث عن العناصر</strong>: إذا حدث تصادم، فواصل الفحص إلى الأمام بالخطوة نفسها حتى تجد العنصر المقابل وأعِد <code>value</code> الخاص به؛ وإذا صادفت دلواً فارغاً، فالعنصر الهدف ليس في جدول التجزئة، لذا أعِد <code>None</code>.</li>
 </ul>
 <p>ويوضح الشكل أدناه توزيع أزواج المفتاح-القيمة في جدول تجزئة بالعنونة المفتوحة يستخدم الفحص الخطي. وفي ظل دالة التجزئة هذه، تُعيَّن المفاتيح ذات الرقمين الأخيرين المتشابهين إلى الدلو نفسه. ثم يضعها الفحص الخطي في ذلك الدلو والدلاء التالية له.</p>
-<p><img src="../../../../images/hello-algo/chapter_hashing--hash_table_linear_probing.png" alt="توزيع أزواج المفتاح-القيمة في جدول تجزئة بالعنونة المفتوحة (الفحص الخطي)"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_hashing--hash_table_linear_probing.png" alt="توزيع أزواج المفتاح-القيمة في جدول تجزئة بالعنونة المفتوحة (الفحص الخطي)"></p>
 <p>غير أن <strong>الفحص الخطي عرضة للتكتّل</strong>. وبشكل أدق، كلما طالت منطقة مشغولة متصلة في المصفوفة، زاد احتمال حدوث تصادمات جديدة داخل تلك المنطقة. ويؤدي ذلك بدوره إلى نمو التكتل أكثر فأكثر، ما يخلق حلقة مفرغة تُدهور تدريجياً كفاءة عمليات الإدراج والحذف والبحث والتحديث.</p>
 <p>ومن المهم ملاحظة أنه <strong>لا يمكننا حذف العناصر مباشرةً من جدول تجزئة بالعنونة المفتوحة</strong>. فحذف عنصر ينشئ دلواً فارغاً <code>None</code> في المصفوفة. وأثناء البحث، بمجرد وصول الفحص الخطي إلى ذلك الدلو الفارغ فإنه يتوقف، ما يعني أن أي عناصر مخزّنة أبعد على مسار الفحص تصبح غير قابلة للوصول. ونتيجة لذلك، قد يستنتج البرنامج خطأً أن تلك العناصر غير موجودة، كما هو موضح في الشكل أدناه.</p>
-<p><img src="../../../../images/hello-algo/chapter_hashing--hash_table_open_addressing_deletion.png" alt="مشكلات الاستعلام الناتجة عن الحذف في العنونة المفتوحة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_hashing--hash_table_open_addressing_deletion.png" alt="مشكلات الاستعلام الناتجة عن الحذف في العنونة المفتوحة"></p>
 <p>ولحل هذه المشكلة، يمكننا اعتماد <u>الحذف الكسول</u>: فبدلاً من إزالة عنصر من جدول التجزئة مباشرةً، <strong>نستخدم ثابتاً <code>TOMBSTONE</code> لوسم الدلو</strong>. وفي ظل هذه الآلية، يشير كل من <code>None</code> و<code>TOMBSTONE</code> إلى دلاء يمكنها استقبال أزواج المفتاح-القيمة. والفرق أن الفحص الخطي، عند مصادفته <code>TOMBSTONE</code>، يجب أن يواصل الفحص، لأن أزواج المفتاح-القيمة قد توجد أبعد على المسار.</p>
 <p>غير أن <strong>الحذف الكسول قد يسرّع تدهور أداء جدول التجزئة</strong>. فكل عملية حذف تترك علامة خلفها، ومع نمو عدد مدخلات <code>TOMBSTONE</code>، يزداد زمن البحث أيضاً، لأن الفحص الخطي قد يحتاج إلى تجاوز عدة علامات حذف قبل إيجاد العنصر الهدف.</p>
 <p>ولمعالجة ذلك، يمكننا تسجيل فهرس أول <code>TOMBSTONE</code> نصادفه أثناء الفحص الخطي وتبديل العنصر الهدف الذي عُثر عليه إلى ذلك الموضع. وتكمن الفائدة في أن كل استعلام أو إدراج يمكنه نقل العناصر أقرب إلى مواضعها المثالية، أي أقرب إلى نقطة بداية الفحص، مما يحسّن كفاءة البحث.</p>
@@ -367,7 +367,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -375,8 +375,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

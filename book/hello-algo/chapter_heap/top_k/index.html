@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة أعلى k — الأكوام (Heaps)"/><!----><title>مسألة أعلى k | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -45,14 +45,14 @@
 <h2 id="الطريقة-1-الاختيار-التكراري">الطريقة 1: الاختيار التكراري</h2>
 <p>يمكننا إجراء $k$ جولة من الاجتياز كما يوضح الشكل أدناه، فنستخرج في كل جولة العناصر $1^{st}$ و$2^{nd}$ و$\dots$ و$k^{th}$ الأكبر، بتعقيد زمني $O(nk)$.</p>
 <p>لا تناسب هذه الطريقة إلا الحالة $k \ll n$، لأنه عندما يقترب $k$ من $n$ يقترب التعقيد الزمني من $O(n^2)$، وهو ما يجعل الكفاءة منخفضة جداً.</p>
-<p><img src="../../../../images/hello-algo/chapter_heap--top_k_traversal.png" alt="الاجتياز لإيجاد أكبر k عنصر"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_heap--top_k_traversal.png" alt="الاجتياز لإيجاد أكبر k عنصر"></p>
 <div class="note">
 <p>عندما $k = n$ يمكننا الحصول على متتالية مرتبة بالكامل، وهو ما يكافئ خوارزمية «ترتيب الاختيار».</p>
 </div>
 <h2 id="الطريقة-2-الترتيب">الطريقة 2: الترتيب</h2>
 <p>كما يوضح الشكل أدناه، يمكننا أولاً ترتيب المصفوفة <code>nums</code>، ثم إعادة العناصر $k$ الواقعة في أقصى اليمين، بتعقيد زمني $O(n \log n)$.</p>
 <p>من الواضح أن هذه الطريقة تبذل جهداً أكبر من اللازم، لأننا نحتاج فقط إلى إيجاد أكبر $k$ عنصر بدلاً من ترتيب العناصر الأخرى.</p>
-<p><img src="../../../../images/hello-algo/chapter_heap--top_k_sorting.png" alt="الترتيب لإيجاد أكبر k عنصر"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_heap--top_k_sorting.png" alt="الترتيب لإيجاد أكبر k عنصر"></p>
 <h2 id="الطريقة-3-الكومة">الطريقة 3: الكومة</h2>
 <p>يمكننا حل مسألة أعلى k بكفاءة أكبر باستخدام كومة، كما يوضح الشكل أدناه.</p>
 <ol>
@@ -70,7 +70,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -78,8 +78,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

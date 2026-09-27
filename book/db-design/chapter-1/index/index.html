@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="قبل ظهور أنظمة قواعد البيانات — Before the Advent of Database Systems"/><!----><title>قبل ظهور أنظمة قواعد البيانات | تصميم قواعد البيانات — الطبعة الثانية</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -84,7 +84,7 @@ How would you solve this problem <span class="hljs-keyword">by</span> altering t
 <h2 id="نظام-الملفات-file-based-system">نظام الملفات (file-based system)</h2>
 <p>تتمثل إحدى طرق الاحتفاظ بالمعلومات على حاسوب في تخزينها في ملفات دائمة. لدى نظام الشركة عدد من برامج التطبيقات؛ صُمِّم كل منها لمعالجة ملفات البيانات. وقد كُتبت برامج التطبيقات هذه بطلب من المستخدمين في المؤسسة. وتُضاف التطبيقات الجديدة إلى النظام عند الحاجة إليها. ويُطلق على النظام الموصوف للتو اسم نظام الملفات (file-based system).</p>
 <p>لنأخذ نظامًا مصرفيًا تقليديًا يستخدم نظام الملفات لإدارة بيانات المؤسسة المبيّنة في الشكل 1.1. وكما نرى، يوجد في المصرف أقسام مختلفة. ولكل قسم تطبيقات خاصة به تُدير ملفات البيانات المختلفة وتُعالجها. أما في الأنظمة المصرفية، فقد تُستخدم هذه البرامج لخصم مبلغ من حساب أو إيداع مبلغ فيه، أو للعثور على رصيد حساب، أو لإضافة قرض رهن عقاري جديد، أو لإصدار كشوف حساب شهرية.</p>
-<p><img src="../../../../images/db-design/chapter-1-0-FileBased_300x1701.webp" alt="صورة توضيحية من الكتاب: Diagram with three coloured drawings: one of a woman and two men sitting and talking; the second shows a man shaking hands with a woman, both are standing and holding briefcases; the third is of a woman sitting. There are also drawings of labelled files, such as Employees, Checking Accounts and Mortgage Loans."></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-1-0-FileBased_300x1701.webp" alt="صورة توضيحية من الكتاب: Diagram with three coloured drawings: one of a woman and two men sitting and talking; the second shows a man shaking hands with a woman, both are standing and holding briefcases; the third is of a woman sitting. There are also drawings of labelled files, such as Employees, Checking Accounts and Mortgage Loans."></p>
 <h3 id="عيوب-نهج-الملفات-file-based-approach">عيوب نهج الملفات (file-based approach)</h3>
 <p>استخدام نظام الملفات للاحتفاظ بمعلومات المؤسسة ينطوي على عدد من العيوب. وفيما يلي خمسة أمثلة على ذلك.</p>
 <h4>تكرار البيانات (data redundancy)</h4>
@@ -141,7 +141,7 @@ How would you solve this problem <span class="hljs-keyword">by</span> altering t
 <p>تكرار البيانات (data redundancy): حالة تحدث في قاعدة بيانات عندما يحتاج حقل إلى تحديث في أكثر من جدول واحد</p>
 <p>نهج قاعدة البيانات (database approach): يتيح إدارة كميات كبيرة من معلومات المؤسسة</p>
 <p>برنامج إدارة قواعد البيانات (database management software): أداة برمجية قوية تتيح لك تخزين البيانات ومعالجتها واسترجاعها بطرق متنوعة</p>
-<p>نظام الملفات (file-based system): برنامج تطبيق مصمم لمعالجة ملفات البيانات. ناقش كل مصطلح من المصطلحات التالية: البيانات، الحقل، السجل، الملف. ما هو تكرار البيانات؟ ناقش عيوب أنظمة الملفات. اشرح الفرق بين البيانات والمعلومات. استخدم الشكل 1.2 (أدناه) للإجابة عن الأسئلة التالية. في الجدول، كم عدد السجلات (records) التي يحتوي عليها الملف؟ وكم عدد الحقول (fields) لكل سجل؟ وما المشكلة التي ستواجهها إذا أردت إنتاج قائمة حسب المدينة؟ وكيف تحل هذه المشكلة بتعديل بنية الملف؟ <img src="../../../../images/db-design/chapter-1-1-Ch1_Exercises_Figure1_1_e1409149351851.webp" alt="صورة توضيحية من الكتاب: A table listing project codes, names of project managers, phone numbers, addresses and bid prices."> الشكل 1.2. جدول التمرين رقم 5، من إعداد A. Watt. نسب العمل. هذا الفصل من كتاب Database Design (بما في ذلك صوره، ما لم يُنص على خلاف ذلك) هو نسخة مشتقة من <a href="http://cnx.org/contents/b57b8760-6898-469d-a0f7-06e0537f6817@1">Database System Concepts</a> من تأليف Nguyen Kim Anh، بترخيص <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License 3.0 license</a></p>
+<p>نظام الملفات (file-based system): برنامج تطبيق مصمم لمعالجة ملفات البيانات. ناقش كل مصطلح من المصطلحات التالية: البيانات، الحقل، السجل، الملف. ما هو تكرار البيانات؟ ناقش عيوب أنظمة الملفات. اشرح الفرق بين البيانات والمعلومات. استخدم الشكل 1.2 (أدناه) للإجابة عن الأسئلة التالية. في الجدول، كم عدد السجلات (records) التي يحتوي عليها الملف؟ وكم عدد الحقول (fields) لكل سجل؟ وما المشكلة التي ستواجهها إذا أردت إنتاج قائمة حسب المدينة؟ وكيف تحل هذه المشكلة بتعديل بنية الملف؟ <img src="/arabic-cs-library/images/db-design/chapter-1-1-Ch1_Exercises_Figure1_1_e1409149351851.webp" alt="صورة توضيحية من الكتاب: A table listing project codes, names of project managers, phone numbers, addresses and bid prices."> الشكل 1.2. جدول التمرين رقم 5، من إعداد A. Watt. نسب العمل. هذا الفصل من كتاب Database Design (بما في ذلك صوره، ما لم يُنص على خلاف ذلك) هو نسخة مشتقة من <a href="http://cnx.org/contents/b57b8760-6898-469d-a0f7-06e0537f6817@1">Database System Concepts</a> من تأليف Nguyen Kim Anh، بترخيص <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License 3.0 license</a></p>
 <p>كُتبت المواد التالية من إعداد Adrienne Watt:</p>
 <ul>
 <li>مقدمة</li>
@@ -154,7 +154,7 @@ How would you solve this problem <span class="hljs-keyword">by</span> altering t
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -162,8 +162,8 @@ How would you solve this problem <span class="hljs-keyword">by</span> altering t
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

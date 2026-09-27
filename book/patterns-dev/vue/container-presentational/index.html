@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="نمط الحاوية/العرضية — أنماط Vue"/><!----><title>نمط الحاوية/العرضية | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -47,7 +47,7 @@
 <p>قدّم تمييز Dan طريقة أوضح وأكثر قابلية للتوسّع لهيكلة تطبيقات JavaScript. فبتحديد مسؤوليات أنواع المكوّنات المختلفة بوضوح، تمكّن المطوّرون من ضمان قابلية استخدام أفضل لعناصر الواجهة (العرضية) والمنطق (الحاويات). وكانت الفكرة أنه إذا أردنا تغيير طريقة ظهور شيء ما (مثل تصميم زر)، فيمكننا فعل ذلك دون المساس بمنطق التطبيق. وبالمقابل، إذا احتجنا تغيير كيفية تدفّق البيانات أو معالجتها، فإن المكوّنات العرضية تبقى دون مساس، مما يضمن بقاء الواجهة متّسقة.</p>
 <p>لكن مع ظهور <a href="https://react.dev/learn/reusing-logic-with-custom-hooks">الخطافات (hooks)</a> في React و<a href="https://vuejs.org/guide/extras/composition-api-faq.html">Composition API</a> في Vue 3، بدأت حدود الفصل الواضحة بين المكوّنات العرضية والحاوية تتلاشى. فقد أتاحت الخطافات وComposition API للمطوّرين تغليف الحالة والمنطق وإعادة استخدامهما دون أن يكونوا ملتزمين بالضرورة بمكوّن حاوية قائم على الأصناف (class-based) أو بـ Options API. ونتيجةً لذلك، لم يعد نمط الحاوية/العرضية مُتّبعًا بهذه الدرجة من الصرامة التي كان عليها. ومع ذلك، سنقضي بعض الوقت في هذا المقال في مناقشة النمط، لأنه لا يزال مفيدًا في أوقات معيّنة.</p>
 <p>لنفترض أننا نريد إنشاء تطبيق يجلب 6 صور لكلاب، ويعرض هذه الصور على الشاشة.</p>
-<p><img src="../../../../images/patterns-dev/vue-container-presentational-0-browse_dogs.webp" alt="تطبيق «تصفّح الكلاب»"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-container-presentational-0-browse_dogs.webp" alt="تطبيق «تصفّح الكلاب»"></p>
 <p>ولكي نتبع نمط الحاوية/العرضية، نريد فرض الفصل بين المسؤوليات (separation of concerns) بفصل هذه العملية إلى جزأين:</p>
 <ul>
 <li><strong>المكوّنات العرضية (presentational components)</strong>: مكوّنات تهتمّ بكيفية عرض البيانات للمستخدم. وفي هذا المثال، يكون ذلك بعرض قائمة صور الكلاب.</li>
@@ -136,7 +136,7 @@ dogs.<span class="hljs-property">value</span> = message;
 <p><a href="https://codesandbox.io/embed/container-presentational-1-p7xssh">فتح CodeSandbox</a></p>
 <h2 id="دوال-التركيب-composables">دوال التركيب (Composables)</h2>
 <blockquote>
-<p>اقرأ أيضًا دليل <a href="../../../../book/patterns-dev/vue/composables">دوال التركيب (Composables)</a> لتتعمّق في فهم دوال التركيب.</p>
+<p>اقرأ أيضًا دليل <a href="/arabic-cs-library/book/patterns-dev/vue/composables">دوال التركيب (Composables)</a> لتتعمّق في فهم دوال التركيب.</p>
 </blockquote>
 <p>في حالات كثيرة، يمكن استبدال نمط الحاوية/العرضية بدوال التركيب (composables). فقد جعل تقديم دوال التركيب من السهل على المطوّرين إضافة حالة ذاتها <strong>دون الحاجة إلى مكوّن حاوية يوفّر تلك الحالة</strong>.</p>
 <p>بدلًا من وضع منطق جلب البيانات داخل مكوّن <code>DogImagesContainer</code>، يمكننا إنشاء دالة تركيب تجلب الصور وتُعيد مصفوفة الكلاب.</p>
@@ -202,7 +202,7 @@ dogs.<span class="hljs-property">value</span> = message;
 <p>تجعل دوال التركيب فصل المنطق عن العرض داخل المكوّن سهلًا، تمامًا كما يفعل نمط الحاوية/العرضية. وهي توفر علينا الطبقة الإضافية التي كانت ضرورية لتغليف المكوّن العرضي داخل المكوّن الحاوية.</p>
 <h2 id="مصادر-مفيدة">مصادر مفيدة</h2>
 <ul>
-<li><a href="../../../../book/patterns-dev/vue/composables">دوال التركيب في Vue | Patterns.dev</a></li>
+<li><a href="/arabic-cs-library/book/patterns-dev/vue/composables">دوال التركيب في Vue | Patterns.dev</a></li>
 </ul>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/patterns-dev/vue/composables"><span class="prev-next__label">السابق</span> <span class="prev-next__title">دوال التركيب</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/patterns-dev/vue/data-provider"><span class="prev-next__label">التالي</span> <span class="prev-next__title">نمط مزوّد البيانات</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
@@ -210,7 +210,7 @@ dogs.<span class="hljs-property">value</span> = message;
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -218,8 +218,8 @@ dogs.<span class="hljs-property">value</span> = message;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

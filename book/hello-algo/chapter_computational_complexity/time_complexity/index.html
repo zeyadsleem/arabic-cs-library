@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="التعقيد الزمني — تحليل التعقيد"/><!----><title>التعقيد الزمني | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -127,7 +127,7 @@ $$</p>
 <li>في الخوارزمية <code>B</code>، تحتاج عملية الطباعة إلى تكرار $n$ مرة، وينمو زمن تشغيل الخوارزمية خطياً مع زيادة $n$. ويُسمى التعقيد الزمني لهذه الخوارزمية «الرتبة الخطية».</li>
 <li>في الخوارزمية <code>C</code>، تحتاج عملية الطباعة إلى تكرار $1000000$ مرة. ورغم أن زمن التشغيل طويل جداً، فهو مستقل عن حجم بيانات الإدخال $n$. لذلك يكون التعقيد الزمني لـ<code>C</code> هو نفسه التعقيد الزمني لـ<code>A</code>، أي «الرتبة الثابتة» أيضاً.</li>
 </ul>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_simple_example.png" alt="اتجاهات نمو الزمن للخوارزميات A وB وC"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_simple_example.png" alt="اتجاهات نمو الزمن للخوارزميات A وB وC"></p>
 <p>مقارنةً بحساب زمن تشغيل الخوارزمية مباشرةً، فما خصائص تحليل التعقيد الزمني؟</p>
 <ul>
 <li><strong>يستطيع التعقيد الزمني تقييم كفاءة الخوارزمية تقييماً فعالاً</strong>. فمثلاً، ينمو زمن تشغيل الخوارزمية <code>B</code> خطياً؛ فعندما $n &gt; 1$ تكون أبطأ من الخوارزمية <code>A</code>، وعندما $n &gt; 1000000$ تكون أبطأ من الخوارزمية <code>C</code>. وفي الواقع، ما دام حجم بيانات الإدخال $n$ كبيراً بما يكفي، فإن خوارزمية بتعقيد «الرتبة الثابتة» تكون دائماً أفضل من خوارزمية بتعقيد «الرتبة الخطية»، وهذا هو بالضبط معنى اتجاه نمو الزمن.</li>
@@ -174,7 +174,7 @@ $$</p>
 <p>إذا وُجد عددان حقيقيان موجبان $c$ و$n_0$ بحيث يتحقق $T(n) \leq c \cdot f(n)$ لكل $n &gt; n_0$، فيمكن اعتبار $f(n)$ حداً أعلى تقاربياً لـ$T(n)$، ويُرمز إلى ذلك بـ$T(n) = O(f(n))$.</p>
 </div>
 <p>وكما هو موضح في الشكل أدناه، فإن حساب الحد الأعلى التقاربي هو إيجاد دالة $f(n)$ بحيث عندما يؤول $n$ إلى اللانهاية يكون $T(n)$ و$f(n)$ في المستوى نفسه من النمو، ولا يختلفان إلا بمعامل ثابت $c$.</p>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--asymptotic_upper_bound.png" alt="الحد الأعلى التقاربي لدالة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--asymptotic_upper_bound.png" alt="الحد الأعلى التقاربي لدالة"></p>
 <h2 id="طريقة-الاشتقاق">طريقة الاشتقاق</h2>
 <p>فكرة الحد الأعلى التقاربي رياضية بعض الشيء. وإذا شعرت أنك لم تفهمها فهماً كاملاً، فلا تقلق. يمكننا أولاً إتقان طريقة الاشتقاق، ثم استيعاب معناها الرياضي تدريجياً بالممارسة المستمرة.</p>
 <p>وفقاً للتعريف، بعد تحديد $f(n)$ يمكننا الحصول على التعقيد الزمني $O(f(n))$. فكيف نحدد الحد الأعلى التقاربي $f(n)$؟ إجمالاً، ينقسم ذلك إلى خطوتين: أولاً إحصاء عدد العمليات، ثم تحديد الحد الأعلى التقاربي.</p>
@@ -272,7 +272,7 @@ $$</p>
 &amp; \text{Constant} &lt; \text{Logarithmic} &lt; \text{Linear} &lt; \text{Linearithmic} &lt; \text{Quadratic} &lt; \text{Exponential} &lt; \text{Factorial}
 \end{aligned}
 $$</p>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_common_types.png" alt="أنواع التعقيد الزمني الشائعة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_common_types.png" alt="أنواع التعقيد الزمني الشائعة"></p>
 <h3 id="الرتبة-الثابتة-o1">الرتبة الثابتة $O(1)$</h3>
 <p>لا يعتمد عدد العمليات في الرتبة الثابتة على حجم بيانات الإدخال $n$، أي إنه لا يتغير بتغير $n$.</p>
 <p>في الدالة التالية، رغم أن قيمة <code>size</code> قد تكون كبيرة، فهي مستقلة عن حجم بيانات الإدخال $n$، لذا يبقى التعقيد الزمني $O(1)$:</p>
@@ -385,7 +385,7 @@ $$</p>
 </code></pre>
 </div>
 <p>يقارن الشكل أدناه التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية.</p>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_constant_linear_quadratic.png" alt="التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_constant_linear_quadratic.png" alt="التعقيدات الزمنية للرتب الثابتة والخطية والتربيعية"></p>
 <p>وبأخذ الترتيب الفقاعي مثالاً، تنفّذ الحلقة الخارجية $n - 1$ مرة، وتنفّذ الحلقة الداخلية $n-1$ ثم $n-2$ ثم $\dots$ ثم $2$ ثم $1$ مرة، بمتوسط $n / 2$ مرة، فيكون التعقيد الزمني $O((n - 1) n / 2) = O(n^2)$:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -469,7 +469,7 @@ $$</p>
 }
 </code></pre>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png" alt="التعقيد الزمني للرتبة الأسية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_exponential.png" alt="التعقيد الزمني للرتبة الأسية"></p>
 <p>وفي الخوارزميات الفعلية، تظهر الرتبة الأسية غالباً في الدوال التعاودية. فمثلاً، في الشيفرة التالية، تنقسم الدالة تعاودياً إلى قسمين، وتتوقف بعد $n$ انقسام:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -521,7 +521,7 @@ $$</p>
 }
 </code></pre>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png" alt="التعقيد الزمني للرتبة اللوغاريتمية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic.png" alt="التعقيد الزمني للرتبة اللوغاريتمية"></p>
 <p>وعلى غرار الرتبة الأسية، تظهر الرتبة اللوغاريتمية أيضاً في الدوال التعاودية. وتشكّل الشيفرة التالية شجرة تعاود ارتفاعها $\log_2 n$:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -583,7 +583,7 @@ $$</p>
 </code></pre>
 </div>
 <p>يوضح الشكل أدناه كيف تنشأ الرتبة الخطية اللوغاريتمية. فكل مستوى من الشجرة الثنائية يحتوي في المجموع على $n$ عملية، وللشجرة $\log_2 n + 1$ مستوى، فيكون التعقيد الزمني $O(n \log n)$.</p>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic_linear.png" alt="التعقيد الزمني للرتبة الخطية اللوغاريتمية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_logarithmic_linear.png" alt="التعقيد الزمني للرتبة الخطية اللوغاريتمية"></p>
 <p>التعقيد الزمني لخوارزميات الترتيب السائدة هو عادةً $O(n \log n)$، مثل الترتيب السريع وترتيب الدمج والترتيب بالكومة.</p>
 <h3 id="الرتبة-العاملية-on">الرتبة العاملية $O(n!)$</h3>
 <p>تقابل الرتبة العاملية مسألة «التباديل» الرياضية. فبمعطى $n$ عنصراً مختلفاً، أوجد جميع مخططات التباديل الممكنة؛ وعدد المخططات هو:</p>
@@ -621,7 +621,7 @@ $$</p>
 }
 </code></pre>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png" alt="التعقيد الزمني للرتبة العاملية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_computational_complexity--time_complexity_factorial.png" alt="التعقيد الزمني للرتبة العاملية"></p>
 <p>لاحظ أنه بما أن $n! &gt; 2^n$ دائماً عندما $n \geq 4$، فإن الرتبة العاملية تنمو أسرع من الرتبة الأسية، وهي أيضاً غير مقبولة لأجل $n$ الكبيرة.</p>
 <h2 id="أسوأ-التعقيدات-الزمنية-وأفضلها-والمتوسطة">أسوأ التعقيدات الزمنية وأفضلها والمتوسطة</h2>
 <p><strong>كفاءة الزمن في الخوارزمية ليست ثابتة غالباً، بل ترتبط بتوزيع بيانات الإدخال</strong>. لنفترض أننا ندخل مصفوفة <code>nums</code> طولها $n$، حيث تتكوّن <code>nums</code> من الأعداد من $1$ إلى $n$، ويظهر كل عدد مرة واحدة فقط، لكن ترتيب العناصر مبعثر عشوائياً. والمطلوب إعادة فهرس العنصر $1$. ويمكننا استخلاص الاستنتاجات التالية.</p>
@@ -674,7 +674,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -682,8 +682,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

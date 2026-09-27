@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="المكوّنات بلا عرض — أنماط Vue"/><!----><title>المكوّنات بلا عرض | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -42,11 +42,11 @@
 <p>تُعدّ المكوّنات بلا عرض مفيدة بشكل خاص عندما نحتاج إلى إنشاء منطق قابل لإعادة الاستخدام يمكن تطبيقه على تطبيقات واجهة مستخدم مختلفة. فمن خلال استخراج المنطق في مكوّن بلا عرض، يمكننا إعادة استخدامه بسهولة في سياقات مختلفة دون تكرار الشيفرة. وإذا كنت لا تزال مشتبكًا في هذه المرحلة، فلا تقلق! لنتعمّق أكثر في هذا المفهوم من خلال مثال.</p>
 <h2 id="تبديل-تبديل-تبديل">تبديل، تبديل، تبديل</h2>
 <p>تخيّل أن لديك عنصر واجهة تبديل (toggle) يحتاج إلى الاستخدام في أجزاء مختلفة من تطبيقك، لكن قد تكون لكل نسخة تمثيل بصري مختلف. فبعض مفاتيح التبديل قد تُعرض كأزرار، بينما قد تكون أخرى مربّعات اختيار أو مفاتيح تحويل.</p>
-<p><img src="../../../../images/patterns-dev/vue-renderless-components-0-renderless_toggles.webp" alt="مكوّنات بلا عرض بأزرار تبديل"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-renderless-components-0-renderless_toggles.webp" alt="مكوّنات بلا عرض بأزرار تبديل"></p>
 <p>يمكننا ببساطة إنشاء ثلاثة مكوّنات تبديل مختلفة للمثال أعلاه، لكننا نلاحظ أن كل عنصر تبديل يتشارك المنطق والسلوك نفسه. ولكل مفتاح تبديل حالة خاملة وأخرى نشطة تُتابَع عبر خاصية بيانات في المكوّن (مثل <code>checked</code>). وعندما يُنقر على مفتاح التبديل، تنتقل حالة المكوّن من الخاملة إلى النشطة والعكس (أي <code>checked = !checked</code>).</p>
 <p>إليك صورة توضّح كيف يُبنى القسمان <code> و</code> في كل مكوّن:</p>
-<p><img src="../../../../images/patterns-dev/vue-renderless-components-1-renderless_toggles_visual.webp" alt="الشكل البصري لأزرار التبديل في المكوّنات بلا عرض"></p>
-<p>نرى فورًا أننا يمكننا إنشاء نمط أكثر قابلية لإعادة الاستخدام عبر استخراج المنطق والسلوك المشتركين بحيث لا نضطر إلى تعريف الحالة وطرق التبديل مرارًا وتكرارًا في كل مكوّن تبديل على حدة. وهذه حالة ممتازة لاستخدام <a href="../../../../book/patterns-dev/vue/composables">الدوال المركّبة (composables)</a>، إذ تتيح لنا هذه الدوال تغليف المنطق ذي الحالة المشترك ومشاركته عبر مكوّنات التبديل المختلفة.</p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-renderless-components-1-renderless_toggles_visual.webp" alt="الشكل البصري لأزرار التبديل في المكوّنات بلا عرض"></p>
+<p>نرى فورًا أننا يمكننا إنشاء نمط أكثر قابلية لإعادة الاستخدام عبر استخراج المنطق والسلوك المشتركين بحيث لا نضطر إلى تعريف الحالة وطرق التبديل مرارًا وتكرارًا في كل مكوّن تبديل على حدة. وهذه حالة ممتازة لاستخدام <a href="/arabic-cs-library/book/patterns-dev/vue/composables">الدوال المركّبة (composables)</a>، إذ تتيح لنا هذه الدوال تغليف المنطق ذي الحالة المشترك ومشاركته عبر مكوّنات التبديل المختلفة.</p>
 <p><strong>useCheckboxToggle</strong>:</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> { ref } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
 
@@ -232,7 +232,7 @@ checkbox.<span class="hljs-property">value</span> = !checkbox.<span class="hljs-
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>عند حفظ تغييراتنا، سيُعرض لنا مفتاح التحويل في تطبيقنا.</p>
-<p><img src="../../../../images/patterns-dev/vue-renderless-components-2-toggle_element_1.webp" alt="عنصر التبديل النهائي"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-renderless-components-2-toggle_element_1.webp" alt="عنصر التبديل النهائي"></p>
 <p>و يمكننا المضي قدمًا وإنشاء عنصرَي التبديل الآخرين بطريقة متشابهة جدًا. وسيكون عنصر التبديل الثاني زرًّا، وإذا ما النُقر عليه، يتناوب بين النص <code>Toggle | Yes 😀</code> والنص <code>Toggle | No 😔</code>.</p>
 <pre><code class="language-javascript">&lt;template&gt;
 
@@ -377,7 +377,7 @@ Off
 <p><a href="https://codesandbox.io/embed/renderless-components-1-99h8zq">Open CodeSandbox</a></p>
 <h2 id="الدوال-المركبة-في-مقابل-المكونات-بلا-عرض">الدوال المركّبة في مقابل المكوّنات بلا عرض</h2>
 <p>الدوال المركّبة (composables) والمكوّنات بلا عرض هما نمطان في Vue يقدّمان منهجيتين مختلفتين لتغليف المنطق وإعادة استخدامه.</p>
-<p>لقد رأينا في <a href="../../../../book/patterns-dev/vue/composables">مقالنا السابق</a> أن الدوال المركّبة تتكوّن عادةً من دوال تُعيد بيانات وتفاعلية (reactive) وطرقًا، يمكن استيرادها واستخدامها في مكوّنات مختلفة. ومن جهة أخرى فإن المكوّنات بلا عرض تركّز على فصل منطق المكوّن عن عرضه التقديمي، عبر جعل المكوّن الأصل يتولّى عرض واجهة المستخدم المناسبة بناءً على البيانات والسلوك المُتاح من المكوّن بلا عرض.</p>
+<p>لقد رأينا في <a href="/arabic-cs-library/book/patterns-dev/vue/composables">مقالنا السابق</a> أن الدوال المركّبة تتكوّن عادةً من دوال تُعيد بيانات وتفاعلية (reactive) وطرقًا، يمكن استيرادها واستخدامها في مكوّنات مختلفة. ومن جهة أخرى فإن المكوّنات بلا عرض تركّز على فصل منطق المكوّن عن عرضه التقديمي، عبر جعل المكوّن الأصل يتولّى عرض واجهة المستخدم المناسبة بناءً على البيانات والسلوك المُتاح من المكوّن بلا عرض.</p>
 <p>يوصي <a href="https://vuejs.org/guide/reusability/composables.html#vs-renderless-components">توثيق Vue</a> باستخدام الدوال المركّبة كلما أمكن ذلك، لأن نمط المكوّن بلا عرض قد يترتّب عليه أحيانًا عبء أداء بسبب عدد نسخ المكوّنات الإضافية التي يتم إنشاؤها. لكن المكوّنات بلا عرض قد تكون مفيدة أحيانًا في المواقف التي نحتاج فيها إلى تحكّم دقيق في العرض و/أو نحتاج إلى إعادة استخدام كلٍّ من المنطق والتخطيط البصري.</p>
 <h2 id="مصادر-مفيدة">مصادر مفيدة</h2>
 <ul>
@@ -390,7 +390,7 @@ Off
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -398,8 +398,8 @@ Off
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

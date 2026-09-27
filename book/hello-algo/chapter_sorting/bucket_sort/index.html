@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="ترتيب الدلاء — الترتيب"/><!----><title>ترتيب الدلاء | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -47,7 +47,7 @@
 <li>رتّب كل دلو على حدة (نستخدم هنا دالة الترتيب المدمجة في لغة البرمجة).</li>
 <li>ادمج النتائج بالترتيب من أصغر دلو إلى أكبرها.</li>
 </ol>
-<p><img src="../../../../images/hello-algo/chapter_sorting--bucket_sort_overview.png" alt="تدفق خوارزمية ترتيب الدلاء"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_sorting--bucket_sort_overview.png" alt="تدفق خوارزمية ترتيب الدلاء"></p>
 <p>الشيفرة كما يلي:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -125,17 +125,17 @@
 <p>نظرياً، يمكن لترتيب الدلاء تحقيق تعقيد زمني $O(n)$. <strong>المفتاح هو توزيع العناصر بالتساوي على الدلاء</strong>، لأن بيانات العالم الواقعي غالباً لا تكون موزعة بانتظام. على سبيل المثال، لنفترض أننا نريد تقسيم جميع المنتجات على Taobao بالتساوي إلى 10 دلاء حسب نطاق السعر، لكن توزيع الأسعار غير متساوٍ: فهناك منتجات كثيرة يقل سعرها عن 100 يوان، ومنتجات قليلة جداً يتجاوز سعرها 1000 يوان. وإذا قُسّم نطاق السعر بالتساوي إلى 10 فترات، فستتباين أعداد المنتجات في الدلاء تبايناً كبيراً.</p>
 <p>لتحقيق توزيع أكثر تساوياً، يمكننا أولاً اختيار حد تقريبي وتقسيم البيانات إلى 3 دلاء. <strong>بعد ذلك، يمكن تقسيم الدلاء التي تحتوي على منتجات أكثر إلى 3 دلاء أخرى، حتى تصبح أعداد العناصر في جميع الدلاء متقاربة</strong>.</p>
 <p>كما يظهر في الشكل التالي، تبني هذه الطريقة في جوهرها شجرة تعاودية هدفها جعل العقد الورقية متوازنة قدر الإمكان. وبالطبع، لا يلزم تقسيم البيانات إلى 3 دلاء في كل جولة؛ إذ يمكن اختيار استراتيجية التقسيم المحددة بمرونة بناءً على خصائص البيانات.</p>
-<p><img src="../../../../images/hello-algo/chapter_sorting--scatter_in_buckets_recursively.png" alt="تقسيم الدلاء تعاودياً"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_sorting--scatter_in_buckets_recursively.png" alt="تقسيم الدلاء تعاودياً"></p>
 <p>إذا عرفنا التوزيع الاحتمالي لأسعار المنتجات مسبقاً، <strong>يمكننا ضبط حدود الأسعار لكل دلو وفقاً لهذا التوزيع</strong>. ومن الجدير بالذكر أن توزيع البيانات لا يلزم قياسه بدقة؛ إذ يمكن أيضاً تقريبه بنموذج احتمالي يُختار ليلائم خصائص البيانات.</p>
 <p>كما يظهر في الشكل التالي، نفترض أن أسعار المنتجات تتبع توزيعاً طبيعياً، مما يتيح لنا ضبط فترات الأسعار بشكل معقول لتوزيع المنتجات بالتساوي على كل دلو.</p>
-<p><img src="../../../../images/hello-algo/chapter_sorting--scatter_in_buckets_distribution.png" alt="تقسيم الدلاء بناءً على التوزيع الاحتمالي"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_sorting--scatter_in_buckets_distribution.png" alt="تقسيم الدلاء بناءً على التوزيع الاحتمالي"></p>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/hello-algo/chapter_sorting/heap_sort"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الترتيب بالكومة</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/hello-algo/chapter_sorting/counting_sort"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الترتيب بالعد</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -143,8 +143,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

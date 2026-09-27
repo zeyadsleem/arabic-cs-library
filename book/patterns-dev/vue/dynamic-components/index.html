@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="المكوّنات الديناميكية — أنماط Vue"/><!----><title>المكوّنات الديناميكية | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -53,7 +53,7 @@
 <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tab&quot;</span>&gt;</span>History component<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
 </code></pre>
 <p>هدفنا هو بناء واجهة تعرض قائمة من علامات التبويب (tabs) يمكن النقر عليها. وبحسب علامة التبويب التي يتم النقر عليها، نريد عرض مكوّن معيّن ديناميكيًا.</p>
-<p><img src="../../../../images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.webp" alt="تبويبات ديناميكية"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.webp" alt="تبويبات ديناميكية"></p>
 <p>عند التنقّل بين علامات التبويب، نريد أن يتم فكّ تركيب المكوّنات وتركيبها ديناميكيًا دون استخدام التوجيه (routing). ورغم أن تأمين شيء كهذا ممكن عبر عرض قوالب فرعية بشكل مشروط بمساعدة توجيهات مثل <a href="https://vuejs.org/guide/essentials/conditional.html"><code>v-if</code> و<code>v-else</code></a>، فإنها حالة مثالية لاستخدام المكوّنات الديناميكية في Vue.</p>
 <p>في مكوّن <code>App</code> الأب الخاص بتطبيقنا، يمكننا أولًا استيراد المكوّنات الثلاثة منفردة لتكون متاحة في القالب. وسننشئ أيضًا خاصية تفاعلية باسم <code>currentTab</code> تُسنِد إليها قيمة أولية وهي <code>&quot;Home&quot;</code>.</p>
 <pre><code class="language-javascript">&lt;script setup&gt;
@@ -131,7 +131,7 @@
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>مع هذه التغييرات، ستظهر لنا ثلاثة أزرار تبويب في الوقت الحالي.</p>
-<p><img src="../../../../images/patterns-dev/vue-dynamic-components-1-dynamic_tabs_initial.webp" alt="التبويبات الديناميكية في حالتها الأولى"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-1-dynamic_tabs_initial.webp" alt="التبويبات الديناميكية في حالتها الأولى"></p>
 <p>لعرض مكوّن فرعي معيّن ديناميكيًا، سنربط سمة <code>is</code> بالعنصر المحجوز ``. وينبغي أن تطابق القيمة المُسنَدة إلى السمة <code>is</code> المكوّن الفرعي الذي نريد عرضه ديناميكيًا. وفي حالتنا، سنستخدم خاصية البيانات <code>currentTab</code> لتحديد المكوّن الفرعي المختار في لحظة معيّنة.</p>
 <pre><code class="language-javascript">&lt;template&gt;
 
@@ -278,7 +278,7 @@ counter.<span class="hljs-property">value</span>++;
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>مع هذه التغييرات، سنلاحظ أن حالة العدّاد لكل مكوّن فرعي تبقى محفوظة حتى مع تبديلنا الديناميكي بين المكوّنات.</p>
-<p><img src="../../../../images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.webp" alt="الحفاظ على حالة المكوّنات الديناميكية"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.webp" alt="الحفاظ على حالة المكوّنات الديناميكية"></p>
 <p>وباستخدام مكوّن ``، يمكننا تحسين سلوك المكوّنات الديناميكية بحفظ حالتها وتوفير تجربة مستخدم أكثر سلاسة عند التنقّل بين علامات التبويب.</p>
 <p>JavaScript iconApp.vue</p>
 <pre><code class="language-javascript">&lt;template&gt;
@@ -323,7 +323,7 @@ counter.<span class="hljs-property">value</span>++;
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -331,8 +331,8 @@ counter.<span class="hljs-property">value</span>++;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الملحق A: نموذج بيانات تسجيل في جامعة — Appendix A: A university registration data model"/><!----><title>الملحق A: نموذج بيانات تسجيل في جامعة | تصميم قواعد البيانات — الطبعة الثانية</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -56,7 +56,7 @@
 <li>أدخل تعديلات على مخطط الكيانات والعلاقات بعد مراجعته إذا لزم الأمر.</li>
 <li>تحقّق من نموذج الكيانات والعلاقات مع المستخدمين لإنهاء التصميم.</li>
 </ul>
-<p><img src="../../../../images/db-design/appendix-a-0-Ch_14_University_Example_ERD_300x189.webp" alt="مخطط الكيانات والعلاقات لنموذج تسجيل الجامعة"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-0-Ch_14_University_Example_ERD_300x189.webp" alt="مخطط الكيانات والعلاقات لنموذج تسجيل الجامعة"></p>
 <h3 id="الكيان-entity">الكيان (Entity)</h3>
 <p>Student (StudentID, Name, Registered, Region, StaffNo)</p>
 <p>Staff (StaffNo, Name, Region) – يحوي هذا الجدول المحاضرين (instructors) وغيرهم من أعضاء هيئة التدريس.</p>
@@ -80,22 +80,22 @@
 <p>بالاستناد إلى الشكل A.2، لاحِظ أن الطالب (السجل) مرتبط (مسجل) بعدد من المقررات يتراوح بين 1 كحد أدنى وعدد كبير كحد أقصى.</p>
 <p>يجب أن يكون لكل تسجيل طالب صالح.</p>
 <p>لاحظ: بما أن StudentID جزء من المفتاح الأساسي (PK)، فلا يمكن أن يكون فارغًا (null). لذلك، يجب أن يكون أي قيمة تُدخَل لـStudentID موجودة في جدول Student من مرة واحدة على الأقل إلى مرة واحدة كحد أقصى. ويكون هذا واضحًا لأن المفتاح الأساسي لا يمكن أن يحوي تكرارات.</p>
-<p><img src="../../../../images/db-design/appendix-a-1-Ch_14_Student_one_to_Many_Enrollment_300x145.webp" alt="علاقة طالب إلى تسجيلات متعددة"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-1-Ch_14_Student_one_to_Many_Enrollment_300x145.webp" alt="علاقة طالب إلى تسجيلات متعددة"></p>
 <p>راجع الشكل A.3. سجل عضو هيئة التدريس (معلّم تربوي) مرتبط بعدد من الطلاب يتراوح بين 0 كحد أدنى وعدد كبير كحد أقصى.</p>
 <p>قد يكون لسجل الطالب معلّم تربوي أو قد لا يكون.</p>
-<p><img src="../../../../images/db-design/appendix-a-2-Ch_14_Staff_to_Student_300x174.webp" alt="علاقة عضو هيئة التدريس إلى الطالب"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-2-Ch_14_Staff_to_Student_300x174.webp" alt="علاقة عضو هيئة التدريس إلى الطالب"></p>
 <p>لاحظ: يسمح الحقل StaffNo في جدول Student بالقيم الفارغة (null) – وهي ممثَّلة بالرقم 0 على الجانب الأيسر. لكن إذا وُجدت قيمة StaffNo في جدول الطلاب فيجب أن توجد في جدول Staff مرة واحدة على الأكثر – وهي ممثَّلة بالرقم 1.</p>
 <p>راجع الشكل A.4. سجل عضو هيئة التدريس (محاضر) مرتبط بعدد من المقررات يتراوح بين 0 كحد أدنى وعدد كبير كحد أقصى.</p>
 <p>قد يكون للمقرر محاضر أو قد لا يكون.</p>
 <p>لاحظ: إن StaffNo في جدول Course هو المفتاح الأجنبي (FK)، ويمكن أن يكون فارغًا. وهذا يمثّل الرقم 0 على الجانب الأيسر من العلاقة. وإذا كانت هناك بيانات في StaffNo، فيجب أن تكون في جدول Staff مرة واحدة على الأكثر. وهذا ممثَّل بالرقم 1 على الجانب الأيسر من العلاقة.</p>
-<p><img src="../../../../images/db-design/appendix-a-3-Ch_14_Staff_to_Course_300x172.webp" alt="علاقة عضو هيئة التدريس إلى المقرر"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-3-Ch_14_Staff_to_Course_300x172.webp" alt="علاقة عضو هيئة التدريس إلى المقرر"></p>
 <p>راجع الشكل A.5. يجب أن يُطرح المقرر (في التسجيلات) من مرة واحدة على الأقل إلى عدد كبير من المرات.</p>
 <p>يجب أن يحتوي جدول Enrollment على مقرر صالح واحد على الأقل إلى عدد كبير.</p>
-<p><img src="../../../../images/db-design/appendix-a-4-Ch_14_Course_to_Enrollment_300x138.webp" alt="علاقة المقرر إلى التسجيل"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-4-Ch_14_Course_to_Enrollment_300x138.webp" alt="علاقة المقرر إلى التسجيل"></p>
 <p>راجع الشكل A.6. يمكن أن يكون للتسجيل عدد من الواجبات يتراوح بين 0 كحد أدنى وعدد كبير كحد أقصى.</p>
 <p>يجب أن يرتبط الواجب بعدد من عمليات التسجيل يتراوح بين 1 على الأقل و1 كحد أقصى.</p>
 <p>لاحظ: يجب أن يحتوي كل سجل في جدول Assignment على سجل تسجيل صالح. ويمكن أن يرتبط سجل التسجيل الواحد بعدة واجبات.</p>
-<p><img src="../../../../images/db-design/appendix-a-5-Ch_14_Enrollment_to_Assignment_300x118.webp" alt="علاقة التسجيل إلى الواجب"></p>
+<p><img src="/arabic-cs-library/images/db-design/appendix-a-5-Ch_14_Enrollment_to_Assignment_300x118.webp" alt="علاقة التسجيل إلى الواجب"></p>
 <h2 id="نسبة-العمل-attribution">نسبة العمل (Attribution)</h2>
 <p>هذا العمل تكييف (adaptation) وليس اشتقاقًا (derivation)، لأن المؤلف كتب نصفه. المصدر: <a href="http://openlearn.open.ac.uk/mod/oucontent/view.php?id=397581&amp;section=8.2">http://openlearn.open.ac.uk/mod/oucontent/view.php?id=397581&amp;section=8.2</a></p>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/db-design/chapter-sql-dml/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">معالجة البيانات في SQL</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/db-design/appendix-b/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الملحق B: تمارين مخطط الكيانات والعلاقات</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
@@ -104,7 +104,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -112,8 +112,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

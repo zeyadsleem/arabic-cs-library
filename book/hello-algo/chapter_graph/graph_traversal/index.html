@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="اجتياز الرسم البياني — الرسوم البيانية"/><!----><title>اجتياز الرسم البياني | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -42,7 +42,7 @@
 <p>تشترط كل من الرسوم البيانية والأشجار تطبيق خوارزميات البحث لتنفيذ عمليات الاجتياز. ويمكن أيضاً تقسيم طرق اجتياز الرسم البياني إلى نوعين: <u>الاجتياز بالعرض أولاً</u> و<u>الاجتياز بالعمق أولاً</u>.</p>
 <h2 id="البحث-بالعرض-أولا">البحث بالعرض أولاً</h2>
 <p><strong>يتقدّم البحث بالعرض أولاً من القريب إلى البعيد: بدءاً من عقدة معينة، يزور دائماً أقرب الرؤوس أولاً ويتوسّع نحو الخارج طبقة بعد طبقة</strong>. وكما هو موضح في الشكل أدناه، بدءاً من الرأس العلوي الأيسر، اجتز أولاً جميع الرؤوس المجاورة لذلك الرأس، ثم اجتز جميع الرؤوس المجاورة للرأس التالي، وهكذا، حتى تُزار جميع الرؤوس.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--graph_bfs.png" alt="البحث بالعرض أولاً في رسم بياني"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--graph_bfs.png" alt="البحث بالعرض أولاً في رسم بياني"></p>
 <h3 id="تنفيذ-الخوارزمية">تنفيذ الخوارزمية</h3>
 <p>يُنفَّذ البحث بالعرض أولاً عادةً بمساعدة طابور، كما هو موضح في الشيفرة أدناه. ويتمتع الطابور بخاصية «أول ما يدخل يخرج أولاً»، وهو ما يتوافق مع فكرة البحث بالعرض أولاً القائمة على «من القريب إلى البعيد».</p>
 <ol>
@@ -64,7 +64,7 @@
 <p><strong>التعقيد المكاني</strong>: يمكن أن تحتوي القائمة <code>res</code> ومجموعة التجزئة <code>visited</code> والطابور <code>que</code> على $|V|$ من الرؤوس على الأكثر، باستخدام مساحة $O(|V|)$.</p>
 <h2 id="البحث-بالعمق-أولا">البحث بالعمق أولاً</h2>
 <p><strong>البحث بالعمق أولاً طريقة اجتياز تعطي الأولوية للمضي إلى أبعد حد ممكن، ثم تتراجع عند انعدام المسار</strong>. وكما هو موضح في الشكل أدناه، بدءاً من الرأس العلوي الأيسر، زُر رأساً مجاوراً للرأس الحالي، واستمر حتى تصل إلى طريق مسدود، ثم عُد وواصل المضي إلى أبعد حد ممكن قبل أن تعود مجدداً، وهكذا، حتى تُجتاز جميع الرؤوس.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--graph_dfs.png" alt="البحث بالعمق أولاً في رسم بياني"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--graph_dfs.png" alt="البحث بالعمق أولاً في رسم بياني"></p>
 <h3 id="تنفيذ-الخوارزمية">تنفيذ الخوارزمية</h3>
 <p>يُنفَّذ هذا النموذج الخوارزمي القائم على «المضي إلى أبعد حد ممكن ثم العودة» عادةً باستخدام التعاود. وكما في البحث بالعرض أولاً، نحتاج في البحث بالعمق أولاً أيضاً إلى مجموعة تجزئة <code>visited</code> لتسجيل الرؤوس المزارة وتجنّب إعادة زيارتها.</p>
 <p>يوضح الشكل أدناه سير خوارزمية البحث بالعمق أولاً.</p>
@@ -87,7 +87,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -95,8 +95,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

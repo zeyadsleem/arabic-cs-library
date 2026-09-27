@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="دوال التركيب — أنماط Vue"/><!----><title>دوال التركيب | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -235,11 +235,11 @@
 </code></pre>
 <p><a href="https://codesandbox.io/embed/composables-1-srzc9w">فتح CodeSandbox</a></p>
 <p>عند تشغيل التطبيق، يُعرض العدد الحالي والعرض الداخلي للنافذة في الوقت الفعلي. ويمكن للمستخدم التفاعل مع المكوّن عبر زيادة العدد أو إنقاصه باستخدام الأزرار في مكوّن ``.</p>
-<p><img src="../../../../images/patterns-dev/vue-composables-0-composables_count.webp" alt="دالة تركيب تُدار العدّاد"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-composables-0-composables_count.webp" alt="دالة تركيب تُدار العدّاد"></p>
 <p>وبالمثل، يُحدَّث العرض تلقائيًا كلما أُعيد تغيير حجم النافذة.</p>
-<p><img src="../../../../images/patterns-dev/vue-composables-1-composables_width.webp" alt="توسيع وتصغير عرض النافذة"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-composables-1-composables_width.webp" alt="توسيع وتصغير عرض النافذة"></p>
 <p>يمكن تصور بنية مكوّن <code>App.vue</code> أحادي الملف على النحو التالي:</p>
-<p><img src="../../../../images/patterns-dev/vue-composables-2-options_api_breakdown.webp" alt="مخطط تدفّق يوضّح الخيارات وOptions API"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-composables-2-options_api_breakdown.webp" alt="مخطط تدفّق يوضّح الخيارات وOptions API"></p>
 <p>رغم أن حجم هذا المكوّن صغير، فإن المنطق بداخله أصبح متشابكًا بالفعل. فبعض الأجزاء مخصّصة لوظيفة العدّاد، بينما تتعلّق أجزاء أخرى بمنطق العرض. ومع نمو المكوّن، يصبح تنظيم المنطق المرتبط داخله والعثور عليه أكثر صعوبة.</p>
 <p>لمعالجة هذه التحديات، قدّم فريق Vue واجهة Composition API في Vue v3.</p>
 <h2 id="composition-api">Composition API</h2>
@@ -593,7 +593,7 @@ width,
 <p><a href="https://codesandbox.io/embed/composables-3-zr4q7x">فتح CodeSandbox</a></p>
 <p>باستخدام دوال التركيب ضمن إعداد Composition API، تمكّنّا من تفكيك سياق تطبيقنا إلى أجزاء أصغر قابلة لإعادة الاستخدام تفصل المنطق عن بعضها.</p>
 <p>لنُصوِّر التغييرات التي أجريناها للتو مقارنةً بمثال المكوّن الأول في Options API.</p>
-<p><img src="../../../../images/patterns-dev/vue-composables-3-composables_breakdown.webp" alt="مخطط تدفّق لتفكيك دالة التركيب إلى أجزاء"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-composables-3-composables_breakdown.webp" alt="مخطط تدفّق لتفكيك دالة التركيب إلى أجزاء"></p>
 <p>أدى استخدام دوال التركيب في Vue إلى تسهيل فصل منطق مكوّننا إلى عدة أجزاء أصغر. وأصبحت إعادة استخدام المنطق ذي الحالة نفسه سهلة الآن، إذ لم نعد مقيدين بتنظيم شيفرتنا ضمن خيارات محدّدة في Options API.</p>
 <p>مع دوال التركيب، لدينا المرونة لاستخراج المنطق المشترك وإعادة استخدامه عبر المكوّنات. وهذا الفصل بين المسؤوليات يتيح لنا التركيز على وظيفة محدّدة داخل كل دالة تركيب، مما يجعل شيفرتنا <strong>أكثر وحداتية وأسهل في الصيانة</strong>.</p>
 <p>وبتقسيم المنطق إلى أجزاء أصغر قابلة لإعادة الاستخدام، يمكننا تركيب مكوّناتنا باستخدام دوال التركيب هذه، فتجتمع الوظائف اللازمة دون تكرار الشيفرة. ويشجّع هذا النهج على <strong>إعادة استخدام الشيفرة</strong> ويقلّل خطر ازدواج الشيفرة والتعارضات فيها.</p>
@@ -610,7 +610,7 @@ width,
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -618,8 +618,8 @@ width,
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

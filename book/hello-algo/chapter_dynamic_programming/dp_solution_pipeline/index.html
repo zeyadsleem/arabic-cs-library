@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="منهج حل مسائل البرمجة الديناميكية — البرمجة الديناميكية"/><!----><title>منهج حل مسائل البرمجة الديناميكية | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -65,12 +65,12 @@
 <p>بمعطى شبكة ثنائية الأبعاد <code>grid</code> بأبعاد $n \times m$ تحتوي كل خلية فيها على عدد صحيح غير سالب يمثّل تكلفتها، يبدأ روبوت من الخلية العلوية اليسرى ولا يستطيع في كل خطوة إلا التحرك للأسفل أو لليمين حتى يصل إلى الخلية السفلية اليمنى. أعد أصغر مجموع مسار من الأعلى اليسار إلى الأسفل اليمين.</p>
 </div>
 <p>يوضح الشكل أدناه مثالاً يكون فيه أصغر مجموع مسار للشبكة المعطاة $13$.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_example.png" alt="بيانات مثال لأصغر مجموع مسار"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_example.png" alt="بيانات مثال لأصغر مجموع مسار"></p>
 <p><strong>الخطوة 1: فكّر في القرارات في كل جولة، وحدد الحالة، وبذلك تحصل على جدول $dp$</strong></p>
 <p>القرار في كل جولة من هذه المسألة هو التحرك خطوة واحدة للأسفل أو لليمين من الخلية الحالية. ولتكن فهارس الصف والعمود للخلية الحالية $[i, j]$. وبعد التحرك للأسفل أو لليمين تصبح الفهارس $[i+1, j]$ أو $[i, j+1]$. لذلك ينبغي أن تتضمن الحالة متغيّرين: فهرس الصف وفهرس العمود، ويُرمز إليهما بـ$[i, j]$.</p>
 <p>تقابل الحالة $[i, j]$ المسألة الفرعية: <strong>أصغر مجموع مسار من نقطة البداية $[0, 0]$ إلى $[i, j]$</strong>، ويُرمز إليه بـ$dp[i, j]$.</p>
 <p>ومن ذلك نحصل على مصفوفة $dp$ ثنائية الأبعاد الموضحة في الشكل أدناه، وحجمها مماثل لحجم شبكة الإدخال $grid$.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_state_definition.png" alt="تعريف الحالة وجدول dp"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_state_definition.png" alt="تعريف الحالة وجدول dp"></p>
 <div class="note">
 <p>يمكن وصف عمليتي البرمجة الديناميكية والتتبّع الرجعي بأنهما سلسلة من القرارات، وتتكوّن الحالة من جميع متغيّرات القرار. وينبغي أن تتضمن جميع المتغيّرات التي تصف تقدّم حل المسألة، وأن تحتوي معلومات كافية لاستنتاج الحالة التالية.</p>
 <p>تقابل كل حالة مسألة فرعية، ونحدد جدول $dp$ لتخزين حلول جميع المسائل الفرعية. وكل متغيّر مستقل في الحالة هو بُعد من أبعاد جدول $dp$. وفي جوهره، جدول $dp$ تعيين بين الحالات وحلول المسائل الفرعية.</p>
@@ -81,7 +81,7 @@
 <p>$$
 dp[i, j] = \min(dp[i-1, j], dp[i, j-1]) + grid[i, j]
 $$</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_state_transition.png" alt="البنية الفرعية المثلى ومعادلة انتقال الحالة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_state_transition.png" alt="البنية الفرعية المثلى ومعادلة انتقال الحالة"></p>
 <div class="note">
 <p>بناءً على جدول $dp$ المحدد، فكّر في العلاقة بين المسألة الأصلية والمسائل الفرعية، وابحث عن طريقة لبناء الحل الأمثل للمسألة الأصلية من الحلول المثلى للمسائل الفرعية، وهذه هي البنية الفرعية المثلى.</p>
 <p>وبمجرد أن نحدد البنية الفرعية المثلى، يمكننا استخدامها لبناء معادلة انتقال الحالة.</p>
@@ -89,7 +89,7 @@ $$</p>
 <p><strong>الخطوة 3: حدد الشروط الحدية وترتيب انتقال الحالة</strong></p>
 <p>في هذه المسألة، لا يمكن للحالات في الصف الأول أن تأتي إلا من الحالة الواقعة على يسارها، ولا يمكن للحالات في العمود الأول أن تأتي إلا من الحالة الواقعة فوقها. لذلك فإن الصف الأول $i = 0$ والعمود الأول $j = 0$ هما شرطان حديان.</p>
 <p>وكما يوضح الشكل أدناه، بما أن كل خلية تنتقل من الخلية الواقعة على يسارها والخلية الواقعة فوقها، نستخدم حلقات لاجتياز المصفوفة، حيث تجتاز الحلقة الخارجية الصفوف وتجتاز الحلقة الداخلية الأعمدة.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_initial_state.png" alt="الشروط الحدية وترتيب انتقال الحالة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_solution_initial_state.png" alt="الشروط الحدية وترتيب انتقال الحالة"></p>
 <div class="note">
 <p>تُستخدم الشروط الحدية في البرمجة الديناميكية لتهيئة جدول $dp$، بينما تُستخدم في البحث للتقليم.</p>
 <p>وجوهر ترتيب انتقال الحالة هو ضمان أنه عند حساب حل المسألة الحالية تكون جميع المسائل الفرعية الأصغر التي تعتمد عليها قد حُسبت حساباً صحيحاً بالفعل.</p>
@@ -106,12 +106,12 @@ $$</p>
 <p>وشيفرة التنفيذ كما يلي:</p>
 <p>يوضح الشكل أدناه شجرة التعاود الجذرية عند $dp[2, 1]$، وتتضمن بعض المسائل الفرعية المتداخلة التي يتزايد عددها بحدّة مع نمو حجم الشبكة <code>grid</code>.</p>
 <p>وفي جوهره، سبب تداخل المسائل الفرعية هو: <strong>وجود مسارات متعددة من الزاوية العلوية اليسرى للوصول إلى خلية معينة</strong>.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png" alt="شجرة تعاود البحث بالقوة الغاشمة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png" alt="شجرة تعاود البحث بالقوة الغاشمة"></p>
 <p>لكل حالة خياران: الأسفل واليمين، لذا فإن إجمالي عدد الخطوات من الزاوية العلوية اليسرى إلى الزاوية السفلية اليمنى هو $m + n - 2$، مما يعطي تعقيداً زمنياً في أسوأ حالة $O(2^{m + n})$، حيث $n$ و$m$ هما عدد صفوف الشبكة وأعمدتها على الترتيب. لاحظ أن هذا الحساب لا يراعي الحالات القريبة من حدود الشبكة، حيث يبقى خيار واحد فقط عند الوصول إلى حدود الشبكة، لذا سيكون العدد الفعلي للمسارات أقل بقليل.</p>
 <h3 id="الطريقة-2-الحفظ-memoization">الطريقة 2: الحفظ (memoization)</h3>
 <p>نُدخِل قائمة مذكرة <code>mem</code> بحجم مماثل لحجم الشبكة <code>grid</code> لتسجيل حلول المسائل الفرعية وتقليم المسائل الفرعية المتداخلة:</p>
 <p>وكما يوضح الشكل أدناه، بعد إدخال الحفظ، لا يلزم حساب كل حل لمسألة فرعية إلا مرة واحدة، لذا يعتمد التعقيد الزمني على إجمالي عدد الحالات، وهو حجم الشبكة $O(nm)$.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png" alt="شجرة تعاود الحفظ"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png" alt="شجرة تعاود الحفظ"></p>
 <h3 id="الطريقة-3-البرمجة-الديناميكية">الطريقة 3: البرمجة الديناميكية</h3>
 <p>نفّذ حل البرمجة الديناميكية القائم على التكرار، كما في الشيفرة أدناه:</p>
 <p>يوضح الشكل أدناه عملية انتقال الحالة لأصغر مجموع مسار، وهي تجتاز الشبكة كاملةً، <strong>وبذلك يكون التعقيد الزمني $O(nm)$</strong>.</p>
@@ -125,7 +125,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -133,8 +133,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

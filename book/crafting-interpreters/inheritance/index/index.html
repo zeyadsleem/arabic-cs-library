@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الوراثة — Inheritance"/><!----><title>الوراثة | صناعة المفسّرات</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/introduction/index">مقدمة</a></li><!--]--></ul><h3>A Map of the Territory</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-map-of-the-territory/index">خريطة الإقليم</a></li><!--]--></ul><h3>Welcome</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/welcome/index">ترحيب</a></li><!--]--></ul><h3>The Lox Language</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/the-lox-language/index">اللّغة Lox</a></li><!--]--></ul><h3>Types of Values</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/types-of-values/index">أنواع القيم</a></li><!--]--></ul><h3>Scanning</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning/index">المسح المعجمي</a></li><!--]--></ul><h3>Scanning On Demand</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning-on-demand/index">المسح عند الطلب</a></li><!--]--></ul><h3>Representing Code</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/representing-code/index">تمثيل الشيفرة</a></li><!--]--></ul><h3>Resolving and Binding</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/resolving-and-binding/index">الحَلّ والربط</a></li><!--]--></ul><h3>Statements and State</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/statements-and-state/index">الجمل والحالة</a></li><!--]--></ul><h3>Classes</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes/index">الأصناف</a></li><!--]--></ul><h3>Classes and Instances</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes-and-instances/index">الأصناف والنسخ</a></li><!--]--></ul><h3>Methods and Initializers</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/methods-and-initializers/index">الدوال والمُهيّئات</a></li><!--]--></ul><h3>Inheritance</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/inheritance/index" class="active">الوراثة</a></li><!--]--></ul><h3>Superclasses</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/superclasses/index">الأصناف الآباء</a></li><!--]--></ul><h3>Control Flow</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/control-flow/index">التحكّم في المسار</a></li><!--]--></ul><h3>Parsing Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/parsing-expressions/index">تحليل التعبيرات</a></li><!--]--></ul><h3>Evaluating Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/evaluating-expressions/index">تقييم التعبيرات</a></li><!--]--></ul><h3>Strings</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/strings/index">النصوص</a></li><!--]--></ul><h3>Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/functions/index">الدوال</a></li><!--]--></ul><h3>Calls and Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/calls-and-functions/index">الاستدعاءات والدوال</a></li><!--]--></ul><h3>Closures</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/closures/index">الإغلاقات</a></li><!--]--></ul><h3>Local Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/local-variables/index">المتغيّرات المحلّية</a></li><!--]--></ul><h3>A Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-virtual-machine/index">آلة افتراضية</a></li><!--]--></ul><h3>Compiling Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/compiling-expressions/index">ترجمة التعبيرات</a></li><!--]--></ul><h3>A Bytecode Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-bytecode-virtual-machine/index">آلة افتراضية لشيفرة البايت</a></li><!--]--></ul><h3>Chunks of Bytecode</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/chunks-of-bytecode/index">قطع الشيفرة بايت</a></li><!--]--></ul><h3>A Tree-Walk Interpreter</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-tree-walk-interpreter/index">مفسّر يتجوّل على الشجرة</a></li><!--]--></ul><h3>Jumping Back and Forth</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/jumping-back-and-forth/index">القفز ذهابًا وإيابًا</a></li><!--]--></ul><h3>Global Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/global-variables/index">المتغيّرات العامة</a></li><!--]--></ul><h3>Hash Tables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/hash-tables/index">جداول التجزئة</a></li><!--]--></ul><h3>Optimization</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/optimization/index">التحسين</a></li><!--]--></ul><h3>Garbage Collection</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/garbage-collection/index">جمع النفايات</a></li><!--]--></ul><h3>Appendix I</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-i/index">الملحق الأول</a></li><!--]--></ul><h3>Appendix II</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-ii/index">الملحق الثاني</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">Inheritance</p> <h1>الوراثة</h1></div> <div class="reader-content"><!----><blockquote>
+<p>كنا في يوم من الأيام كتلاً في البحر، ثم أسماكاً، ثم سحال وجُرذان، ثم قرود،
+ثم مئات الأشياء بينهما. كانت هذه اليد في يوم من الأيام زعنفة، وكانت هذه اليد
+ذات مخالب! وفي فمي البشري لديّ أسنان الذئب الحادّة، وأسنان الأرنب المسطّحة،
+وأسنان البقرة الطاحنة! دماؤنا مالحة كالبحر الذي كنّا نعيش فيه! حين نخاف،
+تنتصب شعيرات جلدنا تماماً كما كانت حين كنا نملك فرواً. نحن تاريخ! وكل ما كنا
+نكونه في طريقنا إلى أن نكون نحن، ما زلنا نحن.</p>
+<p><cite>تيري براتشيت، <em>قبّعة مليئة بالسماء</em></cite></p>
+</blockquote>
+<p>هل تصدّق ذلك؟ لقد وصلنا إلى الفصل الأخير من [الجزء الثاني][]. أوشكنا على
+الانتهاء من أول مفسّر لنا للغة Lox. كان [الفصل السابق][] كرة ضخمة من ميزات
+التوجيه للكائنات المتشابكة. لم أستطع فصل تلك الميزات عن بعضها، لكنني نجح في فكّ
+تشابك قطعة واحدة. وفي هذا الفصل، سنُتمّ دعم Lox للأصناف بإضافة الوراثة
+(inheritance).</p>
+<p>تظهر الوراثة في لغات البرمجة الموجّهة للكائنات منذ <span
+name="inherited">أولى</span> لغة منها، وهي <a href="https://en.wikipedia.org/wiki/Simula">Simula</a>. في البداية لاحظ
+كريستن نيغارد وأول يوهان داهل أوجه التشابه بين الأصناف في برامج المحاكاة التي
+كتباها. منحتهما الوراثة وسيلة لإعادة استخدام شيفرة تلك الأجزاء المتشابهة.</p>
+<aside name="inherited">
+<p>يمكنك القول إن تلك اللغات الأخرى جميعها <em>ورثت</em>ها من Simula. هي-هوهو! سأُخرج
+نفسي من هنا.</p>
+</aside>
+<h2 id="الأصناف-الأب-والأصناف-الفرعية">الأصناف الأب والأصناف الفرعية</h2>
+<p>بما أن المفهوم هو «الوراثة»، فمن الطبيعي أن نتوقّع أن يختاروا استعارة متّسقة ويسمّوها
+أصناف «أم» و«ابن»، لكن ذلك سيكون سهلاً أكثر من اللازم. في زمن بعيد جداً، صاغ
+C. A. R. Hoare مصطلح «<span name="subclass">صنف فرعي</span>» (subclass) للإشارة
+إلى نوع سجلّ (record) يُدقّق نوعاً آخر. واستعارت Simula ذلك المصطلح للإشارة إلى
+<em>صنف</em> يرث من صنف آخر. ولا أظنّ أن أحداً قلب البادئة اللاتينية ليحصل على
+«صنف أب» (superclass) للإشارة إلى الطرف الآخر من العلاقة إلا حين ظهرت Smalltalk.
+ومن C++ تسمع أيضاً «صنف أساسي» (base) و«صنف مشتقّ» (derived). وسألتزم غالباً
+بمصطلحي «الصنف الأب» و«الصنف الفرعي».</p>
+<aside name="subclass">
+<p>&quot;Super-&quot; و&quot;sub-&quot; تعنيان «فوق» و«تحت» باللاتينية على التوالي. تخيّل شجرة وراثة
+مثل شجرة عائلية بجذرها في الأعلى -- فالأصناف الفرعية تكون تحت أصنافها الآباء على
+المخطط. وبشكل أعمّ، تشير &quot;sub-&quot; إلى الأشياء التي تُدقّق أو يحتويها مفهوم أكثر
+عمومية. فعالم الأحياء، الصنف الفرعي تصنيف أدقّ لصنف أكبر من الكائنات الحيّة.</p>
+<p>في نظرية المجموعات، تُحتوى المجموعة الجزئية (subset) في مجموعة كبرى فائقة
+(superset) تحتوي على كل عناصر المجموعة الجزئية وعناصر أخرى محتملة. ويلتقي عالم
+نظرية المجموعات بلُغات البرمجة في نظرية الأنواع. وهناك لديك «أنواع فائقة»
+و«أنواع فرعية».</p>
+<p>في اللغات الموجّهة للكائنات المكتوبة النوع ساكناً، يكون الصنف الفرعي غالباً
+نوعاً فرعياً (subtype) لصنفه الأب. لنقل لدينا صنف أب Doughnut وصنفاً فرعياً
+BostonCream. كل BostonCream هو أيضاً نسخة من Doughnut، لكن هناك قد تكون كائنات
+دونات (doughnut) ليست BostonCreams (مثل Crullers).</p>
+<p>تخيّل النوع كأنه مجموعة كل قيم ذلك النوع. فمجموعة كل نسخ Doughnut تحتوي مجموعة
+كل نسخ BostonCream لأن كل BostonCream هو أيضاً Doughnut. إذن BostonCream هو صنف
+فرعي، ونوع فرعي، ونسخه مجموعة جزئية. كل شيء متسق.</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/inheritance-1.webp" alt="Boston cream &lt;: doughnut." />
+</aside>
+<p>خطوتنا الأولى نحو دعم الوراثة في Lox هي طريقة لتحديد صنف أب عند إعلان صنف. هناك
+تنوّع كبير في الصياغة المستخدَمة لذلك. تضع C++ وC# رمز <code>:</code> بعد اسم الصنف الفرعي
+يليه اسم الصنف الأب. وتستخدم Java كلمة <code>extends</code> بدلاً من النقطتين. وتضع Python
+الصنف (أو الأصناف) الأب داخل أقواس بعد اسم الصنف. أمّا Simula فتضع اسم الصنف
+الأب <em>قبل</em> الكلمة المفتاحية <code>class</code>.</p>
+<p>في هذه المرحلة المتأخرة من المشروع، أفضّل ألّا أضيف كلمة محجوزة أو رمزاً جديداً
+إلى محلّلنا المعجمي (scanner). ليس لدينا <code>extends</code> ولا حتى <code>:</code>، لذا سنتبع Ruby
+ونستخدم علامة أصغر من (<code>&lt;</code>).</p>
+<pre><code class="language-lox">class Doughnut {
+  // General doughnut stuff...
+}
+
+class BostonCream &lt; Doughnut {
+  // Boston Cream-specific stuff...
+}
+</code></pre>
+<p>لإدماج هذا في القواعد اللغوية، نضيف بنداً اختيارياً جديداً في قاعدة <code>classDecl</code>
+القائمة.</p>
+<pre><code class="language-ebnf"><span class="hljs-attribute">classDecl</span>      → &quot;class&quot; IDENTIFIER ( &quot;&lt;&quot; IDENTIFIER )?
+                 &quot;{&quot; function* &quot;}&quot; ;
+</code></pre>
+<p>بعد اسم الصنف، يمكنك أن تضع <code>&lt;</code> يليها اسم الصنف الأب. بند الصنف الأب اختياري
+لأنك <em>لست مضطراً</em> إلى وجود صنف أب. وبخلاف بعض لغات البرمجة الموجّهة للكائنات
+الأخرى مثل Java، لا تملك Lox صنف &quot;Object&quot; جذرياً يرث منه كل شيء، لذا حين تحذف بند
+الصنف الأب، يكون للصنف <em>أبداً</em> صنف أب، ولا حتى ضمني.</p>
+<p>نريد أن نلتقط هذه الصياغة الجديدة في عقدة AST الخاصة بإعلان الصنف.</p>
+<p>^code superclass-ast (1 before, 1 after)</p>
+<p>قد تُفاجئ لأننا نخزّن اسم الصنف الأب كـ<code>Expr.Variable</code> لا كـ<code>Token</code>. فالقواعد
+اللغوية تقصر بند الصنف الأب على مُعرِّف واحد، لكن في الزمن التشغيل يُقيَّم ذلك
+المُعرِّف كوصول إلى متغيّر. وتغليف الاسم في <code>Expr.Variable</code> في وقت مبكّر داخل
+المحلل النحوي يمنحنا كائناً يمكن للمحلّل أن يعلّق عليه معلومات الحَلّ.</p>
+<p>الشيفرة الجديدة في المحلل النحوي تتبع القواعد اللغوية مباشرةً.</p>
+<p>^code parse-superclass (1 before, 1 after)</p>
+<p>بعد أن نحلّل (ربما) إعلان صنف أب، نخزّنه في AST.</p>
+<p>^code construct-class-ast (2 before, 1 after)</p>
+<p>إن لم نحلّل بند صنف أب، فسيكون تعبير الصنف الأب هو <code>null</code>. علينا أن نتأكّد من أن
+الجولات اللاحقة تفحص ذلك. وأولى تلك الجولات هي المحلّل.</p>
+<p>^code resolve-superclass (1 before, 2 after)</p>
+<p>عقدة AST الخاصة بإعلان الصنف لها تعبير فرعي جديد، لذا ندخل إليه ونحلّه. وبما أن
+الأصناف يُعلن عنها عادةً في المستوى الأعلى، فاسم الصنف الأب سيكون على الأرجح
+متغيّراً عاماً، لذا فذلك لا يفعل عادةً شيئاً مفيداً. لكن Lox تسمح بإعلان الأصناف
+حتى داخل الكتل، لذا من الممكن أن يشير اسم الصنف الأب إلى متغيّر محلّي. في تلك
+الحالة، نحتاج إلى التأكّد من أنّه قد حُلّ.</p>
+<p>ولأن حتى المبرمجين ذوي النوايا الحسنة يكتبون أحياناً شيفرة غريبة، هناك حالة حدّية
+سخيفة علينا الانشغال بها—we're here. تأمّل ما يلي:</p>
+<pre><code class="language-lox">class Oops &lt; Oops {}
+</code></pre>
+<p>لا سبيل لهذا أن يفعل أي شيء مفيد، وإذا سمنا للزمن التشغيلي بمحاولة تشغيله، فسيُخِلِف
+توقّع المفسّر بأنّه لا توجد دورات في سلسلة الوراثة. والأمر الأكثر أماناً هو
+اكتشاف هذه الحالة ساكناً والإبلاغ عنها كخطأ.</p>
+<p>^code inherit-self (2 before, 1 after)</p>
+<p>بافتراض أن الشيفرة تُحلّ دون خطأ، تنتقل AST إلى المفسّر.</p>
+<p>^code interpret-superclass (1 before, 1 after)</p>
+<p>إذا كان للصنف تعبير صنف أب، فإننا نقيّمه. وبما أن ذلك يمكن أن يُقيَّم إلى نوع آخر
+من الكائنات، فعلينا أن نتحقّق في الزمن التشغيل من أن الشيء الذي نريده صنفاً أبا
+هو فعلاً صنف. ولو سمحنا بشيفرة كهذه لحدث أمر فظيع:</p>
+<pre><code class="language-lox">var NotAClass = &quot;I am totally not a class&quot;;
+
+class Subclass &lt; NotAClass {} // ?!
+</code></pre>
+<p>بافتراض أن ذلك التحقّق ينجح، نُكمل. فتنفيذ إعلان صنف يحوّل التمثيل النحوي للصنف
+— عقدة AST الخاصة به — إلى تمثيله الزمني، وهو كائن LoxClass. ونحتاج إلى تمرير
+الصنف الأب إلى هناك أيضاً. فنمرّر الصنف الأب إلى المُنشئ.</p>
+<p>^code interpreter-construct-class (3 before, 1 after)</p>
+<p>يخزّنه المُنشئ في حقل.</p>
+<p>^code lox-class-constructor (1 after)</p>
+<p>ونعلنه هنا:</p>
+<p>^code lox-class-superclass-field (1 before, 1 after)</p>
+<p>بهذا، يمكننا تعريف أصناف تكون أصنافاً فرعية لأصناف أخرى. والآن، ما الذي <em>يفعله</em>
+امتلاك صنف أب فعلياً؟</p>
+<h2 id="وراثة-الدوال">وراثة الدوال</h2>
+<p>الوراثة من صنف آخر تعني أن كل ما هو <span name="liskov">صحيح</span> في الصنف
+الأب ينبغي أن يكون صحيحاً، إلى حدٍّ ما، في الصنف الفرعي. وفي اللغات المكتوبة
+النوع ساكناً، يحمل ذلك الكثير من الدلالات. يجب أن يكون الصنف الفرعي <em>نوعاً
+فرعياً</em> أيضاً، وتُضبَط بنية الذاكرة بحيث يمكنك تمرير نسخة من صنف فرعي إلى دالة
+تتوقّع صنفاً أبا ولا تزال قادرة على الوصول إلى الحقول الموروثة بشكل صحيح.</p>
+<aside name="liskov">
+<p>الاسم الأكثر فخامة لهذا الإرشاد التلقائي هو <a href="https://en.wikipedia.org/wiki/Liskov_substitution_principle">مبدأ استبدال ليسكوف</a>. فقد
+قدّمته باربرا ليسكوف في كلمة رئيسية خلال المرحلة التأسيسية للبرمجة الموجّهة
+للكائنات.</p>
+</aside>
+<p>Lox لغة مكتوبة النوع ديناميكياً، لذا متطلّباتنا أبسط بكثير. وبالأساس، هذا يعني
+أنك إن استطعت استدعاء دالة ما على نسخة من الصنف الأب، فينبغي أن تستطيع استدعاء
+تلك الدالة حين تُعطى نسخة من الصنف الفرعي. بمعنى آخر، تُورَث الدوال من الصنف
+الأب.</p>
+<p>وهذا يتّسق مع أحد أهداف الوراثة — أن تمنح المستخدمين وسيلة لإعادة استخدام
+الشيفرة عبر الأصناف. وتنفيذ ذلك في مفسّرنا مذهل في بساطته.</p>
+<p>^code find-method-recurse-superclass (3 before, 1 after)</p>
+<p>هذا حرفياً كل ما في الأمر. عندما نبحث عن دالة على نسخة، إن لم نجدها على صنف
+النسخة، فإننا نتعاود صعوداً عبر سلسلة الصنفين الآباء ونبحث هناك. جرّبه:</p>
+<pre><code class="language-lox">class Doughnut {
+  cook() {
+    print &quot;Fry until golden brown.&quot;;
+  }
+}
+
+class BostonCream &lt; Doughnut {}
+
+BostonCream().cook();
+</code></pre>
+<p>ها هي ذي، نصف ميزات الوراثة اكتملت بثلاثة أسطر فقط من شيفرة Java.</p>
+<h2 id="استدعاء-دوال-الصنف-الأب">استدعاء دوال الصنف الأب</h2>
+<p>في <code>findMethod()</code> نبحث عن دالة على الصنف الحالي <em>قبل</em> الصعود في سلسلة الصنفين
+الآباء. إذا وُجدت دالة بالاسم نفسه في الصنف الفرعي وفي الصنف الأب، فإن دالة
+الصنف الفرعي لها الأولوية أو <strong>تَتجاوز</strong> (overrides) دالة الصنف الأب. شيء أشبه
+بكيف تحجب المتغيّرات في النطاقات الداخلية نظائرها الخارجية.</p>
+<p>هذا رائع إن أراد الصنف الفرعي أن <em>يستبدل</em> سلوك الصنف الأب بالكامل. لكن عملياً،
+غالباً ما يريد الصنف الفرعي أن <em>يُدقّق</em> سلوك الصنف الأب. يريد أن يقوم بقدر قليل من
+العمل الخاص بالصنف الفرعي، لكنه يريد أيضاً تنفيذ سلوك الصنف الأب الأصلي.</p>
+<p>لكن، بما أن الصنف الفرعي قد تجاوز الدالة، فلا سبيل للإشارة إلى الأصلية. إن
+حاولت دالة الصنف الفرعي استدعائها بالاسم، فستصطدم بتجاوزها هي نفسها بشكل متكرر.
+نحتاج إلى وسيلة لقول «استدعِ هذه الدالة، لكن ابحث عنها مباشرةً على صنف أبي
+وتجاوز تجاوازي». تستخدم Java كلمة <code>super</code> لهذا، وسنستخدم الصياغة نفسها في Lox.
+إليك مثالاً:</p>
+<pre><code class="language-lox">class Doughnut {
+  cook() {
+    print &quot;Fry until golden brown.&quot;;
+  }
+}
+
+class BostonCream &lt; Doughnut {
+  cook() {
+    super.cook();
+    print &quot;Pipe full of custard and coat with chocolate.&quot;;
+  }
+}
+
+BostonCream().cook();
+</code></pre>
+<p>إن شغّلتَ هذا، فينبغي أن يطبع:</p>
+<pre><code class="language-text">Fry until golden brown.
+Pipe full of custard and coat with chocolate.
+</code></pre>
+<p>لدينا شكل تعبير جديد. فالكلمة المفتاحية <code>super</code> يليها نقطة ومُعرِّف تبحث عن دالة
+بهذا الاسم. وبخلاف الاستدعاءات على <code>this</code>، يبدأ البحث من الصنف الأب.</p>
+<h3 id="الصياغة">الصياغة</h3>
+<p>مع <code>this</code>، تعمل الكلمة المفتاحية نوعاً ما كمتغيّر سحري، والتعبير هو ذلك الرمز
+الوحيد. أما مع <code>super</code>، فإن النقطة واسم الخاصية اللاحقَين جزءان لا ينفصلان عن
+تعبير <code>super</code>. فلا يمكنك أن يكون لديك رمز <code>super</code> عارياً وحده.</p>
+<pre><code class="language-lox">print super; // Syntax error.
+</code></pre>
+<p>لذلك فإن البند الجديد الذي نضيفه إلى قاعدة <code>primary</code> في قواعدنا اللغوية يشمل
+الوصول إلى الخاصية أيضاً.</p>
+<pre><code class="language-ebnf"><span class="hljs-attribute">primary</span>        → &quot;true&quot; | &quot;false&quot; | &quot;nil&quot; | &quot;this&quot;
+               | NUMBER | STRING | IDENTIFIER | &quot;(&quot; expression &quot;)&quot;
+               | &quot;super&quot; &quot;.&quot; IDENTIFIER ;
+</code></pre>
+<p>عادةً ما يُستخدم تعبير <code>super</code> لاستدعاء دالة، لكن كما في الدوال العادية، قائمة
+المعاملات <em>ليست</em> جزءاً من التعبير. بدلاً من ذلك، استدعاء <em>super</em> هو <em>وصول</em> super
+يليه استدعاء دالة. وكما في استدعاءات الدوال الأخرى، يمكنك أن تحصل على مقبض إلى
+دالة صنف أب وتستدعيها على حدة.</p>
+<pre><code class="language-lox">var method = super.cook;
+method();
+</code></pre>
+<p>إذن تعبير <code>super</code> نفسه يحتوي فقط على رمز الكلمة المفتاحية <code>super</code> واسم الدالة
+المُراد البحث عنها. وعقدة <span name="super-ast">شجرة التركيب</span> المقابلة
+هي إذن:</p>
+<p>^code super-expr (1 before, 1 after)</p>
+<aside name="super-ast">
+<p>الشيفرة المولّدة للعقدة الجديدة موجودة في <a href="/arabic-cs-library/book/crafting-interpreters/appendix-ii/index#super-expression">الملحق الثاني</a>.</p>
+</aside>
+<p>متبعةً للقواعد اللغوية، تذهب شيفرة التحليل الجديدة داخل دالة <code>primary()</code> القائمة
+لديّ.</p>
+<p>^code parse-super (2 before, 2 after)</p>
+<p>الكلمة المفتاحية <code>super</code> في البداية تخبرنا أننا صادفنا تعبير <code>super</code>. وبعد ذلك
+نستهلك النقطة المتوقّعة واسم الدالة.</p>
+<h3 id="الدلالات">الدلالات</h3>
+<p>Earlier، قلتُ إن تعبير <code>super</code> يبدأ البحث عن الدالة من «الصنف الأب»، لكن <em>أيّ</em>
+صنف أب؟ الإجابة الساذجة هي الصنف الأب لـ<code>this</code>، أي الكائن الذي استُدعيت عليه
+الدالة المحيطة. من باب المصادفة، يُنتج ذلك السلوك الصحيح في حالات كثيرة، لكنه
+ليس صحيحاً في الواقع. تأمّل ما يلي:</p>
+<pre><code class="language-lox">class A {
+  method() {
+    print &quot;A method&quot;;
+  }
+}
+
+class B &lt; A {
+  method() {
+    print &quot;B method&quot;;
+  }
+
+  test() {
+    super.method();
+  }
+}
+
+class C &lt; B {}
+
+C().test();
+</code></pre>
+<p>ترجم هذا البرنامج إلى Java أو C# أو C++ وسيطبع &quot;A method&quot;، وهو ما نريد أن تفعله
+Lox أيضاً. عند تشغيل هذا البرنامج، يكون <code>this</code> داخل جسم <code>test()</code> نسخة من C.
+والصنف الأب لـ C هو B، لكن ذلك <em>ليس</em> المكان الذي ينبغي أن يبدأ منه البحث. لو بدأ
+من هناك لاستُدعي <code>method()</code> الخاصة بـ B.</p>
+<p>بدلاً من ذلك، ينبغي أن يبدأ البحث على الصنف أب <em>للصنف الذي يحتوي على تعبير
+<code>super</code></em>. وفي حالتنا هنا، بما أن <code>test()</code> معرَّفة داخل B، فإن تعبير <code>super</code>
+داخلها ينبغي أن يبدأ البحث على صنف B’ <em>الأب</em> -- A.</p>
+<p><span name="flow"></span></p>
+<img src="/arabic-cs-library/images/crafting-interpreters/inheritance-2.webp" alt="سلسلة الاستدعاءات التي تتدفّق عبر الأصناف." />
+<aside name="flow">
+<p>يبدو مسار التنفيذ هكذا:</p>
+<ol>
+<li>
+<p>نستدعي <code>test()</code> على نسخة من C.</p>
+</li>
+<li>
+<p>يدخل ذلك إلى دالة <code>test()</code> الموروثة من B. وهي تستدعي <code>super.method()</code>.</p>
+</li>
+<li>
+<p>الصنف الأب لـ B هو A، لذا فإن ذلك يتسلسل إلى <code>method()</code> على A، ويطبع البرنامج
+&quot;A method&quot;.</p>
+</li>
+</ol>
+</aside>
+<p>إذن، لتقييم تعبير <code>super</code>، نحتاج إلى الوصول إلى الصنف أب لتعريف الصنف المحيط
+بالاستدعاء. للأسف والأسف، عند النقطة في المفسّر حيث نُنفّذ تعبير <code>super</code>، لا يكون
+ذلك متاحاً لنا بسهولة.</p>
+<p><em>يمكننا</em> إضافة حقل إلى LoxFunction لتخزين مرجع إلى LoxClass الذي يملك تلك الدالة.
+سيحتفظ المفسّر بمرجع إلى LoxFunction قيد التنفيذ حالياً حتى نتمكن من البحث عنه
+لاحقاً حين نصادف تعبير <code>super</code>. ومن هناك سنحصل على LoxClass الخاص بالدالة، ثم
+صنفه الأب.</p>
+<p>هذا كثير من المواسير. وفي [الفصل الأخير][] واجهنا مشكلة مشابهة عندما احتجنا إلى
+إضافة دعم لـ <code>this</code>. في تلك الحالة، استخدمنا آلية البيئة والإغلاق القائمة لتخزين
+مرجع إلى الكائن الحالي. هل يمكننا فعل شيء مشابه لتخزين الصنف الأب<span
+name="rhetorical">؟</span> حسناً، لن أكون أتحدّث عن الأمر لولا أن الجواب نعم، إذن
+... نعم.</p>
+<aside name="rhetorical">
+<p>وهل يحبّ أحدهم الأسئلة البلاغية أصلاً؟</p>
+</aside>
+<p>هناك فرق مهم وهو أننا ربطنا <code>this</code> عند <em>الوصول</em> إلى الدالة. فالدالة نفسها يمكن
+استدعاؤها على نسخ مختلفة، وكل واحدة تحتاج إلى <code>this</code> الخاصة بها. أما مع تعبيرات
+<code>super</code>، فإن الصنف الأب خاصية ثابتة <em>لإعلان الصنف نفسه</em>. فكلما قيّمتَ تعبير
+<code>super</code> ما، يكون الصنف الأب نفسه دائماً.</p>
+<p>وهذا يعني أننا نستطيع إنشاء بيئة الصنف الأب مرة واحدة، حين يُنفَّذ تعريف الصنف.
+وقبل أن نعرّف الدوال مباشرةً، ننشئ بيئة جديدة نربط بها صنف الصنف الأب بالاسم
+<code>super</code>.</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/inheritance-3.webp" alt="بيئة الصنف الأب." />
+<p>حين ننشئ التمثيل الزمني LoxFunction لكل دالة، تكون تلك هي البيئة التي سيلتقطها
+في إغلاقها. لاحقاً، حين تُستدعى دالة ويُربط <code>this</code>، تصبح بيئة الصنف الأب هي
+الأب لبيئة تلك الدالة، هكذا:</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/inheritance-4.webp" alt="سلسلة البيئات بما في ذلك بيئة الصنف الأب." />
+<p>هذا كثير من الآليات، لكننا سنجتازها خطوةً خطوة. وقبل أن نصل إلى إنشاء البيئة في
+الزمن التشغيلي، نحتاج إلى معالجة سلسلة النطاقات المقابلة في المحلّل.</p>
+<p>^code begin-super-scope (2 before, 2 after)</p>
+<p>إذا كان إعلان الصنف يملك صنفاً أبا، فإننا ننشئ نطاقاً جديداً يحيط بكل دواله. وفي
+ذلك النطاق، نعرّف الاسم &quot;super&quot;. وبمجرد أن ننتهي من حلّ دوال الصنف، نتخلّص من ذلك
+النطاق.</p>
+<p>^code end-super-scope (2 before, 1 after)</p>
+<p>إنها تحسين بسيط، لكننا ننشئ بيئة الصنف الأب فقط إذا كان الصنف يملك فعلاً <em>صنفاً
+أباً</em>. فلا فائدة من إنشائها حين لا يوجد صنف أب، إذ لن يكون هناك صنف أب لتخزينه
+فيها.</p>
+<p>مع وجود &quot;super&quot; معرَّفاً في سلسلة نطاقات، نتمكّن من حلّ تعبير <code>super</code> نفسه.</p>
+<p>^code resolve-super-expr</p>
+<p>نحلّ رمز <code>super</code> تماماً كما لو كان متغيّراً. ويخزّن الحَلّ عدد القفزات على امتداد
+سلسلة البيئات التي يحتاجها المفسّر ليمشي عليها ليجد البيئة التي يُخزَّن فيها الصنف
+الأب.</p>
+<p>هذه الشيفرة مُنشودة في المفسّر أيضاً. فحين نقيّم تعريف صنف فرعي، ننشئ بيئة جديدة.</p>
+<p>^code begin-superclass-environment (6 before, 2 after)</p>
+<p>داخل تلك البيئة، نخزّن مرجعاً إلى الصنف الأب — كائن LoxClass الفعلي الخاص بالصنف
+الأب الذي أصبح لدينا الآن بما أننا في الزمن التشغيلي. ثم ننشئ كائنات LoxFunction
+لكل دالة. وستلتقط تلك البيئة الحالية — البيئة التي ربطنا فيها &quot;super&quot; للتوّ —
+كإغلاق لها، فتمسك بالصنف الأب كما نحتاج. وبمجرد أن ينتهي ذلك، نُخرج البيئة من
+المكدّس.</p>
+<p>^code end-superclass-environment (2 before, 2 after)</p>
+<p>نحن مستعدّون لتفسير تعبيرات <code>super</code> نفسها. هناك بعض القطع المتحركة، لذا سنبني هذه
+الدالة على مراحل.</p>
+<p>^code interpreter-visit-super</p>
+<p>أولاً، العمل الذي كنّا نفضي إليه. نبحث عن الصنف أب للصنف المحيط بالبحث عن
+&quot;super&quot; في البيئة الصحيحة.</p>
+<p>حين نصل إلى دالة، نحتاج أيضاً إلى ربط <code>this</code> بالكائن الذي تُنال منه الدالة. في
+تعبير مثل <code>doughnut.cook</code>، الكائن هو أيًّا ما نحصل عليه من تقييم <code>doughnut</code>. أما
+في تعبير <code>super</code> مثل <code>super.cook</code>، فالكائن الحالي هو ضمناً <em>نفسه</em> الكائن الحالي
+الذي نستخدمه. بمعنى آخر، <code>this</code>. وبرغم أننا نبحث عن <em>الدالة</em> على الصنف الأب، فالحقل
+<em>النسخة</em> ما زال <code>this</code>.</p>
+<p>للأسف، داخل تعبير <code>super</code> لا نملك عقدة مناسبة يستطيع المحلّل أن يعلّق عليها عدد
+القفزات إلى <code>this</code>. ولحسن الحظ، نحن نتحكّم في تخطيط سلاسل البيئات. فالبيئة التي
+يُربط فيها &quot;this&quot; هي دائماً في الداخل مباشرةً من البيئة التي نخزّن فيها &quot;super&quot;.</p>
+<p>^code super-find-this (2 before, 1 after)</p>
+<p>إن طرح المسافة بواحد يجد &quot;this&quot; في تلك البيئة الداخلية. وأعترف أن هذا ليس
+أجمل <span name="elegant">شيفرة</span>، لكنها تعمل.</p>
+<aside name="elegant">
+<p>كتابة كتاب يتضمّن كل سطر من شيفرة برنامج تعني أنني لا أستطيع إخفاء الحِيَل
+بالاكتفاء بتركها كـ«تمرين للقارئ».</p>
+</aside>
+<p>الآن نحن مستعدّون للبحث عن الدالة وربطها، بدءاً من الصنف الأب.</p>
+<p>^code super-find-method (2 before, 1 after)</p>
+<p>هذا أشبه تماماً بشيفرة البحث عن دالة في تعبير get، باستثناء أننا نستدعي
+<code>findMethod()</code> على الصنف الأب بدلاً من صنف الكائن الحالي.</p>
+<p>هذا كل شيء تقريباً. إلا أنه، بالطبع، من الممكن أن <em>نفشل</em> في العثور على الدالة.
+لذلك نتحقّق من ذلك أيضاً.</p>
+<p>^code super-no-method (2 before, 2 after)</p>
+<p>ها قد يحصل عليها! خذ مثال BostonCream السابق وجرّبه. وبافتراض أننا وأنت فعلنا كل
+شيء على ما يرام، فينبغي أن يقليها أولاً ثم يحشوها بالكريمة.</p>
+<h3 id="الاستخدامات-غير-الصالحة-لـ-super">الاستخدامات غير الصالحة لـ super</h3>
+<p>كما في ميزات اللغة السابقة، فإن تنفيذنا يفعل الشيء الصحيح عندما يكتب المستخدم
+شيفرة صحيحة، لكننا لم نحصّن المفسّر ضد الشيفرة السيّئة. وتحديداً، تأمّل:</p>
+<pre><code class="language-lox">class Eclair {
+  cook() {
+    super.cook();
+    print &quot;Pipe full of crème pâtissière.&quot;;
+  }
+}
+</code></pre>
+<p>هذا الصنف فيه تعبير <code>super</code>، لكن بلا صنف أب. في الزمن التشغيل، تفترض شيفرة تقييم
+تعبيرات <code>super</code> أن &quot;super&quot; قد حُلّ بنجاح وسيُوجد في البيئة. وسيُخفق ذلك هنا لأن
+هناك لا بيئة محيطة للصنف الأب ما دام لا يوجد صنف أب. وستُلقي JVM استثناءً
+وتسقط بمفسّرنا.</p>
+<p>بل هناك حتى استخدامات مكسورة أبسط لـ super:</p>
+<pre><code class="language-lox">super.notEvenInAClass();
+</code></pre>
+<p>يمكننا معالجة أخطاء كهذه في الزمن التشغيل عبر التحقّق ممّا if نجح البحث عن
+&quot;super&quot;. لكن يمكننا أن نُخبركم ساكناً — بمجرد النظر إلى شيفرة المصدر — بأنّ Eclair
+ليس له صنف أب، وبالتالي لا يمكن لأي تعبير <code>super</code> أن ينجح داخله. وبالمثل، في
+المثال الثاني، نعرف أن تعبير <code>super</code> ليس داخل جسم دالة أصلاً.</p>
+<p>وبرغم أن Lox مكتوبة النوع ديناميكياً، فذلك لا يعني أننا نريد تأجيل <em>كل</em> شيء إلى
+الزمن التشغيل. إن أخطأ المستخدم، فعلينا مساعدته على إيجاد الخطأ في وقت أقرب
+بدلاً من متأخر. لذا سنبلّغ عن هذه الأخطاء ساكناً، في المحلّل.</p>
+<p>أولاً، نضيف حالة جديدة إلى التعداد الذي نستخدمه لتتبّع نوع الصنف المحيط بالشيفرة
+الحالية التي يجري زيارتها.</p>
+<p>^code class-type-subclass (1 before, 1 after)</p>
+<p>سنستخدم ذلك للتمييز بين أن نكون داخل صنف له صنف أب وآخر ليس له. وحين نحلّ إعلان
+صنف، نضبط ذلك إذا كان الصنف صنفاً فرعياً.</p>
+<p>^code set-current-subclass (1 before, 1 after)</p>
+<p>ثم حين نحلّ تعبير <code>super</code>، نتحقّق من أننا حالياً داخل نطاق يسمح بذلك.</p>
+<p>^code invalid-super (1 before, 1 after)</p>
+<p>إن لم يكن كذلك — يا لطيم! — فقد أخطأ المستخدم.</p>
+<h2 id="الخاتمة">الخاتمة</h2>
+<p>نجحنا! تلك القطعة الأخيرة من معالجة الأخطاء هي آخر جزء من الشيفرة اللازم لإكمال
+تنفيذنا للغة Lox بلغة Java. وهذا <span name="superhero">إنجاز</span> حقيقي ينبغي
+أن تفخر به. في Chapters الاثني عشر الماضية وألف سطر أو نحوها من الشيفرة، تعلّمنا
+ونفّذنا...</p>
+<ul>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/scanning/index">الرموز والمسح المعجمي</a>،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/representing-code/index">أشجار التركيب</a>،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/parsing-expressions/index">التحليل النحوي بال descent التكراري</a>،</li>
+<li>تعبيرات prefix وinfix،</li>
+<li>التمثيل الزمني للكائنات،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/evaluating-expressions/index">تفسير الشيفرة باستخدام نمط الزائر</a>،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/statements-and-state/index">النطاق المعجمي</a>،</li>
+<li>سلاسل البيئات لتخزين المتغيّرات،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/control-flow/index">التحكّم في المسار</a>،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/functions/index">دوال ذات وسائط</a>،</li>
+<li>الإغلاق،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/resolving-and-binding/index">الحَلّ الساكن للمتغيّرات واكتشاف الأخطاء</a>،</li>
+<li><a href="/arabic-cs-library/book/crafting-interpreters/classes/index">الأصناف</a>،</li>
+<li>المُنشئات،</li>
+<li>الحقول،</li>
+<li>الدوال، وأخيراً،</li>
+<li>الوراثة.</li>
+</ul>
+<aside name="superhero">
+<img src="/arabic-cs-library/images/crafting-interpreters/inheritance-5.webp" alt="أنت، وأنت في أسوأ حالاتك." />
+</aside>
+<p>أنجزنا كل ذلك من الصفر، بلا اعتماديات خارجية ولا أدوات سحرية. أنت وأنا، ومحرّرا
+النصّ لدينا، وبضعة أصناف تجميع في مكتبة Java القياسية، ووقت تشغيل JVM.</p>
+<p>بهذا تنتهي الجزء الثاني، لكن الكتاب لم ينتهِ. خُذ استراحة. ربما اكتب بضعة برامج
+Lox ممتعة وشغّلها في مفسّرك. (قد ترغب في إضافة المزيد من الدوال الأصلية
+(native functions) لأشياء مثل قراءة مدخلات المستخدم.) حين تستعيد نشاطك وتصبح
+مستعدّاً، سننطلق في [مغامرتنا التالية][].</p>
+<div class="challenges">
+<h2 id="التحديات">التحديات</h2>
+<ol>
+<li>
+<p>تدعم Lox <em>الوراثة المفردة</em> فقط -- قد يملك الصنف صنفاً أبا واحداً، وذلك هو
+الطريق الوحيد لإعادة استخدام الدوال عبر الأصناف. وقد استكشفت لغات أخرى طرقاً
+متنوّعة لإعادة استخدام القدرات ومشاركتها بين الأصناف بمرونة أكبر: الخلط
+(mixins)، والصفات (traits)، والوراثة المتعدّدة، والوراثة الافتراضية، ودوال
+التوسيع، إلخ.</p>
+<p>إن أضفتَ ميزة من هذا النوع إلى Lox، أيّها ستختار ولماذا؟ إن شعرت بالشجاعة
+(وينبغي أن تكون كذلك في هذه المرحلة)، فامضِ وأضفها.</p>
+</li>
+<li>
+<p>في Lox، كما في معظم لغات البرمجة الموجّهة للكائنات الأخرى، نبدأ عند البحث
+عن دالة من أسفل تسلسل الأصناف ونصعد تدريجياً -- فدالة الصنف الفرعي مقدَّمة على
+دالة الصنف الأب. وللوصول إلى دالة الصنف الأب من داخل دالة تتجاوزها، تستخدم
+<code>super</code>.</p>
+<p>وتتّخذ لغة <a href="https://beta.cs.au.dk/">BETA</a> تتّخذ <a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">نهجاً معاكساً</a>. فحين تستدعي دالة، تبدأ من
+<em>أعلى</em> تسلسل الأصناف وتعمل <em>نازلاً</em>. فدالة الصنف الأب تغلب على دالة الصنف
+الفرعي. وللوصول إلى دالة الصنف الفرعي، يمكن لدالة الصنف الأب أن تستدعي
+<code>inner</code>، وهو شيء يشبه عكس <code>super</code>. فهو يتسلسل إلى الدالة التالية في التسلسل
+النازل.</p>
+<p>تتحكّم دالة الصنف الأب في متى وأين يُسمح للصنف الفرعي بأن يُدقّق سلوكه. فإذا
+لم تستدعِ دالة الصنف الأب <code>inner</code> إطلاقاً، فلا يملك الصنف الفرعي أي وسيلة
+لتجاوز سلوك الصنف الأب أو تعديله.</p>
+<p>أخرج سلوك التجاوز و<code>super</code> الحالي في Lox واستبدله بدلالات BETA. باختصار:</p>
+<ul>
+<li>
+<p>عند استدعاء دالة على صنف، فضّل الدالة <em>الأعلى</em> في سلسلة وراثة الصنف.</p>
+</li>
+<li>
+<p>داخل جسم دالة، يبحث استدعاء <code>inner</code> عن دالة بالاسم نفسه في أقرب صنف
+فرعي على امتداد سلسلة الوراثة بين الصنف الذي يحتوي <code>inner</code> وصنف <code>this</code>.
+إن لم تكن هناك دالة مطابقة، فلا يفعل استدعاء <code>inner</code> شيئاً.</p>
+</li>
+</ul>
+<p>مثلاً:</p>
+<pre><code class="language-lox">class Doughnut {
+  cook() {
+    print &quot;Fry until golden brown.&quot;;
+    inner();
+    print &quot;Place in a nice box.&quot;;
+  }
+}
+
+class BostonCream &lt; Doughnut {
+  cook() {
+    print &quot;Pipe full of custard and coat with chocolate.&quot;;
+  }
+}
+
+BostonCream().cook();
+</code></pre>
+<p>ينبغي أن يطبع هذا:</p>
+<pre><code class="language-text">Fry until golden brown.
+Pipe full of custard and coat with chocolate.
+Place in a nice box.
+</code></pre>
+</li>
+<li>
+<p>في الفصل الذي عرّفتُ فيه Lox، <a href="/arabic-cs-library/book/crafting-interpreters/the-lox-language/index#challenges">تحدّيتك</a>
+أن يأتي ببعض الميزات التي ترى أن اللغة تفتقدها. والآن بما أنك تعرف كيف تبني
+مفسّراً، نفّذ إحدى تلك الميزات.</p>
+</li>
+</ol>
+</div>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/crafting-interpreters/methods-and-initializers/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الدوال والمُهيّئات</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/crafting-interpreters/superclasses/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الأصناف الآباء</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ucc8xn = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

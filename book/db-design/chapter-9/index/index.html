@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="قواعد السلامة والقيود — Integrity Rules and Constraints"/><!----><title>قواعد السلامة والقيود | تصميم قواعد البيانات — الطبعة الثانية</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -115,7 +115,7 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 <p>وعند ضبط السلامة المرجعية، من المهم أن يكون للمفتاح الأساسي والمفتاح الأجنبي نوعا البيانات نفسه ويأتي من النطاق نفسه، وإلا فلن يسمح نظام إدارة قواعد البيانات العلائقية (relational database management system - RDBMS) بإجراء الربط. وRDBMS هو نظام قواعد بيانات شهير قائم على النموذج العلائقي الذي قدّمه E. F. Codd من مختبر أبحاث IBM في سان خوسيه. وأنظمة قواعد البيانات العلائقية أسهل في الاستخدام والفهم من أنظمة قواعد البيانات الأخرى.</p>
 <h3 id="السلامة-المرجعية-في-microsoft-access">السلامة المرجعية في Microsoft Access</h3>
 <p>في Microsoft (MS) Access، تُضبط السلامة المرجعية عبر ربط المفتاح الأساسي في جدول Customer بـ CustID في جدول Order. انظر الشكل 9.1 لتعرف كيف يتم ذلك في شاشة Edit Relationships في MS Access.</p>
-<p><img src="../../../../images/db-design/chapter-9-0-Access_Referential_Integrity_Window_300x212.webp" alt="لقطة لنافذة Edit Relationships في MS Access"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-0-Access_Referential_Integrity_Window_300x212.webp" alt="لقطة لنافذة Edit Relationships في MS Access"></p>
 <h3 id="السلامة-المرجعية-باستخدام-transact-sql-ms-sql-server">السلامة المرجعية باستخدام Transact-SQL (MS SQL Server)</h3>
 <p>عند استخدام Transact-SQL، تُضبط السلامة المرجعية عند إنشاء جدول Order مع المفتاح الأجنبي. وفيما يلي العبارات التي تُظهر المفتاح الأجنبي في جدول Order وهو يشير إلى المفتاح الأساسي في جدول Customer.</p>
 <p>CREATE TABLE Customer ( CustID INTEGER PRIMARY KEY, CustName CHAR(35) ) CREATE TABLE Orders ( OrderID INTEGER PRIMARY KEY, CustID INTEGER REFERENCES Customer(CustID), OrderDate DATETIME )</p>
@@ -142,42 +142,42 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 </ul>
 <h3 id="التعددية-cardinality-والاتصالية-connectivity">التعددية (Cardinality) والاتصالية (connectivity)</h3>
 <p>تُستخدم قواعد الأعمال لتحديد التعددية (cardinality) والاتصالية (connectivity). وتصف التعددية العلاقة بين جدولين من جداول البيانات عبر التعبير عن الحد الأدنى والأقصى لعدد مرات ظهور الكيانات (entity) المرتبطة بظهور كيان مرتبط واحد. وفي الشكل 9.2، يمكنك أن ترى أن التعددية ممثَّلة بالعلامات الأعمق داخل رمز العلاقة. وفي هذا الشكل، تكون التعددية 0 (صفر) على اليمين و1 (واحد) على اليسار.</p>
-<p><img src="../../../../images/db-design/chapter-9-1-Connectivity_and_Cardinality_300x202.webp" alt="الاتصال والتعددية بين الكيانات"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-1-Connectivity_and_Cardinality_300x202.webp" alt="الاتصال والتعددية بين الكيانات"></p>
 <p>أما الرمز الخارجي لرمز العلاقة، فيمثّل الاتصالية بين الجدولين. والاتصالية هي العلاقة بين جدولين، مثل واحد إلى واحد (one-to-one) أو واحد إلى متعدد (one-to-many). والوقت الوحيد الذي تكون فيه صفرًا هو عندما يمكن أن يكون المفتاح الأجنبي (FK) قيمة NULL. وفيما يتعلق بالمشاركة (participation)، توجد ثلاثة خيارات للعلاقة بين هذه الكيانات: إما 0 (صفر) أو 1 (واحد) أو متعدد (many). وفي الشكل 9.2، على سبيل المثال، تكون الاتصالية 1 (واحد) على الجانب الخارجي الأيسر من هذا الخط، ومتعدد على الجانب الخارجي الأيمن.</p>
 <p>ويوضح الشكل 9.3 الرمز الذي يمثّل علاقة واحد إلى متعدد.</p>
-<p><img src="../../../../images/db-design/chapter-9-2-Ch_9_oneToMany_1.webp" alt="علاقة واحد إلى متعدد (1)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-2-Ch_9_oneToMany_1.webp" alt="علاقة واحد إلى متعدد (1)"></p>
 <p>وفي الشكل 9.4، تظهر كلتا العلامتين: الداخلية (التي تمثّل التعددية) والخارجية (التي تمثّل الاتصالية). ويُقرأ الجانب الأيسر من هذا الرمز على أنه: أدنى 1 وأقصى 1. أما الجانب الأيمن فيُقرأ على أنه: أدنى 1 وأقصى متعدد.</p>
-<p><img src="../../../../images/db-design/chapter-9-3-Ch_9_oneToMany_2.webp" alt="علاقة واحد إلى متعدد (2)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-3-Ch_9_oneToMany_2.webp" alt="علاقة واحد إلى متعدد (2)"></p>
 <h2 id="أنواع-العلاقات">أنواع العلاقات</h2>
 <p>يبيّن الخط الذي يصل بين جدولين في مخطط ERD نوع العلاقة بين الجدولين: إما علاقة محدِّدة للهوية (identifying) أو علاقة غير محدِّدة للهوية (non-identifying). وللعلاقة المحدِّدة للهوية خط متصل (حيث يحتوي المفتاح الأساسي على المفتاح الأجنبي). أما العلاقة غير المحدِّدة للهوية فيُشار إليها بخط متقطع، ولا يحتوي المفتاح الأساسي فيها على المفتاح الأجنبي. راجع القسم في الفصل 8 الذي يتناول العلاقات الضعيفة والقوية لمزيد من الشرح.</p>
-<p><img src="../../../../images/db-design/chapter-9-4-Ch_9_Identifying_and_Non_Identifying_relationship_300x298.webp" alt="الشكل 9.5: علاقة مُعرِّفة وغير مُعرِّفة"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-4-Ch_9_Identifying_and_Non_Identifying_relationship_300x298.webp" alt="الشكل 9.5: علاقة مُعرِّفة وغير مُعرِّفة"></p>
 <h3 id="العلاقات-الاختيارية-optional-relationships">العلاقات الاختيارية (Optional relationships)</h3>
 <p>في العلاقة الاختيارية (optional relationship)، يمكن أن يكون المفتاح الأجنبي (FK) قيمة NULL، أو لا يحتاج الجدول الأصل إلى أن يحتوي على ظهور مقابل في جدول الابن. ويوضّح الرمز المبيّن في الشكل 9.6 نوعًا واحدًا فيه صفر وثلاثة أسنان (أي معنى متعدد) أي معناه صفر أو متعدد.</p>
-<p><img src="../../../../images/db-design/chapter-9-5-Ch_9_Zero_or_Many_1.webp" alt="تعددية «صفر أو متعدد» (1)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-5-Ch_9_Zero_or_Many_1.webp" alt="تعددية «صفر أو متعدد» (1)"></p>
 <p>فمثلًا، إذا نظرت إلى جدول Order في الجانب الأيمن من الشكل 9.7، فستلاحظ أن العميل لا يحتاج إلى تقديم طلب ليكون عميلًا. وبعبارة أخرى، فإن جانب المتعدد اختياري.</p>
-<p><img src="../../../../images/db-design/chapter-9-6-Cardinality_Optional_0_or_more_300x189.webp" alt="تعددية اختيارية: صفر أو أكثر"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-6-Cardinality_Optional_0_or_more_300x189.webp" alt="تعددية اختيارية: صفر أو أكثر"></p>
 <p>ويمكن قراءة رمز العلاقة في الشكل 9.7 على النحو التالي:</p>
 <ul>
 <li>الجانب الأيسر: يجب أن يحتوي كيان الطلب على كيان مرتبط واحد على الأقل في جدول Customer، وكيان مرتبط واحد كحد أقصى.</li>
 <li>الجانب الأيمن: يمكن للعميل تقديم عدد من الطلبات يتراوح بين صفر كحد أدنى ومتعدد كحد أقصى.</li>
 </ul>
 <p>ويوضح الشكل 9.8 نوعًا آخر من رموز العلاقات الاختيارية، وفيه صفر وواحد، أي بمعنى صفر أو واحد. وجانب الواحد اختياري.</p>
-<p><img src="../../../../images/db-design/chapter-9-7-Ch_9_Optional_Arrow_2.webp" alt="سهم التدقيق في العلاقة الاختيارية (2)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-7-Ch_9_Optional_Arrow_2.webp" alt="سهم التدقيق في العلاقة الاختيارية (2)"></p>
 <p>ويقدّم الشكل 9.9 مثالًا على كيفية استخدام رمز من صفر إلى واحد.</p>
-<p><img src="../../../../images/db-design/chapter-9-8-Cardinality_Optional_0_or_1_300x188.webp" alt="تعددية اختيارية: صفر أو واحد"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-8-Cardinality_Optional_0_or_1_300x188.webp" alt="تعددية اختيارية: صفر أو واحد"></p>
 <h3 id="العلاقات-الإلزامية-mandatory-relationships">العلاقات الإلزامية (Mandatory relationships)</h3>
 <p>في العلاقة الإلزامية (mandatory relationship)، يتطلب ظهور الكيان الواحد وجود كيان مقابل. ويبيّن رمز هذه العلاقة واحدًا فقط كما هو موضّح في الشكل 9.10. وجانب الواحد إلزامي.</p>
-<p><img src="../../../../images/db-design/chapter-9-9-Ch_9_oneToOne_1.webp" alt="علاقة واحد إلى واحد (1)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-9-Ch_9_oneToOne_1.webp" alt="علاقة واحد إلى واحد (1)"></p>
 <p>انظر الشكل 9.11 لمثال على كيفية استخدام رمز «واحد فقط» الإلزامي.</p>
-<p><img src="../../../../images/db-design/chapter-9-10-Ch_9_Mandatory_Cardinality_one_to_one_300x188.webp" alt="تعددية إلزامية واحد إلى واحد"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-10-Ch_9_Mandatory_Cardinality_one_to_one_300x188.webp" alt="تعددية إلزامية واحد إلى واحد"></p>
 <p>ويوضّح الشكل 9.12 شكل رمز علاقة واحد إلى متعدد، حيث يكون جانب المتعدد إلزاميًا.</p>
-<p><img src="../../../../images/db-design/chapter-9-11-Ch_9_oneToMany_3.webp" alt="علاقة واحد إلى متعدد (3)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-11-Ch_9_oneToMany_3.webp" alt="علاقة واحد إلى متعدد (3)"></p>
 <p>ارجع إلى الشكل 9.13 لمثال على كيفية استخدام رمز واحد إلى متعدد.</p>
-<p><img src="../../../../images/db-design/chapter-9-12-Ch_9_Mandatory_Cardinality_one_to_Many_300x188.webp" alt="تعددية إلزامية واحد إلى متعدد"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-12-Ch_9_Mandatory_Cardinality_one_to_Many_300x188.webp" alt="تعددية إلزامية واحد إلى متعدد"></p>
 <p>لقد رأينا حتى الآن أن الجانب الأعمق من رمز العلاقة (على الجانب الأيسر من الرمز في الشكل 9.14) يمكن أن تكون له تعددية (cardinality) قدرها 0 (صفر) واتصالية (connectivity) قدرها متعدد (معروضة على الجانب الأيمن من الرمز في الشكل 9.14)، أو واحد (غير معروض).</p>
-<p><img src="../../../../images/db-design/chapter-9-13-Ch_9_Zero_or_Many_1.webp" alt="صورة توضيحية من الكتاب: Ch-9-Zero-or-Many-1"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-13-Ch_9_Zero_or_Many_1.webp" alt="صورة توضيحية من الكتاب: Ch-9-Zero-or-Many-1"></p>
 <p>غير أنه لا يمكن أن تكون له اتصالية قدرها 0 (صفر)، كما هو معروض في الشكل 9.15. ولا يمكن أن تكون الاتصالية سوى 1.</p>
-<p><img src="../../../../images/db-design/chapter-9-14-Ch_9_Zero_or_Many_2.webp" alt="تعددية «صفر أو متعدد» (2)"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-14-Ch_9_Zero_or_Many_2.webp" alt="تعددية «صفر أو متعدد» (2)"></p>
 <p>تُظهر رموز الاتصالية الحدود الأقصى. فإذا فكّرت في الأمر من الناحية المنطقية، فإن رمز الاتصالية إذا كان على الجانب الأيسر يعرض 0 (صفر)، فلا توجد علاقة بين الجدولين.</p>
 <p>وفيما يلي طريقة قراءة رمز العلاقة، مثل الرمز الموجود في الشكل 9.16.</p>
 <ul>
@@ -187,7 +187,7 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 <li>وعندما ترى رمز 0 الخاص بالتعددية، يمكنك أن تفترض أمرين: أن المفتاح الأجنبي في جدول Order يسمح بقيم NULL، وأن</li>
 <li>المفتاح الأجنبي ليس جزءًا من المفتاح الأساسي، لأن المفاتيح الأساسية لا يجوز أن تحتوي على قيم NULL.</li>
 </ul>
-<p><img src="../../../../images/db-design/chapter-9-15-Ch_9_Cust_to_Order_ERD_300x168.webp" alt="مخطط الكيانات والعلاقات بين العميل والطلب"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-15-Ch_9_Cust_to_Order_ERD_300x168.webp" alt="مخطط الكيانات والعلاقات بين العميل والطلب"></p>
 <h2></h2>
 <p>قواعد الأعمال (business rules): تُجمع من المستخدمين عند جمع المتطلبات، وتُستخدم لتحديد التعددية (cardinality)</p>
 <p>التعددية (cardinality): تعبّر عن الحد الأدنى والأقصى لعدد مرات ظهور الكيانات المرتبطة بظهور كيان مرتبط واحد</p>
@@ -204,7 +204,7 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 <p>نظام إدارة قواعد البيانات العلائقية (relational database management system - RDBMS): نظام قواعد بيانات شهير قائم على النموذج العلائقي الذي قدّمه E. F. Codd من مختبر أبحاث IBM في سان خوسيه</p>
 <p>نوع العلاقة (relationship type): نوع العلاقة بين جدولين في مخطط ERD (إما محدِّدة للهوية أو غير محدِّدة للهوية)؛ وتشير هذه العلاقة إلى خط مرسوم بين الجدولين. اقرأ الوصف التالي ثم أجب عن الأسئلة من 1 إلى 5 في نهاية القسم.</p>
 <p>صُمِّمت قاعدة بيانات نادي السباحة في الشكل 9.17 للاحتفاظ بمعلومات عن الطلاب المسجّلين في مقررات السباحة. وتُخزَّن فيه المعلومات التالية: الطلاب، والتسجيل، ومقررات السباحة، وأحواض السباحة التي تُعقد فيها المقررات، والمدرّسون المعنيون بالمقررات، ومستويات مقررات السباحة المختلفة. استخدم الشكل 9.17 للإجابة عن الأسئلة من 1 إلى 5.</p>
-<p><img src="../../../../images/db-design/chapter-9-16-SwimClubDatabase.webp" alt="مخطط قاعدة بيانات نادي السباحة"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-9-16-SwimClubDatabase.webp" alt="مخطط قاعدة بيانات نادي السباحة"></p>
 <p>تم تحديد المفاتيح الأساسية أدناه. وقد خُصِّصت أنواع البيانات التالية في SQL Server.</p>
 <p>tblLevels Level – Identity PK ClassName – text 20 – nulls are not allowed</p>
 <p>tblPool Pool – Identity PK PoolName – text 20 – nulls are not allowed Location – text 30</p>
@@ -234,7 +234,7 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -242,8 +242,8 @@ The swim club database <span class="hljs-keyword">in</span> Figure <span class="
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

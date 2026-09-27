@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة أبراج هانوي — التقسيم والتغلب"/><!----><title>مسألة أبراج هانوي | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -47,7 +47,7 @@
 <li>يجب أن يكون القرص الأصغر دائماً فوق القرص الأكبر.</li>
 </ol>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_divide_and_conquer--hanota_example.png" alt="مثال على مسألة أبراج هانوي"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_divide_and_conquer--hanota_example.png" alt="مثال على مسألة أبراج هانوي"></p>
 <p><strong>نرمز إلى مسألة أبراج هانوي ذات الحجم $i$ بالرمز $f(i)$</strong>. فمثلاً، تمثّل $f(3)$ نقل $3$ أقراص من <code>A</code> إلى <code>C</code>.</p>
 <h3 id="التفكير-في-الحالات-الأساسية">التفكير في الحالات الأساسية</h3>
 <p>كما يوضح الشكل أدناه، في المسألة $f(1)$، عندما يكون هناك قرص واحد فقط، يمكننا نقله مباشرةً من <code>A</code> إلى <code>C</code>.</p>
@@ -74,7 +74,7 @@
 <li>انقل $n-1$ قرصاً من <code>B</code> إلى <code>C</code> بمساعدة <code>A</code>.</li>
 </ol>
 <p>وبالنسبة إلى هاتين المسألتين الفرعيتين $f(n-1)$، <strong>يمكننا تفكيكهما تعاودياً بالطريقة نفسها</strong> حتى الوصول إلى أصغر مسألة فرعية $f(1)$. وحل $f(1)$ معروف ولا يتطلب سوى عملية نقل واحدة.</p>
-<p><img src="../../../../images/hello-algo/chapter_divide_and_conquer--hanota_divide_and_conquer.png" alt="استراتيجية التقسيم والتغلب لحل مسألة أبراج هانوي"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_divide_and_conquer--hanota_divide_and_conquer.png" alt="استراتيجية التقسيم والتغلب لحل مسألة أبراج هانوي"></p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>في الشيفرة، نعرّف دالة تعاودية <code>dfs(i, src, buf, tar)</code>، غرضها نقل الأقراص $i$ العلوية من العمود <code>src</code> إلى العمود الهدف <code>tar</code> بمساعدة العمود المؤقت <code>buf</code>:</p>
 <div class="lang-tab">
@@ -98,7 +98,7 @@
 </code></pre>
 </div>
 <p>وكما يوضح الشكل أدناه، تشكّل مسألة أبراج هانوي شجرة تعاود بارتفاع $n$، حيث تمثّل كل عقدة مسألة فرعية تقابل استدعاءً للدالة <code>dfs()</code>، <strong>لذا يكون التعقيد الزمني $O(2^n)$ والتعقيد المكاني $O(n)$</strong>.</p>
-<p><img src="../../../../images/hello-algo/chapter_divide_and_conquer--hanota_recursive_tree.png" alt="شجرة التعاود لمسألة أبراج هانوي"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_divide_and_conquer--hanota_recursive_tree.png" alt="شجرة التعاود لمسألة أبراج هانوي"></p>
 <div class="note">
 <p>تستمد مسألة أبراج هانوي أصلها من أسطورة قديمة. ففي معبد بالهند القديمة، كان لدى الرهبان ثلاثة أعمدة ماسية شاهقة و$64$ قرصاً ذهبياً مختلف الأحجام. وكان الرهبان ينقلون هذه الأقراص باستمرار، معتقدين أنه عندما يوضع القرص الأخير في مكانه الصحيح، ينتهي العالم.</p>
 <p>ومع ذلك، حتى لو نقل الرهبان قرصاً واحداً كل ثانية، لاستغرق الأمر نحو $2^{64} \approx 1.84×10^{19}$ ثانية، أي ما يقرب من $585$ مليار سنة، وهو ما يتجاوز كثيراً التقديرات الحالية لعمر الكون. لذلك، إذا كانت هذه الأسطورة صحيحة، فلا داعي للقلق من نهاية العالم.</p>
@@ -109,7 +109,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -117,8 +117,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

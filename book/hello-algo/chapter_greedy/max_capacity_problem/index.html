@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة السعة القصوى — الخوارزميات الجشعة"/><!----><title>مسألة السعة القصوى | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -43,7 +43,7 @@
 <p>تساوي سعة الحاوية حاصل ضرب ارتفاعها في عرضها (أي مساحتها)، حيث يتحدد الارتفاع بالحاجز الأقصر، ويكون العرض الفرق بين فهرسي الحاجزين في المصفوفة.</p>
 <p>اختر حاجزين في المصفوفة بحيث تصبح سعة الحاوية الناتجة أقصى ما يمكن، وأعِد تلك السعة القصوى. ويوضح الشكل أدناه مثالاً على ذلك.</p>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_greedy--max_capacity_example.png" alt="بيانات مثال لمسألة السعة القصوى"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_greedy--max_capacity_example.png" alt="بيانات مثال لمسألة السعة القصوى"></p>
 <p>تتكوّن الحاوية من أي حاجزين، <strong>لذا فإن حالة هذه المسألة هي فهرسا الحاجزين، ويرمز إليهما بـ$[i, j]$</strong>.</p>
 <p>وفقاً لنص المسألة، تساوي السعة الارتفاع مضروباً في العرض، حيث يتحدد الارتفاع بالحاجز الأقصر، ويكون العرض الفرق بين فهرسي الحاجزين في المصفوفة. ولتكن السعة $cap[i, j]$؛ فنحصل على الصيغة التالية:</p>
 <p>$$
@@ -52,12 +52,12 @@ $$</p>
 <p>وليكن طول المصفوفة $n$. عندئذٍ يكون عدد طرق اختيار حاجزين (أي العدد الإجمالي للحالات) $C_n^2 = \frac{n(n - 1)}{2}$. والطريقة الأكثر مباشرة هي <strong>استنفاد جميع الحالات تعدداً</strong> للعثور على السعة القصوى، ويكون التعقيد الزمني لها $O(n^2)$.</p>
 <h3 id="تحديد-الاستراتيجية-الجشعة">تحديد الاستراتيجية الجشعة</h3>
 <p>لهذه المسألة حل أكثر كفاءة. وكما هو موضح في الشكل أدناه، خذ حالة $[i, j]$ يكون فيها $i &lt; j$ و$ht[i] &lt; ht[j]$. وفي هذه الحالة يكون $i$ هو الحاجز الأقصر و$j$ هو الحاجز الأطول.</p>
-<p><img src="../../../../images/hello-algo/chapter_greedy--max_capacity_initial_state.png" alt="الحالة الابتدائية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_greedy--max_capacity_initial_state.png" alt="الحالة الابتدائية"></p>
 <p>وكما هو موضح في الشكل أدناه، <strong>إذا حرّكنا الآن الحاجز الأطول $j$ إلى الداخل نحو الحاجز الأقصر $i$، فستنقص السعة حتماً</strong>.</p>
 <p>ويعود السبب إلى أنه بعد تحريك الحاجز الأطول $j$، ينقص العرض $j-i$ حتماً. وبما أن الارتفاع يتحدد بالحاجز الأقصر، فلا يمكن للارتفاع إلا أن يبقى كما هو ($i$ يظل الحاجز الأقصر) أو أن ينقص ($j$ يصبح الحاجز الأقصر بعد التحريك).</p>
-<p><img src="../../../../images/hello-algo/chapter_greedy--max_capacity_moving_long_board.png" alt="الحالة بعد تحريك الحاجز الطويل إلى الداخل"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_greedy--max_capacity_moving_long_board.png" alt="الحالة بعد تحريك الحاجز الطويل إلى الداخل"></p>
 <p>وعلى العكس، <strong>لا يمكن للسعة أن تزداد إلا بتحريك الحاجز الأقصر $i$ إلى الداخل</strong>. فرغم أن العرض سينقص حتماً، فإن <strong>الارتفاع قد يزداد</strong> (قد يكون الحاجز المنقول عند $i$ أطول). فمثلاً في الشكل أدناه، تزداد المساحة بعد تحريك الحاجز الأقصر.</p>
-<p><img src="../../../../images/hello-algo/chapter_greedy--max_capacity_moving_short_board.png" alt="الحالة بعد تحريك الحاجز القصير إلى الداخل"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_greedy--max_capacity_moving_short_board.png" alt="الحالة بعد تحريك الحاجز القصير إلى الداخل"></p>
 <p>ومن هذا نستنتج الاستراتيجية الجشعة لهذه المسألة: هيّئ مؤشرين عند الطرفين، وحرّك في كل جولة المؤشر المقابل للحاجز الأقصر إلى الداخل حتى يلتقي المؤشران.</p>
 <p>يوضح الشكل أدناه عملية تنفيذ الاستراتيجية الجشعة.</p>
 <ol>
@@ -124,7 +124,7 @@ $$</p>
 <p>$$
 cap[i, i+1], cap[i, i+2], \dots, cap[i, j-2], cap[i, j-1]
 $$</p>
-<p><img src="../../../../images/hello-algo/chapter_greedy--max_capacity_skipped_states.png" alt="الحالات المتخطّاة بتحريك الحاجز القصير"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_greedy--max_capacity_skipped_states.png" alt="الحالات المتخطّاة بتحريك الحاجز القصير"></p>
 <p>وبنظرة أدق، نجد أن <strong>هذه الحالات المتخطّاة هي بالضبط الحالات الناتجة عن تحريك الحاجز الأطول $j$ إلى الداخل</strong>. وقد أثبتنا سابقاً أن تحريك الحاجز الأطول إلى الداخل ينقص السعة حتماً. لذلك لا يمكن أن تكون أي من الحالات المتخطّاة هي الحل الأمثل، <strong>فتخطيها لا يجعلنا نفوّت الحل الأمثل</strong>.</p>
 <p>يبين التحليل أعلاه أن تحريك الحاجز الأقصر عملية «آمنة»، وأن الاستراتيجية الجشعة فعّالة.</p>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/hello-algo/chapter_greedy/fractional_knapsack_problem"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مسألة الحقيبة الكسرية</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/hello-algo/chapter_greedy/max_product_cutting_problem"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مسألة القطع بأقصى حاصل ضرب</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
@@ -133,7 +133,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -141,8 +141,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

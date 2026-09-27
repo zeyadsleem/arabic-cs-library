@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة مجموع المجموعات الجزئية — التتبّع الرجعي"/><!----><title>مسألة مجموع المجموعات الجزئية | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -76,7 +76,7 @@
 </div>
 <p>وبتشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$ نحصل على $[3, 3, 3], [4, 5], [5, 4]$. <strong>ورغم أننا نجحنا في العثور على جميع المجموعات الجزئية التي يساوي مجموعها $9$، فإن هناك مجموعتين جزئيتين مكررتين $[4, 5]$ و$[5, 4]$</strong>.</p>
 <p>والسبب أن عملية البحث تميّز ترتيب الاختيارات، بينما لا تميّز المجموعات الجزئية ترتيب الاختيار. وكما يوضح الشكل أدناه، فاختيار 4 أولاً ثم 5 يختلف عن اختيار 5 أولاً ثم 4، وهما فرعان مختلفان لكنهما يقابلان المجموعة الجزئية نفسها.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--subset_sum_i_naive.png" alt="البحث في المجموعات الجزئية والتشذيب عند الحدود"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_i_naive.png" alt="البحث في المجموعات الجزئية والتشذيب عند الحدود"></p>
 <p>لإزالة المجموعات الجزئية المكررة، <strong>تُعَدّ إزالة التكرار من قائمة النتائج فكرة مباشرة</strong>. غير أن هذا النهج غير فعّال للغاية لسببين:</p>
 <ul>
 <li>عندما تكون عناصر المصفوفة كثيرة، خصوصاً عندما يكون <code>target</code> كبيراً، تولّد عملية البحث مجموعات جزئية مكررة كثيرة.</li>
@@ -94,7 +94,7 @@
 <li>تختار الجولتان الأولى والثانية $4$ و$5$، فتتولّد المجموعة الجزئية $[4, 5, \dots]$.</li>
 <li>إذا اختارت الجولة الأولى $5$، <strong>ينبغي أن تتخطى الجولة الثانية $3$ و$4$</strong>، لأن المجموعتين الجزئيتين $[5, 3, \dots]$ و$[5, 4, \dots]$ نسختان مطابقتان تماماً للمجموعتين الجزئيتين الموصوفتين في الخطوتين <code>1.</code> و<code>2.</code></li>
 </ol>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--subset_sum_i_pruning.png" alt="ترتيبات اختيار مختلفة تؤدي إلى مجموعات جزئية مكررة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_i_pruning.png" alt="ترتيبات اختيار مختلفة تؤدي إلى مجموعات جزئية مكررة"></p>
 <p>وخلاصة القول، بمعطى مصفوفة إدخال $[x_1, x_2, \dots, x_n]$، لتكن متتالية الاختيار في عملية البحث $[x_{i_1}, x_{i_2}, \dots, x_{i_m}]$. ويجب أن تحقق متتالية الاختيار هذه $i_1 \leq i_2 \leq \dots \leq i_m$؛ <strong>وأي متتالية اختيار لا تحقق هذا الشرط ستؤدي إلى تكرارات وينبغي تشذيبها</strong>.</p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>لتنفيذ هذا التشذيب، نهيّئ متغيراً <code>start</code> للإشارة إلى نقطة بداية الاجتياز. <strong>وبعد اتخاذ الاختيار $x_{i}$، نجعل الجولة التالية تبدأ الاجتياز من الفهرس $i$</strong>. وهذا يضمن أن تحقق متتالية الاختيار $i_1 \leq i_2 \leq \dots \leq i_m$، بما يضمن تفرّد المجموعات الجزئية.</p>
@@ -130,27 +130,27 @@
 </code></pre>
 </div>
 <p>ويوضح الشكل أدناه عملية التتبّع الرجعي الكاملة الناتجة عن تشغيل الشيفرة أعلاه على المصفوفة $[3, 4, 5]$ بالقيمة المستهدفة $9$.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--subset_sum_i.png" alt="عملية التتبّع الرجعي لمجموع المجموعات الجزئية I"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_i.png" alt="عملية التتبّع الرجعي لمجموع المجموعات الجزئية I"></p>
 <h2 id="مع-وجود-عناصر-مكررة-في-المصفوفة">مع وجود عناصر مكررة في المصفوفة</h2>
 <div class="note">
 <p>بمعطى مصفوفة أعداد صحيحة موجبة <code>nums</code> وعدد صحيح موجب مستهدف <code>target</code>، ابحث عن جميع التوليفات الممكنة التي يساوي مجموع عناصرها <code>target</code>. <strong>وقد تحتوي المصفوفة المعطاة على عناصر مكررة، ويمكن اختيار كل عنصر مرة واحدة على الأكثر</strong>. وأعد هذه التوليفات على هيئة قائمة، على ألا تحتوي القائمة على توليفات مكررة.</p>
 </div>
 <p>وبالمقارنة بالمسألة السابقة، <strong>قد تحتوي مصفوفة الإدخال في هذه المسألة على عناصر مكررة</strong>، وهذا يطرح مشكلة جديدة. فمثلاً بمعطى المصفوفة $[4, \hat{4}, 5]$ والقيمة المستهدفة $9$، يكون ناتج الشيفرة الحالية $[4, 5], [\hat{4}, 5]$، وهو يحتوي على مجموعتين جزئيتين مكررتين.</p>
 <p><strong>وسبب هذا التكرار هو اختيار عناصر متساوية مراراً في جولة معينة</strong>. وفي الشكل أدناه، تحتوي الجولة الأولى على ثلاثة اختيارات، اثنان منها $4$، مما ينشئ فرعي بحث مكررين يخرجان مجموعتين جزئيتين مكررتين. وبالمثل، ينتج العددان $4$ في الجولة الثانية أيضاً مجموعات جزئية مكررة.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--subset_sum_ii_repeat.png" alt="مجموعات جزئية مكررة ناتجة عن عناصر متساوية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_ii_repeat.png" alt="مجموعات جزئية مكررة ناتجة عن عناصر متساوية"></p>
 <h3 id="تشذيب-العناصر-المتساوية">تشذيب العناصر المتساوية</h3>
 <p>لحل هذه المشكلة، <strong>يلزمنا تقييد العناصر المتساوية بحيث تُختار مرة واحدة فقط في كل جولة</strong>. والتنفيذ بارع نوعاً ما: بما أن المصفوفة مرتبة بالفعل، فالعناصر المتساوية متجاورة. وهذا يعني أنه في جولة اختيار معينة، إذا ساوى العنصر الحالي العنصر الواقع على يساره، فقد اختيرت القيمة نفسها بالفعل في هذه الجولة، لذا نتخطى العنصر الحالي مباشرة.</p>
 <p>وفي الوقت نفسه، <strong>تحدّد هذه المسألة أن كل عنصر من عناصر المصفوفة يمكن اختياره مرة واحدة فقط</strong>. ولحسن الحظ، يمكننا أيضاً استخدام المتغير <code>start</code> لتلبية هذا القيد: بعد اتخاذ الاختيار $x_{i}$، نجعل الجولة التالية تبدأ الاجتياز من الفهرس $i + 1$ فصاعداً. وهذا يزيل المجموعات الجزئية المكررة ويتجنّب اختيار العناصر مراراً في آن واحد.</p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>يوضح الشكل أدناه عملية التتبّع الرجعي للمصفوفة $[4, 4, 5]$ بالقيمة المستهدفة $9$، وتتضمن أربعة أنواع من عمليات التشذيب. اجمع بين الرسم وتعليقات الشيفرة لفهم عملية البحث بأكملها وكيفية عمل كل عملية تشذيب.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--subset_sum_ii.png" alt="عملية التتبّع الرجعي لمجموع المجموعات الجزئية II"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--subset_sum_ii.png" alt="عملية التتبّع الرجعي لمجموع المجموعات الجزئية II"></p>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/hello-algo/chapter_backtracking/permutations_problem"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مسألة التباديل</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/hello-algo/chapter_backtracking/n_queens_problem"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مسألة الملكات n</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -158,8 +158,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

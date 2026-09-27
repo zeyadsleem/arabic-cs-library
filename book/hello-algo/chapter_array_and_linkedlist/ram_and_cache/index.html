@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="ذاكرة الوصول العشوائي وذاكرة التخزين المؤقت * — المصفوفات والقوائم المترابطة"/><!----><title>ذاكرة الوصول العشوائي وذاكرة التخزين المؤقت * | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -90,13 +90,13 @@
 <li><strong>لا يمكن أن تحل ذاكرة الوصول العشوائي محل القرص الصلب بسهولة</strong>. أولاً، تُفقد البيانات في الذاكرة بعد انقطاع الطاقة، مما يجعلها غير صالحة للتخزين طويل الأمد للبيانات. ثانياً، الذاكرة أغلى من القرص الصلب بعشرات المرات، مما يصعّب انتشارها في سوق المستهلكين.</li>
 <li><strong>لا تستطيع ذاكرة التخزين المؤقت أن تحقق سعة كبيرة وسرعة عالية في آن واحد</strong>. فمع زيادة سعة ذاكرات التخزين المؤقت L1 وL2 وL3، يكبر حجمها الفيزيائي، وتزداد المسافة الفيزيائية بينها وبين نواة المعالج، مما يؤدي إلى زمن نقل بيانات أطول وزمن وصول أعلى إلى العناصر. وفي ظل التقنية الحالية، يمثّل هيكل التخزين المؤقت متعدد الطبقات أفضل نقطة توازن بين السعة والسرعة والتكلفة.</li>
 </ul>
-<p><img src="../../../../images/hello-algo/chapter_array_and_linkedlist--storage_pyramid.png" alt="نظام تخزين الحاسوب"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_array_and_linkedlist--storage_pyramid.png" alt="نظام تخزين الحاسوب"></p>
 <div class="note">
 <p>يجسّد هيكل التخزين الهرمي في الحواسيب توازناً دقيقاً بين السرعة والسعة والتكلفة. وفي الواقع، تنتشر هذه المقايضات في جميع المجالات الصناعية، وتتطلب منا إيجاد نقطة التوازن المثلى بين المزايا والقيود المختلفة.</p>
 </div>
 <p>خلاصةً، <strong>يُستخدم القرص الصلب للتخزين طويل الأمد لكميات كبيرة من البيانات، وتُستخدم ذاكرة الوصول العشوائي لتخزين البيانات قيد المعالجة تخزيناً مؤقتاً أثناء تنفيذ البرنامج، وتُستخدم ذاكرة التخزين المؤقت لتخزين البيانات والتعليمات كثيرة الوصول إليها</strong>، مما يحسّن كفاءة تنفيذ البرنامج. وتعمل هذه الوسائل الثلاث معاً لإبقاء نظام الحاسوب يعمل بكفاءة.</p>
 <p>وكما هو موضح في الشكل أدناه، أثناء تنفيذ البرنامج تُقرأ البيانات من القرص الصلب إلى ذاكرة الوصول العشوائي ليحسبها المعالج. ويمكن النظر إلى ذاكرة التخزين المؤقت على أنها جزء من المعالج. وهي <strong>تحمّل البيانات من ذاكرة الوصول العشوائي بذكاء</strong>، فتوفّر للمعالج وصولاً عالي السرعة إلى البيانات، مما يحسّن كفاءة تنفيذ البرنامج تحسيناً ملحوظاً ويقلل الاعتماد على ذاكرة الوصول العشوائي الأبطأ.</p>
-<p><img src="../../../../images/hello-algo/chapter_array_and_linkedlist--computer_storage_devices.png" alt="تدفق البيانات بين القرص الصلب وذاكرة الوصول العشوائي وذاكرة التخزين المؤقت"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_array_and_linkedlist--computer_storage_devices.png" alt="تدفق البيانات بين القرص الصلب وذاكرة الوصول العشوائي وذاكرة التخزين المؤقت"></p>
 <h2 id="كفاءة-استهلاك-الذاكرة-في-بنى-البيانات">كفاءة استهلاك الذاكرة في بنى البيانات</h2>
 <p>من حيث استخدام مساحة الذاكرة، لكل من المصفوفات والقوائم المترابطة مزايا وقيود.</p>
 <p>من جهة، <strong>الذاكرة محدودة، ولا يمكن لعدة برامج أن تتشارك الذاكرة نفسها</strong>، لذا نأمل في أن تستفيد بنى البيانات من المساحة بأكبر كفاءة ممكنة. فتُرصّ عناصر المصفوفة بإحكام ولا تحتاج إلى مساحة إضافية لتخزين المراجع (المؤشرات) بين عقد القائمة المترابطة، ومن ثمّ تكون كفاءة مساحتها أعلى. غير أن المصفوفة تحتاج إلى تخصيص مساحة ذاكرة متجاورة كافية دفعةً واحدة، مما قد يؤدي إلى هدر في الذاكرة، كما أن توسيع المصفوفة يتطلب تكلفة زمنية ومكانية إضافية. وبالمقارنة، تُجري القوائم المترابطة تخصيص الذاكرة وتحريرها ديناميكياً على أساس «العقدة»، مما يوفّر مرونة أكبر.</p>
@@ -130,7 +130,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -138,8 +138,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

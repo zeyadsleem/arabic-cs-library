@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة الملكات n — التتبّع الرجعي"/><!----><title>مسألة الملكات n | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -42,14 +42,14 @@
 <p>وفق قواعد الشطرنج، تستطيع الملكة مهاجمة أي قطعة في الصف نفسه أو العمود نفسه أو القطر نفسه. وبمعطى $n$ ملكة ورقعة شطرنج بحجم $n \times n$، ابحث عن ترتيب لا تستطيع فيه أي ملكتين مهاجمة إحداهما الأخرى.</p>
 </div>
 <p>كما يوضح الشكل أدناه، عندما $n = 4$، يوجد حلان يمكن إيجادهما. ومن منظور خوارزمية التتبّع الرجعي، تحتوي رقعة الشطرنج $n \times n$ على $n^2$ مربعاً، وهذه المربعات توفر جميع الخيارات <code>choices</code>. وخلال عملية وضع الملكات واحدة تلو الأخرى، تتغير حالة رقعة الشطرنج باستمرار، وتمثل رقعة الشطرنج في كل لحظة الحالة <code>state</code>.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--solution_4_queens.png" alt="حل مسألة 4 ملكات"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--solution_4_queens.png" alt="حل مسألة 4 ملكات"></p>
 <p>ويوضح الشكل أدناه القيود الثلاثة لهذه المسألة: <strong>لا يمكن لعدة ملكات أن تكون في الصف نفسه أو العمود نفسه أو على القطر نفسه</strong>. ومن الجدير بالذكر أن الأقطار تنقسم إلى نوعين: القطر الرئيسي <code>\</code> والقطر المضاد <code>/</code>.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--n_queens_constraints.png" alt="قيود مسألة الملكات n"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--n_queens_constraints.png" alt="قيود مسألة الملكات n"></p>
 <h3 id="استراتيجية-الوضع-صفا-بصف">استراتيجية الوضع صفاً بصف</h3>
 <p>بما أن عدد الملكات وعدد صفوف رقعة الشطرنج كلاهما $n$، يمكننا استنتاج نتيجة بسهولة: <strong>يسمح كل صف في رقعة الشطرنج بوضع ملكة واحدة فقط لا غير</strong>.</p>
 <p>وهذا يعني أنه يمكننا اعتماد استراتيجية الوضع صفاً بصف: بدءاً من الصف الأول، نضع ملكة واحدة في كل صف حتى يكتمل الصف الأخير.</p>
 <p>ويوضح الشكل أدناه عملية الوضع صفاً بصف لمسألة 4 ملكات. ونظراً لضيق المساحة، لا يوسّع الشكل إلا فرع بحث واحد من الصف الأول، وتُشذَّب جميع المخططات التي تخالف قيد العمود أو القطر.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--n_queens_placing.png" alt="استراتيجية الوضع صفاً بصف"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--n_queens_placing.png" alt="استراتيجية الوضع صفاً بصف"></p>
 <p>في جوهر الأمر، <strong>تؤدي استراتيجية الوضع صفاً بصف وظيفة التشذيب</strong>، إذ تتجنب جميع فروع البحث التي تظهر فيها عدة ملكات في الصف نفسه.</p>
 <h3 id="تشذيب-الأعمدة-والأقطار">تشذيب الأعمدة والأقطار</h3>
 <p>لتحقيق قيد العمود، يمكننا استخدام مصفوفة منطقية <code>cols</code> بطول $n$ لتسجيل ما إذا كان في كل عمود ملكة. وقبل كل قرار وضع، نستخدم <code>cols</code> لتشذيب الأعمدة التي تحتوي بالفعل على ملكات، ونحدّث حالة <code>cols</code> ديناميكياً أثناء التتبّع الرجعي.</p>
@@ -59,7 +59,7 @@
 <p>فكيف نتعامل مع قيد القطر؟ لنأخذ مربعاً في رقعة الشطرنج بفهرسي صف وعمود $(row, col)$. إذا اخترنا قطراً رئيسياً محدداً في المصفوفة، نجد أن جميع المربعات على ذلك القطر لها الفرق نفسه بين فهرسي الصف والعمود، <strong>أي أن $row - col$ قيمة ثابتة لجميع المربعات على القطر الرئيسي</strong>.</p>
 <p>وبعبارة أخرى، إذا حقق مربعان $row_1 - col_1 = row_2 - col_2$، فلا بد أنهما على القطر الرئيسي نفسه. وباستخدام هذا النمط، يمكننا استخدام المصفوفة <code>diags1</code> الموضحة في الشكل أدناه لتسجيل ما إذا كانت هناك ملكة على كل قطر رئيسي.</p>
 <p>وبالمثل، <strong>بالنسبة إلى جميع المربعات على قطر مضاد، يكون المجموع $row + col$ قيمة ثابتة</strong>. ويمكننا بالمثل استخدام المصفوفة <code>diags2</code> للتعامل مع قيود الأقطار المضادة.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--n_queens_cols_diagonals.png" alt="التعامل مع قيود الأعمدة والأقطار"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--n_queens_cols_diagonals.png" alt="التعامل مع قيود الأعمدة والأقطار"></p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>يرجى ملاحظة أنه في مصفوفة مربعة $n \times n$، يكون نطاق $row - col$ هو $[-n + 1, n - 1]$، ونطاق $row + col$ هو $[0, 2n - 2]$. لذلك يكون عدد الأقطار الرئيسية والأقطار المضادة $2n - 1$، أي أن طول المصفوفتين <code>diags1</code> و<code>diags2</code> هو $2n - 1$.</p>
 <div class="lang-tab">
@@ -109,7 +109,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -117,8 +117,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

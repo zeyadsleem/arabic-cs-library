@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مشكلة الحقيبة 0-1 — البرمجة الديناميكية"/><!----><title>مشكلة الحقيبة 0-1 | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -44,7 +44,7 @@
 <p>بمعطى $n$ من العناصر وحقيبة سعتها $cap$، حيث وزن العنصر $i$ هو $wgt[i-1]$ وقيمته $val[i-1]$. ويمكن اختيار كل عنصر مرة واحدة على الأكثر. فما أقصى قيمة يمكن وضعها في الحقيبة ضمن حد السعة؟</p>
 </div>
 <p>تأمّل الشكل أدناه. بما أن ترقيم العنصر $i$ يبدأ العد من $1$ بينما تبدأ فهارس المصفوفة من $0$، فإن العنصر $i$ يقابل الوزن $wgt[i-1]$ والقيمة $val[i-1]$.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--knapsack_example.png" alt="بيانات مثال لحقيبة 0-1"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--knapsack_example.png" alt="بيانات مثال لحقيبة 0-1"></p>
 <p>يمكننا النظر إلى مشكلة الحقيبة 0-1 على أنها عملية تتكوّن من $n$ جولة من القرارات، حيث يوجد لكل عنصر قراران: عدم وضعه ووضعه، وبذلك تحقق المسألة نموذج شجرة القرار.</p>
 <p>هدف هذه المسألة هو إيجاد «أقصى قيمة يمكن وضعها في الحقيبة ضمن حد السعة»، لذا يُرجَّح أنها مسألة برمجة ديناميكية.</p>
 <p><strong>الخطوة 1: فكّر في القرارات في كل جولة، وحدّد الحالة، وبذلك تحصل على جدول $dp$</strong></p>
@@ -76,12 +76,12 @@ $$</p>
 </ul>
 <p>كما يوضح الشكل أدناه، بما أن كل عنصر يولّد فرعي بحث: استبعاده وتضمينه، يكون التعقيد الزمني $O(2^n)$.</p>
 <p>وبمراقبة شجرة التعاود، يسهل ملاحظة مسائل فرعية متداخلة، مثل $dp[1, 10]$. وعندما تكون العناصر كثيرة وسعة الحقيبة كبيرة، ولا سيما عندما تكون العناصر ذات الوزن نفسه كثيرة، يزداد عدد المسائل الفرعية المتداخلة زيادة كبيرة.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--knapsack_dfs.png" alt="شجرة تعاود البحث بالقوة الغاشمة لمشكلة الحقيبة 0-1"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--knapsack_dfs.png" alt="شجرة تعاود البحث بالقوة الغاشمة لمشكلة الحقيبة 0-1"></p>
 <h3 id="الطريقة-2-الحفظ">الطريقة 2: الحفظ</h3>
 <p>لضمان ألا تُحسب المسائل الفرعية المتداخلة إلا مرة واحدة، نستخدم قائمة الحفظ <code>mem</code> لتسجيل حلول المسائل الفرعية، حيث يقابل <code>mem[i][c]</code> القيمة $dp[i, c]$.</p>
 <p>بعد إدخال الحفظ، <strong>يعتمد التعقيد الزمني على عدد المسائل الفرعية</strong>، وهو $O(n \times cap)$. وتكون شيفرة التنفيذ كما يلي:</p>
 <p>يوضح الشكل أدناه فروع البحث التي شُذّبت في الحفظ.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--knapsack_dfs_mem.png" alt="شجرة تعاود الحفظ لمشكلة الحقيبة 0-1"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--knapsack_dfs_mem.png" alt="شجرة تعاود الحفظ لمشكلة الحقيبة 0-1"></p>
 <h3 id="الطريقة-3-البرمجة-الديناميكية">الطريقة 3: البرمجة الديناميكية</h3>
 <p>البرمجة الديناميكية في جوهرها عملية ملء جدول $dp$ أثناء انتقالات الحالة. وتكون الشيفرة كما يلي:</p>
 <p>كما يوضح الشكل أدناه، يُحدَّد التعقيد الزمني والتعقيد المكاني معاً بحجم المصفوفة <code>dp</code>، وهو $O(n \times cap)$.</p>
@@ -100,7 +100,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -108,8 +108,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

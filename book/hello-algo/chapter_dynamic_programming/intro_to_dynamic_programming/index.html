@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مقدمة في البرمجة الديناميكية — البرمجة الديناميكية"/><!----><title>مقدمة في البرمجة الديناميكية | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -45,7 +45,7 @@
 <p>معطى درج يتكوّن من $n$ درجة، ويمكنك صعود درجة واحدة أو درجتين في كل مرة، فكم طريقة مختلفة توجد للوصول إلى القمة؟</p>
 </div>
 <p>وكما يوضح الشكل أدناه، توجد للدرج المكوّن من $3$ درجات ثلاث طرق مختلفة للوصول إلى القمة.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_example.png" alt="عدد الطرق للوصول إلى الدرجة الثالثة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_example.png" alt="عدد الطرق للوصول إلى الدرجة الثالثة"></p>
 <p>هدف هذه المسألة هو تحديد عدد الطرق، لذا <strong>يمكننا التفكير في استخدام التتبّع الرجعي لسرد جميع الاحتمالات</strong>. وتحديداً، تخيّل صعود الدرج عملية اختيار متعددة الجولات: نبدأ من الأرض، ونختار في كل جولة الصعود درجة واحدة أو درجتين، ونزيد العدّاد بواحد كلما بلغنا قمة الدرج، ونشذّب عند تجاوز القمة. والشيفرة كما يلي:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -88,11 +88,11 @@ $$</p>
 dp[i] = dp[i-1] + dp[i-2]
 $$</p>
 <p>وهذا يعني أنه توجد في مسألة صعود الدرج علاقة تعاودية بين المسائل الفرعية، وأن <strong>حل المسألة الأصلية يمكن بناؤه انطلاقاً من حلول المسائل الفرعية</strong>. ويوضح الشكل أدناه هذه العلاقة التعاودية.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_state_transfer.png" alt="العلاقة التعاودية لعدد الطرق"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_state_transfer.png" alt="العلاقة التعاودية لعدد الطرق"></p>
 <p>ويمكننا الحصول على حل بالبحث بالقوة الغاشمة استناداً إلى صيغة التعاود. فبدءاً من $dp[n]$، <strong>حلّل المسألة الأكبر تعاودياً إلى مجموع مسألتين أصغر</strong>، حتى تبلغ أصغر مسألتين فرعيتين $dp[1]$ و$dp[2]$ فتعود. وحلّا أصغر مسألتين فرعيتين معروفان، وهما $dp[1] = 1$ و$dp[2] = 2$، ويمثلان طريقة واحدة وطريقتين للصعود إلى الدرجتين الأولى والثانية على التوالي.</p>
 <p>راقب الشيفرة التالية: فهي، مثل شيفرة التتبّع الرجعي القياسية، تستخدم البحث بالعمق أولاً لكنها أكثر إيجازاً:</p>
 <p>يوضح الشكل أدناه الشجرة التعاودية الناتجة عن البحث بالقوة الغاشمة. فبالنسبة إلى المسألة $dp[n]$، يكون عمق شجرتها التعاودية $n$، بتعقيد زمني $O(2^n)$. والنمو الأسي متفجر؛ فإذا أدخلنا قيمة $n$ كبيرة نسبياً، فقد يكون الانتظار طويلاً جداً.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png" alt="الشجرة التعاودية لصعود الدرج"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png" alt="الشجرة التعاودية لصعود الدرج"></p>
 <p>وبمراقبة الشكل أعلاه، نجد أن <strong>التعقيد الزمني الأسي ناتج عن «المسائل الفرعية المتداخلة»</strong>. على سبيل المثال، تُحلَّل $dp[9]$ إلى $dp[8]$ و$dp[7]$، وتُحلَّل $dp[8]$ إلى $dp[7]$ و$dp[6]$، وكلتاهما تحتويان المسألة الفرعية $dp[7]$.</p>
 <p>وهكذا دواليك، تحتوي المسائل الفرعية على مسائل فرعية متداخلة أصغر، إلى ما لا نهاية. وتُهدَر الغالبية العظمى من موارد الحساب في هذه المسائل الفرعية المتداخلة.</p>
 <h2 id="الطريقة-الثانية-الحفظ">الطريقة الثانية: الحفظ</h2>
@@ -103,13 +103,13 @@ $$</p>
 </ol>
 <p>والشيفرة كما يلي:</p>
 <p>راقب الشكل أدناه: <strong>بعد الحفظ، لا تحتاج جميع المسائل الفرعية المتداخلة إلى الحساب إلا مرة واحدة، فينخفض التعقيد الزمني إلى $O(n)$</strong>، وهي قفزة هائلة.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png" alt="الشجرة التعاودية مع الحفظ"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png" alt="الشجرة التعاودية مع الحفظ"></p>
 <h2 id="الطريقة-الثالثة-البرمجة-الديناميكية">الطريقة الثالثة: البرمجة الديناميكية</h2>
 <p><strong>الحفظ أسلوب «من الأعلى إلى الأسفل»</strong>: نبدأ من المسألة الأصلية (العقدة الجذرية)، ونحلّل المسائل الفرعية الأكبر تعاودياً إلى مسائل أصغر، حتى نبلغ أصغر المسائل الفرعية المعروفة (العقد الأوراق). ثم نجمع، بالرجوع للخلف، حلول المسائل الفرعية طبقةً طبقة لبناء حل المسألة الأصلية.</p>
 <p>وفي المقابل، <strong>البرمجة الديناميكية أسلوب «من الأسفل إلى الأعلى»</strong>: تبدأ من حلول أصغر المسائل الفرعية، وتبني تكرارياً حلول المسائل الفرعية الأكبر حتى الحصول على حل المسألة الأصلية.</p>
 <p>ولأن البرمجة الديناميكية لا تتضمن عملية رجوع للخلف، فهي لا تحتاج إلى التنفيذ إلا بحلقات تكرارية، ولا تحتاج إلى التعاود. وفي الشيفرة التالية نهيّئ مصفوفة <code>dp</code> لتخزين حلول المسائل الفرعية، وهي تؤدي وظيفة التسجيل نفسها التي تؤديها المصفوفة <code>mem</code> في الحفظ:</p>
 <p>ويحاكي الشكل أدناه عملية تنفيذ الشيفرة أعلاه.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png" alt="عملية البرمجة الديناميكية لصعود الدرج"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png" alt="عملية البرمجة الديناميكية لصعود الدرج"></p>
 <p>ومثل خوارزميات التتبّع الرجعي، تستخدم البرمجة الديناميكية أيضاً مفهوم «الحالة» لتمثيل مراحل محددة من حل المسألة، حيث تقابل كل حالة مسألة فرعية والحل الأمثل المحلي المقابل لها. على سبيل المثال، تُعرَّف الحالة في مسألة صعود الدرج بأنها رقم الدرجة الحالية $i$.</p>
 <p>واستناداً إلى ما سبق، يمكننا تلخيص المصطلحات الشائعة الاستخدام في البرمجة الديناميكية.</p>
 <ul>
@@ -127,7 +127,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -135,8 +135,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الإغلاقات — Closures"/><!----><title>الإغلاقات | صناعة المفسّرات</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/introduction/index">مقدمة</a></li><!--]--></ul><h3>A Map of the Territory</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-map-of-the-territory/index">خريطة الإقليم</a></li><!--]--></ul><h3>Welcome</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/welcome/index">ترحيب</a></li><!--]--></ul><h3>The Lox Language</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/the-lox-language/index">اللّغة Lox</a></li><!--]--></ul><h3>Types of Values</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/types-of-values/index">أنواع القيم</a></li><!--]--></ul><h3>Scanning</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning/index">المسح المعجمي</a></li><!--]--></ul><h3>Scanning On Demand</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning-on-demand/index">المسح عند الطلب</a></li><!--]--></ul><h3>Representing Code</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/representing-code/index">تمثيل الشيفرة</a></li><!--]--></ul><h3>Resolving and Binding</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/resolving-and-binding/index">الحَلّ والربط</a></li><!--]--></ul><h3>Statements and State</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/statements-and-state/index">الجمل والحالة</a></li><!--]--></ul><h3>Classes</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes/index">الأصناف</a></li><!--]--></ul><h3>Classes and Instances</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes-and-instances/index">الأصناف والنسخ</a></li><!--]--></ul><h3>Methods and Initializers</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/methods-and-initializers/index">الدوال والمُهيّئات</a></li><!--]--></ul><h3>Inheritance</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/inheritance/index">الوراثة</a></li><!--]--></ul><h3>Superclasses</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/superclasses/index">الأصناف الآباء</a></li><!--]--></ul><h3>Control Flow</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/control-flow/index">التحكّم في المسار</a></li><!--]--></ul><h3>Parsing Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/parsing-expressions/index">تحليل التعبيرات</a></li><!--]--></ul><h3>Evaluating Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/evaluating-expressions/index">تقييم التعبيرات</a></li><!--]--></ul><h3>Strings</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/strings/index">النصوص</a></li><!--]--></ul><h3>Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/functions/index">الدوال</a></li><!--]--></ul><h3>Calls and Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/calls-and-functions/index">الاستدعاءات والدوال</a></li><!--]--></ul><h3>Closures</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/closures/index" class="active">الإغلاقات</a></li><!--]--></ul><h3>Local Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/local-variables/index">المتغيّرات المحلّية</a></li><!--]--></ul><h3>A Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-virtual-machine/index">آلة افتراضية</a></li><!--]--></ul><h3>Compiling Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/compiling-expressions/index">ترجمة التعبيرات</a></li><!--]--></ul><h3>A Bytecode Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-bytecode-virtual-machine/index">آلة افتراضية لشيفرة البايت</a></li><!--]--></ul><h3>Chunks of Bytecode</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/chunks-of-bytecode/index">قطع الشيفرة بايت</a></li><!--]--></ul><h3>A Tree-Walk Interpreter</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-tree-walk-interpreter/index">مفسّر يتجوّل على الشجرة</a></li><!--]--></ul><h3>Jumping Back and Forth</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/jumping-back-and-forth/index">القفز ذهابًا وإيابًا</a></li><!--]--></ul><h3>Global Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/global-variables/index">المتغيّرات العامة</a></li><!--]--></ul><h3>Hash Tables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/hash-tables/index">جداول التجزئة</a></li><!--]--></ul><h3>Optimization</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/optimization/index">التحسين</a></li><!--]--></ul><h3>Garbage Collection</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/garbage-collection/index">جمع النفايات</a></li><!--]--></ul><h3>Appendix I</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-i/index">الملحق الأول</a></li><!--]--></ul><h3>Appendix II</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-ii/index">الملحق الثاني</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">Closures</p> <h1>الإغلاقات</h1></div> <div class="reader-content"><!----><blockquote>
+<p>كما قال ذلك الرجل، لكل مسألة معقّدةٍ حلٌّ بسيط، وهو حلٌّ خاطئ.</p>
+<p><cite>أومبرتو إيكو، <em>بندول فوكو</em></cite></p>
+</blockquote>
+<p>بفضل اجتهادنا الدؤوب في <a href="/arabic-cs-library/book/crafting-interpreters/calls-and-functions/index">الفصل الأخير</a>، لدينا آلة افتراضية (virtual
+machine) تعمل فيها الدوال. وما ينقصها هو الإغلاقات (closures). باستثناء
+المتغيّرات العامة (global variables) — وهي نوعٌ خاصٌّ بذاته من الحيوانات — لا
+يملك أيّ دالة وسيلةً للإشارة إلى متغيّرٍ أُعلن خارج جسمها.</p>
+<pre><code class="language-lox">var x = &quot;global&quot;;
+fun outer() {
+  var x = &quot;outer&quot;;
+  fun inner() {
+    print x;
+  }
+  inner();
+}
+outer();
+</code></pre>
+<p>شغّل هذا المثال الآن فيطبع &quot;global&quot;. ومن المفترض أن يطبع &quot;outer&quot;. ولإصلاح
+ذلك، نحتاج إلى تضمين النطاق المعجميّ (lexical scope) كاملًا لكل الدوال
+المحيطة عند حلّ (resolving) المتغيّر.</p>
+<p>هذه المسألة أصعب في clox ممّا كانت عليه في jlox لأن آلتنا الافتراضية لشيفرة
+البايت (bytecode virtual machine) تخزّن المتغيّرات المحلّية (local variables) على مكدّس
+(stack). استخدمنا المكدّس لأنني ادّعيتُ أنّ للمتغيّرات المحلّية دلالة المكدّس
+— إذ تُبطَل بترتيب معكوس لترتيب إنشائها. لكن مع الإغلاقات، هذا صحيحٌ <em>في
+الغالب</em> فقط.</p>
+<pre><code class="language-lox">fun makeClosure() {
+  var local = &quot;local&quot;;
+  fun closure() {
+    print local;
+  }
+  return closure;
+}
+
+var closure = makeClosure();
+closure();
+</code></pre>
+<p>تعلن الدالة الخارجية <code>makeClosure()</code> متغيّرًا اسمه <code>local</code>. كما تنشئ دالةً
+داخليةً اسمها <code>closure()</code> تلتقط ذلك المتغيّر. ثم تُرجِع <code>makeClosure()</code> إشارةً
+إلى تلك الدالة. وبما أنّ الإغلاق <span name="flying">يهرب</span> وهو يحمل
+معه المتغيّر المحلّي، فإنّ <code>local</code> يجب أن يعمّر أطول من الاستدعاء الذي أُنشئ
+فيه.</p>
+<aside name="flying">
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-1.webp" class="above" alt="A local variable flying away from the stack."/>
+<p>لا، لا! لقد هرب!</p>
+</aside>
+<p>يمكنك حلّ هذه المشكلة بتخصيص ذاكرة ديناميكيًا لكل المتغيّرات المحلّية. هذا ما
+يفعله jlox بوضع كل شيء في كائنات Environment التي تطفو هنا وهناك في كومة
+Java. لكننا لا نريد ذلك. فاستخدام <span name="stack">مكدّس</span> سريعٌ
+<em>للغاية</em>. معظم المتغيّرات المحلّية <em>لا</em> تلتقطها الإغلاقات، ولها فعلًا دلالة
+المكدّس. سيكون سيئًا أن نُبطئ كل تلك المتغيّرات لصالح المتغيّر المحلّي النادر
+الملتقَط.</p>
+<aside name="stack">
+<p>هناك سببٌ في أن تختار لغة C ولغة Java المكدّس لمتغيّرانيهما المحلّيين، في
+نهاية الأمر.</p>
+</aside>
+<p>يعني هذا نهجًا أعقد ممّا استخدمناه في مفسّرنا المكتوب بلغة Java. ولأنّ بعض
+المتغيّرات المحلّية لها أعمارٌ مختلفة كثيرًا، سوف تكون لدينا استراتيجيتان
+للتنفيذ. أمّا المتغيّرات المحلّية التي لا تُستخدم في الإغلاقات، فسنُبقيها على
+المكدّس كما هي. وحينما تلتقط إغلاقٌ متغيّرًا محلّيًا، سنعتمد حلًّا آخر يرفعه
+إلى الكومة حيث يستطيع أن يعيش طالما احتاج.</p>
+<p>الإغلاقات موجودة منذ أيام Lisp الأولى حين كانت بايتات الذاكرة ودورات المعالج
+أغلى من الياقوت. وعلى مدى العقود التالية، ابتكر المخترقون جميعَ أنواع <span
+name="lambda">الطرق</span> لتجميع الإغلاقات في تمثيلات وقت تشغيل محسَّنة. بعضها
+أكفأ لكنه يتطلّب عملية تجميع أعقد مما يسهل إدماجه بأثر رجعي في clox.</p>
+<aside name="lambda">
+<p>ابحث عن &quot;closure conversion&quot; أو &quot;lambda lifting&quot; لتبدأ الاستكشاف.</p>
+</aside>
+<p>الأسلوب الذي أشرحه هنا مستمدّ من تصميم الآلة الافتراضية لـ Lua. إنه سريع،
+ومُوفِّر للذاكرة، ومُنفَّذ بشيفرة قليلة نسبيًا. والأعجب من ذلك أنه ينسجم
+طبيعيًا مع المصرّفات أحادية التمريرة (single-pass) التي يستخدمها كلٌّ من clox
+وLua. لكنه معقّد بعض الشيء. قد يستغرق الأمر وقتًا قبل أن تتّضح جميع القطع في
+ذهنك. سنبنيها خطوةً خطوة، وسأحاول أن أقدّم المفاهيم على مراحل.</p>
+<h2 id="كائنات-الإغلاق">كائنات الإغلاق</h2>
+<p>تمثّل آلتنا الافتراضية الدوال وقت التشغيل باستخدام ObjFunction. تُنشَأ هذه
+الكائنات من واجهة المستخدم الأمامية (front end) أثناء التجميع. أمّا وقت
+التشغيل، فكل ما تفعله الآلة هو تحميل كائن الدالة من جدول الثوابت (constant
+table) وربطه باسم. لا توجد عملية &quot;تنشئ&quot; دالةً وقت التشغيل. تماماً كـ <span name="literal">القيم
+الحرفية (literals)</span> للنصوص والأعداد، فإنّها ثوابت (constants) تُنشَأ حصريًا وقت
+التجميع.</p>
+<aside name="literal">
+<p>بعبارة أخرى، فإنّ إعلان دالة في Lox <em>هو</em> نوعٌ من القيم الحرفية — قطعة صياغة
+تُعرّف قيمة ثابتةً من نوعٍ مدمج.</p>
+</aside>
+<p>أصبح ذلك منطقيًّا لأنّ كل البيانات التي تُكوّن دالةً معروفة وقت التجميع: قطعة
+الشيفرة بايت (chunk of bytecode) المجمَّعة من جسم الدالة، والثوابت المستخدَمة
+في الجسم. لكن ما إن ندخل الإغلاقات، لم تعد تلك التمثيلة كافية. تأمّل:</p>
+<pre><code class="language-lox">fun makeClosure(value) {
+  fun closure() {
+    print value;
+  }
+  return closure;
+}
+
+var doughnut = makeClosure(&quot;doughnut&quot;);
+var bagel = makeClosure(&quot;bagel&quot;);
+doughnut();
+bagel();
+</code></pre>
+<p>تُعرّف الدالة <code>makeClosure()</code> دالةً وتُرجِعها. نستدعيها مرّتين فنحصل على
+إغلاقين. أُنشئا من التصريح نفسه بالدالة المتداخلة، <code>closure</code>، لكنهما يغلقان
+على قيمتين مختلفتين. وحين نستدعي الإغلاقين، يطبع كلٌّ منهما سلسلةً مختلفة.
+يعني ذلك أننا نحتاج إلى بعض تمثيل وقت التشغيل لإغلاق يلتقط المتغيّرات المحلّية
+المحيطة بالدالة كما هي حين <em>يُنفَّذ</em> تصريح الدالة، لا وقت تجميعه فحسب.</p>
+<p>سنعمل تدريجيًا نحو التقاط المتغيّرات، لكن الخطوة الأولى الجيدة هي تعريف تمثيل
+ذلك الكائن. فنوع ObjFunction القائم يمثّل حالة <span name="raw">&quot;الخام&quot; (raw)</span> وقت التجميع لإعلان
+دالة، إذ تشترك كل الإغلاقات المُنشأة من تصريح واحد في الشيفرة والثوابت نفسها.
+أمّا وقت التشغيل، فعند تنفيذه تصريح دالة، نغلّف ObjFunction داخل بنية
+ObjClosure جديدة. ولبنية هذه الأخيرة إشارةٌ إلى الدالة المجرّدة الكامنة، إلى
+جانب حالة وقت تشغيل للمتغيّرات التي يغلق عليها الدالة.</p>
+<aside name="raw">
+<p>يشير تنفيذ Lua إلى كائن الدالة الخام الذي يحوي الشيفرة بايت بأنه
+&quot;prototype&quot;، وهي كلمةٌ ممتازة لوصف هذا، غير أنّ هذه الكلمة تُحمَّل أيضًا
+للإشارة إلى <a href="https://en.wikipedia.org/wiki/Prototype-based_programming">الوراثة النماذجية</a>.</p>
+</aside>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-2.webp" alt="An ObjClosure with a reference to an ObjFunction."/>
+<p>سنغلّف كل دالة داخل ObjClosure، حتى لو كانت الدالة لا تغلق فعلًا على أيّ
+متغيّرات محلّية محيطة وتلتقطها. هذا هدرٌ قليل، لكنه يُبسّط الآلة الافتراضية
+لأننا نستطيع أن نفترض دائمًا أنّ الدالة التي نستدعيها هي ObjClosure. وتبدأ
+بنية هذه الجديدة هكذا:</p>
+<p>^code obj-closure</p>
+<p>في الوقت الحالي، هي ببساطة تشير إلى ObjFunction وتضيف محتويات ترويسة الكائن
+اللازمة. ومن خلال اجتياز المراسم المعتادة لإضافة نوع كائن جديد إلى clox، نُعلن
+دالة C لإنشاء إغلاق جديد.</p>
+<p>^code new-closure-h (2 before, 1 after)</p>
+<p>ثم نُنفّذها هنا:</p>
+<p>^code new-closure</p>
+<p>إنها تأخذ مؤشرًا إلى ObjFunction الذي تغلّفه. كما تهيّئ حقل النوع إلى نوع
+جديد.</p>
+<p>^code obj-type-closure (1 before, 1 after)</p>
+<p>وحين ننتهي من إغلاق، نحرّر ذاكرته.</p>
+<p>^code free-closure (1 before, 1 after)</p>
+<p>نحرّر ObjClosure نفسه فقط، لا ObjFunction. ذلك لأنّ الإغلاق لا <em>يملك</em>
+الدالة. قد يوجد عدّة إغلاقات تشير جميعها إلى الدالة نفسها، ولا منها يدّعي أيّ
+امتياز خاصّ عليها. لا يمكننا تحرير ObjFunction حتى تختفي <em>كل</em> الكائنات التي
+تشير إليه — بما فيها حتى الدالة المحيطة التي يحوي جدول ثوابتها. يبدو تتبّع
+ذلك صعبًا، وهو كذلك فعلًا! ولهذا سنكتب جامع نفايات (garbage collector)
+قريبًا ليتولّى إدارته نيابةً عنا.</p>
+<p>ولنا أيضًا <span name="macro">الماكروهات</span> المعتادة للتحقّق من نوع
+قيمة.</p>
+<aside name="macro">
+<p>ربما كان ينبغي لي أن أعرّف ماكرو يجعل توليد هذه الماكروهات أسهل. لكن ربما يكون
+ذلك ميتافيزيقيًا أكثر قليلًا مما ينبغي.</p>
+</aside>
+<p>^code is-closure (2 before, 1 after)</p>
+<p>وللتحويل إلى نوع معيّن:</p>
+<p>^code as-closure (2 before, 1 after)</p>
+<p>الإغلاقات كائنات من الدرجة الأولى، لذا يمكنك طباعتها.</p>
+<p>^code print-closure (1 before, 1 after)</p>
+<p>تعرض تمامًا كما يفعل ObjFunction. من منظور المستخدم، الفرق بين ObjFunction
+وObjClosure تفصيلٌ تنفيذيٌّ مخفيٌّ بالكامل. وبانقضاء هذا الأمر، لدينا تمثيل
+عامل لكن فارغ للإغلاقات.</p>
+<h3 id="التجميع-إلى-كائنات-الإغلاق">التجميع إلى كائنات الإغلاق</h3>
+<p>لدينا كائنات إغلاق، لكن آلتنا الافتراضية لا تنشئها أبدًا. والخطوة التالية هي
+أن نجعل المصرّف (compiler) يُصدر تعليمات تخبر وقت التشغيل متى يُنشئ
+ObjClosure جديدًا يغلّف ObjFunction معيّنًا. ويحدث هذا في نهاية تصريح الدالة
+بالضبط.</p>
+<p>^code emit-closure (1 before, 1 after)</p>
+<p>قبل ذلك، كانت الشيفرة بايت النهائية لإعلان دالة عبارة عن تعليمة واحدة
+<code>OP_CONSTANT</code> لتحميل الدالة المجمَّعة من جدول ثوابت الدالة المحيطة ودفعها على
+المكدّس. الآن لدينا تعليمة جديدة.</p>
+<p>^code closure-op (1 before, 1 after)</p>
+<p>مثل <code>OP_CONSTANT</code> تمامًا، فهي تأخذ مُعاملًا واحدًا يمثّل فهرسًا في جدول الثوابت
+الخاصة بالدالة. لكن حين ننتقل إلى تنفيذ وقت التشغيل، نفعل شيئًا أكثر إثارة
+للاهتمام.</p>
+<p>أولًا، لنكن مخترقي الآلة مجتهدين ونُضيف دعمًا في المفكّك (disassembler)
+لهذه التعليمة.</p>
+<p>^code disassemble-closure (2 before, 1 after)</p>
+<p>هناك المزيد ممّا اعتدنا عليه في المفكّك هنا. بنهاية الفصل، ستكتشف أنّ
+<code>OP_CLOSURE</code> تعليمة غير اعتيادية إلى حدٍّ كبير. فهي مباشرة الآن — مُعامل من
+بايت واحد فقط — لكننا سنضيف إليها. وهذه الشيفرة تستشرف ذلك المستقبل.</p>
+<h3 id="تفسير-إعلانات-الدوال">تفسير إعلانات الدوال</h3>
+<p>معظم العمل الذي نحتاج إلى إنجازه يقع في وقت التشغيل. علينا بطبيعة الحال
+معالجة التعليمة الجديدة. لكننا نحتاج أيضًا إلى لمس كل جزء من شيفرة الآلة
+الافتراضية الذي يعمل مع ObjFunction وتغييره ليستخدم ObjClosure بدلًا منه —
+استدعاءات الدوال، وإطارات الاستدعاء (call frames)، وغيرها. سنبدأ بالتعلمية
+على أي حال.</p>
+<p>^code interpret-closure (1 before, 1 after)</p>
+<p>مثل تعليمة <code>OP_CONSTANT</code> التي استخدمناها سابقًا، أولًا نحمّل الدالة المجمَّعة من
+جدول الثوابت. الفرق الآن أنّنا نغلّف تلك الدالة داخل ObjClosure جديد وندفع
+النتيجة على المكدّس.</p>
+<p>وحين تملك إغلاقًا، ستودّ في النهاية استدعائه.</p>
+<p>^code call-value-closure (1 before, 1 after)</p>
+<p>نُزيل الشيفرة الخاصة باستدعاء الكائنات التي نوعها <code>OBJ_FUNCTION</code>. وبما أننا
+نغلّف كل الدوال داخل ObjClosures، فلن يحاول وقت التشغيل استدعاء ObjFunction
+مجرّدًا أبدًا. تعيش تلك الكائنات في جداول الثوابت فقط وتُغلَّف فورًا <span
+name="naked">في الإغلاقات</span> قبل أن يراها أيّ شيء آخر.</p>
+<aside name="naked">
+<p>لا نريد أي دوال عارية تتجوّل في الآلة الافتراضية! ماذا سيقول الجيران؟</p>
+</aside>
+<p>نستبدل الشيفرة القديمة بشيفرة شديدة الشبه للاستدعاء إغلاق بدلًا منها. الفرق
+الوحيد هو نوع الكائن الذي نمرّره إلى <code>call()</code>. أمّا التغييرات الحقيقية فهي في
+تلك الدالة. أولًا، نحدّث توقيعها.</p>
+<p>^code call-signature (1 after)</p>
+<p>ثم، في جسم الدالة، نحتاج إلى إصلاح كل ما يشير إلى الدالة للتعامل مع أنّنا
+أدخلنا طبقة استدلال (indirection). نبدأ بالتحقّق من عدد الوسائط:</p>
+<p>^code check-arity (1 before, 1 after)</p>
+<p>التغيير الوحيد هو أنّنا نفكّ تغليف الإغلاق للوصول إلى الدالة الكامنة. الشيء
+التالي الذي تفعله <code>call()</code> هو إنشاء CallFrame جديد. نغيّر تلك الشيفرة لتخزّن
+الإغلاق في CallFrame وتحصل على مؤشّر الشيفرة بايت من دالة الإغلاق.</p>
+<p>^code call-init-closure (1 before, 1 after)</p>
+<p>وهذا يستلزم تغيير تصريح CallFrame أيضًا.</p>
+<p>^code call-frame-closure (1 before, 1 after)</p>
+<p>ذلك التغيير يُطلق بعض التغييرات المتسلسلة الأخرى. كل موضع في الآلة الافتراضية
+كان يصل إلى دالة CallFrame يحتاج إلى استخدام إغلاق بدلًا منها. أولًا، الماكرو
+لقراءة ثابت من جدول ثوابت الدالة الحالية:</p>
+<p>^code read-constant (2 before, 2 after)</p>
+<p>عند تمكين <code>DEBUG_TRACE_EXECUTION</code>، يحتاج إلى الوصول إلى القطعة (chunk) عبر
+الإغلاق.</p>
+<p>^code disassemble-instruction (1 before, 1 after)</p>
+<p>وكذلك عند الإبلاغ عن خطأ وقت التشغيل:</p>
+<p>^code runtime-error-function (1 before, 1 after)</p>
+<p>اقتربنا. القطعة الأخيرة هي كتلة الشيفرة التي تهيّئ أوّل CallFrame لبدء تنفيذ
+الشيفرة ذات المستوى الأعلى لملف Lox.</p>
+<p>^code interpret (1 before, 2 after)</p>
+<p><span name="pop">لا يزال</span> المصرّف يُرجِع ObjFunction خامًا عند تجميع
+ملف. هذا مقبول، لكنه يعني أنّنا نحتاج هنا إلى تغليفه داخل ObjClosure قبل أن
+تستطيع الآلة الافتراضية تنفيذه.</p>
+<aside name="pop">
+<p>تبدو الشيفرة سخيفة قليلًا لأننا ما زلنا ندفع ObjFunction الأصلي على المكدّس.
+ثم نُسقطه بعد إنشاء الإغلاق، ثم ندفع الإغلاق. لماذا نضع ObjFunction على
+المكدّس أصلًا؟ كما جرت العادة، حين ترى حِيلة مكدّس غريبة، فالغرض إبقاء <a href="/arabic-cs-library/book/crafting-interpreters/garbage-collection/index">جامع
+النفايات القادم</a> على عِلم ببعض الكائنات المخصَّصة في الكومة.</p>
+</aside>
+<p>عدنا إلى مفسّر عامل. <em>المستخدم</em> لا يستطيع أن يلاحظ أي فرق، لكن المصرّف صار
+الآن يولّد شيفرة تخبر الآلة الافتراضية بأن تنشئ إغلاقًا لكل تصريح دالة. وكلما
+نفّذت الآلة الافتراضية تصريح دالة، فإنها تغلّف ObjFunction داخل ObjClosure
+جديد. وأمّا بقية الآلة الافتراضية فتعالج الآن تلك ObjClosures الطافية هنا
+وهناك. هذا هو الجزء الممل، وقد تخلّصنا منه. والآن نحن مستعدون لجعل هذه
+الإغلاقات تفعل شيئًا <em>فعلًا</em>.</p>
+<h2 id="القيم-العليا">القيم العليا</h2>
+<p>تعليماتنا القائمة لقراءة المتغيّرات المحلّية وكتابتها محدودة بنافذة مكدّس دالة
+واحدة. أمّا متغيّرات الدالة المحيطة فهي خارج نافذة الدالة الداخلية. سنحتاج إلى
+بعض التعليمات الجديدة.</p>
+<p>قد يكون أبسط نهج هو تعليمة تأخذ إزاحةً نسبية لخانة مكدّس يمكنها الوصول إلى ما
+<em>قبل</em> نافذة الدالة الحالية. وسيعمل ذلك لو كانت المتغيّرات المُغلَق عليها دائمًا
+على المكدّس. لكن كما رأينا سابقًا، تفوق هذه المتغيّرات أحيانًا عمر الدالة التي
+أُعلنت فيها. وهذا يعني أنها لن تكون دائمًا على المكدّس.</p>
+<p>إذن أبسط نهج تالٍ هو أن نأخذ أي متغيّر محلّي يُغلَق عليه ونتركه يعيش دائمًا في
+الكومة. وحين يُنفَّذ تصريح المتغيّر المحلّي في الدالة المحيطة، تخصّص الآلة
+الافتراضية ذاكرةً له ديناميكيًا. هكذا يستطيع أن يعيش طالما احتاج.</p>
+<p>كان هذا نهجًا حسنًا لو لم يكن لدى clox مصرّف أحادي التمريرة. لكن ذلك القيد
+الذي اخترناه في تنفيذنا يجعل الأمور أصعب. تأمّل هذا المثال:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = 1;    // (1)
+  x = 2;        // (2)
+  fun inner() { // (3)
+    print x;
+  }
+  inner();
+}
+</code></pre>
+<p>هنا، يترجم المصرّف تصريح <code>x</code> عند <code>(1)</code> ويُصدر شيفرةً للإسناد عند <code>(2)</code>. وهو
+يفعل ذلك قبل أن يصل إلى تصريح <code>inner()</code> عند <code>(3)</code> ويكتشف أنّ <code>x</code> مُغلَق عليه
+فعلًا. ليس لدينا وسيلة سهلة للرجوع إلى الخلف وإصلاح تلك الشيفرة المُصدَرة
+أصلًا لمعاملة <code>x</code> بطريقة خاصة. وبدلًا من ذلك، نريد حلًّا يسمح للمتغيّر المُغلَق
+عليه أن يعيش على المكدّس تمامًا كمتغيّر محلّي عادي <em>حتى اللحظة التي يُغلَق
+عليه فيها</em>.</p>
+<p>ولحسن الحظ، وبفضل فريق تطوير Lua، لدينا حل. نستخدم طبقة استدلال يسمونها <strong>upvalue</strong>.
+تشير القيمة العليا (upvalue) إلى متغيّر محلّي في دالة محيطة. ويحتفظ كل إغلاق
+بمصفوفة من القيم العليا، واحدة لكل متغيّر محلي محيط يستخدمه الإغلاق.</p>
+<p>تشير القيمة العليا إلى داخل المكدّس إلى الموضع الذي يعيش فيه المتغيّر الذي
+التقطته. وحين يحتاج الإغلاق إلى الوصول إلى متغيّر مُغلَق عليه، فإنّه يمرّ عبر
+القيمة العليا المقابلة للوصول إليه. وحين يُنفَّذ تصريح دالة لأول مرة وننشئ
+إغلاقًا لها، تُنشئ الآلة الافتراضية مصفوفة القيم العليا وتوصّلها بـ&quot;التقاط&quot;
+المتغيّرات المحلّية المحيطة التي يحتاجها الإغلاق.</p>
+<p>مثلًا، إذا ألقينا هذا البرنامج على clox،</p>
+<pre><code class="language-lox">{
+  var a = 3;
+  fun f() {
+    print a;
+  }
+}
+</code></pre>
+<p>سيتضافر المصرّف ووقت التشغيل معًا لبناء مجموعة من الكائنات في الذاكرة على هذا
+النحو:</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-3.webp" alt="The object graph of the stack, ObjClosure, ObjFunction, and upvalue array."/>
+<p>قد يبدو هذا مُرهقًا، لكن لا تخف. سنعمل على اختراجه. الجزء المهم هو أنّ القيم
+العليا تؤدّي دور طبقة الاستدلال اللازمة لمواصلة العثور على متغيّر محلّي
+ملتقَط حتى بعد أن ينتقل بعيدًا عن المكدّس. لكن قبل أن نصل إلى كل ذلك، لنركّز
+على تجميع المتغيّرات الملتقَطة.</p>
+<h3 id="تجميع-القيم-العليا">تجميع القيم العليا</h3>
+<p>كما جرت العادة، نريد أن ننفّذ أكبر قدر ممكن من العمل وقت التجميع لإبقاء
+التنفيذ بسيطًا وسريعًا. ولأنّ المتغيّرات المحلّية نطاقها معجميّ في Lox، لدينا من
+المعرفة وقت التجميع ما يكفي لحلّ أي المتغيّرات المحلّية المحيطة التي تصل إليها
+دالة، وأين أعلن تلك المتغيّرات المحلّية. وهذا بدوره يعني أنّنا نعرف <em>كم</em> قيمة
+عليا يحتاجها الإغلاق، و<em>أيّ</em> متغيّرات يلتقطها، و<em>أيّ خانات مكدّس</em> تحوي تلك
+المتغيّرات في نافذة مكدّس الدالة المعلِنة.</p>
+<p>حاليًا، حين يحلّ المصرّف مُعرِّفًا (identifier)، فهو يمشي في نطاقات الكتل
+الخاصة بالدالة الحالية من الأدنى إلى الأبعد. فإن لم نجد المتغيّر في تلك
+الدالة، نفترض أنّ المتغيّر يجب أن يكون عامًّا. نحن لا نأخذ النطاقات المحلّية
+للدوال المحيطة بعين الاعتبار — يتمّ تخطّيها تمامًا. إذن التغيير الأول هو إدراج
+خطوة حلّ لتلك النطاقات المحلّية الخارجية.</p>
+<p>^code named-variable-upvalue (3 before, 1 after)</p>
+<p>تبدو دالة <code>resolveUpvalue()</code> الجديدة كأنّها تبحث عن متغيّر محلّي معلَن في أيّ
+من الدوال المحيطة. فإن وجدت واحدًا، تُرجِع &quot;فهرس قيمة عليا&quot; لذلك المتغيّر.
+(سنتناول ما يعنيه ذلك لاحقًا.) وإلا، تُرجِع ‎-1‎ للدلالة على أنّ المتغيّر لم
+يُوجد. وإن وُجد، نستخدم هاتين التعليبتين الجديدتين لقراءة المتغيّر أو كتابته عبر
+قيمته العليا:</p>
+<p>^code upvalue-ops (1 before, 1 after)</p>
+<p>نحن ننفّذ هذا النوع من العمل من الأعلى إلى الأسفل، لذا سأعرض لك كيف تعمل هذه
+وقت التشغيل قريبًا. الجزء الذي ينبغي التركيز عليه الآن هو كيف يحلّ المصرّف
+المُعرِّف فعلًا.</p>
+<p>^code resolve-upvalue</p>
+<p>نستدعي هذا بعد فشلنا في حلّ متغيّر محلّي في نطاق الدالة الحالية، لذا نعرف أنّ
+المتغيّر ليس في المصرّف الحالي. تذكّر أنّ المصرّف (Compiler) يخزّن مؤشّرًا إلى
+المصرّف الخاص بالدالة المحيطة، وهذه المؤشرات تشكّل سلسلةً مرتبطةً تمتدّ كلّ
+الطريق إلى المصرّف الجذري (root Compiler) الخاص بالشيفرة ذات المستوى الأعلى.
+لذا، إن كان المصرّف المحيط هو <code>NULL</code>، نعرف أنّنا وصلنا إلى الدالة الأكثر
+خارجية من دون أن نجد متغيّرًا محلّيًا. ولا بدّ أن يكون المتغيّر <span
+name="undefined">عامًّا</span>، لذا نُرجِع ‎-1‎.</p>
+<aside name="undefined">
+<p>قد ينتهي به الأمر إلى أن يكون متغيّرًا غير معرَّف تمامًا بل ليس عامًّا أصلًا.
+لكن في Lox، لا نكتشف ذلك الخطأ إلا وقت التشغيل، لذا فمن منظور المصرّف هو
+&quot;الأمل أنها عامّة&quot;.</p>
+</aside>
+<p>وإلا، نحاول حلّ المُعرِّف بوصفه متغيّرًا محلّيًا في المصرّف <em>المحيط</em>. بمعنى
+آخر، نبحث عنه خارج الدالة الحالية مباشرة. مثلًا:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = 1;
+  fun inner() {
+    print x; // (1)
+  }
+  inner();
+}
+</code></pre>
+<p>عند ترجمة تعبير المُعرِّف عند <code>(1)</code>، تبحث <code>resolveUpvalue()</code> عن متغيّر محلّي
+<code>x</code> معلَن في <code>outer()</code>. فإن وُجد — كما هو في هذا المثال — فقد حللنا المتغيّر
+بنجاح. ننشئ قيمة عليا كي تستطيع الدالة الداخلية الوصول إلى المتغيّر عبرها.
+تُنشَأ القيمة العليا هنا:</p>
+<p>^code add-upvalue</p>
+<p>يحتفظ المصرّف بمصفوفة من بنى القيم العليا لتتبّع المُعرِّفات المُغلَق عليها
+التي حلّها في جسم كل دالة. تذكّر كيف كانت مصفوفة Local في المصرّف تطابق فهارس
+خانات المكدّس التي تعيش فيها المتغيّرات المحلّية وقت التشغيل؟ مصفوفة القيم
+العليا الجديدة تعمل بالطريقة نفسها. الفهارس في مصفوفة المصرّف تطابق الفهارس
+التي تعيش فيها القيم العليا في ObjClosure وقت التشغيل.</p>
+<p>تضيف هذه الدالة قيمة عليا جديدة إلى تلك المصفوفة. كما تتتبّع عدد القيم العليا
+التي تستخدمها الدالة. وهي تخزّن ذلك العدد مباشرةً في ObjFunction نفسه لأنّنا
+سنحتاج أيضًا إلى <span name="bridge">هذا</span> الرقم وقت التشغيل.</p>
+<aside name="bridge">
+<p>مثل الثوابت وعدد وسائط الدالة، فإنّ عدد القيم العليا هو إحدى قطع البيانات
+الصغيرة تلك التي تشكّل الجسر بين المصرّف ووقت التشغيل.</p>
+</aside>
+<p>يتتبّع الحقل <code>index</code> فهرس خانة المتغيّر المحلّي المُغلَق عليه. هكذا يعرف
+المصرّف <em>أيّ</em> متغيّر في الدالة المحيطة يحتاج إلى الالتقاط. سنعود إلى ما أُريد
+بحقل <code>isLocal</code> بعد قليل. وأخيرًا، تُرجِع <code>addUpvalue()</code> فهرس القيمة العليا
+المُنشأة في قائمة القيم العليا الخاصة بالدالة. يصبح ذلك الفهرس مُعاملًا
+لتعليمتَي <code>OP_GET_UPVALUE</code> و<code>OP_SET_UPVALUE</code>.</p>
+<p>هذه هي الفكرة الأساسية لحلّ القيم العليا، لكن الدالة ليست مكتملة بعد. قد يشير
+الإغلاق إلى المتغيّر نفسه في دالة محيطة عدّة مرّات. في تلك الحالة، لا نريد
+إهدار الوقت والذاكرة بإنشاء قيمة عليا منفصلة لكل تعبير مُعرِّف. ولإصلاح ذلك،
+قبل أن نضيف قيمة عليا جديدة، نتحقّق أولًا ممّا إذا كانت الدالة تملك بالفعل
+قيمة عليا تغلق على ذلك المتغيّر.</p>
+<p>^code existing-upvalue (1 before, 1 after)</p>
+<p>إن وجدنا قيمة عليا في المصفوفة يفهرس خانتها مطابقًا لفهرس الخانة التي نضيفها،
+نُرجِع ذلك <em>فهرس القيمة العليا</em> ونعيد استخدامه. وإلا، نكمل ونضيف القيمة العليا
+الجديدة.</p>
+<p>تصل هاتان الدالتان إلى حالة جديدة كثيرة وتعدّلها، لذا لنعرّف تلك الحالة.
+أولًا، نضيف عدد القيم العليا إلى ObjFunction.</p>
+<p>^code upvalue-count (1 before, 1 after)</p>
+<p>نحن مبرمجو C واعون، لذا نُصفّر تلك القيمة عند تخصيص ObjFunction أول مرة.</p>
+<p>^code init-upvalue-count (1 before, 1 after)</p>
+<p>وفي المصرّف، نضيف حقلًا لمصفوفة القيم العليا.</p>
+<p>^code upvalues-array (1 before, 1 after)</p>
+<p>للبساطة، أعطيته حجمًا ثابتًا. تُرمِّز تعليمتَي <code>OP_GET_UPVALUE</code> و<code>OP_SET_UPVALUE</code>
+فهرس القيمة العليا باستخدام مُعامل من بايت واحد، لذا هناك قيدٌ على عدد القيم
+العليا التي يمكن أن تملكها دالة — أي عدد المتغيّرات الفريدة التي يمكن أن تغلق
+عليها. وبناءً على ذلك، يمكننا تحمل مصفوفة ساكنة (static array) بهذا الحجم. ونحتاج
+أيضًا إلى التأكّد من أنّ المصرّف لا يتجاوز ذلك الحد.</p>
+<p>^code too-many-upvalues (5 before, 1 after)</p>
+<p>وأخيرًا، بنية Upvalue نفسها.</p>
+<p>^code upvalue-struct</p>
+<p>يخزّن الحقل <code>index</code> خانة المتغيّر المحلّي التي يلتقطها القيمة العليا. أمّا
+الحقل <code>isLocal</code> فيستحق قسمًا خاصًّا به، وسنصل إليه تاليًا.</p>
+<h3 id="تسطيح-القيم-العليا">تسطيح القيم العليا</h3>
+<p>في المثال الذي عرضته سابقًا، كان الإغلاق يصل إلى متغيّر معلَن في الدالة
+المحيطة مباشرة. ويدعم Lox أيضًا الوصول إلى متغيّرات محلّية معلَنة في <em>أيّ</em> نطاق
+محيط، كما في:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = 1;
+  fun middle() {
+    fun inner() {
+      print x;
+    }
+  }
+}
+</code></pre>
+<p>هنا، نحن نصل إلى <code>x</code> في <code>inner()</code>. ذلك المتغيّر ليس معرَّفًا في <code>middle()</code>، بل
+في <code>outer()</code> على بُعد. ونحتاج إلى معالجة حالات مثل هذه أيضًا. قد <em>تظنّ</em> أنّ
+الأمر ليس أصعب بكثير لأنّ المتغيّر سيكون ببساطة في موضع أبعد إلى الأسفل على
+المكدّس. لكن فكّر في هذا المثال <span name="devious">المتأمر</span>:</p>
+<aside name="devious">
+<p>إذا عملت على لغات البرمجة بما يكفي من الوقت، فستطوّر مهارةً مشحوفة في إنشاء
+برامج غريبة كهذه تكون صالحةً تقنيًا لكنها من المرجّح أن تُربك تنفيذًا كتبه
+شخصٌ خيالُه أقلّ جنونًا منك.</p>
+</aside>
+<pre><code class="language-lox">fun outer() {
+  var x = &quot;value&quot;;
+  fun middle() {
+    fun inner() {
+      print x;
+    }
+
+    print &quot;create inner closure&quot;;
+    return inner;
+  }
+
+  print &quot;return from outer&quot;;
+  return middle;
+}
+
+var mid = outer();
+var in = mid();
+in();
+</code></pre>
+<p>حين تشغّل هذا، من المفترض أن يطبع:</p>
+<pre><code class="language-text">return from outer
+create inner closure
+value
+</code></pre>
+<p>أعرف، فهو ملتبس. الجزء المهم أنّ <code>outer()</code> — حيث يُعلن <code>x</code> — يستدير ويُسقط كل
+متغيّراته من المكدّس قبل أن يُنفَّذ <em>تصريح</em> <code>inner()</code>. لذا، في اللحظة التي
+ننشئ فيها الإغلاق لـ <code>inner()</code>، يكون <code>x</code> قد غادر المكدّس بالفعل.</p>
+<p>وهنا، رسمتُ لك تدفّق التنفيذ:</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-4.webp" alt="Tracing through the previous example program."/>
+<p>لاحظ كيف يُسقط <code>x</code> ① قبل أن يُلتقط ② ثم يُستعمل لاحقًا ③؟ لدينا
+في الواقع مشكلتان:</p>
+<ol>
+<li>
+<p>نحتاج إلى حلّ متغيّرات محلّية معلَنة في دوال محيطة أبعد من الدالة المحيطة
+مباشرة.</p>
+</li>
+<li>
+<p>نحتاج إلى القدرة على التقاط متغيّرات غادرت المكدّس بالفعل.</p>
+</li>
+</ol>
+<p>ولحسن الحظ، نحن في منتصف إضافة القيم العليا إلى الآلة الافتراضية، والقيم العليا
+مصمَّمة صراحةً لتتبّع المتغيّرات التي هربت من المكدّس. لذا، في حيلة ذكية من
+المرجعية الذاتية، يمكننا استخدام القيم العليا للسماح للقيم العليا بالتقاط
+متغيّرات معلَنة خارج الدالة المحيطة مباشرة.</p>
+<p>الحل هو السماح للإغلاق بالتقاط إمّا متغيّرًا محلّيًا وإمّا <em>قيمة عليا قائمة</em>
+في الدالة المحيطة مباشرة. إذا أشارت دالة متداخلة بعمق إلى متغيّر محلّي معلَن
+بعد عدة قفزات، فسنمرّره عبر كل الدوال الوسيطة بأن تُلتقط كل دالة قيمةً عليا
+تمسك بها الدالة التالية.</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-5.webp" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
+<p>في المثال أعلاه، تلتقط <code>middle()</code> المتغيّر المحلّي <code>x</code> في الدالة المحيطة
+مباشرة <code>outer()</code> وتخزّنه في قيمتها العليا الخاصة. وهي تفعل ذلك حتى مع أنّ
+<code>middle()</code> نفسها لا تشير إلى <code>x</code>. ثم، حين يُنفَّذ تصريح <code>inner()</code>، يلتقط إغلاقه
+<em>القيمة العليا</em> من ObjClosure الخاص بـ <code>middle()</code> التي التقطت <code>x</code>. الدالة تلتقط
+— إمّا متغيّرًا محلّيًا وإمّا قيمة عليا — <em>فقط</em> من الدالة المحيطة مباشرة، وهي
+مضمونة لأن تكون ما تزال موجودة في اللحظة التي يُنفَّذ فيها تصريح الدالة
+الداخلية.</p>
+<p>ولتنفيذ ذلك، تصبح <code>resolveUpvalue()</code> عودية (recursive).</p>
+<p>^code resolve-upvalue-recurse (4 before, 1 after)</p>
+<p>إنها فقط ثلاثة أسطر أخرى من الشيفرة، لكنني وجدت هذه الدالة بالغة التحدّي في
+ضبطها من أول محاولة. وذلك رغم أنّني لم أخترع أيّ شيء جديد، بل نقلتُ المفهوم
+من Lua فحسب. معظم الدوال العودية إما أن تنجز كل عملها قبل الاستدعاء العودي
+(<strong>اجتياز مُسبق</strong> pre-order traversal، أو &quot;في طريق الهبوط&quot;)، وإما أن تنجز كل
+عملها بعد الاستدعاء العودي (<strong>اجتياز لاحق</strong> post-order traversal، أو &quot;في طريق
+الصعود&quot;). وهذه الدالة تفعل الأمرين. الاستدعاء العودي يقع في المنتصف تمامًا.</p>
+<p>سنتدرّج فيها على مهل. أولًا، نبحث عن متغيّر محلّي مطابق في الدالة المحيطة. إن
+وجدناه، نلتقط ذلك المتغيّر المحلّي ونسترجع. هذه هي حالة <span
+name="base">الأساس</span>.</p>
+<aside name="base">
+<p>أمّا حالة الأساس الأخرى، بالطبع، فهي ما إذا لم تكن هناك دالة محيطة. في تلك
+الحالة، لا يمكن حلّ المتغيّر معجميًا ويُعامَل على أنه عام.</p>
+</aside>
+<p>وإلا، نبحث عن متغيّر محلّي أبعد من الدالة المحيطة مباشرة. نفعل ذلك باستدعاء
+<code>resolveUpvalue()</code> عوديًا على المصرّف <em>المحيط</em>، لا المصرّف الحالي. تعمل سلسلة
+استدعاءات <code>resolveUpvalue()</code> هذه على التقدّم بمحاذاة سلسلة المصرّفات المتداخلة
+حتى تصل إلى إحدى حالتَي الأساس — إمّا تجد متغيّرًا محلّيًا حقيقيًا تلتقطه، وإمّا
+تنفد المصرّفات.</p>
+<p>حين يُوجد متغيّر محلّي، تلتقطه أعمق استدعاءات <code>resolveUpvalue()</code> <span
+name="outer">المتداخلة</span> وتُرجِع فهرس القيمة العليا. تعود تلك النتيجة إلى
+الاستدعاء التالي الخاص بتصريح الدالة الداخلية. يلتقط ذلك الاستدعاء <em>القيمة
+العليا</em> من الدالة المحيطة، وهكذا دواليك. ومع عودة كل استدعاء عودي من
+<code>resolveUpvalue()</code>، ننفذ عودًا إلى تصريح الدالة الداخلية الأعمق حيث يظهر
+المُعرِّف الذي نحلّه. وفي كل خطوة على طول الطريق، نضيف قيمة عليا إلى الدالة
+الوسيطة ونمرّر فهرس القيمة العليا الناتج إلى الاستدعاء التالي.</p>
+<aside name="outer">
+<p>كل استدعاء عودي لـ <code>resolveUpvalue()</code> يتقدّم إلى <em>الخارج</em> مستوى واحدًا من تداخل
+الدوال. لذا فإن الاستدعاء <em>العودي</em> Inner يشير إلى تصريح متداخل <em>خارجي</em>. أمّا أعمق
+استدعاء عودي إلى <code>resolveUpvalue()</code> يجد المتغيّر المحلّي فسيكون الخاص بِـ
+<em>الدالة الخارجية</em>، في داخل الدالة المحيطة التي يُعلن فيها ذلك المتغيّر فعلًا.</p>
+</aside>
+<p>قد يفيدك المرور على المثال الأصلي أثناء حلّ <code>x</code>:</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-6.webp" alt="Tracing through a recursive call to resolveUpvalue()."/>
+<p>لاحظ أنّ الاستدعاء الجديد لـ <code>addUpvalue()</code> يمرّر <code>false</code> للمُعامل <code>isLocal</code>.
+والآن ترى أنّ ذلك العَلَم يتحكّم فيما إذا كان الإغلاق يلتقط متغيّرًا محلّيًا أم
+قيمة عليا من الدالة المحيطة.</p>
+<p>بحين يصل المصرّف إلى نهاية تصريح دالة، يكون كل مرجع متغيّر قد حُلّ إمّا كمتغيّر
+محلّي، وإمّا كقيمة عليا، وإمّا كمتغيّر عام. وقد تلتقط كل قيمة عليا بدورها متغيّرًا
+محلّيًا من الدالة المحيطة، أو قيمة عليا أخرى في حالة الإغلاقات المتعدّية
+(transitive closures). وأخيرًا، لدينا بيانات كافية لنُصدر شيفرة بايت تنشئ إغلاقًا
+وقت التشغيل يلتقط كل المتغيّرات الصحيحة.</p>
+<p>^code capture-upvalues (1 before, 1 after)</p>
+<p>تُعدّ تعليمة <code>OP_CLOSURE</code> فريدة من نوعها في أنّ ترميزها متغيّر الحجم. لكل قيمة
+عليا يلتقطها الإغلاق، هناك مُعاملان من بايت واحد. يحدّد كل زوج من المُعاملات ما
+الذي تلتقطه تلك القيمة العليا. إذا كان البايت الأول واحدًا، فإنّها تلتقط متغيّرًا
+محلّيًا في الدالة المحيطة. وإذا كان صفرًا، فإنّها تلتقط إحدى قيم الدالة العليا.
+والبايت التالي هو فهرس خانة المتغيّر المحلّي أو القيمة العليا المراد التقاطها.</p>
+<p>هذا الترميز الغريب يعني أنّنا نحتاج إلى دعمٍ مخصّص في شيفرة التفكيك لـ
+<code>OP_CLOSURE</code>.</p>
+<p>^code disassemble-upvalues (1 before, 1 after)</p>
+<p>مثلًا، خذ هذا الملف:</p>
+<pre><code class="language-lox">fun outer() {
+  var a = 1;
+  var b = 2;
+  fun middle() {
+    var c = 3;
+    var d = 4;
+    fun inner() {
+      print a + c + b + d;
+    }
+  }
+}
+</code></pre>
+<p>إذا فكّكنا التعليمة التي تُنشئ الإغلاق الخاص بـ <code>inner()</code>، فستطبع:</p>
+<pre><code class="language-text">0004    9 OP_CLOSURE          2 &lt;fn inner&gt;
+0006      |                     upvalue 0
+0008      |                     local 1
+0010      |                     upvalue 1
+0012      |                     local 2
+</code></pre>
+<p>لدينا تعليمتان أخريان أبسط نضيف لهما دعمًا في المفكّك.</p>
+<p>^code disassemble-upvalue-ops (2 before, 1 after)</p>
+<p>كلتاهما لهما مُعامل من بايت واحد، فلا شيء مثير هنا. لكننا نحتاج إلى إضافة include
+حتى تصل وحدة التصحيح إلى <code>AS_FUNCTION()</code>.</p>
+<p>^code debug-include-object (1 before, 1 after)</p>
+<p>بهذا يكون مصرّفنا حيث نريده. لكل تصريح دالة، يُخرج تعليمة <code>OP_CLOSURE</code> يليها
+سلسلة من أزواج بايتات المُعاملات لكل قيمة عليا يحتاج إلى التقاطها وقت التشغيل.
+حان الوقت القفز إلى ذلك الجانب من الآلة الافتراضية وتشغيل الأمور.</p>
+<h2 id="كائنات-القيم-العليا">كائنات القيم العليا</h2>
+<p>أصبح كل تعليمة <code>OP_CLOSURE</code> متبوعةً بسلسلة البايتات التي تحدّد القيم العليا التي
+يجب أن يملكها ObjClosure. وقبل أن نعالج تلك المُعاملات، نحتاج إلى تمثيل وقت
+التشغيل للقيم العليا.</p>
+<p>^code obj-upvalue</p>
+<p>نعرف أنّ القيم العليا يجب أن تدير متغيّرات مُغلَق عليها لم تعد تعيش على المكدّس،
+ما يعني قدرًا ما من التخصيص الديناميكي. وأبسط طريقة لفعل ذلك في آلتنا الافتراضية
+هي البناء على نظام الكائنات الذي لدينا بالفعل. هكذا، حين ننفّذ جامع نفايات في
+<a href="/arabic-cs-library/book/crafting-interpreters/garbage-collection/index">الفصل التالي</a>، يستطيع جامع النفايات إدارة ذاكرة القيم العليا أيضًا.</p>
+<p>لذلك، تكون بنية القيمة العليا في وقت التشغيل هي ObjUpvalue مع حقل ترويسة Obj
+المعتاد. يتبع ذلك حقل <code>location</code> يشير إلى المتغيّر المُغلَق عليه. لاحظ أنّ هذا
+<em>مؤشّر</em> إلى Value، لا Value نفسها. إنها إشارة إلى <em>متغيّر</em>، لا إلى <em>قيمة</em>. وهذا
+مهم لأنّه يعني أنّه حين نُسند إلى المتغيّر الذي تلتقطه القيمة العليا، فإنّنا
+نُسند إلى المتغيّر الحقيقي لا إلى نسخة. مثلًا:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = &quot;before&quot;;
+  fun inner() {
+    x = &quot;assigned&quot;;
+  }
+  inner();
+  print x;
+}
+outer();
+</code></pre>
+<p>من المفترض أن يطبع هذا البرنامج &quot;assigned&quot; رغم أنّ الإغلاق يُسند إلى <code>x</code> وأنّ
+الدالة المحيطة تصل إليه.</p>
+<p>لأنّ القيم العليا كائنات، لدينا كل آليات الكائنات المعتادة، بدءًا
+بدالة تشبه المُنشئ:</p>
+<p>^code new-upvalue-h (1 before, 1 after)</p>
+<p>إنها تأخذ عنوان الخانة التي يعيش فيها المتغيّر المُغلَق عليه. وهذه هي
+التنفيذ:</p>
+<p>^code new-upvalue</p>
+<p>نكتفي بتهيئة الكائن وتخزين المؤشّر. وهذا يتطلّب نوع كائن جديدًا.</p>
+<p>^code obj-type-upvalue (1 before, 1 after)</p>
+<p>وفي الجهة المقابلة، دالة تشبه المُدمِّر:</p>
+<p>^code free-upvalue (3 before, 1 after)</p>
+<p>يمكن لعدّة إغلاقات أن تغلق على المتغيّر نفسه، لذا لا يملك ObjUpvalue المتغيّر
+الذي يشير إليه. وعليه، الشيء الوحيد الذي يُحرَّر هو ObjUpvalue نفسه.</p>
+<p>وأخيرًا، للطباعة:</p>
+<p>^code print-upvalue (3 before, 1 after)</p>
+<p>الطباعة غير مفيدة للمستخدم النهائي. القيم العليا كائنات فقط كي نستفيد من إدارة
+ذاكرة الآلة الافتراضية. وهي ليست قيمًا من الدرجة الأولى يمكن لمستخدم Lox
+الوصول إليها مباشرةً في برنامج. لذا لن تُنفَّذ هذه الشيفرة أبدًا... لكنها تمنع
+المصرّف من الصراخ في وجوهنا بسبب حالة switch غير معالجة، فها هي.</p>
+<h3 id="القيم-العليا-في-الإغلاقات">القيم العليا في الإغلاقات</h3>
+<p>حين قدّمت القيم العليا أول مرة، قلت إن لكل إغلاق مصفوفة منها. وقد وصلنا أخيرًا
+إلى تنفيذ ذلك.</p>
+<p>^code upvalue-fields (1 before, 1 after)</p>
+<p><span name="count">قد</span> يكون لدى الإغلاقات المختلفة أعدادٌ مختلفة من
+القيم العليا، لذا نحتاج إلى
+مصفوفة ديناميكية. أمّا القيم العليا نفسها فتُخصَّص ديناميكيًا أيضًا، لذا ينتهي
+بنا المطاف إلى مؤشّر مزدوج — مؤشّر إلى مصفوفة مخصَّصة ديناميكيًا من المؤشّرات
+إلى القيم العليا. كما نخزّن عدد العناصر في المصفوفة.</p>
+<aside name="count">
+<p>تخزين عدد القيم العليا في الإغلاق زائدٌ عن الحاجة لأنّ ObjFunction الذي يشير
+إليه ObjClosure يحتفظ بذلك العدد أيضًا. وكما جرت العادة، هذه الشيفرة الغريبة
+موجودة لإرضاء جامع النفايات. قد يحتاج الجامع إلى معرفة حجم مصفوفة قيم ObjClosure
+بعد أن يكون ObjFunction المقابل للإغلاق قد حُرِّر بالفعل.</p>
+</aside>
+<p>حين ننشئ ObjClosure، نخصّص مصفوفة قيم عليا بالحجم المناسب، وقد حدّدناه وقت
+التجميع وخزّنّاه في ObjFunction.</p>
+<p>^code allocate-upvalue-array (1 before, 1 after)</p>
+<p>قبل إنشاء كائن الإغلاق نفسه، نخصّص مصفوفة القيم العليا ونهيّئها جميعًا إلى
+<code>NULL</code>. هذا الطقس الغريب حول الذاكرة هو رقصة متأنّية لإرضاء آلهة جمع النفايات
+(القادمة). وهو يضمن ألّا يطّل مدير الذاكرة أبدًا على ذاكرة غير مهيّأة.</p>
+<p>ثم نخزّن المصفوفة في الإغلاق الجديد، كما ننسخ العدد من ObjFunction.</p>
+<p>^code init-upvalue-fields (1 before, 1 after)</p>
+<p>وحين نحرّر ObjClosure، نحرّر مصفوفة القيم العليا أيضًا.</p>
+<p>^code free-upvalues (1 before, 1 after)</p>
+<p>لا يملك ObjClosure كائنات ObjUpvalue نفسها، لكنه يملك <em>المصفوفة</em> التي تحوي
+مؤشّرات إلى تلك القيم العليا.</p>
+<p>نملأ مصفوفة القيم العليا في المفسّر حين ينشئ إغلاقًا. وهنا نمشي على كل
+المُعاملات بعد <code>OP_CLOSURE</code> لنرى نوع القيمة العليا التي تلتقطها كل خانة.</p>
+<p>^code interpret-capture-upvalues (1 before, 1 after)</p>
+<p>هذه الشيفرة هي اللحظة السحرية حين يأتي الإغلاق إلى الحياة. نمرّ على كل قيمة
+عليا يتوقّعها الإغلاق. ولكل واحدة منها، نقرأ زوجًا من بايتات المُعاملات. إذا
+كانت القيمة العليا تغلق على متغيّر محلّي في الدالة المحيطة، فنترك
+<code>captureUpvalue()</code> يتولّى العمل.</p>
+<p>وإلا، نلتقط قيمة عليا من الدالة المحيطة. تُصدر تعليمة <code>OP_CLOSURE</code> في نهاية
+تصريح دالة. وفي اللحظة التي ننفّذ فيها ذلك التصريح، تكون الدالة <em>الحالية</em> هي
+الدالة المحيطة. هذا يعني أنّ إغلاق الدالة الحالية مخزّن في CallFrame أعلى مكدّس
+الاستدعاءات. لذا، للالتقاط قيمة عليا من الدالة المحيطة، يمكننا قراءتها مباشرةً من
+المتغيّر المحلّي <code>frame</code> الذي يخزّن مؤشّرًا إلى ذلك CallFrame.</p>
+<p>أمّا الإغلاق على متغيّر محلّي فأكثر إثارة للاهتمام. معظم العمل يقع في دالة
+منفصلة، لكننا أولًا نحسب المُعامل الذي نمرّره إليها. نحتاج إلى انتزاع مؤشّر إلى
+خانة المتغيّر المحلّي الملتقَط في نافذة مكدّس الدالة المحيطة. تبدأ تلك النافذة
+عند <code>frame-&gt;slots</code> الذي يشير إلى الخانة صفر. وإضافة <code>index</code> تُزيح ذلك إلى خانة
+المتغيّر المحلّي الذي نريد التقاطه. ونمرّر ذلك المؤشّر هنا:</p>
+<p>^code capture-upvalue</p>
+<p>يبدو هذا سخيفًا قليلًا. كل ما يفعله هو إنشاء ObjUpvalue جديد يلتقط خانة المكدّس
+المعطاة ويعيدها. هل احتجنا إلى دالة منفصلة لهذا؟ حسنًا، لا، <em>ليس بعد</em>. لكنك تعرف
+أننا سننتهي إلى وضع المزيد من الشيفرة هنا.</p>
+<p>أولًا، لنُنهي ما نعمل عليه. في شيفرة المفسّر التي تعالج <code>OP_CLOSURE</code>، ننتقل في
+النهاية إلى اجتياز مصفوفة القيم العليا وتهيئة كل واحدة منها. وحين يكتمل ذلك،
+لدينا إغلاق جديد بمصفوفة مليئة بقيم عليا تشير إلى متغيّرات.</p>
+<p>وفي ضوء ذلك، يمكننا تنفيذ التعليمات التي تعمل مع تلك القيم العليا.</p>
+<p>^code interpret-get-upvalue (1 before, 1 after)</p>
+<p>المُعامل هو فهرس في مصفوفة القيم العليا للدالة الحالية. لذا نبحث ببساطة عن
+القيمة العليا المقابلة ونفكّ مؤشّر <code>location</code> الخاص بها لقراءة القيمة في تلك
+الخانة. وتعيين متغيّر مشابه.</p>
+<p>^code interpret-set-upvalue (1 before, 1 after)</p>
+<p><span name="assign">نأخذ</span> القيمة الموجودة أعلى المكدّس ونخزّنها في الخانة التي يشير إليها
+مؤشّر القيمة العليا المختارة. تماماً كما مع تعليمات المتغيّرات المحلّية، من
+المهمّ أن تكون هذه التعليمات سريعة. فبرامج المستخدم تقرأ وتكتب المتغيّرات
+باستمرار، فإن كانت بطيئة، صار كل شيء بطيئًا. وكما جرت العادة، فطريقة جعلها
+سريعة هي إبقاؤها بسيطة. التعليمتان الجديدتان جيّدتان إلى حدٍّ ما: لا تدفّق
+تحكّم، ولا حساب معقّد، مجرد استدلال مؤشّر أو اثنين واستدعاء <code>push()</code>.</p>
+<aside name="assign">
+<p>تعليمة التعيين لا <em>تُسقط</em> القيمة من المكدّس، لأنّ تذكّر أنّ الإسناد في Lox
+تعبير. لذلك فإنّ نتيجة الإسناد — القيمة المسنَدة — تحتاج إلى البقاء على المكدّس
+من أجل التعبير المحيط.</p>
+</aside>
+<p>هذه نقطة تحوّل. ما دامت كل المتغيّرات تبقى على المكدّس، لدينا إغلاقات تعمل.
+جرّب هذا:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = &quot;outside&quot;;
+  fun inner() {
+    print x;
+  }
+  inner();
+}
+outer();
+</code></pre>
+<p>شغّل هذا، فيطبع &quot;outside&quot; بشكل صحيح.</p>
+<h2 id="القيم-العليا-المغلقة">القيم العليا المُغلَقة</h2>
+<p>بالطبع، إحدى سمات الإغلاقات الأساسية هي أنّها تمسك بالمتغيّر طالما احتاجت
+إليه، حتى بعد أن تعود الدالة التي أعلنته. وإليك مثال آخر <em>ينبغي</em> أن يعمل:</p>
+<pre><code class="language-lox">fun outer() {
+  var x = &quot;outside&quot;;
+  fun inner() {
+    print x;
+  }
+
+  return inner;
+}
+
+var closure = outer();
+closure();
+</code></pre>
+<p>لكن إن شغّلته الآن... فمن يعرف ماذا سيفعل؟ وقت التشغيل، سينتهي به المطاف إلى
+القراءة من خانة مكدّس لم تعد تحوي المتغيّر المُغلَق عليه. كما ذكرتُ مرّات قليلة،
+جوهر المسألة هو أنّ متغيّرات الإغلاقات ليس لها دلالة المكدّس. هذا يعني علينا رفعها
+من المكدّس حين تعود الدالة التي أُعلنت فيها. وهذا القسم الأخير من الفصل يفعل
+ذلك.</p>
+<h3 id="القيم-والمتغيرات">القيم والمتغيّرات</h3>
+<p>قبل أن نصل إلى كتابة الشيفرة، أودّ التعمّق في نقطة دلالية مهمّة. هل يغلق الإغلاق
+على <em>قيمة</em> أم على <em>متغيّر؟</em> وهذا ليس سؤالًا <span name="academic">أكاديميًّا</span>
+فحسب. ولستُ أعمل على تمييز التفرّقات الدقيقة بين المصطلحين. تأمّل:</p>
+<aside name="academic">
+<p>لو لم يكن Lox يسمح بالإسناد، لكان فعلًا سؤالًا أكاديميًا.</p>
+</aside>
+<pre><code class="language-lox">var globalSet;
+var globalGet;
+
+fun main() {
+  var a = &quot;initial&quot;;
+
+  fun set() { a = &quot;updated&quot;; }
+  fun get() { print a; }
+
+  globalSet = set;
+  globalGet = get;
+}
+
+main();
+globalSet();
+globalGet();
+</code></pre>
+<p>تنشئ الدالة الخارجية <code>main()</code> إغلاقين وتخزّنهما في متغيّرات <span
+name="global">عامة</span> كي يعيشا أطول من تنفيذ <code>main()</code> نفسه. كلا الإغلاقين
+يلتقط المتغيّر نفسه. الإغلاق الأول يُسند قيمةً جديدة إليه، والإغلاق الثاني يقرأ
+المتغيّر.</p>
+<aside name="global">
+<p>حقيقة أنّني أستخدم متغيّرين عامّين ليست مهمّة. كنت أحتاج إلى وسيلة ما لإرجاع
+قيمتين من دالة، وبدون أيّ نوع تجميع في Lox كانت خياراتي محدودة.</p>
+</aside>
+<p>ماذا يطبع الاستدعاء لـ <code>globalGet()</code>؟ إذا كانت الإغلاقات تلتقط <em>قيمًا</em>، فإنّ كل
+إغلاق يحصل على نسخته الخاصة من <code>a</code> بالقيمة التي كان لها <code>a</code> في اللحظة التي نُفّذ
+فيها تصريح دالة الإغلاق. وسيعدّل الاستدعاء لـ <code>globalSet()</code> نسخة <code>a</code> في <code>set()</code>،
+لكن نسخة <code>get()</code> لن تتأثّر. لذا، سيطبع الاستدعاء لـ <code>globalGet()</code> القيمة
+&quot;initial&quot;.</p>
+<p>وإذا كانت الإغلاقات تغلق على متغيّرات، فإنّ <code>get()</code> و<code>set()</code> سيلتقط كلاهما —
+سيُشير — <em>المتغيّر القابل للتغيير نفسه</em>. حين تغيّر <code>set()</code> قيمة <code>a</code>، فإنّها تغيّر
+<code>a</code> نفسها التي يقرأ منها <code>get()</code>. فهناك <code>a</code> واحدة فقط. وبدوره، يعني ذلك أنّ
+الاستدعاء لـ <code>globalGet()</code> سيطبع &quot;updated&quot;.</p>
+<p>أيّهما هو؟ الجواب في Lox ومعظم اللغات الأخرى التي أعرفها ذات الإغلاقات هو الثاني.
+الإغلاقات تلتقط متغيّرات. يمكنك التفكير فيها وكأنّها تلتقط <em>المكان الذي تعيش فيه
+القيمة</em>. وهذا مهمّ ينبغي أن ننبّه إليه أثناء تعاملنا مع متغيّرات مُغلَق عليها لم
+تعد على المكدّس. وحين ينتقل متغيّر إلى الكومة، نحرص على أن تحتفظ كل الإغلاقات
+التي تلتقط ذلك المتغيّر بإشارة إلى <em>موقعه</em> الجديد الوحيد. هكذا، حين يتغيّر
+المتغيّر، ترى كل الإغلاقات التغيير.</p>
+<h3 id="إغلاق-القيم-العليا">إغلاق القيم العليا</h3>
+<p>نعرف أنّ المتغيّرات المحلّية تبدأ دائمًا على المكدّس. هذا أسرع، ويتيح لمصرّفنا
+أحادي التمريرة أن يُصدر شيفرة قبل أن يكتشف أنّ المتغيّر التُقط. كما نعرف أنّ
+المتغيّرات المُغلَق عليها تحتاج إلى الانتقال إلى الكومة إذا كان الإغلاق يعيش أطول
+من الدالة التي يُعلن فيها المتغيّر المُلتقط.</p>
+<p>متبعين Lua، سنستخدم <strong>القيمة عليا المفتوحة</strong> (open upvalue) للإشارة إلى قيمة عليا
+تشير إلى متغيّر محلّي ما يزال على المكدّس. وحين ينتقل متغيّر إلى الكومة، فإنّنا
+نُغلق القيمة العليا، والنتيجة بطبيعة الحال هي <strong>قيمة عليا مُغلَقة</strong> (closed
+upvalue). والسؤالان اللذان نحتاج إلى الإجابة عنهما هما:</p>
+<ol>
+<li>
+<p>إلى أين في الكومة يذهب المتغيّر المُغلَق عليه؟</p>
+</li>
+<li>
+<p>متى نُغلق القيمة العليا؟</p>
+</li>
+</ol>
+<p>الجواب عن السؤال الأول سهل. لدينا بالفعل كائن مريح في الكومة يمثّل إشارة إلى
+متغيّر — ObjUpvalue نفسه. سينتقل المتغيّر المُغلَق عليه إلى حقل جديد في داخل بنية
+ObjUpvalue مباشرةً. وبهذه الطريقة لا نحتاج إلى أيّ تخصيص إضافي في الكومة لإغلاق
+قيمة عليا.</p>
+<p>السؤال الثاني مباشر أيضًا. ما دام المتغيّر على المكدّس، قد تكون هناك شيفرة تشير
+إليه هناك، ويجب أن تعمل تلك الشيفرة بشكل صحيح. لذا فالوقت المنطقي لرفع المتغيّر
+إلى الكومة هو ما أمكن من التأخير. إذا نقلنا المتغيّر المحلّي بمجرّد أن يخرج عن
+نطاقه، نتيقّن تمامًا من ألّا تحاول أيّ شيفرة بعد تلك اللحظة الوصول إليه من
+المكدّس. <span name="after">وبعد</span> أن يخرج المتغيّر عن نطاقه، يكون المصرّف
+قد أبلغ عن خطأ إن حاولت أيّ شيفرة استخدامه.</p>
+<aside name="after">
+<p>بـ&quot;بعد&quot; هنا، أعني بالمعنى المعجميّ أو النصّي — الشيفرة بعد <code>}</code> الخاص بالكتلة
+التي تحتوي على تصريح المتغيّر المُغلَق عليه.</p>
+</aside>
+<p>يصرّ المصرّف أصلًا بتعليمات <code>OP_POP</code> عند خروج متغيّر محلّي عن نطاقه. وإذا التقط
+إغلاقٌ متغيّرًا، فسنُصدر بدلًا منها تعليمة أخرى ترفع ذلك المتغيّر من المكدّس إلى
+قيمته العليا المقابلة. ولكي نفعل ذلك، يحتاج المصرّف إلى معرفة المتغيّرات المحلّية
+<span name="param">المُغلَق عليها</span>.</p>
+<aside name="param">
+<p>لا يُسقط المصرّف الوسائط والمتغيّرات المحلّية المُعلَنة فورًا داخل جسم الدالة. سنتعامل
+مع تلك أيضًا في وقت التشغيل.</p>
+</aside>
+<p>يحتفظ المصرّف أصلًا بمصفوفة من بنى Upvalue لكل متغيّر محلّي في الدالة لتتبّع تلك
+الحالة بالضبط. تلك المصفوفة جيّدة للإجابة عن سؤال &quot;أيّ المتغيّرات يستخدمه هذا
+الإغلاق؟&quot; لكنها غير مناسبة للإجابة عن سؤال &quot;هل يلتقط أيّ دالة هذا المتغيّر
+المحلّي؟&quot; وعلى وجه الخصوص، بمجرّد أن ينتهي المصرّف الخاص بإغلاق ما، لا يعود
+المصرّف الخاص بالدالة المحيطة التي التُقط متغيّراتها قادرًا على الوصول إلى أيّ
+من حالة القيم العليا.</p>
+<p>بعبارة أخرى، يحتفظ المصرّف بمؤشّرات من القيم العليا إلى المتغيّرات المحلّية التي
+تلتقطها، لكن ليس في الاتجاه المعاكس. لذا نحتاج أولًا إلى إضافة تتبّع إضافي داخل
+بنية Local القائمة كي نستطيع أن نعرف إن كان متغيّر محلّي ما ملتقَطًا بإغلاق.</p>
+<p>^code is-captured-field (1 before, 1 after)</p>
+<p>هذا الحقل يساوي <code>true</code> إذا كان المتغيّر المحلّي ملتقَطًا بأيّ تصريح دالة متداخلة
+لاحِق. في البداية، كل المتغيّرات المحلّية غير ملتقَطة.</p>
+<p>^code init-is-captured (1 before, 1 after)</p>
+<p><span name="zero">وكذلك</span>، فإنّ &quot;متغيّر الخانة صفر&quot; الخاص الذي يُعلنه
+المصرّف ضمنًا ليس ملتقَطًا.</p>
+<aside name="zero">
+<p>لاحقًا في الكتاب، <em>سيصبح</em> من الممكن للمستخدم التقاط هذا المتغيّر. إننا نبني بعض
+التوقّع هنا فحسب.</p>
+</aside>
+<p>^code init-zero-local-is-captured (1 before, 1 after)</p>
+<p>حين يحلّ المصرّف مُعرِّفًا، إن انتهينا إلى إنشاء قيمة عليا لمتغيّر محلّي، فإنّنا
+نعلّمه على أنه ملتقَط.</p>
+<p>^code mark-local-captured (1 before, 1 after)</p>
+<p>الآن، عند نهاية نطاق كتلة، حين يُصدر المصرّف شيفرة لتحرير خانات المكدّس الخاصة
+بالمتغيّرات المحلّية، يمكننا أن نعرف أيّها يحتاج إلى الرفع إلى الكومة. سنستخدم
+تعليمة جديدة لذلك.</p>
+<p>^code end-scope (3 before, 2 after)</p>
+<p>التعليمة لا تحتاج إلى مُعامل. نعرف أنّ المتغيّر سيكون دائمًا في أعلى المكدّس تمامًا
+في اللحظة التي تُنفَّذ فيها هذه التعليمة. نُعلن التعليمة.</p>
+<p>^code close-upvalue-op (1 before, 1 after)</p>
+<p>ونضيف دعمًا تافهًا في المفكّك لها:</p>
+<p>^code disassemble-close-upvalue (1 before, 1 after)</p>
+<p>ممتاز. الآن تخبر الشيفرة بايت المولَّدة وقت التشغيل تحديدًا متى يجب أن ينتقل كل
+متغيّر محلّي ملتقَط إلى الكومة. والأفضل، أنّها تفعل ذلك فقط للمتغيّرات المحلّية
+التي <em>يستخدمها</em> الإغلاق وتحتاج إلى هذه المعاملة الخاصة. وهذا يتّسق مع هدف الأداء
+العام لدينا وهو أن يدفع المستخدم ثمن الوظائف التي يستخدمها فقط. أمّا المتغيّرات
+التي لا تستخدمها الإغلاقات فتُولد وتموت على المكدّس بالكامل تمامًا كما كانت من قبل.</p>
+<h3 id="تتبع-القيم-العليا-المفتوحة">تتبّع القيم العليا المفتوحة</h3>
+<p>لننتقل إلى جانب وقت التشغيل. قبل أن نتمكّن من تفسير تعليمات
+<code>OP_CLOSE_UPVALUE</code>، لدينا مسألة نحتاج إلى حلّها. في وقت سابق، حين تحدّثت عمّا إذا
+كانت الإغلاقات تلتقط متغيّرات أم قيمًا، قلت إنّه من المهمّ أن تنتهي الإغلاقات
+المتعدّدة التي تصل إلى المتغيّر نفسه إلى إشارة إلى موضع التخزين نفسه بالضبط في
+الذاكرة. هكذا، إن كتب أحد الإغلاقات إلى المتغيّر، يرى الإغلاق الآخر التغيير.</p>
+<p>الآن، إن التقط إغلاقان المتغيّر المحلّي <span name="indirect">نفسه</span>،
+تُنشئ الآلة الافتراضية قيمة عليا منفصلة لكلٍّ منهما. والمشاركة الضرورية غائبة.
+حين ننقل المتغيّر بعيدًا عن المكدّس، فإن نقلناه إلى إحدى القيم العليا فقط،
+ستملك القيمة العليا الأخرى قيمةً يتيمة.</p>
+<aside name="indirect">
+<p>الآلة الافتراضية <em>فعلًا</em> تتشارك القيم العليا إذا التقط إغلاق <em>قيمة عليا</em> من دالة
+محيطة. حالة التداخل تعمل بشكل صحيح. لكن إذا التقط إغلاقان <em>أخوان</em> المتغيّر
+المحلّي نفسه، فإنّ كلًّا منهما ينشئ ObjUpvalue منفصلًا.</p>
+</aside>
+<p>ولإصلاح ذلك، كلما احتاجت الآلة الافتراضية إلى قيمة عليا تلتقط خانة متغيّر محلّي
+معيّنة، سنبحث أولًا عن قيمة عليا قائمة تشير إلى تلك الخانة. فإن وُجدت، نعيد
+استخدامها. التحدّي هو أنّ كل القيم العليا المُنشأة سابقًا مدفونة في مصفوفات القيم
+العليا للإغلاقات المختلفة. وقد تكون تلك الإغلاقات في أيّ موضع في ذاكرة الآلة
+الافتراضية.</p>
+<p>الخطوة الأولى هي أن تمنح الآلة الافتراضية قائمتها الخاصة بكل القيم العليا المفتوحة
+التي تشير إلى متغيّرات ما تزال على المكدّس. البحث في قائمة كلما احتاجت الآلة
+الافتراضية إلى قيمة عليا قد يبدو بطيئًا، لكن في الممارسة ليس سيئًا. يميل عدد
+المتغيّرات على المكدّس التي يُغلَق عليها فعلًا إلى أن يكون صغيرًا. وتصريحات الدوال
+التي <span name="create">تنشئ</span> إغلاقات نادرًا ما تكون على مسارات تنفيذ حرجة
+للأداء في برنامج المستخدم.</p>
+<aside name="create">
+<p>الإغلاقات كثيرًا ما تُستدعى <em>داخل</em> حلقات ساخنة. فكّر في الإغلاقات الممرَّرة إلى
+دوالّ راقية الطرافة (higher-order functions) المعتادة على المجموعات مثل
+<a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)"><code>map()</code></a> و<a href="https://en.wikipedia.org/wiki/Filter_(higher-order_function)"><code>filter()</code></a>. ينبغي أن تكون تلك سريعة. لكن تصريح الدالة الذي
+<em>ينشئ</em> الإغلاق لا يحدث سوى مرة واحدة وهو عادةً خارج الحلقة.</p>
+</aside>
+<p>والأفضل، يمكننا ترتيب قائمة القيم العليا المفتوحة حسب فهرس خانة المكدّس التي
+تشير إليها. الحالة المعتادة هي أنّ الخانة <em>لم</em> تُلتقط سابقًا — فمشاركة المتغيّرات
+بين الإغلاقات غير معتادة — والإغلاقات تميل إلى التقاط متغيّرات محلّية قريبة من
+أعلى المكدّس. إذا خزّنّا مصفوفة القيم العليا المفتوحة بترتيب خانات المكدّس،
+فبمجرد أن نتجاوز الخانة التي يعيش فيها المتغيّر المحلّي الذي نلتقطه، نعرف أنّه لن
+يُوجد. وحين يكون ذلك المتغيّر المحلّي قريبًا من أعلى المكدّس، يمكننا الخروج من
+الحلقة مبكرًا إلى حدٍّ كبير.</p>
+<p>الحفاظ على قائمة مرتّبة يتطلّب إدراج العناصر في المنتصف بكفاءة. وهذا يقترح استخدام
+قائمة مرتبطة بدلًا من مصفوفة ديناميكية. ولأننا عرّفنا بنية ObjUpvalue بأنفسنا،
+فإنّ أسهل تنفيذ هو قائمة متغليسة (intrusive list) تضع مؤشّر التالي في داخل بنية
+ObjUpvalue نفسها.</p>
+<p>^code next-field (1 before, 1 after)</p>
+<p>حين نخصّص قيمة عليا، فإنّها لا تكون متّصلة بأيّ قائمة بعد، لذا يكون الرابط <code>NULL</code>.</p>
+<p>^code init-next (1 before, 1 after)</p>
+<p>تملك الآلة الافتراضية القائمة، لذا يذهب مؤشّر الرأس إلى داخل بنية الآلة الافتراضية
+الرئيسية مباشرةً.</p>
+<p>^code open-upvalues-field (1 before, 1 after)</p>
+<p>تبدأ القائمة فارغة.</p>
+<p>^code init-open-upvalues (1 before, 1 after)</p>
+<p>بدءًا من أول قيمة عليا تشير إليها الآلة الافتراضية، تشير كل قيمة عليا مفتوحة إلى
+القيمة العليا المفتوحة التالية التي تشير إلى متغيّر محلّي أبعد إلى الأسفل على
+المكدّس. هذا الملف، مثلًا،</p>
+<pre><code class="language-lox">{
+  var a = 1;
+  fun f() {
+    print a;
+  }
+  var b = 2;
+  fun g() {
+    print b;
+  }
+  var c = 3;
+  fun h() {
+    print c;
+  }
+}
+</code></pre>
+<p>ينتج سلسلة من القيم العليا المترابطة على النحو التالي:</p>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-7.webp" alt="Three upvalues in a linked list."/>
+<p>كلّما أغلقنا على متغيّر محلّي، وقبل إنشاء قيمة عليا جديدة، نبحث عن قيمة عليا قائمة
+في القائمة.</p>
+<p>^code look-for-existing-upvalue (1 before, 1 after)</p>
+<p>نبدأ من <span name="head">رأس</span> القائمة، وهو القيمة العليا الأقرب إلى أعلى
+المكدّس. نمشي في القائمة، مستخدمين مقارنةً صغيرة بين المؤشّرات لتجاوز كل قيمة عليا
+تشير إلى خانات أعلى من الخانة التي نبحث عنها. وفعلنا ذلك، نتتبّع القيمة العليا
+السابقة في القائمة. سنحتاج إلى تحديث مؤشّر <code>next</code> لتلك العقدة إذا انتهينا إلى إدراج
+عقدة بعدها.</p>
+<aside name="head">
+<p>إنّها قائمة مرتبطة أحادية الاتجاه. ليس أمامنا خيارٌ آخر سوى البدء من الرأس والتقدّم من
+هناك.</p>
+</aside>
+<p>هناك ثلاثة أسباب يمكننا عندها الخروج من الحلقة:</p>
+<ol>
+<li>
+<p><strong>خانة المتغيّر المحلّي التي توقّفنا عندها <em>هي</em> الخانة التي نبحث عنها.</strong> وجدنا
+قيمة عليا قائمة تلتقط المتغيّر، لذا نعيد استخدام تلك القيمة العليا.</p>
+</li>
+<li>
+<p><strong>نفدت القيم العليا التي نبحث فيها.</strong> حين يكون <code>upvalue</code> هو <code>NULL</code>، فهذا يعني
+أنّ كل قيمة عليا مفتوحة في القائمة تشير إلى متغيّرات محلّية أعلى من الخانة التي
+نبحث عنها، أو (والأرجح) قائمة القيم العليا فارغة. وفي الحالتين، لم نجد قيمة
+عليا لخانتنا.</p>
+</li>
+<li>
+<p><strong>وجدنا قيمة عليا خانتها المحلّية <em>أسفل</em> الخانة التي نبحث عنها.</strong> وبما أنّ
+القائمة مرتّبة، فهذا يعني أنّنا تجاوزنا الخانة التي نُغلق عليها، وبالتالي لا بدّ
+ألّا تكون هناك قيمة عليا قائمة لها.</p>
+</li>
+</ol>
+<p>في الحالة الأولى، انتهينا وقد استرجعنا. وإلا، فنحن ننشئ قيمة عليا جديدة لخانتنا
+المحلّية ونُدرجها في القائمة في الموضع الصحيح.</p>
+<p>^code insert-upvalue-in-list (1 before, 1 after)</p>
+<p>النسخة الحالية من هذه الدالة تنشئ القيمة العليا بالفعل، لذا لا نحتاج سوى إلى إضافة
+شيفرة تُدرج القيمة العليا في القائمة. لقد خرجنا من اجتياز القائمة إمّا بتجاوز نهاية
+القائمة، وإمّا بالتوقّف على أول قيمة عليا خانتها المكدّس أسفل الخانة التي نبحث
+عنها. وفي الحالتين، يعني ذلك أنّنا نحتاج إلى إدراج القيمة العليا الجديدة <em>قبل</em>
+الكائن الذي يشير إليه <code>upvalue</code> (والذي قد يكون <code>NULL</code> إن بلغنا نهاية القائمة).</p>
+<p>ربما تعلّمته في &quot;هياكل البيانات 101&quot;: لإدراج عقدة في قائمة مرتبطة، تجعل مؤشّر
+<code>next</code> للعقدة السابقة يشير إلى عقدتك الجديدة. وقد كنا نتتبّع تلك العقدة السابقة
+بسهولة أثناء مشينا في القائمة. ونحتاج أيضًا إلى معالجة حالة <span
+name="double">خاصة</span> حين نُدرج قيمة عليا جديدة عند رأس القائمة، وفي تلك الحالة
+يكون مؤشّر &quot;next&quot; هو مؤشّر رأس الآلة الافتراضية.</p>
+<aside name="double">
+<p>هناك تنفيذ أقصر يتعامل مع تحديث مؤشّر الرأس أو مؤشّر <code>next</code> للقيمة العليا السابقة
+بشكل موحّد عبر استخدام مؤشّر إلى مؤشّر، لكن ذلك النوع من الشيفرة يُربك كل شخص تقريبًا
+لم يبلغ بعد مستوى سيّد Zen في فنّ المؤشّرات. اخترتُ أسلوب جملة <code>if</code> الأساسية.</p>
+</aside>
+<p>مع هذه الدالة المحدَّثة، تضمن الآلة الافتراضية الآن وجود ObjUpvalue واحد فقط لأي
+خانة محلّية معطاة. إذا التقط إغلاقان المتغيّر نفسه، فإنّهما سيحصلان على القيمة
+العليا نفسها. والآن نحن مستعدون لنقل تلك القيم العليا بعيدًا عن المكدّس.</p>
+<h3 id="إغلاق-القيم-العليا-وقت-التشغيل">إغلاق القيم العليا وقت التشغيل</h3>
+<p>يُصدر المصرّف بشكل مفيد تعليمة <code>OP_CLOSE_UPVALUE</code> لتخبر الآلة الافتراضية تحديدًا
+متى يجب رفع متغيّر محلّي إلى الكومة. وتنفيذ تلك التعليمة هي مسؤولية المفسّر.</p>
+<p>^code interpret-close-upvalue (1 before, 1 after)</p>
+<p>حين نصل إلى التعليمة، يكون المتغيّر الذي نرفعه في أعلى المكدّس تمامًا. نستدعي دالة
+مساعِدة، مُمرِّرًا عنوان خانة المكدّس تلك. تلك الدالة مسؤولة عن إغلاق القيمة العليا
+ونقل المتغيّر المحلّي من المكدّس إلى الكومة. وبعد ذلك، تُصبح الآلة الافتراضية
+حرّةً في التخلّص من خانة المكدّس، وهو ما تفعله باستدعاء <code>pop()</code>.</p>
+<p>الأمور الممتعة تحدث هنا:</p>
+<p>^code close-upvalues</p>
+<p>تأخذ هذه الدالة مؤشّرًا إلى خانة مكدّس. وهي تُغلق كل قيمة عليا مفتوحة تجدها تشير
+إلى تلك الخانة أو أيّ خانة أعلى منها على المكدّس. الآن، نمرّر مؤشّرًا إلى الخانة
+العليا على المكدّس فقط، لذا فإنّ جزء &quot;أو ما فوقها&quot; لا يدخل في الحساب، لكنه سيصبح
+كذلك قريبًا.</p>
+<p>لنفعل ذلك، نمشي في قائمة القيم العليا المفتوحة للآلة الافتراضية، مرّة أخرى من الأعلى
+إلى الأسفل. إذا كان موقع قيمة عليا يشير إلى نطاق الخانات الذي نُغلقه، فإنّنا نُغلق
+القيمة العليا. وإلا، بمجرّد أن نصل إلى قيمة عليا خارج النطاق، نعرف أنّ الباقي كذلك،
+لذا نتوقّف عن التكرار.</p>
+<p>طريقة إغلاق القيمة العليا <span name="cool">باردة</span> نوعًا ما. أولًا، ننسخ قيمة
+المتغيّر إلى الحقل <code>closed</code> في ObjUpvalue. هناك تعيش المتغيّرات المُغلَق عليها في
+الكومة. تحتاج تعليمتَي <code>OP_GET_UPVALUE</code> و<code>OP_SET_UPVALUE</code> إلى البحث عن المتغيّر هناك
+بعد نقله. يمكننا إضافة بعض المنطق الشرطي في شيفرة المفسّر لهاتين التعليمتين
+للتحقّق من عَلَم ما إذا كانت القيمة العليا مفتوحة أم مُغلَقة.</p>
+<p>لكن هناك مستوى من الاستدلال قائم بالفعل — تلك التعليمات تفكّ مؤشّر <code>location</code>
+للوصول إلى قيمة المتغيّر. وحين ينتقل المتغيّر من المكدّس إلى الحقل <code>closed</code>، فإنّنا
+نكتفي بتحديث ذلك <code>location</code> ليشير إلى عنوان الحقل <code>closed</code> <em>الخاص</em> بـ ObjUpvalue.</p>
+<aside name="cool">
+<p>لستُ أُمدح نفسي هنا. كل هذا من ابتكار فريق تطوير Lua.</p>
+</aside>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-8.webp" alt="Moving a value from the stack to the upvalue's 'closed' field and then pointing the 'value' field to it."/>
+<p>لا نحتاج إلى تغيير طريقة تفسير <code>OP_GET_UPVALUE</code> و<code>OP_SET_UPVALUE</code> إطلاقًا. هذا يبقيهما
+بسيطَين، وهو بدوره يبقيهما سريعَين. لكننا نحتاج فعلًا إلى إضافة الحقل الجديد إلى
+ObjUpvalue.</p>
+<p>^code closed-field (1 before, 1 after)</p>
+<p>وينبغي أن نُصفّره حين ننشئ ObjUpvalue حتى لا تكون هناك ذاكرة غير مهيّأة طافية في الجوّ.</p>
+<p>^code init-closed (1 before, 1 after)</p>
+<p>كلما وصل المصرّف إلى نهاية كتلة، فإنه يتخلّص من كل المتغيّرات المحلّية في تلك الكتلة
+ويُصدر <code>OP_CLOSE_UPVALUE</code> لكل متغيّر محلّي كان مُغلَقًا عليه. المصرّف <span
+name="close">لا</span> يُصدر <em>أيّ</em> تعليمات في نهاية نطاق الكتلة الأوسع الذي يعرّف جسم
+دالة. يحتوي ذلك النطاق على وسائط الدالة وأي متغيّرات محلّية مُعلَنة فورًا داخل
+الدالة. وتلك تحتاج إلى الإغلاق أيضًا.</p>
+<aside name="close">
+<p>لا شيء <em>يمنع</em>نا من إغلاق نطاق الدالة الأوسع في المصرّف وإصدار تعليمات <code>OP_POP</code>
+و<code>OP_CLOSE_UPVALUE</code>. فعل ذلك غير ضروري فحسب لأنّ وقت التشغيل يتخلّص ضمنيًا من كل
+خانات المكدّس التي تستخدمها الدالة حين يُسقط إطار الاستدعاء.</p>
+</aside>
+<p>هذا هو السبب في قبول <code>closeUpvalues()</code> لمؤشّر إلى خانة مكدّس. حين تعود دالة، نستدعي
+تلك الدالة المساعِدة نفسها ونمرّر أول خانة مكدّس تملكها الدالة.</p>
+<p>^code return-close-upvalues (1 before, 1 after)</p>
+<p>بمرّر الخانة الأولى في نافذة مكدّس الدالة، نُغلق كل قيمة عليا مفتوحة متبقية تملكها
+الدالة العائدة. وبهذا، لدينا الآن تنفيذ إغلاقات عامل بالكامل. تعيش المتغيّرات المُغلَق
+عليها طالما تحتاج إليها الدوال التي تلتقطها.</p>
+<p>كان هذا عملًا كثيرًا! في jlox، خرجت الإغلاقات طبيعيًا من تمثيل البيئة لدينا. أمّا في
+clox، فقد اضطررنا إلى إضافة شيفرة كثيرة — تعليمات شيفرة بايت جديدة، وبنى بيانات
+أكثر في المصرّف، وكائنات وقت تشغيل جديدة. تتعامل الآلة الافتراضية مع متغيّرات
+الإغلاقات على نحو مختلف كثيرًا عن المتغيّرات الأخرى.</p>
+<p>وهناك منطق في ذلك. من حيث تعقيد التنفيذ، أعطتنا jlox الإغلاقات &quot;مجانًا&quot;. لكن من حيث
+<em>الأداء</em>، فإنّ إغلاقات jlox هي عكس ذلك تمامًا. بتخصيص <em>كل</em> البيئات في الكومة، تدفع
+jlox ثمن أداء كبيرًا مقابل <em>كل</em> المتغيّرات المحلّية، حتى الغالبيّة منها التي لا
+تلتقطها الإغلاقات أبدًا.</p>
+<p>مع clox، لدينا نظام أعقد، لكن ذلك يتيح لنا تخصيص التنفيذ ليناسب نمطَي الاستخدام
+اللذين نلاحظهما للمتغيّرات المحلّية. بالنسبة لمعظم المتغيّرات التي لها فعلًا دلالة
+المكدّس، نخصّصها بالكامل على المكدّس وهو أمر بسيط وسريع. ثمّ، بالنسبة لبقية
+المتغيّرات المحلّية القليلة التي لا يعمل فيها ذلك، لدينا مسار ثانٍ أبطأ يمكننا
+الاشتراك فيه عند الحاجة.</p>
+<p>ولحسن الحظ، لا يلاحظ المستخدمون هذا التعقيد. من منظورهم، المتغيّرات المحلّية في Lox
+بسيطة وموحّدة. <em>اللغة نفسها</em> بسيطة بقدر بساطة تنفيذ jlox. لكن تحت الغطاء، يراقب
+clox ما يفعله المستخدم ويحسّن لأجل استخداماته تحديدًا. ومع ازدياد نضج تطبيقات لغاتك،
+ستجد نفسك تفعل هذا أكثر. نسبةٌ كبيرة من &quot;التحسين&quot; تتعلّق بإضافة شيفرة للحالات
+الخاصة تكتشف استخدامات معيّنة وتوفّر مسارًا أسرع مبنيًا خصيصًا للشيفرة التي تتّفق
+مع ذلك النمط.</p>
+<p>لدينا الآن النطاق المعجميّ يعمل بالكامل في clox، وهذه نقطة تحوّل كبيرة. والآن، بما
+لدينا دوال ومتغيّرات ذات أعمار معقّدة، لدينا أيضًا <em>كمٌ كبير</em> من الكائنات الطافية في
+كومة clox، مع شبكة من المؤشّرات تربطها ببعضها. و[الخطوة التالية][] هي اكتشاف كيفية
+إدارة تلك الذاكرة حتى نتمكّن من تحرير بعض تلك الكائنات حين لم تعد هناك حاجة إليها.</p>
+<div class="challenges">
+<h2 id="التحديات">التحدّيات</h2>
+<ol>
+<li>
+<p>تغليف كل ObjFunction داخل ObjClosure يُدخل مستوى من الاستدلال له تكلفة أداء.
+تلك التكلفة ليست ضرورية للدوال التي لا تغلق على أيّ متغيّرات، لكنها تتيح لوقت
+التشغيل معاملة كل الاستدعاءات بالتساوي.</p>
+<p>غيّر clox ليغلّف فقط الدوال التي تحتاج إلى قيم عليا داخل ObjClosures. كيف
+تقارن بين تعقيد الشيفرة والأداء مع التغليف الدائم للدوال؟ احرص على قياس الأداء
+لبرامج تستخدم الإغلاقات وبرامج لا تستخدمها. كيف ينبغي أن تُرجّح أهمية كل قياس؟
+إذا أصبح أحدهما أبطأ والآخر أسرع، فكيف تقرّر أيّ مقايضة تجري لتختار استراتيجية
+تنفيذ؟</p>
+</li>
+<li>
+<p>اقرأ ملاحظة التصميم أدناه. سأنتظرك. والآن، كيف تظنّ أنّ Lox <em>ينبغي</em> أن
+يتصرّف؟ غيّر التنفيذ ليُنشئ متغيّرًا جديدًا لكل دورة من دورات الحلقة.</p>
+</li>
+<li>
+<p>تعلّمنا <a href="http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent">koan مشهورة</a> أنّ &quot;الكائنات هي إغلاق رجل فقير&quot; (والعكس). لا تدعم
+آلتنا الافتراضية الكائنات بعد، لكن بما لدينا من إغلاقات يمكننا تقريها. باستخدام
+الإغلاقات، اكتب برنامج Lox يُنمذج &quot;كائنات&quot; متجهات ثنائية الأبعاد. ينبغي له:</p>
+<ul>
+<li>
+<p>تعريف دالة &quot;مُنشئ&quot; تنشئ متجهًا جديدًا بالإحداثيَّي <em>x</em> و<em>y</em> المُعطَيين.</p>
+</li>
+<li>
+<p>توفير &quot;طرائق&quot; للوصول إلى الإحداثيَّين <em>x</em> و<em>y</em> للقيم المُعادة من ذلك المُنشئ.</p>
+</li>
+<li>
+<p>تعريف &quot;طريقة&quot; جمع تجمع متجهين وتُنتج ثالثًا.</p>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="design-note">
+<h2 id="ملاحظة-تصميم-الإغلاق-على-متغير-الحلقة">ملاحظة تصميم: الإغلاق على متغيّر الحلقة</h2>
+<p>الإغلاقات تلتقط متغيّرات. حين يلتقط إغلاقان المتغيّر نفسه، يتشاركان إشارةً إلى
+موضع التخزين الأساسي نفسه. تصبح هذه الحقيقة ظاهرة حين تُسنَد قيم جديدة إلى المتغيّر.
+ومن البديهي طبعًا، إذا التقط إغلاقان متغيّرين <em>مختلفين</em>، فلا مشاركة بينهما.</p>
+<pre><code class="language-lox">var globalOne;
+var globalTwo;
+
+fun main() {
+  {
+    var a = &quot;one&quot;;
+    fun one() {
+      print a;
+    }
+    globalOne = one;
+  }
+
+  {
+    var a = &quot;two&quot;;
+    fun two() {
+      print a;
+    }
+    globalTwo = two;
+  }
+}
+
+main();
+globalOne();
+globalTwo();
+</code></pre>
+<p>يطبع هذا &quot;one&quot; ثم &quot;two&quot;. في هذا المثال، من الواضح تمامًا أنّ متغيّري <code>a</code> مختلفان.
+لكن ليس الأمر واضحًا بهذه الدرجة دائمًا. تأمّل:</p>
+<pre><code class="language-lox">var globalOne;
+var globalTwo;
+
+fun main() {
+  for (var a = 1; a &lt;= 2; a = a + 1) {
+    fun closure() {
+      print a;
+    }
+    if (globalOne == nil) {
+      globalOne = closure;
+    } else {
+      globalTwo = closure;
+    }
+  }
+}
+
+main();
+globalOne();
+globalTwo();
+</code></pre>
+<p>الشيفرة ملتبسة لأنّ Lox لا يملك أنواع تجميع. الجزء المهم هو أنّ الدالة <code>main()</code>
+تنفّذ دورتين من حلقة <code>for</code>. في كل مرة خلال الحلقة، هي تنشئ إغلاقًا يلتقط متغيّر
+الحلقة. وهي تخزّن الإغلاق الأول في <code>globalOne</code> والثاني في <code>globalTwo</code>.</p>
+<p>هناك بالتأكيد إغلاقان مختلفان. هل يغلقان على متغيّرين مختلفين؟ هل هناك <code>a</code> واحدة
+فقط طوال مدّة الحلقة، أم أنّ كل دورة تحصل على متغيّر <code>a</code> خاص بها ومميّز؟</p>
+<p>الملف هنا غريب ومصطنَع، لكن هذا يظهر فعلًا في شيفرة حقيقية في لغات ليست بحدّة
+clox. وإليك مثالًا بلغة JavaScript:</p>
+<pre><code class="language-js"><span class="hljs-keyword">var</span> closures = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">2</span>; i++) {
+  closures.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) { <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); });
+}
+
+closures[<span class="hljs-number">0</span>]();
+closures[<span class="hljs-number">1</span>]();
+</code></pre>
+<p>هل يطبع هذا &quot;1&quot; ثم &quot;2&quot;، أم أنّه يطبع <span name="three">&quot;3&quot;</span> مرّتين؟ قد
+تُفاجأ حين تسمع أنّه يطبع &quot;3&quot; مرّتين. في برنامج JavaScript هذا، يوجد متغيّر <code>i</code>
+واحد فقط مدى حياتِه يشمل كل دورات الحلقة، بما فيها الخروج النهائي.</p>
+<aside name="three">
+<p>أتساءل كيف يدخل <em>ثلاثة</em> الصورة؟ بعد الدورة الثانية، يُنفَّذ <code>i++</code> الذي يزيد <code>i</code> إلى
+ثلاثة. وهذا ما يجعل <code>i &lt;= 2</code> يقيَّم على أنه خطأ وينهي الحلقة. لو لم يبلغ <code>i</code> ثلاثة
+أبدًا، لدامت الحلقة إلى الأبد.</p>
+</aside>
+<p>إن كنت على دراية بـ JavaScript، فمن المحتمل أنّك تعرف أنّ المتغيّرات المُعلَنة
+باستخدام <code>var</code> تُرفع ضمنيًا (<em>hoisted</em>) إلى نطاق الدالة المحيطة أو النطاق ذي
+المستوى الأعلى. وكأنّك حرفيًا كتبت هذا:</p>
+<pre><code class="language-js"><span class="hljs-keyword">var</span> closures = [];
+<span class="hljs-keyword">var</span> i;
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">2</span>; i++) {
+  closures.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) { <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); });
+}
+
+closures[<span class="hljs-number">0</span>]();
+closures[<span class="hljs-number">1</span>]();
+</code></pre>
+<p>عند تلك النقطة، يصبح أوضح أنّ هناك <code>i</code> واحدًا فقط. والآن، فكّر إن غيّرت البرنامج
+ليستخدم الكلمة المفتاحية الأحدث <code>let</code>:</p>
+<pre><code class="language-js"><span class="hljs-keyword">var</span> closures = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">2</span>; i++) {
+  closures.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) { <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); });
+}
+
+closures[<span class="hljs-number">0</span>]();
+closures[<span class="hljs-number">1</span>]();
+</code></pre>
+<p>هل يتصرّف هذا البرنامج الجديد بالطريقة نفسها؟ لا. في هذه الحالة، هو يطبع &quot;1&quot; ثم
+&quot;2&quot;. كل إغلاق يحصل على <code>i</code> الخاص به. هذا غريب نوعًا ما حين تفكّر فيه. بند الزيادة
+هو <code>i++</code>. وهذا يبدو ًا جدًا على أنّه يُسند إلى متغيّر قائم ويغيّره، لا أنّه ينشئ
+متغيّرًا جديدًا.</p>
+<p>لنجرّب بعض اللغات الأخرى. وإليك Python:</p>
+<pre><code class="language-python">closures = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>):
+  closures.append(<span class="hljs-keyword">lambda</span>: <span class="hljs-built_in">print</span>(i))
+
+closures[<span class="hljs-number">0</span>]()
+closures[<span class="hljs-number">1</span>]()
+</code></pre>
+<p>لا تملك Python نطاق كتلة حقًّا. المتغيّرات مُعلَنة ضمنيًا ويُحكم نطاقها تلقائيًا إلى
+الدالة المحيطة. أشبه برفع المتغيّرات في JS، الآن بعد أن فكّرت في الأمر. لذا يلتقط
+الإغلاقان المتغيّر نفسه. لكن بخلاف C، نحن لا نخرج من الحلقة بزيادة <code>i</code> <em>بتجاوز</em>
+القيمة الأخيرة، لذا يطبع هذا &quot;2&quot; مرّتين.</p>
+<p>وماذا عن Ruby؟ تملك Ruby طريقتين نموذجيتين للتكرار عدديًا. وإليك الأسلوب الأمبري
+البسيط:</p>
+<pre><code class="language-ruby">closures = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span>..<span class="hljs-number">2</span> <span class="hljs-keyword">do</span>
+  closures &lt;&lt; <span class="hljs-built_in">lambda</span> { puts i }
+<span class="hljs-keyword">end</span>
+
+closures[<span class="hljs-number">0</span>].call
+closures[<span class="hljs-number">1</span>].call
+</code></pre>
+<p>هذا، مثل Python، يطبع &quot;2&quot; مرّتين. لكن أسلوب Ruby الأكثر أصالة هو استخدام طريقة
+<code>each()</code> الراقية الطرافة على كائنات المدى:</p>
+<pre><code class="language-ruby">closures = []
+(<span class="hljs-number">1</span>..<span class="hljs-number">2</span>).each <span class="hljs-keyword">do</span> |<span class="hljs-params">i</span>|
+  closures &lt;&lt; <span class="hljs-built_in">lambda</span> { puts i }
+<span class="hljs-keyword">end</span>
+
+closures[<span class="hljs-number">0</span>].call
+closures[<span class="hljs-number">1</span>].call
+</code></pre>
+<p>إن لم تكن على دراية بـ Ruby، فالجزء <code>do |i| ... end</code> هو في الأساس إغلاق يُنشأ
+ويُمرَّر إلى الطريقة <code>each()</code>. و<code>|i|</code> هي توقيع المُعاملات للإغلاق. والطريقة <code>each()</code>
+تستدعي ذلك الإغلاق مرّتين، مُمرِّرة 1 في <code>i</code> أول مرّة و2 في الثانية.</p>
+<p>في هذه الحالة، &quot;متغيّر الحلقة&quot; هو في الواقع مُعامل دالة. وبما أنّ كل دورة من دورات
+الحلقة هي استدعاء منفصل للدالة، فإنّ تلك بالتأكيد متغيّرات منفصلة لكل استدعاء. لذا
+يطبع هذا &quot;1&quot; ثم &quot;2&quot;.</p>
+<p>إذا كانت اللغة تملك بنية تكرار قائمة على مُكرِّرات بمستوى أعلى مثل <code>foreach</code> في C#،
+و&quot;for&quot; المُحسَّنة في Java، و<code>for-of</code> في JavaScript، و<code>for-in</code> في Dart، وغيرها،
+فأعتقد أنّ من الطبيعي للقارئ أن تنشئ كل دورة متغيّرًا جديدًا. الشيفرة <em>تبدو</em> متغيّرًا
+جديدًا لأنّ ترويسة الحلقة تبدو تصريح متغيّر. ولا يوجد تعبير زيادة يبدو كأنّه يغيّر ذلك
+المتغيّر ليتقدّم إلى الخطوة التالية.</p>
+<p>إن بحثت في StackOverflow وفي أماكن أخرى، تجد أدلّة على أنّ هذا هو ما يتوقّعه
+المستخدمون، لأنّهم فوجئوا كثيرًا حين <em>لا</em> يحصلون عليه. وعلى وجه الخصوص، لم يكن C#
+<em>يَنشئ</em> متغيّر حلقة جديدًا لكل دورة من دورات حلقة <code>foreach</code> أصلًا. كانت هذه مصدر
+ارتباك شديد للمستخدمين حتى اتّخذوا الخطوة النادرة جدًّا من إطلاق تغيير مُخِلِق للغة. في
+C# 5، تنشئ كل دورة متغيّرًا جديدًا تمامًا.</p>
+<p>حلقات <code>for</code> القديمة بأسلوب C أصعب. بند الزيادة يبدو حقًّا كأنّه تغيير. وهذا يعني وجود
+متغيّر واحد يُحدَّث في كل خطوة. لكن نادرًا ما يكون <em>مفيدًا</em> أن تتشارك كل دورة متغيّر
+الحلقة. الوقت الوحيد الذي يمكنك حتى كشف فيه هذا هو حين تلتقطه الإغلاقات. ونادرًا ما
+يكون من المفيد أن يكون لديك إغلاق يشير إلى متغيّر قيمته هي القيمة التي جعلتك تخرج من
+الحلقة.</p>
+<p>الجواب المفيد عمليًّا على الأرجح هو فعل ما تفعله JavaScript مع <code>let</code> في حلقات <code>for</code>.
+اجعل يبدو كأنّه تغيير لكن أنشئ في الواقع متغيّرًا جديدًا في كل مرّة، لأنّ هذا هو ما
+يريده المستخدمون. إنّه غريب نوعًا ما حين تفكّر فيه.</p>
+</div>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/crafting-interpreters/calls-and-functions/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الاستدعاءات والدوال</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/crafting-interpreters/local-variables/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المتغيّرات المحلّية</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ucc8xn = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

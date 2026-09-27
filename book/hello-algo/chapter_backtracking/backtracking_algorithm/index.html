@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="خوارزمية التتبّع الرجعي — التتبّع الرجعي"/><!----><title>خوارزمية التتبّع الرجعي | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -61,7 +61,7 @@
 }
 </code></pre>
 </div>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--preorder_find_nodes.png" alt="البحث عن العقد في الاجتياز المسبق"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--preorder_find_nodes.png" alt="البحث عن العقد في الاجتياز المسبق"></p>
 <h2 id="المحاولة-والتتبع-الرجعي">المحاولة والتتبّع الرجعي</h2>
 <p><strong>سُمّيت خوارزمية التتبّع الرجعي بهذا الاسم لأنها تستخدم استراتيجيتَي «المحاولة» و«التتبّع الرجعي» عند البحث في فضاء الحلول</strong>. وعندما تصادف الخوارزمية حالة لا تستطيع فيها المضي قدماً أو لا تجد حلاً يحقق القيود، فإنها تلغي الاختيار السابق، وتعود إلى حالة سابقة، وتجرب خيارات ممكنة أخرى.</p>
 <p>في المثال 1، تمثل زيارة كل عقدة «محاولة»، بينما يمثل تجاوز عقدة ورقية أو عبارة <code>return</code> التي تعيد الاجتياز إلى العقدة الأب «تتبّعاً رجعياً».</p>
@@ -130,7 +130,7 @@
 </code></pre>
 </div>
 <p>«التشذيب» مصطلح معبّر. وكما يوضح الشكل التالي، أثناء عملية البحث، <strong>نقوم «بتشذيب» فروع البحث التي لا تحقق القيود</strong>، متجنبين بذلك كثيراً من المحاولات بلا معنى، وبالتالي نحسّن كفاءة البحث.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--preorder_find_constrained_paths.png" alt="التشذيب وفق القيود"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--preorder_find_constrained_paths.png" alt="التشذيب وفق القيود"></p>
 <h2 id="شيفرة-الإطار">شيفرة الإطار</h2>
 <p>بعد ذلك، نحاول استخلاص إطار عام يتمحور حول «المحاولة والتتبّع الرجعي والتشذيب» في التتبّع الرجعي لتحسين عمومية الشيفرة.</p>
 <p>في شيفرة الإطار التالية، تمثّل <code>state</code> الحالة الحالية للمسألة، وتمثّل <code>choices</code> الخيارات المتاحة في الحالة الحالية:</p>
@@ -214,7 +214,7 @@
 </code></pre>
 </div>
 <p>وفق نص المسألة، ينبغي أن نواصل البحث بعد العثور على عقدة قيمتها $7$. <strong>لذلك نحتاج إلى إزالة عبارة <code>return</code> بعد تسجيل الحل</strong>. ويقارن الشكل التالي عملية البحث مع وجود عبارة <code>return</code> وبدونها.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--backtrack_remove_return_or_not.png" alt="مقارنة عملية البحث مع عبارة return وبدونها"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--backtrack_remove_return_or_not.png" alt="مقارنة عملية البحث مع عبارة return وبدونها"></p>
 <p>وبالمقارنة مع الشيفرة المبنية على الاجتياز المسبق، تبدو الشيفرة المبنية على إطار خوارزمية التتبّع الرجعي أكثر إسهاباً، لكنها أكثر عمومية. وفي الواقع، <strong>يمكن حل كثير من مسائل التتبّع الرجعي داخل هذا الإطار</strong>. ولا نحتاج إلا إلى تعريف <code>state</code> و<code>choices</code> للمسألة المحددة وتنفيذ كل دالة في الإطار.</p>
 <h2 id="المصطلحات-الشائعة">المصطلحات الشائعة</h2>
 <p>لتحليل المسائل الخوارزمية تحليلاً أوضح، نلخص معاني المصطلحات الشائعة المستخدمة في خوارزميات التتبّع الرجعي ونقدم أمثلة مقابلة من المثال 3، كما في الجدول التالي.</p>
@@ -307,7 +307,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -315,8 +315,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

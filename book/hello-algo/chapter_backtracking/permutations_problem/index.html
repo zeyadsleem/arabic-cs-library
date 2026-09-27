@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="مسألة التباديل — التتبّع الرجعي"/><!----><title>مسألة التباديل | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -70,7 +70,7 @@
 <p>من منظور خوارزميات التتبّع الرجعي، <strong>يمكننا تصوّر عملية توليد التباديل كنتيجة لسلسلة من الاختيارات</strong>. لنفترض أن مصفوفة الإدخال هي $[1, 2, 3]$. إذا اخترنا أولاً $1$، ثم اخترنا $3$، وأخيراً اخترنا $2$، حصلنا على التبديل $[1, 3, 2]$. ويعني التتبّع الرجعي التراجع عن اختيار ما ثم تجربة اختيارات أخرى.</p>
 <p>ومن منظور شيفرة التتبّع الرجعي، تتكوّن مجموعة المرشحين <code>choices</code> من جميع عناصر مصفوفة الإدخال، وتكون الحالة <code>state</code> هي العناصر التي اختيرت حتى الآن. لاحظ أن كل عنصر لا يمكن اختياره إلا مرة واحدة، <strong>لذا ينبغي أن تكون جميع عناصر <code>state</code> فريدة</strong>.</p>
 <p>وكما يوضح الشكل أدناه، يمكننا نشر عملية البحث في شجرة تعاودية، حيث تمثل كل عقدة في الشجرة الحالة الحالية <code>state</code>. وبدءاً من العقدة الجذرية، وبعد ثلاث جولات من الاختيارات، نصل إلى عقدة ورقة، وتقابل كل عقدة ورقة تبديلاً واحداً.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--permutations_i.png" alt="الشجرة التعاودية للتباديل"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--permutations_i.png" alt="الشجرة التعاودية للتباديل"></p>
 <h3 id="تشذيب-الاختيارات-المكررة">تشذيب الاختيارات المكررة</h3>
 <p>لضمان اختيار كل عنصر مرة واحدة فقط، نفكّر في إدخال مصفوفة منطقية <code>selected</code>، حيث يشير <code>selected[i]</code> إلى ما إذا كان <code>choices[i]</code> قد اختير. وننفّذ عملية التشذيب التالية استناداً إليها.</p>
 <ul>
@@ -78,7 +78,7 @@
 <li>عند اجتياز قائمة المرشحين <code>choices</code>، نتخطى جميع العقد التي اختيرت، وهذا هو التشذيب.</li>
 </ul>
 <p>وكما يوضح الشكل أدناه، لنفترض أننا اخترنا $1$ في الجولة الأولى، و$3$ في الجولة الثانية، و$2$ في الجولة الثالثة. فحينئذٍ نحتاج إلى تشذيب فرع العنصر $1$ في الجولة الثانية، وتشذيب فرعي العنصرين $1$ و$3$ في الجولة الثالثة.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--permutations_i_pruning.png" alt="مثال على تشذيب التباديل"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--permutations_i_pruning.png" alt="مثال على تشذيب التباديل"></p>
 <p>وبمراقبة الشكل أعلاه، نجد أن عملية التشذيب هذه تقلّص حجم فضاء البحث من $O(n^n)$ إلى $O(n!)$.</p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>بعد فهم المعلومات أعلاه، يمكننا ملء الفراغات في الشيفرة القالبية. ولاختصار الشيفرة الإجمالية، لا ننفّذ كل دالة في القالب على حدة، بل ننشرها داخل الدالة <code>backtrack()</code>:</p>
@@ -110,13 +110,13 @@
 </div>
 <p>لنفترض أن مصفوفة الإدخال هي $[1, 1, 2]$. وللتمييز بين العنصرين المكررين $1$، نرمز إلى الثاني منهما بـ $\hat{1}$.</p>
 <p>وكما يوضح الشكل أدناه، فإن نصف التباديل المولَّدة بالطريقة السابقة مكرر.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--permutations_ii.png" alt="تباديل مكررة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--permutations_ii.png" alt="تباديل مكررة"></p>
 <p>فكيف نزيل التباديل المكررة؟ أسلوب مباشر هو استخدام مجموعة تجزئة (hash set) لإزالة تكرار نتائج التباديل مباشرة. غير أن هذا ليس أنيقاً، لأن <strong>فروع البحث التي تولّد تباديل مكررة غير ضرورية وينبغي تحديدها وتشذيبها مبكراً</strong>، وهو ما يحسّن كفاءة الخوارزمية أكثر.</p>
 <h3 id="تشذيب-العناصر-المتساوية">تشذيب العناصر المتساوية</h3>
 <p>راقب الشكل أدناه. في الجولة الأولى، اختيار $1$ أو اختيار $\hat{1}$ مكافئ. وجميع التباديل المولَّدة تحت هذين الاختيارين مكررة. لذلك ينبغي تشذيب $\hat{1}$.</p>
 <p>وبالمثل، بعد اختيار $2$ في الجولة الأولى، ينتج العنصران $1$ و$\hat{1}$ في الجولة الثانية فرعين مكررين أيضاً، لذا ينبغي تشذيب $\hat{1}$ في الجولة الثانية كذلك.</p>
 <p>وهدفنا جوهرياً <strong>هو ضمان ألا يُختار من العناصر المتساوية المتعددة إلا عنصر واحد في جولة اختيار معينة</strong>.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--permutations_ii_pruning.png" alt="تشذيب التباديل المكررة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--permutations_ii_pruning.png" alt="تشذيب التباديل المكررة"></p>
 <h3 id="تنفيذ-الشيفرة">تنفيذ الشيفرة</h3>
 <p>بناءً على شيفرة المسألة السابقة، نهيّئ مجموعة تجزئة <code>duplicated</code> في كل جولة من الاختيارات لتسجيل العناصر التي جُرِّبت بالفعل في تلك الجولة، ونشذّب العناصر المتساوية:</p>
 <p>بافتراض أن العناصر مختلفة مثنى مثنى، فإن عدد تباديل $n$ عنصراً هو $n!$ (المضروب). وعند تسجيل النتائج نحتاج إلى نسخ قائمة طولها $n$، وهو ما يستغرق زمن $O(n)$. <strong>لذلك يكون التعقيد الزمني $O(n! \cdot n)$</strong>.</p>
@@ -128,14 +128,14 @@
 <li><strong>تشذيب العناصر المتساوية</strong>: تحتوي كل جولة من الاختيارات (كل استدعاء للدالة <code>backtrack</code>) على مجموعة <code>duplicated</code>. وهي تسجّل العناصر التي اختيرت في تكرار هذه الجولة (حلقة <code>for</code>)، وهدفها ضمان ألا تُختار العناصر المتساوية إلا مرة واحدة.</li>
 </ul>
 <p>يوضح الشكل أدناه النطاق الفعلي لشرطي التشذيب. لاحظ أن كل عقدة في الشجرة تمثل اختياراً، وأن العقد الواقعة على المسار من الجذر إلى عقدة ورقة تشكّل تبديلاً.</p>
-<p><img src="../../../../images/hello-algo/chapter_backtracking--permutations_ii_pruning_summary.png" alt="النطاق الفعلي لشرطي التشذيب"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_backtracking--permutations_ii_pruning_summary.png" alt="النطاق الفعلي لشرطي التشذيب"></p>
 <!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/hello-algo/chapter_backtracking/backtracking_algorithm"><span class="prev-next__label">السابق</span> <span class="prev-next__title">خوارزمية التتبّع الرجعي</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/hello-algo/chapter_backtracking/subset_sum_problem"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مسألة مجموع المجموعات الجزئية</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -143,8 +143,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

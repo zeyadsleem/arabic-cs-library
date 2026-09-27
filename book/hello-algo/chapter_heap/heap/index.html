@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الكومة — الأكوام (Heaps)"/><!----><title>الكومة | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -43,7 +43,7 @@
 <li><u>الكومة الصغرى (min heap)</u>: قيمة أي عقدة $\leq$ قيم عقدها الفرعية.</li>
 <li><u>الكومة العظمى (max heap)</u>: قيمة أي عقدة $\geq$ قيم عقدها الفرعية.</li>
 </ul>
-<p><img src="../../../../images/hello-algo/chapter_heap--min_heap_and_max_heap.png" alt="الكومة الصغرى والكومة العظمى"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_heap--min_heap_and_max_heap.png" alt="الكومة الصغرى والكومة العظمى"></p>
 <p>وباعتبارها حالة خاصة من الشجرة الثنائية الكاملة، تتمتع الأكوام بالخصائص التالية.</p>
 <ul>
 <li>تُملأ عقد الطبقة السفلى من اليسار إلى اليمين، وتكون عقد الطبقات الأخرى ممتلئة بالكامل.</li>
@@ -182,7 +182,7 @@
 <p>كما ذُكر في فصل «الشجرة الثنائية»، تلائم الأشجار الثنائية الكاملة التمثيل بالمصفوفات. ولأن الأكوام نوع من الأشجار الثنائية الكاملة، <strong>فإننا سنستخدم المصفوفات لتخزين الأكوام</strong>.</p>
 <p>عند تمثيل شجرة ثنائية بمصفوفة، تمثل العناصر قيم العقد، وتمثل الفهارس مواضع العقد في الشجرة الثنائية. <strong>وتُمثَّل علاقات الأب-الابن عبر صيغ ربط الفهارس</strong>.</p>
 <p>وكما هو موضح في الشكل أدناه، بمعطى فهرس $i$، يكون فهرس الابن الأيسر $2i + 1$، وفهرس الابن الأيمن $2i + 2$، وفهرس الأب $(i - 1) / 2$ (قسمة أرضية). وعندما يخرج الفهرس عن الحدود، فهذا يشير إلى عقدة فارغة أو إلى أن العقدة غير موجودة.</p>
-<p><img src="../../../../images/hello-algo/chapter_heap--representation_of_heap.png" alt="تمثيل الأكوام وتخزينها"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_heap--representation_of_heap.png" alt="تمثيل الأكوام وتخزينها"></p>
 <p>يمكننا تغليف صيغة ربط الفهارس في دوال لتسهيل استخدامها لاحقاً:</p>
 <div class="lang-tab">
 <p class="lang-tab__label">Go</p>
@@ -272,7 +272,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -280,8 +280,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

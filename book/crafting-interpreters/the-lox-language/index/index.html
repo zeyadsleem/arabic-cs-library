@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="اللّغة Lox — The Lox Language"/><!----><title>اللّغة Lox | صناعة المفسّرات</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/introduction/index">مقدمة</a></li><!--]--></ul><h3>A Map of the Territory</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-map-of-the-territory/index">خريطة الإقليم</a></li><!--]--></ul><h3>Welcome</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/welcome/index">ترحيب</a></li><!--]--></ul><h3>The Lox Language</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/the-lox-language/index" class="active">اللّغة Lox</a></li><!--]--></ul><h3>Types of Values</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/types-of-values/index">أنواع القيم</a></li><!--]--></ul><h3>Scanning</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning/index">المسح المعجمي</a></li><!--]--></ul><h3>Scanning On Demand</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning-on-demand/index">المسح عند الطلب</a></li><!--]--></ul><h3>Representing Code</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/representing-code/index">تمثيل الشيفرة</a></li><!--]--></ul><h3>Resolving and Binding</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/resolving-and-binding/index">الحَلّ والربط</a></li><!--]--></ul><h3>Statements and State</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/statements-and-state/index">الجمل والحالة</a></li><!--]--></ul><h3>Classes</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes/index">الأصناف</a></li><!--]--></ul><h3>Classes and Instances</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes-and-instances/index">الأصناف والنسخ</a></li><!--]--></ul><h3>Methods and Initializers</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/methods-and-initializers/index">الدوال والمُهيّئات</a></li><!--]--></ul><h3>Inheritance</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/inheritance/index">الوراثة</a></li><!--]--></ul><h3>Superclasses</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/superclasses/index">الأصناف الآباء</a></li><!--]--></ul><h3>Control Flow</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/control-flow/index">التحكّم في المسار</a></li><!--]--></ul><h3>Parsing Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/parsing-expressions/index">تحليل التعبيرات</a></li><!--]--></ul><h3>Evaluating Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/evaluating-expressions/index">تقييم التعبيرات</a></li><!--]--></ul><h3>Strings</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/strings/index">النصوص</a></li><!--]--></ul><h3>Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/functions/index">الدوال</a></li><!--]--></ul><h3>Calls and Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/calls-and-functions/index">الاستدعاءات والدوال</a></li><!--]--></ul><h3>Closures</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/closures/index">الإغلاقات</a></li><!--]--></ul><h3>Local Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/local-variables/index">المتغيّرات المحلّية</a></li><!--]--></ul><h3>A Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-virtual-machine/index">آلة افتراضية</a></li><!--]--></ul><h3>Compiling Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/compiling-expressions/index">ترجمة التعبيرات</a></li><!--]--></ul><h3>A Bytecode Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-bytecode-virtual-machine/index">آلة افتراضية لشيفرة البايت</a></li><!--]--></ul><h3>Chunks of Bytecode</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/chunks-of-bytecode/index">قطع الشيفرة بايت</a></li><!--]--></ul><h3>A Tree-Walk Interpreter</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-tree-walk-interpreter/index">مفسّر يتجوّل على الشجرة</a></li><!--]--></ul><h3>Jumping Back and Forth</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/jumping-back-and-forth/index">القفز ذهابًا وإيابًا</a></li><!--]--></ul><h3>Global Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/global-variables/index">المتغيّرات العامة</a></li><!--]--></ul><h3>Hash Tables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/hash-tables/index">جداول التجزئة</a></li><!--]--></ul><h3>Optimization</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/optimization/index">التحسين</a></li><!--]--></ul><h3>Garbage Collection</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/garbage-collection/index">جمع النفايات</a></li><!--]--></ul><h3>Appendix I</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-i/index">الملحق الأول</a></li><!--]--></ul><h3>Appendix II</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-ii/index">الملحق الثاني</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">The Lox Language</p> <h1>اللّغة Lox</h1></div> <div class="reader-content"><!----><blockquote>
+<p>ما العمل اللطيف الذي يمكنك فعله لشخصٍ ما أكثر من أن تُعدّ له
+الفطور؟</p>
+<p><cite>أنتوني بوردين</cite></p>
+</blockquote>
+<p>سنقضي بقيّة هذا الكتاب في إنارة كلّ زاويةٍ مظلمة من زوايا لغة
+Lox، لكنّ بدءك فوراً في صهر الشيفرة الخاصة بالمفسّر دون أن
+تلمح ولو لمحةً إلى ما سننتهي إليه يبدو قاسياً.</p>
+<p>وفي الوقت نفسه، لا أريد أن أجرك خلال صفحاتٍ من الجداول
+مواصفات قبل أن تصل إلى <span name="home">محرّرك</span> للنصوص.
+لذلك ستكون هذه مقدّمةً لطيفةً وودّية إلى Lox. وستُهمل فيها
+كثيرٌ من التفاصيل والحالات الحدّية. فلدينا وقتٌ وفير لتلك
+لاحقاً.</p>
+<aside name="home">
+<p>الدرس التعليميّ ليس ممتعاً إن لم تستطع تجربة الشيفرة بنفسك.
+للأسف، لا يتوفّر لديك مفسّر Lox بعد، لأنّك لم تبنِ واحداً!</p>
+<p>لا تخف. يمكنك استعمال <a href="https://github.com/munificent/craftinginterpreters">المفسّر الخاص بيّ</a>.</p>
+</aside>
+<h2 id="مرحبا-lox">مرحباً، Lox</h2>
+<p>وهذا أوّل مذاق لك لـ<span name="salmon">Lox</span>:</p>
+<aside name="salmon">
+<p>أوّل مذاق لك للّغة Lox، أي للّغة بعينها. لا أعرف إن كنتَ جرّبتَ
+سلمون المعالجة المدخّن على البارد من قبل. وإن لم يكن كذلك،
+فجرّبه أيضاً.</p>
+</aside>
+<pre><code class="language-lox">// Your first Lox program!
+print &quot;Hello, world!&quot;;
+</code></pre>
+<p>وكما توحي بذلك تعليق السطر الذي يبدأ بـ <code>//</code> والفاصلة المنقوطة
+في آخره، فإنّ صياغة Lox تنتمي إلى عائلة C. (ولا توجد أقواس
+حول النصّ لأنّ <code>print</code> جملة مدمجة، وليست دالة في مكتبة.)</p>
+<p>والآن، لن أدّعي أنّ صياغة <span name="c">C</span> <em>رائعة</em>. فلو
+أردنا شيئاً أنيقاً لاستنسخنا Pascal أو Smalltalk على الأرجح. ولو
+أردنا أن نذهب إلى حدّ التصغير الإسكندنافي الكامل لفعلنا Scheme.
+ولكلّ منها مزاياها.</p>
+<aside name="c">
+<p>أنا متحيّزٌ قطعاً، لكنّي أظنّ صياغة Lox نظيفة إلى حدٍّ كبير.
+فأخطر مشكلات قواعد C تقع حول الأنواع. فقد كان لدينيس ريتشي
+فكرة اسمها &quot;<a href="http://softwareengineering.stackexchange.com/questions/117024/why-was-the-c-syntax-for-arrays-pointers-and-functions-designed-this-way">الإعلان يعكس الاستعمال</a>&quot;، حيث تعكس
+تصريحاتُ المتغيّرات العملياتِ التي كان عليك إجراؤها على
+المتغيّر للوصول إلى قيمةٍ من النوع الأساس. فكرةٌ ذكية، لكنّي
+لا أظنّها أثمرت كثيراً في الممارسة.</p>
+<p>ولّا لغة Lox أنواعاً ساكنة، لذا نتفادى ذلك.</p>
+</aside>
+<p>ما الذي تملكه الصياغة الشبيهة بـC بدلاً من ذلك هو أمرٌ ستجده
+في اللّغة أكثر غالباً: <em>المألوفيّة</em>. وأنا أعرف أنّك مرتاحٌ
+بمثل هذا النمط، لأنّ اللغتين اللتين سنستعملهما <em>لتنفيذ</em>
+Lox -- Java و C -- ترثان هكذا أيضاً. واستعمال صياغة مشابهة
+لـLox يعني أنّ أمامك أمراً واحداً أقلّ لتتعلّمه.</p>
+<h2 id="لغة-عالية-المستوى">لغة عالية المستوى</h2>
+<p>بينما انتهى هذا الكتاب أكبر مما كنت آمل، فهو ما زال أصغر من
+أن يسع لغةً ضخمة مثل Java. ولكي نتّسع في هذه الصفحات لتنفيذين
+كاملين للّغة Lox، لا بدّ أن تكون Lox نفسها مضغوطةً إلى حدٍّ
+كبير.</p>
+<p>وحينما أفكّر في اللّغات التي تكون صغيرة لكن نافعة، تتبادر إلى
+ذهني لغات النصوص &quot;العالية المستوى&quot; مثل <span
+name="js">JavaScript</span> و Scheme و Lua. ومن هذه الثلاث،
+تبدو Lox أقربها إلى JavaScript، في المقام الأوّل لأنّ معظم
+لغات صيغة C كذلك. وكما سنتعلّم لاحقاً، فإنّ نهج Lox في
+النطاق يتبع Scheme عن قرب. أمّا نكهة C من Lox التي سنبنيها في
+[الجزء الثالث][] فمديونة إلى حدٍّ كبير لتطبيق Lua النظيف
+الكفؤ.</p>
+<aside name="js">
+<p>بعد أن استحوذت JavaScript على العالم وصارت تُستعمل لبناء
+تطبيقاتٍ ضخمة، يصعب تصوّرها كلّغةِ &quot;نصوصٍ صغيرة&quot;. لكنّ برندان
+آيخ برمج أوّل مفسّر JS داخل Netscape Navigator في <em>عشرة
+أيام</em> كي تتحرّك الأزرار في صفحات الويب. وقد نمت JavaScript منذ
+ذلك الحين، لكنّها كانت ذات يوم لغةً صغيرةً لطيفة.</p>
+<p>ولأنّ آيخ ركّب JS من المواد الخام والوقت نفسيهما تقريباً اللذين
+ركّب بهما حلقةً من مسلسل MacGyver، فإنّ فيها بعض الزوايا
+الدلالية الغريبة التي تظهر فيها أشرطة اللصق ومشابكُ الورق.
+أشياء مثل رفع التصريحات (hoisting)، و<code>this</code> المربوطة
+ديناميكياً، والثغرات في المصفوفات، والتحويلات الضمنية.</p>
+<p>وقد تمكّنت من أن آخذ وقتي في Lox، لذا ينبغي أن تكون أنظف
+قليلاً.</p>
+</aside>
+<p>تتشارك Lox مع تلك اللّغات الثلاث جانبَين آخرين:</p>
+<h3 id="التنميط-الديناميكي">التنميط الديناميكي</h3>
+<p>Lox مُنمَّطة ديناميكياً. فيمكن للمتغيّرات أن تخزّن قيماً من أيّ
+نوع، بل يمكن للمتغيّر الواحد أن يخزّن قيماً من أنواعٍ مختلفة في
+أوقاتٍ مختلفة. فإن حاولتَ إجراء عمليةٍ على قيمٍ من النوع الخطأ
+-- كأن تقسم عدداً على نصّ مثلاً -- فسيُكتشف الخطأ ويُبلّغ عنه
+في وقت التشغيل.</p>
+<p>وهناك أسبابٌ كثيرة تُحبّ بها <span name="static">الأنواع
+الساكنة</span>، لكنّها لا تُرجّح الأسباب العملية لاختيار الأنواع
+الديناميكيّة في Lox. فنظامُ أنواعٍ ساكنٍ عملٌ ضخم في التعلّم
+والتنفيذ. وتخطّيها يمنحك لغةً أبسط وكتاباً أقصر. وسنُقلع
+مفسّرنا ليعمل وينفّذ قطعاً من الشيفرة في أبكر وقت إن أجّلنا
+فحص الأنواع إلى وقت التشغيل.</p>
+<aside name="static">
+<p>بعد كلّ شيء، فإنّ اللغتين اللتين سنستعملهما <em>لتنفيذ</em> Lox كلتاهما
+مُنمَّطة ساكناً.</p>
+</aside>
+<h3 id="إدارة-الذاكرة-التلقائية">إدارة الذاكرة التلقائيّة</h3>
+<p>توجد اللّغات عالية المستوى كي تُزيل عن كاهلك العمل الشاقّ
+المُعرَّض للخطأ في المستويات الدنيا، فما أتعسّ من إدارة تخصيص
+والذاكرة وتحريرها يدوياً؟ لا أحد يستيقظ ليحيّي شمس الصباح
+قائلاً: &quot;لا أطيق الانتظار لأحدّد الموضع الصحيح لأُنادي فيه
+<code>free()</code> لكلّ بايت من الذاكرة أُخصّصه اليوم!&quot;
+&quot;لا أطيق الانتظار لأحدّد الموضع الصحيح لأُنادي فيه <code>free()</code>
+لكلّ بايت من الذاكرة أُخصّصه اليوم!&quot;</p>
+<p>وهناك تقنيّتان رئيسيّتان <span name="gc">لإدارة الذاكرة</span>:
+<strong>العدّ بالمراجع</strong> (reference counting) و<strong>جمع النفايات
+بالتتبّع</strong> (tracing garbage collection) (ويُسمّى عادةً <strong>جمع
+النفايات</strong> (garbage collection) أو <strong>GC</strong> فقط). وعدّادات
+المراجع أبسط بكثير في التنفيذ -- وأظنّ أنّ هذا هو سبب بدء Perl
+و PHP و Python جميعاً باستعمالها. لكنّ مع الوقت تصبح قيود عدّ
+المراجع مزعجةً أكثر من اللازم. وانتهت تلك اللّغات جميعاً في
+النهاية إلى إضافة جامع نفايات تتبّعي كامل، أو على الأقلّ ما
+يكفي منه لتنظيف دورات الأشياء.</p>
+<aside name="gc">
+<p>عملياً، يُعدّ العدّ بالمراجع والتتبّع طرفَين متطرّفين من
+طيفٍ واحد أكثر من كونهما جانبَين متعارضَين. فمعظم أنظمة
+العدّ بالمراجع تنتهي إلى إجراء بعض التتبّع لمعالجة الدورات،
+وحاجزَا الكتابة في جامعٍ جيليّ يبدوان أشبه قليلاً
+باستدعاءات الاحتفاظ (retain) إن أمعنتَ النظر.</p>
+<p>للاطّلاع على الكثير عن هذا، انظر &quot;<a href="https://researcher.watson.ibm.com/researcher/files/us-bacon/Bacon04Unified.pdf">نظرية موحّدة لجمع
+النفايات</a>&quot; (PDF).</p>
+</aside>
+<p>للجمع التتبّعيّ سمعةٌ مُرعبة. فهو فعلاً مُرهقٌ قليلاً أن تعمل
+على مستوى الذاكرة الخام. وتنقيح أخطاء جامع نفايات قد يتركك
+ت يرى في أحلامك مطبوعاتٍ سداسية. لكنّ تذكّر أنّ هذا الكتاب
+في كون Lox الصغير هذا، الذرّات التي يتكوّن منها كلّ المادة هي
+بكتابة جامع نفايات خاصّنا. وأظنّ أنّك ستجد الخوارزمية
+بسيطةً إلى حدٍّ كبير وممتعةً في التنفيذ.</p>
+<h2 id="أنواع-البيانات">أنواع البيانات</h2>
+<p>في كون Lox الصغير هذا، الذرّات التي يتكوّن منها كلّ المادّة هي
+أنواع البيانات المدمجة. ولا توجد سوى حفنة:</p>
+<ul>
+<li>
+<p><strong><span name="bool">القيم المنطقيّة</span>.</strong> لا يمكنك البرمجة دون
+منطق، ولا يمكنك المنطق دون قيم منطقيّة. &quot;صحيح&quot; و&quot;خطأ&quot;،
+Yin و Yang في البرمجيات. وخلافاً لبعض اللّغات القديمة التي
+تعيد توظيف نوعٍ قائم لتمثيل الصدق والكذب، تمتلك Lox نوعاً
+منطقيّاً مخصّصاً. ربما لا نعمل في هذه الرحلة بأسلوبٍ متأنٍّ،
+لكنّنا لسنا <em>بُوّاب</em>.</p>
+<aside name="bool">
+<p>متغيّرات القيم المنطقيّة هي نوع البيانات الوحيد في Lox
+المسمّى على اسم شخص، وهو جورج بول، ولهذا تُكتب كلمة
+&quot;Boolean&quot; بحرفٍ كبير. وقد مات عام 1864، قبل قرنٍ تقريباً
+من أن تحوّل الحاسوبات الرقمية جبره إلى كهرباء. وأتساءل
+ماذا كان سيقول لو رأى اسمه موزّعاً على مليارات أسطر شيفرة
+Java.</p>
+</aside>
+<p>وهناك قيمتان منطقيّتان بالطبع، لكلٍّ منهما قيمةٌ حرفية
+(literal).</p>
+<pre><code class="language-lox">true;  // Not false.
+false; // Not *not* false.
+</code></pre>
+</li>
+<li>
+<p><strong>الأعداد.</strong> تمتلك Lox نوعاً واحداً فقط من الأعداد: أعداد
+الفاصلة العائمة ذاتُ الدقة المزدوجة. وبما أنّ أعداد الفاصلة
+العائمة تستطيع أيضاً أن تمثّل مدىً واسعاً من الأعداد الصحيحة،
+فإنّ ذلك يغطّي مساحةً كبيرة، مع إبقاء الأمور بسيطة.</p>
+<p>تمتلك اللّغات المتكاملة صياغاتٍ كثيرة للأعداد -- ست عشري،
+وعلم الأعداد، وثماني، وكلّ أنواع المرح هذه. وسنكتفي بالقيم
+الحرفية (literals) الأعداد الأساسية الصحيحة والعشرية.</p>
+<pre><code class="language-lox">1234;  // An integer.
+12.34; // A decimal number.
+</code></pre>
+</li>
+<li>
+<p><strong>النصوص.</strong> لقد رأينا قيمةً نصّيةً حرفية في المثال الأوّل
+بالفعل. وكما في معظم اللّغات، تُحاط النصوص بعلامتَي تنصيص
+مزدوجَتين.</p>
+<pre><code class="language-lox">&quot;I am a string&quot;;
+&quot;&quot;;    // The empty string.
+&quot;123&quot;; // This is a string, not a number.
+</code></pre>
+<p>وكما سنرى حين نصل إلى تنفيذها، فهناك قدرٌ كبير من
+التعقيد مختبئ في ذلك التسلسل البريء من <span
+name="char">المحارف</span>.</p>
+<aside name="char">
+<p>حتى كلمة &quot;محرف&quot; نفسها هي حيلة. هل هو ASCII؟ Unicode؟ نقطة
+شيفرة أم &quot;مجموعة علامات رسومية&quot; (grapheme cluster)؟ وكيف
+تُرمَّز المحارف؟ هل لكلّ محرف حجمٌ ثابت، أم أنّها قد
+تتفاوت؟</p>
+</aside>
+</li>
+<li>
+<p><strong>Nil.</strong> وهناك قيمةٌ مدمجةٌ أخيرة لم تُدعَ قطّ إلى الحفلة،
+لكنّها تبدو دائماً ما تحضر. وهي تمثّل &quot;لا قيمة&quot;. تُسمّى
+&quot;null&quot; في لُغاتٍ كثيرة أخرى. أمّا في Lox فنكتبها <code>nil</code>. (وحين
+نصل إلى تنفيذها، سيساعدنا ذلك على التمييز بين <code>nil</code> الخاصة
+بـLox وبين <code>null</code> في Java أو C.)</p>
+<p>وهناك حججٌ جيّدة لعدم وجود قيمة null في اللّغة، إذ إنّ أخطاء
+المؤشّرات الفارغة بلاءُ صناعتنا. فلو كنا ننفّذ لغةً مُنمَّطة
+ساكناً، لكان الأمر يستحقّ محاولة منعها. لكن في اللّغة
+المُنمَّطة ديناميكياً، يكون التخلّص منها أحياناً أكثر إزعاجاً
+من وجودها.</p>
+</li>
+</ul>
+<h2 id="التعبيرات">التعبيرات</h2>
+<p>إذا كانت أنواع البيانات المدمجة وقيمها الحرفية ذرّات، فلا بدّ
+أن تكون <strong>التعبيرات</strong> (expressions) هي الجزيئات. وسيكون معظمها
+مألوفاً لك.</p>
+<h3 id="العمليات-الحسابية">العمليات الحسابيّة</h3>
+<p>تقدّم Lox معاملات الحساب الأساسيّة التي تعرفها وتحبّها من C
+ومن لغاتٍ أخرى:</p>
+<pre><code class="language-lox">add + me;
+subtract - me;
+multiply * me;
+divide / me;
+</code></pre>
+<p>ولأنّها <em>اثنان</em>، فإنّ هذه المعاملات تُسمّى <strong>معاملات ثنائيّة</strong>
+(binary). (وليس لها أيّ علاقة باستعمال &quot;ثنائي&quot; بمعنى الآحاد
+والأصفار.) ولأنّ المعامل <span name="fixity">ثابت</span> <em>في</em>
+وسط المعاملات، فإنّها تُسمّى أيضاً معاملات <strong>وَسطيّة</strong> (infix)
+(بخلاف المعاملات <strong>السابقة</strong> (prefix) التي يأتي المعامل فيها
+قبل المعاملات، و<strong>اللاحقة</strong> (postfix) التي يأتي بعدها).</p>
+<aside name="fixity">
+<p>هناك بعض المعاملات التي لها أكثر من معاملَين، وتتشابك المعاملات
+بينها. وأشيع ما يُستعمل منها هو معامل &quot;الشرطي&quot; أو &quot;الثلاثي&quot; في
+C وأقرانها:</p>
+<pre><code class="language-c">condition ? thenArm : elseArm;
+</code></pre>
+<p>ويسمّي بعضهم هذه المعاملات <strong>مختلطة</strong> (mixfix). وتتيح لك بعض
+اللّغات أن تعرّف معاملاتك الخاصّة وتتحكّم في مواضعها -- أي في
+&quot;ثباتها&quot; (fixity).</p>
+</aside>
+<p>أحد معاملات الحساب هو في الواقع معاملٌ <strong>محدَّد</strong> (infix)
+و<strong>سابق</strong> (prefix) في آنٍ واحد. فمعامل <code>-</code> يمكن أن يُستعمل أيضاً
+لِـنفي عدد.</p>
+<pre><code class="language-lox">-negateMe;
+</code></pre>
+<p>وجميع هذه المعاملات تعمل على الأعداد، وتمرير أيّ أنواعٍ أخرى
+إليها خطأ. والاستثناء هو معامل <code>+</code> -- يمكنك أيضاً تمرير إليه
+نصّين لِسلسلتِهما.</p>
+<h3 id="المقارنة-والتساوي">المقارنة والتساوي</h3>
+<p>ولنتابع، فلديك بضعة معاملاتٍ أخرى تُعيد دائماً نتيجةً منطقيّة.
+ويمكنك مقارنة الأعداد (الأعداد فقط) باستخدام معاملات المقارنة
+القديمة المحترمة.</p>
+<pre><code class="language-lox">less &lt; than;
+lessThan &lt;= orEqual;
+greater &gt; than;
+greaterThan &gt;= orEqual;
+</code></pre>
+<p>ويمكنك اختبار قيمتين من أيّ نوعٍ للتساوي أو عدم التساوي.</p>
+<pre><code class="language-lox">1 == 2;         // false.
+&quot;cat&quot; != &quot;dog&quot;; // true.
+</code></pre>
+<p>حتى مع اختلاف الأنواع.</p>
+<pre><code class="language-lox">314 == &quot;pi&quot;; // false.
+</code></pre>
+<p>قيم الأنواع المختلفة <em>لا</em> تكون متكافئة أبداً.</p>
+<pre><code class="language-lox">123 == &quot;123&quot;; // false.
+</code></pre>
+<p>أنا معاذ ضد التحويلات الضمنية في الغالب.</p>
+<h3 id="المعاملات-المنطقية">المعاملات المنطقيّة</h3>
+<p>معامل النفي، وهو معاملٌ سابق على الصنف <code>!</code>، يُعيد <code>false</code> إن
+كان معاملُه صحيحاً، والعكس.</p>
+<pre><code class="language-lox">!true;  // false.
+!false; // true.
+</code></pre>
+<p>والمعاملان المنطقيّان الآخران هما بالفعل بنائيا تحكّم في
+هيئة تعبيرات. فالتعبير <span name="and"><code>and</code></span> يحدّد ما
+إذا كان قيمتان <em>كلتاهما</em> صحيحتان. فهو يُعيد المعامل الأيسر إن
+كان خطأً، وإلاّ فالمعامل الأيمن.</p>
+<pre><code class="language-lox">true and false; // false.
+true and true;  // true.
+</code></pre>
+<p>وتعبير <code>or</code> يحدّد ما إذا كانت أيّ من قيمتين (أو كلتاهما)
+صحيحة. فهو يُعيد المعامل الأيسر إن كان صحيحاً، وإلاّ فالمعامل
+الأيمن.</p>
+<pre><code class="language-lox">false or false; // false.
+true or false;  // true.
+</code></pre>
+<aside name="and">
+<p>استعملتُ <code>and</code> و <code>or</code> هنا بدل <code>&amp;&amp;</code> و <code>||</code> لأنّ Lox لا تستعمل
+<code>&amp;</code> و <code>|</code> معاملاتٍ ثنائيةً (bitwise). بدا لي غريباً أن نقدّم
+الصيغ مزدوجة المحارف دون المفردة.</p>
+<p>وأنا أيضاً أحبّ نوعاً ما استعمال الكلمات هنا، لأنها في الحقيقة
+بنية تحكّمٍ في التنفيذ لا معاملاتٍ بسيطة.</p>
+</aside>
+<p>وسبب كون <code>and</code> و <code>or</code> أشبه ببنايا التحكّم في التنفيذ هو أنّهما
+<strong>يتحقّقان شرطاً ويقفان مبكّراً</strong> (short-circuit). فـ<code>and</code> لا
+تعيد المعامل الأيسر فحسب إذا كان خطأً، بل لا تُقيّم المعامل
+الأيمن <em>حتى</em>. وبالمقابل (عكساً بالتناسب؟)، إذا كان المعامل
+الأيسر لتعبير <code>or</code> صحيحاً، تُتخطّى العملية على اليمين.</p>
+<h3 id="الأسبقية-والتجميع">الأسبقية والتجميع</h3>
+<p>كلّ هذه المعاملات لها الأسبقية والارتباطية (associativity)
+نفسهما اللذين تتوقّعهما قادماً من C. (وحين نصل إلى التحليل
+النحوي، سنصبح <em>أدقّ</em> بكثير في ذلك.) وفي الحالات التي لا تكون
+فيها الأسبقية هي ما تريد، يمكنك استعمال <code>()</code> لتجميع الأشياء.</p>
+<pre><code class="language-lox">var average = (min + max) / 2;
+</code></pre>
+<p>ولأنّها ليست مثيرة للاهتمام تقنياً، فقد حذفتُ بقيّة تشكيلة
+المعاملات المعتادة من لغتنا الصغيرة. لا معاملات ثنائية
+(bitwise)، ولا إزاحة (shift)، ولا باقٍ (modulo)، ولا معاملات
+شرطيّة. أنا لا أُقيّمك، لكنّك ستربح نقاطاً إضافية في قلبي إن
+زدتَ تطبيقك الخاص بـLox بهذه المعاملات.</p>
+<p>إلىها لاحقاً)، فلنرتقِ مستوى.</p>
+<h2 id="الجمل">الجمل</h2>
+<p>الآن وصلنا إلى الجمل (statements). فبينما مهمّة التعبير
+الرئيسيّة أن ينتج <em>قيمة</em>، مهمّة الجملة أن تُنتج <em>أثراً</em>. ولأنّ
+الجمل لا تقوّم إلى قيمة بحكم تعريفها، فإنّها كي تكون نافعة
+لا بدّ أن تغيّر العالم بطريقةٍ ما على أيّ حال -- عادةً بتعديل
+بعض الحالة، أو بقراءة مُدخَلات، أو بإنتاج مخرجات.</p>
+<p>لقد رأيتَ من قبل نوعَين من الجمل. كان أوّلهما:</p>
+<pre><code class="language-lox">print &quot;Hello, world!&quot;;
+</code></pre>
+<p>تُقيّم <span name="print">جملة <code>print</code></span> تعبيراً واحداً
+وتعرض النتيجة على المستخدم. وقد رأيتَ أيضاً بعض الجمل مثل:</p>
+<aside name="print">
+<p>إدماج <code>print</code> في اللّغة بدلاً من مجرّد جعلها دالةً في مكتبةٍ
+أساسيّة هو حيلة. لكنها حيلة <em>مفيدة</em> لنا: فهي تعني أنّ مفسّرنا
+قيد الإنجاز يستطيع أن يبدأ بإخراج المخرجات قبل أن ننفّذ كلّ
+الآليّات المطلوبة لتعريف الدوالّ والبحث عنها بالاسم واستدعائها.</p>
+</aside>
+<pre><code class="language-lox">&quot;some expression&quot;;
+</code></pre>
+<p>تعبيرٌ يليه فاصلة منقوطة (<code>;</code>) يرقي بالتعبير إلى مرتبة الجملة.
+ويُسمّى هذا (بخيالٍ وافٍ) <strong>جملة تعبيرية</strong>
+(expression statement).</p>
+<p>وإذا أردتَ حشر سلسلةٍ من الجمل حيث يُتوقَّع جملةً واحدة، يمكنك
+لفّها في <strong>كتلة</strong> (block).</p>
+<pre><code class="language-lox">{
+  print &quot;One statement.&quot;;
+  print &quot;Two statements.&quot;;
+}
+</code></pre>
+<p>وتؤثّر الكتل أيضاً في النطاق، وهذا ما يقودنا إلى القسم التالي...</p>
+<h2 id="المتغيرات">المتغيّرات</h2>
+<p>تُصرِّح عن المتغيّرات باستخدام جمل <code>var</code>. فإن <span
+name="omit">حذفتَ</span> المُهيّئ (initializer)، فإنّ قيمة
+المتغيّر تكون <code>nil</code> افتراضياً.</p>
+<aside name="omit">
+<p>هذا أحد تلك الحالات التي يكون فيها عدم وجود <code>nil</code> وإجبار كلّ
+متغيّرٍ على التهيئة إلى قيمةٍ ما أكثر إزعاجاً من التعامل مع
+<code>nil</code> نفسه.</p>
+</aside>
+<pre><code class="language-lox">var imAVariable = &quot;here is my value&quot;;
+var iAmNil;
+</code></pre>
+<p>وبعد التصريح عنه، يمكنك بالطبع الوصول إلى المتغيّر وإسناد قيمة
+إليه باستخدام اسمه.</p>
+<p><span name="breakfast"></span></p>
+<pre><code class="language-lox">var breakfast = &quot;bagels&quot;;
+print breakfast; // &quot;bagels&quot;.
+breakfast = &quot;beignets&quot;;
+print breakfast; // &quot;beignets&quot;.
+</code></pre>
+<aside name="breakfast">
+<p>هل تستطيع أن تكتشف أنّني أميل إلى العمل على هذا الكتاب في
+الصباح قبل أن آكل شيئاً؟</p>
+</aside>
+<p>لن أتعمّق هنا في قواعد نطاق المتغيّرات، لأنّنا سنقضي وقتاً
+مدهشاً في الفصول اللاحقة في تخطيط كلّ إنشٍ من تلك القواعد.
+وفي معظم الحالات، يعمل الأمر كما تتوقّع قادماً من C أو Java.</p>
+<h2 id="التحكم-في-التنفيذ">التحكّم في التنفيذ</h2>
+<p>من الصعب كتابة برامج <span name="flow">نافعة</span> إن لم
+يستطع تخطّي بعض الشيفرة أو تنفيذ بعضها أكثر من مرّة. وهذا يعني
+التحكّم في التنفيذ (control flow). وإلى جانب المعاملات المنطقيّة
+التي غطّيناها، ترفع Lox ثلاث جملٍ مباشرةً من C.</p>
+<aside name="flow">
+<p>لدينا <code>and</code> و <code>or</code> بالفعل للتفريع، ويمكننا نظرياً أن نستعمل
+التعاود لتكرار الشيفرة، فذلك كافٍ من الناحية النظرية. غير أنّ
+البرمجة على هذا النمط في لغةٍ بأسلوب أمرٍ (imperative) ستكون
+محرجةً إلى حدٍّ كبير.</p>
+<p>أمّا Scheme، من ناحيةٍ أخرى، فلا تملك بنى تكرارٍ مدمجة. فهي
+<em>فعلاً</em> تعتمد على التعاود في التكرار. وSmalltalk لا تملك بنى
+تفريعٍ مدمجة، وتعتمد على التوجيه الديناميكي (dynamic
+dispatch) لتنفيذ الشيفرة انتقائياً.</p>
+</aside>
+<p>تُنفّذ جملة <code>if</code> إحدى جملتين بناءً على شرطٍ ما.</p>
+<pre><code class="language-lox">if (condition) {
+  print &quot;yes&quot;;
+} else {
+  print &quot;no&quot;;
+}
+</code></pre>
+<p>وتُنفّذ حلقة <span name="do"><code>while</code></span> جسمها مراراً طالما
+كان تعبير الشرط يُقيَّم إلى صحيح.</p>
+<pre><code class="language-lox">var a = 1;
+while (a &lt; 10) {
+  print a;
+  a = a + 1;
+}
+</code></pre>
+<aside name="do">
+<p>استبعدتُ حلقات <code>do while</code> من Lox لأنّها ليست شائعة إلى ذلك
+الحدّ ولن تعلّمك شيئاً لا تعلّمه إياه <code>while</code> أصلاً. فتفضّل
+وأضفها إلى تطبيقك إن سرّك ذلك. هذا شأنك أنت.</p>
+</aside>
+<p>وأخيراً، لدينا حلقات <code>for</code>.</p>
+<pre><code class="language-lox">for (var a = 1; a &lt; 10; a = a + 1) {
+  print a;
+}
+</code></pre>
+<p>وهذه الحلقة تفعل الشيء نفسه الذي تفعله حلقة <code>while</code> السابقة.
+ولمعظم اللّغات الحديثة أيضاً نوعٌ ما من حلقة <span
+name="foreach"><code>for-in</code></span> أو <code>foreach</code> للتكرار الصريح
+على مختلف أنواع التسلسلات. وفي لغةٍ حقيقية، فإنّ ذلك أجمل من حلقة
+<code>for</code> البدائية بأسلوب C التي حصلنا عليها هنا. تُبقي Lox الأمر
+أساسياً.</p>
+<aside name="foreach">
+<p>هذا تنازلٌ أجريته بسبب كيفية تقسيم التنفيذ على الفصول. فحلقة
+<code>for-in</code> تحتاج إلى نوعٍ ما من التوجيه الديناميكي في بروتوكول
+المُكرِّر (iterator) للتعامل مع مختلف أنواع التسلسلات، لكنّنا لا
+نحصل على ذلك إلّا بعد أن ننهي التحكّم في التنفيذ. يمكننا
+العودة وإضافة حلقات <code>for-in</code> لاحقاً، لكنّني لم أرَ أنّ في ذلك
+شيئاً ممتعاً حقّاً لتتعلّمه.</p>
+</aside>
+<h2 id="الدوال">الدوالّ</h2>
+<p>يبدو تعبير استدعاء دالةٍ كما هو في C تماماً.</p>
+<pre><code class="language-lox">makeBreakfast(bacon, eggs, toast);
+</code></pre>
+<p>ويمكنك أيضاً استدعاء دالة دون تمرير أيّ شيء إليها.</p>
+<pre><code class="language-lox">makeBreakfast();
+</code></pre>
+<p>وخلافاً لـRuby مثلاً، فإنّ الأقواس إلزامية في هذه الحالة. فإن
+تركتَها، لن <em>يستدعي</em> الاسمُ الدالة، بل سيشير إليها فحسب.</p>
+<p>ولن تكون اللّغة ممتعة إن لم تستطع تعريف دوالّك الخاصّة. وفي
+Lox، تفعل ذلك بـ<span name="fun"><code>fun</code></span>.</p>
+<aside name="fun">
+<p>لقد رأيتُ لغاتٍ تستعمل <code>fn</code> و <code>fun</code> و <code>func</code> و <code>function</code>. وما
+زلت أنتظر أن أكتشف <code>funct</code> أو <code>functi</code> أو <code>functio</code> في مكانٍ ما.</p>
+</aside>
+<pre><code class="language-lox">fun printSum(a, b) {
+  print a + b;
+}
+</code></pre>
+<p>والآن هو الوقت المناسب لتوضيح بعض <span name="define">المصطلحات</span>.
+فبعض الناس يقذف بكلمتي &quot;وسيط&quot; و&quot;وسيلة&quot; (parameter و argument)
+كأنّهما مترادفتان، وهما كذلك عند كثيرين. وسنقضي وقتاً طويلاً
+في تفصيل أنعم شعرةٍ فارقة في الدلالة، لذا لنُحدّد مصطلحاتنا.
+من الآن فصاعداً:</p>
+<ul>
+<li>
+<p><strong>الوسيلة</strong> (argument) هي قيمةٌ فعليةٌ تمرّرها إلى الدالة
+عند استدعائها. إذن <em>لاستدعاء</em> الدالة قائمةُ وسائل. وأحياناً
+تسمع استعمال <strong>الوسيط الفعليّ</strong> (actual parameter) لها.</p>
+</li>
+<li>
+<p><strong>الوسيط</strong> (parameter) هو متغيّرٌ يحمل قيمة الوسيلة داخل جسم
+الدالة. إذن تصريحُ الدالة <em>له قائمة وسائط</em>. وآخرون يسمّون
+هذه <strong>الوسائط الصورية</strong> (formal parameters) أو مجرّد
+<strong>الصوريّات</strong> (formals).</p>
+</li>
+</ul>
+<aside name="define">
+<p>بمناسبة الحديث عن المصطلحات، تميّز بعض اللّغات المُنمَّطة ساكناً
+مثل C بين <em>التصريح</em> بدالة و<em>تعريفها</em>. فالتصريح يربط نوع الدالة
+باسمها بحيث يمكن فحص أنواع الاستدعاءات، لكنّه لا يوفّر جسماً.
+والتعريف تصريحٌ للدالة يملأ جسماً أيضاً بحيث يمكن تصريف الدالة.</p>
+<p>ولأنّ Lox مُنمَّطة ديناميكياً، فهذا التمييز غير ذو معنى. تصريحُ
+الدالة يحدّدها بالكامل بما في ذلك جسمها.</p>
+</aside>
+<p>ويكون جسم الدالة دائماً كتلةً. وداخلها يمكنك إرجاع قيمة (return)
+باستخدام جملة <code>return</code>.</p>
+<pre><code class="language-lox">fun returnSum(a, b) {
+  return a + b;
+}
+</code></pre>
+<p>وإذا بلغ التنفيذ نهاية الكتلة دون أن يصطدم بـ<code>return</code>، فإنّه
+<span name="sneaky">يُرجِع</span> ضمناً <code>nil</code>.</p>
+<aside name="sneaky">
+<p>أرأيتَ؟ قلتُ لك إنّ <code>nil</code> ستتسلّل إلينا ونحن لا نراقب.</p>
+</aside>
+<h3 id="الإغلاقات">الإغلاقات</h3>
+<p>الدوالّ في Lox <em>من الدرجة الأولى</em>
+(first class)، وهذا يعني ببساطة أنّها قيمٌ حقيقيةٌ تستطيع أن
+تأخذ مرجعاً إليها، وتخزّنها في متغيّرات، وتتداولها، وما إلى
+ذلك. وهذا يعمل:</p>
+<pre><code class="language-lox">fun addPair(a, b) {
+  return a + b;
+}
+
+fun identity(a) {
+  return a;
+}
+
+print identity(addPair)(1, 2); // Prints &quot;3&quot;.
+</code></pre>
+<p>ولأنّ تصريحات الدوالّ جمل، يمكنك تصريح دوالّ محلّية داخل دالةٍ
+أخرى.</p>
+<pre><code class="language-lox">fun outerFunction() {
+  fun localFunction() {
+    print &quot;I'm local!&quot;;
+  }
+
+  localFunction();
+}
+</code></pre>
+<p>وإن جمعتَ بين الدوالّ المحلّية والدوالّ من الدرجة الأولى
+ونطاق الكتل، فتصطدم بهذا الموقف المهمّ:</p>
+<pre><code class="language-lox">fun returnFunction() {
+  var outside = &quot;outside&quot;;
+
+  fun inner() {
+    print outside;
+  }
+
+  return inner;
+}
+
+var fn = returnFunction();
+fn();
+</code></pre>
+<p>هنا، تصل <code>inner()</code> إلى متغيّرٍ محلّي صُرِّح خارج جسمها في
+الدالة المحيطة. هل هذا جائز؟ وبما أنّ لغةً كثيرة استعارت هذه
+الميزة من Lisp، فأنت على الأرجح تعرف أنّ الجواب نعم.</p>
+<p>ولكي يعمل ذلك، لا بدّ أن &quot;تمسك&quot; <code>inner()</code> بمراجع إلى أيّ متغيّراتٍ
+محيطة تستعملها كي تبقى موجودة حتى بعد أن تكون الدالة الخارجية
+قد أعادت. ونسميّ الدوالّ التي تفعل ذلك <span
+name="closure"><strong>إغلاقات</strong></span> (closures). وفي هذه الأيام،
+يُستعمل المصطلح غالباً لكلّ دالةٍ من الدرجة الأولى، وإنّ ذلك
+تسميةٌ خاطئة إلى حدٍّ ما إن لم تكن الدالة تُغلق أيّ متغيّرات.</p>
+<aside name="closure">
+<p>صاغ بيتر ج. لاندين مصطلح &quot;الإغلاق&quot;. نعم، لقد اخترع تقريباً نصف
+مصطلحات لغات البرمجة. وأكثرها خرجت من ورقةٍ واحدة مذهلة،
+&quot;<a href="https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/landin-next-700.pdf">اللّغات البرمجية الـ700 القادمة</a>&quot;.</p>
+<p>ولكي تُنفَّذ هذه النوعية من الدوالّ، تحتاج إلى إنشاء بنية بيانات
+تحزم شيفرة الدالة معاً مع المتغيّرات المحيطة التي تحتاجها.
+وقد سمّاه &quot;إغلاقاً&quot; لأنّه <em>يُغلق على</em> المتغيّرات التي يحتاجها
+ويتمسك بها.</p>
+</aside>
+<p>وكما يمكنك تخيّل، فإنّ تنفيذ هذا يضيف بعض التعقيد، لأنّنا لم نعد
+نستطيع أن نفترض أنّ نطاق المتغيّرات يعمل كالمكدّس تماماً حيث
+تتبخّر المتغيّرات المحلّية لحظة عودة الدالة. وسنمضي وقتاً
+ممتّعاً في تعلّم كيف نجعل هذا يعمل على نحو صحيح وكفؤ.</p>
+<h2 id="الأصناف">الأصناف</h2>
+<p>ولأنّ Lox مُنمَّطة ديناميكياً، ولأنّ نطاقها معجميّ (بمعنى تقريبي
+&quot;كتلي&quot;)، ولأنّ لها إغلاقات، فهي في منتصف الطريق تقريباً إلى أن
+تكون لغةً وظيفية. لكنّك كما سترى، هي في منتصف الطريق تقريباً
+أيضاً إلى أن تكون لغةً موجّهةً نحو الأشياء. ولكلّ النمطين
+مزايا كثيرة، فظننتُ أنّه يستحقّ أن نغطّي بعضاً من كلٍّ منهما.</p>
+<p>ولأنّ الأصناف هُاجمت لأنّها لم ترقَ إلى مستوىضجيجها، دعني
+أشرح أوّلاً لماذا وضعتُها في Lox وفي هذا الكتاب. فهناك سؤالان
+فعلاً:</p>
+<h3 id="لماذا-قد-ترغب-أي-لغة-في-أن-تكون-موجهة-نحو-الأشياء">لماذا قد ترغب أيّ لغة في أن تكون موجّهةً نحو الأشياء؟</h3>
+<p>بعد أننفدت لغةً موجّهةٌ نحو الأشياء مثل Java تذاكرها ولم تعد
+تقدّم إلا عروضاً في الحلبات، لم يعد محبّتها على الموضة. فلماذا
+يصنع أحدهم لغةً <em>جديدة</em> بأشياء؟ أليس هذا أشبه بإصدار موسيقى
+على شريط 8 مسارات؟</p>
+<p>من الصحيح أنّ نوبة &quot;الوراثة كلّ الوقت&quot; في التسعينيات أنتجت
+بعض تسلسلات أصناف وحشية، لكنّ <strong>البرمجة الموجّهة نحو
+الأشياء</strong> (<strong>OOP</strong>) لا تزال ممتعةً إلى حدٍّ كبير. فقد كُتبت
+مليارات الأسطر من الشيفرة الناجحة بلغات OOP، وشُحنت ملايين
+التطبيقات إلى مستخدمين سعداء. ومن المرجّح أنّ أغلبية
+المبرمجين العاملين اليوم يستعملون لغةً موجّهةً نحو الأشياء.
+ولا يمكن أن يكونوا جميعاً <em>مخطئين</em> إلى هذا الحدّ.</p>
+<p>وتحديداً، في اللّغة المُنمَّطة ديناميكياً، تكون الأشياء مفيدةً
+إلى حدٍّ كبير. فنحن نحتاج إلى <em>طريقة</em> ما لتعريف أنواع بيانات
+مركّبة (compound) تحزم كتل من الأشياء معاً.</p>
+<p>وإذا استطعنا أيضاً تعليق الدوالّ عليها، فسنتفادى الحاجة إلى
+أن نبدأ كلّ دوالّنا باسم نوع البيانات التي تعمل عليه كي نتجنّب
+التصادم مع دوالٍ مشابهة لأنواعٍ أخرى. ففي Racket مثلاً، تنتهي
+إلى تسمية دوالّك بأسماء مثل <code>hash-copy</code> (لنسخ جدول تجزئة) و
+<code>vector-copy</code> (لنسخ متجه) كي لا يطأ كلٌّ منهما على الأخرى. أمّا
+الدوالّ (methods) فهي محصورة في الكائن، فيختفي تلك المشكلة.</p>
+<h3 id="لماذا-lox-موجهة-نحو-الأشياء">لماذا Lox موجّهةٌ نحو الأشياء؟</h3>
+<p>باستطاعتي أن أدّعي أنّ الأشياء أعجوبة، لكنّها تبقى خارج نطاق
+الكتاب. فمعظم كتب لغات البرمجة، وخاصة التي تحاول تنفيذ لغةٍ
+كاملة، تُهمل الأشياء. وبالنسبة لي، هذا يعني أنّ الموضوع غير
+مغطّى جيّداً. ونظراً لانتشار هذا النمط الهائل، فإنّ هذا
+الإهمال يجعلني حزيناً.</p>
+<p>بالنظر إلى كم منّا نقضي اليوم كلّه في <em>استعمال</em> لغات OOP، يبدو
+أنّ العالم يمكن أن يستفيد من بعض التوثيق عن كيفية <em>صنع</em> واحدة.
+وكما سترى، تبيّن أنّ هذا مثيرٌ للاهتمام إلى حدٍّ كبير. ليس
+صعباً كما قد تخشى، وليس بسيطاً كما قد تظنّ أيضاً.</p>
+<h3 id="الأصناف-أم-النماذج-الأولية">الأصناف أم النماذج الأوّلية</h3>
+<p>حين نتحدّث عن الأشياء، فهناك فعلياً منهجان: [الأصناف][]
+و[النماذج الأوّلية][] (prototypes). جاء الأصناف أولاً، وهي
+أشيع بفضل C++ و Java و C# وأقرانها. أمّا النماذج الأوّلية
+فكانت فرعاً شبه منسيٍّ إلى أن استحوذت JavaScript على العالم
+عرَضاً.</p>
+<p>وفي اللّغات القائمة على الأصناف، هناك مفهومان أساسيان: النسخ
+(instances) والأصناف. فالنسخ تخزّن حالة كلّ كائن ولديها مرجع
+إلى صنف ذلك النسخة. والأصناف تحوي الدوالّ وسلسلة الوراثة. ولاستدعاء
+دالةٍ على نسخة، يوجد دائماً مستوىٌ من التوجيه غير المباشر. فأنت
+<span name="dispatch">تبحث</span> عن صنف النسخة ثمّ تجد الدالة
+<em>هناك</em>:</p>
+<aside name="dispatch">
+<p>في لغةٍ مُنمَّطة ساكناً مثل C++، يحدث البحث عن الدوالّ عادةً وقت
+التصريف بناءً على النوع <em>الساكن</em> للنسخة، فتعطيك <strong>توجيهاً ساكناً</strong>
+(static dispatch). وبالمقابل، <strong>التوجيه الديناميكي</strong> يبحث عن
+صنف كائن النسخة الفعليّ في وقت التشغيل. وهكذا تعمل الدوالّ
+الافتراضية (virtual methods) في اللّغات المُنمَّطة ساكناً وكلّ
+الدوالّ في لغةٍ مُنمَّطة ديناميكياً مثل Lox.</p>
+</aside>
+<img src="/arabic-cs-library/images/crafting-interpreters/the-lox-language-1.webp" alt="How fields and methods are looked up on classes and instances" />
+<p>أمّا اللّغات القائمة على النماذج الأوّلية <span
+name="blurry">تدمج</span> هذين المفهومين. فلا توجد سوى
+الأشياء -- لا أصناف -- وقد يحتوي كلّ كائنٍ منفرد على حالة ودوالّ.
+ويمكن للأشياء أن ترث من بعضها مباشرةً (أو &quot;تُفوِّض إلى&quot; بلغة
+النماذج الأوّلية):</p>
+<aside name="blurry">
+<p>عملياً، يتلاشى الخطّ الفاصل بين اللّغات القائمة على الأصناف
+والقائمة على النماذج الأوّلية. فمفهوم &quot;دالة الإنشاء&quot; في
+JavaScript <a href="http://gameprogrammingpatterns.com/prototype.html#what-about-javascript">يدفعك إلى Andromeda</a> إلى تحديد أشياء شبيهة
+بالأصناف. وفي المقابل، ترضى Ruby القائمة على الأصناف تماماً
+أن تربط دوالّ بنسخٍ منفردة.</p>
+</aside>
+<img src="/arabic-cs-library/images/crafting-interpreters/the-lox-language-2.webp" alt="How fields and methods are looked up in a prototypal system" />
+<p>وهذا يعني أنّ اللّغات القائمة على النماذج الأوّلية أكثر
+أساسيةً من الأصناف في بعض الجوانب. فهي ممتعةٌ حقّاً في التنفيذ
+لأنّها <em>بسيطة</em> إلى هذا الحدّ. كما أنّها تستطيع التعبير عن كثير
+من الأنماط غير المعتادة التي تصرفك عنها الأصناف.</p>
+<p>لكنّني أطلعتُ على <em>الكثير</em> من الشيفرة المكتوبة بلُغات النماذج
+الأوّلية -- بما فيها <a href="http://finch.stuffwithstuff.com/">بعض ما من صنعي</a>. فهل تعرف ماذا يفعل
+الناس عادةً بكلّ تلك القدرة والمرونة في النماذج الأوّلية؟
+...إنّهم يستعملونها لإعادة اختراع الأصناف.</p>
+<p>لا أعرف <em>لماذا</em> يحدث هذا، لكنّ الناس يبدو أنّهم يفضّلون بشكل
+طبيعي أسلوباً قائماً على الأصناف (كلاسيكي؟ أرستقراطي؟).
+والنماذج الأوّلية <em>أبسط</em> في اللّغة فعلاً، لكنّها لا تنجز ذلك
+على الأرجح إلا بـ<span name="waterbed">دفع</span> التعقيد إلى
+المستخدم. لذا، في حالة Lox، سنوفّر على مستخدمينا هذا العناء
+وندمج الأصناف فيها مباشرةً.</p>
+<aside name="waterbed">
+<p>يسمّي لاري وول، مخترع ونبيّ Perl، هذا &quot;[نظرية حوض
+الماء][]&quot;. فبعض التعقيد جوهريّ ولا يمكن التخلّص منه. فإن
+دفعته إلى الأسفل في مكان، انتفخ في آخر.</p>
+<p>اللّغات القائمة على النماذج الأوّلية لا تلغي تعقيد الأصناف
+قدر ما تجعل <em>المستخدم</em> يأخذ ذلك التعقيد على عاتقه ببناء مكتبات
+برمجةٍ عامّة خاصة به شبيهة بالأصناف.</p>
+</aside>
+<h3 id="الأصناف-في-lox">الأصناف في Lox</h3>
+<p>كفى تبريراً، ولنرَ ما لدينا فعلاً. تضمّ الأصناف في معظم
+اللّغات كوكبةً من الميزات. أما في Lox فقد اخترتُ ما أظنّه
+أسطع نجومها. وتُصرِّح عن الصنف ودوالّه هكذا:</p>
+<pre><code class="language-lox">class Breakfast {
+  cook() {
+    print &quot;Eggs a-fryin'!&quot;;
+  }
+
+  serve(who) {
+    print &quot;Enjoy your breakfast, &quot; + who + &quot;.&quot;;
+  }
+}
+</code></pre>
+<p>يحتوي جسم الصنف على دوالّه. وهي تبدو كتصريحات دوالّ لكن بلا
+الكلمة المفتاحية <code>fun</code> <span name="method">method</span>. وحين
+يُنفَّذ تصريحُ الصنف، تُنشئ Lox كائنَ صنف وتخزّنه في متغيّر
+باسم الصنف. وكما الدوالّ تماماً، الأصناف من الدرجة الأولى في
+Lox.</p>
+<aside name="method">
+<p>لكنّها لا تزال ممتعةً بالقدر نفسه.</p>
+</aside>
+<pre><code class="language-lox">// Store it in variables.
+var someVariable = Breakfast;
+
+// Pass it to functions.
+someFunction(Breakfast);
+</code></pre>
+<p>ثمّ نحتاج إلى طريقة لإنشاء النسخ. يمكننا إضافة كلمةٍ مفتاحية
+شبيهة بـ<code>new</code>، لكنّنا لإبقاء الأمور بسيطة جعلنا الصنف نفسه في
+Lox دالةَ مصنع للنسخ. استدعِ الصنف كدالة، فيُنتج نسخةً جديدة
+من نفسه.</p>
+<pre><code class="language-lox">var breakfast = Breakfast();
+print breakfast; // &quot;Breakfast instance&quot;.
+</code></pre>
+<h3 id="الإنشاء-والتهيئة">الإنشاء والتهيئة</h3>
+<p>الأصناف التي لا تتضمّن سوى سلوكٍ ما ليست مفيدةً إلى حدٍّ كبير.
+فالفكرة وراء البرمجة الموجّهة نحو الأشياء هي حشر السلوك
+<em>والحالة</em> معاً. ولفعل ذلك تحتاج إلى حقول. وتسمح لك Lox، مثل
+غيرها من اللّغات المُنمَّطة ديناميكياً، بإضافة الخصائص على
+الأشياء بحرّية.</p>
+<pre><code class="language-lox">breakfast.meat = &quot;sausage&quot;;
+breakfast.bread = &quot;sourdough&quot;;
+</code></pre>
+<p>والإسناد إلى حقلٍ ينشئه إن لم يكن موجوداً.</p>
+<p>وإذا أردتَ الوصول إلى حقلٍ أو دالةٍ على الكائن الحالي من داخل
+دالة، فاستعمل <code>this</code> القديمة المألوفة.</p>
+<pre><code class="language-lox">class Breakfast {
+  serve(who) {
+    print &quot;Enjoy your &quot; + this.meat + &quot; and &quot; +
+        this.bread + &quot;, &quot; + who + &quot;.&quot;;
+  }
+
+  // ...
+}
+</code></pre>
+<p>ومن حشر البيانات داخل كائنٍ ما هو ضمان أنّ الكائن في حالةٍ
+صالحة وقت إنشائه. ولفعل ذلك يمكنك تعريف مُهيّئ. فإذا كان لصنفك
+دالةٌ اسمها <code>init()</code>، فستُدعى تلقائياً حين يُبنى الكائن. وأيّ
+وسائط تُمرَّر إلى الصنف تُوجَّه إلى مُهيّئه.</p>
+<pre><code class="language-lox">class Breakfast {
+  init(meat, bread) {
+    this.meat = meat;
+    this.bread = bread;
+  }
+
+  // ...
+}
+
+var baconAndToast = Breakfast(&quot;bacon&quot;, &quot;toast&quot;);
+baconAndToast.serve(&quot;Dear Reader&quot;);
+// &quot;Enjoy your bacon and toast, Dear Reader.&quot;
+</code></pre>
+<h3 id="الوراثة">الوراثة</h3>
+<p>تتيح لك كلّ لغةٍ موجّهةٍ نحو الأشياء ليس فقط تعريف الدوالّ بل
+إعادة استعمالها عبر أصنافٍ أو أشياءٍ متعدّدة. ولهذا، تدعم
+Lox الوراثة المفردة (single inheritance). فحين تُصرِّح عن صنف،
+يمكنك تحديد صنفٍ يرث منه باستخدام معامل أصغر-من
+<span name="less">(<code>&lt;</code>)</span>.</p>
+<pre><code class="language-lox">class Brunch &lt; Breakfast {
+  drink() {
+    print &quot;How about a Bloody Mary?&quot;;
+  }
+}
+</code></pre>
+<aside name="less">
+<p>لماذا معامل <code>&lt;</code>؟ لم أشعر برغبةٍ في تقديم كلمة مفتاحية جديدة
+مثل <code>extends</code>. ولا تستعمل Lox الرمز <code>:</code> لأيّ شيء آخر فلم
+أرغب في حجزه هو أيضاً. بدلاً من ذلك، أخذتُ صفحةً من Ruby
+واستعملتُ <code>&lt;</code>.</p>
+<p>وإن كنتَ تعرف أيّ نظرية أنواع، فستلاحظ أنّ هذا الاختيار ليس
+<em>عشوائياً</em> تماماً. فكلّ نسخة من الصنف الفرعي هي نسخة من صنفها
+الأعلى أيضاً، لكنّ هناك نسخاً من الصنف الأعلى قد لا تكون
+نسخاً من الصنف الفرعي. وهذا يعني، في كون الأشياء، أنّ مجموعة
+كائنات الصنف الفرعي أصغر من مجموعة الصنف الأعلى، وإنّ مهووسي
+الأنواع يستعملون عادةً <code>&lt;:</code> للإشارة إلى تلك العلاقة.</p>
+</aside>
+<p>هنا، Brunch هي <strong>الصنف المشتق</strong> (derived class) أو <strong>الصنف
+الفرعي</strong> (subclass)، و Breakfast هي <strong>الصنف الأساس</strong>
+(base class) أو <strong>الصنف الأعلى</strong> (superclass).</p>
+<p>وكلّ دالةٍ معرَّفة في الصنف الأعلى متاحةٌ أيضاً لصنوفه
+الفرعية.</p>
+<pre><code class="language-lox">var benedict = Brunch(&quot;ham&quot;, &quot;English muffin&quot;);
+benedict.serve(&quot;Noble Reader&quot;);
+</code></pre>
+<p>حتى دالة <code>init()</code> ذاتها يتمّ <span name="init">توريثها</span>.
+وعملاً، يريد الصنف الفرعي عادةً أن يعرّف دالة <code>init()</code> خاصّة به
+أيضاً. لكنّ دالة الأصل تحتاج أيضاً إلى أن تُستدعى كي يتمكّن
+الصنف الأعلى من الإبقاء على حالته. ونحتاج إلى طريقة لاستدعاء
+دالةٍ على <em>نسختنا</em> خاصّة من دون أن نمرّ على <em>دوالّنا</em>
+الخاصّة.</p>
+<aside name="init">
+<p>Lox تختلف عن C++ و Java و C# التي لا تورّث المُنشِّئات، لكنّها
+تشبه Smalltalk و Ruby اللتين تورّثهما.</p>
+</aside>
+<p>وكما في Java، تستعمل <code>super</code> لذلك.</p>
+<pre><code class="language-lox">class Brunch &lt; Breakfast {
+  init(meat, bread, drink) {
+    super.init(meat, bread);
+    this.drink = drink;
+  }
+}
+</code></pre>
+<p>هذا كلّ ما في الأمر تقريباً بالنسبة للتجهيز نحو الأشياء. وقد
+حاولتُ إبقاء مجموعة الميزات دنيا. لكنّ بنية الكتاب أرتغلت تنازلاً
+واحداً. فـLox ليست لغةً موجّهةً نحو الأشياء <em>خالصة</em>. ففي لغة
+OOP حقيقية كلّ كائنٍ نسخةٌ من صنف، حتى القيمُ الأوّلية مثل
+الأعداد والقيم المنطقيّة.</p>
+<p>ولأنّنا لا ننفّذ الأصناف إلّا بعد أن نبدأ في التعامل مع الأنواع
+المدمجة بوقتٍ طويل، فإنّ ذلك كان سيكون صعباً. لذا
+فإنّ قيم الأنواع الأوّلية ليست كائناتٍ حقيقية بالمعنى الذي
+تعني به النسخ من الأصناف. فلا لها دوالّ ولا خصائص. ولو كنتُ
+أحاول أن أجعل Lox لغةً حقيقية لمستخدمي حقيقيين لكنّي سأُصلح
+ذلك.</p>
+<h2 id="المكتبة-المعيارية">المكتبة المعياريّة</h2>
+<p>شبهُنا من الانتهاء. هذه هي اللّغة كلّها، فلم يبقَ إلّا المكتبة
+&quot;الأساسيّة&quot; أو &quot;المعياريّة&quot; -- وهي مجموعة الوظائف المنفَّذة
+مباشرةً داخل المفسّر التي يُبنى فوقها كلّ سلوكٍ يعرّفه
+المستخدم.</p>
+<p>هذا أحزنُ أجزاء Lox. فمكتبتها المعياريّة تتجاوز حدود التصغير
+وتقترب من النّيهية الصريحة. فالشيفرة النموذجية في الكتاب لا
+تحتاج إلّا أن نُثبت أنّ الشيفرة تعمل وتفعل ما يُفترض أن تفعله.
+ولذلك لدينا فعلاً جملة <code>print</code> المدمجة.</p>
+<p>ولاحقاً، حين نبدأ في التحسين، سنكتب بعض المعايير (benchmarks)
+ونرى كم يستغرق تنفيذ الشيفرة. وهذا يعني أنّنا نحتاج إلى تتبّع
+الزمن، لذا سنعرّف دالةً مدمجةً واحدة، وهي <code>clock()</code>، التي تُعيد
+عدد الثواني منذ بدء البرنامج.</p>
+<p>و... هذا كلّ شيء. أعرف، صحيح؟ إنّه مُحرِج.</p>
+<p>وإذا أردتَ تحويل Lox إلى لغةٍ نافعةٍ حقّاً، فأوّل ما ينبغي أن
+تفعله هو توسيع هذا. فمعالجة النصوص، والدوالّ المثلثية، ومدخلات
+/مخرجات الملفات، والشبكات، بل حتى <em>قراءة مُدخَلات المستخدم</em>
+ستكون مفيدة. لكنّنا لا نحتاج أيّاً من ذلك لهذا الكتاب، وإضافته
+لن تعلّمك شيئاً مثيراً، لذا تركتُه.</p>
+<p>لا تقلق، فسنملك في اللّغة نفسها الكثير من الأشياء المثيرة
+لنشغلنا بها.</p>
+<div class="challenges">
+<h2 id="التحديات">التحديات</h2>
+<ol>
+<li>
+<p>اكتب بعض برامج Lox النموذجية وشغّلها (يمكنك استعمال تطبيقات
+Lox في <a href="https://github.com/munificent/craftinginterpreters">مستودعي</a>). حاول أن ت come up بسلوكٍ في الحالات
+الحدّية لم أحدّده هنا. هل تفعل ما تتوقّع؟ ولماذا أو لماذا لا؟</p>
+</li>
+<li>
+<p>تترك هذه المقدّمة غير الرسمية <em>الكثير</em> دون تحديد. اكتب عدّة
+أسئلة مفتوحة لديك حول صياغة اللّغة ودلالتها. ما رأيك في
+الإجابات؟</p>
+</li>
+<li>
+<p>Lox لغةٌ صغيرة جداً. ما الميزات التي تظنّ أنها تنقصها
+وستجعل استعمالها في برامجٍ حقيقية مملاً؟ (بطبيعة الحال، من الكتبة،
+من المكتبة المعياريّة.)</p>
+</li>
+</ol>
+</div>
+<div class="design-note">
+<h2 id="ملاحظة-تصميم-التعبيرات-والجمل">ملاحظة تصميم: التعبيرات والجمل</h2>
+<p>تمتلك Lox تعبيراتٍ وجملاً معاً. فبعض اللّغات تُهمل الأخيرة.
+وبدلاً من ذلك، تعامل التصريحات وبنى التحكّم في التنفيذ
+كتعبيراتٍ أيضاً. وهذه اللّغات التي &quot;كلّ شيء فيها تعبير&quot; تميل
+إلى أن تكون ذات نسبٍ وظيفي، وتشمل معظم Lisps و SML و Haskell
+و Ruby و CoffeeScript.</p>
+<p>ولكي تفعل ذلك، فإنّك تحتاج في كلّ بنيةٍ &quot;شبيهة بالجملة&quot; في
+اللّغة أن تقرّر ما القيمة التي تُقيَّم إليها. وبعض ذلك سهل:</p>
+<ul>
+<li>
+<p>يُقيَّم تعبير <code>if</code> إلى نتيجة الفرع الذي اختير. وبالمثل،
+يُقيَّم <code>switch</code> أو أيّ فرعٍ متعدّد المسارات إلى الحالة
+المختارة.</p>
+</li>
+<li>
+<p>يُقيَّم تصريحُ متغيّر إلى قيمة المتغيّر.</p>
+</li>
+<li>
+<p>تُقيَّم الكتلة إلى نتيجة آخر تعبير في التسلسل.</p>
+</li>
+</ul>
+<p>وبعضها أغرب قليلاً. فما الذي ينبغي أن تُقيَّم إليه حلقة؟ فحلقة
+<code>while</code> في CoffeeScript تُقيَّم إلى مصفوفة تحتوي كلّ عنصرٍ كان
+الجسم يُقيَّم إليه. وقد يكون ذلك مفيداً، أو هدراً للذاكرة إن
+لم تكن تحتاج إلى المصفوفة.</p>
+<p>وعليك أيضاً أن تقرّر كيف تتألف هذه التعبيرات الشبيهة بالجمل مع
+التعبيرات الأخرى -- يجب أن تدخلها في جدول أسبقية القواعد. فمثلاً
+تسمح Ruby بما يلي:</p>
+<pre><code class="language-ruby">puts <span class="hljs-number">1</span> + <span class="hljs-keyword">if</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">then</span> <span class="hljs-number">2</span> <span class="hljs-keyword">else</span> <span class="hljs-number">3</span> <span class="hljs-keyword">end</span> + <span class="hljs-number">4</span>
+</code></pre>
+<p>هل هذا ما تتوقّعه؟ هل هو ما يتوقّعه <em>مستخدموك</em>؟ وكيف يؤثر
+هذا في كيفية تصميمك لصياغة &quot;جملك&quot;؟ لاحظ أنّ لدى Ruby <code>end</code>
+صريحةً تخبرك متى يكتمل تعبير <code>if</code>. فمن دونها، يُحتمل أن يُحلَّل
+<code>+ 4</code> كجزءٍ من بند <code>else</code>.</p>
+<p>وتحويل كلّ جملةٍ إلى تعبيرٍ يفرض عليك الإجابة عن بضعة أسئلة
+متشعّبة مثل هذه. وفي المقابل، فأنت تلغي بعض التكرار. فـC لديها
+كتلٌ لتسلسل الجمل، ومعامل الفاصلة لتسلسل التعبيرات. ولديها
+جملة <code>if</code> ومعامل <code>?:</code> الشرطيّ أيضاً. فلو كان كلّ شيء في C
+تعبيراً، لكان بإمكانك توحيد كلٍّ من ذلك.</p>
+<p>واللّغات التي تلغي الجمل تميل أيضاً إلى أن تحوي <strong>إرجاعات ضمنيّة</strong>
+(implicit returns) -- إذ تُعيد الدالة تلقائياً أيّ قيمةٍ يُقيَّم
+إ إليها جسمها دون حاجة إلى صيغة <code>return</code> صريحة. وهذا مفيدٌ حقّاً
+للدوالّ والدوالّ الصغيرة. وفي الواقع، أضافت لغاتٌ كثيرة -- بل
+لغاتٌ لها جمل -- صياغاتٍ مثل <code>=&gt;</code> لتعريف دوالّ يكون جسمها نتيجة
+تقويم تعبيرٍ واحد.</p>
+<p>لكنّ جعل <em>كل</em> الدوالّ تعمل على تلك الطريقة قد يكون غريباً
+قليلاً. فإن لم تكن حذراً، ستسرّب دالتُك قيمةَ إرجاع حتى إن كنتَ
+لا تنوي سوى إنتاج أثرٍ جانبي. لكن عملياً، لا يجد مستخدمو هذه
+اللّغات أنّ ذلك مشكلة.</p>
+<p>أمّا في Lox، فقد منحتها جُملاً لأسبابٍ واقعية بحتة. واخترتُ صيغةً
+شبيهة بـC من أجل المألوفيّة، ومحاولة أخذ صياغة جمل C القائمة
+وتفسيرها كتعبيرات تصبح غريبةً بسرعة.</p>
+</div>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/crafting-interpreters/welcome/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">ترحيب</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/crafting-interpreters/types-of-values/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">أنواع القيم</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ucc8xn = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

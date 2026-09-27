@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="النموذج الأولي — Prototype"/><!----><title>النموذج الأولي | أنماط برمجة الألعاب</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/introduction/index">مقدمة</a></li><!--]--></ul><h3>Design Patterns Revisited</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/design-patterns-revisited/index">أنماط التصميم من جديد</a></li><!--]--></ul><h3>Command</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/command/index">الأمر</a></li><!--]--></ul><h3>Flyweight</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/flyweight/index">الوزن الخفيف</a></li><!--]--></ul><h3>Observer</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/observer/index">المراقب</a></li><!--]--></ul><h3>Prototype</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/prototype/index" class="active">النموذج الأولي</a></li><!--]--></ul><h3>Singleton</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/singleton/index">المفرد</a></li><!--]--></ul><h3>State</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/state/index">الحالة</a></li><!--]--></ul><h3>Subclass Sandbox</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/subclass-sandbox/index">صندوق الصنف الفرعي</a></li><!--]--></ul><h3>Bytecode</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/bytecode/index">شيفرة البايت</a></li><!--]--></ul><h3>Type Object</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/type-object/index">كائن النوع</a></li><!--]--></ul><h3>Behavioral Patterns</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/behavioral-patterns/index">الأنماط السلوكية</a></li><!--]--></ul><h3>Double Buffer</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/double-buffer/index">المخزن المزدوج</a></li><!--]--></ul><h3>Game Loop</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/game-loop/index">حلقة اللعبة</a></li><!--]--></ul><h3>Update Method</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/update-method/index">دالة التحديث</a></li><!--]--></ul><h3>Event Queue</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/event-queue/index">طابور الأحداث</a></li><!--]--></ul><h3>Component</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/component/index">المكوّن</a></li><!--]--></ul><h3>Decoupling Patterns</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/decoupling-patterns/index">أنماط فصل الترابط</a></li><!--]--></ul><h3>Service Locator</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/service-locator/index">محدّد الخدمات</a></li><!--]--></ul><h3>Sequencing Patterns</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/sequencing-patterns/index">أنماط التسلسل</a></li><!--]--></ul><h3>Optimization Patterns</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/optimization-patterns/index">أنماط التحسين</a></li><!--]--></ul><h3>Dirty Flag</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/dirty-flag/index">علامة الوسخ</a></li><!--]--></ul><h3>Object Pool</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/object-pool/index">مجمّع الكائنات</a></li><!--]--></ul><h3>Spatial Partition</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/spatial-partition/index">التقسيم المكاني</a></li><!--]--></ul><h3>Data Locality</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/data-locality/index">محلية البيانات</a></li><!--]--></ul><h3>Architecture, Performance, and Games</h3> <ul><!--[--><li><a href="../../../../book/game-programming-patterns/architecture-performance-and-games/index">المعمارية والأداء والألعاب</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">Prototype</p> <h1>النموذج الأولي</h1></div> <div class="reader-content"><!----><p>^title Prototype
+^section Design Patterns Revisited</p>
+<p>أول مرة سمعت فيها كلمة «نموذج أولي» (prototype) كانت في <em>أنماط التصميم</em>. اليوم يبدو
+أن الجميع ينطق بها، لكن اتضح أنهم لا يتحدثون عن <a
+href="http://en.wikipedia.org/wiki/Prototype_pattern"
+class="gof-pattern">نمط التصميم</a> نفسه. وسنغطي ذلك هنا، لكنني سأعرض عليك أيضاً
+أماكن أخرى أكثر إثارة ظهرت فيها هذه الكلمة والمفاهيم الكامنة خلفها. لكن لنبدأ أولاً
+بالعودة إلى النمط <span name="original">الأصلي</span>.</p>
+<aside name="original">
+<p>لا أستعمل «الأصلي» هنا باستخفاف. فـ<em>أنماط التصميم</em> يستشهد بمشروع
+<a href="http://en.wikipedia.org/wiki/Sketchpad">Sketchpad</a> الأسطوري لإيفان ساذرلاند عام
+<em>1963</em> بوصفه أحد الأمثلة الأولى لهذا النمط في العالم الحقيقي. وفي حين كان الجميع
+يستمع إلى ديلان والبيتلز، كان ساذرلاند مشغولاً — أنت تعرف، فحسب — باختراع المفاهيم
+الأساسية للتصميم بمساعدة الحاسوب، والرسوميات التفاعلية، والبرمجة الكائنية.</p>
+<p>شاهد <a href="http://www.youtube.com/watch?v=USyoT_Ha_bA">العرض التوضيحي</a> واستعدّ للصدمة.</p>
+</aside>
+<h2 id="نمط-تصميم-النموذج-الأولي">نمط تصميم النموذج الأولي</h2>
+<p>لنفترض أننا نصنع لعبة على نمط لعبة Gauntlet. لدينا مخلوقات وشياطين تزحف حول البطل
+وتتنافس على نصيبها من لحمه.</p>
+<p>تدخل هذه الرفقة غير المستساغة الحلبة عبر «منشآت الإنشاء» (spawners)، ولكل نوع من
+الأعداء منشأة إنشاء خاصة به.</p>
+<p>ولأغراض هذا المثال، لنقل لدينا أصناف مختلفة لكل نوع من الوحوش في اللعبة — <code>Ghost</code> و
+<code>Demon</code> و<code>Sorcerer</code> وما شابه — مثل:</p>
+<p>^code monster-classes</p>
+<p>تبني منشأة الإنشاء نسخاً من نوع وحش بعينه. ولدعم كل وحش في اللعبة، يمكننا أن نلجأ
+إلى الحلّ الأعمى بصنف منشأة إنشاء لكل صنف وحش، مما يقود إلى تسلسل أصناف متوازٍ:</p>
+<p><span name="inherits-arrow"></span></p>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-1.webp" alt="Parallel class hierarchies. Ghost, Demon, and Sorceror all inherit from Monster. GhostSpawner, DemonSpawner, and SorcerorSpawner inherit from Spawner." />
+<aside name="inherits-arrow">
+<p>كان عليّ أن أستخرج من الأتراب كتاب UML غباراً لأرسم هذا المخطط. فالسهم <img
+src="/arabic-cs-library/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="A UML arrow." /> يعني «يرث من».</p>
+</aside>
+<p>ولتنفيذه، سيبدو هكذا:</p>
+<p>^code spawner-classes</p>
+<p>ما لم تكن تتقضى أجراً على أساس عدد أسطر الشيفرة، فهذي ليست طريقة ممتعة لتجميع هذا
+الأمر. أصناف كثيرة، وشيفرة تهيئة كثيرة، وتكرار كثير، ونسخ كثير، وتكرار للذات كثير...</p>
+<p>يقدّم نمط النموذج الأولي حلاً. والفكرة الأساسية هي أن <em>كائناً يستطيع أن يُنشئ كائنات
+أخرى شبيهة به</em>.</p>
+<p>فإن كان لديك شبح واحد، يمكنك أن تصنع منه أشباحاً أخرى. وإن كان لديك شيطان، يمكنك أن
+تصنع شياطين أخرى. وأي وحش يمكن معاملته كوحش <em>نموذجي</em> يُستخدم لتوليد نسخ أخرى منه.</p>
+<p>ولتنفيذ ذلك، نمنح صنفنا الأساسي <code>Monster</code> دالة <code>clone()</code> مجرَّدة:</p>
+<p>^code virtual-clone</p>
+<p>يوفّر كل صنف فرعي من الوحوش تنفيذاً يُعيد كائناً مطابقاً له في الصنف والحالة. مثلاً:</p>
+<p>^code clone-ghost</p>
+<p>وبعد أن تدعم جميع وحوشنا ذلك، لا نعود بحاجة إلى صنف منشأة إنشاء لكل صنف وحش. وبدلاً من
+ذلك، نعرّف صنفاً واحداً:</p>
+<p>^code spawner-clone</p>
+<p>وهو يحتفظ في داخله بوحشٍ مخفيّ غرضه الوحيد أن تستخدمه منشأة الإنشاء كقالبٍ تُختَز
+بمقتضاه وحوشٌ أخرى مثله، على نحو ما تفعل ملكة النحل التي لا تغادر الخلية.</p>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-3.webp" alt="A Spawner contains a prototype field referencing a Monster. It calls clone() on the prototype to create new monsters." />
+<p>ولإنشاء منشأة إنشاء للأشباح، ننشئ نسخة شبح نموذجية أولية، ثم ننشئ منشأة إنشاء تحمل ذلك
+النموذج:</p>
+<p>^code spawn-ghost-clone</p>
+<p>ومن الأجزاء اللطيفة في هذا النمط أنه لا يستنسخ <em>صنف</em> النموذج الأولي فحسب، بل يستنسخ
+<em>حالته</em> أيضاً.</p>
+<p>وهذا يعني أننا يمكننا صنع منشأة إنشاء للأشباح السريعة أو الضعيفة أو البطيئة، بمجرد إنشاء
+نموذج شبح مناسب.</p>
+<p>وأجد في هذا النمط شيئاً أنيقاً ومفاجئاً في آن. لا أستطيع تخيّل أنني كنت سأبتكره بنفسي،
+لكنني لا أستطيع أيضاً تخيّل <em>عدم</em> معرفتي به الآن بعد أن عرفت.</p>
+<h3 id="ما-مدى-فاعليته">ما مدى فاعليته؟</h3>
+<p>حسناً، لسنا بحاجة إلى إنشاء صنف منشأة إنشاء منفصل لكل وحش، وهذا أمر جيد. لكننا <em>نحتاج</em>
+إلى تنفيذ <code>clone()</code> في كل صنف وحش. وهذا بقدر ما يكون تقريباً من حجم شيفرة منشآت
+الإنشاء.</p>
+<p>كما أن هناك بعض الحفر الدلالية القبيحة حين تجلس وتحاول كتابة <code>clone()</code> صحيحة. هل
+تُنتج استنساخاً عميقاً أم سطحياً؟ بعبارة أخرى، إن كان الشيطان يحمل منجلاً، فهل ينسخ
+استنساخ الشيطان المنجل أيضاً؟</p>
+<p>كما أن الأمر، في هذه المشكلة المصطنعة، لا يبدو وكأنه يوفّر علينا كثيراً من الشيفرة،
+وإلى جانب ذلك فهي <em>مشكلة مصطنعة</em> أصلاً. فنحن مضطرون إلى الأخذ بالافتراض بأن لدينا
+أصنافاً منفصلة لكل وحش.</p>
+<p>وفي الواقع، تعلّمنا معظمنا بالطريقة الصعبة أن التسلسلات الهرمية الكبيرة من الأصناف
+مُرهقة في الإدارة، ولهذا نستخدم أنماطاً مثل <a href="/arabic-cs-library/book/game-programming-patterns/component/index"
+class="pattern">المكوّن (Component)</a> و<a href="/arabic-cs-library/book/game-programming-patterns/type-object/index"
+class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أنواع الكيانات دون تثبيت كل
+منها في صنف خاص به.</p>
+<h3 id="دوال-الإنشاء">دوال الإنشاء</h3>
+<p>حتى لو كان لدينا فعلاً أصناف مختلفة لكل وحش، فهناك طرق أخرى لتفريخ هذا <em>القطّ
+الأليف</em>. فبدلاً من صنع أصناف منشآت إنشاء <em>منفصلة</em> لكل وحش، يمكننا صنع <em>دوال</em> إنشاء،
+مثل هذا:</p>
+<p>^code callback</p>
+<p>وهذا أقلّ شيفرة تهيئة من صنع صنف كامل لإنشاء وحش من نوع ما. ثمّ إن صنف منشأة الإنشاء
+الواحد يستطيع أن يخزّن ببساطة مؤشر دالة:</p>
+<p>^code spawner-callback</p>
+<p>ولإنشاء منشأة إنشاء للأشباح، تفعل:</p>
+<p>^code spawn-ghost-callback</p>
+<h3 id="القوالب">القوالب</h3>
+<p>بحسب <span name="templates">الوقت الحالي</span>، فإن معظم مطوّري C++ على معرفة بالقوالب.
+فصنف منشأة الإنشاء يحتاج إلى إنشاء نسخ من نوع ما، لكننا لا نريد تثبيت صنف وحش بعينه في
+الشيفرة. الحلّ الطبيعي إذاً هو جعله <em>معامل نوع</em>، وهو ما تتيحه القوالب:</p>
+<aside name="templates">
+<p>لست متأكداً ما إذا كان مبرمجو C++ تعلّموا أن يحبّوها أم أن القوالب خوّفت بعض الناس
+بعيداً عن C++. وعلى أي حال، فإن كل من أراه يستخدم C++ اليوم يستخدم القوالب أيضاً.</p>
+</aside>
+<p><span name="base"></span></p>
+<p>^code templates</p>
+<p>ويبدو استخدامه هكذا:</p>
+<p>^code use-templates</p>
+<aside name="base">
+<p>صنف <code>Spawner</code> هنا موجود كي تستطيع الشيفرة التي لا يهمّها أي نوع من الوحوش تنشئه منشأة
+إنشاء أن تستخدمه وتتعامل مع مؤشرات إلى <code>Monster</code>.</p>
+<p>ولو كان لدينا صنف <code>SpawnerFor&lt;T&gt;</code> وحده، لما وُجد نوعٌ أعلى مشترك تتشاركه كل نسخ ذلك
+القالب، فأي شيفرة تعمل مع منشآت إنشاء من أي نوع وحش ستحتاج هي نفسها إلى معامل قالب.</p>
+</aside>
+<h3 id="أنواع-من-الطبقة-الأولى">أنواع من الطبقة الأولى</h3>
+<p>عالِج الحلّان السابقان الحاجة إلى وجود صنف <code>Spawner</code> مُعامَل بنوع. وفي C++، الأنواع ليست
+عادةً من الطبقة الأولى، لذا يتطلب ذلك بعض <span name="type-obj">الحِيَل</span>.
+وإن كنت تستخدم لغة ديناميكية الأنواع مثل JavaScript أو Python أو Ruby حيث الأصناف
+<em>كائنات</em> عادية يمكنك تمريرها، فستحلّ الأمر على نحو أكثر مباشرة.</p>
+<aside name="type-obj">
+<p>في بعض النواحي، نمط <a href="/arabic-cs-library/book/game-programming-patterns/type-object/index" class="pattern">كائن النوع (Type Object)</a>
+هو تحفّظ آخر على غياب الأنواع من الطبقة الأولى. لكن ذلك النمط يظلّ مفيداً حتى في اللغات
+التي تملكها، لأنه يتيح لك <em>أنت</em> تعريف ما هو «النوع». فقد تريد دلالات مختلفة عمّا تقدّمه
+أصناف اللغة المدمجة.</p>
+</aside>
+<p>وحين تصنع منشأة إنشاء، مرّر ببساطة صنف الوحش الذي يفترض أن تبنيه — أي الكائن الفعلي
+وقت التنفيذ الذي يمثّل صنف الوحش. بسيطة كقطع الكعكة.</p>
+<p>ومع كل هذه الخيارات، لا أستطيع بصدق أن أقول إنني وجدت حالة واحدة شعرت فيها بأن <em>نمط
+التصميم</em> هذا كان أفضل إجابة. ربما تكون خبرتك مختلفة، لكن دعنا نترك هذا الأمر جانباً
+ونتحدث عن شيء آخر: النماذج الأولية بوصفها <em>نموذجاً برمجياً</em>.</p>
+<h2 id="النموذج-البرمجي-القائم-على-النماذج-الأولية">النموذج البرمجي القائم على النماذج الأولية</h2>
+<p>كثير من الناس يعتبرون «البرمجة الكائنية» مرادفةً لـ«الأصناف». وتميل تعريفات البرمجة
+الكائنية إلى أن تبدو كعفائد طوائف دينية متعارضة، لكن هناك مقاربة لا تثير جدلاً كبيراً
+لها، وهي أن <em>البرمجة الكائنية تتيح لك تعريف «كائنات» تجمع البيانات والشيفرة معاً.</em>
+ومقارنةً باللغات البنيوية مثل C واللغات الوظيفية مثل Scheme، فإن السمة المميّزة
+للبرمجة الكائنية هي أنها تربط الحالة والسلوك ربطاً محكماً.</p>
+<p>قد تعتقد أن الأصناف هي الطريق الوحيد للقيام بذلك، لكن حفنة من المطوّرين بما فيهم Dave Ungar
+وRandall Smith تعارضا ذلك. فقد أنشأوا لغة في الثمانينيات اسمها Self. وهي كائنية بقدر ما
+تكون، لكنها بلا أصناف.</p>
+<h3 id="self">Self</h3>
+<p>في المعنى الخالص، لغة Self <em>أكثر</em> كائنية من اللغة القائمة على الأصناف. فنحن نفكر في
+البرمجة الكائنية كزواج بين الحالة والسلوك، لكن اللغات ذات الأصناف تضع في الواقع خط
+فاصل بينهما.</p>
+<p>تخيّل دلالات لغتك المفضّلة القائمة على الأصناف. فللوصول إلى بعض الحالة على كائن، تنظر
+في ذاكرة النسخة نفسها. فالحالة <em>محتواة</em> في النسخة.</p>
+<p>أما لاستدعاء <span name="vtable">دالة</span>، فتنظر إلى صنف النسخة، ثم تبحث عن الدالة
+<em>هناك</em>. فالسلوك محتوا في <em>الصنف</em>. وهناك دائماً ذلك المستوى من التوجيه للوصول إلى الدالة،
+وهذا يعني أن الحقول والدوال مختلفة.</p>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-4.webp" alt="A Class contains a list of Methods. An Instance contains a list of Fields and a reference to its Class." />
+<aside name="vtable">
+<p>فمثلاً، لاستدعاء دالة افتراضية في C++، تنظر في النسخة إلى مؤشر جدول الدوال الافتراضية،
+ثم تبحث عن الدالة هناك.</p>
+</aside>
+<p>وتلغي Self هذا التمييز. فالبحث عن <em>أي شيء</em> يتم بالنظر إلى الكائن نفسه. فالنسخة يمكن أن
+تحتوي على الحالة والسلوك معاً. ويمكن أن يكون لديك كائن واحد لديه دالة فريدة عنه تماماً.</p>
+<p><span name="island"></span></p>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-5.webp" alt="An Object contains a mixed list of Fields and Methods." />
+<aside name="island">
+<p>لا أحد رجلٌ جزيرة، لكن هذا الكائن كذلك.</p>
+</aside>
+<p>ولو كان هذا كل ما تفعله Self، لكان استخدامها صعباً. فالوراثة في اللغات القائمة على
+الأصناف، رغم عيوبها، تتيح لك آلية مفيدة لإعادة استخدام الشيفرة متعددة الأشكال وتجنّب
+التكرار. ولتحقيق شيء مشابه بلا أصناف، تمتلك Self <em>التفويض</em>.</p>
+<p>وللعثور على حقل أو استدعاء دالة على كائن ما، ننظر أولاً في الكائن نفسه. فإذا كان يحتويه
+انتهينا. وإن لم يكن كذلك، ننظر إلى <em>الوالد</em> <span name="parent">للكائن</span>. وهذا ليس
+سوى مرجع إلى كائن آخر. وحين نفشل في العثور على خاصية على الكائن الأول، نجرّب والده ثم
+والد والده وهكذا. بعبارة أخرى، تُفوَّض عمليات البحث الفاشلة <em>إلى</em> والد الكائن.</p>
+<aside name="parent">
+<p>أنا أُبسّط هنا. فـSelf تدعم فعلياً آباء متعدّدين. فالآباء مجرّد حقول موسومة بصفة خاصة،
+وهذا يعني أنك تستطيع أن ترث آباء أو تغيّرهم وقت التنفيذ، مما يقود إلى ما يُعرف
+بال<em>وراثة الديناميكية</em>.</p>
+</aside>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-6.webp" alt="An Object contains Fields and Methods and a reference to another object that it delegates to." />
+<p>وتتيح لنا كائنات الآباء إعادة استخدام السلوك (والحالة أيضاً!) عبر عدة كائنات، فقد غطّينا
+جزءاً من فائدة الأصناف. والأمر الأساسي الآخر الذي تفعله الأصناف أنه يمنحك طريقة لإنشاء
+النسخ. فحين تحتاج إلى شيء جديد، يمكنك أن تكتب مجرّد <code>new Thingamabob()</code> أو ما شابه بحسب
+الصيغة التي تفضّلها لغتك. فالصنف مصنع لنسخه.</p>
+<p>وبدون أصناف، فكيف نصنع أشياء جديدة؟ والأهم: كيف نصنع مجموعة من الأشياء الجديدة التي
+يشترك كل منها في أشياء معينة؟ تماماً كما في نمط التصميم، فالطريقة في Self هي
+<em>الاستنساخ</em>.</p>
+<p>في Self، يبدو الأمر كأن <em>كل</em> كائن يدعم نمط تصميم النموذج الأولي تلقائياً. فأي كائن يمكن
+استنساخه. ولصنع مجموعة من الكائنات المتشابهة، فإنك:</p>
+<ol>
+<li>
+<p>تحوّل كائناً واحداً إلى الشكل الذي تريده. يمكنك استنساخ الكائن <code>Object</code> الأساسي
+المدمج في النظام ثم تملأه حقولاً ودوال.</p>
+</li>
+<li>
+<p>تستنسخه لتصنع ما تشاء من النسخ... آه... المتشابهة.</p>
+</li>
+</ol>
+<p>هذا يمنحنا أناقة نمط تصميم النموذج الأولي من دون ملل تنفيذ <code>clone()</code> بأنفسنا؛ فهو
+مدمج في النظام.</p>
+<p>وهو نظام جميل وذكي ومختصر إلى هذا الحد، بحيث إنما عرفتُ عنه <span name="finch">بدأتُ</span>
+أنشئ لغة قائمة على النماذج الأولية لأكتسب خبرة أكبر معه.</p>
+<aside name="finch">
+<p>أدرك أن بناء لغة من الصفر ليس الطريقة الأكثر كفاءة للتعلّم، لكن ماذا أقول؟ أنا قليل
+الطرافة إلى حدّ ما. وإن كنت فضولياً، فاللغة اسمها <a href="http://finch.stuffwithstuff.com/">Finch</a>.</p>
+</aside>
+<h3 id="كيف-سارت-الأمور">كيف سارت الأمور؟</h3>
+<p>كنت متحمّساً جداً لجرّب لغة قائمة على النماذج الأولية خالصة، لكن حين شغّلت لغاتي، <span
+name="no-fun">اكتشفتُ</span> حقيقة مزعجة: لم تكن البرمجة فيها ممتعة إلى ذلك الحد.</p>
+<aside name="no-fun">
+<p>سمعت منذ ذلك الحين عبر المذياع أن كثيراً من مطوّري Self وصلوا إلى الاستنتاج نفسه. لكن
+المشروع لم يكن بخسارة كبيرة على الإطلاق. فقد كانت Self ديناميكية إلى حدّ أنها احتجت إلى
+كل أنواع الابتكارات في الآلة الافتراضية كي تعمل بالسرعة الكافية.</p>
+<p>الأفكار التي اخترعوها في الترجمة الفورية (just-in-time) وجمع القمامة وتحسين توجيه الدوال
+هي التقنيات نفسها تماماً — ونفّذها غالباً الأشخاص أنفسهم! — التي تجعل اليوم كثيراً من
+لغات العالم الديناميكية الأنواع سريعة بما يكفي لاستخدامها في تطبيقات شديدة الشعبية.</p>
+</aside>
+<p>صحيح، كانت اللغة بسيطة التنفيذ، لكن ذلك لأنها أزاحت التعقيد إلى المستخدم. وما إن
+بدأت أحاول استخدامها، وجدتني أفتقد البنية التي توفّرها الأصناف. وانتهيت إلى محاولة
+إعادة تكوينها على مستوى المكتبة لأن اللغة لم تكن تملكها.</p>
+<p>ربما يكون هذا لأن خبرتي السابقة في اللغات القائمة على الأصناف، فقد جُهِلت ذهني بذلك
+النموذج. لكن حدسي يقول إن معظم الناس يحبّون «أنواع الأشياء» المحدّدة بوضوح.</p>
+<p>وإلى جانب النجاح الهائل للغات القائمة على الأصناف، انظر إلى كم من الألعاب تملك أصناف
+شخصيات صريحة وقائمة دقيقة بأنواع مختلفة من الأعداء والغنائم والمهارات، كلٌّ منها موسوم
+تسميةً واضحة. ولا ترى ألعاباً كثيرة يكون فيها كل وحش ندفة ثلجية فريدة من نوعها، مثل
+«نوعٌ ما بين التروّل والجوبلين مع قليل من الأفعى ممزوج فيها».</p>
+<p>بينما النماذج الأولية نموذج رائع حقاً وأتمنّى لو يعرفه مزيد من الناس، إلا أنني مسرور
+بأن معظمنا لا يبرمج باستخدامها كل يوم. فـ<span name="telling">الشيفرة</span> التي رأيتها
+تتبنّى النماذج الأولية بشكل كامل تبدو لي طريةً وغامضة يصعب عليّ لفهمها.</p>
+<aside name="telling">
+<p>ومن الدالّ أيضاً أن هذه الشيفرة <em>قليلة</em> جداً فعلياً. فقد بحثتُ في الأمر.</p>
+</aside>
+<h3 id="وماذا-عن-javascript">وماذا عن JavaScript؟</h3>
+<p>حسناً، إن كانت اللغات القائمة على النماذج الأولية غير ودودة إلى هذا الحد، فكيف أشرح
+JavaScript؟ إليك لغة تستخدم النماذج الأولية ويستخدمها ملايين الناس كل يوم. فعدد
+الحاسيبات التي تشغّل JavaScript يفوق أي لغة أخرى على وجه الأرض.</p>
+<p><span name="ten">Brendan Eich</span>، مخترع JavaScript، استلهم إلهاماً مباشرةً من Self،
+وكثير من دلالات JavaScript قائمة على النماذج الأولية. فلكل كائن مجموعة اعتباطية من
+الخصائص، حقول و«دوال» معاً (وفي الحقيقة دوال مخزّنة كحقول). ويمكن أن يملك الكائن أيضاً
+كائناً آخر يُسمّى «نموذجه الأولي»، ويفوّض إليه إذا فشل الوصول إلى حقل.</p>
+<aside name="ten">
+<p>كمصمّم لغة، فإن الأمر الجذّاب في النماذج الأولية أنها أسهل في التنفيذ من الأصناف. وقد
+اغتنم Eich هذه الفرصة كاملاً: فالإصدار الأول من JavaScript أُنشئ في عشرة أيام.</p>
+</aside>
+<p>لكن رغم ذلك، أعتقد أن JavaScript عملياً تشترك في أمور أكثر مع اللغات القائمة على الأصناف
+مما تشتركه مع اللغات القائمة على النماذج الأولية. ومن الدلائل على أن JavaScript اتجهت
+بعيداً عن Self أن العملية الأساسية في اللغات القائمة على النماذج الأولية، وهي
+<em>الاستنساخ</em>، لا وجود لها في الأفق.</p>
+<p>فلا توجد في JavaScript دالة لاستنساخ كائن. وأقرب ما فيها هو <code>Object.create()</code> التي
+تتيح لك إنشاء كائن جديد يفوّض إلى كائن قائم. وحتى هذه لم تُضَف إلا في ECMAScript 5،
+أي بعد أربعة عشر عاماً من صدور JavaScript. وبدلاً من الاستنساخ، دعني أمشي بك عبر
+الطريقة المعتادة التي تعرّف بها الأنواع وتنشئ الكائنات في JavaScript. فتبدأ بدالة <em>مُنشئة</em>
+(constructor):</p>
+<pre><code>:::javascript
+function Weapon(range, damage) {
+  this.range = range;
+  this.damage = damage;
+}
+</code></pre>
+<p>وهذا ينشئ كائناً جديداً ويهيّئ حقوله. وتستدعيه هكذا:</p>
+<pre><code>:::javascript
+var sword = new Weapon(10, 16);
+</code></pre>
+<p>أما كلمة <code>new</code> هنا فتستدعي جسم دالة <code>Weapon()</code> مع ربط <code>this</code> بكائن فارغ جديد. ويضيف
+الجسم إليه مجموعة من الحقول، ثم يُعاد الكائن الممتلئ الآن تلقائياً.</p>
+<p>وتفعل <code>new</code> شيئاً آخر أيضاً. فعند إنشاء ذلك الكائن الفارغ، تربطه بحيث يفوّض إلى كائن
+النموذج الأولي. ويمكنك الوصول إلى ذلك الكائن مباشرةً باستخدام <code>Weapon.prototype</code>.</p>
+<p>وبينما تُضاف الحالة في جسم الدالة المُنشئة، فإنك لتعريف <em>السلوك</em> تضيف عادةً دوال إلى
+كائن النموذج الأولي. شيء كهذا:</p>
+<pre><code>:::javascript
+Weapon.prototype.attack = function(target) {
+  if (distanceTo(target) &gt; this.range) {
+    console.log(&quot;Out of range!&quot;);
+  } else {
+    target.health -= this.damage;
+  }
+}
+</code></pre>
+<p>وهذا يضيف خاصية <code>attack</code> إلى نموذج السلاح وقيمتها دالة. وبما أن كل كائن يُعاد من
+<code>new Weapon()</code> يفوّض إلى <code>Weapon.prototype</code>، فصار بإمكانك الآن استدعاء <code>sword.attack()</code>
+فتستدعي تلك الدالة. ويبدو الأمر قليلاً كهذا:</p>
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-7.webp" alt="A Weapon object contains an attack() method and other methods. A Sword object contains fields and delegates to Weapon." />
+<p>لنراجع:</p>
+<ul>
+<li>
+<p>الطريقة التي تنشئ بها الكائنات هي عملية «new» تستدعيها باستخدام كائن يمثّل النوع —
+أي الدالة المُنشئة.</p>
+</li>
+<li>
+<p>تُخزَّن الحالة على النسخة نفسها.</p>
+</li>
+<li>
+<p>يمرّ السلوك عبر مستوى من التوجيه — التفويض إلى النموذج الأولي — ويُخزَّن على كائن منفصل
+يمثّل مجموعة الدوال المشتركة بين كل كائنات نوع معيّن.</p>
+</li>
+</ul>
+<p>ادعُني مجنوناً، لكن هذا يشبه إلى حدّ كبير وصفي للأصناف في وقت سابق. يمكنك <em>أن</em> تكتب
+شيفرة بأسلوب النماذج الأولية في JavaScript (<em>من دون</em> استنساخ)، لكن صيغة اللغة وعاداتها
+تشجّع على المقاربة القائمة على الأصناف.</p>
+<p>شخصياً، أعتقد أن هذا <span name="good">أمر جيد</span>. فكما قلت، أجد أن المضي قدماً
+فيعتمد على النماذج الأولية يجعل الشيفرة أصعب في التعامل، لذا أحبّ أنغلّف JavaScript
+دلالاتها الجوهرية في شيءٍ أكثر أناقة.</p>
+<h2 id="النماذج-الأولية-لنمذجة-البيانات">النماذج الأولية لنمذجة البيانات</h2>
+<p>حسناً، ما زلت أتحدث عن أشياء <em>لا أحبّ</em> استخدام النماذج الأولية فيها، وهذا يجعل هذا
+الفصل محبطاً حقاً. فأنا أرى هذا الكتاب كوميديا أكثر منه مأساة، لذا لنختم بمجال أعتقد
+فيه أن النماذج الأولية — أو بتحديد <em>التفويض</em> — يمكن أن تكون مفيدة.</p>
+<p>ولو عددتَ كل البايتات في لعبة ما لتعرف أيّها شيفرة وأيّها بيانات، لكنتَ سترى أن نسبة
+البيانات قد ارتفعت باستمرار منذ فجر البرمجة. فكانت الألعاب الأولى تولّد كل شيء إجرائياً
+لتتسع على الأقراص المرنة وبطاقات الألعاب القديمة. وفي كثير من ألعاب اليوم، الشيفرة ليست
+سوى «محرّك» يقود اللعبة، وهي معرَّفة كلياً في البيانات.</p>
+<p>لكن هذا رائع، لكن دفع أكوام المحتوى إلى ملفات بيانات لا يحلّ سحراً مشكلات التنظيم في
+مشروع كبير. بل يجعلها أصعب إن صحّ شيء. فالسبب في استخدامنا لغات البرمجة أنها تملك أدوات
+لإدارة التعقيد.</p>
+<p>وبدلاً من نسخ جزء من الشيفرة ولصقه في عشرة أماكن، ننقله إلى دالة يمكننا استدعاؤها
+بالاسم. وبدلاً من نسخ دالة في مجموعة من الأصناف، يمكننا وضعها في صنف منفصل ترث منه
+تلك الأصناف أو تدمجه فيها.</p>
+<p>وحين يبلغ حجم بيانات لعبتك حدّاً معيّناً، تبدأ فعلاً في الرغبة في ميزات متشابهة. فنمذجة
+البيانات موضوع عميق لا أملّ في أن أؤديه حقه هنا، لكنني أريد أن أطرح عليك ميزة واحدة
+لتنظر فيها في ألعابك: استخدام النماذج الأولية والتفويض لإعادة استخدام البيانات.</p>
+<p>لنفترض أننا نعرّف نموذج البيانات للعبة <span name="shameless">النسخة المسروقة من
+Gauntlet</span> التي ذكرتها سابقاً. فمصمّمو اللعبة يحتاجون إلى تحديد خصائص الوحوش والغنائم
+في ملفات من نوع ما.</p>
+<aside name="shameless">
+<p>أعني عنواناً أصلياً تماماً غير مستوحى البتّة من أي ألعاب أركيد عابرة متعددة اللاعبين
+كانت موجودة سابقاً. من فضلك لا تقاضيني.</p>
+</aside>
+<p>من المقاربات الشائعة استخدام JSON. فكيانات البيانات هي في الأساس <em>خرائط</em> أو <em>حقائب
+خصائص</em> أو أي من عشرات المصطلحات الأخرى، لأن لا شيء يحبّه المبرمجون أكثر من <span
+name="inventing">اختراع</span> اسم جديد لشيء له اسم بالفعل.</p>
+<aside name="inventing">
+<p>لقد أعدنا اختراعها مرات لا تُحصى حتى إن سماها Steve Yegge [&quot;النمط التصميمي
+العام&quot;](http://steve-yegge.blogspot.com/2008/10/universal-design-patter
+n.html).</p>
+</aside>
+<p>فقد يُعرَّف الجوبلين في اللعبة هكذا:</p>
+<pre><code>:::json
+{
+  &quot;name&quot;: &quot;goblin grunt&quot;,
+  &quot;minHealth&quot;: 20,
+  &quot;maxHealth&quot;: 30,
+  &quot;resists&quot;: [&quot;cold&quot;, &quot;poison&quot;],
+  &quot;weaknesses&quot;: [&quot;fire&quot;, &quot;light&quot;]
+}
+</code></pre>
+<p>وهذا بسيط إلى حدٍّ ما، وحتى أكثر المصمّمين نفوراً من النصوص يستطيع التعامل معه. فتقذف
+بضع فروع شقيقة على شجرة عائلة الجوبلين العظيمة:</p>
+<pre><code>:::json
+{
+  &quot;name&quot;: &quot;goblin wizard&quot;,
+  &quot;minHealth&quot;: 20,
+  &quot;maxHealth&quot;: 30,
+  &quot;resists&quot;: [&quot;cold&quot;, &quot;poison&quot;],
+  &quot;weaknesses&quot;: [&quot;fire&quot;, &quot;light&quot;],
+  &quot;spells&quot;: [&quot;fire ball&quot;, &quot;lightning bolt&quot;]
+}
+
+{
+  &quot;name&quot;: &quot;goblin archer&quot;,
+  &quot;minHealth&quot;: 20,
+  &quot;maxHealth&quot;: 30,
+  &quot;resists&quot;: [&quot;cold&quot;, &quot;poison&quot;],
+  &quot;weaknesses&quot;: [&quot;fire&quot;, &quot;light&quot;],
+  &quot;attacks&quot;: [&quot;short bow&quot;]
+}
+</code></pre>
+<p>والآن، لو كانت هذه شيفرة، لكان ذوقنا الأنيق يطنّ. فهناك تكرار كبير بين هذه الكيانات،
+والمبرمجون المدرَّبون على تجنّب التكرار <em>يكرهون</em> ذلك. فهو يهدر المساحة ويستغرق وقتاً
+أطول في التأليف. فعليك أن تقرأ بعناية لتعرف ما إذا كانت البيانات متطابقة أصلاً. فهو
+صداع صيانة. وإذا قررنا أن نجعل كل الجوبلين في اللعبة أقوى، فعلينا أن نتذكّر تحديث صحّة
+الثلاثة جميعاً. سيّئ سيّئ سيّئ.</p>
+<p>ولو كانت هذه شيفرة، لآنشأنا تجريداً لـ«الجوبلين» وأعدنا استخدامه على أنواع الجوبلين
+الثلاثة. لكن JSON الساذج لا يعرف شيئاً عن ذلك. فدعنا نجعله أذكى قليلاً.</p>
+<p>سنُعلن أن الكائن، إن كان يملك حقلاً <span name="meta"><code>&quot;prototype&quot;</code></span>، فإن ذلك يعرّف
+اسم كائن آخر يفضّله هذا الكائن. وأي خصائص لا توجد على الكائن الأول تُبحث على النموذج
+الأولي بدلاً من ذلك.</p>
+<aside name="meta">
+<p>هذا يجعل <code>&quot;prototype&quot;</code> جزءاً من البيانات <em>الوصفية</em> (metadata) بدل أن يكون بيانات. فللجوبلين
+بشرة خضراء متقشّرة واصفرار أسنان. ليس لديهم نماذج أولية. النماذج الأولية خاصية <em>لكائن
+البيانات الممثّل للجوبلين</em>، وليست للجوبلين نفسه.</p>
+</aside>
+<p>وبهذا يمكننا تبسيط JSON لجماعتنا من الجوبلين:</p>
+<pre><code>:::json
+{
+  &quot;name&quot;: &quot;goblin grunt&quot;,
+  &quot;minHealth&quot;: 20,
+  &quot;maxHealth&quot;: 30,
+  &quot;resists&quot;: [&quot;cold&quot;, &quot;poison&quot;],
+  &quot;weaknesses&quot;: [&quot;fire&quot;, &quot;light&quot;]
+}
+
+{
+  &quot;name&quot;: &quot;goblin wizard&quot;,
+  &quot;prototype&quot;: &quot;goblin grunt&quot;,
+  &quot;spells&quot;: [&quot;fire ball&quot;, &quot;lightning bolt&quot;]
+}
+
+{
+  &quot;name&quot;: &quot;goblin archer&quot;,
+  &quot;prototype&quot;: &quot;goblin grunt&quot;,
+  &quot;attacks&quot;: [&quot;short bow&quot;]
+}
+</code></pre>
+<p>ولأن الرامي والساحر لديهما الجوبلين العادي كنموذج أولي، فلا نحتاج إلى تكرار الصحّة
+والمقاومة والضعف في كل منهما. والمنطق الذي أضفناه إلى نموذج البيانات بسيط جداً — تفويض
+بسيط منفرد — لكننا تخلّصنا بالفعل من قدر كبير من التكرار.</p>
+<p>ومن الأشياء اللافتة للانتباه هنا أننا لم نجهّز نموذجاً أولياً <em>مجرّداً</em> رابعاً باسم
+«جوبلين أساسي» تفوّض إليه أنواع الجوبلين الثلاثة الملموسة. وبدلاً من ذلك، اخترنا واحداً
+من الجوبلين كان الأبسط وفوّضنا إليه.</p>
+<p>وهذا يبدو طبيعياً في نظام قائم على النماذج الأولية حيث يمكن استخدام أي كائن كنسخة أساس
+لإنشاء كائنات جديدة ومطوَّرة، وأعتقد أنه يبدو طبيعياً هنا أيضاً. وهو ملائم على وجه
+الخصوص لبيانات الألعاب التي تضم كيانات خاصة فريدة في عالم اللعبة.</p>
+<p>فكّر في الزعماء والغنائم الفريدة. فغالباً ما تكون هذه تحسينات لكائن أشيع في اللعبة،
+والتفويض عبر النماذج الأولية ملائم لتعريفها. فسيف «قطع الرؤوس» السحري، وهو في الحقيقة
+مجرد سيف طويل مع بعض المزايا، يمكن التعبير عنه هكذا مباشرةً:</p>
+<pre><code>:::json
+{
+  &quot;name&quot;: &quot;Sword of Head-Detaching&quot;,
+  &quot;prototype&quot;: &quot;longsword&quot;,
+  &quot;damageBonus&quot;: &quot;20&quot;
+}
+</code></pre>
+<p>ومن ثمّ فإن القليل من القوة الإضافية في نظام نمذجة البيانات في محرّك لعبتك يمكن أن يجعل
+من الأسهل للمصمّمين إضافة كثير من التنويعات الصغيرة إلى الأسلحة والمخلوقات التي تملأ
+عالم لعبتك، وهذا الثراء بالضبط هو ما يُبهر اللاعبين.</p>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/game-programming-patterns/observer/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المراقب</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/game-programming-patterns/singleton/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المفرد</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ucc8xn = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

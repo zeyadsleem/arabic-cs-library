@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="ضغط JavaScript (Compressing JavaScript) — أنماط JavaScript"/><!----><title>ضغط JavaScript (Compressing JavaScript) | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -71,7 +71,7 @@
 <h3 id="gzip">Gzip</h3>
 <p>موجود تنسيق ضغط Gzip منذ نحو 30 عامًا، وهو خوارزمية غير فاقد للبيانات تعتمد على <a href="https://www.youtube.com/watch?v=whGwm0Lky2s&amp;t=851s">خوارزمية Deflate</a>. تستخدم Deflate مزيجًا من <a href="https://cs.stanford.edu/people/eroberts/courses/soco/projects/data-compression/lossless/lz77/algorithm.htm">خوارزمية LZ77</a> و<a href="https://cs.stanford.edu/people/eroberts/courses/soco/projects/data-compression/lossless/huffman/algorithm.htm">ترميز Huffman</a> على كتل البيانات في تدفق الإدخال.</p>
 <p>تحدد خوارزمية LZ77 السلاسل المكررة وتستبدلها بإشارة مرجعية، وهي مؤشر إلى الموضع الذي ظهرت فيه من قبل، يتبعه طول السلسلة. ثم يحدد ترميز Huffman المراجع الشائعة ويستبدلها بمراجع ذات تسلسلات بت أقصر. وتستخدم التسلسلات الأطول للمراجع النادرة.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-0-compressingjav__zhfjmtap05.webp" alt="حجم ملف JavaScript قبل الضغط"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-0-compressingjav__zhfjmtap05.webp" alt="حجم ملف JavaScript قبل الضغط"></p>
 <p>مصدر الصورة: <a href="https://www.youtube.com/watch?v=whGwm0Lky2s&amp;t=851s">https://www.youtube.com/watch?v=whGwm0Lky2s&amp;t=851s</a></p>
 <p>تدعم جميع المتصفحات الرئيسية Gzip. و<a href="https://github.com/google/zopfli">Zopfli</a> خوارزمية أبطأ لكن محسنة من Deflate/Gzip، تنتج ملفات GZip متوافقة أصغر. وهي مناسبة للضغط الساكن، حيث توفر مكاسب أكبر.</p>
 <h3 id="brotli">Brotli</h3>
@@ -80,7 +80,7 @@
 <p>حسّنت المواقع ذات قاعدة المستخدمين الكبيرة، مثل <a href="https://tech.oyorooms.com/how-brotli-compression-gave-us-37-latency-improvement-14d41e50fee4">OYO</a> و<a href="https://web.dev/wix/#brotli-compression-(vs.-gzip)">Wix</a>، أدائها كثيرًا بعد استبدال Gzip بـ Brotli.</p>
 <h3 id="مقارنة-gzip-وbrotli">مقارنة Gzip وBrotli</h3>
 <p>يعرض <a href="https://paulcalvano.com/2018-07-25-brotli-compression-how-much-will-it-reduce-your-content/">الجدول التالي</a> مقارنة معيارية لنسب وسرعات ضغط Brotli وGzip عند مستويات مختلفة.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-1-compressingjav__zz1j9i0tui.webp" alt="حجم ملف JavaScript بعد الضغط"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-1-compressingjav__zz1j9i0tui.webp" alt="حجم ملف JavaScript بعد الضغط"></p>
 <p>إليك بعض النتائج من بحث Chrome حول ضغط JS باستخدام Gzip وBrotli.</p>
 <ul>
 <li>يحقق Gzip 9 أفضل نسبة ضغط مع سرعة جيدة، وينبغي التفكير في استخدامه قبل مستويات Gzip الأخرى.</li>
@@ -112,9 +112,9 @@
 <p>يُنصح بـ Brotli بدل خوارزميات الضغط الأخرى لأنه ينتج ملفات أصغر. يمكنك تمكين Gzip كبديل للمتصفحات التي لا تدعم Brotli. وإذا أعدت التهيئة بنجاح، سيعيد الخادم رأس استجابة HTTP <a href="https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Encoding">Content-Encoding</a> للإشارة إلى الخوارزمية المستخدمة، مثل <code>Content-Encoding: br</code>.</p>
 <h2 id="تدقيق-الضغط">تدقيق الضغط</h2>
 <p>يمكنك التحقق مما إذا كان الخادم ضغط السكربتات أو النصوص التي نزلتها في Chrome -&gt; DevTools -&gt; network -&gt; Headers. وتعرض DevTools ترميز المحتوى المستخدم في الاستجابة كما هو موضح أدناه.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-2-compressingjav__4gwntp0et8s.webp" alt="مقارنة الأحجام قبل الضغط وبعده"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-2-compressingjav__4gwntp0et8s.webp" alt="مقارنة الأحجام قبل الضغط وبعده"></p>
 <p>يتضمن تقرير Lighthouse تدقيق أداء لـ «Enable Text Compression» يبحث عن موارد نصية وصلت دون رأس content-encoding المضبوط على br أو gzip أو deflate. ويستخدم Lighthouse Gzip لحساب الوفر الممكن.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-3-compressingjav__qmwdq1rskk8.webp" alt="أثر الضغط على زمن التحليل"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-3-compressingjav__qmwdq1rskk8.webp" alt="أثر الضغط على زمن التحليل"></p>
 <p>مصدر الصورة: <a href="https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server">https://web.dev/uses-text-compression/#how-to-enable-text-compression-on-your-server</a></p>
 <h2 id="ضغط-javascript-ودقة-التحميل">ضغط JavaScript ودقة التحميل</h2>
 <p>لفهم تأثيرات ضغط JavaScript تمامًا، عليك أيضًا النظر في جوانب أخرى لتحسين JavaScript، مثل <a href="https://www.patterns.dev/posts/route-based/">التقسيم حسب المسار</a> و<a href="https://webpack.js.org/guides/code-splitting/">تقسيم الشيفرة</a> و<a href="https://www.patterns.dev/posts/bundle-splitting/">التجميع</a>.</p>
@@ -129,7 +129,7 @@
 <li><strong>الجزء (Chunk)</strong>: مصطلح مستعار من Webpack، ويشير إلى الناتج النهائي لعملية التجميع وتقسيم الشيفرة. ويمكن لـ Webpack تقسيم الحزم إلى أجزاء وفق إعداد <a href="https://webpack.js.org/configuration/entry-context/">entry</a> أو <a href="https://webpack.js.org/plugins/split-chunks-plugin/">SplitChunksPlugin</a> أو <a href="https://webpack.js.org/plugins/split-chunks-plugin/">الاستيرادات الديناميكية</a>.</li>
 </ul>
 <p>إذا كانت الوحدات موجودة في ملفات المصدر، فإن الناتج النهائي لعملية البناء بعد تقسيم الشيفرة أو الحزمة يسمى <strong>جزءًا (chunk)</strong>. ولاحظ أن ملفات المصدر والأجزاء قد يعتمد كل منهما على الآخر.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-4-compressingjav__50dz6giz2pa.webp" alt="إحصاء ملفات JavaScript حسب الحجم"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-4-compressingjav__50dz6giz2pa.webp" alt="إحصاء ملفات JavaScript حسب الحجم"></p>
 <p>مصدر الصورة: <a href="https://www.youtube.com/watch?v=ImjzA7EMI6I&amp;list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&amp;index=29">https://www.youtube.com/watch?v=ImjzA7EMI6I&amp;list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&amp;index=29</a></p>
 <p>يشير حجم JavaScript الناتج إلى حجم الأجزاء أو الحجم الخام بعد تحسينه بواسطة أداة تجميع أو مترجم JavaScript. ويمكن تفكيك تطبيقات JS الكبيرة إلى أجزاء من ملفات JavaScript قابلة للتحميل بشكل مستقل. و<strong>دقة التحميل (loading granularity)</strong> تعني عدد أجزاء الناتج؛ فكلما زاد العدد، صغر حجم كل جزء وزادت الدقة.</p>
 <p>بعض الأجزاء أكثر أهمية من غيرها لأنها تحمّل أكثر أو تنتمي إلى مسارات شيفرة أكثر تأثيرًا، مثل تحميل أداة «checkout». ومعرفة الأجزاء الأكثر أهمية تتطلب معرفة التطبيق، لكن من الآمن افتراض أن جزء «base» أساسي دائمًا.</p>
@@ -170,7 +170,7 @@
 <p>يمكن للمهام الطويلة على الخيط الرئيسي أن تحجبه وقتًا طويلًا، لذلك يجب تقسيمها إلى أجزاء أصغر.</p>
 </li>
 </ul>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-5-compressingjav__oj44b7q1hxl.webp" alt="أكبر الملفات قبل الضغط"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-5-compressingjav__oj44b7q1hxl.webp" alt="أكبر الملفات قبل الضغط"></p>
 <p>مصدر الصورة: <a href="https://www.youtube.com/watch?v=ImjzA7EMI6I&amp;list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&amp;index=29">https://www.youtube.com/watch?v=ImjzA7EMI6I&amp;list=PLyspMSh4XhLP-mqulUMcaqTbLo-ZJxSX5&amp;index=29</a></p>
 <p>كما يوضح المثلث أعلاه، فإن دقة التحميل التي تحاول تحسين أحد هذه الأهداف قد تبتعد عن الأهداف الأخرى. هذه هي مشكلة مقايضة الدقة.</p>
 <p><strong>إزالة التكرار والتخزين المؤقت يتعارضان مع أداء المتصفح والضغط.</strong></p>
@@ -193,7 +193,7 @@
 </ul>
 <p>يُنشئ إصدار عدة أجزاء مشتركة بدل جزء واحد أقل شيفرة غير ضرورية أو مكررة تُنزّل أو تُنفذ في الصفحات المختلفة. كما تحسن الأجزاء المستقلة للمكتبات الكبيرة لدى الأطراف الخارجية التخزين المؤقت لأنها نادرًا ما تتغير. ويضمن حد أدنى قدره 20KB ألّا يكون فقد الضغط كبيرًا.</p>
 <p>ساعدت استراتيجية التقسيم الدقيق عدة تطبيقات Next.js على تقليل إجمالي JavaScript المستخدم في الموقع.</p>
-<p><img src="../../../../images/patterns-dev/vanilla-compression-6-compressingjav__ja7cji39g8m.webp" alt="أكبر الملفات بعد الضغط"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-compression-6-compressingjav__ja7cji39g8m.webp" alt="أكبر الملفات بعد الضغط"></p>
 <p>طُبقت استراتيجية التقسيم الدقيق أيضًا في <a href="https://github.com/gatsbyjs/gatsby/pull/22253">Gatsby</a> ولوحظت فوائد مماثلة.</p>
 <h2 id="الخاتمة">الخاتمة</h2>
 <p>لا يمكن للضغط وحده حل مشكلات أداء JavaScript كلها، لكن فهم طريقة عمل المتصفحات وأدوات التجميع في الخلفية يساعد على إنشاء استراتيجية تجميع أفضل تدعم ضغطًا أفضل. ويجب معالجة مشكلة دقة التحميل عبر منصات مختلفة في النظام البيئي. قد يكون التقسيم الدقيق خطوة في هذا الاتجاه، لكننا ما زلنا بعيدين عن الحل.</p>
@@ -203,7 +203,7 @@
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -211,8 +211,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

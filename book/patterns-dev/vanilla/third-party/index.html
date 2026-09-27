@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="تحسين تحميل الأطراف الثالثة — أنماط JavaScript"/><!----><title>تحسين تحميل الأطراف الثالثة | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -51,7 +51,7 @@
 <li><a href="https://www.google.com/recaptcha/about/">reCAPTCHA</a> أو CAPTCHA للكشف عن الروبوتات (bots).</li>
 </ul>
 <p>يمكنك استخدام الأطراف الثالثة لدمج ميزات أخرى تضيف قيمة إلى محتواك أو لتقليل بعض الأعمال المرهقة التي تنطوي عليها بناء موقع من الصفر. ووفقًا لتقرير Web Almanac لعام 2021، فإن أكثر من <a href="https://almanac.httparchive.org/en/2021/third-parties#prevalence">94% من الصفحات</a> على الويب تستخدم الأطراف الثالثة — وتُشكّل <a href="https://almanac.httparchive.org/en/2020/third-parties#content-types">الصور وJavaScript</a> المساهمين الأكثر أهمية في محتوى الأطراف الثالثة. وفيما يلي <a href="https://almanac.httparchive.org/en/2021/third-parties#fig-10">تفصيل مفيد</a> لطلبات (requests) الأطراف الثالثة حسب نوع المحتوى (content type) والفئة (category):</p>
-<p><img src="../../../../images/patterns-dev/vanilla-third-party-0-optimizingthir__wwfbjeoqhxl.webp" alt="طلبات الطرف الثالث حسب نوع المحتوى والفئة"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-third-party-0-optimizingthir__wwfbjeoqhxl.webp" alt="طلبات الطرف الثالث حسب نوع المحتوى والفئة"></p>
 <p>رغم أن موارد الأطراف الثالثة تضيف إلى موقعك ميزات قيّمة، فإنها يمكن أيضاً أن تُبطّئه في الحالات التالية:</p>
 <ul>
 <li>تسبب رحلات ذهاب وإياب إضافية إلى نطاق الطرف الثالث لكل مورد مطلوب.</li>
@@ -68,9 +68,9 @@
 <li><a href="https://web.dev/bootup-time/">تقليل زمن تنفيذ JavaScript</a> للسكربتات التي تستغرق وقتًا طويلًا في التنفيذ</li>
 <li><a href="https://web.dev/total-byte-weight/">تجنّب أحمال الشبكة (network payloads) الضخمة</a> للسكربتات الكبيرة</li>
 </ul>
-<p><img src="../../../../images/patterns-dev/vanilla-third-party-1-optimizingthir__3tr5286cg4z.webp" alt="تقليل أثر شيفرة الطرف الثالث"></p>
-<p><img src="../../../../images/patterns-dev/vanilla-third-party-2-optimizingthir__t68otdbvv1.webp" alt="تقليل زمن تنفيذ JavaScript"></p>
-<p><img src="../../../../images/patterns-dev/vanilla-third-party-3-optimizingthir__aaavejhhjgm.webp" alt="تجنّب حِمل شبكة ضخم"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-third-party-1-optimizingthir__3tr5286cg4z.webp" alt="تقليل أثر شيفرة الطرف الثالث"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-third-party-2-optimizingthir__t68otdbvv1.webp" alt="تقليل زمن تنفيذ JavaScript"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-third-party-3-optimizingthir__aaavejhhjgm.webp" alt="تجنّب حِمل شبكة ضخم"></p>
 <ul>
 <li>استخدم مخطط شلال Waterfall الخاص بـ WebPageTest (WPT) لتحديد <a href="https://nooshu.com/blog/2019/10/02/how-to-read-a-wpt-waterfall-chart/#third-party-blocking-javascript">سكربتات الأطراف الثالثة التي تحجب</a>، أو استخدم مقارنة WPT جنبًا إلى جنب لـ<a href="https://andydavies.me/blog/2018/02/19/using-webpagetest-to-measure-the-impact-of-3rd-party-tags/">قياس تأثير وسوم الأطراف الثالثة</a>.</li>
 <li>تساعد مواقع مثل <a href="https://bundlephobia.com/">Bundlephobia</a> في تقييم تكلفة إضافة حزم npm المتاحة إلى حزمك (bundles). ويمكنك أيضًا معرفة الحجم والاعتماديات المتضمّنة في أي حزمة باستخدام <a href="https://www.npmjs.com/package/">بحث حزم npm</a>.</li>
@@ -95,7 +95,7 @@
 
 <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://example.com/asyncthis.js&quot;</span> <span class="hljs-attr">async</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
-<p><img src="../../../../images/patterns-dev/vanilla-third-party-4-optimizingthir__k6owmtevvl.webp" alt="مقارنة بين async وdefer"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vanilla-third-party-4-optimizingthir__k6owmtevvl.webp" alt="مقارنة بين async وdefer"></p>
 <blockquote>
 <p>المصدر: <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript">developers.google.com</a></p>
 </blockquote>
@@ -555,7 +555,7 @@ ga(&#x27;send&#x27;, &#x27;pageview&#x27;);
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -563,8 +563,8 @@ ga(&#x27;send&#x27;, &#x27;pageview&#x27;);
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

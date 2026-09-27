@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الرسم البياني — الرسوم البيانية"/><!----><title>الرسم البياني | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -47,22 +47,22 @@ G &amp; = { V, E } \newline
 \end{aligned}
 $$</p>
 <p>إذا نظرنا إلى الرؤوس باعتبارها عقداً، وإلى الأضلاع باعتبارها مراجع (مؤشرات) تربطها، أمكننا اعتبار الرسم البياني امتداداً لبنية بيانات القائمة المترابطة. وكما يوضح الشكل أدناه، <strong>فمقارنةً بالعلاقات الخطية (القوائم المترابطة) وعلاقات التقسيم والتغلب (الأشجار)، تتمتع العلاقات الشبكية (الرسوم البيانية) بدرجة حرية أعلى، ولذلك فهي أكثر تعقيداً</strong>.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--linkedlist_tree_graph.png" alt="العلاقات بين القوائم المترابطة والأشجار والرسوم البيانية"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--linkedlist_tree_graph.png" alt="العلاقات بين القوائم المترابطة والأشجار والرسوم البيانية"></p>
 <h2 id="الأنواع-الشائعة-للرسوم-البيانية-ومصطلحاتها">الأنواع الشائعة للرسوم البيانية ومصطلحاتها</h2>
 <p>يمكن تقسيم الرسوم البيانية إلى <u>رسوم بيانية غير موجّهة</u> (undirected graphs) و<u>رسوم بيانية موجّهة</u> (directed graphs) حسب ما إذا كانت الأضلاع لها اتجاه، كما يوضح الشكل أدناه.</p>
 <ul>
 <li>في الرسوم البيانية غير الموجّهة، تمثّل الأضلاع ارتباطاً «ثنائي الاتجاه» بين رأسين، مثل علاقات الصداقة في WeChat أو QQ.</li>
 <li>في الرسوم البيانية الموجّهة، يكون للأضلاع اتجاه، أي أن الضلعين $A \rightarrow B$ و$A \leftarrow B$ مستقلان أحدهما عن الآخر، مثل علاقات المتابعة والمتابعين في Weibo أو TikTok.</li>
 </ul>
-<p><img src="../../../../images/hello-algo/chapter_graph--directed_graph.png" alt="رسوم بيانية موجّهة وغير موجّهة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--directed_graph.png" alt="رسوم بيانية موجّهة وغير موجّهة"></p>
 <p>ويمكن تقسيم الرسوم البيانية إلى <u>رسوم بيانية متصلة</u> (connected graphs) و<u>رسوم بيانية غير متصلة</u> (disconnected graphs) حسب ما إذا كانت جميع الرؤوس متصلة، كما يوضح الشكل أدناه.</p>
 <ul>
 <li>في الرسوم البيانية المتصلة، يمكن الوصول من أي رأس إلى جميع الرؤوس الأخرى.</li>
 <li>في الرسوم البيانية غير المتصلة، يوجد على الأقل رأس واحد لا يمكن الوصول إليه انطلاقاً من رأس معيّن.</li>
 </ul>
-<p><img src="../../../../images/hello-algo/chapter_graph--connected_graph.png" alt="رسوم بيانية متصلة وغير متصلة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--connected_graph.png" alt="رسوم بيانية متصلة وغير متصلة"></p>
 <p>ويمكننا أيضاً إضافة متغير «وزن» إلى الأضلاع، للحصول على <u>رسوم بيانية موزونة</u> (weighted graphs) كما يوضح الشكل أدناه. فمثلاً، في ألعاب الهاتف مثل «Honor of Kings»، يحسب النظام «مستوى الألفة» بين اللاعبين استناداً إلى مدة لعبهم معاً، ويمكن تمثيل شبكات الألفة هذه باستخدام رسوم بيانية موزونة.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--weighted_graph.png" alt="رسوم بيانية موزونة وغير موزونة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--weighted_graph.png" alt="رسوم بيانية موزونة وغير موزونة"></p>
 <p>وتشمل بنية بيانات الرسم البياني المصطلحات الشائعة التالية.</p>
 <ul>
 <li><u>التجاور</u> (adjacency): عندما يتصل رأسان بضلع، يُقال إن هذين الرأسين «متجاوران». وفي الشكل أعلاه، الرؤوس المجاورة للرأس 1 هي الرؤوس 2 و3 و5.</li>
@@ -74,7 +74,7 @@ $$</p>
 <h3 id="مصفوفة-التجاور">مصفوفة التجاور</h3>
 <p>بمعطى رسم بياني فيه $n$ من الرؤوس، تستخدم <u>مصفوفة التجاور</u> (adjacency matrix) مصفوفة بحجم $n \times n$ لتمثيل الرسم البياني، حيث يمثّل كل صف (عمود) رأساً، وتمثّل عناصر المصفوفة الأضلاع، باستخدام $1$ أو $0$ للإشارة إلى وجود ضلع بين رأسين أو عدم وجوده.</p>
 <p>وكما يوضح الشكل أدناه، لتكن مصفوفة التجاور $M$ وقائمة الرؤوس $V$. عندئذ يشير عنصر المصفوفة $M[i, j] = 1$ إلى وجود ضلع بين الرأس $V[i]$ والرأس $V[j]$، بينما يشير $M[i, j] = 0$ إلى عدم وجود ضلع بين الرأسين.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--adjacency_matrix.png" alt="تمثيل الرسم البياني بمصفوفة التجاور"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--adjacency_matrix.png" alt="تمثيل الرسم البياني بمصفوفة التجاور"></p>
 <p>ولمصفوفات التجاور الخصائص التالية.</p>
 <ul>
 <li>في الرسوم البيانية البسيطة، لا يمكن للرؤوس الاتصال بأنفسها، لذا تكون العناصر الواقعة على القطر الرئيسي لمصفوفة التجاور بلا معنى.</li>
@@ -84,7 +84,7 @@ $$</p>
 <p>وعند استخدام مصفوفات التجاور لتمثيل الرسوم البيانية، يمكننا الوصول مباشرةً إلى عناصر المصفوفة للحصول على الأضلاع، مما يجعل عمليات الإضافة والحذف والبحث والتعديل فعّالة للغاية، بتعقيد زمني $O(1)$ في جميعها. غير أن التعقيد المكاني للمصفوفة هو $O(n^2)$، وهو ما يستهلك ذاكرة كبيرة.</p>
 <h3 id="قائمة-التجاور">قائمة التجاور</h3>
 <p>تستخدم <u>قائمة التجاور</u> (adjacency list) عدداً $n$ من القوائم المترابطة لتمثيل رسم بياني، حيث تمثّل عقد القوائم المترابطة الرؤوس. وتقابل القائمة المترابطة رقم $i$ الرأس $i$، وتخزّن جميع الرؤوس المجاورة لذلك الرأس (أي الرؤوس المتصلة به). ويعرض الشكل أدناه مثالاً على رسم بياني مخزّن باستخدام قائمة تجاور.</p>
-<p><img src="../../../../images/hello-algo/chapter_graph--adjacency_list.png" alt="تمثيل الرسم البياني بقائمة التجاور"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_graph--adjacency_list.png" alt="تمثيل الرسم البياني بقائمة التجاور"></p>
 <p>تخزّن قوائم التجاور الأضلاع الموجودة فعلاً فقط، ويكون العدد الإجمالي للأضلاع عادةً أقل بكثير من $n^2$، مما يجعلها أكثر كفاءة في استهلاك المساحة. غير أن البحث عن الأضلاع في قائمة التجاور يتطلب اجتياز القائمة المترابطة، لذا فهي أقل كفاءة زمنياً من مصفوفة التجاور.</p>
 <p>وكما يوضح الشكل أعلاه، <strong>فإن بنية قوائم التجاور تشبه كثيراً أسلوب السلسلة المنفصلة في جداول التجزئة، لذا يمكننا استخدام طرق مشابهة لتحسين الكفاءة</strong>. فمثلاً، عندما تطول قائمة مترابطة، يمكن تحويلها إلى شجرة AVL أو شجرة حمراء سوداء، مما يحسّن التعقيد الزمني من $O(n)$ إلى $O(\log n)$؛ ويمكن أيضاً تحويلها إلى جدول تجزئة، مما يقلّل التعقيد الزمني إلى $O(1)$.</p>
 <h2 id="التطبيقات-الشائعة-للرسوم-البيانية">التطبيقات الشائعة للرسوم البيانية</h2>
@@ -126,7 +126,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -134,8 +134,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

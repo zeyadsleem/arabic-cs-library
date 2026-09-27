@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="التحكّم في المسار — Control Flow"/><!----><title>التحكّم في المسار | صناعة المفسّرات</title>
+		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="site-header"><div class="container site-header__inner"><a class="logo" href="../../../../"><span class="logo__title">المكتبة العربية</span> <span class="logo__subtitle">لعلوم الحاسوب</span></a> <button class="menu-toggle" aria-label="قائمة التنقل" aria-expanded="false"><span></span><span></span><span></span></button> <nav class="site-nav"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلم</a><a href="../../../../book/hello-algo">مرحباً بالخوارزميات</a><a href="../../../../about">عن المكتبة</a><a href="../../../../search">البحث</a><!--]--> <button class="theme-toggle" aria-label="تبديل السمة">☾</button></nav></div></header> <main id="main"><!--[--><div class="container"><div class="book-layout"><aside class="book-sidebar"><!--[--><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/introduction/index">مقدمة</a></li><!--]--></ul><h3>A Map of the Territory</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-map-of-the-territory/index">خريطة الإقليم</a></li><!--]--></ul><h3>Welcome</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/welcome/index">ترحيب</a></li><!--]--></ul><h3>The Lox Language</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/the-lox-language/index">اللّغة Lox</a></li><!--]--></ul><h3>Types of Values</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/types-of-values/index">أنواع القيم</a></li><!--]--></ul><h3>Scanning</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning/index">المسح المعجمي</a></li><!--]--></ul><h3>Scanning On Demand</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/scanning-on-demand/index">المسح عند الطلب</a></li><!--]--></ul><h3>Representing Code</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/representing-code/index">تمثيل الشيفرة</a></li><!--]--></ul><h3>Resolving and Binding</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/resolving-and-binding/index">الحَلّ والربط</a></li><!--]--></ul><h3>Statements and State</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/statements-and-state/index">الجمل والحالة</a></li><!--]--></ul><h3>Classes</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes/index">الأصناف</a></li><!--]--></ul><h3>Classes and Instances</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/classes-and-instances/index">الأصناف والنسخ</a></li><!--]--></ul><h3>Methods and Initializers</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/methods-and-initializers/index">الدوال والمُهيّئات</a></li><!--]--></ul><h3>Inheritance</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/inheritance/index">الوراثة</a></li><!--]--></ul><h3>Superclasses</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/superclasses/index">الأصناف الآباء</a></li><!--]--></ul><h3>Control Flow</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/control-flow/index" class="active">التحكّم في المسار</a></li><!--]--></ul><h3>Parsing Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/parsing-expressions/index">تحليل التعبيرات</a></li><!--]--></ul><h3>Evaluating Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/evaluating-expressions/index">تقييم التعبيرات</a></li><!--]--></ul><h3>Strings</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/strings/index">النصوص</a></li><!--]--></ul><h3>Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/functions/index">الدوال</a></li><!--]--></ul><h3>Calls and Functions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/calls-and-functions/index">الاستدعاءات والدوال</a></li><!--]--></ul><h3>Closures</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/closures/index">الإغلاقات</a></li><!--]--></ul><h3>Local Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/local-variables/index">المتغيّرات المحلّية</a></li><!--]--></ul><h3>A Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-virtual-machine/index">آلة افتراضية</a></li><!--]--></ul><h3>Compiling Expressions</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/compiling-expressions/index">ترجمة التعبيرات</a></li><!--]--></ul><h3>A Bytecode Virtual Machine</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-bytecode-virtual-machine/index">آلة افتراضية لشيفرة البايت</a></li><!--]--></ul><h3>Chunks of Bytecode</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/chunks-of-bytecode/index">قطع الشيفرة بايت</a></li><!--]--></ul><h3>A Tree-Walk Interpreter</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/a-tree-walk-interpreter/index">مفسّر يتجوّل على الشجرة</a></li><!--]--></ul><h3>Jumping Back and Forth</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/jumping-back-and-forth/index">القفز ذهابًا وإيابًا</a></li><!--]--></ul><h3>Global Variables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/global-variables/index">المتغيّرات العامة</a></li><!--]--></ul><h3>Hash Tables</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/hash-tables/index">جداول التجزئة</a></li><!--]--></ul><h3>Optimization</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/optimization/index">التحسين</a></li><!--]--></ul><h3>Garbage Collection</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/garbage-collection/index">جمع النفايات</a></li><!--]--></ul><h3>Appendix I</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-i/index">الملحق الأول</a></li><!--]--></ul><h3>Appendix II</h3> <ul><!--[--><li><a href="../../../../book/crafting-interpreters/appendix-ii/index">الملحق الثاني</a></li><!--]--></ul><!--]--></aside> <article class="reader"><div class="reader__header"><p class="reader__chapter">Control Flow</p> <h1>التحكّم في المسار</h1></div> <div class="reader-content"><!----><blockquote>
+<p>المنطق، مثل الويسكي، يفقد أثره النافع إذا أُخذ
+بكميات كبيرة جداً.</p>
+<p><cite>إدوارد جون مورتون دراكس بلانكيت، اللورد دانساني</cite></p>
+</blockquote>
+<p>مقارنةً بماراثون <a href="/arabic-cs-library/book/crafting-interpreters/statements-and-state/index">الفصل الماضي</a> الشاقّ، فإن اليوم نزهةً خفيفة عبر
+مروج الأقحوان. لكن العمل سهل، والمكافأة مدهشة في حجمها.</p>
+<p>في الوقت الحالي، مفسّرنا لا هو إلا آلة حاسبة. لا يستطيع برنامج Lox أن يفعل سوى قدر
+ثابت من العمل قبل أن ينتهي. ولمضاعفة زمن تشغيله، عليك أن تضاعف طول شيفرته المصدرية.
+نحن على وشك إصلاح ذلك. وفي هذا الفصل، يتّخذ مفسّرنا خطوة كبيرة نحو دوريات لغة
+البرمجة الكبار: <em>اكتمال تورنغ</em>.</p>
+<h2 id="آلات-تورنغ-باختصار">آلات تورنغ (باختصار)</h2>
+<p>في الجزء الأول من القرن الماضي، تعثّر الرياضيون في سلسلة من
+تناقضات <span name="paradox">مُربكة</span> دفعتهم للشك في متانة الأساس الذي بنوا عليه
+أعمالهم.
+ولمعالجة تلك [الأزمة][]، عادوا إلى نقطة الصفر. انطلاقاً من حفنة بديهيات
+ومن المنطق ونظرية المجموعات، رجوا إعادة بناء الرياضيات على أساس منيع.</p>
+<aside name="paradox">
+<p>أشهرها <a href="https://en.wikipedia.org/wiki/Russell%27s_paradox"><strong>مفارقة رَسل</strong></a>. في البداية، كانت نظرية المجموعات تسمح لك
+بتعريف أي نوع من المجموعات. إن كنت تستطيع وصفه بالإنجليزية، فكان صالحاً. وبطبيعة
+الحال، نظراً لميل الرياضيين إلى الإحالات الذاتية، يمكن أن تحتوي المجموعات على
+مجموعات أخرى. فجاء رَسل — وهوح — بما يلي:</p>
+<p><em>R هي مجموعة كل المجموعات التي لا تحتوي على نفسها.</em></p>
+<p>هل تحتوي R على نفسها؟ إن لم تكن تحتوي، فينبغي بحسب النصف الثاني من التعريف أن
+تفعل. لكن إن كانت تحتوي، فلم تعد تستوفي التعريف. هنا ينفجر العقل.</p>
+</aside>
+<p>أرادوا أن يجيبوا بدقّة عن أسئلة مثل: «هل يمكن إثبات كل الجمل الصحيحة؟» و«هل يمكننا
+[حساب][] كل الدوال التي نستطيع تعريفها؟» بل وحتى السؤال الأعمّ: «ماذا نعني حين
+نزعم أن دالة ما <em>قابلة للحساب</em>؟»</p>
+<p>افترضوا أن إجابة السؤالين الأولين ستكون «نعم». وكل ما تبقّى هو إثبات ذلك. وإلى
+أن الإجابة عن كليهما «لا»، والأمر المدهش أن السؤالين متشابكان بعمق. هذه زاوية
+م fascinating في الرياضيات تمسّ أسئلة جوهرية حول ما تستطيع العقول فعله وكيف يعمل
+الكون. ولا أستطيع أن أعطيها حقّها هنا.</p>
+<p>لكن ما أريد أن أشير إليه هو أن Alan Turing وAlonzo Church، في أثناء إثباتهما أن
+إجابة السؤالين الأولين هي «لا»، صاغا إجابة دقيقة عن السؤال الأخير -- تعريفاً لأنواع
+الدوال <span name="uncomputable">القابلة للحساب</span>. فقد صاغ كلٌّ منهما نظاماً
+صغيراً جداً بمجموعة دنيا من الآليات، لكنه يظلّ قوياً بما يكفي لحساب أي دالة من
+(صفّ كبير جداً من) الدوال.</p>
+<aside name="uncomputable">
+<p>أثبتوا أن إجابة السؤال الأول هي «لا» بإظهار أن الدالة التي تُعيد قيمة صدق جملة
+معطاة <em>ليست</em> دالة قابلة للحساب.</p>
+</aside>
+<p>تُعدّ هذه الآن «الدوال القابلة للحساب». أما نظام تورنغ فيُسمّى <span
+name="turing"><strong>آلة تورنغ</strong></span>. ونظام Church هو <strong>حساب لامدا</strong>
+(lambda calculus). ولا يزال كلاهما مستخدماً على نطاق واسع كأساس لنماذج الحوسبة،
+وبل إن كثيراً من لغات البرمجة الوظيفية الحديثة تستخدم حساب لامدا في جوهرها.</p>
+<aside name="turing">
+<p>سمّى تورنغ اختراعاته «آلات-a» اختصاراً لكلمة «آلية» (automatic). ولم يكن من شأنه
+أن يضع <em>اسمه</em> هو عليها. لكن الرواد الرياضيون الذين جاءوا بعده هم من فعل ذلك
+نيابةً عنه. هكذا تصبح مشهوراً مع الاحتفاظ ببعض التواضع.</p>
+</aside>
+<img src="/arabic-cs-library/images/crafting-interpreters/control-flow-1.webp" alt="آلة تورنغ." />
+<p>لآلات تورنغ شهرة اسم أفضل -- فليس هناك فيلم هوليوودي عن Alonzo Church بعد -- لكن
+الصيغتين <a href="https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">متكافئتان في القوّة</a>. وفي الواقع، أي لغة برمجة تملك حداً أدنى
+معيناً من التعبيرية قوية بما يكفي لحساب <em>أي</em> دالة قابلة للحساب.</p>
+<p>يمكنك إثبات ذلك بكتابة محاكٍ لآلة تورنغ بلغتك. وبما أن تورنغ أثبت أن آلة يمكنه حساب
+أي دالة قابلة للحساب، فإن ذلك بالمعلومية يعني أن لغتك تستطيع أيضاً. كل ما
+تحتاج إليه هو ترجمة الدالة إلى آلة تورنغ، ثم تشغيل تلك الآلة على محاكيك.</p>
+<p>إذا كانت لغتك تعبيرية بما يكفين للقيام بذلك، فإنها تُعدّ <strong>كاملة تورنغ</strong>. وآلات
+تورنغ بسيطة إلى حدٍّ كبير، لذا لا يلزم قدر كبير من القوّة للقيام بذلك. فأنت تحتاج
+أساساً إلى عمليات حسابية، وقليل من التحكّم في المسار، والقدرة على تخصيص واستخدام
+كميات ذاكرة عشوائية (نظرياً). لدينا الأول. وفي نهاية هذا الفصل، سيكون لدينا
+<span name="memory">الثاني</span>.</p>
+<aside name="memory">
+<p>لدينا <em>ثالث</em> أيضاً بشكل شبه كامل. يمكنك إنشاء نصوص ودمجها بأحجام عشوائية، لذا يمكنك
+أن <em>تخزّن</em> ذاكرة غير محدودة. لكن ليس لدينا أي وسيلة للوصول إلى أجزاء من نص.</p>
+</aside>
+<h2 id="التنفيذ-الشرطي">التنفيذ الشرطي</h2>
+<p>كفى من التاريخ، لنُحيِّ لغتنا قليلاً. يمكننا تقسيم التحكّم في المسار إلى نوعين
+تقريباً:</p>
+<ul>
+<li>
+<p><strong>التحكّم الشرطي</strong> أو <strong>المتفرّع</strong> (branching) يُستخدم لـ<em>عدم</em> تنفيذ جزء من
+الشيفرة. بشكل أمرّي، يمكنك أن تفكّر فيه كأنك تقفز <em>إلى الأمام</em> فوق منطقة من
+الشيفرة.</p>
+</li>
+<li>
+<p><strong>التحكّم الحلقوي</strong> ينفّذ قطعة من الشيفرة أكثر من مرّة. فهو يقفز <em>إلى الخلف</em>
+حتى تفعل شيئاً من جديد. وبما أنك لا تريد عادةً حلقات <em>لا نهائية</em>، فإن هناك
+عادةً منطقاً شرطياً ليعرف متى يتوقّف الحلقة أيضاً.</p>
+</li>
+</ul>
+<p>التفرّع أبسط، لذا سنبدأ به. للغلات المشتقّة من C ميزتان رئيسيّتان في التنفيذ
+الشرطي: جملة <code>if</code> والمشغّل «الشرطي» <span name="ternary">الذي يحمل اسماً
+واضحاً</span> (<code>?:</code>). تسمح لك جملة <code>if</code> بتنفيذ جمل بشكل شرطي، ويسمح لك المشغّل
+الشرطي بتنفيذ تعبيرات بشكل شرطي.</p>
+<aside name="ternary">
+<p>يُسمّى المشغّل الشرطي أيضاً «المشغّل الثلاثي» لأنه المشغّل الوحيد في C الذي يأخذ
+ثلاثة معاملات.</p>
+</aside>
+<p>لأغراض البساطة، لا تملك Lox مشغّلاً شرطياً، فلنُشغّل جملة <code>if</code> عندنا. تتلقّى
+قواعدنا اللغويةللجمل إنتاجاً جديداً.</p>
+<p><span name="semicolon"></span></p>
+<pre><code class="language-ebnf"><span class="hljs-attribute">statement</span>      → exprStmt
+               | ifStmt
+               | printStmt
+               | block ;
+
+<span class="hljs-attribute">ifStmt</span>         → &quot;if&quot; &quot;(&quot; expression &quot;)&quot; statement
+               ( &quot;else&quot; statement )? ;
+</code></pre>
+<aside name="semicolon">
+<p>الفواصل المنقوطة في القواعد غير محاطة بعلامات اقتباس، ما يعني أنها جزء من
+metasyntax القواعد اللغوية لا من صياغة Lox. فالكتلة ليس لها <code>;</code> في نهايتها، ولا
+جملة <code>if</code>، إلا إذا كانت جملة then أو else تنتهي بفاصلة منقوطة.</p>
+</aside>
+<p>لجملة <code>if</code> تعبير للشرط، ثم جملة تُنفَّذ إذا كان الشرط truthy. واختيارياً، قد يكون
+لها أيضاً كلمة <code>else</code> وجملة تُنفَّذ إذا كان الشرط falsey. وعقدة <span
+name="if-ast">شجرة التركيب</span> لها حقول لكل واحدة من هذه القطع الثلاث.</p>
+<p>^code if-ast (1 before, 1 after)</p>
+<aside name="if-ast">
+<p>الشيفرة المولّدة للعقدة الجديدة موجودة في <a href="/arabic-cs-library/book/crafting-interpreters/appendix-ii/index#if-statement">الملحق الثاني</a>.</p>
+</aside>
+<p>مثل الجمل الأخرى، يتعرّف المحلل النحوي على جملة <code>if</code> بالكلمة المفتاحية <code>if</code>
+السابقة لها.</p>
+<p>^code match-if (1 before, 1 after)</p>
+<p>وحين يجدها، يستدعي هذه الدالة الجديدة لتحليل الباقي:</p>
+<p>^code if-statement</p>
+<aside name="parens">
+<p>الأقواس حول الشرط لا تفيد إلا نصف فائدتها. فأنت تحتاج إلى نوع ما من الفواصل <em>بين</em> الشرط
+وجملة then، وإلا فالمحلل النحوي لن يعرف متى بلغ نهاية تعبير الشرط. لكن قوس <em>الفتح</em>
+بعد <code>if</code> لا يفيد شيئاً. فقد وضعه دينيس ريتشي هناك ليتمكّن من استخدام <code>)</code> كفاصل
+ختامي دون أقواس غير متوازنة.</p>
+<p>أما لغات أخرى مثل Lua وبعض نسخ BASIC فستخدم كلمة مفتاحية مثل <code>then</code> كفاصل ختامي
+ولا تضع شيئاً قبل الشرط. بينما تشترط Go وSwift أن تكون الجملة كتلة بأقواس معقوفة.
+وهذا يتيح لهما استخدام <code>{</code> في بداية الجملة ليعرفا متى ينتهي الشرط.</p>
+</aside>
+<p>وكالمعتاد، تتبع شيفرة التحليل القواعد اللغوية عن قرب. فهي تكتشف بند else بالبحث
+عن كلمة <code>else</code> السابقة. إن لم تكن هناك، يكون حقل <code>elseBranch</code> في شجرة التركيب هو
+<code>null</code>.</p>
+<p>ذلك else الاختياري الذي يبدو بريئاً فتح في الواقع لغموضاً في قواعدنا اللغوية.
+تأمّل:</p>
+<pre><code class="language-lox">if (first) if (second) whenTrue(); else whenFalse();
+</code></pre>
+<p>إليك اللغز: لأي جملة <code>if</code> ينتمي بند else ذلك؟ وهذا ليس مجرد سؤال نظري عن كيفية
+تدوين قواعدنا اللغوية. بل يؤثر فعلياً في كيفية تنفيذ الشيفرة:</p>
+<ul>
+<li>
+<p>إن أرفقنا else بجملة <code>if</code> الأولى، فإن <code>whenFalse()</code> تُستدعى إذا كان <code>first</code>
+falsey، بغضّ النظر عن قيمة <code>second</code>.</p>
+</li>
+<li>
+<p>إن أرفقناه بجملة <code>if</code> الثانية، فإن <code>whenFalse()</code> لا تُستدعى إلا إذا كان <code>first</code>
+truthy وكان <code>second</code> falsey.</p>
+</li>
+</ul>
+<p>ولأن بنود else اختيارية، ولأنه لا يوجد فاصل صريح يحدّد نهاية جملة <code>if</code>، فإن
+القواعد اللغوية تكون ملتبسة عند تداخل <code>if</code> بهذه الطريقة. وهذه المشكلة النحوية
+الكلاسيكية تُسمّى مشكلة <strong>[الـ else المعلَّق][]</strong> (dangling else).</p>
+<p><span name="else"></span></p>
+<img class="above" src="/arabic-cs-library/images/crafting-interpreters/control-flow-2.webp" alt="طريقتان يمكن تفسير else بهما." />
+<aside name="else">
+<p>هنا، يُبرز التنسيق الطريقتين اللتين يمكن تحليل else بهما. لكن لاحظ أن المحلل
+النحوي يتجاهل محارف المسافات البيضاء، لذا فإن هذا دليل للقارئ البشري فقط.</p>
+</aside>
+<p>من الممكن فعلاً تعريف قواعد لغوية خالية من السياق تتجنّب هذا الالتباس مباشرةً،
+لكن ذلك يتطلّب تقسيم معظم قواعد الجمل إلى أزواج: واحدة تسمح بـ<code>if</code> مع <code>else</code>
+وأخرى لا تسمح. وهو أمر مزعج.</p>
+<p>بدلاً من ذلك، تتجنّب معظم اللغات والمحللات النحوية المشكلة بطريقة ارتجالية. فمهما
+كانت الحيلة التي يبتذرونها لتخلّص أنفسهم منها، فإنهم يختارون دائماً التفسير نفسه --
+يرتبط <code>else</code> بأقرب <code>if</code> يسبقه.</p>
+<p>ومحللنا النحوي يفعل ذلك بالفعل. فبما أن <code>ifStatement()</code> يبحث ب المدرّية عن <code>else</code>
+قبل أن يُرجع، فإنّ innermost استدعاء في سلسلة متداخلة سيطالب ببند else لنفسه قبل
+العودة إلى جمل <code>if</code> الخارجية.</p>
+<p>والآن، مع الصياغة، نحن مستعدّون للتفسير.</p>
+<p>^code visit-if</p>
+<p>تنفيذ المفسّر هو غلاف رقيق حول شيفرة Java نفسها ذاتها. فهو يقيّم الشرط. إن كان
+truthy، ينفّذ فرع then. وإلا، إن كان هناك فرع else، ينفّذ ذلك.</p>
+<p>إن قارنتَ هذه الشيفرة بكيفية تعامل المفسّر مع الصياغات الأخرى التي نفّذناها، فجزء
+جملة <code>if</code> في Java هو ما يجعل التحكّم في المسار خاصّاً. فمعظم أشجار التركيب الأخرى
+تقيّم أشجارها الفرعية دائماً. أما هنا، فقد لا نقيّم جملة then أو else. وإن كان أيٌّ
+منهما له أثر جانبي، فإن خيار عدم تقييمه يصبح مرئياً للمستخدم.</p>
+<h2 id="المشغلات-المنطقية">المشغّلات المنطقية</h2>
+<p>بما أننا لا نملك المشغّل الشرطي، فقد تظنّ أننا انتهينا من التفرّع، لكن لا. فحتى بدون
+المشغّل الثلاثي، هناك مشغّلان آخران تقنياً من باني التحكّم في المسار --
+والمشغّلان المنطقيان <code>and</code> و<code>or</code>.</p>
+<p>هذان ليسا كالمشغّلات الثنائية الأخرى لأنهما <strong>يتجاهلان قصير الدائرة</strong>
+(short-circuit). فإذا، بعد تقييم المُعامل الأيسر، عرفنا ما يجب أن تكون عليه نتيجة
+التعبير المنطقي، فلا نقيّم المُعامل الأيمن. مثلاً:</p>
+<pre><code class="language-lox">false and sideEffect();
+</code></pre>
+<p>لكي يُقيَّم تعبير <code>and</code> إلى شيء truthy، يجب أن يكون كلا المُعاملين truthy. وبمجرد
+أن نقيّم المُعامل الأيسر <code>false</code> نرى أن الأمر لن يكون كذلك، فلا حاجة إلى تقييم
+<code>sideEffect()</code> ويُتخطّى.</p>
+<p>هذا هو سبب عدم تنفيذنا للمشغّلات المنطقية مع المشغّلات الثنائية الأخرى. والآن
+نحن مستعدّون. فالمشغّلان الجديدان منخفضان في جدول الأولويات. ومثل <code>||</code> و<code>&amp;&amp;</code> في
+C، لكل منهما <span name="logical">أولويته الخاصة</span> معكون <code>or</code> أدنى من
+<code>and</code>. ونُدخلهما بينهما تماماً بين <code>assignment</code> و<code>equality</code>.</p>
+<aside name="logical">
+<p>لقد تساءلتُ دائماً لماذا ليس لهما الأولوية نفسها، كما هي الحال مع مشغّلات المقارنة
+أو المساواة المختلفة.</p>
+</aside>
+<pre><code class="language-ebnf"><span class="hljs-attribute">expression</span>     → assignment ;
+<span class="hljs-attribute">assignment</span>     → IDENTIFIER &quot;=<span class="hljs-string">&quot; assignment
+               | logic_or ;
+logic_or       → logic_and ( &quot;</span>or<span class="hljs-string">&quot; logic_and )* ;
+logic_and      → equality ( &quot;</span>and<span class="hljs-string">&quot; equality )* ;
+</span></code></pre>
+<p>بدلاً من الرجوع إلى <code>equality</code>، تتتالى <code>assignment</code> الآن إلى <code>logic_or</code>. والقاعدتان
+الجديدتان، <code>logic_or</code> و<code>logic_and</code>، <span name="same">شبيهتان</span> ومشغّلات
+ثنائية أخرى. ثم تستدعي <code>logic_and</code> الدالة <code>equality</code> لمُعامليها، Returning
+إلى بقية قواعد التعبير.</p>
+<aside name="same">
+<p><em>الصياغة</em> لا تهتمّ بأنها تتجاهل قصير الدائرة. فذلك concern دلالي.</p>
+</aside>
+<p>يمكننا إعادة استخدام صنف <code>Expr.Binary</code> الموجود لهذين التعبيرين الجديدين لأن حقولهما
+متطابقة. لكن عندئذٍ سيضطر <code>visitBinaryExpr()</code> إلى التحقّق ممّا إذا كان المشغّل
+أحد المشغّلات المنطقية واستخدام مسار شيفرة مختلف للتعامل مع التجاهل القصير. أرى أن
+الأنظف أن نعرّف <span name="logical-ast">صنفاً جديداً</span> لهذين المشغّلين حتى
+يحصلا على دالة زيارة خاصة بهما.</p>
+<p>^code logical-ast (1 before, 1 after)</p>
+<aside name="logical-ast">
+<p>الشيفرة المولّدة للعقدة الجديدة موجودة في <a href="/arabic-cs-library/book/crafting-interpreters/appendix-ii/index#logical-expression">الملحق الثاني</a>.</p>
+</aside>
+<p>لنسج التعبيرات الجديدة في المحلل النحوي، نغيّر أولاً شيفرة تحليل الإسناد لتستدعي
+<code>or()</code>.</p>
+<p>^code or-in-assignment (1 before, 2 after)</p>
+<p>شيفرة تحليل سلسلة تعبيرات <code>or</code> تحاكي المشغّلات الثنائية الأخرى.</p>
+<p>^code or</p>
+<p>ومُعاملاها هما مستوى الأولوية الأعلى التالي، أي تعبير <code>and</code> الجديد.</p>
+<p>^code and</p>
+<p>وهي تستدعي <code>equality()</code> لمُعامليها، وبذلك يعود محلّل التعبيرات إلى ما كان عليه
+تماماً. نحن مستعدّون للتفسير.</p>
+<p>^code visit-logical</p>
+<p>إن قارنتَ هذا بدالة <code>visitBinaryExpr()</code> في <a href="/arabic-cs-library/book/crafting-interpreters/evaluating-expressions/index">الفصل الأسبق</a>، فسترى
+الفرق. هنا، نقيّم المُعامل الأيسر أولاً. ننظر إلى قيمته لنرى إن كنا نستطيع التجاهل
+القصير. وإن لم نتمكن، وعندئذٍ فقط، نقيّم المُعامل الأيمن.</p>
+<p>الجزء اللافت الآخر هنا هو تحديد القيمة الفعلية التي نُعيدها. وبما أن Lox مكتوبة
+النوع ديناميكياً، نسمح بمُعاملات من أي نوع ونستخدم truthiness لتحديد ما يمثّله كل
+مُعامل. ونطبّق تفكيراً مشابهاً على النتيجة. بدلاً من الوعد بأن نُعيد حرفياً <code>true</code> أو
+<code>false</code>، فإن مشغّلاً منطقياً يضمن فقط أنه سيُعيد قيمة ذات truthiness مناسبة.</p>
+<p>ولحسن الحظ، لدينا قيم ذات truthiness صحيحة في المتناول -- نتائج المُعاملات نفسها.
+لذا نستخدمها. مثلاً:</p>
+<pre><code class="language-lox">print &quot;hi&quot; or 2; // &quot;hi&quot;.
+print nil or &quot;yes&quot;; // &quot;yes&quot;.
+</code></pre>
+<p>في السطر الأول، <code>&quot;hi&quot;</code> هي truthy، لذا يتجاهل <code>or</code> قصير الدائرة ويُعيدها. وفي
+السطر الثاني، <code>nil</code> هي falsey، لذا يُقيّم ويُعيد المُعامل الثاني، <code>&quot;yes&quot;</code>.</p>
+<p>هذا يغطّي جميع أواصر التفرّع في Lox. نحن مستعدّون للقفز إلى الأمام نحو الحلقات.
+أترى ما فعلتُه هناك؟ <em>قفز. إلى الأمام.</em> أدركتَ؟ انظر،إنه مثل إشارة إلى... أوه،
+انسَ ذلك.</p>
+<h2 id="حلقات-while">حلقات While</h2>
+<p>تقدّم Lox جملتَي تحكّم حلقويتين: <code>while</code> و<code>for</code>. حلقة <code>while</code> هي الأبسط، لذا
+سنبدأ بها. قواعدها اللغوية نفسها كما في C.</p>
+<pre><code class="language-ebnf"><span class="hljs-attribute">statement</span>      → exprStmt
+               | ifStmt
+               | printStmt
+               | whileStmt
+               | block ;
+
+<span class="hljs-attribute">whileStmt</span>      → &quot;while&quot; &quot;(&quot; expression &quot;)&quot; statement ;
+</code></pre>
+<p>نضيف بنداً آخر إلى قاعدة statement يشير إلى القاعدة الجديدة لحلقة while. فهي تأخذ
+كلمة <code>while</code> مفتاحية، يليها تعبير شرط محاط بأقواس، ثم جملة تكون الجسم. وتحصل قاعدة
+القواعد اللغوية الجديدة هذه على <span name="while-ast">عقدة شجرة تركيب</span>.</p>
+<p>^code while-ast (1 before, 1 after)</p>
+<aside name="while-ast">
+<p>الشيفرة المولّدة للعقدة الجديدة موجودة في <a href="/arabic-cs-library/book/crafting-interpreters/appendix-ii/index#while-statement">الملحق الثاني</a>.</p>
+</aside>
+<p>تخزّن العقدة الشرط والجسم. وهنا يمكنك أن ترى لماذا من الجميل أن تكون لدينا أصناف
+أساسية منفصلة للتعبيرات والجمل. فإعلانات الحقول توضّح أن الشرط تعبير وأن الجسم جملة.</p>
+<p>وفي المحلل النحوي، نتبع العملية نفسها التي استخدمناها لجمل <code>if</code>. أولاً، نضيف حالة
+أخرى في <code>statement()</code> لاكتشاف الكلمة المفتاحية السابقة ومطابقتها.</p>
+<p>^code match-while (1 before, 1 after)</p>
+<p>وهذا يفوّض العمل الفعلي إلى هذه الدالة:</p>
+<p>^code while-statement</p>
+<p>القواعد اللغوية بسيطة جداً وهذا ترجمة حرفيّة لها إلى Java. وبمناسبة الحديث عن
+الترجمة الحرفية إلى Java، إليك كيف نُنفّذ الصياغة الجديدة:</p>
+<p>^code visit-while</p>
+<p>مثل دالة الزيارة الخاصة بـ<code>if</code>، يستخدم هذا الزائر ميزة Java المقابلة. هذه الدالة
+ليست معقّدة، لكنها تجعل Lox أقوى بكثير. يمكننا أخيراً كتابة برنامج زمن تشغيله غير
+مقيّد تماماً بطول شيفرته المصدرية.</p>
+<h2 id="حلقات-for">حلقات For</h2>
+<p>بقي لنا آخر باني تحكّم في المسار، حلقة <span name="for">for</span> بنمط C
+القديم. ولستُ بحاجة على الأرجح إلى تذكيرك، لكنها تبدو هكذا:</p>
+<pre><code class="language-lox">for (var i = 0; i &lt; 10; i = i + 1) print i;
+</code></pre>
+<p>بلغة القواعد اللغوية، هذا:</p>
+<pre><code class="language-ebnf"><span class="hljs-attribute">statement</span>      → exprStmt
+               | forStmt
+               | ifStmt
+               | printStmt
+               | whileStmt
+               | block ;
+
+<span class="hljs-attribute">forStmt</span>        → &quot;for&quot; &quot;(&quot; ( varDecl | exprStmt | &quot;;&quot; )
+<span class="hljs-attribute">                 expression</span>? &quot;;&quot;
+<span class="hljs-attribute">                 expression</span>? &quot;)&quot; statement ;
+</code></pre>
+<aside name="for">
+<p>معظم اللغات الحديثة لديها جملة حلقة أعلى مستوى للتكرار على تسلسلات معرّفة من
+المستخدم. فـC# لديها <code>foreach</code>، وJava لديها «الحلقة المعزّزة»، بل وحتى C++ لديها
+الآن جمل <code>for</code> قائمة على النطاقات. وتقدّم تلك صياغة أنظف من جملة <code>for</code> في C
+باستدعاء ضمني لبروتوكول تكرار يدعمه الكائن الذي نحلّق عليه.</p>
+<p>أنا أحبّ تلك. لكننا في Lox محدودون لأننا نبني المفسّر فصلاً بعد فصل. وليس لدينا
+كائنات ودوال بعد، فلا سبيل لدينا لتعريف بروتوكول تكرار يمكن أن تستخدمه حلقة <code>for</code>.
+لذلك سنتمسّك بحلقة <code>for</code> القديمة بنمط C. فكّر فيها على أنها «قديمة الطراز». وهي
+النسخة الأصلية من جمل التحكّم في المسار.</p>
+</aside>
+<p>داخل الأقواس، لديك ثلاثة بنود تفصلها فواصل منقوطة:</p>
+<ol>
+<li>
+<p>البند الأول هو <em>المُهيّئ</em>. يُنفَّذ مرّة واحدة بالضبط، قبل أي شيء آخر. وهو عادةً
+تعبير، لكن من باب الراحة نسمح أيضاً بإعلان متغيّر. وفي تلك الحالة، يكون نطاق
+المتغيّر محصوراً ببقية حلقة <code>for</code> -- البندين الآخرين والجسم.</p>
+</li>
+<li>
+<p>التالي هو <em>الشرط</em>. كما في حلقة <code>while</code>، يتحكّم هذا التعبير في متى نخرج من
+الحلقة. ويُقيَّم مرّة واحدة في بداية كل دورة، بما في ذلك الأولى. إن كانت
+النتيجة truthy، ينفّذ جسم الحلقة. وإلا، فيخرج.</p>
+</li>
+<li>
+<p>البند الأخير هو <em>الزيادة</em>. إنه تعبير حرّ يقوم ببعض العمل في نهاية كل دورة من
+دورات الحلقة. وتُهمَل نتيجة التعبير، لذا يجب أن يكون له أثر جانبي ليكون نافعاً.
+في الممارسة، هو عادةً يزيد متغيّراً.</p>
+</li>
+</ol>
+<p>ويمكن حذف أيّ من هذه البنود. وبعد قوس الإغلاق تأتي جملة الجسم، وهي عادةً كتلة.</p>
+<h3 id="نزع-السكر">نزع السكر</h3>
+<p>هذا كثير من الآليات، لكن لاحظ أن منها لا شيء يفعل ما لا تستطيع فعله بالجمل التي
+لديك بالفعل. فإذا لم تكن حلقات <code>for</code> تدعم بنود المهيّئ، لاستطعت ببساطة وضع تعبير
+المهيّئ قبل جملة <code>for</code>. وبدون بند الزيادة، لاستطعت ببساطة وضع تعبير الزيادة في
+نهاية الجسم بنفسك.</p>
+<p>بمعنى آخر، لا <em>تحتاج</em> Lox إلى حلقات <code>for</code>، وإنما هي تجعل بعض أنماط الشيفرة
+الشائعة أكثر متعة في الكتابة. وتُسمّى هذه النوعية من الميزات <span
+name="sugar"><strong>سكراً نحوياً</strong></span> (syntactic sugar). فمثلاً، يمكن إعادة كتابة
+حلقة <code>for</code> السابقة هكذا:</p>
+<aside name="sugar">
+<p>ابتكر هذه العبارة البديعة بيتر ج. لاندين عام 1964 ليصف كيف تكون بعض صيغ التعبيرات
+الجميلة التي تدعمها لغات مثل ALGOL مجمّداً يُرشّ فوق حساب لامدا الأكثر
+أساسيةً -- على الأرجح أقلّ مذاقاً-- في الأسفل.</p>
+<img class="above" src="/arabic-cs-library/images/crafting-interpreters/control-flow-3.webp" alt="أكثر بقليل من ملعقة سكّر." />
+</aside>
+<pre><code class="language-lox">{
+  var i = 0;
+  while (i &lt; 10) {
+    print i;
+    i = i + 1;
+  }
+}
+</code></pre>
+<p>هذا السكربت له الدلالات نفسها تماماً كما كان قبله، لكنه أقلّ راحةً للعين. وميزات
+السكر النحوي مثل حلقة <code>for</code> في Lox تجعل اللغة أكثر متعةً وإنتاجية في العمل. لكن،
+وخاصة في تطبيقات اللغات المتطوّرة، فإن كل ميزة لغة تتطلّب دعم طرف خلفي وتحسيناً
+تكلّفتها باهظة.</p>
+<p>يمكننا أن نأكل الكعكة ونأخذها أيضاً بواسطة <span
+name="caramel"><strong>نزع السكر</strong></span> (desugaring). وتصف تلك الكلمة الغريبة عملية
+يأخذ فيها المقدّم الأمامي شيفرة تستخدم السكر النحوي ويترجمها إلى شكل أوّلي أكثر
+يعرف كيف ينفّذه الطرف الخلفي أصلاً.</p>
+<aside name="caramel">
+<p>يا ليتي كان المصطلح المقبول لهذا هو «التحميص». ولماذا نقدّم استعارة إن كنا لن
+نلتزم بها؟</p>
+</aside>
+<p>سننزع سكر حلقات <code>for</code> إلى حلقات <code>while</code> وإلى الجمل الأخرى التي يتعامل معها
+المفسّر بالفعل. وفي مفسّرنا البسيط، لا يوفّر لنا نزع السفر حقاً الكثير من العمل،
+لكنه يتيح لي فرصة أن أقدّم لك هذه التقنية. إذن، بخلاف الجمل السابقة، <em>لن</em> نضيف
+عقدة شجرة تركيب جديدة. بدلاً من ذلك، ننتقل مباشرةً إلى التحليل. أولاً، أضف import
+سنحتاجه قريباً.</p>
+<p>^code import-arrays (1 before, 1 after)</p>
+<p>وكما في كل جملة، نبدأ تحليل حلقة <code>for</code> بمطابقة كلمتها المفتاحية.</p>
+<p>^code match-for (1 before, 1 after)</p>
+<p>وهنا تصبح الأمور مثيرة. فنزع السكر سيحدث هنا، لذا سنبني هذه الدالة قطعةً قطعة،
+بدءاً بقوس الفتح السابق للبنود.</p>
+<p>^code for-statement</p>
+<p>البند الأول التالي لذلك هو المُهيّئ.</p>
+<p>^code for-initializer (2 before, 1 after)</p>
+<p>إن كان الرمز التالي لـ<code>(</code> هو فاصلة منقوطة، فالمُهيّئ قد حُذف. وإلا، فإننا نتحقّق من
+كلمة <code>var</code> لنرى إن كانت إعلاناً لـ<span name="variable">متغيّر</span>. وإن لم
+يطابق أيٌّ منهما، فلا بدّ أنه تعبير. نحلّله ونلفّه في جملة تعبير حتى يكون المُهيّئ
+دائماً من نوع Stmt.</p>
+<aside name="variable">
+<p>في فصل سابق، قلتُ إننا نستطيع فصل شجرتي التركيب للتعبيرات وللجمل إلى تسلسلَي
+أصناف منفصلين لأنه لا يوجد مكان واحد في القواعد اللغوية يسمح بتعبير وجملة معاً.
+وكان ذلك غير <em>صحيح تماماً</em> على ما يبدو.</p>
+</aside>
+<p>التالي هو الشرط.</p>
+<p>^code for-condition (2 before, 1 after)</p>
+<p>ومرةً أخرى، نبحث عن فاصلة منقوطة لنرى إن كان البند قد حُذف. والبند الأخير هو
+الزيادة.</p>
+<p>^code for-increment (1 before, 1 after)</p>
+<p>إنه مشبه ببند الشرط، لكن هذا البند ينتهي بقوس الإغلاق. ولم يبقَ سوى <span
+name="body">الجسم</span>.</p>
+<aside name="body">
+<p>أم أنني الوحيد الذي يجد هذا مقلِماً؟ «لم يبقَ سوى <em>الجسم</em>».</p>
+</aside>
+<p>^code for-body (1 before, 1 after)</p>
+<p>لقد حلّلنا جميع قطع حلقة <code>for</code> المختلفة، وعُقد AST الناتجة جالسة في حفنة من
+المتغيّرات المحلّية في Java. وهنا يأتي نزع السكر. نأخذ تلك ونستخدمها لتركيب عقد
+شجرة تركيب تعبّر عن دلالات حلقة <code>for</code>، مثل مثال النزع اليدوي الذي عرضته عليك
+سابقاً.</p>
+<p>تصبح الشيفرة أبسط قليلاً إن عملنا من الخلف، لذا نبدأ ببند الزيادة.</p>
+<p>^code for-desugar-increment (2 before, 1 after)</p>
+<p>الزيادة، إن وُجدت، تُنفَّذ بعد الجسم في كل دورة من دورات الحلقة. ونفعل ذلك
+باستبدال الجسم بكتلة صغيرة تحتوي الجسم الأصلي يليها جملة تعبير تقيّم الزيادة.</p>
+<p>^code for-desugar-condition (2 before, 1 after)</p>
+<p>ثم نأخذ الشرط والجسم ونبني الحلقة باستخدام حلقة <code>while</code> أوّلية. وإن حُذف الشرط،
+فندفع <code>true</code> لنحصل على حلقة لا نهائية.</p>
+<p>^code for-desugar-initializer (2 before, 1 after)</p>
+<p>وأخيراً، إن وُجد مُهيّئ، فإنه ينفَّذ مرّة واحدة قبل الحلقة بأكملها. ونفعل ذلك
+أيضاً باستبدال الجملة كاملةً بكتلة تشغّل المُهيّئ ثم تنفّذ الحلقة.</p>
+<p>هذا كل شيء. صار مفسّرنا الآن يدعم حلقات <code>for</code> بنمط C ولم نضطر إلى لمس صنف
+Interpreter إطلاقاً. ولأننا نزعنا السكر إلى عقد يعرف المفسّر كيفية زيارتها بالفعل،
+فلم يبقَ المزيد من العمل.</p>
+<p>أخيراً، صارت Lox قوية بما يكفي لتسليتنا، ولو لبضع دقائق على الأقل. إليك برنامجاً
+صغيراً يطبع أول 21 عنصراً في متتالية فيبوناتشي:</p>
+<pre><code class="language-lox">var a = 0;
+var temp;
+
+for (var b = 1; a &lt; 10000; b = temp + b) {
+  print a;
+  temp = a;
+  a = b;
+}
+</code></pre>
+<div class="challenges">
+<h2 id="التحديات">التحديات</h2>
+<ol>
+<li>
+<p>بعد بضعة فصول من الآن، حين تدعم Lox دوالاً من الدرجة الأولى وتوجيهاً
+ديناميكياً، فلن <em>نحتاج</em> تقنياً إلى جمل تفرّع مدمجة في اللغة. بيّن كيف يمكن
+تنفيذ التنفيذ الشرطي بواسطة هذه الأدوات. وسمّ لغة تستخدم هذه التقنية في تحكّمها
+في المسار.</p>
+</li>
+<li>
+<p>وعلى النحو نفسه، يمكن تنفيذ التكرار باستخدام تلك الأدوات نفسها، شريطة أن
+يدعم مفسّرنا تحسيناً مهماً. ما هو، ولماذا هو ضروري؟ وسمّ لغة تستخدم هذه التقنية
+في تكرارها.</p>
+</li>
+<li>
+<p>بخلاف Lox، تدعم معظم اللغات الأخرى بنمط C أيضاً جملتَي <code>break</code> و<code>continue</code>
+داخل الحلقات. أضف دعماً لجمل <code>break</code>.</p>
+<p>الصياغة هي كلمة <code>break</code> مفتاحية يليها فاصلة منقوطة. وينبغي أن يكون ظهور جملة
+<code>break</code> خارج أي حلقة محيطة خطأً نحوياً. في الزمن التشغيلي، تتسبب جملة <code>break</code>
+في قفز التنفيذ إلى نهاية أقرب حلقة محيطة والمتابعة من هناك. لاحظ أن <code>break</code>
+قد تكون متداخلة داخل كتل وجمل <code>if</code> أخرى تحتاج هي أيضاً إلى الخروج منها.</p>
+</li>
+</ol>
+</div>
+<div class="design-note">
+<h2 id="ملاحظة-تصميم-ملاعق-من-السكر-النحوي">ملاحظة تصميم: ملاعق من السكر النحوي</h2>
+<p>حين تصمّم لغتك الخاصة، فأنت تختار مقدار السكر النحوي الذي تصبّه في القواعد
+اللغوية. فهل تصنع طعاماً صحياً بلا سكّر تُقابل فيه كل عملية دلالية وحدة نحوية
+واحدة، أمحلوى فاخرة فاخرة حيث يمكن التعبير عن كل ذرّة سلوك بعشر طرق مختلفة؟ أما
+اللغات الناجحة فتقيم في كل نقاط هذا الطيف.</p>
+<p>وفي الطرف اللاذع الحادّ توجد لغات ذات صياغة دنيا بلا رحمة مثل Lisp وForth
+وSmalltalk. فمشترو Lisp المشهورون يدّعون أن لغتهم «لا صياغة لها»، بينما يتباهى
+أهل Smalltalk بأنك تستطيع أن تضع القواعد اللغوية كاملةً على بطاقة فهرس. ولهذه
+العائلة فلسفة أن <em>اللغة</em> لا تحتاج سكراً نحوياً. بدلاً من ذلك، فالصياغة والدلالات
+الدنيا التي تقدّمها قوية بما يكفي لتتيح لشيفرة المكتبات أن تكون تعبيرية كما لو كانت
+جزءاً من اللغة نفسها.</p>
+<p>قريباً من هذه توجد لغات مثل C وLua وGo. فهي تسعى إلى البساطة والوضوح أكثر من
+التقليص. وبعضها، مثل Go، يتجنّب عمداً كلاً من السكر النحوي وقابلية التوسّع النحوي
+من الفئة السابقة. إنهم يريدون للصياغة أن تزيح نفسها عن طريق الدلالات، لذا يركّزون
+على إبقاء القواعد اللغوية والمكتبات بسيطة. ينبغي أن تكون الشيفرة واضحة أكثر منها
+جميلة.</p>
+<p>وفي المنتصف تجد لغات مثل Java وC# وPython. وفي النهاية تصل إلى Ruby وC++ وPerl و
+D -- لغات حشمت القواعد اللغوية فيها قدراً كبيراً من الصياغة حتى بدأت تنفد منها
+محارف الترقيم على لوحة المفاتيح.</p>
+<p>إلى حدٍّ ما، فإن الموقع على الطيف correlates مع العمر. فإضافة قطع من السكر النحوي
+في الإصدارات اللاحقة أمر سهل نسبياً. ف الصياغة الجديدة تُبهر الجماهير، وهي أقلّ
+احتمالاً لكسر البرامج القائمة من العبث بالدلالات. وبمجرد إضافتها، لا يمكنك
+سحبها أبداً، لذا تميل اللغات إلى التحلية مع مرور الوقت. ومن أبرز فوائد إنشاء لغة
+جديدة من الصفر أنه يتيح لك فرصة كشط تلك الطبقات المتراكمة من الك frosting وتبدأ من
+جديد.</p>
+<p>للسكر النحوي سمعة سيئة لدى نخبة لغات البرمجة. فهناك هوس حقيقي بالتقليص في تلك
+الدائرة. وهناك ما يبرّر ذلك إلى حدٍّ ما. فالصياغة سيّئة التصميم وغير الضرورية ترفع
+العبء المعرفي دون أن تضيف تعبيرية كافية تبرّر ثقلها. ولأنهناك ضغطاً دائماً لإدخال
+ميزات جديدة إلى اللغة،,it takes انضباط وتركيز على البساطة لتجنّب الانتفاخ. وبمجرد
+أن تضيف بعض الصياغة، فأنت محتجز لها، لذا من الحكمة أن تكون مقتصداً.</p>
+<p>وفي الوقت نفسه، فإن معظم اللغات الناجحة لديها قواعد لغوية معقّدة إلى حدٍّ لا
+بأس به، على الأقل في الوقت الذي تصبح فيه مستخدَمة على نطاق واسع. فالمبرمجون
+يقضون وقتاً طويلاً في لغتهم المفضّلة، وبعض اللمسات هنا وهناك يمكنها حقّاً أن تحسّن
+راحة عملهم وكفاءتهم.</p>
+<p>وهذا يتطلّب أن تضبط التوازن الصحيح -- أن تختار مستوى الحلاوة المناسب للغةك -- وهو
+ما يعتمد على ذوقك الخاص.</p>
+</div>
+<!----></div> <div class="prev-next"><!--[0--><a class="prev" href="../../../../book/crafting-interpreters/superclasses/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الأصناف الآباء</span></a><!--]--> <!--[0--><a class="next" href="../../../../book/crafting-interpreters/parsing-expressions/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">تحليل التعبيرات</span></a><!--]--></div></article></div></div><!--]--><!----></main> <footer class="site-footer"><div class="container site-footer__inner"><div><p class="site-footer__text">المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p class="site-footer__text">المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="site-footer__links"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلم</a> <a href="../../../../about">عن المكتبة</a> <a href="../../../../search">البحث</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ucc8xn = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

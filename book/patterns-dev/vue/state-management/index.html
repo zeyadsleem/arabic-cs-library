@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="إدارة الحالة — أنماط Vue"/><!----><title>إدارة الحالة | أنماط تصميم تطبيقات الويب</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -64,7 +64,7 @@
 <p>قبل أن نتناول كيفية إدارتنا للحالة في التطبيق، سنبدأ بالنظر في كيفيةVERBirement <strong>الخصائص</strong> (props) مشاركة البيانات بين المكوّنات الأصل والفرعية.</p>
 <h2 id="الخصائص">الخصائص</h2>
 <p>لنفترض لدينا تطبيقًا افتراضيًا يحتوي في البداية على مكوّن أصل ومكوّن فرعي فقط. ويمنحنا Vue القدرة على استخدام <strong>الخصائص</strong> (props) لتمرير البيانات من المكوّن الأصل إلى المكوّن الفرعي.</p>
-<p><img src="../../../../images/patterns-dev/vue-state-management-0-props.webp" alt="إدارة الحالة عبر الخصائص"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-state-management-0-props.webp" alt="إدارة الحالة عبر الخصائص"></p>
 <p>استخدام الخصائص بسيط إلى حدٍّ كبير. فكل ما نحتاج إليه فعليًا هو ربط قيمة بسمة الخاصية في الموضع الذي يُعرض فيه المكوّن الفرعي. وإليك مثالًا على استخدام الخصائص لتمرير مصفوفة قيم إلى الأسفل بمساعدة التوجيه <a href="https://vuejs.org/api/built-in-directives.html#v-bind">v-bind</a>:</p>
 <p><strong>ParentComponent</strong></p>
 <pre><code class="language-javascript">&lt;template&gt;
@@ -123,7 +123,7 @@
 <h2 id="أحداث-المكونات">أحداث المكوّنات</h2>
 <p>ماذا لو احتجنا إلى إيجاد طريقة للتواصل في الاتجاه المعاكس؟ ويمكن أن يكون أحد الأمثلة السماح للمستخدم بإدخال عدد جديد إلى المصفوفة المعروضة في المثال أعلاه من المكوّن الفرعي.</p>
 <p>لا يمكننا استخدام <code>props</code> لأن <code>props</code> لا يمكن استخدامها إلّا لتمرير البيانات بصيغة أحادية الاتجاه (من الأصل إلى الفرعي إلى حفيد…). ولتسهيل إعلام المكوّن الفرعي للمكوّن الأصل بشيء ما، يمكننا استخدام الأحداث المخصّصة.</p>
-<p><img src="../../../../images/patterns-dev/vue-state-management-1-custom_events.webp" alt="إدارة الحالة عبر الأحداث المخصّصة"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-state-management-1-custom_events.webp" alt="إدارة الحالة عبر الأحداث المخصّصة"></p>
 <p>تُرسَل الأحداث المخصّصة في Vue كأحداث <a href="https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events#adding_custom_data_%E2%80%93_customevent">CustomEvents</a> أصيلة، وتُستخدم للتواصل بين المكوّنات.</p>
 <p>إليك مثالًا على استخدام الأحداث المخصّصة لتمكين <code>ChildComponent</code> من تيسير تغيير في خاصية بيانات <code>numbers</code> الخاصة بـ <code>ParentComponent</code>:</p>
 <p><strong>ChildComponent</strong></p>
@@ -194,7 +194,7 @@ Add new number
 <p><a href="https://codesandbox.io/embed/state-management-2-m52vxf">Open CodeSandbox</a></p>
 <h2 id="إدارة-حالة-بسيطة">إدارة حالة بسيطة</h2>
 <p>يمكننا استخدام الخصائص لتمرير البيانات إلى الأسفل والأحداث المخصّصة لإرسال الرسائل إلى الأعلى. وكيف يمكننا تمرير البيانات أو تيسير التواصل بين مكوّنين مختلفين شقيقين؟</p>
-<p><img src="../../../../images/patterns-dev/vue-state-management-2-sibling_components_communication.webp" alt="التواصل بين المكوّنات الشقيقة"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-state-management-2-sibling_components_communication.webp" alt="التواصل بين المكوّنات الشقيقة"></p>
 <p>لا يمكننا استخدام الأحداث المخصّصة بالطريقة التي استخدمناها أعلاه، لأن تلك الأحداث تُصدر داخل واجهة مكوّن معيّن، ونتيجة لذلك فإن مستمع الحدث المخصّص يحتاج إلى التصريح عند الموضع الذي يُعرض فيه المكوّن. وفي مكوّنين منعزلين، لا يُعرض أحدهما داخل الآخر.</p>
 <p>إحدى الطرق البسيطة لإدارة حالة مستوى التطبيق هي إنشاء نمط مخزن (store) قائم على مشاركة مخزن بيانات بين المكوّنات. ويمكن للمخزن إدارة حالة تطبيقنا فضلًا عن الطرق المسؤولة عن تغيير الحالة.</p>
 <p>على سبيل المثال، يمكننا أن يكون لدينا مخزن بسيط على النحو التالي:</p>
@@ -270,7 +270,7 @@ Add new number
 </code></pre>
 <p><a href="https://codesandbox.io/embed/state-management-3-78vzcy">Open CodeSandbox</a></p>
 <p>حين نقول هنا إن المكوّنات تتفاعل بعضها مع بعض، فإننا نستخدم كلمة «تفاعل» بالمعنى الواسع. فالمكوّنات لن تفعل شيئًا تجاه بعضها، بل ستُحدث تغييرات على بعضها الآخر <em>عبر</em> المخزن.</p>
-<p><img src="../../../../images/patterns-dev/vue-state-management-3-simple_store.webp" alt="مخزن حالة تفاعلي بسيط"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-state-management-3-simple_store.webp" alt="مخزن حالة تفاعلي بسيط"></p>
 <p>وإذا أمعنا النظر في جميع القطع التي تتفاعل مباشرةً مع المخزن، يمكننا حينها من المسى:</p>
 <ul>
 <li>الطريقة الموجودة في <code>NumberSubmit</code> هي المسؤولة عن العمل مباشرةً على طريقة المخزن، لذا يمكننا وسمها بـ <strong>إجراء المخزن</strong> (store action).</li>
@@ -379,7 +379,7 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 </code></pre>
 <p><a href="https://codesandbox.io/embed/state-management-4-3tr5qr">Open CodeSandbox</a></p>
 <p>بالنسبة إلى تطبيق بسيط كتطبيق، قد لا يكون مخزن Pinia ضروريًا حقًا، وسلوكه قريب جدًا من مجرد استخدام مخزن أُنشئ بالدالة <code>reactive()</code> ومع ذلك، يقدّم Pinia قدرات إضافية لحالات الاستخدام الأكثر تعقيدًا، مثل القدرة على <a href="https://pinia.vuejs.org/core-concepts/plugins.html">توسيع ميزات Pinia عبر الإضافات</a>، والحصول على دعم لأدوات المطوّر (devtools)، وامتياز <a href="https://pinia.vuejs.org/core-concepts/state.html#typescript">دعم TypeScript</a> و<a href="https://pinia.vuejs.org/ssr/nuxt.html">دعم العرض في الخادم</a> الأكثر ملاءمة.</p>
-<p><img src="../../../../images/patterns-dev/vue-state-management-4-pinia_vue_devtools.webp" alt="Pinia داخل أدوات مطوّر Vue"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-state-management-4-pinia_vue_devtools.webp" alt="Pinia داخل أدوات مطوّر Vue"></p>
 <h2 id="ما-هي-الطريقة-الصحيحة">ما هي الطريقة الصحيحة؟</h2>
 <p>لكل طريقة لإدارة حالة مستوى التطبيق مزاياها وعيوبها.</p>
 <h3 id="مخزن-بسيط">مخزن بسيط</h3>
@@ -406,7 +406,7 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -414,8 +414,8 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

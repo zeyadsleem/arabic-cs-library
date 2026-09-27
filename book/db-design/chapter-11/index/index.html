@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="الاعتماديات الوظيفية — Functional Dependencies"/><!----><title>الاعتماديات الوظيفية | تصميم قواعد البيانات — الطبعة الثانية</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -76,7 +76,7 @@ See Chapter <span class="hljs-number">12.</span>
 <p>ISBN ———–&gt; Title</p>
 <h2 id="قواعد-الاعتماديات-الوظيفية">قواعد الاعتماديات الوظيفية</h2>
 <p>تأمّل جدول البيانات r(R) التالي الخاص بمخطط العلاقة R(ABCDE) المبيّن في الجدول 11.1.</p>
-<p><img src="../../../../images/db-design/chapter-11-0-Table_R_Functional_Dependency_example.webp" alt="صورة توضيحية من الكتاب: Table-R-Functional-Dependency-example"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-0-Table_R_Functional_Dependency_example.webp" alt="صورة توضيحية من الكتاب: Table-R-Functional-Dependency-example"></p>
 <p>أثناء النظر في هذا الجدول، اسأل نفسك: ما نوع الاعتماديات التي يمكننا ملاحظتها بين الخصائص في الجدول R؟ وبما أن قيم A فريدة (a1, a2, a3، إلخ)، فإنه يترتب على تعريف الاعتمادية الوظيفية ما يلي:</p>
 <p>A → B, A → C, A → D, A → E</p>
 <ul>
@@ -101,11 +101,11 @@ See Chapter <span class="hljs-number">12.</span>
 <p>لتكن R(U) مخطط علاقة فوق مجموعة الخصائص U. وسنستخدم الأحرف X و Y و Z لتمثيل أي مجموعة جزئية من، وللاختصار، اتحاد مجموعتين من الخصائص، بدلًا من الصيغة المعتادة X U Y.</p>
 <h3 id="بديهية-الانعكاس">بديهية الانعكاس</h3>
 <p>تقول هذه البديهية: إذا كانت Y مجموعة جزئية من X، فإن X تحدّد Y (انظر الشكل 11.1).</p>
-<p><img src="../../../../images/db-design/chapter-11-1-Ch_11_Axion_Reflexivity.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axion-Reflexivity"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-1-Ch_11_Axion_Reflexivity.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axion-Reflexivity"></p>
 <p>فمثالًا، PartNo —&gt; NT123 حيث X (PartNo) مكوّن من أكثر من جزء واحد من المعلومات؛ أي Y (NT) و partID (123).</p>
 <h3 id="بديهية-التوسعة">بديهية التوسعة</h3>
 <p>تقول بديهية التوسعة، وتُعرف أيضًا باعتمادية جزئية (partial dependency): إذا كانت X تحدّد Y، فإن XZ تحدّد YZ لأي Z (انظر الشكل 11.2).</p>
-<p><img src="../../../../images/db-design/chapter-11-2-Ch_11_Axiom_of_Augmentation_300x34.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-of-Augmentation-300x34"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-2-Ch_11_Axiom_of_Augmentation_300x34.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-of-Augmentation-300x34"></p>
 <p>تقول بديهية التوسعة إن كل خاصية غير مفتاحية يجب أن تعتمد اعتمادًا كاملًا على المفتاح الأساسي. وفي المثال المبيّن أدناه، لا تعتمد StudentName و Address و City و Prov و PC (الرمز البريدي) إلا على StudentNo، ولا على StudentNo مع Grade.</p>
 <p>StudentNo, Course —&gt; StudentName, Address, City, Prov, PC, Grade, DateCompleted</p>
 <p>هذا الوضع غير مرغوب فيه لأن كل خاصية غير مفتاحية يجب أن تعتمد اعتمادًا كاملًا على المفتاح الأساسي. ففي هذا الوضع، لا تعتمد معلومات الطالب إلا اعتمادًا جزئيًا على المفتاح الأساسي (StudentNo).</p>
@@ -116,7 +116,7 @@ See Chapter <span class="hljs-number">12.</span>
 </ul>
 <h3 id="بديهية-التعدية">بديهية التعدّية</h3>
 <p>تقول بديهية التعدّية: إذا كانت X تحدّد Y، و Y تحدّد Z، فإن X يجب أن تحدّد Z أيضًا (انظر الشكل 11.3).</p>
-<p><img src="../../../../images/db-design/chapter-11-3-Ch_11_Axiom_of_transitivity_300x30.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-of-transitivity-300x30"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-3-Ch_11_Axiom_of_transitivity_300x30.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-of-transitivity-300x30"></p>
 <p>يحتوي الجدول أدناه على معلومات لا علاقة لها مباشرة بالطالب؛ فمثلًا، ينبغي أن يكون للبرنامج ProgramID و ProgramName جدول خاص به. فالخاصية ProgramName لا تعتمد على StudentNo؛ وإنما تعتمد على ProgramID.</p>
 <p>StudentNo —&gt; StudentName, Address, City, Prov, PC, ProgramID, ProgramName</p>
 <p>هذا الوضع غير مرغوب فيه لأن خاصية غير مفتاحية (ProgramName) تعتمد على خاصية غير مفتاحية أخرى (ProgramID).</p>
@@ -128,7 +128,7 @@ See Chapter <span class="hljs-number">12.</span>
 <p>غير أننا ما زلنا بحاجة إلى ترك مفتاح أجنبي (FK) في جدول الطالب حتى نتمكن من تحديد البرنامج الذي يسجَّل فيه الطالب.</p>
 <h3 id="الاتحاد">الاتحاد</h3>
 <p>تقترح هذه القاعدة أنه إذا كان جدولان منفصلان والمفتاح الأساسي فيهما هو نفسه، فقد ترغب في وضعهما معًا. وتقول إنه إذا كانت X تحدّد Y و X تحدّد Z، فإن X يجب أن تحدّد Y و Z أيضًا (انظر الشكل 11.4).</p>
-<p><img src="../../../../images/db-design/chapter-11-4-Ch_11_Axiom_Union_300x23.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-Union-300x23"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-4-Ch_11_Axiom_Union_300x23.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-Union-300x23"></p>
 <p>فمثالًا، إذا كان:</p>
 <ul>
 <li>SIN —&gt; EmpName</li>
@@ -139,10 +139,10 @@ See Chapter <span class="hljs-number">12.</span>
 <p>قد يختار بعض مسؤولي قواعد البيانات (DBA) إبقاء هذين الجدولين منفصلين لسببين. أولًا، كل جدول يصف كيانًا (entity) مختلفًا، ولذلك ينبغي فصل الكيانات. ثانيًا، إذا كان من المفترض أن يبقى SpouseName فارغًا (NULL) في معظم الوقت، فلا حاجة لإدراجه في الجدول نفسه الذي يحوي EmpName.</p>
 <h3 id="التفكيك">التفكيك</h3>
 <p>التفكيك (decomposition) هو عكس قاعدة الاتحاد. فإذا كان لديك جدول يبدو وكأنه يحتوي كيانين يحدّدهما المفتاح الأساسي نفسه، ففكّر في تقسيمه إلى جدولين. وتقول هذه القاعدة إنه إذا كانت X تحدّد Y و Z، فإن X تحدّد Y، و X تحدّد Z كلٌّ على حدة (انظر الشكل 11.5).</p>
-<p><img src="../../../../images/db-design/chapter-11-5-Ch_11_Axiom_Decomposition_300x28.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-Decomposition-300x28"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-5-Ch_11_Axiom_Decomposition_300x28.webp" alt="صورة توضيحية من الكتاب: Ch-11-Axiom-Decomposition-300x28"></p>
 <h2 id="مخطط-الاعتماديات">مخطط الاعتماديات</h2>
 <p>يوضّح مخطط الاعتماديات، المبيّن في الشكل 11.6، الاعتماديات المختلفة التي قد توجد في جدول غير مُطبَّع (unnormalized). والجدول غير المُطبَّع هو جدول يحتوي على تكرار في البيانات.</p>
-<p><img src="../../../../images/db-design/chapter-11-6-Ch_11_Dependency_Diagram_300x67.webp" alt="صورة توضيحية من الكتاب: Ch-11-Dependency-Diagram-300x67"></p>
+<p><img src="/arabic-cs-library/images/db-design/chapter-11-6-Ch_11_Dependency_Diagram_300x67.webp" alt="صورة توضيحية من الكتاب: Ch-11-Dependency-Diagram-300x67"></p>
 <p>تُحدَّد الاعتماديات التالية في هذا الجدول:</p>
 <ul>
 <li>ProjectNo و EmpNo، معًا، يمثلان المفتاح الأساسي.</li>
@@ -176,7 +176,7 @@ See Chapter <span class="hljs-number">12.</span>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -184,8 +184,8 @@ See Chapter <span class="hljs-number">12.</span>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

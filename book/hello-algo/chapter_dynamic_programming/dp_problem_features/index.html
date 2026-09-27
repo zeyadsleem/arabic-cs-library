@@ -19,21 +19,21 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.CAuPVLTp.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.CeD7B6xv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Nb4YBBcI.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BVsjt9Bb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7sCVP9Q.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.QaMruKH7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BsWlrJW5.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BrYefza0.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/cC0gxFaz.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B-mAaINP.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CE5nkbVr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.COpIiDbu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DScVS1wu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BqRCC8DQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DB1aoCq1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DfiJHCI9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D6U5Ahr7.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B8_7GHjM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.DONH7Kqc.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/6Y9lBYPL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C7cUe4Jm.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kLN1Pq9m.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية مفتوحة لكتب ومصادر علوم الحاسوب: الخوارزميات وبنى البيانات وأنظمة التشغيل والشبكات والمترجمات وغيرها."/><!----><!--1s55fxa--><meta name="description" content="خصائص مسائل البرمجة الديناميكية — البرمجة الديناميكية"/><!----><title>خصائص مسائل البرمجة الديناميكية | مرحباً بالخوارزميات</title>
 		<link href="../../../../_app/immutable/assets/0.B7eXiKE7.css" rel="stylesheet">
   </head>
@@ -52,7 +52,7 @@
 <p>بمعطى درج، يمكنك صعود $1$ أو $2$ من الدرجات في المرة الواحدة، وكل درجة موسومة بعدد صحيح غير سالب يمثّل تكلفة الوقوف عليها. بمعطى مصفوفة أعداد صحيحة غير سالبة $cost$، حيث $cost[i]$ تمثّل تكلفة الدرجة $i$ و$cost[0]$ هو الأرض (نقطة البداية)، فما أقل تكلفة لازمة للوصول إلى القمة؟</p>
 </div>
 <p>وكما هو موضح في الشكل أدناه، إذا كانت تكاليف الدرجات الأولى والثانية والثالثة $1$ و$10$ و$1$ على الترتيب، فإن الصعود من الأرض إلى الدرجة الثالثة يتطلب أقل تكلفة مقدارها $2$.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_cost_cs_example.png" alt="أقل تكلفة للصعود إلى الدرجة الثالثة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_cost_cs_example.png" alt="أقل تكلفة للصعود إلى الدرجة الثالثة"></p>
 <p>لِتكن $dp[i]$ التكلفة المتراكمة للصعود إلى الدرجة $i$. وبما أن الدرجة $i$ لا يمكن أن تأتي إلا من الدرجة $i-1$ أو $i-2$، فإن $dp[i]$ لا يمكن أن يساوي إلا $dp[i-1] + cost[i]$ أو $dp[i-2] + cost[i]$. ولتقليل التكلفة، ينبغي اختيار الأصغر من القيمتين:</p>
 <p>$$
 dp[i] = \min(dp[i-1], dp[i-2]) + cost[i]
@@ -62,7 +62,7 @@ $$</p>
 <p>فهل تمتلك مسألة صعود الدرج من القسم السابق بنية فرعية مثلى؟ هدفها إيجاد عدد الطرق، وهو ما يبدو مسألة عدّ، لكن إذا غيّرنا السؤال إلى: «جد أكبر عدد من الطرق»، نكتشف على نحو مفاجئ أنه <strong>مع أن المسألتين قبل التعديل وبعده متكافئتان، فقد برزت البنية الفرعية المثلى</strong>: فأكبر عدد من الطرق للدرجة $n$ يساوي مجموع أكبر عدد من الطرق للدرجتين $n-1$ و$n-2$. لذلك فإن تفسير البنية الفرعية المثلى مرن تماماً ويتخذ معانٍ مختلفة في مسائل مختلفة.</p>
 <p>وفقاً لمعادلة انتقال الحالة والحالتين الابتدائيتين $dp[1] = cost[1]$ و$dp[2] = cost[2]$، يمكننا الحصول على شيفرة البرمجة الديناميكية:</p>
 <p>ويوضح الشكل أدناه عملية البرمجة الديناميكية للشيفرة أعلاه.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--min_cost_cs_dp.png" alt="عملية البرمجة الديناميكية لصعود الدرج بأقل تكلفة"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--min_cost_cs_dp.png" alt="عملية البرمجة الديناميكية لصعود الدرج بأقل تكلفة"></p>
 <p>يمكن أيضاً تحسين هذه المسألة مكانياً، بالضغط من بُعد واحد إلى صفر بُعد، مما يقلل التعقيد المكاني من $O(n)$ إلى $O(1)$:</p>
 <h2 id="انعدام-التأثير-اللاحق">انعدام التأثير اللاحق</h2>
 <p>انعدام التأثير اللاحق أحد الخصائص المهمة التي تمكّن البرمجة الديناميكية من حل المسائل بفعالية. وتعريفه: <strong>بمعطى حالة معينة، فإن تطورها المستقبلي يرتبط بالحالة الحالية فقط ولا علاقة له بجميع الحالات السابقة</strong>.</p>
@@ -73,7 +73,7 @@ $$</p>
 <p>بمعطى درج فيه $n$ درجة، حيث يمكنك صعود $1$ أو $2$ من الدرجات في المرة الواحدة، <strong>لكن لا يمكنك القفز $1$ درجة في جولتين متتاليتين</strong>. فكم عدد الطرق للصعود إلى القمة؟</p>
 </div>
 <p>وكما هو موضح في الشكل أدناه، لا توجد سوى $2$ من الطرق الممكنة للصعود إلى الدرجة الثالثة. أما المسار الذي يتضمن ثلاث قفزات متتالية بمقدار $1$ درجة فلا يحقق القيد، ولذلك يُستبعد.</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_example.png" alt="عدد طرق الصعود إلى الدرجة الثالثة مع قيد"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_example.png" alt="عدد طرق الصعود إلى الدرجة الثالثة مع قيد"></p>
 <p>في هذه المسألة، إذا كانت الجولة السابقة قفزة بمقدار $1$ درجة، فيجب أن تكون الجولة التالية قفزة بمقدار $2$ درجتين. وهذا يعني أن <strong>الخيار التالي لا يمكن تحديده بالاعتماد على الحالة الحالية وحدها (رقم الدرجة الحالية)، بل يعتمد أيضاً على الحالة السابقة (رقم الدرجة من الجولة السابقة)</strong>.</p>
 <p>وليس من الصعب ملاحظة أن هذه المسألة لم تعد تحقق انعدام التأثير اللاحق، كما تفشل معادلة انتقال الحالة $dp[i] = dp[i-1] + dp[i-2]$، لأن $dp[i-1]$ يمثّل القفز $1$ درجة في هذه الجولة، لكنه يتضمن كثيراً من الحلول التي «كانت الجولة السابقة فيها قفزة بمقدار $1$ درجة»، وهي لا يمكن أن تُحتسب مباشرةً في $dp[i]$ لتحقيق القيد.</p>
 <p>لهذا السبب، نحتاج إلى توسيع تعريف الحالة: <strong>الحالة $[i, j]$ تمثّل الوقوف على الدرجة $i$ مع قفز الجولة السابقة $j$ من الدرجات</strong>، حيث $j \in {1, 2}$. ويميّز تعريف الحالة هذا بفعالية ما إذا كانت الجولة السابقة قفزة بمقدار $1$ درجة أو $2$ درجتين، مما يتيح لنا تحديد من أين جاءت الحالة الحالية.</p>
@@ -88,7 +88,7 @@ dp[i, 1] = dp[i-1, 2] \
 dp[i, 2] = dp[i-2, 1] + dp[i-2, 2]
 \end{cases}
 $$</p>
-<p><img src="../../../../images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_state_transfer.png" alt="علاقة التعاود مع مراعاة القيود"></p>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_state_transfer.png" alt="علاقة التعاود مع مراعاة القيود"></p>
 <p>وأخيراً، أعِد $dp[n, 1] + dp[n, 2]$، حيث يمثّل مجموعهما العدد الإجمالي لطرق الصعود إلى الدرجة $n$:</p>
 <p>في الحالة أعلاه، وبما أننا نحتاج فقط إلى النظر في حالة سابقة إضافية واحدة، لا يزال بإمكاننا جعل المسألة تحقق انعدام التأثير اللاحق عبر توسيع تعريف الحالة. غير أن بعض المسائل تتضمن «تأثيرات لاحقة» شديدة جداً.</p>
 <div class="note">
@@ -103,7 +103,7 @@ $$</p>
 			
 			<script>
 				{
-					__sveltekit_jgi6b8 = {
+					__sveltekit_1ucc8xn = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -111,8 +111,8 @@ $$</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.CAuPVLTp.js"),
-						import("../../../../_app/immutable/entry/app.QaMruKH7.js")
+						import("../../../../_app/immutable/entry/start.CeD7B6xv.js"),
+						import("../../../../_app/immutable/entry/app.BsWlrJW5.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
