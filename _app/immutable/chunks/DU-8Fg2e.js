@@ -1,0 +1,589 @@
+const $="introtcs",e="lec_17_model_rand",t="Models of Randomized Algorithms",n="index",a="نمذجة الحساب الاحتمالي  { #chapmodelrand }",i=[{depth:3,id:"objectives",text:"{ .objectives }"},{depth:2,id:"نمذجة-الحساب-الاحتمالي",text:"نمذجةُ الحساب الاحتمالي"},{depth:3,id:"منظور-بديل-العملات-العشوائية-بوصفها-مدخلا-إضافيا",text:"منظورٌ بديل: العملاتُ العشوائية بوصفها «مدخلًا إضافيًّا»"},{depth:3,id:"theorem-titlequotتوصيف-بديل-للصنف-mathbfbppquot-randextrainput",text:"{.theorem title=&quot;توصيفٌ بديل للصنف $\\mathbf{BPP}$&quot; #randextrainput}"},{depth:3,id:"proofidea-data-refquotrandextrainputquot",text:"{.proofidea data-ref=&quot;randextrainput&quot;}"},{depth:3,id:"تكبير-نجاح-خوارزميات-الخطأ-ثنائي-الجانب-successamptwosided",text:"تكبيرُ نجاح خوارزميات الخطأ ثنائي الجانب { #successamptwosided }"},{depth:3,id:"proofidea-data-refquotamplificationthmquot",text:"{.proofidea data-ref=&quot;amplificationthm&quot;}"},{depth:2,id:"mathbfbpp-واكتمال-mathbfnp",text:"$\\mathbf{BPP}$ واكتمالُ $\\mathbf{NP}$"},{depth:3,id:"theorem-titlequotmathbfnp-الصعوبة-و-mathbfbppquot-npcandbpp",text:"{.theorem title=&quot;$\\mathbf{NP}$-الصعوبة و $\\mathbf{BPP}$&quot; #NPCandBPP}"},{depth:3,id:"proofidea-data-refquotnpcandbppquot",text:"{.proofidea data-ref=&quot;NPCandBPP&quot;}"},{depth:3,id:"proof-data-refquotnpcandbppquot",text:"{.proof data-ref=&quot;NPCandBPP&quot;}"},{depth:2,id:"قوة-العشوائية",text:"قوةُ العشوائية"},{depth:3,id:"حل-mathbfbpp-في-زمن-أسي",text:"حلُّ $\\mathbf{BPP}$ في زمنٍ أُسّيّ"},{depth:3,id:"theorem-titlequotمحاكاة-الخوارزميات-العشوائية-في-زمن-أسيquot-bppexp",text:"{.theorem title=&quot;محاكاةُ الخوارزميات العشوائية في زمنٍ أُسّيّ&quot; #BPPEXP}"},{depth:3,id:"pause",text:"{ .pause }"},{depth:3,id:"محاكاة-الخوارزميات-العشوائية-بالدوائر",text:"محاكاةُ الخوارزميات العشوائية بالدوائر"},{depth:3,id:"theorem-titlequotالعشوائية-لا-تساعد-في-الحساب-غير-المنتظمquot-rnandthm",text:"{.theorem title=&quot;العشوائيةُ لا تساعد في الحساب غير المنتظم&quot; #rnandthm}"},{depth:3,id:"proofidea-proofidea-rnandthm-data-refquotrnandthmquot",text:"{.proofidea #proofidea-rnandthm data-ref=&quot;rnandthm&quot;}"},{depth:2,id:"نزع-العشوائية-derandomization",text:"نزعُ العشوائية (derandomization)"},{depth:3,id:"المولدات-شبه-العشوائية",text:"المولِّداتُ شبه العشوائية"},{depth:3,id:"definition-titlequotالمولد-شبه-العشوائيquot-prgdef",text:"{.definition title=&quot;المولِّدُ شبه العشوائي&quot; #prgdef}"},{depth:3,id:"pause",text:"{ .pause }"},{depth:3,id:"من-الوجود-إلى-الإنشائية-constructivity-optimalprgconj",text:"من الوجود إلى الإنشائية (constructivity) {#optimalprgconj }"},{depth:3,id:"فائدة-المولدات-شبه-العشوائية",text:"فائدةُ المولِّدات شبه العشوائية"},{depth:3,id:"theorem-titlequotنزع-عشوائية-mathbfbppquot-derandbppthm",text:"{.theorem title=&quot;نزعُ عشوائية $\\mathbf{BPP}$&quot; #derandBPPthm}"},{depth:3,id:"proofidea-prg-pause-data-refquotderandbppthmquot",text:"{.proofidea #prg-pause data-ref=&quot;derandBPPthm&quot;}"},{depth:2,id:"mathbfpmathbfnp-و-mathbfbpp-مقابل-mathbfp",text:"$\\mathbf{P}=\\mathbf{NP}$ و $\\mathbf{BPP}$ مقابل $\\mathbf{P}$"},{depth:3,id:"theorem-titlequotمبرهنة-سيبسرغاكس-sipsergácsquot-bppvsnp",text:"{.theorem title=&quot;مبرهنةُ سيبسر–غاكس (Sipser–Gács)&quot; #BPPvsNP}"},{depth:2,id:"الوجود-غير-الإنشائي-للمولدات-شبه-العشوائية-متقدم-اختياري",text:"الوجودُ غير الإنشائي للمولِّدات شبه العشوائية (متقدّم، اختياري)"},{depth:3,id:"lemma-titlequotوجود-مولدات-شبه-عشوائية-غير-فعالةquot-prgexist",text:"{.lemma title=&quot;وجودُ مولِّداتٍ شبه عشوائية غيرِ فعّالة&quot; #prgexist}"},{depth:3,id:"proofidea-data-refquotprgexistquot",text:"{.proofidea data-ref=&quot;prgexist&quot;}"},{depth:2,id:"التمارين",text:"التمارين"},{depth:2,id:"ملاحظات-مرجعية-modelrandbibnotes",text:"ملاحظاتٌ مرجعية {#modelrandbibnotes }"}],o=`<h1>نمذجة الحساب الاحتمالي  { #chapmodelrand }</h1>
+<blockquote>
+<h3 id="objectives">{ .objectives }</h3>
+</blockquote>
+<ul>
+<li>تعريفٌ رسميٌّ لزمنٍ متعدّد الحدود احتماليّ (probabilistic polynomial time): الصنف  $\\mathbf{BPP}$. \\</li>
+<li>برهانُ أنّ كلَّ دالةٍ في $\\mathbf{BPP}$ يمكن حسابُها ببرامجِ/دوائرَ NAND-CIRC ذاتِ حجم $poly(n)$. \\</li>
+<li>العلاقاتُ بين $\\mathbf{BPP}$ و$\\mathbf{NP}$. \\</li>
+<li>المولِّداتُ شبه العشوائية (pseudorandom generators)</li>
+</ul>
+<blockquote>
+<p><em>&quot;أيُّ شخصٍ يفكّر في طرقٍ حسابيةٍ لإنتاج الأرقام العشوائية، هو بالطبع في حالةِ خطيئة.&quot;</em> جون فون نيومان، 1951.</p>
+</blockquote>
+<p>حتى الآن وصفنا الخوارزميات العشوائية بأسلوبٍ غير رسميّ، بافتراض أنّ عمليةً مثل  «اختيار سلسلة $x\\in {0,1}^n$» يمكن إنجازُها بكفاءة.
+لكنّنا أهملنا معالجة سؤالين:</p>
+<ol>
+<li>
+<p>كيف نحصل فعلًا وبكفاءة على السلاسل العشوائية في العالم الفيزيائي؟</p>
+</li>
+<li>
+<p>ما هو النموذجُ الرياضيُّ للحسابات العشوائية، وهل هو أقوى من الحساب الحتميّ؟</p>
+</li>
+</ol>
+<p>السؤالُ الأول ذو أهميةٍ عمليةٍ ونظريةٍ معًا، لكنّنا سنكتفي الآن بالقول إنّ هناك مصادرَ فيزيائيةَ متنوّعةً لبيانات «عشوائية» أو «غير قابلةٍ للتنبّؤ».
+حركةُ فأرة المستخدم وأنماطُ كتابته، وكماليّةُ (latency) القرص الصلب (غير ذي الحالة الصلبة) والشبكة، والضجيجُ الحراري، والانحلالُ الإشعاعي، قد جُميعًا استُعملت مصادرَ للعشوائية (انظر المناقشة في <a href="http://spectrum.ieee.org/computing/hardware/behind-intels-new-randomnumber-generator">modelrandbibnotes</a>{.ref}).
+مثلًا، تأتي كثيرٌ من رقاقات Intel مدمجًا فيها <a href="http://spectrum.ieee.org/computing/hardware/behind-intels-new-randomnumber-generator">مولِّدُ أرقامٍ عشوائية</a>.
+بل ويمكن حتى بناءُ آلاتٍ ميكانيكيةٍ لقذف العملات (انظر <a href="/arabic-cs-library/images/introtcs/lec_17_model_rand-2.webp">coinfig</a>{.ref}).</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-1.webp" alt="/images/introtcs/lec_17_model_rand-1.webp">{#coinfig .margin  }</p>
+<div class="callout callout--nonmath">
+<p>في هذا الفصل نركّز على السؤال الثاني، أي: نمذجةُ الحساب الاحتماليّ رسميًّا ودراسةُ قوّته. وسنبيّن أنّ:</p>
+<ol>
+<li>
+<p>يمكننا تعريفُ الصنف $\\mathbf{BPP}$ الذي يضمّ كلَّ الدوالّ البوليانية (Boolean) التي يمكن حسابُها في زمنٍ متعدّد الحدود بخوارزميةٍ عشوائية. والأهمّ من ذلك أنّ $\\mathbf{BPP}$ لا يزال إلى حدٍّ بعيد صنفَ حسابٍ في <em>الحالة الأسوأ</em>: فالاحتمالُ لا يُؤخذ إلّا على اختيار عملات الخوارزمية العشوائية، لا على اختيار المدخل.</p>
+</li>
+<li>
+<p>يمكننا <em>تكبيرَ</em> احتمال نجاح الخوارزميات العشوائية، وبذلك يصبح تعريفُ الصنف $\\mathbf{BPP}$ مكافئًا سواء أطلبنا نجاحًا بنسبة $2/3$ أم $0.51$ أم نجاحًا بنسبة $1-2^{-n}$.</p>
+</li>
+<li>
+<p>ولو أنّ الكثير ممّا لا نعرفه عن الصنف $\\mathbf{BPP}$، كما الحالُ مع $\\mathbf{P}$ و$\\mathbf{NP}$، يمكننا إثباتُ بعض العلاقات بين $\\mathbf{BPP}$ وبقية أصناف التعقيد التي رأيناها من قبل. وسنبيّن على وجه التحديد أنّ $\\mathbf{P}  \\subseteq \\mathbf{BPP} \\subseteq \\mathbf{EXP}$ وأنّ $\\mathbf{BPP} \\subseteq \\mathbf{P_{/poly}}$.</p>
+</li>
+<li>
+<p>ولو كانت العلاقةُ بين $\\mathbf{BPP}$ و$\\mathbf{NP}$ غيرَ معروفة، يمكننا أن نبيّن أنّه إذا كان $\\mathbf{P}=\\mathbf{NP}$ فإنّ $\\mathbf{BPP}=\\mathbf{P}$.</p>
+</li>
+<li>
+<p>كما سنبيّن أنّ مفهومَ <em>اكتمالِ $\\mathbf{NP}$</em> (NP-completeness) ينطبق على الخوارزميات العشوائية تمامًا كما ينطبق على غيرها، إذا استعملناها بوصفها نموذجنا لـ«الحساب الفعّال». أي أنّه إذا وُجدت مسألةٌ واحدةٌ مكتملةٌ في $\\mathbf{NP}$ لها خوارزميةٌ عشوائيةٌ بزمنٍ متعدّد الحدود، فإنّ $\\mathbf{NP}$ كلَّه يمكن حسابُه في زمنٍ متعدّد الحدود بخوارزميات عشوائية.</p>
+</li>
+<li>
+<p>وأخيرًا سنناقش سؤالَ ما إذا كان $\\mathbf{BPP} = \\mathbf{P}$، وسنعرض بعضَ الأدلّة المُثيرِة للاهتمام التي توحي بأنّ الإجابة قد تكون في الواقع <em>«نعم»</em>، وذلك باستعمال مفهوم <em>المولِّدات شبه العشوائية</em>.</p>
+</li>
+</ol>
+</div>
+<h2 id="نمذجة-الحساب-الاحتمالي">نمذجةُ الحساب الاحتمالي</h2>
+<p>نمذجةُ الحساب الاحتماليّ سهلةٌ في الواقع.
+يمكننا إضافةُ العمليات التالية إلى أيّ لغةِ برمجةٍ مثل NAND-TM وNAND-RAM وNAND-CIRC وغيرها:</p>
+<pre><code class="language-python">foo = RAND()
+</code></pre>
+<p>حيث <code>foo</code> متغيّر.
+نتيجةُ تطبيق هذه العملية أنّ <code>foo</code> يُسنَد إليه بتٌ عشوائيٌّ في \${0,1}$.
+(وفي كلِّ مرّةٍ تُستدعى فيها العمليةُ <code>RAND</code> تُعيد بتًا عشوائيًّا جديدًا ومستقلًّا.)
+ونسمّي لغاتِ البرمجةِ المُزوَّدة بهذه العملية الإضافية، على الترتيب، RNAND-TM وRNAND-RAM وRNAND-CIRC.</p>
+<p>وبالمثل، يمكننا بسهولةٍ تعريفُ آلاتِ تورينج العشوائية بأنّها آلاتُ تورينج التي تأخذ فيها دالّةُ الانتقال $\\delta$ مدخلًا إضافيًّا (إضافةً إلى الحالة الحالية والرمز المقروء من الشريط) هو بتٌ $b$ يُختار في كلِّ خطوةٍ عشوائيًّا من \${0,1}$.
+بالطبع يمكن لدالّة الانتقال أن تتجاهل هذا البتّ (وتُعطي النتيجةَ نفسها سواء كان $b=0$ أو $b=1$)، ومن ثمّ فإنّ آلاتِ تورينج العشوائية تعمّم آلاتِ تورينج الحتمية.</p>
+<p>يمكننا استعمالُ العملية <code>RAND()</code> لتعريف فكرة أنّ دالةً ما يُحسبها خوارزميةٌ عشوائيةٌ في زمن $T(n)$، لكلِّ حدٍّ زمنيّ حسنٍ $T:\\N \\rightarrow \\N$، وكذلك فكرة أنّ دالةً على مُدخَلاتٍ محدودةٍ (finite) يُحسبها برنامجُ NAND-CIRC عشوائيٌّ بحجم $S$ (أو بما يكافئ ذلك، دارةً عشوائيةً ذات $S$ بوابةٍ تُقابِل إمّا عمليات NAND وإمّا عمليات قذف العملات).
+لكنّنا، لأجل البساطة، لن نعرّف الحسابَ الاحتماليَّ بكلِّ عموميتِه، بل سنركّز ببساطةٍ على صنف الدوالّ التي يمكن حسابُها بخوارزمياتٍ عشوائيةٍ <em>تعمل في زمنٍ متعدّد الحدود</em>، وهو ما تُسمّيه، بحسب العُرف التاريخيّ، $\\mathbf{BPP}$:</p>
+<div class="callout callout--definition">
+<p>ليكن $F: {0,1}^<em>\\rightarrow {0,1}$.
+نقول إنّ $F\\in \\mathbf{BPP}$ إذا وُجدت ثابتات $a,b\\in \\N$ وبرنامجُ RNAND-TM مدعوٌّ $P$ بحيث لكلِّ $x\\in {0,1}^</em>$، عند مدخل $x$، يتوقّف البرنامجُ $P$ خلال $a|x|^b$ خطوةٍ على الأكثر، ويكون
+$$
+\\Pr[ P(x)= F(x)] \\geq \\tfrac{2}{3} \\label{BPPdefinitioneq}
+$$
+حيث يُؤخذ هذا الاحتمالُ على نتائج عمليات RAND في $P$.</p>
+</div>
+<p>لاحظ أنّ الاحتمالَ في <a href="https://people.csail.mit.edu/rrw/nexp-v-bpp.pdf">BPPdefinitioneq</a>{.eqref} يُؤخذ فقط على الاختيارات العشوائية في تنفيذ $P$، و_ليس_ على اختيار المدخل $x$.
+وبخاصةٍ، كما ناقشنا في <a href="/arabic-cs-library/images/introtcs/lec_17_model_rand-4.webp">randomworstcaseidea</a>{.ref}، لا يزال $\\mathbf{BPP}$ صنفَ تعقيدٍ في <em>الحالة الأسوأ</em>، بالمعنى أنّه إذا كان $F$ في $\\mathbf{BPP}$ فإنّ هناك خوارزميةً عشوائيةً بزمنٍ متعدّد الحدود تحسب $F$ باحتمالٍ لا يقلّ عن $2/3$ <em>على كلِّ مدخلٍ محتمل</em> (لا على المدخلات العشوائية فحسب).</p>
+<p>المحاكاةُ ذاتُها التي تُجري برامجَ NAND-RAM ببرامجِ NAND-TM وبعبءٍ متعدّد الحدود، والتي رأيناها في <a href="/arabic-cs-library/images/introtcs/fig-randomizedcomp.webp">polyRAMTM-thm</a>{.ref}، تمتدّ كذلك إلى البرامجِ <em>العشوائية</em>.
+ومن ثمّ فإنّ الصنف $\\mathbf{BPP}$ واحدٌ سواء عُرِّف ببرامج RNAND-TM أم ببرامج RNAND-RAM.
+وبالمثل، كان بإمكاننا أن نعرّف $\\mathbf{BPP}$ باستعمال آلاتِ تورينج العشوائية بالقدر نفسه تمامًا.</p>
+<p>وبفضل هذه التكافؤات، سنستعمل فيما يلي الاسمَ <em>«الخوارزمية العشوائية بزمنٍ متعدّد الحدود»</em> للدلالة على حسابٍ يمكن نمذجتُه ببرنامج RNAND-TM بزمنٍ متعدّد الحدود، أو ببرنامج RNAND-RAM، أو بآلةِ تورينج عشوائية (أو بأيّ لغةِ برمجةٍ تتضمّن عمليةَ قذف عملات).
+وبما أنّ كلَّ هذه النماذج متكافئةٌ حتى مضاعفاتٍ متعدّدة الحدود، فيمكنك استعمالُ النموذج الذي تفضّله لالتقاط الخوارزميات العشوائية بزمنٍ متعدّد الحدود دون أيّ خسارةٍ في العمومية.</p>
+<div class="callout callout--solvedexercise" id="choosingfromsetex">
+<p><strong>تمرين محلول — الاختيار من مجموعة</strong></p>
+<p>تحمل لغاتُ البرمجة الحديثة، في الغالب، لا القدرةَ على قذف عملةٍ عشوائيةٍ في \${0,1}$ فحسب، بل أيضًا القدرةَ على اختيار عنصرٍ عشوائيًّا من مجموعة $S$.
+أثبت أنّ بإمكانك محاكاةَ هذه الأوليّة (primitive) باستعمال قذف العملات.
+وبالتحديد، بيّن أنّ هناك خوارزميةً عشوائية $A$ تُعطى مجموعةً $S$ من $m$ سلسلةً طولُ كلٍّ منها $n$، تعمل في زمن $poly(n,m)$، وتُخرج إمّا عنصرًا $x\\in S$ وإمّا «fail»، بحيث</p>
+<ol>
+<li>
+<p>إذا كان $p$ هو احتمالَ أن تُخرج $A$ القيمةَ «fail»، فإنّ $p &lt; 2^{-n}$ (عددٌ صغيرٌ جدًّا بحيث يمكن تجاهله).</p>
+</li>
+<li>
+<p>لكلِّ $x \\in S$، فإنّ احتمالَ أن تُخرج $A$ القيمةَ $x$ هو بالضبط $\\tfrac{1-p}{m}$ (وعليه فإنّ الخرجَ منتظمٌ فوق $S$ إذا تجاهلنا احتمالَ الفشل الضئيل)</p>
+</li>
+</ol>
+</div>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>إذا كان حجمُ $S$ قوةً للعدد اثنين، أي $m=2^\\ell$ لبعض $\\ell\\in N$، فيمكننا اختيارُ عنصرٍ عشوائيٍّ في $S$ بأن نقذف $\\ell$ عملةً للحصول على سلسلة $w \\in {0,1}^\\ell$، ثمّ نُخرج العنصرَ ذو الترتيب $i$ في $S$، حيث $i$ هو العدد الذي تمثيلُه الثنائيُّ هو $w$.</p>
+<p>أمّا إذا لم تكن $S$ قوةً للعدد اثنين، فإنّ محاولتَنا الأولى ستكون أن نضع $\\ell = \\ceil{\\log m}$ ونفعل الشيءَ نفسه، لكنّنا عندئذٍ نُخرج العنصرَ ذو الترتيب $i$ في $S$ إذا كان $i \\in [m]$، ونُخرج «fail» وإلّا.
+بشرط ألّا نُخرج «fail»، فإنّ هذا العنصرَ موزَّعٌ بانتظامٍ في $S$.
+لكنّ في الحالة الأسوأ قد يكون $2^\\ell$ قريبًا من $2m$، ومن ثمّ قد يقترب احتمالُ الفشل من النصف.
+ولتقليل احتمال الفشل، يمكننا تكرارُ التجربة أعلاه $n$ مرة.
+وبالتحديد، سنستعمل الخوارزميةَ التالية</p>
+<pre><code class="language-{.algorithm">INPUT: Set $S = \\{ x_0,\\ldots, x_{m-1} \\}$ with $x_i\\in \\{0,1\\}^n$ -for all $i\\in [m]$.
+OUTPUT: Either $x\\in S$ or &quot;fail&quot;
+
+Let $\\ell \\leftarrow \\lceil \\log m \\rceil$
+For{$j = 0,1,\\ldots,n-1$}
+   Pick $w \\sim \\{0,1\\}^\\ell$
+   Let $i\\in [2^\\ell]$ be number whose binary representation is $w$.
+   If{$i&lt;m$}
+     return $x_i$
+   Endif
+Endfor
+Return &quot;fail&quot;
+</code></pre>
+<p>بشرط ألّا تفشل، فإنّ خرجَ <a href="https://www.wired.com/2017/02/russians-engineer-brilliant-slot-machine-cheat-casinos-no-fix/">samplefromsetalg</a>{.ref} موزَّعٌ بانتظامٍ في $S$. لكنّ بما أنّ $2^\\ell &lt; 2m$ فإنّ احتمالَ الفشل في كلِّ دورةٍ أقلُّ من $1/2$، ومن ثمّ فإنّ احتمالَ الفشل في جميعها لا يتجاوز $(1/2)^{n}= 2^{-n}$.</p>
+</div>
+<h3 id="منظور-بديل-العملات-العشوائية-بوصفها-مدخلا-إضافيا">منظورٌ بديل: العملاتُ العشوائية بوصفها «مدخلًا إضافيًّا»</h3>
+<p>بينما عرضنا الحسابَ الاحتماليَّ كإضافةِ عمليةٍ «قذفِ عملات» إضافيةٍ إلى برامجنا، يمكننا أيضًا نمذجتَ هذا بأنّنا نتلقّى مدخلًا إضافيًّا.
+أي أنّنا يمكننا أن نفكّر في خوارزميةٍ عشوائية $A$ على أنّها خوارزميةٌ <em>حتميةٌ</em> $A'$ تأخذ <em>مدخلَين</em> $x$ و$r$، حيث المدخلُ الثاني $r$ يُختار عشوائيًّا من \${0,1}^m$ لبعض $m\\in \\N$ (انظر <a href="https://www.plainsite.org/dockets/2j3mlaig6/missouri-eastern-district-court/usa-v-bliev-et-al/">randomalgsviewsfig</a>{.ref}).
+والتكافؤُ مع <a href="/arabic-cs-library/images/introtcs/lec_17_model_rand-5.webp">BPPdef</a>{.ref} مبيَّنٌ في المبرهنة التالية:</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-2.webp" alt="/images/introtcs/lec_17_model_rand-2.webp">{#randomalgsviewsfig .margin  }</p>
+<blockquote>
+<h3 id="theorem-titlequotتوصيف-بديل-للصنف-mathbfbppquot-randextrainput">{.theorem title=&quot;توصيفٌ بديل للصنف $\\mathbf{BPP}$&quot; #randextrainput}</h3>
+</blockquote>
+<p>ليكن $F:{0,1}^*  \\rightarrow {0,1}$. عندئذٍ $F\\in \\mathbf{BPP}$ إذا وإلّا فقط إذا وُجدت $a,b\\in \\N$ ودالّةُ $G:{0,1}^* \\rightarrow {0,1}$ بحيث $G$ في $\\mathbf{P}$، ولكلِّ $x\\in {0,1}^*$,
+$$
+\\Pr_{r\\sim {0,1}^{a|x|^b}} [ G(xr)=F(x)] \\geq \\tfrac{2}{3}  \\label{eqBPPauxiliary};.
+$$</p>
+<blockquote>
+<h3 id="proofidea-data-refquotrandextrainputquot">{.proofidea data-ref=&quot;randextrainput&quot;}</h3>
+</blockquote>
+<p>فكرةُ البرهان هي أنّنا، كما هو مبيَّن في <a href="/arabic-cs-library/images/introtcs/fig-strongamplification.webp">randomalgsviewsfig</a>{.ref}، يمكننا ببساطةٍ استبدالَ سحبِ عملةٍ عشوائيةٍ بقراءةِ بتٍ من «المدخل العشوائي» الإضافيّ $r$، وبالعكس. ولإثبات ذلك بدقّةٍ سنحتاج إلى العمل باصطلاحٍ رسميٍّ مرهقٍ نوعًا ما. ولعلّ هذا من تلك البراهين التي يسهُل استخراجُها بنفسك أكثرَ من قراءتها.</p>
+<div class="callout callout--proof">
+<p>نبدأُ بإثبات اتجاه «إذا فقط».
+ليكن $F\\in \\mathbf{BPP}$، وليكن $P$ برنامجَ RNAND-TM يحسب $F$ وفقًا لـ <a href="https://www.amazon.com/Probabilistic-Method-Discrete-Mathematics-Optimization/dp/1119061954/ref=dp_ob_title_bk">BPPdef</a>{.ref}، وليكن $a,b\\in \\N$ بحيث إنّ البرنامجَ $P$ يتوقّف عند كلِّ مدخلٍ طولُه $n$ خلال $an^b$ خطوةٍ على الأكثر.
+سنبني خوارزميةً بزمنٍ متعدّد الحدود $P'$ بحيث لكلِّ $x\\in {0,1}^n$، إذا وضعنا $m=an^b$، فإنّ
+$$
+\\Pr_{r \\sim {0,1}^{m}}[ P'(xr) = 1] = \\Pr[ P(x) = 1 ] ;,
+$$
+حيث يُؤخذ الاحتمالُ في الطرف الأيمن على عمليات <code>RAND()</code> في $P$.
+وبخاصةٍ فإنّ هذا يعني أنّه إذا عرّفنا $G(xr) = P'(xr)$ فإنّ الدالّةَ $G$ تستوفي شروطَ <a href="/arabic-cs-library/images/introtcs/lec_17_model_rand-6.webp">eqBPPauxiliary</a>{.eqref}.</p>
+<p>ستكون الخوارزميةُ $P'$ بسيطةً جدًّا: فهي تحاكي البرنامجَ $P$ مع الاحتفاظ بعدّاد $i$ مُهيَّأً بالقيمة <code>0</code>. وفي كلِّ مرّةٍ تُجري فيها $P$ عمليةَ <code>RAND()</code>، يزوّد البرنامجُ $P'$ بالنتيجة المأخوذة من $r_i$ ويزيد $i$ بمقدار واحد.
+لن «نفد» من البتّات أبدًا، إذ إنّ زمنَ تنفيذ $P$ لا يتجاوز $an^b$، ومن ثمّ فإنّه لا يمكنه أن يُجري أكثرَ من هذا العدد من استدعاءات <code>RAND()</code>.
+وسيكون خرجُ $P'(xr)$ مع $r\\sim {0,1}^m$ عشوائيًّا موزَّعًا بالتوزيع نفسِه الذي يوزَّع عليه خرجُ $P(x)$.</p>
+<p>أمّا في الاتجاه الآخر، فبالإعطاء على دالّةٍ $G\\in \\mathbf{P}$ تستوفي الشرطَ <a href="http://statweb.stanford.edu/~susan/papers/headswithJ.pdf">eqBPPauxiliary</a>{.eqref}، وعلى برنامج NAND-TM مدعوٍّ $P'$ يحسب $G$ في زمنٍ متعدّد الحدود، يمكننا بناءُ برنامج RNAND-TM $P$ يحسب $F$ في زمنٍ متعدّد الحدود.
+عند مدخل $x\\in {0,1}^n$، يستعمل البرنامجُ $P$ ببساطةٍ التعليمةَ <code>RAND()</code> $an^b$ مرّةً لملء مصفوفة <code>R[</code>$0$<code>]</code> ، $\\ldots$، <code>R[</code>$an^b-1$<code>]</code>، ثمّ ينفّذ البرنامجَ الأصليَّ $P'$ على المدخل $xr$ حيث $r_i$ هو العنصرُ ذو الترتيب $i$ في المصفوفة <code>R</code>.
+ومرّةً أخرى، من الواضح أنّه إذا كان $P'$ ينفّذ في زمنٍ متعدّد الحدود فإنّ $P$ كذلك، وأنّه لكلِّ مدخل $x$ ولكلِّ $r\\in {0,1}^{an^b}$، يكون خرجُ $P$ على المدخل $x$ حين تكون نتيجةُ قذف العملات هي $r$ مساويًا لـ $P'(xr)$.</p>
+</div>
+<div class="callout callout--remark">
+<p><strong>ملاحظة</strong></p>
+<p>يوحي التوصيفُ للصنف $\\mathbf{BPP}$ في <a href="https://en.wikipedia.org/wiki/Randomness_extractor">randextrainput</a>{.ref} بتوصيفِ الصنف $\\mathbf{NP}$ في <a href="">NP-def</a>{.ref}، حيث تؤدّي العشوائيةُ في حالة $\\mathbf{BPP}$ دورَ الحلِّ في حالة $\\mathbf{NP}$. لكنّ هناك فروقًا جوهرية بين الاثنين:</p>
+<ul>
+<li>
+<p>تعريفُ $\\mathbf{NP}$ «أحاديُّ الجانب» (one sided): $F(x)=1$ إذا <em>كان هناك</em> حلٌّ $w$ بحيث $G(xw)=1$، و $F(x)=0$ إذا <em>لكلِّ</em> سلسلة $w$ بالطول المناسب كان $G(xw)=0$. وفي المقابل فإنّ توصيفَ $\\mathbf{BPP}$ متناظرٌ بالنسبة للحالتين $F(x)=0$ و$F(x)=1$.</p>
+</li>
+<li>
+<p>العلاقةُ بين $\\mathbf{NP}$ و$\\mathbf{BPP}$ ليست واضحةً على الفوري. فليس معروفًا ما إذا كان $\\mathbf{BPP} \\subseteq \\mathbf{NP}$ أم $\\mathbf{NP} \\subseteq \\mathbf{BPP}$ أم أنّ الصنفين غيرَ قابلين للمقارنة. لكنّه معروف (ببرهانٍ غير تافه) أنّه إذا كان $\\mathbf{P}=\\mathbf{NP}$ فإنّ  $\\mathbf{BPP}=\\mathbf{P}$ (انظر <a href="">BPPvsNP</a>{.ref}).</p>
+</li>
+<li>
+<p>والأهمّ من ذلك أنّ تعريفَ $\\mathbf{NP}$ «غيرُ فعّال» (ineffective)، لأنّه لا يمتحن طريقةً لإيجاد ما إذا كان هناك حلٌّ فعلًا في الاحتمالاتِ الأُسّيّة العدد. وفي المقابل فإنّ تعريفَ $\\mathbf{BPP}$ يعطينا طريقةً لحساب الدالّةِ عمليًّا بمجرّد اختيار المدخل الثاني عشوائيًّا.</p>
+</li>
+</ul>
+</div>
+<p><strong>«الأشرطةُ العشوائية» (random tapes).</strong> <a href="">randextrainput</a>{.ref} يدفعنا أحيانًا إلى اعتبار عشوائية برنامج RNAND-TM (أو RNAND-RAM) مدخلًا إضافيًّا. ومن ثمّ، إذا كانت $A$ خوارزميةً عشوائية تُجري عند مداخلَ طولُها $n$ ما لا يزيد على $m$ قذفةِ عملة، فسنستعمل عادةً الترميزَ $A(x;r)$ (حيث $x\\in {0,1}^n$ و $r\\in {0,1}^{m}$) للإشارة إلى نتيجة تنفيذ $x$ حين تقابل قذفاتُ عملات $A$ إحداثيّاتِ $r$. ويُشار أحيانًا إلى هذا المدخل الثاني، أو «المساعِد»، بأنّه «الشريطُ العشوائي» (random tape). ومصدرُ هذه المصطلحية هو نموذجُ آلاتِ تورينج العشوائية.</p>
+<h3 id="تكبير-نجاح-خوارزميات-الخطأ-ثنائي-الجانب-successamptwosided">تكبيرُ نجاح خوارزميات الخطأ ثنائي الجانب { #successamptwosided }</h3>
+<p>قد يبدو العددُ $2/3$ اعتباطيًّا، لكنّه، كما رأينا في <a href="">randomizedalgchap</a>{.ref}، يمكن تكبيرُه إلى مقدارٍ نشاء:</p>
+<div class="callout callout--theorem" id="amplificationthm">
+<p><strong>التكبير</strong></p>
+<p>ليكن $F:{0,1}^* \\rightarrow {0,1}$ دالّةً بوليانية بحيث إنّ هناك متعدّدَ حدودٍ $p:\\N \\rightarrow \\N$ وخوارزميةَ عشوائية $A$ بزمنٍ متعدّد الحدود تستوفي أنّه لكلِّ $x\\in {0,1}^n$،
+$$
+\\Pr[A(x) = F(x)] \\geq \\frac{1}{2} + \\frac{1}{p(n)} \\label{eqbppampassumption} ;.
+$$
+عندئذٍ فلكلِّ متعدّدِ حدودٍ $q:\\N \\rightarrow \\N$ هناك خوارزميةٌ عشوائية $B$ بزمنٍ متعدّد الحدود تستوفي أنّه لكلِّ $x\\in {0,1}^n$،
+$$
+\\Pr[B(x) = F(x)] \\geq  1 - 2^{-q(n)} ;.
+$$</p>
+</div>
+<div class="callout callout--bigidea" id="amplificationidea">
+<p>يمكننا <em>تكبيرَ</em> نجاحِ الخوارزميات العشوائية إلى قيمةٍ تقترب من $1$ بما نشاء.</p>
+</div>
+<blockquote>
+<h3 id="proofidea-data-refquotamplificationthmquot">{.proofidea data-ref=&quot;amplificationthm&quot;}</h3>
+</blockquote>
+<p>البرهانُ هو نفسه الذي رأيناه من قبل في حالة القطع الأقصى (maximum cut) وفي أمثلةٍ أخرى.
+فنستعمل حدَّ تشرنوف (Chernoff bound) لنبيّن أنّه إذا كانت $A$ تحسب $F$ باحتمالٍ لا يقلّ عن $\\tfrac{1}{2} + \\epsilon$، وشغّلناها $O(k/\\epsilon^2)$ مرّة، مستعملين في كلِّ مرّة عملاتٍ عشوائيةً جديدة ومستقلّة، فإنّ احتمالَ أن تكون أكثرُ الأجوبة خطأً سيكون أقلّ من $2^{-k}$.
+ويمكن اعتبارُ التكبير نوعًا من «استطلاع» (polling) لاختياراتِ العشوائية التي تستعملها الخوارزمية (انظر <a href="">amplificationfig</a>{.ref}).</p>
+<div class="callout callout--proof">
+<p>ليكن $A$ خوارزميةً تستوفي <a href="">eqbppampassumption</a>{.eqref}.
+نضع $\\epsilon = \\tfrac{1}{p(n)}$ و $k = q(n)$ حيث $p,q$ هما المتعدّدان في نصّ المبرهنة.
+يمكننا تشغيلُ $P$ على المدخل $x$ عددَ $t=10k/\\epsilon^2$ من المرّات، باستعمال عشوائيةٍ جديدة في كلِّ تنفيذ، ثمّ نحسب المخارجَ $y_0,\\ldots,y_{t-1}$. ونُخرج القيمةَ $y$ التي ظهرت أكبرَ عددٍ من المرّات.
+ليكن $X_i$ المتغيّرَ العشوائيَّ الذي يساوي $1$ إذا كان $y_i = F(x)$، ويساوي $0$ وإلّا.
+المتغيّراتُ العشوائيةُ $X_0,\\ldots,X_{t-1}$ مستقلّةٌ ومتطابقةُ التوزيع (i.i.d.) وتستوفي $\\E [X_i] = \\Pr[ X_i = 1] \\geq 1/2 + \\epsilon$، ومن ثمّ فبحسب خطّية التوقّع فإنّ $\\mathbb{E}[\\sum_{i=0}^{t-1} X_i] \\geq t(1/2 + \\epsilon)$.
+لكي تكون القيمةُ الأكثر تكرارًا <em>خاطئة</em>، لا بدّ من أن يتحقّق $\\sum_{i=0}^{t-1} X_i \\leq t/2$، وهذا يعني أنّ $\\sum_{i=0}^{t-1}X_i$ يبتعد عن توقّعه بمقدارٍ لا يقلّ عن $\\epsilon t$. ومن ثمّ فبحسب حدّ تشرنوف (<a href="">chernoffthm</a>{.ref}) فإنّ احتمالَ أن تكون القيمةُ الأكثر تكرارًا غيرَ صحيحة لا يتجاوز $2e^{-\\epsilon^2 t}$، وهو أصغرُ من  $2^{-k}$ لاختيارنا للقيمة $t$.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-3.webp" alt="/images/introtcs/lec_17_model_rand-3.webp">{#amplificationfig   .margin  }</p>
+<h2 id="mathbfbpp-واكتمال-mathbfnp">$\\mathbf{BPP}$ واكتمالُ $\\mathbf{NP}$</h2>
+<p>لأنّ «العمليات الصاخبة» (noisy processes) وفيرةٌ في الطبيعة، يمكن تنفيذُ الخوارزميات العشوائية فيزيائيًّا، ومن المعقولِ أن نقترح $\\mathbf{BPP}$ بدلًا من $\\mathbf{P}$ بوصفه نموذجنا الرياضيَّ للحساب «المُنال» (feasible) أو «السهلِ المعالجة» (tractable).
+قد يتساءلُ المرءُ ما إذا كان هذا يجعلُ الفصولَ السابقةَ كلَّها بلا فائدة، وعلى وجه التحديد ما إذا كانت نظريّةُ اكتمال $\\mathbf{NP}$ ما تزال تنطبقُ على الخوارزميات الاحتمالية.
+ولحسن الحظّ فالإجابةُ هي <em>نعم</em>:</p>
+<blockquote>
+<h3 id="theorem-titlequotmathbfnp-الصعوبة-و-mathbfbppquot-npcandbpp">{.theorem title=&quot;$\\mathbf{NP}$-الصعوبة و $\\mathbf{BPP}$&quot; #NPCandBPP}</h3>
+</blockquote>
+<p>لنفترض أنّ $F$ هي $\\mathbf{NP}$-صعبة و $F\\in \\mathbf{BPP}$. عندئذٍ $\\mathbf{NP} \\subseteq \\mathbf{BPP}$.</p>
+<p>قبل الاطلاع على البرهان، لاحظ أنّ <a href="">NPCandBPP</a>{.ref} يفيد أنّه إذا وُجدت خوارزميةٌ عشوائيةٌ بزمنٍ متعدّد الحدود لأيِّ مسألةٍ $\\mathbf{NP}$-مكتملةٍ مثل $3SAT$ أو $ISET$ وغيرها، فإنّه ستوجد خوارزميةٌ من هذا النوع لكلِّ مسألةٍ في $\\mathbf{NP}$.
+وعليه، سواء كان نموذجُ الحساب لدينا حتميًّا أم خوارزمياتٍ عشوائية، تحتفظُ المسائلُ الـ$\\mathbf{NP}$-مكتملةُ بصفتها «أصعب المسائل في $\\mathbf{NP}$».</p>
+<blockquote>
+<h3 id="proofidea-data-refquotnpcandbppquot">{.proofidea data-ref=&quot;NPCandBPP&quot;}</h3>
+</blockquote>
+<p>الفكرةُ هي تشغيلُ الاختزال (reduction) كالمعتاد، وتمريره إلى الخوارزمية العشوائية بدلًا من خوارزميةٍ حتمية. وكان استخراجُ هذا البرهان بنفسك تمرينًا ممتازًا، وسيلةً لتثبيت تعريفي $\\mathbf{NP}$-الصعوبة والخوارزميات العشوائية. لكنّنا، من أجل الاستيفاء، نُدرج هذا البرهان أدناه.</p>
+<blockquote>
+<h3 id="proof-data-refquotnpcandbppquot">{.proof data-ref=&quot;NPCandBPP&quot;}</h3>
+</blockquote>
+<p>لنفترض أنّ $F$ هي $\\mathbf{NP}$-صعبة و $F\\in \\mathbf{BPP}$.
+وسنبيّن الآن أنّ هذا يعني أنّ $\\mathbf{NP} \\subseteq \\mathbf{BPP}$.
+ليكن $G \\in \\mathbf{NP}$.
+بحكم تعريف $\\mathbf{NP}$-الصعوبة، فإنّه ينتج أنّ $G \\leq_p F$، أي بعبارةٍ أخرى إنّ هناك دالّةً $R:{0,1}^* \\rightarrow {0,1}^<em>$ قابلةَ للحساب في زمنٍ متعدّد الحدود بحيث $G(x)=F(R(x))$ لكلِّ $x\\in {0,1}^</em>$.
+والآن إذا كانت $F$ في $\\mathbf{BPP}$ فإنّ هناك برنامجَ RNAND-TM بزمنٍ متعدّد الحدود مدعوًّا $P$ بحيث
+$$
+\\Pr[ P(y)= F(y) ] \\geq 2/3 \\label{FinBPPeq}
+$$
+لكلِّ $y\\in {0,1}^*$ (حيث يُؤخذ الاحتمالُ على قذف العملات العشوائية في $P$).
+ومن ثمّ يمكننا الحصول على برنامج RNAND-TM بزمنٍ متعدّد الحدود $P'$ يحسب $G$ بوضع $P'(x)=P(R(x))$.
+وبحسب <a href="">FinBPPeq</a>{.eqref} فإنّ $\\Pr[ P'(x) = F(R(x))] \\geq 2/3$، وبما أنّ $F(R(x))=G(x)$ فإنّ هذا يعني أنّ $\\Pr[ P'(x) = G(x)] \\geq 2/3$، وهو ما يُثبت أنّ $G \\in \\mathbf{BPP}$.</p>
+<p>معظمُ النتائج التي رأيناها حول $\\mathbf{NP}$-الصعوبة، بما فيها اختزالُ البحثِ إلى القرار في <a href="">search-dec-thm</a>{.ref}، واختزالُ القرارِ إلى التحسين في <a href="">optimizationnp</a>{.ref}، ونتيجةُ حذفِ الكمّيات (quantifier elimination) في <a href="">PH-collapse-thm</a>{.ref}، تنطبق كلُّها بالطريقة نفسِه إذا استبدلنا $\\mathbf{P}$ بـ $\\mathbf{BPP}$ بوصفه نموذجنا للحساب الفعّال.
+وعليه، إذا كان $\\mathbf{NP} \\subseteq \\mathbf{BPP}$ فإنّنا نحصلُ جوهريًّا على كلِّ النتائج الغريبةِ والخلّابةِ المترتبة على $\\mathbf{P}=\\mathbf{NP}$.
+وليس مُفاجئًا ألّا نتمكّنَ من استبعاد هذا الاحتمال.
+وفعلًا، بخلاف $\\mathbf{P}=\\mathbf{EXP}$ الذي يُستبعد ببرهانية تدرّج الزمن (time hierarchy theorem)، فإنّنا لا نعرف حتى كيف نستبعد احتمالَ أنّ $\\mathbf{BPP}=\\mathbf{EXP}$!
+وعليه، من حيث المبدأ، ممكنٌ (لكنّه يبدو بعيدَ الاحتمال جدًّا) أن تكون العشوائيةُ أداةً سحرية تسمحُ بتسريع أيّ حسابٍ بزمنٍ أُسّيّ.^[في وقت كتابة هذا الكتاب، كان أكبرُ صنفِ تعقيدٍ «طبيعيّ» لا نستطيع استبعادَ احتوائه في $\\mathbf{BPP}$ هو الصنفَ $\\mathbf{NEXP}$، وهو صنفٌ لم نعرّفه في هذه الدورة، ويقابل الزمنَ الأُسّيَّ غيرَ الحتميّ. انظر <a href="https://people.csail.mit.edu/rrw/nexp-v-bpp.pdf">هذه الورقة</a> لمناقشة هذا السؤال.]
+ومع ذلك، كما سنناقش أدناه، يُعتقد أنّ قوةَ العشوائية أضعفُ بكثير، وأنّ $\\mathbf{BPP}$ يقع في منطقةٍ «أكثر عاديّة» بكثير.</p>
+<h2 id="قوة-العشوائية">قوةُ العشوائية</h2>
+<p>السؤالُ الكبير هو ما إذا كانت العشوائيةُ تستطيع إضافةَ قوّةٍ إلى الحساب.
+ويمكننا صياغتُه رياضيًّا على النحو التالي: هل $\\mathbf{BPP}=\\mathbf{P}$؟
+بالنظر إلى ما رأيناه حتى الآن عن علاقاتِ أصنافِ التعقيد الأخرى مثل $\\mathbf{P}$ و$\\mathbf{NP}$، أو $\\mathbf{NP}$ و$\\mathbf{EXP}$، قد يخطرُ لأحدٍ أن يخمّن أنّ:</p>
+<ol>
+<li>
+<p>لا نعرف الإجابةَ عن هذا السؤال.</p>
+</li>
+<li>
+<p>لكنّنا نخمّن أنّ $\\mathbf{BPP}$ مختلفٌ عن $\\mathbf{P}$.</p>
+</li>
+</ol>
+<p>وسكونَ المتحدّثُ محقًّا في الأولى، ومخطئًا في الثانية.
+وكما سنرى، فإنّ لدينا فعلًا أسبابًا تجعلُنا نؤمن بأنّ $\\mathbf{BPP}=\\mathbf{P}$.
+ويمكن اعتبارُ هذا مؤيِّدًا لـ_أطروحة تورينج-تشرش المُوسَّعة_ (extended Church-Turing thesis) التي تنصّ على أنّ آلاتِ تورينج الحتميةَ بزمنٍ متعدّد الحدود تلتقط ما يمكن حسابُه في العالم الفيزيائي على نحوٍ مُنالٍ.</p>
+<p>ولنستعرض الآن بعضَ العلاقات المعروفة بين $\\mathbf{BPP}$ وبقية أصناف التعقيد التي صادفناها. (وانظر أيضًا <a href="">BPPscenariosfig</a>{.ref}.)</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-4.webp" alt="/images/introtcs/lec_17_model_rand-4.webp">{#BPPscenariosfig .margin  }</p>
+<h3 id="حل-mathbfbpp-في-زمن-أسي">حلُّ $\\mathbf{BPP}$ في زمنٍ أُسّيّ</h3>
+<p>ليس صعبًا أن نرى أنّه إذا كانت $F$ في $\\mathbf{BPP}$ فإنّها يمكن حسابُها في زمنٍ <em>أُسّيّ</em>.</p>
+<blockquote>
+<h3 id="theorem-titlequotمحاكاة-الخوارزميات-العشوائية-في-زمن-أسيquot-bppexp">{.theorem title=&quot;محاكاةُ الخوارزميات العشوائية في زمنٍ أُسّيّ&quot; #BPPEXP}</h3>
+</blockquote>
+<p>$\\mathbf{BPP} \\subseteq \\mathbf{EXP}$</p>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>برهانُ <a href="">BPPEXP</a>{.ref} ينتج بسهولةٍ بالعدّ على كلِّ الخيارات (الأُسّيّة العدد) للعملات العشوائية.
+ونُغفل البرهانَ الرسميّ، لأنّ إتمامَه بنفسك طريقةٌ ممتازةٌ للتأقلم مع <a href="">BPPdef</a>{.ref}.</p>
+<h3 id="محاكاة-الخوارزميات-العشوائية-بالدوائر">محاكاةُ الخوارزميات العشوائية بالدوائر</h3>
+<p>رأينا في <a href="">non-uniform-thm</a>{.ref} أنّه إذا كانت  $F$ في $\\mathbf{P}$، فإنّ هناك متعدّدَ حدودٍ $p:\\N \\rightarrow \\N$ بحيث لكلِّ $n$ يكون تقييدُ $F_{\\upharpoonright n}$ لـ $F$ على المداخل \${0,1}^n$ في $SIZE(p(n))$. (بعبارةٍ أخرى، أنّ $\\mathbf{P} \\subseteq \\mathbf{P_{/poly}}$.)
+من حيث المبدأ ليس واضحًا البتّةَ أنّ الأمرَ نفسه ينطبق على دالّةٍ في $\\mathbf{BPP}$، لكنّه يتبيّن أنّ هذا هو الحال.</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-randomizedcomp.webp" alt="The possible guarantees for a randomized algorithm $A$ computing some function $F$. In the tables above, the columns correspond to different inputs and the rows to different choices of the random tape. A cell at position $r,x$ is colored green if $A(x;r)=F(x)$ (i.e., the algorithm outputs the correct answer) and red otherwise. The standard $athbf{BPP}$ guarantee corresponds to the middle figure, where for every input $x$, at least two thirds of the choices $r$ for a random tape will result in $A$ computing the correct value. That is, every column is colored green in at least two thirds of its coordinates.  In the left figure we have an &quot;average case&quot; guarantee where the algorithm is only guaranteed to output the correct answer with probability two thirds over a random input (i.e., at most one third of the total entries of the table are colored red, but there could be an all red column). The right figure corresponds to the &quot;offline $athbf{BPP}$&quot; case, with probability at least two thirds over the random choice $r$, $r$ will be good for every input. That is, at least two thirds of the rows are all green. rnandthm{.ref} ($athbf{BPP} ubseteq athbf{P_{/poly}}$) is proven by amplifying the success of a $athbf{BPP}$ algorithm until we have the &quot;offline $athbf{BPP}$&quot; guarantee, and then hardwiring the choice of the randomness $r$ to obtain a non-uniform deterministic algorithm.">{#randomizedcompfig   }</p>
+<blockquote>
+<h3 id="theorem-titlequotالعشوائية-لا-تساعد-في-الحساب-غير-المنتظمquot-rnandthm">{.theorem title=&quot;العشوائيةُ لا تساعد في الحساب غير المنتظم&quot; #rnandthm}</h3>
+</blockquote>
+<p>$\\mathbf{BPP} \\subseteq \\mathbf{P_{/poly}}$.</p>
+<p>أي أنّه لكلِّ $F\\in \\mathbf{BPP}$ توجد $a,b\\in \\N$ بحيث لكلِّ $n&gt;0$ يكون $F_{\\upharpoonright n} \\in SIZE(an^b)$، حيث $F_{\\upharpoonright n}$ هو تقييدُ $F$ على المداخل في \${0,1}^n$.</p>
+<blockquote>
+<h3 id="proofidea-proofidea-rnandthm-data-refquotrnandthmquot">{.proofidea #proofidea-rnandthm data-ref=&quot;rnandthm&quot;}</h3>
+</blockquote>
+<p>الفكرةُ وراء البرهان هي أنّنا يمكننا أوّلًا تكبيرَ احتمال النجاح بالتكرار من $2/3$ إلى $1-0.1 \\cdot 2^{-n}$.
+وسيتيح لنا ذلك أن نبيّن أنّه لكلِّ $n\\in\\N$ هناك <em>اختيارٌ واحدٌ ثابت</em> لـ«العملات الملائمة»، وهو سلسلة $r$ طولُها متعدّدُ الحدود في $n$، بحيث إذا استُعملت $r$ بوصفها العشوائيةَ فإنّنا نُخرج الإجابةَ الصحيحة على <em>كلِّ</em> المداخل المحتملة الـ$2^n$.
+عندئذٍ يمكننا استعمالُ تقنية «فكّ الحلقة» (unravelling the loop) المعتادة لتحويل برنامج RNAND-TM إلى برنامج RNAND-CIRC، و«تثبيت» اختيار العملات الملائم داخلَ البرنامج لتحويل برنامج RNAND-CIRC إلى برنامج NAND-CIRC حتميٍّ عاديًّا.</p>
+<div class="callout callout--proof">
+<p>لنفترض أنّ $F\\in \\mathbf{BPP}$. وليكن $P$ برنامجَ RNAND-TM بزمنٍ متعدّد الحدود يحسب $F$ وفقًا لـ <a href="">BPPdef</a>{.ref}.
+باستعمال <a href="">amplificationthm</a>{.ref} يمكننا <em>تكبيرَ</em> احتمال نجاح $P$ للحصول على برنامج RNAND-TM $P'$ لا يبطؤ إلّا بمعامل $O(n)$ على الأكثر (ومن ثمّ فهو ما زال بزمنٍ متعدّد الحدود)
+بحيث لكلِّ $x\\in {0,1}^n$</p>
+<p>$$
+\\Pr_{r \\sim {0,1}^{m}}[ P'(x;r)=F(x)] \\geq 1 - 0.1\\cdot 2^{-n} ;, \\label{ampeq}
+$$</p>
+<p>حيث $m$ هو عددُ قذفات العملات التي تستعملها $P'$ عند المداخل طولُها $n$. ونستعمل الترميزَ $P'(x;r)$ للدلالة على تنفيذ $P'$ على المدخل $x$ وحين تقابل نتيجةُ قذف العملات السلسلةَ $r$.</p>
+<p>لكلِّ $x\\in {0,1}^n$، عرِّف الحدثَ «السيّئ» $B_x$ بأنّه يتحقّق إذا كان $P'(x) \\neq F(x)$، حيث فضاءُ العيّناتِ لهذا الحدث مكوّنٌ من عملات $P'$.
+عندئذٍ فبحسب <a href="">ampeq</a>{.eqref} يكون $\\Pr[B_x] \\leq 0.1\\cdot 2^{-n}$ لكلِّ $x \\in {0,1}^n$.
+ولأنّ هناك $2^n$ من هذه $x$، فبحسب حدّ الاتحاد (union bound) نرى أنّ احتمالَ <em>اتحاد</em> الأحداث \${ B_x }<em>{x\\in {0,1}^n}$ لا يتجاوز $0.1$.
+وهذا يعني أنّه إذا اخترنا $r \\sim {0,1}^m$، فباحتمالٍ لا يقلّ عن $0.9$ يتحقّق أنّه لكلِّ $x\\in {0,1}^n$ لدينا $F(x)=P'(x;r)$.
+(وفعلًا، وإلّا فإنّ الحدثَ $B_x$ سيتحقّق لبعض $x$.)
+وبخاصةٍ، لمجرّد أنّ احتمالَ $\\cup</em>{x \\in {0,1}^n} B_x$ أصغرُ من $1$، فإنّ هذا يعني أنّه <em>يوجد</em> $r^*$ معيّنٌ في \${0,1}^m$ بحيث</p>
+<p>$$P'(x;r^*)=F(x) \\label{hardwirecorrecteq}
+$$</p>
+<p>لكلِّ $x\\in {0,1}^n$.</p>
+<p>والآن لنستعمل تقنية «فكّ الحلقة» المعتادة لنحوّل $P'$ إلى برنامج NAND-CIRC $Q$ حجمُه متعدّدُ الحدود في $n$، بحيث $Q(xr)=P'(x;r)$ لكلِّ $x\\in {0,1}^n$ و $r \\in {0,1}^m$.
+ثمّ، بـ«تثبيت» القيم $r^<em>_0,\\ldots,r^</em><em>{m-1}$ بدلًا من آخر $m$ مدخلَ لـ $Q$، نحصل على برنامج NAND-CIRC جديدٍ $Q</em>{r^<em>}$ يستوفي، بحسب <a href="">hardwirecorrecteq</a>{.eqref}، أنّ $Q_{r^</em>}(x)=F(x)$ لكلِّ $x\\in {0,1}^n$.
+وهذا يبيّن أنّ $F_{\\upharpoonright n}$ له برنامجُ NAND-CIRC حجمُه متعدّدُ الحدود في $n$، ومن ثمّ يكتمل برهانُ <a href="">rnandthm</a>{.ref}.</p>
+</div>
+<h2 id="نزع-العشوائية-derandomization">نزعُ العشوائية (derandomization)</h2>
+<p>يمكن تلخيصُ برهان <a href="">rnandthm</a>{.ref} فيما يلي: يمكننا استبدالَ خوارزميةٍ تعمل في زمن $poly(n)$ وتُقذف العملات أثناء تنفيذها بخوارزميةٍ تستعمل مجموعةً واحدةً من قذفات العملات $r^* \\in {0,1}^{poly(n)}$ تكون كافيةً لكلِّ المداخل ذات الحجم $n$.
+وبعبارةٍ أخرى، إنّنا لأغراض حساب الدوالّ لا نحتاج إلى وصولٍ «على الخطّ» (online) إلى العملات العشوائية، ويمكننا توليدُ مجموعةٍ من العملات «دون الخطّ» (offline) مسبقًا، قبل أن نرى المدخلَ الفعليّ.</p>
+<p>لكنّ هذا لا يساعدنا حقًّا في الإجابة عن سؤال ما إذا كان $\\mathbf{BPP}$ مساويًا لـ $\\mathbf{P}$، إذ لا نزال بحاجة إلى إيجاد طريقةٍ لتوليد هذه العملات «دون الخطّ» من الأساس.
+ولنزع العشوائية عن برنامج RNAND-TM سنحتاج إلى إيجاد خوارزميةٍ حتميةٍ <em>واحدة</em> تعمل <em>لكلِّ أطوال المداخل</em>.
+أي أنّه، بخلاف حالة برامج RNAND-CIRC، لا يمكننا أن نختار لكلِّ طولِ مدخل $n$ سلسلةً $r^* \\in {0,1}^{poly(n)}$ ونستعملها عملاتٍ عشوائيةً لنا.</p>
+<p>هل يمكننا نزعَ العشوائية عن الخوارزميات العشوائية، أم أنّ للعشائية قوّةً جوهريةً إضافية تُضاف إلى الحساب؟
+هذا سؤالٌ مثيرٌ للاهتمام من حيث الأصل، لكنّه ذو أهميةٍ عملية أيضًا.
+منذ أن بدأ الناسُ استعمالَ الخوارزميات العشوائية أثناء مشروع مانهاتن، وهم يحاولون إزالةَ الحاجة إلى العشوائية واستبدالَها بأعدادٍ تُختار عبر عمليّةٍ ما حتمية.
+وعلى مدى السنين نجح هذا الأسلوبُ مرارًا، وإن كان هناك عددٌ من حالات الإخفاق أيضًا.^[من القصصِ الطريفة <a href="https://www.wired.com/2017/02/russians-engineer-brilliant-slot-machine-cheat-casinos-no-fix/">حالةٌ حديثة</a> تمكّن فيها المحتالون من توقّع «مولِّد الأرقام شبه العشوائية» الناقص المستعمَل في آلات القمار لخداع الكازينوهات. وللأسف لا نعرف تفاصيلَ كيف فعلوا ذلك، لأنّ القضية <a href="https://www.plainsite.org/dockets/2j3mlaig6/missouri-eastern-district-court/usa-v-bliev-et-al/">أُغلقت</a>.]</p>
+<p>كان أحدُ الأساليب الشائعة التي استعملها الناس على مدى السنين هو استبدالُ عملات الخوارزمية العشوائية بسلسلةٍ «ذات مظهرٍ شبه عشوائي» يولّدونها عبر تقدّمٍ ما حسابيّ.
+مثلًا، يمكن استعمالُ أرقامِ $\\pi$ بوصفها الشريطَ العشوائيّ.
+استعمالُ هذا النوع من الأساليب يماثل ما أسماه فون نيومان «بحالةِ خطيئة».
+(مع أنّ هذه خطيئةٌ كان هو نفسه يرتكبها كثيرًا، لأنّ توليدَ عشوائيةٍ حقيقيّةٍ بالكميات الكافية كان ولا يزال مكلفًا في الغالب.)
+السببُ في اعتبارِ هذا «خطيئة» هو أنّ مثلَ هذه الإجراءات لن ينفع في العموم.
+مثلًا، من السهل تعديلُ أيّ خوارزميةٍ احتمالية $A$ مثل التي رأيناها في <a href="">#randomizedalgchap</a>{.ref}، لتصبح خوارزميةً $A'$ <em>مضمونٌ أن تفشل</em> إذا صادف أن كان الشريطُ العشوائي مساويًا لأرقام $\\pi$.
+وهذا يعني أنّ الإجراءَ «استبدل الشريطَ العشوائيَّ بأرقام $\\pi$» لا ينتج طريقةً <em>عامّةً</em> لتحويل خوارزميةٍ احتمالية إلى خوارزميةٍ حتمية تحلُّ المسألةَ نفسها.
+بالطبع، لا يفشل هذا الإجراءُ <em>دائمًا</em>، لكنّنا لا نملك طريقةً جيّدةً لتحديد متى يفشل ومتى ينجح.
+وهذا الاستدلالُ ليس خاصًّا بـ $\\pi$ وينطبق على كلِّ سلسلةٍ منتَجةٍ حتميًا، سواء أنشأتها $\\pi$ أو $e$ أو متتاليةُ فيبوناتشي أو أيُّ شيءٍ آخر.</p>
+<!---
+
+
+> ### {.lemma title="لا يمكن استبدال الشريط حتميًا" #nodet}
+ليكن $G:\\{0,1\\}^* \\rightarrow \\{0,1\\}^m$
+توجد خوارزميةٌ احتماليةٌ $A$ بزمنٍ خطيّ بحيث لكلِّ $x\\in \\{0,1\\}^*$، $\\Pr[A(x)=1]< 1/10$، لكنّه
+لكلِّ $n>10$ ولكلِّ سلسلةٍ ثابتةٍ $r\\in \\{0,1\\}^n$، يوجد $x\\in \\{0,1\\}^n$ بحيث $A(x;r)=1$، حيث $A(x;r)$ تدلّ على تنفيذ $A$ على المدخل $x$ وحيث تُؤخذ العشوائيةُ من $r$.
+
+> ### {.proof data-ref="nodet"}
+الخوارزميةُ $A$ بسيطةٌ جدًّا. فعلى مدخل $x$ طولُه $n$، تُقذف $n$ عملةً عشوائية $r_1,\\ldots,r_n$ وتُخرج $1$ إذا وإلّا فقط إذا كان $x_0=r_0$، و $x_1=r_1$، و$\\ldots$، و $x_{9}=r_{9}$ (وإذا كان $n<10$ فإنّ $A$ تُخرج دائمًا $0$).
+من الواضح أنّ $A$ تعمل في $O(n)$ خطوةٍ وأنّه لكلِّ $x\\in \\{0,1\\}^*$، $\\Pr[ A(x)=1] \\leq 2^{-10} < 0.1$.
+لكنّ بحكم التعريف، لكلِّ سلسلةٍ ثابتةٍ $r$ طولُها $10$ على الأقلّ، لدينا $A(r;r)=1$.
+
+قد يبدو برهانُ [nodet](){.ref} سخيفًا نوعًا ما، لكنّه يشير إلى مسألةٍ بالغةِ الخطورة.
+
+--->
+<p>قد تبدو الخوارزميةُ التي تتحقّق ممّا إذا كان شريطُها العشوائي مساويًا لـ $\\pi$ ثمّ تفشل سخيفةً جدًّا، لكنّ هذا ليس إلّا «قمةَ الجليد» في مسألةٍ بالغةِ الخطورة.
+وقد تعلّم الناسُ مرارًا وتكرارًا، بالطريقة الصعبة، أنّ إنتاجَ البتّات العشوائية بوسائلَ حتمية يتطلّب حذرًا شديدًا.
+وكما سنرى عند مناقشة التعمية (cryptography)، فإنّ كثيرًا من إخفاقاتِ الأمنِ المذهلة والاختراقات كانت نتيجةَ استعمال عملاتٍ «غيرِ عشوائيةٍ بما يكفي».</p>
+<h3 id="المولدات-شبه-العشوائية">المولِّداتُ شبه العشوائية</h3>
+<p>وعليه، لا يمكننا استعمالَ أيِّ سلسلةٍ <em>واحدةٍ</em> لـ«نزع العشوائية» عن خوارزميةٍ احتمالية.
+لكنّه يتبيّن أنّ بإمكاننا استعمالَ <em>مجموعةٍ</em> من السلاسل لفعل ذلك.
+وبعبارةٍ أخرى، بدلًا من محاولة <em>التخلّص</em> من الحاجة إلى العشوائية، نبدأ بالتركيز على <em>تقليل</em> مقدار العشوائية المطلوب. (مع أنّنا سنرى أنّنا إذا قلّلنا العشوائية بما يكفي فسنتمكّن في النهاية من التخلّص منها كلّيًّا.)</p>
+<p>نُعطي التعريفَ التالي:</p>
+<blockquote>
+<h3 id="definition-titlequotالمولد-شبه-العشوائيquot-prgdef">{.definition title=&quot;المولِّدُ شبه العشوائي&quot; #prgdef}</h3>
+</blockquote>
+<p>دالّةُ $G:{0,1}^\\ell \\rightarrow {0,1}^m$ هي <em>مولِّدًا شبه عشوائيًّا بمعاملات $(T,\\epsilon)$</em> إذا كان لكلِّ
+دارةٍ  $C$ ذات $m$ مدخلًا ومخرجٍ واحدٍ وعددٍ من البوابات لا يتجاوز $T$،
+$$
+\\left| \\Pr_{s\\sim {0,1}^\\ell}[C(G(s))=1] - \\Pr_{r \\sim {0,1}^m}[C(r)=1] \\right| &lt; \\epsilon \\label{eq:prg}
+$$</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-5.webp" alt="/images/introtcs/lec_17_model_rand-5.webp">{#pseudorandomgeneratorfig  .margin  }</p>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>هذا تعريفٌ يستحق القراءةَ أكثرَ من مرّة، مع تخصيصِ بعض الوقت لاستيعابه.
+لاحظ أنّه يتضمّن عدةَ معاملات:</p>
+<ul>
+<li>
+<p>$T$ هو الحدُّ الأعلى لعدد بوابات الدارةِ $C$ التي يحتاج المولِّدُ إلى «خداعها». وكلّما كان $T$ أكبرَ كان المولِّدُ أقوى.</p>
+</li>
+<li>
+<p>$\\epsilon$ هو مقدارُ تقاربِ خرج المولِّدِ شبه العشوائي من التوزيع المنتظم الحقيقيّ فوق \${0,1}^m$. وكلّما كان $\\epsilon$ أصغرَ كان المولِّدُ أقوى.</p>
+</li>
+<li>
+<p>$\\ell$ هو طولُ المدخل و$m$ هو طولُ الخرج. إذا كان $\\ell \\geq m$ فالأمرُ هو إيجادُ مثل هذا المولِّد مباشرةً: على المدخل $s\\in {0,1}^\\ell$ يمكننا إخراجُ $s_0,\\ldots,s_{m-1}$. عندئذٍ سيكون $\\Pr_{s\\sim {0,1}^\\ell}[ P(G(s))=1]$ مساويًا ببساطةٍ لـ $\\Pr_{r\\sim {0,1}^m}[ P(r)=1]$، مهما كان عددُ أسطر $P$. إذًا كلّما كان $\\ell$ أصغرَ و$m$ أكبرَ كان المولِّدُ أقوى، ولكي نحصل على أيّ شيءٍ غير تافهٍ نحتاج إلى $m&gt;\\ell$.</p>
+</li>
+</ul>
+<p>ولاحظ كذلك أنّه رغم أنّ هدفَنا النهائيّ هو خداعُ الخوارزميات العشوائية الاحتمالية التي تأخذ عددًا غير محدودٍ من المداخل، فإنّ <a href="">prgdef</a>{.ref} يتعلّق ببرامج NAND-CIRC <em>محدودة</em> و_حتمية_.</p>
+</div>
+<p>يمكننا التفكيرُ في المولِّدِ شبه العشوائي على أنّه «مكبِّرَ عشوائية». فهو يأخذ مدخلًا $s$ من $\\ell$ بتًا يُختار عشوائيًّا، ويوسّع هذه الـ$\\ell$ بتًّا إلى خرجٍ $r$ مكوّنٍ من $m&gt;\\ell$ بتًّا <em>شبه عشوائي</em>.
+وإذا كان $\\epsilon$ صغيرًا بما يكفي فإنّ البتّات شبه العشوائية «ستبدو عشوائية» لأيِّ برنامج NAND-CIRC ليس كبيرًا أكثرَ من اللازم.
+ومع ذلك، فهناك سؤالان لم نُجب عنهما:</p>
+<ul>
+<li>
+<p><em>ما السببُ الذي يجعلنا نعتقد بوجود مولِّداتٍ شبه عشوائية ذاتِ معاملاتٍ غير تافهة؟</em></p>
+</li>
+<li>
+<p><em>حتى لو وُجدت، فلماذا تكون هذه المولِّداتُ مفيدةً لنزع العشوائية عن الخوارزميات العشوائية؟</em> فبعدَ كلِّ شيء، لا يتعلّق <a href="">prgdef</a>{.ref} ببرامج RNAND-TM أو RNAND-RAM، بل ببرامج NAND-CIRC حتميةٍ بلا عشوائيةٍ وبلا حلقات.</p>
+</li>
+</ul>
+<p>سنجيب الآن (جزئيًّا) عن كلا السؤالين.
+أمّا السؤالُ الأوّل، فلنُصرّح بصراحة بأنّنا لا نعرف كيف نُبرهن <em>على</em> وجود مولِّداتٍ شبه عشوائية مثيرٍ للاهتمام.
+والمقصودُ بـ«مثيرٍ للاهتمام» هو مولِّداتٌ شبه عشوائية تستوفي أنّ $\\epsilon$ ثابتٌ صغيرٌ (لنقل $\\epsilon&lt;1/3$)، وأنّ $m&gt;\\ell$، وأنّ الدالّةَ $G$ نفسها يمكن حسابُها في زمن $poly(m)$.
+ومع ذلك، فإنّ <a href="">prgexist</a>{.ref} (يُرجى الرجوعُ إلى نصّها وبرهانها في نهاية هذا الفصل) تُبيّن أنّه إذا أسقطنا الشرطَ الأخير (قابليةَ الحساب في زمنٍ متعدّد الحدود) فإنّ هناك مولِّداتٍ شبه عشوائية يكون فيها $m$ <em>أكبرَ أُسّيًّا</em> من $\\ell$.</p>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>في هذه المرحلة قد ترغب في تخطّي ما هو قادم والنظر إلى <em>نصّ العبارةِ</em> <a href="">prgexist</a>{.ref}. لكنّ بما أنّ <em>برهانَه</em> دقيقٌ بعض الشيء، فإنّي أنصحك بتأجيل قراءته حتى تُتمّ قراءة بقية هذا الفصل.</p>
+<h3 id="من-الوجود-إلى-الإنشائية-constructivity-optimalprgconj">من الوجود إلى الإنشائية (constructivity) {#optimalprgconj }</h3>
+<p>إنّ حقيقةَ أنّه <em>يوجد</em> مولِّدٌ شبه عشوائيّ لا تعني أنّ هناك مولِّدًا يمكن حسابُه بكفاءة.
+لكنّه يتبيّن أنّنا نستطيع قلبَ التعقيد «على رأسه» (turn it on its head) واستعمالَ عدمِ وجودِ خوارزمياتٍ سريعةٍ — كما هو مفترَض — لمسائلَ مثل 3SAT للحصول على مولِّداتٍ شبه عشوائية يمكن بعدئذٍ استعمالُها لتحويل الخوارزميات العشوائية إلى خوارزمياتٍ حتمية.
+ويُعرفُ هذا بـ_نمط_ «الصعوبة مقابل العشوائية» (<em>Hardness vs Randomness</em> paradigm).
+وأدّت نتائجٌ كثيرةٌ في هذا الاتجاه، معظمُها خارجَ نطاق هذه الدورة، الباحثينَ إلى الاعتقاد بالتخمين التالي:</p>
+<div class="callout callout--quote">
+<p><strong>اقتباس</strong></p>
+<p><strong>تخمينُ PRG الأمثل:</strong> هناك دالّةٌ $PRG:{0,1}^* \\rightarrow {0,1}$ قابلةٌ للحساب في زمنٍ متعدّد الحدود تُنتج <em>مولِّدًا شبه عشوائيًّا ذا أمانٍ أُسّيّ</em>.</p>
+<p>وبالتحديد، يوجد ثابتُ $\\delta &gt;0$ بحيث لكلِّ $\\ell$ ولكلِّ $m &lt; 2^{\\delta \\ell}$، إذا عرّفنا $G:{0,1}^\\ell \\rightarrow {0,1}^m$ بأنّ $G(s)_i = PRG(s,i)$ لكلِّ $s\\in {0,1}^\\ell$ و $i \\in [m]$، فإنّ $G$ يكون مولِّدًا شبه عشوائيًّا بمعاملات $(2^{\\delta \\ell},2^{-\\delta \\ell})$.</p>
+</div>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>«تخمينُ PRG الأمثل» يستحق القراءةَ أكثرَ من مرّة. وهو يفترض أنّنا نستطيع الحصولَ على مولِّدٍ شبه عشوائيّ $G$ بمعاملات $(T,\\epsilon)$ بحيث يمكن حسابُ كلِّ بتٍ من أخرج $G$ في زمنٍ متعدّد الحدود في طولِ المدخل $\\ell$، حيث يكون $T$ أُسّيَّ الحجم في $\\ell$ ويكون $\\epsilon$ أُسّيَّ الصغر في $\\ell$. (لاحظ أنّنا لا نأمل أن يكون الخرجُ كلُّه قابلًا للحساب في $\\ell$، لأنّ مجردَ كتابةِ الخرج تستغرق وقتًا طويلًا.)</p>
+<p>لفهم سبب تسميتنا هذا المولِّدَ شبه العشوائيّ بـ«الأمثل»، من تمرينٍ جيّدٍ أن تُقنع نفسك بأنّه، مثلًا، لا يوجد مولِّدٌ شبه عشوائيّ بمعاملات $(2^{1.1\\ell},2^{-1.1\\ell})$ (وفي الحقيقة لا بدّ أن يكون العددُ $\\delta$ في التخمين أصغرَ من $1$).
+ولرؤية أنّنا لا يمكن أن يكون $T \\gg 2^{\\ell}$، لاحظ أنّه إذا سمحنا لبرنامج NAND-CIRC بعددِ أسطرٍ أكبرَ بكثير من $2^\\ell$ فبإمكان هذا البرنامج أن «يثبّت» داخليًّا كلَّ مخارجَ $G$ على كلِّ مداخلِه الـ$2^\\ell$، وأن يستعملَ ذلك للتمييز بين سلسلةٍ من الشكل $G(s)$ وسلسلةٍ مختارةٍ بانتظامٍ في \${0,1}^m$.
+ولرؤية أنّنا لا يمكن أن يكون $\\epsilon \\ll 2^{-\\ell}$، لاحظ أنّنا بالتخمين على المدخل $s$ (وهو ما ينجح باحتمال $2^{-\\ell}$) نستطيع الحصولَ على برنامج NAND-CIRC صغير (أي ذا $O(\\ell)$ سطرًا) يحقّق ميزّةَ $2^{-\\ell}$ في التمييز بين مدخلٍ شبه عشوائيّ ومدخلٍ منتظم.
+وتفصيلُ هذه التفاصيل تمرينٌ موصى به بشدّة.</p>
+</div>
+<p>ونؤكّد مرّةً أخرى أنّ تخمينَ PRG الأمثل، كما يدلّ اسمه، <em>تخمينٌ</em>، ولا نعرف حتى الآن كيف نُبرهن <em>عليه</em>.
+وبخاصةٍ فإنّه أقوى من تخمين $\\mathbf{P} \\neq \\mathbf{NP}$.
+لكنّ لدينا بعضَ الأدلّة على صحّته.
+هناك طيفٌ من الأنواع المختلفة للمولِّدات شبه العشوائية، وهناك افتراضاتٌ أضعفُ من تخمين PRG الأمثل تكفي لإثبات أنّ $\\mathbf{BPP}=\\mathbf{P}$.
+وبخاصةٍ فمعروفٌ أنّ هذا يتحقّق تحت افتراض وجود دالّةٍ $F\\in \\mathbf{TIME}(2^{O(n)})$ و $\\epsilon &gt;0$ بحيث لكلِّ $n$ كبيرٍ بما يكفي لا يكون $F_{\\upharpoonright n}$ في $SIZE(2^{\\epsilon n})$.
+اسمُ «تخمين PRG الأمثل» غيرُ قياسيّ.
+ويُعرف هذا التخمينُ أحيانًا في الأدبيات بأنّه وجودُ <em>دوالّ شبه عشوائيةٍ قويّةٍ أُسّيًّا</em>.^[يُعرف المولِّدُ شبه العشوائيُّ من النوع الذي نفترضه، حيث يمكن حسابُ كلِّ بتٍ من أخرجه على حدةٍ في زمنٍ متعدّد الطول في طولِ البذرة، عادةً باسم <em>مولِّدِ الدوالّ شبه العشوائية</em> (pseudorandom function generator). ولمزيدٍ من النتائج والروابط المثيرةِ للاهتمام في دراسة <em>شبه العشوائية</em> (pseudorandomness)، انظر <a href="https://people.seas.harvard.edu/~salil/pseudorandomness/">هذا الكتاب لأون ساليل فادان (Salil Vadhan)</a>.]</p>
+<h3 id="فائدة-المولدات-شبه-العشوائية">فائدةُ المولِّدات شبه العشوائية</h3>
+<p>وسنبيّن الآن أنّ المولِّدات شبه العشوائية الأمثل مفيدةٌ في الواقع، عبر البرهان التالي:</p>
+<blockquote>
+<h3 id="theorem-titlequotنزع-عشوائية-mathbfbppquot-derandbppthm">{.theorem title=&quot;نزعُ عشوائية $\\mathbf{BPP}$&quot; #derandBPPthm}</h3>
+</blockquote>
+<p>لنفترض أنّ تخمينَ PRG الأمثل صحيح. عندئذٍ $\\mathbf{BPP}=\\mathbf{P}$.</p>
+<blockquote>
+<h3 id="proofidea-prg-pause-data-refquotderandbppthmquot">{.proofidea #prg-pause data-ref=&quot;derandBPPthm&quot;}</h3>
+</blockquote>
+<p>يخبرنا تخمينُ PRG الأمثل أنّنا نستطيع تحقيقَ <em>توسيعٍ أُسّيّ</em> لـ $\\ell$ عملاتٍ عشوائيةً حققيقية إلى ما يصل إلى $2^{\\delta \\ell}$ «عملةً شبه عشوائية».
+وبالنظرِ من الاتجاه الآخر، يسمحُ لنا بتقليل الحاجة إلى العشوائية، بأن نأخذ خوارزميةً تستعمل $m$ عملةً ونحوّلها إلى خوارزميةٍ لا تستعمل إلّا $O(\\log m)$ عملة.
+والخوارزميةُ من هذا النوع الثاني يمكن جعلُها حتميةً تمامًا بالعدّ على كلِّ الاحتمالاتِ الـ$2^{O(\\log m)}$ (وهي متعدّدةُ الحدود في $m$) لاختياراتِها العشوائية.</p>
+<p>ولنتقدّم الآن في تفاصيل البرهان.</p>
+<div class="callout callout--proof">
+<p>ليكن $F\\in \\mathbf{BPP}$، وليكن $P$ برنامجَ NAND-TM، وليكن $a,b,c,d$ ثوابت، بحيث لكلِّ $x\\in {0,1}^n$ ينفّذ $P(x)$ في $c \\cdot n^d$ خطوةٍ على الأكثر، و $\\Pr_{r\\sim {0,1}^m}[ P(x;r) = F(x) ] \\geq 2/3$.
+بـ«فكّ الحلقة» (unrolling the loop) و«تثبيت» المدخل $x$، يمكننا الحصولَ لكلِّ مدخل $x\\in {0,1}^n$ على برنامج NAND-CIRC $Q_x$ بعددٍ من الأسطر لا يتجاوز، مثلًا، $T=10c \\cdot n^d$، يأخذ $m$ بتًّا من المدخلات بحيث $Q(r)=P(x;r)$.</p>
+<p>والآن نفترض أنّ $G:{0,1}^\\ell \\rightarrow {0,1}$ مولِّدٌ شبه عشوائيّ بمعاملات $(T,0.1)$.
+عندئذٍ يمكننا، بشكلٍ حتميّ، تقديرَ الاحتمالِ $p(x)= \\Pr_{r\\sim {0,1}^m}[ Q_x(r) = 1 ]$ بدقّة $0.1$ في زمن $O(T \\cdot 2^\\ell \\cdot m \\cdot cost(G))$، حيث $cost(G)$ هو الزمنُ اللازم لحساب بتٍ واحدٍ من أخرج $G$.</p>
+<p>والسببُ في ذلك أنّنا نعرف أنّ $\\tilde{p}(x)= \\Pr_{s \\sim {0,1}^\\ell}[ Q_x(G(s)) = 1]$ سيعطينا مثلَ هذا التقدير لـ $p(x)$، ويمكننا حسابُ الاحتمال $\\tilde{p}(x)$ بمجرّد تجريبِ كلِّ الاحتمالاتِ الـ$2^\\ell$ الممكنة لـ $s$.
+والآن، تحت تخمين PRG الأمثل يمكننا وضعَ  $T = 2^{\\delta \\ell}$ أو بما يكافئ ذلك $\\ell = \\tfrac{1}{\\delta}\\log T$، ويكون زمنُ حسابنا الكلّي متعدّدَ الحدود في $2^\\ell = T^{1/\\delta}$. وبما أنّ $T \\leq 10c \\cdot n^d$ فإنّ زمنَ التنفيذ هذا سيكون متعدّدَ الحدود في $n$.</p>
+<p>وهذا يُكمل البرهان، إذ إنّنا مضمونُون أنّ $\\Pr_{r\\sim {0,1}^m}[ Q_x(r) = F(x) ] \\geq 2/3$، ومن ثمّ فإنّ تقديرَ الاحتمال $p(x)$ بدقّة $0.1$ يكفي لحساب $F(x)$.</p>
+</div>
+<h2 id="mathbfpmathbfnp-و-mathbfbpp-مقابل-mathbfp">$\\mathbf{P}=\\mathbf{NP}$ و $\\mathbf{BPP}$ مقابل $\\mathbf{P}$</h2>
+<p>هناك سؤالان في التعقيد الحسابي لا نستطيع حسمَهما:</p>
+<ul>
+<li>
+<p>هل $\\mathbf{P}=\\mathbf{NP}$؟ وهو ما نعتقد أنّ الإجابةَ عليه <em>لا</em>.</p>
+</li>
+<li>
+<p>هل $\\mathbf{BPP}=\\mathbf{P}$؟ وهو ما نعتقد أنّ الإجابةَ عليه <em>بنعم</em>.</p>
+</li>
+</ul>
+<p>لكنّنا نستطيع القول إنّ «الحكمةَ المتداولة» تصيبُ في أحدِ هذين السؤالين على الأقلّ.
+أي أنّه إذا أخطأنا في الأوّل فإنّنا نصيبُ في الثاني:</p>
+<blockquote>
+<h3 id="theorem-titlequotمبرهنة-سيبسرغاكس-sipsergácsquot-bppvsnp">{.theorem title=&quot;مبرهنةُ سيبسر–غاكس (Sipser–Gács)&quot; #BPPvsNP}</h3>
+</blockquote>
+<p>إذا كان $\\mathbf{P}=\\mathbf{NP}$ فإنّ $\\mathbf{BPP}=\\mathbf{P}$.</p>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>قبل قراءة البرهان، من المفيد أن تفكّر في سبب أنّ هذه النتيجةَ ليست «واضحة». إذا كان $\\mathbf{P}=\\mathbf{NP}$، فبالإعطاء على أيِّ خوارزميةٍ عشوائية $A$ ومدخل $x$، يمكننا أن نحدّد في زمنٍ متعدّد الحدود ما إذا كانت هناك سلسلة $r\\in {0,1}^m$ من عملات $A$ العشوائية بحيث $A(xr)=1$.
+المشكلةُ أنّه حتى لو كان $\\Pr_{r\\sim {0,1}^m}[A(xr)=F(x)] \\geq 0.9999$، فقد يبقى الحالُ كذلك أنّه حتى حين $F(x)=0$ توجد سلسلة $r$ بحيث $A(xr)=1$.</p>
+<p>البرهانُ دقيقٌ نوعًا ما. والأهمُّ بكثير أن تفهمَ <em>نصَّ</em> المبرهنة من أن تتتبّع كلَّ تفاصيلِ البرهان.</p>
+</div>
+<div class="callout callout--proofidea">
+<p>يتبع هذا البناءُ فكرةَ «حذف الكمّيات» (quantifier elimination) التي رأيناها في <a href="">PH-collapse-thm</a>{.ref}.
+سنبيّن أنّه لكلِّ $F \\in \\mathbf{BPP}$ يمكننا اختزالَ مسألة هل يحقّق مدخلٌ ما $x$ الشرطَ $F(x)=1$ على مسألة هل صادقت صيغةٌ من الشكل $\\exists_{u\\in {0,1}^m} \\forall_{v \\in {0,1}^k} P(u,v)$، حيث $m,k$ متعدّدان في طول $x$ و $P$ قابلةٌ للحساب في زمنٍ متعدّد الحدود.
+وبحسب <a href="">PH-collapse-thm</a>{.ref}، إذا كان $\\mathbf{P}=\\mathbf{NP}$ يمكننا البتَّ في زمنٍ متعدّد الحدود ما إذا كانت هذه الصيغةُ صادقةً أم كاذبة.</p>
+<p>الفكرةُ وراء هذا البناء أنّه بالتكبير يمكننا الحصولَ على خوارزميةٍ عشوائية $A$ لحساب $F$ تستعمل $m$ عملةً بحيث لكلِّ $x\\in {0,1}^n$، إذا كان $F(x)=0$ فإنّ المجموعةَ $S \\subseteq {0,1}^m$ من العملات التي تجعل $A$ تُخرج $1$ ضئيلةً جدًّا (أي أصغرُ أُسّيًّا بالنسبة إلى $2^m$)، وإذا كان $F(x)=1$ فإنّ $S$ كبيرةٌ جدًّا (بحجمٍ قريبٍ من $2^m$). عندئذٍ ننظرُ في «إزاحات» (shifts) المجموعة $S$: مجموعاتٍ من الشكل $S \\oplus s$ حيث $s\\in {0,1}^m$ سلسلةٌ ما، على أنْ $S \\oplus s$ معرَّفةٌ بـ\${ r \\oplus s ;|; r \\in S }$. ولاحظ أنّه لكلِّ إزاحةٍ $s$ من هذا النوع، فإنّ عددَ عناصرِ $S \\oplus s$ يساوي عددَ عناصرِ $S$. ومن ثمّ، إذا كان $F(x)=0$، وبالتالي كانت $S$ «ضئيلة»، فإنّ اتحادَ المجموعات $S \\oplus s_i$ لن يغطّي \${0,1}^m$ مهما كان العددُ متعدّدَ الحدود من الإزاحات $s_0,\\ldots,s_k \\in {0,1}^m$. ومن جهةٍ أخرى، سنبيّن أنّه إذا كانت $S$ كبيرةً جدًّا فإنّ هناك عددًا متعدّدَ الحدود من هذه الإزاحات بحيث $\\cup_{i=0}^{k-1} (S \\oplus s_i) = {0,1}^m$.</p>
+<p>يمكننا التعبيرُ عن الشرط الذي يفيد وجودَ $s_0,\\ldots,s_{k-1}$ بحيث $\\cup_{i\\in [k]} (S \\oplus s_i) = {0,1}^m$ على هيئة عبارةٍ بعددٍ ثابتٍ من الكمّيات. (وبالتحديد، فإنّ هذا الشرط يتحقّق إذا كان <em>لكلِّ</em> $y\\in {0,1}^m$ <em>يوجد</em> $s \\in S$ و $i\\in {0,\\ldots,k-1}$ بحيث $y=s\\oplus s_i$.)</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/fig-strongamplification.webp" alt="If $Fn athbf{BPP}$ then through amplification we can ensure that there is an algorithm $A$ to compute $F$ on $n$-length inputs and using $m$ coins such that $r_{rim 0,1^m}[ A(xr)eq F(x)] l 1/poly(m)$. Hence if $F(x)=1$ then almost all of the $2^m$ choices for $r$ will cause $A(xr)$ to output $1$, while if $F(x)=0$ then $A(xr)=0$ for almost all $r$'s. To prove the Sipser–Gács Theorem we consider several &quot;shifts&quot; of the set $S ubseteq 0,1^m$ of the coins $r$ such that $A(xr)=1$. If $F(x)=1$ then we can find a set of $k$ shifts $s_0,dots,s_{k-1}$ for which $up_{in [k]} (S plus s_i) = 0,1^m$. If $F(x)=0$ then for every such set $|up_{in [k]} S_i| eq k |S| l 2^m$. We can phrase the question of whether there is such a set of shifts using a constant number of quantifiers, and so can solve it in polynomial time if $athbf{P}=athbf{NP}$.">{#strongampbppfig .margin  }</p>
+<div class="callout callout--proof">
+<p>ليكن $F \\in \\mathbf{BPP}$. باستعمال <a href="">amplificationthm</a>{.ref}، توجد خوارزميةٌ $A$ بزمنٍ متعدّد الحدود بحيث لكلِّ $x\\in {0,1}^n$، $\\Pr_{r \\in {0,1}^m}[ A(xr)=F(x)] \\geq 1 - 2^{-n}$، حيث $m$ متعدّدةُ الحدود في $n$.
+وبخاصةٍ (لأنّ الأُسّيّ يغلُب متعدّدَ الحدود، ويمكننا دائمًا افتراضُ أنّ $n$ كبيرٌ بما يكفي)، فإنّ
+$$
+\\Pr_{r \\in {0,1}^m}[ A(xr)=F(x)] \\geq 1 - \\tfrac{1}{10m^2}  ;. \\label{sipsergacseq}
+$$</p>
+<p>ليكن $x\\in {0,1}^n$، وليكن $S_x \\subseteq {0,1}^m$ المجموعةَ \${ r\\in {0,1}^m ;:;  A(xr)=1 }$.
+وبافتراضنا، إذا كان $F(x)=0$ فإنّ $|S_x| \\leq  \\tfrac{1}{10m^2}2^{m}$، وإذا كان $F(x)=1$ فإنّ $|S_x| \\geq (1-\\tfrac{1}{10m^2})2^m$.</p>
+<p>لمجموعةٍ $S \\subseteq {0,1}^m$ وسلسلةٍ $s\\in {0,1}^m$، نعرّف المجموعةَ $S \\oplus s$ بأنّها \${ r \\oplus s ;:; r\\in S }$، حيث $\\oplus$ تدلّ على عملية XOR.
+أي أنّ $S \\oplus s$ هي المجموعة $S$ «مُزاحةً» بمقدار $s$.
+لاحظ أنّ $|S \\oplus s| = |S|$. (من فضلك تأكّد من أنّك ترى سببَ صحّة ذلك.)</p>
+<p>جوهرُ البرهان هو المُدّعَان التاليان:</p>
+<p><strong>المُدّعَ الأوّل:</strong> لكلِّ مجموعةٍ جزئية $S \\subseteq {0,1}^m$، إذا كان $|S| \\leq \\tfrac{1}{1000m}2^m$، فإنّ لكلِّ $s_0,\\ldots,s_{100m-1} \\in {0,1}^m$ يكون $\\cup_{i\\in [100m]} (S \\oplus s_i) \\subsetneq {0,1}^m$.</p>
+<p><strong>المُدّعَ الثاني:</strong> لكلِّ مجموعةٍ جزئية $S \\subseteq {0,1}^m$، إذا كان $|S| \\geq \\tfrac{1}{2}2^m$، فإنّ هناك مجموعةَ سلاسل $s_0,\\ldots,s_{100m-1}$ بحيث  $\\cup_{i\\in [100m]} (S \\oplus s_i) = {0,1}^m$.</p>
+<p>المُدّعَان الأوّلُ والثاني معًا يُلزمان المبرهنة. فهما يعنيان أنّه تحت افتراضاتنا، لكلِّ $x\\in {0,1}^n$، لدينا $F(x)=1$ إذا وإلّا فقط إذا</p>
+<p>$$
+\\exists_{s_0,\\ldots, s_{100m-1} \\in {0,1}^m} \\cup_{i\\in [100m]} (S_x \\oplus s_i) = {0,1}^m
+$$</p>
+<p>وهي عبارةٌ يمكننا إعادةُ صياغتها على النحو التالي:</p>
+<p>$$
+\\exists_{s_0,\\ldots, s_{100m-1} \\in {0,1}^m} \\forall_{w\\in {0,1}^m} \\Bigl( w \\in (S_x \\oplus s_0) \\vee w \\in (S_x \\oplus s_1) \\vee \\cdots w \\in (S_x \\oplus s_{100m-1}) \\Bigr)
+$$</p>
+<p>أو بما يكافئ ذلك:</p>
+<p>$$
+\\exists_{s_0,\\ldots, s_{100m-1} \\in {0,1}^m} \\forall_{w\\in {0,1}^m} \\Bigl( A(x(w\\oplus s_0))=1 \\vee A(x(w\\oplus s_1))=1 \\vee \\cdots \\vee A(x(w\\oplus s_{100m-1}))=1    \\Bigr)
+$$</p>
+<p>وهي (لأنّ $A$ قابلةٌ للحساب في زمنٍ متعدّد الحدود) بالضبط من النوع الذي بيّن <a href="">PH-collapse-thm</a>{.ref} أنّه يمكن البتُّ فيه في زمنٍ متعدّد الحدود إذا كان $\\mathbf{P}=\\mathbf{NP}$.</p>
+<p>نرى أنّ كلَّ ما تبقّى هو إثباتُ <strong>المُدّعَ الأوّل</strong> و__المُدّعَ الثاني__. و__المُدّعَ الأوّل__ ينتج مباشرةً من الحقيقة التالية:</p>
+<p>$$
+\\left| \\cup_{i \\in [100m-1]} S_x \\oplus s_i \\right| \\leq \\sum_{i=0}^{100m-1} |S_x \\oplus s_i| = \\sum_{i=0}^{100m -1} |S_x| = 100m|S_x| ;.
+$$</p>
+<p>ولإثبات <strong>المُدّعَ الثاني</strong>، سنستعمل تقنيةً تُعرف بـ_الطريقة الاحتمالية_ (<em>probabilistic method</em>) (انظر برهانَ <a href="">prgexist</a>{.ref} لمناقشةٍ أوسع). ولاحظ أنّ هذا استعمالٌ مختلفٌ تمامًا للاحتمال عمّا في نصّ المبرهنة، فنحن لا نستعمل إلّا أدواتِ الاحتمال لإثبات عبارةٍ <em>وجودية</em> (<em>existential</em>).</p>
+<p><strong>برهانُ المُدّعَ الثاني:</strong> ليكن $S \\subseteq {0,1}^m$ مع $|S| \\geq 0.5 \\cdot 2^m$ كما في نصّ المُدّعَ.
+ننظر في التجربة الاحتمالية التالية: نختار $100m$ إزاحةً عشوائية $s_0,\\ldots,s_{100m-1}$ مستقلّةً وعشوائيًّا في \${0,1}^m$، وننظر في الحدث $GOOD$ الذي يفيد أنّ $\\cup_{i\\in [100m]}(S \\oplus s_i) = {0,1}^m$.
+ولإثبات المُدّعَ الثاني يكفي أن نبيّن أنّ $\\Pr[ GOOD ] &gt; 0$، لأنّ ذلك يعني، على وجه الخصوص، أنّه <em>يوجد</em> إزاحاتُ $s_0,\\ldots,s_{100m-1}$ تستوفي هذا الشرط.</p>
+<p>لكلِّ $z \\in {0,1}^m$، عرِّف الحدثَ $BAD_z$ بأنّه يتحقّق إذا كان $z \\not\\in \\cup_{i\\in [100m-1]}(S \\oplus s_i)$. والحدثُ $GOOD$ يتحقّق إذا أخفق الحدثُ $BAD_z$ لكلِّ $z\\in {0,1}^m$، ومن ثمّ فإنّ هدفَنا هو إثبات أنّ $\\Pr[ \\cup_{z\\in {0,1}^m} BAD_z ] &lt;1$. وبحسب حدّ الاتحاد، يكفي لإثبات ذلك أن نبيّن أنّ $\\Pr[ BAD_z ] &lt; 2^{-m}$ لكلِّ $z\\in {0,1}^m$.
+عرِّف الحدثَ $BAD_z^i$ بأنّه يتحقّق إذا كان $z\\not\\in S \\oplus s_i$.
+وبما أنّ كلَّ إزاحة $s_i$ تُختار باستقلال، فإنّ لكلِّ $z$ ثابتةٍ تكون الأحداثُ $BAD_z^0,\\ldots,BAD_z^{100m-1}$ مستقلّةً تبادليًّا،^[شرطُ الاستقلالية هنا دقيق. فليس <em>بالضرورة</em> أن تكون جميعَ الأحداثِ الـ$2^m \\times 100m$ من الشكل \${ BAD_z^i }_{z\\in {0,1}^m,i\\in [100m]}$ مستقلّةً تبادليًّا. إنّما لدى $z \\in {0,1}^m$ ثابتةٍ تكون الأحداثُ الـ$100m$ من الشكل $BAD_z^i$ مستقلّةً تبادليًّا.] ومن ثمّ</p>
+<p>$$\\Pr[ BAD_z ] = \\Pr[ \\cap_{i\\in [100m-1]} BAD_z^i ] = \\prod_{i=0}^{100m-1} \\Pr[BAD_z^i]  \\label{sipsergacsprodboundeq};.$$</p>
+<p>وهذا يعني أنّ النتيجةَ ستنتج إذا بيّنا أنّ $\\Pr[ BAD_z^i ] \\leq \\tfrac{1}{2}$ لكلِّ $z\\in {0,1}^m$ و $i\\in [100m]$ (فذلك يسمحُ بتحديد الطرف الأيمن في <a href="">sipsergacsprodboundeq</a>{.eqref} بالحدّ $2^{-100m}$).
+بعبارةٍ أخرى، نحتاج أن نبيّن أنّه لكلِّ $z\\in {0,1}^m$ ولكلِّ مجموعةٍ $S \\subseteq {0,1}^m$ مع $|S| \\geq \\tfrac{1}{2} 2^m$،</p>
+<p>$$\\Pr_{s \\sim {0,1}^m}[ z \\in S \\oplus s ] \\geq \\tfrac{1}{2}; \\label{sipsergacsprodboundtwoeq}.$$</p>
+<p>ولإثبات ذلك، نلاحظ أنّ $z \\in S \\oplus s$ إذا وإلّا فقط إذا كان $s \\in S \\oplus z$ (هل ترى لماذا). ومن ثمّ يمكننا إعادةُ كتابة الاحتمال في الطرف الأيسر من <a href="">sipsergacsprodboundtwoeq</a>{.eqref} على هيئة $\\Pr_{s\\sim {0,1}^m}[ s\\in S \\oplus z]$، وهو يساوي ببساطةٍ $|S \\oplus z|/2^m  = |S|/2^m \\geq 1/2$!
+وهذا يُنهي برهانَ <strong>المُدّعَ الثاني</strong> ومن ثمّ برهانَ <a href="">BPPvsNP</a>{.ref}.</p>
+</div>
+<h2 id="الوجود-غير-الإنشائي-للمولدات-شبه-العشوائية-متقدم-اختياري">الوجودُ غير الإنشائي للمولِّدات شبه العشوائية (متقدّم، اختياري)</h2>
+<p>وسنبيّن الآن أنّه إذا لم نُصرْ على الإنشائية (<em>constructivity</em>) للمولِّدات شبه العشوائية، بإمكاننا إثباتُ وجود مولِّداتٍ شبه عشوائية يكون خرجُها <em>أكبرَ أُسّيًّا</em> في طول المدخل.</p>
+<blockquote>
+<h3 id="lemma-titlequotوجود-مولدات-شبه-عشوائية-غير-فعالةquot-prgexist">{.lemma title=&quot;وجودُ مولِّداتٍ شبه عشوائية غيرِ فعّالة&quot; #prgexist}</h3>
+</blockquote>
+<p>هناك ثابتٌ مطلقٌ $C$ بحيث لكلِّ $\\epsilon,T$، إذا كان $\\ell &gt; C (\\log T + \\log (1/\\epsilon))$ و $m \\leq T$، فإنّ هناك مولِّدًا شبه عشوائيًّا بمعاملات $(T,\\epsilon)$ مدعوًّا $G: {0,1}^\\ell \\rightarrow {0,1}^m$.</p>
+<blockquote>
+<h3 id="proofidea-data-refquotprgexistquot">{.proofidea data-ref=&quot;prgexist&quot;}</h3>
+</blockquote>
+<p>يستخدم البرهانُ تقنيةً بالغةَ النفع تُعرف بـ«الطريقة الاحتمالية»، وهي ليست صعبةً رياضيًّا جدًّا لكنّها قد تكون مُربكةً في البداية.^[وهناك كتابٌ كاملٌ (وموصى به بشدّة) <a href="https://www.amazon.com/Probabilistic-Method-Discrete-Mathematics-Optimization/dp/1119061954/ref=dp_ob_title_bk">من تأليف ألون وسبنسر (Alon and Spencer)</a> مخصَّصٌّ لهذه الطريقة.]
+الفكرةُ هي تقديمُ برهانٍ «غير إنشائيّ» لوجود المولِّدِ شبه العشوائيّ $G$، بإظهار أنّه إذا اختير $G$ عشوائيًّا فإنّ احتمالَ أن يكون مولِّدًا شبه عشوائيًّا صالحًا بمعاملات $(T,\\epsilon)$ يكون موجبًا.
+وبخاصةٍ فإنّ هذا يعني أنّه <em>يوجد</em> $G$ واحدٌ صالحٌ كمولِّدٍ شبه عشوائيّ بمعاملات $(T,\\epsilon)$.
+والطريقةُ الاحتماليةُ ليست إلّا <em>تقنيةَ برهانٍ</em> لإثبات وجود دالّةٍ كهذه.
+وهدفُنا في النهاية هو إثباتُ وجود دالّةٍ <em>حتميةٍ</em> $G$ تستوفي الشرط.</p>
+<p>قد تكون المناقشةُ أعلاه مجرّدةً نوعًا ما في هذه المرحلة، لكنّها ستتّضح بعد الاطلاع على البرهان.</p>
+<div class="callout callout--proof">
+<p>ليكن $\\epsilon,T,\\ell,m$ كما في نصّ المُلزَم. نحتاج إلى إثبات أنّه توجد دالّةٌ $G:{0,1}^\\ell \\rightarrow {0,1}^m$ «تخدع» كلَّ برنامجٍ $P$ من $T$ سطرًا بالمعنى المبيَّن في <a href="">eq:prg</a>{.eqref}.
+وسنبيّن أنّ هذا ينتج عن المُدّعَ التالي:</p>
+<p><strong>المُدّعَ الأوّل:</strong> لكلِّ برنامج NAND-CIRC ثابتٍ $P$، إذا اخترنا $G:{0,1}^\\ell \\rightarrow {0,1}^m$ <em>عشوائيًّا</em> فإنّ احتمالَ خرقِ <a href="">eq:prg</a>{.eqref} لا يتجاوز $2^{-T^2}$.</p>
+<p>قبل إثبات المُدّعَ الأوّل، لنرَ لماذا يستلزم ذلك <a href="">prgexist</a>{.ref}.
+يمكننا تعريفُ دالّةٍ $G:{0,1}^\\ell \\rightarrow {0,1}^m$ بجدولِ حقائقِها (<em>truth table</em>)، أو ببساطةٍ بقائمةِ قيمِها على كلِّ مداخلِها الممكنة الـ$2^\\ell$. وبما أنّ كلَّ خرجٍ سلسلةٌ من $m$ بتًّا،
+فبإمكاننا أيضًا اعتبارُ $G$ سلسلةً في \${0,1}^{m\\cdot 2^\\ell}$. ونعرّف $\\mathcal{F}^m_\\ell$ بأنّها مجموعةُ كلِّ الدوالّ من \${0,1}^\\ell$ إلى \${0,1}^m$. وكما ناقشنا أعلاه يمكننا تعريفَ $\\mathcal{F}<em>\\ell^m$ بـ\${0,1}^{m\\cdot 2^\\ell}$، واختيارُ دالّةٍ عشوائية $G \\sim \\mathcal{F}</em>\\ell^m$ يوافق اختيارَ سلسلةٍ عشوائيةٍ من $m\\cdot 2^\\ell$ بتًّا.</p>
+<p>لكلِّ برنامج NAND-CIRC $P$، ليكن $B_P$ هو الحدثَ الذي يفيد أنّه إذا اخترنا $G$ عشوائيًّا من $\\mathcal{F}<em>\\ell^m$ فإنّ <a href="">eq:prg</a>{.eqref} يُنتهك بالنسبة إلى البرنامج $P$.
+ومن المهمّ فهم ما هو فضاءُ العيّناتِ الذي يُعرَّف فوقه الحدثُ $B_P$، إذ إنّ هذا الحدثَ يعتمد على اختيار $G$، ومن ثمّ فإنّ $B_P$ مجموعةٌ جزئيةٌ من $\\mathcal{F}</em>\\ell^m$. والطريقةُ المكافئةُ لتعريف الحدث $B_P$ هي أنّه مجموعةُ الدوالّ كلِّها التي تُرسِل \${0,1}^\\ell$ إلى \${0,1}^m$ وتُنتهِك <a href="">eq:prg</a>{.eqref}، أو بعبارةٍ أخرى:</p>
+<p>$$
+B_P = \\left{ G \\in \\mathcal{F}<em>\\ell^m  ; \\big| ; \\left| \\tfrac{1}{2^\\ell}\\sum</em>{s\\in {0,1}^\\ell} P(G(s)) - \\tfrac{1}{2^m}\\sum_{r \\in {0,1}^m}P(r)  \\right| &gt; \\epsilon  \\right} ;; \\label{eq:eventdefine}
+$$
+(استبدلنا هنا عباراتِ الاحتمال في <a href="">eq:prg</a>{.eqref} بمجاميعَ مكافئة، بقصد تقليلِ الالتباس بشأن فضاءِ العيّناتِ الذي يُعرَّف فوقه $B_P$.)</p>
+<p>لفهم هذا البرهان، من الضروري أن تتوقّف هنا وترى كيف يقابل تعريفُ $B_P$ أعلاه المعادلةَ <a href="">eq:eventdefine</a>{.eqref}. وقد يستدعي الأمرُ إعادةَ قراءة النصّ أعلاه مرّةً أو مرّتين، لكنّه تمرينٌ جيّدٌ في تحليل العبارات الاحتمالية وتعلّم كيفية تحديد <em>فضاءِ العيّنات</em> الذي تقابله هذه العبارات.</p>
+<p>والآن، بيّنا في <a href="">program-count</a>{.ref} أنّه، بعد إعادة تسمية المتغيّرات (وهو ما لا يُغيّر عملَ البرنامج)، هناك $2^{O(T\\log T)}$ برنامجَ NAND-CIRC بعددٍ من الأسطر لا يتجاوز $T$.
+وبما أنّ $T\\log T &lt; T^2$ من أجل $T$ كبيرٍ بما يكفي، فإنّ هذا يعني أنّه إذا كان المُدّعَ الأوّل صحيحًا، فبحسب حدّ الاتحاد يكون احتمالُ اتحادِ $B_P$ على <em>جميع</em> برامج NAND-CIRC التي لا يتجاوز عددُ أسطرِها $T$ لا يتجاوز $2^{O(T\\log T)}2^{-T^2} &lt; 0.1$ من أجل $T$ كبيرٍ بما يكفي.
+والأهمُّ عندنا في العدد $0.1$ هو أنّه أصغرُ من $1$.
+وبخاصةٍ فإنّ هذا يعني أنّه <em>يوجد</em> $G^* \\in \\mathcal{F}_\\ell^m$ واحدٌ بحيث إنّ $G^<em>$ <em>لا</em> تنتهك <a href="">eq:prg</a>{.eqref} بالنسبة إلى أيِّ برنامج NAND-CIRC بعددِ أسطرٍ لا يتجاوز $T$، وهو ما يعني بالضبط أنّ $G^</em>$ مولِّدٌ شبه عشوائيّ بمعاملات $(T,\\epsilon)$.</p>
+<p>وعليه، يكفي لإتمام برهان <a href="">prgexist</a>{.ref} إثباتُ المُدّعَ الأوّل.
+اختيارُ $G: {0,1}^\\ell \\rightarrow {0,1}^m$ عشوائيًّا يعني اختيارَ $L=2^\\ell$ سلسلةً عشوائية $y_0,\\ldots,y_{L-1} \\in {0,1}^m$ وتركَ $G(x)=y_x$ (بتحديد \${0,1}^\\ell$ و $[L]$ عبر التمثيل الثنائيّ).
+وهذا يعني أنّ إثبات المُدّعَ يكفي أن نبيّن أنّه لكلِّ دالّةٍ ثابتةٍ $P:{0,1}^m \\rightarrow {0,1}$،
+إذا كان $L &gt;  2^{C (\\log T + \\log \\epsilon)}$ (وهو ما يمكننا ضمانُّه بأنّه أكبرَ من $10 T^2/\\epsilon^2$ بوضع $C&gt;4$)، فإنّ احتمالَ أنّ
+$$
+\\left| \\tfrac{1}{L}\\sum_{i=0}^{L-1} P(y_i)  -  \\Pr_{s \\sim {0,1}^m}[P(s)=1] \\right| &gt; \\epsilon \\label{eq:prgchernoff}
+$$
+لا يتجاوز $2^{-T^2}$.</p>
+<p>ينتج <a href="">eq:prgchernoff</a>{.eqref} مباشرةً من حدّ تشرنوف.
+وفعلًا، إذا جعلنا لكلِّ $i\\in  [L]$ المتغيّرَ العشوائيَّ $X_i$ يساوي $P(y_i)$، فإنّ $y_0,\\ldots,y_{L-1}$ يُختار باستقلالٍ وعشوائيًّا، وبذلك تكون هذه متغيّراتٍ عشوائيةً مستقلّةً ومتطابقةَ التوزيع ذاتِ متوسّطٍ $\\E_{y \\sim {0,1}^m}[P(y)]= \\Pr_{y\\sim {0,1}^m}[ P(y)=1]$، ومن ثمّ فإنّ احتمالَ انحرافها عن توقّعها بمقدار $\\epsilon$ لا يتجاوز $2\\cdot 2^{-\\epsilon^2 L/2}$.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_17_model_rand-6.webp" alt="/images/introtcs/lec_17_model_rand-6.webp">{#bppcomplexitypicturefig }</p>
+<div class="callout callout--recap">
+<p><strong>خلاصة</strong></p>
+<ul>
+<li>
+<p>يمكننا نمذجةُ الخوارزميات العشوائية إمّا بإضافة عمليةِ «قذفِ عملات» خاصّة، أو بافتراض مدخلٍ إضافيٍّ يُختار عشوائيًّا.</p>
+</li>
+<li>
+<p>الصنفُ $\\mathbf{BPP}$ يضمّ مجموعةَ الدوالّ البوليانية التي يمكن حسابُها بخوارزمياتٍ عشوائيةٍ بزمنٍ متعدّد الحدود.</p>
+</li>
+<li>
+<p>$\\mathbf{BPP}$ صنفُ حسابٍ في <em>الحالة الأسوأ</em>: فالخوارزميةُ العشوائيةُ لحساب دالّةٍ ما يجب أن تحسبَها صحّةً باحتمالٍ عالٍ <em>على كلِّ مدخل</em>.</p>
+</li>
+<li>
+<p>يمكننا <em>تكبيرَ</em> احتمال نجاح الخوارزمية العشوائية من أيِّ قيمةٍ أكبرُ تمامًا من $1/2$ إلى احتمالِ نجاحٍ <em>أُسّيِّ القربِ من $1$</em>.</p>
+</li>
+<li>
+<p>نعرف أنّ $\\mathbf{P} \\subseteq  \\mathbf{BPP} \\subseteq \\mathbf{EXP}$.</p>
+</li>
+<li>
+<p>ونعرف أيضًا أنّ $\\mathbf{BPP} \\subseteq \\mathbf{P_{/poly}}$.</p>
+</li>
+<li>
+<p>العلاقةُ بين $\\mathbf{BPP}$ و$\\mathbf{NP}$ غيرُ معروفة، لكنّنا نعرف أنّه إذا كان $\\mathbf{P}=\\mathbf{NP}$ فإنّ $\\mathbf{BPP}=\\mathbf{P}$.</p>
+</li>
+<li>
+<p>المولِّداتُ شبه العشوائية كائناتٌ تأخذ «بذرة» (<em>seed</em>) عشوائيةً قصيرة وتوسّعها إلى خرجٍ أطولَ بكثير «يبدو عشوائيًا» في نظر الخوارزميات الفعّالة. ونخمّن أنّ مولِّداتٍ شبه عشوائية قويّةً أُسّيًّا موجودة. وتحت هذا التخمين، $\\mathbf{BPP}=\\mathbf{P}$.</p>
+</li>
+</ul>
+</div>
+<div class="exercises"><h2 id="التمارين">التمارين</h2>
+<h2 id="ملاحظات-مرجعية-modelrandbibnotes">ملاحظاتٌ مرجعية {#modelrandbibnotes }</h2>
+<p>في هذا الفصل نتجاهل مسألةَ كيف نحصل على البتّات العشوائية عمليًّا.
+يمكن اعتبارُ خرجِ كثيرٍ من العمليات الفيزيائية، سواء كانت حرارةً حرارية، أو كماليّةً للشبكة والقرص الصلب، أو نمطَ كتابة المستخدم وحركةَ فأرته، وغيرها، سلسلةً ثنائيةَ البتّات مأخوذةً عيّنةً من توزيعٍ ما $\\mu$ قد تكون له صعوبةُ توقّعٍ (أو <em>إنتروبيا</em>) كبيرة، لكنّه ليس بالضرورة التوزيعَ <em>المنتظمَ فوقِ</em> \${0,1}^n$. وفعلًا، كما تُظهر <a href="http://statweb.stanford.edu/~susan/papers/headswithJ.pdf">هذه الورقة</a>، فإنّ حتى قذفَ العملات (في العالم الحقيقي) لا يملك بالضبط توزيعَ سلسلةٍ عشوائيةٍ منتظمة.
+وعليه، لاستعمال القياساتِ الناتجة في الخوارزميات العشوائية، عادةً ما يلزم تطبيقُ عمليةِ «تقطير» أو <a href="https://en.wikipedia.org/wiki/Randomness_extractor">استخلاصِ العشوائية</a> على القياسات الخام لتحويلها إلى التوزيع المنتظم.
+كتابُ فادان [@vadhan2012pseudorandomness] مصدرٌ ممتازٌ لمزيدٍ من المناقشة حول كلٍّ من مستخلِصاتِ العشوائية ومولِّداتِ العشوائية شبه العشوائية.</p>
+<p>الاسمُ $\\mathbf{BPP}$ اختصارٌ لعبارة «bounded probability polynomial time» (زمنٍ متعدّد الحدود باحتمالٍ مقيَّد). وهذا حادثٌ تاريخيّ: فلربّما كان ينبغي تسميةُ هذا الصنف $\\mathbf{RP}$ أو $\\mathbf{PP}$، لكنّ أسماءً أخرى كانت قد احتلَّتها أصنافٌ أخرى.</p>
+<p>برهانُ <a href="">rnandthm</a>{.ref} ينتج في الواقع أكثرَ ممّا يقوله. فبإمكاننا استعمالُ حجج «فكّ الحلقة» (<em>unrolling the loop</em>) ذاتها التي استعملناها من قبل لبيان أنّ تقييدَ كلِّ دالّةٍ في $\\mathbf{BPP}$ على \${0,1}^n$ يمكن حسابُه أيضًا ببرنامج RNAND-CIRC متعدّدِ الحجم في $n$ (أي برنامج NAND-CIRC مع عملية <code>RAND</code>). وكما في حالة $\\mathbf{P}$ مقابل $SIZE(poly(n))$، هناك أيضًا دوالّ خارج $\\mathbf{BPP}$ يمكن حسابُ قيودِها ببرامجِ RNAND-CIRC متعدّدةِ الحجم في $n$.
+ومع ذلك، فإنّ برهانَ <a href="">rnandthm</a>{.ref} يُبيّن أنّ حتى هذه الدوالّ يمكن حسابُها ببرامجِ NAND-CIRC متعدّدةِ الحجم في $n$ دون استعمال عمليات <code>rand</code>.
+ويمكن صياغةُ ذلك بأنّ $BPSIZE(T(n)) \\subseteq SIZE(O(n T(n)))$ (حيث تُعرَّف $BPSIZE$ بالطريقة الطبيعية باستعمال برامج RNAND).
+والنسخةُ الأقوى من <a href="">rnandthm</a>{.ref} التي ذكرناها يمكن صياغتُها بأنّ $\\mathbf{BPP_{/poly}} = \\mathbf{P_{/poly}}$.</p>
+</div>`,r={book:$,chapter:e,chapterTitle:t,slug:n,title:a,headings:i,html:o};export{$ as book,e as chapter,t as chapterTitle,r as default,i as headings,o as html,n as slug,a as title};

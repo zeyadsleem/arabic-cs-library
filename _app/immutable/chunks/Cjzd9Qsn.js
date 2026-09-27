@@ -1,0 +1,3 @@
+const o="effective-go",e="commentary",c="التعليقات",t="index",n="التعليقات",s=[],d=`<p>توفّر Go تعليقات كتل بنمط C — <code>/* */</code> — وتعليقات سطر بنمط C++‎ — <code>//</code>. وتعليقات السطر هي القاعدة، أما تعليقات الكتل فتظهر غالبًا كتعليقات للحزمة، لكنها مفيدة داخل تعبير، أو لتعطيل مساحات كبيرة من الشيفرة.</p>
+<p>التعليقات التي تسبق التصريحات على المستوى الأعلى، من دون أسطر فارغة بينها، تُعدّ توثيقًا للتصريح نفسه. وهذه «تعليقات التوثيق» هي التوثيق الأساسي لأي حزمة أو أمر في Go. ولمزيد من التفاصيل عن تعليقات التوثيق، راجع <code>Go Doc Comments</code>.</p>
+`,a={book:o,chapter:e,chapterTitle:c,slug:t,title:n,headings:s,html:d};export{o as book,e as chapter,c as chapterTitle,a as default,s as headings,d as html,t as slug,n as title};

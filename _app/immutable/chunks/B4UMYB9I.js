@@ -1,0 +1,1004 @@
+const n="introtcs",e="lec_03_computation",a="Computation",$="index",t="تعريف الحوسبة {#compchap }",o=[{depth:2,id:"تعريف-الحوسبة",text:"تعريف الحوسبة"},{depth:2,id:"الحساب-باستخدام-and-وor-وnot-andornotsec",text:"الحساب باستخدام AND وOR وNOT. { #andornotsec }"},{depth:3,id:"بعض-خواص-and-وor",text:"بعض خواص AND وOR"},{depth:3,id:"مثال-موسع-حساب-xor-من-and-وor-وnot-xoraonexample",text:"مثال موسّع: حساب $XOR$ من $AND$ و$OR$ و$NOT$ {#xoraonexample }"},{depth:3,id:"lemma-alganalaysis",text:"{.lemma #alganalaysis}"},{depth:3,id:"pause",text:"{ .pause }"},{depth:3,id:"تعريف-العمليات-الأساسية-والخوارزميات-إجرائيا",text:"تعريف «العمليات الأساسية» و«الخوارزميات» إجرائيًا"},{depth:3,id:"pause",text:"{ .pause }"},{depth:2,id:"الدوائر-المنطقية-booleancircuitsec",text:"الدوائر المنطقية  {#booleancircuitsec }"},{depth:3,id:"الدوائر-المنطقية-تعريف-رسمي",text:"الدوائر المنطقية: تعريف رسمي"},{depth:2,id:"البرامج-المستقيمة-starightlineprogramsec",text:"البرامج المستقيمة { #starightlineprogramsec }"},{depth:3,id:"مواصفة-لغة-البرمجة-aon-circ",text:"مواصفة لغة البرمجة AON-CIRC"},{depth:3,id:"إثبات-تكافؤ-برامج-aon-circ-والدوائر-المنطقية",text:"إثبات تكافؤ برامج AON-CIRC والدوائر المنطقية"},{depth:3,id:"theorem-titlequotتكافؤ-الدوائر-والبرامج-المستقيمةquot-slcircuitequivthm",text:"{.theorem title=&quot;تكافؤ الدوائر والبرامج المستقيمة&quot; #slcircuitequivthm}"},{depth:3,id:"proofidea-data-refquotslcircuitequivthmquot",text:"{.proofidea data-ref=&quot;slcircuitequivthm&quot;}"},{depth:2,id:"التنفيذات-الفيزيائية-لأجهزة-الحوسبة-استطراد-physicalimplementationsec",text:"التنفيذات الفيزيائية لأجهزة الحوسبة (استطراد) {#physicalimplementationsec }"},{depth:3,id:"الترانزستورات",text:"الترانزستورات"},{depth:3,id:"البوابات-المنطقية-من-الترانزستورات",text:"البوابات المنطقية من الترانزستورات"},{depth:3,id:"الحوسبة-البيولوجية",text:"الحوسبة البيولوجية"},{depth:3,id:"الأوتوماتا-الخلوية-ولعبة-الحياة",text:"الأوتوماتا الخلوية ولعبة الحياة"},{depth:3,id:"الشبكات-العصبية",text:"الشبكات العصبية"},{depth:3,id:"حاسوب-مصنوع-من-الكرات-والأنابيب",text:"حاسوب مصنوع من الكرات والأنابيب"},{depth:2,id:"دالة-nand-nandsec",text:"دالة NAND { #nandsec }"},{depth:3,id:"theorem-titlequotnand-تحسب-and-وor-وnotquot-univnandonethm",text:"{.theorem title=&quot;NAND تحسب AND وOR وNOT&quot; #univnandonethm}"},{depth:3,id:"proof-data-refquotunivnandonethmquot",text:"{.proof data-ref=&quot;univnandonethm&quot;}"},{depth:3,id:"pause",text:"{ .pause }"},{depth:3,id:"solvedexercise-titlequotحساب-الأغلبية-بـnandquot-majbynandex",text:"{.solvedexercise title=&quot;حساب الأغلبية بـNAND&quot; #majbynandex}"},{depth:3,id:"دوائر-nand",text:"دوائر NAND"},{depth:3,id:"theorem-titlequotnand-عملية-شاملةquot-nanduniversamthm",text:"{.theorem title=&quot;NAND عملية شاملة&quot; #NANDuniversamthm}"},{depth:3,id:"proofidea-data-refquotnanduniversamthmquot",text:"{.proofidea data-ref=&quot;NANDuniversamthm&quot;}"},{depth:3,id:"أمثلة-أخرى-على-دوائر-nand-اختياري",text:"أمثلة أخرى على دوائر NAND (اختياري)"},{depth:3,id:"لغة-البرمجة-nand-circ-nandcircsec",text:"لغة البرمجة NAND-CIRC { #nandcircsec }"},{depth:3,id:"pause",text:"{ .pause }"},{depth:3,id:"theorem-titlequotتكافؤ-دوائر-nand-والبرامج-المستقيمةquot-nandcircslequivthm",text:"{.theorem title=&quot;تكافؤ دوائر NAND والبرامج المستقيمة&quot; #NANDcircslequivthm}"},{depth:3,id:"remark-titlequotهل-لغة-البرمجة-nand-circ-تامة-تورينج-ملاحظة-اختياريةquot-nandturingcompleteness",text:"{.remark title=&quot;هل لغة البرمجة NAND-CIRC تامّة تورينج؟ (ملاحظة اختيارية)&quot; #NANDturingcompleteness}"},{depth:2,id:"تكافؤ-كل-هذه-النماذج",text:"تكافؤ كل هذه النماذج"},{depth:3,id:"proofidea-data-refquotequivalencemodelsthmquot",text:"{.proofidea data-ref=&quot;equivalencemodelsthm&quot;}"},{depth:3,id:"الدوائر-بمجموعات-بوابات-أخرى-othergatessec",text:"الدوائر بمجموعات بوابات أخرى  {#othergatessec }"},{depth:3,id:"المواصفة-مقابل-التنفيذ-مرة-أخرى-specvsimplrem",text:"المواصفة مقابل التنفيذ (مرة أخرى) {#specvsimplrem}"},{depth:3,id:"recap",text:"{ .recap }"},{depth:2,id:"التمارين",text:"التمارين"},{depth:3,id:"exercise-titlequotحد-على-حجم-الأساس-الشامل-تحدquot-universal-bound",text:"{.exercise title=&quot;حدّ على حجم الأساس الشامل (تحدٍّ)&quot; #universal-bound}"},{depth:3,id:"exercise-titlequotالعتبة-باستعمال-nandquot-threshold-nand-ex",text:"{.exercise title=&quot;العتبة باستعمال NAND&quot; #threshold-nand-ex}"},{depth:2,id:"ملاحظات-سردية",text:"ملاحظات سردية"}],i=`<h1>تعريف الحوسبة {#compchap }</h1>
+<blockquote>
+<h1>{.objectives  }</h1>
+</blockquote>
+<ul>
+<li>أن ترى كيف يمكن نمذجة الحوسبة بدقّة. \\</li>
+<li>أن تتعلّم النموذج الحوسب للدوائر المنطقية (Boolean circuits) / البرامج المستقيمة.</li>
+<li>تكافؤ الدوائر مع البرامج المستقيمة.</li>
+<li>تكافؤ AND/OR/NOT مع NAND.</li>
+<li>أمثلة على الحساب في العالم الفيزيائي. \\</li>
+</ul>
+<blockquote>
+<p><em>&quot;لا يوجد سبب يمنع من الاقتصاد في العمل العقلي كما في العمل البدني بمعاونة الآلات&quot;</em>، تشارلز بابيج، 1852</p>
+</blockquote>
+<blockquote>
+<p><em>&quot;إن لم ينبّهه مثالُي، وشرع أي رجل في بناء مُحرّك يجسّد في ذاته كامل القسم التنفيذي من التحليل الرياضي على مبادئ مختلفة أو بوسائل ميكانيكية أبسط، فلا أخشى أن أترك سمعتي في عهده، إذ هو وحده القادر تمامًا على تقدير طبيعة جهدي وقيمة نتائجه.&quot;</em>، تشارلز بابيج، 1864</p>
+</blockquote>
+<blockquote>
+<p><em>&quot;لفهم برنامج لا بدّ أن تصير في آن واحد الماكينة والبرنامج&quot;</em>، آلان بيرليس، 1982</p>
+</blockquote>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-1.webp" alt="/images/introtcs/lec_03_computation-1.webp">{#babbagewheels .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-PopularMechanics1944smaller.webp" alt="مقال صادر عام 1944 في مجلة Popular Mechanics عن حاسوب هارفارد Mark I.">{#markIcomp .margin  }</p>
+<p>لقد كان الناس يحسبون لآلاف السنين، بمعونات لا تقتصر على القلم والورق، بل تشمل العدّاد (abacus) والمسطرةَ الحسابية (slide rules) والأجهزةَ الميكانيكيةَ المتنوعة، والحواسيبَ الإلكترونيةَ الحديثة.
+من حيث المبدأ، تبدو فكرة الحوسبة مرتبطة بالأداة التي تستخدمها بعينها.
+قد تظنّ أن الخوارزمية «الأفضل» لضرب الأعداد ستكون مختلفة إن نفّذتها في <em>Python</em> على حاسوب محمول حديث عمّا لو استخدمت القلم والورق.
+غير أننا، كما رأينا في المقدمة (<a href="/arabic-cs-library/images/introtcs/lec_03_computation-4.webp">chapintro</a>{.ref})، فإن الخوارزمية الأفضل من حيث السلوك التصاعدي (asymptotically better) كانت لتتفوّق في النهاية على خوارزمية أضعف مهما كانت التقنية الكامنة.
+وهذا يمنحنا أملًا في طريقة <em>مستقلة عن التقنية</em> (technology independent) لتعريف الحوسبة.
+وهذا هو ما نفعله في هذا الفصل.
+سنعرّف فكرة حساب مُخرَج من مُدخَل عبر تطبيق تسلسل من العمليات الأساسية (انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-5.webp">compchapwhatvshowfig</a>{.ref}).
+وباستخدام هذا، سنتمكن من تعريف عبارات مثل «الدالة $f$ يمكن حسابها بالنموذج $X$» أو «الدالة $f$ يمكن حسابها بالنموذج $X$ باستخدام $s$ عمليات» بدقّة.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-2.webp" alt="دالة تُرسِل النصوص إلى النصوص تحدِّد مهمةً حسابية، أي أنها تصف ما هي العلاقة المرغوبة بين المُدخل والمُخرج. وفي هذا الفصل نعرّف نماذجَ لـ_تنفيذ_ العمليات الحسابية التي تحقّق تلك العلاقة، أي أنها تصف كيف يُحسب المُخرج من المُدخل. وسنرى عدّة أمثلة لمثل هذه النماذج باستخدام الدوائر المنطقية (Boolean circuits) وبرامج البرمجة المستقيمة معًا.">{#compchapwhatvshowfig }</p>
+<div class="callout callout--nonmath">
+<p>أبرز ما نستفيده من هذا الفصل هو ما يلي:</p>
+<ul>
+<li>
+<p>يمكننا استخدام <em>العمليات المنطقية</em> (logical operations) مثل $AND$ و$OR$ و$NOT$ لحساب مُخرج من مُدخل (انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-6.webp">andornotsec</a>{.ref}).</p>
+</li>
+<li>
+<p><em>الدائرة المنطقية</em> (Boolean circuit) هي طريقة لتركيب العمليات المنطقية الأساسية معًا لتحسب دالةً أعقد (انظر <a href="/arabic-cs-library/images/introtcs/fig-logicgates.webp">booleancircuitsec</a>{.ref}). ويمكننا أن نرى الدوائر المنطقية بوصفها نموذجًا رياضيًا (قائمًا على الرسوم البيانية الموجَّهة غير الدورية) فضلًا عن كونها أجهزة فيزيائية يمكننا بناؤها في العالم الحقيقي بطرق متنوّعة، لا تقتصر على أشباه الموصلات السيليكونية فحسب بل تشمل أيضًا الآليات الميكانيكية وحتى الحيوية (انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-7.webp">physicalimplementationsec</a>{.ref}).</p>
+</li>
+<li>
+<p>يمكننا أيضًا وصف الدوائر المنطقية بوصفها <em>برامج مستقيمة</em> (straight-line programs)، أي برامج لا تحتوي على أي بِنَى تكرارية (أي لا <code>while</code> ولا <code>for</code> ولا <code>do .. until</code> إلخ)، انظر <a href="https://goo.gl/gntTQE">starightlineprogramsec</a>{.ref}.</p>
+</li>
+<li>
+<p>من الممكن تنفيذ عمليات $AND$ و$OR$ و$NOT$ باستخدام العملية $NAND$ (وكذلك العكس). وهذا يعني أن الدوائر ذات البوابات $AND$/$OR$/$NOT$ تستطيع حساب الدوال نفسها (أي أنها <em>متكافئة في القدرة</em>) التي تحسبها الدوائر ذات بوابات $NAND$، ويمكننا استخدام أيّ النموذجين لوصف الحوسبة بحسب ما يريحنا، انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-8.webp">nandsec</a>{.ref}. ولكي نكشف جانبًا من الجواب مبكرًا، سنرى في <a href="/arabic-cs-library/images/introtcs/lec_03_computation-9.webp">finiteuniversalchap</a>{.ref} أن مثل هذه الدوائر تستطيع حساب <em>كل</em> الدوال المتناهية.</p>
+</li>
+</ul>
+<p>إحدى «الفكرة الكبرى» في هذا الفصل هي فكرة <em>التكافؤ</em> (equivalence) بين النماذج (<a href="/arabic-cs-library/images/introtcs/fig-generalcircuit.webp">equivalencemodels</a>{.ref}). ويكون نموذجان حوسبان <em>متكافئين</em> إذا استطاعا حساب المجموعة نفسها من الدوال. والدوائر المنطقية ذات البوابات $AND$/$OR$/$NOT$ تكافئ الدوائر ذات بوابات $NAND$، لكن هذا مجرد مثال على ظاهرة أعمّ سنلتقي بها مرارًا في هذا الكتاب.</p>
+</div>
+<h2 id="تعريف-الحوسبة">تعريف الحوسبة</h2>
+<p>اسم «الخوارزمية» مشتق من النقل اللاتيني لاسم محمد بن موسى الخوارزمي.
+كان الخوارزمي عالمًا فارسيًا في القرن التاسع الميلادي، عرّض كتبه العالمَ الغربي على نظام الأرقام العشري الموضعي، فضلًا عن حلول المعادلات من الدرجة الأولى والثانية (انظر <a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1124.pdf">alKhwarizmi</a>{.ref}).
+غير أن أوصاف الخوارزميات عند الخوارزمي كانت غير رسمية إلى حدٍّ كبير بمقاييس اليوم.
+فهو لم يستخدم «متغيّرات» مثل $x,y$، بل استخدم أعدادًا بعينها مثل 10 و39، ووثق في القارئ أن يكون قادرًا على التعميم انطلاقًا من هذه الأمثلة، تمامًا كما لا يزال تُعلَّم الخوارزميات للأطفال اليوم.</p>
+<p>إليك كيف وصف الخوارزمي خوارزمية حل معادلة من الشكل $x^2 +bx = c$:</p>
+<blockquote>
+<p><em>[كيف تحلّ معادلة من الشكل ] «الجذور والمربعات تساوي أعدادًا»: على سبيل المثال «مربع واحد، وعشرة جذور منه، مجموعها تسعة وثلاثون درهمًا»، أي ما هو المربع الذي إذا زيد إليه عشرة من جذره بلغ تسعة وثلاثين؟ الحل هو هذا: أنصِف عدد الجذور، فيصير في هذه الحالة خمسة. اضرب هذا في نفسه، فيكون الناتج خمسة وعشرين. أضِف هذا إلى تسعة وثلاثين، فيكون المجموع أربعة وستين. خُذ الآن جذر هذا المجموع، وهو ثمانية، واطرح منه نصف عدد الجذور، وهو خمسة، فيبقى ثلاثة. هذا هو جذر المربع الذي كنت تبحث عنه؛ وأما المربع نفسه فتسعة.</em></p>
+</blockquote>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-4.webp" alt="/images/introtcs/lec_03_computation-4.webp">{#alKhwarizmi .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-5.webp" alt="/images/introtcs/lec_03_computation-5.webp">{#childrenalg .margin  }</p>
+<p>ولأغراض هذا الكتاب، سنحتاج إلى طريقة أدقّ بكثير لوصف الخوارزميات.
+ولحسن الحظ (أو لسوء الحظ؟)، على الأقل في الوقت الحالي، تتأخر الحواسيب كثيرًا في التعلّم من الأمثلة مقارنةً بأطفال سنّ المدرسة.
+ولهذا، في القرن العشرين، ابتكر الناس صيغًا رسمية دقيقة لوصف الخوارزميات، وهي <em>لغات البرمجة</em>.
+إليك خوارزمية الخوارزمي لحل المعادلات من الدرجة الثانية مصوغةً بلغة البرمجة <em>Python</em>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> sqrt
+<span class="hljs-comment">#Pythonspeak to enable use of the sqrt function to compute square roots.</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_eq</span>(<span class="hljs-params">b,c</span>):
+    <span class="hljs-comment"># return solution of x^2 + bx = c following Al Khwarizmi&#x27;s instructions</span>
+    <span class="hljs-comment"># Al Kwarizmi demonstrates this for the case b=10 and c= 39</span>
+
+    val1 = b / <span class="hljs-number">2.0</span> <span class="hljs-comment"># &quot;halve the number of the roots&quot;</span>
+    val2 = val1 * val1 <span class="hljs-comment"># &quot;this you multiply by itself&quot;</span>
+    val3 = val2 + c <span class="hljs-comment"># &quot;Add this to thirty-nine&quot;</span>
+    val4 = sqrt(val3) <span class="hljs-comment"># &quot;take the root of this&quot;</span>
+    val5 = val4 - val1 <span class="hljs-comment"># &quot;subtract from it half the number of roots&quot;</span>
+    <span class="hljs-keyword">return</span> val5  <span class="hljs-comment"># &quot;This is the root of the square which you sought for&quot;</span>
+
+<span class="hljs-comment"># Test: solve x^2 + 10*x = 39</span>
+<span class="hljs-built_in">print</span>(solve_eq(<span class="hljs-number">10</span>,<span class="hljs-number">39</span>))
+<span class="hljs-comment"># 3.0</span>
+</code></pre>
+<p>يمكننا تعريف الخوارزميات إجرائيًا على النحو التالي:</p>
+<div class="callout callout--quote">
+<p><strong>اقتباس</strong></p>
+<p><strong>تعريف إجرائي للخوارزمية:</strong> <em>الخوارزمية</em> (algorithm) مجموعة تعليمات تصف كيفية حساب مُخرج من مُدخل عبر اتباع تسلسل من «الخطوات الأولية».</p>
+<p>تقول الخوارزمية $A$ إنها <em>تحسب</em> الدالة $F$ إذا كان لكل مُدخل $x$، حين نتبع تعليمات $A$ على المُدخل $x$، ينتج عن ذلك المُخرج $F(x)$.</p>
+</div>
+<p>في هذا الفصل سنجعل هذا التعريف الإجرائي دقيقًا باستخدام نموذج <strong>الدوائر المنطقية</strong> (Boolean Circuits).
+وسنبيّن أن الدوائر المنطقية متكافئة في القدرة مع <strong>البرامج المستقيمة</strong> (straight line programs) المكتوبة بلغات برمجة «فائقة البساطة» لا تحوي حتى حلقات تكرار.
+وسنرى أيضًا أن الاختيار بعينه للعمليات <strong>الأولية</strong> (elementary operations) لا أهمية له، وأن اختيارات كثيرة مختلفة تُنتج نماذج متكافئة القدرة (انظر <a href="https://github.com/boazbk/tcscode">compchapoverviewfig</a>{.ref}).
+غير أننا سنحتاج إلى بعض الوقت حتى نصل إلى ذلك.
+وسنبدأ بمناقشة ما هي «العمليات الأولية»، وكيف نحوّل وصفًا لخوارزمية إلى عملية فيزيائية فعلية تُنتج مُخرجًا من مُدخل في العالم الحقيقي.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-6.webp" alt="/images/introtcs/lec_03_computation-6.webp">{#compchapoverviewfig  }</p>
+<h2 id="الحساب-باستخدام-and-وor-وnot-andornotsec">الحساب باستخدام AND وOR وNOT. { #andornotsec }</h2>
+<p>تفكّك الخوارزمية الحسابَ <em>المعقّد</em> إلى سلسلة من خطوات <em>أبسط</em>.
+وتنفيذ هذه الخطوات ممكن بطرق متنوّعة مختلفة، منها:</p>
+<ul>
+<li>
+<p>كتابة الرموز على ورقة.</p>
+</li>
+<li>
+<p>تعديل التيار الكهربائي الذي يجري في الأسلاك.</p>
+</li>
+<li>
+<p>ربط بروتينٍ بخيط من الحمض النووي.</p>
+</li>
+<li>
+<p>الاستجابة لمنبّه من جانب عنصر في مجموعة (مثل نحلة في مستعمرة، أو تاجر في سوق).</p>
+</li>
+</ul>
+<p>ولكي نعرّف الخوارزميات تعريفًا رسميًا، فلنحاول أن «نميل إلى جهة البساطة» وأن نمذجة «خطواتنا الأساسية» بوصفها بالغة الدقّة.
+فمثلًا، إليك بعض الدوال البسيطة جدًا:</p>
+<ul>
+<li>$OR:{0,1}^2 \\rightarrow {0,1}$ المعرَّفة بما يلي:</li>
+</ul>
+<p>$$OR(a,b) = \\begin{cases} 0 &amp; a=b=0 \\ 1 &amp; \\text{otherwise} \\end{cases}$$</p>
+<ul>
+<li>$AND:{0,1}^2 \\rightarrow {0,1}$ المعرَّفة بما يلي:</li>
+</ul>
+<p>$$AND(a,b) = \\begin{cases} 1 &amp; a=b=1 \\ 0 &amp; \\text{otherwise} \\end{cases}$$</p>
+<ul>
+<li>$NOT:{0,1} \\rightarrow {0,1}$ المعرَّفة بما يلي:</li>
+</ul>
+<p>$$NOT(a) = \\begin{cases} 0 &amp; a = 1 \\ 1 &amp; a = 0 \\end{cases}$$</p>
+<p>الدوال $AND$ و$OR$ و$NOT$ هي المشغّلات المنطقية الأساسية المستخدمة في المنطق وفي أنظمة حواسوب كثيرة.
+وفي سياق المنطق، من الشائع استعمال التدوين $a \\wedge b$ للدالة $AND(a,b)$، و$a \\vee b$ للدالة $OR(a,b)$، و$\\overline{a}$ و$\\neg a$ للدالة $NOT(a)$، وسنستعمل هذا التدوين أيضًا.</p>
+<p>كل واحدة من الدوال $AND,OR,NOT$ تأخذ إمّا بتًّا واحدًا أو اثنين كمدخل، وتُنتج بتًّا واحدًا كمخرج.
+ومن البديهي أنها لا يمكن أن تكون أكثر أولية من ذلك.
+غير أن القدرة الحوسبية مصدرها <em>تركيب</em> هذه القوالب الأولية البسيطة معًا.</p>
+<div class="callout callout--example" id="majorityfunctionex">
+<p><strong>الأغلبية من AND وOR وNOT</strong></p>
+<p>لتُعتبر الدالة $MAJ:{0,1}^3 \\rightarrow {0,1}$ المعرَّفة بما يلي:</p>
+<p>$$MAJ(x) = \\begin{cases}1 &amp; x_0 + x_1 + x_2 \\geq 2 \\ 0 &amp; \\text{otherwise}\\end{cases} ;.$$</p>
+<p>بمعنى آخر، لكل $x\\in {0,1}^3$، لدينا $MAJ(x)=1$ إذا ونحو فقط إذا كانت أكثرية عناصر $x$ (أي اثنين على الأقل من الثلاثة) مساوية لـ $1$.
+هل تستطيع أن تجد صيغة تتضمّن $AND$ و$OR$ و$NOT$ لحساب $MAJ$؟ (من المفيد لك أن تتوقف هنا وتستنتج الصيغة بنفسك. وكإرشاد، فرغم أن المشغّل $NOT$ لازم لحساب بعض الدوال، فإنك لن تحتاج إليه لحساب $MAJ$.)</p>
+<p>لنحاول أولًا أن نعيد صياغة $MAJ(x)$ بالكلمات: «$MAJ(x)=1$ إذا ونحو فقط إذا وُجد زوجٌ ما من العناصر المتمايزة $i,j$ بحيث يكون $x_i$ و$x_j$ كلاهما مساويًا لـ $1$». وبعبارة أخرى، يعني ذلك أن $MAJ(x)=1$ إذا ونحو فقط إذا كان <em>إمّا</em> $x_0=1$ و$x_1=1$ كلاهما، <em>أو</em> $x_1=1$ و$x_2=1$ كلاهما، <em>أو</em> $x_0=1$ و$x_2=1$ كلاهما.
+ولأن $OR$ لثلاثة شروط $c_0,c_1,c_2$ يمكن كتابتها $OR(c_0,OR(c_1,c_2))$، يمكننا الآن ترجمة ذلك إلى صيغة كالتالي:</p>
+<p>$$
+MAJ(x_0,x_1,x_2) = OR\\left(, AND(x_0,x_1);,; OR \\bigl( AND(x_1,x_2) ;,; AND(x_0,x_2) \\bigr) , \\right) ;. \\label{eqmajandornot}
+$$</p>
+<p>تذكّر أننا يمكننا أيضًا كتابة $a \\vee b$ للدالة $OR(a,b)$ و$a \\wedge b$ للدالة $AND(a,b)$. وبهذا التدوين،
+يمكن كتابة <a href="https://www.youtube.com/watch?v=czk4xgdhdY4">eqmajandornot</a>{.eqref} أيضًا على الصورة</p>
+<p>$$MAJ(x_0,x_1,x_2) = ((x_0 \\wedge x_1) \\vee (x_1 \\wedge x_2)) \\vee (x_0 \\wedge x_2);.$$</p>
+<p>كما يمكننا كتابة <a href="/arabic-cs-library/images/introtcs/lec_03_computation-12.webp">eqmajandornot</a>{.eqref} بصورة «لغة برمجة»، أي التعبير عنها كمجموعة تعليمات لحساب $MAJ$ انطلاقًا من العمليات الأساسية $AND,OR,NOT$:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">MAJ</span>(<span class="hljs-params">X[<span class="hljs-number">0</span>],X[<span class="hljs-number">1</span>],X[<span class="hljs-number">2</span>]</span>):
+    firstpair  = AND(X[<span class="hljs-number">0</span>],X[<span class="hljs-number">1</span>])
+    secondpair = AND(X[<span class="hljs-number">1</span>],X[<span class="hljs-number">2</span>])
+    thirdpair  = AND(X[<span class="hljs-number">0</span>],X[<span class="hljs-number">2</span>])
+    temp       = OR(secondpair,thirdpair)
+    <span class="hljs-keyword">return</span> OR(firstpair,temp)
+</code></pre>
+</div>
+<iframe src="https://trinket.io/embed/python/5ead2eab1b" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+<h3 id="بعض-خواص-and-وor">بعض خواص AND وOR</h3>
+<p>كما في الجمع والضرب المعياريَّين، فإن الدالتين $AND$ و$OR$ تستوفيان خاصيتي <em>التبديل</em> (commutativity): $a \\vee b = b \\vee a$ و$a \\wedge b = b \\wedge a$، وخاصية <em>التجميع</em> (associativity): $(a \\vee b) \\vee c = a \\vee (b \\vee c)$ و$(a \\wedge b) \\wedge c = a \\wedge (b \\wedge c)$.
+وكما في حالة الجمع والضرب، فإننا نُسقط الأقواس غالبًا ونكتب $a \\vee b \\vee c \\vee d$ بدلًا من $((a \\vee b) \\vee c) \\vee d$، وكذلك في حالات OR وAND لأكثر من حدّ.
+كما أنهما تستوفيان صيغةً من صيغ قانون التوزيع:</p>
+<div class="callout callout--solvedexercise" id="distributivelaw">
+<p><strong>تمرين محلول — قانون التوزيع لـ AND و OR</strong></p>
+<p>أثبِت أن لكل $a,b,c \\in {0,1}$، لدينا $a \\wedge (b \\vee c) = (a \\wedge b) \\vee (a \\wedge c)$.</p>
+</div>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>يمكننا إثبات ذلك بحصر جميع القيم الثمانية الممكنة لـ $a,b,c \\in {0,1}$، لكنه أيضًا يتبع قانون التوزيع المعياري.
+لنفترض أن نُطابق أي عدد صحيح موجب مع «صحيح» والقيمة صفر مع «خطأ».
+عندئذٍ لكل عددين $u,v \\in \\N$، يكون $u+v$ موجبًا إذا ونحو فقط إذا كانت $u \\vee v$ صحيحة، ويكون $u \\cdot v$ موجبًا إذا ونحو فقط إذا كانت $u \\wedge v$ صحيحة.
+وهذا يعني أن لكل $a,b,c \\in {0,1}$، يكون التعبير $a \\wedge (b \\vee c)$ صحيحًا إذا ونحو فقط إذا كان $a \\cdot(b+c)$ موجبًا، ويكون التعبير $(a \\wedge b) \\vee (a \\wedge c)$ صحيحًا إذا ونحو فقط إذا كان $a \\cdot b + a \\cdot c$ موجبًا،
+ولكن بقانون التوزيع المعياري فإن $a\\cdot (b+c) = a\\cdot b + a \\cdot c$، وبالتالي فالتعبير الأول صحيح إذا ونحو فقط إذا كان التعبير الثاني كذلك.</p>
+</div>
+<h3 id="مثال-موسع-حساب-xor-من-and-وor-وnot-xoraonexample">مثال موسّع: حساب $XOR$ من $AND$ و$OR$ و$NOT$ {#xoraonexample }</h3>
+<p>لِنَرَ كيف يمكننا الحصول على دالة مختلفة من القوالب البناءية نفسها.
+لنُعرِّف $XOR:{0,1}^2 \\rightarrow {0,1}$ لتكون الدالة $XOR(a,b)= a + b \\mod 2$. أي أن $XOR(0,0)=XOR(1,1)=0$ و$XOR(1,0)=XOR(0,1)=1$.
+ونحن ندّعي أنه يمكننا بناء $XOR$ باستخدام $AND$ و$OR$ و$NOT$ لا غير.</p>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>وكالمعتاد، من التمارين المفيدة أن تحاول استنتاج خوارزمية $XOR$ باستخدام $AND$ و$OR$ و$NOT$ بنفسك قبل أن تقرأ ما يلي.</p>
+</div>
+<p>تحسب الخوارزمية التالية $XOR$ باستخدام $AND$ و$OR$ و$NOT$:</p>
+<pre><code class="language-{.algorithm">Input: $a,b \\in \\{0,1\\}$.
+Output: $XOR(a,b)$
+
+$w1 \\leftarrow AND(a,b)$
+
+$w2 \\leftarrow NOT(w1)$
+
+$w3 \\leftarrow OR(a,b)$
+
+return $AND(w2,w3)$
+</code></pre>
+<blockquote>
+<h3 id="lemma-alganalaysis">{.lemma #alganalaysis}</h3>
+</blockquote>
+<p>لكل $a,b\\in {0,1}$، عند المدخلين $a,b$، تُنتج الخوارزمية <a href="/arabic-cs-library/images/introtcs/lec_03_computation-13.webp">XORfromAONalg</a>{.ref} القيمة $a+b \\mod 2$.</p>
+<div class="callout callout--proof">
+<p>لكل $a,b$، لدينا $XOR(a,b)=1$ إذا ونحو فقط إذا كان $a$ <em>مختلفًا</em> عن $b$.
+وعند المدخلين $a,b\\in {0,1}$، تُنتج الخوارزمية <a href="https://en.wikipedia.org/wiki/Fluidics">XORfromAONalg</a>{.ref} القيمة $AND(w2,w3)$ حيث $w2=NOT(AND(a,b))$ و$w3=OR(a,b)$.</p>
+<ul>
+<li>
+<p>إذا كان $a=b=0$ فإن $w3=OR(a,b)=0$، وبالتالي سيكون المُخرج $0$.</p>
+</li>
+<li>
+<p>إذا كان $a=b=1$ فإن $AND(a,b)=1$، وبالتالي يكون $w2=NOT(AND(a,b))=0$، وسيكون المُخرج $0$.</p>
+</li>
+<li>
+<p>إذا كان $a=1$ و$b=0$ (أو العكس) فإن كلًّا من $w3=OR(a,b)=1$ و$w1=AND(a,b)=0$، وفي هذه الحالة ستُنتج الخوارزمية $OR(NOT(w1),w3)=1$.</p>
+</li>
+</ul>
+</div>
+<p>كما يمكننا التعبير عن الخوارزمية <a href="http://www.nature.com/news/the-chips-are-down-for-moore-s-law-1.19338">XORfromAONalg</a>{.ref} بلغة برمجة.
+وعلى وجه التحديد، إليك برنامج <em>Python</em> يحسب الدالة $XOR$:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">AND</span>(<span class="hljs-params">a,b</span>): <span class="hljs-keyword">return</span> a*b
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">OR</span>(<span class="hljs-params">a,b</span>):  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>-(<span class="hljs-number">1</span>-a)*(<span class="hljs-number">1</span>-b)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">NOT</span>(<span class="hljs-params">a</span>):   <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>-a
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">XOR</span>(<span class="hljs-params">a,b</span>):
+    w1 = AND(a,b)
+    w2 = NOT(w1)
+    w3 = OR(a,b)
+    <span class="hljs-keyword">return</span> AND(w2,w3)
+
+<span class="hljs-comment"># Test out the code</span>
+<span class="hljs-built_in">print</span>([<span class="hljs-string">f&quot;XOR(<span class="hljs-subst">{a}</span>,<span class="hljs-subst">{b}</span>)=<span class="hljs-subst">{XOR(a,b)}</span>&quot;</span> <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]])
+<span class="hljs-comment"># [&#x27;XOR(0,0)=0&#x27;, &#x27;XOR(0,1)=1&#x27;, &#x27;XOR(1,0)=1&#x27;, &#x27;XOR(1,1)=0&#x27;]</span>
+</code></pre>
+<div class="callout callout--solvedexercise" id="xorthreebits">
+<p><strong>تمرين محلول — حساب XOR على ثلاثة بتات مُدخلة</strong></p>
+<p>لتكن $XOR_3:{0,1}^3 \\rightarrow {0,1}$ الدالة المعرَّفة بـ $XOR_3(a,b,c) = a + b +c \\mod 2$. أي أن $XOR_3(a,b,c)=1$ إذا كان $a+b+c$ فرديًا، و$XOR_3(a,b,c)=0$ في غير ذلك.
+أثبِت أنه بإمكانك حساب $XOR_3$ باستخدام AND وOR وNOT.
+يمكنك التعبير عنها بصيغة، أو استخدام لغة برمجة مثل Python، أو استخدام دائرة منطقية.</p>
+</div>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>الجمع على مقياس اثنين يستوفي خصيتي <em>التجميع</em> ($(a+b)+c=a+(b+c)$) و_التبديل_ ($a+b=b+a$) نفسها التي يستوفيها الجمع المعياري.
+وهذا يعني أنه إذا عرّفنا $a \\oplus b$ بأنه يساوي $a + b \\mod 2$،
+فإن
+$$
+XOR_3(a,b,c) = (a \\oplus b) \\oplus c
+$$
+أو بمعنى آخر
+$$
+XOR_3(a,b,c) = XOR(XOR(a,b),c) ;.
+$$</p>
+<p>ولأننا نعرف كيف نحسب $XOR$ باستخدام AND وOR وNOT، يمكننا تركيب ذلك لحساب $XOR_3$ بالقوالب البناءية نفسها.
+وفي Python يقابل ذلك البرنامج التالي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">XOR3</span>(<span class="hljs-params">a,b,c</span>):
+    w1 = AND(a,b)
+    w2 = NOT(w1)
+    w3 = OR(a,b)
+    w4 = AND(w2,w3)
+    w5 = AND(w4,c)
+    w6 = NOT(w5)
+    w7 = OR(w4,c)
+    <span class="hljs-keyword">return</span> AND(w6,w7)
+
+<span class="hljs-comment"># Let&#x27;s test this out</span>
+<span class="hljs-built_in">print</span>([<span class="hljs-string">f&quot;XOR3(<span class="hljs-subst">{a}</span>,<span class="hljs-subst">{b}</span>,<span class="hljs-subst">{c}</span>)=<span class="hljs-subst">{XOR3(a,b,c)}</span>&quot;</span> <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]])
+<span class="hljs-comment"># [&#x27;XOR3(0,0,0)=0&#x27;, &#x27;XOR3(0,0,1)=1&#x27;, &#x27;XOR3(0,1,0)=1&#x27;, &#x27;XOR3(0,1,1)=0&#x27;, &#x27;XOR3(1,0,0)=1&#x27;, &#x27;XOR3(1,0,1)=0&#x27;, &#x27;XOR3(1,1,0)=0&#x27;, &#x27;XOR3(1,1,1)=1&#x27;]</span>
+</code></pre>
+<iframe src="https://trinket.io/embed/python/0e71e3fcaa" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+</div>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>حاول تعميم الأمثلة أعلاه للحصول على طريقة لحساب $XOR_n:{0,1}^n \\rightarrow {0,1}$ لكل $n$ باستخدام $4n$ خطوة أساسية على الأكثر، وتكون تطبيقات لدالة من \${ AND, OR , NOT }$ على مُخرجات أو على قيم حُسبت سابقًا.</p>
+<h3 id="تعريف-العمليات-الأساسية-والخوارزميات-إجرائيا">تعريف «العمليات الأساسية» و«الخوارزميات» إجرائيًا</h3>
+<p>لقد رأينا أننا يمكننا الحصول على بعض الأمثلة على الأقل من الدوال المهمة، عبر تركيب $AND$ و$OR$ و$NOT$ معًا.
+وهذا يوحي إلينا باستعمال $AND$ و$OR$ و$NOT$ بوصفها «عملياتنا الأساسية»، فنحصل على التعريف التالي لـ«الخوارزمية»:</p>
+<div class="callout callout--quote">
+<p><strong>اقتباس</strong></p>
+<p><strong>تعريف شبه رسمي للخوارزمية:</strong> تتألف <em>الخوارزمية</em> (algorithm) من تسلسل خطوات من الشكل «احسب قيمة جديدة بتطبيق $AND$ أو $OR$ أو $NOT$ على قيم حُسبت سابقًا (مع الافتراض بأن المُدخل قد حُسب بدوره سابقًا)».</p>
+<p>تقول الخوارزمية $A$ إنها <em>تحسب</em> الدالة $F$ إذا كان لكل مُدخل $x$ للدالة $F$، حين نُدخل $x$ كمدخل إلى الخوارزمية، كانت القيمة المحسوبة في خطوتها الأخيرة هي $F(x)$.</p>
+</div>
+<p>يثير هذا التعريف عدة مخاوف:</p>
+<ol>
+<li>
+<p>أولًا وقبل كل شيء، هذا التعريف غير رسمي فعلًا. فنحن لا نحدّد بدقّة ما الذي تفعله كل خطوة، ولا ما الذي يعنيه «إدخال $x$ كمدخل».</p>
+</li>
+<li>
+<p>ثانيًا، يبدو اختيار $AND$ أو $OR$ أو $NOT$ عشوائيًا إلى حدٍّ كبير. ولماذا لا $XOR$ و$MAJ$؟ ولماذا لا نسمح بعمليات مثل الجمع والضرب؟ وماذا عن أي بِنَى منطقية أخرى مثل <code>if</code>/<code>then</code> أو <code>while</code>؟</p>
+</li>
+<li>
+<p>ثالثًا، هل نعرف أصلًا أن لهذا التعريف علاقة بأي حساب فعلي؟ فلو أعطى أحدهم لنا وصفًا لخوارزمية كهذه، فهل يمكننا استعمالها فعلًا لحساب الدالة في العالم الحقيقي؟</p>
+</li>
+</ol>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>ستوجّه هذه المخاوف مسيرتنا إلى حدٍّ كبير في الفصول القادمة. ومن ثمّ فإن من الحكمة أن تعيد قراءة التعريف الإجرائي أعلاه وتنظر فيما تعبّر عنه من رأي في هذه المسائل.</p>
+<p>سيُخصَّص جزء كبير من هذا الكتاب لمعالجة المسائل أعلاه. وسنرى أن:</p>
+<ol>
+<li>
+<p>يمكننا أن نجعل تعريف الخوارزمية رسميًا تمامًا، وبالتالي منح معنى رياضيًا دقيقًا لعبارات مثل «الخوارزمية $A$ تحسب الدالة $f$».</p>
+</li>
+<li>
+<p>ورغم أن اختيار $AND$/$OR$/$NOT$ عشوائي، وأن كان بإمكاننا أن نختار دوال أخرى بالقدر نفسه، فسنرى أيضًا أن هذا الاختيار لا أهمية كبيرة له. وسنرى أننا لو استخدمنا بدلًا منه الجمع والضرب، بل وكل عملية أخرى يمكن اعتبارها بصورة معقولة خطوةً أساسية، لَحَصّلنا على القدرة الحوسبية نفسها.</p>
+</li>
+<li>
+<p>ويبيّن الأمر في الواقع أننا يمكننا أن نحسب هذه «الخوارزميات المعتمدة على $AND$/$OR$/$NOT$» في العالم الحقيقي، بل إننا نفعل ذلك فعلًا. أولًا، مثل هذه الخوارزمية محدَّدة بدقّة واضح، ولذلك يمكن تنفيذها من إنسان بقلم وورقة. وثانيًا، هناك طرائق متنوّعة <em>لآلية</em> (mechanize) هذا الحساب. لقد رأينا بالفعل أننا نستطيع كتابة شيفرة Python تقابل اتباع قائمة التعليمات هذه. لكننا في الواقع نستطيع تنفيذ عمليات مثل $AND$ و$OR$ و$NOT$ مباشرةً عبر إشارات إلكترونية باستخدام مكوّنات تُعرف بالـ_ترانزستورات_ (transistors). هكذا تعمل الحواسيب الإلكترونية الحديثة.</p>
+</li>
+</ol>
+<p>وفي بقية هذا الفصل، وفي بقية هذا الكتاب، سنبدأ في الإجابة عن بعض هذه الأسئلة.
+وسنرى أمثلة أكثر على قوة العمليات البسيطة في حساب عمليات أعقد، منها الجمع والضرب والترتيب وغيرها.
+وسنناقش أيضًا كيف نُنفّذ <em>فيزيائيًا</em> عمليات بسيطة مثل $AND$ و$OR$ و$NOT$ باستخدام تقنيات متنوّعة.</p>
+<h2 id="الدوائر-المنطقية-booleancircuitsec">الدوائر المنطقية  {#booleancircuitsec }</h2>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-15.webp" alt="الرموز المعيارية للعمليات المنطقية أو «البوابات» $AND$ و$OR$ و$NOT$، فضلًا عن العملية $NAND$ التي نتناولها في nandsec{.ref}.">{#logicgatesfig .margin }</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-7.webp" alt="/images/introtcs/lec_03_computation-7.webp">{#smallandornotcircxorfig  .margin  }</p>
+<p>توفّر <em>الدوائر المنطقية</em> (Boolean circuits) مفهومًا دقيقًا لـ«تركيب العمليات الأساسية معًا».
+تتألف الدائرة المنطقية (انظر <a href="http://www.northdownfarm.co.uk/rory/tim/basiclogic.htm">boolancircfig</a>{.ref}) من <em>بوابات</em> و_مُدخلات_ متّصلة بواسطة <em>أسلاك</em>.
+تحمل <em>الأسلاك</em> إشارة تمثّل إمّا القيمة $0$ وإمّا القيمة $1$.
+تقابل كل بوابة إمّا عملية <em>OR</em> أو <em>AND</em> أو <em>NOT</em>.
+وللبوابة <em>OR</em> سلكان داخليان، وسلك خارج واحد أو أكثر.
+إذا حمل هذان السلكان الداخليان الإشارتين $a$ و$b$ (من أجل $a,b \\in {0,1}$)، فإن الإشارة على الأسلاك الخارجية ستكون $OR(a,b)$.
+وتُعرَّف بوابتا <em>AND</em> و_NOT_ بالمثل.
+أما <em>المُدخلات</em> فليس لها إلا أسلاك خارجة.
+إذا عيّننا مُدخلًا معيّنًا على القيمة $a\\in {0,1}$، فإن هذه القيمة تنتشر على كل الأسلاك الخارجة منه.
+كما نُعيّن بعض البوابات لتكون <em>بوابات مُخرَج</em>، وتُقابل قيمتها نتيجة تقييم الدائرة.
+على سبيل المثال، يقدّم <a href="/arabic-cs-library/images/introtcs/fig-dtl_logic.webp">smallandornotcircxorfig</a>{.ref} دائرة كهذه للدالة $XOR$، وفق <a href="/arabic-cs-library/images/introtcs/fig-nand_transistor.webp">xoraonexample</a>{.ref}.
+نُقيّم دائرة منطقية ذات $n$ مُدخلًا $C$ على مُدخل $x\\in {0,1}^n$ بوضع بتات $x$ على المُدخلات، ثم نشر القيم على الأسلاك حتى نصل إلى مُخرج، انظر <a href="http://www.nature.com/nrg/journal/v13/n7/full/nrg3197.html">boolancircfig</a>{.ref}.</p>
+<div class="callout callout--remark" id="booleancircimprem">
+<p><strong>ملاحظة — التجسيد الفيزيائي للدوائر المنطقية</strong></p>
+<p>الدوائر المنطقية هي <em>نموذج رياضي</em> لا يقابل بالضرورة جسماً ماديًا، لكنها قابلة للتنفيذ فيزيائيًا.
+في التنفيذات الفيزيائية للدوائر، تُنفَّذ الإشارة <a href="https://goo.gl/gntTQE">غالبًا</a> بواسطة فرق الجهد الكهربائي، أو <em>الجهد الكهربائي</em> (voltage)، على سلك، حيث يُفسَّر، مثلًا، الجهد الأعلى من مستوى معيّن على أنه قيمة منطقية $1$، والأدنى من مستوى معيّن على أنه قيمة منطقية $0$.
+يناقش <a href="http://science.sciencemag.org/content/340/6132/554?iss=6132">physicalimplementationsec</a>{.ref} التنفيذات الفيزيائية للدوائر المنطقية (مع أمثلة تشمل استعمال الإشارات الكهربائية كما في الدوائر السيليكونية، وكذلك التنفيذات الحيوية والميكانيكية).</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-8.webp" alt="/images/introtcs/lec_03_computation-8.webp">{#boolancircfig  }</p>
+<div class="callout callout--solvedexercise" id="allequalex">
+<p><strong>تمرين محلول — دالة التساوي التام</strong></p>
+<p>عرِّف $ALLEQ:{0,1}^4 \\rightarrow {0,1}$ لتكون الدالة التي على المُدخل $x\\in {0,1}^4$ تُنتج $1$ إذا ونحو فقط إذا كان $x_0=x_1=x_2=x_3$. أعطِ دائرة منطقية لحساب $ALLEQ$.</p>
+</div>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>هناك طريقة أخرى لوصف الدالة $ALLEQ$: أنها تُنتج $1$ على مُدخل $x\\in {0,1}^4$ إذا ونحو فقط إذا كان $x = 0^4$ أو $x=1^4$.
+ويمكننا صياغة الشرط $x=1^4$ على صورة $x_0 \\wedge x_1 \\wedge x_2 \\wedge x_3$، ويمكن حسابه
+باستعمال ثلاث بوابات AND.
+وبالمثل يمكننا صياغة الشرط $x=0^4$ على صورة $\\overline{x}_0 \\wedge \\overline{x}_1 \\wedge \\overline{x}_2 \\wedge \\overline{x}_3$، ويمكن حسابه باستعمال أربع بوابات NOT وثلاث بوابات AND.
+ومُخرج $ALLEQ$ هو OR لهذين الشرطين، أي الدائرة ذات 4 بوابات NOT و6 بوابات AND وبوابة OR واحدة المعروضة في <a href="https://youtu.be/-1fqgrF7fXU">allequalfig</a>{.ref}.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-9.webp" alt="/images/introtcs/lec_03_computation-9.webp">{#allequalfig .margin }</p>
+<h3 id="الدوائر-المنطقية-تعريف-رسمي">الدوائر المنطقية: تعريف رسمي</h3>
+<p>عرّفنا الدوائر المنطقية إجرائيًا بأنها ما يُحصل عليه بوصل بوابات <em>AND</em> و_OR_ و_NOT_ بواسطة أسلاك لإنتاج مُخرج من مُدخل.
+غير أنه، لكي نتمكّن من إثبات مبرهنات حول وجود دوائر منطقية تحسب دوالّ متنوّعة أو عدم وجودها، نحتاج إلى:</p>
+<ol>
+<li>
+<p>أن نعرّف الدائرة المنطقية رسميًا بوصفها كائنًا رياضيًا.</p>
+</li>
+<li>
+<p>أن نعرّف رسميًا معنى قول الدائرة $C$ إنها تحسب الدالة $f$.</p>
+</li>
+</ol>
+<p>وسنقوم الآن بذلك.
+سنعرّف الدائرة المنطقية بأنها <em>رسم بياني موجَّه غير دوري</em> (Directed Acyclic Graph) مُوسَم.
+وتُقابل <em>رؤوس</em> (vertices) الرسم البياني بوابات الدائرة ومُدخلاتها، بينما تُقابل <em>حواف</em> (edges) الرسم البياني الأسلاك.
+السلك الذي ينتقل من مُدخل أو بوابة $u$ إلى بوابة $v$ في الدائرة يقابل حافة موجَّهة بين الرأسين المقابلين.
+أما المُدخلات فهي رؤوس لا حواف داخلية لها، بينما لكل بوابة العدد المناسب من الحواف الداخلية بحسب الدالة التي تحسبها. (أي أن بوابتَي <em>AND</em> و_OR_ لهما جيران داخليان اثنان، بينما لبوابة <em>NOT</em> جار داخلي واحد.)
+والتعريف الرسمي هو ما يلي (انظر أيضًا <a href="http://science.sciencemag.org/content/early/2013/03/27/science.1232758.full">generalcircuitfig</a>{.ref}):</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-transcriptor.webp" alt="الدائرة المنطقية (Boolean Circuit) هي رسم بياني موجَّه غير دوري (DAG) مُوسَم. ولديها $n$ رأس مُدخل، تُعلَّم بـ $0$,$dots$, $n-1$ ولا حواف داخلية لها، وبقية الرؤوس هي بوابات. ولبوابات AND و_OR_ و_NOT_ على التوالي حافتان داخليتان، وحافتان داخليتان، وحافة داخلية واحدة. وإذا كان للدائرة $m$ مُخرجات، فإن $m$ من البوابات تُعرف بـ_المُخرجات_ وتُعلَّم بـ $0$,$dots$,$m-1$. وحين نُقيّم دائرة $C$ على مُدخل $xn 0,1^n$، نبدأ بتعيين قيمة رؤوس المُدخلات إلى $x_0,dots,x_{n-1}$ ثم ننشر القيم، فنُسند إلى كل بوابة $g$ نتيجة تطبيق عملية $g$ على قيم جيران $g$ الداخلة. ومُخرج الدائرة هو القيمة المُسندة إلى بوابات الخرج.">{#generalcircuitfig }</p>
+<div class="callout callout--definition" id="booleancircdef">
+<p><strong>الدوائر المنطقية</strong></p>
+<p>لتكن $n,m,s$ أعدادًا صحيحة موجبة بحيث $s \\geq m$. <em>الدائرة المنطقية</em> (Boolean circuit) ذات $n$ مُدخلًا و$m$ مُخرجًا و$s$ بوابة هي رسم بياني موجَّه غير دوري (DAG) مُوسَم $G=(V,E)$ له $s+n$ رأسًا، يستوفي الخصائص التالية:</p>
+<ul>
+<li>
+<p>بالضبط $n$ من الرؤوس ليس لها جيران داخلية. وتُعرف هذه الرؤوس بـ_المُدخلات_ وتُوسَم بـ$n$ من الوسوم <code>X[</code>$0$<code>]</code>, $\\ldots$, <code>X[</code>$n-1$<code>]</code>. ولكل مُدخل جار خارج واحد على الأقل.</p>
+</li>
+<li>
+<p>الرؤوس الـ$s$ الأخرى تُعرف بـ_البوابات_. وتُوسَم كل بوابة بـ$\\wedge$ أو $\\vee$ أو $\\neg$. والبوابات الموسومة بـ$\\wedge$ (<em>AND</em>) أو $\\vee$ (<em>OR</em>) لها جيران داخليان اثنان. والبوابات الموسومة بـ$\\neg$ (<em>NOT</em>) لها جار داخلي واحد. وسنسمح بالحواف الموازية.^[معنى وجود حواف موازية أن بوابة AND أو OR المعنونة $u$ يمكن أن يكون كلا جيريها الداخلي هو البوابة $v$ نفسها. وبما أن $AND(a,a)=OR(a,a)=a$ لكل $a\\in {0,1}$، فإن هذه الحواف الموازية لا تساعد في حساب قيم جديدة في الدوائر ذات بوابات AND/OR/NOT. غير أننا سنرى لاحقًا دوائر بمجموعات بوابات أكثر عمومية.]</p>
+</li>
+<li>
+<p>بالضبط $m$ من البوابات تُوسَم أيضًا بـ$m$ من الوسوم <code>Y[</code>$0$<code>]</code>, $\\ldots$, <code>Y[</code>$m-1$<code>]</code> (بالإضافة إلى وسمها $\\wedge$/$\\vee$/$\\neg$). وتُعرف هذه بـ_المُخرجات_.</p>
+</li>
+</ul>
+<p>و_حجم_ الدائرة المنطقية هو العدد $s$ من البوابات التي تحتوي عليها.</p>
+</div>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>هذا تعريف رياضي غير تافه، ومن ثمّ من المفيد أن تقرأه ببطء وتدقيق. فكما في كل التعريفات الرياضية، فإننا نستعمل كائنًا رياضيًا معروفًا --- رسمًا بيانيًا موجَّهًا غير دوري (DAG) --- لتعريف كائن جديد، هو الدائرة المنطقية.
+قد يكون هذا وقتًا مناسبًا لمراجعة بعض الخصائص الأساسية للرسوم البيانية غير الدورية، وخصوصية أنها يمكن أن تُرتَّب <em>طوبولوجيًّا</em>، انظر <a href="http://www.rennard.org/alife/CollisionBasedRennard.pdf">topsortsec</a>{.ref}.</p>
+</div>
+<p>إذا كانت $C$ دائرة ذات $n$ مُدخلًا و$m$ مُخرجًا، و$x\\in {0,1}^n$، فيمكننا حساب مُخرج $C$ على المُدخل $x$ بالطريقة الطبيعية: نُسند إلى رؤوس المُدخلات <code>X[</code>$0$<code>]</code>, $\\ldots$, <code>X[</code>$n-1$<code>]</code> القيم $x_0,\\ldots,x_{n-1}$، ونطبّق كل بوابة على قيم جيرانها الداخلة، ثم نُخرج القيم المقابلة لرؤوس الخرج.
+ويُعرَّف ذلك رسميًا على النحو التالي:</p>
+<div class="callout callout--definition" id="circuitcomputedef">
+<p><strong>حساب دالة بواسطة دائرة منطقية</strong></p>
+<p>لتكن $C$ دائرة منطقية ذات $n$ مُدخلًا و$m$ مُخرجًا.
+لكل $x\\in {0,1}^n$، يُعرَّف <em>مُخرج</em> $C$ على المُدخل $x$، ويُرمز له بـ$C(x)$، بأنه نتيجة العملية التالية:</p>
+<p>لتكن $h:V \\rightarrow \\N$ هي <em>التوزيع الطبقي الأدنى</em> (minimal layering) لـ$C$ (أي <em>الفرز الطوبولوجي</em>، انظر <a href="/arabic-cs-library/images/introtcs/fig-game_of_life_and.webp">minimallayeruniquethm</a>{.ref}).
+ولتكن $L$ أكبر طبقة في $h$، ولكل $\\ell=0,1,\\ldots,L$ نفعل ما يلي:</p>
+<ul>
+<li>
+<p>لكل $v$ في الطبقة $\\ell$ (أي $v$ بحيث $h(v)=\\ell$) نفعل:</p>
+<ul>
+<li>
+<p>إذا كان $v$ رأس مُدخل موسومًا بـ<code>X[</code>$i$<code>]</code> لمُدخل ما $i\\in [n]$، فإننا نُسند إلى $v$ القيمة $x_i$.</p>
+</li>
+<li>
+<p>إذا كان $v$ رأس بوابة موسومًا بـ$\\wedge$ وله جيران داخليان $u,w$، فإننا نُسند إلى $v$ ناتج <em>AND</em> للقيمتين المُسندتين إلى $u$ و$w$. (وبما أن $u$ و$w$ جيران داخليان لـ$v$، فإنهما في طبقة أدنى من $v$، وبذلك تكون قيمتُهما قد سُندت بالفعل.)</p>
+</li>
+<li>
+<p>إذا كان $v$ رأس بوابة موسومًا بـ$\\vee$ وله جيران داخليان $u,w$، فإننا نُسند إلى $v$ ناتج OR للقيمتين المُسندتين إلى $u$ و$w$.</p>
+</li>
+<li>
+<p>إذا كان $v$ رأس بوابة موسومًا بـ$\\neg$ وله جار داخلي واحد $u$، فإننا نُسند إلى $v$ نفي القيمة المُسندة إلى $u$.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>نتيجة هذه العملية هي القيمة $y\\in {0,1}^m$ بحيث إن كان $j\\in [m]$ فإن $y_j$ هي القيمة المُسندة إلى الرأس الموسوم بـ<code>Y[</code>$j$<code>]</code>.</p>
+</li>
+</ul>
+<p>ولتكن $f:{0,1}^n \\rightarrow {0,1}^m$. نقول إن الدائرة $C$ <em>تحسب</em> $f$ إذا كان لكل $x\\in {0,1}^n$، لدينا $C(x)=f(x)$.</p>
+</div>
+<div class="callout callout--remark" id="booleancircuitsremarks">
+<p><strong>ملاحظة — تفاصيل دقيقة في الدوائر المنطقية (اختياري)</strong></p>
+<p>في صياغة <a href="https://goo.gl/p9izfA">booleancircdef</a>{.ref}، اتخذنا بعض الخيارات التقنية التي ليست بالغة الأهمية، لكنها ستكون مريحة لنا لاحقًا.
+معنى وجود حواف موازية أن بوابة AND أو OR المعنونة $u$ يمكن أن يكون كلا جيريها الداخلي هو البوابة $v$ نفسها.
+وبما أن $AND(a,a)=OR(a,a)=a$ لكل $a\\in {0,1}$، فإن هذه الحواف الموازية لا تساعد في حساب قيم جديدة في الدوائر ذات بوابات AND/OR/NOT.
+غير أننا سنرى لاحقًا دوائر بمجموعات بوابات أكثر عمومية.
+وشرط أن يكون لكل رأس مُدخل جار خارج واحد على الأقل ليس بالغة الأهمية أيضًا، لأن يمكننا دائمًا إضافة «بوابات وهمية» تلامس هذه
+المُدخلات. لكنه مريح لأنها تضمن أن عدد المُدخلات في الدائرة (بما أن لكل بوابة جيران داخليان على الأكثر)
+لا يتجاوز أبدًا ضعف حجمها.</p>
+</div>
+<h2 id="البرامج-المستقيمة-starightlineprogramsec">البرامج المستقيمة { #starightlineprogramsec }</h2>
+<p>لقد رأينا طريقتين لوصف كيفية حساب دالة $f$ باستخدام <em>AND</em> و_OR_ و_NOT_:</p>
+<ul>
+<li>
+<p><em>الدائرة المنطقية</em> (Boolean circuit)، المعرَّفة في <a href="/arabic-cs-library/images/introtcs/fig-activationfuncs.webp">booleancircdef</a>{.ref}، تحسب $f$ بوصل بوابات <em>AND</em> و_OR_ و_NOT_ بالمُدخلات بواسطة الأسلاك.</p>
+</li>
+<li>
+<p>ويمكننا أيضًا وصف حساب كهذا باستخدام <em>برنامج مستقيم</em> (straight-line program) تتكون أسطره من الشكل <code>foo = AND(bar,blah)</code> و<code>foo = OR(bar,blah)</code> و<code>foo = NOT(bar)</code>، حيث <code>foo</code> و<code>bar</code> و<code>blah</code> أسماء متغيّرات. (ونسمّيه <em>برنامجًا مستقيمًا</em> لأنه لا يحتوي على حلقات تكرار ولا على تعليمات تفرّع (مثل if/then).)</p>
+</li>
+</ul>
+<p>ولجعل التعريف الثاني أدقّ، سنعرّف الآن <em>لغة برمجة</em> تكافئ الدوائر المنطقية.
+ونسميّ لغة البرمجة هذه <strong>لغة البرمجة AON-CIRC</strong> (يرمز &quot;AON&quot; إلى <em>AND</em>/<em>OR</em>/<em>NOT</em>، ويرمز &quot;CIRC&quot; إلى <em>الدائرة</em>).</p>
+<p>على سبيل المثال، إليك برنامج AON-CIRC يُخرج، على مُدخل $x \\in {0,1}^2$، القيمة $\\overline{x_0 \\wedge x_1}$ (أي عملية $NOT$ المطبَّقة على $AND(x_0,x_1)$:</p>
+<pre><code class="language-python">temp = AND(X[<span class="hljs-number">0</span>],X[<span class="hljs-number">1</span>])
+Y[<span class="hljs-number">0</span>] = NOT(temp)
+</code></pre>
+<p>لغة AON-CIRC ليست لغة برمجة عملية: فقد صُمِّمت لأغراض تعليمية فحسب، بوصفها وسيلة لنمذجة الحوسبة بوصفها تركيبًا لدوال $AND$ و$OR$ و$NOT$.
+غير أنها مع ذلك يمكن تنفيذها بسهولة على الحاسوب.</p>
+<p>وبناءً على هذا المثال، لعلك تستطيع بالفعل أن تخمّن كيف تكتب برنامجًا لحساب (مثلًا) $x_0 \\wedge \\overline{x_1 \\vee x_2}$، وعمومًا كيف تترجم دائرة منطقية إلى برنامج AON-CIRC.
+غير أننا، لأننا نريد إثبات عبارات رياضية عن برامج AON-CIRC، سنحتاج إلى تعريف دقيق للغة البرمجة AON-CIRC.
+وقد تكون المواصفات الدقيقة للّغات البرمجة طويلة ومملّة في أحيانٍ كثيرة،^[فمثلًا <a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1124.pdf">مواصفة لغة البرمجة C</a> تتجاوز 500 صفحة.] لكنها بالغة الأهمية للتنفيذات الآمنة والموثوقة.
+ولحسن الحظ، فإن لغة البرمجة AON-CIRC بسيطة بما يكفي لنعرّفها رسميًا بألمٍ قليل.</p>
+<h3 id="مواصفة-لغة-البرمجة-aon-circ">مواصفة لغة البرمجة AON-CIRC</h3>
+<p>برنامج AON-CIRC هو تسلسل من النصوص، نسمّيها «أسطرًا»، يستوفي الشروط التالية:</p>
+<ul>
+<li>
+<p>لكل سطر إحدى الصور التالية: <code>foo = AND(bar,baz)</code> أو <code>foo = OR(bar,baz)</code> أو <code>foo = NOT(bar)</code>، حيث <code>foo</code> و<code>bar</code> و<code>baz</code> <em>معرِّفات متغيّرات</em>. (ونتبع <a href="https://goo.gl/QyHa3b">عرف لغات البرمجة</a> الشائع في استعمال أسماء مثل <code>foo</code> و<code>bar</code> و<code>baz</code> بديلًا عن معرِّفات عامة.) ويقابل السطر <code>foo = AND(bar,baz)</code> عملية إسناد القيمة المنطقية لـ AND إلى المتغيّر <code>foo</code> من قيم المتغيّرين <code>bar</code> و<code>baz</code>. ومثلًا، يقابل <code>foo = OR(bar,baz)</code> و<code>foo = NOT(bar)</code> عمليتي OR المنطقية وNOT المنطقية.</p>
+</li>
+<li>
+<p>يمكن أن يكون <em>معرِّف المتغيّر</em> في لغة البرمجة AON-CIRC أي تركيبة من الحروف والأرقام والشرطات السفلية والأقواس. وهناك نوعان خاصان من المتغيّرات:</p>
+<ul>
+<li>المتغيّرات من الشكل <code>X[</code>$i$<code>]</code>, مع $i \\in {0,1,\\ldots, n-1}$ تُعرف بـ_متغيّرات المُدخل_.</li>
+<li>المتغيّرات من الشكل <code>Y[</code>$j$<code>]</code> تُعرف بـ_متغيّرات الخرج_.</li>
+</ul>
+</li>
+<li>
+<p>برنامج AON-CIRC الصحيح $P$ يتضمّن متغيّرات مُدخل من الشكل <code>X[</code>$0$<code>]</code>,$\\ldots$,<code>X[</code>$n-1$<code>]</code> ومتغيّرات خرج من الشكل <code>Y[</code>$0$<code>]</code>,$\\ldots$, <code>Y[</code>$m-1$<code>]</code> حيث $n,m$ عددان طبيعيان. ونقول إن $n$ هو عدد <em>مُدخلات</em> البرنامج $P$ و$m$ هو عدد مُخرجاته.</p>
+</li>
+<li>
+<p>في برنامج AON-CIRC الصحيح، يجب أن تكون المتغيّرات الموجودة في الطرف الأيمن من معامل الإسناد في كل سطر إمّا متغيّرات مُدخل وإمّا متغيّرات فُسندت لها قيمة في سطر سابق.</p>
+</li>
+<li>
+<p>إذا كان $P$ برنامج AON-CIRC صحيحًا ذو $n$ مُدخلًا و$m$ مُخرجًا، فإن <em>مُخرج</em> $P$ على المُدخل $x$ لكل $x\\in {0,1}^n$ هو النص $y\\in {0,1}^m$ المعرَّف على النحو التالي:</p>
+<ul>
+<li>نهيّئ متغيّرات المُدخل <code>X[</code>$0$<code>]</code>,$\\ldots$,<code>X[</code>$n-1$<code>]</code> على القيم $x_0,\\ldots,x_{n-1}$</li>
+<li>ننفّذ أسطر العمليات في $P$ واحدًا تلو الآخر بالترتيب، وفي كل سطر نُسند إلى المتغيّر في الطرف الأيسر من معاملات الإسناد قيمة العملية الموجودة في الطرف الأيمن.</li>
+<li>لتكن $y\\in {0,1}^m$ هي قيم متغيّرات الخرج <code>Y[</code>$0$<code>]</code>,$\\ldots$, <code>Y[</code>$m-1$<code>]</code> في نهاية التنفيذ.</li>
+</ul>
+</li>
+<li>
+<p>نرمز لمُخرج $P$ على المُدخل $x$ بـ$P(x)$.</p>
+</li>
+<li>
+<p><em>حجم</em> برنامج AON circ $P$ هو عدد الأسطر التي يحتوي عليها. (ولعلّ القارئ يلاحظ أن هذا يوافق تعريفنا لحجم الدائرة بعدد البوابات التي تحتوي عليها.)</p>
+</li>
+</ul>
+<p>والآن وقد وصفنا برامج AON-CIRC رسميًا، يمكننا أن نعرّف معنى قول برنامج AON-CIRC $P$ إنه يحسب دالة $f$:</p>
+<div class="callout callout--definition" id="AONcircdef">
+<p><strong>حساب دالة بواسطة برامج AON-CIRC</strong></p>
+<p>لتكن $f:{0,1}^n \\rightarrow{0,1}^m$، وليكن $P$ برنامج AON-CIRC صحيحًا ذو $n$ مُدخلًا و$m$ مُخرجًا.
+نقول إن <em>$P$ يحسب $f$</em> إذا كان $P(x)=f(x)$ لكل $x\\in {0,1}^n$.</p>
+</div>
+<p>يعطي التمرين المحلول التالي مثالًا على برنامج AON-CIRC.</p>
+<div class="callout callout--solvedexercise" id="aonforcmpsolved">
+<p><strong>تمرين محلول</strong></p>
+<p>لتُعتبر الدالة التالية $CMP:{0,1}^4 \\rightarrow {0,1}$ التي، على أربعة بتات مُدخلة $a,b,c,d\\in {0,1}$، تُنتج $1$ إذا ونحو فقط إذا كان العدد الذي تمثّله $(a,b)$ أكبر من العدد الذي تمثّله $(c,d)$.
+أي أن $CMP(a,b,c,d)=1$ إذا ونحو فقط إذا كان $2a+b&gt;2c+d$.</p>
+<p>اكتب برنامج AON-CIRC يحسب $CMP$.</p>
+</div>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>كتابة برنامج كهذا مملّة لكنها ليست صعبة حقًا.
+لمقارنة عددين نقارن أولًا أكثر خانتين أهمية فيهما، ثم ننتقل إلى الخانة التالية وهكذا دواليك.
+وفي حالتنا هنا حيث للأرقام خانتان ثنائيتان فقط، تكون هذه المقارنات بسيطة إلى حدٍّ خاص.
+يكون العدد الذي تمثّله $(a,b)$ أكبر من العدد الذي تمثّله $(c,d)$ إذا ونحو فقط إذا وقع أحد الشرطين التاليين:</p>
+<ol>
+<li>البت الأكثر أهمية $a$ في $(a,b)$ أكبر من البت الأكثر أهمية $c$ في $(c,d)$.</li>
+</ol>
+<p>أو</p>
+<ol start="2">
+<li>البتان الأكثر أهمية $a$ و$c$ متساويتان، لكن $b&gt;d$.</li>
+</ol>
+<p>وهناك طريقة أخرى للتعبير عن الشرط نفسه وهي التالية:
+العدد $(a,b)$ أكبر من $(c,d)$ إذا ونحو فقط إذا كان $a&gt;c$ <strong>OR</strong> ($a\\ge c$ <strong>AND</strong> $b&gt;d$).</p>
+<p>بالنسبة للخانات الثنائية $\\alpha,\\beta$، فإن الشرط $\\alpha&gt;\\beta$ هو ببساطة $\\alpha=1$ و$\\beta=0$، أي $AND(\\alpha,NOT(\\beta))=1$، والشرط $\\alpha\\ge\\beta$ هو ببساطة $OR(\\alpha, NOT(\\beta))=1$.
+ويمكن استعمال هذه الملاحظات مجتمعةً للحصول على برنامج AON-CIRC التالي الذي يحسب $CMP$:</p>
+<pre><code class="language-python"><span class="hljs-comment"># Compute CMP:{0,1}^4--&gt;{0,1}</span>
+<span class="hljs-comment"># CMP(X)=1 iff 2X[0]+X[1] &gt; 2X[2] + X[3]</span>
+temp_1 = NOT(X[<span class="hljs-number">2</span>])
+temp_2 = AND(X[<span class="hljs-number">0</span>],temp_1)
+temp_3 = OR(X[<span class="hljs-number">0</span>],temp_1)
+temp_4 = NOT(X[<span class="hljs-number">3</span>])
+temp_5 = AND(X[<span class="hljs-number">1</span>],temp_4)
+temp_6 = AND(temp_5,temp_3)
+Y[<span class="hljs-number">0</span>] = OR(temp_2,temp_6)
+</code></pre>
+<p>ويمكننا أيضًا تقديم هذا البرنامج المكوَّن من 8 أسطر بوصفه دائرة ذات 8 بوابات، انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-21.webp">aoncmpfig</a>{.ref}.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-10.webp" alt="/images/introtcs/lec_03_computation-10.webp">{#aoncmpfig .margin}</p>
+<h3 id="إثبات-تكافؤ-برامج-aon-circ-والدوائر-المنطقية">إثبات تكافؤ برامج AON-CIRC والدوائر المنطقية</h3>
+<p>وسنثبت الآن رسميًا أن برامج AON-CIRC والدوائر المنطقية لهما القدرة نفسها تمامًا:</p>
+<blockquote>
+<h3 id="theorem-titlequotتكافؤ-الدوائر-والبرامج-المستقيمةquot-slcircuitequivthm">{.theorem title=&quot;تكافؤ الدوائر والبرامج المستقيمة&quot; #slcircuitequivthm}</h3>
+</blockquote>
+<p>لتكن $f:{0,1}^n \\rightarrow {0,1}^m$ و$s \\geq m$ عددًا ما. حينئذٍ يكون $f$ قابلًا للحساب بواسطة دائرة منطقية ذات $s$ بوابة إذا ونحو فقط كان $f$ قابلًا للحساب بواسطة برنامج AON-CIRC من $s$ سطرًا.</p>
+<blockquote>
+<h3 id="proofidea-data-refquotslcircuitequivthmquot">{.proofidea data-ref=&quot;slcircuitequivthm&quot;}</h3>
+</blockquote>
+<p>الفكرة بسيطة — برامج AON-CIRC والدوائر المنطقية ليست سوى طريقتين مختلفتين لوصف العملية الحسابية نفسها تمامًا.
+على سبيل المثال، تقابل بوابة <em>AND</em> في دائرة منطقية حساب <em>AND</em> لقيمتين حُسبتا سابقًا.
+وفي برنامج AON-CIRC سيقابل ذلك السطر الذي يخزّن في متغيّر ناتج <code>AND</code> لمتغيّرين حُسبا سابقًا.</p>
+<div class="callout callout--pause">
+<p><strong>توقّف وتأمّل</strong></p>
+<p>هذا البرهان لـ<a href="/arabic-cs-library/images/introtcs/fig-turingtumble.webp">slcircuitequivthm</a>{.ref} بسيط في جوهره، لكن كل التفاصيل التي يحتويها تجعل قراءته أثقل قليلًا. غالبًا ما يكون من الأفضل لك أن تحاول استنتاجه بنفسك قبل قراءته.
+ويحتوي <a href="https://github.com/boazbk/tcscode">مستودعنا على GitHub</a> على «برهان بـ Python» لـ<a href="/arabic-cs-library/images/introtcs/lec_03_computation-23.webp">slcircuitequivthm</a>{.ref}: تنفيذ الدالتين <code>circuit2prog</code> و<code>prog2circuits</code> اللتين تربطان الدوائر المنطقية ببرامج AON-CIRC
+وبالعكس.</p>
+</div>
+<div class="callout callout--proof">
+<p>لتكن $f:{0,1}^n \\rightarrow {0,1}^m$. وبما أن المبرهنة عبارة عن «إذا وفقط إذا»، فإثباتها يتطلب بيان الاتجاهين: ترجمة برنامج AON-CIRC يحسب $f$ إلى دائرة تحسب $f$، وترجمة دائرة تحسب $f$ إلى برنامج AON-CIRC يفعل ذلك.</p>
+<p>نبدأ بالاتجاه الأول. وليكن $P$ برنامج AON-CIRC يحسب $f$. نعرّف دائرة $C$ على النحو التالي: يكون للدائرة $n$ مُدخلًا و$s$ بوابة. ولكل $i \\in [s]$، إذا كان سطر العمليات رقم $i$ على الصورة <code>foo = AND(bar,blah)</code>، فإن البوابة رقم $i$ في الدائرة ستكون بوابة AND موصولة بالبوابتين $j$ و$k$ حيث تقابل $j$ و$k$ آخر سطرين قبل $i$ كُتب فيهما المتغيّران <code>bar</code> و<code>blah</code> (على التوالي). (فمثلًا، إذا كان $i=57$ وكان آخر سطر كُتب فيه <code>bar</code> هو $35$ وآخر سطر كُتب فيه <code>blah</code> هو $17$، فإن الجارين الداخليين للبوابة $57$ هما البوابتان $35$ و$17$.)
+وإذا كان أحد <code>bar</code> أو <code>blah</code> متغيّر مُدخل، فإننا نوصل البوابة برأس المُدخل المقابل بدلًا من ذلك.
+وإذا كان <code>foo</code> متغيّر خرج من الشكل <code>Y[</code>$j$<code>]</code>, فإننا نضيف الوسم نفسه إلى البوابة المقابل لنُعلّمها بوابة خرج.
+ونجري العمليات المماثلة إذا تضمّن السطر رقم $i$ عملية <code>OR</code> أو عملية <code>NOT</code> (مع أننا نستعمل في الحالة الثانية بوابة <em>NOT</em> المقابل، ولها عندها جار داخلي واحد بدل اثنين).
+ولكل مُدخل $x\\in {0,1}^n$، إذا نفّذنا البرنامج $P$ على $x$، فإن القيمة المحسوبة في السطر رقم $i$ هي بالضبط القيمة التي ستُسنَد إلى البوابة رقم $i$ إذا قيّمنا الدائرة $C$ على $x$. وبذلك يكون $C(x)=P(x)$ لكل $x\\in {0,1}^n$.</p>
+<p>وفي الاتجاه الآخر، لتكن $C$ دائرة ذات $s$ بوابة و$n$ مُدخلًا تحسب الدالة $f$. نرتّب البوابات وفق ترتيب طوبولوجي ونكتبها $v_0,\\ldots,v_{s-1}$.
+ويمكننا الآن إنشاء برنامج $P$ من $s$ سطر عمليات كالتالي.
+لكل $i\\in [s]$، إذا كانت $v_i$ بوابة AND بجارين داخليين $v_j,v_k$، فإننا نضيف إلى $P$ سطرًا على الصورة <code>temp_</code>$i$ <code> = AND(temp_</code>$j$<code>,temp_</code>$k$<code>)</code>, إلا إذا كان أحد الرأسين رأس مُدخل أو بوابة خرج، وعندئذٍ نغيّر ذلك إلى الصورة <code>X[.]</code> أو <code>Y[.]</code> بحسب ما يلائم.
+ولأننا نعمل بترتيب طوبولوجي، فإننا نضمن أن الجيران الداخليين $v_j$ و$v_k$ يقابلان متغيّرات فُسندت لها قيمة بالفعل.
+ونفعل الشيء نفسه مع بوابتَي OR وNOT.
+ومرة أخرى، يمكن التحقق أن القيمة $P(x)$ ستساوي $C(x)$ لكل مُدخل $x$، وبذلك يحسب البرنامج الدالة نفسها التي تحسبها الدائرة.
+(ولاحظ أن $C$ دائرة صحيحة، وفقًا لـ<a href="/arabic-cs-library/images/introtcs/lec_03_computation-24.webp">booleancircdef</a>{.ref}، فإن لكل رأس مُدخل في $C$ جارًا خارجًا واحدًا على الأقل، وهناك بالضبط $m$ بوابة خرج موسومة بـ$0,\\ldots,m-1$؛
+وبالتالي فإن جميع المتغيّرات <code>X[0]</code> و$\\ldots$ و<code>X[</code>$n-1$<code>]</code> و<code>Y[0]</code> و$\\ldots$ و<code>Y[</code>$m-1$<code>]</code> ستظهر في البرنامج $P$.)</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-11.webp" alt="/images/introtcs/lec_03_computation-11.webp">{#aoncircequivfig .margin  }</p>
+<h2 id="التنفيذات-الفيزيائية-لأجهزة-الحوسبة-استطراد-physicalimplementationsec">التنفيذات الفيزيائية لأجهزة الحوسبة (استطراد) {#physicalimplementationsec }</h2>
+<p><em>الحوسبة</em> مفهوم مجرد يختلف عن <em>تنفيذاته</em> الفيزيائية.
+ورغم أن معظم أجهزة الحوسبة الحديثة تُحصل بوَصْل البوابات المنطقية على ترانزستورات قائمة على أشباه الموصلات، إلا أن الناس على مدى التاريخ قد حسبوا باستخدام تشكيلة ضخمة من الآليات، منها الأنظمة الميكانيكية، والغازات والسوائل (المعروفة بـ_التحكّم الموائع_ (fluidics))، والعمليات الحيوية والكيميائية، بل وحتى الكائنات الحيّة (مثلًا، انظر <a href="/arabic-cs-library/images/introtcs/lec_03_computation-26.webp">crabfig</a>{.ref} أو <a href="https://www.youtube.com/watch?v=czk4xgdhdY4">هذا الفيديو</a> لتعرف كيف يمكن استعمال السرطان أو العفن المخاطي في إجراء حسابات).</p>
+<p>في هذا القسم سنستعرض بعض هذه التنفيذات، وذلك أولًا لتقدير كيف يمكن ترجمة الدوائر المنطقية مباشرةً إلى العالم الفيزيائي دون المرور بمنظومة العمارة وأنظمة التشغيل والمترجِمات كاملةً، وثانيًا للتأكيد على أن المعالجات القائمة على السيليكون ليست بأي حال الطريقة الوحيدة لإجراء الحوسبة.
+وفعلًا، كما سنرى في <a href="/arabic-cs-library/images/introtcs/lec_03_computation-27.webp">quantumchap</a>{.ref}، فإن خطًّا بحثيًا ممتعًا جدًا في الآونة الأخيرة يتطلّب استعمال وسائل مختلفة للحوسبة تتيح لنا الاستفادة من <em>الآثار الميكانيكية الكمّية</em> (quantum mechanical effects) لتفعيل أنواع مختلفة من الخوارزميات.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-12.webp" alt="/images/introtcs/lec_03_computation-12.webp">{#crabfig .margin}</p>
+<blockquote class="twitter-tweet"><p lang="ar" dir="rtl">طريقة باردة جدًا لشرح البوابات المنطقية. <a href="https://t.co/6Wgu2ZKFCx">pic.twitter.com/6Wgu2ZKFCx</a></p>&mdash; Lionel Page (\\@page_eco) <a href="https://twitter.com/page_eco/status/1188749430020698112?ref_src=twsrc%5Etfw">October 28, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"><\/script>
+<h3 id="الترانزستورات">الترانزستورات</h3>
+<p>يمكن تصوّر الـ_ترانزستور_ (transistor) على أنه دائرة كهربائية لها مُدخلان يُعرفان بـ_المصدر_ (source) و_البوابة_ (gate)، ومُخرج يُعرف بـ_المصبّ_ (sink).
+تتحكّم البوابة في ما إذا كان التيار يفيض من المصدر إلى المصبّ.
+وفي الـ_ترانزستور القياسي_، إذا كانت البوابة «مُفعَّلة» (ON) أمكن للتيار أن يفيض من المصدر إلى المصبّ، وإذا كانت «معطَّلة» (OFF) لم يستطع.
+وفي الـ_ترانزستور التكاملي_ (complementary transistor) يكون هذا معكوسًا: إذا كانت البوابة «معطَّلة» أمكن للتيار أن يفيض من المصدر إلى المصبّ، وإذا كانت «مُفعَّلة» لم يستطع.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-13.webp" alt="/images/introtcs/lec_03_computation-13.webp">{#transistor-water-fig .margin  }</p>
+<p>هناك عدة طرق لتنفيذ منطق الترانزستور.
+فمثلًا، يمكننا استعمال الصنابير لتنفيذه بواسطة ضغط الماء (انظر <a href="">transistor-water-fig</a>{.ref}). وقد يبدو هذا مجرد فضول، لكن هناك مجال يُعرف بـ<a href="https://en.wikipedia.org/wiki/Fluidics">التحكّم الموائع</a> (fluidics) يعنى بتنفيذ العمليات المنطقية باستعمال السوائل أو الغازات. ومن بين دوافعه العمل في ظروف بيئية قاسية مثل الفضاء أو أرض المعركة، حيث لن تصمد المعدات الإلكترونية القياسية.</p>
+<p>تستخدم التنفيذات القياسية للترانزستورات تيارًا كهربائيًا.
+ومن أقدم التنفيذات ما استخدم <em>أنابيب التفريغ</em> (vacuum tubes).
+وكما يدل اسمها، فإن أنبوب التفريغ أنبوب لا يحتوي على شيء (أي فراغ)، حيث يمكن للإلكترونات مبدئيًا أن تفيض بحرية من المصدر (سلك) إلى المصبّ (لوح). غير أنه توجد بين الاثنين بوابة (شبكة)، وتعديل جهدها يمكن أن يعوق فيض الإلكترونات.</p>
+<p>كانت أنابيب التفريغ المبكّرة بحجم لمبات المصابيح تقريبًا، وكانت تتشابه معها إلى حدٍّ كبير.
+وفي الخمسينيات حلّت محلّها <em>الترانزستورات</em>، التي تنفّذ المنطق نفسه باستعمال <em>أشباه الموصلات</em> (semiconductors)، وهي مواد لا توصّل الكهرباء عادةً ولكن يمكن تعديل ناقليتها والتحكم بها بإدخال شوائب (وتُسمّى «التخليق» (doping)) وتطبيق مجال كهربائي خارجي (ويُعرف ذلك بـ_أثر المجال_ (field effect)).
+وفي الستينيات بدأت تُنفَّذ الحواسيب باستعمال <em>الدوائر المتكاملة</em> (integrated circuits) التي سمحت بكثافة أعلى بكثير.
+وفي عام 1965 تنبّأ جوردون مور بأن عدد الترانزستورات في كل دائرة متكاملة سيتضاعف كل عام (انظر <a href="">moorefig</a>{.ref})، وأن هذا سيؤدي إلى «عجائب مثل الحواسيب المنزلية —أو على الأقلّ أطراف طرفية موصولة بحاسوب مركزي— وضوابط آلية للسيارات، ومعدّات اتصالات شخصية محمولة».
+ومنذ ذلك الحين، ظلّت هذه «قانون مور» المزعوم (في نسخ معدَّلة منه) يسير بقوة، وإن كان النمو الأُسّي لا يمكن أن يستمر إلى الأبد، فبعض القيود الفيزيائية بدأت بالفعل <a href="http://www.nature.com/news/the-chips-are-down-for-moore-s-law-1.19338">تظهر للعلن</a>.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-14.webp" alt="/images/introtcs/lec_03_computation-14.webp">{#moorefig .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-15.webp" alt="/images/introtcs/lec_03_computation-15.webp">{#moore-cartoon-fig .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-16.webp" alt="/images/introtcs/lec_03_computation-16.webp">{#kurzweil-fig .margin  }</p>
+<h3 id="البوابات-المنطقية-من-الترانزستورات">البوابات المنطقية من الترانزستورات</h3>
+<p>يمكننا استعمال الترانزستورات لتنفيذ دوال منطقية متنوّعة مثل $AND$ و$OR$ و$NOT$.
+ولكل بوابة ذات مُدخلين $G:{0,1}^2 \\rightarrow {0,1}$، يكون هذا التنفيذ نظامًا فيه سلكا مُدخل $x,y$ وسلك مُخرج واحد $z$، بحيث إذا طابقنا الجهد العالي بـ«$1$» والجهد المنخفض بـ«$0$»، فإن السلك $z$ يساوي «$1$» إذا ونحو فقط كان تطبيق $G$ على قيمتي السلكين $x$ و$y$ يساوي $1$ (انظر <a href="">logicgatestransistorsfig</a>{.ref} و<a href="">transistor-nand-fig</a>{.ref}).
+وهذا يعني أن ما دام هناك دائرة من نوع AND/OR/NOT تحسب الدالة $g:{0,1}^n \\rightarrow {0,1}^m$، فيمكننا حساب $g$ في العالم الفيزيائي باستعمال الترانزستورات أيضًا.</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-dtl_logic.webp" alt="تنفيذ البوابات المنطقية باستعمال الترانزستورات. الشكل مأخوذ من موقع روري مانغلز.">{#logicgatestransistorsfig   .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-nand_transistor.webp" alt="تنفيذ بوابة NAND (انظر nandsec{.ref}) باستعمال الترانزستورات.">{#transistor-nand-fig .margin  }</p>
+<h3 id="الحوسبة-البيولوجية">الحوسبة البيولوجية</h3>
+<p>يمكن أن تستند الحوسبة إلى <a href="http://www.nature.com/nrg/journal/v13/n7/full/nrg3197.html">الأنظمة البيولوجية أو الكيميائية</a>.
+فمثلًا، ينتج <a href="https://en.wikipedia.org/wiki/Lac_operon"><em>lac</em> operon_</a> الأنزيمات اللازمة لهضم اللاكتوز فقط إذا تحقّقت الشروط $x \\wedge (\\neg y)$، حيث $x$ تعني «اللاكتوز موجود» و$y$ تعني «الغلوكوز موجود».
+تمكن الباحثون من <a href="http://science.sciencemag.org/content/340/6132/554?iss=6132">إنشاء ترانزستورات</a>، ومنها بوابات منطقية، قائمة على جزيئات الحمض النووي (انظر أيضًا <a href="">transcriptorfig</a>{.ref}).
+وتتيح مشاريع مثل <a href="https://www.cidarlab.org/cello">لغة برمجة Cello</a> تحويل الدوائر المنطقية إلى تسلسلات حمض نووي ترمّز عمليات يمكن تنفيذها في الخلايا البكتيرية، انظر <a href="https://youtu.be/-1fqgrF7fXU">هذا الفيديو</a>.
+وأحد دوافع حوسبة الحمض النووي هو تحقيق توازٍ أو كثافة تخزين أعلى؛ وآخر هو إنشاء «وكلاء بيولوجيين أذكياء» يمكن حقنهم في الأجساد فيتكاثرون ويصلحون الخلايا التالفة أو يقتلونها، والتي أضرّها مرضٌ مثل السرطان.
+وهي بالطبع لا تقتصر الحوسبة في الأنظمة البيولوجية على الحمض النووي:
+فحتى الأنظمة الأكبر مثل <a href="https://www.cs.princeton.edu/~chazelle/pubs/cacm12-natalg.pdf">أسراب الطيور</a> يمكن اعتبارها عمليات حسابية.</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-transcriptor.webp" alt="أداء البوابات المنطقية القائمة على الحمض النووي. الشكل مأخوذ من ورقة Bonnet et al، Science، 2013.">{#transcriptorfig .margin  }</p>
+<h3 id="الأوتوماتا-الخلوية-ولعبة-الحياة">الأوتوماتا الخلوية ولعبة الحياة</h3>
+<p><em>الأوتوماتا الخلوية</em> (cellular automata) نموذج لنظام مؤلَّف من تسلسل من <em>الخلايا</em>، لكل منها حالة متناهية محتملة.
+وفي كل خطوة تحدّث الخلية حالتها بناءً على حالات <em>خلاياها المجاورة</em> وعلى قواعد بسيطة.
+وكما سنناقش لاحقًا في هذا الكتاب (انظر <a href="">cellularautomatasec</a>{.ref})، فإن الأوتوماتا الخلوية مثل «لعبة الحياة» لكونيواي يمكن استعمالها لمحاكاة البوابات الحسابية.</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-game_of_life_and.webp" alt="بوابة AND باستعمال إعداد من «لعبة الحياة». الشكل مأخوذ من ورقة جان-فيليب رينار.">{#gameoflifefig .margin  }</p>
+<h3 id="الشبكات-العصبية">الشبكات العصبية</h3>
+<p>أحد أجهزة الحوسبة التي نحملها جميعًا هو <em>دماغنا</em> نفسه.
+وقد خدمت الأدمغة البشرية البشرية على مدى التاريخ، فأنجزت حسابات تمتدّ من التمييز بين الفرائس والمفترسات، مرورًا بالاكتشافات العلمية والتحفّرات الفنية، وصولًا إلى تأليف رسائل ذكية من 280 حرفًا.
+ولا يزال العمل الدقيق للدماغ غير مفهوم تمامًا، لكن أحد النماذج الرياضية الشائعة له هو <em>شبكة عصبية</em> (neural network) كبيرة جدًا.</p>
+<p>يمكن تصوّر الشبكة العصبية على أنها دائرة منطقية تستعمل بوابات أخرى غير $AND$/$OR$/$NOT$ بوصفها الأساس.
+فمثلًا، أحد الأسس التي يمكننا استعمالها هي <em>بوابات العتبة</em> (threshold gates).
+ولكل متجه $w= (w_0,\\ldots,w_{k-1})$ من الأعداد الصحيحة ولكل عدد صحيح $t$ (قد يكون بعضها أو كلها سالبة)،
+تكون <em>دالة العتبة المقابلة لـ$w,t$</em> هي الدالة
+$T_{w,t}:{0,1}^k \\rightarrow {0,1}$ التي تُسقط $x\\in {0,1}^k$ على $1$ إذا ونحو فقط إذا كان $\\sum_{i=0}^{k-1} w_i x_i \\geq t$.
+فمثلًا، دالة العتبة $T_{w,t}$ المقابلة لـ$w=(1,1,1,1,1)$ و$t=3$ هي ببساطة دالة الأغلبية $MAJ_5$ على \${0,1}^5$.
+ويمكن تصوّر بوابات العتبة على أنها تقريب لـ_خلايا العصبونات_ التي تشكّل جوهر أدمغة البشر والحيوانات. وفي التقريب الأول، للعصبون $k$ مُدخلات ومُخرج واحد، وينطلق العصبون «ناريًا» أي يُشغّل مُخرجه حين تتجاوز تلك الإشارات عتبةً ما.</p>
+<p>تستعمل كثير من خوارزميات التعلّم الآلي <em>الشبكات العصبية الاصطناعية</em> التي لا يقصد منها محاكاة الأحياء بل تنفيذ مهمة حسابية ما، ولذلك فهي غير مقيّدة ببوابة عتبة أو ببوابات أخرى مستوحاة من الأحياء.
+وبوجه عام، تُوصف الشبكة العصبية بأنها تعمل على إشارات هي أعداد حقيقية لا قيم $0/1$، حيث يُحصل مُخرج بوابة على مُدخلات $x_0,\\ldots,x_{k-1}$ بتطبيق $f(\\sum_i w_i x_i)$، حيث $f:\\R \\rightarrow \\R$ هي <a href="https://goo.gl/p9izfA">دالة تنشيط</a> (activation function) كوحدة الخطية المصحَّحة (ReLU) أو السيغمويد (Sigmoid) أو غيرها كثير (انظر <a href="">activationfunctionsfig</a>{.ref}).
+غير أنه، لأغراض مناقشتنا، كل ما سبق متكافئ (انظر أيضًا <a href="">NANDsfromActivationfunctionex</a>{.ref}).
+ويسرّنا أن نلاحظ أننا نستطيع اختصار حالة المُدخلات الحقيقية إلى مُدخلات ثنائية بتمثيل العدد الحقيقي في الأساس الثنائي، ثم ضرب وزن البت المقابل لرتبة الخانة $i^{th}$ في $2^i$.</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-activationfuncs.webp" alt="دوال التنشيط الشائعة المستعملة في الشبكات العصبية، ومنها الوحدات الخطية المصحَّحة (ReLU) ودوال السيغمويد والظلّية. ويمكن اعتبار جميعها تقريبًا مستمرًا يبسّط دالة الخطوة. وكل هذه يمكن استعمالها لحساب بوابة NAND (انظر NANDsfromActivationfunctionex{.ref}). وهذه الخاصية تمكّن الشبكات العصبية من حساب (تقريبًا) أي دالة يمكن حسابها بدائرة منطقية.">{#activationfunctionsfig .margin }</p>
+<h3 id="حاسوب-مصنوع-من-الكرات-والأنابيب">حاسوب مصنوع من الكرات والأنابيب</h3>
+<p>يمكننا تنفيذ الحوسبة بوسائط فيزيائية كثيرة أخرى، دون أي مكوّنات إلكترونية أو حيوية أو كيميائية. وقد تقدُّمت مقترحات كثيرة لحاسوبات <em>ميكانيكية</em>، يعود أقدمها على الأقل إلى آلات الحوسبة لغوتفريد لايبنتس في سبعينيات القرن السابع عشر، وإلى خطة تشارلز بابيج عام 1837 <a href="https://en.wikipedia.org/wiki/Analytical_Engine"><em>المحرك التحليلي</em></a> الميكانيكي.
+ومن الأمثلة، يوضّح <a href="">marblefig</a>{.ref} تنفيذًا مبسّطًا لبوابة NAND (نفي AND، انظر <a href="">nandsec</a>{.ref}) باستعمال كرات تمرّ في أنابيب. ونمثّل قيمة منطقية في \${0,1}$ بزوج من الأنابيب بحيث يمرّ في أحدهما كرة بالضبط.
+ونسمّي أحد الأنابيب «أنبوب $0$» والآخر «أنبوب $1$»، وبذلك تحدّد هوية الأنبوب الذي توجد فيه الكرة القيمة المنطقية.
+وتقابل بوابة NAND جسمًا ميكانيكيًا له زوجان من الأنابيب الداخلة وزوج من الأنابيب الخارجة، بحيث لكل $a,b \\in {0,1}$، إذا كانت كرتان تتدحرجان نحو الجسم في أنبوب $a$ من الزوج الأول وأنبوب $b$ من الزوج الثاني، فإن كرة ستتدحرج خارج الجسم في أنبوب $NAND(a,b)$ من الزوج الخرج.
+وفعلًا، هناك حتى لعبة تعليمية متوفّرة تجاريًا تستعمل الكرات أساسًا للحوسبة، انظر <a href="">turingtumblefig</a>{.ref}.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-20.webp" alt="/images/introtcs/lec_03_computation-20.webp">{#marblefig .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-21.webp" alt="/images/introtcs/lec_03_computation-21.webp">{#gadgetfig .margin  }</p>
+<p><img src="/arabic-cs-library/images/introtcs/fig-turingtumble.webp" alt="لعبة Turing Tumble تحتوي تنفيذًا للبوابات المنطقية باستعمال الكرات.">{#turingtumblefig .margin  }</p>
+<h2 id="دالة-nand-nandsec">دالة NAND { #nandsec }</h2>
+<p>دالة $NAND$ هي دالة أخرى بسيطة بالغة النفع لتعريف الحوسبة.
+وهي الدالة التي تُسقط \${0,1}^2$ على \${0,1}$ والمعرَّفة بما يلي:</p>
+<p>$$NAND(a,b) = \\begin{cases} 0 &amp; a=b=1 \\ 1 &amp; \\text{otherwise} \\end{cases};.$$</p>
+<p>وكما يدل اسمها، فإن $NAND$ هي نفي AND (أي $NAND(a,b)= NOT(AND(a,b))$)، ولذلك يمكننا بوضوح حساب $NAND$ باستعمال $AND$ و$NOT$.
+ومن اللافت أن الاتجاه المعاكس يصمد أيضًا:</p>
+<blockquote>
+<h3 id="theorem-titlequotnand-تحسب-and-وor-وnotquot-univnandonethm">{.theorem title=&quot;NAND تحسب AND وOR وNOT&quot; #univnandonethm}</h3>
+</blockquote>
+<p>يمكننا حساب $AND$ و$OR$ و$NOT$ بتركيب دالة $NAND$ وحدها.</p>
+<blockquote>
+<h3 id="proof-data-refquotunivnandonethmquot">{.proof data-ref=&quot;univnandonethm&quot;}</h3>
+</blockquote>
+<p>نبدأ بالملاحظة التالية. لكل $a\\in {0,1}$ لدينا $AND(a,a)=a$. وبذلك $NAND(a,a)=NOT(AND(a,a))=NOT(a)$.
+وهذا يعني أن $NAND$ تستطيع حساب $NOT$.
+وبمبدأ «النفي المزدوج»، لدينا $AND(a,b)=NOT(NOT(AND(a,b)))$، ولذلك يمكننا استعمال $NAND$ لحساب $AND$ أيضًا.
+ومتى استطعنا حساب $AND$ و$NOT$، استطعنا حساب $OR$ باستعمال <a href="https://goo.gl/TH86dH">«قانون دو مورغان»</a>: $OR(a,b)=NOT(AND(NOT(a),NOT(b)))$ (ويمكن أيضًا كتابتها $a \\vee b = \\overline{\\overline{a} \\wedge \\overline{b}}$) لكل $a,b \\in {0,1}$.</p>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>برهان <a href="">univnandonethm</a>{.ref} بسيط جدًا، غير أنك ينبغي أن تتأكد أنك <strong>(i)</strong> تفهم نص المبرهنة، و__(ii)__ تتابع برهانها. وعلى وجه الخصوص، ينبغي أن تتأكد أنك تفهم لماذا يكون قانون دو مورغان صحيحًا.</p>
+<p>ويمكننا استعمال $NAND$ لحساب دوال أخرى كثيرة، كما يوضّح التمرين التالي.</p>
+<blockquote>
+<h3 id="solvedexercise-titlequotحساب-الأغلبية-بـnandquot-majbynandex">{.solvedexercise title=&quot;حساب الأغلبية بـNAND&quot; #majbynandex}</h3>
+</blockquote>
+<p>لتكن $MAJ: {0,1}^3 \\rightarrow {0,1}$ الدالة التي على المُدخل $a,b,c$ تُنتج $1$ إذا ونحو فقط إذا كان $a+b+c \\geq 2$. بيّن كيف تحسب $MAJ$ بتركيب من عمليات $NAND$.</p>
+<div class="callout callout--solution">
+<p><strong>الحل</strong></p>
+<p>تذكّر أن <a href="">eqmajandornot</a>{.eqref} تنص على أن</p>
+<p>$$
+MAJ(x_0,x_1,x_2) = OR\\left(, AND(x_0,x_1);,; OR \\bigl( AND(x_1,x_2) ;,; AND(x_0,x_2) \\bigr) , \\right) ;. \\label{eqmajandornotrestated}
+$$</p>
+<p>ويمكننا استعمال <a href="">univnandonethm</a>{.ref} لاستبدال كل مواضع $AND$ و$OR$ بـ$NAND$.
+على وجه التحديد، يمكننا استعمال التكافؤات $AND(a,b)=NOT(NAND(a,b))$ و$OR(a,b)=NAND(NOT(a),NOT(b))$ و$NOT(a)=NAND(a,a)$ لاستبدال الطرف الأيمن من
+<a href="">eqmajandornotrestated</a>{.eqref} بتعبير يتضمّن $NAND$ وحدها، مما ينتج أن $MAJ(a,b,c)$ تكافئ التعبير (الذي هو بعض الشيء مُعقّد)</p>
+<p>$$
+\\begin{gathered}
+NAND \\biggl(, NAND\\Bigl(, NAND\\bigl(NAND(a,b),NAND(a,c)\\bigr), \\
+NAND\\bigl(NAND(a,b),NAND(a,c)\\bigr), \\Bigr),\\
+NAND(b,c) , \\biggr)
+\\end{gathered}
+$$</p>
+<p>ويمكن التعبير عن الصيغة نفسها أيضًا بدائرة ببوابات NAND، انظر <a href="">majnandcircfig</a>{.ref}.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-23.webp" alt="/images/introtcs/lec_03_computation-23.webp">{#majnandcircfig .margin  }</p>
+<h3 id="دوائر-nand">دوائر NAND</h3>
+<p>نعرّف <em>دوائر NAND</em> بأنها الدوائر التي كل بوابات فيها عمليات NAND.
+وتقابل هذه الدائرة أيضًا رسمًا بيانيًا موجَّهًا غير دوري (DAG)، إذ إن كل البوابات تقابل الدالة نفسها (أي NAND)، ولذلك لا نحتاج حتى إلى وسمها، وكل البوابات درجتها الداخلة اثنان بالضبط.
+ورغم بساطتها، فإن دوائر NAND قد تكون بالغة القوة.</p>
+<div class="callout callout--example" id="xornandexample">
+<p><strong>دائرة NAND للدالة XOR</strong></p>
+<p>تذكّر الدالة $XOR$ التي تُسقط $x_0,x_1 \\in {0,1}$ على $x_0 + x_1 \\mod 2$.
+لقد رأينا في <a href="">xoraonexample</a>{.ref} أننا نستطيع حساب $XOR$ باستعمال $AND$ و$OR$ و$NOT$، وبذلك وبموجب <a href="">univnandonethm</a>{.ref} نستطيع حسابها بعمليات $NAND$ وحدها.
+غير أن التالي بناء مباشر لحساب $XOR$ عبر تسلسل من عمليات NAND:</p>
+<ol>
+<li>ليكن $u = NAND(x_0,x_1)$.</li>
+<li>ليكن $v = NAND(x_0,u)$</li>
+<li>ليكن $w = NAND(x_1,u)$.</li>
+<li>تكون $XOR$ لـ$x_0$ و$x_1$ هي $y_0 = NAND(v,w)$.</li>
+</ol>
+<p>ويمكن التحقق من أن هذه الخوارزمية تحسب $XOR$ فعلًا بحصر الاحتمالات الأربعة الممكنة لـ$x_0,x_1 \\in {0,1}$.
+ويمكننا أيضًا تمثيل هذه الخوارزمية بيانيًا بدائرة، انظر <a href="">cornandcircfig</a>{.ref}.</p>
+</div>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-24.webp" alt="/images/introtcs/lec_03_computation-24.webp">{#cornandcircfig .margin  }</p>
+<p>وفعلًا، يمكننا إثبات المبرهنة التالية:</p>
+<blockquote>
+<h3 id="theorem-titlequotnand-عملية-شاملةquot-nanduniversamthm">{.theorem title=&quot;NAND عملية شاملة&quot; #NANDuniversamthm}</h3>
+</blockquote>
+<p>لكل دائرة منطقية $C$ ذات $s$ بوابة، توجد دائرة NAND $C'$ ذات $3s$ بوابة على الأكثر تحسب الدالة نفسها التي تحسبها $C$.</p>
+<blockquote>
+<h3 id="proofidea-data-refquotnanduniversamthmquot">{.proofidea data-ref=&quot;NANDuniversamthm&quot;}</h3>
+</blockquote>
+<p>فكرة البرهان هي مجرد استبدال كل بوابة $AND$ و$OR$ و$NOT$ بتنفيذها المعتمد على NAND، على النحو المبيَّن في برهان <a href="">univnandonethm</a>{.ref}.</p>
+<div class="callout callout--proof">
+<p>إذا كانت $C$ دائرة منطقية، فإن بما أننا، كما رأينا في برهان <a href="">univnandonethm</a>{.ref}، لدينا لكل $a,b \\in {0,1}$</p>
+<ul>
+<li>
+<p>$NOT(a) = NAND(a,a)$</p>
+</li>
+<li>
+<p>$AND(a,b) = NAND(NAND(a,b),NAND(a,b))$</p>
+</li>
+<li>
+<p>$OR(a,b) = NAND(NAND(a,a),NAND(b,b))$</p>
+</li>
+</ul>
+<p>نستطيع استبدال كل بوابة في $C$ بثلاث بوابات $NAND$ على الأكثر للحصول على دائرة مكافئة $C'$. وستكون الدائرة الناتجة ذات $3s$ بوابة على الأكثر.</p>
+</div>
+<div class="callout callout--bigidea" id="equivalencemodels">
+<p>النموذجان <em>متكافئان في القدرة</em> إذا أمكِن استعمالهما لحساب المجموعة نفسها من الدوال.</p>
+</div>
+<h3 id="أمثلة-أخرى-على-دوائر-nand-اختياري">أمثلة أخرى على دوائر NAND (اختياري)</h3>
+<p>إليك بعض الأمثلة الأكثر تعقيدًا على دوائر NAND:</p>
+<p><em><em>زيادة الأعداد الصحيحة.</em> لنُعتبر مهمة حساب، انطلاقًا من مُدخل نصي $x\\in {0,1}^n$ يمثّل عددًا طبيعيًا $X\\in \\N$، التمثيلَ الخاص بـ$X+1$.
+أي أننا نريد حساب الدالة $INC_n:{0,1}^n \\rightarrow {0,1}^{n+1}$ بحيث لكل $x_0,\\ldots,x</em>{n-1}$، يكون $INC_n(x)=y$ الذي يستوفي $\\sum_{i=0}^n y_i 2^i = \\left( \\sum_{i=0}^{n-1} x_i 2^i \\right)+1$. (لتبسيط التدوين، نستخدم في هذا المثال التمثيل الذي تكون فيه الخانة الأقل أهمية أولًا لا آخرًا.)</p>
+<p>يمكن وصف عملية الزيادة بإيجاز شديد على النحو التالي: <em>«أضِف $1$ إلى البت الأقل أهمية وانقل الحمل (carry)»</em>.
+وبشكل أدق قليلًا، في حالة التمثيل الثنائي، للحصول على زيادة $x$، نفحص $x$ بدءًا من البت الأقل أهمية، ونقلب كل البتات $1$ إلى $0$ حتى نلاقي بتًّا مساويًا لـ$0$، وعندئذٍ نقلبه إلى $1$ ونتوقف.</p>
+<p>ويمكننا بذلك حساب زيادة $x_0,\\ldots,x_{n-1}$ بفعل ما يلي:</p>
+<pre><code class="language-{.algorithm">INPUT: $x_0,x_1,\\ldots,x_{n-1}$ representing the number $\\sum_{i=0}^{n-1} x_i\\cdot 2^i$ # we use LSB-first representation
+OUTPUT:$y \\in \\{0,1\\}^{n+1}$ such that $\\sum_{i=0}^n y_i \\cdot 2^i =  \\sum_{i=0}^{n-1} x_i\\cdot 2^i + 1$
+
+Let $c_0 \\leftarrow 1$ # we pretend we have a &quot;carry&quot; of $1$ initially
+For{$i=0,\\ldots, n-1$}
+Let $y_i \\leftarrow XOR(x_i,c_i)$.
+If{$c_i=x_i=1$}
+$c_{i+1}=1$
+else
+$c_{i+1}=0$
+endif
+Endfor
+Let $y_n \\leftarrow c_n$.
+</code></pre>
+<p>تصف <a href="">incrementalg</a>{.ref} بدقة كيفية حساب عملية الزيادة، ويمكن بسهولة تحويلها إلى شيفرة <em>Python</em> تؤدّي الحساب نفسه، لكنها لا تبدو وكأنها تعطي مباشرةً دائرة NAND لحسابها.
+غير أننا نستطيع تحويل هذه الخوارزمية سطرًا بسطر إلى دائرة NAND.
+فمثلًا، بما أن $NAND(a,NOT(a))=1$ لكل $a$، يمكننا استبدال التصريح الأول $c_0=1$ بـ$c_0 = NAND(x_0,NAND(x_0,x_0))$.
+ونحن نعرف بالفعل كيف نحسب $XOR$ باستعمال NAND، وبذلك يمكننا استعمال ذلك لتنفيذ العملية $y_i \\leftarrow XOR(x_i,c_i)$.
+وبالمثل، يمكننا كتابة تعليمات «if» على صورة $c_{i+1} \\leftarrow AND(c_i,x_i)$، أو بمعنى آخر $c_{i+1} \\leftarrow  NAND(NAND(c_i,x_i),NAND(c_i,x_i))$.
+وأخيرًا، يمكن كتابة الإسناد $y_n = c_n$ على صورة $y_n = NAND(NAND(c_n,c_n),NAND(c_n,c_n))$.
+ويجمع هذه الملاحظات معًا لتُعطي لكل $n\\in \\N$ دائرة $NAND$ تحسب $INC_n$.
+فعلى سبيل المثال، يوضّح <a href="">nandincrememntcircfig</a>{.ref} كيف تبدو هذه الدائرة عند $n=4$.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-25.webp" alt="/images/introtcs/lec_03_computation-25.webp">{#nandincrememntcircfig  .margin }</p>
+<p><strong>من الزيادة إلى الجمع.</strong>
+ومتى توفرت لدينا عملية الزيادة، يمكننا بالتأكيد حساب الجمع بالتكرار المتواصل للزيادة (أي حساب $x+y$ بتنفيذ $INC(x)$ $y$ مرة).
+غير أن ذلك سيكون غير فعّال تمامًا وغير ضروري.
+وبفكرة تتبّع الحمل نفسها، يمكننا تنفيذ خوارزمية الجمع «المدرسية» وحساب الدالة $ADD_n:{0,1}^{2n} \\rightarrow {0,1}^{n+1}$ التي على مُدخل $x\\in {0,1}^{2n}$ تُخرج التمثيل الثنائي لمجموع العددين الممثَّلين بـ$x_0,\\ldots,x_{n-1}$ و$x_{n},\\ldots,x_{2n-1}$:</p>
+<pre><code class="language-{.algorithm">INPUT: $u \\in \\{0,1\\}^n$, $v\\in \\{0,1\\}^n$ representing numbers in LSB-first binary representation.
+OUTPUT: LSB-first binary representation of $x+y$.
+
+Let $c_0 \\leftarrow 0$
+For{$i=0,\\ldots,n-1$}
+    Let $y_i \\leftarrow u_i + v_i \\mod 2$
+    If{$u_i + v_i + c_i \\geq 2$}
+    $c_{i+1}\\leftarrow 1$
+    else
+    $c_{i+1} \\leftarrow 0$
+    endif
+Endfor
+Let $y_n \\leftarrow c_n$
+</code></pre>
+<p>ومرة أخرى، يمكن ترجمة <a href="">additionfromnand</a>{.ref} إلى دائرة NAND.
+والملاحظة الجوهرية هي أن تعليمات «if/then» تقابل ببساطة
+$c_{i+1} \\leftarrow MAJ_3(u_i,v_i,v_i)$، وقد رأينا في <a href="">majbynandex</a>{.ref} أن الدالة $MAJ_3:{0,1}^3 \\rightarrow {0,1}$ يمكن حسابها باستعمال $NAND$.</p>
+<h3 id="لغة-البرمجة-nand-circ-nandcircsec">لغة البرمجة NAND-CIRC { #nandcircsec }</h3>
+<p>تمامًا كما فعلنا مع الدوائر المنطقية، يمكننا تعريف نسخة بلغة برمجة تكافئ دوائر NAND.
+وهي أبسط حتى من لغة AON-CIRC لأن لدينا عملية واحدة فقط.
+ونعرّف <em>لغة برمجة NAND-CIRC</em> بأنها لغة برمجة كل سطر فيها (باستثناء تصريح المُدخل/المُخرج) على الصورة التالية:</p>
+<pre><code class="language-python">foo = NAND(bar,blah)
+</code></pre>
+<p>حيث <code>foo</code> و<code>bar</code> و<code>blah</code> معرِّفات متغيّرات.</p>
+<div class="callout callout--example" id="NANDprogramexample">
+<p><strong>أول برنامج NAND-CIRC لنا</strong></p>
+<p>إليك مثالًا على برنامج NAND-CIRC:</p>
+<pre><code class="language-python">u = NAND(X[<span class="hljs-number">0</span>],X[<span class="hljs-number">1</span>])
+v = NAND(X[<span class="hljs-number">0</span>],u)
+w = NAND(X[<span class="hljs-number">1</span>],u)
+Y[<span class="hljs-number">0</span>] = NAND(v,w)
+</code></pre>
+</div>
+<blockquote>
+<h3 id="pause">{ .pause }</h3>
+</blockquote>
+<p>هل تعرف الدالة التي يحسبها هذا البرنامج؟ إرشاد: لقد رأيتها من قبل.</p>
+<p>ورسميًا، تمامًا كما فعلنا في <a href="">AONcircdef</a>{.ref} بالنسبة إلى AON-CIRC، يمكننا تعريف فكرة الحساب ببرنامج NAND-CIRC بالطريقة الطبيعية:</p>
+<div class="callout callout--definition" id="NANDcomp">
+<p><strong>الحساب ببرنامج NAND-CIRC</strong></p>
+<p>لتكن $f:{0,1}^n \\rightarrow {0,1}^m$ دالة ما، وليكن $P$ برنامج NAND-CIRC. نقول إن $P$ <em>تحسب</em> الدالة $f$ إذا:</p>
+<ol>
+<li>
+<p>كان للبرنامج $P$ $n$ متغيّر مُدخل <code>X[</code>$0$<code>]</code>$,\\ldots,$<code>X[</code>$n-1$<code>]</code> و$m$ متغيّر خرج <code>Y[</code>$0$<code>]</code>,$\\ldots$,<code>Y[</code>$m-1$<code>]</code>.</p>
+</li>
+<li>
+<p>لكل $x\\in {0,1}^n$، إذا نفّذنا $P$ مع إسناد القيم $x_0,\\ldots,x_{n-1}$ إلى <code>X[</code>$0$<code>]</code>$,\\ldots,$<code>X[</code>$n-1$<code>]</code>، فإن متغيّرات الخرج <code>Y[</code>$0$<code>]</code>,$\\ldots$,<code>Y[</code>$m-1$<code>]</code> تكون في نهاية التنفيذ لها القيم $y_0,\\ldots,y_{m-1}$ حيث $y=f(x)$.</p>
+</li>
+</ol>
+</div>
+<p>وكما من قبل، يمكننا أن نبيّن أن دوائر NAND تكافئ برامج NAND-CIRC (انظر <a href="">progandcircfig</a>{.ref}):</p>
+<blockquote>
+<h3 id="theorem-titlequotتكافؤ-دوائر-nand-والبرامج-المستقيمةquot-nandcircslequivthm">{.theorem title=&quot;تكافؤ دوائر NAND والبرامج المستقيمة&quot; #NANDcircslequivthm}</h3>
+</blockquote>
+<p>لكل $f:{0,1}^n \\rightarrow {0,1}^m$ و$s \\geq m$، يكون $f$ قابلًا للحساب ببرنامج NAND-CIRC من $s$ سطرًا إذا ونحو فقط كان قابلًا للحساب بدائرة NAND ذات $s$ بوابة.</p>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-26.webp" alt="/images/introtcs/lec_03_computation-26.webp">{#progandcircfig   .margin  }</p>
+<p>نُغفل برهان <a href="">NANDcircslequivthm</a>{.ref} لأنه يسير على الخطوط نفسها تمامًا كتكافؤ الدوائر المنطقية مع برنامج AON-CIRC (<a href="">slcircuitequivthm</a>{.ref}).
+وبناءً على <a href="">NANDcircslequivthm</a>{.ref} و<a href="">NANDuniversamthm</a>{.ref}، نعرف أننا نستطيع ترجمة كل برنامج AON-CIRC من $s$ سطرًا $P$ إلى برنامج NAND-CIRC مكافئ من $3s$ سطرًا على الأكثر.
+وفعلًا، يمكن إجراء هذه الترجمة بسهولة باستبدال كل سطر على الصورة <code>foo = AND(bar,blah)</code> أو <code>foo = OR(bar,blah)</code> أو <code>foo = NOT(bar)</code> بالأسطر المكافئة من 1 إلى 3 التي تستعمل العملية <code>NAND</code>.
+ويحتوي <a href="https://github.com/boazbk/tcscode">مستودعنا على GitHub</a> على «برهان بالشيفرة»: برنامج Python بسيط اسمه <code>AON2NAND</code> يحوّل برنامج AON-CIRC إلى برنامج NAND-CIRC مكافئ.</p>
+<blockquote>
+<h3 id="remark-titlequotهل-لغة-البرمجة-nand-circ-تامة-تورينج-ملاحظة-اختياريةquot-nandturingcompleteness">{.remark title=&quot;هل لغة البرمجة NAND-CIRC تامّة تورينج؟ (ملاحظة اختيارية)&quot; #NANDturingcompleteness}</h3>
+</blockquote>
+<p>ربما سمعت مصطلحًا يُعرف بـ«تامّة تورينج» (Turing Complete) يُستعمل أحيانًا لوصف لغات البرمجة. (وإن لم تكن سمعت به، فلا بأس من تجاهل بقية هذه الملاحظة: فنحن نعرّف هذا المصطلح بدقّة في <a href="">chapequivalentmodels</a>{.ref}.)
+وإن كنت سمعت به، فقد تتساءل إن كانت لغة البرمجة NAND-CIRC تملك هذه الخاصية.
+والجواب <strong>لا</strong>، أو على نحو أدقّ أن مصطلح «اكتمال تورينج» لا ينطبق أصلًا على لغة البرمجة NAND-CIRC.
+والسبب أن لغة البرمجة NAND-CIRC، بحسب تصميمها، تستطيع حساب الدوال <em>المتناهية</em> $F:{0,1}^n \\rightarrow {0,1}^m$ فقط، وهي دوال تأخذ عددًا ثابتًا من بتات المُدخل وتُنتج عددًا ثابتًا من بتات الخرج.
+أما مصطلح «تامّة تورينج» فلا ينطبق إلا على لغات البرمجة الخاصة بالدوال <em>اللامتناهية</em> التي تقبل مُدخلات بطول اعتباطي.
+وسنعود إلى هذا التمييز لاحقًا في هذا الكتاب.</p>
+<h2 id="تكافؤ-كل-هذه-النماذج">تكافؤ كل هذه النماذج</h2>
+<p>إذا جمعنا بين <a href="">slcircuitequivthm</a>{.ref} و<a href="">NANDuniversamthm</a>{.ref} و<a href="">NANDcircslequivthm</a>{.ref}، نحصل على النتيجة التالية:</p>
+<div class="callout callout--theorem" id="equivalencemodelsthm">
+<p><strong>التكافؤ بين نماذج الحوسبة المتناهية</strong></p>
+<p>لكل $s,n,m$ كبيرة بما يكفي ولكل $f:{0,1}^n \\rightarrow {0,1}^m$، الشروط التالية كلها متكافئة فيما بينها:</p>
+<ul>
+<li>
+<p>$f$ يمكن حسابها بدائرة منطقية (ذات بوابات $\\wedge,\\vee,\\neg$) عدد بواباتها $O(s)$ على الأكثر.</p>
+</li>
+<li>
+<p>$f$ يمكن حسابها ببرنامج AON-CIRC مستقيم عدد أسطره $O(s)$ على الأكثر.</p>
+</li>
+<li>
+<p>$f$ يمكن حسابها بدائرة NAND عدد بواباتها $O(s)$ على الأكثر.</p>
+</li>
+<li>
+<p>$f$ يمكن حسابها ببرنامج NAND-CIRC مستقيم عدد أسطره $O(s)$ على الأكثر.</p>
+</li>
+</ul>
+</div>
+<p>بـ«$O(s)$» نعني أن الحد هو $c\\cdot s$ على الأكثر حيث $c$ ثابت مستقل عن $n$.
+فمثلًا، إذا كانت $f$ قابلة للحساب بدائرة منطقية ذات $s$ بوابة، فإنها قابلة للحساب ببرنامج NAND-CIRC من $3s$ سطرًا على الأكثر، وإذا كانت $f$ قابلة للحساب بدائرة NAND ذات $s$ بوابة، فإنها قابلة للحساب ببرنامج AON-CIRC من $2s$ سطرًا على الأكثر.</p>
+<blockquote>
+<h3 id="proofidea-data-refquotequivalencemodelsthmquot">{.proofidea data-ref=&quot;equivalencemodelsthm&quot;}</h3>
+</blockquote>
+<p>نُغفل البرهان الرسمي، إذ يُحصل عليه بدمج <a href="">slcircuitequivthm</a>{.ref} و<a href="">NANDuniversamthm</a>{.ref} و<a href="">NANDcircslequivthm</a>{.ref}. والملاحظة الأساسية هي أن النتائج التي رأيناها تتيح لنا ترجمة برنامج/دائرة يحسب $f$ في أحد النماذج أعلاه إلى برنامج/دائرة يحسب $f$ في نموذج آخر، بزيادة عدد الأسطر/البوابات بمعامل ثابت على الأكثر (وهذا المعامل الثابت هو $3$ على الأكثر في الواقع).</p>
+<p>ويعد <a href="">slcircuitequivthm</a>{.ref} حالة خاصة من نتيجة أكثر عمومية.
+فقد نُفكّر في نماذج حوسبة أكثر عمومية، حيث نستعمل بدلًا من AND/OR/NOT أو NAND عمليات أخرى (انظر <a href="">othergatessec</a>{.ref} أدناه).
+ويبيّن الأمر أن الدوائر المنطقية تكافئ هذه النماذج أيضًا في القدرة.
+وأن كون كل هذه الطرق المختلفة لتعريف الحوسبة يقود إلى نماذج متكافئة يدلّ على أننا «على الطريق الصحيح».
+وهذا يبرّر الخيارات التي تبدو عشوائية والمتمثلة في استعمال AND/OR/NOT أو NAND بوصفهما عملياتنا الأساسية، لأن هذه الخيارات لا تؤثر في قدرة نموذجنا الحوسب.
+وتعني نتائج التكافؤ مثل <a href="">equivalencemodelsthm</a>{.ref} أننا نستطيع بسهولة الترجمة بين الدوائر المنطقية ودوائر NAND وبرامج NAND-CIRC وما شابه.
+وسنستعمل هذه القدرة لاحقًا في هذا الكتاب، منتقلين كثيرًا إلى الصياغة الأكثر ملاءمة دون أن نُوليها عناية بالغة.
+ولذلك لن نقلق كثيرًا من التمييز بين، مثلًا، الدوائر المنطقية وبرامج NAND-CIRC.</p>
+<p>وفي المقابل، سنواصلة الحرص على التمييز بين <em>الدوائر/البرامج</em> و_الدوال_ (تذكّر <a href="">functionprogramidea</a>{.ref}).
+فتقابل الدالةُ <em>مواصفةَ</em> مهمة حسابية، وهي كائن مختلف جوهريًا عن البرنامج أو الدائرة التي تقابل <em>تنفيذَ</em> تلك المهمة.</p>
+<h3 id="الدوائر-بمجموعات-بوابات-أخرى-othergatessec">الدوائر بمجموعات بوابات أخرى  {#othergatessec }</h3>
+<p>لا شيء خاص بـAND/OR/NOT أو NAND. فلكل مجموعة دوال $\\mathcal{G} = { G_0,\\ldots,G_{k-1} }$ يمكننا تعريف فكرة الدوائر التي تستعمل عناصر $\\mathcal{G}$ بوصفها بوابات، وفكرة «لغة برمجة $\\mathcal{G}$» التي يكون فيها كل سطر إسنادًا إلى متغيّر <code>foo</code> نتيجة تطبيق $G_i \\in \\mathcal{G}$ ما على متغيّرات مُعرَّفة سابقًا أو على مُدخلات.
+وبالتحديد، يمكننا تقديم التعريف التالي:</p>
+<div class="callout callout--definition" id="genstraight-lineprogs">
+<p><strong>البرامج المستقيمة العامة</strong></p>
+<p>لتكن $\\mathcal{F} = { f_0,\\ldots, f_{t-1} }$ مجموعة متناهية من الدوال المنطقية، بحيث
+$f_i:{0,1}^{k_i} \\rightarrow {0,1}$ لمُدخل ما $k_i \\in \\N$.
+<em>برنامج $\\mathcal{F}$</em> هو تسلسل من الأسطر، يُسند كلٌّ منها إلى متغيّر ما نتيجة تطبيق $f_i \\in \\mathcal{F}$ ما على $k_i$ متغيّرات أخرى. وكما سبق، نستعمل <code>X[</code>$i$<code>]</code> و<code>Y[</code>$j$<code>]</code> للدلالة على متغيّرات المُدخل والمُخرج.</p>
+<p>ونقول إن $\\mathcal{F}$ هي <em>مجموعة عمليات شاملة</em> (وتُعرف أيضًا بمجموعة بوابات شاملة) إذا وُجد برنامج $\\mathcal{F}$ يحسب الدالة $NAND$.</p>
+</div>
+<p>تقابل برامج AON-CIRC برامج \${AND,OR,NOT}$، وتقابل برامج NAND-CIRC برامج $\\mathcal{F}$ للمجموعة $\\mathcal{F}$ التي لا تحتوي إلّا على الدالة $NAND$، ولكن يمكننا أيضًا تعريف برامج \${ IF, ZERO, ONE}$ (انظر أدناه)، أو استعمال أي مجموعة أخرى.</p>
+<p>ويمكننا أيضًا تعريف <em>دوائر $\\mathcal{F}$</em>، وهي رسوم بيانية موجَّهة تكون فيها كل <em>بوابة</em> مقابلة لتطبيق دالة $f_i \\in \\mathcal{F}$، ولكل بوابة $k_i$ سلكًا داخليًا وسلكًا خارجيًا واحدًا. (وإذا كانت الدالة $f_i$ غير <em>متماثلة</em>، بمعنى أن ترتيب مُدخلاتها مهم، فيلزم أن نوسم كل سلك يدخل البوابة بمُعامل الدالة الذي يقابله.)
+وكما في <a href="">slcircuitequivthm</a>{.ref}، يمكننا أن نبيّن أن دوائر $\\mathcal{F}$ وبرامج $\\mathcal{F}$ متكافئة.
+لقد رأينا أن الدوائر/البرامج الناتجة عن $\\mathcal{F} = { AND,OR, NOT}$ تكافئ في القدرة لغة البرمجة NAND-CIRC، لأننا نستطيع حساب $NAND$ باستعمال $AND$/$OR$/$NOT$ وبالعكس.
+ويبيّن الأمر أن هذه حالة خاصة من ظاهرة أعمّ — <em>عمومية</em> (universality) $NAND$ ومجموعات البوابات الأخرى — سنستكشفها بمزيد من التفصيل لاحقًا في هذا الكتاب.</p>
+<div class="callout callout--example" id="IZOcircuits">
+<p><strong>دوائر IF وZERO وONE</strong></p>
+<p>لتكن $\\mathcal{F} = { IF , ZERO, ONE }$ حيث $ZERO:{0,1} \\rightarrow {0}$ و$ONE:{0,1} \\rightarrow {1}$ هما دالتا الصفر والواحد الثابتتان،^[يمكن أيضًا تعريف هاتين الدالتين بأنهما تأخذان مُدخلًا طوله صفر. وهذا لا يحدث أي فرق في قدرة النموذج الحوسبية.] و$IF:{0,1}^3 \\rightarrow {0,1}$ هي الدالة التي على المُدخل $(a,b,c)$ تُخرج $b$ إذا كان $a=1$ و$c$ في غير ذلك.
+عندئذٍ تكون $\\mathcal{F}$ شاملة.</p>
+<p>وفعلًا، يمكننا أن نبيّن أن \${ IF, ZERO, ONE }$ شاملة باستعمال الصيغة التالية لـ$NAND$:</p>
+<p>$$
+NAND(a,b) = IF(a,IF(b,ZERO,ONE),ONE) ;.
+$$</p>
+</div>
+<p>وهناك أيضًا بعض المجموعات $\\mathcal{F}$ المقيّدة أكثر في القدرة. فمثلًا يمكن إثبات أن استعملنا بوابات AND أو OR وحدها (من دون NOT) فإننا لا نحصل على نموذج حوسبة <em>مكافئ</em>.
+وتغطي التمارين عدة أمثلة على مجموعات بوابات شاملة وغير شاملة.</p>
+<h3 id="المواصفة-مقابل-التنفيذ-مرة-أخرى-specvsimplrem">المواصفة مقابل التنفيذ (مرة أخرى) {#specvsimplrem}</h3>
+<p><img src="/arabic-cs-library/images/introtcs/lec_03_computation-27.webp" alt="/images/introtcs/lec_03_computation-27.webp">{#specvsimplfig }</p>
+<p>كما ناقشنا في <a href="">secimplvsspec</a>{.ref}، فإن أحد أهم التمييزات في هذا الكتاب هو تمييز <em>المواصفة</em> عن <em>التنفيذ</em>، أي فصل «ماذا» عن «كيف» (انظر <a href="">specvsimplfig</a>{.ref}).
+فتقابل <em>الدالةُ</em> <em>مواصفةَ</em> مهمة حسابية، أي <em>ما الذي</em> ينبغي أن يُنتج كمُخرج لكل مُدخل بعينه.
+وتقابل <em>البرنامج</em> (أو الدائرة، أو أي طريقة أخرى لتحديد <em>الخوارزميات</em>) <em>تنفيذَ</em> <em>كيفية</em> حساب المُخرج المطلوب من المُدخل.
+أي أن البرنامج مجموعة تعليمات حول كيفية حساب المُخرج من المُدخل.
+وحتى في النموذج الحوسب نفسه، قد توجد طرق كثيرة مختلفة لحساب الدالة نفسها.
+فمثلًا، يوجد أكثر من برنامج NAND-CIRC واحد يحسب دالة الأغلبية، وأكثر من دائرة منطقية واحدة تحسب دالة الجمع، وهكذا دواليك.</p>
+<p>والخلط بين المواصفة والتنفيذ (أو بما يكافئهما من <em>الدوال</em> و_البرامج_) خطأ شائع، وللأسف تشجّعه المصطلحات الشائعة في لغات البرمجة التي تسمّي أجزاء من البرنامج «دوالًا».
+غير أنه، في نظرية علم الحاسوب وممارسته معًا، من المهم الإبقاء على هذا التمييز، وهو مهم بشكل خاص لنا في هذا الكتاب.</p>
+<blockquote>
+<h3 id="recap">{ .recap }</h3>
+</blockquote>
+<ul>
+<li><em>الخوارزمية</em> وصفةٌ لتنفيذ حسابٍ، وهي تسلسل من عمليات «أولية» أو «بسيطة».</li>
+<li>أحد التعريفات المرشَّحة للعمليات «الأولية» هو المجموعة $AND$ و$OR$ و$NOT$.</li>
+<li>تعريف مرشَّح آخر لعملية «أولية» هو عملية $NAND$. وهي عملية يسهل تنفيذها في العالم الفيزيائي بطرق متنوّعة، منها الترانزستورات الإلكترونية.</li>
+<li>يمكننا استعمال $NAND$ لحساب دوال أخرى كثيرة، منها الأغلبية والزيادة وغيرها.</li>
+<li>وهناك اختيارات أخرى متكافئة، منها المجموعتان \${AND,OR,NOT}$ و\${ IF, ZERO, ONE }$.</li>
+<li>يمكننا تعريف رسميًا فكرة أن الدالة $F:{0,1}^n \\rightarrow {0,1}^m$ قابلة للحساب باستعمال <em>لغة البرمجة NAND-CIRC</em>.</li>
+<li>ولكل مجموعة عمليات أساسية، تتكافؤ فكرة القابلية للحساب بدائرة وفكرة القابلية للحساب ببرنامج مستقيم.</li>
+</ul>
+<div class="exercises"><h2 id="التمارين">التمارين</h2>
+<div class="callout callout--exercise" id="comparenumbersex">
+<p><strong>تمرين — مقارنة أعداد من 4 بتات</strong></p>
+<p>أعطِ دائرة منطقية (ببوابات AND/OR/NOT) تحسب الدالة $CMP_8:{0,1}^8 \\rightarrow {0,1}$ بحيث $CMP_8(a_0,a_1,a_2,a_3,b_0,b_1,b_2,b_3)=1$ إذا ونحو فقط إذا كان العدد الذي تمثّله $a_0a_1a_2a_3$ أكبر من العدد الذي تمثّله $b_0b_1b_2b_3$.</p>
+</div>
+<div class="callout callout--exercise" id="compareasymnumbersex">
+<p><strong>تمرين — مقارنة أعداد من n بتًا</strong></p>
+<p>أثبِت أن هناك ثابتًا $c$ بحيث إن لكل $n$ توجد دائرة منطقية (ببوابات AND/OR/NOT) $C$ عدد بواباتها $c\\cdot n$ على الأكثر تحسب الدالة $CMP_{2n}:{0,1}^{2n} \\rightarrow {0,1}$ بحيث $CMP_{2n}(a_0\\cdots a_{n-1} b_0 \\cdots b_{n-1})=1$ إذا ونحو فقط إذا كان العدد الذي تمثّله $a_0 \\cdots a_{n-1}$ أكبر من العدد الذي تمثّله $b_0 \\cdots b_{n-1}$.</p>
+</div>
+<div class="callout callout--exercise" id="ornotex">
+<p><strong>تمرين — OR وNOT شاملتان</strong></p>
+<p>أثبِت أن المجموعة \${ OR, NOT }$ <em>شاملة</em>، بمعنى أنه يمكن حساب NAND باستعمال هاتين البوابتين.</p>
+</div>
+<div class="callout callout--exercise" id="andorex">
+<p><strong>تمرين — AND وOR ليستا شاملتين</strong></p>
+<p>أثبِت أن لكل دائرة $C$ ذات مُدخل من $n$ بتات تحتوي بوابات AND وOR وحدها، وكذلك بوابات تحسب الدالتين الثابتتين $0$ و$1$، تكون $C$ <em>مُحكَمة الترتيب</em> (monotone)، بمعنى أنه إذا كان $x,x' \\in {0,1}^n$ و$x_i \\leq x'_i$ لكل $i\\in [n]$، فإن $C(x) \\leq C(x')$.</p>
+<p>استنتج أن المجموعة \${ AND, OR, 0, 1}$ <em>ليست</em> شاملة.</p>
+</div>
+<div class="callout callout--exercise" id="xorex">
+<p><strong>تمرين — XOR ليست شاملة</strong></p>
+<p>أثبِت أن لكل دائرة $C$ ذات مُدخل من $n$ بتات تحتوي بوابات XOR وحدها، وكذلك بوابات تحسب الدالتين الثابتتين $0$ و$1$، تكون $C$ <em>تآلفية أو خطّية على مقياس اثنين</em>، بمعنى أنه يوجد $a\\in {0,1}^n$ و$b\\in {0,1}$ بحيث لكل $x\\in {0,1}^n$، لدينا $C(x) = \\sum_{i=0}^{n-1}a_ix_i + b \\mod 2$.</p>
+<p>استنتج أن المجموعة \${ XOR , 0 , 1}$ <em>ليست</em> شاملة.</p>
+</div>
+<div class="callout callout--exercise" id="majnotex">
+<p><strong>تمرين — MAJ وNOT و1 شاملة</strong></p>
+<p>لتكن $MAJ:{0,1}^3 \\rightarrow {0,1}$ دالة الأغلبية.
+أثبِت أن \${ MAJ,NOT, 1 }$ مجموعة بوابات شاملة.</p>
+</div>
+<div class="callout callout--exercise" id="majnotextwo">
+<p><strong>تمرين — MAJ وNOT ليستا شاملتين</strong></p>
+<p>أثبِت أن \${ MAJ,NOT  }$ ليست مجموعة شاملة. انظر الحاشية للإرشاد.^[<em>إرشاد:</em> استعمل الحقيقة $MAJ(\\overline{a},\\overline{b},\\overline{c}) = \\overline{MAJ(a,b,c)}$ لإثبات أن كل $f:{0,1}^n \\rightarrow {0,1}$ يمكن حسابها بدائرة فيها بوابتا $MAJ$ و$NOT$ فقط تستوفي $f(0,0,\\ldots,0) \\neq f(1,1,\\ldots,1)$. شكرًا لناثان برونيل وديفيد إيفانز على اقتراح هذا التمرين.]</p>
+</div>
+<div class="callout callout--exercise" id="norex">
+<p><strong>تمرين — NOR شاملة</strong></p>
+<p>لتكن $NOR:{0,1}^2 \\rightarrow {0,1}$ المعرَّفة بـ$NOR(a,b) = NOT(OR(a,b))$. أثبِت أن \${ NOR }$ مجموعة بوابات شاملة.</p>
+</div>
+<div class="callout callout--exercise" id="lookupex">
+<p><strong>تمرين — LOOKUP شاملة</strong></p>
+<p>أثبِت أن \${ LOOKUP_1,0,1 }$ مجموعة بوابات شاملة، حيث $0$ و$1$ دالتان ثابتتان و$LOOKUP_1:{0,1}^3 \\rightarrow {0,1}$ تحقق أن $LOOKUP_1(a,b,c)$ تساوي $a$ إذا كان $c=0$ وتساوي $b$ إذا كان $c=1$.</p>
+</div>
+<blockquote>
+<h3 id="exercise-titlequotحد-على-حجم-الأساس-الشامل-تحدquot-universal-bound">{.exercise title=&quot;حدّ على حجم الأساس الشامل (تحدٍّ)&quot; #universal-bound}</h3>
+</blockquote>
+<p>أثبِت أن لكل مجموعة جزئية $B$ من الدوال من \${0,1}^k$ إلى \${0,1}$،
+إذا كانت $B$ شاملة، فهناك دائرة $B$ عدد بواباتها $O(1)$ على الأكثر تحسب الدالة $NAND$ (يمكنك البدء بإثبات وجود دائرة $B$ عدد بواباتها $O(k^{16})$ على الأكثر).^[شكرًا لأليك صن وسيمون فيشر على ملاحظاتهما على هذه المسألة.]</p>
+<div class="callout callout--exercise" id="nandcircsizeex">
+<p><strong>تمرين — الحجم والمُدخلات / المُخرجات</strong></p>
+<p>أثبِت أن لكل دائرة NAND ذات حجم $s$ و$n$ مُدخلًا و$m$ مُخرجًا، لدينا $s \\geq \\min { n/2 , m }$. انظر الحاشية للإرشاد.^[<em>إرشاد:</em> استعمل شرطَي <a href="">booleancircdef</a>{.ref} اللذين ينصّان على أن لكل رأس مُدخل جارًا خارجًا واحدًا على الأقل، وأن هناك بالضبط $m$ بوابة خرج. وانظر أيضًا <a href="">booleancircuitsremarks</a>{.ref}.]</p>
+</div>
+<blockquote>
+<h3 id="exercise-titlequotالعتبة-باستعمال-nandquot-threshold-nand-ex">{.exercise title=&quot;العتبة باستعمال NAND&quot; #threshold-nand-ex}</h3>
+</blockquote>
+<p>أثبِت أن هناك ثابتًا $c$ بحيث إن لكل $n&gt;1$، ولكل أعداد صحيحة $a_0,\\ldots,a_{n-1},b \\in {-2^n,-2^n+1,\\ldots,-1,0,+1,\\ldots,2^n}$، توجد دائرة NAND عدد بواباتها $c n^4$ على الأكثر تحسب دالة <em>العتبة</em> $f_{a_0,\\ldots,a_{n-1},b}:{0,1}^n \\rightarrow {0,1}$ التي على مُدخل $x\\in {0,1}^n$ تُخرج $1$ إذا ونحو فقط إذا كان $\\sum_{i=0}^{n-1} a_i x_i &gt; b$.</p>
+<div class="callout callout--exercise" id="NANDsfromActivationfunctionex">
+<p><strong>تمرين — NAND من دوال التنشيط</strong></p>
+<p>نقول إن الدالة $f:\\mathbb{R}^2 \\rightarrow \\mathbb{R}$ هي <em>مُقارِب NAND</em> (NAND approximator) إذا كانت لها الخاصية التالية: لكل $a,b \\in \\mathbb{R}$، إذا كان $\\min{|a|,|1-a|}\\leq 1/3$ و$\\min { |b|,|1-b| }\\leq 0.1$، حينئذٍ $|f(a,b) - NAND(\\lfloor a \\rceil, \\lfloor b \\rceil)| \\leq 0.1$، حيث نرمز بـ$\\lfloor x \\rceil$ إلى أقرب عدد صحيح إلى $x$. أي أنه إذا كان $a,b$ على مسافة $1/3$ من \${0,1}$، فنريد أن يساوي $f(a,b)$ قيمة $NAND$ للقيم في \${0,1}$ الأقرب إلى $a$ و$b$ على التوالي. وفي غير ذلك، لا يهمّنا ما يكونه مُخرج $f$ عند $a$ و$b$.</p>
+<p>في هذا التمرين ستبيّن أنه يمكن بناء مُقارِب NAND من دوال تنشيط شائعة كثيرة المستعملة في الشبكات العصبية العميقة. ونتيجةً لذلك ستحصل على أن الشبكات العصبية العميقة تستطيع محاكاة دوائر NAND. وبما أن دوائر NAND تستطيع أيضًا محاكاة الشبكات العصبية العميقة، فإن هذين النموذجين الحوسبين متكافئان فيما بينهما.</p>
+<ol>
+<li>
+<p>بيّن أن هناك مُقارِب NAND $f$ المعرَّف بـ$f(a,b) = L(DReLU(L'(a,b)))$ حيث $L':\\mathbb{R}^2 \\rightarrow \\mathbb{R}$ دالة <em>تآلفية</em> (affine) (من الشكل $L'(a,b)=\\alpha a + \\beta b + \\gamma$ لمُعاملات ما $\\alpha,\\beta,\\gamma \\in \\mathbb{R}$)، و$L$ دالة تآلفية (من الشكل $L(y) = \\alpha y + \\beta$ لمُعاملات $\\alpha,\\beta \\in \\mathbb{R}$)، و$DReLU:\\mathbb{R} \\rightarrow \\mathbb{R}$ دالة معرَّفة بـ$DReLU(x) = \\min(1,\\max(0,x))$. ولاحظ أن $DReLU(x) = 1-ReLU(1-ReLU(x))$ حيث $ReLU(x)=\\max(x,0)$ هي دالة تنشيط الوحدة الخطية المصحَّحة.</p>
+</li>
+<li>
+<p>بيّن أن هناك مُقارِب NAND $f$ المعرَّف بـ$f(a,b) = L(sigmoid(L'(a,b)))$ حيث $L',L$ تآلفية كما سبق و$sigmoid:\\mathbb{R} \\rightarrow \\mathbb{R}$ دالة معرَّفة بـ$sigmoid(x) = e^x/(e^x+1)$.</p>
+</li>
+<li>
+<p>بيّن أن هناك مُقارِب NAND $f$ المعرَّف بـ$f(a,b) = L(tanh(L'(a,b)))$ حيث $L',L$ تآلفية كما سبق و$tanh:\\mathbb{R} \\rightarrow \\mathbb{R}$ دالة معرَّفة بـ$tanh(x) = (e^x-e^{-x})/(e^x+e^{-x})$.</p>
+</li>
+<li>
+<p>أثبِت أن لكل دائرة NAND $C$ ذات $n$ مُدخلًا ومُخرج واحد تحسب دالة $g:{0,1}^n \\rightarrow {0,1}$، إذا استبدلنا كل بوابة في $C$ بمُقارِب NAND ثم استدعينا الدائرة الناتجة على $x\\in {0,1}^n$ ما، فإن المُخرج سيكون عددًا $y$ بحيث $|y-g(x)|\\leq 1/3$.</p>
+</li>
+</ol>
+</div>
+<div class="callout callout--exercise" id="majwithNAND">
+<p><strong>تمرين — الأغلبية بكفاءة باستعمال NAND</strong></p>
+<p>أثبِت أن هناك ثابتًا $c$ بحيث إن لكل $n&gt;1$ توجد دائرة NAND عدد بواباتها $c\\cdot n$ على الأكثر تحسب دالة الأغلبية على $n$ بت مُدخل $MAJ_n:{0,1}^n \\rightarrow {0,1}$. أي أن $MAJ_n(x)=1$ إذا ونحو فقط إذا كان $\\sum_{i=0}^{n-1}x_i &gt; n/2$. انظر الحاشية للإرشاد.^[أحد أساليب حل هذه المسألة هو استعمال التعاود وتحليله باستعمال ما يُعرف بـ«مبرهنة سيجر» (Master Theorem).]</p>
+</div>
+<div class="callout callout--exercise" id="outputlastlayer">
+<p><strong>تمرين — المُخرج في الطبقة الأخيرة</strong></p>
+<p>أثبِت أن لكل $f:{0,1}^n \\rightarrow {0,1}$، إذا كانت هناك دائرة منطقية $C$ ذات $s$ بوابة
+تحسب $f$، فهناك دائرة منطقية $C'$ ذات $s$ بوابة على التوالي بحيث في التوزيع الطبقي الأدنى لـ$C'$، تكون بوابة خرج $C'$ موضوعة في الطبقة الأخيرة. انظر الحاشية للإرشاد.^[<em>إرشاد:</em> يمكن إزالة الرؤوس الواقعة في طبقات بعد الخرج بأمان دون تغيير وظيفة الدائرة.]</p>
+</div>
+<h2 id="ملاحظات-سردية">ملاحظات سردية</h2>
+<p>المقتطف من كتاب الخوارزمي مأخوذ من «جبر ابن موسى» لفريدريك روزن، 1831.</p>
+<p>كان تشارلز بابيج (1791-1871) عالمًا ومخترعًا وباحثًا رؤيويًا (انظر [@swade2002the, @collier2000charles]).
+وقبل أكثر من قرن من اختراع الحواسيب الإلكترونية الحديثة، أدرك بابيج أن الحساب يمكن أن يُآلَف من حيث المبدأ.
+وكان تصميمه الأول لحاسوب ميكانيكي هو <em>محرك الفروق</em> المصمَّم لإجراء الاستيفاء متعددة الحدود.
+ثم صمّم بعد ذلك <em>المحرك التحليلي</em>، وهو آلة أكثر عمومية بكثير وأول نموذج أوّلي لحاسوب عام قابل للبرمجة.
+وللأسف لم يستطع بابيج يومًا إتمام تصميم نماذجه الأوّلية.
+ومن أوائل من أدركوا إمكانات المحرك وآثاره البعيدة آدا لوفلايس (انظر ملاحظات <a href="">chaploops</a>{.ref}).</p>
+<p>جرى أول البحث في جبر البولياني على يد بولي ودي مورغان في الأربعينيات من القرن التاسع عشر [@Boole1847mathematical, @DeMorgan1847].
+وأُعطيت تعريف الدوائر المنطقية وصلتها بدوائر المرحِّلات الكهربائية في رسالة الماجستير لشانون [@Shannon1938].
+(وقد وصف هوارد غاردنر رسالة شانون بأنها «ربما أهم رسالة ماجستير، وأيضًا أشهرها، في القرن العشرين».)
+كتاب سافيج [@Savage1998models]، مثل هذا الكتاب، يقدّم نظرية الحوسبة بدءًا بالدوائر المنطقية بوصفها النموذج الأول.
+ويحتوي كتاب جوكنا [@Jukna12] على عرض حديث ومتعمّق للدوائر المنطقية، انظر أيضًا [@wegener1987complexity].</p>
+<p>أُثبت أن دالة NAND شاملة على يد شيفر [@Sheffer1913]، مع أن هذا يظهر أيضًا في عمل بيرس الأسبق، انظر [@Burks1978charles].
+واستعمل وايتهد وروسيل NAND أساسًا لمنطقهما في عملهما العظيم <em>مبادئ الرياضيات</em> (Principia Mathematica) [@WhiteheadRussell1912].
+وتبحث أطروحة إرنست للدكتوراه [@Ernst2009phd] تجريبيًا في أصغر دوائر NAND لدوال متنوّعة.
+ويبني كتاب نيسان وشوكن [@NisanShocken2005] نظام حوسبة يبدأ من بوابات NAND وينتهي عند البرامج والألعاب عالية المستوى («من NAND إلى تيتريس»)؛ انظر أيضًا الموقع <a href="https://www.nand2tetris.org/">nandtotetris.org</a>.</p>
+<p>عرّفنا في <a href="">booleancircdef</a>{.ref} <em>حجم</em> الدائرة المنطقية بأنه عدد البوابات التي تحتوي عليها. وهذه إحدى عريفتين مستعملتين في الأدبيات. أما العريفة الأخرى فتُعرّف الحجم بأنه عدد <em>الأسلاك</em> (وهو مكافئ لعدد البوابات مضافًا إليه عدد المُدخلات).
+وهذا لا يصنع فارقًا يُذكر في كل السياقات تقريبًا، لكنه قد يؤثّر في تعقيد حجم الدائرة لبعض «الأمثلة المرضية» لدوال مثل دالة الصفر الثابت التي لا تعتمد على كثير من مُدخلاتها.</p>
+</div>`,s={book:n,chapter:e,chapterTitle:a,slug:$,title:t,headings:o,html:i};export{n as book,e as chapter,a as chapterTitle,s as default,o as headings,i as html,$ as slug,t as title};

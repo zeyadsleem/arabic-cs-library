@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.B3zN2Ssl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/HDcIFdPs.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DyW3u5n-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BjFV5UfP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.qKHRscGD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSyanxWP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/mpWbqwpc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/1igVymJj.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.PN5J_LRl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C1gN4WzR.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الأخطاء — الأخطاء"/><!----><title>الأخطاء | Go الفعّالة</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/effective-go">Go الفعّالة</a> <span class="reader-bar__chapter">› الأخطاء</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 15 من 16">15 / 16</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/effective-go/concurrency/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/effective-go/web-server/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مقدمة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/introduction/index">مقدمة</a></li><!--]--></ul><h3>التنسيق</h3> <ul><!--[--><li><a href="../../../../book/effective-go/formatting/index">التنسيق</a></li><!--]--></ul><h3>التعليقات</h3> <ul><!--[--><li><a href="../../../../book/effective-go/commentary/index">التعليقات</a></li><!--]--></ul><h3>التسمية</h3> <ul><!--[--><li><a href="../../../../book/effective-go/names/index">التسمية</a></li><!--]--></ul><h3>الفواصل المنقوطة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/semicolons/index">الفواصل المنقوطة</a></li><!--]--></ul><h3>بنى التحكم</h3> <ul><!--[--><li><a href="../../../../book/effective-go/control-structures/index">بنى التحكم</a></li><!--]--></ul><h3>الدوال</h3> <ul><!--[--><li><a href="../../../../book/effective-go/functions/index">الدوال</a></li><!--]--></ul><h3>البيانات</h3> <ul><!--[--><li><a href="../../../../book/effective-go/data/index">البيانات</a></li><!--]--></ul><h3>التهيئة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/initialization/index">التهيئة</a></li><!--]--></ul><h3>الطرق</h3> <ul><!--[--><li><a href="../../../../book/effective-go/methods/index">الطرق</a></li><!--]--></ul><h3>الواجهات وأنواع أخرى</h3> <ul><!--[--><li><a href="../../../../book/effective-go/interfaces-and-types/index">الواجهات وأنواع أخرى</a></li><!--]--></ul><h3>المُعرِّف الفارغ</h3> <ul><!--[--><li><a href="../../../../book/effective-go/the-blank-identifier/index">المُعرِّف الفارغ</a></li><!--]--></ul><h3>الدمج</h3> <ul><!--[--><li><a href="../../../../book/effective-go/embedding/index">الدمج</a></li><!--]--></ul><h3>التزامن</h3> <ul><!--[--><li><a href="../../../../book/effective-go/concurrency/index">التزامن</a></li><!--]--></ul><h3 class="active-chapter">الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/effective-go/errors/index" class="active">الأخطاء</a></li><!--]--></ul><h3>خادم ويب</h3> <ul><!--[--><li><a href="../../../../book/effective-go/web-server/index">خادم ويب</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>الأخطاء</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><p>على دوال المكتبات أن تُرجع في أغلب الأحيان نوعًا ما من إشارة الخطأ إلى المنادي. وقد ذكرنا سابقًا أن الإرجاع متعدّد القيم في Go يجعل من السهل أن تُرجع وصفًا تفصيليًا للخطأ إلى جانب قيمة الإرجاع المعتادة. ومن الأسلوب الجيد أن تستعمل هذه الميزة لتوفير معلومات دقيقة عن الخطأ. فمثلًا، كما سنرى، لا تُرجع <code>os.Open</code> مؤشرًا <code>nil</code> فحسب عند الفشل، بل تُرجع أيضًا قيمة خطأ تصف ما الذي حدث.</p>
+<p>وبالعرف، تكون الأخطاء من النوع <code>error</code>، وهي واجهة مدمجة بسيطة:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> <span class="hljs-type">error</span> <span class="hljs-keyword">interface</span> {
+    Error() <span class="hljs-type">string</span>
+}
+</code></pre>
+<p>ومَن يكتب مكتبة حرّ في تنفيذ هذه الواجهة بنموذج أغنى في باطنها، فيصبح من الممكن ألّا ترى الخطأ فحسب بل أن تقدّم بعض السياق. وقد ذكرنا أن <code>os.Open</code> تُرجع، إلى جانب قيمة الإرجاع المعتادة <code>*os.File</code>، قيمة خطأ أيضًا. فإذا فُتح الملف بنجاح كان الخطأ <code>nil</code>، أما عند وجود مشكلة فيحمل قيمة <code>os.PathError</code>:</p>
+<pre><code class="language-go"><span class="hljs-comment">// PathError records an error and the operation and</span>
+<span class="hljs-comment">// file path that caused it.</span>
+<span class="hljs-keyword">type</span> PathError <span class="hljs-keyword">struct</span> {
+    Op <span class="hljs-type">string</span>    <span class="hljs-comment">// &quot;open&quot;, &quot;unlink&quot;, etc.</span>
+    Path <span class="hljs-type">string</span>  <span class="hljs-comment">// The associated file.</span>
+    Err <span class="hljs-type">error</span>    <span class="hljs-comment">// Returned by the system call.</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *PathError)</span></span> Error() <span class="hljs-type">string</span> {
+    <span class="hljs-keyword">return</span> e.Op + <span class="hljs-string">&quot; &quot;</span> + e.Path + <span class="hljs-string">&quot;: &quot;</span> + e.Err.Error()
+}
+</code></pre>
+<p>وتولّد دالة <code>Error</code> في <code>PathError</code> نصًّا من هذا النوع:</p>
+<pre><code class="language-text">open /etc/passwx: no such file or directory
+</code></pre>
+<p>وهذا الخطأ — الذي يتضمّن اسم الملف المشكلة، والعملية، وخطأ نظام التشغيل الذي سبّبه — مفيد حتى لو طُبع بعيدًا عن النداء الذي سبّبه؛ فهو أكثر إفادة بكثير من عبارة «no such file or directory» المجرّدة.</p>
+<p>وحيثما أمكن، ينبغي لنصوص الأخطاء أن تحدّد مصدرها، مثل أن تحمل بادئة تسمّي العملية أو الحزمة التي أنتجت الخطأ. فمثلًا، في الحزمة <code>image</code>، يكون التمثيل النصّي لخطأ في فك ترميز بسبب تنسيق غير معروف هو «image: unknown format».</p>
+<p>والمنادون الذين يهمّهم تفصيل الأخطاء يستطيعون استعمال مُبدِّل أنواع أو تأكيد نوع للبحث عن أخطاء بعينها واستخراج تفاصيلها. وبالنسبة إلى <code>PathErrors</code> قد يشمل ذلك فحص الحقل الداخلي <code>Err</code> للكشف عن الأعطال القابلة للاسترداد:</p>
+<pre><code class="language-go"><span class="hljs-keyword">for</span> try := <span class="hljs-number">0</span>; try &lt; <span class="hljs-number">2</span>; try++ {
+    file, err = os.Create(filename)
+    <span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> {
+        <span class="hljs-keyword">return</span>
+    }
+    <span class="hljs-keyword">if</span> e, ok := err.(*os.PathError); ok &amp;&amp; e.Err == syscall.ENOSPC {
+        deleteTempFiles()  <span class="hljs-comment">// Recover some space.</span>
+        <span class="hljs-keyword">continue</span>
+    }
+    <span class="hljs-keyword">return</span>
+}
+</code></pre>
+<p>وجملة <code>if</code> الثانية هنا هي تأكيد نوع آخر. فإن أخفقت، سيكون <code>ok</code> خاطئًا وستكون <code>e</code> هي <code>nil</code>. وإن نجحت، سيكون <code>ok</code> صحيحًا، أي إن الخطأ كان من نوع <code>*os.PathError</code>، ومن ثمّ <code>e</code> كذلك، فيمكننا فحصه لمعرفة المزيد عن الخطأ.</p>
+<h2 id="panic">panic</h2>
+<p>الطريقة المعتادة للإبلاغ عن خطأ إلى المنادي هي أن تُرجع <code>error</code> كقيمة إرجاع إضافية. وطريقة <code>Read</code> المعتادة مثال معروف؛ فهي تُرجع عدد بايتات و<code>error</code>. لكن ماذا إن كان الخطأ غير قابل للاسترداد؟ أحيانًا لا يستطيع البرنامج أن يُكمل ببساطة.</p>
+<p>ولهذا الغرض توجد دالة مدمجة اسمها <code>panic</code> تنشئ خطأ وقت تشغيل يوقف البرنامج (لكن انظر القسم التالي). وهي تأخذ وسيطًا واحدًا من نوع اعتباطي — غالبًا نصًّا — يُطبع عند موت البرنامج. وهي أيضًا طريقة للإشارة إلى حدوث شيء مستحيل، مثل الخروج من حلقة لا نهائية.</p>
+<pre><code class="language-go"><span class="hljs-comment">// A toy implementation of cube root using Newton&#x27;s method.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CubeRoot</span><span class="hljs-params">(x <span class="hljs-type">float64</span>)</span></span> <span class="hljs-type">float64</span> {
+    z := x/<span class="hljs-number">3</span>   <span class="hljs-comment">// Arbitrary initial value</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1e6</span>; i++ {
+        prevz := z
+        z -= (z*z*z-x) / (<span class="hljs-number">3</span>*z*z)
+        <span class="hljs-keyword">if</span> veryClose(z, prevz) {
+            <span class="hljs-keyword">return</span> z
+        }
+    }
+    <span class="hljs-comment">// A million iterations has not converged; something is wrong.</span>
+    <span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">&quot;CubeRoot(%g) did not converge&quot;</span>, x))
+}
+</code></pre>
+<p>هذا مثال فحسب، لكن دوال المكتبات الحقيقية ينبغي أن تتجنّب <code>panic</code>. فإن أمكن إخفاء المشكلة أو الالتفاف حولها، فالأفضل دائمًا ترك الأشياء تعمل بدلًا من إسقاط البرنامج كله. ومن الأمثلة الممكنة على الاستثناء التهيئة: فإذا عجزت المكتبة حقًا عن.الإعداد، فقد يكون من المعقول أن «تُpanic» — على حدّ التعبير.</p>
+<pre><code class="language-go"><span class="hljs-keyword">var</span> user = os.Getenv(<span class="hljs-string">&quot;USER&quot;</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">if</span> user == <span class="hljs-string">&quot;&quot;</span> {
+        <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;no value for $USER&quot;</span>)
+    }
+}
+</code></pre>
+<h2 id="recover">recover</h2>
+<p>حين تُنادى <code>panic</code> — بما في ذلك ضمنيًا لأخطاء وقت التشغيل مثل الفهرسة خارج حدود شريحة أو فشل تأكيد نوع — فإنها توقف تنفيذ الدالة الحالية فورًا وتبدأ في فكّ مكدّس الـ goroutine، مُنفِّذة أي دوال مؤجَّلة في الطريق. فإن بلغ هذا الفكّ قمة مكدّس الـ goroutine، مات البرنامج. غير أنه من الممكن استعمال الدالة المدمجة <code>recover</code> لاستعادة التحكّم في الـ goroutine واستئناف التنفيذ الطبيعي.</p>
+<p>ونداءُ <code>recover</code> يوقف عملية الفكّ ويُرجع الوسيط الذي مُرِّر إلى <code>panic</code>. ولأن الشيفرة الوحيدة التي تعمل أثناء الفكّ هي ما بداخل الدوال المؤجَّلة، فإن <code>recover</code> لا تنفع إلا داخل دوال مؤجَّلة.</p>
+<p>ومن تطبيقات <code>recover</code> إيقاف goroutine فاشلة داخل خادم دون قتل الـ goroutines الأخرى العاملة. وإليك مثالًا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">server</span><span class="hljs-params">(workChan &lt;-<span class="hljs-keyword">chan</span> *Work)</span></span> {
+    <span class="hljs-keyword">for</span> work := <span class="hljs-keyword">range</span> workChan {
+        <span class="hljs-keyword">go</span> safelyDo(work)
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">safelyDo</span><span class="hljs-params">(work *Work)</span></span> {
+    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> {
+            log.Println(<span class="hljs-string">&quot;work failed:&quot;</span>, err)
+        }
+    }()
+    do(work)
+}
+</code></pre>
+<p>في هذا المثال، إن أُطلق <code>panic</code> في <code>do(work)</code>، فسيُسجَّل الناتج وتخرج الـ goroutine بنظافة دون إزعاج غيرها. ولا حاجة إلى عمل أي شيء آخر داخل الإغلاق المؤجَّل؛ فنداء <code>recover</code> يعالج الحالة تمامًا.</p>
+<p>ولأن <code>recover</code> تُرجع دائمًا <code>nil</code> ما لم تُنَادَ مباشرةً من دالة مؤجَّلة، فإن الشيفرة المؤجَّلة تستطيع أن تنادي دوال مكتبات تستعمل <code>panic</code> و<code>recover</code> هي نفسها دون أن تفشل. فمثلًا، قد تنادي الدالة المؤجَّلة في <code>safelyDo</code> دالة تسجيل قبل نداء <code>recover</code>، وستعمل شيفرة التسجيل تلك دون أن يؤثّر فيها حالة الانهيار.</p>
+<p>ومع وجود نمط الاسترداد هذا، تستطيع دالة <code>do</code> — وأي شيء تناديه — أن تخرج من أي موقف سيّئ بأمان عبر نداء <code>panic</code>. ويمكننا أن نستثمر هذه الفكرة لتبسيط معالجة الأخطاء في البرمجيات المعقّدة. فلنرَ نسخة مثالية من حزمة <code>regexp</code>، وهي تبلّغ عن أخطاء التحليل بنداء <code>panic</code> مع نوع خطأ محلي. وإليك تعريف <code>Error</code>، ودالة <code>error</code>، ودالة <code>Compile</code>:</p>
+<pre><code class="language-go"><span class="hljs-comment">// Error is the type of a parse error; it satisfies the error interface.</span>
+<span class="hljs-keyword">type</span> Error <span class="hljs-type">string</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Error)</span></span> Error() <span class="hljs-type">string</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">string</span>(e)
+}
+
+<span class="hljs-comment">// error is a method of *Regexp that reports parsing errors by</span>
+<span class="hljs-comment">// panicking with an Error.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(regexp *Regexp)</span></span> <span class="hljs-type">error</span>(err <span class="hljs-type">string</span>) {
+    <span class="hljs-built_in">panic</span>(Error(err))
+}
+
+<span class="hljs-comment">// Compile returns a parsed representation of the regular expression.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Compile</span><span class="hljs-params">(str <span class="hljs-type">string</span>)</span></span> (regexp *Regexp, err <span class="hljs-type">error</span>) {
+    regexp = <span class="hljs-built_in">new</span>(Regexp)
+    <span class="hljs-comment">// doParse will panic if there is a parse error.</span>
+    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">if</span> e := <span class="hljs-built_in">recover</span>(); e != <span class="hljs-literal">nil</span> {
+            regexp = <span class="hljs-literal">nil</span>    <span class="hljs-comment">// Clear return value.</span>
+            err = e.(Error) <span class="hljs-comment">// Will re-panic if not a parse error.</span>
+        }
+    }()
+    <span class="hljs-keyword">return</span> regexp.doParse(str), <span class="hljs-literal">nil</span>
+}
+</code></pre>
+<p>وإن أُطلق <code>panic</code> في <code>doParse</code>، فإن كتلة الاسترداد ستضبط قيمة الإرجاع على <code>nil</code> — فالدوال المؤجَّلة تستطيع تعديل قيم الإرجاع المسمّاة. ثم ستفحص، في الإسناد إلى <code>err</code>، أن المشكلة كانت خطأ تحليل بتأكيد أنها من النوع المحلي <code>Error</code>. وإن لم تكن كذلك، فإن تأكيد النوع سيفشل، فيسبب خطأ وقت تشغيل يُكمل فكّ المكدّس وكأن شيئًا لم يقطعه. يعني هذا الفحص أن إذا حدث شيء غير متوقّع، مثل الخروج عن حدود فهرس، فستفشل الشيفرة رغم أننا نستعمل <code>panic</code> و<code>recover</code> في معالجة أخطاء التحليل.</p>
+<p>ومع وجود معالجة الأخطاء، تصبح دالة <code>error</code> — ولأنها دالة مرتبطة بنوع، فلا بأس ولا غرابة في أن تحمل الاسم نفسه الذي تحمله نوع <code>error</code> المدمج — تجعل الإبلاغ عن أخطاء التحليل سهلًا دون التفكير في فكّ مكدّس التحليل يدويًا:</p>
+<pre><code class="language-go"><span class="hljs-keyword">if</span> pos == <span class="hljs-number">0</span> {
+    re.<span class="hljs-type">error</span>(<span class="hljs-string">&quot;&#x27;*&#x27; illegal at start of expression&quot;</span>)
+}
+</code></pre>
+<p>ورغم نفع هذا النمط، فينبغي ألا يُستعمل إلا داخل الحزمة الواحدة. فدالة <code>Parse</code> تحوّل نداءاتها الداخلية لـ <code>panic</code> إلى قيم <code>error</code>؛ فهي لا تكشف <code>panics</code> لعملائها. وهذه قاعدة جيّدة نمضي على النهج.</p>
+<p>وبالمناسبة، يغيّر هذا عرف إعادة الانهيار قيمة الانهيار إذا وقع خطأ فعلي. غير أن الفشل الأصلي والجديد سيُعرضان معًا في تقرير الانهيار، فيبقى سبب المشكلة الجذري ظاهرًا. ومن ثمّ يكفي هذا النهج البسيط لإعادة الانهيار عادةً — بعد كل شيء، إنّه انهيار — أما إن أردت عرض القيمة الأصلية وحدها، فبإمكانك كتابة شيفرة أطول قليلًا تُصفّي المشكلات غير المتوقّعة وتعيد الانهيار بالخطأ الأصلي. وذاك تُرك كتمرين للقارئ.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/effective-go/concurrency/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التزامن</span></a><!--]--> <!--[0--><a href="../../../../book/effective-go/web-server/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">خادم ويب</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ad9a2f = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.B3zN2Ssl.js"),
+						import("../../../../_app/immutable/entry/app.BjFV5UfP.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

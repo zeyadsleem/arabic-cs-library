@@ -1,0 +1,2 @@
+const o="how-to-write-go-code",t="introduction",e="مقدمة",n="index",c="مقدمة",d=[],s=`<p>هذا المستند يوضّح تطوير حزمة Go بسيطة داخل وحدة (module)، ويقدّم الأداة <code>go</code>، وهي الطريقة المعيارية لجلب وحدات Go وحزمها وأوامرها وبنائها وتثبيتها.</p>
+`,i={book:o,chapter:t,chapterTitle:e,slug:n,title:c,headings:d,html:s};export{o as book,t as chapter,e as chapterTitle,i as default,d as headings,s as html,n as slug,c as title};

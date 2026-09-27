@@ -1,0 +1,64 @@
+const e="effective-go",s="embedding",o="الدمج",a="index",n="الدمج",c=[],d=`<p>لا توفّر Go مفهوم الوراثة المعتاد القائم على الأنواع، لكنها تملك القدرة على «استعارة» أجزاء من تنفيذ ما بتضمين الأنواع داخل بنية أو واجهة.</p>
+<p>وتضمين الواجهات أمر بسيط جدًا. لقد ذكرنا واجهتَي <code>io.Reader</code> و<code>io.Writer</code> من قبل؛ وهذه تعريفاتهما:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> Reader <span class="hljs-keyword">interface</span> {
+    Read(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)
+}
+
+<span class="hljs-keyword">type</span> Writer <span class="hljs-keyword">interface</span> {
+    Write(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)
+}
+</code></pre>
+<p>وتصدّر الحزمة <code>io</code> أيضًا عدة واجهات أخرى تحدّد كائنات تستطيع تنفيذ عدة من هذه الدوال. فمثلًا هناك <code>io.ReadWriter</code>، وهي واجهة تحوي <code>Read</code> و<code>Write</code> معًا. يمكننا أن نحدّد <code>io.ReadWriter</code> بذكر الدالتين صراحةً، لكن تضمين الواجهتين لتكوين الواجهة الجديدة أسهل وأوضح:</p>
+<pre><code class="language-go"><span class="hljs-comment">// ReadWriter is the interface that combines the Reader and Writer interfaces.</span>
+<span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">interface</span> {
+    Reader
+    Writer
+}
+</code></pre>
+<p>وهذا يقول ما يبدو تمامًا: تستطيع <code>ReadWriter</code> أن تفعل ما تفعله <code>Reader</code> وما تفعله <code>Writer</code>؛ إنها اتحاد للواجهات المُدمجة. ولا يمكن تضمين سوى الواجهات داخل الواجهات.</p>
+<p>وتنطبق الفكرة الأساسية نفسها على البنى، لكن نتائجها أبعد مدًى. فلدى الحزمة <code>bufio</code> نوعا بنية، هما <code>bufio.Reader</code> و<code>bufio.Writer</code>، وكلاهما ينفّذ بطبيعة الحال الواجهتين المقابلتين من الحزمة <code>io</code>. كما أن <code>bufio</code> تنفّذ قارئًا/كاتبًا مُخزَّنًا مؤقتًا، وذلك بدمج قارئ وكاتب في بنية واحدة باستخدام التضمين: فهي تذكر الأنواع داخل البنية لكنها لا تعطيها أسماء حقول.</p>
+<pre><code class="language-go"><span class="hljs-comment">// ReadWriter stores pointers to a Reader and a Writer.</span>
+<span class="hljs-comment">// It implements io.ReadWriter.</span>
+<span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">struct</span> {
+    *Reader  <span class="hljs-comment">// *bufio.Reader</span>
+    *Writer  <span class="hljs-comment">// *bufio.Writer</span>
+}
+</code></pre>
+<p>والعناصر المُدمجة هي مؤشرات إلى بنى، ويجب بالطبع تهيئتها لتشير إلى بنى صالحة قبل أن تُستعمل. ويمكن كتابة بنية <code>ReadWriter</code> هكذا:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">struct</span> {
+    reader *Reader
+    writer *Writer
+}
+</code></pre>
+<p>لكن عندها نحتاج — لترقية دوال الحقول ولإشباع واجهات <code>io</code> — إلى توفير دوال تمرير (forwarding methods) هكذا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(rw *ReadWriter)</span></span> Read(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>) {
+    <span class="hljs-keyword">return</span> rw.reader.Read(p)
+}
+</code></pre>
+<p>وبتضمين البنى مباشرةً، نتفادى هذه الأعمال الكتابية كلها. فدوال الأنواع المُدمجة تأتي مجّانًا، أي أن <code>bufio.ReadWriter</code> لا يملك دوال <code>bufio.Reader</code> و<code>bufio.Writer</code> فحسب، بل يشبع أيضًا الواجهات الثلاث: <code>io.Reader</code> و<code>io.Writer</code> و<code>io.ReadWriter</code>.</p>
+<p>وهناك فرق مهم بين التضمين والوراثة. فعند تضمين نوع، تصبح دوال ذلك النوع دوال للنوع الخارجي، غير أن المُستقبِل عند نداء تلك الدوال هو النوع الداخلي لا الخارجي. ففي مثالنا، حين تُندعى دالة <code>Read</code> الخاصة بـ <code>bufio.ReadWriter</code>، يكون لها الأثر نفسه تمامًا الذي للدالة المكتوبة أعلاه؛ فالمُستقبِل هو الحقل <code>reader</code> داخل <code>ReadWriter</code> لا <code>ReadWriter</code> نفسها.</p>
+<p>ويمكن أن يكون التضمين مجرّد راحة. فالمثال التالي يُظهر حقلًا مُدمجًا إلى جانب حقل عادي مُسمّى:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> Job <span class="hljs-keyword">struct</span> {
+    Command <span class="hljs-type">string</span>
+    *log.Logger
+}
+</code></pre>
+<p>أصبح لدى النوع <code>Job</code> الآن دوال <code>Print</code> و<code>Printf</code> و<code>Println</code> وغيرها من دوال <code>*log.Logger</code>. كان بإمكاننا أن نُعطي <code>Logger</code> اسم حقل، لكن ذلك ليس ضروريًا. والآن، بعد التهيئة، يمكننا أن نسجّل في <code>Job</code>:</p>
+<pre><code class="language-go">job.Println(<span class="hljs-string">&quot;starting now...&quot;</span>)
+</code></pre>
+<p>و<code>Logger</code> حقل عادي في بنية <code>Job</code>، ويمكن تهيئته على النحو المعتاد داخل مُنشئ <code>Job</code>، هكذا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewJob</span><span class="hljs-params">(command <span class="hljs-type">string</span>, logger *log.Logger)</span></span> *Job {
+    <span class="hljs-keyword">return</span> &amp;Job{command, logger}
+}
+</code></pre>
+<p>أو بقيمة مركّبة:</p>
+<pre><code class="language-go">job := &amp;Job{command, log.New(os.Stderr, <span class="hljs-string">&quot;Job: &quot;</span>, log.Ldate)}
+</code></pre>
+<p>وإن احتجنا الإشارة إلى حقل مُدمج مباشرةً، فإن اسم نوع الحقل — متجاهلين مُحدِّد الحزمة — يعمل اسم حقل، كما كان في دالة <code>Read</code> الخاصة ببنية <code>ReadWriter</code>. وهنا، إن احتجنا الوصول إلى <code>*log.Logger</code> الخاص بمتغيّر <code>job</code> من النوع <code>Job</code>، لكتَبنا <code>job.Logger</code>، وهو ما يكون مفيدًا لو أردنا تنقيح دوال <code>Logger</code>:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(job *Job)</span></span> Printf(format <span class="hljs-type">string</span>, args ...<span class="hljs-keyword">interface</span>{}) {
+    job.Logger.Printf(<span class="hljs-string">&quot;%q: %s&quot;</span>, job.Command, fmt.Sprintf(format, args...))
+}
+</code></pre>
+<p>ويُقدّم تضمين الأنواع مشكلة تعارض الأسماء، لكن قواعد حلّها بسيطة. أولًا، الحقل أو الدالة <code>X</code> تحجب أي عنصر آخر اسمُه <code>X</code> في جزء أعماق تداخلًا داخل النوع. فإذا كان <code>log.Logger</code> يحوي حقلًا أو دالة اسمُها <code>Command</code>، لطغى حقل <code>Command</code> الخاص بـ <code>Job</code> عليها.</p>
+<p>ثانيًا، إن ظهر الاسم نفسه على مستوى التداخل نفسه، فذلك عادةً خطأ؛ ومن الخطأ تضمين <code>log.Logger</code> إذا كانت بنية <code>Job</code> تحوي حقلًا أو دالة أخرى اسمُها <code>Logger</code>. لكن إن لم يُذكر الاسم المكرّر في البرنامج خارج تعريف النوع، فلا بأس. ويقدّم هذا التقييد قدرًا من الحماية ضد التغييرات التي تُجرى على أنواع مُدمجة من الخارج: فلا مشكلة إن أُضيف حقل يتعارض مع حقل آخر في نوع فرعي آخر، ما دام لم يُستعمل أيٌّ منهما أبدًا.</p>
+`,r={book:e,chapter:s,chapterTitle:o,slug:a,title:n,headings:c,html:d};export{e as book,s as chapter,o as chapterTitle,r as default,c as headings,d as html,a as slug,n as title};

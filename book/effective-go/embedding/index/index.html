@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.B3zN2Ssl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/HDcIFdPs.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DyW3u5n-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.BjFV5UfP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.qKHRscGD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSyanxWP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/mpWbqwpc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/1igVymJj.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.PN5J_LRl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C1gN4WzR.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الدمج — الدمج"/><!----><title>الدمج | Go الفعّالة</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/effective-go">Go الفعّالة</a> <span class="reader-bar__chapter">› الدمج</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 13 من 16">13 / 16</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/effective-go/the-blank-identifier/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/effective-go/concurrency/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مقدمة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/introduction/index">مقدمة</a></li><!--]--></ul><h3>التنسيق</h3> <ul><!--[--><li><a href="../../../../book/effective-go/formatting/index">التنسيق</a></li><!--]--></ul><h3>التعليقات</h3> <ul><!--[--><li><a href="../../../../book/effective-go/commentary/index">التعليقات</a></li><!--]--></ul><h3>التسمية</h3> <ul><!--[--><li><a href="../../../../book/effective-go/names/index">التسمية</a></li><!--]--></ul><h3>الفواصل المنقوطة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/semicolons/index">الفواصل المنقوطة</a></li><!--]--></ul><h3>بنى التحكم</h3> <ul><!--[--><li><a href="../../../../book/effective-go/control-structures/index">بنى التحكم</a></li><!--]--></ul><h3>الدوال</h3> <ul><!--[--><li><a href="../../../../book/effective-go/functions/index">الدوال</a></li><!--]--></ul><h3>البيانات</h3> <ul><!--[--><li><a href="../../../../book/effective-go/data/index">البيانات</a></li><!--]--></ul><h3>التهيئة</h3> <ul><!--[--><li><a href="../../../../book/effective-go/initialization/index">التهيئة</a></li><!--]--></ul><h3>الطرق</h3> <ul><!--[--><li><a href="../../../../book/effective-go/methods/index">الطرق</a></li><!--]--></ul><h3>الواجهات وأنواع أخرى</h3> <ul><!--[--><li><a href="../../../../book/effective-go/interfaces-and-types/index">الواجهات وأنواع أخرى</a></li><!--]--></ul><h3>المُعرِّف الفارغ</h3> <ul><!--[--><li><a href="../../../../book/effective-go/the-blank-identifier/index">المُعرِّف الفارغ</a></li><!--]--></ul><h3 class="active-chapter">الدمج</h3> <ul><!--[--><li><a href="../../../../book/effective-go/embedding/index" class="active">الدمج</a></li><!--]--></ul><h3>التزامن</h3> <ul><!--[--><li><a href="../../../../book/effective-go/concurrency/index">التزامن</a></li><!--]--></ul><h3>الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/effective-go/errors/index">الأخطاء</a></li><!--]--></ul><h3>خادم ويب</h3> <ul><!--[--><li><a href="../../../../book/effective-go/web-server/index">خادم ويب</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>الدمج</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><p>لا توفّر Go مفهوم الوراثة المعتاد القائم على الأنواع، لكنها تملك القدرة على «استعارة» أجزاء من تنفيذ ما بتضمين الأنواع داخل بنية أو واجهة.</p>
+<p>وتضمين الواجهات أمر بسيط جدًا. لقد ذكرنا واجهتَي <code>io.Reader</code> و<code>io.Writer</code> من قبل؛ وهذه تعريفاتهما:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> Reader <span class="hljs-keyword">interface</span> {
+    Read(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)
+}
+
+<span class="hljs-keyword">type</span> Writer <span class="hljs-keyword">interface</span> {
+    Write(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)
+}
+</code></pre>
+<p>وتصدّر الحزمة <code>io</code> أيضًا عدة واجهات أخرى تحدّد كائنات تستطيع تنفيذ عدة من هذه الدوال. فمثلًا هناك <code>io.ReadWriter</code>، وهي واجهة تحوي <code>Read</code> و<code>Write</code> معًا. يمكننا أن نحدّد <code>io.ReadWriter</code> بذكر الدالتين صراحةً، لكن تضمين الواجهتين لتكوين الواجهة الجديدة أسهل وأوضح:</p>
+<pre><code class="language-go"><span class="hljs-comment">// ReadWriter is the interface that combines the Reader and Writer interfaces.</span>
+<span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">interface</span> {
+    Reader
+    Writer
+}
+</code></pre>
+<p>وهذا يقول ما يبدو تمامًا: تستطيع <code>ReadWriter</code> أن تفعل ما تفعله <code>Reader</code> وما تفعله <code>Writer</code>؛ إنها اتحاد للواجهات المُدمجة. ولا يمكن تضمين سوى الواجهات داخل الواجهات.</p>
+<p>وتنطبق الفكرة الأساسية نفسها على البنى، لكن نتائجها أبعد مدًى. فلدى الحزمة <code>bufio</code> نوعا بنية، هما <code>bufio.Reader</code> و<code>bufio.Writer</code>، وكلاهما ينفّذ بطبيعة الحال الواجهتين المقابلتين من الحزمة <code>io</code>. كما أن <code>bufio</code> تنفّذ قارئًا/كاتبًا مُخزَّنًا مؤقتًا، وذلك بدمج قارئ وكاتب في بنية واحدة باستخدام التضمين: فهي تذكر الأنواع داخل البنية لكنها لا تعطيها أسماء حقول.</p>
+<pre><code class="language-go"><span class="hljs-comment">// ReadWriter stores pointers to a Reader and a Writer.</span>
+<span class="hljs-comment">// It implements io.ReadWriter.</span>
+<span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">struct</span> {
+    *Reader  <span class="hljs-comment">// *bufio.Reader</span>
+    *Writer  <span class="hljs-comment">// *bufio.Writer</span>
+}
+</code></pre>
+<p>والعناصر المُدمجة هي مؤشرات إلى بنى، ويجب بالطبع تهيئتها لتشير إلى بنى صالحة قبل أن تُستعمل. ويمكن كتابة بنية <code>ReadWriter</code> هكذا:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> ReadWriter <span class="hljs-keyword">struct</span> {
+    reader *Reader
+    writer *Writer
+}
+</code></pre>
+<p>لكن عندها نحتاج — لترقية دوال الحقول ولإشباع واجهات <code>io</code> — إلى توفير دوال تمرير (forwarding methods) هكذا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(rw *ReadWriter)</span></span> Read(p []<span class="hljs-type">byte</span>) (n <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>) {
+    <span class="hljs-keyword">return</span> rw.reader.Read(p)
+}
+</code></pre>
+<p>وبتضمين البنى مباشرةً، نتفادى هذه الأعمال الكتابية كلها. فدوال الأنواع المُدمجة تأتي مجّانًا، أي أن <code>bufio.ReadWriter</code> لا يملك دوال <code>bufio.Reader</code> و<code>bufio.Writer</code> فحسب، بل يشبع أيضًا الواجهات الثلاث: <code>io.Reader</code> و<code>io.Writer</code> و<code>io.ReadWriter</code>.</p>
+<p>وهناك فرق مهم بين التضمين والوراثة. فعند تضمين نوع، تصبح دوال ذلك النوع دوال للنوع الخارجي، غير أن المُستقبِل عند نداء تلك الدوال هو النوع الداخلي لا الخارجي. ففي مثالنا، حين تُندعى دالة <code>Read</code> الخاصة بـ <code>bufio.ReadWriter</code>، يكون لها الأثر نفسه تمامًا الذي للدالة المكتوبة أعلاه؛ فالمُستقبِل هو الحقل <code>reader</code> داخل <code>ReadWriter</code> لا <code>ReadWriter</code> نفسها.</p>
+<p>ويمكن أن يكون التضمين مجرّد راحة. فالمثال التالي يُظهر حقلًا مُدمجًا إلى جانب حقل عادي مُسمّى:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> Job <span class="hljs-keyword">struct</span> {
+    Command <span class="hljs-type">string</span>
+    *log.Logger
+}
+</code></pre>
+<p>أصبح لدى النوع <code>Job</code> الآن دوال <code>Print</code> و<code>Printf</code> و<code>Println</code> وغيرها من دوال <code>*log.Logger</code>. كان بإمكاننا أن نُعطي <code>Logger</code> اسم حقل، لكن ذلك ليس ضروريًا. والآن، بعد التهيئة، يمكننا أن نسجّل في <code>Job</code>:</p>
+<pre><code class="language-go">job.Println(<span class="hljs-string">&quot;starting now...&quot;</span>)
+</code></pre>
+<p>و<code>Logger</code> حقل عادي في بنية <code>Job</code>، ويمكن تهيئته على النحو المعتاد داخل مُنشئ <code>Job</code>، هكذا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewJob</span><span class="hljs-params">(command <span class="hljs-type">string</span>, logger *log.Logger)</span></span> *Job {
+    <span class="hljs-keyword">return</span> &amp;Job{command, logger}
+}
+</code></pre>
+<p>أو بقيمة مركّبة:</p>
+<pre><code class="language-go">job := &amp;Job{command, log.New(os.Stderr, <span class="hljs-string">&quot;Job: &quot;</span>, log.Ldate)}
+</code></pre>
+<p>وإن احتجنا الإشارة إلى حقل مُدمج مباشرةً، فإن اسم نوع الحقل — متجاهلين مُحدِّد الحزمة — يعمل اسم حقل، كما كان في دالة <code>Read</code> الخاصة ببنية <code>ReadWriter</code>. وهنا، إن احتجنا الوصول إلى <code>*log.Logger</code> الخاص بمتغيّر <code>job</code> من النوع <code>Job</code>، لكتَبنا <code>job.Logger</code>، وهو ما يكون مفيدًا لو أردنا تنقيح دوال <code>Logger</code>:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(job *Job)</span></span> Printf(format <span class="hljs-type">string</span>, args ...<span class="hljs-keyword">interface</span>{}) {
+    job.Logger.Printf(<span class="hljs-string">&quot;%q: %s&quot;</span>, job.Command, fmt.Sprintf(format, args...))
+}
+</code></pre>
+<p>ويُقدّم تضمين الأنواع مشكلة تعارض الأسماء، لكن قواعد حلّها بسيطة. أولًا، الحقل أو الدالة <code>X</code> تحجب أي عنصر آخر اسمُه <code>X</code> في جزء أعماق تداخلًا داخل النوع. فإذا كان <code>log.Logger</code> يحوي حقلًا أو دالة اسمُها <code>Command</code>، لطغى حقل <code>Command</code> الخاص بـ <code>Job</code> عليها.</p>
+<p>ثانيًا، إن ظهر الاسم نفسه على مستوى التداخل نفسه، فذلك عادةً خطأ؛ ومن الخطأ تضمين <code>log.Logger</code> إذا كانت بنية <code>Job</code> تحوي حقلًا أو دالة أخرى اسمُها <code>Logger</code>. لكن إن لم يُذكر الاسم المكرّر في البرنامج خارج تعريف النوع، فلا بأس. ويقدّم هذا التقييد قدرًا من الحماية ضد التغييرات التي تُجرى على أنواع مُدمجة من الخارج: فلا مشكلة إن أُضيف حقل يتعارض مع حقل آخر في نوع فرعي آخر، ما دام لم يُستعمل أيٌّ منهما أبدًا.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/effective-go/the-blank-identifier/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المُعرِّف الفارغ</span></a><!--]--> <!--[0--><a href="../../../../book/effective-go/concurrency/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التزامن</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1ad9a2f = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.B3zN2Ssl.js"),
+						import("../../../../_app/immutable/entry/app.BjFV5UfP.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

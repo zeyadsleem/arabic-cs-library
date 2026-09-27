@@ -1,0 +1,120 @@
+const s="effective-go",n="errors",a="الأخطاء",e="index",o="الأخطاء",p=[{depth:2,id:"panic",text:"panic"},{depth:2,id:"recover",text:"recover"}],r=`<p>على دوال المكتبات أن تُرجع في أغلب الأحيان نوعًا ما من إشارة الخطأ إلى المنادي. وقد ذكرنا سابقًا أن الإرجاع متعدّد القيم في Go يجعل من السهل أن تُرجع وصفًا تفصيليًا للخطأ إلى جانب قيمة الإرجاع المعتادة. ومن الأسلوب الجيد أن تستعمل هذه الميزة لتوفير معلومات دقيقة عن الخطأ. فمثلًا، كما سنرى، لا تُرجع <code>os.Open</code> مؤشرًا <code>nil</code> فحسب عند الفشل، بل تُرجع أيضًا قيمة خطأ تصف ما الذي حدث.</p>
+<p>وبالعرف، تكون الأخطاء من النوع <code>error</code>، وهي واجهة مدمجة بسيطة:</p>
+<pre><code class="language-go"><span class="hljs-keyword">type</span> <span class="hljs-type">error</span> <span class="hljs-keyword">interface</span> {
+    Error() <span class="hljs-type">string</span>
+}
+</code></pre>
+<p>ومَن يكتب مكتبة حرّ في تنفيذ هذه الواجهة بنموذج أغنى في باطنها، فيصبح من الممكن ألّا ترى الخطأ فحسب بل أن تقدّم بعض السياق. وقد ذكرنا أن <code>os.Open</code> تُرجع، إلى جانب قيمة الإرجاع المعتادة <code>*os.File</code>، قيمة خطأ أيضًا. فإذا فُتح الملف بنجاح كان الخطأ <code>nil</code>، أما عند وجود مشكلة فيحمل قيمة <code>os.PathError</code>:</p>
+<pre><code class="language-go"><span class="hljs-comment">// PathError records an error and the operation and</span>
+<span class="hljs-comment">// file path that caused it.</span>
+<span class="hljs-keyword">type</span> PathError <span class="hljs-keyword">struct</span> {
+    Op <span class="hljs-type">string</span>    <span class="hljs-comment">// &quot;open&quot;, &quot;unlink&quot;, etc.</span>
+    Path <span class="hljs-type">string</span>  <span class="hljs-comment">// The associated file.</span>
+    Err <span class="hljs-type">error</span>    <span class="hljs-comment">// Returned by the system call.</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *PathError)</span></span> Error() <span class="hljs-type">string</span> {
+    <span class="hljs-keyword">return</span> e.Op + <span class="hljs-string">&quot; &quot;</span> + e.Path + <span class="hljs-string">&quot;: &quot;</span> + e.Err.Error()
+}
+</code></pre>
+<p>وتولّد دالة <code>Error</code> في <code>PathError</code> نصًّا من هذا النوع:</p>
+<pre><code class="language-text">open /etc/passwx: no such file or directory
+</code></pre>
+<p>وهذا الخطأ — الذي يتضمّن اسم الملف المشكلة، والعملية، وخطأ نظام التشغيل الذي سبّبه — مفيد حتى لو طُبع بعيدًا عن النداء الذي سبّبه؛ فهو أكثر إفادة بكثير من عبارة «no such file or directory» المجرّدة.</p>
+<p>وحيثما أمكن، ينبغي لنصوص الأخطاء أن تحدّد مصدرها، مثل أن تحمل بادئة تسمّي العملية أو الحزمة التي أنتجت الخطأ. فمثلًا، في الحزمة <code>image</code>، يكون التمثيل النصّي لخطأ في فك ترميز بسبب تنسيق غير معروف هو «image: unknown format».</p>
+<p>والمنادون الذين يهمّهم تفصيل الأخطاء يستطيعون استعمال مُبدِّل أنواع أو تأكيد نوع للبحث عن أخطاء بعينها واستخراج تفاصيلها. وبالنسبة إلى <code>PathErrors</code> قد يشمل ذلك فحص الحقل الداخلي <code>Err</code> للكشف عن الأعطال القابلة للاسترداد:</p>
+<pre><code class="language-go"><span class="hljs-keyword">for</span> try := <span class="hljs-number">0</span>; try &lt; <span class="hljs-number">2</span>; try++ {
+    file, err = os.Create(filename)
+    <span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> {
+        <span class="hljs-keyword">return</span>
+    }
+    <span class="hljs-keyword">if</span> e, ok := err.(*os.PathError); ok &amp;&amp; e.Err == syscall.ENOSPC {
+        deleteTempFiles()  <span class="hljs-comment">// Recover some space.</span>
+        <span class="hljs-keyword">continue</span>
+    }
+    <span class="hljs-keyword">return</span>
+}
+</code></pre>
+<p>وجملة <code>if</code> الثانية هنا هي تأكيد نوع آخر. فإن أخفقت، سيكون <code>ok</code> خاطئًا وستكون <code>e</code> هي <code>nil</code>. وإن نجحت، سيكون <code>ok</code> صحيحًا، أي إن الخطأ كان من نوع <code>*os.PathError</code>، ومن ثمّ <code>e</code> كذلك، فيمكننا فحصه لمعرفة المزيد عن الخطأ.</p>
+<h2 id="panic">panic</h2>
+<p>الطريقة المعتادة للإبلاغ عن خطأ إلى المنادي هي أن تُرجع <code>error</code> كقيمة إرجاع إضافية. وطريقة <code>Read</code> المعتادة مثال معروف؛ فهي تُرجع عدد بايتات و<code>error</code>. لكن ماذا إن كان الخطأ غير قابل للاسترداد؟ أحيانًا لا يستطيع البرنامج أن يُكمل ببساطة.</p>
+<p>ولهذا الغرض توجد دالة مدمجة اسمها <code>panic</code> تنشئ خطأ وقت تشغيل يوقف البرنامج (لكن انظر القسم التالي). وهي تأخذ وسيطًا واحدًا من نوع اعتباطي — غالبًا نصًّا — يُطبع عند موت البرنامج. وهي أيضًا طريقة للإشارة إلى حدوث شيء مستحيل، مثل الخروج من حلقة لا نهائية.</p>
+<pre><code class="language-go"><span class="hljs-comment">// A toy implementation of cube root using Newton&#x27;s method.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CubeRoot</span><span class="hljs-params">(x <span class="hljs-type">float64</span>)</span></span> <span class="hljs-type">float64</span> {
+    z := x/<span class="hljs-number">3</span>   <span class="hljs-comment">// Arbitrary initial value</span>
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1e6</span>; i++ {
+        prevz := z
+        z -= (z*z*z-x) / (<span class="hljs-number">3</span>*z*z)
+        <span class="hljs-keyword">if</span> veryClose(z, prevz) {
+            <span class="hljs-keyword">return</span> z
+        }
+    }
+    <span class="hljs-comment">// A million iterations has not converged; something is wrong.</span>
+    <span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">&quot;CubeRoot(%g) did not converge&quot;</span>, x))
+}
+</code></pre>
+<p>هذا مثال فحسب، لكن دوال المكتبات الحقيقية ينبغي أن تتجنّب <code>panic</code>. فإن أمكن إخفاء المشكلة أو الالتفاف حولها، فالأفضل دائمًا ترك الأشياء تعمل بدلًا من إسقاط البرنامج كله. ومن الأمثلة الممكنة على الاستثناء التهيئة: فإذا عجزت المكتبة حقًا عن.الإعداد، فقد يكون من المعقول أن «تُpanic» — على حدّ التعبير.</p>
+<pre><code class="language-go"><span class="hljs-keyword">var</span> user = os.Getenv(<span class="hljs-string">&quot;USER&quot;</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">if</span> user == <span class="hljs-string">&quot;&quot;</span> {
+        <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;no value for $USER&quot;</span>)
+    }
+}
+</code></pre>
+<h2 id="recover">recover</h2>
+<p>حين تُنادى <code>panic</code> — بما في ذلك ضمنيًا لأخطاء وقت التشغيل مثل الفهرسة خارج حدود شريحة أو فشل تأكيد نوع — فإنها توقف تنفيذ الدالة الحالية فورًا وتبدأ في فكّ مكدّس الـ goroutine، مُنفِّذة أي دوال مؤجَّلة في الطريق. فإن بلغ هذا الفكّ قمة مكدّس الـ goroutine، مات البرنامج. غير أنه من الممكن استعمال الدالة المدمجة <code>recover</code> لاستعادة التحكّم في الـ goroutine واستئناف التنفيذ الطبيعي.</p>
+<p>ونداءُ <code>recover</code> يوقف عملية الفكّ ويُرجع الوسيط الذي مُرِّر إلى <code>panic</code>. ولأن الشيفرة الوحيدة التي تعمل أثناء الفكّ هي ما بداخل الدوال المؤجَّلة، فإن <code>recover</code> لا تنفع إلا داخل دوال مؤجَّلة.</p>
+<p>ومن تطبيقات <code>recover</code> إيقاف goroutine فاشلة داخل خادم دون قتل الـ goroutines الأخرى العاملة. وإليك مثالًا:</p>
+<pre><code class="language-go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">server</span><span class="hljs-params">(workChan &lt;-<span class="hljs-keyword">chan</span> *Work)</span></span> {
+    <span class="hljs-keyword">for</span> work := <span class="hljs-keyword">range</span> workChan {
+        <span class="hljs-keyword">go</span> safelyDo(work)
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">safelyDo</span><span class="hljs-params">(work *Work)</span></span> {
+    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> {
+            log.Println(<span class="hljs-string">&quot;work failed:&quot;</span>, err)
+        }
+    }()
+    do(work)
+}
+</code></pre>
+<p>في هذا المثال، إن أُطلق <code>panic</code> في <code>do(work)</code>، فسيُسجَّل الناتج وتخرج الـ goroutine بنظافة دون إزعاج غيرها. ولا حاجة إلى عمل أي شيء آخر داخل الإغلاق المؤجَّل؛ فنداء <code>recover</code> يعالج الحالة تمامًا.</p>
+<p>ولأن <code>recover</code> تُرجع دائمًا <code>nil</code> ما لم تُنَادَ مباشرةً من دالة مؤجَّلة، فإن الشيفرة المؤجَّلة تستطيع أن تنادي دوال مكتبات تستعمل <code>panic</code> و<code>recover</code> هي نفسها دون أن تفشل. فمثلًا، قد تنادي الدالة المؤجَّلة في <code>safelyDo</code> دالة تسجيل قبل نداء <code>recover</code>، وستعمل شيفرة التسجيل تلك دون أن يؤثّر فيها حالة الانهيار.</p>
+<p>ومع وجود نمط الاسترداد هذا، تستطيع دالة <code>do</code> — وأي شيء تناديه — أن تخرج من أي موقف سيّئ بأمان عبر نداء <code>panic</code>. ويمكننا أن نستثمر هذه الفكرة لتبسيط معالجة الأخطاء في البرمجيات المعقّدة. فلنرَ نسخة مثالية من حزمة <code>regexp</code>، وهي تبلّغ عن أخطاء التحليل بنداء <code>panic</code> مع نوع خطأ محلي. وإليك تعريف <code>Error</code>، ودالة <code>error</code>، ودالة <code>Compile</code>:</p>
+<pre><code class="language-go"><span class="hljs-comment">// Error is the type of a parse error; it satisfies the error interface.</span>
+<span class="hljs-keyword">type</span> Error <span class="hljs-type">string</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Error)</span></span> Error() <span class="hljs-type">string</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">string</span>(e)
+}
+
+<span class="hljs-comment">// error is a method of *Regexp that reports parsing errors by</span>
+<span class="hljs-comment">// panicking with an Error.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(regexp *Regexp)</span></span> <span class="hljs-type">error</span>(err <span class="hljs-type">string</span>) {
+    <span class="hljs-built_in">panic</span>(Error(err))
+}
+
+<span class="hljs-comment">// Compile returns a parsed representation of the regular expression.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Compile</span><span class="hljs-params">(str <span class="hljs-type">string</span>)</span></span> (regexp *Regexp, err <span class="hljs-type">error</span>) {
+    regexp = <span class="hljs-built_in">new</span>(Regexp)
+    <span class="hljs-comment">// doParse will panic if there is a parse error.</span>
+    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-keyword">if</span> e := <span class="hljs-built_in">recover</span>(); e != <span class="hljs-literal">nil</span> {
+            regexp = <span class="hljs-literal">nil</span>    <span class="hljs-comment">// Clear return value.</span>
+            err = e.(Error) <span class="hljs-comment">// Will re-panic if not a parse error.</span>
+        }
+    }()
+    <span class="hljs-keyword">return</span> regexp.doParse(str), <span class="hljs-literal">nil</span>
+}
+</code></pre>
+<p>وإن أُطلق <code>panic</code> في <code>doParse</code>، فإن كتلة الاسترداد ستضبط قيمة الإرجاع على <code>nil</code> — فالدوال المؤجَّلة تستطيع تعديل قيم الإرجاع المسمّاة. ثم ستفحص، في الإسناد إلى <code>err</code>، أن المشكلة كانت خطأ تحليل بتأكيد أنها من النوع المحلي <code>Error</code>. وإن لم تكن كذلك، فإن تأكيد النوع سيفشل، فيسبب خطأ وقت تشغيل يُكمل فكّ المكدّس وكأن شيئًا لم يقطعه. يعني هذا الفحص أن إذا حدث شيء غير متوقّع، مثل الخروج عن حدود فهرس، فستفشل الشيفرة رغم أننا نستعمل <code>panic</code> و<code>recover</code> في معالجة أخطاء التحليل.</p>
+<p>ومع وجود معالجة الأخطاء، تصبح دالة <code>error</code> — ولأنها دالة مرتبطة بنوع، فلا بأس ولا غرابة في أن تحمل الاسم نفسه الذي تحمله نوع <code>error</code> المدمج — تجعل الإبلاغ عن أخطاء التحليل سهلًا دون التفكير في فكّ مكدّس التحليل يدويًا:</p>
+<pre><code class="language-go"><span class="hljs-keyword">if</span> pos == <span class="hljs-number">0</span> {
+    re.<span class="hljs-type">error</span>(<span class="hljs-string">&quot;&#x27;*&#x27; illegal at start of expression&quot;</span>)
+}
+</code></pre>
+<p>ورغم نفع هذا النمط، فينبغي ألا يُستعمل إلا داخل الحزمة الواحدة. فدالة <code>Parse</code> تحوّل نداءاتها الداخلية لـ <code>panic</code> إلى قيم <code>error</code>؛ فهي لا تكشف <code>panics</code> لعملائها. وهذه قاعدة جيّدة نمضي على النهج.</p>
+<p>وبالمناسبة، يغيّر هذا عرف إعادة الانهيار قيمة الانهيار إذا وقع خطأ فعلي. غير أن الفشل الأصلي والجديد سيُعرضان معًا في تقرير الانهيار، فيبقى سبب المشكلة الجذري ظاهرًا. ومن ثمّ يكفي هذا النهج البسيط لإعادة الانهيار عادةً — بعد كل شيء، إنّه انهيار — أما إن أردت عرض القيمة الأصلية وحدها، فبإمكانك كتابة شيفرة أطول قليلًا تُصفّي المشكلات غير المتوقّعة وتعيد الانهيار بالخطأ الأصلي. وذاك تُرك كتمرين للقارئ.</p>
+`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:o,headings:p,html:r};export{s as book,n as chapter,a as chapterTitle,c as default,p as headings,r as html,e as slug,o as title};
