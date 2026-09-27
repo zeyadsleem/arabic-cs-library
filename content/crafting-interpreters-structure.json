@@ -1,0 +1,424 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "a-map-of-the-territory",
+      "title": "A Map of the Territory",
+      "titleAr": "A Map of the Territory",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Map of the Territory",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "welcome",
+      "title": "Welcome",
+      "titleAr": "Welcome",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Welcome",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "the-lox-language",
+      "title": "The Lox Language",
+      "titleAr": "The Lox Language",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Lox Language",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "types-of-values",
+      "title": "Types of Values",
+      "titleAr": "Types of Values",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Types of Values",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "scanning",
+      "title": "Scanning",
+      "titleAr": "Scanning",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scanning",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "scanning-on-demand",
+      "title": "Scanning On Demand",
+      "titleAr": "Scanning On Demand",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scanning On Demand",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "representing-code",
+      "title": "Representing Code",
+      "titleAr": "Representing Code",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Representing Code",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "resolving-and-binding",
+      "title": "Resolving and Binding",
+      "titleAr": "Resolving and Binding",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Resolving and Binding",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "statements-and-state",
+      "title": "Statements and State",
+      "titleAr": "Statements and State",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Statements and State",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "classes",
+      "title": "Classes",
+      "titleAr": "Classes",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Classes",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "classes-and-instances",
+      "title": "Classes and Instances",
+      "titleAr": "Classes and Instances",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Classes and Instances",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "methods-and-initializers",
+      "title": "Methods and Initializers",
+      "titleAr": "Methods and Initializers",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Methods and Initializers",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "inheritance",
+      "title": "Inheritance",
+      "titleAr": "Inheritance",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Inheritance",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "superclasses",
+      "title": "Superclasses",
+      "titleAr": "Superclasses",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Superclasses",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "control-flow",
+      "title": "Control Flow",
+      "titleAr": "Control Flow",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Control Flow",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "parsing-expressions",
+      "title": "Parsing Expressions",
+      "titleAr": "Parsing Expressions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Parsing Expressions",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "evaluating-expressions",
+      "title": "Evaluating Expressions",
+      "titleAr": "Evaluating Expressions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Evaluating Expressions",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "strings",
+      "title": "Strings",
+      "titleAr": "Strings",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Strings",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "functions",
+      "title": "Functions",
+      "titleAr": "Functions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Functions",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "calls-and-functions",
+      "title": "Calls and Functions",
+      "titleAr": "Calls and Functions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Calls and Functions",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "closures",
+      "title": "Closures",
+      "titleAr": "Closures",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Closures",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "local-variables",
+      "title": "Local Variables",
+      "titleAr": "Local Variables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Local Variables",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "a-virtual-machine",
+      "title": "A Virtual Machine",
+      "titleAr": "A Virtual Machine",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Virtual Machine",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "compiling-expressions",
+      "title": "Compiling Expressions",
+      "titleAr": "Compiling Expressions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Compiling Expressions",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "a-bytecode-virtual-machine",
+      "title": "A Bytecode Virtual Machine",
+      "titleAr": "A Bytecode Virtual Machine",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Bytecode Virtual Machine",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "key": "chunks-of-bytecode",
+      "title": "Chunks of Bytecode",
+      "titleAr": "Chunks of Bytecode",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Chunks of Bytecode",
+          "order": 26
+        }
+      ]
+    },
+    {
+      "key": "a-tree-walk-interpreter",
+      "title": "A Tree-Walk Interpreter",
+      "titleAr": "A Tree-Walk Interpreter",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "A Tree-Walk Interpreter",
+          "order": 27
+        }
+      ]
+    },
+    {
+      "key": "jumping-back-and-forth",
+      "title": "Jumping Back and Forth",
+      "titleAr": "Jumping Back and Forth",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Jumping Back and Forth",
+          "order": 28
+        }
+      ]
+    },
+    {
+      "key": "global-variables",
+      "title": "Global Variables",
+      "titleAr": "Global Variables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Global Variables",
+          "order": 29
+        }
+      ]
+    },
+    {
+      "key": "hash-tables",
+      "title": "Hash Tables",
+      "titleAr": "Hash Tables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hash Tables",
+          "order": 30
+        }
+      ]
+    },
+    {
+      "key": "optimization",
+      "title": "Optimization",
+      "titleAr": "Optimization",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimization",
+          "order": 31
+        }
+      ]
+    },
+    {
+      "key": "garbage-collection",
+      "title": "Garbage Collection",
+      "titleAr": "Garbage Collection",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Garbage Collection",
+          "order": 32
+        }
+      ]
+    },
+    {
+      "key": "appendix-i",
+      "title": "Appendix I",
+      "titleAr": "Appendix I",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix I",
+          "order": 33
+        }
+      ]
+    },
+    {
+      "key": "appendix-ii",
+      "title": "Appendix II",
+      "titleAr": "Appendix II",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Appendix II",
+          "order": 34
+        }
+      ]
+    }
+  ]
+}

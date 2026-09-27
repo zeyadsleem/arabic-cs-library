@@ -607,7 +607,7 @@
       "title": "صناعة المفسّرات",
       "titleEn": "Crafting Interpreters",
       "author": "Robert Nystrom",
-      "description": "من المحلل المعجمي إلى المحلل النحوي وشجرة الصياغة، ثم المفسّر والإغلاقات وآلة البايت كود وجمع النفايات — 30 فصلاً مع مفسّرين كاملين بـC وJava.",
+      "description": "صناعة المفسّرات كاملة: 35 فصلاً وملحقان، من التحليل المعجمي إلى جمع النفايات — مع مفسّرين كاملين بـC وJava.",
       "sourceUrl": "https://craftinginterpreters.com/",
       "repoUrl": "https://github.com/munificent/craftinginterpreters",
       "license": "CC BY-NC-ND 4.0 (النص) / MIT (الشيفرة)",
@@ -616,12 +616,12 @@
         "C",
         "Java"
       ],
-      "status": "planned",
+      "status": "translated",
       "note": "نص الكتاب CC BY-NC-ND (الشيفرة MIT). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "languages",
       "order": 4,
       "format": "html",
-      "pages": 640,
+      "pages": 35,
       "completeCourse": true,
       "prerequisites": [
         "nand2tetris-2"
@@ -674,7 +674,7 @@
       "title": "أنماط برمجة الألعاب",
       "titleEn": "Game Programming Patterns",
       "author": "Robert Nystrom",
-      "description": "أنماط التصميم، وطوابير الأحداث، والحالة، والمكوّنات، ومحلية البيانات وغيرها — 21 فصلاً.",
+      "description": "أنماط برمجة الألعاب كاملة: 26 فصلاً عن أنماط التصميم والتسلسل والفصل والأداء في الألعاب.",
       "sourceUrl": "https://gameprogrammingpatterns.com/",
       "repoUrl": "https://github.com/munificent/game-programming-patterns",
       "license": "CC BY-NC-ND 4.0 (النص) / MIT (الشيفرة)",
@@ -682,12 +682,12 @@
       "languages": [
         "C++"
       ],
-      "status": "planned",
+      "status": "translated",
       "note": "نص الكتاب CC BY-NC-ND (الشيفرة MIT). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "architecture",
       "order": 3,
       "format": "html",
-      "pages": 250,
+      "pages": 26,
       "completeCourse": true,
       "prerequisites": [
         "500-lines"
@@ -784,16 +784,16 @@
       "title": "مقدمة في علوم الحاسوب النظرية",
       "titleEn": "Introduction to Theoretical Computer Science",
       "author": "Boaz Barak",
-      "description": "الآلات المجردة، والقابلية للحساب، وآلات تورينج، والتعقيد، ومسألتا P وNP.",
+      "description": "مقدمة في علوم الحاسوب النظرية: 26 محاضرة عن الحوسبة، والتمثيل، وعدم قابلية الحساب، وP مقابل NP، والتشفير، والحوسبة الكمّية.",
       "sourceUrl": "https://introtcs.org/public/index.html",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "status": "planned",
+      "status": "translated",
       "note": "ترخيص CC BY-NC-ND + الكتاب ناقص (فصلان). أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "math",
       "order": 3,
       "format": "markdown",
-      "pages": 656,
+      "pages": 26,
       "completeCourse": false,
       "prerequisites": [
         "discrete-math",

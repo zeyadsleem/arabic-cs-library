@@ -1,0 +1,316 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "design-patterns-revisited",
+      "title": "Design Patterns Revisited",
+      "titleAr": "Design Patterns Revisited",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Design Patterns Revisited",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "command",
+      "title": "Command",
+      "titleAr": "Command",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Command",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "flyweight",
+      "title": "Flyweight",
+      "titleAr": "Flyweight",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Flyweight",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "observer",
+      "title": "Observer",
+      "titleAr": "Observer",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Observer",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "prototype",
+      "title": "Prototype",
+      "titleAr": "Prototype",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Prototype",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "singleton",
+      "title": "Singleton",
+      "titleAr": "Singleton",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Singleton",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "state",
+      "title": "State",
+      "titleAr": "State",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "State",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "subclass-sandbox",
+      "title": "Subclass Sandbox",
+      "titleAr": "Subclass Sandbox",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Subclass Sandbox",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "bytecode",
+      "title": "Bytecode",
+      "titleAr": "Bytecode",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Bytecode",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "type-object",
+      "title": "Type Object",
+      "titleAr": "Type Object",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Type Object",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "behavioral-patterns",
+      "title": "Behavioral Patterns",
+      "titleAr": "Behavioral Patterns",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Behavioral Patterns",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "double-buffer",
+      "title": "Double Buffer",
+      "titleAr": "Double Buffer",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Double Buffer",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "game-loop",
+      "title": "Game Loop",
+      "titleAr": "Game Loop",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Game Loop",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "update-method",
+      "title": "Update Method",
+      "titleAr": "Update Method",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Update Method",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "event-queue",
+      "title": "Event Queue",
+      "titleAr": "Event Queue",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Event Queue",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "component",
+      "title": "Component",
+      "titleAr": "Component",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Component",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "decoupling-patterns",
+      "title": "Decoupling Patterns",
+      "titleAr": "Decoupling Patterns",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Decoupling Patterns",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "service-locator",
+      "title": "Service Locator",
+      "titleAr": "Service Locator",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Service Locator",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "sequencing-patterns",
+      "title": "Sequencing Patterns",
+      "titleAr": "Sequencing Patterns",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sequencing Patterns",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "optimization-patterns",
+      "title": "Optimization Patterns",
+      "titleAr": "Optimization Patterns",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimization Patterns",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "dirty-flag",
+      "title": "Dirty Flag",
+      "titleAr": "Dirty Flag",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dirty Flag",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "object-pool",
+      "title": "Object Pool",
+      "titleAr": "Object Pool",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Object Pool",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "spatial-partition",
+      "title": "Spatial Partition",
+      "titleAr": "Spatial Partition",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Spatial Partition",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "data-locality",
+      "title": "Data Locality",
+      "titleAr": "Data Locality",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data Locality",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "architecture-performance-and-games",
+      "title": "Architecture, Performance, and Games",
+      "titleAr": "Architecture, Performance, and Games",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Architecture, Performance, and Games",
+          "order": 25
+        }
+      ]
+    }
+  ]
+}

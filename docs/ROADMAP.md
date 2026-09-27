@@ -7,7 +7,7 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 مترجم بالكامل داخل المكتبة: **8 كتب / 268 صفحة**
-`Hello Algo` (117) · `patterns.dev` (53) · `500 Lines` (23) · `Database Design` (19) · `Missing Semester` (13) ·
+`Hello Algo` (117) · `patterns.dev` (53) · `500 Lines` (23) · `Database Design` (19) · `Crafting Interpreters` (35) · `Game Programming Patterns` (26) · `IntroTCS` (26) · `Missing Semester` (13) ·
 `Eloquent JavaScript` (22) · `Full Stack open` (68) · `Go by Example` (84 مثالاً) ·
 `Learn Go with Tests` · `Go 101` (136 مقالاً).
 

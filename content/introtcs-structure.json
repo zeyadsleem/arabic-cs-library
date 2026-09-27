@@ -1,0 +1,316 @@
+{
+  "chapters": [
+    {
+      "key": "lec_00_0_preface",
+      "title": "Preface {#prefacechap }",
+      "titleAr": "Preface",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface {#prefacechap }",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "lec_00_1_math_background",
+      "title": "Mathematical Background { #chapmath }",
+      "titleAr": "Mathematical Background",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mathematical Background { #chapmath }",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "lec_01_introduction",
+      "title": "Introduction { #chapintro }",
+      "titleAr": "Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction { #chapintro }",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "lec_02_representation",
+      "title": "Computation and Representation {#chaprepres }",
+      "titleAr": "Representing Information",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Computation and Representation {#chaprepres }",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "lec_03_computation",
+      "title": "Defining computation {#compchap }",
+      "titleAr": "Computation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Defining computation {#compchap }",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "lec_03a_computing_every_function",
+      "title": "Syntactic sugar, and computing every function {#finiteuniversalchap }",
+      "titleAr": "Computing Every Function",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Syntactic sugar, and computing every function {#finiteuniversalchap }",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "lec_04_code_and_data",
+      "title": "Code as data, data as code { #codeanddatachap }",
+      "titleAr": "Code and Data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Code as data, data as code { #codeanddatachap }",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "lec_05_infinite",
+      "title": "Functions with Infinite domains, Automata, and Regular expressions { #chapinfinite }",
+      "titleAr": "Infinite Sets",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Functions with Infinite domains, Automata, and Regular expressions { #chapinfinite }",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "lec_06_loops",
+      "title": "Loops and infinity { #chaploops }",
+      "titleAr": "Loops and Recursions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Loops and infinity { #chaploops }",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "lec_07_other_models",
+      "title": "Equivalent models of computation { #chapequivalentmodels }",
+      "titleAr": "Other Models of Computation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Equivalent models of computation { #chapequivalentmodels }",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "lec_08_uncomputability",
+      "title": "Universality and uncomputability {#chapcomputable }",
+      "titleAr": "Uncomputability",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Universality and uncomputability {#chapcomputable }",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "lec_08a_restricted_models",
+      "title": "Restricted computational models { #restrictedchap }",
+      "titleAr": "Restricted Models of Computation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Restricted computational models { #restrictedchap }",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "lec_09_godel",
+      "title": "Is every theorem provable? { #godelchap }",
+      "titleAr": "The Gödel Theorem",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Is every theorem provable? { #godelchap }",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "lec_10_efficient_alg",
+      "title": "Efficient computation: An informal introduction { #chapefficient }",
+      "titleAr": "Efficient Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Efficient computation: An informal introduction { #chapefficient }",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "lec_11_running_time",
+      "title": "Modeling running time { #chapmodelruntime }",
+      "titleAr": "Running Time",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modeling running time { #chapmodelruntime }",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "lec_12_NP",
+      "title": "Polynomial-time reductions {#reductionchap }",
+      "titleAr": "NP",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Polynomial-time reductions {#reductionchap }",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "lec_13_Cook_Levin",
+      "title": "NP, NP completeness, and the Cook-Levin Theorem {#cooklevinchap }",
+      "titleAr": "The Cook-Levin Theorem",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "NP, NP completeness, and the Cook-Levin Theorem {#cooklevinchap }",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "lec_14_PvsNP",
+      "title": "What if P equals NP? { #chappvsnp }",
+      "titleAr": "P versus NP",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "What if P equals NP? { #chappvsnp }",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "lec_14a_space_complexity",
+      "title": "Space bounded computation { #spacechap }",
+      "titleAr": "Space Complexity",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Space bounded computation { #spacechap }",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "lec_15_probability",
+      "title": "Probability Theory 101 {#probabilitychap }",
+      "titleAr": "Probability and Randomized Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Probability Theory 101 {#probabilitychap }",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "lec_16_randomized_alg",
+      "title": "Probabilistic computation { #randomizedalgchap }",
+      "titleAr": "Randomized Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Probabilistic computation { #randomizedalgchap }",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "lec_17_model_rand",
+      "title": "Modeling randomized computation  { #chapmodelrand }",
+      "titleAr": "Models of Randomized Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modeling randomized computation  { #chapmodelrand }",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "lec_19_cryptography",
+      "title": "Cryptography { #chapcryptography  }",
+      "titleAr": "Cryptography",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Cryptography { #chapcryptography  }",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "lec_20_alg_society",
+      "title": "Algorithms and society",
+      "titleAr": "Algorithms and Society",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Algorithms and society",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "lec_24_proofs",
+      "title": "Proofs and algorithms  { #chapproofs }",
+      "titleAr": "Proofs",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Proofs and algorithms  { #chapproofs }",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "lec_26_quantum_computing",
+      "title": "Quantum computing { #quantumchap }",
+      "titleAr": "Quantum Computing",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Quantum computing { #quantumchap }",
+          "order": 25
+        }
+      ]
+    }
+  ]
+}

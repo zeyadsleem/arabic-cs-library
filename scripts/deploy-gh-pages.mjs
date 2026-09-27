@@ -21,7 +21,11 @@ const repo = match[2];
 const repoUrl = `git@github.com:${owner}/${repo}.git`;
 
 console.log(`بناء الموقع للمسار /${repo} ...`);
-run('node', ['scripts/build-content.mjs'], { cwd: root, stdio: 'inherit' });
+run('node', ['scripts/build-content.mjs'], {
+  cwd: root,
+  stdio: 'inherit',
+  env: { ...process.env, BASE_PATH: `/${repo}` },
+});
 run('node', ['node_modules/vite/bin/vite.js', 'build'], {
   cwd: root,
   stdio: 'inherit',

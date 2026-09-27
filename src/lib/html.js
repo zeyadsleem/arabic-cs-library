@@ -1,8 +1,23 @@
 import { base } from '$app/paths';
 
+const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * @param {string} path
+ * @returns {string}
+ */
 export const withBasePath = (path) => (base ? `${base}${path}` : path);
 
+/**
+ * @param {string | null | undefined} html
+ * @returns {string | null | undefined}
+ */
 export const withBase = (html) => {
   if (!html || !base) return html;
-  return html.replace(/(src|href)="\/(?!\/)/g, `$1="${base}/`);
+  const prefix = base.replace(/^\//, '');
+  const already = new RegExp(`^(?:/${escape(prefix)}/|/)`, 'i');
+  return html.replace(/(src|href)="(\/[^"]*)"/g, (match, attribute, value) => {
+    if (already.test(value)) return match;
+    return `${attribute}="${base}${value}"`;
+  });
 };

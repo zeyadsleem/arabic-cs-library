@@ -13,6 +13,16 @@ const generatedDir = path.join(root, 'src', 'lib', 'generated');
 const library = JSON.parse(
   fs.readFileSync(path.join(contentDir, 'library.json'), 'utf8')
 );
+const basePath = (process.env.BASE_PATH || '').replace(/\/$/, '');
+
+const withBasePath = (html) => {
+  if (!basePath) return html;
+  return html.replace(/(href|src)\s*=\s*"(\s*)(\/[^"]*)"/g, (match, attribute, space, value) => {
+    if (value.startsWith(`${basePath}/`)) return match;
+    return `${attribute}="${space}${basePath}${value}"`;
+  });
+};
+
 const learningPath = JSON.parse(
   fs.readFileSync(path.join(contentDir, 'learning-path.json'), 'utf8')
 );
@@ -137,6 +147,7 @@ const run = () => {
         let html = markdown.render(content);
         html = addHeadingIds(html);
         html = wrapExercises(html);
+        html = withBasePath(html);
 
         const entry = {
           book: book.id,
