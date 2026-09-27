@@ -1,0 +1,292 @@
+{
+  "chapters": [
+    {
+      "key": "overview",
+      "title": "نظرة عامة على الحزمة",
+      "titleAr": "نظرة عامة على الحزمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة على الحزمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "astro",
+      "title": "Astro",
+      "titleAr": "Astro",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Astro",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "htmx",
+      "title": "htmx",
+      "titleAr": "htmx",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "htmx",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "alpine",
+      "title": "Alpine.js",
+      "titleAr": "Alpine.js",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Alpine.js",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "conclusion",
+      "title": "الخلاصة",
+      "titleAr": "الخلاصة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الخلاصة",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "whats-changed",
+      "title": "ما تغيّر منذ 2024",
+      "titleAr": "ما تغيّر منذ 2024",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "ما تغيّر منذ 2024",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "ai-agents",
+      "title": "حزمة AHA للوكلاء الذكيين",
+      "titleAr": "حزمة AHA للوكلاء الذكيين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "حزمة AHA للوكلاء الذكيين",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "how-we-got-here",
+      "title": "كيف وصلنا إلى هنا",
+      "titleAr": "كيف وصلنا إلى هنا",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "كيف وصلنا إلى هنا",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "html-first",
+      "title": "HTML أولاً",
+      "titleAr": "HTML أولاً",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "HTML أولاً",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "simplicity",
+      "title": "البساطة",
+      "titleAr": "البساطة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البساطة",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "example-first",
+      "title": "مثال أوّل",
+      "titleAr": "مثال أوّل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مثال أوّل",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "example-alpine",
+      "title": "إضافة Alpine",
+      "titleAr": "إضافة Alpine",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "إضافة Alpine",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "example-contacts",
+      "title": "مثال من كتاب Hypermedia Systems",
+      "titleAr": "مثال من كتاب Hypermedia Systems",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مثال من كتاب Hypermedia Systems",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "other-resources",
+      "title": "مصادر أخرى",
+      "titleAr": "مصادر أخرى",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مصادر أخرى",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "faq-why",
+      "title": "لماذا؟",
+      "titleAr": "لماذا؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "لماذا؟",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "faq-real-world",
+      "title": "هل يعمل في العالم الحقيقي؟",
+      "titleAr": "هل يعمل في العالم الحقيقي؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "هل يعمل في العالم الحقيقي؟",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "faq-scale",
+      "title": "هل يتوسّع؟",
+      "titleAr": "هل يتوسّع؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "هل يتوسّع؟",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "faq-too-simple",
+      "title": "أليس هذا بسيطاً أكثر من اللازم؟",
+      "titleAr": "أليس هذا بسيطاً أكثر من اللازم؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أليس هذا بسيطاً أكثر من اللازم؟",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "faq-why-astro",
+      "title": "لماذا Astro؟",
+      "titleAr": "لماذا Astro؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "لماذا Astro؟",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "faq-mobile",
+      "title": "وماذا عن تطبيقات الجوال؟",
+      "titleAr": "وماذا عن تطبيقات الجوال؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "وماذا عن تطبيقات الجوال؟",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "faq-ajax",
+      "title": "أليس هذا مجرد AJAX؟",
+      "titleAr": "أليس هذا مجرد AJAX؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أليس هذا مجرد AJAX؟",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "compare-spa",
+      "title": "مقارنة مع تطبيق SPA",
+      "titleAr": "مقارنة مع تطبيق SPA",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقارنة مع تطبيق SPA",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "compare-web-1",
+      "title": "مقارنة مع تطبيق Web 1.0",
+      "titleAr": "مقارنة مع تطبيق Web 1.0",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقارنة مع تطبيق Web 1.0",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "similar-things",
+      "title": "هل هو مثل Hotwire أو Livewire؟",
+      "titleAr": "هل هو مثل Hotwire أو Livewire؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "هل هو مثل Hotwire أو Livewire؟",
+          "order": 23
+        }
+      ]
+    }
+  ]
+}

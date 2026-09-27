@@ -18,6 +18,9 @@
 | صناعة المفسّرات (Crafting Interpreters) | ✅ 35 فصلاً وملحقان |
 | أنماط برمجة الألعاب (Game Programming Patterns) | ✅ 26 فصلاً |
 | مقدمة في علوم الحاسوب النظرية (Introtcs) | ✅ 26 محاضرة |
+| مجموعة AHA (Astro + htmx + Alpine) | ✅ 24 صفحة |
+| أمن الشبكات (Network Security) | ✅ 10 فصول |
+| تشفير 101 (Crypto 101) | ✅ 18 فصلاً |
 | الفصل المفقود في تعليم علوم الحاسوب (Missing Semester) | ✅ 13 محاضرة مع الفيديو |
 | Go بالأمثلة (Go by Example) | ✅ 84 مثالاً — موقع مستقل |
 | تعلّم Go مع الاختبارات (Learn Go with Tests) | ✅ كامل — موقع مستقل |

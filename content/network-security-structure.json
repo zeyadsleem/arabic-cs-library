@@ -1,0 +1,124 @@
+{
+  "chapters": [
+    {
+      "key": "foreword",
+      "title": "الكلمة الافتتاحية",
+      "titleAr": "الكلمة الافتتاحية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الكلمة الافتتاحية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "preface",
+      "title": "المقدمة",
+      "titleAr": "المقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المقدمة",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "principles",
+      "title": "مبادئ تصميم الشبكات",
+      "titleAr": "مبادئ تصميم الشبكات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مبادئ تصميم الشبكات",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "systems",
+      "title": "أمن الشبكات من منظور الأنظمة",
+      "titleAr": "أمن الشبكات من منظور الأنظمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أمن الشبكات من منظور الأنظمة",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "infra",
+      "title": "أمن البنية التحتية",
+      "titleAr": "أمن البنية التحتية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أمن البنية التحتية",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "crypto",
+      "title": "التشفير في الشبكات",
+      "titleAr": "التشفير في الشبكات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التشفير في الشبكات",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "key-distro",
+      "title": "توزيع المفاتيح",
+      "titleAr": "توزيع المفاتيح",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "توزيع المفاتيح",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "firewall",
+      "title": "جدران الحماية",
+      "titleAr": "جدران الحماية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "جدران الحماية",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "authentication",
+      "title": "المصادقة والتفويض",
+      "titleAr": "المصادقة والتفويض",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المصادقة والتفويض",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "tls",
+      "title": "أمن طبقة النقل (TLS)",
+      "titleAr": "أمن طبقة النقل (TLS)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أمن طبقة النقل (TLS)",
+          "order": 9
+        }
+      ]
+    }
+  ]
+}

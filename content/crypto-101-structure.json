@@ -1,0 +1,220 @@
+{
+  "chapters": [
+    {
+      "key": "foreword",
+      "title": "الكلمة التمهيدية",
+      "titleAr": "الكلمة التمهيدية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الكلمة التمهيدية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "building-blocks",
+      "title": "اللبنات الأساسية",
+      "titleAr": "اللبنات الأساسية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "اللبنات الأساسية",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "exclusive-or",
+      "title": "الاو الحصري (XOR)",
+      "titleAr": "الاو الحصري (XOR)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الاو الحصري (XOR)",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "block-ciphers",
+      "title": "شيفرات الكتل",
+      "titleAr": "شيفرات الكتل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "شيفرات الكتل",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "stream-ciphers",
+      "title": "شيفرات التيار",
+      "titleAr": "شيفرات التيار",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "شيفرات التيار",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "key-exchange",
+      "title": "تبادل المفاتيح",
+      "titleAr": "تبادل المفاتيح",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تبادل المفاتيح",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "public-key-encryption",
+      "title": "التشفير بالمفتاح العام",
+      "titleAr": "التشفير بالمفتاح العام",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التشفير بالمفتاح العام",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "hash-functions",
+      "title": "دوال التجزئة",
+      "titleAr": "دوال التجزئة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "دوال التجزئة",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "message-authentication-codes",
+      "title": "رموز التحقق من الرسالة",
+      "titleAr": "رموز التحقق من الرسالة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "رموز التحقق من الرسالة",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "signature-algorithms",
+      "title": "خوارزميات التوقيع",
+      "titleAr": "خوارزميات التوقيع",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خوارزميات التوقيع",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "key-derivation-functions",
+      "title": "دوال اشتقاق المفاتيح",
+      "titleAr": "دوال اشتقاق المفاتيح",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "دوال اشتقاق المفاتيح",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "random-number-generators",
+      "title": "مولّدات الأعداد العشوائية",
+      "titleAr": "مولّدات الأعداد العشوائية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مولّدات الأعداد العشوائية",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "complete-cryptosystems",
+      "title": "أنظمة تشفير متكاملة",
+      "titleAr": "أنظمة تشفير متكاملة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أنظمة تشفير متكاملة",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "off-the-record-messaging",
+      "title": "الرسائل التي لا تُخزَّن",
+      "titleAr": "الرسائل التي لا تُخزَّن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الرسائل التي لا تُخزَّن",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "openpgp-and-gpg",
+      "title": "OpenPGP وGPG",
+      "titleAr": "OpenPGP وGPG",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "OpenPGP وGPG",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "ssl-and-tls",
+      "title": "SSL وTLS",
+      "titleAr": "SSL وTLS",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SSL وTLS",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "appendices",
+      "title": "الملاحق",
+      "titleAr": "الملاحق",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الملاحق",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "glossary",
+      "title": "المسرد",
+      "titleAr": "المسرد",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المسرد",
+          "order": 17
+        }
+      ]
+    }
+  ]
+}
