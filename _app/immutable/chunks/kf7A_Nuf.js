@@ -1,0 +1,1 @@
+const t="arabic-cs-library:last-read",a=()=>{if(typeof localStorage>"u")return null;try{const r=localStorage.getItem(t);return r?JSON.parse(r):null}catch{return null}},o=r=>{if(!(typeof localStorage>"u"))try{localStorage.setItem(t,JSON.stringify({...r,at:Date.now()}))}catch{return}};export{a as r,o as s};
