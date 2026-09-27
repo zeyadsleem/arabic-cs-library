@@ -19,7 +19,6 @@ The production of this book has been made possible by the financial support of
     <img src="https://github.com/aosabook/500lines/raw/master/resource/pagerduty_logo.png" alt="PagerDuty Logo" />
 </p>
 
-
 Mission
 -------
 
@@ -339,7 +338,6 @@ Contributors
     <td><a href="https://github.com/yoavrubin">yoavrubin</a></td>
   </tr>
 </table>
-
 
 Technical Reviewers
 -------------------

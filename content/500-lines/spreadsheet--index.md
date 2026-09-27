@@ -10,9 +10,7 @@ _مُبرمجة ومترجمة تعلَّمت نفسها بنفسها، تعمل
 
 والإصدار ES5 من هذا المشروع متاح على [jsFiddle](http://jsfiddle.net/audreyt/LtDyP/).
 
-
 _(هذا الفصل متاح أيضًا [بالصينية التقليدية](https://github.com/aosabook/500lines/blob/master/spreadsheet/spreadsheet.zh-tw.markdown))._
-
 
 ## مقدّمة
 
@@ -32,9 +30,9 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 يحتوي دليل [ورقة الحساب](https://github.com/audreyt/500lines/tree/master/spreadsheet/code) على عرضنا لإصدارات أواخر عام 2014 من لغات الويب الثلاث: [HTML5](http://www.w3.org/TR/html5/) للبنية، و[CSS3](http://www.w3.org/TR/css3-ui/) للعرض، ومعيار JS [ES6 «Harmony»](http://git.io/es6features) للتفاعل. كما يستخدم [تخزين الويب](http://www.whatwg.org/specs/web-apps/current-work/multipage/webstorage.html) لاستمرارية البيانات، و[عمال الويب](http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html) لتشغيل شيفرة JS في الخلفية. وحتى وقت كتابة هذا الفصل، تدعم هذه المعايير ويب Firefox وChrome وInternet Explorer 11+، فضلًا عن متصفّحات الجوّال على iOS 5+ وAndroid 4+.
 
-الآن لنفتح [ورقة حسابنا](http://audreyt.github.io/500lines/spreadsheet/) في متصفّح (\aosafigref{500l.spreadsheet.initial}):
+الآن لنفتح [ورقة حسابنا](http://audreyt.github.io/500lines/spreadsheet/) في متصفّح (initial):
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-0-01_initial.webp{Initial Screen}{500l.spreadsheet.initial}
+![Initial Screen](/images/500-lines/spreadsheet-0-01_initial.webp)
 
 ### المفاهيم الأساسية
 
@@ -45,17 +43,17 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 * صيغة (_formula_): ‏`=A1+C1` في **E1**، وهي _تُحسب_ (_calculates_) إلى _قيمة_ (_value_) "3920"، تُعرض بخلفية زرقاء فاتحة.
 * فارغ: جميع خلايا الصف **2** فارغة حاليًّا.
 
-انقر على "3920" لوضع _التركيز_ (_focus_) على **E1**، ما يكشف صيغتها في _مربّع إدخال_ (_input box_) (\aosafigref{500l.spreadsheet.inputbox}).
+انقر على "3920" لوضع _التركيز_ (_focus_) على **E1**، ما يكشف صيغتها في _مربّع إدخال_ (_input box_) (inputbox).
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-1-02_input.webp{Input Box}{500l.spreadsheet.inputbox}
+![Input Box](/images/500-lines/spreadsheet-1-02_input.webp)
 
-الآن لنضع التركيز على **A1** و_نغيّر_ (_change_) محتواها إلى "1"، ممّا يجعل **E1** تُعيد الحساب (_recalculate_) لقيمتها فتصير "2047" (\aosafigref{500l.spreadsheet.changed}).
+الآن لنضع التركيز على **A1** و_نغيّر_ (_change_) محتواها إلى "1"، ممّا يجعل **E1** تُعيد الحساب (_recalculate_) لقيمتها فتصير "2047" (changed).
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-2-03_changed.webp{Changed Content}{500l.spreadsheet.changed}
+![Changed Content](/images/500-lines/spreadsheet-2-03_changed.webp)
 
-اضغط **ENTER** لوضع التركيز على **A2** وتغيير محتواها إلى `=Date()`، ثم اضغط **TAB**، وغيّر محتوى **B2** إلى `=alert()`، ثم اضغط **TAB** مرّة أخرى لوضع التركيز على `C2` (\aosafigref{500l.spreadsheet.error}).
+اضغط **ENTER** لوضع التركيز على **A2** وتغيير محتواها إلى `=Date()`، ثم اضغط **TAB**، وغيّر محتوى **B2** إلى `=alert()`، ثم اضغط **TAB** مرّة أخرى لوضع التركيز على `C2` (error).
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-3-04_error.webp{Formula Error}{500l.spreadsheet.error}
+![Formula Error](/images/500-lines/spreadsheet-3-04_error.webp)
 
 وهذا يُظهر أن الصيغة قد تحسب إلى رقم ("2047" في **E1**)، أو إلى نصّ (الوقت الحالي في **A2**، محاذًى إلى اليسار)، أو إلى _خطأ_ (_error_) (حروف حمراء في **B2**، محاذاةً إلى الوسط).
 
@@ -65,22 +63,22 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 ### التحسين التدريجي
 
-قبل أن نغوص في أسطر الشيفرة التسعة والتسعين، يجدر بنا تعطيل JS في المتصفّح، وإعادة تحميل الصفحة، وتدوين الفروق (\aosafigref{500l.spreadsheet.nojs}).
+قبل أن نغوص في أسطر الشيفرة التسعة والتسعين، يجدر بنا تعطيل JS في المتصفّح، وإعادة تحميل الصفحة، وتدوين الفروق (nojs).
 
 * بدلًا من الشبكة الكبيرة، لا يبقى على الشاشة سوى جدول 2×2، وفيه خلية محتوى واحدة.
 * تُستبدل تسميات الصفوف والأعمدة بـ `{{ row }}` و`{{ col }}`.
 * الضغط على زر إعادة التعيين لا يُحدث أيّ أثر.
 * الضغط على **TAB** أو النقر في سطر المحتوى الأوّل ما زال يكشف مربّع إدخال قابلًا للتحرير.
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-4-05_nojs.webp{With JavaScript Disabled}{500l.spreadsheet.nojs}
+![With JavaScript Disabled](/images/500-lines/spreadsheet-4-05_nojs.webp)
 
 حين نعطّل التفاعلات الديناميكية (JS)، تبقى بنية المحتوى (HTML) وأنماط العرض (_style_) الخاصّة بـ CSS سارية. فإذا كان موقع ما مفيدًا مع تعطيل JS وCSS معًا، نقول إنّه يلتزم بمبدأ _التحسين التدريجي_ (_progressive enhancement_)، ممّا يجعل محتواه في متناول أوسع جمهور ممكن.
 
 ولأنّ ورقة حسابنا تطبيق ويب بلا شيفرة من جهة الخادم، فلا بدّ من الاعتماد على JS لتوفير المنطق المطلوب. لكنّه يعمل فعلًا حين لا يكون CSS مدعومًا بالكامل، كما في قارئات الشاشة والمتصفّحات في وضع النصّ.
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-5-06_nocss.webp{With CSS Disabled}{500l.spreadsheet.nocss}
+![With CSS Disabled](/images/500-lines/spreadsheet-5-06_nocss.webp)
 
-وكما يبيّن \aosafigref{500l.spreadsheet.nocss}، فإنّنا إن فعّلنا JS في المتصفّح وعطّلنا CSS بدلًا منه، تكون الآثار كالتالي:
+وكما يبيّن nocss، فإنّنا إن فعّلنا JS في المتصفّح وعطّلنا CSS بدلًا منه، تكون الآثار كالتالي:
 
 * تختفي كلّ ألوان الخلفية والمقدّمة.
 * يظهر مربّع الإدخال وقيمة الخلية معًا، بدلًا من ظهور أحدهما فقط في كلّ مرّة.
@@ -88,10 +86,9 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 ## استعراض الشيفرة
 
-يبيّن \aosafigref{500l.spreadsheet.architecture} الروابط بين مكوّنات HTML وJS. وكي نفهم المخطّط، سنمرّ على ملفات الشيفرة المصدرية الأربعة، بالترتيب نفسه الذي يحمّل بها المتصفّح.
+يبيّن architecture الروابط بين مكوّنات HTML وJS. وكي نفهم المخطّط، سنمرّ على ملفات الشيفرة المصدرية الأربعة، بالترتيب نفسه الذي يحمّل بها المتصفّح.
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-6-00_architecture.webp{Architecture Diagram}{500l.spreadsheet.architecture}
-
+![Architecture Diagram](/images/500-lines/spreadsheet-6-00_architecture.webp)
 
 * **index.html**: 19 سطرًا
 * **main.js**: 38 سطرًا (باستثناء التعليقات والأسطر الفارغة)
@@ -209,9 +206,9 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 * عند تغيير المستخدم لورقة الحساب، إرسال محتواها الجديد إلى العامل.
 * عند وصول النتائج المحسوبة من العامل، تحديث العرض وحفظ الحالة الحالية.
 
-ويبيّن المخطّط الانسيابي في \aosafigref{500l.spreadsheet.flowchart} التفاعل بين المتحكّم والعامل بمزيد من التفصيل:
+ويبيّن المخطّط الانسيابي في flowchart التفاعل بين المتحكّم والعامل بمزيد من التفصيل:
 
-\aosafigure[240pt]/images/500-lines/spreadsheet-7-00_flowchart.webp{Controller-Worker Flowchart}{500l.spreadsheet.flowchart}
+![Controller-Worker Flowchart](/images/500-lines/spreadsheet-7-00_flowchart.webp)
 
 الآن لنمرّ على الشيفرة. في السطر الأوّل، نطلب `$scope` من AngularJS‏:
 
@@ -231,7 +228,6 @@ angular.module('500lines', []).controller('Spreadsheet', function ($scope, $time
 ```
 
 تجعل صيغة [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) في ES6 من السهل المرور على النطاقات (_ranges_) ذات نقطة بداية ونقطة نهاية، مع تعريف الدالة المساعدة `range` بوصفها [مولِّدًا](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) (generator)‏:
-
 
 ```javascript
   function* range(cur, end) { while (cur <= end) { yield cur;

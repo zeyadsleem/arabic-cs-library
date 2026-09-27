@@ -11,7 +11,7 @@ _[Dann](https://twitter.com/dann) enjoys building things, like programming langu
 > "What went forth to the ends of the world to traverse not itself, God, the sun, Shakespeare, a commercial traveller, having itself traversed in reality itself becomes that self."
 > &mdash;James Joyce
 
-\noindent A long time ago, when the world was still young, all data walked happily in single file. If you wanted your data to jump over a fence, you just set the fence down in its path and each datum jumped it in turn. Punch cards in, punch cards out. Life was easy and programming was a breeze.
+ A long time ago, when the world was still young, all data walked happily in single file. If you wanted your data to jump over a fence, you just set the fence down in its path and each datum jumped it in turn. Punch cards in, punch cards out. Life was easy and programming was a breeze.
 
 Then came the random access revolution, and data grazed freely across the hillside. Herding data became a serious concern: if you can access any piece of data at any time, how do you know which one to pick next? Techniques were developed for corralling the data by forming links between items[^items], marshaling groups of units into formation through their linking assemblage. Questioning data meant picking a sheep and pulling along everything connected to it.
 
@@ -24,7 +24,6 @@ The distributed revolution changed everything, again. Data broke free of spacial
 [^items]: One of the very first database designs was the hierarchical model, which grouped items into tree-shaped hierarchies and is still used as the basis of IBM's IMS product, a high-speed transaction processing system. It's influence can also been seen in XML, file systems and geographic information storage. The network model, invented by Charles Bachmann and standardized by CODASYL, generalized the hierarchical model by allowing multiple parents, forming a DAG instead of a tree. These navigational database models came in to vogue in the 1960s and continued their dominance until performance gains made relational databases usable in the 1980s.
 
 [^relationaltheory]: Edgar F. Codd developed relational database theory while working at IBM, but Big Blue feared that a relational database would cannibalize the sales of IMS. While IBM eventually built a research prototype called System R, it was based around a new non-relational language called SEQUEL, instead of Codd's original Alpha language. The SEQUEL language was copied by Larry Ellison in his Oracle Database based on pre-launch conference papers, and the name changed to SQL to avoid trademark disputes.
-
 
 ## Take One
 
@@ -225,7 +224,6 @@ Then we'll add our new edge to both vertices' edge lists: the edge's out vertex'
 
 And that's all the graph structure we need for now!
 
-
 ## Enter the Query
 
 There are really only two parts to this system: the part that holds the graph and the part that answers questions about the graph. The part that holds the graph is pretty simple, as we've seen. The query part is a little trickier.
@@ -303,7 +301,6 @@ We're probably only interested in getting a few unique results out, so we'll cha
 
 All graph databases have to support a mechanism for doing as little work as possible, and most choose some form of non-strict evaluation to do so. Since we're building our own interpreter, the lazy evaluation of our program is possible, but we may have to contend with some consequences.
 
-
 ## Ramifications of Evaluation Strategy on our Mental Model
 
 Up until now our mental model for evaluation has been very simple:
@@ -331,7 +328,6 @@ We'll go into more detail on this new model soon, but in the meantime here are s
 - That result might be one of the aforementioned gremlins. Each gremlin represents a potential query result, and they carry state with them through the pipes. Gremlins cause the head to move to the right.
 - A pipe can return a result of 'pull', which signals the head that it needs input and moves it to the right.
 - A result of 'done' tells the head that nothing prior needs to be activated again, and moves the head left.
-
 
 ## Pipetypes
 
@@ -378,7 +374,6 @@ See those underscores? We use those to label params that won't be used in our fu
 
 This underscore technique is also important because it makes the comments line up nicely. No, seriously. If programs ["must be written for people to read, and only incidentally for machines to execute"](https://mitpress.mit.edu/sicp/front/node3.html), then it immediately follows that our predominant concern should be making code pretty.
 
-
 #### Vertex
 
 Most pipetypes we meet will take a gremlin and produce more gremlins, but this particular pipetype generates gremlins from just a string. Given an vertex ID it returns a single new gremlin. Given a query it will find all matching vertices, and yield one new gremlin at a time until it has worked through them.
@@ -416,12 +411,11 @@ There are a couple of common ways of determining this: in a statically typed sys
 
 JavaScript doesn't have either of these facilities, but we can get almost the same effect if we're really, really disciplined. Which we will be. For now. 
 
-
 #### In-N-Out
 
 Walking the graph is as easy as ordering a burger. These two lines set up the `in` and `out` pipetypes for us.
 
-\newpage 
+ 
 
 ```javascript
 Dagoba.addPipetype('out', Dagoba.simpleTraversal('out'))
@@ -466,7 +460,6 @@ The second is more serious. This isn't the only pipetype function we're writing,
 
 In this case, with a dozen or so pipetypes, the right choice seems to be to style each of the pipetype functions as similarly as possible, and label the constituent pieces with comments. So we resist our impulse to refactor this particular pipetype, because doing so would reduce uniformity, but we also resist the urge to engineer a formal structural abstraction for query initialization, state initialization, and the like. If there were hundreds of pipetypes that latter choice would probably be the right one: the complexity cost of the abstraction is constant, while the benefit accrues linearly with the number of units. When handling that many moving pieces, anything you can do to enforce regularity among them is helpful.
 
-
 #### Property
 
 Let's pause for a moment to consider an example query based on the three pipetypes we've seen. We can ask for Thor's grandparents like this[^runnote]: 
@@ -502,7 +495,6 @@ Dagoba.addPipetype('property', function(graph, args, gremlin, state) {
 Our query initialization here is trivial: if there's no gremlin, we pull. If there is a gremlin, we'll set its result to the property's value. Then the gremlin can continue onward. If it makes it through the last pipe its result will be collected and returned from the query. Not all gremlins have a `result` property. Those that don't return their most recently visited vertex.
 
 Note that if the property doesn't exist we return `false` instead of the gremlin, so property pipes also act as a type of filter. Can you think of a use for this? What are the tradeoffs in this design decision?
-
 
 #### Unique
 
@@ -576,7 +568,6 @@ The second possibility is that the filter is being applied dynamically at run ti
 
 For those occasions when showing too few results is better than showing too many, `Dagoba.error` can be overridden to throw an error, thereby circumventing the natural control flow.
 
-
 #### Take
 
 We don't always want all the results at once. Sometimes we only need a handful of results; say we want a dozen of Thor's contemporaries, so we walk all the way back to the primeval cow Auðumbla:
@@ -599,7 +590,6 @@ q.run() // []
 ```
 
 Our query can function in an asynchronous environment, allowing us to collect more results as needed. When we run out, an empty array is returned.
-
 
 ```javascript
 Dagoba.addPipetype('take', function(graph, args, gremlin, state) {
@@ -625,7 +615,6 @@ Then when `state.taken` reaches `args[0]` we return 'done', sealing off the pipe
 We do those two steps before query initialization to handle the cases of `take(0)` and `take()` [^takereturn]. Then we increment our counter and return the gremlin.
 
 [^takereturn]: What would you expect each of those to return? What do they actually return?
-
 
 #### As
 
@@ -671,7 +660,6 @@ Dagoba.addPipetype('merge', function(graph, args, gremlin, state) {
 
 We map over each argument, looking for it in the gremlin's list of labeled vertices. If we find it, we clone the gremlin to that vertex. Note that only gremlins that make it to this pipe are included in the merge&mdash;if Thor's mother's parents aren't in the graph, she won't be in the result set.
 
-
 #### Except
 
 We've already seen cases where we would like to say "Give me all Thor's siblings who are not Thor". We can do that with a filter:
@@ -705,7 +693,6 @@ Dagoba.addPipetype('except', function(graph, args, gremlin, state) {
 
 Here we're checking whether the current vertex is equal to the one we stored previously. If it is, we skip it.
 
-
 #### Back
 
 Some of the questions we might ask involve checking further into the graph, only to return later to our point of origin if the answer is in the affirmative. Suppose we wanted to know which of Fjörgynn's daughters had children with one of Bestla's sons?
@@ -728,7 +715,6 @@ Dagoba.addPipetype('back', function(graph, args, gremlin, state) {
 ```
 
 We're using the `Dagoba.gotoVertex` helper function to do all real work here. Let's take a look at that and some other helpers now.
-
 
 ## Helpers
 
@@ -757,7 +743,6 @@ Dagoba.gotoVertex = function(gremlin, vertex) {               // clone the greml
 Note that this function actually returns a brand new gremlin: a clone of the old one, sent to our desired destination. That means a gremlin can sit on a vertex while its clones are sent out to explore many other vertices. This is exactly what happens in `simpleTraversal`.
 
 As an example of possible enhancements, we could add a bit of state to keep track of every vertex the gremlin visits, and add new pipetypes to take advantage of those paths.
-
 
 #### Finding
 
@@ -812,7 +797,6 @@ Dagoba.G.searchVertices = function(filter) {        // match on filter's propert
 
 The `searchVertices` function uses the `objectFilter` helper on every vertex in the graph. We'll look at `objectFilter` in the next section, but in the meantime, can you think of a way to search through the vertices lazily?
 
-
 #### Filtering
 
 We saw that `simpleTraversal` uses a filtering function on the edges it encounters. It's a simple function, but powerful enough for our purposes.
@@ -857,7 +841,6 @@ This allows us to query the edge using a filter object:
 ```javascript
 `g.v('Odin').in({_label: 'spouse', order: 2}).run()`    // finds Odin's second wife
 ```
-
 
 ## The Interpreter's Nature
 
@@ -936,7 +919,6 @@ Interestingly, our fluent interface hides another difference between our query l
 So if we start evaluating our query at the end of the statement, with `run`, and work our way back to `v('Thor')`, calculating results only as needed, then we've effectively achieved non-strictness. The secret is in the linearity of our queries. Branches complicate the process graph and also introduce opportunities for duplicate calls, which require memoization to avoid wasted work. The simplicity of our query language means we can implement an equally simple interpreter based on our linear read/write head model.
 
 In addition to allowing runtime optimizations, this style has many other benefits related to the ease of instrumentation: history, reversibility, stepwise debugging, query statistics. All these are easy to add dynamically because we control the interpreter and have left it as a virtual machine evaluator instead of reducing the program to a single thunk.
-
 
 ## Interpreter, Unveiled
 
@@ -1022,7 +1004,6 @@ This is also the initialization state, since `pc` starts as `max`. So we start h
 
 We're out of the driver loop now: the query has ended, the results are in, and we just need to process and return them. If any gremlin has its result set we'll return that, otherwise we'll return the gremlin's final vertex. Are there other things we might want to return? What are the tradeoffs here?
 
-
 ## Query Transformers
 
 Now we have a nice compact interpreter for our query programs, but we're still missing something. Every modern DBMS comes with a query optimizer as an essential part of the system. For non-relational databases, optimizing our query plan rarely yields the exponential speedups seen in their relational cousins [^dboptimize], but it's still an important aspect of database design.
@@ -1075,7 +1056,6 @@ Optimizing a program can often increase complexity and reduce the elegance of th
 In light of that, this type of "orthogonal optimization" is particularly appealing. We can add optimizers in modules or even user code, instead of having them tightly coupled to the engine. We can test them in isolation, or in groups, and with the addition of generative testing we could even automate that process, ensuring that our available optimizers play nicely together.
 
 We can also use this transformer system to add new functionality unrelated to optimization. Let's look at a case of that now.
-
 
 ## Aliases
 
@@ -1164,7 +1144,6 @@ This brings us in to the realm of dependency resolution[^dependencyresolution], 
 
 On the other hand, we expect that our queries will generally be rather short (100 steps would be a very long query) and that we'll have a reasonably low number of transformers. Instead of fiddling around with DAGs and dependency management we could return 'true' from the transform function if anything changed, and then run it until it stops being productive. This requires each transformer to be idempotent, but that's a useful property for transformers to have. What are the pros and cons of these two pathways?
 
-
 ## Performance
 
 All production graph databases share a particular performance characteristic: graph traversal queries are constant time with respect to total graph size [^ifadjacency]. In a non-graph database, asking for the list of someone's friends can require time proportional to the number of entries, because in the naive worst-case you have to look at every entry. This means if a query over ten entries takes a millisecond, then a query over ten million entries will take almost two weeks. Your friend list would arrive faster if sent by Pony Express [^ponyexpress]!
@@ -1208,7 +1187,6 @@ Run these yourself to experience the graph database difference [^jslistfilter].
 
 [^jslistfilter]: In modern JavaScript engines filtering a list is quite fast&mdash;for small graphs the naive version can actually be faster than the index-free version due to the underlying data structures and the way the code is JIT compiled. Try it with different sizes of graphs to see how the two approaches scale.
 
-
 ## Serialization
 
 Having a graph in memory is great, but how do we get it there in the first place? We saw that our graph constructor can take a list of vertices and edges and create a graph for us, but once the graph has been built how do we get the vertices and edges back out?
@@ -1246,7 +1224,6 @@ The only difference between them is what they do when a cycle is about to be for
 We're manually manipulating JSON in `Dagoba.jsonify`, which generally isn't recommended as the JSON format is rather persnickety. Even in a dose this small it's easy to miss something and hard to visually confirm correctness.
 
 We could merge the two replacer functions into a single function, and use that new replacer function over the whole graph by doing `JSON.stringify(graph, my_cool_replacer)`. This frees us from having to manually massage the JSON output, but the resulting code may be quite a bit messier. Try it yourself and see if you can come up with a well-factored solution that avoids hand-coded JSON. (Bonus points if it fits in a tweet.)
-
 
 ## Persistence
 
@@ -1290,7 +1267,6 @@ There are also potential issues if multiple browser windows from the same domain
 
 If we wanted our persistence implementation to be multi-window–concurrency aware, then we could make use of the storage events that are fired when `localStorage` is changed to update our local graph accordingly.
 
-
 ## Updates
 
 Our `out` pipetype copies the vertex's out-going edges and pops one off each time it needs one. Building that new data structure takes time and space, and pushes more work on to the memory manager. We could have instead used the vertex's out-going edge list directly, keeping track of our place with a counter variable. Can you think of a problem with that approach?
@@ -1300,7 +1276,6 @@ If someone deletes an edge we've visited while we're in the middle of a query, t
 So we'll pay the performance price to copy the edge list. There's still a problem, though, in that long-lived queries may not see a completely consistent chronology. We will traverse every edge belonging to a vertex at the moment we visit it, but we visit vertices at different clock times during our query. Suppose we save a query like `var q = g.v('Odin').children().children().take(2)` and then call `q.run()` to gather two of Odin's grandchildren. Some time later we need to pull another two grandchildren, so we call `q.run()` again. If Odin has had a new grandchild in the intervening time, we may or may not see it, depending on whether the parent vertex was visited the first time we ran the query.
 
 One way to fix this non-determinism is to change the update handlers to add versioning to the data. We'll then change the driver loop to pass the graph's current version in to the query, so we're always seeing a consistent view of the world as it existed when the query was first initialized. Adding versioning to our database also opens the door to true transactions, and automated rollback/retries in an STM-like fashion.
-
 
 ## Future Directions
 
@@ -1358,7 +1333,6 @@ g.v('Ymir').in().filter({survives: true}).every()
 
 which would work like `all`+`times` but without enforcing a limit. We may want to impose a particular strategy on the traversal, though, like a stolid BFS or YOLO DFS, so <latex>\newline</latex> `g.v('Ymir').in().filter({survives: true}).bfs()` would be more flexible. Phrasing it this way allows us to state complicated queries like "check for Ragnarök survivors, skipping every other generation" in a straightforward fashion: `g.v('Ymir').in().filter({survives: true}).in().bfs()`.
 
-
 ## Wrapping Up
 
 So what have we learned? Graph databases are great for storing interconnected [^sortainterconnected] data that you plan to query via graph traversals. Adding non-strict semantics allows for a fluent interface over queries you could never express in an eager system for performance reasons, and allows you to cross async boundaries. Time makes things complicated, and time from multiple perspectives (i.e., concurrency) makes things very complicated, so whenever we can avoid introducing a temporal dependency (e.g., state, observable effects, etc.) we make reasoning about our system easier. Building in a simple, decoupled and painfully unoptimized style leaves the door open for global optimizations later on, and using a driver loop allows for orthogonal optimizations&mdash;each without introducing the brittleness and complexity that is the hallmark of most optimization techniques.
@@ -1366,7 +1340,6 @@ So what have we learned? Graph databases are great for storing interconnected [^
 That last point can't be overstated: keep it simple. Eschew optimization in favor of simplicity. Work hard to achieve simplicity by finding the right model. Explore many possibilities. The chapters in this book provide ample evidence that highly non-trivial applications can have a small, tight kernel. Once you find that kernel for the application you are building, fight to keep complexity from polluting it. Build hooks for attaching additional functionality, and maintain your abstraction barriers at all costs. Using these techniques well is not easy, but they can give you leverage over otherwise intractable problems.
 
 [^sortainterconnected]: Not *too* interconnected, though&mdash;you'd like the number of edges to grow in direct proportion to the number of vertices. In other words, the average number of edges connected to a vertex shouldn't vary with the size of the graph. Most systems we'd consider putting in a graph database already have this property: if Loki had 100,000 additional grandchildren the degree of the Thor vertex wouldn't increase.
-
 
 ### Acknowledgements
 

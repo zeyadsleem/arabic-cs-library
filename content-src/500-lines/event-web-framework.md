@@ -267,7 +267,6 @@ We still haven't seen how requests are parsed and interpreted from one of our bu
 
 This high-level method delegates to a specialization of `parse` that works with plain strings, or to `parse-params` that interprets the buffer contents as HTTP parameters. These are called depending on how much of the request we've already processed; the final `parse` happens when we already have a partial `request` saved in the `buffer`, at which point we're only looking to parse the request body.
 
-
 ```lisp
 (defmethod parse ((str string))
   (let ((lines (split "\\r?\\n" str)))
@@ -477,7 +476,6 @@ Now we can see what `error!` does:
 It takes an error response and a socket, writes the response to the socket and closes it (ignoring errors, in case the other end has already disconnected). The `instance` argument here is for logging/debugging purposes.
 
 And with that, we have an event-driven web server that can respond to HTTP requests or send SSE messages, complete with error handling!
-
 
 ## Extending the Server Into a Web Framework
 

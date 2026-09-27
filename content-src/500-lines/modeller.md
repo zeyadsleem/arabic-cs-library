@@ -159,11 +159,11 @@ To convert a vector $v$ from one coordinate space to another, we multiply by a t
 Some common transformation matrices are translations, scaling, and rotations.
 
 ### Model, World, View, and Projection Coordinate Spaces
-\aosafigure[250pt]{modeller-images/newtranspipe.png}{Transformation Pipeline}{500l.modeller.newtranspipe}
+![Transformation Pipeline](modeller-images/newtranspipe.png)
 
 To draw an item to the screen, we need to convert between a few different coordinate spaces.
 
-The right hand side of \aosafigref{500l.modeller.newtranspipe}[^transimage], including all of the transformations from Eye Space to Viewport Space will all be handled for us by OpenGL.
+The right hand side of Transformation Pipeline[^transimage], including all of the transformations from Eye Space to Viewport Space will all be handled for us by OpenGL.
 
 [^transimage]: Thanks to Dr. Anton Gerdelan for the image. His OpenGL tutorial book is available at [http://antongerdelan.net/opengl/](http://antongerdelan.net/opengl/).
 
@@ -316,13 +316,11 @@ class Primitive(Node):
     def render_self(self):
         glCallList(self.call_list)
 
-
 class Sphere(Primitive):
     """ Sphere primitive """
     def __init__(self):
         super(Sphere, self).__init__()
         self.call_list = G_OBJ_SPHERE
-
 
 class Cube(Primitive):
     """ Cube primitive """
@@ -344,7 +342,7 @@ To render primitives, we use the call lists feature from OpenGL.
 An OpenGL call list is a series of OpenGL calls that are defined once and bundled together under a single name.
 The calls can be dispatched with `glCallList(LIST_NAME)`. Each primitive (`Sphere` and `Cube`) defines the call list required to render it (not shown).
 
-For example, the call list for a cube draws the 6 faces of the cube, with the center at the origin and the edges exactly 1 unit long. \newpage
+For example, the call list for a cube draws the 6 faces of the cube, with the center at the origin and the edges exactly 1 unit long. 
 
 ```python
 # Pseudocode Cube definition
@@ -374,8 +372,7 @@ The `render_self` function for hierarchical nodes simply calls `render_self` on 
 With the `HierarchicalNode` class, it is very easy to add figures to the scene.
 Now, defining the snow figure is as simple as specifying the shapes that comprise it, and their relative positions and sizes.
 
-\aosafigure[240pt]{modeller-images/nodes.jpg}{Hierarchy of `Node` subclasses}{500l.modeller.hierarchy}
-
+![Hierarchy of `Node` subclasses](modeller-images/nodes.jpg)
 
 ```python
 class HierarchicalNode(Node):
@@ -387,8 +384,6 @@ class HierarchicalNode(Node):
         for child in self.child_nodes:
             child.render()
 ```
-
-\newpage
 
 ```python
 class SnowFigure(HierarchicalNode):
@@ -411,10 +406,8 @@ tree. As it traverses, it keeps a stack of `ModelView` matrices, used for conver
 At each step, it pushes the current `ModelView` matrix onto the stack, and when it completes rendering of all child nodes,
 it pops the matrix off the stack, leaving the parent node's `ModelView` matrix at the top of the stack.
 
-
 By making the `Node` class extensible in this way, we can add new types of shapes to the scene without changing any of the other code for scene
 manipulation and rendering. Using the node concept to abstract away the fact that one `Scene` object may have many children is known as the Composite design pattern.
-
 
 ### User Interaction
 Now that our modeller is capable of storing and displaying the scene, we need a way to interact with it. 
@@ -757,11 +750,11 @@ ray's coordinate space as the third parameter. Each node applies its own transfo
 
 The ray-AABB selection approach is very simple to understand and implement. However, the results are wrong in certain situations.
 
-\aosafigure[240pt]{modeller-images/AABBError.png}{AABB Error}{500l.modeller.aabberror}
+![AABB Error](modeller-images/AABBError.png)
 
 For example, in the case of the `Sphere` primitive, the sphere itself only touches the AABB in the centre of each of the AABB's faces.
 However if the user clicks on the corner of the Sphere's AABB, the collision will be detected with the Sphere, even if the user intended to click
-past the Sphere onto something behind it (\aosafigref{500l.modeller.aabberror}).
+past the Sphere onto something behind it (AABB Error).
 
 This trade-off between complexity, performance, and accuracy is common in computer graphics and in many areas of software engineering.
 
@@ -959,7 +952,7 @@ Node placement uses techniques from both picking and translation. We use the sam
 To place a new node, we first create the new instance of the corresponding type of node and add it to the scene.
 We want to place the node underneath the user's cursor, so we find a point on the ray, at a fixed distance from the camera.
 Again, the ray is represented in camera space, so we convert the resulting translation vector into the world coordinate space by multiplying it by the inverse modelview matrix.
-Finally, we translate the new node by the calculated vector. \newpage
+Finally, we translate the new node by the calculated vector. 
 
 ```python
     # class Scene
@@ -992,7 +985,7 @@ Finally, we translate the new node by the calculated vector. \newpage
 ## Summary
 Congratulations! We've successfully implemented a tiny 3D modeller!
 
-\aosafigure[240pt]{modeller-images/StartScene.png}{Sample Scene}{500l.modeller.samplescene}
+![Sample Scene](modeller-images/StartScene.png)
 
 We saw how to develop an extensible data structure to represent the objects in
 the scene. We noticed that using the Composite design pattern and a tree-based

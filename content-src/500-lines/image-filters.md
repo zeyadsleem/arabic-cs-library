@@ -28,9 +28,9 @@ That is when I discovered that this idea wasn’t, in fact, brilliant.
 The progression wasn’t as clear as I hoped, the dominant color
 extracted wasn’t generally the most appealing shade, the creation took a long
 time (a couple of seconds per image), and it took hundreds of images to make
-something cool (\aosafigref{500l.imagefilters.sunflower}).
+something cool (Sunflower layout).
 
-\aosafigure[180pt]{image-filters-images/sunflower.jpg}{Sunflower layout}{500l.imagefilters.sunflower}
+![Sunflower layout](image-filters-images/sunflower.jpg)
 
 You might think this would be discouraging, but by the time I got to this
 point I had learned many things that hadn’t come my way before — about color
@@ -133,13 +133,13 @@ This is why low-resolution images are described as "pixelated" — you can start
 to see the squares. These pixels are stored in an array, with the number
 in each array "box" containing the color.
 
-In \aosafigref{500l.imagefilters.animals}, we see a high-resolution picture of some blow-up animals taken at
-MoMA in NYC. \aosafigref{500l.imagefilters.pixelanimals} is
+In Blow-up animals at MoMA NY, we see a high-resolution picture of some blow-up animals taken at
+MoMA in NYC. Blow-up animals, blown up is
 the same image blown up, but with just 24 x 32 pixels.
 
-\aosafigure[220pt]{image-filters-images/animals.jpg}{Blow-up animals at MoMA NY}{500l.imagefilters.animals}
+![Blow-up animals at MoMA NY](image-filters-images/animals.jpg)
 
-\aosafigure[220pt]{image-filters-images/pixelanimals.jpg}{Blow-up animals, blown up}{500l.imagefilters.pixelanimals}
+![Blow-up animals, blown up](image-filters-images/pixelanimals.jpg)
 
 See how it's so blurry? We call
 that _pixelation_, which means the image is too big for the number of pixels it
@@ -158,12 +158,9 @@ FFFCC2
 FFF5B7
 ```
 
-
 Hex colors are six characters long. The first two are the red value, the second
 two the green value, and the third two the blue value. Sometimes there are an
 extra two characters which are the alpha value. In this case `FFFAC4` means:
-
-\newpage
 
 - red = FF (hex) = 255 (base 10)
 - green = FA (hex) = 250 (base 10)
@@ -171,7 +168,7 @@ extra two characters which are the alpha value. In this case `FFFAC4` means:
 
 ## Running the App 
 
-In \aosafigref{500l.imagefilters.app}, we have a picture of our app running.
+In The App, we have a picture of our app running.
 It’s very much developer-designed, I know, but we only have 500 lines of Java
 to work with so something had to suffer! You can see the list of commands on the right.
 Some things we can do:
@@ -183,7 +180,7 @@ Some things we can do:
 - Reset the image.
 - Save the image we have made.
 
-\aosafigure[266pt]{image-filters-images/app.jpg}{The App}{500l.imagefilters.app}
+![The App](image-filters-images/app.jpg)
 
 Processing makes it simple to create a little
 application and do image manipulation;
@@ -395,7 +392,6 @@ console. Later, you’ll want to do different things depending on what key was
 pressed, and to do this you just switch on the key value. (This exists in the
 `PApplet` superclass, and contains the last key pressed.) 
 
-
 ## Writing Tests 
 
 This app doesn’t do a lot yet, but we can already see number of places where
@@ -465,12 +461,12 @@ through light with enough red (or green, or blue).
 
 <markdown>
 By applying different filters to this image
-\aosafigref{500l.imagefilters.frankfurt} (taken on a spring trip to Frankfurt)
+Four (Simulated) Seasons in Frankfurt (taken on a spring trip to Frankfurt)
 it’s almost like the seasons are different. (Remember the four-seasons
 paintings we imagined earlier?)  See how much more green the tree becomes when
 the red filter is applied.
 
-\aosafigure[240pt]{image-filters-images/frankfurt.jpg}{Four (Simulated) Seasons in Frankfurt}{500l.imagefilters.frankfurt}
+![Four (Simulated) Seasons in Frankfurt](image-filters-images/frankfurt.jpg)
 </markdown>
 <latex>
 By applying different RGB filters to an image we can make it almost seem like
@@ -644,9 +640,9 @@ for(int px in pixels) {
 
 <markdown>
 At the end we can print this hue to the screen, or display it next to the
-picture (\aosafigref{500l.imagefilters.hueranges}). 
+picture (Dominant hue versus size of range (number of buckets) used). 
 
-\aosafigure[240pt]{image-filters-images/hueranges.jpg}{Dominant hue versus size of range (number of buckets) used}{500l.imagefilters.hueranges}
+![Dominant hue versus size of range (number of buckets) used](image-filters-images/hueranges.jpg)
 
 </markdown>
 
@@ -660,11 +656,11 @@ Once we’ve extracted the "dominant" hue, we can choose to either show or hide
 it in the image. We can show the dominant hue with varying tolerance (ranges
 around it that we will accept). Pixels that don’t fall into this range can be
 changed to grayscale by setting the value based on the brightness.
-\aosafigref{500l.imagefilters.showdominant} shows the dominant hue determined
+Showing dominant hue shows the dominant hue determined
 using a range of 240, and with varying tolerance. The tolerance is the
 amount either side of the most popular hue that gets grouped together. 
 
-\aosafigure[240pt]{image-filters-images/showdominant.jpg}{Showing dominant hue}{500l.imagefilters.showdominant}
+![Showing dominant hue](image-filters-images/showdominant.jpg)
 </markdown>
 
 <latex>
@@ -677,11 +673,11 @@ Alternatively, we can hide the dominant hue by setting the color for pixels with
 
 <markdown>
 Alternatively, we can hide the dominant hue. In
-\aosafigref{500l.imagefilters.hidedominant}, the images are transposed side by
+Hiding dominant hue, the images are transposed side by
 side: the original in the middle, on the left the dominant hue (the brownish color of the path) is shown, and on
 the right the dominant hue is hidden (range 320, tolerance 20).
 
-\aosafigure[240pt]{image-filters-images/hidedominant.jpg}{Hiding dominant hue}{500l.imagefilters.hidedominant}
+![Hiding dominant hue](image-filters-images/hidedominant.jpg)
 </markdown>
 
 Each image requires a double pass (looking at each pixel twice), so on images
@@ -720,7 +716,6 @@ public HSBColor getDominantHue(PApplet applet, IFAImage image, int hueRange) {
   float b = brightnesses[hue] / hueCount;
   return new HSBColor(hue, s, b);
 }
-
 
 public void processImageForHue(PApplet applet, IFAImage image, int hueRange,
     int hueTolerance, boolean showHue) {
@@ -763,7 +758,7 @@ matrices of specific values that sharpen images.
 
 ## Architecture
 
-There are three main components to the app (\aosafigref{500l.imagefilters.architecture}).
+There are three main components to the app (Architecture diagram).
 
 ### The App
 The app consists of one file: `ImageFilterApp.java`. This 
@@ -786,7 +781,7 @@ Color consists of two files: `ColorHelper.java` is where all the image
 processing and filtering takes place, and `PixelColorHelper.java` 
 abstracts out final `PApplet` methods for pixel colors for testability.
 
-\aosafigure[240pt]{image-filters-images/architecture.jpg}{Architecture diagram}{500l.imagefilters.architecture}
+![Architecture diagram](image-filters-images/architecture.jpg)
 
 ### Wrapper Classes and Tests
 Briefly mentioned above, there are two wrapper classes (`IFAImage` and
@@ -1172,8 +1167,6 @@ public class ColorHelperTest {
 }
 ```
 
-\newpage
-
 Notice that:
 
 - We use the `MockitoJUnit` runner.
@@ -1381,7 +1374,7 @@ public class ImageStateTest {
 }
 ```
 
-\newpage Notice that:
+ Notice that:
 
 - We exposed a protected initialization method `set` for testing that helps us quickly get the system under test into a specific state.
 - We mock `PApplet`, `ColorHelper`, and `IFAImage` (created expressly for this purpose).

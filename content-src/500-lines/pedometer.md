@@ -25,9 +25,9 @@ An accelerometer is a piece of hardware that measures acceleration in the $x$, $
 
 An accelerometer returns a *signal* in 3-dimensional space. A signal is a set of data points recorded over time. Each component of the signal is a time series representing acceleration in one of the $x$, $y$, or $z$ directions. Each point in a time series is the acceleration in that direction at a specific point in time. Acceleration is measured in units of g-force, or *g*. One *g* is equal to 9.8 $m/s^2$, the average acceleration due to gravity on Earth.
 
-\aosafigref{500l.pedometer.accelerationtotal} shows an example signal from an accelerometer with the three time series.
+Example acceleration signal shows an example signal from an accelerometer with the three time series.
 
-\aosafigure[333pt]{pedometer-images/acceleration-total.png}{Example acceleration signal}{500l.pedometer.accelerationtotal}
+![Example acceleration signal](pedometer-images/acceleration-total.png)
 
 The *sampling rate* of the accelerometer, which can often be calibrated, determines the number of measurements per second. For instance, an accelerometer with a sampling rate of 100 returns 100 data points for each $x$, $y$, and $z$ time series every second.
 
@@ -39,9 +39,9 @@ A person bounces up and down, in the vertical direction, with each step. If you 
 
 We are going to count steps by using the accelerometer to count bounces up and down. Because the phone can rotate in any direction, we will use gravity to know which direction down is. **A pedometer can count steps by counting the number of bounces in the direction of gravity.**
 
-Let's look at a person walking with an accelerometer-equipped smartphone in his or her shirt pocket (\aosafigref{500l.pedometer.walk1}).
+Let's look at a person walking with an accelerometer-equipped smartphone in his or her shirt pocket (Walking).
 
-\aosafigure[240pt]{pedometer-images/walk-1.png}{Walking}{500l.pedometer.walk1}
+![Walking](pedometer-images/walk-1.png)
 
 For the sake of simplicity, we'll assume that the person:
 
@@ -57,9 +57,9 @@ Ah, the joys of a perfect world, which we only ever experience in texts like thi
 
 The force of gravity causes an acceleration in the direction of gravity, which we refer to as gravitational acceleration. This acceleration is unique because it is always present and, for the purposes of this chapter, is constant at 9.8 $m/s^2$.
 
-Suppose a smartphone is lying on a table screen-side up. In this orientation, our coordinate system is such that the negative $z$ direction is the one that gravity is acting on. Gravity will pull our phone in the negative $z$ direction, so our accelerometer, *even when perfectly still*, will record an acceleration of 9.8 $m/s^2$ in the negative $z$ direction. Accelerometer data from our phone in this orientation is shown in \aosafigref{500l.pedometer.accelerationtotalphonestill}.
+Suppose a smartphone is lying on a table screen-side up. In this orientation, our coordinate system is such that the negative $z$ direction is the one that gravity is acting on. Gravity will pull our phone in the negative $z$ direction, so our accelerometer, *even when perfectly still*, will record an acceleration of 9.8 $m/s^2$ in the negative $z$ direction. Accelerometer data from our phone in this orientation is shown in Example accelerometer data at rest.
 
-\aosafigure[333pt]{pedometer-images/acceleration-total-phone-still.png}{Example accelerometer data at rest}{500l.pedometer.accelerationtotalphonestill}
+![Example accelerometer data at rest](pedometer-images/acceleration-total-phone-still.png)
 
 Note that $x(t)$ and $y(t)$ remain constant at 0, while $z(t)$ is constant at -1 *g*. Our accelerometer records all acceleration, including gravitational acceleration.
 
@@ -67,9 +67,9 @@ Each time series measures the *total acceleration* in that direction. Total acce
 
 User acceleration is the acceleration of the device due to the movement of the user, and is constant at 0 when the phone is perfectly still. However, when the user is moving with the device, user acceleration is rarely constant, since it's difficult for a person to move with a constant acceleration.
 
-\aosafigure[240pt]{pedometer-images/component-signals-2.png}{Component signals}{500l.pedometer.componentsignals}
+![Component signals](pedometer-images/component-signals-2.png)
 
-To count steps, we're interested in the bounces created by the user in the direction of gravity. That means we're interested in isolating the 1-dimensional time series which describes **user acceleration in the direction of gravity** from our 3-dimensional acceleration signal (\aosafigref{500l.pedometer.componentsignals}).
+To count steps, we're interested in the bounces created by the user in the direction of gravity. That means we're interested in isolating the 1-dimensional time series which describes **user acceleration in the direction of gravity** from our 3-dimensional acceleration signal (Component signals).
 
 In our simple example, gravitational acceleration is 0 in $x(t)$ and $z(t)$ and constant at 9.8 $m/s^2$ in $y(t)$. Therefore, in our total acceleration plot, $x(t)$ and $z(t)$ fluctuate around 0 while $y(t)$ fluctuates around -1 *g*. In our user acceleration plot, we notice that&mdash;because we have removed gravitational acceleration&mdash;all three time series fluctuate around 0. Note the obvious peaks in $y_{u}(t)$. Those are due to step bounces! In our last plot, gravitational acceleration, $y_{g}(t)$ is constant at -1 *g*, and $x_{g}(t)$ and $z_{g}(t)$ are constant at 0.
 
@@ -77,13 +77,13 @@ So, in our example, the 1-dimensional user acceleration in the direction of grav
 
 ### People Are Complicated Creatures
 
-What if a person carries the phone in a bag on their shoulder, with the phone in a more wonky position? To make matters worse, what if the phone rotates in the bag part way through the walk, as in \aosafigref{500l.pedometer.walk2}?
+What if a person carries the phone in a bag on their shoulder, with the phone in a more wonky position? To make matters worse, what if the phone rotates in the bag part way through the walk, as in A more complicated walk?
 
-\aosafigure[133pt]{pedometer-images/walk-2.png}{A more complicated walk}{500l.pedometer.walk2}
+![A more complicated walk](pedometer-images/walk-2.png)
 
-Yikes. Now all three of our components have a non-zero gravitational acceleration, so the user acceleration in the direction of gravity is now split amongst all three time series. To determine user acceleration in the direction of gravity, we first have to determine which direction gravity is acting in. To do this, we have to split total acceleration in each of the three time series into a user acceleration time series and a gravitational acceleration time series (\aosafigref{500l.pedometer.component3}).
+Yikes. Now all three of our components have a non-zero gravitational acceleration, so the user acceleration in the direction of gravity is now split amongst all three time series. To determine user acceleration in the direction of gravity, we first have to determine which direction gravity is acting in. To do this, we have to split total acceleration in each of the three time series into a user acceleration time series and a gravitational acceleration time series (More complicated component signals).
 
-\aosafigure[240pt]{pedometer-images/component-signals-3.png}{More complicated component signals}{500l.pedometer.component3}
+![More complicated component signals](pedometer-images/component-signals-3.png)
 
 Then we can isolate the portion of user acceleration in each component that is in the direction of gravity, resulting in just the user acceleration in the direction of gravity time series.
 
@@ -105,9 +105,9 @@ A *low-pass filter* allows low-frequency signals through, while attenuating sign
 
 In our situation, the frequency, measured in Hz, indicates how quickly the acceleration is changing. A constant acceleration has a frequency of 0 Hz, while a non-constant acceleration has a non-zero frequency. This means that our constant gravitational acceleration is a 0 Hz signal, while user acceleration is not.
 
-For each component, we can pass total acceleration through a low-pass filter, and we'll be left with just the gravitational acceleration time series. Then we can subtract gravitational acceleration from total acceleration, and we'll have the user acceleration time series (\aosafigref{500l.pedometer.lowpass}).
+For each component, we can pass total acceleration through a low-pass filter, and we'll be left with just the gravitational acceleration time series. Then we can subtract gravitational acceleration from total acceleration, and we'll have the user acceleration time series (A low-pass filter).
 
-\aosafigure[240pt]{pedometer-images/low-pass-filter-a.png}{A low-pass filter}{500l.pedometer.lowpass}
+![A low-pass filter](pedometer-images/low-pass-filter-a.png)
 
 There are numerous varieties of filters. The one we'll use is called an infinite impulse response (IIR) filter. We've chosen an IIR filter because of its low overhead and ease of implementation. The IIR filter we've chosen is implemented using the formula: 
 
@@ -139,9 +139,9 @@ $$y_{g}(t) = \alpha_{0}(y(t)\beta_{0} + y(t-1)\beta_{1} + y(t-2)\beta_{2} - y_{g
 
 $$z_{g}(t) = \alpha_{0}(z(t)\beta_{0} + z(t-1)\beta_{1} + z(t-2)\beta_{2} - z_{g}(t-1)\alpha_{1} - z_{g}(t-2)\alpha_{2})$$
 
-The resulting time series after low-pass filtering are in \aosafigref{500l.pedometer.accelerationgravitational}.
+The resulting time series after low-pass filtering are in Gravitational acceleration.
 
-\aosafigure[333pt]{pedometer-images/acceleration-gravitational.png}{Gravitational acceleration}{500l.pedometer.accelerationgravitational}
+![Gravitational acceleration](pedometer-images/acceleration-gravitational.png)
 
 $x_{g}(t)$ and $z_{g}(t)$ hover around 0, and $y_{g}(t)$ very quickly drops to $-1g$. The initial 0 value in $y_{g}(t)$ is from the initialization of the formula.
 
@@ -158,11 +158,10 @@ z_{u}(t) = z(t) - z_{g}(t)
 $$
 
 The result is the time series seen in
-\aosafigref{500l.pedometer.accelerationuser}.  We've successfully split our
+Split acceleration.  We've successfully split our
 total acceleration into user acceleration and gravitational acceleration!
 
-\aosafigure[333pt]{pedometer-images/acceleration-user.png}{Split acceleration}{500l.pedometer.accelerationuser}
-
+![Split acceleration](pedometer-images/acceleration-user.png)
 
 ### 2. Isolating User Acceleration in the Direction of Gravity
 
@@ -174,25 +173,23 @@ Let's get to it. First, some linear algebra 101. Don't take that mathematician h
 
 When working with coordinates, you won't get very far before being introduced to the *dot product*, one of the fundamental tools used in comparing the magnitude and direction of $x$, $y$, and $z$ coordinates.  
 
-The dot product takes us from 3-dimensional space to 1-dimensional space (\aosafigref{500l.pedometer.dotproduct}). When we take the dot product of the two time series, user acceleration and gravitational acceleration, both of which are in 3-dimensional space, we'll be left with a single time series in 1-dimensional space representing the portion of user acceleration in the direction of gravity. We'll arbitrarily call this new time series $a(t)$, because, well, every important time series deserves a name.
+The dot product takes us from 3-dimensional space to 1-dimensional space (The dot product). When we take the dot product of the two time series, user acceleration and gravitational acceleration, both of which are in 3-dimensional space, we'll be left with a single time series in 1-dimensional space representing the portion of user acceleration in the direction of gravity. We'll arbitrarily call this new time series $a(t)$, because, well, every important time series deserves a name.
 
-\aosafigure[333pt]{pedometer-images/dot-product-explanation.png}{The dot product}{500l.pedometer.dotproduct}
-
+![The dot product](pedometer-images/dot-product-explanation.png)
 
 #### Implementing the Dot Product
 
-We can implement the dot product for our earlier example using the formula $a(t) = x_{u}(t)x_{g}(t) + y_{u}(t)y_{g}(t) + z_{u}(t)z_{g}(t)$, leaving us with $a(t)$ in 1-dimensional space (\aosafigref{500l.pedometer.accelerationdotproduct}).
+We can implement the dot product for our earlier example using the formula $a(t) = x_{u}(t)x_{g}(t) + y_{u}(t)y_{g}(t) + z_{u}(t)z_{g}(t)$, leaving us with $a(t)$ in 1-dimensional space (Implementing the dot product).
 
-\aosafigure[333pt]{pedometer-images/acceleration-dotproduct.png}{Implementing the dot product}{500l.pedometer.accelerationdotproduct}
+![Implementing the dot product](pedometer-images/acceleration-dotproduct.png)
 
 We can now visually pick out where the steps are in $a(t)$. The dot product is very powerful, yet beautifully simple.
 
 ### Solutions in the Real World
 
-We saw how quickly our seemingly simple problem became more complex when we threw in the challenges of the real world and real people. However, we're getting a lot closer to counting steps, and we can see how $a(t)$ is starting to resemble our ideal sine wave. But, only "kinda, sorta" starting to. We still need to make our messy $a(t)$ time series smoother. There are four main issues (\aosafigref{500l.pedometer.problems}) with $a(t)$ in its current state. Let's examine each one.
+We saw how quickly our seemingly simple problem became more complex when we threw in the challenges of the real world and real people. However, we're getting a lot closer to counting steps, and we can see how $a(t)$ is starting to resemble our ideal sine wave. But, only "kinda, sorta" starting to. We still need to make our messy $a(t)$ time series smoother. There are four main issues (Jumpy, slow, short, bumpy) with $a(t)$ in its current state. Let's examine each one.
 
-\aosafigure[333pt]{pedometer-images/jumpy-slow-short-bumpy.png}{Jumpy, slow, short, bumpy}{500l.pedometer.problems}
-
+![Jumpy, slow, short, bumpy](pedometer-images/jumpy-slow-short-bumpy.png)
 
 #### 1. Jumpy Peaks
 
@@ -208,15 +205,15 @@ As a person is using an app or making a call, the accelerometer registers small 
 
 #### 4. Bumpy Peaks
 
-Our pedometer should accommodate many people with different walks, so we've set minimum and maximum step frequencies based on a large sample size of people and walks. This means that we may sometimes filter slightly too much or too little. While we'll often have fairly smooth peaks, we can, once in a while, get a "bumpier" peak. \aosafigref{500l.pedometer.problems} zooms in on one such peak.
+Our pedometer should accommodate many people with different walks, so we've set minimum and maximum step frequencies based on a large sample size of people and walks. This means that we may sometimes filter slightly too much or too little. While we'll often have fairly smooth peaks, we can, once in a while, get a "bumpier" peak. Jumpy, slow, short, bumpy zooms in on one such peak.
 
 When bumpiness occurs at our threshold, we can mistakenly count too many steps for one peak. We'll use a method called *hysteresis* to address this. Hysteresis refers to the dependence of an output on past inputs. We can count threshold crossings in the positive direction, as well as 0 crossings in the negative direction. Then, we only count steps where a threshold crossing occurs after a 0 crossing, ensuring we count each step only once.
 
 #### Peaks That Are Juuuust Right
 
-\aosafigure[333pt]{pedometer-images/acceleration-filtered.png}{Tweaked peaks}{500l.pedometer.accelerationfiltered}
+![Tweaked peaks](pedometer-images/acceleration-filtered.png)
 
-\noindent In accounting for these four scenarios, we've managed to bring our messy $a(t)$ fairly close to our ideal sine wave (\aosafigref{500l.pedometer.accelerationfiltered}), allowing us to count steps.
+ In accounting for these four scenarios, we've managed to bring our messy $a(t)$ fairly close to our ideal sine wave (Tweaked peaks), allowing us to count steps.
 
 ### Recap
 
@@ -324,9 +321,9 @@ Dealing with multiple input formats is a common programming problem. If we want 
 
 #### Standard Format
 
-The cleanest way for us to deal with this is to take our two input formats and fit them into a standard format as soon as possible, allowing the rest of the program to work with this new standard format. Our solution requires that we work with user acceleration and gravitational acceleration separately, so our standard format will need to be split into the two accelerations (\aosafigref{500l.pedometer.standardformat}).
+The cleanest way for us to deal with this is to take our two input formats and fit them into a standard format as soon as possible, allowing the rest of the program to work with this new standard format. Our solution requires that we work with user acceleration and gravitational acceleration separately, so our standard format will need to be split into the two accelerations (Standard format).
 
-\aosafigure[240pt]{pedometer-images/standard-format.png}{Standard format}{500l.pedometer.standardformat}
+![Standard format](pedometer-images/standard-format.png)
 
 Our standard format allows us to store a time series, as each element represents acceleration at a point in time. We've defined it as an array of arrays of arrays. Let's peel that onion.
 
@@ -336,9 +333,9 @@ Our standard format allows us to store a time series, as each element represents
 
 ### The Pipeline
 
-The input into our system will be data from an accelerometer, information on the user taking the walk (gender, stride, etc.), and information on the trial walk itself (sampling rate, actual steps taken, etc.). Our system will apply the signal processing solution, and output the number of steps calculated, the delta between the actual steps and calculated steps, the distance travelled, and the elapsed time. The entire process from input to output can be viewed as a pipeline (\aosafigref{500l.pedometer.pipeline}).
+The input into our system will be data from an accelerometer, information on the user taking the walk (gender, stride, etc.), and information on the trial walk itself (sampling rate, actual steps taken, etc.). Our system will apply the signal processing solution, and output the number of steps calculated, the delta between the actual steps and calculated steps, the distance travelled, and the elapsed time. The entire process from input to output can be viewed as a pipeline (The pipeline).
 
-\aosafigure[240pt]{pedometer-images/pipeline.png}{The pipeline}{500l.pedometer.pipeline}
+![The pipeline](pedometer-images/pipeline.png)
 
 In the spirit of separation of concerns, we'll write the code for each distinct component of the pipeline&mdash;parsing, processing, and analyzing&mdash;individually.
 
@@ -346,7 +343,7 @@ In the spirit of separation of concerns, we'll write the code for each distinct 
 
 Given that we want our data in the standard format as early as possible, it makes sense to write a parser that allows us to take our two known input formats and convert them to a standard output format as the first component of our pipeline. Our standard format splits out user acceleration and gravitational acceleration, which means that if our data is in the combined format, our parser will need to first pass it through a low-pass filter to convert it to the standard format.
 
-\aosafigure[240pt]{pedometer-images/input-data-workflow-1.png}{Initial workflow}{500l.pedometer.input1}
+![Initial workflow](pedometer-images/input-data-workflow-1.png)
 
 In the future, if we ever have to add another input format, the only code we'll have to touch is this parser. Let's separate concerns once more, and create a `Parser` class to handle the parsing.
 
@@ -420,9 +417,9 @@ Based on the solution we defined, we'll need our code to do a couple of things t
 
 We'll handle short and bumpy peaks by avoiding them during step counting.
 
-Now that we have our data in the standard format, we can process it to get in into a state where we can analyze it to count steps (\aosafigref{500l.pedometer.input2}).
+Now that we have our data in the standard format, we can process it to get in into a state where we can analyze it to count steps (Processing).
 
-\aosafigure[166pt]{pedometer-images/input-data-workflow-2.png}{Processing}{500l.pedometer.input2}
+![Processing](pedometer-images/input-data-workflow-2.png)
 
 The purpose of processing is to take our data in the standard format and incrementally clean it up to get it to a state as close as possible to our ideal sine wave. Our two processing operations, taking the dot product and filtering, are quite distinct, but both are intended to process our data, so we'll create one class called a `Processor`.
 
@@ -639,7 +636,7 @@ As long as we have a sampling rate, time is calculated by dividing the total num
 
 ### Tying It All Together With the Pipeline
 
-Our `Parser`, `Processor`, and `Analyzer` classes, while useful individually, are definitely better together. Our program will often use them to run through the pipeline we introduced earlier. Since the pipeline will need to be run frequently, we'll create a `Pipeline` class to run it for us. \newpage
+Our `Parser`, `Processor`, and `Analyzer` classes, while useful individually, are definitely better together. Our program will often use them to run through the pipeline we introduced earlier. Since the pipeline will need to be run frequently, we'll create a `Pipeline` class to run it for us. 
 
 ```ruby
 class Pipeline
@@ -675,15 +672,15 @@ We're through the most labour intensive part of our program. Next, we'll build a
 
 ### A User Scenario
 
-When a user first enters the app by navigating to `/uploads`, they see a table of existing data and a form to submit new data by uploading an accelerometer output file and trial and user information (\aosafigref{500l.pedometer.app1}).
+When a user first enters the app by navigating to `/uploads`, they see a table of existing data and a form to submit new data by uploading an accelerometer output file and trial and user information (Upload view).
 
-\aosafigure[240pt]{pedometer-images/app1.png}{Upload view}{500l.pedometer.app1}
+![Upload view](pedometer-images/app1.png)
 
 Submitting the form stores the data to the file system, parses, processes, and analyzes it, and redirects back to `/uploads` with the new entry in the table.
 
-Clicking the **Detail** link for an entry presents the user with the following view in \aosafigref{500l.pedometer.app3}.
+Clicking the **Detail** link for an entry presents the user with the following view in Detail view.
 
-\aosafigure[240pt]{pedometer-images/app3.png}{Detail view}{500l.pedometer.app3}
+![Detail view](pedometer-images/app3.png)
 
 The information presented includes values input by the user through the upload form, values calculated by our program, and graphs of the time series following the dot product operation, and again following filtering. The user can navigate back to `/uploads` using the *Back to Uploads* link.
 

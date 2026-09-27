@@ -86,7 +86,6 @@ page, our front-end designer would need to be able to edit Python code to make
 HTML changes.  Imagine what the code would look like if the page were ten (or
 one hundred) times more complicated; it would quickly become unworkable.
 
-
 ## Templates
 
 The better way to produce HTML pages is with *templates*.  The HTML page is
@@ -161,7 +160,6 @@ used to produce plain-text email messages.  But usually they are used for
 HTML, and occasionally have HTML-specific features, such as escaping, which
 makes it possible to insert values into the HTML without worrying about which
 characters are special in HTML.
-
 
 ## Supported Syntax
 
@@ -244,7 +242,6 @@ brace-hashes:
 {# This is the best template ever! #}
 ```
 
-
 ## Implementation Approaches
 
 In broad strokes, the template engine will have two main phases: _parsing_ the template, and then _rendering_ the template.
@@ -294,7 +291,6 @@ Another application of templates might prefer the interpreted approach, if
 templates will be used only a few times each.  Then the effort to compile to
 Python won't pay off in the long run, and a simpler interpretation process
 might perform better overall.
-
 
 ## Compiling to Python
 
@@ -417,16 +413,13 @@ Python conditionals and loops.  The expression in the `{% if/for ... %}` tag
 will become the expression in the `if` or `for` statement, and the contents up
 until the `{% end... %}` tag will become the body of the statement.
 
-
 <!-- [[[cog from cogutil import include ]]] -->
 <!-- [[[end]]] -->
-
 
 ## Writing the Engine
 
 Now that we understand what the engine will do, let's walk through the
 implementation.
-
 
 ### The Templite class
 
@@ -466,7 +459,6 @@ be available everywhere, like `upper` in the previous example.
 
 Before we discuss the implementation of Templite, we have a helper to define
 first: CodeBuilder.
-
 
 ### CodeBuilder
 
@@ -618,11 +610,9 @@ in our Python source, we can retrieve that name from the dict returned by
 Now we can get into the implementation of the Templite class itself, and see
 how and where CodeBuilder is used.
 
-
 ### The Templite class implementation
 
 Most of our code is in the Templite class.  As we've discussed, it has both a compilation and a rendering phase.
-
 
 #### Compiling
 
@@ -768,13 +758,13 @@ this:
 buffered.append("'hello'")
 ```
 
-\noindent which will mean that our compiled Python function will have this line:
+ which will mean that our compiled Python function will have this line:
 
 ```python
 append_result('hello')
 ```
 
-\noindent which will add the string `hello` to the rendered output of the template. We have multiple levels of abstraction here which can be difficult to keep straight. The compiler uses \newline `buffered.append("'hello'")`, which creates `append_result('hello')` in the compiled Python function, which when run, appends `hello` to the template result.
+ which will add the string `hello` to the rendered output of the template. We have multiple levels of abstraction here which can be difficult to keep straight. The compiler uses \newline `buffered.append("'hello'")`, which creates `append_result('hello')` in the compiled Python function, which when run, appends `hello` to the template result.
 
 Back to our Templite class. As we parse control structures, we want to check
 that they are properly nested.  The `ops_stack` list is a stack of strings:
@@ -1107,7 +1097,6 @@ Templite object:
 Now `self._render_function` is a callable Python function. We'll use it later,
 during the rendering phase.
 
-
 #### Compiling Expressions
 
 We haven't yet seen a significant piece of the compiling process: the
@@ -1118,7 +1107,7 @@ expression.  Our template expressions can be as simple as a single name:
 {{user_name}}
 ```
 
-\noindent or can be a complex sequence of attribute accesses and filters:
+ or can be a complex sequence of attribute accesses and filters:
 
 ```
 {{user.name.localized|upper|escape}}
@@ -1195,7 +1184,6 @@ name:
 ```
 <!-- [[[end]]] -->
 
-
 #### Helper Functions
 
 During compilation, we used a few helper functions.  The `_syntax_error` method
@@ -1231,7 +1219,6 @@ the set:
 <!-- [[[end]]] -->
 
 With that, the compilation code is done!
-
 
 #### Rendering
 
@@ -1309,14 +1296,12 @@ how templates work, not part of the details of a particular template.  It feels
 cleaner to implement it like this than to have that code be part of the
 compiled template.
 
-
 ## Testing
 
 Provided with the template engine is a suite of tests that cover all of the
 behavior and edge cases.  I'm actually a little bit over my 500-line limit:
 the template engine is 252 lines, and the tests are 275 lines.  This is typical
 of well-tested code: you have more code in your tests than in your product.
-
 
 ## What's Left Out
 
@@ -1333,7 +1318,6 @@ here.  To keep this code small, we're leaving out interesting ideas like:
 
 Even so, our simple template engine is useful.  In fact, it is the template
 engine used in coverage.py to produce its HTML reports.
-
 
 ## Summing up
 

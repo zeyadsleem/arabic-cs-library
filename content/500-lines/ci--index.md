@@ -89,7 +89,6 @@ $ git commit -m ”add tests”
 $ git clone /path/to/test_repo test_repo_clone_obs
 ```
 
-
 وسيحتاج مشغّل الاختبارات أيضاً إلى نسخته الخاصة من الشيفرة، حتى يتمكّن من إجراء checkout للمستودع عند commit معيّن وتشغيل الاختبارات. لننشئ نسخة أخرى من مستودعنا الرئيسي ونسمّيها `test_repo_clone_runner`:
 
 ```bash
@@ -536,9 +535,9 @@ run_or_fail "Could not update to given commit hash" git reset --hard "$COMMIT"
 
 ### مخطّط تدفّق التحكّم
 
-يشكل \aosafigref{500l.ci.controlflow} مخطّطاً عاماً لهذا النظام. يفترض هذا المخطّط أن الملفات الثلاثة \newline (`repo_observer.py` و`dispatcher.py` و`test_runner.py`) تعمل بالفعل، ويصف الإجراءات التي تتّخذها كل عملية عند إجراء commit جديد.
+يشكل controlflow مخطّطاً عاماً لهذا النظام. يفترض هذا المخطّط أن الملفات الثلاثة \newline (`repo_observer.py` و`dispatcher.py` و`test_runner.py`) تعمل بالفعل، ويصف الإجراءات التي تتّخذها كل عملية عند إجراء commit جديد.
 
-\aosafigure[360pt]/images/500-lines/ci-0-diagram.webp{تدفّق التحكّم}{500l.ci.controlflow}
+![تدفّق التحكّم](/images/500-lines/ci-0-diagram.webp)
 
 ### تشغيل الشيفرة
 

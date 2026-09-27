@@ -20,13 +20,13 @@ _ـ[Greg Wilson](https://twitter.com/gvwilson) هو مؤسّس Software Carpentr
 
 ورقم المنفذ هو عدد في المدى من 0 إلى 65535 يحدّد المقبس على نحو فريد على الآلة المضيفة. (إذا كان عنوان IP أشبه برقم هاتف شركة، فإنّ رقم المنفذ أشبه برقم داخلي.) أمّا المنافذ من 0 إلى 1023 فهي محجوزة لاستخدام نظام التشغيل؛ ويمكن لأيّ شخص آخر استخدام بقية المنافذ.
 
-تصف بروتوكول نقل النصوص التشعبية (Hypertext Transfer Protocol، HTTP) إحدى الطرق التي يمكن بها للبرامج تبادل البيانات فوق IP. وHTTP بسيط عن قصد: يرسل العميل طلبًا يحدّد ما يريده عبر اتصال مقبس، ويردّ الخادم ببعض البيانات (\aosafigref{500l.web-server.cycle}.) وقد تُنسخ البيانات من ملف على القرص، أو تُولَّد ديناميكيًّا بواسطة برنامج، أو تكون مزيجًا من الأمرَين.
+تصف بروتوكول نقل النصوص التشعبية (Hypertext Transfer Protocol، HTTP) إحدى الطرق التي يمكن بها للبرامج تبادل البيانات فوق IP. وHTTP بسيط عن قصد: يرسل العميل طلبًا يحدّد ما يريده عبر اتصال مقبس، ويردّ الخادم ببعض البيانات (cycle.) وقد تُنسخ البيانات من ملف على القرص، أو تُولَّد ديناميكيًّا بواسطة برنامج، أو تكون مزيجًا من الأمرَين.
 
-\aosafigure[240pt]/images/500-lines/web-server-0-http_cycle.webp{The HTTP Cycle}{500l.web-server.cycle}
+![The HTTP Cycle](/images/500-lines/web-server-0-http_cycle.webp)
 
-وأهمّ ما في طلب HTTP هو أنّه مجرّد نصّ: فيمكن لأيّ برنامج أن ينشئ طلبًا أو يحلّله. لكنّ ذلك النصّ، كي يُفهَم، يجب أن يحتوي على الأجزاء المبيَّنة في \aosafigref{500l.web-server.request}.
+وأهمّ ما في طلب HTTP هو أنّه مجرّد نصّ: فيمكن لأيّ برنامج أن ينشئ طلبًا أو يحلّله. لكنّ ذلك النصّ، كي يُفهَم، يجب أن يحتوي على الأجزاء المبيَّنة في request.
 
-\aosafigure[240pt]/images/500-lines/web-server-1-http_request.webp{An HTTP Request}{500l.web-server.request}
+![An HTTP Request](/images/500-lines/web-server-1-http_request.webp)
 
 ودالة HTTP (method) هي دائمًا تقريبًا إمّا "GET" (لجلب معلومات) أو "POST" (لإرسال بيانات نموذج أو رفع ملفات). ويحدّد URL ما يريده العميل؛ وهو غالبًا مسار إلى ملف على القرص، مثل `/research/experiments.html`، لكن (وهذا هو الجزء المهمّ) من شأن الخادم وحده أن يقرّر تمامًا ما الذي يفعله به. أمّا إصدار HTTP فهو عادةً "HTTP/1.0" أو "HTTP/1.1"؛ والفروق بين الاثنين لا تهمّنا.
 
@@ -42,12 +42,11 @@ If-Modified-Since: 16-May-2005
 
 وأخيرًا، فإنّ جسم الطلب (body) هو أيّ بيانات إضافية مرتبطة بالطلب. ويُستخدم هذا عند إرسال بيانات عبر نماذج الويب، وعند رفع الملفات، وهكذا. ويجب أن يكون هناك سطر فارغ بين آخر ترويسة وبداية الجسم للإشارة إلى نهاية الترويسات.
 
-
 وتخبر إحدى الترويسات، وتُسمّى `Content-Length`، الخادم بعدد البايتات التي يتوقّع أن يقرأها في جسم الطلب.
 
-وتُنسَّق استجابات HTTP على نحو طلبات HTTP نفسه (\aosafigref{500l.web-server.response}):
+وتُنسَّق استجابات HTTP على نحو طلبات HTTP نفسه (response):
 
-\aosafigure[240pt]/images/500-lines/web-server-2-http_response.webp{An HTTP Response}{500l.web-server.response}
+![An HTTP Response](/images/500-lines/web-server-2-http_response.webp)
 
 للإصدار والترويسات والجسم الصيغة والدلالة نفسها. أمّا رمز الحالة (status code) فهو عدد يدلّ على ما حدث حين عولج الطلب: 200 يعني "كل شيء على ما يرام"، و404 يعني "غير موجود"، ورموز أخرى لها معانٍ أخرى. وتُعيد عبارة الحالة (status phrase) تلك المعلومة في عبارة مقروءة للبشر مثل "OK" أو "غير موجود".
 
@@ -202,7 +201,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 '''
 ```
 
-\noindent والدالة التي تملأ هذا هي:
+ والدالة التي تملأ هذا هي:
 
 ```python
     def create_page(self):
@@ -351,7 +350,6 @@ class case_no_file(object):
     def act(self, handler):
         raise ServerException("'{0}' not found".format(handler.path))
 
-
 class case_existing_file(object):
     '''File exists.'''
 
@@ -360,7 +358,6 @@ class case_existing_file(object):
 
     def act(self, handler):
         handler.handle_file(handler.full_path)
-
 
 class case_always_fail(object):
     '''Base case if nothing else worked.'''
@@ -372,7 +369,7 @@ class case_always_fail(object):
         raise ServerException("Unknown object '{0}'".format(handler.path))
 ```
 
-\noindent وهكذا نبني قائمة معالِجات الحالات في أعلى صنف `RequestHandler`:
+ وهكذا نبني قائمة معالِجات الحالات في أعلى صنف `RequestHandler`:
 
 ```python 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -443,7 +440,6 @@ class case_directory_no_index_file(object):
 
     def act(self, handler):
         handler.list_dir(handler.full_path)
-
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -580,7 +576,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.wfile.write(content)
 ```
 
-\noindent بينما يكون الصنف الأب لمعالِجات الحالات لدينا هو:
+ بينما يكون الصنف الأب لمعالِجات الحالات لدينا هو:
 
 ```python 
 class base_case(object):
@@ -605,7 +601,7 @@ class base_case(object):
         assert False, 'Not implemented.'
 ```
 
-\noindent ومعالِج الملفّ الموجود (لنختر مثالًا اعتباطيًّا) هو:
+ ومعالِج الملفّ الموجود (لنختر مثالًا اعتباطيًّا) هو:
 
 ```python 
 class case_existing_file(base_case):

@@ -1214,6 +1214,58 @@
   font-size: 1rem;
 }
 
+.callout {
+  margin: 1.4rem 0;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.callout > p:first-of-type {
+  margin-top: 0;
+}
+
+.callout > p:last-child {
+  margin-bottom: 0;
+}
+
+.callout--exercise,
+.callout--solvedexercise {
+  background: var(--paper-deep);
+  border-color: var(--rule-strong);
+}
+
+.callout--solution {
+  background: var(--jade-wash);
+  border-color: color-mix(in srgb, var(--jade) 30%, transparent);
+}
+
+.callout--remark,
+.callout--recap {
+  background: var(--surface);
+}
+
+.callout--quote {
+  background: transparent;
+  border-inline-start: 2px solid var(--rule-strong);
+  border-block: 0;
+  border-inline-end: 0;
+  border-radius: 0;
+  color: var(--ink-soft);
+}
+
+.callout--pause {
+  background: var(--rubric-wash);
+  border-color: color-mix(in srgb, var(--rubric) 28%, transparent);
+}
+
+.callout--nonmath {
+  border: 0;
+  background: transparent;
+  padding-inline: 0;
+}
+
 .lecture-video {
   position: relative;
   padding-top: 56.25%;

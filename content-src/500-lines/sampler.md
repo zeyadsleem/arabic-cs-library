@@ -34,7 +34,6 @@ the solution.[^note]
 [^note]: This chapter assumes some familiarity with statistics and
 probability theory.
 
-
 ### What is Sampling?
 
 The term *sampling* means generating random values from some
@@ -333,7 +332,7 @@ numbers come from. We create it as follows:
 >>> rso = np.random.RandomState(230489)
 ```
 
-\noindent where the number passed to the `RandomState` constructor is the
+ where the number passed to the `RandomState` constructor is the
 *seed* for the random number generator. As long as we instantiate it with the
 same seed, a `RandomState` object will produce the same "random" numbers in the
 same order, thus ensuring replicability:
@@ -456,7 +455,7 @@ $$
 p(\mathbf{x}; \mathbf{p}) = \frac{(\sum_{i=1}^k x_i)!}{x_1!\cdots{}x_k!}p_1^{x_1}\cdots{}p_k^{x_k}
 $$
 
-\noindent where $\mathbf{x}=[x_1, \ldots{}, x_k]$ is a vector of length $k$
+ where $\mathbf{x}=[x_1, \ldots{}, x_k]$ is a vector of length $k$
 specifying the number of times each event happened, and
 $\mathbf{p}=[p_1, \ldots{}, p_k]$ is a vector specifying the
 probability of each event occurring. As mentioned above, the event
@@ -1134,9 +1133,9 @@ Now we can draw a bunch of samples, and compute the 50th percentile
 ```
 
 If we were to plot a histogram of how many samples we got for each
-amount of damage, it would look something like \aosafigref{500l.sampler.damage}.
+amount of damage, it would look something like Damage Distribution.
 
-\aosafigure[180pt]{sampler-images/damage_distribution.png}{Damage Distribution}{500l.sampler.damage}
+![Damage Distribution](sampler-images/damage_distribution.png)
 
 There is a pretty wide range of damage that the player could
 potentially inflict, but it has a long tail: the 50th percentile is at

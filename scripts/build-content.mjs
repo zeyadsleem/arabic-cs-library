@@ -65,6 +65,67 @@ const addHeadingIds = (html) =>
     }
   );
 
+const calloutLabels = {
+  exercise: 'تمرين',
+  solvedexercise: 'تمرين محلول',
+  solution: 'الحل',
+  remark: 'ملاحظة',
+  quote: 'اقتباس',
+  recap: 'خلاصة',
+  pause: 'توقّف وتأمّل',
+  note: 'ملاحظة',
+  nonmath: '',
+  important: 'مهم',
+  warning: 'تحذير',
+  tip: 'تلميح',
+};
+
+const convertCallouts = (markdown) => {
+  const normalized = markdown
+    .replace(/([^\n])\s*(:::\s*\{)/g, '$1\n\n$2')
+    .replace(/\s+(:::\s*)(?=\n)/g, '\n$1');
+  const lines = normalized.split('\n');
+  const out = [];
+  let inFence = false;
+
+  for (const line of lines) {
+    if (/^```/.test(line.trim())) {
+      inFence = !inFence;
+      out.push(line);
+      continue;
+    }
+    if (inFence) {
+      out.push(line);
+      continue;
+    }
+
+    const opener = line.match(/^:::\s*\{([^}]*)\}\s*(.*)$/);
+    if (opener) {
+      const info = opener[1];
+      const kind = info.match(/\.([a-z-]+)/)?.[1] || 'note';
+      const id = info.match(/#([\w-]+)/)?.[1];
+      const rawTitle = info.match(/title="([^"]*)"/)?.[1] || '';
+      const title = rawTitle.replace(/\$/g, '').trim();
+      const label = calloutLabels[kind] ?? '';
+      const heading = [label, title].filter(Boolean).join(' — ');
+      out.push('', `<div class="callout callout--${kind}"${id ? ` id="${id}"` : ''}>`, '');
+      if (heading) out.push(`**${heading}**`, '');
+      const rest = (line.slice(line.lastIndexOf('}') + 1) || '').trim();
+      if (rest) out.push('', rest, '');
+      continue;
+    }
+
+    if (/^:::\s*$/.test(line)) {
+      out.push('', '</div>', '');
+      continue;
+    }
+
+    out.push(line);
+  }
+
+  return out.join('\n');
+};
+
 const wrapExercises = (html) => {
   const heading = (html.match(/<h[1-4][^>]*>[\s\S]*?<\/h[1-4]>/g) || []).find(
     (tag) => /exercises|تمارين/i.test(tag)
@@ -140,7 +201,8 @@ const run = () => {
           continue;
         }
         const raw = fs.readFileSync(file, 'utf8');
-        const { data, content } = matter(raw);
+        const { data, content: rawContent } = matter(raw);
+        const content = convertCallouts(rawContent);
         if (data.lang && data.lang !== 'ar') {
           console.log(`not translated yet: ${book.id}/${chapter.key}--${slug}`);
         }

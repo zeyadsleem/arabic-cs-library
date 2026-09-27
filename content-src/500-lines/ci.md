@@ -186,7 +186,6 @@ repository, and call it `test_repo_clone_obs`:
 $ git clone /path/to/test_repo test_repo_clone_obs
 ```
 
-
 The test runner will also need its own clone of the code, so it can
 checkout the repository at a given commit and run the tests. Let's
 create another clone of our master repository, and call it
@@ -811,12 +810,12 @@ the address of the dispatcher.
 
 ### Control Flow Diagram
 
-\aosafigref{500l.ci.controlflow} is an overview diagram of this system. This
+Control Flow is an overview diagram of this system. This
 diagram assumes that all three files \newline (`repo_observer.py`,
 `dispatcher.py` and `test_runner.py`) are already running, and describes the
 actions each process takes when a new commit is made.
 
-\aosafigure[360pt]{ci-images/diagram.png}{Control Flow}{500l.ci.controlflow}
+![Control Flow](ci-images/diagram.png)
 
 ### Running the Code
 

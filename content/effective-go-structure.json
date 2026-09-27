@@ -1,0 +1,196 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "مقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "formatting",
+      "title": "Formatting",
+      "titleAr": "التنسيق",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التنسيق",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "commentary",
+      "title": "Commentary",
+      "titleAr": "التعليقات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التعليقات",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "names",
+      "title": "Names",
+      "titleAr": "التسمية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التسمية",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "semicolons",
+      "title": "Semicolons",
+      "titleAr": "الفواصل المنقوطة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الفواصل المنقوطة",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "control-structures",
+      "title": "Control structures",
+      "titleAr": "بنى التحكم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "بنى التحكم",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "functions",
+      "title": "Functions",
+      "titleAr": "الدوال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدوال",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "data",
+      "title": "Data",
+      "titleAr": "البيانات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البيانات",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "initialization",
+      "title": "Initialization",
+      "titleAr": "التهيئة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التهيئة",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "methods",
+      "title": "Methods",
+      "titleAr": "الطرق",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الطرق",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "interfaces-and-types",
+      "title": "Interfaces and other types",
+      "titleAr": "الواجهات وأنواع أخرى",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الواجهات وأنواع أخرى",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "the-blank-identifier",
+      "title": "The blank identifier",
+      "titleAr": "المُعرِّف الفارغ",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المُعرِّف الفارغ",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "embedding",
+      "title": "Embedding",
+      "titleAr": "الدمج",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدمج",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "concurrency",
+      "title": "Concurrency",
+      "titleAr": "التزامن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التزامن",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "errors",
+      "title": "Errors",
+      "titleAr": "الأخطاء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأخطاء",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "web-server",
+      "title": "A web server",
+      "titleAr": "خادم ويب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خادم ويب",
+          "order": 15
+        }
+      ]
+    }
+  ]
+}

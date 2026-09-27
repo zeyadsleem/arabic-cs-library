@@ -364,7 +364,7 @@ It is crucial to understand that Python stack frames are allocated in heap memor
 'foo'
 ```
 
-\aosafigure[240pt]{crawler-images/function-calls.png}{Function Calls}{500l.crawler.functioncalls}
+![Function Calls](crawler-images/function-calls.png)
 
 The stage is now set for Python generators, which use the same building blocks&mdash;code objects and stack frames&mdash;to marvelous effect.
 
@@ -406,7 +406,7 @@ A Python generator encapsulates a stack frame plus a reference to some code, the
 
 All generators from calls to `gen_fn` point to this same code. But each has its own stack frame. This stack frame is not on any actual stack, it sits in heap memory waiting to be used:
 
-\aosafigure[240pt]{crawler-images/generator.png}{Generators}{500l.crawler.generators}
+![Generators](crawler-images/generator.png)
 
 The frame has a "last instruction" pointer, the instruction it executed most recently. In the beginning, the last instruction pointer is -1, meaning the generator has not begun:
 
@@ -726,7 +726,7 @@ loop()
 
 When `read` yields a future, the task receives it through the channel of `yield from` statements, precisely as if the future were yielded directly from `fetch`. When the loop resolves a future, the task sends its result into `fetch`, and the value is received by `read`, exactly as if the task were driving `read` directly:
 
-\aosafigure[240pt]{crawler-images/yield-from.png}{Yield From}{500l.crawler.yieldfrom}
+![Yield From](crawler-images/yield-from.png)
 
 To perfect our coroutine implementation, we polish out one mar: our code uses `yield` when it waits for a future, but `yield from` when it delegates to a sub-coroutine. It would be more refined if we used `yield from` whenever a coroutine pauses. Then a coroutine need not concern itself with what type of thing it awaits.
 
@@ -936,7 +936,7 @@ New URLs have ten redirects remaining. Fetching this particular URL results in a
 
 The `aiohttp` package we use would follow redirects by default and give us the final response. We tell it not to, however, and handle redirects in the crawler, so it can coalesce redirect paths that lead to the same destination: if we have already seen this URL, it is in ``self.seen_urls`` and we have already started on this path from a different entry point:
 
-\aosafigure[240pt]{crawler-images/redirects.png}{Redirects}{500l.crawler.redirects}
+![Redirects](crawler-images/redirects.png)
 
 The crawler fetches "foo" and sees it redirects to "baz", so it adds "baz" to
 the queue and to ``seen_urls``. If the next page it fetches is "bar", which

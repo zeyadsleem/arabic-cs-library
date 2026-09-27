@@ -449,8 +449,6 @@ b = body(e)
 
 `loops` هي `Array` من أرقام أسطر التسميات التي تقع عندها قفزات تمثّل حلقات. أمّا `nesting` فتُشير إلى عدد الحلقات التي نحن داخلها حاليًّا. و`lines` هي `Array` من طور من الشكل (فهرس، `Expr`).
 
-
-
 ```julia
   for i in 1:length(b)
     if typeof(b[i]) == LabelNode
@@ -526,7 +524,6 @@ function loosetypes(lr::Vector)
   return loose_types
 end
 ```
-
 
 ```julia
   symbols = SymbolNode[]
@@ -604,7 +601,6 @@ foo(Int64)::Union(Int64,Float64)
 	s::Union(Int64,Float64)
 	s::Union(Int64,Float64)
 
-
 julia> checklooptypes(code_typed(foo,(Int,))[1])
 (Int64)::Union(Int64,Float64)
 	s::Union(Int64,Float64)
@@ -646,7 +642,6 @@ function Base.show(io::IO, x::LoopResults)
   end
 end
 ```
-
 
 ## البحث عن متغيّرات غير مستخدمة
 
@@ -872,7 +867,6 @@ end
 ```
 
 في نهاية الدالة، نُعيد مجموعة استخدامات المتغيّرات على الجانب الأيمن.
-
 
 هناك المزيد قليلًا من الشيفرة التي تبسّط الدالة أعلاه. ولأنّ النسخة أعلاه لا تتعامل إلّا مع `Expr`s، بينما إنّ بعض القيم التي تُمرَّر بشكل متكرّر قد لا تكون `Expr`s، فنحتاج إلى بضع طرق أخرى للتعامل مع الأنواع الممكنة الأخرى على نحو مناسب.
 

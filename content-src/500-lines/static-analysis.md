@@ -446,7 +446,6 @@ And then:
 
 `loops` is an `Array` of label line numbers where gotos that are loops occur. `nesting` indicates the number of loops we are currently inside. `lines` is an `Array` of (index, `Expr`) tuples. 
 
-
 ```julia
   for i in 1:length(b)
     if typeof(b[i]) == LabelNode
@@ -522,7 +521,6 @@ function loosetypes(lr::Vector)
   return loose_types
 end
 ```
-
 
 ```julia
   symbols = SymbolNode[]
@@ -600,7 +598,6 @@ foo(Int64)::Union(Int64,Float64)
 	s::Union(Int64,Float64)
 	s::Union(Int64,Float64)
 
-
 julia> checklooptypes(code_typed(foo,(Int,))[1])
 (Int64)::Union(Int64,Float64)
 	s::Union(Int64,Float64)
@@ -642,7 +639,6 @@ function Base.show(io::IO, x::LoopResults)
   end
 end
 ```
-
 
 ## Looking For Unused Variables
 
@@ -868,7 +864,6 @@ The `:(::)` operator is used to add type annotations. The first argument is the 
 ```
 
 At the end of the function, we return the set of RHS variable usages.
-
 
 There's a little more code that simplifies the method above. Because the version above only handles `Expr`s, but some of the values that get passed recursively may not be `Expr`s, we need a few more methods to handle the other possible types appropriately.
 

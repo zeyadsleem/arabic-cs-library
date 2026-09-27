@@ -47,20 +47,20 @@ The Hypertext Transfer Protocol (HTTP) describes one way that
 programs can exchange data over IP.
 HTTP is deliberately simple:
 the client sends a request specifying what it wants over a socket connection,
-and the server sends some data in response (\aosafigref{500l.web-server.cycle}.)
+and the server sends some data in response (The HTTP Cycle.)
 The data may be copied from a file on disk,
 generated dynamically by a program,
 or some mix of the two.
 
-\aosafigure[240pt]{web-server-images/http-cycle.png}{The HTTP Cycle}{500l.web-server.cycle}
+![The HTTP Cycle](web-server-images/http-cycle.png)
 
 The most important thing about an HTTP request is that it's just text:
 any program that wants to can create one or parse one.
 In order to be understood,
 though,
-that text must have the parts shown in \aosafigref{500l.web-server.request}.
+that text must have the parts shown in An HTTP Request.
 
-\aosafigure[240pt]{web-server-images/http-request.png}{An HTTP Request}{500l.web-server.request}
+![An HTTP Request](web-server-images/http-request.png)
 
 The HTTP method is almost always either "GET" (to fetch information)
 or "POST" (to submit form data or upload files).
@@ -93,14 +93,13 @@ and so on.
 There must be a blank line between the last header and the start of the body
 to signal the end of the headers.
 
-
 One header,
 called `Content-Length`,
 tells the server how many bytes to expect to read in the body of the request.
 
-HTTP responses are formatted like HTTP requests (\aosafigref{500l.web-server.response}):
+HTTP responses are formatted like HTTP requests (An HTTP Response):
 
-\aosafigure[240pt]{web-server-images/http-response.png}{An HTTP Response}{500l.web-server.response}
+![An HTTP Response](web-server-images/http-response.png)
 
 The version, headers, and body have the same form and meaning.
 The status code is a number indicating what happened when the request was processed:
@@ -359,7 +358,7 @@ with some formatting placeholders:
 '''
 ```
 
-\noindent and the method that fills this in is:
+ and the method that fills this in is:
 
 ```python
     def create_page(self):
@@ -585,7 +584,6 @@ class case_no_file(object):
     def act(self, handler):
         raise ServerException("'{0}' not found".format(handler.path))
 
-
 class case_existing_file(object):
     '''File exists.'''
 
@@ -594,7 +592,6 @@ class case_existing_file(object):
 
     def act(self, handler):
         handler.handle_file(handler.full_path)
-
 
 class case_always_fail(object):
     '''Base case if nothing else worked.'''
@@ -606,7 +603,7 @@ class case_always_fail(object):
         raise ServerException("Unknown object '{0}'".format(handler.path))
 ```
 
-\noindent and here's how we construct the list of case handlers
+ and here's how we construct the list of case handlers
 at the top of the `RequestHandler` class:
 
 ```python 
@@ -704,7 +701,6 @@ class case_directory_no_index_file(object):
 
     def act(self, handler):
         handler.list_dir(handler.full_path)
-
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -876,7 +872,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.wfile.write(content)
 ```
 
-\noindent while the parent class for our case handlers is:
+ while the parent class for our case handlers is:
 
 ```python 
 class base_case(object):
@@ -901,7 +897,7 @@ class base_case(object):
         assert False, 'Not implemented.'
 ```
 
-\noindent and the handler for an existing file
+ and the handler for an existing file
 (just to pick an example at random) is:
 
 ```python 
@@ -939,4 +935,4 @@ have allowed us to ignore the details of handling socket connections
 and parsing HTTP requests.
 
 These ideas are generally useful; 
-see if you can find ways to use them in your own projects. 
+see if you can find ways to use them in your own projects.

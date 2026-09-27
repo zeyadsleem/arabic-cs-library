@@ -1,0 +1,76 @@
+{
+  "chapters": [
+    {
+      "key": "introduction",
+      "title": "Introduction",
+      "titleAr": "مقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "code-organization",
+      "title": "Code organization",
+      "titleAr": "تنظيم الشيفرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تنظيم الشيفرة",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "your-first-program",
+      "title": "Your first program",
+      "titleAr": "برنامجك الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "برنامجك الأول",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "testing",
+      "title": "Testing",
+      "titleAr": "الاختبار",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الاختبار",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "whats-next",
+      "title": "What's next",
+      "titleAr": "الخطوة التالية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الخطوة التالية",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "getting-help",
+      "title": "Getting help",
+      "titleAr": "الحصول على المساعدة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الحصول على المساعدة",
+          "order": 5
+        }
+      ]
+    }
+  ]
+}

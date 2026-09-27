@@ -276,9 +276,9 @@ run {} for 3	-- generate an instance with up to 3 objects of every signature typ
 ```
 
 As soon as the analyzer finds a possible instance of the system, it
-automatically produces a diagram of the instance, like in \aosafigref{500l.same-origin-policy.fig-http-1}.
+automatically produces a diagram of the instance, like in A possible instance.
 
-\aosafigure[240pt]{same-origin-policy-images/fig-http-1.png}{A possible instance}{500l.same-origin-policy.fig-http-1}
+![A possible instance](same-origin-policy-images/fig-http-1.png)
 
 This instance shows a client (represented by node `Client`) sending an
 `HttpRequest` to `Server`, which, in response, returns a resource
@@ -311,11 +311,11 @@ check {
 } for 3 
 ```
 
-Given this `check` command, the analyzer explores every possible behavior of the system (up to the specified bound), and when it finds one that violates the property, displays that instance as a *counterexample*, as shown in \aosafigref{500l.same-origin-policy.fig-http-2a} and \aosafigref{500l.same-origin-policy.fig-http-2b}.
+Given this `check` command, the analyzer explores every possible behavior of the system (up to the specified bound), and when it finds one that violates the property, displays that instance as a *counterexample*, as shown in Counterexample at time 0 and Counterexample at time 1.
 
-\aosafigure[180pt]{same-origin-policy-images/fig-http-2a.png}{Counterexample at time 0}{500l.same-origin-policy.fig-http-2a}
+![Counterexample at time 0](same-origin-policy-images/fig-http-2a.png)
 
-\aosafigure[180pt]{same-origin-policy-images/fig-http-2b.png}{Counterexample at time 1}{500l.same-origin-policy.fig-http-2b}
+![Counterexample at time 1](same-origin-policy-images/fig-http-2b.png)
 
 This counterexample again shows an HTTP request being made by a
 client, but with two different servers. (In the Alloy visualizer,
@@ -791,18 +791,18 @@ check Confidentiality for 5
 
 For example, when checking the model of our example application against the
 confidentiality property, the analyzer generates the scenario seen in
-\aosafigref{500l.same-origin-policy.fig-attack-1a} and
-\aosafigref{500l.same-origin-policy.fig-attack-1b}, which shows how
+Confidentiality counterexample at time 0 and
+Confidentiality counterexample at time 1, which shows how
 `EvilScript` may access a piece of critical data (`MyInboxInfo`).
 
-\aosafigure[180pt]{same-origin-policy-images/fig-attack-1a.png}{Confidentiality counterexample at time 0}{500l.same-origin-policy.fig-attack-1a}
-\aosafigure[180pt]{same-origin-policy-images/fig-attack-1b.png}{Confidentiality counterexample at time 1}{500l.same-origin-policy.fig-attack-1b}
+![Confidentiality counterexample at time 0](same-origin-policy-images/fig-attack-1a.png)
+![Confidentiality counterexample at time 1](same-origin-policy-images/fig-attack-1b.png)
 
-This counterexample involves two steps. In the first step (\aosafigref{500l.same-origin-policy.fig-attack-1a}), `EvilScript`, executing inside `AdBanner` from `EvilDomain`, reads the content of `InboxPage`, which originates from `EmailDomain`. In the next step (\aosafigref{500l.same-origin-policy.fig-attack-1b}), `EvilScript` sends the same content (`MyInboxInfo`) to `EvilServer` by making an `XmlHtttpRequest` call. The core of the problem here is that a script executing under one domain is able to read the content of a document from another domain; as we will see in the next section, this is exactly one of the scenarios that the SOP is designed to prevent.
+This counterexample involves two steps. In the first step (Confidentiality counterexample at time 0), `EvilScript`, executing inside `AdBanner` from `EvilDomain`, reads the content of `InboxPage`, which originates from `EmailDomain`. In the next step (Confidentiality counterexample at time 1), `EvilScript` sends the same content (`MyInboxInfo`) to `EvilServer` by making an `XmlHtttpRequest` call. The core of the problem here is that a script executing under one domain is able to read the content of a document from another domain; as we will see in the next section, this is exactly one of the scenarios that the SOP is designed to prevent.
 
-There may be multiple counterexamples to a single assertion. Consider \aosafigref{500l.same-origin-policy.fig-attack-2}, which shows a different way in which the system may violate the confidentiality property.
+There may be multiple counterexamples to a single assertion. Consider Another confidentiality violation, which shows a different way in which the system may violate the confidentiality property.
 
-\aosafigure[180pt]{same-origin-policy-images/fig-attack-2.png}{Another confidentiality violation}{500l.same-origin-policy.fig-attack-2}
+![Another confidentiality violation](same-origin-policy-images/fig-attack-2.png)
 
 In this scenario, instead of reading the content of the inbox page,
 `EvilScript` directly makes a `GetInboxInfo` request to `EmailServer`.
@@ -1005,8 +1005,8 @@ check Confidentiality for 5
 This scenario consists of five steps; the first three steps show a typical use of `document.domain`, where two documents from distinct origins, `CalendarPage` and `InboxPage`, communicate by setting their domain properties to a common value (`ExampleDomain`). The last two steps introduce another document, `BlogPage`, that has been compromised with a malicious script that attempts to access the content of the other two documents.
 
 At the beginning of the scenario
-(\aosafigref{500l.same-origin-policy.fig-setdomain-1a} and
-\aosafigref{500l.same-origin-policy.fig-setdomain-1b}), `InboxPage` and
+(Cross-origin counterexample at time 0 and
+Cross-origin counterexample at time 1), `InboxPage` and
 `CalendarPage` have domain properties with two distinct values (`EmailDomain`
 and `ExampleDomain`, respectively), so the browser will prevent them from
 accessing each other's DOM.  The scripts running inside the documents
@@ -1014,13 +1014,13 @@ accessing each other's DOM.  The scripts running inside the documents
 modify their domain properties to `ExampleDomain` (which is allowed because
 `ExampleDomain` is a superdomain of the original domain).
 
-\aosafigure[180pt]{same-origin-policy-images/fig-setdomain-1a.png}{Cross-origin counterexample at time 0}{500l.same-origin-policy.fig-setdomain-1a}
-\aosafigure[180pt]{same-origin-policy-images/fig-setdomain-1b.png}{Cross-origin counterexample at time 1}{500l.same-origin-policy.fig-setdomain-1b}
+![Cross-origin counterexample at time 0](same-origin-policy-images/fig-setdomain-1a.png)
+![Cross-origin counterexample at time 1](same-origin-policy-images/fig-setdomain-1b.png)
 
 Having done this, they can now access each other's DOM by
-executing `ReadDom` or `WriteDom` operations, as in \aosafigref{500l.same-origin-policy.fig-setdomain-1c}.
+executing `ReadDom` or `WriteDom` operations, as in Cross-origin counterexample at time 2.
 
-\aosafigure[180pt]{same-origin-policy-images/fig-setdomain-1c.png}{Cross-origin counterexample at time 2}{500l.same-origin-policy.fig-setdomain-1c}
+![Cross-origin counterexample at time 2](same-origin-policy-images/fig-setdomain-1c.png)
 
 Note that when you set the domain of `email.example.com`
 and `calendar.example.com` to `example.com`, you are allowing not only
@@ -1028,13 +1028,13 @@ these two pages to communicate between each other, but also _any_
 other page that has `example.com` as a superdomain
 (e.g., `blog.example.com`). An attacker also realizes this, and
 constructs a special script (`EvilScript`) that runs inside the
-attacker's blog page (`BlogPage`). In the next step (\aosafigref{500l.same-origin-policy.fig-setdomain-2a}), the script executes the `SetDomain` operation to modify the domain property of `BlogPage` to `ExampleDomain`.
+attacker's blog page (`BlogPage`). In the next step (Cross-origin counterexample at time 3), the script executes the `SetDomain` operation to modify the domain property of `BlogPage` to `ExampleDomain`.
 
-\aosafigure[180pt]{same-origin-policy-images/fig-setdomain-2a.png}{Cross-origin counterexample at time 3}{500l.same-origin-policy.fig-setdomain-2a}
+![Cross-origin counterexample at time 3](same-origin-policy-images/fig-setdomain-2a.png)
 
-Now that `BlogPage` has the same domain property as the other two documents, it can successfully execute the `ReadDOM` operation to access their content (\aosafigref{500l.same-origin-policy.fig-setdomain-2b}.)
+Now that `BlogPage` has the same domain property as the other two documents, it can successfully execute the `ReadDOM` operation to access their content (Cross-origin counterexample at time 4.)
 
-\aosafigure[180pt]{same-origin-policy-images/fig-setdomain-2b.png}{Cross-origin counterexample at time 4}{500l.same-origin-policy.fig-setdomain-2b}
+![Cross-origin counterexample at time 4](same-origin-policy-images/fig-setdomain-2b.png)
 
 This attack points out one crucial weakness of the domain property
 method for cross-origin communication: The security of an application
@@ -1150,13 +1150,13 @@ cookie (`MyCookie`) for `CalendarServer`. However, because the JSONP
 request is being sent to `CalendarServer`, the browser automatically
 includes `MyCookie` as part of the request; `CalendarServer`, having
 received a JSONP request with `MyCookie`, will return the victim's
-resource (`MySchedule`) wrapped inside the padding `Leak` (\aosafigref{500l.same-origin-policy.fig-jsonp-1}.)
+resource (`MySchedule`) wrapped inside the padding `Leak` (JSONP counterexample at time 0.)
 
-\aosafigure[240pt]{same-origin-policy-images/fig-jsonp-1.png}{JSONP counterexample at time 0}{500l.same-origin-policy.fig-jsonp-1}
+![JSONP counterexample at time 0](same-origin-policy-images/fig-jsonp-1.png)
 
-In the next step, the browser interprets the JSONP response as a call to `Leak(MySchedule)` (\aosafigref{500l.same-origin-policy.fig-jsonp-2}). The rest of the attack is simple; `Leak` can simply be programmed to forward the input argument to `EvilServer`, allowing the attacker to access the victim's sensitive information.
+In the next step, the browser interprets the JSONP response as a call to `Leak(MySchedule)` (JSONP counterexample at time 1). The rest of the attack is simple; `Leak` can simply be programmed to forward the input argument to `EvilServer`, allowing the attacker to access the victim's sensitive information.
 
-\aosafigure[180pt]{same-origin-policy-images/fig-jsonp-2.png}{JSONP counterexample at time 1}{500l.same-origin-policy.fig-jsonp-2}
+![JSONP counterexample at time 1](same-origin-policy-images/fig-jsonp-2.png)
 
 This attack, an example of _cross-site request forgery_ (CSRF), shows an inherent weakness of JSOPN; _any_ site on the web can make a JSONP request simply by including a `<script>` tag and access the payload inside the padding. The risk can be mitigated in two ways: (1) ensure that a JSONP request never returns sensitive data, or (2) use another mechanism in place of cookies (e.g., secret tokens) to authorize the request.
 
@@ -1200,18 +1200,18 @@ Note that by default, the PostMessage mechanism does not restrict
  registered a `ReceiveMessage` handler. For example, in the following
  instance generated from Alloy, `EvilScript`, running inside
  `AdBanner`, sends a malicious `PostMessage` to a document with the
- target origin of `EmailDomain` (\aosafigref{500l.same-origin-policy.fig-postmessage-1}.)
+ target origin of `EmailDomain` (PostMessage counterexample at time 0.)
 
-\aosafigure[240pt]{same-origin-policy-images/fig-postmessage-1.png}{PostMessage counterexample at time 0}{500l.same-origin-policy.fig-postmessage-1}
+![PostMessage counterexample at time 0](same-origin-policy-images/fig-postmessage-1.png)
 
 The browser then forwards this message to the document(s)
 with the corresponding origin (in this case, `InboxPage`).  Unless
 `InboxScript` specifically checks the value of `srcOrigin` to filter out
 messages from unwanted origins, `InboxPage` will accept the malicious
 data, possibly leading to further security attacks. (For example, it
-may embed a piece of JavaScript to carry out an XSS attack.) This is shown in \aosafigref{500l.same-origin-policy.fig-postmessage-1}.
+may embed a piece of JavaScript to carry out an XSS attack.) This is shown in PostMessage counterexample at time 0.
 
-\aosafigure[240pt]{same-origin-policy-images/fig-postmessage-2.png}{PostMessage counterexample at time 1}{500l.same-origin-policy.fig-postmessage-2}
+![PostMessage counterexample at time 1](same-origin-policy-images/fig-postmessage-2.png)
 
 As this example illustrates, `PostMessage` is not secure by default,
 and it is the responsibility of the receiving document to
@@ -1290,9 +1290,9 @@ mechanism. Unfortunately, `CalendarServer` is configured to return
 `Origin` (which represents the set of all origin values) for the
 `access-control-allow-origin` header in CORS responses. As a result, a
 script from any origin, including `EvilDomain`, is allowed to make
-a cross-site request to `CalendarServer` and read its response (\aosafigref{500l.same-origin-policy.fig-cors}).
+a cross-site request to `CalendarServer` and read its response (CORS counterexample).
 
-\aosafigure[240pt]{same-origin-policy-images/fig-cors.png}{CORS counterexample}{500l.same-origin-policy.fig-cors}
+![CORS counterexample](same-origin-policy-images/fig-cors.png)
 
 This example highlights one common mistake that developers make with
 CORS: Using the wildcard value "\*" as the value of
@@ -1404,4 +1404,3 @@ endpoints. A module can be imported multiple times; for example, we
 could declare a signature called `UnixProcess`, and instantiate the
 module `call` to obtain a distinct set of `Call` objects that are sent
 from one Unix process to another.
-

@@ -14,7 +14,6 @@ and error conditions.
 It also avoids holding all data in RAM at once
 so you can store more data than you have RAM.
 
-
 ## Memory
 
 I remember the first time I was really stuck on a bug. When I finished
@@ -64,7 +63,6 @@ I learned, once again, that it's easier to reason about things that don't change
 
 So starts the story.
 
-
 ## Why Is it Interesting?
 
 Most projects require a database of some kind.
@@ -87,7 +85,6 @@ that needs to have rational, predictable behaviour
 when faced with failure.
 
 Speaking of failure...
-
 
 ## Characterizing Failure
 
@@ -130,7 +127,6 @@ but it is left as an exercise for the reader[^bonus].
 
 [^bonus]: Bonus feature: Can you guarantee that the compacted tree structure is
 balanced?  This helps maintain performance over time.
-
 
 ## The Architecture of DBDB
 
@@ -219,7 +215,6 @@ These modules grew from attempting
 to give each class a single responsibility.
 In other words,
 each class should have only one reason to change.
-
 
 ### Reading a Value
 
@@ -380,7 +375,6 @@ Once the associated value is found,
 it is written to ``stdout`` by ``main()``
 without adding any extra newlines,
 to preserve the user's data exactly.
-
 
 #### Inserting and Updating
 
@@ -649,7 +643,6 @@ In this way, commits are also durable.
 
 We're done!
 
-
 ### How NodeRefs Save Memory
 
 To avoid keeping the entire tree structure in memory at the same time,
@@ -701,7 +694,6 @@ because changes aren't visible
 until the new root node address is written to disk.
 Concurrent updates are blocked by a lockfile on disk.
 The lock is acquired on first update, and released after commit.
-
 
 ### Exercises for the Reader
 
@@ -778,7 +770,6 @@ but there are multiple avenues of extension
 with only localised changes required.
 Refactoring as I added features was a pleasure!
 
-
 ### Summary
 
 DBDB is a simple database that makes simple guarantees, and yet
@@ -786,4 +777,4 @@ things still became complicated in a hurry. The most important thing I did to
 manage this complexity was to implement an ostensibly mutable object with an
 immutable data structure. I encourage you to consider this technique the next
 time you find yourself in the middle of a tricky problem that seems to have
-more edge cases than you can keep track of. 
+more edge cases than you can keep track of.

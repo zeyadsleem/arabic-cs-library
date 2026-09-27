@@ -28,7 +28,7 @@ If we were to ask our friendly archaeologist to design a database, we might expe
 
 For example, a wall may have Roman symbols on it on one layer, and in a lower layer there may be Greek symbols. Both these observations are recorded as part of the wall's state.
 
-This analogy is visualized in \aosafigref{500l.functionaldb.exc}:
+This analogy is visualized in The Excavation Site:
 
 * The entire circle is the excavation site.
 * Each ring is a _layer_ (here numbered from 0 to 4).
@@ -37,7 +37,7 @@ This analogy is visualized in \aosafigref{500l.functionaldb.exc}:
 * Solid arrows denote a change in symbol between layers 
 * Dotted arrows are arbitrary relationships of interest between artifacts (e.g., from ‘E’ to ‘A’).
 
-\aosafigure[240pt]{functionalDB-images/image_0.png}{The Excavation Site}{500l.functionaldb.exc}
+![The Excavation Site](functionalDB-images/image_0.png)
 
 If we translate the archaeologist's language into terms a database designer would use:
 
@@ -141,7 +141,7 @@ We will access the storage via a simple _protocol_, which will make it possible 
    (drop-entity [storage entity]))
 ```
 
-\noindent And here's our in-memory implementation of the protocol, which uses a map as the store:
+ And here's our in-memory implementation of the protocol, which uses a map as the store:
 
 ```clojure
 (defrecord InMemory [] Storage
@@ -158,7 +158,7 @@ Datoms are important because they represent facts, and our database accumulates 
 
 If you've used a database system before, you are probably already familiar with the concept of an _index_, which is a supporting data structure that consumes extra space in order to decrease the average query time.  In our database, an index is a three-leveled structure which stores the components of a datom in a specific order. Each index derives its name from the order it stores the datom's components in.
 
-For example, let’s look at at the index sketched in \aosafigref{500l.functionaldb.eavt}:
+For example, let’s look at at the index sketched in EAVT:
 
 * The first level stores entity-IDs 
 * The second level stores the related attribute-names 
@@ -166,15 +166,15 @@ For example, let’s look at at the index sketched in \aosafigref{500l.functiona
 
 This index is named EAVT, as the top level map holds Entity IDs, the second level holds Attribute names, and the leaves hold Values. The "T" comes from the fact that each layer in the database has its own indexes, hence the index itself is relevant for a specific Time. 
 
-\aosafigure[240pt]{functionalDB-images/image_1.png}{EAVT}{500l.functionaldb.eavt}
+![EAVT](functionalDB-images/image_1.png)
 
-\aosafigref{500l.functionaldb.avet} shows an index that would be called AVET since:
+AVET shows an index that would be called AVET since:
 
 * The first level map holds attribute-name.
 * The second level map holds the values (of the attributes).
 * The third level set holds the entity-IDs (of the entities whose attribute is at the first level).
 
-\aosafigure[240pt]{functionalDB-images/image_2.png}{AVET}{500l.functionaldb.avet}
+![AVET](functionalDB-images/image_2.png)
 
 Our indexes are implemented as a map of maps, where the keys of the root map act as the first level, each such key points to a map whose keys act as the index’s second-level and the values are the index’s third level. Each element in the third level is a set, holding the leaves of the index.
 
@@ -191,7 +191,7 @@ In most database systems, indexes are an optional component; for example, in an 
  (defn usage-pred [index] (:usage-pred (meta index)))
 ```
 
-In our database there are four indexes: EAVT (see \aosafigref{500l.functionaldb.eavt}), AVET (see \aosafigref{500l.functionaldb.avet}), VEAT and VAET. We can access these as a vector of values returned from the `indexes` function.
+In our database there are four indexes: EAVT (see EAVT), AVET (see AVET), VEAT and VAET. We can access these as a vector of values returned from the `indexes` function.
 
 ```clojure
 (defn indexes[] [:VAET :AVET :VEAT :EAVT])
@@ -308,7 +308,7 @@ Nile $\Rightarrow$ \{Egypt $\Rightarrow$ \{river\}\}                            
 \end{table}
 </latex>
 
-\newpage
+
 
 ### Database
 

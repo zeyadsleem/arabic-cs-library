@@ -10,7 +10,6 @@ The idea behind local search is to improve an existing solution heuristically by
 
 First, we provide some background material on the flow shop scheduling problem and local search techniques. We then look in detail at the general solver code and the various heuristics and neighbourhood selection strategies that we use. Next we consider the dynamic strategy selection that the solver uses to tie everything together. Finally, we conclude with a summary of the project and some lessons learned through the implementation process.
 
-
 ## Background
 ### Flow Shop Scheduling
 The flow shop scheduling problem is an optimization problem in which we must determine the processing time for various tasks in a job in order to schedule the tasks to minimize the total time it takes to complete the job. Take, for example, a car manufacturer with an assembly line where each part of the car is completed in sequence on different machines. Different orders may have custom requirements, making the task of painting the body, for example, vary from one car to the next. In our example, each car is a new *job* and each part for the car is called a *task*. Every job will have the same sequence of tasks to complete.
@@ -29,11 +28,11 @@ Because we select the maximum of these two values, idle time for either machine 
 
 Due to the simple form of the problem, any permutation of jobs is a valid solution, and the optimal solution will correspond to *some* permutation. Thus, we search for improved solutions by changing the permutation of jobs and measuring the corresponding makespan. In what follows, we refer to a permutation of the jobs as a *candidate*.
 
-Let's consider a simple example with two jobs and two machines. The first job has tasks $\mathbf{A}$ and $\mathbf{B}$, which take 1 and 2 minutes to complete respectively. The second job has tasks $\mathbf{C}$ and $\mathbf{D}$, which take 2 and 1 minutes to complete respectively. Recall that $\mathbf{A}$ must come before $\mathbf{B}$ and $\mathbf{C}$ must come before $\mathbf{D}$. Because there are two jobs, we have just two permutations to consider. If we order job 2 before job 1, the makespan is 5 (\aosafigref{500l.flowshop.example1}); on the other hand, if we order job 1 before job 2, the makespan is only 4 (\aosafigref{500l.flowshop.example2}).
+Let's consider a simple example with two jobs and two machines. The first job has tasks $\mathbf{A}$ and $\mathbf{B}$, which take 1 and 2 minutes to complete respectively. The second job has tasks $\mathbf{C}$ and $\mathbf{D}$, which take 2 and 1 minutes to complete respectively. Recall that $\mathbf{A}$ must come before $\mathbf{B}$ and $\mathbf{C}$ must come before $\mathbf{D}$. Because there are two jobs, we have just two permutations to consider. If we order job 2 before job 1, the makespan is 5 (Flow Shop Example 1); on the other hand, if we order job 1 before job 2, the makespan is only 4 (Flow Shop Example 2).
 
-\aosafigure[240pt]{flow-shop-images/example1.png}{Flow Shop Example 1}{500l.flowshop.example1}
+![Flow Shop Example 1](flow-shop-images/example1.png)
 
-\aosafigure[240pt]{flow-shop-images/example2.png}{Flow Shop Example 2}{500l.flowshop.example2}
+![Flow Shop Example 2](flow-shop-images/example2.png)
 
 Notice that there is no budge room to push any of the tasks earlier. A guiding principle for a good permutation is to minimize the time in which any machine is left without a task to process.
 
@@ -47,7 +46,6 @@ To use local search formally, we must answer a few questions:
 3. Given the set of candidate neighbours, which one should we consider moving to next?
 
 The following three sections address these questions in turn.
-
 
 ## General Solver
 In this section we provide the general framework for the flow shop scheduler. To begin, we have the necessary Python imports and the settings for the solver:
@@ -123,7 +121,7 @@ However, to start a local search in the space of permutations, we must have an i
     random.shuffle(perm)
 ```
 
-Next, we initialize the variables that allow us to keep track of the best permutation found so far, as well as the timing information for providing output. \newpage
+Next, we initialize the variables that allow us to keep track of the best permutation found so far, as well as the timing information for providing output. 
 
 ```python
     # Keep track of the best solution
@@ -208,7 +206,6 @@ At regular intervals, the statistics for strategy use are updated. We removed th
     return (best_perm, best_make)
 ```
 
-
 ### Parsing Problems
 As input to the parsing procedure, we provide the file name where the input can be found and the example number that should be used. (Each file contains a number of instances.)
 
@@ -260,7 +257,6 @@ We parse the data directly, converting the processing time of each task to an in
     #  item in data the durations of tasks for a particular job
     return zip(*data)
 ```
-
 
 ### Compiling Solutions
 A solution to the flow shop scheduling problem consists of precise timing for each task in every job. Because we represent a solution implicitly with a permutation of the jobs, we introduce the `compile_solution` function to convert a permutation to precise times. As input, the function takes in the data for the problem (giving us the duration of every task) and a permutation of jobs.
@@ -351,7 +347,6 @@ Next, we use the string formatting functionality in Python to print the table of
 
     print "\n\nNote: Idle time does not include initial or final wait time.\n"
 ```
-
 
 ## Neighbourhoods
 
@@ -458,7 +453,6 @@ Next, we iterate through the subsets to find the best permutation of jobs in eac
 ```
 
 If we were to set the `size` parameter to be equal to the number of jobs, then every permutation would be considered and the best one selected. In practice, however, we need to limit the size of the subset to around 3 or 4; anything larger would cause the `neighbours_LNS` function to take a prohibitive amount of time.
-
 
 ## Heuristics
 

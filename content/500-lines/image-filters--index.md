@@ -31,9 +31,9 @@ Sunflower](http://www.catehuston.com/applets/Sunflower/index.html). إنه أك�
 لم يكن التقدّم واضحًا كما توقعت، ولم يكن اللون
 الغالب المستخرج هو عادةً الدرجة الأكثر جاذبية، واستغرق الإنشاء وقتًا
 طويلًا (بضع ثوانٍ لكل صورة)، واحتجت مئات الصور لأصنع
-شيئًا رائعًا (\aosafigref{500l.imagefilters.sunflower}).
+شيئًا رائعًا (sunflower).
 
-\aosafigure[180pt]/images/500-lines/image-filters-0-sunflower.webp{Sunflower layout}{500l.imagefilters.sunflower}
+![Sunflower layout](/images/500-lines/image-filters-0-sunflower.webp)
 
 قد تظن أن هذا محبط، لكن حين وصلت إلى هذه النقطة كنت قد تعلمت
 الكثير من الأمور التي لم تأتني من قبل — عن فضاءات
@@ -136,13 +136,13 @@ Java.
 أن ترى المربعات. وتُخزَّن هذه البكسلات في مصفوفة، ويحتوي الرقم
 في كل «خانة» في المصفوفة على اللون.
 
-في \aosafigref{500l.imagefilters.animals}، نرى صورة عالية الدقة لبعض الحيوانات
-المكبَّرة الملتُقطة في MoMA في نيويورك. أما \aosafigref{500l.imagefilters.pixelanimals} فهو
+في animals، نرى صورة عالية الدقة لبعض الحيوانات
+المكبَّرة الملتُقطة في MoMA في نيويورك. أما pixelanimals فهو
 الصورة نفسها مكبَّرة، لكن بـ 24 × 32 بكسلًا فقط.
 
-\aosafigure[220pt]/images/500-lines/image-filters-1-animals.webp{Blow-up animals at MoMA NY}{500l.imagefilters.animals}
+![Blow-up animals at MoMA NY](/images/500-lines/image-filters-1-animals.webp)
 
-\aosafigure[220pt]/images/500-lines/image-filters-2-pixelanimals.webp{Blow-up animals, blown up}{500l.imagefilters.pixelanimals}
+![Blow-up animals, blown up](/images/500-lines/image-filters-2-pixelanimals.webp)
 
 انظر كيف تبدو ضبابية إلى هذا الحد؟ إننا نسمّي ذلك
 _التنقيطَ_ (_pixelation_)، أي أن الصورة أكبر من عدد البكسلات التي
@@ -161,12 +161,9 @@ FFFCC2
 FFF5B7
 ```
 
-
 الألوان السداسية ستة محارف طويلة. أول محرفين يمثلان قيمة الأحمر، والمحرفان
 الثانيان قيمة الأخضر، والمحرفان الثالثان قيمة الأزرق. وأحيانًا يوجد
 محرفان إضافيان يمثلان قيمة الشفافية (alpha). في هذه الحالة تعني `FFFAC4`:
-
-\newpage
 
 - red = FF (hex) = 255 (base 10)
 - green = FA (hex) = 250 (base 10)
@@ -174,7 +171,7 @@ FFF5B7
 
 ## تشغيل التطبيق
 
-في \aosafigref{500l.imagefilters.app}، لدينا صورة لتطبيقنا قيد التشغيل.
+في app، لدينا صورة لتطبيقنا قيد التشغيل.
 أعرف أنه مصمَّم إلى حدٍّ كبير من منظور المبرمجين، لكن لدينا 500 سطر
 من Java فحسب لنعمل بها، لذا كان لا بد من أن يُضحَّى بشيء ما! يمكنك أن ترى قائمة الأوامر على اليمين.
 وإليك بعض ما يمكننا فعله:
@@ -186,7 +183,7 @@ FFF5B7
 - إعادة تعيين الصورة.
 - حفظ الصورة التي صنعناها.
 
-\aosafigure[266pt]/images/500-lines/image-filters-3-app.webp{The App}{500l.imagefilters.app}
+![The App](/images/500-lines/image-filters-3-app.webp)
 
 تجعل Processing إنشاء تطبيق
 صغير ومعالجة الصور أمرًا بسيطًا؛
@@ -259,7 +256,6 @@ public void draw() {
 (\aosatblref{500l.imagefilters.pimagefields}) إضافة إلى بعض الدوال التي
 سنستخدمها (\aosatblref{500l.imagefilters.pimagemethods}).
 
-
 <table>
   <tr>
     <td>`pixels[]`</td>
@@ -293,7 +289,6 @@ height & Image height in pixels \\
 \label{500l.imagefilters.pimagefields}
 \end{table}
 </latex>
-
 
 <table>
   <tr>
@@ -398,7 +393,6 @@ public void keyPressed() {
 ضغطته، يكفي أن تبدّل على قيمة المفتاح. (وهذا موجود في
 الصنف الأعلى `PApplet`، ويحوي آخر مفتاح ضُغط.)
 
-
 ## كتابة الاختبارات
 
 لا يفعل هذا التطبيق الكثير حتى الآن، لكننا نستطيع بالفعل أن نرى عددًا من المواضع التي
@@ -466,14 +460,13 @@ public void keyPressed() {
 الأثر نفسه الذي ينتج عن وضع لوح ملوّن أمام عدسة الكاميرا، وهي لاتمرّر
 إلا الضوء الذي يحتوي على قدر كافٍ من الأحمر (أو الأخضر، أو الأزرق).
 
-
 بتطبيق مرشِّحات مختلفة على هذه الصورة
-\aosafigref{500l.imagefilters.frankfurt} (التُقطت في رحلة ربيعية إلى فرانكفورت)
+frankfurt (التُقطت في رحلة ربيعية إلى فرانكفورت)
  يكاد الأمر يكون كأن الفصول مختلفة. (أتذكر لوحات الفصول الأربعة
 التي تخيلناها في وقت سابق؟) لاحظ كم تصير الشجرة أكثر خضرة
 عند تطبيق المرشِّح الأحمر.
 
-\aosafigure[240pt]/images/500-lines/image-filters-4-frankfurt.webp{Four (Simulated) Seasons in Frankfurt}{500l.imagefilters.frankfurt}
+![Four (Simulated) Seasons in Frankfurt](/images/500-lines/image-filters-4-frankfurt.webp)
 
 <latex>
 By applying different RGB filters to an image we can make it almost seem like
@@ -498,7 +491,6 @@ we imagined earlier?)
 أحادية البعد تبدأ من أعلى اليسار وتتحرك [من اليسار إلى اليمين، ومن أعلى إلى
 أسفل](https://processing.org/tutorials/pixels/). وتُبيَّن هنا فهارس المصفوفة
 لصورة 4×4:
-
 
 <table>
   <tr>
@@ -645,30 +637,25 @@ for(int px in pixels) {
 }
 ```
 
-
 في النهاية يمكننا طباعة درجة اللون هذه على الشاشة، أو عرضها بجوار
-الصورة (\aosafigref{500l.imagefilters.hueranges}).
+الصورة (hueranges).
 
-\aosafigure[240pt]/images/500-lines/image-filters-5-hueranges.webp{Dominant hue versus size of range (number of buckets) used}{500l.imagefilters.hueranges}
-
-
+![Dominant hue versus size of range (number of buckets) used](/images/500-lines/image-filters-5-hueranges.webp)
 
 <latex>
 At the end we can print this hue to the screen, or display it next to the
 picture. 
 </latex>
 
-
 بمجرد أن استخرجنا درجة اللون «الغالبة»، يمكننا أن نختار إما إظهارها أو
 إخفائها في الصورة. ويمكننا إظهار درجة اللون الغالبة بدرجات تسامح متفاوتة (مجالات
 حولها نقبلها). ويمكن تغيير البكسلات التي لا تقع في هذا المجال إلى
 تدرّج رمادي عبر ضبط القيمة بناءً على السطوع.
-يُظهر \aosafigref{500l.imagefilters.showdominant} درجة اللون الغالبة المحدَّدة
+يُظهر showdominant درجة اللون الغالبة المحدَّدة
 باستخدام مدى 240، وبدرجات تسامح متفاوتة. أما التسامح فهو
 المقدار على جانبي درجة اللون الأكثر شيوعًا الذي يُجمَّع معًا.
 
-\aosafigure[240pt]/images/500-lines/image-filters-6-showdominant.webp{Showing dominant hue}{500l.imagefilters.showdominant}
-
+![Showing dominant hue](/images/500-lines/image-filters-6-showdominant.webp)
 
 <latex>
 Once we've extracted the "dominant" hue, we can choose to either show or hide
@@ -678,14 +665,12 @@ changed to grayscale by setting the value based on the brightness.
 Alternatively, we can hide the dominant hue by setting the color for pixels with that hue to greyscale, and leaving other pixels as they are. 
 </latex>
 
-
 وبدلًا من ذلك، يمكننا إخفاء درجة اللون الغالبة. في
-\aosafigref{500l.imagefilters.hidedominant}، تكون الصور جنبًا إلى جنب:
+hidedominant، تكون الصور جنبًا إلى جنب:
 الأصل في الوسط، وعلى اليسار تُعرض درجة اللون الغالبة (اللون البني الفاتح
 للطريق)، وعلى اليمين تُخفى درجة اللون الغالبة (مدى 320، تسامح 20).
 
-\aosafigure[240pt]/images/500-lines/image-filters-7-hidedominant.webp{Hiding dominant hue}{500l.imagefilters.hidedominant}
-
+![Hiding dominant hue](/images/500-lines/image-filters-7-hidedominant.webp)
 
 تتطلب كل صورة مرورًا مزدوجًا (النظر في كل بكسل مرتين)، لذا فإن الصور
 ذات العدد الكبير من البكسلات قد تستغرق وقتًا ملحوظًا.
@@ -723,7 +708,6 @@ public HSBColor getDominantHue(PApplet applet, IFAImage image, int hueRange) {
   float b = brightnesses[hue] / hueCount;
   return new HSBColor(hue, s, b);
 }
-
 
 public void processImageForHue(PApplet applet, IFAImage image, int hueRange,
     int hueTolerance, boolean showHue) {
@@ -766,7 +750,7 @@ public void processImageForHue(PApplet applet, IFAImage image, int hueRange,
 
 ## البنية
 
-هناك ثلاثة مكوّنات رئيسية للتطبيق (\aosafigref{500l.imagefilters.architecture}).
+هناك ثلاثة مكوّنات رئيسية للتطبيق (architecture).
 
 ### التطبيق
 يتكوّن التطبيق من ملف واحد: `ImageFilterApp.java`. وهذا
@@ -789,7 +773,7 @@ Processing) ويتولى التخطيط وتفاعل المستخدم وما إ�
 معالجة الصور والترشيح، و`PixelColorHelper.java`
 يُجَرِّد دوال `PApplet` النهائية الخاصة بألوان البكسلات من أجل قابلية الاختبار.
 
-\aosafigure[240pt]/images/500-lines/image-filters-8-architecture.webp{Architecture diagram}{500l.imagefilters.architecture}
+![Architecture diagram](/images/500-lines/image-filters-8-architecture.webp)
 
 ### أصناف الغلاف والاختبارات
 كما ذُكر بإيجاز أعلاه، هناك صنفا غلاف (`IFAImage` و
@@ -1175,8 +1159,6 @@ public class ColorHelperTest {
 }
 ```
 
-\newpage
-
 لاحظ ما يلي:
 
 - نستخدم مُشغِّل `MockitoJUnit`.
@@ -1384,7 +1366,7 @@ public class ImageStateTest {
 }
 ```
 
-\newpage لاحظ ما يلي:
+ لاحظ ما يلي:
 
 - كشفنا عن طريقة تهيئة محميّة اسمها `set` لأغراض الاختبار، تساعدنا على إدخال نظام الاختبار بسرعة في حالة معيّنة.
 - نُحدث كائنات وهمية لـ`PApplet` و`ColorHelper` و`IFAImage` (أُنشئ خصيصًا لهذا الغرض).

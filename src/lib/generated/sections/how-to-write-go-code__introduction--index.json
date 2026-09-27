@@ -1,0 +1,1 @@
+{"book":"how-to-write-go-code","chapter":"introduction","chapterTitle":"مقدمة","slug":"index","title":"مقدمة","headings":[],"html":"<p>هذا المستند يوضّح تطوير حزمة Go بسيطة داخل وحدة (module)، ويقدّم الأداة <code>go</code>، وهي الطريقة المعيارية لجلب وحدات Go وحزمها وأوامرها وبنائها وتثبيتها.</p>\n"}

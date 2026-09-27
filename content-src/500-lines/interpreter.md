@@ -64,9 +64,9 @@ what_to_execute = {
     "numbers": [7, 5] }
 ```
 
-The Python interpreter is a _stack machine_, so it must manipulate stacks to add two numbers (\aosafigref{500l.interpreter.stackmachine}.) The interpreter will begin by executing the first instruction, `LOAD_VALUE`, and pushing the first number onto the stack. Next it will push the second number onto the stack. For the third instruction, `ADD_TWO_VALUES`, it will pop both numbers off, add them together, and push the result onto the stack. Finally, it will pop the answer back off the stack and print it.
+The Python interpreter is a _stack machine_, so it must manipulate stacks to add two numbers (A stack machine.) The interpreter will begin by executing the first instruction, `LOAD_VALUE`, and pushing the first number onto the stack. Next it will push the second number onto the stack. For the third instruction, `ADD_TWO_VALUES`, it will pop both numbers off, add them together, and push the result onto the stack. Finally, it will pop the answer back off the stack and print it.
 
-\aosafigure[240pt]{interpreter-images/interpreter-stack.png}{A stack machine}{500l.interpreter.stackmachine}
+![A stack machine](interpreter-images/interpreter-stack.png)
 
 The `LOAD_VALUE` instruction tells the interpreter to push a number on to the stack, but the instruction alone doesn't specify which number. Each instruction needs an extra piece of information, telling the interpreter where to find the number to load. So our instruction set has two pieces: the instructions themselves, plus a list of constants the instructions will need. (In Python, what we're calling "instructions" is the bytecode, and the "what to execute" object below is the _code object_.)
 
@@ -127,7 +127,7 @@ First of all, some instructions need arguments. In real Python bytecode, about h
 
 Second, notice that the instruction for `ADD_TWO_VALUES` did not require any arguments. Instead, the values to be added together were popped off the interpreter's stack. This is the defining feature of a stack-based interpreter.
 
-Remember that given valid instruction sets, without any changes to our interpreter, we can add more than two numbers at a time. Consider the instruction set below. What do you expect to happen? If you had a friendly compiler, what code could you write to generate this instruction set? \newpage
+Remember that given valid instruction sets, without any changes to our interpreter, we can add more than two numbers at a time. Consider the instruction set below. What do you expect to happen? If you had a friendly compiler, what code could you write to generate this instruction set? 
 
 ```python
     what_to_execute = {
@@ -167,7 +167,7 @@ Next let's add variables to our interpreter. Variables require an instruction fo
 
 Our new implementation is below. To keep track of what names are bound to what values, we'll add an `environment` dictionary to the `__init__` method. We'll also add `STORE_NAME` and `LOAD_NAME`. These methods first look up the variable name in question and then use the dictionary to store or retrieve its value.
 
-The arguments to an instruction can now mean two different things: They can either be an index into the "numbers" list, or they can be an index into the "names" list. The interpreter knows which it should be by checking what instruction it's executing. We'll break out this logic&mdash;and the mapping of instructions to what their arguments mean&mdash;into a separate method. \newpage
+The arguments to an instruction can now mean two different things: They can either be an index into the "numbers" list, or they can be an index into the "names" list. The interpreter knows which it should be by checking what instruction it's executing. We'll break out this logic&mdash;and the mapping of instructions to what their arguments mean&mdash;into a separate method. 
 
 ```python
 class Interpreter:
@@ -213,7 +213,7 @@ class Interpreter:
                 self.LOAD_NAME(argument)
 ```
 
-Even with just five instructions, the `run_code` method is starting to get tedious. If we kept this structure, we'd need one branch of the `if` statement for each instruction. Here, we can make use of Python's dynamic method lookup. We'll always define a method called `FOO` to execute the instruction called `FOO`, so we can use Python's `getattr` function to look up the method on the fly instead of using the big `if` statement. The `run_code` method then looks like this: \newpage
+Even with just five instructions, the `run_code` method is starting to get tedious. If we kept this structure, we'd need one branch of the `if` statement for each instruction. Here, we can make use of Python's dynamic method lookup. We'll always define a method called `FOO` to execute the instruction called `FOO`, so we can use Python's `getattr` function to look up the method on the fly instead of using the big `if` statement. The `run_code` method then looks like this: 
 
 ```python
     def execute(self, what_to_execute):
@@ -255,7 +255,7 @@ b'd\x01\x00}\x00\x00|\x00\x00d\x02\x00k\x00\x00r\x16\x00d\x03\x00Sd\x04\x00Sd\x0
 
 When we just print the bytecode, it looks unintelligible&mdash;all we can tell is that it's a series of bytes. Luckily, there's a powerful tool we can use to understand it: the `dis` module in the Python standard library. 
 
-`dis` is a bytecode disassembler. A disassembler takes low-level code that is written for machines, like assembly code or bytecode, and prints it in a human-readable way. When we run `dis.dis`, it outputs an explanation of the bytecode it has passed. \newpage
+`dis` is a bytecode disassembler. A disassembler takes low-level code that is written for machines, like assembly code or bytecode, and prints it in a human-readable way. When we run `dis.dis`, it outputs an explanation of the bytecode it has passed. 
 
 ```python
 >>> dis.dis(cond)
@@ -291,7 +291,7 @@ The second and third bytes&mdash;1, 0&mdash;are arguments to `LOAD_CONST`, while
 
 ### Conditionals and Loops
 
-So far, the interpreter has executed code simply by stepping through the instructions one by one. This is a problem; often, we want to execute certain instructions many times, or skip them under certain conditions. To allow us to write loops and if statements in our code, the interpreter must be able to jump around in the instruction set. In a sense, Python handles loops and conditionals with `GOTO` statements in the bytecode! Look at the disassembly of the function `cond` again: \newpage
+So far, the interpreter has executed code simply by stepping through the instructions one by one. This is a problem; often, we want to execute certain instructions many times, or skip them under certain conditions. To allow us to write loops and if statements in our code, the interpreter must be able to jump around in the instruction set. In a sense, Python handles loops and conditionals with `GOTO` statements in the bytecode! Look at the disassembly of the function `cond` again: 
 
 ```python
 >>> dis.dis(cond)
@@ -362,7 +362,7 @@ To answer this question, we must add a layer of complexity: the frame. A frame i
 
 Frames live on the _call stack_, a completely different stack from the one we've been discussing so far. (The call stack is the stack you're most familiar with already&mdash;you've seen it printed out in the tracebacks of exceptions. Each line in a traceback starting with "File 'program.py', line 10" corresponds to one frame on the call stack.) The stack we've been examining&mdash;the one the interpreter is manipulating while it executes bytecode&mdash;we'll call the _data stack_. There's also a third stack, called the _block stack_. Blocks are used for certain kinds of control flow, particularly looping and exception handling. Each frame on the call stack has its own data stack and block stack.
 
-Let's make this concrete with an example. Suppose the Python interpreter is currently executing the line marked 3 below. The interpreter is in the middle of a call to `foo`, which is in turn calling `bar`. The diagram shows a schematic of the call stack of frames, the block stacks, and the data stacks. (This code is written like a REPL session, so we've first defined the needed functions.) At the moment we're interested in, the interpreter is executing `foo()`, at the bottom, which then reaches in to the body of `foo` and then up into `bar`. \newpage
+Let's make this concrete with an example. Suppose the Python interpreter is currently executing the line marked 3 below. The interpreter is in the middle of a call to `foo`, which is in turn calling `bar`. The diagram shows a schematic of the call stack of frames, the block stacks, and the data stacks. (This code is written like a REPL session, so we've first defined the needed functions.) At the moment we're interested in, the interpreter is executing `foo()`, at the bottom, which then reaches in to the body of `foo` and then up into `bar`. 
 
 ```python
 >>> def bar(y):
@@ -378,9 +378,9 @@ Let's make this concrete with an example. Suppose the Python interpreter is curr
 3
 ```
 
-\aosafigure[240pt]{interpreter-images/interpreter-callstack.png}{The call stack}{500l.interpreter.callstack}
+![The call stack](interpreter-images/interpreter-callstack.png)
 
-At this point, the interpreter is in the middle of the function call to `bar`. There are three frames on the call stack: one for the module level, one for the function `foo`, and one for `bar` (\aosafigref{500l.interpreter.callstack}.) Once `bar` returns, the frame associated with it is popped off the call stack and discarded.
+At this point, the interpreter is in the middle of the function call to `bar`. There are three frames on the call stack: one for the module level, one for the function `foo`, and one for `bar` (The call stack.) Once `bar` returns, the frame associated with it is popped off the call stack and discarded.
 
 The bytecode instruction `RETURN_VALUE` tells the interpreter to pass a value between frames. First it will pop the top value off the data stack of the top frame on the call stack. Then it pops the entire frame off the call stack and throws it away. Finally, the value is pushed onto the data stack on the next frame down.
 
@@ -388,7 +388,7 @@ When Ned Batchelder and I were working on Byterun, for a long time we had a sign
 
 [^thanks]: My thanks to Michael Arntzenius for his insight on this bug. 
 
-Looking back on this bug, I was amazed at how little of Python relied on each frame having a different data stack. Nearly all operations in the Python interpreter carefully clean up the data stack, so the fact that the frames were sharing the same stack didn't matter. In the example above, when `bar` finishes executing, it'll leave its data stack empty. Even if `foo` shared the same stack, the values would be lower down. However, with generators, a key feature is the ability to pause a frame, return to some other frame, and then return to the generator frame later and have it be in exactly the same state that you left it. \newpage
+Looking back on this bug, I was amazed at how little of Python relied on each frame having a different data stack. Nearly all operations in the Python interpreter carefully clean up the data stack, so the fact that the frames were sharing the same stack didn't matter. In the example above, when `bar` finishes executing, it'll leave its data stack empty. Even if `foo` shared the same stack, the values would be lower down. However, with generators, a key feature is the ability to pause a frame, return to some other frame, and then return to the generator frame later and have it be in exactly the same state that you left it. 
 
 ## Byterun
 
@@ -607,7 +607,6 @@ class VirtualMachine(object):
 ```
 
 The next method is `dispatch`, which looks up the operations for a given instruction and executes them. In the CPython interpreter, this dispatch is done with a giant switch statement that spans 1,500 lines!  Luckily, since we're writing Python, we can be more compact.  We'll define a method for each byte name and then use `getattr` to look it up. Like in the toy interpreter above, if our instruction is named `FOO_BAR`, the corresponding method would be named `byte_FOO_BAR`. For the moment, we'll leave the content of these methods as a black box.  Each bytecode method will return either `None` or a string, called `why`, which is an extra piece of state the interpreter needs in some cases.  These return values of the individual instruction methods are used only as internal indicators of interpreter state&mdash;don't confuse these with return values from executing frames.
-
 
 ```python
 class VirtualMachine(object):

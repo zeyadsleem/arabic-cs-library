@@ -858,6 +858,46 @@
       "prerequisites": [
         "db-design"
       ]
+    },
+    {
+      "id": "effective-go",
+      "title": "Go الفعّالة",
+      "titleEn": "Effective Go",
+      "author": "The Go Authors",
+      "description": "الدليل الذي يشرح لماذا تُكتب Go على هذه الصورة: التصريحات، وأعراف التسمية والتنسيق، وبنى التحكم، والشرائح والخرائط، والواجهات، والتزامن بالقنوات، ومعالجة الأخطاء — وختامًا بخادم ويب كامل. ستة عشر قسماً تغطّي اللغة كلّها.",
+      "sourceUrl": "https://go.dev/doc/effective_go",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "languages": [
+        "Go"
+      ],
+      "status": "translated",
+      "stage": "go",
+      "order": 4,
+      "format": "markdown",
+      "pages": 16,
+      "completeCourse": true,
+      "prerequisites": []
+    },
+    {
+      "id": "how-to-write-go-code",
+      "title": "كيف تكتب شيفرة Go",
+      "titleEn": "How to Write Go Code",
+      "author": "The Go Authors",
+      "description": "دليل عملي لتركيب مشروع Go من الصفر: أين توضع الملفات وكيف تُسمّى، ومسارات الوحدات والحزم، والبناء بـ go install، والاختبار بـ go test — مع تطبيق كامل يُبنى ويُشغَّر خطوة بخطوة.",
+      "sourceUrl": "https://go.dev/doc/code",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "languages": [
+        "Go"
+      ],
+      "status": "translated",
+      "stage": "go",
+      "order": 5,
+      "format": "markdown",
+      "pages": 6,
+      "completeCourse": true,
+      "prerequisites": []
     }
   ]
 }

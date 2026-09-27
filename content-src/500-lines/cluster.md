@@ -96,9 +96,9 @@ The protocol operates in a series of ballots, each led by a single member of the
 Each ballot has a unique ballot number based on an integer and the proposer's identity.
 The proposer's goal is to get a majority of cluster members, acting as acceptors, to accept its value, but only if another value has not already been decided.
 
-\aosafigure[240pt]{cluster-images/ballot.png}{A Ballot}{500l.cluster.ballot}
+![A Ballot](cluster-images/ballot.png)
 
-A ballot begins with the proposer sending a ``Prepare`` message with the ballot number *N* to the acceptors and waiting to hear from a majority (\aosafigref{500l.cluster.ballot}.)
+A ballot begins with the proposer sending a ``Prepare`` message with the ballot number *N* to the acceptors and waiting to hear from a majority (A Ballot.)
 
 The ``Prepare`` message is a request for the accepted value (if any) with the highest ballot number less than *N*.
 Acceptors respond with a ``Promise`` containing any value they have already accepted, and promising not to accept any ballot numbered less than *N* in the future.
@@ -138,7 +138,6 @@ Consider the following sequence of events:
 With unlucky timing -- more common over long-distance connections where the time between sending a message and getting a response is long -- this deadlock can continue for many rounds.
 
 ### Multi-Paxos
-
 
 Reaching consensus on a single static value is not particularly useful on its own.
 Clustered systems such as the bank account service want to agree on a particular state (account balances) that changes over time.
@@ -215,7 +214,6 @@ Cluster's protocol uses fifteen different message types, each defined as a Pytho
     Adopted = namedtuple('Adopted', ['ballot_num', 'accepted_proposals'])
     Accepting = namedtuple('Accepting', ['leader'])
 ```    
-
 
 Using named tuples to describe each message type keeps the code clean and helps avoid some simple errors.
 The named tuple constructor will raise an exception if it is not given exactly the right attributes, making typos obvious.
@@ -329,7 +327,6 @@ The application interacts with the cluster through the ``invoke`` method, which 
 Once that proposal is decided and the state machine runs, ``invoke`` returns the machine's output.
 The method uses a simple synchronized `Queue` to wait for the result from the protocol thread.
 
-
 ```python
 class Member(object):
 
@@ -413,10 +410,10 @@ The ``Replica`` class is the most complicated role class, as it has a few closel
 * Tracking the current leader; and
 * Adding newly started nodes to the cluster.
 
-The replica creates new proposals in response to ``Invoke`` messages from clients, selecting what it believes to be an unused slot and sending a ``Propose`` message to the current leader (\aosafigref{500l.cluster.replica}.)
+The replica creates new proposals in response to ``Invoke`` messages from clients, selecting what it believes to be an unused slot and sending a ``Propose`` message to the current leader (Replica Role Control Flow.)
 Furthermore, if the consensus for the selected slot is for a different proposal, the replica must re-propose with a new slot.
 
-\aosafigure[240pt]{cluster-images/replica.png}{Replica Role Control Flow}{500l.cluster.replica}
+![Replica Role Control Flow](cluster-images/replica.png)
 
 ``Decision`` messages represent slots on which the cluster has come to consensus.
 Here, replicas store the new decision, then run the state machine until it reaches an undecided slot.
@@ -436,24 +433,24 @@ Replicas need to know which node is the active leader in order to send ``Propose
 There is a surprising amount of subtlety required to get this right, as we'll see later.
 Each replica tracks the active leader using three sources of information.
 
-When the leader role becomes active, it sends an ``Adopted`` message to the replica on the same node (\aosafigref{500l.cluster.adopted}.)
+When the leader role becomes active, it sends an ``Adopted`` message to the replica on the same node (Adopted.)
 
-\aosafigure[240pt]{cluster-images/adopted.png}{Adopted}{500l.cluster.adopted}
+![Adopted](cluster-images/adopted.png)
 
-When the acceptor role sends a ``Promise`` to a new leader, it sends an ``Accepting`` message to its local replica (\aosafigref{500l.cluster.accepting}.)
+When the acceptor role sends a ``Promise`` to a new leader, it sends an ``Accepting`` message to its local replica (Accepting.)
 
-\aosafigure[240pt]{cluster-images/accepting.png}{Accepting}{500l.cluster.accepting}
+![Accepting](cluster-images/accepting.png)
 
-The active leader sends ``Active`` messages as a heartbeat (\aosafigref{500l.cluster.active}.) If no such message arrives before the ``LEADER_TIMEOUT`` expires, the replica assumes the leader is dead and moves on to the next leader.  In this case, it's important that all replicas choose the *same* new leader, which we accomplish by sorting the members and selecting the next one in the list.
+The active leader sends ``Active`` messages as a heartbeat (Active.) If no such message arrives before the ``LEADER_TIMEOUT`` expires, the replica assumes the leader is dead and moves on to the next leader.  In this case, it's important that all replicas choose the *same* new leader, which we accomplish by sorting the members and selecting the next one in the list.
 
-\aosafigure[240pt]{cluster-images/active.png}{Active}{500l.cluster.active}
+![Active](cluster-images/active.png)
 
 Finally, when a node joins the network, the bootstrap role sends a ``Join``
-message (\aosafigref{500l.cluster.bootstrap}.) The replica responds with a
+message (Bootstrap.) The replica responds with a
 ``Welcome`` message containing its most recent state, allowing the new node to
 come up to speed quickly.
 
-\aosafigure[240pt]{cluster-images/bootstrap.png}{Bootstrap}{500l.cluster.bootstrap}
+![Bootstrap](cluster-images/bootstrap.png)
 
 ```python
 class Replica(Role):
@@ -637,11 +634,11 @@ class Leader(Role):
             self.logger.info("got PROPOSE for a slot already being proposed")
 ```
 
-The leader creates a scout role when it wants to become active, in response to receiving a ``Propose`` when it is inactive (\aosafigref{500l.cluster.leaderscout}.)
+The leader creates a scout role when it wants to become active, in response to receiving a ``Propose`` when it is inactive (Scout.)
 The scout sends (and re-sends, if necessary) a ``Prepare`` message, and collects ``Promise`` responses until it has heard from a majority of its peers or until it has been preempted.
-It communicates back to the leader with ``Adopted`` or ``Preempted``, respectively. \newpage
+It communicates back to the leader with ``Adopted`` or ``Preempted``, respectively. 
 
-\aosafigure[240pt]{cluster-images/leaderscout.png}{Scout}{500l.cluster.leaderscout}
+![Scout](cluster-images/leaderscout.png)
 
 ```python
 class Scout(Role):
@@ -694,12 +691,12 @@ class Scout(Role):
             self.stop()
 ```
 
-The leader creates a commander role for each slot where it has an active proposal (\aosafigref{500l.cluster.leadercommander}.)
+The leader creates a commander role for each slot where it has an active proposal (Commander.)
 Like a scout, a commander sends and re-sends ``Accept`` messages and waits for a majority of acceptors to reply with ``Accepted``, or for news of its preemption.
 When a proposal is accepted, the commander broadcasts a ``Decision`` message to all nodes.
 It responds to the leader with ``Decided`` or ``Preempted``.
 
-\aosafigure[240pt]{cluster-images/leadercommander.png}{Commander}{500l.cluster.leadercommander}
+![Commander](cluster-images/leadercommander.png)
 
 ```python
 class Commander(Role):
@@ -747,7 +744,6 @@ When *all* ``Decision`` messages were lost, the protocol could not proceed.
 The replica continued to re-transmit ``Propose`` messages, but the leader ignored them as it already had a proposal for that slot.
 The replica's catch-up process could not find the result, as no replica had heard of the decision.
 The solution was to ensure that local messages are always delivered, as is the case for real network stacks.
-
 
 #### Bootstrap
 
@@ -927,7 +923,6 @@ class Timer(object):
 
     def cancel(self):
         self.cancelled = True
-
 
 class Network(object):
     PROP_DELAY = 0.03
@@ -1134,7 +1129,6 @@ I performed some manual fuzz testing of cluster during development, but a full f
 
 ## Power Struggles
 
-
 A cluster with many active leaders is a very noisy place, with scouts sending ever-increasing ballot numbers to acceptors, and no ballots being decided.
 A cluster with no active leader is quiet, but equally nonfunctional.
 Balancing the implementation so that a cluster almost always agrees on exactly one leader is remarkably difficult.
@@ -1219,7 +1213,7 @@ This seemingly simple change introduced a great deal of complexity:
 * properly serializing multiple competing view changes, and
 * communicating view information between the leader and replica.
 
-The result was far too large for this book! \newpage
+The result was far too large for this book! 
 
 ## References
 

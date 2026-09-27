@@ -143,12 +143,11 @@ open call[Endpoint]
 run {} for 3	-- generate an instance with up to 3 objects of every signature type
 ```
 
-وفي اللحظة التي يجد فيها المحلّل نموذجاً ممكناً للنظام، ينتج تلقائياً مخطّطاً لذلك النموذج، كما في \aosafigref{500l.same-origin-policy.fig-http-1}.
+وفي اللحظة التي يجد فيها المحلّل نموذجاً ممكناً للنظام، ينتج تلقائياً مخطّطاً لذلك النموذج، كما في fig http 1.
 
-\aosafigure[240pt]/images/500-lines/same-origin-policy-0-fig_http_1.webp{نموذج ممكن}{500l.same-origin-policy.fig-http-1}
+![نموذج ممكن](/images/500-lines/same-origin-policy-0-fig_http_1.webp)
 
 يُظهر هذا النموذج عميلاً (يمثّله العنصر `Client`) يُرسِل `HttpRequest` إلى `Server`، الذي يعود بدوره بمورد عنصر، ويطلب من العميل أن يخزّن `Cookie` عند `Domain`.
-
 
 ولاحظ أن المورد المُعادة من الطلب (`Resource1`) غير موجود في الخادم. فقد أهملنا أن نذكر حقيقةً بديهية عن الخادم،وهي أن كل استجابة لطلب هي مورد يخزّنه الخادم. يمكننا العودة إلى تعريفنا لـ `HttpRequest` وإضافة قيد:
 
@@ -169,11 +168,11 @@ check {
 } for 3 
 ```
 
-بالإعطاء لهذا الأمر `check`، يستكشف المحلّل كل سلوك ممكن للنظام (حتى الحد المحدَّد)، وعندما يجد سلوكاً ينتهك الخاصية، يعرض ذلك النموذج بوصفه *مثالاً مضاداً* (counterexample)، كما هو مبيّن في \aosafigref{500l.same-origin-policy.fig-http-2a} و \aosafigref{500l.same-origin-policy.fig-http-2b}.
+بالإعطاء لهذا الأمر `check`، يستكشف المحلّل كل سلوك ممكن للنظام (حتى الحد المحدَّد)، وعندما يجد سلوكاً ينتهك الخاصية، يعرض ذلك النموذج بوصفه *مثالاً مضاداً* (counterexample)، كما هو مبيّن في fig http 2a و fig http 2b.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-1-fig_http_2a.webp{مثال مضاد عند الزمن 0}{500l.same-origin-policy.fig-http-2a}
+![مثال مضاد عند الزمن 0](/images/500-lines/same-origin-policy-1-fig_http_2a.webp)
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-2-fig_http_2b.webp{مثال مضاد عند الزمن 1}{500l.same-origin-policy.fig-http-2b}
+![مثال مضاد عند الزمن 1](/images/500-lines/same-origin-policy-2-fig_http_2b.webp)
 
 يُظهر هذا المثال المضاد مرة أخرى طلب HTTP يُنجَزه عميل، لكن مع خادمين مختلفين. (وفي المُصوِّر البصري لـ Alloy، تُميَّز العناصر من النوع نفسه بإلحاق لواحق رقمية بأسمائها؛ وإذا كان هناك عنصر واحد فقط من نوع معيّن فلا تُضاف أي لاحقة. وكل اسم يظهر في مخطّط لقطة هو اسم عنصر. لذا&mdash;وربما بدا ذلك مربكاً في أول نظرة&mdash;فالأسماء `Domain` و`Path` و`Resource` و`Url` تشير جميعها إلى عناصر مفردة، لا إلى أنواع.)
 
@@ -464,16 +463,16 @@ assert Integrity {
 check Confidentiality for 5
 ```
 
-فمثلاً، عند فحص نموذج تطبيقنا النموذجي مقابل خاصية السرّية، يولّد المحلّل السيناريو المبيّن في \aosafigref{500l.same-origin-policy.fig-attack-1a} و \aosafigref{500l.same-origin-policy.fig-attack-1b}، وهو يُظهر كيف يمكن لـ `EvilScript` الوصول إلى جزء من البيانات الحرجة (`MyInboxInfo`).
+فمثلاً، عند فحص نموذج تطبيقنا النموذجي مقابل خاصية السرّية، يولّد المحلّل السيناريو المبيّن في fig attack 1a و fig attack 1b، وهو يُظهر كيف يمكن لـ `EvilScript` الوصول إلى جزء من البيانات الحرجة (`MyInboxInfo`).
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-3-fig_attack_1a.webp{مثال مضاد لخاصية السرّية عند الزمن 0}{500l.same-origin-policy.fig-attack-1a}
-\aosafigure[180pt]/images/500-lines/same-origin-policy-4-fig_attack_1b.webp{مثال مضاد لخاصية السرّية عند الزمن 1}{500l.same-origin-policy.fig-attack-1b}
+![مثال مضاد لخاصية السرّية عند الزمن 0](/images/500-lines/same-origin-policy-3-fig_attack_1a.webp)
+![مثال مضاد لخاصية السرّية عند الزمن 1](/images/500-lines/same-origin-policy-4-fig_attack_1b.webp)
 
-ينطوي هذا المثال المضاد على خطوتين. في الخطوة الأولى (\aosafigref{500l.same-origin-policy.fig-attack-1a})، يقرأ `EvilScript` الذي يُنفَّذ داخل `AdBanner` المنتمي إلى `EvilDomain` محتوى `InboxPage`، وهو محتوى مصدره `EmailDomain`. وفي الخطوة التالية (\aosafigref{500l.same-origin-policy.fig-attack-1b})، يُرسِل `EvilScript` المحتوى نفسه (`MyInboxInfo`) إلى `EvilServer` عبر استدعاء `XmlHtttpRequest`. وجوهر المشكلة هنا أن سكربتاً يُنفَّذ تحت نطاق واحد قادر على قراءة محتوى مستند من نطاق آخر؛ وكما سنرى في القسم التالي، فهذا تحديداً أحد السيناريوهات التي صُمّمت سياسة الأصل نفسه لمنعها.
+ينطوي هذا المثال المضاد على خطوتين. في الخطوة الأولى (fig attack 1a)، يقرأ `EvilScript` الذي يُنفَّذ داخل `AdBanner` المنتمي إلى `EvilDomain` محتوى `InboxPage`، وهو محتوى مصدره `EmailDomain`. وفي الخطوة التالية (fig attack 1b)، يُرسِل `EvilScript` المحتوى نفسه (`MyInboxInfo`) إلى `EvilServer` عبر استدعاء `XmlHtttpRequest`. وجوهر المشكلة هنا أن سكربتاً يُنفَّذ تحت نطاق واحد قادر على قراءة محتوى مستند من نطاق آخر؛ وكما سنرى في القسم التالي، فهذا تحديداً أحد السيناريوهات التي صُمّمت سياسة الأصل نفسه لمنعها.
 
-قد تكون هناك أمثلة مضادة متعدّدة لتأكيد واحد. لننظر في \aosafigref{500l.same-origin-policy.fig-attack-2}، وهو يُظهر طريقة أخرى قد ينتهك بها النظام خاصية السرّية.
+قد تكون هناك أمثلة مضادة متعدّدة لتأكيد واحد. لننظر في fig attack 2، وهو يُظهر طريقة أخرى قد ينتهك بها النظام خاصية السرّية.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-5-fig_attack_2.webp{انتهاك آخر للسرّية}{500l.same-origin-policy.fig-attack-2}
+![انتهاك آخر للسرّية](/images/500-lines/same-origin-policy-5-fig_attack_2.webp)
 
 في هذا السيناريو، بدلاً من قراءة محتوى صفحة صندوق الوارد، يُرسِل `EvilScript` طلب `GetInboxInfo` مباشرةً إلى `EmailServer`. ولاحظ أن الطلب يتضمّن ملف تعريف ارتباط (`MyCookie`) مُعرَّفاً على النطاق نفسه الذي يقع عليه الخادم الهدف. وهذا قد يكون خطيراً، فإذا استُخدم ملف تعريف الارتباط لتمثيل هوية المستخدم (كملف تعريف ارتباط جلسة مثلاً)، استطاع `EvilScript` أن يتقمّص شخصية المستخدم فعلياً ويخدع الخادم ويُجبره على الرد ببيانات المستخدم الخاصة (`MyInboxInfo`). وهنا المشكلة أيضاً تتعلق بالطرق المتساهلة التي يمكن بها للسكربت الوصول إلى المعلومات عبر النطاقات المختلفة&mdash;وهي تحديداً أن سكربتاً يُنفَّذ تحت نطاق واحد قادر على إجراء طلب HTTP إلى خادم له نطاق مختلف.
 
@@ -592,34 +591,34 @@ check Confidentiality for 5
 يتكوّن هذا السيناريو من خمس خطوات؛ تُظهر الخطوات الثلاث الأولى استعمالاً نموذجياً لـ `document.domain`، حيث يتبادل مستندان من أصلين متباعدين، وهما `CalendarPage` و`InboxPage`، الاتصال يضبطان خاصية النطاق فيهما على قيمة مشتركة (`ExampleDomain`). وتُقدّم الخطوتان الأخيرتان مستنداً آخر هو `BlogPage`، قد أُخترق بسكربت خبيث يحاول الوصول إلى محتوى المستندين الآخرين.
 
 في بداية السيناريو
-(\aosafigref{500l.same-origin-policy.fig-setdomain-1a} و
-\aosafigref{500l.same-origin-policy.fig-setdomain-1b})، تملك `InboxPage` و
+(fig setdomain 1a و
+fig setdomain 1b)، تملك `InboxPage` و
 `CalendarPage` خاصيتي نطاق بقيمتين متباعدتين (`EmailDomain`
 و`ExampleDomain` على التوالي)، لذا سيمنع المتصفّح أحدهما من الوصول إلى DOM الآخر. وتنفّذ السكربتات العاملة داخل المستندين
 (`InboxScript` و`CalendarScript`) كلٌّ منهما عملية `SetDomain` ليعدّل
 خاصية نطاقه إلى `ExampleDomain` (وهو مسموح لأن
 `ExampleDomain` نطاق أعلى للنطاق الأصلي).
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-6-fig_setdomain_1a.webp{مثال مضاد عبر الأصول عند الزمن 0}{500l.same-origin-policy.fig-setdomain-1a}
-\aosafigure[180pt]/images/500-lines/same-origin-policy-7-fig_setdomain_1b.webp{مثال مضاد عبر الأصول عند الزمن 1}{500l.same-origin-policy.fig-setdomain-1b}
+![مثال مضاد عبر الأصول عند الزمن 0](/images/500-lines/same-origin-policy-6-fig_setdomain_1a.webp)
+![مثال مضاد عبر الأصول عند الزمن 1](/images/500-lines/same-origin-policy-7-fig_setdomain_1b.webp)
 
-وبعد أن فعلوا ذلك، أصبح بإمكانهم الآن الوصول إلى DOM بعضهم البعض عبر تنفيذ عمليات `ReadDom` أو `WriteDom`، كما في \aosafigref{500l.same-origin-policy.fig-setdomain-1c}.
+وبعد أن فعلوا ذلك، أصبح بإمكانهم الآن الوصول إلى DOM بعضهم البعض عبر تنفيذ عمليات `ReadDom` أو `WriteDom`، كما في fig setdomain 1c.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-8-fig_setdomain_1c.webp{مثال مضاد عبر الأصول عند الزمن 2}{500l.same-origin-policy.fig-setdomain-1c}
+![مثال مضاد عبر الأصول عند الزمن 2](/images/500-lines/same-origin-policy-8-fig_setdomain_1c.webp)
 
 لاحظ أن حين تضبط نطاق `email.example.com`
 و`calendar.example.com` على `example.com`، فأنت لا تسمح لهاتين الصفحتين بالاتصال
 بينهما فحسب، بل تسمح لأي صفحة أخرى لها `example.com` نطاقاً أعلى
 (مثل `blog.example.com`). ويدرك المهاجم ذلك أيضاً، فيبني
 سكربتاً خاصاً (`EvilScript`) يعمل داخل صفحة المدونة الخاصة بالمهاجم
-(`BlogPage`). وفي الخطوة التالية (\aosafigref{500l.same-origin-policy.fig-setdomain-2a})، ينفّذ
+(`BlogPage`). وفي الخطوة التالية (fig setdomain 2a)، ينفّذ
 السكربت عملية `SetDomain` لتعديل خاصية نطاق `BlogPage` إلى `ExampleDomain`.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-9-fig_setdomain_2a.webp{مثال مضاد عبر الأصول عند الزمن 3}{500l.same-origin-policy.fig-setdomain-2a}
+![مثال مضاد عبر الأصول عند الزمن 3](/images/500-lines/same-origin-policy-9-fig_setdomain_2a.webp)
 
-والآن بعد أن صارت `BlogPage` تملك خاصية النطاق نفسها التي تملكها المستندان الآخران، استطاعت بنجاح تنفيذ عملية `ReadDOM` للوصول إلى محتواهما (\aosafigref{500l.same-origin-policy.fig-setdomain-2b}.)
+والآن بعد أن صارت `BlogPage` تملك خاصية النطاق نفسها التي تملكها المستندان الآخران، استطاعت بنجاح تنفيذ عملية `ReadDOM` للوصول إلى محتواهما (fig setdomain 2b.)
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-10-fig_setdomain_2b.webp{مثال مضاد عبر الأصول عند الزمن 4}{500l.same-origin-policy.fig-setdomain-2b}
+![مثال مضاد عبر الأصول عند الزمن 4](/images/500-lines/same-origin-policy-10-fig_setdomain_2b.webp)
 
 ويؤشّر هذا الهجوم على نقطة ضعف جوهرية في طريقة الخاصية هذه
 للاتصال عبر الأصول: فإن أمان تطبيق يستخدم هذه الطريقة لا يكون
@@ -690,13 +689,13 @@ sig JsonpCallback extends EventHandler {
 
 **التحليل:** فحص الخاصية `Confidentiality` بمحلّل Alloy يعيد مثالاً مضاداً يُظهر أحد مخاطر JSONP الأمنية المحتملة. وفي هذا السيناريو، يجعل تطبيق التقويم (`CalendarServer`) موارده متاحة لمواقع الأطراف الثالثة عبر نقطة نهاية JSONP (`GetSchedule`). وحصراً للوصول إلى تلك الموارد، لا يعيد `CalendarServer` استجابةً تتضمن جدول المستخدم إلا إذا كان الطلب يتضمّن ملف تعريف ارتباط يحدّد ذلك المستخدم بدقّة.
 
-ولاحظ أن بمجرد أن يوفّر خادم ما نقطة نهاية HTTP كخدمة JSONP، يصبح بإمكان أي شخص إجراء طلب JSONP إليها، بما في ذلك المواقع الخبيثة. وفي هذا السيناريو، تتضمّن صفحة اللافتة الإعلانية من `EvilServer` وسم _سكربت_ يسبّب طلب `GetSchedule`، مع دالة استدعاء اسمها `Leak` بوصفها `padding`. وعادةً ما لا يملك مطوّر `AdBanner` وصولاً مباشراً إلى ملف تعريف ارتباط جلسة المستخدم الضحية (`MyCookie`) لـ `CalendarServer`. غير أن طلب JSONP يُرسَل إلى `CalendarServer`، لذا يُضمّنه المتصفّح تلقائياً `MyCookie`؛ و`CalendarServer` الذي تلقّى طلب JSONP يحمل `MyCookie` سيعيد مورد الضحية (`MySchedule`) ملتفّاً داخل الحشو `Leak` (\aosafigref{500l.same-origin-policy.fig-jsonp-1}.)
+ولاحظ أن بمجرد أن يوفّر خادم ما نقطة نهاية HTTP كخدمة JSONP، يصبح بإمكان أي شخص إجراء طلب JSONP إليها، بما في ذلك المواقع الخبيثة. وفي هذا السيناريو، تتضمّن صفحة اللافتة الإعلانية من `EvilServer` وسم _سكربت_ يسبّب طلب `GetSchedule`، مع دالة استدعاء اسمها `Leak` بوصفها `padding`. وعادةً ما لا يملك مطوّر `AdBanner` وصولاً مباشراً إلى ملف تعريف ارتباط جلسة المستخدم الضحية (`MyCookie`) لـ `CalendarServer`. غير أن طلب JSONP يُرسَل إلى `CalendarServer`، لذا يُضمّنه المتصفّح تلقائياً `MyCookie`؛ و`CalendarServer` الذي تلقّى طلب JSONP يحمل `MyCookie` سيعيد مورد الضحية (`MySchedule`) ملتفّاً داخل الحشو `Leak` (fig jsonp 1.)
 
-\aosafigure[240pt]/images/500-lines/same-origin-policy-11-fig_jsonp_1.webp{مثال مضاد لـ JSONP عند الزمن 0}{500l.same-origin-policy.fig-jsonp-1}
+![مثال مضاد لـ JSONP عند الزمن 0](/images/500-lines/same-origin-policy-11-fig_jsonp_1.webp)
 
-وفي الخطوة التالية، يفسّر المتصفّح استجابة JSONP على أنها استدعاء لـ `Leak(MySchedule)` (\aosafigref{500l.same-origin-policy.fig-jsonp-2}). وبقية الهجوم بسيطة؛ إذ يمكن ببساطة برمجة `Leak` لتوجيه الوسيط الوارد إلى `EvilServer`، مما يتيح للمهاجم الوصول إلى المعلومات الحسّاسة للضحية.
+وفي الخطوة التالية، يفسّر المتصفّح استجابة JSONP على أنها استدعاء لـ `Leak(MySchedule)` (fig jsonp 2). وبقية الهجوم بسيطة؛ إذ يمكن ببساطة برمجة `Leak` لتوجيه الوسيط الوارد إلى `EvilServer`، مما يتيح للمهاجم الوصول إلى المعلومات الحسّاسة للضحية.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-12-fig_jsonp_2.webp{مثال مضاد لـ JSONP عند الزمن 1}{500l.same-origin-policy.fig-jsonp-2}
+![مثال مضاد لـ JSONP عند الزمن 1](/images/500-lines/same-origin-policy-12-fig_jsonp_2.webp)
 
 وهذا الهجوم، وهو مثال على _تزوير الطلب عبر المواقع_ (cross-site request forgery، CSRF)، يُظهر ضعفاً جوهرياً في JSONP؛ فـ _أي_ موقع على الويب يستطيع إجراء طلب JSONP بمجرد إدراج وسم `<script>` والوصول إلى الحمولة داخل الحشو. ويمكن التخفيف من هذا الخطر بطريقتين: (1) التأكّد من أن طلب JSONP لا يعيد بيانات حسّاسة أبداً، أو (2) استعمال آلية أخرى بدلاً من ملفات تعريف الارتباط (كالبطاقات السرّية مثلاً) لتفويض الطلب.
 
@@ -734,13 +733,13 @@ sig ReceiveMessage extends EventHandler {
 
 **التحليل:** لنطلب مرة أخرى من محلّل Alloy أن يخبرنا ما إذا كانت `PostMessage` طريقة آمنة لإجراء الاتصال عبر الأصول. وفي هذه المرة، يعيد المحلّل مثالاً مضاداً لخاصية `Integrity`، ما يعني أن المهاجم قادر على استغلال ثغرة في `PostMessage` لإدخال بيانات خبيثة إلى تطبيق موثوق.
 
-ولاحظ أن آلية PostMessage افتراضياً لا تقيّد من يُسمح له بإرسال PostMessage؛ بمعنى آخر، يستطيع أي مستند أن يرسل رسالة إلى مستند آخر ما دام الأخير قد سجّل معالِج `ReceiveMessage`. فمثلاً، في النموذج المولَّد من Alloy التالي، يرسل `EvilScript` الذي يعمل داخل `AdBanner` رسالة `PostMessage` خبيثة إلى مستند أصله الهدف هو `EmailDomain` (\aosafigref{500l.same-origin-policy.fig-postmessage-1}.)
+ولاحظ أن آلية PostMessage افتراضياً لا تقيّد من يُسمح له بإرسال PostMessage؛ بمعنى آخر، يستطيع أي مستند أن يرسل رسالة إلى مستند آخر ما دام الأخير قد سجّل معالِج `ReceiveMessage`. فمثلاً، في النموذج المولَّد من Alloy التالي، يرسل `EvilScript` الذي يعمل داخل `AdBanner` رسالة `PostMessage` خبيثة إلى مستند أصله الهدف هو `EmailDomain` (fig postmessage 1.)
 
-\aosafigure[240pt]/images/500-lines/same-origin-policy-13-fig_postmessage_1.webp{مثال مضاد لـ PostMessage عند الزمن 0}{500l.same-origin-policy.fig-postmessage-1}
+![مثال مضاد لـ PostMessage عند الزمن 0](/images/500-lines/same-origin-policy-13-fig_postmessage_1.webp)
 
-ثم يوجّه المتصفّح هذه الرسالة إلى المستند (المستندات) ذات الأصل المقابل (في هذه الحالة، `InboxPage`). ما لم يفحص `InboxScript` قيمة `srcOrigin` تحديداً لاستبعاد الرسائل القادمة من أصول غير مرغوب فيها، فإن `InboxPage` سيقبل البيانات الخبيثة، وقد يقود ذلك إلى هجمات أمنية أخرى. (فمثلاً، قد يضمّن قطعة JavaScript لتنفيذ هجوم XSS.) وهذا مبيّن في \aosafigref{500l.same-origin-policy.fig-postmessage-1}.
+ثم يوجّه المتصفّح هذه الرسالة إلى المستند (المستندات) ذات الأصل المقابل (في هذه الحالة، `InboxPage`). ما لم يفحص `InboxScript` قيمة `srcOrigin` تحديداً لاستبعاد الرسائل القادمة من أصول غير مرغوب فيها، فإن `InboxPage` سيقبل البيانات الخبيثة، وقد يقود ذلك إلى هجمات أمنية أخرى. (فمثلاً، قد يضمّن قطعة JavaScript لتنفيذ هجوم XSS.) وهذا مبيّن في fig postmessage 1.
 
-\aosafigure[180pt]/images/500-lines/same-origin-policy-14-fig_postmessage_2.webp{مثال مضاد لـ PostMessage عند الزمن 1}{500l.same-origin-policy.fig-postmessage-2}
+![مثال مضاد لـ PostMessage عند الزمن 1](/images/500-lines/same-origin-policy-14-fig_postmessage_2.webp)
 
 وكما يوضّح هذا المثال، فإن `PostMessage` ليست آمنة افتراضياً، ومن مسؤولية المستند المستقبِل _إضافةً_ إلى ذلك أن يفحص الوسيط `srcOrigin` للتأكّد من أن الرسالة قادمة من مستند موثوق. وللأسف، فإن كثيراً من المواقع تُسقط هذا الفحص في الممارسة العملية، مما يمكّن مستنداً خبيثاً من حقن محتوى سيّئ ضمن `PostMessage`[^postMessageStudy].
 
@@ -781,9 +780,9 @@ fact corsRule {
 
 **التحليل:** هل يمكن إساءة استعمال CORS بطريقة تسمح للمهاجم باختراق أمان موقع موثوق؟ وعند سؤاله، يعيد محلّل Alloy مثالاً مضاداً بسيطاً لخاصية `Confidentiality`.
 
-وهنا، يقرّر مطوّر تطبيق التقويم أن يشارك بعض موارده مع تطبيقات أخرى باستخدام آلية CORS. وللأسف، ضُبط `CalendarServer` بحيث يعيد `Origin` (الذي يمثّل مجموعة قيم الأصول كلها) لترويسة `access-control-allow-origin` في استجابات CORS. ونتيجةً لذلك، يُسمح لسكربت من أي أصل، بما في ذلك `EvilDomain`، بإجراء طلب عبر المواقع إلى `CalendarServer` وقراءة استجابته (\aosafigref{500l.same-origin-policy.fig-cors}).
+وهنا، يقرّر مطوّر تطبيق التقويم أن يشارك بعض موارده مع تطبيقات أخرى باستخدام آلية CORS. وللأسف، ضُبط `CalendarServer` بحيث يعيد `Origin` (الذي يمثّل مجموعة قيم الأصول كلها) لترويسة `access-control-allow-origin` في استجابات CORS. ونتيجةً لذلك، يُسمح لسكربت من أي أصل، بما في ذلك `EvilDomain`، بإجراء طلب عبر المواقع إلى `CalendarServer` وقراءة استجابته (fig cors).
 
-\aosafigure[240pt]/images/500-lines/same-origin-policy-15-fig_cors.webp{مثال مضاد لـ CORS}{500l.same-origin-policy.fig-cors}
+![مثال مضاد لـ CORS](/images/500-lines/same-origin-policy-15-fig_cors.webp)
 
 يُبرز هذا المثال خطأً شائعاً يرتكبه المطوّرون مع CORS: استعمال القيمة "\*" القيمة البديلة لترويسة "access-control-allow-origin"، ما يسمح لأي موقع بالوصول إلى مورد على الخادم. وهذا النمط من الوصول مناسب إذا كان المورد يُعدّ عاماً ومتاحاً للجميع. لكن اتضح أن مواقع كثيرة تستعمل "\*" القيمة الافتراضية حتى للموارد الخاصة، فتسمح بذلك عَرَضاً للسكربتات الخبيثة بالوصول إليها عبر طلبات CORS[^corsStudy].
 
@@ -794,7 +793,6 @@ fact corsRule {
 في هذا الفصل، انطلقنا لبناء وثيقة تقدّم فهماً واضحاً لسياسة الأصل نفسه وآلياتها المرتبطة، عبر بناء _نموذج_ (_model_) للسياسة في لغة اسمها Alloy. ونموذجنا لسياسة الأصل نفسه ليس تطبيقاً بالمعنى التقليدي، ولا يمكن نشره للاستخدام، بخلاف المخرجات المعروضة في الفصول الأخرى. وبدلاً من ذلك، أردنا أن نُظهر العناصر الرئيسية وراء نهجنا في «النمذجة الرشيقة»: (1) البدء بنموذج صغير ومجرَّد للنظام وإضافة التفاصيل _على نحو تزايدي_ حسب الحاجة، و(2) تحديد _خصائص_ يُتوقّع أن يحققها النظام، و(3) تطبيق _تحليل صارم_ (_rigorous analysis_) لاستكشاف أي عيوب محتملة في تصميم النظام. وبطبيعة الحال، فقد كُتب هذا الفصل بعد وقت طويل من إدخال سياسة الأصل نفسه، لكننا نعتقد أن هذا النوع من النمذجة قد يكون أكثر فائدة لو أُنجز في مرحلة مبكرة من تصميم النظام.
 
 وإلى جانب سياسة الأصل نفسه، استُخدم Alloy لنمذجة مجموعة متنوعة من الأنظمة عبر مجالات مختلفة&mdash;من بروتوكولات الشبكة، إلى الويب الدلالي، إلى أمن البايت كود، إلى التصويت الإلكتروني والأنظمة الطبية. وقد قاد تحليل Alloy في كثير من هذه الأنظمة إلى اكتشاف عيوب في التصميم وأخطاء كانت قد خفيت عن المطوّرين، في بعض الحالات لسنوات. وندعو قرّاءنا إلى زيارة [صفحة Alloy](http://alloy.mit.edu) وتجربة بناء نموذج نظامهم المفضّل!
-
 
 [^postMessageStudy]: Sooel Son and Vitaly Shmatikov. *The Postman Always Rings Twice: Attacking and Defending postMessage in HTML5 Websites*. Network and Distributed System Security Symposium (NDSS), 2013.
 

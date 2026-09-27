@@ -33,7 +33,6 @@ examine a working example of a simple OCR system that recognizes numerical
 digits using an Artificial Neural Network (ANN). But first, let’s establish a
 bit more context.
 
-
 ## What is Artificial Intelligence?
 \label{sec.ocr.ai}
 While Turing’s definition of intelligence sounds reasonable, at the end of the
@@ -71,15 +70,15 @@ networks found in a biological brain. [Hebbian
 Theory](http://www.nbb.cornell.edu/neurobio/linster/BioNB420/hebb.pdf) explains
 how these networks can learn to identify patterns by physically altering their
 structure and link strengths. Similarly, a typical ANN (shown in
-\aosafigref{500l.ocr.ann}) has connections between nodes that have a weight
+An Artificial Neural Network) has connections between nodes that have a weight
 which is updated as the network learns. The nodes labelled "+1" are called
 _biases_. The leftmost blue column of nodes are _input nodes_, the middle
 column contains _hidden nodes_, and the rightmost column contains _output
 nodes_. There may be many columns of hidden nodes, known as _hidden layers_.
 
-\aosafigure[360pt]{ocr-images/ann.png}{An Artificial Neural Network}{500l.ocr.ann}
+![An Artificial Neural Network](ocr-images/ann.png)
 
-The values inside all of the circular nodes in \aosafigref{500l.ocr.ann}
+The values inside all of the circular nodes in An Artificial Neural Network
 represent the output of the node. If we call the output of the $n$th node from
 the top in layer $L$ as a $n(L)$ and the connection between the $i$th node in
 layer $L$ and the $j$th node in layer $L+1$ as $w^{(L)}_ji$, then the output of
@@ -217,7 +216,6 @@ single pixel for the ANN input as a square of 10x10 real pixels. Thus the real
 canvas is 200x200 pixels and it is represented by a 20x20 canvas from the
 perspective of the ANN. The variables below will help us keep track of these
 measurements.
-
 
 ```javascript
 var ocrDemo = {
@@ -476,7 +474,7 @@ of common activation functions and their properties.
 A second factor to consider is whether we want to include biases. We've
 mentioned biases a couple of times before but haven't really talked about what
 they are or why we use them. Let's try to understand this by going back to how
-the output of a node is computed in \aosafigref{500l.ocr.ann}. Suppose we had a single input
+the output of a node is computed in An Artificial Neural Network. Suppose we had a single input
 node and a single output node, our output formula would be $y = f(wx)$, where $y$
 is the output, $f()$ is the activation function, $w$ is the weight for the link
 between the nodes, and $x$ is the variable input for the node. The bias is

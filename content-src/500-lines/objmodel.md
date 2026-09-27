@@ -48,8 +48,6 @@ engineering detail to make it efficient. However, the simpler implementation
 language makes it easier to focus on actual behaviour differences instead of
 getting bogged down by implementation details.
 
-
-
 ## Method-Based Model
 
 The object model we will start out with is an extremely simplified version of
@@ -198,7 +196,6 @@ class Instance(Base):
         assert isinstance(cls, Class)
         Base.__init__(self, cls, {})
 
-
 class Class(Base):
     """ A User-defined class. """
 
@@ -243,9 +240,9 @@ To define new metaclasses, it is enough to subclass ``TYPE``. However, in the
 rest of this chapter we won't do that; we'll simply always use ``TYPE`` as the
 metaclass of every class.
 
-\aosafigure[240pt]{objmodel-images/inheritance.png}{Inheritance}{500l.objmodel.inheritance}
+![Inheritance](objmodel-images/inheritance.png)
 
-Now the first test passes. The second test checks that reading and writing attributes works on classes as well. It's easy to write, and passes immediately. \newpage
+Now the first test passes. The second test checks that reading and writing attributes works on classes as well. It's easy to write, and passes immediately. 
 
 ```python
 def test_read_write_field_class():
@@ -266,7 +263,6 @@ def test_read_write_field_class():
 ```
 
 ### `isinstance` Checking
-
 
 So far we haven't taken advantage of the fact that objects have classes. The next
 test implements the ``isinstance`` machinery:
@@ -304,7 +300,6 @@ class itself, is
 called the "method resolution order" of that class. It can easily be
 computed recursively:
 
-
 ```python
 class Class(Base):
     ...
@@ -322,7 +317,6 @@ class Class(Base):
 ```
 
 With that code, the test passes.
-
 
 ### Calling Methods
 
@@ -416,10 +410,6 @@ def test_callmethod_subclassing_and_arguments():
     obj.write_attr("x", 4)
     assert obj.callmethod("g", 4) == 12
 ```
-
-
-
-
 
 ## Attribute-Based Model
 
@@ -533,7 +523,6 @@ def _make_boundmethod(meth, self):
 
 The rest of the code does not need to be changed at all.
 
-
 ## Meta-Object Protocols
 
 In addition to "normal" methods that are called directly by the program, many
@@ -556,7 +545,6 @@ In this chapter we will add three such meta-hooks to our object model. They are
 used to fine-tune what exactly happens when reading and writing attributes. The
 special methods we will add first are ``__getattr__`` and ``__setattr__``, which
 closely follow the behaviour of Python's namesakes.
-
 
 ### Customizing Reading and Writing and Attribute
 
@@ -677,7 +665,6 @@ OBJECT = Class("object", None, {"__setattr__": OBJECT__setattr__}, None)
 The behaviour of ``OBJECT__setattr__`` is like the previous behaviour of
 ``write_attr``. With these modifications, the new test passes.
 
-
 ### Descriptor Protocol
 
 The above test to provide automatic conversion between
@@ -754,7 +741,6 @@ level, instead of using ``meth.read_attr("__get__")``. This is necessary since
 our object model borrows functions and thus methods from Python, instead of
 having a representation for them that uses the object model. A more complete
 object model would have to solve this problem.
-
 
 ## Instance Optimization
 
@@ -859,7 +845,7 @@ a different map, which ``next_map`` computes. The method uses the ``next_maps``
 dictionary to cache already created maps. That way, objects that have the same
 layout also end up using the same ``Map`` object.
 
-\aosafigure[166pt]{objmodel-images/maptransition.png}{Map transitions}{500l.objmodel.maptransition}
+![Map transitions](objmodel-images/maptransition.png)
 
 The ``Instance`` implementation that uses maps looks like this:
 
@@ -904,10 +890,9 @@ corresponding entry of the storage list is returned.
 Writing into the fields dictionary has two cases. On the one hand the value of
 an existing attribute can be changed. This is done by simply changing the
 storage at the corresponding index. On the other hand, if the attribute does
-not exist yet, a *map transition* (\aosafigref{500l.objmodel.maptransition}) is
+not exist yet, a *map transition* (Map transitions) is
 needed using the ``next_map`` method. The value of the new attribute is
 appended to the storage list.
-
 
 What does this optimization achieve? It optimizes use of memory in the common
 case where there are many instances with the same layout. It is not a universal
@@ -955,7 +940,6 @@ experiment with various language design choices. Here are some possibilities:
 - A more radical change is to switch to a prototype model, which involves the removal
   of the distinction between classes and instances.
 
-
 ## Conclusions
 
 Some of the core aspects of the design of an
@@ -971,4 +955,3 @@ experimentation. They can be embedded in and used from other languages. Examples
 of this approach are common: the GObject object model, written in C,
 that's used in GLib and other Gnome libraries; or the various class system
 implementations in JavaScript.
-

@@ -25,7 +25,6 @@ source: https://aosabook.org/en/500L/introduction.html
     <img src="https://github.com/aosabook/500lines/raw/master/resource/pagerduty_logo.png" alt="شعار PagerDuty" />
 </p>
 
-
 الرسالة
 -------
 
@@ -344,7 +343,6 @@ source: https://aosabook.org/en/500L/introduction.html
     <td><a href="https://github.com/yoavrubin">yoavrubin</a></td>
   </tr>
 </table>
-
 
 المراجعون التقنيون
 -------------------
