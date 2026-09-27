@@ -68,13 +68,20 @@
       <span class="press-mark__desk">لعلوم الحاسوب</span>
     </a>
 
-    <form class="header-search" onsubmit={submitSearch} role="search">
+    <form
+      class="header-search"
+      method="get"
+      action={withBasePath('/search')}
+      onsubmit={submitSearch}
+      role="search"
+    >
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="10.5" cy="10.5" r="6" />
         <path d="M15 15l5 5" />
       </svg>
       <input
         type="search"
+        name="q"
         placeholder="ابحث في الكتب والأقسام…"
         bind:value={term}
         aria-label="البحث في المكتبة"
