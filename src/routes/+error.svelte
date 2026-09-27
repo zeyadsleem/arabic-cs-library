@@ -7,7 +7,15 @@
 </svelte:head>
 
 <div class="container page">
-  <h1>404 - الصفحة غير موجودة</h1>
-  <p>عذراً، الصفحة التي تبحث عنها غير موجودة.</p>
-  <p><a class="button" href={withBasePath('/')}>العودة إلى المكتبة</a></p>
+  <h1>لم نجد هذه الصفحة</h1>
+  <p class="page__lead">
+    الرابط الذي فتحته لا يقابل صفحةً في المكتبة. قد يكون الفصل قد نُقل، أو الرابط
+    قديماً.
+  </p>
+  <div class="press-actions">
+    <a class="button" href={withBasePath('/')}>تصفّح الرف</a>
+    <a class="button button--quiet" href={withBasePath('/search')}>
+      ابحث عن الفصل
+    </a>
+  </div>
 </div>

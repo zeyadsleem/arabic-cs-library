@@ -1,8 +1,16 @@
 <script>
   import searchIndex from '$lib/generated/search-index.json';
   import { sectionPath } from '$lib/content.js';
+  import { page } from '$app/state';
+  import { browser } from '$app/environment';
 
   let query = $state('');
+
+  $effect(() => {
+    if (!browser) return;
+    const incoming = page.url.searchParams.get('q');
+    if (incoming && incoming !== query) query = incoming;
+  });
 
   const normalize = (text) =>
     text
@@ -18,6 +26,7 @@
     const scored = [];
 
     for (const section of searchIndex.sections) {
+      if (!section.text || section.text.length < 40) continue;
       const haystack = `${normalize(section.title)} ${section.text}`;
       let score = 0;
       for (const term of terms) {
@@ -27,7 +36,7 @@
           break;
         }
         score += occurrences;
-        if (normalize(section.title).includes(term)) score += 10;
+        if (normalize(section.title).includes(term)) score += 12;
       }
       if (score > 0) scored.push({ section, score });
     }
@@ -39,33 +48,42 @@
     const term = normalize(query).split(/\s+/)[0];
     const text = section.text;
     const index = normalize(text).indexOf(term);
-    if (index < 0) return text.slice(0, 220);
-    const start = Math.max(0, index - 80);
-    return text.slice(start, start + 260);
+    if (index < 0) return text.slice(0, 200);
+    const start = Math.max(0, index - 70);
+    return `${start > 0 ? '…' : ''}${text.slice(start, start + 240)}…`;
   };
 </script>
 
 <svelte:head>
-  <title>البحث | المكتبة العربية</title>
+  <title>البحث في المكتبة | المكتبة العربية</title>
 </svelte:head>
 
-<div class="container page">
-  <h1>البحث في المكتبة</h1>
+<div class="container search-hero">
+  <h1>البحث في الكتب</h1>
+  <p class="page__lead">
+    ابحث في {searchIndex.sections.length} قسماً داخل كل الكتب المترجمة.
+  </p>
+</div>
 
-  <form class="search-form" onsubmit={(event) => event.preventDefault()}>
+<div class="container page">
+  <form class="search-field" onsubmit={(event) => event.preventDefault()}>
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6" />
+      <path d="M15 15l5 5" />
+    </svg>
     <input
       type="search"
-      placeholder="اكتب كلمة للبحث..."
+      placeholder="اكتب كلمة أو عبارة…"
       bind:value={query}
-      aria-label="البحث"
+      aria-label="البحث في المكتبة"
     />
   </form>
 
   {#if query.length >= 2}
-    <p>
+    <p class="search-count">
       {results.length > 0
-        ? `تم العثور على ${results.length} نتيجة`
-        : 'لا توجد نتائج مطابقة'}
+        ? `أقرب ${results.length} نتيجة`
+        : 'لا توجد نتائج مطابقة — جرّب كلمةً أقصر أو مرادفاً آخر.'}
     </p>
 
     <div class="search-results">
@@ -73,17 +91,24 @@
         <a
           class="search-result"
           href={sectionPath(
-            'hello-algo',
+            result.section.book,
             result.section.chapter,
             result.section.slug
           )}
         >
-          <strong
-            >{result.section.chapterTitle} — {result.section.title}</strong
+          <span class="search-result__book"
+            >{result.section.bookTitle} · {result.section.chapterTitle}</span
           >
-          <p>{snippet(result.section)}</p>
+          <strong class="search-result__title">{result.section.title}</strong>
+          <p class="search-result__snippet">{snippet(result.section)}</p>
         </a>
       {/each}
     </div>
+  {:else if query.length === 1}
+    <p class="search-count">اكتب حرفين على الأقل للبحث.</p>
+  {:else}
+    <p class="search-count">
+      جرّب: «شجرة»، «التعقيد»، «الفهارس»، «الالتزام»، «TLS».
+    </p>
   {/if}
 </div>

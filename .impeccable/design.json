@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "world": "Arabic technical press (Bulaq rubrication): ink black, press-red rubrics, warm paper, Kufi headings",
+  "tokens": {
+    "color": {
+      "ink": { "light": "#171a1f", "dark": "#ece5d6", "role": "Primary text and strong rules" },
+      "ink-soft": { "light": "#4c525c", "dark": "#aca79c", "role": "Secondary text: leads and descriptions" },
+      "ink-faint": { "light": "#5f646d", "dark": "#8a887f", "role": "Faint numerals, dots and meta" },
+      "paper": { "light": "#f5efe3", "dark": "#131519", "role": "Page background" },
+      "paper-deep": { "light": "#ece2d0", "dark": "#1a1d22", "role": "Deeper paper: hover rows, footer and notes" },
+      "surface": { "light": "#fdfbf6", "dark": "#181b20", "role": "Card, chip and field surface" },
+      "rule": { "light": "#d8cbb4", "dark": "#2c3037", "role": "1px hairline rule" },
+      "rule-strong": { "light": "#b9a98d", "dark": "#454b54", "role": "Strong border rule" },
+      "rubric": { "light": "#a6201e", "dark": "#dd6a5e", "role": "Press red: links, active states, counters" },
+      "rubric-wash": { "light": "#f4e2dd", "dark": "#2a1c1b", "role": "Red wash: blocked and active fills" },
+      "jade": { "light": "#14524a", "dark": "#6cb2a3", "role": "Jade: done state and continue card border" },
+      "jade-wash": { "light": "#dde9e4", "dark": "#17231f", "role": "Jade wash: translated fills and continue card" },
+      "code-bg": { "light": "#191c22", "dark": "#0d0f13", "role": "Code block background" },
+      "code-text": { "light": "#eae3d5", "dark": "#ece5d6", "role": "Code block text" }
+    },
+    "font": {
+      "display": "'Reem Kufi', 'Noto Kufi Arabic', system-ui, sans-serif",
+      "ui": "'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif",
+      "reading": "'Noto Naskh Arabic', 'Amiri', Georgia, serif",
+      "mono": "'IBM Plex Mono', ui-monospace, monospace"
+    },
+    "radius": {
+      "sheet": "14px",
+      "control": "8px"
+    },
+    "shadow": {
+      "lift": {
+        "light": "0 10px 24px -14px rgba(23, 26, 31, 0.45)",
+        "dark": "0 12px 26px -16px rgba(0, 0, 0, 0.9)"
+      }
+    },
+    "width": {
+      "content": "78rem",
+      "reading": "44rem"
+    }
+  },
+  "components": [
+    {
+      "name": "Press header and footer",
+      "classes": ["press-header", "press-header__rule", "press-header__inner", "press-mark", "press-mark__name", "press-mark__desk", "header-search", "press-nav", "press-nav--open", "press-menu-toggle", "press-footer", "press-footer__inner", "press-footer__links", "icon"],
+      "notes": "Sticky header with a 3px rubric rule, Kufi wordmark, inline search that navigates to /search?q=, nav with active state and theme toggle; menu collapses behind press-menu-toggle at 48rem. Footer is a 2fr/1fr grid on paper-deep."
+    },
+    {
+      "name": "Intro and stats",
+      "classes": ["intro", "intro__title", "intro__lead", "intro__stats", "stat"],
+      "notes": "Page opening on home and path with a 62ch lead and real counts read from content/library.json."
+    },
+    {
+      "name": "Continue card",
+      "classes": ["continue-card", "continue-card__label"],
+      "notes": "Jade-wash strip on the home page showing arabic-cs-library:last-read with a link to the saved path; label in jade."
+    },
+    {
+      "name": "Catalogue bar",
+      "classes": ["catalogue", "catalogue__bar", "chip", "chip--on", "catalogue__sort", "catalogue__count"],
+      "notes": "Filters all/translated/queued, sort select for stage/pages/title, grid-list toggle and visible count."
+    },
+    {
+      "name": "Book card grid",
+      "classes": ["book-grid", "book-card", "book-card__en", "book-card__title", "book-card__author", "book-card__description", "book-card__foot", "book-card__cta"],
+      "notes": "Auto-fill min 19rem grid; card shows the LTR English title with a stage cloth dot via --book-cloth, Arabic title in display font, 3-line clamped description, pages, status badge and CTA."
+    },
+    {
+      "name": "Book list row",
+      "classes": ["book-row-list", "book-list-row", "book-list-row__title", "book-list-row__author", "book-list-row__meta"],
+      "notes": "Dense grid 2.4fr 1.6fr auto auto with a stage cloth dot on the title; author and meta are hidden at 48rem."
+    },
+    {
+      "name": "Status badges",
+      "classes": ["badge", "badge--done", "badge--planned", "badge--blocked", "badge--reference"],
+      "notes": "Four states: done (jade), planned (deep paper), blocked (red wash), reference (transparent rule border)."
+    },
+    {
+      "name": "Book head",
+      "classes": ["book-head", "book-head__layout", "book-cover", "book-cover__title", "book-cover__pages", "book-head__meta", "book-head__title", "book-head__author", "book-head__lead", "book-facts", "book-fact__label", "book-fact__value", "book-actions", "sheet-note"],
+      "notes": "Cover at 3/4 in --book-cloth with spine gradient, LTR mono meta and page count, title, author, 66ch lead, facts grid, action buttons and paper-deep note."
+    },
+    {
+      "name": "Book table of contents and aside",
+      "classes": ["book-body", "toc-list", "toc-chapter", "toc-chapter__head", "toc-chapter__title", "toc-chapter__count", "toc-sections", "toc-sections__num", "aside-card"],
+      "notes": "Two-column body 1fr + 18rem: chapter sections with LTR mono counts and numerals, plus aside cards for same stage, path and attribution; stacked at 64rem."
+    },
+    {
+      "name": "Reader bar and progress",
+      "classes": ["reader-bar", "reader-bar__inner", "reader-bar__book", "reader-bar__chapter", "reader-bar__spacer", "reader-tool", "reader-tool--on", "reader-progress"],
+      "notes": "Sticky reading bar under the header with book link, chapter, chapter counter and bookmark toggle; the 2px rubric progress line scales from the right with transform: scaleX(var(--progress))."
+    },
+    {
+      "name": "Reader layout and content",
+      "classes": ["reader-layout", "reader-aside", "reader-aside__title", "active-chapter", "active", "reader-sheet", "reader-tools", "reader-content", "toc-inline", "prev-next", "prev-next__label", "prev-next__title"],
+      "notes": "Sticky 18rem aside with rubric active chapter and section, 44rem reading column in Noto Naskh Arabic at 1.16rem/2, inline toc for sections with 3-12 headings, and prev/next cards; collapses to one column at 64rem."
+    },
+    {
+      "name": "Path stages",
+      "classes": ["path", "stage", "stage__num", "stage__title", "stage__description", "stage__books", "stage-book", "stage-book__title", "stage-book__en", "stage-book__description", "stage-book__facts", "stage-book__badges", "stage-book__action"],
+      "notes": "Numbered stages with a 2px ink top rule and book cards carrying a stage cloth dot, LTR English title, description, facts and dependency or replacement badges."
+    },
+    {
+      "name": "Search field and results",
+      "classes": ["search-hero", "search-field", "search-count", "search-results", "search-result", "search-result__book", "search-result__title", "search-result__snippet"],
+      "notes": "Surface input with rule border and rubric focus-within; results are scored from two characters with Arabic diacritics stripped, title matches weighted +12, capped at 30."
+    },
+    {
+      "name": "Colophon cards",
+      "classes": ["colophon-grid", "colophon-card"],
+      "notes": "Auto-fit min 17rem grid of surface cards on the about page with real numbers and licences."
+    },
+    {
+      "name": "Exercises box and lecture video",
+      "classes": ["exercises", "lecture-video"],
+      "notes": "Exercise box on surface with red CSS-counter circles and dash sub-items; 16:9 video frame capped at the reading width."
+    },
+    {
+      "name": "Buttons",
+      "classes": ["button", "button--quiet"],
+      "notes": "Solid ink button turning rubric on hover with a 1px lift; quiet outline variant filling ink on hover."
+    },
+    {
+      "name": "Utilities",
+      "classes": ["container", "page", "page__lead", "skip-link", "visually-hidden"],
+      "notes": "78rem container with fluid padding, page sections, focus-revealed skip link and hidden text utility."
+    }
+  ],
+  "rules": [
+    "No letter-spacing anywhere: it breaks Arabic letter joining, and Arabic text never takes letter-spacing.",
+    "Code and Latin metadata stay LTR inside RTL via direction:ltr, unicode-bidi:embed and pre text-align:left.",
+    "Reading column is capped at 44rem at 1.16rem/2 in Noto Naskh Arabic; long-form prose measures 62-70ch.",
+    "The catalogue is book cards or list rows marked by a stage cloth dot, not vertical spines; the spine shelf was dropped for practicality.",
+    "1px rules and restrained shadows; 8px radii for controls and 14px for sheets.",
+    "Four font roles: Reem Kufi display, IBM Plex Sans Arabic UI, Noto Naskh Arabic reading, IBM Plex Mono code and meta.",
+    "Light theme is the default; dark applies only when localStorage theme=dark, set before first paint.",
+    "No accounts, no ads, no tracking, no emoji marks and no cream-serif library look."
+  ],
+  "signatures": [
+    "Catalogue of book cards and list rows, each marked by a stage cloth dot; no vertical spines or shelf board.",
+    "Reader marks: sticky reader bar with a 2px rubric progress line scaling from the right, sticky chapter aside, and prev/next cards.",
+    "Press masthead: 3px rubric rule, Kufi wordmark and an inline search that jumps to /search?q=."
+  ]
+}

@@ -801,6 +801,63 @@
       ],
       "replacement": "mathematics-for-cs",
       "translationInitiative": true
+    },
+    {
+      "id": "pgexercises",
+      "title": "تمارين PostgreSQL التفاعلية",
+      "titleEn": "PGExercises",
+      "author": "Alvaro Herrera",
+      "description": "تمارين SQL تفاعلية على قاعدة بيانات حقيقية: الاستعلامات، والربط، والتجميع، والدوال، وتعديل البيانات — كل تمرين مع حلّ.",
+      "sourceUrl": "https://pgexercises.com/",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "status": "planned",
+      "stage": "databases",
+      "order": 6,
+      "format": "web",
+      "pages": 70,
+      "completeCourse": true,
+      "prerequisites": [
+        "db-design"
+      ]
+    },
+    {
+      "id": "select-star-sql",
+      "title": "SELECT النجمة: تعلّم SQL بالقراءة والتمرين",
+      "titleEn": "Select Star SQL",
+      "author": "Zi Chong Kao",
+      "description": "كتاب تفاعلي يعلّم SQL على بيانات حقيقية خطوة بخطوة: من SELECT الأولى إلى النوافذ والدوال التجميعية، مع محرّر استعلامات داخل الصفحة.",
+      "sourceUrl": "https://selectstarsql.com/",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "status": "planned",
+      "stage": "databases",
+      "order": 7,
+      "format": "web",
+      "pages": 45,
+      "completeCourse": true,
+      "prerequisites": [
+        "db-design"
+      ]
+    },
+    {
+      "id": "sql-mystery",
+      "title": "لغز جريمة SQL",
+      "titleEn": "SQL Murder Mystery",
+      "author": "Northwestern University Knight Lab",
+      "description": "تعلّم SQL بالتحقيق في قضية جريمة: قاعدة بيانات بوليسية تُحقّق فيها باستعلامات SQL متدرّجة الصعوبة.",
+      "sourceUrl": "https://mystery.knightlab.com/",
+      "license": "MIT (الشيفرة) وCC BY-SA 4.0 (المحتوى)",
+      "licenseUrl": "https://github.com/NUKnightLab/sql-mysteries/blob/master/LICENSE",
+      "status": "planned",
+      "stage": "databases",
+      "order": 8,
+      "format": "web",
+      "pages": 12,
+      "completeCourse": true,
+      "prerequisites": [
+        "db-design"
+      ]
     }
   ]
 }
