@@ -273,22 +273,6 @@ const convert = (html, images) => {
   return chunks.join('\n\n');
 };
 
-const extractMain = (html, selector) => {
-  const patterns = selector
-    ? [
-        new RegExp(`<div[^>]*role="${selector}"[^>]*>`, 'i'),
-        new RegExp(`<${selector}[^>]*>`, 'i'),
-      ]
-    : [];
-  for (const pattern of patterns) {
-    const match = html.match(pattern);
-    if (match) {
-      return html.slice(html.indexOf(match[0]) + match[0].length);
-    }
-  }
-  return html;
-};
-
 for (const [id, book] of Object.entries(books)) {
   const sourceDir = path.join(sourceRoot, id);
   const targetDir = path.join(contentDir, id);

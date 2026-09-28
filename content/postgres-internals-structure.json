@@ -1,0 +1,148 @@
+{
+  "chapters": [
+    {
+      "key": "pgsql01",
+      "title": "Database Cluster, Databases, and Tables",
+      "titleAr": "عنقود قواعد البيانات والجداول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "عنقود قواعد البيانات والجداول",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "pgsql02",
+      "title": "Process and Memory Architecture",
+      "titleAr": "معمارية العمليات والذاكرة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "معمارية العمليات والذاكرة",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "pgsql03",
+      "title": "Query Processing",
+      "titleAr": "معالجة الاستعلامات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "معالجة الاستعلامات",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "pgsql04",
+      "title": "Foreign Data Wrapper",
+      "titleAr": "مغلّف البيانات الخارجية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مغلّف البيانات الخارجية",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "pgsql05",
+      "title": "Concurrency Control",
+      "titleAr": "التحكّم بالتزامن",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التحكّم بالتزامن",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "pgsql06",
+      "title": "Vacuum Processing",
+      "titleAr": "معالجة التفريغ (Vacuum)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "معالجة التفريغ (Vacuum)",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "pgsql07",
+      "title": "Heap Only Tuple (HOT)",
+      "titleAr": "الصفوف المكتفية بالكومة (HOT)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الصفوف المكتفية بالكومة (HOT)",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "pgsql08",
+      "title": "Buffer Manager",
+      "titleAr": "مدير المخزن المؤقت",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مدير المخزن المؤقت",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "pgsql09",
+      "title": "Write Ahead Logging",
+      "titleAr": "سجل ما قبل الكتابة (WAL)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "سجل ما قبل الكتابة (WAL)",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "pgsql10",
+      "title": "Base Backup and Point-In-Time Recovery",
+      "titleAr": "النسخ الاحتياطي الأساسي والاستعادة الزمنية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "النسخ الاحتياطي الأساسي والاستعادة الزمنية",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "pgsql11",
+      "title": "Streaming Replication",
+      "titleAr": "النسخ المتماثل المتدفّق",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "النسخ المتماثل المتدفّق",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "pgsql12",
+      "title": "Logical Replication",
+      "titleAr": "النسخ المتماثل المنطقي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "النسخ المتماثل المنطقي",
+          "order": 11
+        }
+      ]
+    }
+  ]
+}
