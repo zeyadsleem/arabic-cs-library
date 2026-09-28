@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.DsBhiNuk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DHfh3JdB.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVFrQua3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DWle-4Kv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.C6zqZvZQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwCc9Pmq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BCdrqkTo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/InF3o_3c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D4zxZeCu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/iAJklL8s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="مغلّف البيانات الخارجية — مغلّف البيانات الخارجية"/><!----><title>مغلّف البيانات الخارجية | داخل PostgreSQL</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/postgres-internals">داخل PostgreSQL</a> <span class="reader-bar__chapter">› مغلّف البيانات الخارجية</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 4 من 12">4 / 12</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql03/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql05/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>عنقود قواعد البيانات والجداول</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql01/index">عنقود قواعد البيانات والجداول</a></li><!--]--></ul><h3>معمارية العمليات والذاكرة</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql02/index">معمارية العمليات والذاكرة</a></li><!--]--></ul><h3>معالجة الاستعلامات</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql03/index">معالجة الاستعلامات</a></li><!--]--></ul><h3 class="active-chapter">مغلّف البيانات الخارجية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql04/index" class="active">مغلّف البيانات الخارجية</a></li><!--]--></ul><h3>التحكّم بالتزامن</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql05/index">التحكّم بالتزامن</a></li><!--]--></ul><h3>معالجة التفريغ (Vacuum)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql06/index">معالجة التفريغ (Vacuum)</a></li><!--]--></ul><h3>الصفوف المكتفية بالكومة (HOT)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql07/index">الصفوف المكتفية بالكومة (HOT)</a></li><!--]--></ul><h3>مدير المخزن المؤقت</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql08/index">مدير المخزن المؤقت</a></li><!--]--></ul><h3>سجل ما قبل الكتابة (WAL)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql09/index">سجل ما قبل الكتابة (WAL)</a></li><!--]--></ul><h3>النسخ الاحتياطي الأساسي والاستعادة الزمنية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql10/index">النسخ الاحتياطي الأساسي والاستعادة الزمنية</a></li><!--]--></ul><h3>النسخ المتماثل المتدفّق</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql11/index">النسخ المتماثل المتدفّق</a></li><!--]--></ul><h3>النسخ المتماثل المنطقي</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql12/index">النسخ المتماثل المنطقي</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>مغلّف البيانات الخارجية</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><h1>4.1. نظرة عامة (Overview)</h1>
+<p>لاستخدام ميزة FDW (مغلّف البيانات الخارجية)، يجب تثبيت الإضافة المناسبة، وتنفيذ أوامر الإعداد مثل <a href="https://www.postgresql.org/docs/current/static/sql-createforeigntable.html">CREATE FOREIGN TABLE</a> و<a href="https://www.postgresql.org/docs/current/static/sql-createserver.html">CREATE SERVER</a> و<a href="https://www.postgresql.org/docs/current/static/sql-createusermapping.html">CREATE USER MAPPING</a>. (لمزيد من التفاصيل، راجع <a href="https://www.postgresql.org/docs/current/static/postgres-fdw.html">التوثيق الرسمي</a>.)</p>
+<p>وبعد اكتمال التهيئة، تُستدعى الدوال المعرَّفة في الإضافة أثناء معالجة الاستعلامات للوصول إلى الجداول الخارجية.</p>
+<p>ويصف الشكل 4.2 بإيجاز عملية تنفيذ FDW في PostgreSQL.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-02.webp" alt=""></p>
+<h4>الشكل 4.2. كيفية تنفيذ مغلّفات البيانات الخارجية.</h4>
+<ul>
+<li>(1) <strong>التحليل:</strong> يُنشئ المحلّل شجرة استعلام من SQL المُدخَل.</li>
+<li>(2) <strong>الاتصال:</strong> يُنشئ المخطِّط (أو المنفِّذ) اتصالًا بالخادم البعيد.</li>
+<li>(3) <strong>تقدير الكلفة:</strong> إذا كان الخيار <a href="https://www.postgresql.org/docs/current/static/postgres-fdw.html#id-1.11.7.43.10.4">use_remote_estimate</a> مضبوطًا على ‘on’ (القيمة الافتراضية ‘off’)، ينفّذ المخطِّط أوامر EXPLAIN على الخادم البعيد لتقدير كلفة كل مسار خطة.</li>
+<li>(4) <strong>فك التحليل (Deparsing):</strong> يولّد المخطِّط عبارة SQL نصية من شجرة الخطة؛ وتُسمى هذه العملية داخليًا <strong>فك التحليل</strong> (deparsing).</li>
+<li>(5) <strong>التنفيذ:</strong> يرسل المنفِّذ عبارة SQL النصية إلى الخادم البعيد ويستقبل النتائج.</li>
+</ul>
+<p>ثم يعالج المنفِّذ البيانات المستلمة حسب الحاجة. على سبيل المثال، إذا نُفِّذ استعلام متعدد الجداول، يُجري المنفِّذ معالجة ربط بين البيانات البعيدة المستلمة وجداول محلية أو خارجية أخرى.</p>
+<p>وتُوصف تفاصيل هذه العمليات في الأقسام التالية.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>4.1.1. إنشاء شجرة استعلام</li>
+<li>4.1.2. إنشاء اتصال بالخادم البعيد</li>
+<li>4.1.3. تقدير الكلفة عبر EXPLAIN البعيد (اختياري)</li>
+<li>4.1.4. فك التحليل</li>
+<li>4.1.5. التنفيذ واسترداد النتائج</li>
+</ul>
+<h2 id="411-إنشاء-شجرة-استعلام">4.1.1. إنشاء شجرة استعلام</h2>
+<p>يُنشئ المحلّل شجرة استعلام SQL المُدخَل بالاستفادة من تعريفات الجداول الخارجية. وتُخزَّن هذه التعريفات في كتالوجي <a href="https://www.postgresql.org/docs/current/static/catalog-pg-class.html">pg_catalog.pg_class</a> و<a href="https://www.postgresql.org/docs/current/static/catalog-pg-foreign-table.html">pg_catalog.pg_foreign_table</a>، وهما يُملَآن عبر الأمرين <a href="https://www.postgresql.org/docs/current/static/sql-createforeigntable.html">CREATE FOREIGN TABLE</a> أو <a href="https://www.postgresql.org/docs/current/static/sql-importforeignschema.html">IMPORT FOREIGN SCHEMA</a>.</p>
+<h2 id="412-إنشاء-اتصال-بالخادم-البعيد">4.1.2. إنشاء اتصال بالخادم البعيد</h2>
+<p>لإنشاء اتصال، يستخدم المخطِّط (أو المنفِّذ) مكتبة خاصة بنوع قاعدة البيانات البعيدة. على سبيل المثال، يستخدم postgres_fdw مكتبة <a href="https://www.postgresql.org/docs/current/static/libpq.html">libpq</a> للاتصال بخوادم PostgreSQL البعيدة. وبالمثل، تستخدم إضافة <a href="https://github.com/EnterpriseDB/mysql_fdw">mysql_fdw</a> مكتبة libmysqlclient للاتصال بخوادم MySQL.</p>
+<p>وتُخزَّن معاملات الاتصال — بما في ذلك اسم المستخدم وعنوان IP للخادم ورقم المنفذ — في كتالوجي <a href="https://www.postgresql.org/docs/current/static/catalog-pg-user-mapping.html">pg_catalog.pg_user_mapping</a> و<a href="https://www.postgresql.org/docs/current/static/catalog-pg-foreign-server.html">pg_catalog.pg_foreign_server</a>. وتُعرَّف هذه المعاملات باستخدام الأمرين <a href="https://www.postgresql.org/docs/current/static/sql-createusermapping.html">CREATE USER MAPPING</a> و<a href="https://www.postgresql.org/docs/current/static/sql-createserver.html">CREATE SERVER</a>.</p>
+<h2 id="413-تقدير-الكلفة-عبر-explain-البعيد-اختياري">4.1.3. تقدير الكلفة عبر EXPLAIN البعيد (اختياري)</h2>
+<p>تدعم ميزة FDW في PostgreSQL الحصول على إحصاءات من الجداول الخارجية لتحسين إنشاء خطة الاستعلام. وتستخدم عدة إضافات FDW، مثل postgres_fdw وmysql_fdw وtds_fdw وjdbc2_fdw، هذه الإحصاءات.</p>
+<p>إذا ضُبِط الخيار ‘use_remote_estimate’ على ‘on’ عبر الأمر <a href="https://www.postgresql.org/docs/current/static/sql-alterserver.html">ALTER SERVER</a>، يطلب المخطِّط كلف الخطط من الخادم البعيد بتنفيذ الأمر EXPLAIN. وإلا، يعتمد المخطِّط على قيم ثابتة مضمَّنة افتراضية لتقدير الكلفة.</p>
+<pre><code>localdb=# ALTER SERVER remote_server_name OPTIONS (use_remote_estimate 'on');
+</code></pre>
+<p>وبينما تحاول عدة إضافات استخدام قيم EXPLAIN البعيد، يمتاز postgres_fdw بقدرة فريدة على عكس هذه النتائج بدقة لأن أمر EXPLAIN في PostgreSQL يوفّر كلفة البدء والكلفة الإجمالية معًا.</p>
+<p>في المقابل، غالبًا ما يفتقر مخرَج EXPLAIN من أنواع أنظمة إدارة قواعد البيانات الأخرى إلى التفصيل الكافي لمتطلبات التخطيط في PostgreSQL. على سبيل المثال، يُعيد أمر EXPLAIN في MySQL أساسًا العدد المقدَّر للصفوف، بينما يحتاج مخطِّط PostgreSQL إلى معلومات الكلفة الأشمل الموصوفة في <a href="/arabic-cs-library/book/postgres-internals/pgsql03/index">الفصل 3</a>.</p>
+<h2 id="414-فك-التحليل">4.1.4. فك التحليل</h2>
+<p>أثناء إنشاء شجرة الخطة، يُنشئ المخطِّط عبارة SQL نصية من مسارات المسح المرتبطة بالجداول الخارجية.</p>
+<p>على سبيل المثال، يوضّح الشكل 4.3 شجرة الخطة لبيان SELECT التالي:</p>
+<pre><code>localdb=# SELECT * FROM tbl_a AS a WHERE a.id &lt; 10;
+</code></pre>
+<p>وكما هو موضّح في الشكل 4.3، تخزّن عقدة ForeignScan — المرتبطة بشجرة خطة PlannedStmt — عبارة SELECT نصية.</p>
+<p>في هذه العملية، يعيد postgres_fdw بناء نص SQL من شجرة الاستعلام المنشأة أثناء التحليل النحوي والتحليل الدلالي. وتُسمى عملية إعادة البناء هذه <strong>فك التحليل</strong> (deparsing) في PostgreSQL.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-03.webp" alt=""></p>
+<h4>الشكل 4.3. مثال على شجرة الخطة التي تمسح جدولًا خارجيًا.</h4>
+<p>وبالمثل، ينشئ mysql_fdw عبارة SELECT متوافقة مع MySQL من شجرة الاستعلام. وعند استخدام <a href="https://github.com/pg-redis-fdw/redis_fdw">redis_fdw</a> أو <a href="https://github.com/nahanni/rw_redis_fdw">rw_redis_fdw</a>، تُنشئ العملية أمر <a href="https://redis.io/commands/select">SELECT</a> خاصًا بـ Redis.</p>
+<h2 id="415-التنفيذ-واسترداد-النتائج">4.1.5. التنفيذ واسترداد النتائج</h2>
+<p>بعد عملية فك التحليل، يرسل المنفِّذ عبارات SQL المُفكَّكة إلى الخادم البعيد ويستقبل النتائج.</p>
+<p>وتعتمد طريقة إرسال عبارات SQL على تنفيذ إضافة FDW المحددة. على سبيل المثال، يرسل mysql_fdw عبارات SQL دون بدء معاملة رسمية. ويوضّح الشكل 4.4 التسلسل النموذجي لتنفيذ استعلام SELECT في mysql_fdw.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-04.webp" alt=""></p>
+<h4>الشكل 4.4. التسلسل النموذجي لعبارات SQL لتنفيذ استعلام SELECT في mysql_fdw.</h4>
+<ul>
+<li>(5-1) <strong>التهيئة:</strong> تضبط SQL_MODE على ‘ANSI_QUOTES’.</li>
+<li>(5-2) <strong>الإرسال:</strong> ترسل عبارة SELECT إلى الخادم البعيد.</li>
+<li>(5-3) <strong>الاسترداد والتحويل:</strong> تستقبل النتائج من الخادم البعيد. وفي هذه المرحلة، يحوّل mysql_fdw البيانات إلى صيغة يقرأها PostgreSQL.</li>
+</ul>
+<p>وعلى جميع إضافات FDW تنفيذ ميزة تحويل لضمان توافق البيانات البعيدة مع منفِّذ PostgreSQL.</p>
+<p>** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>mysql&gt; SELECT command_type,argument FROM mysql.general_log;
++--------------+-----------------------------------------------------------------------+
+| command_type | argument                                                              |
++--------------+-----------------------------------------------------------------------+
+... snip ...
+
+| Query        | SET sql_mode='ANSI_QUOTES'                                            |
+| Prepare      | SELECT `id`, `data` FROM `localdb`.`tbl_a` WHERE ((`id` &lt; 10))        |
+| Close stmt   |                                                                       |
++--------------+-----------------------------------------------------------------------+
+</code></pre>
+<p>في المقابل، يكون تسلسل التواصل في postgres_fdw أكثر تعقيدًا لأنه يتضمّن إدارة المعاملات والمؤشرات. ويظهر التسلسل النموذجي لاستعلام SELECT في postgres_fdw في الشكل 4.5.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-05.webp" alt=""></p>
+<h4>الشكل 4.5. التسلسل النموذجي لعبارات SQL لتنفيذ استعلام SELECT في postgres_fdw.</h4>
+<ul>
+<li>(5-1) <strong>بدء المعاملة:</strong> تبدأ معاملة بعيدة. ومستوى العزل البعيد الافتراضي هو REPEATABLE READ. غير أنه إذا ضُبِط مستوى عزل المعاملة المحلية على SERIALIZABLE، تُضبَط المعاملة البعيدة أيضًا على SERIALIZABLE.</li>
+<li>(5-2)-(5-4) <strong>تعريف المؤشر:</strong> يُعرَّف مؤشر لعبارة SQL. وتُنفَّذ الاستعلامات البعيدة عمومًا عبر المؤشرات لإدارة تدفق البيانات بكفاءة.</li>
+<li>(5-5) <strong>الجلب:</strong> تُنفَّذ أوامر FETCH لاسترداد النتائج. ويُسترد افتراضيًا 100 صف لكل أمر FETCH.</li>
+<li>(5-6) <strong>الاسترداد:</strong> تُستقبل البيانات من الخادم البعيد.</li>
+<li>(5-7) <strong>إغلاق المؤشر:</strong> يُغلق المؤشر بعد استرداد جميع الصفوف المطلوبة.</li>
+<li>(5-8) <strong>الالتزام:</strong> تُلتزم المعاملة البعيدة.</li>
+</ul>
+<p>** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR SELECT id, data FROM public.tbl_a WHERE ((id &lt; 10))
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR SELECT id, data FROM public.tbl_a WHERE ((id &lt; 10))
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR SELECT id, data FROM public.tbl_a WHERE ((id &lt; 10))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<p>** مستوى العزل الافتراضي للمعاملة البعيدة.</p>
+<p>يشرح <a href="https://www.postgresql.org/docs/current/postgres-fdw.html#POSTGRES-FDW-TRANSACTION-MANAGEMENT">التوثيق الرسمي</a> سبب كون REPEATABLE READ هو مستوى العزل الافتراضي للمعاملة البعيدة.</p>
+<h1>4.2. كيفية عمل إضافة Postgres_fdw</h1>
+<p>إضافة postgres_fdw وحدة متخصصة تصونها رسميًا مجموعة تطوير PostgreSQL العالمية. وشيفرتها المصدرية مدمجة مباشرةً في شجرة الشيفرة المصدرية لـ PostgreSQL.</p>
+<p>وpostgres_fdw محلّ تحسين مستمر. ويلخّص الجدول 4.1 ملاحظات الإصدار المتعلقة بـ postgres_fdw من التوثيق الرسمي.</p>
+<table>
+<thead>
+<tr>
+<th>الإصدار</th>
+<th>سنة الإصدار</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9.6</td>
+<td>2016</td>
+<td>النظر في تنفيذ عمليات الفرز على الخادم البعيد. النظر في تنفيذ عمليات الربط على الخادم البعيد. تنفيذ UPDATE أو DELETE بالكامل على الخادم البعيد عند الإمكان. السماح بضبط حجم الجلب كخيار للخادم أو الجدول.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2017</td>
+<td>دفع الدوال التجميعية إلى الخادم البعيد عند الإمكان.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>2018</td>
+<td>السماح بدفع التجميعات إلى الجداول الخارجية التي تكون أجزاءً. السماح بدفع أوامر UPDATE وDELETE باستخدام عمليات الربط إلى الخوادم الخارجية.</td>
+</tr>
+<tr>
+<td>12</td>
+<td>2019</td>
+<td>السماح بدفع عمليات فرز ORDER BY وعبارات LIMIT في مزيد من الحالات.</td>
+</tr>
+<tr>
+<td>14</td>
+<td>2021</td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>2022</td>
+<td></td>
+</tr>
+<tr>
+<td>16</td>
+<td>2023</td>
+<td></td>
+</tr>
+<tr>
+<td>17</td>
+<td>2024</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>وبينما فصّل القسم السابق كيفية معالجة postgres_fdw للاستعلامات ذات الجدول الواحد، تصف الأقسام الفرعية التالية معالجة الاستعلامات متعددة الجداول وعمليات الفرز والدوال التجميعية.</p>
+<p>ورغم أن هذا القسم يركّز أساسًا على عبارات SELECT، فإن postgres_fdw يدعم أيضًا عمليات DML الأخرى، بما في ذلك INSERT وUPDATE وDELETE.</p>
+<h4>ملاحظة: لا يكتشف FDW في PostgreSQL الجمود</h4>
+<p>لا تدعم إضافة postgres_fdw وإطار FDW الأساسي إدارة الأقفال الموزَّعة واكتشاف الجمود الموزَّع. وبناءً على ذلك، قد يحدث جمود عبر الخوادم.</p>
+<p>على سبيل المثال، لنتأمل سيناريو يحدّث فيه العميل A جدولًا محليًا tbl_local ثم جدولًا خارجيًا tbl_remote، بينما يحدّث العميل B الجدول tbl_remote ثم الجدول tbl_local بالترتيب المعاكس.</p>
+<p>ورغم أن المعاملتين تدخلان في حالة جمود متبادل، لا يستطيع PostgreSQL اكتشاف الاعتماد عبر الحدود البعيدة. ونتيجةً لذلك، تظل المعاملتان متوقفتين إلى أجل غير مسمى ولا يمكن التزامهما.</p>
+<pre><code class="language-sql">localdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- Client A</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">BEGIN</span>;
+<span class="hljs-keyword">BEGIN</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> tbl_local <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">1</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> tbl_remote <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">1</span>
+</code></pre>
+<pre><code class="language-sql">localdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- Client B</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">BEGIN</span>;
+<span class="hljs-keyword">BEGIN</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> tbl_remote <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">1</span>
+localdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> tbl_local <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">1</span>
+</code></pre>
+<p>محتويات القسم</p>
+<ul>
+<li>4.2.1. استعلام متعدد الجداول</li>
+<li>4.2.2. عمليات الفرز</li>
+<li>4.2.3. الدوال التجميعية</li>
+</ul>
+<h2 id="421-استعلام-متعدد-الجداول">4.2.1. استعلام متعدد الجداول</h2>
+<p>لتنفيذ استعلام متعدد الجداول، يجلب postgres_fdw عادةً كل جدول خارجي باستخدام عبارة SELECT أحادية الجدول ثم يُجري الربط على الخادم المحلي.</p>
+<p>في الإصدار 9.5 والأقدم، يجلب postgres_fdw الجداول الخارجية فرادى حتى لو كانت مخزَّنة على الخادم البعيد نفسه. وتُنشأ عملية الربط وتُنفَّذ دائمًا محليًا.</p>
+<p>وفي الإصدار 9.6 والأحدث، حُسِّن postgres_fdw لدعم عمليات الربط البعيدة. وعندما تقيم الجداول الخارجية على الخادم البعيد نفسه ويكون الخيار <a href="https://www.postgresql.org/docs/current/static/postgres-fdw.html">use_remote_estimate</a> مفعَّلًا، يمكن للمخطِّط إنشاء مسار ربط يُنفَّذ مباشرةً على الخادم البعيد.</p>
+<p>وتُوصف تفاصيل التنفيذ أدناه.</p>
+<h3 id="4211-الإصدارات-95-أو-أقدم">4.2.1.1. الإصدارات 9.5 أو أقدم</h3>
+<p>فيما يلي وصف لكيفية معالجة PostgreSQL لاستعلام يربط جدولين خارجيين، ’tbl_a’ و’tbl_b’.</p>
+<pre><code>localdb=# SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id AND a.id &lt; 200;
+</code></pre>
+<p>وتظهر نتيجة الأمر EXPLAIN لهذا الاستعلام أدناه:</p>
+<pre><code> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+</code></pre>
+<pre><code>localdb=# EXPLAIN SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id AND a.id &lt; 200;
+                                  QUERY PLAN
+------------------------------------------------------------------------------
+ Merge Join  (cost=532.31..700.34 rows=10918 width=16)
+   Merge Cond: (a.id = b.id)
+   -&gt;  Sort  (cost=200.59..202.72 rows=853 width=8)
+         Sort Key: a.id
+         -&gt;  Foreign Scan on tbl_a a  (cost=100.00..159.06 rows=853 width=8)
+   -&gt;  Sort  (cost=331.72..338.12 rows=2560 width=8)
+         Sort Key: b.id
+         -&gt;  Foreign Scan on tbl_b b  (cost=100.00..186.80 rows=2560 width=8)
+(8 rows)
+</code></pre>
+<p>يشير المخرَج إلى أن المنفِّذ يختار ربطًا بالدمج، يُعالَج عبر الخطوات التالية:</p>
+<ul>
+<li><strong>السطر 8:</strong> يجلب المنفِّذ الصفوف من الجدول tbl_a باستخدام مسح خارجي.</li>
+<li><strong>السطر 6:</strong> يفرز المنفِّذ الصفوف المجلوبة من tbl_a على الخادم المحلي.</li>
+<li><strong>السطر 11:</strong> يجلب المنفِّذ الصفوف من الجدول tbl_b باستخدام مسح خارجي.</li>
+<li><strong>السطر 9:</strong> يفرز المنفِّذ الصفوف المجلوبة من tbl_b على الخادم المحلي.</li>
+<li><strong>السطر 4:</strong> ينفّذ المنفِّذ عملية ربط بالدمج على الخادم المحلي.</li>
+</ul>
+<p>ويُوصف تسلسل استرداد الصفوف أدناه (راجع الشكل 4.6):</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-06.webp" alt=""></p>
+<h4>الشكل 4.6. تسلسل عبارات SQL لتنفيذ الاستعلام متعدد الجداول في الإصدارات 9.5 أو الأقدم.</h4>
+<p>(5-1) <strong>بدء المعاملة:</strong> تبدأ معاملة بعيدة.</p>
+<p>(5-2) <strong>تعريف المؤشر (c1):</strong> يُعرَّف المؤشر c1 بعبارة SELECT التالية:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> id, data <span class="hljs-keyword">FROM</span> public.tbl_a <span class="hljs-keyword">WHERE</span> (id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>)
+</code></pre>
+<p>(5-3) <strong>الجلب (c1):</strong> تُنفَّذ أوامر FETCH لاسترداد نتائج المؤشر c1.</p>
+<p>(5-4) <strong>تعريف المؤشر (c2):</strong> يُعرَّف المؤشر c2 بعبارة SELECT التالية:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> id, data <span class="hljs-keyword">FROM</span> public.tbl_b
+</code></pre>
+<p>ويتناول ما يلي تعريف المؤشر c2. فرغم أن عامل تصفية الاستعلام الأصلي هو tbl_a.id = tbl_b.id AND tbl_a.id &lt; 200، وهو ما يستلزم منطقيًا قيد tbl_b.id &lt; 200، لا يستطيع postgres_fdw في هذه الإصدارات إجراء هذا الاستنتاج. وبناءً على ذلك، ينفّذ المنفِّذ العبارة دون عبارة WHERE وعليه أن يسترد جميع الصفوف من الجدول الخارجي tbl_b. وهذا السلوك غير كفؤ لأن بيانات غير ضرورية تُنقَل من الخادم البعيد عبر الشبكة.</p>
+<p>(5-5) <strong>الجلب (c2):</strong> تُنفَّذ أوامر FETCH لاسترداد نتائج المؤشر c2.</p>
+<p>(5-6) <strong>إغلاق المؤشر (c1):</strong> يُغلق المؤشر c1.</p>
+<p>(5-7) <strong>إغلاق المؤشر (c2):</strong> يُغلق المؤشر c2.</p>
+<p>(5-8) <strong>الالتزام:</strong> تُلتزم المعاملة البعيدة.</p>
+<p>بعد استقبال الصفوف، يفرز المنفِّذ البيانات من كل من tbl_a وtbl_b ثم يُكمل عملية الربط بالدمج باستخدام النتائج المفروزة.</p>
+<p>** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: FETCH 100 FROM c1
+LOG:  parse &lt;unnamed&gt;: DECLARE c2 CURSOR FOR
+      SELECT id, data FROM public.tbl_b
+LOG:  bind &lt;unnamed&gt;: DECLARE c2 CURSOR FOR
+      SELECT id, data FROM public.tbl_b
+LOG:  execute &lt;unnamed&gt;: DECLARE c2 CURSOR FOR
+      SELECT id, data FROM public.tbl_b
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+
+... snip
+
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: FETCH 100 FROM c2
+LOG:  statement: CLOSE c2
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<h3 id="4212-الإصدارات-96-أو-أحدث">4.2.1.2. الإصدارات 9.6 أو أحدث</h3>
+<p>إذا ضُبِط خيار use_remote_estimate على ‘on’ (القيمة الافتراضية ‘off’)، يرسل postgres_fdw عدة أوامر EXPLAIN للحصول على تقديرات الكلفة لجميع مسارات الخطط المتعلقة بالجداول الخارجية.</p>
+<p>ولتحقيق ذلك، يصدر postgres_fdw أوامر EXPLAIN لكل استعلام أحادي الجدول وكذلك لعبارات SELECT التي تمثّل عمليات ربط بعيدة محتملة.</p>
+<p>وفي هذا المثال، تُرسَل الأوامر السبعة التالية من EXPLAIN إلى الخادم البعيد. ثم يستخدم المخطِّط هذه النتائج لاختيار الخطة الأقل كلفة.</p>
+<pre><code>(1) EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+(2) EXPLAIN SELECT id, data FROM public.tbl_b
+(3) EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200)) ORDER BY id ASC NULLS LAST
+(4) EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((((SELECT null::integer)::integer) = id)) AND ((id &lt; 200))
+(5) EXPLAIN SELECT id, data FROM public.tbl_b ORDER BY id ASC NULLS LAST
+(6) EXPLAIN SELECT id, data FROM public.tbl_b WHERE ((((SELECT null::integer)::integer) = id))
+(7) EXPLAIN SELECT r1.id, r1.data, r2.id, r2.data FROM (public.tbl_a r1 INNER JOIN public.tbl_b r2 ON (((r1.id = r2.id)) AND ((r1.id &lt; 200))))
+</code></pre>
+<p>ويُظهر EXPLAIN المحلي الخطة التي اختارها المخطِّط.</p>
+<pre><code>localdb=# EXPLAIN SELECT * FROM tbl_a AS a, tbl_b AS b WHERE a.id = b.id AND a.id &lt; 200;
+                        QUERY PLAN
+-----------------------------------------------------------
+ Foreign Scan  (cost=134.35..244.45 rows=80 width=16)
+   Relations: (public.tbl_a a) INNER JOIN (public.tbl_b b)
+(2 rows)
+</code></pre>
+<p>ويؤكد المخرَج أن المخطِّط يختار ربطًا داخليًا يُعالَج على الخادم البعيد، ما يحسّن الكفاءة تحسينًا كبيرًا بتقليل نقل البيانات.</p>
+<p>ويُوصف تسلسل العمليات التي ينفّذها postgres_fdw أدناه (راجع الشكل 4.7):</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql04-fig-4-07.webp" alt=""></p>
+<h4>الشكل 4.7. تسلسل عبارات SQL لتنفيذ عملية الربط البعيد في الإصدارات 9.6 أو الأحدث.</h4>
+<ul>
+<li>(3-1) <strong>بدء المعاملة:</strong> تبدأ معاملة بعيدة.</li>
+<li>(3-2) <strong>تقدير الكلفة:</strong> تُنفَّذ أوامر EXPLAIN لتقدير كلفة كل مسار خطة محتمل.</li>
+</ul>
+<p>وفي هذه الحالة تحديدًا، تُنفَّذ سبعة أوامر EXPLAIN. ثم يحدّد المخطِّط استعلام SELECT الأقل كلفة بناءً على القيم المُعادة.</p>
+<p>(5-1) <strong>تعريف المؤشر (c1):</strong> يُعرَّف المؤشر c1 بعبارة الربط البعيد التالية:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> r1.id, r1.data, r2.id, r2.data <span class="hljs-keyword">FROM</span> (public.tbl_a r1 <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> public.tbl_b r2
+  <span class="hljs-keyword">ON</span> (((r1.id <span class="hljs-operator">=</span> r2.id)) <span class="hljs-keyword">AND</span> ((r1.id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>))))
+</code></pre>
+<p>(5-2) <strong>استرداد النتائج:</strong> تُستقبل النتائج المربوطة من الخادم البعيد. (5-3) <strong>إغلاق المؤشر (c1):</strong> يُغلق المؤشر c1. (5-4) <strong>الالتزام:</strong> تُلتزم المعاملة البعيدة. ** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_b
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200)) ORDER BY id ASC NULLS LAST
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_a WHERE ((((SELECT null::integer)::integer) = id)) AND ((id &lt; 200))
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_b ORDER BY id ASC NULLS LAST
+LOG:  statement: EXPLAIN SELECT id, data FROM public.tbl_b WHERE ((((SELECT null::integer)::integer) = id))
+LOG:  statement: EXPLAIN SELECT r1.id, r1.data, r2.id, r2.data FROM (public.tbl_a r1 INNER JOIN public.tbl_b r2 ON (((r1.id = r2.id)) AND ((r1.id &lt; 200))))
+LOG:  parse: DECLARE c1 CURSOR FOR
+	   SELECT r1.id, r1.data, r2.id, r2.data FROM (public.tbl_a r1 INNER JOIN public.tbl_b r2 ON (((r1.id = r2.id)) AND ((r1.id &lt; 200))))
+LOG:  bind: DECLARE c1 CURSOR FOR
+	   SELECT r1.id, r1.data, r2.id, r2.data FROM (public.tbl_a r1 INNER JOIN public.tbl_b r2 ON (((r1.id = r2.id)) AND ((r1.id &lt; 200))))
+LOG:  execute: DECLARE c1 CURSOR FOR
+	   SELECT r1.id, r1.data, r2.id, r2.data FROM (public.tbl_a r1 INNER JOIN public.tbl_b r2 ON (((r1.id = r2.id)) AND ((r1.id &lt; 200))))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<p>ويجدر التنبيه إلى أنه إذا بقي خيار use_remote_estimate على ‘off’، فنادرًا ما يُختار استعلام ربط بعيد. لأن المخطِّط، دون تغذية راجعة من الخادم البعيد، يقدّر كلفة عمليات الربط البعيدة بقيمة ثابتة مضمَّنة كبيرة جدًا، ما يجعل عمليات الربط المحلية تبدو أفضل بالمقارنة.</p>
+<h2 id="422-عمليات-الفرز">4.2.2. عمليات الفرز</h2>
+<h3 id="4221-الإصدارات-95-أو-أقدم">4.2.2.1. الإصدارات 9.5 أو أقدم</h3>
+<p>في هذه الإصدارات، تُعالَج عمليات الفرز — مثل تلك التي تُشغِّلها عبارة ORDER BY — حصريًا على الخادم المحلي. وبناءً على ذلك، على الخادم المحلي استرداد جميع الصفوف الهدف من الخادم البعيد قبل أن تبدأ عملية الفرز.</p>
+<p>ويوضّح مخرَج EXPLAIN التالي كيفية معالجة استعلام بسيط يحتوي على عبارة ORDER BY:</p>
+<pre><code>1
+2
+3
+4
+5
+6
+7
+</code></pre>
+<pre><code>localdb=# EXPLAIN SELECT * FROM tbl_a AS a WHERE a.id &lt; 200 ORDER BY a.id;
+                              QUERY PLAN
+-----------------------------------------------------------------------
+ Sort  (cost=200.59..202.72 rows=853 width=8)
+   Sort Key: id
+   -&gt;  Foreign Scan on tbl_a a  (cost=100.00..159.06 rows=853 width=8)
+(3 rows)
+</code></pre>
+<p><strong>السطر 6:</strong> يرسل المنفِّذ الاستعلام التالي إلى الخادم البعيد ويسترد النتائج:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> id, data <span class="hljs-keyword">FROM</span> public.tbl_a <span class="hljs-keyword">WHERE</span> ((id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>))
+</code></pre>
+<p><strong>السطر 4:</strong> ينفّذ المنفِّذ عملية الفرز على الصفوف المستردة من tbl_a محليًا. ** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<h3 id="4222-الإصدارات-96-أو-أحدث">4.2.2.2. الإصدارات 9.6 أو أحدث</h3>
+<p>بدءًا من الإصدار 9.6، يمكن لـ postgres_fdw تنفيذ عبارات SELECT ذات عبارة ORDER BY مباشرةً على الخادم البعيد عند الإمكان.</p>
+<pre><code>1
+2
+3
+4
+5
+</code></pre>
+<pre><code>localdb=# EXPLAIN SELECT * FROM tbl_a AS a WHERE a.id &lt; 200 ORDER BY a.id;
+                           QUERY PLAN
+-----------------------------------------------------------------
+ Foreign Scan on tbl_a a  (cost=100.00..167.46 rows=853 width=8)
+(1 row)
+</code></pre>
+<p><strong>السطر 4:</strong> يرسل المنفِّذ استعلامًا يحتوي على عبارة ORDER BY إلى الخادم البعيد. والنتائج المستردة مفروزة بالفعل، ما يغني عن الفرز المحلي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> id, data <span class="hljs-keyword">FROM</span> public.tbl_a <span class="hljs-keyword">WHERE</span> ((id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>)) <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> id <span class="hljs-keyword">ASC</span> <span class="hljs-keyword">NULLS LAST</span>
+</code></pre>
+<p>** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200)) ORDER BY id ASC NULLS LAST
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200)) ORDER BY id ASC NULLS LAST
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT id, data FROM public.tbl_a WHERE ((id &lt; 200)) ORDER BY id ASC NULLS LAST
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<p>ويقلّل هذا التحسين عبء العمل الحسابي على الخادم المحلي وقد يقلّل زمن التنفيذ الإجمالي تقليلًا كبيرًا.</p>
+<h2 id="423-الدوال-التجميعية">4.2.3. الدوال التجميعية</h2>
+<h3 id="4231-الإصدارات-96-أو-أقدم">4.2.3.1. الإصدارات 9.6 أو أقدم</h3>
+<p>على غرار عمليات الفرز الموصوفة في القسم الفرعي السابق، تُعالَج الدوال التجميعية مثل AVG() وCOUNT() <strong>على الخادم المحلي</strong>. وتتكوّن العملية من الخطوات التالية:</p>
+<pre><code>1
+2
+3
+4
+5
+6
+</code></pre>
+<pre><code>localdb=# EXPLAIN SELECT AVG(data) FROM tbl_a AS a WHERE a.id &lt; 200;
+                              QUERY PLAN
+-----------------------------------------------------------------------
+ Aggregate  (cost=168.50..168.51 rows=1 width=4)
+   -&gt;  Foreign Scan on tbl_a a  (cost=100.00..166.06 rows=975 width=4)
+(2 rows)
+</code></pre>
+<p><strong>السطر 5:</strong> يسترد المنفِّذ جميع الصفوف الهدف من الخادم البعيد بإرسال الاستعلام التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> id, data <span class="hljs-keyword">FROM</span> public.tbl_a <span class="hljs-keyword">WHERE</span> ((id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>))
+</code></pre>
+<p><strong>السطر 4:</strong> يحسب المنفِّذ متوسط الصفوف المستردة على الخادم المحلي. ** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+      SELECT data FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<p>وهذه المقاربة غير كفؤة عند التعامل مع مجموعات بيانات كبيرة، لأن نقل حجم كبير من الصفوف يستهلك عرض نطاق شبكيًا كبيرًا ويزيد زمن التنفيذ.</p>
+<h3 id="4232-الإصدارات-10-أو-أحدث">4.2.3.2. الإصدارات 10 أو أحدث</h3>
+<p>بدءًا من الإصدار 10، يمكن لـ postgres_fdw تنفيذ عبارات SELECT التي تحتوي على دوال تجميعية مباشرةً <strong>على الخادم البعيد</strong> عند الإمكان.</p>
+<pre><code>1
+2
+3
+4
+5
+6
+</code></pre>
+<pre><code>localdb=# EXPLAIN SELECT AVG(data) FROM tbl_a AS a WHERE a.id &lt; 200;
+                     QUERY PLAN
+-----------------------------------------------------
+ Foreign Scan  (cost=102.44..149.03 rows=1 width=32)
+   Relations: Aggregate on (public.tbl_a a)
+(2 rows)
+</code></pre>
+<p><strong>السطر 4:</strong> يرسل المنفِّذ استعلامًا يحتوي على الدالة AVG() إلى الخادم البعيد ويسترد النتيجة النهائية فقط.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">avg</span>(data) <span class="hljs-keyword">FROM</span> public.tbl_a <span class="hljs-keyword">WHERE</span> ((id <span class="hljs-operator">&lt;</span> <span class="hljs-number">200</span>))
+</code></pre>
+<p>** ** السجل الفعلي للخادم البعيد</p>
+<pre><code>LOG:  statement: START TRANSACTION ISOLATION LEVEL REPEATABLE READ
+LOG:  parse &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT avg(data) FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  bind &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT avg(data) FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  execute &lt;unnamed&gt;: DECLARE c1 CURSOR FOR
+	   SELECT avg(data) FROM public.tbl_a WHERE ((id &lt; 200))
+LOG:  statement: FETCH 100 FROM c1
+LOG:  statement: CLOSE c1
+LOG:  statement: COMMIT TRANSACTION
+</code></pre>
+<p>وهذه العملية أكثر كفاءة بكثير لأن الخادم البعيد يُجري الحساب ويرسل صفًا واحدًا فقط كنتيجة، ما يقلّل حركة الشبكة إلى الحد الأدنى.</p>
+<p>** الدفع للأسفل (Push-Down)</p>
+<p><strong>الدفع للأسفل</strong> هو عملية تفويض مهام، مثل التجميع أو الفرز، إلى الخادم البعيد.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql03/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">معالجة الاستعلامات</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql05/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التحكّم بالتزامن</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_7ry6u = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.DsBhiNuk.js"),
+						import("../../../../_app/immutable/entry/app.DWle-4Kv.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

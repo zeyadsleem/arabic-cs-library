@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.DsBhiNuk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DHfh3JdB.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVFrQua3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DWle-4Kv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.C6zqZvZQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwCc9Pmq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BCdrqkTo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/InF3o_3c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D4zxZeCu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/iAJklL8s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الصفوف المكتفية بالكومة (HOT) — الصفوف المكتفية بالكومة (HOT)"/><!----><title>الصفوف المكتفية بالكومة (HOT) | داخل PostgreSQL</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/postgres-internals">داخل PostgreSQL</a> <span class="reader-bar__chapter">› الصفوف المكتفية بالكومة (HOT)</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 7 من 12">7 / 12</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql06/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql08/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>عنقود قواعد البيانات والجداول</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql01/index">عنقود قواعد البيانات والجداول</a></li><!--]--></ul><h3>معمارية العمليات والذاكرة</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql02/index">معمارية العمليات والذاكرة</a></li><!--]--></ul><h3>معالجة الاستعلامات</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql03/index">معالجة الاستعلامات</a></li><!--]--></ul><h3>مغلّف البيانات الخارجية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql04/index">مغلّف البيانات الخارجية</a></li><!--]--></ul><h3>التحكّم بالتزامن</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql05/index">التحكّم بالتزامن</a></li><!--]--></ul><h3>معالجة التفريغ (Vacuum)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql06/index">معالجة التفريغ (Vacuum)</a></li><!--]--></ul><h3 class="active-chapter">الصفوف المكتفية بالكومة (HOT)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql07/index" class="active">الصفوف المكتفية بالكومة (HOT)</a></li><!--]--></ul><h3>مدير المخزن المؤقت</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql08/index">مدير المخزن المؤقت</a></li><!--]--></ul><h3>سجل ما قبل الكتابة (WAL)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql09/index">سجل ما قبل الكتابة (WAL)</a></li><!--]--></ul><h3>النسخ الاحتياطي الأساسي والاستعادة الزمنية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql10/index">النسخ الاحتياطي الأساسي والاستعادة الزمنية</a></li><!--]--></ul><h3>النسخ المتماثل المتدفّق</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql11/index">النسخ المتماثل المتدفّق</a></li><!--]--></ul><h3>النسخ المتماثل المنطقي</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql12/index">النسخ المتماثل المنطقي</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>الصفوف المكتفية بالكومة (HOT)</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#711-تحديث-صف-بدون-hot">7.1.1. تحديث صف بدون HOT</a></li><li><a href="#712-كيف-تعمل-hot">7.1.2. كيف تعمل HOT</a></li><li><a href="#713-الحالات-التي-لا-تتوفر-فيها-hot">7.1.3. الحالات التي لا تتوفر فيها HOT</a></li><!--]--></ul></nav><!--]--> <div class="reader-content"><!----><h1>7.1. الصفوف المكتفية بالكومة (Heap Only Tuple, HOT)</h1>
+<p>نفّذ PostgreSQL 8.3 (عام 2008) تقنية الصفوف المكتفية بالكومة (HOT) لاستخدام صفحات الفهرس والجدول معاً بفعالية عندما يُخزَّن الصف المحدَّث في الصفحة نفسها التي يوجد فيها الصف القديم. كما تقلّل HOT الحاجة إلى معالجة VACUUM.</p>
+<p>ولأن ملف <a href="https://github.com/postgres/postgres/blob/master/src/backend/access/heap/README.HOT">README.HOT</a> في دليل الشيفرة المصدرية يصف HOT بالتفصيل، لا يقدّم هذا الفصل سوى مقدمة موجزة.</p>
+<p>يصف القسم 7.1.1 كيف يحدّث PostgreSQL صفاً بدون HOT لتوضيح المشكلات التي تحلّها HOT. ثم يصف القسم 7.1.2 كيفية عمل HOT.</p>
+<h2 id="711-تحديث-صف-بدون-hot">7.1.1. تحديث صف بدون HOT</h2>
+<p>افترض أن الجدول ’tbl’ له عمودان: ‘id’ (المفتاح الأساسي) و‘data’.</p>
+<pre><code>testdb=# \d tbl
+                Table &amp;#34;public.tbl&amp;#34;
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ id     | integer |           | not null |
+ data   | text    |           |          |
+Indexes:
+    &amp;#34;tbl_pkey&amp;#34; PRIMARY KEY, btree (id)
+</code></pre>
+<p>يحتوي الجدول ’tbl’ على 1,000 صف. ويُخزَّن الصف الأخير (id = 1000) في الصفحة الخامسة من الجدول. ويشير صف الفهرس المقابل (key = 1000) إلى هذا الصف بمعرّف TID هو ‘(5, 1)’. انظر الشكل 7.1(أ).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-01.webp" alt=""></p>
+<h4>الشكل 7.1. تحديث صف بدون HOT</h4>
+<p>لنتأمّل كيف يُحدَّث الصف الأخير بدون HOT.</p>
+<pre><code>testdb=# UPDATE tbl SET data = 'B' WHERE id = 1000;
+</code></pre>
+<p>في هذه الحالة، يُدرج PostgreSQL كلاً من صف الجدول الجديد وصف فهرس جديد. انظر الشكل 7.1(ب).</p>
+<p>يستهلك إدراج صفوف الفهرس مساحة صفحات الفهرس. علاوةً على ذلك، فإن كلفة إدراج صفوف الفهرس وتفريغها مرتفعة. وتقلّل HOT من تأثير هذه المشكلات.</p>
+<h2 id="712-كيف-تعمل-hot">7.1.2. كيف تعمل HOT</h2>
+<p>عند تحديث صف باستخدام HOT، لا يُدرج PostgreSQL صف فهرس جديداً إذا كان الصف المحدَّث مخزَّناً في صفحة الجدول نفسها التي يوجد فيها الصف القديم. وبدلاً من ذلك، يضبط بتّة HEAP_HOT_UPDATED في الحقل t_informask2 الخاص بالصف القديم وبتّة HEAP_ONLY_TUPLE في الصف الجديد. انظر الشكلين 7.2 و7.3.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-02.webp" alt=""></p>
+<h4>الشكل 7.2. تحديث صف باستخدام HOT</h4>
+<p>فمثلاً، في هذه الحالة، يُوسَم Tuple_1 بـ HEAP_HOT_UPDATED ويُوسَم Tuple_2 بـ HEAP_ONLY_TUPLE.</p>
+<p>بالإضافة إلى ذلك، يستخدم PostgreSQL هاتين البتّتين بصرف النظر عن تنفيذ عمليتي <strong>التشذيب (pruning)</strong> و<strong>إزالة التشظّي (defragmentation)</strong> (الموضّحتين أدناه).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-03.webp" alt=""></p>
+<h4>الشكل 7.3. بتّتا HEAP_HOT_UPDATED وHEAP_ONLY_TUPLE</h4>
+<p>فيما يلي وصف لكيفية وصول PostgreSQL إلى الصفوف المحدَّثة عبر مسح فهرس مباشرةً بعد تحديث HOT. انظر الشكل 7.4(أ).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-04.webp" alt=""></p>
+<h4>الشكل 7.4. تشذيب مؤشرات الأسطر</h4>
+<ul>
+<li>(1) إيجاد صف الفهرس الذي يشير إلى الصف الهدف.</li>
+<li>(2) الوصول إلى مؤشر السطر [1] الذي يشير إليه صف الفهرس.</li>
+<li>(3) قراءة Tuple_1.</li>
+<li>(4) قراءة Tuple_2 عبر t_ctid الخاص بـ Tuple_1.</li>
+</ul>
+<p>يقرأ PostgreSQL الصفين معاً ويحدّد أيّهما مرئي باستخدام آلية التحكّم بالتزامن الموضّحة في <a href="/arabic-cs-library/book/postgres-internals/pgsql05/index">الفصل 5</a>.</p>
+<p>غير أن مشكلة تنشأ إذا أُزيلت الصفوف الميتة من صفحات الجدول. ففي الشكل 7.4(أ)، إذا أُزيل Tuple_1 بوصفه صفاً ميتاً، لا يستطيع الفهرس الوصول إلى Tuple_2.</p>
+<p>ولحلّ ذلك، يعيد PostgreSQL توجيه مؤشر السطر الخاص بالصف القديم إلى مؤشر السطر الخاص بالصف الجديد في الوقت المناسب. وتُسمى هذه العملية <strong>التشذيب (pruning)</strong>. ويوضّح الشكل 7.4(ب) كيف يصل PostgreSQL إلى الصفوف بعد التشذيب.</p>
+<ul>
+<li>(1) إيجاد صف الفهرس.</li>
+<li>(2) الوصول إلى مؤشر السطر [1] الذي يشير إليه صف الفهرس.</li>
+<li>(3) الوصول إلى مؤشر السطر [2] عبر مؤشر السطر المعاد توجيهه.</li>
+<li>(4) قراءة Tuple_2 الذي يشير إليه مؤشر السطر [2].</li>
+</ul>
+<p>يُنفَّذ التشذيب، إن أمكن، أثناء أوامر SQL مثل SELECT وUPDATE وINSERT وDELETE. ولا يصف هذا التوثيق التوقيت الدقيق للتنفيذ لأنه معقّد؛ والتفاصيل في ملف <a href="https://github.com/postgres/postgres/blob/master/src/backend/access/heap/README.HOT">README.HOT</a>.</p>
+<p>كما يزيل PostgreSQL الصفوف الميتة في الوقت المناسب، على غرار عملية التشذيب. وتُسمى هذه العملية <strong>إزالة التشظّي (defragmentation)</strong>. ويوضّح الشكل 7.5 إزالة التشظّي بواسطة HOT.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-05.webp" alt=""></p>
+<h4>الشكل 7.5. إزالة تشظّي الصفوف الميتة</h4>
+<p>كلفة إزالة التشظّي أقل من كلفة معالجة VACUUM العادية لأنها لا تتضمن إزالة صفوف الفهرس.</p>
+<p>وبذلك تقلّل HOT استهلاك الصفحات في الفهارس والجداول معاً. كما تقلّل عدد الصفوف التي يجب على VACUUM معالجتها. ونتيجة لذلك، تحسّن HOT الأداء بتقليل عمليات إدراج صفوف الفهرس والحاجة إلى معالجة VACUUM.</p>
+<h2 id="713-الحالات-التي-لا-تتوفر-فيها-hot">7.1.3. الحالات التي لا تتوفر فيها HOT</h2>
+<p>لفهم HOT بوضوح، تُعرض فيما يلي حالتان لا يمكن فيهما استخدام HOT:</p>
+<ul>
+<li>(أ) عندما يُخزَّن الصف المحدَّث في صفحة مختلفة عن الصف القديم، يجب على PostgreSQL إدراج صف فهرس جديد. انظر الشكل 7.6(أ).</li>
+<li>(ب) عندما تُحدَّث قيمة مفتاح صف الفهرس، يجب على PostgreSQL إدراج صف فهرس جديد. انظر الشكل 7.6(ب).</li>
+</ul>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-06.webp" alt=""></p>
+<h4>الشكل 7.6. الحالات التي لا تتوفر فيها HOT.</h4>
+<h1>7.2. المسح بالفهرس فقط (Index-Only Scans)</h1>
+<p>يقلّل المسح بالفهرس فقط (index-only scans) (ويُسمى غالباً الوصول بالفهرس فقط) كلفة الإدخال/الإخراج باستخدام مفتاح الفهرس مباشرةً دون الوصول إلى صفحات الجدول. ويحدث ذلك عندما يشمل مفتاح الفهرس جميع المدخلات المستهدفة في أمر SELECT. وتوفّر هذه التقنية جميع أنظمة RDBMS التجارية تقريباً، مثل DB2 وOracle. وقد قدّم PostgreSQL هذا الخيار في الإصدار 9.2 (عام 2012).</p>
+<p>يصف المثال التالي كيفية عمل المسح بالفهرس فقط في PostgreSQL.</p>
+<p>يعتمد المثال على الافتراضات التالية:</p>
+<p><strong>تعريف الجدول:</strong> يُعرَّف الجدول ’tbl’ كما يلي:</p>
+<pre><code>testdb=# \d tbl
+      Table &amp;#34;public.tbl&amp;#34;
+ Column |  Type   | Modifiers
+--------+---------+-----------
+ id     | integer |
+ name   | text    |
+ data   | text    |
+Indexes:
+    &amp;#34;tbl_idx&amp;#34; btree (id, name)
+</code></pre>
+<p><strong>الفهرس:</strong> يتكوّن الفهرس ’tbl_idx’ من عمودين: ‘id’ و’name’.</p>
+<p><strong>الصفوف:</strong> يحتوي الجدول ’tbl’ على الصفوف التالية:</p>
+<ul>
+<li>Tuple_18: المعرّف 18، والاسم ‘Queen’؛ مخزَّن في الصفحة 0.</li>
+<li>Tuple_19: المعرّف 19، والاسم ‘BOSTON’؛ مخزَّن في الصفحة 1.</li>
+</ul>
+<p><strong>الظهور:</strong> جميع الصفوف في الصفحة 0 مرئية؛ أما الصفوف في الصفحة 1 فليست كذلك. ويُسجَّل ظهور كل صفحة في خريطة الظهور (VM) المقابلة. (راجع القسم 6.2 لتفاصيل VM.)</p>
+<p>يوضّح أمر SELECT التالي كيفية قراءة PostgreSQL لهذه الصفوف:</p>
+<pre><code>testdb=# SELECT id, name FROM tbl WHERE id BETWEEN 18 and 19;
+ id |  name
+----+--------
+ 18 | Queen
+ 19 | Boston
+(2 rows)
+</code></pre>
+<p>يسترجع هذا الاستعلام بيانات من العمودين ‘id’ و’name’. ولأن الفهرس ’tbl_idx’ يحتوي على العمودين معاً، يبدو الوصول إلى صفحات الجدول غير ضروري في البداية.</p>
+<p>غير أنه من حيث المبدأ يجب على PostgreSQL فحص ظهور الصفوف. فصفوف الفهرس لا تحتوي على معلومات المعاملات، مثل الحقلين t_xmin وt_xmax الموجودين في صفوف الكومة (الموضّحين في القسم 5.2). وبالتالي يجب على PostgreSQL عادةً الوصول إلى بيانات الجدول للتحقق من ظهور صفوف الفهرس.</p>
+<p>ولحلّ هذه المعضلة، يستخدم PostgreSQL خريطة الظهور. فإذا كانت جميع الصفوف في صفحة مرئية، يستخدم PostgreSQL مفتاح صف الفهرس ويتخطّى الوصول إلى صفحة الجدول. وإلا فإنه يقرأ صف الجدول لفحص الظهور، وهذه هي العملية المعتادة.</p>
+<p>في هذا المثال، لا يصل PostgreSQL إلى Tuple_18 لأن الصفحة 0 مُعلَّمة بأنها مرئية في VM. وفي المقابل، يجب عليه الوصول إلى Tuple_19 للتعامل مع التحكّم بالتزامن لأن الصفحة 1 ليست مُعلَّمة بأنها مرئية بالكامل. انظر الشكل 7.7.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql07-fig-7-07.webp" alt=""></p>
+<h4>الشكل 7.7. كيف يعمل المسح بالفهرس فقط</h4>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql06/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">معالجة التفريغ (Vacuum)</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql08/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مدير المخزن المؤقت</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_7ry6u = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.DsBhiNuk.js"),
+						import("../../../../_app/immutable/entry/app.DWle-4Kv.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

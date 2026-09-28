@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.DsBhiNuk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DHfh3JdB.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVFrQua3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DWle-4Kv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.C6zqZvZQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CwCc9Pmq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BCdrqkTo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/InF3o_3c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D4zxZeCu.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/iAJklL8s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="النسخ المتماثل المتدفّق — النسخ المتماثل المتدفّق"/><!----><title>النسخ المتماثل المتدفّق | داخل PostgreSQL</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/postgres-internals">داخل PostgreSQL</a> <span class="reader-bar__chapter">› النسخ المتماثل المتدفّق</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 11 من 12">11 / 12</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql10/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql12/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>عنقود قواعد البيانات والجداول</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql01/index">عنقود قواعد البيانات والجداول</a></li><!--]--></ul><h3>معمارية العمليات والذاكرة</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql02/index">معمارية العمليات والذاكرة</a></li><!--]--></ul><h3>معالجة الاستعلامات</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql03/index">معالجة الاستعلامات</a></li><!--]--></ul><h3>مغلّف البيانات الخارجية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql04/index">مغلّف البيانات الخارجية</a></li><!--]--></ul><h3>التحكّم بالتزامن</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql05/index">التحكّم بالتزامن</a></li><!--]--></ul><h3>معالجة التفريغ (Vacuum)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql06/index">معالجة التفريغ (Vacuum)</a></li><!--]--></ul><h3>الصفوف المكتفية بالكومة (HOT)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql07/index">الصفوف المكتفية بالكومة (HOT)</a></li><!--]--></ul><h3>مدير المخزن المؤقت</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql08/index">مدير المخزن المؤقت</a></li><!--]--></ul><h3>سجل ما قبل الكتابة (WAL)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql09/index">سجل ما قبل الكتابة (WAL)</a></li><!--]--></ul><h3>النسخ الاحتياطي الأساسي والاستعادة الزمنية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql10/index">النسخ الاحتياطي الأساسي والاستعادة الزمنية</a></li><!--]--></ul><h3 class="active-chapter">النسخ المتماثل المتدفّق</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql11/index" class="active">النسخ المتماثل المتدفّق</a></li><!--]--></ul><h3>النسخ المتماثل المنطقي</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql12/index">النسخ المتماثل المنطقي</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>النسخ المتماثل المتدفّق</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><h1>11.1. بدء النسخ المتماثل المتدفّق</h1>
+<p>في النسخ المتماثل المتدفّق، تعمل ثلاثة أنواع من العمليات تعاونيًا:</p>
+<ul>
+<li>عملية <strong>walsender</strong> على الخادم الأساسي ترسل بيانات WAL إلى الخادم الاحتياطي.</li>
+<li>عملية <strong>walreceiver</strong> على الخادم الاحتياطي تستقبل بيانات WAL وتعيد تنفيذها.</li>
+<li>عملية <strong>startup</strong> على الخادم الاحتياطي تبدأ عملية walreceiver.</li>
+</ul>
+<p>تتواصل عمليتا walsender وwalreceiver عبر اتصال TCP واحد.</p>
+<p>يوضّح الشكل 11.1 تسلسل بدء النسخ المتماثل المتدفّق:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-01.webp" alt=""></p>
+<h4>الشكل 11.1. تسلسل بدء النسخ المتماثل المتدفّق.</h4>
+<ul>
+<li>(1) تشغيل الخادمين الأساسي والاحتياطي.</li>
+<li>(2) يبدأ الخادم الاحتياطي عملية startup.</li>
+<li>(3) يبدأ الخادم الاحتياطي عملية walreceiver.</li>
+<li>(4) ترسل عملية walreceiver طلب اتصال إلى الخادم الأساسي. وإذا لم يكن الخادم الأساسي يعمل، ترسل عملية walreceiver هذه الطلبات دوريًا.</li>
+<li>(5) عندما يستقبل الخادم الأساسي طلب اتصال، يبدأ عملية walsender. ثم يُنشأ اتصال TCP بين walsender وwalreceiver.</li>
+<li>(6) ترسل عملية walreceiver أحدث LSN (رقم تسلسل السجل) لتجمّع قاعدة البيانات على الخادم الاحتياطي. وتُعرف هذه المبادلة بـ<strong>المصافحة</strong> (handshaking).</li>
+<li>(7) إذا كان أحدث LSN على الخادم الاحتياطي أقل من أحدث LSN على الخادم الأساسي (LSN الاحتياطي &lt; LSN الأساسي)، يرسل walsender بيانات WAL من LSN الأول إلى LSN الثاني. ويوفّر الدليل الفرعي pg_wal على الخادم الأساسي (أو pg_xlog في الإصدار 9.6 أو أقدم) قطع WAL هذه. ثم يعيد الخادم الاحتياطي تنفيذ بيانات WAL المستلمة. وفي هذه المرحلة، يلحق الخادم الاحتياطي بالخادم الأساسي، وهو ما يُسمى <strong>اللحاق</strong> (catch-up).</li>
+<li>(8) يبدأ النسخ المتماثل المتدفّق بالعمل.</li>
+</ul>
+<p>تحتفظ كل عملية walsender بحالة تقابل مرحلة عمل walreceiver أو التطبيق المتصل. والحالات الممكنة لعملية walsender هي:</p>
+<ul>
+<li><strong>start-up</strong> - من بداية walsender حتى نهاية المصافحة. انظر الشكلين 11.1(5)-(6).</li>
+<li><strong>catch-up</strong> - خلال مرحلة اللحاق. انظر الشكل 11.1(7).</li>
+<li><strong>streaming</strong> - بينما يعمل النسخ المتماثل المتدفّق. انظر الشكل 11.1(8).</li>
+<li><strong>backup</strong> - أثناء إرسال ملفات تجمّع قاعدة البيانات بأكمله لأدوات النسخ الاحتياطي مثل أداة <a href="http://www.postgresql.org/docs/current/static/app-pgbasebackup.html">pg_basebackup</a>.</li>
+</ul>
+<p>يعرض العرض <a href="https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-VIEW">pg_stat_replication</a> حالة جميع عمليات walsender قيد التشغيل. وفيما يلي مثال:</p>
+<pre><code>testdb=# SELECT application_name,state FROM pg_stat_replication;
+ application_name |   state
+------------------+-----------
+ standby1         | streaming
+ standby2         | streaming
+ pg_basebackup    | backup
+(3 rows)
+</code></pre>
+<p>كما هو موضّح أعلاه، تعمل عمليتا walsender لإرسال بيانات WAL لخادمي النسخ الاحتياطي المتصلين، وتعمل عملية أخرى لإرسال جميع ملفات تجمّع قاعدة البيانات من أجل أداة <a href="http://www.postgresql.org/docs/current/static/app-pgbasebackup.html">pg_basebackup</a>.</p>
+<h2 id="1111-ماذا-يحدث-عندما-يعاد-تشغيل-الخادم-الاحتياطي-بعد-توقف-طويل">11.1.1. ماذا يحدث عندما يُعاد تشغيل الخادم الاحتياطي بعد توقّف طويل؟</h2>
+<p>في الإصدار 9.3 أو أقدم، لا يستطيع الخادم الاحتياطي اللحاق بالخادم الأساسي إذا كانت قطع WAL المطلوبة قد أُعيد تدويرها بالفعل على الخادم الأساسي.</p>
+<p>ولا يوجد حل موثوق لهذه المشكلة سوى ضبط قيمة كبيرة لمعلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a> (أو wal_keep_segments في الإصدار 12 أو أقدم). وتقلّل هذه المعلمة احتمال حدوث المشكلة، لكنها تبقى حلًا مؤقتًا.</p>
+<p>وفي الإصدار 9.4 أو أحدث، يمكن لـ<strong>فتحات النسخ</strong> (replication slots) منع هذه المشكلة. وفتحة النسخ ميزة توسّع مرونة إرسال بيانات WAL. راجع القسم 11.4 للتفاصيل.</p>
+<h1>11.2. كيفية تنفيذ النسخ المتماثل المتدفّق</h1>
+<p>يتضمّن النسخ المتماثل المتدفّق جانبين رئيسيين: شحن السجلات ومزامنة قاعدة البيانات.</p>
+<ul>
+<li><strong>شحن السجلات:</strong> هذه هي الآلية الجوهرية التي يرسل فيها الخادم الأساسي بيانات WAL باستمرار إلى خوادم النسخ الاحتياطي المتصلة فور كتابتها.</li>
+<li><strong>مزامنة قاعدة البيانات:</strong> هذه خاصة بالنسخ المتماثل المتزامن، حيث ينسّق الخادم الأساسي مع كل خادم احتياطي لضمان بقاء تجمّعات قواعد بياناتها متزامنة.</li>
+</ul>
+<p>يتطلب الفهم الدقيق للنسخ المتماثل المتدفّق معرفة كيف يدير خادم أساسي واحد خوادم احتياطية متعددة. ويبدأ هذا القسم بحالة بسيطة (نظام بخادم أساسي واحد وخادم احتياطي واحد) قبل مناقشة الحالة العامة (نظام بخادم أساسي واحد وخوادم احتياطية متعددة) في القسم التالي.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>11.2.1. التواصل بين الخادم الأساسي وخادم احتياطي متزامن</li>
+<li>11.2.2. اكتشاف أعطال خوادم النسخ الاحتياطي</li>
+<li>11.2.3. التعامل مع الأعطال في النسخ المتماثل المتزامن</li>
+<li>11.2.4. التعارضات</li>
+</ul>
+<h2 id="1121-التواصل-بين-الخادم-الأساسي-وخادم-احتياطي-متزامن">11.2.1. التواصل بين الخادم الأساسي وخادم احتياطي متزامن</h2>
+<p>لنفترض أن الخادم الاحتياطي في وضع النسخ المتماثل المتزامن، وأن المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a> معطّلة، وأن <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> مضبوطة على ‘<em>replica</em>’. وإعداد الخادم الأساسي كما يلي:</p>
+<pre><code>synchronous_standby_names = 'standby1'
+hot_standby = off
+wal_level = replica
+</code></pre>
+<p>من بين المُطلِقات الثلاثة لكتابة بيانات WAL المذكورة في القسم 9.5، يركّز هذا القسم على عمليات الالتزام بالمعاملات.</p>
+<p>لنفترض أن عملية خلفية واحدة على الخادم الأساسي تصدر عبارة INSERT بسيطة في وضع الالتزام التلقائي. فتبدأ العملية الخلفية معاملة، وتصدر العبارة، وتلتزم فورًا. ويوضّح الشكل 11.2 تسلسل عملية الالتزام هذه:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-02.webp" alt=""></p>
+<h4>الشكل 11.2. مخطط تسلسل التواصل في النسخ المتماثل المتدفّق.</h4>
+<ul>
+<li>(1) تكتب العملية الخلفية بيانات WAL وتدفعها إلى ملف قطعة WAL بتنفيذ XLogInsert() وXLogFlush().</li>
+<li>(2) ترسل عملية walsender بيانات WAL من قطعة WAL إلى عملية walreceiver.</li>
+<li>(3) بعد إرسال البيانات، تنتظر العملية الخلفية استجابة ACK من الخادم الاحتياطي. وتحديدًا، تحصل العملية الخلفية على مزلاج (latch) عبر الدالة الداخلية SyncRepWaitForLSN() وتنتظر تحريره.</li>
+<li>(4) تكتب عملية walreceiver على الخادم الاحتياطي بيانات WAL المستلمة في قطعة WAL الخاصة بالخادم الاحتياطي باستخدام استدعاء النظام write() وترجع استجابة ACK إلى walsender.</li>
+<li>(5) تدفع عملية walreceiver بيانات WAL إلى قطعة WAL باستخدام fsync()، وترجع استجابة ACK أخرى إلى walsender، وتُعلم عملية startup بأن بيانات WAL قد حُدِّثت.</li>
+<li>(6) تعيد عملية startup تنفيذ بيانات WAL المكتوبة في قطعة WAL.</li>
+<li>(7) تحرّر عملية walsender مزلاج العملية الخلفية عند استقبال استجابة ACK من walreceiver. ثم تُكمل العملية الخلفية عملية الالتزام أو الإلغاء. ويتوقف توقيت هذا التحرير على المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT">synchronous_commit</a>: إذا ضُبطت على ‘on’ (الافتراضي)، يُحرَّر المزلاج عند استقبال ACK من الخطوة (5).</li>
+<li>وإذا ضُبطت على ‘remote_write’، يُحرَّر المزلاج عند استقبال ACK من الخطوة (4).</li>
+</ul>
+<p>وتُعلم كل استجابة ACK الخادم الأساسي بالحالة الداخلية للخادم الاحتياطي. وهي تحتوي على أربعة عناصر:</p>
+<ul>
+<li>موضع LSN الذي كُتبت فيه أحدث بيانات WAL.</li>
+<li>موضع LSN الذي دُفعت فيه أحدث بيانات WAL.</li>
+<li>موضع LSN الذي أعادت فيه عملية startup تنفيذ أحدث بيانات WAL.</li>
+<li>الطابع الزمني لإرسال الاستجابة.</li>
+</ul>
+<p>** ** XLogWalRcvSendReply</p>
+<pre><code>XLogWalRcvSendReply(void)@src/backend/replication/walreceiver.c
+	/* Construct a new message */
+	writePtr = LogstreamResult.Write;
+	flushPtr = LogstreamResult.Flush;
+	applyPtr = GetXLogReplayRecPtr(NULL);
+
+	resetStringInfo(&amp;reply_message);
+	pq_sendbyte(&amp;reply_message, 'r');
+	pq_sendint64(&amp;reply_message, writePtr);
+	pq_sendint64(&amp;reply_message, flushPtr);
+	pq_sendint64(&amp;reply_message, applyPtr);
+	pq_sendint64(&amp;reply_message, GetCurrentTimestamp());
+	pq_sendbyte(&amp;reply_message, requestReply ? 1 : 0);
+</code></pre>
+<p>ترجع عملية walreceiver استجابات ACK عند كتابة بيانات WAL أو دفعها، وبشكل دوري كنَبْضة قلب (heartbeat). ونتيجة لذلك، يحتفظ الخادم الأساسي دائمًا بحالة دقيقة لجميع خوادم النسخ الاحتياطي المتصلة.</p>
+<p>ويعرض الاستعلام التالي المعلومات المتعلقة بـLSN لخوادم النسخ الاحتياطي المتصلة:</p>
+<pre><code>testdb=# SELECT application_name AS host,
+        write_location AS write_LSN, flush_location AS flush_LSN,
+        replay_location AS replay_LSN FROM pg_stat_replication;
+
+   host   | write_lsn | flush_lsn | replay_lsn
+----------+-----------+-----------+------------
+ standby1 | 0/5000280 | 0/5000280 | 0/5000280
+ standby2 | 0/5000280 | 0/5000280 | 0/5000280
+(2 rows)
+</code></pre>
+<p>** معلومات</p>
+<p>تُضبط فترة نَبْضة القلب بالمعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-RECEIVER-STATUS-INTERVAL">wal_receiver_status_interval</a> (الافتراضي: 10 ثوانٍ).</p>
+<h2 id="1122-اكتشاف-أعطال-خوادم-النسخ-الاحتياطي">11.2.2. اكتشاف أعطال خوادم النسخ الاحتياطي</h2>
+<p>يستخدم النسخ المتماثل المتدفّق إجراءين شائعين لاكتشاف الأعطال:</p>
+<ol>
+<li><strong>اكتشاف عطل عملية الخادم الاحتياطي</strong>: يقرّر الخادم الأساسي العطل <em>فورًا</em> إذا اكتشف انقطاع الاتصال بين walsender وwalreceiver.</li>
+<li>ويقرّر الخادم الأساسي أيضًا العطل <em>فورًا</em> إذا أرجعت دالة شبكة منخفضة المستوى خطأ أثناء الوصول إلى مقبس walreceiver.</li>
+<li><strong>اكتشاف عطل العتاد والشبكات</strong>: يقرّر الخادم الأساسي العطل إذا لم تستجب عملية walreceiver خلال فترة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-SENDER-TIMEOUT">wal_sender_timeout</a> (الافتراضي: 60 ثانية).</li>
+<li>قد يستغرق تأكيد عطل الخادم الاحتياطي حتى <em>wal_sender_timeout</em> ثانية إذا تعذّر على الخادم الاحتياطي إرسال الاستجابات بسبب أعطال العتاد أو الشبكة.</li>
+</ol>
+<p>ولا يكون اكتشاف العطل فوريًا دائمًا، وقد يتضمن تأخرًا زمنيًا وفقًا لسبب العطل.</p>
+<h2 id="1123-التعامل-مع-الأعطال-في-النسخ-المتماثل-المتزامن">11.2.3. التعامل مع الأعطال في النسخ المتماثل المتزامن</h2>
+<p>يكون سلوك الخادم الأساسي بالغ الأهمية عند تعطّل خادم احتياطي متزامن.</p>
+<p>إذا تعطّل الخادم الاحتياطي وتوقف عن إرجاع استجابات ACK، ينتظر الخادم الأساسي تلك الاستجابات إلى أجل غير مسمى. ولأن النسخ المتماثل المتدفّق يفتقر إلى آلية للعودة تلقائيًا إلى الوضع غير المتزامن بعد مهلة، تتوقف جميع عمليات الخادم الأساسي — بما فيها الالتزام بالمعاملات ومعالجة الاستعلامات اللاحقة — حتى يُكتشف العطل ويُعالَج.</p>
+<p>ولتجنّب توقف عمليات الخادم الأساسي كليًا، ضع في الاعتبار الاستراتيجيات التالية:</p>
+<p><strong>زيادة التوافر:</strong> استخدم عدة خوادم احتياطية ليتمكن الخادم الأساسي من مواصلة العمل إذا تعطّل أحدها. <strong>التجاوز اليدوي إلى الوضع غير المتزامن:</strong> إذا اكتُشف عطل دائم، يمكن تبديل الوضع من متزامن إلى غير متزامن بتنفيذ الخطوات التالية: اضبط المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a> على سلسلة فارغة.</p>
+<pre><code>synchronous_standby_names = ''
+</code></pre>
+<p>نفّذ الأمر pg_ctl مع خيار <em>reload</em>.</p>
+<pre><code class="language-bash">$ pg_ctl -D <span class="hljs-variable">$PGDATA</span> reload
+</code></pre>
+<p>لا يؤثر هذا الإجراء في العملاء المتصلين. فيواصل الخادم الأساسي معالجة المعاملات، وتبقى جميع الجلسات بين العملاء وعملياتها الخلفية.</p>
+<h2 id="1124-التعارضات">11.2.4. التعارضات</h2>
+<p>في النسخ المتماثل المتدفّق، يمكن للخوادم الاحتياطية تنفيذ أوامر SELECT بشكل مستقل عن الخادم الأساسي. ومع ذلك، قد تنشأ تعارضات بين الخادم الاحتياطي والخادم الأساسي في ظروف معينة، ما قد يؤدي إلى أخطاء.</p>
+<p>يوضّح الشكل 11.3 مثالًا نموذجيًا: يُسقط الخادم الأساسي جدولًا يقوم الخادم الاحتياطي بتحديده.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-03.webp" alt=""></p>
+<h4>الشكل 11.3. تعارض ناتج عن DROP TABLE.</h4>
+<ul>
+<li>
+<p>(1) يحدّد الخادم الاحتياطي جدولًا.</p>
+</li>
+<li>
+<p>(2) يُسقط الخادم الأساسي الجدول الذي يحدّده الخادم الاحتياطي حاليًا.</p>
+</li>
+<li>
+<p>(3) يرسل الخادم الأساسي سجلات XLOG المتعلقة بأمر DROP TABLE.</p>
+</li>
+<li>
+<p>(4) يعلّق الخادم الاحتياطي إعادة تنفيذ بيانات WAL الخاصة بأمر DROP TABLE مدة 30 ثانية افتراضيًا (قابلة للضبط عبر <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> أو <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a>).</p>
+</li>
+<li>
+<p>(5) إذا لم يُحلّ التعارض خلال الوقت المحدد (أي لم تكتمل عبارة SELECT)، ترجع عبارة SELECT خطأ وتنتهي.</p>
+</li>
+<li>
+<p>الخادم الأساسي</p>
+</li>
+</ul>
+<pre><code>testdb=# -- Primary
+
+testdb=# DROP TABLE tbl;
+DROP TABLE
+
+testdb=#
+</code></pre>
+<ul>
+<li>الخادم الاحتياطي</li>
+</ul>
+<pre><code>testdb=# -- Standby
+testdb=# SELECT count(*) FROM tbl;
+
+ERROR:  canceling statement due to conflict with recovery
+DETAIL:  User was holding a relation lock for too long.
+</code></pre>
+<p>سبب هذا التعارض هو بيانات WAL المتولّدة عن <strong>قفل الوصول الحصري</strong> الذي يحصل عليه أمر DROP TABLE داخليًا على الخادم الأساسي<a href="#fn:1">1</a>. وتتعارض بيانات WAL هذه مع عبارة SELECT على الخادم الاحتياطي. (وكما هو موضّح في القسم 9.5.1، تتضمّن بيانات WAL ليس فقط تغييرات البيانات بل أيضًا معلومات الأقفال.)</p>
+<p>ووفقًا لـ<a href="https://www.postgresql.org/docs/current/hot-standby.html#HOT-STANDBY-CONFLICT">التوثيق الرسمي</a>، تنقسم أسباب التعارضات إلى ثلاثة أنواع:</p>
+<ol>
+<li><strong>أقفال الوصول الحصري على الخادم الأساسي</strong>: تتعارض هذه مع أي قفل على الخادم الاحتياطي. راجع <a href="https://www.postgresql.org/docs/current/explicit-locking.html#LOCKING-TABLES">التوثيق الرسمي</a> للأوامر التي تحصل على هذه الأقفال، مثل LOCK IN ACCESS EXCLUSIVE MODE وDROP TABLE وTRUNCATE وREINDEX وVACUUM FULL.</li>
+<li><strong>إسقاط قواعد البيانات أو فضاءات الجداول</strong>.</li>
+<li><strong>تطبيق سجل تنظيف vacuum من WAL</strong>: يحدث ذلك إذا كانت معاملات الخادم الاحتياطي لا تزال ترى صفوفًا قيد الإزالة أو إذا كانت الاستعلامات تصل إلى الصفحة المتأثرة.</li>
+</ol>
+<p>وهذا مثال آخر: يحذف الخادم الأساسي صفوفًا وينفّذ أمر VACUUM على جدول يحدّده الخادم الاحتياطي.</p>
+<ul>
+<li>الخادم الأساسي</li>
+</ul>
+<pre><code class="language-sql">testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- Primary</span>
+
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">FROM</span> tbl
+testdb<span class="hljs-operator">-</span>#      <span class="hljs-keyword">WHERE</span> data <span class="hljs-operator">&gt;</span> <span class="hljs-number">100000</span>;
+<span class="hljs-keyword">DELETE</span> <span class="hljs-number">1050</span>
+
+testdb<span class="hljs-operator">=</span># VACUUM tbl;
+VACUUM
+
+testdb<span class="hljs-operator">=</span>#
+</code></pre>
+<ul>
+<li>الخادم الاحتياطي</li>
+</ul>
+<pre><code>testdb=# -- Standby
+testdb=# SELECT count(*) FROM tbl;
+
+ERROR:  canceling statement due to conflict with recovery
+DETAIL:  User query might have needed to see row versions that must be removed.
+</code></pre>
+<p>تكون التعارضات الناتجة عن معالجة VACUUM مزعجة بشكل خاص لأنها تحدث أثناء أوامر VACUUM الصريحة وعمليات vacuum التلقائي أيضًا (الموصوفة في القسم 6.5).</p>
+<h3 id="11241-تخفيف-التعارضات-الناتجة-عن-الأقفال">11.2.4.1. تخفيف التعارضات الناتجة عن الأقفال</h3>
+<p>على خوادم النسخ الاحتياطي، تقلّل زيادة قيمتي <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> و<a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a> (الافتراضي: 30 ثانية) التعارضات. ويتيح هذان الإعدادان للخادم الاحتياطي تأخير إعادة تنفيذ بيانات WAL، ما يقلّل احتمال الأخطاء.</p>
+<p>ومع ذلك، لا يمكن لهاتين المعلمتين إزالة التعارضات دائمًا.</p>
+<p>وبالإضافة إلى ذلك، فإنهما تؤثران في العمليات الخلفية الأخرى على الخادم الاحتياطي بمنعها من الوصول إلى أحدث البيانات خلال التأخير. ونتيجة لذلك، لا يكون الخادم الاحتياطي متزامنًا تمامًا خلال هذه التعارضات.</p>
+<p>ويجب على المسؤولين ضبط هاتين المعلمتين مع الموازنة الدقيقة بين هذه المقايضات التشغيلية.</p>
+<h3 id="11242-تجنب-التعارضات-الناتجة-عن-معالجة-vacuum">11.2.4.2. تجنّب التعارضات الناتجة عن معالجة vacuum</h3>
+<p>على الخادم الأساسي، يؤدي ضبط المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK">hot_standby_feedback</a> (الافتراضي: معطّلة) على “on” إلى تجنّب التعارضات الناتجة عن vacuum. واستنادًا إلى حالة الخادم الاحتياطي، يؤخّر الخادم الأساسي حذف البيانات التي لا يزال الخادم الاحتياطي بحاجة إليها.</p>
+<p>ويرسل الخادم الاحتياطي حالته إلى الخادم الأساسي على فترات تحدّدها <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-RECEIVER-STATUS-INTERVAL">wal_receiver_status_interval</a> (الافتراضي: 10 ثوانٍ).</p>
+<p>ومع أن <em>hot_standby_feedback</em> تحلّ تعارضات vacuum، فإن لها عيوبًا على الخادم الأساسي:</p>
+<ul>
+<li><strong>انتفاخ الجداول والفهارس</strong>: يحول الاحتفاظ بالصفوف القديمة المرئية للخادم الاحتياطي دون تنفيذ vacuum، ما يزيد انتفاخ الجداول والفهارس على الخادم الأساسي.</li>
+<li><strong>مشكلات تراكم WAL:</strong> قد يؤدي تراكم بيانات إضافية من أجل اتساق الخادم الاحتياطي إلى زيادة استهلاك WAL.</li>
+</ul>
+<p>** pg_stat_database_conflicts</p>
+<p>يؤدي الاستعلام عن العرض <a href="https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-DATABASE-CONFLICTS-VIEW">pg_stat_database_conflicts</a> على خادم احتياطي إلى عرض أسباب التعارضات وعددها:</p>
+<pre><code>testdb=# -- Standby
+testdb=# \x
+Expanded display is on.
+testdb=# SELECT * FROM pg_stat_database_conflicts WHERE datname = 'testdb';
+-[ RECORD 1 ]------------+-------
+datid                    | 16384
+datname                  | testdb
+confl_tablespace         | 0
+confl_lock               | 1
+confl_snapshot           | 1
+confl_bufferpin          | 0
+confl_deadlock           | 0
+confl_active_logicalslot | 0
+</code></pre>
+<p>** معلومات تاريخية</p>
+<p>حتى الإصدار 15، كانت المعلمة <a href="https://www.postgresql.org/docs/14/runtime-config-replication.html#GUC-VACUUM-DEFER-CLEANUP-AGE">vacuum_defer_cleanup_age</a> تدعم تأخير حذف الصفوف الميتة. وإذا ضُبطت على عدد موجب، أخّرت عمليات vacuum حذف الصفوف الميتة لعدد المعاملات المحدد.</p>
+<p>وأُزيلت هذه المعلمة في الإصدار 16 لأنها لم تكن تزيل التعارضات دائمًا.</p>
+<p>ويؤدي استخدام <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK">hot_standby_feedback</a> وفتحات النسخ (الموصوفة في القسم 11.4) إلى إدارة التعارضات بفعالية أكبر.</p>
+<ol>
+<li>حالة التعارض هذه سمة تصميمية مقصودة لتوفير مهلة سماح تمنع أخطاء الاستعلامات الفورية على الخادم الاحتياطي. فعندما يُسقط الخادم الأساسي كائنات يصل إليها الخادم الاحتياطي حاليًا، يدخل النسخ المتماثل المتدفّق في حالة التعارض هذه. ولإعلام خوادم النسخ الاحتياطي بهذه الحالة، يسجّل PostgreSQL الحصول على أقفال الوصول الحصري في XLOG. ولاحظ أن هذه السجلات تُنشأ خصيصًا من أجل النسخ المتماثل وليس من أجل الاستعادة القياسية. ونتيجة لذلك، لا ينشئها PostgreSQL إذا كان wal_level مضبوطًا على minimal. <a href="#fnref:1">↩︎</a></li>
+</ol>
+<h1>11.3. إدارة خوادم احتياطية متعددة</h1>
+<p>يصف هذا القسم كيفية عمل النسخ المتماثل المتدفّق مع خوادم احتياطية متعددة.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>11.3.1. أولوية النسخ المتماثل والحالات المتزامنة</li>
+<li>11.3.2. كيف يدير الخادم الأساسي خوادم احتياطية متعددة</li>
+<li>11.3.3. السلوك عند حدوث عطل</li>
+</ul>
+<h2 id="1131-أولوية-النسخ-المتماثل-والحالات-المتزامنة">11.3.1. أولوية النسخ المتماثل والحالات المتزامنة</h2>
+<p>يصنّف الخادم الأساسي كل خادم احتياطي وفقًا لدوره وموثوقيته لإدارة خوادم احتياطية متعددة بكفاءة في بيئة نسخ متماثل متزامن. ويعتمد هذا التصنيف على سمتين داخليتين: <strong>sync_priority</strong> و<strong>sync_state</strong>.</p>
+<p>ويسند الخادم الأساسي هاتين السمتين إلى جميع خوادم النسخ الاحتياطي المُدارة ويتعامل مع كل خادم وفقًا لهاتين القيمتين. ويقوم الخادم الأساسي بهذا الإسناد حتى إذا كان يدير خادمًا احتياطيًا واحدًا فقط.</p>
+<h3 id="11311-syncpriority">11.3.1.1. sync_priority</h3>
+<p>تشير السمة sync_priority إلى أولوية الخادم الاحتياطي في الوضع المتزامن.</p>
+<p>وتمثّل القيمة الأقل أولوية أعلى. وتعني القيمة الخاصة 0 أن الخادم الاحتياطي في الوضع غير المتزامن.</p>
+<p>ويسند الخادم الأساسي الأولويات وفقًا للترتيب المذكور في المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a>.</p>
+<p>فمثلًا، في الإعداد التالي، تكون أولويتا standby1 وstandby2 هما 1 و2 على الترتيب.</p>
+<pre><code>synchronous_standby_names = 'standby1, standby2'
+</code></pre>
+<p>أما خوادم النسخ الاحتياطي غير المذكورة في هذه المعلمة فتعمل في الوضع غير المتزامن بأولوية 0.</p>
+<h3 id="11312-syncstate">11.3.1.2. sync_state</h3>
+<p>تشير السمة <em>sync_state</em> إلى الحالة الحالية للخادم الاحتياطي. ويمكن أن تكون إحدى الحالات التالية:</p>
+<ul>
+<li><strong>sync:</strong> الخادم الاحتياطي في الوضع المتزامن وهو الخادم الاحتياطي العامل حاليًا بأعلى أولوية.</li>
+<li><strong>potential:</strong> الخادم الاحتياطي في الوضع المتزامن وهو خادم احتياطي بأولوية أقل. وإذا تعطّل الخادم <em>sync</em> الحالي، يُرقّى هذا الخادم إلى حالة <em>sync</em>.</li>
+<li><strong>async:</strong> الخادم الاحتياطي في الوضع غير المتزامن. ولا يدخل أبدًا في حالتي <em>sync</em> أو <em>potential</em>.</li>
+<li><strong>quorum:</strong> تعمل خوادم النسخ الاحتياطي في وضع النصاب (quorum). انظر القسم 11.3.2.1 للتفاصيل.</li>
+</ul>
+<p>ويؤدي إصدار الاستعلام التالي إلى عرض أولوية خوادم النسخ الاحتياطي وحالتها:</p>
+<pre><code>testdb=# SELECT application_name AS host,
+         sync_priority, sync_state FROM pg_stat_replication;
+   host   | sync_priority | sync_state
+----------+---------------+------------
+ standby1 |             1 | sync
+ standby2 |             2 | potential
+(2 rows)
+</code></pre>
+<h2 id="1132-كيف-يدير-الخادم-الأساسي-خوادم-احتياطية-متعددة">11.3.2. كيف يدير الخادم الأساسي خوادم احتياطية متعددة</h2>
+<p>ينتظر الخادم الأساسي استجابات ACK من الخادم الاحتياطي المتزامن وحده. فلا يؤكّد سوى كتابة الخادم الاحتياطي المتزامن لبيانات WAL ودفعها. ولذلك يضمن النسخ المتماثل المتدفّق أن يبقى الخادم الاحتياطي المتزامن وحده في حالة متسقة ومتزامنة مع الخادم الأساسي.</p>
+<p>ويوضّح الشكل 11.4 حالة تصل فيها استجابة ACK من الخادم الاحتياطي المرشّح (potential) قبل استجابة الخادم الأساسي (sync).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-04.webp" alt=""></p>
+<h4>الشكل 11.4. إدارة خوادم احتياطية متعددة.</h4>
+<ul>
+<li>(1) تواصل العملية الخلفية على الخادم الأساسي انتظار استجابة ACK من الخادم الاحتياطي المتزامن، حتى بعد استقبال ACK من الخادم المرشّح.</li>
+<li>(2) بعد استقبال ACK من الخادم الاحتياطي المتزامن، تحرّر العملية الخلفية المزلاج وتُكمل المعاملة.</li>
+</ul>
+<p>وفي الحالة المعاكسة (وصول ACK من الخادم المتزامن قبل المرشّح)، يُكمل الخادم الأساسي الالتزام فورًا دون التحقق مما إذا كان الخادم المرشّح قد كتب بيانات WAL أو دفعها.</p>
+<h3 id="11321-النسخ-المتماثل-المتزامن-القائم-على-النصاب">11.3.2.1. النسخ المتماثل المتزامن القائم على النصاب</h3>
+<p>قدّم الإصدار 9.6 (2016) النسخ المتماثل المتزامن القائم على النصاب. وتتيح هذه الميزة اعتبار المعاملات ملتزمة بمجرد أن تؤكّدها مجموعة فرعية (نصاب) من خوادم النسخ الاحتياطي المتزامنة.</p>
+<p>وللنسخ المتماثل المتزامن القائم على النصاب وضعان: ANY وFIRST.</p>
+<h4>وضع ANY</h4>
+<p>تنسيق synchronous_standby_names في وضع ANY هو:</p>
+<pre><code>ANY num_sync ( standby_name [, ...] )
+</code></pre>
+<p>في وضع ANY، يُكمل الخادم الأساسي الالتزام بالمعاملة الحالية بمجرد أن ترجع أي ’num_sync’ من خوادم النسخ الاحتياطي في القائمة استجابات ACK.</p>
+<p>فمثلًا، يتيح الإعداد التالي الالتزام بمجرد أن يرجع أي خادمَي نسخ احتياطي استجابات:</p>
+<pre><code>synchronous_standby_names = 'ANY 2 (standby1, standby2, standby3)'
+</code></pre>
+<p>يوضّح الشكل 11.5 سلوك إعداد وضع ANY:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-05.webp" alt=""></p>
+<h4>الشكل 11.5. سلوك إعداد وضع ANY.</h4>
+<p>وحالة <em>sync_priority</em> و<em>sync_state</em> لهذا الإعداد هي:</p>
+<pre><code>testdb=# SELECT application_name AS host,
+        sync_priority, sync_state FROM pg_stat_replication;
+   host   | sync_priority | sync_state
+----------+---------------+------------
+ standby1 |             1 | quorum
+ standby2 |             1 | quorum
+ standby3 |             1 | quorum
+(3 rows)
+</code></pre>
+<h4>وضع FIRST</h4>
+<p>تنسيق synchronous_standby_names في وضع FIRST هو:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>FIRST<span class="hljs-punctuation">]</span> num_sync ( standby_name <span class="hljs-punctuation">[</span><span class="hljs-punctuation">,</span> ...<span class="hljs-punctuation">]</span> )
+</code></pre>
+<p>في وضع FIRST، يُكمل الخادم الأساسي الالتزام بعد أن ترجع أول ’num_sync’ من خوادم النسخ الاحتياطي في القائمة استجابات ACK.</p>
+<p>فمثلًا، يجعل الإعداد التالي الخادم الأساسي ينتظر حتى ترجع standby1 وstandby2 استجابتي ACK، حتى إذا استجاب standby3 أولًا:</p>
+<pre><code>synchronous_standby_names = 'FIRST 2 (standby1, standby2, standby3)'
+</code></pre>
+<p>يوضّح الشكل 11.6 سلوك إعداد وضع FIRST:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-06.webp" alt=""></p>
+<h4>الشكل 11.6. سلوك إعداد وضع FIRST.</h4>
+<p>وفيما يلي حالة sync_priority وsync_state للإعداد أعلاه:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> application_name <span class="hljs-keyword">AS</span> host,
+        sync_priority, sync_state <span class="hljs-keyword">FROM</span> pg_stat_replication;
+   host   <span class="hljs-operator">|</span> sync_priority <span class="hljs-operator">|</span> sync_state
+<span class="hljs-comment">----------+---------------+------------</span>
+ standby3 <span class="hljs-operator">|</span>             <span class="hljs-number">3</span> <span class="hljs-operator">|</span> potential
+ standby2 <span class="hljs-operator">|</span>             <span class="hljs-number">2</span> <span class="hljs-operator">|</span> sync
+ standby1 <span class="hljs-operator">|</span>             <span class="hljs-number">1</span> <span class="hljs-operator">|</span> sync
+(<span class="hljs-number">3</span> <span class="hljs-keyword">rows</span>)
+</code></pre>
+<h2 id="1133-السلوك-عند-حدوث-عطل">11.3.3. السلوك عند حدوث عطل</h2>
+<p>عندما يتعطّل خادم احتياطي مرشّح أو غير متزامن، ينهي الخادم الأساسي عملية walsender المتصلة بالخادم المتعطّل ويواصل كل المعالجة. وبعبارة أخرى، لا يؤثر عطل أي من نوعي الخوادم الاحتياطية في معالجة المعاملات على الخادم الأساسي.</p>
+<p>وعندما يتعطّل خادم احتياطي متزامن، ينهي الخادم الأساسي عملية walsender المتصلة بالخادم المتعطّل ويستبدل الخادم الاحتياطي المتزامن بأعلى خادم مرشّح أولوية. انظر الشكل 11.7.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-07.webp" alt=""></p>
+<h4>الشكل 11.7. استبدال الخادم الاحتياطي المتزامن.</h4>
+<p>وخلافًا لعطل خادم مرشّح أو غير متزامن، يؤدي عطل خادم احتياطي متزامن إلى توقف معالجة الاستعلامات على الخادم الأساسي حتى تكتمل عملية الاستبدال. (لذلك، يُعدّ اكتشاف الأعطال وظيفة بالغة الأهمية لزيادة توافر نظام النسخ المتماثل. ويُوصف اكتشاف الأعطال في القسم التالي.)</p>
+<p>وفي كل الأحوال، إذا عمل خادم احتياطي واحد أو أكثر في الوضع المتزامن، يحتفظ الخادم الأساسي بخادم احتياطي متزامن واحد بالضبط في جميع الأوقات. ويبقى هذا الخادم الاحتياطي المتزامن في حالة متسقة ومتزامنة مع الخادم الأساسي.</p>
+<h1>11.4. فتحات النسخ</h1>
+<p>كما نوقش في القسم 11.1.1، تضمن فتحات النسخ (المُدخلة في الإصدار 9.4) الاحتفاظ بقطع WAL وإصدارات الصفوف القديمة حتى اكتمال النسخ المتماثل.</p>
+<p>ويستكشف هذا القسم آلية فتحات النسخ.</p>
+<p>لاحظ أنه على الرغم من أن فتحات النسخ أساسية للنسخ المتماثل المنطقي، فإن هذا القسم لا يتناولها في ذلك السياق.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>11.4.1. مزايا فتحات النسخ في النسخ المتماثل المتدفّق</li>
+<li>11.4.2. فتحات النسخ والعمليات والملفات ذات الصلة</li>
+<li>11.4.3. بنية البيانات</li>
+<li>11.4.4. بدء فتحة النسخ</li>
+<li>11.4.5. إدارة فتحات النسخ</li>
+</ul>
+<h2 id="1141-مزايا-فتحات-النسخ-في-النسخ-المتماثل-المتدفق">11.4.1. مزايا فتحات النسخ في النسخ المتماثل المتدفّق</h2>
+<p>في النسخ المتماثل المتدفّق، ومع أن فتحات النسخ ليست إلزامية، فإنها توفّر المزايا التالية مقارنة بـ<a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a>:</p>
+<ol>
+<li>ضمان عمل النسخ المتماثل المتدفّق دون فقدان قطع WAL المطلوبة: تتتبّع فتحات النسخ قطع WAL المطلوبة وتمنع إزالتها. وفي المقابل، عند استخدام wal_keep_size وحدها، قد يحذف PostgreSQL قطعًا ضرورية إذا لم تقرأها خوادم النسخ الاحتياطي لفترة طويلة.</li>
+<li>الاحتفاظ بالحد الأدنى الضروري فقط من قطع WAL: مع فتحات النسخ، يحتفظ الدليل pg_wal بقطع WAL المطلوبة فقط ويحذف غير الضرورية. وبالعكس، تحتفظ wal_keep_size بكمية ثابتة من قطع WAL بصرف النظر عن الحاجة الفعلية.</li>
+</ol>
+<p>** max_slot_wal_keep_size</p>
+<p>بما أن فتحات النسخ قد تحتفظ بقطع WAL إلى أجل غير مسمى، فقد تمتلئ مساحة التخزين في أسوأ الحالات، ما قد يؤدي إلى ذعر في نظام التشغيل.</p>
+<p>ولمعالجة هذه المشكلة، قدّم الإصدار 13 معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE">max_slot_wal_keep_size</a>. وتحدّ هذه المعلمة الحجم الأقصى لقطع WAL في الدليل pg_wal عند نقطة التفتيش.</p>
+<p>ويكمن الفرق الجوهري بين استخدام max_slot_wal_keep_size مع فتحات النسخ واستخدام wal_keep_size في طريقة إدارتهما لقطع WAL:</p>
+<ul>
+<li>تحدّد max_slot_wal_keep_size حدًا أقصى للحجم مع السماح لفتحات النسخ بالاحتفاظ بالحد الأدنى المطلوب فقط.</li>
+<li>تحدّد wal_keep_size كمية ثابتة من قطع WAL يُحتفظ بها، بصرف النظر عن الحاجة إليها.</li>
+</ul>
+<h2 id="1142-فتحات-النسخ-والعمليات-والملفات-ذات-الصلة">11.4.2. فتحات النسخ والعمليات والملفات ذات الصلة</h2>
+<p>تُخزَّن فتحات النسخ في منطقة الذاكرة المخصّصة ضمن الذاكرة المشتركة.</p>
+<p>يوضّح الشكل 11.8 فتحات النسخ والعمليات والملفات ذات الصلة:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-08.webp" alt=""></p>
+<h4>الشكل 11.8. فتحات النسخ والعمليات والملفات ذات الصلة.</h4>
+<h3 id="11421-العمليات-ذات-الصلة">11.4.2.1. العمليات ذات الصلة</h3>
+<p>العمليات المتعلقة بفتحات النسخ كما يلي:</p>
+<ul>
+<li><strong>walsender</strong>: تحدّث هذه العملية باستمرار فتحة النسخ المقابلة لتعكس الحالة الحالية لبيانات WAL على الخادم الاحتياطي.</li>
+<li><strong>عملية نقاط التفتيش الخلفية</strong>: تقرأ هذه العملية فتحات النسخ لتحديد ما إذا كان يمكن حذف قطع WAL أثناء نقطة التفتيش.</li>
+<li><strong>العملية الخلفية لـPostgres</strong>: تعرض هذه العملية معلومات الفتحة عبر عرض النظام <a href="https://www.postgresql.org/docs/current/view-pg-replication-slots.html">pg_replication_slots</a>.</li>
+</ul>
+<h3 id="11422-الملفات-ذات-الصلة">11.4.2.2. الملفات ذات الصلة</h3>
+<p>الملفات المتعلقة بفتحات النسخ كما يلي:</p>
+<ul>
+<li><strong>ملفات الحالة</strong> تحت دليل <em>pg_replslot</em>: تحفظ عمليات walsender بانتظام معلومات مفصّلة عن فتحات نسخها في ملفات الحالة في هذا الدليل. وأثناء إعادة تشغيل الخادم، يحمّل PostgreSQL هذه المعلومات مرة أخرى إلى الذاكرة لاستعادة حالة فتحات النسخ.</li>
+<li><strong>ملفات قطع WAL</strong> تحت دليل <em>pg_wal</em>.</li>
+</ul>
+<h2 id="1143-بنية-البيانات">11.4.3. بنية البيانات</h2>
+<p>تُعرَّف فتحات النسخ بالبنية <code>ReplicationSlot</code> في <a href="https://github.com/postgres/postgres/blob/master/src/include/replication/slot.h">slot.h</a>.</p>
+<p>** ** ReplicationSlot</p>
+<pre><code class="language-python">/*
+ * Shared memory state of a single replication slot.
+ *
+ * The <span class="hljs-keyword">in</span>-memory data of replication slots follows a locking model based
+ * on two linked concepts:
+ * - A replication slo<span class="hljs-string">t&#x27;s in_use flag is switched when added or discarded using
+ * the LWLock ReplicationSlotControlLock, which needs to be hold in exclusive
+ * mode when updating the flag by the backend owning the slot and doing the
+ * operation, while readers (concurrent backends not owning the slot) need
+ * to hold it in shared mode when looking at replication slot data.
+ * - Individual fields are protected by mutex where only the backend owning
+ * the slot is authorized to update the fields from its own slot.  The
+ * backend owning the slot does not need to take this lock when reading its
+ * own fields, while concurrent backends not owning this slot should take the
+ * lock when reading this slot&#x27;</span>s data.
+ */
+typedef struct ReplicationSlot
+{
+	/* lock, on same cacheline <span class="hljs-keyword">as</span> effective_xmin */
+	slock_t		mutex;
+
+	/* <span class="hljs-keyword">is</span> this slot defined */
+	<span class="hljs-built_in">bool</span>		in_use;
+
+	/* Who <span class="hljs-keyword">is</span> streaming out changes <span class="hljs-keyword">for</span> this slot? <span class="hljs-number">0</span> <span class="hljs-keyword">in</span> unused slots. */
+	pid_t		active_pid;
+
+	/* <span class="hljs-built_in">any</span> outstanding modifications? */
+	<span class="hljs-built_in">bool</span>		just_dirtied;
+	<span class="hljs-built_in">bool</span>		dirty;
+
+	/*
+	 * For logical decoding, i<span class="hljs-string">t&#x27;s extremely important that we never remove any
+	 * data that&#x27;</span>s still needed <span class="hljs-keyword">for</span> decoding purposes, even after a crash;
+	 * otherwise, decoding will produce wrong answers.  Ordinary streaming
+	 * replication also needs to prevent old row versions <span class="hljs-keyword">from</span> being removed
+	 * too soon, but the worst consequence we might encounter there <span class="hljs-keyword">is</span>
+	 * unwanted query cancellations on the standby.  Thus, <span class="hljs-keyword">for</span> logical
+	 * decoding, this value represents the latest xmin that has actually been
+	 * written to disk, whereas <span class="hljs-keyword">for</span> streaming replication, i<span class="hljs-string">t&#x27;s just the same
+	 * as the persistent value (data.xmin).
+	 */
+	TransactionId effective_xmin;
+	TransactionId effective_catalog_xmin;
+
+	/* data surviving shutdowns and crashes */
+	ReplicationSlotPersistentData data;
+
+	/* is somebody performing io on this slot? */
+	LWLock		io_in_progress_lock;
+
+	/* Condition variable signaled when active_pid changes */
+	ConditionVariable active_cv;
+
+	/* all the remaining data is only used for logical slots */
+
+	/*
+	 * When the client has confirmed flushes &gt;= candidate_xmin_lsn we can
+	 * advance the catalog xmin.  When restart_valid has been passed,
+	 * restart_lsn can be increased.
+	 */
+	TransactionId candidate_catalog_xmin;
+	XLogRecPtr	candidate_xmin_lsn;
+	XLogRecPtr	candidate_restart_valid;
+	XLogRecPtr	candidate_restart_lsn;
+
+	/*
+	 * This value tracks the last confirmed_flush LSN flushed which is used
+	 * during a shutdown checkpoint to decide if logical&#x27;</span>s slot data should be
+	 * forcibly flushed <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span>.
+	 */
+	XLogRecPtr	last_saved_confirmed_flush;
+
+	/* The time since the slot has become inactive */
+	TimestampTz inactive_since;
+} ReplicationSlot;
+
+<span class="hljs-comment">#define SlotIsPhysical(slot) ((slot)-&gt;data.database == InvalidOid)</span>
+<span class="hljs-comment">#define SlotIsLogical(slot) ((slot)-&gt;data.database != InvalidOid)</span>
+
+/*
+ * Shared memory control area <span class="hljs-keyword">for</span> <span class="hljs-built_in">all</span> of replication slots.
+ */
+typedef struct ReplicationSlotCtlData
+{
+	/*
+	 * This array should be declared [FLEXIBLE_ARRAY_MEMBER], but <span class="hljs-keyword">for</span> some
+	 * reason you can<span class="hljs-string">&#x27;t do that in an otherwise-empty struct.
+	 */
+	ReplicationSlot replication_slots[1];
+} ReplicationSlotCtlData;
+</span></code></pre>
+<p>ومع أن البنية تحتوي على عناصر كثيرة، لأنها مشتركة بين النسخ المتماثل المتدفّق والمنطقي معًا، فإن العناصر الرئيسية ذات الصلة بالنسخ المتماثل المتدفّق هي التالية:</p>
+<ul>
+<li><strong>active_pid</strong>: معرّف العملية (PID) لعملية walsender التي تدير هذه الفتحة.</li>
+<li><strong>ReplicationSlotPersistentData data</strong>: عناصر معرّفة ببنية <code>ReplicationSlotPersistentData</code>. وتشمل العناصر الرئيسية: <strong>name</strong>: اسم الفتحة.</li>
+<li><strong>restart_lsn</strong>: أقدم LSN قد تحتاج إليه فتحة النسخ هذه. وتقرأ عملية نقاط التفتيش أصغر قيمة restart_lsn بين جميع الفتحات لتحديد ما إذا كان يمكن حذف قطع WAL.</li>
+</ul>
+<p>ويُحفظ العنصر ReplicationSlotPersistentData data بانتظام في الدليل pg_replslot.</p>
+<p>** ** ReplicationSlotPersistentData</p>
+<pre><code class="language-python">/*
+ * On-Disk data of a replication slot, preserved across restarts.
+ */
+typedef struct ReplicationSlotPersistentData
+{
+
+	NameData	name;
+
+	/* database the slot <span class="hljs-keyword">is</span> active on */
+	Oid			database;
+
+	/*
+	 * The slo<span class="hljs-string">t&#x27;s behaviour when being dropped (or restored after a crash).
+	 */
+	ReplicationSlotPersistency persistency;
+
+	/*
+         * xmin horizon for data
+         *
+         * NB: This may represent a value that hasn&#x27;</span>t been written to disk yet;
+         * see notes <span class="hljs-keyword">for</span> effective_xmin, below.
+         */
+	 TransactionId xmin;
+
+	/*
+	 * xmin horizon <span class="hljs-keyword">for</span> catalog tuples
+	 *
+	 * NB: This may represent a value that hasn<span class="hljs-string">&#x27;t been written to disk yet;
+	 * see notes for effective_xmin, below.
+	 */
+	TransactionId catalog_xmin;
+
+	/* oldest LSN that might be required by this replication slot */
+	XLogRecPtr	restart_lsn;
+
+	/* RS_INVAL_NONE if valid, or the reason for having been invalidated */
+	ReplicationSlotInvalidationCause invalidated;
+
+	/*
+	 * Oldest LSN that the client has acked receipt for.  This is used as the
+	 * start_lsn point in case the client doesn&#x27;</span>t specify one, <span class="hljs-keyword">and</span> also <span class="hljs-keyword">as</span> a
+	 * safety measure to jump forwards <span class="hljs-keyword">in</span> <span class="hljs-keyword">case</span> the client specifies a
+	 * start_lsn tha<span class="hljs-string">t&#x27;s further in the past than this value.
+	 */
+	XLogRecPtr	confirmed_flush;
+
+	/*
+	 * LSN at which we enabled two_phase commit for this slot or LSN at which
+	 * we found a consistent point at the time of slot creation.
+	 */
+	XLogRecPtr	two_phase_at;
+
+	/*
+	 * Allow decoding of prepared transactions?
+	 */
+	bool		two_phase;
+
+	/* plugin name */
+	NameData	plugin;
+
+	/*
+	 * Was this slot synchronized from the primary server?
+	 */
+	char		synced;
+
+	/*
+	 * Is this a failover slot (sync candidate for standbys)? Only relevant
+	 * for logical slots on the primary server.
+	 */
+	bool		failover;
+} ReplicationSlotPersistentData;
+</span></code></pre>
+<h2 id="1144-بدء-فتحة-النسخ">11.4.4. بدء فتحة النسخ</h2>
+<p>يوضّح الشكل 11.9 تسلسل بدء فتحة النسخ:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql11-fig-11-09.webp" alt=""></p>
+<h4>الشكل 11.9. تسلسل بدء فتحة النسخ.</h4>
+<p>(1) إنشاء فتحة نسخ (فيزيائية) باستخدام الدالة <a href="https://www.postgresql.org/docs/current/functions-admin.html#FUNCTIONS-REPLICATION">pg_create_physical_replication_slot()</a>. وباستثناء اسم الفتحة، يضبط PostgreSQL البيانات في فتحة النسخ على قيمها الافتراضية.</p>
+<pre><code>testdb=# SELECT * FROM pg_create_physical_replication_slot('standby_slot');
+slot_name   | lsn
+---------------+-----
+standby_slot  |
+(1 row)
+</code></pre>
+<p>(2) كتابة جزء من بيانات الفتحة في الدليل pg_replslot. وتعرّف بنية ReplicationSlotPersistentData هذه البيانات. وينشئ PostgreSQL ملفًا باسم ‘state’ تحت الدليل الفرعي المقابل لاسم الفتحة، كما هو موضّح أدناه:</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">ls</span> -1 pg_replslot/
+standby_slot
+$ find pg_replslot/
+pg_replslot/
+pg_replslot/standby_slot
+pg_replslot/standby_slot/state
+</code></pre>
+<p>(3) إعادة ربط الخادم الاحتياطي بالخادم الأساسي. ولإعادة ربط الخادم الاحتياطي، اضبط معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-PRIMARY-SLOT-NAME">primary_slot_name</a> على اسم فتحة النسخ.</p>
+<pre><code># standby's postgresql.conf
+
+primary_slot_name = 'standby_slot'
+</code></pre>
+<p>ثم أصدر الأمر pg_ctl مع خيار “reload”:</p>
+<pre><code class="language-bash">$ pg_ctl -D <span class="hljs-variable">$PGDATA_STANDBY</span> reload
+</code></pre>
+<p>(4) تحديث فتحة النسخ، بما في ذلك حقول مثل active_pid وrestart_lsn. (5) كتابة جزء من بيانات الفتحة المحدَّثة في الدليل pg_replslot.</p>
+<h2 id="1145-إدارة-فتحات-النسخ">11.4.5. إدارة فتحات النسخ</h2>
+<p>بعد ضبط فتحات النسخ في الذاكرة المشتركة، تحدّث عمليات walsender الفتحات باستمرار لتعكس الحالات الحالية لخوادم النسخ الاحتياطي المقابلة.</p>
+<p>وفيما يلي مثال على حالات فتحات النسخ:</p>
+<pre><code>testdb=# \x
+Expanded display is on.
+testdb=# SELECT * FROM pg_replication_slots;
+-[ RECORD 1 ]-------+--------------
+slot_name           | standby_slot
+plugin              |
+slot_type           | physical
+datoid              |
+database            |
+temporary           | f
+active              | t
+active_pid          | 236772
+xmin                | 754
+catalog_xmin        |
+restart_lsn         | 0/303B968
+confirmed_flush_lsn |
+wal_status          | reserved
+safe_wal_size       |
+two_phase           | f
+inactive_since      |
+conflicting         |
+invalidation_reason |
+failover            | f
+synced              | f
+</code></pre>
+<p>يحفظ خادم PostgreSQL الأساسي بانتظام معلومات مفصّلة عن فتحات نسخه في ملفات ‘state’ في الدليل pg_replslot.</p>
+<p>وعند إعادة تشغيل الخادم الأساسي، يحمّل هذه المعلومات المحفوظة مرة أخرى إلى الذاكرة لاستعادة حالة فتحات نسخه.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql10/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">النسخ الاحتياطي الأساسي والاستعادة الزمنية</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql12/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">النسخ المتماثل المنطقي</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_7ry6u = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.DsBhiNuk.js"),
+						import("../../../../_app/immutable/entry/app.DWle-4Kv.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
