@@ -1,0 +1,60 @@
+const s="hello-algo",a="chapter_sorting",n="الترتيب",t="selection_sort",l="ترتيب الاختيار",p=[{depth:2,id:"خصائص-الخوارزمية",text:"خصائص الخوارزمية"}],e=`<p><u>ترتيب الاختيار</u> (selection sort) بسيط جداً في عمله: في كل جولة يختار أصغر عنصر من المجال غير المرتب ويضعه في نهاية المجال المرتب.</p>
+<p>افترض أن طول المصفوفة <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>. ويوضح الشكل أدناه سير ترتيب الاختيار.</p>
+<ol>
+<li>في البداية تكون جميع العناصر غير مرتبة، أي إن مجال الفهارس غير المرتب هو $[0, n-1]$.</li>
+<li>اختر أصغر عنصر في المجال $[0, n-1]$ وبدّله مع العنصر عند الفهرس <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>. وبعد الانتهاء يصبح العنصر الأول من المصفوفة مرتباً.</li>
+<li>اختر أصغر عنصر في المجال $[1, n-1]$ وبدّله مع العنصر عند الفهرس <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>. وبعد الانتهاء يصبح العنصران الأولان من المصفوفة مرتبين.</li>
+<li>وهكذا دواليك. بعد $n - 1$ جولة من الاختيار والتبديل، تصبح العناصر $n - 1$ الأولى من المصفوفة مرتبة.</li>
+<li>ولا بد أن يكون العنصر الوحيد المتبقي هو الأكبر، لذا لا حاجة إلى مزيد من الترتيب وتصبح المصفوفة مرتبة.</li>
+</ol>
+<p>في الشيفرة نستخدم <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> لتتبع أصغر عنصر داخل المجال غير المرتب:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* ترتيب الاختيار */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">selectionSort</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> {
+	n := <span class="hljs-built_in">len</span>(nums)
+	<span class="hljs-comment">// الحلقة الخارجية: المجال غير المرتب هو [i, n-1]</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n<span class="hljs-number">-1</span>; i++ {
+		<span class="hljs-comment">// الحلقة الداخلية: ابحث عن أصغر عنصر داخل المجال غير المرتب</span>
+		k := i
+		<span class="hljs-keyword">for</span> j := i + <span class="hljs-number">1</span>; j &lt; n; j++ {
+			<span class="hljs-keyword">if</span> nums[j] &lt; nums[k] {
+				<span class="hljs-comment">// سجّل فهرس أصغر عنصر</span>
+				k = j
+			}
+		}
+		<span class="hljs-comment">// بدّل أصغر عنصر مع العنصر الأول من المجال غير المرتب</span>
+		nums[i], nums[k] = nums[k], nums[i]
+
+	}
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* ترتيب الاختيار */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">selectionSort</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">let</span> n = nums.<span class="hljs-property">length</span>;
+    <span class="hljs-comment">// الحلقة الخارجية: المجال غير المرتب هو [i, n-1]</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-comment">// الحلقة الداخلية: ابحث عن أصغر عنصر داخل المجال غير المرتب</span>
+        <span class="hljs-keyword">let</span> k = i;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (nums[j] &lt; nums[k]) {
+                k = j; <span class="hljs-comment">// سجّل فهرس أصغر عنصر</span>
+            }
+        }
+        <span class="hljs-comment">// بدّل أصغر عنصر مع العنصر الأول من المجال غير المرتب</span>
+        [nums[i], nums[k]] = [nums[k], nums[i]];
+    }
+}
+</code></pre>
+</div>
+<h2 id="خصائص-الخوارزمية">خصائص الخوارزمية</h2>
+<ul>
+<li><strong>التعقيد الزمني <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>؛ ترتيب غير تكيّفي (non-adaptive)</strong>: تضم الحلقة الخارجية $n - 1$ جولة إجمالاً. وتُنفَّذ الحلقة الداخلية $n - 1$ مرة في الجولة الأولى ومرة واحدة في الجولة الأخيرة. وبذلك تُنفَّذ $n - 1$ و$n - 2$ و<span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.123em;"></span><span class="minner">…</span></span></span></span> و<span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> و<span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> مرة على التوالي، ومجموعها <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</li>
+<li><strong>التعقيد المكاني <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>؛ ترتيب في المكان (in-place)</strong>: يستخدم المؤشران <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> و<span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> مقداراً ثابتاً من المساحة الإضافية.</li>
+<li><strong>ترتيب غير مستقر</strong>: كما يوضح الشكل أدناه، قد يُبدَّل العنصر <code>nums[i]</code> إلى يمين عنصر مساوٍ له، مما يغيّر ترتيبهما النسبي.</li>
+</ul>
+<p><img src="/arabic-cs-library/images/hello-algo/chapter_sorting--selection_sort_instability.png" alt="مثال على عدم استقرار ترتيب الاختيار"></p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:t,title:l,headings:p,html:e};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,e as html,t as slug,l as title};

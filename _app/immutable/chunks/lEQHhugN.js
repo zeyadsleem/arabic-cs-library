@@ -1,0 +1,981 @@
+const s="postgres-internals",n="pgsql09",e="سجل ما قبل الكتابة (WAL)",a="index",t="سجل ما قبل الكتابة (WAL)",l=[{depth:2,id:"911-عمليات-الإدراج-دون-wal",text:"9.1.1. عمليات الإدراج دون WAL"},{depth:2,id:"912-عمليات-الإدراج-واستعادة-قاعدة-البيانات",text:"9.1.2. عمليات الإدراج واستعادة قاعدة البيانات"},{depth:2,id:"913-كتابات-الصفحة-الكاملة",text:"9.1.3. كتابات الصفحة الكاملة"},{depth:2,id:"941-جزء-الترويسة-من-سجل-xlog",text:"9.4.1. جزء الترويسة من سجل XLOG"},{depth:2,id:"942-جزء-البيانات-من-سجل-xlog-الإصدار-94-أو-أقدم",text:"9.4.2. جزء البيانات من سجل XLOG (الإصدار 9.4 أو أقدم)"},{depth:3,id:"9421-الكتلة-الاحتياطية",text:"9.4.2.1. الكتلة الاحتياطية"},{depth:3,id:"9422-الكتلة-غير-الاحتياطية",text:"9.4.2.2. الكتلة غير الاحتياطية"},{depth:2,id:"943-جزء-البيانات-من-سجل-xlog-الإصدار-95-أو-أحدث",text:"9.4.3. جزء البيانات من سجل XLOG (الإصدار 9.5 أو أحدث)"},{depth:3,id:"9431-الكتلة-الاحتياطية",text:"9.4.3.1. الكتلة الاحتياطية"},{depth:3,id:"9432-الكتلة-غير-الاحتياطية",text:"9.4.3.2. الكتلة غير الاحتياطية"},{depth:2,id:"951-ملاحظة-حول-كتابة-سجلات-xlog",text:"9.5.1. ملاحظة حول كتابة سجلات XLOG"},{depth:2,id:"961-عملية-كاتب-wal",text:"9.6.1. عملية كاتب WAL"},{depth:2,id:"962-عملية-ملخص-wal",text:"9.6.2. عملية مُلخِّص WAL"},{depth:3,id:"9621-مخطط-عمل-عملية-ملخص-wal",text:"9.6.2.1. مخطط عمل عملية مُلخِّص WAL"},{depth:3,id:"9622-محتويات-ملف-الملخص",text:"9.6.2.2. محتويات ملف الملخّص"},{depth:2,id:"971-مخطط-معالجة-نقاط-التفتيش",text:"9.7.1. مخطط معالجة نقاط التفتيش"},{depth:2,id:"972-ملف-pgcontrol",text:"9.7.2. ملف pg_control"},{depth:2,id:"981-معالجة-الاستعادة",text:"9.8.1. معالجة الاستعادة"},{depth:2,id:"982-مقارنة-lsn-وعدم-التأثر-بالتكرار",text:"9.8.2. مقارنة LSN وعدم التأثر بالتكرار"},{depth:2,id:"991-تبديل-قطع-wal",text:"9.9.1. تبديل قطع WAL"},{depth:2,id:"992-إدارة-قطع-wal",text:"9.9.2. إدارة قطع WAL"},{depth:3,id:"9921-عوامل-أخرى",text:"9.9.2.1. عوامل أخرى"}],p=`<h1>9.1. نظرة عامة</h1>
+<p>يقدّم هذا القسم نظرة عامة على آلية التسجيل المسبق للكتابة (write-ahead logging, WAL).</p>
+<p>يوضّح القسم الفرعي الأول مخاطر انهيار النظام في قاعدة بيانات لا تستخدم WAL. ويقدّم القسم الفرعي الثاني المفاهيم الأساسية، مثل كتابة بيانات WAL وعملية الاستعادة (recovery). ويصف القسم الفرعي الأخير <strong>كتابات الصفحة الكاملة</strong> (full-page writes)، وهو مفهوم بالغ الأهمية لسلامة البيانات.</p>
+<p>في هذا القسم، تستخدم الأمثلة جدولًا باسم <code>TABLE_A</code> يحتوي على صفحة واحدة.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>9.1.1. عمليات الإدراج دون WAL</li>
+<li>9.1.2. عمليات الإدراج واستعادة قاعدة البيانات</li>
+<li>9.1.3. كتابات الصفحة الكاملة</li>
+</ul>
+<h2 id="911-عمليات-الإدراج-دون-wal">9.1.1. عمليات الإدراج دون WAL</h2>
+<p>تُنفّذ كل نظم إدارة قواعد البيانات (DBMS) تجمّع مخزن مؤقت مشتركًا (shared buffer pool) لتوفير وصول فعّال إلى صفحات العلاقات.</p>
+<p>يوضّح الشكل 9.1 سيناريو تُدرَج فيه صفوف البيانات في الجدول TABLE_A على خادم PostgreSQL <strong>لا</strong> ينفّذ WAL.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-01.webp" alt=""></p>
+<h4>الشكل 9.1. عمليات الإدراج دون WAL.</h4>
+<ul>
+<li>(1) عند تنفيذ عبارة INSERT الأولى، يحمّل PostgreSQL صفحة TABLE_A من تجمّع قاعدة البيانات إلى تجمّع المخزن المؤقت المشترك ويُدرج صفًّا. وتُسمى هذه الصفحة المعدَّلة <strong>صفحة قذرة</strong> (dirty page). ولا تُكتب الصفحة إلى وسيط التخزين فورًا.</li>
+<li>(2) عند تنفيذ عبارة INSERT الثانية، يُدرج PostgreSQL صفًّا جديدًا في الصفحة الموجودة في تجمّع المخزن المؤقت. وتظل الصفحة في الذاكرة فقط.</li>
+<li>(3) إذا تعطّل نظام التشغيل أو خادم PostgreSQL (مثلًا بسبب انقطاع التيار الكهربائي)، تُفقد كل البيانات المُدرَجة في الذاكرة.</li>
+</ul>
+<p>لذلك فإن قاعدة بيانات بلا WAL معرّضة لأعطال النظام.</p>
+<p>** معلومات تاريخية</p>
+<p>قبل الإصدار 7.1، كان PostgreSQL ينفّذ كتابات متزامنة على القرص بإصدار استدعاء النظام sync كلما تغيّرت صفحة في الذاكرة.</p>
+<p>ومع أن ذلك كان يضمن المتانة، فقد أدى إلى أداء ضعيف لأوامر التعديل مثل INSERT وUPDATE وDELETE.</p>
+<h2 id="912-عمليات-الإدراج-واستعادة-قاعدة-البيانات">9.1.2. عمليات الإدراج واستعادة قاعدة البيانات</h2>
+<p>يدعم PostgreSQL آلية WAL لمنع فقدان البيانات دون المساس بالأداء. ويصف هذا القسم الفرعي المفاهيم الأساسية، وكتابة بيانات WAL، واستعادة قاعدة البيانات.</p>
+<p>يسجّل PostgreSQL جميع التعديلات كبيانات تاريخية في وسيط تخزين دائم. وتُعرف هذه البيانات التاريخية باسم سجلات <strong>XLOG</strong> أو <strong>بيانات WAL</strong>.</p>
+<p>تكتب عمليات التغيير، مثل الإدراج أو الحذف أو الالتزام، سجلات XLOG في <strong>مخزن WAL المؤقت</strong> في الذاكرة. وتُدفع هذه السجلات إلى <strong>ملف قطعة WAL</strong> (WAL segment file) على وسيط التخزين عند الالتزام بالمعاملة أو إلغائها. (تُوصف مُطلِقات أخرى لكتابة سجلات XLOG في القسم 9.5.) ويمثّل <strong>رقم تسلسل السجل (LSN)</strong> المعرّف الفريد والموقع المحدد لسجل XLOG داخل سجل المعاملات.</p>
+<p>عند التفكير في استعادة قاعدة البيانات، يتبادر إلى الذهن سؤال مباشر: من أين تبدأ الاستعادة بالضبط؟ الجواب هو <strong>نقطة إعادة التنفيذ</strong> (REDO point). ونقطة إعادة التنفيذ هي موقع سجل XLOG المكتوب في اللحظة التي بدأت فيها أحدث <strong>نقطة تفتيش</strong> (checkpoint). (تُوصف نقاط التفتيش في القسم 9.7.) ولا تنفصل عملية الاستعادة عن عملية نقطة التفتيش.</p>
+<p>** معلومات</p>
+<p>نُفِّذت آلية WAL وعملية نقطة التفتيش في الوقت نفسه في الإصدار 7.1.</p>
+<p>يصف الشكل 9.2 والخطوات التالية إدراج صف باستخدام WAL.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-02.webp" alt=""></p>
+<h4>الشكل 9.2. عمليات الإدراج باستخدام WAL.</h4>
+<p>** إشارات</p>
+<p>يوضّح «LSN الخاص بالجدول TABLE_A» قيمة 'pd_lsn' داخل ترويسة صفحة TABLE_A. ويُقصد بـ«LSN الخاص بالصفحة» الأمر نفسه.</p>
+<ul>
+<li>(1) تُجري <strong>عملية نقاط التفتيش</strong> (checkpointer) — وهي عملية خلفية — نقاط تفتيش دورية. وفي بداية نقطة التفتيش، تكتب <strong>سجل نقطة تفتيش</strong> يحتوي على أحدث نقطة إعادة تنفيذ إلى قطعة WAL.</li>
+<li>(2) عند تنفيذ عبارة INSERT الأولى، يحمّل PostgreSQL صفحة TABLE_A إلى تجمّع المخزن المؤقت المشترك ويُدرج صفًّا. ثم يكتب سجل XLOG لهذه العبارة في مخزن WAL المؤقت عند LSN_1 ويحدّث ترويسة الصفحة (pd_lsn) للجدول TABLE_A من LSN_0 إلى LSN_1.</li>
+<li>(3) عند الالتزام بالمعاملة، يكتب PostgreSQL سجل XLOG للالتزام في مخزن WAL المؤقت ويدفع جميع السجلات من LSN_1 إلى ملف قطعة WAL.</li>
+<li>(4) عند تنفيذ عبارة INSERT الثانية، يُدرج PostgreSQL صفًّا جديدًا، ويكتب سجل XLOG عند LSN_2، ويحدّث LSN الخاص بالجدول TABLE_A إلى LSN_2.</li>
+<li>(5) عند الالتزام بهذه المعاملة، يدفع PostgreSQL سجلات XLOG كما في الخطوة (3).</li>
+<li>(6) إذا حدث عطل في النظام، تُفقد البيانات الموجودة في تجمّع المخزن المؤقت المشترك. ومع ذلك، فقد حُفظت جميع التعديلات في ملفات قطع WAL.</li>
+</ul>
+<p>عند إعادة التشغيل، يدخل PostgreSQL تلقائيًا في وضع الاستعادة. فيقرأ سجلات XLOG ويعيد تنفيذها بالتسلسل بدءًا من نقطة إعادة التنفيذ (الشكل 9.3).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-03.webp" alt=""></p>
+<h4>الشكل 9.3. استعادة قاعدة البيانات باستخدام WAL.</h4>
+<ul>
+<li>(1) يقرأ PostgreSQL أول سجل XLOG للإدراج ويحمّل صفحة TABLE_A من وسيط التخزين إلى تجمّع المخزن المؤقت المشترك.</li>
+<li>(2) قبل إعادة التنفيذ، يقارن PostgreSQL بين LSN الخاص بسجل XLOG وLSN الخاص بالصفحة. وقواعد إعادة التنفيذ كما يلي: إذا كان LSN الخاص بسجل XLOG أحدث (أكبر) من LSN الخاص بالصفحة، يُدرَج الجزء الخاص بالبيانات من السجل في الصفحة، ويُحدَّث LSN الخاص بالصفحة.</li>
+<li>إذا كان LSN الخاص بسجل XLOG أقدم (أصغر)، يُتخطّى السجل.</li>
+</ul>
+<p>(3) يعيد PostgreSQL تنفيذ جميع السجلات المتبقية بالترتيب الزمني.</p>
+<p>على الرغم من أن كتابة سجلات XLOG تحمل بالتأكيد تكلفة طفيفة، فإنها تتضاءل أمام كلفة كتابة الصفحات المعدَّلة كاملة. ولا شك في أن قدرة تحمّل أعطال النظام المكتسبة تستحق هذه الكلفة.</p>
+<h2 id="913-كتابات-الصفحة-الكاملة">9.1.3. كتابات الصفحة الكاملة</h2>
+<p>إذا تعطّل نظام التشغيل أثناء كتابة صفحة قذرة، فقد تتلف بيانات الصفحة على وسيط التخزين. ولا يمكن إعادة تنفيذ سجلات XLOG على صفحة تالفة.</p>
+<p>لمعالجة ذلك، يستخدم PostgreSQL <strong>كتابات الصفحة الكاملة</strong> (full-page writes). وعند تفعيلها، يكتب PostgreSQL الصفحة كاملة كسجل XLOG خلال أول تعديل على تلك الصفحة بعد نقطة تفتيش. ويسمى هذا السجل <strong>كتلة احتياطية</strong> (backup block) أو <strong>صورة الصفحة الكاملة</strong> (full-page image).</p>
+<p>يوضّح الشكل 9.4 عملية الإدراج مع تفعيل كتابات الصفحة الكاملة.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-04.webp" alt=""></p>
+<h4>الشكل 9.4. كتابات الصفحة الكاملة.</h4>
+<ul>
+<li>(1) تبدأ عملية نقاط التفتيش نقطة تفتيش.</li>
+<li>(2) تؤدي عبارة INSERT الأولى إلى إنشاء <strong>كتلة احتياطية</strong> لأنها أول تعديل على الصفحة منذ نقطة التفتيش.</li>
+<li>(3) تُلتزم المعاملة ويُدفع المخزن المؤقت كالمعتاد.</li>
+<li>(4) تنشئ عبارة INSERT الثانية سجل XLOG عاديًا (وليس كتلة احتياطية) لأن الصفحة عُدّلت مرة واحدة بالفعل منذ نقطة التفتيش.</li>
+<li>(5) تُلتزم المعاملة.</li>
+<li>(6) يحدث عطل في نظام التشغيل بينما تكتب عملية نقاط التفتيش صفحة TABLE_A المعدَّلة إلى وسيط التخزين، ما يؤدي إلى تلف الصفحة على قرص التخزين.</li>
+</ul>
+<p>يوضّح الشكل 9.5 عملية الاستعادة.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-05.webp" alt=""></p>
+<h4>الشكل 9.5. استعادة قاعدة البيانات باستخدام الكتلة الاحتياطية.</h4>
+<ul>
+<li>(1) يقرأ PostgreSQL أول سجل XLOG ويحمّل الصفحة التالفة إلى تجمّع المخزن المؤقت.</li>
+<li>(2) بما أن السجل كتلة احتياطية، يُكتب محتوى الصفحة كاملًا فوق الصفحة التالفة بصرف النظر عن قيم LSN. ويُحدَّث LSN الخاص بالصفحة إلى LSN_1. وبذلك تُستعاد الصفحة التالفة.</li>
+<li>(3) تُعاد بعد ذلك تنفيذ الكتل غير الاحتياطية باستخدام قاعدة مقارنة LSN المعتادة.</li>
+</ul>
+<p>تضمن هذه الآلية استعادة قاعدة البيانات حتى إذا حدثت أخطاء في كتابة البيانات بسبب انهيار.</p>
+<p>** WAL والنسخ الاحتياطي والنسخ المتماثل</p>
+<p>كما ذُكر أعلاه، يمنع WAL فقدان البيانات بسبب انهيار العمليات أو نظام التشغيل. ومع ذلك، تُفقد البيانات إذا حدث عطل في نظام الملفات أو في وسيط التخزين. ولمعالجة مثل هذه الأعطال، يوفّر PostgreSQL ميزتي <a href="/arabic-cs-library/book/postgres-internals/pgsql10/index">النسخ الاحتياطي المتصل</a> و<a href="/arabic-cs-library/book/postgres-internals/pgsql11/index">النسخ المتماثل</a>.</p>
+<ul>
+<li>تتيح النسخ الاحتياطية المتصلة المنتظمة استعادة قاعدة البيانات من أحدث نسخة احتياطية حتى بعد عطل وسيط التخزين. ومع ذلك، لا يمكن استعادة التغييرات التي أُجريت بعد آخر نسخة احتياطية باستخدام تلك النسخة وحدها. فمثلًا، حتى مع نسخة احتياطية يومية تُؤخذ عند الساعة 0:00، إذا حدث عطل في نظام الملفات عند الساعة 8:00، فستُفقد كل التغييرات من 0:00 حتى لحظة العطل.</li>
+<li>تخزّن ميزة النسخ المتماثل المتزامن جميع التغييرات في وسيط تخزين أو مضيف آخر في الوقت الحقيقي. وإذا حدث عطل في وسيط التخزين على الخادم الأساسي، يمكن استعادة البيانات من الخادم الاحتياطي.</li>
+</ul>
+<p>لمزيد من المعلومات، انظر الفصول <a href="/arabic-cs-library/book/postgres-internals/pgsql10/index">10</a> و<a href="/arabic-cs-library/book/postgres-internals/pgsql11/index">11</a> و<a href="/arabic-cs-library/book/postgres-internals/pgsql12/index">12</a> على الترتيب.</p>
+<p>** هل يُغني النسخ المتماثل المتزامن عن النسخ الاحتياطي؟</p>
+<p>لا. لا يُغني النسخ المتماثل المتزامن عن النسخ الاحتياطي.</p>
+<p>يتطلب تشغيل نظام إدارة قواعد البيانات معالجة ليس فقط أعطال العتاد أو البرمجيات، بل أيضًا فقدان البيانات الناتج عن الخطأ البشري أو أخطاء البرمجيات.</p>
+<p>فمثلًا، إذا حُذفت بيانات حساسة عن طريق الخطأ، ينعكس الحذف فورًا على الخادم الاحتياطي. وبالمثل، إذا كُتبت بيانات خاطئة بسبب خطأ ما، ينتشر الخطأ فورًا عبر جميع خوادم النسخ المتماثل.</p>
+<p>في مثل هذه الحالات، لا يمكن للنسخ المتماثل استعادة البيانات المفقودة أو التالفة. وليس أمامك للتعافي من هذه الأعطال سوى استخدام بيانات النسخ الاحتياطي (+ سجلات الأرشيف).</p>
+<h1>9.2. سجل المعاملات وملفات قطع WAL</h1>
+<p>منطقيًا، يكتب PostgreSQL سجلات XLOG في ملف افتراضي بمساحة عناوين من 8 بايتات (16 إكسابايت).</p>
+<p>سعة سجل المعاملات غير محدودة فعليًا. ومع أن مساحة عناوين من 8 بايتات هائلة، فإن إدارة ملف واحد بهذا الحجم مستحيلة. لذلك يقسّم PostgreSQL سجل المعاملات إلى ملفات أصغر، عادةً 16 ميغابايت لكل ملف. ويُعرف كل ملف باسم <strong>قطعة WAL</strong> (WAL segment). انظر الشكل 9.6.</p>
+<p>** حجم ملف قطعة WAL</p>
+<p>في الإصدار 11 أو أحدث، يمكن ضبط حجم ملف قطعة WAL عبر خيار <a href="https://www.postgresql.org/docs/current/static/app-initdb.html">–wal-segsize</a> عند إنشاء تجمّع PostgreSQL باستخدام الأمر <code>initdb</code>.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-06.webp" alt=""></p>
+<h4>الشكل 9.6. سجل المعاملات وملفات قطع WAL</h4>
+<p>اسم ملف قطعة WAL عدد سداسي عشري من 24 خانة. وقاعدة التسمية كما يلي:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">WAL segment file name</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">timelineId</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">uint32</span></span><span class="mclose">)</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">16</span><span class="mord text"><span class="mord">M</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">256</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">uint32</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">16</span><span class="mord text"><span class="mord">M</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span> ** timelineId</p>
+<p>يستخدم WAL في PostgreSQL مفهوم <strong>timelineId</strong> (عدد صحيح غير مُوقَّع من 4 بايتات) من أجل الاستعادة الزمنية (PITR)، وهو ما يُوصف في <a href="/arabic-cs-library/book/postgres-internals/pgsql10/index">الفصل 10</a>.</p>
+<p>ومع ذلك، يبقى timelineId ثابتًا عند 0x00000001 في هذا الفصل لتبسيط الأوصاف التالية.</p>
+<p>أول ملف قطعة WAL هو 000000010000000000000001. وعندما تمتلئ سجلات XLOG الملف الأول، يوفّر PostgreSQL الملف الثاني: 000000010000000000000002. وتُستخدم الملفات بترتيب تصاعدي. وبعد امتلاء 0000000100000000000000FF، يكون الملف الموفَّر هو 000000010000000100000000. وبهذه الطريقة يزداد العدد المكوّن من 8 خانات في الوسط بمقدار واحد كلما حُملت الخانتان الأخيرتان.</p>
+<p>وبالمثل، بعد امتلاء 0000000100000001000000FF، يوفّر PostgreSQL الملف 000000010000000200000000، وهكذا.</p>
+<p>** pg_xlogfile_name / pg_walfile_name</p>
+<p>تحدّد الدالة المدمجة pg_xlogfile_name (في الإصدار 9.6 أو أقدم) أو pg_walfile_name (في الإصدار 10 أو أحدث) اسم ملف قطعة WAL الذي يحتوي على LSN محدَّد.</p>
+<p>وفيما يلي مثال:</p>
+<pre><code>testdb=# SELECT pg_xlogfile_name('1/00002D3E');  # In versions 10 or later, &amp;#34;SELECT pg_walfile_name('1/00002D3E');&amp;#34;
+     pg_xlogfile_name
+--------------------------
+ 000000010000000100000000
+(1 row)
+</code></pre>
+<h1>9.3. التخطيط الداخلي لقطعة WAL</h1>
+<p>قطعة WAL ملف بحجم 16 ميغابايت افتراضيًا. وهي مقسّمة داخليًا إلى صفحات من 8192 بايت (8 كيلوبايت). وتحتوي الصفحة الأولى على ترويسة معرّفة بالبنية <code>XLogLongPageHeaderData</code>.</p>
+<p>في المقابل، تحتوي كل الصفحات التالية على معلومات صفحة معرّفة بالبنية <code>XLogPageHeaderData</code>. وبعد ترويسة الصفحة، تُكتب سجلات XLOG في كل صفحة بالتسلسل من البداية. انظر الشكل 9.7.</p>
+<p>** ** XLogLongPageHeaderData</p>
+<pre><code class="language-python">typedef XLogPageHeaderData *XLogPageHeader;
+
+/*
+ * When the XLP_LONG_HEADER flag <span class="hljs-keyword">is</span> <span class="hljs-built_in">set</span>, we store additional fields <span class="hljs-keyword">in</span> the
+ * page header.  (This <span class="hljs-keyword">is</span> ordinarily done just <span class="hljs-keyword">in</span> the first page of an
+ * XLOG file.)	The additional fields serve to identify the file accurately.
+ */
+typedef struct XLogLongPageHeaderData
+{
+	XLogPageHeaderData std;		/* standard header fields */
+	uint64		xlp_sysid;		/* system identifier <span class="hljs-keyword">from</span> pg_control */
+	uint32		xlp_seg_size;	/* just <span class="hljs-keyword">as</span> a cross-check */
+	uint32		xlp_xlog_blcksz;	/* just <span class="hljs-keyword">as</span> a cross-check */
+} XLogLongPageHeaderData;
+</code></pre>
+<p>** ** XLogPageHeaderData</p>
+<pre><code class="language-python">/*
+ * Each page of XLOG file has a header like this:
+ */
+<span class="hljs-comment">#define XLOG_PAGE_MAGIC 0xD113	/* can be used as WAL version indicator */</span>
+
+typedef struct XLogPageHeaderData
+{
+	uint16		xlp_magic;		/* magic value <span class="hljs-keyword">for</span> correctness checks */
+	uint16		xlp_info;		/* flag bits, see below */
+	TimeLineID	xlp_tli;		/* TimeLineID of first record on page */
+	XLogRecPtr	xlp_pageaddr;	/* XLOG address of this page */
+
+	/*
+	 * When there <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> enough space on current page <span class="hljs-keyword">for</span> whole record, we
+	 * <span class="hljs-keyword">continue</span> on the <span class="hljs-built_in">next</span> page.  xlp_rem_len <span class="hljs-keyword">is</span> the number of <span class="hljs-built_in">bytes</span>
+	 * remaining <span class="hljs-keyword">from</span> a previous page; it tracks xl_tot_len <span class="hljs-keyword">in</span> the initial
+	 * header.  Note that the continuation data isn<span class="hljs-string">&#x27;t necessarily aligned.
+	 */
+	uint32		xlp_rem_len;	/* total len of remaining data for record */
+} XLogPageHeaderData;
+</span></code></pre>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-07.webp" alt=""></p>
+<h4>الشكل 9.7. التخطيط الداخلي لملف قطعة WAL.</h4>
+<p>البنيتان XLogLongPageHeaderData وXLogPageHeaderData معرّفتان في <a href="https://github.com/postgres/postgres/blob/master/src/include/access/xlog_internal.h">xlog_internal.h</a>. وقد حُذف وصف هاتين البنيتين هنا لأنه غير مطلوب في الأقسام التالية.</p>
+<h1>9.4. التخطيط الداخلي لسجل XLOG</h1>
+<p>يتكوّن سجل XLOG من جزء ترويسة عامة وأجزاء بيانات مرتبطة به.</p>
+<p>يصف القسم الفرعي الأول بنية الترويسة. ويشرح القسمان الفرعيان المتبقيان بنيتي جزء البيانات للإصدار 9.4 وما قبله، والإصدار 9.5 وما بعده على الترتيب. (تغيّر تنسيق البيانات في الإصدار 9.5 (2016).)</p>
+<p>محتويات القسم</p>
+<ul>
+<li>9.4.1. جزء الترويسة من سجل XLOG</li>
+<li>9.4.2. جزء البيانات من سجل XLOG (الإصدار 9.4 أو أقدم)</li>
+<li>9.4.3. جزء البيانات من سجل XLOG (الإصدار 9.5 أو أحدث)</li>
+</ul>
+<h2 id="941-جزء-الترويسة-من-سجل-xlog">9.4.1. جزء الترويسة من سجل XLOG</h2>
+<p>تحتوي جميع سجلات XLOG على جزء ترويسة عامة معرّف ببنية XLogRecord. وبنية الإصدار 9.4 وما قبله معروضة أدناه:</p>
+<pre><code>typedef struct XLogRecord
+{
+   uint32          xl_tot_len;   /* total len of entire record */
+   TransactionId   xl_xid;       /* xact id */
+   uint32          xl_len;       /* total len of rmgr data. This variable was removed in ver.9.5. */
+   uint8           xl_info;      /* flag bits, see below */
+   RmgrId          xl_rmid;      /* resource manager for this record */
+   /* 2 bytes of padding here, initialize to zero */
+   XLogRecPtr      xl_prev;      /* ptr to previous record in log */
+   pg_crc32        xl_crc;       /* CRC for this record */
+} XLogRecord;
+</code></pre>
+<p>** جزء الترويسة من سجل XLOG في الإصدار 9.5 أو أحدث.</p>
+<p>في الإصدار 9.5 أو أحدث، حُذف المتغيّر xl_len من بنية XLogRecord لتحسين التنسيق وتقليل الحجم ببضعة بايتات.</p>
+<p>** ** XLogRecord</p>
+<pre><code>typedef struct XLogRecord
+{
+        uint32          xl_tot_len;             /* total len of entire record */
+        TransactionId 	xl_xid;           	/* xact id */
+        XLogRecPtr      xl_prev;                /* ptr to previous record in log */
+        uint8           xl_info;                /* flag bits, see below */
+        RmgrId          xl_rmid;                /* resource manager for this record */
+        /* 2 bytes of padding here, initialize to zero */
+        pg_crc32c       xl_crc;                 /* CRC for this record */
+        /* XLogRecordBlockHeaders and XLogRecordDataHeader follow, no padding */
+} XLogRecord;
+</code></pre>
+<p>معظم المتغيّرات واضحة بذاتها.</p>
+<p>يرتبط كل من <strong>xl_rmid</strong> و<strong>xl_info</strong> بـ<strong>مديري الموارد</strong> (resource managers)، وهم مجموعات من العمليات الخاصة بميزة WAL، مثل كتابة سجلات XLOG وإعادة تنفيذها. ويميل عدد مديري الموارد إلى الازدياد مع كل إصدار من PostgreSQL.</p>
+<p>يسرد الجدول 9.1 مديري الموارد:</p>
+<table>
+<thead>
+<tr>
+<th>العملية</th>
+<th>مدير الموارد</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>عمليات صفوف الكومة (heap)</td>
+<td>RM_HEAP, RM_HEAP2</td>
+</tr>
+<tr>
+<td>عمليات الفهارس</td>
+<td>RM_BTREE, RM_HASH, RM_GIN, RM_GIST, RM_SPGIST, RM_BRIN</td>
+</tr>
+<tr>
+<td>عمليات المتسلسلات</td>
+<td>RM_SEQ</td>
+</tr>
+<tr>
+<td>عمليات المعاملات</td>
+<td>RM_XACT, RM_MULTIXACT, RM_CLOG, RM_XLOG, RM_COMMIT_TS</td>
+</tr>
+<tr>
+<td>عمليات فضاءات الجداول</td>
+<td>RM_SMGR, RM_DBASE, RM_TBLSPC, RM_RELMAP</td>
+</tr>
+<tr>
+<td>عمليات النسخ المتماثل</td>
+<td>RM_STANDBY, RM_REPLORIGIN, RM_GENERIC_ID, RM_LOGICALMSG_ID</td>
+</tr>
+</tbody>
+</table>
+<p>وفيما يلي أمثلة تمثيلية على كيفية عمل مديري الموارد:</p>
+<ul>
+<li>عند تنفيذ عبارة INSERT، يُضبط المتغيّران xl_rmid وxl_info في الترويسة على RM_HEAP وXLOG_HEAP_INSERT على الترتيب. وأثناء استعادة قاعدة البيانات، يختار PostgreSQL الدالة heap_xlog_insert() من RM_HEAP بناءً على xl_info لإعادة تنفيذ السجل.</li>
+<li>في عبارة UPDATE، يُضبط xl_info على XLOG_HEAP_UPDATE. وتعيد الدالة heap_xlog_update() تنفيذ السجل أثناء الاستعادة.</li>
+<li>عند الالتزام بمعاملة، يُضبط xl_rmid وxl_info على RM_XACT وXLOG_XACT_COMMIT على الترتيب. وتعيد الدالة xact_redo_commit() تنفيذ هذا السجل أثناء الاستعادة.</li>
+</ul>
+<p>** معلومات</p>
+<p>بنية XLogRecord في الإصدار 9.4 أو أقدم معرّفة في <a href="https://github.com/postgres/postgres/blob/REL9_4_STABLE/src/include/access/xlog.h">xlog.h</a>، وفي الإصدار 9.5 أو أحدث توجد في <a href="https://github.com/postgres/postgres/blob/master/src/include/access/xlogrecord.h">xlogrecord.h</a>.</p>
+<p>الدالتان heap_xlog_insert وheap_xlog_update معرّفتان في <a href="https://github.com/postgres/postgres/blob/master/src/backend/access/heap/heapam.c">heapam.c</a>؛ وxact_redo_commit معرّفة في <a href="https://github.com/postgres/postgres/blob/master/src/backend/access/transam/xact.c">xact.c</a>.</p>
+<h2 id="942-جزء-البيانات-من-سجل-xlog-الإصدار-94-أو-أقدم">9.4.2. جزء البيانات من سجل XLOG (الإصدار 9.4 أو أقدم)</h2>
+<p>يُصنَّف جزء البيانات من سجل XLOG إما ككتلة احتياطية (تحتوي على صفحة كاملة) أو ككتلة غير احتياطية (تحتوي على بيانات تختلف وفقًا للعملية).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-08.webp" alt=""></p>
+<h4>الشكل 9.8. أمثلة على سجلات XLOG (الإصدار 9.4 أو أقدم).</h4>
+<p>تُوصف التخطيطات الداخلية لسجلات XLOG أدناه باستخدام أمثلة محددة.</p>
+<h3 id="9421-الكتلة-الاحتياطية">9.4.2.1. الكتلة الاحتياطية</h3>
+<p>تُعرض الكتلة الاحتياطية في الشكل 9.8(a). وهي تتكوّن من بنيتَي بيانات وكائن بيانات واحد:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية <code>BkpBlock</code>.</li>
+<li>الصفحة كاملة، باستثناء مساحتها الحرة.</li>
+</ol>
+<p>تحتوي بنية <code>BkpBlock</code> على متغيّرات تحدّد الصفحة في تجمّع قاعدة البيانات (relfilenode، ورقم التفريعة (fork) للعلاقة، ورقم الكتلة). كما تخزّن موضع البداية وطول المساحة الحرة في الصفحة.</p>
+<p>** ** BkpBlock</p>
+<pre><code>typedef struct BkpBlock @ include/access/xlog_internal.h
+{
+  RelFileNode node;        /* relation containing block */
+  ForkNumber  fork;        /* fork within the relation */
+  BlockNumber block;       /* block number */
+  uint16      hole_offset; /* number of bytes before &amp;#34;hole&amp;#34; */
+  uint16      hole_length; /* number of bytes in &amp;#34;hole&amp;#34; */
+
+  /* ACTUAL BLOCK DATA FOLLOWS AT END OF STRUCT */
+} BkpBlock;
+</code></pre>
+<h3 id="9422-الكتلة-غير-الاحتياطية">9.4.2.2. الكتلة غير الاحتياطية</h3>
+<p>في الكتل غير الاحتياطية، يختلف تخطيط جزء البيانات وفقًا للعملية. ويُشرح هنا سجل XLOG الخاص بعبارة INSERT كمثال تمثيلي. انظر الشكل 9.8(b). وفي هذه الحالة، يتكوّن سجل XLOG من بنيتَي بيانات وكائن بيانات واحد:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية <code>xl_heap_insert</code>.</li>
+<li>الصف المُدرَج، بعد إزالة بضعة بايتات منه.</li>
+</ol>
+<p>تحتوي بنية <code>xl_heap_insert</code> على متغيّرات تحدّد الصف المُدرَج في تجمّع قاعدة البيانات (relfilenode الخاص بالجدول وTID الخاص بالصف) وعلى علامة ظهور الصف.</p>
+<p>** ** xl_heap_insert</p>
+<pre><code>typedef struct BlockIdData
+{
+   uint16          bi_hi;
+   uint16          bi_lo;
+} BlockIdData;
+
+typedef uint16 OffsetNumber;
+
+typedef struct ItemPointerData
+{
+   BlockIdData     ip_blkid;
+   OffsetNumber    ip_posid;
+}
+
+typedef struct RelFileNode
+{
+   Oid             spcNode;             /* tablespace */
+   Oid             dbNode;              /* database */
+   Oid             relNode;             /* relation */
+} RelFileNode;
+
+typedef struct xl_heaptid
+{
+   RelFileNode     node;
+   ItemPointerData tid;                 /* changed tuple id */
+} xl_heaptid;
+
+typedef struct xl_heap_insert
+{
+   xl_heaptid      target;              /* inserted tuple id */
+   bool            all_visible_cleared; /* PD_ALL_VISIBLE was cleared */
+} xl_heap_insert;
+</code></pre>
+<p>** معلومات</p>
+<p>يرد سبب إزالة بضعة بايتات من الصف المُدرَج في تعليق الشيفرة المصدرية لبنية xl_heap_header:</p>
+<blockquote>
+<p>لا نخزّن الجزء الثابت كاملًا (HeapTupleHeaderData) من الصف المُدرَج أو المُحدَّث في WAL؛ فيمكننا توفير بضعة بايتات بإعادة بناء الحقول المتاحة في مكان آخر من سجل WAL، أو التي لا حاجة أصلًا إلى إعادة بنائها.</p>
+</blockquote>
+<p>وهناك مثال آخر معروض هنا. انظر الشكل 9.8(c).</p>
+<p>سجل XLOG الخاص بنقطة تفتيش بسيط ويتكوّن من بنيتَي بيانات:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية CheckPoint، التي تحتوي على معلومات نقطة التفتيش (انظر القسم 9.7 للتفاصيل).</li>
+</ol>
+<p>** معلومات</p>
+<p>بنية xl_heap_header (الإصدار 9.4 أو أقدم) معرّفة في <a href="https://github.com/postgres/postgres/blob/REL9_4_STABLE/src/include/access/heapam_xlog.h">heapam_xlog.h</a>، بينما بنية CheckPoint معرّفة في <a href="https://github.com/postgres/postgres/blob/REL9_4_STABLE/src/include/catalog/pg_control.h">pg_control.h</a>.</p>
+<h2 id="943-جزء-البيانات-من-سجل-xlog-الإصدار-95-أو-أحدث">9.4.3. جزء البيانات من سجل XLOG (الإصدار 9.5 أو أحدث)</h2>
+<p>في الإصدار 9.4 أو أقدم، لم يكن لسجلات XLOG تنسيق موحّد، إذ كان كل مدير موارد يعرّف تنسيقه الخاص. وقد جعل ذلك صيانة الشيفرة المصدرية وتنفيذ ميزات WAL جديدة يتزايد صعوبة.</p>
+<p>ولمعالجة هذه المشكلة، قدّم الإصدار 9.5 تنسيقًا موحّدًا منظّمًا مستقلًا عن مديري الموارد.</p>
+<p>يتكوّن جزء البيانات من سجل XLOG من جزأين: الترويسة والبيانات. انظر الشكل 9.9.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-09.webp" alt=""></p>
+<h4>الشكل 9.9. التنسيق الموحّد لسجل XLOG.</h4>
+<p>يحتوي جزء الترويسة على صفر أو أكثر من <code>XLogRecordBlockHeaders</code> وصفر أو واحد من <code>XLogRecordDataHeaderShort</code> (أو <code>XLogRecordDataHeaderLong</code>). ويجب أن يحتوي على واحد منها على الأقل.</p>
+<p>عندما يخزّن السجل صورة صفحة كاملة (FPI)، تتضمّن بنية XLogRecordBlockHeader البنية <code>XLogRecordBlockImageHeader</code>. كما تتضمّن البنية <code>XLogRecordBlockCompressHeader</code> إذا كانت الكتلة مضغوطة.</p>
+<p>** ** XLogRecordBlockHeader</p>
+<pre><code>/*
+ * Header info for block data appended to an XLOG record.
+ *
+ * 'data_length' is the length of the rmgr-specific payload data associated
+ * with this block. It does not include the possible full page image, nor
+ * XLogRecordBlockHeader struct itself.
+ *
+ * Note that we don't attempt to align the XLogRecordBlockHeader struct!
+ * So, the struct must be copied to aligned local storage before use.
+ */
+typedef struct XLogRecordBlockHeader
+{
+	uint8		id;				/* block reference ID */
+	uint8		fork_flags;		/* fork within the relation, and flags */
+	uint16		data_length;	/* number of payload bytes (not including page
+								 * image) */
+
+	/* If BKPBLOCK_HAS_IMAGE, an XLogRecordBlockImageHeader struct follows */
+	/* If BKPBLOCK_SAME_REL is not set, a RelFileLocator follows */
+	/* BlockNumber follows */
+} XLogRecordBlockHeader;
+
+/*
+ * The fork number fits in the lower 4 bits in the fork_flags field. The upper
+ * bits are used for flags.
+ */
+#define BKPBLOCK_FORK_MASK	0x0F
+#define BKPBLOCK_FLAG_MASK	0xF0
+#define BKPBLOCK_HAS_IMAGE	0x10	/* block data is an XLogRecordBlockImage */
+#define BKPBLOCK_HAS_DATA	0x20
+#define BKPBLOCK_WILL_INIT	0x40	/* redo will re-init the page */
+#define BKPBLOCK_SAME_REL	0x80	/* RelFileLocator omitted, same as
+									 * previous */
+</code></pre>
+<p>** ** XLogRecordBlockImageHeader</p>
+<pre><code class="language-python">/*
+ * Additional header information when a full-page image <span class="hljs-keyword">is</span> included
+ * (i.e. when BKPBLOCK_HAS_IMAGE <span class="hljs-keyword">is</span> <span class="hljs-built_in">set</span>).
+ *
+ * The XLOG code <span class="hljs-keyword">is</span> aware that PG data pages usually contain an unused &amp;<span class="hljs-comment">#34;hole&amp;#34;</span>
+ * <span class="hljs-keyword">in</span> the middle, which contains only zero <span class="hljs-built_in">bytes</span>.  Since we know that the
+ * &amp;<span class="hljs-comment">#34;hole&amp;#34; is all zeros, we remove it from the stored data (and it&#x27;s not counted</span>
+ * <span class="hljs-keyword">in</span> the XLOG record<span class="hljs-string">&#x27;s CRC, either).  Hence, the amount of block data actually
+ * present is (BLCKSZ - &lt;length of &amp;#34;hole&amp;#34; bytes&gt;).
+ *
+ * Additionally, when wal_compression is enabled, we will try to compress full
+ * page images using one of the supported algorithms, after removing the
+ * &amp;#34;hole&amp;#34;. This can reduce the WAL volume, but at some extra cost of CPU spent
+ * on the compression during WAL logging. In this case, since the &amp;#34;hole&amp;#34;
+ * length cannot be calculated by subtracting the number of page image bytes
+ * from BLCKSZ, basically it needs to be stored as an extra information.
+ * But when no &amp;#34;hole&amp;#34; exists, we can assume that the &amp;#34;hole&amp;#34; length is zero
+ * and no such an extra information needs to be stored. Note that
+ * the original version of page image is stored in WAL instead of the
+ * compressed one if the number of bytes saved by compression is less than
+ * the length of extra information. Hence, when a page image is successfully
+ * compressed, the amount of block data actually present is less than
+ * BLCKSZ - the length of &amp;#34;hole&amp;#34; bytes - the length of extra information.
+ */
+typedef struct XLogRecordBlockImageHeader
+{
+	uint16		length;			/* number of page image bytes */
+	uint16		hole_offset;	/* number of bytes before &amp;#34;hole&amp;#34; */
+	uint8		bimg_info;		/* flag bits, see below */
+
+	/*
+	 * If BKPIMAGE_HAS_HOLE and BKPIMAGE_COMPRESSED(), an
+	 * XLogRecordBlockCompressHeader struct follows.
+	 */
+} XLogRecordBlockImageHeader;
+
+/* Information stored in bimg_info */
+#define BKPIMAGE_HAS_HOLE		0x01	/* page image has &amp;#34;hole&amp;#34; */
+#define BKPIMAGE_APPLY			0x02	/* page image should be restored
+										 * during replay */
+/* compression methods supported */
+#define BKPIMAGE_COMPRESS_PGLZ	0x04
+#define BKPIMAGE_COMPRESS_LZ4	0x08
+#define BKPIMAGE_COMPRESS_ZSTD	0x10
+
+#define	BKPIMAGE_COMPRESSED(info) \\
+	((info &amp; (BKPIMAGE_COMPRESS_PGLZ | BKPIMAGE_COMPRESS_LZ4 | \\
+			  BKPIMAGE_COMPRESS_ZSTD)) != 0)
+</span></code></pre>
+<p>** ** XLogRecordBlockCompressHeader</p>
+<pre><code>/*
+ * Extra header information used when page image has &amp;#34;hole&amp;#34; and
+ * is compressed.
+ */
+typedef struct XLogRecordBlockCompressHeader
+{
+	uint16		hole_length;	/* number of bytes in &amp;#34;hole&amp;#34; */
+} XLogRecordBlockCompressHeader;
+</code></pre>
+<p>** ** XLogRecordDataHeader</p>
+<pre><code>/*
+ * XLogRecordDataHeaderShort/Long are used for the &amp;#34;main data&amp;#34; portion of
+ * the record. If the length of the data is less than 256 bytes, the short
+ * form is used, with a single byte to hold the length. Otherwise the long
+ * form is used.
+ *
+ * (These structs are currently not used in the code, they are here just for
+ * documentation purposes).
+ */
+typedef struct XLogRecordDataHeaderShort
+{
+	uint8		id;				/* XLR_BLOCK_ID_DATA_SHORT */
+	uint8		data_length;	/* number of payload bytes */
+}			XLogRecordDataHeaderShort;
+
+#define SizeOfXLogRecordDataHeaderShort (sizeof(uint8) * 2)
+
+typedef struct XLogRecordDataHeaderLong
+{
+	uint8		id;				/* XLR_BLOCK_ID_DATA_LONG */
+	/* followed by uint32 data_length, unaligned */
+}			XLogRecordDataHeaderLong;
+
+#define SizeOfXLogRecordDataHeaderLong (sizeof(uint8) + sizeof(uint32))
+</code></pre>
+<p>يتكوّن جزء البيانات من صفر أو أكثر من بيانات الكتل وصفر أو واحد من البيانات الرئيسية، وهما يقابلان XLogRecordBlockHeader (أو أكثر) وXLogRecordDataHeader على الترتيب.</p>
+<p>** ضغط WAL</p>
+<p>في الإصدار 9.5 أو أحدث، يمكن ضغط صور الصفحات الكاملة داخل سجلات XLOG بطريقة LZ عبر ضبط “wal_compression = enable”. وفي هذه الحالة تُضاف بنية XLogRecordBlockCompressHeader.</p>
+<p>توفّر هذه الميزة ميزتين: تقليل كلفة الإدخال/الإخراج لكتابة السجلات، وكبح استهلاك ملفات قطع WAL.</p>
+<p>أما العيب فهو زيادة استهلاك موارد المعالج اللازمة للضغط.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-10.webp" alt=""></p>
+<h4>الشكل 9.10. أمثلة على سجلات XLOG (الإصدار 9.5 أو أحدث).</h4>
+<p>وفيما يلي بعض الأمثلة المحددة.</p>
+<h3 id="9431-الكتلة-الاحتياطية">9.4.3.1. الكتلة الاحتياطية</h3>
+<p>تُعرض الكتلة الاحتياطية الناتجة عن عبارة INSERT في الشكل 9.10(a). وهي تتكوّن من أربع بنى بيانات وكائن بيانات واحد:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية XLogRecordBlockHeader، متضمنةً بنية XLogRecordBlockImageHeader واحدة.</li>
+<li>بنية XLogRecordDataHeaderShort.</li>
+<li>كتلة احتياطية (بيانات الكتلة).</li>
+<li>بنية xl_heap_insert (البيانات الرئيسية).</li>
+</ol>
+<p>تحتوي بنية XLogRecordBlockHeader على متغيّرات تحدّد الكتلة في تجمّع قاعدة البيانات (relfilenode، ورقم التفريعة، ورقم الكتلة). وتحوي بنية XLogRecordBlockImageHeader طول هذه الكتلة ورقم إزاحتها.</p>
+<p>وتخزّن بنيتا الترويسة هاتان معًا البيانات نفسها التي كانت تخزّنها بنية BkBlock المستخدمة حتى الإصدار 9.4.</p>
+<h4>قسم البيانات الرئيسية</h4>
+<p>تحوي بنية XLogRecordDataHeaderShort طول بنية xl_heap_insert، التي تعمل كبيانات رئيسية للسجل.</p>
+<p>ويختلف محتوى قسم البيانات الرئيسية في سجل WAL الذي يحتوي على FPI وفقًا للعملية. فمثلًا، تضيف عبارة UPDATE بنى مثل xl_heap_lock أو xl_heap_update.</p>
+<p>وفي سياق الاستعادة الفيزيائية المعتمدة على WAL، تكون البيانات في قسم البيانات الرئيسية للكتلة الاحتياطية زائدة عن الحاجة وتبقى غير مستخدمة، لأن FPI نفسها توفّر الحالة الكاملة للصفحة.</p>
+<p>** النسخ المتماثل المنطقي</p>
+<p>عندما يُضبط <em>wal_level</em> على <strong>logical</strong>، يتغيّر السلوك: فتُلحق بيانات الصف الفعلية صراحةً بقسم البيانات الرئيسية، حتى إذا كانت FPI موجودة. انظر الشكل 9.11.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-11.webp" alt=""></p>
+<h4>الشكل 9.11. سجل XLOG يحتوي على كتلة احتياطية (wal_level = logical).</h4>
+<p>هذا التصميم بالغ الأهمية من أجل <strong>النسخ المتماثل المنطقي</strong>. فهو يتيح لعملية walsender تجاوز FPI الفيزيائية وفكّ ترميز معلومات الصف المخزّنة في البيانات الرئيسية مباشرة. وبذلك يحقّق PostgreSQL عملية فكّ ترميز فعّالة مستقلة عن التخطيط الفيزيائي للصفحة.</p>
+<p>ويضمن ذلك أداءً عاليًا وإنتاجية ثابتة حتى خلال «طفرة نقاط التفتيش» التي يتكرر فيها توليد FPI.</p>
+<h3 id="9432-الكتلة-غير-الاحتياطية">9.4.3.2. الكتلة غير الاحتياطية</h3>
+<p>يُعرض سجل الكتلة غير الاحتياطية الناتج عن عبارة INSERT في الشكل 9.10(b). وهو يتكوّن من أربع بنى بيانات وكائن بيانات واحد:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية XLogRecordBlockHeader.</li>
+<li>بنية XLogRecordDataHeaderShort.</li>
+<li>صف مُدرَج (تحديدًا بنية xl_heap_header وكامل البيانات المُدرَجة).</li>
+<li>بنية <code>xl_heap_insert</code> (البيانات الرئيسية).</li>
+</ol>
+<p>تحتوي بنية XLogRecordBlockHeader على ثلاث قيم (relfilenode، ورقم التفريعة، ورقم الكتلة) لتحديد الكتلة الهدف، وعلى طول جزء بيانات الصف المُدرَج.</p>
+<p>وتحوي بنية XLogRecordDataHeaderShort طول بنية xl_heap_insert.</p>
+<p>وتحوي بنية xl_heap_insert قيمتين فقط: رقم إزاحة الصف داخل الكتلة وعلامة الظهور. وقد بُسِّطت هذه البنية لأن بنية XLogRecordBlockHeader تخزّن الآن معظم البيانات التي كانت تحتوي عليها xl_heap_insert سابقًا.</p>
+<p>** ** xl_heap_insert</p>
+<pre><code>typedef struct xl_heap_insert
+{
+        OffsetNumber	offnum;            /* inserted tuple's offset */
+        uint8           flags;
+
+        /* xl_heap_header &amp; TUPLE DATA in backup block 0 */
+} xl_heap_insert;
+</code></pre>
+<p>يُعرض سجل نقطة تفتيش في الشكل 9.10(c). وهو يتكوّن من ثلاث بنى بيانات:</p>
+<ol>
+<li>بنية XLogRecord (جزء الترويسة).</li>
+<li>بنية XLogRecordDataHeaderShort، التي تحوي طول البيانات الرئيسية.</li>
+<li>بنية CheckPoint (البيانات الرئيسية).</li>
+</ol>
+<p>** معلومات</p>
+<p>بنية xl_heap_header معرّفة في <a href="https://github.com/postgres/postgres/blob/master/src/include/access/htup.h">htup.h</a>، وبنية CheckPoint معرّفة في <a href="https://github.com/postgres/postgres/blob/master/src/include/catalog/pg_control.h">pg_control.h</a>.</p>
+<p>تنسيق XLOG الجديد مُحسَّن لكفاءة التحليل، على الرغم من كونه أكثر تعقيدًا على الإنسان. وبالإضافة إلى ذلك، أصبحت أنواع كثيرة من سجلات XLOG الآن أصغر حجمًا.</p>
+<p>يوضّح الشكلان 9.8 و9.10 أحجام البنى الرئيسية، ما يتيح حساب أحجام السجلات ومقارنتها<a href="#fn:1">1</a>.</p>
+<ol>
+<li>مع أن سجل نقطة التفتيش الجديد أكبر من السابق، فإنه يتضمّن متغيّرات أكثر. <a href="#fnref:1">↩︎</a></li>
+</ol>
+<h1>9.5. كتابة سجلات XLOG</h1>
+<p>يقدّم هذا القسم نظرة شاملة على عملية كتابة سجلات XLOG.</p>
+<p>أولًا، تأمّل العبارة التالية لاستكشاف داخليات PostgreSQL:</p>
+<pre><code>testdb=# INSERT INTO tbl VALUES ('A');
+</code></pre>
+<p>يستدعي تنفيذ هذه العبارة الدالة الداخلية exec_simple_query().</p>
+<p>وفيما يلي الشيفرة الزائفة للدالة exec_simple_query():</p>
+<pre><code class="language-python">exec_simple_query() @postgres.c
+
+(<span class="hljs-number">1</span>) ExtendCLOG() @clog.c                  /* Write the state of this transaction
+                                           * &amp;<span class="hljs-comment">#34;IN_PROGRESS&amp;#34; to the CLOG.</span>
+                                           */
+(<span class="hljs-number">2</span>) heap_insert()@heapam.c                /* Insert a <span class="hljs-built_in">tuple</span>, creates a XLOG record,
+                                           * <span class="hljs-keyword">and</span> invoke the function XLogInsert.
+                                           */
+(<span class="hljs-number">3</span>)   XLogInsert() @xloginsert.c (<span class="hljs-number">9.4</span> <span class="hljs-keyword">or</span> earlier, xlog.c)
+                                          /* Write the XLOG record of the inserted <span class="hljs-built_in">tuple</span>
+                                           *  to the WAL buffer, <span class="hljs-keyword">and</span> update page<span class="hljs-string">&#x27;s pd_lsn.
+                                           */
+(4) finish_xact_command() @postgres.c     /* Invoke commit action.*/
+      XLogInsert() @xloginsert.c (9.4 or earlier, xlog.c)
+                                          /* Write a XLOG record of this commit action
+                                           * to the WAL buffer.
+                                           */
+(5)   XLogWrite() @xloginsert.c (9.4 or earlier, xlog.c)
+                                          /* Write and flush all XLOG records on
+                                           * the WAL buffer to WAL segment.
+                                           */
+(6) TransactionIdCommitTree() @transam.c  /* Change the state of this transaction
+                                           * from &amp;#34;IN_PROGRESS&amp;#34; to &amp;#34;COMMITTED&amp;#34;
+                                           * on the CLOG.
+                                           */
+</span></code></pre>
+<p>تشرح الأوصاف التالية كل سطر من الشيفرة الزائفة لتوضيح كتابة سجل XLOG. ويقدّم الشكلان 9.12 و9.13 تمثيلين بصريين لهذه العملية.</p>
+<ul>
+<li>(1) تكتب الدالة ExtendCLOG() حالة المعاملة ‘IN_PROGRESS’ في CLOG (الموجود في الذاكرة).</li>
+<li>(2) تُدرج الدالة heap_insert() صف كومة في الصفحة الهدف في تجمّع المخزن المؤقت المشترك، وتنشئ سجل XLOG لتلك الصفحة، وتستدعي XLogInsert().</li>
+<li>(3) تكتب الدالة XLogInsert() سجل XLOG الذي أنشأته heap_insert() في مخزن WAL المؤقت عند LSN_1. ثم تحدّث pd_lsn الخاص بالصفحة المعدَّلة من LSN_0 إلى LSN_1.</li>
+<li>(4) تُنفَّذ الدالة finish_xact_command() للالتزام بهذه المعاملة. فتنشئ سجل XLOG الخاص بعملية الالتزام، ثم تكتب XLogInsert() هذا السجل في مخزن WAL المؤقت عند LSN_2.</li>
+</ul>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-12.webp" alt=""></p>
+<h4>الشكل 9.12. تسلسل كتابة سجلات XLOG.</h4>
+<ul>
+<li>(5) تكتب الدالة XLogWrite() جميع سجلات XLOG من مخزن WAL المؤقت وتدفعها إلى ملف قطعة WAL. وإذا كانت المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-SYNC-METHOD">wal_sync_method</a> مضبوطة على ‘open_sync’ أو ‘open_datasync’، تُكتب السجلات تزامنيًا. وفي هذه الحالة، تكتب الدالة جميع السجلات باستدعاء النظام open() مع العلامة ‘O_SYNC’ أو ‘O_DSYNC’. وإذا كانت المعلمة مضبوطة على ‘fsync’ أو ‘fsync_writethrough’ أو ‘fdatasync’، ينفّذ النظام استدعاء النظام المقابل: fsync() أو fcntl() مع خيار F_FULLFSYNC أو fdatasync(). وتضمن هذه الاستدعاءات كتابة جميع سجلات XLOG إلى وسيط التخزين.</li>
+<li>(6) تغيّر الدالة TransactionIdCommitTree() حالة المعاملة من ‘IN_PROGRESS’ إلى ‘COMMITTED’ في CLOG.</li>
+</ul>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-13.webp" alt=""></p>
+<h4>الشكل 9.13. تسلسل كتابة سجلات XLOG. (تابع من الشكل 9.12)</h4>
+<p>في المثال أعلاه، أدّى الالتزام إلى كتابة سجلات XLOG في قطعة WAL. ومع ذلك، تحدث هذه الكتابة في أي من الحالات التالية:</p>
+<ol>
+<li>التزام معاملة جارية أو إلغاؤها.</li>
+<li>امتلاء مخزن WAL المؤقت. (يعتمد حجم مخزن WAL المؤقت على المعلمة <a href="https://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-WAL-BUFFERS">wal_buffers</a>.)</li>
+<li>الكتابة الدورية لعملية كاتب WAL. (انظر القسم 9.6.1.)</li>
+</ol>
+<p>وإذا حدث أي من ذلك، تُكتب جميع سجلات WAL الموجودة في مخزن WAL المؤقت إلى ملف قطعة WAL بصرف النظر عن حالة الالتزام الخاصة بمعاملاتها.</p>
+<h2 id="951-ملاحظة-حول-كتابة-سجلات-xlog">9.5.1. ملاحظة حول كتابة سجلات XLOG</h2>
+<p>تولّد عمليات لغة معالجة البيانات (DML) عادةً سجلات XLOG، لكن العمليات غير المتعلقة بـDML يمكنها أيضًا توليدها.</p>
+<p>ومن الأمثلة:</p>
+<ul>
+<li>تكتب عملية الالتزام سجل XLOG يحتوي على معرّف المعاملة الملتزمة.</li>
+<li>تكتب عملية نقطة التفتيش سجل XLOG يحتوي على معلومات عامة عن نقطة التفتيش.</li>
+</ul>
+<p>وفي حالات خاصة، تولّد حتى عبارات SELECT سجلات XLOG:</p>
+<ul>
+<li>تولّد عبارة SELECT FOR UPDATE سجلات XLOG لجميع أقفال الصفوف الهدف (<strong>ROW SHARE LOCK</strong>) <a href="#fn:1">1</a>.</li>
+<li>أثناء عمليات الصف فقط في الكومة (HOT)، يكتب النظام سجلات XLOG الخاصة بحذف الصفوف وإزالة تجزئة الصفحة إلى مخزن WAL المؤقت.</li>
+</ul>
+<p>وبالإضافة إلى ذلك، إذا كانت المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> مضبوطة على ‘replica’ أو أعلى، يسجّل PostgreSQL أيضًا <strong>أقفال ACCESS EXCLUSIVE</strong> كسجلات XLOG. ويحدث ذلك عند الحصول صراحةً على قفل ACCESS EXCLUSIVE باستخدام الأمر LOCK، أو عند تنفيذ أوامر مثل DROP TABLE وTRUNCATE. راجع القسم 11.2.4 للتفاصيل.</p>
+<ol>
+<li>يُبلّغ المستخدمون أحيانًا عن زيادات غير متوقعة في استهلاك قطع WAL رغم تنفيذ أوامر SELECT فقط. وفي مثل هذه الحالات، تحقّق مما إذا كانت أوامر SELECT FOR UPDATE قيد التنفيذ. <a href="#fnref:1">↩︎</a></li>
+</ol>
+<h1>9.6. عمليات WAL ذات الصلة</h1>
+<h2 id="961-عملية-كاتب-wal">9.6.1. عملية كاتب WAL</h2>
+<p>كاتب WAL عملية خلفية تفحص مخزن WAL المؤقت دوريًا وتكتب جميع سجلات XLOG غير المكتوبة إلى قطع WAL. وتساعد هذه العملية على تجنّب اندفاعات كتابة XLOG. وإذا لم يكن كاتب WAL مفعّلًا، فقد تصبح كتابة XLOG عنق زجاجة عند الالتزام بكمية كبيرة من البيانات دفعة واحدة.</p>
+<p>كاتب WAL مفعّل افتراضيًا ولا يمكن تعطيله. وتضبط معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-WRITER-DELAY">wal_writer_delay</a> فترة الفحص، وقيمتها الافتراضية 200 ميلي ثانية.</p>
+<h2 id="962-عملية-ملخص-wal">9.6.2. عملية مُلخِّص WAL</h2>
+<p>أُدخلت في الإصدار 17 (2024) لدعم النسخ الاحتياطية التزايدية (الموصوفة في القسم 10.5)، وتتتبّع عملية مُلخِّص WAL التغييرات في جميع كتل قاعدة البيانات، بما فيها العلاقات وخرائط الظهور.</p>
+<p>وتكتب هذه التعديلات في ملفات ملخّص WAL في الدليل <code>$PGDATA/pg_wal/summaries/</code>.</p>
+<p>وتفعّل معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-SUMMARIZE-WAL">summarize_wal</a> هذه العملية؛ وهي معطّلة افتراضيًا.</p>
+<p>لاحظ أن مُلخِّص WAL <strong>لا يتتبّع تفريعة خريطة المساحة الحرة</strong> لأنها لا تُسجَّل في WAL تسجيلًا سليمًا.</p>
+<h3 id="9621-مخطط-عمل-عملية-ملخص-wal">9.6.2.1. مخطط عمل عملية مُلخِّص WAL</h3>
+<p>تعمل عملية مُلخِّص WAL كما يلي:</p>
+<ol>
+<li>أثناء كل نقطة تفتيش، تقرأ العملية ملفات قطع WAL من نقطة إعادة التنفيذ السابقة إلى نقطة إعادة التنفيذ الحالية.</li>
+<li>تتتبّع العملية التغييرات في جميع كتل جميع العلاقات (بما فيها خرائط الظهور) باستخدام ملفات قطع WAL.</li>
+<li>تكتب العملية النتائج في ملفات ملخّص WAL في الدليل “pg_wal/summaries/”.</li>
+</ol>
+<p>وفي هذا السياق، يُشار إلى «نقطة إعادة التنفيذ السابقة» و«نقطة إعادة التنفيذ الحالية» بـ<em>start_lsn</em> و<em>end_lsn</em> على الترتيب.</p>
+<p>ونمط اسم ملف الملخّص كما يلي:</p>
+<ul>
+<li><strong>نمط ملف الملخّص</strong>: <code>{Timeline}{start_lsn}{end_lsn}.summary</code></li>
+</ul>
+<p>وفيما يلي مثال على ملفات الملخّص:</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">ls</span> -1 <span class="hljs-variable">$PGDATA</span>/pg_wal/summaries/
+00000001000000000100002800000000010B1D30.summary
+0000000100000000010B1D300000000001473DE0.summary
+000000010000000001473DE00000000001473EE0.summary
+000000010000000001473EE0000000000147A8A8.summary
+00000001000000000147A8A8000000000147A9A8.summary
+
+... snip ...
+</code></pre>
+<p>تعرض الدالة <a href="https://www.postgresql.org/docs/current/functions-info.html#FUNCTIONS-INFO-WAL-SUMMARY">pg_available_wal_summaries()</a> ملخّصات WAL:</p>
+<pre><code>testdb=# SELECT tli, start_lsn, end_lsn FROM pg_available_wal_summaries() ORDER BY start_lsn;
+ tli | start_lsn  |  end_lsn
+-----+------------+------------
+   1 | 0/1000028  | 0/10B1D30
+   1 | 0/10B1D30  | 0/1473DE0
+   1 | 0/1473DE0  | 0/1473EE0
+   1 | 0/1473EE0  | 0/147A8A8
+   1 | 0/147A8A8  | 0/147A9A8
+
+... snip ...
+</code></pre>
+<p>يحذف PostgreSQL ملفات الملخّص تلقائيًا بعد مرور المدة التي تحدّدها <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-SUMMARY-KEEP-TIME">wal_summary_keep_time</a> (افتراضيًا 10 أيام) منذ إنشائها.</p>
+<h3 id="9622-محتويات-ملف-الملخص">9.6.2.2. محتويات ملف الملخّص</h3>
+<p>لتوضيح محتوى ملف الملخّص، ينشئ المثال التالي أربعة جداول (t1 وt2 وt3 وt4)، يتكوّن كل منها من أربع كتل.</p>
+<pre><code class="language-sql">testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE TABLE</span> t1 (id <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t1 <span class="hljs-keyword">SELECT</span>  GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">800</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">800</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> pg_freespace(<span class="hljs-string">&#x27;t1&#x27;</span>);
+ blkno <span class="hljs-operator">|</span> avail
+<span class="hljs-comment">-------+-------</span>
+     <span class="hljs-number">0</span> <span class="hljs-operator">|</span>     <span class="hljs-number">0</span>
+     <span class="hljs-number">1</span> <span class="hljs-operator">|</span>     <span class="hljs-number">0</span>
+     <span class="hljs-number">2</span> <span class="hljs-operator">|</span>     <span class="hljs-number">0</span>
+     <span class="hljs-number">3</span> <span class="hljs-operator">|</span>     <span class="hljs-number">0</span>
+(<span class="hljs-number">4</span> <span class="hljs-keyword">rows</span>)
+
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE TABLE</span> t2 (id <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t2 <span class="hljs-keyword">SELECT</span>  GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">800</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">800</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE TABLE</span> t3 (id <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t3 <span class="hljs-keyword">SELECT</span>  GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">800</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">800</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE TABLE</span> t4 (id <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t4 <span class="hljs-keyword">SELECT</span>  GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">800</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">800</span>
+testdb<span class="hljs-operator">=</span># CHECKPOINT;
+CHECKPOINT
+</code></pre>
+<p>وبعد تنفيذ CHECKPOINT، تُنفَّذ العمليات التالية:</p>
+<ul>
+<li>[1] تحديث صفّين في الجدول t1.</li>
+<li>[2] إدراج 150 صفًّا في الجدول t2.</li>
+<li>[3] حذف 300 صف من الجدول t3.</li>
+<li>[4] اقتطاع جميع الصفوف من الجدول t4.</li>
+<li>[5] إنشاء جدول جديد t5 وإدراج 800 صف فيه.</li>
+</ul>
+<pre><code class="language-sql">testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- [1] Update two rows to modify the blocks of t1</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> t1 <span class="hljs-keyword">SET</span> id <span class="hljs-operator">=</span> id <span class="hljs-operator">+</span> <span class="hljs-number">1000</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">OR</span> id <span class="hljs-operator">=</span> <span class="hljs-number">200</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">2</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- [2] Insert 150 rows to modify the last block and add a new block</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t2 <span class="hljs-keyword">SELECT</span> GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">150</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">150</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- [3] Delete 500 rows to remove blocks</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> t3 <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">&gt;</span> <span class="hljs-number">300</span>;
+<span class="hljs-keyword">DELETE</span> <span class="hljs-number">500</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- [4] Truncate all blocks</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">TRUNCATE</span> t4;
+<span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- [5] Create new table</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE TABLE</span> t5 (id <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">INSERT INTO</span> t5 <span class="hljs-keyword">SELECT</span>  GENERATE_SERIES(<span class="hljs-number">1</span>, <span class="hljs-number">800</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">800</span>
+testdb<span class="hljs-operator">=</span># CHECKPOINT;
+CHECKPOINT
+</code></pre>
+<p>تعرض الدالة <a href="https://www.postgresql.org/docs/current/functions-info.html#FUNCTIONS-INFO-WAL-SUMMARY">pg_wal_summary_contents(timeline, start_lsn, end_lsn)</a> جميع الكتل المتغيّرة بين ‘start_lsn’ و’end_lsn’. ويتضمّن الخرج filenode (OID)، ورقم الكتلة، ورقم التفريعة، وعلامة ‘is_limit_block’.</p>
+<h4>[1] كتل معدَّلة</h4>
+<p>يُحدَّث صفّان في الجدول t1.</p>
+<pre><code class="language-sql">testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">UPDATE</span> t1 <span class="hljs-keyword">SET</span> id <span class="hljs-operator">=</span> id <span class="hljs-operator">+</span> <span class="hljs-number">1000</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">OR</span> id <span class="hljs-operator">=</span> <span class="hljs-number">200</span>;
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-number">2</span>
+</code></pre>
+<p>تسترجع الدالة pg_wal_summary_contents() بيانات الملخّص:</p>
+<pre><code>testdb=# SELECT p.relname, s.relforknumber, s.relblocknumber, s.is_limit_block
+testdb-# 	FROM pg_wal_summary_contents(1, '0/1F4225F8', '0/1F476450') AS s, pg_class AS p
+testdb-#  	WHERE s.relfilenode = p.oid AND p.relname = 't1';
+ relname | relforknumber | relblocknumber | is_limit_block
+---------+---------------+----------------+----------------
+ t1      |             0 |              0 | f
+ t1      |             0 |              3 | f
+(2 rows)
+</code></pre>
+<p>يشير الخرج إلى أن الكتلتين رقم 0 ورقم 3 من الجدول t1 قد عُدِّلتا.</p>
+<p>يوضّح الشكل 9.14 هذه التغييرات استنادًا إلى بيانات الملخّص.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-14.webp" alt=""></p>
+<h4>الشكل 9.14. تعديل الجدول t1.</h4>
+<h4>[2] كتل مضافة</h4>
+<p>أُضيف 150 صفًّا جديدًا إلى الجدول t2.</p>
+<p>عُدِّلت الكتلة الثالثة، وأُضيفت كتلة رابعة جديدة.</p>
+<pre><code class="language-python">testdb=<span class="hljs-comment"># SELECT p.relname, s.relforknumber, s.relblocknumber, s.is_limit_block</span>
+testdb-<span class="hljs-comment"># 	FROM pg_wal_summary_contents(1, &#x27;0/1F4225F8&#x27;, &#x27;0/1F476450&#x27;) AS s, pg_class AS p</span>
+testdb-<span class="hljs-comment">#  	WHERE s.relfilenode = p.oid AND p.relname = &#x27;t2&#x27;;</span>
+ relname | relforknumber | relblocknumber | is_limit_block
+---------+---------------+----------------+----------------
+ t2      |             <span class="hljs-number">0</span> |              <span class="hljs-number">3</span> | f
+ t2      |             <span class="hljs-number">0</span> |              <span class="hljs-number">4</span> | f
+(<span class="hljs-number">2</span> rows)
+
+testdb=<span class="hljs-comment"># select * from pg_freespace(&#x27;t2&#x27;);</span>
+ blkno | avail
+-------+-------
+     <span class="hljs-number">0</span> |     <span class="hljs-number">0</span>
+     <span class="hljs-number">1</span> |     <span class="hljs-number">0</span>
+     <span class="hljs-number">2</span> |     <span class="hljs-number">0</span>
+     <span class="hljs-number">3</span> |     <span class="hljs-number">0</span>
+     <span class="hljs-number">4</span> |     <span class="hljs-number">0</span>
+(<span class="hljs-number">5</span> rows)
+</code></pre>
+<p>يوضّح الشكل 9.15 هذه الإضافات.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-15.webp" alt=""></p>
+<h4>الشكل 9.15. تعديل الجدول t2.</h4>
+<h4>[3] كتل مُزالة</h4>
+<p>عند حذف كتل بعد رقم كتلة معيّن، تسجّل العملية الكتلة الحدّية وتضبط <strong>is_limit_block</strong> على <strong>true</strong>. وتعمل هذه الكتلة الحدّية ككتلة إنهاء افتراضية.</p>
+<p>في الجدول t3، حُذف 500 صف.</p>
+<pre><code class="language-python">testdb=<span class="hljs-comment"># SELECT p.relname, s.relforknumber, s.relblocknumber, s.is_limit_block</span>
+testdb-<span class="hljs-comment"># 	FROM pg_wal_summary_contents(1, &#x27;0/1F4225F8&#x27;, &#x27;0/1F476450&#x27;) AS s, pg_class AS p</span>
+testdb-<span class="hljs-comment">#  	WHERE s.relfilenode = p.oid AND p.relname = &#x27;t3&#x27;;</span>
+ relname | relforknumber | relblocknumber | is_limit_block
+---------+---------------+----------------+----------------
+ t3      |             <span class="hljs-number">0</span> |              <span class="hljs-number">2</span> | t
+ t3      |             <span class="hljs-number">0</span> |              <span class="hljs-number">1</span> | f
+ t3      |             <span class="hljs-number">0</span> |              <span class="hljs-number">0</span> | f
+ t3      |             <span class="hljs-number">2</span> |              <span class="hljs-number">2</span> | t
+ t3      |             <span class="hljs-number">2</span> |              <span class="hljs-number">0</span> | f
+(<span class="hljs-number">5</span> rows)
+
+testdb=<span class="hljs-comment"># select * from pg_freespace(&#x27;t3&#x27;);</span>
+ blkno | avail
+-------+-------
+     <span class="hljs-number">0</span> |     <span class="hljs-number">0</span>
+     <span class="hljs-number">1</span> |  <span class="hljs-number">5472</span>
+(<span class="hljs-number">2</span> rows)
+</code></pre>
+<p>في هذه الحالة، تُعلَّم الكتلة الثانية من الجدول t3 ككتلة حدّية بضبط is_limit_block على true؛ وتُحدَّث خريطة الظهور المقابلة (التفريعة 2) بالطريقة نفسها.</p>
+<p>وبناءً على ذلك، يُظهر الخرج أن الكتلتين الثانية والثالثة قد أُزيلتا، وأن الكتلة الثانية من خريطة ظهور t3 قد أُزيلت، وأن الكتلتين المتبقيتين رقم 0 ورقم 1 قد عُدِّلتا.</p>
+<p>يوضّح الشكل 9.16 هذه التعديلات.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-16.webp" alt=""></p>
+<h4>الشكل 9.16. تعديل الجدول t3.</h4>
+<h4>[4] اقتطاع جميع الكتل</h4>
+<p>عند اقتطاع الجدول t4، يُضبط رقم الكتلة لجميع الكتل المرتبطة على 0، وتُضبط <strong>is_limit_block</strong> على <strong>true</strong>.</p>
+<pre><code class="language-python">testdb=<span class="hljs-comment"># SELECT p.relname, s.relforknumber, s.relblocknumber, s.is_limit_block</span>
+testdb-<span class="hljs-comment"># 	FROM pg_wal_summary_contents(1, &#x27;0/1F4225F8&#x27;, &#x27;0/1F476450&#x27;) AS s, pg_class AS p</span>
+testdb-<span class="hljs-comment">#  	WHERE s.relfilenode = p.oid AND p.relname = &#x27;t4&#x27;;</span>
+ relname | relforknumber | relblocknumber | is_limit_block
+---------+---------------+----------------+----------------
+ t4      |             <span class="hljs-number">0</span> |              <span class="hljs-number">0</span> | t
+ t4      |             <span class="hljs-number">2</span> |              <span class="hljs-number">0</span> | t
+ t4      |             <span class="hljs-number">3</span> |              <span class="hljs-number">0</span> | t  &lt;= fork_num <span class="hljs-number">3</span> <span class="hljs-keyword">is</span> a special number,
+                                                  so the explanation <span class="hljs-keyword">is</span> omitted here.
+(<span class="hljs-number">3</span> rows)
+
+testdb=<span class="hljs-comment"># select * from pg_freespace(&#x27;t4&#x27;);</span>
+ blkno | avail
+-------+-------
+(<span class="hljs-number">0</span> rows)
+</code></pre>
+<p>يوضّح الشكل 9.17 عملية الاقتطاع.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-17.webp" alt=""></p>
+<h4>الشكل 9.17. تعديل الجدول t4.</h4>
+<p>وتحدث النتيجة نفسها عند تنفيذ أمر DROP TABLE.</p>
+<h4>[5] إنشاء جدول جديد</h4>
+<p>عند إنشاء جدول جديد، يُضبط رقم الكتلة على 0، وتُضبط <strong>is_limit_block</strong> على <strong>true</strong>.</p>
+<p>بالنسبة إلى الجدول t5، يحتوي الملخّص في البداية على الكتلة رقم 0 مع ضبط is_limit_block على true. ثم تنشئ عمليات الإدراج اللاحقة الكتل من 0 إلى 3، مع ضبط is_limit_block على false.</p>
+<pre><code>testdb=# SELECT p.relname, s.relforknumber, s.relblocknumber, s.is_limit_block
+testdb-# 	FROM pg_wal_summary_contents(1, '0/1F4225F8', '0/1F476450') AS s, pg_class AS p
+testdb-#  	WHERE s.relfilenode = p.oid AND p.relname = 't5';
+ relname | relforknumber | relblocknumber | is_limit_block
+---------+---------------+----------------+----------------
+ t5      |             0 |              0 | t
+ t5      |             0 |              0 | f
+ t5      |             0 |              1 | f
+ t5      |             0 |              2 | f
+ t5      |             0 |              3 | f
+ t5      |             2 |              0 | f
+(6 rows)
+</code></pre>
+<p>يوضّح الشكل 9.18 إنشاء الجدول t5 وتعبئته.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-18.webp" alt=""></p>
+<h4>الشكل 9.18. تعديل الجدول t5.</h4>
+<h1>9.7. معالجة نقاط التفتيش في PostgreSQL</h1>
+<p>في PostgreSQL، تنفّذ عملية نقاط التفتيش (الخلفية) نقاط التفتيش. وتبدأ هذه العملية عند حدوث أحد الأحداث التالية:</p>
+<ol>
+<li>انقضاء الفترة المضبوطة في <a href="http://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT">checkpoint_timeout</a> منذ نقطة التفتيش السابقة (القيمة الافتراضية 300 ثانية).</li>
+<li>في الإصدار 9.4 أو أقدم، استهلاك عدد ملفات قطع WAL المضبوط في <a href="http://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-CHECKPOINT-SEGMENTS">checkpoint_segments</a> منذ نقطة التفتيش السابقة (القيمة الافتراضية 3).</li>
+<li>في الإصدار 9.5 أو أحدث، تجاوز الحجم الكلي لملفات قطع WAL في الدليل <code>pg_wal</code> (أو <code>pg_xlog</code> في الإصدار 9.6 أو أقدم) لقيمة <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MAX-WAL-SIZE">max_wal_size</a> (القيمة الافتراضية 1 غيغابايت أو 64 ملفًا).</li>
+<li>توقف خادم PostgreSQL في الوضع <em>smart</em> أو <em>fast</em>.</li>
+<li>إصدار مستخدم فائق الأمر <a href="https://www.postgresql.org/docs/current/sql-checkpoint.html">CHECKPOINT</a> يدويًا.</li>
+</ol>
+<p>** معلومات</p>
+<p>في الإصدار 9.1 أو أقدم، وكما ذُكر في القسم 8.6، كانت عملية الكاتب الخلفي تنفّذ كلًا من نقاط التفتيش وكتابة الصفحات القذرة.</p>
+<p>تصف الأقسام الفرعية التالية مخطط نقاط التفتيش وملف <strong>pg_control</strong>، الذي يحتفظ بالبيانات الوصفية لنقطة التفتيش الحالية.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>9.7.1. مخطط معالجة نقاط التفتيش</li>
+<li>9.7.2. ملف pg_control</li>
+</ul>
+<h2 id="971-مخطط-معالجة-نقاط-التفتيش">9.7.1. مخطط معالجة نقاط التفتيش</h2>
+<p>لمعالجة نقاط التفتيش جانبان: التحضير لاستعادة قاعدة البيانات، وتنظيف الصفحات القذرة في تجمّع المخزن المؤقت المشترك.</p>
+<p>يوضّح الشكل 9.19 لمحة عامة عن المعالجة الداخلية.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-19.webp" alt=""></p>
+<h4>الشكل 9.19. المعالجة الداخلية لنقطة تفتيش PostgreSQL.</h4>
+<ul>
+<li>(1) <strong>تخزين نقطة إعادة التنفيذ</strong>: عند بدء نقطة تفتيش، تخزّن عملية نقاط التفتيش نقطة إعادة التنفيذ في الذاكرة. ونقطة إعادة التنفيذ هي LSN الخاص بسجل XLOG المكتوب في لحظة بدء نقطة التفتيش. وتبدأ استعادة قاعدة البيانات من هذه النقطة.</li>
+<li>(2) <strong>دفع الذاكرة المشتركة</strong>: تدفع عملية نقاط التفتيش جميع البيانات الموجودة في الذاكرة المشتركة (مثل محتويات clog) إلى وسيط التخزين.</li>
+<li>(3) <strong>دفع الصفحات القذرة</strong>: تكتب عملية نقاط التفتيش تدريجيًا جميع الصفحات القذرة في تجمّع المخزن المؤقت المشترك وتدفعها إلى وسيط التخزين.</li>
+<li>(4) <strong>كتابة سجل نقطة التفتيش</strong>: تكتب عملية نقاط التفتيش سجل XLOG لنقطة التفتيش هذه في مخزن WAL المؤقت. وتعرّف بنية <code>CheckPoint</code> جزء البيانات من هذا السجل، وتحتوي على متغيّرات مثل نقطة إعادة التنفيذ. ويسمى موضع كتابة سجل نقطة التفتيش <em>checkpoint</em>.</li>
+<li>(5) <strong>تحديث pg_control</strong>: تحدّث عملية نقاط التفتيش <strong>ملف pg_control</strong>. ويحتوي هذا الملف على معلومات أساسية، مثل موضع نقطة التفتيش.</li>
+</ul>
+<p>** ** struct CheckPoint</p>
+<pre><code class="language-python">typedef struct CheckPoint
+{
+  XLogRecPtr      redo;           /* <span class="hljs-built_in">next</span> RecPtr available when we began to
+                                   * create CheckPoint (i.e. REDO start point) */
+  TimeLineID      ThisTimeLineID; /* current TLI */
+  TimeLineID      PrevTimeLineID; /* previous TLI, <span class="hljs-keyword">if</span> this record begins a new
+                                   * timeline (equals ThisTimeLineID otherwise) */
+  <span class="hljs-built_in">bool</span>            fullPageWrites; /* current full_page_writes */
+  uint32          nextXidEpoch;   /* higher-order bits of nextXid */
+  TransactionId   nextXid;        /* <span class="hljs-built_in">next</span> free XID */
+  Oid             nextOid;        /* <span class="hljs-built_in">next</span> free OID */
+  MultiXactId     nextMulti;      /* <span class="hljs-built_in">next</span> free MultiXactId */
+  MultiXactOffset nextMultiOffset;/* <span class="hljs-built_in">next</span> free MultiXact offset */
+  TransactionId   oldestXid;      /* cluster-wide minimum datfrozenxid */
+  Oid             oldestXidDB;    /* database <span class="hljs-keyword">with</span> minimum datfrozenxid */
+  MultiXactId     oldestMulti;    /* cluster-wide minimum datminmxid */
+  Oid             oldestMultiDB;  /* database <span class="hljs-keyword">with</span> minimum datminmxid */
+  pg_time_t       time;           /* time stamp of checkpoint */
+
+ /*
+  * Oldest XID still running. This <span class="hljs-keyword">is</span> only needed to initialize hot standby
+  * mode <span class="hljs-keyword">from</span> an online checkpoint, so we only bother calculating this <span class="hljs-keyword">for</span>
+  * online checkpoints <span class="hljs-keyword">and</span> only when wal_level <span class="hljs-keyword">is</span> hot_standby. Otherwise
+  * i<span class="hljs-string">t&#x27;s set to InvalidTransactionId.
+  */
+  TransactionId oldestActiveXid;
+} CheckPoint;
+</span></code></pre>
+<h2 id="972-ملف-pgcontrol">9.7.2. ملف pg_control</h2>
+<p>ملف pg_control ضروري لاستعادة قاعدة البيانات لأنه يحتوي على معلومات نقطة التفتيش الأساسية. وإذا تلف هذا الملف أو تعذّرت قراءته، فلا يمكن أن تبدأ عملية الاستعادة لأن نقطة البداية مفقودة.</p>
+<p>ومع أن ملف pg_control يخزّن أكثر من 40 عنصرًا، فإن ثلاثة عناصر وثيقة الصلة بالقسم التالي معروضة أدناه:</p>
+<ul>
+<li><strong>State</strong>: حالة خادم قاعدة البيانات عند بدء أحدث نقطة تفتيش. وتوجد سبع حالات إجمالًا، منها: <strong>start up:</strong> النظام قيد بدء التشغيل.</li>
+<li><strong>shut down:</strong> النظام قيد الإيقاف الطبيعي.</li>
+<li><strong>in production:</strong> النظام يعمل.</li>
+</ul>
+<p><strong>Latest checkpoint location</strong>: LSN الخاص بأحدث سجل نقطة تفتيش.</p>
+<p>يُخزَّن ملف pg_control في الدليل الفرعي <code>$PGDATA/global</code> من الدليل الأساسي. وتعرض أداة <a href="https://www.postgresql.org/docs/current/app-pgcontroldata.html">pg_controldata</a> محتوياته.</p>
+<pre><code class="language-bash">$ pg_controldata  <span class="hljs-variable">$PGDATA</span>
+pg_control version number:            1300
+Catalog version number:               202306141
+Database system identifier:           7250496631638317596
+Database cluster state:               <span class="hljs-keyword">in</span> production
+pg_control last modified:             Mon Jan 1 15:16:38 2024
+Latest checkpoint location:           0/16AF0090
+Latest checkpoint<span class="hljs-string">&#x27;s REDO location:    0/16AF0090
+Latest checkpoint&#x27;</span>s REDO WAL file:    000000010000000000000016
+
+... snip ...
+</code></pre>
+<p>** إزالة نقطة التفتيش السابقة في PostgreSQL 11</p>
+<p>حتى الإصدار 10، كان PostgreSQL يحتفظ بقطع WAL تحتوي على آخر نقطتَي إعادة تنفيذ — «نقطة إعادة التنفيذ لأحدث نقطة تفتيش» و«نقطة إعادة التنفيذ لنقطة التفتيش السابقة». وكان ذلك احتياطًا في حال تعذّر قراءة أحدث نقطة إعادة تنفيذ.</p>
+<p>ومع ذلك، تخزّن الإصدارات 11 (2018) وما بعدها أحدث نقطة إعادة تنفيذ فقط لتوفير مساحة التخزين. ويعكس هذا التغيير تحسّن موثوقية التخزين.</p>
+<p>انظر <a href="https://www.postgresql.org/message-id/E1eC87v-0008E6-Ih%40gemulon.postgresql.org">هذا الموضوع</a> لمزيد من التفاصيل.</p>
+<h1>9.8. استعادة قاعدة البيانات في PostgreSQL</h1>
+<p>ينفّذ PostgreSQL استعادة قائمة على سجل إعادة التنفيذ. وإذا انهار خادم قاعدة البيانات، يستعيد PostgreSQL تجمّع قاعدة البيانات بإعادة تنفيذ سجلات XLOG في ملفات قطع WAL بالتسلسل بدءًا من نقطة إعادة التنفيذ.</p>
+<p>نُوقشت استعادة قاعدة البيانات عدة مرات في الأقسام السابقة. ويغطي هذا القسم جانبين إضافيين من الاستعادة.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>9.8.1. معالجة الاستعادة</li>
+<li>9.8.2. مقارنة LSN وعدم التأثر بالتكرار</li>
+</ul>
+<h2 id="981-معالجة-الاستعادة">9.8.1. معالجة الاستعادة</h2>
+<p>يتعلق الجانب الأول ببدء عملية الاستعادة. فعند تشغيل PostgreSQL، يقرأ ملف pg_control. وتصف التفاصيل التالية عملية الاستعادة من تلك النقطة.</p>
+<p>انظر الشكل 9.20 والوصف التالي.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-20.webp" alt=""></p>
+<h4>الشكل 9.20. تفاصيل عملية الاستعادة.</h4>
+<ul>
+<li>(1) يقرأ PostgreSQL جميع العناصر في ملف pg_control عند بدء التشغيل. وإذا كان عنصر <em>state</em> هو ‘in production’، يدخل PostgreSQL في وضع الاستعادة لأن قاعدة البيانات لم تُوقف إيقافًا طبيعيًا.</li>
+<li>وإذا كانت الحالة ‘shut down’، يدخل PostgreSQL في وضع بدء التشغيل الطبيعي.</li>
+</ul>
+<p>(2) يقرأ PostgreSQL أحدث سجل نقطة تفتيش من ملف قطعة WAL المناسب باستخدام الموقع المسجَّل في ملف pg_control. ثم يسترجع نقطة إعادة التنفيذ من ذلك السجل.</p>
+<p>(3) يقرأ مديرو الموارد سجلات XLOG ويعيدون تنفيذها بالتسلسل من نقطة إعادة التنفيذ حتى نهاية أحدث قطعة WAL.</p>
+<ul>
+<li>إذا كان سجل XLOG المعاد تنفيذه كتلة احتياطية، يكتب المدير فوق صفحة الجدول المقابلة بصرف النظر عن LSN الخاص بها.</li>
+<li>وإلا، فلا يعيد المدير تنفيذ سجل XLOG غير الاحتياطي إلا إذا كان LSN الخاص بالسجل أكبر من pd_lsn الخاص بالصفحة المقابلة.</li>
+</ul>
+<h2 id="982-مقارنة-lsn-وعدم-التأثر-بالتكرار">9.8.2. مقارنة LSN وعدم التأثر بالتكرار</h2>
+<p>تتعلق النقطة الثانية بمقارنة LSN: لماذا يجب مقارنة LSN الخاص بالكتلة غير الاحتياطية مع pd_lsn الخاص بالصفحة المقابلة.</p>
+<p>ويُوضَّح ذلك بمثال محدد يبرز الحاجة إلى هذه المقارنة. انظر الشكلين 9.21 و9.22. (لاحظ أن مخزن WAL المؤقت محذوف لتبسيط الوصف.)</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-21.webp" alt=""></p>
+<h4>الشكل 9.21. عمليات الإدراج أثناء عمل الكاتب الخلفي.</h4>
+<ul>
+<li>(1) يُدرج PostgreSQL صفًّا في الجدول TABLE_A ويكتب سجل XLOG عند LSN_1.</li>
+<li>(2) تكتب عملية نقاط التفتيش صفحة TABLE_A إلى وسيط التخزين. وعند هذه النقطة، يكون pd_lsn الخاص بالصفحة هو LSN_1.</li>
+<li>(3) يُدرج PostgreSQL صفًّا جديدًا في الجدول TABLE_A ويكتب سجل XLOG عند LSN_2. ولم تُكتب الصفحة المعدَّلة بعد إلى وسيط التخزين.</li>
+</ul>
+<p>في هذا السيناريو، وخلافًا لأمثلة النظرة العامة السابقة، كُتبت صفحة TABLE_A إلى وسيط التخزين مرة واحدة.</p>
+<p>وإذا أُوقفت قاعدة البيانات في الوضع الفوري ثم شُغّلت، تحدث الاستعادة التالية:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-22.webp" alt=""></p>
+<h4>الشكل 9.22. استعادة قاعدة البيانات.</h4>
+<ul>
+<li>(1) يحمّل PostgreSQL أول سجل XLOG وصفحة TABLE_A. ولا يعيد تنفيذ السجل لأن LSN الخاص بالسجل (LSN_1) ليس أكبر من LSN الخاص بالصفحة (وهو أيضًا LSN_1). فلا حاجة لإعادة تنفيذه.</li>
+<li>(2) بعد ذلك، يعيد PostgreSQL تنفيذ سجل XLOG الثاني لأن LSN الخاص بالسجل (LSN_2) أكبر من pd_lsn الحالي لصفحة TABLE_A (LSN_1).</li>
+</ul>
+<p>إذا كان ترتيب إعادة تنفيذ الكتل غير الاحتياطية خاطئًا أو أُعيد تنفيذها أكثر من مرة، يصبح تجمّع قاعدة البيانات غير متسق. ويُظهر ذلك أن عملية إعادة التنفيذ للكتل غير الاحتياطية <strong>ليست عديمة التأثر بالتكرار</strong> (idempotent). ولضمان ترتيب إعادة التنفيذ الصحيح، ينبغي ألا يُعاد تنفيذ سجلات الكتل غير الاحتياطية إلا عندما يكون LSN الخاص بها أكبر من pd_lsn الخاص بالصفحة المقابلة.</p>
+<p>في المقابل، فإن عملية إعادة التنفيذ للكتل الاحتياطية <strong>عديمة التأثر بالتكرار</strong>، أي يمكن إعادة تنفيذ هذه الكتل عدة مرات بصرف النظر عن LSN الخاص بها.</p>
+<h1>9.9. إدارة ملفات قطع WAL</h1>
+<p>يكتب PostgreSQL سجلات XLOG في ملفات قطع WAL المخزّنة في الدليل الفرعي pg_wal (المسمى pg_xlog في الإصدار 9.6 أو أقدم). ويُبدَّل إلى ملف قطعة WAL جديد كلما امتلأ الملف الحالي. ويتغيّر عدد ملفات WAL وفقًا لمعلمات الإعداد ونشاط الخادم.</p>
+<p>وابتداءً من الإصدار 9.4، يمكن لـفتحات النسخ أيضًا التحكم في عدد ملفات WAL بناءً على حالة النسخ المتماثل. علاوة على ذلك، قدّم الإصدار 9.5 تحسينات على سياسة إدارة ملفات قطع WAL.</p>
+<p>تصف الأقسام الفرعية التالية تبديل ملفات قطع WAL وطرق الإدارة الأساسية.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>9.9.1. تبديل قطع WAL</li>
+<li>9.9.2. إدارة قطع WAL</li>
+</ul>
+<h2 id="991-تبديل-قطع-wal">9.9.1. تبديل قطع WAL</h2>
+<p>تحدث عمليات تبديل قطع WAL عند حدوث أي من الأحداث التالية:</p>
+<ol>
+<li>امتلاء قطعة WAL.</li>
+<li>استدعاء الدالة <a href="http://www.postgresql.org/docs/current/static/functions-admin.html#FUNCTIONS-ADMIN-BACKUP">pg_switch_wal()</a> (أو pg_switch_xlog() في الإصدارات الأقدم).</li>
+<li>تفعيل المعلمة <a href="http://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-ARCHIVE-MODE">archive_mode</a> وانقضاء مهلة <a href="http://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-ARCHIVE-TIMEOUT">archive_timeout</a>.</li>
+</ol>
+<p>عند تبديل ملف قطعة WAL، يعيد PostgreSQL تدويره عادةً (بإعادة تسميته وإعادة استخدامه) للاستخدام المستقبلي. ومع ذلك، قد يُحذف الملف لاحقًا إذا لم تعد هناك حاجة إليه.</p>
+<h2 id="992-إدارة-قطع-wal">9.9.2. إدارة قطع WAL</h2>
+<p>كلما بدأت نقطة تفتيش، يقدّر PostgreSQL عدد ملفات قطع WAL اللازمة لدورة نقطة التفتيش التالية ويجهّزها. ويستند هذا التقدير إلى استهلاك WAL في دورات نقاط التفتيش السابقة.</p>
+<p>ويبدأ عدّ ملفات قطع WAL من القطعة التي تحتوي على نقطة إعادة التنفيذ. ويجب أن تكون هذه القيمة بين <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MIN-WAL-SIZE">min_wal_size</a> (افتراضيًا 80 ميغابايت، أو 5 ملفات) و<a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-MAX-WAL-SIZE">max_wal_size</a> (افتراضيًا 1 غيغابايت، أو 64 ملفًا).</p>
+<p>وعند بدء نقطة تفتيش، يحتفظ PostgreSQL بملفات قطع WAL اللازمة أو يعيد تدويرها، ويحذف غير اللازمة منها.</p>
+<p>يوضّح الشكل 9.23 مثالًا محددًا.</p>
+<p>لنفترض وجود ستة ملفات قطع WAL قبل بدء نقطة تفتيش، وأن WAL_3 يحتوي على نقطة إعادة التنفيذ. وإذا قدّر PostgreSQL أن خمسة ملفات مطلوبة، يُعاد تسمية WAL_1 إلى WAL_7 لإعادة تدويره، ويُحذف WAL_2.</p>
+<p>** معلومات</p>
+<p>يمكن حذف الملفات الأقدم من الملف الذي يحتوي على نقطة إعادة التنفيذ لأن آلية الاستعادة الموصوفة في القسم 9.8 لا تحتاج إليها أبدًا.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-23.webp" alt=""></p>
+<h4>الشكل 9.23. إعادة تدوير ملفات قطع WAL وحذفها عند نقطة تفتيش.</h4>
+<p>وإذا تطلّب ارتفاع مفاجئ في نشاط WAL مزيدًا من القطع، ينشئ PostgreSQL ملفات قطع WAL جديدة ما دام الحجم الكلي يبقى دون max_wal_size.</p>
+<p>فمثلًا، في الشكل 9.24، إذا امتلأ WAL_7، يُنشأ WAL_8 جديد.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-24.webp" alt=""></p>
+<h4>الشكل 9.24. إنشاء ملف قطعة WAL.</h4>
+<p>يتكيّف عدد ملفات قطع WAL مع نشاط الخادم. وإذا زاد معدل كتابة WAL باستمرار، يزداد العدد المقدَّر للملفات والحجم الكلي تدريجيًا. وبالعكس، إذا انخفض معدل الكتابة، تنخفض هذه القيم.</p>
+<p>وإذا تجاوز الحجم الكلي لملفات قطع WAL قيمة max_wal_size، تبدأ نقطة تفتيش. ويوضّح الشكل 9.25 هذه الحالة. وأثناء نقطة التفتيش، تُنشأ نقطة إعادة تنفيذ جديدة وتُهمل نقطة إعادة التنفيذ القديمة؛ ثم يُعاد تدوير ملفات قطع WAL القديمة غير اللازمة. وبهذه الطريقة، يحتفظ PostgreSQL بملفات قطع WAL المطلوبة لاستعادة قاعدة البيانات فقط.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-25.webp" alt=""></p>
+<h4>الشكل 9.25. نقاط التفتيش وإعادة تدوير ملفات قطع WAL.</h4>
+<h3 id="9921-عوامل-أخرى">9.9.2.1. عوامل أخرى</h3>
+<p>تؤثر المعلمة <a href="http://www.postgresql.org/docs/current/static/runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a> (أو wal_keep_segments في الإصدار 12 أو أقدم) وميزة <a href="http://www.postgresql.org/docs/current/static/warm-standby.html#STREAMING-REPLICATION-SLOTS">فتحة النسخ</a> أيضًا في عدد ملفات قطع WAL.</p>
+<h1>9.10. الأرشفة المستمرة وسجلات الأرشيف</h1>
+<p><strong>الأرشفة المستمرة</strong> ميزة تنسخ ملفات قطع WAL إلى منطقة أرشيف كلما حدث تبديل لقطعة WAL. وتؤدي عملية <em>الأرشفة (الخلفية)</em> هذه المهمة. ويُعرف الملف المنسوخ باسم <strong>سجل الأرشيف</strong>. وتُستخدم هذه الميزة عادةً من أجل النسخ الاحتياطي الفيزيائي الساخن والاستعادة الزمنية (PITR)، وهما موصوفان في <a href="/arabic-cs-library/book/postgres-internals/pgsql10/index">الفصل 10</a>.</p>
+<p>وتحدّد معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> مسار منطقة الأرشيف. فمثلًا، ينسخ الإعداد التالي ملفات قطع WAL إلى الدليل <code>/home/postgres/archives/</code> عند كل تبديل قطعة:</p>
+<pre><code>archive_command = 'cp %p /home/postgres/archives/%f'
+</code></pre>
+<p>وفي هذا الأمر، يمثّل العنصر النائب <code>%p</code> مسار قطعة WAL المصدر، ويمثّل العنصر النائب <code>%f</code> اسم ملف سجل الأرشيف.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql09-fig-9-26.webp" alt="When the WAL segment file WAL_7 is switched, the file is copied to the archival area as Archive log 7."></p>
+<h4>الشكل 9.26. الأرشفة المستمرة.</h4>
+<p>عند تبديل ملف قطعة WAL المسمى WAL_7، يُنسخ الملف إلى منطقة الأرشيف باسم Archive log 7.</p>
+<p>تقبل المعلمة archive_command أي أمر أو أداة يونكس. ويتيح ذلك استخدام <em>scp</em> أو أدوات نسخ احتياطي أخرى لنقل سجلات الأرشيف إلى مضيفات بعيدة، بدلًا من الاعتماد على أوامر النسخ البسيطة.</p>
+<p>** archive_library</p>
+<p>اعتمدت إصدارات PostgreSQL 14 وما قبلها على أوامر الصدفة للأرشفة المستمرة. ومع ذلك، قدّم الإصدار 15 ميزة مكتبة قابلة للتحميل لتمكين الأرشفة المستمرة عبر آليات قائمة على المكتبات.</p>
+<p>لمزيد من التفاصيل، راجع التوثيق الخاص بـ<a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> و<a href="https://www.postgresql.org/docs/current/basic-archive.html">basic_archive</a>.</p>
+<p>** ملاحظة</p>
+<p>لا ينظّف PostgreSQL سجلات الأرشيف تلقائيًا، لذا يجب على المسؤولين إدارة هذه الملفات. وبدون تدخّل، يتزايد عدد سجلات الأرشيف باستمرار.</p>
+<p>وتُعدّ أداة <a href="http://www.postgresql.org/docs/current/static/pgarchivecleanup.html">pg_archivecleanup</a> أداة مفيدة لإدارة ملفات سجل الأرشيف.</p>
+<p>وبالإضافة إلى ذلك، يمكن لأمر <em>find</em> حذف سجلات الأرشيف القديمة. فمثلًا، يحذف الأمر التالي السجلات الأقدم من ثلاثة أيام:</p>
+<pre><code class="language-bash">$ find /home/postgres/archives -mtime +3d -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">rm</span>  -f {} \\;
+</code></pre>
+`,r={book:s,chapter:n,chapterTitle:e,slug:a,title:t,headings:l,html:p};export{s as book,n as chapter,e as chapterTitle,r as default,l as headings,p as html,a as slug,t as title};
