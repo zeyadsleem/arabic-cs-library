@@ -1,0 +1,1605 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>9.3. Red-Black Trees &#8212; OCaml Programming: Correct + Efficient + Beautiful</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../../_static/op.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="9.4. Sequences" href="sequence.html" />
+    <link rel="prev" title="9.2. Amortized Analysis" href="amortized.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint">Using this book as part of a course? Please <a style="color:white" href="https://docs.google.com/forms/d/e/1FAIpQLSfEW65AJPBnk732zZZM9CFpWMobWUkym6Nf-pgslRqqwoWYIA/viewform?usp=preview">let us know</a>!</div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/op_title.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">OCaml Programming: Correct + Efficient + Beautiful</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Preface
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/about.html">
+   About This Book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/install.html">
+   Installing OCaml
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/intro.html">
+   1. Better Programming Through OCaml
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/past.html">
+     1.1. The Past of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/present.html">
+     1.2. The Present of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/future.html">
+     1.3. Look to Your Future
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/3110.html">
+     1.4. A Brief History of CS 3110
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/summary.html">
+     1.5. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../basics/intro.html">
+   2. The Basics of OCaml
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/toplevel.html">
+     2.1. The OCaml Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/compiling.html">
+     2.2. Compiling OCaml Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/expressions.html">
+     2.3. Expressions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/functions.html">
+     2.4. Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/documentation.html">
+     2.5. Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/printing.html">
+     2.6. Printing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/debugging.html">
+     2.7. Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/summary.html">
+     2.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/exercises.html">
+     2.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  OCaml Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data/intro.html">
+   3. Data and Types
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/lists.html">
+     3.1. Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/variants.html">
+     3.2. Variants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/ounit.html">
+     3.3. Unit Testing with OUnit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/records_tuples.html">
+     3.4. Records and Tuples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/pattern_matching_advanced.html">
+     3.5. Advanced Pattern Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/type_synonym.html">
+     3.6. Type Synonyms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/options.html">
+     3.7. Options
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/assoc_list.html">
+     3.8. Association Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/algebraic_data_types.html">
+     3.9. Algebraic Data Types
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exceptions.html">
+     3.10. Exceptions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/trees.html">
+     3.11. Example: Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/nats.html">
+     3.12. Example: Natural Numbers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/summary.html">
+     3.13. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exercises.html">
+     3.14. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../hop/intro.html">
+   4. Higher-Order Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/higher_order.html">
+     4.1. Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/map.html">
+     4.2. Map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/filter.html">
+     4.3. Filter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/fold.html">
+     4.4. Fold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/beyond_lists.html">
+     4.5. Beyond Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/pipelining.html">
+     4.6. Pipelining
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/currying.html">
+     4.7. Currying
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/laws.html">
+     4.8. Algebraic Laws for Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/summary.html">
+     4.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/exercises.html">
+     4.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../modules/intro.html">
+   5. Modular Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_systems.html">
+     5.1. Module Systems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/modules.html">
+     5.2. Modules
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/toplevel.html">
+     5.3. Modules and the Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/encapsulation.html">
+     5.4. Encapsulation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/compilation_units.html">
+     5.5. Compilation Units
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functional_data_structures.html">
+     5.6. Functional Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_type_constraints.html">
+     5.7. Module Type Constraints
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/includes.html">
+     5.8. Includes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functors.html">
+     5.9. Functors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/summary.html">
+     5.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/exercises.html">
+     5.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../mut/intro.html">
+   6. Mutability
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/refs.html">
+     6.1. Refs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/mutable_fields.html">
+     6.2. Mutable Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/arrays.html">
+     6.3. Arrays and Loops
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/summary.html">
+     6.4. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/exercises.html">
+     6.5. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../conc/intro.html">
+   7. Concurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/concurrency.html">
+     7.1. Concurrency
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/promises.html">
+     7.2. Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_promises.html">
+     7.3. Implementing Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/io_promises.html">
+     7.4. Asynchronous Input and Output
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/callbacks.html">
+     7.5. Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_callbacks.html">
+     7.6. Implementing Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/full_promises_impl.html">
+     7.7. The Full Promises Implementation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/monads.html">
+     7.8. Monads
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/summary.html">
+     7.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/exercises.html">
+     7.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Correctness and Efficiency
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../correctness/intro.html">
+   8. Correctness
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/specifications.html">
+     8.1. Specifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/function_docs.html">
+     8.2. Function Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/module_docs.html">
+     8.3. Module Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/test_debug.html">
+     8.4. Testing and Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/black_glass_box.html">
+     8.5. Black-box and Glass-box Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/randomized.html">
+     8.6. Randomized Testing with QCheck
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/proving_correctness.html">
+     8.7. Proving Correctness
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/structural_induction.html">
+     8.8. Structural Induction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/eq_spec.html">
+     8.9. Equational Specification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/summary.html">
+     8.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/exercises.html">
+     8.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="intro.html">
+   9. Data Structures
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="hash_tables.html">
+     9.1. Hash Tables
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="amortized.html">
+     9.2. Amortized Analysis
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     9.3. Red-Black Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sequence.html">
+     9.4. Sequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="memoization.html">
+     9.5. Memoization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="parrays.html">
+     9.6. Persistent Arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="twothree.html">
+     9.7. Two-Three Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="summary.html">
+     9.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="exercises.html">
+     9.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Language Implementation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../interp/intro.html">
+   10. Interpreters
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/calculator.html">
+     10.1. Example: Calculator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/parsing.html">
+     10.2. Parsing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/substitution.html">
+     10.3. Substitution Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/environment.html">
+     10.4. Environment Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/typecheck.html">
+     10.5. Type Checking
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/inference.html">
+     10.6. Type Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/summary.html">
+     10.7. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/exercises.html">
+     10.8. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lagniappe
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../adv/curry-howard.html">
+   The Curry-Howard Correspondence
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendix
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/bigoh.html">
+   Big-Oh Notation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/vm.html">
+   Virtual Machine
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/cs3110/textbook/main?urlpath=tree/src/chapters/ds/rb.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/cs3110/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/ds/rb.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/edit/main/src/chapters/ds/rb.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/chapters/ds/rb.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download notebook file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="../../_sources/chapters/ds/rb.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#binary-search-trees">
+   9.3.1. Binary Search Trees
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   9.3.2. Red-Black Trees
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#balance">
+     9.3.2.1. Balance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#membership">
+     9.3.2.2. Membership
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#insertion-okasaki-s-algorithm">
+     9.3.2.3. Insertion: Okasaki’s Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removal">
+     9.3.2.4. Removal
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#maps-and-sets-from-bsts">
+   9.3.3. Maps and Sets from BSTs
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Red-Black Trees</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#binary-search-trees">
+   9.3.1. Binary Search Trees
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   9.3.2. Red-Black Trees
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#balance">
+     9.3.2.1. Balance
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#membership">
+     9.3.2.2. Membership
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#insertion-okasaki-s-algorithm">
+     9.3.2.3. Insertion: Okasaki’s Algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removal">
+     9.3.2.4. Removal
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#maps-and-sets-from-bsts">
+   9.3.3. Maps and Sets from BSTs
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="red-black-trees">
+<h1><span class="section-number">9.3. </span>Red-Black Trees<a class="headerlink" href="#red-black-trees" title="Permalink to this headline">#</a></h1>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/uOKHuYloCsI" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>As we’ve now seen, hash tables are an efficient data structure for implementing
+a map ADT. They offer amortized, expected constant-time performance—which
+is a subtle guarantee because of those “amortized” and “expected” qualifiers we
+have to add. Hash tables also require mutability to implement.  As functional
+programmers, we prefer to avoid mutability when possible.</p>
+<p>So, let’s investigate how to implement functional maps. One of the best data
+structures for that is the <em>red-black tree</em>, which is a kind of balanced binary
+search tree that offers worst-case logarithmic performance. So on one hand the
+performance is somewhat worse than hash tables (logarithmic vs. constant), but
+on the other hand we don’t have to qualify the performance with words like
+“amortized” and “expected”. Logarithmic is actually still plenty efficient for
+even very large workloads. And, we get to avoid mutability!</p>
+<section id="binary-search-trees">
+<h2><span class="section-number">9.3.1. </span>Binary Search Trees<a class="headerlink" href="#binary-search-trees" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/Xx9V5vrkjJA" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>A <strong>binary search tree</strong> (BST) is a binary tree with the following
+representation invariant:</p>
+<blockquote>
+<div><p>For any node <em>n</em>, every node in the left subtree of <em>n</em> has a value less than
+<em>n</em>’s value, and every node in the right subtree of <em>n</em> has a value greater
+than <em>n</em>’s value.</p>
+</div></blockquote>
+<p>We call that the <em>BST Invariant</em>.</p>
+<p>Here is code that implements a couple of operations on a BST:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">tree</span> <span class="o">=</span> <span class="nc">Node</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">tree</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">tree</span> <span class="o">|</span> <span class="nc">Leaf</span>
+
+<span class="c">(** [mem x t] is [true] iff [x] is a member of [t]. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">mem</span> <span class="n">x</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Leaf</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+  <span class="o">|</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">mem</span> <span class="n">x</span> <span class="n">l</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">mem</span> <span class="n">x</span> <span class="n">r</span>
+    <span class="k">else</span> <span class="bp">true</span>
+
+<span class="c">(** [insert x t] is [t] with [x] inserted as a member. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">insert</span> <span class="n">x</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Leaf</span> <span class="o">-&gt;</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">)</span>
+  <span class="o">|</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="k">as</span> <span class="n">t</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">then</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">y</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">r</span><span class="o">)</span>
+    <span class="k">else</span> <span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type &#39;a tree = Node of &#39;a * &#39;a tree * &#39;a tree | Leaf
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val mem : &#39;a -&gt; &#39;a tree -&gt; bool = &lt;fun&gt;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val insert : &#39;a -&gt; &#39;a tree -&gt; &#39;a tree = &lt;fun&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>What is the running time of those operations? Since <code class="docutils literal notranslate"><span class="pre">insert</span></code> is just a <code class="docutils literal notranslate"><span class="pre">mem</span></code>
+with an extra constant-time node creation, we focus on the <code class="docutils literal notranslate"><span class="pre">mem</span></code> operation.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/pFUJgaYUH6o" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>The running time of <code class="docutils literal notranslate"><span class="pre">mem</span></code> is <span class="math notranslate nohighlight">\(O(h)\)</span>, where <span class="math notranslate nohighlight">\(h\)</span> is the height of the tree,
+because every recursive call descends one level in the tree. What’s the
+worst-case height of a tree? It occurs with a tree of <span class="math notranslate nohighlight">\(n\)</span> nodes all in a single
+long branch—imagine adding the numbers 1,2,3,4,5,6,7 in order into the
+tree. So the worst-case running time of <code class="docutils literal notranslate"><span class="pre">mem</span></code> is still <span class="math notranslate nohighlight">\(O(n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the
+number of nodes in the tree.</p>
+<p>What is a good shape for a tree that would allow for fast lookup?
+A <em>perfect binary tree</em>, in which every leaf is at the bottom level, has the smallest possible height for the number of nodes in it.
+Consider this perfect tree:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="nc">Node</span> <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">),</span> <span class="nc">Node</span> <span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>We can draw it like this, where <code class="docutils literal notranslate"><span class="pre">.</span></code> indicates a <code class="docutils literal notranslate"><span class="pre">Leaf</span></code>, and where we depict the height of each level of the tree:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                     <span class="n">Height</span>
+        <span class="mi">2</span>              <span class="mi">2</span>
+       <span class="o">/</span> \
+     <span class="mi">1</span>     <span class="mi">3</span>           <span class="mi">1</span>
+    <span class="o">/</span> \   <span class="o">/</span> \
+   <span class="o">.</span>   <span class="o">.</span> <span class="o">.</span>   <span class="o">.</span>         <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The number of nodes <span class="math notranslate nohighlight">\(n\)</span> in a perfect binary tree is exponential in the tree’s height <span class="math notranslate nohighlight">\(h\)</span>.
+(Note that by “node” here we specifically mean <code class="docutils literal notranslate"><span class="pre">Node</span></code> not <code class="docutils literal notranslate"><span class="pre">Leaf</span></code>.)
+In particular, <span class="math notranslate nohighlight">\(n = 2^h - 1\)</span> (which is a fact that we could prove by induction).
+Therefore <span class="math notranslate nohighlight">\(h = \log_2(n+1)\)</span>, which is <span class="math notranslate nohighlight">\(O(\log n)\)</span>.
+Lookup operations on a perfect binary search tree would therefore run in logarithmic time.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/BGkipOJdH3U" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Of course, not every tree is perfect.
+But if we could keep all paths in the tree close to logarithmic in length, then we could still get good performance.
+A <em>balanced</em> tree data structure does that: when an element is added or removed, the tree shape may be changed to ensure that the path lengths do not grow too long.
+Some examples of balanced binary search tree data structures, in order from strongest to weakest constraints on path lengths, include:</p>
+<ul class="simple">
+<li><p>2-3 trees (Hopcroft, 1970): all paths have the same length.</p></li>
+<li><p>AVL trees (Adelson-Velsky and Landis, 1962): the length of the shortest and longest path differ by at most one.</p></li>
+<li><p>Red-black trees (Guibas and Sedgewick, 1978): the length of the shortest and longest path differ by at most a factor of two.</p></li>
+</ul>
+<p>Each of those data structures ensures <span class="math notranslate nohighlight">\(O(\log n)\)</span> running time.
+Next we will study red-black trees, which have a particularly nice implementation based on algebraic data types and pattern matching.</p>
+</section>
+<section id="id1">
+<h2><span class="section-number">9.3.2. </span>Red-Black Trees<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/JzhG0jDxGqg" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Red-black trees are relatively simple balanced binary tree data structure.
+We color each node of the tree either <em>red</em> or <em>black</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">color</span> <span class="o">=</span> <span class="nc">Red</span> <span class="o">|</span> <span class="nc">Black</span>
+<span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">rbtree</span> <span class="o">=</span> <span class="nc">Leaf</span> <span class="o">|</span> <span class="nc">Node</span> <span class="k">of</span> <span class="n">color</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">rbtree</span> <span class="o">*</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">rbtree</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type color = Red | Black
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type &#39;a rbtree = Leaf | Node of color * &#39;a * &#39;a rbtree * &#39;a rbtree
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that when we write “node” in this discussion we mean the <code class="docutils literal notranslate"><span class="pre">Node</span></code> constructor; <strong>a <code class="docutils literal notranslate"><span class="pre">Leaf</span></code> is not a node.</strong>
+We require the root node of a non-empty tree to be colored black.</p>
+<p>In addition to the binary search tree representation invariant, red-black trees must also satisfy these invariants:</p>
+<ol class="simple">
+<li><p><strong>Local Invariant:</strong> There are no two adjacent red nodes along any path.</p></li>
+<li><p><strong>Global Invariant:</strong> Every <em>full path</em> (a path from the root to a leaf) has the same number of black nodes. This number is called the <em>black height</em> of the tree.</p></li>
+</ol>
+<p>If a tree satisfies these two conditions, it must also be the case that every subtree of the tree also satisfies the conditions.
+If a subtree violated either of the conditions, the whole tree would also.</p>
+<section id="balance">
+<h3><span class="section-number">9.3.2.1. </span>Balance<a class="headerlink" href="#balance" title="Permalink to this headline">#</a></h3>
+<p>The red-black tree invariants ensure that the tree stays balanced.
+The balance is not necessarily perfect — some full paths can be longer than other full paths — but as the following theorem states, the imbalance cannot be too bad.</p>
+<p><strong>Theorem.</strong> The length of the longest full path in a red-black tree is at most twice the length of the shortest full path.</p>
+<p><em>Proof.</em>
+By the Global Invariant, both the longest and shortest full paths must have the same number of black nodes, <span class="math notranslate nohighlight">\(b\)</span>, which is the black height of the tree.
+(If there are ties for the longest full path or the shortest full path, it doesn’t matter. Consider any path among those that are tied.)
+If the shortest has no red nodes, then its length is just <span class="math notranslate nohighlight">\(b\)</span>.
+By the Local Invariant, the longest could at most double that length by adding <span class="math notranslate nohighlight">\(b\)</span> red nodes.
+For example, suppose the shortest full path is B-B-B-B-Leaf, where “B” indicates a black node.
+That has length four.
+What is the longest full path the tree could potentially have given its black height?
+It would be a path that adds one red node after each black node — that is, B-R-B-R-B-R-B-R-Leaf, where “R” indicates a red node.
+The length of that is eight, which is double the length of the shortest. □</p>
+</section>
+<section id="membership">
+<h3><span class="section-number">9.3.2.2. </span>Membership<a class="headerlink" href="#membership" title="Permalink to this headline">#</a></h3>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/gDTCRj2-bCU" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>We check for membership in red-black trees exactly the same way as for binary search trees:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">rec</span> <span class="n">mem</span> <span class="n">x</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Leaf</span> <span class="o">-&gt;</span> <span class="bp">false</span>
+  <span class="o">|</span> <span class="nc">Node</span> <span class="o">(_,</span> <span class="n">y</span><span class="o">,</span> <span class="n">l</span><span class="o">,</span> <span class="n">r</span><span class="o">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">mem</span> <span class="n">x</span> <span class="n">l</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">mem</span> <span class="n">x</span> <span class="n">r</span>
+    <span class="k">else</span> <span class="bp">true</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val mem : &#39;a -&gt; &#39;a rbtree -&gt; bool = &lt;fun&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>What is the efficiency of <code class="docutils literal notranslate"><span class="pre">mem</span></code>?
+In the worst case it recurses down to the lowest leaf in the tree and does not find the element <code class="docutils literal notranslate"><span class="pre">x</span></code> — that is, the running time is determined by the height of the tree.
+The height of a red-black tree is logarithmic in the number of nodes, as the following theorem establishes.</p>
+<p><strong>Theorem.</strong> A red-black tree with <span class="math notranslate nohighlight">\(n\)</span> nodes has height <span class="math notranslate nohighlight">\(h\)</span> that is at most <span class="math notranslate nohighlight">\(O(\log n)\)</span>.</p>
+<p><em>Proof.</em>
+Let <span class="math notranslate nohighlight">\(b\)</span> be the black height of the tree — that is, the number of black nodes on every full path.
+We will use <span class="math notranslate nohighlight">\(b\)</span> to establish a relationship between <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(n\)</span> in the following two lemmas.</p>
+<p>Lemma 1: <span class="math notranslate nohighlight">\(h \leq 2b\)</span>.
+Consider any full path of nodes of length <span class="math notranslate nohighlight">\(h\)</span>.
+There must be <span class="math notranslate nohighlight">\(b\)</span> black nodes on the path.
+If there are some red nodes, then as we argued above in the proof about balance, there can be at most <span class="math notranslate nohighlight">\(b\)</span> of them.
+The path therefore has length at most <span class="math notranslate nohighlight">\(2b\)</span>.
+Thus, <span class="math notranslate nohighlight">\(h \leq 2b\)</span>.</p>
+<p>Lemma 2: <span class="math notranslate nohighlight">\(n \geq 2^b - 1\)</span>.
+Consider the black nodes in the tree.
+Since every full path must have <span class="math notranslate nohighlight">\(b\)</span> black nodes, we could form a perfect tree of height <span class="math notranslate nohighlight">\(b\)</span> out of those nodes.
+(Start at the root, which is black. Keep it. Recurse to each child. If the child is black, keep it. If it is red and has no children, throw it away. If it is red and has children those children must be black; arbitrarily pick one to replace the red node and throw away the other black child.)
+That perfect tree would have at least <span class="math notranslate nohighlight">\(2^b - 1\)</span> nodes, as discussed above.
+Thus, <span class="math notranslate nohighlight">\(n \geq 2^b - 1\)</span>.</p>
+<p>Finally: We can rewrite Lemma 2 as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+&amp; n \geq 2^b - 1 \\
+&amp; \equiv 2^b \leq n + 1 \\
+&amp; \equiv b \leq \log_2(n + 1) \\
+&amp; \equiv 2b \leq 2 \log_2(n + 1)
+\end{split}\]</div>
+<p>Then with Lemma 1 we can relax the lower bound of <span class="math notranslate nohighlight">\(2b\)</span> on the left-hand side of that inequality to <span class="math notranslate nohighlight">\(h\)</span>, thus obtaining <span class="math notranslate nohighlight">\(h \leq 2 \log_2(n + 1)\)</span>.
+Therefore <span class="math notranslate nohighlight">\(h\)</span> is at most <span class="math notranslate nohighlight">\(O(\log n)\)</span>. □</p>
+</section>
+<section id="insertion-okasaki-s-algorithm">
+<h3><span class="section-number">9.3.2.3. </span>Insertion: Okasaki’s Algorithm<a class="headerlink" href="#insertion-okasaki-s-algorithm" title="Permalink to this headline">#</a></h3>
+<p>More interesting is the <code class="docutils literal notranslate"><span class="pre">insert</span></code> operation. As with
+standard binary trees, we add a node by replacing the leaf found by the search
+procedure. But what can we color that node?</p>
+<ul class="simple">
+<li><p>Coloring it black could increase the black height of that path, violating the
+Global Invariant.</p></li>
+<li><p>Coloring it red could make it adjacent to another red node, violating the
+Local Invariant.</p></li>
+</ul>
+<p>So neither choice is safe in general. Chris Okasaki (<em>Purely Functional Data
+Structures</em>, 1999) gives an elegant algorithm that solves the problem by opting
+to violate the Local Invariant, then walk up the tree to repair the violation.
+Here’s how it works.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/dCBAhbIEoYM" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>We always color the new node red to ensure that the Global Invariant is
+preserved. If the new node’s parent is already black, then the Local Invariant
+has not been violated. In that case, we are done with the insertion: there has
+been no violation, and no work is needed to repair the tree. One common case in
+which this case occurs is when the new node’s parent is the tree’s root, which
+will already be colored black.</p>
+<p>But if the new node’s parent is red, then the Local Invariant has been violated.
+In this case, the new node’s parent cannot be the tree’s root (which is black),
+therefore the new node has a grandparent. That grandparent must be black,
+because the Local Invariant held before we inserted the new node. Now we have
+work to do to restore the Local Invariant.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/igUOhpGICgA" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>The next figure shows the four possible violations that can arise. In it,
+<code class="docutils literal notranslate"><span class="pre">a</span></code>-<code class="docutils literal notranslate"><span class="pre">d</span></code> are possibly empty subtrees, and <code class="docutils literal notranslate"><span class="pre">x</span></code>-<code class="docutils literal notranslate"><span class="pre">z</span></code> are values stored at a node.
+The nodes colors are indicated with <code class="docutils literal notranslate"><span class="pre">R</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>. We’ve marked the lower of the
+two violating red nodes with square brackets. As we begin repairing the tree,
+that marked node will be the new node we just inserted. Therefore it will have
+no children—for example, in case 1, <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> would be leaves. (Later
+on, though, as we walk up the tree to continue the repair, we can encounter
+situations in which the marked node has non-empty subtrees.)</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>           1             2             3             4
+
+           Bz            Bz            Bx            Bx
+          / \           / \           / \           / \
+         Ry  d         Rx  d         a   Rz        a   Ry
+        /  \          / \               /  \          /  \
+     [Rx]  c         a  [Ry]          [Ry]  d        b   [Rz]
+     /  \               /  \          / \                /  \
+    a    b             b    c        b   c              c    d
+</pre></div>
+</div>
+<p>Notice that in each of these trees, we’ve carefully labeled the values and nodes
+such that the BST Invariant ensures the following ordering:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>all nodes in a
+ &lt;
+  x
+   &lt;
+    all nodes in b
+     &lt;
+      y
+       &lt;
+        all nodes in c
+         &lt;
+          z
+           &lt;
+            all nodes in d
+</pre></div>
+</div>
+<p>Therefore, we can transform the tree to restore the Local Invariant by replacing
+any of the above four cases with:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>         Ry
+        /  \
+      Bx    Bz
+     / \   / \
+    a   b c   d
+</pre></div>
+</div>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/D4FJMJUIMSw" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>This transformation is called a <em>rotation</em> by some authors. Think of <code class="docutils literal notranslate"><span class="pre">y</span></code> as
+being a kind of axis or center of the tree. All the other nodes and subtrees
+move around it as part of the rotation. Okasaki calls the transformation a
+<em>balance</em> operation. Think of it as improving the balance of the tree, as you
+can see in the shape of the final tree above compared to the original four
+cases. This balance function can be written simply and concisely using pattern
+matching, where each of the four input cases is mapped to the same output case.
+In addition, there is the case where the tree is left unchanged locally.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">balance</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Black</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">),</span> <span class="n">c</span><span class="o">),</span> <span class="n">d</span>
+  <span class="o">|</span> <span class="nc">Black</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">)),</span> <span class="n">d</span>
+  <span class="o">|</span> <span class="nc">Black</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">),</span> <span class="n">d</span><span class="o">)</span>
+  <span class="o">|</span> <span class="nc">Black</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">d</span><span class="o">))</span> <span class="o">-&gt;</span>
+    <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Black</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">),</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Black</span><span class="o">,</span> <span class="n">z</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">d</span><span class="o">))</span>
+  <span class="o">|</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">d</span> <span class="o">-&gt;</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">c</span><span class="o">,</span> <span class="n">d</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val balance : color * &#39;a * &#39;a rbtree * &#39;a rbtree -&gt; &#39;a rbtree = &lt;fun&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Why does a rotation (i.e., the balance operation) preserve the BST Invariant?</em>
+Inspect the figures above to convince yourself that the rotated tree ensures the
+proper ordering of all the nodes and subtrees. The choice of which labels were
+placed where in the first figure was clever, and is what guarantees that the
+final tree has the same labels in all four cases.</p>
+<p><em>Why does a rotation preserve the Global Invariant?</em> Before a rotation, the tree
+satisfies the Global Invariant. That means the subtrees <code class="docutils literal notranslate"><span class="pre">a</span></code>-<code class="docutils literal notranslate"><span class="pre">d</span></code> below the
+grandparent all have the same black height, and the grandparent adds one to that
+height. In the rotated tree, the subtrees are all at the same level, but now <code class="docutils literal notranslate"><span class="pre">x</span></code>
+and <code class="docutils literal notranslate"><span class="pre">z</span></code> add one to that height. The overall black height of the tree has not
+changed, and each path continues to have the same black height.</p>
+<p><em>Why does a rotation establish the Local Invariant?</em> The only Local Invariant
+violation in the tree before the rotation involved the marked node. After the
+rotation, that violation has been eliminated. Moreover, since <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> are
+colored black after the rotation, they cannot be creating new Local Invariant
+violations with the root (if any) of subtrees <code class="docutils literal notranslate"><span class="pre">a</span></code>-<code class="docutils literal notranslate"><span class="pre">d</span></code>. However, the root of the
+rotated tree is now <code class="docutils literal notranslate"><span class="pre">y</span></code> and is colored red. If that node has a parent—that
+is, if the grandparent in cases 1-4 was not the root of the entire
+tree—then it’s possible we just created a new Local Invariant violation
+between <code class="docutils literal notranslate"><span class="pre">y</span></code> and its parent!</p>
+<p>To address that possible new violation, we need to continue walking up the tree
+from <code class="docutils literal notranslate"><span class="pre">y</span></code> to the root, and fix further Local Invariant violations as we go. In
+the worst case, the process cascades all the way up to the top of the tree and
+results in two adjacent red nodes, one of which has just become the root. But if
+this happens, we can just recolor this new root from red to black. That finishes
+restoring the Local Invariant. It also preserves the Global Invariant while
+increasing the total black height of the entire tree by one—and that is
+the only way the black height increases from an insertion. The <code class="docutils literal notranslate"><span class="pre">insert</span></code> code
+using <code class="docutils literal notranslate"><span class="pre">balance</span></code> is as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">s</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">rec</span> <span class="n">ins</span> <span class="o">=</span> <span class="k">function</span>
+    <span class="o">|</span> <span class="nc">Leaf</span> <span class="o">-&gt;</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Red</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">,</span> <span class="nc">Leaf</span><span class="o">)</span>
+    <span class="o">|</span> <span class="nc">Node</span> <span class="o">(</span><span class="n">color</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="k">as</span> <span class="n">s</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">balance</span> <span class="o">(</span><span class="n">color</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">ins</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">balance</span> <span class="o">(</span><span class="n">color</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">ins</span> <span class="n">b</span><span class="o">)</span>
+      <span class="k">else</span> <span class="n">s</span>
+  <span class="k">in</span>
+  <span class="k">match</span> <span class="n">ins</span> <span class="n">s</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Node</span> <span class="o">(_,</span> <span class="n">y</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="nc">Node</span> <span class="o">(</span><span class="nc">Black</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span>
+  <span class="o">|</span> <span class="nc">Leaf</span> <span class="o">-&gt;</span> <span class="c">(* guaranteed to be non-empty *)</span>
+    <span class="n">failwith</span> <span class="s2">&quot;RBT insert failed with ins returning leaf&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val insert : &#39;a -&gt; &#39;a rbtree -&gt; &#39;a rbtree = &lt;fun&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The amount of work done by <code class="docutils literal notranslate"><span class="pre">insert</span></code> is <span class="math notranslate nohighlight">\(O(\log n)\)</span>. It recurses with <code class="docutils literal notranslate"><span class="pre">ins</span></code> down
+the tree to a leaf, which is where the insert occurs, then calls <code class="docutils literal notranslate"><span class="pre">balance</span></code> at
+each step on the way back up. The path to the leaf has length <span class="math notranslate nohighlight">\(O(\log n)\)</span>,
+because the tree was already balanced. And, each call to <code class="docutils literal notranslate"><span class="pre">balance</span></code> is <span class="math notranslate nohighlight">\(O(1)\)</span>
+work.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/giSzhfuTMMA" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+</section>
+<section id="removal">
+<h3><span class="section-number">9.3.2.4. </span>Removal<a class="headerlink" href="#removal" title="Permalink to this headline">#</a></h3>
+<p>Removing an element from a red-black tree works
+analogously. We start with a BST element removal and then do rebalancing. When
+an interior (nonleaf) node is removed, we simply splice it out if it has fewer
+than two nonleaf children; if it has two nonleaf children, we find the next
+value in the tree, which must be found inside its right child.</p>
+<p>But, balancing the trees during removal from red-black tree requires considering
+more cases. Deleting a black element from the tree creates the possibility that
+some path in the tree has too few black nodes, breaking the Global Invariant.</p>
+<p>Germane and Might invented an elegant algorithm to handle that rebalancing Their
+solution is to create “doubly-black” nodes that count twice in determining the
+black height. For more, read their paper: <a class="reference external" href="https://doi.org/10.1017/S0956796814000227"><em>Deletion: The Curse of the Red-Black
+Tree</em> <em>Journal of Functional Programming</em></a>, volume 24, issue 4, July 2014.</p>
+</section>
+</section>
+<section id="maps-and-sets-from-bsts">
+<h2><span class="section-number">9.3.3. </span>Maps and Sets from BSTs<a class="headerlink" href="#maps-and-sets-from-bsts" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/B_e8Qr4nl4A" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>It’s easy to use a BST to implement either a map or a set ADT:</p>
+<ul class="simple">
+<li><p>For a map, just store a binding at each node. The nodes are ordered by the
+keys. The values are irrelevant to the ordering.</p></li>
+<li><p>For a set, just store an element at each node. The nodes are ordered by the
+elements.</p></li>
+</ul>
+<p>The OCaml standard library does this for the <code class="docutils literal notranslate"><span class="pre">Map</span></code> and <code class="docutils literal notranslate"><span class="pre">Set</span></code> modules. It uses a
+balanced BST that is a variant of an AVL tree. AVL trees are balanced BSTs in
+which the height of paths is allowed to vary by at most 1. The OCaml standard
+library modifies that to allow the height to vary by at most 2. Like red-black
+trees, they achieve worst-case logarithmic performance.</p>
+<p>Now that we have a functional map data structure, how does it compare to our
+imperative version, the hash table?</p>
+<ul class="simple">
+<li><p><strong>Persistence:</strong> Our red-black trees are persistent, but hash tables are
+ephemeral.</p></li>
+<li><p><strong>Performance:</strong> We get guaranteed worst-case logarithmic performance with
+red-black trees, but amortized, expected constant-time with hash tables.
+That’s somewhat hard to compare given all the modifiers involved. It’s also an
+example of a general phenomenon that persistent data structures often have to
+pay an extra logarithmic cost over the equivalent ephemeral data structures.</p></li>
+<li><p><strong>Convenience:</strong> We have to provide an ordering function for balanced binary
+trees, and a hash function for hash tables. Most libraries provide a default
+hash function for convenience. But the performance of the hash table does
+depend on that hash function truly distributing keys randomly over buckets. If
+it doesn’t, the “expected” part of the performance guarantee for hash tables
+is violated. So the convenience is a double-edged sword.</p></li>
+</ul>
+<p>There isn’t a clear winner here. Since the OCaml library provides both <code class="docutils literal notranslate"><span class="pre">Map</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Hashtbl</span></code>, you get to choose.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "cs3110/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "ocaml-jupyter"
+        },
+        kernelOptions: {
+            kernelName: "ocaml-jupyter",
+            path: "./chapters/ds"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ocaml-jupyter'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="amortized.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">9.2. </span>Amortized Analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="sequence.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">9.4. </span>Sequences</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael R. Clarkson et al.<br/>
+  
+      &copy; Copyright 2026.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,3 @@
+## 10.1. Example: Calculator[#](#example-calculator)
+
+Let’s start with a video guided tour of implementing an interpreter for a tiny language: just a calculator, essentially, with addition and multiplication. The point of this guided tour is not to go into great detail about any single piece of it. Rather, the goal is to get a little familiarity with the OCaml tools and techniques for lexing, parsing, and evaluation. They are all rather tightly coupled, which makes it challenging to understand one piece without having a high-level understanding of the whole. After we get that understanding from the tour, we’ll start over again in the next section (on parsing), and at that time we’ll dive into the details.

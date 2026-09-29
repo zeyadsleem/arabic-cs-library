@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>The WHERE clause in detail</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">Code is there to explain the comments to the computer.</span> <br>
+&mdash;Andy Harris
+</p> </blockquote> <h1>The WHERE clause in detail</h1> <p>
+In a <code>SELECT</code> statement such as: <pre><code>SELECT code, coordinator
+FROM course
+WHERE coordinator = &#39;u0012047&#39;;</code></pre> the <code>FROM</code> clause is executed first by the database server. The
+      entire table ‘course’ is loaded into working memory. We know: we're repeating
+      ourselves, but this is really essential knowledge if you want to be able to
+      write good queries.
+</p><p>
+Then the <code>WHERE</code> clause is executed (if present). Only the rows
+<em>that satisfy the condition</em> in the <code>WHERE</code> are kept. All
+      other rows disappear from memory. Afterwards the
+<code>SELECT</code> is executed. In this chapter, we will look more closely
+      at some possibilities of <code>WHERE</code>.
+</p> <section class="info"> <p>
+You can test the code examples in the table ‘course’ of the schema
+        ‘ucllcatalogue’ (or in your own version of this table in your personal
+        schema).
+</p> </section> <h2>Standard comparison operators</h2> <p>
+SQL provides the standard comparison operators: <code>=</code> (equal to),
+<code>&lt;&gt;</code> or <code>!=</code> (not equal to), <code>&gt;</code>
+(greater than), <code>&lt;</code> (less than), <code>&gt;=</code> (greater
+      than or equal to) and <code>&lt;=</code> (less than or equal to). You can compare
+      numbers, strings and dates or timestamps. The following query shows all courses
+      that have a start date before April 5, 2017:
+</p> <pre><code>SELECT *
+FROM course
+WHERE start_date &lt; &#39;2017-04-05&#39;; --input date in ISO-format with single quotes</code></pre> <p>
+A date that is <em>farther in the past</em> is <em>smaller</em> than a later
+      date, as you would logically expect.
+</p> <p>
+Comparing strings is a bit more involved. Unfortunately the result is <em>database specific</em>. That ‘a’ &lt; ‘b’ is obvious, but what about the comparison of ‘a’ and
+      ‘A’? You know what, we'll just try it out in PostgreSQL:
+<pre><code>SELECT &#39;a&#39; &lt; &#39;A&#39;;</code></pre> </p> <p>
+The result is <code>true</code>. We conclude: <em>in PostgreSQL</em>
+lowercase letters come before uppercase letters. In another DBMS, it may be
+      the other way around.
+</p> <p>
+And what about a comparison between ‘magic’ and ‘monkey’ and between
+      ‘cent’ and ‘century’? Let's test this:<pre><code>SELECT &#39;magic&#39; &gt; &#39;monkey&#39;;
+SELECT &#39;cent&#39; &gt; &#39;century&#39;;</code></pre> </p> <p>
+The result is twice <code>false</code>. The comparison between two strings
+      is in fact done <em>letter by letter from left to right</em>. For ‘magic’
+      and ‘monkey’, the first letter is the same, but not the second. The second
+      ‘a’ of ‘magic’ is (alphabetically speaking) smaller than the ‘o’ of
+      ‘monkey’ and so <code>'magic' &lt; 'monkey'</code>.
+</p> <p>
+The word ‘cent’ is smaller than ‘century’. The letters are compared one at
+      a time. After four matching letters, there is no fifth letter in the
+      string ‘cent’ and so this word is smaller (<em>shorter</em>) than the
+      longer word ‘century’.
+</p> <h2>IS (NOT) NULL</h2> <p>
+The value <code>NULL</code> in a field means ‘unknown’: there is no value for
+      this field. It is possible to test for this special <code>NULL</code> value.
+      You just have to remember not to use
+<code>=</code> but to use <code>IS</code>. The next query shows a list of
+      all courses for which we do not yet know when they will stop:
+<pre><code>SELECT *
+FROM course
+WHERE end_date IS NULL; -- so don&#39;t write = NULL</code></pre> </p> <p>
+Conversely, the following query returns the list of all courses that do
+      have an end date (and thus are no longer taught or for which it is already
+      known until when these courses will be in the curriculum): <pre><code>SELECT *
+FROM course
+WHERE end_date IS NOT NULL;</code></pre> </p> <h2>String patterns with LIKE</h2> <p>
+Sometimes you don't want to search for the full value of a string, but
+      only for a part of it. Suppose you want a list of all courses that have
+      the word ‘web’ somewhere in the name (does not matter whether ‘web’ is
+      upper or lower case). We already know <a href="/EN/SQL_select/index.html#String-functions">from a previous chapter</a> that the function <code>lower()</code> will certainly be useful in this query
+      to convert all upper case letters to lower case. But how do we test for the
+      presence of ‘web’ anywhere in the name?
+</p> <p>
+This can be done in different ways (e.g. with <a href="https://www.postgresql.org/docs/current/functions-matching.html">regular expressions</a>). Here we look at <em>the simplest way</em> using <code>LIKE</code> and a
+      pattern. In that pattern you can use two special characters:
+</p><ul> <li><code>%</code>: 0 or more characters;</li> <li><code>_</code> (underscore): exactly 1 character.</li> </ul>  <p>
+The following query searches all names that contain the substring ‘web’
+      (upper / lower case does not matter):<pre><code>SELECT code, name, semester
+FROM course
+WHERE lower(name) LIKE &#39;%web%&#39;;</code></pre> </p> <p>Now try the following exercises.</p> <section class="taak"> <p>
+Describe in words what subsequent LIKE strings are looking for:
+<pre><code>... LIKE &#39;B%&#39;
+... LIKE &#39;_e%&#39;
+... LIKE &#39;%e%e%e%&#39;
+... LIKE &#39;__a_b%&#39;</code></pre> </p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>... LIKE &#39;B%&#39; --all strings beginning with capital B
+... LIKE &#39;_e%&#39; --all strings with an e as second letter
+... LIKE &#39;%e%e%e%&#39; --all strings with at least 3 times the letter e
+... LIKE &#39;__a_b%&#39; --all strings with a as third and b as fifth letter</code></pre> </div>  </section> <section class="taak"> <p>
+Write the SQL query that generates a list of all lecturers whose
+        lecturer code ends with the digit 4. Also add a column with the name of
+        the course for which they are responsible.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT coordinator, name
+FROM course
+WHERE coordinator like &#39;%4&#39;;
+-- It&#39;s also possible to use substring(), please try this version as well</code></pre> </div>  </section> <h2>Retain rows that do NOT satisfy a condition</h2> <p>
+With a condition in the <code>WHERE</code> clause, we only keep those rows
+      that meet that condition. What if you want all the other rows, so only those
+      that <em>don't</em> satisfy the condition? For this purpose you can use the
+      keyword <code>NOT</code>. The next query returns all courses that do not
+      meet the condition, i.e. those that do not start with the letters ‘Web’:<pre><code>SELECT code, name, semester
+FROM course
+WHERE NOT name LIKE &#39;Web%&#39;;</code></pre> </p> <section class="taak"> <p>
+List all courses (code, name and number of credits) whose name does not
+        contain a single ‘a’ (lower case only, upper case ‘A’ may occur). Write
+        the query. What do you modify in your solution if upper case ‘A’ is also
+        disallowed?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT code, name, credits
+FROM course
+WHERE NOT name like &#39;%a%&#39;; -- adaptation: NOT lower(name) like &#39;%a%&#39;</code></pre> </div>  </section> <h2>Linking conditions with AND and OR</h2> <p>
+We can link multiple conditions with <code>AND</code> and <code>OR</code>:
+</p> <ul> <li> <code>A AND B</code>: only <code>TRUE</code> if both A and B are <code>TRUE</code>;
+</li> <li> <code>A OR B</code>: <code>TRUE</code> if either A or B or both are
+<code>TRUE</code>.
+</li> </ul> <p> <code>AND</code> and <code>OR</code> can of course also be used in combination
+      with <code>NOT</code>.
+</p> <section class="taak"> <p>
+What does the following query do:<pre><code>SELECT *
+FROM course
+WHERE language = &#39;nl&#39; AND lower(name) LIKE &#39;%prog%&#39;;</code></pre> </p>  <button>Show / hide solution</button> <div class="oplossing">
+This query displays all columns of those courses that are given in Dutch
+<em>and</em> whose name (converted to lower case) contains the string ‘prog’.
+        Both conditions must be satisfied at the same time!
+</div>  </section> <section class="taak"> <p>
+Write the query that generates the list of all courses given in either
+        Dutch or French.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT *
+FROM course
+WHERE language = &#39;nl&#39; OR language = &#39;fr&#39;; -- we will see how to write this query more concisely later</code></pre> </div>  </section> <p>
+You can <em>link</em> more than two conditions. You have to be be careful as
+      the following example demonstrates. List all the courses taught in Dutch or
+      French that are still being taught. We try the following query:<pre><code>SELECT *
+FROM course
+WHERE language = &#39;nl&#39; OR language = &#39;fr&#39; AND end_date IS NULL;</code></pre> </p> <section class="taak"> <p>
+This query returns the wrong result. Run the query and explain why this
+        result is incorrect.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+The reason has to do with the order of operations. Just as you learned
+          long ago that 3 + 4 * 2 should be read as 3 + (4 * 2) because
+          multiplication takes precedence over addition, there is a sequence of
+          operators in a <code>WHERE</code>.
+</p> </div>  </section> <p>The order of the operators is, from high priority to low:</p> <ol> <li>
+first, comparison operators such as <code>=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, ...,
+</li> <li>then <code>NOT</code>,</li> <li>then <code>AND</code>,</li> <li>and last but not least <code>OR</code>.</li> </ol> <p>
+This means that the condition above is not evaluated simply left-to-right
+      but as <code>language = 'nl' OR (language = 'fr' AND end_date IS NULL)</code>. You can translate this condition as ‘all Dutch courses (from present or
+      past, doesn't matter) or all French ones that are still being taught’.
+      That's not what we wanted.
+</p><p>
+The solution is simple: use parentheses. The query as we intended it thus
+      becomes:<pre><code>SELECT *
+FROM course
+WHERE (language = &#39;nl&#39; OR language = &#39;fr&#39;) AND end_date IS NULL;</code></pre> </p> <p>
+For complex compound conditions, parentheses are always a good idea
+      because they <em>increase the readability</em> of the condition.
+</p> <h2>BETWEEN</h2> <p>We begin with a simple exercise:</p> <section class="taak"> <p>
+Give all courses (code, name and credits) with 3 to 8 credits.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT code, name, credits
+FROM course
+WHERE credits &gt;=3 AND credits &lt;=8;</code></pre> </div>  </section> <p>
+SQL provides a somewhat shorter notation for this type of query (more
+      consistent with common language):<pre><code>SELECT code, name, credits
+FROM course
+WHERE credits BETWEEN 3 AND 8; -- both boundaries are included</code></pre> </p> <p>
+If you have to write SQL queries on an exam, you may always choose whether
+      you go for the <code>BETWEEN</code> notation or the slightly longer version.
+      You must understand both notations, obviously.
+</p> <h2>IN</h2> <p>
+The keyword IN allows you to <i>shorten</i> some conditions. Again, a little
+      exercise to get started:
+</p> <section class="taak"> <p>
+Write the query that shows all courses where the coordinator is one of
+        the following individuals: u0012047, u0015584, u0024689 or u0031447.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT code, name, coordinator
+FROM course
+WHERE coordinator = &#39;u0012047&#39; OR coordinator = &#39;u0015584&#39; OR
+ coordinator = &#39;u0024689&#39; OR coordinator = &#39;u0031447&#39;;</code></pre> </div>  </section> <p>
+A bit cumbersome, isn't it? This query can be shortened with <code>IN</code>: <pre><code>SELECT code, name, coordinator
+FROM course
+WHERE coordinator IN (&#39;u0012047&#39;,&#39;u0015584&#39;,&#39;u0024689&#39;,&#39;u0031447&#39;);</code></pre> </p> <h2>Overview operators</h2> <p>
+The following table gives an overview of the operators that you can use in
+      a
+<code>WHERE</code> clause.
+</p> <div class="tabel"> <table> <thead> <tr><th>Operator</th><th>Function</th><th>Example</th></tr> </thead> <tbody> <tr> <td><code>=</code></td> <td>Equal to</td> <td><code>WHERE name = 'Jan Van Hee'</code></td> </tr> <tr> <td><code>&lt;&gt;</code> or <code>!=</code></td> <td>Not equal to</td> <td><code>WHERE year &lt;&gt; 2023</code></td> </tr> <tr> <td><code>&gt;</code></td> <td>Greater than</td> <td><code>WHERE amount &gt; 250</code></td> </tr> <tr> <td><code>&lt;</code></td> <td>Less than</td> <td><code>WHERE amount &lt; 400</code></td> </tr> <tr> <td><code>&gt;=</code></td> <td>Greater than or equal to</td> <td><code>WHERE amount &gt;= 250</code></td> </tr> <tr> <td><code>&lt;=</code></td> <td>Less than or equal to</td> <td><code>WHERE amount &lt;= 400</code></td> </tr> <tr> <td><code>BETWEEN</code></td> <td>Within a range</td> <td><code>WHERE amount BETWEEN 250 AND 400</code></td> </tr> <tr> <td><code>IN</code></td> <td>Equal to one of a set of values</td> <td><code>WHERE city IN ('Leuven', 'Brussel', 'Gent')</code></td> </tr> <tr> <td><code>LIKE</code></td> <td>Match a pattern (with '%' of '_', case sensitive)</td> <td><code>WHERE name LIKE 'Jan%'</code></td> </tr> <tr> <td><code>ILIKE</code></td> <td>Match a pattern (case insensitive)</td> <td><code>WHERE name ILIKE 'jan%'</code></td> </tr> <tr> <td><code>NOT</code></td> <td>Negates a condition</td> <td><code>WHERE name NOT LIKE 'Jan%'</code></td> </tr> </tbody> </table> </div> <h2>Exercises SQLzoo</h2> <p>
+SQLzoo is an interactive practice platform. You enter SQL code that the
+      system reviews for you. It's a good idea to try these exercises. This way,
+      you'll learn to work with tables other than the ones we use in this course
+      text.
+</p> <h3>Table ‘world’</h3> <p>This table contains the following data from countries:</p> <ul> <li>name</li> <li>continent</li> <li>area</li> <li>population</li> <li> <a href="https://en.wikipedia.org/wiki/Gross_domestic_product">gdp</a> </li> </ul> <section class="taak"> <p>
+As an introduction to this table, make <a href="https://sqlzoo.net/wiki/SELECT_basics">exercise series 1</a>, with three small exercises. Here you use <code>WHERE</code>, <code>IN</code> and <code>BETWEEN</code> (and of course <code>SELECT</code> and <code>FROM</code>).
+</p>  </section> <section class="taak"> <p>
+Take <a href="https://sqlzoo.net/wiki/SELECT_Quiz">quiz 1</a> with 7 questions
+        focusing on <code>WHERE</code>.
+</p>  </section> <section class="taak"> <p> <a href="https://sqlzoo.net/wiki/SELECT_from_WORLD_Tutorial">Exercise series 2
+</a> on the ‘world’ table contains 13 exercises in the style of the previous
+        one, but with additional computational functions such as <code>ROUND</code> and some string manipulation.
+</p>  </section> <section class="taak"> <p> <a href="https://sqlzoo.net/wiki/BBC_QUIZ">Quiz 2</a> again contains 7 questions.
+        Pay attention to the details!
+</p>  </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

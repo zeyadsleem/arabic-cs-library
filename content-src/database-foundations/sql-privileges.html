@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Allocation of PRIVILEGES</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">When my brothers try to draw a circle to exclude me, I shall draw a
+          larger circle to include them. Where they speak out for the privileges
+          of a puny group, I shall shout for the rights of all mankind.</span> <br>
+&mdash;Pauli Murray
+</p> </blockquote> <h1>Allocation of PRIVILEGES</h1> <p>
+Consider your ISP in KULoket for a moment. Behind KULoket is an extensive
+      database. At the beginning of each semester you can make adjustments in
+      your ISP: e.g. add or omit courses, adjust groups in another phase than
+      your basic phase etc.<em>
+Obviously, you cannot view another student's ISP, because that is
+        personal information</em>. But have you ever wondered who within UCLL does have access to your
+      ISP? Who can change it?
+</p> <ul> <li>
+Your student coach (STC), which goes without saying because you can
+        discuss the ISP with your STC, who, by the way, must also approve it.
+</li> <li>
+People from the student secretarial office, for example, sometimes have
+        to adjust the basic group, so they also get access.
+</li> <li>
+Ordinary lecturers (without an STC role), however, cannot view students'
+        ISPs.
+</li> </ul> <p>
+In other words, the rights to view and change an ISP are not the same for
+      everyone. This is also the case in a database. In a database, you can
+      determine who can view and change data. This access rights are called <em>privileges</em>.
+</p><p>
+In this section, we'll give you a simplified look at the rights system
+        of PostgreSQL.
+</p> <h2>Privileges - rights</h2> <p>
+As an STC, I have <em>limited</em> access to all ISPs in KULoket. If I go
+        to my son David's ISP (studied at KULeuven, so not UCLL), I get a (Dutch)
+        error message saying that I can only look at it, not change it:
+</p> <figure class="center"> <img src="/assets/privileges/DavidISP.png" alt=""> </figure> <p>
+Thus, I <em>do</em> have the right to <em>survey</em> the ISP, consult it,
+        but
+<em>not</em> to make <em>changes</em> to it.
+</p> <section class="taak"> <p>
+Can you think of a reason why an STC at UCLL can still consult ISPs of
+          KULeuven students?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+One reason is that a student coach at UCLL should be able to advise
+            new students who were already studying at KULeuven. In order to
+            assess whether such a student could get exemptions, it makes sense
+            for an STC to be able to request an overview of every student at the
+            KULeuven association. An STC should only be able to see what credits
+            a student obtained, not with what grades this occurred. So I don't
+            get to see those points!
+</p> </div>  </section> <p>
+We talk about ‘privileges’ within PostgreSQL. Granting privileges to
+        other users in SQL can be done with <code>GRANT ... PRIVILEGE ... TO</code>. We will first give some examples and then discuss the <code>GRANT</code> statements that can be useful for a database assignment where you need to
+        collaborate with other people within the same database schema.
+</p> <h2>GRANT</h2> <p>Without going into detail, first some examples:</p> <ul> <li> <code>GRANT USAGE ON SCHEMA examoef TO student</code>: all users who
+          have the role ‘student’ get access to the schema ‘examoef’.
+</li> <li> <code>GRANT SELECT ON TABLE customer TO local_r0987654</code>: user
+          ‘local_r0987654’ is allowed to <code>SELECT</code> statements on the table
+          ‘customer’ in the current schema.
+</li> <li> <code>GRANT ALL ON ALL TABLES IN SCHEMA project TO local_01234567,
+            local_02345678, local_03456789</code>: give these three students <em>all</em> permissions to <em>all</em> tables
+          of which you are the owner.
+</li> </ul> <p>
+You define access rights with the <code>GRANT</code> statement. This is one
+        of the more complex statements in SQL. We will limit ourselves to those things
+        that are useful for the group work. From <a href="https://www.postgresql.org/docs/current/sql-grant.html">the extensive documentation of <code>GRANT</code></a> we extract some possibilities. Don't panic if the following overwhelms you
+        a bit. We will elaborate in the following sections.
+</p> <p>The formal definition looks like this:</p> <p> <pre><code>GRANT { { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES | TRIGGER }
+  [, ...] | ALL [ PRIVILEGES ] }
+  ON { [ TABLE ] table_name [, ...]
+    | ALL TABLES IN SCHEMA schema_name [, ...] }
+  TO role_specification [, ...] [ WITH GRANT OPTION ]
+  [ GRANTED BY role_specification ]
+
+GRANT { { CREATE | USAGE } [, ...] | ALL [ PRIVILEGES ] }
+  ON SCHEMA schema_name [, ...]
+  TO role_specification [, ...] [ WITH GRANT OPTION ]
+  [ GRANTED BY role_specification ]</code></pre> </p> <p> <em>No panic!</em> First, process the rest of this chapter and then come back
+        for a moment back to the definition above. It will look a whole lot more readable
+        then.
+</p> <h2>Practical exercise related to rights</h2> <section class="info"> <p>
+In what follows we will get hands-on in postgreSQL. Preferably make
+          these exercises in pairs. It is also possible alone (e.g. for distance
+          learning students). Each student has after all, two separate users:
+          your r-number on the regular connection 50203 and your local_r-number
+          on the pooling connection 60203. The exercises are set up as a kind of
+          role-play between two users (<a href="https://militaryalphabet.net">‘Alpha’ and ‘Bravo’</a>).
+</p> </section> <p>
+Screenshots and code below were created for user ‘local_u0012047’
+        (‘Alpha’, played here by lecturer Jan) and user ‘local_0145920’
+        (‘Bravo’, lecturer Steven). If you make the exercise yourself, of course
+        you replace our two usernames with your own r-numbers.
+</p> <p>
+Perform the steps in the following work text. If something goes wrong,
+        please read on. We intentionally let you make mistakes here and there in
+        order to learn from them …
+</p> <h2>Owner</h2> <p> <em>
+Anyone who creates an object (schema, table, etc.) in a database is
+          automatically owner of this object.
+</em> Now perform the following steps in the database belonging to your group
+        (‘1TX31’, ...):
+</p> <section class="taak"> <div> <ul> <li>
+Alpha creates a new schema named ‘u0012047_privileges’ in the
+              pooling connection 60203.
+</li> <li>Bravo also uses the pooling connection.</li> <li>
+Only the owner currently has privileges to do anything in this
+              schema. To demonstrate this, Bravo tries to create a table in this
+              schema.
+</li> </ul> <p>
+Bravo creates (via a <code>CREATE</code> statement) a very simple table
+            ‘customer’ with only two columns: customer number (integer, this is the
+            primary key so mandatory) and name (<code>varchar(50)</code>, also
+            mandatory).
+<em>Don't forget to put the name of the schema before the name of the
+              table otherwise you will create a new table in public!</em> Normally, Bravo gets an error message in the style of: <pre><code>ERROR:  permission denied for schema u0012047_privileges
+LINE 1: create table u0012047_privileges.customer (
+                     ^
+SQL state: 42501
+Character: 14</code></pre> </p> </div>  </section> <h2>Giving rights to your schema</h2> <p>
+Bravo cannot create new objects (such as a table) in the schema of
+        Alpha. <em>
+It is now up to the schema owner to assign appropriate permissions to
+          another user.
+</em> Now put these next steps into practice:
+</p> <section class="taak"> <div> <ol> <li> <p>
+Alpha gives certain rights to the schema to Bravo. This can be
+                very limited to only use (<code>USAGE</code>), as we do for the
+                schema on an exam. After all, we do not want students to make
+                their own changes to the schema (new tables etc). Alpha,
+                however, wants his peer to be able to work in his schema and
+                types the following command into a query tool:<pre><code>GRANT ALL PRIVILEGES ON SCHEMA u0012047_privileges TO local_0145920;
+--The word PRIVILEGES is not required, so shorter is:
+GRANT ALL ON SCHEMA u0012047_privileges TO local_0145920</code></pre> </p> <p>
+If all goes well, the server responds with:<pre><code>GRANT
+
+Query returned successfully in 60 msec.</code></pre> </p> </li> <li> <p>
+Bravo has now been granted all rights to Alpha's schema.
+                Although ... <em>all</em> rights? Bravo tries to drop the schema:<pre><code>DROP SCHEMA u0012047_privileges;</code></pre> </p> <p>
+The database server responds with an error message:<pre><code>ERROR: must be owner of schema u0012047_privileges
+SQL state: 42501</code></pre> </p> <p>
+In other words, <code>ALL PRIVILEGES</code> actually means ‘everything
+                except <code>DROP</code>’. You can never drop someone else's
+                schema, unless you are <em>superuser</em> of the database server.
+</p> </li> <li>
+Bravo now tries again in Alpha's schema to create the new table
+              ‘customer’. It should succeed now. Try this out!
+</li> </ol> </div>  </section> <h2>Giving rights to a table</h2> <p>
+Bravo was able to successfully create the small table ‘customer’. We are
+        now trying the following things on this table.
+</p> <section class="taak"> <div> <ol> <li> <p>
+Bravo adds a customer with number 789 and name ‘Dieter Desmedt’
+                to the table. This should work without a problem, see figure:
+</p> <figure class="center"> <img src="/assets/privileges/EN/KlantDieter.png" width="400" alt=""> </figure> </li> <li> <p>
+Alpha tries to add a row to the table ‘customer’ (‘Wim Claes’
+                with customer number 5). However, it gets the following error
+                message:<pre><code>ERROR: permission denied for table customer state: 42501</code></pre> </p> <p>
+That error message makes sense, because Alpha is not the owner
+                of the ‘customer’ table object. <em>The fact that Alpha does own the schema is irrelevant,
+                  because this is only about the permissions on the table
+                  itself.</em> </p> </li> <li> <p>
+Bravo now gives <code>INSERT</code> privilege to Alpha: <pre><code>GRANT INSERT ON TABLE u0012047_privileges.customer to local_u0012047;</code></pre> </p> <p>
+You can visualize those permissions nicely in pgAdmin. Right
+                click on the table ‘client’ and choose properties... The figure
+                below tells me that local_0145920 is the owner of this table:
+</p> <figure class="center"> <img src="/assets/privileges/tabelproperties.png" alt=""> </figure> <p>The security tab provides additional information:</p> <figure class="center"> <img src="/assets/privileges/tabelsecurity.png" alt=""> </figure> <p>
+Two difficult words here: ‘grantor’ is the one who gives the
+                rights, ‘grantee’ is the recipient of the rights. This
+                screenshot shows that user local_u0145920 has given <code>INSERT</code> rights to user local_u0012047. <em>By the way, you can change permissions yourself in this tab
+                  and save this. However, at least for the exam, you should be
+                  able to do this using only SQL statements in pgAdmin.</em> </p> </li> <li> <p>
+Now Alpha can add a row to the table:<pre><code>INSERT INTO u0012047_privileges.customer VALUES(5,&#39;Wim Claes&#39;);</code></pre> </p> </li> <li> <p>
+Alpha notices, however, that this is not the right customer, so
+                it must be removed:<pre><code>DELETE FROM u0012047_privileges.customer
+WHERE customer_number = 5;</code></pre> </p> <p>Explain what happens when this query is executed.</p> </li> <li> <p>
+Bravo also gives Alpha <code>DELETE</code> privilege. Alpha then tries
+                to delete the customer with number 5 again with the query above. The
+                surprising result is that this fails because Alpha does not have enough
+                permissions! How can that be? The owner of the table (Bravo) just
+                gave <code>DELETE</code> permissions, didn't he?
+</p> <p>
+The answer to these questions is <a href="https://www.postgresql.org/docs/current/ddl-priv.html">in the postgres documentation</a>. We quote briefly, “In practice, any nontrivial <code>DELETE</code> command will require <code>SELECT</code> privilege as well, since
+                it must reference table columns to determine which rows to delete.”.
+                Since the <code>DELETE</code> query above has to be able to <code>select</code> the row with customer number 5, Alpha must therefore also have
+<code>SELECT</code> permissions.
+</p> <p>
+Bravo, also give <code>SELECT</code> permissions on your table, so
+                that Alpha can remove the wrong row. Great!
+</p> </li> </ol> </div>  </section> <h2>Overview rights</h2> <p>
+You can find the full list of privileges at <a href="https://www.postgresql.org/docs/current/ddl-priv.html">the page already mentioned</a>. For us the most interesting ones are (the system is much more
+        extensive than this small overview):
+</p> <ol> <li><code>ALL</code>: all rights (except <code>DROP</code>).</li> <li> <code>SELECT</code>: select column(s) in a table. Almost also always
+          needed for <code>UPDATE</code> and <code>DELETE</code> privileges.
+</li> <li><code>UPDATE</code>: right to update columns in a table.</li> <li><code>DELETE</code>: delete rows in a table.</li> <li> <code>CREATE</code>: right to create a new schema in a database, or
+          create a new table in an existing schema.
+</li> <li><code>USAGE</code>: right to access in a schema.</li> </ol> <p>
+For the group work, in practice you will give all permissions to all
+        group members. One person creates the schema and gives everyone rights:<pre><code>GRANT ALL ON SCHEMA ... TO local_r1, local_r2, local_r3</code></pre> </p> <p>
+Each student who creates a new table in this schema then gives the
+        others all rights to those tables. You can also give privileges on <em>all</em> tables in a schema:<pre><code>GRANT ALL ON ALL TABLES IN SCHEMA ... TO ...</code></pre> </p> <p>
+This is what the lecturers do for the exam schema:<pre><code>GRANT USAGE ON SCHEMA examschema TO student;
+GRANT SELECT ON ALL TABLES IN SCHEMA examschema TO student;</code></pre> </p> <p>
+In other words, on the exam, you get access to all the tables of the
+        schema and can only perform <code>SELECT</code> queries.
+</p> <h2>REVOKE</h2> <p>
+Everything you can <em>grant</em> in terms of privileges you can also <em>remove</em> with <code>REVOKE</code>. You simply replace the word <code>GRANT</code> with <code>REVOKE</code> in the above examples.
+</p>  </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

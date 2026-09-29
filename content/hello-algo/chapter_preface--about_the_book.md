@@ -43,7 +43,7 @@ lang: ar
 
 أُنجزت أعمال مراجعة الشيفرة لهذا الكتاب بواسطة coderonion وcurtishd وGonglja وgvenusleo وhpstory وjustin-tse وkhoaxuantu وkrahets وnight-cruise وnuomi1 وReanon وrongyi (بالترتيب الأبجدي). والشكر لهم على الوقت والجهد الذي بذلوه؛ فقد ساعدوا في الحفاظ على اتساق الشيفرة وتوحيدها عبر إصدارات اللغات المختلفة.
 
-راجع الإصدار الإنجليزي من هذا الكتاب yuelinxin وK3v123 وmagentaqin وQiLOL وPhoenix0415 وSamJin98 وyanedie وRafaelCaso وpengchzn وthomasq0؛ وراجع الإصدار الياباني eltociear؛ وراجع الإصدار الروسي И. А. Шевкун وYuyan Huang؛ وراجع الإصدار الصيني التقليدي Shyam-Chen وDr-XYZ. وبفضل مساهماتهم، يستطيع هذا الكتاب خدمة قاعدة أوسع من القراء، ونحن ممتنون لهم امتناناً عميقاً.
+راجع الإصدار الإنجليزي من هذا الكتاب yuelinxin وK3v123 وmagentaqin وQiLOL وPhoenix0415 وSamJin98 وyanedie وRafaelCaso وpengchzn وthomasq0؛ وراجع الإصدار الياباني eltociear؛ وراجع الإصدار الروسي . . وYuyan Huang؛ وراجع الإصدار الصيني التقليدي Shyam-Chen وDr-XYZ. وبفضل مساهماتهم، يستطيع هذا الكتاب خدمة قاعدة أوسع من القراء، ونحن ممتنون لهم امتناناً عميقاً.
 
 طوّر zhongfq أداة إنشاء كتاب ePub الإلكتروني لهذا الكتاب. ونشكره على مساهمته التي توفّر للقراء طريقة قراءة أكثر مرونة.
 

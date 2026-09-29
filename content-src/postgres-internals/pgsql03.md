@@ -3304,7 +3304,7 @@ In 2016, a research paper titled “[A Closer Look at Variance ImplementationsIn
 
 To address these concerns, a [patch](https://www.postgresql.org/message-id/flat/153313051300.1397.9594490737341194671@wrigleys.postgresql.org) was developed in November 2018, leading to the adoption of the [Youngs and Cramer](http://i.stanford.edu/pub/cstr/reports/cs/tr/79/773/CS-TR-79-773.pdf) method in PostgreSQL version 12. This algorithm provides significantly higher numerical stability and accuracy than the standard single-pass formula[1](#fn:1).
 
-The following pseudocode illustrates the implementation of the Youngs and Cramer method (refer to [Appendix 1.1](../pgsqlappendix/01.html#a-1-1) for details.):
+The following pseudocode illustrates the implementation of the Youngs and Cramer method (refer to Appendix 1.1 for details.):
 
 $$ \begin{cases} V_{1} &= 0 \\ V_{n} &= V_{n-1} + \frac{1}{n(n-1)} (nx_{n} - S_{n})^{2} \tag{3-20} \end{cases} $$
 
@@ -4148,7 +4148,7 @@ testdb=# EXPLAIN  SELECT var_pop(id) FROM d where data > 100;
 
 ### 3.7.3.3. Mathematical Logic for Parallel Aggregation
 
-To combine results from different workers (e.g., sums, averages, and variances), PostgreSQL uses the following formulas (See [Appendix 1.2](../pgsqlappendix/01.html#a-1-2) for details):
+To combine results from different workers (e.g., sums, averages, and variances), PostgreSQL uses the following formulas (See Appendix 1.2 for details):
 
 $$ \begin{align*} S_{n} &= S_{n_{1}} + S_{n_{2}} \\ A_{n} &= \frac{1}{n_{1} + n_{2}} (S_{n_{1}} + S_{n_{2}} ) \\ V_{n} &= (V_{n_{1}} + V_{n_{2}}) + \frac{n_{1} n_{2}}{n_{1} + n_{2}} \left(\frac{S_{n_{1}}}{n_{1}} - \frac{S_{n_{2}}}{n_{2}} \right)^{2} \end{align*} $$
 

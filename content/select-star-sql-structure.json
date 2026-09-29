@@ -1,0 +1,76 @@
+{
+  "chapters": [
+    {
+      "key": "frontmatter",
+      "title": "Front Matter",
+      "titleAr": "Front Matter",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Front Matter",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "beazley",
+      "title": "Beazley's Last Statement",
+      "titleAr": "Beazley's Last Statement",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Beazley's Last Statement",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "innocence",
+      "title": "Claims of Innocence",
+      "titleAr": "Claims of Innocence",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Claims of Innocence",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "hiatuses",
+      "title": "Execution Hiatuses",
+      "titleAr": "Execution Hiatuses",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Execution Hiatuses",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "longtail",
+      "title": "The Long Tail",
+      "titleAr": "The Long Tail",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Long Tail",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "questions",
+      "title": "Closing Remarks and Challenge Questions",
+      "titleAr": "Closing Remarks and Challenge Questions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Closing Remarks and Challenge Questions",
+          "order": 5
+        }
+      ]
+    }
+  ]
+}

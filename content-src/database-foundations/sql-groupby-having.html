@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>The GROUP BY and HAVING clauses in detail</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">Confusion is part of programming.</span> <br>
+&mdash;Felienne Hermans, The Programmer's Brain
+</p> </blockquote> <h1>The GROUP BY and HAVING clauses in detail</h1> <section class="leerdoel"> <ul></ul> </section> <h2>Grouping rows</h2> <p>
+In <a href="/EN/SQL_CSV/index.html#Grouping-data-with-GROUP-BY">the chapter on importing a CSV file</a> you came into contact with grouping rows for the first time. Often this involves
+      a question containing the words ‘for each’. An example: “Enter <em>for each lecturer</em>
+the number of courses for which this lecturer is coordinator”. “Please provide
+<em></em> the total number of credits from all courses now or previously given
+      in that language”. Granted, that last sentence does not contain the words ‘for
+      each’, but you can rephrase it as “Provide <em>for each language</em> the total
+      number of credits of all courses that are or have been given in that language.”.
+</p> <p>
+The image we use is: <em>group the rows with the same value of a given field (or fields) in a
+        box</em>. From that box, you can then no longer view individual rows (you're not
+      allowed to open the box). You must limit yourself <em>to summary information</em>.
+</p> <p>
+As an example, let's consider the question above: “For each lecturer,
+      please provide the number of courses for which this lecturer is (or was)
+      the coordinator.”.
+</p> <section class="info"> <p>
+You can test the code examples in the table ‘course’ of the schema
+        ‘ucllcatalogue’ (or in your own version of this table in your personal
+        schema).
+</p> </section> <section class="taak"> <div> <p>
+In a first step, as an exercise, write the query that generates the
+          following figure, namely a list of all coordinators with code, name
+          and semester, ordered by lecturer code (u-number, ascending):
+</p> <figure class="center"> <img src="/assets/groupby/EN/sortbycoord.png" width="600" alt=""> </figure> <p>Not such a difficult query, right?</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT coordinator, code, name, semester
+FROM course
+ORDER BY coordinator;</code></pre> </div>  </section> <p>
+You can read in this figure that lector ‘u0012047’ is (or was) coordinator
+      of ‘Probleemoplossend denken’, ‘Web Development 1’ and ‘Front-end
+      Development’. Now if you group by lector then all rows with the same value
+      for the ‘coordinator’ column are put together in one box. The first box
+      thus contains three rows. On the box is the name of the field that is
+      common to all these rows, so ‘u0012047’.
+</p> <p>
+The second box labeled ‘u0015529’ contains two rows. The third box
+      (‘u0032987’) contains only one row, etc.
+</p> <p>
+Because these rows are together in a box (and you're not allowed to open
+      the boxes to look at specific rows), you can no longer retrieve individual
+      data in the <code>SELECT</code> clause. If you try to do that you get a typical
+      error message, as the following piece of code shows:
+<pre><code>SELECT coordinator, code, name, semester
+FROM course
+GROUP BY coordinator;
+
+-- the result of this query is this error:
+ERROR: column &quot;course.code&quot; must appear in the GROUP BY clause
+  or be used in an aggregate function
+LINE 2: select coordinator, code, name, semester
+                            ^
+SQL state: 42803
+Character: 50</code></pre> </p> <p>
+This query just shows a summary of all the ‘labels’ of the boxes and is
+      executed without any problems:<pre><code>SELECT coordinator
+FROM course
+GROUP BY coordinator;</code></pre> </p> <p>
+You may only look inside the box and provide certain summary information
+      given in the <code>SELECT</code>, such as the number of rows, the sum of
+      all the rows as far as a particular column is concerned. <em>We call these summary functions ‘aggregation functions’ and talk about
+        data ‘aggregation'</em>. In the next section, we look at several of these functions.
+</p> <h2>Aggregation functions</h2> <h3>Counting the number of rows</h3> <p>
+The question we are still trying to answer is “For each lecturer, please
+      provide the number of courses for which this lecturer is (or was) the
+      coordinator.”. In this sentence you already know by now that the ‘for each
+      lecturer’ bit means that you have to group together rows that have the
+      same value for coordinator. <em>
+Counting the number of rows contained in one box</em> is done with the function <code>COUNT()</code> (<a href="https://www.postgresql.org/docs/current/functions-aggregate.html">documentation</a>). If you want to count full rows, use <code>COUNT(*)</code>.
+</p> <p>
+The final query that returns the answer to the question is:<pre><code>SELECT coordinator, COUNT(*)
+FROM course
+GROUP BY coordinator
+ORDER BY coordinator;</code></pre> </p> <h3>Sum of certain data in a group</h3> <p>
+A second aggregation function is <code>SUM()</code>. <em>You use it to sum values in a given column</em>. Caution: we regularly see students who mix up
+<code>COUNT()</code> en <code>SUM()</code>! Now make the following
+      exercise.
+</p> <section class="taak"> <div> <p>
+Write a SQL query that generates the summary of the total number of
+          credits for which a lecturer is coordinator. Organize the result
+          according to decreasing total number of credits. You should obtain the
+          figure below. As always: also pay attention to the correct heading of
+          each column.
+</p> <figure class="center"> <img src="/assets/groupby/EN/sumSP.png" width="350" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT coordinator, SUM(credits) AS &quot;total number of credits&quot;
+FROM course
+GROUP BY coordinator
+ORDER BY 2 DESC;</code></pre> </div>  </section> <h3>Minimum, maximum and average</h3> <p>
+The last three aggregation functions are <code>MIN()</code>, <code>MAX()</code>and <code>AVG()</code>, respectively, for the minimum, maximum or
+      arithmetic mean of <em>values in a given column</em>. Make the following
+      exercises.
+</p> <section class="taak"> <div> <p>
+Create a list that shows the average number of credits for each
+          semester. Order the answer rows by semester from small to large. Your
+          should obtain the figure below. Can you also include the name of the
+          course?
+</p> <figure class="center"> <img src="/assets/groupby/EN/groupavgsemester.png" width="350" alt="Grouped on semester"> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Not every task will contain the word ‘for each’. Language has many
+          alternatives for asking the same thing. So here you will have to group
+          by semester and you will have to use the aggregation function <code>AVG()</code>. Obviously, you cannot retrieve information from individual courses
+          (such as the name) because that is ‘information that is inside the
+          box’. The following query is a possible solution:
+</p> <pre><code>SELECT semester, AVG(credits) AS &quot;average number of credits&quot;
+FROM course
+GROUP BY semester
+ORDER BY 1;</code></pre> </div>  </section> <section class="taak"> <p>
+Slightly more difficult ... List by language the number of courses of at
+        least 4 credits taught in that language. You don't have to order.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT language, COUNT(*) AS number
+FROM course
+WHERE credits &gt;= 4
+GROUP BY language;</code></pre> </div>  </section> <h2>Grouping on an expression</h2> <p>
+Usually you group on a particular column, but it is also possible to group
+      on a ‘calculated column’ (expression). Each course has a start date. From
+      this start date you can easily extract the year with <a href="/NL/SQL_select/index.html#Extract-…-from"> <code>EXTRACT</code> </a>. As an example, we provide the query that answers the following
+      question: “List for each year how many courses entered the program in that
+      year.”.
+</p> <pre><code>SELECT EXTRACT(year FROM start_date), COUNT(*) AS &quot;number of courses&quot;
+FROM course
+GROUP BY EXTRACT(year FROM start_date)
+ORDER BY 1;</code></pre> <h2>Grouping on multiple columns</h2> <p>
+The following query groups on two columns: semester and credits:<pre><code>SELECT semester, credits, COUNT(*)
+FROM course
+GROUP BY semester, credits
+ORDER BY 1, 2;</code></pre> </p> <p>
+This query creates 15 boxes (see figure). <span style="color: orange">The first box (orange border)</span> shows on the label ‘semester 1, courses with 3 credits’. There are four rows
+      in this box. <span style="color:blue">The second box (blue border)</span> is
+      ‘semester 1, courses with 4 credits’. In this box there is only one course.
+      etc.
+</p> <figure class="center"> <img src="/assets/groupby/EN/grouptweekol.png" width="400" alt="Grouping can be on multiple columns"> </figure> <h2>HAVING</h2> <p>
+The <code>HAVING</code> clause has already been covered <a href="/EN/SQL_CSV/index.html#HAVING">in the chapter on CSV files</a>. Students often find it difficult to distinguish it from the
+<code>WHERE</code> clause, which is understandable because they are doing something
+      similar. The
+<code>WHERE</code> follows immediately after the execution of the <code>FROM</code> component and selects
+<em>which rows may remain and which will disappear</em>.
+</p> <p>
+The <code>HAVING</code> component, however, is executed only after creating
+      the ‘boxes’ when grouping. <em>This condition decides which boxes may remain and which will disappear
+        from the result</em>.
+</p> <h2>Exercises</h2> <p>Now make the following exercises.</p> <section class="taak"> <div> <p>
+For odd semesters (so 1, 3, 5, …), list the number of credits and
+          number of courses in that semester. Sort according to decreasing
+          number of credits. You should obtain the following figure.
+</p> <p>
+A tip for finding the odd semesters: to do this, look at the
+          possibilities of <em>the remainder in integer division</em> (the so-called
+          ‘modulo’ operation), do a search for ‘Modulo’ on the page <a href="https://www.postgresql.org/docs/current/functions-math.html">https://www.postgresql.org/docs/current/functions-math.html</a>.
+</p> <figure class="center"> <img src="/assets/groupby/EN/grouponevensem.png" alt="group on odd semesters" width="400"> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT semester, SUM(credits) AS &quot;total number of credits&quot;, COUNT(*) AS &quot;number of courses&quot;
+FROM course
+WHERE semester %2 != 0
+GROUP BY semester
+ORDER BY 2 DESC;</code></pre> </div>  </section> <section class="taak"> <p>
+How many different coordinators are there for each semester?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT SEMESTER, COUNT(DISTINCT(coordinator)) AS number_of_different_coordinators
+FROM course
+GROUP BY semester;</code></pre> </div>  </section> <section class="taak"> <p>
+Give all semesters with two or more ‘follow-up’ courses (courses ending
+        with ‘2’) per semester.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT semester, COUNT(name) AS number_of_follow_up_courses
+FROM course
+WHERE name LIKE&#39;%2&#39;
+GROUP BY semester
+HAVING COUNT(name) &gt;= 2;</code></pre> <p>
+This gives a ‘wrong’ result because the course ‘Communication in
+          French 2 (sem 2)’ does not follow the (unspoken?) convention in terms
+          of name. This version may give a better result:<pre><code>SELECT semester, COUNT(name) AS number_of_follow_up_courses
+FROM course
+WHERE name LIKE &#39;%2&#39; OR name LIKE &#39;%2 (%&#39;
+GROUP BY semester
+HAVING COUNT(name) &gt;= 2;</code></pre> </p> </div>  </section> <h2>Exercises SQLzoo</h2> <section class="taak"> <p>
+Make <a href="https://sqlzoo.net/wiki/SUM_and_COUNT">Exercise series 5 on aggregation functions</a> (table ‘world’).
+</p>  </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

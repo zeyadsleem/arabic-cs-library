@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dive Into Systems</title>
+    <meta name="generator" content="Antora 2.2.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6C7YGP3BE6"></script>
+    <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','G-6C7YGP3BE6')</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">Dive Into Systems</a>
+      <div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search book...">
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="diveintosystems" data-version="1.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Dive Into Systems</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dive Into Systems</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">Authors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../copyright.html">Copyright</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preface.html">Preface</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction.html">0. Introduction</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C1-C_intro/index.html">1. By the C, the Beautiful C</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/getting_started.html">1.1. Getting Started Programming in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/input_output.html">1.2. Input/Output (printf and scanf)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/conditionals.html">1.3. Conditionals and Loops</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/functions.html">1.4. Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/arrays_strings.html">1.5. Arrays and Strings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/structs.html">1.6. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/summary.html">1.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/exercises.html">1.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C2-C_depth/index.html">2. A Deeper Dive Into C</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/scope_memory.html">2.1. Parts of Program Memory and Scope</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/pointers.html">2.2. C Pointer Variables</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/pointers_functions.html">2.3. Pointers and Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/dynamic_memory.html">2.4. Dynamic Memory Allocation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/arrays.html">2.5. Arrays in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/strings.html">2.6. Strings and the String Library</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/structs.html">2.7. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/IO.html">2.8. Input / Output in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C2-C_depth/advanced.html">2.9. Advanced C Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_switch.html">2.9.1. Constants, switch, enum, and typedef</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_cmd_line_args.html">2.9.2. Command Line Arguments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_voidstar.html">2.9.3. The void* Type</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_pointer_arithmetic.html">2.9.4. Pointer Arithmetic</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_libraries.html">2.9.5. C Libraries: Using, Compiling and Linking</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_writing_libraries.html">2.9.6. Writing and using your own C libraries (and compiling multiple .c and .h files)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_assembly.html">2.9.7. Compiling C to Assembly and Compiling Assembly Code</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/summary.html">2.10. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/exercises.html">2.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C3-C_debug/index.html">3. C Debugging Tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb.html">3.1. Debugging with GDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_commands.html">3.2. GDB Commands in Detail</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/valgrind.html">3.3. Debugging Memory with Valgrind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_advanced.html">3.4. Advanced GDB Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_assembly.html">3.5. Debugging Assembly Code</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_pthreads.html">3.6. Debugging Multi-threaded Programs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/summary.html">3.7. Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C4-Binary/index.html">4. Binary and Data Representation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/bases.html">4.1. Number Bases and Unsigned Integers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/conversion.html">4.2. Converting Between Bases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/signed.html">4.3. Signed Binary Integers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C4-Binary/arithmetic.html">4.4. Binary Integer Arithmetic</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_addition.html">4.4.1. Addition</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_subtraction.html">4.4.2. Subtraction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_mult_div.html">4.4.3. Multiplication &amp; Division</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/overflow.html">4.5. Overflow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/bitwise.html">4.6. Bitwise Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/byte_order.html">4.7. Integer Byte Order</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/floating_point.html">4.8. Real Numbers in Binary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/summary.html">4.9. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/exercises.html">4.10. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C5-Arch/index.html">5. What von Neumann Knew: Computer Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/hist.html">5.1. The Origins of Modern Computing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/von.html">5.2. The von Neumann Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/gates.html">5.3. Logic Gates</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C5-Arch/circuits.html">5.4. Circuits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/arithlogiccircs.html">5.4.1. Arithmetic and Logic Circuits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/controlcircs.html">5.4.2. Control Circuits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/storagecircs.html">5.4.3. Storage Circuits</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/cpu.html">5.5. Building a Processor</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/instrexec.html">5.6. The Processor&#8217;s Execution of Program Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/pipelining.html">5.7. Pipelining Instruction Execution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/pipelining_advanced.html">5.8. Advanced Pipelining Considerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/modern.html">5.9. Looking Ahead: CPUs Today</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/summary.html">5.10. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/exercises.html">5.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../C6-asm_intro/index.html">6. Under the C: Dive into Assembly</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C7-x86_64/index.html">7. 64-bit x86 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/basics.html">7.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/common.html">7.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/arithmetic.html">7.3. Additional Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C7-x86_64/conditional_control_loops.html">7.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/preliminaries.html">7.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/if_statements.html">7.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/loops.html">7.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/functions.html">7.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/recursion.html">7.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/arrays.html">7.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/matrices.html">7.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/structs.html">7.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/buffer_overflow.html">7.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/exercises.html">7.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C8-IA32/index.html">8. 32-bit x86 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/basics.html">8.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/common.html">8.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/arithmetic.html">8.3. Additional Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C8-IA32/conditional_control_loops.html">8.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/preliminaries.html">8.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/if_statements.html">8.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/loops.html">8.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/functions.html">8.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/recursion.html">8.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/arrays.html">8.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/matrices.html">8.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/structs.html">8.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/buffer_overflow.html">8.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/exercises.html">8.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C9-ARM64/index.html">9. ARMv8 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/basics.html">9.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/common.html">9.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/arithmetic.html">9.3. Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C9-ARM64/conditional_control_loops.html">9.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/preliminaries.html">9.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/if_statements.html">9.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/loops.html">9.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/functions.html">9.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/recursion.html">9.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/arrays.html">9.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/matrices.html">9.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/structs.html">9.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/buffer_overflow.html">9.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/exercises.html">9.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../C10-asm_takeaways/index.html">10. Key Assembly Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C11-MemHierarchy/index.html">11. Storage and the Memory Hierarchy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/mem_hierarchy.html">11.1. The Memory Hierarchy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/devices.html">11.2. Storage Devices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/locality.html">11.3. Locality</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/caching.html">11.4. Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/cachegrind.html">11.5. Cache Analysis and Cachegrind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/coherency.html">11.6. Looking Ahead: Caching on Multicore Processors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/summary.html">11.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/exercises.html">11.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C12-CodeOpt/index.html">12. Code Optimization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/basic.html">12.1. First Steps</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/loops_functions.html">12.2. Other Compiler Optimizations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/memory_considerations.html">12.3. Memory Considerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/summary.html">12.4. Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C13-OS/index.html">13. The Operating System</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C13-OS/impl.html">13.1. Booting and Running</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C13-OS/processes.html">13.2. Processes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C13-OS/vm.html">13.3. Virtual Memory</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C13-OS/ipc.html">13.4. Interprocess Communication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C13-OS/ipc_signals.html">13.4.1. Signals</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C13-OS/ipc_msging.html">13.4.2. Message Passing</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C13-OS/ipc_shm.html">13.4.3. Shared Memory</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C13-OS/advanced.html">13.5. Summary and Other OS Functionality</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C13-OS/exercises.html">13.6. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">14. Leveraging Shared Memory in the Multicore Era</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="multicore.html">14.1. Programming Multicore Systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="posix.html">14.2. POSIX Threads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="synchronization.html">14.3. Synchronizing Threads</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="mutex.html">14.3.1. Mutual Exclusion</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="semaphores.html">14.3.2. Semaphores</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="other_syncs.html">14.3.3. Other Synchronization Constructs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="performance.html">14.4. Measuring Parallel Performance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="performance_basics.html">14.4.1. Parallel Performance Basics</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="performance_advanced.html">14.4.2. Advanced Topics</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cache_coherence.html">14.5. Cache Coherence</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="thread_safety.html">14.6. Thread Safety</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="openmp.html">14.7. Implicit Threading with OpenMP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="summary.html">14.8. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exercises.html">14.9. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C15-Parallel/index.html">15. Looking Ahead: Other Parallel Systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/gpu.html">15.1. Hardware Acceleration and CUDA</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/distrmem.html">15.2. Distributed Memory Systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/cloud.html">15.3. To Exascale and Beyond</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../Appendix1/index.html">16. Appendix 1: Chapter 1 for Java Programmers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/getting_started.html">16.1. Getting Started Programming in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/input_output.html">16.2. Input/Output (printf and scanf)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/conditionals.html">16.3. Conditionals and Loops</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/functions.html">16.4. Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/arrays_strings.html">16.5. Arrays and Strings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/structs.html">16.6. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/summary.html">16.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/exercises.html">16.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../Appendix2/index.html">17. Appendix 2: Using Unix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/cmdln_basics.html">17.1. Unix Command Line and the Unix File System</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/man.html">17.2. Man and the Unix Manual</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/ssh_scp.html">17.3. Remote Access</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/editors.html">17.4. Unix Editors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/makefiles.html">17.5. make and Makefiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/grep.html">17.6 Searching: grep and find</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/chmod.html">17.7 File Permissions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/tar.html">17.8 Archiving and Compressing Files</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/pskill.html">17.9 Process Control</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/timing.html">17.10 Timing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/history.html">17.11 Command History</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/ioredirect.html">17.12 I/0 Redirection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/pipe.html">17.13 Pipes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/dotfiles.html">17.14 Dot Files and .bashrc</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/shellprog.html">17.15 Shell Programming</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/sysinfo.html">17.16 Getting System Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Dive Into Systems</span>
+    <span class="version">1.2</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Dive Into Systems</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.2</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Dive Into Systems</a></li>
+    <li><a href="index.html">14. Leveraging Shared Memory in the Multicore Era</a></li>
+    <li><a href="performance.html">14.4. Measuring Parallel Performance</a></li>
+    <li><a href="performance_advanced.html">14.4.2. Advanced Topics</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect2">
+<h3 id="_advanced_topics"><a class="anchor" href="#_advanced_topics"></a>14.4.2. Advanced Topics</h3>
+<div class="sect3">
+<h4 id="_gustafson_barsis_law"><a class="anchor" href="#_gustafson_barsis_law"></a>Gustafson-Barsis Law</h4>
+<div class="paragraph">
+<p>In 1988, John L. Gustafson, a computer scientist and researcher at Sandia
+National Labs,  wrote a paper called "Reevaluating Amdahl&#8217;s Law<sup>1</sup>". In this
+paper, Gustafson calls to light a critical assumption that was made about the
+execution of a parallel program that is not always true.</p>
+</div>
+<div class="paragraph">
+<p>Specifically, Amdahl&#8217;s law implies that the number of compute cores
+<em>c</em> and the fraction of a program that is parallelizable <em>P</em> are independent
+of each other. Gustafson notes that this "<em>is virtually never the case</em>."<sup>1</sup>
+While benchmarking a program&#8217;s performance by varying the number of cores on a
+fixed set of data is a useful academic exercise, in the real world, more cores
+(or processors, as examined in our discussion of distributed memory) are
+added as the problem grows large. "<em>It may be most realistic</em>," Gustafson
+writes<sup>1</sup>, "<em>to assume run time, not problem size, is constant</em>."</p>
+</div>
+<div class="paragraph">
+<p>Thus, according to Gustafson, it is most accurate to say that "<em>The amount of work
+that can be done in parallel varies linearly with the number of processors</em>."<sup>1</sup></p>
+</div>
+<div class="paragraph">
+<p>Consider a <em>parallel</em> program that takes time T<sub><em>c</em></sub> to run on a system with <em>c</em>
+cores. Let <em>S</em> represent the fraction of the program execution that is necessarily
+serial and takes <em>S</em> × T<sub><em>c</em></sub> time to run. Thus, the parallelizable fraction of the
+program execution, <em>P</em> = 1 - <em>S</em>, takes <em>P</em> × T<sub><em>c</em></sub> time to run on <em>c</em> cores.</p>
+</div>
+<div class="paragraph">
+<p>When the same program is run on just one core, the serial fraction of the code still
+takes <em>S</em> x T<sub><em>c</em></sub> (assuming all other conditions are equal). However, the parallelizable
+fraction (which was divided between <em>c</em> cores) now has to be executed by just one
+core to run serially and takes <em>P</em> × T<sub><em>c</em></sub> × <em>c</em> time. In other words, the parallel
+component will take <em>c</em> times as long on a single-core system. It follows that the scaled
+speedup would be:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/sspeedup.png" alt="sspeedup">
+</div>
+</div>
+<div class="paragraph">
+<p>This shows that the scaled speedup increases linearly with the number of
+compute units.</p>
+</div>
+<div class="paragraph">
+<p>Consider our prior example in which 99% of a program is parallelizable (i.e.,
+<em>P</em> = 0.99). Applying the scaled speedup equation, the theoretical
+speedup on 100 processors would be 99.01. On 1,000 processors, it would be
+990.01. Notice that the efficiency stays constant at <em>P</em>.</p>
+</div>
+<div class="paragraph">
+<p>As Gustafson concludes, "<em>speedup should be measured by scaling the problem to
+the number of processors, not by fixing a problem size</em>."<sup>1</sup> Gustafson&#8217;s result
+is notable because it shows that it is possible to get increasing speedup
+by updating the number of processors. As a researcher working
+in a national supercomputing facility, Gustafson was more interested in doing <em>more work</em>
+in a constant amount of time. In several scientific fields, the ability to analyze
+more data usually leads to higher accuracy or fidelity of results. Gustafson&#8217;s
+work showed that it was possible to get large speedups on large numbers of processors,
+and revived interest in parallel processing<sup>2</sup>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scalability"><a class="anchor" href="#_scalability"></a>Scalability</h4>
+<div class="paragraph">
+<p>We describe a program as <strong>scalable</strong> if we see improving (or constant)
+performance as we increase the number of resources (cores, processors) or the
+problem size. Two related concepts are <strong>strong scaling</strong> and <strong>weak scaling</strong>. It
+is important to note that "weak" and "strong" in this context do not indicate
+the <em>quality</em> of a program&#8217;s scalability, but are simply different ways to measure scalability.</p>
+</div>
+<div class="paragraph">
+<p>We say that a program is <strong>strongly scalable</strong> if increasing the number of
+cores/processing units on a <em>fixed</em> problem size yields an improvement in
+performance. A program displays strong linear scalability if, when run on <em>n</em>
+cores, the speedup is also <em>n</em>. Of course, Amdahl&#8217;s Law guarantees that after
+some point, adding additional cores makes little sense.</p>
+</div>
+<div class="paragraph">
+<p>We say that a program is <strong>weakly scalable</strong> if increasing the size of the data
+at the same rate as the number of cores (i.e., if there is a fixed data size
+per core/processor) results in constant or an improvement in performance. We
+say a program displays weak linear scalability if we see an improvement of <em>n</em>
+if the work per core is scaled up by a factor of <em>n</em>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_general_advice_regarding_measuring_performance"><a class="anchor" href="#_general_advice_regarding_measuring_performance"></a>General Advice Regarding Measuring Performance</h4>
+<div class="paragraph">
+<p>We conclude our discussion on performance with some notes about benchmarking
+and performance on hyperthreaded cores.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Run a program multiple times when benchmarking.</dt>
+<dd>
+<p>In many of the examples shown thus far in this book, we run a program only
+once to get a sense of its runtime. However, this is not sufficient for
+formal benchmarks. Running a program once is <em>never</em> an accurate measure of
+a program&#8217;s true runtime! Context switches and other running processes can
+temporarily cause the runtime to radically fluctuate. Therefore, it is always
+best to run a program several times and report an average runtime together with
+as many details as feasible, including number of runs, observed variability of
+the measurements (e.g., error bars, minimum, maximum, median, standard deviation) and
+conditions under which the measurements were taken.</p>
+</dd>
+<dt class="hdlist1">Be careful where you measure timing.</dt>
+<dd>
+<p>The <code>gettimeofday</code> function is useful in helping to accurately measure the time a program
+takes to run. However, it can also be abused. Even though it may be tempting to
+place the <code>gettimeofday</code> call around only the thread creation and joining
+component in <code>main</code>, it is important to consider what exactly you are
+trying to time. For example, if a program reads in an external data file
+as a necessary part of its execution, the time for file reading should likely be
+included in the program&#8217;s timing.</p>
+</dd>
+<dt class="hdlist1">Be aware of the impact of hyperthreaded cores.</dt>
+<dd>
+<p>As discussed in the <a href="index.html#_taking_a_closer_look_how_many_cores" class="page">introduction
+ to this chapter</a> and <a href="../C5-Arch/modern.html#_multicore_and_hardware_multithreading" class="page">hardware multithreading section</a>, hyper-threaded (logical) cores are capable of executing
+multiple threads on a single core. In a quad-core system with two logical
+threads per core, we say there are eight hyperthreaded cores on the system.
+Running a program in parallel on eight logical cores in many cases yields
+better wall time than running a program on four cores. However, due to the
+resource contention that usually occurs with hyperthreaded cores, you may see
+a dip in core efficiency and nonlinear speedup.</p>
+</dd>
+<dt class="hdlist1">Beware of resource contention.</dt>
+<dd>
+<p>When benchmarking, it&#8217;s always important to consider what <em>other</em> processes and
+threaded applications are running on the system. If your performance results
+ever look a bit strange, it is worth quickly running <code>top</code> to see whether
+there are any other users also running resource-intensive tasks on the same
+system. If so, try using a different system to benchmark (or wait until
+the system is not so heavily used).</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_references"><a class="anchor" href="#_references"></a>References</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>John Gustafson. "Reevaluating Amdahl&#8217;s law". <em>Communications of the ACM</em> 31(5), pp. 532&#8212;&#8203;533. ACM. 1988.</p>
+</li>
+<li>
+<p>Caroline Connor. "Movers and Shakers in HPC: John Gustafson" <em>HPC Wire</em>. <a href="http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html" class="bare">http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 Dive into Systems, LLC.</p>
+
+  <p><i>Dive into Systems,</i> is licensed under the Creative Commons <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Attribution-NonCommercial-NoDerivatives 4.0 International</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script>antoraLunr.init("../_/../search_index.json")</script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

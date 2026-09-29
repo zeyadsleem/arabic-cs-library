@@ -1,0 +1,100 @@
+{
+  "chapters": [
+    {
+      "key": "set-1",
+      "title": "Set 1",
+      "titleAr": "Set 1",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 1",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "set-2",
+      "title": "Set 2",
+      "titleAr": "Set 2",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 2",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "set-3",
+      "title": "Set 3",
+      "titleAr": "Set 3",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "set-4",
+      "title": "Set 4",
+      "titleAr": "Set 4",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "set-5",
+      "title": "Set 5",
+      "titleAr": "Set 5",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 5",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "set-6",
+      "title": "Set 6",
+      "titleAr": "Set 6",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 6",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "set-7",
+      "title": "Set 7",
+      "titleAr": "Set 7",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 7",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "set-8",
+      "title": "Set 8",
+      "titleAr": "Set 8",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Set 8",
+          "order": 7
+        }
+      ]
+    }
+  ]
+}

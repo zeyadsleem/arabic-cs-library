@@ -1,0 +1,11 @@
+{
+  "/static/fig03_mssql_slow.930uegsd.png": "/images/use-the-index-luke/sql-testing-scalability-data-volume-2-fig03_mssql_slow.930uegsd.webp",
+  "/static/fig03_mssql_fast.9FT2aI9e.png": "/images/use-the-index-luke/sql-testing-scalability-data-volume-3-fig03_mssql_fast.9FT2aI9e.webp",
+  "/static/mssql_ssms_filter.ZrTov2hZ.png": "/images/use-the-index-luke/sql-explain-plan-sql-server-filter-predicates-0-mssql_ssms_filter.ZrTov2hZ.webp",
+  "/static/sort-merge.2hg7gOBL.gif": "/images/use-the-index-luke/sql-join-sort-merge-join-0-sort-merge.2hg7gOBL.webp",
+  "/static/intentional-filter-predicate.en.N5J1kRR3.gif": "/images/use-the-index-luke/sql-clustering-index-filter-predicates-0-intentional-filter-predicate.en.N5J1kRR3.webp",
+  "/static/sqldeveloper_access_filter_predicates.6GQmGBUE.png": "/images/use-the-index-luke/sql-explain-plan-oracle-filter-predicates-0-sqldeveloper_access_filter_predicates.6GQmGBUE.webp",
+  "/static/mssql_ssms_explain_button.vqQzQh6C.png": "/images/use-the-index-luke/sql-explain-plan-sql-server-getting-an-execution-plan-0-mssql_ssms_explain_button.vqQzQh6C.webp",
+  "/static/mssql_ssms_explain.p0Ulm-iw.png": "/images/use-the-index-luke/sql-explain-plan-sql-server-getting-an-execution-plan-1-mssql_ssms_explain.p0Ulm-iw.webp",
+  "/static/mssql_ssms_explain_table.6KapJiT5.png": "/images/use-the-index-luke/sql-explain-plan-sql-server-getting-an-execution-plan-2-mssql_ssms_explain_table.6KapJiT5.webp"
+}

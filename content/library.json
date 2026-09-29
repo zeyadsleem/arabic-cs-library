@@ -386,11 +386,11 @@
       "title": "الغوص في الأنظمة",
       "titleEn": "Dive into Systems",
       "author": "Suzanne J. Matthews et al.",
-      "description": "لغة C، والثنائي، والذاكرة، ولغة التجميع، ومعمارية الحاسوب، ومفاهيم أنظمة التشغيل، والتوازي.",
+      "description": "الغوص في الأنظمة كاملاً: 18 فصلاً عن C والثنائي والمعمارية ولغة التجميع والذاكرة والتوازي.",
       "sourceUrl": "https://diveintosystems.org/book/",
       "license": "CC BY-NC-ND 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "status": "planned",
+      "status": "translated",
       "note": "ترخيص CC BY-NC-ND يمنع النشر العلني للترجمة. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "systems",
       "order": 5,
@@ -473,11 +473,11 @@
       "title": "أسس قواعد البيانات",
       "titleEn": "Database Foundations",
       "author": "Steven Engels, Jan Van Hee & Bram Van Impe (UCLL)",
-      "description": "مكمل ممتاز لدراسة قواعد البيانات العلائقية وSQL بشكل منظم: 24 وحدة تغطي نمذجة البيانات وSQL.",
+      "description": "أسس قواعد البيانات كاملاً: 24 وحدة في نمذجة البيانات وSQL، مع التمارين وحلولها.",
       "sourceUrl": "https://df.webontwerp.ucll.be/EN/",
       "license": "بلا ترخيص معلن",
       "licenseUrl": "https://df.webontwerp.ucll.be/EN/",
-      "status": "planned",
+      "status": "translated",
       "note": "بلا ترخيص معلن. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "databases",
       "order": 3,
@@ -515,11 +515,11 @@
       "title": "استخدم الفهرس يا لوقا!",
       "titleEn": "Use The Index, Luke!",
       "author": "Markus Winand",
-      "description": "الفهارس، وأشجار B، وأداء الاستعلامات، وعمليات الربط، والترقيم، وكفاءة التنفيذ.",
+      "description": "استخدم الفهرس يا لوقا! كاملاً: 139 صفحة عن الفهارس وخطط التنفيذ والترتيب والضمّ والترقيم وخرافات الأداء.",
       "sourceUrl": "https://use-the-index-luke.com/",
       "license": "كل الحقوق محفوظة",
       "licenseUrl": "https://use-the-index-luke.com/legal",
-      "status": "planned",
+      "status": "translated",
       "note": "كل الحقوق محفوظة. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "databases",
       "order": 5,
@@ -559,7 +559,7 @@
       "title": "البرمجة بلغة OCaml: صحيحة وفعّالة وجميلة",
       "titleEn": "OCaml Programming: Correct + Efficient + Beautiful (Cornell CS 3110)",
       "author": "Michael R. Clarkson et al. — Cornell CS 3110",
-      "description": "كتاب جامعي في البرمجة الوظيفية وبنى البيانات بلغة OCaml: البرمجة من الرتبة العليا، والتطابق النمطي، والتزامن، وإثبات الصحة، والمفسّرات، والاستدلال على الأنواع.",
+      "description": "البرمجة بلغة OCaml كاملاً: 11 فصلاً من الأساسيات إلى الوحدات والتزامن وإثبات الصحة وبنى المعطيات والمفسّرات.",
       "sourceUrl": "https://cs3110.github.io/textbook/cover.html",
       "repoUrl": "https://github.com/cs3110/textbook",
       "license": "CC BY-NC-ND 4.0",
@@ -567,8 +567,8 @@
       "languages": [
         "OCaml"
       ],
-      "status": "planned",
-      "note": "ترخيص CC BY-NC-ND لا يسمح بنشر الترجمة علناً. ويبقى المصدر الأصلي هو المرجع المعتمد.",
+      "status": "translated",
+      "note": "ترخيص CC BY-NC-ND لا يسمح بنشر الترجمة علناً. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "languages",
       "order": 2,
       "format": "web",
@@ -762,11 +762,11 @@
       "title": "تحديات كريبتوبالز",
       "titleEn": "The Cryptopals Crypto Challenges",
       "author": "Cryptopals",
-      "description": "تطبيق عملي في التشفير والهجمات والمفاهيم الأمنية عبر 66 تحدياً في 8 مجموعات.",
+      "description": "تحديات كريبتوبالز كاملاً: 8 مجموعات و66 تحدياً في كسر التشفير عملياً.",
       "sourceUrl": "https://cryptopals.com/",
       "license": "بلا ترخيص",
       "licenseUrl": "https://cryptopals.com/",
-      "status": "planned",
+      "status": "translated",
       "note": "بلا ترخيص على نص التحديات. أُدرجت في قائمة الترجمة بمبادرة المستخدم.",
       "stage": "security",
       "order": 4,
@@ -807,11 +807,11 @@
       "title": "تمارين PostgreSQL التفاعلية",
       "titleEn": "PGExercises",
       "author": "Alvaro Herrera",
-      "description": "تمارين SQL تفاعلية على قاعدة بيانات حقيقية: الاستعلامات، والربط، والتجميع، والدوال، وتعديل البيانات — كل تمرين مع حلّ.",
+      "description": "تمارين PostgreSQL التفاعلية كاملاً: 7 مجموعات تغطي الاستعلامات والربط والتجميع والتعديل والاستعلامات التعاودية والتواريخ والمصفوفات.",
       "sourceUrl": "https://pgexercises.com/",
       "license": "CC BY-SA 3.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
-      "status": "planned",
+      "status": "translated",
       "stage": "databases",
       "order": 6,
       "format": "web",
@@ -819,18 +819,19 @@
       "completeCourse": true,
       "prerequisites": [
         "db-design"
-      ]
+      ],
+      "note": ". أُدرجت في قائمة الترجمة بمبادرة المستخدم."
     },
     {
       "id": "select-star-sql",
       "title": "SELECT النجمة: تعلّم SQL بالقراءة والتمرين",
       "titleEn": "Select Star SQL",
       "author": "Zi Chong Kao",
-      "description": "كتاب تفاعلي يعلّم SQL على بيانات حقيقية خطوة بخطوة: من SELECT الأولى إلى النوافذ والدوال التجميعية، مع محرّر استعلامات داخل الصفحة.",
+      "description": "SELECT النجمة كاملاً: 6 فصول تعلّم SQL بالقراءة والتمرين على بيانات حقيقية.",
       "sourceUrl": "https://selectstarsql.com/",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "status": "planned",
+      "status": "translated",
       "stage": "databases",
       "order": 7,
       "format": "web",
@@ -838,18 +839,19 @@
       "completeCourse": true,
       "prerequisites": [
         "db-design"
-      ]
+      ],
+      "note": ". أُدرجت في قائمة الترجمة بمبادرة المستخدم."
     },
     {
       "id": "sql-mystery",
       "title": "لغز جريمة SQL",
       "titleEn": "SQL Murder Mystery",
       "author": "Northwestern University Knight Lab",
-      "description": "تعلّم SQL بالتحقيق في قضية جريمة: قاعدة بيانات بوليسية تُحقّق فيها باستعلامات SQL متدرّجة الصعوبة.",
+      "description": "لغز جريمة SQL كاملاً: القضية ودليل الحل خطوة بخطوة.",
       "sourceUrl": "https://mystery.knightlab.com/",
       "license": "MIT (الشيفرة) وCC BY-SA 4.0 (المحتوى)",
       "licenseUrl": "https://github.com/NUKnightLab/sql-mysteries/blob/master/LICENSE",
-      "status": "planned",
+      "status": "translated",
       "stage": "databases",
       "order": 8,
       "format": "web",
@@ -857,7 +859,8 @@
       "completeCourse": true,
       "prerequisites": [
         "db-design"
-      ]
+      ],
+      "note": ". أُدرجت في قائمة الترجمة بمبادرة المستخدم."
     },
     {
       "id": "effective-go",
@@ -898,6 +901,50 @@
       "pages": 6,
       "completeCourse": true,
       "prerequisites": []
+    },
+    {
+      "id": "go-faq",
+      "title": "الأسئلة الشائعة عن Go",
+      "titleEn": "The Go FAQ",
+      "author": "The Go Authors",
+      "description": "الأسئلة الشائعة عن Go كاملاً: 15 قسماً بالإجابات الرسمية عن اللغة والأنواع والتزامن والوحدات والأدوات.",
+      "sourceUrl": "https://go.dev/doc/faq",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "languages": [
+        "Go"
+      ],
+      "status": "translated",
+      "stage": "go",
+      "order": 6,
+      "format": "web",
+      "pages": 22,
+      "completeCourse": true,
+      "prerequisites": [
+        "effective-go"
+      ]
+    },
+    {
+      "id": "go-style",
+      "title": "دليل أسلوب Go من Google",
+      "titleEn": "Go Style Guide",
+      "author": "Google",
+      "description": "دليل أسلوب Go من Google كاملاً: النظرة العامة والدليل والقرارات وأفضل الممارسات.",
+      "sourceUrl": "https://google.github.io/styleguide/go/",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "languages": [
+        "Go"
+      ],
+      "status": "translated",
+      "stage": "go",
+      "order": 7,
+      "format": "web",
+      "pages": 90,
+      "completeCourse": true,
+      "prerequisites": [
+        "effective-go"
+      ]
     }
   ]
 }

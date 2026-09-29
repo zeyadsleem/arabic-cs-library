@@ -137,7 +137,7 @@ for _, value := range array {
 فالحلقة
 
 ```go
-for pos, char := range "日本\x80語" { // \x80 is an illegal UTF-8 encoding
+for pos, char := range " \x80 " { // \x80 is an illegal UTF-8 encoding
     fmt.Printf("character %#U starts at byte position %d\n", char, pos)
 }
 ```
@@ -145,10 +145,10 @@ for pos, char := range "日本\x80語" { // \x80 is an illegal UTF-8 encoding
 تُطبع
 
 ```text
-character U+65E5 '日' starts at byte position 0
-character U+672C '本' starts at byte position 3
+character U+65E5 ' ' starts at byte position 0
+character U+672C ' ' starts at byte position 3
 character U+FFFD '�' starts at byte position 6
-character U+8A9E '語' starts at byte position 7
+character U+8A9E ' ' starts at byte position 7
 ```
 
 وأخيرًا، لا يوجد في Go معامل فاصلة (comma operator)، كما أن `++` و`--` جملتان لا تعبيران. فإن أردت تشغيل عدّة متغيّرات داخل `for` فينبغي أن تستعمل الإسناد المتوازي (مع العلم بأن ذلك يستبعد `++` و`--`):

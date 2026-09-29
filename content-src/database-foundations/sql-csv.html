@@ -1,0 +1,548 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Fetching information from a data file via SQL</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">One of my most productive days was throwing away 1000 lines of code.</span> <br>
+&mdash;Ken Thompson
+</p> </blockquote> <h1>Fetching information from a data file via SQL</h1> <p></p> <section class="learning objective"> <ul></ul> </section> <h2>Existing data sets</h2> <p>
+We saw in the previous chapter how to add your own data to a table via <code>INSERT INTO</code>. In the introductory example we took data of courses from the program
+      guide using the ECTS sheets of our Computer Science program. However,
+      sometimes data has already been collected by other people and can
+      be found on websites. We then talk about <em>datasets</em>.
+</p> <p>
+As an example, we take a dataset that provides some data related to
+      internet usage by country. Check out on Kaggle the page <a href="https://www.kaggle.com/datasets/ramjasmaurya/1-gb-internet-price">https://www.kaggle.com/datasets/ ramjasmaurya/1-gb-internet-price</a>. On this page, user ‘Ram Jas Maurya’ provides data on ‘Internet Prices
+      around 200+ countries in 2022’. The data is made available in the <em>Public Domain</em> (no copyright). So you may use this dataset without any problem.
+</p> <p>
+What we unfortunately do not find are <em>sources</em>. It should be
+      a natural reflex to always look for sources. Where did the data collected by
+      this author in this dataset come from? Let's do a quick little check with a
+      number that we can easily look up. Belgium will have (according to
+      Wikipedia, source Statbel) on January 1, 2022 about 11.6 million
+      inhabitants. This dataset gives as the number of inhabitants the number
+      11.5 million. That's pretty close. Where the information about internet
+      data fees for 1 GB of data was obtained, you don't know. In the comments
+      to this dataset on Kaggle, you read similar comments, by the way.
+</p> <p>
+In this chapter, however, we want to emphasize <em></em>
+didactic use of a CSV dataset and then this can serve. As long as we do not
+      want to conclude any ‘absolute truths’ from this...
+</p> <p>
+At the time of writing this chapter (Aug. 14, 2022), there are four
+      datasets available. We are particularly interested in ‘all_csv sorted.csv’
+      (version 7 at the time of writing). This dataset combines the other three
+      datasets into one larger dataset with 200 rows and 13 columns. The file
+      contains data on the average, minimum and maximum price of 1 GB of data in
+      2022 and the averages in the two previous years (if available). You will
+      also find the number of internet users and residents in each country and
+      the average speed of a connection in Mbit/s. As already mentioned and yet
+      important: <em>we have no idea where the data comes from</em>, so use this
+      data with caution.
+</p> <section class="taak"> <div> <p>
+Download this dataset via <a href="/assets/CSV/all_csv_sorted_versie7.csv">this direct download link to the CSV file</a>.
+</p> <figure class="center"> <img src="/assets/CSV/downloadCSV.png" alt=""> </figure> <p>
+Possibly this dataset will then just open in your browser window.
+          Either you explicitly command the linked file to be downloaded , or
+          select the entire contents of your browser window (Win: CTRL + A, Mac:
+          CMD + A) and copy and paste this content into a new text file.
+</p> <p>Save the file as ‘internetprices.csv’.</p> </div>  </section> <h2>CSV files</h2> <p>
+A CSV file (‘Comma Separated Values’) is an ordinary <em>text file</em> that
+      is useful to exchange data between different applications. For example, you
+      can export an Excel file in this format. Between each column value there is
+      a separator (which you can often choose yourself) such as a comma, semicolon,
+      etc. Each row starts on a new line. The downloaded file looks like this:
+</p> <pre><code class="language-plaintext">S.NO,Country code,Country,Continental region,NO. OF Internet Plans,Average price of 1GB (USD),Cheapest 1GB for 30 days (USD),Most expensive 1GB (USD),Average price of 1GB (USD at the start of 2021),Average price of 1GB (USD â€&quot; at start of 2020),Internet users,Population, &quot;Avg
+(Mbit/s)Ookla&quot;
+0,IL,Israel,NEAR EAST,27,0.05,0.02,20.95,0. 11,0.9,&quot;6,788,737&quot;,&quot;8,381,516&quot;,28.01
+1,KG,Kyrgyzstan,CIS (FORMER USSR),20,0.15,0.1,7.08,0.21,0.27,&quot;2,309,235&quot;,&quot;6,304,030&quot;,16.3
+2,FJ,Fiji,OCEANIA,18,0. 19,0.05,0.85,0.59,3.57,&quot;452,479&quot;,&quot;883,483&quot;,25.99
+3,IT,Italy,WESTERN EUROPE,29,0.27,0.09,3.54,0.43,1.73,&quot;50,540,000&quot;,&quot;60,627,291&quot;,37.15
+…</code></pre> <p>
+The first line of a CSV file usually contains some sort of <em>column header</em>, in this case:
+</p> <ul> <li>a number (type of serial number),</li> <li>two-letter country code,</li> <li>name of the country,</li> <li>region,</li> <li>number of different internet formulas,</li> <li>average price of 1GB,</li> <li>cheapest price for the same,</li> <li>most expensive price,</li> <li>averages for both previous years,</li> <li>number of internet users,</li> <li>number of residents,</li> <li>average data rate.</li> </ul> <section class="taak"> <div> <p>
+Since this is a text file, you can open, view and manipulate it with
+          an <em>editor</em>. You choose which editor you use for this, but in
+          this example we'll use <a href="https://code.visualstudio.com/">Visual Studio Code</a> (‘VS Code’), an editor that you undoubtedly use in other courses (frontend,
+          programming, …) as well. Proposal: install in VS Code the extension ‘Edit
+          CSV’ created by a certain janisdd. This extension allows you to work in
+          a spreadsheet-like representation with rows and columns to view the data
+          and manipulate it.
+</p> <p>
+A second useful extension for CSV files is ‘Rainbow CSV’. This gives
+          the different columns a different color and makes them therefore easier to
+          distinguish from each other. Also install this extension in VS
+          Code.
+</p> <p>
+The two screenshots below show the original CSV file without and with
+          the extension ‘Rainbow CSV’. The colored version is a lot more
+          readable, isn't it?
+</p> <figure class="center"> <img src="/assets/CSV/zonderkleur.png" alt="CSV file without rainbow coloring"> </figure> <figure class="center"> <img src="/assets/CSV/metkleur.png" alt="CSV file with rainbow coloring"> </figure> <p>
+Attention: there is a small error because there is an ‘enter’ between
+          ‘Avg’ and ‘(Mbit/s)Ookla’. Be sure to remove that so that the full
+          header is only on the first row!
+</p> <p>
+Once these extensions are installed, open the csv file and click ‘Edit
+          CSV’ in the upper right corner. You now get the following presentation
+          of the file:
+</p> <figure class="center"> <img src="/assets/CSV/editcsv.png" alt="this is what a CSV file looks like after installing edit CSV in VS Code"> </figure> </div>  </section> <!-- Edit ended here --> <h2>Data cleaning</h2> <p> <em>A dataset is rarely usable without modification.</em> This dataset also
+      contains some annoying things that make it difficult to load into a table.
+</p> <h3>Unnecessary columns</h3> <p>
+You can only load CSV data into a <em>existing table</em>. So you have to
+<em>first create a new table</em>. You already know that every table has a <em>primary key</em>: a field (or combination of fields) that is unique to each row. The first
+      column from this dataset contains an incremental integer (we'll later call this 
+      a <a href="/EN/model_logisch/#Relational-database-model">‘technical key’</a>). This could certainly serve, but let's look further.
+</p> <p>
+The second column contains a <em>country code</em> consisting of two letters.
+      That country code is guaranteed to be unique if it follows <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes">the standard</a>. Actually, it is then a <em>
+better idea to use this second column as the primary key for our table
+</em>.
+</p> <section class="taak"> <p>
+The first column actually contains useless information. It is best
+        removed from the file. The extension ‘Edit CSV’ that you installed in VS
+        Code makes this easy. If you have not done it before, just click ‘Edit
+        CSV’ in the top right corner. You then get a column view of the file.
+        Hover over the header ‘column 1’. A trash can icon will appear. Click it
+        to delete this column.
+</p>  </section> <h3>Character encoding</h3> <p>
+Scroll to row 35. I don't know what it will look like on your screen, but
+      on my Mac I read "RÃ©union" as the country name. That's a typical problem
+      with the <a href="https://en.wikipedia.org/wiki/Character_encoding">character encoding</a>. To make a long story short: computer makers have (long ago) agreed on
+      which combinations of bits correspond to which letter, digit, character.
+      If you don't use the same character encoding as the one used for this
+      file, certain letters will be misinterpreted.
+</p> <p>
+The most commonly used character encoding is UTF-8. That is the standard
+      encoding of your browser, of VS Code, ... Also in a database server, you
+      can choose your character encoding. Let's agree that we will always choose
+      UTF-8. There are some country names that contain special characters such
+      as é, ô etc. Let's modify those manually. If you have trouble finding
+      those characters on your keyboard, you can always copy them from a file
+      that does have those characters correctly.
+</p> <section class="taak"> <div> <p>
+Adjust the following (unless they are already correct):
+</p> <ul> <li>row 35: Réunion</li> <li>row 125: Saint Barthélemy (St. Barts)</li> <li>row 131: Côte d'Ivoire</li> <li>
+row 139: a difficult one, a swedish capital letter: Åland Islands 
+            (it's probably easiest to copy the letter from here)
+</li> <li>row 199: Curaçao</li> <li>
+and finally the most difficult one on row 229: São Tomé and Príncipe.
+</li> </ul> </div>  </section> <p>
+With that, this bit of the <em>‘data cleaning’</em> is done. We can still
+      wonder if we need the first row. In principle we do not, but it contains useful
+      info that is needed to define the table later. Moreover, we can indicate later
+      during import that the first row should not be be imported.
+</p> <section class="taak"> <div> <p>
+To be on the safe side, save these changes to VS. Code: ‘Apply changes
+          to file and save’ (see screenshot below).
+</p> <figure class="center"> <img src="/assets/CSV/applychanges.png" alt=""> </figure> </div>  </section> <h3>Missing info</h3> <section class="taak"> <div> <p>
+From row 233 (‘Christmas Island’) onwards a lot of information
+          is missing: either there are no providers, or the currency in which
+          costs are expressed is so unstable that it cannot be converted into
+          dollars. Let's remove all these rows (i.e., from ‘Christmas Island’ to
+          ‘Zimbabwe’) from this example. You can do that in the column version,
+          but actually it's <em>simpler in the text version</em>
+because in the column layout you have to do it row by row.
+</p> <p>
+Go over everything again. Here and there the description ‘NO PACKAGES’
+          stands out. These are often tiny countries. Let us remove rows from
+          the dataset as well. More specifically the following five countries
+          (rows) may be removed: ‘Cook Islands’, ‘Vanuatu’, ‘Tuvalu’, ‘Cuba’
+          (bit of a shame because this is a big country after all) and ‘Cocos
+          (Keeling) Islands’. Now delete these rows (best in the text version,
+          do a search for ‘PACK’) and save the file one last time.
+</p> </div>  </section> <p>
+I want to add a word of caution here. In real-world situations, deleting
+    or altering data can have serious consequences for the validity of your 
+    study.
+
+    For example, imagine you are analyzing the median income in Belgium. People 
+    with lower incomes may be less willing to disclose their monthly salary. 
+    If you simply delete those missing responses, your results could show a median
+    income that is significantly higher than reality.
+
+    You will learn more strategies for handling missing data in future classes. 
+    For now, remember: when working with real data for a real client,
+<em> always ask questions before deleting or modifying data. </em>.
+</p> <h3>Different number notation</h3> <p>
+Notice that the large numbers representing residents and users use the US
+      notation: thousands are separated by a comma while the separator between
+      unit and decimals here is the period and not the comma. That period is
+      not a problem, but the <em>
+comma between numbers is going to be a problem when importing the data
+</em>. We just want the numbers and no separator for thousands, millions,
+      etc.
+</p> <p>
+This is complicated by the fact that we cannot simply omit all commas,
+      because that comma is also the separator between the different columns.
+      And I must honestly admit that in preparing this teaching text, I spent
+      quite a bit of time fiddling with Excel. That was my first plan: import
+      this data into Excel, edit it there and then export it back as a CSV.
+      Sounds very simple, but the process was rather frustrating.
+</p> <p> <em>The best thing you can do if it doesn't work is to take a walk ...</em> </p> <figure class="center"> <img src="/assets/CSV/goforwalk.png" alt="Sometimes, as a developer, you have to go for a walk."> </figure> <p>
+When I came back I suddenly saw that it really could easily be done <em>
+in VS Code itself
+</em>. The impetus for a solution is in one of the previous paragraphs.
+      Now execute the following steps in VS Code:
+</p> <section class="taak"> <div> <p>
+The separator between columns is the comma. A CSV file can use other
+          characters as separators, however. We can set this through the VS Code
+          extension. So again, choose ‘Edit CSV’. At the top of the window you
+          have ‘Write options’. In the write options, choose as the separator
+          (‘Delimiter’) the semicolon ‘;’). Apply and save via the ‘Apply
+          changes to file and save’ button. Close both .csv files (the original
+          and the ‘edit CSV’) in VS Code and open the original .csv file again
+          to view the modification. The CSV file now uses the ; between two
+          columns:
+</p> <pre><code class="language-plaintext">Country code;Country;Continental region;NO. OF Internet Plans;Average price of 1GB (USD);Cheapest 1GB for 30 days (USD);Most expensive 1GB (USD);Average price of 1GB (USD at the start of 2021);Average price of 1GB (USD at start of 2020);Internet users;Population; &quot;Avg (Mbit/s)Alsola&quot;） Israel;NEAR EAST;27;0. 05;0.02;20.95;0.11;0.9;6,788,737;8,381,516;&quot;28.01&quot;
+KG;Kyrgyzstan;CIS (FORMER USSR);20;0.15;0.1;7.08;0.21;0. 27;2,309,235;6,304,030;&quot;16.3&quot;
+FJ;Fiji;OCEANIA;18;0.19;0.05;0.85;0.59;3.57;452,479;883,483;&quot;25.99&quot;
+…</code></pre> </div>  </section> <p>
+The only commas left now are those between thousands, millions, etc. So
+      those can be removed with a <em> search/replace command</em> in VS Code (see
+      figure below).
+</p> <figure class="center"> <img src="/assets/CSV/zoekvervang.png" alt="Search and replace in VSCode."> </figure> <section class="taak"> <p>
+In the search field enter the comma, leave the replace field empty (not
+        even a space). The buttons on the right hand side allow you to
+        substitute one by one or all at once. In the text itself you can see all
+        commas that will be removed. That looks good, so just do all at once. <em>If it goes wrong, don't panic: Undo!</em> </p>  </section> <p>
+The double quotes ("...") around some numbers should also be removed.
+      After all, we want to read this data into the database as a number because
+      we want to preform calculations with those numbers. So they should not be
+      read in as strings.
+</p> <section class="taak"> <p>
+Remove all double quotes with a search/replace command in VS Code via
+        Edit &gt; Replace.
+</p>  </section> <p>After removing these two characters, the end result looks like this:</p> <pre><code class="language-plaintext">Country code;Country;Continental region;NO. OF Internet Plans;Average price of 1GB (USD);Cheapest 1GB for 30 days (USD);Most expensive 1GB (USD);Average price of 1GB (USD at the start of 2021);Average price of 1GB (USD at the start of 2020);Internet users;Population;Avg (Mbit/s)AlsolaNIL;Israel;NEAR EAST;27;0. 05;0.02;20.95;0.11;0.9;6788737;8381516;28.01
+KG;Kyrgyzstan;CIS (FORMER USSR);20;0.15;0.1;7.08;0.21;0.27;2309235;6304030;16. 3
+FJ;Fiji;OCEANIA;18;0.19;0.05;0.85;0.59;3.57;452479;883483;25.99
+IT;Italy;WESTERN EUROPE;29;0.27;0.09;3.54;0.43;1.73;50540000;60627291;37.15
+SD;Sudan;SUB-SAHARAN AFRICA;33;0.27;0.03;0.92;0. 63;0.68;12512639;41801533;9.5
+RU;Russia;CIS (FORMER USSR);22;0.29;0.13;1.86;0.52;0.91;124000000;145734038;20.46
+MD;Moldova;EASTERN EUROPE;18;0.32;0.07;2.79;1.12;2.82;3083783;4051944;29.46
+…</code></pre> <p>
+The file is now ready to be imported into a table. So let's create that
+      table now.
+</p> <h2>Create schema and table via pgAdmin</h2> <p>
+Via pgAdmin you already have access to a schema with your student number ‘rxxxxxxxx’ as name 
+      in the database belonging to your class. In this schema
+      we will now create a new table ‘internet prices’ (you can create as many
+      tables in your schema as you want). Let's go through all of the columns:
+</p> <ul> <li>
+The <em>country code</em> (column 1) is a two-character string, so <code>char(2)</code>. It is required because it will be our primary key.
+</li> <li>
+The <em>name</em> of the country (column 2) and the <em>region</em> (column
+        3) are indeterminate in length. So those will need to be <code>varchar()</code>.
+        Choose for yourself the number of characters for both that is sufficient
+        to store all the names (look for the longest string). Both are
+        mandatory.
+</li> <li>
+The <em>number of internet formulas</em> (column 4) is a small integer. The
+        data type <code>smallint</code> certainly suffices. Also a required field.
+</li> <li>
+The next three columns are <em>average price</em>, <em>minimum price</em> and
+<em>maximum price</em> for 1 GB of data. These are required fields that represent
+        a dollar amount. A suitable data type for this is <code>numeric(5,2)</code>. In this, 5 is the total number of digits and 2 is the number of
+        digits after the decimal point (i.e., an amount rounded to 1 dollar
+        cent). All three values are indicated each time in the dataset.
+</li> <li>
+Columns 8 and 9 are <em>average prices of the two previous years</em>.
+        There too, the choice of <code>numeric(5,2)</code> is fine. There is a small
+        problem if you look at the dataset. These numbers are not specified for each
+        row. So here we are not going to add the requirement of <code>NOT NULL</code>. These fields may well be left blank when importing the data.
+</li> <li>
+Columns 10 and 11 are the <em>number of internet users</em> and the <em>
+number of residents
+</em>. These are large integers, so <code>integer</code> is an appropriate
+        data type. Check if all rows have this info. If they do, then you may require
+        that these fields cannot be left blank.
+</li> <li>
+Finally, the last column is another one that is not always known, namely
+        the <em>average data rate</em>. Again, this could be a <code>numeric(5,2)</code> probably.
+</li> </ul> <section class="taak"> <div> <p>
+Now, as an exercise, create this new table with a <code>CREATE</code>
+statement. Some typical errors that often recur:
+</p> <ul> <li>
+You are accidentally working in the schema ‘Public’ (<a href="/EN/SQL_intro/index.html#Choosing-the-right-schema">explanations and solutions</a>).
+</li> <li>
+You use column names with spaces: bad idea. In itself it can be
+            done, but then you should always enclose the name in double quotes
+            ("..."). A better solution is to write words together or use a low
+            dash (underscore).
+</li> <li>You forgot to define a primary key.</li> </ul> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>
+CREATE SCHEMA u0012047; -- probably unnecessary because this schema exists already
+SET search_path to u0012047; -- otherwise you&#39;re working in schema public!
+CREATE TABLE internet_prices (
+  country_code         char(2) NOT NULL,
+  name                 varchar(60) NOT NULL,
+  region               varchar(50) NOT NULL,
+  number               smallint NOT NULL,
+  avg_price            numeric(5,2) NOT NULL,
+  min_price            numeric(5,2) NOT NULL,
+  max_price            numeric(5,2) NOT NULL,
+  avg_21_price         numeric(5,2),
+  avg_20_price         numeric(5,2),
+  internet_users       integer,
+  residents            integer,
+  avg_data_rate        numeric(5,2),
+  CONSTRAINT pk_internet_prices PRIMARY KEY ( country_code )
+);</code></pre> </div>  </section> <h2>CSV import via pgAdmin</h2> <p>
+CSV is often used to <em>exchange data between applications</em>. It is
+      therefore obvious that a PostgreSQL database server can work with CSV
+      files. The client we are using (pgAdmin) allows us to perform this operation
+      easily.
+</p><p>
+About that ‘simple’ perhaps a small warning ... When importing a CSV file
+      into a table you will almost certainly run into some errors. Sometimes a
+      column definition is not quite compatible with the data or the CSV file
+      still contains small errors, etc. We hope that the cleanup operation we
+      did above will be sufficient to make the importing succeed.
+</p> <p><em>False hope</em>, as we will soon see ...</p> <section class="taak"> <div> <p>
+The import is done in pgAdmin as follows. Right click on the name of
+          the newly created table and choose ‘Import/Export Data... ’. In the
+          dialog box (tab ‘General’) you now set the following:
+</p> <figure class="center"> <img src="/assets/CSV/importcsv1.png" alt="first dialog box for import of CSV in pgAdmin"> </figure> <ul> <li>Import/Export: select Import;</li> <li>
+Filename: link to the .csv file you want to import
+            (‘internetprices.csv’);
+</li> <li>Format: csv;</li> <li>Encoding: UTF8;</li> </ul> <p>In the second ‘Options’ tab (figure below), adjust the following:</p> <figure class="center"> <img src="/assets/CSV/importcsv2.png" alt="second dialog box for importing CSV into pgAdmin"> </figure> <ul> <li>Header: checkbox (so that the first row is skipped);</li> <li>Delimiter: choose ‘;’ as separator;</li> <li>You don't need to change the rest of the options.</li> </ul> <p>
+Confirm with OK. If all goes well, all the rows of the CSV file are
+          now read into rows of the table.
+</p><p>
+But as mentioned ... things rarely go quite as planned the first time.
+          We thought our ‘data cleaning’ was successful, but you still get an
+          error message. To see this error message, you must first go into the
+          red box where there is an error message, click on ‘View Processes’.
+          You will then get a table with a line of information about the failed
+          import process. In that line, just before the ‘PID’ column there is a
+          ‘View Details’ icon. Click it to see the correct error. You may need
+          to enlarge the window to read the full error message. Such an error
+          message will look like this:
+</p> <figure class="center"> <img src="/assets/CSV/EN/importfoutAruba.png" alt="Error importing country Aruba."> </figure> <p>
+Apparently, the country code AW (our primary key!) appears twice
+          around line 176 of the CSV file. <em>
+Since the primary key must be unique, the database server rightly
+            gives an error message and the import is aborted.
+</em> Therefore, nothing is imported.
+</p> <p>Look near that line in the code:</p> <pre><code class="language-plaintext">...
+AG;Antigua and Barbuda;CARIBBEAN;39;4.44;1.48;42.18;7.17;12.7;77529;96286;
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;15877494;17059560;108. 33
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;102285;105845;108.33
+PA;Panama;CENTRAL AMERICA;8;4.49;2;7.48;6.69;4.69;2371852;4176869;17.03
+...</code></pre> <p>
+So there are two countries with country code AW and the same name
+          Aruba. A quick visit to Wikipedia reveals that Aruba has just over 100
+          000 inhabitants. That number corresponds to the second line. The first
+          line presumably corresponds to the Netherlands, as it has about 17
+          million inhabitants. Let's look at the data of the Netherlands in the 
+          CSV file to confirm our thoughts.
+          Through a search in VS Code we find the following:
+</p> <pre><code class="language-plaintext">NL;The Netherlands;WESTERN EUROPE;24;3.11;0.77;15.97;2.98;4.62;;;</code></pre> <p>
+So this line is missing the number of internet users, the number of
+          population and the average speed. We warned in advance about the <em>lack of clear source citation</em> for this dataset. Now it also appears that there are <em>errors</em>
+in the file. Presumably the error is best corrected by moving the data
+          from the first entry of AW, Aruba, ... to the line about the Netherlands
+          and then removing that first line from Aruba from the file.
+</p> <pre><code class="language-plaintext">NL;The Netherlands;WESTERN EUROPE;24;3.11;0.77;15.97;2.98;4.62;15877494;17059560;108.33
+...
+AG;Antigua and Barbuda;CARIBBEAN;39;4.44;1.48;42.18;7.17;12. 7;77529;96286;
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;102285;105845;108.33
+PA;Panama;CENTRAL AMERICA;8;4.49;2;7.48;6.69;4.69;2371852;4176869;17.03
+...</code></pre> <p>
+Next attempt. Repeat the import steps. This also goes wrong because
+          country code LB appears twice. The CSV file reads:
+</p> <pre><code class="language-plaintext">LB;Lebanon;NEAR EAST;15;4.81;1.21;77.7;3.82;5.84;4755187;6859408;16.38
+LB;Lebanon;NEAR EAST;15;4.81;1.21;77.7;3.82;5.84;4755187;6859408;16.38</code></pre> <p>
+This error is simple to correct: delete either line in VS Code. Don't
+          forget to save your file afterwards!
+</p> <p>
+New attempt. Fortunately, this time we get the message that the import
+          was successful via a green window with ‘Process completed’.
+</p><p>
+Request a complete overview with <code>SELECT * FROM internet_prices</code>:
+</p> <figure class="center"> <img src="/assets/CSV/EN/selectalleprijzen.png" alt="Successful! Overview of all prices."> </figure> </div>  </section> <h2>From data to information</h2> <p>
+We have put the <em>data</em> (a collection of facts) into a table. Now we
+      can use SQL to structure this data, combine it, organize it differently, etc.
+      Remember that we talk about <em>converting data to information</em>.
+</p> <p>
+By way of example, let's look for an answer to the question of how
+      Belgium compares to other countries in terms of cost (in 2022) of 1 GB of
+      data on the internet. This can be found with the following simple query:
+</p> <pre><code>SELECT name, avg_price
+FROM internet_prices
+ORDER BY 2; --so from cheap to expensive</code></pre> <section class="taak"> <p>Test this and subsequent queries yourself!</p>  </section> <p>
+Belgium is ranked 186 according to this data. Our internet connections are
+      expensive!
+</p> <p>
+So where do we stand compared to our neighbors in Western Europe? There
+      too we are not doing so well. Only three countries (Norway, Andorra and
+      Greece) are even more expensive than Belgium, as the following query
+      shows:
+</p> <pre><code>SELECT name, region, avg_price
+FROM internet_prices
+WHERE region =&#39;WESTERN EUROPE&#39;
+ORDER By 3;</code></pre> <h2>Exercises on this dataset</h2> <p>
+The best way to learn about a dataset is to play with it. Test different
+      queries. Try to solve the following exercises.
+</p> <h3>Ranking based on internet speed</h3><section class="taak"> <p>
+Create a ranking of all countries based on average data rate. The country
+        with the fastest connection should be at the top. Display only the
+        columns ‘name’ and ‘avg_data_rate’. In a second version of this
+        query show only those countries for which a rate is given.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>A first version of the query could be this:</p> <pre><code>SELECT name, avg_data_rate
+FROM internet_prices
+ORDER BY avg_data_rate DESC;</code></pre> <p>
+You'll notice something special in the output: all rows containing <code>NULL</code> in the rate column are shown first. This is because for PostgreSQL
+<code>NULL</code> values are considered <em>larger</em> than all non-<code>NULL</code> values. This behavior depends on the database: Oracle does it the same
+          way, but SQLite and MySQL do it the other way around. Those database servers
+          consider
+<code>NULL</code> as a value smaller than all other values.
+</p> <p>
+To display only those rows for which there is effectively a rate
+          given, you can filter for the value <code>NOT NULL</code>:
+</p> <pre><code>SELECT name, avg_data_rate
+FROM internet_prices
+WHERE avg_data_rate IS NOT NULL
+ORDER BY avg_data_rate DESC;</code></pre> </div>  </section> <h3>Country with most expensive average price</h3> <section class="taak"> <p>
+Which country has the most expensive average price for 1 GB of data?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT *
+FROM internet_prices
+ORDER by avg_price desc;</code></pre> </div>  </section> <h3>Biggest price difference</h3> <p>
+In a <code>SELECT</code>, you can also <em>count with columns</em>. We
+      will make use of this in this exercise.
+</p> <section class="taak"> <div> <p>
+In which country is the price difference between the most expensive
+          and the cheapest offer the greatest? (Answer: Greece, where the
+          difference is so large that you have to wonder if these numbers are
+          correct ...). You should obtain the screenshot of the figure below.
+</p> <figure class="center"> <img src="/assets/CSV/EN/grootsteprijsverschil.png" alt="In Greece, the difference between the most expensive and the cheapest provider is the largest."> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT name, max_price - min_price AS price_difference, max_price, min_price
+FROM internet_prices
+ORDER BY 2 desc;</code></pre> </div>  </section> <h3>Country in the Americas with fastest internet</h3> <section class="taak"> <p>
+Which country on the American continent (both North and South America)
+        has the fastest internet speed? Create an SQL query that will generate a
+        list where you can find the answer.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+This is already an extended combination of <code>AND</code> and <code>OR</code>. Don't worry if you find this difficult, we will come back to this
+          in the next chapter.
+</p> <pre><code>SELECT name, avg_data_rate, region
+FROM internet_prices
+WHERE (region = &#39;SOUTH AMERICA&#39; OR region = &#39;NORTHERN AMERICA&#39;) AND avg_data_rate is not null
+ORDER BY avg_data_rate desc;</code></pre> </div>  </section> <h3>Percentage of internet users</h3> <p>This is a difficult exercise!</p> <section class="taak"> <p>
+Calculate the percentage of internet users of each country and rank them so
+        that the country with the largest percentage is at the top. In case
+        you thought until now ‘Surely everyone in our country has internet
+        access?’: Belgium has a percentage of 87% ... Below in the solution some
+        tips, but first try the exercise without the tips!
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <ul> <li>
+A percentage is the number divided by the total number multiplied by
+            100.
+</li> <li> <p>
+There is a problem with the division of two integers. Try the
+              following code:
+</p> <pre><code>SELECT 1 / 2;</code></pre> <p>
+This division produces a surprising result: 0. The reason is that
+              this is a <em>whole</em> division. The number 2 effectively goes 0
+              times into 1. Try a few other number combinations until you understand
+              how integer division works. If you want to obtain a float (decimal) as a result,
+              you must use the <code>CAST ... AS ...</code> operator.
+              Type the following <code>SELECT</code>:
+</p> <pre><code>SELECT cast(1 AS float) / cast(2 AS float);</code></pre> <p>
+This <code>SELECT</code> calculates the division of two decimal numbers.
+              The result is now also a decimal number, which is called a float in the database.
+</p> </li> <li>We don't want <code>NULL</code> values in the output.</li> <li>
+Make use of an alias (with <code>AS</code>) in the <code>SELECT</code>.
+</li> </ul> <p>This code is a good solution:</p> <pre><code>SELECT name, cast(internet_users as float) / cast(residents as float) * 100 AS percentage
+FROM internet_prices
+WHERE internet_users / residents is not null
+ORDER BY 2 desc;</code></pre> </div>  </section> <h2>Grouping data with GROUP BY</h2> <p>
+Now that we have a sufficiently large data set, we can group 
+      (or with a technical term ‘aggregate’) data in a meaningful way, 
+      e.g., by region. We
+      introduce the <code>GROUP BY</code> for this purpose. A thorough treatment
+      follows in the <a href="/EN/SQL_groupby_having/">chapter ‘GROUP BY / HAVING’</a>.
+</p> <h3>Order in which a query is executed</h3> <p>
+By now you can already create simple queries. Those queries are completed
+      by a database server in this order:
+</p> <ol> <li> <code>FROM</code>: which table(s) do we need and should be loaded into
+        memory?
+</li> <li><code>WHERE</code>: which rows of these tables do we select?</li> <li><code>SELECT</code>: which columns do we display in the result?</li> <li> <code>ORDER BY</code>: according to which column(s) are the rows
+        ordered in the result?
+</li> </ol> <p>Note that this is different from the order in which you write the query!</p> <h3>Grouping data</h3> <p>
+Sometimes you no longer want to retrieve individual details, but are only
+      interested in <em>information about a particular group</em>. Some examples
+      for the table of internet prices:
+</p> <ul> <li> <p>
+What is the average internet speed, average minimum price and number of
+          countries in each region (see figure)?
+</p> <figure class="center"> <img src="/assets/CSV/EN/groupbyvb1.png" alt="Grouped data, such as average by region." width="600"> </figure> </li> <li> <p>
+List the countries by the number of internet formulas
+          (from at least 40 formulas) and give the average price:
+</p> <figure class="center"> <img src="/assets/CSV/EN/groupbyhaving.png" alt="Grouped data, with a condition: having" width="450"> </figure> </li> </ul> <p>
+Let's solve the question from the first example: “For each region, list the
+      number of countries in that region, the average internet speed and the average
+      minimum price.”. We need to provide some information by region so we use <code>GROUP BY region</code>. At this point we can only retrieve the <em>region itself</em> and <em>summary numbers (aggregation functions applied to certain columns)</em>. This gives the following query:
+</p> <pre><code>SELECT region, AVG(avg_data_rate), AVG(min_price), COUNT(*)
+FROM internet_prices
+GROUP BY region
+ORDER BY 2 DESC;</code></pre> <p>
+Let's go through the execution of this query step by step in the correct
+      order <em>(i.e., not the order in which the query is written!)</em>:
+</p> <ol> <li> <code>FROM internet_prices</code>: the entire table internet_prices is loaded into
+        memory.
+</li> <li>There is no <code>WHERE</code>, so no rows are dropped.</li> <li>
+Next comes the <code>GROUP BY region</code>: all rows with the same
+        region end up in one box. On each box, the name of region will appear.
+        So there will be as many boxes as there are different regions in the
+        table.
+</li> <li>
+Only now is the <code>SELECT</code> executed. The only thing we can now retrieve
+        is the label of each box (region) and summary information of all the data
+        contained in each box using aggregation functions such as
+<code>AVG(avg_data_rate)</code> (arithmetic average of all rates in each
+        box),
+<code>AVG(min_price)</code> (arithmetic average of all min prices in each box)
+         and <code>COUNT(*)</code> (the number of rows in each box).
+</li> <li>
+Finally, the rows in the final result are ordered (<code>ORDER BY 2 DESC</code>) from large to small according to the second column so that the row
+        with the largest average speed is at the top.
+</li> </ol> <h3>Classical error with a GROUP BY</h3> <section class="taak"> <div> <p>
+Take a look at the following simple query. This query will fail
+          because it contains errors. What is wrong with it?
+</p> <pre><code>SELECT *
+FROM internet_prices
+GROUP by region;</code></pre> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>Read carefully the error message you get:</p> <pre><code>ERROR: column &quot;internet_prices.country_code&quot; must appear in the GROUP BY clause
+  or be used in an aggregate function
+LINE 2: select *
+               ^
+SQL state: 42803
+ Character: 39</code></pre> <p>
+Using the <code>GROUP BY</code>, all rows with the same value for the
+          field ‘region’ are put into one box. From this box you can only select the
+          name (‘region’) and averages, maxima, minima, number and sum<em></em>
+(the five aggregation functions) of some columns. With <code>SELECT *</code> you query <em>all</em> columns, which cannot be done. It immediately
+          goes wrong with the first column (‘country_code’), hence the message that this
+          column must be in the <code>GROUP BY</code>.
+</p> </div>  </section> <h3>HAVING</h3> <p>
+In a query with <code>GROUP BY</code>, you will also regularly encounter a <code>HAVING</code>. This is somewhat similar to a <code>WHERE</code> in that it also makes a
+      selection and possibly causes data to drop out. Consider the following example:
+</p> <pre><code>SELECT region, COUNT(*), AVG(avg_data_rate)
+FROM internet_prices
+GROUP BY region
+ORDER BY 2 DESC;</code></pre> <p>
+This query lists by region the number of countries in that region and the
+      average internet speed in that region. The following figure shows the full
+      results, arranged descending by the second column:
+</p> <figure class="center"> <img src="/assets/CSV/EN/havingvb.png" alt="Having to use as a condition in conjunction with group by" width="450"> </figure> <p>We can now add a HAVING in the code:</p> <pre><code>SELECT region, COUNT(*), AVG(avg_data_rate)
+FROM internet_prices
+GROUP BY region
+HAVING COUNT(*) &gt; 16 --has to come after the GROUP BY clause
+ORDER BY 2 DESC;</code></pre> <p>
+The addition of <code>HAVING COUNT(*) &gt; 16</code> means ‘keep only those
+      boxes (regions) that contain more than 16 individual rows’. The result of the
+      query now consists of far fewer rows:
+</p> <figure class="center"> <img src="/assets/CSV/EN/havingminstens16.png" alt="Keep only those boxes that meet the condition in the having" width="450"> </figure> <p>
+So what is the biggest difference from <code>WHERE</code>? The <code>WHERE</code> is executed right after the <code>FROM</code> and before the <code>GROUP BY</code> comes into play. The condition behind <code>WHERE</code> selects certain
+      rows of the table (and discards the others). Only then are these rows collected
+      into boxes collected by <code>GROUP BY</code>. Only when every row is in a
+      box, the <code>HAVING</code> is started which keeps certain boxes and removes
+      others.
+</p> <section class="opgepast"> <p>The various statements in a query are executed in this order:</p> <ol> <li><code>FROM</code>: which tables contain the info?</li> <li> <code>WHERE</code>: which rows satisfy the condition? Retain only
+          those rows.
+</li> <li><code>GROUP BY</code>: do we put info together in boxes ...?</li> <li><code>HAVING</code>: ... that meet a certain condition?</li> <li><code>SELECT</code>: which columns do we display?</li> <li><code>ORDER BY</code>: how are the rows ordered?</li> </ol> </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

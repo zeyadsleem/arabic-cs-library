@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>One-to-many relationships</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">Why did the database administrator leave his wife?<br>She had
+          one-to-many relationships.</span> <br>
+&mdash;unknown author
+</p> </blockquote> <h1>One-to-many relationships</h1> <p></p> <section class="leerdoel"> <ul></ul> </section> <p>
+In the next chapter, we introduce SQL queries that span multiple tables
+      using <code>JOINS</code>. To practice, you will need a schema that
+      consists of <em>multiple tables</em>. This chapter introduces you to a
+      small schema with a one-to-many relationship between two tables. In one of
+      the <a href="/EN/model_logisch/"> following lessons on modeling</a> the theory
+      behind this practical chapter is fully detailed. Here you will only find a
+      brief introduction.
+</p> <h2>Two tables</h2> <p>
+In the previous chapters, the various components of a <code>SELECT</code> statement
+      were worked out. As a basis, we used a table that was the translation of this
+      conceptual model:
+</p> <figure class="center"> <img src="/assets/select/EN/opo_conceptueel.svg" alt="Conceptual model of course"> </figure> <h3>Separate tables</h3> <p>
+This schema has one <em>entity type</em>
+with a number of <em>attributes</em>. One of those attributes is the
+      lecturer code of the coordinator of the course. After all, each course has
+      a unique coordinator. It makes sense to add a second entity type
+      ‘Lecturer’ to the schema. After all, we have a lot of information about
+      lecturers. This entity type contains information about all lecturers, not
+      just the coordinators of an course. A naive attempt is the following
+      figure:
+</p> <figure class="center"> <img src="/assets/een-op-veel-SQL/EN/2_losse_entiteittypes.svg" alt="Two independent entities, a bad idea!"> </figure> <p>
+If you translate this to PostgreSQL you get two separate tables. However,
+      this structure is a <em>source of problems</em>. We mention two possible
+      errors:
+</p> <ul> <li>
+Someone adds a row (= a new course) to the table ‘Course’ with a
+        coordinator that is not in the table ‘Lecturer’.
+</li> <li>
+Someone deletes a row in the ‘Lecturer’ table. The lecturer from this
+        row however, is also coordinator of an course.
+</li> </ul> <p>
+Both operations will cause the database to contain errors. You can then no
+      longer look up info from some courses about the coordinator of the course.
+      This is not a good solution. <em>You want your RDBMS (‘Relational DataBase Management System’) to
+        protect you against operations that introduce errors into the schema</em>.
+</p> <h3>Linked tables</h3> <p>
+The problem, of course, is that the two tables cannot exist separately. <em>There is a relationship between the two</em>. The conceptual model in the figure below makes this relationship
+      visible:
+</p> <figure class="center"> <img src="/assets/een-op-veel-SQL/EN/gekoppelde_entiteittypes.svg" alt="2 entities connected by a relationship"> </figure> <p>
+From right to left you read the relationship as ‘is coordinator of’, from
+      left to right it could then become something in the style of ‘has as
+      coordinator’. Each course has at least one and at most one (i.e. just one)
+      coordinator. Not every lecturer is coordinator of an course, but a
+      lecturer could possibly be coordinator of several courses. The cardinality
+      on lecturer's side is thus (0, N). This is an example of a one-to-many
+      relationship.
+</p> <p>
+Note that the attribute ‘Coordinator’ from an earlier figure is omitted.
+      Indeed, it has been replaced by a relationship with a new entity type
+      ‘Lecturer’ because we feel the need to do more than just keep track of a
+      lecturer's number.
+</p> <h3>Translation to relational model</h3> <p>
+Now how do you translate this one-to-many relationship into a <em>relational</em> model? After all, PostgreSQL is an example of a relational database. If we
+      translate the
+<em>conceptual</em> model from the previous section to a <em>logical</em> model,
+      that logical model will have to be a relational model.
+</p> <p>
+You can study all about logical models in detail in the chapter
+<a href="/EN/model_logisch/">‘Logical data model’</a>. The sole purpose of
+      this section is to briefly introduce you to this topic so that we can move
+      on to the next part in our exploration of the SQL language (<code>JOIN</code>). The logical model looks like this :
+</p> <figure class="center"> <img src="/assets/een-op-veel-SQL/EN/logisch.svg" alt="Logisch model voor deze relatie"> </figure> <p>
+For now, it's enough that you can read this diagram, and it's not that
+      difficult:
+</p> <ul> <li>
+Each entity type becomes a <em>table</em>, represented by a rectangle
+        with a title: ‘Course’ and ‘Lecturer’.
+</li> <li>
+Each attribute of an entity type becomes a <em>column</em> in the table.
+</li> <li>
+Each table has a <em>primary key</em> (PK), represented here <span style="background-color:yellow">in yellow</span>. That primary key has a unique value for each row in the table.
+</li> <li>
+Each course unit is required to have one coordinator. There is therefore
+        a relationship between the two tables. In the table ‘Course’ a
+        ‘Coordinator’ column has been added. This column is a so-called ‘Foreign
+        Key’ (FK, <span style="background-color: #0f0">indicated in green</span>) because each value of this column must occur as a PK of the
+        ‘Lecturer’ table.
+</li> <li>
+The connection between the two tables makes it clear that the contents
+        of the column corresponds to the value of the ‘Lecturer_id' column. The
+        symbol (two dashes) in the <span style="color:#33f">small blue circle
+</span> indicates that each course unit is required to have one lecturer
+        as coordinator.
+</li> <li>
+Conversely, the symbol in the <span style="color:#ff8000">larger orange circle</span> shows that each lecturer can be coordinator of zero (bullet) or one or
+        more courses (crow's foot).
+</li> </ul> <p>
+This logical model is finally converted to a <em>physical</em> model, where
+      we specify further information that depends on the specific properties of the
+      chosen RDBMS (in our case PostgreSQL). For example, an example would be the
+      data types of the columns.
+</p> <p>
+The physical model was drawn with DBSchema. We will cover this in detail <a href="/EN/SQL_DBschema/">later</a>. This physical model corresponds to the logical model, in a slightly
+      different notation (notice the <span style="color:rgb(120,160,190)">blue departing arrow</span> indicating that this field is an FK referring to the <span style="color:rgb(164,143,72)">
+yellow-brown arriving arrow
+</span> at lecturer_id). Also, each field has been given a data type (<code>char</code>, <code>date</code>, ...):
+</p> <figure class="center"> <img src="/assets/een-op-veel-SQL/EN/course_lecturer.png" alt="Physical model of 2 tables with one-to-many relation"> </figure> <p>
+Adding this one-to-many relationship in the database is done as follows:
+</p> <ol> <li>First create the table ‘Lecturer’.</li> <li>
+Search for the primary key of the ‘Lecturer’ table. This primary key is
+        the ‘lecturer_id’ field. The data type of this primary key is a <code>char(8)</code>, because a lecturer code always begins with a ‘u’ followed by seven
+        digits. Note that we are actually using the designations ‘field’ and
+        ‘column’ interchangeably.
+</li> <li>
+In the table ‘Course’ a column should now be created with exactly the
+        same data type as the data type of the primary key in the lecturer
+        table, so also a <code>char(8)</code>. We call this ‘transferring the
+        primary key’ and refer to it in the course table as an ‘foreign key’.
+</li> <li>
+Now link these two columns using a constraint (<code>constraint</code>).
+</li> <li>Then <em>first</em> enter the data in table ‘Lecturer’.</li> <li> <em>After that</em> you can fill the table ‘Course’ with rows.
+</li> </ol> <h2>Realization in your own schema</h2> <p>
+From here, you need to roll up your sleeves and <em>effectively create the two tables
+</em>. After all, we want you to soon be able to add and remove
+      information in your own tables and that won't be possible if we let
+      everyone work in the same table. So start pgAdmin and execute the
+      following steps.
+</p> <p>
+If you follow the roadmap below (based on the steps in previous section)
+      you get two linked tables filled with data. We'll make some small
+      exercises on this schema. In the next chapter on <code>JOIN</code> we will
+      use this schema as a basis.
+</p> <section class="taak"> <div> <ol> <li>
+The following steps assume that everyone has their own schema with
+            the name ‘rxxxxxxx’, using of course your own r-number. The easiest
+            way is for you to use the pooling connection at port 62526.
+</li> <li>
+Check your schema to see if there may already be a table ‘Course’ or
+            ‘Lecturer’ present. If so, remove this table with a <code>DROP TABLE ...</code> in a query tool. Remember: either use for each table name first the
+            name of the schema, followed by a period and then the table name, or
+            you define your
+<code>search_path</code> properly.
+</li> <li>
+Download the file <a href="/assets/een-op-veel-SQL/EN/lecturer-course-SQL.txt">‘lecturer-course-SQL.txt’</a>. The next steps use pieces of this SQL code to build everything
+            and populate it with data. Each time, you can copy a piece from this
+            text document, paste it into your query tool and execute.
+</li> <li>
+Create the table ‘Lecturer’ by executing the <code>CREATE</code> code
+            for this table from the file you just downloaded. Nothing new to see
+            here: two fields not required, some different data types, a primary key,
+            ...
+</li> <li>
+Now create the table ‘Course’ by copy/paste from the txt file. This
+            code needs a little bit of explanation:
+<pre><code>CREATE TABLE rxxxxxxx.course (
+  code char(6) NOT NULL ,
+
+  ...
+
+  coordinator char(8) NOT NULL ,
+  CONSTRAINT pk_course_code PRIMARY KEY ( code ),
+  CONSTRAINT fk_course_lecturer FOREIGN KEY ( coordinator )
+    REFERENCES rxxxxxxx.lecturer( lecturer_id )
+);</code></pre> <p>
+This last <code>CONSTRAINT</code> is new. Loosely translated, this
+              constraint says the following: “the ‘coordinator’ column of this table
+              refers to the <em>primary</em> key ‘lecturer_id’ of the table ‘Lecturer’
+              and is therefore a <em>foreign</em> key”. It is a good idea to use
+              for each
+<code>CONSTRAINT</code> a <em>sensible name</em>. In this case:
+              ‘fk’ (for ‘foreign key’) followed by the two names of the two
+              tables involved. The tool DBSchema that we will use later for
+              this, uses this naming scheme automatically.
+</p> </li> <li>
+Think logically about <em>the correct order of filling in the data in the two tables</em>. The ‘Course’ table depends on the ‘Lecturer’ table. You can only
+            add a coordinator for a course if this person already exists in the
+            ‘Lecturer’ table. So first fill the lecturer table by a copy/paste
+            operation of the <code>INSERT</code> statements from the txt file.
+<pre><code>INSERT INTO rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) VALUES ( &#39;u0042352&#39;, &#39;Adriaens&#39;,
+  &#39;Gerben&#39;, &#39;gerben.adriaens@ucll.be&#39;, &#39;Ankerstraat&#39;, &#39;12&#39;, &#39;1330 Rixensart&#39;,
+  &#39;1984-02-16&#39;, &#39;2017-09-01&#39;, null, &#39;M&#39;);
+INSERT INTO rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) VALUES ( &#39;u0057764&#39;, &#39;Bogers&#39;,
+  &#39;Goedele&#39;, &#39;goedele.bogers@ucll.be&#39;, &#39;Elzasgang&#39;, null, &#39;2830 Willebroek&#39;,
+  &#39;1979-09-09&#39;, &#39;2006-11-20&#39;, null, &#39;F&#39;);
+INSERT INTO ...</code></pre> </li> <li>
+Finally, now that the ‘Lecturer’ table is populated, you can also
+            populate the ‘Course’ table with data. This time we'll do it with a
+            CSV list. Copy these lines from the list and put them in a new .csv
+            file. Import this .csv file like (<a href="/EN/SQL_CSV/index.html">see section ‘CSV file’</a>):<pre><code class="language-plaintext">code,credits,name,start_date,end_date,language,semester,coordinator
+MBI71A,3,Probleemoplossend denken,2016-09-15,2022-09-14,nl,1,u0012047
+MBI65X,4,Webontwikkeling 1,2017-09-15,2022-09-14,nl,1,u0012047
+MBI66X,4,Webontwikkeling 2,2017-09-15,2022-09-14,nl,2,u0015529
+MBI20X,3,MobieleToepassingen,2018-09-15,2023-09-14,nl,5,u0057764
+MBI26A,6,Computersystemen,2013-09-15,2022-09-14,nl,6,u0041234
+...</code></pre> </li> <li>
+Done! Run a <code>SELECT * FROM ...</code> on both tables to view the
+            data.
+</li> </ol> </div>  </section> <h2>Response of the RDBMS to errors</h2> <p>
+Now make the following small exercises. Sometimes the purpose of an
+      exercise is <em>to let you make an error</em> so that you learn to properly
+      interpret error messages from our RDBMS.
+</p> <section class="taak"> <p>
+Add a new lecturer: ‘Anouk De Ridder’ with u-number ‘u0012047’. She
+        lives at ‘Kerkstraat 23, 3053 Haasrode’, was born on 5 May 1994 and
+        joins UCLL today. Mail addresses at UCLL are simple:
+        firstname.lastname@ucll.be. Explain what happens when you run an <code>INSERT</code> with the data above.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+You get an error message that a lecturer with this lecturer code
+          already exists. Since the lecturer code is the <em>primary</em> key (and
+          therefore
+<em>unique</em>) the RDBMS returns an error message and the <code>INSERT</code> is
+<em>not executed</em>. Again, you'll notice that it's useful to use a
+          meaningful name for your <code>CONSTRAINT</code>: something is wrong
+          with primary key ‘lecturer_id’ in the table ‘Lecturer’:
+<pre><code>ERROR: duplicate key value violates unique constraint &quot;pk_lecturer_lecturer_id&quot;
+DETAIL: Key (lecturer_id)=&quot;(u0012047)&quot; already exists.
+SQL state: 23505</code></pre> </p> </div>  </section> <section class="taak"> <p>
+Stupid typo of course above. The u-number of Anouk is not ‘u0012047’ but
+        rather ‘u0099999’. Now add this lecturer to the table ‘Lecturer’.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+No problem this time if your query was something in this style:<pre><code>INSERT INTO rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) VALUES ( &#39;u0099999&#39;, &#39;De Ridder&#39;,
+  &#39;Anouk&#39;, &#39;anouk.deridder@ucll.be&#39;, &#39;Kerkstraat&#39;, &#39;23&#39;, &#39;3053 Haasrode&#39;,
+  &#39;1994-07-05&#39;, &#39;2022-10-15&#39;, null, &#39;F&#39;);</code></pre> </p> <p>
+The server replies that one row was successfully added:<pre><code>INSERT 0 1
+
+Query returned successfully in 85 msec.</code></pre> </p> </div>  </section> <section class="taak"> <p>
+The same day she is added to the database, Anouk De Ridder decides that
+        she does not want to become a lecturer after all. Remove her from the
+        table ‘Lecturer’.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>DELETE
+FROM rxxxxxxx.lecturer
+WHERE lecturer_id = &#39;u0099999&#39;;</code></pre> <p>
+You can also use the following code, but then you delete
+<em>everyone with this name</em>. Who knows, maybe there is more than
+          one person with the name ‘Anouk De Ridder’ and then these persons will
+          also be removed from the table:
+<pre><code>DELETE
+FROM rxxxxxxx.lecturer
+WHERE last_name = &#39;De Ridder&#39; AND first_name = &#39;Anouk&#39;; -- dangerous!</code></pre> </p> <p>
+The server replies that one row was successfully deleted:<pre><code>DELETE 1
+
+Query returned successfully in 53 msec</code></pre> </p> </div>  </section> <section class="taak"> <p>
+Remove ‘Bram De Smet’ of Leuven from the ‘Lecturer’ table. Explain what
+        happens.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+With this code you delete the row:<pre><code>DELETE
+FROM rxxxxxxx.lecturer
+WHERE first_name = &#39;Bram&#39; AND last_name = &#39;De Smet&#39; AND municipality LIKE &#39;%Leuven&#39;;</code></pre> </p> <p>
+However, the server gives this error message:
+<pre><code>ERROR: update or delete on table &quot;lecturer&quot; violates foreign key constraint
+  &quot;fk_course_lecturer&quot; on table &quot;course&quot;
+DETAIL: Key (lecturer_id)=(u0012047) is still referenced from table &quot;course&quot;.
+SQL state: 23503</code></pre> </p> <p>
+You read this error message as follows: “The table ‘Course’ contains
+          at least one row that refers to this lecturer. This lecturer is
+          therefore coordinator of a course. Therefore, it should not be
+          removed.”. In the case of Anouk De Ridder, there was no problem
+          because her u-number does not appear anywhere in the course table and
+          so she could safely be removed from that table.
+</p> </div>  </section> <section class="taak"> <p>
+Finally, add a new course: ‘Trees and graphs’ with code ‘MBI39A’. This
+        course was given in the second semester, stopped this year and ran from
+        September 15, 2017 to September 14, 2022. The course was given in Dutch
+        and had 3 credits. Coordinator of the course was the lecturer with u
+        number ‘u0099998’. Write the <code>INSERT</code>, execute and interpret
+        the result.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+With this code, you do the <code>INSERT</code>:
+<pre><code>INSERT INTO rxxxxxxx.course( code, credits, name, start_date,
+  end_date, language, semester, coordinator ) VALUES ( &#39;MBI39A&#39;, 3, &#39;Trees and graphs&#39;,
+  &#39;2017-09-15&#39;, &#39;2022-09-14&#39;, &#39;nl&#39;, 2, &#39;u0099998&#39;);</code></pre> </p> <p>
+The database server refuses to execute this <code>INSERT</code> and returns
+          the following error message:
+<pre><code>ERROR: insert or update on table &quot;course&quot; violates
+  foreign key constraint &quot;fk_course_lecturer&quot;
+DETAIL: Key (coordinator)=(u0099998) is not present in table &quot;lecturer&quot;.
+SQL state: 23503</code></pre> </p> <p>
+Since no lecturer with this lecturer code is already present in the
+          ‘Lecturer’ table, you cannot add a new course with this lecturer as
+          coordinator. Only after you have added this lecturer in the ‘Lecturer’
+          table, can you add the course.
+</p> </div>  </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

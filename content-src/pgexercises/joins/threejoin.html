@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PostgreSQL exercises</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <link rel="icon" href="../../img/favicon.ico" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link href="../../css/site.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../../lib/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link href="../../lib/perfect-scrollbar/min/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="../../lib/splitter/splitter.css" rel="stylesheet">
+    <link href="../../css/jquery/jquery-ui-1.10.3.custom.min.css " rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <!-- temporary downgrade to 1.10.2 due to popup drag bugs with 1.10.3-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script src="../../lib/codemirror/lib/codemirror.js"></script>
+    <script src="../../lib/perfect-scrollbar/min/perfect-scrollbar.with-mousewheel.min.js"></script>
+    <script src="../../lib/codemirror/mode/sql/sql.js"></script>
+    <script src="../../js/browser.js"></script>
+    <script src="../../lib/splitter/splitter.js"></script>
+    <script src="../../js/site.js"></script>
+
+  </head>
+
+  <body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
+
+    <!-- Navbar
+      ================================================== -->
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container" style="width: auto;">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="../../">PostgreSQL Exercises</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="divider"></li>
+              <li><a href="../../">Home</a></li>
+              <li><a href="../../gettingstarted.html">Getting Started</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exercises<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="../basic/">Basic</a></li>
+                  <li><a href="../joins/">Joins and Subqueries</a></li>
+                  <li><a href="../updates/">Modifying data</a></li>
+                  <li><a href="../aggregates/">Aggregates</a></li>
+                  <li><a href="../date/">Date</a></li>
+                  <li><a href="../string/">String</a></li>
+                  <li><a href="../recursive/">Recursive</a></li>
+                </ul>
+              </li>
+              <li><a href="../../about.html">About</a></li>
+	      <li><a href="../../options.html">Options</a></li>
+              <!--<li><a href="#">Random</a></li>-->
+            </ul>
+          </div><!-- /.nav-collapse -->
+        </div>
+      </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->
+
+    <div class="container">
+
+      <!--Navigation-->
+      <div class="row">
+        <div class="span4"><p class="bfnav"><a href="self2.html">Previous Exercise</a></p></div>
+        <div class="span4" align="center">
+          <ul class="breadcrumb">
+            <li><a href="../../">Home</a> <span class="divider">/</span></li>
+            <li><a href="./">Joins</a> <span class="divider">/</span></li>
+            <li class="active">Threejoin</li>
+          </ul>
+        </div>
+        <div class="span4"><p class="bfnav" align="right"><a href="threejoin2.html">Next Exercise</a></p></div>
+      </div>
+
+
+    <!-- Typography
+    ================================================== -->
+    <section id="typography">
+      <div class="page-header">
+        <h1>
+	<span style="float:left">
+Produce a list of all members who have used a tennis court        </span>
+	<span style="float:right">
+	<img src="../../assets/tick2.svg" class="headertick"></img>
+
+	</span>
+        <div style="clear:both"></div>
+        </h1>
+      </div>
+
+      <div class="row" style="margin-bottom:10px">
+        <div class="span8">
+          <h3>Question</h3>
+How can you produce a list of all members who have used a tennis court?  Include in your output the name of the court, and the name of the member formatted as a single column.  Ensure no duplicate data, and order by the member name followed by the facility name.        </div>
+      </div>
+      <div class="row">
+      <div class="span12">
+      <div id=splittercontainerouter>
+        <div id="schemareminder" class="btn btn-primary" onClick="schema();">
+          <div>Schema reminder <span id="schemareminderarrow">&#x25BC;</span></div>
+        </div>
+        <div id="schemaremindercontents">
+          <img id="schemareminderimage" src="../../img/schema-horizontal.svg" alt="DB schema" width="840"></img>
+        </div>
+        <div id=splittercontainer>
+          <div id="expres" ondblclick="setOptimalExpectedResultsSize()">
+            <div style="overflow-x:hidden;">
+              <div style="display: inline-block; min-width:1000px;">
+                <h3>Expected Results</h3>
+                <div style="width:auto; display:inline-block">
+                  <table id="exprestable" class="demo table table-bordered table-striped" style="width:auto;">
+<thead><tr>
+<th>member</th>
+<th>facility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Anne Baker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Anne Baker</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Charles Owen</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Charles Owen</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Darren Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Farrell</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>David Farrell</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Jones</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>David Jones</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Pinker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Douglas Jones</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Erica Crumpet</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Gerald Butters</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Gerald Butters</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Henrietta Rumney</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Janice Joplette</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Janice Joplette</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Joan Coplin</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>John Hunt</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>John Hunt</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Matthew Genting</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Millicent Purview</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Nancy Dare</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Nancy Dare</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Ramnaresh Sarwin</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Ramnaresh Sarwin</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tim Boothe</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tim Boothe</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tim Rownam</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tim Rownam</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Timothy Baker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Timothy Baker</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tracy Smith</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tracy Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+</tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div id="codediv">
+            <div id="youranswerdiv" ondblclick="setOptimalYourAnswerSize()">
+                    <h3 style="min-width:200px;">Your Answer<span id="youranswertickspan"><img src="../../assets/cross.svg" class="youranswertick"></img></span>
+                <span id="youranswerbuttons">
+                  <a id="hintbtn" class="youranswerbutton btn btn-primary btn-small" onClick="hint();">Hint</a>
+                  <a id="helpbtn" class="youranswerbutton btn btn-primary btn-small" onClick="help();" title="[Alt-h]">Help</a>
+                  <a id="querybtn" class="youranswerbutton btn btn-primary btn-small" onClick="save();">Save</a>
+                  <a id="savebtn" class="youranswerbutton btn btn-primary btn-small" onClick="query();" title="[Alt-r]">Run Query</a>
+                </span>
+              </h3>
+              <div style="clear:both;">
+  	      <div id="codewrapper">
+                  <form>
+                    <textarea id="code" name="code"></textarea>
+                  </form>
+                </div>
+  	    </div>
+            </div>
+            <div id="yourresultsdiv" ondblclick="setOptimalYourResultsSize()">
+              <div>
+                <table id="yourresultstable" class="demo table table-bordered table-striped"></table>
+                <pre id="yourresultserror"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      <div class="row" style="margin-bottom:30px">
+        <div class="span12">
+          <h3>Answers and Discussion <a id="answerbtn" class="inactive btn btn-primary btn-small" style="margin: 5px" onClick="toggleAnswers();">Show</a></h3>
+          <pre id="querydiv" class="answerdiv prettyprint lang-sql">
+select distinct mems.firstname || ' ' || mems.surname as member, facs.name as facility
+	from 
+		cd.members mems
+		inner join cd.bookings bks
+			on mems.memid = bks.memid
+		inner join cd.facilities facs
+			on bks.facid = facs.facid
+	where
+		facs.name in ('Tennis Court 2','Tennis Court 1')
+order by member, facility          </pre>
+          <div class="row">
+            <div class="span8 answerdiv">
+<p>This exercise is largely a more complex application of what you've learned in prior questions.  It's also the first time we've used more than one join, which may be a little confusing for some.  When reading join expressions, remember that a join is effectively a function that takes two tables, one labelled the left table, and the other the right.  This is easy to visualise with just one join in the query, but a little more confusing with two.</p>
+
+<p>Our second <span class="code">INNER JOIN</span> in this query has a right hand side of cd.facilities.  That's easy enough to grasp.  The left hand side, however, is the table returned by joining cd.members to cd.bookings.  It's important to emphasise this: the relational model is all about tables.  The output of any join is another table.  The output of a query is a table.  Single columned lists are tables.  Once you grasp that, you've grasped the fundamental beauty of the model.</p>
+<p>As a final note, we do introduce one new thing here: the <span class="code">||</span> operator is used to concatenate strings.</p>            </div>
+          </div>
+        </div>
+      </div>
+      <!--Navigation-->
+      <div class="row">
+        <div class="span4"><p class="bfnav"><a href="self2.html">Previous Exercise</a></p></div>
+        <div class="span4" align="center">
+          <ul class="breadcrumb">
+            <li><a href="../../">Home</a> <span class="divider">/</span></li>
+            <li><a href="./">Joins</a> <span class="divider">/</span></li>
+            <li class="active">Threejoin</li>
+          </ul>
+        </div>
+        <div class="span4"><p class="bfnav" align="right"><a href="threejoin2.html">Next Exercise</a></p></div>
+      </div>
+    </div><!-- /container -->
+      <div id="hint" title="Hint">
+This answer requires multiple joins.  To concatenate strings you can use the <span class="code">||</span> operator.
+      </div>
+      <div id="help" title="Help">
+        <div id="helpcontent">
+	  <h4>Keyboard shortcuts:</h4>
+	  <ul>
+	    <li><b>Alt-h</b>: Show/Hide Help menu
+	    <li><b>Alt-r</b>: Run query
+	    <li><b>Alt-x</b>: Run selected text as query
+	    <li><b>Alt-s</b>: Run query by cursor (delimited by whitespace/semi-colon)
+	  </ul>
+	  <hr />
+	  <h4>Other hints:</h4>
+	    <ul>
+	      <li>You can double click on each of the panes of Expected Result/Your answer to quickly resize them.
+	      <li>If you have trouble remembering the database schema, you can leave this popup open while you work on your answer.
+	      <li>Don't forget to use the hint button if you're stuck!
+	    </ul>
+	  <hr />
+	</div>
+      </div>
+
+
+    <script>
+        var App = {};
+	App.sorted = 1;
+	App.pageID = "1E7B6EED-BDC5-4B46-829C-0E1B10BD8644";
+        App.writeable = 0;
+        App.tableToReturn = "";
+	App.jsonResults = sortJSONResults([["Anne Baker","Tennis Court 1"],["Anne Baker","Tennis Court 2"],["Burton Tracy","Tennis Court 1"],["Burton Tracy","Tennis Court 2"],["Charles Owen","Tennis Court 1"],["Charles Owen","Tennis Court 2"],["Darren Smith","Tennis Court 2"],["David Farrell","Tennis Court 1"],["David Farrell","Tennis Court 2"],["David Jones","Tennis Court 1"],["David Jones","Tennis Court 2"],["David Pinker","Tennis Court 1"],["Douglas Jones","Tennis Court 1"],["Erica Crumpet","Tennis Court 1"],["Florence Bader","Tennis Court 1"],["Florence Bader","Tennis Court 2"],["GUEST GUEST","Tennis Court 1"],["GUEST GUEST","Tennis Court 2"],["Gerald Butters","Tennis Court 1"],["Gerald Butters","Tennis Court 2"],["Henrietta Rumney","Tennis Court 2"],["Jack Smith","Tennis Court 1"],["Jack Smith","Tennis Court 2"],["Janice Joplette","Tennis Court 1"],["Janice Joplette","Tennis Court 2"],["Jemima Farrell","Tennis Court 1"],["Jemima Farrell","Tennis Court 2"],["Joan Coplin","Tennis Court 1"],["John Hunt","Tennis Court 1"],["John Hunt","Tennis Court 2"],["Matthew Genting","Tennis Court 1"],["Millicent Purview","Tennis Court 2"],["Nancy Dare","Tennis Court 1"],["Nancy Dare","Tennis Court 2"],["Ponder Stibbons","Tennis Court 1"],["Ponder Stibbons","Tennis Court 2"],["Ramnaresh Sarwin","Tennis Court 1"],["Ramnaresh Sarwin","Tennis Court 2"],["Tim Boothe","Tennis Court 1"],["Tim Boothe","Tennis Court 2"],["Tim Rownam","Tennis Court 1"],["Tim Rownam","Tennis Court 2"],["Timothy Baker","Tennis Court 1"],["Timothy Baker","Tennis Court 2"],["Tracy Smith","Tennis Court 1"],["Tracy Smith","Tennis Court 2"]]);
+    </script>
+
+    <script src="../../js/prettify/run_prettify.js?lang=sql"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-45602502-1', 'pgexercises.com');
+      ga('send', 'pageview');
+
+    </script>
+
+  </body>
+</html>

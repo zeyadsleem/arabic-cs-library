@@ -1,0 +1,136 @@
+{
+  "chapters": [
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "Preface",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "intro",
+      "title": "Better Programming Through OCaml",
+      "titleAr": "Better Programming Through OCaml",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Better Programming Through OCaml",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "basics",
+      "title": "The Basics of OCaml",
+      "titleAr": "The Basics of OCaml",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Basics of OCaml",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "data",
+      "title": "Data and Types",
+      "titleAr": "Data and Types",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data and Types",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "hop",
+      "title": "Higher-Order Programming",
+      "titleAr": "Higher-Order Programming",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Higher-Order Programming",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "modules",
+      "title": "Modular Programming",
+      "titleAr": "Modular Programming",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modular Programming",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "mut",
+      "title": "Mutability",
+      "titleAr": "Mutability",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mutability",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "conc",
+      "title": "Concurrency",
+      "titleAr": "Concurrency",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Concurrency",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "correctness",
+      "title": "Correctness",
+      "titleAr": "Correctness",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Correctness",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "ds",
+      "title": "Data Structures",
+      "titleAr": "Data Structures",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data Structures",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "interp",
+      "title": "Interpreters",
+      "titleAr": "Interpreters",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interpreters",
+          "order": 10
+        }
+      ]
+    }
+  ]
+}

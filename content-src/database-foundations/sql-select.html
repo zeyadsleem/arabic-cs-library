@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>The SELECT clause in detail</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">One of the easiest ways to get noticed or hired as a junior developer
+          in the tech industry is by documenting everything you are learning.
+          Build great projects, but don't forget to document your journey along
+          the way.</span> <br>
+&mdash;Olawale Daniel
+</p> </blockquote> <h1>The SELECT clause in detail</h1> <p></p> <section class="leerdoel"> <ul></ul> </section> <p>
+This chapter and the next four are actually one big topic. We look at the
+      various components of a query in more detail. The first two SQL chapters
+      already introduced <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code> en <code>ORDER BY</code>.
+      Now it's time to dive a little deeper into these clauses.
+</p> <p>
+In this chapter, we will look at some of the features of <code>SELECT</code>. As an example, we will use an extended version of the table ‘course’
+      which is used in the <a href="/EN/SQL_intro/">introduction SQL chapter</a>. <em>
+This is a work text. Reading is nice, doing is even nicer. Test things
+        and make exercises.
+</em> </p> <p>
+In this chapter we use a simple schema with only one table. This schema
+      corresponds to the following conceptual model:
+</p> <figure class="center"> <img src="/assets/select/EN/opo_conceptueel.svg" alt=""> </figure> <p>
+The entity type ‘Course’ has eight attributes. The attribute ‘Code’ is the
+      key attribute.
+</p> <p>
+You can find the table ‘course’ in the schema ‘ucllcatalogue’ in the
+      database ‘df’. In order to make this table for you, we took the following
+      steps (we will come back to them later). These steps are only for
+      illustration. You cannot perform them yourself because you do not have
+      write permissions in the database ‘df’.
+</p> <ol> <li>
+I open a query tool in the database ‘df’ and run this code: <pre><code>CREATE SCHEMA ucllcatalogue;</code></pre> </li> <li>
+All colleagues and students should have access to this schema:<pre><code>GRANT USAGE on schema ucllcatalogue to student;
+GRANT USAGE on schema ucllcatalogue to lector;</code></pre> </li> <li>
+Next, I create the table ‘course’:<pre><code>CREATE TABLE ucllcatalogue.course (
+  code char(6) NOT NULL ,
+  credits smallint NOT NULL ,
+  name varchar(100) NOT NULL ,
+  start_date date NOT NULL ,
+  end_date date ,
+  language char(2) NOT NULL ,
+  semester smallint NOT NULL ,
+  coordinator char(8) NOT NULL ,
+  CONSTRAINT pk_course_code PRIMARY KEY ( code )
+);</code></pre> </li> <li>
+Everyone should be given SELECT rights. Students should not be able to
+        modify this table, delete or update rows, etc. So the permissions are
+        limited to SELECT only:<pre><code>grant select on all tables in schema ucllcatalogue to student;
+grant select on all tables in schema ucllcatalogue to lector;</code></pre> </li> <li>
+Finally, 21 rows were added via an import of a .CSV file. This could
+        have been done with <code>INSERT INTO</code> as well, of course.
+</li> </ol> <h2>Requesting something</h2> <p>
+With <code>SELECT</code> you can request something from a database server.
+      That can even be a small calculation:<pre><code>SELECT 3*4; -- gives 12
+SELECT sqrt(200); -- returns the root of 200, i.e., 14,142....
+SELECT TRUE AND FALSE; -- result is FALSE</code></pre> </p> <p>
+A little silly to use a database server as a calculator, but it can be
+      done.
+</p> <section class="taak"> <p>
+You can use mathematical functions in SQL (think of the ones on your
+        calculator such as sin, cos, ...). Above is one example: <code>SELECT sqrt(200)</code> returns the square root of 200. Find the SQL function you use to round
+        up a number. A good source for this is <a href="https://www.postgresql.org/docs/current/functions-math.html">https://www.postgresql.org/docs/current/functions-math.html</a>.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT ceil(2.1) -- gives: 3
+SELECT ceiling(2.1) -- alternative, does exactly the same thing
+SELECT ceil(-2.1) -- gives: -2 (careful with negative numbers: -2 &gt; -2.1)</code></pre> </div>  </section> <h2>Selecting columns</h2> <p>
+What interests us more is extracting information from data stored in a
+      database. We already did that in the introductory examples, so we can be
+      brief here.
+</p> <p>
+Using the <code>*</code> you can select <em>all</em> columns of a table:<pre><code>SELECT *
+FROM course;</code></pre> </p> <p>
+The database server begins to work from the <code>FROM</code> clause. The entire
+      table ‘course’ is loaded into the server's working memory. Then the server
+      looks at the <code>SELECT</code> clause. The star <code>*</code> indicates
+      that all columns should be displayed.
+</p> <p>
+Suppose we only want to see the columns with the name and the semester in
+      which it was given. This can be done as follows:<pre><code>SELECT name, semester
+FROM course;</code></pre> </p> <h2>Alias for a column name</h2> <p>
+Sometimes you want <em>other headers</em> for a displayed column. Suppose that
+      we run the following query to get a summary of the start date when each course
+      was first given:<pre><code>SELECT name, start_date
+FROM course;</code></pre> </p> <p>
+The header of the second column will be ‘start_date’. Perhaps you would
+      prefer the word ‘start’ as the column title? That can be done very easily
+      with an <em>alias</em>. You give it using the word <code>AS</code>.
+</p> <pre><code>SELECT name, start_date AS start
+FROM course;</code></pre> <div class="opgepast"> <p>
+Beware if you use several <em>words with a space in between</em>. Then
+        you must enclose this alias between <em>double quotes</em> like this:<pre><code>SELECT name, start_date AS &quot;start date&quot;
+FROM course;</code></pre> </p> </div> <section class="opgepast"> <p>
+A point of interest and source of problems in SQL is the use of single
+        and double quotes:
+</p> <ul> <li>Single quotes ('...') are used in SQL for strings or dates.</li> <li>
+Double quotes ("...") are reserved for names (called identifiers) of
+          tables, schemas and aliases with special characters (such as a space,
+          hyphen, etc.). There are tools (such as DBSchema, <a href="/EN/SQL_DBschema/">see later</a>) that, in the code they generate, always enclose table and schema
+          names in double quotes.
+</li> </ul> <p>
+More info e.g. at <a href="https://www.prisma.io/dataguide/postgresql/short-guides/quoting-rules">https://www.prisma.io/dataguide/postgresql/short-guides/quoting-rules</a> </p> </section> <h2>Creating new columns</h2> <p>
+You don't have to limit yourself to columns that already exist in tables
+      when writing queries. It is possible to specify new columns in the <code>SELECT</code> that are not present in a table.
+</p> <h3>Constant text or number</h3> <p>
+If you put a string or number as a column, this is repeated for each row
+      in the result.
+</p> <section class="taak"> <p>
+Describe the result of the following query:<pre><code>SELECT code, name, &#39;Applied Computer Science&#39;
+FROM course;</code></pre> </p>  <button>Show / hide solution</button> <div class="oplossing">
+You get an overview of all rows of the table with course code and name
+        and a new column ‘Applied Computer Science’, repeated for each row.
+</div>  </section> <section class="taak"> <p>
+Adjust the code from the previous exercise so that above the column with
+        the repeated text ‘Applied Computer Science’ the word ‘course’ is
+        used as the column header. Then modify the query so that the column
+        header shows ‘Course Proximus’.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT code, name, &#39;Applied Computer Science&#39; AS course
+FROM course
+ 
+-- version 2 with spaces in the header
+SELECT code, name, &#39;Applied Computer Science&#39; AS &quot;Course Proximus&quot;
+FROM course;</code></pre> </div>  </section> <h3>Math</h3> <p>
+One credit corresponds to roughly 25 hours of work, everything included
+      (attending classes, studying, completing assignments, studying for exams,
+      taking the exam, ...). The following query creates a new column ‘work
+      hours’ based on the present column study points:
+</p> <pre><code>SELECT code, name, credits * 25 AS &quot;work hours&quot;
+FROM course;</code></pre> <section class="taak"> <p>
+Leave out ‘AS work hours’ in the above query to see what the (ugly)
+        default column header becomes.
+</p>  </section> <h3>Concatenating strings</h3> <p>
+You can combine multiple columns into one column. For student coaches it
+      is useful that the name of a course is always followed by the number of
+      credits in parentheses, such as, e.g. ‘Database Foundations (6)’.
+</p> <p>
+The double ‘pipe’ character (<code>||</code>) allows you to put columns of
+      text next to each other. The requested combination of name and credits can
+      be realized by the following query. Pay attention to the difference
+      between single and double quotes.
+</p> <pre><code>SELECT code, name || &#39; (&#39; || credits || &#39;)&#39; AS &quot;Course Name (credits)&quot;
+FROM course;</code></pre> <h3>String functions</h3> <p>
+Let's take a quick look at the fantastic documentation of PostgreSQL. It
+      is very comprehensive. On some questions about SQL functions, the
+      lecturers will suggest to look up the answer in the documentation
+      yourself. <a href="https://en.wikipedia.org/wiki/RTFM">RTFM</a>, then!
+</p> <p>
+I usually start at the index page <a href="https://www.postgresql.org/docs/current/bookindex.html">https://www.postgresql.org/docs/current/bookindex.html</a>. At the ‘S’ of string, I find a number of references to <a href="https://www.postgresql.org/docs/current/functions-string.html">https://www.postgresql.org/docs/current/functions-string.html</a>. Browse through the long list of features. Below we give two examples of
+      string functions.
+</p> <h4>Switching between upper case and lower case letters</h4> <p>
+The functions <code>lower()</code> and <code>upper()</code> allow you to switch
+      between lower case and upper case (see picture below for the <a href="https://en.wikipedia.org/wiki/Letter_case">origin</a> of these designations). Especially if we want to search in the next chapter
+      for strings (in the <code>WHERE</code> clause) it is usually a safe option
+      to convert everything to lowercase first because <em>strings in SQL are case sensitive</em>. The string ‘Van Hee’ is not the same as ‘Van hee’.
+</p> <figure class="center"> <img src="/assets/select/letterkast.jpeg" alt=""> <figcaption>
+Photo: The most frequently used letters (that is, the lower case
+        letters) are in the lower case, the less frequently used (upper case
+        letters) in the upper case.
+</figcaption> </figure> <p>
+The following query shows all names of courses in lowercase:
+<pre><code>SELECT code, lower(name)
+FROM course;</code></pre> </p> <h4>Substring</h4> <p>
+A second basic operation with strings is <em>to select a part of the string</em>. This can be done with the <code>substring()</code> function. The following
+      query returns only the digit part of the lecturer code (column ‘coordinator’),
+      so without the ‘u’:
+</p> <pre><code>SELECT code, substring(coordinator from 2) -- start at letter 2 to the end
+FROM course;</code></pre> <section class="taak"> <div> <p>
+You may have already noticed that all course codes begin with ‘MBI’
+          (at least in the BCS program anyway). All lecturers have a number that
+          starts with ‘u’. Write a query that shows the course code and the
+          coordinator, but without the initial letter(s) that are always the
+          same. Pay attention to the column headings!
+</p> <figure class="center"> <img src="/assets/select/EN/zonderbeginletters.png" width="300" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT substring(code from 4) AS &quot;short code&quot;,
+  substring(coordinator from 2) AS &quot;coordinator(shortened)&quot;
+FROM course;</code></pre> </div>  </section> <h3>CASE</h3> <p>
+Suppose: instead of a column of credits, we just want to show a column
+      showing the values ‘small’ (for courses with 4 or less credits), ‘medium’
+      (courses with 5 or 6 credits) and ‘large’ for courses with more than 6
+      credits. That column will be based on the ‘credits’ column and will be
+      created with a <code>CASE</code> structure.
+</p> <p>
+We refer to the documentation. Through the index page, we find ‘CASE:
+      conditional expressions’ on the page<a href="https://www.postgresql.org/docs/current/functions-conditional.html">https://www.postgresql.org/docs/current/functions-conditional.html</a>. You'll find the following structure (and examples) here:
+</p> <pre><code>CASE
+  WHEN condition THEN result
+  [WHEN ...]
+  [ELSE result]
+END</code></pre> <p>
+Applied to the requested query, that gives the following possible query:
+</p> <pre><code>SELECT name,
+  CASE
+    WHEN credits &lt;= 4 THEN &#39;small&#39;
+    WHEN credits &lt;= 6 THEN &#39;medium&#39; -- checking &gt; 4 not necessary
+    ELSE &#39;large&#39;
+  END AS size
+FROM course;</code></pre> <p>
+The first condition that is true causes a value to be assigned in the
+      column. The rest of the lines in the <code>CASE</code> are then skipped. Also
+      note that we use an alias (<code>AS</code>) because otherwise the column
+      header otherwise just shows ‘case’.
+</p> <p> <em>White space</em> (indenting with tabs or spaces) is not important to the
+      database server, but it is <em>important for people who have to read your code</em> (such as lecturers who need to correct your assignments :-).
+</p> <section class="taak"> <div> <p>
+Courses that do not have an end date are called ‘new’ courses in
+          contrast to the ‘old’ courses that are no longer given and have an end
+          date in our table. Write the query that generates the result of figure
+          below. Need we say more? Note the column headings ...
+</p> <figure class="center"> <img src="/assets/select/EN/oudnieuw.png" alt="new column with the text old or new" width="400"> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT name, code,
+  CASE
+    WHEN end_date is null THEN &#39;new&#39;
+    ELSE &#39;old&#39;
+  END AS &quot;old or new&quot;
+FROM course;</code></pre> </div>  </section> <h2>Distinct</h2> <p>
+List all the possible languages that are used in courses. The query for
+      this is not difficult:
+</p> <pre><code>SELECT language
+FROM course;</code></pre> <p>
+The result contains as many rows as there are rows in the table. That is
+      not really what we want. To avoid <em>repetition</em> use <code>DISTINCT</code> behind the word<code>SELECT</code>:
+</p> <pre><code>SELECT DISTINCT language
+FROM course;</code></pre> <p>
+Attention: the <em>full</em> combination of all columns that come after the
+      word
+<code>DISTINCT</code> must be different. Adjust the query to:
+</p> <pre><code>SELECT DISTINCT language, coordinator
+FROM course;</code></pre> <p>
+We now get more rows than before, but less than the full number of rows
+      because some coordinators have multiple courses in the same language. For
+      example, check in the original table that coordinator ‘u0012047’ appears
+      three times with language dutch. The combination of language and
+      coordinator is thus the same three times. By using the keyword <code>DISTINCT</code> this row will be shown only once.
+</p> <section class="taak"> <p>
+Generate a list with per course each lecturer and the number of credits
+        from each course. Count how many rows there are. Now make sure that
+        there are no duplicates in this list, so if lecturer ‘u0012047’ gives
+        two courses of 6 credits, this row should appear in the list only once.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>-- the list without duplicates (for the full list remove distinct)
+SELECT distinct coordinator, credits
+FROM course;</code></pre> </div>  </section> <h2>Working with a date</h2> <p>
+The data type <code>date</code> is very important in a database. There are
+      dozens of functions that can manipulate a date. We will look only at a few
+      of them here. Moreover, there is not only <code>date</code> as a datatype,
+      but also <code>timestamp</code>, <code>time</code> and <code>interval</code>
+(see documentation at <a href="https://www.postgresql.org/docs/current/datatype-datetime.html">https://www.postgresql.org/docs/current/datatype-datetime.html</a>).
+</p> <p>
+For now, we limit ourselves to the data type <code>date</code>. The <a href="https://www.postgresql.org/docs/current/functions-datetime.html">documentation</a> provides an overview of the <code>date/time</code> functions that PostgreSQL
+      offers.
+</p> <h3>Extract … from</h3> <p>
+A date contains the year, month and day. A time additionally includes
+      hours, minutes, seconds, etc. With the function <a href="https://www.postgresql.org/docs/current/functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"><code>EXTRACT</code></a> you can extract a piece from a date (or time). A small example from the course
+      list to clarify this:
+</p> <pre><code>SELECT code, EXTRACT(year FROM start_date) AS &quot;start academic year&quot;
+FROM course;</code></pre> <p>
+This query displays a list of all courses with code and the year in which
+      that course was first given. The list of possibilities is quite extensive:
+      month, week, day, hour, ... (see <a href="https://www.postgresql.org/docs/current/functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT">documentation</a>).
+</p> <h3>Calculating with a date</h3> <p>
+You can increase or decrease a date by an integer, subtract dates from
+      each other, etc (<a href="https://www.postgresql.org/docs/current/functions-datetime.html">documentation</a>).
+</p> <h4>Example 1: subtracting dates from each other</h4> <p>
+The following query calculates for each course how many days it will run
+      or has been running. Of course, if we do not know end date, the result
+      cannot cannot be calculated and you get the value<code>NULL</code>:
+</p> <pre><code>SELECT code, end_date - start_date AS &quot;number of days&quot;
+FROM course;</code></pre> <p>
+Apparently, the course with code ‘MBI68A’ is the course with the longest
+      duration: 5477 days.
+</p> <h4>Example 2: functions age() and now()</h4> <p>
+A second example shows two functions: <code>age()</code> and <code>now()</code>. How old am I today if I was born on May 7, 1967?
+</p> <pre><code>SELECT age(now(),&#39;1967-05-07&#39;);
+-- alternative is: SELECT age(CURRENT_DATE, &#39;1967-05-07&#39;);
+-- second alternative: SELECT age(timestamp &#39;1967-05-07&#39;);</code></pre> <h2>Changing data type</h2> <p>
+A classic problem in typed programming languages is <em>
+converting a value to another data type
+</em>. You want to add an integer to a float, convert a number to a
+      string, ... In English, this action is called ‘to cast’.
+</p> <p>
+The last example in the previous section in which the age was calculated
+      was an example of an <em>automatic cast</em>. According to the
+      documentation that we have already referred to a few times, the function <code>age()</code>in the first version of the query operates on two <code>timestamps</code>. We however, wrote <code>age(now(),‘1967-05-07’)</code>. The function <code>now()</code> returns a <code>timestamp</code>, but the second argument (‘1967-05-07’)
+      is a <code>date</code> and not a <code>timestamp</code>. PostgreSQL,
+      however, will silently turn this <code>date</code> into a <code>timestamp</code> (by taking midnight as the time).
+</p> <h3>CAST … AS</h3> <p>
+Often, however, you have to do the casting yourself. This can be done with
+      two types of syntax: either with the <code>CAST(... AS ...)</code> function,
+      or with the notation
+<code>::</code>. We give some simple examples:
+</p> <pre><code>-- cast a string to an integer
+SELECT CAST(&#39;123&#39; AS integer);
+SELECT &#39;123&#39;::integer; -- different notation, but does the same thing as the CAST
+
+-- cast an integer to a numeric
+SELECT CAST(1234 AS numeric(8,3));
+SELECT 1234::numeric(8,3); -- different notation, but does the same thing
+
+-- a number to a string
+SELECT CAST(1234 AS char(6)); -- generates the string &#39;1234  &#39;</code></pre> <h3>TO_CHAR</h3> <p>
+The last example above (number to string) is a bit odd. Usually you want
+      to convert the values in a column to a string <em>with a certain format</em>, e.g. a date in European notation with slashes between day, month and
+      year. To do this, the function <code>TO_CHAR()</code> exists (<a href="https://www.postgresql.org/docs/current/functions-formatting.html">documentation</a>). Some examples:
+</p> <pre><code>SELECT TO_CHAR(date &#39;1967-05-07&#39;, &#39;dd/mm/yyyy&#39;); -- results: &#39;07/05/1967&#39;
+SELECT TO_CHAR(date &#39;1967-05-07&#39;, &#39;day dd month yyyy&#39;); -- results: &#39;sunday 07 may 1967&#39;
+SELECT TO_CHAR(148.5, &#39;9999.9999&#39;); -- returns the string &#39; 148.5000&#39;</code></pre> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

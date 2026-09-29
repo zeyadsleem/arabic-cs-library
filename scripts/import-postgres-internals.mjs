@@ -26,6 +26,7 @@ const chapters = [
   ['pgsql10', 'Base Backup and Point-In-Time Recovery', 'النسخ الاحتياطي الأساسي والاستعادة الزمنية'],
   ['pgsql11', 'Streaming Replication', 'النسخ المتماثل المتدفّق'],
   ['pgsql12', 'Logical Replication', 'النسخ المتماثل المنطقي'],
+  ['pgsqlappendix', 'Appendix: Derivation of Variance Calculation Formulas', 'الملحق: اشتقاق صيغ حساب التباين'],
 ];
 
 const fetchText = (url) => {

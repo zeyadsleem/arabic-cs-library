@@ -1,0 +1,220 @@
+{
+  "chapters": [
+    {
+      "key": "c0-introduction",
+      "title": "0. Introduction",
+      "titleAr": "0. Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "0. Introduction",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "c1-intro",
+      "title": "1. By the C, by the C, by the Beautiful C",
+      "titleAr": "1. By the C, by the C, by the Beautiful C",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "1. By the C, by the C, by the Beautiful C",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "c2-depth",
+      "title": "2. A Deeper Dive into C Programming",
+      "titleAr": "2. A Deeper Dive into C Programming",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "2. A Deeper Dive into C Programming",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "c3-debug",
+      "title": "3. C Debugging Tools",
+      "titleAr": "3. C Debugging Tools",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "3. C Debugging Tools",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "c4-binary",
+      "title": "4. Binary and Data Representation",
+      "titleAr": "4. Binary and Data Representation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "4. Binary and Data Representation",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "c5-arch",
+      "title": "5. What von Neumann Knew: Computer Architecture",
+      "titleAr": "5. What von Neumann Knew: Computer Architecture",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "5. What von Neumann Knew: Computer Architecture",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "c6-asm-intro",
+      "title": "6. Under the C: Diving into Assembly",
+      "titleAr": "6. Under the C: Diving into Assembly",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "6. Under the C: Diving into Assembly",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "c7-x86-64",
+      "title": "7. 64-bit x86 Assembly (x86-64)",
+      "titleAr": "7. 64-bit x86 Assembly (x86-64)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "7. 64-bit x86 Assembly (x86-64)",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "c8-ia32",
+      "title": "8. 32-bit x86 Assembly (IA32)",
+      "titleAr": "8. 32-bit x86 Assembly (IA32)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "8. 32-bit x86 Assembly (IA32)",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "c9-arm64",
+      "title": "9. ARM Assembly",
+      "titleAr": "9. ARM Assembly",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "9. ARM Assembly",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "c10-asm-takeaways",
+      "title": "10. Key Assembly Takeaways",
+      "titleAr": "10. Key Assembly Takeaways",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "10. Key Assembly Takeaways",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "c11-memhierarchy",
+      "title": "11. Storage and the Memory Hierarchy",
+      "titleAr": "11. Storage and the Memory Hierarchy",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "11. Storage and the Memory Hierarchy",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "c12-codeopt",
+      "title": "12. Code Optimization",
+      "titleAr": "12. Code Optimization",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "12. Code Optimization",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "c13-os",
+      "title": "13. The Operating System",
+      "titleAr": "13. The Operating System",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "13. The Operating System",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "c14-sharedmemory",
+      "title": "14. Leveraging Shared Memory in the Multicore Era",
+      "titleAr": "14. Leveraging Shared Memory in the Multicore Era",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "14. Leveraging Shared Memory in the Multicore Era",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "c15-parallel",
+      "title": "15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",
+      "titleAr": "15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "c16-appendix-1",
+      "title": "16. Appendix 1: Chapter 1 for Java Programmers",
+      "titleAr": "16. Appendix 1: Chapter 1 for Java Programmers",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "16. Appendix 1: Chapter 1 for Java Programmers",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "c17-appendix-2",
+      "title": "17. Appendix 2: Using Unix",
+      "titleAr": "17. Appendix 2: Using Unix",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "17. Appendix 2: Using Unix",
+          "order": 17
+        }
+      ]
+    }
+  ]
+}

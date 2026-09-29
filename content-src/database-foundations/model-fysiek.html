@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Modeling: physical data model</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">The strength of a database is directly proportional to the power of
+          the questions you can ask of it.</span> <br>
+&mdash;Hans Rosling
+</p> </blockquote> <h1>Physical data model</h1> <p>
+In this chapter, we take the final step in planning our database: creating
+      our physical data model. How do you convert a logical data model into a
+      physical data model?
+</p><p>
+You must be able to explain the following terms, how to visualize this
+        (where relevant) and explain by example:
+</p> <section class="leerdoel"> <ul> <li>Physical data model;</li> <li>datatype;</li> <li><code>NULL</code>-value.</li> </ul> </section> <h2>Introduction</h2> <p>
+The final step in laying out our data model, is <em>the physical layer</em>. When we get to this step, we have already chosen a database model and
+        converted the conceptual data model into a structure that complies with
+        this database model, resulting in the logical data model.
+</p> <p>
+The physical layer of our data model answers the question ‘How should we
+        describe the data structure according to our chosen DBMS?’ In doing so,
+        we supplement our data model with the following information:
+</p> <ul> <li>the <em>datatype</em> of a column</li> <li>the <em>length</em> of a value</li> <li>whether or not a value can be empty (<code>NULL</code>)</li> <li>
+(<em>constraints</em>) that we want to impose on a particular table
+          (not discussed in this course)
+</li> <li>indexing (not discussed in this course)</li> <li>views (not discussed in this course)</li> <li>procedures (not discussed in this course)</li> <li>diskspace usage (not discussed in this course)</li> </ul> <p>
+The reason we add this information in a separate layer is because it
+        deals with the more <em>technical</em> aspects of the data model. For the
+        same database model, there may be differences at the level of the DBMS. In
+        other words, a physical data model for one DBMS may be different from that
+        of another DBMS.
+</p><p>
+The differences are mostly quite small, especially for DBMS for
+        databases structured by the relational database model, because <em>standards</em> were established. For the relational database model, standards were summarized
+        in the ANSI standard for SQL, first in 1986 and more recently in 2016. Developers
+        of DBMS for relational databases usually adhere to these standards, although
+        they also add their own variants to differentiate themselves from other products
+        on the market. The focus in this course is on PostgreSQL; we also do not
+        make comparisons with other DBMS within this course.
+</p> <p>
+Finally, a database architect may also decide to structure the data
+        slightly differently than specified by the logical data model. The
+        architect will do this to optimize the performance or usability of the
+        database, often taking into consideration the technical capabilities of
+        the chosen DBMS. These considerations are covered in a later section.
+</p> <h2>From logical to physical data model</h2> <p>
+In translating a logical data model into a physical data model, in the
+        context of this course, we are going to add the <em>following information</em>:
+</p> <ul> <li>
+tables and columns are named in line with our agreed naming
+          conventions; to do so we must first define naming conventions;
+</li> <li>we define a data type and length for each of the columns;</li> <li>
+we indicate for each of the columns whether the value in the column
+          can or cannot be empty (<code>NULL</code>);
+</li> <li>we impose restrictions (constraints) on a table.</li> </ul> <h2>Naming conventions</h2> <p>
+In the physical data model, <em>naming conventions</em> play a major role.
+        In particular, you want to strive for naming conventions that are <em>readable</em>, <em>clear</em> and <em>consistent</em>. In doing so, many DBMS allow
+        only a limited number of characters in the names of tables and columns.
+        So you are often forced to keep it short.
+</p> <p>
+There are different ways to set rules for naming, and each company will
+        use its own rules. Some ideas:
+</p> <ul> <li>
+case of the names and/or separation of words:
+<ul> <li>UPPER CASE,</li> <li>lower case,</li> <li>camelCase,</li> <li>PascalCase,</li> <li>snake_case,</li> <li>kebab-case: words are separated.</li> </ul> </li> <li>use of plural or singular (table "players" or "player")</li> <li>
+separate words from each other:
+<ul> <li>by an underscore (_),</li> <li>by a period,</li> <li>by a capital letter,</li> <li>by a combination of the above.</li> </ul> </li> <li>
+language (in an international environment it is best to work in
+          English)
+</li> <li>
+use of abbreviations to indicate, for example, tables, primary or
+          foreign keys. You can also designate abbreviations to delineate
+          certain subdomains within the data model.
+</li> <li>
+rules for abbreviating long words by, for example, omitting all vowels
+          unless the word starts with a vowel.
+</li> </ul> <p>
+In addition, we can give <em>the following tips</em>:
+</p> <ul> <li>don't use spaces;</li> <li>don't use foreign characters;</li> <li>don't use SQL or DBMS reserved key-words.</li> </ul> <p>Self, we apply the <em>following naming conventions</em>:</p> <ul> <li> <strong>table:</strong> we use a singular name set in lowercase. Different
+          words are separated by an ‘_’.
+</li> <li> <strong>column:</strong> the column name is described in lowercase, with
+          several words separated by an ‘_’. Try to keep the column name as short
+          as possible, but in such a way that it is still possible to figure out
+          what it means.
+</li> <li> <strong>primary key:</strong> if possible, we name the key ‘id’. This way,
+          it is always easy for users to identify the primary key.
+</li> <li> <strong>foreign key:</strong> foreign keys are references to other tables,
+          so we try to include the name of the original table into the name. For
+          example, the primary key ‘id’ from the table ‘lecturer’ could be named
+          ‘lecturer_id’ in other tables as a foreign key.
+</li> </ul> <p>
+As mentioned, <em>you can define your own naming conventions</em>, and
+        in your future work environment, conventions will probably already be in
+        place. The most important thing is that you stay consistent!
+</p> <h2>Datatype</h2> <p>
+In the physical data model, we are going to define the <em>data type</em> for each column. Here we take into account the nature of the data we want
+        to add. In the first steps you took with SQL, within the
+<a href="/EN/SQL_intro/#Some-simple-data-types">chapter ‘Intro SQL’</a>,
+        you have already been introduced to the most commonly used data types:
+<code>char()</code>, <code>varchar()</code>, <code>integer</code> and <code>date</code>.
+</p> <p>
+In addition to these data types, PostgreSQL offers a wide range of
+        additional data types. Each data type has a particular role and, through
+        the use of functions, offers additional capabilities.
+</p> <p>
+When defining the data type, you must sometimes specify the
+<em>length</em>. Datatypes can have a <em>fixed</em> length (for example,
+<code>integer</code> 4 bytes, <code>boolean</code> 1 bit, <code>real</code> 4 bytes, ...) or a
+<em>variable</em> length (e.g., <code>char</code>, <code>varchar</code>, <code>numeric</code>, ...).
+</p><p>
+When specifying the length of a column, consider the maximum length a
+        value could have. A datatype with a variable length allows you to make a
+        lot of space available, without taking up all of that space every time.
+        A good guideline is to keep your specified length realistic, minimizing
+        wasted space.
+</p> <h2>NULL or NOT NULL</h2> <p>
+In the physical design, we need to specify whether the value in a column <em>
+can be empty or not</em>. For the columns that should never be empty, we can specify <code>NOT NULL</code>. For the columns where we have not specified this, the value can be
+        empty.
+</p> <p>
+The choice to be made here is based on the logical data model, and is
+        determined by two elements:
+</p><ul> <li>
+As the first element, we have our <em>foreign keys</em>. Looking at
+          the relationship that exists between two tables through a primary and
+          a foreign key, we must use the minimum cardinality to evaluate whether
+          the value of the foreign key can be <code>NULL</code>. If the
+          relationship is enforced, as for example when using an intermediate
+          table, we indicate that the foreign key is <code>NOT NULL</code>.
+</li><li>
+As a second element, for each of the columns (beyond the primary and
+          foreign keys) evaluate <em>
+whether from the client's logic it makes sense for a column to be is
+            empty
+</em>. For example, an employee's name and first name are not used as
+          a key, since they are not necessarily unique. However, an employee
+          whose first and last name are left blank is probably not very useful.
+          Hence, we can additionally specify that these columns should not be
+          empty.
+</li> </ul> <p>
+The value <code>NULL</code> can mean two things: on the one hand, it can
+        mean that there could be a value filled in, but that we do not know that
+        value. The value could then be filled in at a later time. On the other hand,
+<code>NULL</code> could indicate that for this particular case there is no
+        value possible, the column is not applicable for this entity.
+</p> <p>
+A comparison with a <code>NULL</code> value gives a <code>NULL</code> value
+        as a result, because a comparison with something unknown is always unknown.
+</p>  </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

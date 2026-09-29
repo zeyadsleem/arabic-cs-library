@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Modeling: Data and information</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header> 
+.
+<main> <blockquote> <p> <span class="citaat">Data is a precious thing and will last longer than the systems
+          themselves.</span> <br>
+&mdash; Tim Berners-Lee, inventor of the World Wide Web
+</p> </blockquote> <h1>Data and information</h1> <p>
+In the next chapter, we want to elaborate on the concepts of ‘data’ and
+      ‘information’. What exactly do these concepts mean? Why are these concepts
+      important for you as a (future) it professional?
+</p> <p>From this chapter you should remember the following:</p> <section class="learning objective"> <ul> <li>what is the meaning of ‘data’?</li> <li>what is the meaning of ‘information’?</li> <li>
+what is the role of ‘data’ and ‘information’ within IT applications?
+</li> <li>why is there a need for ‘persistent data’?</li> <li>
+how does a DBMS contribute to efficiently building and maintaining
+          databases?
+</li> </ul> </section> <h2>Difference between data and information</h2> <p>
+Before we get you started in this practically-oriented course, we want to
+      take a moment to reflect on some <em>important concepts</em>. First, we
+      want to talk briefly about data, and where the distinction is made with
+      information. The two terms are often used interchangeably, but there is a
+      difference.
+</p> <p> <strong>Data</strong> refers to specific facts that can take the form of digits,
+      numbers, words, characters, ... For example, ‘23’, ‘Turing’, ‘1912’, ‘London’,
+      ‘Alan’ and ‘June’ are each in themselves facts that can be considered data.
+</p> <p> <strong>Information</strong> refers to the meaning that users come to attach
+      to these facts and the connections made between them. For example, the following
+      information can be assigned to the facts above: "On June 23, 1912, Alan Turing
+      was born in London." <em>
+We combine the data to assign context and value to it</em>.
+</p> <p>
+We are used to filling out paper and digital forms. Most of these forms
+      don't ask for our life story. Instead, we are asked to enter specific
+      facts (data) like name, first name, date of birth, ... These forms are
+      often designed in function of a <strong>process</strong>
+in which the data is collected, tracked and processed. Once processed, the
+      data can be retrieved and used as input for other processes.
+</p> <p>
+As an example, let's take the <emph>process of enrolling at UCLL</emph>.
+      Upon your enrollment you will be asked to answer a number of questions.
+      These questions have the purpose of gathering information about you as a
+      prospective student and to know for which program you would like to
+      enroll. For example, you will be asked to provide information about
+      yourself (name, date of birth, ...), your previous education path
+      (program, school, degree, ...) and for which program you would like to
+      enroll (program, ...). The information you give is split up into atomic
+      parts: the data. Each piece of data is entered into a field of the form.
+      As soon as the form is submitted, the data is stored.
+</p> <figure class="center"> <img src="/assets/data/inschrijvenUCLL.png" alt="Picture of a student registering with UCLL" width="600"> </figure> <p>
+The data is stored according to the structure of the registration form.
+      The administration staff uses the data of the registrations to prepare for
+      the coming academic year. The data allows them to put together class
+      groups, create timetables, etc. In other words, the data that was
+      previously collected at enrollment is now reassembled back into
+      information to feed other processes. In translating collected data into
+      useful information, the data is often restructured according to a
+      different logic. For example, class composition does not take into account
+      the date of birth, but does take into account the number of students
+      within a program. In addition, the data can also be combined with other
+      data. For example, the preparation of timetables is done on the basis of
+      enrollments, but also on the availability of lecturers and classrooms.
+</p> <p>
+And herein lies the role of you as future IT professionals. It is your role
+      to think about the need and importance of information for your
+      applications, the translation of information into structured data and how
+      to store this data efficiently. It is up to you to define the logic to
+      create information from structured data and vice versa.
+</p> <h2>Data and IT applications</h2> <p>
+As mentioned above, data is often collected in function of a
+<emph>process</emph>. IT applications are often developed for the purpose
+      of digitizing or automating manual processes. The earlier example
+      described enrolling a student online for a program at UCLL. Previously (in
+      the days when your lecturers were enrolling for their studies) this was
+      done entirely on paper, including the manual work of processing the
+      registrations which lead to a greater risk of errors. Currently, this
+      process has been digitized and automated as an IT application.
+</p> <p>
+So an IT application must be able to collect, process, and store data.
+      Also, in the other direction, it must be able to retrieve said data and
+      display it to users. This leads to a need of being able to store data for
+      a longer period of time. Storing data for a longer period of time is
+      called <strong>persistent data storage</strong>.
+</p> <p>
+When designing an application, the team of developers will begin to define
+      an architecture of the application. This involves considering which
+      components are necessary to build a functioning system. An application is
+      thus considered not as a monolithic whole, but as a composition of
+      different components, each of which has a particular function. These
+      components are, for example, an interface for mobile devices (front-end),
+      the ability to communicate with other applications, ... The different
+      components each perform a certain function (this will be covered later in
+      the program). In many cases, some form of persistent data storage will be
+      part of the architecture. Through the various decades, a lot of technology
+      for persistent data storage has been developed. In the context of this
+      course, we focus on relational databases and DBMS since this is the
+      standard solution for persistent data storage, but certainly not the only
+      one.
+</p> <h2>Databases and DBMS</h2> <p>
+As a developer, as part of your applications, you will be collecting data,
+      processing and displaying it to users. All the data you collect, is stored
+      in a database. A <strong>database</strong> is viewed as a collection of "persistent
+      data". In other words, a database includes a set of data that must be kept
+      for a long period of time. For example, UCLL's student records system includes
+      data relating to students, enrollments, courses, ...
+</p> <p>
+Persistent data is stored in the permanent memory of a system. This
+      permanent memory or storage medium can take various forms, for example,
+      hard disks, magnetic tapes, CD-ROM, ... The storage of data comes with a
+      certain cost that strongly depends on the type of storage medium used.
+      Hence, it is very important for a team of developers to consider the value
+      of data being added to a database and to make a trade-off between which
+      data is included in the database and which is not. That said, the cost of
+      data storage has dropped significantly since the 2000s, so keeping some
+      extra data won't be a problem in most cases. As an illustration an image
+      of the decreasing "cost per gigabyte" for hard disks (<a href="https://www.backblaze.com/blog/hard-drive-cost-per-gigabyte/">source</a>).
+</p> <figure class="center"> <img src="/assets/data/costperGB.jpeg" alt="Graph showing the decreasing cost per gigabyte"> </figure> <p>
+The technology we use to build these databases, and to maintain, manage,
+      secure and query (extract data from the database) them is called a <strong>database management system (DBMS)</strong>. The DBMS is a software package that serves as an interface between the
+      end users and applications on the one hand and the database on the other.
+</p> <p>
+There are a lot of database management systems and in the context of this
+      course, we will be using
+<a href="https://www.postgresql.org/">PostgreSQL</a>. Other examples
+      include.
+<a href="https://www.mysql.com/">MySQL</a>,
+<a href="https://www.oracle.com/database/">Oracle</a>,
+<a href="https://www.microsoft.com/en-us/sql-server/sql-server-2022">Microsoft SQL Server</a>,
+<a href="https://www.ibm.com/products/db2">IBM DB2</a>,
+<a href="https://www.mongodb.com/atlas/database">MongoDB</a>,
+<a href="https://neo4j.com/">Neo4j</a>, ...
+</p> <figure class="center"><img src="/assets/data/dbms.png" alt=""></figure> <p>
+Database management systems come in a lot of different forms, some of
+      which are designed for specific purposes. When choosing a database
+      management system, a lot of different factors are considered, ranging from
+      the cost of a license, the way the data is structured, data security,
+      features, ... but this is beyond the scope of this course.
+</p> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

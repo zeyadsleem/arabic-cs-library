@@ -1,0 +1,292 @@
+{
+  "chapters": [
+    {
+      "key": "model-data",
+      "title": "Data and information",
+      "titleAr": "Data and information",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Data and information",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "sql-pgadmin",
+      "title": "Installation of pgAdmin",
+      "titleAr": "Installation of pgAdmin",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Installation of pgAdmin",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "sql-intro",
+      "title": "Intro SQL",
+      "titleAr": "Intro SQL",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Intro SQL",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "model-vraag-naar-data",
+      "title": "From question to data",
+      "titleAr": "From question to data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "From question to data",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "model-conceptueel",
+      "title": "Conceptual data model",
+      "titleAr": "Conceptual data model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Conceptual data model",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "model-conceptueel-oefeningen",
+      "title": "Conceptual data model: exercises",
+      "titleAr": "Conceptual data model: exercises",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Conceptual data model: exercises",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "sql-csv",
+      "title": "Fetching information from a data file via SQL",
+      "titleAr": "Fetching information from a data file via SQL",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Fetching information from a data file via SQL",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "sql-select",
+      "title": "The SELECT clause in detail",
+      "titleAr": "The SELECT clause in detail",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The SELECT clause in detail",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "sql-where",
+      "title": "The WHERE clause in detail",
+      "titleAr": "The WHERE clause in detail",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The WHERE clause in detail",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "sql-groupby-having",
+      "title": "The GROUP BY and HAVING clauses in detail",
+      "titleAr": "The GROUP BY and HAVING clauses in detail",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The GROUP BY and HAVING clauses in detail",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "sql-orderby",
+      "title": "The ORDER BY clause in detail",
+      "titleAr": "The ORDER BY clause in detail",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The ORDER BY clause in detail",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "sql-limit",
+      "title": "The LIMIT clause",
+      "titleAr": "The LIMIT clause",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The LIMIT clause",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "sql-eenopveel",
+      "title": "One-to-many relationships",
+      "titleAr": "One-to-many relationships",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "One-to-many relationships",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "sql-innerjoin",
+      "title": "Combining tables with INNER JOIN",
+      "titleAr": "Combining tables with INNER JOIN",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Combining tables with INNER JOIN",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "sql-outerjoin",
+      "title": "Combining tables with OUTER JOIN",
+      "titleAr": "Combining tables with OUTER JOIN",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Combining tables with OUTER JOIN",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "sql-tennis",
+      "title": "SQL Exercises on tennis club database",
+      "titleAr": "SQL Exercises on tennis club database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Exercises on tennis club database",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "model-logisch",
+      "title": "Logical data model",
+      "titleAr": "Logical data model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Logical data model",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "model-logisch-oefeningen",
+      "title": "Logical data model: exercises",
+      "titleAr": "Logical data model: exercises",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Logical data model: exercises",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "model-fysiek",
+      "title": "Physical data model",
+      "titleAr": "Physical data model",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Physical data model",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "sql-dbschema",
+      "title": "DBSchema PostgreSQL client",
+      "titleAr": "DBSchema PostgreSQL client",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "DBSchema PostgreSQL client",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "sql-privileges",
+      "title": "Allocation of PRIVILEGES",
+      "titleAr": "Allocation of PRIVILEGES",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Allocation of PRIVILEGES",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "sql-subquery",
+      "title": "Subqueries",
+      "titleAr": "Subqueries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Subqueries",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "sql-kookclub",
+      "title": "Exercises SQL on database for a cooking club",
+      "titleAr": "Exercises SQL on database for a cooking club",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Exercises SQL on database for a cooking club",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "model-drawio",
+      "title": "Draw models with draw.io",
+      "titleAr": "Draw models with draw.io",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Draw models with draw.io",
+          "order": 23
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1969 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2.3. Expressions &#8212; OCaml Programming: Correct + Efficient + Beautiful</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../../_static/op.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. Functions" href="functions.html" />
+    <link rel="prev" title="2.2. Compiling OCaml Programs" href="compiling.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint">Using this book as part of a course? Please <a style="color:white" href="https://docs.google.com/forms/d/e/1FAIpQLSfEW65AJPBnk732zZZM9CFpWMobWUkym6Nf-pgslRqqwoWYIA/viewform?usp=preview">let us know</a>!</div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/op_title.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">OCaml Programming: Correct + Efficient + Beautiful</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Preface
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/about.html">
+   About This Book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/install.html">
+   Installing OCaml
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/intro.html">
+   1. Better Programming Through OCaml
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/past.html">
+     1.1. The Past of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/present.html">
+     1.2. The Present of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/future.html">
+     1.3. Look to Your Future
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/3110.html">
+     1.4. A Brief History of CS 3110
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/summary.html">
+     1.5. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="intro.html">
+   2. The Basics of OCaml
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="toplevel.html">
+     2.1. The OCaml Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="compiling.html">
+     2.2. Compiling OCaml Programs
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.3. Expressions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="functions.html">
+     2.4. Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="documentation.html">
+     2.5. Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="printing.html">
+     2.6. Printing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="debugging.html">
+     2.7. Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="summary.html">
+     2.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="exercises.html">
+     2.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  OCaml Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data/intro.html">
+   3. Data and Types
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/lists.html">
+     3.1. Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/variants.html">
+     3.2. Variants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/ounit.html">
+     3.3. Unit Testing with OUnit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/records_tuples.html">
+     3.4. Records and Tuples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/pattern_matching_advanced.html">
+     3.5. Advanced Pattern Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/type_synonym.html">
+     3.6. Type Synonyms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/options.html">
+     3.7. Options
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/assoc_list.html">
+     3.8. Association Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/algebraic_data_types.html">
+     3.9. Algebraic Data Types
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exceptions.html">
+     3.10. Exceptions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/trees.html">
+     3.11. Example: Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/nats.html">
+     3.12. Example: Natural Numbers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/summary.html">
+     3.13. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exercises.html">
+     3.14. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../hop/intro.html">
+   4. Higher-Order Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/higher_order.html">
+     4.1. Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/map.html">
+     4.2. Map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/filter.html">
+     4.3. Filter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/fold.html">
+     4.4. Fold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/beyond_lists.html">
+     4.5. Beyond Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/pipelining.html">
+     4.6. Pipelining
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/currying.html">
+     4.7. Currying
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/laws.html">
+     4.8. Algebraic Laws for Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/summary.html">
+     4.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/exercises.html">
+     4.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../modules/intro.html">
+   5. Modular Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_systems.html">
+     5.1. Module Systems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/modules.html">
+     5.2. Modules
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/toplevel.html">
+     5.3. Modules and the Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/encapsulation.html">
+     5.4. Encapsulation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/compilation_units.html">
+     5.5. Compilation Units
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functional_data_structures.html">
+     5.6. Functional Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_type_constraints.html">
+     5.7. Module Type Constraints
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/includes.html">
+     5.8. Includes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functors.html">
+     5.9. Functors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/summary.html">
+     5.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/exercises.html">
+     5.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../mut/intro.html">
+   6. Mutability
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/refs.html">
+     6.1. Refs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/mutable_fields.html">
+     6.2. Mutable Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/arrays.html">
+     6.3. Arrays and Loops
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/summary.html">
+     6.4. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/exercises.html">
+     6.5. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../conc/intro.html">
+   7. Concurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/concurrency.html">
+     7.1. Concurrency
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/promises.html">
+     7.2. Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_promises.html">
+     7.3. Implementing Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/io_promises.html">
+     7.4. Asynchronous Input and Output
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/callbacks.html">
+     7.5. Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_callbacks.html">
+     7.6. Implementing Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/full_promises_impl.html">
+     7.7. The Full Promises Implementation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/monads.html">
+     7.8. Monads
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/summary.html">
+     7.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/exercises.html">
+     7.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Correctness and Efficiency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../correctness/intro.html">
+   8. Correctness
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/specifications.html">
+     8.1. Specifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/function_docs.html">
+     8.2. Function Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/module_docs.html">
+     8.3. Module Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/test_debug.html">
+     8.4. Testing and Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/black_glass_box.html">
+     8.5. Black-box and Glass-box Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/randomized.html">
+     8.6. Randomized Testing with QCheck
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/proving_correctness.html">
+     8.7. Proving Correctness
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/structural_induction.html">
+     8.8. Structural Induction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/eq_spec.html">
+     8.9. Equational Specification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/summary.html">
+     8.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/exercises.html">
+     8.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../ds/intro.html">
+   9. Data Structures
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/hash_tables.html">
+     9.1. Hash Tables
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/amortized.html">
+     9.2. Amortized Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/rb.html">
+     9.3. Red-Black Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/sequence.html">
+     9.4. Sequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/memoization.html">
+     9.5. Memoization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/parrays.html">
+     9.6. Persistent Arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/twothree.html">
+     9.7. Two-Three Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/summary.html">
+     9.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/exercises.html">
+     9.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Language Implementation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../interp/intro.html">
+   10. Interpreters
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/calculator.html">
+     10.1. Example: Calculator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/parsing.html">
+     10.2. Parsing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/substitution.html">
+     10.3. Substitution Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/environment.html">
+     10.4. Environment Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/typecheck.html">
+     10.5. Type Checking
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/inference.html">
+     10.6. Type Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/summary.html">
+     10.7. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../interp/exercises.html">
+     10.8. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lagniappe
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../adv/curry-howard.html">
+   The Curry-Howard Correspondence
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendix
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/bigoh.html">
+   Big-Oh Notation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/vm.html">
+   Virtual Machine
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/cs3110/textbook/main?urlpath=tree/src/chapters/basics/expressions.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="initThebeSBT()"
+  class="headerbtn headerbtn-launch-thebe"
+  data-toggle="tooltip"
+data-placement="left"
+title="Launch Thebe"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="headerbtn__text-container">Live Code</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/cs3110/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/basics/expressions.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/edit/main/src/chapters/basics/expressions.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/chapters/basics/expressions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download notebook file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="../../_sources/chapters/basics/expressions.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#primitive-types-and-values">
+   2.3.1. Primitive Types and Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-operators">
+   2.3.2. More Operators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assertions">
+   2.3.3. Assertions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#if-expressions">
+   2.3.4. If Expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-expressions">
+   2.3.5. Let Expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scope">
+   2.3.6. Scope
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-annotations">
+   2.3.7. Type Annotations
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Expressions</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#primitive-types-and-values">
+   2.3.1. Primitive Types and Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-operators">
+   2.3.2. More Operators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assertions">
+   2.3.3. Assertions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#if-expressions">
+   2.3.4. If Expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-expressions">
+   2.3.5. Let Expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scope">
+   2.3.6. Scope
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-annotations">
+   2.3.7. Type Annotations
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="expressions">
+<h1><span class="section-number">2.3. </span>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">#</a></h1>
+<p>The primary piece of OCaml syntax is the <em>expression</em>. Just like programs in
+imperative languages are primarily built out of <em>commands</em>, programs in
+functional languages are primarily built out of expressions. Examples of
+expressions include <code class="docutils literal notranslate"><span class="pre">2+2</span></code> and <code class="docutils literal notranslate"><span class="pre">increment</span> <span class="pre">21</span></code>.</p>
+<p>The OCaml manual has a complete definition of <a class="reference external" href="https://ocaml.org/manual/expr.html">all the expressions in the
+language</a>. Though that page starts with a rather cryptic overview, if you
+scroll down, you’ll come to some English explanations. Don’t worry about
+studying that page now; just know that it’s available for reference.</p>
+<p>The primary task of computation in a functional language is to <em>evaluate</em> an
+expression to a <em>value</em>. A value is an expression for which there is no
+computation remaining to be performed. So, all values are expressions, but not
+all expressions are values. Examples of values include <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">&quot;yay!&quot;</span></code>.</p>
+<p>The OCaml manual also has a definition of <a class="reference external" href="https://ocaml.org/manual/values.html">all the values</a>, though
+again, that page is mostly useful for reference rather than study.</p>
+<p>Sometimes an expression might fail to evaluate to a value. There are two reasons
+that might happen:</p>
+<ol class="simple">
+<li><p>Evaluation of the expression raises an exception.</p></li>
+<li><p>Evaluation of the expression never terminates (e.g., it enters an “infinite
+loop”).</p></li>
+</ol>
+<section id="primitive-types-and-values">
+<h2><span class="section-number">2.3.1. </span>Primitive Types and Values<a class="headerlink" href="#primitive-types-and-values" title="Permalink to this headline">#</a></h2>
+<p>The <em>primitive</em> types are the built-in and most basic types: integers,
+floating-point numbers, characters, strings, and booleans. They will be
+recognizable as similar to primitive types from other programming languages.</p>
+<p><strong>Type <code class="docutils literal notranslate"><span class="pre">int</span></code>: Integers.</strong> OCaml integers are written as usual: <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, etc.
+The usual operators are available: <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>, and <code class="docutils literal notranslate"><span class="pre">mod</span></code>. The latter
+two are integer division and modulus:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">65</span> <span class="o">/</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">65</span> <span class="ow">mod</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">65</span> <span class="o">/</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Exception</span>: Division_by_zero.
+<span class="n">Raised</span> <span class="n">by</span> <span class="n">primitive</span> <span class="n">operation</span> <span class="n">at</span> <span class="n">unknown</span> <span class="n">location</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Stdlib__Fun.protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">33</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">8</span><span class="o">-</span><span class="mi">15</span>
+<span class="n">Re</span><span class="o">-</span><span class="n">raised</span> <span class="n">at</span> <span class="n">Stdlib__Fun</span><span class="o">.</span><span class="n">protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">38</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">6</span><span class="o">-</span><span class="mi">52</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Topeval.load_lambda</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;toplevel/byte/topeval.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">89</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">4</span><span class="o">-</span><span class="mi">150</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>OCaml integers range from <span class="math notranslate nohighlight">\(-2^{62}\)</span> to <span class="math notranslate nohighlight">\(2^{62}-1\)</span> on modern platforms. They are
+implemented with 64-bit machine <em>words</em>, which is the size of a register on
+64-bit processor. But one of those bits is “stolen” by the OCaml implementation,
+leading to a 63-bit representation. That bit is used at run time to distinguish
+integers from pointers. For applications that need true 64-bit integers, there
+is an <a class="reference external" href="https://ocaml.org/api/Int64.html"><code class="docutils literal notranslate"><span class="pre">Int64</span></code> module</a> in the standard library. And for applications that
+need arbitrary-precision integers, there is a separate <a class="reference external" href="https://github.com/ocaml/Zarith"><code class="docutils literal notranslate"><span class="pre">Zarith</span></code></a>
+library. But for most purposes, the built-in <code class="docutils literal notranslate"><span class="pre">int</span></code> type suffices and offers the
+best performance.</p>
+<p><strong>Type <code class="docutils literal notranslate"><span class="pre">float</span></code>: Floating-point numbers.</strong> OCaml floats are <a class="reference external" href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754
+double-precision floating-point numbers</a>. Syntactically, they must
+always contain a dot—for example, <code class="docutils literal notranslate"><span class="pre">3.14</span></code> or <code class="docutils literal notranslate"><span class="pre">3.0</span></code> or even <code class="docutils literal notranslate"><span class="pre">3.</span></code>.  The last
+is a <code class="docutils literal notranslate"><span class="pre">float</span></code>; if you write it as <code class="docutils literal notranslate"><span class="pre">3</span></code>, it is instead an <code class="docutils literal notranslate"><span class="pre">int</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : float = 3.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 3
+</pre></div>
+</div>
+</div>
+</div>
+<p>OCaml deliberately does not support operator overloading. Arithmetic operations
+on floats are written with a dot after them. For example, floating-point
+multiplication is written <code class="docutils literal notranslate"><span class="pre">*.</span></code> not <code class="docutils literal notranslate"><span class="pre">*</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span><span class="o">.</span><span class="mi">14</span> <span class="o">*.</span> <span class="mi">2</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : float = 6.28
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span><span class="o">.</span><span class="mi">14</span> <span class="o">*</span> <span class="mi">2</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="s2">&quot;[7]&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">0</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span>
+<span class="mi">1</span> <span class="o">|</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="mf">2.</span>
+    <span class="o">^^^^</span>
+<span class="ne">Error</span>: This expression has type float but an expression was expected of type
+         <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>OCaml will not automatically convert between <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">float</span></code>. If you want to
+convert, there are two built-in functions for that purpose: <code class="docutils literal notranslate"><span class="pre">int_of_float</span></code> and
+<code class="docutils literal notranslate"><span class="pre">float_of_int</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span><span class="o">.</span><span class="mi">14</span> <span class="o">*.</span> <span class="o">(</span><span class="n">float_of_int</span> <span class="mi">2</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : float = 6.28
+</pre></div>
+</div>
+</div>
+</div>
+<p>As in any language, the floating-point representation is approximate. That can
+lead to rounding errors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span> <span class="o">+.</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : float = 0.300000000000000044
+</pre></div>
+</div>
+</div>
+</div>
+<p>The same behavior can be observed in Python and Java, too.  If you haven’t
+encountered this phenomenon before, here’s a <a class="reference external" href="https://floating-point-gui.de/basic/">basic guide to floating-point
+representation</a> that you might enjoy reading.</p>
+<p><strong>Type <code class="docutils literal notranslate"><span class="pre">bool</span></code>: Booleans.</strong> The boolean values are written <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+The usual short-circuit conjunction <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> and disjunction <code class="docutils literal notranslate"><span class="pre">||</span></code> operators are
+available.</p>
+<p><strong>Type <code class="docutils literal notranslate"><span class="pre">char</span></code>: Characters.</strong> Characters are written with single quotes, such as
+<code class="docutils literal notranslate"><span class="pre">'a'</span></code>, <code class="docutils literal notranslate"><span class="pre">'b'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'c'</span></code>. They are represented as bytes —that is, 8-bit
+integers— in the ISO 8859-1 “Latin-1” encoding. The first half of the
+characters in that range are the standard ASCII characters. You can convert
+characters to and from integers with <code class="docutils literal notranslate"><span class="pre">char_of_int</span></code> and <code class="docutils literal notranslate"><span class="pre">int_of_char</span></code>.</p>
+<p><strong>Type <code class="docutils literal notranslate"><span class="pre">string</span></code>: Strings.</strong> Strings are sequences of characters. They are
+written with double quotes, such as <code class="docutils literal notranslate"><span class="pre">&quot;abc&quot;</span></code>.  The string concatenation operator
+is <code class="docutils literal notranslate"><span class="pre">^</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;abc&quot;</span> <span class="o">^</span> <span class="s2">&quot;def&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : string = &quot;abcdef&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Object-oriented languages often provide an overridable method for converting
+objects to strings, such as <code class="docutils literal notranslate"><span class="pre">toString()</span></code> in Java or <code class="docutils literal notranslate"><span class="pre">__str__()</span></code> in Python. But
+most OCaml values are not objects, so another means is required to convert to
+strings. For three of the primitive types, there are built-in functions:
+<code class="docutils literal notranslate"><span class="pre">string_of_int</span></code>, <code class="docutils literal notranslate"><span class="pre">string_of_float</span></code>, <code class="docutils literal notranslate"><span class="pre">string_of_bool</span></code>.  Strangely,
+there is no <code class="docutils literal notranslate"><span class="pre">string_of_char</span></code>, but the library function <code class="docutils literal notranslate"><span class="pre">String.make</span></code> can
+be used to accomplish the same goal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">string_of_int</span> <span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : string = &quot;42&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="nn">String</span><span class="p">.</span><span class="n">make</span> <span class="mi">1</span> <span class="sc">&#39;z&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : string = &quot;z&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Likewise, for the same three primitive types, there are built-in functions to
+convert from a string if possible: <code class="docutils literal notranslate"><span class="pre">int_of_string</span></code>, <code class="docutils literal notranslate"><span class="pre">float_of_string</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">bool_of_string</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">int_of_string</span> <span class="s2">&quot;123&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 123
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">int_of_string</span> <span class="s2">&quot;not an int&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Exception</span>: Failure &quot;int_of_string&quot;.
+<span class="n">Raised</span> <span class="n">by</span> <span class="n">primitive</span> <span class="n">operation</span> <span class="n">at</span> <span class="n">unknown</span> <span class="n">location</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Stdlib__Fun.protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">33</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">8</span><span class="o">-</span><span class="mi">15</span>
+<span class="n">Re</span><span class="o">-</span><span class="n">raised</span> <span class="n">at</span> <span class="n">Stdlib__Fun</span><span class="o">.</span><span class="n">protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">38</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">6</span><span class="o">-</span><span class="mi">52</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Topeval.load_lambda</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;toplevel/byte/topeval.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">89</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">4</span><span class="o">-</span><span class="mi">150</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is no <code class="docutils literal notranslate"><span class="pre">char_of_string</span></code>, but the individual characters of a string can be
+accessed by a 0-based index. The indexing operator is written with a dot and
+square brackets:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;abc&quot;</span><span class="o">.[</span><span class="mi">0</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : char = &#39;a&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;abc&quot;</span><span class="o">.[</span><span class="mi">1</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : char = &#39;b&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;abc&quot;</span><span class="o">.[</span><span class="mi">3</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">Exception</span>: Invalid_argument &quot;index out of bounds&quot;.
+<span class="n">Raised</span> <span class="n">by</span> <span class="n">primitive</span> <span class="n">operation</span> <span class="n">at</span> <span class="n">unknown</span> <span class="n">location</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Stdlib__Fun.protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">33</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">8</span><span class="o">-</span><span class="mi">15</span>
+<span class="n">Re</span><span class="o">-</span><span class="n">raised</span> <span class="n">at</span> <span class="n">Stdlib__Fun</span><span class="o">.</span><span class="n">protect</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;fun.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">38</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">6</span><span class="o">-</span><span class="mi">52</span>
+<span class="n">Called</span> <span class="kn">from</span> <span class="nn">Topeval.load_lambda</span> <span class="ow">in</span> <span class="n">file</span> <span class="s2">&quot;toplevel/byte/topeval.ml&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">89</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">4</span><span class="o">-</span><span class="mi">150</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="more-operators">
+<h2><span class="section-number">2.3.2. </span>More Operators<a class="headerlink" href="#more-operators" title="Permalink to this headline">#</a></h2>
+<p>We’ve covered most of the built-in operators above, but there are a few more
+that you can see in the <a class="reference external" href="https://ocaml.org/manual/expr.html#ss%3Aexpr-operators">OCaml manual</a>.</p>
+<p>There are two equality operators in OCaml, <code class="docutils literal notranslate"><span class="pre">=</span></code> and <code class="docutils literal notranslate"><span class="pre">==</span></code>, with corresponding
+inequality operators <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code>. Operators <code class="docutils literal notranslate"><span class="pre">=</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> examine <em>structural</em>
+equality whereas <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code> examine <em>physical</em> equality. Until we’ve studied
+the imperative features of OCaml, the difference between them will be tricky to
+explain. See the <a class="reference external" href="https://ocaml.org/api/Stdlib.html">documentation</a> of <code class="docutils literal notranslate"><span class="pre">Stdlib.(==)</span></code> if you’re curious now.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Start training yourself now to use <code class="docutils literal notranslate"><span class="pre">=</span></code> and not to use <code class="docutils literal notranslate"><span class="pre">==</span></code>. This will be
+difficult if you’re coming from a language like Java where <code class="docutils literal notranslate"><span class="pre">==</span></code> is the usual
+equality operator.</p>
+</div>
+</section>
+<section id="assertions">
+<h2><span class="section-number">2.3.3. </span>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline">#</a></h2>
+<p>The expression <code class="docutils literal notranslate"><span class="pre">assert</span> <span class="pre">e</span></code> evaluates <code class="docutils literal notranslate"><span class="pre">e</span></code>. If the result is <code class="docutils literal notranslate"><span class="pre">true</span></code>, nothing more
+happens, and the entire expression evaluates to a special value called <em>unit</em>.
+The unit value is written <code class="docutils literal notranslate"><span class="pre">()</span></code> and its type is <code class="docutils literal notranslate"><span class="pre">unit</span></code>. But if the result is
+<code class="docutils literal notranslate"><span class="pre">false</span></code>, an exception is raised.</p>
+<p>One way to test a function <code class="docutils literal notranslate"><span class="pre">f</span></code> is to write a series of assertions like this:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="k">assert</span> <span class="o">(</span><span class="n">f</span> <span class="n">input1</span> <span class="o">=</span> <span class="n">output1</span><span class="o">)</span>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="k">assert</span> <span class="o">(</span><span class="n">f</span> <span class="n">input2</span> <span class="o">=</span> <span class="n">output2</span><span class="o">)</span>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="k">assert</span> <span class="o">(</span><span class="n">f</span> <span class="n">input3</span> <span class="o">=</span> <span class="n">output3</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Those assert that <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">input1</span></code> should be <code class="docutils literal notranslate"><span class="pre">output1</span></code>, and so forth. The
+<code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">()</span> <span class="pre">=</span> <span class="pre">...</span></code> part of those is used to handle the unit value returned by each
+assertion.</p>
+</section>
+<section id="if-expressions">
+<h2><span class="section-number">2.3.4. </span>If Expressions<a class="headerlink" href="#if-expressions" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/XJ6QPtlPD7s" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>The expression <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">e1</span> <span class="pre">then</span> <span class="pre">e2</span> <span class="pre">else</span> <span class="pre">e3</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">e2</span></code> if <code class="docutils literal notranslate"><span class="pre">e1</span></code> evaluates to
+<code class="docutils literal notranslate"><span class="pre">true</span></code>, and to <code class="docutils literal notranslate"><span class="pre">e3</span></code> otherwise. We call <code class="docutils literal notranslate"><span class="pre">e1</span></code> the <em>guard</em> of the <code class="docutils literal notranslate"><span class="pre">if</span></code> expression.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">then</span> <span class="s2">&quot;yay!&quot;</span> <span class="k">else</span> <span class="s2">&quot;boo!&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : string = &quot;yay!&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">if-then-else</span></code> <em>statements</em> that you may have used in imperative
+languages, <code class="docutils literal notranslate"><span class="pre">if-then-else</span></code> <em>expressions</em> in OCaml are just like any other
+expression; they can be put anywhere an expression can go. That makes them
+similar to the ternary operator <code class="docutils literal notranslate"><span class="pre">?</span> <span class="pre">:</span></code> that you might have used in other
+languages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="mi">4</span> <span class="o">+</span> <span class="o">(</span><span class="k">if</span> <span class="sc">&#39;a&#39;</span> <span class="o">=</span> <span class="sc">&#39;b&#39;</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">2</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 6
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">If</span></code> expressions can be nested in a pleasant way:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">e1</span> <span class="k">then</span> <span class="n">e2</span>
+<span class="k">else</span> <span class="k">if</span> <span class="n">e3</span> <span class="k">then</span> <span class="n">e4</span>
+<span class="k">else</span> <span class="k">if</span> <span class="n">e5</span> <span class="k">then</span> <span class="n">e6</span>
+<span class="o">...</span>
+<span class="k">else</span> <span class="n">en</span>
+</pre></div>
+</div>
+<p>You should regard the final <code class="docutils literal notranslate"><span class="pre">else</span></code> as mandatory, regardless of whether you are
+writing a single <code class="docutils literal notranslate"><span class="pre">if</span></code> expression or a highly nested <code class="docutils literal notranslate"><span class="pre">if</span></code> expression. If you
+omit it you’ll likely get an error message that, for now, is inscrutable:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="k">then</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="s2">&quot;[20]&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">14</span><span class="o">-</span><span class="mi">15</span><span class="p">:</span>
+<span class="mi">1</span> <span class="o">|</span> <span class="k">if</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="n">then</span> <span class="mi">5</span>
+                  <span class="o">^</span>
+<span class="ne">Error</span>: This expression has type int but an expression was expected of type
+         <span class="n">unit</span>
+       <span class="n">because</span> <span class="n">it</span> <span class="ow">is</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">result</span> <span class="n">of</span> <span class="n">a</span> <span class="n">conditional</span> <span class="k">with</span> <span class="n">no</span> <span class="k">else</span> <span class="n">branch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Syntax.</strong> The syntax of an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">e1</span> <span class="k">then</span> <span class="n">e2</span> <span class="k">else</span> <span class="n">e3</span>
+</pre></div>
+</div>
+<p>The letter <code class="docutils literal notranslate"><span class="pre">e</span></code> is used here to represent any other OCaml expression; it’s an
+example of a <em>syntactic variable</em> aka <em>metavariable</em>, which is not actually a
+variable in the OCaml language itself, but instead a name for a certain
+syntactic construct. The numbers after the letter <code class="docutils literal notranslate"><span class="pre">e</span></code> are being used to
+distinguish the three different occurrences of it.</p>
+<p><strong>Dynamic semantics.</strong> The dynamic semantics of an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">e1</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">true</span></code>, and if <code class="docutils literal notranslate"><span class="pre">e2</span></code> evaluates to a value <code class="docutils literal notranslate"><span class="pre">v</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">e1</span> <span class="pre">then</span> <span class="pre">e2</span> <span class="pre">else</span> <span class="pre">e3</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">v</span></code></p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">e1</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">false</span></code>, and if <code class="docutils literal notranslate"><span class="pre">e3</span></code> evaluates to a value <code class="docutils literal notranslate"><span class="pre">v</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">e1</span> <span class="pre">then</span> <span class="pre">e2</span> <span class="pre">else</span> <span class="pre">e3</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p></li>
+</ul>
+<p>We call these <em>evaluation rules</em>: they define how to evaluate expressions. Note
+how it takes two rules to describe the evaluation of an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression, one for
+when the guard is true, and one for when the guard is false. The letter <code class="docutils literal notranslate"><span class="pre">v</span></code> is
+used here to represent any OCaml value; it’s another example of a metavariable.
+Later we will develop a more mathematical way of expressing dynamic semantics,
+but for now we’ll stick with this more informal style of explanation.</p>
+<p><strong>Static semantics.</strong> The static semantics of an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">e1</span></code> has type <code class="docutils literal notranslate"><span class="pre">bool</span></code> and <code class="docutils literal notranslate"><span class="pre">e2</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">e3</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code> then
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">e1</span> <span class="pre">then</span> <span class="pre">e2</span> <span class="pre">else</span> <span class="pre">e3</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code></p></li>
+</ul>
+<p>We call this a <em>typing rule</em>: it describes how to type check an expression. Note
+how it only takes one rule to describe the type checking of an <code class="docutils literal notranslate"><span class="pre">if</span></code> expression.
+At compile time, when type checking is done, it makes no difference whether the
+guard is true or false; in fact, there’s no way for the compiler to know what
+value the guard will have at run time. The letter <code class="docutils literal notranslate"><span class="pre">t</span></code> here is used to represent
+any OCaml type; the OCaml manual also has definition of <a class="reference external" href="https://ocaml.org/manual/types.html">all types</a>
+(which curiously does not name the base types of the language like <code class="docutils literal notranslate"><span class="pre">int</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bool</span></code>).</p>
+<p>We’re going to be writing “has type” a lot, so let’s introduce a more compact
+notation for it. Whenever we would write “<code class="docutils literal notranslate"><span class="pre">e</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code>”, let’s instead write
+<code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code>. The colon is pronounced “has type”. This usage of colon is consistent
+with how the toplevel responds after it evaluates an expression that you enter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val x : int = 42
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the above example, variable <code class="docutils literal notranslate"><span class="pre">x</span></code> has type <code class="docutils literal notranslate"><span class="pre">int</span></code>, which is what the colon
+indicates.</p>
+</section>
+<section id="let-expressions">
+<h2><span class="section-number">2.3.5. </span>Let Expressions<a class="headerlink" href="#let-expressions" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/ug3L97FXC6A" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>In our use of the word <code class="docutils literal notranslate"><span class="pre">let</span></code> thus far, we’ve been making definitions in the
+toplevel and in <code class="docutils literal notranslate"><span class="pre">.ml</span></code> files. For example,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>val x : int = 42
+</pre></div>
+</div>
+</div>
+</div>
+<p>defines <code class="docutils literal notranslate"><span class="pre">x</span></code> to be 42, after which we can use <code class="docutils literal notranslate"><span class="pre">x</span></code> in future definitions at the
+toplevel. We’ll call this use of <code class="docutils literal notranslate"><span class="pre">let</span></code> a <em>let definition</em>.</p>
+<p>There’s another use of <code class="docutils literal notranslate"><span class="pre">let</span></code> which is as an expression:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span> <span class="k">in</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 43
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we’re <em>binding</em> a value to the name <code class="docutils literal notranslate"><span class="pre">x</span></code> then using that binding inside
+another expression, <code class="docutils literal notranslate"><span class="pre">x+1</span></code>. We’ll call this use of <code class="docutils literal notranslate"><span class="pre">let</span></code> a <em>let expression</em>.
+Since it’s an expression, it evaluates to a value. That’s different than
+definitions, which themselves do not evaluate to any value. You can see that if
+you try putting a let definition in place of where an expression is expected:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="s2">&quot;[24]&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="n">characters</span> <span class="mi">11</span><span class="o">-</span><span class="mi">12</span><span class="p">:</span>
+<span class="mi">1</span> <span class="o">|</span> <span class="p">(</span><span class="n">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+               <span class="o">^</span>
+<span class="ne">Error</span>: Syntax error
+</pre></div>
+</div>
+</div>
+</div>
+<p>Syntactically, a <code class="docutils literal notranslate"><span class="pre">let</span></code> definition is not permitted on the left-hand side of the
+<code class="docutils literal notranslate"><span class="pre">+</span></code> operator, because a value is needed there, and definitions do not evaluate
+to values. On the other hand, a <code class="docutils literal notranslate"><span class="pre">let</span></code> expression would work fine:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span> <span class="k">in</span> <span class="n">x</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 43
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another way to understand let definitions at the toplevel is that they are like
+let expression where we just haven’t provided the body expression yet.
+Implicitly, that body expression is whatever else we type in the future. For
+example,</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;big&quot;</span><span class="o">;;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="o">;;</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="o">;;</span>
+<span class="o">#</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>is understood by OCaml in the same way as</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;big&quot;</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span> <span class="k">in</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>That latter series of <code class="docutils literal notranslate"><span class="pre">let</span></code> bindings is idiomatically how several variables
+can be bound inside a given block of code.</p>
+<p><strong>Syntax.</strong></p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="n">e1</span> <span class="k">in</span> <span class="n">e2</span>
+</pre></div>
+</div>
+<p>As usual, <code class="docutils literal notranslate"><span class="pre">x</span></code> is an identifier. These identifiers must begin with lower-case,
+not upper, and idiomatically are written with <code class="docutils literal notranslate"><span class="pre">snake_case</span></code> not <code class="docutils literal notranslate"><span class="pre">camelCase</span></code>. We
+call <code class="docutils literal notranslate"><span class="pre">e1</span></code> the <em>binding expression</em>, because it’s what’s being bound to <code class="docutils literal notranslate"><span class="pre">x</span></code>; and
+we call <code class="docutils literal notranslate"><span class="pre">e2</span></code> the <em>body expression</em>, because that’s the body of code in which the
+binding will be in scope.</p>
+<p><strong>Dynamic semantics.</strong></p>
+<p>To evaluate <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">e1</span> <span class="pre">in</span> <span class="pre">e2</span></code>:</p>
+<ul class="simple">
+<li><p>Evaluate <code class="docutils literal notranslate"><span class="pre">e1</span></code> to a value <code class="docutils literal notranslate"><span class="pre">v1</span></code>.</p></li>
+<li><p>Substitute <code class="docutils literal notranslate"><span class="pre">v1</span></code> for <code class="docutils literal notranslate"><span class="pre">x</span></code> in <code class="docutils literal notranslate"><span class="pre">e2</span></code>, yielding a new expression <code class="docutils literal notranslate"><span class="pre">e2'</span></code>.</p></li>
+<li><p>Evaluate <code class="docutils literal notranslate"><span class="pre">e2'</span></code> to a value <code class="docutils literal notranslate"><span class="pre">v2</span></code>.</p></li>
+<li><p>The result of evaluating the let expression is <code class="docutils literal notranslate"><span class="pre">v2</span></code>.</p></li>
+</ul>
+<p>Here’s an example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    let x = 1 + 4 in x * 3
+--&gt;   (evaluate e1 to a value v1)
+    let x = 5 in x * 3
+--&gt;   (substitute v1 for x in e2, yielding e2&#39;)
+    5 * 3
+--&gt;   (evaluate e2&#39; to v2)
+    15
+      (result of evaluation is v2)
+</pre></div>
+</div>
+<p><strong>Static semantics.</strong></p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">e1</span> <span class="pre">:</span> <span class="pre">t1</span></code> and if under the assumption that <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:</span> <span class="pre">t1</span></code> it holds that
+<code class="docutils literal notranslate"><span class="pre">e2</span> <span class="pre">:</span> <span class="pre">t2</span></code>, then <code class="docutils literal notranslate"><span class="pre">(let</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">e1</span> <span class="pre">in</span> <span class="pre">e2)</span> <span class="pre">:</span> <span class="pre">t2</span></code>.</p></li>
+</ul>
+<p>We use the parentheses above just for clarity. As usual, the compiler’s type
+inferencer determines what the type of the variable is, or the programmer could
+explicitly annotate it with this syntax:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">:</span> <span class="n">t</span> <span class="o">=</span> <span class="n">e1</span> <span class="k">in</span> <span class="n">e2</span>
+</pre></div>
+</div>
+</section>
+<section id="scope">
+<h2><span class="section-number">2.3.6. </span>Scope<a class="headerlink" href="#scope" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/_TpTC6eo34M" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p><code class="docutils literal notranslate"><span class="pre">Let</span></code> bindings are in effect only in the block of code in which they occur. This
+is exactly what you’re used to from nearly any modern programming language. For
+example:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span> <span class="k">in</span>
+  <span class="c">(* y is not meaningful here *)</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="o">(</span><span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;3110&quot;</span> <span class="k">in</span>
+         <span class="c">(* y is meaningful here *)</span>
+         <span class="n">int_of_string</span> <span class="n">y</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The <em>scope</em> of a variable is where its name is meaningful. Variable <code class="docutils literal notranslate"><span class="pre">y</span></code> is in
+scope only inside of the <code class="docutils literal notranslate"><span class="pre">let</span></code> expression that binds it above.</p>
+<p>It’s possible to have overlapping bindings of the same name. For example:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span>
+  <span class="o">((</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>But this is darn confusing, and for that reason, it is strongly discouraged
+style.
+Nonetheless, let’s consider what that code means.</p>
+<p>To what value does that code evaluate? The answer comes down to how <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+replaced by a value each time it occurs. Here are a few possibilities for such
+<em>substitution</em>:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(* possibility 1 *)</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span>
+  <span class="o">((</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="mi">6</span><span class="o">)</span> <span class="o">+</span> <span class="mi">5</span><span class="o">)</span>
+
+<span class="c">(* possibility 2 *)</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span>
+  <span class="o">((</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="mi">5</span><span class="o">)</span> <span class="o">+</span> <span class="mi">5</span><span class="o">)</span>
+
+<span class="c">(* possibility 3 *)</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span>
+  <span class="o">((</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="mi">6</span><span class="o">)</span> <span class="o">+</span> <span class="mi">6</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The first one is what nearly any reasonable language would do. And most likely
+it’s what you would guess. But, <strong>why?</strong></p>
+<p>The answer is something we’ll call the <em>Principle of Name Irrelevance</em>: the name
+of a variable shouldn’t intrinsically matter. You’re used to this from math. For
+example, the following two functions are the same:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+f(x) &amp;= x^2 \\
+f(y) &amp;= y^2
+\end{align*}\]</div>
+<p>It doesn’t intrinsically matter whether we call the argument to the function
+<span class="math notranslate nohighlight">\(x\)</span> or <span class="math notranslate nohighlight">\(y\)</span>; either way, it’s still the squaring function.
+Therefore, in programs, these two functions should be identical:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">f</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>This principle is more commonly known as <em>alpha equivalence</em>: the two functions
+are equivalent up to renaming of variables, which is also called <em>alpha
+conversion</em> for historical reasons that are unimportant here.</p>
+<p>According to the Principle of Name Irrelevance, these two expressions should be
+identical:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>Therefore, the following two expressions, which have the above expressions
+embedded in them, should also be identical:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span> <span class="o">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">x</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span> <span class="o">(</span><span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">y</span><span class="o">)</span> <span class="o">+</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>But for those to be identical, we <strong>must</strong> choose the first of the three
+possibilities above. It is the only one that makes the name of the variable be
+irrelevant.</p>
+<p>There is a term commonly used for this phenomenon: a new binding of a variable
+<em>shadows</em> any old binding of the variable name. Metaphorically, it’s as if the
+new binding temporarily casts a shadow over the old binding. But eventually the
+old binding could reappear as the shadow recedes.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/4SqMkUwakEA" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Shadowing is not mutable assignment. For example, both of the following
+expressions evaluate to 11:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span> <span class="o">((</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">x</span><span class="o">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">)</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">in</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="o">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">6</span> <span class="k">in</span> <span class="n">x</span><span class="o">))</span>
+</pre></div>
+</div>
+<p>Likewise, the following utop transcript is not mutable assignment, though at
+first it could seem like it is:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">22</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">22</span>
+</pre></div>
+</div>
+<p>Recall that every <code class="docutils literal notranslate"><span class="pre">let</span></code> definition in the toplevel is effectively a nested <code class="docutils literal notranslate"><span class="pre">let</span></code>
+expression. So the above is effectively the following:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">22</span> <span class="k">in</span>
+    <span class="o">...</span> <span class="c">(* whatever else is typed in the toplevel *)</span>
+</pre></div>
+</div>
+<p>The right way to think about this is that the second <code class="docutils literal notranslate"><span class="pre">let</span></code> binds an entirely new
+variable that just happens to have the same name as the first <code class="docutils literal notranslate"><span class="pre">let</span></code>.</p>
+<p>Here is another utop transcript that is well worth studying:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">#</span> <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">42</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">f</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">-&gt;</span> <span class="kt">int</span> <span class="o">=</span> <span class="o">&lt;</span><span class="k">fun</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="n">f</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="o">#</span> <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">22</span><span class="o">;;</span>
+<span class="k">val</span> <span class="n">x</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="o">#</span> <span class="n">f</span> <span class="mi">0</span><span class="o">;;</span>
+<span class="o">-</span> <span class="o">:</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">42</span>  <span class="c">(* x did not mutate! *)</span>
+</pre></div>
+</div>
+<p>To summarize, each let definition binds an entirely new variable. If that new
+variable happens to have the same name as an old variable, the new variable
+temporarily shadows the old one. But the old variable is still around, and its
+value is immutable: it never, ever changes. So even though <code class="docutils literal notranslate"><span class="pre">let</span></code> expressions
+might superficially look like assignment statements from imperative languages,
+they are actually quite different.</p>
+</section>
+<section id="type-annotations">
+<h2><span class="section-number">2.3.7. </span>Type Annotations<a class="headerlink" href="#type-annotations" title="Permalink to this headline">#</a></h2>
+<p>OCaml automatically infers the type of every expression, with no need for the
+programmer to write it manually. Nonetheless, it can sometimes be useful to
+manually specify the desired type of an expression. A <em>type annotation</em> does
+that:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">5</span> <span class="o">:</span> <span class="kt">int</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- : int = 5
+</pre></div>
+</div>
+</div>
+</div>
+<p>An incorrect annotation will produce a compile-time error:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">5</span> <span class="o">:</span> <span class="kt">float</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>File &quot;[27]&quot;, line 1, characters 1-2:
+1 | (5 : float)
+     ^
+Error: This expression has type int but an expression was expected of type
+         float
+  Hint: Did you mean `5.&#39;?
+</pre></div>
+</div>
+</div>
+</div>
+<p>And that example shows why you might use manual type annotations during
+debugging.  Perhaps you had forgotten that <code class="docutils literal notranslate"><span class="pre">5</span></code> cannot be treated as a <code class="docutils literal notranslate"><span class="pre">float</span></code>,
+and you tried to write:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="mi">5</span> <span class="o">+.</span> <span class="mi">1</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>You might try manually specifying that <code class="docutils literal notranslate"><span class="pre">5</span></code> was supposed to be a <code class="docutils literal notranslate"><span class="pre">float</span></code>:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="mi">5</span> <span class="o">:</span> <span class="kt">float</span><span class="o">)</span> <span class="o">+.</span> <span class="mi">1</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>File &quot;[28]&quot;, line 1, characters 1-2:
+1 | (5 : float) +. 1.1
+     ^
+Error: This expression has type int but an expression was expected of type
+         float
+  Hint: Did you mean `5.&#39;?
+</pre></div>
+</div>
+</div>
+</div>
+<p>It’s clear that the type annotation has failed. Although that might seem silly
+for this tiny program, you might find this technique to be effective as programs
+get larger.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Type annotations are <strong>not</strong> <em>type casts</em>, such as might be found in C or Java.
+They do not indicate a conversion from one type to another. Rather they indicate
+a check that the expression really does have the given type.</p>
+</div>
+<p><strong>Syntax.</strong> The syntax of a type annotation:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">t</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Note that the parentheses are required.</p>
+<p><strong>Dynamic semantics.</strong> There is no run-time meaning for a type annotation.
+It goes away during compilation, because it indicates a compile-time check.
+There is no run-time conversion.
+So, if <code class="docutils literal notranslate"><span class="pre">(e</span> <span class="pre">:</span> <span class="pre">t)</span></code> compiled successfully, then at run-time it is simply <code class="docutils literal notranslate"><span class="pre">e</span></code>,
+and it evaluates as <code class="docutils literal notranslate"><span class="pre">e</span></code> would.</p>
+<p><strong>Static semantics.</strong>  If <code class="docutils literal notranslate"><span class="pre">e</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code> then <code class="docutils literal notranslate"><span class="pre">(e</span> <span class="pre">:</span> <span class="pre">t)</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "cs3110/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "ocaml-jupyter"
+        },
+        kernelOptions: {
+            kernelName: "ocaml-jupyter",
+            path: "./chapters/basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ocaml-jupyter'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="compiling.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">2.2. </span>Compiling OCaml Programs</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="functions.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2.4. </span>Functions</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael R. Clarkson et al.<br/>
+  
+      &copy; Copyright 2026.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

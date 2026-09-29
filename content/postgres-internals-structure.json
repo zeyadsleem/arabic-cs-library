@@ -143,6 +143,18 @@
           "order": 11
         }
       ]
+    },
+    {
+      "key": "pgsqlappendix",
+      "title": "Appendix: Derivation of Variance Calculation Formulas",
+      "titleAr": "الملحق: اشتقاق صيغ حساب التباين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الملحق: اشتقاق صيغ حساب التباين",
+          "order": 12
+        }
+      ]
     }
   ]
 }

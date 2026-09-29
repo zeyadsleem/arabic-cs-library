@@ -1,0 +1,28 @@
+{
+  "chapters": [
+    {
+      "key": "index",
+      "title": "The SQL Murder Mystery",
+      "titleAr": "The SQL Murder Mystery",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The SQL Murder Mystery",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "walkthrough",
+      "title": "The SQL Murder Mystery: Detailed Walkthrough",
+      "titleAr": "The SQL Murder Mystery: Detailed Walkthrough",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The SQL Murder Mystery: Detailed Walkthrough",
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

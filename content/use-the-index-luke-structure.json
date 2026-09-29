@@ -1,0 +1,1672 @@
+{
+  "chapters": [
+    {
+      "key": "sql-preface",
+      "title": "Developers Need to Index",
+      "titleAr": "Developers Need to Index",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Developers Need to Index",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "sql-anatomy",
+      "title": "Anatomy of an SQL Index",
+      "titleAr": "Anatomy of an SQL Index",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Anatomy of an SQL Index",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "sql-anatomy-the-leaf-nodes",
+      "title": "The Index Leaf Nodes",
+      "titleAr": "The Index Leaf Nodes",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Index Leaf Nodes",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "sql-anatomy-the-tree",
+      "title": "The Search Tree (B-Tree) Makes the Index Fast",
+      "titleAr": "The Search Tree (B-Tree) Makes the Index Fast",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Search Tree (B-Tree) Makes the Index Fast",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "sql-anatomy-slow-indexes",
+      "title": "Slow Indexes, Part I",
+      "titleAr": "Slow Indexes, Part I",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Slow Indexes, Part I",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause",
+      "title": "The Where Clause",
+      "titleAr": "The Where Clause",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Where Clause",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-the-equals-operator",
+      "title": "The Equality Operator",
+      "titleAr": "The Equality Operator",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Equality Operator",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-the-equals-operator-primary-keys",
+      "title": "Primary Keys",
+      "titleAr": "Primary Keys",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Primary Keys",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-the-equals-operator-concatenated-keys",
+      "title": "Concatenated Indexes",
+      "titleAr": "Concatenated Indexes",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Concatenated Indexes",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-the-equals-operator-slow-indexes-part-ii",
+      "title": "Slow Indexes, Part II",
+      "titleAr": "Slow Indexes, Part II",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Slow Indexes, Part II",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-functions",
+      "title": "Functions",
+      "titleAr": "Functions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Functions",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-functions-case-insensitive-search",
+      "title": "Case-Insensitive Search Using `UPPER` or `LOWER`",
+      "titleAr": "Case-Insensitive Search Using `UPPER` or `LOWER`",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Case-Insensitive Search Using `UPPER` or `LOWER`",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-functions-user-defined-functions",
+      "title": "User-Defined Functions",
+      "titleAr": "User-Defined Functions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "User-Defined Functions",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-functions-over-indexing",
+      "title": "Over-Indexing",
+      "titleAr": "Over-Indexing",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Over-Indexing",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-bind-parameters",
+      "title": "Parameterized Queries",
+      "titleAr": "Parameterized Queries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Parameterized Queries",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-searching-for-ranges",
+      "title": "Searching for Ranges",
+      "titleAr": "Searching for Ranges",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Searching for Ranges",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates",
+      "title": "Greater, Less and `BETWEEN`",
+      "titleAr": "Greater, Less and `BETWEEN`",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Greater, Less and `BETWEEN`",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-searching-for-ranges-like-performance-tuning",
+      "title": "Indexing `LIKE` Filters",
+      "titleAr": "Indexing `LIKE` Filters",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexing `LIKE` Filters",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-searching-for-ranges-index-merge-performance",
+      "title": "Index Merge",
+      "titleAr": "Index Merge",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index Merge",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-partial-and-filtered-indexes",
+      "title": "Partial Indexes",
+      "titleAr": "Partial Indexes",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Partial Indexes",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-null",
+      "title": "`NULL` in the Oracle Database",
+      "titleAr": "`NULL` in the Oracle Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "`NULL` in the Oracle Database",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-null-index",
+      "title": "Indexing `NULL`",
+      "titleAr": "Indexing `NULL`",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexing `NULL`",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-null-not-null-constraint",
+      "title": "`NOT NULL` Constraints",
+      "titleAr": "`NOT NULL` Constraints",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "`NOT NULL` Constraints",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-null-partial-index",
+      "title": "Emulating Partial Indexes in the Oracle Database",
+      "titleAr": "Emulating Partial Indexes in the Oracle Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Emulating Partial Indexes in the Oracle Database",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation",
+      "title": "Obfuscated Conditions",
+      "titleAr": "Obfuscated Conditions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Obfuscated Conditions",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation-dates",
+      "title": "Date Types",
+      "titleAr": "Date Types",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Date Types",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation-numeric-strings",
+      "title": "Numeric Strings",
+      "titleAr": "Numeric Strings",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Numeric Strings",
+          "order": 26
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation-concatenation",
+      "title": "Combining Columns",
+      "titleAr": "Combining Columns",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Combining Columns",
+          "order": 27
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation-smart-logic",
+      "title": "Smart Logic",
+      "titleAr": "Smart Logic",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Smart Logic",
+          "order": 28
+        }
+      ]
+    },
+    {
+      "key": "sql-where-clause-obfuscation-math",
+      "title": "Math",
+      "titleAr": "Math",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Math",
+          "order": 29
+        }
+      ]
+    },
+    {
+      "key": "sql-testing-scalability",
+      "title": "Performance and Scalability",
+      "titleAr": "Performance and Scalability",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Performance and Scalability",
+          "order": 30
+        }
+      ]
+    },
+    {
+      "key": "sql-testing-scalability-data-volume",
+      "title": "Performance Impacts of Data Volume",
+      "titleAr": "Performance Impacts of Data Volume",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Performance Impacts of Data Volume",
+          "order": 31
+        }
+      ]
+    },
+    {
+      "key": "sql-testing-scalability-system-load",
+      "title": "Performance Impacts of System Load",
+      "titleAr": "Performance Impacts of System Load",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Performance Impacts of System Load",
+          "order": 32
+        }
+      ]
+    },
+    {
+      "key": "sql-testing-scalability-response-time-throughput-scaling-horizontal",
+      "title": "Response Time, Throughput and Horizontal Scalability",
+      "titleAr": "Response Time, Throughput and Horizontal Scalability",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Response Time, Throughput and Horizontal Scalability",
+          "order": 33
+        }
+      ]
+    },
+    {
+      "key": "sql-join",
+      "title": "The Join Operation",
+      "titleAr": "The Join Operation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Join Operation",
+          "order": 34
+        }
+      ]
+    },
+    {
+      "key": "sql-join-nested-loops-join-n1-problem",
+      "title": "Nested Loops",
+      "titleAr": "Nested Loops",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Nested Loops",
+          "order": 35
+        }
+      ]
+    },
+    {
+      "key": "sql-join-hash-join-partial-objects",
+      "title": "Hash Join",
+      "titleAr": "Hash Join",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hash Join",
+          "order": 36
+        }
+      ]
+    },
+    {
+      "key": "sql-join-sort-merge-join",
+      "title": "Sort Merge",
+      "titleAr": "Sort Merge",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sort Merge",
+          "order": 37
+        }
+      ]
+    },
+    {
+      "key": "sql-clustering",
+      "title": "Clustering Data",
+      "titleAr": "Clustering Data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Clustering Data",
+          "order": 38
+        }
+      ]
+    },
+    {
+      "key": "sql-clustering-index-filter-predicates",
+      "title": "Index Filter Predicates Used Intentionally",
+      "titleAr": "Index Filter Predicates Used Intentionally",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index Filter Predicates Used Intentionally",
+          "order": 39
+        }
+      ]
+    },
+    {
+      "key": "sql-clustering-index-only-scan-covering-index",
+      "title": "Index-Only Scan: Avoiding Table Access",
+      "titleAr": "Index-Only Scan: Avoiding Table Access",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index-Only Scan: Avoiding Table Access",
+          "order": 40
+        }
+      ]
+    },
+    {
+      "key": "sql-clustering-index-organized-clustered-index",
+      "title": "Index-Organized Tables and Clustered Indexes",
+      "titleAr": "Index-Organized Tables and Clustered Indexes",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index-Organized Tables and Clustered Indexes",
+          "order": 41
+        }
+      ]
+    },
+    {
+      "key": "sql-sorting-grouping",
+      "title": "Sorting and Grouping",
+      "titleAr": "Sorting and Grouping",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sorting and Grouping",
+          "order": 42
+        }
+      ]
+    },
+    {
+      "key": "sql-sorting-grouping-indexed-order-by",
+      "title": "Indexing Order By",
+      "titleAr": "Indexing Order By",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexing Order By",
+          "order": 43
+        }
+      ]
+    },
+    {
+      "key": "sql-sorting-grouping-order-by-asc-desc-nulls-last",
+      "title": "Indexing `ASC`, `DESC` and `NULLS FIRST`/`LAST`",
+      "titleAr": "Indexing `ASC`, `DESC` and `NULLS FIRST`/`LAST`",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexing `ASC`, `DESC` and `NULLS FIRST`/`LAST`",
+          "order": 44
+        }
+      ]
+    },
+    {
+      "key": "sql-sorting-grouping-indexed-group-by",
+      "title": "Indexing Group By",
+      "titleAr": "Indexing Group By",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexing Group By",
+          "order": 45
+        }
+      ]
+    },
+    {
+      "key": "sql-partial-results",
+      "title": "Partial Results",
+      "titleAr": "Partial Results",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Partial Results",
+          "order": 46
+        }
+      ]
+    },
+    {
+      "key": "sql-partial-results-top-n-queries",
+      "title": "Querying Top-N Rows",
+      "titleAr": "Querying Top-N Rows",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Querying Top-N Rows",
+          "order": 47
+        }
+      ]
+    },
+    {
+      "key": "sql-partial-results-fetch-next-page",
+      "title": "Paging Through Results",
+      "titleAr": "Paging Through Results",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Paging Through Results",
+          "order": 48
+        }
+      ]
+    },
+    {
+      "key": "sql-partial-results-window-functions",
+      "title": "Using Window Functions for Efficient Pagination",
+      "titleAr": "Using Window Functions for Efficient Pagination",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Using Window Functions for Efficient Pagination",
+          "order": 49
+        }
+      ]
+    },
+    {
+      "key": "sql-dml",
+      "title": "Modifying Data",
+      "titleAr": "Modifying Data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modifying Data",
+          "order": 50
+        }
+      ]
+    },
+    {
+      "key": "sql-dml-insert",
+      "title": "Insert",
+      "titleAr": "Insert",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Insert",
+          "order": 51
+        }
+      ]
+    },
+    {
+      "key": "sql-dml-delete",
+      "title": "Delete",
+      "titleAr": "Delete",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Delete",
+          "order": 52
+        }
+      ]
+    },
+    {
+      "key": "sql-dml-update",
+      "title": "Update",
+      "titleAr": "Update",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Update",
+          "order": 53
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan",
+      "title": "Execution Plans",
+      "titleAr": "Execution Plans",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Execution Plans",
+          "order": 54
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-db2",
+      "title": "Working With Execution Plans in Db2 (LUW)",
+      "titleAr": "Working With Execution Plans in Db2 (LUW)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Working With Execution Plans in Db2 (LUW)",
+          "order": 55
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-db2-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 56
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-db2-operations",
+      "title": "Db2 (LUW) Execution Plan Operations",
+      "titleAr": "Db2 (LUW) Execution Plan Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Db2 (LUW) Execution Plan Operations",
+          "order": 57
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-db2-filter-predicates",
+      "title": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distinguishing Access and Filter-Predicates",
+          "order": 58
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-mysql",
+      "title": "MySQL",
+      "titleAr": "MySQL",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL",
+          "order": 59
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-mysql-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 60
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-mysql-operations",
+      "title": "Operations",
+      "titleAr": "Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operations",
+          "order": 61
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-mysql-access-filter-predicates",
+      "title": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distinguishing Access and Filter-Predicates",
+          "order": 62
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-oracle",
+      "title": "Oracle Database",
+      "titleAr": "Oracle Database",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Database",
+          "order": 63
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-oracle-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 64
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-oracle-operations",
+      "title": "Operations",
+      "titleAr": "Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operations",
+          "order": 65
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-oracle-filter-predicates",
+      "title": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distinguishing Access and Filter-Predicates",
+          "order": 66
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-postgresql",
+      "title": "PostgreSQL",
+      "titleAr": "PostgreSQL",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL",
+          "order": 67
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-postgresql-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 68
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-postgresql-operations",
+      "title": "Operations",
+      "titleAr": "Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operations",
+          "order": 69
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-postgresql-filter-predicates",
+      "title": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distinguishing Access and Filter-Predicates",
+          "order": 70
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sql-server",
+      "title": "SQL Server",
+      "titleAr": "SQL Server",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server",
+          "order": 71
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sql-server-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 72
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sql-server-operations",
+      "title": "Operations",
+      "titleAr": "Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operations",
+          "order": 73
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sql-server-filter-predicates",
+      "title": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Distinguishing Access and Filter-Predicates",
+          "order": 74
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlite",
+      "title": "Working With Execution Plans in SQLite",
+      "titleAr": "Working With Execution Plans in SQLite",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Working With Execution Plans in SQLite",
+          "order": 75
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlite-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 76
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlite-operations",
+      "title": "SQLite Execution Plan Operations",
+      "titleAr": "SQLite Execution Plan Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLite Execution Plan Operations",
+          "order": 77
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlbase",
+      "title": "Working With Execution Plans in SQLBase",
+      "titleAr": "Working With Execution Plans in SQLBase",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Working With Execution Plans in SQLBase",
+          "order": 78
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlbase-getting-an-execution-plan",
+      "title": "Getting an Execution Plan",
+      "titleAr": "Getting an Execution Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Getting an Execution Plan",
+          "order": 79
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-sqlbase-operations",
+      "title": "SQLBase Execution Plan Operations",
+      "titleAr": "SQLBase Execution Plan Operations",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLBase Execution Plan Operations",
+          "order": 80
+        }
+      ]
+    },
+    {
+      "key": "sql-myth-directory",
+      "title": "Myth Directory",
+      "titleAr": "Myth Directory",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Myth Directory",
+          "order": 81
+        }
+      ]
+    },
+    {
+      "key": "sql-myth-directory-indexes-can-degenerate",
+      "title": "Indexes Can Degenerate",
+      "titleAr": "Indexes Can Degenerate",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Indexes Can Degenerate",
+          "order": 82
+        }
+      ]
+    },
+    {
+      "key": "sql-myth-directory-most-selective-first",
+      "title": "Most Selective First",
+      "titleAr": "Most Selective First",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Most Selective First",
+          "order": 83
+        }
+      ]
+    },
+    {
+      "key": "sql-myth-directory-null-cannot-be-indexed",
+      "title": "The Oracle Database Cannot Index NULL",
+      "titleAr": "The Oracle Database Cannot Index NULL",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Oracle Database Cannot Index NULL",
+          "order": 84
+        }
+      ]
+    },
+    {
+      "key": "sql-myth-directory-dynamic-sql-is-slow",
+      "title": "Dynamic SQL is Slow",
+      "titleAr": "Dynamic SQL is Slow",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dynamic SQL is Slow",
+          "order": 85
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema",
+      "title": "Example Schema",
+      "titleAr": "Example Schema",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Example Schema",
+          "order": 86
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary",
+      "title": "Glossary",
+      "titleAr": "Glossary",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Glossary",
+          "order": 87
+        }
+      ]
+    },
+    {
+      "key": "sql-explain-plan-postgres-concrete-planning",
+      "title": "Concrete Planning",
+      "titleAr": "Concrete Planning",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Concrete Planning",
+          "order": 88
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-performance-testing-scalability",
+      "title": "Oracle Example Scripts for “Testing and Scalability”",
+      "titleAr": "Oracle Example Scripts for “Testing and Scalability”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “Testing and Scalability”",
+          "order": 89
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-performance-testing-scalability",
+      "title": "PostgreSQL Example Scripts for “Testing and Scalability”",
+      "titleAr": "PostgreSQL Example Scripts for “Testing and Scalability”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “Testing and Scalability”",
+          "order": 90
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-performance-testing-scalability",
+      "title": "SQL Server Scripts for “Testing and Scalability”",
+      "titleAr": "SQL Server Scripts for “Testing and Scalability”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “Testing and Scalability”",
+          "order": 91
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-index-filter-predicates",
+      "title": "Index Filter Predicates",
+      "titleAr": "Index Filter Predicates",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index Filter Predicates",
+          "order": 92
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-heap-table",
+      "title": "Heap-Table",
+      "titleAr": "Heap-Table",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Heap-Table",
+          "order": 93
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-secondary-index",
+      "title": "Secondary Index",
+      "titleAr": "Secondary Index",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Secondary Index",
+          "order": 94
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-sorting-grouping",
+      "title": "PostgreSQL Example Scripts for “Sorting and Grouping”",
+      "titleAr": "PostgreSQL Example Scripts for “Sorting and Grouping”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “Sorting and Grouping”",
+          "order": 95
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-sorting-grouping",
+      "title": "Oracle Example Scripts for “Sorting and Grouping”",
+      "titleAr": "Oracle Example Scripts for “Sorting and Grouping”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “Sorting and Grouping”",
+          "order": 96
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-db2",
+      "title": "Db2 (LUW) Example Scripts",
+      "titleAr": "Db2 (LUW) Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Db2 (LUW) Example Scripts",
+          "order": 97
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-db2-where-clause",
+      "title": "Db2 (LUW) Example Scripts for “The Where Clause”",
+      "titleAr": "Db2 (LUW) Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Db2 (LUW) Example Scripts for “The Where Clause”",
+          "order": 98
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-db2-performance-testing-scalability",
+      "title": "Db2 (LUW) Example Scripts for “Testing and Scalability”",
+      "titleAr": "Db2 (LUW) Example Scripts for “Testing and Scalability”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Db2 (LUW) Example Scripts for “Testing and Scalability”",
+          "order": 99
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-db2-join",
+      "title": "Db2 (LUW) Example Scripts for “The Join Operation”",
+      "titleAr": "Db2 (LUW) Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Db2 (LUW) Example Scripts for “The Join Operation”",
+          "order": 100
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql",
+      "title": "MySQL Example Scripts",
+      "titleAr": "MySQL Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts",
+          "order": 101
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql-where-clause",
+      "title": "MySQL Example Scripts for “The Where Clause”",
+      "titleAr": "MySQL Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts for “The Where Clause”",
+          "order": 102
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql-join",
+      "title": "MySQL Example Scripts for “The Join Operation”",
+      "titleAr": "MySQL Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts for “The Join Operation”",
+          "order": 103
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql-clustering-data",
+      "title": "MySQL Example Scripts for “Clustering Data”",
+      "titleAr": "MySQL Example Scripts for “Clustering Data”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts for “Clustering Data”",
+          "order": 104
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql-sorting-grouping",
+      "title": "MySQL Example Scripts for “Sorting and Grouping”",
+      "titleAr": "MySQL Example Scripts for “Sorting and Grouping”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts for “Sorting and Grouping”",
+          "order": 105
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-mysql-partial-results",
+      "title": "MySQL Example Scripts for “Partial Results”",
+      "titleAr": "MySQL Example Scripts for “Partial Results”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "MySQL Example Scripts for “Partial Results”",
+          "order": 106
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle",
+      "title": "Oracle Example Scripts",
+      "titleAr": "Oracle Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts",
+          "order": 107
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-where-clause",
+      "title": "Oracle Example Scripts for “The Where Clause”",
+      "titleAr": "Oracle Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “The Where Clause”",
+          "order": 108
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-join",
+      "title": "Oracle Example Scripts for “The Join Operation”",
+      "titleAr": "Oracle Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “The Join Operation”",
+          "order": 109
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-clustering-data",
+      "title": "Oracle Example Scripts for “Clustering Data”",
+      "titleAr": "Oracle Example Scripts for “Clustering Data”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “Clustering Data”",
+          "order": 110
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-partial-results",
+      "title": "Oracle Example Scripts for “Partial Results”",
+      "titleAr": "Oracle Example Scripts for “Partial Results”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “Partial Results”",
+          "order": 111
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-oracle-dml",
+      "title": "Oracle Example Scripts for “Insert, Delete and Update”",
+      "titleAr": "Oracle Example Scripts for “Insert, Delete and Update”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Oracle Example Scripts for “Insert, Delete and Update”",
+          "order": 112
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql",
+      "title": "PostgreSQL Example Scripts",
+      "titleAr": "PostgreSQL Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts",
+          "order": 113
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-where-clause",
+      "title": "PostgreSQL Example Scripts for “The Where Clause”",
+      "titleAr": "PostgreSQL Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “The Where Clause”",
+          "order": 114
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-join",
+      "title": "PostgreSQL Example Scripts for “The Join Operation”",
+      "titleAr": "PostgreSQL Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “The Join Operation”",
+          "order": 115
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-partial-results",
+      "title": "PostgreSQL Example Scripts for “Partial Results”",
+      "titleAr": "PostgreSQL Example Scripts for “Partial Results”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “Partial Results”",
+          "order": 116
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-postgresql-dml",
+      "title": "PostgreSQL Example Scripts for “Insert, Delete and Update”",
+      "titleAr": "PostgreSQL Example Scripts for “Insert, Delete and Update”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PostgreSQL Example Scripts for “Insert, Delete and Update”",
+          "order": 117
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server",
+      "title": "SQL Server Example Scripts",
+      "titleAr": "SQL Server Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Example Scripts",
+          "order": 118
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-where-clause",
+      "title": "SQL Server Scripts for “The Where Clause”",
+      "titleAr": "SQL Server Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “The Where Clause”",
+          "order": 119
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-join",
+      "title": "SQL Server Scripts for “The Join Operation”",
+      "titleAr": "SQL Server Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “The Join Operation”",
+          "order": 120
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-clustering-data",
+      "title": "SQL Server Scripts for “Clustering Data”",
+      "titleAr": "SQL Server Scripts for “Clustering Data”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “Clustering Data”",
+          "order": 121
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-sorting-grouping",
+      "title": "SQL Server Scripts for “Sorting and Grouping”",
+      "titleAr": "SQL Server Scripts for “Sorting and Grouping”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “Sorting and Grouping”",
+          "order": 122
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-partial-results",
+      "title": "SQL Server Scripts for “Partial Results”",
+      "titleAr": "SQL Server Scripts for “Partial Results”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “Partial Results”",
+          "order": 123
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sql-server-dml",
+      "title": "SQL Server Scripts for “Insert, Delete and Update”",
+      "titleAr": "SQL Server Scripts for “Insert, Delete and Update”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQL Server Scripts for “Insert, Delete and Update”",
+          "order": 124
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlite",
+      "title": "SQLite",
+      "titleAr": "SQLite",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLite",
+          "order": 125
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlite-where-clause",
+      "title": "SQLite Example Scripts for “The Where Clause”",
+      "titleAr": "SQLite Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLite Example Scripts for “The Where Clause”",
+          "order": 126
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlite-join",
+      "title": "SQLite Example Scripts for “The Join Operation”",
+      "titleAr": "SQLite Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLite Example Scripts for “The Join Operation”",
+          "order": 127
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlbase",
+      "title": "SQLBase Example Scripts",
+      "titleAr": "SQLBase Example Scripts",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLBase Example Scripts",
+          "order": 128
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlbase-where-clause",
+      "title": "SQLBase Example Scripts for “The Where Clause”",
+      "titleAr": "SQLBase Example Scripts for “The Where Clause”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLBase Example Scripts for “The Where Clause”",
+          "order": 129
+        }
+      ]
+    },
+    {
+      "key": "sql-example-schema-sqlbase-join",
+      "title": "SQLBase Example Scripts for “The Join Operation”",
+      "titleAr": "SQLBase Example Scripts for “The Join Operation”",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "SQLBase Example Scripts for “The Join Operation”",
+          "order": 130
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-execution-plan-explain-plan",
+      "title": "Execution Plan - Explain Plan - Query Plan",
+      "titleAr": "Execution Plan - Explain Plan - Query Plan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Execution Plan - Explain Plan - Query Plan",
+          "order": 131
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-clustered-index",
+      "title": "Clustered Index / Non-Clustered Index",
+      "titleAr": "Clustered Index / Non-Clustered Index",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Clustered Index / Non-Clustered Index",
+          "order": 132
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-index-clustering-factor",
+      "title": "Index Clustering Factor",
+      "titleAr": "Index Clustering Factor",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index Clustering Factor",
+          "order": 133
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-covering-index",
+      "title": "Covering Index",
+      "titleAr": "Covering Index",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Covering Index",
+          "order": 134
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-index-only-scan",
+      "title": "Index-Only Scan",
+      "titleAr": "Index-Only Scan",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index-Only Scan",
+          "order": 135
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-index-organized-table",
+      "title": "Index-Organized Table",
+      "titleAr": "Index-Organized Table",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Index-Organized Table",
+          "order": 136
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-query-optimizer-query-planner",
+      "title": "Optimizer - Query Optimizer - Query Planner",
+      "titleAr": "Optimizer - Query Optimizer - Query Planner",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimizer - Query Optimizer - Query Planner",
+          "order": 137
+        }
+      ]
+    },
+    {
+      "key": "sql-glossary-parsing-query-planning-compiling",
+      "title": "Parsing - Query Planning - Compiling",
+      "titleAr": "Parsing - Query Planning - Compiling",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Parsing - Query Planning - Compiling",
+          "order": 138
+        }
+      ]
+    }
+  ]
+}

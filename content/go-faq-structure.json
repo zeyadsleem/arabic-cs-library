@@ -1,0 +1,16 @@
+{
+  "chapters": [
+    {
+      "key": "faq",
+      "title": "Frequently Asked Questions (FAQ)",
+      "titleAr": "الأسئلة الشائعة عن Go",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأسئلة الشائعة عن Go",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

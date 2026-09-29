@@ -1,0 +1,161 @@
+<!DOCTYPE HTML><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head prefix="og: http://ogp.me/ns#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link type="text/css" rel="stylesheet" media="all" href="/static/util.ScMZxgG+.css"><title>Example Scripts for SQL Server - Partial Results</title><meta name="description" content="CREATE &amp;amp; INSERT statements to create the SQL Server example database for Chapter 7, Partial Results"><link rel="canonical" href="https://use-the-index-luke.com/sql/example-schema/sql-server/partial-results"><link rel="alternate" hreflang="de" href="https://use-the-index-luke.com/de/sql/beispiel-schema/sql-server/partielle-ergebnisse"><link rel="alternate" hreflang="en" href="https://use-the-index-luke.com/sql/example-schema/sql-server/partial-results"><meta property="og:title" content="Example Scripts for SQL Server - Partial Results"><meta property="og:description" content="CREATE &amp;amp; INSERT statements to create the SQL Server example database for Chapter 7, Partial Results"><meta property="og:image" content="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@SQLPerfTips"><meta name="twitter:creator" content="@MarkusWinand"><link rel="apple-touch-icon" sizes="180x180" href="/static/favicon-180.ZbtZnW-D.png"><meta name="msapplication-TileImage" content="/static/favicon-180.ZbtZnW-D.png"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternate" type="application/rss+xml" href="/blog/feed" title="The Use The Index, Luke Blog"><meta name="flattr:id" content="m0ovgy"><noscript><style>.needsjs {display:none !important;}</style></noscript><script>document.documentElement.className="js-early";</script></head><body><div id="page-wrapper"><div id="page"><div id="header"><a rel="home" href="/"><img id="header-logo" height="130" width="770" src="/static/header-logo.6aLqEdMq.svg" title="HomeHome" alt="Use The Index Luke: A guide to SQL performance for developers"></a></div><div id="main-wrapper"><div class="region-content-top"><div class="flags"></div><form action="/" method="get" class="needsjs"><div><select name="u" onchange="window.location.href = this.options[this.selectedIndex].value"><option value="/de/sql/beispiel-schema/sql-server/partielle-ergebnisse">Deutsch</option><option value="/sql/example-schema/sql-server/partial-results" selected>English</option></select></div></form><noscript><p class="translator">[&nbsp;<a href="/de/sql/beispiel-schema/sql-server/partielle-ergebnisse">DE</a>&nbsp;]</p></noscript><p class="translator">by <a href="//winand.at/home">Markus Winand</a>.</p></div><div class="breadcrumb"><a href="/sql/table-of-contents">Table of Contents</a><span> › </span><a href="/sql/example-schema">Example Schema</a><span> › </span><a href="/sql/example-schema/sql-server">SQL Server</a><span> › </span></div><div class="clearfix"><div id="content"><div class="section"><h1 id="main-title">SQL Server Scripts for “Partial Results”</h1><hr><div class="content"><div id="article"><p>This section contains the <code class="command">create</code> and <code class="command">insert</code> statements to run the examples from <a href="/sql/partial-results">Chapter&nbsp;7<em>Partial Results</em></a> in an SQL Server database.</p><h2>Querying Top-N Rows</h2><p>The test approach for the scalability of Top-N queries is the same as used in the “<a href="/sql/example-schema/sql-server/performance-testing-scalability">Testing and Scalability</a>” chapter.</p><pre><code>CREATE FUNCTION [dbo].test_top_n_scalability (@n int)
+   RETURNS @table TABLE
+( section  NUMERIC NOT NULL PRIMARY KEY,
+  duration NUMERIC NOT NULL,
+  rows     NUMERIC NOT NULL)
+AS BEGIN
+   DECLARE @strt DATETIME2
+   DECLARE @iter INT
+   DECLARE @xsec INT
+   DECLARE @xcnt INT
+   DECLARE @xrnd INT
+
+   SET @iter = 0
+   WHILE (@iter &lt; @n) BEGIN
+      SET @xsec = 0
+      WHILE (@xsec &lt; <b>300</b>) BEGIN
+         SET @strt = SYSDATETIME()
+
+         SELECT @xcnt = COUNT(*)
+           FROM (SELECT TOP 100 *
+                   FROM scale_data
+                  WHERE section=@xsec
+                  ORDER BY id2) tlb; 
+
+         IF @iter = 0 BEGIN
+           INSERT INTO @table
+           VALUES ( @xsec
+                  , datediff(microsecond, @strt, SYSDATETIME())
+                  , @xcnt);
+         END; ELSE BEGIN
+           UPDATE @table
+              SET duration = duration 
+                  + datediff(microsecond, @strt, SYSDATETIME())
+                , rows = rows + @xcnt
+            WHERE section = @xsec
+         END;
+         SET @xsec = @xsec + 1
+      END;
+      SET @iter = @iter + 1
+   END;
+
+   RETURN;
+END;
+
+GO</code></pre><p>First, using a pipelined Top-N with an index covering the <code class="command">order by</code> clause:</p><pre><code>CREATE INDEX scale_fast ON scale_data(section, id2, id1);
+GO
+
+SELECT * FROM [dbo].[test_top_n_scalability] (10);
+GO</code></pre><p>Then, using an index for the <code class="command">where</code> clause only. However, SQL Server refuses to use the index unless it includes the ID2 column. So, it is not exactly the same test case as for the other databases, but it still shows the scalability.</p><pre><code>DROP INDEX scale_fast ON scale_data;
+GO
+
+CREATE INDEX scale_slow ON scale_data(section, id1, id2);
+GO
+
+SELECT * FROM [dbo].[test_top_n_scalability] (10);
+GO</code></pre><h2>Paging Through Results</h2><pre><code>CREATE FUNCTION [dbo].test_topn_scalability (@n int)
+   RETURNS @table TABLE
+( section NUMERIC NOT NULL,
+  mode    NUMERIC NOT NULL,
+  page    NUMERIC NOT NULL,
+  seconds NUMERIC NOT NULL)
+AS BEGIN
+  DECLARE @strt DATETIME2
+  DECLARE @iter INT
+  DECLARE @xmde INT
+  DECLARE @page INT
+  DECLARE @xsec INT
+  DECLARE @c1 INT, @c2 INT;
+  DECLARE @cont TABLE (
+    section int NOT NULL,
+    c1      int NOT NULL, 
+    c2      int NOT NULL
+  );
+
+  SET @iter = 0
+  WHILE (@iter &lt; @n) BEGIN
+    SET @xmde = 0
+    WHILE (@xmde &lt;= 1) BEGIN
+      SET @page = 0
+      WHILE (@page &lt;= 100) BEGIN
+        SET @xsec = 5
+        WHILE (@xsec &lt; 300) BEGIN
+          SET @strt = SYSDATETIME()
+
+          IF @xmde = 0 OR @page = 0 BEGIN
+            DECLARE sql CURSOR FAST_FORWARD FOR
+             SELECT id2, id1
+               FROM (SELECT id2, id1
+                          , ROW_NUMBER() OVER (ORDER BY id2, id1) rn
+                       FROM scale_data
+                      WHERE section = @xsec
+                    ) result
+              WHERE rn &gt;  100 * (@page  )
+                AND rn &lt;= 100 * (@page+1);
+         
+          END; ELSE BEGIN
+            SELECT @c2 = c2, @c1 = c1 FROM @cont WHERE section = @xsec;
+            DECLARE sql CURSOR FAST_FORWARD FOR
+             SELECT TOP 100 id2, id1
+               FROM scale_data
+              WHERE section = @xsec
+                AND id2 &gt;= @c2
+                AND ( 
+                       (id2 = @c2 AND id1 &gt; @c1)
+                    OR 
+                       (id2 &gt; @c2)
+                    )
+              ORDER BY id2, id1
+          END;
+
+          OPEN sql; FETCH NEXT FROM sql INTO @c2, @c1;
+          WHILE @@FETCH_STATUS = 0 BEGIN
+            FETCH NEXT FROM sql INTO @c2, @c1;
+          END
+          CLOSE sql; DEALLOCATE sql;
+
+          INSERT INTO @table
+          VALUES ( @xsec
+                 , @xmde
+                 , @page
+                 , datediff(microsecond, @strt, SYSDATETIME())
+                 );
+          UPDATE @cont set c1 = @c1, c2 = @c2
+           WHERE section = @xsec;
+          IF @@ROWCOUNT = 0
+           INSERT INTO @cont VALUES(@xsec, @c1, @c2);
+          SET @xsec = @xsec + 1
+        END;
+        SET @page = @page + 1
+      END;
+      SET @xmde = @xmde + 1
+    END;
+    SET @iter = @iter + 1
+  END;
+
+  RETURN;
+END;
+GO
+
+SELECT section, mode, page, sum(seconds)
+  FROM [dbo].[test_topn_scalability] (10)
+ WHERE section=10
+ GROUP BY section, mode, page
+ ORDER BY section, mode, page;
+GO</code></pre><h2>Window-Functions</h2><p>SQL Server 2008R2 utilizes the index to implement a pipelined Top-N query when using the window-Function <code>ROW_NUMBER</code>:</p><pre><code>SELECT *
+  FROM ( SELECT sales.*
+              , <b>ROW_NUMBER() OVER (ORDER BY sale_date DESC
+                                          , sale_id   DESC) rn</b>
+           FROM sales
+       ) tmp
+ <b>WHERE rn between 11 and 20</b>
+ ORDER BY sale_date DESC, sale_id DESC</code></pre><p id="apc-ms-window-xplan"><pre><code>|-<b>Sort(ORDER BY:([sale_date] DESC, [sale_id] DESC))</b>
+  |-Filter(WHERE:([Expr1004]&gt;=(11) AND [Expr1004]&lt;=(20)))
+    |-<b>Top(TOP EXPRESSION:(20))</b>
+      |-Sequence Project(DEFINE:([Expr1004]=row_number))
+        |-Segment
+          |-Nested Loops(Inner Join, WITH ORDERED PREFETCH)
+            |-Index Scan([sales].[sl_dtid], <b>ORDERED BACKWARD</b>)
+            |-RID Lookup([sales],
+               SEEK:([Bmk1000]=[Bmk1000])
+               LOOKUP ORDERED FORWARD)</code></pre></p><p>SQL Server reads the index backwards, so that it doesn’t need an sort operation for the window function. The Top-Step aborts the operations below it, as soon as 20 rows arrived. The last two steps, shown first in the execution plan, filter the leading 10 rows off and sorts the remaining result. This sort operation will just sort ten rows, so it is not going to be a performance problem.</p></div><a id="nav-prev" href="/sql/example-schema/sql-server/sorting-grouping" title="Previous: SQL Server Scripts for “Sorting and Grouping”">Previous page</a><a id="navbar-prev" href="/sql/example-schema/sql-server/sorting-grouping" title="Previous: SQL Server Scripts for “Sorting and Grouping”"></a><a id="nav-next" href="/sql/example-schema/sql-server/dml" title="Next: SQL Server Scripts for “Insert, Delete and Update”">Next page</a><a id="navbar-next" href="/sql/example-schema/sql-server/dml" title="Next: SQL Server Scripts for “Insert, Delete and Update”"></a></div><div id="below-article"><p><em>You can’t learn everything in one day. Subscribe the newsletter via <b><a href="https://winand.at/lists">E-Mail</a></b>, <b><a href="https://bsky.app/profile/winand.at">Bluesky</a></b> or <b><a href="/blog/feed">RSS</a></b> to gradually catch up. Have a look at <a href="https://modern-sql.com">modern-⁠sql.com</a> as well.</em></p><h2 class="box-title">About the Author</h2><div id="authorsbio" class="box-body"><img width="110" height="110" src="/static/markuswinand.JSEKkX8C.jpg" alt="Photo of Markus Winand"><p>Markus Winand provides insights into SQL and shows how different systems support it at  <a href="https://modern-sql.com">modern-sql.com</a>. Previously he made <a href="https://use-the-index-luke.com">use-the-index-luke.com</a>, which is still actively maintained. Markus can be hired as trainer, speaker and consultant via <a href="https://winand.at">winand.at</a>.</p></div><div id="promo"><div class="promo-book"><h2 class="box-title">Buy the Book</h2><div class="box-body"><a href="https://sql-performance-explained.com?utm_content=promo-book&amp;utm_source=use-the-index-luke.com&amp;utm_campaign=ap-schema-mssql-topn&amp;utm_medium=web"><img width="110" height="168" src="/static/9783950307825_w220.d9ybRqoS.jpg" alt="Cover of “SQL Performance Explained”: Squirrel running on grass"></a><p>The essence of SQL tuning in 200 pages</p><p><a href="//sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=ap-schema-mssql-topn&amp;utm_medium=web" class="gradient-button rounded-corners">Buy now!</a><br><small>(paperback and/or PDF)</small></p><p class="small">Paperback also available at <a href="https://www.amazon.com/gp/product/3950307826/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=3950307826&amp;linkCode=as2&amp;tag=sqlperexp-20&amp;linkId=XTDRWIA3YYYIRNO&amp;m=A1PG4MQR22GK8T">Amazon.com</a>.</p></div></div><div class="promo-gap"></div><div class="promo-service"><h2 class="box-title">Hire Markus</h2><div class="box-body"><p>Markus offers SQL training and consulting for developers working at companies of all sizes. <a href="//winand.at/"><br>Learn&nbsp;more&nbsp;»</a></p></div></div></div></div></div></div><div class="region-sidebar-first"><div class="title-wrap"><h2><a href="/3-minute-quiz">The 3-Minute Quiz</a></h2></div><div id="menu-3-minute-test" style="position: relative"><div id="menu-3-minute-test-clock"></div><a href="/3-minute-quiz">Expert, competent, or just a greenhorn? Test your SQL performance skills in just three minutes. ›</a></div><div class="block"><div class="title-wrap"><h2><a href="/sql/table-of-contents">Table of Contents</a></h2></div><ul class="menu"><li><a href="/sql/preface">Preface</a></li><li><a href="/sql/anatomy">Anatomy of an Index</a></li><li><a href="/sql/where-clause">The Where Clause</a></li><li><a href="/sql/testing-scalability">Performance and Scalability</a></li><li><a href="/sql/join">The Join Operation</a></li><li><a href="/sql/clustering">Clustering Data</a></li><li><a href="/sql/sorting-grouping">Sorting and Grouping</a></li><li><a href="/sql/partial-results">Partial Results</a></li><li><a href="/sql/dml">Modifying Data</a></li><li><a href="/sql/explain-plan">Execution Plans</a></li><li><a href="/sql/myth-directory">Myth Directory</a></li><li><a href="/sql/example-schema">Example Schema</a><ul class="menu"><li><a href="/sql/example-schema/db2">Db2 (LUW)</a></li><li><a href="/sql/example-schema/mysql">MySQL</a></li><li><a href="/sql/example-schema/oracle">Oracle</a></li><li><a href="/sql/example-schema/postgresql">PostgreSQL</a></li><li><a href="/sql/example-schema/sql-server">SQL Server</a><ul class="menu"><li><a href="/sql/example-schema/sql-server/where-clause">The Where Clause</a></li><li><a href="/sql/example-schema/sql-server/performance-testing-scalability">Testing and Scalability</a></li><li><a href="/sql/example-schema/sql-server/join">The Join Operation</a></li><li><a href="/sql/example-schema/sql-server/clustering-data">Clustering Data</a></li><li><a href="/sql/example-schema/sql-server/sorting-grouping">Sorting and Grouping</a></li><li><a href="" class="active">Partial Results</a></li><li><a href="/sql/example-schema/sql-server/dml">Insert, Delete and Update</a></li><li><a href="/sql/example-schema/sql-server/3-minute-quiz">3-Minute Quiz</a></li></ul></li><li><a href="/sql/example-schema/sqlite">SQLite</a></li><li><a href="/sql/example-schema/sqlbase">Gupate SQLBase</a></li></ul></li><li><a href="/sql/glossary">Glossary</a></li></ul></div><div class="block"><div class="title-wrap"><h2><a href="/blog">Latest Blog Posts</a></h2></div><ul class="menu"><li><a href="/blog/2024-12/date-time-prefix-rewrite">Automatic Rewrite of Date and Time Ranges</a></li><li><a href="/blog/2019-04/include-columns-in-btree-indexes">A Close Look at the Index <code>Include</code> Clause</a></li><li><a href="/blog/2018-07/upcoming-advanced-sql-training">Upcoming Training: SQL Performance Kick-Start and modern SQL</a></li><li><a href="/blog/2017-11/spanish-anyone">Spanish Anyone?</a></li><li><a href="/blog/2017-11/cloud-wars-ibm-db2-renaming-major-database-releases">News Review: Cloud Wars, IBM’s Renaming Insanity, and Three Major Releases</a></li><li><a href="/blog/2017-05/new-sql-standard-oracle-122-acidrain">Big News: new SQL standard, cloud wars, ACIDRain</a></li><li><a href="/blog/2016-11/big-news-in-databases">Big News in Databases</a></li><li><a href="/blog/2016-07-29/on-ubers-choice-of-databases">On Uber’s Choice of Databases</a></li><li><a href="/blog/2015-02/modern-sql">Modern SQL in PostgreSQL [and other databases]</a></li></ul></div><div class="block"><div class="title-wrap"><h2><a href="/shop">Geek Ware</a></h2></div><ul class="menu"><li><a href="/shop#sticker-package">Stickers</a></li><li><a href="/shop#coaster-package">Coasters</a></li><li><a href="/shop#pdf-package">Books</a></li><li><a href="/shop#mug-package">Mugs</a></li></ul></div></div></div></div></div></div><div id="prefooter"><div><h2>Connect with Markus Winand</h2><a id="mailinglist" href="https://winand.at/lists"><span>Subscribe mailinglists</span></a><a id="rss" href="https://use-the-index-luke.com/blog/feed"><span>Subscribe the RSS feed</span></a><a id="linkedin" href="https://at.linkedin.com/in/markuswinand/"><span>Markus Winand on LinkedIn</span></a><a id="xing" href="https://www.xing.com/profile/Markus_Winand"><span>Markus Winand on XING</span></a><a id="mastodon" rel="me" href="https://mastodon.social/@MarkusWinand"><span>Markus Winand on Mastodon</span></a><a id="bluesky" href="https://bsky.app/profile/winand.at"><span>Markus Winand on Bluesky</span></a></div></div><div id="page-closure"><div class="region-page-closure">Copyright 2010-2026 <a href="https://winand.at/">Markus Winand</a>. All righs reserved.<br><a href="/legal">Legal</a> | <a href="/contact">Contact</a> | <a href="/legal/no-warranty">NO WARRANTY</a> | <a href="/legal/trademarks">Trademarks</a> | <a href="/legal/privacy">Privacy and GDPR</a></div></div><script src="/static/util.dpe1Xaua.js"></script></body></html>

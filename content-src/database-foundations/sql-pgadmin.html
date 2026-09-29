@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Installation of pgAdmin</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="quote">A man's nothing without his tools.</span><br>
+&mdash;Kathy Reichs
+</p> </blockquote> <h1>Installation of pgAdmin</h1> <p>
+In this chapter, you'll install pgadmin and configure connections to the
+      database server. This involves a fair bit of configuration. Lots of things
+      can (and will) go wrong but don't worry: we are here to help.
+</p> <h2>Connecting to the database server</h2> <p>
+It is possible to install database software on your own laptop. However,
+      for larger applications, a <em>database server</em> that runs the software is
+      commonly used. Everyone that needs to use the database stored on the server
+      (be it humans, software, ...) then connects to the server using a piece of software.
+      In this course, we will use a PostgreSQL server. You communicate with the server
+      via a <em>client</em>. There are dozens of clients. In this course we will
+      use two of them: pgAdmin and DBSchema. For the first lessons pgAdmin will
+      do fine.
+</p> <p>
+The figure below shows how a client never interacts directly with the data
+      itself, but how it always interacts via a database server (<a href="https://medium.datadriveninvestor.com/artificial-intelligence-series-part-5-data-analysis-using-sql-7e61bee24b85">source figure</a>).
+</p> <img class="block" src="/assets/introSQL/rdbms.webp" alt="client-server at databases, source: https://medium.datadriveninvestor.com/artificial-intelligence-series-part-5-data-analysis-using-sql-7e61bee24b85"> <h2>Installation pgAdmin</h2> <section class="taak"> <p>
+Follow the steps in the document <a href="/assets/PDF/manual.pdf">‘manual.pdf’</a>. This manual describes in detail how to install pgAdmin and how to
+        configure three connections to the database server within pgAdmin. The
+        video below demonstrates the steps of the manual for a previous academic
+        year (so the connections have a different number), but the steps stay
+        the same.
+</p>  </section> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_7q0hmch8&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_zls7j6vf" width="640" height="360" allowfullscreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="en_pgadmin"></iframe> </div> <p>
+After executing all of the steps, you should have three connections to the
+      database:
+</p> <ul> <li>
+The connection via port 54321 remains the same every year. Here you will
+        find a number of basic databases that can be used over the course of
+        several academic years.
+</li> <li>
+The second connection, via port 50203 is updated every year. Via this
+        connection you reach, among other things, the database of your class
+        where you can create your own new schemas.
+</li> <li>
+Finally, there is a third connection that uses pooling: 60203. This
+        connection gives access to exactly the same as via port 50203, but in a
+        smarter way so that you will never run out of connections. <em>In practice, always use this pooling connection.</em> </li> </ul> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

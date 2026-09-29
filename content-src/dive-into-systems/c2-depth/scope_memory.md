@@ -1,0 +1,74 @@
+---
+title: "2.1. Parts of Program Memory and Scope"
+lang: en
+---
+
+The following C program shows examples of functions, parameters, and local and global variables (function comments are omitted to shorten this code listing):
+
+```c
+/* An example C program with local and global variables */
+#include <stdio.h>
+
+int max(int n1, int n2); /* function prototypes */
+int change(int amt);
+
+int g_x;  /* global variable: declared outside function bodies */
+
+int main(void) {
+    int x, result;   /* local variables: declared inside function bodies */
+
+    printf("Enter a value: ");
+    scanf("%d", &x);
+    g_x = 10;       /* global variables can be accessed in any function */
+
+    result = max(g_x, x);
+    printf("%d is the largest of %d and %d\n", result, g_x, x);
+
+    result = change(10);
+    printf("g_x's value was %d and now is %d\n", result, g_x);
+
+    return 0;
+}
+
+int max(int n1, int n2) {  /* function with two parameters */
+    int val;    /* local variable */
+
+    val = n1;
+    if ( n2 > n1 ) {
+        val = n2;
+    }
+    return val;
+}
+
+int change(int amt) {
+    int val;
+
+    val = g_x;  /* global variables can be accessed in any function */
+    g_x += amt;
+    return val;
+}
+```
+
+This example shows program variables with different scope. A variable’s **scope** defines when its name has meaning. In other words, scope defines the set of program code blocks in which a variable is bound to (associated with) a program memory location and can be used by program code.
+
+Declaring a variable outside of any function body creates a **global variable**. Global variables remain permanently in scope and can be used by any code in the program because they’re always bound to one specific memory location. Every global variable must have a unique name — its name uniquely identifies a specific storage location in program memory for the entire duration of the program.
+
+**Local variables and parameters** are only in scope inside the function in which they are defined. For example, the `amt` parameter is in scope only inside the `change` function. This means that only statements within the `change` function body can access the `amt` parameter, and an instance of the `amt` parameter is bound to a specific memory storage location only within a specific active execution of the function. Space to store a parameter’s value is allocated on the stack when the function gets called, and it is deallocated from the stack when the function returns. Each activation of a function gets its own bindings for its parameters and local variables. Thus, for recursive function calls, each call (or activation) gets a separate stack frame containing space for its parameters and local variables.
+
+Because parameters and local variables are only in scope inside the function that defines them, different functions can use the same names for local variables and parameters. For example, both the `change` and the `max` functions have a local variable named `val`. When code in the `max` function refers to `val` it refers to its local variable `val` and not to the `change` function’s local variable `val` (which is not in scope inside the `max` function.)
+
+While there may occasionally be times when using global variables in C programs is necessary, we strongly recommend that you *avoid programming with global variables whenever possible*. Using only local variables and parameters yields code that’s more modular, more general-purpose, and easier to debug. Also, because a function’s parameters and local variables are only allocated in program memory when the function is active, they may result in more space-efficient programs.
+
+Upon launching a new program, the operating system allocates the new program’s address space. A program’s **address space** (or memory space) represents storage locations for everything it needs in its execution, namely storage for its instructions and data. A program’s address space can be thought of as an array of addressable bytes; each used address in the program’s address space stores all or part of a program instruction or data value (or some additional state necessary for the program’s execution).
+
+A program’s memory space is divided into several parts, each of which is used to store a different kind of entity in the process’s address space. [Figure 1](#FigMemParts) illustrates the parts of a program’s memory space.
+
+![The parts of program memory arranged into a program’s address space. At the top (addresses closer to 0), we have regions for the OS, code (instructions), data (globals), and the heap (dynamically allocated memory). At the other end of the address space (maximum address), the stack stores local variables and function parameters.](/images/dive-into-systems/c2-depth-0-memparts.webp) Figure 1. The parts of a program’s address space.
+
+The top of a program’s memory is reserved for use by the operating system, but the remaining parts are usable by the running program. The program’s instructions are stored in the *code* section of the memory. For example, the program listed above stores instructions for the `main`, `max`, and `change` functions in this region of memory.
+
+Local variables and parameters reside in the portion of memory for the *stack*. Because the amount of stack space grows and shrinks over the program’s execution as functions are called and returned from, the stack part of memory is typically allocated near the bottom of memory (at the highest memory addresses) to leave space for it to change. Stack storage space for local variables and parameters exists only when the function is active (within the stack frame for the function’s activation on the stack.)
+
+Global variables are stored in the *data* section. Unlike the stack, the data region does not grow or shrink — storage space for globals persists for the entire run of the program.
+
+Finally, the *heap* portion of memory is the part of a program’s address space associated with dynamic memory allocation. The heap is typically located far from stack memory, and grows into higher addresses as more space is dynamically allocated by the running program.

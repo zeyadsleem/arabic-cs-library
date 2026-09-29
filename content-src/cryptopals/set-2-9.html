@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='content-type'>
+    <meta content='Thomas Ptacek, Sean Devlin, and Alex Balducci' name='author'>
+    <title>Challenge 9 Set 2 - The Cryptopals Crypto Challenges</title>
+    <link href='/static/bootstrap.css' media='all' rel='stylesheet' type='text/css'>
+    <link href='/static/app.css' media='all' rel='stylesheet' type='text/css'>
+    <style>
+      body { 
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-12'>
+          <h3>
+            <a href='/'>the cryptopals crypto challenges</a>
+          </h3>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='col-md-12'>
+          <ul class='breadcrumb'>
+            <li>
+              <a href='/'>Challenges</a>
+            </li>
+            <li>
+              <a href='/sets/2'>Set 2</a>
+            </li>
+            <li class='active'>
+              <a href='/sets/2/challenges/9'>Challenge 9</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class='row'>
+        
+        <div class='col-md-2'></div>
+        <div class='col-md-10'>
+          <h3>Implement PKCS#7 padding</h3>
+          <p>
+  A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext
+  into ciphertext. But we almost never want to transform a single block; we encrypt
+  irregularly-sized messages.
+</p>
+<p>
+  One way we account for irregularly-sized messages is by padding, creating a plaintext
+  that is an even multiple of the blocksize. The most popular padding scheme is called
+  PKCS#7.
+</p>
+<p>
+  So: pad any block to a specific block length, by appending the number of
+  bytes of padding to the end of the block. For instance,
+</p>
+<pre>"YELLOW SUBMARINE"</pre>
+<p>
+  ... padded to 20 bytes would be:
+</p>
+<pre>"YELLOW SUBMARINE\x04\x04\x04\x04"</pre>
+
+        </div>
+      </div>
+   </div>
+   <div style="text-align:center"><a href="https://cryptoservices.github.io/">Cryptography Services</a> | <a href="https://www.nccgroup.trust/us/">NCC Group</a></div>
+  </body>
+</html>

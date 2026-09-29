@@ -1,0 +1,105 @@
+<!DOCTYPE HTML><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head prefix="og: http://ogp.me/ns#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link type="text/css" rel="stylesheet" media="all" href="/static/util.ScMZxgG+.css"><title>Example Scripts for Gupta SQLBase - The WHERE Clause</title><meta name="description" content="CREATE &amp;amp; INSERT statements to create the Gupta SQLBase example database for Chapter 2, The Where Clause"><link rel="canonical" href="https://use-the-index-luke.com/sql/example-schema/sqlbase/where-clause"><link rel="alternate" hreflang="en" href="https://use-the-index-luke.com/sql/example-schema/sqlbase/where-clause"><meta property="og:title" content="Example Scripts for Gupta SQLBase - The WHERE Clause"><meta property="og:description" content="CREATE &amp;amp; INSERT statements to create the Gupta SQLBase example database for Chapter 2, The Where Clause"><meta property="og:image" content="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png"><meta name="twitter:card" content="summary"><meta name="twitter:site" content="@SQLPerfTips"><meta name="twitter:creator" content="@MarkusWinand"><link rel="apple-touch-icon" sizes="180x180" href="/static/favicon-180.ZbtZnW-D.png"><meta name="msapplication-TileImage" content="/static/favicon-180.ZbtZnW-D.png"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternate" type="application/rss+xml" href="/blog/feed" title="The Use The Index, Luke Blog"><meta name="flattr:id" content="m0ovgy"><noscript><style>.needsjs {display:none !important;}</style></noscript><script>document.documentElement.className="js-early";</script></head><body><div id="page-wrapper"><div id="page"><div id="header"><a rel="home" href="/"><img id="header-logo" height="130" width="770" src="/static/header-logo.6aLqEdMq.svg" title="HomeHome" alt="Use The Index Luke: A guide to SQL performance for developers"></a></div><div id="main-wrapper"><div class="breadcrumb"><a href="/sql/table-of-contents">Table of Contents</a><span> › </span><a href="/sql/example-schema">Example Schema</a><span> › </span><a href="/sql/example-schema/sqlbase">Gupate SQLBase</a><span> › </span></div><div class="clearfix"><div id="content"><div class="section"><h1 id="main-title">SQLBase Example Scripts for “The Where Clause”</h1><hr><div class="content"><div id="article"><h2>The Equals Operator</h2><h3>Surrogate Keys</h3><p>Creating the <code>EMPLOYEES</code> table with 1000 rows.</p><pre><code>CREATE TABLE employees (
+   employee_id   INTEGER       NOT NULL,
+   first_name    VARCHAR(200) NOT NULL,
+   last_name     VARCHAR(200) NOT NULL,
+   date_of_birth DATE                  ,
+   phone_number  VARCHAR(200) NOT NULL,
+   junk          CHAR(254)             ,
+   PRIMARY KEY (employee_id)
+);
+
+CREATE UNIQUE INDEX employees_pk ON employees(employee_id);
+
+CREATE TABLE generator_16 (
+   n NUMBER NOT NULL,
+   PRIMARY KEY (n)
+);
+
+CREATE UNIQUE INDEX generator_16_pk ON generator_16 (n);
+
+INSERT INTO generator_16 VALUES (0);
+INSERT INTO generator_16 VALUES (1);
+INSERT INTO generator_16 VALUES (2);
+INSERT INTO generator_16 VALUES (3);
+INSERT INTO generator_16 VALUES (4);
+INSERT INTO generator_16 VALUES (5);
+INSERT INTO generator_16 VALUES (6);
+INSERT INTO generator_16 VALUES (7);
+INSERT INTO generator_16 VALUES (8);
+INSERT INTO generator_16 VALUES (9);
+INSERT INTO generator_16 VALUES (10);
+INSERT INTO generator_16 VALUES (11);
+INSERT INTO generator_16 VALUES (12);
+INSERT INTO generator_16 VALUES (13);
+INSERT INTO generator_16 VALUES (14);
+INSERT INTO generator_16 VALUES (15);
+
+<b>CREATE VIEW generator_256</b> (n)
+AS SELECT ( ( hi.n * 16 ) + lo.n ) AS n
+     FROM generator_16 lo, generator_16 hi;
+
+<b>CREATE VIEW generator_4k</b> (n)
+AS SELECT ( ( hi.n * 256 ) + lo.n ) AS n
+     FROM generator_256 lo, generator_16 hi;
+
+<b>CREATE VIEW generator_64k</b> (n)
+AS SELECT ( ( hi.n * 256 ) + lo.n ) AS n
+     FROM generator_256 lo, generator_256 hi;
+
+
+<b>INSERT INTO employees</b> (employee_id,  first_name,
+                       last_name,    date_of_birth, 
+                       phone_number, junk)
+SELECT n +1,
+       @CHAR(@mod(n, 26)+65)    ||  @CHAR(@mod(@microsecond(@NOW), 26)+97)   || @CHAR(@mod(@minute(@NOW)+n, 26)+97),
+       @CHAR(@mod(13+n, 26)+65) ||  @CHAR(@mod(@microsecond(@NOW)+7, 26)+97) || @CHAR(@mod(@minute(@NOW)+n+17, 26)+97),
+       SYSDATE - @mod(n+@MICROSECOND(@NOW), 40*365) - 3650,
+       @MOD(@MICROSECOND(@NOW)+n, 9000) + 1000,
+       'junk'
+  FROM generator_4k
+WHERE n &lt; 1000;
+
+<b>UPDATE employees </b>
+   SET first_name='MARKUS', 
+       last_name='WINAND'
+ WHERE employee_id=123;
+
+UPDATE STATISTICS ON TABLE employees;
+UPDATE STATISTICS ON INDEX employees_pk;</code></pre><p>Note:</p><ul><li><p>We use 200 characters to be on the safe side regarding SQLBases limit on key lenght (total &lt; 255, including overhead).</p></li></ul><h3>Concatenated Keys</h3><pre><code>-- add subsidiary_id and update existing records
+ALTER TABLE employees ADD subsidiary_id INTEGER;
+UPDATE      employees SET subsidiary_id = 30;
+ALTER TABLE employees MODIFY subsidiary_id NOT NULL;
+
+-- change the PK
+﻿ALTER TABLE employees DROP PRIMARY KEY;
+DROP INDEX employees_pk;
+
+CREATE UNIQUE INDEX employees_pk ON employees (employee_id, subsidiary_id);
+ALTER TABLE employees PRIMARY KEY (employee_id, subsidiary_id);
+
+-- generate more records (Very Big Company)
+<b>INSERT INTO employees</b> (employee_id,  first_name,
+                       last_name,    date_of_birth, 
+                       phone_number, subsidiary_id, junk)
+SELECT n +1,
+       @CHAR(@mod(n, 26)+65)    ||  @CHAR(@mod(@microsecond(@NOW), 26)+97)   || @CHAR(@mod(@minute(@NOW)+n, 26)+97),
+       @CHAR(@mod(13+n, 26)+65) ||  @CHAR(@mod(@microsecond(@NOW)+7, 26)+97) || @CHAR(@mod(@minute(@NOW)+n+17, 26)+97),
+       SYSDATE - @mod(n+@MICROSECOND(@NOW), 40*365) - 3650,
+       @MOD(@MICROSECOND(@NOW)+n, 9000) + 1000,
+       @MOD(@SECOND(@NOW)+n/9000*29,29),
+       'junk'
+  FROM generator_64k
+WHERE n &lt; 9000;
+
+UPDATE STATISTICS ON TABLE employees;
+UPDATE STATISTICS ON INDEX employees_pk;</code></pre><pre><code>CREATE INDEX emp_sub_id ON employees (subsidiary_id);
+</code></pre><p>Although that gives decent performance, it’s better to use the index that supports the primary key:</p><pre><code>-- use tmp index to support the PK
+ALTER TABLE employees DROP PRIMARY KEY;
+DROP INDEX employees_pk;
+
+CREATE UNIQUE INDEX employees_pk ON employees (subsidiary_id, employee_id);
+ALTER TABLE employees PRIMARY KEY (subsidiary_id, employee_id);
+
+DROP INDEX emp_sub_id;
+
+UPDATE STATISTICS ON INDEX employees_pk;</code></pre><h2>Functions</h2><pre><code>CREATE INDEX emp_name_up ON employees (@upper(last_name));</code></pre></div><a id="nav-prev" href="/sql/example-schema/sqlbase" title="Previous: SQLBase Example Scripts">Previous page</a><a id="navbar-prev" href="/sql/example-schema/sqlbase" title="Previous: SQLBase Example Scripts"></a><a id="nav-next" href="/sql/example-schema/sqlbase/join" title="Next: SQLBase Example Scripts for “The Join Operation”">Next page</a><a id="navbar-next" href="/sql/example-schema/sqlbase/join" title="Next: SQLBase Example Scripts for “The Join Operation”"></a></div><div id="below-article"><p><em>You can’t learn everything in one day. Subscribe the newsletter via <b><a href="https://winand.at/lists">E-Mail</a></b>, <b><a href="https://bsky.app/profile/winand.at">Bluesky</a></b> or <b><a href="/blog/feed">RSS</a></b> to gradually catch up. Have a look at <a href="https://modern-sql.com">modern-⁠sql.com</a> as well.</em></p><h2 class="box-title">About the Author</h2><div id="authorsbio" class="box-body"><img width="110" height="110" src="/static/markuswinand.JSEKkX8C.jpg" alt="Photo of Markus Winand"><p>Markus Winand provides insights into SQL and shows how different systems support it at  <a href="https://modern-sql.com">modern-sql.com</a>. Previously he made <a href="https://use-the-index-luke.com">use-the-index-luke.com</a>, which is still actively maintained. Markus can be hired as trainer, speaker and consultant via <a href="https://winand.at">winand.at</a>.</p></div><div id="promo"><div class="promo-book"><h2 class="box-title">Buy the Book</h2><div class="box-body"><a href="https://sql-performance-explained.com?utm_content=promo-book&amp;utm_source=use-the-index-luke.com&amp;utm_campaign=ap-schema-sqlbase-where&amp;utm_medium=web"><img width="110" height="168" src="/static/9783950307825_w220.d9ybRqoS.jpg" alt="Cover of “SQL Performance Explained”: Squirrel running on grass"></a><p>The essence of SQL tuning in 200 pages</p><p><a href="//sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=ap-schema-sqlbase-where&amp;utm_medium=web" class="gradient-button rounded-corners">Buy now!</a><br><small>(paperback and/or PDF)</small></p><p class="small">Paperback also available at <a href="https://www.amazon.com/gp/product/3950307826/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=3950307826&amp;linkCode=as2&amp;tag=sqlperexp-20&amp;linkId=XTDRWIA3YYYIRNO&amp;m=A1PG4MQR22GK8T">Amazon.com</a>.</p></div></div><div class="promo-gap"></div><div class="promo-service"><h2 class="box-title">Hire Markus</h2><div class="box-body"><p>Markus offers SQL training and consulting for developers working at companies of all sizes. <a href="//winand.at/"><br>Learn&nbsp;more&nbsp;»</a></p></div></div></div></div></div></div><div class="region-sidebar-first"><div class="title-wrap"><h2><a href="/3-minute-quiz">The 3-Minute Quiz</a></h2></div><div id="menu-3-minute-test" style="position: relative"><div id="menu-3-minute-test-clock"></div><a href="/3-minute-quiz">Expert, competent, or just a greenhorn? Test your SQL performance skills in just three minutes. ›</a></div><div class="block"><div class="title-wrap"><h2><a href="/sql/table-of-contents">Table of Contents</a></h2></div><ul class="menu"><li><a href="/sql/preface">Preface</a></li><li><a href="/sql/anatomy">Anatomy of an Index</a></li><li><a href="/sql/where-clause">The Where Clause</a></li><li><a href="/sql/testing-scalability">Performance and Scalability</a></li><li><a href="/sql/join">The Join Operation</a></li><li><a href="/sql/clustering">Clustering Data</a></li><li><a href="/sql/sorting-grouping">Sorting and Grouping</a></li><li><a href="/sql/partial-results">Partial Results</a></li><li><a href="/sql/dml">Modifying Data</a></li><li><a href="/sql/explain-plan">Execution Plans</a></li><li><a href="/sql/myth-directory">Myth Directory</a></li><li><a href="/sql/example-schema">Example Schema</a><ul class="menu"><li><a href="/sql/example-schema/db2">Db2 (LUW)</a></li><li><a href="/sql/example-schema/mysql">MySQL</a></li><li><a href="/sql/example-schema/oracle">Oracle</a></li><li><a href="/sql/example-schema/postgresql">PostgreSQL</a></li><li><a href="/sql/example-schema/sql-server">SQL Server</a></li><li><a href="/sql/example-schema/sqlite">SQLite</a></li><li><a href="/sql/example-schema/sqlbase">Gupate SQLBase</a><ul class="menu"><li><a href="" class="active">The Where Clause</a></li><li><a href="/sql/example-schema/sqlbase/join">The Join Operation</a></li></ul></li></ul></li><li><a href="/sql/glossary">Glossary</a></li></ul></div><div class="block"><div class="title-wrap"><h2><a href="/blog">Latest Blog Posts</a></h2></div><ul class="menu"><li><a href="/blog/2024-12/date-time-prefix-rewrite">Automatic Rewrite of Date and Time Ranges</a></li><li><a href="/blog/2019-04/include-columns-in-btree-indexes">A Close Look at the Index <code>Include</code> Clause</a></li><li><a href="/blog/2018-07/upcoming-advanced-sql-training">Upcoming Training: SQL Performance Kick-Start and modern SQL</a></li><li><a href="/blog/2017-11/spanish-anyone">Spanish Anyone?</a></li><li><a href="/blog/2017-11/cloud-wars-ibm-db2-renaming-major-database-releases">News Review: Cloud Wars, IBM’s Renaming Insanity, and Three Major Releases</a></li><li><a href="/blog/2017-05/new-sql-standard-oracle-122-acidrain">Big News: new SQL standard, cloud wars, ACIDRain</a></li><li><a href="/blog/2016-11/big-news-in-databases">Big News in Databases</a></li><li><a href="/blog/2016-07-29/on-ubers-choice-of-databases">On Uber’s Choice of Databases</a></li><li><a href="/blog/2015-02/modern-sql">Modern SQL in PostgreSQL [and other databases]</a></li></ul></div><div class="block"><div class="title-wrap"><h2><a href="/shop">Geek Ware</a></h2></div><ul class="menu"><li><a href="/shop#sticker-package">Stickers</a></li><li><a href="/shop#coaster-package">Coasters</a></li><li><a href="/shop#pdf-package">Books</a></li><li><a href="/shop#mug-package">Mugs</a></li></ul></div></div></div></div></div></div><div id="prefooter"><div><h2>Connect with Markus Winand</h2><a id="mailinglist" href="https://winand.at/lists"><span>Subscribe mailinglists</span></a><a id="rss" href="https://use-the-index-luke.com/blog/feed"><span>Subscribe the RSS feed</span></a><a id="linkedin" href="https://at.linkedin.com/in/markuswinand/"><span>Markus Winand on LinkedIn</span></a><a id="xing" href="https://www.xing.com/profile/Markus_Winand"><span>Markus Winand on XING</span></a><a id="mastodon" rel="me" href="https://mastodon.social/@MarkusWinand"><span>Markus Winand on Mastodon</span></a><a id="bluesky" href="https://bsky.app/profile/winand.at"><span>Markus Winand on Bluesky</span></a></div></div><div id="page-closure"><div class="region-page-closure">Copyright 2010-2026 <a href="https://winand.at/">Markus Winand</a>. All righs reserved.<br><a href="/legal">Legal</a> | <a href="/contact">Contact</a> | <a href="/legal/no-warranty">NO WARRANTY</a> | <a href="/legal/trademarks">Trademarks</a> | <a href="/legal/privacy">Privacy and GDPR</a></div></div><script src="/static/util.dpe1Xaua.js"></script></body></html>

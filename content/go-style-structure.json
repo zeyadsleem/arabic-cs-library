@@ -1,0 +1,76 @@
+{
+  "chapters": [
+    {
+      "key": "index",
+      "title": "نظرة عامة على دليل أسلوب Go",
+      "titleAr": "نظرة عامة على دليل أسلوب Go",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة على دليل أسلوب Go",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "guide",
+      "title": "دليل أسلوب Go",
+      "titleAr": "دليل أسلوب Go",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "دليل أسلوب Go",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "decisions-1",
+      "title": "قرارات أسلوب Go (1 من 2)",
+      "titleAr": "قرارات أسلوب Go (1 من 2)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "قرارات أسلوب Go (1 من 2)",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "decisions-2",
+      "title": "قرارات أسلوب Go (2 من 2)",
+      "titleAr": "قرارات أسلوب Go (2 من 2)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "قرارات أسلوب Go (2 من 2)",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "best-practices-1",
+      "title": "أفضل ممارسات أسلوب Go (1 من 2)",
+      "titleAr": "أفضل ممارسات أسلوب Go (1 من 2)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أفضل ممارسات أسلوب Go (1 من 2)",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "best-practices-2",
+      "title": "أفضل ممارسات أسلوب Go (2 من 2)",
+      "titleAr": "أفضل ممارسات أسلوب Go (2 من 2)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أفضل ممارسات أسلوب Go (2 من 2)",
+          "order": 5
+        }
+      ]
+    }
+  ]
+}

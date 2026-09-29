@@ -1,0 +1,90 @@
+---
+title: "4.10. Exercises"
+lang: en
+---
+
+- [All Chapter 4 Exercises](https://diveintosystems.org/exercises/dive-into-systems-exercises-7.html)
+
+### Additional Exercises
+
+1. What are the decimal and hexadecimal representations for the value 0b01001010?
+2. What are the binary and hexadecimal representations for the value 389?
+3. As a five-armed creature, Sally the starfish prefers to represent numbers using a base 5 number system. If Sally gives you the base 5 number 1423, what is the equivalent decimal value?
+
+### Solutions
+
+**If your browser supports hidden solutions, click here to reveal them.**
+
+0b01001010 in decimal is:
+
+(0 * 27) + (1 * 26) + (0 * 25) + (0 * 24) + (1 * 23) + (0 * 22) + (1 * 21) + (0 * 20)
+
+= 0 + 64 + 0 + 0 + 8 + 0 + 2 + 0 = 74
+
+In hexadecimal, it’s:
+
+```
+0100 1010
+  4    A  ->  0x4A
+```
+
+Converting 389 to decimal…​
+
+*Using powers of two:*
+
+256 fits into 389, so d8 should be a 1. That leaves 389 - 256 = 133.
+
+128 fits into 133, so d7 should be a 1. That leaves 133 - 128 = 5.
+
+64 does not fit into 5, so d6 should be a 0.
+
+32 does not fit into 5, so d5 should be a 0.
+
+16 does not fit into 5, so d4 should be a 0.
+
+8 does not fit into 5, so d3 should be a 0.
+
+4 fits into 5, so d2 should be a 1. That leaves 6 - 5 = 1.
+
+2 fits does not fit into 1, so d1 should be a 0.
+
+1 fits into 1, so d0 should be a 1. That leaves 1 - 1 = 0.
+
+Thus, decimal 389 corresponds to **0b110000101**.
+
+*Using repeated division:*
+
+389 is odd, so d0 should be a 1.
+
+389 / 2 = 194, which is even, so d1 should be a 0.
+
+194 / 2 = 97, which is odd, so d2 should be a 1.
+
+97 / 2 = 48, which is even, so d3 should be a 0.
+
+48 / 2 = 24, which is even, so d4 should be a 0.
+
+24 / 2 = 12, which is even, so d5 should be a 0.
+
+12 / 2 = 6, which is even, so d6 should be a 0.
+
+6 / 2 = 3, which is odd, so d7 should be a 1.
+
+3 / 2 = 1, which is odd, so d8 should be a 1.
+
+1 / 2 = 0, so any digit numbered nine or above will be 0.
+
+Thus, decimal 389 corresponds to **0b110000101**.
+
+Converting to hexadecimal:
+
+```
+0001 1000 0101
+  1    8    5  ->  0x185
+```
+
+1423 in base 5 converted to decimal is:
+
+(1 * 53) + (4 * 52) + (2 * 51) + (3 * 50)
+
+= 125 + 100 + 10 + 3 = 238

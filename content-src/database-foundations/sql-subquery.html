@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Subqueries</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">Programming, it turns out, is hard. The fundamental rules are
+          typically simple and clear. But programs built on top of these rules
+          tend to become complex enough to introduce their own rules and
+          complexity. You’re building your own maze, in a way, and you might
+          just get lost in it.</span> <br>
+&mdash;Marijn Haverbeke
+</p> </blockquote> <h1>Subqueries</h1> <h2>Schema students_campus</h2> <section class="info"> <p>
+Take a quick look at the figure's ERD. You can find the schema
+        ‘students_campus’ in the database ‘df’ via the pooling connection (or
+        the 5... connection). Do a <code>SELECT *</code> of both tables to get an
+        idea of the information contained in the schema.
+</p> </section> <figure class="center"> <img src="/assets/subquery/EN/ERD_student_campus.png" alt=""> </figure> <p>
+Specifically, it involves a listing of all eight campuses of UCLL and a
+      table of 1,000 students with some personal information for each student,
+      which campus they go to (a student can only belong to one campus) and how
+      far they live from this campus. The latter field is not mandatory. By the
+      way, we created this schema as an example for automatic data generation in
+      DBSchema or using a site such as <a href="https://mockaroo.com">https://mockaroo.com</a>.
+</p> <h2>Who lives farther from a campus than the average distance?</h2> <p>
+There are several types of SQL queries. One kind asks only the answer to a
+      question. That can be a number, one or more names, a date, ... For this
+      type of query, you do not need to provide the query/queries used. Only the
+      answer is sufficient. An example of such a question is the following
+      exercise. Make that one and check your answer.
+</p> <section class="taak"> <p>
+How many students live farther from their campus than the average
+        distance? Only the answer was asked, not the queries you used. Can you
+        find the correct answer: 401 students?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+This is typically a question you can quickly solve with two simple
+          queries. The first query looks for the average of all distances:
+<pre><code>SELECT AVG(distance_to_campus)
+FROM student;</code></pre>
+The result of this query is 52.01658. Note that null values do not
+          count to calculate an average, such as <a href="https://www.postgresql.org/docs/15/functions-aggregate.html">the documentation briefly mentions for the function ‘avg’</a>.
+</p> <p>
+You can now use this number in a subsequent query:
+<pre><code>SELECT count(*) -- or simply use * and read the number of lines in the query tool
+FROM student
+WHERE distance_to_campus &gt; 52.01658;</code></pre> </p> </div>  </section> <p>So for this type of SQL query, just answer ‘401’. Fine, point earned!</p> <p>
+However, for another type of exam question, you need to <em>give the query</em>. In addition you may only give <em>one</em> query, which your lecturer must
+      be able to copy and execute in pgAdmin. A solution with two separate queries,
+      where you then have to copy the answer of the first to the second query is
+      not allowed.
+</p> <p>
+The above exercise has an elegant solution: use a <em>subquery</em>
+(also called a <em>nested query</em>). The following query provides the
+      solution (401) of the exercise in one query:
+<pre><code>SELECT COUNT(*)
+FROM student
+WHERE distance_to_campus &gt; (
+  SELECT AVG(distance_to_campus)
+  FROM student
+);</code></pre> </p> <p>
+In the <code>WHERE</code> clause, a new <code>SELECT</code> is started. We
+      call this query the <em>inner query</em>. The query around it is called
+      the <em>outer query</em>. You can define different levels of nesting. A
+      subquery can return one or more rows to the calling query. The above is an
+      example of a <em>scalar</em> subquery: as the subquery returns only <em>one number</em>. You can nest a subquery in the <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code> or
+<code>HAVING</code> clause.
+</p> <h2>Average distance of Proximus students</h2> <h3>Two versions of the same exercise</h3> <p>Now solve the following exercise with a subquery:</p> <section class="taak"> <p>
+Give the average distance to campus of all students attending campus
+        Proximus. Use one query with a subquery. The answer is: 49.0319
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT avg(distance_to_campus)
+FROM student
+WHERE campus_id = (
+  SELECT id
+  FROM campus
+  WHERE name = &#39;Campus Proximus&#39;
+);</code></pre> </div>  </section> <p>
+Perhaps when reading the above statement you thought ‘I can do that just
+      as well with a <code>JOIN</code>?’ Rightly so! Now solve the same exercise
+      without a subquery by just using a <code>JOIN</code>:
+</p> <section class="taak"> <p>
+Give the average distance to campus of all students going to campus
+        Proximus using a <code>JOIN</code>.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT avg(distance_to_campus)
+FROM student S INNER JOIN campus C on S.campus_id = C.id
+WHERE C.name = &#39;Campus Proximus&#39;;</code></pre> </div>  </section> <h3>Choosing between JOIN and subquery</h3> <p>
+Sometimes you have no choice and have to use a subquery, as in the first
+      exercise. You can't solve that one with a <code>JOIN</code>. Conversely,
+      for some queries you need a <code>JOIN</code>. However, sometimes you have
+      the choice between a subquery and a <code>JOIN</code>. It is difficult to
+      unambiguously define which is the best choice. For complex queries, a <code>JOIN</code> is often <em>more</em> efficient. A subquery is usually easier to read, though.
+</p> <p>
+In any case, you should be able to use both types of query. It is possible
+      that for a given query on the exam you will have to explicitly use one of
+      both.
+</p> <h2>Subquery with IN operator</h2> <p>
+We looked at the <code>IN</code> operator already <a href="/EN/SQL_where/index.html#IN">in the section on the <code>WHERE</code> clause</a>. After <code>IN</code> the result of a subquery can be used. Try the following
+      exercise.
+</p> <section class="taak"> <div> <p>
+Show the five oldest students attending a campus in Heverlee. Work
+          with a subquery.
+</p> <figure class="center"> <img src="/assets/subquery/EN/oudste5Heverlee.png" width="350" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT first_name || &#39; &#39; || last_name AS name, birth_date
+FROM student
+WHERE campus_id IN (
+  SELECT id
+  FROM campus
+  WHERE location = &#39;Heverlee&#39;
+)
+ORDER BY birth_date
+LIMIT 5;</code></pre> </div>  </section> <section class="taak"> <p>
+This exercise can also be perfectly solved with a <code>JOIN</code>. Try
+        the exercise again with a <code>JOIN</code>.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT first_name || &#39; &#39; || last_name AS name, birth_date
+FROM student S INNER JOIN campus C ON S.campus_id = C.id
+WHERE location = &#39;Heverlee&#39;
+ORDER BY birth_date
+LIMIT 5;</code></pre> </div>  </section> <h2>Subquery with the ALL operator</h2> <p>
+The <code>ALL</code> operator compares a value to <em>every</em> value of the
+      result table. We illustrate this with the following example.
+</p> <p>
+List all students who are younger than all students whose whose first name
+      begins with ‘Al’. Again, you could solve this with two queries. First,
+      query the birth dates of all students with the first name requested:<pre><code>SELECT birth_date
+FROM student
+WHERE (first_name like &#39;Al%&#39;)
+ORDER BY birth_date DESC;</code></pre> </p> <p>
+It turns out that the youngest of these students was born on Feb. 27.
+      2004. You can now query in a second query all students with a birth date
+      greater than (because they must be younger!) this date:<pre><code>SELECT *
+FROM student
+WHERE birth_date &gt; &#39;2004-02-27&#39;
+ORDER BY birth_date DESC;</code></pre> </p> <p>You will eventually find a list of 22 students.</p> <p>
+You can combine these two consecutive queries into one query by using a
+      subquery. You will find the same 22 students:<pre><code>SELECT *
+FROM student
+WHERE birth_date &gt; ALL (
+  SELECT birth_date
+  FROM student
+  WHERE first_name LIKE &#39;Al%&#39;
+)
+ORDER BY birth_date DESC;</code></pre> </p> <p>
+The following exercise does not look so difficult at first glance, but
+      there is an unexpected problem that you might struggle with. Tips and
+      solution can be found in the usual place, but try this exercise yourself
+      first!
+</p> <section class="taak"> <div> <p>
+List all students who live closer to their campus than all students
+          who attend a campus in Diest and whose last name contains the letter
+          ‘a’ twice (capital letters are also allowed). You may use only one
+          query (which may, of course, contain subqueries). Rank according to
+          increasing campus_id and decreasing distance.
+</p> <figure class="center"> <img src="/assets/subquery/EN/afstandDiest.png" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+It is a good idea to solve such an exercise in pieces. Sub-question 1:
+          What is the campus_id of the campus(es) in Diest?
+<pre><code>SELECT id
+FROM campus
+WHERE location = &#39;Diest&#39;;</code></pre> </p> <p>
+There appears to be only one campus in Diest, namely the campus with
+          id = 2. With this we can now answer part 2 of the question: give all
+          students from this campus who have a family name with two times ‘a’
+          (upper or lower case does not matter).
+<pre><code>SELECT *
+FROM student
+WHERE lower(last_name) LIKE &#39;%a%a%&#39; AND campus_id = 2
+ORDER BY distance_to_campus ASC;</code></pre> </p> <p>
+Verify that the result effectively includes only students who attend
+          campus 2 and have a surname with at least 2 times the letter ‘a’. The
+          smallest distance turns out to be 15 km. Finally, we can answer the
+          last part of the question: all students from the student table who
+          live less than 15 km from their campus:
+<pre><code>SELECT *
+FROM student
+WHERE distance_to_campus &lt; 15
+ORDER BY campus_id ASC, distance_to_campus DESC;</code></pre> </p> <p>
+This turns out to be a list of 106 students. Puzzling everything
+          together into one big query, with two subqueries in it is now not so
+          difficult:
+<pre><code>SELECT *
+from student
+WHERE distance_to_campus &lt; ALL (
+  SELECT distance_to_campus
+  FROM student
+  WHERE lower(last_name) LIKE &#39;%a%a%&#39; AND campus_id IN (
+    SELECT id
+    FROM campus
+    WHERE location = &#39;Diest&#39;
+  )
+)
+ORDER BY campus_id ASC, distance_to_campus DESC;</code></pre> </p> <p> <em>Yet this query does not appear to give the correct result. The
+            result does not contain any rows at all! What is going on?</em> </p> <p>
+The problem is in sub-question 2. After all, the list of all students
+          from campus 4 with twice an ‘a’ in the surname contains a number of
+          null values in the distance. Any comparison of a number with a null
+          always gives a null, as this query demonstrates:
+<pre><code>SELECT null &gt; 999 -- result is not true or false but null
+SELECT null &lt;= 999 -- result is not true or false but null;</code></pre> </p> <p>
+As a result, each test <code>WHERE distance_to_campus &lt; ALL ...</code> will always fail, leaving no row in the result. Fortunately, the solution
+          is not that difficult: <em>
+In sub-question 2, avoid null values in the result
+</em>. So we add a single condition in the first subquery:
+<pre><code>SELECT *
+from student
+WHERE distance_to_campus &lt; ALL (
+  SELECT distance_to_campus
+  FROM student
+  WHERE lower(last_name) LIKE &#39;%a%a%&#39;
+    AND distance_to_campus IS NOT null --Avoid null in the result
+    AND campus_id IN (
+      SELECT id
+      FROM campus
+      WHERE location = &#39;Diest&#39;
+    )
+)
+ORDER BY campus_id ASC, distance_to_campus DESC;</code></pre> </p> </div>  </section> <h2>Subquery with the ANY operator</h2> <p>
+The <code>ANY</code> operator compares a value to any value in a table and
+      is satisfied <em>if the comparison applies to at least one value in the table</em>. The table being compared to must contain at least one value. The
+      example below explains the principle.
+</p> <p>
+We want a list of all students from campus 7 who are older than at least
+      one student from campus 4. The following code returns a list of 135
+      students who meet the condition:<pre><code>SELECT *
+FROM student
+WHERE campus_id = 7 AND birth_date &lt; ANY(
+  SELECT birth_date
+  FROM student
+  WHERE campus_id = 4
+);</code></pre> </p> <p>
+As always, it's a good idea to parse a query properly to understand how
+      everything works. Let's query the list of all students from campus 7:<pre><code>SELECT *
+FROM student
+WHERE campus_id = 7;</code></pre> </p> <p>
+That list contains 136 students, so one more than the first query! We
+      quickly examine where the difference is.
+</p> <p>
+We are looking for the youngest student from campus 4 first:<pre><code>SELECT *
+FROM student
+WHERE campus_id = 4
+ORDER BY 4 DESC;</code></pre> </p> <p>
+That turns out to be Lisa Vargas, born Sept. 30, 2004. In campus 7
+      however, there is one student even younger than Lisa Vargas, namely Kate
+      Gonzales, born on Oct. 12, 2004. Thus, she does not meet the condition
+      with the <code>ANY</code> and consequently does not appear in the result.
+</p> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

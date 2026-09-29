@@ -1,0 +1,1352 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>10.5. Type Checking &#8212; OCaml Programming: Correct + Efficient + Beautiful</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="../../_static/op.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="10.6. Type Inference" href="inference.html" />
+    <link rel="prev" title="10.4. Environment Model" href="environment.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint">Using this book as part of a course? Please <a style="color:white" href="https://docs.google.com/forms/d/e/1FAIpQLSfEW65AJPBnk732zZZM9CFpWMobWUkym6Nf-pgslRqqwoWYIA/viewform?usp=preview">let us know</a>!</div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/op_title.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">OCaml Programming: Correct + Efficient + Beautiful</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Preface
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/about.html">
+   About This Book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../preface/install.html">
+   Installing OCaml
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../intro/intro.html">
+   1. Better Programming Through OCaml
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/past.html">
+     1.1. The Past of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/present.html">
+     1.2. The Present of OCaml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/future.html">
+     1.3. Look to Your Future
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/3110.html">
+     1.4. A Brief History of CS 3110
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../intro/summary.html">
+     1.5. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../basics/intro.html">
+   2. The Basics of OCaml
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/toplevel.html">
+     2.1. The OCaml Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/compiling.html">
+     2.2. Compiling OCaml Programs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/expressions.html">
+     2.3. Expressions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/functions.html">
+     2.4. Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/documentation.html">
+     2.5. Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/printing.html">
+     2.6. Printing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/debugging.html">
+     2.7. Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/summary.html">
+     2.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../basics/exercises.html">
+     2.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  OCaml Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data/intro.html">
+   3. Data and Types
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/lists.html">
+     3.1. Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/variants.html">
+     3.2. Variants
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/ounit.html">
+     3.3. Unit Testing with OUnit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/records_tuples.html">
+     3.4. Records and Tuples
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/pattern_matching_advanced.html">
+     3.5. Advanced Pattern Matching
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/type_synonym.html">
+     3.6. Type Synonyms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/options.html">
+     3.7. Options
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/assoc_list.html">
+     3.8. Association Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/algebraic_data_types.html">
+     3.9. Algebraic Data Types
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exceptions.html">
+     3.10. Exceptions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/trees.html">
+     3.11. Example: Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/nats.html">
+     3.12. Example: Natural Numbers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/summary.html">
+     3.13. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data/exercises.html">
+     3.14. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../hop/intro.html">
+   4. Higher-Order Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/higher_order.html">
+     4.1. Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/map.html">
+     4.2. Map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/filter.html">
+     4.3. Filter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/fold.html">
+     4.4. Fold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/beyond_lists.html">
+     4.5. Beyond Lists
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/pipelining.html">
+     4.6. Pipelining
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/currying.html">
+     4.7. Currying
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/laws.html">
+     4.8. Algebraic Laws for Higher-Order Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/summary.html">
+     4.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../hop/exercises.html">
+     4.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../modules/intro.html">
+   5. Modular Programming
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_systems.html">
+     5.1. Module Systems
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/modules.html">
+     5.2. Modules
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/toplevel.html">
+     5.3. Modules and the Toplevel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/encapsulation.html">
+     5.4. Encapsulation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/compilation_units.html">
+     5.5. Compilation Units
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functional_data_structures.html">
+     5.6. Functional Data Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/module_type_constraints.html">
+     5.7. Module Type Constraints
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/includes.html">
+     5.8. Includes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/functors.html">
+     5.9. Functors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/summary.html">
+     5.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../modules/exercises.html">
+     5.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../mut/intro.html">
+   6. Mutability
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/refs.html">
+     6.1. Refs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/mutable_fields.html">
+     6.2. Mutable Fields
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/arrays.html">
+     6.3. Arrays and Loops
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/summary.html">
+     6.4. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mut/exercises.html">
+     6.5. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../conc/intro.html">
+   7. Concurrency
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/concurrency.html">
+     7.1. Concurrency
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/promises.html">
+     7.2. Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_promises.html">
+     7.3. Implementing Promises
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/io_promises.html">
+     7.4. Asynchronous Input and Output
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/callbacks.html">
+     7.5. Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/impl_callbacks.html">
+     7.6. Implementing Callbacks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/full_promises_impl.html">
+     7.7. The Full Promises Implementation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/monads.html">
+     7.8. Monads
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/summary.html">
+     7.9. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../conc/exercises.html">
+     7.10. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Correctness and Efficiency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../correctness/intro.html">
+   8. Correctness
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/specifications.html">
+     8.1. Specifications
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/function_docs.html">
+     8.2. Function Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/module_docs.html">
+     8.3. Module Documentation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/test_debug.html">
+     8.4. Testing and Debugging
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/black_glass_box.html">
+     8.5. Black-box and Glass-box Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/randomized.html">
+     8.6. Randomized Testing with QCheck
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/proving_correctness.html">
+     8.7. Proving Correctness
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/structural_induction.html">
+     8.8. Structural Induction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/eq_spec.html">
+     8.9. Equational Specification
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/summary.html">
+     8.10. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../correctness/exercises.html">
+     8.11. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../ds/intro.html">
+   9. Data Structures
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/hash_tables.html">
+     9.1. Hash Tables
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/amortized.html">
+     9.2. Amortized Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/rb.html">
+     9.3. Red-Black Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/sequence.html">
+     9.4. Sequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/memoization.html">
+     9.5. Memoization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/parrays.html">
+     9.6. Persistent Arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/twothree.html">
+     9.7. Two-Three Trees
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/summary.html">
+     9.8. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ds/exercises.html">
+     9.9. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Language Implementation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="intro.html">
+   10. Interpreters
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="calculator.html">
+     10.1. Example: Calculator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="parsing.html">
+     10.2. Parsing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="substitution.html">
+     10.3. Substitution Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="environment.html">
+     10.4. Environment Model
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     10.5. Type Checking
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="inference.html">
+     10.6. Type Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="summary.html">
+     10.7. Summary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="exercises.html">
+     10.8. Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Lagniappe
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../adv/curry-howard.html">
+   The Curry-Howard Correspondence
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendix
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/bigoh.html">
+   Big-Oh Notation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../appendix/vm.html">
+   Virtual Machine
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/cs3110/textbook"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/issues/new?title=Issue%20on%20page%20%2Fchapters/interp/typecheck.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/cs3110/textbook/edit/main/src/chapters/interp/typecheck.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/chapters/interp/typecheck.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-type-system-for-simpl">
+   10.5.1. A Type System for SimPL
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-type-checker-for-simpl">
+   10.5.2. A Type Checker for SimPL
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-safety">
+   10.5.3. Type Safety
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Type Checking</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-type-system-for-simpl">
+   10.5.1. A Type System for SimPL
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-type-checker-for-simpl">
+   10.5.2. A Type Checker for SimPL
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#type-safety">
+   10.5.3. Type Safety
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="type-checking">
+<h1><span class="section-number">10.5. </span>Type Checking<a class="headerlink" href="#type-checking" title="Permalink to this headline">#</a></h1>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/_whuqDIWiO0" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Earlier, we skipped over the type checking phase. Let’s come back to that now.
+After lexing and parsing, the next phase of compilation is semantic analysis,
+and the primary task of semantic analysis is type checking.</p>
+<p>A <em>type system</em> is a mathematical description of how to determine whether an
+expression is <em>ill-typed</em> or <em>well-typed</em>, and in the latter case, what the type
+of the expression is. A <em>type checker</em> is a program that implements a type
+system, i.e., that implements the static semantics of the language.</p>
+<p>Commonly, a type system is formulated as a ternary relation
+<span class="math notranslate nohighlight">\(\mathit{HasType}(\Gamma, e, t)\)</span>, which means that expression <span class="math notranslate nohighlight">\(e\)</span> has type <span class="math notranslate nohighlight">\(t\)</span>
+in static environment <span class="math notranslate nohighlight">\(\Gamma\)</span>. A <em>static environment</em>, aka <em>typing context</em>, is
+a map from identifiers to types. The static environment is used to record what
+variables are in scope, and what their types are. The use of the Greek letter
+<span class="math notranslate nohighlight">\(\Gamma\)</span> for static environments is traditional.</p>
+<p>That ternary relation <span class="math notranslate nohighlight">\(\mathit{HasType}\)</span> is typically written with infix
+notation, though, as <span class="math notranslate nohighlight">\(\Gamma \vdash e : t\)</span>. You can read the turnstile symbol
+<span class="math notranslate nohighlight">\(\vdash\)</span> as “proves” or “shows”, i.e., the static environment <span class="math notranslate nohighlight">\(\Gamma\)</span> shows
+that <span class="math notranslate nohighlight">\(e\)</span> has type <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Let’s make that notation a little friendlier by eliminating the Greek and the
+math typesetting. We’ll just write <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code> to mean that static
+environment <code class="docutils literal notranslate"><span class="pre">env</span></code> shows that <code class="docutils literal notranslate"><span class="pre">e</span></code> has type <code class="docutils literal notranslate"><span class="pre">t</span></code>. We previously used <code class="docutils literal notranslate"><span class="pre">env</span></code> to mean
+a dynamic environment in the big-step relation <code class="docutils literal notranslate"><span class="pre">==&gt;</span></code>. Since it’s always possible
+to see whether we’re using the <code class="docutils literal notranslate"><span class="pre">==&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">|-</span></code> relation, the meaning of <code class="docutils literal notranslate"><span class="pre">env</span></code> as
+either a dynamic or static environment is always discernible.</p>
+<p>Let’s write <code class="docutils literal notranslate"><span class="pre">{}</span></code> for the empty static environment, and <code class="docutils literal notranslate"><span class="pre">x:t</span></code> to mean that <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+bound to <code class="docutils literal notranslate"><span class="pre">t</span></code>. So, <code class="docutils literal notranslate"><span class="pre">{foo:int,</span> <span class="pre">bar:bool}</span></code> would be the static environment is which
+<code class="docutils literal notranslate"><span class="pre">foo</span></code> has type <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">bar</span></code> has type <code class="docutils literal notranslate"><span class="pre">bool</span></code>. A static environment may bind an
+identifier at most once. We’ll write <code class="docutils literal notranslate"><span class="pre">env[x</span> <span class="pre">-&gt;</span> <span class="pre">t]</span></code> to mean a static environment
+that contains all the bindings of <code class="docutils literal notranslate"><span class="pre">env</span></code>, and also binds <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">t</span></code>. If <code class="docutils literal notranslate"><span class="pre">x</span></code> was
+already bound in <code class="docutils literal notranslate"><span class="pre">env</span></code>, then that old binding is replaced by the new binding to
+<code class="docutils literal notranslate"><span class="pre">t</span></code> in <code class="docutils literal notranslate"><span class="pre">env[x</span> <span class="pre">-&gt;</span> <span class="pre">t]</span></code>. As with dynamic environments, if we wanted a more
+mathematical notation we would write <span class="math notranslate nohighlight">\(\mapsto\)</span> instead of <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code> in
+<code class="docutils literal notranslate"><span class="pre">env[x</span> <span class="pre">-&gt;</span> <span class="pre">v]</span></code>, but we’re aiming for notation that is easily typed on a standard
+keyboard.</p>
+<p>With all that machinery, we can at last define what it means to be well-typed:
+An expression <code class="docutils literal notranslate"><span class="pre">e</span></code> is <strong>well-typed</strong> in static environment <code class="docutils literal notranslate"><span class="pre">env</span></code> if there exists
+a type <code class="docutils literal notranslate"><span class="pre">t</span></code> for which <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code>. The goal of a type checker is thus to find
+such a type <code class="docutils literal notranslate"><span class="pre">t</span></code>, starting from some initial static environment.</p>
+<p>It’s convenient to pretend that the initial static environment is empty. But in
+practice, it’s rare that a language truly uses the empty static environment to
+determine whether a program is well-typed. In OCaml, for example, there are many
+built-in identifiers that are always in scope, such as everything in the
+<code class="docutils literal notranslate"><span class="pre">Stdlib</span></code> module.</p>
+<section id="a-type-system-for-simpl">
+<h2><span class="section-number">10.5.1. </span>A Type System for SimPL<a class="headerlink" href="#a-type-system-for-simpl" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/9Lxz8qS3uQ8" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Recall the syntax of SimPL:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+
+bop ::= + | * | &lt;=
+</pre></div>
+</div>
+<p>Let’s define a type system <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code> for SimPL. The only types in SimPL are
+integers and booleans:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>t ::= int | bool
+</pre></div>
+</div>
+<p>To define <code class="docutils literal notranslate"><span class="pre">|-</span></code>, we’ll invent a set of <em>typing rules</em> that specify what the type
+of an expression is based on the types of its subexpressions. In other words,
+<code class="docutils literal notranslate"><span class="pre">|-</span></code> is an <em>inductively-defined relation</em>, as can be learned about in a discrete
+math course. So, it has some base cases, and some inductive cases.</p>
+<p>For the base cases, an integer constant has type <code class="docutils literal notranslate"><span class="pre">int</span></code> in any static environment
+whatsoever, a Boolean constant likewise always has type <code class="docutils literal notranslate"><span class="pre">bool</span></code>, and a variable
+has whatever type the static environment says it should have. Here are the
+typing rules that express those ideas:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>env |- i : int
+env |- b : bool
+{x : t, ...} |- x : t
+</pre></div>
+</div>
+<p>The remaining syntactic forms are inductive cases.</p>
+<p><strong>Let.</strong> As we already know from OCaml, we type check the body of a let
+expression using a scope that is extended with a new binding.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>env |- let x = e1 in e2 : t2
+  if env |- e1 : t1
+  and env[x -&gt; t1] |- e2 : t2
+</pre></div>
+</div>
+<p>The rule says that <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">e1</span> <span class="pre">in</span> <span class="pre">e2</span></code> has type <code class="docutils literal notranslate"><span class="pre">t2</span></code> in static environment <code class="docutils literal notranslate"><span class="pre">env</span></code>,
+but only if certain conditions hold. The first condition is that <code class="docutils literal notranslate"><span class="pre">e1</span></code> has type
+<code class="docutils literal notranslate"><span class="pre">t1</span></code> in <code class="docutils literal notranslate"><span class="pre">env</span></code>. The second is that <code class="docutils literal notranslate"><span class="pre">e2</span></code> has type <code class="docutils literal notranslate"><span class="pre">t2</span></code> in a new static
+environment, which is <code class="docutils literal notranslate"><span class="pre">env</span></code> extended to bind <code class="docutils literal notranslate"><span class="pre">x</span></code> to <code class="docutils literal notranslate"><span class="pre">t1</span></code>.</p>
+<p><strong>Binary operators.</strong> We’ll need a couple different rules for binary operators.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>env |- e1 bop e2 : int
+  if bop is + or *
+  and env |- e1 : int
+  and env |- e2 : int
+
+env |- e1 &lt;= e2 : bool
+  if env |- e1 : int
+  and env |- e2 : int
+</pre></div>
+</div>
+<p><strong>If.</strong> Just like OCaml, an if expression must have a Boolean guard, and its two
+branches must have the same type.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>env |- if e1 then e2 else e3 : t
+  if env |- e1 : bool
+  and env |- e2 : t
+  and env |- e3 : t
+</pre></div>
+</div>
+</section>
+<section id="a-type-checker-for-simpl">
+<h2><span class="section-number">10.5.2. </span>A Type Checker for SimPL<a class="headerlink" href="#a-type-checker-for-simpl" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/BN_nIMgFZ_o" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Let’s implement a type checker for SimPL, based on the type system we defined in
+the previous section. You can download the completed type checker as part of the
+SimPL interpreter: <a href="../../code/simpl.zip">simpl.zip</a></p>
+<p>We need a variant to represent types:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">typ</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">TInt</span>
+  <span class="o">|</span> <span class="nc">TBool</span>
+</pre></div>
+</div>
+<p>The natural name for that variant would of course have been “type” not “typ”,
+but the former is already a keyword in OCaml. We have to prefix the constructors
+with “T” to disambiguate them from the constructors of the <code class="docutils literal notranslate"><span class="pre">expr</span></code> type, which
+include <code class="docutils literal notranslate"><span class="pre">Int</span></code> and <code class="docutils literal notranslate"><span class="pre">Bool</span></code>.</p>
+<p>Let’s introduce a small signature for static environments, based on the
+abstractions we’ve introduced so far: the empty static environment, looking up a
+variable, and extending a static environment.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">StaticEnvironment</span> <span class="o">=</span> <span class="k">sig</span>
+  <span class="c">(** [t] is the type of a static environment. *)</span>
+  <span class="k">type</span> <span class="n">t</span>
+
+  <span class="c">(** [empty] is the empty static environment. *)</span>
+  <span class="k">val</span> <span class="n">empty</span> <span class="o">:</span> <span class="n">t</span>
+
+  <span class="c">(** [lookup env x] gets the binding of [x] in [env].</span>
+<span class="c">      Raises: [Failure] if [x] is not bound in [env]. *)</span>
+  <span class="k">val</span> <span class="n">lookup</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">typ</span>
+
+  <span class="c">(** [extend env x ty] is [env] extended with a binding</span>
+<span class="c">      of [x] to [ty]. *)</span>
+  <span class="k">val</span> <span class="n">extend</span> <span class="o">:</span> <span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">typ</span> <span class="o">-&gt;</span> <span class="n">t</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>It’s easy to implement that signature with an association list.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">StaticEnvironment</span> <span class="o">:</span> <span class="nc">StaticEnvironment</span> <span class="o">=</span> <span class="k">struct</span>
+  <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="o">(</span><span class="kt">string</span> <span class="o">*</span> <span class="n">typ</span><span class="o">)</span> <span class="kt">list</span>
+
+  <span class="k">let</span> <span class="n">empty</span> <span class="o">=</span> <span class="bp">[]</span>
+
+  <span class="k">let</span> <span class="n">lookup</span> <span class="n">env</span> <span class="n">x</span> <span class="o">=</span>
+    <span class="k">try</span> <span class="nn">List</span><span class="p">.</span><span class="n">assoc</span> <span class="n">x</span> <span class="n">env</span>
+    <span class="k">with</span> <span class="nc">Not_found</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s2">&quot;Unbound variable&quot;</span>
+
+  <span class="k">let</span> <span class="n">extend</span> <span class="n">env</span> <span class="n">x</span> <span class="n">ty</span> <span class="o">=</span>
+    <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">ty</span><span class="o">)</span> <span class="o">::</span> <span class="n">env</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Now we can implement the typing relation <code class="docutils literal notranslate"><span class="pre">|-</span></code>. We’ll do that by writing a
+function <code class="docutils literal notranslate"><span class="pre">typeof</span> <span class="pre">:</span> <span class="pre">StaticEnvironment.t</span> <span class="pre">-&gt;</span> <span class="pre">expr</span> <span class="pre">-&gt;</span> <span class="pre">typ</span></code>, such that
+<code class="docutils literal notranslate"><span class="pre">typeof</span> <span class="pre">env</span> <span class="pre">e</span> <span class="pre">=</span> <span class="pre">t</span></code> if and only if <code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code>. Note that the <code class="docutils literal notranslate"><span class="pre">typeof</span></code>
+function produces the type as output, so the function is actually inferring the
+type! That inference is easy for SimPL; it would be considerably harder for
+larger languages.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/m3bt3BYB0vQ" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Let’s start with the base cases:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nc">StaticEnvironment</span>
+
+<span class="c">(** [typeof env e] is the type of [e] in static environment [env].</span>
+<span class="c">    Raises: [Failure] if [e] is not well-typed in [env]. *)</span>
+<span class="k">let</span> <span class="k">rec</span> <span class="n">typeof</span> <span class="n">env</span> <span class="o">=</span> <span class="k">function</span>
+  <span class="o">|</span> <span class="nc">Int</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">TInt</span>
+  <span class="o">|</span> <span class="nc">Bool</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nc">TBool</span>
+  <span class="o">|</span> <span class="nc">Var</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">lookup</span> <span class="n">env</span> <span class="n">x</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>Note how the implementation of <code class="docutils literal notranslate"><span class="pre">typeof</span></code> so far is based on the rules we
+previously defined for <code class="docutils literal notranslate"><span class="pre">|-</span></code>. In particular:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">typeof</span></code> is a recursive function, just as <code class="docutils literal notranslate"><span class="pre">|-</span></code> is an inductive relation.</p></li>
+<li><p>The base cases for the recursion of <code class="docutils literal notranslate"><span class="pre">typeof</span></code> are the same as the base cases
+for <code class="docutils literal notranslate"><span class="pre">|-</span></code>.</p></li>
+</ul>
+<p>Also note how the implementation of <code class="docutils literal notranslate"><span class="pre">typeof</span></code> differs in one major way from the
+definition of <code class="docutils literal notranslate"><span class="pre">|-</span></code>: error handling. The type system didn’t say what to do about
+errors; rather, it just defined what it meant to be well-typed. The type
+checker, on the other hand, needs to take action and report ill-typed programs.
+Our <code class="docutils literal notranslate"><span class="pre">typeof</span></code> function does that by raising exceptions. The <code class="docutils literal notranslate"><span class="pre">lookup</span></code> function, in
+particular, will raise an exception if we attempt to lookup a variable that
+hasn’t been bound in the static environment.</p>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/TiKPU5rYeF8" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>Let’s continue with the recursive cases:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span>  <span class="o">...</span>
+  <span class="o">|</span> <span class="nc">Let</span> <span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">typeof_let</span> <span class="n">env</span> <span class="n">x</span> <span class="n">e1</span> <span class="n">e2</span>
+  <span class="o">|</span> <span class="nc">Binop</span> <span class="o">(</span><span class="n">bop</span><span class="o">,</span> <span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">typeof_bop</span> <span class="n">env</span> <span class="n">bop</span> <span class="n">e1</span> <span class="n">e2</span>
+  <span class="o">|</span> <span class="nc">If</span> <span class="o">(</span><span class="n">e1</span><span class="o">,</span> <span class="n">e2</span><span class="o">,</span> <span class="n">e3</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">typeof_if</span> <span class="n">env</span> <span class="n">e1</span> <span class="n">e2</span> <span class="n">e3</span>
+</pre></div>
+</div>
+<p>We’re factoring out a helper function for each branch for the sake of keeping
+the pattern match readable. Each of the helpers directly encodes the ideas of
+the <code class="docutils literal notranslate"><span class="pre">|-</span></code> rules, with error handling added.</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="ow">and</span> <span class="n">typeof_let</span> <span class="n">env</span> <span class="n">x</span> <span class="n">e1</span> <span class="n">e2</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e1</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">env&#39;</span> <span class="o">=</span> <span class="n">extend</span> <span class="n">env</span> <span class="n">x</span> <span class="n">t1</span> <span class="k">in</span>
+  <span class="n">typeof</span> <span class="n">env&#39;</span> <span class="n">e2</span>
+
+<span class="ow">and</span> <span class="n">typeof_bop</span> <span class="n">env</span> <span class="n">bop</span> <span class="n">e1</span> <span class="n">e2</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e1</span><span class="o">,</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e2</span> <span class="k">in</span>
+  <span class="k">match</span> <span class="n">bop</span><span class="o">,</span> <span class="n">t1</span><span class="o">,</span> <span class="n">t2</span> <span class="k">with</span>
+  <span class="o">|</span> <span class="nc">Add</span><span class="o">,</span> <span class="nc">TInt</span><span class="o">,</span> <span class="nc">TInt</span>
+  <span class="o">|</span> <span class="nc">Mult</span><span class="o">,</span> <span class="nc">TInt</span><span class="o">,</span> <span class="nc">TInt</span> <span class="o">-&gt;</span> <span class="nc">TInt</span>
+  <span class="o">|</span> <span class="nc">Leq</span><span class="o">,</span> <span class="nc">TInt</span><span class="o">,</span> <span class="nc">TInt</span> <span class="o">-&gt;</span> <span class="nc">TBool</span>
+  <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s2">&quot;Operator and operand type mismatch&quot;</span>
+
+<span class="ow">and</span> <span class="n">typeof_if</span> <span class="n">env</span> <span class="n">e1</span> <span class="n">e2</span> <span class="n">e3</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e1</span> <span class="o">=</span> <span class="nc">TBool</span>
+  <span class="k">then</span> <span class="k">begin</span>
+    <span class="k">let</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e2</span> <span class="k">in</span>
+    <span class="k">if</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">typeof</span> <span class="n">env</span> <span class="n">e3</span> <span class="k">then</span> <span class="n">t2</span>
+    <span class="k">else</span> <span class="n">failwith</span> <span class="s2">&quot;Branches of if must have same type&quot;</span>
+  <span class="k">end</span>
+  <span class="k">else</span> <span class="n">failwith</span> <span class="s2">&quot;Guard of if must have type bool&quot;</span>
+</pre></div>
+</div>
+<p>Note how the recursive calls in the implementation of <code class="docutils literal notranslate"><span class="pre">typeof</span></code> occur exactly in
+the same places where the definition of <code class="docutils literal notranslate"><span class="pre">|-</span></code> is inductive.</p>
+<p>Finally, we can implement a function to check whether an expression is
+well-typed:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(** [typecheck e] checks whether [e] is well-typed in</span>
+<span class="c">    the empty static environment. Raises: [Failure] if not. *)</span>
+<span class="k">let</span> <span class="n">typecheck</span> <span class="n">e</span> <span class="o">=</span>
+  <span class="n">ignore</span> <span class="o">(</span><span class="n">typeof</span> <span class="n">empty</span> <span class="n">e</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="type-safety">
+<h2><span class="section-number">10.5.3. </span>Type Safety<a class="headerlink" href="#type-safety" title="Permalink to this headline">#</a></h2>
+<div class="container16x9"><iframe src="https://www.youtube.com/embed/MrmEIbDOfnk" class="responsive-iframe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<p>What is the purpose of a type system? There might be many, but one of the
+primary purposes is to ensure that certain run-time errors don’t occur. Now that
+we know how to formalize type systems with the <code class="docutils literal notranslate"><span class="pre">|-</span></code> relation and evaluation with
+the <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code> relation, we can make that idea precise.</p>
+<p>The goals of a language designer usually include ensuring that these two
+properties, which establish a relationship between <code class="docutils literal notranslate"><span class="pre">|-</span></code> and <code class="docutils literal notranslate"><span class="pre">--&gt;</span></code>, both hold:</p>
+<ul class="simple">
+<li><p><strong>Progress:</strong> If an expression is well-typed, then either it is already a
+value, or it can take at least one step. We can formalize that as, “for all
+<code class="docutils literal notranslate"><span class="pre">e</span></code>, if there exists a <code class="docutils literal notranslate"><span class="pre">t</span></code> such that <code class="docutils literal notranslate"><span class="pre">{}</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code>, then <code class="docutils literal notranslate"><span class="pre">e</span></code> is a value, or
+there exists an <code class="docutils literal notranslate"><span class="pre">e'</span></code> such that <code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">--&gt;</span> <span class="pre">e'</span></code>.”</p></li>
+<li><p><strong>Preservation:</strong> If an expression is well-typed, then if the expression
+steps, the new expression has the same type as the old expression. Formally,
+“for all <code class="docutils literal notranslate"><span class="pre">e</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> such that <code class="docutils literal notranslate"><span class="pre">{}</span> <span class="pre">|-</span> <span class="pre">e</span> <span class="pre">:</span> <span class="pre">t</span></code>, if there exists an <code class="docutils literal notranslate"><span class="pre">e'</span></code> such
+that <code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">--&gt;</span> <span class="pre">e'</span></code>, then <code class="docutils literal notranslate"><span class="pre">{}</span> <span class="pre">|-</span> <span class="pre">e'</span> <span class="pre">:</span> <span class="pre">t</span></code>.”</p></li>
+</ul>
+<p>Put together, progress plus preservation imply that evaluation of a
+well-typed expression can never <em>get stuck</em>, meaning it reaches a non-value that
+cannot take a step. This property is known as <em>type safety</em>.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">+</span> <span class="pre">true</span></code> would get stuck using the SimPL evaluation relation,
+because the primitive <code class="docutils literal notranslate"><span class="pre">+</span></code> operation cannot accept a Boolean as an operand. But
+the SimPL type system won’t accept that program, thus saving us from ever
+reaching that situation.</p>
+<p>Looking back at the SimPL we wrote, everywhere in the implementation of <code class="docutils literal notranslate"><span class="pre">step</span></code>
+where we raised an exception was a place where evaluation would get stuck. But
+the type system guarantees those exceptions will never occur.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "cs3110/textbook",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./chapters/interp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="environment.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">10.4. </span>Environment Model</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="inference.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">10.6. </span>Type Inference</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Michael R. Clarkson et al.<br/>
+  
+      &copy; Copyright 2026.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

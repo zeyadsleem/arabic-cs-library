@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dive Into Systems</title>
+    <meta name="generator" content="Antora 2.2.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6C7YGP3BE6"></script>
+    <script>function gtag(){dataLayer.push(arguments)};window.dataLayer=window.dataLayer||[];gtag('js',new Date());gtag('config','G-6C7YGP3BE6')</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">Dive Into Systems</a>
+      <div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search book...">
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="diveintosystems" data-version="1.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Dive Into Systems</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Dive Into Systems</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../index.html">Authors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../copyright.html">Copyright</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../preface.html">Preface</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction.html">0. Introduction</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C1-C_intro/index.html">1. By the C, the Beautiful C</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/getting_started.html">1.1. Getting Started Programming in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/input_output.html">1.2. Input/Output (printf and scanf)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/conditionals.html">1.3. Conditionals and Loops</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/functions.html">1.4. Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/arrays_strings.html">1.5. Arrays and Strings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/structs.html">1.6. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/summary.html">1.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C1-C_intro/exercises.html">1.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C2-C_depth/index.html">2. A Deeper Dive Into C</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/scope_memory.html">2.1. Parts of Program Memory and Scope</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/pointers.html">2.2. C Pointer Variables</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/pointers_functions.html">2.3. Pointers and Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/dynamic_memory.html">2.4. Dynamic Memory Allocation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/arrays.html">2.5. Arrays in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/strings.html">2.6. Strings and the String Library</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/structs.html">2.7. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/IO.html">2.8. Input / Output in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C2-C_depth/advanced.html">2.9. Advanced C Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_switch.html">2.9.1. Constants, switch, enum, and typedef</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_cmd_line_args.html">2.9.2. Command Line Arguments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_voidstar.html">2.9.3. The void* Type</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_pointer_arithmetic.html">2.9.4. Pointer Arithmetic</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_libraries.html">2.9.5. C Libraries: Using, Compiling and Linking</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_writing_libraries.html">2.9.6. Writing and using your own C libraries (and compiling multiple .c and .h files)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C2-C_depth/advanced_assembly.html">2.9.7. Compiling C to Assembly and Compiling Assembly Code</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/summary.html">2.10. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C2-C_depth/exercises.html">2.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C3-C_debug/index.html">3. C Debugging Tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb.html">3.1. Debugging with GDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_commands.html">3.2. GDB Commands in Detail</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/valgrind.html">3.3. Debugging Memory with Valgrind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_advanced.html">3.4. Advanced GDB Features</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_assembly.html">3.5. Debugging Assembly Code</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/gdb_pthreads.html">3.6. Debugging Multi-threaded Programs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C3-C_debug/summary.html">3.7. Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C4-Binary/index.html">4. Binary and Data Representation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/bases.html">4.1. Number Bases and Unsigned Integers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/conversion.html">4.2. Converting Between Bases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/signed.html">4.3. Signed Binary Integers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C4-Binary/arithmetic.html">4.4. Binary Integer Arithmetic</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_addition.html">4.4.1. Addition</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_subtraction.html">4.4.2. Subtraction</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C4-Binary/arithmetic_mult_div.html">4.4.3. Multiplication &amp; Division</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/overflow.html">4.5. Overflow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/bitwise.html">4.6. Bitwise Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/byte_order.html">4.7. Integer Byte Order</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/floating_point.html">4.8. Real Numbers in Binary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/summary.html">4.9. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C4-Binary/exercises.html">4.10. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C5-Arch/index.html">5. What von Neumann Knew: Computer Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/hist.html">5.1. The Origins of Modern Computing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/von.html">5.2. The von Neumann Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/gates.html">5.3. Logic Gates</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C5-Arch/circuits.html">5.4. Circuits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/arithlogiccircs.html">5.4.1. Arithmetic and Logic Circuits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/controlcircs.html">5.4.2. Control Circuits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C5-Arch/storagecircs.html">5.4.3. Storage Circuits</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/cpu.html">5.5. Building a Processor</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/instrexec.html">5.6. The Processor&#8217;s Execution of Program Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/pipelining.html">5.7. Pipelining Instruction Execution</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/pipelining_advanced.html">5.8. Advanced Pipelining Considerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/modern.html">5.9. Looking Ahead: CPUs Today</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/summary.html">5.10. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C5-Arch/exercises.html">5.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../C6-asm_intro/index.html">6. Under the C: Dive into Assembly</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C7-x86_64/index.html">7. 64-bit x86 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/basics.html">7.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/common.html">7.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/arithmetic.html">7.3. Additional Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C7-x86_64/conditional_control_loops.html">7.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/preliminaries.html">7.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/if_statements.html">7.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C7-x86_64/loops.html">7.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/functions.html">7.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/recursion.html">7.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/arrays.html">7.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/matrices.html">7.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/structs.html">7.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/buffer_overflow.html">7.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C7-x86_64/exercises.html">7.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C8-IA32/index.html">8. 32-bit x86 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/basics.html">8.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/common.html">8.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/arithmetic.html">8.3. Additional Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C8-IA32/conditional_control_loops.html">8.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/preliminaries.html">8.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/if_statements.html">8.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C8-IA32/loops.html">8.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/functions.html">8.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/recursion.html">8.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/arrays.html">8.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/matrices.html">8.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/structs.html">8.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/buffer_overflow.html">8.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C8-IA32/exercises.html">8.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C9-ARM64/index.html">9. ARMv8 Assembly</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/basics.html">9.1. Assembly Basics</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/common.html">9.2. Common Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/arithmetic.html">9.3. Arithmetic Instructions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C9-ARM64/conditional_control_loops.html">9.4. Conditional Control and Loops</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/preliminaries.html">9.4.1. Preliminaries</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/if_statements.html">9.4.2. If Statements</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C9-ARM64/loops.html">9.4.3. Loops</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/functions.html">9.5. Functions in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/recursion.html">9.6. Recursion</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/arrays.html">9.7. Arrays in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/matrices.html">9.8. Matrices in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/structs.html">9.9. Structs in Assembly</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/buffer_overflow.html">9.10. Buffer Overflows</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C9-ARM64/exercises.html">9.11. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../C10-asm_takeaways/index.html">10. Key Assembly Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C11-MemHierarchy/index.html">11. Storage and the Memory Hierarchy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/mem_hierarchy.html">11.1. The Memory Hierarchy</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/devices.html">11.2. Storage Devices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/locality.html">11.3. Locality</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/caching.html">11.4. Caching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/cachegrind.html">11.5. Cache Analysis and Cachegrind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/coherency.html">11.6. Looking Ahead: Caching on Multicore Processors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/summary.html">11.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C11-MemHierarchy/exercises.html">11.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C12-CodeOpt/index.html">12. Code Optimization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/basic.html">12.1. First Steps</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/loops_functions.html">12.2. Other Compiler Optimizations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/memory_considerations.html">12.3. Memory Considerations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C12-CodeOpt/summary.html">12.4. Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">13. The Operating System</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="impl.html">13.1. Booting and Running</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="processes.html">13.2. Processes</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="vm.html">13.3. Virtual Memory</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ipc.html">13.4. Interprocess Communication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ipc_signals.html">13.4.1. Signals</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ipc_msging.html">13.4.2. Message Passing</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ipc_shm.html">13.4.3. Shared Memory</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="advanced.html">13.5. Summary and Other OS Functionality</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="exercises.html">13.6. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C14-SharedMemory/index.html">14. Leveraging Shared Memory in the Multicore Era</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/multicore.html">14.1. Programming Multicore Systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/posix.html">14.2. POSIX Threads</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C14-SharedMemory/synchronization.html">14.3. Synchronizing Threads</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C14-SharedMemory/mutex.html">14.3.1. Mutual Exclusion</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C14-SharedMemory/semaphores.html">14.3.2. Semaphores</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C14-SharedMemory/other_syncs.html">14.3.3. Other Synchronization Constructs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C14-SharedMemory/performance.html">14.4. Measuring Parallel Performance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C14-SharedMemory/performance_basics.html">14.4.1. Parallel Performance Basics</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../C14-SharedMemory/performance_advanced.html">14.4.2. Advanced Topics</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/cache_coherence.html">14.5. Cache Coherence</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/thread_safety.html">14.6. Thread Safety</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/openmp.html">14.7. Implicit Threading with OpenMP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/summary.html">14.8. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C14-SharedMemory/exercises.html">14.9. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../C15-Parallel/index.html">15. Looking Ahead: Other Parallel Systems</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/gpu.html">15.1. Hardware Acceleration and CUDA</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/distrmem.html">15.2. Distributed Memory Systems</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../C15-Parallel/cloud.html">15.3. To Exascale and Beyond</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../Appendix1/index.html">16. Appendix 1: Chapter 1 for Java Programmers</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/getting_started.html">16.1. Getting Started Programming in C</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/input_output.html">16.2. Input/Output (printf and scanf)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/conditionals.html">16.3. Conditionals and Loops</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/functions.html">16.4. Functions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/arrays_strings.html">16.5. Arrays and Strings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/structs.html">16.6. Structs</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/summary.html">16.7. Summary</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix1/exercises.html">16.8. Exercises</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../Appendix2/index.html">17. Appendix 2: Using Unix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/cmdln_basics.html">17.1. Unix Command Line and the Unix File System</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/man.html">17.2. Man and the Unix Manual</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/ssh_scp.html">17.3. Remote Access</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/editors.html">17.4. Unix Editors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/makefiles.html">17.5. make and Makefiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/grep.html">17.6 Searching: grep and find</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/chmod.html">17.7 File Permissions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/tar.html">17.8 Archiving and Compressing Files</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/pskill.html">17.9 Process Control</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/timing.html">17.10 Timing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/history.html">17.11 Command History</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/ioredirect.html">17.12 I/0 Redirection</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/pipe.html">17.13 Pipes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/dotfiles.html">17.14 Dot Files and .bashrc</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/shellprog.html">17.15 Shell Programming</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../Appendix2/sysinfo.html">17.16 Getting System Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Dive Into Systems</span>
+    <span class="version">1.2</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Dive Into Systems</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.2</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Dive Into Systems</a></li>
+    <li><a href="index.html">13. The Operating System</a></li>
+    <li><a href="vm.html">13.3. Virtual Memory</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<div class="sect1">
+<h2 id="_virtual_memory"><a class="anchor" href="#_virtual_memory"></a>13.3. Virtual Memory</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The OS&#8217;s process abstraction provides each process with a virtual
+memory space.  <strong>Virtual memory</strong> is an abstraction that gives each
+process its own private, logical address space in which its
+instructions and data are stored.  Each process&#8217;s virtual address
+space can be thought of as an
+array of addressable bytes, from address 0 up to some  maximum address.
+For example, on 32-bit systems the maximum address is 2<sup>32</sup> -1.
+Processes cannot access the contents of one another&#8217;s address spaces.  Some
+parts of a process&#8217;s virtual address space come from the binary executable
+file it&#8217;s running (e.g., the <em>text</em> portion contains program instructions
+from the <code>a.out</code> file).  Other parts of a process&#8217;s virtual address space
+are created at runtime (e.g., the <em>stack</em>).</p>
+</div>
+<div class="paragraph">
+<p>Operating systems implement virtual memory as part of the <strong>lone view</strong>
+abstraction of processes. That is, each process only interacts with memory in
+terms of its own virtual address space rather than the reality of many
+processes simultaneously sharing the computer&#8217;s physical memory (RAM).  The OS
+also uses its virtual memory implementation to protect processes from
+accessing one another&#8217;s memory spaces. As an example, consider the
+following simple C program:</p>
+</div>
+<div id="exampleprog" class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">/* a simple program */
+#include &lt;stdio.h&gt;
+
+int main(int argc, char* argv[]) {
+    int x, y;
+
+    printf("enter a value: ");
+    scanf("%d", &amp;y);
+
+    if (y &gt; 10) {
+        x = y;
+    } else {
+        x = 6;
+    }
+    printf("x is %d\n", x);
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If two processes simultaneously execute this program,
+they each get their own copy of stack memory as part of their
+separate virtual address spaces.  As a result, if
+one process executes <code>x = 6</code> it will have no effect on the value of
+<code>x</code> in the other process&#8201;&#8212;&#8201;each process has its own copy of <code>x</code>, in its
+private virtual address space, as shown in <a href="#Figprivatevm">Figure 1</a>.</p>
+</div>
+<div id="Figprivatevm" class="imageblock text-center">
+<div class="content">
+<img src="_images/vas.png" alt="virtual address space">
+</div>
+<div class="title">Figure 1. Two executions of a.out results in two processes, each running isolated instances of the a.out program. Each process has its own private virtual address space, containing its copies of program instructions, global variables, and stack and heap memory space.  For example, each may have a local variable x in the stack portion of their virtual address spaces.</div>
+</div>
+<div class="paragraph">
+<p>A process&#8217;s virtual address space is divided into several sections,
+each of which stores a different part of the process&#8217;s memory.  The
+top part (at the lowest addresses) is reserved for the OS and can
+only be accessed in kernel mode.  The text and data parts of a process&#8217;s
+virtual address space are initialized from the program executable file
+(<code>a.out</code>).  The text section contains the program instructions, and the
+data section contains global variables (the data portion is actually
+divided into two parts, one for initialized global variables and the other
+for uninitialized globals).</p>
+</div>
+<div class="paragraph">
+<p>The stack and heap sections of a process&#8217;s virtual address space vary in
+size as the process runs.  Stack space grows in response to the process
+making function calls, and shrinks as it returns from functions.
+Heap space grows when the process dynamically allocates memory space (via
+calls to <code>malloc</code>), and shrinks when the process frees dynamically allocated
+memory space (via calls to <code>free</code>).  The heap and
+stack portions of a process&#8217;s memory are typically located far apart in
+its address space to maximize the amount of space either can use.  Typically,
+the stack is located at the bottom of a process&#8217;s address space (near the
+maximum address), and grows upward into lower addresses as stack frames
+are added to the top of the stack in response to a function call.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">About Heap and Stack Memory</div>
+<div class="paragraph">
+<p>The actual total capacity of heap and stack memory space does not typically
+change on every call to <code>malloc</code> and <code>free</code>, nor on every function
+call and return.  Instead, these actions often only make changes to how
+much of the currently allocated heap and stack parts of
+the virtual memory space are actively being used by the process.
+Sometimes, however, these actions do result in changes to the total
+capacity of the heap or stack space.</p>
+</div>
+<div class="paragraph">
+<p>The operating system is responsible for managing a process&#8217;s virtual
+address space, including changing the total capacity of heap and
+stack space.  The system calls <code>brk</code>, <code>sbrk</code>, or <code>mmap</code> can
+be used to request that the OS change the total capacity of heap memory.
+C programmers do not usually invoke these system calls directly.
+Instead, C programmers call the standard C library function <code>malloc</code>
+(and <code>free</code>) to allocate (and free) heap memory space.  Internally,
+the standard C library&#8217;s user-level heap manager may invoke one of
+these system calls to request that the OS change the size of heap
+memory space to satisfy a <code>malloc</code> request.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_memory_addresses"><a class="anchor" href="#_memory_addresses"></a>13.3.1. Memory Addresses</h3>
+<div class="paragraph">
+<p>Because processes operate within their own virtual address spaces, operating
+systems must make an important distinction between two types of memory
+addresses.  <strong>Virtual addresses</strong> refer to storage locations in a process&#8217;s
+virtual address space, and <strong>physical addresses</strong> refer to storage locations
+in physical memory (RAM).</p>
+</div>
+<div class="sect3">
+<h4 id="_physical_memory_ram_and_physical_memory_addresses"><a class="anchor" href="#_physical_memory_ram_and_physical_memory_addresses"></a>Physical Memory (RAM) and Physical Memory Addresses</h4>
+<div class="paragraph">
+<p>From the <a href="../C11-MemHierarchy/index.html#_storage_and_the_memory_hierarchy" class="page">Storage and Memory Hierarchy Chapter</a>,
+we know that physical memory (RAM) can be viewed as an array of
+addressable bytes in which addresses range from 0 to a maximum address value
+based on the total size of RAM.  For example, in a system with
+2 gigabytes (GB) of RAM, physical memory addresses range from 0 to
+2<sup>31</sup> -1 (1 GB is 2<sup>30</sup> bytes, so 2 GB is 2<sup>31</sup> bytes).</p>
+</div>
+<div class="paragraph">
+<p>In order for the CPU to run a program, the program&#8217;s instructions and data must
+be loaded into RAM by the OS; the CPU cannot directly access other storage
+devices (e.g., disks).  The OS manages RAM and determines which
+locations in RAM should store the virtual address space contents of a process.
+For example, if two processes, P1 and P2, run
+the <a href="#exampleprog">example program</a> listed above, then P1 and P2 have separate
+copies of the <code>x</code> variable, each stored at a different location in RAM.
+That is, P1’s <code>x</code> and P2’s <code>x</code> have different physical addresses.  If the OS
+gave P1 and P2 the same physical address for their <code>x</code> variables, then P1
+setting <code>x</code> to 6 would also modify P2&#8217;s value of <code>x</code>, violating the
+per-process private virtual address space.</p>
+</div>
+<div class="paragraph">
+<p>At any point in time, the OS stores in RAM the address space contents
+from many processes as well as OS code that it may map into every
+process&#8217;s virtual address space (OS code is typically loaded starting at
+address 0x0 of RAM).  <a href="#FigRAM">Figure 2</a> shows an example of
+the OS and three processes (P1, P2, and P3) loaded into RAM. Each process
+gets its own separate physical storage locations for its address space
+contents (e.g., even if P1 and P2 run the same program, they
+get separate physical storage locations for their variable <code>x</code>).</p>
+</div>
+<div id="FigRAM" class="imageblock text-center">
+<div class="content">
+<img src="_images/pa.png" alt="physical addresses" width="650">
+</div>
+<div class="title">Figure 2. Example RAM contents showing OS loaded at address 0x0, and processes loaded at different physical memory addresses in RAM.  If P1 and P2 are running the same a.out, P1&#8217;s physical address for x is different from P2&#8217;s physical address for x.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_virtual_memory_and_virtual_addresses"><a class="anchor" href="#_virtual_memory_and_virtual_addresses"></a>Virtual Memory and Virtual Addresses</h4>
+<div class="paragraph">
+<p>Virtual memory is the per-process view of its memory space, and
+<strong>virtual addresses</strong> are addresses in the process&#8217;s view of its memory.  If
+two process run the same binary executable, they have exactly
+the same virtual addresses for function code and for global variables
+in their address spaces (the virtual addresses of dynamically
+allocated space in heap memory and of local variables on the stack may
+vary slightly between the two processes due to runtime differences in
+their two separate executions).  In other words,
+both processes will have the same virtual addresses for the location
+of their <code>main</code> function, and the same virtual address for the location of
+a global variable <code>x</code> in their address spaces, as shown in <a href="#FigVA">Figure 3</a>.</p>
+</div>
+<div id="FigVA" class="imageblock text-center">
+<div class="content">
+<img src="_images/va.png" alt="virtual addresses for two processes running the same a.out">
+</div>
+<div class="title">Figure 3. Example virtual memory contents for two processes running the same a.out file. P1 and P2 have the same virtual address for global variable x.</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_virtual_address_to_physical_address_translation"><a class="anchor" href="#_virtual_address_to_physical_address_translation"></a>13.3.2. Virtual Address to Physical Address Translation</h3>
+<div class="paragraph">
+<p>A program&#8217;s assembly and machine code instructions refer to virtual addresses.
+As a result, if two processes execute the same <code>a.out</code> program, the CPU
+executes instructions with identical virtual addresses to access
+corresponding parts of their two separate virtual address spaces.  For
+example, suppose that <code>x</code> is at virtual address 0x24100, then assembly
+instructions to set <code>x</code> to 6 might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>movl $0x24100, %eax    # load 0x24100 into register eax
+movl $6, (%eax)        # store 6 at memory address 0x24100</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At runtime the OS loads each of the processes' <code>x</code> variables at
+different physical memory addresses (at different locations in RAM).
+This means that whenever the CPU executes a load or store instruction
+to memory that specify virtual addresses, the virtual address from the
+CPU must be translated to its corresponding physical address in RAM
+before reading or writing the bytes from RAM.</p>
+</div>
+<div class="paragraph">
+<p>Because virtual memory is an important and core abstraction implemented
+by operating systems, processors generally provide some hardware support
+for virtual memory.  An OS can make use of this hardware-level virtual
+memory support to perform virtual to physical address translations quickly,
+avoiding having to trap to the OS to handle every address translation.
+A particular OS chooses how much of the hardware support for paging it
+uses in its implementation of virtual memory.  There is often a
+trade-off in speed versus flexibility when choosing a hardware-implemented
+feature versus a software-implemented feature.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>memory management unit</strong> (MMU) is the part of the computer hardware
+that implements address translation.  Together, the MMU hardware
+and the OS translate virtual to physical addresses when applications
+access memory.  The particular hardware/software split depends on
+the specific combination of hardware and OS.  At its most complete,
+MMU hardware performs the full translation: it takes a virtual address
+from the CPU and translates it to a physical address that is used to
+address RAM (as shown in <a href="#FigMMU">Figure 4</a>).  Regardless of the extent of hardware
+support for virtual memory, there will be some virtual-to-physical translations
+that the OS has to handle.  In our discussion of virtual memory, we assume a
+more complete MMU that minimizes the amount of OS involvement required for
+address translation.</p>
+</div>
+<div id="FigMMU" class="imageblock text-center">
+<div class="content">
+<img src="_images/mmu.png" alt="mmu maps virtual addresses to physical addresses">
+</div>
+<div class="title">Figure 4. The memory management unit (MMU) maps virtual to physical addresses.   Virtual addresses are used in instructions executed by the CPU.  When the CPU needs to fetch data from physical memory, the virtual address is first translated by the MMU to a physical addresses that is used to address RAM.</div>
+</div>
+<div class="paragraph">
+<p>The OS maintains virtual memory mappings for each process to ensure that it can
+correctly translate virtual to physical addresses for any process that runs on
+the CPU.  During a context switch, the OS updates the MMU hardware to refer to
+the swapped-on process&#8217;s virtual to physical memory mappings.  The OS protects
+processes from accessing one another&#8217;s memory spaces by swapping the per-process
+address mapping state on a context switch&#8201;&#8212;&#8201;swapping the mappings on a context
+switch ensures that one process&#8217;s virtual addresses will not map to physical
+addresses storing another process&#8217;s virtual address space.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_paging"><a class="anchor" href="#_paging"></a>13.3.3. Paging</h3>
+<div class="paragraph">
+<p>Although many virtual memory systems have been proposed over the years,
+paging is now the most widely used implementation of virtual memory.
+In a <strong>paged virtual memory</strong> system, the OS divides the virtual address space of
+each process into fixed-sized chunks called <strong>pages</strong>.  The OS defines
+the page size for the system.  Page sizes of a few kilobytes
+are commonly used in general-purpose operating systems today&#8201;&#8212;&#8201;4 KB (4,096 bytes)
+is the default page size on many systems.</p>
+</div>
+<div class="paragraph">
+<p>Physical memory is similarly divided by the OS into page-sized chunks
+called <strong>frames</strong>.  Because pages and frames are defined to be the same size,
+any page of a process&#8217;s virtual memory can be stored in any frame of
+physical RAM.</p>
+</div>
+<div class="paragraph">
+<p>In a paging system:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pages and frames are the same size, so any page of virtual memory can be
+loaded into (stored) in any physical frame of RAM.</p>
+</li>
+<li>
+<p>A process&#8217;s pages do not need to be stored in contiguous RAM frames (at
+a sequence of addresses all next to one another in RAM).</p>
+</li>
+<li>
+<p>Not every page of virtual address space needs to be loaded into RAM for a
+process to run.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="#FigPageVM">Figure 5</a> shows an example of how pages from a process&#8217;s virtual address
+space may map to frames of physical RAM.</p>
+</div>
+<div id="FigPageVM" class="imageblock text-center">
+<div class="content">
+<img src="_images/frames.png" alt="virtual memory pages map into physical RAM frames" width="650">
+</div>
+<div class="title">Figure 5. Paged virtual memory.  Individual pages of a process&#8217;s virtual address space are stored in RAM frames. Any page of virtual address space can be loaded into (stored at) any frame of physical memory. In this example, P1&#8217;s virtual page 1000 is stored in physical frame 100, and its page 500 resides in frame 513.  P2&#8217;s virtual page 1000 is stored in physical frame 880, and its page 230 resides in frame 102.</div>
+</div>
+<div class="sect3">
+<h4 id="_virtual_and_physical_addresses_in_paged_systems"><a class="anchor" href="#_virtual_and_physical_addresses_in_paged_systems"></a>Virtual and Physical Addresses in Paged Systems</h4>
+<div class="paragraph">
+<p>Paged virtual memory systems divide the bits of a virtual address into
+two parts: the high-order bits specify the <strong>page number</strong> on which
+the virtual address is stored, and the low-order bits correspond to the
+<strong>byte offset</strong> within the page (which byte from the top of the page
+corresponds to the address).</p>
+</div>
+<div class="paragraph">
+<p>Similarly, paging systems divide physical addresses into two parts: the
+high-order bits specify the <strong>frame number</strong> of physical memory, and the
+low-order bits specify the <strong>byte offset</strong> within the frame.   Because
+frames and pages are the
+same size, the byte offset bits in a virtual address are identical to
+the byte offset bits in its translated physical address. Virtual
+addresses differ from their translated physical addresses
+in their high-order bits, which specify the virtual
+page number and physical frame number.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="_images/addrbits.png" alt="virtual and physical address bits">
+</div>
+<div class="title">Figure 6. The address bits in virtual and physical addresses</div>
+</div>
+<div class="paragraph">
+<p>For example, consider a (very tiny) system with 16-bit virtual addresses,
+14-bit physical addresses, and 8-byte pages.  Because the page size is
+eight bytes,
+the low-order three bits of physical and virtual addresses define the byte
+offset into a page or frame&#8201;&#8212;&#8201;three bits can encode eight distinct byte offset
+values, 0-7 (2<sup>3</sup> is 8).  This leaves the high-order 13 bits of the virtual
+address for specifying the page number and the high-order 11 bits of the
+physical address for specifying frame number, as shown in the example
+in <a href="#FigVAPAEX">Figure 7</a>.</p>
+</div>
+<div id="FigVAPAEX" class="imageblock text-center">
+<div class="content">
+<img src="_images/expavaaddrbits.png" alt="interpreting address bits in example">
+</div>
+<div class="title">Figure 7. Virtual and physical address bit divisions in an example system with 16-bit virtual addresses, 14-bit physical addresses, and a page size of 8 bytes.</div>
+</div>
+<div class="paragraph">
+<p>In the example in <a href="#FigVAPAEX">Figure 7</a>, virtual address 43357 (in decimal)
+has a byte offset of 5 (0b101 in binary), the low-order 3 bits of the
+address, and a page number of 5419 (0b1010100101011), the high-order 13
+bits of the address.  This means that the virtual address is at
+byte 5 from the top of page 5419.</p>
+</div>
+<div class="paragraph">
+<p>If this page of virtual memory is loaded into frame 43 (0b00000101011)
+of physical memory, then its physical address is 349 (0b00000101011101),
+where the low-order 3 bits (0b101) specify the byte offset, and the
+high-order 11 bits (0b00000101011) specify the frame number.  This means
+that the physical address is at byte 5 from the top of frame 43 of RAM.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_page_tables_for_virtual_to_physical_page_mapping"><a class="anchor" href="#_page_tables_for_virtual_to_physical_page_mapping"></a>Page Tables for Virtual-to-Physical Page Mapping</h4>
+<div class="paragraph">
+<p>Because every page of a process&#8217;s virtual memory space can map to a
+different frame of RAM, the OS must maintain mappings for every virtual page
+in the process&#8217;s address space.   The OS keeps a per-process <strong>page table</strong>
+that it uses to store the process&#8217;s virtual page number to physical frame
+number mappings. The page table is a data structure implemented by
+the OS that is stored in RAM.  <a href="#FigPTMem">Figure 8</a> shows an example of how
+the OS may store two process&#8217;s page tables in RAM.  The page table of
+each process stores the mappings of its virtual pages to their physical
+frames in RAM such that any pages of virtual memory can be stored in
+any physical frame of RAM.</p>
+</div>
+<div id="FigPTMem" class="imageblock text-center">
+<div class="content">
+<img src="_images/pagetables.png" alt="two process&#8217;s page tables stored in RAM">
+</div>
+<div class="title">Figure 8. Every process has a page table containing its virtual page to physical frame mappings. Page tables, stored in RAM, are used by the system to translate process&#8217;s virtual addresses to physical addresses that are used to address locations in RAM.  This example shows the separate page tables stored in RAM for processes P1 and P2, each page table with its own virtual page to physical frame mappings.</div>
+</div>
+<div class="paragraph">
+<p>For each page of virtual memory, the page table stores one <strong>page table entry</strong>
+(PTE) that contains the frame number of physical memory (RAM) storing the
+virtual page.  A PTE may also contain other information about the virtual page,
+including a <strong>valid bit</strong> that is used to indicate whether the PTE stores a valid
+mapping.  If a page&#8217;s valid bit is zero, then the page of the process&#8217;s virtual
+address space is not currently loaded into physical memory.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="_images/pte.png" alt="page table entry">
+</div>
+<div class="title">Figure 9. A page table entry (PTE) stores the frame number (23) of the frame of RAM in which the virtual page is loaded.  We list the frame number (23) in decimal, although it is really encoded in binary in the PTE entry (0&#8230;&#8203;010111).  A valid bit of 1 indicates that this entry stores  a valid mapping.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_a_page_table_to_map_virtual_to_physical_addresses"><a class="anchor" href="#_using_a_page_table_to_map_virtual_to_physical_addresses"></a>Using a Page Table to Map Virtual to Physical Addresses</h4>
+<div class="paragraph">
+<p>There are four steps to translating a virtual address to a physical address
+(shown in <a href="#FigPagingXlation">Figure 10</a>).  The particular C13-OS/hardware
+combination determines which of the OS or the hardware performs all or
+part of each step.  We assume a full-featured MMU that performs as
+much of the address translation as possible in hardware in describing these
+steps, but on some systems the OS may perform parts of these steps.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>First, the MMU divides the bits of the virtual address into two parts:
+for a page size of 2<sup>k</sup> bytes, the low-order k bits (VA bits (k-1) to 0)
+encode the byte offset (d) into the page, and the high-order n-k bits
+(VA bits (n-1) to k) encode the virtual page number (p).</p>
+</li>
+<li>
+<p>Next, the page number value (p) is used by the MMU as an index into
+the page table to access the PTE for page p.  Most architectures have
+a <strong>page table base register</strong> (PTBR) that stores the RAM address of
+the running process&#8217;s page table.   The value in the PTBR is combined
+with the page number value (p) to compute the address of the PTE for page p.</p>
+</li>
+<li>
+<p>If the valid bit in the PTE is set (is 1), then the frame number in the PTE
+represents a valid VA to PA mapping.  If the valid bit is 0, then a page
+fault occurs, triggering the OS to handle this address translation
+(we discuss the OS page fault handling later).</p>
+</li>
+<li>
+<p>The MMU constructs the physical address using the frame number (f) bits
+from the PTE entry as the high-order bits, and the page offset (d) bits from
+the VA as the low-order bits of the physical address.</p>
+</li>
+</ol>
+</div>
+<div id="FigPagingXlation" class="imageblock text-center">
+<div class="content">
+<img src="_images/pagingxlation.png" alt="the steps of address translation using PTE">
+</div>
+<div class="title">Figure 10. A process&#8217;s page table is used to perform virtual to physical address translations. The PTBR stores the base address of the currently running process&#8217;s page table.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_an_example_mapping_va_to_pa_with_a_page_table"><a class="anchor" href="#_an_example_mapping_va_to_pa_with_a_page_table"></a>An Example: Mapping VA to PA with a Page Table</h4>
+<div class="paragraph">
+<p>Consider an example (tiny) paging system where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the page size is 4 bytes</p>
+</li>
+<li>
+<p>the virtual addresses are 6 bits (the high-order 4 bits are the page number and the
+low-order 2 bits are the byte offset)</p>
+</li>
+<li>
+<p>the physical addresses are 7 bits</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Assume that the page table for process P1 in this system looks
+like <a href="#TabP1PageTable">Table 1</a> (values are listed in both decimal and binary).</p>
+</div>
+<table id="TabP1PageTable" class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 1. Process P1&#8217;s Page Table</caption>
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Entry</th>
+<th class="tableblock halign-left valign-top">Valid</th>
+<th class="tableblock halign-left valign-top">Frame #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">0 (0b0000)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23 (0b10111)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1 (0b0001)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17 (0b10001)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2 (0b0010)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11 (0b01011)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">3 (0b0011)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16 (0b10000)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">4 (0b0100)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">08 (0b01000)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">5 (0b0101)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14 (0b01110)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15 (0b1111)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30 (0b11110)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Using the information provided in this example suggests several important
+things about address sizes, parts of addresses, and address
+translation, including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The size of (number of entries in) the page table is determined by
+the number of bits in the virtual address and the page size in the system.
+The high-order 4 bits of each 6-bit virtual address specifies the page
+number, so there are 16 (2<sup>4</sup>) total pages of virtual memory.  Since
+the page table has one entry for each virtual page, there are a total
+of 16 page table entries in each process&#8217;s page table.</p>
+</li>
+<li>
+<p>The size of each page table entry (PTE) depends on the
+number of bits in the physical address and the page size in the system.
+Each PTE stores a valid bit and a physical frame number.  The valid bit
+requires a single bit.  The frame number requires 5 bits because
+physical addresses are 7 bits and the page offset is the low-order
+2 bits (to address the 4 bytes on each page), which leaves the 5 high-order
+bits for the frame number.   Thus, each PTE entry requires 6 bits: 1 for the
+valid bit, and 5 for the frame number.</p>
+</li>
+<li>
+<p>The maximum sizes of virtual and physical memory are determined by
+the number of bits in the addresses.  Because virtual addresses
+are 6 bits, 2<sup>6</sup> bytes of memory can be addressed, so each process&#8217;s virtual
+address space is 2<sup>6</sup> (or 64) bytes.  Similarly, the maximum size of physical
+memory is 2<sup>7</sup> (or 128) bytes.</p>
+</li>
+<li>
+<p>The page size, the number of bits in virtual and physical addresses, and
+the page table determine the mapping of virtual to physical addresses.
+For example, if process P1 executes an instruction to load a value from
+its virtual address 0b001110, its page table is used to convert the virtual
+address to physical address 0b1000010, which is then
+used to access the value in RAM.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The virtual address (VA) to physical address (PA) translation steps are:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Separate the VA bits into the page number (p) and byte offset (d) bits:  the
+high-order four bits are the page number (0b0011 or page 3) and the
+lower-order two bits are the byte offset into the page (0b10 or byte 2).</p>
+</li>
+<li>
+<p>Use the page number (3) as an index into the page table to read the PTE for
+virtual page 3 (PT[3]: valid:1  frame#:16).</p>
+</li>
+<li>
+<p>Check the valid bit for a valid PTE mapping.  In this case, the valid bit
+is 1, so the PTE contains a valid mapping, meaning that virtual memory page
+3 is stored in physical memory frame 16.</p>
+</li>
+<li>
+<p>Construct the physical address  using the five-bit frame number from the PTE as
+the high-order address bits (0b10000), and the low-order two-bit offset from
+the virtual address (0b10) as the lower-order two bits: the physical
+address is 0b1000010 (in RAM frame 16 at byte offset 2).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_paging_implementation"><a class="anchor" href="#_paging_implementation"></a>Paging Implementation</h4>
+<div class="paragraph">
+<p>Most computer hardware provides some support for paged virtual memory, and
+together the OS and hardware implement paging on a given system.  At a minimum,
+most architectures provide a page table base register (PTBR) that stores the
+base address of the currently running process&#8217;s page table.  To perform
+virtual-to-physical
+address translations, the virtual page number part of a virtual
+address is combined with the value stored in the PTBR to find the PTE entry for
+the virtual page.  In other words, the virtual page number is an index into the
+process&#8217;s page table, and its value combined with the PTBR value gives the RAM
+address of the PTE for page p (e.g., PTBR + p × (PTE size) is the RAM
+address of the PTE for page p).  Some architectures may support the full page
+table lookup by manipulating PTE bits in hardware.  If not, then the OS needs
+to be interrupted to handle some parts of page table lookup and accessing the
+PTE bits to translate a virtual address to a physical address.</p>
+</div>
+<div class="paragraph">
+<p>On a context switch, the OS <em>saves and restores</em> the PTBR values of
+processes to ensure that when a process runs on the
+CPU it accesses its own virtual-to-physical address mappings from its own
+page table in RAM.   This is one mechanism through which the OS
+protects processes' virtual address spaces from one another;
+changing the PTBR value on context switch ensures
+that a process cannot access the VA-PA mappings of another process, and thus
+it cannot read or write values at physical addresses that store the
+virtual address space contents of any other processes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_an_example_virtual_to_physical_address_mappings_of_two_processes"><a class="anchor" href="#_an_example_virtual_to_physical_address_mappings_of_two_processes"></a>An Example: Virtual-to-Physical Address Mappings of Two Processes</h4>
+<div class="paragraph">
+<p>As an example, consider an example system with eight-byte pages, seven-bit
+virtual addresses, and six-bit physical addresses.</p>
+</div>
+<table id="TabExampleProcessPageTable" class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 2. Example Process Page Tables</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" colspan="3">P1&#8217;s Page Table</th>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top" colspan="3">P2&#8217;s Page Table</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Valid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Frame #</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Valid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Frame #</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Given the following current state of the (partially shown) page tables of two
+processes (P1 and P2) in <a href="#TabExampleProcessPageTable">Table 2</a>, let&#8217;s compute the
+physical addresses for the following sequence of virtual memory addresses
+generated from the CPU (each address is prefixed by the process that is running
+on the CPU):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>P1: 0000100
+P1: 0000000
+P1: 0010000
+              &lt;---- context switch
+P2: 0010000
+P2: 0001010
+P2: 1011001
+              &lt;---- context switch
+P1: 1011001</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First, determine the division of bits in virtual and physical
+addresses.  Since the page size is eight bytes, the three low-order bits of every
+address encodes the page offset (d).  Virtual addresses are seven bits. Thus,
+with three bits for the page offset, this leaves the four high-order bits for
+specifying the page number (p).  Since physical addresses are six bits long
+and the low-order three are for the page offset, the high-order three bits
+specify the frame number.</p>
+</div>
+<div class="paragraph">
+<p>Next, for each virtual address, use its page number bits (p) to look up in the
+process&#8217;s page table the PTE for page p.  If the valid bit in the PTE is
+set, then use the frame number (f) for the high-order bits of the PA.  The
+low-order bits of the PA come from the byte-offset bits (d) of the VA.</p>
+</div>
+<div class="paragraph">
+<p>The results are shown in <a href="#TabAddressMappingsExample">Table 3</a> (note which page table
+is being used for the translation of each address).</p>
+</div>
+<table id="TabAddressMappingsExample" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Address Mappings for the Example Sequence of Memory Accesses from Processes P1 and P2.  Note that a Context Switch Changes which Page Table is used for Address Translation.</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Process</th>
+<th class="tableblock halign-center valign-top">VirtAddr</th>
+<th class="tableblock halign-center valign-top">p</th>
+<th class="tableblock halign-center valign-top">d</th>
+<th class="tableblock halign-center valign-top">PTE</th>
+<th class="tableblock halign-center valign-top">f</th>
+<th class="tableblock halign-center valign-top">d</th>
+<th class="tableblock halign-center valign-top">PhysAddr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0000100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[0]: 1(v),3(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">011100</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0000000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[0]: 1(v),3(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">011000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0010000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[2]: 1(v),6(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">110</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">110000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="8"><p class="tableblock"><strong>Context Switch P1 to P2</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0010000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[2]: 1(v),5(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">101</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">101000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0001010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">010</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[1]: 1(v),4(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">010</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100010</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1011001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">001</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[11]: 0(v),3(f)</p></td>
+<td class="tableblock halign-left valign-top" colspan="3"><p class="tableblock"><strong>page fault (valid bit 0)</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="8"><p class="tableblock"><strong>Context Switch P2 to P1</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1011001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">001</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">PT[11]: 1(v),7(f)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">111001</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>As one example, consider the first address accesses by process P1.  When
+P1 accesses its virtual address 8 (0b0000100), the address is divided into
+its page number 0 (0b0000) and its byte offset 4 (0b100).
+The page number, 0, is used to look up PTE entry 0, whose valid bit is
+1, indicating a valid page mapping entry, and whose frame number
+is 3 (0b011).  The physical address (0b011100) is constructed using the
+frame number (0b011) as the high-order bits and the page offset (0b100)
+as the low-order bits.</p>
+</div>
+<div class="paragraph">
+<p>When process P2 is context switched on the CPU, its page table mappings
+are used (note the different physical addresses when P1 and P2 access
+the same virtual address 0b0010000).  When P2 accesses a PTE entry with
+a 0 valid bit, it triggers a page fault to the OS to handle.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_memory_efficiency"><a class="anchor" href="#_memory_efficiency"></a>13.3.4. Memory Efficiency</h3>
+<div class="paragraph">
+<p>One of the primary goals of the operating system is to efficiently manage
+hardware resources.  System performance is particularly dependent on how
+the OS manages the memory hierarchy.  For example, if a process accesses
+data that are stored in RAM, the process will run much faster than
+if those data are on disk.</p>
+</div>
+<div class="paragraph">
+<p>The OS strives to increase the degree of multiprogramming
+in the system in order to keep the CPU busy doing real work while
+some processes are blocked waiting for an event like disk I/O.
+However, because RAM is fixed-size storage, the OS must make decisions
+about which process to load in RAM at any point in time, possibly limiting
+the degree of multiprogramming in the system.  Even systems with a large
+amount of RAM (10s or 100s of gigabytes) often cannot simultaneously
+store the full address space of every process in the system.
+As a result, an OS can make more efficient use of system resources by
+running processes with only parts of their virtual address spaces
+loaded in RAM.</p>
+</div>
+<div class="sect3">
+<h4 id="_implementing_virtual_memory_using_ram_disk_and_page_replacement"><a class="anchor" href="#_implementing_virtual_memory_using_ram_disk_and_page_replacement"></a>Implementing Virtual Memory Using RAM, Disk, and Page Replacement</h4>
+<div class="paragraph">
+<p>From the <a href="../C11-MemHierarchy/mem_hierarchy.html#_locality" class="page">Memory Hierarchy Chapter</a>,
+we know that memory references usually exhibit a very high degree of locality.
+In terms of paging, this means that processes tend to access pages
+of their memory space with a high degree of temporal or spatial locality.  It
+also means that at any point in its execution, a process is not typically
+accessing large extents of its address space.   In fact, processes typically
+never access large extents of their full address spaces.  For example,
+processes typically do not use the full extent of their stack or heap memory
+space.</p>
+</div>
+<div class="paragraph">
+<p>One way in which the OS can make efficient use of both RAM and CPU is to treat
+RAM as a cache for disk.  In doing so, the OS allows processes to run in the
+system only having some of their virtual memory pages loaded into physical
+frames of RAM.  Their other virtual memory pages remain on secondary storage
+devices, such as disk, and the OS only brings them into RAM when the process
+accesses addresses on these pages.  This is another part of the OS&#8217;s
+<strong>virtual memory</strong> abstraction&#8201;&#8212;&#8201;the OS implements a view of a single large
+physical "memory" that is implemented using RAM storage in combination with
+disk or other secondary storage devices.  Programmers do not need to
+explicitly manage their program&#8217;s memory, nor do they need to handle
+moving parts in and out of RAM as their program needs it.</p>
+</div>
+<div class="paragraph">
+<p>By treating RAM as a cache for disk, the OS keeps in RAM only those pages from
+processes' virtual address spaces that are being accessed or have been
+accessed recently.  As a result, processes tend to have the set of pages that
+they are accessing stored in fast RAM and the set of pages that they do not
+access frequently (or at all) stored on slower disk.  This leads to more
+efficient use of RAM because the OS uses RAM to store pages that are actually
+being used by running processes, and doesn&#8217;t waste RAM space to store pages
+that will not be accessed for a long time or ever.  It  also results in more
+efficient use of the CPU by allowing more processes to simultaneously share
+RAM space to store their active pages, which can result in an increase
+in the number of ready processes in the system, reducing times when the
+CPU is idle due to all the processes waiting for some event like disk I/O.</p>
+</div>
+<div class="paragraph">
+<p>In virtual memory systems, however, processes sometimes try to access a
+page that is currently not stored in RAM (causing a <strong>page fault</strong>).
+When a page fault occurs, the OS needs to read the page from disk into RAM
+before the process can continue executing.  The MMU reads a PTE&#8217;s valid
+bit to determine whether it needs to trigger a page fault exception.
+When it encounters a PTE whose valid bit is zero, it traps to the OS,
+which takes the following steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The OS finds a free frame (e.g., frame j) of RAM into which it will load the
+faulted page.</p>
+</li>
+<li>
+<p>It next issues a read to the disk to load the page from disk into frame
+j of RAM.</p>
+</li>
+<li>
+<p>When the read from disk has completed, the OS updates the PTE entry, setting
+the frame number to j and the valid bit to 1 (this PTE for the faulted page now
+has a valid mapping to frame j).</p>
+</li>
+<li>
+<p>Finally, the OS restarts the process at the instruction that caused the page
+fault.  Now that the page table holds a valid mapping for the page that
+faulted, the process can access the virtual memory address that maps to an
+offset in physical frame j.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To handle a page fault, the OS needs to keep track of which RAM
+frames are free so that it can find a free frame of RAM into which the page read
+from disk can be stored.  Operating systems often keep a list of free
+frames that are available for allocating on a page fault.  If there are no
+available free RAM frames, then the OS picks a frame and replaces the
+page it stores with the faulted page.  The PTE of the replaced page is
+updated, setting its valid bit to 0 (this page&#8217;s PTE mapping is no longer
+valid).  The replaced page is written back to disk if its in-RAM contents
+differ from its on-disk version; if the owning process wrote to the page while
+it was loaded in RAM, then the RAM version of the page needs to be written
+to disk before being replaced so that the modifications to the page of
+virtual memory are not lost.  PTEs often include a <strong>dirty bit</strong> that is
+used to indicate if the in-RAM copy of the page has been modified (written to).
+During page replacement, if the dirty bit of the replaced page is set,
+then the page needs to be written to disk before being replaced with
+the faulted page.  If the dirty bit is 0, then the on-disk copy of the
+replaced page matches the in-memory copy, and the page does not need to
+be written to disk when replaced.</p>
+</div>
+<div class="paragraph">
+<p>Our discussion of virtual memory has primarily focused on the <em>mechanism</em>
+part of implementing paged virtual memory.  However, there is an
+important <em>policy</em> part of paging in the OS&#8217;s implementation.
+The OS needs to run a <strong>page replacement policy</strong>
+when free RAM is exhausted in the system.  A page
+replacement policy picks a frame of RAM that is currently being used and
+replaces its contents with the faulted page; the current page is <em>evicted</em>
+from RAM to make room for storing the faulted page.  The OS
+needs to implement a good page replacement policy for selecting which
+frame in RAM will be written back to disk to make room for the faulted
+page.  For example, an OS might implement the <strong>least recently used</strong> (LRU)
+policy, which replaces the page stored in the frame of RAM that has
+been accessed least recently.  LRU works well when
+there is a high degree of locality in memory accesses.  There are
+many other policies that an OS may choose to implement.  See an
+OS textbook for more information about page replacement policies.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_making_page_accesses_faster"><a class="anchor" href="#_making_page_accesses_faster"></a>Making Page Accesses Faster</h4>
+<div class="paragraph">
+<p>Although paging has many benefits, it also results in
+a significant slowdown to every memory access.  In a paged virtual
+memory system, every load and store to a virtual memory address
+requires <em>two</em> RAM accesses: the first reads the
+page table entry to get the frame number for virtual-to-physical address
+translation, and the second reads or writes the byte(s) at
+the physical RAM address.  Thus, in a paged virtual memory system,
+every memory access is twice as slow as in a system that supports
+direct physical RAM addressing.</p>
+</div>
+<div class="paragraph">
+<p>One way to reduce the additional overhead of paging is to cache page
+table mappings of virtual page numbers to physical frame numbers.  When
+translating a virtual address, the MMU first checks for the page number in
+the cache.  If found, then the page&#8217;s frame number mapping can be grabbed
+from the cache entry, avoiding one RAM access for reading the PTE.</p>
+</div>
+<div class="paragraph">
+<p>A <strong>translation look-aside buffer</strong> (TLB) is a hardware cache that
+stores (page number, frame number) mappings.  It is a small,
+fully associative cache that is optimized for fast lookups in hardware.
+When the MMU finds a mapping in the TLB (a TLB hit), a page
+table lookup is not needed, and only one RAM access is required to
+execute a load or store to a virtual memory address.  When a mapping is not
+found in the TLB (a TLB miss), then an additional RAM access to the
+page&#8217;s PTE is required to first construct the physical address of the load
+or store to RAM.  The mapping associated with a TLB miss is added into
+the TLB.  With good locality of memory references, the hit rate
+in the TLB is very high, resulting in fast memory accesses in paged virtual
+memory&#8201;&#8212;&#8201;most virtual memory accesses require only a single RAM access.
+<a href="#FigTLB">Figure 11</a> shows how the TLB is used in virtual-to-physical address mappings.</p>
+</div>
+<div id="FigTLB" class="imageblock text-center">
+<div class="content">
+<img src="_images/tlb.png" alt="TLB lookup for virtual page to physical frame mapping">
+</div>
+<div class="title">Figure 11. The translation look-aside buffer (TLB) is a small hardware cache of virtual page to physical frame mappings.  The TLB is first searched for an entry for page p.  If found, no page table lookup is needed to translate the virtual address to its physical address.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Copyright (C) 2020 Dive into Systems, LLC.</p>
+
+  <p><i>Dive into Systems,</i> is licensed under the Creative Commons <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Attribution-NonCommercial-NoDerivatives 4.0 International</a> (CC BY-NC-ND 4.0).</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script>antoraLunr.init("../_/../search_index.json")</script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

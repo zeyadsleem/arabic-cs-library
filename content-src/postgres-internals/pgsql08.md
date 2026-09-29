@@ -677,7 +677,7 @@ The buffer manager, therefore, has been refactored, especially for cases where t
 
 This section explains the basic concept of AIO, describes its implementation, and details its operation, focusing on Sequential Scan.
 
-Additionally, the [Appendix 2](../pgsqlappendix/02.html#a-2) provides sample io_uring programs for readers unfamiliar with the framework.
+Additionally, the Appendix 2 provides sample io_uring programs for readers unfamiliar with the framework.
 
 Section Contents
 
@@ -736,7 +736,7 @@ The flow of an asynchronous read operation using io_uring is shown below (Figure
 - (2) **Execute Request:** The kernel retrieves requests from the SQ and performs the requested reads, utilizing storage-level parallelism. The retrieved data is copied directly into the specified buffer pool slot via DMA (Direct Memory Access). When a read operation completes, the kernel enqueues a completion event (CQE) into the CQ.
 - (3) **Wait Completions:** PostgreSQL waits for the CQ to receive completed requests. Once a completion event is found, PostgreSQL can read the page that has been loaded into the target buffer pool slot.
 
-Readers unfamiliar with io_uring programing can refer to the [Appendix](../pgsqlappendix/02.html#a-2) for simple examples.
+Readers unfamiliar with io_uring programing can refer to the Appendix for simple examples.
 
 #### Read Request
 
@@ -762,7 +762,7 @@ As shown in Figure 8.17, when PostgreSQL reads contiguous blocks, it prepares a 
 
 During a Sequential Scan, PostgreSQL typically reads contiguous relation blocks. Vectored I/O combines these blocks into a single read request, reducing system call overhead and requiring only a single completion event.
 
-[Appendix 2.2](../pgsqlappendix/02.html#a-2-2) provides a simple io_uring program using Vector I/O.
+Appendix 2.2 provides a simple io_uring program using Vector I/O.
 
 ### 8.5.2.2. io_worker
 
@@ -969,7 +969,7 @@ Because this subsection assumes that the backend must read all pages from storag
 
 `prepare_and_submit()` function prepares and submits asynchronous read requests for the buffer descriptors newly enqueued by read_ahead().
 
-Because a Sequential Scan reads contiguous blocks, it utilizes Vector I/O (Scatter-Gather I/O) to combine multiple blocks into a single read request (see [Appendix 2.2](../pgsqlappendix/02.html#a-2-2) for details).
+Because a Sequential Scan reads contiguous blocks, it utilizes Vector I/O (Scatter-Gather I/O) to combine multiple blocks into a single read request (see Appendix 2.2 for details).
 
 ```
 /* Simple Version */
@@ -1093,7 +1093,7 @@ Assume that the (n+2)-th block is already cached in the buffer pool. Figure 8.23
 
 (4) The scan processes n-th, (n+1)-th, and (n+2)-th blocks. The first two blocks are obtained from the completed I/O request, while (n+2)-th blockis already available in the buffer pool.
 
-Stopping the read-ahead process at the first cache hit ensures that all blocks accumulated in stream_buffers are physically contiguous in the relation file. Consequently, the buffer manager can submit them as a single Vector I/O request (see [Appendix 2.2](../pgsqlappendix/02.html#a-2-2) for details), maximizing sequential read efficiency.
+Stopping the read-ahead process at the first cache hit ensures that all blocks accumulated in stream_buffers are physically contiguous in the relation file. Consequently, the buffer manager can submit them as a single Vector I/O request (see Appendix 2.2 for details), maximizing sequential read efficiency.
 
 Figure 8.24 [1] illustrates the behavior when reading subsequent blocks from storage after a cache hit has been processed.
 

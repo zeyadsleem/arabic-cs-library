@@ -1,0 +1,88 @@
+{
+  "chapters": [
+    {
+      "key": "basic",
+      "title": "Simple SQL Queries",
+      "titleAr": "Simple SQL Queries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Simple SQL Queries",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "joins",
+      "title": "Joins and Subqueries",
+      "titleAr": "Joins and Subqueries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Joins and Subqueries",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "aggregates",
+      "title": "Aggregation",
+      "titleAr": "Aggregation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Aggregation",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "updates",
+      "title": "Modifying data",
+      "titleAr": "Modifying data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modifying data",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "recursive",
+      "title": "Recursive Queries",
+      "titleAr": "Recursive Queries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Recursive Queries",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "date",
+      "title": "Working with Timestamps",
+      "titleAr": "Working with Timestamps",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Working with Timestamps",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "arrays",
+      "title": "Arrays",
+      "titleAr": "Arrays",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Arrays",
+          "order": 6
+        }
+      ]
+    }
+  ]
+}

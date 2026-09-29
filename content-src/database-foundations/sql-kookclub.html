@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Exercises SQL on database for a cooking club</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">All I ever wanted to do was to make food accessible to everyone; to
+          show that you can make mistakes &ndash; I do all the time &ndash; but
+          it doesn't matter.</span> <br>
+&mdash;Jamie Oliver
+</p> </blockquote> <h1>Exercises SQL on database for a cooking club</h1> <h2>Presentation model</h2> <p>
+In this last chapter we want to give you an idea of the difficulty of the
+      exercises on the exam. For this we recycle a model used on a previous exam
+      for a cooking club.
+</p> <section class="info"> <p>
+You can find this model (‘cooking_club’) in the database ‘df’. You only
+        have <code>SELECT</code> permissions and thus cannot test <code>INSERT</code>, <code>CREATE</code> etc.
+</p> </section> <p>
+For this exam, we will use a simple model of an organization that sets up
+      cooking workshops. This is the physical model:
+</p> <figure class="center"> <img src="/assets/kookclub/EN/ERD_kookclub.png" alt=""> </figure> <p>
+We would like to automate the organization of cooking workshops. A cooking
+      workshop is always about a certain theme within which there are certain
+      dishes. Members can register to participate in a workshop and can also
+      give a score and some feedback. Both attributes are not mandatory.
+</p> <p>
+At the time a cooking workshop is organized, as mentioned above the theme
+      is determined. Within each theme, a number of dishes are known. For a
+      cooking workshop dishes can be chosen from the offerings within that
+      theme, but it is also possible to add a new dish. Of course this new dish
+      will be linked to that theme. For every dish the ingredients and in what
+      quantity they are used for each dish are marked in the database.
+</p> <p>
+Note for ingredients: the unit indicates whether that ingredient is used
+      per g, per ml, per tablespoon, per piece or other. The energy level
+      displays the number of kcal. Note that if the unit is expressed in g or
+      ml, then the energy is always given per 100 g or 100 ml. In the other
+      cases it is per unit indicated.
+</p> <section class="taak"> <p>
+For example, check in the database that strawberries have 32 kcal of
+        energy per 100 g and that one apricot has an energy content of 27 kcal.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT *
+FROM cooking_club.ingredient -- or use the search_path …
+WHERE name IN (&#39;Strawberry&#39;,&#39;Apricot&#39;);</code></pre> </div>  </section> <section class="opgepast">
+Don't forget to set your <code>search_path</code> properly or use the name
+      of the schema before the name of a table ...
+</section> <section class="taak"> <p>
+Tip: Now study the model before looking at the questions. Review the
+        contents of all the tables so you get an idea of where you can find
+        information and how extensive some tables are. A part of the database is
+        automatically generated (e.g. ‘member’ and ‘participation’), but many
+        tables are still manually populated so the data looks fairly realistic.
+</p>  </section> <p>
+Below you will find many exercises as they were once asked on an exam.
+      There are a lot of different types:
+</p> <ul> <li>Give the answer to a question, no SQL code requested.</li> <li>Give the SQL code that answers a question.</li> <li>
+Modify the database: add data, change things (you can't test this,
+        though because you don't have the proper privileges to do so).
+</li> <li>What does the following SQL code do?</li> <li>Expand the model with a new functionality.</li> </ul> <h2>Questions where you just have to give the answer</h2> <p>
+For these exercises you only have to give a short answer (name,
+      ingredient, municipality, ... ). So you do not have to give the query with
+      which you found this answer. In the solutions you will usually find the
+      query so you can check what you did wrong.
+</p> <section class="taak"> <p>
+The schema includes a comprehensive list of ingredients. Some of these
+        are per gram, others per milliliter, per tablespoon, still others per
+        piece etc. Suppose you eat one of each ingredient counted <em>by piece</em>, how much energy (kcal) have you ingested?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: 7071 kcal. A possible query for this is:
+<pre><code>SELECT sum(energy)
+FROM ingredient
+WHERE unit = &#39;piece&#39;;</code></pre> </p> </div>  </section> <section class="taak"> <p>
+This schema has been filled in part by automatic data generation. This
+        has not been done too cleverly. For example, it is obviously not
+        possible for a registration date to fall <em>after</em> the cooking workshop
+        itself. So this error has to be be corrected manually. How many such erroneous
+        registrations are there?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: 57, possible query:
+<pre><code>SELECT COUNT(*)
+FROM participation D INNER JOIN cooking_workshop K ON D.workshop = K.workshop_id
+WHERE D.registration_date &gt; K.start_time;</code></pre> </p> </div>  </section> <section class="taak"> <p>
+Check out all the <em>main</em> dishes ever made in a cooking workshop. This
+        required a lot of ingredients. If you delete them from the long list of all
+        ingredients and you organize the remaining list alphabetically, which ingredient,
+        that was not used for any main course, is in row 81?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Meatball, solution found e.g. via:
+<pre><code>SELECT name, IG.dish
+FROM dish_in_workshop GW
+  INNER JOIN ingredient_in_dish IG on GW.dish = IG.dish AND role_in_menu = &#39;Main Dish&#39;
+  RIGHT OUTER JOIN ingredient I ON IG.ingredient = I.name
+WHERE IG.dish is NULL
+ORDER BY 1;</code></pre> </p> </div>  </section> <section class="taak"> <p>
+Who is the youngest cooking workshop participant who used the word
+        ‘awesome’ or ‘fantastic’ in his feedback? Please provide first name
+        followed by name.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Ramiro Bell, with e.g. the following query:
+<pre><code>SELECT first_name, name, birth_date, feedback
+FROM participation D INNER JOIN member L ON D.member = L.member_number
+WHERE feedback LIKE &#39;%awesome%&#39; OR feedback LIKE &#39;%fantastic%&#39;
+ORDER BY 3 DESC;</code></pre> </p> </div>  </section> <h2>Model question</h2> <p>
+In this question, you have to add something to the model. You cannot test
+      this because you only have <code>SELECT</code> permissions on the schema. You
+      draw something on paper for this query on the ERD (physical data model) of
+      the schema and issue the necessary SQL queries.
+</p> <section class="taak"> <div> <p>
+We want to keep track of how many ingredients we need to order for a
+          particular workshop. To do this, we need to keep track the amount of
+          each ingredient ordered on a specific date.
+</p> <ol> <li>Draw the necessary extension to the diagram.</li> <li>
+Write the changes needed in the <code>CREATE</code> script. Also be sure
+            that the numbers ordered are always strictly positive. Include all integrity
+            rules.
+</li> <li>
+For cooking workshop 7, the following ingredients should be ordered:
+            600 g ginger (80 kcal per 100 g), 180 g wasabi (241 kcal per 100 g),
+            6 kg salmon (137 kcal per 100 g) and 7 pieces of broccoli (35 kcal
+            each). Write the necessary <code>INSERT</code> statements for this.
+</li> </ol> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+You need to create a table:
+<pre><code>CREATE  TABLE cooking_club.order (
+  ingredient_name          varchar(30)  NOT NULL ,
+  workshop_id              smallint  NOT NULL ,
+  order_date               date NOT NULL ,
+  number                   smallint  NOT NULL ,
+  CONSTRAINT pk_order PRIMARY KEY ( ingredient_name, workshop_id, order_date ),
+  CONSTRAINT fk_order_ingredient FOREIGN KEY ( ingredient_name )
+      REFERENCES cooking_club.ingredient( name )   ,
+  CONSTRAINT fk_order_cooking_workshop FOREIGN KEY ( workshop_id )
+       REFERENCES cooking_club.cooking_workshop( workshop_id )   ,
+  CONSTRAINT cns_order CHECK ( number &gt; 0 )
+);</code></pre> </p> <p>
+Adding the additional information goes as follows: order for 0.6 kg of
+          ginger (80 kcal per 100 g), 180 g of wasabi (241 kcal per 100 g), 6 kg
+          of salmon (137 kcal per 100 g) and 7 broccoli (35 kcal each) to be
+          will be used in cooking workshop 7 because there we will prepare fish
+          in an oriental way. Ginger, Salmon and Broccoli are already in the
+          ingredient table. Wasabi is not in there yet, so first you need to add
+          that ingredient:
+<pre><code>INSERT INTO ingredient VALUES (&#39;Wasabi&#39;, &#39;g&#39;, 241);</code></pre> </p> <p>
+Now we can put the order in order:
+<pre><code>INSERT INTO order VALUES (&#39;Ginger&#39;, 7, &#39;2020-08-18&#39;, 600);
+INSERT INTO order VALUES (&#39;Wasabi&#39;, 7, &#39;2020-08-18&#39;, 180);
+INSERT INTO order VALUES (&#39;Salmon&#39;, 7, &#39;2020-08-18&#39;, 6000);
+INSERT INTO order VALUES (&#39;Broccoli&#39;, 7, &#39;2020-08-18&#39;, 7);</code></pre> </p> </div>  </section> <h2>Given the SQL query, what was the question?</h2> <section class="taak"> <div> <p>
+For this exercise, you are given a query that is the answer to a
+          particular question. What was the question? Give your answer as
+          completely as possible. Feel free to use several sentences.
+</p> <div> <pre><code>SELECT distinct municipality
+FROM municipality LEFT OUTER JOIN member using(postal_code)
+  INNER JOIN participation ON member.member_number = participation.member
+  INNER JOIN dish_in_workshop using(workshop)
+  INNER JOIN ingredient_in_dish using(dish)
+GROUP BY municipality, participation.member
+HAVING COUNT(distinct ingredient) &gt; 30
+ORDER BY 1 ASC;</code></pre> </div> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Provide an alphabetical list of all municipalities where residents
+          participated in one or more cooking workshops with a total of more
+          than 30 different ingredients (across all cooking workshops of this
+          member). If there are several such residents, the municipality should
+          be listed only once. The <code>OUTER JOIN</code> has no effect and is not
+          translated to the question.
+</p> </div>  </section> <h2>SQL queries</h2> <p>
+The following type of exercises requires <em>the full SQL</em> query to be
+      returned as your answer.
+</p> <section class="taak"> <div> <p>
+Provide an overview that shows by ingredient in which themes that
+          ingredient is used. There is an additional column that shows the
+          energy of an ingredient in one word: lower than 100 (kcal) is ‘low’ ,
+          between 100 and 300 is ‘medium’ and higher than 300 is ‘high’. Avoid
+          repetition of rows. Put ingredients in alphabetical order. Write the
+          query.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/kcal.png" width="500" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT distinct I.name AS ingredient, GT.theme AS &quot;name theme&quot;, 
+  CASE
+    WHEN energy &lt; 100 THEN &#39;low&#39;
+    WHEN energy &gt; 300 THEN &#39;high&#39;
+    ELSE &#39;medium&#39;
+  END AS energy
+FROM ingredient I
+    INNER JOIN ingredient_in_dish IG ON (I.name = IG.ingredient)
+    INNER JOIN dish_fits_in_theme GT using(dish)
+ORDER BY 1;</code></pre> </div>  </section> <section class="taak"> <div> <p>
+For each theme, please list (see figure) by municipality how many
+          participants are from that municipality. Rank alphabetically by theme
+          and within one theme according to decreasing number of members. Write
+          the query.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/ledenperthema.png" width="600" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT theme, municipality, COUNT (member_number) AS &quot;number of members per municipality&quot;
+FROM member
+  INNER JOIN municipality USING (postal_code)
+  INNER JOIN participation ON (member = member_number)
+  INNER JOIN cooking_workshop ON (workshop = workshop_id)
+GROUP BY theme, postal_code, municipality
+ORDER BY theme, COUNT(member_number) DESC;</code></pre> <p>
+An alternative where municipality in the <code>GROUP BY</code> may be omitted
+          because of not using <code>USING</code>:
+<pre><code>SELECT theme, municipality, COUNT (member_number) AS &quot;number of members per municipality&quot;
+FROM member
+  INNER JOIN municipality ON municipality.postal_code = member.postal_code
+  INNER JOIN participation ON (member = member_number)
+  INNER JOIN cooking_workshop ON (workshop = workshop_id)
+GROUP BY theme, municipality.postal_code
+ORDER BY theme, COUNT(member_number) DESC;</code></pre> </p> </div>  </section> <section class="taak"> <div> <p>
+How many kcal are in the dish ‘Tiramisu with chocolate and banana’ per
+          ingredient? Please note that where the unit is ‘g’ or ‘ml’, the energy
+          content is the number of kcal per 100 g or 100 ml. For all other
+          units, the number in kcal is simply the energy per unit (piece,
+          tablespoon, etc.). So keep in mind the units. The ingredient that
+          makes the largest energy contribution to this dish is at the top, then
+          the second, etc. See figure. Write the query.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/tiramisu-energie.png" width="600" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT IG.ingredient, quantity, unit,energy,
+  CASE
+    WHEN unit in (&#39;g&#39;,&#39;ml&#39;) THEN energy * quantity / 100
+    ELSE energy * quantity
+  END AS titak
+FROM ingredient_in_dish IG INNER JOIN ingredient I ON IG.ingredient = I.name
+WHERE dish = &#39;Tiramisu with chocolate and banana&#39;
+ORDER BY 5 DESC;</code></pre> </div>  </section> <h2>Questions where you just have to give the answer, part 2</h2> <section class="taak"> <p>
+List alphabetically all ingredients that are <em>not yet</em> used in a dish.
+        Which ingredient is in position 100 and what is the energy value of this
+        ingredient? So your answer contains two parts as e.g., ‘Cauliflower with
+        25 kcal’.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>Answer: ‘Red Whine’ with 82 kcal. Possible query:</p> <pre><code>SELECT ingredient.name, ingredient.energy
+FROM ingredient LEFT OUTER JOIN ingredient_in_dish ON (ingredient.name = ingredient_in_dish.ingredient)
+WHERE ingredient_in_dish.dish IS NULL
+ORDER BY ingredient.name;</code></pre> </div>  </section> <section class="taak"> <p>
+View all participations in cooking workshops by people from a community
+        that begins with an ‘N’ or ends with an ‘n’. How many participants from
+        these communities gave a score of at least 7?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>Answer: 10. Possible query:</p> <pre><code>SELECT score, member_number, municipality, postal_code
+FROM participation D
+    INNER JOIN member L ON D.member = L.member_number
+    INNER JOIN municipality using(postal_code)
+WHERE (municipality LIKE &#39;N%&#39; OR municipality LIKE &#39;%n&#39;) AND score &gt;= 7;</code></pre> </div>  </section> <section class="taak"> <p>
+Review the long list of ingredients, but limit yourself to those
+        ingredients that are measured in grams (‘g’). Calculate the average
+        energy of these ingredients (which is measured per 100 g, but for this
+        question, this is not important). Which ingredient that is measured per
+        g has an energy content closest to this average?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Advocaat (240 Kcal per 100 g, is closest to average 226,5).
+          You can obtain this most easily with two small queries, but of course
+          it can be done more elegantly with one query (which contains a
+          subquery).
+</p> <pre><code>SELECT name,energy -- but first you ask avg(energy)
+FROM ingredient
+WHERE unit = &#39;g&#39;
+ORDER BY 2;</code></pre> </div>  </section> <section class="taak"> <p>
+Provide first name and name of the member with most participations. If
+        there are multiple members with the same maximum number of
+        participations, give all names (first name followed by last name).
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>Answer: Benny Nielsenn, Casey Valentine, Shelley Vincent</p> <pre><code>SELECT name, first_name, COUNT(*)
+FROM participation D INNER JOIN member L ON D.member = L.member_number
+GROUP BY member_number
+ORDER BY 3 DESC, 1;</code></pre> </div>  </section> <h2>Given the SQL query, what was the question, part 2?</h2> <p>
+For this exercise, you get a query that is the answer to a particular
+      question. What was this question? Give your answer as completely as
+      possible. Feel free to use several sentences to clearly describe that
+      question.
+</p> <section class="taak"> <p> <pre><code>SELECT G.name
+FROM theme T
+    INNER JOIN dish_fits_in_theme GT ON T.name = GT.theme
+    RIGHT OUTER JOIN dish G ON GT.dish = G.name AND
+        T.name IN (&#39;mediterranean&#39;,&#39;italian&#39;,&#39;fish&#39;)
+WHERE T.name is NULL AND G.description NOT LIKE &#39;%summer%&#39;
+ORDER BY preparation_time DESC;</code></pre> </p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+This is a difficult exercise, <a href="/EN/SQL_outerjoin/index.html#Select-rows-that-do-NOT-meet-a-certain-condition">see also the heading "Selecting rows that do NOT meet a certain
+            condition in the piece about OUTER JOIN</a>. List all dishes in the database that <em>do not</em> have as a theme
+          Mediterranean, Italian or fish and where the description of the dish does
+          not include the word summer, sorted by decreasing duration to prepare the
+          dish.
+</p> </div>  </section> <h2>SQL query's, part 2</h2> <section class="taak"> <div> <p>
+Write a query that, for all dishes that have an ingredient list,
+          calculates the total energy content in kcal. Attention: for
+          ingredients whose unit is ‘g’ or ‘ml’, the energy content per 100 g or
+          100 ml is given. For all other units the energy content is given per
+          unit (‘piece’, ‘dl’, ‘teaspoon’, ...). We would like to use this
+          overview to get a list of only ‘light’ dishes that in total contain
+          less than 4000 kcal. The dish with the least number of kcal is at the
+          top, then the second etc. The screenshot shows only the first two
+          rows.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/weinigkcal.png" width="500" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT IG.dish,
+  sum(CASE
+    WHEN unit in (&#39;g&#39;,&#39;ml&#39;) THEN energy * quantity / 100
+    ELSE energy * quantity
+  END) AS &quot;total kcal&quot;
+FROM ingredient_in_dish IG INNER JOIN ingredient I ON IG.ingredient = I.name
+GROUP BY IG.dish
+HAVING sum(CASE
+    WHEN unit in (&#39;g&#39;,&#39;ml&#39;) THEN energy * quantity / 100
+    ELSE energy * quantity
+  END) &lt; 4000
+ORDER BY 2;</code></pre> </div>  </section> <section class="taak"> <div> <p>
+In signing up, we did not consider the maximum number of participants
+          of each cooking workshop. This is stupid, of course, because the
+          people who registered after the maximum number of participants reached
+          should be notified that the workshop is already fully booked. Write a
+          query that generates the list of all workshops that are are
+          overbooked. The most overbooked workshop is at the top, below that the
+          one with the second largest overbooking and so on. The screenshot in
+          the figure below shows only the first three rows.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/overboekt.png" width="500" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT workshop_id, max_participants, COUNT(*) AS &quot;number of participants&quot;
+FROM cooking_workshop KW INNER JOIN participation D ON D.workshop = KW.workshop_id
+GROUP BY workshop_id
+HAVING COUNT(*) &gt; max_participants
+ORDER BY (COUNT(*) - max_participants) DESC;</code></pre> </div>  </section> <h2>Questions where you just have to give the answer, part 3 (+ video)</h2> <p></p> <section class="taak"> <p>
+Make a list of all members who have not yet participated in any workshop
+        and live on a street ending in ‘pad’. Rank this list from old to young.
+        What is the first name of the person who is in position 7 in this list?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>Answer: Angelica. Possible query:</p> <pre><code>SELECT *
+FROM member M LEFT OUTER JOIN participation P ON M.member_number = P.member
+WHERE street LIKE &#39;%pad&#39; AND workshop IS NULL
+ORDER BY birth_date;</code></pre> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_f3dfdzx6&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_w0x7t233" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1a"></iframe> </div> </div>  </section> <section class="taak"> <p>
+List by municipality the average score that people from that
+        municipality gave to a cooking workshop. Sort this list so that the
+        highest average scores are at the top. Within the same average score
+        sort alphabetically. Municipalities where no one gave a score are not
+        included in this list. Which municipality (name) is at the top?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Barvaux-Condrox. Possible query:<pre><code>SELECT avg(score), municipality
+FROM participation P
+  INNER JOIN member M ON P.member = M.member_number
+  INNER JOIN municipality G ON G.postal_code = M.postal_code
+WHERE score IS NOT NULL
+GROUP BY municipality
+ORDER BY avg(score) DESC, municipality ASC;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_7h8wjzvm&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_z07gsx31" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1b"></iframe> </div> </div>  </section> <section class="taak"> <p>
+Calculate the percentage of participants who received a positive
+        evaluation. By ‘positive’ we mean that the evaluation should contain at
+        least one of the following words: ‘good’, ‘great’ or ‘fantastic’. Tip:
+        you can write two fairly short queries that each return a number and
+        then use your calculator to calculate the percentage yourself. It can of
+        course also be done in one query.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: 23.5%. There are 94 good participations:<pre><code>SELECT COUNT(*)
+FROM participation
+WHERE feedback LIKE &#39;%good%&#39; or feedback LIKE &#39;%great%&#39; or feedback LIKE &#39;%fantastic%&#39;;</code></pre> </p> <p>
+In all, there are 400 participations:<pre><code>SELECT COUNT(*)
+FROM participation;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_0k6utb2v&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_o9ydng5o" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1c"></iframe> </div> </div>  </section> <section class="taak"> <p>
+Make a list of all the ingredients that contain <em>exactly</em> twice the
+        letter ‘a’. We don't consider upper/lower case. Sort according to decreasing
+        energy content. Which ingredient is in place 21?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Low-fat cottage cheese. Possible query:<pre><code>SELECT *
+FROM ingredient
+WHERE (lower(name) LIKE &#39;%a%a%&#39;) AND NOT(lower(name) LIKE &#39;%a%a%a%&#39;)
+ORDER BY 3 DESC;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_496zuk87&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_05191a4i" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1d"></iframe> </div> </div>  </section> <section class="taak"> <p>
+Generate an overview of all registrations for workshops for which the
+        participant wrote feedback and with a registration date before January 1
+        2019. Sort this list alphabetically by name. Enter the first name and
+        last name of the person listed in position 100.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: Sonya Osborne. Query: <pre><code>SELECT name, first_name, member, registration_date, feedback
+FROM participation P INNER JOIN member M ON P.member = M.member_number
+WHERE feedback IS NOT NULL AND registration_date &lt; &#39;2019-01-01&#39;
+ORDER BY 1;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_fb2vf9l5&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_s2aw0hwb" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1e"></iframe> </div> </div>  </section> <section class="taak"> <p>
+Rank all themes by decreasing number of entries so that the theme to
+        which the most people subscribed is at the top. How many entries did the
+        theme that ranks fifth in this list have?
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Answer: 41<pre><code>SELECT theme, COUNT(*)
+FROM participation INNER JOIN cooking_workshop ON workshop = workshop_id
+GROUP BY theme
+ORDER BY 2 DESC;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_rf33h8d6&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_1l4lgnlh" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag1f"></iframe> </div> </div>  </section> <h2>Modifying database data (+ video)</h2> <section class="taak"> <p>
+The municipalities of ‘Overpelt’ and ‘Neerpelt’ have recently merged.
+        Both together now form the municipality of ‘Pelt’. The site of the
+        municipality of Pelt states: ‘3900 Overpelt becomes 3900 Pelt and 3910
+        Neerpelt becomes 3910 Pelt’. You, as the database administrator for the
+        cooking club, have to make sure that this information is correctly
+        updated in the database. Write one query that does this. Caution:
+        because you only have <code>SELECT</code> privilege to the database, you
+        will not be able to test the query.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>UPDATE cooking_club.municipality
+SET municipality = &#39;Pelt&#39;
+WHERE postal_code = &#39;3900&#39; OR postal_code = &#39;3910&#39;;</code></pre> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_lianawzh&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_8sz9fb1v" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag2"></iframe> </div> </div>  </section> <h2>Given the query, what was the question, part 3 (+ video)?</h2> <section class="taak"> <p>
+Given the following query. Describe accurately and briefly (one
+        sentence) what the question is to which the query provides the answer.
+        Begin your answer with “List all the ... ”. This exercise is more
+        difficult than you would expect at first glance.
+<pre><code>SELECT name
+FROM theme T LEFT OUTER JOIN cooking_workshop CW ON T.name = CW.theme AND max_participants &gt; 35
+WHERE theme IS null;</code></pre> </p>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+“Please list all topics (name will suffice) that <em>not</em>
+are covered in a cooking workshop with a maximum capacity of more than
+          35 participants.” Alternative: “Please list all themes that have not yet
+          been covered in a cooking workshop or have only been covered in a cooking
+          workshop with at most 35 participants.”
+</p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_9f5hsagh&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_iz6jvvg0" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag3"></iframe> </div> </div>  </section> <h2>Adding information to the database (+ video)</h2> <section class="taak"> <div> <p>
+Jeroen Meus recently made in <a href="https://dagelijksekost.vrt.be">his cooking program ‘dagelijkse kost’</a>
+(english: ‘daily food’) ‘Cheese Croquette with ham and asparagus’. That
+          looked particularly delicious. You so want to add this dish to the database.
+          We give below the full description. You need to add the appropriate lines.
+<em>Information that is already in the database should not be added
+            again</em>, because then the database server responds with an error message. If
+          there is information missing that is needed, then make up something
+          appropriate. Beware: because you only have <code>SELECT</code> privilege
+          to the database, you will not be able to test the queries.
+</p> <p>
+We add ‘Cheese Croquette with ham and asparagus’. This dish is
+          described as ‘Asparagus in a croquette, together with ham and
+          Flandrien cheese’. It takes an hour to prepare this dish. You will
+          need the following ingredients:
+</p> <ul> <li>10 asparagus (each one provides an energy of 18 kcal)</li> <li>150 g butter (100 g butter provides 737 kcal)</li> <li>one lemon (1 lemon has 35 kcal energy)</li> <li>200 g of ham (100 g of ham provides 335 kcal)</li> <li>0.3 kg of Flandrien Cheese (100 g provides 365 kcal energy)</li> </ul> <p>
+This dish fits the theme of ‘belgian’. Write all the necessary queries
+          to add all this information to the database.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+In terms of ingredients, you just need to add the Flandrien cheese:<pre><code>INSERT INTO cooking_club.ingredient VALUES (&#39;Flandrien Cheese&#39;, &#39;g&#39;, 365);</code></pre> </p> <p>
+Then add the new dish:<pre><code>INSERT INTO cooking_club.dish VALUES 
+  (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Asparagus in a croquette, together with ham and Flandrien cheese&#39;, 60);</code></pre> </p> <p>
+Next, the intermediate table between the two:<pre><code>INSERT INTO cooking_club.ingredient_in_dish VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Asparagus&#39;,10);
+INSERT INTO cooking_club.ingredient_in_dish VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Butter&#39;,150);
+INSERT INTO cooking_club.ingredient_in_dish VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Lemon&#39;,1);
+INSERT INTO cooking_club.ingredient_in_dish VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Ham&#39;,200);
+INSERT INTO cooking_club.ingredient_in_dish VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;Flandrien Cheese&#39;,300);</code></pre> </p> <p>
+Finally pair the dish with the belgian theme:<pre><code>INSERT INTO cooking_club.dish_fits_in_theme VALUES (&#39;Cheese Croquette with ham and asparagus&#39;,&#39;belgian&#39;);</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_kbc20z1t&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_1t3ef5xh" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag4"></iframe> </div> </div>  </section> <h2>SQL queries, part 3 (+ video)</h2> <section class="taak"> <div> <p>
+Write the SQL query that generates the following summary: a list of
+          all municipalities with a total of three cooking workshop
+          registrations. We want only those municipalities that contain at least
+          three times the lowercase ‘e’ in the name. Arrange the results in
+          reverse alphabetical order.
+</p> <figure class="center"> <img src="/assets/kookclub/EN/3deelnames.png" width="500" alt=""> </figure> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Alternative: grouping by municipality and postal code is also allowed,
+          postal code is more specific.<pre><code>SELECT G.postal_code, COUNT(*) AS &quot;number of participations&quot;, G.municipality
+FROM municipality G
+  INNER JOIN member M ON G.postal_code = M.postal_code
+  INNER JOIN participation P ON M.member_number = P.member
+WHERE municipality LIKE &#39;%e%e%e%&#39;
+GROUP BY G.postal_code
+HAVING COUNT(*) = 3
+ORDER BY 3 DESC;</code></pre> </p> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_ij67dpdw&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_szonio0j" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag5"></iframe> </div> </div>  </section> <section class="taak"> <p>
+Suppose you make all dishes that are themed ‘italian’ or ‘BBQ’ (or both
+        together). Now make an overview per ingredient with per line the name,
+        amount of energy (in kcal per piece, 100 g, 100 ml, ...), the unit in
+        which it is counted, the total amount of this ingredient you need to
+        prepare all of these dishes and the amount of energy in kcal that this
+        represents. Order so that the ingredient with the largest amount of kcal
+        is at the top. Write the query.
+</p>  <button>Show / hide solution</button> <div class="oplossing"> <pre><code>SELECT ingredient, energy, unit, sum(quantity) AS &quot;total quantity&quot;,
+  CASE
+    WHEN unit = &#39;g&#39; or unit = &#39;ml&#39; THEN energy*sum(quantity)/100
+    ELSE energy*sum(quantity)
+  END AS &quot;total energy&quot;
+FROM ingredient_in_dish IG
+  INNER JOIN dish_fits_in_theme GT ON IG.dish = GT.dish
+  INNER JOIN ingredient I ON I.name = IG.ingredient
+WHERE theme IN (&#39;italian&#39;,&#39;BBQ&#39;)
+GROUP BY ingredient, energy, unit
+ORDER BY 5 DESC;</code></pre> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_y1kzr02s&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_jpxq1lti" width="640" height="360" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="DQ_vraag6"></iframe> </div> </div>  </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.ico">
+    <!-- thanks to https://favicon.io/ -->
+    <link rel="stylesheet" href='css/codemirror.css'>
+    <link rel="stylesheet" href='css/neat.css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Roboto:700,500,300|Roboto+Condensed">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://unpkg.com/@webcomponents/custom-elements@1.2.0/custom-elements.min.js"></script>
+    <script src="scripts/codemirror.js"></script>
+    <script src="scripts/codemirrorsql.js"></script>
+    <script src="scripts/autorefresh.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>
+      window.onload = () => loadData('data/tx_deathrow_small.db');
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-46601509-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-46601509-2');
+    </script>
+    <title>The Long Tail</title>
+
+    <!-- add meta tag for translated version -->
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    <link rel="alternate" hreflang="en" href="/longtail.html">
+    <link rel="alternate" hreflang="he" href="/he/longtail.html">
+      
+    
+      
+      
+    
+      
+      
+    
+
+  </head>
+
+  <body>
+    <div id="column">
+      <div class="header">
+        <a href="/"><img class="logo" src="imgs/favicon-256.png"></a>
+        <a href="/"><div class="title">Select Star SQL</div></a>
+      </div>
+      <div class="content">
+        
+
+<div class="section-nav">
+  <a href="/">Home</a>
+  
+    
+    <div class="section-sib">
+      &#x21b3; <a href="innocence.html">Claims of Innocence</a>
+    </div>
+  
+
+  <div class="section-sib">&#x21b3; <div class="cur-text">The Long Tail</div></div>
+
+  
+    
+  
+    
+  
+    
+  
+    
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#long_tails">Long Tails</a>
+          </div>
+        
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#groupby">Group By</a>
+          </div>
+        
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#having">Having</a>
+          </div>
+        
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#nested">Nested Queries</a>
+          </div>
+        
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#harris">Harris County</a>
+          </div>
+        
+      
+        
+          <div class="childlinks">
+            &#x21b3; <a href="#recap">Recap</a>
+          </div>
+        
+      
+        
+      
+    
+  
+    
+  
+    
+  
+
+  
+    
+    <div class="section-sib">
+      &#x21b3; <a href="hiatuses.html">Execution Hiatuses</a>
+    </div>
+  
+</div>
+
+<p><a name="long_tail"></a></p>
+<h2 id="long-tails">Long Tails</h2>
+<p>Long tails refer to small numbers of samples which occur a large number of times. When we plot these out, they form a small sliver far to the right of the center of mass which looks like a tail. They indicate the presence of outliers whose unusual behaviors may be of interest to us.<img src="imgs/execution_tail.png" /> In the context of executions in Texas, the long tail refers to a small number of counties which have been known to conduct a large number of executions.</p>
+
+<p>Let’s find the percentage of executions from each county so that we can pick out the ones in the tail.</p>
+
+<p>As will become increasingly evident, the shape of the tables tell us a lot about the operations we need to perform. (This is analogous to dimensional analysis in physics.) In this case, we can discern that the methods we’ve covered so far are inadequate: The <a href="beazley.html">Beazley</a> chapter dealt with individual rows of data, but it’s clear that we need to do some aggregation to find county-level data. The <a href="innocence.html">Claims of Innocence</a> chapter taught us aggregation, but those functions would end up aggregating the dataset into one row when we really want one row per county.</p>
+
+<p><br />
+<a name="groupby"></a></p>
+<h2 id="the-group-by-block">The GROUP BY Block</h2>
+<p>This is where the <code class="language-plaintext highlighter-rouge">GROUP BY</code> block comes in. It allows us to split up the dataset and apply aggregate functions within each group, resulting in one row per group. Its most basic form is <code class="codeblock">GROUP BY &lt;column&gt;, &lt;column&gt;, ...</code> and comes after the <code class="language-plaintext highlighter-rouge">WHERE</code> block.</p>
+
+<sql-exercise data-question="This query pulls the execution counts per county." data-default-text="SELECT
+  county,
+  COUNT(*) AS county_executions
+FROM executions
+GROUP BY county"></sql-exercise>
+
+<p>If you recall <a href="innocence.html#strange">A Strange Query</a>, alarm bells would be going off in your head. Didn’t we just learn not to mix aggregated and non-aggregated columns? The difference here is that grouping columns are the only columns allowed to be non-aggregate. After all, all the rows in that group must have the same values on those columns so there’s no ambiguity in the value that should be returned.</p>
+
+<p>You may have also noticed our use of <code class="language-plaintext highlighter-rouge">AS</code>. It’s what we call “aliasing”. In the <code class="language-plaintext highlighter-rouge">SELECT</code> block, <code class="codeblock">&lt;expression&gt; AS &lt;alias&gt;</code> provides an alias that can be referred to later in the query. This saves us from rewriting long expressions, and allows us to clarify the purpose of the expression.</p>
+
+<sql-exercise data-question="This query counts the executions with and without last statements. Modify it to further break it down by county." data-comment="The clause &lt;code&gt;last_statement IS NOT NULL&lt;/code&gt; acts as an indicator variable where 1 means true and 0 means false." data-default-text="SELECT
+  last_statement IS NOT NULL AS has_last_statement,
+  COUNT(*)
+FROM executions
+GROUP BY has_last_statement" data-solution="SELECT
+  last_statement IS NOT NULL AS has_last_statement,
+  county,
+  COUNT(*)
+FROM executions
+GROUP BY has_last_statement, county"></sql-exercise>
+
+<p><br />
+<a name="having"></a></p>
+<h2 id="the-having-block">The HAVING Block</h2>
+<p>This next exercise illustrates that filtering via the <code class="language-plaintext highlighter-rouge">WHERE</code> block happens before grouping and aggregation. This is reflected in the order of syntax since the <code class="language-plaintext highlighter-rouge">WHERE</code> block always precedes the <code class="language-plaintext highlighter-rouge">GROUP BY</code> block.</p>
+
+<sql-exercise data-question="Count the number of inmates aged 50 or older that were executed in each county." data-comment="You should be able to do this using &lt;code&gt;CASE WHEN&lt;/code&gt;, but try using the &lt;code&gt;WHERE&lt;/code&gt; block here." data-default-text="" data-solution="SELECT county, COUNT(*)
+FROM executions
+WHERE ex_age &gt;= 50
+GROUP BY county"></sql-exercise>
+
+<p>This is all good but what happens if we want to filter on the result of the grouping and aggregation? Surely we can’t jump forward into the future and grab information from there. To solve this problem, we use <code class="language-plaintext highlighter-rouge">HAVING</code>.</p>
+
+<sql-exercise data-question="List the counties in which more than 2 inmates aged 50 or older have been executed." data-comment="This builds on the previous exercise. We need an additional filter&mdash;one that uses the result of the aggregation. This means it cannot exist in the &lt;code&gt;WHERE&lt;/code&gt; block because those filters are run before aggregation. Look up the &lt;a href='https://www.w3schools.com/sql/sql_having.asp'&gt;&lt;code&gt;HAVING&lt;/code&gt; block&lt;/a&gt;. You can think of it as a post-aggregation &lt;code&gt;WHERE&lt;/code&gt; block." data-default-text="" data-solution="
+SELECT county
+FROM executions
+WHERE ex_age &gt;= 50
+GROUP BY county
+HAVING COUNT(*) &gt; 2"></sql-exercise>
+
+<p><br /></p>
+<h2 id="practice">Practice</h2>
+<p>This quiz is designed to challenge your understanding. Read the explanations even if you get everything correct.</p>
+
+<sql-quiz data-title="Mark the statements that are true." data-description="This query finds the number of inmates from each county and 10 year age range. &lt;pre&gt;
+SELECT
+  county,
+  ex_age/10 AS decade_age,
+  COUNT(*)
+FROM executions
+GROUP BY county, decade_age&lt;/pre&gt;">
+  <sql-quiz-option data-value="valid" data-statement="The query is valid (ie. won't throw an error when run)." data-hint="Were you thrown off by &lt;code&gt;ex_age/10&lt;/code&gt;? Grouping by transformed columns is fine too." data-correct="true"></sql-quiz-option>
+  <sql-quiz-option data-value="gran" data-statement="The query would return more rows if we were to use &lt;code&gt;ex_age&lt;/code&gt; instead of &lt;code&gt;ex_age/10&lt;/code&gt;." data-hint="Remember that &lt;code&gt;ex_age/10&lt;/code&gt; does integer division which rounds all the ages. This produces fewer unique groups." data-correct="true"></sql-quiz-option>
+  <sql-quiz-option data-value="unique_combocc" data-statement="The output will have as many rows as there are unique combinations of counties and decade_ages in the dataset." data-hint="This is correct." data-correct="true"></sql-quiz-option>
+  <sql-quiz-option data-statement="The output will have a group ('Bexar', 6) even though no Bexar county inmates were between 60 and 69 at execution time." data-hint="The &lt;code&gt;GROUP BY&lt;/code&gt; block finds all combinations &lt;i&gt;in the dataset&lt;/i&gt; rather than all theoretically possible combinations." data-value="abstract_cartesian"></sql-quiz-option>
+  <sql-quiz-option data-statement="The output will have a different value of county for every row it returns." data-hint="This would be true only if &lt;code&gt;county&lt;/code&gt; were the only grouping column. Here, we can have many groups with the same county but different decade_ages." data-value="one_col_diff"></sql-quiz-option>
+  <sql-quiz-option data-statement="The output can have groups where the count is 0." data-hint="This is similar to the ('Bexar', 6) question. If there are no rows with ('Bexar', 6), the group won't even show up." data-value="count_zero"></sql-quiz-option>
+  <sql-quiz-option data-statement="The query would be valid even if we don't specify &lt;code&gt;county&lt;/code&gt; in the &lt;code&gt;SELECT&lt;/code&gt; block." data-hint="The grouping columns don't necessarily have to be in the &lt;code&gt;SELECT&lt;/code&gt; block. It would be valid, but not make much sense because we wouldn't know which counts are for which county." data-value="missing_gp_col" data-correct="true"></sql-quiz-option>
+  <sql-quiz-option data-statement="It is reasonable to add &lt;code&gt;last_name&lt;/code&gt; to the &lt;code&gt;SELECT&lt;/code&gt; block even without grouping by it." data-hint="Even though it would be valid (in SQLite) for the reasons set forth in &lt;a href='innocence.html#strange'&gt;A Strange Query&lt;/a&gt;, it is poor form to have non-aggregate, non-grouping columns in the &lt;code&gt;SELECT&lt;/code&gt; block." data-value="extra_gp_col"></sql-quiz-option>
+</sql-quiz>
+
+<sql-exercise data-question="List all the distinct counties in the dataset." data-comment="We did this in the previous chapter using the &lt;code&gt;SELECT DISTINCT&lt;/code&gt; command. This time, stick with vanilla &lt;code&gt;SELECT&lt;/code&gt; and use &lt;code&gt;GROUP BY&lt;/code&gt;." data-default-text="" data-solution="SELECT county FROM executions GROUP BY county"></sql-exercise>
+
+<p><br />
+<a name="nested"></a></p>
+<h2 id="nested-queries">Nested Queries</h2>
+<p>Now, you may ask, wouldn’t we be done if we could just run something like this?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT
+  county,
+  PERCENT_COUNT(*)
+FROM executions
+GROUP BY county
+</code></pre></div></div>
+
+<p>Percentages are such a common metric—shouldn’t such a function exist? Unfortunately not, and perhaps for good reason: Such a function would need to aggregate both within the groups (to get the numerator) and throughout the dataset (to get the denominator). But each query either has a <code class="language-plaintext highlighter-rouge">GROUP BY</code> block or doesn’t. So what we really need are two separate queries, one which aggregates with a <code class="language-plaintext highlighter-rouge">GROUP BY</code> and another that aggregates without. We can then combine them using a technique called “nesting”.</p>
+
+<p>Here’s an example of how nesting works. The parentheses are important for demarcating the boundary between the inner query and the outer one:</p>
+
+<sql-exercise data-question="Find the first and last name of the inmate with the longest last statement (by character count)." data-comment="Write in a suitable query to nest in &lt;&lt;code&gt;length-of-longest-last-statement&lt;/code&gt;&gt;." data-default-text="SELECT first_name, last_name
+FROM executions
+WHERE LENGTH(last_statement) =
+    (&lt;length-of-longest-last-statement&gt;)" data-solution="SELECT first_name, last_name
+FROM executions
+WHERE LENGTH(last_statement) =
+    (SELECT MAX(LENGTH(last_statement))
+     FROM executions)"></sql-exercise>
+
+<p>To reiterate, nesting is necessary here because in the <code class="language-plaintext highlighter-rouge">WHERE</code> clause, as the computer is inspecting a row to decide if its last statement is the right length, it can’t look outside to figure out the maximum length across the entire dataset. We have to find the maximum length  separately and feed it into the clause. Now let’s apply the same concept to find the percentage of executions from each county.</p>
+
+<sql-exercise data-question="Insert the &lt;&lt;code&gt;count-of-all-rows&lt;/code&gt;&gt; query to find the percentage of executions from each county." data-comment="&lt;code&gt;100.0&lt;/code&gt; is a decimal so we can get decimal percentages." data-default-text="SELECT
+  county,
+  100.0 * COUNT(*) / (&lt;count-of-all-rows&gt;)
+    AS percentage
+FROM executions
+GROUP BY county
+ORDER BY percentage DESC" data-solution="SELECT
+  county,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM executions)
+    AS percentage
+FROM executions
+GROUP BY county
+ORDER BY percentage DESC"></sql-exercise>
+
+<p>I’ve quietly slipped in an <code class="language-plaintext highlighter-rouge">ORDER BY</code> block. Its format is <code class="codeblock">ORDER BY &lt;column&gt;, &lt;column&gt;, ...</code> and it can be modified by appending <code class="language-plaintext highlighter-rouge">DESC</code> if you don’t want the default ascending order.</p>
+
+<p><br />
+<a name="harris"></a></p>
+<h2 id="harris-county">Harris County</h2>
+<p>Is it surprising that Harris (home to the city of Houston), Dallas, Bexar and Tarrant account for about 50% of all executions in Texas? Perhaps it is, especially if we start from the assumption that executions should be distributed evenly across counties. But a better first approximation is that executions are distributed in line with the population distribution. The <a href="https://www.tsl.texas.gov/ref/abouttx/popcnty12010.html">2010 Texas Census</a> shows that the 4 counties had a population of 10.0M which is 40.0% the population of Texas (25.1M). This makes the finding slightly less surprising.</p>
+
+<p>But breaking this tail down further, we realize that Harris county accounts for most of the delta. It only has 16.4% of the population, but 23.1% of the executions. That’s almost 50% more than it’s supposed to have.</p>
+
+<p>Numerous studies have examined why Harris county has been so prolific and several factors have been suggested:</p>
+<ul>
+  <li>
+    <p>Prosecutions have been <a href="https://web.archive.org/web/20191227235319/https://www.citylab.com/equity/2014/09/one-texas-county-is-responsible-for-most-of-the-executions-in-the-entire-us/380705/">organized and well-financed</a>, while defenses have been court-financed and poorly-incentivized. <a href="https://houstonlawreview.org/article/3874.pdf">(Source, see p49)</a>
+</p>
+  </li>
+  <li>
+    <p>The long-time district attorney was <a href="https://www.chron.com/news/houston-texas/article/Former-DA-ran-powerful-death-penalty-machine-1833545.php">determined and enthusiastic about the death penalty</a>.
+</p>
+  </li>
+  <li>
+    <p>Judges in Texas are elected, and the population has supported the death penalty. <a href="https://priceonomics.com/why-has-texas-executed-so-many-inmates/">(Source)</a>
+</p>
+  </li>
+  <li>
+    <p>Checks and balances in the Harris county judicial system have not worked. <a href="https://houstonlawreview.org/article/3874-the-problem-of-rubber-stamping-in-state-capital-habeas-proceedings-a-harris-county-case-study">(Source, see p929)</a></p>
+  </li>
+</ul>
+
+<p><br />
+<a name="recap"></a></p>
+<h2 id="recap">Recap</h2>
+<p>In this section, we’ve learned to aggregate over groups and to use nesting to use the output of an inner query in an outer one. These techniques have the very practical benefit of allowing us to calculate percentages.</p>
+
+<p><a name="mapreduce"></a></p>
+<div class="sideNote">
+  <h3>MapReduce</h3>
+  <p>An interesting addendum is that we've actually just learned to do MapReduce in SQL. MapReduce is a famous programming paradigm which views computations as occurring in a "map" and "reduce" step. You can learn more about MapReduce <a href="https://stackoverflow.com/questions/28982/simple-explanation-of-mapreduce">here</a>.</p>
+  <p>The <a href="beazley.html">Beazley</a> chapter was all about mapping because it showed us how to map various operations out to all the rows. For example, <code>SELECT LENGTH(last_statement) FROM executions</code> maps the length function out to all the rows. This chapter showed us how to reduce various groups of data using aggregation functions; and the previous <a href="innocence.html">Claims of Innocence</a> chapter was just a special case in which the entire table is one group.</p>
+</div>
+
+<p>In the next chapter, we’ll learn about <code class="language-plaintext highlighter-rouge">JOIN</code>s which will enable us to work with multiple tables.</p>
+
+
+<div class="tutorial-nav">
+  
+    
+    <div class="previous">Previous: <a href="innocence.html">
+    Claims of Innocence</a></div>
+  
+
+  
+    
+    <div class="next">Next: <a href="hiatuses.html">
+    Execution Hiatuses</a></div>
+  
+</div>
+
+      </div>
+      <div class="footer">
+        Prose for <a href="/">SelectStarSql.com</a> is licensed by <a href="https://kaomorphism.com/">Zi Chong Kao</a> under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons BY-SA 4.0 License</a>.
+         The <a href="/he/">Hebrew translation</a> is by <a href="https://thepitz.io/">Noam Castel</a>,
+         the <a href="/nl/">Dutch translation</a> is by Jowan Vogel,
+         the <a href="/it/">Italian translation</a> is by Stefano Caglio,
+         the <a href="/es/">Spanish translation</a> is by Daniel René Piedra,
+         and the <a href='/fr/'>French Translation</a> is by April Tao. Code and data are released into the public domain under the <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons CC0 License</a>.
+      </div>
+    </div>
+  </body>
+</html>

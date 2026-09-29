@@ -1,0 +1,409 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Modeling: exercises Conceptual data model</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="citaat">May the Force be with you.</span> </p><p>&mdash;Star Wars</p>  </blockquote> <h1>Conceptual data model: exercises</h1> <p>
+The exercises below allow you to practice creating conceptual data models.
+      For every exercise a model solution is provided. It is possible that you
+      have a different solution that is equally correct. If you have questions
+      about your own solution, feel free to contact us!
+</p> <h2>Exercise 1: youth club: entity types</h2> <p>
+Below you get the description of how a youth club could potentially work.
+      This story will be used for the following exercises. You will successively
+      look for entity types, attributes and relationships. In this section, we
+      will first restrict ourselves to entity types.
+</p> <figure class="center"> <img src="/assets/conceptueel/chiro.jpg" alt=""> </figure> <section class="taak"> <div> <p>
+Read the description below thoroughly and try to identify the entity
+          types.
+</p> <p>
+A youth club wants to set up a database to support its membership
+          administration and activity planning. At initial registration, each
+          member is given a unique member number. Information such as name,
+          first name, address, email address, gender and date of birth are
+          recorded.
+</p> <p>
+Our members must re-register every year, a registration is thus valid
+          for one year. Membership fees are also paid annually to cover
+          insurance costs, for example. This is a different amount every year,
+          the important thing to know is which members have paid their
+          registration fee, and which have not yet done so. At the moment a
+          registration happens, the member is placed in a certain age group, for
+          example ‘6 to 9 year olds’, ‘10 to 12 year olds’, ... The age class is
+          determined on the basis of the age of the member at the start of the
+          new year.
+</p> <p>
+After registration, members are added to a group. With a lot of
+          registrations within a particular age group, it is possible that for a
+          given age group multiple groups are created. The groups themselves
+          choose a name that they will use throughout the year. Just like the
+          registration, this is revisited every year and the division remade.
+</p> <p>
+Each group will have one designated member who will take on the role
+          of ‘leader’ of the group. In addition, each group may have additional
+          ‘co-leaders’, which will be one or more members who will support the
+          ‘main’ leader. The age of the leaders should obviously not match the
+          age range of the group, that would be somewhat inappropriate.
+          Leadership is redefined every year, and therefore applies for the
+          lifetime of a group. Members can take charge of a maximum of one
+          group, this applies to both ‘leaders’ and ‘co-leaders’.
+</p> <p>
+Leaders organise certain activities for their groups which together
+          form the group's annual schedule. Each activity is scheduled on a
+          certain date and location. The same activity can be scheduled for
+          several groups at the same time.
+</p> <p>
+We use a list of possible activities that are are described in a long
+          list. This list contains for each activity, for example ‘Swimming’,
+          what members should bring, how long it takes and certain other things
+          to take into account. The list of possible activities is used to plan
+          activities. The list is then also used to communicate to members and
+          their parents.
+</p> <p>
+The responsibility for coordinating these activities lies with the
+          ‘leader’. The email address of the leader will be communicated so that
+          members and parents can ask questions.
+</p> <p>
+The purpose of the system is to keep track of membership records where
+          we want to be able to answer the following questions:
+</p> <ul> <li>What groups do we have?</li> <li>What members do we have this year?</li> <li>What members did we have last year?</li> <li>What members do we have from a certain age group?</li> <li>What members have paid registration fees?</li> <li>Which members are in which group?</li> <li>What leadership do we have?</li> <li>Who leads which group?</li> <li>What activities are planned for a particular group?</li> <li>Who is responsible for coordinating the planned activities?</li> <li>When are the different activities planned?</li> <li>Where will the activities take place?</li> </ul> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+The nouns eligible for an entity type are: Member, Registration, Age
+          Group, Group, Activity and Activity Type.
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening1_oplossing_afb01.svg" alt="Solution exercise Conceptual.1"> </figure> </div>  </section> <h2>Exercise 2: youth club: attributes</h2> <section class="taak"> <div> <p>
+Go back to conceptual.1 and determine for each of the entity types
+          which attributes you find in the text. The attributes should allow you
+          to describe the entities. Ask yourself the following questions:
+</p> <ul> <li>What properties should I track for each of the entity types?</li> <li>
+What information is necessary for my application? Can I find this
+            information in the attributes?
+</li> <li>
+Are certain entity types missing to structure the necessary data? Is
+            it difficult to place certain attributes with the entity types you
+            have identified?
+</li> <li>
+Are there certain entity types that only have one attribute? Are we
+            sure that this is an entity type with one attribute, or an attribute
+            of another entity type? For example, if we want to keep track of a
+            person's age, then we could identify an entity type ‘Age’ with the
+            attribute ‘Age’. On the other hand, this could also simply be an
+            attribute of the entity type ‘Person’, without making our data model
+            unnecessarily complex.
+</li> </ul> <p>
+Expand your ERD in draw.io with your attributes. (TIP: you can
+          duplicate a tab in diagrams.net. You can then build on the answer of a
+          previous question, without losing the answer to the first question).
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+Below is an overview of the different attributes that were identified
+          for each of the entity types:
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening2_oplossing_afb01.svg" alt="Solution exercise Conceptual.2"> </figure> </div>  </section> <h2>Exercise 3: youth club: relationships</h2> <section class="taak"> <div> <p>
+Build on the results of exercise conceptual.2 and explore the various
+          relationships that exist between the entity types. Describe the
+          relationships with a clear name and specify the cardinality for each
+          of the relationship's entity types. Ask the following questions when
+          doing so:
+</p> <ul> <li>
+Do the relationships allow all the links and information to be
+            incorporated?
+</li> <li>Are all entity types connected?</li> </ul> <p>Expand your ERD in diagrams.net with your relationships.</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+The ERD below contains the relationships with their cardinalities.
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening3_oplossing_afb01.svg" alt="Solution exercise Conceptual.3"> </figure> </div>  </section> <h2>Exercise 4: youth club: types of attributes</h2> <section class="taak"> <div> <p>
+Go back to the result of exercise conceptual.3 and refine your result
+          with the correct types of attributes. Does the notation of your
+          attributes match the type? Are there certain relationships that have
+          an attribute?
+</p> <p>Expand your ERD in diagrams.net with your relationships.</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening4_oplossing_afb01.svg" alt="Solution exercise Conceptual.4"> </figure> </div>  </section> <h2>Exercise 5: car rental company</h2> <p>
+In the next exercises, we are going to draw out a full ERD in a number of
+      steps.
+<span class="extra">Each step adds a piece of logic and/or complexity (blue text in
+        italics).</span> Clearly describe the entities, attributes and relationships. For each of
+      the relationships, clearly state the cardinality of each of the participating
+      entity types. As the different tasks build on each other, you can duplicate
+      a tab in diagrams.net. This allows you to keep an overview of your work and
+      distinguish the different steps.
+</p> <figure class="center"> <img src="/assets/conceptueel/autoverhuur.jpg" alt=""> </figure> <h4>Step 1</h4> <section class="taak"> <div> <p>
+A car rental company rents cars to customers. At the first rental,
+          customers are assigned a customer number. For each customer we also
+          store the name, first name, address, e-mail address and mobile phone
+          number. For each car, we keep a record of its brand, model, license
+          plate and chassis number. Our system should generate a record of:
+</p> <ul> <li>the customers currently renting a car</li> <li>the cars and which customers they are currently with</li> <li>the cars and if they are available for a next rental</li> </ul> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening5_oplossing_afb01.svg" alt="Solution exercise Conceptual.5.1"> </figure> </div>  </section> <h4>Step 2</h4> <section class="taak"> <div> <p>
+Text <span class="extra">in blue and italics</span> is an extension of
+          the previous exercise. Additional requirements are added each time.
+</p> <p>
+A car rental company rents cars to customers. <span class="extra">
+Customers can reserve a type of car in advance, indicating when they
+            would like to pick it up and when they would like to return it.
+</span> At the first rental, customers are assigned a customer number.
+          For each customer we also store the name, first name, address, e-mail address
+          and mobile phone number. For each car, we keep a record of its brand, model,
+          license plate and chassis number. Our system should generate a record of:
+</p> <ul> <li> <span class="extra">the reservations made by customers</span> </li> <li>the customers currently renting a car</li> <li>the cars and which customers they are currently with</li> <li>the cars and if they are available for a next rental</li> </ul> <p>
+TIP: For those who have never rented a car before, pay a visit to one
+          of the online car rental companies. Ask yourself the question, what am
+          I actually booking?
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening5_oplossing_afb02.svg" alt="Solution exercise Conceptual.5.2"> </figure> </div>  </section> <h4>Step 3</h4> <section class="taak"> <div> <p>
+A car rental company rents cars to customers. Customers can reserve a
+          type of car in advance, indicating when they would like to pick it up
+          and when they would like to return it. At the first rental, customers
+          are assigned a customer number. For each customer we also store the
+          name, first name, address, e-mail address and mobile phone number. For
+          each car, we keep a record of its brand, model, license plate and
+          chassis number. Our system should generate a record of:
+</p> <ul> <li>the reservations made by customers</li> <li>the customers currently renting a car</li> <li>the cars and which customers they are currently with</li> <li>the cars and when they are available for a next rental</li> <li> <span class="extra">
+all cars rented by a particular customer in the past
+</span> </li> <li> <span class="extra">
+all customers who have rented a particular car in the past
+</span> </li> </ul> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening5_oplossing_afb03.svg" alt="Solution exercise Conceptual.5.3"> </figure> </div>  </section> <h2>Exercise 6: student administration</h2> <p>
+In the next exercises, we are going to draw out a full ERD in a number of
+      steps.
+<span class="extra">Each step adds a piece of logic and/or complexity (blue text in
+        italics).</span> Clearly describe the entities, attributes and relationships. For each of
+      the relationships, clearly state the cardinality of each of the participating
+      entity types. As the different tasks build on each other, you can duplicate
+      a tab in diagrams.net. This allows you to keep an overview of your work and
+      distinguish the different steps.
+</p> <figure class="center"> <img src="/assets/conceptueel/kuloket.png" alt=""> </figure> <h4>Step 1</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is taught by one
+          lecturer. Lecturers teach to students. A student's name, first name,
+          address, and age are stored. A lecturer's name, first name, field of
+          expertise and number of years in service are also stored. For each
+          course we store the code and name of the course. We must be able to
+          give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb01.svg" alt="Solution exercise Conceptual.6.1"> </figure> </div>  </section> <h4>Step 2</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is taught by one
+          lecturer. Lecturers teach to students. <span class="extra">
+We want to be able to generate a list where we get an overview of
+            which students are taught by which lecturers.</span> A student's name, first name, address, and age are stored. A lecturer's
+          name, first name, field of expertise and number of years in service are
+          also stored. For each course we store the code and name of the course.
+          We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+We can generate the list based on the previous result. Nothing needs
+          to be added.
+</p> </div>  </section> <h4>Step 3</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is taught by <span class="extra">one or more lecturers</span>. Lecturers teach to students. We want to be able to generate a list
+          where we get an overview of which students are taught by which
+          lecturers. A student's name, first name, address, and age are stored.
+          A lecturer's name, first name, field of expertise and number of years
+          in service are also stored. For each course we store the code and name
+          of the course. We must be able to give the overview for the current
+          academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb03.svg" alt="Solution exercise Conceptual.6.3"> </figure> </div>  </section> <h4>Step 4</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, <span class="extra">each course is coordinated by at most one lecturer but taught by
+            one or more lecturers</span>. Lecturers teach to students. We want to be able to generate a list
+          where we get an overview of which students are taught by which
+          lecturers. A student's name, first name, address, and age are stored.
+          A lecturer's name, first name, field of expertise and number of years
+          in service are also stored. For each course we store the code and name
+          of the course. We must be able to give the overview for the current
+          academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb04.svg" alt="Solution exercise Conceptual.6.4"> </figure> </div>  </section> <h4>Step 5</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name,
+<span class="extra">fields of expertise he or she contributes to</span> and number of years in service are also stored. For each course we store
+          the code and name of the course. We must be able to give the overview for
+          the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+You can solve this in two ways, on the one hand with an entity type
+          ‘Field of Expertise’, on the other hand with a multi-valued attribute
+          ‘Field of Expertise’. Both solutions are correct.
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb05a.svg" alt="Solution exercise Conceptual.6.5.a"> </figure> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb05b.svg" alt="Solution exercise Conceptual.6.5.b"> </figure> </div>  </section> <h4>Step 6</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course.
+<span class="extra">For each course taken by a student, we keep track of the points the
+            student has earned on this course</span>. We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb06.svg" alt="Solution exercise Conceptual.6.6"> </figure> </div>  </section> <h4>Step 7</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course. For each course taken by a student, we keep
+          track of the points the student has earned on this course.
+<span class="extra">The students picks an internship within a field of expertise</span>. We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb07.svg" alt="Solution exercise Conceptual.6.7"> </figure> </div>  </section> <h4>Step 8</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course. For each course taken by a student, we keep
+          track of the points the student has earned on this course. The
+          students picks an internship within a field of expertise <span class="extra">for which a lecturer is appointed as mentor</span>. We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb08.svg" alt="Solution exercise Conceptual.6.8"> </figure> </div>  </section> <h4>Step 9</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course. For each course taken by a student, we keep
+          track of the points the student has earned on this course. The
+          students picks an internship within a field of expertise for which a
+          lecturer is appointed as mentor.
+<span class="extra">The field of expertise of the internship should match the field of
+            expertise of the mentor. (Is it possible to add constraints to an
+            ERD?)</span>
+We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+It is not possible to add conditions to an ERD. The result therefore
+          remains unchanged.
+</p> </div>  </section> <h4>Step 10</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course.
+<span class="extra">A course unit can be given on different campuses. Each campus has a
+            name and an address.</span>
+For each course taken by a student, we keep track of the points the student
+          has earned on this course. The students picks an internship within a field
+          of expertise for which a lecturer is appointed as mentor. The field of
+          expertise of the internship should match the field of expertise of the
+          mentor. We must be able to give the overview for the current academic year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb010.svg" alt="Solution exercise Conceptual.6.10"> </figure> </div>  </section> <h4>Step 11</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course.
+<span class="extra">Some courses build on existing courses and can only be taken if the
+            student has taken that course first. A course may give access to
+            several courses. A course may also require several other courses to
+            have been taken previously.</span>
+A course unit can be given on different campuses. Each campus has a name
+          and an address. For each course taken by a student, we keep track of the
+          points the student has earned on this course. The students picks an internship
+          within a field of expertise for which a lecturer is appointed as mentor.
+          The field of expertise of the internship should match the field of expertise
+          of the mentor. We must be able to give the overview for the current academic
+          year.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb011.svg" alt="Solution exercise Conceptual.6.11"> </figure> </div>  </section> <h4>Step 12</h4> <section class="taak"> <div> <p>
+A student can take one or more courses, each course is coordinated by
+          one lecturer but taught by one or more lecturers. Lecturers teach to
+          students. We want to be able to generate a list where we get an
+          overview of which students are taught by which lecturers. A student's
+          name, first name, address, and age are stored. A lecturer's name,
+          first name, fields of expertise he or she contributes to and number of
+          years in service are also stored. For each course we store the code
+          and name of the course. Some courses build on existing courses and can
+          only be taken if the student has taken that course first. A course may
+          give access to several courses. A course may also require several
+          other courses to have been taken previously. A course unit can be
+          given on different campuses. Each campus has a name and an address.
+          For each course taken by a student, we keep track of the points the
+          student has earned on this course. The students picks an internship
+          within a field of expertise for which a lecturer is appointed as
+          mentor. The field of expertise of the internship should match the
+          field of expertise of the mentor.
+<span class="extra">We must be able to give the overview for the current and all
+            previous academic years.</span> </p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening6_oplossing_afb012.svg" alt="Solution exercise Conceptual.6.12"> </figure> </div>  </section> <h2>Exercise 7: library</h2> <p>
+In the next exercises, we are going to draw out a full ERD in a number of
+      steps.
+<span class="extra">Each step adds a piece of logic and/or complexity (blue text in
+        italics).</span> Clearly describe the entities, attributes and relationships. For each of
+      the relationships, clearly state the cardinality of each of the participating
+      entity types. As the different tasks build on each other, you can duplicate
+      a tab in diagrams.net. This allows you to keep an overview of your work and
+      distinguish the different steps.
+</p> <figure class="center"> <img src="/assets/conceptueel/mechelen_het_predikheren_public_library_be_001.jpg" alt=""> </figure> <h4>Step 1</h4> <section class="taak"> <div> <p>
+A library lends out books. Each book is identified by an ISBN number,
+          a title and one or more authors. Of one particular book we may have
+          several copies, which is why we give each book a copy number. The ISBN
+          and the copy number allow us to uniquely identify each book. To borrow
+          a book, you must be a member of the library. When a member borrows a
+          book for the first time, he or she needs to register. When the member
+          registers, we receive the name, first name, address, e-mail address
+          and mobile phone number. We then also assign a member number. The
+          library wants to know which books are currently borrowed. When a book
+          is not returned on time, a fine is recorded. We want to be able to
+          generate an overview of outstanding fines and the amount due.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <p>
+We could add 3 binary relationships between Member, Fine and Book.
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/conceptual_7_1_a.svg" alt="Solution exercise Conceptual.7.1.a"> </figure> <p>
+However, this could lead to weird situations in reality. Let say that
+          a user, Emma, borrows Book 1 and Book 2. She could then receive a fine
+          for Book 3, even though she did not borrow it. This is not correct. We
+          will use a ternary relation instead, so the fine is connected to the
+          act of borrowing.
+</p> <figure class="center model"> <img src="/assets/conceptOef/EN/conceptual_7_1_b.svg" alt="Solution exercise Conceptual.7.1.b"> </figure> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_gquun038&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_9ei0bj7x" width="1280" height="720" allowfullscreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe> </div> </div>  </section> <h4>Step 2</h4> <section class="taak"> <div> <p>
+A library lends out books. <span class="extra">However, we also have books that are too valuable to lend out.
+            These can only be consulted in the library.</span>
+Each book is identified by an ISBN number, a title and one or more authors.
+          Of one particular book we may have several copies, which is why we give
+          each book a copy number. The ISBN and the copy number allow us to uniquely
+          identify each book. To borrow a book, you must be a member of the library.
+          When a member borrows a book for the first time, he or she needs to register.
+          When the member registers, we receive the name, first name, address, e-mail
+          address and mobile phone number. We then also assign a member number. The
+          library wants to know which books are currently borrowed. When a book is
+          not returned on time, a fine is recorded. We want to be able to generate
+          an overview of outstanding fines and the amount due.
+</p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/conceptual_7_2.svg" alt="Solution exercise Conceptual.7.2"> </figure> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_ed1a71oi&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_9ei0bj7x" width="1280" height="720" allowfullscreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe> </div> </div>  </section> <h4>Step 3</h4> <section class="taak"> <div> <p>
+A library lends out books. However, we also have books that are too
+          valuable to lend out. These can only be consulted in the library. Each
+          book is identified by an ISBN number, a title and one or more authors.
+          Of one particular book we may have several copies, which is why we
+          give each book a copy number. The ISBN and the copy number allow us to
+          uniquely identify each book. To borrow a book, you must be a member of
+          the library. When a member borrows a book for the first time, he or
+          she needs to register. When the member registers, we receive the name,
+          first name, address, e-mail address and mobile phone number. We then
+          also assign a member number. The library wants to know which books are
+          currently borrowed. When a book is not returned on time, a fine is
+          recorded. We want to be able to generate an overview of outstanding
+          fines and the amount due.
+<span class="extra">The librarian not only wants an overview of which books are
+            currently borrowed, but also which books have been borrowed most or
+            least, which books are consulted most or least, and which members
+            most often return books late.</span> </p> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/conceptual_7_3.svg" alt="Solution exercise Conceptual.7.3"> </figure> <div class="iframewrapper kaltura"> <iframe class="preview-iframe" src="https://cdnapisec.kaltura.com/p/2375821/sp/237582100/embedIframeJs/uiconf_id/43066731/partner_id/2375821?iframeembed=true&playerId=kaltura_player&entry_id=1_exk4bcuy&flashvars[streamerType]=auto&flashvars[localizationCode]=en&flashvars[sideBarContainer.plugin]=true&flashvars[sideBarContainer.position]=left&flashvars[sideBarContainer.clickToClose]=true&flashvars[chapters.plugin]=true&flashvars[chapters.layout]=vertical&flashvars[chapters.thumbnailRotator]=false&flashvars[streamSelector.plugin]=true&flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&flashvars[dualScreen.plugin]=true&flashvars[hotspots.plugin]=1&flashvars[Kaltura.addCrossoriginToIframe]=true&&wid=1_9ei0bj7x" width="1280" height="720" allowfullscreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe> </div> </div>  </section> <h2>Exercise 8: board game association</h2> <p>
+Create an ERD diagram for the following description. Clearly state the
+      cardinality of the relationships and the attributes of the entity types.
+</p> <figure class="center model"> <img src="/assets/conceptueel/IMG_1656.jpeg" alt=""> </figure> <section class="taak"> <div> <p>
+A board game association wants to develop an application to support
+          their association. The association organises tournaments for their
+          various members. A tournament revolves around one specific board game.
+          Typically they give a funny name to each tournament in order to easily
+          communicate with their members. The aim is to declare a member the
+          winner of the tournament. Members sign up for the tournament. On basis
+          of the entries, matches are organised. Each match is scheduled at a
+          specific date and time. The tournaments take place at the association
+          centre. Each table has a number. For the matches they keep track of
+          which table a match is scheduled on. Each match is played by a number
+          of the members of the association. At each match, one of the members
+          takes the role of game leader. This person is responsible for
+          recording the individual scores of the players. The members are
+          registered in the system so that they can participate in matches and
+          take up the role of game leader. For each member, they want to keep
+          name, e-mail address and date of birth. Members can introduce other
+          members. They have a catalogue of games that they use to organise the
+          tournaments and competitions. For each game, they need to store the
+          name, the number of players and the edition. A board game can either
+          be a base game, or an expansion. If it is an expansion, they want to
+          know for which base game it is an expansion. For each board game, they
+          want a list of members who can lead games of the board game. At any
+          time, we need to be able to create an overview of:
+</p><ul> <li>the schedule of tournaments and matches</li> <li>
+the matches played, which members participated and the scores
+            achieved by the members
+</li> <li>the winners of the various tournaments</li> <li>the catalogue of board games, with possible game leaders</li> </ul> </div>  <button>Show / hide solution</button> <div class="oplossing"> <figure class="center model"> <img src="/assets/conceptOef/EN/model_conceptueel_oefening8_oplossing_afb01.svg" alt="Solution exercise conceptual.8"> </figure> </div>  </section> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

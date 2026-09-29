@@ -1,0 +1,735 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/styles/stijl.css"><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script><script>
+      hljs.highlightAll();
+    </script><title>Modeling: logical data model</title></head> <body> <header id="top"> <div class="container"> <nav> <ul> <li><a href="/EN/">Home</a></li> <li><a href="/EN/leerpad">Learning Path</a></li> <li><a href="/EN/model_menu">Data modeling</a></li> <li><a href="/EN/SQL_menu">SQL</a></li> </ul> </nav> </div> </header>  <main> <blockquote> <p> <span class="quote">Logic will get you from A to B. Imagination will take you everywhere.</span>
+&mdash;Albert Einstein
+</p> </blockquote> <h1>Logical data model</h1> <p>
+In this chapter, we introduce the concept of a ‘database model’ as an
+      introduction to building the logical data model. Then, we can make the
+      conversion from the conceptual to the logical data model. We will take a
+      look at:
+</p> <ul> <li>What is a database model?</li> <li>What is the role of a database model?</li> <li>What is the relational database model?</li> <li>
+How to convert a conceptual data model to a logical data model according
+        to the relational database model?
+</li> </ul> <p>
+You should be able to define the following terms, how to visualize this
+      (where relevant) and explain with an example:
+</p> <section class="learning objective"> <ul> <li>logical data model;</li> <li>database model;</li> <li>relational database model;</li> <li>table;</li> <li>
+key (including candidate key, primary key, foreign key, composite key,
+          natural key, technical or surrogate key)
+</li> <li>normalization.</li> </ul> </section> <p>
+After completing this chapter, you should be able to read the notation of
+      a logical data model (of a relational database model) and explain it using
+      an example.
+</p> <p>
+You should also be able to <em>
+Convert a conceptual data model to a logical data model
+</em> (of a relational database model).
+</p> <h2>Introduction</h2> <p>
+After the conceptual data model, we move on to the design of our database.
+      We had described a database as a collection of "persistent data". To
+      determine <em>what</em> specifically should be included in that collection,
+      we created the conceptual data model that addressed the question ‘What information
+      should we include in our database’. In doing so the collection is delineated
+      to a particular topic or application. An example of this is the UCLL College
+      student administration database, with data of students, programs, enrollments,
+      ...
+</p> <p>
+In the next step, we will consider the <em>structure</em> of this collection
+      of data. How do we organize the data? After all, there are several ways to
+      do that.
+</p> <p>
+Before we focus on the different ways in which we can apply structure, we
+      should take a moment to consider the question ‘Why is structure
+      important?’. When we work with computers, structure ensures that we can
+      teach these computers to work within the framework of this structure.
+      Structure in itself provides predictability so that it becomes easy to
+      define procedures on it. This is by the way, not only the case for
+      computers: the fact that there are markings on the roads structure the
+      roads in such a way that rules can be defined that promote road safety.
+      And we are all happy about that.
+</p> <p>
+For data, this gives the added benefit that the structure itself contains
+      additional information (we call this <em>metadata</em> - data about the data)
+      that can then be used to determine procedures. Thus we can manage data access,
+      optimize storage, develop standard procedures, ...
+</p> <p>
+You can <em>structure the same concept in a lot of different ways</em>,
+      just think of a library. You can arrange all the books by theme, by
+      author, by title, ... This is no different for data. You then ask the
+      following questions:
+</p> <ul> <li>what type of data are we talking about?</li> <li>what do you want to do with this data?</li> </ul> <p>
+Because IT people are rather fond of <em>standards</em> (and you future IT
+      guys should be getting excited by now because a standard is clearly coming),
+      it should come as no surprise that this is also the case for data. A lot of
+      standards have been defined over time for data models and to structure data.
+      We call these standards <em>database models</em>.
+</p> <h2>Database models</h2> <p>
+A database model defines the structure of a database and how the data
+      within a database is organized and manipulated. Let's take a look in a
+      little more detail.
+</p> <p>
+First and foremost, a database model will structure data in a specific
+      way. This typically involves the use of a number of components or building
+      blocks, each of which play a role in the structure of the data model. That
+      role is then typically described by a number of principles or rules that
+      define the cooperation of the various components.
+</p> <p>
+The standards around database models (and other domains) provide some
+      important advantages that we should not lose sight of:
+</p> <ul> <li>
+First and foremost, these are <em>
+standards used across the industry
+</em>. When you talk about a particular standard, everyone around the
+        table with an IT training understands what you are talking about. This
+        also applies to database models.
+</li> <li>
+A second advantage is that a lot of researchers continue to work on
+        these standards and additional extensions (like the EERD). They continue
+        to develop procedures that benefit everyone, so
+<em>standards typically do continue to evolve</em>. It's your job to
+        keep up. Lifelong learning ...
+</li> <li>
+A third benefit is that <em>
+the standards provide a foundation for companies to develop software
+          products.
+</em> Since they are based on standards, they can in turn work well with
+        other products that in turn also use standards.
+</li> </ul> <p>
+Over the years, many different database models have been developed. Some
+      have been developed from particular technologies. Others to work with new
+      types of data. Others because the development of ever more powerful
+      machines expanded the possibilities of working with data. In short, the
+      horizon of what is possible is constantly expanding, and so does the range
+      of database models available.
+</p> <p>
+Of all these database models, one particular database model has been going
+      for a long time. The <em>relational database model</em>, developed in the
+      1970s by Codd, is still considered a standard within the IT industry.
+      Within this course, this is therefore the database model on which we will
+      focus further. Some others are covered in other courses.
+</p> <h3>Relational database model</h3> <h4>Table</h4> <p>
+The relational database model uses only one component or building block,
+      the <em>table</em>. All the data we want to track, will be put into one or
+      multiple tables. Each table represents a collection of similar data, for
+      example, a table containing all student data. A table is structured as a
+      2-dimensional array structure, where we call the horizontal dimension the <em>rows</em> and the vertical dimension the
+<em>columns</em>.
+</p> <p>
+A row represents a <em>record</em> (or <em>entity</em>) of the table. A
+      table can theoretically contain an infinite number of rows. As we create a
+      table with student records, each row might represent a student.
+</p> <p>
+A column represents an <em>attribute</em> (or <em>field</em>) of the
+      table, each of which will describe a piece of the row (or entity). A table
+      contains a <em>fixed number</em> of columns. If we want to add a column, which
+      is possible, then we need to think what this means for the existing rows in
+      the table. For example, it is possible that we need to enter a value for this
+      column for each of the rows already included in the table.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_databankmodel_afb01.png" alt="A table as a 2-dimensional array structure consisting of rows and columns."> </figure> <p>
+In our example of a table of student data, each column would contain a
+      certain property of the student, for example, the name, the birthdate, ...
+</p> <p>
+Therefore, because a table has a specific structure of columns, also all
+      data maintained in one table will always have the same structure. Every
+      time we want to keep additional data with a different structure, we create
+      an additional table. <em>
+In a relational database model, we call a set of a number of tables "a
+        database".
+</em> So our relational database can contain many different tables. To then
+      combine these tables with each other and create relationships, we use keys.
+</p> <h4>Keys</h4> <p>
+A <em>key</em> consists of one or more columns (attributes) of a table that
+      satisfy the following three conditions:
+</p> <ul> <li>
+The value of the combination of one or more columns in a row constitutes <em>a unique identifier</em> of the entire row. Thus, for each row, the value of the key must be unique;
+        in other words, two rows in the table must not have the same key.
+</li> <li>
+The combination of the columns forming the key must be <em>minimal</em>.
+        By this we want to indicate that if in the combination we were to remove
+        one of the columns, we would no longer satisfy the first condition. If
+        we have a key consisting of one column, our key is minimal by
+        definition.
+</li> <li>
+The value of the key may also <em>not be empty</em>, the key must thus
+        always be filled in.
+</li> </ul> <p>
+Within the relational model, we define <em>
+one primary key for each table
+</em>. The value of the primary key is a unique identifier for each row.
+      We will use this primary key to connect the different tables with each
+      other.
+</p> <p>
+The primary key is chosen from a number of candidate keys. A
+<em>candidate key</em> is a potential key for a table, which
+      therefore also satisfies the three conditions for a key.
+</p> <p>
+The image below shows an example for the table ‘Lecturers’. We have four
+      columns that might be a key. After consideration we are left with only
+      ‘Lecturer ID’ as a candidate key. <em>
+Since there is only one candidate key, it makes sense to choose this as
+        the primary key.
+</em> </p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_databankmodel_afb02.png" alt="An overview of possible keys for the table lectors."> </figure> <p>
+So a table can have multiple keys. From the list of candidate keys, we
+      choose one primary key. To choose a <em>
+good key from the list of possible keys
+</em> you can consider the following criteria:
+</p> <ul> <li>
+A key should be as <em>stable</em> as possible. In fact, we assume that a
+        key is actually never modified. There are some exceptions to this, but we
+        try to avoid changing a primary key. For example, if within the context of
+        student administration you have the choice between a state registry number
+        or a student number to uniquely identify a student, you choose the student
+        number. Not only do we have within student administration more control over
+        the student number, we can ensure that it is never altered. A state registration
+        number can change. In addition, the use of a national registry number in
+        a database (and outside of it) is subject to very strict GDPR legislation,
+        but we'll explain that in another course.
+</li> <li>
+A key ideally includes as few columns as possible. Keys can consist of
+        one or more columns. A key that consists of multiple columns, is called
+        a <em>composite key</em> simply because it is composed of multiple values.
+        We avoid compound keys because that makes the whole thing a bit more complex,
+        and complexity brings a cost that we try to avoid. Complexity means that
+        the whole is difficult to understand for the parties involved, that there
+        is possibly a loss of performance when processing the data, etc. As soon
+        as you learn about performance, automation, security, ... we will be able
+        to explain the cost of complexity in a database.
+</li> <li>
+A key is ideally a <em>simple value</em>, for example a number or a
+        short sequence of characters. As soon as it becomes more complex, or
+        even starts using special characters, the risk of errors increases.
+</li> <li>
+A key is ideally <em>
+taken from the context that we are describing</em>. A key that is both valuable within the database (as a primary key)
+        but also used outside the system, has the advantage that a lot of the
+        people involved quickly understand what it is about. For example, a
+        student number is also a way to identify students outside the database.
+        So student number is potentially a good primary key. A key that is used
+        both within and outside the database, is called a <em>natural key</em>.
+</li> </ul> <p>
+If we have no candidate keys, or the available candidate keys are not a
+      suitable choice, we always have the option to define a key ourselves. We
+      call those
+<em>technical</em> or <em>surrogate keys</em>. The technical key is only
+      used inside the database, and has no value outside the database. It has
+      the effect of adding an additional column that will contain the key. <em>Ultimately, each table must have a primary key.</em> </p> <p>
+We had already indicated that primary keys make it possible to create
+      links between tables. This is done by an exchange of primary keys. The
+      mechanism of the exchange is explained in the section
+<a href="/EN/model_logisch/#From-conceptual-to-logical-data-model">‘From conceptual to logical data model’</a>. Essentially, the primary key of one table is added to another table. As
+      soon as we add a primary key to another table, and thus add a column to
+      that table, we call this key a <em>foreign key</em>.
+</p> <p> <em>
+The use of primary keys and foreign keys is central in the relational
+        model. It is the basis for defining relationships.
+</em> </p> <h3>Other database models</h3> <p>
+In addition to the relational database model, there are many other
+      database models, each with their specific applications. Some of these
+      database models have found their way into certain technologies so that a
+      good understanding of the model should enable you to understand the
+      operation of the technology as well. We will discuss this in more detail
+      in other courses but to give you a foretaste, we have already listed some
+      database models:
+</p> <ul> <li> <em>Hierarchical</em> database model: uses tree structuring to represent
+        data
+</li> <li> <em>Network</em> database model: uses network structuring to represent data
+</li> <li> <em>Dimensional</em> database model: used in the context of data warehouses
+</li> <li> <em>Object-oriented</em> database model: combines the capabilities of a relational
+        db with object-oriented programming
+</li> <li> <em>Graph</em> database model: uses graph structuring to represent data
+</li> </ul> <h2>From conceptual to logical data model</h2> <section class="info"> <p>
+How to draw a logical data model in draw.io can be found in a separate
+        chapter in two videos:
+</p> <ol> <li> <a href="/EN/model_drawio/#Logical-data-model-drawing-with-draw.io">draw a logical data model with draw.io</a> </li> <li> <a href="/EN/model_drawio/#From-conceptual-to-logical">from conceptual to logical</a> </li> </ol> </section> <p>
+The logical data model answers the question ‘How should we structure the
+      data according to our chosen database model?’ We developed a conceptual
+      data model, and made the choice of a relational database model. The
+      conversion of this conceptual data model then proceeds in a number of
+      steps.
+</p> <h3>Step 1: entity types become tables</h3> <p>
+In the first step, we create <em>a table for each of the entity types</em>. We give this table the same name as the entity type. Then we define the
+      columns of the table, creating <em>a column for each attribute </em>,
+      except for the multi-valued attributes and the derived attributes. We will
+      come back to the multi-valued attributes later. The name of the column
+      created matches the name of the attribute.
+</p> <p>
+The notation of the logical data model is different from that of the
+      conceptual data model. We represent the whole of a table as a frame,
+      containing a list of its attributes.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb01.png" alt="Step 1: entities become tables."> </figure> <h3>Step 2: each table is assigned a primary key</h3> <p>
+In a second step, we designate <em>a primary key</em> for each table. This
+      means that we need to determine a number of candidate keys and from this list
+      then select the best candidate.
+</p> <p>
+We visualize the primary key by placing the columns of the key at the top
+      of the list with a line below to clearly distinguish between the primary
+      key and the remaining columns. In doing so we also put for the different
+      columns of the primary key the code ‘PK’ (from primary key) and to be
+      completely sure that nobody can make a mistake, we underline the column
+      names as well.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb02.png" alt="Step 2: Each table is assigned a primary key."> </figure> <p>
+We do this for each table. Also keep in mind that you may create a
+      technical key, if it is difficult to create a primary key with the
+      existing columns.
+</p> <h3>
+Step 3: for each 1-1 and 1-N relationships, we transfer the primary key as
+      a foreign key
+</h3> <p>
+In the third step, we are going to convert some of the <em>
+relationships from the conceptual data model to something equivalent in
+        the logical data model
+</em>. Since we create relationships within the logical data model by
+      means of keys, we are going to work with primary and foreign keys.
+</p> <p>
+For each 1-N relationship, we're going to transfer the primary key from
+      the 1-side to the N-side. On the N side, this primary key then becomes a
+      foreign key. So each row of the table on the N-side will get an additional
+      column containing a reference (by means of the foreign key) to a row in
+      the 1-side table.
+</p> <p>
+For example, we have two entity types: ‘Team’ and ‘Staff Member’. Each
+      staff member is in exactly one team. Each team can include multiple staff
+      members. We create two tables: a table ‘Team’ and a table ‘Staff member’.
+      The table ‘Team’ is given the primary key ‘Team Code’, by which every team
+      in the table gets a unique team code. The table ‘Staff member’ is given
+      the primary key ‘Member number’, by which every staff member in the table
+      is assigned a unique member number. In order to model the relationship
+      between the two entity types in the logical data model, we append the team
+      code from the ‘Team’ table (1-side) to each staff member in the ‘Staff
+      Member’ table (N-side).
+</p> <p>
+The reverse (i.e., adding the primary key from ‘Staff Member’ to ‘Team’)
+      is not an option. We can add only one value to a team. Thus, if we were to
+      make a reference from the team to one staff member, we would lose the
+      connection to the other team members of the team.
+</p> <p>
+In the data model <em> we add the foreign key to the list of columns</em>.
+      We denote the foreign key by the abbreviation "FK" (from foreign key)
+      followed by a sequence number, for example FK1, FK2, ... The sequence
+      number should make it possible to distinguish the different foreign keys
+      from each other. If we have a foreign key that consists of multiple
+      columns, we transfer each of the columns. We then give them all the same
+      sequence number to indicate that they belong together.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb03.png" alt="Step 3: For each 1-N relationship, we transfer the primary key as the foreign key."> </figure> <p>
+We still denote the relationship by a line where we use the
+<em>crow's foot notation</em>. The crow's foot notation is different from
+      the (min,max) notation you have used so far.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb04.png" alt="crowsfoot notation 1-N relationships"> </figure> <p>
+For each of the 1-1 relationships, we do something similar, only here we
+      can
+<em>choose</em> from which side we take the primary key to add to the other
+      side as a foreign key.
+</p> <p>
+The <em>guideline</em> with a 1-1 relationship is to look at the minimum cardinality.
+<em>
+If a given entity type cannot exist without the relationship (so minimum
+        cardinality is ‘1’), this table best takes the primary key of the other
+        table as the foreign key.
+</em> Since an entity only exists if it has a relationship, then the row describing
+      the entity must always have this value filled in. Because without this value,
+      the relationship does not exist.
+</p> <p>
+If both entity types cannot exist without each other (both thus have a
+      minimum cardinality of ‘1’), or both can both exist without each other
+      (i.e., both have a minimum cardinality of ‘0’),
+<em>you may choose</em>. Typically, you then choose the table with the
+      smallest number of rows to include the primary key of the other table as
+      the foreign key.
+</p> <h4 id="multi-valued">Multi-valued attributes</h4> <p>
+Multi-valued attributes are a type of 1-N relationship where an <em>
+entity is related to multiple attribute values
+</em>. Therefore, you need to use a similar approach for these as for
+      converting 1-N relationships. <em>
+For each multivalued attribute, create a new table named with the name
+        of the multivalued attribute.
+</em> To this table you add the value of the attribute and then the primary
+      key of the entity type table as the foreign key. Don't forget to indicate the
+      primary key and to add a line in crow's foot notation.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb05.png" alt="Multi-valued attributes."> </figure> <p>
+For example, the multi-valued attribute ‘Email’ of the entity type
+      ‘Employee’ results in a table ‘Email’ containing a column ‘Email’. To
+      associate each email address with a staff member, we add the primary key
+      of the table ‘Staff member’ as a foreign key to the ‘Email’ table. Note in
+      this example that the primary key of the table ‘Email’ is a composite key:
+      only the <em>combination</em> of the columns ‘Staff Member’ and ‘Email’ is
+      unique.
+</p> <h3>Step 4: For each N-M relationship, we create an intermediate table</h3> <p>Now things get a little more complex.</p> <p>
+In the paragraphs above, we already gave a procedure for the different
+      entity types, their attributes and for the 1-1 and 1-N relationships. In
+      this step we focus on the N-M relationships. <em>
+To enable N-M relationships, we need to go beyond the simple exchange of
+        primary keys
+</em> because this does not provide a good solution for N-M relationships.
+</p> <p>
+Let's start from an example. We have the entity type ‘Student’ and the
+      entity type ‘Course’. Between both entity types we have a relationship
+      that expresses that a student can enroll in multiple courses, and
+      conversely that in a course multiple students can enroll. So this is a
+      many-to-many relationship.
+</p> <p>
+Initially, we create two tables from both entity types: the ‘Student’
+      table and the ‘Course’ table. The first table gets as primary key ‘Student
+      Number’, the second table gets as primary key ‘Course Code’. If we were to
+      add the ‘Course Code’ column to the table ‘Student’, a student could refer
+      to only one course and thus could take only one course, which is not
+      correct. Conversely, should we add the ‘Student Number’ to the ‘Course’
+      table, a course could only be taken by one student, which is also not
+      correct.
+</p> <p>
+We solve this by creating an <em>intermediate table</em>, to which we add
+      a row for every combination of a ‘Student’ entity following a ‘Course’
+      entity. Each row then contains the primary key of the table ‘Student’ and
+      the primary key of the ‘Course’ table. <em>
+Thus, the table will contain two foreign keys.</em> The combination of the two foreign keys, will then become the <em>
+new primary key</em> of the new intermediate table.
+</p> <p>
+The same rules we gave earlier for a key also apply here. So if there is a
+      need for multiple relationships between the same two entities, the
+      combination of the foreign keys might be insufficient to satisfy all the
+      rules. That means something might be missing in your data model.
+</p> <p>
+In other words, the above example results in an (intermediate) table
+      ‘StudentFollowsCourse’ (or ‘Student_Course’, be consistent in your naming)
+      in which we find the ‘Student Number’ column and the ‘Course Code’ column.
+      Both are foreign keys, so we denote them with the abbreviation ‘FK’
+      (Foreign Key) followed by a sequence number. The combination of both keys
+      is also the primary key of the new table, so we denote each column also
+      with abbreviation ‘PK’ (Primary key). Study the figure below carefully!
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb06.png" alt="Step 4: We create an intermediate table for each N-M relationship."> </figure> <p>
+An N-M relation is the only type of relationship that can have <em>attributes</em>. In a logical data model, we are going to <em>create</em>
+additional columns for these attributes in the intermediate table
+</p> <p>
+For example, in the above example, if we want to keep a score for each
+      combination between student and course then we create an additional column
+      ‘Score’ in the table ‘StudentFollowsCourse’ (see figure below).
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb07.png" alt="Step 4: we create an intermediate table for each N-M relationship (with attributes of the relationship)."> </figure> <h3>Step 5: the special cases</h3> <p>
+There remain some constructs in the conceptual data model that we have not
+      yet given a solution for. We want to explain them briefly so that you can
+      also convert these from a conceptual to a logical data model.
+</p> <h4>Relationships of degree 1</h4> <p>
+A grade 1 relationship in a conceptual data model, also called an <em>unary</em>
+relationship, is a situation in which an entity type has a relationship with
+      itself.
+</p> <p>
+For example, consider a situation where an employee is coaching another
+      employee. We want to include this information in our database (and
+      therefore in our data model). We have an entity type ‘Employee’ that
+      refers to itself via a relation ‘Coaches’. The relation specifies that
+      each employee possibly coaches several other employees or none. In
+      addition, each employee has at most 1 coach, but again this is not
+      mandatory.
+</p> <p>
+To then convert this into a logical data model, we treat this unary
+      relationship <em>
+as if it were a binary relation, corresponding to a 1-N relation</em>.
+</p> <p>
+How do we approach this practically? First, we create a table ‘Employee’
+      and define a primary key, in this case ‘Staff Number’. In the situation of
+      a 1-N relationship, we carry the primary key from the 1-side (coaching
+      employee) as a foreign key to the N-side (coached employee). We add the
+      primary key ‘Staff Number’ as an additional column to the table ‘Employee’
+      where we rename it ‘CoachedByStaffNumber’ for clarity and we designate it
+      as a foreign key with the abbreviation ‘FK’, optionally followed by a
+      sequence number. This allows us, for each employee, to connect to his or
+      her coach because each row of the employee will contain a reference.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb08.png" alt="We convert unary relations as if they were binary relations."> </figure> <p>
+For the other types of relationships, the reasoning runs similarly. <em>
+If a unary relation is an N-M relation, we use an intermediate table
+</em>
+as described earlier.
+</p> <h4>Relationships of degree 3 and higher</h4> <p>
+A relationship of degree 3 and higher in a conceptual data model is a
+      situation where a relationship connects three or more entity types.
+</p> <p>
+For example, imagine a situation where a doctor prescribes medication to a
+      patient. If we model this in a conceptual data model we would have three
+      entity types ‘Doctor’, ‘Patient’ and ‘Medication’ that are connected by a
+      relationship ‘Prescribes’. We have previously used this example <a href="/EN/model_conceptueel/index.html#Degree">in the chapter of the conceptual data model</a>, so we know we can't reduce this to binary relationships.
+</p> <p>
+To then convert this to a logical data model, we create a table for each
+      of the three entity types: ‘Doctor’, ‘Patient’ and ‘Medication.’ These
+      three tables each have a primary key, ‘Doctor Number’, ‘Patient Number’
+      and ‘Medication Code’ respectively. We replace the relationship with an <em>
+intermediate table ‘Prescription’, to which we add the three columns
+        that each refer to the primary keys of the ‘Doctor’, ‘Patient’ and
+        ‘Medication’ tables</em>. Each key is a foreign key in the ‘Prescription’ table and so we denote
+      them with the abbreviation ‘FK’ followed by a sequence number. <em>
+The three columns together form the primary key of the table
+        ‘Prescription’
+</em> and thus we also denote them by the abbreviation ‘PK’. For every relationship
+      that exists between the different entities of the entity types ‘Doctor’, ‘Patient’
+      and ‘Medication’, a row will be added to the ‘Prescription’ table.
+</p> <p>
+Each <em>attribute</em> of the relationship, for example the attribute ‘Date’
+      to indicate when the medication was prescribed, is added to the intermediate
+      table ‘Prescription’ as an <em>additional column</em>.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb09.png" alt="We convert relationships of grade 3 and above to an intermediate table."> </figure> <p>
+We can extend the same principle for relationships of degree 4, 5, ... In
+      each case, we create an intermediate table that contains the primary keys
+      of all tables involved.
+</p> <h4>Exercise Car Rental</h4> <p>
+Create <a href="/EN/model_logisch_oefeningen/#Exercise-1:-car-rental">Exercise 1: car rental</a>.
+</p> <h4>Exercise youth association</h4> <p>
+Create <a href="/EN/model_logisch_oefeningen/#Exercise-2:-youth-association">Exercise 2: youth association</a>.
+</p> <h4>Exercise board game association</h4> <p>
+Create <a href="/EN/model_logisch_oefeningen/#Exercise-3:-board-game-association">Exercise 3: board games association</a>.
+</p> <h4>Exercise technical maintenance and repair</h4> <p>
+Create <a href="/EN/model_logisch_oefeningen/#Exercise-4:-technical-maintenance-and-repair">Exercise 4: technical maintenance and repair</a>.
+</p> <h4>Subtypes and supertypes</h4> <p>
+We have <a href="/EN/model_conceptueel/index.html#Extended-Entity-Relationship-Diagram-(EERD)">previously described how the ERD was extended to the EERD</a>, including the ability to create subtypes and supertypes. A
+<em>subtype</em> is an entity type that inherits attributes and relationships
+      from a
+<em>supertype</em> and then extends it with additional attributes and relationships.
+      Similarly, we saw that a supertype can have multiple subtypes, each of them
+      a <em>specialization</em> of the supertype.
+</p> <p>
+The example we used earlier was a supertype ‘Employee’, and two subtypes
+      ‘Temporary employee’ and ‘Permanent employee’. Of the entity type
+      ‘Employee’, we keep the typical properties: name, first name, date of
+      birth, employee number, ... In addition, we have the entity type
+      ‘Temporary employee’ that inherits all the attributes and relationships
+      from the entity type ‘Employee’, but extends it with the attributes
+      ‘Contract start date’ and ‘Contract end date’. The entity type ‘Permanent
+      employee’ extends the entity type ‘Employee’ with the attributes ‘Employee
+      start date’ and ‘Number of years of service’.
+</p> <p>
+To then convert this to a logical data model, we can use
+<em>different strategies</em>. The tradeoff between the different
+      strategies is typically done based on performance, and since this course
+      does not focus on performance, you can freely choose your strategy.
+      However, you must be able to apply both strategies.
+</p> <p>We'll go over the two strategies:</p> <ol> <li> <p> <em>A first strategy is to create one table</em> ‘Employee’, where for
+          each attribute of the entity type ‘Employee’ we add a column, with the
+          exception of the multi-valued and derived attributes. We give this table
+          a primary key, for example, ‘Staff Number’. Then for each of the attributes
+          of the subtypes of the entity type ‘Employee’ (in other words the entity
+          types ‘Temporary Employee’ and ‘Permanent Employee’) we also add columns.
+          This results in one large table with all the attributes of both the supertypes
+          and subtypes. If the subtypes also have relationships, each of the relationships
+          must of course also be added to the table correcty as we described earlier.
+          The resulting table contains one row for every employee, the different
+          columns are filled-in according to whether the employee is a temporary
+          or permanent employee.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb10.png" alt="Converting supertypes and subtypes to a logical data model: 1 table."> </figure> <p> <em>
+This strategy works very well if the supertype contains the largest
+            proportion of attributes and relationships</em>, and the subtypes have only a few additional attributes or
+          relationships each. Thus, we deliberately choose not to add complexity
+          by adding additional tables.
+</p> <p>
+Additionally <em>
+this strategy works well with overlapping and/or total inheritance
+</em>. With overlapping and/or total inheritance, we are going to have
+          more attributes filled-in for a given entity, or translated to the
+          logic model, fewer columns will be empty for a given row.
+</p> </li> <li> <p>
+A <em>second strategy</em> is to create a single table ‘Employee’, where
+          we add a column for each attribute of the entity type ‘Employee’, with
+          the exception of the multi-valued and derived attributes. We give this
+          table a primary key, for example ‘Staff Number’. <em>
+We then create additional tables for each of the subtypes</em>, which for our example results in the tables ‘Temporary Employee’
+          and ‘Permanent Employee’.
+</p><p>
+To these tables we add a column for each attribute of the subtypes,
+          again with the exception of the multi-valued and derived attributes.
+          To each of the subtype tables we add the primary key of the supertype
+          table. In our example, we add the ‘Employee Number’ column to the
+          ‘Temporary Employee’ and ‘Permanent Employee’ tables. Given that this
+          is the primary key of another table, we denote it as a foreign key
+          with the abbreviation ‘FK’ followed by a sequence number. At the same
+          time, this key also assumes the role of primary key for the subtype
+          tables, so we denote it also with the abbreviation ‘PK’.
+</p><p> <em>
+This results in several tables, one for the supertype and one for
+            each of the subtypes.
+</em> Of course, also here the different relationships must be processed
+          correctly as we described earlier. The resulting supertype table contains
+          one row for each employee. In addition, for each temporary employee a row
+          will be added to the table ‘Temporary Employee’. and for each permanent
+          employee a row will be added to the ‘Permanent Employee’ table with each
+          column being filled in accordingly.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_relationeel_conceptueel_naar_logisch_afb11.png" alt="Converting supertypes and subtypes to a logical data model: multiple tables."> </figure> <p>
+This strategy <em>
+works very well if the supertype includes a small number of
+            attributes and relationships</em>, and the subtypes themselves have a lot of attributes or
+          relationships. To avoid the complexity of all those additional columns
+          that would usually be empty in a single table we split the whole thing
+          up.
+</p> <p>
+Additionally, this strategy works <em>
+works well if it involves disjoint and/or optional inheritance
+</em>. With both disjoint and/or optional inheritance, we have a high
+          risk of a lot of empty columns for a given row, which then in turn
+          takes up unnecessary space.
+</p> </li> </ol> <p>
+Finally, you can start <em>combining</em> the above strategies, where you create
+      an additional table for certain subtypes, and include other subtypes along
+      with the super-type table.
+</p> <h4>Exercise library</h4> <p>
+Create <a href="/EN/model_logisch_oefeningen/#Exercise-5:-library">Exercise 5: library</a>.
+</p> <h2>Redundancy in a relational database model</h2> <p> <a href="/EN/model_conceptueel/#Redundancy">
+In the previous section, we briefly touched upon the concept of
+        redundancy</a>. Redundancy means that we are keeping multiple instances of the same
+      information in our data model. For the conceptual data model, this means
+      that when defining entity types, attributes, and relationships, we must be
+      careful not to add logic that is already contained in the data model.
+</p> <p>
+In the context of a relational database model, redundancy means that we <em>define tables and columns that we don't actually need</em>. But how does this look?
+</p> <p>
+Let's start from the example we used earlier. A customer buys a car from
+      one of the garages. We know which customer buys which car. We also know in
+      which garage a car is sold. If we want to know in which garage a customer
+      buys a car, we can establish the relationship ‘Buys car in’ between the
+      entity types ‘Customer’ and ‘Garage’. We mentioned earlier that <em>this relationship is redundant</em>, because the information we can derive from this relationship is already
+      contained in the relationship ‘Buys’ between the entity types ‘Customer’
+      and ‘Car’ and the relationship ‘Is in’ between the entity types ‘Car’ and
+      ‘Garage’. What would it now mean for our logical data model if we add the
+      relationship anyway?
+</p> <p>
+Based on the above, we might arrive at the following conceptual data
+      model. We have added cardinalities and additional attributes.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_redundantie_afb01.svg" alt="An example of a conceptual data model with a redundant relationship ‘Buys car in’ between the entity types ‘Customer’ and
+          ‘Garage’ indicating additional information."> </figure> <p>
+If we translate this data model into a logical data model, we get the
+      result below.
+</p> <figure class="center"> <img src="/assets/logisch/EN/model_logisch_redundantie_afb02.svg" alt="An example of a logical data model with a redundant relationship ‘Buys car in’ between the entity types ‘Customer’ and
+          ‘Garage’ indicating additional information."> </figure> <p>
+Now there is redundancy. Because if we want to know which customer bought
+      a car in a particular garage, we can look at the table ‘Buys_car_in’. We
+      can also look in the table ‘Car’, because for each car sold, there is a
+      reference in this table to both the customer and the garage. <em>But why is this a problem?</em> </p> <p>
+When we represent the same information within a model through different
+      paths, there is <em>
+a risk of creating anomalies within the database
+</em>. The possible types of anomalies are:
+</p> <ul> <li>Insert anomalies</li> <li>Delete anomalies</li> <li>Update anomalies</li> </ul> <p>
+Briefly, in the table ‘Car’ we may add data (insert), remove data (delete)
+      or modify data (update) <em> without modifying the same data</em>
+in the table ‘Buys_car_in’ and vice versa. This is a problem because we compromise
+      the integrity of our database by doing so.
+</p> <p>
+By <em>integrity of a database</em> we mean that the data in the database should
+      reflect reality <em>correctly</em>. For example, if a sale does not go
+      through, we are going to delete the reference to the customer in the table
+      ‘Car’. Should we forget to delete the reference to this sale in the table
+      ‘Buys_car_in’, then the data in the database will no longer be correct. In
+      the table ‘Buys_car_in’ we have registered a sale, but in the table ‘Car’
+      we did not. This is an example of an update anomaly.
+</p> <p> <em>
+Redundancy is not always bad in principle, but as described, it can
+        cause an increased risk of problems.
+</em> Therefore, we will try to <em>avoid</em> this whenever possible. Nevertheless
+      there are certain database models where redundancy is not a problem, for these
+      type of database, redundancy just provides increased performance. However,
+      this is not the type of database we will cover in this course.
+</p> <p>
+For relational data models, a number of standards have been formulated
+      that attempt to avoid redundancy. These standards are called normal forms.
+      We are going to explain these briefly so that you know what normalizing a
+      data model entails.
+</p> <h2>Normalize</h2> <p>
+To avoid redundancy in a data model, we are going to <em>normalize</em> the
+      data model. Normalization is the process by which we are going to mold the
+      data model (and the final database) into logical units. To guide us in this,
+      we make use of normal forms, where <em>each normal form imposes certain conditions on the tables</em> in the data model. The conditions contained in these normal forms have as
+<em>aim to reduce redundancy and guarantee integrity</em>.
+</p> <p>
+The theoretical background of normal forms is based on first-order logic
+      where the dependencies that exist between different columns are eliminated
+      to eliminate redundancy of data. For example, the column ‘Zip Code’
+      determines the column ‘Municipality’ so one of them can be eliminated.
+</p> <p>
+We give an idea of the first three normal forms below. There are a total
+      of a total of six normal forms, but in this simplified introduction we
+      will not go in detail about those last three normal forms.
+</p> <h3>First normal form</h3> <p>
+The first normal form, 1NF (‘first normal form’), says that a table is in
+      1NF
+<em>if no value in the table is a table in itself</em>. In other words, if
+      an entity type has a multi-valued attribute, we must split-off this
+      attribute when converting the conceptual data model to a logical data
+      model, creating a separate table, just as we described <a href="#multi-valued">above</a>. Of any table that satisfies this condition, we can say that it is in
+      first normal form.
+</p> <h3>Second normal form</h3> <p>
+The second normal form, 2NF (‘second normal form’), says that a table must
+      satisfy:
+</p><ul> <li>the first normal form,</li> <li>
+and that each column of the table (which is not part of a candidate
+          key for the table) should always depend on the whole of the columns
+          that are part of a candidate key.
+</li> </ul>  <p>
+The second condition is somewhat complex. First, we have the concept of
+      "dependent," which basically means that the value of one column determines
+      the value of another column. For example, we have a table ‘Address’ that
+      contains addresses. The table contains the columns ‘Street’, ‘House no.’
+      ‘Postal code’ and ‘City’. <em>
+The only candidate key is a combination of ‘Street’, ‘House no’ and
+        ‘Postal Code’.
+</em> If we know the value for each of these three columns, we can determine
+      the appropriate row.
+</p><p>
+The ‘Municipality’ column depends on the ‘Zip Code’ column, because if we
+      know the value of ‘Zip Code,’ we can determine the value of
+      ‘Municipality.’ For example, 3053 is the zip code of Oud-Heverlee.
+      Conversely the ‘Postal Code’ column does not depend on the ‘Municipality’
+      column, because if we know the value of ‘Municipality’, we cannot
+      determine the value of ‘Zip Code’ unambiguously. For example, the
+      municipality of Oud-Heverlee has the zip codes 3053 (Oud-Heverlee), 3051
+      (Sint-Joris-Weert), 3052 (Blanden), 3053 (Haasrode) and 3053 (Vaalbeek).
+      All of these are boroughs of Oud-Heverlee. So the zip code uniquely
+      defines the municipality, but the municipality does not uniquely
+      determines the postal code. The column ‘Municipality’ thus depends on the
+      column ‘Postal code’, but the column ‘Postal code’ does not depend on the
+      column ‘Municipality’.
+</p> <p>
+‘Zip code’ is part of a candidate key, but is not in itself a candidate
+      key. The column ‘Municipality’ does not depend on the whole of the columns
+      that are part of a candidate key, but only of one column of a candidate
+      key. Thus, the second condition is not filled.
+</p> <div class="table"> <table> <thead> <tr><th>Street</th><th>House number</th><th>Postal code</th><th>Municipality</th></tr> </thead> <tbody> <tr><td>Stationlei</td><td>12</td><td>1800</td><td>Vilvoorde</td></tr> <tr><td>Bondgenotenlaan</td><td>16</td><td>3000</td><td>Leuven</td></tr> <tr><td>Maurice Dequeeckerplein</td><td>1</td><td>2100</td><td>Deurne</td></tr> <tr><td>Maurice Dequeeckerplein</td><td>26</td><td>2100</td><td>Deurne</td></tr> <tr><td>Turnhoutsebaan</td><td>20</td><td>2100</td><td>Deurne</td></tr> <tr><td>Molenberg</td><td>14</td><td>3290</td><td>Deurne</td></tr> </tbody> </table> </div> <p>
+To satisfy the second condition, we need to divide this table into two
+      separate tables. A first table ‘Address’ consists of the columns.
+      ‘Street’, ‘House no’ and ‘Postal code’.
+</p> <div class="table"> <table class="center"> <thead> <tr><th>Street</th><th>House no</th><th>Postal code</th></tr> </thead> <tbody> <tr><td>Station Valley</td><td>12</td><td>1800</td></tr> <tr><td>Bondgenotenlaan</td><td>16</td><td>3000</td></tr> <tr><td>Maurice Dequeeckerplein</td><td>1</td><td>2100</td></tr> <tr><td>Maurice Dequeeckerplein</td><td>26</td><td>2100</td></tr> <tr><td>Turnhoutsebaan</td><td>20</td><td>2100</td></tr> <tr><td>Molenberg</td><td>14</td><td>3290</td></tr> </tbody> </table> </div> <p>
+Next, we create a two table ‘Municipality’ that contains the columns ‘Zip
+      Code’ and ‘Municipality’.
+</p> <div class="table"> <table class="center"> <thead> <tr><th>Postal code</th><th>Municipality</th></tr> </thead> <tbody> <tr><td>1800</td><td>Vilvoorde</td></tr> <tr><td>3000</td><td>Leuven</td></tr> <tr><td>2100</td><td>Deurne</td></tr> <tr><td>3290</td><td>Deurne</td></tr> </tbody> </table> </div> <p>Our tables now both satisfy the second condition of 2NF.</p> <h3>Third normal form</h3> <p>
+The third normal form, 3NF (‘third normal form’), says that a table must
+      satisfy:
+</p><ul> <li>the second normal form,</li> <li>
+and that every column of the table depends solely on one of the
+          candidate keys.
+</li> </ul>  <p>
+The second normal form states that all columns that do not belong to a
+      candidate key must depend on the complete candidate key and thus should
+      not depend on just a piece of a candidate key.
+</p> <p>
+The third normal form extends this so that all columns that do not belong
+      to a candidate key may only depend on the candidate key. If a column that
+      does not belong to a candidate key depends on a column other than the
+      candidate key, we remove this dependency by splitting the table.
+</p> <p>
+For example, we have a table ‘Staff member’ that contains data of staff
+      members. The table contains the columns ‘Staff number’, ‘Name’, ‘Street’,
+      ‘House number’, ‘Zip code’ and ‘City’. The only candidate key is ‘Staff
+      number’. Each value is singular, so we satisfy 1NF. Each of the values of
+      the other columns is determined by the value of ‘Staff Number’, so we
+      satisfy 2NF. Again the ‘Municipality’ column is determined by the ‘Zip
+      Code’ column. ‘Postal code’ is not part of a candidate key here. Thus,
+      there exists a column that does NOT depend solely on the candidate key, so
+      we do not satisfy the second condition of 3NF.
+</p> <div class="table"> <table class="center"> <thead> <tr><th>Staff no</th><th>Name</th><th>Street</th><th>House no</th><th>Postal code</th><th>Municipality</th></tr> </thead> <tbody> <tr><td>0000001</td><td>Jan</td><td>Station Valley</td><td>12</td><td>1800</td><td>Vilvoorde</td></tr> <tr><td>0000002</td><td>Kaat</td><td>Bondgenotenlaan</td><td>16</td><td>3000</td><td>Leuven</td></tr> <tr><td>0000003</td><td>Hans</td><td>Maurice Dequeeckerplein</td><td>1</td><td>2100</td><td>Deurne</td></tr> <tr><td>0000004</td><td>Petra</td><td>Maurice Dequeeckerplein</td><td>26</td><td>2100</td><td>Deurne</td></tr> <tr><td>0000005</td><td>Kaat</td><td>Turnhoutsebaan</td><td>20</td><td>2100</td><td>Deurne</td></tr> <tr><td>0000006</td><td>Pieter</td><td>Molenberg</td><td>14</td><td>3290</td><td>Deurne</td></tr> </tbody> </table> </div> <p>
+To satisfy the second condition, we need to divide this table into two
+      separate tables. A first table ‘Address’ consists of the columns:
+      ‘Street’, ‘House no’ and ‘Postal code’. Next, we create a second table
+      ‘Municipality’ containing the columns ‘Zip Code’ and ‘Town’.
+</p> <div class="table"> <table class="center"> <thead> <tr><th>Staff number</th><th>Name</th><th>Street</th><th>House no</th><th>Postal code</th></tr> </thead> <tbody> <tr><td>0000001</td><td>Jan</td><td>Station Valley</td><td>12</td><td>1800</td></tr> <tr><td>0000002</td><td>Kaat</td><td>Bondgenotenlaan</td><td>16</td><td>3000</td></tr> <tr><td>0000003</td><td>Hans</td><td>Maurice Dequeeckerplein</td><td>1</td><td>2100</td></tr> <tr><td>0000004</td><td>Petra</td><td>Maurice Dequeeckerplein</td><td>26</td><td>2100</td></tr> <tr><td>0000005</td><td>Kaat</td><td>Turnhoutsebaan</td><td>20</td><td>2100</td></tr> <tr><td>0000006</td><td>Pieter</td><td>Molenberg</td><td>14</td><td>3290</td></tr> </tbody> </table> </div> <div class="table"> <table class="center"> <thead> <tr><th>Postal code</th><th>Municipality</th></tr> </thead> <tbody> <tr><td>1800</td><td>Vilvoorde</td></tr> <tr><td>3000</td><td>Leuven</td></tr> <tr><td>2100</td><td>Deurne</td></tr> <tr><td>3290</td><td>Deurne</td></tr> </tbody> </table> </div> <p>Our tables now both satisfy the second condition of 3NF.</p> <h3>Conclusions</h3> <p>
+Normalizing has an impact on your logical data model. As soon as you
+      decide to split a table, you also need to adjust this in your logical
+      model.
+</p> <p>
+We don't expect that you are able to convert a model into a particular
+      normal form. What we do expect is that you can explain the concept of
+      normalization, and that you are intentional about creating redundancy.
+</p> </main>  <footer> <div class="container"> <p> <img src="/assets/Logo_UCLL_negatief_RGB.png" width="100" height="53" alt="Logo UCLL Hogeschool"><br>&copy; version 2026-09-22 — Steven
+          Engels, Jan Van Hee &amp; Bram Van Impe
+</p> <p><a href="#top">&uarr; Go to top</a></p> </div> </footer> <script src="/assets/js/func2.js"></script> </body> </html>

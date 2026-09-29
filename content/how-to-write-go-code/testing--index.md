@@ -19,7 +19,7 @@ func TestReverseRunes(t *testing.T) {
         in, want string
     }{
         {"Hello, world", "dlrow ,olleH"},
-        {"Hello, 世界", "界世 ,olleH"},
+ {"Hello, ", " ,olleH"},
         {"", ""},
     }
     for _, c := range cases {
