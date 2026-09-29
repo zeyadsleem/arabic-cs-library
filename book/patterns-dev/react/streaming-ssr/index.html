@@ -19,23 +19,23 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.DsBhiNuk.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DHfh3JdB.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.TbKJm7bL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/QgBCM3iT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVFrQua3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cbc8heEE.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DWle-4Kv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bp22yAlo.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.C6zqZvZQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CwCc9Pmq.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BCdrqkTo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.slUUsyzt.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSVJXvM8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CiWa-fIK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/InF3o_3c.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D4zxZeCu.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/iAJklL8s.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/EWRl7P9B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.BLm4K8j-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DvR8F70e.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="البث مع العرض في جانب الخادم — أنماط React وNext.js"/><!----><title>البث مع العرض في جانب الخادم | أنماط تصميم تطبيقات الويب</title>
@@ -297,7 +297,7 @@ error.<span class="hljs-property">tsx</span>        &lt;-- error boundary
 <p>البث ليس مجانيًا. وفيما يلي بعض الأمور التي ينبغي الانتباه إليها:</p>
 <ul>
 <li><strong>لا يمكنك تغيير ترويسات الاستجابة بعد المقطع الأول.</strong> رمز الحالة و<code>Set-Cookie</code> وإعادة التوجيه وترويسات الأمان — تتخذ كلها قراراتها قبل الإرسال الأول. إذا كان مكوّن أعمق سيؤدي إلى 404، فيمكنك عرض رسالة خطأ داخل البث، لكن رمز حالة الاستجابة يثبت عند 200.</li>
-<li><strong>تتعطل بعض البرمجيات الوسيطة.</strong> أي شيء يجمع الاستجابة كاملة، كضغط被执行 بصورة خاطئة أو إعدادات معينة لـ WAF أو CDN، يبطل البث كليًا. تحقق باستخدام <code>curl</code> وراقب أن <code>Transfer-Encoding: chunked</code> يتصرف فعليًا كتدفق.</li>
+<li><strong>تتعطل بعض البرمجيات الوسيطة.</strong> أي شيء يجمع الاستجابة كاملة، كضغط بصورة خاطئة أو إعدادات معينة لـ WAF أو CDN، يبطل البث كليًا. تحقق باستخدام <code>curl</code> وراقب أن <code>Transfer-Encoding: chunked</code> يتصرف فعليًا كتدفق.</li>
 <li><strong>يبدو TTFB أقل من التجربة الفعلية.</strong> تصل البايتة الأولى سريعًا، لكنها قد تكون الهيكل وحده. قارن SSR بالبث بـ SSR من دون بث عبر LCP وINP، لا TTFB وحده.</li>
 <li><strong>يغير Suspense أنماط جلب البيانات.</strong> يجب أن يستخدم المكوّن الذي يعلّق التنفيذ طبقة بيانات متوافقة مع Suspense، إما hook <code>use()</code> في React، أو وسيط إطار عمل مثل <code>fetch</code> في Next.js و<code>useLoaderData</code> في Remix، أو مكتبة تتكيف مثل <code>useSuspenseQuery</code> في TanStack Query. ولا يعلّق <code>useEffect</code> العادي التنفيذ.</li>
 </ul>
@@ -339,7 +339,7 @@ error.<span class="hljs-property">tsx</span>        &lt;-- error boundary
 			
 			<script>
 				{
-					__sveltekit_7ry6u = {
+					__sveltekit_1k8skom = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -347,8 +347,8 @@ error.<span class="hljs-property">tsx</span>        &lt;-- error boundary
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.DsBhiNuk.js"),
-						import("../../../../_app/immutable/entry/app.DWle-4Kv.js")
+						import("../../../../_app/immutable/entry/start.TbKJm7bL.js"),
+						import("../../../../_app/immutable/entry/app.Bp22yAlo.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

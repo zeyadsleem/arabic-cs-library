@@ -1,0 +1,29 @@
+const e="use-the-index-luke",o="sql-explain-plan-db2-filter-predicates",n="Distinguishing Access and Filter-Predicates",c="index",a="التمييز بين مُسندات الوصول والترشيح",d=[],t=`<p>لا تقدّم أي قاعدة بيانات أخرى معلومات أفضل عن نمط تقييم المُسندات كما تفعل Db2، لأنها تقول ببساطة في خطة التنفيذ ما إذا كان المُسند يُستخدم كشرط بدء و/أو توقف لـ<a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-operations/index#apa-db2-ops-ixscan">IXSCAN</a> أو كمُسند ترشيح محض. لكن الأمر مربك لأنها تستخدم تعريفاً قديماً لمصطلح «<em>sarg</em>».</p>
+<blockquote>
+<p>في الأيام الأولى، سمّى باحثو IBM هذه الأنواع من شروط البحث «مُسندات قابلة للبحث (sargable predicates)» لأن SARG اختصار لعبارة Search ARGument. وفي أيام لاحقة، أعادت Microsoft وSybase تعريف «sargable» لتعني «يمكن البحث عنه عبر الفهرس».— <a href="https://web.archive.org/web/20241210124531/https://www.informit.com/articles/article.aspx?p=30247">SQL Performance Tuning</a></p>
+</blockquote>
+<p>أجد التعريفين عديمي الفائدة إلى حد كبير، وأتجنّب المصطلح كلياً في كتبي ومقالاتي. غير أن مُسندات الترشيح في خطط تنفيذ Db2 تُوسَم بـ<code>SARG</code> — لذا يجب أن نوضح أن IBM Db2 تستخدم التعريف «الأصلي» المذكور أعلاه. وهذا مدعوم طبعاً بالوثائق:</p>
+<p><em>مُسندات الفهرس القابلة للبحث (Index sargable)</em> لا تُستخدم لحصر نطاق البحث، بل تُقيَّم من الفهرس إذا اختير، لأن الأعمدة المشمولة في المُسند جزء من مفتاح الفهرس. […]</p>
+<p><em>مُسندات البيانات القابلة للبحث (Data sargable)</em> […] تتطلب الوصول إلى صفوف فردية من الجدول الأساسي. وعند اللزوم، تسترجع DMS الأعمدة اللازمة لتقييم المُسند، وكذلك أي أعمدة أخرى لتلبية أعمدة قائمة SELECT التي تعذّر الحصول عليها من الفهرس.</p>
+<p>— <a href="https://www.ibm.com/docs/en/db2/11.5.x?topic=optimization-predicate-processing-queries">معالجة المُسندات للاستعلامات، وثائق Db2 LUW 11.1</a></p>
+<p>ويعني ذلك أن المُسندات الموسومة بـ<code>SARG</code> في Db2 هي عموماً مُسندات ترشيح محض — إما على مستوى الفهرس وإما على مستوى الجدول.</p>
+<p>والجزء الجميل جداً في معلومات المُسندات المعروضة في خطط تنفيذ Db2 أنها لا توسم مُسندات الوصول فحسب، بل تقول صراحةً أي المُسندات تُستخدم كشرطَي <code>START</code> و/أو <code>STOP</code>.</p>
+<p>ويعرض المثال التالي جميع أنواع المُسندات كما يظهرها <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-db2-getting-an-execution-plan/index#apa-db2-last_explained">عرض <code>last_explained</code></a>:</p>
+<pre><code>Explain Plan
+--------------------------------------------------------------
+ID | Operation           |                        Rows |  Cost
+ 1 | RETURN              |                             | 23550
+ 2 |  GRPBY (COMPLETE)   |        1 of 96480 (   .00%) | 23550
+ 3 |   IXSCAN SCALE_SLOW | 96480 of 60299800 (   .16%) | 23544
+
+Predicate Information
+ 3 - START (Q1.SECTION = ?)
+      STOP (Q1.SECTION = ?)
+      SARG (Q1.ID2 = ?)
+
+Explain plan by Markus Winand - NO WARRANTY
+http://use-the-index-luke.com/s/last_explained
+</code></pre>
+<p>ويمكن تحديد نطاق الفهرس الممسوح بسهولة تامة من هذا الخرج — فهو يتحدد فقط بمُسندَي <code>START</code> و<code>STOP</code> (وهما المصادف أنهما متماثلان في هذه الحالة). أما المُسند الثالث على العمود <code>ID2</code> فموسوم بـ<code>SARG</code> فهو مجرد مُسند ترشيح.</p>
+<p>ومع أن مُسندات <code>SARG</code> قد تظهر في عمليات أخرى أيضاً (مثل <code>TBSCAN</code>)، فإن <code>START</code> و<code>STOP</code> خاصان بـ<code>IXSCAN</code> وحدهما. ويشير غياب <code>START</code> أو <code>STOP</code> إلى بحث بحد أعلى أو أدنى فقط (مثل <code>WHERE x &gt; ?</code>). أما إذا لم يظهر أي من <code>START</code> و<code>STOP</code> لعملية <code>IXSCAN</code>، فهذا يعني قراءة الفهرس بأكمله.</p>
+`,p={book:e,chapter:o,chapterTitle:n,slug:c,title:a,headings:d,html:t};export{e as book,o as chapter,n as chapterTitle,p as default,d as headings,t as html,c as slug,a as title};

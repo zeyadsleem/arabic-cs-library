@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.TbKJm7bL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/QgBCM3iT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cbc8heEE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bp22yAlo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.slUUsyzt.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSVJXvM8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CiWa-fIK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/EWRl7P9B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.BLm4K8j-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DvR8F70e.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="تعديل البيانات — Modifying data"/><!----><title>تعديل البيانات | تمارين PostgreSQL التفاعلية</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/pgexercises">تمارين PostgreSQL التفاعلية</a> <span class="reader-bar__chapter">› Modifying data</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 4 من 7">4 / 7</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/pgexercises/aggregates/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/pgexercises/recursive/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>Simple SQL Queries</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/basic/index">استعلامات SQL بسيطة</a></li><!--]--></ul><h3>Joins and Subqueries</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/joins/index">عمليات الربط والاستعلامات الفرعية</a></li><!--]--></ul><h3>Aggregation</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/aggregates/index">التجميع</a></li><!--]--></ul><h3 class="active-chapter">Modifying data</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/updates/index" class="active">تعديل البيانات</a></li><!--]--></ul><h3>Recursive Queries</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/recursive/index">الاستعلامات التعاودية</a></li><!--]--></ul><h3>Working with Timestamps</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/date/index">التعامل مع الطوابع الزمنية</a></li><!--]--></ul><h3>Arrays</h3> <ul><!--[--><li><a href="../../../../book/pgexercises/arrays/index">المصفوفات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>تعديل البيانات</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#1-إدراج-بعض-البيانات-في-جدول">1. إدراج بعض البيانات في جدول</a></li><li><a href="#2-إدراج-صفوف-متعددة-من-البيانات-في-جدول">2. إدراج صفوف متعددة من البيانات في جدول</a></li><li><a href="#3-إدراج-بيانات-محسوبة-في-جدول">3. إدراج بيانات محسوبة في جدول</a></li><li><a href="#4-تحديث-بعض-البيانات-الموجودة">4. تحديث بعض البيانات الموجودة</a></li><li><a href="#5-تحديث-صفوف-وأعمدة-متعددة-في-الوقت-نفسه">5. تحديث صفوف وأعمدة متعددة في الوقت نفسه</a></li><li><a href="#6-تحديث-صف-بناء-على-محتوى-صف-آخر">6. تحديث صف بناءً على محتوى صف آخر</a></li><li><a href="#7-حذف-كل-الحجوزات">7. حذف كل الحجوزات</a></li><li><a href="#8-حذف-عضو-من-جدول-cdmembers">8. حذف عضو من جدول cd.members</a></li><li><a href="#9-الحذف-بناء-على-استعلام-فرعي">9. الحذف بناءً على استعلام فرعي</a></li><!--]--></ul></nav><!--]--> <div class="reader-content"><!----><p>الاستعلام (query) عن البيانات أمر جيد ومفيد، لكنك سترغب في مرحلة ما على الأرجح في إدخال بيانات إلى قاعدة بياناتك! يتناول هذا القسم إدراج المعلومات وتحديثها وحذفها. وتُعرف العمليات التي تغيّر بياناتك كهذه مجتمعةً باسم لغة معالجة البيانات (Data Manipulation Language) أو DML.</p>
+<p>في الأقسام السابقة، كنا نعيد إليك نتائج الاستعلام الذي نفّذته. ولأن التعديلات التي نجريها في هذا القسم لا تُعيد أي نتائج استعلام، فإننا نعرض لك بدلًا من ذلك المحتوى المحدَّث للجدول المفترض أن تعمل عليه. ويمكنك مقارنته بالجدول المعروض في &quot;النتائج المتوقعة&quot; لترى كيف أبليت.</p>
+<p>إن واجهت صعوبة في هذه الأسئلة، فأنصح بشدة بكتاب <a href="http://shop.oreilly.com/product/9780596007270.do">Learning SQL</a> لـ Alan Beaulieu.</p>
+<h2 id="1-إدراج-بعض-البيانات-في-جدول">1. إدراج بعض البيانات في جدول</h2>
+<p><strong>السؤال</strong></p>
+<p>يضيف النادي مرفقًا جديدًا — وهو منتجع صحي (spa). نحتاج إلى إضافته إلى جدول facilities. استخدم القيم التالية:</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>5</td>
+<td>25</td>
+<td>8000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Spa</td>
+<td>20</td>
+<td>30</td>
+<td>100000</td>
+<td>800</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">insert into</span> cd.facilities
+    (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+    <span class="hljs-keyword">values</span> (<span class="hljs-number">9</span>, <span class="hljs-string">&#x27;Spa&#x27;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">800</span>);
+</code></pre>
+<p>إن INSERT INTO ... VALUES هي أبسط طريقة لإدراج بيانات في جدول. ولا يوجد الكثير مما يُقال هنا: تُستخدم VALUES لبناء صف من البيانات، يُدرجه بيان INSERT في الجدول. الأمر بهذه البساطة.</p>
+<p>ويمكنك أن ترى قسمين بين قوسين. الأول جزء من بيان INSERT، ويحدد الأعمدة التي نقدّم بيانات لها. والثاني جزء من VALUES، ويحدد البيانات الفعلية التي نريد إدراجها في كل عمود.</p>
+<p>إذا كنا نُدرج بيانات في كل أعمدة الجدول، كما في هذا المثال، فتحديد أسماء الأعمدة صراحةً اختياري. فما دمت تملأ البيانات لكل أعمدة الجدول، بالترتيب الذي عُرّفت به عند إنشاء الجدول، يمكنك فعل شيء مثل ما يلي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">insert into</span> cd.facilities <span class="hljs-keyword">values</span> (<span class="hljs-number">9</span>, <span class="hljs-string">&#x27;Spa&#x27;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">800</span>);
+</code></pre>
+<p>وبوجه عام، في SQL التي ستُعاد استخدامها، أميل إلى تفضيل الصراحة وتحديد أسماء الأعمدة.</p>
+<p><strong>تلميح:</strong> يمكن استخدام INSERT لإدراج بيانات في جدول.</p>
+<h2 id="2-إدراج-صفوف-متعددة-من-البيانات-في-جدول">2. إدراج صفوف متعددة من البيانات في جدول</h2>
+<p><strong>السؤال</strong></p>
+<p>في التمرين السابق، تعلمت كيف تضيف مرفقًا. والآن ستضيف عدة مرافق بأمر واحد. استخدم القيم التالية:</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>5</td>
+<td>25</td>
+<td>8000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Spa</td>
+<td>20</td>
+<td>30</td>
+<td>100000</td>
+<td>800</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Squash Court 2</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">insert into</span> cd.facilities
+    (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+    <span class="hljs-keyword">values</span>
+        (<span class="hljs-number">9</span>, <span class="hljs-string">&#x27;Spa&#x27;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">800</span>),
+        (<span class="hljs-number">10</span>, <span class="hljs-string">&#x27;Squash Court 2&#x27;</span>, <span class="hljs-number">3.5</span>, <span class="hljs-number">17.5</span>, <span class="hljs-number">5000</span>, <span class="hljs-number">80</span>);
+</code></pre>
+<p>يمكن استخدام VALUES لتوليد أكثر من صف واحد لإدراجه في جدول، كما ترى في هذا المثال. ونأمل أن يكون واضحًا ما يجري هنا: فناتج VALUES جدول، ويُنسخ ذلك الجدول إلى cd.facilities، الجدول المحدد في أمر INSERT.</p>
+<p>ومع أنك سترى VALUES في أغلب الأحيان عند إدراج البيانات، فإن Postgres يتيح لك استخدام VALUES في أي موضع قد تستخدم فيه SELECT. وهذا منطقي: فناتج الأمرين جدول، غير أن VALUES أكثر راحة عند التعامل مع بيانات ثابتة.</p>
+<p>وبالمثل، يمكن استخدام SELECT في أي موضع ترى فيه VALUES. وهذا يعني أنك تستطيع إدراج نتائج SELECT بـ INSERT. على سبيل المثال:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">insert into</span> cd.facilities
+    (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+    <span class="hljs-keyword">SELECT</span> <span class="hljs-number">9</span>, <span class="hljs-string">&#x27;Spa&#x27;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">800</span>
+    <span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span>
+        <span class="hljs-keyword">SELECT</span> <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;Squash Court 2&#x27;</span>, <span class="hljs-number">3.5</span>, <span class="hljs-number">17.5</span>, <span class="hljs-number">5000</span>, <span class="hljs-number">80</span>;
+</code></pre>
+<p>وسترى في تمارين لاحقة أننا نستخدم INSERT ... SELECT لتوليد بيانات تُدرج بناءً على المعلومات الموجودة أصلًا في قاعدة البيانات.</p>
+<p><strong>تلميح:</strong> يمكن استخدام VALUES لتوليد أكثر من صف واحد.</p>
+<h2 id="3-إدراج-بيانات-محسوبة-في-جدول">3. إدراج بيانات محسوبة في جدول</h2>
+<p><strong>السؤال</strong></p>
+<p>لنحاول إضافة المنتجع الصحي إلى جدول facilities مرة أخرى. لكننا نريد هذه المرة توليد قيمة facid التالية تلقائيًا، بدلًا من تحديدها كثابت. استخدم القيم التالية لكل ما عدا ذلك:</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>5</td>
+<td>25</td>
+<td>8000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Spa</td>
+<td>20</td>
+<td>30</td>
+<td>100000</td>
+<td>800</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">insert into</span> cd.facilities
+    (facid, name, membercost, guestcost, initialoutlay, monthlymaintenance)
+    <span class="hljs-keyword">select</span> (<span class="hljs-keyword">select</span> <span class="hljs-built_in">max</span>(facid) <span class="hljs-keyword">from</span> cd.facilities)<span class="hljs-operator">+</span><span class="hljs-number">1</span>, <span class="hljs-string">&#x27;Spa&#x27;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">800</span>;
+</code></pre>
+<p>استخدمنا في التمارين السابقة VALUES لإدراج بيانات ثابتة في جدول facilities. لكن لدينا هنا مطلبًا جديدًا: معرّف مولَّد ديناميكيًا. وهذا تحسين حقيقي في جودة الحياة، إذ لا يلزمنا أن نبذل الجهد يدويًا لمعرفة أكبر معرّف حالي: فأمر SQL يفعل ذلك لنا.</p>
+<p>ولأن عبارة VALUES تُستخدم فقط لتقديم بيانات ثابتة، نحتاج إلى استبدالها باستعلام بدلًا من ذلك. وعبارة SELECT بسيطة إلى حد كبير: فهناك استعلام فرعي داخلي يحسب facid التالية بناءً على أكبر معرّف حالي، والباقي مجرد بيانات ثابتة. وناتج البيان صف نُدرجه في جدول facilities.</p>
+<p>ومع أن هذا يعمل جيدًا في مثالنا البسيط، فليس هكذا تُنفَّذ عادةً معرّفات تتزايد في العالم الحقيقي. فيوفّر Postgres أنواع SERIAL التي تُملأ تلقائيًا بالمعرّف التالي عند إدراج صف. وإلى جانب توفير الجهد، فإن هذه الأنواع أكثر أمانًا أيضًا: فبخلاف الإجابة المعروضة في هذا التمرين، لا حاجة للقلق من أن تولّد عمليات متزامنة المعرّف نفسه.</p>
+<p><strong>تلميح:</strong> يمكنك حساب البيانات التي تريد إدراجها باستخدام الاستعلامات الفرعية.</p>
+<h2 id="4-تحديث-بعض-البيانات-الموجودة">4. تحديث بعض البيانات الموجودة</h2>
+<p><strong>السؤال</strong></p>
+<p>وقعنا في خطأ عند إدخال بيانات ملعب التنس الثاني. فكانت النفقة الأولية 10000 وليس 8000: عليك تعديل البيانات لتصحيح الخطأ.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">update</span> cd.facilities
+    <span class="hljs-keyword">set</span> initialoutlay <span class="hljs-operator">=</span> <span class="hljs-number">10000</span>
+    <span class="hljs-keyword">where</span> facid <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+<p>يُستخدم بيان UPDATE لتعديل البيانات الموجودة. وإن كنت على دراية باستعلامات SELECT، فقراءته سهلة إلى حد كبير: فعبارة WHERE تعمل بالطريقة نفسها تمامًا، وتتيح لنا تصفية مجموعة الصفوف التي نريد العمل عليها. ثم تُعدَّل هذه الصفوف وفق ما تحدده عبارة SET: في هذه الحالة، ضبط النفقة الأولية.</p>
+<p>وعبارة WHERE مهمة للغاية. فمن السهل الخطأ فيها أو حتى إسقاطها، بنتائج كارثية. تأمل الأمر التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">update</span> cd.facilities
+    <span class="hljs-keyword">set</span> initialoutlay <span class="hljs-operator">=</span> <span class="hljs-number">10000</span>;
+</code></pre>
+<p>لا توجد عبارة WHERE لتصفية الصفوف التي تهمنا. ونتيجة ذلك أن التحديث يجري على كل صف في الجدول! وهذا نادرًا ما يكون ما نريده.</p>
+<p><strong>تلميح:</strong> يمكنك تعديل البيانات الموجودة باستخدام بيان UPDATE.</p>
+<h2 id="5-تحديث-صفوف-وأعمدة-متعددة-في-الوقت-نفسه">5. تحديث صفوف وأعمدة متعددة في الوقت نفسه</h2>
+<p><strong>السؤال</strong></p>
+<p>نريد زيادة سعر ملاعب التنس لكل من الأعضاء والضيوف. حدّث التكاليف لتكون 6 للأعضاء و30 للضيوف.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>6</td>
+<td>30</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>6</td>
+<td>30</td>
+<td>8000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">update</span> cd.facilities
+    <span class="hljs-keyword">set</span>
+        membercost <span class="hljs-operator">=</span> <span class="hljs-number">6</span>,
+        guestcost <span class="hljs-operator">=</span> <span class="hljs-number">30</span>
+    <span class="hljs-keyword">where</span> facid <span class="hljs-keyword">in</span> (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);
+</code></pre>
+<p>تقبل عبارة SET قائمة قيم مفصولة بفواصل تريد تحديثها.</p>
+<p><strong>تلميح:</strong> يمكن لعبارة SET تحديث أعمدة متعددة.</p>
+<h2 id="6-تحديث-صف-بناء-على-محتوى-صف-آخر">6. تحديث صف بناءً على محتوى صف آخر</h2>
+<p><strong>السؤال</strong></p>
+<p>نريد تعديل سعر ملعب التنس الثاني بحيث يكون أعلى بنسبة 10% من الأول. حاول فعل ذلك دون استخدام قيم ثابتة للأسعار، حتى نتمكن من إعادة استخدام البيان إن أردنا.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>facid</th>
+<th>name</th>
+<th>membercost</th>
+<th>guestcost</th>
+<th>initialoutlay</th>
+<th>monthlymaintenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Tennis Court 1</td>
+<td>5</td>
+<td>25</td>
+<td>10000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Tennis Court 2</td>
+<td>5.5</td>
+<td>27.5</td>
+<td>8000</td>
+<td>200</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Badminton Court</td>
+<td>0</td>
+<td>15.5</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Table Tennis</td>
+<td>0</td>
+<td>5</td>
+<td>320</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Massage Room 1</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Massage Room 2</td>
+<td>35</td>
+<td>80</td>
+<td>4000</td>
+<td>3000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Squash Court</td>
+<td>3.5</td>
+<td>17.5</td>
+<td>5000</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Snooker Table</td>
+<td>0</td>
+<td>5</td>
+<td>450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Pool Table</td>
+<td>0</td>
+<td>5</td>
+<td>400</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">update</span> cd.facilities facs
+    <span class="hljs-keyword">set</span>
+        membercost <span class="hljs-operator">=</span> (<span class="hljs-keyword">select</span> membercost <span class="hljs-operator">*</span> <span class="hljs-number">1.1</span> <span class="hljs-keyword">from</span> cd.facilities <span class="hljs-keyword">where</span> facid <span class="hljs-operator">=</span> <span class="hljs-number">0</span>),
+        guestcost <span class="hljs-operator">=</span> (<span class="hljs-keyword">select</span> guestcost <span class="hljs-operator">*</span> <span class="hljs-number">1.1</span> <span class="hljs-keyword">from</span> cd.facilities <span class="hljs-keyword">where</span> facid <span class="hljs-operator">=</span> <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">where</span> facs.facid <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+<p>لا يمثّل تحديث الأعمدة بناءً على بيانات محسوبة صعوبة جوهرية كبيرة: فيمكننا فعل ذلك بسهولة إلى حد كبير باستخدام الاستعلامات الفرعية. ويمكنك أن ترى هذه المقاربة في إجابتنا المختارة. ومع تزايد عدد الأعمدة التي نريد تحديثها، قد تبدأ SQL القياسية تصبح مرهقة جدًا: فأنت لا تريد تحديد استعلام فرعي منفصل لكل تحديث من 15 تحديثًا مختلفًا للأعمدة. ويوفّر Postgres امتدادًا غير قياسي لـ SQL يُسمى UPDATE...FROM يعالج ذلك: فهو يتيح لك تقديم عبارة FROM لتوليد قيم تُستخدم في عبارة SET. والمثال أدناه:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">update</span> cd.facilities facs
+    <span class="hljs-keyword">set</span>
+        membercost <span class="hljs-operator">=</span> facs2.membercost <span class="hljs-operator">*</span> <span class="hljs-number">1.1</span>,
+        guestcost <span class="hljs-operator">=</span> facs2.guestcost <span class="hljs-operator">*</span> <span class="hljs-number">1.1</span>
+    <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> cd.facilities <span class="hljs-keyword">where</span> facid <span class="hljs-operator">=</span> <span class="hljs-number">0</span>) facs2
+    <span class="hljs-keyword">where</span> facs.facid <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+<p><strong>تلميح:</strong> ألقِ نظرة على UPDATE FROM في وثائق PostgreSQL.</p>
+<h2 id="7-حذف-كل-الحجوزات">7. حذف كل الحجوزات</h2>
+<p><strong>السؤال</strong></p>
+<p>في إطار تنقية قاعدة بياناتنا، نريد حذف كل الحجوزات من جدول cd.bookings. فكيف نحقق ذلك؟</p>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> cd.bookings;
+</code></pre>
+<p>يفعل بيان DELETE ما يقوله ببساطة: يحذف صفوفًا من الجدول. ونعرض هنا الأمر في أبسط صوره، دون أي قيود. وفي هذه الحالة، يحذف كل شيء من الجدول. ومن الواضح أنه ينبغي الحذر في عمليات الحذف والتأكد دائمًا من تقييدها — وسنرى كيف نفعل ذلك في التمرين التالي. وبديل عمليات DELETE غير المقيّدة هو ما يلي:</p>
+<pre><code>truncate cd.bookings;
+</code></pre>
+<p>يحذف TRUNCATE أيضًا كل شيء في الجدول، لكنه يفعل ذلك بآلية أساسية أسرع. وهو ليس <a href="https://www.postgresql.org/docs/current/static/mvcc-caveats.html">آمنًا تمامًا في كل الظروف</a>، لذا استخدمه بحكمة. وعند الشك، استخدم DELETE.</p>
+<p><strong>تلميح:</strong> ألقِ نظرة على بيان DELETE في وثائق PostgreSQL.</p>
+<h2 id="8-حذف-عضو-من-جدول-cdmembers">8. حذف عضو من جدول cd.members</h2>
+<p><strong>السؤال</strong></p>
+<p>نريد إزالة العضو 37، الذي لم يحجز قط، من قاعدة بياناتنا. فكيف نحقق ذلك؟</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>memid</th>
+<th>surname</th>
+<th>firstname</th>
+<th>address</th>
+<th>zipcode</th>
+<th>telephone</th>
+<th>recommendedby</th>
+<th>joindate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>GUEST</td>
+<td>GUEST</td>
+<td>GUEST</td>
+<td>0</td>
+<td>(000) 000-0000</td>
+<td></td>
+<td>2012-07-01 00:00:00</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Smith</td>
+<td>Darren</td>
+<td>8 Bloomsbury Close, Boston</td>
+<td>4321</td>
+<td>555-555-5555</td>
+<td></td>
+<td>2012-07-02 12:02:05</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Smith</td>
+<td>Tracy</td>
+<td>8 Bloomsbury Close, New York</td>
+<td>4321</td>
+<td>555-555-5555</td>
+<td></td>
+<td>2012-07-02 12:08:23</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Rownam</td>
+<td>Tim</td>
+<td>23 Highway Way, Boston</td>
+<td>23423</td>
+<td>(844) 693-0723</td>
+<td></td>
+<td>2012-07-03 09:32:15</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Joplette</td>
+<td>Janice</td>
+<td>20 Crossing Road, New York</td>
+<td>234</td>
+<td>(833) 942-4710</td>
+<td>1</td>
+<td>2012-07-03 10:25:05</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Butters</td>
+<td>Gerald</td>
+<td>1065 Huntingdon Avenue, Boston</td>
+<td>56754</td>
+<td>(844) 078-4130</td>
+<td>1</td>
+<td>2012-07-09 10:44:09</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Tracy</td>
+<td>Burton</td>
+<td>3 Tunisia Drive, Boston</td>
+<td>45678</td>
+<td>(822) 354-9973</td>
+<td></td>
+<td>2012-07-15 08:52:55</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Dare</td>
+<td>Nancy</td>
+<td>6 Hunting Lodge Way, Boston</td>
+<td>10383</td>
+<td>(833) 776-4001</td>
+<td>4</td>
+<td>2012-07-25 08:59:12</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Boothe</td>
+<td>Tim</td>
+<td>3 Bloomsbury Close, Reading, 00234</td>
+<td>234</td>
+<td>(811) 433-2547</td>
+<td>3</td>
+<td>2012-07-25 16:02:35</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Stibbons</td>
+<td>Ponder</td>
+<td>5 Dragons Way, Winchester</td>
+<td>87630</td>
+<td>(833) 160-3900</td>
+<td>6</td>
+<td>2012-07-25 17:09:05</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Owen</td>
+<td>Charles</td>
+<td>52 Cheshire Grove, Winchester, 28563</td>
+<td>28563</td>
+<td>(855) 542-5251</td>
+<td>1</td>
+<td>2012-08-03 19:42:37</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Jones</td>
+<td>David</td>
+<td>976 Gnats Close, Reading</td>
+<td>33862</td>
+<td>(844) 536-8036</td>
+<td>4</td>
+<td>2012-08-06 16:32:55</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Baker</td>
+<td>Anne</td>
+<td>55 Powdery Street, Boston</td>
+<td>80743</td>
+<td>844-076-5141</td>
+<td>9</td>
+<td>2012-08-10 14:23:22</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Farrell</td>
+<td>Jemima</td>
+<td>103 Firth Avenue, North Reading</td>
+<td>57392</td>
+<td>(855) 016-0163</td>
+<td></td>
+<td>2012-08-10 14:28:01</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Smith</td>
+<td>Jack</td>
+<td>252 Binkington Way, Boston</td>
+<td>69302</td>
+<td>(822) 163-3254</td>
+<td>1</td>
+<td>2012-08-10 16:22:05</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Bader</td>
+<td>Florence</td>
+<td>264 Ursula Drive, Westford</td>
+<td>84923</td>
+<td>(833) 499-3527</td>
+<td>9</td>
+<td>2012-08-10 17:52:03</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Baker</td>
+<td>Timothy</td>
+<td>329 James Street, Reading</td>
+<td>58393</td>
+<td>833-941-0824</td>
+<td>13</td>
+<td>2012-08-15 10:34:25</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Pinker</td>
+<td>David</td>
+<td>5 Impreza Road, Boston</td>
+<td>65332</td>
+<td>811 409-6734</td>
+<td>13</td>
+<td>2012-08-16 11:32:47</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Genting</td>
+<td>Matthew</td>
+<td>4 Nunnington Place, Wingfield, Boston</td>
+<td>52365</td>
+<td>(811) 972-1377</td>
+<td>5</td>
+<td>2012-08-19 14:55:55</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mackenzie</td>
+<td>Anna</td>
+<td>64 Perkington Lane, Reading</td>
+<td>64577</td>
+<td>(822) 661-2898</td>
+<td>1</td>
+<td>2012-08-26 09:32:05</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Coplin</td>
+<td>Joan</td>
+<td>85 Bard Street, Bloomington, Boston</td>
+<td>43533</td>
+<td>(822) 499-2232</td>
+<td>16</td>
+<td>2012-08-29 08:32:41</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Sarwin</td>
+<td>Ramnaresh</td>
+<td>12 Bullington Lane, Boston</td>
+<td>65464</td>
+<td>(822) 413-1470</td>
+<td>15</td>
+<td>2012-09-01 08:44:42</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Jones</td>
+<td>Douglas</td>
+<td>976 Gnats Close, Reading</td>
+<td>11986</td>
+<td>844 536-8036</td>
+<td>11</td>
+<td>2012-09-02 18:43:05</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Rumney</td>
+<td>Henrietta</td>
+<td>3 Burkington Plaza, Boston</td>
+<td>78533</td>
+<td>(822) 989-8876</td>
+<td>20</td>
+<td>2012-09-05 08:42:35</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Farrell</td>
+<td>David</td>
+<td>437 Granite Farm Road, Westford</td>
+<td>43532</td>
+<td>(855) 755-9876</td>
+<td></td>
+<td>2012-09-15 08:22:05</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Worthington-Smyth</td>
+<td>Henry</td>
+<td>55 Jagbi Way, North Reading</td>
+<td>97676</td>
+<td>(855) 894-3758</td>
+<td>2</td>
+<td>2012-09-17 12:27:15</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Purview</td>
+<td>Millicent</td>
+<td>641 Drudgery Close, Burnington, Boston</td>
+<td>34232</td>
+<td>(855) 941-9786</td>
+<td>2</td>
+<td>2012-09-18 19:04:01</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Tupperware</td>
+<td>Hyacinth</td>
+<td>33 Cheerful Plaza, Drake Road, Westford</td>
+<td>68666</td>
+<td>(822) 665-5327</td>
+<td></td>
+<td>2012-09-18 19:32:05</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Hunt</td>
+<td>John</td>
+<td>5 Bullington Lane, Boston</td>
+<td>54333</td>
+<td>(899) 720-6978</td>
+<td>30</td>
+<td>2012-09-19 11:32:45</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Crumpet</td>
+<td>Erica</td>
+<td>Crimson Road, North Reading</td>
+<td>75655</td>
+<td>(811) 732-4816</td>
+<td>2</td>
+<td>2012-09-22 08:36:38</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> cd.members <span class="hljs-keyword">where</span> memid <span class="hljs-operator">=</span> <span class="hljs-number">37</span>;
+</code></pre>
+<p>هذا التمرين زيادة صغيرة على التمرين السابق. فبدلًا من حذف كل الحجوزات، نريد هذه المرة أن نكون أكثر تحديدًا، وأن نحذف عضوًا واحدًا لم يحجز قط. وللقيام بذلك، ما علينا سوى إضافة عبارة WHERE إلى أمرنا، نحدد فيها العضو الذي نريد حذفه. ويمكنك أن ترى أوجه الشبه مع بيانَي SELECT وUPDATE هنا. وهناك نقطة طريفة تستحق الانتباه. جرّب هذا الأمر، لكن باستبدال معرّف العضو 0. فقد أجرى هذا العضو حجوزات كثيرة، وستجد أن الحذف يفشل بخطأ يتعلق بانتهاك قيد مفتاح أجنبي (foreign key constraint). وهذا مفهوم مهم في قواعد البيانات العلائقية، فلنستكشفه قليلًا. المفاتيح الأجنبية آلية لتعريف علاقات بين أعمدة جداول مختلفة. وفي حالتنا نستخدمها لنحدد أن عمود memid في جدول bookings مرتبط بعمود memid في جدول members. وتحدد العلاقة (أو &quot;القيد&quot;) أنه بالنسبة لحجز معيّن، يجب أن يكون العضو المحدد في الحجز <strong>موجودًا</strong> في جدول members. ومن المفيد أن تُنفّذ قاعدة البيانات هذا الضمان: فهو يعني أن الشيفرة التي تستخدم قاعدة البيانات يمكنها الاعتماد على وجود العضو. ويصعب (بل يستحيل) فرض ذلك في مستويات أعلى: فقد تتداخل عمليات متزامنة وتترك قاعدة بياناتك في حالة معطوبة. ويدعم PostgreSQL أنواعًا مختلفة من القيود التي تتيح لك فرض بنية على بياناتك. ولمزيد من المعلومات عن القيود، راجع وثائق PostgreSQL عن <a href="https://www.postgresql.org/docs/current/static/ddl-constraints.html">المفاتيح الأجنبية</a></p>
+<p><strong>تلميح:</strong> ألقِ نظرة على بيان DELETE في وثائق PostgreSQL.</p>
+<h2 id="9-الحذف-بناء-على-استعلام-فرعي">9. الحذف بناءً على استعلام فرعي</h2>
+<p><strong>السؤال</strong></p>
+<p>في تماريننا السابقة، حذفنا عضوًا معيّنًا لم يحجز قط. فكيف نجعل ذلك أعم، بحيث نحذف كل الأعضاء الذين لم يحجزوا قط؟</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>memid</th>
+<th>surname</th>
+<th>firstname</th>
+<th>address</th>
+<th>zipcode</th>
+<th>telephone</th>
+<th>recommendedby</th>
+<th>joindate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>GUEST</td>
+<td>GUEST</td>
+<td>GUEST</td>
+<td>0</td>
+<td>(000) 000-0000</td>
+<td></td>
+<td>2012-07-01 00:00:00</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Smith</td>
+<td>Darren</td>
+<td>8 Bloomsbury Close, Boston</td>
+<td>4321</td>
+<td>555-555-5555</td>
+<td></td>
+<td>2012-07-02 12:02:05</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Smith</td>
+<td>Tracy</td>
+<td>8 Bloomsbury Close, New York</td>
+<td>4321</td>
+<td>555-555-5555</td>
+<td></td>
+<td>2012-07-02 12:08:23</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Rownam</td>
+<td>Tim</td>
+<td>23 Highway Way, Boston</td>
+<td>23423</td>
+<td>(844) 693-0723</td>
+<td></td>
+<td>2012-07-03 09:32:15</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Joplette</td>
+<td>Janice</td>
+<td>20 Crossing Road, New York</td>
+<td>234</td>
+<td>(833) 942-4710</td>
+<td>1</td>
+<td>2012-07-03 10:25:05</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Butters</td>
+<td>Gerald</td>
+<td>1065 Huntingdon Avenue, Boston</td>
+<td>56754</td>
+<td>(844) 078-4130</td>
+<td>1</td>
+<td>2012-07-09 10:44:09</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Tracy</td>
+<td>Burton</td>
+<td>3 Tunisia Drive, Boston</td>
+<td>45678</td>
+<td>(822) 354-9973</td>
+<td></td>
+<td>2012-07-15 08:52:55</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Dare</td>
+<td>Nancy</td>
+<td>6 Hunting Lodge Way, Boston</td>
+<td>10383</td>
+<td>(833) 776-4001</td>
+<td>4</td>
+<td>2012-07-25 08:59:12</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Boothe</td>
+<td>Tim</td>
+<td>3 Bloomsbury Close, Reading, 00234</td>
+<td>234</td>
+<td>(811) 433-2547</td>
+<td>3</td>
+<td>2012-07-25 16:02:35</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Stibbons</td>
+<td>Ponder</td>
+<td>5 Dragons Way, Winchester</td>
+<td>87630</td>
+<td>(833) 160-3900</td>
+<td>6</td>
+<td>2012-07-25 17:09:05</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Owen</td>
+<td>Charles</td>
+<td>52 Cheshire Grove, Winchester, 28563</td>
+<td>28563</td>
+<td>(855) 542-5251</td>
+<td>1</td>
+<td>2012-08-03 19:42:37</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Jones</td>
+<td>David</td>
+<td>976 Gnats Close, Reading</td>
+<td>33862</td>
+<td>(844) 536-8036</td>
+<td>4</td>
+<td>2012-08-06 16:32:55</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Baker</td>
+<td>Anne</td>
+<td>55 Powdery Street, Boston</td>
+<td>80743</td>
+<td>844-076-5141</td>
+<td>9</td>
+<td>2012-08-10 14:23:22</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Farrell</td>
+<td>Jemima</td>
+<td>103 Firth Avenue, North Reading</td>
+<td>57392</td>
+<td>(855) 016-0163</td>
+<td></td>
+<td>2012-08-10 14:28:01</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Smith</td>
+<td>Jack</td>
+<td>252 Binkington Way, Boston</td>
+<td>69302</td>
+<td>(822) 163-3254</td>
+<td>1</td>
+<td>2012-08-10 16:22:05</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Bader</td>
+<td>Florence</td>
+<td>264 Ursula Drive, Westford</td>
+<td>84923</td>
+<td>(833) 499-3527</td>
+<td>9</td>
+<td>2012-08-10 17:52:03</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Baker</td>
+<td>Timothy</td>
+<td>329 James Street, Reading</td>
+<td>58393</td>
+<td>833-941-0824</td>
+<td>13</td>
+<td>2012-08-15 10:34:25</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Pinker</td>
+<td>David</td>
+<td>5 Impreza Road, Boston</td>
+<td>65332</td>
+<td>811 409-6734</td>
+<td>13</td>
+<td>2012-08-16 11:32:47</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Genting</td>
+<td>Matthew</td>
+<td>4 Nunnington Place, Wingfield, Boston</td>
+<td>52365</td>
+<td>(811) 972-1377</td>
+<td>5</td>
+<td>2012-08-19 14:55:55</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mackenzie</td>
+<td>Anna</td>
+<td>64 Perkington Lane, Reading</td>
+<td>64577</td>
+<td>(822) 661-2898</td>
+<td>1</td>
+<td>2012-08-26 09:32:05</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Coplin</td>
+<td>Joan</td>
+<td>85 Bard Street, Bloomington, Boston</td>
+<td>43533</td>
+<td>(822) 499-2232</td>
+<td>16</td>
+<td>2012-08-29 08:32:41</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Sarwin</td>
+<td>Ramnaresh</td>
+<td>12 Bullington Lane, Boston</td>
+<td>65464</td>
+<td>(822) 413-1470</td>
+<td>15</td>
+<td>2012-09-01 08:44:42</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Jones</td>
+<td>Douglas</td>
+<td>976 Gnats Close, Reading</td>
+<td>11986</td>
+<td>844 536-8036</td>
+<td>11</td>
+<td>2012-09-02 18:43:05</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Rumney</td>
+<td>Henrietta</td>
+<td>3 Burkington Plaza, Boston</td>
+<td>78533</td>
+<td>(822) 989-8876</td>
+<td>20</td>
+<td>2012-09-05 08:42:35</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Farrell</td>
+<td>David</td>
+<td>437 Granite Farm Road, Westford</td>
+<td>43532</td>
+<td>(855) 755-9876</td>
+<td></td>
+<td>2012-09-15 08:22:05</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Worthington-Smyth</td>
+<td>Henry</td>
+<td>55 Jagbi Way, North Reading</td>
+<td>97676</td>
+<td>(855) 894-3758</td>
+<td>2</td>
+<td>2012-09-17 12:27:15</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Purview</td>
+<td>Millicent</td>
+<td>641 Drudgery Close, Burnington, Boston</td>
+<td>34232</td>
+<td>(855) 941-9786</td>
+<td>2</td>
+<td>2012-09-18 19:04:01</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Tupperware</td>
+<td>Hyacinth</td>
+<td>33 Cheerful Plaza, Drake Road, Westford</td>
+<td>68666</td>
+<td>(822) 665-5327</td>
+<td></td>
+<td>2012-09-18 19:32:05</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Hunt</td>
+<td>John</td>
+<td>5 Bullington Lane, Boston</td>
+<td>54333</td>
+<td>(899) 720-6978</td>
+<td>30</td>
+<td>2012-09-19 11:32:45</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Crumpet</td>
+<td>Erica</td>
+<td>Crimson Road, North Reading</td>
+<td>75655</td>
+<td>(811) 732-4816</td>
+<td>2</td>
+<td>2012-09-22 08:36:38</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> cd.members <span class="hljs-keyword">where</span> memid <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> memid <span class="hljs-keyword">from</span> cd.bookings);
+</code></pre>
+<p>يمكننا استخدام الاستعلامات الفرعية لتحديد ما إذا كان ينبغي حذف صف أم لا. وهناك طريقتان قياسيتان لفعل ذلك. في إجابتنا المميزة، يُنتج الاستعلام الفرعي قائمة بكل معرّفات الأعضاء المختلفة في جدول cd.bookings. وإن لم يكن الصف في الجدول ضمن القائمة التي يولّدها الاستعلام الفرعي، حُذف. وبديل ذلك استخدام <em>استعلام فرعي مترابط</em>. فحيث يشغّل مثالنا السابق استعلامًا فرعيًا كبيرًا مرة واحدة، تحدد المقاربة المترابطة بدلًا من ذلك استعلامًا فرعيًا أصغر يُشغَّل مقابل كل صف.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">delete</span> <span class="hljs-keyword">from</span> cd.members mems <span class="hljs-keyword">where</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> (<span class="hljs-keyword">select</span> <span class="hljs-number">1</span> <span class="hljs-keyword">from</span> cd.bookings <span class="hljs-keyword">where</span> memid <span class="hljs-operator">=</span> mems.memid);
+</code></pre>
+<p>وقد يكون للصيغتين المختلفتين خصائص أداء مختلفة. غير أن محرّك قاعدة بياناتك حرّ في أن يحوّل استعلامك في الخفاء ليُنفّذه بأسلوب مترابط أو غير مترابط، لذا قد يكون التنبؤ بالأمر صعبًا بعض الشيء.</p>
+<p><strong>تلميح:</strong> يمكنك الحذف بناءً على ناتج استعلام فرعي</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/pgexercises/aggregates/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التجميع</span></a><!--]--> <!--[0--><a href="../../../../book/pgexercises/recursive/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الاستعلامات التعاودية</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1k8skom = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.TbKJm7bL.js"),
+						import("../../../../_app/immutable/entry/app.Bp22yAlo.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

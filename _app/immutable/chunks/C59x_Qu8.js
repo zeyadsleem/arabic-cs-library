@@ -1,0 +1,34 @@
+const e="use-the-index-luke",n="sql-explain-plan-postgresql-operations",o="Operations",a="index",s="العمليات",p=[{depth:2,id:"الوصول-إلى-الفهرس-والجدول",text:"الوصول إلى الفهرس والجدول"},{depth:2,id:"عمليات-الربط",text:"عمليات الربط"},{depth:2,id:"الترتيب-والتجميع",text:"الترتيب والتجميع"},{depth:2,id:"استعلامات-top-n",text:"استعلامات Top-N"}],r=`<h2 id="الوصول-إلى-الفهرس-والجدول">الوصول إلى الفهرس والجدول</h2>
+<p>Seq Scan</p>
+<p>تمسح عملية <code>Seq Scan</code> العلاقة (الجدول) بأكملها كما هي مخزّنة على القرص (مثل <code>TABLE ACCESS FULL</code>).</p>
+<p>Index Scan</p>
+<p>تنفّذ <code>Index Scan</code> اجتياز شجرة B، وتمشي عبر العقد الورقية للعثور على جميع المدخلات المطابقة، وتجلب بيانات الجدول المقابلة. وهي مثل <code>INDEX RANGE SCAN</code> تتبعها عملية <code>TABLE ACCESS BY INDEX ROWID</code>. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy/index">الفصل 1، «<em>تشريح فهرس SQL</em>»</a>.</p>
+<p>وما يسمى مُسندات ترشيح الفهرس كثيراً ما يسبّب مشكلات أداء لعملية <code>Index Scan</code>. ويشرح <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-postgresql-filter-predicates/index">القسم التالي</a> كيفية تحديدها.</p>
+<p>Index Only Scan</p>
+<p>تنفّذ <code>Index Only Scan</code> اجتياز شجرة B وتمشي عبر العقد الورقية للعثور على جميع المدخلات المطابقة، دون حاجة إلى الوصول إلى الجدول لأن الفهرس يملك جميع الأعمدة اللازمة لتلبية الاستعلام (استثناء: معلومات ظهور MVCC). انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-clustering-index-only-scan-covering-index/index">«<em>مسح الفهرس فقط: تجنّب الوصول إلى الجدول</em>»</a>.</p>
+<p>Bitmap Index Scan / Bitmap Heap Scan / Recheck Cond</p>
+<p>رسالة Tom Lane على <a href="https://www.postgresql.org/message-id/12553.1135634231@sss.pgh.pa.us">قائمة بريد أداء PostgreSQL</a> واضحة وموجزة جداً.</p>
+<blockquote>
+<p>يجلب <code>Index Scan</code> العادي مؤشر صف واحداً في المرة من الفهرس، ويزور ذلك الصف في الجدول فوراً. أما مسح البتات (bitmap scan) فيجلب جميع مؤشرات الصفوف من الفهرس دفعة واحدة، ويرتّبها باستخدام بنية بيانات «بتات» في الذاكرة، ثم يزور صفوف الجدول بترتيب مواقعها الفيزيائية.— <a href="https://www.postgresql.org/message-id/12553.1135634231@sss.pgh.pa.us">Tom Lane</a></p>
+</blockquote>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=ap-plan-pg-op&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<h2 id="عمليات-الربط">عمليات الربط</h2>
+<p>تعالج عمليات الربط عموماً جدولين في المرة الواحدة. وإذا كان للاستعلام عمليات ربط أكثر، نُفِّذت تتابعياً: الجدولان الأولان أولاً، ثم النتيجة الوسيطة مع الجدول التالي. وفي سياق الربط، قد يعني مصطلح «جدول» أيضاً «نتيجة وسيطة».</p>
+<p>Nested Loopsتربط جدولين بجلب النتيجة من جدول والاستعلام من الجدول الآخر مقابل كل صف من الأول. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index">«<em>الحلقات المتداخلة</em>»</a>.</p>
+<p>Hash Join / Hash</p>
+<p>يحمّل الربط بالتجزئة السجلات المرشحة من أحد طرفَي الربط إلى جدول تجزئة (موسوم بـ<code>Hash</code> في الخطة)، ثم يُفحص مقابل كل سجل من الطرف الآخر للربط. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-join-hash-join-partial-objects/index">«<em>الربط بالتجزئة</em>»</a>.</p>
+<p>Merge Join</p>
+<p>يجمع ربط الدمج (بالترتيب) قائمتين مرتَّبتين كما يُغلق السحّاب. ويجب أن يكون طرفا الربط مرتَّبين مسبقاً. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-join-sort-merge-join/index">«<em>دمج الترتيب</em>»</a>.</p>
+<h2 id="الترتيب-والتجميع">الترتيب والتجميع</h2>
+<p>Sort / Sort Keyترتّب المجموعة على الأعمدة المذكورة في <code>Sort Key</code>. وتحتاج عملية <code>Sort</code> إلى كميات كبيرة من الذاكرة لتجسيد النتيجة الوسيطة (غير متدفقة). انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index">«<em>فهرسة Order By</em>»</a>.</p>
+<p>GroupAggregate</p>
+<p>تجمّع مجموعة مرتَّبة مسبقاً وفق جملة <code>group by</code>. ولا تخزّن هذه العملية كميات كبيرة من البيانات مؤقتاً (متدفقة). انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-group-by/index">«<em>فهرسة Group By</em>»</a>.</p>
+<p>HashAggregate</p>
+<p>تستخدم جدول تجزئة مؤقتاً لتجميع السجلات. ولا تتطلب عملية <code>HashAggregate</code> مجموعة بيانات مرتَّبة مسبقاً، بل تستخدم كميات كبيرة من الذاكرة لتجسيد النتيجة الوسيطة (غير متدفقة). والخرج غير مرتَّب بأي طريقة ذات معنى. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-group-by/index">«<em>فهرسة Group By</em>»</a>.</p>
+<h2 id="استعلامات-top-n">استعلامات Top-N</h2>
+<p>Limitتوقف العمليات الأساسية عند جلب عدد الصفوف المطلوب. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-top-n-queries/index">«<em>الاستعلام عن صفوف Top-N</em>»</a>.</p>
+<p>وتتوقف كفاءة استعلام Top-N على نمط تنفيذ العمليات الأساسية؛ وهو غير فعّال أبداً عند إيقاف عمليات غير متدفقة مثل <code>Sort</code>.</p>
+<p>WindowAgg</p>
+<p>تشير إلى استخدام دوال النوافذ. وبدءاً من PostgreSQL 15، تشير «Run Condition» إلى إيقاف Top-N محتمل. انظر أيضاً <a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-window-functions/index">«<em>استخدام دوال النوافذ لترقيم فعّال</em>»</a>.</p>
+`,t={book:e,chapter:n,chapterTitle:o,slug:a,title:s,headings:p,html:r};export{e as book,n as chapter,o as chapterTitle,t as default,p as headings,r as html,a as slug,s as title};

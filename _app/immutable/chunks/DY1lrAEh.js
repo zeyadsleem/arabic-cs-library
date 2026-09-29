@@ -1,0 +1,12 @@
+const e="use-the-index-luke",t="sql-partial-results",s="Partial Results",n="index",a="النتائج الجزئية",r=[{depth:2,id:"المحتويات",text:"المحتويات"}],i=`<p>قد لا تحتاج أحياناً إلى النتيجة الكاملة لاستعلام SQL بل إلى الصفوف الأولى فقط — مثلاً لعرض أحدث عشر رسائل. وفي هذه الحالة، من الشائع أيضاً إتاحة تصفح الرسائل الأقدم للمستخدمين، إما عبر تنقّل تقليدي بين الصفحات أو عبر الصيغة الأحدث «التمرير اللانهائي». غير أن استعلامات SQL المرتبطة بهذه الوظيفة قد تسبّب مشكلات أداء خطيرة إذا وجب فرز <em>جميع</em> الرسائل للعثور على الأحدث منها. ولذلك فإن <a href="/arabic-cs-library/book/use-the-index-luke/sql-sorting-grouping-indexed-order-by/index"><code>order by</code> المتدفق</a> وسيلة تحسين قوية جداً لمثل هذه الاستعلامات.</p>
+<p>لا يقتصر استخدام <code>order by</code> المتدفق على توفير جهد فرز النتيجة، بل يتجاوز ذلك إلى إرجاع النتائج الأولى دون قراءة جميع الصفوف وفرزها؛ أي إن كلفة بدء التشغيل منخفضة جداً. ومن ثمّ يمكن إيقاف التنفيذ بعد جلب بضع صفوف دون إهدار الجهود المبذولة لتحضير النتيجة النهائية.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=ch-partial&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>يعرض هذا الفصل كيفية استخدام <code>order by</code> المتدفق لاسترجاع نتائج جزئية بكفاءة. ومع أن صيغة هذه الاستعلامات تختلف من قاعدة بيانات إلى أخرى، فإنها تنفّذ الاستعلامات بطريقة شديدة التشابه. وهذا يوضح مرة أخرى أنها جميعاً تلبس بنطالها رجلاً واحداً في كل مرة.</p>
+<h2 id="المحتويات">المحتويات</h2>
+<ol>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-top-n-queries/index">اختيار صفوف Top-N</a></em> — إذا كنت تحتاج الصفوف الأولى فقط</li>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-fetch-next-page/index">جلب الصفحة التالية</a></em> — مقارنة طريقتي الإزاحة والبحث بالمفتاح</li>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-window-functions/index">دوال النوافذ</a></em> — الترقيم باستخدام الاستعلامات التحليلية</li>
+</ol>
+`,o={book:e,chapter:t,chapterTitle:s,slug:n,title:a,headings:r,html:i};export{e as book,t as chapter,s as chapterTitle,o as default,r as headings,i as html,n as slug,a as title};

@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.TbKJm7bL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/QgBCM3iT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cbc8heEE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bp22yAlo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.slUUsyzt.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSVJXvM8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CiWa-fIK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/EWRl7P9B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.BLm4K8j-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DvR8F70e.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الملحق: اشتقاق صيغ حساب التباين — الملحق: اشتقاق صيغ حساب التباين"/><!----><title>الملحق: اشتقاق صيغ حساب التباين | داخل PostgreSQL</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/postgres-internals">داخل PostgreSQL</a> <span class="reader-bar__chapter">› الملحق: اشتقاق صيغ حساب التباين</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 13 من 13">13 / 13</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/postgres-internals/pgsql12/index">السابق</a><!--]--> <!--[-1--><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>عنقود قواعد البيانات والجداول</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql01/index">عنقود قواعد البيانات والجداول</a></li><!--]--></ul><h3>معمارية العمليات والذاكرة</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql02/index">معمارية العمليات والذاكرة</a></li><!--]--></ul><h3>معالجة الاستعلامات</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql03/index">معالجة الاستعلامات</a></li><!--]--></ul><h3>مغلّف البيانات الخارجية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql04/index">مغلّف البيانات الخارجية</a></li><!--]--></ul><h3>التحكّم بالتزامن</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql05/index">التحكّم بالتزامن</a></li><!--]--></ul><h3>معالجة التفريغ (Vacuum)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql06/index">معالجة التفريغ (Vacuum)</a></li><!--]--></ul><h3>الصفوف المكتفية بالكومة (HOT)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql07/index">الصفوف المكتفية بالكومة (HOT)</a></li><!--]--></ul><h3>مدير المخزن المؤقت</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql08/index">مدير المخزن المؤقت</a></li><!--]--></ul><h3>سجل ما قبل الكتابة (WAL)</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql09/index">سجل ما قبل الكتابة (WAL)</a></li><!--]--></ul><h3>النسخ الاحتياطي الأساسي والاستعادة الزمنية</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql10/index">النسخ الاحتياطي الأساسي والاستعادة الزمنية</a></li><!--]--></ul><h3>النسخ المتماثل المتدفّق</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql11/index">النسخ المتماثل المتدفّق</a></li><!--]--></ul><h3>النسخ المتماثل المنطقي</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsql12/index">النسخ المتماثل المنطقي</a></li><!--]--></ul><h3 class="active-chapter">الملحق: اشتقاق صيغ حساب التباين</h3> <ul><!--[--><li><a href="../../../../book/postgres-internals/pgsqlappendix/index" class="active">الملحق: اشتقاق صيغ حساب التباين</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>الملحق: اشتقاق صيغ حساب التباين</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#a11-اشتقاق-طريقة-يونغز-وكرامر">A.1.1. اشتقاق طريقة يونغز وكرامر</a></li><li><a href="#a12-اشتقاق-صيغ-التباين-أحادي-المرور-المتوازي">A.1.2. اشتقاق صيغ التباين أحادي المرور / المتوازي</a></li><li><a href="#a21-أسلوب-القراءة-المتعددة">A.2.1. أسلوب القراءة المتعددة</a></li><li><a href="#a22-أسلوب-القراءة-المتجهة">A.2.2. أسلوب القراءة المتجهة</a></li><!--]--></ul></nav><!--]--> <div class="reader-content"><!----><h1>A.1. اشتقاق صيغ حساب التباين</h1>
+<h2 id="a11-اشتقاق-طريقة-يونغز-وكرامر">A.1.1. اشتقاق طريقة يونغز وكرامر</h2>
+<p>طريقة يونغز وكرامر (Youngs and Cramer method) تحسينٌ لطريقة <a href="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford%27s_online_algorithm">وِلفورد المتّصلة</a>. ولِفهم اشتقاق (derivation) طريقة يونغز وكرامر، نتفحّص طريقة وِلفورد (Welford method) أولًا.</p>
+<h4>طريقة وِلفورد:</h4>
+<p>تُعرَّف طريقة وِلفورد (Welford’s method) لحساب التباين (variance) بعلاقة الاستدعاء الذاتي (recurrence relation) التالية:</p>
+<p>$$ V_{n} = V_{n-1} + \frac{n-1}{n} (x_{n} - A_{n-1})^{2} $$</p>
+<p>ويكون اشتقاق هذه العلاقة كما يلي:</p>
+<p>$$ \begin{align*} V_{n} &amp;= \sum_{i=1}^{n} (x_{i} - A_{n})^{2} = \sum_{i=1}^{n-1} (x_{i} - A_{n})^{2} + (x_{n} - A_{n})^{2} \ &amp;= \sum_{i=1}^{n-1} \left( (x_{i} - \frac{1}{n}((n-1)A_{n-1} + x_{n}) \right)^{2} + \left( (x_{n} - \frac{1}{n}((n-1)A_{n-1} + x_{n}) \right)^{2} \ &amp;= \sum_{i=1}^{n-1} \left( (x_{i} - A_{n-1}) - \frac{1}{n}(x_{n} - A_{n-1}) \right)^{2} + \left( \frac{1}{n} (nx_{n} - (n-1)A_{n-1} - x_{n} ) \right)^{2} \ &amp;= \sum_{i=1}^{n-1} \left( (x_{i} - A_{n-1})^{2} - \frac{2(x_{n} - A_{n-1})}{n}(x_{i} - A_{n-1}) + \frac{1}{n^{2}}(x_{n} - A_{n-1})^{2} \right) + \left( \frac{(n - 1) x_{n} - (n-1) A_{n-1}}{n} \right)^{2} \ &amp;= \sum_{i=1}^{n-1} (x_{i} - A_{n-1})^{2} - \frac{2(x_{n} - A_{n-1})}{n} \sum_{i=1}^{n-1}(x_{i} - A_{n-1}) + \frac{1}{n^{2}} \sum_{i=1}^{n-1} (x_{n} - A_{n-1})^{2} + \left( \frac{(n - 1) (x_{n} - A_{n-1})}{n} \right)^{2} \ &amp;= V_{n-1} - \frac{2(x_{n} - A_{n-1})}{n} \left( \sum_{i=1}^{n-1} x_{i} - (n-1)A_{n-1} \right) + \frac{1}{n^{2}} (n-1) \cdot (x_{n} - A_{n-1})^{2} + \left( \frac{n-1}{n} \right)^{2} (x_{n} - A_{n-1})^{2} \ &amp;= V_{n-1} - \frac{2(x_{n} - A_{n-1})}{n} (S_{n-1} - S_{n-1}) + \left( \frac{n-1}{n^{2}} + \left( \frac{n-1}{n}\right)^{2} \right) (x_{n} - A_{n-1})^{2} \ &amp;= V_{n-1} - \frac{2(x_{n} - A_{n-1})}{n} \cdot 0 + \frac{(n-1) + (n-1)^{2}}{n^{2}} (x_{n} - A_{n-1})^{2} \ &amp;= V_{n-1} + \frac{(n-1)(1 + (n-1))}{n^{2}} (x_{n} - A_{n-1})^{2} \ &amp;= V_{n-1} + \frac{n-1}{n} (x_{n} - A_{n-1})^{2} \end{align*} $$</p>
+<h4>طريقة يونغز وكرامر:</h4>
+<p>تُعدّل طريقة يونغز وكرامر طريقة وِلفورد باستبدال المتوسط (mean) $A_{n-1}$ بالمجموع $S_{n-1}$ لتحسين كفاءة الحساب والاستقرار العددي.</p>
+<p>وتُشتق علاقة الاستدعاء الذاتي كما يلي:</p>
+<p>$$ \begin{align*} V_{n} &amp;= V_{n-1} + \frac{n-1}{n} \left( x_{n} - \frac{S_{n-1}}{n-1} \right)^{2} = V_{n-1} + \frac{n-1}{n} \left( \frac{(n-1)x_{n} - S_{n-1}}{n-1} \right)^{2} \ &amp;= V_{n-1} + \frac{1}{n(n-1)} ((n-1)x_{n} - S_{n-1})^{2} = V_{n-1} + \frac{1}{n(n-1)} (nx_{n} - x_{n} - (S_{n}- x_{n} ))^{2} \ &amp;= V_{n-1} + \frac{1}{n(n-1)} (nx_{n} - S_{n})^{2} \end{align*} $$</p>
+<h2 id="a12-اشتقاق-صيغ-التباين-أحادي-المرور-المتوازي">A.1.2. اشتقاق صيغ التباين أحادي المرور / المتوازي</h2>
+<p>في معالجة الاستعلامات المتوازية (parallel query processing)، عند حساب التباين، تجمع عملية القائد (leader process) النتائج الجزئية التي حسبتها عمليات العمال (worker processes) لتوليد النتيجة النهائية.</p>
+<p>ويمكن التعبير عن تباين مجموعة البيانات كاملة، $V_{n}$، بدلالة $V_{n_{1}}$ و$V_{n_{2}}$ و$S_{n_{1}}$ و$S_{n_{2}}$ كما يلي:</p>
+<p>$$ V_{n} = V_{n_{1}} + V_{n_{2}} + \frac{n_{1} n_{2}}{n_{1} + n_{2}} \left( \frac{S_{n_{1}}}{n_{1}} - \frac{S_{n_{2}}}{n_{2}} \right)^{2} $$</p>
+<p>حيث:</p>
+<ul>
+<li>مجموعة البيانات (dataset): $\lbrace x_{i} | 1 \leq i \leq n = n_{1} + n_{2} \rbrace$</li>
+<li>المتوسط الإجمالي: $A_{n} = \sum_{i=1}^{n_{1}+n_{2}} x_{i}$</li>
+<li>مجموع الجزء الأول من مجموعة البيانات: $S_{n_{1}} = \sum_{i=1}^{n_{1}} x_{i}$</li>
+<li>تباين الجزء الأول: $V_{n_{1}} = \sum_{i=1}^{n_{1}} (x_{i} - \frac{S_{n_{1}}}{n_{1}})^{2}$</li>
+<li>مجموع الجزء الثاني من مجموعة البيانات: $S_{n_{2}} = \sum_{i=1+n_{1}}^{n_{1}+n_{2}} x_{i}$</li>
+<li>تباين الجزء الثاني: $V_{n_{2}} = \sum_{i=1+n_{1}}^{n_{1}+n_{2}} (x_{i} - \frac{S_{n_{2}}}{n_{2}})^{2}$</li>
+</ul>
+<h4>البرهان:</h4>
+<p>$$ \begin{align*} V_{n} &amp;= \sum_{i=1}^{n} (x_{i} - A_{n})^{2} = \sum_{i=1}^{n_{1}} (x_{i} - A_{n})^{2} + \sum_{i=1+n_{1}}^{n_{1}+n_{2}} (x_{i} - A_{n})^{2} = \sum_{i=1}^{n_{1}} \left( x_{i} - (\frac{S_{n_{1}} + S_{n_{2}}}{n_{1} + n_{2}}) \right)^{2} + \sum_{i=1+n_{1}}^{n_{1}+n_{2}} \left( x_{i} - (\frac{S_{n_{1}} + S_{n_{2}}}{n_{1} + n_{2}}) \right)^{2} \ &amp;= \sum_{i=1}^{n_{1}} \left( (x_{i} - \frac{S_{n_{1}}}{n_{1}}) + \frac{S_{n_{1}} n_{2} - S_{n_{2}}n_{1}}{(n_{1} + n_{2}) n_{1}} \right)^{2} + \sum_{i=1+n_{1}}^{n_{1}+n_{2}} \left( (x_{i} - \frac{S_{n_{2}}}{n_{2}}) + \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1} + n_{2}) n_{2}} \right)^{2} \ &amp;= \sum_{i=1}^{n_{1}} \left( x_{i} - \frac{S_{n_{1}}}{n_{1}} \right)^{2} + 2 \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1} }{(n_{1} + n_{2}) n_{1}} \right) \sum_{i=1}^{n_{1}} \left( x_{i} - \frac{S_{n_{1}}}{n_{1}} \right) + \sum_{i=1}^{n_{1}} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1} + n_{2}) n_{1}} \right)^{2} \ &amp; \quad + \sum_{i=1+n_{1}}^{n_{1} + n_{2}} \left( x_{i} - \frac{S_{n_{2}}}{n_{2}} \right)^{2} + 2 \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right) \sum_{i=1+n_{1}}^{n_{1}+n_{2}} \left( x_{i} - \frac{S_{n_{2}}}{n_{2}} \right) + \sum_{i=1+n_{1}}^{n_{1}+n_{2}} \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right)^{2} \ &amp;= V_{n_{1}} + 2 \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1} + n_{2}) n_{1}} \right) \left( \sum_{i=1}^{n_{1}} x_{i} - n_{1} \frac{S_{n_{1}}}{n_{1}} \right) + n_{1} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1}+n_{2}) n_{1}} \right)^{2} \ &amp; \quad + V_{n_{2}} + 2 \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right) \left( \sum_{i=1+n_{1}}^{n_{1}+n_{2}} x_{i} - n_{2} \frac{S_{n_{2}}}{n_{2}} \right) + n_{2} \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right)^{2} \ &amp;= V_{n_{1}} + 2 \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1} + n_{2}) n_{1}} \right) ( S_{n_{1}} - S_{n_{1}} ) + n_{1} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1}+n_{2}) n_{1}} \right)^{2} \ &amp; \quad + V_{n_{2}} + 2 \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right) ( S_{n_{2}} - S_{n_{2}} ) + n_{2} \left( \frac{ (-1) (S_{n_{1}} n_{2} - S_{n_{2}} n_{1})}{(n_{1}+n_{2}) n_{2}} \right)^{2} \ &amp;= V_{n_{1}} + 2 \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1} + n_{2}) n_{1}} \right) \cdot 0 + n_{1} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1}+n_{2}) n_{1}} \right)^{2} + V_{n_{2}} + 2 \left( \frac{S_{n_{2}} n_{1} - S_{n_{1}} n_{2}}{(n_{1}+n_{2}) n_{2}} \right) \cdot 0 + n_{2} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{(n_{1}+n_{2}) n_{2}} \right)^{2} \ &amp;= V_{n_{1}} + V_{n_{2}} + \frac{1}{n_{1}} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{n_{1}+n_{2}} \right)^{2} + \frac{1}{n_{2}} \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{n_{1}+n_{2}} \right)^{2} = V_{n_{1}} + V_{n_{2}} + \left( \frac{1}{n_{1}} + \frac{1}{n_{2}} \right) \left( \frac{S_{n_{1}} n_{2} - S_{n_{2}} n_{1}}{n_{1}+n_{2}} \right)^{2} \ &amp;= V_{n_{1}} + V_{n_{2}} + \left( \frac{1}{n_{1}} + \frac{1}{n_{2}} \right) \left( \frac{1}{n_{1}+n_{2}} \right)^{2} (S_{n_{1}} n_{2} - S_{n_{2}} n_{1})^{2} \ &amp;= V_{n_{1}} + V_{n_{2}} + \left( \frac{n_{1} + n_{2}}{n_{1} n_{2}} \right) \left( \frac{1}{n_{1}+n_{2}} \right)^{2} \left( \frac{n_{1} n_{2}}{n_{1} n_{2}} (S_{n_{1}} n_{2} - S_{n_{2}} n_{1}) \right)^{2} \ &amp;= V_{n_{1}} + V_{n_{2}} + \left( \frac{n_{1} + n_{2}}{n_{1} n_{2}} \right) \left( \frac{n_{1} n_{2}}{n_{1}+n_{2}} \right)^{2} \left( \frac{1}{n_{1} n_{2}} (S_{n_{1}} n_{2} - S_{n_{2}} n_{1}) \right)^{2} \ &amp;= V_{n_{1}} + V_{n_{2}} + \frac{n_{1} n_{2}}{n_{1} + n_{2}} \left( \frac{S_{n_{1}}}{n_{1}} - \frac{S_{n_{2}}}{n_{2}} \right)^{2} \end{align*} $$</p>
+<h1>A.2. أمثلة على io_uring</h1>
+<p>إلمام بأمثلة تنفيذ io_uring يوضّح الإدخال/الإخراج غير المتزامن (Asynchronous I/O أو AIO) في PostgreSQL. وفيما يلي مثالان بسيطان.</p>
+<p>وهما يقدّمان نموذجًا مبسّطًا (toy model) لمدير مخزن مؤقت (buffer manager)، إذ يقرآن البيانات من ملف بشكل غير متزامن إلى فتحات في الذاكرة (الشكل A2.1).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsqlappendix-fig-a-2-01.webp" alt=""></p>
+<h4>الشكل A2.1. نموذج مبسّط لمدير المخزن المؤقت.</h4>
+<p>تقرأ البرامج ملفًا بحجم 32 بايت (rel.data) بشكل غير متزامن إلى مصفوفة <em>BufferPool</em> مستخدمةً أربعة طلبات قراءة بحجم 8 بايت لكل منها.</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">cat</span> rel.data
+A0000000B0000001C0000010D0000011
+</code></pre>
+<pre><code>#define BUFFER_SIZE 8
+#define PAGE_SIZE 8
+
+char BufferPool[BUFFER_SIZE][PAGE_SIZE + 1];
+</code></pre>
+<p>في هذين المثالين، توضع الكتل المنطقية الأربع من rel.data في فتحات BufferPool أرقام 3 و7 و1 و0.</p>
+<pre><code>/*
+ * Mapping Table: Logical Block -&gt; Physical Buffer Slot
+ * Defines the destination slot in BufferPool for each sequential file block.
+ * - Block 0 (Bytes 0-7)   -&gt; BufferPool[3]
+ * - Block 1 (Bytes 8-15)  -&gt; BufferPool[7]
+ * - Block 2 (Bytes 16-23) -&gt; BufferPool[1]
+ * - Block 3 (Bytes 24-31) -&gt; BufferPool[0]
+ */
+#define QUEUE_SIZE 4
+
+int dest[QUEUE_SIZE] = { 3, 7, 1, 0 };
+</code></pre>
+<h2 id="a21-أسلوب-القراءة-المتعددة">A.2.1. أسلوب القراءة المتعددة</h2>
+<p>يوضّح المثال التالي برنامج io_uring بسيطًا.</p>
+<p>الشيفرة المصدرية الكاملة معروضة فيما يلي: ** ** aio_read.c</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">cat</span> rel.data
+A0000000B0000001C0000010D0000011
+
+$ <span class="hljs-built_in">cat</span> aio_read.c
+<span class="hljs-comment">#include &lt;liburing.h&gt;</span>
+<span class="hljs-comment">#include &lt;stdio.h&gt;</span>
+<span class="hljs-comment">#include &lt;string.h&gt;</span>
+<span class="hljs-comment">#include &lt;unistd.h&gt;</span>
+
+<span class="hljs-comment">#define BUFFER_SIZE 8</span>
+<span class="hljs-comment">#define PAGE_SIZE 8</span>
+<span class="hljs-comment">#define QUEUE_SIZE 4</span>
+<span class="hljs-comment">#define REL_FILE &amp;#34;rel.data&amp;#34;</span>
+
+int
+<span class="hljs-function"><span class="hljs-title">main</span></span>()
+{
+    int fd;
+    struct io_uring ring;
+    char BufferPool[BUFFER_SIZE][PAGE_SIZE+1];
+
+    /*
+     * Mapping Table: Logical Block -&gt; Physical Buffer Slot
+     * Defines the destination slot <span class="hljs-keyword">in</span> BufferPool <span class="hljs-keyword">for</span> each sequential file block.
+     * - Block 0 (Bytes 0-7)   -&gt; BufferPool[3]
+     * - Block 1 (Bytes 8-15)  -&gt; BufferPool[7]
+     * - Block 2 (Bytes 16-23) -&gt; BufferPool[1]
+     * - Block 3 (Bytes 24-31) -&gt; BufferPool[0]
+     */
+    int dest[QUEUE_SIZE] = { 3, 7, 1, 0 };
+
+    /* Initialize io_uring environment and open target relation file */
+    io_uring_queue_init(QUEUE_SIZE, &amp;ring, 0);
+    <span class="hljs-keyword">if</span> ((fd = open(REL_FILE, O_RDONLY)) &lt; 0)
+        <span class="hljs-built_in">return</span> 1;
+
+    memset(BufferPool, 0, sizeof(BufferPool));
+
+    /*
+     * Prepare and submit <span class="hljs-built_in">read</span> requests
+     */
+    <span class="hljs-keyword">for</span> (int i = 0; i &lt; QUEUE_SIZE; i++) {
+        struct io_uring_sqe* sqe = io_uring_get_sqe(&amp;ring);
+        int buff_id = dest[i];
+        io_uring_prep_read(sqe, fd, BufferPool[buff_id], PAGE_SIZE, i * PAGE_SIZE);
+        sqe-&gt;user_data = i;
+    }
+    io_uring_submit(&amp;ring);
+
+    /*
+     * Wait <span class="hljs-keyword">for</span> completion events
+     */
+    <span class="hljs-keyword">for</span> (int i = 0; i &lt; QUEUE_SIZE; i++) {
+        int blockNum;
+        int buff_id;
+        struct io_uring_cqe* cqe;
+
+        /* Wait <span class="hljs-keyword">for</span> one io_uring completion event */
+        io_uring_wait_cqe(&amp;ring, &amp;cqe);
+
+        /* Mark io_uring completion event as consumed */
+        io_uring_cqe_seen(&amp;ring, cqe);
+
+        /* Output the results */
+        blockNum = (int)cqe-&gt;user_data;
+        buff_id = dest[blockNum];
+        <span class="hljs-built_in">printf</span>(&amp;#34;CQ[%d]: BlockNum_%d -&gt; BufferPool[%d] offset=%3d bytes=%2d: [%s]\n&amp;#34;,
+              i+1, blockNum, buff_id, blockNum * PAGE_SIZE, PAGE_SIZE, BufferPool[buff_id]);
+    }
+
+    close(fd);
+    io_uring_queue_exit(&amp;ring);
+    <span class="hljs-built_in">return</span> 0;
+}
+
+$ gcc -o aio_read aio_read.c -luring
+
+$ ./aio_read
+CQ[1]: BlockNum_0 -&gt; BufferPool[3] offset=  0 bytes= 8: [A0000000]
+CQ[2]: BlockNum_1 -&gt; BufferPool[7] offset=  8 bytes= 8: [B0000001]
+CQ[3]: BlockNum_2 -&gt; BufferPool[1] offset= 16 bytes= 8: [C0000010]
+CQ[4]: BlockNum_3 -&gt; BufferPool[0] offset= 24 bytes= 8: [D0000011]
+</code></pre>
+<p>أولًا، يفتح البرنامج الملف ويهيّئ نسخة io_uring.</p>
+<pre><code>#define REL_FILE &amp;#34;rel.data&amp;#34;
+
+int fd;
+struct io_uring ring;
+
+if ((fd = open(REL_FILE, O_RDONLY)) &lt; 0)
+    return 1;
+
+io_uring_queue_init(QUEUE_SIZE, &amp;ring, 0);
+</code></pre>
+<p>يوضّح الشكل A2.2 التدفق اللاحق لمعالجة طلبات قراءة متعددة.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsqlappendix-fig-a-2-02.webp" alt=""></p>
+<h4>الشكل A2.2. تدفق معالجة طلبات قراءة متعددة.</h4>
+<p>(1) <strong>تحضير طلبات القراءة:</strong> يوفّر io_uring_get_sqe() مدخلًا واحدًا في طابور الإرسال (Submission Queue Entry أو SQE) لكل طلب قراءة. ثم يملأ io_uring_prep_read() كل مدخل SQE بطلب قراءة، محددًا المخزن الهدف وحجم القراءة وإزاحة الملف. ويخزّن الحقل <em>user_data</em> رقم الكتلة لربط كل حدث إتمام بالطلب المقابل له لاحقًا.</p>
+<pre><code>for (int i = 0; i &lt; QUEUE_SIZE; i++) {
+    struct io_uring_sqe* sqe = io_uring_get_sqe(&amp;ring);
+    int buff_id = dest[i];
+    io_uring_prep_read(sqe, fd, BufferPool[buff_id], PAGE_SIZE, i * PAGE_SIZE);
+    sqe-&gt;user_data = i;
+}
+</code></pre>
+<p>(2) <strong>إرسال طلبات القراءة:</strong> بعد جهوزية طلبات القراءة الأربعة كلها، يرسلها io_uring_submit() معًا.</p>
+<pre><code>io_uring_submit(&amp;ring);
+</code></pre>
+<p>(3) <strong>قراءة الكتل وإدراج أحداث الإتمام:</strong> تقرأ النواة الكتل المطلوبة من جهاز التخزين. وبمجرد اكتمال كل قراءة، تدرج النواة حدث إتمام في طابور الإتمام (Completion Queue أو CQ).</p>
+<p>(4) <strong>انتظار أحداث الإتمام:</strong> ينتظر البرنامج أحداث الإتمام باستدعاء io_uring_wait_cqe() مرارًا وتكرارًا. ويصبح المخزن المؤقت المقابل آمنًا للوصول كلما وصل حدث إتمام. وأخيرًا، يضع io_uring_cqe_seen() علامة على مدخل طابور الإتمام باعتباره مستهلَكًا.</p>
+<pre><code>for (int i = 0; i &lt; QUEUE_SIZE; i++) {
+    int blockNum;
+    int buff_id;
+    struct io_uring_cqe* cqe;
+
+    /* Wait for one io_uring completion event */
+    io_uring_wait_cqe(&amp;ring, &amp;cqe);
+
+    /* Mark io_uring completion event as consumed */
+    io_uring_cqe_seen(&amp;ring, cqe);
+
+    /* Output the results */
+    blockNum = (int)cqe-&gt;user_data;
+    buff_id = dest[blockNum];
+    printf(&amp;#34;CQ[%d]: BlockNum_%d -&gt; BufferPool[%d] offset=%3d bytes=%2d: [%s]\n&amp;#34;,
+           i+1, blockNum, buff_id, blockNum * PAGE_SIZE, PAGE_SIZE, BufferPool[buff_id]);
+}
+</code></pre>
+<p>أنتجت إحدى عمليات تنفيذ البرنامج الخرج التالي.</p>
+<pre><code class="language-bash">$ ./aio_read
+CQ[1]: BlockNum_0 -&gt; BufferPool[3] offset=  0 bytes= 8: [A0000000]
+CQ[2]: BlockNum_1 -&gt; BufferPool[7] offset=  8 bytes= 8: [B0000001]
+CQ[3]: BlockNum_2 -&gt; BufferPool[1] offset= 16 bytes= 8: [C0000010]
+CQ[4]: BlockNum_3 -&gt; BufferPool[0] offset= 24 bytes= 8: [D0000011]
+</code></pre>
+<h2 id="a22-أسلوب-القراءة-المتجهة">A.2.2. أسلوب القراءة المتجهة</h2>
+<p>يدعم io_uring الإدخال/الإخراج المتجهي (Vector I/O) أو الإدخال/الإخراج بالتجميع-التفريق (Scatter-Gather I/O)، ما يتيح قراءة صفحات متتالية متعددة بكفاءة عبر طلب قراءة واحد.</p>
+<p>يوضّح المثال التالي كيفية عمل io_uring على صفحات متتالية متعددة.</p>
+<p>الشيفرة المصدرية الكاملة معروضة فيما يلي: ** ** aio_readv.c</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">cat</span> rel.data
+A0000000B0000001C0000010D0000011
+
+$ <span class="hljs-built_in">cat</span> aio_readv.c
+<span class="hljs-comment">#include &lt;fcntl.h&gt;</span>
+<span class="hljs-comment">#include &lt;liburing.h&gt;</span>
+<span class="hljs-comment">#include &lt;stdio.h&gt;</span>
+<span class="hljs-comment">#include &lt;string.h&gt;</span>
+<span class="hljs-comment">#include &lt;unistd.h&gt;</span>
+
+<span class="hljs-comment">#define BUFFER_SIZE 8</span>
+<span class="hljs-comment">#define PAGE_SIZE 8</span>
+<span class="hljs-comment">#define QUEUE_SIZE 4</span>
+<span class="hljs-comment">#define REL_FILE &amp;#34;rel.data&amp;#34;</span>
+
+int
+<span class="hljs-function"><span class="hljs-title">main</span></span>()
+{
+    int fd;
+    struct io_uring ring;
+    char BufferPool[BUFFER_SIZE][PAGE_SIZE + 1];
+    struct iovec iov[QUEUE_SIZE];
+
+    /*
+     * Mapping Table: Logical Block -&gt; Physical Buffer Slot
+     * Defines the destination slot <span class="hljs-keyword">in</span> BufferPool <span class="hljs-keyword">for</span> each sequential file block.
+     * - Block 0 (Bytes 0-7)   -&gt; BufferPool[3]
+     * - Block 1 (Bytes 8-15)  -&gt; BufferPool[7]
+     * - Block 2 (Bytes 16-23) -&gt; BufferPool[1]
+     * - Block 3 (Bytes 24-31) -&gt; BufferPool[0]
+     */
+    int dest[QUEUE_SIZE] = { 3, 7, 1, 0 };
+
+    /* Initialize io_uring environment and open target relation file */
+    io_uring_queue_init(QUEUE_SIZE, &amp;ring, 0);
+    <span class="hljs-keyword">if</span> ((fd = open(REL_FILE, O_RDONLY)) &lt; 0)
+        <span class="hljs-built_in">return</span> 1;
+
+    memset(BufferPool, 0, sizeof(BufferPool));
+
+    /* Set up iovec array to <span class="hljs-built_in">bind</span> scattered buffer pool addresses to the <span class="hljs-built_in">read</span> stream */
+    <span class="hljs-keyword">for</span> (int blockNum = 0; blockNum &lt; QUEUE_SIZE; blockNum++) {
+        int buff_id = dest[blockNum];
+        iov[blockNum].iov_base = BufferPool[buff_id];
+        iov[blockNum].iov_len = PAGE_SIZE;
+    }
+
+    /*
+     * Prepare and submit a single scatter-read request (readv)
+     */
+    struct io_uring_sqe* sqe = io_uring_get_sqe(&amp;ring);
+    io_uring_prep_readv(sqe, fd, iov, QUEUE_SIZE, 0 /* file offset */);
+    io_uring_submit(&amp;ring);
+
+    /*
+     * Wait <span class="hljs-keyword">until</span> the single CQE (representing the entire readv completion) returns
+     */
+    struct io_uring_cqe* cqe;
+    io_uring_wait_cqe(&amp;ring, &amp;cqe);
+
+    /* Mark the completion event as consumed */
+    io_uring_cqe_seen(&amp;ring, cqe);
+
+    /* Output the results scattered into the buffer pool */
+    <span class="hljs-built_in">printf</span>(&amp;#34;CQ: readv completed: %d bytes <span class="hljs-built_in">read</span>\n&amp;#34;, cqe-&gt;res);
+    <span class="hljs-keyword">for</span> (int blockNum = 0; blockNum &lt; QUEUE_SIZE; blockNum++) {
+        int buff_id = dest[blockNum];
+        <span class="hljs-built_in">printf</span>(&amp;#34;\tBlockNum_%d -&gt; BufferPool[%d] offset=%3d bytes=%2d: [%s]\n&amp;#34;,
+               blockNum, buff_id, blockNum * PAGE_SIZE, PAGE_SIZE, BufferPool[buff_id]);
+    }
+
+    close(fd);
+    io_uring_queue_exit(&amp;ring);
+    <span class="hljs-built_in">return</span> 0;
+}
+
+$ gcc -o aio_readv aio_readv.c -luring
+
+$ ./aio_readv
+CQ: readv completed: 32 bytes <span class="hljs-built_in">read</span>
+	BlockNum_0 -&gt; BufferPool[3] offset=  0 bytes= 8: [A0000000]
+	BlockNum_1 -&gt; BufferPool[7] offset=  8 bytes= 8: [B0000001]
+	BlockNum_2 -&gt; BufferPool[1] offset= 16 bytes= 8: [C0000010]
+	BlockNum_3 -&gt; BufferPool[0] offset= 24 bytes= 8: [D0000011]
+</code></pre>
+<p>لاستخدام ميزة الإدخال/الإخراج المتجهي، ينشئ البرنامج مصفوفة <code>iov</code> ويضبط عناوين فتحات BufferPool.</p>
+<pre><code>struct iovec iov[QUEUE_SIZE];
+
+/* Set up iovec array to bind scattered buffer pool addresses to the read stream */
+for (int blockNum = 0; blockNum &lt; QUEUE_SIZE; blockNum++) {
+    int buff_id = dest[blockNum];
+    iov[blockNum].iov_base = BufferPool[buff_id];
+    iov[blockNum].iov_len = PAGE_SIZE;
+}
+</code></pre>
+<p>يوضّح الشكل A2.3 التدفق اللاحق لمعالجة طلب قراءة متجهة.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsqlappendix-fig-a-2-03.webp" alt=""></p>
+<h4>الشكل A2.3. تدفق معالجة طلب قراءة متجهة.</h4>
+<p>(1) <strong>تحضير طلب القراءة:</strong> يجهّز البرنامج طلب قراءة واحدًا. وخلافًا للمثال السابق، يقرأ هذا الطلب الواحد أربع كتل متتالية إلى فتحات BufferPool المتفّرقة المحددة في مصفوفة <code>iov</code>.</p>
+<pre><code>struct io_uring_sqe* sqe = io_uring_get_sqe(&amp;ring);
+io_uring_prep_readv(sqe, fd, iov, QUEUE_SIZE, 0 /* file offset */);
+</code></pre>
+<p>(2) <strong>إرسال طلب القراءة:</strong> يرسل io_uring_submit() طلب القراءة.</p>
+<pre><code>io_uring_submit(&amp;ring);
+</code></pre>
+<p>(3) <strong>قراءة الكتل وإدراج حدث الإتمام:</strong> تقرأ النواة الكتل المتتالية الأربع كلها من الملف. وعند اكتمال عملية القراءة المتجهة بأكملها، تدرج النواة حدث إتمام واحدًا في طابور الإتمام CQ.</p>
+<p>(4) <strong>انتظار حدث الإتمام:</strong> ينتظر البرنامج حدث إتمام طلب القراءة. وخلافًا للمثال السابق، ومع أن البرنامج طلب أربع كتل، تدرج النواة حدثًا واحدًا فقط في طابور الإتمام CQ لأنه لا يوجد سوى طلب قراءة واحد.</p>
+<pre><code>struct io_uring_cqe* cqe;
+
+/* Wait for a completion event */
+io_uring_wait_cqe(&amp;ring, &amp;cqe);
+
+/* Mark the completion event as consumed */
+io_uring_cqe_seen(&amp;ring, cqe);
+
+/* Output the results scattered into the buffer pool */
+printf(&amp;#34;CQ: readv completed: %d bytes read\n&amp;#34;, cqe-&gt;res);
+for (int blockNum = 0; blockNum &lt; QUEUE_SIZE; blockNum++) {
+    int buff_id = dest[blockNum];
+    printf(&amp;#34;\tBlockNum_%d -&gt; BufferPool[%d] offset=%3d bytes=%2d: [%s]\n&amp;#34;,
+           blockNum, buff_id, blockNum * PAGE_SIZE, PAGE_SIZE, BufferPool[buff_id]);
+}
+</code></pre>
+<p>أنتجت إحدى عمليات تنفيذ البرنامج الخرج التالي.</p>
+<pre><code class="language-bash">$ ./aio_readv
+CQ: readv completed: 32 bytes <span class="hljs-built_in">read</span>
+	BlockNum_0 -&gt; BufferPool[3] offset=  0 bytes= 8: [A0000000]
+	BlockNum_1 -&gt; BufferPool[7] offset=  8 bytes= 8: [B0000001]
+	BlockNum_2 -&gt; BufferPool[1] offset= 16 bytes= 8: [C0000010]
+	BlockNum_3 -&gt; BufferPool[0] offset= 24 bytes= 8: [D0000011]
+</code></pre>
+<p>يؤدي استخدام ميزة الإدخال/الإخراج المتجهي إلى تجميع قراءة الكتل المتتالية في طلب قراءة واحد.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql12/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">النسخ المتماثل المنطقي</span></a><!--]--> <!--[-1--><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1k8skom = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.TbKJm7bL.js"),
+						import("../../../../_app/immutable/entry/app.Bp22yAlo.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

@@ -1,0 +1,1136 @@
+const t="pgexercises",n="joins",s="Joins and Subqueries",d="index",r="عمليات الربط والاستعلامات الفرعية",a=[{depth:2,id:"1-استرجاع-أوقات-بدء-حجوزات-الأعضاء",text:"1. استرجاع أوقات بدء حجوزات الأعضاء"},{depth:2,id:"2-تحديد-أوقات-بدء-حجوزات-ملاعب-التنس",text:"2. تحديد أوقات بدء حجوزات ملاعب التنس"},{depth:2,id:"3-إنتاج-قائمة-بكل-الأعضاء-الذين-أوصوا-بعضو-آخر",text:"3. إنتاج قائمة بكل الأعضاء الذين أوصوا بعضو آخر"},{depth:2,id:"4-إنتاج-قائمة-بكل-الأعضاء-مع-من-أوصى-بهم",text:"4. إنتاج قائمة بكل الأعضاء مع من أوصى بهم"},{depth:2,id:"5-إنتاج-قائمة-بكل-الأعضاء-الذين-استخدموا-ملعب-تنس",text:"5. إنتاج قائمة بكل الأعضاء الذين استخدموا ملعب تنس"},{depth:2,id:"6-إنتاج-قائمة-بالحجوزات-المكلفة",text:"6. إنتاج قائمة بالحجوزات المكلفة"},{depth:2,id:"7-إنتاج-قائمة-بكل-الأعضاء-مع-من-أوصى-بهم-دون-استخدام-أي-عمليات-ربط",text:"7. إنتاج قائمة بكل الأعضاء مع من أوصى بهم، دون استخدام أي عمليات ربط"},{depth:2,id:"8-إنتاج-قائمة-بالحجوزات-المكلفة-باستخدام-استعلام-فرعي",text:"8. إنتاج قائمة بالحجوزات المكلفة باستخدام استعلام فرعي"}],e=`<p>تتناول هذه الفئة بالدرجة الأولى مفهومًا أساسيًا في نظم قواعد البيانات العلائقية: الربط (joining). فالربط يتيح لك دمج معلومات مترابطة من جداول متعددة للإجابة عن سؤال. وهذا ليس مفيدًا لسهولة الاستعلام (query) فحسب: فغياب قدرة الربط يشجّع على تفكيك تسوية البيانات (denormalisation)، وهو ما يزيد تعقيد الحفاظ على اتساق بياناتك داخليًا. ويغطي هذا الموضوع الربط الداخلي والخارجي والذاتي، مع قضاء بعض الوقت في الاستعلامات الفرعية (subqueries) — أي الاستعلامات داخل الاستعلامات. وإن واجهت صعوبة في هذه الأسئلة، فأنصح بشدة بكتاب <a href="http://shop.oreilly.com/product/9780596007270.do">Learning SQL</a> لـ Alan Beaulieu، فهو كتاب موجز وجيد الكتابة في الموضوع.</p>
+<h2 id="1-استرجاع-أوقات-بدء-حجوزات-الأعضاء">1. استرجاع أوقات بدء حجوزات الأعضاء</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إنتاج قائمة بأوقات البدء لحجوزات الأعضاء المسمّين 'David Farrell'؟</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>starttime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2012-09-18 09:00:00</td>
+</tr>
+<tr>
+<td>2012-09-18 17:30:00</td>
+</tr>
+<tr>
+<td>2012-09-18 13:30:00</td>
+</tr>
+<tr>
+<td>2012-09-18 20:00:00</td>
+</tr>
+<tr>
+<td>2012-09-19 09:30:00</td>
+</tr>
+<tr>
+<td>2012-09-19 15:00:00</td>
+</tr>
+<tr>
+<td>2012-09-19 12:00:00</td>
+</tr>
+<tr>
+<td>2012-09-20 15:30:00</td>
+</tr>
+<tr>
+<td>2012-09-20 11:30:00</td>
+</tr>
+<tr>
+<td>2012-09-20 14:00:00</td>
+</tr>
+<tr>
+<td>2012-09-21 10:30:00</td>
+</tr>
+<tr>
+<td>2012-09-21 14:00:00</td>
+</tr>
+<tr>
+<td>2012-09-22 08:30:00</td>
+</tr>
+<tr>
+<td>2012-09-22 17:00:00</td>
+</tr>
+<tr>
+<td>2012-09-23 08:30:00</td>
+</tr>
+<tr>
+<td>2012-09-23 17:30:00</td>
+</tr>
+<tr>
+<td>2012-09-23 19:00:00</td>
+</tr>
+<tr>
+<td>2012-09-24 08:00:00</td>
+</tr>
+<tr>
+<td>2012-09-24 16:30:00</td>
+</tr>
+<tr>
+<td>2012-09-24 12:30:00</td>
+</tr>
+<tr>
+<td>2012-09-25 15:30:00</td>
+</tr>
+<tr>
+<td>2012-09-25 17:00:00</td>
+</tr>
+<tr>
+<td>2012-09-26 13:00:00</td>
+</tr>
+<tr>
+<td>2012-09-26 17:00:00</td>
+</tr>
+<tr>
+<td>2012-09-27 08:00:00</td>
+</tr>
+<tr>
+<td>2012-09-28 11:30:00</td>
+</tr>
+<tr>
+<td>2012-09-28 09:30:00</td>
+</tr>
+<tr>
+<td>2012-09-28 13:00:00</td>
+</tr>
+<tr>
+<td>2012-09-29 16:00:00</td>
+</tr>
+<tr>
+<td>2012-09-29 10:30:00</td>
+</tr>
+<tr>
+<td>2012-09-29 13:30:00</td>
+</tr>
+<tr>
+<td>2012-09-29 14:30:00</td>
+</tr>
+<tr>
+<td>2012-09-29 17:30:00</td>
+</tr>
+<tr>
+<td>2012-09-30 14:30:00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> bks.starttime 
+	<span class="hljs-keyword">from</span> 
+		cd.bookings bks
+		<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.members mems
+			<span class="hljs-keyword">on</span> mems.memid <span class="hljs-operator">=</span> bks.memid
+	<span class="hljs-keyword">where</span> 
+		mems.firstname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;David&#x27;</span> 
+		<span class="hljs-keyword">and</span> mems.surname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Farrell&#x27;</span>;
+</code></pre>
+<p>أكثر أنواع الربط استخدامًا هو INNER JOIN. وهو يدمج جدولين بناءً على تعبير ربط — في هذه الحالة، لكل معرّف عضو في جدول members، نبحث عن قيم مطابقة في جدول bookings. وحيث نجد تطابقًا، يُعاد صف يجمع قيم الجدولين. ولاحظ أننا أعطينا كل جدول <em>اسمًا مستعارًا</em> (bks وmems). ويُستخدم ذلك لسببين: أولًا لأنه ملائم، وثانيًا لأننا قد نربط الجدول نفسه عدة مرات، فيلزمنا التمييز بين الأعمدة الواردة من كل مرة رُبط فيها الجدول.</p>
+<p>ولنتجاهل الآن عبارتي select وwhere، ونركّز على ما ينتجه بيان FROM. في كل أمثلتنا السابقة، كان FROM مجرد جدول بسيط. فما هو الآن؟ جدول آخر! وهذه المرة، ينتج كتركيب من bookings وmembers. ويمكنك أن ترى مجموعة فرعية من ناتج الربط أدناه:</p>
+<p><img src="https://pgexercises.com/images/pgexercises/joins-simplejoin-0-joinbefore.webp" alt="Output of a from clause of a join"></p>
+<p>لكل عضو في جدول members، وجد الربط كل معرّفات الأعضاء المطابقة في جدول bookings. ولكل تطابق، أنتج صفًا يجمع الصف من جدول members والصف من جدول bookings.</p>
+<p>من الواضح أن هذه معلومات أكثر ممّا يلزم في حد ذاتها، وأي سؤال مفيد سيريد تصفيتها. وفي استعلامنا، نستخدم بداية عبارة SELECT لاختيار الأعمدة، وعبارة WHERE لاختيار الصفوف، كما هو موضح أدناه:</p>
+<p><img src="https://pgexercises.com/images/pgexercises/joins-simplejoin-1-join1.webp" alt=""></p>
+<p>هذا كل ما نحتاج إليه لإيجاد حجوزات David! وبوجه عام، أشجعك على تذكّر أن ناتج عبارة FROM هو في جوهره جدول كبير واحد تُصفّي منه المعلومات بعد ذلك. وقد يبدو هذا غير فعّال — لكن لا تقلق، فقاعدة البيانات (DB) ستتصرف في الخفاء بذكاء أكبر بكثير :-).</p>
+<p>وملاحظة أخيرة: هناك صيغتان مختلفتان للربط الداخلي. وقد عرضت عليك الصيغة التي أفضّلها، والتي أجدها أكثر اتساقًا مع أنواع الربط الأخرى. وسترى كثيرًا صيغة مختلفة، معروضة أدناه:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> bks.starttime
+        <span class="hljs-keyword">from</span>
+                cd.bookings bks,
+                cd.members mems
+        <span class="hljs-keyword">where</span>
+                mems.firstname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;David&#x27;</span>
+                <span class="hljs-keyword">and</span> mems.surname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Farrell&#x27;</span>
+                <span class="hljs-keyword">and</span> mems.memid <span class="hljs-operator">=</span> bks.memid;
+</code></pre>
+<p>هذه مكافئة وظيفيًا تمامًا للإجابة المعتمدة. وإن كنت أكثر ارتياحًا لهذه الصيغة، فلا تتردد في استخدامها!</p>
+<p><strong>تلميح:</strong> ألقِ نظرة على الوثائق الخاصة بـ INNER JOIN.</p>
+<h2 id="2-تحديد-أوقات-بدء-حجوزات-ملاعب-التنس">2. تحديد أوقات بدء حجوزات ملاعب التنس</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إنتاج قائمة بأوقات البدء لحجوزات ملاعب التنس، في التاريخ '2012-09-21'؟ أرجع قائمة بأزواج من وقت البدء واسم المرفق، مرتّبة بحسب الوقت.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>start</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2012-09-21 08:00:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 08:00:00</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>2012-09-21 09:30:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 10:00:00</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>2012-09-21 11:30:00</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>2012-09-21 12:00:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 13:30:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 14:00:00</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>2012-09-21 15:30:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 16:00:00</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>2012-09-21 17:00:00</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>2012-09-21 18:00:00</td>
+<td>Tennis Court 2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> bks.starttime <span class="hljs-keyword">as</span> <span class="hljs-keyword">start</span>, facs.name <span class="hljs-keyword">as</span> name
+	<span class="hljs-keyword">from</span> 
+		cd.facilities facs
+		<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.bookings bks
+			<span class="hljs-keyword">on</span> facs.facid <span class="hljs-operator">=</span> bks.facid
+	<span class="hljs-keyword">where</span> 
+		facs.name <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;Tennis Court 2&#x27;</span>,<span class="hljs-string">&#x27;Tennis Court 1&#x27;</span>) <span class="hljs-keyword">and</span>
+		bks.starttime <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2012-09-21&#x27;</span> <span class="hljs-keyword">and</span>
+		bks.starttime <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-09-22&#x27;</span>
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> bks.starttime;
+</code></pre>
+<p>هذا استعلام آخر بـ INNER JOIN، وإن كان فيه قدر أكبر بكثير من التعقيد! فجزء FROM من الاستعلام سهل — فنحن ببساطة نربط جدولَي facilities وbookings على facid. وينتج عن ذلك جدول أرفقنا فيه، لكل صف في bookings، معلومات مفصّلة عن المرفق المحجوز.</p>
+<p>وننتقل إلى مكوّن WHERE في الاستعلام. والفحوص على starttime واضحة إلى حد كبير بذاتها — فنحن نتأكد من أن كل الحجوزات تبدأ بين التاريخين المحددين. ولأننا لا يهمّنا إلا ملاعب التنس، نستخدم أيضًا مُعامل IN لنخبر نظام قاعدة البيانات بأن يعيد لنا معرّفات المرافق 0 أو 1 فقط — وهما معرّفا الملعبين. وهناك طرق أخرى للتعبير عن ذلك: كان يمكننا استخدام where facs.facid = 0 or facs.facid = 1، أو حتى where facs.name like 'Tennis%'.</p>
+<p>والباقي بسيط إلى حد كبير: نستخدم SELECT لاختيار الأعمدة التي تهمنا، وORDER BY لترتيب النتائج بحسب وقت البدء.</p>
+<p><strong>تلميح:</strong> هذا ربط داخلي (INNER JOIN) آخر. وقد تريد أيضًا التفكير في استخدام مُعاملَي IN أو LIKE لتحديد النتائج التي تحصل عليها.</p>
+<h2 id="3-إنتاج-قائمة-بكل-الأعضاء-الذين-أوصوا-بعضو-آخر">3. إنتاج قائمة بكل الأعضاء الذين أوصوا بعضو آخر</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إخراج قائمة بكل الأعضاء الذين أوصوا بعضو آخر؟ تأكد من عدم وجود تكرارات في القائمة، ومن أن النتائج مرتّبة بحسب (surname، firstname).</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>firstname</th>
+<th>surname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Florence</td>
+<td>Bader</td>
+</tr>
+<tr>
+<td>Timothy</td>
+<td>Baker</td>
+</tr>
+<tr>
+<td>Gerald</td>
+<td>Butters</td>
+</tr>
+<tr>
+<td>Jemima</td>
+<td>Farrell</td>
+</tr>
+<tr>
+<td>Matthew</td>
+<td>Genting</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Jones</td>
+</tr>
+<tr>
+<td>Janice</td>
+<td>Joplette</td>
+</tr>
+<tr>
+<td>Millicent</td>
+<td>Purview</td>
+</tr>
+<tr>
+<td>Tim</td>
+<td>Rownam</td>
+</tr>
+<tr>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Tracy</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Ponder</td>
+<td>Stibbons</td>
+</tr>
+<tr>
+<td>Burton</td>
+<td>Tracy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> recs.firstname <span class="hljs-keyword">as</span> firstname, recs.surname <span class="hljs-keyword">as</span> surname
+	<span class="hljs-keyword">from</span> 
+		cd.members mems
+		<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.members recs
+			<span class="hljs-keyword">on</span> recs.memid <span class="hljs-operator">=</span> mems.recommendedby
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> surname, firstname;
+</code></pre>
+<p>وهنا مفهوم يجد بعض الناس فيه لبسًا: يمكنك ربط جدول بنفسه! وهذا مفيد حقًا إذا كانت لديك أعمدة تشير إلى بيانات في الجدول نفسه، كما هي الحال مع recommendedby في cd.members.</p>
+<p>وإن واجهت صعوبة في تصوّر ذلك، فتذكّر أن هذا يعمل تمامًا كأي ربط داخلي آخر. فيأخذ ربطنا كل صف في members له قيمة recommendedby، ويبحث في members مرة أخرى عن الصف الذي له معرّف عضو مطابق. ثم يولّد صف إخراج يجمع مُدخلَي العضوين. وهذا يشبه المخطط أدناه:</p>
+<p><img src="https://pgexercises.com/images/pgexercises/joins-self-0-innerjoin.webp" alt=""></p>
+<p>لاحظ أنه قد يكون لدينا عمودا 'surname' في مجموعة الإخراج، لكن يمكن تمييزهما بالأسماء المستعارة للجدولين. وبعد أن نختار الأعمدة التي نريدها، نستخدم ببساطة DISTINCT لضمان عدم وجود تكرارات.</p>
+<p><strong>تلميح:</strong> هذا ربط داخلي (INNER JOIN)، تمامًا كما في التمارين السابقة.</p>
+<h2 id="4-إنتاج-قائمة-بكل-الأعضاء-مع-من-أوصى-بهم">4. إنتاج قائمة بكل الأعضاء مع من أوصى بهم</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إخراج قائمة بكل الأعضاء، مع الشخص الذي أوصى بهم (إن وُجد)؟ تأكد من أن النتائج مرتّبة بحسب (surname، firstname).</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>memfname</th>
+<th>memsname</th>
+<th>recfname</th>
+<th>recsname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Florence</td>
+<td>Bader</td>
+<td>Ponder</td>
+<td>Stibbons</td>
+</tr>
+<tr>
+<td>Anne</td>
+<td>Baker</td>
+<td>Ponder</td>
+<td>Stibbons</td>
+</tr>
+<tr>
+<td>Timothy</td>
+<td>Baker</td>
+<td>Jemima</td>
+<td>Farrell</td>
+</tr>
+<tr>
+<td>Tim</td>
+<td>Boothe</td>
+<td>Tim</td>
+<td>Rownam</td>
+</tr>
+<tr>
+<td>Gerald</td>
+<td>Butters</td>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Joan</td>
+<td>Coplin</td>
+<td>Timothy</td>
+<td>Baker</td>
+</tr>
+<tr>
+<td>Erica</td>
+<td>Crumpet</td>
+<td>Tracy</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Nancy</td>
+<td>Dare</td>
+<td>Janice</td>
+<td>Joplette</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Farrell</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Jemima</td>
+<td>Farrell</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GUEST</td>
+<td>GUEST</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Matthew</td>
+<td>Genting</td>
+<td>Gerald</td>
+<td>Butters</td>
+</tr>
+<tr>
+<td>John</td>
+<td>Hunt</td>
+<td>Millicent</td>
+<td>Purview</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Jones</td>
+<td>Janice</td>
+<td>Joplette</td>
+</tr>
+<tr>
+<td>Douglas</td>
+<td>Jones</td>
+<td>David</td>
+<td>Jones</td>
+</tr>
+<tr>
+<td>Janice</td>
+<td>Joplette</td>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Anna</td>
+<td>Mackenzie</td>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Charles</td>
+<td>Owen</td>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Pinker</td>
+<td>Jemima</td>
+<td>Farrell</td>
+</tr>
+<tr>
+<td>Millicent</td>
+<td>Purview</td>
+<td>Tracy</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Tim</td>
+<td>Rownam</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Henrietta</td>
+<td>Rumney</td>
+<td>Matthew</td>
+<td>Genting</td>
+</tr>
+<tr>
+<td>Ramnaresh</td>
+<td>Sarwin</td>
+<td>Florence</td>
+<td>Bader</td>
+</tr>
+<tr>
+<td>Darren</td>
+<td>Smith</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Darren</td>
+<td>Smith</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Jack</td>
+<td>Smith</td>
+<td>Darren</td>
+<td>Smith</td>
+</tr>
+<tr>
+<td>Tracy</td>
+<td>Smith</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Ponder</td>
+<td>Stibbons</td>
+<td>Burton</td>
+<td>Tracy</td>
+</tr>
+<tr>
+<td>Burton</td>
+<td>Tracy</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hyacinth</td>
+<td>Tupperware</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Henry</td>
+<td>Worthington-Smyth</td>
+<td>Tracy</td>
+<td>Smith</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> mems.firstname <span class="hljs-keyword">as</span> memfname, mems.surname <span class="hljs-keyword">as</span> memsname, recs.firstname <span class="hljs-keyword">as</span> recfname, recs.surname <span class="hljs-keyword">as</span> recsname
+	<span class="hljs-keyword">from</span> 
+		cd.members mems
+		<span class="hljs-keyword">left</span> <span class="hljs-keyword">outer</span> <span class="hljs-keyword">join</span> cd.members recs
+			<span class="hljs-keyword">on</span> recs.memid <span class="hljs-operator">=</span> mems.recommendedby
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> memsname, memfname;
+</code></pre>
+<p>ولنُقدّم مفهومًا جديدًا آخر: LEFT OUTER JOIN. وأفضل تفسير له هو بيان كيف يختلف عن عمليات الربط الداخلي. فالربط الداخلي يأخذ جدولًا أيسر وجدولًا أيمن، ويبحث عن صفوف متطابقة بناءً على شرط ربط (ON). وعندما يتحقق الشرط، يُنتج صف مربوط. ويعمل LEFT OUTER JOIN على نحو مشابه، إلا أنه إذا لم يطابق صف معيّن في الجدول الأيسر أي شيء، فإنه يُنتج صف إخراج رغم ذلك. ويتكوّن صف الإخراج هذا من صف الجدول الأيسر، ومجموعة من قيم NULL مكان صف الجدول الأيمن.</p>
+<p>وهذا مفيد في حالات كهذا السؤال، حيث نريد إنتاج مخرجات ببيانات اختيارية. فنريد أسماء كل الأعضاء، واسم من أوصى بكل منهم <em>إن وُجد ذلك الشخص</em>. ولا يمكن التعبير عن ذلك على نحو صحيح بربط داخلي.</p>
+<p>وكما قد خمّنت، هناك عمليات ربط خارجي أخرى أيضًا. فـ RIGHT OUTER JOIN يشبه كثيرًا LEFT OUTER JOIN، إلا أن الجانب الأيسر من التعبير هو الذي يحتوي البيانات الاختيارية. أما FULL OUTER JOIN، قليل الاستخدام، فيتعامل مع جانبي التعبير كليهما كبيانات اختيارية.</p>
+<p><strong>تلميح:</strong> جرّب البحث في LEFT OUTER JOIN.</p>
+<h2 id="5-إنتاج-قائمة-بكل-الأعضاء-الذين-استخدموا-ملعب-تنس">5. إنتاج قائمة بكل الأعضاء الذين استخدموا ملعب تنس</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إنتاج قائمة بكل الأعضاء الذين استخدموا ملعب تنس؟ أدرج في مخرجاتك اسم الملعب، واسم العضو منسّقًا في عمود واحد. تأكد من عدم تكرار البيانات، ورتّب النتائج بحسب اسم العضو ثم اسم المرفق.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>member</th>
+<th>facility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anne Baker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Anne Baker</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Charles Owen</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Charles Owen</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Darren Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Farrell</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>David Farrell</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Jones</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>David Jones</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>David Pinker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Douglas Jones</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Erica Crumpet</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Gerald Butters</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Gerald Butters</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Henrietta Rumney</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Janice Joplette</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Janice Joplette</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Joan Coplin</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>John Hunt</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>John Hunt</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Matthew Genting</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Millicent Purview</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Nancy Dare</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Nancy Dare</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Ramnaresh Sarwin</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Ramnaresh Sarwin</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tim Boothe</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tim Boothe</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tim Rownam</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tim Rownam</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Timothy Baker</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Timothy Baker</td>
+<td>Tennis Court 2</td>
+</tr>
+<tr>
+<td>Tracy Smith</td>
+<td>Tennis Court 1</td>
+</tr>
+<tr>
+<td>Tracy Smith</td>
+<td>Tennis Court 2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> mems.firstname <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> mems.surname <span class="hljs-keyword">as</span> <span class="hljs-keyword">member</span>, facs.name <span class="hljs-keyword">as</span> facility
+	<span class="hljs-keyword">from</span> 
+		cd.members mems
+		<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.bookings bks
+			<span class="hljs-keyword">on</span> mems.memid <span class="hljs-operator">=</span> bks.memid
+		<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.facilities facs
+			<span class="hljs-keyword">on</span> bks.facid <span class="hljs-operator">=</span> facs.facid
+	<span class="hljs-keyword">where</span>
+		facs.name <span class="hljs-keyword">in</span> (<span class="hljs-string">&#x27;Tennis Court 2&#x27;</span>,<span class="hljs-string">&#x27;Tennis Court 1&#x27;</span>)
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">member</span>, facility
+</code></pre>
+<p>هذا التمرين في معظمه تطبيق أكثر تعقيدًا لما تعلمته في الأسئلة السابقة. وهو أيضًا المرة الأولى التي نستخدم فيها أكثر من عملية ربط واحدة، وقد يكون ذلك مربكًا قليلًا للبعض. وعند قراءة تعبيرات الربط، تذكّر أن الربط فعليًا دالة تأخذ جدولين، يُسمّى أحدهما الجدول الأيسر والآخر الأيمن. ويسهل تصوّر ذلك مع عملية ربط واحدة في الاستعلام، لكنه يصير أكثر إرباكًا قليلًا مع عمليتين.</p>
+<p>عملية الربط الداخلي الثانية في هذا الاستعلام جانبها الأيمن هو cd.facilities. وهذا سهل الفهم. أما جانبه الأيسر فهو الجدول الذي يعيده ربط cd.members بـ cd.bookings. ومن المهم التأكيد على هذا: النموذج العلائقي كله يقوم على الجداول. فناتج أي عملية ربط هو جدول آخر. وناتج أي استعلام هو جدول. والقوائم ذات العمود الواحد جداول. ومتى استوعبت ذلك، فقد استوعبت الجمال الجوهري للنموذج.</p>
+<p>وملاحظة أخيرة: نُقدّم هنا شيئًا جديدًا واحدًا فعلًا: يُستخدم المُعامل || لدمج النصوص (concatenate).</p>
+<p><strong>تلميح:</strong> تتطلب هذه الإجابة عمليات ربط متعددة. ولدمج النصوص يمكنك استخدام المُعامل ||.</p>
+<h2 id="6-إنتاج-قائمة-بالحجوزات-المكلفة">6. إنتاج قائمة بالحجوزات المكلفة</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إنتاج قائمة بالحجوزات في يوم 2012-09-14 التي ستكلف العضو (أو الضيف) أكثر من 30 دولارًا؟ تذكّر أن تكاليف الضيوف تختلف عن تكاليف الأعضاء (والتكاليف المذكورة لكل &quot;شريحة&quot; مدتها نصف ساعة)، وأن مستخدم الضيوف معرّفه دائمًا 0. أدرج في مخرجاتك اسم المرفق، واسم العضو منسّقًا في عمود واحد، والتكلفة. ورتّب النتائج تنازليًا بحسب التكلفة، ولا تستخدم أي استعلامات فرعية.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>member</th>
+<th>facility</th>
+<th>cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 2</td>
+<td>320</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+<td>150</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Massage Room 1</td>
+<td>140</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+<td>75</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+<td>75</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+<td>75</td>
+</tr>
+<tr>
+<td>Matthew Genting</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Massage Room 2</td>
+<td>70</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>70.0</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>35.0</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>35.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> mems.firstname <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> mems.surname <span class="hljs-keyword">as</span> <span class="hljs-keyword">member</span>, 
+	facs.name <span class="hljs-keyword">as</span> facility, 
+	<span class="hljs-keyword">case</span> 
+		<span class="hljs-keyword">when</span> mems.memid <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+			bks.slots<span class="hljs-operator">*</span>facs.guestcost
+		<span class="hljs-keyword">else</span>
+			bks.slots<span class="hljs-operator">*</span>facs.membercost
+	<span class="hljs-keyword">end</span> <span class="hljs-keyword">as</span> cost
+        <span class="hljs-keyword">from</span>
+                cd.members mems                
+                <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.bookings bks
+                        <span class="hljs-keyword">on</span> mems.memid <span class="hljs-operator">=</span> bks.memid
+                <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.facilities facs
+                        <span class="hljs-keyword">on</span> bks.facid <span class="hljs-operator">=</span> facs.facid
+        <span class="hljs-keyword">where</span>
+		bks.starttime <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2012-09-14&#x27;</span> <span class="hljs-keyword">and</span> 
+		bks.starttime  <span class="hljs-number">30</span>) <span class="hljs-keyword">or</span>
+			(mems.memid <span class="hljs-operator">!=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> bks.slots<span class="hljs-operator">*</span>facs.membercost <span class="hljs-operator">&gt;</span> <span class="hljs-number">30</span>)
+		)
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> cost <span class="hljs-keyword">desc</span>;
+</code></pre>
+<p>هذا تمرين معقّد بعض الشيء! ورغم أن منطقه أكثر تعقيدًا ممّا استخدمناه سابقًا، فلا يوجد الكثير جدًا مما يستحق التعليق. فعبارة WHERE تحصر مخرجاتنا في الصفوف المكلفة بدرجة كافية في 2012-09-14، مع تذكّر التمييز بين الضيوف وغيرهم. ثم نستخدم عبارة CASE في اختيارات الأعمدة لإخراج التكلفة الصحيحة للعضو أو الضيف.</p>
+<p><strong>تلميح:</strong> كما في السابق، تتطلب هذه الإجابة عمليات ربط متعددة. ومنطق WHERE فيها أكثر تعقيدًا مما اعتدت عليه، وسيحتاج إلى عبارة CASE في اختيارات الأعمدة!</p>
+<h2 id="7-إنتاج-قائمة-بكل-الأعضاء-مع-من-أوصى-بهم-دون-استخدام-أي-عمليات-ربط">7. إنتاج قائمة بكل الأعضاء مع من أوصى بهم، دون استخدام أي عمليات ربط</h2>
+<p><strong>السؤال</strong></p>
+<p>كيف يمكنك إخراج قائمة بكل الأعضاء، مع الشخص الذي أوصى بهم (إن وُجد)، دون استخدام أي عمليات ربط؟ تأكد من عدم وجود تكرارات في القائمة، ومن أن كل زوج من firstname + surname منسّق في عمود ومرتّب.</p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>member</th>
+<th>recommender</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anna Mackenzie</td>
+<td>Darren Smith</td>
+</tr>
+<tr>
+<td>Anne Baker</td>
+<td>Ponder Stibbons</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td></td>
+</tr>
+<tr>
+<td>Charles Owen</td>
+<td>Darren Smith</td>
+</tr>
+<tr>
+<td>Darren Smith</td>
+<td></td>
+</tr>
+<tr>
+<td>David Farrell</td>
+<td></td>
+</tr>
+<tr>
+<td>David Jones</td>
+<td>Janice Joplette</td>
+</tr>
+<tr>
+<td>David Pinker</td>
+<td>Jemima Farrell</td>
+</tr>
+<tr>
+<td>Douglas Jones</td>
+<td>David Jones</td>
+</tr>
+<tr>
+<td>Erica Crumpet</td>
+<td>Tracy Smith</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Ponder Stibbons</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td></td>
+</tr>
+<tr>
+<td>Gerald Butters</td>
+<td>Darren Smith</td>
+</tr>
+<tr>
+<td>Henrietta Rumney</td>
+<td>Matthew Genting</td>
+</tr>
+<tr>
+<td>Henry Worthington-Smyth</td>
+<td>Tracy Smith</td>
+</tr>
+<tr>
+<td>Hyacinth Tupperware</td>
+<td></td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Darren Smith</td>
+</tr>
+<tr>
+<td>Janice Joplette</td>
+<td>Darren Smith</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td></td>
+</tr>
+<tr>
+<td>Joan Coplin</td>
+<td>Timothy Baker</td>
+</tr>
+<tr>
+<td>John Hunt</td>
+<td>Millicent Purview</td>
+</tr>
+<tr>
+<td>Matthew Genting</td>
+<td>Gerald Butters</td>
+</tr>
+<tr>
+<td>Millicent Purview</td>
+<td>Tracy Smith</td>
+</tr>
+<tr>
+<td>Nancy Dare</td>
+<td>Janice Joplette</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Burton Tracy</td>
+</tr>
+<tr>
+<td>Ramnaresh Sarwin</td>
+<td>Florence Bader</td>
+</tr>
+<tr>
+<td>Tim Boothe</td>
+<td>Tim Rownam</td>
+</tr>
+<tr>
+<td>Tim Rownam</td>
+<td></td>
+</tr>
+<tr>
+<td>Timothy Baker</td>
+<td>Jemima Farrell</td>
+</tr>
+<tr>
+<td>Tracy Smith</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> mems.firstname <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span>  mems.surname <span class="hljs-keyword">as</span> <span class="hljs-keyword">member</span>,
+	(<span class="hljs-keyword">select</span> recs.firstname <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> recs.surname <span class="hljs-keyword">as</span> recommender 
+		<span class="hljs-keyword">from</span> cd.members recs 
+		<span class="hljs-keyword">where</span> recs.memid <span class="hljs-operator">=</span> mems.recommendedby
+	)
+	<span class="hljs-keyword">from</span> 
+		cd.members mems
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> <span class="hljs-keyword">member</span>;
+</code></pre>
+<p>يمثّل هذا التمرين تقديم الاستعلامات الفرعية. والاستعلام الفرعي، كما يوحي الاسم، استعلام داخل استعلام. ويُستخدم عادةً مع التجميعات للإجابة عن أسئلة مثل 'أحضر لي كل تفاصيل العضو الذي أمضى أكثر عدد من الساعات في Tennis Court 1'.</p>
+<p>وفي هذه الحالة، نستخدم الاستعلام الفرعي ببساطة لمحاكاة ربط خارجي. فلكل قيمة من قيم member، يُشغَّل الاستعلام الفرعي مرة واحدة للعثور على اسم الشخص الذي أوصى به (إن وُجد). ويُعرف الاستعلام الفرعي الذي يستخدم معلومات من الاستعلام الخارجي بهذه الطريقة (ومن ثم يلزم تشغيله لكل صف في مجموعة النتائج) بأنه <em>استعلام فرعي مترابط</em> (correlated subquery).</p>
+<p><strong>تلميح:</strong> تتطلب الإجابة الصحيحة عن هذا السؤال استخدام استعلام فرعي</p>
+<h2 id="8-إنتاج-قائمة-بالحجوزات-المكلفة-باستخدام-استعلام-فرعي">8. إنتاج قائمة بالحجوزات المكلفة باستخدام استعلام فرعي</h2>
+<p><strong>السؤال</strong></p>
+<p>احتوى تمرين <a href="https://pgexercises.com/questions/joins/threejoin2.html">إنتاج قائمة بالحجوزات المكلفة</a> على منطق غير مرتب: إذ اضطررنا إلى حساب تكلفة الحجز في كل من عبارة WHERE وعبارة CASE. حاول تبسيط هذا الحساب باستخدام الاستعلامات الفرعية. وللعلم، كان السؤال: <em>كيف يمكنك إنتاج قائمة بالحجوزات في يوم 2012-09-14 التي ستكلف العضو (أو الضيف) أكثر من 30 دولارًا؟ تذكّر أن تكاليف الضيوف تختلف عن تكاليف الأعضاء (والتكاليف المذكورة لكل &quot;شريحة&quot; مدتها نصف ساعة)، وأن مستخدم الضيوف معرّفه دائمًا 0. أدرج في مخرجاتك اسم المرفق، واسم العضو منسّقًا في عمود واحد، والتكلفة. ورتّب النتائج تنازليًا بحسب التكلفة.</em></p>
+<p><strong>النتائج المتوقعة</strong></p>
+<table>
+<thead>
+<tr>
+<th>member</th>
+<th>facility</th>
+<th>cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 2</td>
+<td>320</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Massage Room 1</td>
+<td>160</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+<td>150</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Massage Room 1</td>
+<td>140</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+<td>75</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 2</td>
+<td>75</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Tennis Court 1</td>
+<td>75</td>
+</tr>
+<tr>
+<td>Matthew Genting</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Florence Bader</td>
+<td>Massage Room 2</td>
+<td>70</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>70.0</td>
+</tr>
+<tr>
+<td>Jemima Farrell</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Ponder Stibbons</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Burton Tracy</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>Jack Smith</td>
+<td>Massage Room 1</td>
+<td>70</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>35.0</td>
+</tr>
+<tr>
+<td>GUEST GUEST</td>
+<td>Squash Court</td>
+<td>35.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>الإجابة</strong></p>
+<pre><code class="language-sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">member</span>, facility, cost <span class="hljs-keyword">from</span> (
+	<span class="hljs-keyword">select</span> 
+		mems.firstname <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> mems.surname <span class="hljs-keyword">as</span> <span class="hljs-keyword">member</span>,
+		facs.name <span class="hljs-keyword">as</span> facility,
+		<span class="hljs-keyword">case</span>
+			<span class="hljs-keyword">when</span> mems.memid <span class="hljs-operator">=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+				bks.slots<span class="hljs-operator">*</span>facs.guestcost
+			<span class="hljs-keyword">else</span>
+				bks.slots<span class="hljs-operator">*</span>facs.membercost
+		<span class="hljs-keyword">end</span> <span class="hljs-keyword">as</span> cost
+		<span class="hljs-keyword">from</span>
+			cd.members mems
+			<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.bookings bks
+				<span class="hljs-keyword">on</span> mems.memid <span class="hljs-operator">=</span> bks.memid
+			<span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> cd.facilities facs
+				<span class="hljs-keyword">on</span> bks.facid <span class="hljs-operator">=</span> facs.facid
+		<span class="hljs-keyword">where</span>
+			bks.starttime <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2012-09-14&#x27;</span> <span class="hljs-keyword">and</span>
+			bks.starttime  <span class="hljs-number">30</span>
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> cost <span class="hljs-keyword">desc</span>;
+</code></pre>
+<p>تقدّم هذه الإجابة تبسيطًا طفيفًا للنسخة السابقة: فقد كان علينا في نسخة دون استعلام فرعي حساب تكلفة العضو أو الضيف في كل من عبارة WHERE وعبارة CASE. وفي نسختنا الجديدة، ننتج استعلامًا مضمّنًا يحسب لنا التكلفة الإجمالية للحجز، ما يتيح للاستعلام الخارجي أن يختار ببساطة الحجوزات التي يبحث عنها. وللعلم، قد ترى أيضًا الاستعلامات الفرعية في عبارة FROM تُسمّى <em>عروضًا مضمّنة</em> (inline views).</p>
+<p><strong>تلميح:</strong> ستكون إجابتك مشابهة للتمرين المشار إليه. استخدم استعلامًا فرعيًا في عبارة FROM لتوليد مجموعة نتائج تحسب التكلفة الإجمالية لكل حجز. ثم يمكن للاستعلام الخارجي أن يختار الحجوزات التي تهمه.</p>
+`,o={book:t,chapter:n,chapterTitle:s,slug:d,title:r,headings:a,html:e};export{t as book,n as chapter,s as chapterTitle,o as default,a as headings,e as html,d as slug,r as title};

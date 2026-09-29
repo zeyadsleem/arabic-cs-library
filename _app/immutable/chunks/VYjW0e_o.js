@@ -1,0 +1,198 @@
+const e="use-the-index-luke",n="sql-testing-scalability-data-volume",s="Performance Impacts of Data Volume",a="index",c="آثار حجم البيانات في الأداء",o=[{depth:2,id:"الشكل-32-قابلية-التوسع-حسب-حجم-البيانات",text:"الشكل 3.2 قابلية التوسع حسب حجم البيانات"}],l=`<p>لحجم البيانات المخزنة في قاعدة البيانات أثر كبير في أدائها. ومن المقبول عادةً أن الاستعلام يبطؤ مع إضافة بيانات إلى قاعدة البيانات. لكن ما مقدار أثر الأداء إذا تضاعف حجم البيانات؟ وكيف يمكننا تحسين هذه النسبة؟ هذه هي الأسئلة المفتاحية عند مناقشة قابلية توسع قواعد البيانات.</p>
+<p>وكمثال، نحلل زمن استجابة الاستعلام التالي عند استخدام فهرسين مختلفين. وسيبقى تعريفا الفهرس مجهولين في الوقت الحالي — وسيُكشف عنهما في سياق المناقشة.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+  <span class="hljs-keyword">FROM</span> scale_data
+ <span class="hljs-keyword">WHERE</span> section <span class="hljs-operator">=</span> ?
+   <span class="hljs-keyword">AND</span> id2 <span class="hljs-operator">=</span> ?
+</code></pre>
+<p>للعمود <code>SECTION</code> غرض خاص في هذا الاستعلام: فهو يتحكم في حجم البيانات. وكلما كبر رقم <code>SECTION</code>، زاد عدد الصفوف التي يختارها الاستعلام. ويعرض <a href="#fig-scale-resptime">الشكل 3.1</a> زمن الاستجابة لقيمة <code>SECTION</code> صغيرة.</p>
+<p>الشكل 3.1 مقارنة الأداء</p>
+<p>هناك فرق كبير في الأداء بين صيغتَي الفهرسة. وما زال زمن الاستجابة في الحالتين أقل بكثير من عُشر ثانية، لذا فالاستعلام الأبطأ على الأرجح سريع بما يكفي في معظم الحالات. غير أن مخطط الأداء يعرض نقطة اختبار واحدة فقط. ومناقشة قابلية التوسع تعني النظر في أثر الأداء عند تغيير المعاملات البيئية — مثل حجم البيانات.</p>
+<h4>مهم</h4>
+<p>تُظهر قابلية التوسع اعتماد الأداء على عوامل مثل حجم البيانات.</p>
+<p>وقيمة الأداء مجرد نقطة بيانات واحدة على مخطط قابلية التوسع.</p>
+<p>ويعرض <a href="#fig-scale-data">الشكل 3.2</a> زمن الاستجابة بدلالة رقم <code>SECTION</code> — أي مع حجم بيانات متنامٍ.</p>
+<h2 id="الشكل-32-قابلية-التوسع-حسب-حجم-البيانات">الشكل 3.2 قابلية التوسع حسب حجم البيانات</h2>
+<p>يُظهر المخطط نمو زمن الاستجابة في الفهرسين. وفي الجهة اليمنى من المخطط، عندما يصبح حجم البيانات مئة ضعف، يحتاج الاستعلام الأسرع أكثر من ضعف زمنه الأصلي، بينما ارتفع زمن استجابة الاستعلام الأبطأ بمقدار 20 ضعفاً إلى أكثر من ثانية.</p>
+<h4>نصيحة</h4>
+<p>في <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema/index">الملحق ج، «<em>المخطط التوضيحي</em>»</a> السكربتات اللازمة لتكرار هذا الاختبار في قاعدة بيانات <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-oracle-performance-testing-scalability/index">Oracle</a> أو <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-postgresql-performance-testing-scalability/index">PostgreSQL</a> أو <a href="/arabic-cs-library/book/use-the-index-luke/sql-example-schema-sql-server-performance-testing-scalability/index">SQL Server</a>.</p>
+<p>يعتمد زمن استجابة استعلام SQL على عوامل كثيرة، وحجم البيانات أحدها. وإذا كان الاستعلام سريعاً بما يكفي في شروط اختبار معينة، فهذا لا يعني أنه سيكون سريعاً بما يكفي في الإنتاج، وبخاصة في بيئات التطوير التي لا تملك سوى جزء صغير من بيانات نظام الإنتاج.</p>
+<p>غير أنه لا عجب أن تبطؤ الاستعلامات مع نمو حجم البيانات. لكن الفجوة اللافتة بين الفهرسين غير متوقعة إلى حد ما. فما سبب معدلَي النمو المختلفين؟</p>
+<p>ينبغي أن يسهل العثور على السبب بمقارنة خطتي التنفيذ.</p>
+<p>Db2 (LUW)</p>
+<pre><code>-------------------------------------------------------------
+ID | Operation           |                        Rows | Cost
+ 1 | RETURN              |                             |  208
+ 2 |  GRPBY (COMPLETE)   |         1 of 4456 (   .02%) |  208
+ 3 |   IXSCAN SCALE_SLOW | 4456 of 135449700 (   .00%) |  208
+</code></pre>
+<pre><code>Explain Plan
+-------------------------------------------------------------
+ID | Operation           |                        Rows | Cost
+ 1 | RETURN              |                             |  296
+ 2 |  GRPBY (COMPLETE)   |         1 of 4456 (   .02%) |  296
+ 3 |   IXSCAN SCALE_FAST | 4456 of 135449700 (   .00%) |  296
+</code></pre>
+<p>MySQL</p>
+<pre><code class="language-javascript">+------+------------+---------+-------+------+-----------------------+
+| type | key        | key_len | ref   | rows | <span class="hljs-title class_">Extra</span>                 |
++------+------------+---------+-------+------+-----------------------+
+| ref  | scale_slow | <span class="hljs-number">6</span>       | <span class="hljs-keyword">const</span> |    <span class="hljs-number">1</span> | <span class="hljs-title class_">Using</span> index condition |
++------+------------+---------+-------+------+-----------------------+
+</code></pre>
+<pre><code class="language-javascript">+------+------------+---------+-------------+------+-------+
+| type | key        | key_len | ref         | rows | <span class="hljs-title class_">Extra</span> |
++------+------------+---------+-------------+------+-------+
+| ref  | scale_fast | <span class="hljs-number">12</span>      | <span class="hljs-keyword">const</span>,<span class="hljs-keyword">const</span> |    <span class="hljs-number">1</span> |       |
++------+------------+---------+-------------+------+-------+
+</code></pre>
+<p>Oracle</p>
+<pre><code>------------------------------------------------------
+| Id | Operation         | Name       | Rows  | Cost |
+------------------------------------------------------
+|  0 | SELECT STATEMENT  |            |     1 |  972 |
+|  1 |  SORT AGGREGATE   |            |     1 |      |
+|* 2 |   INDEX RANGE SCAN| SCALE_SLOW |  3000 |  972 |
+------------------------------------------------------
+</code></pre>
+<pre><code>------------------------------------------------------
+| Id   Operation         | Name       | Rows  | Cost |
+------------------------------------------------------
+|  0 | SELECT STATEMENT  |            |     1 |   13 |
+|  1 |  SORT AGGREGATE   |            |     1 |      |
+|* 2 |   INDEX RANGE SCAN| SCALE_FAST |  3000 |   13 |
+------------------------------------------------------
+</code></pre>
+<p>SQL Server <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-0-fig03_mssql_slow.930uegsd.webp" alt=""></p>
+<p>تستخدم خطة التنفيذ أعلاه الفهرس <code>scale_slow</code>، بينما تستخدم الخطة التالية الفهرس <code>scale_fast</code>. يرجى ملاحظة أن كلتيهما تستخدمان عملية Index Seek — فلا تعطيان أي تلميح إلى سبب كون إحداهما أبطأ من الأخرى.</p>
+<p><img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-1-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
+<p>غير أننا نرى فرقاً باستخدام <code>STATISTICS PROFILE ON</code>:</p>
+<pre><code>\uFEFF|--Compute Scalar
+   |--Stream Aggregate(Count(*))
+      |--Index Seek(OBJECT:scale_slow),
+         SEEK:(scale_data.section=2),
+         WHERE:(scale_data.id2=1234) ORDERED FORWARD)
+</code></pre>
+<pre><code>\uFEFF|--Compute Scalar
+   |--Stream Aggregate(Count(*))
+      |--Index Seek(OBJECT:(scale_data.scale_fast),
+         SEEK:(scale_data.section=1)
+          AND  scale_data.id2=1234) ORDERED FORWARD)
+</code></pre>
+<p>خطتا التنفيذ متطابقتان تقريباً — إنهما تستخدمان فهرساً مختلفاً فقط. ومع أن قيم التكلفة تعكس فرق السرعة، فالسبب غير ظاهر في خطة التنفيذ.</p>
+<p>يبدو أننا نواجه «<a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy-slow-indexes/index">تجربة الفهرس البطيء</a>»: فالاستعلام بطيء رغم استخدامه فهرساً. ومع ذلك لم نعد نصدّق خرافة «<a href="/arabic-cs-library/book/use-the-index-luke/sql-myth-directory-indexes-can-degenerate/index">الفهرس المتدهور</a>». وبدلاً من ذلك نتذكر المكوّنين اللذين يجعلان البحث في الفهرس بطيئاً: (1) الوصول إلى الجدول، (2) ومسح نطاق فهرس واسع.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-scale-data&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>ولا تُظهر أي من خطتي التنفيذ عملية <code>TABLE ACCESS BY INDEX ROWID</code>، لذا لا بد أن إحداهما تمسح نطاق فهرس أوسع من الأخرى. فأين تُظهر خطة التنفيذ نطاق الفهرس الممسوح؟ في معلومات المُسندات طبعاً!</p>
+<h4>نصيحة</h4>
+<p>انتبه إلى معلومات المُسندات.</p>
+<p>ومعلومات المُسندات ليست بأي حال تفصيلة غير ضرورية يمكن إغفالها كما فُعل أعلاه؛ فخطة تنفيذ بلا معلومات مُسندات ناقصة. ويعني ذلك أنك لا تستطيع رؤية سبب فرق الأداء في الخطتين المعروضتين أعلاه. وإذا نظرنا إلى خطتي التنفيذ الكاملتين، رأينا الفرق.</p>
+<p>Db2 (LUW)</p>
+<pre><code>Explain Plan
+-------------------------------------------------------------
+ID | Operation           |                        Rows | Cost
+ 1 | RETURN              |                             |  208
+ 2 |  GRPBY (COMPLETE)   |         1 of 4456 (   .02%) |  208
+ 3 |   IXSCAN SCALE_SLOW | 4456 of 135449700 (   .00%) |  208
+
+Predicate Information
+ 3 - START (Q1.SECTION = ?)
+      STOP (Q1.SECTION = ?)
+      SARG (Q1.ID2 = ?)
+</code></pre>
+<pre><code>Explain Plan
+-------------------------------------------------------------
+ID | Operation           |                        Rows | Cost
+ 1 | RETURN              |                             |  296
+ 2 |  GRPBY (COMPLETE)   |         1 of 4456 (   .02%) |  296
+ 3 |   IXSCAN SCALE_FAST | 4456 of 135449700 (   .00%) |  296
+
+Predicate Information
+ 3 - START (Q1.SECTION = ?)
+     START (Q1.ID2 = ?)
+      STOP (Q1.SECTION = ?)
+      STOP (Q1.ID2 = ?)
+</code></pre>
+<p>لاحظ أيضاً قيم التكلفة: فمع أن الفهرس الثاني أكفأ، للأول تكلفة أقل، ما يحمل المُحسِّن على اختيار الأسوأ إذا وُجد كلاهما.</p>
+<p>MySQL</p>
+<pre><code class="language-javascript">+------+------------+---------+-------+------+-----------------------+
+| type | key        | key_len | ref   | rows | <span class="hljs-title class_">Extra</span>                 |
++------+------------+---------+-------+------+-----------------------+
+| ref  | scale_slow | <span class="hljs-number">6</span>       | <span class="hljs-keyword">const</span> |    <span class="hljs-number">1</span> | <span class="hljs-title class_">Using</span> index condition |
++------+------------+---------+-------+------+-----------------------+
+</code></pre>
+<pre><code class="language-javascript">+------+------------+---------+-------------+------+-------+
+| type | key        | key_len | ref         | rows | <span class="hljs-title class_">Extra</span> |
++------+------------+---------+-------------+------+-------+
+| ref  | scale_fast | <span class="hljs-number">12</span>      | <span class="hljs-keyword">const</span>,<span class="hljs-keyword">const</span> |    <span class="hljs-number">1</span> |       |
++------+------------+---------+-------------+------+-------+
+</code></pre>
+<p>Oracle</p>
+<pre><code>------------------------------------------------------
+| Id | Operation         | Name       | Rows  | Cost |
+------------------------------------------------------
+|  0 | SELECT STATEMENT  |            |     1 |  972 |
+|  1 |  SORT AGGREGATE   |            |     1 |      |
+|* 2 |   INDEX RANGE SCAN| SCALE_SLOW |  3000 |  972 |
+------------------------------------------------------
+
+Predicate Information (identified by operation id):
+   2 - access(&quot;SECTION&quot;=TO_NUMBER(:A))
+       filter(&quot;ID2&quot;=TO_NUMBER(:B))
+</code></pre>
+<pre><code>------------------------------------------------------
+| Id   Operation         | Name       | Rows  | Cost |
+------------------------------------------------------
+|  0 | SELECT STATEMENT  |            |     1 |   13 |
+|  1 |  SORT AGGREGATE   |            |     1 |      |
+|* 2 |   INDEX RANGE SCAN| SCALE_FAST |  3000 |   13 |
+------------------------------------------------------
+
+Predicate Information (identified by operation id):
+   2 - access(&quot;SECTION&quot;=TO_NUMBER(:A) AND &quot;ID2&quot;=TO_NUMBER(:B))
+</code></pre>
+<p>SQL Server <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-2-fig03_mssql_slow.930uegsd.webp" alt=""> <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-3-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
+<p>لرؤية الفرق في خطة التنفيذ الرسومية، يجب تمرير الفأرة فوق عملية <code>Index Seek</code> وفحص «<em>Predicate</em>» مقابل «<em>Seek Perdicates</em>».</p>
+<pre><code>\uFEFF|--Compute Scalar
+   |--Stream Aggregate(Count(*))
+      |--Index Seek(OBJECT:scale_slow),
+         SEEK:(scale_data.section=2),
+         WHERE:(scale_data.id2=1234) ORDERED FORWARD)
+</code></pre>
+<pre><code>\uFEFF|--Compute Scalar
+   |--Stream Aggregate(Count(*))
+      |--Index Seek(OBJECT:(scale_data.scale_fast),
+         SEEK:(scale_data.section=1)
+          AND  scale_data.id2=1234) ORDERED FORWARD)
+</code></pre>
+<p>تشير مُسندات <code>WHERE</code> في خطة التنفيذ الأولى إلى مُسندات ترشيح الفهرس — فهي لا تضيّق نطاق الفهرس الممسوح. وتعرض خطة التنفيذ الثانية المُسندين معاً تحت <code>SEEK</code>، وهو مصطلح SQL Server لمُسندات الوصول.</p>
+<h4>ملاحظة</h4>
+<p>بُسِّطت خطة التنفيذ للوضوح. ويشرح <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-oracle-filter-predicates/index">الملحق</a> تفاصيل قسم «Predicate Information» في خطة تنفيذ Oracle.</p>
+<p>والفرق واضح الآن: لا يُعدّ من الشروط إلا الشرط على <code>SECTION</code> مُسند وصول عند استخدام فهرس <code>SCALE_SLOW</code>. وتقرأ قاعدة البيانات جميع صفوف القسم وتستبعد ما لا يطابق مُسند الترشيح على <code>ID2</code>، فينمو زمن الاستجابة مع عدد صفوف القسم. أما مع فهرس <code>SCALE_FAST</code> فتستخدم قاعدة البيانات جميع الشروط كمُسندات وصول، فينمو زمن الاستجابة مع عدد الصفوف المختارة.</p>
+<h4>مهم</h4>
+<p>مُسندات الترشيح كأجهزة ذخيرة غير منفجرة؛ يمكن أن تنفجر في أي وقت.</p>
+<p>والقطع الأخيرة الناقصة في أحجيتنا هي تعريفا الفهرس. فهل نستطيع إعادة بناء تعريفَي الفهرس من خطتي التنفيذ؟</p>
+<p>يجب أن يبدأ تعريف فهرس <code>SCALE_SLOW</code> بالعمود <code>SECTION</code> — وإلا لما أمكن استخدامه كمُسند وصول. والشرط على <code>ID2</code> ليس مُسند وصول، فلا يمكن أن يلي <code>SECTION</code> في تعريف الفهرس. ويعني ذلك أن فهرس <code>SCALE_SLOW</code> يجب أن يضم ثلاثة أعمدة على الأقل، يكون <code>SECTION</code> فيها الأول و<code>ID2</code> غير الثاني. وهذا بالضبط ما في تعريف الفهرس المستخدم في هذا الاختبار:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> INDEX scale_slow <span class="hljs-keyword">ON</span> scale_data (section, id1, id2)
+</code></pre>
+<p>لا تستطيع قاعدة البيانات استخدام <code>ID2</code> كمُسند وصول بسبب وجود العمود <code>ID1</code> في الموضع الثاني.</p>
+<p>ويجب أن يضم تعريف فهرس <code>SCALE_FAST</code> العمودين <code>SECTION</code> و<code>ID2</code> في الموضعين الأولين لأن كليهما يُستخدم في مُسندات الوصول. ومع ذلك لا يمكننا قول شيء عن ترتيبهما. والفهرس المستخدم في الاختبار يبدأ بالعمود <code>SECTION</code> وله عمود إضافي هو <code>ID1</code> في الموضع الثالث:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> INDEX scale_fast <span class="hljs-keyword">ON</span> scale_data (section, id2, id1)
+</code></pre>
+<p>أُضيف العمود <code>ID1</code> فقط ليكون لهذا الفهرس الحجم نفسه الذي لـ<code>SCALE_SLOW</code> — وإلا فقد يخطر لك أن الحجم هو سبب الفرق.</p>
+<h4>روابط</h4>
+<ul>
+<li>
+<p>شرح مُسندات ترشيح الفهرس: <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates/index">شروط أكبر من وأصغر من وBetween</a></p>
+</li>
+<li>
+<p>العثور على مُسندات ترشيح الفهرس في <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-oracle-filter-predicates/index">قاعدة بيانات Oracle</a> و<a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-postgresql-filter-predicates/index">PostgreSQL</a> و<a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-sql-server-filter-predicates/index">SQL Server</a>.</p>
+</li>
+<li>
+<p><a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-searching-for-ranges-like-performance-tuning/index">فهرسة مرشّحات LIKE</a>: مُسندات الوصول والترشيح في تعبير واحد.</p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Big_O_notation">ترميز Big-O</a>: النهج الرياضي لقابلية التوسع.</p>
+</li>
+</ul>
+`,p={book:e,chapter:n,chapterTitle:s,slug:a,title:c,headings:o,html:l};export{e as book,n as chapter,s as chapterTitle,p as default,o as headings,l as html,a as slug,c as title};

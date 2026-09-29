@@ -1,0 +1,22 @@
+const e="use-the-index-luke",a="sql-testing-scalability-system-load",s="Performance Impacts of System Load",t="index",n="آثار حِمل النظام في الأداء",l=[],i=`<p>غالباً ما يتوقف التفكير في كيفية تعريف فهرس متعدد الأعمدة بمجرد استخدام الفهرس في الاستعلام الذي نضبطه. غير أن المُحسِّن لا يستخدم الفهرس لأنه «الصحيح» للاستعلام، بل لأنه أكفأ من المسح الكامل للجدول. وهذا لا يعني أنه الفهرس الأمثل للاستعلام.</p>
+<p>وقد أظهر <a href="/arabic-cs-library/book/use-the-index-luke/sql-testing-scalability-data-volume/index">المثال السابق</a> صعوبات إدراك ترتيب الأعمدة الخاطئ في خطة التنفيذ؛ فكثيراً ما تكون معلومات المُسندات مخفية جيداً بحيث يجب البحث عنها تحديداً للتحقق من الاستخدام الأمثل للفهرس.</p>
+<p>فمثلاً، لا يعرض SQL Server Management Studio معلومات المُسندات إلا كتلميح عند تمرير مؤشر الفأرة فوق عملية الفهرس («hover») — وكذلك على هذه الصفحة. وتستخدم خطة التنفيذ التالية الفهرس <code>SCALE_SLOW</code>، ومن ثمّ تعرض الشرط على <code>ID2</code> كمُسند ترشيح («Predicate» فقط، دون Seek).</p>
+<p><img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-system-load-0-mssql_ssms_filter.ZrTov2hZ.webp" alt=""></p>
+<p>والحصول على معلومات المُسندات من خطة تنفيذ <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-mysql-access-filter-predicates/index">MySQL</a> أو <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan-postgresql-filter-predicates/index">PostgreSQL</a> أكثر إزعاجاً. وفي <a href="/arabic-cs-library/book/use-the-index-luke/sql-explain-plan/index">الملحق أ</a> التفاصيل.</p>
+<p>ومهما بدت معلومات المُسندات تافهة في خطة التنفيذ، فلأثرها في الأداء أهمية كبيرة — وبخاصة عندما ينمو النظام. وتذكّر أن ما ينمو ليس حجم البيانات فحسب بل معدل الوصول أيضاً؛ وهذا معامل آخر من معاملات دالة قابلية التوسع.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-scale-load&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>يرسم <a href="#fig-scale-load">الشكل 3.4</a> زمن الاستجابة بدلالة معدل الوصول — مع بقاء حجم البيانات دون تغيير. وهو يعرض زمن تنفيذ الاستعلام نفسه كما في السابق ويستخدم دائماً القسم ذا أكبر حجم بيانات؛ ويعني ذلك أن النقطة الأخيرة من <a href="/arabic-cs-library/book/use-the-index-luke/sql-testing-scalability-data-volume/index#fig-scale-data">الشكل 3.2</a> تقابل النقطة الأولى في هذا المخطط.</p>
+<p>الشكل 3.4 قابلية التوسع حسب حِمل النظام</p>
+<p>يرسم الخط المتقطع زمن الاستجابة عند استخدام فهرس <code>SCALE_SLOW</code>. وهو ينمو حتى 32 ثانية إذا كانت هناك 25 استعلاماً يعمل في الوقت نفسه. وبالمقارنة مع زمن الاستجابة بلا حِمل خلفي — كما قد تكون الحال في بيئة التطوير لديك — فهو يستغرق 30 ضعفاً. وحتى لو كانت لديك نسخة كاملة من قاعدة بيانات الإنتاج في بيئة التطوير، فقد يظل الحِمل الخلفي سبباً في عمل الاستعلام أبطأ بكثير في الإنتاج.</p>
+<p>أما الخط المتصل فيعرض زمن الاستجابة عند استخدام فهرس <code>SCALE_FAST</code> — وليس له أي مُسندات ترشيح. ويبقى زمن الاستجابة أقل بكثير من ثانيتين حتى إذا كان هناك 25 استعلاماً يعمل تزامنياً.</p>
+<h4>ملاحظة</h4>
+<p>فحص خطة التنفيذ <em>بعناية</em> يمنح ثقة أكثر من اختبارات الأداء <em>السطحية</em>.</p>
+<p>ويبقى اختبار الإجهاد الكامل جديراً بالجهد — لكن كلفته عالية.</p>
+<p>كثيراً ما يُستهان بأزمنة الاستجابة المشبوهة أثناء التطوير، ويرجع ذلك في معظمه إلى توقعنا أن «عتاد الإنتاج الأقوى» سيقدّم أداءً أفضل. غير أن العكس هو الحال في أكثر الأحيان، لأن بنية الإنتاج التحتية أكثر تعقيداً وتراكم أزمنة استجابة لا تحدث في بيئة التطوير. وحتى عند الاختبار على بنية مكافئة لبنية الإنتاج، قد يظل الحِمل الخلفي سبباً في أزمنة استجابة مختلفة. وسنرى في القسم التالي أنه ليس من المعقول عموماً توقع استجابات أسرع من «عتاد أكبر».</p>
+<h4>روابط</h4>
+<ul>
+<li>مقال «<a href="https://blog.fatalmind.com/2009/12/22/latency-security-vs-performance/">زمن الاستجابة: الأمان مقابل الأداء</a>» عن أزمنة الاستجابة في البنى التحتية المعقدة.</li>
+<li>مقال: «<a href="https://jamesgolick.com/2010/10/27/we-are-experiencing-too-much-load-lets-add-a-new-server..html">نعاني حِملاً كبيراً جداً. لنضف خادماً جديداً</a>» لـJams Golick.</li>
+</ul>
+`,o={book:e,chapter:a,chapterTitle:s,slug:t,title:n,headings:l,html:i};export{e as book,a as chapter,s as chapterTitle,o as default,l as headings,i as html,t as slug,n as title};

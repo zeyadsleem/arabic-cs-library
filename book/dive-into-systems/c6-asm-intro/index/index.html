@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.TbKJm7bL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/QgBCM3iT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cbc8heEE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bp22yAlo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.slUUsyzt.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSVJXvM8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CiWa-fIK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/EWRl7P9B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.BLm4K8j-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DvR8F70e.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="6. تحت السطح: الغوص في لغة التجميع — 6. Under the C: Diving into Assembly"/><!----><title>6. تحت السطح: الغوص في لغة التجميع | الغوص في الأنظمة</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/dive-into-systems">الغوص في الأنظمة</a> <span class="reader-bar__chapter">› 6. Under the C: Diving into Assembly</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 7 من 18">7 / 18</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/dive-into-systems/c5-arch/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/dive-into-systems/c7-x86-64/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>0. Introduction</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c0-introduction/index">0. مقدّمة</a></li><!--]--></ul><h3>1. By the C, by the C, by the Beautiful C</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c1-intro/index">1. بلغة C، بلغة C، بلغة C الجميلة</a></li><!--]--></ul><h3>2. A Deeper Dive into C Programming</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c2-depth/index">2. غوص أعمق في البرمجة بلغة C</a></li><!--]--></ul><h3>3. C Debugging Tools</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c3-debug/index">3. أدوات تنقيح C</a></li><!--]--></ul><h3>4. Binary and Data Representation</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c4-binary/index">4. الثنائي وتمثيل البيانات</a></li><!--]--></ul><h3>5. What von Neumann Knew: Computer Architecture</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c5-arch/index">5. ما عرفه فون نيومان: معمارية الحاسوب</a></li><!--]--></ul><h3 class="active-chapter">6. Under the C: Diving into Assembly</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c6-asm-intro/index" class="active">6. تحت السطح: الغوص في لغة التجميع</a></li><!--]--></ul><h3>7. 64-bit x86 Assembly (x86-64)</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c7-x86-64/index">7. تجميع x86 ذو 64 بت (x86-64)</a></li><!--]--></ul><h3>8. 32-bit x86 Assembly (IA32)</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c8-ia32/index">8. تجميع x86 ذو 32 بت (IA32)</a></li><!--]--></ul><h3>9. ARM Assembly</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c9-arm64/index">9. تجميع ARM</a></li><!--]--></ul><h3>10. Key Assembly Takeaways</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c10-asm-takeaways/index">10. خلاصات أساسية في لغة التجميع</a></li><!--]--></ul><h3>11. Storage and the Memory Hierarchy</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c11-memhierarchy/index">11. التخزين وهرم الذاكرة</a></li><!--]--></ul><h3>12. Code Optimization</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c12-codeopt/index">12. تحسين الشيفرة</a></li><!--]--></ul><h3>13. The Operating System</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c13-os/index">13. نظام التشغيل</a></li><!--]--></ul><h3>14. Leveraging Shared Memory in the Multicore Era</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c14-sharedmemory/index">14. استغلال الذاكرة المشتركة في عصر تعدد الأنوية</a></li><!--]--></ul><h3>15. Looking Ahead: Other Parallel Systems and Parallel Programming Models</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c15-parallel/index">15. نظرة إلى الأمام: أنظمة التوازي الأخرى ونماذج البرمجة المتوازية</a></li><!--]--></ul><h3>16. Appendix 1: Chapter 1 for Java Programmers</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c16-appendix-1/index">16. الملحق 1: الفصل 1 لمبرمجي Java</a></li><!--]--></ul><h3>17. Appendix 2: Using Unix</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c17-appendix-2/index">17. الملحق 2: استخدام Unix</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>6. تحت السطح: الغوص في لغة التجميع</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><p><em>تحت السطح، تحت السطح</em></p>
+<p><em>ألا تعلم أنه خير</em></p>
+<p><em>من التعامل مع السجلات</em></p>
+<p><em>ولغة التجميع؟</em></p>
+<p>-سيباستيان، على الأرجح</p>
+<p>قبل اختراع المترجم (compiler) في الأيام الأولى للحوسبة، كان كثير من المبرمجين يكتبون برامجهم بلغة <strong>التجميع</strong> (assembly language)، التي تحدّد مباشرة مجموعة التعليمات التي يتبعها الحاسوب أثناء التنفيذ. ولغة التجميع هي أقرب ما يصل إليه المبرمج إلى البرمجة على مستوى الآلة من دون كتابة الشيفرة مباشرة بالآحاد والأصفار، وهي صورة مقروءة من <strong>شيفرة الآلة</strong> (machine code). ولكتابة شيفرة تجميع فعّالة، يجب على المبرمجين أن يفهموا فهمًا دقيقًا طريقة عمل معمارية الآلة الأساسية.</p>
+<p>غيّر اختراع المترجم جذريًا الطريقة التي يكتب بها المبرمجون الشيفرة. فـ<strong>المترجم</strong> (compiler) يترجم لغة برمجة مقروءة بشريًا (تُكتب عادةً باستخدام كلمات إنجليزية) إلى لغة يفهمها الحاسوب (أي شيفرة الآلة). ويترجم المترجمون الشيفرة المقروءة بشريًا إلى شيفرة آلة بالاستناد إلى قواعد لغة البرمجة ومواصفات نظام التشغيل ومجموعة تعليمات الآلة، ويوفّرون قدرًا من اكتشاف الأخطاء وفحص الأنواع أثناء ذلك. وتنتج معظم المترجمات الحديثة شيفرة تجميع لا تقل كفاءة عن شيفرة التجميع المكتوبة يدويًا في الأزمنة الغابرة.</p>
+<h3 id="فوائد-تعلم-لغة-التجميع">فوائد تعلّم لغة التجميع</h3>
+<p>بالنظر إلى كل فوائد المترجمات، قد لا يكون واضحًا سبب فائدة تعلّم لغة التجميع. غير أن هناك عدة أسباب مقنعة لتعلّم شيفرة التجميع وفهمها. إليك بعض الأمثلة.</p>
+<h4>1. التجريد عالي المستوى يخفي تفاصيل قيّمة عن البرنامج</h4>
+<p>يُعدّ التجريد الذي توفّره لغات البرمجة عالية المستوى نعمة لتقليل تعقيد البرمجة. وفي الوقت نفسه، يسهّل هذا التبسيط على المبرمجين اتخاذ قرارات تصميمية من دون فهم كامل لتبعات خياراتهم على مستوى الآلة. وغالبًا ما يمنع الجهل بلغة التجميع المبرمجَ من فهم معلومات قيّمة حول طريقة عمل البرنامج، ويحدّ من قدرته على فهم ما تفعله شيفرته فعليًا.</p>
+<p>على سبيل المثال، ألقِ نظرة على البرنامج التالي:</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">adder</span><span class="hljs-params">()</span> {
+    <span class="hljs-type">int</span> a;
+    <span class="hljs-keyword">return</span> a + <span class="hljs-number">2</span>;
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">assign</span><span class="hljs-params">()</span> {
+    <span class="hljs-type">int</span> y = <span class="hljs-number">40</span>;
+    <span class="hljs-keyword">return</span> y;
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> {
+    <span class="hljs-type">int</span> x;
+    assign();
+    x = adder();
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;x is: %d\n&quot;</span>, x);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>ما مخرجات البرنامج؟ للوهلة الأولى، تبدو الدالة <code>assign</code> بلا أثر، إذ لا يخزّن أي متغير في <code>main</code> قيمة إرجاعها. وتعيد الدالة <code>adder</code> قيمة <code>a + 2</code>، مع أن المتغير <code>a</code> غير مهيأ (وإن كان المترجم ستهيئه إلى 0 على بعض الأجهزة). ومن المتوقع أن تؤدي طباعة <code>x</code> إلى قيمة غير معرّفة. غير أن ترجمة البرنامج وتشغيله على معظم الأجهزة ذات المعالجات 64-بت ينتج باستمرار الإجابة <code>42</code>:</p>
+<pre><code class="language-bash">$ gcc -o example example.c
+$ ./example
+x is: 42
+</code></pre>
+<p>تبدو مخرجات هذا البرنامج غير منطقية للوهلة الأولى، إذ يبدو أن الدالتين <code>adder</code> و<code>assign</code> غير مترابطتين. وسيساعدك فهم إطارات المكدّس (stack frames) وكيفية تنفيذ الدوال في العمق على إدراك سبب أن الإجابة هي <code>42</code>. وسنعود إلى هذا المثال في الفصول القادمة.</p>
+<h4>2. بعض الأنظمة الحاسوبية محدودة الموارد أكثر من أن تناسب المترجمات</h4>
+<p>أكثر أنواع &quot;الحواسيب&quot; شيوعًا هي تلك التي لا نتبيّن بسهولة أنها حواسيب. فهذه الأجهزة موجودة في كل مكان، من السيارات وآلات صنع القهوة إلى الغسالات والساعات الذكية. وتؤدي المستشعرات (sensors) والمتحكمات الدقيقة (microcontrollers) وغيرها من المعالجات المدمجة دورًا متزايد الهيمنة في حياتنا، وكلها تحتاج إلى برمجيات لتعمل. غير أن المعالجات الموجودة في مثل هذه الأجهزة غالبًا ما تكون صغيرة جدًا إلى حد لا يمكّنها من تنفيذ الشيفرة المترجمة المكتوبة بلغات برمجة عالية المستوى. وفي كثير من الحالات، تحتاج هذه الأجهزة إلى برامج تجميع مستقلة لا تعتمد على مكتبات التشغيل التي تتطلبها لغات البرمجة الشائعة.</p>
+<h4>3. تحليل الثغرات</h4>
+<p>تقضي فئة من المتخصصين في الأمن السيبراني أيامهم في محاولة اكتشاف الثغرات (vulnerabilities) في مختلف أنواع الأنظمة الحاسوبية. وتتعلق سبل كثيرة لاستغلال البرامج بالطريقة التي يخزّن بها البرنامج معلوماته أثناء التنفيذ. ويمكّن تعلّم لغة التجميع هؤلاء المتخصصين من فهم كيف تنشأ الثغرات وكيف يمكن استغلالها.</p>
+<p>ويقضي متخصصون آخرون في الأمن وقتهم في &quot;الهندسة العكسية&quot; (reverse engineering) للشيفرة الخبيثة في البرمجيات الضارة وغيرها. والمعرفة العملية بلغة التجميع ضرورية لتمكين هؤلاء المهندسين من تطوير تدابير مضادة بسرعة لحماية الأنظمة من الهجمات. وأخيرًا، قد ينتهي المطاف بالمطورين الذين يفتقرون إلى فهم كيفية ترجمة شيفرتهم إلى لغة التجميع إلى كتابة شيفرة قابلة للاستغلال من دون قصد.</p>
+<h4>4. تسلسلات الشيفرة الحرجة في برمجيات مستوى النظام</h4>
+<p>وأخيرًا، توجد بعض مكونات النظام الحاسوبي التي لا تستطيع المترجمات تحسينها تحسينًا كافيًا، وتتطلب لغة تجميع مكتوبة يدويًا. فبعض مستويات النظام تحتوي شيفرة تجميع مكتوبة يدويًا في مجالات تكون فيها التحسينات الدقيقة الخاصة بالآلة حاسمة للأداء. فعلى سبيل المثال، تُكتب تسلسلات الإقلاع (boot sequence) في جميع الحواسيب بلغة التجميع. وتحتوي أنظمة التشغيل غالبًا على شيفرة تجميع مكتوبة يدويًا لتبديل سياق الخيوط أو العمليات. وكثيرًا ما يستطيع البشر إنتاج شيفرة تجميع أفضل تحسينًا من المترجمات في هذه التسلسلات القصيرة الحاسمة للأداء.</p>
+<h3 id="ما-ستتعلمه-في-الفصول-القادمة">ما ستتعلمه في الفصول القادمة</h3>
+<p>تغطي الفصول الثلاثة التالية ثلاث صور مختلفة من لغة التجميع. يغطي <a href="https://diveintosystems.org/book/C7-x86_64/index.html#_x64_assembly_chapter">الفصل 7</a> و<a href="https://diveintosystems.org/book/C8-IA32/index.html#_IA32_assembly_chapter">الفصل 8</a> معماريتي x86_64 وصورتها الأقدم IA32. ويغطي <a href="https://diveintosystems.org/book/C9-ARM64/index.html#_a64_assembly_chapter">الفصل 9</a> لغة تجميع ARMv8-A، وهي بنية مجموعة التعليمات (ISA) الموجودة في معظم أجهزة ARM الحديثة، بما فيها الحواسيب أحادية اللوحة مثل Raspberry Pi. ويحتوي <a href="https://diveintosystems.org/book/C10-asm_takeaways/index.html#_assembly_summary">الفصل 10</a> على ملخص وبعض الخلاصات الأساسية لتعلّم لغة التجميع.</p>
+<p>وكل صورة من صور لغة التجميع هذه تنفّذ بنية مجموعة تعليمات (instruction set architecture, ISA) مختلفة. وتذكّر أن <a href="https://diveintosystems.org/book/C5-Arch/index.html#_what_von_neumann_knew_computer_architecture">بنية مجموعة التعليمات</a> تحدّد مجموعة التعليمات وترميزها الثنائي، ومجموعة سجلات وحدة المعالجة المركزية (CPU registers)، وآثار تنفيذ التعليمات على حالة المعالج والذاكرة.</p>
+<p>وسترى في الفصول الثلاثة التالية أوجه شبه عامة بين جميع بنى مجموعات التعليمات، منها أن سجلات وحدة المعالجة المركزية تُستخدم معاملات (operands) لكثير من التعليمات، وأن كل بنية توفّر أنواعًا متشابهة من التعليمات:</p>
+<ol>
+<li>تعليمات لحساب العمليات الحسابية والمنطقية، مثل الجمع أو عملية AND على مستوى البتات</li>
+<li>تعليمات للتحكم في مسار التنفيذ تُستخدم لتنفيذ التفريعات مثل if-else والحلقات واستدعاء الدوال والعودة منها</li>
+<li>تعليمات لنقل البيانات تُحمّل القيم وتخزّنها بين سجلات وحدة المعالجة المركزية والذاكرة</li>
+<li>تعليمات لدفع القيم إلى المكدّس (stack) وسحبها منه. تُستخدم هذه التعليمات لتنفيذ مكدّس الاستدعاء، حيث يُضاف إطار جديد من ذاكرة المكدّس (يخزّن المتغيرات المحلية والمعاملات لدالة قيد التنفيذ) إلى قمة المكدّس عند استدعاء دالة، ويُزال إطار من قمة المكدّس عند العودة من دالة.</li>
+</ol>
+<p>يترجم مترجم لغة C الشيفرة المصدرية إلى مجموعة تعليمات بنية ISA محددة. ويترجم المترجم عبارات C، بما فيها الحلقات و<code>if</code>-<code>else</code> واستدعاءات الدوال والوصول إلى المتغيرات، إلى مجموعة محددة من التعليمات تعرّفها بنية ISA وتنفّذها وحدة معالجة مصممة لتنفيذ تعليمات هذه البنية. فمثلًا، يترجم المترجم C إلى تعليمات x86 لتُنفَّذ على معالج Intel x86، أو يترجم C إلى تعليمات ARM لتُنفَّذ على معالج ARM.</p>
+<p>أثناء قراءتك فصول قسم لغة التجميع في الكتاب، قد تلاحظ إعادة تعريف بعض المصطلحات الأساسية وإعادة إنتاج بعض الأشكال. وقد صمّمنا كل فصل ليُستخدم باستقلالية في كليات وجامعات معينة، إسهامًا منا في خدمة معلمي علوم الحاسوب الآخرين على أفضل وجه. ورغم أن معظم المادة في كل فصل فريدة، نأمل أن تساعد أوجه الشبه بين الفصول على ترسيخ التشابهات بين صور لغة التجميع المختلفة في أذهان القراء.</p>
+<p>هل أنت مستعد لتعلّم لغة التجميع؟ لنغُص مباشرة إذن! اتبع الروابط أدناه لزيارة الفصول التي تهمك:</p>
+<ul>
+<li><a href="https://diveintosystems.org/book/C7-x86_64/index.html#_x64_assembly_chapter">تجميع x86-64</a></li>
+<li><a href="https://diveintosystems.org/book/C8-IA32/index.html#_IA32_assembly_chapter">تجميع IA32</a></li>
+<li><a href="https://diveintosystems.org/book/C9-ARM64/index.html#_a64_assembly_chapter">تجميع ARMv8-A</a></li>
+</ul>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/dive-into-systems/c5-arch/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">5. ما عرفه فون نيومان: معمارية الحاسوب</span></a><!--]--> <!--[0--><a href="../../../../book/dive-into-systems/c7-x86-64/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">7. تجميع x86 ذو 64 بت (x86-64)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1k8skom = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.TbKJm7bL.js"),
+						import("../../../../_app/immutable/entry/app.Bp22yAlo.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

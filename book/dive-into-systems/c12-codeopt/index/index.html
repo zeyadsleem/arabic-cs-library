@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.TbKJm7bL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/QgBCM3iT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cbc8heEE.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Bp22yAlo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.slUUsyzt.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BSVJXvM8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CiWa-fIK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/EWRl7P9B.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.BLm4K8j-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DvR8F70e.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="12. تحسين الشيفرة — 12. Code Optimization"/><!----><title>12. تحسين الشيفرة | الغوص في الأنظمة</title>
+		<link href="../../../../_app/immutable/assets/0.kyIYvR9l.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/dive-into-systems">الغوص في الأنظمة</a> <span class="reader-bar__chapter">› 12. Code Optimization</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 13 من 18">13 / 18</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/dive-into-systems/c11-memhierarchy/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/dive-into-systems/c13-os/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>0. Introduction</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c0-introduction/index">0. مقدّمة</a></li><!--]--></ul><h3>1. By the C, by the C, by the Beautiful C</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c1-intro/index">1. بلغة C، بلغة C، بلغة C الجميلة</a></li><!--]--></ul><h3>2. A Deeper Dive into C Programming</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c2-depth/index">2. غوص أعمق في البرمجة بلغة C</a></li><!--]--></ul><h3>3. C Debugging Tools</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c3-debug/index">3. أدوات تنقيح C</a></li><!--]--></ul><h3>4. Binary and Data Representation</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c4-binary/index">4. الثنائي وتمثيل البيانات</a></li><!--]--></ul><h3>5. What von Neumann Knew: Computer Architecture</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c5-arch/index">5. ما عرفه فون نيومان: معمارية الحاسوب</a></li><!--]--></ul><h3>6. Under the C: Diving into Assembly</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c6-asm-intro/index">6. تحت السطح: الغوص في لغة التجميع</a></li><!--]--></ul><h3>7. 64-bit x86 Assembly (x86-64)</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c7-x86-64/index">7. تجميع x86 ذو 64 بت (x86-64)</a></li><!--]--></ul><h3>8. 32-bit x86 Assembly (IA32)</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c8-ia32/index">8. تجميع x86 ذو 32 بت (IA32)</a></li><!--]--></ul><h3>9. ARM Assembly</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c9-arm64/index">9. تجميع ARM</a></li><!--]--></ul><h3>10. Key Assembly Takeaways</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c10-asm-takeaways/index">10. خلاصات أساسية في لغة التجميع</a></li><!--]--></ul><h3>11. Storage and the Memory Hierarchy</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c11-memhierarchy/index">11. التخزين وهرم الذاكرة</a></li><!--]--></ul><h3 class="active-chapter">12. Code Optimization</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c12-codeopt/index" class="active">12. تحسين الشيفرة</a></li><!--]--></ul><h3>13. The Operating System</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c13-os/index">13. نظام التشغيل</a></li><!--]--></ul><h3>14. Leveraging Shared Memory in the Multicore Era</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c14-sharedmemory/index">14. استغلال الذاكرة المشتركة في عصر تعدد الأنوية</a></li><!--]--></ul><h3>15. Looking Ahead: Other Parallel Systems and Parallel Programming Models</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c15-parallel/index">15. نظرة إلى الأمام: أنظمة التوازي الأخرى ونماذج البرمجة المتوازية</a></li><!--]--></ul><h3>16. Appendix 1: Chapter 1 for Java Programmers</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c16-appendix-1/index">16. الملحق 1: الفصل 1 لمبرمجي Java</a></li><!--]--></ul><h3>17. Appendix 2: Using Unix</h3> <ul><!--[--><li><a href="../../../../book/dive-into-systems/c17-appendix-2/index">17. الملحق 2: استخدام Unix</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>12. تحسين الشيفرة</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#ما-تفعله-المصرفات-بالفعل">ما تفعله المصرّفات بالفعل</a></li><li><a href="#ما-لا-تستطيع-المصرفات-فعله-دائما-فوائد-تعلم-تحسين-الشيفرة">ما لا تستطيع المصرّفات فعله دائمًا: فوائد تعلّم تحسين الشيفرة</a></li><li><a href="#التعاون-مع-مصرفك-برنامج-نموذجي">التعاون مع مصرّفك: برنامج نموذجي</a></li><li><a href="#المراجع">المراجع</a></li><li><a href="#1211-استخدام-callgrind-للتنميط">12.1.1. استخدام Callgrind للتنميط</a></li><li><a href="#1212-نقل-شيفرة-ثابت-الحلقة">12.1.2. نقل شيفرة ثابت الحلقة</a></li><li><a href="#1221-تضمين-الدوال">12.2.1. تضمين الدوال</a></li><li><a href="#1222-فتح-الحلقات">12.2.2. فتح الحلقات</a></li><li><a href="#1231-تبديل-الحلقات">12.3.1. تبديل الحلقات</a></li><li><a href="#1232-تحسينات-أخرى-للمصرف-لتحسين-المحلية-التفكيك-والدمج">12.3.2. تحسينات أخرى للمصرّف لتحسين المحلية: التفكيك والدمج</a></li><li><a href="#1233-تنميط-الذاكرة-باستخدام-massif">12.3.3. تنميط الذاكرة باستخدام Massif</a></li><!--]--></ul></nav><!--]--> <div class="reader-content"><!----><p><strong>تحسين الشيفرة</strong> (code optimization) هو عملية تحسين برنامج بتقليل حجم شيفرته أو تعقيدها أو استخدامه للذاكرة أو زمن تشغيله (أو مزيج من ذلك) من دون تغيير وظيفته الجوهرية. وتتضمن أنظمة التصريف الكثيرة مُحسِّن شيفرة كخطوة وسيطة. وتحديدًا، يطبّق <strong>المصرّف المُحسِّن</strong> (optimizing compiler) تحويلات تحسّن الشيفرة كجزء من عملية التصريف. وجميع المصرّفات الحديثة تقريبًا (ومنها GCC) مصرّفات مُحسِّنة. وينفّذ مصرّف GCC للغة C تنوعًا واسعًا من <strong>أعلام التحسين</strong> (optimization flags) التي تمنح المبرمجين وصولًا مباشرًا إلى مجموعة جزئية من التحسينات المنفَّذة. وتحسّن أعلام تحسين المصرّف الشيفرة على حساب زمن التصريف وسهولة التنقيح. وللتبسيط، يجمّع GCC مجموعة جزئية من أعلام التحسين هذه في <strong>مستويات تحسين</strong> مختلفة يمكن للمبرمج استدعاؤها مباشرة. فمثلًا، يصرّف الأمر التالي برنامجًا نموذجيًا بتحسينات المستوى 1:</p>
+<pre><code class="language-bash">$ gcc -O1 -o program program.c
+</code></pre>
+<p>تنفّذ تحسينات المستوى 1 (<code>-O1</code> أو <code>-O</code>) في GCC تحسينات أساسية لتقليل حجم الشيفرة وزمن التنفيذ مع محاولة إبقاء زمن التصريف عند أدنى حد. وتشمل تحسينات المستوى 2 (<code>-O2</code>) معظم التحسينات المنفَّذة في GCC التي لا تتضمن مقايضة بين المساحة والأداء. وأخيرًا، ينفّذ المستوى 3 (<code>-O3</code>) تحسينات إضافية (مثل تضمين الدوال الذي نناقشه لاحقًا في هذا الفصل)، وقد يجعل تصريف البرنامج يستغرق وقتًا أطول بكثير. <a href="https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html">وتوثّق وثائق GCC</a> أعلام التحسين المنفَّذة بالتفصيل.</p>
+<p>تتجاوز المناقشة المفصلة للمصرّفات المُحسِّنة وبنائها وتشغيلها نطاق هذا الكتاب؛ ونشجع القراء المهتمين على الاطلاع على الكتاب المرجعي <em>Compilers: Principles, Techniques, and Tools</em> لـ Aho وSethi وUlman. بل إن غرض هذا الفصل هو إبراز بعض الأمور التي تستطيع معظم المصرّفات فعلها (والتي لا تستطيعها)، وكيف يمكن للمبرمجين التعاون مع مصرّفاتهم وأدوات التنميط للمساعدة في تحسين شيفرتهم.</p>
+<h3 id="ما-تفعله-المصرفات-بالفعل">ما تفعله المصرّفات بالفعل</h3>
+<p>تُوصف بإيجاز في الأقسام القادمة عدة تحسينات شائعة تجريها جميع المصرّفات تقريبًا. وينبغي للطلاب <em>ألا</em> ينفّذوا هذه التحسينات يدويًا أبدًا، لأن المصرّف ينفّذها بالفعل.</p>
+<p>طيّ الثوابت</p>
+<p>تُقيَّم الثوابت في الشيفرة في زمن التصريف لتقليل عدد التعليمات الناتجة. فمثلًا، في مقطع الشيفرة التالي، يستبدل <strong>توسيع الماكرو</strong> (macro expansion) العبارة <code>int debug = N-5</code> بالعبارة <code>int debug = 5-5</code>. ثم يحدّث <strong>طيّ الثوابت</strong> (constant folding) هذه العبارة إلى <code>int debug = 0</code>.</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> N 5</span>
+<span class="hljs-type">int</span> debug = N - <span class="hljs-number">5</span>; <span class="hljs-comment">//constant folding changes this statement to debug = 0;</span>
+</code></pre>
+<p>انتشار الثوابت</p>
+<p>يستبدل <strong>انتشار الثوابت</strong> (constant propagation) المتغيرات بقيمة ثابتة إذا كانت تلك القيمة معروفة في زمن التصريف. فكّر في مقطع الشيفرة التالي:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> debug = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">//sums up all the elements in an array</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">doubleSum</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> length)</span>{
+    <span class="hljs-type">int</span> i, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++){
+        total += <span class="hljs-built_in">array</span>[i];
+        <span class="hljs-keyword">if</span> (debug) {
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[%d] is: %d\n&quot;</span>, i, <span class="hljs-built_in">array</span>[i]);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * total;
+}
+</code></pre>
+<p>سيغيّر المصرّف الذي يستخدم انتشار الثوابت <code>if (debug)</code> إلى <code>if (0)</code>.</p>
+<p>إزالة الشيفرة الميتة</p>
+<p>ليس غريبًا أن يكون برنامج ما مليئًا بمتغيرات أو إسنادات أو عبارات غير مستخدمة. ومع أن هذه العبارات غير اللازمة نادرًا ما تُضاف عن قصد، فهي غالبًا ناتج طبيعي عن التكرار والتحسين المستمرين في دورة تطوير البرمجيات. وإذا بقيت دون اكتشاف، يمكن أن تدفع هذه التسلسلات المعروفة بـ <strong>الشيفرة الميتة</strong> (dead code) المصرّفات إلى إخراج تعليمات تجميع غير ضرورية تهدد بدورها وقت المعالجة. وتستخدم معظم المصرّفات تقنيات مثل تحليل تدفق البيانات لتحديد مقاطع الشيفرة غير القابلة للوصول وبالتالي إزالتها. وكثيرًا ما تجعل <strong>إزالة الشيفرة الميتة</strong> (dead code elimination) البرنامج أسرع بتقليص حجم الشيفرة ومجموعة التعليمات المرتبطة بها. وكمثال، لنعد إلى دالة <code>doubleSum</code> التي استخدم فيها المصرّف انتشار الثوابت لاستبدال <code>debug</code> بـ <code>0</code> في عبارة <code>if</code>:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> debug = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">//sums up all the elements in an array</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">doubleSum</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> length)</span>{
+    <span class="hljs-type">int</span> i, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++){
+        total += <span class="hljs-built_in">array</span>[i];
+        <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span>) { <span class="hljs-comment">//debug replaced by constant propagation by compiler</span>
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;array[%d] is: %d\n&quot;</span>, i, <span class="hljs-built_in">array</span>[i]);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * total;
+}
+</code></pre>
+<p>يدرك المصرّف الذي يستخدم تحليل تدفق البيانات أن عبارة <code>if</code> تُقيَّم دائمًا إلى خطأ وأن عبارة <code>printf</code> لا تُنفَّذ أبدًا. ولذلك يحذف المصرّف عبارة <code>if</code> ونداء <code>printf</code> من الملف التنفيذي المصرَّف. كما تحذف مرور أخرى العبارة <code>debug = 0</code>.</p>
+<p>تبسيط التعبيرات</p>
+<p>بعض التعليمات أغلى من غيرها. فمثلًا، تستغرق التعليمتان الحسابيتان <code>imul</code> و<code>idiv</code> في لغة التجميع وقتًا طويلًا في التنفيذ. وتحاول المصرّفات عادةً تقليل عدد التعليمات الغالية بتبسيط العمليات الرياضية كلما أمكن. فمثلًا، في دالة <code>doubleSum</code>، قد يستبدل المصرّف التعبير <code>2 * total</code> بالتعبير <code>total + total</code> لأن تعليمة الجمع أقل كلفة من الضرب:</p>
+<pre><code class="language-c"><span class="hljs-comment">//declaration of debug removed through dead-code elimination</span>
+
+<span class="hljs-comment">//sums up all the elements in an array</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">doubleSum</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> length)</span>{
+    <span class="hljs-type">int</span> i, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++){
+        total += <span class="hljs-built_in">array</span>[i];
+        <span class="hljs-comment">//if statement removed through data-flow analysis</span>
+    }
+    <span class="hljs-keyword">return</span> total + total; <span class="hljs-comment">//simplifying expression</span>
+}
+</code></pre>
+<p>وبالمثل، سيحوّل المصرّف تسلسلات الشيفرة ذات الإزاحة على البتات وعمليات البتات الأخرى لتبسيط التعبيرات. فمثلًا، قد يستبدل المصرّف التعبير <code>total * 8</code> بالتعبير <code>total &lt;&lt; 3</code>، أو التعبير <code>total % 8</code> بالتعبير <code>total &amp; 7</code>، بما أن عمليات البتات تُنفَّذ بتعليمة سريعة واحدة.</p>
+<h3 id="ما-لا-تستطيع-المصرفات-فعله-دائما-فوائد-تعلم-تحسين-الشيفرة">ما لا تستطيع المصرّفات فعله دائمًا: فوائد تعلّم تحسين الشيفرة</h3>
+<p>بالنظر إلى فوائد المصرّفات المُحسِّنة، قد لا يكون واضحًا فورًا سبب فائدة تعلّم تحسين الشيفرة. وقد يغريك التفكير في المصرّف كصندوق أسود سحري «ذكي». وفي نهاية الأمر، المصرّف قطعة برمجية تنفّذ سلسلة من تحويلات الشيفرة في محاولة لتسريعها. كما أن المصرّفات محدودة في أنواع التحسينات التي تستطيع تنفيذها.</p>
+<p>تقليل القوة الخوارزمي مستحيل</p>
+<p>السبب الأول لضعف أداء الشيفرة هو الخيارات السيئة لبنى البيانات والخوارزميات. ولا تستطيع المصرّفات إصلاح هذه القرارات السيئة بأعجوبة. فمثلًا، لن يحسّن مصرّف أبدًا برنامجًا ينفّذ ترتيب الفقاعات إلى برنامج ينفّذ الترتيب السريع. ومع استمرار تحسّن تطور المصرّفات وتحسيناتها، تتفاوت <em>جودة</em> تحسينات أي مصرّف فردي بين المنصات. ولذلك تقع على عاتق المبرمج مسؤولية ضمان استفادة شيفرته من أفضل الخوارزميات وبنى البيانات.</p>
+<p>أعلام تحسين المصرّف لا تضمن جعل الشيفرة «مثالية» (ولا متسقة)</p>
+<p>قد لا يؤدي رفع مستوى تحسينات المصرّف (مثلًا من <code>-O2</code> إلى <code>-O3</code>) دائمًا إلى تقليل زمن تشغيل البرنامج. فأحيانًا قد يكتشف المبرمج أن تحديث أعلام التحسين من <code>-O2</code> إلى <code>-O3</code> <em>يبطئ</em> البرنامج، أو لا يحقق أي زيادة في الأداء على الإطلاق. وفي حالات أخرى، قد يكتشف المبرمج أن برنامجًا صُرِّف من دون أعلام التحسين لا يُظهر أخطاء ظاهريًا، بينما يؤدي تصريفه بـ <code>-O2</code> أو <code>-O3</code> إلى أخطاء تقسيم أو أخطاء أخرى. ويصعب تنقيح هذه الأنواع من أخطاء البرمجة بصفة خاصة، لأن علم التنقيح في GCC (<code>-g</code>) غير متوافق مع أعلام التحسين فيه (<code>-O</code>)، إذ تتعارض التحويلات التي تجريها تحسينات المصرّف عند مستويات <code>-O</code> مع قدرة المنقّح على تحليل الشيفرة الكامنة. ويطلب العديد من أدوات التنميط الشائعة، مثل GDB وValgrind، العلم <code>-g</code>.</p>
+<p>ومن الأسباب الكبيرة للسلوك غير المتسق أن معيار C/C++ لا يقدم توجيهًا واضحًا لحل السلوك غير المعرَّف. ونتيجة لذلك، كثيرًا ما يُترك للمصرّف قرار كيفية حل الغموض. ويمكن أن يؤدي التفاوت في كيفية تعامل مستويات التحسين المختلفة مع السلوك غير المعرَّف إلى <em>تغيّر</em> الإجابات. فكّر في المثال التالي من John Regehr1:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">silly</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> {
+  <span class="hljs-keyword">return</span> (a + <span class="hljs-number">1</span>) &gt; a;
+}
+</code></pre>
+<p>لنفترض أن <code>silly</code> شُغّلت بالقيمة <code>a = INT_MAX</code>. في هذه الحالة، ينتج الحساب <code>a 1</code> فيضًا في العدد الصحيح. لكن معيار C/C++ لا يعرّف <em>كيف</em> ينبغي للمصرّف التعامل مع فيض الأعداد الصحيحة. وفي الواقع، يؤدي تصريف البرنامج من دون تحسينات إلى إعادة الدالة القيمة 0، بينما يؤدي تصريفه بتحسينات <code>-O3</code> إلى إعادة الدالة القيمة 1.</p>
+<p>وباختصار، ينبغي استخدام أعلام التحسين بحذر وبتفكير وعند الحاجة. كما أن تعلّم أعلام التحسين التي ينبغي استخدامها يمكن أن يساعد المبرمج على العمل مع مصرّفه لا ضده.</p>
+<p><strong>ملاحظة — لا يُطلب من المصرّف التعامل مع السلوك غير المعرَّف</strong></p>
+<blockquote>
+<p>دالة <code>silly</code> عند تشغيلها بالقيمة <code>a = INT_MAX</code> مثال على السلوك غير المعرَّف. لاحظ أن المخرجات غير المتسقة التي ينتجها المصرّف ليست عيبًا في تصميمه ولا نتيجة لاستخدام أعلام التحسين. فالمصرّفات مصممة تحديدًا لاتباع مواصفة اللغة. ولا يحدد معيار لغة C ما ينبغي للمصرّف فعله عند مصادفته سلوكًا غير معرَّف؛ فقد ينهار البرنامج، أو يفشل في التصريف، أو يولّد نتائج غير متسقة أو غير صحيحة. وفي نهاية الأمر، المبرمج مسؤول عن تحديد السلوك غير المعرَّف في الشيفرة وإزالته. وما إذا كان ينبغي لـ <code>silly</code> أن تعيد 0 أو 1 أو قيمة أخرى قرار يجب أن يتخذه المبرمج في النهاية. ولمعرفة المزيد عن السلوك غير المعرَّف والمسائل المرتبطة به في برامج C، زر الأسئلة الشائعة حول C2 أو مدونة John Regehr1. يمكن أن تكون المؤشرات مشكِلة</p>
+</blockquote>
+<p>تذكّر أن المصرّف يجري تحويلات تُبقي السلوك الجوهري للبرنامج المصدر دون تغيير. وإذا كان التحويل ينطوي على خطر تغيير سلوك البرنامج، فلن يجريه المصرّف. ويصح هذا بصفة خاصة في حالة <strong>تراكب أسماء الذاكرة</strong> (memory aliasing) حيث يشير مؤشران مختلفان إلى العنوان نفسه في الذاكرة. وكمثال، فكّر في الدالة التالية <code>shiftAdd</code> التي تأخذ مؤشري عددين صحيحين كمُعامِليها. وتضرب الدالة العدد الأول في 10 وتضيف إليه العدد الثاني. فإذا مُرِّرت للدالة <code>shiftAdd</code> العددان 5 و6، كان الناتج 56.</p>
+<p><strong>الجدول 1. مقارنة بين دالتين تضرب الأولى العدد الأول في 10 وتضيف إليه الثاني. متاح على <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/shiftadd.c">هذا الرابط</a>.</strong></p>
+<p><strong>نسخة غير مُحسَّنة</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">shiftAdd</span><span class="hljs-params">(<span class="hljs-type">int</span> *a, <span class="hljs-type">int</span> *b)</span>{
+    *a = *a * <span class="hljs-number">10</span>; <span class="hljs-comment">//multiply by 10</span>
+    *a += *b; <span class="hljs-comment">//add b</span>
+}
+</code></pre>
+<p><strong>نسخة مُحسَّنة</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">shiftAddOpt</span><span class="hljs-params">(<span class="hljs-type">int</span> *a, <span class="hljs-type">int</span> *b)</span>{
+    *a = (*a * <span class="hljs-number">10</span>) + *b;
+}
+</code></pre>
+<p>تحسّن دالة <code>shiftAddOpt</code> دالة <code>shiftAdd</code> بإزالة مرجع ذاكرة إضافي إلى <code>a</code>، ما ينتج مجموعة تعليمات أصغر في التجميع المصرَّف. غير أن المصرّف لن يجري هذا التحسين أبدًا بسبب خطر تراكب أسماء الذاكرة. وللفهم لماذا، فكّر في الدالة <code>main</code> التالية:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>{
+    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;
+    <span class="hljs-type">int</span> y = <span class="hljs-number">6</span>;
+    shiftAdd(&amp;x, &amp;y); <span class="hljs-comment">//should produce 56</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;shiftAdd produces: %d\n&quot;</span>, x);
+
+    x = <span class="hljs-number">5</span>; <span class="hljs-comment">//reset x</span>
+    shiftAddOpt(&amp;x, &amp;y); <span class="hljs-comment">//should produce 56</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;shiftAddOpt produces: %d\n&quot;</span>, x);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+}
+</code></pre>
+<p>وينتج عن تصريف هذا البرنامج وتشغيله المخرجات المتوقعة:</p>
+<pre><code class="language-bash">$ gcc -o shiftadd shiftadd.c
+$ ./shiftadd
+shiftAdd produces: 56
+shiftAddOpt produces: 56
+</code></pre>
+<p>لنفترض بدلًا من ذلك أن البرنامج عُدّل بحيث تأخذ <code>shiftAdd</code> الآن مؤشرًا إلى <code>x</code> كمُعامِليها:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>{
+    <span class="hljs-type">int</span> x = <span class="hljs-number">5</span>;
+    shiftAdd(&amp;x, &amp;x); <span class="hljs-comment">//should produce 55</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;shiftAdd produces: %d\n&quot;</span>, x);
+
+    x = <span class="hljs-number">5</span>; <span class="hljs-comment">//reset x</span>
+    shiftAddOpt(&amp;x, &amp;x); <span class="hljs-comment">//should produce 55</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;shiftAddOpt produces: %d\n&quot;</span>, x);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+}
+</code></pre>
+<p>المخرجات المتوقعة هي 55. لكن إعادة تصريف الشيفرة المحدَّثة وإعادة تشغيلها ينتج مخرجتين مختلفتين:</p>
+<pre><code class="language-bash">$ gcc -o shiftadd shiftadd.c
+$ ./shiftadd
+shiftAdd produces: 100
+shiftAddOpt produces: 55
+</code></pre>
+<p>ويكشف إعادة تتبع دالتي <code>shiftAdd</code> مع افتراض أن <code>a</code> و<code>b</code> يشيران إلى موقع الذاكرة نفسه عن المشكلة. فضرب <code>a</code> في 10 في <code>shiftAdd</code> يحدّث <code>x</code> إلى 50. ثم تؤدي إضافة <code>a</code> إلى <code>b</code> في <code>shiftAdd</code> إلى مضاعفة <code>x</code> إلى 100. ويكشف خطر تراكب أسماء الذاكرة أن <code>shiftAdd</code> و<code>shiftAddOpt</code> ليستا في الواقع متكافئتين، وإن كان المبرمج قد قصد أن تكونا كذلك. ولإصلاح هذه المشكلة، لاحظ أن المُعامِل الثاني لـ <code>shiftAdd</code> لا يحتاج إلى تمريره كمؤشر. فاستبدال المُعامِل الثاني بعدد صحيح يزيل خطر التراكب ويتيح للمصرّف تحسين إحدى الدالتين إلى الأخرى:</p>
+<p><strong>الجدول 2. دالتان محسَّنتان تضربان العدد الأول في 10 وتضيفان إليه الثاني. متاحتان على <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/shiftadd.c">هذا الرابط</a>.</strong></p>
+<p><strong>نسخة (مصحَّحة) غير مُحسَّنة</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">shiftAdd</span><span class="hljs-params">(<span class="hljs-type">int</span> *a, <span class="hljs-type">int</span> b)</span>{
+    *a = *a * <span class="hljs-number">10</span>; <span class="hljs-comment">//multiply by 10</span>
+    *a += b; <span class="hljs-comment">//add b</span>
+}
+</code></pre>
+<p><strong>نسخة (مصحَّحة) مُحسَّنة</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">shiftAddOpt</span><span class="hljs-params">(<span class="hljs-type">int</span> *a, <span class="hljs-type">int</span> b)</span>{
+    *a = (*a * <span class="hljs-number">10</span>) + b;
+}
+</code></pre>
+<p>وتتيح إزالة مرجع الذاكرة غير اللازم للمبرمج الحفاظ على مقروئية دالة <code>shiftAdd</code> الأصلية مع تمكين المصرّف من تحسين الدالة.</p>
+<h3 id="التعاون-مع-مصرفك-برنامج-نموذجي">التعاون مع مصرّفك: برنامج نموذجي</h3>
+<p>نركّز في الأقسام التالية على تعلّم المزيد عن الأنواع الشائعة من التحسينات، ونناقش استراتيجيات البرمجة والتنميط للمساعدة في تسهيل تحسين المصرّف لشيفرتنا. ولتوجيه مناقشتنا، سنعمل على تحسين البرنامج التالي (المكتوب دون المستوى الأمثل) الذي يحاول إيجاد جميع الأعداد الأولية بين 2 و<em>n</em> (الشيفرة المصدرية متاحة على <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample.c">هذا الرابط</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">//helper function: checks to see if a number is prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; <span class="hljs-built_in">sqrt</span>(x) + <span class="hljs-number">1</span>; i++) { <span class="hljs-comment">//no prime number is less than 2</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) { <span class="hljs-comment">//if the number is divisible by i</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//it is not prime</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">//otherwise it is prime</span>
+}
+
+<span class="hljs-comment">// finds the next prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">getNextPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> prev)</span> {
+    <span class="hljs-type">int</span> next = prev + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (!isPrime(next)) { <span class="hljs-comment">//while the number is not prime</span>
+        next++; <span class="hljs-comment">//increment and check again</span>
+    }
+    <span class="hljs-keyword">return</span> next;
+}
+
+<span class="hljs-comment">// generates a sequence of primes</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">genPrimeSequence</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> limit)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> len = limit;
+    <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">array</span>[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span>; <span class="hljs-comment">//initialize the first number to 2</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; len; i++) {
+        <span class="hljs-built_in">array</span>[i] = getNextPrime(<span class="hljs-built_in">array</span>[i<span class="hljs-number">-1</span>]); <span class="hljs-comment">//fill in the array</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">array</span>[i] &gt; limit) {
+            len = i;
+            <span class="hljs-keyword">return</span> len;
+        }
+    }
+    <span class="hljs-keyword">return</span> len;
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+  <span class="hljs-comment">//omitted for brevity</span>
+  <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = allocateArray(limit);
+  <span class="hljs-type">int</span> length = genPrimeSequence(<span class="hljs-built_in">array</span>, limit);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>ويعرض <a href="#TableProducePrime">الجدول 3</a> نتائج التوقيت لإنتاج الأعداد الأولية بين 2 و5,000,000 مع أعلام مستويات التحسين المختلفة باستخدام أمر التصريف الأساسي التالي:</p>
+<pre><code class="language-bash">$ gcc -o optExample optExample.c -lm
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>غير مُحسَّن</th>
+<th><code>-O1</code></th>
+<th><code>-O2</code></th>
+<th><code>-O3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.86</td>
+<td>2.32</td>
+<td>2.14</td>
+<td>2.15</td>
+</tr>
+</tbody>
+</table>
+<p>أسرع زمن مُلاحَظ مع أعلام التحسين نحو 2.14 ثانية. ومع أن استخدام أعلام التحسين يوفر فعلًا أكثر من ثانية من زمن تشغيل هذا البرنامج، فإن رفع أعلام التحسين يقدم تحسينًا ضئيلًا. وسنناقش في الأقسام التالية كيف يمكننا تعديل برنامجنا لتسهيل تحسينه على المصرّف.</p>
+<h3 id="المراجع">المراجع</h3>
+<ol>
+<li>John Regehr. &quot;A Guide to Undefined Behavior in C and C++, Part 1&quot;. <a href="https://blog.regehr.org/archives/213">https://blog.regehr.org/archives/213</a></li>
+<li>C FAQ. &quot;comp.lang.c FAQ list: Question 11.33&quot;. <a href="http://c-faq.com/ansi/undef.html">http://c-faq.com/ansi/undef.html</a></li>
+</ol>
+<p><em>«المشكلة الحقيقية أن المبرمجين أنفقوا وقتًا أطول مما ينبغي في القلق على الكفاءة في المواضع والأوقات الخطأ؛ فالتحسين المبكر أصل كل الشرور (أو معظمه على الأقل) في البرمجة.»</em> - Don Knuth، <em>The Art of Computer Programming</em></p>
+<p>من أكبر مخاطر تحسين الشيفرة مفهوم <strong>التحسين المبكر</strong> (premature optimization). ويحدث التحسين المبكر عندما يحاول المبرمج التحسين بناءً على «إحساس حدسي» بمكان حدوث أوجه قصور الأداء، لا بناءً على بيانات. وكلما أمكن، من المهم قياس زمن تشغيل أجزاء مختلفة من الشيفرة على مدخلات مختلفة <em>قبل</em> بدء التحسين لتحديد <strong>نقاط السخونة</strong> (hot spots)، أي المناطق في البرنامج التي تحدث فيها أكبر كمية من التعليمات.</p>
+<p>لمعرفة كيفية تحسين <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample.c">optExample.c</a>، لنبدأ بإلقاء نظرة أقرب على الدالة <code>main</code>:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-comment">// error-handling and timing code omitted for brevity</span>
+
+    <span class="hljs-type">int</span> limit = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+    <span class="hljs-type">int</span> length = limit;
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = allocateArray(length); <span class="hljs-comment">//allocates array of specified length</span>
+
+    genPrimeSequence(<span class="hljs-built_in">array</span>, limit, &amp;length); <span class="hljs-comment">//generates sequence of primes</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>تحتوي الدالة <code>main</code> نداءات إلى دالتين: <code>allocateArray</code> التي تهيّئ مصفوفة بطول يحدده المستخدم (أو حدّ)، و<code>genPrimeSequence</code> التي تولّد تسلسل أعداد أولية ضمن الحد المحدد (لاحظ أنه بالنسبة إلى أي تسلسل بين 2 و<em>n</em>، لا يمكن أن يكون عدد الأعداد الأولية أكثر من <em>n</em>، وكثيرًا ما يكون أقل بكثير). وتحتوي الدالة <code>main</code> في <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample.c">ملف C</a> شيفرة تقيس زمن كل من الدالتين أعلاه. ويكشف تصريف الشيفرة وتشغيلها مع ضبط <code>limit</code> على 5,000,000 ما يلي:</p>
+<pre><code class="language-bash">$ gcc -o optExample optExample.c -lm
+$ <span class="hljs-keyword">time</span> -p ./optExample 5000000
+Time to allocate: 5.5e-05
+Time to generate primes: 3.85525
+348513 primes found.
+real 3.85
+user 3.86
+sys 0.00
+</code></pre>
+<p>يستغرق برنامج <code>optExample</code> نحو 3.86 ثانية لاكتماله، مع قضاء كل الوقت تقريبًا في الدالة <code>genPrimeSequence</code>. ولا فائدة من إنفاق الوقت في تحسين <code>allocateArray</code>، لأن أي تحسينات ستكون ضئيلة بالنسبة إلى زمن تشغيل البرنامج ككل. وفي الأمثلة التالية، نركّز بدرجة أكبر على الدالة <code>genPrimeSequence</code> والدوال المرتبطة بها. وتُعاد الدوال إدراجها هنا للتيسير:</p>
+<pre><code class="language-c"><span class="hljs-comment">// helper function: checks to see if a number is prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; <span class="hljs-built_in">sqrt</span>(x) + <span class="hljs-number">1</span>; i++) { <span class="hljs-comment">//no prime number is less than 2</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) { <span class="hljs-comment">//if the number is divisible by i</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//it is not prime</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">//otherwise it is prime</span>
+}
+
+<span class="hljs-comment">// finds the next prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">getNextPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> prev)</span> {
+    <span class="hljs-type">int</span> next = prev + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (!isPrime(next)) { <span class="hljs-comment">//while the number is not prime</span>
+        next++; <span class="hljs-comment">//increment and check again</span>
+    }
+    <span class="hljs-keyword">return</span> next;
+}
+
+<span class="hljs-comment">// generates a sequence of primes</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">genPrimeSequence</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> limit)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> len = limit;
+    <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">array</span>[<span class="hljs-number">0</span>] = <span class="hljs-number">2</span>; <span class="hljs-comment">//initialize the first number to 2</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; len; i++) {
+        <span class="hljs-built_in">array</span>[i] = getNextPrime(<span class="hljs-built_in">array</span>[i<span class="hljs-number">-1</span>]); <span class="hljs-comment">//fill in the array</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">array</span>[i] &gt; limit) {
+            len = i;
+            <span class="hljs-keyword">return</span> len;
+        }
+    }
+    <span class="hljs-keyword">return</span> len;
+}
+</code></pre>
+<p>لإيجاد نقاط السخونة في برنامج ما، ركّز على المناطق التي تحتوي أكبر عدد من الحلقات. ويمكن للفحص اليدوي للشيفرة المساعدة في تحديد نقاط السخونة، لكن ينبغي دائمًا تأكيده بأدوات القياس المرجعي قبل محاولة التحسين. وينتج عن الفحص اليدوي لبرنامج <code>optExample</code> الملاحظات التالية.</p>
+<ul>
+<li>تحاول الدالة <code>genPrimeSequence</code> توليد جميع الأعداد الأولية بين 2 وعدد صحيح ما <em>n</em>. ولأن عدد الأعداد الأولية بين 2 و<em>n</em> لا يمكن أن يتجاوز <em>n</em>، فإن حلقة <code>for</code> في <code>genPrimeSequence</code> تعمل n مرة على الأكثر. ويستدعي كل تكرار من حلقة <code>for</code> الدالة <code>getNextPrime</code> مرة واحدة. وبذلك تعمل <code>getNextPrime</code> n مرة على الأكثر.</li>
+<li>تستمر حلقة <code>while</code> في الدالة <code>getNextPrime</code> بالعمل حتى اكتشاف عدد أولي. ومع أنه يصعب تحديد عدد مرات تنفيذ حلقة <code>while</code> في <code>getNextPrime</code> مسبقًا بدلالة <em>n</em> (فالفجوة بين الأعداد الأولية المتعاقبة يمكن أن تكون كبيرة اعتباطيًا)، فمن المؤكد أن <code>isPrime</code> تُنفَّذ في كل تكرار من تكرارات حلقة <code>while</code>.</li>
+<li>تحتوي الدالة <code>isPrime</code> حلقة <code>for</code> واحدة بالضبط. ولنفترض أن الحلقة تعمل <em>k</em> تكرارًا إجمالًا. عندئذٍ تُنفَّذ الشيفرة في جسم الحلقة <em>k</em> مرة إجمالًا. تذكّر أن <a href="https://diveintosystems.org/book/C1-C_intro/conditionals.html#_loops_in_c">بنية حلقة for</a> تتألف من <em>عبارة تهيئة</em> (تهيّئ متغير الحلقة بقيمة معينة)، و<em>تعبير منطقي</em> (يحدد متى تنتهي الحلقة)، و<em>تعبير خطوة</em> (يحدّث متغير الحلقة في كل تكرار). ويعرض <a href="#LoopExecution">الجدول 1</a> عدد مرات تنفيذ كل مكوّن من مكوّنات الحلقة في حلقة <code>for</code> تعمل <em>k</em> تكرارًا. ففي كل حلقة <code>for</code>، تحدث التهيئة مرة واحدة بالضبط. ويُنفَّذ التعبير المنطقي <em>k + 1</em> مرة مقابل <em>k</em> تكرار، لأنه يجب إجراء فحص أخير لإنهاء الحلقة. أما جسم الحلقة وتعبير الخطوة فيُنفَّذ كل منهما <em>k</em> مرة.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>عبارة التهيئة</th>
+<th>التعبير المنطقي</th>
+<th>تعبير الخطوة</th>
+<th>جسم الحلقة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><em>k</em>+1</td>
+<td><em>k</em></td>
+<td><em>k</em></td>
+</tr>
+</tbody>
+</table>
+<p>يشير فحصنا اليدوي للشيفرة إلى أن البرنامج يقضي معظم وقته في الدالة <code>isPrime</code>، وأن الدالة <code>sqrt</code> هي الأكثر تنفيذًا. ولنستخدم بعد ذلك تنميط الشيفرة للتحقق من هذه الفرضية.</p>
+<h3 id="1211-استخدام-callgrind-للتنميط"><a href="#_using_callgrind_to_profile"></a>12.1.1. استخدام Callgrind للتنميط</h3>
+<p>في برنامجنا الصغير، كان من السهل نسبيًا استخدام الفحص اليدوي لتكوين فرضية أن الدالة <code>sqrt</code> تقع في «نقطة سخونة» في الشيفرة. لكن تحديد نقاط السخونة قد يصبح أعقد في البرامج الأكبر. وعلى أي حال، من الجيد استخدام التنميط للتحقق من فرضيتنا. وتوفّر أدوات تنميط الشيفرة مثل <a href="http://valgrind.org/">Valgrind</a> كثيرًا من المعلومات عن تنفيذ البرنامج. ونستخدم في هذا القسم أداة <code>callgrind</code> لفحص مخطط نداءات برنامج <code>OptExample</code>.</p>
+<p>لاستخدام <code>callgrind</code>، لنبدأ بإعادة تصريف برنامج <code>optExample</code> بالعلم <code>-g</code> وتشغيل <code>callgrind</code> على مجال أصغر (من 2 إلى 100,000). وكما في تطبيقات Valgrind الأخرى، يعمل <code>callgrind</code> كغلاف حول برنامج، مضيفًا تعليقات مثل عدد مرات تنفيذ الدوال وإجمالي عدد التعليمات المنفَّذة نتيجةً لذلك. وبالتالي، سيستغرق برنامج <code>optExample</code> وقتًا أطول في التنفيذ عند تشغيله مع <code>callgrind</code>.</p>
+<pre><code class="language-bash">$ gcc -g -o optExample optExample.c -lm
+$ valgrind --tool=callgrind ./optExample 100000
+==32590== Callgrind, a call-graph generating cache profiler
+==32590== Copyright (C) 2002-2015, and GNU GPL<span class="hljs-string">&#x27;d, by Josef Weidendorfer et al.
+==32590== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==32590== Command: ./optExample 100000
+==32590==
+==32590== For interactive control, run &#x27;</span>callgrind_control -h<span class="hljs-string">&#x27;.
+Time to allocate: 0.003869
+Time to generate primes: 0.644743
+9592 primes found.
+==32590==
+==32590== Events    : Ir
+==32590== Collected : 68338759
+==32590==
+==32590== I   refs:      68,338,759
+</span></code></pre>
+<p>تكشف كتابة <code>ls</code> في الطرفية عن ملف جديد يُسمى <code>callgrind.out.xxxxx</code>، حيث <code>xxxxx</code> معرّف فريد. وفي هذه الحالة، الملف هو <code>callgrind.out.32590</code> (أي الرقم المعروض في العمود الأيسر في المخرجات السابقة). وينتج تشغيل <code>callgrind_annotate</code> على هذا الملف معلومات إضافية عن الدوال الثلاث موضع الاهتمام:</p>
+<pre><code class="language-bash">$ callgrind_annotate --auto=<span class="hljs-built_in">yes</span> callgrind.out.32590
+ ----------------------------------------------------------------
+Profile data file <span class="hljs-string">&#x27;callgrind.out.32393&#x27;</span> (creator: callgrind-3.11.0)
+ ----------------------------------------------------------------
+...
+  .  //helper <span class="hljs-keyword">function</span>: checks to see <span class="hljs-keyword">if</span> a number is prime
+   400,004  int isPrime(int x) {
+         .      int i;
+36,047,657      <span class="hljs-keyword">for</span> (i = 2; i &lt; sqrt(x)+1; i++) { //no prime is less than 2
+13,826,015  =&gt; ???:sqrt (2765204x)
+16,533,672          <span class="hljs-keyword">if</span> (x % i == 0) { //if the number is divisible by i
+   180,818              <span class="hljs-built_in">return</span> 0; //it is not prime
+         .          }
+         .      }
+     9,592      <span class="hljs-built_in">return</span> 1; //otherwise it is prime
+   200,002  }
+         .
+         .  // finds the next prime
+    38,368  int getNextPrime(int prev) {
+    28,776      int next = prev + 1;
+   509,597      <span class="hljs-keyword">while</span> (!isPrime(next)) { //while the number is not prime
+67,198,556  =&gt; optExample.c:isPrime (100001x)
+    90,409          next++; //increment and check again
+         .      }
+     9,592      <span class="hljs-built_in">return</span> next;
+    19,184  }
+         .
+         .  // generates a sequence of primes
+         6  int genPrimeSequence(int * array, int <span class="hljs-built_in">limit</span>) {
+         .      int i;
+         2      int len = <span class="hljs-built_in">limit</span>;
+         2      <span class="hljs-keyword">if</span> (len == 0) <span class="hljs-built_in">return</span> 0;
+         2      array[0]=2; //initialize the first number to 2
+    38,369      <span class="hljs-keyword">for</span> (i = 1; i &lt; len; i++) {
+   143,880          array[i] = getNextPrime(array[i-1]); //fill <span class="hljs-keyword">in</span> the array
+67,894,482  =&gt; optExample.c:getNextPrime (9592x)
+    76,736          <span class="hljs-keyword">if</span> (array[i] &gt; <span class="hljs-built_in">limit</span>){
+         2              len = i;
+         2              <span class="hljs-built_in">return</span> len;
+         .          }
+         .      }
+         .      <span class="hljs-built_in">return</span> len;
+         4  }
+</code></pre>
+<p>تمثّل الأرقام في العمود الأيسر عدد التعليمات المنفَّذة الإجمالي المرتبط بكل سطر. وتشير الأرقام بين قوسين إلى عدد مرات تشغيل دالة معينة. وباستخدام الأرقام في العمود الأيسر، نستطيع التحقق من نتائج فحصنا اليدوي. ففي الدالة <code>genPrimeSequence</code>، أنتجت الدالة <code>getNextPrime</code> أكبر عدد من التعليمات المنفَّذة، وهو 67.8 مليون تعليمة، مقابل 9,592 نداء دالة (لتوليد الأعداد الأولية بين 2 و100,000). ويكشف فحص <code>getNextPrime</code> أن غالبية تلك التعليمات (67.1 مليون، أي 99%) ناتجة من نداء <code>isPrime</code> الذي يُستدعى 100,001 مرة إجمالًا. وأخيرًا، يكشف فحص <code>isPrime</code> أن 13 مليونًا من إجمالي التعليمات (20.5%) ناتجة من الدالة <code>sqrt</code> التي تُنفَّذ 2.7 مليون مرة إجمالًا.</p>
+<p>وتؤكد هذه النتائج فرضيتنا الأصلية بأن البرنامج يقضي معظم وقته في الدالة <code>isPrime</code>، وأن الدالة <code>sqrt</code> هي الأكثر تنفيذًا بين جميع الدوال. ويؤدي تقليل إجمالي عدد التعليمات المنفَّذة إلى برنامج أسرع؛ ويشير التحليل أعلاه إلى أنه ينبغي أن تركّز جهودنا الأولية على تحسين الدالة <code>isPrime</code>، وربما تقليل عدد مرات تنفيذ <code>sqrt</code>.</p>
+<h3 id="1212-نقل-شيفرة-ثابت-الحلقة"><a href="#_loop_invariant_code_motion"></a>12.1.2. نقل شيفرة ثابت الحلقة</h3>
+<p>نقل شيفرة ثابت الحلقة (loop-invariant code motion) تقنية تحسين تنقل الحسابات الساكنة التي تحدث داخل حلقة إلى خارجها من دون التأثير في سلوك الحلقة. وتستطيع المصرّفات المُحسِّنة إجراء معظم تحسينات شيفرة ثابت الحلقة تلقائيًا. وتحديدًا، يحاول علم المصرّف <code>-fmove-loop-invariants</code> في GCC (المفعَّل عند المستوى <code>-O1</code>) تحديد أمثلة نقل شيفرة ثابت الحلقة ونقلها خارج حلقاتها.</p>
+<p>لكن المصرّف لا يستطيع دائمًا تحديد حالات شيفرة ثابت الحلقة، خصوصًا في حالة نداءات الدوال. ولأن نداءات الدوال يمكن أن تسبب <strong>آثارًا جانبية</strong> (side effects) غير مقصودة، تتجنّب معظم المصرّفات محاولة تحديد ما إذا كان نداء دالة يعيد النتيجة نفسها باستمرار. ولذلك، حتى مع معرفة المبرمج أن <code>sqrt(x)</code> تعيد دائمًا الجذر التربيعي لمدخل ما <code>x</code>، لن يفترض GCC ذلك دائمًا. فكّر في حالة تحدّث فيها الدالة <code>sqrt</code> متغيرًا عامًا سريًا <code>g</code>. في هذه الحالة، ليس استدعاء <code>sqrt</code> مرة واحدة خارج الدالة (<em>تحديث واحد</em> لـ <code>g</code>) مماثلًا لاستدعائها في كل تكرار من تكرارات الحلقة (<em>n</em> من التحديثات لـ <code>g</code>). وإذا لم يستطع المصرّف تحديد أن دالة تعيد النتيجة نفسها دائمًا، فلن ينقل الدالة <code>sqrt</code> خارج الحلقة تلقائيًا.</p>
+<p>لكن المبرمج يعرف أن نقل الحساب <code>sqrt(x) + 1</code> خارج حلقة <code>for</code> لا يؤثر في سلوك الحلقة. والدالة المحدَّثة معروضة هنا ومتاحة <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">في الملف التالي</a>:</p>
+<pre><code class="language-c"><span class="hljs-comment">//helper function: checks to see if a number is prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> max = <span class="hljs-built_in">sqrt</span>(x)+<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; max; i++) { <span class="hljs-comment">//no prime number is less than 2</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) { <span class="hljs-comment">//if the number is divisible by i</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//it is not prime</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">//otherwise it is prime</span>
+}
+</code></pre>
+<p>يوضح <a href="#FirstTimes">الجدول 2</a> أن هذا التغيير البسيط يوفر ثانيتين كاملتين (47%) من زمن تشغيل <code>optExample2</code>، حتى قبل استخدام أعلام المصرّف. وفضلًا عن ذلك، يبدو أن المصرّف يجد تحسين <code>optExample2</code> أسهل قليلًا.</p>
+<table>
+<thead>
+<tr>
+<th>النسخة</th>
+<th>غير مُحسَّنة</th>
+<th><code>-O1</code></th>
+<th><code>-O2</code></th>
+<th><code>-O3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الأصلية</td>
+<td>3.86</td>
+<td>2.32</td>
+<td>2.14</td>
+<td>2.15</td>
+</tr>
+<tr>
+<td>مع نقل شيفرة ثابت الحلقة</td>
+<td>1.83</td>
+<td>1.63</td>
+<td>1.71</td>
+<td>1.63</td>
+</tr>
+</tbody>
+</table>
+<p>وتكشف إعادة تشغيل <code>callgrind</code> على الملف التنفيذي <code>optExample2</code> سبب ملاحظة هذا التحسن الكبير في زمن التشغيل. ويفترض مقطع الشيفرة التالي أن الملف <code>callgrind.out.30086</code> يحتوي تعليقات تشغيل <code>callgrind</code> على الملف التنفيذي <code>optExample2</code>:</p>
+<pre><code class="language-bash">$ gcc -g -o optExample2 optExample2.c -lm
+$ valgrind --tool=callgrind ./optExample2 100000
+$ callgrind_annotate --auto=<span class="hljs-built_in">yes</span> callgrind.out.30086
+ ------------------------------------------------------------------
+Profile data file <span class="hljs-string">&#x27;callgrind.out.30086&#x27;</span> (creator: callgrind-3.11.0)
+ ------------------------------------------------------------------
+ ...
+   400,004  int isPrime(int x) {
+         .      int i;
+   900,013      int max = sqrt(x)+1;
+   500,000  =&gt; ???:sqrt (100001x)
+11,122,449      <span class="hljs-keyword">for</span> (i = 2; i &lt; max; i++) { //no prime number is less than 2
+16,476,120          <span class="hljs-keyword">if</span> (x % i == 0) { //if the number is divisible by i
+   180,818              <span class="hljs-built_in">return</span> 0; //it is not prime
+         .          }
+         .      }
+     9,592      <span class="hljs-built_in">return</span> 1; //otherwise it is prime
+   200,002  }
+         .
+         .  // finds the next prime
+    38,368  int getNextPrime(int prev) {
+    28,776      int next = prev + 1;
+   509,597      <span class="hljs-keyword">while</span> (!isPrime(next)) { //while the number is not prime
+29,789,794  =&gt; optExample2.c:isPrime (100001x)
+    90,409          next++; //increment and check again
+         .      }
+     9,592      <span class="hljs-built_in">return</span> next;
+    19,184  }
+</code></pre>
+<p>إن نقل نداء <code>sqrt</code> خارج حلقة <code>for</code> يقلل عدد مرات استدعاء الدالة <code>sqrt</code> في البرنامج من 2.7 مليون إلى 100,000 (انخفاض بنسبة 96%). ويقابل هذا الرقم عدد مرات استدعاء الدالة <code>isPrime</code>، ما يؤكد أن الدالة <code>sqrt</code> تُنفَّذ مرة واحدة فقط مع كل استدعاء للدالة <code>isPrime</code>.</p>
+<p>لاحظ أن المصرّف تمكن من إجراء مستويات كبيرة من التحسين عند تحديد أعلام التحسين، حتى لو لم يُجرِ المبرمج نقل الشيفرة يدويًا. وسبب ذلك في هذه الحالة تعليمة خاصة تُسمى <code>fsqrt</code> تحددها معمارية x86. فعند تشغيل أعلام التحسين، يستبدل المصرّف جميع حالات الدالة <code>sqrt</code> بالتعليمة <code>fsqrt</code>. وتُعرف هذه العملية بـ <strong>التضمين</strong> (inlining)، ونغطيها بمزيد من التفصيل في القسم التالي. ولأن <code>fsqrt</code> لم تعد دالة، يصبح تحديد طبيعتها كثابت حلقة أسهل على المصرّف، فينقلها خارج جسم الحلقة.</p>
+<p>كان تحسين نقل شيفرة ثابت الحلقة الموصوف في القسم السابق تغييرًا بسيطًا أنتج انخفاضًا هائلًا في زمن التنفيذ. غير أن هذه التحسينات تعتمد على الحالة، وقد لا تؤدي دائمًا إلى تحسينات في الأداء. وفي معظم الحالات، يتولى المصرّف نقل شيفرة ثابت الحلقة.</p>
+<p>تُقرأ الشيفرة اليوم أكثر مما تُكتب. وفي معظم الحالات، لا تستحق المكاسب الأدائية الجزئية التضحية بمقروئية الشيفرة. وبصفة عامة، ينبغي للمبرمج أن يدع المصرّف يحسّن كلما أمكن. ونغطي في هذا القسم بعض تقنيات التحسين التي كان المبرمجون ينفّذونها يدويًا سابقًا، لكن المصرّفات تنفّذها اليوم بصفة شائعة.</p>
+<p>ثمة مصادر كثيرة على الإنترنت تدعو إلى التنفيذ اليدوي للتقنيات التي نصفها في الأقسام التالية. لكننا نشجع القراء على التحقق مما إذا كانت مصرّفاتهم تدعم التحسينات التالية قبل محاولة تنفيذها يدويًا في شيفرتهم. وجميع التحسينات الموصوفة في هذا القسم منفَّذة في GCC، لكنها قد لا تكون متاحة في المصرّفات الأقدم.</p>
+<h3 id="1221-تضمين-الدوال"><a href="#_function_inlining"></a>12.2.1. تضمين الدوال</h3>
+<p>من خطوات التحسين التي تحاول المصرّفات تنفيذها <strong>تضمين الدوال</strong> (function inlining)، وهو استبدال نداءات دالة بجسم الدالة. فمثلًا، في الدالة <code>main</code>، سيستبدل مصرّف يضمّن الدالة <code>allocateArray</code> نداء <code>allocateArray</code> بنداء مباشر إلى <code>malloc</code>:</p>
+<p><strong>الجدول 1. مثال على تضمين المصرّف للدالة <code>allocateArray</code>.</strong></p>
+<p><strong>النسخة الأصلية</strong></p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-comment">// omitted for brevity</span>
+    <span class="hljs-comment">// some variables shortened for space considerations</span>
+    <span class="hljs-type">int</span> lim = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// allocation of array</span>
+    <span class="hljs-type">int</span> *a = allocateArray(lim);
+
+    <span class="hljs-comment">// generates sequence of primes</span>
+    <span class="hljs-type">int</span> len = genPrimeSequence(a, lim);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p><strong>نسخة مع تضمين <code>allocateArray</code></strong></p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-comment">// omitted for brevity</span>
+    <span class="hljs-comment">// some variables shortened for space considerations</span>
+    <span class="hljs-type">int</span> lim = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// allocation of array (in-lined)</span>
+    <span class="hljs-type">int</span> *a = <span class="hljs-built_in">malloc</span>(lim * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+
+    <span class="hljs-comment">// generates sequence of primes</span>
+    <span class="hljs-type">int</span> len = genPrimeSequence(a, lim);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>قد يؤدي تضمين الدوال إلى بعض التوفير في زمن تشغيل البرنامج. تذكّر أنه في كل مرة يستدعي فيها برنامج دالة، تُولَّد بالضرورة تعليمات كثيرة مرتبطة بإنشاء الدالة وتدميرها. ويتيح تضمين الدوال للمصرّف إزالة هذه النداءات الزائدة، ويسهّل عليه تحديد تحسينات محتملة أخرى، منها انتشار الثوابت وطيّ الثوابت وإزالة الشيفرة الميتة. وفي حالة برنامج <code>optExample</code>، يرجّح أن التضمين يتيح للمصرّف استبدال نداء <code>sqrt</code> بالتعليمة <code>fsqrt</code>، ثم نقلها خارج الحلقة.</p>
+<p>ويشير العلم <code>-finline-functions</code> إلى GCC بضرورة تضمين الدوال. وهذا التحسين مفعَّل عند المستوى 3. ومع أنه يمكن استخدام <code>-finline-functions</code> من دون العلم <code>-O3</code>، فهو <em>اقتراح</em> للمصرّف بالبحث عن دوال لتضمينها. وبالمثل، يمكن استخدام الكلمة المفتاحية <code>static inline</code> لاقتراح على المصرّف تضمين دالة معينة. وتذكّر أن المصرّف لن يضمّن جميع الدوال، وأن تضمين الدوال غير مضمون لجعل الشيفرة أسرع.</p>
+<p>وينبغي للمبرمجين عمومًا تجنّب تضمين الدوال يدويًا. فالتضمين يحمل خطرًا كبيرًا بتقليل مقروئية الشيفرة بدرجة كبيرة، وزيادة احتمال الأخطاء، وجعل تحديث الدوال وصيانتها أصعب. فمثلًا، ستقلل محاولة تضمين الدالة <code>isPrime</code> في الدالة <code>getNextPrime</code> مقروئية <code>getNextPrime</code> بدرجة كبيرة.</p>
+<h3 id="1222-فتح-الحلقات"><a href="#_loop_unrolling"></a>12.2.2. فتح الحلقات</h3>
+<p>آخر استراتيجية تحسين للمصرّف نناقشها في هذا القسم هي فتح الحلقات. لنعد إلى الدالة <code>isPrime</code>:</p>
+<pre><code class="language-c"><span class="hljs-comment">// helper function: checks to see if a number is prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> max = <span class="hljs-built_in">sqrt</span>(x) + <span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">// no prime number is less than 2</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; max; i++) {
+        <span class="hljs-comment">// if the number is divisible by i</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// it&#x27;s not prime</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// otherwise it is</span>
+}
+</code></pre>
+<p>تُنفَّذ حلقة <code>for</code> ما مجموعه <code>max</code> مرة، حيث <code>max</code> واحد أكبر من الجذر التربيعي للعدد الصحيح <code>x</code>. وعلى مستوى التجميع، يفحص كل تنفيذ للحلقة ما إذا كان <code>i</code> أصغر من <code>max</code>. وإذا كان كذلك، يقفز مؤشر التعليمة إلى جسم الحلقة الذي يحسب عملية باقي القسمة. وإذا نتج عن العملية 0، يخرج البرنامج من الحلقة فورًا ويعيد 0. وإلا، تستمر الحلقة في التنفيذ. ومع أن متنبّئات التفرعات جيدة إلى حد كبير في التنبؤ بنتيجة تعبير شرطي (خصوصًا داخل الحلقات)، فإن التخمينات الخاطئة يمكن أن تضر بالأداء بسبب الاضطرابات في خط أنابيب التعليمات.</p>
+<p>و<strong>فتح الحلقات</strong> (loop unrolling) تحسين تجريه المصرّفات لتقليل أثر التخمينات الخاطئة. والهدف في فتح الحلقات هو تقليل عدد تكرارات الحلقة بمعامل <em>n</em> بزيادة الحمل الذي ينفّذه كل تكرار بمعامل <em>n</em>. فعند فتح حلقة بمعامل 2، يُنصّف عدد التكرارات في الحلقة، بينما يُضاعَف مقدار العمل المنفَّذ في كل تكرار.</p>
+<p>لنطبّق يدويًا فتح الحلقات بمعامل 2 على دالتنا <code>isPrime</code> (متاحة في <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample3.c">optExample3.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">// helper function: checks to see if a number is prime</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> max = <span class="hljs-built_in">sqrt</span>(x)+<span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">// no prime number is less than 2</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">2</span>; i &lt; max; i+=<span class="hljs-number">2</span>) {
+        <span class="hljs-comment">// if the number is divisible by i or i+1</span>
+        <span class="hljs-keyword">if</span> ( (x % i == <span class="hljs-number">0</span>) || (x % (i+<span class="hljs-number">1</span>) == <span class="hljs-number">0</span>) ) {
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// it&#x27;s not prime</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// otherwise it is</span>
+}
+</code></pre>
+<p>لاحظ أنه مع تنصيفنا عدد التكرارات التي تأخذها حلقة <code>for</code>، ينفّذ كل تكرار من الحلقة الآن فحصَي باقي قسمة، ما يضاعف مقدار العمل في كل تكرار. وينتج عن إعادة تصريف البرنامج وتشغيله أوقات تحسّنت تحسنًا هامشيًا (انظر <a href="#NextTimes">الجدول 2</a>). كما تقل مقروئية الشيفرة. والطريقة الأفضل للاستفادة من فتح الحلقات هي استدعاء علم تحسين المصرّف <code>-funroll-loops</code> الذي يطلب من المصرّف فتح الحلقات التي يمكن تحديد تكراراتها في زمن التصريف. وعلم المصرّف <code>-funroll-all-loops</code> خيار أكثر جرأة يفتح جميع الحلقات سواء تأكد المصرّف من عدد التكرارات أم لا. ويعرض <a href="#NextTimes">الجدول 2</a> أزمنة تشغيل فتح الحلقات اليدوي بمعامل 2 (المتاح في <code>optExample3.c</code>) مقارنةً بإضافة علمي تحسين المصرّف <code>-funroll-loops</code> و<code>-funroll-all-loops</code> إلى البرنامج السابق (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">optExample2.c</a>).</p>
+<table>
+<thead>
+<tr>
+<th>النسخة</th>
+<th>غير مُحسَّنة</th>
+<th><code>-O1</code></th>
+<th><code>-O2</code></th>
+<th><code>-O3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الأصلية (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample.c">optExample.c</a>)</td>
+<td>3.86</td>
+<td>2.32</td>
+<td>2.14</td>
+<td>2.15</td>
+</tr>
+<tr>
+<td>مع نقل شيفرة ثابت الحلقة (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">optExample2.c</a>)</td>
+<td>1.83</td>
+<td>1.63</td>
+<td>1.71</td>
+<td>1.63</td>
+</tr>
+<tr>
+<td>مع فتح الحلقات اليدوي بمعامل 2 (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample3.c">optExample3.c</a>)</td>
+<td>1.65</td>
+<td>1.53</td>
+<td>1.45</td>
+<td>1.45</td>
+</tr>
+<tr>
+<td>مع <code>-funroll-loops</code> (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">optExample2.c</a>)</td>
+<td>1.82</td>
+<td>1.48</td>
+<td>1.46</td>
+<td>1.46</td>
+</tr>
+<tr>
+<td>مع <code>-funroll-all-loops</code> (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">optExample2.c</a>)</td>
+<td>1.81</td>
+<td>1.47</td>
+<td>1.47</td>
+<td>1.46</td>
+</tr>
+</tbody>
+</table>
+<p>ومع أن فتح الحلقات اليدوي يؤدي فعلًا إلى بعض التحسن في الأداء، فإن أعلام فتح الحلقات المدمجة في المصرّف، عند دمجها بأعلام التحسين الأخرى، تحقق أداءً مماثلًا. وإذا أراد المبرمج إدراج تحسينات فتح الحلقات في شيفرته، فينبغي أن يعتمد افتراضيًا على أعلام المصرّف المناسبة، وألا يفتح الحلقات يدويًا بنفسه.</p>
+<p>وينبغي للمبرمجين إيلاء اهتمام خاص لاستخدام الذاكرة، خصوصًا عند استخدام بنى بيانات كثيفة الذاكرة مثل المصفوفات الرياضية والمصفوفات. ومع أن المصرّفات تقدّم ميزات تحسين قوية، لا يستطيع المصرّف دائمًا إجراء تحسينات تحسّن استخدام البرنامج للذاكرة. ونستخدم في هذا القسم تطبيقًا لبرنامج ضرب مصفوفة في متجه (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector.c">matrixVector.c</a>) لتوجيه مناقشة تقنيات تحسين استخدام الذاكرة وأدواته.</p>
+<p>تنفّذ الدالة <code>main</code> في البرنامج خطوتين. أولًا، تخصص مصفوفة الإدخال الرياضية ومتجه الإدخال ومصفوفة الإخراج الرياضية وتهيّئها. بعد ذلك، تنفّذ ضرب المصفوفة الرياضية في المتجه. ويكشف تشغيل الشيفرة على أبعاد 10,000 × 10,000 أن الدالة <code>matrixVectorMultiply</code> تستهلك معظم الوقت:</p>
+<pre><code class="language-sh">$ gcc -o matrixVector matrixVector.c
+$ ./matrixVector 10000 10000
+Time to allocate and fill matrices: 1.2827
+Time to allocate vector: 9.6e-05
+Time to matrix-vector multiply: 1.98402
+</code></pre>
+<p>ولذلك ستركّز مناقشتنا على الدالة <code>matrixVectorMultiply</code>.</p>
+<h3 id="1231-تبديل-الحلقات"><a href="#_loop_interchange"></a>12.3.1. تبديل الحلقات</h3>
+<p>تبدّل تحسينات تبديل الحلقات (loop interchange) ترتيب الحلقتين الداخلية والخارجية في الحلقات المتداخلة لتعظيم محلية الذاكرة المؤقتة. ويصعب على المصرّفات إجراء هذه المهمة تلقائيًا. وفي GCC، يوجد علم المصرّف <code>-floop-interchange</code> لكنه غير متاح افتراضيًا حاليًا. ولذلك من الجيد أن ينتبه المبرمجون إلى كيفية وصول شيفرتهم إلى بنى البيانات المركّبة من الذاكرة مثل المصفوفات والمصفوفات الرياضية. وكمثال، لنلقِ نظرة أقرب على الدالة <code>matrixVectorMultiply</code> في <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector.c">matrixVector.c</a>:</p>
+<p><strong>الجدول 1. تبديل الحلقات في الدالة <code>matrixVectorMultiply()</code>.</strong></p>
+<p><strong>النسخة الأصلية (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector.c">matrixVector.c</a>)</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">matrixVectorMultiply</span><span class="hljs-params">(<span class="hljs-type">int</span> **m,
+                          <span class="hljs-type">int</span> *v,
+                          <span class="hljs-type">int</span> **res,
+                          <span class="hljs-type">int</span> row,
+                          <span class="hljs-type">int</span> col)</span> {
+    <span class="hljs-type">int</span> i, j;
+    <span class="hljs-comment">//cycles through every matrix column</span>
+    <span class="hljs-comment">//in inner-most loop (inefficient)</span>
+    <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; col; j++){
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; row; i++){
+            res[i][j] = m[i][j] * v[j];
+        }
+    }
+}
+</code></pre>
+<p><strong>نسخة تبديل الحلقات (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector2.c">matrixVector2.c</a>)</strong></p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">matrixVectorMultiply</span><span class="hljs-params">(<span class="hljs-type">int</span> **m,
+                          <span class="hljs-type">int</span> *v,
+                          <span class="hljs-type">int</span> **res,
+                          <span class="hljs-type">int</span> row,
+                          <span class="hljs-type">int</span> col)</span> {
+    <span class="hljs-type">int</span> i, j;
+    <span class="hljs-comment">//cycles through every row of matrix</span>
+    <span class="hljs-comment">//in inner-most loop</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; row; i++){
+        <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; col; j++){
+            res[i][j] = m[i][j] * v[j];
+        }
+    }
+}
+</code></pre>
+<p>تُخصَّص مصفوفتا الإدخال والإخراج الرياضيتان ديناميكيًا (الطريقة الثانية المناقشة في فصل C). ونتيجة لذلك، لا تكون الصفوف في المصفوفتين الرياضيتين متتابعة مع بعضها، بينما تكون العناصر في كل صف متتابعة. ويسبب الترتيب الحالي للحلقتين أن يمر البرنامج على كل عمود بدلًا من كل صف. تذكّر أن <a href="https://diveintosystems.org/book/C11-MemHierarchy/caching.html#_direct_mapped_caches">البيانات تُحمَّل في الذاكرة المؤقتة <em>كتلًا</em></a> لا عناصر. ونتيجة لذلك، عند الوصول إلى عنصر <em>x</em> في مصفوفة في <code>res</code> أو <code>m</code>، تُحمَّل أيضًا <em>العناصر المجاورة لـ x</em> في الذاكرة المؤقتة. ويمرير كل «عمود» في المصفوفة الرياضية يسبب إخفاقات أكثر في الذاكرة المؤقتة، إذ تُجبر الذاكرة المؤقتة على تحميل كتل جديدة مع كل وصول. ويظهر <a href="#MatBench">الجدول 2</a> أن إضافة أعلام التحسين لا تقلل زمن تشغيل الدالة. لكن مجرد تبديل ترتيب الحلقتين (كما يظهر في أمثلة الشيفرة السابقة وفي <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector2.c">matrixVector2.c</a>) يجعل الدالة أسرع بنحو ثماني مرات ويتيح للمصرّف إجراء تحسينات إضافية.</p>
+<table>
+<thead>
+<tr>
+<th>النسخة</th>
+<th>البرنامج</th>
+<th>غير مُحسَّنة</th>
+<th><code>-O1</code></th>
+<th><code>-O2</code></th>
+<th><code>-O3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الأصلية</td>
+<td><code>matrixVector</code></td>
+<td>2.01</td>
+<td>2.05</td>
+<td>2.07</td>
+<td>2.08</td>
+</tr>
+<tr>
+<td>مع تبديل الحلقات</td>
+<td><code>matrixVector2</code></td>
+<td>0.27</td>
+<td>0.08</td>
+<td>0.06</td>
+<td>0.06</td>
+</tr>
+</tbody>
+</table>
+<p>وأداة Valgrind المسماة <code>cachegrind</code> (المناقشة في <a href="https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html#_cache_analysis_and_valgrind">الفصل 11</a>) طريقة ممتازة لتحديد مشكلات محلية البيانات، وهي تكشف الفروق في الوصول إلى الذاكرة المؤقتة بين نسختي الدالة <code>matrixVectorMultiply</code> المعروضتين في المثال السابق.</p>
+<h3 id="1232-تحسينات-أخرى-للمصرف-لتحسين-المحلية-التفكيك-والدمج"><a href="#_some_other_compiler_optimizations_for_improving_locality_fission_and_fusion"></a>12.3.2. تحسينات أخرى للمصرّف لتحسين المحلية: التفكيك والدمج</h3>
+<p>ينتج عن إعادة تشغيل البرنامج المحسَّن على 10,000 × 10,000 عنصر أرقام زمن التشغيل التالية:</p>
+<pre><code class="language-sh">$ gcc -o matrixVector2 matrixVector2.c
+$ ./matrixVector2 10000 10000
+Time to allocate and fill matrices: 1.29203
+Time to allocate vector: 0.000107
+Time to matrix-vector multiply: 0.271369
+</code></pre>
+<p>الآن، صار تخصيص المصفوفات الرياضية وملؤها يستهلك معظم الوقت. ويكشف توقيت إضافي أن ملء المصفوفات الرياضية هو ما يستهلك معظم الوقت فعلًا. لنلقِ نظرة أقرب على تلك الشيفرة:</p>
+<pre><code class="language-c"><span class="hljs-comment">//fill matrices</span>
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++){
+    fillArrayRandom(matrix[i], cols);
+    fillArrayZeros(result[i], cols);
+}
+</code></pre>
+<p>لملء مصفوفتي الإدخال والإخراج الرياضيتين، تمر حلقة <code>for</code> على جميع الصفوف، وتستدعي الدالتين <code>fillArrayRandom</code> و<code>fillArrayZeros</code> على كل مصفوفة رياضية. وفي بعض السيناريوهات، قد يكون من المفيد للمصرّف أن يقسم الحلقة الواحدة إلى حلقتين منفصلتين (وهو ما يُعرف بـ <strong>تفكيك الحلقات</strong>، loop fission)، كما يظهر في <a href="#fission">الجدول 3</a>.</p>
+<p><strong>الجدول 3. مثال على تفكيك الحلقات في حلقة ملء المصفوفات الرياضية في <code>main</code>.</strong></p>
+<p><strong>النسخة الأصلية</strong></p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    fillArrayRandom(matrix[i], cols);
+    fillArrayZeros(result[i], cols);
+}
+</code></pre>
+<p><strong>مع تفكيك الحلقات</strong></p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    fillArrayRandom(matrix[i], cols);
+}
+
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    fillArrayZeros(result[i], cols);
+}
+</code></pre>
+<p>وتُسمى عملية أخذ حلقتين تعملان على المجال نفسه ودمج محتوياتهما في حلقة واحدة (أي عكس تفكيك الحلقات) <strong>دمج الحلقات</strong> (loop fusion). وتفكيك الحلقات ودمجها مثالان على تحسينات قد يجريها المصرّف لمحاولة تحسين محلية البيانات. وقد تستخدم مصرّفات المعالجات متعددة الأنوية تفكيك الحلقات أو دمجها أيضًا لتمكين الحلقات من التنفيذ بكفاءة على أنوية متعددة. فمثلًا، قد يستخدم المصرّف تفكيك الحلقات لتوزيع حلقتين على نواتين مختلفتين. وبالمثل، قد يستخدم المصرّف دمج الحلقات لدمج عمليات مترابطة في جسم الحلقة وتوزيع مجموعة جزئية من تكرارات الحلقة على كل نواة (بافتراض استقلال البيانات بين التكرارات).</p>
+<p>وفي حالتنا، لا يحسّن تطبيق تفكيك الحلقات يدويًا أداء البرنامج مباشرةً؛ فلا تغيير تقريبًا في الوقت اللازم لملء المصفوفة. غير أنه قد يكشف تحسينًا أكثر دقة: فالحلقة التي تحتوي <code>fillArrayZeros</code> غير ضرورية. فتخصيص القيم لكل عنصر في مصفوفة <code>result</code> تقوم به الدالة <code>matrixVectorMultiply</code>؛ ولا حاجة إلى تهيئة مسبقة بجميع الأصفار.</p>
+<p><strong>الجدول 4. إزالة النداء غير اللازم إلى <code>fillArrayZeros</code>.</strong></p>
+<p><strong>النسخة السابقة (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector2.c">matrixVector2.c</a>)</strong></p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    matrix[i] = allocateArray(cols);
+    result[i] = allocateArray(cols);
+}
+
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    fillArrayRandom(matrix[i], cols);
+    fillArrayZeros(result[i], cols);
+}
+</code></pre>
+<p><strong>النسخة المحدَّثة مع <code>calloc()</code> (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector3.c">matrixVector3.c</a>)</strong></p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    matrix[i] = allocateArray(cols);
+    result[i] = allocateArray(cols);
+}
+
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; rows; i++) {
+    fillArrayRandom(matrix[i], cols);
+    <span class="hljs-comment">//fillArrayZeros(result[i], cols); //no longer needed</span>
+}
+</code></pre>
+<h3 id="1233-تنميط-الذاكرة-باستخدام-massif"><a href="#_memory_profiling_with_massif"></a>12.3.3. تنميط الذاكرة باستخدام Massif</h3>
+<p>لا يؤدي إجراء التغيير السابق إلا إلى انخفاض طفيف في زمن التشغيل. فمع أنه يزيل خطوة ملء جميع عناصر مصفوفة النتائج بالأصفار، ما زال مطلوبًا قدر كبير من الوقت لملء مصفوفة الإدخال بأعداد عشوائية:</p>
+<pre><code class="language-sh">$ gcc -o matrixVector3 matrixVector3.c
+$ ./matrixVector3 10000 10000
+Time to allocate matrices: 0.049073
+Time to fill matrices: 0.946801
+Time to allocate vector: 9.3e-05
+Time to matrix-vector multiply: 0.359525
+</code></pre>
+<p>ومع أن كل مصفوفة مخزَّنة في الذاكرة بشكل غير متتابع، تشغل كل منها 10,000 × <code>sizeof(int)</code> بايت، أي 40,000 بايت. ولأن المجموع المخصص 20,000 مصفوفة (10,000 للمصفوفة الرياضية الأولية و10,000 لمصفوفة النتائج)، فإن ذلك يقابل 800 مليون بايت، أي نحو 762 ميغابايت من المساحة. ومن المفهوم أن ملء 762 ميغابايت بأعداد عشوائية يستغرق وقتًا طويلًا. وفي المصفوفات الرياضية، ينمو استخدام الذاكرة تربيعيًا مع حجم الإدخال، ويمكن أن يؤدي دورًا كبيرًا في الأداء.</p>
+<p>وتستطيع أداة <code>massif</code> في Valgrind مساعدتك على تنميط استخدام الذاكرة. وكما في أدوات Valgrind الأخرى التي غطيناها في هذا الكتاب (<a href="https://diveintosystems.org/book/C3-C_debug/valgrind.html#_debugging_memory_with_valgrind">memcheck</a> و<a href="https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html#_cache_analysis_and_valgrind">cachegrind</a> و<a href="https://diveintosystems.org/book/C12-CodeOpt/basic.html#_using_callgrind_to_profile">callgrind</a>)، يعمل <code>massif</code> كغلاف حول الملف التنفيذي للبرنامج. وتحديدًا، يأخذ <code>massif</code> لقطات لاستخدام البرنامج للذاكرة عبر البرنامج، وينمّط كيفية تذبذب استخدام الذاكرة. وقد يجد المبرمجون أداة <code>massif</code> مفيدة لتتبع كيفية استخدام برامجهم لذاكرة الكومة، ولتحديد فرص تحسين استخدام الذاكرة. لنشغّل أداة <code>massif</code> على الملف التنفيذي <code>matrixVector3</code>:</p>
+<pre><code class="language-bash">$ valgrind --tool=massif ./matrixVector3 10000 10000
+==7030== Massif, a heap profiler
+==7030== Copyright (C) 2003-2015, and GNU GPL<span class="hljs-string">&#x27;d, by Nicholas Nethercote
+==7030== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==7030== Command: ./matrixVector3 10000 10000
+==7030==
+Time to allocate matrices: 0.049511
+Time to fill matrices: 4.31627
+Time to allocate vector: 0.001015
+Time to matrix-vector multiply: 0.62672
+==7030==
+</span></code></pre>
+<p>ينتج عن تشغيل <code>massif</code> ملف <code>massif.out.xxxx</code>، حيث <code>xxxx</code> رقم معرّف فريد. وإذا كنت تكتب معنا، اكتب <code>ls</code> لكشف ملف massif المقابل لديك. وفي المثال التالي، الملف المقابل هو <code>massif.out.7030</code>. استخدم الأمر <code>ms_print</code> لعرض مخرجات <code>massif</code>:</p>
+<pre><code class="language-bash">$ ms_print massif.out.7030
+-----------------------------------------------------------------------------
+Command:            ./matrixVector3 10000 10000
+Massif arguments:   (none)
+ms_print arguments: massif.out.7030
+-----------------------------------------------------------------------------
+
+    MB
+763.3^                                                ::::::::::::::::::::::#
+     |:::::::::::::::::::::::::::::::::::::::::::::::::                     <span class="hljs-comment">#</span>
+     |:                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+     |@                                               :                     <span class="hljs-comment">#</span>
+   0 +--------------------------------------------------------------------&gt;Gi
+     0                                                                  9.778
+
+Number of snapshots: 80
+ Detailed snapshots: [3, 12, 17, 22, 49, 59, 69, 79 (peak)]
+</code></pre>
+<p>في أعلى المخرجات يقع مخطط استخدام الذاكرة. ويُظهر المحور <em>x</em> عدد التعليمات المنفَّذة. ويُظهر المحور <em>y</em> استخدام الذاكرة. ويشير المخطط أعلاه إلى أن ما مجموعه 9.778 مليار (Gi) تعليمة نُفِّذت أثناء تشغيلنا لـ <code>matrixVector3</code>. وأثناء التنفيذ، أخذ <code>massif</code> ما مجموعه 80 لقطة لقياس الاستخدام على الكومة. وبلغ استخدام الذاكرة ذروته في اللقطة الأخيرة (79). وكانت ذروة استخدام الذاكرة للبرنامج 763.3 ميغابايت، وظلت ثابتة نسبيًا عبر البرنامج.</p>
+<p>وتأتي ملخصات جميع اللقطات بعد المخطط. فمثلًا، يقابل الجدول التالي اللقطات حول اللقطة 79:</p>
+<pre><code>....
+
+------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)   stacks(B)
+------------------------------------------------------------------------------
+ 70      1,081,926      727,225,400      727,080,000       145,400          0
+ 71      1,095,494      737,467,448      737,320,000       147,448          0
+ 72      1,109,062      747,709,496      747,560,000       149,496          0
+ 73      1,122,630      757,951,544      757,800,000       151,544          0
+ 74      1,136,198      768,193,592      768,040,000       153,592          0
+ 75      1,149,766      778,435,640      778,280,000       155,640          0
+ 76      1,163,334      788,677,688      788,520,000       157,688          0
+ 77      1,176,902      798,919,736      798,760,000       159,736          0
+ 78  7,198,260,935      800,361,056      800,201,024       160,032          0
+ 79 10,499,078,349      800,361,056      800,201,024       160,032          0
+99.98% (800,201,024B) (heap allocations) malloc/new/new[], --alloc-fns, etc.
+-&gt;99.96% (800,040,000B) 0x40089D: allocateArray (in matrixVector3)
+</code></pre>
+<p>يقابل كل صف لقطة معينة، وزمن أخذها، وإجمالي استهلاك ذاكرة الكومة (بالبايتات) عند تلك النقطة، وعدد البايتات التي طلبها البرنامج (&quot;useful-heap&quot;) عند تلك النقطة، وعدد البايتات المخصصة زيادةً على ما طلبه البرنامج، وحجم المكدّس. ويكون تنميط المكدّس معطّلًا افتراضيًا (فهو يبطئ <code>massif</code> بدرجة كبيرة). ولتمكين تنميط المكدّس، استخدم الخيار <code>--stacks=yes</code> عند تشغيل <code>massif</code>.</p>
+<p>وتكشف أداة <code>massif</code> أن 99.96% من استخدام ذاكرة الكومة في البرنامج حدث في الدالة <code>allocateArray</code>، وأن ما مجموعه 800 مليون بايت خُصّص، وهو ما يتسق مع الحساب التقريبي الذي أجريناه سابقًا. وسيجد القراء على الأرجح أن <code>massif</code> أداة مفيدة لتحديد مناطق الاستخدام المرتفع لذاكرة الكومة في برامجهم، وهو ما يبطئ البرنامج غالبًا. فمثلًا، قد تحدث <strong>تسربات الذاكرة</strong> (memory leaks) في البرامج عندما يستدعي المبرمجون <code>malloc</code> بتكرار من دون استدعاء <code>free</code> عند أول فرصة صحيحة. وأداة <code>massif</code> مفيدة للغاية في كشف هذه التسربات.</p>
+<p>ينبغي أن توصلنا رحلتنا القصيرة (وربما المحبطة) في تحسين الشيفرة برسالة مهمة جدًا للقارئ: إذا كنت تفكر في تحسين شيفرتك يدويًا، ففكّر مليًا فيما يستحق إنفاق وقتك عليه وما ينبغي تركه للمصرّف. وإليك بعض النصائح المهمة التي ينبغي مراعاتها عند السعي إلى تحسين أداء الشيفرة.</p>
+<p>اختر بنى بيانات وخوارزميات جيدة</p>
+<p>لا بديل عن استخدام الخوارزميات وبنى البيانات المناسبة؛ فالإخفاق في ذلك غالبًا ما يكون السبب الأول لضعف الأداء في الشيفرة. فمثلًا، خوارزمية غربال إراتوستينس (Sieve of Eratosthenes) الشهيرة طريقة أكفأ بكثير لتوليد الأعداد الأولية من خوارزميتنا المخصصة في <code>optExample</code>، وتنتج تحسنًا كبيرًا في الأداء. وتعرض القائمة التالية الوقت اللازم لتوليد جميع الأعداد الأولية بين 2 و5 ملايين باستخدام تطبيق للغربال:</p>
+<pre><code class="language-sh">$ gcc -o genPrimes genPrimes.c
+$ ./genPrimes 5000000
+Found 348513 primes (0.122245 s)
+</code></pre>
+<p>تتطلب خوارزمية الغربال 0.12 ثانية فقط لإيجاد جميع الأعداد الأولية بين 2 و5 ملايين، مقابل 1.46 ثانية يستغرقها <code>optExample2</code> لتوليد المجموعة نفسها من الأعداد الأولية مع تشغيل أعلام التحسين <code>-O3</code> (تحسن بمقدار 12 مرة). وتُترك كتابة تطبيق خوارزمية الغربال تمرينًا للقارئ؛ لكن ينبغي أن يكون واضحًا أن اختيار خوارزمية أفضل منذ البداية كان سيوفر ساعات من جهد التحسين المضني. ويوضح مثالنا لماذا تشكّل معرفة بنى البيانات والخوارزميات أساسًا لعلماء الحاسوب.</p>
+<p>استخدم دوال المكتبة القياسية كلما أمكن</p>
+<p>لا تعد اختراع العجلة. فإذا احتجت في أثناء البرمجة إلى دالة تؤدي مهمة قياسية جدًا (مثل إيجاد القيمة المطلقة، أو إيجاد أكبر أو أصغر قيمة في قائمة أعداد)، فتوقف وتحقق مما إذا كانت الدالة موجودة بالفعل ضمن المكتبة القياسية للغة عالية المستوى. فدوال المكتبات القياسية مختبرة جيدًا وتميل إلى أن تكون محسَّنة للأداء. فمثلًا، إذا نفّذ قارئ نسخته الخاصة من الدالة <code>sqrt</code> يدويًا، فقد لا يعرف المصرّف استبدال نداء الدالة تلقائيًا بالتعليمة <code>fsqrt</code>.</p>
+<p>حسّن بناءً على البيانات لا على المشاعر</p>
+<p>إذا احتجت، بعد اختيار أفضل بنى البيانات والخوارزميات <em>و</em>استخدام دوال المكتبة القياسية، إلى تحسينات إضافية في الأداء، فاستعن بأداة تنميط جيدة مثل Valgrind. وينبغي <em>ألا</em> يكون التحسين أبدًا مبنيًا على الإحساس الحدسي. فالتركيز المفرط على ما <em>يشعر</em> المرء أنه ينبغي تحسينه (من دون بيانات تدعم الفكرة) كثيرًا ما يؤدي إلى إضاعة الوقت.</p>
+<p>قسّم الشيفرة المعقدة إلى عدة دوال</p>
+<p>عادةً لا يحقق تضمين الشيفرة يدويًا مكسبًا أدائيًا كبيرًا على ما تستطيع المصرّفات الحديثة تحقيقه. وبدلًا من ذلك، سهّل على مصرّفك مساعدتك في التحسين. فالمصرّفات تجد تحسين مقاطع الشيفرة الأقصر أسهل. وتقسيم العمليات المعقدة إلى عدة دوال يزيد في الوقت نفسه مقروئية الشيفرة ويسهّل على المصرّف التحسين. تحقق مما إذا كان مصرّفك يحاول التضمين افتراضيًا أو يملك علمًا منفصلًا لمحاولة تضمين الشيفرة. والأفضل أن تدع مصرّفك يجري التضمين بدلًا من إجرائه يدويًا بنفسك.</p>
+<p>أعط الأولوية لمقروئية الشيفرة</p>
+<p>في كثير من التطبيقات اليوم، المقروئية هي الملك. والحقيقة أن الشيفرة تُقرأ أكثر مما تُكتب. وتنفق شركات كثيرة وقتًا كبيرًا في تدريب مهندسي برمجياتها على كتابة الشيفرة بطريقة محددة جدًا لتعظيم المقروئية. وإذا أدى تحسين شيفرتك إلى ضرر ملحوظ بمقروئيتها، فمن المهم التحقق مما إذا كان التحسن الأدائي المحقق يستحق هذا الضرر. فمثلًا، تملك مصرّفات كثيرة اليوم أعلام تحسين تتيح فتح الحلقات. وينبغي للمبرمجين دائمًا استخدام أعلام التحسين المتاحة لفتح الحلقات بدلًا من محاولة فتح الحلقات يدويًا، وهو ما قد يؤدي إلى ضرر كبير بمقروئية الشيفرة. وغالبًا ما يزيد تقليل مقروئية الشيفرة احتمال إدخال أخطاء إلى الشيفرة دون قصد، ما قد يؤدي إلى ثغرات أمنية.</p>
+<p>انتبه لاستخدام الذاكرة</p>
+<p>كثيرًا ما يكون لاستخدام البرنامج للذاكرة أثر أكبر في زمن تنفيذه من عدد التعليمات التي ينفّذها. و<a href="https://diveintosystems.org/book/C12-CodeOpt/memory_considerations.html#_loop_interchange">مثال تبديل الحلقات</a> يجسّد هذه النقطة. ففي الحالتين، تنفّذ الحلقة العدد نفسه من التعليمات. لكن ترتيب الحلقتين له أثر كبير في الوصول إلى الذاكرة والمحلية. وتذكّر أيضًا استكشاف أدوات تنميط الذاكرة مثل <code>massif</code> و<code>cachegrind</code> عند محاولة تحسين برنامج.</p>
+<p>المصرّفات تتحسن باستمرار</p>
+<p>يحدّث كاتبو المصرّفات مصرّفاتهم باستمرار لتنفيذ تحسينات أكثر تطورًا بأمان. فمثلًا، تحول GCC إلى صيغة <a href="https://gcc.gnu.org/onlinedocs/gccint/SSA.html">الإسناد الأحادي الساكن (SSA)</a> بدءًا من الإصدار 4.0، ما حسّن آثار بعض تحسيناته تحسنًا كبيرًا. وتنفّذ فرع <code>GRAPHITE</code> من قاعدة شيفرة GCC <a href="https://polyhedral.info/">النموذج متعدد السطوح</a>، الذي يتيح للمصرّف إجراء أنواع أكثر تعقيدًا من تحويلات الحلقات. وكلما صارت المصرّفات أكثر تطورًا، انخفضت فوائد التحسين اليدوي انخفاضًا كبيرًا.</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/dive-into-systems/c11-memhierarchy/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">11. التخزين وهرم الذاكرة</span></a><!--]--> <!--[0--><a href="../../../../book/dive-into-systems/c13-os/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">13. نظام التشغيل</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1k8skom = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.TbKJm7bL.js"),
+						import("../../../../_app/immutable/entry/app.Bp22yAlo.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
