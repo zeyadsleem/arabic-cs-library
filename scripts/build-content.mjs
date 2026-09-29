@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
+import katex from 'katex';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -64,6 +65,49 @@ const addHeadingIds = (html) =>
       return `<h${level}${attrs} id="${id}">${inner}</h${level}>`;
     }
   );
+
+let mathFailures = 0;
+
+const renderMath = (html) => {
+  const render = (tex, display) => {
+    const warn = console.warn;
+    console.warn = () => {};
+    try {
+      return katex.renderToString(tex, {
+        displayMode: display,
+        throwOnError: false,
+        strict: false,
+        trust: false,
+        output: 'html',
+      });
+    } catch (error) {
+      mathFailures += 1;
+      return tex;
+    } finally {
+      console.warn = warn;
+    }
+  };
+
+  const segments = html.split(/(<pre[\s\S]*?<\/pre>|<code[\s\S]*?<\/code>)/g);
+  const withMath = segments
+    .map((segment, index) => {
+      if (index % 2 === 1) return segment;
+      return segment
+        .replace(/\$\$([\s\S]+?)\$\$/g, (match, tex) => render(tex.trim(), true))
+        .replace(/\\\[([\s\S]+?)\\\]/g, (match, tex) => render(tex.trim(), true))
+        .replace(/\\\(([\s\S]+?)\\\)/g, (match, tex) => render(tex.trim(), false))
+        .replace(/(?<![\\\w$])\$([^$\n]+?)\$(?!\d)/g, (match, tex) => {
+          const value = tex.trim();
+          const isFormula =
+            /[\\^_{}]/.test(value) || /^[A-Za-z0-9+\-=<>()|:,.']{1,8}$/.test(value);
+          if (!isFormula) return match;
+          return render(value, false);
+        });
+    })
+    .join('');
+
+  return withMath;
+};
 
 const calloutLabels = {
   exercise: 'تمرين',
@@ -207,6 +251,7 @@ const run = () => {
           console.log(`not translated yet: ${book.id}/${chapter.key}--${slug}`);
         }
         let html = markdown.render(content);
+        html = renderMath(html);
         html = addHeadingIds(html);
         html = wrapExercises(html);
         html = withBasePath(html);
@@ -306,6 +351,10 @@ const run = () => {
     path.join(generatedDir, 'search-index.json'),
     JSON.stringify({ sections: searchIndex })
   );
+
+  if (mathFailures) {
+    console.log(`math: ${mathFailures} expressions left unrendered`);
+  }
 };
 
 run();

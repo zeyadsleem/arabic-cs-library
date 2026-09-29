@@ -141,6 +141,18 @@ samp {
   border-radius: 4px;
 }
 
+.katex {
+  font-size: 1.05em;
+}
+
+.katex-display {
+  direction: ltr;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.5rem;
+  margin: 1.4rem 0;
+}
+
 pre {
   direction: ltr;
   text-align: left;

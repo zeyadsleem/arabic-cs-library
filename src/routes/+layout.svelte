@@ -1,5 +1,6 @@
 <script>
   import 'highlight.js/styles/atom-one-dark.css';
+  import 'katex/dist/katex.min.css';
   import '../app.css';
   import '../lib/library.css';
   import { page } from '$app/state';
