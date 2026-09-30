@@ -278,7 +278,7 @@
       "title": "بنى البيانات المفتوحة",
       "titleEn": "Open Data Structures",
       "author": "Pat Morin",
-      "description": "دراسة أكاديمية لبنى البيانات: القوائم، والصفوف، والأشجار، وجداول التجزئة، والأكوام، والرسوم البيانية — مع تنفيذات Java وC++ و170 تمريناً.",
+      "description": "بنية بيانات مفتوحة (إصدار Java): 14 فصلاً تغطي القوائم والمخططات الانقلابية والأشجار وجداول التجزئة والأكوام وخوارزميات الترتيب والرسوم البيانية وبنى بيانات الأعداد الصحيحة والبحث في الذاكرة الخارجية.",
       "sourceUrl": "https://opendatastructures.org/ods-java/Contents.html",
       "repoUrl": "https://github.com/patmorin/ods",
       "license": "CC BY 2.5 CA",
@@ -287,11 +287,11 @@
         "Java",
         "C++"
       ],
-      "status": "planned",
+      "status": "translated",
       "stage": "datastructures",
       "order": 1,
-      "format": "latex",
-      "pages": 334,
+      "format": "html",
+      "pages": 14,
       "completeCourse": true,
       "prerequisites": [
         "hello-algo"

@@ -176,6 +176,26 @@ const convert = (html, images) => {
 };
 
 
+/**
+ * Normalizes legacy TeX2HTML output (uppercase tags, `CLASS=`/`SRC=`/`ALT=`
+ * attributes, math as images whose ALT holds the LaTeX source) into the shape
+ * the converter above expects. Opt-in: modern HTML is unaffected.
+ * @param {string} html
+ * @returns {string}
+ */
+const normalizeLegacyHtml = (html) =>
+  html
+    .replace(
+      /<span class="math"[^>]*>([\s\S]*?)<\/span>/gi,
+      (match, inner) => {
+        const alt = inner.match(/alt="([^"]*)"/i)?.[1];
+        return alt ? ` $${alt.trim()}$ ` : ' ';
+      }
+    )
+    .replace(/<a\s+name="[^"]*"[^>]*>\s*<\/a>/gi, '')
+    .replace(/<(\/?)([a-z][a-z0-9]*)/gi, (match, slash, tag) => `<${slash}${tag.toLowerCase()}`)
+    .replace(/\s(class|id|src|alt|href|width|height|align|border|lang|data-[\w-]+)="/gi, ' $1="');
+
 const extractMain = (html, selector) => {
   const patterns = selector
     ? [
@@ -193,6 +213,7 @@ const extractMain = (html, selector) => {
 };
 
 export {
+  normalizeLegacyHtml,
   decode,
   inline,
   listItems,

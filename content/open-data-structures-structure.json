@@ -1,0 +1,172 @@
+{
+  "chapters": [
+    {
+      "key": "1_Introduction",
+      "title": "1. Introduction",
+      "titleAr": "1. Introduction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "1. Introduction",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "2_Array_Based_Lists",
+      "title": "2. Array-Based Lists",
+      "titleAr": "2. Array-Based Lists",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "2. Array-Based Lists",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "3_Linked_Lists",
+      "title": "3. Linked Lists",
+      "titleAr": "3. Linked Lists",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "3. Linked Lists",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "4_Skiplists",
+      "title": "4. Skiplists",
+      "titleAr": "4. Skiplists",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "4. Skiplists",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "5_Hash_Tables",
+      "title": "5. Hash Tables",
+      "titleAr": "5. Hash Tables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "5. Hash Tables",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "6_Binary_Trees",
+      "title": "6. Binary Trees",
+      "titleAr": "6. Binary Trees",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "6. Binary Trees",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "7_Random_Binary_Search_Tree",
+      "title": "7. Random Binary Search Trees",
+      "titleAr": "7. Random Binary Search Trees",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "7. Random Binary Search Trees",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "8_Scapegoat_Trees",
+      "title": "8. Scapegoat Trees",
+      "titleAr": "8. Scapegoat Trees",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "8. Scapegoat Trees",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "9_Red_Black_Trees",
+      "title": "9. Red-Black Trees",
+      "titleAr": "9. Red-Black Trees",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "9. Red-Black Trees",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "10_Heaps",
+      "title": "10. Heaps",
+      "titleAr": "10. Heaps",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "10. Heaps",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "11_Sorting_Algorithms",
+      "title": "11. Sorting Algorithms",
+      "titleAr": "11. Sorting Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "11. Sorting Algorithms",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "12_Graphs",
+      "title": "12. Graphs",
+      "titleAr": "12. Graphs",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "12. Graphs",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "13_Data_Structures_Integers",
+      "title": "13. Data Structures for Integers",
+      "titleAr": "13. Data Structures for Integers",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "13. Data Structures for Integers",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "14_External_Memory_Searchin",
+      "title": "14. External Memory Searching",
+      "titleAr": "14. External Memory Searching",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "14. External Memory Searching",
+          "order": 13
+        }
+      ]
+    }
+  ]
+}
