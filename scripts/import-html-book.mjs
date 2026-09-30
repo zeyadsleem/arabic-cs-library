@@ -92,6 +92,8 @@ const stripBoilerplate = (html, url) =>
   html
     .replace(/<header\b[\s\S]*?<\/header>/gi, '')
     .replace(/<div id="ptx-navbar"[\s\S]*?<\/div>/gi, '')
+    .replace(/<div id="ptx-sidebar"[\s\S]*?<\/div>\s*<\/div>/gi, '')
+    .replace(/<nav id="ptx-toc"[\s\S]*?<\/nav>/gi, '')
     .replace(/<a class="skip"[\s\S]*?<\/a>/gi, '')
     .replace(/Skip to main content/gi, '')
     .replace(/<div class="navigation"[\s\S]*?<\/div>/gi, '')
@@ -266,7 +268,13 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
         });
         return ` IMAGE${subRefs.length - 1}END `;
       });
-      parts.push({ url: subUrl, article: subArticle, refs: subRefs });
+      parts.push({
+        url: subUrl,
+        article: subArticle,
+        refs: subRefs,
+        slug: link.replace(/\.html$/, ''),
+        pageTitle: subHtml.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim() || '',
+      });
     }
   }
 
@@ -299,7 +307,7 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
     const intro = [];
     let current = null;
     for (const line of text.split('\n')) {
-      if (/^##\s+/.test(line)) {
+      if (/^#{1,3}\s+/.test(line)) {
         current = { heading: line.replace(/^##\s+/, '').trim(), lines: [line] };
         blocks.push(current);
       } else if (current) {
@@ -326,8 +334,12 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
       .replace(/^\d+(\.\d+)*\s*/, '')
       .trim();
     if (config.titleFromSlug && part.slug) return titleFromSlug(part.slug);
+    const pageTitle = (part.pageTitle || '')
+      .replace(/\s*[—–|-]\s*(Logic and Proofs|Graph Theory|Counting|Sequences|Algebraic Structures|Discrete Mathematics).*$/i, '')
+      .trim();
+    if (pageTitle && pageTitle.toLowerCase() !== title.toLowerCase()) return pageTitle;
     if (heading && heading.toLowerCase() !== title.toLowerCase()) return heading;
-    const convertedFirst = convert(part.article, part.refs).trim().split('\n')[0] || '';
+    const convertedFirst = clean(convert(part.article, part.refs)).split('\n')[0] || '';
     const fromContent = convertedFirst.replace(/^#+\s*/, '').trim();
     if (fromContent && fromContent.length > 3 && !/^\d+(\.\d+)*$/.test(fromContent)) {
       return fromContent.replace(/^\d+(\.\d+)*\s*/, '');
@@ -375,7 +387,7 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
         return;
       }
       const slug =
-        index === 0 && !parts.slice(1).length
+        parts.length === 1
           ? 'index'
           : `${slugify(sectionTitles[index]) || `s${index}`}`;
       writeFile(slug, sectionTitles[index], text);
