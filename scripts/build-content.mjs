@@ -68,12 +68,42 @@ const addHeadingIds = (html) =>
 
 let mathFailures = 0;
 
+const texMacros = {
+  '\\\\N': '\\\\mathbb{N}',
+  '\\\\Z': '\\\\mathbb{Z}',
+  '\\\\Q': '\\\\mathbb{Q}',
+  '\\\\R': '\\\\mathbb{R}',
+  '\\\\C': '\\\\mathbb{C}',
+  '\\\\B': '\\\\mathbf{B}',
+  '\\\\U': '\\\\mathcal{U}',
+  '\\\\x': '\\\\mathbf{x}',
+  '\\\\y': '\\\\mathbf{y}',
+  '\\\\X': '\\\\mathcal{X}',
+  '\\\\Y': '\\\\mathbf{Y}',
+  '\\\\Zcal': '\\\\mathcal{Z}',
+  '\\\\Qq': '\\\\mathbb{Q}',
+  '\\\\blacktriangle': '\\\\blacktriangle',
+};
+
+const expandTexMacros = (tex) => {
+  let out = tex;
+  for (const [name, replacement] of Object.entries(texMacros)) {
+    const bare = name.endsWith('{');
+    const pattern = new RegExp(
+      `${name.replace(/[.*+?^\${}()|[\\]\\\\]/g, '\\\\$&')}(?![a-zA-Z])${bare ? '?' : ''}`,
+      'g'
+    );
+    out = out.replace(pattern, replacement);
+  }
+  return out.replace(/(?<!\\\\[a-zA-Z])\\\\d(?![a-zA-Z{])/g, '\\\\displaystyle ');
+};
+
 const renderMath = (html) => {
   const render = (tex, display) => {
     const warn = console.warn;
     console.warn = () => {};
     try {
-      return katex.renderToString(tex, {
+      return katex.renderToString(expandTexMacros(tex), {
         displayMode: display,
         throwOnError: false,
         strict: false,

@@ -21,6 +21,42 @@ const contentDir = path.join(root, 'content', id);
 const sourceDir = path.join(root, 'content-src', id);
 for (const dir of [imageDir, contentDir, sourceDir]) fs.mkdirSync(dir, { recursive: true });
 
+const dropMacroPreamble = (text) => {
+  const start = text.indexOf('(\\usepackage');
+  if (start === -1) return text;
+  let depth = 0;
+  for (let index = start; index < text.length; index += 1) {
+    if (text[index] === '(') depth += 1;
+    else if (text[index] === ')') {
+      depth -= 1;
+      if (depth === 0) {
+        return `${text.slice(0, start)}${text
+          .slice(index + 1)
+          .replace(/^\s+/, '')}`;
+      }
+    }
+  }
+  return text;
+};
+
+const titleFromSlug = (slug) =>
+  slug
+    .replace(/^sec_/, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (character) => character.toUpperCase())
+    .trim();
+
+const slugify = (text) =>
+  text
+    .trim()
+    .toLowerCase()
+    .replace(/[`*_~]/g, '')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 48);
+
 const fetchText = (url) => {
   const out = execFileSync(
     'curl',
@@ -54,6 +90,10 @@ const optimize = (raw, target) => {
 
 const stripBoilerplate = (html, url) =>
   html
+    .replace(/<header\b[\s\S]*?<\/header>/gi, '')
+    .replace(/<div id="ptx-navbar"[\s\S]*?<\/div>/gi, '')
+    .replace(/<a class="skip"[\s\S]*?<\/a>/gi, '')
+    .replace(/Skip to main content/gi, '')
     .replace(/<div class="navigation"[\s\S]*?<\/div>/gi, '')
     .replace(/<p class="navigation"[\s\S]*?<\/p>/gi, '')
     .replace(
@@ -65,8 +105,30 @@ const stripBoilerplate = (html, url) =>
     .replace(/<footer\b[\s\S]*?<\/footer>/g, '')
     .replace(new RegExp(`<link[^>]*href="[^"]*${url.split('/').pop()}[^"]*"[^>]*>`, 'g'), '');
 
-let sectionMap = new Map();
+const chapterSections = new Map();
 if (config.tocUrl) {
+  const toc = fetchText(config.tocUrl);
+  const chapterKeys = config.pages.map(([key]) => key);
+  const order = [
+    ...toc.matchAll(
+      /href="(frontmatter|preface|ch_[a-z_]+|backmatter|sec_[a-z_]+-[a-z0-9_-]+)\.html"/g
+    ),
+  ].map((match) => match[1]);
+  let current = null;
+  for (const entry of order) {
+    if (chapterKeys.includes(entry)) {
+      current = entry;
+      if (!chapterSections.has(current)) chapterSections.set(current, []);
+    } else if (current && entry.startsWith('sec_')) {
+      chapterSections.get(current).push(entry);
+    }
+  }
+  const total = [...chapterSections.values()].reduce((sum, list) => sum + list.length, 0);
+  console.log(`toc: ${total} sections across ${chapterSections.size} chapters`);
+}
+
+let sectionMap = new Map();
+if (false) {
   const toc = fetchText(config.tocUrl);
   const seen = new Set();
   for (const match of toc.matchAll(/href="(\d+_[^"#]*?)\.html"/gi)) {
@@ -81,9 +143,10 @@ if (config.tocUrl) {
 }
 
 const structure = { chapters: [] };
+const vectorImages = new Set();
 let imageCount = 0;
 
-for (const [key, expectedTitle] of pages) {
+for (const [key, expectedTitle, sectionPrefix] of pages) {
   const url = `${origin}${key}${config.pageSuffix || ''}`;
   let html;
   try {
@@ -121,7 +184,13 @@ for (const [key, expectedTitle] of pages) {
       try {
         const raw = path.join(imageDir, `${name}.raw`);
         fs.writeFileSync(raw, download(resolved));
-        optimize(raw, webp);
+        if (/\.svg(\?|$)/i.test(resolved)) {
+          const svg = path.join(imageDir, `${name}.svg`);
+          fs.renameSync(raw, svg);
+          vectorImages.add(path.basename(svg));
+        } else {
+          optimize(raw, webp);
+        }
         imageCount += 1;
       } catch (error) {
         console.warn(`image failed: ${resolved}`);
@@ -134,13 +203,15 @@ for (const [key, expectedTitle] of pages) {
     return ` IMAGE${refs.length - 1}END `;
   });
 
-  const parts = [{ url, article, refs: [] }];
+  let parts = [{ url, article, refs: [] }];
   if (config.discoverSections) {
     const chapterNumber = key.split('_')[0];
-    const linkPattern = new RegExp(`href=["']${chapterNumber}_\\d[^"']*?\\.html["']`, 'gi');
+    const linkPattern = sectionPrefix
+      ? new RegExp(`href=["'](${sectionPrefix}[^"']*?\\.html)["']`, 'gi')
+      : new RegExp(`href=["'](${chapterNumber}_\\d[^"']*?\\.html)["']`, 'gi');
     const seen = new Set();
-    const links = [...article.matchAll(linkPattern)]
-      .map((match) => match[0].replace(/^href=["']|["']$/gi, ''))
+    const links = (chapterSections.get(key) || [])
+      .map((slug) => `${slug}.html`)
       .filter((value) => !seen.has(value) && seen.add(value));
     for (const link of links) {
       const subUrl = `${origin}${link}`;
@@ -172,15 +243,26 @@ for (const [key, expectedTitle] of pages) {
           try {
             const raw = path.join(imageDir, `${name}.raw`);
             fs.writeFileSync(raw, download(resolved));
-            optimize(raw, webp);
+            if (/\.svg(\?|$)/i.test(resolved)) {
+              const svg = path.join(imageDir, `${name}.svg`);
+              fs.renameSync(raw, svg);
+              vectorImages.add(path.basename(svg));
+            } else {
+              optimize(raw, webp);
+            }
             imageCount += 1;
           } catch (error) {
             console.warn(`  image failed: ${resolved}`);
           }
         }
+        const vectorName = `${name}.svg`;
         subRefs.push({
           alt,
-          local: fs.existsSync(webp) ? `/images/${id}/${path.basename(webp)}` : src,
+          local: fs.existsSync(webp)
+            ? `/images/${id}/${path.basename(webp)}`
+            : vectorImages.has(vectorName)
+              ? `/images/${id}/${vectorName}`
+              : src,
         });
         return ` IMAGE${subRefs.length - 1}END `;
       });
@@ -197,28 +279,119 @@ for (const [key, expectedTitle] of pages) {
     expectedTitle;
   const title = (rawTitle || expectedTitle).replace(/\s+/g, ' ').trim();
 
-  const body = parts
-    .map((part, partIndex) => {
-      const converted = convert(part.article, part.refs).trim();
-      if (partIndex === 0) return converted;
-      const firstLine = converted.split('\n')[0] || '';
-      if (/^#{1,2}\s/.test(firstLine)) {
-        return converted.replace(/^#{1,2}\s/, '## ');
+  if (parts.length > 1) {
+    parts = parts.slice(1);
+  }
+
+  const clean = (rawText) =>
+    dropMacroPreamble(rawText)
+      .replace(/^#\s+.*\n/, '')
+      .replace(/\(\s*\\usepackage[^)]*?\)/g, '')
+      .replace(/\[\]\([^)]*\)/g, '')
+      .replace(/^\*\*\s*Next:\*\*.*$/m, '')
+      .replace(/^\*\*\s*Up:\*\*.*$/m, '')
+      .replace(/^\*\*\s*Previous:\*\*.*$/m, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+  const splitInline = (text) => {
+    const blocks = [];
+    const intro = [];
+    let current = null;
+    for (const line of text.split('\n')) {
+      if (/^##\s+/.test(line)) {
+        current = { heading: line.replace(/^##\s+/, '').trim(), lines: [line] };
+        blocks.push(current);
+      } else if (current) {
+        current.lines.push(line);
+      } else {
+        intro.push(line);
       }
-      const heading = part.article
-        .match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]
-        ?.replace(/<[^>]+>/g, '')
-        .replace(/^\d+(\.\d+)*\s*/, '')
-        .trim();
-      return heading ? `## ${heading}\n\n${converted}` : converted;
-    })
-    .join('\n\n')
-    .replace(/^#\s+.*\n/, '')
-    .replace(/^\*\*\s*Next:\*\*.*$/m, '')
-    .replace(/^\*\*\s*Up:\*\*.*$/m, '')
-    .replace(/^\*\*\s*Previous:\*\*.*$/m, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+    }
+    return {
+      intro: intro.join('\n').trim(),
+      blocks: blocks
+        .map((block) => ({
+          title: block.heading.replace(/^\d+(\.\d+)*\s*/, '').trim() || block.heading,
+          text: block.lines.join('\n').trim(),
+        }))
+        .filter((block) => block.text),
+    };
+  };
+
+  const sectionTitles = parts.map((part, index) => {
+    const heading = part.article
+      .match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]
+      ?.replace(/<[^>]+>/g, '')
+      .replace(/^\d+(\.\d+)*\s*/, '')
+      .trim();
+    if (config.titleFromSlug && part.slug) return titleFromSlug(part.slug);
+    if (heading && heading.toLowerCase() !== title.toLowerCase()) return heading;
+    const convertedFirst = convert(part.article, part.refs).trim().split('\n')[0] || '';
+    const fromContent = convertedFirst.replace(/^#+\s*/, '').trim();
+    if (fromContent && fromContent.length > 3 && !/^\d+(\.\d+)*$/.test(fromContent)) {
+      return fromContent.replace(/^\d+(\.\d+)*\s*/, '');
+    }
+    return `${title} — ${index + 1}`;
+  });
+
+  const bodies = parts.map((part, index) => {
+    const converted = convert(part.article, part.refs).trim();
+    if (index === 0) return clean(converted);
+    const firstLine = converted.split('\n')[0] || '';
+    if (/^#{1,2}\s/.test(firstLine)) return clean(converted.replace(/^#{1,2}\s/, '## '));
+    return clean(`## ${sectionTitles[index]}\n\n${converted}`);
+  });
+
+  const writeFile = (slug, heading, text) => {
+    const target = path.join(contentDir, `${key}--${slug}.md`);
+    const existing = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
+    if (!/lang: ar/.test(existing)) {
+      fs.writeFileSync(
+        target,
+        `---\ntitle: "${heading.replace(/"/g, '')}"\nlang: en\nsource: ${url}\n---\n\n${text}\n`
+      );
+    }
+    return target;
+  };
+
+  const sections = [];
+  if (config.splitSections) {
+    let unitIndex = 0;
+    bodies.forEach((text, index) => {
+      if (parts.length === 1) {
+        const { intro, blocks } = splitInline(text);
+        if (intro) {
+          writeFile('index', title, intro);
+          sections.push({ slug: 'index', title, order: unitIndex });
+          unitIndex += 1;
+        }
+        blocks.forEach((block) => {
+          const slug = `s${unitIndex}-${slugify(block.title)}`;
+          writeFile(slug, block.title, block.text);
+          sections.push({ slug, title: block.title, order: unitIndex });
+          unitIndex += 1;
+        });
+        return;
+      }
+      const slug =
+        index === 0 && !parts.slice(1).length
+          ? 'index'
+          : `${slugify(sectionTitles[index]) || `s${index}`}`;
+      writeFile(slug, sectionTitles[index], text);
+      sections.push({ slug, title: sectionTitles[index], order: unitIndex });
+      unitIndex += 1;
+    });
+  }
+
+  const body = bodies.join('\n\n');
+  if (!config.splitSections) {
+    writeFile('index', title, body);
+  }
+  fs.writeFileSync(
+    path.join(sourceDir, `${key}.md`),
+    `---\ntitle: "${title.replace(/"/g, '')}"\nlang: en\n---\n\n${body}\n`
+  );
 
   const file = path.join(contentDir, `${key}--index.md`);
   const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
@@ -237,7 +410,9 @@ for (const [key, expectedTitle] of pages) {
     key,
     title,
     titleAr: title,
-    sections: [{ slug: 'index', title, order: structure.chapters.length }],
+    sections: sections.length
+      ? sections
+      : [{ slug: 'index', title, order: structure.chapters.length }],
   });
   console.log(`${id}/${key}: ${body.length} chars, ${refs.length} images`);
 }
