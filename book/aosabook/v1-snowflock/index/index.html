@@ -19,23 +19,23 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.DfciPU9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CL0XzpJP.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.sfGLCnEv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DpTNWPP-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DHBc9RQp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DNSbqq4G.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.D6SaVgzs.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.qnCBTOCK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.CO63hm-n.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CJYiA3-G.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CPbfJyNb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.49bAj2HQ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C0bfcbw3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/tqSrk0F9.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B4Cyr53u.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.CEH-XqUS.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BfeaRjBo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xooZYZqs.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Bce1I3LI.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BdHAOsbZ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="SnowFlock — SnowFlock"/><!----><title>SnowFlock | معمارية تطبيقات المصادر المفتوحة</title>
@@ -110,7 +110,7 @@
 <li>النهاية (End Game): حين يكون الخادم قد أرسل معظم الصفحات، يعود إلى الردود أحادية الوجهة (unicast). ومعظم الطلبات في هذه المرحلة هي إعادة إرسال، ومن ثمّ فإن بثّ صفحة عبر الشبكة إلى جميع النسخ أمر غير ضروري.</li>
 </ul>
 <h3 id="1853-القرص-الافتراضي">18.5.3. القرص الافتراضي</h3>
-<p>نادرًا ما تستخدم نسخ SnowFlock قرصها، بسبب قصر عمرها وحتميتها المصيرية. يضمّ القرص الافتراضي لآلة SnowFlock الافتراضية القسم الجذري الذي يحوي الملفات التنفيذية والمكتبات وملفات الإعداد. أمّا معالجة البيانات الضخمة فتتم عبر أنظمة ملفات مناسبة مثل <a href="https://aosabook.org/en/v1//book/aosabook/v1-hdfs/">HDFS</a> أو PVFS. وهكذا، حين تقرر نسخ SnowFlock القراءة من قرصها الجذري، فإن طلباتها تُلبّى عادةً من ذاكرة تخزين صفحات نظام الملفات في النواة.</p>
+<p>نادرًا ما تستخدم نسخ SnowFlock قرصها، بسبب قصر عمرها وحتميتها المصيرية. يضمّ القرص الافتراضي لآلة SnowFlock الافتراضية القسم الجذري الذي يحوي الملفات التنفيذية والمكتبات وملفات الإعداد. أمّا معالجة البيانات الضخمة فتتم عبر أنظمة ملفات مناسبة مثل <a href="/arabic-cs-library/book/aosabook/v1-hdfs/index">HDFS</a> أو PVFS. وهكذا، حين تقرر نسخ SnowFlock القراءة من قرصها الجذري، فإن طلباتها تُلبّى عادةً من ذاكرة تخزين صفحات نظام الملفات في النواة.</p>
 <p>ومع ذلك، ما زلنا بحاجة إلى توفير الوصول إلى القرص الافتراضي للنسخ، في النادر من الحالات التي يلزم فيها هذا الوصول. وقد سلكنا هنا طريق المقاومة الأدنى، ونفّذنا القرص ملتزمًا عن قرب بتصميم نسخ الذاكرة. أولًا، تُجمَّد حالة القرص لحظة الاستنساخ. وتواصل الآلة الافتراضية الأم استخدام قرصها بأسلوب CoW: إذ تُوجَّه الكتابات إلى موقع منفصل في وحدة التخزين المساندة، بينما تظل صورة القرص التي تتوقعها النسخ غير قابلة للتغيير. ثانيًا، تُبثّ حالة القرص إلى جميع النسخ باستخدام <code>mcdist</code>، بالحجم نفسه للصفحات البالغ 4 كيلوبايت، وتحت الافتراضات نفسها بشأن الموضعية الزمنية. ثالثًا، حالة القرص المنسوخة لآلة افتراضية منسوخة هي زائلة تمامًا: إذ تُخزَّن في ملف مسطّح متفرّق يُحذف عند إتلاف النسخة.</p>
 <h2 id="186-مكونات-جانب-النسخة">18.6. مكوّنات جانب النسخة</h2>
 <p>النسخ، لحظة إنشائها من الوصف المعماري، ليست سوى قشور جوفاء؛ لذا تحتاج، مثلها مثل الجميع، إلى مساعدة كبيرة من أصولها كي تنضج: فحين تلاحظ أي من آلات الأبناء الافتراضية نقص شيء تحتاجه، تتصل فورًا بأصلها وتطلب منه إرساله حالًا.</p>
@@ -190,7 +190,7 @@
 			
 			<script>
 				{
-					__sveltekit_m4sqcf = {
+					__sveltekit_194xs6y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -198,8 +198,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.DfciPU9i.js"),
-						import("../../../../_app/immutable/entry/app.D6SaVgzs.js")
+						import("../../../../_app/immutable/entry/start.sfGLCnEv.js"),
+						import("../../../../_app/immutable/entry/app.qnCBTOCK.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
