@@ -1,43 +1,43 @@
 ---
 title: "Implications"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_logic-implications.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 1.2 Implications
+## القسم 1.2 الاستلزامات
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_logic-implications-2-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكن من أداء ما يلي.[🔗](#sec_logic-implications-2-1-1)
 
-1. Explain the conditions under which an implication is true.[🔗](#sec_logic-implications-2-2-1-1) [🔗](#sec_logic-implications-2-2-1)
-2. Identify statements as equivalent to a given implication or its converse.[🔗](#sec_logic-implications-2-2-2-1) [🔗](#sec_logic-implications-2-2-2)
-3. Explain the relationship between the truth values of an implication, its converse, and its contrapositive.[🔗](#sec_logic-implications-2-2-3-1) [🔗](#sec_logic-implications-2-2-3)
+1. أن تشرح الشروط التي يكون الاستلزام (implication) تحتها صحيحاً.[🔗](#sec_logic-implications-2-2-1-1) [🔗](#sec_logic-implications-2-2-1)
+2. أن تُحدِّد العبارات المكافئة لاستلزام معطى أو لعكسه (converse).[🔗](#sec_logic-implications-2-2-2-1) [🔗](#sec_logic-implications-2-2-2)
+3. أن تشرح العلاقة بين قيم صدق الاستلزام وعكسه وعكس المقابل (contrapositive) له.[🔗](#sec_logic-implications-2-2-3-1) [🔗](#sec_logic-implications-2-2-3)
 
 [🔗](#sec_logic-implications-2)
 
-### Subsection Section Preview
+### القسم الفرعي: لمحة عن القسم
 
-#### Investigate!
+#### استكشف!
 
-Little Timmy’s Mom tells him, “If you don’t eat all your broccoli, then you will not get any ice cream.” Of course, Timmy loves his ice cream, so he quickly eats all his broccoli (which actually tastes pretty good).[🔗](#subsec-introduction-2-1-1) After dinner, when Timmy asks for his ice cream, he is told no! Does Timmy have a right to be upset? Why or why not?[🔗](#subsec-introduction-2-1-2) [🔗](#subsec-introduction-2)By far, the most important type of statement in mathematics is the implication. It is also the least intuitive of our basic molecular statement types. Our goal in this section is to become more familiar with this key concept.[🔗](#subsec-introduction-3) To see why this sort of statement is so prevalent, consider the *Pythagorean Theorem*. Despite what social media might claim, the Pythagorean Theorem is not \begin{equation*} a^2 + b^2 = c^2\text{.} \end{equation*} Okay, sure, that has a variable in it, so we must be using the convention to take the universal generalization, \begin{equation*} \forall a,b,c \in \R \left( a^2 + b^2 = c^2 \right)\text{.} \end{equation*} So \(1^2 + 5^2 = 2^2\text{???}\) Okay, fine. The equation is true as long as \(a\) and \(b\) are the lengths of the legs of a right triangle and \(c\) is the length of the hypotenuse. In other words: [🔗](#subsec-introduction-4)
+تخبر أم تيمي الصغير ابنها: «إذا لم تأكل كل البروكلي، فلن تحصل على أي مثلجات.» وبالطبع يحب تيمي المثلجات، لذا أسرع فأكل كل البروكلي (ذي الطعم الجيد في الواقع).[🔗](#subsec-introduction-2-1-1) وبعد العشاء، حين طلب تيمي مثلجاته، قيل له لا! أيحق لتيمي أن ينزعج؟ ولماذا أو لماذا لا؟[🔗](#subsec-introduction-2-1-2) [🔗](#subsec-introduction-2)إن أهم أنواع العبارات في الرياضيات على الإطلاق هو الاستلزام. وهو أيضاً أقل أنواع العبارات المركبة (molecular statements) الأساسية حدساً. وهدفنا في هذا القسم أن نزيد تألّفنا بهذا المفهوم المحوري.[🔗](#subsec-introduction-3) ولمعرفة سبب انتشار هذا النوع من العبارات بهذا القدر، تأمّل *نظرية فيثاغورس*. فعلىغم مما قد تدّعيه وسائل التواصل الاجتماعي، فإن نظرية فيثاغورس ليست \begin{equation*} a^2 + b^2 = c^2\text{.} \end{equation*} حسناً، طبعاً، فيها متغير، لذا علينا أن نأخذ التعميم الكلي (universal generalization)، \begin{equation*} \forall a,b,c \in \R \left( a^2 + b^2 = c^2 \right)\text{.} \end{equation*} إذاً \(1^2 + 5^2 = 2^2\text{???}\) حسناً، حسناً. المعادلة صحيحة ما دام \(a\) و\(b\) هما طولَا ضلعي المثلث القائم، و\(c\) هو طول الوتر (hypotenuse). بمعنى آخر: [🔗](#subsec-introduction-4)
 
 > 
-> > *If* \(a\) and \(b\) are the lengths of the legs of a right triangle with hypotenuse of length \(c\text{,}\) *then* \(a^2 + b^2 = c^2\text{.}\)[🔗](#subsec-introduction-5-1)
+> > *إذا* كان \(a\) و\(b\) طولَي ضلعي مثلث قائم ووتره طوله \(c\text{,}\) *فإن* \(a^2 + b^2 = c^2\text{.}\)[🔗](#subsec-introduction-5-1)
 > > [🔗](#subsec-introduction-5)
 
-Math is about making general claims, but a claim is rarely going to be true of absolutely *every* mathematical object. The way we *restrict* our claims to a particular type of object is with an implication: “Take any object you like, *if* it is of the right type, *then* this thing is true about it.”[🔗](#subsec-introduction-6) Similarly, as we saw in the [Quantifiers and Predicates](sec_logic-statements.html#subsec_logic-statements-quant) subsection, when we make claims like “Every square is a rectangle,” we really have an implication: “If something is a square, then it is a rectangle.”[🔗](#subsec-introduction-7) Here is a reminder of what we mean by an implication.[🔗](#subsec-introduction-8)
+تدور الرياضيات حول تقديم ادعاءات عامة، لكن نادراً ما يكون الادعاء صحيحاً بالنسبة إلى *كل* كائن رياضي على الإطلاق. إن الطريقة التي *نقصر* بها ادعاءاتنا على نوع معيّن من الكائنات هي الاستلزام: «خذ أي كائن شئت، *فإذا* كان من النوع المناسب، *فإن* هذا الأمر صحيح بالنسبة إليه.»[🔗](#subsec-introduction-6) وعلى نحو مماثل، كما رأينا في القسم الفرعي [الكمّات والمُسندات](sec_logic-statements.html#subsec_logic-statements-quant)، حين نقدم ادعاءات مثل «كل مربع مستطيل»، فإننا في الواقع نصوغ استلزاماً: «إذا كان شيء ما مربعاً، فإنه مستطيل.»[🔗](#subsec-introduction-7) وفيما يلي تذكير بما نعنيه بالاستلزام.[🔗](#subsec-introduction-8)
 
-#### Definition 1.2.1. Implication.
+#### التعريف 1.2.1. الاستلزام.
 
-An implication (or conditional) is a molecular statement of the form \begin{equation*} P \imp Q \end{equation*} where \(P\) and \(Q\) are statements. We say that
+الاستلزام (أو الشرطي (conditional)) هو عبارة مركّبة من الشكل \begin{equation*} P \imp Q \end{equation*} حيث \(P\) و\(Q\) عبارتان. ونقول إن:
 
-- \(P\) is the hypothesis (or antecedent). [🔗](#subsec-introduction-9-8-1-6-1)
-- \(Q\) is the conclusion (or consequent). [🔗](#subsec-introduction-9-8-1-6-2)
+- \(P\) هي الفرضية (hypothesis) (أو المقدمة (antecedent)). [🔗](#subsec-introduction-9-8-1-6-1)
+- \(Q\) هي النتيجة (conclusion) (أو اللاحقة (consequent)). [🔗](#subsec-introduction-9-8-1-6-2)
 
-[🔗](#subsec-introduction-9-8-1) An implication is *true* provided \(P\) is false or \(Q\) is true (or both), and *false* otherwise. In particular, the only way for \(P \imp Q\) to be false is for \(P\) to be true *and* \(Q\) to be false.[🔗](#subsec-introduction-9-8-2) [🔗](#subsec-introduction-9)The definition of truth of an implication can also be represented as a truth table:[🔗](#subsec-introduction-10)
+[🔗](#subsec-introduction-9-8-1) الاستلزام *صحيح* ما دام \(P\) خاطئة أو \(Q\) صحيحة (أو كلتيهما)، و*خاطئ* فيما عدا ذلك. وبشكل خاص، فالطريقة الوحيدة لأن يكون \(P \imp Q\) خاطئاً هي أن تكون \(P\) صحيحة *وأن* تكون \(Q\) خاطئة.[🔗](#subsec-introduction-9-8-2) [🔗](#subsec-introduction-9)كما يمكن التعبير عن تعريف صدق الاستلزام في صورة جدول صدق (truth table):[🔗](#subsec-introduction-10)
 
 | \(P\) | \(Q\) | \(P \imp Q\) |
 | --- | --- | --- |
@@ -46,277 +46,277 @@ An implication (or conditional) is a molecular statement of the form \begin{equa
 | F | T | T |
 | F | F | T |
 
-Figure 1.2.2. The truth table for \(P \imp Q\text{.}\)[🔗](#fig-implication-tt)Does this truth table make sense? Should we believe it? Look in particular at the third row: F, T, T, and consider the implication, “If \(5 \lt 3\) then \(5+3 = 8\text{.}\)” Does that statement *feel* true? The truth table says it should be (since \(5 \lt 3\) is false, and \(5+3 = 8\) is true).[🔗](#subsec-introduction-12) Much of what we will do in the remainder of this section is convince ourselves that this truth table makes sense.[🔗](#subsec-introduction-13)
+الشكل 1.2.2. جدول الصدق لـ \(P \imp Q\text{.}\)[🔗](#fig-implication-tt)هل هذا جدول الصدق منطقي؟ وهل ينبغي أن نصدّقه؟ لاحظ على وجه التحديد الصف الثالث: F، T، T، وتأمّل الاستلزام «إذا \(5 \lt 3\) فإن \(5+3 = 8\text{.}\)» هل *يبدو* أن هذه العبارة صحيحة؟ يقول جدول الصدق إنها يجب أن تكون كذلك (لأن \(5 \lt 3\) خاطئة، و\(5+3 = 8\) صحيحة).[🔗](#subsec-introduction-12) إن كثيراً مما سنفعله في بقية هذا القسم إنما هو أن نُقنع أنفسنا بأن جدول الصدق هذا منطقي.[🔗](#subsec-introduction-13)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=ws-preview-implications)
+#### ورقة العمل: نشاط استطلاعي[&#xe8ad;](?printpreview=ws-preview-implications)
 
 #### 1.
 
-Consider the statement, “If Tommy doesn’t eat his broccoli, then he will not get any ice cream.” Which of the following statements mean the same thing (i.e., will be true in the same situations)? Select all that apply.[🔗](#pa-sec-logic-implications-tommy-1-1)
+تأمّل العبارة: «إذا لم يأكل تومي البروكلي، فلن يحصل على أي مثلجات.» أيّ من العبارات التالية تعني الشيء ذاته (أي أنها تصدق في المواقف نفسها)؟ اختر كل ما ينطبق.[🔗](#pa-sec-logic-implications-tommy-1-1)
 
-- If Tommy does eat his broccoli, then he will get ice cream.
-- Are you sure? Did we say what happens when he *does* eat the broccoli, or only what happens when he doesn’t?
-- If Tommy gets ice cream, then he ate his broccoli.
-- If he got ice cream, he must have eaten the broccoli, because if he didn’t, then he wouldn’t have had ice cream.
-- If Tommy doesn’t get ice cream, then he didn’t eat his broccoli.
-- Could there have been a reason that Tommy doesn’t get ice cream even if he did eat his broccoli?
-- Tommy ate his broccoli and still didn’t get any ice cream.
-- This is the opposite of the original statement (it is false precisely when the original statement is true).
+- إذا كان تومي قد أكل البروكلي، فإنه سيحصل على المثلجات.
+- هل أنت متأكد؟ ألم نقل ماذا يحدث عندما *يأكل* البروكلي، أم قلنا فقط ماذا يحدث عندما لا يأكله؟
+- إذا حصل تومي على المثلجات، فإنه قد أكل البروكلي.
+- إذا حصل على المثلجات، فلا بد أنه أكل البروكلي، لأنه لو لم يكن قد أكله لما حصل على المثلجات.
+- إذا لم يحصل تومي على المثلجات، فإنه لم يأكل البروكلي.
+- هل قد يوجد سبب يمنع تومي من الحصول على المثلجات حتى لو كان قد أكل البروكلي؟
+- أكل تومي البروكلي ولم يحصل على أي مثلجات على أي حال.
+- هذه عكس العبارة الأصلية (فهي خاطئة على وجه الدقة عندما تكون العبارة الأصلية صحيحة).
 
 [🔗](#pa-sec-logic-implications-tommy)
 
 #### 2.
 
-Suppose that your shady uncle offers you the following deal: If you loan him your car, then he will bring you tacos. In which of the following situations would it be fair to say that your uncle is a liar (i.e., that his statement was false)? Select all that apply.[🔗](#pa-sec-logic-implications-falseimp-1-1)
+لنفترض أن عمّك الخادع يعرض عليك الصفقة التالية: إذا أعرته سيارتك، فإنه سيحضر لك التاكو. في أيّ من المواقف التالية يكون من الإنصاف القول إن عمّك كاذب (أي إن عبارته كانت خاطئة)؟ اختر كل ما ينطبق.[🔗](#pa-sec-logic-implications-falseimp-1-1)
 
-- You loan him your car. He brings you tacos.
-- You loan him your car. He never buys you tacos.
-- You don’t loan him your car. He still brings you tacos.
-- Maybe he just really likes giving you tacos. That’s not enough to say he was a liar, is it?
-- You don’t loan him your car. He never brings you tacos.
+- أعرته سيارتك. أحضر لك التاكو.
+- أعرته سيارتك. لم يشترِ لك التاكو أبداً.
+- لم تُعره سيارتك. أحضر لك التاكو على أي حال.
+- ربما أنه يحب مجرد إعطائك التاكو فحسب. وهذا لا يكفي للقول إنه كان كاذباً، أليس كذلك؟
+- لم تُعره سيارتك. لم يحضر لك التاكو أبداً.
 
 [🔗](#pa-sec-logic-implications-falseimp)
 
 #### 3.
 
-Consider the *sentence*, “If \(x \ge 10\text{,}\) then \(x^2 \ge 25\text{.}\)” This sentence becomes a statement when we replace \(x\) by a value, or “capture” the \(x\) in the scope of a quantifier. Which of the following claims are true (select all that apply)?[🔗](#pa-sec-logic-implications-quant-1-1)
+تأمّل *الجملة*: «إذا \(x \ge 10\text{,}\) فإن \(x^2 \ge 25\text{.}\)» تتحوّل هذه الجملة إلى عبارة عندما نستبدل \(x\) بقيمة ما، أو عندما «نأسر» \(x\) في نطاق كمّ ما. أيّ من الادعاءات التالية صحيحة (اختر كل ما ينطبق)؟[🔗](#pa-sec-logic-implications-quant-1-1)
 
-- If we replace \(x\) by \(15\text{,}\) then the resulting statement is true. (Note, \(15^2 = 225\text{.}\))
-- If we replace \(x\) by \(3\text{,}\) then the resulting statement is true.
-- If we replace \(x\) by \(6\text{,}\) then the resulting statement is true.
-- The universal generalization (“for all \(x\text{,}\) if \(x \ge 10\) the \(x^2 \ge 25\)”) is true.
-- There is a number we could replace \(x\) with that makes the statement false.
+- إذا استبدلنا \(x\) بالعدد \(15\text{,}\) فستكون العبارة الناتجة صحيحة. (لاحظ أن \(15^2 = 225\text{.}\))
+- إذا استبدلنا \(x\) بالعدد \(3\text{,}\) فستكون العبارة الناتجة صحيحة.
+- إذا استبدلنا \(x\) بالعدد \(6\text{,}\) فستكون العبارة الناتجة صحيحة.
+- التعميم الكلي («لكل \(x\text{,}\) إذا كان \(x \ge 10\) فإن \(x^2 \ge 25\)») صحيح.
+- هناك عدد يمكننا استبدال \(x\) به يجعل العبارة خاطئة.
 
 [🔗](#pa-sec-logic-implications-quant)
 
 #### 4.
 
-Consider the statement, “If I see a movie, then I eat popcorn” (which happens to be true). Based solely on your intuition of English, which of the following statements mean the same thing? Select all that apply.[🔗](#pa-sec-logic-implications-equiv-1-1)
+تأمّل العبارة: «إذا شاهدت فيلماً، فإنني آكل الفشار» (وهي عبارة صحيحة بالمناسبة). اعتماداً على حدسك باللغة الإنجليزية وحدها، أيّ من العبارات التالية تعني الشيء ذاته؟ اختر كل ما ينطبق.[🔗](#pa-sec-logic-implications-equiv-1-1)
 
-- If I eat popcorn, then I see a movie.
-- This is not equivalent to the original statement. Maybe I also eat popcorn when I watch TV? In that case, the original statement would be true, but this one would be false.
-- If I don’t eat popcorn, then I don’t see a movie.
-- Correct.
-- It is necessary that I eat popcorn when I see a movie.
-- This is equivalent to the original statement (although here “necessary” is used in a logical sense).
-- To see a movie, it is sufficient for me to eat popcorn.
-- Just because I eat popcorn, doesn’t mean I see a movie. I might eat popcorn in other situations. So this is not equivalent to the original statement.
-- I only watch a movie if I eat popcorn.
-- Another way of saying this is, “I watch a movie only if I eat popcorn.” This is equivalent to the original statement.
+- إذا أكلت الفشار، فإنني أشاهد فيلماً.
+- هذه ليست مكافئة للعبارة الأصلية. فربما آكل الفشار أيضاً عندما أشاهد التلفاز؟ في هذه الحالة تكون العبارة الأصلية صحيحة، لكن هذه تكون خاطئة.
+- إذا لم آكل الفشار، فإنني لا أشاهد فيلماً.
+- صحيح.
+- من الضروري أن آكل الفشار عندما أشاهد فيلماً.
+- هذه مكافئة للعبارة الأصلية (مع أن «الضروري» هنا يُستعمل بالمعنى المنطقي).
+- لمشاهدة فيلم يكفي أن آكل الفشار.
+- مجرد أن آكل الفشار لا يعني أنني أشاهد فيلماً. فربما آكل الفشار في مواقف أخرى. لذا فهذه ليست مكافئة للعبارة الأصلية.
+- لا أشاهد فيلماً إلا إذا أكلت الفشار.
+- طريقة أخرى لقول ذلك هي: «لا أشاهد فيلماً إلا إذا أكلت الفشار.» وهذه مكافئة للعبارة الأصلية.
 
 [🔗](#pa-sec-logic-implications-equiv)[🔗](#ws-preview-implications)[🔗](#subsec-introduction)
 
-### Subsection Understanding the Truth Table
+### القسم الفرعي: فهم جدول الصدق
 
-The truth value of the implication is determined by the truth values of its two parts. Our definition of the truth conditions for an implication says that there is only one way for an implication to be false: when the hypothesis is true and the conclusion is false.[🔗](#subsec_implications-2)
+تتحدد قيمة صدق الاستلزام بقيمتي صدق جزأيه. ويبيّن تعريفنا لشروط صدق الاستلزام أن هناك طريقة واحدة فقط لأن يكون الاستلزام خاطئاً: أن تكون الفرضية صحيحة والنتيجة خاطئة.[🔗](#subsec_implications-2)
 
-#### Example 1.2.3.
+#### المثال 1.2.3.
 
-Consider the statement:[🔗](#subsec_implications-3-1-1)
+تأمّل العبارة:[🔗](#subsec_implications-3-1-1)
 
-> If Bob gets a 90 on the final, then Bob will pass the class.[🔗](#subsec_implications-3-1-2-1)
+> إذا حصل بوب على درجة 90 في الاختبار النهائي، فإن بوب سينجح في المساق.[🔗](#subsec_implications-3-1-2-1)
 > > [🔗](#subsec_implications-3-1-2)
 
-This is definitely an implication: \(P\) is the statement “Bob gets a 90 on the final,” and \(Q\) is the statement “Bob will pass the class.”[🔗](#subsec_implications-3-1-3) Suppose I made that statement to Bob. In what circumstances would it be fair to call me a liar? What if Bob really did get a 90 on the final, and he did pass the class? Then I have not lied; my statement is true. However, if Bob did get a 90 on the final and did not pass the class, then I lied, making the statement false. The tricky case is this: What if Bob did not get a 90 on the final? Maybe he passes the class, maybe he doesn’t. Did I lie in either case? I think not. In these last two cases, \(P\) was false, and the statement \(P \imp Q\) was true. In the first case, \(Q\) was true, and so was \(P \imp Q\text{.}\) So \(P \imp Q\) is true when either \(P\) is false or \(Q\) is true.[🔗](#subsec_implications-3-1-4) [🔗](#subsec_implications-3)Just to be clear, although we sometimes read \(P \imp Q\) as “\(P\) *implies* \(Q\)”, we are not insisting that there is some *causal* relationship between the statements \(P\) and \(Q\) (although there might be). “If \(x \lt y\text{,}\) then \(x+1 \lt y+1\text{,}\)” is a true statement (or at least, its universal generalization is). We know it is true because we understand how the two parts interact. If you add 1 to two numbers \(x\) and \(y\text{,}\) then their order does not change. But the statement, “if \(1 \lt 2\text{,}\) then Euclid studied geometry” is also a true implication.[🔗](#subsec_implications-4)
+هذه عبارة استلزامية بلا شك: فـ \(P\) هي العبارة «يحصل بوب على 90 في الاختبار النهائي»، و\(Q\) هي العبارة «سينجح بوب في المساق».[🔗](#subsec_implications-3-1-3) لنفترض أنني قلت ذلك لبوب. في أيّ ظروف يكون من الإنصاف أن تسمّني كاذباً؟ وماذا لو حصل بوب فعلاً على 90 في الاختبار النهائي ونجح في المساق؟ عندئذ لا تكون قد كذبت؛ فعبارتي صحيحة. لكن إذا حصل بوب على 90 في الاختبار النهائي ولم ينجح في المساق، فقد كذبت، فيصبحت العبارة خاطئة. أما الحالة الصعبة فهي هذه: وماذا لو لم يحصل بوب على 90 في الاختبار النهائي؟ ربما ينجح في المساق، وربما لا ينجح. هل كذبت في أيّ من هاتين الحالتين الأخيرتين؟ أظن لا. فهاتان الحالتان كانتا \(P\) خاطئة، وعبارة \(P \imp Q\) صحيحة. وفي الحالة الأولى كانت \(Q\) صحيحة، وبالتالي كانت \(P \imp Q\text{.}\) صحيحة أيضاً. إذاً يكون \(P \imp Q\) صحيحاً عندما تكون \(P\) خاطئة أو تكون \(Q\) صحيحة.[🔗](#subsec_implications-3-1-4) [🔗](#subsec_implications-3)ولنكن واضحين: رغم أننا نقرأ أحياناً \(P \imp Q\) على أنها «\(P\) *تستلزم* \(Q\)»، فإننا لا نؤكد وجود علاقة *سببية* بين العبارتين \(P\) و\(Q\) (رغم أنه قد تكون موجودة). إن العبارة «إذا \(x \lt y\text{,}\) فإن \(x+1 \lt y+1\text{,}\)» عبارة صحيحة (أو على الأقل تعميمها الكلي صحيح). ونعرف أنها صحيحة لأننا نفهم كيف يتفاعل الجزءان. فإذا أضفت 1 إلى عددين \(x\) و\(y\text{,}\) فإن ترتيبهما لا يتغير. لكن العبارة «إذا \(1 \lt 2\text{,}\) فإن إقليدس درس الهندسة» هي أيضاً استلزام صحيح.[🔗](#subsec_implications-4)
 
-#### Example 1.2.4.
+#### المثال 1.2.4.
 
-Decide which of the following statements are true and which are false. Briefly explain.
+حدّد أيّ من العبارات التالية صحيحة وأيّها خاطئة. واشرح بإيجاز.
 
-1. If \(1=1\text{,}\) then most horses have 4 legs.[🔗](#subsec_implications-5-1-1-1-1-1) [🔗](#subsec_implications-5-1-1-1-1)
-2. If \(0=1\text{,}\) then \(1=1\text{.}\)[🔗](#subsec_implications-5-1-1-1-2-1) [🔗](#subsec_implications-5-1-1-1-2)
-3. If 8 is a prime number, then the 7624th digit of \(\pi\) is an 8.[🔗](#subsec_implications-5-1-1-1-3-1) [🔗](#subsec_implications-5-1-1-1-3)
-4. If the 7624th digit of \(\pi\) is an 8, then \(2+2 = 4\text{.}\)[🔗](#subsec_implications-5-1-1-1-4-1) [🔗](#subsec_implications-5-1-1-1-4)
+1. إذا \(1=1\text{,}\) فإن معظم الخيل لها 4 أرجل.[🔗](#subsec_implications-5-1-1-1-1-1) [🔗](#subsec_implications-5-1-1-1-1)
+2. إذا \(0=1\text{,}\) فإن \(1=1\text{.}\)[🔗](#subsec_implications-5-1-1-1-2-1) [🔗](#subsec_implications-5-1-1-1-2)
+3. إذا كان 8 عدداً أولياً، فإن الرقم 7624 من خانات \(\pi\) يساوي 8.[🔗](#subsec_implications-5-1-1-1-3-1) [🔗](#subsec_implications-5-1-1-1-3)
+4. إذا كان الرقم 7624 من خانات \(\pi\) يساوي 8، فإن \(2+2 = 4\text{.}\)[🔗](#subsec_implications-5-1-1-1-4-1) [🔗](#subsec_implications-5-1-1-1-4)
 
-[🔗](#subsec_implications-5-1-1) Solution. All four of the statements are true. Remember, the only way for an implication to be false is for the *if* part to be true and the *then* part to be false.
+[🔗](#subsec_implications-5-1-1) الحل. العبارات الأربع كلها صحيحة. تذكّر أن الطريقة الوحيدة لأن يكون الاستلزام خاطئاً هي أن يكون جزء «إذا» صحيحاً وجزء «فإن» خاطئاً.
 
-1. Here both the hypothesis and the conclusion are true, so the implication is true. It does not matter that there is no meaningful connection between the true mathematical fact and the fact about horses.[🔗](#subsec_implications-5-2-1-3-1-1) [🔗](#subsec_implications-5-2-1-3-1)
-2. Here the hypothesis is false and the conclusion is true, so the implication is true.[🔗](#subsec_implications-5-2-1-3-2-1) [🔗](#subsec_implications-5-2-1-3-2)
-3. I have no idea what the 7624th digit of \(\pi\) is, but this does not matter. Since the hypothesis is false, the implication is automatically true.[🔗](#subsec_implications-5-2-1-3-3-1) [🔗](#subsec_implications-5-2-1-3-3)
-4. Regardless of the truth value of the hypothesis, the conclusion is true, making the implication true.[🔗](#subsec_implications-5-2-1-3-4-1) [🔗](#subsec_implications-5-2-1-3-4)
+1. هنا الفرضية والنتيجة كلتاهما صحيحة، لذا فإن الاستلزام صحيح. ولا يهمّ أنه لا توجد علاقة ذات معنى بين الحقيقة الرياضية والحقيقة المتعلقة بالخيل.[🔗](#subsec_implications-5-2-1-3-1-1) [🔗](#subsec_implications-5-2-1-3-1)
+2. هنا الفرضية خاطئة والنتيجة صحيحة، لذا فإن الاستلزام صحيح.[🔗](#subsec_implications-5-2-1-3-2-1) [🔗](#subsec_implications-5-2-1-3-2)
+3. لا أعرف ما هو الرقم 7624 من خانات \(\pi\)، لكن هذا لا يهمّ. فبما أن الفرضية خاطئة، فإن الاستلزام صحيح تلقائياً.[🔗](#subsec_implications-5-2-1-3-3-1) [🔗](#subsec_implications-5-2-1-3-3)
+4. بغضّ النظر عن قيمة صدق الفرضية، فإن النتيجة صحيحة، مما يجعل الاستلزام صحيحاً.[🔗](#subsec_implications-5-2-1-3-4-1) [🔗](#subsec_implications-5-2-1-3-4)
 
-[🔗](#subsec_implications-5-2-1) [🔗](#subsec_implications-5-2) [🔗](#subsec_implications-5)This is a strange example and isn’t really how we use implications anyway. This strangeness is not just mathematicians being stubborn though. The truth conditions for implications *must* be like they are for mathematics to make sense. Let’s see why.[🔗](#subsec_implications-6)
+[🔗](#subsec_implications-5-2-1) [🔗](#subsec_implications-5-2) [🔗](#subsec_implications-5)هذا مثال غريب، وليس في الحقيقة طريقة استخدامنا للاستلزامات. لكن هذا الغرابة ليس مجرّد عناد من الرياضيين. إن شروط صدق الاستلزامات *يجب* أن تكون كما هي حتى تصحّ الرياضيات. فلنرَ لماذا.[🔗](#subsec_implications-6)
 
-#### Example 1.2.5.
+#### المثال 1.2.5.
 
-Consider the statement, “All squares are rectangles,” which can also be phrased as, “For all shapes, if the shape is a square, then it is a rectangle.” Is this statement true or false? Are we sure? What about the following three shapes?[🔗](#subsec_implications-7-1-1) ![three shapes, a square, a non-square rectangle, and a triangle.](generated/latex-image/img-squares.svg) Solution. Of course the statement is true. A square is a 4-sided plane figure with 4 right angles and 4 equal-length sides, while a rectangle is a 4-sided plane figure with 4 right angles.[🔗](#subsec_implications-7-2-1) However, what we mean when we consider a universal statement like this is that, no matter what we “plug in” for the variable (“the shape” in this case), the resulting statement is true. When the statement is about a particular shape, we have an implication \(P \imp Q\text{.}\) This means it must be true that, if the actual shape on the left is a square, then it is a rectangle. Great. The shape is a square (\(P\) is true) and is a rectangle (\(Q\) is true), so yes, the implication is true.[🔗](#subsec_implications-7-2-2) Is the implication true of the rectangle in the middle? Well, that shape is not a square (\(P\) is false), and it is a rectangle (\(Q\) is true). But look, we believe that all squares are rectangles, so the statement must be true. Even of a rectangle. The only way this works is if “false implies true” is true![🔗](#subsec_implications-7-2-3) Similarly, all squares are rectangles is a true statement, even when we look at a triangle. \(P\) is false (the triangle is not a square), and \(Q\) is false (the triangle is not a rectangle). Thankfully, we defined implications to be true in this case as well.[🔗](#subsec_implications-7-2-4) We have given shapes that illustrate lines 1, 3, and 4 of the truth table for implications ([Figure 1.2.2](sec_logic-implications.html#fig-implication-tt)). What shape illustrates line 2? That would need to be a shape that was a square and was not a rectangle.... Of course we can’t find one, precisely because the statement is true![🔗](#subsec_implications-7-2-5) [🔗](#subsec_implications-7-2) [🔗](#subsec_implications-7)[🔗](#subsec_implications)
+تأمّل العبارة: «كل مربع مستطيل»، والتي يمكن صياغتها أيضاً هكذا: «لكل الأشكال، إذا كان الشكل مربعاً، فإنه مستطيل.» فهل هذه العبارة صحيحة أم خاطئة؟ هل نحن متأكدون؟ وماذا عن الأشكال الثلاثة التالية؟[🔗](#subsec_implications-7-1-1) ![ثلاثة أشكال: مربع، ومستطيل غير مربع، ومثلث.](generated/latex-image/img-squares.svg) الحل. العبارة صحيحة بالطبع. فالمربع شكل مستوي ذو 4 أضلاع و4 زوايا قائمة و4 أضلاع متساوية الطول، بينما المستطيل شكل مستوي ذو 4 أضلاع و4 زوايا قائمة.[🔗](#subsec_implications-7-2-1) غير أن ما نعنيه حين نأخذ بعين الاعتبار عبارة كهذه ذات تعميم كلي هو أن العبارة الناتجة صحيحة مهما ما «أدخلناه» في المتغير («الشكل» في هذه الحالة). وحين تكون العبارة عن شكل بعينه، لدينا استلزام \(P \imp Q\text{.}\) وهذا يعني أنه يجب أن يكون صحيحاً: إذا كان الشكل المعني مربعاً، فإنه مستطيل. ممتاز. فالشكل مربع (\(P\) صحيحة) وهو مستطيل (\(Q\) صحيحة)، إذن نعم، الاستلزام صحيح.[🔗](#subsec_implications-7-2-2) فهل الاستلزام صحيح بالنسبة إلى المستطيل في الوسط؟ حسناً، ذلك الشكل ليس مربعاً (\(P\) خاطئة)، وهو مستطيل (\(Q\) صحيحة). لكن لاحظ أننا نؤمن بأن كل المربعات مستطيلات، لذا يجب أن تكون العبارة صحيحة. حتى بالنسبة إلى مستطيل. والطريقة الوحيدة التي يعمل بها هذا هي أن تكون عبارة «الخاطئة تستلزم الصحيحة» صحيحة![🔗](#subsec_implications-7-2-3) وبالمثل، فإن عبارة «كل مربع مستطيل» عبارة صحيحة حتى حين ننظر إلى مثلث. فـ \(P\) خاطئة (المثلث ليس مربعاً)، و\(Q\) خاطئة (المثلث ليس مستطيلاً). ولحسن الحظ فقد عرّفنا الاستلزامات بأنها صحيحة في هذه الحالة أيضاً.[🔗](#subsec_implications-7-2-4) وقد قدّمنا أشكالاً توضّح السطر 1 والسطر 3 والسطر 4 من جدول صدق الاستلزامات ([الشكل 1.2.2](sec_logic-implications.html#fig-implication-tt)). فما الشكل الذي يوضّح السطر 2؟ سيكون شكلاً كان مربعاً ولم يكن مستطيلاً.... وبالطبع لا يمكننا إيجاد مثل هذا الشكل، والسبب تحديداً هو أن العبارة صحيحة![🔗](#subsec_implications-7-2-5) [🔗](#subsec_implications-7-2) [🔗](#subsec_implications-7)[🔗](#subsec_implications)
 
-### Subsection Related Statements
+### القسم الفرعي: عبارات ذات صلة
 
-An implication is a way of expressing a relationship between two statements. It is often interesting to ask whether there are other relationships between the statements. Here we introduce some common language to address this question.[🔗](#subsec-related-statements-2)
+الاستلزام طريقة للتعبير عن علاقة بين عبارتين. وكثيراً ما يكون من المثير للاهتمام أن نسأل: هل هناك علاقات أخرى بين هاتين العبارتين؟ وفيما يلي نقدّم بعض المصطلحات الشائعة لمعالجة هذا السؤال.[🔗](#subsec-related-statements-2)
 
-#### Definition 1.2.6. Converse, Contrapositive, and Inverse.
+#### التعريف 1.2.6. العكس، وعكس المقابل، والمعاكس.
 
-Given an implication \(P \imp Q\text{,}\) we say,
+بفرض استلزام \(P \imp Q\text{,}\) نقول إن:
 
-- The converse is the statement \(Q \imp P\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-1-1) [🔗](#subsec-related-statements-3-5-1-2-1)
-- The contrapositive is the statement \(\neg Q \imp \neg P\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-2-1) [🔗](#subsec-related-statements-3-5-1-2-2)
-- The inverse is the statement, \(\neg P \imp \neg Q\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-3-1) [🔗](#subsec-related-statements-3-5-1-2-3)
+- العكس هو العبارة \(Q \imp P\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-1-1) [🔗](#subsec-related-statements-3-5-1-2-1)
+- عكس المقابل هو العبارة \(\neg Q \imp \neg P\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-2-1) [🔗](#subsec-related-statements-3-5-1-2-2)
+- المعاكس هو العبارة \(\neg P \imp \neg Q\text{.}\)[🔗](#subsec-related-statements-3-5-1-2-3-1) [🔗](#subsec-related-statements-3-5-1-2-3)
 
 [🔗](#subsec-related-statements-3-5-1) [🔗](#subsec-related-statements-3)
 
-#### Example 1.2.7.
+#### المثال 1.2.7.
 
-Consider the implication, “If you clean your room, then you can go to the party.” Give the converse, contrapositive, and inverse of this statement[🔗](#subsec-related-statements-4-1-1) Solution. The converse is, “If you can go to the party, then you clean your room.”[🔗](#subsec-related-statements-4-2-1) The contrapositive is, “If you can’t go to the party, then you don’t clean your room.”[🔗](#subsec-related-statements-4-2-2) The inverse is, “If you don’t clean your room, then you can’t go to the party.”[🔗](#subsec-related-statements-4-2-3) [🔗](#subsec-related-statements-4-2) [🔗](#subsec-related-statements-4)Symbolically, both the converse and the contrapositive *switch* the order of the two parts of the statement (or alternatively, think about turning the arrow to point in the other direction). The contrapositive and the inverse take the *negation* of both of the statements. Notice that if you take the converse (switch the order) and then take the contrapositive *of* that converse (switch the order back and negate both parts) you get the inverse. So the inverse is nothing more than the contrapositive of the converse. Or the converse of the contrapositive, which is a fun fact to mention at parties.[🔗](#subsec-related-statements-5) When considering statements with quantifiers, we ignore the outside quantifiers when forming the converse, contrapositive, and inverse.[🔗](#subsec-related-statements-6)
+تأمّل الاستلزام: «إذا رتّبتغرفتك، فإنك تستطيع الذهاب إلى الحفلة.» اكتب عكسه وعكس مقابله ومعاكسه[🔗](#subsec-related-statements-4-1-1) الحل. العكس هو: «إذا استطعت الذهاب إلى الحفلة، فإنك رتّبتغرفتك.»[🔗](#subsec-related-statements-4-2-1) وعكس المقابل هو: «إذا لم تستطع الذهاب إلى الحفلة، فإنك لم ترتّب غرفتك.»[🔗](#subsec-related-statements-4-2-2) والمعاكس هو: «إذا لم ترتّب غرفتك، فإنك لا تستطيع الذهاب إلى الحفلة.»[🔗](#subsec-related-statements-4-2-3) [🔗](#subsec-related-statements-4-2) [🔗](#subsec-related-statements-4)رمزياً، كلٌّ من العكس وعكس المقابل *يبادل* ترتيب جزأَي العبارة (أو فكّر بدلاً من ذلك في قلب السهم ليشير إلى الاتجاه الآخر). أما عكس المقابل والمعاكس فيأخذان *نفي* كلٍّ من العبارتين. لاحظ أن أخذك للعكس (مبادلة الترتيب) ثم أخذك لعكس المقابل *للعكس نفسه* (إعادة الترتيب ونفي الجزأين) يعطيك المعاكس. إذن المعاكس ليس إلا عكس المقابل للعكس. أو عكس عكس المقابل، وهي حقيقة طريفة تُذكر في الحفلات.[🔗](#subsec-related-statements-5) وحين ننظر في عبارات تحتوي كمّات، فإننا نتجاهل الكمّات الخارجية عند تكوين العكس وعكس المقابل والمعاكس.[🔗](#subsec-related-statements-6)
 
-#### Quantifiers and the Converse, Contrapositive, and Inverse.
+#### الكمّات والعكس وعكس المقابل والمعاكس.
 
-A quantified implication \(\forall x (P(x) \imp Q(x))\) has: Converse[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-1) \(\displaystyle \forall x (Q(x) \imp P(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-1-2) Contrapositive[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-2) \(\displaystyle \forall x (\neg Q(x) \imp \neg P(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-2-2) Inverse[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-3) \(\displaystyle \forall x (\neg P(x) \imp \neg Q(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-3-2) [🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2) [🔗](#assemblage-converse-contrapositive-inverse-quantifiers)
+للاستلزام المُكمَّم \(\forall x (P(x) \imp Q(x))\) ما يلي: العكس[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-1) \(\displaystyle \forall x (Q(x) \imp P(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-1-2) عكس المقابل[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-2) \(\displaystyle \forall x (\neg Q(x) \imp \neg P(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-2-2) المعاكس[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-3) \(\displaystyle \forall x (\neg P(x) \imp \neg Q(x))\)[🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2-2-3-2) [🔗](#assemblage-converse-contrapositive-inverse-quantifiers-2) [🔗](#assemblage-converse-contrapositive-inverse-quantifiers)
 
-#### Note 1.2.8.
+#### ملاحظة 1.2.8.
 
-It is unlikely that we would encounter a statement of the form \(\exists x (P(x) \imp Q(x))\text{,}\) since this would be automatically true if there was any \(x\) that made \(P(x)\) false. But if we did, the same rules would apply to the converse, contrapositive, and inverse as above: Just ignore the quantifier when swapping and/or negating the parts of the implication.[🔗](#subsec-related-statements-8-1) [🔗](#subsec-related-statements-8)For example, “For all shapes, if the shape is a square, then it is a rectangle” (i.e., all squares are rectangles) has the converse, “For all shapes, if the shape is a rectangle, then it is a square” (so all rectangles are squares).[🔗](#subsec-related-statements-9) Well, that’s not true! There exist shapes that are rectangles and are NOT squares. Indeed, this is an example of a statement that is true with a false converse. There are lots of examples of this throughout mathematics. There are also examples of true implications that have true converses. You just can’t know from the logic. 2 It turns out the Pythagorean Theorem is one such statement. It is also true that *if* \(a^2 + b^2 = c^2\text{,}\) *then* there is a right triangle with legs of lengths \(a\) and \(b\) and hypotenuse of length \(c\text{.}\) So we could have also written the theorem as a biconditional: “\(a\) and \(b\) are the lengths of the legs of a right triangle with hypotenuse of length \(c\) *if and only if* \(a^2 + b^2 = c^2\text{.}\)”[🔗](#subsec-related-statements-10) The contrapositive of “For all shapes, if it is a square, then it is a rectangle” is “For all shapes, if the shape is not a rectangle, then it is not a square.” This is true. In fact, *the contrapositive of a true statement is always true*![🔗](#subsec-related-statements-11) Since the contrapositive of an implication always has the same truth value as its original implication, it can often be helpful to analyze the contrapositive to decide whether an implication is true.[🔗](#subsec-related-statements-12)
+من المستبعد أن نصادف عبارة من الشكل \(\exists x (P(x) \imp Q(x))\text{,}\) لأن هذه تكون صحيحة تلقائياً إذا وُجد أي \(x\) يجعل \(P(x)\) خاطئة. لكن إن صادفناها، فإن القواعد نفسها تنطبق على العكس وعكس المقابل والمعاكس كما سبق: فتجاهل الكمّ فقط عند مبادلة و/أو نفي جزأَي الاستلزام.[🔗](#subsec-related-statements-8-1) [🔗](#subsec-related-statements-8)فعلى سبيل المثال، «لكل الأشكال، إذا كان الشكل مربعاً، فإنه مستطيل» (أي: كل مربع مستطيل) لها العكس: «لكل الأشكال، إذا كان الشكل مستطيلاً، فإنه مربع» (أي أن كل المستطيلات مربعات).[🔗](#subsec-related-statements-9) حسناً، هذا ليس صحيحاً! فهناك أشكال مستطيلات وليست مربعات. وفي الحقيقة فهذه مثال على عبارة صحيحة يكون عكسها خاطئاً. وهناك أمثلة كثيرة من هذا النوع في الرياضيات كلها. وهناك أيضاً أمثلة على استلزامات صحيحة يكون عكسها صحيحاً. ولا يمكنك أن تعرف ذلك من المنطق وحده. 2 وتبيّن أن نظرية فيثاغورس إحدى هذه العبارات. فمن الصحيح أيضاً أن *إذا* \(a^2 + b^2 = c^2\text{,}\) *فإن* هناك مثلثاً قائم الزاوية ضلعاه طولاهما \(a\) و\(b\) ووتره طوله \(c\text{.}\) ولهذا كان بإمكاننا أيضاً كتابة النظرية في صورة شرط مزدوج (biconditional): «\(a\) و\(b\) هما طولَا ضلعي مثلث قائم الزاوية ووتره طوله \(c\) *إذا وفقط إذا* \(a^2 + b^2 = c^2\text{.}\)»[🔗](#subsec-related-statements-10) وعكس مقابل «لكل الأشكال، إذا كان مربعاً، فإنه مستطيل» هو «لكل الأشكال، إذا لم يكن الشكل مستطيلاً، فإنه ليس مربعاً.» وهذه عبارة صحيحة. وفي الواقع، *عكس مقابل العبارة الصحيحة يكون صحيحاً دائماً*![🔗](#subsec-related-statements-11) ولما كان عكس مقابل الاستلزام له دائماً قيمة صدق الاستلزام الأصلي نفسها، فإنه غالباً ما يكون مفيداً تحليل عكس المقابل لتحديد ما إذا كان الاستلزام صحيحاً.[🔗](#subsec-related-statements-12)
 
-#### Example 1.2.9.
+#### المثال 1.2.9.
 
-True or false: If you draw any nine playing cards from a regular deck, then you will have at least three cards all of the same suit. Is the converse true?[🔗](#subsec-related-statements-13-1-1) Solution. True. The original implication is a little hard to analyze because there are so many combinations of nine cards. But consider the contrapositive: if you *don’t* have at least three cards all of the same suit, then you don’t have nine cards. It is easy to see why this is true. If you don’t have at least three cards in a suit, you can have at most two cards of each of the four suits, for a total of at most eight cards.[🔗](#subsec-related-statements-13-2-1) The converse: If you have at least three cards of the same suit, then you have nine cards. This is false. You could have three spades and nothing else. Note that to demonstrate that the converse (an implication) is false, we provided an example where the hypothesis is true (you do have three cards of the same suit), but where the conclusion is false (you do not have nine cards). In other words, we find some example that puts us in row 2 of the implication’s truth table.[🔗](#subsec-related-statements-13-2-2) [🔗](#subsec-related-statements-13-2) [🔗](#subsec-related-statements-13)Understanding converses and contrapositives can help understand implications and their truth values:[🔗](#subsec-related-statements-14)
+صواب أم خطأ: إذا سحبت أي تسع ورقات من مجموعة لعب اعتيادية، فإن لديك ثلاث ورقات على الأقل من النوع نفسه. فهل العكس صحيح؟[🔗](#subsec-related-statements-13-1-1) الحل. صحيح. يصعب بعض الشيء تحليل الاستلزام الأصلي لأن هناك عدداً كبيراً جداً من تركيبات التسع ورقات. لكن تأمّل عكس المقابل: إذا *لم يكن* لديك ثلاث ورقات على الأقل من النوع نفسه، فإنك لا تملك تسع ورقات. ومن السهل أن نرى لماذا هذه صحيحة. فإذا لم يكن لديك ثلاث ورقات على الأقل من نوع واحد، فيمكنك أن تملك بطاقتين كحد أقصى من كلٍّ من الأنواع الأربعة، أي بحد أقصى ثماني ورقات إجمالاً.[🔗](#subsec-related-statements-13-2-1) أما العكس: إذا كان لديك ثلاث ورقات على الأقل من النوع نفسه، فإن لديك تسع ورقات. وهذا خاطئ. إذ يمكنك أن تكون قد سحبت ثلاث ورقات من السباديـز (spades) ولا شيء غيرها. ولاحظ أن لإثبات أن العكس (وهو استلزام) خاطئ، فقد قدّمنا مثالاً تكون فيه الفرضية صحيحة (فإن لديك فعلاً ثلاث ورقات من النوع نفسه)، وتكون فيه النتيجة خاطئة (فإنك لا تملك تسع ورقات). بمعنى آخر، نجد مثالاً يضعنا في السطر 2 من جدول صدق الاستلزام.[🔗](#subsec-related-statements-13-2-2) [🔗](#subsec-related-statements-13-2) [🔗](#subsec-related-statements-13)وفهم العكس وعكس المقابل يمكن أن يساعد على فهم الاستلزامات وقيم صدقها:[🔗](#subsec-related-statements-14)
 
-#### Example 1.2.10.
+#### المثال 1.2.10.
 
-Suppose I tell Sue that if she gets a 93% on her final, then she will get an A in the class. Assuming that what I said is true, what can you conclude in the following cases:[🔗](#subsec-related-statements-15-1-1)
+لنفترض أنني أخبرت سوي أنه إذا حصلت على 93% في اختبارها النهائي، فإنها ستحصل على تقدير A في المساق. وبافتراض أن ما قلته صحيح، فما الذي تستطيع استنتاجه في الحالات التالية:[🔗](#subsec-related-statements-15-1-1)
 
-1. Sue gets a 93% on her final.[🔗](#subsec-related-statements-15-1-2-1-1-1) [🔗](#subsec-related-statements-15-1-2-1-1)
-2. Sue gets an A in the class.[🔗](#subsec-related-statements-15-1-2-1-2-1) [🔗](#subsec-related-statements-15-1-2-1-2)
-3. Sue does not get a 93% on her final.[🔗](#subsec-related-statements-15-1-2-1-3-1) [🔗](#subsec-related-statements-15-1-2-1-3)
-4. Sue does not get an A in the class.[🔗](#subsec-related-statements-15-1-2-1-4-1) [🔗](#subsec-related-statements-15-1-2-1-4)
+1. سوي تحصل على 93% في اختبارها النهائي.[🔗](#subsec-related-statements-15-1-2-1-1-1) [🔗](#subsec-related-statements-15-1-2-1-1)
+2. سوي تحصل على تقدير A في المساق.[🔗](#subsec-related-statements-15-1-2-1-2-1) [🔗](#subsec-related-statements-15-1-2-1-2)
+3. سوي لا تحصل على 93% في اختبارها النهائي.[🔗](#subsec-related-statements-15-1-2-1-3-1) [🔗](#subsec-related-statements-15-1-2-1-3)
+4. سوي لا تحصل على تقدير A في المساق.[🔗](#subsec-related-statements-15-1-2-1-4-1) [🔗](#subsec-related-statements-15-1-2-1-4)
 
-[🔗](#subsec-related-statements-15-1-2) Solution. Note first that whenever \(P \imp Q\) and \(P\) are both true statements, \(Q\) must be true as well. For this problem, take \(P\) to mean “Sue gets a 93% on her final” and \(Q\) to mean “Sue will get an A in the class.”[🔗](#subsec-related-statements-15-2-1)
+[🔗](#subsec-related-statements-15-1-2) الحل. لاحظ أولاً أن كلما كانت \(P \imp Q\) و\(P\) عبارتين صحيحتين معاً، وجب أن تكون \(Q\) صحيحة أيضاً. في هذه المسألة، خُذ \(P\) لتعني «سوي تحصل على 93% في اختبارها النهائي»، و\(Q\) لتعني «ستحصل سوي على تقدير A في المساق».[🔗](#subsec-related-statements-15-2-1)
 
-1. We have \(P \imp Q\) and \(P\text{,}\) so \(Q\) follows. Sue gets an A.[🔗](#subsec-related-statements-15-2-2-1-1-1) [🔗](#subsec-related-statements-15-2-2-1-1)
-2. You cannot conclude anything. Sue could have gotten the A because she did extra credit, for example. Notice that we do not know that if Sue gets an \(A\text{,}\) then she gets a 93% on her final. That is the converse of the original implication, so it might or might not be true.[🔗](#subsec-related-statements-15-2-2-1-2-1) [🔗](#subsec-related-statements-15-2-2-1-2)
-3. The contrapositive of the converse of \(P \imp Q\) is \(\neg P \imp \neg Q\text{,}\) which states that if Sue does not get a 93% on the final, then she will not get an A in the class. But this does not follow from the original implication. Again, we can conclude nothing. Sue could have done extra credit.[🔗](#subsec-related-statements-15-2-2-1-3-1) [🔗](#subsec-related-statements-15-2-2-1-3)
-4. What would happen if Sue did not get an A but *did* get a 93% on the final? Then \(P\) would be true, and \(Q\) would be false. This makes the implication \(P \imp Q\) false! It must be that Sue did not get a 93% on the final. Notice we now have the implication \(\neg Q \imp \neg P\) which is the contrapositive of \(P \imp Q\text{.}\) Since \(P \imp Q\) is assumed to be true, we know \(\neg Q \imp \neg P\) is true as well.[🔗](#subsec-related-statements-15-2-2-1-4-1) [🔗](#subsec-related-statements-15-2-2-1-4)
+1. لدينا \(P \imp Q\) و\(P\text{,}\) إذن تترتب \(Q\). أي أن سوي تحصل على تقدير A.[🔗](#subsec-related-statements-15-2-2-1-1-1) [🔗](#subsec-related-statements-15-2-2-1-1)
+2. لا يمكنك استنتاج أي شيء. فربما حصلت سوي على تقدير A مثلاً لأنها أنجزت واجبات إضافية (extra credit). ولاحظ أننا لا نعرف أن سوي تحصل على \(A\text{,}\) فإنها تحصل على 93% في اختبارها النهائي. فهذه هي العبارة العكسية للاستلزام الأصلي، لذا قد تكون صحيحة وقد لا تكون.[🔗](#subsec-related-statements-15-2-2-1-2-1) [🔗](#subsec-related-statements-15-2-2-1-2)
+3. عكس مقابل عكس \(P \imp Q\) هو \(\neg P \imp \neg Q\text{,}\) أي أنه يقول: إذا لم تحصل سوي على 93% في الاختبار النهائي، فلن تحصل على تقدير A في المساق. لكن هذا لا يترتب على الاستلزام الأصلي. ومرة أخرى، لا يمكننا استنتاج شيء. فربما أنجزت سوي واجبات إضافية.[🔗](#subsec-related-statements-15-2-2-1-3-1) [🔗](#subsec-related-statements-15-2-2-1-3)
+4. وماذا لو لم تحصل سوي على تقدير A *مع أنها* حصلت على 93% في الاختبار النهائي؟ عندئذ تكون \(P\) صحيحة، وتكون \(Q\) خاطئة. وهذا يجعل الاستلزام \(P \imp Q\) خاطئاً! لا بد أن تكون سوي لم تحصل على 93% في الاختبار النهائي. ولاحظ أننا لدينا الآن الاستلزام \(\neg Q \imp \neg P\) وهو عكس المقابل لـ \(P \imp Q\text{.}\) وبما أننا نفترض أن \(P \imp Q\) صحيح، فإننا نعرف أن \(\neg Q \imp \neg P\) صحيح أيضاً.[🔗](#subsec-related-statements-15-2-2-1-4-1) [🔗](#subsec-related-statements-15-2-2-1-4)
 
-[🔗](#subsec-related-statements-15-2-2) [🔗](#subsec-related-statements-15-2) [🔗](#subsec-related-statements-15)As we said above, an implication is not logically equivalent to its converse, but it is possible that both the implication and its converse are true. In this case, when both \(P \imp Q\) and \(Q \imp P\) are true, we say that \(P\) and \(Q\) are equivalent and write \(P \iff Q\text{.}\) This is the biconditional we mentioned in [Section 1.1](sec_logic-statements.html).[🔗](#subsec-related-statements-16) You can think of “if and only if” statements as having two parts: an implication and its converse. We might say one is the “if” part, and the other is the “only if” part. We also sometimes say that “if and only if” statements have two directions: a forward direction \((P \imp Q)\) and a backward direction (\(P \leftarrow Q\text{,}\) which is really just sloppy notation for \(Q \imp P\)).[🔗](#subsec-related-statements-17) Let’s think a little about which part is which. Is \(P \imp Q\) the “if” part or the “only if” part? Consider an example.[🔗](#subsec-related-statements-18)
+[🔗](#subsec-related-statements-15-2-2) [🔗](#subsec-related-statements-15-2) [🔗](#subsec-related-statements-15)كما قلنا أعلاه، الاستلزام لا يكافئ منطقياً عكسه، غير أنه قد يكون صحيحاً هو الآخر وعكسه معاً. وفي هذه الحالة، عندما تكون كلٌّ من \(P \imp Q\) و\(Q \imp P\) صحيحة، نقول إن \(P\) و\(Q\) متكافئتان ونكتب \(P \iff Q\text{.}\) وهذا هو الشرط المزدوج (biconditional) الذي ذكرناه في [القسم 1.1](sec_logic-statements.html).[🔗](#subsec-related-statements-16) ويمكنك أن تنظر إلى عبارات «إذا وفقط إذا» على أنها تتألف من جزأين: استلزام وعكسه. فقد نقول إن أحدهما هو جزء «إذا»، والآخر هو جزء «فقط إذا». ونقول أحياناً أيضاً إن عبارات «إذا وفقط إذا» لها اتجاهان: اتجاه أمامي \((P \imp Q)\) واتجاه خلفي (\(P \leftarrow Q\text{,}\) وهو في الحقيقة مجرد تدوين متسرّع لـ \(Q \imp P\)).[🔗](#subsec-related-statements-17) ولنفكّر قليلاً في أيّ الجزأين هو الآخر. فهل \(P \imp Q\) هو جزء «إذا» أم جزء «فقط إذا»؟ تأمّل مثالاً.[🔗](#subsec-related-statements-18)
 
-#### Example 1.2.11.
+#### المثال 1.2.11.
 
-Suppose it is true that I sing if and only if I’m in the shower. We know this means both that if I sing, then I’m in the shower, and also the converse, that if I’m in the shower, then I sing. Let \(P\) be the statement, “I sing,” and \(Q\) be, “I’m in the shower.” So \(P \imp Q\) is the statement “if I sing, then I’m in the shower.” Which part of the if and only if statement is this?[🔗](#subsec-related-statements-19-1-1) What we are really asking for is the meaning of “I sing *if* I’m in the shower” and “I sing *only if* I’m in the shower.” When is the first one (the “if” part) *false*? When I am in the shower but not singing. That is the same condition for being false as the statement, “If I’m in the shower, then I sing.” So the “if” part is \(Q \imp P\text{.}\) On the other hand, to say, “I sing only if I’m in the shower” is equivalent to saying “If I sing, then I’m in the shower,” so the “only if” part is \(P \imp Q\text{.}\)[🔗](#subsec-related-statements-19-1-2) [🔗](#subsec-related-statements-19)It is not especially important to know which part is the “if” or “only if” part, but this does illustrate something very, very important: *There are many ways to state an implication!*[🔗](#subsec-related-statements-20)
+لنفترض أن عبارة «أنا أغنّي إذا وفقط إذا كنت في الدش» صحيحة. ونعرف أن هذا يعني كلٌّ من: «إذا أغنيتُ فإني في الدش»، وكذلك العكس: «إذا كنت في الدش فإني أغنّي». لنجعل \(P\) هي العبارة «أنا أغنّي»، و\(Q\) هي «أنا في الدش». إذن \(P \imp Q\) هي العبارة «إذا أغنيتُ فإني في الدش». فأيّ جزء من عبارة «إذا وفقط إذا» هذه؟[🔗](#subsec-related-statements-19-1-1) إن ما نسأل عنه حقاً هو معنى «أنا أغنّي *إذا* كنت في الدش» و«أنا أغنّي *فقط إذا* كنت في الدش». متى تكون الأولى (أي جزء «إذا») *خاطئة*؟ عندما أكون في الدش وأنا لا أغنّي. وهذا هو الشرط نفسه الذي يجعل العبارة «إذا كنت في الدش فإني أغنّي» خاطئة. إذن جزء «إذا» هو \(Q \imp P\text{.}\) ومن جهة أخرى، فإن قولك «أنا أغنّي فقط إذا كنت في الدش» يكافئ قولك «إذا أغنيتُ فإني في الدش»، إذن جزء «فقط إذا» هو \(P \imp Q\text{.}\)[🔗](#subsec-related-statements-19-1-2) [🔗](#subsec-related-statements-19)ولا يهمّ كثيراً أن تعرف أيّ الجزء هو جزء «إذا» وأيّهما هو جزء «فقط إذا»، غير أن هذا يوضح شيئاً بالغ الأهمية: *هناك طرائق كثيرة لقول الاستلزام!*[🔗](#subsec-related-statements-20)
 
-#### Example 1.2.12.
+#### المثال 1.2.12.
 
-Rephrase the implication, “If I dream, then I am asleep” in as many ways as possible. Then do the same for the converse.[🔗](#subsec-related-statements-21-1-1) Solution. The following are all equivalent to the original implication:
+أعِد صياغة الاستلزام «إذا كنت أحلم، فإني نائم» بأكبر عدد ممكن من الطرق. ثم افعل الشيء نفسه مع العكس.[🔗](#subsec-related-statements-21-1-1) الحل. كل العبارات التالية مكافئة للاستلزام الأصلي:
 
-1. I am asleep if I dream.[🔗](#subsec-related-statements-21-2-1-1-1-1) [🔗](#subsec-related-statements-21-2-1-1-1)
-2. I dream only if I am asleep.[🔗](#subsec-related-statements-21-2-1-1-2-1) [🔗](#subsec-related-statements-21-2-1-1-2)
-3. In order to dream, I must be asleep.[🔗](#subsec-related-statements-21-2-1-1-3-1) [🔗](#subsec-related-statements-21-2-1-1-3)
-4. To dream, it is necessary that I am asleep.[🔗](#subsec-related-statements-21-2-1-1-4-1) [🔗](#subsec-related-statements-21-2-1-1-4)
-5. To be asleep, it is sufficient to dream.[🔗](#subsec-related-statements-21-2-1-1-5-1) [🔗](#subsec-related-statements-21-2-1-1-5)
-6. I am not dreaming unless I am asleep.[🔗](#subsec-related-statements-21-2-1-1-6-1) [🔗](#subsec-related-statements-21-2-1-1-6)
+1. أنا نائم إذا كنت أحلم.[🔗](#subsec-related-statements-21-2-1-1-1-1) [🔗](#subsec-related-statements-21-2-1-1-1)
+2. أنا أحلم فقط إذا كنت نائماً.[🔗](#subsec-related-statements-21-2-1-1-2-1) [🔗](#subsec-related-statements-21-2-1-1-2)
+3. من أجل أن أحلم، يجب أن أكون نائماً.[🔗](#subsec-related-statements-21-2-1-1-3-1) [🔗](#subsec-related-statements-21-2-1-1-3)
+4. ولكي أحلم، من الضروري أن أكون نائماً.[🔗](#subsec-related-statements-21-2-1-1-4-1) [🔗](#subsec-related-statements-21-2-1-1-4)
+5. ولكي أكون نائماً، يكفي أن أحلم.[🔗](#subsec-related-statements-21-2-1-1-5-1) [🔗](#subsec-related-statements-21-2-1-1-5)
+6. لا أحلم إلا إذا كنت نائماً.[🔗](#subsec-related-statements-21-2-1-1-6-1) [🔗](#subsec-related-statements-21-2-1-1-6)
 
-The following are equivalent to the converse (if I am asleep, then I dream):
+العبارات التالية مكافئة للعبارة العكسية (إذا كنت نائماً، فإني أحلم):
 
-1. I dream if I am asleep.[🔗](#subsec-related-statements-21-2-1-2-1-1) [🔗](#subsec-related-statements-21-2-1-2-1)
-2. I am asleep only if I dream.[🔗](#subsec-related-statements-21-2-1-2-2-1) [🔗](#subsec-related-statements-21-2-1-2-2)
-3. It is necessary that I dream in order to be asleep.[🔗](#subsec-related-statements-21-2-1-2-3-1) [🔗](#subsec-related-statements-21-2-1-2-3)
-4. It is sufficient that I be asleep in order to dream.[🔗](#subsec-related-statements-21-2-1-2-4-1) [🔗](#subsec-related-statements-21-2-1-2-4)
-5. If I don’t dream, then I’m not asleep.[🔗](#subsec-related-statements-21-2-1-2-5-1) [🔗](#subsec-related-statements-21-2-1-2-5)
+1. أنا أحلم إذا كنت نائماً.[🔗](#subsec-related-statements-21-2-1-2-1-1) [🔗](#subsec-related-statements-21-2-1-2-1)
+2. أنا نائم فقط إذا كنت أحلم.[🔗](#subsec-related-statements-21-2-1-2-2-1) [🔗](#subsec-related-statements-21-2-1-2-2)
+3. من الضروري أن أحلم كي أكون نائماً.[🔗](#subsec-related-statements-21-2-1-2-3-1) [🔗](#subsec-related-statements-21-2-1-2-3)
+4. يكفي أن أكون نائماً كي أحلم.[🔗](#subsec-related-statements-21-2-1-2-4-1) [🔗](#subsec-related-statements-21-2-1-2-4)
+5. إذا لم أحلم، فإني لست نائماً.[🔗](#subsec-related-statements-21-2-1-2-5-1) [🔗](#subsec-related-statements-21-2-1-2-5)
 
-[🔗](#subsec-related-statements-21-2-1) [🔗](#subsec-related-statements-21-2) [🔗](#subsec-related-statements-21)Hopefully you agree with the above example. We include the “necessary and sufficient” versions because those are common when discussing mathematics. Let’s agree once and for all what they mean.[🔗](#subsec-related-statements-22)
+[🔗](#subsec-related-statements-21-2-1) [🔗](#subsec-related-statements-21-2) [🔗](#subsec-related-statements-21)أرجو أن توافق على المثال أعلاه. وقد أدرجنا صيغ «الضروري والكافي» لأنها شائعة عند مناقشة الرياضيات. فلنتفق مرة واحدة وإلى الأبد على ما تعنيه.[🔗](#subsec-related-statements-22)
 
-#### Definition 1.2.13. Necessary and Sufficient.
+#### التعريف 1.2.13. الضروري والكافي.
 
-- “\(P\) is necessary for \(Q\)” means \(Q \imp P\text{.}\) [🔗](#subsec-related-statements-23-4-1-1-1)
-- “\(P\) is sufficient for \(Q\)” means \(P \imp Q\text{.}\) [🔗](#subsec-related-statements-23-4-1-1-2)
-- If \(P\) is necessary and sufficient for \(Q\text{,}\) then \(P \iff Q\text{.}\)[🔗](#subsec-related-statements-23-4-1-1-3-1) [🔗](#subsec-related-statements-23-4-1-1-3)
+- «\(P\) ضروري لـ \(Q\)» تعني \(Q \imp P\text{.}\) [🔗](#subsec-related-statements-23-4-1-1-1)
+- «\(P\) كافٍ لـ \(Q\)» تعني \(P \imp Q\text{.}\) [🔗](#subsec-related-statements-23-4-1-1-2)
+- إذا كان \(P\) ضرورياً وكافياً لـ \(Q\text{,}\) فإن \(P \iff Q\text{.}\)[🔗](#subsec-related-statements-23-4-1-1-3-1) [🔗](#subsec-related-statements-23-4-1-1-3)
 
-[🔗](#subsec-related-statements-23-4-1) [🔗](#subsec-related-statements-23)To be honest, I have trouble with these if I’m not very careful. I find it helps to keep a standard example for reference.[🔗](#subsec-related-statements-24)
+[🔗](#subsec-related-statements-23-4-1) [🔗](#subsec-related-statements-23)بصراحة، أعاني كثيراً مع هذه الصيغ إن لم أكن دقيقاً إلى حد كبير. وأجد أن من المفيد الاحتفاظ بمثال معياري للاستئناس به.[🔗](#subsec-related-statements-24)
 
-#### Example 1.2.14.
+#### المثال 1.2.14.
 
-In a regular deck of cards, the red suits are hearts and diamonds. The black suits are clubs and spades. Thus it is true that, after picking a card, if my card is a spade, then my card is black.[🔗](#subsec-related-statements-25-1-1) Restate this fact using necessary and sufficient phrasing.[🔗](#subsec-related-statements-25-1-2) Solution. For my card to be a spade, it is necessary that it is black. However, it is not sufficient for it to be black to say that I am holding a spade (since I could have a club).[🔗](#subsec-related-statements-25-2-1) I can also say that to have a black card, it is sufficient to have a spade. It is not necessary that I have a spade.[🔗](#subsec-related-statements-25-2-2) It is helpful to think about the amount of evidence you need. Is knowing that the card is a spade enough evidence to conclude that it is a black card? Yes, that is sufficient! Being a spade is a sufficient condition for the card to be black.[🔗](#subsec-related-statements-25-2-3) [🔗](#subsec-related-statements-25-2) [🔗](#subsec-related-statements-25)Thinking about the necessity and sufficiency of conditions can also help when writing proofs and justifying conclusions. If you want to establish some mathematical fact, it is helpful to think what other facts would *be enough* (be sufficient) to prove your fact. If you have an assumption, think about what must also be necessary if that hypothesis is true.[🔗](#subsec-related-statements-26) [🔗](#subsec-related-statements)
+في مجموعة ورق لعب اعتيادية، تكون الألوان الحمراء هي القلوب (hearts) والمعينات (diamonds)، وتكون الألوان السوداء هي الأندية (clubs) والسباديـز (spades). ومن ثمّ صحيح أنه بعد سحب ورقة، إذا كانت ورقتي من السباديـز، فإن ورقتي سوداء.[🔗](#subsec-related-statements-25-1-1) أعد صياغة هذه الحقيقة بصيغة «الضروري والكافي».[🔗](#subsec-related-statements-25-1-2) الحل. لكي تكون ورقتي من السباديـز، من الضروري أن تكون سوداء. غير أن كونها سوداء ليس كافياً للقول إنني أحمل سباديـز (فقد أحمل ورقة من الأندية (clubs)).[🔗](#subsec-related-statements-25-2-1) ويمكنني أيضاً أن أقول إن للحصول على ورقة سوداء يكفي أن تكون من السباديـز. وليس ضرورياً أن تكون عندي سباديـز.[🔗](#subsec-related-statements-25-2-2) ومن المفيد التفكير في مقدار البرهان الذي تحتاجه. فهل معرفتك بأن الورقة سباديـز ترقى إلى برهان كافٍ لاستنتاج أنها سوداء؟ نعم، هذا كافٍ! فكون الورقة سباديـز شرط كافٍ لأن تكون الورقة سوداء.[🔗](#subsec-related-statements-25-2-3) [🔗](#subsec-related-statements-25-2) [🔗](#subsec-related-statements-25)كما أن التفكير في ضرورة الشروط وكفايتها قد يساعد أيضاً عند كتابة البراهين وتبرير النتائج. فإذا أردت إثبات حقيقة رياضية، من المفيد أن تفكر فيما هي الحقائق الأخرى التي *تكفي* (تكون كافية) لإثبات حقيقتك. وإذا كان لديك افتراض، ففكّر فيما يجب أن يكون ضرورياً أيضاً إن كانت تلك الفرضية صحيحة.[🔗](#subsec-related-statements-26) [🔗](#subsec-related-statements)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-It happens to be true that all mammals have hair. Which of the following are also true?[🔗](#rq-logic-implications-rephrase-1-1)
+يحدث أن كل الثدييات (mammals) لها فرو. فأيّ ممّا يلي صحيح أيضاً؟[🔗](#rq-logic-implications-rephrase-1-1)
 
-- Having hair is a necessary condition for being a mammal.
-- Having hair is a sufficient condition for being a mammal.
-- This would be saying that as soon as a thing has hair, it is a mammal. But...tarantulas!
-- If an animal doesn’t have hair, then it is not a mammal.
-- This is the contrapositive of the original statement.
-- An animal is a mammal only if it has hair.
-- And this is the same as saying if an animal is a mammal, then it has hair.
+- امتلاك الفرو شرط ضروري كي يكون الحيوان ثدياً.
+- امتلاك الفرو شرط كافٍ كي يكون الحيوان ثدياً.
+- وهذا يعني أن مجرد امتلاك شيء ما للفرو يجعله ثدياً. لكن... العناكب الرتلياء (tarantulas)!
+- إذا لم يكن لدى حيوان فرو، فإنه ليس ثدياً.
+- وهذه هي عكس مقابل العبارة الأصلية.
+- الحيوان ثديّ فقط إذا كان له فرو.
+- وهذا يعني الشيء ذاته، أي: إذا كان الحيوان ثدياً، فله فرو.
 
 [🔗](#rq-logic-implications-rephrase)
 
 #### 2.
 
-Give an example of a *true* implication (written out in words) that has a *false* converse. Explain why your implication is true and why the converse is false.[🔗](#rq-logic-implications-false-converse-1-1) [🔗](#rq-logic-implications-false-converse)
+اذكر مثالاً لاستلزام *صحيح* (مكتوب بالكلمات) يكون عكسه *خاطئاً*. واشرح لماذا استلزامك صحيح ولماذا العكس خاطئ.[🔗](#rq-logic-implications-false-converse-1-1) [🔗](#rq-logic-implications-false-converse)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-logic-implications-q-1-1) [🔗](#rq-logic-implications-q)[🔗](#rqs-logic-implications)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب سؤالاً واحداً على الأقل عن محتوى هذا القسم يثير فضولك.[🔗](#rq-logic-implications-q-1-1) [🔗](#rq-logic-implications-q)[🔗](#rqs-logic-implications)
 
-### Exercises Practice Problems
+### تمارين: مسائل للتدريب
 
 #### 1.
 
-Activate In my safe is a sheet of paper with two shapes drawn on it in colored crayon. One is a diamond, and the other is a circle. Each shape is drawn in a single color. Suppose you believe me when I tell you that, "If the diamond is purple, then the circle is blue.[🔗](#extracted-webwork-7-1-1-1) What do you therefore know about the truth value of the following statements?[🔗](#extracted-webwork-7-1-1-2)
+فعِّل في خزنةتي ورقة عليها شكلان مرسومان بمطبون ملوّن. أحدهما معيّن (diamond)، والآخر دائرة. وكل شكل مرسوم بلون واحد. ولنفترض أنك تصدّقني حين أقول لك: «إذا كان المعيّن أرجوانياً، فالدائرة زرقاء.»[🔗](#extracted-webwork-7-1-1-1) فما الذي تعرفه إذن عن قيمة صدق العبارات التالية؟[🔗](#extracted-webwork-7-1-1-2)
 
-1. If the circle is blue, then the diamond is purple.[🔗](#extracted-webwork-7-1-1-3-1-1-1) [🔗](#extracted-webwork-7-1-1-3-1-1)
-2. The diamond and the circle are both blue.[🔗](#extracted-webwork-7-1-1-3-1-2-1) [🔗](#extracted-webwork-7-1-1-3-1-2)
-3. The diamond and the circle are both purple.[🔗](#extracted-webwork-7-1-1-3-1-3-1) [🔗](#extracted-webwork-7-1-1-3-1-3)
-4. If the circle is not blue, then the diamond is not purple.[🔗](#extracted-webwork-7-1-1-3-1-4-1) [🔗](#extracted-webwork-7-1-1-3-1-4)
-5. The diamond is not purple, or the circle is blue.[🔗](#extracted-webwork-7-1-1-3-1-5-1) [🔗](#extracted-webwork-7-1-1-3-1-5)
+1. إذا كانت الدائرة زرقاء، فالمعيّن أرجواني.[🔗](#extracted-webwork-7-1-1-3-1-1-1) [🔗](#extracted-webwork-7-1-1-3-1-1)
+2. المعيّن والدائرة كلاهما أزرق.[🔗](#extracted-webwork-7-1-1-3-1-2-1) [🔗](#extracted-webwork-7-1-1-3-1-2)
+3. المعيّن والدائرة كلاهما أرجواني.[🔗](#extracted-webwork-7-1-1-3-1-3-1) [🔗](#extracted-webwork-7-1-1-3-1-3)
+4. إذا لم تكن الدائرة زرقاء، فالمعيّن ليس أرجوانياً.[🔗](#extracted-webwork-7-1-1-3-1-4-1) [🔗](#extracted-webwork-7-1-1-3-1-4)
+5. المعيّن ليس أرجوانياً، أو أن الدائرة زرقاء.[🔗](#extracted-webwork-7-1-1-3-1-5-1) [🔗](#extracted-webwork-7-1-1-3-1-5)
 
 [🔗](#extracted-webwork-7-1-1-3) [🔗](#ww-statements-shape-color)
 
 #### 2.
 
-Activate Suppose the statement, *"If the circle is orange, then the square is purple,"* is true. Assume also that the converse is false. Classify each statement below as true or false (if possible).[🔗](#extracted-webwork-8-1-1-1)
+فعِّل لنفترض أن العبارة *«إذا كانت الدائرة برتقالية، فالمربّع أرجواني»،* صحيحة. ولنفترض أيضاً أن العبارة العكسية خاطئة. صنِّف كل عبارة أدناه على أنها صحيحة أو خاطئة (إن أمكن).[🔗](#extracted-webwork-8-1-1-1)
 
-1. The circle is orange.[🔗](#extracted-webwork-8-1-1-2-1-1-1) [🔗](#extracted-webwork-8-1-1-2-1-1)
-2. The square is purple.[🔗](#extracted-webwork-8-1-1-2-1-2-1) [🔗](#extracted-webwork-8-1-1-2-1-2)
-3. The circle is orange if and only if the square is not purple.[🔗](#extracted-webwork-8-1-1-2-1-3-1) [🔗](#extracted-webwork-8-1-1-2-1-3)
-4. The circle is orange if and only if the square is purple.[🔗](#extracted-webwork-8-1-1-2-1-4-1) [🔗](#extracted-webwork-8-1-1-2-1-4)
+1. الدائرة برتقالية.[🔗](#extracted-webwork-8-1-1-2-1-1-1) [🔗](#extracted-webwork-8-1-1-2-1-1)
+2. المربّع أرجواني.[🔗](#extracted-webwork-8-1-1-2-1-2-1) [🔗](#extracted-webwork-8-1-1-2-1-2)
+3. الدائرة برتقالية إذا وفقط إذا لم يكن المربّع أرجوانياً.[🔗](#extracted-webwork-8-1-1-2-1-3-1) [🔗](#extracted-webwork-8-1-1-2-1-3)
+4. الدائرة برتقالية إذا وفقط إذا كان المربّع أرجوانياً.[🔗](#extracted-webwork-8-1-1-2-1-4-1) [🔗](#extracted-webwork-8-1-1-2-1-4)
 
 [🔗](#extracted-webwork-8-1-1-2) [🔗](#ww-statements-shape-color-f-conv)
 
 #### 3.
 
-Activate Consider the statement, *"If you will give me magic beans, then I will give you a cow."* Decide whether each statement below is the converse, the contrapositive, or neither.[🔗](#extracted-webwork-9-1-1-1)
+فعِّل تأمّل العبارة *«إذا أعطيتني حبوباً سحرية، فإنني سأعطيك بقرة.»* وحدّد ما إذا كانت كل عبارة أدناه هي العبارة العكسية أم عكس المقابل أم لا شيء منهما.[🔗](#extracted-webwork-9-1-1-1)
 
-1. If you will not give me magic beans, then I will not give you a cow.[🔗](#extracted-webwork-9-1-1-2-1-1-1) [🔗](#extracted-webwork-9-1-1-2-1-1)
-2. If you will give me magic beans, then I will not give you a cow.[🔗](#extracted-webwork-9-1-1-2-1-2-1) [🔗](#extracted-webwork-9-1-1-2-1-2)
-3. You will give me magic beans, and I will not give you a cow.[🔗](#extracted-webwork-9-1-1-2-1-3-1) [🔗](#extracted-webwork-9-1-1-2-1-3)
-4. If I will give you a cow, then you will give me magic beans.[🔗](#extracted-webwork-9-1-1-2-1-4-1) [🔗](#extracted-webwork-9-1-1-2-1-4)
-5. If I will not give you a cow, then you will not give me magic beans.[🔗](#extracted-webwork-9-1-1-2-1-5-1) [🔗](#extracted-webwork-9-1-1-2-1-5)
-6. If I will give you a cow, then you will not give me magic beans.[🔗](#extracted-webwork-9-1-1-2-1-6-1) [🔗](#extracted-webwork-9-1-1-2-1-6)
+1. إذا لم تعطني حبوباً سحرية، فإنني لن أعطيك بقرة.[🔗](#extracted-webwork-9-1-1-2-1-1-1) [🔗](#extracted-webwork-9-1-1-2-1-1)
+2. إذا أعطيتني حبوباً سحرية، فإنني لن أعطيك بقرة.[🔗](#extracted-webwork-9-1-1-2-1-2-1) [🔗](#extracted-webwork-9-1-1-2-1-2)
+3. ستعطيني حبوباً سحرية، ولن أعطيك بقرة.[🔗](#extracted-webwork-9-1-1-2-1-3-1) [🔗](#extracted-webwork-9-1-1-2-1-3)
+4. إذا أعطيتك بقرة، فإنك ستعطيني حبوباً سحرية.[🔗](#extracted-webwork-9-1-1-2-1-4-1) [🔗](#extracted-webwork-9-1-1-2-1-4)
+5. إذا لم أعطك بقرة، فإنك لن تعطني حبوباً سحرية.[🔗](#extracted-webwork-9-1-1-2-1-5-1) [🔗](#extracted-webwork-9-1-1-2-1-5)
+6. إذا أعطيتك بقرة، فإنك لن تعطني حبوباً سحرية.[🔗](#extracted-webwork-9-1-1-2-1-6-1) [🔗](#extracted-webwork-9-1-1-2-1-6)
 
 [🔗](#extracted-webwork-9-1-1-2) [🔗](#ww-statements-conv-cont)
 
 #### 4.
 
-Activate You have discovered an old paper on graph theory that discusses the *viscosity* of a graph (which for all you know, is something completely made up by the author). A theorem in the paper claims that “if a graph satisfies *condition (V)*, then the graph is *viscous*.” Which of the following are equivalent ways of stating this claim? Which are equivalent to the *converse* of the claim?[🔗](#extracted-webwork-10-1-1-1)
+فعِّل لقد عثرت على ورقة قديمة في نظرية الرسوم البيانية تتناول *لزوجة* (viscosity) الرسم البياني (والتي، بحسب ما تعرف، قد تكون اختراعاً محضاً من المؤلف). وتذكر فيها مبرهنة أن «إذا كان الرسم البياني يحقق *الشرط (V)*، فإن الرسم البياني *لزج* (viscous).» فأيّ ممّا يلي صيغٌ مكافئة للتعبير عن هذا الادعاء؟ وأيّ منها مكافئ للعبارة *العكسية* لهذا الادعاء؟[🔗](#extracted-webwork-10-1-1-1)
 
-1. Satisfying condition (V) is a necessary condition for a graph to be viscous.[🔗](#extracted-webwork-10-1-1-2-1-1-1) [🔗](#extracted-webwork-10-1-1-2-1-1)
-2. For a graph to be viscous, it is sufficient for it to satisfy condition (V).[🔗](#extracted-webwork-10-1-1-2-1-2-1) [🔗](#extracted-webwork-10-1-1-2-1-2)
-3. A graph is viscous only if it satisfies condition (V).[🔗](#extracted-webwork-10-1-1-2-1-3-1) [🔗](#extracted-webwork-10-1-1-2-1-3)
-4. Every viscous graph satisfies condition (V).[🔗](#extracted-webwork-10-1-1-2-1-4-1) [🔗](#extracted-webwork-10-1-1-2-1-4)
-5. For a graph to be viscous, it is necessary that it satisfies condition (V).[🔗](#extracted-webwork-10-1-1-2-1-5-1) [🔗](#extracted-webwork-10-1-1-2-1-5)
+1. استيفاء الشرط (V) شرط ضروري كي يكون الرسم البياني لزجاً.[🔗](#extracted-webwork-10-1-1-2-1-1-1) [🔗](#extracted-webwork-10-1-1-2-1-1)
+2. لكي يكون الرسم البياني لزجاً، يكفي أن يحقق الشرط (V).[🔗](#extracted-webwork-10-1-1-2-1-2-1) [🔗](#extracted-webwork-10-1-1-2-1-2)
+3. الرسم البياني لزج فقط إذا يحقق الشرط (V).[🔗](#extracted-webwork-10-1-1-2-1-3-1) [🔗](#extracted-webwork-10-1-1-2-1-3)
+4. كل رسم بياني لزج يحقق الشرط (V).[🔗](#extracted-webwork-10-1-1-2-1-4-1) [🔗](#extracted-webwork-10-1-1-2-1-4)
+5. لكي يكون الرسم البياني لزجاً، من الضروري أن يحقق الشرط (V).[🔗](#extracted-webwork-10-1-1-2-1-5-1) [🔗](#extracted-webwork-10-1-1-2-1-5)
 
 [🔗](#extracted-webwork-10-1-1-2) [🔗](#ww-statements-rephrase)
 
 #### 5.
 
-Activate Which of the following statements are equivalent to the implication, "*if you win the lottery, then you will be rich,*" and which are equivalent to the converse of the implication?[🔗](#extracted-webwork-11-1-1-1)
+فعِّل أيّ من العبارات التالية مكافئة للاستلزام «*إذا ربحت اليانصيب، فإنك ستغتني،*» وأيّ منها مكافئة للعبارة العكسية لهذا الاستلزام؟[🔗](#extracted-webwork-11-1-1-1)
 
-1. You will win the lottery if you are rich.[🔗](#extracted-webwork-11-1-1-2-1-1-1) [🔗](#extracted-webwork-11-1-1-2-1-1)
-2. You will be rich if you win the lottery.[🔗](#extracted-webwork-11-1-1-2-1-2-1) [🔗](#extracted-webwork-11-1-1-2-1-2)
-3. You will be rich only if you win the lottery.[🔗](#extracted-webwork-11-1-1-2-1-3-1) [🔗](#extracted-webwork-11-1-1-2-1-3)
-4. It is sufficient to win the lottery to be rich.[🔗](#extracted-webwork-11-1-1-2-1-4-1) [🔗](#extracted-webwork-11-1-1-2-1-4)
-5. Either you don’t win the lottery, or else you are rich.[🔗](#extracted-webwork-11-1-1-2-1-5-1) [🔗](#extracted-webwork-11-1-1-2-1-5)
+1. ستربح اليانصيب إذا كنت غنياً.[🔗](#extracted-webwork-11-1-1-2-1-1-1) [🔗](#extracted-webwork-11-1-1-2-1-1)
+2. ستغتني إذا ربحت اليانصيب.[🔗](#extracted-webwork-11-1-1-2-1-2-1) [🔗](#extracted-webwork-11-1-1-2-1-2)
+3. ستغتني فقط إذا ربحت اليانصيب.[🔗](#extracted-webwork-11-1-1-2-1-3-1) [🔗](#extracted-webwork-11-1-1-2-1-3)
+4. يكفي الفوز باليانصيب كي تكون غنياً.[🔗](#extracted-webwork-11-1-1-2-1-4-1) [🔗](#extracted-webwork-11-1-1-2-1-4)
+5. إمّا ألّا تربح اليانصيب، وإمّا أن تكون غنياً.[🔗](#extracted-webwork-11-1-1-2-1-5-1) [🔗](#extracted-webwork-11-1-1-2-1-5)
 
 [🔗](#extracted-webwork-11-1-1-2) [🔗](#ww-statements-rephrase2)[🔗](#practice-logic-implications)
 
-### Exercises Additional Exercises
+### تمارين: تمارين إضافية
 
 #### 1.
 
-Translate into English:
+ترجم إلى الإنجليزية:
 
 1. \(\forall x (E(x) \imp E(x +2))\text{.}\) [🔗](#ex-logic-implications-2-1-1-1-1)
 2. \(\forall x \exists y (\sin(x) = y)\text{.}\) [🔗](#ex-logic-implications-2-1-1-1-2)
@@ -327,46 +327,46 @@ Translate into English:
 
 #### 2.
 
-Consider the statement, “If Oscar eats Chinese food, then he drinks milk.”
+تأمّل العبارة: «إذا أكل أوسكار الطعام الصيني، فإنه يشرب الحليب.»
 
-1. Write the converse of the statement.[🔗](#ex-logic-implications-3-1-1-2-1-1) [🔗](#ex-logic-implications-3-1-1-2-1)
-2. Write the contrapositive of the statement.[🔗](#ex-logic-implications-3-1-1-2-2-1) [🔗](#ex-logic-implications-3-1-1-2-2)
-3. Is it possible for the contrapositive to be false? If it was, what would that tell you?[🔗](#ex-logic-implications-3-1-1-2-3-1) [🔗](#ex-logic-implications-3-1-1-2-3)
-4. Suppose the original statement is true, and that Oscar drinks milk. Can you conclude anything (about his eating Chinese food)? Explain.[🔗](#ex-logic-implications-3-1-1-2-4-1) [🔗](#ex-logic-implications-3-1-1-2-4)
-5. Suppose the original statement is true, and that Oscar does not drink milk. Can you conclude anything (about his eating Chinese food)? Explain.[🔗](#ex-logic-implications-3-1-1-2-5-1) [🔗](#ex-logic-implications-3-1-1-2-5)
+1. اكتب العبارة العكسية لهذه العبارة.[🔗](#ex-logic-implications-3-1-1-2-1-1) [🔗](#ex-logic-implications-3-1-1-2-1)
+2. اكتب عكس المقابل لهذه العبارة.[🔗](#ex-logic-implications-3-1-1-2-2-1) [🔗](#ex-logic-implications-3-1-1-2-2)
+3. هل يمكن أن يكون عكس المقابل خاطئاً؟ وإذا كان خاطئاً، فما الذي يدلّك ذلك؟[🔗](#ex-logic-implications-3-1-1-2-3-1) [🔗](#ex-logic-implications-3-1-1-2-3)
+4. لنفترض أن العبارة الأصلية صحيحة وأن أوسكار يشرب الحليب. هل يمكنك استنتاج أي شيء (عن أكله للطعام الصيني)؟ اشرح.[🔗](#ex-logic-implications-3-1-1-2-4-1) [🔗](#ex-logic-implications-3-1-1-2-4)
+5. لنفترض أن العبارة الأصلية صحيحة وأن أوسكار لا يشرب الحليب. هل يمكنك استنتاج أي شيء (عن أكله للطعام الصيني)؟ اشرح.[🔗](#ex-logic-implications-3-1-1-2-5-1) [🔗](#ex-logic-implications-3-1-1-2-5)
 
 [🔗](#ex-logic-implications-3-1-1) [🔗](#ex-logic-implications-3)
 
 #### 3.
 
-Write each of the following statements in the form, “If …, then ….” Careful, some statements may be false (which is fine for the purposes of this question).
+اكتب كل عبارة من العبارات التالية في الشكل: «إذا …، فإن ….». وانتبه، فقد تكون بعض هذه العبارات خاطئة (وهذا مقبول لغرض هذا السؤال).
 
-1. To lose weight, you must exercise.[🔗](#ex-logic-implications-4-1-1-2-1-1) [🔗](#ex-logic-implications-4-1-1-2-1)
-2. To lose weight, all you need to do is exercise.[🔗](#ex-logic-implications-4-1-1-2-2-1) [🔗](#ex-logic-implications-4-1-1-2-2)
-3. Every American is patriotic.[🔗](#ex-logic-implications-4-1-1-2-3-1) [🔗](#ex-logic-implications-4-1-1-2-3)
-4. You are patriotic only if you are American.[🔗](#ex-logic-implications-4-1-1-2-4-1) [🔗](#ex-logic-implications-4-1-1-2-4)
-5. The set of rational numbers is a subset of the real numbers.[🔗](#ex-logic-implications-4-1-1-2-5-1) [🔗](#ex-logic-implications-4-1-1-2-5)
-6. A number is prime if it is not even.[🔗](#ex-logic-implications-4-1-1-2-6-1) [🔗](#ex-logic-implications-4-1-1-2-6)
-7. Either the Broncos will win the Super Bowl, or they won’t play in the Super Bowl.[🔗](#ex-logic-implications-4-1-1-2-7-1) [🔗](#ex-logic-implications-4-1-1-2-7)
+1. لإنقاص الوزن، يجب أن تمارس الرياضة.[🔗](#ex-logic-implications-4-1-1-2-1-1) [🔗](#ex-logic-implications-4-1-1-2-1)
+2. لإنقاص الوزن، لا يلزمك سوى ممارسة الرياضة.[🔗](#ex-logic-implications-4-1-1-2-2-1) [🔗](#ex-logic-implications-4-1-1-2-2)
+3. كل أمريكي وطني.[🔗](#ex-logic-implications-4-1-1-2-3-1) [🔗](#ex-logic-implications-4-1-1-2-3)
+4. أنت وطني فقط إذا كنت أمريكياً.[🔗](#ex-logic-implications-4-1-1-2-4-1) [🔗](#ex-logic-implications-4-1-1-2-4)
+5. مجموعة الأعداد النسبية مجموعة جزئية من مجموعة الأعداد الحقيقية.[🔗](#ex-logic-implications-4-1-1-2-5-1) [🔗](#ex-logic-implications-4-1-1-2-5)
+6. العدد أولي إذا كان ليس زوجياً.[🔗](#ex-logic-implications-4-1-1-2-6-1) [🔗](#ex-logic-implications-4-1-1-2-6)
+7. إمّا أن يفوز فريق برونكوس بكأس السوبر بول، وإمّا أنهم لن يلعبوا في السوبر بول.[🔗](#ex-logic-implications-4-1-1-2-7-1) [🔗](#ex-logic-implications-4-1-1-2-7)
 
 [🔗](#ex-logic-implications-4-1-1) [🔗](#ex-logic-implications-4)
 
 #### 4.
 
-Consider the implication, “If you clean your room, then you can watch TV.” Rephrase the implication in as many ways as possible. Then do the same for the converse.[🔗](#ex-logic-implications-5-1-1) Hint. Of course there are many answers. It helps to assume that the statement is true and the converse is *not* true. Think about what that means in the real world, and then start saying it in different ways. Some ideas: Use “necessary and sufficient” language, use “only if,” consider negations, use “or else” language.[🔗](#ex-logic-implications-5-2-1) [🔗](#ex-logic-implications-5-2) [🔗](#ex-logic-implications-5)
+تأمّل الاستلزام: «إذا رتّبتغرفتك، فإنك تستطيع مشاهدة التلفاز.» أعد صياغة الاستلزام بأكبر عدد ممكن من الطرق. ثم افعل الشيء نفسه مع العكس.[🔗](#ex-logic-implications-5-1-1) تلميح. بالطبع هناك إجابات كثيرة. ومن المفيد أن نفترض أن العبارة صحيحة وأن العبارة العكسية *ليست* صحيحة. فكّر في ما يعنيه ذلك في الواقع، ثم ابدأ التعبير عنها بطرق مختلفة. بعض الأفكار: استعمل لغة «الضروري والكافي»، واستعمل «فقط إذا»، وتأمّل النفي، واستعمل لغة «أو وإلا».[🔗](#ex-logic-implications-5-2-1) [🔗](#ex-logic-implications-5-2) [🔗](#ex-logic-implications-5)
 
 #### 5.
 
-Recall from calculus, if a function is differentiable at a point \(c\text{,}\) then it is continuous at \(c\text{,}\) but that the converse of this statement is not true (for example, \(f(x) = |x|\) at the point 0). Restate this fact using “necessary and sufficient” language.[🔗](#ex-logic-implications-6-1-1) [🔗](#ex-logic-implications-6)
+تذكّر من التفاضل والتكامل أن الدالة القابلة للاشتقاق عند نقطة \(c\text{,}\) تكون متصلة عند \(c\text{,}\) لكن العكس ليس صحيحاً (مثلاً \(f(x) = |x|\) عند النقطة 0). أعد صياغة هذه الحقيقة بلغة «الضروري والكافي».[🔗](#ex-logic-implications-6-1-1) [🔗](#ex-logic-implications-6)
 
 #### 6.
 
-Consider the statement, “For all natural numbers \(n\text{,}\) if \(n\) is prime, then \(n\) is solitary.” You do not need to know what *solitary* means for this problem, just that it is a property that some numbers have and others do not.
+تأمّل العبارة: «لكل الأعداد الطبيعية \(n\text{,}\) إذا كان \(n\) أولياً، فإن \(n\) وحيد (solitary).» ولا تحتاج في هذه المسألة إلى معرفة معنى *الوحيد*، يكفي أن تعرف أنها خاصية تتوافر لبعض الأعداد ولا تتوافر لغيرها.
 
-1. Write the converse and the contrapositive of the statement, saying which is which. Note: the original statement claims that an implication is true for all \(n\text{,}\) and it is that implication that we are taking the converse and contrapositive of.[🔗](#ex-logic-implications-7-2-1-3-1-1) [🔗](#ex-logic-implications-7-2-1-3-1)
-2. Write the negation of the original statement. What would you need to show to prove that the statement is false?[🔗](#ex-logic-implications-7-2-1-3-2-1) [🔗](#ex-logic-implications-7-2-1-3-2)
-3. Even though you don’t know whether 10 is solitary (in fact, nobody knows this), is the statement, “If 10 is prime, then 10 is solitary” true or false? Explain.[🔗](#ex-logic-implications-7-2-1-3-3-1) [🔗](#ex-logic-implications-7-2-1-3-3)
-4. It turns out that 8 is solitary. Does this tell you anything about the truth or falsity of the original statement, its converse or its contrapositive? Explain.[🔗](#ex-logic-implications-7-2-1-3-4-1) [🔗](#ex-logic-implications-7-2-1-3-4)
-5. Assuming that the original statement is true, what can you say about the relationship between the *set* \(P\) of prime numbers and the *set* \(S\) of solitary numbers. Explain.[🔗](#ex-logic-implications-7-2-1-3-5-1) [🔗](#ex-logic-implications-7-2-1-3-5)
+1. اكتب العبارة العكسية وعكس المقابل لهذه العبارة، مع تحديد أيّهما هو أيّهما. لاحظ: العبارة الأصلية تدّعي أن استلزاماً ما صحيح لكل \(n\text{,}\) وهو ذلك الاستلزام الذي نأخذ عكسه وعكس مقابله.[🔗](#ex-logic-implications-7-2-1-3-1-1) [🔗](#ex-logic-implications-7-2-1-3-1)
+2. اكتب نفي العبارة الأصلية. فما الذي يلزمك إظهاره لإثبات أن العبارة خاطئة؟[🔗](#ex-logic-implications-7-2-1-3-2-1) [🔗](#ex-logic-implications-7-2-1-3-2)
+3. رغم أنك لا تعرف ما إذا كان 10 وحيداً (وفي الواقع لا أحد يعرف ذلك)، فهل العبارة «إذا كان 10 أولياً، فإن 10 وحيد» صحيحة أم خاطئة؟ اشرح.[🔗](#ex-logic-implications-7-2-1-3-3-1) [🔗](#ex-logic-implications-7-2-1-3-3)
+4. تبيّن أن 8 وحيد. فهل يخبرك هذا بشيء عن صحة العبارة الأصلية أو بطلانها، أو عن صحة عكسيها أو عكس مقابلها؟ اشرح.[🔗](#ex-logic-implications-7-2-1-3-4-1) [🔗](#ex-logic-implications-7-2-1-3-4)
+5. بافتراض أن العبارة الأصلية صحيحة، فما الذي يمكنك قوله عن العلاقة بين *مجموعة* الأعداد الأولية \(P\) و*مجموعة* الأعداد الوحيد \(S\)؟ اشرح.[🔗](#ex-logic-implications-7-2-1-3-5-1) [🔗](#ex-logic-implications-7-2-1-3-5)
 
-[🔗](#ex-logic-implications-7-2-1) [🔗](#ex-logic-implications-7)[🔗](#ex-logic-implications)[🔗](#sec_logic-implications) [&#xe5cb;Prev](sec_logic-statements.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_logic-rules.html) [Feedback](/cdn-cgi/l/email-protection#3f504c5c5e4d11535a4956517f4a515c50115a5b4a)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_logic-implications-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_logic-implications-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+[🔗](#ex-logic-implications-7-2-1) [🔗](#ex-logic-implications-7)[🔗](#ex-logic-implications)[🔗](#sec_logic-implications) [&#xe5cb;السابق](sec_logic-statements.html)[&#xe5ce;الأعلى](#)[التالي&#xe5cc;](sec_logic-rules.html) [ملاحظات](/cdn-cgi/l/email-protection#3f504c5c5e4d11535a4956517f4a515c50115a5b4a)[شعار PreTeXt](https://pretextbook.org)[![شعار Runestone Academy](/images/discrete-math/sec_logic-implications-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_logic-implications-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

@@ -1,75 +1,75 @@
 ---
-title: "Coloring"
-lang: en
+title: "التلوين"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_coloring.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 2.5 Coloring
+## القسم 2.5 التلوين
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_coloring-2-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_coloring-2-1-1)
 
-1. Determine the chromatic number of a graph.[🔗](#sec_coloring-2-2-1-1) [🔗](#sec_coloring-2-2-1)
-2. Determine the chromatic index of a graph[🔗](#sec_coloring-2-2-2-1) [🔗](#sec_coloring-2-2-2)
-3. Decide whether using the chromatic number or chromatic index is more appropriate to solve particular problems.[🔗](#sec_coloring-2-2-3-1) [🔗](#sec_coloring-2-2-3)
+1. أن تحدّد العددَ اللوني (chromatic number) لرسمٍ بياني.[🔗](#sec_coloring-2-2-1-1) [🔗](#sec_coloring-2-2-1)
+2. أن تحدّد الفهرسَ اللوني (chromatic index) لرسمٍ بياني.[🔗](#sec_coloring-2-2-2-1) [🔗](#sec_coloring-2-2-2)
+3. أن تقرّر أيّهما أنسب لحلّ مسألةٍ بعينها: العددُ اللوني أم الفهرسُ اللوني.[🔗](#sec_coloring-2-2-3-1) [🔗](#sec_coloring-2-2-3)
 
 [🔗](#sec_coloring-2)
 
-### Subsection Section Preview
+### معاينة القسم
 
 #### Investigate!
 
-Mapmakers in the fictional land of Euleria have drawn the borders of the various dukedoms of the land. To make the map pretty, they wish to color each region. Adjacent regions must be colored differently, but it is perfectly fine to color two distant regions with the same color. What is the fewest colors the mapmakers can use and still accomplish this task?[🔗](#sec_coloring-3-2-1) ! [🔗](#sec_coloring-3-2)Perhaps the most famous graph theory problem is how to color maps.[🔗](#sec_coloring-3-3)
+في بلاد يوليريا الخيالية، رسم صانعو الخرائط حدود دوقيات البلاد المختلفة. ولمّا أرادوا أن تجعل الخريطة جميلة، رغبوا في تلوين كلّ منطقة. ويجب أن تكون المناطق المتجاورة ملوّنةً بألوانٍ مختلفة، لكنّه لا بأس من تلوين منطقتين متباعدتين باللون نفسه. فما أقلّ عددٍ من الألوان الذي يستطيع صانعو الخرائط استعماله مع إنجاز هذه المهمّة؟[🔗](#sec_coloring-3-2-1) ! [🔗](#sec_coloring-3-2)تُعدّ مسألةُ تلوين الخرائط أشهرَ مسائل نظرية الرسوم البيانية.[🔗](#sec_coloring-3-3)
 
-> Given any map of countries, states, counties, etc., how many colors are needed to color each region on the map so that neighboring regions are colored differently?[🔗](#sec_coloring-3-4-1)
+> معطى أيّ خريطةٍ لدولٍ أو ولاياتٍ أو مقاطعات أو ما شابه، كم لونًا نحتاج لتلوين كلّ منطقةٍ على الخريطة بحيث تكون المناطق المتجاورة ملوّنةً بألوانٍ مختلفة؟[🔗](#sec_coloring-3-4-1)
 > > [🔗](#sec_coloring-3-4)
 
-Actual map makers usually use around seven colors. For one thing, they require watery regions to be a specific color, and with a lot of colors it is easier to find a permissible coloring. We want to know whether there is a smaller palette that will work for any map.[🔗](#sec_coloring-3-5) How is this related to graph theory? Well, if we place a vertex in the center of each region (say in the capital of each state) and then connect two vertices if their states share a border, we get a graph. Coloring regions on the map corresponds to coloring the vertices of the graph. Since neighboring regions cannot be colored the same, our graph cannot have vertices colored the same when those vertices are adjacent.[🔗](#sec_coloring-3-6) In general, given any graph \(G\text{,}\) a coloring of the vertices is called (not surprisingly) a vertex coloring. If the vertex coloring has the property that adjacent vertices are colored differently, then the coloring is called proper. Every graph has a proper vertex coloring. For example, you could color every vertex with a different color. But often you can do better. The smallest number of colors needed to get a proper vertex coloring is called the chromatic number of the graph, written \(\chi(G)\text{.}\) [🔗](#sec_coloring-3-7) Our goal in this section is to see how graph coloring can be used to solve some problems and to understand some basic properties of graph coloring.[🔗](#sec_coloring-3-8)
+يستعمل صانعو الخرائط عادةً نحو سبعة ألوان. فمن جهة، يشترطون أن تكون المناطق المائيّة بلونٍ محدّد، ومع كثرة الألوان يكون العثور على تلوينٍ مسموحٍ أسهل. ونحن نريد أن نعرف: هل توجد لوحةُ ألوانٍ أصغر من هذه تنفع لأيّ خريطة؟[🔗](#sec_coloring-3-5) فما علاقة هذا بنظرية الرسوم البيانية؟ حسنًا، إن وضعنا رأسًا (vertex) في مركز كلّ منطقة (ولنفرض في عاصمة كلّ ولاية) ثمّ وصلنا بين رأسين متى تشترك ولايتاهما في حدّ، حصلنا على رسمٍ بياني. وتلوين مناطق الخريطة يقابل تلوين رؤوس ذلك الرسم البياني. وبما أنّ المناطق المتجاورة لا يجوز أن تُلوَّن باللون نفسه، فإنّ رسمَنا البياني لا يجوز أن تكون فيه رؤوسٌ متجاورة ملوّنةٌ باللون نفسه.[🔗](#sec_coloring-3-6) وبوجهٍ عام، معطى أيّ رسمٍ بياني \(G\text{,}\) يُسمّى تلوينُ رؤوسه (وهذا ليس مفاجئًا على نحوٍ ما) تلوينَ رؤوس (vertex coloring). فإذا كان تلوينُ الرؤوس بحيث تُلوَّن الرؤوسُ المتجاورة بألوانٍ مختلفة، سُمّي هذا التلوين سليمًا (proper). ولكلّ رسمٍ بياني تلوينُ رؤوسٍ سليم. فمثلًا يمكنك أن تُلوِّن كلّ رأسٍ بلونٍ مختلف. لكنّك غالبًا ما تستطيع أفضل من ذلك. وأقلّ عددٍ من الألوان اللازم للحصول على تلوين رؤوسٍ سليم يُسمّى العددَ اللوني (chromatic number) للرسم البياني، ويُكتب \(\chi(G)\text{.}\) [🔗](#sec_coloring-3-7) وهدفنا في هذا القسم هو أن نرى كيف يمكن استعمالُ تلوين الرسوم البيانية لحلّ بعض المسائل، وأن نفهم بعض الخصائص الأساسيّة للتلوين.[🔗](#sec_coloring-3-8)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-coloring-vertices)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-coloring-vertices)
 
-For each graph below:
+لكلّ رسمٍ بياني أدناه:
 
-- Find a proper vertex coloring using some number of colors. That is, color vertices using any number of colors but in such a way that no pair of adjacent vertices have the same color.[🔗](#PA-coloring-vertices-2-1-1-1-1) [🔗](#PA-coloring-vertices-2-1-1-1)
-- Find the *fewest* number of colors you need to properly color the vertices of the graph. This is called the chromatic number of the graph. Think about how you know your answer is correct.[🔗](#PA-coloring-vertices-2-1-1-2-1) [🔗](#PA-coloring-vertices-2-1-1-2)
-- Can you generalize? Can you conclude anything about the chromatic number for particular sorts of graphs?[🔗](#PA-coloring-vertices-2-1-1-3-1) [🔗](#PA-coloring-vertices-2-1-1-3)
+- أوجد تلوينَ رؤوسٍ سليمًا باستعمال عددٍ ما من الألوان. أي: لوّن الرؤوس باستعمال أيّ عددٍ من الألوان، على أن لا يتشارك أيّ زوجٍ من الرؤوس المتجاورة اللونَ نفسه.[🔗](#PA-coloring-vertices-2-1-1-1-1) [🔗](#PA-coloring-vertices-2-1-1-1)
+- أوجد *أقلّ* عددٍ من الألوان تحتاجه لتلوين رؤوس الرسم البياني تلوينًا سليمًا. وهذا ما يُسمّى العددَ اللوني (chromatic number) للرسم البياني. فكّر في كيفية إدراكك أنّ إجابتك صحيحة.[🔗](#PA-coloring-vertices-2-1-1-2-1) [🔗](#PA-coloring-vertices-2-1-1-2)
+- هل تستطيع التعميم؟ هل يمكنك أن تستنتج أيّ شيءٍ عن العدد اللوني في أنواعٍ معيّنة من الرسوم البيانية؟[🔗](#PA-coloring-vertices-2-1-1-3-1) [🔗](#PA-coloring-vertices-2-1-1-3)
 
 [🔗](#PA-coloring-vertices-2-1)
 
 #### 1.
 
-Activate ![A copy of the complete graph on 6 vertices to be colored](generated/webwork/images/webwork-56-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-56-1-1-2) [🔗](#pa-gt-coloring-1)
+Activate ![نسخة من الرسم البياني الكامل على 6 رؤوسٍ لتلوينها](generated/webwork/images/webwork-56-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-56-1-1-2) [🔗](#pa-gt-coloring-1)
 
 #### 2.
 
-Activate ![a bipartite graph with 5 vertices on the left each connected to each of 3 vertices on the right](generated/webwork/images/webwork-57-image-1.svg) \(\chi(G) =\) [🔗](#extracted-webwork-57-1-1-2) [🔗](#pa-gt-coloring-2)
+Activate ![رسم بياني ثنائي الجزء (bipartite) فيه 5 رؤوسٍ على اليسار، كلٌّ منها موصولٌ بكلّ واحدٍ من 3 رؤوسٍ على اليمين](generated/webwork/images/webwork-57-image-1.svg) \(\chi(G) =\) [🔗](#extracted-webwork-57-1-1-2) [🔗](#pa-gt-coloring-2)
 
 #### 3.
 
-Activate ![A cycle of 8 vertices to be colored](generated/webwork/images/webwork-58-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-58-1-1-2) [🔗](#pa-gt-coloring-3)
+Activate ![دورة من 8 رؤوسٍ لتلوينها](generated/webwork/images/webwork-58-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-58-1-1-2) [🔗](#pa-gt-coloring-3)
 
 #### 4.
 
-Activate ![A cycle of 7 vertices to be colored](generated/webwork/images/webwork-59-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-59-1-1-2) [🔗](#pa-gt-coloring-4)
+Activate ![دورة من 7 رؤوسٍ لتلوينها](generated/webwork/images/webwork-59-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-59-1-1-2) [🔗](#pa-gt-coloring-4)
 
 #### 5.
 
-Activate ![a tree consisting of 13 vertices, 6 of which are leaves. 4 vertices have degree 2, 2 vertices have degree 3, and the last vertex has degree 4.](generated/webwork/images/webwork-60-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-60-1-1-2) [🔗](#pa-gt-coloring-5)
+Activate ![شجرة (tree) تتكوّن من 13 رأسًا، 6 منها أوراق. 4 رؤوسٍ درجتها 2، ورأسان درجتهما 3، والرأس الأخير درجته 4.](generated/webwork/images/webwork-60-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-60-1-1-2) [🔗](#pa-gt-coloring-5)
 
 #### 6.
 
-Activate ![A graph with 13 vertices and 28 edges. No edges cross.](generated/webwork/images/webwork-61-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-61-1-1-2) [🔗](#pa-gt-coloring-6) [🔗](#PA-coloring-vertices)[🔗](#sec_coloring-3)
+Activate ![رسم بياني فيه 13 رأسًا و28 حافة. لا تتقاطع أيّ حافتين.](generated/webwork/images/webwork-61-image-1.svg) \(\chi(G) =\)[🔗](#extracted-webwork-61-1-1-2) [🔗](#pa-gt-coloring-6) [🔗](#PA-coloring-vertices)[🔗](#sec_coloring-3)
 
-### Subsection Coloring Vertices
+### تلوين الرؤوس
 
 #### Investigate!
 
-The math department plans to offer 10 classes next semester. Some classes cannot run at the same time (perhaps they are taught by the same professor, or are required for seniors).[🔗](#sec_coloring-4-2-1)
+خطّط قسم الرياضيات لعرض 10 مقرّراتٍ في الفصل الدراسي القادم. وبعض المقرّرات لا يمكن أن تُعقد في الوقت نفسه (ربما لأنّها يدرّسها أستاذٌ واحد، أو لأنّها مقرّراتٌ إلزامية لطلبة السنة الرابعة).[🔗](#sec_coloring-4-2-1)
 
-| Class: | Conflicts with: |
+| المقررّ: | يتعارض مع: |
 | --- | --- |
 | A | D I |
 | B | D I J |
@@ -82,19 +82,19 @@ The math department plans to offer 10 classes next semester. Some classes cannot
 | I | A B C E F H |
 | J | B G H |
 
-How many different time slots are needed to teach these classes (and which should be taught at the same time)? More importantly, how could we use graph coloring to answer this question?[🔗](#sec_coloring-4-2-3) [🔗](#sec_coloring-4-2)The best way to get a feel for the chromatic number is to actually try to color some graphs.[🔗](#sec_coloring-4-3)
+كم عدد الفترات الزمنية المختلفة اللازمة لتقديم هذه المقرّرات (وأيّها ينبغي أن تُقدَّم في الوقت نفسه)؟ والأهمّ من ذلك، كيف يمكننا أن نستعمل تلوين الرسوم البيانية للإجابة عن هذا السؤال؟[🔗](#sec_coloring-4-2-3) [🔗](#sec_coloring-4-2)أفضلُ طريقة للإحساس بالعدد اللوني هي أن تحاول فعليًّا تلوينَ بعض الرسوم البيانية.[🔗](#sec_coloring-4-3)
 
-#### Example 2.5.1.
+#### مثال 2.5.1.
 
-Find the chromatic number of the graphs below.[🔗](#sec_coloring-4-4-1-1) ![A copy of K6: six vertices arranged in a hexagon, with every vertex adjacent to every other vertex.](generated/latex-image/img-k6.svg) ![Six vertices arranged in a triangle (with three vertices along each side). Six edges form the outside of the triangle, and three edges connect the center vertices of each side (in an upside-down triangle).](generated/latex-image/img-gt-triangles.svg) ![A copy of K2,3, with a row of two vertices on a top row, each adjacent to each of three vertices on a bottom row](generated/latex-image/img-k-2-3.svg) Solution. The graph on the left is \(K_6\text{.}\) The only way to properly color the graph is to give every vertex a different color (since every vertex is adjacent to every other vertex). Thus the chromatic number is 6.[🔗](#sec_coloring-4-4-2-1) The middle graph can be properly colored with just 3 colors (Red, Blue, and Green). For example:[🔗](#sec_coloring-4-4-2-2) ![Six vertices arranged in a triangle (with three vertices along each side). Six edges form the outside of the triangle, and three edges connect the center vertices of each side (in an upside-down triangle). The bottom row of vertices are labeled R, B, G (left to right), the middle row of vertices are labeled G, R, and to top vertex is labeled B.](generated/latex-image/img-gt-colored-triangles.svg) There is no way to color it with just two colors, since there are three vertices mutually adjacent (i.e., a triangle). Thus the chromatic number is 3.[🔗](#sec_coloring-4-4-2-4) The graph on the right is just \(K_{2,3}\text{.}\) As with all bipartite graphs, this graph has chromatic number 2: color the vertices on the top row red and the vertices on the bottom row blue.[🔗](#sec_coloring-4-4-2-5) [🔗](#sec_coloring-4-4-2) [🔗](#sec_coloring-4-4)It appears that there is no limit to how large chromatic numbers can get. It should not come as a surprise that \(K_n\) has chromatic number \(n\text{.}\) So how could there possibly be an answer to the original map coloring question? If the chromatic number of a graph can be arbitrarily large, then it seems like there would be no upper bound to the number of colors needed for any map. But there is.[🔗](#sec_coloring-4-5) The key observation is that while it is true that for any number \(n\) there is a graph with chromatic number \(n\text{,}\) only some graphs arrive as representations of maps. If you convert a map to a graph, the edges between vertices correspond to borders between the countries. So you should be able to connect vertices in such a way that the edges do not cross. In other words, the graphs representing maps are all *planar*![🔗](#sec_coloring-4-6) So the question is, what is the largest chromatic number of any planar graph? The answer is the best-known theorem of graph theory:[🔗](#sec_coloring-4-7)
+أوجد العددَ اللوني (chromatic number) للرسوم البيانية أدناه.[🔗](#sec_coloring-4-4-1-1) ![نسخة من K6: ستة رؤوس مرتّبة في سداسيّ، كلٌّ رأسٍ منها مجاورٌ لكلّ رأسٍ آخر.](generated/latex-image/img-k6.svg) ![ستة رؤوس مرتّبة في مثلّث (ثلاثة رؤوس على كلّ ضلع). ست حوافّ تشكّل محيط المثلّث، وثلاث حوافّ تصل رؤوسَ الأوساط لكلّ ضلع (في مثلّثٍ مقلوب).](generated/latex-image/img-gt-triangles.svg) ![نسخة من K2,3، صفٌّ علوي من رأسين، كلٌّ منهما مجاورٌ لكلّ واحدٍ من ثلاثة رؤوسٍ في صفٍّ سفلي](generated/latex-image/img-k-2-3.svg) الحلّ. الرسمُ البياني على اليسار هو \(K_6\text{.}\) والطريقةُ الوحيدة لتلوين هذا الرسم تلوينًا سليم هي إعطاءُ كلّ رأسٍ لونًا مختلفًا (لأنّ كلّ رأسٍ مجاورٌ لكلّ رأسٍ آخر). ومن ثمّ فإنّ العدد اللوني هو 6.[🔗](#sec_coloring-4-4-2-1) ويمكن تلوينُ الرسم الأوسط تلوينًا سليمًا بثلاثة ألوانٍ فقط (الأحمر والأزرق والأخضر). مثلًا:[🔗](#sec_coloring-4-4-2-2) ![ستة رؤوس مرتّبة في مثلّث (ثلاثة رؤوس على كلّ ضلع). ست حوافّ تشكّل محيط المثلّث، وثلاث حوافّ تصل رؤوسَ الأوساط لكلّ ضلع (في مثلّثٍ مقلوب). رؤوس الصفّ السفلي موسومةٌ بـ R وB وG (من اليسار إلى اليمين)، ورؤوس الصفّ الأوسط موسومةٌ بـ G وR، والرأس العلوي موسومٌ بـ B.](generated/latex-image/img-gt-colored-triangles.svg) ولا توجد طريقةٌ لتلوينه بلونين فقط، لأنّ هناك ثلاثة رؤوسٍ كلٌّ منها مجاورٌ للاثنين الآخرين (أي مثلّثًا). ومن ثمّ فإنّ العدد اللوني هو 3.[🔗](#sec_coloring-4-4-2-4) والرسمُ البياني على اليمين هو ببساطة \(K_{2,3}\text{.}\) وكما في جميع الرسوم الثنائية الجزء، فإنّ هذا الرسم عدده اللوني 2: لوّن رؤوس الصفّ العلوي بالأحمر ورؤوس الصفّ السفلي بالأزرق.[🔗](#sec_coloring-4-4-2-5) [🔗](#sec_coloring-4-4-2) [🔗](#sec_coloring-4-4)يبدو أنّه لا حدّ لمدى كِبَر الأعداد اللونية. ولا ينبغي أن يفاجئك أنّ \(K_n\) عدده اللوني \(n\text{.}\) فكيف إذن يمكن لسؤال تلوين الخرائط الأصلي أن تكون له إجابة؟ وإذا كان العددُ اللوني لرسمٍ بياني قد يصير كبيرًا إلى حدٍّ غير محدود، فإنّه يبدو إذن ألّا يكون هناك حدٌّ أعلى لعدد الألوان اللازم لأيّ خريطة. غير أنّ هناك حدًّا.[🔗](#sec_coloring-4-5) والملاحظةُ المفتاحية هي أنّه وإن كان صحيحًا أنّه لكلّ عددٍ \(n\) يوجد رسمٌ بياني عدده اللوني \(n\text{,}\) فإنّ بعض الرسوم البيانية فقط هي التي تصلح تمثيلًا للخرائط. فإذا حوّلتَ خريطةً إلى رسمٍ بياني، فإنّ الحوافّ بين الرؤوس تقابل الحدودَ بين البلدان. ومن ثمّ ينبغي أن تستطيع وصلَ الرؤوس بحيث لا تتقاطع الحواف. وبعبارةٍ أخرى، الرسومُ البيانية التي تمثّل الخرائط كلّها *مستويّة* (planar)![🔗](#sec_coloring-4-6) والسؤالُ إذن هو: ما أكبر عددٍ لونيٍّ لأيّ رسمٍ بياني مستوٍّ؟ والجوابُ هو أشهرُ مبرهنةٍ في نظرية الرسوم البيانية:[🔗](#sec_coloring-4-7)
 
-#### Theorem 2.5.2. The Four Color Theorem.
+#### مبرهنة 2.5.2. مبرهنة الألوان الأربعة.
 
-If \(G\) is a planar graph, then the chromatic number of \(G\) is less than or equal to 4. Thus any map can be properly colored with 4 or fewer colors.[🔗](#thm-four-color-5-1) [🔗](#thm-four-color)We will not prove this theorem. Really. Even though the theorem is easy to state and understand, the proof is not. In fact, there is currently no “easy” known proof of the theorem. The current best proof still requires powerful computers to check an *unavoidable set* of 633 *reducible configurations*. The idea is that every graph must contain one of these reducible configurations (this fact also needs to be checked by a computer) and that reducible configurations can, in fact, be colored in 4 or fewer colors.[🔗](#sec_coloring-4-9) Cartography is certainly not the only application of graph coloring. There are plenty of situations in which you might wish to partition the objects in question so that related objects are not in the same set. For example, you might wish to store chemicals safely. To avoid explosions, certain pairs of chemicals should not be stored in the same room. By coloring a graph (with vertices representing chemicals and edges representing potential negative interactions), you can determine the smallest number of rooms needed to store the chemicals.[🔗](#sec_coloring-4-10) Here is a further example:[🔗](#sec_coloring-4-11)
+إذا كان \(G\) رسمًا بيانيًا مستويًّا، فإنّ العددَ اللوني لـ \(G\) أصغرُ من 4 أو مساوٍ له. ومن ثمّ يمكن تلوينُ أيّ خريطةٍ تلوينًا سليمٍ بأربعة ألوانٍ أو بأقلّ.[🔗](#thm-four-color-5-1) [🔗](#thm-four-color)لن نبرهن هذه المبرهنة. حقًّا. فمع أنّ المبرهنة سهلةُ الصياغة والفهم، إلّا أنّ برهانها ليس كذلك. وفي الحقيقة لا توجد حتى الآن برهنةٌ معروفةٌ “سهلة” لهذه المبرهنة. وما زال أفضلُ برهانٍ حاليٍّ يتطلّب حواسيبَ قويّةَ للتحقّق من مجموعةٍ لا مفرّ من *633 تركيبةً اختزالية* (reducible configurations). والفكرةُ أنّ كلّ رسمٍ بياني يجب أن يحوي إحدى هذه التركيبات الاختزالية (وهذه الحقيقة تحتاج بدورها إلى التحقّق بستعمال حاسوب) وأنّ التركيبات الاختزالية يمكن بالفعل تلوينُها بأربعة ألوانٍ أو بأقلّ.[🔗](#sec_coloring-4-9) ورسمُ الخرائط ليس بالتأكيد التطبيقَ الوحيد للتلوين الرسوميّ. فهناك حالاتٌ كثيرة قد ترغب فيها في تقسيم الأشياء محلّ البحث بحيث لا تقع الأشياءُ المترابطة في المجموعة نفسها. فمثلًا قد ترغب في تخزين المواد الكيميائية بأمان. ولتجنّب الانفجارات، ينبغي ألّا تُخزَّن أزواجٌ معيّنة من المواد الكيميائية في الغرفة نفسها. وبتلوين رسمٍ بياني (مع رؤوسٍ تمثّل المواد الكيميائية وحوافٍ تمثّل التفاعلات السلبية المحتملة)، تستطيع تحديدَ أقلّ عددٍ من الغرف اللازمة لتخزين المواد الكيميائية.[🔗](#sec_coloring-4-10) وإليك مثالًا آخر:[🔗](#sec_coloring-4-11)
 
-#### Example 2.5.3.
+#### مثال 2.5.3.
 
-Radio stations broadcast their signal at certain frequencies. However, there are a limited number of frequencies to choose from, so nationwide, many stations use the same frequency. This works because the stations are far enough apart that their signals will not interfere; no one radio could pick them up at the same time.[🔗](#sec_coloring-4-12-1-1) Suppose 10 new radio stations are to be set up in a currently unpopulated (by radio stations) region. The radio stations that are close enough to each other to cause interference are recorded in the table below. What is the fewest number of frequencies the stations could use?[🔗](#sec_coloring-4-12-1-2)
+تبثّ محطّاتُ الراديو إشاراتها عند تردداتٍ معيّنة. لكنّ عددَ الترددات التي يمكن اختيارها محدود، لذا فعلى مستوى البلاد تستخدم محطّاتٌ كثيرةً الترددَ نفسه. ويأتي ذلك لأنّ المحطّات متباعدةٌ بدرجةٍ كافية بحيث لا تتداخل إشاراتها؛ إذ لا يستطيع أيّ جهازِ رادٍ التقاطَها في الوقت نفسه.[🔗](#sec_coloring-4-12-1-1) لنفرض أنّ عشر محطّات راديو جديدة ستُنشأ في منطقةٍ خاليةٍ حاليًّا (من محطّات الراديو). وتُدوَّن في الجدول أدناه المحطّاتُ القريبةُ من بعضها بالدرجة الكافية بحيث يحدث تداخل. فما أقلّ عددٍ من الترددات يمكن للمحطّات أن تستعمله؟[🔗](#sec_coloring-4-12-1-2)
 
 |  | KQEA | KQEB | KQEC | KQED | KQEE | KQEF | KQEG | KQEH | KQEI | KQEJ |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -109,188 +109,188 @@ Radio stations broadcast their signal at certain frequencies. However, there are
 | KQEI |  |  |  |  | x |  |  | x |  | x |
 | KQEJ | x |  | x |  |  | x | x |  | x |  |
 
-Solution. Represent the problem as a graph with vertices as the stations and edges when two stations are close enough to cause interference. We are looking for the chromatic number of the graph. Vertices that are colored identically represent stations that can have the same frequency.[🔗](#sec_coloring-4-12-2-1) This graph has chromatic number 5. A proper 5-coloring is shown on the right. Notice that the graph contains a copy of the complete graph \(K_5\text{,}\) so no fewer than 5 colors can be used.[🔗](#sec_coloring-4-12-2-2) ![A drawing of the graph representing the radio stations with edges between vertices if those radio stations interfere with each other. Vertices are arranged in a ring with KQEA at the top, and proceeding clockwise to KQEB, and so on through KQEH.](generated/latex-image/img-radio-graph.svg) ![A drawing of the graph representing the radio stations with edges between vertices if those radio stations interfere with each other. Here each vertex is labeled with a letter representing a color. From the top vertex and moving around clockwise: R, G, B, B, G, G, Y, R, B, P. A copy of of the graph K5 is drawn in bold among the edges of the original graph.](generated/latex-image/img-radio-graph-colored.svg) [🔗](#sec_coloring-4-12-2) [🔗](#sec_coloring-4-12)In the example above, the chromatic number was 5, but this is not a counterexample to the [Four Color Theorem 2.5.2](sec_coloring.html#thm-four-color), since the graph representing the radio stations is not planar. It would be nice to have some quick way to find the chromatic number of a (possibly non-planar) graph. It turns out nobody knows whether an efficient algorithm for computing chromatic numbers exists.[🔗](#sec_coloring-4-13) While we might not be able to find the exact chromatic number of a graph easily, we can often give a reasonable range for the chromatic number. In other words, we can give upper and lower bounds for the chromatic number.[🔗](#sec_coloring-4-14) This is not very difficult: for every graph \(G\text{,}\) the chromatic number of \(G\) is at least 1 and at most the number of vertices of \(G\text{.}\)[🔗](#sec_coloring-4-15) What? You want *better* bounds on the chromatic number? Well, you are in luck.[🔗](#sec_coloring-4-16) A clique in a graph is a set of vertices all of which are pairwise adjacent. In other words, a clique of size \(n\) is just a copy of the complete graph \(K_n\text{.}\) We define the clique number of a graph to be the largest \(n\) for which the graph contains a clique of size \(n\text{.}\) Any clique of size \(n\) cannot be colored with fewer than \(n\) colors, so we have a nice lower bound:[🔗](#sec_coloring-4-17)
+الحلّ. مثّل المسألةَ برسمٍ بيانيٍّ تكون رؤوسُه هي المحطّات، وتكون فيه حافةٌ متى كانت محطّتان قريبتَين بالدرجة الكافية يحدث بينهما تداخل. ونحن نبحث عن العدد اللوني لهذا الرسم البياني. والرؤوسُ الملوّنة بالطريقة نفسها تمثّل محطّاتٍ يمكن أن تتشارك الترددَ نفسه.[🔗](#sec_coloring-4-12-2-1) عددُ هذا الرسم البياني اللوني 5. ويظهر على اليمين تلوينٌ سليمٌ بخمسة ألوان. ولاحظ أنّ الرسم البياني يحوي نسخةً من الرسم البياني الكامل \(K_5\text{,}\) ومن ثمّ لا يمكن استعمالُ أقلّ من خمسة ألوان.[🔗](#sec_coloring-4-12-2-2) ![رسمٌ للرسم البياني الذي يمثّل محطّات الراديو، مع حافةٍ بين رأسين متى تداخلت المحطّتان المقابلتان. والرؤوس مرتّبةٌ في حلقةٍ وKQEA في الأعلى، ثمّ باتجاه عقارب الساعة KQEB، وهكذا حتى KQEH.](generated/latex-image/img-radio-graph.svg) ![رسمٌ للرسم البياني الذي يمثّل محطّات الراديو، مع حافةٍ بين رأسين متى تداخلت المحطّتان المقابلتان. وهنا كلّ رأسٍ موسومٌ بحرفٍ يمثّل لونًا. ابتداءً من الرأس العلوي ومتحرّكًا باتجاه عقارب الساعة: R, G, B, B, G, G, Y, R, B, P. ورُسمت نسخةٌ من الرسم البياني K5 بخطٍّ عريضٍ بين حوافّ الرسم البياني الأصلي.](generated/latex-image/img-radio-graph-colored.svg) [🔗](#sec_coloring-4-12-2) [🔗](#sec_coloring-4-12)في المثال أعلاه كان العددُ اللوني 5، لكنّ هذا ليس مثالًا مضادًّا لـ [مبرهنة الألوان الأربعة 2.5.2](sec_coloring.html#thm-four-color)، لأنّ الرسم البياني الذي يمثّل محطّات الراديو ليس مستويًّا. وكان من جيّد لو وُجدت طريقةٌ سريعةٌ لإيجاد العدد اللوني لرسمٍ بياني (قد لا يكون مستويًّا). لكنّ الأمر تبيّن أنّ لا أحد يعرف هل توجد خوارزميّةٌ كفاءةٌ لحساب الأعداد اللونية.[🔗](#sec_coloring-4-13) ولئن كنّا قد لا نستطيع بسهولة إيجادَ العدد اللوني الدقيق لرسمٍ بياني، فإنّنا نستطيع غالبًا إعطاءَ مدىً معقولٍ للعدد اللوني. وبعبارةٍ أخرى، نستطيع إعطاءَ حدٍّ أعلى وحدٍّ أدنى للعدد اللوني.[🔗](#sec_coloring-4-14) وهذا ليس صعبًا جدًّا: فلكلّ رسمٍ بياني \(G\text{,}\) يكون العددُ اللوني لـ \(G\) مساويًا 1 على الأقلّ، ومساويًا لعدد رؤوس \(G\text{.}\)[🔗](#sec_coloring-4-15) ماذا؟ أتريد حدودًا *أدقّ* للعدد اللوني؟ حسنًا، أنت في الحظّ السعيد.[🔗](#sec_coloring-4-16) التجمّع (clique) في رسمٍ بياني هو مجموعةُ رؤوسٍ كلُّها متجاورةٌ فيما بينها. وبعبارةٍ أخرى، التجمّعُ بحجم \(n\) ليس سوى نسخةٍ من الرسم البياني الكامل \(K_n\text{.}\) ونعرّف عددَ التجمّعات (clique number) في رسمٍ بياني بأنّه أكبرُ \(n\) يكون عندها في الرسم البياني تجمّعٌ بحجم \(n\text{.}\) وأيّ تجمّعٍ بحجم \(n\) لا يمكن تلوينُه بأقلّ من \(n\) لونًا، ومن ثمّ لدينا حدٌّ أدنى جميل:[🔗](#sec_coloring-4-17)
 
-#### Theorem 2.5.4.
+#### مبرهنة 2.5.4.
 
-The chromatic number of a graph \(G\) is at least the clique number of \(G\text{.}\)[🔗](#sec_coloring-4-18-1-1) [🔗](#sec_coloring-4-18) There are times when the chromatic number of \(G\) is *equal* to the clique number. These graphs have a special name; they are called perfect. If you know that a graph is perfect, then finding the chromatic number is simply a matter of searching for the largest clique. 10 There are special classes of graphs that can be proved to be perfect. One such class is the set of chordal graphs, which have the property that every cycle in the graph contains a chord—an edge between two vertices in the cycle which are not adjacent in the cycle. However, not all graphs are perfect.[🔗](#sec_coloring-4-19) For an upper bound, we can improve on “the number of vertices” by looking at the degrees of vertices. Let \(\Delta(G)\) be the largest degree of any vertex in the graph \(G\text{.}\) One reasonable guess for an upper bound on the chromatic number is \(\chi(G) \le \Delta(G) + 1\text{.}\) Why is this reasonable? Starting with any vertex, it together with all of its neighbors can always be colored in \(\Delta(G) + 1\) colors, since at most we are talking about \(\Delta(G) + 1\) vertices in this set. Now fan out! At any point, if you consider an already colored vertex, some of its neighbors might be colored, some might not. But no matter what, that vertex and its neighbors could all be colored distinctly, since there are at most \(\Delta(G)\) neighbors, plus the one vertex being considered.[🔗](#sec_coloring-4-20) In fact, there are examples of graphs for which \(\chi(G) = \Delta(G) + 1\text{.}\) For any \(n\text{,}\) the complete graph \(K_n\) has chromatic number \(n\text{,}\) but \(\Delta(K_n) = n-1\) (since every vertex is adjacent to every *other* vertex). Additionally, any *odd* cycle will have chromatic number 3, but the degree of every vertex in a cycle is 2. It turns out that these are the only two types of examples where we get equality, a result known as Brooks’ Theorem.[🔗](#sec_coloring-4-21)
+العددُ اللوني لرسمٍ بياني \(G\) أصغرُ من عدد التجمّعات لـ \(G\text{.}\) أو مساوٍ له.[🔗](#sec_coloring-4-18-1-1) [🔗](#sec_coloring-4-18) وهناك أحيانًا ما يكون فيه العددُ اللوني لـ \(G\) *مساويًا* لعدد التجمّعات. وهذه الرسومُ البيانية لها اسمٌ خاص؛ فهي تسمّى مثاليّة (perfect). فإذا عرفتَ أنّ رسمًا بيانيًا مثاليّ، فإنّ إيجادَ العدد اللوني ليس سوى مسألةِ البحث عن أكبر تجمّع. 10 وهناك أصنافٌ خاصةٌ من الرسوم البيانية يمكن إثباتُ أنّها مثاليّة. ومن هذه الأصناف مجموعةُ الرسوم التاجيّة (chordal graphs)، التي لها خاصيّةُ أنّ كلّ دورةٍ في الرسم البياني تحوي وترًا—أي حافةً بين رأسين في الدورة ليسا متجاورَين في الدورة. غير أنّ ليس كلُّ الرسوم البيانية مثاليًّا.[🔗](#sec_coloring-4-19) وبالنسبة إلى الحدّ الأعلى، يمكننا تحسينُ «عدد الرؤوس» بالنظر إلى درجات الرؤوس. فليكن \(\Delta(G)\) أكبرَ درجةٍ لأيّ رأسٍ في الرسم البياني \(G\text{.}\) ومن التقديرات المعقولة للحدّ الأعلى للعدد اللوني أنّ \(\chi(G) \le \Delta(G) + 1\text{.}\) ولماذا هذا معقول؟ إن بدأنا بأيّ رأس، فإنّه هو وكلُّ جيرانه يمكن تلوينُهم دائمًا بـ \(\Delta(G) + 1\) لونًا، لأنّنا نتكلّم في الغاية عن \(\Delta(G) + 1\) رأسًا في هذه المجموعة. والآن فتّح وانتشر! في أيّ لحظة، إن نظرتَ إلى رأسٍ ملوَّنٍ بالفعل، فإنّ بعضَ جيرانه قد يكونون ملوّنين وبعضُهم لا يكون. لكنّ ذلك الرأس وجيرانَه يمكن أن يكون كلٌّ منهم بلونٍ مختلف، إذ لا يزيد عددُ جيرانه عن \(\Delta(G)\)، تزيد ذلك الرأسُ الواحد محلّ النظر.[🔗](#sec_coloring-4-20) وفي الحقيقة، هناك رسومٌ بيانية يكون فيها \(\chi(G) = \Delta(G) + 1\text{.}\) فلكلّ \(n\text{,}\) يكون للرسم البياني الكامل \(K_n\) عددٌ لونيّ \(n\text{,}\) لكنّ \(\Delta(K_n) = n-1\) (لأنّ كلّ رأسٍ مجاورٌ لكلّ رأسٍ *آخر*). وإضافةً إلى ذلك، فإنّ أيّ دورةٍ *فرديّة* يكون عددها اللوني 3، لكنّ درجةَ كلّ رأسٍ في دورةٍ هي 2. ويبيّن الأمرُ أنّ نوعَي الأمثلة هذين هما الوحيدان اللذان نحصل فيهما على التساوي، وهذه نتيجةٌ معروفةٌ باسم مبرهنة بروكس.[🔗](#sec_coloring-4-21)
 
-#### Theorem 2.5.5. Brooks’ Theorem.
+#### مبرهنة 2.5.5. مبرهنة بروكس.
 
-Any graph \(G\) satisfies \(\chi(G) \le \Delta(G)\text{,}\) unless \(G\) is a complete graph or an odd cycle, in which case \(\chi(G) = \Delta(G) + 1\text{.}\)[🔗](#sec_coloring-4-22-3-1) [🔗](#sec_coloring-4-22)The proof of this theorem is *just* complicated enough that we will not present it here (although you are asked to prove a special case in the exercises). The adventurous reader is encouraged to find a book on graph theory to find suggestions for how to prove the theorem.[🔗](#sec_coloring-4-23) [🔗](#sec_coloring-4)
+كلُّ رسمٍ بياني \(G\) يحقّق \(\chi(G) \le \Delta(G)\text{,}\) إلا إذا كان \(G\) رسمًا كاملًا أو دورةً فرديّة، وعندئذٍ \(\chi(G) = \Delta(G) + 1\text{.}\)[🔗](#sec_coloring-4-22-3-1) [🔗](#sec_coloring-4-22)برهانُ هذه المبرهنة معقّدٌ *إلى الحدّ* الذي لن نعرضه هنا (مع أنّه مطلوبٌ منك إثباتُ حالةٍ خاصةٍ في التمارين). والقارئُ المغامر مدعوٌّ إلى أن يعثر على كتابٍ في نظرية الرسوم البيانية ليجد فيه اقتراحاتٍ حول كيفية إثبات المبرهنة.[🔗](#sec_coloring-4-23) [🔗](#sec_coloring-4)
 
-### Subsection Coloring Edges
+### تلوين الحوافّ
 
-The chromatic number of a graph tells us about coloring vertices, but we could also ask about coloring edges. Just like with vertex coloring, we might insist that adjacent edges must be colored differently. Here, we are thinking of two edges as being adjacent if they are incident to the same vertex. The least number of colors required to properly color the edges of a graph \(G\) is called the chromatic index of \(G\text{,}\) written \(\chi'(G)\text{.}\) [🔗](#sec_coloring-5-3)
+العددُ اللوني لرسمٍ بياني يخبرنا عن تلوين رؤوسه، لكنّنا يمكننا أيضًا أن نسأل عن تلوين حوافّه. ومثلَ تلوين الرؤوس تمامًا، قد نُلحّ على أنّ الحوافّ المتجاورة يجب أن تُلوَّن بألوانٍ مختلفة. وهنا نعتبر حافتين متجاورَتين إذا كانا تلتقيان في الرأس نفسه. وأقلُّ عددٍ من الألوان اللازم لتلوين حوافّ رسمٍ بياني \(G\) تلوينًا سليمًا يُسمّى الفهرسَ اللوني (chromatic index) لـ \(G\text{,}\) ويُكتب \(\chi'(G)\text{.}\) [🔗](#sec_coloring-5-3)
 
-#### Example 2.5.6.
+#### مثال 2.5.6.
 
-Six friends decide to spend the afternoon playing chess. Everyone will play everyone else once. They have plenty of chess sets, but nobody wants to play more than one game at a time. Games will last an hour (thanks to their handy chess clocks). How many hours will the tournament last?[🔗](#sec_coloring-5-4-1-1) Solution. Represent each player with a vertex and put an edge between two players if they play each other. In this case, we get the graph \(K_6\text{:}\)[🔗](#sec_coloring-5-4-2-1) ![The graph K6: six vertices (arranged in a circle), each adjacent to the other five.](generated/latex-image/img-chess-graph.svg) We must color the edges; each color represents a different hour. Since different edges incident to the same vertex will be colored differently, no player will be playing two different games (edges) at the same time. Thus we need to know the chromatic index of \(K_6\text{.}\)[🔗](#sec_coloring-5-4-2-3) Notice that for sure \(\chi'(K_6) \ge 5\text{,}\) since there is a vertex of degree 5. It turns out, 5 colors is enough (go find such a coloring). Therefore the friends will play for 5 hours.[🔗](#sec_coloring-5-4-2-4) [🔗](#sec_coloring-5-4-2) [🔗](#sec_coloring-5-4)Interestingly, if one of the friends in the above example left, the remaining 5 chessletes would still need 5 hours: the chromatic index of \(K_5\) is also 5.[🔗](#sec_coloring-5-5) In general, what can we say about the chromatic index? Certainly \(\chi'(G) \ge \Delta(G)\text{.}\) But how much higher could it be? Only a little higher.[🔗](#sec_coloring-5-6)
+قرّر ستةُ أصدقاء قضاءَ فترةٍ بعد الظهر في لعب الشطرنج. وسيلعب كلٌّ منهم كلَّ آخرٍ منهم مرّةً واحدة. ولديهم مجموعاتُ شطرنجٍ كثيرة، لكن لا أحد يريد أن يلعب أكثرَ من مباراةٍ في وقتٍ واحد. وستدوم كلُّ مباراةٍ ساعةً (بفضل ساعات الشطرنج اليدوية عندهم). فكم ساعةً ستدوم البطولة؟[🔗](#sec_coloring-5-4-1-1) الحلّ. مثّل كلَّ لاعبٍ برأس، وضع حافةً بين لاعبين إذا لعب أحدهما الآخر. وفي هذه الحالة نحصل على الرسم البياني \(K_6\text{:}\)[🔗](#sec_coloring-5-4-2-1) ![الرسم البياني K6: ستة رؤوس (مرتّبة في دائرة)، كلٌّ منها مجاورٌ للخمسة الأخرى.](generated/latex-image/img-chess-graph.svg) وعلينا أن نلوّن الحوافّ؛ ويمثّل كلُّ لونٍ ساعةً مختلفة. وبما أنّ الحوافّ المختلفة الملتقيّة في الرأس نفسه ستُلوَّن بألوانٍ مختلفة، فلا سيلعب أيُّ لاعب مباراتين (حافتين) مختلفتين في الوقت نفسه. ومن ثمّ نحتاج إلى معرفة الفهرس اللوني لـ \(K_6\text{.}\)[🔗](#sec_coloring-5-4-2-3) ولاحظ أنّ \(\chi'(K_6) \ge 5\text{,}\) بالتأكيد، لأنّ هناك رأسًا درجته 5. ويبيّن الأمرُ أنّ خمسةَ ألوانٍ تكفي (اذهب وابحث عن تلوينٍ من هذا النوع). ومن ثمّ سيلعب الأصدقاء لمدّة خمس ساعات.[🔗](#sec_coloring-5-4-2-4) [🔗](#sec_coloring-5-4-2) [🔗](#sec_coloring-5-4)ومن اللافت للنظر أنّه لو غادر أحدُ الأصدقاء في المثال أعلاه، لكان الخمسةُ المتبقّون من هواة الشطرنج ما زالوا يحتاجون خمس ساعات: فالفهرسُ اللوني لـ \(K_5\) هو أيضًا 5.[🔗](#sec_coloring-5-5) وبوجهٍ عام، ماذا يمكننا أن نقول عن الفهرس اللوني؟ وبالطبع \(\chi'(G) \ge \Delta(G)\text{.}\) لكنّ إلى أيّ حدٍّ قد يكون أعلى؟ ليس أعلى إلّا بقليلٍ جدًّا.[🔗](#sec_coloring-5-6)
 
-#### Theorem 2.5.7. Vizing’s Theorem.
+#### مبرهنة 2.5.7. مبرهنة فيزينغ.
 
-For any graph \(G\text{,}\) the chromatic index \(\chi'(G)\) is either \(\Delta(G)\) or \(\Delta(G) + 1\text{.}\)[🔗](#sec_coloring-5-7-3-1) [🔗](#sec_coloring-5-7)At first, this theorem makes it seem like the chromatic index might not be very interesting. However, deciding which case a graph is in is not always easy. Graphs for which \(\chi'(G) = \Delta(G)\) are called *class 1*, while the others are called *class 2*. Bipartite graphs always satisfy \(\chi'(G) = \Delta(G)\text{,}\) so are class 1 (this was proved by König in 1916, decades before Vizing proved his theorem in 1964). In 1965 Vizing proved that all planar graphs with \(\Delta(G) \ge 8\) are of class 1, but this does not hold for all planar graphs with \(2 \le \Delta(G) \le 5\text{.}\) Vizing conjectured that all planar graphs with \(\Delta(G) = 6\) or \(\Delta(G) = 7\) are class 1; the \(\Delta(G) = 7\) case was proved in 2001 by Sanders and Zhao; the \(\Delta(G) = 6\) case is still open.[🔗](#sec_coloring-5-8)
+لكلّ رسمٍ بياني \(G\text{,}\) فإنّ الفهرسَ اللوني \(\chi'(G)\) إمّا \(\Delta(G)\) وإمّا \(\Delta(G) + 1\text{.}\)[🔗](#sec_coloring-5-7-3-1) [🔗](#sec_coloring-5-7)في البداية، تُوحي هذه المبرهنة بأنّ الفهرسَ اللوني ربّما ليس مثيرًا للاهتمام كثيرًا. لكنّ تحديدَ الحالة التي يقع فيها رسمٌ بيانيٍّ ليس سهلًا دائمًا. وتُسمّى الرسومُ التي يكون \(\chi'(G) = \Delta(G)\) *الصنف 1*، بينما تُسمّى سواها *الصنف 2*. والرسومُ الثنائية الجزء (bipartite) تحقّق دائمًا \(\chi'(G) = \Delta(G)\text{,}\) فهي من الصنف 1 (وقد أثبت ذلك كونيغ (König) سنة 1916، أي قبل عقودٍ من إثبات فيزينغ مبرهنته سنة 1964). وقد أثبت فيزينغ سنة 1965 أنّ كلَّ الرسوم المستوية التي يكون \(\Delta(G) \ge 8\) تنتمي إلى الصنف 1، لكنّ هذا لا يتحقّق لكلِّ الرسوم المستوية التي يكون \(2 \le \Delta(G) \le 5\text{.}\) وتوقّع فيزينغ أنّ كلَّ الرسوم المستوية التي يكون \(\Delta(G) = 6\) أو \(\Delta(G) = 7\) تنتمي إلى الصنف 1؛ وقد ثبتت حالة \(\Delta(G) = 7\) سنة 2001 على يد ساندِرز (Sanders) وزاو (Zhao)؛ أمّا حالة \(\Delta(G) = 6\) فما تزال مفتوحة.[🔗](#sec_coloring-5-8)
 
-#### Ramsey Theory.
+#### نظرية رامزي.
 
-There is another interesting way we might consider coloring edges, quite different from what we have discussed so far. What if we colored every edge of a graph either red or blue? Can we do so without, say, creating a *monochromatic* triangle (i.e., an all red or all blue triangle)? Certainly, for some graphs the answer is yes. Try doing so for \(K_4\text{.}\) What about \(K_5\text{?}\) \(K_6\text{?}\) How far can we go?[🔗](#sec_coloring-5-9-3) The problem above is not too difficult and is a fun exercise. We could extend the question in a variety of ways. What if we had three colors? What if we were trying to avoid other graphs? Surprisingly, very little is known about these questions. For example, we know that you need to go up to \(K_{17}\) in order to force a monochromatic triangle using three colors, but nobody knows how big you need to go with more colors. Similarly, we know that using two colors, \(K_{18}\) is the smallest graph that forces a monochromatic copy of \(K_4\text{,}\) but the best we have to force a monochromatic \(K_{5}\) is a range, somewhere from \(K_{43}\) to \(K_{49}\text{.}\) If you are interested in these sorts of questions, this area of graph theory is called Ramsey theory. Check it out.[🔗](#sec_coloring-5-9-4) [🔗](#sec_coloring-5-9)[🔗](#sec_coloring-5)
+هناك طريقةٌ أخرى مثيرةٌ للاهتمام يمكننا بها التفكير في تلوين الحوافّ، مختلفةٌ تمامًا عمّا ناقشناه حتى الآن. فماذا لو لوّنّا كلَّ حافةٍ في رسمٍ بيانيٍّ إمّا بالأحمر وإمّا بالأزرق؟ هل يمكننا فعلَ ذلك دون أن نُنشئ، مثلًا، *مثلّثًا أحاديَّ اللون* (monochromatic)، أي مثلّثًا كلُّه أحمر أو كلُّه أزرق؟ وبالطبع، فإنّ الجوابَ نعم لبعض الرسوم البيانية. جرّب ذلك على \(K_4\text{.}\) فماذا عن \(K_5\text{?}\) \(K_6\text{?}\) وإلى أيّ حدٍّ يمكننا الذهاب؟[🔗](#sec_coloring-5-9-3) والمسألةُ أعلاه ليست صعبةً جدًّا وهي تمرينٌ ممتع. ويمكننا توسيعَ السؤال بطرقٍ متعدّدة. فماذا لو كان لدينا ثلاثةُ ألوان؟ وماذا لو كنا نحاول تجنّب رسومٍ بيانيةٍ أخرى؟ ولأمرٍ مدهش، فمعلوماتُنا عن هذه الأسئلة قليلةٌ جدًّا. فمثلًا، نعرف أنّه يلزم الصعودُ إلى \(K_{17}\) لإجبار وجود مثلّثٍ أحاديّ اللون باستعمال ثلاثة ألوان، لكن لا أحد يعرف كم يجب أن نصعد إليه مع ألوانٍ أكثر. وبالمثل، نعلم أنّ باستعمال لونين يكون \(K_{18}\) أصغرَ رسمٍ بيانيٍّ يُجبر على نسخةٍ أحاديةِ اللون من \(K_4\text{,}\) لكنّ أفضلَ ما لدينا لإجبار \(K_{5}\) أحاديّ اللون هو مدىً من \(K_{43}\) إلى \(K_{49}\text{.}\) وإن كنت مهتمًّا بهذه الأسئلة، فإنّ هذا المجالَ من نظرية الرسوم البيانية يُسمّى نظرية رامزي (Ramsey theory). فتفحّصها.[🔗](#sec_coloring-5-9-4) [🔗](#sec_coloring-5-9)[🔗](#sec_coloring-5)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-True or false: if a graph contains a vertex of degree 5, then the chromatic number of the graph is at least 5. Explain.[🔗](#rq-gt-coloring-degree-1-1) [🔗](#rq-gt-coloring-degree)
+صحّ أم خطأ: إذا احتوى رسمٌ بيانيٌّ على رأسٍ درجته 5، فإنّ العددَ اللوني للرسم البياني مساوٍ لـ 5 على الأقلّ. اشرح.[🔗](#rq-gt-coloring-degree-1-1) [🔗](#rq-gt-coloring-degree)
 
 #### 2.
 
-In your own words, explain the difference between chromatic number and chromatic index.[🔗](#rq-gt-coloring-edges-1-1) [🔗](#rq-gt-coloring-edges)
+بعباراتك أنت، اشرح الفرقَ بين العدد اللوني والفهرس اللوني.[🔗](#rq-gt-coloring-edges-1-1) [🔗](#rq-gt-coloring-edges)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-gt-coloring-q-1-1) [🔗](#rq-gt-coloring-q)[🔗](#rqs-gt-coloring)
+ما الأسئلةُ التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب سؤالًا واحدًا على الأقلّ عن محتوى هذا القسم يثيرُ اهتمامك.[🔗](#rq-gt-coloring-q-1-1) [🔗](#rq-gt-coloring-q)[🔗](#rqs-gt-coloring)
 
-### Exercises Practice Problems
+### التمارين مسائل التدريب
 
 #### 1.
 
-Activate Each of the following problems can be solved by finding either the chromatic number of a graph or the chromatic index of a graph.[🔗](#extracted-webwork-62-1-1-1) For each problem, say whether you should find a proper coloring of the vertices or of the edges of the graph to solve the problem. Note: you likely don’t have enough information to actually solve the problem, but this is okay. Just say in principle whether this is an edge-coloring or vertex-coloring application.[🔗](#extracted-webwork-62-1-1-2)
+Activate يمكنُ حلُّ كلّ مسألةٍ من المسائل التالية إمّا بإيجاد العدد اللوني لرسمٍ بيانيٍّ أو بإيجاد الفهرس اللوني لرسمٍ بياني.[🔗](#extracted-webwork-62-1-1-1) فلكلّ مسألة، حدّد: هل ينبغي أن تجد تلوينًا سليمًا لرؤوس الرسم البياني أم لحوافّه. ملاحظة: على الأغلب لا تملك معلوماتٍ كافية لحلّ المسألة فعلًا، لكنّ ذلك لا بأس به. فقط حدّد من حيث المبدأ أهي مسألةُ تلوين حوافّ أم مسألةُ تلوين رؤوس.[🔗](#extracted-webwork-62-1-1-2)
 
-1. Professor Snape stores potion ingredients in as few cabinets as possible, but some ingredients can’t be stored in the same cabinet because they could interact dangerously. How many cabinets are required?[🔗](#extracted-webwork-62-1-1-3-1-1-1) [🔗](#extracted-webwork-62-1-1-3-1-1)
-2. At the world Tic-Tac-Toe championship, each player must play against seven other players. New games start every hour. How many hours will the tournament take?[🔗](#extracted-webwork-62-1-1-3-1-2-1) [🔗](#extracted-webwork-62-1-1-3-1-2)
-3. Your teacher wants to have different versions of the Final Exam so that no students that are seated within four feet of each other have the same version of the exam. How many versions are needed?[🔗](#extracted-webwork-62-1-1-3-1-3-1) [🔗](#extracted-webwork-62-1-1-3-1-3)
-4. The math department wants to schedule common, day-long midterm exams over Spring Break, but obviously a student in two classes has to have their exams for those classes on different days (and this is the only problem with this plan). How many days are needed for exams?[🔗](#extracted-webwork-62-1-1-3-1-4-1) [🔗](#extracted-webwork-62-1-1-3-1-4)
+1. يحفظ الأستاذُ سناب مكوّناتِ الجرعات في أقلّ عددٍ ممكنٍ من الخزائن، لكنّ بعضَ المكوّنات لا يمكن حفظُها في الخزانة نفسها لأنّها قد تتفاعل بشكلٍ خطير. فكم خزانةً لازمة؟[🔗](#extracted-webwork-62-1-1-3-1-1-1) [🔗](#extracted-webwork-62-1-1-3-1-1)
+2. في بطولة العالم للعبة «إكس وأو»، يجب على كلِّ لاعبٍ أن يواجه سبعةَ لاعبين آخرين. وتُبدأ مبارياتٌ جديدةٌ كلّ ساعة. فكم ساعةً ستستغرق البطولة؟[🔗](#extracted-webwork-62-1-1-3-1-2-1) [🔗](#extracted-webwork-62-1-1-3-1-2)
+3. يريد أستاذُك أن تتوفّر نسخٌ مختلفةٌ من الامتحان النهائي بحيث لا يحصل طالبان جالسان على مسافةٍ تقلّ عن أربعة أقدام من بعضهما على النسخة نفسها. فكم نسخةً لازمة؟[🔗](#extracted-webwork-62-1-1-3-1-3-1) [🔗](#extracted-webwork-62-1-1-3-1-3)
+4. يريد قسمُ الرياضيات أن يجدول امتحاناتٍ نهائيةً مشتركةً تمتدّ طوالَ اليوم خلال عطلة الربيع، لكنّ من الواضح أنّ الطالبَ المسجَّل في مادّتين لا بدّ أن تكون امتحاناتُه في تلك المادّتين في أيّامٍ مختلفة (وهذه هي المشكلةُ الوحيدةُ في هذه الخطة). فكم يومًا نحتاج للامتحانات؟[🔗](#extracted-webwork-62-1-1-3-1-4-1) [🔗](#extracted-webwork-62-1-1-3-1-4)
 
 [🔗](#extracted-webwork-62-1-1-3) [🔗](#ww-gt-coloring-apps)
 
 #### 2.
 
-Activate What is the chromatic number of each graph?[🔗](#extracted-webwork-63-1-1-1) \(P_{15}\) [🔗](#extracted-webwork-63-1-1-2) \(C_{6}\) [🔗](#extracted-webwork-63-1-1-3) \(C_{5}\) [🔗](#extracted-webwork-63-1-1-4) \(K_{5, 15}\) [🔗](#extracted-webwork-63-1-1-5) \(K_{5}\) [🔗](#extracted-webwork-63-1-1-6) [🔗](#ww-gt-chromatic-number)
+Activate ما العددُ اللوني لكلّ رسمٍ بياني؟[🔗](#extracted-webwork-63-1-1-1) \(P_{15}\) [🔗](#extracted-webwork-63-1-1-2) \(C_{6}\) [🔗](#extracted-webwork-63-1-1-3) \(C_{5}\) [🔗](#extracted-webwork-63-1-1-4) \(K_{5, 15}\) [🔗](#extracted-webwork-63-1-1-5) \(K_{5}\) [🔗](#extracted-webwork-63-1-1-6) [🔗](#ww-gt-chromatic-number)
 
 #### 3.
 
-Activate What is the chromatic *index* of each graph?[🔗](#extracted-webwork-64-1-1-1) \(P_{5}\) [🔗](#extracted-webwork-64-1-1-2) \(C_{14}\) [🔗](#extracted-webwork-64-1-1-3) \(C_{9}\) [🔗](#extracted-webwork-64-1-1-4) \(K_{5, 15}\) [🔗](#extracted-webwork-64-1-1-5) \(K_{14}\) [🔗](#extracted-webwork-64-1-1-6) [🔗](#ww-gt-chromatic-index)
+Activate ما الفهرسُ *اللوني* لكلّ رسمٍ بياني؟[🔗](#extracted-webwork-64-1-1-1) \(P_{5}\) [🔗](#extracted-webwork-64-1-1-2) \(C_{14}\) [🔗](#extracted-webwork-64-1-1-3) \(C_{9}\) [🔗](#extracted-webwork-64-1-1-4) \(K_{5, 15}\) [🔗](#extracted-webwork-64-1-1-5) \(K_{14}\) [🔗](#extracted-webwork-64-1-1-6) [🔗](#ww-gt-chromatic-index)
 
 #### 4.
 
-Activate The following statements are about the chromatic number \(\chi(G)\) and the chromatic index \(\chi'(G)\) of graphs. We use \(\Delta(G)\) for the maximum degree of \(G\text{.}\)[🔗](#extracted-webwork-65-1-1-1) Are the following statements true or false?[🔗](#extracted-webwork-65-1-1-2)
+Activate تتعلّق العباراتُ التالية بالعدد اللوني \(\chi(G)\) والفهرس اللوني \(\chi'(G)\) للرسوم البيانية. ونستعمل \(\Delta(G)\) للإشارة إلى أكبر درجةٍ في \(G\text{.}\)[🔗](#extracted-webwork-65-1-1-1) هل العباراتُ التالية صحيحةٌ أم خاطئة؟[🔗](#extracted-webwork-65-1-1-2)
 
-1. If a every vertex of a graph has degree at most 7, then the chromatic index of the graph is at least 7.[🔗](#extracted-webwork-65-1-1-3-1-1-1) [🔗](#extracted-webwork-65-1-1-3-1-1)
+1. إذا كان كلُّ رأسٍ في رسمٍ بيانيٍّ درجته 7 على الأكثر، فإنّ الفهرسَ اللوني للرسم البياني مساوٍ لـ 7 على الأقلّ.[🔗](#extracted-webwork-65-1-1-3-1-1-1) [🔗](#extracted-webwork-65-1-1-3-1-1)
 2. \(\chi'(G) \ge \Delta(G)\text{.}\)[🔗](#extracted-webwork-65-1-1-3-1-2-1) [🔗](#extracted-webwork-65-1-1-3-1-2)
-3. For any cycle, the chromatic index is equal to the chromatic number.[🔗](#extracted-webwork-65-1-1-3-1-3-1) [🔗](#extracted-webwork-65-1-1-3-1-3)
-4. For all \(n \ge 3\text{,}\) \(\chi'(K_n) = \Delta(K_n)\text{.}\)[🔗](#extracted-webwork-65-1-1-3-1-4-1) [🔗](#extracted-webwork-65-1-1-3-1-4)
+3. لأيّ دورة، يساوي الفهرسُ اللوني العددَ اللوني.[🔗](#extracted-webwork-65-1-1-3-1-3-1) [🔗](#extracted-webwork-65-1-1-3-1-3)
+4. لكلّ \(n \ge 3\text{,}\) \(\chi'(K_n) = \Delta(K_n)\text{.}\)[🔗](#extracted-webwork-65-1-1-3-1-4-1) [🔗](#extracted-webwork-65-1-1-3-1-4)
 
 [🔗](#extracted-webwork-65-1-1-3) [🔗](#ww-gt-chromatic-TF)
 
 #### 5.
 
-Activate What is the chromatic number of each graph?[🔗](#extracted-webwork-66-1-1-1)
+Activate ما العددُ اللوني لكلّ رسمٍ بياني؟[🔗](#extracted-webwork-66-1-1-1)
 
-| ![a graph for which to find the chromatic number](/images/discrete-math/sec_coloring-webwork-66-image-1.png.webp) | ![a graph for which to find the chromatic number](/images/discrete-math/sec_coloring-webwork-66-image-2.png.webp) |
+| ![رسمٌ بيانيٌّ لإيجاد عدده اللوني](/images/discrete-math/sec_coloring-webwork-66-image-1.png.webp) | ![رسمٌ بيانيٌّ لإيجاد عدده اللوني](/images/discrete-math/sec_coloring-webwork-66-image-2.png.webp) |
 | --- | --- |
 |  |  |
-| ![a graph for which to find the chromatic number](/images/discrete-math/sec_coloring-webwork-66-image-3.png.webp) | [🔗](#extracted-webwork-66-1-1-2-3-2-2) |
+| ![رسمٌ بيانيٌّ لإيجاد عدده اللوني](/images/discrete-math/sec_coloring-webwork-66-image-3.png.webp) | [🔗](#extracted-webwork-66-1-1-2-3-2-2) |
 |  |  |
 
 [🔗](#ww-gt-chromnum)[🔗](#practice_gt-coloring)
 
-### Exercises Additional Exercises
+### التمارين تمارين إضافية
 
 #### 1.
 
-What is the smallest number of colors you need to properly color the vertices of \(K_{4,5}\text{?}\) That is, find the chromatic number of the graph.[🔗](#exercises_gt-coloring-2-1-1) [🔗](#exercises_gt-coloring-2)
+ما أصغرُ عددٍ من الألوان تحتاجه لتلوين رؤوس \(K_{4,5}\text{?}\) أي: أوجد العددَ اللوني للرسم البياني.[🔗](#exercises_gt-coloring-2-1-1) [🔗](#exercises_gt-coloring-2)
 
 #### 2.
 
-Draw a graph with chromatic number 6 (i.e., which requires 6 colors to properly color the vertices). Could your graph be planar? Explain.[🔗](#exercises_gt-coloring-3-1-1) [🔗](#exercises_gt-coloring-3)
+ارسم رسمًا بيانيًا عدده اللوني 6 (أي الذي يتطلّب 6 ألوانٍ لتلوين رؤوسه تلوينًا سليمًا). هل يمكن أن يكون رسمُك مستويًّا؟ اشرح.[🔗](#exercises_gt-coloring-3-1-1) [🔗](#exercises_gt-coloring-3)
 
 #### 3.
 
-Find the chromatic number of each of the following graphs.[🔗](#exercises_gt-coloring-4-1-1) ![A graph with five vertices arranged in a diamond with one vertex in the middle. The top vertex is connected to the two outside vertices below it, which are connected to the bottom vertex. The center vertex is connected to the two vertices to its left and right.](generated/latex-image/k23-coloring.svg) ![The graph C7: seven vertices arranged in a circle with edges connecting neighboring vertices (creating a 7-sided polygon).](generated/latex-image/c7-coloring.svg) ![Five vertices in a pentagon with a sixth vertex in the center. Edges form the outside of the pentagon, and the center vertex is adjacent to each outside vertex.](generated/latex-image/w5-coloring.svg) ![The graph K5: five vertices each adjacent to all the others, arranged in a pentagon.](generated/latex-image/k5-coloring.svg) ![The Petersen graph: ten vertices arranged in two rings of five each. Each outer vertex is adjacent to the two outer vertices closest to it, forming a pentagon, and to the inner vertex closest to it. Each inner vertex is adjacent to the two inner vertices not neighboring it, forming a 5-ponted star.](generated/latex-image/petersen_graph_coloring.svg) [🔗](#exercises_gt-coloring-4)
+أوجد العددَ اللوني لكلّ من الرسوم البيانية التالية.[🔗](#exercises_gt-coloring-4-1-1) ![رسم بياني فيه خمسة رؤوس مرتّبة على شكل معيّن مع رأسٍ واحد في الوسط. الرأس العلوي موصولٌ بالرأسين الخارجيين أسفله، وهما موصولان بالرأس السفلي. والرأس الأوسط موصولٌ بالرأسين إلى يمينه ويساره.](generated/latex-image/k23-coloring.svg) ![الرسم البياني C7: سبعة رؤوس مرتّبة في دائرة مع حوافٍ تصل الرؤوسَ المتجاورة (فتُكوّن مضلّعًا من سبعة أضلاع).](generated/latex-image/c7-coloring.svg) ![خمسة رؤوسٍ في خماسيّ مع رأسٍ سادسٍ في الوسط. تشكّل الحوافُ محيطَ الخماسيّ، والرأسُ الأوسط مجاورٌ لكلّ رأسٍ خارجي.](generated/latex-image/w5-coloring.svg) ![الرسم البياني K5: خمسة رؤوسٍ كلٌّ منها مجاورٌ لجميع الرؤوس الأخرى، مرتّبة في خماسيّ.](generated/latex-image/k5-coloring.svg) ![رسم بيدرسن (Petersen) البياني: عشرة رؤوس مرتّبةً في حلقتين من خمسة رؤوس كلٍّ منهما. كلُّ رأسٍ خارجيّ مجاورٌ للرأسين الخارجيين الأقرب إليه فيُكوّنان خماسيًّا، ومجاورٌ كذلك لأقرب رأسٍ داخليٍّ إليه. وكلُّ رأسٍ داخليّ مجاورٌ للرأسين الداخليّين اللذين ليسا مجاورَين له فيُكوّنان نجمةً خماسيةَ الأطراف.](generated/latex-image/petersen_graph_coloring.svg) [🔗](#exercises_gt-coloring-4)
 
 #### 4.
 
-A group of 10 friends decides to head up to a cabin in the woods (where nothing could possibly go wrong). Unfortunately, a number of these friends have dated each other in the past, and things are still a little awkward. To get to the cabin, they need to divide up into some number of cars, and no two people who dated should be in the same car.[🔗](#exercises_gt-coloring-5-1-1)
+قرّرت مجموعةٌ من عشرة أصدقاء التوجّهَ إلى كوخٍ في الغابات (حيث لا يمكن أن يحدث شيءٌ سيّئ). وللأسف، فقد تواعد عددٌ من هؤلاء الأصدقاء بعضهم في الماضي، والأمورُ ما زالت متوتّرةً قليلًا. ولبلوغ الكوخ، عليهم أن يتقسموا بين عددٍ ما من السيارات، وألّا يجتمع شخصان تواعدا في السيارة نفسها.[🔗](#exercises_gt-coloring-5-1-1)
 
 #### (a)
 
-What is the smallest number of cars you need if all the relationships were strictly heterosexual? Represent an example of such a situation with a graph. What kind of graph do you get?[🔗](#exercises_gt-coloring-5-2-1-1) [🔗](#exercises_gt-coloring-5-2)
+ما أصغرُ عددٍ من السيارات تحتاجه إذا كانت كلُّ العلاقات بين الجنسين فقط؟ مثّل حالةً من هذا النوع برسمٍ بياني. فما نوعُ الرسم البياني الذي تحصل عليه؟[🔗](#exercises_gt-coloring-5-2-1-1) [🔗](#exercises_gt-coloring-5-2)
 
 #### (b)
 
-Because a number of these friends dated there are also conflicts between friends of the same gender, listed below. Now what is the smallest number of conflict-free cars they could take to the cabin?[🔗](#exercises_gt-coloring-5-3-1-1)
+ولأنّ عددًا من هؤلاء الأصدقاء قد تواعدوا، فإنّ هناك أيضًا تعارضاتٍ بين أصدقاءٍ من الجنس نفسه، وهي مسرودةٌ أدناه. فما الآن أصغرُ عددٍ من السيارات الخالية من التعارضات التي يمكنهم أخذُها إلى الكوخ؟[🔗](#exercises_gt-coloring-5-3-1-1)
 
-| Friend | A | B | C | D | E | F | G | H | I | J |
+| الصديق | A | B | C | D | E | F | G | H | I | J |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Conflicts | CFI | J | AEF | H | CFG | ACEGI | EFI | D | AFG | B |
+| التعارضات | CFI | J | AEF | H | CFG | ACEGI | EFI | D | AFG | B |
 
 [🔗](#exercises_gt-coloring-5-3)[🔗](#exercises_gt-coloring-5)
 
 #### 5.
 
-What is the smallest number of colors that can be used to color the vertices of a cube so that no two adjacent vertices are colored identically?[🔗](#exercises_gt-coloring-6-1-1) [🔗](#exercises_gt-coloring-6)
+ما أصغرُ عددٍ من الألوان التي يمكن استعمالُها لتلوين رؤوس مكعّبٍ بحيث لا يُلوَّن رأسان متجاوران باللون نفسه؟[🔗](#exercises_gt-coloring-6-1-1) [🔗](#exercises_gt-coloring-6)
 
 #### 6.
 
-Prove the chromatic number of any tree is two. Recall, a tree is a connected graph with no cycles.[🔗](#exercises_gt-coloring-7-1-1)
+اثبت أنّ العددَ اللوني لأيّ شجرةٍ (tree) هو اثنان. تذكّر أنّ الشجرة رسمٌ بيانيٌّ متصلٌ لا دوراتَ فيه.[🔗](#exercises_gt-coloring-7-1-1)
 
 #### (a)
 
-Consider the tree below. If you color the left-most vertex red, what should its neighbor be colored? What should the neighbors of the neighbor be colored? Describe a procedure to color the tree below using two colors.[🔗](#exercises_gt-coloring-7-2-1-1) ![A tree with 28 vertices.](generated/latex-image/img_big-tree.svg) [🔗](#exercises_gt-coloring-7-2)
+تأمّل الشجرةَ أدناه. فإذا لوّنتَ الرأسَ الأكثر سَارًا بالأحمر، فبأيّ لونٍ ينبغي أن يُلوَّن جاره؟ وبأيّ لونٍ ينبغي أن تُلوَّن جيرانُ الجار؟ صِف إجراءً لتلوين الشجرة أدناه باستعمال لونين.[🔗](#exercises_gt-coloring-7-2-1-1) ![شجرة فيها 28 رأسًا.](generated/latex-image/img_big-tree.svg) [🔗](#exercises_gt-coloring-7-2)
 
 #### (b)
 
-If you used the same procedure to color a cycle, will you always be able to color it with two colors?[🔗](#exercises_gt-coloring-7-3-1-1) [🔗](#exercises_gt-coloring-7-3)
+إذا استعملتَ الإجراءَ نفسه في تلوين دورة، فهل ستتمكّن دائمًا من تلوينها بلونين؟[🔗](#exercises_gt-coloring-7-3-1-1) [🔗](#exercises_gt-coloring-7-3)
 
 #### (c)
 
-Prove that your procedure from part (a) always works for any tree.[🔗](#exercises_gt-coloring-7-4-1-1) Hint. Will you eventually color every vertex following the procedure? Will there ever be a vertex you cannot color according to the procedure?[🔗](#exercises_gt-coloring-7-4-2-1) [🔗](#exercises_gt-coloring-7-4-2) [🔗](#exercises_gt-coloring-7-4)
+اثبت أنّ الإجراءَ الذي توصّلتَ إليه في الجزء (a) ينجح دائمًا لأيّ شجرة. تلميح. هل ستلوّن في النهاية كلَّ رأسٍ اتّباعًا للإجراء؟ وهل سيوجد رأسٌ لا تستطيع تلوينَه وفق الإجراء؟[🔗](#exercises_gt-coloring-7-4-1-1) [🔗](#exercises_gt-coloring-7-4-2-1) [🔗](#exercises_gt-coloring-7-4-2) [🔗](#exercises_gt-coloring-7-4)
 
 #### (d)
 
-Now, give a different proof, this time using induction, that every tree has chromatic number 2.[🔗](#exercises_gt-coloring-7-5-1-1) [🔗](#exercises_gt-coloring-7-5)[🔗](#exercises_gt-coloring-7)
+والآن، اعرض برهانًا مختلفًا، هذه المرّة بالتعليل الرياضي (induction)، على أنّ كلَّ شجرةٍ عددها اللوني 2.[🔗](#exercises_gt-coloring-7-5-1-1) [🔗](#exercises_gt-coloring-7-5)[🔗](#exercises_gt-coloring-7)
 
 #### 7.
 
-The two problems below can be solved using graph coloring. For each problem, represent the situation with a graph, say whether you should be coloring vertices or edges and why, and use the coloring to solve the problem.[🔗](#exercises_gt-coloring-8-3-1)
+يمكن حلُّ المسألتَين أدناه باستعمال تلوين الرسوم البيانية. فلكلّ مسألة، مثّل الحالةَ برسمٍ بياني، وحدّد: هل ينبغي أن يكون ذلك تلوينَ رؤوسٍ أم تلوينَ حوافٍ ولماذا، واستعمل التلوينَ لحلّ المسألة.[🔗](#exercises_gt-coloring-8-3-1)
 
 #### (a)
 
-Your Quidditch league has 5 teams. You will play a tournament next week in which every team will play every other team once. Each team can play at most one match each day, but there is plenty of time in the day for multiple matches. What is the fewest number of days over which the tournament can take place?[🔗](#exercises_gt-coloring-8-4-1-1) Hint. You will want the teams to be vertices and games to be edges. Which does it make sense to color?[🔗](#exercises_gt-coloring-8-4-2-1) [🔗](#exercises_gt-coloring-8-4-2) [🔗](#exercises_gt-coloring-8-4)
+في دوريّ كويديتش (Quidditch) لديك 5 فرق. وستُقام بطولةٌ الأسبوع القادم، يُلعب فيها كلُّ فريقٍ كلَّ فريقٍ آخر مرّةً واحدة. ويمكن لكلِّ فريقٍ أن يلعب مباراةً واحدةً على الأكثر في اليوم، لكنّ في اليوم وقتًا وفيرًا لمبارياتٍ متعدّدة. فما أقلُّ عددٍ من الأيام التي يمكن أن تمتدَّ فيها البطولة؟[🔗](#exercises_gt-coloring-8-4-1-1) تلميح. ستحبّ أن تكون الفرقُ رؤوسًا والمبارياتُ حوافّ. فأيّهما من المعنى أن نلوّنه؟[🔗](#exercises_gt-coloring-8-4-2-1) [🔗](#exercises_gt-coloring-8-4-2) [🔗](#exercises_gt-coloring-8-4)
 
 #### (b)
 
-Ten members of Math Club are driving to a math conference in a neighboring state. However, some of these students have dated in the past, and things are still a little awkward. Each student lists which other students they refuse to share a car with; these conflicts are recorded in the table below. What is the fewest number of cars the club needs to make the trip? Do not worry about running out of seats, just avoid the conflicts.[🔗](#exercises_gt-coloring-8-5-1-1)
+عشرةُ أعضاءٍ من نادي الرياضيات يقودون إلى مؤتمرٍ رياضيٍّ في ولايةٍ مجاورة. لكنّ بعضَ هؤلاء الطلبة قد تواعدوا في الماضي، والأمورُ ما زالت متوتّرةً قليلًا. وكلُّ طالبٍ يذكر الطلبةَ الآخرين الذين يرفض تقاسمَ سيارةٍ معهم؛ وتُدوَّن هذه التعارضات في الجدول أدناه. فما أقلُّ عددٍ من السيارات يحتاج إليه النادي لرحلة الذهاب؟ لا تقلق بشأن نفاد المقاعد، وابدأ بتجنّب التعارضات.[🔗](#exercises_gt-coloring-8-5-1-1)
 
-| Student: | A | B | C | D | E | F | G | H | I | J |
+| الطالب: | A | B | C | D | E | F | G | H | I | J |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Conflicts: | BEJ | ADG | HJ | BF | AI | DJ | B | CI | EHJ | ACFI |
+| التعارضات: | BEJ | ADG | HJ | BF | AI | DJ | B | CI | EHJ | ACFI |
 
 [🔗](#exercises_gt-coloring-8-5)[🔗](#exercises_gt-coloring-8)
 
 #### 8.
 
-Prove the 6-color theorem: every planar graph has chromatic number 6 or less. Do not assume the 4-color theorem (whose proof is MUCH harder), but you may assume the fact that every planar graph contains a vertex of degree at most 5.[🔗](#exercises_gt-coloring-9-2-1) [🔗](#exercises_gt-coloring-9)
+اثبت مبرهنةَ الألوان الستّة: كلُّ رسمٍ بيانيٍّ مستوٍٍ عدده اللوني 6 أو أقلّ. لا تفترض مبرهنةَ الألوان الأربعة (وهي أصعبُ بكثير)، لكنّه يجوز لك افتراضُ أنّ كلَّ رسمٍ بيانيٍّ مستوٍٍ يحوي رأسًا درجته 5 على الأكثر.[🔗](#exercises_gt-coloring-9-2-1) [🔗](#exercises_gt-coloring-9)
 
 #### 9.
 
-Not all graphs are perfect. Give an example of a graph with chromatic number 4 that does not contain a copy of \(K_4\text{.}\) That is, there should be no 4 vertices all pairwise adjacent.[🔗](#exercises_gt-coloring-10-3-1) [🔗](#exercises_gt-coloring-10)
+ليس كلُّ الرسوم البيانية مثاليًّا. أعطِ مثالًا لرسمٍ بيانيٍّ عدده اللوني 4 ولا يحوي نسخةً من \(K_4\text{.}\) أي أنّه لا ينبغي أن توجد 4 رؤوسٍ كلُّها متجاورةٌ فيما بينها.[🔗](#exercises_gt-coloring-10-3-1) [🔗](#exercises_gt-coloring-10)
 
 #### 10.
 
-Find the chromatic number of the graph below and prove you are correct.[🔗](#exercises_gt-coloring-11-1-1) ![A graph with 11 vertices. A single vertex in the center, then five vertices equally spaced around a ring around it, and five more equally spaced around a ring around those. Edges form the sides of a pentagon for the outer ring of vertices. Each outer vertex is also adjacent to two inner vertices: the two on either side of the vertex closest to it. Finally, every inner vertex is also adjacent to the center vertex.](generated/latex-image/img-grotzsch2.svg) Hint. The chromatic number is 4. Now prove this![🔗](#exercises_gt-coloring-11-2-1) Note that you cannot use the 4-color theorem, or Brooke’s theorem, or the clique number here. In fact, this graph, called the *Grötzsch graph*, is the smallest graph with chromatic number 4 that does not contain any triangles.[🔗](#exercises_gt-coloring-11-2-2) [🔗](#exercises_gt-coloring-11-2) [🔗](#exercises_gt-coloring-11)
+أوجد العددَ اللوني للرسم البياني أدناه واثبت أنّ إجابتك صحيحة.[🔗](#exercises_gt-coloring-11-1-1) ![رسم بياني فيه 11 رأسًا. رأسٌ واحد في الوسط، ثمّ خمسة رؤوسٍ متباعدةٌ بالتساوي في حلقةٍ حوله، وخمسةٌ أخرى متباعدةٌ بالتساوي في حلقةٍ حول تلك. تشكّل الحوافُ أضلاعَ خماسيٍّ للحلقة الخارجية. كلُّ رأسٍ خارجيّ مجاورٌ كذلك لرأسين داخليّين: الرأسين على جانبَي الرأس الأقرب إليه. وأخيرًا، كلُّ رأسٍ داخليّ مجاورٌ كذلك للرأس الأوسط.](generated/latex-image/img-grotzsch2.svg) تلميح. العددُ اللوني هو 4. والآن اثبت ذلك![🔗](#exercises_gt-coloring-11-2-1) ولاحظ أنّه لا يمكنك هنا استعمالُ مبرهنة الألوان الأربعة، ولا مبرهنة بروكس، ولا عدد التجمّعات. وفي الحقيقة، هذا الرسم البياني الذي يُسمّى *رسمَ غروتسش* (Grötzsch graph) هو أصغرُ رسمٍ بيانيٍّ عدده اللوني 4 ولا يحوي أيَّ مثلّث.[🔗](#exercises_gt-coloring-11-2-2) [🔗](#exercises_gt-coloring-11-2) [🔗](#exercises_gt-coloring-11)
 
 #### 11.
 
-Prove that any connected graph \(G\) which contains at least one vertex of degree less than \(\Delta(G)\) (the maximal degree of all vertices in \(G\)) has chromatic number at most \(\Delta(G)\text{.}\)[🔗](#exercises_gt-coloring-12-1-1) [🔗](#exercises_gt-coloring-12)
+اثبت أنّ أيَّ رسمٍ بيانيٍّ متصل \(G\) يحوي على الأقلّ رأسًا واحدًا درجتُه أقلّ من \(\Delta(G)\) (أكبر درجةٍ بين رؤوس \(G\) جميعًا) عدده اللوني على الأكثر \(\Delta(G)\text{.}\)[🔗](#exercises_gt-coloring-12-1-1) [🔗](#exercises_gt-coloring-12)
 
 #### 12.
 
-You have a set of magnetic alphabet letters (one of each of the 26 letters in the alphabet) that you need to put into boxes. For obvious reasons, you don’t want to put two consecutive letters in the same box. What is the fewest number of boxes you need (assuming the boxes are able to hold as many letters as they need to)?[🔗](#exercises_gt-coloring-13-1-1) [🔗](#exercises_gt-coloring-13)
+لديك مجموعةٌ من حروف الأبجدية المغناطيسية (حرفٌ واحدٌ من كلّ حروف الأبجدية الستّة والعشرين) عليك وضعُها في صناديق. ولأسبابٍ واضحة، لا تريد أن تضع حرفين متتاليَين في الصندوق نفسه. فما أقلُّ عددٍ من الصناديق تحتاجه (بافتراض أنّ الصناديق قادرةٌ على استيعاب أيّ عددٍ من الحروف تحتاجه)؟[🔗](#exercises_gt-coloring-13-1-1) [🔗](#exercises_gt-coloring-13)
 
 #### 13.
 
-Suppose you colored the edges of a graph either red or blue (not requiring that adjacent edges be colored differently). What must be true of the graph to guarantee some vertex is incident to three edges of the same color? Prove your answer.[🔗](#exercises_gt-coloring-14-1-1) Hint. You can color \(K_5\) in such a way that every vertex is adjacent to exactly two blue edges and two red edges. However, there is a graph with only 5 edges that will result in a vertex incident to three edges of the same color, no matter how they are colored. What is it, and how can you generalize?[🔗](#exercises_gt-coloring-14-2-1) [🔗](#exercises_gt-coloring-14-2) [🔗](#exercises_gt-coloring-14)
+لنفرض أنّك لوّنت حوافَّ رسمٍ بيانيٍّ إمّا بالأحمر وإمّا بالأزرق (دون اشتراط أن تكون الحوافُّ المتجاورة ملوّنةً بألوانٍ مختلفة). فما الذي ينبغي أن يتحقّق في الرسم البياني لنضمن وجودَ رأسٍ يلتقي بثلاث حوافٍ من اللون نفسه؟ اثبت إجابتك.[🔗](#exercises_gt-coloring-14-1-1) تلميح. يمكنك تلوينُ \(K_5\) بحيث يكون كلُّ رأسٍ مجاورًا لحوافّ زرقاءٍ بالضبط وحوافّ حمراءٍ بالضبط. لكنّ هناك رسمًا بيانيًا فيه 5 حوافّ فقط سيؤدّي إلى رأسٍ يلتقي بثلاث حوافّ من اللون نفسه، مهما كانت طريقةُ تلوينها. فما هو، وكيف يمكنك التعميم؟[🔗](#exercises_gt-coloring-14-2-1) [🔗](#exercises_gt-coloring-14-2) [🔗](#exercises_gt-coloring-14)
 
 #### 14.
 
-Prove that if you color every edge of \(K_6\) either red or blue, you are guaranteed a monochromatic triangle (that is, an all-red or an all-blue triangle).[🔗](#exercises_gt-coloring-15-1-1) Hint. The previous exercise is useful as a starting point.[🔗](#exercises_gt-coloring-15-2-1) [🔗](#exercises_gt-coloring-15-2) [🔗](#exercises_gt-coloring-15)[🔗](#exercises_gt-coloring)[🔗](#sec_coloring) [&#xe5cb;Prev](sec_gt-paths.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_gt-relations.html) [Feedback](/cdn-cgi/l/email-protection#58372b3b392a76343d2e3136182d363b37763d3c2d)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_coloring-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_coloring-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+اثبت أنّه إذا لوّنتَ كلَّ حافةٍ في \(K_6\) إمّا بالأحمر وإمّا بالأزرق، فإنّك تضمن وجودَ مثلّثٍ أحاديّ اللون (أي مثلّثٍ كلُّه أحمر أو كلُّه أزرق).[🔗](#exercises_gt-coloring-15-1-1) تلميح. التمرينُ السابق مفيدٌ كنقطةِ انطلاق.[🔗](#exercises_gt-coloring-15-2-1) [🔗](#exercises_gt-coloring-15-2) [🔗](#exercises_gt-coloring-15)[🔗](#exercises_gt-coloring)[🔗](#sec_coloring) [&#xe5cb;السابق](sec_gt-paths.html)[&#xe5ce;أعلى](#)[التالي&#xe5cc;](sec_gt-relations.html) [ملاحظات](/cdn-cgi/l/email-protection#58372b3b392a76343d2e3136182d363b37763d3c2d)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_coloring-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_coloring-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

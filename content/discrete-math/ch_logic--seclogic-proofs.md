@@ -1,299 +1,299 @@
 ---
-title: "Proofs"
-lang: en
+title: "البراهين"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_logic-proofs.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 1.4 Proofs
+## القسم 1.4 البراهين
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_logic-proofs-2-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_logic-proofs-2-1-1)
 
-- Identify the logical structure of, and distinguish between, *direct proofs*, a *proof by contrapositives*, and a *proof by contradictions*.[🔗](#sec_logic-proofs-2-2-1-1) [🔗](#sec_logic-proofs-2-2-1)
-- Identify flaws in an incorrect proof and determine whether they are flaws in logic or mathematical concepts.[🔗](#sec_logic-proofs-2-2-2-1) [🔗](#sec_logic-proofs-2-2-2)
-- Apply definitions to prove statements using basic proof styles.[🔗](#sec_logic-proofs-2-2-3-1) [🔗](#sec_logic-proofs-2-2-3)
+- أن تحدّد البنية المنطقية لِـ*البراهين المباشرة*، و*البرهان بنقيض المضمون*، و*البرهان بالتناقض*، وأن تميّز بينها.[🔗](#sec_logic-proofs-2-2-1-1) [🔗](#sec_logic-proofs-2-2-1)
+- أن تحدّد أوجه القصور في برهانٍ خاطئ، وأن تحدّد ما إذا كانت في المنطق أم في المفاهيم الرياضية.[🔗](#sec_logic-proofs-2-2-2-1) [🔗](#sec_logic-proofs-2-2-2)
+- أن توظّف التعريفات لإثبات العبارات بأساليب البرهان الأساسية.[🔗](#sec_logic-proofs-2-2-3-1) [🔗](#sec_logic-proofs-2-2-3)
 
 [🔗](#sec_logic-proofs-2)
 
-### Subsection Section Preview
+### تمهيد القسم
 
-#### Investigate!
+#### استكشف!
 
-A mini sudoku puzzle is a \(4\times 4\) grid of squares, divided into four \(2\times 2\) boxes. The goal is to fill each square with a digit from 1 to 4, such that no digit repeats in any row, any column, or any box.[🔗](#logic-proofs-intro-2-2) Here is a simple mini sudoku puzzle you can try to solve.[🔗](#logic-proofs-intro-2-3) ![4x4 sudoku with given digits.](generated/latex-image/img-sudoku-example.svg) You might notice that the solution to the above puzzle has its four outside corners all different, and its four middle squares all different.[🔗](#logic-proofs-intro-2-5) The goal of this *Investigate!* question is to prove that this is not a coincidence: Suppose a mini sudoku puzzle has all different numbers in its four corners (marked with # below). Prove that the center four squares (marked with * below) must also contain different numbers.[🔗](#logic-proofs-intro-2-6) ![4x4 sudoku with given digits.](generated/latex-image/img-sudoku-invst-thm.svg) [🔗](#logic-proofs-intro-2)
+لغز السودوكو المصغّر (mini sudoku) هو شبكة من \(4\times 4\) مربعات، مقسّمة إلى أربعة صناديق \(2\times 2\). والهدف هو ملء كل مربع برقمٍ من 1 إلى 4، بحيث لا يتكرّر أي رقم في أي صف أو عمود أو صندوق.[🔗](#logic-proofs-intro-2-2) وإليك لغز سودوكو مصغّرًا بسيطًا يمكنك أن تحاول حلّه.[🔗](#logic-proofs-intro-2-3) ![سودوكو 4×4 بأرقام معطاة.](generated/latex-image/img-sudoku-example.svg) قد تلاحظ أنّ حلّ اللغز أعلاه يجعل أرقامه في الزوايا الأربع الخارجية مختلفةً جميعًا، وأنّ أرقامه في المربعات الوسطى الأربعة مختلفةً جميعًا.[🔗](#logic-proofs-intro-2-5) والهدف من سؤال *استكشف!* هذا هو إثبات أنّ هذا ليس مجرّد مصادفة: افترض أنّ لغز سودوكو مصغّرًا أرقام زواياه الأربع (المعلَّمة بـ # أدناه) مختلفة جميعًا. اثبت أنّ المربعات الوسطى الأربعة (المعلَّمة بـ * أدناه) لا بدّ أن تحتوي أيضًا على أرقام مختلفة.[🔗](#logic-proofs-intro-2-6) ![سودوكو 4×4 بأرقام معطاة.](generated/latex-image/img-sudoku-invst-thm.svg) [🔗](#logic-proofs-intro-2)
 
-#### Try it 1.4.1.
+#### جرّب بنفسك 1.4.1.
 
-Try placing numbers into an empty mini sudoku puzzle. See if you can break the statement we were asked to prove in the *Investigate!* activity. What stops you? Briefly explain whether you think the statement is true or false, and why.[🔗](#ip-logic-proofs-1-1) [🔗](#ip-logic-proofs) Anyone who doesn’t believe there is creativity in mathematics clearly has not tried to write proofs. Finding a way to convince the world that a particular statement is necessarily true is a mighty undertaking and can often be quite challenging. There is no guaranteed path to success in the search for proofs. For example, in the summer of 1742, a German mathematician by the name of Christian Goldbach wondered whether every even integer greater than 2 could be written as the sum of two primes. Centuries later, we still don’t have a proof of this apparent fact (computers have checked that Goldbach’s conjecture holds for all numbers less than \(4\times 10^{18}\text{,}\) but no proof that the statement holds for *all* numbers has been found).[🔗](#logic-proofs-intro-4) Writing proofs is a bit of an art. Like any art, to be truly great at it, you need some sort of inspiration, as well as some foundational technique. Just as musicians can learn proper fingering, and painters can learn the proper way to hold a brush, we can look at the proper way to construct arguments. [🔗](#logic-proofs-intro-5) We can view a proof through two distinct but intersecting lenses. First, we can think about the *logical* structure of a proof. Below we will consider three styles of proof that vary precisely in their logical structure. Second, we can look at the *mathematical content* of the proof. How does the proof illustrate understanding of mathematical concepts? Does it use definitions of mathematical objects correctly? How do the definitions interact with each other?[🔗](#logic-proofs-intro-6) Recall that in [Section 1.3](sec_logic-rules.html) we said that a tautology is a necessarily true statement, but that it doesn’t tell us anything interesting. Similarly, if a proof relied entirely on the logical form of the statement it was proving, it wouldn’t tell us anything interesting about mathematics. Thus all the proofs we consider *must* involve some combining of mathematical concepts in addition to their logical structure.[🔗](#logic-proofs-intro-7) In this section, we will see examples of how the interaction between logical and mathematical structure plays out. We will think of the logical structure as the *skeleton* or *scaffolding* of the proof and look at the different shapes this skeleton can take. We will then see how the mathematical content of the proof fills in the details of the skeleton, how it adds meat to the bones.[🔗](#logic-proofs-intro-8) It is often challenging to be careful about proofs when the statements we try to prove seem too obvious or familiar. While we will definitely want to prove simple facts about numbers, like that the sum of two even numbers is even, our familiarity with numbers can make it difficult to take this task seriously. So instead, we will start by proving some facts in what is hopefully a novel setting: mini sudoku puzzles.[🔗](#logic-proofs-intro-9)
+حاول وضع الأرقام في لغز سودوكو مصغّرٍ فارغ. وانظر إن كنت تستطيع كسر العبارة التي طُلب إلينا إثباتها في نشاط *استكشف!* فما الذي يوقفك؟ اشرح بإيجاز إن كنت ترى أنّ العبارة صادقة أم خاطئة، ولماذا.[🔗](#ip-logic-proofs-1-1) [🔗](#ip-logic-proofs) من لا يؤمن بأنّ في الرياضيات إبداعًا لم يجرّب كتابة البراهين قط. فإيجاد طريقةٍ لإقناع العالم بأنّ عبارةً معيّنة بالضرورة صادقة عملٌ عظيم، وغالبًا ما يكون بالغ الصعوبة. ولا يوجد طريقٌ مضمون للنجاح في البحث عن البراهين. فمثلًا، في صيف عام 1742، تساءل عالم رياضياتٍ ألماني اسمه كريستيان غولدباخ (Christian Goldbach) هل يمكن كتابة كل عدد صحيح زوجي أكبر من 2 على صورة مجموع عددين أوليين. وبعد قرونٍ من ذلك، ما زلنا لا نملك برهانًا لهذه الحقيقة الظاهرية (لقد تحقّقت الحواسيب من أنّ حدس غولدباخ قائمٌ لكل الأعداد الأصغر من \(4\times 10^{18}\text{,}\) لكن لم يُعثر على برهانٍ يُثبت أنّ العبارة تصحّ لكل الأعداد).[🔗](#logic-proofs-intro-4) وكتابة البراهين نوعٌ من الفن. وكأي فنٍّ، فإنّ الإتقان الحقيقي له يتطلّب نوعًا من الإلهام، فضلًا عن تقنيةٍ أساسية. وكما يستطيع الموسيقيون تعلّم طريقة وضع الأصابع الصحيحة، ويستطيع الرسّامون تعلّم الطريقة الصحيحة للإمساك بالفرشاة، يمكننا أن ننظر في الطريقة الصحيحة لبناء الحجج. [🔗](#logic-proofs-intro-5) ويمكننا النظر إلى البرهان عبر عدستين متميزتين لكنهما متقاطعتان. فأوّلًا، يمكننا التفكير في البنية *المنطقية* للبرهان. وسنناقش أدناه ثلاثة أساليب للبرهان يكمن اختلافها تحديدًا في بنيتها المنطقية. وثانيًا، يمكننا النظر في المحتوى *الرياضي* للبرهان. فكيف يبيّن البرهان فهمه للمفاهيم الرياضية؟ وهل يستعمل تعريفات الكائنات الرياضية على الوجه الصحيح؟ وكيف تتفاعل التعريفات فيما بينها؟[🔗](#logic-proofs-intro-6) وتذكّر أنّنا في [القسم 1.3](sec_logic-rules.html) قلنا إنّ التوتولوجيا (tautology) عبارةٌ بالضرورة صادقة، وإنّها لا تخبرنا بشيء مثير للاهتمام. وكذلك، لو اعتمد برهانٌ بالكامل على الصيغة المنطقية للعبارة التي يثبتها، لما أخبرنا بشيء مثير عن الرياضيات. وعليه، لا بدّ أن تتضمّن كل البراهين التي سنناقشها *مزيجًا* من المفاهيم الرياضية إلى جانب بنيتها المنطقية.[🔗](#logic-proofs-intro-7) وسنرى في هذا القسم أمثلة على كيفية تجسّد التفاعل بين البنية المنطقية والبنية الرياضية. وسنتعامل مع البنية المنطقية باعتبارها *هيكل* البرهان أو *سقالته*، وسننظر في الأشكال المختلفة التي يمكن أن يأخذها هذا الهيكل. وسنرى بعد ذلك كيف يملأ المحتوى الرياضي للبرهان تفاصيل الهيكل، وكيف يضيف لحمًا إلى العظام.[🔗](#logic-proofs-intro-8) وغالبًا ما يكون الإقبال على الدقة في البراهين عسيرًا عندما تبدو العبارات التي نحاول إثباتها بديهيةً أو مألوفةً أكثر من اللازم. ولئن كنا سنرغب قطعًا في إثبات حقائق بسيطة عن الأعداد، مثل أنّ مجموع عددين زوجيّين زوجي، فإنّ ألفتنا بالأعداد قد تجعل من الصعب أن نأخذ هذه المهمة على محمل الجدّ. لذلك سنبدأ بدلًا من ذلك بإثبات بعض الحقائق في سياقٍ نأمل أن يكون مبتكرًا: ألغاز السودوكو المصغّرة.[🔗](#logic-proofs-intro-9)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-logic-proofs)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-logic-proofs)
 
-Consider the statement:[🔗](#PA-logic-proofs-2-1)
+تأمّل العبارة التالية:[🔗](#PA-logic-proofs-2-1)
 
-> If \(a b\) is an even number, then \(a\) or \(b\) is even.[🔗](#PA-logic-proofs-2-2-1)
+> إذا كان \(a b\) عددًا زوجيًا، فإنّ \(a\) أو \(b\) زوجي.[🔗](#PA-logic-proofs-2-2-1)
 > > [🔗](#PA-logic-proofs-2-2)
 
-Which of the proofs below appear to be valid proofs of this statement? Note: You can assume all the algebra below is correct (because it is).[🔗](#PA-logic-proofs-2-3)
+أيٌّ من البراهين التالية يبدو برهانًا صحيحًا لهذه العبارة؟ ملاحظة: يمكنك أن تفترض أنّ جميع عمليات الجبر أدناه صحيحة (لأنّها كذلك).[🔗](#PA-logic-proofs-2-3)
 
 #### 1.
 
-Suppose \(a\) and \(b\) are odd. That is, \(a=2k+1\) and \(b=2m+1\) for some integers \(k\) and \(m\text{.}\) Then \begin{align*} ab \amp =(2k+1)(2m+1)\\ \amp =4km+2k+2m+1\\ \amp =2(2km+k+m)+1\text{.} \end{align*} [🔗](#PA-logic-proofs-3-1) Therefore \(ab\) is odd.[🔗](#PA-logic-proofs-3-2) [🔗](#PA-logic-proofs-3)
+افترض أنّ \(a\) و\(b\) فرديّان. أي إنّ \(a=2k+1\) و\(b=2m+1\) لبعض الأعداد الصحيحة \(k\) و\(m\text{.}\) عندئذٍ \begin{align*} ab \amp =(2k+1)(2m+1)\\ \amp =4km+2k+2m+1\\ \amp =2(2km+k+m)+1\text{.} \end{align*} [🔗](#PA-logic-proofs-3-1) إذن \(ab\) فردي.[🔗](#PA-logic-proofs-3-2) [🔗](#PA-logic-proofs-3)
 
 #### 2.
 
-Assume that \(a\) or \(b\) is even -- say it is \(a\) (the case where \(b\) is even will be identical). That is, \(a=2k\) for some integer \(k\text{.}\) Then \begin{align*} ab \amp =(2k)b\\ \amp =2(kb)\text{.} \end{align*} [🔗](#PA-logic-proofs-4-1) Thus \(ab\) is even.[🔗](#PA-logic-proofs-4-2) [🔗](#PA-logic-proofs-4)
+افترض أنّ \(a\) أو \(b\) زوجي -- لنقل إنّ \(a\) (الحالة التي يكون فيها \(b\) زوجيًا ستكون مماثلة). أي إنّ \(a=2k\) لعدد صحيح \(k\text{.}\) عندئذٍ \begin{align*} ab \amp =(2k)b\\ \amp =2(kb)\text{.} \end{align*} [🔗](#PA-logic-proofs-4-1) إذن \(ab\) زوجي.[🔗](#PA-logic-proofs-4-2) [🔗](#PA-logic-proofs-4)
 
 #### 3.
 
-Suppose that \(ab\) is even but \(a\) and \(b\) are both odd. Namely, \(ab = 2n\text{,}\) \(a=2k+1\) and \(b=2j+1\) for some integers \(n\text{,}\) \(k\text{,}\) and \(j\text{.}\) Then \begin{align*} 2n \amp =(2k+1)(2j+1)\\ 2n \amp =4kj+2k+2j+1\\ n \amp = 2kj+k+j+\frac{1}{2}\text{.} \end{align*} [🔗](#PA-logic-proofs-5-1) But since \(2kj+k+j\) is an integer, this says that the integer \(n\) is equal to a non-integer, which is impossible.[🔗](#PA-logic-proofs-5-2) [🔗](#PA-logic-proofs-5)
+افترض أنّ \(ab\) زوجي لكنّ \(a\) و\(b\) كلاهما فرديّان. أي إنّ \(ab = 2n\text{,}\) و\(a=2k+1\) و\(b=2j+1\) لبعض الأعداد الصحيحة \(n\text{,}\) و\(k\text{,}\) و\(j\text{.}\) عندئذٍ \begin{align*} 2n \amp =(2k+1)(2j+1)\\ 2n \amp =4kj+2k+2j+1\\ n \amp = 2kj+k+j+\frac{1}{2}\text{.} \end{align*} [🔗](#PA-logic-proofs-5-1) لكنّ \(2kj+k+j\) عددٌ صحيح، وهذا يعني أنّ العدد الصحيح \(n\) يساوي عددًا غير صحيح، وهو مستحيل.[🔗](#PA-logic-proofs-5-2) [🔗](#PA-logic-proofs-5)
 
 #### 4.
 
-Let \(ab\) be an even number, say \(ab=2n\text{,}\) and \(a\) be an odd number, say \(a=2k+1\text{.}\) \begin{align*} ab \amp =(2k+1)b\\ 2n \amp =2kb+b\\ 2n-2kb\amp =b\\ 2(n-kb)\amp =b\text{.} \end{align*} [🔗](#PA-logic-proofs-6-1) Therefore \(b\) must be even.[🔗](#PA-logic-proofs-6-2) [🔗](#PA-logic-proofs-6)
+دع \(ab\) يكون عددًا زوجيًا، أي \(ab=2n\text{,}\) وليكن \(a\) عددًا فرديًا، أي \(a=2k+1\text{.}\) \begin{align*} ab \amp =(2k+1)b\\ 2n \amp =2kb+b\\ 2n-2kb\amp =b\\ 2(n-kb)\amp =b\text{.} \end{align*} [🔗](#PA-logic-proofs-6-1) إذن لا بدّ أن يكون \(b\) زوجيًا.[🔗](#PA-logic-proofs-6-2) [🔗](#PA-logic-proofs-6)
 
 #### 5.
 
-Which of the proofs above are valid proofs of the statement?[🔗](#pa-logic-proofs-1-1)
+أيٌّ من البراهين أعلاه برهانٌ صحيح للعبارة؟[🔗](#pa-logic-proofs-1-1)
 
-- Proof 1.
-- Proof 2.
-- This is a valid proof, but not of the statement given. It is proving something else.
-- Proof 3.
-- Proof 4.
+- البرهان 1.
+- البرهان 2.
+- هذا برهانٌ صحيح، لكنّه ليس برهانًا للعبارة المعطاة، فهو يثبت شيئًا آخر.
+- البرهان 3.
+- البرهان 4.
 
 [🔗](#pa-logic-proofs)[🔗](#PA-logic-proofs)[🔗](#logic-proofs-intro)
 
-### Subsection Direct Proof
+### البرهان المباشر
 
-The simplest style of proof is direct proof. Often all that is required to prove something is a systematic explanation of what everything means. You look at the definitions, carefully explain and *unpack* their meaning, until you see that the conclusion is true.[🔗](#sec_logic-proofs-4-3) To illustrate the importance of definitions in a proof, let’s give a few careful definitions about mini sudoku puzzles.[🔗](#sec_logic-proofs-4-4)
+أبسط أساليب البرهان هو البرهان المباشر. وغالبًا ما لا يتطلّب إثبات شيءٍ أكثر من شرحٍ منهجيّ لما يعنيه كل شيء. فتنظر إلى التعريفات، وتشرح معانيها و*تفكّكها* بعناية، حتى ترى أنّ النتيجة صحيحة.[🔗](#sec_logic-proofs-4-3) ولإبراز أهمية التعريفات في البرهان، فلنقدّم بعض تعريفاتٍ دقيقة عن ألغاز السودوكو المصغّرة.[🔗](#sec_logic-proofs-4-4)
 
-#### Definition 1.4.2. Mini Sudoku Definitions.
+#### تعريف 1.4.2. تعريفات سودوكو المصغّرة.
 
-A mini sudoku puzzle is a partially filled in \(4\times 4\) grid of squares, divided into four \(2\times 2\) boxes. Each square can be empty or contain a digit from 1 to 4.[🔗](#def-mini-sudoku-3-1) We say that a mini sudoku puzzle is valid provided no digit from 1 to 4 appears more than once in any row, any column, or any box.[🔗](#def-mini-sudoku-3-2) A solution to a mini sudoku puzzle is a valid puzzle with no empty squares and every non-empty square of the puzzle unchanged.[🔗](#def-mini-sudoku-3-3) We say that a mini sudoku puzzle is solvable if there is exactly one solution.[🔗](#def-mini-sudoku-3-4) [🔗](#def-mini-sudoku)First, let’s prove a useful and “obvious” fact about any valid mini sudoku puzzle.[🔗](#sec_logic-proofs-4-6)
+لغز السودوكو المصغّر هو شبكة \(4\times 4\) من المربعات مملوءة جزئيًا، مقسّمة إلى أربعة صناديق \(2\times 2\). ويمكن أن يكون كل مربع فارغًا أو يحتوي على رقم من 1 إلى 4.[🔗](#def-mini-sudoku-3-1) ونقول إنّ لغز السودوكو المصغّر صالح بشرط ألّا يظهر أي رقم من 1 إلى 4 أكثر من مرّة في أي صف أو عمود أو صندوق.[🔗](#def-mini-sudoku-3-2) أمّا حلّ لغز السودوكو المصغّر فهو لغزٌ صالح خالٍ من المربعات الفارغة، والمربعات غير الفارغة فيه تبقى كما هي دون تغيير.[🔗](#def-mini-sudoku-3-3) ونقول إنّ لغز السودوكو المصغّر قابل للحلّ إذا كان له حلٌّ وحيد بالضبط.[🔗](#def-mini-sudoku-3-4) [🔗](#def-mini-sudoku)أوّلًا، فلنُثبت حقيقةً مفيدة و«بديهية» عن أي لغز سودوكو مصغّر صالح.[🔗](#sec_logic-proofs-4-6)
 
-#### Proposition 1.4.3.
+#### مقولة 1.4.3.
 
-Any solution to a mini sudoku puzzle will have each digit from 1 to 4 appear exactly once in each row, in each column, and in each box, appearing a total of four times.[🔗](#prop-mini-sudoku-full-1-1) [🔗](#prop-mini-sudoku-full)That’s obvious, you say! Isn’t that exactly what a valid puzzle is? Well, a valid completed puzzle, which is what we mean by a solution, right? Okay, not exactly, since valid means that no digit repeats... isn’t that the same thing?[🔗](#sec_logic-proofs-4-8) Yes! Exactly! Saying this is a direct proof.[🔗](#sec_logic-proofs-4-9)
+كلّ حلٍّ للّغز سودوكو مصغّرٍ سيجعل كل رقم من 1 إلى 4 يظهر مرّة واحدة بالضبط في كل صف، وفي كل عمود، وفي كل صندوق، أي بمجموع أربع مرّات.[🔗](#prop-mini-sudoku-full-1-1) [🔗](#prop-mini-sudoku-full)ذلك بديهيّ، أنت تقول! أليس هذا تمامًا معنى أنّ اللغز صالح؟ حسنًا، اللغز المكتمل الصالح، وهو ما نعنيه بالحلّ، صحيح؟ حسنًا، ليس تمامًا، لأنّ الصالحة تعني أنّه لا يتكرّر أي رقم... أليس هذا الشيء نفسه؟[🔗](#sec_logic-proofs-4-8) نعم! بالضبط! قول هذا يُعدّ برهانًا مباشرًا.[🔗](#sec_logic-proofs-4-9)
 
-#### Proof.
+#### برهان.
 
-Suppose you have a solution to a mini sudoku puzzle. That means that you have a \(4 \times 4\) grid with each square filled in with a digit from 1 to 4 that is valid. 4 Definition of solution Since the puzzle is *valid*, no digit repeats in any row, any column, or any box 5 Definition of valid . Since a row contains four numbers that do not repeat, and there are exactly four possible digits, each of those digits must appear exactly once. This is true for every row, and for every column, and for every box.[🔗](#sec_logic-proofs-4-10-1) For each digit, since it appears exactly once in four different rows, it appears exactly four times. This completes the proof.[🔗](#sec_logic-proofs-4-10-2) [🔗](#sec_logic-proofs-4-10)
+افترض أنّ لديك حلًّا لغز سودوكو مصغّر. أي إنّ لديك شبكة \(4 \times 4\) مملوءة كل مربّع فيها برقم من 1 إلى 4، وهي صالحة. 4 تعريف الحل وبما أنّ اللغز *صالح*، فلا يتكرّر أي رقم في أي صف أو عمود أو صندوق 5 تعريف الصلاحية . وبما أنّ الصف يحتوي على أربعة أرقام لا تتكرّر، وهناك بالضبط أربعة أرقام ممكنة، فلا بدّ أن يظهر كل واحد من هذه الأرقام مرّة واحدة بالضبط. وهذا صحيح لكل صف، ولكل عمود، ولكل صندوق.[🔗](#sec_logic-proofs-4-10-1) وبالنسبة لكل رقم، بما أنّه يظهر مرّة واحدة بالضبط في أربعة صفوف مختلفة، فإنّه يظهر أربع مرّات بالضبط. وهذا يُتمّ البرهان.[🔗](#sec_logic-proofs-4-10-2) [🔗](#sec_logic-proofs-4-10)
 
-#### Remark 1.4.4.
+#### ملاحظة 1.4.4.
 
-The proof contained one key mathematical idea besides just explaining definitions: If four distinct numbers are chosen from a set of four numbers, then all four numbers are chosen. Perhaps you want to also explain why this is true, or just say it is an example of the pigeonhole principle (we will say what this is soon). How much you explain depends on who you are writing the proof for. A little paranoia when writing proofs is healthy.[🔗](#sec_logic-proofs-4-11-1) Indeed, in most contexts, we wouldn’t even need to write out any of the above proof. It would probably be sufficient to say, “Clearly this follows from the definitions.” However, we are currently trying to learn how to write proofs, and it can be useful to be overly pedantic so we can focus on the proof structure and the importance of applying definitions.[🔗](#sec_logic-proofs-4-11-2) [🔗](#sec_logic-proofs-4-11)Let’s prove something about a particular sudoku puzzle.[🔗](#sec_logic-proofs-4-12)
+احتوى البرهان على فكرة رياضية رئيسية واحدة إلى جانب مجرد شرح التعريفات: إذا اختيرت أربعة أرقام متمايزة من مجموعة من أربعة أرقام، فإنّ الأرقام الأربعة جميعها قد اختيرت. وربما ترغب أيضًا في تفسير لماذا هذا صحيح، أو أن تكتفي بالقول إنّه مثال على مبدأ الحمّام (pigeonhole principle) (سوف نوضّح ما هو قريبًا). ومدى ما تشرحه يعتمد على الشخص الذي تكتب البرهان لأجله. وقليلٌ من التشكيك عند كتابة البراهين أمرٌ صحّي.[🔗](#sec_logic-proofs-4-11-1) وفي الواقع، في معظم السياقات، لن نحتاج حتى إلى كتابة أيّ من البرهان أعلاه. يكفي على الأرجح القول: «واضح أنّ هذا يتبع من التعريفات». غير أنّنا نحاول حاليًا تعلّم كيفية كتابة البراهين، وقد يكون من المفيد أن نكون متشدّدين أكثر من اللازم حتى نركّز على بنية البرهان وأهمية توظيف التعريفات.[🔗](#sec_logic-proofs-4-11-2) [🔗](#sec_logic-proofs-4-11)فلنُثبت شيئًا عن لغز سودوكو بعينه.[🔗](#sec_logic-proofs-4-12)
 
-#### Example 1.4.5.
+#### مثال 1.4.5.
 
-Prove that for any solution to the mini sudoku puzzle below, if the solution has a 2 in the top-left square (r1c1), then it will contain a 2 in the bottom-right square (r4c4).[🔗](#sec_logic-proofs-4-13-1-1) ![A mini sudoku puzzle.](generated/latex-image/img-sudoku-first-proof.svg) Solution. We do not know whether the puzzle is solvable (in fact, it is not), although note that it is valid right now. What we want to prove is that *if* 2 is in the top-left square in any particular solution, *then* that solution contains a 2 in the bottom-right square.[🔗](#sec_logic-proofs-4-13-2-1)
+اثبت أنّه لأي حلٍّ للّغز سودوكو المصغّر أدناه، إذا كان في الحلّ رقم 2 في المربع العلوي الأيسر (r1c1)، فإنّه سيحتوي على 2 في المربع السفلي الأيمن (r4c4).[🔗](#sec_logic-proofs-4-13-1-1) ![لغز سودوكو مصغّر.](generated/latex-image/img-sudoku-first-proof.svg) الحل. لا نعرف ما إذا كان اللغز قابلًا للحلّ (وفي الحقيقة، ليس كذلك)، لكن لاحظ أنّه صالح في الوقت الحالي. وما نريد إثباته هو أنّه *إذا* وُجد 2 في المربع العلوي الأيسر في أي حلٍّ بعينه، *فإنّ* ذلك الحلّ يحتوي على 2 في المربع السفلي الأيمن.[🔗](#sec_logic-proofs-4-13-2-1)
 
-#### Proof.
+#### برهان.
 
-Let \(S\) be a solution to the puzzle, and assume that \(S\) contains a 2 in the top-left square. Since \(S\) is a valid puzzle, no digit repeats in any row, any column, or any box. Look first at the top row. Since the row already contains 1, 2, and 3, the remaining open square (r1c4) must be a 4.[🔗](#sec_logic-proofs-4-13-2-2-1) Now look at column 4 (the right-most column). Since we now know the top-right square is a 4, this column already contains 1, 3, and 4. So the last open square (r4c4) must be a 2.[🔗](#sec_logic-proofs-4-13-2-2-2) Thus \(S\) contains a 2 in the bottom-right square, which is what we needed to prove.[🔗](#sec_logic-proofs-4-13-2-2-3) [🔗](#sec_logic-proofs-4-13-2-2)[🔗](#sec_logic-proofs-4-13-2) [🔗](#sec_logic-proofs-4-13)Observe the general form of the argument above. We were trying to prove an implication \(P \imp Q\text{:}\) If there was a 2 in r1c1, then there was a 2 in r4c4. We started by assuming \(P\) was true. From that, we deduced something, and from that something we deduced \(Q\text{.}\) This is exactly what a direct proof of an implication \(P \imp Q\) looks like (we could have had more steps between the \(P\) and \(Q\) as well).[🔗](#sec_logic-proofs-4-14)
+دع \(S\) يكون حلًّا للّغز، وافترض أنّ \(S\) يحتوي على 2 في المربع العلوي الأيسر. وبما أنّ \(S\) لغزٌ صالح، فلا يتكرّر أي رقم في أي صف أو عمود أو صندوق. انظر أوّلًا إلى الصف العلوي. وبما أنّ الصف يحتوي أصلًا على 1 و2 و3، فلا بدّ أن يكون المربع الفارغ المتبقي (r1c4) هو 4.[🔗](#sec_logic-proofs-4-13-2-2-1) الآن انظر إلى العمود 4 (العمود الأقصى يمينًا). وبما أنّنا نعرف الآن أنّ المربع العلوي الأيمن هو 4، فإنّ هذا العمود يحتوي أصلًا على 1 و3 و4. إذن لا بدّ أن يكون آخر مربع فارغ (r4c4) هو 2.[🔗](#sec_logic-proofs-4-13-2-2-2) إذن يحتوي \(S\) على 2 في المربع السفلي الأيمن، وهو ما كنّا بحاجة إلى إثباته.[🔗](#sec_logic-proofs-4-13-2-2-3) [🔗](#sec_logic-proofs-4-13-2-2)[🔗](#sec_logic-proofs-4-13-2) [🔗](#sec_logic-proofs-4-13)لاحظ الصيغة العامة للحجّة أعلاه. كنا نحاول إثبات تضمينٍ (implication) \(P \imp Q\text{:}\) إذا كان هناك 2 في r1c1، إذن هناك 2 في r4c4. بدأنا بافتراض أنّ \(P\) صادقة. ومن ذلك استنتجنا شيئًا، ومن ذلك الشيء استنتجنا \(Q\text{.}\) وهذا بالضبط ما يبدو عليه البرهان المباشر لـ \(P \imp Q\) (كان يمكننا أيضًا أن تكون بين \(P\) و\(Q\) خطواتٌ أكثر).[🔗](#sec_logic-proofs-4-14)
 
-> Assume \(P\text{.}\) Explain, explain, …, explain. Therefore \(Q\text{.}\)[🔗](#sec_logic-proofs-4-15-1)
+> افترض \(P\text{.}\) اشرح، اشرح، …، اشرح. إذن \(Q\text{.}\)[🔗](#sec_logic-proofs-4-15-1)
 > > [🔗](#sec_logic-proofs-4-15)
 
-The one additional consideration we must make is that often we are proving a general, universal statement, a statement of the form \(\forall x (P(x) \imp Q(x))\text{.}\) To handle the quantifier, we fix an *arbitrary* instance of \(x\text{.}\) Above, we said, “Let \(S\) be a solution to the puzzle.” Since we made no additional assumptions about \(S\) besides that \(P\) was true about it, we say that \(S\) was an *arbitrary* solution.[🔗](#sec_logic-proofs-4-16) If we wanted to prove that all squares are rectangles, we first realize that this is the same as saying, “For any shape, if the shape is a square, then it is a rectangle.” In symbols, \(\forall x (S(x) \imp R(x))\text{.}\) We will want to assume \(P(x)\) is true and deduce \(Q(x)\text{.}\) Which \(x\) do we use? An arbitrary one, so our proof can be applied to *all* possible \(x\text{.}\)[🔗](#sec_logic-proofs-4-17)
+الاعتبار الإضافي الوحيد الذي يجب أن نُخذه في الحسبان هو أنّنا كثيرًا ما نبرهن على عبارةٍ عامة، أي عبارةٍ من الشكل \(\forall x (P(x) \imp Q(x))\text{.}\) ولمعالجة الكمّاس، نُثبّت قيمة *اعتباطية* (arbitrary) لـ \(x\text{.}\) لقد قلنا أعلاه: «دع \(S\) يكون حلًّا للّغز». وبما أنّنا لم نُجرِ أي افتراضات إضافية على \(S\) سوى أنّ \(P\) كانت صادقة عنه، نقول إنّ \(S\) كان حلًّا *اعتباطيًا*.[🔗](#sec_logic-proofs-4-16) ولو أردنا إثبات أنّ كل المربعات مستطيلات، لاحظنا أوّلًا أنّ هذا هو نفسه قولنا: «لكل شكل، إذا كان الشكل مربّعًا، فإنّه مستطيل». ورمزًا لذلك: \(\forall x (S(x) \imp R(x))\text{.}\) وسنرغب في افتراض أنّ \(P(x)\) صادقة واستنتاج \(Q(x)\text{.}\) وأيّ \(x\) نستعمل؟ قيمةً اعتباطية، بحيث يمكن تطبيق برهاننا على *كل* القيم الممكنة لـ \(x\text{.}\)[🔗](#sec_logic-proofs-4-17)
 
-#### Example 1.4.6.
+#### مثال 1.4.6.
 
-Prove that for any mini sudoku puzzle with three empty squares, if the puzzle has a solution, then the puzzle is solvable.[🔗](#sec_logic-proofs-4-18-1-1) Solution. Is this obvious? If a puzzle has a solution, then it is solvable, right? Not at all! Look again at the [Mini Sudoku Definitions](sec_logic-proofs.html#def-mini-sudoku): Just because a puzzle has a solution doesn’t mean that it has exactly one solution (i.e., it is solvable). But even if we don’t think this needs a proof, let’s be paranoid again and use this as an excuse to focus on the logical structure of the proof.[🔗](#sec_logic-proofs-4-18-2-1) Notice that we are proving that the claim is true no matter what mini sudoku puzzle we start with. We might start with this puzzle:[🔗](#sec_logic-proofs-4-18-2-2) ![4x4 sudoku with only one missing digit.](generated/latex-image/img-sudoku-almost-done-eg.svg) Clearly there is only one way to complete the puzzle: The top row has only one open square, so we can only put one digit in it, and then columns 2 and 3 only have one open square each, so we can fill those uniquely.[🔗](#sec_logic-proofs-4-18-2-4) Looking at a single example can often be helpful when crafting a proof, but proving a general statement with an example is *NEVER* a correct proof.[🔗](#sec_logic-proofs-4-18-2-5) While there are *only* around 152.58 billion mini sudoku puzzles (and most of those are not valid, fewer have solutions, and even fewer have exactly one empty square), we don’t really want to check all possible puzzles. So instead, we fix an arbitrary valid mini sudoku puzzle. We assume that it has a solution and has exactly three open squares. From this, we prove that there is only one possible solution.[🔗](#sec_logic-proofs-4-18-2-6)
+اثبت أنّ أي لغز سودوكو مصغّرٍ فيه ثلاثة مربعات فارغة، إذا كان له حلّ، فإنّ اللغز قابل للحلّ.[🔗](#sec_logic-proofs-4-18-1-1) الحل. هل هذا بديهيّ؟ إذا كان للّغز حلّ، فهو قابل للحلّ، صحيح؟ على الإطلاق! انظر مجددًا إلى [تعريفات سودوكو المصغّرة](sec_logic-proofs.html#def-mini-sudoku): مجرّد أنّ للّغز حلًّا لا يعني أنّ له حلًّا وحيدًا بالضبط (أي أنّه قابل للحلّ). لكن حتى لو لم نرَ أنّ هذا يحتاج إلى برهان، فلنتكن حذرين من جديد ونستغل هذا ذريعةً للتركيز على البنية المنطقية للبرهان.[🔗](#sec_logic-proofs-4-18-2-1) لاحظ أنّنا نبرهن على أنّ الدعوى صحيحة مهما كان لغز السودوكو المصغّر الذي نبدأ به. وقد نبدأ بهذا اللغز:[🔗](#sec_logic-proofs-4-18-2-2) ![سودوكو 4×4 ينقصه رقم واحد فقط.](generated/latex-image/img-sudoku-almost-done-eg.svg) وبوضوح، لا توجد سوى طريقة واحدة لإكمال اللغز: فالصف العلوي فيه مربع فارغ واحد فقط، فلا يمكن أن نضع فيه إلّا رقمًا واحدًا، ثمّ لا يبقى في العمودين 2 و3 سوى مربع فارغ واحد لكلٍّ منهما، فيمكن ملؤهما على نحوٍ فريد.[🔗](#sec_logic-proofs-4-18-2-4) وقد يفيد النظر في مثال واحد كثيرًا عند بناء برهان، لكنّ إثبات عبارةٍ عامة بمثالٍ ليس برهانًا صحيحًا *بالتأكيد*.[🔗](#sec_logic-proofs-4-18-2-5) ولئن كان عدد ألغاز السودوكو المصغّرة *لا يتجاوز* نحو 152.58 مليارًا (معظمها غير صالح، وأقلّ منها له حلول، وأقلّ بكثير منها له مربع فارغ واحد بالضبط)، فإنّنا لا نريد حقًّا فحص كل اللغوز الممكنة. لذلك بدلًا من ذلك نُثبّت لغز سودوكو مصغّرًا صالحًا اعتباطيًا. ونفترض أنّ له حلًّا وأنّه يحتوي بالضبط على ثلاثة مربعات فارغة. ومن هذا نبرهن على أنّه لا يوجد إلّا حلٌّ واحد ممكن.[🔗](#sec_logic-proofs-4-18-2-6)
 
-#### Proof.
+#### برهان.
 
-Let \(P\) be an arbitrary mini sudoku puzzle. Assume \(P\) has exactly three empty squares and that \(S\) is a solution.[🔗](#sec_logic-proofs-4-18-2-7-1) Since \(P\) is arbitrary, we don’t know how the three empty squares are arranged. They could all be in different rows, or two could be in the same row, or all three could be in the same row.[🔗](#sec_logic-proofs-4-18-2-7-2) If all the empty squares are in different rows, then in each row, there is exactly one empty square. The other three squares are filled with three different digits (since the puzzle is valid), so there is only one choice to fill the empty square. This number must be the number used in the solution \(S\text{.}\)[🔗](#sec_logic-proofs-4-18-2-7-3) Now consider the case where two of the empty squares are in the same row, and the third square is in a different row. The third empty square’s row has three different digits, so there is only one choice for the last square, and it must agree with \(S\text{.}\) Once this is filled in, the other two empty squares must be in two different columns, each of which has three filled-in digits. In each of these columns, the three filled-in digits are different, so there is only one choice for the empty square. So again, any solution must be exactly \(S\text{.}\)[🔗](#sec_logic-proofs-4-18-2-7-4) Finally, if all three empty squares are in the same row, then they are all in different columns. So using the same argument as we did when the empty squares were in different rows, but using columns instead, we see that \(S\) is the only solution.[🔗](#sec_logic-proofs-4-18-2-7-5) We have considered all possible cases, and in each case, \(S\) is the only solution, so \(P\) is solvable.[🔗](#sec_logic-proofs-4-18-2-7-6) [🔗](#sec_logic-proofs-4-18-2-7)[🔗](#sec_logic-proofs-4-18-2) [🔗](#sec_logic-proofs-4-18)Direct proof can, of course, be used to prove statements in mathematics too.[🔗](#sec_logic-proofs-4-19)
+دع \(P\) يكون لغز سودوكو مصغّرًا اعتباطيًا. افترض أنّ \(P\) فيه بالضبط ثلاثة مربعات فارغة وأنّ \(S\) حلٌّ له.[🔗](#sec_logic-proofs-4-18-2-7-1) وبما أنّ \(P\) اعتباطي، فإنّنا لا نعرف كيف ترتّب المربعات الثلاثة الفارغة. فقد تكون جميعها في صفوف مختلفة، أو اثنان منها في الصف نفسه، أو الثلاثة في الصف نفسه.[🔗](#sec_logic-proofs-4-18-2-7-2) وإذا كانت جميع المربعات الفارغة في صفوف مختلفة، فإنّ في كل صف يوجد مربع فارغ واحد بالضبط. والمربعات الثلاثة الأخرى مملوءة بثلاثة أرقام متمايزة (لأنّ اللغز صالح)، فلا يوجد إلّا خيار واحد لملء المربع الفارغ. ويجب أن يكون هذا الرقم هو الرقم المستعمل في الحلّ \(S\text{.}\)[🔗](#sec_logic-proofs-4-18-2-7-3) والآن تأمّل الحالة التي يقع فيها مربعان فارغان في الصف نفسه، وتقع المربع الثالث في صف مختلف. يحتوي صف المربع الفارغ الثالث على ثلاثة أرقام متمايزة، فلا يوجد إلّا خيار واحد للمربع الأخير، ويجب أن يتّفق مع \(S\text{.}\) ومتى ما مُلئ هذا، وجب أن يقع المربعان الفارغان الآخران في عمودين مختلفين، لكلٍّ منهما ثلاثة أرقام مملوءة. وفي كلٍّ من هذين العمودين، تكون الأرقام الثلاثة المملوءة متمايزة، فلا يوجد إلّا خيار واحد للمربع الفارغ. إذن مرةً أخرى، يجب أن يكون أي حلٍّ هو \(S\text{.}\) بالضبط.[🔗](#sec_logic-proofs-4-18-2-7-4) وأخيرًا، إذا وقعت المربعات الثلاثة الفارغة كلها في الصف نفسه، فإنّها تقع جميعها في أعمدة مختلفة. إذن، باستعمال الحجّة نفسها التي استعملناها عندما كانت المربعات الفارغة في صفوف مختلفة، لكن بالأعمدة بدل الصفوف، نرى أنّ \(S\) هو الحلّ الوحيد.[🔗](#sec_logic-proofs-4-18-2-7-5) لقد راعينا كل الحالات الممكنة، وفي كل حالةٍ يكون \(S\) هو الحلّ الوحيد، إذن \(P\) قابل للحلّ.[🔗](#sec_logic-proofs-4-18-2-7-6) [🔗](#sec_logic-proofs-4-18-2-7)[🔗](#sec_logic-proofs-4-18-2) [🔗](#sec_logic-proofs-4-18)وّاقع الأمر أنّ البرهان المباشر يمكن، بالطبع، أن يُستعمل لإثبات عبارات في الرياضيات أيضًا.[🔗](#sec_logic-proofs-4-19)
 
-#### Example 1.4.7.
+#### مثال 1.4.7.
 
-Prove: For all integers \(n\text{,}\) if \(n\) is even, then \(n^2\) is even.[🔗](#eg-logic-proofs-sqr-even-even-1-1) Solution. The format of the proof will be this: Let \(n\) be an arbitrary integer. Assume that \(n\) is even. Explain explain explain. Therefore \(n^2\) is even.[🔗](#eg-logic-proofs-sqr-even-even-2-1) To fill in the details, we explain what it means for \(n\) to be even, and then see what that means for \(n^2\text{.}\) The *definition* that is relevant here is, “An integer \(n\) is even if there is an integer \(k\) such that \(n = 2k\text{.}\)” Here is a complete proof.[🔗](#eg-logic-proofs-sqr-even-even-2-2)
+اثبت: لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(n\) زوجيًا، فإنّ \(n^2\) زوجي.[🔗](#eg-logic-proofs-sqr-even-even-1-1) الحل. ستكون صيغة البرهان كما يلي: دع \(n\) يكون عددًا صحيحًا اعتباطيًا. افترض أنّ \(n\) زوجي. اشرح اشرح اشرح. إذن \(n^2\) زوجي.[🔗](#eg-logic-proofs-sqr-even-even-2-1) ولملء التفاصيل، نشرح ما معنى أن يكون \(n\) زوجيًا، ثمّ نرى ما الذي يعنيه ذلك لـ \(n^2\text{.}\) و*التعريف*ذو الصلة هنا هو: «عددٌ صحيح \(n\) يكون زوجيًا إذا وُجد عدد صحيح \(k\) بحيث \(n = 2k\text{.}\)» وهذا برهانٌ كامل.[🔗](#eg-logic-proofs-sqr-even-even-2-2)
 
-#### Proof.
+#### برهان.
 
-Let \(n\) be an arbitrary integer. Suppose \(n\) is even. Then \(n = 2k\) for some integer \(k\text{.}\) Now \(n^2 = (2k)^2 = 4k^2 = 2(2k^2)\text{.}\) Since \(2k^2\) is an integer, \(n^2\) is even.[🔗](#eg-logic-proofs-sqr-even-even-2-3-1) [🔗](#eg-logic-proofs-sqr-even-even-2-3)[🔗](#eg-logic-proofs-sqr-even-even-2) [🔗](#eg-logic-proofs-sqr-even-even)
+دع \(n\) يكون عددًا صحيحًا اعتباطيًا. افترض أنّ \(n\) زوجي. عندئذٍ \(n = 2k\) لعدد صحيح \(k\text{.}\) الآن \(n^2 = (2k)^2 = 4k^2 = 2(2k^2)\text{.}\) وبما أنّ \(2k^2\) عددٌ صحيح، فإنّ \(n^2\) زوجي.[🔗](#eg-logic-proofs-sqr-even-even-2-3-1) [🔗](#eg-logic-proofs-sqr-even-even-2-3)[🔗](#eg-logic-proofs-sqr-even-even-2) [🔗](#eg-logic-proofs-sqr-even-even)
 
-#### Example 1.4.8.
+#### مثال 1.4.8.
 
-Prove: For all integers \(a\text{,}\) \(b\text{,}\) and \(c\text{,}\) if \(b\) is a multiple of \(a\text{,}\) and \(c\) is a multiple of \(b\text{,}\) then \(c\) is a multiple of \(a\text{.}\)[🔗](#sec_logic-proofs-4-21-1-1) Solution. Even if we don’t remember exactly what “is a multiple of” means, we can set up a direct proof for this statement. It will go something like this: Let \(a\text{,}\) \(b\text{,}\) and \(c\) be arbitrary integers. Assume that \(b\) is a multiple of \(a\) and that \(c\) is a multiple of \(b\text{.}\) Dot dot dot. Therefore \(c\) is a multiple of \(a\text{.}\)[🔗](#sec_logic-proofs-4-21-2-1) How do we connect the dots? We say what our hypothesis really means and why this gives us what the conclusion really means. This is where we need the definition of \(b\) is a multiple of \(a\): This means that \(b = ka\) for some integers \(k\text{.}\) What are we going for? That \(c = la\text{,}\) for some integer \(l\text{.}\) Here is the complete proof.[🔗](#sec_logic-proofs-4-21-2-2)
+اثبت: لكل الأعداد الصحيحة \(a\text{,}\) و\(b\text{,}\) و\(c\text{,}\) إذا كان \(b\) مضاعفًا (multiple) لـ \(a\text{,}\) وكان \(c\) مضاعفًا لـ \(b\text{,}\) فإنّ \(c\) مضاعف لـ \(a\text{.}\)[🔗](#sec_logic-proofs-4-21-1-1) الحل. حتى لو لم نتذكّر تمامًا معنى «كون عددٍ مضاعفًا لـ»، يمكننا إعداد برهان مباشر لهذه العبارة. وسيجري شيءٌ من هذا القبيل: دع \(a\text{,}\) و\(b\text{,}\) و\(c\) أعدادًا صحيحة اعتباطية. افترض أنّ \(b\) مضاعف لـ \(a\) وأنّ \(c\) مضاعف لـ \(b\text{.}\) نقط نقط نقط. إذن \(c\) مضاعف لـ \(a\text{.}\)[🔗](#sec_logic-proofs-4-21-2-1) وكيف نصل بين النقط؟ نشرح ما تعنيه فرضيتنا حقًّا ولماذا يُفضي هذا إلينا إلى ما تعنيه النتيجة حقًّا. وهنا نحتاج إلى تعريف «كون \(b\) مضاعفًا لـ \(a\)»: أي أنّ \(b = ka\) لبعض الأعداد الصحيحة \(k\text{.}\) فما الذي نستهدفه؟ أن يكون \(c = la\text{,}\) لعدد صحيح \(l\text{.}\) وهذا هو البرهان الكامل.[🔗](#sec_logic-proofs-4-21-2-2)
 
-#### Proof.
+#### برهان.
 
-Let \(a\text{,}\) \(b\text{,}\) and \(c\) be integers. Assume that \(b\) is a multiple of \(a\) and that \(c\) is a multiple of \(b\text{.}\) So there are integers \(k\) and \(j\) such that \(b = ka\) and \(c = jb\text{.}\) Combining these (through substitution) we get that \begin{equation*} c = j(ka) = (jk)a\text{.} \end{equation*} But \(jk\) is an integer, so this says that \(c\) is a multiple of \(a\text{.}\) [🔗](#sec_logic-proofs-4-21-2-3-1) [🔗](#sec_logic-proofs-4-21-2-3)[🔗](#sec_logic-proofs-4-21-2) [🔗](#sec_logic-proofs-4-21)[🔗](#sec_logic-proofs-4)
+دع \(a\text{,}\) و\(b\text{,}\) و\(c\) أعدادًا صحيحة. افترض أنّ \(b\) مضاعف لـ \(a\) وأنّ \(c\) مضاعف لـ \(b\text{.}\) إذن هناك عددان صحيحان \(k\) و\(j\) بحيث \(b = ka\) و\(c = jb\text{.}\) وبدمج هاتين المتساويتَين (عبر التعويض) نحصل على \begin{equation*} c = j(ka) = (jk)a\text{.} \end{equation*} لكنّ \(jk\) عددٌ صحيح، وهذا يعني أنّ \(c\) مضاعف لـ \(a\text{.}\) [🔗](#sec_logic-proofs-4-21-2-3-1) [🔗](#sec_logic-proofs-4-21-2-3)[🔗](#sec_logic-proofs-4-21-2) [🔗](#sec_logic-proofs-4-21)[🔗](#sec_logic-proofs-4)
 
-### Subsection Proof by Contrapositive
+### البرهان بنقيض المضمون
 
-Recall that an implication \(P \imp Q\) is logically equivalent to its contrapositive \(\neg Q \imp \neg P\text{.}\) There are plenty of examples of statements that are hard to prove directly, but whose contrapositive can easily be proved using a direct proof. This is all that proof by contrapositive does. It gives a direct proof of the contrapositive of the implication. This is enough because the contrapositive is logically equivalent to the original implication.[🔗](#ssec_contrapositive-proof-4) The skeleton of the proof of \(P \imp Q\) by contrapositive will always look roughly like this:[🔗](#ssec_contrapositive-proof-5)
+تذكّر أنّ التضمين \(P \imp Q\) مكافئٌ منطقيًا لنقيض مضمونه (contrapositive) \(\neg Q \imp \neg P\text{.}\) وهناك أمثلة كثيرة على عباراتٍ يصعب إثباتها مباشرة، في حين يسهل إثبات نقيض مضمونها ببرهانٍ مباشر. وهذا كلّ ما يفعله البرهان بنقيض المضمون. فهو يُعطي برهانًا مباشرًا لنقيض مضمون التضمين. وهذا كافٍ لأنّ نقيض المضمون مكافئٌ منطقيًا للتضمين الأصلي.[🔗](#ssec_contrapositive-proof-4) وسيبدو الهيكل الكلّي لبرهان \(P \imp Q\) بنقيض المضمون دائمًا على نحوٍ تقريبي كما يلي:[🔗](#ssec_contrapositive-proof-5)
 
-> Assume \(\neg Q\text{.}\) Explain, explain, … explain. Therefore \(\neg P\text{.}\)[🔗](#ssec_contrapositive-proof-6-1)
+> افترض \(\neg Q\text{.}\) اشرح، اشرح، … اشرح. إذن \(\neg P\text{.}\)[🔗](#ssec_contrapositive-proof-6-1)
 > > [🔗](#ssec_contrapositive-proof-6)
 
-As before, if there are variables and quantifiers, we set them to be arbitrary elements of our domain.[🔗](#ssec_contrapositive-proof-7)
+وكما من قبل، إذا كان في المسألة متغيّرات وكمّاسات، نُثبّتها على هيئة عناصر اعتباطية في مجالنا.[🔗](#ssec_contrapositive-proof-7)
 
-#### Example 1.4.9.
+#### مثال 1.4.9.
 
-Prove that if a mini sudoku puzzle is solvable, then it is valid.[🔗](#ssec_contrapositive-proof-8-1-1) Solution. Remember, a puzzle is valid provided no row, column, or box contains a repeated digit. A puzzle is solvable if there is exactly one solution, where a solution is a valid puzzle with no empty squares (that doesn’t change any previously filled-in square).[🔗](#ssec_contrapositive-proof-8-2-1) If we try a direct proof, we would start with an arbitrary puzzle and assume it is solvable. We could then “get” the solution, but would need to reason back in time to when the puzzle started. This seems hard. Often, when a proof seems to require breaking things apart, it is easier to try the contrapositive. That’s what we will do.[🔗](#ssec_contrapositive-proof-8-2-2)
+اثبت أنّه إذا كان لغز سودوكو مصغّر قابلًا للحلّ، فإنّه صالح.[🔗](#ssec_contrapositive-proof-8-1-1) الحل. تذكّر أنّ اللغز صالح بشرط ألّا يحتوي أي صف أو عمود أو صندوق على رقمٍ متكرّر. واللغز قابل للحلّ إذا كان له حلٌّ وحيد بالضبط، حيث الحلّ هو لغزٌ صالح خالٍ من المربعات الفارغة (ولا يغيّر أي مربع سبق ملؤه).[🔗](#ssec_contrapositive-proof-8-2-1) وإذا حاولنا برهانًا مباشرًا، لبدأنا بلغزٍ اعتباطي وافترضنا أنّه قابل للحلّ. يمكننا عندئذٍ «الحصول على» الحلّ، لكنّنا سنحتاج إلى الرجوع في التفكير إلى اللحظة التي بدأ فيها اللغز. ويبدو هذا صعبًا. وغالبًا ما يكون أسهل تجربة نقيض المضمون عندما يبدو أنّ البرهان يتطلّب تفكيك الأمور. وهذا ما سنفعله.[🔗](#ssec_contrapositive-proof-8-2-2)
 
-#### Proof.
+#### برهان.
 
-Let \(P\) be an arbitrary mini sudoku puzzle and assume that it is *not* valid. This means that in at least one row, or one column, or one box, some digit appears more than once.[🔗](#ssec_contrapositive-proof-8-2-3-1) Now suppose we have filled in the empty squares but not changed any previously filled-in squares. The original row, column, or box that contained a duplicate digit will still contain that duplication, so the resulting completed puzzle will not be valid. Thus no solution to \(P\) exists, so \(P\) is not solvable.[🔗](#ssec_contrapositive-proof-8-2-3-2) [🔗](#ssec_contrapositive-proof-8-2-3)We have proved that if a mini sudoku puzzle is not valid, then it is not solvable, which is the contrapositive of what we wanted to prove and so serves as a proof of the original statement.[🔗](#ssec_contrapositive-proof-8-2-4) [🔗](#ssec_contrapositive-proof-8-2) [🔗](#ssec_contrapositive-proof-8)Here are a couple more mathy examples.[🔗](#ssec_contrapositive-proof-9)
+دع \(P\) يكون لغز سودوكو مصغّرًا اعتباطيًا، وافترض أنّه *غير* صالح. أي إنّ في صفٍ واحد على الأقل، أو عمودٍ واحد على الأقل، أو صندوقٍ واحد على الأقل، يظهر رقمٌ ما أكثر من مرّة.[🔗](#ssec_contrapositive-proof-8-2-3-1) والآن نفترض أنّنا ملأنا المربعات الفارغة دون تغيير أي مربع سبق ملؤه. فصفُ أو عمودُ أو صندوقُ الذي كان يحتوي على رقمٍ مكرّر سيظلّ يحمل هذا التكرار، بحيث لا يكون اللغز المكتمل الناتج صالحًا. إذن لا يوجد أي حلٍّ لـ \(P\)، وبالتالي \(P\) غير قابل للحلّ.[🔗](#ssec_contrapositive-proof-8-2-3-2) [🔗](#ssec_contrapositive-proof-8-2-3)لقد برهنّا على أنّه إذا كان لغز السودوكو المصغّر غير صالح، فإنّه غير قابل للحلّ، وهذا هو نقيض المضمون للعبارة التي أردنا إثباتها، ومن ثمّ فإنّه يقوم مقام برهانٍ للعبارة الأصلية.[🔗](#ssec_contrapositive-proof-8-2-4) [🔗](#ssec_contrapositive-proof-8-2) [🔗](#ssec_contrapositive-proof-8)وهذه مثالان رياضيّان آخران.[🔗](#ssec_contrapositive-proof-9)
 
-#### Example 1.4.10.
+#### مثال 1.4.10.
 
-Is the statement, “For all integers \(n\text{,}\) if \(n^2\) is even, then \(n\) is even,” true?[🔗](#ssec_contrapositive-proof-10-1-1) Solution. This is the converse of the statement we proved in [Example 1.4.7](sec_logic-proofs.html#eg-logic-proofs-sqr-even-even) above using a direct proof. From trying a few examples, this statement appears to be true. So let’s prove it.[🔗](#ssec_contrapositive-proof-10-2-1) A direct proof of this statement would require fixing an arbitrary \(n\) and assuming that \(n^2\) is even. But it is not at all clear how this would allow us to conclude anything about \(n\text{.}\) Just because \(n^2 = 2k\) does not in itself suggest how we could write \(n\) as a multiple of 2.[🔗](#ssec_contrapositive-proof-10-2-2) Try something else: Write the contrapositive of the statement. We get, for all integers \(n\text{,}\) if \(n\) is odd, then \(n^2\) is odd. This looks much more promising.[🔗](#ssec_contrapositive-proof-10-2-3) We need a definition of a number being odd. An integer \(n\) is odd provided \(n = 2k+1\) for some integer \(k\text{.}\) Our proof will look something like this:[🔗](#ssec_contrapositive-proof-10-2-4) Let \(n\) be an arbitrary integer. Suppose that \(n\) is not even. This means that …. In other words …. But this is the same as saying …. Therefore \(n^2\) is not even.[🔗](#ssec_contrapositive-proof-10-2-5) Now we fill in the details.[🔗](#ssec_contrapositive-proof-10-2-6)
+هل العبارة «لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(n^2\) زوجيًا، فإنّ \(n\) زوجي» صادقة؟[🔗](#ssec_contrapositive-proof-10-1-1) الحل. هذه هي عكس (converse) العبارة التي برهنّا عليها في [مثال 1.4.7](sec_logic-proofs.html#eg-logic-proofs-sqr-even-even) أعلاه باستخدام برهانٍ مباشر. ومن خلال تجربة بضع أمثلة، تبدو هذه العبارة صادقة. فلنبرهن عليها إذن.[🔗](#ssec_contrapositive-proof-10-2-1) وسيتطلّب البرهان المباشر لهذه العبارة تثبيت \(n\) اعتباطيًا وافتراض أنّ \(n^2\) زوجي. لكنّه ليس واضحًا البتّة كيف يمكّننا هذا من استنتاج أيّ شيء عن \(n\text{.}\) فبمجرد أنّ \(n^2 = 2k\) لا يقترح بحدّ ذاته كيف يمكننا كتابة \(n\) على صورة مضاعفٍ للعدد 2.[🔗](#ssec_contrapositive-proof-10-2-2) جرّب شيئًا آخر: اكتب نقيض مضمون العبارة. فنحصل على: لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(n\) فرديًا، فإنّ \(n^2\) فردي. وهذا يبدو أكثر جدّية بكثير.[🔗](#ssec_contrapositive-proof-10-2-3) ونحتاج إلى تعريف لكون العدد فرديًا. فيكون العدد الصحيح \(n\) فرديًا إذا \(n = 2k+1\) لعدد صحيح \(k\text{.}\) وسيبدو برهاننا على نحوٍ ما كما يلي: دع \(n\) يكون عددًا صحيحًا اعتباطيًا. افترض أنّ \(n\) ليس زوجيًا. أي إنّ … بمعنى آخر … لكنّ هذا هو نفسه قول … إذن \(n^2\) ليس زوجيًا. والآن نملأ التفاصيل.[🔗](#ssec_contrapositive-proof-10-2-4) [🔗](#ssec_contrapositive-proof-10-2-5) [🔗](#ssec_contrapositive-proof-10-2-6)
 
-#### Proof.
+#### برهان.
 
-We will prove the contrapositive. Let \(n\) be an arbitrary integer. Suppose that \(n\) is not even, and thus odd. Then \(n= 2k+1\) for some integer \(k\text{.}\) Now \(n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1\text{.}\) Since \(2k^2 + 2k\) is an integer, we see that \(n^2\) is odd and therefore not even.[🔗](#ssec_contrapositive-proof-10-2-7-1) [🔗](#ssec_contrapositive-proof-10-2-7)[🔗](#ssec_contrapositive-proof-10-2) [🔗](#ssec_contrapositive-proof-10)
+سنبرهن على نقيض المضمون. دع \(n\) يكون عددًا صحيحًا اعتباطيًا. افترض أنّ \(n\) ليس زوجيًا، وبالتالي فهو فردي. عندئذٍ \(n= 2k+1\) لعدد صحيح \(k\text{.}\) الآن \(n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1\text{.}\) وبما أنّ \(2k^2 + 2k\) عددٌ صحيح، فإنّ \(n^2\) فردي، وبالتالي ليس زوجيًا.[🔗](#ssec_contrapositive-proof-10-2-7-1) [🔗](#ssec_contrapositive-proof-10-2-7)[🔗](#ssec_contrapositive-proof-10-2) [🔗](#ssec_contrapositive-proof-10)
 
-#### Example 1.4.11.
+#### مثال 1.4.11.
 
-Prove that for all integers \(a\) and \(b\text{,}\) if \(a + b\) is odd, then \(a\) is odd or \(b\) is odd.[🔗](#ssec_contrapositive-proof-11-1-1) Solution. The problem with trying a direct proof is that it will be hard to separate \(a\) and \(b\) from knowing something about \(a+b\text{.}\) On the other hand, if we know something about \(a\) and \(b\) separately, then combining them might give us information about \(a+b\text{.}\) The contrapositive of the statement we are trying to prove is: for all integers \(a\) and \(b\text{,}\) if \(a\) and \(b\) are even, then \(a+b\) is even. Thus our proof will have the following format:[🔗](#ssec_contrapositive-proof-11-2-1) Let \(a\) and \(b\) be integers. Assume that \(a\) and \(b\) are both even. la la la. Therefore \(a+b\) is even.[🔗](#ssec_contrapositive-proof-11-2-2) Here is a complete proof.[🔗](#ssec_contrapositive-proof-11-2-3)
+اثبت أنّه لكل الأعداد الصحيحة \(a\) و\(b\text{,}\) إذا كان \(a + b\) فرديًا، فإنّ \(a\) فردي أو \(b\) فردي.[🔗](#ssec_contrapositive-proof-11-1-1) الحل. المشكلة في محاولة البرهان المباشر هي أنّه يصعب فصل \(a\) و\(b\) عمّا نعرفه عن \(a+b\text{.}\) ومن ناحية أخرى، إن عرفنا شيئًا عن \(a\) و\(b\) كلٍّ على حدة، فإنّ جمعهما قد يعطينا معلومات عن \(a+b\text{.}\) ونقيض المضمون للعبارة التي نحاول إثباتها هو: لكل الأعداد الصحيحة \(a\) و\(b\text{,}\) إذا كان \(a\) و\(b\) زوجيَّين، فإنّ \(a+b\) زوجي. إذن سيأخذ برهاننا الصيغة التالية:[🔗](#ssec_contrapositive-proof-11-2-1) دع \(a\) و\(b\) عددين صحيحين. افترض أنّ \(a\) و\(b\) كلاهما زوجي. لا لا لا. إذن \(a+b\) زوجي.[🔗](#ssec_contrapositive-proof-11-2-2) وهذا برهانٌ كامل.[🔗](#ssec_contrapositive-proof-11-2-3)
 
-#### Proof.
+#### برهان.
 
-Let \(a\) and \(b\) be integers. Assume that \(a\) and \(b\) are even. Then \(a = 2k\) and \(b = 2l\) for some integers \(k\) and \(l\text{.}\) Now \(a + b = 2k + 2l = 2(k+l)\text{.}\) Since \(k + l\) is an integer, we see that \(a + b\) is even, completing the proof.[🔗](#ssec_contrapositive-proof-11-2-4-1) [🔗](#ssec_contrapositive-proof-11-2-4)Note that our assumption that \(a\) and \(b\) are even is the negation of \(a\) or \(b\) is odd. We used De Morgan’s law here.[🔗](#ssec_contrapositive-proof-11-2-5) [🔗](#ssec_contrapositive-proof-11-2) [🔗](#ssec_contrapositive-proof-11)Direct proofs and proofs by contrapositive can be used when proving *implications*. Remember that some statements that are not explicitly written as an implication can be rephrased as one.[🔗](#ssec_contrapositive-proof-12)
+دع \(a\) و\(b\) عددين صحيحين. افترض أنّ \(a\) و\(b\) زوجيَّين. عندئذٍ \(a = 2k\) و\(b = 2l\) لبعض الأعداد الصحيحة \(k\) و\(l\text{.}\) الآن \(a + b = 2k + 2l = 2(k+l)\text{.}\) وبما أنّ \(k + l\) عددٌ صحيح، فإنّ \(a + b\) زوجي، وهذا يُتمّ البرهان.[🔗](#ssec_contrapositive-proof-11-2-4-1) [🔗](#ssec_contrapositive-proof-11-2-4)لاحظ أنّ افتراضنا أنّ \(a\) و\(b\) زوجيَّين هو نفي العبارة «\(a\) أو \(b\) فردي». لقد استعملنا هنا قانون دو مورغان (De Morgan's law).[🔗](#ssec_contrapositive-proof-11-2-5) [🔗](#ssec_contrapositive-proof-11-2) [🔗](#ssec_contrapositive-proof-11)يمكن استعمال البراهين المباشرة والبراهين بنقيض المضمون عند إثبات *التضمينات*. وتذكّر أنّ بعض العبارات التي لا تُكتب صراحةً على شكل تضمين يمكن إعادة صياغتها كذلك.[🔗](#ssec_contrapositive-proof-12)
 
-#### Example 1.4.12.
+#### مثال 1.4.12.
 
-Consider the statement, “For every prime number \(p\text{,}\) either \(p = 2\text{,}\) or \(p\) is odd.” We can rephrase this as, “For every prime number \(p\text{,}\) if \(p \ne 2\text{,}\) then \(p\) is odd.” Now try to prove it.[🔗](#ssec_contrapositive-proof-13-1-1) Use the following as the definition of a prime number: An integer \(p \gt 1\) is prime provided it has exactly two factors, namely \(1\) and \(p\text{.}\)[🔗](#ssec_contrapositive-proof-13-1-2) Solution.
+تأمّل العبارة: «لكل عددٍ أولي \(p\text{,}\) إمّا \(p = 2\text{,}\) وإمّا \(p\) فردي». يمكننا إعادة صياغتها هكذا: «لكل عددٍ أولي \(p\text{,}\) إذا كان \(p \ne 2\text{,}\) فإنّ \(p\) فردي». والآن حاول إثباتها.[🔗](#ssec_contrapositive-proof-13-1-1) استعمل ما يلي تعريفًا للعدد الأولي: العدد الصحيح \(p \gt 1\) يكون أوليًا بشرط أن يكون له عاملان بالضبط، وهما \(1\) و\(p\text{.}\)[🔗](#ssec_contrapositive-proof-13-1-2) الحل.
 
-#### Proof.
+#### برهان.
 
-Let \(p\) be an arbitrary prime number. Assume \(p\) is not odd. So \(p\) is divisible by 2. Since \(p\) is prime, it must have exactly two divisors, and it has 2 as a divisor, so \(p\) must be divisible by only 1 and 2. Therefore \(p = 2\text{.}\) This completes the proof (by contrapositive).[🔗](#ssec_contrapositive-proof-13-2-1-1) [🔗](#ssec_contrapositive-proof-13-2-1)[🔗](#ssec_contrapositive-proof-13-2) [🔗](#ssec_contrapositive-proof-13)[🔗](#ssec_contrapositive-proof)
+دع \(p\) يكون عددًا أوليًّا اعتباطيًا. افترض أنّ \(p\) ليس فرديًا. إذن \(p\) يقبل القسمة على 2. وبما أنّ \(p\) أولي، فلا بدّ أن يكون له قاسمان بالضبط، وله 2 قاسمًا، إذن لا بدّ أن يكون \(p\) قابلًا للقسمة على 1 و2 وحدهما. إذن \(p = 2\text{.}\) وهذا يُتمّ البرهان (بنقيض المضمون).[🔗](#ssec_contrapositive-proof-13-2-1-1) [🔗](#ssec_contrapositive-proof-13-2-1)[🔗](#ssec_contrapositive-proof-13-2) [🔗](#ssec_contrapositive-proof-13)[🔗](#ssec_contrapositive-proof)
 
-### Subsection Proof by Contradiction
+### البرهان بالتناقض
 
-Take a step back and consider what it would mean if the conclusion of an argument were false. There are two reasons this could happen. Either the logic in the argument is faulty, or at least one assumption must be false. A proof by contradiction exploits this second possibility. We start with a single assumption and construct a *valid* proof that leads to a false conclusion; the only possibility is that the single assumption was false. The false conclusion is the “contradiction,” which just means a necessarily false statement (technically a statement of the form \(P \wedge \neg P\)).[🔗](#sec_logic-proofs-6-4) The general form of a proof by contradiction to prove a statement \(P\) is,[🔗](#sec_logic-proofs-6-5)
+تراجع خطوةً وتأمّل ما الذي سيعنيه لو كان ناتج الحجّة خاطئًا. وهناك سببان لحدوث ذلك. إمّا أنّ المنطق في الحجّة معطوب، أو أنّ واحدًا على الأقل من الافتراضات خاطئ. ويستغل البرهان بالتناقض الإمكان الثاني هذا. فنبدأ بافتراضٍ واحد ونبني برهانًا *صحيحًا* يقود إلى ناتجٍ خاطئ؛ والاحتمال الوحيد هو أنّ هذا الافتراض الواحد كان خاطئًا. والناتج الخاطئ هو «التناقض»، وهو مجرّد عبارةٍ بالضرورة خاطئة (وبالتقنيّ عبارةٌ من الشكل \(P \wedge \neg P\)).[🔗](#sec_logic-proofs-6-4) والصيغة العامة للبرهان بالتناقض لإثبات عبارة \(P\) هي،[🔗](#sec_logic-proofs-6-5)
 
-> Assume \(\neg P\) (that \(P\) is not true). This means that..., which tells us..., so we can say... But that is a contradiction, so \(P\) must in fact be true.[🔗](#sec_logic-proofs-6-6-1)
+> افترض \(\neg P\) (أي أنّ \(P\) ليست صادقة). هذا يعني أنّ...، وهذا يخبرنا بأنّ...، فيمكننا القول إنّ... لكنّ ذلك تناقض، إذن لا بدّ أن تكون \(P\) صادقة في الواقع.[🔗](#sec_logic-proofs-6-6-1)
 > > [🔗](#sec_logic-proofs-6-6)
 
-Note that if we think of this style of argument as a direct proof of something, it is a direct proof of \begin{equation*} \neg P \imp \text{ contradiction}\text{.} \end{equation*} So we have a valid proof of this implication. How can a true implication have a false conclusion? Recall the truth table for an implication ([Figure 1.2.2](sec_logic-implications.html#fig-implication-tt)). The only row in which the implication is true but the conclusion is false is row 4, and here the hypothesis is also false. So \(\neg P\) is false, which is to say \(P\) is true. [🔗](#sec_logic-proofs-6-7) Once you start writing proofs by contradiction, it becomes very natural. Let’s see how with a sudoku proof.[🔗](#sec_logic-proofs-6-8)
+لاحظ أنّه إذا نظرنا إلى هذا النمط من الحجج باعتباره برهانًا مباشرًا لشيء ما، فهو برهانٌ مباشر لـ \begin{equation*} \neg P \imp \text{ contradiction}\text{.} \end{equation*} إذن لدينا برهان صحيح لهذا التضمين. وكيف يمكن لتضمينٍ صادق أن يكون ناتجه خاطئًا؟ تذكّر جدول الصدق الخاص بالتضمين ([الشكل 1.2.2](sec_logic-implications.html#fig-implication-tt)). الصفّ الوحيد الذي يكون فيه التضمين صادقًا مع خُروج ناتجه خاطئًا هو الصفّ 4، وهناك تكون الفرضية خاطئة أيضًا. إذن \(\neg P\) خاطئة، أي إنّ \(P\) صادقة. [🔗](#sec_logic-proofs-6-7) وفور أن تبدأ كتابة البراهين بالتناقض، يصبح الأمر طبيعيًا جدًّا. فلنرَ كيف ذلك مع برهانٍ على سودوكو.[🔗](#sec_logic-proofs-6-8)
 
-#### Example 1.4.13.
+#### مثال 1.4.13.
 
-Prove that any solution to the mini sudoku puzzle below must contain a 3 in the top-right corner (r1c4).[🔗](#sec_logic-proofs-6-9-1-1) ![4x4 sudoku puzzle.](generated/latex-image/sec_logic-proofs-6-9-1-2.svg) Solution. There are multiple ways we could prove this, which is often the case for proofs by contradiction. While we would always start with the same initial assumption (the opposite of what we want to prove), where the contradiction is found can vary.[🔗](#sec_logic-proofs-6-9-2-1)
+اثبت أنّ كل حلٍّ للّغز سودوكو المصغّر أدناه لا بدّ أن يحتوي على 3 في الزاوية العلوية اليمنى (r1c4).[🔗](#sec_logic-proofs-6-9-1-1) ![لغز سودوكو 4×4.](generated/latex-image/sec_logic-proofs-6-9-1-2.svg) الحل. هناك طرقٌ متعدّدة يمكننا بها إثبات هذا، وهو أمرٌ شائع في البراهين بالتناقض. فبينما سنبدأ دائمًا بالافتراض الأول نفسه (نقيض ما نريد إثباته)، فإنّ موضع العثور على التناقض قد يختلف.[🔗](#sec_logic-proofs-6-9-2-1)
 
-#### Proof.
+#### برهان.
 
-Let \(S\) be a solution to the puzzle, but assume that \(S\) does *not* contain a 3 in the top-right corner. Then the top row must contain a 3 somewhere else. It cannot be in column 1, since it already has a 3. It cannot be in column 2, since that square is already filled in (with the 2). It also cannot be in column 3, since if it was, there would be no place to put a three in the bottom row. So there would be no 3 in the top row, contradicting that \(S\) is a solution.[🔗](#sec_logic-proofs-6-9-2-2-1) Therefore \(S\) must contain a 3 in the top-right corner.[🔗](#sec_logic-proofs-6-9-2-2-2) [🔗](#sec_logic-proofs-6-9-2-2)[🔗](#sec_logic-proofs-6-9-2) [🔗](#sec_logic-proofs-6-9)
+دع \(S\) يكون حلًّا للّغز، لكن افترض أنّ \(S\) *لا* يحتوي على 3 في الزاوية العلوية اليمنى. عندئذٍ لا بدّ أن يحتوي الصف العلوي على 3 في مكان آخر. ولا يمكن أن يكون في العمود 1، لأنّ فيه 3 أصلًا. ولا يمكن أن يكون في العمود 2، لأنّ ذلك المربع مملوء أصلًا (بالرقم 2). ولا يمكن أن يكون في العمود 3 أيضًا، لأنّ لو كان كذلك لما وُجد مكانٌ لوضع 3 في الصف السفلي. إذن لا يوجد 3 في الصف العلوي، وهذا يناقض كون \(S\) حلًّا. إذن لا بدّ أن يحتوي \(S\) على 3 في الزاوية العلوية اليمنى.[🔗](#sec_logic-proofs-6-9-2-2-1) [🔗](#sec_logic-proofs-6-9-2-2-2) [🔗](#sec_logic-proofs-6-9-2-2)[🔗](#sec_logic-proofs-6-9-2) [🔗](#sec_logic-proofs-6-9)
 
-#### Example 1.4.14.
+#### مثال 1.4.14.
 
-Prove that there is no solution to the sudoku puzzle below.[🔗](#sec_logic-proofs-6-10-1-1) ![A mini sudoku puzzle](generated/latex-image/img-sudoku-counterexample.svg) Solution. Look at the logical format of this statement: \begin{equation*} \neg \exists S (S \text{ is a solution })\text{.} \end{equation*} Using the rules for negation of quantifiers, this is the same as \begin{equation*} \forall S (S \text{ is not a solution})\text{.} \end{equation*} If we were to prove this directly, we would need to consider all possible solutions and show that they are not valid. That seems quite challenging. [🔗](#sec_logic-proofs-6-10-2-1) On the other hand, if we try a proof by contradiction, we get to assume the negation of the statement we are asked to prove. That is, we can assume that there *is* a solution. That is a single solution we can reason about. Much more manageable.[🔗](#sec_logic-proofs-6-10-2-2)
+اثبت أنّه لا يوجد حلٌّ للّغز سودوكو أدناه.[🔗](#sec_logic-proofs-6-10-1-1) ![لغز سودوكو مصغّر](generated/latex-image/img-sudoku-counterexample.svg) الحل. انظر إلى الصيغة المنطقية لهذه العبارة: \begin{equation*} \neg \exists S (S \text{ is a solution })\text{.} \end{equation*} وباستعمال قواعد نفي الكمّاسات، فإنّها على النحو التالي: \begin{equation*} \forall S (S \text{ is not a solution})\text{.} \end{equation*} ولو أردنا إثبات ذلك مباشرة، لكنّا بحاجة إلى تأمّل جميع الحلول الممكنة وإثبات أنّها غير صالحة. ويبدو ذلك صعبًا جدًّا. [🔗](#sec_logic-proofs-6-10-2-1) ومن ناحية أخرى، إن حاولنا برهانًا بالتناقض، نُفترض نفي العبارة التي طُلب إلينا إثباتها. أي يمكننا أن نفترض أنّه *يوجد* حلّ. وهذا حلٌّ واحد يمكننا التفكير فيه. وهذا أكثر قابلية للإدارة بكثير.[🔗](#sec_logic-proofs-6-10-2-2)
 
-#### Proof.
+#### برهان.
 
-Suppose, for the sake of contradiction, that there *does* exist a solution to the puzzle. This solution must have a 4 in the bottom-left box. But the only squares that can hold a 4 are either in row 4 or column 1 (or both). In either case, this contradicts that there is a 4 already in column 1 and row 4.[🔗](#sec_logic-proofs-6-10-2-3-1) [🔗](#sec_logic-proofs-6-10-2-3)[🔗](#sec_logic-proofs-6-10-2) [🔗](#sec_logic-proofs-6-10)Here are three examples of proofs by contradiction about numbers:[🔗](#sec_logic-proofs-6-11)
+افترض، طلبًا للتناقض، أنّه *يوجد* فعلًا حلٌّ للّغز. ولا بدّ أن يحتوي هذا الحلّ على 4 في الصندوق السفلي الأيسر. لكنّ المربعات الوحيدة التي يمكن أن تستوعب 4 إنّما تقع إمّا في الصف 4 أو في العمود 1 (أو كليهما). وفي كلتا الحالتين، فإنّ هذا يناقض وجود 4 أصلًا في العمود 1 وفي الصف 4.[🔗](#sec_logic-proofs-6-10-2-3-1) [🔗](#sec_logic-proofs-6-10-2-3)[🔗](#sec_logic-proofs-6-10-2) [🔗](#sec_logic-proofs-6-10)وهذه ثلاثة أمثلة على براهين بالتناقض تتعلّق بالأعداد:[🔗](#sec_logic-proofs-6-11)
 
-#### Example 1.4.15.
+#### مثال 1.4.15.
 
-Prove that \(\sqrt{2}\) is irrational.[🔗](#sec_logic-proofs-6-12-1-1) Solution.
+اثبت أنّ \(\sqrt{2}\) غير ناطق (irrational).[🔗](#sec_logic-proofs-6-12-1-1) الحل.
 
-#### Proof.
+#### برهان.
 
-Suppose not. Then \(\sqrt 2\) is equal to a fraction \(\frac{a}{b}\text{.}\) Without loss of generality, assume \(\frac{a}{b}\) is in lowest terms (otherwise reduce the fraction). So, \begin{equation*} 2 = \frac{a^2}{b^2} \end{equation*} \begin{equation*} 2b^2 = a^2\text{.} \end{equation*} [🔗](#sec_logic-proofs-6-12-2-1-1) Thus \(a^2\) is even, and as such \(a\) is even. So \(a = 2k\) for some integer \(k\text{,}\) and \(a^2 = 4k^2\text{.}\) We then have, \begin{equation*} 2b^2 = 4k^2 \end{equation*} \begin{equation*} b^2 = 2k^2\text{.} \end{equation*} [🔗](#sec_logic-proofs-6-12-2-1-2) Thus \(b^2\) is even, and as such \(b\) is even. Since \(a\) is also even, we see that \(\frac{a}{b}\) is not in lowest terms, a contradiction. Thus \(\sqrt 2\) is irrational.[🔗](#sec_logic-proofs-6-12-2-1-3) [🔗](#sec_logic-proofs-6-12-2-1)[🔗](#sec_logic-proofs-6-12-2) [🔗](#sec_logic-proofs-6-12)
+افترض العكس. عندئذٍ \(\sqrt 2\) يساوي كسرًا \(\frac{a}{b}\text{.}\) ودون حدٍّ من التعميم (without loss of generality)، افترض أنّ \(\frac{a}{b}\) في أبسط صورة (وإلا فاختصر الكسر). إذن، \begin{equation*} 2 = \frac{a^2}{b^2} \end{equation*} \begin{equation*} 2b^2 = a^2\text{.} \end{equation*} [🔗](#sec_logic-proofs-6-12-2-1-1) إذن \(a^2\) زوجي، وبالتالي فإنّ \(a\) زوجي. إذن \(a = 2k\) لعدد صحيح \(k\text{,}\) و\(a^2 = 4k^2\text{.}\) عندئذٍ لدينا، \begin{equation*} 2b^2 = 4k^2 \end{equation*} \begin{equation*} b^2 = 2k^2\text{.} \end{equation*} [🔗](#sec_logic-proofs-6-12-2-1-2) إذن \(b^2\) زوجي، وبالتالي فإنّ \(b\) زوجي. وبما أنّ \(a\) زوجي أيضًا، فإنّنا نرى أنّ \(\frac{a}{b}\) ليس في أبسط صورة، وهذا تناقض. إذن \(\sqrt 2\) غير ناطق.[🔗](#sec_logic-proofs-6-12-2-1-3) [🔗](#sec_logic-proofs-6-12-2-1)[🔗](#sec_logic-proofs-6-12-2) [🔗](#sec_logic-proofs-6-12)
 
-#### Example 1.4.16.
+#### مثال 1.4.16.
 
-Prove: There are no integers \(x\) and \(y\) such that \(x^2 = 4y + 2\text{.}\)[🔗](#sec_logic-proofs-6-13-1-1) Solution.
+اثبت: لا توجد أعداد صحيحة \(x\) و\(y\) بحيث \(x^2 = 4y + 2\text{.}\)[🔗](#sec_logic-proofs-6-13-1-1) الحل.
 
-#### Proof.
+#### برهان.
 
-We proceed by contradiction. So suppose there *are* integers \(x\) and \(y\) such that \(x^2 = 4y + 2 = 2(2y + 1)\text{.}\) So \(x^2\) is even. We have seen that this implies that \(x\) is even. So \(x = 2k\) for some integer \(k\text{.}\) Then \(x^2 = 4k^2\text{.}\) This in turn gives \(2k^2 = (2y + 1)\text{.}\) But \(2k^2\) is even, and \(2y + 1\) is odd, so these cannot be equal. Thus we have a contradiction, so there must not be any integers \(x\) and \(y\) such that \(x^2 = 4y + 2\text{.}\)[🔗](#sec_logic-proofs-6-13-2-1-1) [🔗](#sec_logic-proofs-6-13-2-1)[🔗](#sec_logic-proofs-6-13-2) [🔗](#sec_logic-proofs-6-13)
+سنتقدّم بالتناقض. إذن نفترض أنّه *هناك* أعداد صحيحة \(x\) و\(y\) بحيث \(x^2 = 4y + 2 = 2(2y + 1)\text{.}\) إذن \(x^2\) زوجي. وقد رأينا أنّ هذا يعني أنّ \(x\) زوجي. إذن \(x = 2k\) لعدد صحيح \(k\text{.}\) عندئذٍ \(x^2 = 4k^2\text{.}\) وهذا بدوره يُعطي \(2k^2 = (2y + 1)\text{.}\) لكنّ \(2k^2\) زوجي، و\(2y + 1\) فردي، فلا يمكن أن يكونا متساويين. إذن لدينا تناقض، ولذلك لا بدّ ألّا توجد أي أعداد صحيحة \(x\) و\(y\) بحيث \(x^2 = 4y + 2\text{.}\)[🔗](#sec_logic-proofs-6-13-2-1-1) [🔗](#sec_logic-proofs-6-13-2-1)[🔗](#sec_logic-proofs-6-13-2) [🔗](#sec_logic-proofs-6-13)
 
-#### Example 1.4.17.
+#### مثال 1.4.17.
 
-The Pigeonhole Principle: If more than \(n\) pigeons fly into \(n\) pigeonholes, then at least one pigeonhole will contain at least two pigeons. Prove this![🔗](#sec_logic-proofs-6-14-1-1) Solution.
+مبدأ الحمّام: إذا طار أكثر من \(n\) حمامةً إلى \(n\) جُحورًا، فإنّ أحد الجُحور سيحتوي على حمامتين على الأقل. اثبت ذلك![🔗](#sec_logic-proofs-6-14-1-1) الحل.
 
-#### Proof.
+#### برهان.
 
-Suppose, contrary to stipulation, that each of the pigeonholes contains at most one pigeon. Then at most, there will be \(n\) pigeons. But we assumed that there are more than \(n\) pigeons, so this is impossible. Thus there must be a pigeonhole with more than one pigeon.[🔗](#sec_logic-proofs-6-14-2-1-1) [🔗](#sec_logic-proofs-6-14-2-1)While we phrased this proof as a proof by contradiction, we could have also used a proof by contrapositive since our contradiction was simply the negation of the hypothesis. Sometimes this will happen, in which case you can use either style of proof. There are examples, however, where the contradiction occurs “far away” from the original statement.[🔗](#sec_logic-proofs-6-14-2-2) [🔗](#sec_logic-proofs-6-14-2) [🔗](#sec_logic-proofs-6-14)[🔗](#sec_logic-proofs-6)
+افترض، خلافًا للمُقرَّر، أنّ كل جُحرٍ يحتوي على حمامة واحدة على الأكثر. عندئذٍ لن يكون هناك أكثر من \(n\) حمامة. لكنّنا افترضنا أنّ هناك أكثر من \(n\) حمامة، وهذا مستحيل. إذن لا بدّ من وجود جُحرٍ فيه أكثر من حمامة واحدة.[🔗](#sec_logic-proofs-6-14-2-1-1) [🔗](#sec_logic-proofs-6-14-2-1)ولئن صُغنا هذا البرهان على صورة برهانٍ بالتناقض، كان بإمكاننا أيضًا استعمال البرهان بنقيض المضمون، لأنّ تناقضنا لم يكن سوى نفي الفرضية. أحيانًا ما يحدث هذا، وعندئذٍ يمكنك استعمال أيّ من أسلوبي البرهان. غير أنّ هناك أمثلةٍ يكون فيها التناقض واقعًا «بعيدًا» عن العبارة الأصلية.[🔗](#sec_logic-proofs-6-14-2-2) [🔗](#sec_logic-proofs-6-14-2) [🔗](#sec_logic-proofs-6-14)[🔗](#sec_logic-proofs-6)
 
-### Subsection Summary of Proof Styles
+### خلاصة أساليب البرهان
 
-We have considered three styles of proof: direct proof, proof by contrapositive, and proof by contradiction. It can be challenging to decide which style of proof to use on a given problem, and no rule will always tell us what to do. Often, there are multiple ways you can proceed in a proof, which is one reason math is so exciting.[🔗](#subsec-summary-of-proof-styles-2) A good starting point when writing proofs is to consider what the initial assumption would be with each style, and what the conclusion you would be looking for is. A proof is a little like a kids-menu maze. There is a *START* and an *EXIT*, and your goal is to find your way from one to the other. Sometimes it helps to work your way in from both sides and hopefully meet in the middle.[🔗](#subsec-summary-of-proof-styles-3)
+لقد ناقشنا ثلاثة أساليب للبرهان: البرهان المباشر، والبرهان بنقيض المضمون، والبرهان بالتناقض. وقد يكون من الصعب تحديد أسلوب البرهان المناسب لم مسألةٍ بعينها، ولا توجد قاعدة تخبرنا دائمًا بما يجب فعله. وغالبًا ما توجد طرائق متعدّدة يمكنك بها المضي في برهان، وهذا أحد أسباب كون الرياضيات مثيرة إلى هذا الحدّ.[🔗](#subsec-summary-of-proof-styles-2) ونقطة انطلاق جيّدة عند كتابة البراهين هي أن تنظر في كيفية الافتراض الأول في كل أسلوب، وفيما هو الناتج الذي تسعى إليه. والبرهان أشبه قليلًا بمتاهة قائمة طعام الأطفال. فهناك *بداية* و*نهاية*، وهدفك هو إيجاد طريقك من واحدة إلى الأخرى. وأحيانًا يفيد أن تتقدّم من الجانبين في آنٍ واحد، آملين أن تلتقي في المنتصف.[🔗](#subsec-summary-of-proof-styles-3)
 
-#### Starts and Ends Proofs.
+#### بدايات البراهين ونهاياتها.
 
-To prove an implication \(P \imp Q\text{:}\) Direct[🔗](#assemblage-proof-start-end-2-2-1) Start: Assume \(P\text{.}\)[🔗](#assemblage-proof-start-end-2-2-1-2) End: Therefore \(Q\text{.}\)[🔗](#assemblage-proof-start-end-2-2-1-3) Contrapositive[🔗](#assemblage-proof-start-end-2-2-2) Start: Assume \(\neg Q\text{.}\)[🔗](#assemblage-proof-start-end-2-2-2-2) End: Therefore \(\neg P\text{.}\)[🔗](#assemblage-proof-start-end-2-2-2-3) Contradiction[🔗](#assemblage-proof-start-end-2-2-3) Start: Assume \(\neg (P \imp Q)\text{.}\)[🔗](#assemblage-proof-start-end-2-2-3-2) End: ...which is a contradiction.[🔗](#assemblage-proof-start-end-2-2-3-3) [🔗](#assemblage-proof-start-end-2) [🔗](#assemblage-proof-start-end)You can use a proof by contradiction even if you are not trying to prove an implication, but if the statement is an implication, then assuming \(\neg (P \imp Q)\) is really powerful. Remember, the only way for an implication to be false is for \(P\) to be true and \(Q\) to be false. So we are actually assuming \(P \wedge \neg Q\text{.}\) Aha! \(P\) is what we assume in a direct proof. \(\neg Q\) is what we assume in a proof by contrapositive. So a *proof by contradiction is like doing the other two proofs at the same time, and meeting in the middle!*[🔗](#subsec-summary-of-proof-styles-5) To illustrate this, let’s prove the fact from the *Investigate!* activity. We will prove that if a mini sudoku puzzle has all different numbers in its corners (marked with \(a\) through \(d\) below), then the center four squares (marked with * below) must also contain different numbers (in any solution).[🔗](#subsec-summary-of-proof-styles-6) ![4x4 sudoku with given digits.](generated/latex-image/img-sudoku-invst-thm-2.svg) We will give three proofs, first a direct proof, then a proof by contrapositive, and finally a proof by contradiction.[🔗](#subsec-summary-of-proof-styles-8)
+لإثبات تضمينٍ \(P \imp Q\text{:}\) مباشر[🔗](#assemblage-proof-start-end-2-2-1) البداية: افترض \(P\text{.}\)[🔗](#assemblage-proof-start-end-2-2-1-2) النهاية: إذن \(Q\text{.}\)[🔗](#assemblage-proof-start-end-2-2-1-3) بنقيض المضمون[🔗](#assemblage-proof-start-end-2-2-2) البداية: افترض \(\neg Q\text{.}\)[🔗](#assemblage-proof-start-end-2-2-2-2) النهاية: إذن \(\neg P\text{.}\)[🔗](#assemblage-proof-start-end-2-2-2-3) بالتناقض[🔗](#assemblage-proof-start-end-2-2-3) البداية: افترض \(\neg (P \imp Q)\text{.}\)[🔗](#assemblage-proof-start-end-2-2-3-2) النهاية: ...وهو تناقض.[🔗](#assemblage-proof-start-end-2-2-3-3) [🔗](#assemblage-proof-start-end-2) [🔗](#assemblage-proof-start-end)ويمكنك استعمال البرهان بالتناقض حتى وإن لم تكن تحاول إثبات تضمين، لكن إذا كانت العبارة تضمينًا، فإنّ افتراض \(\neg (P \imp Q)\) قويٌّ حقًّا. وتذكّر، أنّ الطريقة الوحيدة لأن يكون التضمين خاطئًا هي أن تكون \(P\) صادقة و\(Q\) خاطئة. إذن نحن نفترض في الواقع \(P \wedge \neg Q\text{.}\) آه! \(P\) هو ما نفترضه في البرهان المباشر. و\(\neg Q\) هو ما نفترضه في البرهان بنقيض المضمون. إذن *البرهان بالتناقض يشبه إجراء البرهانين الآخرين في آنٍ واحد، ثمّ اللقاء في المنتصف!*[🔗](#subsec-summary-of-proof-styles-5) ولتوضيح ذلك، فلنُثبت الحقيقة الواردة في نشاط *استكشف!*. سنبرهن على أنّه إذا كانت أرقام زوايا لغز سودوكو مصغّر مختلفة جميعًا (وهي المعلَّمة بـ \(a\) إلى \(d\) أدناه)، فإنّ المربعات الوسطى الأربعة (المعلَّمة بـ * أدناه) لا بدّ أن تحتوي أيضًا على أرقام مختلفة (في أي حلٍّ).[🔗](#subsec-summary-of-proof-styles-6) ![سودوكو 4×4 بأرقام معطاة.](generated/latex-image/img-sudoku-invst-thm-2.svg) وسنعطي ثلاثة براهين: أوّلًا برهانٌ مباشر، ثمّ برهانٌ بنقيض المضمون، وأخيرًا برهانٌ بالتناقض.[🔗](#subsec-summary-of-proof-styles-8)
 
-#### Proof.
+#### برهان.
 
-Let \(P\) be a sudoku puzzle with all different numbers in its corners: \(a\) in the top-left, \(b\) in the top-right, \(c\) in the bottom-left, and \(d\) in the bottom-right. Let \(S\) be any solution to the puzzle.[🔗](#subsec-summary-of-proof-styles-9-1) In \(S\text{,}\) whatever digit \(a\) is must appear in row 2. Since \(a\) is already in the top-left box, it cannot appear in columns 1 or 2, so it must appear in columns 3 or 4. If it is in column 3, then \(a\) appears in one of the center squares. If not, then it is in column 4. In this latter case, we ask where \(a\) appears in row 3: It cannot be in column 1 or 4, so it must be in column 2 or 3, and thus in one of the center squares.[🔗](#subsec-summary-of-proof-styles-9-2) The same argument can now be applied to each of the other three outer squares. Thus, in any solution to the puzzle, the center four squares must contain the digits \(a\) through \(d\text{,}\) all different.[🔗](#subsec-summary-of-proof-styles-9-3) [🔗](#subsec-summary-of-proof-styles-9)Now we will prove the same statement by contrapositive.[🔗](#subsec-summary-of-proof-styles-10)
+دع \(P\) يكون لغز سودوكو مصغّرًا أرقام زواياه مختلفة: \(a\) في الزاوية العلوية اليسرى، و\(b\) في العلوية اليمنى، و\(c\) في السفلية اليسرى، و\(d\) في السفلية اليمنى. وليكن \(S\) أي حلٍّ للّغز.[🔗](#subsec-summary-of-proof-styles-9-1) في \(S\text{,}\) وأيًّا كان الرقم \(a\)، فلا بدّ أن يظهر في الصف 2. وبما أنّ \(a\) موجود بالفعل في الصندوق العلوي الأيسر، فلا يمكن أن يظهر في العمودين 1 أو 2، إذن لا بدّ أن يظهر في العمودين 3 أو 4. وإذا كان في العمود 3، فإنّ \(a\) يظهر في أحد المربعات الوسطى. وإن لم يكن كذلك، فإنّه في العمود 4. وفي هذه الحالة الأخيرة، نسأل أين يظهر \(a\) في الصف 3: لا يمكن أن يكون في العمود 1 أو 4، إذن لا بدّ أن يكون في العمود 2 أو 3، وبالتالي في أحد المربعات الوسطى.[🔗](#subsec-summary-of-proof-styles-9-2) والآن يمكن تطبيق الحجّة نفسها على كلٍّ من المربعات الخارجية الثلاثة الأخرى. إذن، في أي حلٍّ للّغز، لا بدّ أن تحتوي المربعات الوسطى الأربعة على الأرقام \(a\) إلى \(d\text{,}\) مختلفةً جميعًا.[🔗](#subsec-summary-of-proof-styles-9-3) [🔗](#subsec-summary-of-proof-styles-9)والآن سنبرهن على العبارة نفسها بنقيض المضمون.[🔗](#subsec-summary-of-proof-styles-10)
 
-#### Proof.
+#### برهان.
 
-Let \(P\) be a mini sudoku puzzle with numbers in its corners. Let \(S\) be any solution to the puzzle. Assume that the center four squares do not contain all different numbers in \(S\text{.}\) Then there must be some common number, say \(n\text{,}\) in two of the center squares.[🔗](#subsec-summary-of-proof-styles-11-1) Since \(n\) cannot appear twice in a row, it must be that \(n\) is in two center squares diagonally from each other: either in r2c2 and r3c3, or in r2c3 and r3c2. In either case, where could \(n\) be in rows 1 and 4? It cannot be in columns 2 or 3, so it must be in columns 1 and 4. This means that \(n\) will be in opposite outer corners, meaning that the digits in the four corners are not all different.[🔗](#subsec-summary-of-proof-styles-11-2) [🔗](#subsec-summary-of-proof-styles-11)Finally, we will prove the same statement by contradiction.[🔗](#subsec-summary-of-proof-styles-12)
+دع \(P\) يكون لغز سودوكو مصغّرًا بأرقام في زواياه. وليكن \(S\) أي حلٍّ للّغز. افترض أنّ المربعات الوسطى الأربعة لا تحتوي على أرقام مختلفة جميعًا في \(S\text{.}\) عندئذٍ لا بدّ من وجود رقمٍ مشترك، ولنقل \(n\text{,}\) في مربعين من المربعات الوسطى.[🔗](#subsec-summary-of-proof-styles-11-1) وبما أنّ \(n\) لا يمكن أن يظهر مرّتين في صفٍ واحد، فلا بدّ أن يكون \(n\) في مربعين مركزيين يتباعدان على قطر، أي في r2c2 وr3c3، أو في r2c3 وr3c2. وفي كلتا الحالتين، أين يمكن أن يكون \(n\) في الصفَّين 1 و4؟ لا يمكن أن يكون في العمودين 2 أو 3، إذن لا بدّ أن يكون في العمودين 1 و4. وهذا يعني أنّ \(n\) سيكون في زاويتين خارجيتين متقابلتين، أي إنّ الأرقام في الزوايا الأربع ليست مختلفةً جميعًا.[🔗](#subsec-summary-of-proof-styles-11-2) [🔗](#subsec-summary-of-proof-styles-11)وأخيرًا، سنبرهن على العبارة نفسها بالتناقض.[🔗](#subsec-summary-of-proof-styles-12)
 
-#### Proof.
+#### برهان.
 
-Let \(P\) be a mini sudoku puzzle and assume that the four outer corners are all different, but in some solution \(S\text{,}\) the center four squares are not all different.[🔗](#subsec-summary-of-proof-styles-13-1) Suppose \(a\text{,}\) the digit in the top-left corner, appears twice in the center four squares. The only way this can happen is if \(a\) appears in r3c2 and r2c3, as shown below.[🔗](#subsec-summary-of-proof-styles-13-2) ![a partially filled mini sudoku.](generated/latex-image/subsec-summary-of-proof-styles-13-3.svg) But now, where can the fourth \(a\) in the go in the solution? It must be in r4c4, contradicting that the four corners are all different. An analogous argument leads to a contradiction for each of the other possible outer corner digits being repeated in the center. Thus, the center four squares must contain all different numbers.[🔗](#subsec-summary-of-proof-styles-13-4) [🔗](#subsec-summary-of-proof-styles-13)[🔗](#subsec-summary-of-proof-styles)
+دع \(P\) يكون لغز سودوكو مصغّرًا، وافترض أنّ الزوايا الخارجية الأربع مختلفة جميعًا، لكن في حلٍّ ما \(S\text{,}\) لا تكون المربعات الوسطى الأربعة مختلفةً جميعًا.[🔗](#subsec-summary-of-proof-styles-13-1) وافترض أنّ \(a\text{,}\) وهو الرقم في الزاوية العلوية اليسرى، يظهر مرّتين في المربعات الوسطى الأربعة. والطريقة الوحيدة التي يمكن أن يحدث بها ذلك هي أن يظهر \(a\) في r3c2 وr2c3، كما هو مبيّن أدناه.[🔗](#subsec-summary-of-proof-styles-13-2) ![لغز سودوكو مصغّر مملوء جزئيًا.](generated/latex-image/subsec-summary-of-proof-styles-13-3.svg) لكن أين يمكن للـ \(a\) الرابعة أن تذهب في الحلّ؟ لا بدّ أن تكون في r4c4، وهذا يناقض أنّ الزوايا الأربع مختلفة جميعًا. وتُفضي الحجّة المماثلة إلى تناقض مع كل رقمٍ ممكنٍ آخر من أرقام الزوايا الخارجية إذا تكرّر في الوسط. إذن لا بدّ أن تحتوي المربعات الوسطى الأربعة على أرقام مختلفة جميعًا.[🔗](#subsec-summary-of-proof-styles-13-4) [🔗](#subsec-summary-of-proof-styles-13)[🔗](#subsec-summary-of-proof-styles)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-Which of the following would be the best first line of a *direct proof* if you wanted to prove the statement, “For all sets \(A\) of single-digit numbers, if \(|A| = 6\text{,}\) then \(A\) contains an even number.”[🔗](#rq-logic-proofs-direct-1-1)
+أيٌّ ممّا يلي يكون أفضل سطرٍ أوّل في *برهانٍ مباشر* إذا أردت إثبات العبارة: «لكل مجموعة \(A\) من الأعداد ذات الخانة الواحدة، إذا كان \(|A| = 6\text{,}\) فإنّ \(A\) تحتوي على عددٍ زوجي».[🔗](#rq-logic-proofs-direct-1-1)
 
-- Suppose there exists a set \(A\) of single-digit numbers with \(|A| = 6\) but that contains only odd numbers.
-- Incorrect. A direct proof starts by assuming the hypothesis of the implication you wish to prove. Try again.
-- Fix an arbitrary set \(A\) of single-digit numbers, and assume \(|A| = 6\text{.}\)
-- Correct! A direct proof starts by assuming the hypothesis of the implication you wish to prove.
-- Suppose \(A\) is a set of single-digit numbers with \(|A| \ne 6\text{.}\)
-- Incorrect. What is the “if” part of the statement you are trying to prove? Try again.
-- Let \(A\) be a set of single-digit numbers that contains an even number.
-- Incorrect. Try again.
-- Let \(A\) be a set of single-digit numbers, and assume that \(A\) does not contain any even numbers.
-- Incorrect. Try again.
+- افترض أنّ هناك مجموعة \(A\) من الأعداد ذات الخانة الواحدة بحيث \(|A| = 6\) لكنّها تحتوي على أرقام فردية فقط.
+- غير صحيح. البرهان المباشر يبدأ بافتراض فرضية التضمين الذي تريد إثباته. حاول مجدّدًا.
+- ثبّت مجموعةً اعتباطية \(A\) من الأعداد ذات الخانة الواحدة، وافترض أنّ \(|A| = 6\text{.}\)
+- صحيح! البرهان المباشر يبدأ بافتراض فرضية التضمين الذي تريد إثباته.
+- افترض أنّ \(A\) مجموعة من الأعداد ذات الخانة الواحدة بحيث \(|A| \ne 6\text{.}\)
+- غير صحيح. ما الجزء الخاص بـ«إذا» في العبارة التي تحاول إثباتها؟ حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة تحتوي على عددٍ زوجي.
+- غير صحيح. حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة، وافترض أنّ \(A\) لا تحتوي على أي أعداد زوجية.
+- غير صحيح. حاول مجدّدًا.
 
 [🔗](#rq-logic-proofs-direct)
 
 #### 2.
 
-Which of the following would be the best first line of a *proof by contrapositive* if you wanted to prove the statement, “For all sets \(A\) of single-digit numbers, if \(|A| = 6\text{,}\) then \(A\) contains an even number.”[🔗](#rq-logic-proof-contrapositive-1-1)
+أيٌّ ممّا يلي يكون أفضل سطرٍ أوّل في *برهانٍ بنقيض المضمون* إذا أردت إثبات العبارة: «لكل مجموعة \(A\) من الأعداد ذات الخانة الواحدة، إذا كان \(|A| = 6\text{,}\) فإنّ \(A\) تحتوي على عددٍ زوجي».[🔗](#rq-logic-proof-contrapositive-1-1)
 
-- Suppose there exists a set \(A\) of single-digit numbers with \(|A| = 6\) but that contains only odd numbers.
-- Incorrect. What is the contrapositive of what we are trying to prove? Try again.
-- Fix an arbitrary set \(A\) of single-digit numbers, and assume \(|A| = 6\text{.}\)
-- Incorrect. We are trying to prove the contrapositive, so assume the if part of the contrapositive. Try again.
-- Suppose \(A\) is a set of single-digit numbers with \(|A| \ne 6\text{.}\)
-- Incorrect. The contrapositive of \(P \imp Q\) is \(\neg Q \imp \neg P\text{.}\) Proofs by contrapositive should start by assuming \(\neg Q\text{.}\) Try again.
-- Let \(A\) be a set of single-digit numbers that contains an even number.
-- Incorrect. The contrapositive of \(P \imp Q\) is \(\neg Q \imp \neg P\text{.}\) Proofs by contrapositive should start by assuming \(\neg Q\text{.}\) Try again.
-- Let \(A\) be a set of single-digit numbers, and assume that \(A\) does not contain any even numbers.
-- Correct!
+- افترض أنّ هناك مجموعة \(A\) من الأعداد ذات الخانة الواحدة بحيث \(|A| = 6\) لكنّها تحتوي على أرقام فردية فقط.
+- غير صحيح. ما نقيض المضمون للعبارة التي نحاول إثباتها؟ حاول مجدّدًا.
+- ثبّت مجموعةً اعتباطية \(A\) من الأعداد ذات الخانة الواحدة، وافترض أنّ \(|A| = 6\text{.}\)
+- غير صحيح. نحن نحاول إثبات نقيض المضمون، إذن افترض الجزء الخاص بـ«إذا» في نقيض المضمون. حاول مجدّدًا.
+- افترض أنّ \(A\) مجموعة من الأعداد ذات الخانة الواحدة بحيث \(|A| \ne 6\text{.}\)
+- غير صحيح. نقيض المضمون لـ \(P \imp Q\) هو \(\neg Q \imp \neg P\text{.}\) ويجب أن تبدأ البراهين بنقيض المضمون بافتراض \(\neg Q\text{.}\) حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة تحتوي على عددٍ زوجي.
+- غير صحيح. نقيض المضمون لـ \(P \imp Q\) هو \(\neg Q \imp \neg P\text{.}\) ويجب أن تبدأ البراهين بنقيض المضمون بافتراض \(\neg Q\text{.}\) حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة، وافترض أنّ \(A\) لا تحتوي على أي أعداد زوجية.
+- صحيح!
 
 [🔗](#rq-logic-proof-contrapositive)
 
 #### 3.
 
-Which of the following would be the best first line of a *proof by contradiction* if you wanted to prove the statement, “For all sets \(A\) of single-digit numbers, if \(|A| = 6\text{,}\) then \(A\) contains an even number.”[🔗](#rq-logic-proof-contradiction-1-1)
+أيٌّ ممّا يلي يكون أفضل سطرٍ أوّل في *برهانٍ بالتناقض* إذا أردت إثبات العبارة: «لكل مجموعة \(A\) من الأعداد ذات الخانة الواحدة، إذا كان \(|A| = 6\text{,}\) فإنّ \(A\) تحتوي على عددٍ زوجي».[🔗](#rq-logic-proof-contradiction-1-1)
 
-- Suppose there exists a set \(A\) of single-digit numbers with \(|A| = 6\) but that contains only odd numbers.
-- Correct! This is the negation of the statement we are trying to prove.
-- Fix an arbitrary set \(A\) of single-digit numbers, and assume \(|A| = 6\text{.}\)
-- Incorrect. A proof by contradiction should start by assuming the negation of what we are trying to prove. Try again.
-- Suppose \(A\) is a set of single-digit numbers with \(|A| \ne 6\text{.}\)
-- Incorrect. A proof by contradiction should start by assuming the negation of what we are trying to prove. Try again.
-- Let \(A\) be a set of single-digit numbers that contains an even number.
-- Incorrect. A proof by contradiction should start by assuming the negation of what we are trying to prove. Try again.
-- Let \(A\) be a set of single-digit numbers, and assume that \(A\) does not contain any even numbers.
-- Incorrect. A proof by contradiction should start by assuming the negation of what we are trying to prove. Try again.
+- افترض أنّ هناك مجموعة \(A\) من الأعداد ذات الخانة الواحدة بحيث \(|A| = 6\) لكنّها تحتوي على أرقام فردية فقط.
+- صحيح! هذا هو نفي العبارة التي نحاول إثباتها.
+- ثبّت مجموعةً اعتباطية \(A\) من الأعداد ذات الخانة الواحدة، وافترض أنّ \(|A| = 6\text{.}\)
+- غير صحيح. ينبغي أن يبدأ البرهان بالتناقض بافتراض نفي ما نحاول إثباته. حاول مجدّدًا.
+- افترض أنّ \(A\) مجموعة من الأعداد ذات الخانة الواحدة بحيث \(|A| \ne 6\text{.}\)
+- غير صحيح. ينبغي أن يبدأ البرهان بالتناقض بافتراض نفي ما نحاول إثباته. حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة تحتوي على عددٍ زوجي.
+- غير صحيح. ينبغي أن يبدأ البرهان بالتناقض بافتراض نفي ما نحاول إثباته. حاول مجدّدًا.
+- دع \(A\) تكون مجموعةً من الأعداد ذات الخانة الواحدة، وافترض أنّ \(A\) لا تحتوي على أي أعداد زوجية.
+- غير صحيح. ينبغي أن يبدأ البرهان بالتناقض بافتراض نفي ما نحاول إثباته. حاول مجدّدًا.
 
 [🔗](#rq-logic-proof-contradiction)
 
 #### 4.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-logic-proof-q-1-1) [🔗](#rq-logic-proof-q)[🔗](#rqs-logic-proof)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب سؤالًا واحدًا على الأقلّ عن محتوى هذا القسم يثير فضولك.[🔗](#rq-logic-proof-q-1-1) [🔗](#rq-logic-proof-q)[🔗](#rqs-logic-proof)
 
-### Exercises Practice Problems
+### التمارين مسائل تطبيقية
 
 #### 1.
 
-Arrange some of the statements below to form a correct proof of the following statement: “For any integer \(n\text{,}\) if \(n\) is even, then \(7n\) is even.”[🔗](#proofs-xe-7xe-1-1)
+رتّب بعض العبارات التالية لتشكيل برهانٍ صحيح للعبارة الآتية: «لكل عدد صحيح \(n\text{,}\) إذا كان \(n\) زوجيًا، فإنّ \(7n\) زوجي».[🔗](#proofs-xe-7xe-1-1)
 
 ```natural
 Let \(n\) be an arbitrary integer, and assume \(n\) is even.
@@ -322,7 +322,7 @@ Since an even number divided by \(7\) must be odd, #distractor
 
 #### 2.
 
-Arrange some of the statements below to form a correct proof of the following statement: “For any integer \(n\text{,}\) if \(7n\) is even, then \(n\) is even.”[🔗](#proofs-7xe-xe-1-1)
+رتّب بعض العبارات التالية لتشكيل برهانٍ صحيح للعبارة الآتية: «لكل عدد صحيح \(n\text{,}\) إذا كان \(7n\) زوجيًا، فإنّ \(n\) زوجي».[🔗](#proofs-7xe-xe-1-1)
 
 ```natural
 Let \(n\) be an arbitrary integer, and assume \(n\) is even. #distractor
@@ -351,7 +351,7 @@ Since an even number divided by \(7\) must be even, #distractor
 
 #### 3.
 
-Consider the statement, “For any numbers \(a\) and \(b\text{,}\) if \(a+b\) is odd, then either \(a\) or \(b\) is odd”.[🔗](#proofs-odd-contrapositive-1-1) Give a valid proof of the statement using a *proof by contrapositive*. Arrange some statements below to complete the proof.[🔗](#proofs-odd-contrapositive-1-2)
+تأمّل العبارة: «لكل عددين \(a\) و\(b\text{,}\) إذا كان \(a+b\) فرديًا، فإنّ \(a\) أو \(b\) فردي».[🔗](#proofs-odd-contrapositive-1-1) قدّم برهانًا صحيحًا للعبارة باستخدام *البرهان بنقيض المضمون*. ورتّب بعض العبارات التالية لإكمال البرهان.[🔗](#proofs-odd-contrapositive-1-2)
 
 ```natural
 Let \(a\) and \(b\) be integers, and assume that \(a+b\) is odd. #distractor
@@ -375,7 +375,7 @@ But then \(a+b\) is both even and odd, a contradiction. #distractor
 
 #### 4.
 
-Consider the same statement, “For any numbers \(a\) and \(b\text{,}\) if \(a+b\) is odd, then either \(a\) or \(b\) is odd.”[🔗](#proofs-odd-contradiction-1-1) Give a valid proof of the statement, this time using a *proof by contradiction* using some of the statements below.[🔗](#proofs-odd-contradiction-1-2)
+تأمّل العبارة نفسها: «لكل عددين \(a\) و\(b\text{,}\) إذا كان \(a+b\) فرديًا، فإنّ \(a\) أو \(b\) فردي».[🔗](#proofs-odd-contradiction-1-1) قدّم برهانًا صحيحًا للعبارة، هذه المرة باستخدام *البرهان بالتناقض*، باستعمال بعض العبارات التالية.[🔗](#proofs-odd-contradiction-1-2)
 
 ```natural
 Let \(a\) and \(b\) be integers, and assume that \(a+b\) is odd. #distractor
@@ -399,176 +399,176 @@ But then \(a+b\) is both even and odd, a contradiction.
 
 #### 5.
 
-Activate Below are three statements together with a possible first line of a proof of that statement. In each case, say whether the first line is the start of a direct proof, a proof by contrapositive, or a proof by contradiction.[🔗](#extracted-webwork-20-1-1-1)
+فعِّل فيما يلي ثلاث عبارات مع سطرٍ أوّلٍ محتمل لبرهانٍ على تلك العبارة. وفي كل حالة، فُل إن كان هذا السطر هو بداية برهانٍ مباشر، أم برهانٍ بنقيض المضمون، أم برهانٍ بالتناقض.[🔗](#extracted-webwork-20-1-1-1)
 
-1. *Statement:* For any triangle, the sum of the interior angles is 180 degrees.[🔗](#extracted-webwork-20-1-1-2-1-1-1) *First line:* Consider a plane figure and assume that the sum of the interior angles is not 180 degrees.[🔗](#extracted-webwork-20-1-1-2-1-1-2) [🔗](#extracted-webwork-20-1-1-2-1-1)
-2. *Statement:* If a shape is a pentagon, then its interior angles add up to 480 degrees.[🔗](#extracted-webwork-20-1-1-2-1-2-1) *First line:* Consider an arbitrary shape, and assume it is a pentagon.[🔗](#extracted-webwork-20-1-1-2-1-2-2) [🔗](#extracted-webwork-20-1-1-2-1-2)
-3. *Statement:* For any triangle, the sum of the interior angles is 180 degrees.[🔗](#extracted-webwork-20-1-1-2-1-3-1) *First line:* Suppose there is a triangle with a sum of interior angles not equal to 180 degrees[🔗](#extracted-webwork-20-1-1-2-1-3-2) [🔗](#extracted-webwork-20-1-1-2-1-3)
+1. *العبارة:* لكل مثلّث، مجموع الزوايا الداخلية يساوي 180 درجة.[🔗](#extracted-webwork-20-1-1-2-1-1-1) *السطر الأوّل:* تأمّل شكلًا مستويًا وافترض أنّ مجموع الزوايا الداخلية لا يساوي 180 درجة.[🔗](#extracted-webwork-20-1-1-2-1-1-2) [🔗](#extracted-webwork-20-1-1-2-1-1)
+2. *العبارة:* إذا كان الشكل خماسيًا، فإنّ زواياه الداخلية مجموعها 480 درجة.[🔗](#extracted-webwork-20-1-1-2-1-2-1) *السطر الأوّل:* تأمّل شكلًا اعتباطيًا، وافترض أنّه خماسي.[🔗](#extracted-webwork-20-1-1-2-1-2-2) [🔗](#extracted-webwork-20-1-1-2-1-2)
+3. *العبارة:* لكل مثلّث، مجموع الزوايا الداخلية يساوي 180 درجة.[🔗](#extracted-webwork-20-1-1-2-1-3-1) *السطر الأوّل:* افترض أنّ هناك مثلّثًا مجموع زواياه الداخلية لا يساوي 180 درجة[🔗](#extracted-webwork-20-1-1-2-1-3-2) [🔗](#extracted-webwork-20-1-1-2-1-3)
 
 [🔗](#extracted-webwork-20-1-1-2) [🔗](#ww-proofs-firstline)
 
 #### 6.
 
-- Assume \(f: A \to B\) is a bijection
-- Direct proof
-- Assume \(|A| \ne |B|\)
-- Proof by contrapositive
-- Assume \(f: A \to B\) is a bijection and \(|A|\ne|B|\)
-- Proof by contradiction
+- افترض أنّ \(f: A \to B\) دالةٌ تقابلية (bijection)
+- برهان مباشر
+- افترض أنّ \(|A| \ne |B|\)
+- برهان بنقيض المضمون
+- افترض أنّ \(f: A \to B\) دالةٌ تقابلية (bijection) و\(|A|\ne|B|\)
+- برهان بالتناقض
 
 [🔗](#matching-proof-firstline)[🔗](#practice_logic-proofs)
 
-### Exercises Additional Exercises
+### التمارين تمارين إضافية
 
 #### 1.
 
-For a given predicate \(P(x)\text{,}\) you might believe that the statements \(\forall x P(x)\) or \(\exists x P(x)\) are either true or false. How would you decide if you were correct in each case? You have four choices: You could give an example of an element \(n\) in the domain for which \(P(n)\) is true or for which \(P(n)\) is false, or you could argue that no matter what \(n\) is, \(P(n)\) is true or is false.
+بالنسبة لمُسندٍ (predicate) معطى \(P(x)\text{,}\) قد تعتقد أنّ العبارتين \(\forall x P(x)\) أو \(\exists x P(x)\) إمّا صادقتان أو خاطئتان. فكيف ستقرّر إن كنت مصيبًا في كل حالة؟ لديك أربعة خيارات: يمكنك أن تعطي مثالًا بعنصر \(n\) في المجال بحيث \(P(n)\) صادقة، أو بحيث \(P(n)\) خاطئة، أو يمكنك أن تُعِدّ أنّ \(n\) مهما كان، فإنّ \(P(n)\) صادقة أو خاطئة.
 
-1. What would you need to do to prove \(\forall x P(x)\) is true?[🔗](#exercises_logic-proofs-2-1-1-9-1-1) [🔗](#exercises_logic-proofs-2-1-1-9-1)
-2. What would you need to do to prove \(\forall x P(x)\) is false?[🔗](#exercises_logic-proofs-2-1-1-9-2-1) [🔗](#exercises_logic-proofs-2-1-1-9-2)
-3. What would you need to do to prove \(\exists x P(x)\) is true?[🔗](#exercises_logic-proofs-2-1-1-9-3-1) [🔗](#exercises_logic-proofs-2-1-1-9-3)
-4. What would you need to do to prove \(\exists x P(x)\) is false?[🔗](#exercises_logic-proofs-2-1-1-9-4-1) [🔗](#exercises_logic-proofs-2-1-1-9-4)
+1. ما الذي ستحتاج إلى فعله لإثبات أنّ \(\forall x P(x)\) صادقة؟[🔗](#exercises_logic-proofs-2-1-1-9-1-1) [🔗](#exercises_logic-proofs-2-1-1-9-1)
+2. ما الذي ستحتاج إلى فعله لإثبات أنّ \(\forall x P(x)\) خاطئة؟[🔗](#exercises_logic-proofs-2-1-1-9-2-1) [🔗](#exercises_logic-proofs-2-1-1-9-2)
+3. ما الذي ستحتاج إلى فعله لإثبات أنّ \(\exists x P(x)\) صادقة؟[🔗](#exercises_logic-proofs-2-1-1-9-3-1) [🔗](#exercises_logic-proofs-2-1-1-9-3)
+4. ما الذي ستحتاج إلى فعله لإثبات أنّ \(\exists x P(x)\) خاطئة؟[🔗](#exercises_logic-proofs-2-1-1-9-4-1) [🔗](#exercises_logic-proofs-2-1-1-9-4)
 
 [🔗](#exercises_logic-proofs-2-1-1) [🔗](#exercises_logic-proofs-2)
 
 #### 2.
 
-Consider the statement, “For all integers \(a\) and \(b\text{,}\) if \(a + b\) is even, then \(a\) and \(b\) are even.”
+تأمّل العبارة: «لكل الأعداد الصحيحة \(a\) و\(b\text{,}\) إذا كان \(a + b\) زوجيًا، فإنّ \(a\) و\(b\) زوجيّان».
 
-1. Write the contrapositive of the statement.[🔗](#exercises_logic-proofs-3-1-1-2-1-1) [🔗](#exercises_logic-proofs-3-1-1-2-1)
-2. Write the converse of the statement.[🔗](#exercises_logic-proofs-3-1-1-2-2-1) [🔗](#exercises_logic-proofs-3-1-1-2-2)
-3. Write the negation of the statement.[🔗](#exercises_logic-proofs-3-1-1-2-3-1) [🔗](#exercises_logic-proofs-3-1-1-2-3)
-4. Is the original statement true or false? Prove your answer.[🔗](#exercises_logic-proofs-3-1-1-2-4-1) [🔗](#exercises_logic-proofs-3-1-1-2-4)
-5. Is the contrapositive of the original statement true or false? Prove your answer.[🔗](#exercises_logic-proofs-3-1-1-2-5-1) [🔗](#exercises_logic-proofs-3-1-1-2-5)
-6. Is the converse of the original statement true or false? Prove your answer.[🔗](#exercises_logic-proofs-3-1-1-2-6-1) [🔗](#exercises_logic-proofs-3-1-1-2-6)
-7. Is the negation of the original statement true or false? Prove your answer.[🔗](#exercises_logic-proofs-3-1-1-2-7-1) [🔗](#exercises_logic-proofs-3-1-1-2-7)
+1. اكتب نقيض مضمون العبارة.[🔗](#exercises_logic-proofs-3-1-1-2-1-1) [🔗](#exercises_logic-proofs-3-1-1-2-1)
+2. اكتب عكس العبارة.[🔗](#exercises_logic-proofs-3-1-1-2-2-1) [🔗](#exercises_logic-proofs-3-1-1-2-2)
+3. اكتب نفي العبارة.[🔗](#exercises_logic-proofs-3-1-1-2-3-1) [🔗](#exercises_logic-proofs-3-1-1-2-3)
+4. هل العبارة الأصلية صادقة أم خاطئة؟ برهن لإجابتك.[🔗](#exercises_logic-proofs-3-1-1-2-4-1) [🔗](#exercises_logic-proofs-3-1-1-2-4)
+5. هل نقيض مضمون العبارة الأصلية صادق أم خاطئ؟ برهن لإجابتك.[🔗](#exercises_logic-proofs-3-1-1-2-5-1) [🔗](#exercises_logic-proofs-3-1-1-2-5)
+6. هل عكس العبارة الأصلية صادق أم خاطئ؟ برهن لإجابتك.[🔗](#exercises_logic-proofs-3-1-1-2-6-1) [🔗](#exercises_logic-proofs-3-1-1-2-6)
+7. هل نفي العبارة الأصلية صادق أم خاطئ؟ برهن لإجابتك.[🔗](#exercises_logic-proofs-3-1-1-2-7-1) [🔗](#exercises_logic-proofs-3-1-1-2-7)
 
 [🔗](#exercises_logic-proofs-3-1-1) [🔗](#exercises_logic-proofs-3)
 
 #### 3.
 
-For each of the statements below, say what method of proof you should use to prove them. Then say how the proof starts and how it ends. Bonus points for filling in the middle.
+بالنسبة لكلٍّ من العبارات التالية، فُل ما طريقة البرهان التي ينبغي أن تستعملها لإثباتها. ثمّ فُل كيف يبدأ البرهان وكيف ينتهي. ولك نقاط إضافية إن ملأت ما بينهما.
 
-1. There are no integers \(x\) and \(y\) such that \(x\) is a prime greater than 5 and \(x = 6y + 3\text{.}\)[🔗](#exercises_logic-proofs-4-1-1-1-1-1) [🔗](#exercises_logic-proofs-4-1-1-1-1)
-2. For all integers \(n\text{,}\) if \(n\) is a multiple of 3, then \(n\) can be written as the sum of consecutive integers.[🔗](#exercises_logic-proofs-4-1-1-1-2-1) [🔗](#exercises_logic-proofs-4-1-1-1-2)
-3. For all integers \(a\) and \(b\text{,}\) if \(a^2 + b^2\) is odd, then \(a\) or \(b\) is odd.[🔗](#exercises_logic-proofs-4-1-1-1-3-1) [🔗](#exercises_logic-proofs-4-1-1-1-3)
+1. لا توجد أعداد صحيحة \(x\) و\(y\) بحيث يكون \(x\) عددًا أوليًا أكبر من 5 و \(x = 6y + 3\text{.}\)[🔗](#exercises_logic-proofs-4-1-1-1-1-1) [🔗](#exercises_logic-proofs-4-1-1-1-1)
+2. لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(n\) مضاعفًا لـ 3، فإنّ \(n\) يمكن كتابته على صورة مجموع أعداد صحيحة متتالية.[🔗](#exercises_logic-proofs-4-1-1-1-2-1) [🔗](#exercises_logic-proofs-4-1-1-1-2)
+3. لكل الأعداد الصحيحة \(a\) و\(b\text{,}\) إذا كان \(a^2 + b^2\) فرديًا، فإنّ \(a\) أو \(b\) فردي.[🔗](#exercises_logic-proofs-4-1-1-1-3-1) [🔗](#exercises_logic-proofs-4-1-1-1-3)
 
 [🔗](#exercises_logic-proofs-4-1-1) [🔗](#exercises_logic-proofs-4)
 
 #### 4.
 
-Consider the statement, “For all integers \(n\text{,}\) if \(n\) is even then \(8n\) is even.”
+تأمّل العبارة: «لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(n\) زوجيًا فإنّ \(8n\) زوجي».
 
-1. Prove the statement. What sort of proof are you using?[🔗](#exercises_logic-proofs-5-1-1-2-1-1) [🔗](#exercises_logic-proofs-5-1-1-2-1)
-2. Is the converse true? Prove or disprove.[🔗](#exercises_logic-proofs-5-1-1-2-2-1) [🔗](#exercises_logic-proofs-5-1-1-2-2)
+1. برهن العبارة. ما نوع البرهان الذي تستعمله؟[🔗](#exercises_logic-proofs-5-1-1-2-1-1) [🔗](#exercises_logic-proofs-5-1-1-2-1)
+2. هل العكس صادق؟ برهن أو أُبطل.[🔗](#exercises_logic-proofs-5-1-1-2-2-1) [🔗](#exercises_logic-proofs-5-1-1-2-2)
 
 [🔗](#exercises_logic-proofs-5-1-1) [🔗](#exercises_logic-proofs-5)
 
 #### 5.
 
-The game TENZI comes with 40 six-sided dice (each numbered 1 to 6). Suppose you roll all 40 dice.
+تأتي لعبة TENZI مع 40 حجر نردٍ من ستة أوجه (كلٍّ منها مرقّم من 1 إلى 6). افترض أنّك رميت حجرك الأربعين جميعها.
 
-1. Prove that there will be at least seven dice that land on the same number. [🔗](#exercises_logic-proofs-6-1-1-1-1)
-2. How many dice would you have to roll before you were guaranteed that some four of them would all match or all be different? Prove your answer.[🔗](#exercises_logic-proofs-6-1-1-1-2-1) [🔗](#exercises_logic-proofs-6-1-1-1-2)
+1. برهن أنّه سيكون هناك سبعة أحجار نرد على الأقلّ ستعطي الرقم نفسه. [🔗](#exercises_logic-proofs-6-1-1-1-1)
+2. كم حجر نردٍ ستحتاج إلى رميه قبل أن تضمن أنّ أربعة منها إما متطابقة جميعها أو مختلفة جميعها؟ برهن لإجابتك.[🔗](#exercises_logic-proofs-6-1-1-1-2-1) [🔗](#exercises_logic-proofs-6-1-1-1-2)
 
 [🔗](#exercises_logic-proofs-6-1-1) [🔗](#exercises_logic-proofs-6)
 
 #### 6.
 
-Prove that for all integers \(n\text{,}\) it is the case that \(n\) is even if and only if \(3n\) is even. That is, prove both implications: If \(n\) is even, then \(3n\) is even, and if \(3n\) is even, then \(n\) is even.[🔗](#exercises_logic-proofs-7-1-1) Hint. One of the implications will be a direct proof; the other will be a proof by contrapositive.[🔗](#exercises_logic-proofs-7-2-1) [🔗](#exercises_logic-proofs-7-2) [🔗](#exercises_logic-proofs-7)
+برهن أنّه لكل الأعداد الصحيحة \(n\text{,}\) يكون \(n\) زوجيًا إذا وفقط إذا كان \(3n\) زوجيًا. أي برهن كلا التضمينين: إذا كان \(n\) زوجيًا، فإنّ \(3n\) زوجي، وإذا كان \(3n\) زوجيًا، فإنّ \(n\) زوجي.[🔗](#exercises_logic-proofs-7-1-1) تلميح. سيكون أحد التضمينين برهانًا مباشرًا، والآخر برهانًا بنقيض المضمون.[🔗](#exercises_logic-proofs-7-2-1) [🔗](#exercises_logic-proofs-7-2) [🔗](#exercises_logic-proofs-7)
 
 #### 7.
 
-Prove that \(\sqrt 3\) is irrational.[🔗](#exercises_logic-proofs-8-1-1) Hint. This is really an exercise in modifying the proof that \(\sqrt{2}\) is irrational. There you proved things were even; here they will be multiples of 3.[🔗](#exercises_logic-proofs-8-2-1) [🔗](#exercises_logic-proofs-8-2) [🔗](#exercises_logic-proofs-8)
+برهن أنّ \(\sqrt 3\) غير ناطق.[🔗](#exercises_logic-proofs-8-1-1) تلميح. هذا في الواقع تمرينٌ على تعديل البرهان الذي يثبت أنّ \(\sqrt{2}\) غير ناطق. هناك برهنت أنّ الأشياء زوجية؛ أمّا هنا فستكون مضاعفات لـ 3.[🔗](#exercises_logic-proofs-8-2-1) [🔗](#exercises_logic-proofs-8-2) [🔗](#exercises_logic-proofs-8)
 
 #### 8.
 
-Consider the statement, “For all integers \(a\) and \(b\text{,}\) if \(a\) is even and \(b\) is a multiple of 3, then \(ab\) is a multiple of 6.”
+تأمّل العبارة: «لكل الأعداد الصحيحة \(a\) و\(b\text{,}\) إذا كان \(a\) زوجيًا وكان \(b\) مضاعفًا لـ 3، فإنّ \(ab\) مضاعف لـ 6».
 
-1. Prove the statement. What sort of proof are you using?[🔗](#exercises_logic-proofs-9-1-1-2-1-1) [🔗](#exercises_logic-proofs-9-1-1-2-1)
-2. State the converse. Is it true? Prove or disprove.[🔗](#exercises_logic-proofs-9-1-1-2-2-1) [🔗](#exercises_logic-proofs-9-1-1-2-2)
+1. برهن العبارة. ما نوع البرهان الذي تستعمله؟[🔗](#exercises_logic-proofs-9-1-1-2-1-1) [🔗](#exercises_logic-proofs-9-1-1-2-1)
+2. صِغ العكس. هل هو صادق؟ برهن أو أُبطل.[🔗](#exercises_logic-proofs-9-1-1-2-2-1) [🔗](#exercises_logic-proofs-9-1-1-2-2)
 
-[🔗](#exercises_logic-proofs-9-1-1) Hint. Part (a) should be a relatively easy direct proof. Look for a counterexample for part (b).[🔗](#exercises_logic-proofs-9-2-1) [🔗](#exercises_logic-proofs-9-2) [🔗](#exercises_logic-proofs-9)
+[🔗](#exercises_logic-proofs-9-1-1) تلميح. ينبغي أن يكون الجزء (أ) برهانًا مباشرًا سهلًا نسبيًا. فابحث عن مثالٍ مضادّ للجزء (ب).[🔗](#exercises_logic-proofs-9-2-1) [🔗](#exercises_logic-proofs-9-2) [🔗](#exercises_logic-proofs-9)
 
 #### 9.
 
-Prove the statement, “For all integers \(n\text{,}\) if \(5n\) is odd, then \(n\) is odd.” Clearly state the style of proof you are using.[🔗](#exercises_logic-proofs-10-1-1) [🔗](#exercises_logic-proofs-10)
+برهن العبارة: «لكل الأعداد الصحيحة \(n\text{,}\) إذا كان \(5n\) فرديًا، فإنّ \(n\) فردي». وبيّن بوضوح أسلوب البرهان الذي تستعمله.[🔗](#exercises_logic-proofs-10-1-1) [🔗](#exercises_logic-proofs-10)
 
 #### 10.
 
-Prove the statement, “For all integers \(a\text{,}\) \(b\text{,}\) and \(c\text{,}\) if \(a^2 + b^2 = c^2\text{,}\) then \(a\) or \(b\) is even.”[🔗](#exercises_logic-proofs-11-1-1) Hint. A proof by contradiction would be reasonable here, because then you get to assume that both \(a\) *and* \(b\) are odd. Deduce that \(c^2\) is even, and therefore a multiple of 4 (why? and why is that a contradiction?).[🔗](#exercises_logic-proofs-11-2-1) [🔗](#exercises_logic-proofs-11-2) [🔗](#exercises_logic-proofs-11)
+برهن العبارة: «لكل الأعداد الصحيحة \(a\text{,}\) و\(b\text{,}\) و\(c\text{,}\) إذا كان \(a^2 + b^2 = c^2\text{,}\) فإنّ \(a\) أو \(b\) زوجي».[🔗](#exercises_logic-proofs-11-1-1) تلميح. البرهان بالتناقض سيكون ملائمًا هنا، لأنّك ستفترض عندئذٍ أنّ \(a\) *و* \(b\) كلاهما فردي. استنتج أنّ \(c^2\) زوجي، وبالتالي فإنّه مضاعف لـ 4 (لماذا؟ ولماذا يكون ذلك تناقضًا؟).[🔗](#exercises_logic-proofs-11-2-1) [🔗](#exercises_logic-proofs-11-2) [🔗](#exercises_logic-proofs-11)
 
 #### 11.
 
-Suppose that you would like to prove the following implication:[🔗](#exercises_logic-proofs-12-2-1)
+افترض أنّك تودّ إثبات التضمين الآتي:[🔗](#exercises_logic-proofs-12-2-1)
 
-> For all numbers \(n\text{,}\) if \(n\) is prime then \(n\) is solitary.[🔗](#exercises_logic-proofs-12-2-2-1)
+> لكل الأعداد \(n\text{,}\) إذا كان \(n\) عددًا أوليًا، فإنّ \(n\) منفرد (solitary).[🔗](#exercises_logic-proofs-12-2-2-1)
 > > [🔗](#exercises_logic-proofs-12-2-2)
 
-Write out the beginning and end of the argument if you were to prove the statement,
+اكتب بداية الحجة ونهايتها إذا كنت ستبرهن على العبارة،
 
-1. Directly[🔗](#exercises_logic-proofs-12-2-3-1-1-1) [🔗](#exercises_logic-proofs-12-2-3-1-1)
-2. By contrapositive[🔗](#exercises_logic-proofs-12-2-3-1-2-1) [🔗](#exercises_logic-proofs-12-2-3-1-2)
-3. By contradiction[🔗](#exercises_logic-proofs-12-2-3-1-3-1) [🔗](#exercises_logic-proofs-12-2-3-1-3)
+1. مباشرةً[🔗](#exercises_logic-proofs-12-2-3-1-1-1) [🔗](#exercises_logic-proofs-12-2-3-1-1)
+2. بنقيض المضمون[🔗](#exercises_logic-proofs-12-2-3-1-2-1) [🔗](#exercises_logic-proofs-12-2-3-1-2)
+3. بالتناقض[🔗](#exercises_logic-proofs-12-2-3-1-3-1) [🔗](#exercises_logic-proofs-12-2-3-1-3)
 
-[🔗](#exercises_logic-proofs-12-2-3) You do not need to provide the middle parts of the proofs (since you do not know what solitary means). However, make sure that you give the first few and last few lines of the proofs so that we can see the logical structure you would follow.[🔗](#exercises_logic-proofs-12-2-4) [🔗](#exercises_logic-proofs-12)
+[🔗](#exercises_logic-proofs-12-2-3) ولا تحتاج إلى تقديم الأجزاء الوسطى من البراهين (لأنّك لا تعرف معنى solitary). لكن احرص على أن تعطي الأسطر الأولى والأخيرة القليلة من البراهين بحيث نرى البنية المنطقية التي ستبعها.[🔗](#exercises_logic-proofs-12-2-4) [🔗](#exercises_logic-proofs-12)
 
 #### 12.
 
-Suppose you have a collection of rare 5-cent stamps and 8-cent stamps. You desperately need to mail a letter and, having no other stamps available, decide to dip into your collection. The question is, what amounts of postage can you make?
+افترض أنّ لديك مجموعةً من طوابع الـ5 سنت النادرة وطوابع الـ8 سنت. أنت بحاجةٍ ماسّة إلى إرسال رسالة، ولعدم توفّر أي طوابع أخرى، قرّرت أن تمدّ يدك إلى مجموعتك. والسؤال هو: ما قيم البريد التي تستطيع تكوينها؟
 
-1. Prove that if you only use an even number of both types of stamps, the amount of postage you make must be even.[🔗](#exercises_logic-proofs-13-1-1-1-1-1) [🔗](#exercises_logic-proofs-13-1-1-1-1)
-2. Suppose you made an even amount of postage. Prove that you used an even number of at least one of the types of stamps.[🔗](#exercises_logic-proofs-13-1-1-1-2-1) [🔗](#exercises_logic-proofs-13-1-1-1-2)
-3. Suppose you made exactly 72 cents of postage. Prove that you used at least 6 of at least one type of stamp.[🔗](#exercises_logic-proofs-13-1-1-1-3-1) [🔗](#exercises_logic-proofs-13-1-1-1-3)
+1. برهن أنّه إذا استخدمت عددًا زوجيًا من كلا النوعين من الطوابع، فإنّ قيمة البريد التي تكونها لا بدّ أن تكون زوجية.[🔗](#exercises_logic-proofs-13-1-1-1-1-1) [🔗](#exercises_logic-proofs-13-1-1-1-1)
+2. افترض أنّك كوّنت قيمة بريدٍ زوجية. برهن أنّك استخدمت عددًا زوجيًا من نوعٍ واحد على الأقلّ من الطوابع.[🔗](#exercises_logic-proofs-13-1-1-1-2-1) [🔗](#exercises_logic-proofs-13-1-1-1-2)
+3. افترض أنّك كوّنت قيمة بريدٍ مقدارها 72 سنتًا بالضبط. برهن أنّك استخدمت 6 طوابع على الأقلّ من نوعٍ واحد على الأقلّ.[🔗](#exercises_logic-proofs-13-1-1-1-3-1) [🔗](#exercises_logic-proofs-13-1-1-1-3)
 
-[🔗](#exercises_logic-proofs-13-1-1) Hint. Use a different style of proof for each part.[🔗](#exercises_logic-proofs-13-2-1) [🔗](#exercises_logic-proofs-13-2) [🔗](#exercises_logic-proofs-13)
+[🔗](#exercises_logic-proofs-13-1-1) تلميح. استعمل أسلوب برهانٍ مختلف لكل جزء.[🔗](#exercises_logic-proofs-13-2-1) [🔗](#exercises_logic-proofs-13-2) [🔗](#exercises_logic-proofs-13)
 
 #### 13.
 
-Prove: \(x=y\) if and only if \(xy=\dfrac{(x+y)^2}{4}\text{.}\) Note, you will need to prove two “directions” here, the “if” and the “only if” part.[🔗](#exercises_logic-proofs-14-1-1) [🔗](#exercises_logic-proofs-14)
+برهن: \(x=y\) إذا وفقط إذا كان \(xy=\dfrac{(x+y)^2}{4}\text{.}\) لاحظ أنّك ستحتاج هنا إلى إثبات اتجاهين، وهما اتجاه «إذا» واتجاه «فقط إذا».[🔗](#exercises_logic-proofs-14-1-1) [🔗](#exercises_logic-proofs-14)
 
 #### 14.
 
-Prove that \(\log(7)\) is irrational.[🔗](#exercises_logic-proofs-15-1-1) Hint. Note that if \(\log(7) = \frac{a}{b}\text{,}\) then \(7 = 10^\frac{a}{b}\text{.}\) Can any power of 7 be the same as a power of 10?[🔗](#exercises_logic-proofs-15-2-1) [🔗](#exercises_logic-proofs-15-2) [🔗](#exercises_logic-proofs-15)
+برهن أنّ \(\log(7)\) غير ناطق.[🔗](#exercises_logic-proofs-15-1-1) تلميح. لاحظ أنّه إذا كان \(\log(7) = \frac{a}{b}\text{,}\) فإنّ \(7 = 10^\frac{a}{b}\text{.}\) هل يمكن لأيّ قوةٍ من 7 أن تساوي قوةً من 10؟[🔗](#exercises_logic-proofs-15-2-1) [🔗](#exercises_logic-proofs-15-2) [🔗](#exercises_logic-proofs-15)
 
 #### 15.
 
-Prove that there are no integer solutions to the equation \(x^2 = 4y + 3\text{.}\)[🔗](#exercises_logic-proofs-16-1-1) Hint. What if there were? Deduce that \(x\) must be odd, and continue towards a contradiction.[🔗](#exercises_logic-proofs-16-2-1) [🔗](#exercises_logic-proofs-16-2) [🔗](#exercises_logic-proofs-16)
+برهن أنّه لا توجد حلول صحيحة للمعادلة \(x^2 = 4y + 3\text{.}\)[🔗](#exercises_logic-proofs-16-1-1) تلميح. ماذا لو كانت موجودة؟ استنتج أنّ \(x\) لا بدّ أن يكون فرديًا، وواصل المضيّ نحو التناقض.[🔗](#exercises_logic-proofs-16-2-1) [🔗](#exercises_logic-proofs-16-2) [🔗](#exercises_logic-proofs-16)
 
 #### 16.
 
-Prove that every prime number greater than 3 is either one more or one less than a multiple of 6.[🔗](#exercises_logic-proofs-17-2-1) Hint. Prove the contrapositive by cases. There will be 4 cases to consider.[🔗](#exercises_logic-proofs-17-3-1) [🔗](#exercises_logic-proofs-17-3) [🔗](#exercises_logic-proofs-17)
+برهن أنّ كل عدد أولي أكبر من 3 هو إما يزيد عن مضاعفٍ من 6 بواحد أو ينقص عنه بواحد.[🔗](#exercises_logic-proofs-17-2-1) تلميح. برهن نقيض المضمون بحسب الحالات. وستكون هناك 4 حالات للنظر فيها.[🔗](#exercises_logic-proofs-17-3-1) [🔗](#exercises_logic-proofs-17-3) [🔗](#exercises_logic-proofs-17)
 
 #### 17.
 
-Your “friend” has shown you a “proof” he wrote to show that \(1 = 3\text{.}\) Here is the proof:[🔗](#exercises_logic-proofs-18-1-1)
+«صديقك» قدّم لك «برهانًا» كتبه ليبين أنّ \(1 = 3\text{.}\) وهذا هو البرهان:[🔗](#exercises_logic-proofs-18-1-1)
 
-#### Proof.
+#### برهان.
 
-I claim that \(1 = 3\text{.}\) Of course we can do anything to one side of an equation as long as we also do it to the other side. So subtract 2 from both sides. This gives \(-1 = 1\text{.}\) Now square both sides, to get \(1 = 1\text{.}\) And we all agree this is true.[🔗](#exercises_logic-proofs-18-1-2-1) [🔗](#exercises_logic-proofs-18-1-2) What is going on here? Is your friend’s argument valid? Is the argument a proof of the claim \(1=3\text{?}\) Carefully explain using what we know about logic.[🔗](#exercises_logic-proofs-18-1-3) Hint. Your friend’s proof is a proof, but of what? What implication follows from the given proof? Is that helpful?[🔗](#exercises_logic-proofs-18-2-1) [🔗](#exercises_logic-proofs-18-2) [🔗](#exercises_logic-proofs-18)
+أدّعي أنّ \(1 = 3\text{.}\) وبالطبع يمكننا أن نفعل أيّ شيءٍ في أحد طرفي المعادلة ما دمنا نفعله أيضًا في الطرف الآخر. فاطرح 2 من الطرفين. هذا يعطينا \(-1 = 1\text{.}\) الآن ربّع الطرفين، فتحصل على \(1 = 1\text{.}\) ونحن جميعًا نتفق على أنّ هذا صحيح.[🔗](#exercises_logic-proofs-18-1-2-1) [🔗](#exercises_logic-proofs-18-1-2) فما الذي يجري هنا؟ هل حجّة صديقك صحيحة؟ هل الحجة برهانٌ للدعوى \(1=3\text{?}\) اشرح بعناية مستعملًا ما نعرفه عن المنطق.[🔗](#exercises_logic-proofs-18-1-3) تلميح. برهان صديقك برهان، لكن لِمَ؟ وأيّ تضمينٍ يتبع من البرهان المعطى؟ أهذا مفيد؟[🔗](#exercises_logic-proofs-18-2-1) [🔗](#exercises_logic-proofs-18-2) [🔗](#exercises_logic-proofs-18)
 
 #### 18.
 
-A standard deck of 52 cards consists of 4 suits (hearts, diamonds, spades, and clubs) each containing 13 different values (Ace, 2, 3, …, 10, J, Q, K). If you draw some number of cards at random, you might or might not have a pair (two cards with the same value) or three cards all of the same suit. However, if you draw enough cards, you will be guaranteed to have these. For each of the following, find the smallest number of cards you would need to draw to be guaranteed having the specified cards. Prove your answers.
+تتكوّن مجموعةٌ قياسية من 52 بطاقةً من 4 بدلات (القلوب والمعيّنات والبستاقات) ولكل بدلة 13 قيمة مختلفة (Ace، 2، 3، …، 10، J، Q، K). فإذا سحبت عددًا من البطاقات عشوائيًا، فقد يكون لديك زوجٌ (بطاقتان لهما القيمة نفسها) أو ثلاث بطاقات جميعها من البدلة نفسها، وقد لا يكون كذلك. لكن إذا سحبت عددًا كافيًا من البطاقات، فستضمن الحصول على ذلك. بالنسبة لكل ممّا يلي، أوجد أصغر عدد من البطاقات ستحتاج إلى سحبه لضمان الحصول على البطاقات المحدَّدة. برهن لإجاباتك.
 
-1. Three of a kind (for example, three 7’s).[🔗](#exercises_logic-proofs-19-2-1-2-1-1) [🔗](#exercises_logic-proofs-19-2-1-2-1)
-2. A flush of five cards (for example, five hearts).[🔗](#exercises_logic-proofs-19-2-1-2-2-1) [🔗](#exercises_logic-proofs-19-2-1-2-2)
-3. Three cards that are either all the same suit or all different suits.[🔗](#exercises_logic-proofs-19-2-1-2-3-1) [🔗](#exercises_logic-proofs-19-2-1-2-3)
+1. ثلاثية متجانسة (مثل ثلاث بطاقات 7).[🔗](#exercises_logic-proofs-19-2-1-2-1-1) [🔗](#exercises_logic-proofs-19-2-1-2-1)
+2. دفعةٌ من خمس بطاقات من البدلة نفسها (مثل خمس قلوب).[🔗](#exercises_logic-proofs-19-2-1-2-2-1) [🔗](#exercises_logic-proofs-19-2-1-2-2)
+3. ثلاث بطاقات إمّا جميعها من البدلة نفسها أو جميعها من بدلات مختلفة.[🔗](#exercises_logic-proofs-19-2-1-2-3-1) [🔗](#exercises_logic-proofs-19-2-1-2-3)
 
 [🔗](#exercises_logic-proofs-19-2-1) [🔗](#exercises_logic-proofs-19)
 
 #### 19.
 
-Suppose you are at a party with 19 of your closest friends (so including you, there are 20 people there). Explain why there must be at least two people at the party who are friends with the same number of people at the party. Assume friendship is always reciprocated.[🔗](#exercises_logic-proofs-20-1-1) Hint. Consider the set of *numbers* of friends that everyone has. If everyone had a different number of friends, this set must contain 20 elements. Is that possible? Why not?[🔗](#exercises_logic-proofs-20-2-1) [🔗](#exercises_logic-proofs-20-2) [🔗](#exercises_logic-proofs-20)
+افترض أنّك في حفلة مع 19 من أقرب أصدقائك (أي إنّ العدد الإجمالي للأشخاص في الحفلة 20 شخصًا). اشرح لماذا لا بدّ من وجود شخصين على الأقلّ في الحفلة صديقَيهما عدد الأشخاص نفسه في الحفلة. وافترض أنّ الصداقة متبادلة دائمًا.[🔗](#exercises_logic-proofs-20-1-1) تلميح. تأمّل مجموعة *أعداد* الأصدقاء التي يملكها كل فرد. لو كان لكل واحد عددٌ مختلف من الأصدقاء، لكان في هذه المجموعة 20 عنصرًا. هل ذلك ممكن؟ ولماذا لا؟[🔗](#exercises_logic-proofs-20-2-1) [🔗](#exercises_logic-proofs-20-2) [🔗](#exercises_logic-proofs-20)
 
 #### 20.
 
-Your friend has given you his list of 115 best Doctor Who episodes (in order of greatness). It turns out that you have seen 60 of them. Prove that there are at least two episodes you have seen that are exactly four episodes apart on your friend’s list.[🔗](#exercises_logic-proofs-21-2-1) Hint. This feels like the pigeonhole principle, although a bit more complicated. At least, you could try to replicate the style of proof used by the pigeonhole principle. How would the episodes need to be spaced out so that no two of your sixty were exactly 4 apart?[🔗](#exercises_logic-proofs-21-3-1) [🔗](#exercises_logic-proofs-21-3) [🔗](#exercises_logic-proofs-21)
+أعطاك صديقك قائمته بأفضل 115 حلقة من Doctor Who (مرتَّبةً تنازليًا بحسب العظمة). ويتبيّن أنّك شاهدت منها 60 حلقة. برهن أنّ هناك حلقتين على الأقلّ شاهدتهما تبعد كلٌّ منهما عن الأخرى بأربع حلقات بالضبط في قائمة صديقك.[🔗](#exercises_logic-proofs-21-2-1) تلميح. يبدو هذا أشبه بمبدأ الحمّام، وإن كان أعقد قليلًا. على الأقلّ يمكنك أن تحاكي أسلوب البرهان المستعمل في مبدأ الحمّام. كيف ينبغي أن تتباعد الحلقات بحيث لا تكون أيّ حلقتين من حلقاتك الستّين تبعد بمقدار 4 بالضبط؟[🔗](#exercises_logic-proofs-21-3-1) [🔗](#exercises_logic-proofs-21-3) [🔗](#exercises_logic-proofs-21)
 
 #### 21.
 
-Suppose you have an \(n\times n\) chessboard, but your dog has eaten one of the corner squares. You have dominoes that each cover exactly two squares of the board. Can you cover the remaining squares on the board with non-overlapping dominoes? What needs to be true about \(n\text{?}\) Give necessary and sufficient conditions (that is, say exactly which values of \(n\) work and which do not work). Prove your answers.[🔗](#exercises_logic-proofs-22-2-1) ![An 8 by 8 chessboard with the top-right corner square removed. Every other square is shaded darker (checkerboard pattern).](generated/latex-image/checkerboard-minus-1.svg) [🔗](#exercises_logic-proofs-22)
+افترض أنّ لديك رقعة شطرنج \(n\times n\)، لكن كلبك أكل أحد مربّعات الزاوية. ولديك قطع دومينو، كل قطعة منها تغطّي بالضبط مربّعين من الرقعة. هل يمكنك تغطية المربّعات المتبقّية على الرقعة بقطع دومينو غير متداخلة؟ وما الذي ينبغي أن يتحقّق بشأن \(n\text{?}\) أعطِ الشروط اللازمة والكافية (أي فُل بالضبط أيّ قيمٍ لـ \(n\) تعمل وأيّها لا تعمل). برهن لإجاباتك.[🔗](#exercises_logic-proofs-22-2-1) ![رقعة شطرنج 8×8 مع إزالة المربع في الزاوية العلوية اليمنى. وكل مربّعٍ آخر مظلَّم بلونٍ أغمق (نمط رقعة الشطرنج).](generated/latex-image/checkerboard-minus-1.svg) [🔗](#exercises_logic-proofs-22)
 
 #### 22.
 
-What if your \(n\times n\) chessboard is missing two opposite corners? Prove that no matter what \(n\) is, you will not be able to cover the remaining squares with non-overlapping dominoes.[🔗](#exercises_logic-proofs-23-2-1) ![An 8 by 8 chessboard with the top-right and bottom-left corner squares removed. Every other square is shaded darker (checkerboard pattern).](generated/latex-image/checkerboard-minus-2.svg) [🔗](#exercises_logic-proofs-23)[🔗](#exercises_logic-proofs)[🔗](#sec_logic-proofs) [&#xe5cb;Prev](sec_logic-rules.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_logic-structures.html) [Feedback](/cdn-cgi/l/email-protection#79160a1a180b57151c0f1017390c171a16571c1d0c)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_logic-proofs-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_logic-proofs-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+ماذا لو كانت رقعة شطرنج \(n\times n\) لديك تنقصها زاويتان متقابلتان؟ برهن أنّه مهما كان \(n\)، فلن تستطيع تغطية المربّعات المتبقّية بقطع دومينو غير متداخلة.[🔗](#exercises_logic-proofs-23-2-1) ![رقعة شطرنج 8×8 مع إزالة مربّعي الزاويتين العلوية اليمنى والسفلية اليسرى. وكل مربّعٍ آخر مظلَّم بلونٍ أغمق (نمط رقعة الشطرنج).](generated/latex-image/checkerboard-minus-2.svg) [🔗](#exercises_logic-proofs-23)[🔗](#exercises_logic-proofs)[🔗](#sec_logic-proofs) [السابق&#xe5cb;](sec_logic-rules.html)[الأعلى&#xe5ce;](#)[التالي&#xe5cc;](sec_logic-structures.html) [ملاحظات](/cdn-cgi/l/email-protection#79160a1a180b57151c0f1017390c171a16571c1d0c)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_logic-proofs-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_logic-proofs-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

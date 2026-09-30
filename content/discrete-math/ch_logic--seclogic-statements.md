@@ -1,190 +1,190 @@
 ---
-title: "Mathematical Statements"
-lang: en
+title: "العبارات الرياضية"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_logic-statements.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 1.1 Mathematical Statements
+## القسم 1.1 العبارات الرياضية
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_logic-statements-2-1-1)
+بعد إتمام هذا القسم، ينبغي أن تكون قادرًا على ما يلي.[🔗](#sec_logic-statements-2-1-1)
 
-1. Identify the logical structure of statements to determine their truth value in terms of the truth values of their parts.[🔗](#sec_logic-statements-2-2-1-1) [🔗](#sec_logic-statements-2-2-1)
-2. Identify the use of quantifiers in a statement, and determine the truth value of the statement based on those quantifiers.[🔗](#sec_logic-statements-2-2-2-1) [🔗](#sec_logic-statements-2-2-2)
-3. Translate between statements in natural language and logical symbols.[🔗](#sec_logic-statements-2-2-3-1) [🔗](#sec_logic-statements-2-2-3)
+1. تمييز البنية المنطقية للعبارات لتحديد قيمة صدقها من حيث قيم صدق أجزاءها.[🔗](#sec_logic-statements-2-2-1-1) [🔗](#sec_logic-statements-2-2-1)
+2. تمييز استخدام المكمِّمات في عبارة ما، وتحديد قيمة صدق العبارة بناءً على تلك المكمِّمات.[🔗](#sec_logic-statements-2-2-2-1) [🔗](#sec_logic-statements-2-2-2)
+3. الترجمة بين العبارات المكتوبة باللغة الطبيعية وبين الرموز المنطقية.[🔗](#sec_logic-statements-2-2-3-1) [🔗](#sec_logic-statements-2-2-3)
 
 [🔗](#sec_logic-statements-2)
 
-### Subsection Section Preview
+### معاينة القسم
 
-#### Investigate!
+#### لنستكشف!
 
-While walking through a fictional forest, you encounter three trolls guarding a bridge. Each is either a *knight*, who always tells the truth, or a *knave*, who always lies. The trolls will not let you pass until you correctly identify each as either a knight or a knave. Each troll makes a single statement:[🔗](#sec_logic-statements-3-2-3)
+أثناء تجوالك في غابةٍ خيالية، تصادف ثلاثة أقزام (trolls) يحرسون جسرًا. كلٌّ منهم إما *فارس* (knight) يقول الصدق دائمًا، أو *غشّاش* (knave) يكذب دائمًا. ولن يدعك الأقزام تعبر حتى تحدّد كلَّ واحدٍ منهم بدقّة على أنه فارس أو غشّاش. ويصوغ كلُّ غwarf عبارةً واحدة:[🔗](#sec_logic-statements-3-2-3)
 
-> Troll 1: If I am a knave, then there are exactly two knights here.[🔗](#sec_logic-statements-3-2-4-1)
-> > Troll 2: Troll 1 is lying.[🔗](#sec_logic-statements-3-2-4-2)
-> > Troll 3: Either we are all knaves, or at least one of us is a knight.[🔗](#sec_logic-statements-3-2-4-3)
+> الغwarf 1: إذا كنتُ غشّاشًا، فهناك فارسان بالضبط هنا.[🔗](#sec_logic-statements-3-2-4-1)
+> > الغwarf 2: الغwarf 1 يكذب.[🔗](#sec_logic-statements-3-2-4-2)
+> > الغwarf 3: إمّا أننا جميعًا غشّاشون، أو أنّ واحدًا منّا على الأقلّ فارس.[🔗](#sec_logic-statements-3-2-4-3)
 > > [🔗](#sec_logic-statements-3-2-4)
 
-Which troll is which? [🔗](#sec_logic-statements-3-2-5) [🔗](#sec_logic-statements-3-2)
+أيُّهم فارس وأيّهم غشّاش؟ [🔗](#sec_logic-statements-3-2-5) [🔗](#sec_logic-statements-3-2)
 
-#### Try it 1.1.1.
+#### جرّب بنفسك 1.1.1.
 
-Spend a few minutes thinking about the Investigate problem above. What could you conclude if you knew Troll 1 really was a knave (i.e., their statement was false)? Share your initial thoughts on this.[🔗](#ip_sec_logic-statements-1-1) [🔗](#ip_sec_logic-statements)In order to *do* mathematics, we must be able to *talk* and *write* about mathematics. Perhaps your experience with mathematics so far has mostly involved finding numerical answers to problems. As we embark towards more advanced and abstract mathematics, writing will play a more prominent role in the mathematical process.[🔗](#sec_logic-statements-3-4) In fact, the primary goal of mathematics, as an academic discipline in its own right, is to establish general mathematical truths. How can we know whether these facts, perhaps called *theorems* or *propositions*, are true? We construct valid arguments, called *proofs*, which establish the truth of the statements. Here, an argument is not the sort of thing you have with your Mom when you disagree about what to have for dinner. Rather, we have a technical definition of the term.[🔗](#sec_logic-statements-3-5)
+اقضِ بضع دقائق في التفكير في مسألة الاستكشاف أعلاه. ماذا يمكنك أن تستنتج لو علمتَ أنّ الغwarf 1 كان حقًّا غشّاشًا (أي أنّ عبارته كانت خاطئة)؟ شارك أفكارك الأوّلية في هذا.[🔗](#ip_sec_logic-statements-1-1) [🔗](#ip_sec_logic-statements)كي *نمارس* الرياضيات، يجب أن نتمكّن من *الحديث* و*الكتابة* عن الرياضيات. ربّما كانت خبرتك مع الرياضيات حتى الآن في معظمها تتطلّب إيجاد إجابات عددية للمسائل. وكما نمضي قدمًا نحو الرياضيات الأكثر تقدّمًا وتعمّقًا، سيأخذ الكتابة دورًا أكثر بروزًا في العملية الرياضية.[🔗](#sec_logic-statements-3-4) وفي الواقع، فإنّ الهدف الرئيسي للرياضيات، بوصفها تخصّصًا أكاديميًا قائمًا بذاته، هو إثبات الحقائق الرياضية العامة. وكيف يمكننا أن نعرف ما إذا كانت هذه الحقائق، التي قد تسمّى *المبرهنات* (theorems) أو *القضيات* (propositions)، صادقة؟ نبني حججًا صالحة تسمّى *البراهين* (proofs)، تُثبت صدق العبارات. وهنا، لا تعني الحجة ذلك الشيء الذي تكونه مع والدتك عندما تتّفقان على ما تأكلانه على العشاء، بل لدينا تعريف فنّي لهذا المصطلح.[🔗](#sec_logic-statements-3-5)
 
-#### Definition 1.1.2. Argument.
+#### التعريف 1.1.2. الحجة.
 
-An argument is a sequence of statements, the last of which is called the conclusion and the rest of which are called premises. [🔗](#def-argument-8-1) An argument is said to be valid provided the conclusion must be true whenever the premises are all true. An argument is invalid if it is not valid; that is, all the premises can be true, and the conclusion could still be false.[🔗](#def-argument-8-2) An argument is sound provided it is valid and all the premises are true. A proof of a statement is a sound argument whose conclusion is the statement.[🔗](#def-argument-8-3) [🔗](#def-argument)
+الحجة (argument) هي تسلسل من العبارات، تُسمّى آخِرُها الخاتمة، ويُسمّى ما عداها المقدمات. [🔗](#def-argument-8-1) وتُوصف الحجة بأنّها صالحة متى كانت الخاتمة لا بدّ أن تكون صادقة ما دامت جميع المقدمات صادقة. وتُوصف بأنّها غير صالحة إن لم تكن صالحة؛ أي إنّ جميع المقدمات قد تكون صادقة بينما تظلّ الخاتمة خاطئة.[🔗](#def-argument-8-2) وتُوصف الحجة بأنّها سليمة (sound) متى كانت صالحة وكانت جميع مقدماتها صادقة. أمّا برهان عبارة ما فهو حجة سليمة خاتمتها هي تلك العبارة.[🔗](#def-argument-8-3) [🔗](#def-argument)
 
-#### By the way...
+#### بالمناسبة...
 
-Our definitions of argument, valid argument, and sound argument are the same ones used in philosophy, the other primary academic discipline concerned with logic and reasoning.[🔗](#sec_logic-statements-3-7-1) To determine whether we have a proof of a statement, we must decide both whether every premise is true, and whether the argument is valid: whether the conclusion *follows from* the premises. How can we do this?[🔗](#sec_logic-statements-3-8)
+تعريفاتنا للحجة، وللحجة الصالحة، وللحجة السليمة، هي نفسها التعريفات المستخدَمة في الفلسفة، وهي التخصّص الأكاديمي الأول الآخر الذي يعنى بالمنطق والاستدلال.[🔗](#sec_logic-statements-3-7-1) ولتقدير ما إذا كان لدينا برهانٌ لإحدى العبارات، علينا أن نقرّر أمرين معًا: هل كلُّ مقدّمة صادقة؟ وهل الحجة صالحة، أي هل الخاتمة *تترتّب عن* المقدمات؟ وكيف يمكننا أن نفعل ذلك؟[🔗](#sec_logic-statements-3-8)
 
-#### Example 1.1.3.
+#### مثال 1.1.3.
 
-Consider the following two arguments:[🔗](#sec_logic-statements-3-9-2-1)
+تأمّل الحجّتين التاليتين:[🔗](#sec_logic-statements-3-9-2-1)
 
-|  | If Edith eats her vegetables, then she can have a cookie. |
+|  | إذا أكلت إيديث خضارها، استحالت عليها أن تنال كعكة. |
 | --- | --- |
-|  | Edith eats her vegetables. |
-| \(\therefore\) | Edith gets a cookie. |
+|  | إيديث تأكل خضارها. |
+| \(\therefore\) | إيديث تنال كعكة. |
 
-|  | Florence must eat her vegetables to get a cookie. |
+|  | على فلورنس أن تأكل خضارها كي تنال كعكة. |
 | --- | --- |
-|  | Florence eats her vegetables. |
-| \(\therefore\) | Florence gets a cookie. |
+|  | فلورنس تأكل خضارها. |
+| \(\therefore\) | فلورنس تنال كعكة. |
 
-(The symbol “\(\therefore\)” means “therefore”)[🔗](#sec_logic-statements-3-9-2-4) Are these arguments valid?[🔗](#sec_logic-statements-3-9-2-5) Solution. Do you agree that the first argument is valid but the second argument is not? We will soon develop a better understanding of the logic involved in this analysis, but if your intuition agrees with this assessment, then you are in good shape.[🔗](#sec_logic-statements-3-9-3-1) Notice the two arguments look almost identical. Edith and Florence both eat their vegetables. In both cases, there is a connection between the eating of vegetables and cookies. Yet we claim that it is valid to conclude that Edith gets a cookie, but not that Florence does. The difference must be in the connection between eating vegetables and getting cookies. We need to be skilled at reading and comprehending these sentences. Do the two sentences mean the same thing?[🔗](#sec_logic-statements-3-9-3-2) Unfortunately, in everyday language we are often sloppy, and you might be tempted to say they are equivalent. But notice that just because Florence *must* eat her vegetables, we have not claimed that doing so would be *enough* (she might also need to clean her room, for example). In everyday (non-mathematical) practice, you might be tempted to say this “other direction” is implied. In mathematics, we never get that luxury.[🔗](#sec_logic-statements-3-9-3-3) [🔗](#sec_logic-statements-3-9-3) [🔗](#sec_logic-statements-3-9)
+(الرمز «\(\therefore\)» يعني «إذن»)[🔗](#sec_logic-statements-3-9-2-4) هل هاتان الحجّتان صالحتان؟[🔗](#sec_logic-statements-3-9-2-5) الحل. هل توافق على أنّ الحجّة الأولى صالحة بينما الحجّة الثانية ليست كذلك؟ سنطوّر قريبًا فهمًا أفضل للمنطق المتضمّن في هذا التحليل، ولكن إن كان حدسك موافقًا لهذا التقييم، فأنت في وضع جيّد.[🔗](#sec_logic-statements-3-9-3-1) ولاحظ أنّ الحجّتين تبدو متطابقتين تقريبًا. فإيديث وفلورنس تأكلان خضارهما في الحالتين، وفي كلتا الحالتين هناك صلة بين أكل الخضار ونيل الكعكة. ومع ذلك ندّعي أنّه من الصواب أن نستنتج أنّ إيديث تنال كعكة، لكنّه ليس من الصواب أن نستنتج أنّ فلورنس تنالها. إنّ الفارق يجب أن يكون في الصلة بين أكل الخضار ونيل الكعكة. ونحتاج إلى أن نتقن قراءة هذه الجمل وفهمها. هل تعني الجملتان الشيء نفسه؟[🔗](#sec_logic-statements-3-9-3-2) لسوء الحظّ، فإنّنا في اللغة اليومية كثيرًا ما نكون مسرفين، وقد يغريك القول إنّهما متكافئتان. لكن لاحظ أنّه لمجرّد أنّ فلورنس *يجب* أن تأكل خضارها، فإنّنا لم ندّعَ أنّ فعل ذلك سيكون *كافيًا* (فقد تحتاج أيضًا إلى ترتيب غرفتها، على سبيل المثال). وفي الممارسة اليومية (غير الرياضية)، قد يغريك القول إنّ هذا «الاتجاه الآخر» مفترض ضمنًا. أمّا في الرياضيات فلا نُمنح هذه الرفاهية أبدًا.[🔗](#sec_logic-statements-3-9-3-3) [🔗](#sec_logic-statements-3-9-3) [🔗](#sec_logic-statements-3-9)
 
-#### Remark 1.1.4.
+#### ملاحظة 1.1.4.
 
-The arguments in the example above illustrate another important point: Even if you don’t care about the advancement of human knowledge in the field of mathematics, becoming skilled at analyzing arguments is useful. And even if you don’t want to give your grandmother a cookie. If you are *using* mathematics to solve problems in some other discipline, it is still necessary to demonstrate that your solution is correct. You better have a good argument that it is![🔗](#sec_logic-statements-3-10-1) [🔗](#sec_logic-statements-3-10)Since arguments are built up of statements, we must agree on what counts as a statement.[🔗](#sec_logic-statements-3-11)
+توضّح الحجج في المثال أعلاه نقطةً مهمّة أخرى: حتى إن لم تكن تهتمّ بتقدّم المعرفة البشرية في مجال الرياضيات، فإنّ إتقانك تحليل الحجج أمر مفيد. وحتى إن لم تكن راغبًا في تقديم كعكة لجدّتك. فإذا كنتَ *تستخدم* الرياضيات لحلّ مسائل في تخصّص آخر، فإنّه لا يزال عليك إثبات أنّ حلّك صحيح. لا بدّ أن تكون لديك حجّة جيّدة على ذلك![🔗](#sec_logic-statements-3-10-1) [🔗](#sec_logic-statements-3-10) ولأنّ الحجج تُبنى من عبارات، علينا أن نتّفق على ما الذي يُعدّ عبارةً.[🔗](#sec_logic-statements-3-11)
 
-#### Definition 1.1.5.
+#### التعريف 1.1.5.
 
-A statement is a declarative sentence that is either true or false.[🔗](#def-statement-2-1) [🔗](#def-statement)If the sentences in an argument could not be true or false, there would be no way to determine whether the argument was valid, since validity describes a relationship between the truth values of the premises and conclusions.[🔗](#sec_logic-statements-3-13) The goal of this section is to explore the different “shapes” a statement can take. We will see that more complicated statements can be built up from simpler ones, in ways that entirely determine their truth value based on the truth values of their parts.[🔗](#sec_logic-statements-3-14)
+العبارة (statement) هي جملة خبرية تكون إمّا صادقة أو كاذبة.[🔗](#def-statement-2-1) [🔗](#def-statement)ولو لم يكن بالإمكان أن تكون جمل الحجة صادقة أو كاذبة، لما وُجدت طريقة لتحديد ما إذا كانت الحجة صالحة، إذ إنّ الصلاحية تصف علاقة بين قيم صدق المقدمات والخاتمة.[🔗](#sec_logic-statements-3-13) والهدف من هذا القسم هو استكشاف «الأشكال» المختلفة التي يمكن أن تتّخذها العبارة. وسنرى أنّ العبارات الأكثر تعقيدًا يمكن بناؤها من عبارات أبسط، بطرق تحدّد قيمة صدقها كليًا بناءً على قيم صدق أجزاءها.[🔗](#sec_logic-statements-3-14)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-logic-statements)
+#### معاينة نشاط ورقة العمل[&#xe8ad;](?printpreview=PA-logic-statements)
 
-Before reading on to the main content of the section, complete this preview activity to start thinking about the types of questions this section will address.[🔗](#PA-logic-statements-2-1)
+قبل أن تتابع قراءة المحتوى الرئيس للقسم، أكمل هذا النشاط التمهيدي كي تبدأ التفكير في أنواع الأسئلة التي سيعالجها هذا القسم.[🔗](#PA-logic-statements-2-1)
 
 #### 1.
 
-Which of the following sentences should count as statements? That is, for which of the sentences below could you *potentially* claim the sentence was either true or false? Select all that apply.[🔗](#pa-logic-statements-vs-sentences-1-1)
+أيُّ الجمل التالية ينبغي أن تُعدّ عبارات؟ أي إنّ أيَّ الجمل أدناه يمكنك أن *تحتمل* القول بأنها كانت صادقة أو كاذبة؟ اختر كل ما ينطبق.[🔗](#pa-logic-statements-vs-sentences-1-1)
 
-- The sum of the first 100 positive integers.
-- This is not a statement. It is not even a complete sentence (there is no verb).
-- What is the sum of the first 100 positive integers?
-- This is a question. It is not a statement.
-- The sum of the first 100 positive integers is 5050.
-- This is a statement. It is either true or false (it happens to be true).
-- Is the sum of the first 100 positive integers 5050?
-- This is a question. The answer happens to be “yes”, but that is not the same as saying “true”. Questions are never statements.
-- The sum of the first 100 positive integers is 17.
-- This is clearly false. But since it is false, it is a statement!
+- مجموع أول مئة عدد صحيح موجب.
+- هذه ليست عبارة. بل إنّها ليست حتى جملةً تامّة (لا يوجد فيها فعل).
+- ما مجموع أول مئة عدد صحيح موجب؟
+- هذه سؤال. وليست عبارة.
+- مجموع أول مئة عدد صحيح موجب هو 5050.
+- هذه عبارة. فهي إمّا صادقة أو كاذبة (واتّضح أنّها صادقة).
+- هل مجموع أول مئة عدد صحيح موجب هو 5050؟
+- هذا سؤال. ولعلّ الجواب هو «نعم»، لكنّ ذلك ليس معناه أنّ العبارة «صادقة». فالأسئلة ليست عبارات أبدًا.
+- مجموع أول مئة عدد صحيح موجب هو 17.
+- هذه خاطئة بوضوح. لكنّها، لمجرّد أنّها خاطئة، فإنّها عبارة!
 
 [🔗](#pa-logic-statements-vs-sentences)
 
 #### 2.
 
-You and your roommate are arguing, and they make the audacious claim that pineapple is good both on pizza and in smoothies. Which of the following are reasonable responses to this claim, from a logical point of view?[🔗](#pa-logic-statements-tf-and-1-1)
+أنت وصديقك السكن تتجادلان، وهو يدّعي بجرأة أنّ الأناناس جيّد على البيتزا وفي العصائر المخلوطة معًا. أيٌّ ممّا يلي يمثّل ردودًا معقولة على هذه الدعوى، من منظور منطقي؟[🔗](#pa-logic-statements-tf-and-1-1)
 
-- The statement is false because even though pineapple is good in smoothies, it is NOT good on pizza.
-- If you really think that pineapple is not good on pizza, then you would have to say the statement is false. The statement is claiming both are true.
-- The statement is false because while pineapple is good on pizza and pineapple is good in smoothies, a pizza smoothie is never good.
-- The claim that pineapple is good both on pizza and in smoothies is not claiming that it is only good at the same time. It is precisely claiming these two separate facts are both true.
-- The statement is half true because regardless of what you think about pineapple on pizza, we can all agree at least that pineapple is good in smoothies.
-- Statements are either true or false. There is no “half true.”.
-- The statement is false because everyone who likes pineapple on pizza does NOT like pineapple in smoothies.
-- If it were the case that everyone who liked pineapple on pizza didn’t like pineapple in smoothies, then the statement would indeed be false.
+- العبارة خاطئة، لأنّ الأناناس وإن كان جيّدًا في العصائر، فهو ليس جيّدًا على البيتزا.
+- إن كنتَ تعتقد حقًّا أنّ الأناناس ليس جيّدًا على البيتزا، فلا بدّ لك من القول إنّ العبارة خاطئة، لأنّ العبارة تدّعي أنّ الأمرين كلاهما صادق.
+- العبارة خاطئة، لأنّ الأناناس جيّد على البيتزا وجيّد في العصائر، لكنّ بيتزا الأناناس المخفوق ليس جيّدًا أبدًا.
+- الدعوى بأنّ الأناناس جيّد على البيتزا وفي العصائر لا تدّعي أنّه جيّد في الوقت نفسه فحسب، بل إنّها تدّعي بالضبط أنّ هاتين الحقيقتين المنفصلتين كلتيهما صادقتان.
+- العبارة نصف صادقة، لأنّ بغضّ النظر عمّا تظنّه في الأناناس على البيتزا، يمكننا جميعًا أن نتفق على الأقلّ على أنّ الأناناس جيّد في العصائر.
+- العبارات إمّا صادقة أو كاذبة. ولا يوجد ما يُسمّى «نصف صادقة».
+- العبارة خاطئة، لأنّ كلَّ من يحبّ الأناناس على البيتزا لا يحبّ الأناناس في العصائر.
+- لو كان الأمر كذلك، أي لو لم يحبّ كلُّ من يحبّ الأناناس على البيتزا الأناناس في العصائر، لكانت العبارة خاطئة حقًّا.
 
 [🔗](#pa-logic-statements-tf-and)
 
 #### 3.
 
-Your roommate now makes an even more outrageous claim: If a superhero movie is part of the Marvel Cinematic Universe, then it is good. Which of the following are reasonable responses to this claim, from a logical point of view?[🔗](#pa-logic-statements-tf-if-then-1-1)
+يعمد صديقك السكن الآن إلى دعوى أكثرّ وقاحة: إذا كان فيلم أبطالٍ خارق جزءًا من عالم مارفل السينمائي، فهو جيّد. أيٌّ ممّا يلي يمثّل ردودًا معقولة على هذه الدعوى، من منظور منطقي؟[🔗](#pa-logic-statements-tf-if-then-1-1)
 
-- This is false because there are good superhero movies, like Wonder Woman and Dark Knight, that are based on DC Comics, and so not part of the Marvel Cinematic Universe.
-- The claim was that *if* a movie was Marvel, then it was good. It is not claiming that if a movie is good, then it is Marvel.
-- The statement is false because there is at least one superhero movie that is part of the Marvel Cinematic Universe that is also not good.
-- Exactly. This is what it means for an if-then statement to be false.
-- The statement is false because, for example, Green Lantern is neither Marvel nor good.
-- Actually, I’ve never seen that movie, but even if it were bad, that doesn’t say anything about the original statement, since it is not a Marvel movie.
-- The statement is true because more than half of the Marvel movies are good.
-- The claim was that this statement held for *every* superhero movie, not just most of them.
+- هذا خاطئ، لأنّه توجد أفلام أبطالٍ خارق جيّدة، مثل «Wonder Woman» و«Dark Knight»، قائمة على شخصيات DC Comics، ولذلك فهي ليست جزءًا من عالم مارفل السينمائي.
+- كانت الدعوى أنّه *إذا* كان الفيلم من مارفل، فهو جيّد. وهي لا تدّعي أنّه إذا كان الفيلم جيّدًا، فهو من مارفل.
+- العبارة خاطئة، لأنّه يوجد على الأقلّ فيلم أبطالٍ خارق واحدٌ جزء من عالم مارفل السينمائي وليس جيّدًا أيضًا.
+- بالضبط. هذا هو معنى أن تكون عبارة «إذا... فإنّ...» خاطئة.
+- العبارة خاطئة، لأنّ فيلم «Green Lantern» ليس من مارفل وليس جيّدًا.
+- في الواقع، لم أشاهد ذلك الفيلم قطّ، لكنّ حتى لو كان سيّئًا فإنّ ذلك لا يقول شيئًا عن العبارة الأصلية، لأنّه ليس فيلمًا من مارفل.
+- العبارة صادقة لأنّ أكثر من نصف أفلام مارفل جيّد.
+- كانت الدعوى أنّ هذه العبارة تصدق على *كلّ* فيلم أبطالٍ خارق، لا على معظمها فحسب.
 
 [🔗](#pa-logic-statements-tf-if-then)
 
 #### 4.
 
-Your roommate just won’t let up with their outrageous claims. Now they claim that either every troll is a knave, or there is at least one troll that is a knight. What can you say to this?[🔗](#pa-logic-statement-tf-or-all-1-1)
+لن يتوقّف صديقك السكن عن دعواه الصادمة. فقد ادّعى الآن أنّه إمّا أنّ كلّ الأقزام غشّاشون، أو أنّ هناك غwarfًا واحدًا على الأقلّ فارس. ماذا تقول في هذا؟[🔗](#pa-logic-statement-tf-or-all-1-1)
 
-- Yes, this is true because every troll is either a knight or a knave. If it is not the case that *all* trolls are knaves, then there must be *some* troll that is a knight.
-- Exactly!
-- This is false because some trolls are knights and some other trolls are knaves.
-- If that were the case, there would be at least one knight.
-- The statement is false because there is no way to verify which of the two options is the case.
-- Whether it is possible to verify which part of an “or” statement is true does not change whether the statement is true.
-- The statement is false because no troll could say that all trolls are knaves, since knaves always lie.
-- It’s true that if a troll said that all trolls are knaves they would have to be a knave and then it would be false that all trolls were knaves. But luckily there is another option.
+- نعم، هذا صحيح لأنّ كل غwarf إمّا فارس أو غشّاش. فإن لم يكن الحال أنّ *كلّ* الأقزام غشّاشون، فلا بدّ من وجود غwarf فارس.
+- بالضبط!
+- هذا خاطئ لأنّ بعض الأقزام فارس وبعضهم الآخر غشّاش.
+- لو كان الحال كذلك، لكان هناك فارس واحد على الأقلّ.
+- العبارة خاطئة لأنّه لا سبيل إلى التحقّق أيُّ الخيارين هو الواقع.
+- ما إذا أمكن التحقّق من أيّ جزأين من عبارة «أو» هو صادق لا يغيّر ما إذا كانت العبارة صادقة.
+- العبارة خاطئة، لأنّه يستحيل على أيّ غwarf أن يقول إنّ كلّ الأقزام غشّاشون، إذ إنّ الغشّاشين يكذبون دائمًا.
+- صحيح أنّه لو قال غwarf إنّ كلّ الأقزام غشّاشون لكان لا بدّ أن يكون غشّاشًا، وعندئذٍ يكون القول إنّ كلّ الأقزام غشّاشون خاطئًا. لكنّنا على حظّنا، إذ لدينا خيار آخر.
 
 [🔗](#pa-logic-statement-tf-or-all)[🔗](#PA-logic-statements)[🔗](#sec_logic-statements-3)
 
-### Subsection Atomic and Molecular Statements
+### العبارات الذرية والجزئية
 
-A statement is any declarative sentence which is either true or false. A statement is atomic if it cannot be divided into smaller statements, otherwise it is called molecular.[🔗](#atomic-molecular-statements-2)
+العبارة هي أي جملة خبرية تكون إمّا صادقة أو كاذبة. وتُعدّ العبارة ذرية (atomic) إذا لم يكن بالإمكان تقسيمها إلى عبارات أصغر، وإلا فإنّها تُسمّى جزئية (molecular).[🔗](#atomic-molecular-statements-2)
 
-#### Example 1.1.6.
+#### مثال 1.1.6.
 
-These are statements (in fact, *atomic* statements):
+هذه عبارات (بل إنّها عبارات *ذرية*):
 
-- Telephone numbers in the USA have 10 digits.[🔗](#atomic-molecular-statements-3-1-1-2-1-1) [🔗](#atomic-molecular-statements-3-1-1-2-1)
-- The moon is made of cheese.[🔗](#atomic-molecular-statements-3-1-1-2-2-1) [🔗](#atomic-molecular-statements-3-1-1-2-2)
-- 42 is a perfect square.[🔗](#atomic-molecular-statements-3-1-1-2-3-1) [🔗](#atomic-molecular-statements-3-1-1-2-3)
-- Every even number greater than 2 can be expressed as the sum of two primes.[🔗](#atomic-molecular-statements-3-1-1-2-4-1) [🔗](#atomic-molecular-statements-3-1-1-2-4)
+- أرقام الهواتف في الولايات المتحدة تتكوّن من 10 أرقام.[🔗](#atomic-molecular-statements-3-1-1-2-1-1) [🔗](#atomic-molecular-statements-3-1-1-2-1)
+- القمر مصنوع من الجبن.[🔗](#atomic-molecular-statements-3-1-1-2-2-1) [🔗](#atomic-molecular-statements-3-1-1-2-2)
+- 42 عدد تامّ مربّع.[🔗](#atomic-molecular-statements-3-1-1-2-3-1) [🔗](#atomic-molecular-statements-3-1-1-2-3)
+- كلّ عدد زوجي أكبر من 2 يمكن التعبير عنه على صورة مجموع عددين أوليّين.[🔗](#atomic-molecular-statements-3-1-1-2-4-1) [🔗](#atomic-molecular-statements-3-1-1-2-4)
 - \(\displaystyle 3+7 = 12\)[🔗](#atomic-molecular-statements-3-1-1-2-5-1) [🔗](#atomic-molecular-statements-3-1-1-2-5)
 
-And these are not statements:
+وهذه ليست عبارات:
 
-- Would you like some cake?[🔗](#atomic-molecular-statements-3-1-1-3-1-1) [🔗](#atomic-molecular-statements-3-1-1-3-1)
-- The sum of two squares.[🔗](#atomic-molecular-statements-3-1-1-3-2-1) [🔗](#atomic-molecular-statements-3-1-1-3-2)
+- هل تودّ بعض الكعكة؟[🔗](#atomic-molecular-statements-3-1-1-3-1-1) [🔗](#atomic-molecular-statements-3-1-1-3-1)
+- مجموع مربّعين.[🔗](#atomic-molecular-statements-3-1-1-3-2-1) [🔗](#atomic-molecular-statements-3-1-1-3-2)
 - \(1+3+5+7+\cdots+2n+1\text{.}\) [🔗](#atomic-molecular-statements-3-1-1-3-3)
-- Go to your room![🔗](#atomic-molecular-statements-3-1-1-3-4-1) [🔗](#atomic-molecular-statements-3-1-1-3-4)
+- اذهب إلى غرفتك![🔗](#atomic-molecular-statements-3-1-1-3-4-1) [🔗](#atomic-molecular-statements-3-1-1-3-4)
 - \(\displaystyle 3+x = 12\)[🔗](#atomic-molecular-statements-3-1-1-3-5-1) [🔗](#atomic-molecular-statements-3-1-1-3-5)
 
-[🔗](#atomic-molecular-statements-3-1-1) [🔗](#atomic-molecular-statements-3) The reason the sentence “\(3 + x = 12\)” is not a statement is that it contains a variable. Depending on what \(x\) is, the sentence is either true or false, but right now it is neither. One way to make the *sentence* into a *statement* is to specify the value of the variable in some way. This could be done by setting a specific substitution, for example, “\(3+x = 12\) where \(x = 9\text{,}\)” which is a true statement. Or you could *capture* the free variable by *quantifying* over it, as in, “For all values of \(x\text{,}\) \(3+x = 12\text{,}\)” which is false. We will discuss quantifiers in more detail in the subsection [Quantifiers and Predicates](sec_logic-statements.html#subsec_logic-statements-quant) below.[🔗](#atomic-molecular-statements-4) You can build more complicated (molecular) statements out of simpler (atomic or molecular) ones using logical connectives. For example, this is a molecular statement:[🔗](#atomic-molecular-statements-5)
+[🔗](#atomic-molecular-statements-3-1-1) [🔗](#atomic-molecular-statements-3) فالسبب في أنّ الجملة «\(3 + x = 12\)» ليست عبارةً هو أنّها تحتوي متغيّرًا. فبحسب ما يكون عليه \(x\) تكون الجملة إمّا صادقة أو كاذبة، أمّا الآن فهي ليست واحدة منهما. وإحدى الطرق لجعل *الجملة* *عبارة* هي تحديد قيمة المتغيّر بطريقة ما. ويمكن ذلك بإجراء استبدال معيّن، مثل «\(3+x = 12\) where \(x = 9\text{,}\)» وهي عبارة صادقة. أو يمكنك *التقاط* المتغيّر الحرّ *بالتكميم* عليه، كما في «لكلّ قيم \(x\text{,}\) \(3+x = 12\text{,}\)» وهي خاطئة. وسنناقش المكمِّمات بمزيد من التفصيل في البند الفرعي [المكمِّمات والمنشِّقات](sec_logic-statements.html#subsec_logic-statements-quant) أدناه.[🔗](#atomic-molecular-statements-4) ويمكنك بناء عبارات أكثر تعقيدًا (جزئية) من عبارات أبسط (ذرية أو جزئية) باستخدام الروابط المنطقية. فمثلًا، هذه عبارة جزئية:[🔗](#atomic-molecular-statements-5)
 
-> Telephone numbers in the USA have 10 digits, and 42 is a perfect square.[🔗](#atomic-molecular-statements-6-1)
+> أرقام الهواتف في الولايات المتحدة تتكوّن من 10 أرقام، و42 عدد تامّ مربّع.[🔗](#atomic-molecular-statements-6-1)
 > > [🔗](#atomic-molecular-statements-6)
 
-Note that we can break this down into two smaller statements. The two shorter statements are *connected* by an “and.” We will consider 5 connectives: “and” (Sam is a man, and Chris is a woman), “or” (Sam is a man, or Chris is a woman), “if…, then…” (if Sam is a man, then Chris is a woman), “if and only if” (Sam is a man if and only if Chris is a woman), and “not” (Sam is not a man). The first four are called binary connectives (because they connect two statements) while “not” is an example of a unary connective (since it applies to a single statement).[🔗](#atomic-molecular-statements-7) These molecular statements are, of course, still statements, so they must be either true or false. The crucial observation here is that which truth value the molecular statement achieves is completely determined by the type of connective and the truth values of the parts. We do not need to know what the parts actually say or whether they have some material connection to each other, only whether those parts are true or false.[🔗](#atomic-molecular-statements-8) To analyze logical connectives, it is enough to consider propositional variables (sometimes called *sentential* variables), usually capital letters in the middle of the alphabet: \(P, Q, R, S, \ldots\text{.}\) We think of these as standing in for (usually atomic) statements, but there are only two *values* the variables can achieve: true or false. 1 In computer programming, we should call such variables Boolean variables. We also have symbols for the logical connectives: \(\wedge\text{,}\) \(\vee\text{,}\) \(\imp\text{,}\) \(\iff\text{,}\) \(\neg\text{.}\)[🔗](#atomic-molecular-statements-9)
+ولاحظ أنّنا يمكننا تفكيك هذه إلى عبارتين أصغر. فالعبارتان الأقصر *مرتبطتان* بـ«و». وسندرس خمسة روابط: «و» (سام ذكر، وكريس أنثى)، و«أو» (سام ذكر، أو كريس أنثى)، و«إذا... فإنّ...» (إذا كان سام ذكرًا، فإنّ كريس أنثى)، و«إذا كانت... إذا فقط» (سام ذكر إذا كانت كريس أنثى إذا فقط)، و«ليس» (سام ليس ذكرًا). أمّا الأربعة الأولى فتُسمّى روابط ثنائية (لأنّها تربط عبارتين)، أمّا «ليس» فمثال على رابط أحادي (لأنّه ينطبق على عبارة واحدة).[🔗](#atomic-molecular-statements-7) وهذه العبارات الجزئية هي بطبيعة الحال عبارات أيضًا، لذا يجب أن تكون إمّا صادقة أو كاذبة. أمّا الملاحظة الجوهرية هنا فهي أنّ قيمة الصدق التي تبلغها العبارة الجزئية تحدّدها تمامًا نوع الرابط وقيم صدق الأجزاء. فنحن لا نحتاج إلى معرفة ما تقوله الأجزاء فعلًا، ولا ما إذا كانت بينها صلة موضوعية، بل نحتاج فقط إلى معرفة ما إذا كانت تلك الأجزاء صادقة أو كاذبة.[🔗](#atomic-molecular-statements-8) ولتحليل الروابط المنطقية، يكفي النظر في متغيّرات العبارات (propositional variables) (وتُسمّى أحيانًا متغيّرات *جُملية*)، وهي عادةً حروف كبيرة في منتصف الأبجدية: \(P, Q, R, S, \ldots\text{.}\) ونفكّر فيها على أنها تقوم مقام عبارات (ذرية عادةً)، لكنّ قيم المتغيّرات لا تتجاوز اثنتين: صادقة أو كاذبة. 1 وفي البرمجة الحاسوبية ينبغي أن نسمّي هذه المتغيّرات متغيّرات منطقية (Boolean variables). ولدينا أيضًا رموز للروابط المنطقية: \(\wedge\text{,}\) \(\vee\text{,}\) \(\imp\text{,}\) \(\iff\text{,}\) \(\neg\text{.}\)[🔗](#atomic-molecular-statements-9)
 
-#### Definition 1.1.7. Logical Connectives.
+#### التعريف 1.1.7. الروابط المنطقية.
 
-We define the following logical connectives.
+نُعرِّف الروابط المنطقية التالية.
 
-- \(P \wedge Q\) is read “\(P\) and \(Q\text{,}\)” and is called a conjunction. [🔗](#atomic-molecular-statements-10-4-1-2-1)
-- \(P \vee Q\) is read “\(P\) or \(Q\text{,}\)” and is called a disjunction. [🔗](#atomic-molecular-statements-10-4-1-2-2)
-- \(P \imp Q\) is read “if \(P\) then \(Q\text{,}\)” and is called an implication or conditional. [🔗](#atomic-molecular-statements-10-4-1-2-3)
-- \(P \iff Q\) is read “\(P\) if and only if \(Q\text{,}\)” and is called a biconditional. [🔗](#atomic-molecular-statements-10-4-1-2-4)
-- \(\neg P\) is read “not \(P\text{,}\)” and is called a negation. [🔗](#atomic-molecular-statements-10-4-1-2-5)
+- تُقرأ \(P \wedge Q\) على النحو «\(P\) و\(Q\text{,}\)» وتُسمّى عطفًا (conjunction). [🔗](#atomic-molecular-statements-10-4-1-2-1)
+- تُقرأ \(P \vee Q\) على النحو «\(P\) أو \(Q\text{,}\)» وتُسمّى فصلًا (disjunction). [🔗](#atomic-molecular-statements-10-4-1-2-2)
+- تُقرأ \(P \imp Q\) على النحو «إذا كان \(P\) فإنّ \(Q\text{,}\)» وتُسمّى استلزامًا (implication) أو شرطًا (conditional). [🔗](#atomic-molecular-statements-10-4-1-2-3)
+- تُقرأ \(P \iff Q\) على النحو «\(P\) إذا كانت \(Q\text{,}\) إذا فقط» وتُسمّى تكافؤًا (biconditional). [🔗](#atomic-molecular-statements-10-4-1-2-4)
+- تُقرأ \(\neg P\) على النحو «ليس \(P\text{,}\)» وتُسمّى نفيًا (negation). [🔗](#atomic-molecular-statements-10-4-1-2-5)
 
-[🔗](#atomic-molecular-statements-10-4-1) [🔗](#atomic-molecular-statements-10) The truth value of a statement is determined by the truth value(s) of its part(s), depending on the connectives:[🔗](#atomic-molecular-statements-11)
+[🔗](#atomic-molecular-statements-10-4-1) [🔗](#atomic-molecular-statements-10) وتُحدَّد قيمة صدق العبارة بقيمة صدق أجزاءها، بحسب الروابط:[🔗](#atomic-molecular-statements-11)
 
-#### Definition 1.1.8. Truth Conditions for Connectives.
+#### التعريف 1.1.8. شروط صدق الروابط.
 
-The truth conditions for the logical connectives are defined as follows.
+تُعرَّف شروط صدق الروابط المنطقية على النحو التالي.
 
-- \(P \wedge Q\) is true when both \(P\) and \(Q\) are true. [🔗](#def-connectives-truth-3-1-2-1)
-- \(P \vee Q\) is true when \(P\) or \(Q\) or both are true. [🔗](#def-connectives-truth-3-1-2-2)
-- \(P \imp Q\) is true when \(P\) is false or \(Q\) is true (or both). [🔗](#def-connectives-truth-3-1-2-3)
-- \(P \iff Q\) is true when \(P\) and \(Q\) are both true, or both false. [🔗](#def-connectives-truth-3-1-2-4)
-- \(\neg P\) is true when \(P\) is false. [🔗](#def-connectives-truth-3-1-2-5)
+- \(P \wedge Q\) صادقة عندما يكون كلٌّ من \(P\) و\(Q\) صادقًا. [🔗](#def-connectives-truth-3-1-2-1)
+- \(P \vee Q\) صادقة عندما يكون \(P\) أو \(Q\) أو كلاهما صادقًا. [🔗](#def-connectives-truth-3-1-2-2)
+- \(P \imp Q\) صادقة عندما يكون \(P\) كاذبًا أو يكون \(Q\) صادقًا (أو كليهما). [🔗](#def-connectives-truth-3-1-2-3)
+- \(P \iff Q\) صادقة عندما يكون كلٌّ من \(P\) و\(Q\) صادقًا، أو كلاهما كاذبًا. [🔗](#def-connectives-truth-3-1-2-4)
+- \(\neg P\) صادقة عندما يكون \(P\) كاذبًا. [🔗](#def-connectives-truth-3-1-2-5)
 
-[🔗](#def-connectives-truth-3-1) [🔗](#def-connectives-truth) Each of the above definitions can be represented in a table, called a truth table. We simply list what the truth value of the statement is for each possible combination of truth values of the parts.[🔗](#atomic-molecular-statements-13)
+[🔗](#def-connectives-truth-3-1) [🔗](#def-connectives-truth) ويمكن تمثيل كلٍّ من هذه التعريفات في جدول، يُسمّى جدول الصدق. فنحن نكتفي بذكر قيمة صدق العبارة لكلّ تركيبة ممكنة من قيم صدق الأجزاء.[🔗](#atomic-molecular-statements-13)
 
 | \(P\) | \(Q\) | \(P\wedge Q\) |
 | --- | --- | --- |
@@ -220,234 +220,234 @@ The truth conditions for the logical connectives are defined as follows.
 | F | T |
 |  |  |
 
-Figure 1.1.9. Truth tables for logical connectives.[🔗](#fig-truth-tables)For example, we can use the truth table for \(P \imp Q\) to decide whether the statement, “If 5 is even, then 6 is even,” is true or false. Here \(P\) is the statement “5 is even,” and \(Q\) is the statement “6 is even.” Since 5 is not even, the statement \(P\) is false. Since 6 is even, the statement \(Q\) is true. The truth table tells us that the statement \(P \imp Q\) is true when \(P\) is false and \(Q\) is true (the 3rd row). So the statement, “If 5 is even, then 6 is even,” is true. (If you don’t like that the statement is true, hold on to that thought, and we will hopefully resolve it soon.)[🔗](#atomic-molecular-statements-15) Note that for us, *or* is the inclusive or (and not the sometimes used *exclusive or*) meaning that \(P \vee Q\) is true when \(P\) or \(Q\) *or both \(P\) and \(Q\)* are true. As for the other connectives, “and” behaves as you would expect, as does negation. The biconditional (if and only if) might seem a little strange, but you should think of this as saying the two parts of the statements are *equivalent* in that they have the same truth value.[🔗](#atomic-molecular-statements-16) This leaves only the implication \(P \imp Q\) which has a slightly different meaning in mathematics than in ordinary usage. However, implications are so common and useful in mathematics that we must develop a level of fluency with their use which warrants a whole section ([Section 1.2](sec_logic-implications.html)).[🔗](#atomic-molecular-statements-17)
+الشكل 1.1.9. جداول الصدق للروابط المنطقية.[🔗](#fig-truth-tables)فمثلًا، يمكننا استخدام جدول الصدق لـ \(P \imp Q\) لتحديد ما إذا كانت العبارة «إذا كان 5 زوجيًّا، فإنّ 6 زوجيّ» صادقة أم خاطئة. هنا \(P\) هي العبارة «5 زوجيّ»، و\(Q\) هي العبارة «6 زوجيّ». ولأنّ 5 ليس زوجيًّا، فإنّ العبارة \(P\) خاطئة. ولأنّ 6 زوجيّ، فإنّ العبارة \(Q\) صادقة. ويخبرنا جدول الصدق أنّ العبارة \(P \imp Q\) صادقة عندما تكون \(P\) خاطئة وتكون \(Q\) صادقة (الصف الثالث). إذًا فالعبارة «إذا كان 5 زوجيًّا، فإنّ 6 زوجيّ» صادقة. (وإن لم يعجبك أنّ العبارة صادقة، فأمسك بهذا الفكرة، فلن نُنهيها قريبًا.)[🔗](#atomic-molecular-statements-15) ولاحظ أنّ «أو» عندنا تعني «أو الشاملة» (وليس *أو الحصرية* التي تُستخدم أحيانًا)، أي إنّ \(P \vee Q\) صادقة عندما يكون \(P\) أو \(Q\) أو *كلٌّ من \(P\) و\(Q\)* صادقًا. أمّا بقية الروابط فتعمل كما تتوقّع تمامًا، وكذلك النفي. أمّا التكافؤ (إذا كانت... إذا فقط) فقد يبدو غريبًا بعض الشيء، لكنّ ينبغي أن تنظر إليه على أنه يقول إنّ جزأَي العبارة *متكافئان* أي إنّ لهما قيمة الصدق نفسها.[🔗](#atomic-molecular-statements-16) ويبقى لنا وحده الاستلزام \(P \imp Q\) الذي له معنًى مختلف قليلًا في الرياضيات عمّا له في الاستعمال العادي. لكنّ الاستلزامات شائعة ومفيدة جدًّا في الرياضيات حتى إنّنا نحتاج إلى مستوى من الإتقان في استخدامها يستحقّ قسمًا كاملًا ([القسم 1.2](sec_logic-implications.html)).[🔗](#atomic-molecular-statements-17)
 
-#### Example 1.1.10.
+#### مثال 1.1.10.
 
-Using the truth conditions for the logical connectives, determine which statements below are true and which are false.
+باستخدام شروط صدق الروابط المنطقية، حدّد أيّ العبارات أدناه صادقة وأيّها خاطئة.
 
-1. 17 is prime, and 17 is odd.[🔗](#atomic-molecular-statements-18-1-1-1-1-1) [🔗](#atomic-molecular-statements-18-1-1-1-1)
-2. 17 is prime, and 18 is prime.[🔗](#atomic-molecular-statements-18-1-1-1-2-1) [🔗](#atomic-molecular-statements-18-1-1-1-2)
-3. 17 is prime, or 18 is prime.[🔗](#atomic-molecular-statements-18-1-1-1-3-1) [🔗](#atomic-molecular-statements-18-1-1-1-3)
-4. 17 is prime, or 19 is prime.[🔗](#atomic-molecular-statements-18-1-1-1-4-1) [🔗](#atomic-molecular-statements-18-1-1-1-4)
-5. If 17 is prime, then 19 is prime.[🔗](#atomic-molecular-statements-18-1-1-1-5-1) [🔗](#atomic-molecular-statements-18-1-1-1-5)
-6. If 18 is prime, then my favorite number is 17.[🔗](#atomic-molecular-statements-18-1-1-1-6-1) [🔗](#atomic-molecular-statements-18-1-1-1-6)
-7. 17 is prime if and only if 19 is prime.[🔗](#atomic-molecular-statements-18-1-1-1-7-1) [🔗](#atomic-molecular-statements-18-1-1-1-7)
-8. 17 is not prime if and only if 19 is not prime.[🔗](#atomic-molecular-statements-18-1-1-1-8-1) [🔗](#atomic-molecular-statements-18-1-1-1-8)
+1. 17 عدد أوليّ، و17 عدد فردي.[🔗](#atomic-molecular-statements-18-1-1-1-1-1) [🔗](#atomic-molecular-statements-18-1-1-1-1)
+2. 17 عدد أوليّ، و18 عدد أوليّ.[🔗](#atomic-molecular-statements-18-1-1-1-2-1) [🔗](#atomic-molecular-statements-18-1-1-1-2)
+3. 17 عدد أوليّ، أو 18 عدد أوليّ.[🔗](#atomic-molecular-statements-18-1-1-1-3-1) [🔗](#atomic-molecular-statements-18-1-1-1-3)
+4. 17 عدد أوليّ، أو 19 عدد أوليّ.[🔗](#atomic-molecular-statements-18-1-1-1-4-1) [🔗](#atomic-molecular-statements-18-1-1-1-4)
+5. إذا كان 17 عددًا أوليًّا، فإنّ 19 عدد أوليّ.[🔗](#atomic-molecular-statements-18-1-1-1-5-1) [🔗](#atomic-molecular-statements-18-1-1-1-5)
+6. إذا كان 18 عددًا أوليًّا، فإنّ 17 هو عددي المفضّل.[🔗](#atomic-molecular-statements-18-1-1-1-6-1) [🔗](#atomic-molecular-statements-18-1-1-1-6)
+7. 17 عدد أوليّ إذا كانت 19 عددًا أوليًّا إذا فقط.[🔗](#atomic-molecular-statements-18-1-1-1-7-1) [🔗](#atomic-molecular-statements-18-1-1-1-7)
+8. 17 ليس عددًا أوليًّا إذا كانت 19 ليست عددًا أوليًّا إذا فقط.[🔗](#atomic-molecular-statements-18-1-1-1-8-1) [🔗](#atomic-molecular-statements-18-1-1-1-8)
 
-[🔗](#atomic-molecular-statements-18-1-1) Solution. First, let’s agree on some facts: 17 really is prime and odd, 18 is not either, and 19 is prime.
+[🔗](#atomic-molecular-statements-18-1-1) الحل. لنبدأ أوّلًا بالاتّفاق على بعض الحقائق: 17 عدد أوليّ وفرديّ في الوقت نفسه، و18 ليس واحدًا منهما، و19 عدد أوليّ.
 
-1. True. Both parts of the conjunction are true, so the entire statement is true.[🔗](#atomic-molecular-statements-18-2-1-1-1-1) [🔗](#atomic-molecular-statements-18-2-1-1-1)
-2. False. The first part is true, but the second part is false, so the entire statement is false.[🔗](#atomic-molecular-statements-18-2-1-1-2-1) [🔗](#atomic-molecular-statements-18-2-1-1-2)
-3. True. The first part is true, so the entire statement is true. As soon as we see one true statement in a disjunction, we can stop checking and declare the entire statement true.[🔗](#atomic-molecular-statements-18-2-1-1-3-1) [🔗](#atomic-molecular-statements-18-2-1-1-3)
-4. True. Since we use the inclusive or, the statement is true when both parts are true.[🔗](#atomic-molecular-statements-18-2-1-1-4-1) [🔗](#atomic-molecular-statements-18-2-1-1-4)
-5. True. Don’t be worried that there isn’t a good reason that 17 being prime *causes* 19 to be prime. That is not what we mean by a conditional statement. Since the “then” part is true, we know that the statement overall is true.[🔗](#atomic-molecular-statements-18-2-1-1-5-1) [🔗](#atomic-molecular-statements-18-2-1-1-5)
-6. True. The “if” part of the statement is false. That’s all we need. I bet you don’t even know what my favorite number is, and you don’t need to. The statement is true.[🔗](#atomic-molecular-statements-18-2-1-1-6-1) [🔗](#atomic-molecular-statements-18-2-1-1-6)
-7. True. Do both parts have the same truth value? Yes, since they are both true. So the entire statement is true.[🔗](#atomic-molecular-statements-18-2-1-1-7-1) [🔗](#atomic-molecular-statements-18-2-1-1-7)
-8. True as well. Now both parts are false (since both are the negation of a true statement), so the entire statement is true.[🔗](#atomic-molecular-statements-18-2-1-1-8-1) [🔗](#atomic-molecular-statements-18-2-1-1-8)
+1. صادقة. كلا جزأي العطف صادقان، إذًا فالعبارة كلّها صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-1-1) [🔗](#atomic-molecular-statements-18-2-1-1-1)
+2. خاطئة. الجزء الأول صادق، لكنّ الجزء الثاني خاطئ، إذًا فالعبارة كلّها خاطئة.[🔗](#atomic-molecular-statements-18-2-1-1-2-1) [🔗](#atomic-molecular-statements-18-2-1-1-2)
+3. صادقة. الجزء الأول صادق، إذًا فالعبارة كلّها صادقة. وفور أن نرى عبارة صادقة واحدة في الفصل، يمكننا التوقّف عن الفحص وإعلان أنّ العبارة كلّها صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-3-1) [🔗](#atomic-molecular-statements-18-2-1-1-3)
+4. صادقة. ولأنّنا نستخدم «أو» الشاملة، فإنّ العبارة صادقة عندما يكون كلا الجزأين صادقًا.[🔗](#atomic-molecular-statements-18-2-1-1-4-1) [🔗](#atomic-molecular-statements-18-2-1-1-4)
+5. صادقة. لا تقلق من عدم وجود سبب جيّد بأنّ كون 17 عددًا أوليًّا *يسبّب* كون 19 عددًا أوليًّا. فليس هذا ما نعنيه بعبارة شرطية. وبما أنّ جزء «فإنّ» صادق، فإنّنا نعلم أنّ العبارة ككلّ صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-5-1) [🔗](#atomic-molecular-statements-18-2-1-1-5)
+6. صادقة. جزء «إذا» في العبارة خاطئ. وهذا كلّ ما نحتاجه. وأراهنّ أنّك لا تعرف حتى عددي المفضّل، ولا تحتاج إلى معرفته. العبارة صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-6-1) [🔗](#atomic-molecular-statements-18-2-1-1-6)
+7. صادقة. هل لكلا الجزأين قيمة صدق واحدة؟ نعم، لأنّهما كلاهما صادق. إذًا فالعبارة كلّها صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-7-1) [🔗](#atomic-molecular-statements-18-2-1-1-7)
+8. صادقة أيضًا. فالجزآن كلاهما الآن خاطئان (لأنّهما كلاهما نفي عبارة صادقة)، إذًا فالعبارة كلّها صادقة.[🔗](#atomic-molecular-statements-18-2-1-1-8-1) [🔗](#atomic-molecular-statements-18-2-1-1-8)
 
-[🔗](#atomic-molecular-statements-18-2-1) [🔗](#atomic-molecular-statements-18-2) [🔗](#atomic-molecular-statements-18)The way we define logical connectives and their truth value is very precise and technical. Often, language is not. Part of learning how to communicate mathematics is learning the cultural norms of mathematical language and how to translate statements in ordinary language into these technical statements. This will get easier with practice, so make sure you are talking to lots of people about the math you are studying.[🔗](#atomic-molecular-statements-19) Here are a few examples of how ordinary language might be difficult to translate.[🔗](#atomic-molecular-statements-20)
+[🔗](#atomic-molecular-statements-18-2-1) [🔗](#atomic-molecular-statements-18-2) [🔗](#atomic-molecular-statements-18)الطريقة التي نُعرِّف بها الروابط المنطقية وقيمة صدقها دقيقة وتقنيّة إلى حدٍّ كبير. أمّا اللغة فليست كذلك في غالب الأحيان. ومن جوانب تعلّم كيفية توصيل الرياضيات هو تعلّم الأعراف الثقافية للغة الرياضية وكيفية ترجمة العبارات باللغة العادية إلى هذه العبارات التقنية. وسيصبح هذا أسهل مع الممارسة، لذا تأكّد من تحدّثك مع كثيرين عن الرياضيات التي تدرسها.[🔗](#atomic-molecular-statements-19) وفيما يلي بعض الأمثلة على كيف قد تكون اللغة العادية صعبة الترجمة.[🔗](#atomic-molecular-statements-20)
 
-#### Example 1.1.11.
+#### مثال 1.1.11.
 
-Identify the logical structure of each of the following statements.
+حدّد البنية المنطقية لكلٍّ من العبارات التالية.
 
-1. 4 and 5 are both prime.[🔗](#atomic-molecular-statements-21-1-1-1-1-1) [🔗](#atomic-molecular-statements-21-1-1-1-1)
-2. Only one of 4 or 5 is prime.[🔗](#atomic-molecular-statements-21-1-1-1-2-1) [🔗](#atomic-molecular-statements-21-1-1-1-2)
-3. You must attend every day and do the homework to pass this class.[🔗](#atomic-molecular-statements-21-1-1-1-3-1) [🔗](#atomic-molecular-statements-21-1-1-1-3)
-4. Every number is even or odd.[🔗](#atomic-molecular-statements-21-1-1-1-4-1) [🔗](#atomic-molecular-statements-21-1-1-1-4)
+1. 4 و5 كلاهما عدد أوليّ.[🔗](#atomic-molecular-statements-21-1-1-1-1-1) [🔗](#atomic-molecular-statements-21-1-1-1-1)
+2. واحد فقط من 4 أو 5 عدد أوليّ.[🔗](#atomic-molecular-statements-21-1-1-1-2-1) [🔗](#atomic-molecular-statements-21-1-1-1-2)
+3. عليك أن تحضر كلّ يوم وأن تحلّ الواجب كي تنجح في هذه المادة.[🔗](#atomic-molecular-statements-21-1-1-1-3-1) [🔗](#atomic-molecular-statements-21-1-1-1-3)
+4. كلّ عدد زوجي أو فردي.[🔗](#atomic-molecular-statements-21-1-1-1-4-1) [🔗](#atomic-molecular-statements-21-1-1-1-4)
 
-[🔗](#atomic-molecular-statements-21-1-1) Solution.
+[🔗](#atomic-molecular-statements-21-1-1) الحل.
 
-1. Do you agree this is the same statement as “4 is prime, *and* 5 is prime”? Notice that it would not make sense to write this as \(P \wedge Q\) where \(P\) is “4” and \(Q\) is “5 is prime”. But if we let \(P\) be the statement, “4 is prime,” then both parts of the conjunction are statements.[🔗](#atomic-molecular-statements-21-2-1-1-1-1) [🔗](#atomic-molecular-statements-21-2-1-1-1)
-2. Again, we can’t just put what is on one side of the “or” as a statement. But if we let \(P\) be “4 is prime” and \(Q\) be “5 is prime,”, then we can write this as \((P \vee Q) \wedge \neg (P \wedge Q)\text{.}\) That is, either 4 is prime or 5 is prime, and it is not the case that both 4 is prime and 5 is prime.[🔗](#atomic-molecular-statements-21-2-1-1-2-1) [🔗](#atomic-molecular-statements-21-2-1-1-2)
-3. Here is another way you could phrase the same statement: If you pass the class, then it must be the case that you attended every day and that you did the homework. If we agree that this is just a clearer way to state the original statement, then we could illustrate its structure as \(P \imp (Q \wedge R)\text{.}\)[🔗](#atomic-molecular-statements-21-2-1-1-3-1) [🔗](#atomic-molecular-statements-21-2-1-1-3)
-4. Notice that this is not the same as saying, “Every number is even, or every number is odd.” Of course, saying, “3 is even or odd,” *is* the same as saying, “3 is even, or 3 is odd.” Language is confusing![🔗](#atomic-molecular-statements-21-2-1-1-4-1) We don’t yet have the logical technology to translate this statement as anything more than \(P\text{,}\) where \(P\) is the statement, “Every number is even or odd.” Luckily, that technology is available, starting... now![🔗](#atomic-molecular-statements-21-2-1-1-4-2) [🔗](#atomic-molecular-statements-21-2-1-1-4)
+1. هل توافق على أنّ هذه هي العبارة نفسها التي تقول «4 عدد أوليّ، *و*5 عدد أوليّ»؟ لاحظ أنّه لا معنى لكتابة هذا على صورة \(P \wedge Q\) حيث \(P\) هي «4» و\(Q\) هي «5 عدد أوليّ». لكنّنا إن أخذنا \(P\) لتكون العبارة «4 عدد أوليّ،» فإنّ كلا جزئي العطف يكونان عبارتين.[🔗](#atomic-molecular-statements-21-2-1-1-1-1) [🔗](#atomic-molecular-statements-21-2-1-1-1)
+2. مرّة أخرى، لا يمكننا وضع ما على أحد طرفي «أو» بوصفه عبارة. لكنّنا إن أخذنا \(P\) لتكون «4 عدد أوليّ» و\(Q\) لتكون «5 عدد أوليّ،» أمكننا كتابة ذلك على صورة \((P \vee Q) \wedge \neg (P \wedge Q)\text{.}\) أي إنّ 4 عدد أوليّ أو 5 عدد أوليّ، وليس الحال أنّ 4 عدد أوليّ و5 عدد أوليّ معًا.[🔗](#atomic-molecular-statements-21-2-1-1-2-1) [🔗](#atomic-molecular-statements-21-2-1-1-2)
+3. وفيما يلي طريقة أخرى لصياغة العبارة نفسها: إذا نجحت في المادة، فلا بدّ أن تكون قد حضرت كلّ يوم وأن تكون قد حلّلت الواجب. فإن اتّفقنا على أنّ هذه ليست سوى طريقة أوضح لقول العبارة الأصلية، فيمكننا توضيح بنيتها على صورة \(P \imp (Q \wedge R)\text{.}\)[🔗](#atomic-molecular-statements-21-2-1-1-3-1) [🔗](#atomic-molecular-statements-21-2-1-1-3)
+4. لاحظ أنّ هذا ليس معناه القول إنّ «كلّ الأعداد زوجية، أو كلّ الأعداد فردية». وبالطّبع، فإنّ القول إنّ «3 زوجيّ أو فرديّ،» *يكافئ* القول إنّ «3 زوجيّ، أو 3 فرديّ». فاللغة محيّرة![🔗](#atomic-molecular-statements-21-2-1-1-4-1) وليس لدينا بعد التقنية المنطقية لترجمة هذه العبارة على صورة تتجاوز \(P\text{,}\) حيث \(P\) هي العبارة «كلّ الأعداد زوجية أو فردية». ولحسن الحظّ فإنّ تلك التقنية متاحة، ابتداءً من... الآن![🔗](#atomic-molecular-statements-21-2-1-1-4-2) [🔗](#atomic-molecular-statements-21-2-1-1-4)
 
 [🔗](#atomic-molecular-statements-21-2-1) [🔗](#atomic-molecular-statements-21-2) [🔗](#atomic-molecular-statements-21)[🔗](#atomic-molecular-statements)
 
-### Subsection Quantifiers and Predicates
+### المكمِّمات والمنشِّقات
 
-Did you know that all mammals have hair? That every integer is even or odd? That some odd numbers are not prime?[🔗](#subsec_logic-statements-quant-2) Our goal is to explore how to write statements such as these in mathematical notation to highlight the logical structure of the statements.[🔗](#subsec_logic-statements-quant-3) This will require considering a new sort of basic sentence called a predicate, which is like a statement, but contains a free variable. When you replace that variable with a constant of some sort, then the sentence becomes a statement proper. Think of a predicate as making a claim about the values that are substituted for the “placeholder” variable(s).[🔗](#subsec_logic-statements-quant-4) A predicate can be made into a (true or false) statement by evaluating it at some constant(s), or we can claim that some or all possible constants would make the resulting statement true or false. This is done using quantifiers.[🔗](#subsec_logic-statements-quant-5)
+هل تعلم أنّ جميع الثدييات لها شعر؟ وأنّ كل عدد صحيح زوجيّ أو فرديّ؟ وأنّ بعض الأعداد الفردية ليست أوليّة؟[🔗](#subsec_logic-statements-quant-2) وهدفنا هو استكشاف كيفية كتابة عبارات مثل هذه بالترميز الرياضي لإبراز بنيتها المنطقية.[🔗](#subsec_logic-statements-quant-3) وهذا يتطلّب النظر في نوعٍ جديد من الجمل الأساسية يُسمّى المنشِق (predicate)، وهو يشبه العبارة، لكنّه يحتوي متغيّرًا حرًّا. فإذا استبدلتَ ذلك المتغيّر بثابتٍ من نوع ما، تصارت الجملة عبارةً بالمعنى الدقيق. فكّر في المنشِق على أنه يدّعي شيئًا عن القيم التي تُستبدل بالمتغيّر «العنصر النائب».[🔗](#subsec_logic-statements-quant-4) ويمكن تحويل المنشِق إلى عبارة (صادقة أو كاذبة) بتقييمه عند ثوابت، أو يمكننا أن ندّعي أنّ بعض الثوابت الممكنة أو كلّها ستجعل العبارة الناتجة صادقة أو كاذبة. ويتمّ ذلك باستخدام المكمِّمات.[🔗](#subsec_logic-statements-quant-5)
 
-#### Definition 1.1.12. Quantifiers.
+#### التعريف 1.1.12. المكمِّمات.
 
-The universal quantifier is written \(\forall\) and is read, “for all.” The existential quantifier is written \(\exists\) and is read, “there exists” or “for some.”[🔗](#def-quantifiers-7-1) [🔗](#def-quantifiers)We usually write predicates similar to how you write a function, although with capital letters. For example, we might use the predicate \(P(x)\) to represent “\(x\) is prime”. We can then say that \(P(7)\) is true (since 7 is prime) and that \(P(8)\) is false. Or using quantifiers, we can (falsely) claim that all numbers are prime by writing \(\forall x P(x)\) or (truthfully) claim that there is at least one prime number, by writing \(\exists x P(x)\text{.}\)[🔗](#subsec_logic-statements-quant-7)
+يُكتب المكمِّم الكلي \(\forall\) ويُقرأ «لكلّ». ويُكتب المكمِّم الوجودي \(\exists\) ويُقرأ «يوجد» أو «لبعض».[🔗](#def-quantifiers-7-1) [🔗](#def-quantifiers)ونحن عادةً ما نكتب المنشِقات بطريقة مشابهة لطريقة كتابة دالة، وإن كان ذلك بحروف كبيرة. فمثلًا قد نستخدم المنشِق \(P(x)\) للدلالة على «\(x\) عدد أوليّ». يمكننا عندئذٍ أن نقول إنّ \(P(7)\) صادقة (لأنّ 7 عدد أوليّ) وإنّ \(P(8)\) خاطئة. أو باستخدام المكمِّمات يمكننا أن ندّعي (بصورة خاطئة) أنّ كل الأعداد أوليّة بكتابة \(\forall x P(x)\)، أو أن ندّعي (بصورة صادقة) أنّ هناك عددًا أوليًّا واحدًا على الأقلّ بكتابة \(\exists x P(x)\text{.}\)[🔗](#subsec_logic-statements-quant-7)
 
-#### Example 1.1.13.
+#### مثال 1.1.13.
 
-Translate the statement, “Every number is even or odd,” into symbols.[🔗](#subsec_logic-statements-quant-8-3-1) Solution. Before we even start using symbols, it is helpful to rephrase this in a way that captures the logical structure of the statement. What is the claim saying? Given any number, it will either be the case that the number is even, or that the number is odd. In particular, we are not claiming that either all numbers are even or all numbers are odd.[🔗](#subsec_logic-statements-quant-8-4-1) Let’s use \(E(x)\) to say that \(x\) is even, and \(O(x)\) to say that \(x\) is odd. Then we can write, \begin{equation*} E(x) \vee O(x) \end{equation*} to say that \(x\) is even or \(x\) is odd. Which \(x\) is that true for (according to the claim)? *All* of them. So we write the statement as, \begin{equation*} \forall x (O(x) \vee E(x))\text{.} \end{equation*} We added some parentheses to emphasize that the scope of the universal quantifier includes both predicates. [🔗](#subsec_logic-statements-quant-8-4-2) Note that if we incorrectly interpreted the statement as claiming that either all numbers are even or all numbers are odd, we could write that as \(\forall x O(x) \vee \forall x E(x)\text{.}\) This is not the same![🔗](#subsec_logic-statements-quant-8-4-3) [🔗](#subsec_logic-statements-quant-8-4) [🔗](#subsec_logic-statements-quant-8)Just like we did for propositional logic and the logical connectives, we should decide what it means for a quantified predicate to be true or false. We say \(\forall x P(x)\) is true if \(P(a)\) is true no matter what constant \(a\) we substitute for \(x\text{.}\) And similarly, \(\exists x P(x)\) is true if there is at least one value \(a\) for which \(P(a)\) is true.[🔗](#subsec_logic-statements-quant-9) However, we must be careful here. Consider the statement \begin{equation*} \forall x \exists y (y \lt x)\text{.} \end{equation*} You would read this, “For every \(x\) there is some \(y\) such that \(y\) is less than \(x\text{.}\)” Note that \(\lt\) is a predicate with two free variables; we have chosen to write it with the symbol between the variables instead of the funky-looking \(L(y,x)\) or \(\lt\!(y,x)\text{.}\) [🔗](#subsec_logic-statements-quant-10) Is this statement true? The answer depends on our domain of discourse. When we say “for all” \(x\text{,}\) do we mean all positive integers or all real numbers or all elephants or...? Usually, this information is implied by the context of the statement. In discrete mathematics, we almost always quantify over the *natural numbers*, \(0, 1, 2,\ldots \text{,}\) so let’s take that for our domain of discourse here.[🔗](#subsec_logic-statements-quant-11) For the statement to be true, we need, no matter what natural number we select, for there to be some natural number that is strictly smaller. Perhaps we could let \(y\) be \(x-1\text{?}\) But here is the problem: what if \(x = 0\text{?}\) Then \(y = -1\text{,}\) and that is *not a number!* (in our domain of discourse). Thus we see that the statement is false because there is a number less than or equal to all other numbers. In symbols, \begin{equation*} \exists x \forall y (y \ge x)\text{.} \end{equation*} [🔗](#subsec_logic-statements-quant-12) We will explore some rules for working with quantifiers and other connectives in [Section 1.3](sec_logic-rules.html). For now, we will focus on translating between informal statements in ordinary language and the more precise language of logic. There is no perfect algorithm for doing this translation, but here are a few useful rules of thumb.[🔗](#subsec_logic-statements-quant-13)
+ترجم العبارة «كلّ الأعداد زوجية أو فردية» إلى رموز.[🔗](#subsec_logic-statements-quant-8-3-1) الحل. قبل أن نبدأ حتى باستخدام الرموز، من المفيد أن نعيد صياغة ذلك بطريقة تلتقط البنية المنطقية للعبارة. فماذا تقول هذه الدعوى؟ إنّنا مع أيّ عدد، إمّا أن يكون العدد زوجيًّا وإمّا أن يكون فرديًّا. وبخاصة، فإنّنا لا ندّعي إمّا أنّ كلّ الأعداد زوجية أو أنّ كلّ الأعداد فردية.[🔗](#subsec_logic-statements-quant-8-4-1) لنستخدم \(E(x)\) للدلالة على أنّ \(x\) زوجيّ، و\(O(x)\) للدلالة على أنّ \(x\) فرديّ. ثمّ يمكننا أن نكتب \begin{equation*} E(x) \vee O(x) \end{equation*} للدلالة على أنّ \(x\) زوجيّ أو أنّ \(x\) فرديّ. فأيّ \(x\) يصحّ ذلك عليه (بحسب الدعوى)؟ *جميعها*. ولذلك نكتب العبارة على صورة \begin{equation*} \forall x (O(x) \vee E(x))\text{.} \end{equation*} أضفنا بعض الأقواس للتأكيد على أنّ مدى المكمِّم الكلي يشمل كلا المنشِقين. [🔗](#subsec_logic-statements-quant-8-4-2) ولاحظ أنّه لو فسّرنا العبارة على نحو خاطئ بوصفها تدّعي إمّا أنّ كلّ الأعداد زوجية أو أنّ كلّ الأعداد فردية، لكان بإمكاننا كتابتها على صورة \(\forall x O(x) \vee \forall x E(x)\text{.}\) وهذا ليس الشيء نفسه![🔗](#subsec_logic-statements-quant-8-4-3) [🔗](#subsec_logic-statements-quant-8-4) [🔗](#subsec_logic-statements-quant-8)وكما فعلنا مع منطق العبارات (propositional logic) والروابط المنطقية، علينا أن نقرّر ما معنى أن يكون منشِقٌ مُكمَّمٌ صادقًا أو كاذبًا. نقول إنّ \(\forall x P(x)\) صادق إذا كانت \(P(a)\) صادقة مهما كان الثابت \(a\) الذي نستبدله بـ\(x\text{.}\) وبالمثل، إنّ \(\exists x P(x)\) صادق إذا وُجدت قيمة واحدة على الأقلّ \(a\) تكون عندها \(P(a)\) صادقة.[🔗](#subsec_logic-statements-quant-9) غير أنّنا يجب أن نكون حذرين هنا. تأمّل العبارة \begin{equation*} \forall x \exists y (y \lt x)\text{.} \end{equation*} وستقرأها: «لكلّ \(x\) يوجد \(y\) بحيث يكون \(y\) أصغر من \(x\text{.}\)» لاحظ أنّ \(\lt\) منشِق ذو متغيّرَين حرّين؛ وقد اخترنا كتابته بالرمز الموضوع بين المتغيّرَين بدلًا من \(L(y,x)\) أو \(\lt\!(y,x)\text{.}\) ذي الشكل الغريب. [🔗](#subsec_logic-statements-quant-10) هل هذه العبارة صادقة؟ يعتمد الجواب على مجال الخطاب (domain of discourse) لدينا. حين نقول «لكلّ» \(x\text{,}\) هل نعني كلّ الأعداد الصحيحة الموجبة، أم كلّ الأعداد الحقيقية، أم كلّ الفيلة، أم...؟ وعادةً ما تكون هذه المعلومة مفترضة ضمن سياق العبارة. وفي الرياضيات المتقطّعة، نُكمِّم دائمًا تقريبًا على *الأعداد الطبيعية* \(0, 1, 2,\ldots \text{,}\) فلنعتبرها هنا مجالَ خطابنا.[🔗](#subsec_logic-statements-quant-11) وكي تكون العبارة صادقة، نحتاج إلى أنّه مهما كان العدد الطبيعي الذي نختاره، يوجد عدد طبيعي أصغر منه تمامًا. ربّما يمكننا أن نختار \(y\) يساوي \(x-1\text{?}\) لكنّ المشكلة هنا: ماذا لو كان \(x = 0\text{?}\) عندئذٍ \(y = -1\text{,}\) وهذا *ليس عددًا!* (في مجال خطابنا). وهكذا نرى أنّ العبارة خاطئة، لأنّ هناك عددًا أصغر من أو يساوي سائرَ الأعداد. وبالرموز، \begin{equation*} \exists x \forall y (y \ge x)\text{.} \end{equation*} [🔗](#subsec_logic-statements-quant-12) وسنستكشف بعض القواعد للعمل مع المكمِّمات والروابط الأخرى في [القسم 1.3](sec_logic-rules.html). أمّا الآن فسنركّز على الترجمة بين العبارات غير الرسمية باللغة العادية واللغة المنطقية الأدقّ. ولا توجد خوارزمية مثالية لإجراء هذه الترجمة، لكنّ إليك بعض القواعد الإرشادية المفيدة.[🔗](#subsec_logic-statements-quant-13)
 
-#### Every blank is blank.
+#### كلّ فراغ هو فراغ.
 
-Any statement of the form, “Every \(P\)-thing is a \(Q\)-thing” can be written as \begin{equation*} \forall x(P(x) \imp Q(x))\text{.} \end{equation*} [🔗](#assemblage-universal-rot-2) Example: all mammals have hair, becomes \(\forall x (M(x) \imp H(x))\text{,}\) where \(M(x)\) means \(x\) is a mammal, and \(H(x)\) means \(x\) has hair.[🔗](#assemblage-universal-rot-3) [🔗](#assemblage-universal-rot)To make sense of this, think about what we mean by statements like these in terms of sets. We claim that the set of mammals is contained in, or is a subset of, the set of hairy things. What we mean by “\(A\) is a subset of \(B\)” is precisely that every element of \(x\) is an element of \(y\text{.}\) This can also be expressed by saying that “if \(x\) is an element of \(A\text{,}\) then \(x\) is also an element of \(B\text{.}\)”[🔗](#subsec_logic-statements-quant-15)
+أيّ عبارة من الصورة «كلّ شيء ذي \(P\) هو شيء ذي \(Q\)» يمكن كتابتها على صورة \begin{equation*} \forall x(P(x) \imp Q(x))\text{.} \end{equation*} [🔗](#assemblage-universal-rot-2) فمثلًا: جميع الثدييات لها شعر، تصبح \(\forall x (M(x) \imp H(x))\text{,}\) حيث \(M(x)\) تعني أنّ \(x\) ثدييّ، و\(H(x)\) تعني أنّ \(x\) له شعر.[🔗](#assemblage-universal-rot-3) [🔗](#assemblage-universal-rot)ولكي نفهم ذلك، فكّر فيما نعنيه بعبارات مثل هذه بالمجموعات. فنحن ندّعي أنّ مجموعة الثدييات مجموعةٌ محتواة في، أو مجموعة جزئية من، مجموعة الأشياء ذات الشعر. ومعنى قولنا «\(A\) مجموعة جزئية من \(B\)» هو بالضبط أنّ كل عنصر من \(x\) هو عنصر من \(y\text{.}\) ويمكن التعبير عن ذلك أيضًا بقولنا «إذا كان \(x\) عنصرًا في \(A\text{,}\) فإنّ \(x\) عنصر أيضًا في \(B\text{.}\)»[🔗](#subsec_logic-statements-quant-15)
 
-#### Some blanks are blank.
+#### بعض الفراغات فراغ.
 
-Any statement of the form, “Some \(P\)-things are \(Q\)-things,” can be written as \begin{equation*} \exists x (P(x) \wedge Q(x))\text{.} \end{equation*} [🔗](#assemblage-existential-rot-2) Example: Some cats can swim, becomes \(\exists x (C(x) \wedge S(x))\text{,}\) where \(C(x)\) means \(x\) is a cat, and \(S(x)\) means \(x\) can swim.[🔗](#assemblage-existential-rot-3) [🔗](#assemblage-existential-rot)Again, it is helpful to think of how to express such statements in terms of sets. To say that some cats can swim is to say that there are things that belong both to the set of cats and to the set of swimming things. Such animals belong to the *intersection* of these two sets, which you can describe as belonging to the first set *and* the second set. Existential statements of this form claim that the intersection of the two sets is not empty.[🔗](#subsec_logic-statements-quant-17)
+أيّ عبارة من الصورة «بعض الأشياء ذات \(P\) هي أشياء ذات \(Q\)» يمكن كتابتها على صورة \begin{equation*} \exists x (P(x) \wedge Q(x))\text{.} \end{equation*} [🔗](#assemblage-existential-rot-2) فمثلًا: بعض القطط تستطيع السباحة، تصبح \(\exists x (C(x) \wedge S(x))\text{,}\) حيث \(C(x)\) تعني أنّ \(x\) قطة، و\(S(x)\) تعني أنّ \(x\) يستطيع السباحة.[🔗](#assemblage-existential-rot-3) [🔗](#assemblage-existential-rot)ومرّة أخرى، من المفيد أن نفكّر في كيفية التعبير عن هذه العبارات بالمجموعات. فالقول إنّ بعض القطط تستطيع السباحة هو القول إنّ هناك أشياء تنتمي إلى مجموعة القطط وإلى مجموعة الأشياء السابحة معًا. فهذه الحيوانات تنتمي إلى *تقاطع* هاتين المجموعتين، وهو ما يمكنك وصفه بأنها تنتمي إلى المجموعة الأولى *و*الثانية. وعبارات الوجود من هذه الصورة تدّعي أنّ تقاطع المجموعتين ليس فارغًا.[🔗](#subsec_logic-statements-quant-17)
 
-#### Implicit Quantifiers.
+#### المكمِّمات الضمنية.
 
-It is always a good idea to be precise in mathematics. Sometimes though, we can relax a bit, as long as we all agree on a convention. An example of such a convention is to assume that sentences containing predicates with free variables are intended as statements, where the variables are universally quantified.[🔗](#pars-implicituantifiers-5) For example, do you believe that if a shape is a square, then it is a rectangle? But how can that be true if it is not a statement? To be a little more precise, we have two predicates: \(S(x)\) for “\(x\) is a square” and \(R(x)\) for “\(x\) is a rectangle”. The *sentence* we are looking at is \begin{equation*} S(x) \imp R(x)\text{.} \end{equation*} This is neither true nor false, as it is not a statement. But come on! We all know that we meant to consider the statement, \begin{equation*} \forall x (S(x) \imp R(x))\text{,} \end{equation*} and this is what our convention tells us to consider. We call the resulting statement the universal generalization of the original sentence. [🔗](#pars-implicituantifiers-6)
+الدقة في الرياضيات أمر دائمًا جيّد. لكنّنا نستطيع أحيانًا أن نخفّف قليلًا، ما دام الجميع متّفقًا على اتّفاق (convention). ومن أمثلة هذا الاتّفاق افتراض أنّ الجمل التي تحتوي منشِقات ذات متغيّرات حرة مقصود بها أن تكون عبارات، فتُكمَّم متغيّراتها كمّيًّا كليًّا.[🔗](#pars-implicituantifiers-5) فمثلًا، هل تصدّق أنّه إذا كان شكلٌ ما مربّعًا، فإنّه مستطيل؟ لكنّ كيف يمكن أن يكون ذلك صادقًا إن لم تكن عبارةً؟ ولأدقّ قليلًا، لدينا منشِقان: \(S(x)\) لتعني «\(x\) مربّع» و\(R(x)\) لتعني «\(x\) مستطيل». أمّا *الجملة* التي نتحدّث عنها فهي \begin{equation*} S(x) \imp R(x)\text{.} \end{equation*} وهي ليست صادقة ولا خاطئة، لأنّها ليست عبارةً. لكن تعالَ! فنحن جميعًا نعلم أنّنا قصدنا النظر في العبارة \begin{equation*} \forall x (S(x) \imp R(x))\text{,} \end{equation*} وهذا هو ما يخبرنا به اتّفاقنا بأن ننظر إليه. ونسمي العبارة الناتجة التعميمَ الكليّ (universal generalization) للجملة الأصلية. [🔗](#pars-implicituantifiers-6)
 
-#### Definition 1.1.14.
+#### التعريف 1.1.14.
 
-Given a sentence with free variables, the universal generalization of that sentence is the statement obtained by adding enough universal quantifiers to the beginning of the sentence so that all free variables become bound.[🔗](#def-univerals-generalization-2-1) [🔗](#def-univerals-generalization)Similarly, we will often be a bit sloppy about the distinction between a predicate and a statement. For example, we might write, *let \(P(n)\) be the statement*, “\(n\) is prime,” which is technically incorrect. It is implicit that we mean that we are defining \(P(n)\) to be a predicate, which for each \(n\) becomes the statement, \(n\) is prime.[🔗](#pars-implicituantifiers-8) [🔗](#pars-implicituantifiers)[🔗](#subsec_logic-statements-quant)
+بالنسبة إلى جملة ذات متغيّرات حرة، فإنّ التعميم الكليّ لتلك الجملة هو العبارة التي تُحصل عليها بإضافة مكمِّمات كلّية كافية في بداية الجملة بحيث تصبح جميع المتغيّرات الحرّة مربوطة.[🔗](#def-univerals-generalization-2-1) [🔗](#def-univerals-generalization)وبالمثل، كثيرًا ما نكون مهملين قليلًا في التمييز بين المنشِق والعبارة. فمثلًا قد نكتب: *ولنجعل \(P(n)\) هي العبارةَ* «\(n\) عدد أوليّ»، وهو غير صحيح تقنيًّا. فالمفترض ضمنًا أنّنا نعني أنّنا نعرّف \(P(n)\) ليكون منشِقًا، يتحوّل مع كل \(n\) إلى العبارة «\(n\) عدد أوليّ».[🔗](#pars-implicituantifiers-8) [🔗](#pars-implicituantifiers)[🔗](#subsec_logic-statements-quant)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
 - \(P \wedge Q\)
-- \(P\) and \(Q\) (conjunction)
+- \(P\) و\(Q\) (عطف)
 - \(P \imp Q\)
-- If \(P\text{,}\) then \(Q\text{,}\) (implication)
+- إذا كان \(P\text{,}\) فإنّ \(Q\text{,}\) (استلزام)
 - \(P \vee Q\)
-- \(P\) or \(Q\) (disjunction)
+- \(P\) أو \(Q\) (فصل)
 - \(\neg P\)
-- Not \(P\) (negation)
+- ليس \(P\) (نفي)
 
 [🔗](#rq-logic-statements-connective-type)
 
 #### 2.
 
-Consider the sentence, “If \(x \gt 3\text{,}\) then \(x\) is even.”[🔗](#rq-logic-statements-free-vars-1-1) Which of the following statements are true about the sentence? Select all that apply.[🔗](#rq-logic-statements-free-vars-1-2)
+تأمّل الجملة «إذا كان \(x \gt 3\text{,}\) فإنّ \(x\) زوجيّ.»[🔗](#rq-logic-statements-free-vars-1-1) أيّ العبارات التالية صادقة عن هذه الجملة؟ اختر كل ما ينطبق.[🔗](#rq-logic-statements-free-vars-1-2)
 
-- The sentence is a false statement since it has a free variable.
-- For what values of the free variable \(x\text{?}\)
-- The universal generalization of the sentence is a statement.
-- The only thing holding the sentence back from being a statement is the free variable \(x\text{.}\) The universal generalization quantifies this free variable.
-- If you substitute \(10\) for \(x\text{,}\) the resulting statement is true.
-- With this substitution, both the “if” and “then” parts are true.
-- The sentence becomes a true statement no matter what natural number you substitute for \(x\text{.}\)
-- If you replace \(x\) with \(5\text{,}\) then the “if” part is true and the “then” part is false.
+- الجملة عبارة خاطئة لأنّ فيها متغيّرًا حرًّا.
+- لأيّ قيم المتغيّر الحرّ \(x\text{?}\)
+- التعميم الكليّ للجملة عبارة.
+- الشيء الوحيد الذي يمنع الجملة من أن تكون عبارة هو المتغيّر الحرّ \(x\text{.}\) فالتعميم الكليّ يكمّم هذا المتغيّر الحرّ.
+- إذا استبدلتَ \(10\) مكان \(x\text{,}\) فإنّ العبارة الناتجة صادقة.
+- مع هذا الاستبدال، فإنّ جزأَي «إذا» و«فإنّ» كلاهما صادق.
+- تصير الجملة عبارة صادقة مهما كان العدد الطبيعي الذي تستبدله بـ\(x\text{.}\)
+- إذا استبدلتَ \(x\) بـ\(5\text{,}\) فإنّ جزء «إذا» صادق وجزء «فإنّ» خاطئ.
 
 [🔗](#rq-logic-statements-free-vars)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-logic-statements-q-1-1) [🔗](#rq-logic-statements-q)[🔗](#rqs-logic-statements)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب سؤالًا واحدًا على الأقلّ حول محتوى هذا القسم يثير فضولك.[🔗](#rq-logic-statements-q-1-1) [🔗](#rq-logic-statements-q)[🔗](#rqs-logic-statements)
 
-### Exercises Practice Problems
+### تمارين تمارين تطبيقية
 
 #### 1.
 
-Activate For each sentence below, decide whether it is an atomic statement, a molecular statement, or not a statement at all.[🔗](#extracted-webwork-1-1-1-1)
+فعِّل لكلّ من الجمل أدناه، قرّر ما إذا كانت عبارة ذرية، أم عبارة جزئية، أم ليست عبارة أصلًا.[🔗](#extracted-webwork-1-1-1-1)
 
-1. Some say the end is near, and some say we’ll see Armageddon soon.[🔗](#extracted-webwork-1-1-1-2-1-1-1) [🔗](#extracted-webwork-1-1-1-2-1-1)
-2. Mom’s coming ’round to put it back the way it ought to be.[🔗](#extracted-webwork-1-1-1-2-1-2-1) [🔗](#extracted-webwork-1-1-1-2-1-2)
-3. Learn to swim.[🔗](#extracted-webwork-1-1-1-2-1-3-1) [🔗](#extracted-webwork-1-1-1-2-1-3)
+1. يقول بعضهم إنّ النهاية قريبة، ويقول بعضهم إنّنا سنرى الكارثة الكبرى قريبًا.[🔗](#extracted-webwork-1-1-1-2-1-1-1) [🔗](#extracted-webwork-1-1-1-2-1-1)
+2. ستأتي والدتي لتعيده إلى ما ينبغي أن يكون عليه.[🔗](#extracted-webwork-1-1-1-2-1-2-1) [🔗](#extracted-webwork-1-1-1-2-1-2)
+3. تعلّم السباحة.[🔗](#extracted-webwork-1-1-1-2-1-3-1) [🔗](#extracted-webwork-1-1-1-2-1-3)
 
 [🔗](#extracted-webwork-1-1-1-2) [🔗](#ww-statements-classify)
 
 #### 2.
 
-Activate Classify each of the sentences below as an atomic statement, a molecular statement, or not a statement at all. If the statement is molecular, say what kind it is (conjuction, disjunction, conditional, biconditional, negation).[🔗](#extracted-webwork-2-1-1-1)
+فعِّل صنّف كلّ من الجمل أدناه بوصفها عبارة ذرية، أو عبارة جزئية، أو ليست عبارة أصلًا. فإذا كانت العبارة جزئية، فاذكر نوعها (عطف، فصل، شرط، تكافؤ، نفي).[🔗](#extracted-webwork-2-1-1-1)
 
-1. Everybody can be fooled sometimes.[🔗](#extracted-webwork-2-1-1-2-1-1-1) [🔗](#extracted-webwork-2-1-1-2-1-1)
-2. Every natural number greater than 1 is either prime or composite.[🔗](#extracted-webwork-2-1-1-2-1-2-1) [🔗](#extracted-webwork-2-1-1-2-1-2)
-3. Go to your room![🔗](#extracted-webwork-2-1-1-2-1-3-1) [🔗](#extracted-webwork-2-1-1-2-1-3)
-4. The Broncos will win the Super Bowl, or I’ll eat my hat.[🔗](#extracted-webwork-2-1-1-2-1-4-1) [🔗](#extracted-webwork-2-1-1-2-1-4)
-5. This shirt is not black.[🔗](#extracted-webwork-2-1-1-2-1-5-1) [🔗](#extracted-webwork-2-1-1-2-1-5)
+1. يمكن خداع الجميع أحيانًا.[🔗](#extracted-webwork-2-1-1-2-1-1-1) [🔗](#extracted-webwork-2-1-1-2-1-1)
+2. كلّ عدد طبيعي أكبر من 1 إمّا أوليّ أو مؤلَّف.[🔗](#extracted-webwork-2-1-1-2-1-2-1) [🔗](#extracted-webwork-2-1-1-2-1-2)
+3. اذهب إلى غرفتك![🔗](#extracted-webwork-2-1-1-2-1-3-1) [🔗](#extracted-webwork-2-1-1-2-1-3)
+4. سيفوز فريق برونكوز بدوريّة Super Bowl، أو سآكل قبّعي.[🔗](#extracted-webwork-2-1-1-2-1-4-1) [🔗](#extracted-webwork-2-1-1-2-1-4)
+5. هذا القميص ليس أسود.[🔗](#extracted-webwork-2-1-1-2-1-5-1) [🔗](#extracted-webwork-2-1-1-2-1-5)
 
 [🔗](#extracted-webwork-2-1-1-2) [🔗](#ww-statements-classify-type)
 
 #### 3.
 
-Activate Determine whether each molecular statement below is true or false, or whether it is impossible to determine. Assume you do not know what my favorite number is (but you do know which numbers are prime).[🔗](#extracted-webwork-3-1-1-1)
+فعِّل حدّد ما إذا كانت كلّ عبارة جزئية أدناه صادقة أم خاطئة، أم ما إذا كان يتعذّر تحديدها. افترض أنّك لا تعرف ما هو عددي المفضّل (لكنّك تعرف أيّ الأعداد أوليّة).[🔗](#extracted-webwork-3-1-1-1)
 
-1. If 4 is my favorite number, then \(4+1\) is my favorite number.[🔗](#extracted-webwork-3-1-1-2-1-1-1) [🔗](#extracted-webwork-3-1-1-2-1-1)
-2. 8 is my favorite number, and 3 is not prime.[🔗](#extracted-webwork-3-1-1-2-1-2-1) [🔗](#extracted-webwork-3-1-1-2-1-2)
-3. 4 is my favorite number, or 4 is prime.[🔗](#extracted-webwork-3-1-1-2-1-3-1) [🔗](#extracted-webwork-3-1-1-2-1-3)
-4. If 4 is prime, then \(2\cdot4\) is prime.[🔗](#extracted-webwork-3-1-1-2-1-4-1) [🔗](#extracted-webwork-3-1-1-2-1-4)
-5. If 3 is prime, then 3 is my favorite number.[🔗](#extracted-webwork-3-1-1-2-1-5-1) [🔗](#extracted-webwork-3-1-1-2-1-5)
-6. 8 is my favorite number, and 4 is not prime.[🔗](#extracted-webwork-3-1-1-2-1-6-1) [🔗](#extracted-webwork-3-1-1-2-1-6)
+1. إذا كان 4 هو عددي المفضّل، فإنّ \(4+1\) هو عددي المفضّل.[🔗](#extracted-webwork-3-1-1-2-1-1-1) [🔗](#extracted-webwork-3-1-1-2-1-1)
+2. 8 هو عددي المفضّل، و3 ليس عددًا أوليًّا.[🔗](#extracted-webwork-3-1-1-2-1-2-1) [🔗](#extracted-webwork-3-1-1-2-1-2)
+3. 4 هو عددي المفضّل، أو 4 عدد أوليّ.[🔗](#extracted-webwork-3-1-1-2-1-3-1) [🔗](#extracted-webwork-3-1-1-2-1-3)
+4. إذا كان 4 عددًا أوليًّا، فإنّ \(2\cdot4\) عدد أوليّ.[🔗](#extracted-webwork-3-1-1-2-1-4-1) [🔗](#extracted-webwork-3-1-1-2-1-4)
+5. إذا كان 3 عددًا أوليًّا، فإنّ 3 هو عددي المفضّل.[🔗](#extracted-webwork-3-1-1-2-1-5-1) [🔗](#extracted-webwork-3-1-1-2-1-5)
+6. 8 هو عددي المفضّل، و4 ليس عددًا أوليًّا.[🔗](#extracted-webwork-3-1-1-2-1-6-1) [🔗](#extracted-webwork-3-1-1-2-1-6)
 
 [🔗](#extracted-webwork-3-1-1-2) [🔗](#ww-statements-favnum)
 
 #### 4.
 
-- Some people can be fooled all of the time.
+- يمكن خداع بعض الناس طيلة الوقت.
 - \(\exists x \forall y P(x,y)\)
-- Everyone can be fooled sometimes.
+- يمكن خداع الجميع أحيانًا.
 - \(\forall x \exists y P(x,y)\)
-- It is always true that some people can be fooled.
+- من الصحيح دائمًا أنّ بعض الناس يمكن خداعهم.
 - \(\forall y \exists x P(x,y)\)
-- Sometimes everyone can be fooled.
+- أحيانًا يمكن خداع الجميع.
 - \(\exists y \forall x P(x,y)\)
 
 [🔗](#rs-statements-quant-translate)
 
 #### 5.
 
-Your friend believes that you cannot fool everyone at the same time. What is another way of saying this, and how would you write that in symbols (using \(P(x,y)\) to say you can fool \(x\) at time \(y\)).[🔗](#rs-statements-quant-neg-1-1)
+يظنّ صديقك أنّك لا تستطيع خداع الجميع في الوقت نفسه. فما الطريقة الأخرى لقول ذلك، وكيف تكتبه بالرموز (باستخدام \(P(x,y)\) للدلالة على أنّك تستطيع خداع \(x\) في الوقت \(y\)).[🔗](#rs-statements-quant-neg-1-1)
 
-- Someone is never fooled. \(\exists x \forall y\neg P(x,y)\)
-- Everyone is never fooled. \(\forall x \forall y \neg P(x,y)\)
-- Someone is not fooled sometimes. \(\exists x \exists y \neg P(x,y)\)
-- Everyone is not fooled sometimes. \(\forall x \exists y \neg P(x,y)\)
+- لا يُخدَع أحد قطّ. \(\exists x \forall y\neg P(x,y)\)
+- لا يُخدَع أحد قطّ أبدًا. \(\forall x \forall y \neg P(x,y)\)
+- لا يُخدَع أحد أحيانًا. \(\exists x \exists y \neg P(x,y)\)
+- لا يُخدَع الجميع أحيانًا. \(\forall x \exists y \neg P(x,y)\)
 
 [🔗](#rs-statements-quant-neg)
 
 #### 6.
 
-Regardless of your beliefs of how many people can be fooled at various times, what could you conclude if we reinterpret \(P(x,y)\) to mean \(x \lt y\) and only quantify over the natural numbers (so \(\forall x\) means “For all natural numbers,” and \(\exists x\) means “There exists a natural number”)? Select all of the following that apply.[🔗](#rs-statements-quant-interpretation-1-1)
+بغضّ النظر عن معتقداتك بشأن عدد الأشخاص الذين يمكن خداعهم في أوقات مختلفة، فماذا يمكنك أن تستنتج إذا أعدنا تفسير \(P(x,y)\) على أنّه يعني \(x \lt y\) واكتفينا بالكمّ على الأعداد الطبيعية (فـ\(\forall x\) تعني «لكلّ الأعداد الطبيعية»، و\(\exists x\) تعني «يوجد عدد طبيعي»)؟ اختر كل ما ينطبق.[🔗](#rs-statements-quant-interpretation-1-1)
 
-- \(\forall x \exists y P(x,y)\) is true.
-- \(\exists x \forall y P(x,y)\) is true.
-- Careful, \(P(x,y)\) means \(x\) is less than \(y\text{,}\) not \(x\) is less than *or equal* to \(y\text{.}\)
-- \(\forall y \exists x P(x,y)\) is true.
-- \(\exists y \forall x P(x,y)\) is true.
-- No matter what \(P(x,y)\) means, we can conclude that \(\forall x \exists y P(x,y)\) and \(\exists y \forall x\) are NOT *logically equivalent*
+- \(\forall x \exists y P(x,y)\) صادقة.
+- \(\exists x \forall y P(x,y)\) صادقة.
+- انتبه، فـ\(P(x,y)\) تعني أنّ \(x\) أصغر من \(y\text{,}\) وليس أنّ \(x\) أصغر من *أو يساوي* \(y\text{.}\)
+- \(\forall y \exists x P(x,y)\) صادقة.
+- \(\exists y \forall x P(x,y)\) صادقة.
+- مهما كان معنى \(P(x,y)\)، يمكننا أن نستنتج أنّ \(\forall x \exists y P(x,y)\) و \(\exists y \forall x\) ليسا *متكافئين منطقيًا*
 
 [🔗](#rs-statements-quant-interpretation)
 
 #### 7.
 
-Activate Let \(P(x)\) be the predicate, “\(16x+1\) is even.”
+فعِّل ليكن \(P(x)\) هو المنشِق «\(16x+1\) زوجيّ.»
 
-1. Is \(P(11)\) true or false? True[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-1-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-1)
-2. False[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-2-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-2)
-3. Neither (not a statement)[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-3-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-3)
-4. What, if anything, can you conclude about \(\exists x P(x)\) from the truth value of \(P(11)\text{?}\)[🔗](#extracted-webwork-4-1-1-1-5-2-1) \(\exists x P(x)\) must be true.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-1-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-1)
-5. \(\exists x P(x)\) must be false.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-2-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-2)
-6. \(\exists x P(x)\) could be true or could be false.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-3-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-3)
-7. What, if anything, can you conclude about \(\forall x P(x)\) from the truth value of \(P(11)\text{?}\)[🔗](#extracted-webwork-4-1-1-1-5-3-1) \(\forall x P(x)\) must be true.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-1-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-1)
-8. \(\forall x P(x)\) must be false.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-2-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-2)
-9. \(\forall x P(x)\) could be true or could be false.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-3-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-3)
+1. هل \(P(11)\) صادقة أم خاطئة؟ صادقة[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-1-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-1)
+2. خاطئة[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-2-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-2)
+3. لا هذه ولا ذاك (ليست عبارة)[🔗](#extracted-webwork-4-1-1-1-5-1-1-2-3-1) [🔗](#extracted-webwork-4-1-1-1-5-1-1-2-3)
+4. ماذا، إن كان ثمّة شيء، يمكنك استنتاجه عن \(\exists x P(x)\) من قيمة صدق \(P(11)\text{?}\)[🔗](#extracted-webwork-4-1-1-1-5-2-1) \(\exists x P(x)\) يجب أن تكون صادقة.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-1-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-1)
+5. \(\exists x P(x)\) يجب أن تكون خاطئة.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-2-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-2)
+6. \(\exists x P(x)\) قد تكون صادقة وقد تكون خاطئة.[🔗](#extracted-webwork-4-1-1-1-5-2-2-1-3-1) [🔗](#extracted-webwork-4-1-1-1-5-2-2-1-3)
+7. ماذا، إن كان ثمّة شيء، يمكنك استنتاجه عن \(\forall x P(x)\) من قيمة صدق \(P(11)\text{?}\)[🔗](#extracted-webwork-4-1-1-1-5-3-1) \(\forall x P(x)\) يجب أن تكون صادقة.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-1-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-1)
+8. \(\forall x P(x)\) يجب أن تكون خاطئة.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-2-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-2)
+9. \(\forall x P(x)\) قد تكون صادقة وقد تكون خاطئة.[🔗](#extracted-webwork-4-1-1-1-5-3-2-1-3-1) [🔗](#extracted-webwork-4-1-1-1-5-3-2-1-3)
 
 [🔗](#extracted-webwork-4-1-1-1) [🔗](#ww-statements-quant1)
 
 #### 8.
 
-Activate Let \(P(x)\) be the predicate, “\(9x+1\) is even.”
+فعِّل ليكن \(P(x)\) هو المنشِق «\(9x+1\) زوجيّ.»
 
-1. Is \(P(13)\) true or false? True[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-1-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-1)
-2. False[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-2-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-2)
-3. Neither (not a statement)[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-3-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-3)
-4. What, if anything, can you conclude about \(\exists x P(x)\) from the truth value of \(P(13)\text{?}\)[🔗](#extracted-webwork-5-1-1-1-5-2-1) \(\exists x P(x)\) must be true.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-1-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-1)
-5. \(\exists x P(x)\) must be false.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-2-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-2)
-6. \(\exists x P(x)\) could be true or could be false.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-3-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-3)
-7. What, if anything, can you conclude about \(\forall x P(x)\) from the truth value of \(P(13)\text{?}\)[🔗](#extracted-webwork-5-1-1-1-5-3-1) \(\forall x P(x)\) must be true.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-1-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-1)
-8. \(\forall x P(x)\) must be false.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-2-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-2)
-9. \(\forall x P(x)\) could be true or could be false.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-3-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-3)
+1. هل \(P(13)\) صادقة أم خاطئة؟ صادقة[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-1-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-1)
+2. خاطئة[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-2-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-2)
+3. لا هذه ولا ذاك (ليست عبارة)[🔗](#extracted-webwork-5-1-1-1-5-1-1-2-3-1) [🔗](#extracted-webwork-5-1-1-1-5-1-1-2-3)
+4. ماذا، إن كان ثمّة شيء، يمكنك استنتاجه عن \(\exists x P(x)\) من قيمة صدق \(P(13)\text{?}\)[🔗](#extracted-webwork-5-1-1-1-5-2-1) \(\exists x P(x)\) يجب أن تكون صادقة.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-1-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-1)
+5. \(\exists x P(x)\) يجب أن تكون خاطئة.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-2-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-2)
+6. \(\exists x P(x)\) قد تكون صادقة وقد تكون خاطئة.[🔗](#extracted-webwork-5-1-1-1-5-2-2-1-3-1) [🔗](#extracted-webwork-5-1-1-1-5-2-2-1-3)
+7. ماذا، إن كان ثمّة شيء، يمكنك استنتاجه عن \(\forall x P(x)\) من قيمة صدق \(P(13)\text{?}\)[🔗](#extracted-webwork-5-1-1-1-5-3-1) \(\forall x P(x)\) يجب أن تكون صادقة.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-1-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-1)
+8. \(\forall x P(x)\) يجب أن تكون خاطئة.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-2-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-2)
+9. \(\forall x P(x)\) قد تكون صادقة وقد تكون خاطئة.[🔗](#extracted-webwork-5-1-1-1-5-3-2-1-3-1) [🔗](#extracted-webwork-5-1-1-1-5-3-2-1-3)
 
 [🔗](#extracted-webwork-5-1-1-1) [🔗](#ww-statements-quant2)
 
 #### 9.
 
-Consider the sentence, \(\exists x P(x,y) \imp \forall x P(x,y)\text{.}\) What can we say about this sentence? Select all that apply.[🔗](#rs-statements-quant-free-variables-1-1)
+تأمّل الجملة \(\exists x P(x,y) \imp \forall x P(x,y)\text{.}\) فماذا يمكننا أن نقول عن هذه الجملة؟ اختر كل ما ينطبق.[🔗](#rs-statements-quant-free-variables-1-1)
 
-- The sentence is a statement because it contains quantifiers.
-- The sentence is not a statement because \(x\) and \(z\) are free variables.
-- The sentence is not a statement because \(y\) is a free variable.
-- The universal generalization of the sentence is a statement.
+- الجملة عبارة لأنّها تحتوي مكمِّمات.
+- الجملة ليست عبارة لأنّ \(x\) و\(z\) متغيّران حرّان.
+- الجملة ليست عبارة لأنّ \(y\) متغيّر حرّ.
+- التعميم الكليّ للجملة عبارة.
 
 [🔗](#rs-statements-quant-free-variables)
 
 #### 10.
 
-Activate Suppose \(P(x,y)\) is some binary predicate defined on a very small domain of discourse: just the integers 1, 2, 3, and 4. For each of the 16 pairs of these numbers, \(P(x,y)\) is either true or false, according to the following table (\(x\) values are rows, \(y\) values are columns).[🔗](#extracted-webwork-6-1-1-1)
+فعِّل افترض أنّ \(P(x,y)\) منشِق ثنائي مُعرَّف على مجال خطاب صغير جدًّا: الأعداد الصحيحة 1 و2 و3 و4 فقط. ولكلّ زوج من الأزواج الستّة عشر لهذه الأعداد، تكون \(P(x,y)\) إمّا صادقة أو خاطئة، وفقًا للجدول التالي (قيم \(x\) هي الصفوف، وقيم \(y\) هي الأعمدة).[🔗](#extracted-webwork-6-1-1-1)
 
 |  | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- |
@@ -456,7 +456,7 @@ Activate Suppose \(P(x,y)\) is some binary predicate defined on a very small dom
 | 3 | T | T | T | T |
 | 4 | F | F | F | F |
 
-For example, \(P(1,3)\) is false, as indicated by the F in the first row, third column.[🔗](#extracted-webwork-6-1-1-3) Use the table to decide whether the following statements are true or false.[🔗](#extracted-webwork-6-1-1-4)
+فمثلًا، \(P(1,3)\) خاطئة، كما يدلّ على ذلك الحرف F في الصف الأول والعمود الثالث.[🔗](#extracted-webwork-6-1-1-3) واستخدم الجدول لتحديد ما إذا كانت العبارات التالية صادقة أم خاطئة.[🔗](#extracted-webwork-6-1-1-4)
 
 1. \(\displaystyle \exists y \forall x P(x,y)\text{.}\)[🔗](#extracted-webwork-6-1-1-5-1-1-1) [🔗](#extracted-webwork-6-1-1-5-1-1)
 2. \(\displaystyle \forall y \exists x P(x,y)\text{.}\)[🔗](#extracted-webwork-6-1-1-5-1-2-1) [🔗](#extracted-webwork-6-1-1-5-1-2)
@@ -465,39 +465,39 @@ For example, \(P(1,3)\) is false, as indicated by the F in the first row, third 
 
 [🔗](#extracted-webwork-6-1-1-5) [🔗](#ww-statements-binary-pred)[🔗](#practice_intro-statements)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-Suppose \(P\) and \(Q\) are the statements: \(P\text{:}\) Jack passed math. \(Q\text{:}\) Jill passed math.
+افترض أنّ \(P\) و\(Q\) هما العبارتان: \(P\text{:}\) جاك نجح في الرياضيات. \(Q\text{:}\) جيل نجحت في الرياضيات.
 
-1. Translate “Jack and Jill both passed math” into symbols.[🔗](#exercises_intro-statements-2-1-1-5-1-1) [🔗](#exercises_intro-statements-2-1-1-5-1)
-2. Translate “If Jack passed math, then Jill did not” into symbols.[🔗](#exercises_intro-statements-2-1-1-5-2-1) [🔗](#exercises_intro-statements-2-1-1-5-2)
-3. Translate “\(P \vee Q\)” into English.[🔗](#exercises_intro-statements-2-1-1-5-3-1) [🔗](#exercises_intro-statements-2-1-1-5-3)
-4. Translate “\(\neg(P \wedge Q) \imp Q\)” into English.[🔗](#exercises_intro-statements-2-1-1-5-4-1) [🔗](#exercises_intro-statements-2-1-1-5-4)
-5. Suppose you know that if Jack passed math, then so did Jill. What can you conclude if you know that: Jill passed math? [🔗](#exercises_intro-statements-2-1-1-5-5-1-1-1)
-6. Jill did not pass math? [🔗](#exercises_intro-statements-2-1-1-5-5-1-1-2)
+1. ترجم «نجح جاك وجيل في الرياضيات معًا» إلى رموز.[🔗](#exercises_intro-statements-2-1-1-5-1-1) [🔗](#exercises_intro-statements-2-1-1-5-1)
+2. ترجم «إذا نجح جاك في الرياضيات، فإنّ جيل لم تنجح» إلى رموز.[🔗](#exercises_intro-statements-2-1-1-5-2-1) [🔗](#exercises_intro-statements-2-1-1-5-2)
+3. ترجم «\(P \vee Q\)» إلى الإنجليزية.[🔗](#exercises_intro-statements-2-1-1-5-3-1) [🔗](#exercises_intro-statements-2-1-1-5-3)
+4. ترجم «\(\neg(P \wedge Q) \imp Q\)» إلى الإنجليزية.[🔗](#exercises_intro-statements-2-1-1-5-4-1) [🔗](#exercises_intro-statements-2-1-1-5-4)
+5. افترض أنّك تعرف أنّه إذا نجح جاك في الرياضيات، فإنّ جيل قد نجحت أيضًا. فماذا يمكنك أن تستنتج لو علمتَ أنّ: جيل نجحت في الرياضيات؟ [🔗](#exercises_intro-statements-2-1-1-5-5-1-1-1)
+6. جيل لم تنجح في الرياضيات؟ [🔗](#exercises_intro-statements-2-1-1-5-5-1-1-2)
 
 [🔗](#exercises_intro-statements-2-1-1-5-5-1) [🔗](#exercises_intro-statements-2-1-1-5-5) [🔗](#exercises_intro-statements-2-1-1) [🔗](#exercises_intro-statements-2)
 
 #### 2.
 
-Translate into symbols. Use \(E(x)\) for “\(x\) is even” and \(O(x)\) for “\(x\) is odd.”
+ترجم إلى رموز. استخدم \(E(x)\) لـ«\(x\) زوجيّ» و\(O(x)\) لـ«\(x\) فرديّ.»
 
-1. No number is both even and odd.[🔗](#exercises_intro-statements-3-1-1-5-1-1) [🔗](#exercises_intro-statements-3-1-1-5-1)
-2. One more than any even number is an odd number.[🔗](#exercises_intro-statements-3-1-1-5-2-1) [🔗](#exercises_intro-statements-3-1-1-5-2)
-3. There is a prime number that is even.[🔗](#exercises_intro-statements-3-1-1-5-3-1) [🔗](#exercises_intro-statements-3-1-1-5-3)
-4. Between any two numbers there is a third number.[🔗](#exercises_intro-statements-3-1-1-5-4-1) [🔗](#exercises_intro-statements-3-1-1-5-4)
-5. There is no number between a number and one more than that number.[🔗](#exercises_intro-statements-3-1-1-5-5-1) [🔗](#exercises_intro-statements-3-1-1-5-5)
+1. لا عدد يكون زوجيًّا وفرديًّا معًا.[🔗](#exercises_intro-statements-3-1-1-5-1-1) [🔗](#exercises_intro-statements-3-1-1-5-1)
+2. العدد المضاف إلى أيّ عدد زوجيّ هو عدد فرديّ.[🔗](#exercises_intro-statements-3-1-1-5-2-1) [🔗](#exercises_intro-statements-3-1-1-5-2)
+3. يوجد عدد أوليّ زوجيّ.[🔗](#exercises_intro-statements-3-1-1-5-3-1) [🔗](#exercises_intro-statements-3-1-1-5-3)
+4. بين أيّ عددين يوجد عدد ثالث.[🔗](#exercises_intro-statements-3-1-1-5-4-1) [🔗](#exercises_intro-statements-3-1-1-5-4)
+5. لا يوجد عدد بين عددٍ ما والعدد المضاف إليه.[🔗](#exercises_intro-statements-3-1-1-5-5-1) [🔗](#exercises_intro-statements-3-1-1-5-5)
 
 [🔗](#exercises_intro-statements-3-1-1) [🔗](#exercises_intro-statements-3)
 
 #### 3.
 
-For each of the statements below, give a domain of discourse for which the statement is true, and a domain for which the statement is false.
+بالنسبة إلى كلّ من العبارات أدناه، أعطِ مجال خطاب تكون فيه العبارة صادقة، ومجالًا تكون فيه العبارة خاطئة.
 
 1. \(\forall x \exists y (y^2 = x)\text{.}\) [🔗](#exercises_intro-statements-4-1-1-1-1)
 2. \(\forall x \forall y (x \lt y \imp \exists z (x \lt z \lt y))\text{.}\) [🔗](#exercises_intro-statements-4-1-1-1-2)
 3. \(\exists x \forall y \forall z (y \lt z \imp y \le x \le z)\text{.}\) [🔗](#exercises_intro-statements-4-1-1-1-3)
 
-[🔗](#exercises_intro-statements-4-1-1) Hint. First figure out what each statement is saying. For part (c), you don’t need to assume the domain is an infinite set.[🔗](#exercises_intro-statements-4-2-1) [🔗](#exercises_intro-statements-4-2) [🔗](#exercises_intro-statements-4)[🔗](#exercises_intro-statements)[🔗](#sec_logic-statements) [&#xe5cb;Prev](ch_logic.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_logic-implications.html) [Feedback](/cdn-cgi/l/email-protection#8ae5f9e9ebf8a4e6effce3e4caffe4e9e5a4efeeff)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_logic-statements-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_logic-statements-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+[🔗](#exercises_intro-statements-4-1-1) تلميح. أوّلًا حدّد ما تقوله كلّ عبارة. أمّا في الجزء (c) فلا تحتاج إلى افتراض أنّ المجال مجموعة لا نهائية.[🔗](#exercises_intro-statements-4-2-1) [🔗](#exercises_intro-statements-4-2) [🔗](#exercises_intro-statements-4)[🔗](#exercises_intro-statements)[🔗](#sec_logic-statements) [&#xe5cb;السابق](ch_logic.html)[&#xe5ce;الأعلى](#)[التالي&#xe5cc;](sec_logic-implications.html) [ملاحظات](/cdn-cgi/l/email-protection#8ae5f9e9ebf8a4e6effce3e4caffe4e9e5a4efeeff)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_logic-statements-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_logic-statements-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
