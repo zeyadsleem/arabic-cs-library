@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.DfciPU9i.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CL0XzpJP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BLOzpoWr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DHBc9RQp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.D6SaVgzs.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DJd288bo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/39t1Z4AF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/t1efHWVH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.CO63hm-n.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CJYiA3-G.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CPbfJyNb.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUvQTlB8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B4Cyr53u.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CEH-XqUS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfeaRjBo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B9TP7Bng.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="FreeRTOS — FreeRTOS"/><!----><title>FreeRTOS | معمارية تطبيقات المصادر المفتوحة</title>
+		<link href="../../../../_app/immutable/assets/0.NA9mLT-T.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/aosabook">معمارية تطبيقات المصادر المفتوحة</a> <span class="reader-bar__chapter">› FreeRTOS</span> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 29 من 51">29 / 51</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/aosabook/v2-ffreleng/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/aosabook/v2-gdb/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout"><aside class="reader-aside" aria-label="فهرس الكتاب"><p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>Asterisk</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-asterisk/index">Asterisk</a></li><!--]--></ul><h3>Audacity</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-audacity/index">Audacity</a></li><!--]--></ul><h3>The Bourne-Again Shell</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-bash/index">The Bourne-Again Shell</a></li><!--]--></ul><h3>Berkeley DB</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-bdb/index">Berkeley DB</a></li><!--]--></ul><h3>CMake</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-cmake/index">CMake</a></li><!--]--></ul><h3>Eclipse</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-eclipse/index">Eclipse</a></li><!--]--></ul><h3>Graphite</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-graphite/index">Graphite</a></li><!--]--></ul><h3>The Hadoop Distributed File System</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-hdfs/index">The Hadoop Distributed File System</a></li><!--]--></ul><h3>Continuous Integration</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-integration/index">Continuous Integration</a></li><!--]--></ul><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-intro1/index">Introduction</a></li><!--]--></ul><h3>Jitsi</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-jitsi/index">Jitsi</a></li><!--]--></ul><h3>LLVM</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-llvm/index">LLVM</a></li><!--]--></ul><h3>Mercurial</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-mercurial/index">Mercurial</a></li><!--]--></ul><h3>The NoSQL Ecosystem</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-nosql/index">The NoSQL Ecosystem</a></li><!--]--></ul><h3>Python Packaging</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-packaging/index">Python Packaging</a></li><!--]--></ul><h3>Riak and Erlang/OTP</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-riak/index">Riak and Erlang/OTP</a></li><!--]--></ul><h3>Selenium WebDriver</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-selenium/index">Selenium WebDriver</a></li><!--]--></ul><h3>Sendmail</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-sendmail/index">Sendmail</a></li><!--]--></ul><h3>SnowFlock</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-snowflock/index">SnowFlock</a></li><!--]--></ul><h3>SocialCalc</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-socialcalc/index">SocialCalc</a></li><!--]--></ul><h3>Telepathy</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-telepathy/index">Telepathy</a></li><!--]--></ul><h3>Thousand Parsec</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-thousandparsec/index">Thousand Parsec</a></li><!--]--></ul><h3>Violet</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-violet/index">Violet</a></li><!--]--></ul><h3>VisTrails</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-vistrails/index">VisTrails</a></li><!--]--></ul><h3>VTK</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-vtk/index">VTK</a></li><!--]--></ul><h3>Battle for Wesnoth</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v1-wesnoth/index">Battle for Wesnoth</a></li><!--]--></ul><h3>Scalable Web Architecture and Distributed Systems</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-distsys/index">Scalable Web Architecture and Distributed Systems</a></li><!--]--></ul><h3>Firefox Release Engineering</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-ffreleng/index">Firefox Release Engineering</a></li><!--]--></ul><h3 class="active-chapter">FreeRTOS</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-freertos/index" class="active">FreeRTOS</a></li><!--]--></ul><h3>GDB</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-gdb/index">GDB</a></li><!--]--></ul><h3>The Glasgow Haskell Compiler</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-ghc/index">The Glasgow Haskell Compiler</a></li><!--]--></ul><h3>Git</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-git/index">Git</a></li><!--]--></ul><h3>GPSD</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-gpsd/index">GPSD</a></li><!--]--></ul><h3>Introduction</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-intro2/index">Introduction</a></li><!--]--></ul><h3>The Dynamic Language Runtime and the Iron Languages</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-ironlang/index">The Dynamic Language Runtime and the Iron Languages</a></li><!--]--></ul><h3>ITK</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-itk/index">ITK</a></li><!--]--></ul><h3>GNU Mailman</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-mailman/index">GNU Mailman</a></li><!--]--></ul><h3>matplotlib</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-matplotlib/index">matplotlib</a></li><!--]--></ul><h3>MediaWiki</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-mediawiki/index">MediaWiki</a></li><!--]--></ul><h3>Moodle</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-moodle/index">Moodle</a></li><!--]--></ul><h3>nginx</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-nginx/index">nginx</a></li><!--]--></ul><h3>Open MPI</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-openmpi/index">Open MPI</a></li><!--]--></ul><h3>OSCAR</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-oscar/index">OSCAR</a></li><!--]--></ul><h3>Processing.js</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-pjs/index">Processing.js</a></li><!--]--></ul><h3>Puppet</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-puppet/index">Puppet</a></li><!--]--></ul><h3>PyPy</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-pypy/index">PyPy</a></li><!--]--></ul><h3>SQLAlchemy</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-sqlalchemy/index">SQLAlchemy</a></li><!--]--></ul><h3>Twisted</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-twisted/index">Twisted</a></li><!--]--></ul><h3>Yesod</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-yesod/index">Yesod</a></li><!--]--></ul><h3>The Yocto Project</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-yocto/index">The Yocto Project</a></li><!--]--></ul><h3>ZeroMQ</h3> <ul><!--[--><li><a href="../../../../book/aosabook/v2-zeromq/index">ZeroMQ</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet"><h1>FreeRTOS</h1> <!--[-1--><!--]--> <div class="reader-content"><!----><p>معمارية تطبيقات المصادر المفتوحة (المجلد الثاني)FreeRTOS</p>
+<h1>معمارية تطبيقات المصادر المفتوحة (المجلد الثاني) FreeRTOS</h1>
+<p>كريستوفر سفيك</p>
+<p>إذا استمتعت بهذه الكتب، فقد تستمتع أيضًا بـ <a href="https://third-bit.com/sdxpy/">التصميم البرمجي بالأمثلة في Python</a> و<a href="https://third-bit.com/sdxjs/">التصميم البرمجي بالأمثلة في JavaScript</a>.</p>
+<p>‏FreeRTOS (تُنطق &quot;free-arr-toss&quot;) هو نظام تشغيل وقت حقيقي (real-time operating system, RTOS) مفتوح المصدر مخصّص للأنظمة المدمجة (embedded systems). ويدعم <a href="http://www.freertos.org/index.html?http://www.freertos.org/FreeRTOS_Features.html">FreeRTOS</a> بُنى معماريات وسلاسل أدوات مترجم كثيرة مختلفة، وقد صُمّم ليكون «صغيرًا وبسيطًا وسهل الاستخدام».</p>
+<p>يخضع FreeRTOS للتطوير النشِط، وقد كان كذلك منذ أن بدأ ريتشارد باري العمل عليه عام 2002. أما أنا فلسـت مطوِّرًا لـFreeRTOS ولا مساهمًا فيه، إني مجرّد مستخدم ومُعجب به. وعليه، فإن هذا الفصل سيركّز على «ماذا» و«كيف» تتشكّل بنية FreeRTOS، أكثر من تركيزه على «لماذا» مقارنةً بالفصول الأخرى في هذا الكتاب.</p>
+<p>مثل جميع أنظمة التشغيل، تتمثّل المهمة الأساسية لـFreeRTOS في تشغيل المهام (tasks). ويتضمّن معظم شيفرة FreeRTOS تحديد أولويات المهام (prioritizing) وجدولتها (scheduling) وتشغيل مهام معرَّفة من المستخدم. وبخلاف جميع أنظمة التشغيل، فإن FreeRTOS نظام تشغيل وقت حقيقي يعمل على الأنظمة المدمجة.</p>
+<p>بنهاية هذا الفصل آمل أن تكون قد فهمت البنية الأساسية لـFreeRTOS. فمعظم FreeRTOS مخصّص لتشغيل المهام، لذا ستحصل على نظرة واضحة جدًّا على كيفية إنجاز ذلك بالضبط.</p>
+<p>وإذا كانت هذه أول نظرة لك تحت غطاء نظام تشغيل، فآمل أيضًا أن تتعلّم الأساسيات是如何 يعمل أي نظام تشغيل. إنّ FreeRTOS بسيط نسبيًّا، خاصةً مقارنةً بـWindows أو Linux أو OS X، لكن جميع أنظمة التشغيل تشترك في المفاهيم والأهداف الأساسية ذاتها، لذا فإن إلقاء النظر في أي نظام تشغيل يمكن أن يكون مفيدًا ومشوّقًا.</p>
+<h2 id="31-ما-المقصود-بـالمدمج-والوقت-الحقيقي">3.1. ما المقصود بـ«المدمج» و«الوقت الحقيقي»؟</h2>
+<p>قد يعبّر «المدمج» و«الوقت الحقيقي» عن أشياء مختلفة لمختلف الناس، فلنعرّفهما بالطريقة التي يستخدم بها FreeRTOS.</p>
+<p>النظام المدمج (embedded system) هو نظام حاسوبي مصمَّم لإنجاز أمور قليلة فقط، مثل النظام الموجود في وحدة التحكّم عن بُعد بالتلفاز، أو جهاز GPS في السيارة، أو الساعة الرقمية، أو منظّم ضربات القلب. والأنظمة المدمجة أصغر وأبطأ عادةً من أنظمة الحوسبة العامة الغرض، وهي أيضًا أقل كلفةً عادةً. فقد يحتوي نظام مدمج منخفض الطرف على معالج 8 بتات يعمل بتردد 25MHz، وعدّة كيلوبايتات من الذاكرة العشوائية RAM، وربما 32 كيلوبايت من ذاكرة الوميض flash. أما النظام المدمج عالي الطرف فقد يحتوي على معالج 32 بتًا يعمل بتردد 750MHz، وجيغابايت من الذاكرة العشوائية، وعدّة جيغابايتات من ذاكرة الوميض.</p>
+<p>أنظمة الوقت الحقيقي مصمَّمة لإنجاز شيء ما ضمن مدة زمنية محدَّدة؛ فهي تضمن أن الأمور تحدث في وقتها المفترض.</p>
+<p>منظّم ضربات القلب مثال ممتاز على نظام مدمج عامل في الوقت الحقيقي. إذ يجب أن ينقبض عضلة القلب في اللحظة الصحيحة لإبقائك حيًّا؛ ولا يمكن أن يكون مشغولًا إلى الحدّ الذي يمنعه من الاستجابة في وقتها. وتُصمَّم منظّمات ضربات القلب والأنظمة المدمجة الأخرى العاملة في الوقت الحقيقي بعناية كي تُنجز مهامها في وقتها في كل مرة.</p>
+<h2 id="32-لمحة-عامة-عن-البنية">3.2. لمحة عامة عن البنية</h2>
+<p>‏FreeRTOS تطبيق صغير نسبيًّا. لا تتجاوز نواة FreeRTOS الدنيا ثلاث ملفات مصدر (<code>.c</code>) وحفنة من ملفات الترويسات، بمجموع أقل قليلًا من 9000 سطر شيفرة، بما فيها التعليقات والأسطر الفارغة. وتكون صورة الشيفرة الثنائية النمطية أصغر من 10 كيلوبايت.</p>
+<p>ينقسم شيفرة FreeRTOS إلى ثلاثة مجالات رئيسية: المهام، والتواصل، والتفاعل مع العتاد.</p>
+<ul>
+<li><strong>المهام:</strong> يتعامل قرابة نصف شيفرة FreeRTOS الأساسية مع أهمّ ما يشغل كثير من أنظمة التشغيل: المهام. فالمهمة هي دالة C معرَّفة من المستخدم لها أولوية معيّنة. ويتولّى <code>tasks.c</code> و<code>task.h</code> كل الأعمال الثقيلة الخاصة بإنشاء المهام وجدولتها وصيانتها.</li>
+<li><strong>التواصل:</strong> المهام جيّدة، لكن المهام القادرة على التواصل فيما بينها أفضل!وهذا يوّلينا إلى المهمة الثانية لـFreeRTOS: التواصل. ويتعامل نحو 40% من شيفرة FreeRTOS الأساسية مع التواصل. ويتولّى <code>queue.c</code> و<code>queue.h</code> تواصل FreeRTOS. وتستخدم المهام والمقاطعات (interrupts) الطوابير (queues) لإرسال البيانات إلى بعضها بعضًا، ولإشارات استخدام الموارد الحرجة باستخدام السيمافورات (semaphores) والأقفال المتبادلة (mutexes).</li>
+<li><strong>الهمس مع العتاد:</strong> نحو 9000 سطر من الشيفرة التي تشكّل قاعدة FreeRTOS هي شيفرة مستقلة عن العتاد؛ فسواء كان FreeRTOS يعمل على شريحة 8051 المتواضعة أم على أحدث نوى ARM وأحدثها، تعمل الشيفرة ذاتها. ويكاد نحو 6% من شيفرة FreeRTOS الأساسية يكون طبقة وصل (shim) بين نواة FreeRTOS المستقلة عن العتاد وبين الشيفرة المعتمدة على العتاد. وسنناقش الشيفرة المعتمدة على العتاد في القسم التالي.</li>
+</ul>
+<h3 id="اعتبارات-العتاد">اعتبارات العتاد</h3>
+<p>تقع طبقة FreeRTOS المستقلة عن العتاد فوق طبقة معتمدة على العتاد. وهذه الطبقة المعتمدة على العتاد تعرف كيف تتحدّث مع أي بنية شرائح تختارها. ويعرض <a href="#fig.freertos.layers">الشكل 3.1</a> طبقات FreeRTOS.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-layers.webp" alt=""> الشكل 3.1: طبقات برنامج FreeRTOS</p>
+<p>يأتي FreeRTOS مع كامل الشيفرة المستقلة عن العتاد والشيفرة المعتمدة عليه التي ستحتاجها لتشغيل نظام ما. وهو يدعم مترجمين كثيرين (CodeWarrior وGCC وIAR وغيرها) وكذلك بُنى معالجات كثيرة (ARM7 وARM Cortex-M3 ومتنوّع من شرائح PIC وSilicon Labs 8051 وx86 وغيرها). راجع موقع FreeRTOS للاطلاع على قائمة البنى والمترجمين المدعومة.</p>
+<p>صُمّم FreeRTOS ليكون قابلًا للتهيئة بدرجة عالية. إذ يمكن بناؤه كنظام تشغيل وقت حقيقي مجرّد (bare-bones RTOS) على معالج واحد يدعم مهمام قليلة فقط، أو يمكن بناؤه كوحش متعدّد النوى عالي الوظائف مع TCP/IP ونظام ملفات وUSB.</p>
+<p>تُحدَّد خيارات التهيئة في الملف <code>FreeRTOSConfig.h</code> عبر ضبط تعليمات <code>#define</code> المختلفة. فسرعة الساعة وحجم الكومة والأقفال المتبادلة ومجموعات فرعية من واجهة البرمجة كلها قابلة للتهيئة في هذا الملف، إلى جانب خيارات كثيرة أخرى. وفيما يلي أمثلة قليلة تضبط الحدّ الأقصى من مستويات أولوية المهام، وتردد المعالج، وتردد نبض النظام، وأصغر حجم للمكدس، وحجم الكومة الكلّي:</p>
+<pre><code>#define configMAX_PRIORITIES      ( ( unsigned portBASE_TYPE ) 5 )
+#define configCPU_CLOCK_HZ        ( 12000000UL )
+#define configTICK_RATE_HZ        ( ( portTickType ) 1000 )
+#define configMINIMAL_STACK_SIZE  ( ( unsigned short ) 100 )
+#define configTOTAL_HEAP_SIZE     ( ( size_t ) ( 4 * 1024 ) )
+</code></pre>
+<p>تقيم الشيفرة المعتمدة على العتاد في ملفات منفصلة لكل سلسلة أدوات مترجم وبنية معالج. فمثلًا، إذا كنت تعمل مع مترجم IAR على شريحة ARM Cortex-M3، فإن الشيفرة المعتمدة على العتاد تقع في المجلد <code>FreeRTOS/Source/portable/IAR/ARM_CM3/</code>. ويصرّح <code>portmacro.h</code> عن جميع الدوال الخاصة بالعتاد، بينما يحتوي <code>port.c</code> و<code>portasm.s</code> على كامل الشيفرة المعتمدة على العتاد. ويقوم ملف الترويسات المستقل عن العتاد <code>portable.h</code> بـ<code>#include</code> ملف <code>portmacro.h</code> الصحيح وقت التصريف. وينادي FreeRTOS الدوال الخاصة بالعتاد باستخدام دوال معرَّفة بـ<code>#define</code> والمصرَّح عنها في <code>portmacro.h</code>.</p>
+<p>لننظر إلى مثال على كيفية نداء FreeRTOS لدالة معتمدة على العتاد. فكثيرًا ما يحتاج الملف المستقل عن العتاد <code>tasks.c</code> إلى الدخول في مقطع شيفرة حرج (critical section) لمنع استباق المهام (preemption). ويحدث الدخول في مقطع حرج بطرق مختلفة باختلاف البنى، ولا يرغب <code>tasks.c</code> المستقل عن العتاد في أن يضطر إلى فهم التفاصيل المعتمدة على العتاد. ولهذا ينادي <code>tasks.c</code> الماكرو العام <code>portENTER_CRITICAL()</code>، راضيًا بجهله بكيفية عمله الفعلية. وبافتراض أننا نستخدم مترجم IAR على شريحة ARM Cortex-M3، فإن FreeRTOS مبنيٌّ مع الملف <code>FreeRTOS/Source/portable/IAR/ARM_CM3/portmacro.h</code> الذي يعرّف <code>portENTER_CRITICAL()</code> هكذا:</p>
+<pre><code>#define portENTER_CRITICAL()   vPortEnterCritical()
+</code></pre>
+<p>يُعرَّف <code>vPortEnterCritical()</code> فعليًا في <code>FreeRTOS/Source/portable/IAR/ARM_CM3/port.c</code>. والملف <code>port.c</code> معتمد على العتاد، ويحتوي شيفرة تفهم مترجم IAR وشريحة Cortex-M3. يدخل <code>vPortEnterCritical()</code> المقطع الحرج مستخدمًا هذه المعرفة الخاصة بالعتاد، ثم يعود إلى <code>tasks.c</code> المستقل عن العتاد.</p>
+<p>يعرّف الملف <code>portmacro.h</code> أيضًا أنواع البيانات الأساسية لبنية معمارية. فأنواع البيانات الخاصة بالمتغيّرات العددية الأساسية والمؤشرات ونوع بيانات نبض مؤقّت النظام تُعرَّف هكذا لمترجم IAR على شرائح ARM Cortex-M3:</p>
+<pre><code>#define portBASE_TYPE  long              // Basic integer variable type
+#define portSTACK_TYPE unsigned long     // Pointers to memory locations
+typedef unsigned portLONG portTickType;  // The system timer tick type
+</code></pre>
+<p>قد تبدو هذه الطريقة في استخدام أنواع البيانات والدوال عبر طبقات رقيقة من تعليمات <code>#define</code> معقّدةً بعض الشيء، لكنها تتيح لـFreeRTOS أن يُعاد تصريفه لبنية نظام مختلفة تمامًا بتغيير الملفات المعتمدة على العتاد وحدها. وإذا أردت تشغيل FreeRTOS على بنية لا يدعمها حاليًا، فكل ما عليك هو تنفيذ الوظائف المعتمدة على العتاد، وهي أصغر بكثير من الجزء المستقل عن العتاد في FreeRTOS.</p>
+<p>وكما رأينا، ينفّذ FreeRTOS الوظائف المعتمدة على العتاد باستخدام ماكروهات <code>#define</code> الخاصة بالمعالج المُسبق للغة C. ويستخدم FreeRTOS أيضًا تعليمات <code>#define</code> في شيفرة مستقلة عن العتاد كثيرة. وللطبيقات غير المدمجة، فإن هذا الاستخدام المتكرّر لـ<code>#define</code> يُعدّ خطيئة كبرى، لكن في كثير من الأنظمة المدمجة الأصغر لا تستحق كلفة نداء الدالة المزايا التي تقدّمها الدوال «الحقيقية».</p>
+<h2 id="33-جدولة-المهام-لمحة-سريعة">3.3. جدولة المهام: لمحة سريعة</h2>
+<h3 id="أولويات-المهام-وقائمة-الجاهزية">أولويات المهام وقائمة الجاهزية</h3>
+<p>لكل مهمة أولوية يعيّنها المستخدم تقع بين 0 (أدنى أولوية) وقيمة <code>configMAX_PRIORITIES-1</code> وقت التصريف (أعلى أولوية). فمثلًا، إذا ضُبطت <code>configMAX_PRIORITIES</code> على 5، فإن FreeRTOS سيستخدم 5 مستويات للأولوية: 0 (أدنى أولوية) و1 و2 و3 و4 (أعلى أولوية).</p>
+<p>يستخدم FreeRTOS «قائمة الجاهزية» (ready list) لمتابعة جميع المهام التي تكون حاليًا جاهزة للتشغيل. وينفّذ قائمة الجاهزية كمصفوفة من قوائم المهام هكذا:</p>
+<pre><code>static xList pxReadyTasksLists[ configMAX_PRIORITIES ];  /* Prioritised ready tasks.  */
+</code></pre>
+<p>‏<code>pxReadyTasksLists[0]</code> قائمة بجميع المهام الجاهزة ذات الأولوية 0، و<code>pxReadyTasksLists[1]</code> قائمة بجميع المهام الجاهزة ذات الأولوية 1، وهكذا حتى <code>pxReadyTasksLists[configMAX_PRIORITIES-1]</code>.</p>
+<h3 id="نبض-النظام">نبض النظام</h3>
+<p>تُسمّى نبضة قلب نظام FreeRTOS بنبض النظام (system tick). ويهيّئ FreeRTOS النظام ليولّد مقاطعة نبض دورية. ويمكن للمستخدم ضبط تردد مقاطعة النبض، وهو عادةً في حدود الميلي ثانية. ومع كل مرة تنطلق فيها مقاطعة النبض، تُنادى الدالة <code>vTaskSwitchContext()</code>. وتختار <code>vTaskSwitchContext()</code> المهمة الجاهزة ذات الأولوية الأعلى وتضعها في المتغيّر <code>pxCurrentTCB</code> هكذا:</p>
+<pre><code>/* Find the highest-priority queue that contains ready tasks. */
+while( listLIST_IS_EMPTY( &amp;( pxReadyTasksLists[ uxTopReadyPriority ] ) ) )
+{
+    configASSERT( uxTopReadyPriority );
+    --uxTopReadyPriority;
+}
+
+/* listGET_OWNER_OF_NEXT_ENTRY walks through the list, so the tasks of the same 
+priority get an equal share of the processor time. */
+listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyPriority ] ) );
+</code></pre>
+<p>قبل بدء حلقة while، تكون <code>uxTopReadyPriority</code> مضمونًا أن تكون أكبر من أولوية المهمة الجاهزة الأعلى أولويةً أو مساوية لها. وتبدأ حلقة while() عند مستوى الأولوية <code>uxTopReadyPriority</code> وتهبط عبر مصفوفة <code>pxReadyTasksLists[]</code> باحثة عن مستوى الأولوية الأعلى الذي توجد فيه مهام جاهزة. ثم تلتقط <code>listGET_OWNER_OF_NEXT_ENTRY()</code> المهمة الجاهزة التالية من قائمة الجاهزية الخاصة بمستوى تلك الأولوية.</p>
+<p>أصبح <code>pxCurrentTCB</code> الآن يشير إلى المهمة الأعلى أولويةً، وعندما تعود <code>vTaskSwitchContext()</code> تبدأ الشيفرة المعتمدة على العتاد في تشغيل تلك المهمة.</p>
+<p>تلك التسعة أسطر من الشيفرة هي قلب FreeRTOS المطلق. أما الأسطر الـ8900 الأخرى فأكثر من موجودة لضمان أن تكون تلك التسعة أسطر كل ما يلزم لإبقاء المهمة الأعلى أولويةً قيد التشغيل.</p>
+<p>‏<a href="#fig.freertos.ready">الشكل 3.2</a> صورة من مستوى عالٍ لما تبدو عليه قائمة الجاهزية. وفي هذا المثال ثلاثة مستويات للأولوية، فيها مهمة واحدة ذات أولوية 0، ولا مهام ذات أولوية 1، وثلاث مهام ذات أولوية 2. وهذه الصورة دقيقة لكنها غير كاملة؛ إذ ينقصها بعض التفاصيل التي سنستكملها لاحقًا.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-basic-ready-list.webp" alt=""> الشكل 3.2: رؤية أساسية لقائمة جاهزية FreeRTOS</p>
+<p>والآن وقد فرغنا من النظرة العامة على مستوى عالٍ، فلنعُق إلى التفاصيل. سننظر إلى بُنى بيانات FreeRTOS الثلاث الرئيسية: المهام، والقوائم، والطوابير.</p>
+<h2 id="34-المهام">3.4. المهام</h2>
+<p>المهمة الأساسية لجميع أنظمة التشغيل هي تشغيل مهام المستخدم وتنسيقها. ومثل كثير من أنظمة التشغيل، فإن وحدة العمل الأساسية في FreeRTOS هي المهمة. ويستخدم FreeRTOS كتلة تحكّم المهمة (Task Control Block, TCB) لتمثيل كل مهمة.</p>
+<h3 id="كتلة-تحكم-المهمة-tcb">كتلة تحكّم المهمة (TCB)</h3>
+<p>يُعرَّف TCB في <code>tasks.c</code> هكذا:</p>
+<pre><code class="language-python">typedef struct tskTaskControlBlock
+{
+  volatile portSTACK_TYPE *pxTopOfStack;                  /* Points to the location of
+                                                             the last item placed on 
+                                                             the tasks stack.  THIS 
+                                                             MUST BE THE FIRST MEMBER 
+                                                             OF THE STRUCT. */
+                                                         
+  xListItem    xGenericListItem;                          /* <span class="hljs-type">List</span> item used to place 
+                                                             the TCB <span class="hljs-keyword">in</span> ready <span class="hljs-keyword">and</span> 
+                                                             blocked queues. */
+  xListItem    xEventListItem;                            /* <span class="hljs-type">List</span> item used to place 
+                                                             the TCB <span class="hljs-keyword">in</span> event lists.*/
+  unsigned portBASE_TYPE uxPriority;                      /* The priority of the task
+                                                             where <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> the lowest 
+                                                             priority. */
+  portSTACK_TYPE *pxStack;                                /* Points to the start of 
+                                                             the stack. */
+  signed char    pcTaskName[ configMAX_TASK_NAME_LEN ];   /* Descriptive name given 
+                                                             to the task when created.
+                                                             Facilitates debugging 
+                                                             only. */
+
+  <span class="hljs-comment">#if ( portSTACK_GROWTH &gt; 0 )</span>
+    portSTACK_TYPE *pxEndOfStack;                         /* Used <span class="hljs-keyword">for</span> stack overflow 
+                                                             checking on architectures
+                                                             where the stack grows up
+                                                             <span class="hljs-keyword">from</span> low memory. */
+  <span class="hljs-comment">#endif</span>
+
+  <span class="hljs-comment">#if ( configUSE_MUTEXES == 1 )</span>
+    unsigned portBASE_TYPE uxBasePriority;                /* The priority last 
+                                                             assigned to the task - 
+                                                             used by the priority 
+                                                             inheritance mechanism. */
+  <span class="hljs-comment">#endif</span>
+
+} tskTCB;
+</code></pre>
+<p>يخزّن TCB عنوان بداية المكدس في <code>pxStack</code> وقمة المكدس الحالية في <code>pxTopOfStack</code>. كما يخزّن مؤشرًا إلى نهاية المكدس في <code>pxEndOfStack</code> للتحقّق من فيض المكدس (stack overflow) إذا كان المكدس ينمو «إلى أعلى» نحو عناوين أعلى. وإذا كان المكدس ينمو «إلى أسفل» نحو عناوين أدنى، فيُفحص فيض المكدس بمقارنة قمة المكدس الحالية مع بداية ذاكرة المكدس في <code>pxStack</code>.</p>
+<p>يخزّن TCB أولوية المهمة الابتدائية في <code>uxPriority</code> و<code>uxBasePriority</code>. وتُعطى المهمة أولوية عند إنشائها، ويمكن تغيير أولوية المهمة. وإذا نفّذ FreeRTOS الوراثة الأولوية (priority inheritance) فإنه يستخدم <code>uxBasePriority</code> ليتذكّر الأولوية الأصلية أثناء رفع المهمة مؤقتًا إلى الأولوية «الموروثة». (راجع مناقشة الأقفال المتبادلة أدناه لمزيد من التفاصيل عن الوراثة الأولوية.)</p>
+<p>لكل مهمة عنصرا قائمة (list items) لاستخدامهما في قوائم جدولة FreeRTOS المختلفة. وعندما تُدرَج مهمة في قائمة، لا يُدرِج FreeRTOS مؤشرًا مباشرًا إلى TCB، بل يُدرِج مؤشرًا إلى إمّا <code>xGenericListItem</code> أو <code>xEventListItem</code> داخل TCB. وتتيح متغيّرات <code>xListItem</code> هذه أن تكون قوائم FreeRTOS أذكى مما لو كانت تحتفظ بمؤشر إلى TCB فحسب. وسنرى مثالًا على ذلك عند مناقشة القوائم لاحقًا.</p>
+<p>يمكن أن تكون المهمة في إحدى أربع حالات: قيد التشغيل، أو جاهزة للتشغيل، أو معلّقة (suspended)، أو محظورة (blocked). وقد تتوقّع أن يكون لكل مهمة متغيّر يخبر FreeRTOS بحالتها، لكنه لا يتوفّر. وبدلًا من ذلك، يتابع FreeRTOS حالة المهمة ضمنيًا عبر وضع المهام في القائمة المناسبة: قائمة الجاهزية، أو قائمة المهام المعلّقة، وغيرها. فوجود المهمة في قائمة معيّنة يدل على حالتها. وعندما تنتقل المهمة من حالة إلى أخرى، لا يفعل FreeRTOS سوى نقلها من قائمة إلى أخرى.</p>
+<h3 id="إنشاء-المهمة">إنشاء المهمة</h3>
+<p>لقد لمسنا من قبل كيفية اختيار المهمة وجدولتها عبر مصفوفة <code>pxReadyTasksLists</code>؛ والآن لننظر إلى كيفية إنشاء المهمة في بدايتها. تُنشأ المهمة عند نداء الدالة <code>xTaskCreate()</code>. ويستخدم FreeRTOS كائن TCB جديد المُخصَّص لتخزين اسم المهمة وأولويتها وتفاصيلها الأخرى، ثم يخصّص حجم المكدس الذي يطلبه المستخدم (بافتراض توفّر ذاكرة كافية) ويتذكّر بداية ذاكرة المكدس في العضو <code>pxStack</code> في TCB.</p>
+<p>يُهيَّأ المكدس بحيث يبدو وكأن المهمة الجديدة قيد التشغيل بالفعل وقد قاطعها تبديل سياق (context switch). بهذه الطريقة يستطيع المجدول (scheduler) أن يعامل المهام المُنشأة حديثًا تمامًا كالمهام التي تعمل منذ فترة؛ إذ لا يحتاج المجدول إلى أي شيفرة حالة خاصة للتعامل مع المهام الجديدة.</p>
+<p>تعتمد طريقة جعل مكدس المهمة يبدو وكأنه قُطع بتبديل سياق على البنية التي يعمل عليها FreeRTOS، لكن تنفيذية معالج ARM Cortex-M3 هذه مثال جيّد:</p>
+<pre><code>unsigned int *pxPortInitialiseStack( unsigned int *pxTopOfStack, 
+                                     pdTASK_CODE pxCode,
+                                     void *pvParameters )
+{
+  /* Simulate the stack frame as it would be created by a context switch interrupt. */
+  pxTopOfStack--; /* Offset added to account for the way the MCU uses the stack on 
+                     entry/exit of interrupts. */
+  *pxTopOfStack = portINITIAL_XPSR;  /* xPSR */
+  pxTopOfStack--;
+  *pxTopOfStack = ( portSTACK_TYPE ) pxCode;  /* PC */
+  pxTopOfStack--;
+  *pxTopOfStack = 0;  /* LR */
+  pxTopOfStack -= 5;  /* R12, R3, R2 and R1. */
+  *pxTopOfStack = ( portSTACK_TYPE ) pvParameters;  /* R0 */
+  pxTopOfStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
+  
+  return pxTopOfStack;
+}
+</code></pre>
+<p>يدفع معالج ARM Cortex-M3 السجلات إلى المكدس عندما تُقاطَع مهمة. ويعدّل <code>pxPortInitialiseStack()</code> المكدس بحيث يبدو وكأن السجلات قد دُفعت، رغم أن المهمة لم تبدأ تشغيلها فعليًا بعد. وتُخزَّن قيم معروفة في المكدس لسجلات ARM وهي <code>xPSR, PC, LR,</code> و<code>R0</code>. أما السجلات المتبقية <code>R1</code> -- <code>R12</code> فتُخصَّص لها مساحة في المكدس عن طريق إنقاص مؤشر قمة المكدس، دون تخزين أي بيانات محدَّدة لها في المكدس. ويقول معمارية ARM إن هذه السجلات غير معرَّفة عند إعادة الضبط، لذا لن يعتمد برنامج (خلوّ من الأخطاء) على قيمة معروفة لها.</p>
+<p>بعد تجهيز المكدس، تكون المهمة جاهزة تقريبًا للتشغيل. لكن أولًا، يعطّل FreeRTOS المقاطعات: نحن على وشك أن نبدأ العبث بقوائم الجاهزية وببُنى المجدول الأخرى، ولا نريد أن يغيّرها أحد آخر من تحت أيدينا.</p>
+<p>إذا كانت هذه أول مهمة تُنشأ على الإطلاق، فإن FreeRTOS يهيّئ قوائم مهام المجدول. ولدى مجدول FreeRTOS مصفوفة من قوائم الجاهزية، وهي <code>pxReadyTasksLists[]</code>، تحوي قائمة جاهزية واحدة لكل مستوى أولوية ممكن. ولدى FreeRTOS أيضًا بعض القوائم الأخرى لمتابعة المهام المعلّقة والمقتولة والمؤجَّلة. وكلها تُهيَّأ الآن أيضًا.</p>
+<p>بعد إتمام أي تهيئة لأول مرة، تُضاف المهمة الجديدة إلى قائمة الجاهزية عند مستوى أولويتها المحدَّد. ثم تُعاد المقاطعات إلى التشغيل ويكتمل إنشاء المهمة الجديدة.</p>
+<h2 id="35-القوائم">3.5. القوائم</h2>
+<p>بعد المهام، تأتي القائمة (list) بوصفها بنية بيانات FreeRTOS الأكثر استخدامًا. ويستخدم FreeRTOS بنية القائمة لمتابعة المهام لأغراض الجدولة، وكذلك لتنفيذ الطوابير.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list.webp" alt=""> الشكل 3.3: رؤية كاملة لقائمة جاهزية FreeRTOS</p>
+<p>قائمة FreeRTOS هي قائمة مرتبطة مزدوجة دورية (circular doubly linked list) قياسية مع إضافتين مثيرتين للاهتمام. وإليك عنصرًا في القائمة:</p>
+<pre><code>struct xLIST_ITEM
+{
+  portTickType xItemValue;                   /* The value being listed.  In most cases
+                                                this is used to sort the list in 
+                                                descending order. */
+  volatile struct xLIST_ITEM * pxNext;       /* Pointer to the next xListItem in the 
+                                                list.  */
+  volatile struct xLIST_ITEM * pxPrevious;   /* Pointer to the previous xListItem in 
+                                                the list. */
+  void * pvOwner;                            /* Pointer to the object (normally a TCB)
+                                                that contains the list item.  There is
+                                                therefore a two-way link between the 
+                                                object containing the list item and 
+                                                the list item itself. */
+  void * pvContainer;                        /* Pointer to the list in which this list
+                                                item is placed (if any). */
+};
+</code></pre>
+<p>يحمل كل عنصر في القائمة رقمًا هو <code>xItemValue</code>، وهو عادةً أولوية المهمة التي يجري متابعتها أو قيمة مؤقّت لأغراض جدولة الأحداث. وتُحفظ القوائم بترتيب تنازلي الأولوية، أي أن <code>xItemValue</code> الأعلى أولويةً (أكبر رقم) يقع في مقدمة القائمة، و<code>xItemValue</code> الأدنى أولويةً (أصغر رقم) يقع في نهايتها.</p>
+<p>المؤشران <code>pxNext</code> و<code>pxPrevious</code> هما مؤشرا قائمة مرتبطة قياسيان. و<code>pvOwner</code> مؤشر إلى مالك عنصر القائمة، وهو عادةً مؤشر إلى كائن TCB الخاص بمهمة. ويُستخدم <code>pvOwner</code> لجعل تبديل المهام سريعًا في <code>vTaskSwitchContext()</code>: فبمجرد العثور على عنصر القائمة الخاص بالمهمة الأعلى أولويةً داخل <code>pxReadyTasksLists[]</code>، يقودنا مؤشر <code>pvOwner</code> الخاص بعنصر القائمة ذاك مباشرةً إلى TCB المطلوب لجدولة المهمة.</p>
+<p>يشير <code>pvContainer</code> إلى القائمة التي يقع فيها هذا العنصر. ويُستخدم لتحديد سريع ما إذا كان عنصر قائمة معيّن في قائمة بعينها. ويمكن وضع كل عنصر قائمة داخل قائمة، وهي معرَّفة هكذا:</p>
+<pre><code>typedef struct xLIST
+{
+  volatile unsigned portBASE_TYPE uxNumberOfItems;
+  volatile xListItem * pxIndex;           /* Used to walk through the list.  Points to
+                                             the last item returned by a call to 
+                                             pvListGetOwnerOfNextEntry (). */
+  volatile xMiniListItem xListEnd;        /* List item that contains the maximum 
+                                             possible item value, meaning it is always
+                                             at the end of the list and is therefore 
+                                             used as a marker. */
+} xList;
+</code></pre>
+<p>يُحفظ حجم القائمة في أي لحظة في <code>uxNumberOfItems</code>، من أجل عمليات حجم القائمة السريعة. وتُهيَّأ كل القوائم الجديدة لاحتواء عنصر واحد فقط: عنصر <code>xListEnd</code>. و<code>xListEnd.xItemValue</code> قيمة حارسة (sentinel) مساوية لأكبر قيمة يمكن أن يأخذها المتغيّر <code>xItemValue</code>: وهي <code>0xffff</code> عندما تكون <code>portTickType</code> قيمة بـ16 بت، و<code>0xffffffff</code> عندما تكون <code>portTickType</code> قيمة بـ32 بت. وقد تحمل عناصر القائمة الأخرى القيمة نفسها أيضًا؛ إذ يضمن خوارزمية الإدراج أن يبقى <code>xListEnd</code> العنصر الأخير في القائمة دائمًا.</p>
+<p>ولأن القوائم مرتّبة تنازليًا بالأولوية، يُستخدم عنصر <code>xListEnd</code> كعلامة لبداية القائمة. ولأن القائمة دورية، فإن عنصر <code>xListEnd</code> هذا يخدم أيضًا كعلامة لنهاية القائمة.</p>
+<p>معظم عمليات الوصول إلى القوائم «التقليدية» التي استخدمتها على الأرجح تنجز كل عملها داخل حلقة for() واحدة أو نداء دالة واحدة هكذا:</p>
+<pre><code>for (listPtr = listStart; listPtr != NULL; listPtr = listPtr-&gt;next) {
+  // Do something with listPtr here...
+}
+</code></pre>
+<p>غالبًا ما يحتاج FreeRTOS إلى الوصول إلى قائمة عبر عدة حلقات for() وwhile() وكذلك عبر نداءات الدوال، ولهذا يستخدم دوال قوائم تُشغِّل المؤشر <code>pxIndex</code> ليمشي على القائمة. وتفعل الدالة <code>listGET_OWNER_OF_NEXT_ENTRY()</code> ما هو <code>pxIndex = pxIndex-&gt;pxNext;</code> وتعيد <code>pxIndex</code>. (|:- بالطبع أنها تُجري كشف الالتفاف الصحيح حول نهاية القائمة أيضًا.) بهذه الطريقة تتحمّل القائمة نفسها مسؤولية تتبّع «أين أنت» أثناء المرور عليها باستخدام <code>pxIndex</code>، مما يتيح لبقية FreeRTOS ألّا تقلق بشأن ذلك.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list-2.webp" alt=""> الشكل 3.4: رؤية كاملة لقائمة جاهزية FreeRTOS بعد نبضة مؤقّت النظام</p>
+<p>التشغيل الذي يجري على القائمة <code>pxReadyTasksLists[]</code> في <code>vTaskSwitchContext()</code> مثال جيّد على كيفية استخدام <code>pxIndex</code>. لنفترض لدينا مستوى أولوية واحد فقط هو الأولوية 0، وهناك ثلاث مهام عند ذلك المستوى. وهذا يشبه صورة قائمة الجاهزية الأساسية التي نظرنا إليها سابقًا، لكن هذه المرة سنشمل جميع بُنى البيانات والحقول.</p>
+<p>وكما ترى في <a href="#fig.freertos.list">الشكل 3.3</a>، فإن <code>pxCurrentTCB</code> يدلّ على أننا نُشغّل حاليًا المهمة B. وفي المرة التالية التي تعمل فيها <code>vTaskSwitchContext()</code> فإنها تنادي <code>listGET_OWNER_OF_NEXT_ENTRY()</code> للحصول على المهمة التالية المراد تشغيلها. وتستخدم هذه الدالة <code>pxIndex-&gt;pxNext</code> لتحدّد أن المهمة التالية هي المهمة C، وأصبح الآن <code>pxIndex</code> يشير إلى عنصر القائمة الخاص بالمهمة C، ويشير <code>pxCurrentTCB</code> إلى TCB الخاص بالمهمة C، كما هو مبيّن في <a href="#fig.freertos.aftertick">الشكل 3.4</a>.</p>
+<p>لاحظ أن كل كائن من نوع <code>struct xListItem</code> هو في الحقيقة كائن <code>xGenericListItem</code> الخاص بـTCB المرتبط به.</p>
+<h2 id="36-الطوابير">3.6. الطوابير</h2>
+<p>يتيح FreeRTOS للمهام أن تتواصل وتتزامن فيما بينها باستخدام الطوابير (queues). كما تستخدم روتينات خدمة المقاطعة (ISRs) الطوابير للتواصل والمزامنة.</p>
+<p>بنية بيانات الطابور الأساسية هي:</p>
+<pre><code class="language-python">typedef struct QueueDefinition
+{
+  signed char *pcHead;                      /* Points to the beginning of the queue 
+                                               storage area. */
+  signed char *pcTail;                      /* Points to the byte at the end of the 
+                                               queue storage area. One more byte <span class="hljs-keyword">is</span> 
+                                               allocated than necessary to store the 
+                                             queue items; this <span class="hljs-keyword">is</span> used <span class="hljs-keyword">as</span> a marker. */
+  signed char *pcWriteTo;                   /* Points to the free <span class="hljs-built_in">next</span> place <span class="hljs-keyword">in</span> the 
+                                               storage area. */
+  signed char *pcReadFrom;                  /* Points to the last place that a queued 
+                                               item was read <span class="hljs-keyword">from</span>. */
+                                           
+  xList xTasksWaitingToSend;                /* <span class="hljs-type">List</span> of tasks that are blocked waiting 
+                                               to post onto this queue.  Stored <span class="hljs-keyword">in</span> 
+                                               priority order. */
+  xList xTasksWaitingToReceive;             /* <span class="hljs-type">List</span> of tasks that are blocked waiting 
+                                               to read <span class="hljs-keyword">from</span> this queue. Stored <span class="hljs-keyword">in</span> 
+                                               priority order. */
+
+  volatile unsigned portBASE_TYPE uxMessagesWaiting;  /* The number of items currently
+                                                         <span class="hljs-keyword">in</span> the queue. */
+  unsigned portBASE_TYPE uxLength;                    /* The length of the queue 
+                                                         defined <span class="hljs-keyword">as</span> the number of 
+                                                         items it will hold, <span class="hljs-keyword">not</span> the 
+                                                         number of <span class="hljs-built_in">bytes</span>. */
+  unsigned portBASE_TYPE uxItemSize;                  /* The size of each items that 
+                                                         the queue will hold. */
+                                         
+} xQUEUE;
+</code></pre>
+<p>هذا طابور قياسي إلى حدٍّ كبير بمؤشري رأس وذيل، فضلًا عن مؤشرات لتتبّع الموضع الذي قرأنا منه للتو والموضع الذي كتبنا إليه للتو.</p>
+<p>عند إنشاء طابور، يحدّد المستخدم طول الطابور وحجم كل عنصر يتتبّعه الطابور. ويُستخدم <code>pcHead</code> و<code>pcTail</code> لمتابعة التخزين الداخلي للطابور. وإضافة عنصر إلى طابور تؤدّي إلى نسخة عميقة (deep copy) من العنصر في التخزين الداخلي للطابور.</p>
+<p>يُجري FreeRTOS نسخة عميقة بدلًا من تخزين مؤشر إلى العنصر، لأن عمر العنصر المُدرَج قد يكون أقصر بكثير من عمر الطابور. فمثلًا، لنفترض طابورًا من أعداد صحيحة بسيطة تُدرَج وتُزال باستخدام متغيّرات محلّية عبر عدة نداءات دوال. لو خزّن الطابور مؤشرات إلى تلك المتغيّرات المحلّية، لكانت المؤشرات غير صالحة بمجرد خروج المتغيّرات المحلّية عن نطاقها واستخدام ذاكرتها من أجل قيمة جديدة.</p>
+<p>المستخدم هو من يقرّر ما الذي يُوضع في الطابور. ويمكن للمستخدم أن يضع في الطابور نسخًا من العناصر إذا كانت صغيرة، كما في مثال الأعداد الصحيحة البسيطة في الفقرة السابقة، أو أن يضع مؤشرات إلى العناصر إذا كانت كبيرة. ولاحظ أن FreeRTOS يجري نسخة عميقة في الحالتين: إذا اختار المستخدم وضع نسخ من العناصر، فإن الطابور يخزّن نسخة عميقة من كل عنصر؛ وإذا اختار وضع المؤشرات، فإن الطابور يخزّن نسخة عميقة من المؤشر. وبالطبع، إذا خزّن المستخدم مؤشرات في الطابور، فإن المستخدم هو المسؤول عن إدارة الذاكرة المرتبطة بتلك المؤشرات. فطابور لا يهمّه أي بيانات تضعها فيه، ولا يحتاج سوى أن يعرف حجم البيانات.</p>
+<p>يدعم FreeRTOS عمليات الإدراج والإزالة في الطوابير الحاجبة (blocking) وغير الحاجبة (non-blocking). وتعيد العمليات غير الحاجبة الرجوع فورًا بحالة «هل نجح الإدراج في الطابور؟» أو «هل نجحت الإزالة من الطابور؟». أما العمليات الحاجبة فتُحدَّد بمهلة (timeout). ويمكن للمهمة أن تحجب نفسها إلى أجل غير مسمى أو لمدّة محدودة.</p>
+<p>تبقى المهمة المحظورة—ولنسَمِّها المهمة A—محظورة ما دامت عملية الإدراج أو الإزالة الخاصة بها لا يمكن إتمامها ولم تنتهِ مهلةها (إن وُجدت). وإذا عدّل مقاطعة أو مهمة أخرى الطابور بحيث يمكن إتمام عملية المهمة A، فإن المهمة A ستُحجب عن الحظر. وإذا كانت عملية الطابور الخاصة بالمهمة A ما زالت ممكنة عند الوقت الذي تعمل فيه فعليًا، فإن المهمة A ستُتمّ عملية الطابور وتُعيد «نجاح». غير أنه، بحلول الوقت الذي تعمل فيه المهمة A فعليًا، من المحتمل أن تكون مهمة أعلى أولويةً أو مقاطعة قد نفّذت عملية أخرى على الطابور تمنع المهمة A من تنفيذ عمليتها. وفي هذه الحالة ستتحقّق المهمة A من مهلتها، إمّا أن تستأنف الحظر إن لم تنتهِ المهلة، أو تُعيد حالة «فشل» لعملية الطابور.</p>
+<p>من المهمّ ملاحظة أن بقية النظام تستمر في العمل بينما مهمة ما تحجب نفسها على طابور؛ فالمهام والمقاطعات الأخرى تستمر في التشغيل. وبهذه الطريقة لا تُهدِر المهمة المحظورة دورات معالجة المعالج (CPU cycles) كان يمكن استغلالها بفاعلية من المهام والمقاطعات الأخرى.</p>
+<p>يستخدم FreeRTOS القائمة <code>xTasksWaitingToSend</code> لمتابعة المهام التي تحجب نفسها في أثناء الإدراج في طابور. ومع كل مرة يُزال فيها عنصر من طابور، تُفحص القائمة <code>xTasksWaitingToSend</code>. وإذا كانت هناك مهمة تنتظر في تلك القائمة فإنها تُحجب عن الحظر.</p>
+<p>وبالمثل، تحتفظ <code>xTasksWaitingToReceive</code> بمتابعة المهام التي تحجب نفسها في أثناء الإزالة من طابور. ومع كل مرة يُدرَج فيها عنصر جديد في طابور، تُفحص القائمة <code>xTasksWaitingToReceive</code>. وإذا كانت هناك مهمة تنتظر في تلك القائمة فإنها تُحجب عن الحظر.</p>
+<h3 id="السيمافورات-والأقفال-المتبادلة">السيمافورات والأقفال المتبادلة</h3>
+<p>يستخدم FreeRTOS طوابيره للتواصل بين المهام وداخلها. ويستخدم FreeRTOS طوابيره أيضًا لتنفيذ السيمافورات (semaphores) والأقفال المتبادلة (mutexes).</p>
+<h4>ما الفرق بينهما؟</h4>
+<p>قد تبدو السيمافورات والأقفال المتبادلةشيئًا واحدًا، لكنها ليست كذلك. ينفّذ FreeRTOSهما بطريقة متشابهة، لكن المقصود بهما أن يُستخدما بطرق مختلفة. فكيف ينبغي استخدام كلٍّ منهما بصورة مختلفة؟ خبير الأنظمة المدمجة Michael Barr يقول ذلك بأفضل صياغة في مقاله، «<a href="http://www.barrgroup.com/Embedded-Systems/How-To/RTOS-Mutex-Semaphore">شرح مُبسّط للأقفال المتبادلة والسيمافورات</a>»:</p>
+<blockquote>
+<p>الاستخدام الصحيح للسيمافور هو الإشارات من مهمة إلى أخرى. أما القفل المتبادل فيُقصد أن يُؤخذ ويُحرَّر، بهذا الترتيب دائمًا، من كل مهمة تستخدم المورد المشترك الذي يحميه. وبالمقابل، فإن المهام التي تستخدم السيمافورات إمّا تُرسل إشارة [«أرسل» بمصطلح FreeRTOS] أو تنتظر [«استلم» بمصطلح FreeRTOS]—لا الأمرين معًا.</p>
+</blockquote>
+<p>يُستخدم القفل المتبادل لحماية مورد مشترك. فالمهمة تكتسب القفل المتبادل، وتستخدم المورد المشترك، ثم تحرّر القفل المتبادل. ولا يمكن لأي مهمة أن تكتسب قفلًا متبادلًا أثناء امتلاك مهمة أخرى له. وهذا يضمن السماح لمهمة واحدة فقط باستخدام مورد مشترك في الوقت نفسه.</p>
+<p>تُستخدم السيمافورات بواسطة مهمة واحدة لإشارة مهمة أخرى. ولنسوف مقالة Barr:</p>
+<blockquote>
+<p>فمثلًا، قد تحتوي المهمة 1 على شيفرة تُرسل (أي تُشير أو تزيد) سيمافورًا معيّنًا عند الضغط على زر «الطاقة»، بينما تنتظر المهمة 2، التي تُوقظ الشاشة، على ذلك السيمافور نفسه. وفي هذا السيناريو، تكون إحدى المهام هي مُنتِج إشارة الحدث، والأخرى هي مُستهلكها.</p>
+</blockquote>
+<p>وإن=torchورتك أي شكوك حول السيمافورات والأقفال المتبادلة، فرجاءً راجع مقالة Michael.</p>
+<h4>التنفيذ</h4>
+<p>ينفّذ FreeRTOS سيمافورًا من N عنصرًا كطابور قادر على احتواء N عنصر. وهو لا يخزّن أي بيانات فعلية لعناصر الطابور؛ فالسيمافور لا يهتمّ إلا بعدد مدخلات الطابور المشغولة حاليًا، وهو عدد يُتتبَّع في حقل <code>uxMessagesWaiting</code> الخاص بالطابور. فهو إذن يقوم بـ«مزامنة صرفة»، كما يسمّيها ملف ترويسات FreeRTOS <code>semphr.h</code>. ومن ثمّ فإن حجم عنصر الطابور يساوي صفر بايت (<code>uxItemSize == 0</code>). وكل وصول إلى السيمافور يزيد حقل <code>uxMessagesWaiting</code> أو ينقصه؛ ولا حاجة إلى نسخ أي عنصر أو بيانات.</p>
+<p>مثل السيمافور، يُنفَّذ القفل المتبادل أيضًا كطابور، لكن عدة حقول من البنية <code>xQUEUE</code> تُحمَّل فوق معاني أخرى باستخدام تعليمات <code>#define</code>:</p>
+<pre><code>/* Effectively make a union out of the xQUEUE structure. */
+#define uxQueueType           pcHead
+#define pxMutexHolder         pcTail
+</code></pre>
+<p>لأن القفل المتبادل لا يخزّن أي بيانات في الطابور، فإنه لا يحتاج إلى أي تخزين داخلي، ولهذا لا حاجة إلى حقلي <code>pcHead</code> و<code>pcTail</code>. ويضبط FreeRTOS حقل <code>uxQueueType</code> (وهو في الحقيقة حقل <code>pcHead</code>) على <code>0</code> للإشارة إلى أن هذا الطابور مستخدَم لقفل متبادل. ويستخدم FreeRTOS حقلي <code>pcTail</code> المحمَّلين فوق معاني أخرى لتطبيق الوراثة الأولوية على الأقفال المتبادلة.</p>
+<p>وإن كنت غير ملمّ بالوراثة الأولوية، فسأستشهد مجدّدًا بـMichael Barr لتعريفها، هذه المرة من مقاله، «<a href="https://barrgroup.com/Embedded-Systems/How-To/RTOS-Priority-Inversion">مدخل إلى انقلاب الأولوية</a>»:</p>
+<blockquote>
+<p>[الوراثة الأولوية] تقتضي أن ترث المهمة الأدنى أولويةً أولويةَ أي مهمة أعلى أولويةً في انتظار مورد تشتركان فيه. وينبغي أن يحدث هذا التغيير في الأولوية بمجرد أن تبدأ المهمة الأعلى أولويةً في الانتظار؛ وينبغي أن ينتهي عند تحرير المورد.</p>
+</blockquote>
+<p>ينفّذ FreeRTOS الوراثة الأولوية باستخدام حقل <code>pxMutexHolder</code> (وهو في الحقيقة مجرّد حقل <code>pcTail</code> المحمَّل بـ<code>#define</code>). ويسجّل FreeRTOS المهمة التي تمسك قفلًا متبادلًا في حقل <code>pxMutexHolder</code>. وعندما يُعثر على مهمة أعلى أولويةً وهي تنتظر قفلًا متبادلًا محجوزًا حاليًا لدى مهمة أدنى أولويةً، فإن FreeRTOS «يرفع» المهمة الأدنى أولويةً إلى أولوية المهمة الأعلى أولويةً حتى يصبح القفل المتبادل متاحًا من جديد.</p>
+<h2 id="37-الخلاصة">3.7. الخلاصة</h2>
+<p>لقد فرغنا من استعراض بنية FreeRTOS. ونأمل أن تكون قد أتقنت الآن كيف تعمل مهام FreeRTOS وتتواصل. وإذا كنت لم تسبق لك النظر من قبل في البنية الداخلية لأي نظام تشغيل، فنأمل أن تكون قد اكتشفت صورةً أولية عن كيفية عملها.</p>
+<p>من الواضح أن هذا الفصل لم يغطِّ بنية FreeRTOS كلها. ولم أذكر تحديدًا تخصيص الذاكرة (memory allocation)، ولا روتينات خدمة المقاطعة (ISRs)، ولا التنقيح (debugging)، ولا دعم وحدة حماية الذاكرة (MPU). كما أن هذا الفصل لم يناقش كيفية إعداد FreeRTOS أو استخدامه. وقد كتب ريتشارد باري كتابًا ممتازًا هو <em><a href="http://www.freertos.org/Documentation/FreeRTOS-documentation-and-book.html">استخدام نواة FreeRTOS الزمنية الحقيقية: دليل عملي</a></em>، يناقش هذا بالضبط؛ وأوصي به بشدّة إذا كنت تنوي استخدام FreeRTOS.</p>
+<h2 id="38-شكر-وتقدير">3.8. شكر وتقدير</h2>
+<p>أودّ أن أشكر ريتشارد باري على إنشاء FreeRTOS وصيانته، وعلى اختياره جعله مفتوح المصدر. وكان ريتشارد متعاونًا جدًا في كتابة هذا الفصل، إذ قدّم بعض التاريخ عن FreeRTOS إضافةً إلى مراجعة تقنية بالغة القيمة.</p>
+<p>كما أشكر Amy Brown وGreg Wilson على جمع كل هذا العمل «AOSA» معًا.</p>
+<p>وأخيرًا والأهم (وهذا عكس «وليس في المرتبة الأخيرة»)، أودّ أن أشكر زوجتي Sarah على مشاركتها معي البحث وكتابة هذا الفصل. ولحسن الحظ كانت تعرف أنني مهووس بالتقنية حين تزوّجتني!</p>
+<!----></div> <div class="prev-next"><!--[0--><a href="../../../../book/aosabook/v2-ffreleng/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">Firefox Release Engineering</span></a><!--]--> <!--[0--><a href="../../../../book/aosabook/v2-gdb/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">GDB</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_m4sqcf = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.DfciPU9i.js"),
+						import("../../../../_app/immutable/entry/app.D6SaVgzs.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

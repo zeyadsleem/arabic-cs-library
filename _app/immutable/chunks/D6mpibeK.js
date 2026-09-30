@@ -1,0 +1,358 @@
+const s="aosabook",a="v1-eclipse",n="Eclipse",p="index",l="Eclipse",e=[{depth:2,id:"61-eclipse-المبكر",text:"6.1. Eclipse المبكّر"},{depth:3,id:"611-المنصة-platform",text:"6.1.1. المنصّة (Platform)"},{depth:3,id:"612-أدوات-تطوير-java-jdt",text:"6.1.2. أدوات تطوير Java (JDT)"},{depth:3,id:"613-بيئة-تطوير-الإضافات-pde",text:"6.1.3. بيئة تطوير الإضافات (PDE)"},{depth:2,id:"62-eclipse-30-بيئة-التشغيل-وrcp-والروبوتات",text:"6.2. Eclipse 3.0: بيئة التشغيل وRCP والروبوتات"},{depth:3,id:"621-بيئة-التشغيل-runtime",text:"6.2.1. بيئة التشغيل (Runtime)"},{depth:3,id:"622-منصة-العميل-الثرية-rcp",text:"6.2.2. منصّة العميل الثرية (RCP)"},{depth:2,id:"63-eclipse-34",text:"6.3. Eclipse 3.4"},{depth:3,id:"631-مفاهيم-p2",text:"6.3.1. مفاهيم p2"},{depth:2,id:"64-eclipse-40",text:"6.4. Eclipse 4.0"},{depth:3,id:"641-مساحة-عمل-النموذج",text:"6.4.1. مساحة عمل النموذج"},{depth:3,id:"642-التنسيق-بأوراق-الأنماط-المتتالية-css",text:"6.4.2. التنسيق بأوراق الأنماط المتتالية (CSS)"},{depth:3,id:"643-حقن-الاعتماديات-dependency-injection",text:"6.4.3. حقن الاعتماديات (Dependency Injection)"},{depth:3,id:"644-خدمات-التطبيقات",text:"6.4.4. خدمات التطبيقات"},{depth:2,id:"65-الخاتمة",text:"6.5. الخاتمة"},{depth:2,id:"الحواشي",text:"الحواشي"}],t=`<p>معمارية تطبيقات المصادر المفتوحة (المجلد الأول)Eclipse</p>
+<h1>معمارية تطبيقات المصادر المفتوحة (المجلد الأول) Eclipse</h1>
+<p>Kim Moir</p>
+<p>إذا استمتعت بهذه الكتب، فقد يعجبك أيضًا <a href="https://third-bit.com/sdxpy/">التصميم البرمجي بالأمثلة في بايثون (Software Design by Example in Python)</a> و<a href="https://third-bit.com/sdxjs/">التصميم البرمجي بالأمثلة في جافاسكربت (Software Design by Example in JavaScript)</a>.</p>
+<p>يُعَدّ تنفيذ تقسيم البرمجيات إلى وحدات (modularity) مهمةً صعبة على نحوٍ شهير. كما أنّ إدارة التشغيل البيني (interoperability) مع قاعدة شيفرة ضخمة كتبها مجتمع متنوّع أمرٌ صعب في حدّ ذاته. أمّا في Eclipse فقد تمكّنّا من النجاح في كلا البُعدين. وفي يونيو 2010 أتاحت مؤسسة Eclipse إصدارها المنسّق Helios، مع أكثر من 39 مشروعًا و490 مُودِعًا من أكثر من 40 شركة يعملون معًا لبناء فوق وظائف المنصّة الأساسية. فما الرؤية المعمارية الأصلية لـ Eclipse؟ وكيف تطوّرت؟ وكيف تخدم معمارية التطبيق تشجيع انخراط المجتمع ونموّه؟ فلنعد إلى البداية.</p>
+<p>في 7 نوفمبر 2001 صدر مشروع مفتوح المصدر باسم Eclipse 1.0. وقد وُصِف Eclipse في حينه بأنّه «بيئة تطوير متكاملة (Integrated Development Environment، IDE) لكل شيء، ولا شيء بعينه». وكان هذا الوصف عامًّا عن قصد، لأنّ الرؤية المعمارية لم تكن مجرّد مجموعة أدوات أخرى، بل إطار عمل (framework)؛ إطار عمل معياري (modular) وقابل للتوسّع. وقد وفّر Eclipse منصّة قائمة على المكوّنات (component-based platform) تصلح أساسًا لبناء أدوات المطوّرين. وقد شجّع هذا التصميم المعماري القابل للتمديد المجتمعَ على البناء فوق منصّة أساسية وتمديدها إلى ما وراء حدود الرؤية الأصلية. بدأ Eclipse بوصفه منصّة، وكانت حزمة تطوير برمجيات Eclipse (Eclipse Software Development Kit، ESDK) هي منتَج إثبات المفهوم. وقد أتاحت هذه الحزمة للمطوّرين أن يستضيفوا Eclipse ذاتيًا ويستخدموا حزمة Eclipse SDK نفسها لبناء إصدارات أحدث من Eclipse.</p>
+<p>الصورة النمطية الشائعة لمطوّر مفتوح المصدر هي شخص مُحبّ للغير، يظلّ يعمل في وقت متأخّر من الليل لإصلاح الأخطاء وتنفيذ ميزات جديدة مذهلة لتلبية اهتماماته الشخصية. وفي المقابل، إن نظرت إلى تاريخ مشروع Eclipse المبكّر، ستجد أنّ بعض الشيفرة الأولية التي تبرّع بها المشروع كانت مبنيّة على VisualAge for Java الذي طوّرته IBM. وكان أوّل المُودعين (committers) الذين عملوا على مشروع مفتوح المصدر هذا موظفين في شركة تابعة لـ IBM اسمها Object Technology International (OTI). وكان هؤلاء المُودعون يتقاضون رواتب للعمل بدوام كامل على المشروع المفتوح المصدر، للإجابة عن الأسئلة في مجموعات الأخبار، ومعالجة الأخطاء، وتنفيذ ميزات جديدة. وقد تشكّل تحالف (consortium) من بائعي البرمجيات المهتمّين لتوسيع هذا الجهد في أدوات العمل المفتوحة. وكان أعضاء تحالف Eclipse الأوائل هم Borland وIBM وMerant وQNX Software Systems وRational Software وRedHat وSuSE وTogetherSoft.</p>
+<p>وبالاستثمار في هذا الجهد، تكسب هذه الشركات الخبرةَ اللازمة لإطلاق منتجات تجارية مبنيّة على Eclipse. ويشبه ذلك الاستثمارات التي تقوم بها الشركات في المساهمة في نواة لينكس، لأنّ من مصلحتها أن يكون لديها موظفون يحسّنون البرمجيات مفتوحة المصدر التي تقوم عليها عروضها التجارية. وفي مطلع عام 2004 تأسّست مؤسسة Eclipse لإدارة مجتمع Eclipse المتنامي وتوسيعه. وقد موِّلت هذه المؤسسة غير الربحية رسومَ عضوية الشركات، ويقودها مجلس إدارة. أمّا اليوم فقد توسّع تنوّع مجتمع Eclipse ليشمل أكثر من 170 شركةَ عضوًا وما يقارب 1000 مُودِع.</p>
+<p>في الأصل كان الناس يعرفون «Eclipse» بوصفه حزمة Eclipse SDK فحسب، أمّا اليوم فهو أكثر من ذلك بكثير. وفي يوليو 2010 كان لدى eclipse.org ما يقارب 250 مشروعًا متنوّعًا قيد التطوير. وهناك أدوات لدعم التطوير بـ C/C++ وPHP وخدمات الويب والتطوير المُدار بالنماذج وأدوات البناء وغيرها كثير. ويُدرَج كلٌّ واحد من هذه المشاريع ضمن مشروع رئيسي (top-level project، TLP) تُداره لجنةُ إدارة مشروع (Project Management Committee، PMC) تتألّف من أعضاء كبار في المشروع رُشِّحوا لتحمّل مسؤولية تحديد التوجّه التقني وأهداف الإصدار. وحرصًا على الاختصار، سيقتصر نطاق هذا الفصل على تطوّر معمارية Eclipse SDK ضمن مشروعي Eclipse<a href="#footnote-1">1</a> وEquinox Runtime<a href="#footnote-2">2</a>. ولأنّ لـ Eclipse تاريخًا طويلًا فسأركّز على Eclipse المبكّر، فضلًا عن إصدارات 3.0 و3.4 و4.0.</p>
+<h2 id="61-eclipse-المبكر">6.1. Eclipse المبكّر</h2>
+<p>في مطلع القرن الحادي والعشرين كانت هناك أدوات كثيرة لمطوّري البرمجيات، لكن قلّة منها كانت تعمل معًا. سعى Eclipse إلى توفير منصّة مفتوحة المصدر لإنشاء أدوات قابلة للتشغيل البيني للمطوّرين. وكان ذلك سيتيح للمطوّرين التركيز على كتابة أدوات جديدة بدلًا من كتابة شيفرة للتعامل مع مشكلات البنية التحتية مثل التفاعل مع نظام الملفات، وتقديم تحديثات البرمجيات، والاتصال بمستودعات الشيفرة المصدرية. وأشهر ما في Eclipse على الأرجح هو أدوات تطوير Java (Java Development Tools، JDT). وكان المقصد من هذه الأدوات النموذجية أن تكون مثالًا يقتفيه كلُّ من يهتمّ بتوفير أدوات للغات أخرى.</p>
+<p>قبل أن نتعمّق في معمارية Eclipse، فلننظر إلى ما تبدو عليه حزمة Eclipse SDK في نظر المطوّر. فعند تشغيل Eclipse واختيار مساحة العمل (workbench)، سيُعرَض عليك منظور Java. والمنظور ينظّم طرق العرض (views) والمحرّرات (editors) الخاصة بالأدوات الجاري استخدامها.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-javaperspective.webp" alt="[منظور Java]"></p>
+<p>الشكل 6.1: منظور Java</p>
+<p>امتازت الإصدارات المبكّرة من معمارية Eclipse SDK بثلاثة عناصر رئيسية، تقابل ثلاثة مشاريع فرعية كبرى: Platform وJDT (أدوات تطوير Java) وPDE (بيئة تطوير الإضافات).</p>
+<h3 id="611-المنصة-platform">6.1.1. المنصّة (Platform)</h3>
+<p>مكتوبة منصّة Eclipse بلغة Java، ويتطلّب تشغيلها آلة Java افتراضية (Java VM). وهي مبنيّة من وحدات وظيفية صغيرة تُسمّى الإضافات (plugins). والإضافات هي أساس نموذج مكوّنات Eclipse. والإضافة في جوهرها ملف JAR مع بيان (manifest) يصف نفسه وتبعياته وكيفية استخدامه أو توسيعه. وقد خُزِّنت معلومات البيان هذه في الأصل في ملف <code>plug-in.xml</code> يقع في جذر مجلّد الإضافة. وقد وفّرت أدوات تطوير Java إضافات للتطوير في Java. أمّا بيئة تطوير الإضافات (PDE) فتوفّر أدوات لتطوير الإضافات التي توسّع Eclipse. وتُكتَب إضافات Eclipse بلغة Java، وقد تضمّ أيضًا مساهمات غير برمجية مثل ملفات HTML للتوثيق المتّصل. ولكلّ إضافة محمّل أصناف خاص بها. وتستطيع الإضافات التعبير عن اعتمادياتها على إضافات أخرى باستخدام عبارات <code>requires</code> في ملف <code>plugin.xml</code>. وانظر إلى ملف <code>plugin.xml</code> الخاص بإضافة <code>org.eclipse.ui</code> لترى اسمها وإصدارها المحدَّدين، فضلًا عن الاعتماديات التي تحتاج إلى استيرادها من إضافات أخرى.</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>
+   <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.ui&quot;</span>
+   <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;%Plugin.name&quot;</span>
+   <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;2.1.1&quot;</span>
+   <span class="hljs-attr">provider-name</span>=<span class="hljs-string">&quot;%Plugin.providerName&quot;</span>
+   <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.eclipse.ui.internal.UIPlugin&quot;</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">runtime</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">library</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ui.jar&quot;</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">export</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;*&quot;</span>/&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">packages</span> <span class="hljs-attr">prefixes</span>=<span class="hljs-string">&quot;org.eclipse.ui&quot;</span>/&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">library</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">runtime</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">requires</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.apache.xerces&quot;</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.core.resources&quot;</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.update.core&quot;</span>/&gt;</span>
+      :       :        :
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.text&quot;</span> <span class="hljs-attr">export</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.ui.workbench.texteditor&quot;</span> <span class="hljs-attr">export</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.ui.editors&quot;</span> <span class="hljs-attr">export</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">requires</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+</code></pre>
+<p>ولحثّ الناس على البناء فوق منصّة Eclipse، لا بدّ من وجود آلية تتيح تقديم مساهمة إلى المنصّة، وأن تقبل المنصّة هذه المساهمة. ويُتحقّق ذلك عبر استخدام الامتدادات (extensions) ونقاط الامتداد (extension points)، وهي عنصر آخر في نموذج مكوّنات Eclipse. ويحدّد التصدير (export) الواجهات التي تتوقّع أن يستخدمها غيرك عند كتابة امتداداتهم، ما يقيّد الأصناف المتاحة خارج إضافتك بالأصناف المصدَّرة فحسب. كما يفرض قيودًا إضافية على الموارد المتاحة خارج الإضافة، بدلًا من إتاحة جميع الدوالّ أو الأصناف العلنية للمستهلكين. وتُعدّ الإضافات المصدَّرة واجهةً برمجية علنية (public API)، أمّا ما عداها فيُعدّ تفاصيلَ تنفيذ خاصة. ولكتابة إضافة تضيف عنصرًا إلى قائمة في شريط أدوات Eclipse، يمكنك استخدام نقطة الامتداد <code>actionSets</code> الموجودة في إضافة <code>org.eclipse.ui</code>.</p>
+<pre><code>&lt;extension-point id=&quot;actionSets&quot; name=&quot;%ExtPoint.actionSets&quot;
+                 schema=&quot;schema/actionSets.exsd&quot;/&gt;
+&lt;extension-point id=&quot;commands&quot; name=&quot;%ExtPoint.commands&quot;
+                 schema=&quot;schema/commands.exsd&quot;/&gt;
+&lt;extension-point id=&quot;contexts&quot; name=&quot;%ExtPoint.contexts&quot;
+                 schema=&quot;schema/contexts.exsd&quot;/&gt;
+&lt;extension-point id=&quot;decorators&quot; name=&quot;%ExtPoint.decorators&quot;
+                 schema=&quot;schema/decorators.exsd&quot;/&gt;
+&lt;extension-point id=&quot;dropActions&quot; name=&quot;%ExtPoint.dropActions&quot;
+                 schema=&quot;schema/dropActions.exsd&quot;/&gt; =
+</code></pre>
+<p>سيبدو امتداد إضافتك الذي يضيف عنصرًا إلى قائمة في نقطة الامتداد <code>org.eclipse.ui.actionSet</code> على النحو التالي:</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>
+   <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;com.example.helloworld&quot;</span>
+   <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;com.example.helloworld&quot;</span>
+   <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;1.0.0&quot;</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">runtime</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">library</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;helloworld.jar&quot;</span>/&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">runtime</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">requires</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.ui&quot;</span>/&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">requires</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">extension</span>
+         <span class="hljs-attr">point</span>=<span class="hljs-string">&quot;org.eclipse.ui.actionSets&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">actionSet</span>
+            <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Example Action Set&quot;</span>
+            <span class="hljs-attr">visible</span>=<span class="hljs-string">&quot;true&quot;</span>
+            <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.helloworld.actionSet&quot;</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">menu</span>
+               <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;Example &amp;Menu&quot;</span>
+               <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;exampleMenu&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">separator</span>
+                  <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;exampleGroup&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">separator</span>&gt;</span>
+         <span class="hljs-tag">&lt;/<span class="hljs-name">menu</span>&gt;</span>
+         <span class="hljs-tag">&lt;<span class="hljs-name">action</span>
+               <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;&amp;Example Action&quot;</span>
+               <span class="hljs-attr">icon</span>=<span class="hljs-string">&quot;icons/example.gif&quot;</span>
+               <span class="hljs-attr">tooltip</span>=<span class="hljs-string">&quot;Hello, Eclipse world&quot;</span>
+               <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.example.helloworld.actions.ExampleAction&quot;</span>
+               <span class="hljs-attr">menubarPath</span>=<span class="hljs-string">&quot;exampleMenu/exampleGroup&quot;</span>
+               <span class="hljs-attr">toolbarPath</span>=<span class="hljs-string">&quot;exampleGroup&quot;</span>
+               <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.helloworld.actions.ExampleAction&quot;</span>&gt;</span>
+         <span class="hljs-tag">&lt;/<span class="hljs-name">action</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">actionSet</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">extension</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+</code></pre>
+<p>عند تشغيل Eclipse، تفحص منصّة وقت التشغيل بيانات تعريف (manifests) الإضافات الموجودة في نسخة التثبيت لديك، وتبني سجلَّ إضافات (plugin registry) يُخزَّن في الذاكرة. وتُسجَّل نقاط الامتداد والامتدادات المقابلة لها بالاسم. ويمكن الإشارة إلى سجلّ الإضافات الناتج من خلال الواجهة البرمجية التي توفّرها منصّة Eclipse. ويُخزَّن السجلّ مؤقتًا (cached) على القرص كي يمكن إعادة تحميل هذه المعلومات عند تشغيل Eclipse في المرّة القادمة. وتُكتشف جميع الإضافات عند بدء التشغيل لتغذية السجلّ، لكنّها لا تُفعَّل (لا تُحمَّل أصنافها) إلا حين يُستخدم الشيفرة فعليًّا. وتُسمّى هذه الطريقة التفعيل الكسول (lazy activation). ويتقلّص الأثر على الأداء الناجم عن إضافة حِزَم إضافية إلى نسخة التثبيت لديك، لأنّ أصناف الإضافات لا تُحمَّل فعليًّا قبل الحاجة إليها. فمثلًا، لن تُفعَّل الإضافة المساهمة في نقطة الامتداد org.eclipse.ui.actionSet إلا حين يختار المستخدم عنصر القائمة الجديد في شريط الأدوات.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-examplemenu.webp" alt="[قائمة نموذجية]"></p>
+<p>الشكل 6.2: قائمة نموذجية</p>
+<p>تبدو الشيفرة التي تولّد عنصر القائمة هذا على النحو التالي:</p>
+<pre><code class="language-python">package com.example.helloworld.actions;
+
+<span class="hljs-keyword">import</span> org.eclipse.jface.action.IAction;
+<span class="hljs-keyword">import</span> org.eclipse.jface.viewers.ISelection;
+<span class="hljs-keyword">import</span> org.eclipse.ui.IWorkbenchWindow;
+<span class="hljs-keyword">import</span> org.eclipse.ui.IWorkbenchWindowActionDelegate;
+<span class="hljs-keyword">import</span> org.eclipse.jface.dialogs.MessageDialog;
+
+public <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExampleAction</span> implements IWorkbenchWindowActionDelegate {
+    private IWorkbenchWindow window;
+
+    public ExampleAction() {
+    }
+
+    public void run(IAction action) {
+        MessageDialog.openInformation(
+            window.getShell(),
+            <span class="hljs-string">&quot;org.eclipse.helloworld&quot;</span>,
+            <span class="hljs-string">&quot;Hello, Eclipse architecture world&quot;</span>);
+    }
+
+    public void selectionChanged(IAction action, ISelection selection) {
+    }
+
+    public void dispose() {
+    }
+
+    public void init(IWorkbenchWindow window) {
+        this.window = window;
+    }
+}
+</code></pre>
+<p>حين يختار المستخدم العنصر الجديد في شريط الأدوات، يستعلم المكوّن المنفِّذ لنقطة الامتداد سجلّ الامتدادات. وتُنشئ الإضافة التي توفّر الامتداد نسخةً من المساهمة وتحمّل الإضافة. وبعد تفعيل الإضافة يُنفَّذ الباني <code>ExampleAction</code> في مثالنا، ثم يهيّئ مندوب إجراء (action delegate) من نوع <code>Workbench</code>. وبما أنّ التحديد في مساحة العمل قد تغيّر وأنّ المندوب أُنشئ، فإنّ الإجراء يستطيع أن يتغيّر. وعندها تُفتَح نافذة الرسالة بالرسالة «Hello, Eclipse architecture world».</p>
+<p>وهذه المعمارية القابلة للتمديد كانت إحدى مفاتيح النموّ الناجح لمحيط Eclipse البيئي. فقد كان بإمكان الشركات أو الأفراد تطوير إضافات جديدة، وإطلاقها إمّا مفتوحة المصدر وإمّا وبيعها تجاريًّا.</p>
+<p>من أهمّ المفاهيم عن Eclipse أنّ <em>كلّ شيء إضافة</em> (everything is a plugin). وسواء كانت الإضافة جزءًا من منصّة Eclipse أم كتبتها بنفسك، فإنّ الإضافات كلّها مكوّنات من الدرجة الأولى في التطبيق المُجمَّع. ويبيّن <a href="#fig.ecl.plat">الشكل 6.3</a> عناقيد من الوظائف المترابطة التي تساهم بها الإضافات في الإصدارات المبكّرة من Eclipse.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-platform.webp" alt="[معمارية Eclipse المبكّرة]"></p>
+<p>الشكل 6.3: معمارية Eclipse المبكّرة</p>
+<p>تُعدّ مساحة العمل (workbench) أكثر عناصر الواجهة ألفةً لدى مستخدمي منصّة Eclipse، إذ توفّر البنى التي تنظّم كيف يبدو Eclipse على سطح المكتب. وتتألّف مساحة العمل من المنظورات (perspectives) وطرق العرض (views) والمحرّرات (editors). ويرتبط كلّ محرّر بأنواع ملفات، فيُطلَق المحرّر المناسب عند فتح ملف. ومن أمثلة طرق العرض طريقة العرض «problems» التي تبيّن الأخطاء أو التحذيرات في شيفرة Java الخاصة بك. ومعًا تشكّل المحرّرات وطرق العرض منظورًا يعرض الأدوات للمستخدم بصورة منظّمة.</p>
+<p>بُنيت مساحة عمل Eclipse فوق مجموعة أدوات Standard Widget Toolkit (SWT) وJFace، وSWT تستحقّ بعض الاستكشاف. وتنقسم مجموعات أدوات عناصر الواجهة عمومًا إلى أصلية (native) أو محاكاة (emulated). وتستخدم مجموعة أدوات عناصر الواجهة الأصلية استدعاءات نظام التشغيل لبناء مكوّنات واجهة المستخدم مثل القوائم وأزرار الضغط، ويتولّى نظام التشغيل التفاعل مع المكوّنات. أمّا مجموعة أدوات عناصر الواجهة المحاكاة فتنفّذ المكوّنات خارج نظام التشغيل، وتتكفّل بنفسها بالتعامل مع الفأرة ولوحة المفاتيح والرسم والتركيز وبقية وظائف عناصر الواجهة، بدلًا من إسنادها إلى نظام التشغيل. ولكلٍّ من التصميمين نقاط قوة وضعف مختلفة.</p>
+<p>مجموعات أدوات عناصر الواجهة الأصلية «مضبوطة على البكسل» (pixel perfect)، إذ تبدو عناصرها وتتصرّف كما نظائرها في التطبيقات الأخرى على سطح المكتب. ويغيّر بائعو أنظمة التشغيل باستمرار مظهر عناصرهم وسلوكها ويضيفون ميزات جديدة. وتحصل مجموعات الأدوات الأصلية على هذه التحديثات مجانًا. غير أنّ الأدوات الأصلية يصعب تنفيذها، لأنّ تطبيقات عناصر الواجهة في أنظمة التشغيل الكامنة خلفها تختلف اختلافًا شديدًا، ما يؤدي إلى تباينات وبرامج غير قابلة للنقل.</p>
+<p>أمّا مجموعات أدوات عناصر الواجهة المحاكاة فتوفّر إمّا مظهرها وسلوكها الخاصّ، وإمّا تحاول الرسم والتصرّف مثل نظام التشغيل. وقوّتها الكبرى على الأدوات الأصلية هي المرونة (مع أنّ مجموعات الأدوات الأصلية الحديثة مثل Windows Presentation Framework (WPF) مرنة بالقدر نفسه). ولأنّ شيفرة تنفيذ عنصر واجهة جزءٌ من المجموعة بدلًا من أن تكون مضمّنة في نظام التشغيل، يمكن جعل عنصر الواجهة يرسم ويتصرّف بأي طريقة. أمّا البرامج التي تستخدم مجموعات أدوات عناصر الواجهة المحاكاة فقابلة للنقل إلى حدٍّ كبير. وكانت مجموعات الأدوات المحاكاة المبكّرة ذات سمعة سيّئة؛ فهي غالبًا بطيئة، ولم تحسن محاكاة نظام التشغيل، فبدت في غير مكانها على سطح المكتب. وعلى وجه الخصوص كانت برامج Smalltalk-80 في تلك الحقبة سهلة التمييز بسبب استخدامها عناصر محاكاة. وكان المستخدمون يدركون أنّهم يشغّلون «برنامج Smalltalk»، وهذا ما أضرّ بقبول التطبيقات المكتوبة بلغة Smalltalk.</p>
+<p>على خلاف لغات الحاسوب الأخرى مثل C وC++، جاءت الإصدارات الأولى من Java مع مكتبة مجموعات أدوات عناصر واجهة أصلية اسمها Abstract Window Toolkit (AWT). وقد رُئي في AWT محدوديةٌ وخلل وعدم اتّساق، وسُخر منه على نطاق واسع. وفي شركة Sun وفي أماكن أخرى، كان يُعتقد — ولو جزئيًّا بسبب الخبرة مع AWT — استحالةَ بناء مجموعة أدوات عناصر واجهة أصلية قابلة للنقل وعالية الأداء. وكان الحل هو Swing، وهي مجموعة أدوات عناصر واجهة محاكاة متكاملة المزايا.</p>
+<p>نحو عام 1999 كانت OTI تستخدم Java لتنفيذ منتج اسمه VisualAge Micro Edition. وقد استخدم الإصدار الأول من VisualAge Micro Edition مكتبة Swing، ولم تكن خبرة OTI مع Swing إيجابية. فقد كانت الإصدارات المبكّرة من Swing مليئة بالأخطاء، وكانت فيها مشكلات في التوقيت والذاكرة، وكانت عتاد تلك الحقبة ليس قويًّا بما يكفي لتقديم أداء مقبول. وقد بنت OTI بنجاح مجموعة أدوات عناصر واجهة أصلية لـ Smalltalk-80 ولتطبيقات Smalltalk أخرى بغية تحقيق انتشار Smalltalk. وقد استُخدمت هذه الخبرة لبناء الإصدار الأول من SWT. وكانت VisualAge Micro Edition وSWT نجاحًا، وكان SWT الخيار الطبيعي حين بُدئ العمل في Eclipse. وقد أدّى استخدام SWT بدلًا من Swing داخل Eclipse إلى انقسام مجتمع Java. فقد رأى بعضهم مؤامرات، لكنّ Eclipse كان نجاحًا، وقد ميّز استخدام SWT بينه وبين برامج Java الأخرى. فقد كان Eclipse عالي الأداء ومضبوطًا على البكسل، وكان الانطباع العامّ هو: «لا أصدّق أنّه برنامج Java».</p>
+<p>جرت إصدارات Eclipse SDK المبكّرة على لينكس ويندوز. وفي عام 2010 كان هناك دعم لأكثر من اثنتي عشرة منصّة. يستطيع المطوّر كتابة تطبيق لمنصّة واحدة ثم نشره على عدّة منصّات. وكان تطوير مجموعة أدوات عناصر واجهة جديدة لجافا مسألة خلاف داخل مجتمع Java آنذاك، لكنّ مُودعي Eclipse رأوا أنّ الجهد يستحقّ لتوفير أفضل تجربة أصلية على سطح المكتب. وهذا القول صحيح حتى اليوم، إذ هناك ملايين الأسطر من الشيفرة التي تعتمد على SWT.</p>
+<p>JFace هي طبقة فوق SWT توفّر أدوات لمهام برمجة واجهة المستخدم الشائعة، مثل أُطر التفضيلات (preferences) والمعالجات (wizards). وكما SWT، صُمِّمت للعمل مع أنظمة نوافذ كثيرة. غير أنّها شيفرة Java خالصة ولا تضمّ أي شيفرة منصّة أصلية.</p>
+<p>كما وفّرت المنصّة نظام مساعدة متكاملًا قائمًا على وحدات معلومات صغيرة تُسمّى المواضيع (topics). ويتألّف الموضوع من تسمية ومرجع إلى موضعه. وقد يكون الموضع ملف توثيق بصيغة HTML أو مستند XML يصف روابط إضافية. وتُجمَّع المواضيع في فهارس محتويات (TOCs). واعتبر المواضيع أوراقَ الشجرة والفهارس فروعَها. ولإضافة محتوى مساعدة إلى تطبيقك، يمكنك المساهمة في نقطة الامتداد <code>org.eclipse.help.toc</code>، كما يفعل <code>org.eclipse.platform.doc.isv</code> <code>plugin.xml</code> أدناه.</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
+<span class="hljs-meta">&lt;?eclipse version=&quot;3.0&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- ===================================================================== --&gt;</span>
+<span class="hljs-comment">&lt;!-- Define primary TOC                                                    --&gt;</span>
+<span class="hljs-comment">&lt;!-- ===================================================================== --&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">extension</span>
+         <span class="hljs-attr">point</span>=<span class="hljs-string">&quot;org.eclipse.help.toc&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;toc.xml&quot;</span>
+            <span class="hljs-attr">primary</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">index</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;index&quot;</span>/&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">extension</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- ===================================================================== --&gt;</span>
+<span class="hljs-comment">&lt;!-- Define TOCs                                                           --&gt;</span>
+<span class="hljs-comment">&lt;!-- ===================================================================== --&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">extension</span>
+         <span class="hljs-attr">point</span>=<span class="hljs-string">&quot;org.eclipse.help.toc&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;topics_Guide.xml&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;topics_Reference.xml&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;topics_Porting.xml&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;topics_Questions.xml&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">toc</span>
+            <span class="hljs-attr">file</span>=<span class="hljs-string">&quot;topics_Samples.xml&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">toc</span>&gt;</span>
+   <span class="hljs-tag">&lt;/<span class="hljs-name">extension</span>&gt;</span>
+</code></pre>
+<p>يُستخدم Apache Lucene لفهرسة محتوى المساعدة المتّصل والبحث فيه. وفي الإصدارات المبكّرة من Eclipse كانت المساعدة المتّصلة تُقدَّم كتطبيق ويب على Tomcat. وإضافةً إلى ذلك، ومن خلال توفير المساعدة داخل Eclipse نفسه، بإمكانك أيضًا استخدام المجموعة الجزئية من إضافات المساعدة لتوفير خادم مساعدة مستقل.<a href="#footnote-3">3</a></p>
+<p>كما يوفّر Eclipse دعمًا للفرق للتعامل مع مستودع شيفرة مصدرية، وإنشاء رقع (patches)، ومهام شائعة أخرى. وتوفّر مساحة العمل مجموعة من الملفات وبيانات الوصف التي تحفظ عملك على نظام الملفات. وكان هناك أيضًا مصحّح (debugger) لتتبّع المشكلات في شيفرة Java، فضلًا عن إطار لبناء مصحّحات خاصة بكل لغة.</p>
+<p>كان أحد أهداف مشروع Eclipse هو تشجيع المستهلكين مفتوحي المصدر والتجاريين لهذه التقنية على توسيع المنصّة لتلبية احتياجاتهم، وإحدى وسائل تشجيع هذا التبنّي هي توفير واجهة برمجية مستقرّة (stable API). ويمكن النظر إلى الواجهة البرمجية باعتبارها عقدًا تقنيًّا يحدّد سلوك تطبيقك. ويمكن أيضًا النظر إليها باعتبارها عقدًا اجتماعيًّا. وفي مشروع Eclipse تُمثَّل العبارة المفتاحية بـ «الواجهة البرمجية دائمة» (API is forever). وعليه يجب الوضع في الحسبان عند كتابة واجهة برمجية أنّها معنيّة للاستخدام إلى أجل غير مسمّى. فالواجهة البرمجية المستقرّة عقدٌ بين العميل أو مستهلك الواجهة من جهة والمزوّد من جهة أخرى. ويضمن هذا العقد أن يعتمد العميل على منصّة Eclipse لتوفير الواجهة البرمجية على المدى الطويل دون الحاجة إلى إعادة هيكلة مُرهِقة من جانب العميل. كما أنّ الواجهة البرمجية الجيدة مرنة بما يكفي للسماح بتطوّر التنفيذ.</p>
+<h3 id="612-أدوات-تطوير-java-jdt">6.1.2. أدوات تطوير Java (JDT)</h3>
+<p>تقدّم JDT محرّرات Java والمعالجات (wizards) ودعم إعادة الهيكلة (refactoring) والمصحّح والمترجم والباني التزايدي (incremental builder). ويُستخدم المترجم أيضًا في الإكمال التلقائي للمحتوى (content assist) والتنقّل وميزات التحرير الأخرى. ولا تأتي حزمة Java SDK مضمّنة مع Eclipse، لذا الأمر متروك للمستخدم اختيار الحزمة التي يثبّتها على سطح مكتبه. لماذا كتب فريق JDT مترجمًا منفصلًا لتجميع شيفرة Java الخاصة بك داخل Eclipse؟ لأنّهم تلقّوا مساهمة أولية في شيفرة المترجم من VisualAge Micro Edition. وقد خططوا لبناء الأدوات فوق المترجم، لذا كان كتابة المترجم نفسه قرارًا منطقيًّا. وقد سمحت هذه الطريقة أيضًا لمُودعي JDT بتوفير نقاط امتداد لتوسيع المترجم. وكان هذا سيصعب لو كان المترجم تطبيق سطر أوامر يوفّره طرف ثالث.</p>
+<p>كتابة مترجمهم الخاص وفّرت آلية لتوفير دعم للباني التزايدي داخل الـ IDE. ويُقدّم الباني التزايدي أداءً أفضل لأنّه لا يُعيد إلا ترجمة الملفات التي تغيّرت أو تبعياتها. وكيف يعمل الباني التزايدي؟ حين تنشئ مشروع Java داخل Eclipse فأنت تنشئ موارد (resources) في مساحة العمل لتخزين ملفاتك. يأخذ الباني داخل Eclipse المدخلات الموجودة في مساحة العمل (ملفات <code>.java</code>) وينتج مخرجات (ملفات <code>.class</code>). ومن خلال حالة البناء (build state) يعرف الباني الأنواع (أصنافًا أو واجهات) الموجودة في مساحة العمل، وكيف يشير بعضها إلى بعض. وتوفّر حالة البناء من المترجم إلى الباني في كلّ مرّة يُترجم فيها ملف مصدر. وحين يُستدعى بناء تزايدي، يُزوَّد الباني بفرق موارد (resource delta) يصف أي الملفات الجديدة أو المعدَّلة أو المحذوفة. وتُحذف ملفات الأصناف المقابلة لملفات المصدر المحذوفة. وتُضاف الأنواع الجديدة أو المعدَّلة إلى طابور. وتُترجم الملفات الموجودة في الطابور تباعًا وتُقارن بملف الأصناف القديم لتحديد ما إذا كانت هناك تغييرات بنيوية. والتغييرات البنيوية هي تعديلات على الصنف قد تؤثّر في نوع آخر يشير إليه، مثل تغيير توقيع دالة أو إضافة دالة أو إزالتها. وإذا كانت هناك تغييرات بنيوية، تُضاف جميع الأنواع التي تشير إليه إلى الطابور أيضًا. وإذا تغيّر النوع بأي شكل، يُكتب ملف الأصناف الجديد في مجلّد مخرجات البناء. وتُحدَّث حالة البناء بمعلومات التأشير للنوع المترجم. وتتكرّر هذه العملية لجميع الأنواع الموجودة في الطابور حتى يصبح فارغًا. وإذا كانت هناك أخطاء ترجمة، فسينشئ محرّر Java علامات مشاكل (problem markers). وعلى مدى السنين توسّعت الأدوات التي توفّرها JDT اتساعًا هائلًا بالتوازي مع إصدارات جديدة من بيئة تشغيل Java نفسها.</p>
+<h3 id="613-بيئة-تطوير-الإضافات-pde">6.1.3. بيئة تطوير الإضافات (PDE)</h3>
+<p>وفّرت بيئة تطوير الإضافات (PDE) الأدوات اللازمة لتطوير الإضافات وبنائها ونشرها واختبارها، وكذلك المنتَجات الأخرى المستخدَمة لتوسيع وظائف Eclipse. وبما أنّ إضافات Eclipse كانت نوعًا جديدًا من المنتَجات في عالم Java، لم يكن هناك نظام بناء قادر على تحويل المصدر إلى إضافات. لذا كتب فريق PDE مكوّنًا اسمه PDE Build يفحص تبعيات الإضافات ويولّد سكربتات Ant لبناء منتَجات البناء.</p>
+<h2 id="62-eclipse-30-بيئة-التشغيل-وrcp-والروبوتات">6.2. Eclipse 3.0: بيئة التشغيل وRCP والروبوتات</h2>
+<h3 id="621-بيئة-التشغيل-runtime">6.2.1. بيئة التشغيل (Runtime)</h3>
+<p>ربما كان Eclipse 3.0 واحدًا من أهمّ إصدارات Eclipse نظرًا لعدد التغييرات الجوهرية التي وقعت في دورة الإصدار هذه. ففي معمارية Eclipse ما قبل 3.0 كان نموذج مكوّنات Eclipse يتألّف من إضافات تستطيع التفاعل فيما بينها بطريقتين. أوّلًا، تستطيع التعبير عن اعتمادياتها باستخدام العبارة <code>requires</code> في ملف <code>plugin.xml</code>. فإذا كانت الإضافة A تتطلّب الإضافة B، تستطيع A أن ترى جميع أصناف Java وموارد B مع الالتزام بأعراف رؤوية أصناف Java. ولكلّ إضافة إصدار، كما تستطيع أيضًا أن تحدّد إصدارات اعتمادياتها. ثانيًا، قدّم نموذج المكوّنات <em>الامتدادات</em> (extensions) و<em>نقاط الامتداد</em> (extension points). تاريخيًا كتب مُودعو Eclipse بيئة تشغيل خاصة بحزمة Eclipse SDK لإدارة تحميل الأصناف (classloading) وتبعيات الإضافات والامتدادات ونقاط الامتداد.</p>
+<p>أُنشئ مشروع Equinox بوصفه مشروع حاضنة (incubator) جديدًا في Eclipse. وكان هدف مشروع Equinox استبدال نموذج مكوّنات Eclipse بنموذج موجود بالفعل، فضلًا عن توفير دعم للإضافات الديناميكية. أمّا الحلول المطروحة للنظر فشملت JMX وJakarta Avalon وOSGi. ولم يكن JMX نموذج مكوّنات مكتمل التطوير، لذا لم يُعدّ مناسبًا. ولم تختر Jakarta Avalon لأنّها بدت تفقد زخمها بوصفها مشروعًا. وإلى جانب المتطلّبات التقنية، كان من المهمّ أيضًا النظر في المجتمع الذي يدعم هذه التقنيات: فهل يكونون مستعدّين لاحتواء تغييرات خاصة بـ Eclipse؟ وهل يُطوَّر بفاعلية ويكتسب مستخدمين جددًا؟ وشعر فريق Equinox بأنّ المجتمع المحيط بالتقنية التي اختاروها في النهاية لا يقلّ أهمية عن الاعتبارات التقنية.</p>
+<p>وبعد بحث الخيارات المتاحة وتقييمها، اختار المُودعون OSGi. ولماذا OSGi؟ لأنّه يوفّر نظام ترقيم إصدارات دلالية (semantic versioning) لإدارة التبعيات. كما يوفّر إطارًا للوحداتية (modularity) يفتقر إليه JDK نفسه؛ إذ يجب صراحةً تصدير الحزم (packages) المتاحة للحِزَم (bundles) الأخرى وتُخفى جميع ما عداها. ويوفّر OSGi محمّل أصناف خاصًّا به، فلم يعد على فريق Equinox مواصلة صيانة محمّلهم الخاص. وبالمعايير على نموذج مكوّنات يتمتّع باعتماد أوسع خارج محيط Eclipse، رأوا أنّهم يستطيعون جذب مجتمع أوسع ودفع تبنّي Eclipse إلى الأمام.</p>
+<p>ورأى فريق Equinox أنّه، بما أنّ OSGi كان له بالفعل مجتمع نشط، يستطيع العمل مع ذلك المجتمع للمساعدة على إدراج الوظائف التي يحتاجها Eclipse في نموذج المكوّنات. فمثلًا، في ذلك الحين كان OSGi يدعم فقط سرد المتطلّبات على مستوى الحزمة (package)، لا على مستوى الإضافة (plugin) كما كان Eclipse يتطلّب. وإضافةً إلى ذلك، لم يكن OSGi يتضمّن بعدًا مفهوم الشظايا (fragments)، وهي الآلية المفضّلة في Eclipse لتوفير شيفرة خاصة بالمنصّة أو البيئة إلى إضافة قائمة. فمثلًا، تقدّم الشظايا شيفرة للتعامل مع أنظمة ملفات لينكس ويندوز، فضلًا عن شظايا تساهم في ترجمات لغوية. وبمجردّ اتخاذ قرار المضي مع OSGi بوصفه بيئة التشغيل الجديدة، احتاج المُودعون إلى تنفيذ إطار عمل مفتوح المصدر. فقيّموا Oscar، وهو السلف لـ Apache Felix، وإطار إدارة الخدمات (Service Management Framework، SMF) الذي طوّرته IBM. وكان Oscar في حينه مشروعًا بحثيًّا بنشر محدود. أمّا SMF فاختير لأنّه كان مستخدمًا بالفعل في منتجات متوفّرة في الأسواق، لذا رُئي أنّه جاهز للمؤسسات. وتُعدّ تنفيذة Equinox هي التنفيذ المرجعي لمواصفة OSGi.</p>
+<p>كما فُدِمت طبقة توافق (compatibility layer) كي تظلّ الإضافات القائمة تعمل في تثبيت 3.0. فطلب من المطوّرين إعادة كتابة إضافاتهم لاستيعاب التغييرات في البنية التحتية لـ Eclipse 3.0 كان سيوقف الزخم على Eclipse بوصفه منصّة أدوات. والتوقّع لدى مستهلكي Eclipse كان أن تظلّ المنصّة تعمل ببساطة.</p>
+<p>مع الانتقال إلى OSGi، صارت إضافات Eclipse تُسمّى حِزَمًا (bundles). الإضافة والحزمة شيء واحد: فكلاهما يوفّر مجموعة فرعية معيارية من الوظائف تصف نفسها ببيانات وصف في بيان. وقبل ذلك كانت التبعيات والحزم المصدَّرة والامتدادات ونقاط الامتداد موصوفة في <code>plugin.xml</code>. ومع الانتقال إلى حِزَم OSGi، ظلّت الامتدادات ونقاط الامتداد موصوفة في <code>plugin.xml</code> لأنّها مفاهيم خاصة بـ Eclipse. أمّا بقية المعلومات فكانت موصوفة في <code>META-INF/MANIFEST.MF</code>، وهو إصدار OSGi من بيان الحزمة. ودعمًا لهذا التغيير، وفّرت PDE محرّر بيانات وصف جديدًا داخل Eclipse. ولكلّ حزمة اسم وإصدار. ويبدو بيان الحزمة <code>the org.eclipse.ui</code> على النحو التالي:</p>
+<pre><code>Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Plugin.name
+Bundle-SymbolicName: org.eclipse.ui; singleton:=true
+Bundle-Version: 3.3.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: org.eclipse.ui.internal.UIPlugin
+Bundle-Vendor: %Plugin.providerName
+Bundle-Localization: plugin
+Export-Package: org.eclipse.ui.internal;x-internal:=true
+Require-Bundle: org.eclipse.core.runtime;bundle-version=&quot;[3.2.0,4.0.0)&quot;,
+ org.eclipse.swt;bundle-version=&quot;[3.3.0,4.0.0)&quot;;visibility:=reexport,
+ org.eclipse.jface;bundle-version=&quot;[3.3.0,4.0.0)&quot;;visibility:=reexport,
+ org.eclipse.ui.workbench;bundle-version=&quot;[3.3.0,4.0.0)&quot;;visibility:=reexport,
+ org.eclipse.core.expressions;bundle-version=&quot;[3.3.0,4.0.0)&quot;
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: CDC-1.0/Foundation-1.0, J2SE-1.3
+</code></pre>
+<p>اعتبارًا من Eclipse 3.1، يمكن للبيان كذلك أن يحدّد بيئة التنفيذ المطلوبة للحزمة (BREE). وتحدّد بيئات التنفيذ أدنى بيئة Java مطلوبة كي تعمل الحزمة. ولا يفهم مترجم Java الحِزَم ولا بيانات OSGi. وتوفّر PDE أدوات لتطوير حِزَم OSGi. لذلك تحلّل PDE بيان الحزمة وتولّد مسار الصنف (classpath) لتلك الحزمة. فإذا حدّدت بيئة تنفيذ J2SE-1.4 في بيانك، ثم كتبت شيفرة تتضمّن الأنواع العمومية (generics)، فسيُنبَّهك إلى أخطاء الترجمة في شيفرتك. وهذا يضمن التزام شيفرتك بالعقد الذي حدّدته في البيان.</p>
+<p>يوفّر OSGi إطارًا للوحداتية في Java. ويدير إطار OSGi مجموعات من الحِزَم ذاتية الوصف ويتولّى تحميل أصنافها. ولكلّ حزمة محمّل أصناف خاص بها. ويُبنى مسار الصنف المتاح لحزمة ما بفحص تبعيات البيان وتوليد مسار صنف متاح لتلك الحزمة. وتُعدّ تطبيقات OSGi مجموعات من الحِزَم. وكي تحتضن الوحداتية على نحو كامل، لا بدّ أن تستطيع التعبير عن تبعياتك بصيغة موثوقة للمستهلكين. ومن هنا يصف البيان الحزم المصدَّرة المتاحة لعملاء هذه الحزمة، وهو ما يقابل الواجهة البرمجية العلنية المتاحة للاستهلاك. ويتعيّن على الحزمة التي تستهلك تلك الواجهة أن يكون لديها استيراد مقابل للحزمة التي تستهلكها. كما يتيح البيان التعبير عن نطاقات إصدارات لتبعياتك. وانظر إلى ترويسة <code>Require-Bundle</code> في البيان أعلاه، فستلاحظ أنّ الحزمة <code>org.eclipse.core.runtime</code> التي تعتمد عليها <code>org.eclipse.ui</code> يجب أن تكون على الأقل 3.2.0 وأقلّ من 4.0.0.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-bundlelifecycle.webp" alt="[دورة حياة حزمة OSGi]"></p>
+<p>الشكل 6.4: دورة حياة حزمة OSGi</p>
+<p>OSGi إطار ديناميكي يدعم تثبيت الحِزَم وبدء تشغيلها وإيقافها وإزالتها. وكما سبق الذكر، كان التفعيل الكسول ميزةً أساسية في Eclipse لأنّ أصناف الإضافات لم تكن تُحمَّل إلا عند الحاجة إليها. كما تتيح دورة حياة حزمة OSGi هذا الأسلوب. وحين تبدأ تطبيق OSGi تكون الحِزَم في حالة «مثبَّتة» (installed). وإذا تحقّقت تبعياتها انتقلت الحزمة إلى حالة «محلولة» (resolved). وبعد الحلّ يمكن تحميل الأصناف داخل تلك الحزمة وتشغيلها. وتعني حالة «قيد البدء» (starting) أنّ الحزمة يجري تفعيلها وفق سياسة التفعيل الخاصة بها. وبعد التفعيل تكون الحزمة في حالة «نشطة» (active)، فيمكنها حيازة الموارد المطلوبة والتفاعل مع الحِزَم الأخرى. وتكون الحزمة في حالة «قيد الإيقاف» (stopping) عند تنفيذها لدالة الإيقاف في مُنشِّطها (activator) لتنظيف الموارد التي فُتحت حين كانت نشطة. وأخيرًا، قد تُزال الحزمة، وهو ما يعني أنّها لم تعد متاحة للاستخدام.</p>
+<p>ومع تطوّر الواجهة البرمجية، لا بدّ من وسيلة لإشارة التغييرات إلى مستهلكيك. إحدى الطرق هي استخدام ترقيم إصدارات دلالي لحِزَمك ونطاقات إصدارات في بياناتك الوصف لتحديد نطاقات إصدارات تبعياتك. ويستخدم OSGi مخطط تسمية إصدارات من أربعة أجزاء كما هو مبيّن في <a href="#fig.ecl.ver">الشكل 6.5</a>.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-versioning.webp" alt="[مخطط تسمية الإصدارات]"></p>
+<p>الشكل 6.5: مخطط تسمية الإصدارات</p>
+<p>مع مخطط ترقيم إصدارات OSGi، لكلّ حزمة معرّف فريد مكوّن من اسم ورقم إصدار من أربعة أجزاء. ويشترك المعرّف والإصدار معًا في تحديد مجموعة فريدة من البايتات بالنسبة إلى المستهلك. وبعرفية Eclipse المتّبع، إذا كنت تجري تغييرات على حزمة، فإنّ كلّ جزء من الإصدار يدلّ المستهلك على نوع التغيير الجاري. فإن أردت الإشارة إلى نيتك في كسر الواجهة البرمجية، زِد الجزء الأول (الرئيسي). وإذا كنت قد أضفت واجهة برمجية فحسب، زِد الجزء الثاني (الثانوي). وإذا أصلحت خطأً صغيرًا لا يؤثّر في الواجهة البرمجية، فيُزاد الجزء الثالث (الخدمة). وأخيرًا، يُزاد الجزء الرابع أو الجزء المؤهَّل لإشارة إلى وسم مستودع إصدارات البناء (build id source control repository tag).</p>
+<p>إلى جانب التعبير عن التبعيات الثابتة بين الحِزَم، هناك أيضًا آلية داخل OSGi تُسمّى الخدمات (services) توفّر فكًّا إضافيًّا للحِزَم. والخدمات كائنات لها مجموعة خصائص تُسجَّل في سجلّ خدمات OSGi. وعلى خلاف الامتدادات، التي تُسجَّل في سجلّ الامتدادات حين يفحص Eclipse الحِزَم عند بدء التشغيل، فإنّ الخدمات تُسجَّل ديناميكيًّا. والحزمة التي تستهلك خدمة تحتاج إلى استيراد الحزمة التي تعرّف عقد الخدمة، ويحدّد الإطار تنفيذ الخدمة من سجلّ الخدمات.</p>
+<p>وكما في الدالة main في ملف صنف Java، هناك تطبيق محدّد معرَّف لبدء تشغيل Eclipse. وتُعرَّف تطبيقات Eclipse باستخدام الامتدادات. فمثلًا، التطبيق الذي يشغّل Eclipse IDE نفسه هو <code>org.eclipse.ui.ide.workbench</code> والمعرَّف في حزمة <code>org.eclipse.ui.ide.application</code>.</p>
+<pre><code>&lt;plugin&gt;
+    &lt;extension
+         id=&quot;org.eclipse.ui.ide.workbench&quot;
+         point=&quot;org.eclipse.core.runtime.applications&quot;&gt;
+      &lt;application&gt;
+         &lt;run
+               class=&quot;org.eclipse.ui.internal.ide.application.IDEApplication&quot;&gt;
+         &lt;/run&gt;
+      &lt;/application&gt;
+  &lt;/extension&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>يوفّر Eclipse تطبيقات كثيرة، مثل تلك لتشغيل خوادم مساعدة مستقلّة ومهام Ant واختبارات JUnit.</p>
+<h3 id="622-منصة-العميل-الثرية-rcp">6.2.2. منصّة العميل الثرية (RCP)</h3>
+<p>من أكثر الأمور إثارةً للعمل داخل مجتمع مفتوح المصدر أنّ الناس يستخدمون البرمجيات بطرق غير متوقّعة إطلاقًا. فالنية الأصلية لـ Eclipse كانت توفير منصّة وأدوات لإنشاء بيئات التطوير المتكاملة (IDEs) وتوسيعها. غير أنّه في الفترة التي سبقت إصدار 3.0 كشفت تقارير الأخطاء أنّ المجتمع صار يأخذ مجموعة فرعية من حِزَم المنصّة ويستخدمها لبناء تطبيقات منصّة العميل الثرية (RCP)، وهي تطبيقات يعرفها كثيرون بأنّها تطبيقات Java. ولما كان Eclipse مركَّزًا في الأصل على الـ IDE، فقد كان يلزم نوعٌ ما من إعادة هيكلة الحِزَم ليسمح بهذا سيناريو الاستخدام بأن تتبنّاه مجتمع المستخدمون بسهولة أكبر. ولم تكن تطبيقات RCP تتطلّب كل وظائف الـ IDE، لذا فُصلت عدة حِزَم إلى حِزَم أصغر يمكن للمجتمع استهلاكها لبناء تطبيقات RCP.</p>
+<p>تشمل أمثلة تطبيقات RCP في العالم الحقيقي استخدام RCP لمراقبة روبوتات مركّب استكشاف المريخ (Mars Rover) التي طوّرتها NASA في مختبر الدفع النفاث (Jet Propulsion Laboratory)، وBioclipse لتصوير بيانات المعلومات الحيوية (bioinformatics)، وسكة الحديد الهولندية (Dutch Railways) لمراقبة أداء القطارات. وكان الخيط المشترك الذي يمرّ بكثير من هذه التطبيقات هو أنّ هذه الفرق قرّرت أنّها تستطيع أخذ المنفعة المقدَّمة من منصّة RCP والتركيز على بناء أدواتها المتخصّصة فوقها. فكان بإمكانها توفير الوقت والمال بالتركيز على بناء أدواتها على منصّة ذات واجهة برمجية مستقرّة تضمن أنّ اختيارها التقني سيحظّى بدعم طويل الأمد.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-rcp.webp" alt="[معمارية Eclipse 3.0]"></p>
+<p>الشكل 6.6: معمارية Eclipse 3.0</p>
+<p>بالنظر إلى معمارية 3.0 في <a href="#fig.ecl.rcp">الشكل 6.6</a>، ستلاحظ أنّ بيئة تشغيل Eclipse (Eclipse Runtime) ما زالت موجودة لتوفّر نموذج التطبيق وسجلّ الامتدادات. أمّا إدارة التبعيات بين المكوّنات، أي نموذج الإضافات، فقد أصبحت يديرها OSGi. وإلى جانب استمرار قدرتهم على توسيع Eclipse لبناء أدوات التطوير المتكاملة الخاصة بهم، يستطيع المستهلكون أيضًا البناء على إطار تطبيقات RCP لتطبيقات أكثر عمومية.</p>
+<h2 id="63-eclipse-34">6.3. Eclipse 3.4</h2>
+<p>يُعدّ تحديث تطبيق بسهولة إلى إصدار جديد وإضافة محتوى جديد أمرًا مفروغًا منه. في Firefox يحدث ذلك بسلاسة. أمّا في Eclipse فلم يكن الأمر بهذه السهولة. فقد كان Update Manager الآلية الأصلية المستخدَمة لإضافة محتوى جديد إلى تثبيت Eclipse أو التحديث إلى إصدار جديد.</p>
+<p>لفهم ما يتغيّر أثناء عملية تحديث أو تثبيت، من الضروري فهم ما يقصده Eclipse بـ «الميزات» (features). الميزةُ منتَجٌ من منتَجات PDE يعرّف مجموعة من الحِزَم تُحزَّم معًا بصيغة يمكن بناؤها أو تثبيتها. ويمكن أن تضمّ الميزات ميزات أخرى. (انظر <a href="#fig.ecl.feat">الشكل 6.7</a>.)</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-eclipse33features.webp" alt="[تسلسل هرم ميزات Eclipse 3.3 SDK]"></p>
+<p>الشكل 6.7: تسلسل هرم ميزات Eclipse 3.3 SDK</p>
+<p>لو أردت تحديث تثبيت Eclipse لديك إلى بناء جديد يضمّ حزمة واحدة جديدة فقط، لكان عليك تحديث الميزة بالكامل لأنّ هذه هي الآلية ذات الحبيبات الخشنة التي استخدمها مدير التحديث. وتحديث ميزة لإصلاح حزمة واحدة أمرٌ غير كفء.</p>
+<p>وتوجد في PDE معالجات لإنشاء الميزات وبنائها في مساحة عملك. ويحدّد ملف <code>feature.xml</code> الحِزَم المضمّنة في الميزة، وبعض الخصائص البسيطة لتلك الحِزَم. وللميزة، مثل الحزمة، اسم وإصدار. ويمكن للميزات أن تضمّ ميزات أخرى وتحدّد نطاقات إصدارات للميزات التي تضمّها. وتُدرَج الحِزَم المضمّنة في الميزة مع خصائص محدّدة. فمثلًا ترى أنّ الشظيّة <code>org.eclipse.launcher.gtk.linux.x86_64</code> تحدّد نظام التشغيل (<code>os</code>) ونظام النوافذ (<code>ws</code>) والمعمارية (<code>arch</code>) حيث ينبغي استخدامها. ومن ثمّ، عند الترقية إلى إصدار جديد، لن تُثبَّت هذه الشظيّة إلا على هذه المنصّة. وتُدرَج مرشّحات المنصّات هذه في بيان OSGi الخاص بهذه الحزمة.</p>
+<pre><code class="language-html"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">feature</span>
+      <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.rcp&quot;</span>
+      <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;%featureName&quot;</span>
+      <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;3.7.0.qualifier&quot;</span>
+      <span class="hljs-attr">provider-name</span>=<span class="hljs-string">&quot;%providerName&quot;</span>
+      <span class="hljs-attr">plugin</span>=<span class="hljs-string">&quot;org.eclipse.rcp&quot;</span>
+      <span class="hljs-attr">image</span>=<span class="hljs-string">&quot;eclipse_update_120.jpg&quot;</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>
+      %description
+   <span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">copyright</span>&gt;</span>
+      %copyright
+   <span class="hljs-tag">&lt;/<span class="hljs-name">copyright</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">license</span> <span class="hljs-attr">url</span>=<span class="hljs-string">&quot;%licenseURL&quot;</span>&gt;</span>
+      %license
+   <span class="hljs-tag">&lt;/<span class="hljs-name">license</span>&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>
+         <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.equinox.launcher&quot;</span>
+         <span class="hljs-attr">download-size</span>=<span class="hljs-string">&quot;0&quot;</span>
+         <span class="hljs-attr">install-size</span>=<span class="hljs-string">&quot;0&quot;</span>
+         <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;0.0.0&quot;</span>
+         <span class="hljs-attr">unpack</span>=<span class="hljs-string">&quot;false&quot;</span>/&gt;</span>
+
+   <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>
+         <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;org.eclipse.equinox.launcher.gtk.linux.x86_64&quot;</span>
+         <span class="hljs-attr">os</span>=<span class="hljs-string">&quot;linux&quot;</span>
+         <span class="hljs-attr">ws</span>=<span class="hljs-string">&quot;gtk&quot;</span>
+         <span class="hljs-attr">arch</span>=<span class="hljs-string">&quot;x86_64&quot;</span>
+         <span class="hljs-attr">download-size</span>=<span class="hljs-string">&quot;0&quot;</span>
+         <span class="hljs-attr">install-size</span>=<span class="hljs-string">&quot;0&quot;</span>
+         <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;0.0.0&quot;</span>
+         <span class="hljs-attr">fragment</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span>
+</code></pre>
+<p>لا يقتصر تطبيق Eclipse على الميزات والحِزَم. إذ توجد ملفات تنفيذية خاصة بكل منصّة لتشغيل Eclipse نفسه، وملفات تراخيص، ومكتبات خاصة بكل منصّة، كما هو مبيّن في قائمة الملفات هذه المضمّنة في تطبيق Eclipse.</p>
+<pre><code>com.ibm.icu
+org.eclipse.core.commands
+org.eclipse.core.conttenttype
+org.eclipse.core.databinding
+org.eclipse.core.databinding.beans
+org.eclipse.core.expressions
+org.eclipse.core.jobs
+org.eclipse.core.runtime
+org.eclipse.core.runtime.compatibility.auth
+org.eclipse.equinox.common
+org.eclipse.equinox.launcher
+org.eclipse.equinox.launcher.carbon.macosx
+org.eclipse.equinox.launcher.gtk.linux.ppc
+org.eclipse.equinox.launcher.gtk.linux.s390
+org.eclipse.equinox.launcher.gtk.linux.s390x
+org.eclipse.equinox.launcher.gtk.linux.x86
+org.eclipse.equinox.launcher.gtk.linux.x86_64
+</code></pre>
+<p>لم تكن هذه الملفات قابلة للتحديث عبر مدير التحديث، لأنّه كان يتعامل مع الميزات فحسب. ولأنّ كثيرًا من هذه الملفات كان يُحدَّث في كل إصدار رئيسي، فقد يعني ذلك أنّ المستخدمين عليهم تنزيل ملف zip جديد في كل إصدار جديد بدلًا من تحديث تثبيتهم القائمة. ولم يكن هذا مقبولًا بالنسبة إلى مجتمع Eclipse. وقد وفّرت PDE دعمًا لملفات المنتجات (product files)، التي تحدّد كل الملفات اللازمة لبناء تطبيق Eclipse RCP. غير أنّ مدير التحديث لم يكن لديه آلية لتهيئة (provision) هذه الملفات في تثبيتك، وهو ما كان محبطًا جدًّا للمستخدمين ومطوّري المنتجات على السواء. وفي مارس 2008 صُدِرت p2 في الحزمة SDK بوصفها حلّ التهيئة الجديد. وفي سبيل التوافق العكسي ظلّ Update Manager متاحًا للاستخدام، لكنّ p2 كانت مفعّلة افتراضيًّا.</p>
+<h3 id="631-مفاهيم-p2">6.3.1. مفاهيم p2</h3>
+<p>تدور Equinox p2 بالكامل حول وحدات التثبيت (IUs). وIU هو وصفٍ لاسم ومعرّف المنتَج الذي تثبّته. كما أنّ بيانات الوصف هذه تصف قدرات المنتَج (ما يوفّره) ومتطلّباته (تبعياته). ويمكن لبيانات الوصف أيضًا أن تعبّر عن مرشّحات انطباق إذا كان المنتَج لا ينطبق إلّا على بيئة معيّنة. فمثلًا، لا تنطبق الشظيّة org.eclipse.swt.gtk.linux.x86 إلّا إذا كنت تثبّت على جهاز لينكس gtk x86. وجوهرًا، بيانات الوصف هي تعبير عن المعلومات الموجودة في بيان الحزمة. أمّا المنتَجات فهي مجرّد البتات الثنائية التي يجري تثبيتها. ويُتحقَّق الفصل بين المسؤوليات (separation of concerns) بالفصل بين بيانات الوصف والمنتَجات التي تصفها. ويتألّف مستودع p2 من مستودعَي بيانات الوصف والمنتَجات معًا.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-p2.webp" alt="[مفاهيم p2]"></p>
+<p>الشكل 6.8: مفاهيم p2</p>
+<p>ملف التعريف (profile) هو قائمة بوحدات التثبيت في نسختك. فمثلًا، لحزمة Eclipse SDK لديك ملف تعريف يصف تثبيتك الحالية. ومن داخل Eclipse يمكنك طلب تحديث إلى إصدار أحدث من البناء، وهو ما ينشئ ملف تعريف جديدًا بمجموعة مختلفة من وحدات التثبيت. كما يوفّر ملف التعريف قائمة بالخصائص المرتبطة بالتثبيت، مثل معاملات نظام التشغيل ونظام النوافذ والمعمارية. ويخزّن ملف التعريف أيضًا مجلّد التثبيت وموقعه. وتُحفَظ ملفات التعريف في سجلّ ملفات التعريف، القادر على تخزين عدّة ملفات تعريف. أمّا المدير (director) فهو مسؤول عن استدعاء عمليات التهيئة. ويعمل مع المُخطِّط (planner) والمحرّك (engine). يفحص المُخطِّط ملف التعريف القائم ويحدّد العمليات التي يجب أن تحدث لتحويل التثبيت إلى حالته الجديدة. والمحرّك مسؤول عن تنفيذ عمليات التهيئة الفعلية وتثبيت المنتَجات الجديدة على القرص. أمّا نقاط التماس (touchpoints) فهي جزء من المحرّك تعمل مع تنفيذ وقت التشغيل للنظام الجاري تثبيته. فمثلًا، في حالة حزمة Eclipse SDK، هناك نقطة تماس Eclipse تعرف كيفية تثبيت الحِزَم. أمّا في نظام لينكس يُثبَّت فيه Eclipse من ملفات RPM الثنائية، فسيتعامل المحرّك مع نقطة تماس RPM. كما تستطيع p2 تنفيذ عمليات التثبيت داخل العملية نفسها أو في الخارج في عملية منفصلة، مثل عملية بناء.</p>
+<p>كانت هناك فوائد كثيرة لنظام التهيئة الجديد p2. فقد كان بالإمكان تحديث منتَجات تثبيت Eclipse من إصدار إلى آخر. ولأنّ ملفات التعريف السابقة كانت مخزَّنة على القرص، كان هناك أيضًا طريقة للرجوع إلى تثبيت سابق لـ Eclipse. وإضافةً إلى ذلك، وبمعرفة ملف تعريف ومستودع، كان بإمكانك إعادة إنشاء تثبيت Eclipse الخاص بمستخدم أبلغ عن خلل كي تحاول إعادة إنتاج المشكلة على سطح مكتبك. وقد وفّر التهيئة عبر p2 طريقة لتحديث وتثبيت ما هو أكثر من مجرّد حزمة Eclipse SDK، فقد كانت منصّة تنطبق على سيناريوهات استخدام RCP وOSGi أيضًا. وعمل فريق Equinox أيضًا مع أعضاء مشروع Eclipse آخر وهو إطار اتصالات Eclipse (Eclipse Communication Framework، ECF) لتوفير نقل موثوق لاستهلاك المنتَجات وبيانات الوصف في مستودعات p2.</p>
+<p>كانت هناك مناقشات حادّة كثيرة داخل مجتمع Eclipse حين صُدِرت p2 في الحزمة SDK. ولأنّ مدير التحديث كان حلًّا أقلّ من الأمثل لتهيئة تثبيت Eclipse، كان لمستهلكي Eclipse عادة فكّ ضغط الحِزَم في تثبيتهم وإعادة تشغيل Eclipse. تحلّ هذه الطريقة حِزَمك على أساس أفضل ما يمكن. كما أنّها تعني أنّ أي تعارضات في تثبيتك كانت تُحلّ وقت التشغيل لا وقت التثبيت. وقيود التعارض ينبغي أن تُحلّ وقت التثبيت لا وقت التشغيل. غير أنّ المستخدمين كانوا غالبًا غير مُدركين لهذه المشكلات ويظنّون، ما دامت الحِزَم موجودة على القرص، فهي تعمل. وفي السابق كانت مواقع التحديث التي يوفّرها Eclipse مجرّد مجلّد بسيط يتألّف من حِزَم وميزات محزومة في ملفات JAR. وكان ملف <code>site.xml</code> البسيط يوفّر أسماء الميزات المتاحة للاستهلاك في ذلك الموقع. ومع ظهور p2 صارت بيانات الوصف المقدَّمة في مستودعات p2 أعقد بكثير. ولإنشاء بيانات الوصف، احتاجت عملية البناء إلى تعديل لتوليد بيانات الوصف وقت البناء أو تشغيل مهمّة مولّدة على الحِزَم القائمة. وفي البداية كان ينقص التوثيق المتاح الذي يشرح كيفية إجراء هذه التغييرات. وكذلك، كما هي الحال دائمًا، فإنّ إتاحة تقنية جديدة لجمهور أوسع كشفت عن أخطاء غير متوقّعة كان لا بدّ من معالجتها. غير أنّ فريق Equinox تمكّن، بفضل كتابة مزيد من التوثيق والعمل ساعات طويلة لمعالجة هذه الأخطاء، من معالجة هذه المخاوف، وأصبحت p2 اليوم محرّك التهيئة الأساسي وراء عروض تجارية كثيرة. كما أنّ مؤسسة Eclipse تسلّم إصدارها المنسّق كل عام باستخدام مستودع p2 تجميعي لكل المشاريع المشاركة.</p>
+<h2 id="64-eclipse-40">6.4. Eclipse 4.0</h2>
+<p>يجب مراجعة المعمارية باستمرار لتقييم ما إذا كانت لا تزال مناسبة. فهل قادرة على استيعاب تقنية جديدة؟ وهل تشجّع نموّ المجتمع؟ وهل يسهل جذب مساهمين جدد؟ وفي أواخر 2007 قرّر مُودعو مشروع Eclipse أنّ الإجابات على هذه الأسئلة كانت بالنفي، فشرعوا في تصميم رؤية جديدة لـ Eclipse. وفي الوقت نفسه أدركوا أنّ هناك آلاف تطبيقات Eclipse التي تعتمد على الواجهة البرمجية القائمة. وأُنشئ مشروع تقني حاضن في أواخر 2008 بثلاثة أهداف محدّدة: تبسيط نموذج برمجة Eclipse، وجذب مُودعين جدد، وتمكين المنصّة من الاستفادة من تقنيات الويب الجديدة مع توفير معمارية مفتوحة.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-e4.webp" alt="[إصدار Eclipse 4.0 SDK للمستخدمين المبكّرين]"></p>
+<p>الشكل 6.9: إصدار Eclipse 4.0 SDK للمستخدمين المبكّرين</p>
+<p>صدر Eclipse 4.0 للمرّة الأولى في يوليو 2010 ليستخدمه المستخدمون المبكّرون (early adopters) في تقديم الملاحظات. وقد تألّف من مجموعة من حِزَم SDK كانت جزءًا من إصدار 3.6، وحِزَم جديدة ترسّخت من مشروع التقنية. وكما في 3.0، كانت هناك طبقة توافق كي تعمل الحِزَم القائمة مع الإصدار الجديد. وكما جرت العادة، كان هناك تحفّظ بأنّ المستهلكين يحتاجون إلى استخدام الواجهة البرمجية العلنية كي يكونوا مضمونين لذلك التوافق. ولا يوجد مثل هذا الضمان إذا كانت حزمتك تستخدم شيفرة داخلية. وقد قدّم إصدار 4.0 منصّة تطبيقات Eclipse 4 التي وفّرت الميزات التالية.</p>
+<h3 id="641-مساحة-عمل-النموذج">6.4.1. مساحة عمل النموذج</h3>
+<p>في 4.0 تُولَّد مساحة عمل النموذج باستخدام إطار عمل نمذجة Eclipse (Eclipse Modeling Framework، EMFgc). وهناك فصلٌ بين المسؤوليات بين النموذج وتحويل العرض، إذ يتحدّث العارض (renderer) مع النموذج ثم يولّد شيفرة SWT. والافتراضي هو استخدام العارضات المبنية على SWT، لكنّ حلولًا أخرى ممكنة. فإذا أنشأت تطبيق 4.x نموذجيًّا، فسيُنشأ ملف XMI لنموذج مساحة العمل الافتراضي. ويمكن تعديل النموذج وستُحدَّث مساحة العمل فورًا لتعكس التغييرات في النموذج. ويبيّن <a href="#fig.ecl.mwb">الشكل 6.10</a> نموذجًا مُولَّدًا لتطبيق 4.x نموذجي.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-modelledworkbench.webp" alt="[نموذج مُولَّد لتطبيق 4.x نموذجي]"></p>
+<p>الشكل 6.10: نموذج مُولَّد لتطبيق 4.x نموذجي</p>
+<h3 id="642-التنسيق-بأوراق-الأنماط-المتتالية-css">6.4.2. التنسيق بأوراق الأنماط المتتالية (CSS)</h3>
+<p>صدر Eclipse عام 2001، قبل عصر تطبيقات الإنترنت الثرية التي كان يمكن تنسيق مظهرها وسلوكها عبر CSS لتوفير شكل ومظهر مختلفين. ويوفّر Eclipse 4.0 القدرة على استخدام أوراق الأنماط لتغيير مظهر تطبيق Eclipse وسلوكه بسهولة. ويمكن العثور على أوراق أنماط CSS الافتراضية في المجلّد <code>css</code> الخاص بحزمة <code>org.eclipse.platform</code>.</p>
+<h3 id="643-حقن-الاعتماديات-dependency-injection">6.4.3. حقن الاعتماديات (Dependency Injection)</h3>
+<p>كلٌّ من سجلّ امتدادات Eclipse وخدمات OSGi مثالٌ على نماذج برمجة الخدمات. وعرفًا (by convention)، يحتوي نموذج برمجة الخدمات على منتِجي الخدمات ومستهلكيها. والميسّر (broker) هو المسؤول عن إدارة العلاقة بين المنتِجين والمستهلكين.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-producerconsumer.webp" alt="[العلاقة بين المنتِجين والمستهلكين]"></p>
+<p>الشكل 6.11: العلاقة بين المنتِجين والمستهلكين</p>
+<p>تقليديًّا، في تطبيقات Eclipse 3.4.x كان على المستهلك أن يعرف موقع التنفيذ، وأن يفهم الوراثة داخل الإطار كي يستهلك الخدمات. وكان شيفرة المستهلك بالتالي أقلّ قابلية لإعادة الاستخدام لأنّ الناس لم يكونوا يستطيعون تجاوز أي تنفيذ يستلمه المستهلك. فمثلًا، لو أردت تحديث الرسالة في سطر الحالة في Eclipse 3.x، لبدا الشيفرة على النحو التالي:</p>
+<pre><code>getViewSite().getActionBars().getStatusLineManager().setMessage(msg);
+</code></pre>
+<p>بُني Eclipse 3.6 من مكوّنات، لكنّ كثيرًا من هذه المكوّنات مقترنة ارتباطًا شديدًا. ولتجميع تطبيقات من مكوّنات أقلّ اقترانًا، يستخدم Eclipse 4.0 حقن الاعتماديات لتوفير الخدمات للعملاء. ويتمّ حقن الاعتماديات في Eclipse 4.x عبر استخدام إطار عمل مخصّص يستعمل مفهوم السياق (context) الذي يعمل كآلية عامّة للعثور على الخدمات نيابةً عن المستهلكين. ويوجد السياق بين التطبيق والإطار. والسياقات هرمية: فإذا تعذّر على سياق تلبية طلب، فسيُحيل الطلب إلى السياق الأصل. ويُخزّن سياق Eclipse، المسمّى <code>IEclipseContext</code>، الخدمات المتوفّرة ويوفّر البحث في خدمات OSGi. وجوهرًا يشبه السياق خريطة Java من حيث أنّه يوفّر ربطًا من اسم أو صنف إلى كائن. ويتعامل السياق مع عناصر النموذج والخدمات. ولكلّ عنصر من عناصر النموذج سياق. وتُنشر الخدمات في 4.x بوسيلة آلية خدمات OSGi.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-eclipse-context.webp" alt="[سياق وسيط الخدمات]"></p>
+<p>الشكل 6.12: سياق وسيط الخدمات</p>
+<p>يضيف المنتِجون الخدمات والكائنات إلى السياق الذي يخزّنها. وتُحقَن الخدمات في كائنات المستهلك بواسطة السياق. ويصرّح المستهلك بما يريده، ويحدّد السياق كيف يلبّي هذا الطلب. وقد جعل هذا الأسلوب استهلاك الخدمات الديناميكية أسهل. ففي Eclipse 3.x كان على المستهلك أن يربط المستمعات (listeners) ليُبلَّغ بتوفّر الخدمات أو عدمه. أمّا مع Eclipse 4.x فبعد حقن السياق في كائن مستهلك، تُسلَّم أي تغييرات إلى ذلك الكائن تلقائيًّا مرة أخرى. وبعبارة أخرى، يُعاد حقن الاعتماديات. ويشير المستهلك إلى أنّه سيستخدم السياق عبر استخدام تعليقات Java 5 التوضيحية (annotations) التي تلتزم بمعيار JSR 330، مثل <code>@inject</code>، فضلًا عن بعض تعليقات Eclipse المخصّصة. ويُدعم الحقن في الباني والدوالّ والحقول. ويفحص بيئة 4.x وقت التشغيل الكائنات بحثًا عن هذه التعليقات. والإجراء الذي يُنفَّذ يعتمد على التعليق الذي عُثر عليه.</p>
+<p>يسمح هذا الفصل بين المسؤوليات بين السياق والتطبيق بإعادة استخدام أفضل للمكوّنات، ويعفي المستهلك من الحاجة إلى فهم التنفيذ. وفي 4.x سيبدو شيفرة تحديث سطر الحالة على النحو التالي:</p>
+<pre><code>@Inject
+IStatusLineManager statusLine;
+&amp;#8942;    &amp;#8942;    &amp;#8942;
+statusLine.setMessage(msg);
+</code></pre>
+<h3 id="644-خدمات-التطبيقات">6.4.4. خدمات التطبيقات</h3>
+<p>كان أحد الأهداف الرئيسية في Eclipse 4.0 هو تبسيط الواجهة البرمجية للمستهلكين ليسهل تنفيذ الخدمات الشائعة. وقد أصبحت قائمة الخدمات البسيطة معروفة بـ «العشرين شيئًا» وتُسمّى خدمات تطبيقات Eclipse. والهدف هو عرض واجهات برمجية مستقلّة يستطيع العملاء استخدامها دون الحاجة إلى فهم عميق لجميع الواجهات البرمجية المتاحة. وهي منظّمة كخدمات منفردة كي يتيسّر استخدامها أيضًا في لغات أخرى غير Java، مثل Javascript. فمثلًا، هناك واجهة برمجية للوصول إلى نموذج التطبيق، وقراءة التفضيلات وتعديلها، والإبلاغ عن الأخطاء والتحذيرات.</p>
+<h2 id="65-الخاتمة">6.5. الخاتمة</h2>
+<p>تطوّرت معمارية Eclipse القائمة على المكوّنات لتستوعب تقنية جديدة مع الحفاظ على التوافق العكسي. وقد كلّف ذلك كثيرًا، لكنّ المكافأة كانت نموّ مجتمع Eclipse بفضل الثقة التي ترسّخت من أنّ المستهلكين ما زال بإمكانهم إطلاق منتجات مبنيّة على واجهة برمجية مستقرّة.</p>
+<p>لدى Eclipse عددٌ هائل من المستهلكين ذوي حالات الاستخدام المتنوّعة، وأصبحت واجهتنا البرمجية الواسعة يصعب على المستهلكين الجدد تبنّيها وفهمها. وبالنظر إلى الوراء، كان ينبغي لنا الإبقاء على واجهتنا البرمجية أبسط. فإذا كان 80% من المستهلكين يستخدمون 20% فقط من الواجهة البرمجية، فإنّ الحاجة إلى التبسيط قائمة، وكانت إحدى أسباب إنشاء سلسلة Eclipse 4.x.</p>
+<p>تكشف حكمة الجموع حالات استخدام مثيرة للاهتمام، مثل تفكيك الـ IDE إلى حِزَم يمكن استخدامها لبناء تطبيقات RCP. وفي المقابل، كثيرًا ما تولّد الجموع ضجيجًا كبيرًا عبر طلبات سيناريوهات حدّية (edge cases) تستغرق زمنًا طويلًا في تنفيذها.</p>
+<p>في الأيام المبكّرة لمشروع Eclipse كان لدى المُودعين رفاهية تخصيص وقائع كبيرة من الوقت للتوثيق والأمثلة والإجابة عن أسئلة المجتمع. وقد انتقلت هذه المسؤولية مع الوقت إلى مجتمع Eclipse ككلّ. كان بإمكاننا أن نكون أفضل في توفير التوثيق وحالات الاستخدام لمساعدة المجتمع، لكنّ ذلك كان صعبًا بالنظر إلى العدد الهائل من العناصر المخطَّطة لكلّ إصدار. وبخلاف التوقّع بأنّ مواعيد إصدار البرمجيات تتأخّر، فإنّنا في Eclipse نسلّم إصداراتنا في مواعيدها باستمرار، ما يتيح لمستهلكينا أن يثقوا بقدرتهم على فعل الشيء ذاته.</p>
+<p>بتبنّينا التقنية الجديدة، وإعادة اختراع شكل Eclipse وطريقة عمله، فإنّنا نواصل الحوار مع مستهلكينا ونُبقيهم منخرطين في المجتمع. وإن كنت مهتمًّا بالمشاركة في Eclipse، فضع بعين الاعتبار زيارة http://www.eclipse.org.</p>
+<h2 id="الحواشي">الحواشي</h2>
+<ol>
+<li><code>http://www.eclipse.org</code></li>
+<li><code>http://www.eclipse.org/equinox</code></li>
+<li>على سبيل المثال: <code>http://help.eclipse.org</code>.</li>
+</ol>
+`,i={book:s,chapter:a,chapterTitle:n,slug:p,title:l,headings:e,html:t};export{s as book,a as chapter,n as chapterTitle,i as default,e as headings,t as html,p as slug,l as title};
