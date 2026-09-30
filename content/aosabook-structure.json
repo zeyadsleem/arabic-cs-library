@@ -1,0 +1,667 @@
+{
+  "chapters": [
+    {
+      "key": "v1-asterisk",
+      "title": "Asterisk",
+      "titleAr": "Asterisk",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Asterisk",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "v1-audacity",
+      "title": "Audacity",
+      "titleAr": "Audacity",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Audacity",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "v1-bash",
+      "title": "The Bourne-Again Shell",
+      "titleAr": "The Bourne-Again Shell",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)The Bourne-Again Shell",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "v1-bdb",
+      "title": "Berkeley DB",
+      "titleAr": "Berkeley DB",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Berkeley DB",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "v1-cmake",
+      "title": "CMake",
+      "titleAr": "CMake",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)CMake",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "v1-eclipse",
+      "title": "Eclipse",
+      "titleAr": "Eclipse",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Eclipse",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "v1-graphite",
+      "title": "Graphite",
+      "titleAr": "Graphite",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Graphite",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "v1-hdfs",
+      "title": "The Hadoop Distributed File System",
+      "titleAr": "The Hadoop Distributed File System",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)The Hadoop Distributed File System",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "v1-integration",
+      "title": "Continuous Integration",
+      "titleAr": "Continuous Integration",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Continuous Integration",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "v1-intro1",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Introduction",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "v1-jitsi",
+      "title": "Jitsi",
+      "titleAr": "Jitsi",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Jitsi",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "v1-llvm",
+      "title": "LLVM",
+      "titleAr": "LLVM",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)LLVM",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "v1-mercurial",
+      "title": "Mercurial",
+      "titleAr": "Mercurial",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Mercurial",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "v1-nosql",
+      "title": "The NoSQL Ecosystem",
+      "titleAr": "The NoSQL Ecosystem",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)The NoSQL Ecosystem",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "v1-packaging",
+      "title": "Python Packaging",
+      "titleAr": "Python Packaging",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Python Packaging",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "v1-riak",
+      "title": "Riak and Erlang/OTP",
+      "titleAr": "Riak and Erlang/OTP",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Riak and Erlang/OTP",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "v1-selenium",
+      "title": "Selenium WebDriver",
+      "titleAr": "Selenium WebDriver",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Selenium WebDriver",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "v1-sendmail",
+      "title": "Sendmail",
+      "titleAr": "Sendmail",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Sendmail",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "v1-snowflock",
+      "title": "SnowFlock",
+      "titleAr": "SnowFlock",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)SnowFlock",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "v1-socialcalc",
+      "title": "SocialCalc",
+      "titleAr": "SocialCalc",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)SocialCalc",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "v1-telepathy",
+      "title": "Telepathy",
+      "titleAr": "Telepathy",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Telepathy",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "v1-thousandparsec",
+      "title": "Thousand Parsec",
+      "titleAr": "Thousand Parsec",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Thousand Parsec",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "v1-violet",
+      "title": "Violet",
+      "titleAr": "Violet",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Violet",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "v1-vistrails",
+      "title": "VisTrails",
+      "titleAr": "VisTrails",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)VisTrails",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "v1-vtk",
+      "title": "VTK",
+      "titleAr": "VTK",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)VTK",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "key": "v1-wesnoth",
+      "title": "Battle for Wesnoth",
+      "titleAr": "Battle for Wesnoth",
+      "volume": "المجلد الأول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 1)Battle for Wesnoth",
+          "order": 26
+        }
+      ]
+    },
+    {
+      "key": "v2-distsys",
+      "title": "Scalable Web Architecture and Distributed Systems",
+      "titleAr": "Scalable Web Architecture and Distributed Systems",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Scalable Web Architecture and Distributed Systems",
+          "order": 28
+        }
+      ]
+    },
+    {
+      "key": "v2-ffreleng",
+      "title": "Firefox Release Engineering",
+      "titleAr": "Firefox Release Engineering",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Firefox Release Engineering",
+          "order": 29
+        }
+      ]
+    },
+    {
+      "key": "v2-freertos",
+      "title": "FreeRTOS",
+      "titleAr": "FreeRTOS",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)FreeRTOS",
+          "order": 30
+        }
+      ]
+    },
+    {
+      "key": "v2-gdb",
+      "title": "GDB",
+      "titleAr": "GDB",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)GDB",
+          "order": 31
+        }
+      ]
+    },
+    {
+      "key": "v2-ghc",
+      "title": "The Glasgow Haskell Compiler",
+      "titleAr": "The Glasgow Haskell Compiler",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)The Glasgow Haskell Compiler",
+          "order": 32
+        }
+      ]
+    },
+    {
+      "key": "v2-git",
+      "title": "Git",
+      "titleAr": "Git",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Git",
+          "order": 33
+        }
+      ]
+    },
+    {
+      "key": "v2-gpsd",
+      "title": "GPSD",
+      "titleAr": "GPSD",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)GPSD",
+          "order": 34
+        }
+      ]
+    },
+    {
+      "key": "v2-intro2",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Introduction",
+          "order": 35
+        }
+      ]
+    },
+    {
+      "key": "v2-ironlang",
+      "title": "The Dynamic Language Runtime and the Iron Languages",
+      "titleAr": "The Dynamic Language Runtime and the Iron Languages",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)The Dynamic Language Runtime and the Iron Languages",
+          "order": 36
+        }
+      ]
+    },
+    {
+      "key": "v2-itk",
+      "title": "ITK",
+      "titleAr": "ITK",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)ITK",
+          "order": 37
+        }
+      ]
+    },
+    {
+      "key": "v2-mailman",
+      "title": "GNU Mailman",
+      "titleAr": "GNU Mailman",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)GNU Mailman",
+          "order": 38
+        }
+      ]
+    },
+    {
+      "key": "v2-matplotlib",
+      "title": "matplotlib",
+      "titleAr": "matplotlib",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)matplotlib",
+          "order": 39
+        }
+      ]
+    },
+    {
+      "key": "v2-mediawiki",
+      "title": "MediaWiki",
+      "titleAr": "MediaWiki",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)MediaWiki",
+          "order": 40
+        }
+      ]
+    },
+    {
+      "key": "v2-moodle",
+      "title": "Moodle",
+      "titleAr": "Moodle",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Moodle",
+          "order": 41
+        }
+      ]
+    },
+    {
+      "key": "v2-nginx",
+      "title": "nginx",
+      "titleAr": "nginx",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)nginx",
+          "order": 42
+        }
+      ]
+    },
+    {
+      "key": "v2-openmpi",
+      "title": "Open MPI",
+      "titleAr": "Open MPI",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Open MPI",
+          "order": 43
+        }
+      ]
+    },
+    {
+      "key": "v2-oscar",
+      "title": "OSCAR",
+      "titleAr": "OSCAR",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)OSCAR",
+          "order": 44
+        }
+      ]
+    },
+    {
+      "key": "v2-pjs",
+      "title": "Processing.js",
+      "titleAr": "Processing.js",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Processing.js",
+          "order": 45
+        }
+      ]
+    },
+    {
+      "key": "v2-puppet",
+      "title": "Puppet",
+      "titleAr": "Puppet",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Puppet",
+          "order": 46
+        }
+      ]
+    },
+    {
+      "key": "v2-pypy",
+      "title": "PyPy",
+      "titleAr": "PyPy",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)PyPy",
+          "order": 47
+        }
+      ]
+    },
+    {
+      "key": "v2-sqlalchemy",
+      "title": "SQLAlchemy",
+      "titleAr": "SQLAlchemy",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)SQLAlchemy",
+          "order": 48
+        }
+      ]
+    },
+    {
+      "key": "v2-twisted",
+      "title": "Twisted",
+      "titleAr": "Twisted",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Twisted",
+          "order": 49
+        }
+      ]
+    },
+    {
+      "key": "v2-yesod",
+      "title": "Yesod",
+      "titleAr": "Yesod",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)Yesod",
+          "order": 50
+        }
+      ]
+    },
+    {
+      "key": "v2-yocto",
+      "title": "The Yocto Project",
+      "titleAr": "The Yocto Project",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)The Yocto Project",
+          "order": 51
+        }
+      ]
+    },
+    {
+      "key": "v2-zeromq",
+      "title": "ZeroMQ",
+      "titleAr": "ZeroMQ",
+      "volume": "المجلد الثاني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Architecture of Open Source Applications (Volume 2)ZeroMQ",
+          "order": 52
+        }
+      ]
+    }
+  ]
+}
