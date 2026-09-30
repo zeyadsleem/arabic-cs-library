@@ -241,8 +241,10 @@ const run = () => {
   const flatSections = [];
   const chaptersByBook = new Map();
 
-  const contentBooks = library.books.filter((book) =>
-    fs.existsSync(path.join(contentDir, `${book.id}-structure.json`))
+  const contentBooks = library.books.filter(
+    (book) =>
+      book.status === 'translated' &&
+      fs.existsSync(path.join(contentDir, `${book.id}-structure.json`))
   );
 
   for (const book of contentBooks) {

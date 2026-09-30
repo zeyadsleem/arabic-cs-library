@@ -1,0 +1,252 @@
+{
+  "chapters": [
+    {
+      "key": "frontmatter",
+      "title": "Front Matter",
+      "titleAr": "Front Matter",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Discrete Mathematics An Open Introduction, 4th Edition",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "Preface",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Discrete Mathematics An Open Introduction, 4th Edition",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch_intro",
+      "title": "Introduction",
+      "titleAr": "Introduction",
+      "sections": [
+        {
+          "slug": "secintro-intro",
+          "title": "What is Discrete Mathematics?",
+          "order": 0
+        },
+        {
+          "slug": "secintro-structures",
+          "title": "Discrete Structures",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "ch_logic",
+      "title": "Logic and Proofs",
+      "titleAr": "Logic and Proofs",
+      "sections": [
+        {
+          "slug": "seclogic-statements",
+          "title": "Mathematical Statements",
+          "order": 0
+        },
+        {
+          "slug": "seclogic-implications",
+          "title": "Implications",
+          "order": 1
+        },
+        {
+          "slug": "seclogic-rules",
+          "title": "Rules of Logic",
+          "order": 2
+        },
+        {
+          "slug": "seclogic-proofs",
+          "title": "Proofs",
+          "order": 3
+        },
+        {
+          "slug": "seclogic-structures",
+          "title": "Proofs about Discrete Structures",
+          "order": 4
+        },
+        {
+          "slug": "seclogic-conc",
+          "title": "Chapter Summary",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "ch_graphtheory",
+      "title": "Graph Theory",
+      "titleAr": "Graph Theory",
+      "sections": [
+        {
+          "slug": "secgt-intro",
+          "title": "Problems and Definitions",
+          "order": 0
+        },
+        {
+          "slug": "sectrees",
+          "title": "Trees",
+          "order": 1
+        },
+        {
+          "slug": "secgt-planar",
+          "title": "Planar Graphs",
+          "order": 2
+        },
+        {
+          "slug": "secgt-paths",
+          "title": "Euler Trails and Circuits",
+          "order": 3
+        },
+        {
+          "slug": "seccoloring",
+          "title": "Coloring",
+          "order": 4
+        },
+        {
+          "slug": "secgt-relations",
+          "title": "Relations and Graphs",
+          "order": 5
+        },
+        {
+          "slug": "secmatchings",
+          "title": "Matching in Bipartite Graphs",
+          "order": 6
+        },
+        {
+          "slug": "secgt-conc",
+          "title": "Chapter Summary",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "ch_counting",
+      "title": "Counting",
+      "titleAr": "Counting",
+      "sections": [
+        {
+          "slug": "seccounting-pascal",
+          "title": "Pascal’s Arithmetical Triangle",
+          "order": 0
+        },
+        {
+          "slug": "seccounting-combine-outcomes",
+          "title": "Combining Outcomes",
+          "order": 1
+        },
+        {
+          "slug": "seccounting-non-disjoint",
+          "title": "Non-Disjoint Outcomes",
+          "order": 2
+        },
+        {
+          "slug": "seccounting-combperm",
+          "title": "Combinations and Permutations",
+          "order": 3
+        },
+        {
+          "slug": "seccounting-multisets",
+          "title": "Counting Multisets",
+          "order": 4
+        },
+        {
+          "slug": "seccomb-proofs",
+          "title": "Combinatorial Proofs",
+          "order": 5
+        },
+        {
+          "slug": "secadvpie",
+          "title": "Advanced Counting Using PIE",
+          "order": 6
+        },
+        {
+          "slug": "seccount-conc",
+          "title": "Chapter Summary",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "ch_sequences",
+      "title": "Sequences",
+      "titleAr": "Sequences",
+      "sections": [
+        {
+          "slug": "secseqintro",
+          "title": "Describing Sequences",
+          "order": 0
+        },
+        {
+          "slug": "secseq-growth",
+          "title": "Rate of Growth",
+          "order": 1
+        },
+        {
+          "slug": "secseq-polynomial",
+          "title": "Polynomial Sequences",
+          "order": 2
+        },
+        {
+          "slug": "secseq-exponential",
+          "title": "Exponential Sequences",
+          "order": 3
+        },
+        {
+          "slug": "secseq-induction",
+          "title": "Proof by Induction",
+          "order": 4
+        },
+        {
+          "slug": "secseq-strong-induction",
+          "title": "Strong Induction",
+          "order": 5
+        },
+        {
+          "slug": "secsequences-conc",
+          "title": "Chapter Summary",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "ch_structures",
+      "title": "Algebraic Structures",
+      "titleAr": "Algebraic Structures",
+      "sections": [
+        {
+          "slug": "secstructures-sets",
+          "title": "Sets",
+          "order": 0
+        },
+        {
+          "slug": "secstructures-functions",
+          "title": "Functions",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "backmatter",
+      "title": "Backmatter",
+      "titleAr": "Backmatter",
+      "sections": [
+        {
+          "slug": "secaddtops-genfun",
+          "title": "Generating Functions",
+          "order": 0
+        },
+        {
+          "slug": "secaddtops-numbth",
+          "title": "Introduction to Number Theory",
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

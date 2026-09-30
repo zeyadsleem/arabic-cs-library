@@ -15,36 +15,11 @@ if (!configPath) {
 }
 
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-const { id, origin, pages, mainSelector = 'body', titleSelector = 'h1' } = config;
+const { id, origin, pages, mainSelector = 'body' } = config;
 const imageDir = path.join(root, 'static', 'images', id);
 const contentDir = path.join(root, 'content', id);
 const sourceDir = path.join(root, 'content-src', id);
 for (const dir of [imageDir, contentDir, sourceDir]) fs.mkdirSync(dir, { recursive: true });
-
-const dropMacroPreamble = (text) => {
-  const start = text.indexOf('(\\usepackage');
-  if (start === -1) return text;
-  let depth = 0;
-  for (let index = start; index < text.length; index += 1) {
-    if (text[index] === '(') depth += 1;
-    else if (text[index] === ')') {
-      depth -= 1;
-      if (depth === 0) {
-        return `${text.slice(0, start)}${text
-          .slice(index + 1)
-          .replace(/^\s+/, '')}`;
-      }
-    }
-  }
-  return text;
-};
-
-const titleFromSlug = (slug) =>
-  slug
-    .replace(/^sec_/, '')
-    .replace(/[-_]+/g, ' ')
-    .replace(/\b\w/g, (character) => character.toUpperCase())
-    .trim();
 
 const slugify = (text) =>
   text
@@ -57,16 +32,37 @@ const slugify = (text) =>
     .replace(/^-|-$/g, '')
     .slice(0, 48);
 
-const fetchText = (url) => {
-  const out = execFileSync(
-    'curl',
-    ['-sL', '--compressed', '-m', '120', '-w', '\n%{http_code}', url],
-    { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 }
-  );
-  const cut = out.lastIndexOf('\n');
-  const status = Number(out.slice(cut + 1).trim());
-  if (status !== 200) throw new Error(`HTTP ${status}`);
-  return out.slice(0, cut);
+const fetchText = (url, attempts = 4) => {
+  let lastError = new Error('unreachable');
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const out = execFileSync(
+        'curl',
+        [
+          '-sL',
+          '--compressed',
+          '-m',
+          '120',
+          '--retry',
+          '2',
+          '--retry-delay',
+          '3',
+          '--retry-all-errors',
+          '-w',
+          '\n%{http_code}',
+          url,
+        ],
+        { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }
+      );
+      const cut = out.lastIndexOf('\n');
+      const status = Number(out.slice(cut + 1).trim());
+      if (status === 200) return out.slice(0, cut);
+      lastError = new Error(`HTTP ${status}`);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
 };
 
 const download = (url) =>
@@ -88,78 +84,102 @@ const optimize = (raw, target) => {
   }
 };
 
-const stripBoilerplate = (html, url) =>
+const dropMacroPreamble = (text) => {
+  const start = text.indexOf('(\\usepackage');
+  if (start === -1) return text;
+  let depth = 0;
+  for (let index = start; index < text.length; index += 1) {
+    if (text[index] === '(') depth += 1;
+    else if (text[index] === ')') {
+      depth -= 1;
+      if (depth === 0) {
+        return `${text.slice(0, start)}${text.slice(index + 1).replace(/^\s+/, '')}`;
+      }
+    }
+  }
+  return text;
+};
+
+const stripBoilerplate = (html) =>
   html
     .replace(/<header\b[\s\S]*?<\/header>/gi, '')
+    .replace(/<footer\b[\s\S]*?<\/footer>/gi, '')
+    .replace(/<nav\b[\s\S]*?<\/nav>/gi, '')
     .replace(/<div id="ptx-navbar"[\s\S]*?<\/div>/gi, '')
     .replace(/<div id="ptx-sidebar"[\s\S]*?<\/div>\s*<\/div>/gi, '')
     .replace(/<nav id="ptx-toc"[\s\S]*?<\/nav>/gi, '')
-    .replace(/<a class="skip"[\s\S]*?<\/a>/gi, '')
-    .replace(/Skip to main content/gi, '')
     .replace(/<div class="navigation"[\s\S]*?<\/div>/gi, '')
-    .replace(/<p class="navigation"[\s\S]*?<\/p>/gi, '')
     .replace(
       /<img[^>]*alt="(?:next|up|prev|previous|contents|index|back|home|first|last|top|bottom)"[^>]*>/gi,
       ''
     )
-    .replace(/<(script|style|head)\b[\s\S]*?<\/\1>/g, '')
-    .replace(/<nav\b[\s\S]*?<\/nav>/g, '')
-    .replace(/<footer\b[\s\S]*?<\/footer>/g, '')
-    .replace(new RegExp(`<link[^>]*href="[^"]*${url.split('/').pop()}[^"]*"[^>]*>`, 'g'), '');
+    .replace(/Skip to main content/gi, '');
 
-const chapterSections = new Map();
-if (config.tocUrl) {
-  const toc = fetchText(config.tocUrl);
-  const chapterKeys = config.pages.map(([key]) => key);
-  const order = [
-    ...toc.matchAll(
-      /href="(frontmatter|preface|ch_[a-z_]+|backmatter|sec_[a-z_]+-[a-z0-9_-]+)\.html"/g
-    ),
-  ].map((match) => match[1]);
-  let current = null;
-  for (const entry of order) {
-    if (chapterKeys.includes(entry)) {
-      current = entry;
-      if (!chapterSections.has(current)) chapterSections.set(current, []);
-    } else if (current && entry.startsWith('sec_')) {
-      chapterSections.get(current).push(entry);
-    }
-  }
-  const total = [...chapterSections.values()].reduce((sum, list) => sum + list.length, 0);
-  console.log(`toc: ${total} sections across ${chapterSections.size} chapters`);
-}
-
-let sectionMap = new Map();
-if (false) {
-  const toc = fetchText(config.tocUrl);
-  const seen = new Set();
-  for (const match of toc.matchAll(/href="(\d+_[^"#]*?)\.html"/gi)) {
-    const slug = match[1];
-    const chapterKey = slug.split('_').slice(0, 2).join('_');
-    if (seen.has(slug)) continue;
-    seen.add(slug);
-    if (!sectionMap.has(chapterKey)) sectionMap.set(chapterKey, []);
-    sectionMap.get(chapterKey).push(slug);
-  }
-  console.log(`toc: ${seen.size} sections across ${sectionMap.size} chapters`);
-}
-
-const structure = { chapters: [] };
-const vectorImages = new Set();
 let imageCount = 0;
+const vectorImages = new Set();
 
-for (const [key, expectedTitle, sectionPrefix] of pages) {
-  const url = `${origin}${key}${config.pageSuffix || ''}`;
-  let html;
-  try {
-    html = fetchText(url);
-  } catch (error) {
-    console.warn(`skip ${key}: ${error.message}`);
-    continue;
-  }
+const localizeImages = (article, pageUrl, prefix) => {
+  const refs = [];
+  const next = article.replace(/<img[^>]*>/gi, (tag) => {
+    const src = tag.match(/src="([^"]+)"/i)?.[1];
+    const alt = (tag.match(/alt="([^"]*)"/i)?.[1] || '').trim();
+    if (!src) return '';
+    let resolved;
+    try {
+      resolved = new URL(src, pageUrl).href;
+    } catch {
+      return '';
+    }
+    const name = `${prefix}-${path
+      .basename(new URL(resolved).pathname)
+      .replace(/[^.\w-]/g, '_')}`;
+    const webp = path.join(imageDir, `${name}.webp`);
+    const svg = path.join(imageDir, `${name}.svg`);
+    try {
+      if (/\.svg(\?|$)/i.test(resolved)) {
+        if (!fs.existsSync(svg)) {
+          const raw = path.join(imageDir, `${name}.raw`);
+          fs.writeFileSync(raw, download(resolved));
+          fs.renameSync(raw, svg);
+          vectorImages.add(path.basename(svg));
+          imageCount += 1;
+        }
+      } else if (!fs.existsSync(webp)) {
+        const raw = path.join(imageDir, `${name}.raw`);
+        fs.writeFileSync(raw, download(resolved));
+        optimize(raw, webp);
+        imageCount += 1;
+      }
+    } catch (error) {
+      console.warn(`  image failed: ${resolved}`);
+    }
+    refs.push({
+      alt,
+      local: fs.existsSync(webp)
+        ? `/images/${id}/${path.basename(webp)}`
+        : vectorImages.has(path.basename(svg))
+          ? `/images/${id}/${path.basename(svg)}`
+          : src,
+    });
+    return ` IMAGE${refs.length - 1}END `;
+  });
+  return { article: next, refs };
+};
+
+const clean = (rawText) =>
+  dropMacroPreamble(rawText)
+    .replace(/^#\s+.*\n/, '')
+    .replace(/\[\]\([^)]*\)/g, '')
+    .replace(/^\*\*\s*Next:\*\*.*$/m, '')
+    .replace(/^\*\*\s*Up:\*\*.*$/m, '')
+    .replace(/^\*\*\s*Previous:\*\*.*$/m, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+const loadPage = (url, key) => {
+  const html = fetchText(url);
   fs.writeFileSync(path.join(sourceDir, `${key}.html`), html);
-
-  let article = extractMain(stripBoilerplate(html, url), mainSelector);
+  let article = extractMain(stripBoilerplate(html), mainSelector);
   if (config.legacy) article = normalizeLegacyHtml(article);
   if (config.bodyStart) {
     const at = article.search(new RegExp(config.bodyStart));
@@ -168,147 +188,99 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
       article = article.slice(open + 1);
     }
   }
+  const localized = localizeImages(article, url, key);
+  return {
+    html,
+    rawTitle: html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, '').trim() || '',
+    article: localized.article,
+    refs: localized.refs,
+    pageTitle: html.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim() || '',
+  };
+};
 
-  const refs = [];
-  article = article.replace(/<img[^>]*>/g, (tag) => {
-    const src = tag.match(/src="([^"]+)"/)?.[1];
-    const alt = (tag.match(/alt="([^"]*)"/)?.[1] || '').trim();
-    if (!src) return '';
-    let resolved;
-    try {
-      resolved = new URL(src, url).href;
-    } catch {
-      return '';
-    }
-    const name = `${key}-${path.basename(new URL(resolved).pathname).replace(/[^.\w-]/g, '_')}`;
-    const webp = path.join(imageDir, `${name}.webp`);
-    if (!fs.existsSync(webp)) {
-      try {
-        const raw = path.join(imageDir, `${name}.raw`);
-        fs.writeFileSync(raw, download(resolved));
-        if (/\.svg(\?|$)/i.test(resolved)) {
-          const svg = path.join(imageDir, `${name}.svg`);
-          fs.renameSync(raw, svg);
-          vectorImages.add(path.basename(svg));
-        } else {
-          optimize(raw, webp);
-        }
-        imageCount += 1;
-      } catch (error) {
-        console.warn(`image failed: ${resolved}`);
-      }
-    }
-    refs.push({
-      alt,
-      local: fs.existsSync(webp) ? `/images/${id}/${path.basename(webp)}` : src,
-    });
-    return ` IMAGE${refs.length - 1}END `;
-  });
+// Some books split chapters into section pages whose slug prefixes do not match
+// the chapter key, so the mapping is declared per book in the config. Section
+// order follows the table of contents.
+const sectionSlugs = new Map();
+if (config.tocUrl && config.sectionChapterMap) {
+  const toc = fetchText(config.tocUrl);
+  const order = [
+    ...new Set([...toc.matchAll(/href="(sec_[a-z0-9_-]+)\.html"/gi)].map((match) => match[1])),
+  ];
+  const prefixes = Object.keys(config.sectionChapterMap).sort((a, b) => b.length - a.length);
+  for (const slug of order) {
+    const prefix = prefixes.find((candidate) => slug.startsWith(candidate));
+    if (!prefix) continue;
+    const chapterKey = config.sectionChapterMap[prefix];
+    if (!sectionSlugs.has(chapterKey)) sectionSlugs.set(chapterKey, []);
+    sectionSlugs.get(chapterKey).push(slug);
+  }
+  const total = [...sectionSlugs.values()].reduce((sum, list) => sum + list.length, 0);
+  console.log(`toc: ${total} sections across ${sectionSlugs.size} chapters`);
+}
 
-  let parts = [{ url, article, refs: [] }];
-  if (config.discoverSections) {
-    const chapterNumber = key.split('_')[0];
-    const linkPattern = sectionPrefix
-      ? new RegExp(`href=["'](${sectionPrefix}[^"']*?\\.html)["']`, 'gi')
-      : new RegExp(`href=["'](${chapterNumber}_\\d[^"']*?\\.html)["']`, 'gi');
-    const seen = new Set();
-    const links = (chapterSections.get(key) || [])
-      .map((slug) => `${slug}.html`)
-      .filter((value) => !seen.has(value) && seen.add(value));
-    for (const link of links) {
-      const subUrl = `${origin}${link}`;
-      let subHtml;
+const structure = { chapters: [] };
+const writeFile = (chapterKey, slug, heading, text, source) => {
+  const target = path.join(contentDir, `${chapterKey}--${slug}.md`);
+  const existing = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
+  if (!/lang: ar/.test(existing)) {
+    fs.writeFileSync(
+      target,
+      `---\ntitle: "${heading.replace(/"/g, '')}"\nlang: en\nsource: ${source}\n---\n\n${text}\n`
+    );
+  }
+};
+
+for (const [key, expectedTitle] of pages) {
+  const url = `${origin}${key}${config.pageSuffix || ''}`;
+  const sections = [];
+
+  let chapterPage;
+  try {
+    chapterPage = loadPage(url, key);
+  } catch (error) {
+    console.warn(`skip ${key}: ${error.message}`);
+    continue;
+  }
+  const ownSections = sectionSlugs.get(key) || [];
+  if (ownSections.length) {
+    for (const sectionSlug of ownSections) {
+      const sectionUrl = `${origin}${sectionSlug}${config.pageSuffix || ''}`;
+      let page;
       try {
-        subHtml = fetchText(subUrl);
+        page = loadPage(sectionUrl, sectionSlug);
       } catch (error) {
-        console.warn(`  skip ${link}: ${error.message}`);
+        console.warn(`  skip ${sectionSlug}: ${error.message}`);
         continue;
       }
-      let subArticle = extractMain(stripBoilerplate(subHtml, subUrl), mainSelector);
-      if (config.legacy) subArticle = normalizeLegacyHtml(subArticle);
-      const subRefs = [];
-      subArticle = subArticle.replace(/<img[^>]*>/gi, (tag) => {
-        const src = tag.match(/src="([^"]+)"/i)?.[1];
-        const alt = (tag.match(/alt="([^"]*)"/i)?.[1] || '').trim();
-        if (!src) return '';
-        let resolved;
-        try {
-          resolved = new URL(src, subUrl).href;
-        } catch {
-          return '';
-        }
-        const name = `${link.replace(/\.html$/, '')}-${path
-          .basename(new URL(resolved).pathname)
-          .replace(/[^.\w-]/g, '_')}`;
-        const webp = path.join(imageDir, `${name}.webp`);
-        if (!fs.existsSync(webp)) {
-          try {
-            const raw = path.join(imageDir, `${name}.raw`);
-            fs.writeFileSync(raw, download(resolved));
-            if (/\.svg(\?|$)/i.test(resolved)) {
-              const svg = path.join(imageDir, `${name}.svg`);
-              fs.renameSync(raw, svg);
-              vectorImages.add(path.basename(svg));
-            } else {
-              optimize(raw, webp);
-            }
-            imageCount += 1;
-          } catch (error) {
-            console.warn(`  image failed: ${resolved}`);
-          }
-        }
-        const vectorName = `${name}.svg`;
-        subRefs.push({
-          alt,
-          local: fs.existsSync(webp)
-            ? `/images/${id}/${path.basename(webp)}`
-            : vectorImages.has(vectorName)
-              ? `/images/${id}/${vectorName}`
-              : src,
-        });
-        return ` IMAGE${subRefs.length - 1}END `;
-      });
-      parts.push({
-        url: subUrl,
-        article: subArticle,
-        refs: subRefs,
-        slug: link.replace(/\.html$/, ''),
-        pageTitle: subHtml.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim() || '',
-      });
+      const body = clean(convert(page.article, page.refs));
+      if (!body) continue;
+      const heading = (page.pageTitle || '').split(/\s*[—–|]\s*/)[0].trim() || expectedTitle;
+      const slug = slugify(sectionSlug) || `s${sections.length}`;
+      writeFile(key, slug, heading, body, sectionUrl);
+      sections.push({ slug, title: heading, order: sections.length });
     }
+    const chapterBody = sections
+      .map((entry) => readSection(key, entry.slug))
+      .join('\n\n');
+    fs.writeFileSync(
+      path.join(sourceDir, `${key}.md`),
+      `---\ntitle: "${expectedTitle}"\nlang: en\n---\n\n${chapterBody}\n`
+    );
+    structure.chapters.push({ key, title: expectedTitle, titleAr: expectedTitle, sections });
+    console.log(`${id}/${key}: ${sections.length} sections, ${chapterBody.length} chars`);
+    continue;
   }
 
-  const rawTitle =
-    article.match(new RegExp(`<${titleSelector}[^>]*>([\\s\\S]*?)</${titleSelector}>`))?.[1]?.replace(
-      /<[^>]+>/g,
-      ''
-    ) ||
-    html.match(/<title>([\s\S]*?)<\/title>/)?.[1]?.replace(/<[^>]+>/g, '') ||
-    expectedTitle;
-  const title = (rawTitle || expectedTitle).replace(/\s+/g, ' ').trim();
+  const fullBody = clean(convert(chapterPage.article, chapterPage.refs));
 
-  if (parts.length > 1) {
-    parts = parts.slice(1);
-  }
-
-  const clean = (rawText) =>
-    dropMacroPreamble(rawText)
-      .replace(/^#\s+.*\n/, '')
-      .replace(/\(\s*\\usepackage[^)]*?\)/g, '')
-      .replace(/\[\]\([^)]*\)/g, '')
-      .replace(/^\*\*\s*Next:\*\*.*$/m, '')
-      .replace(/^\*\*\s*Up:\*\*.*$/m, '')
-      .replace(/^\*\*\s*Previous:\*\*.*$/m, '')
-      .replace(/\n{3,}/g, '\n\n')
-      .trim();
-
-  const splitInline = (text) => {
-    const blocks = [];
+  if (config.splitSections) {
     const intro = [];
+    const blocks = [];
     let current = null;
-    for (const line of text.split('\n')) {
+    for (const line of fullBody.split('\n')) {
       if (/^#{1,3}\s+/.test(line)) {
-        current = { heading: line.replace(/^##\s+/, '').trim(), lines: [line] };
+        current = { title: line.replace(/^#+\s*/, '').trim(), lines: [line] };
         blocks.push(current);
       } else if (current) {
         current.lines.push(line);
@@ -316,117 +288,52 @@ for (const [key, expectedTitle, sectionPrefix] of pages) {
         intro.push(line);
       }
     }
-    return {
-      intro: intro.join('\n').trim(),
-      blocks: blocks
-        .map((block) => ({
-          title: block.heading.replace(/^\d+(\.\d+)*\s*/, '').trim() || block.heading,
-          text: block.lines.join('\n').trim(),
-        }))
-        .filter((block) => block.text),
-    };
-  };
-
-  const sectionTitles = parts.map((part, index) => {
-    const heading = part.article
-      .match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]
-      ?.replace(/<[^>]+>/g, '')
-      .replace(/^\d+(\.\d+)*\s*/, '')
-      .trim();
-    if (config.titleFromSlug && part.slug) return titleFromSlug(part.slug);
-    const pageTitle = (part.pageTitle || '')
-      .replace(/\s*[—–|-]\s*(Logic and Proofs|Graph Theory|Counting|Sequences|Algebraic Structures|Discrete Mathematics).*$/i, '')
-      .trim();
-    if (pageTitle && pageTitle.toLowerCase() !== title.toLowerCase()) return pageTitle;
-    if (heading && heading.toLowerCase() !== title.toLowerCase()) return heading;
-    const convertedFirst = clean(convert(part.article, part.refs)).split('\n')[0] || '';
-    const fromContent = convertedFirst.replace(/^#+\s*/, '').trim();
-    if (fromContent && fromContent.length > 3 && !/^\d+(\.\d+)*$/.test(fromContent)) {
-      return fromContent.replace(/^\d+(\.\d+)*\s*/, '');
+    let order = 0;
+    const introText = intro.join('\n').trim();
+    if (introText) {
+      writeFile(key, 'index', expectedTitle, introText, url);
+      sections.push({ slug: 'index', title: expectedTitle, order });
+      order += 1;
     }
-    return `${title} — ${index + 1}`;
-  });
-
-  const bodies = parts.map((part, index) => {
-    const converted = convert(part.article, part.refs).trim();
-    if (index === 0) return clean(converted);
-    const firstLine = converted.split('\n')[0] || '';
-    if (/^#{1,2}\s/.test(firstLine)) return clean(converted.replace(/^#{1,2}\s/, '## '));
-    return clean(`## ${sectionTitles[index]}\n\n${converted}`);
-  });
-
-  const writeFile = (slug, heading, text) => {
-    const target = path.join(contentDir, `${key}--${slug}.md`);
-    const existing = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
-    if (!/lang: ar/.test(existing)) {
-      fs.writeFileSync(
-        target,
-        `---\ntitle: "${heading.replace(/"/g, '')}"\nlang: en\nsource: ${url}\n---\n\n${text}\n`
-      );
+    for (const block of blocks) {
+      const text = block.lines.join('\n').trim();
+      if (text.length < 200) continue;
+      const slug = slugify(block.title) || `s${order}`;
+      writeFile(key, slug, block.title, text, url);
+      sections.push({ slug, title: block.title, order });
+      order += 1;
     }
-    return target;
-  };
-
-  const sections = [];
-  if (config.splitSections) {
-    let unitIndex = 0;
-    bodies.forEach((text, index) => {
-      if (parts.length === 1) {
-        const { intro, blocks } = splitInline(text);
-        if (intro) {
-          writeFile('index', title, intro);
-          sections.push({ slug: 'index', title, order: unitIndex });
-          unitIndex += 1;
-        }
-        blocks.forEach((block) => {
-          const slug = `s${unitIndex}-${slugify(block.title)}`;
-          writeFile(slug, block.title, block.text);
-          sections.push({ slug, title: block.title, order: unitIndex });
-          unitIndex += 1;
-        });
-        return;
-      }
-      const slug =
-        parts.length === 1
-          ? 'index'
-          : `${slugify(sectionTitles[index]) || `s${index}`}`;
-      writeFile(slug, sectionTitles[index], text);
-      sections.push({ slug, title: sectionTitles[index], order: unitIndex });
-      unitIndex += 1;
-    });
-  }
-
-  const body = bodies.join('\n\n');
-  if (!config.splitSections) {
-    writeFile('index', title, body);
-  }
-  fs.writeFileSync(
-    path.join(sourceDir, `${key}.md`),
-    `---\ntitle: "${title.replace(/"/g, '')}"\nlang: en\n---\n\n${body}\n`
-  );
-
-  const file = path.join(contentDir, `${key}--index.md`);
-  const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
-  if (!/lang: ar/.test(existing)) {
+    const joined = sections.map((entry) => readSection(key, entry.slug)).join('\n\n');
     fs.writeFileSync(
-      file,
-      `---\ntitle: "${title.replace(/"/g, '')}"\nlang: en\nsource: ${url}\n---\n\n${body}\n`
+      path.join(sourceDir, `${key}.md`),
+      `---\ntitle: "${expectedTitle}"\nlang: en\n---\n\n${joined}\n`
     );
+    structure.chapters.push({ key, title: expectedTitle, titleAr: expectedTitle, sections });
+    console.log(`${id}/${key}: ${sections.length} sections, ${joined.length} chars`);
+    continue;
   }
+
+  const body = fullBody;
+  const heading = chapterPage.rawTitle || expectedTitle;
+  writeFile(key, 'index', heading, body, url);
   fs.writeFileSync(
     path.join(sourceDir, `${key}.md`),
-    `---\ntitle: "${title.replace(/"/g, '')}"\nlang: en\n---\n\n${body}\n`
+    `---\ntitle: "${heading.replace(/"/g, '')}"\nlang: en\n---\n\n${body}\n`
   );
-
   structure.chapters.push({
     key,
-    title,
-    titleAr: title,
-    sections: sections.length
-      ? sections
-      : [{ slug: 'index', title, order: structure.chapters.length }],
+    title: heading,
+    titleAr: heading,
+    sections: [{ slug: 'index', title: heading, order: 0 }],
   });
-  console.log(`${id}/${key}: ${body.length} chars, ${refs.length} images`);
+  console.log(`${id}/${key}: ${body.length} chars`);
+}
+
+function readSection(chapterKey, slug) {
+  const file = path.join(contentDir, `${chapterKey}--${slug}.md`);
+  return fs.existsSync(file)
+    ? fs.readFileSync(file, 'utf8').replace(/^---[\s\S]*?---\n\n/, '').trim()
+    : '';
 }
 
 fs.writeFileSync(
