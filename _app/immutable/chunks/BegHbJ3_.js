@@ -1,0 +1,1 @@
+import{b as r}from"./BLyAOEDq.js";const o=e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),i=e=>r?`${r}${e}`:e,p=e=>{if(!e||!r)return e;const t=r.replace(/^\//,""),a=new RegExp(`^(?:/${o(t)}/|/)`,"i");return e.replace(/(src|href)="(\/[^"]*)"/g,(c,n,s)=>a.test(s)?c:`${n}="${r}${s}"`)};export{p as a,i as w};
