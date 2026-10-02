@@ -93,18 +93,26 @@ async function execute(action) {
   const request = new AbortController();
   controller = request;
   let expired = false;
-  timeout = setTimeout(() => {
-    expired = true;
-    request.abort();
-  }, 30_000);
+  if (action === 'run' && engine === 'official') {
+    timeout = setTimeout(() => {
+      expired = true;
+      request.abort();
+    }, 30_000);
+  }
   busy = true;
   error = '';
   if (action === 'run') events = [];
   status = action === 'run' ? 'جارٍ تجميع البرنامج وتشغيله…' : 'جارٍ تنسيق الشيفرة…';
+  const phase = (value) => {
+    if (generation !== token) return;
+    status = value === 'loading'
+      ? 'جارٍ تحميل محرك Go المحلي…'
+      : action === 'run' ? 'جارٍ تشغيل البرنامج داخل المتصفح…' : 'جارٍ تنسيق الشيفرة…';
+  };
   try {
     if (action === 'run') {
       const result = engine === 'browser'
-        ? await runInBrowser(source, request.signal)
+        ? await runInBrowser(source, request.signal, phase)
         : await compile(source, request.signal, playgroundService);
       if (generation !== token) return;
       events = result.events;
@@ -116,7 +124,7 @@ async function execute(action) {
           : 'اكتمل التشغيل.';
       if (programBody(files) !== source) status += ' النتائج تخص الشيفرة قبل آخر تعديل.';
     } else {
-      const formatted = await formatInBrowser(source, request.signal);
+      const formatted = await formatInBrowser(source, request.signal, phase);
       if (generation !== token) return;
       if (files[selected].Content !== snapshot) {
         status = 'تغيّرت الشيفرة أثناء التنسيق؛ أعد المحاولة للحفاظ على تعديلاتك.';

@@ -82,7 +82,7 @@ test('compiler errors, image output and an unreachable service are explained', a
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.getByAltText('الصورة التي أنتجها برنامج Go')).toBeVisible({ timeout: 40_000 });
 
-  await page.route('**/go-browser/interpreter.wasm', (route) => route.abort('failed'));
+  await page.route('**/go-browser/interpreter.wasm*', (route) => route.abort('failed'));
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.locator('.output-panel .error')).toBeVisible({ timeout: 40_000 });
 });
@@ -177,6 +177,23 @@ test('browser runtime reports generics support accurately', async ({ page }) => 
   await expect(page.locator('.output-panel .error')).toHaveCount(0);
   await expect(page.locator('.output-panel')).toContainText('2');
   await expect(page.locator('.output-panel')).toContainText('-1');
+});
+
+test('slow first runtime download does not consume the program execution timeout', async ({ page }) => {
+  await page.route('**/go-browser/interpreter.wasm.gz', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 22_000));
+    // Match GitHub Pages: a compressed file without automatic HTTP decoding.
+    await route.fulfill({
+      contentType: 'application/gzip',
+      body: readFileSync(new URL('../../static/go-browser/interpreter.wasm.gz', import.meta.url))
+    });
+  });
+  const editor = await openTour(page, 'basics', 1);
+  await editor.fill('package main\nimport "fmt"\nfunc main(){fmt.Println("loaded after delay")}');
+  await page.getByRole('button', { name: '▶ تشغيل' }).click();
+  await expect(page.locator('.output-status')).toContainText('تحميل محرك Go');
+  await expect(page.locator('.output-panel')).toContainText('loaded after delay', { timeout: 60_000 });
+  await expect(page.locator('.output-panel .error')).toHaveCount(0);
 });
 
 test('Tour helper packages work in the browser without external compilation', async ({ page }) => {
