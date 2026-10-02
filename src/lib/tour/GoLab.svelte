@@ -14,7 +14,10 @@ let error = $state('');
 let events = $state([]);
 let busy = $state(false);
 let storageAvailable = $state(true);
-let engine = $state('browser');
+let engine = $state('official');
+let resetDialog = $state();
+const engineKey = 'go-tour-ar:engine';
+const hasEdits = $derived(files.some((file, index) => file.Content !== examples[index]?.Content));
 let controller;
 let timeout;
 let generation = 0;
@@ -74,14 +77,32 @@ function edit(value) {
   if (mounted) save();
 }
 
+function chooseEngine(value) {
+  if (!['official', 'browser'].includes(value)) return;
+  engine = value;
+  try {
+    localStorage.setItem(engineKey, value);
+  } catch (cause) {
+    console.warn('Could not save Go execution preference', cause);
+    storageAvailable = false;
+  }
+}
+
+function requestReset() {
+  if (!hasEdits || busy) return;
+  resetDialog.showModal();
+  resetDialog.querySelector('[data-cancel-reset]')?.focus();
+}
+
 function reset() {
-  if (!confirm('هل تريد استعادة المثال الأصلي لهذا الدرس؟ ستُحذف تعديلاتك عليه.')) return;
+  if (!hasEdits || busy) { resetDialog.close(); return; }
   cancel();
   files = examples.map((file) => ({ ...file }));
   events = [];
   error = '';
   status = 'تمت استعادة المثال الأصلي.';
   save();
+  resetDialog.close();
 }
 
 async function execute(action) {
@@ -93,7 +114,7 @@ async function execute(action) {
   const request = new AbortController();
   controller = request;
   let expired = false;
-  if (action === 'run' && engine === 'official') {
+  if (engine === 'official') {
     timeout = setTimeout(() => {
       expired = true;
       request.abort();
@@ -124,7 +145,9 @@ async function execute(action) {
           : 'اكتمل التشغيل.';
       if (programBody(files) !== source) status += ' النتائج تخص الشيفرة قبل آخر تعديل.';
     } else {
-      const formatted = await formatInBrowser(source, request.signal, phase);
+      const formatted = engine === 'official'
+        ? await format(source, request.signal, playgroundService)
+        : await formatInBrowser(source, request.signal, phase);
       if (generation !== token) return;
       if (files[selected].Content !== snapshot) {
         status = 'تغيّرت الشيفرة أثناء التنسيق؛ أعد المحاولة للحفاظ على تعديلاتك.';
@@ -172,6 +195,7 @@ function adoptTranslationActions(event) {
 }
 
 function navigationKey(event) {
+  if (resetDialog?.open) return;
   if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
   if (event.key === 'PageDown') { event.preventDefault(); onNext?.(); }
   else if (event.key === 'PageUp') { event.preventDefault(); onPrevious?.(); }
@@ -179,6 +203,13 @@ function navigationKey(event) {
 
 onMount(() => {
   mounted = true;
+  try {
+    const preference = localStorage.getItem(engineKey);
+    if (preference === 'browser' || preference === 'official') engine = preference;
+  } catch (cause) {
+    console.warn('Could not restore Go execution preference', cause);
+    storageAvailable = false;
+  }
   loadFiles();
   window.addEventListener('click', adoptTranslationActions);
   window.addEventListener('keydown', navigationKey);
@@ -196,9 +227,9 @@ onMount(() => {
   <div class="lab">
     <div class="lab-toolbar">
       <label class="engine-label">التشغيل
-        <select aria-label="محرك تشغيل Go" bind:value={engine} disabled={busy}>
+        <select aria-label="محرك تشغيل Go" value={engine} onchange={(event) => chooseEngine(event.currentTarget.value)} disabled={busy}>
+          <option value="official">Go Playground</option>
           <option value="browser">داخل المتصفح</option>
-          <option value="official">المترجم الرسمي</option>
         </select>
       </label>
       <button class="run" disabled={busy} title="Shift+Enter" onclick={() => execute('run')}>
@@ -207,7 +238,7 @@ onMount(() => {
       <button disabled={busy} title="Ctrl+Enter أو Cmd+Enter" onclick={() => execute('format')}>
         تنسيق
       </button>
-      <button onclick={reset}>استعادة الأصل</button>
+      <button disabled={!hasEdits || busy} onclick={requestReset}>استعادة الأصل</button>
       {#if busy}
         <button onclick={() => {
           cancel();
@@ -260,6 +291,15 @@ onMount(() => {
   <p class="lab-empty">هذا الدرس للقراءة فقط؛ جرّب المثال في الدرس التالي.</p>
 {/if}
 
+<dialog class="reset-dialog" bind:this={resetDialog} aria-labelledby="reset-dialog-title" aria-describedby="reset-dialog-description">
+  <h2 id="reset-dialog-title">استعادة المثال الأصلي؟</h2>
+  <p id="reset-dialog-description">ستُحذف تعديلاتك على شيفرة هذا الدرس، ويعود المثال كما ورد في الكتاب. لا يتغيّر اختيارك لمحرك التشغيل.</p>
+  <div class="reset-dialog__actions">
+    <button type="button" class="button button--quiet" data-cancel-reset onclick={() => resetDialog.close()}>إلغاء</button>
+    <button type="button" class="button" onclick={reset}>استعادة الشيفرة الأصلية</button>
+  </div>
+</dialog>
+
 <style>
   .lab { display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0; max-width: 100%; border: 1px solid #69727e; border-radius: 6px; overflow: hidden; }
   .engine-label { font-size: .8rem; display: flex; gap: .4rem; align-items: center; }
@@ -280,4 +320,10 @@ onMount(() => {
   .program-image { max-width: 100%; image-rendering: pixelated; }
   .lab-source { margin: 0; padding: .5rem .8rem; font-size: .8rem; background: #202731; color: #cfd8e3; }
   .lab-empty { margin: 0; padding: 1.5rem 1rem; border: 1px dashed var(--rule-strong, #858585); border-radius: 6px; font-size: .9rem; }
+  .reset-dialog { width: min(460px, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); padding: 1.5rem; overflow: auto; color: var(--ink); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: var(--radius-sheet); box-shadow: var(--shadow-lift); }
+  .reset-dialog::backdrop { background: #0007; }
+  .reset-dialog h2 { font-family: var(--display); margin: 0 0 .75rem; font-size: 1.25rem; }
+  .reset-dialog p { font-family: var(--ui); margin: 0; font-size: .95rem; line-height: 1.8; }
+  .reset-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .7rem; margin-top: 1.4rem; }
+  .reset-dialog__actions .button { min-height: 44px; font-size: .9rem; line-height: 1.5; padding: .6rem .9rem; }
 </style>

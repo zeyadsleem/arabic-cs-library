@@ -50,10 +50,10 @@ test('tour is a book in the catalogue with cover, facts and table of contents', 
 });
 
 test('run, format, restore and per-lesson edits survive reload', async ({ page }) => {
-  // The direct upstream is blocked: the same-origin gateway must still work.
-  await page.route('https://play.golang.org/**', (route) => route.abort('failed'));
-  await page.route('**/api/go/**', (route) => route.abort('failed'));
+  // The default Playground mode must never download the browser interpreter.
+  await page.route('**/go-browser/**', (route) => route.abort('failed'));
   const editor = await openTour(page, 'basics', 1);
+  await expect(page.getByRole('combobox', { name: 'محرك تشغيل Go' })).toHaveValue('official');
   await editor.fill('package main; import "fmt"; func main(){fmt.Println("مرحبا من الاختبار")}');
   await editor.press('Shift+Enter');
   await expect(page.locator('.output-panel')).toContainText('مرحبا من الاختبار', { timeout: 40_000 });
@@ -67,9 +67,62 @@ test('run, format, restore and per-lesson edits survive reload', async ({ page }
   await expect.poll(() => editor.innerText(), { timeout: 30_000 }).toContain('مرحبا من الاختبار');
   await page.reload();
   await expect.poll(() => editor.innerText(), { timeout: 30_000 }).toContain('مرحبا من الاختبار');
-  page.once('dialog', (dialog) => dialog.accept());
   await page.getByRole('button', { name: 'استعادة الأصل', exact: true }).click();
+  const confirmation = page.getByRole('dialog', { name: 'استعادة المثال الأصلي؟' });
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole('button', { name: 'استعادة الشيفرة الأصلية' }).click();
   await expect(editor).toContainText('rand.Intn');
+  await expect(page.getByRole('button', { name: 'استعادة الأصل', exact: true })).toBeDisabled();
+});
+
+test('execution preference survives reload and moving between lessons', async ({ page }) => {
+  await openTour(page, 'basics', 1);
+  const engine = page.getByRole('combobox', { name: 'محرك تشغيل Go' });
+  await expect(engine).toHaveValue('official');
+  await engine.selectOption('browser');
+  await page.reload();
+  await expect(engine).toHaveValue('browser');
+  await openTour(page, 'basics', 2);
+  await expect(engine).toHaveValue('browser');
+  await engine.selectOption('official');
+  await page.reload();
+  await expect(engine).toHaveValue('official');
+  await openTour(page, 'methods', 1);
+  await expect(engine).toHaveValue('official');
+});
+
+test('reset is disabled for original code and confirms edits with the themed dialog', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  let nativeDialog = false;
+  page.on('dialog', async (dialog) => { nativeDialog = true; await dialog.dismiss(); });
+  const editor = await openTour(page, 'basics', 1);
+  const reset = page.getByRole('button', { name: 'استعادة الأصل', exact: true });
+  await expect(reset).toBeDisabled();
+  await editor.fill('package main // changed');
+  await expect(reset).toBeEnabled();
+  await reset.click();
+  const confirmation = page.getByRole('dialog', { name: 'استعادة المثال الأصلي؟' });
+  await expect(confirmation).toBeVisible();
+  const box = await confirmation.boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(320);
+  await expect(confirmation.getByRole('button', { name: 'إلغاء', exact: true })).toBeFocused();
+  await confirmation.getByRole('button', { name: 'إلغاء', exact: true }).click();
+  await expect(editor).toContainText('changed');
+  await reset.click();
+  await page.keyboard.press('Escape');
+  await expect(confirmation).not.toBeVisible();
+  await expect(editor).toContainText('changed');
+  await reset.click();
+  await confirmation.getByRole('button', { name: 'استعادة الشيفرة الأصلية' }).click();
+  await expect(reset).toBeDisabled();
+  await expect(editor).toContainText('rand.Intn');
+  const source = JSON.parse(readFileSync(new URL('../../src/lib/tour/source.json', import.meta.url), 'utf8'));
+  await editor.fill('package main // another change');
+  await expect(reset).toBeEnabled();
+  await editor.fill(source.basics.Pages[0].Files[0].Content);
+  await expect(reset).toBeDisabled();
+  expect(nativeDialog).toBe(false);
 });
 
 test('compiler errors, image output and an unreachable service are explained', async ({ page }) => {
@@ -83,18 +136,19 @@ test('compiler errors, image output and an unreachable service are explained', a
   await expect(page.getByAltText('الصورة التي أنتجها برنامج Go')).toBeVisible({ timeout: 40_000 });
 
   await page.route('**/go-browser/interpreter.wasm*', (route) => route.abort('failed'));
+  await page.getByRole('combobox', { name: 'محرك تشغيل Go' }).selectOption('browser');
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.locator('.output-panel .error')).toBeVisible({ timeout: 40_000 });
 });
 
-test('reading area is the larger pane, the code pane is resizable and code never moves', async ({ page }) => {
+test('reading and code panes start equal, are resizable and do not lose code', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   const editor = await openTour(page, 'flowcontrol', 8);
   const lesson = page.locator('.lesson-text');
   const pane = page.locator('#lesson-code-pane');
   const lessonBox = await lesson.boundingBox();
   const paneBox = await pane.boundingBox();
-  expect(lessonBox.width).toBeGreaterThan(paneBox.width);
+  expect(Math.abs(lessonBox.width - paneBox.width)).toBeLessThan(2);
 
   const source = JSON.parse(readFileSync(new URL('../../src/lib/tour/source.json', import.meta.url), 'utf8'));
   const original = parse(source.flowcontrol.Pages[7].Content);
@@ -158,6 +212,7 @@ test('browser runtime supports channels and can terminate an infinite loop witho
   await page.route('**/api/go/**', (route) => route.abort());
   await page.route('https://play.golang.org/**', (route) => route.abort());
   const editor = await openTour(page, 'concurrency', 2);
+  await page.getByRole('combobox', { name: 'محرك تشغيل Go' }).selectOption('browser');
   await editor.fill('package main\nimport "fmt"\nfunc main(){c:=make(chan int);go func(){c<-42}();fmt.Println(<-c)}');
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.locator('.output-panel')).toContainText('42', { timeout: 30_000 });
@@ -172,6 +227,7 @@ test('browser runtime supports channels and can terminate an infinite loop witho
 
 test('browser runtime reports generics support accurately', async ({ page }) => {
   await openTour(page, 'generics', 1);
+  await page.getByRole('combobox', { name: 'محرك تشغيل Go' }).selectOption('browser');
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.locator('.output-status')).not.toContainText('جارٍ', { timeout: 30_000 });
   await expect(page.locator('.output-panel .error')).toHaveCount(0);
@@ -189,6 +245,7 @@ test('slow first runtime download does not consume the program execution timeout
     });
   });
   const editor = await openTour(page, 'basics', 1);
+  await page.getByRole('combobox', { name: 'محرك تشغيل Go' }).selectOption('browser');
   await editor.fill('package main\nimport "fmt"\nfunc main(){fmt.Println("loaded after delay")}');
   await page.getByRole('button', { name: '▶ تشغيل' }).click();
   await expect(page.locator('.output-status')).toContainText('تحميل محرك Go');
@@ -200,6 +257,7 @@ test('Tour helper packages work in the browser without external compilation', as
   await page.route('**/api/go/**', (route) => route.abort());
   await page.route('https://play.golang.org/**', (route) => route.abort());
   const editor = await openTour(page, 'moretypes', 23);
+  await page.getByRole('combobox', { name: 'محرك تشغيل Go' }).selectOption('browser');
   await editor.fill(`package main
 import ("strings"; "golang.org/x/tour/wc"; "golang.org/x/tour/reader"; "golang.org/x/tour/tree"; "fmt")
 type MyReader struct{}
