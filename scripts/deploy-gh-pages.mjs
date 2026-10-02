@@ -57,7 +57,7 @@ try {
     console.log('جلب فرع gh-pages من المستودع...');
     run(
       'git',
-      ['clone', '--depth', '1', '--branch', 'gh-pages', repoUrl, tmp],
+      ['clone', '--filter=blob:none', '--no-checkout', '--depth', '1', '--single-branch', '--branch', 'gh-pages', repoUrl, tmp],
       { stdio: 'pipe' }
     );
   } else {
@@ -87,11 +87,11 @@ try {
   copy(buildDir, tmp);
 
   run('git', ['add', '-A'], { cwd: tmp });
-  if (!run('git', ['diff', '--cached', '--name-only'], { cwd: tmp }).trim()) {
+  if (!run('git', ['diff', '--cached', '--name-only', '--no-renames'], { cwd: tmp }).trim()) {
     console.log(`الموقع منشور بالفعل: https://${owner}.github.io/${repo}/`);
     process.exitCode = 0;
   } else {
-    run('git', ['commit', '-m', `deploy: ${new Date().toISOString()}`], {
+    run('git', ['-c', 'diff.renames=false', 'commit', '-m', `deploy: ${new Date().toISOString()}`], {
       cwd: tmp,
       stdio: 'inherit',
     });
