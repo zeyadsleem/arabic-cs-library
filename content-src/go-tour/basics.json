@@ -1,0 +1,74 @@
+{
+  "Title": "Packages, variables, and functions.",
+  "Description": "Learn the basic components of any Go program.",
+  "Pages": [
+    {
+      "Title": "Packages",
+      "Content": "\n  <h2>Packages</h2>\n  \n  \n  <p>\n    Every Go program is made up of packages.\n  </p>\n  \n\n  \n  <p>\n    Programs start running in package <code>main</code>.\n  </p>\n  \n\n  \n  <p>\n    This program is using the packages with import paths <code>&#34;fmt&#34;</code> and <code>&#34;math/rand&#34;</code>.\n  </p>\n  \n\n  \n  <p>\n    By convention, the package name is the same as the last element of the import path. For instance, the <code>&#34;math/rand&#34;</code> package comprises files that begin with the statement <code>package rand</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Imports",
+      "Content": "\n  <h2>Imports</h2>\n  \n  \n  <p>\n    This code groups the imports into a parenthesized, &#34;factored&#34; import statement.\n  </p>\n  \n\n  \n  <p>\n    You can also write multiple import statements, like:\n  </p>\n  \n\n  \n  <pre>import &#34;fmt&#34;\nimport &#34;math&#34;</pre>\n  \n\n  \n  <p>\n    But it is good style to use the factored import statement.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exported names",
+      "Content": "\n  <h2>Exported names</h2>\n  \n  \n  <p>\n    In Go, a name is exported if it begins with a capital letter.\n\n\n    For example, <code>Pizza</code> is an exported name, as is <code>Pi</code>, which is exported from\n\n\n    the <code>math</code> package.\n  </p>\n  \n\n  \n  <p>\n    <code>pizza</code> and <code>pi</code> do not start with a capital letter, so they are not exported.\n  </p>\n  \n\n  \n  <p>\n    When importing a package, you can refer only to its exported names.\n\n\n    Any &#34;unexported&#34; names are not accessible from outside the package.\n  </p>\n  \n\n  \n  <p>\n    Run the code. Notice the error message.\n  </p>\n  \n\n  \n  <p>\n    To fix the error, rename <code>math.pi</code> to <code>math.Pi</code> and try it again.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Functions",
+      "Content": "\n  <h2>Functions</h2>\n  \n  \n  <p>\n    A function can take zero or more arguments.\n  </p>\n  \n\n  \n  <p>\n    In this example, <code>add</code> takes two parameters of type <code>int</code>.\n  </p>\n  \n\n  \n  <p>\n    Notice that the type comes <i>after</i> the variable name.\n  </p>\n  \n\n  \n  <p>\n    (For more about why types look the way they do, see the <a href=\"/blog/gos-declaration-syntax\" target=\"_self\">article on Go&#39;s declaration syntax</a>.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Functions continued",
+      "Content": "\n  <h2>Functions continued</h2>\n  \n  \n  <p>\n    When two or more consecutive named function parameters share a type, you can omit the type from all but the last.\n  </p>\n  \n\n  \n  <p>\n    In this example, we shortened\n  </p>\n  \n\n  \n  <pre>x int, y int</pre>\n  \n\n  \n  <p>\n    to\n  </p>\n  \n\n  \n  <pre>x, y int</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Multiple results",
+      "Content": "\n  <h2>Multiple results</h2>\n  \n  \n  <p>\n    A function can return any number of results.\n  </p>\n  \n\n  \n  <p>\n    The <code>swap</code> function returns two strings.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Named return values",
+      "Content": "\n  <h2>Named return values</h2>\n  \n  \n  <p>\n    Go&#39;s return values may be named. If so, they are treated as variables defined at the top of the function.\n  </p>\n  \n\n  \n  <p>\n    These names should be used to document the meaning of the return values.\n  </p>\n  \n\n  \n  <p>\n    A <code>return</code> statement without arguments returns the named return values. This is known as a &#34;naked&#34; return.\n  </p>\n  \n\n  \n  <p>\n    Naked return statements should be used only in short functions, as with the example shown here. They can harm readability in longer functions.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Variables",
+      "Content": "\n  <h2>Variables</h2>\n  \n  \n  <p>\n    The <code>var</code> statement declares a list of variables; as in function argument lists, the type is last.\n  </p>\n  \n\n  \n  <p>\n    A <code>var</code> statement can be at package or function level. We see both in this example.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Variables with initializers",
+      "Content": "\n  <h2>Variables with initializers</h2>\n  \n  \n  <p>\n    A <code>var</code> declaration can include initializers, one per variable.\n  </p>\n  \n\n  \n  <p>\n    If an initializer is present, the type can be omitted; the variable will take the type of the initializer.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Short variable declarations",
+      "Content": "\n  <h2>Short variable declarations</h2>\n  \n  \n  <p>\n    Inside a function, the <code>:=</code> short assignment statement can be used in place of a <code>var</code> declaration with implicit type.\n  </p>\n  \n\n  \n  <p>\n    Outside a function, every statement begins with a keyword (<code>var</code>, <code>func</code>, and so on) and so the <code>:=</code> construct is not available.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Basic types",
+      "Content": "\n  <h2>Basic types</h2>\n  \n  \n  <p>\n    Go&#39;s basic types are\n  </p>\n  \n\n  \n  <pre>bool\n\nstring\n\nint  int8  int16  int32  int64\nuint uint8 uint16 uint32 uint64 uintptr\n\nbyte // alias for uint8\n\nrune // alias for int32\n     // represents a Unicode code point\n\nfloat32 float64\n\ncomplex64 complex128</pre>\n  \n\n  \n  <p>\n    The example shows variables of several types,\n\n\n    and also that variable declarations may be &#34;factored&#34; into blocks,\n\n\n    as with import statements.\n  </p>\n  \n\n  \n  <p>\n    The <code>int</code>, <code>uint</code>, and <code>uintptr</code> types are usually 32 bits wide on 32-bit systems and 64 bits wide on 64-bit systems.\n\n\n    When you need an integer value you should use <code>int</code> unless you have a specific reason to use a sized or unsigned integer type.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Zero values",
+      "Content": "\n  <h2>Zero values</h2>\n  \n  \n  <p>\n    Variables declared without an explicit initial value are given their\n\n\n    <i>zero value</i>.\n  </p>\n  \n\n  \n  <p>\n    The zero value is:\n  </p>\n  \n\n  <ul>\n  \n    <li><code>0</code> for numeric types,</li>\n  \n    <li><code>false</code> for the boolean type, and</li>\n  \n    <li><code>&#34;&#34;</code> (the empty string) for strings.</li>\n  \n  </ul>\n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Type conversions",
+      "Content": "\n  <h2>Type conversions</h2>\n  \n  \n  <p>\n    The expression <code>T(v)</code> converts the value <code>v</code> to the type <code>T</code>.\n  </p>\n  \n\n  \n  <p>\n    Some numeric conversions:\n  </p>\n  \n\n  \n  <pre>var i int = 42\nvar f float64 = float64(i)\nvar u uint = uint(f)</pre>\n  \n\n  \n  <p>\n    Or, put more simply:\n  </p>\n  \n\n  \n  <pre>i := 42\nf := float64(i)\nu := uint(f)</pre>\n  \n\n  \n  <p>\n    Unlike in C, in Go assignment between items of different type requires an\n\n\n    explicit conversion.\n\n\n    Try removing the <code>float64</code> or <code>uint</code> conversions in the example and see what happens.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Type inference",
+      "Content": "\n  <h2>Type inference</h2>\n  \n  \n  <p>\n    When declaring a variable without specifying an explicit type (either by using the <code>:=</code> syntax or <code>var =</code> expression syntax), the variable&#39;s type is inferred from the value on the right hand side.\n  </p>\n  \n\n  \n  <p>\n    When the right hand side of the declaration is typed, the new variable is of that same type:\n  </p>\n  \n\n  \n  <pre>var i int\nj := i // j is an int</pre>\n  \n\n  \n  <p>\n    But when the right hand side contains an untyped numeric constant, the new variable may be an <code>int</code>, <code>float64</code>, or <code>complex128</code> depending on the precision of the constant:\n  </p>\n  \n\n  \n  <pre>i := 42           // int\nf := 3.142        // float64\ng := 0.867 &#43; 0.5i // complex128</pre>\n  \n\n  \n  <p>\n    Try changing the initial value of <code>v</code> in the example code and observe how its type is affected.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Constants",
+      "Content": "\n  <h2>Constants</h2>\n  \n  \n  <p>\n    Constants are declared like variables, but with the <code>const</code> keyword.\n  </p>\n  \n\n  \n  <p>\n    Constants can be character, string, boolean, or numeric values.\n  </p>\n  \n\n  \n  <p>\n    Constants cannot be declared using the <code>:=</code> syntax.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Numeric Constants",
+      "Content": "\n  <h2>Numeric Constants</h2>\n  \n  \n  <p>\n    Numeric constants are high-precision <i>values</i>.\n  </p>\n  \n\n  \n  <p>\n    An untyped constant takes the type needed by its context.\n  </p>\n  \n\n  \n  <p>\n    Try printing <code>needInt(Big)</code> too.\n  </p>\n  \n\n  \n  <p>\n    (An <code>int</code> can store at maximum a 64-bit integer, and sometimes less.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Congratulations!",
+      "Content": "\n  <h2>Congratulations!</h2>\n  \n  \n  <p>\n    You finished this lesson!\n  </p>\n  \n\n  \n  <p>\n    You can go back to the list of <a href=\"/tour/list\" target=\"_self\">modules</a> to find what to learn next, or continue with the <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">next lesson</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

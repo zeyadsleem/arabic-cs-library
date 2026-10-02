@@ -6,7 +6,10 @@ const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
  * @param {string} path
  * @returns {string}
  */
-export const withBasePath = (path) => (base ? `${base}${path}` : path);
+export const withBasePath = (path) => {
+  if (!base || path === base || path.startsWith(`${base}/`)) return path;
+  return `${base}${path}`;
+};
 
 /**
  * @param {string | null | undefined} html

@@ -1,0 +1,18 @@
+{
+  "Title": "Generics",
+  "Description": "Go supports generic programming using type parameters. This lesson shows some examples for employing generics in your code.",
+  "Pages": [
+    {
+      "Title": "Type parameters",
+      "Content": "\n  <h2>Type parameters</h2>\n  \n  \n  <p>\n    Go functions can be written to work on multiple types using type parameters. The\n\n\n    type parameters of a function appear between brackets, before the function&#39;s\n\n\n    arguments.\n  </p>\n  \n\n  \n  <pre>func Index[T comparable](s []T, x T) int</pre>\n  \n\n  \n  <p>\n    This declaration means that <code>s</code> is a slice of any type <code>T</code> that fulfills the\n\n\n    built-in constraint <code>comparable</code>. <code>x</code> is also a value of the same type.\n  </p>\n  \n\n  \n  <p>\n    <code>comparable</code> is a useful constraint that makes it possible to use the <code>==</code> and\n\n\n    <code>!=</code> operators on values of the type. In this example, we use it to compare a\n\n\n    value to all slice elements until a match is found. This <code>Index</code> function works\n\n\n    for any type that supports comparison.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Generic types",
+      "Content": "\n  <h2>Generic types</h2>\n  \n  \n  <p>\n    In addition to generic functions, Go also supports generic types. A type can\n\n\n    be parameterized with a type parameter, which could be useful for implementing\n\n\n    generic data structures.\n  </p>\n  \n\n  \n  <p>\n    This example demonstrates a simple type declaration for a singly-linked list\n\n\n    holding any type of value.\n  </p>\n  \n\n  \n  <p>\n    As an exercise, add some functionality to this list implementation.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Congratulations!",
+      "Content": "\n  <h2>Congratulations!</h2>\n  \n  \n  <p>\n    You finished this lesson!\n  </p>\n  \n\n  \n  <p>\n    You can go back to the list of <a href=\"/tour/list\" target=\"_self\">modules</a> to find what to learn next, or continue with the <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">next lesson</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

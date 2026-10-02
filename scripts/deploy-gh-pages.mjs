@@ -21,6 +21,11 @@ const repo = match[2];
 const repoUrl = `git@github.com:${owner}/${repo}.git`;
 
 console.log(`بناء الموقع للمسار /${repo} ...`);
+run('node', ['scripts/build-go-tour.mjs'], {
+  cwd: root,
+  stdio: 'inherit',
+  env: { ...process.env, BASE_PATH: `/${repo}` },
+});
 run('node', ['scripts/build-content.mjs'], {
   cwd: root,
   stdio: 'inherit',
@@ -82,12 +87,17 @@ try {
   copy(buildDir, tmp);
 
   run('git', ['add', '-A'], { cwd: tmp });
-  run('git', ['commit', '-m', `deploy: ${new Date().toISOString()}`, '--allow-empty'], {
-    cwd: tmp,
-    stdio: 'inherit',
-  });
-  run('git', ['push', 'origin', 'gh-pages'], { cwd: tmp, stdio: 'inherit' });
-  console.log(`تم النشر: https://${owner}.github.io/${repo}/`);
+  if (!run('git', ['diff', '--cached', '--name-only'], { cwd: tmp }).trim()) {
+    console.log(`الموقع منشور بالفعل: https://${owner}.github.io/${repo}/`);
+    process.exitCode = 0;
+  } else {
+    run('git', ['commit', '-m', `deploy: ${new Date().toISOString()}`], {
+      cwd: tmp,
+      stdio: 'inherit',
+    });
+    run('git', ['push', 'origin', 'gh-pages'], { cwd: tmp, stdio: 'inherit' });
+    console.log(`تم النشر: https://${owner}.github.io/${repo}/`);
+  }
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
 }

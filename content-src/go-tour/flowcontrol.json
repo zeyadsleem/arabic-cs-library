@@ -1,0 +1,62 @@
+{
+  "Title": "Flow control statements: for, if, else, switch and defer",
+  "Description": "Learn how to control the flow of your code with conditionals, loops, switches and defers.",
+  "Pages": [
+    {
+      "Title": "For",
+      "Content": "\n  <h2>For</h2>\n  \n  \n  <p>\n    Go has only one looping construct, the <code>for</code> loop.\n  </p>\n  \n\n  \n  <p>\n    The basic <code>for</code> loop has three components separated by semicolons:\n  </p>\n  \n\n  <ul>\n  \n    <li>the init statement: executed before the first iteration</li>\n  \n    <li>the condition expression: evaluated before every iteration</li>\n  \n    <li>the post statement: executed at the end of every iteration</li>\n  \n  </ul>\n\n  \n  <p>\n    The init statement will often be a variable declaration, and the\n\n\n    variables declared there are visible only in the scope of the <code>for</code>\n\n\n    statement.\n  </p>\n  \n\n  \n  <p>\n    The loop will stop iterating once the boolean condition evaluates to <code>false</code>.\n  </p>\n  \n\n  \n  <p>\n    <b>Note:</b> Unlike other languages like C, Java, or JavaScript there are no parentheses\n\n\n    surrounding the three components of the <code>for</code> statement and the braces <code>{ }</code> are\n\n\n    always required.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "For continued",
+      "Content": "\n  <h2>For continued</h2>\n  \n  \n  <p>\n    The init and post statements are optional.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "For is Go's \"while\"",
+      "Content": "\n  <h2>For is Go&#39;s &#34;while&#34;</h2>\n  \n  \n  <p>\n    At that point you can drop the semicolons: C&#39;s <code>while</code> is spelled <code>for</code> in Go.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Forever",
+      "Content": "\n  <h2>Forever</h2>\n  \n  \n  <p>\n    If you omit the loop condition it loops forever, so an infinite loop is compactly expressed.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "If",
+      "Content": "\n  <h2>If</h2>\n  \n  \n  <p>\n    Go&#39;s <code>if</code> statements are like its <code>for</code> loops; the expression need not be\n\n\n    surrounded by parentheses <code>( )</code> but the braces <code>{ }</code> are required.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "If with a short statement",
+      "Content": "\n  <h2>If with a short statement</h2>\n  \n  \n  <p>\n    Like <code>for</code>, the <code>if</code> statement can start with a short statement to execute before the condition.\n  </p>\n  \n\n  \n  <p>\n    Variables declared by the statement are only in scope until the end of the <code>if</code>.\n  </p>\n  \n\n  \n  <p>\n    (Try using <code>v</code> in the last <code>return</code> statement.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "If and else",
+      "Content": "\n  <h2>If and else</h2>\n  \n  \n  <p>\n    Variables declared inside an <code>if</code> short statement are also available inside any\n\n\n    of the <code>else</code> blocks.\n  </p>\n  \n\n  \n  <p>\n    (Both calls to <code>pow</code> return their results before the call to <code>fmt.Println</code>\n\n\n    in <code>main</code> begins.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Loops and Functions",
+      "Content": "\n  <h2>Exercise: Loops and Functions</h2>\n  \n  \n  <p>\n    As a way to play with functions and loops, let&#39;s implement a square root function: given a number x, we want to find the number z for which z² is most nearly x.\n  </p>\n  \n\n  \n  <p>\n    Computers typically compute the square root of x using a loop.\n\n\n    Starting with some guess z, we can adjust z based on how close z² is to x,\n\n\n    producing a better guess:\n  </p>\n  \n\n  \n  <pre>z -= (z*z - x) / (2*z)</pre>\n  \n\n  \n  <p>\n    Repeating this adjustment makes the guess better and better\n\n\n    until we reach an answer that is as close to the actual square root as can be.\n  </p>\n  \n\n  \n  <p>\n    Implement this in the <code>func Sqrt</code> provided.\n\n\n    A decent starting guess for z is 1, no matter what the input.\n\n\n    To begin with, repeat the calculation 10 times and print each z along the way.\n\n\n    See how close you get to the answer for various values of x (1, 2, 3, ...)\n\n\n    and how quickly the guess improves.\n  </p>\n  \n\n  \n  <p>\n    Hint: To declare and initialize a floating point value,\n\n\n    give it floating point syntax or use a conversion:\n  </p>\n  \n\n  \n  <pre>z := 1.0\nz := float64(1)</pre>\n  \n\n  \n  <p>\n    Next, change the loop condition to stop once the value has stopped\n\n\n    changing (or only changes by a very small amount).\n\n\n    See if that&#39;s more or fewer than 10 iterations.\n\n\n    Try other initial guesses for z, like x, or x/2.\n\n\n    How close are your function&#39;s results to the <a href=\"/pkg/math/#Sqrt\" target=\"_self\">math.Sqrt</a> in the standard library?\n  </p>\n  \n\n  \n  <p>\n    (<b>Note:</b> If you are interested in the details of the algorithm, the z² − x above\n\n\n    is how far away z² is from where it needs to be (x), and the division by 2z is the derivative\n\n\n    of z², to scale how much we adjust z by how quickly z² is changing.\n\n\n    This general approach is called <a href=\"https://en.wikipedia.org/wiki/Newton%27s_method\" target=\"_blank\">Newton&#39;s method</a>.\n\n\n    It works well for many functions but especially well for square root.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Switch",
+      "Content": "\n  <h2>Switch</h2>\n  \n  \n  <p>\n    A <code>switch</code> statement is a shorter way to write a sequence of <code>if - else</code> statements.\n\n\n    It runs the first case whose value is equal to the condition expression.\n  </p>\n  \n\n  \n  <p>\n    Go&#39;s switch is like the one in C, C++, Java, JavaScript, and PHP,\n\n\n    except that Go only runs the selected case, not all the cases that follow.\n\n\n    In effect, the <code>break</code> statement that is needed at the end of each case in those\n\n\n    languages is provided automatically in Go.\n\n\n    Another important difference is that Go&#39;s switch cases need not\n\n\n    be constants, and the values involved need not be integers.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Switch evaluation order",
+      "Content": "\n  <h2>Switch evaluation order</h2>\n  \n  \n  <p>\n    Switch cases evaluate cases from top to bottom, stopping when a case succeeds.\n  </p>\n  \n\n  \n  <p>\n    (For example,\n  </p>\n  \n\n  \n  <pre>switch i {\ncase 0:\ncase f():\n}</pre>\n  \n\n  \n  <p>\n    does not call <code>f</code> if <code>i==0</code>.)\n  </p>\n  \n\n  \n  <p>\n    <b>Note:</b> Time in the Go playground always appears to start at\n\n\n    2009-11-10 23:00:00 UTC, a value whose significance is left as an\n\n\n    exercise for the reader.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Switch with no condition",
+      "Content": "\n  <h2>Switch with no condition</h2>\n  \n  \n  <p>\n    Switch without a condition is the same as <code>switch true</code>.\n  </p>\n  \n\n  \n  <p>\n    This construct can be a clean way to write long if-then-else chains.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Defer",
+      "Content": "\n  <h2>Defer</h2>\n  \n  \n  <p>\n    A defer statement defers the execution of a function until the surrounding\n\n\n    function returns.\n  </p>\n  \n\n  \n  <p>\n    The deferred call&#39;s arguments are evaluated immediately, but the function call\n\n\n    is not executed until the surrounding function returns.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Stacking defers",
+      "Content": "\n  <h2>Stacking defers</h2>\n  \n  \n  <p>\n    Deferred function calls are pushed onto a stack. When a function returns, its\n\n\n    deferred calls are executed in last-in-first-out order.\n  </p>\n  \n\n  \n  <p>\n    To learn more about defer statements read this\n\n\n    <a href=\"/blog/defer-panic-and-recover\" target=\"_self\">blog post</a>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Congratulations!",
+      "Content": "\n  <h2>Congratulations!</h2>\n  \n  \n  <p>\n    You finished this lesson!\n  </p>\n  \n\n  \n  <p>\n    You can go back to the list of <a href=\"/tour/list\" target=\"_self\">modules</a> to find what to learn next, or continue with the <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">next lesson</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

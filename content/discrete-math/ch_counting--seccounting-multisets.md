@@ -1,272 +1,272 @@
 ---
 title: "Counting Multisets"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_counting-multisets.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 3.5 Counting Multisets
+## القسم 3.5 عدّ المجموعات المتعدّدة
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_counting-multisets-7-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_counting-multisets-7-1-1)
 
-1. Identify counting problems whose outcomes can be represented by multisets.[🔗](#sec_counting-multisets-7-2-1-1) [🔗](#sec_counting-multisets-7-2-1)
-2. Represent outcomes of counting problems using multisets and sticks and stones diagrams.[🔗](#sec_counting-multisets-7-2-2-1) [🔗](#sec_counting-multisets-7-2-2)
-3. Solve counting problems using sticks and stones.[🔗](#sec_counting-multisets-7-2-3-1) [🔗](#sec_counting-multisets-7-2-3)
+1. أن تميّز مسائل العدّ التي يمكن تمثيل نتائجها بمجموعات متعدّدة (multisets).[🔗](#sec_counting-multisets-7-2-1-1) [🔗](#sec_counting-multisets-7-2-1)
+2. أن تمثّل نتائج مسائل العدّ باستخدام المجموعات المتعدّدة ومخططات العصي والحصى.[🔗](#sec_counting-multisets-7-2-2-1) [🔗](#sec_counting-multisets-7-2-2)
+3. أن تحلّ مسائل العدّ باستخدام العصي والحصى.[🔗](#sec_counting-multisets-7-2-3-1) [🔗](#sec_counting-multisets-7-2-3)
 
 [🔗](#sec_counting-multisets-7)
 
-### Subsection Section Preview
+### القسم الفرعي: معاينة القسم
 
 #### Investigate!
 
-Skittles come in five “flavors”. How many different handfuls of 8 skittles are possible?[🔗](#investigate-counting-multisets-1) Suppose you have baked 8 identical cupcakes to give to your top five favorite discrete math teachers. How many ways can you distribute the cupcakes?[🔗](#investigate-counting-multisets-2) Why are the answers to the two counting questions above the same?[🔗](#investigate-counting-multisets-3) [🔗](#investigate-counting-multisets)We know how to solve lots of types of counting problems now. If each outcome in a set of outcomes we are counting can be represented by a sequence, we count it as a permutation (if the terms in the sequence don’t repeat) or use the product principle (if they do). If we are counting outcomes for which we don’t distinguish between different arrangements of the terms (if order doesn’t matter) then we think of the outcome as a set and count it as a combination. However, sets never allow an element to be repeated; each element is either in a set or not.[🔗](#sec_counting-multisets-8-3) So we have a glaring hole in our counting repertoire. What if we want to count outcomes that are collections of terms for which we do not distinguish between the order the terms appear in, but can contain terms more than once? In other words, how can we complete the following table?[🔗](#sec_counting-multisets-8-4)
+تأتي حبّات «سكيتلز» بخمسة نكهات مختلفة. كم عدد الأكوام المختلفة الممكنة من 8 حبّات سكيتلز؟[🔗](#investigate-counting-multisets-1) لنفترض أنّك خبزت 8 كعكبات متطابقة لتوزيعها على أفضل خمسة معلّمي الرياضيات المتقطّعة الذين تفضّلهم. كم عدد طرق توزيع الكعكبات؟[🔗](#investigate-counting-multisets-2) لماذا إجابتا سؤالَي العدّ أعلاه متطابقتان؟[🔗](#investigate-counting-multisets-3) [🔗](#investigate-counting-multisets)لقد تعلّمنا الآن كيف نحلّ أنواعًا كثيرة من مسائل العدّ. فإذا أمكن تمثيل كلّ ناتج في مجموعة النتائج التي نعدّها على صورة تتابع، فإنّنا نعدّه تبديلًا (permutation) (إذا لم تتكرّر الحدود في التتابع) أو نستعمل مبدأ الضرب (product principle) (إذا تكرّرت). وإذا كنّا نعدّ نتائج لا نميّز فيها بين الترتيبات المختلفة للحدود (إذا لم يكن الترتيب مهمًّا)، فإنّنا نتعامل مع الناتج على صورة مجموعة ونعدّه توافيق (combination). غير أنّ المجموعات لا تسمح أبدًا بتكرار عنصر؛ فكلّ عنصر إما في المجموعة أو ليس فيها.[🔗](#sec_counting-multisets-8-3)وهكذا هناك ثغرة واضحة في ترسانتنا في العدّ. ماذا لو أردنا عدّ نتائج تكون مجموعات من حدود لا نميّز فيها بين الترتيب الذي تظهر به الحدود، لكن يمكن أن تحتوي على الحدود أكثر من مرّة؟ وبعبارات أخرى، كيف يمكننا إكمال الجدول التالي؟[🔗](#sec_counting-multisets-8-4)
 
-|  | Distinguished Arrangements? |  |
+|  | ترتيبات متمايزة؟ |  |
 | --- | --- | --- |
-|  | Yes | No |
-| Repeats OK | Sequences Prod. Principle \(n^k\) |  |
-| No repeats | Sequences Permutations \(P(n,k)\) | Sets Combinations \(\binom{n}{k}\) |
+|  | نعم | لا |
+| التكرار مسموح | تتابعات: مبدأ الضرب \(n^k\) |  |
+| بلا تكرار | تتابعات: تبديلات \(P(n,k)\) | مجموعات: توافيق \(\binom{n}{k}\) |
 
-What we want to count are some sort of set-like structure but one that *does* permit elements in the set to appear more than once. Such structures are called multisets.[🔗](#sec_counting-multisets-8-6)
+ما نريد عدّه هو بنية تشبه المجموعة نوعًا ما، لكنّها بنية *تسمح فعلًا* لعناصر المجموعة بأن تظهر أكثر من مرّة. وتُسمّى هذه البنى المجموعات المتعدّدة (multisets).[🔗](#sec_counting-multisets-8-6)
 
-#### Definition 3.5.1.
+#### تعريف 3.5.1.
 
-A multiset is an unordered collection of elements, each of which can appear any number of times. The number of times an element appears is called its multiplicity.[🔗](#def-multiset-1-1) Multisets are written using the same notation as sets: a comma-separated list in braces, such as \(\{1, 2, 2, 5\}\text{.}\)[🔗](#def-multiset-1-2) [🔗](#def-multiset)In this section, we will explore how multisets can be used to represent a wide range of counting problems. We will then develop a way to translate multisets into a special type of bit-string so that we can use the numbers in Pascal’s triangle to count the number of multisets.[🔗](#sec_counting-multisets-8-8)
+المجموعة المتعدّدة (multiset) هي مجموعة غير مرتّبة من العناصر، يمكن لكلّ عنصر فيها أن يظهر أيّ عدد من المرّات. ويُسمّى عدد مرّات ظهور العنصر تعدّده (multiplicity).[🔗](#def-multiset-1-1) وتُكتب المجموعات المتعدّدة بالترميز نفسه المستعمل للمجموعات: قائمة مفصولة بفواصل داخل أقواس معقوفة، مثل \(\{1, 2, 2, 5\}\text{.}\)[🔗](#def-multiset-1-2) [🔗](#def-multiset)في هذا القسم، سنستكشف كيف يمكن استعمال المجموعات المتعدّدة لتمثيل طيف واسع من مسائل العدّ. ثمّ سنضع طريقة لترجمة المجموعات المتعدّدة إلى نوع خاصّ من السلاسل الثنائية (bit-strings) حتى نتمكّن من استعمال الأعداد في مثلث باسكال (Pascal’s triangle) لعدّ عدد المجموعات المتعدّدة.[🔗](#sec_counting-multisets-8-8)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-couting-multisets)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-couting-multisets)
 
 #### 1.
 
-Activate Find a collection of identical objects, perhaps pennies or sugar cubes. Also grab a few dividers, which could be toothpicks, matches, or pens.[🔗](#extracted-webwork-127-1-1-1) Line up the pennies in a single row. We will divide the row into some number of groups by placing the toothpicks in the spaces between the pennies. We will distinguish between which order the groups come in. For example, two different ways to divide 7 pennies into 4 groups would look like this:[🔗](#extracted-webwork-127-1-1-2) ![two rows of 7 pennies separated into 4 groups with 3 sticks](generated/webwork/images/webwork-127-image-1.svg) We will allow for one or more groups to contain no pennies (by having two toothpicks next to each other or before or after all of the pennies).[🔗](#extracted-webwork-127-1-1-4) By lining up the correct number of pennies and sticks, count the number of ways you can divide a row of pennies into the given number of groups.[🔗](#extracted-webwork-127-1-1-5)
+Activate اعثر على مجموعة من الأشياء المتطابقة، ربّما عملات معدنية أو مكعّبات سكّر. واحضر أيضًا بضعة فواصل،可以是 أعواه أسنان، أو كبريت، أو أقلام.[🔗](#extracted-webwork-127-1-1-1) رتّب العملات المعدنية في صفّ واحد. وسنقسم الصفّ إلى عدد من المجموعات بوضع أعواه الأسنان في الفراغات بين العملات المعدنية. وسنميّز بين الترتيب الذي تأتي به المجموعات. فمثلًا، تبديلان مختلفان لتقسيم 7 عملات معدنية إلى 4 مجموعات سيبدوان هكذا:[🔗](#extracted-webwork-127-1-1-2) ![صفّان من 7 عملات معدنية مقسّمان إلى 4 مجموعات بواسطة 3 عصي](generated/webwork/images/webwork-127-image-1.svg) وسنسمح لواحدة أو أكثر من المجموعات أن لا تحتوي على أيّ عملات معدنية (بوضع عودَي أسنان متجاورَين، أو قبل جميع العملات أو بعدها).[🔗](#extracted-webwork-127-1-1-4) وبرصف العدد الصحيح من العملات المعدنية والعصي، عدّ عدد الطرق التي يمكنك بها تقسيم صفّ من العملات المعدنية إلى العدد المعطى من المجموعات.[🔗](#extracted-webwork-127-1-1-5)
 
 #### (a)
 
-If you want to divide a row of pennies into 4 groups, how many toothpicks will you need?[🔗](#extracted-webwork-127-1-2-1-1) [🔗](#extracted-webwork-127-1-2)
+إذا أردتَ تقسيم صفّ من العملات المعدنية إلى 4 مجموعات، فكم عدد أعواه الأسنان التي ستحتاجها؟[🔗](#extracted-webwork-127-1-2-1-1) [🔗](#extracted-webwork-127-1-2)
 
 #### (b)
 
-How many ways are there to separate a row of three pennies into two groups?[🔗](#extracted-webwork-127-1-3-1-1) [🔗](#extracted-webwork-127-1-3)
+كم عدد الطرق لفصل صفّ من ثلاث عملات معدنية إلى مجموعتين؟[🔗](#extracted-webwork-127-1-3-1-1) [🔗](#extracted-webwork-127-1-3)
 
 #### (c)
 
-How many ways are there to separate a row of four pennies into two groups?[🔗](#extracted-webwork-127-1-4-1-1) [🔗](#extracted-webwork-127-1-4)
+كم عدد الطرق لفصل صفّ من أربع عملات معدنية إلى مجموعتين؟[🔗](#extracted-webwork-127-1-4-1-1) [🔗](#extracted-webwork-127-1-4)
 
 #### (d)
 
-How many ways are there to separate a row of five pennies into two groups?[🔗](#extracted-webwork-127-1-5-1-1) [🔗](#extracted-webwork-127-1-5)
+كم عدد الطرق لفصل صفّ من خمس عملات معدنية إلى مجموعتين؟[🔗](#extracted-webwork-127-1-5-1-1) [🔗](#extracted-webwork-127-1-5)
 
 #### (e)
 
-How many ways are there to separate a row of three pennies into three groups?[🔗](#extracted-webwork-127-1-6-1-1) [🔗](#extracted-webwork-127-1-6)
+كم عدد الطرق لفصل صفّ من ثلاث عملات معدنية إلى ثلاث مجموعات؟[🔗](#extracted-webwork-127-1-6-1-1) [🔗](#extracted-webwork-127-1-6)
 
 #### (f)
 
-How many ways are there to separate a row of four pennies into three groups?[🔗](#extracted-webwork-127-1-7-1-1) [🔗](#extracted-webwork-127-1-7)
+كم عدد الطرق لفصل صفّ من أربع عملات معدنية إلى ثلاث مجموعات؟[🔗](#extracted-webwork-127-1-7-1-1) [🔗](#extracted-webwork-127-1-7)
 
 #### (g)
 
-How many ways are there to separate a row of five pennies into three groups?[🔗](#extracted-webwork-127-1-8-1-1) [🔗](#extracted-webwork-127-1-8)
+كم عدد الطرق لفصل صفّ من خمس عملات معدنية إلى ثلاث مجموعات؟[🔗](#extracted-webwork-127-1-8-1-1) [🔗](#extracted-webwork-127-1-8)
 
 #### (h)
 
-Based on your answers above, make a conjecture about how many ways you could separate a row of seven pennies into four groups.[🔗](#extracted-webwork-127-1-9-1-1) Hint. Look for the numbers you found in the previous questions in Pascal’s triangle.[🔗](#extracted-webwork-127-1-9-2-1) [🔗](#extracted-webwork-127-1-9-2) [🔗](#extracted-webwork-127-1-9) [🔗](#pa-counting-multisets)[🔗](#PA-couting-multisets)[🔗](#sec_counting-multisets-8)
+بالاعتماد على إجاباتك أعلاه، صُغ حدسًا (conjecture) عن عدد الطرق التي يمكنك بها فصل صفّ من سبع عملات معدنية إلى أربع مجموعات.[🔗](#extracted-webwork-127-1-9-1-1) تلميح. ابحث في مثلث باسكال عن الأعداد التي وجدتَها في الأسئلة السابقة.[🔗](#extracted-webwork-127-1-9-2-1) [🔗](#extracted-webwork-127-1-9-2) [🔗](#extracted-webwork-127-1-9) [🔗](#pa-counting-multisets)[🔗](#PA-couting-multisets)[🔗](#sec_counting-multisets-8)
 
-### Subsection Have Some Cookies
+### القسم الفرعي: خذ بعض البسكويت
 
-Consider the following counting problem:[🔗](#subsec-cookies-kids-2)
+تأمّل مسألة العدّ التالية:[🔗](#subsec-cookies-kids-2)
 
-> You have 7 cookies to give to 4 kids. How many ways can you do this?[🔗](#subsec-cookies-kids-3-1)
+> لديك 7 قطع بسكويت لتوزيعها على 4 أطفال. كم عدد الطرق التي يمكنك فعل ذلك بها؟[🔗](#subsec-cookies-kids-3-1)
 > > [🔗](#subsec-cookies-kids-3)
 
-Take a moment to think about how you might solve this problem. You may assume that it is acceptable to give a kid no cookies. Also, the cookies are all identical and the order in which you give out the cookies does not matter (so giving cookies to the second kid before the first kid does not count as a separate outcome as the other way around).[🔗](#subsec-cookies-kids-4) Before solving the problem, here is a wrong answer: You might guess that the answer should be \(4^7\) because, for each of the 7 cookies, there are 4 choices of kids to which you can give the cookie. This is reasonable, but wrong. To see why, consider a few possible outcomes: We could assign the first six cookies to kid A, and the seventh cookie to kid B. Another outcome would assign the first cookie to kid B and the six remaining cookies to kid A. Both outcomes are included in the \(4^7\) answer. But for our counting problem, both outcomes are really the same – kid A gets six cookies and kid B gets one cookie. This would have been the correct answer if the cookies were all different, but they are not.[🔗](#subsec-cookies-kids-5) What do outcomes actually look like? How can we represent them? One approach would be to write an outcome as a string of four numbers like this: \begin{equation*} 3112\text{,} \end{equation*} which represents the outcome in which the first kid gets 3 cookies, the second and third kids each get 1 cookie, and the fourth kid gets 2 cookies. Represented this way, the order in which the numbers occur matters. 1312 is a different outcome, because the first kid gets one cookie instead of 3. Each number in the string can be any integer between 0 and 7. But the answer is not \(7^4\text{.}\) We need the *sum* of the numbers to be 7. [🔗](#subsec-cookies-kids-6) Another way we might represent outcomes is to write a string of seven letters: \begin{equation*} \text{ABAADCD}\text{,} \end{equation*} which represents that the first cookie goes to kid A, the second cookie goes to kid B, the third and fourth cookies go to kid A, and so on. In fact, this outcome is identical to the previous one—A gets 3 cookies, B and C get 1 each, and D gets 2. Each of the seven letters in the string can be any of the 4 possible letters (one for each kid), but the number of such strings is not \(4^7\text{,}\) because here order does *not* matter. In fact, another way to write the same outcome is \begin{equation*} \text{AAABCDD}\text{.} \end{equation*} [🔗](#subsec-cookies-kids-7) This will be the preferred representation of the outcome. Since we can write the letters in any order, we might as well write them in *alphabetical* order for the purposes of counting. So we will write all the A’s first, then all the B’s, and so on. In fact, since we do not distinguish between the different arrangements, it is like we are writing a set, just that this multiset can contain an element more than one time.[🔗](#subsec-cookies-kids-8) So we now have two useful ways to think of the outcomes.
+خذ لحظة لتفكّر في كيفية حلّ هذه المسألة. ويمكنك أن تفترض أنّه مقبول أن تعطي طفلًا لا بسكويت. كذلك، قطع البسكويت كلّها متطابقة، والترتيب الذي توزّع به لا يهمّ (فإعطاء البسكويت للطفل الثاني قبل الطفل الأوّل لا يُحسب ناتجًا منفصلًا عن العكس).[🔗](#subsec-cookies-kids-4) وقبل حلّ المسألة، إليك إجابة خاطئة: قد تخمّن أنّ الإجابة ينبغي أن تكون \(4^7\) لأنّه لكلّ واحدة من قطع البسكويت السبع، هناك 4 خيارات للأطفال الذين يمكنك إعطاؤهم إيّاها. هذا منطقي، لكنه خاطئ. ولرؤية السبب، تأمّل بعض النتائج الممكنة: يمكننا أن نُسند القطع الستّ الأولى إلى الطفل A، والقطعة السابعة إلى الطفل B. ونتيجة أخرى تُسند القطعة الأولى إلى الطفل B والقطع الستّ الباقية إلى الطفل A. وكلتا النتيجتين مُدرَجتان في إجابة \(4^7\). لكن في مسألة العدّ لدينا، النتيجتان في الواقع واحدة – يحصل الطفل A على ستّ قطع والطفل B على قطعة واحدة. وكانت هذه ستكون الإجابة الصحيحة لو كانت قطع البسكويت كلّها مختلفة، لكنها ليست كذلك.[🔗](#subsec-cookies-kids-5) فكيف تبدو النتائج في الواقع؟ وكيف يمكننا تمثيلها؟ وتتمثل إحدى الطرق في كتابة الناتج على صورة سلسلة من أربعة أعداد هكذا: \begin{equation*} 3112\text{,} \end{equation*} وهي تمثّل النتيجة التي يحصل فيها الطفل الأوّل على 3 قطع، والطفلان الثاني والثالث على قطعة واحدة لكلٍّ منهما، والطفل الرابع على قطعتين. وبهذا التمثيل، يكون الترتيب الذي تظهر به الأعداد مهمًّا. فـ 1312 نتيجة مختلفة، لأن الطفل الأوّل يحصل على قطعة واحدة بدلًا من 3. ويمكن أن يكون كلّ عدد في السلسلة أيّ عدد صحيح بين 0 و7. لكنّ الإجابة ليست \(7^4\text{.}\) فنحن بحاجة إلى أن يكون *مجموع* الأعداد هو 7. [🔗](#subsec-cookies-kids-6) وهناك طريقة أخرى لتمثيل النتائج وهي كتابة سلسلة من سبعة أحرف: \begin{equation*} \text{ABAADCD}\text{,} \end{equation*} وهي تمثّل أن القطعة الأولى تذهب إلى الطفل A، والثانية إلى الطفل B، والثالثة والرابعة إلى الطفل A، وهكذا. وفي الحقيقة، هذه النتيجة مطابقة للنتيجة السابقة—يحصل A على 3 قطع، ويحصل B وC على قطعة لكلٍّ منهما، ويحصل D على قطعتين. ويمكن أن يكون كلٌّ من الأحرف السبعة في السلسلة أيًّا من الأحرف الأربعة الممكنة (حرف واحد لكلّ طفل)، لكنّ عدد هذه السلاسل ليس \(4^7\text{,}\) لأنّ الترتيب هنا *لا* يهمّ. وفي الحقيقة، هناك طريقة أخرى لكتابة النتيجة نفسها وهي \begin{equation*} \text{AAABCDD}\text{.} \end{equation*} [🔗](#subsec-cookies-kids-7) وستكون هذه هي الطريقة المفضّلة لتمثيل الناتج. وبما أنّنا يمكننا كتابة الأحرف بأيّ ترتيب، فلا بأس من كتابتها بترتيب *أبجدي* لأغراض العدّ. فسنكتب كلّ حروف A أوّلًا، ثمّ كلّ حروف B، وهكذا. وفي الحقيقة، بما أنّنا لا نميّز بين الترتيبات المختلفة، فكأنّنا نكتب مجموعة، وإنّما الفرق أنّ هذه المجموعة المتعدّدة يمكن أن تحتوي على عنصر أكثر من مرّة واحدة.[🔗](#subsec-cookies-kids-8) إذن لدينا الآن طريقتان مفيدتان للنظر في النتائج.
 
-1. As a multiset containing 7 elements, each of which is one of the four kids (or letter representing their names). For example, \begin{equation*} \{A, A, A, B, C, D, D\}\text{.} \end{equation*} Each time a kid is in the multiset, it means that kid gets a cookie, so the multiplicity of the kid in the multiset is the number of cookies the kid gets. [🔗](#subsec-cookies-kids-9-1-1-1) [🔗](#subsec-cookies-kids-9-1-1)
-2. As a string of 4 non-negative numbers with a sum of 7. For example, \begin{equation*} 3112\text{.} \end{equation*} The position of the number in the string represents the kid, and the number itself represents the number of cookies that kid gets. [🔗](#subsec-cookies-kids-9-1-2-1) [🔗](#subsec-cookies-kids-9-1-2)
+1. على صورة مجموعة متعدّدة تتضمّن 7 عناصر، كلٌّ منها أحد الأطفال الأربعة (أو حرف يمثّل اسمه). فمثلًا، \begin{equation*} \{A, A, A, B, C, D, D\}\text{.} \end{equation*} وكلّما كان الطفل موجودًا في المجموعة المتعدّدة، فإنّ ذلك يعني أنّ ذلك الطفل يحصل على قطعة بسكويت، ومن ثمّ فإنّ تعدّد الطفل في المجموعة المتعدّدة هو عدد قطع البسكويت التي يحصل عليها. [🔗](#subsec-cookies-kids-9-1-1-1) [🔗](#subsec-cookies-kids-9-1-1)
+2. على صورة سلسلة من 4 أعداد غير سالبة مجموعها 7. فمثلًا، \begin{equation*} 3112\text{.} \end{equation*} ويمثّل موضع العدد في السلسلة الطفل، ويمثّل العدد نفسه عدد قطع البسكويت التي يحصل عليها ذلك الطفل. [🔗](#subsec-cookies-kids-9-1-2-1) [🔗](#subsec-cookies-kids-9-1-2)
 
-[🔗](#subsec-cookies-kids-9) Before we think about how to count the number of outcomes represented this way, here are a couple more examples of counting problems we can represent in these ways.[🔗](#subsec-cookies-kids-10)
+[🔗](#subsec-cookies-kids-9) وقبل أن نفكّر في كيفية عدّ عدد النتائج الممثَّلة بهذه الطريقة، إليك مثالَين إضافيَّين من مسائل العدّ يمكننا تمثيلهما بهاتين الطريقتين.[🔗](#subsec-cookies-kids-10)
 
-#### Example 3.5.2.
+#### المثال 3.5.2.
 
-You grab a handful of ten jelly beans from a bag that contains six flavors. Write down three possible outcomes using both multisets and strings of numbers.[🔗](#subsec-cookies-kids-11-1-1) Solution. Multisets are the more natural way to think of this problem since each handful is a multiset of flavors. So for example we could have, \begin{equation*} \{R, R, G, G, G, B, B, B, B, Y\} \end{equation*} meaning you got two red, three green, four blue, and one yellow jelly bean (and no purple or orange), or \begin{equation*} \{R, R, R, R, R, R, R, R, R, R\} \end{equation*} which means you got ten red jelly beans. You could also have \begin{equation*} \{R, G, B, Y, P, O, O, O, O, O\} \end{equation*} meaning you have one each of red, green, blue, and yellow, and five orange jelly beans. [🔗](#subsec-cookies-kids-11-2-1) The corresponding sequences of six numbers summing to 10 are \begin{equation*} 2,3,4,1,0,0; \qquad 10,0,0,0,0,0; \qquad 1,1,1,1,1,5\text{.} \end{equation*} (We added commas between numbers since not every number is a single digit.) Notice that for this representation we need to agree on a fixed order of the flavors, which was not alphabetical in this case, but the same order we used when listing the multisets. [🔗](#subsec-cookies-kids-11-2-2) [🔗](#subsec-cookies-kids-11-2) [🔗](#subsec-cookies-kids-11)
+تمسك بيدك حفنة من عشر حبّات حلوى من كيس يحتوي على ستّ نكهات. اكتب ثلاثة نتائج ممكنة باستخدام كلٍّ من المجموعات المتعدّدة والسلاسل العددية.[🔗](#subsec-cookies-kids-11-1-1) الحل. المجموعات المتعدّدة هي الطريقة الأكثر طبيعية في التفكير في هذه المسألة، إذ كلّ حفنة هي مجموعة متعدّدة من النكهات. فمثلًا يمكننا أن يكون لدينا، \begin{equation*} \{R, R, G, G, G, B, B, B, B, Y\} \end{equation*} أي أنّك حصلت على حبّتين حمراوين، وثلاث خضراء، وأربع زرقاء، وحبة صفراء واحدة (ولا بنفسجية ولا برتقالية)، أو \begin{equation*} \{R, R, R, R, R, R, R, R, R, R\} \end{equation*} أي أنّك حصلت على عشر حبّات حمراء. ويمكنك أيضًا أن تكون لديك \begin{equation*} \{R, G, B, Y, P, O, O, O, O, O\} \end{equation*} أي أنّ لديك حبّة واحدة من كلٍّ من الأحمر والأخضر والأزرق والأصفر، وخمس حبّات برتقالية. [🔗](#subsec-cookies-kids-11-2-1) والتتابعات المقابلة المكوّنة من ستّة أعداد مجموعها 10 هي \begin{equation*} 2,3,4,1,0,0; \qquad 10,0,0,0,0,0; \qquad 1,1,1,1,1,5\text{.} \end{equation*} (أضفنا فواصل بين الأعداد لأنّ ليس كلّ عدد رقمًا من رقم واحد.) ولاحظ أنّ هذا التمثيل يحتاج أن نتّفق على ترتيب ثابت للنكهات، وهو في هذه الحالة لم يكن أبجديًا، بل كان نفس الترتيب الذي استعملناه عند سرد المجموعات المتعدّدة. [🔗](#subsec-cookies-kids-11-2-2) [🔗](#subsec-cookies-kids-11-2) [🔗](#subsec-cookies-kids-11)
 
-#### Example 3.5.3.
+#### المثال 3.5.3.
 
-You have 12 identical copies of your favorite Discrete Math book that you want to put on 5 bookshelves. Write down three possible outcomes using both multisets and strings of numbers.[🔗](#subsec-cookies-kids-12-1-1) Solution. Here the sequences of numbers are more natural, since we can just say how many books go on each shelf. We will need 5 numbers that add up to 12. For example, we could have
+لديك 12 نسخة متطابقة من كتاب الرياضيات المتقطّعة المفضّل لديك، وتريد وضعها على 5 رفوف كتب. اكتب ثلاثة نتائج ممكنة باستخدام كلٍّ من المجموعات المتعدّدة والسلاسل العددية.[🔗](#subsec-cookies-kids-12-1-1) الحل. هنا تكون السلاسل العددية أكثر طبيعية، إذ يمكننا ببساطة أن نقول كم كتابًا يذهب إلى كلّ رفّ. وسنحتاج إلى 5 أعداد مجموعها 12. فمثلًا، يمكننا أن يكون لدينا
 
-1. \(3,3,3,2,1\text{,}\) meaning 3 books on the first shelf, 3 on the second, 3 on the third, 2 on the fourth, and 1 on the fifth.[🔗](#subsec-cookies-kids-12-2-1-1-1-1) [🔗](#subsec-cookies-kids-12-2-1-1-1)
-2. \(0,0,12,0,0\text{,}\) meaning all 12 books are on the middle shelf.[🔗](#subsec-cookies-kids-12-2-1-1-2-1) [🔗](#subsec-cookies-kids-12-2-1-1-2)
-3. \(1,1,1,1,8\text{,}\) meaning one book on each of the first four shelves and 8 on the last.[🔗](#subsec-cookies-kids-12-2-1-1-3-1) [🔗](#subsec-cookies-kids-12-2-1-1-3)
+1. \(3,3,3,2,1\text{,}\) أي 3 كتب على الرفّ الأوّل، و3 على الثاني، و3 على الثالث، و2 على الرابع، وواحد على الخامس.[🔗](#subsec-cookies-kids-12-2-1-1-1-1) [🔗](#subsec-cookies-kids-12-2-1-1)
+2. \(0,0,12,0,0\text{,}\) أي أنّ الكتب الاثنَي عشر كلّها على الرفّ الأوسط.[🔗](#subsec-cookies-kids-12-2-1-1-2-1) [🔗](#subsec-cookies-kids-12-2-1-1-2)
+3. \(1,1,1,1,8\text{,}\) أي كتاب واحد على كلٍّ من الرفوف الأربعة الأولى و8 على الأخير.[🔗](#subsec-cookies-kids-12-2-1-1-3-1) [🔗](#subsec-cookies-kids-12-2-1-1-3)
 
-[🔗](#subsec-cookies-kids-12-2-1) The corresponding multisets are
+[🔗](#subsec-cookies-kids-12-2-1) والمجموعات المتعدّدة المقابلة هي
 
-1. \(\{1,1,1,2,2,2,3,3,3,4,4,5\}\text{,}\) meaning shelf 1 is assigned a book three times, shelf 2 is assigned a book three times, etc. Notice that there are 12 elements in the multiset, one for each book. The numbers here represent the shelves; the multiplicity of the number is the number of books on that shelf.[🔗](#subsec-cookies-kids-12-2-2-1-1-1) [🔗](#subsec-cookies-kids-12-2-2-1-1)
-2. \(\{3,3,3,3,3,3,3,3,3,3,3,3\}\text{.}\) The only shelf in the multiset is shelf 3, with multiplicity 12, meaning that shelf 3 gets 12 books.[🔗](#subsec-cookies-kids-12-2-2-1-2-1) [🔗](#subsec-cookies-kids-12-2-2-1-2)
-3. \(\{1,2,3,4,5,5,5,5,5,5,5,5\}\text{.}\) Here shelf 1 gets one book, shelf 2 gets one book, shelf 3 gets one book, shelf 4 gets one book, and shelf 5 gets the rest.[🔗](#subsec-cookies-kids-12-2-2-1-3-1) [🔗](#subsec-cookies-kids-12-2-2-1-3)
+1. \(\{1,1,1,2,2,2,3,3,3,4,4,5\}\text{,}\) أي أنّ الرفّ 1 يُسند إليه كتاب ثلاث مرّات، والرفّ 2 يُسند إليه كتاب ثلاث مرّات، وهكذا. ولاحظ أنّ هناك 12 عنصرًا في المجموعة المتعدّدة، عنصر واحد لكلّ كتاب. والأعداد هنا تمثّل الرفوف؛ وتعدّد العدد هو عدد الكتب على ذلك الرفّ.[🔗](#subsec-cookies-kids-12-2-2-1-1-1) [🔗](#subsec-cookies-kids-12-2-2-1-1)
+2. \(\{3,3,3,3,3,3,3,3,3,3,3,3\}\text{.}\) الرفّ الوحيد في المجموعة المتعدّدة هو الرفّ 3، بتعدّد 12، أي أنّ الرفّ 3 يحصل على 12 كتابًا.[🔗](#subsec-cookies-kids-12-2-2-1-2-1) [🔗](#subsec-cookies-kids-12-2-2-1-2)
+3. \(\{1,2,3,4,5,5,5,5,5,5,5,5\}\text{.}\) هنا يحصل الرفّ 1 على كتاب واحد، والرفّ 2 على كتاب واحد، والرفّ 3 على كتاب واحد، والرفّ 4 على كتاب واحد، والرفّ 5 على البقيّة.[🔗](#subsec-cookies-kids-12-2-2-1-3-1) [🔗](#subsec-cookies-kids-12-2-2-1-3)
 
-[🔗](#subsec-cookies-kids-12-2-2) [🔗](#subsec-cookies-kids-12-2) [🔗](#subsec-cookies-kids-12)This last example could also have been asked as a question about solving equations with non-negative integer solutions. In particular, we could have asked for solutions to the equation \(a+b+c+d+e = 12\text{.}\) Think of each variable as saying how many books go on each shelf. We will ask questions directly like this, but realizing how to represent other questions as such an equation can be useful.[🔗](#subsec-cookies-kids-13) [🔗](#subsec-cookies-kids)
+[🔗](#subsec-cookies-kids-12-2-2) [🔗](#subsec-cookies-kids-12-2) [🔗](#subsec-cookies-kids-12)يمكن أيضًا طرح هذا المثال الأخير بوصفه مسألة عن حلّ معادلات ذات حلول صحيحة غير سالبة. وبشكل خاصّ، كان يمكننا أن نطلب حلول المعادلة \(a+b+c+d+e = 12\text{.}\) وتخيّل كلّ متغيّر على أنّه يحدّد عدد الكتب التي تذهب إلى كلّ رفّ. وسنطرح أسئلة مباشرة بهذا الأسلوب، لكنّ إدراك كيفية تمثيل الأسئلة الأخرى على صورة معادلة كهذه قد يكون مفيدًا.[🔗](#subsec-cookies-kids-13) [🔗](#subsec-cookies-kids)
 
-### Subsection Representing Multisets with Bit Strings
+### القسم الفرعي: تمثيل المجموعات المتعدّدة بالسلاسل الثنائية
 
-Now let’s return to the original problem of distributing 7 cookies to 4 kids and actually count the number of outcomes.[🔗](#subsec-representing-multisets-with-bit-strings-2) When we were counting plain old sets, we saw that the numbers in Pascal’s triangle gave us the counts. In fact, we saw this was true because we could represent each set as a bit string. Whenever an element was in the set, we would denote that with a 1, and if the element was not in the set, we would mark its absence with a 0.[🔗](#subsec-representing-multisets-with-bit-strings-3) This is essentially what we did with multisets but had to use strings of non-negative numbers beyond just 0 and 1, since an element in a multiset can appear more than 0 or 1 times. But if we could translate those strings of numbers into some other sort of bit string, then we could use Pascal’s triangle to count the number of multisets.[🔗](#subsec-representing-multisets-with-bit-strings-4) Here is how we can do this. Given a multiset such as \begin{equation*} \{A, A, A, B, C, D, D\} \end{equation*} we have a number sequence representation as \begin{equation*} 3,1,1,2\text{.} \end{equation*} Well, instead of individual numbers, write each as a sequence of that many 1s. So this example becomes \begin{equation*} 111,1,1,11\text{.} \end{equation*} This is slightly awkward since we are using commas to separate the numbers. To make this clearer, let’s switch to two different symbols. We will call them sticks and stones, where the stone represents a 1 and the stick represents a comma. So the sequence \begin{equation*} 111,1,1,11 \end{equation*} becomes \begin{equation*} \o\o\o|\o|\o|\o\o\text{.} \end{equation*} This is a string of ten symbols, 7 of which are stones and 3 of which are sticks. [🔗](#subsec-representing-multisets-with-bit-strings-5) This is fantastic! Whatever two symbols we use (you might also see these called stars and bars or balls and bins), we can use Pascal’s triangle to count the number of ways to arrange them. The number of 10-bit strings of weight 3 (or weight 7) is \(\binom{10}{3} = 120\text{.}\)[🔗](#subsec-representing-multisets-with-bit-strings-6) In terms of cookies, we can view this sticks and stones diagram as saying after how many cookies we stop giving cookies to the first kid and start giving cookies to the second kid. And then after how many do we switch to the third kid? And after how many do we switch to the fourth? So \begin{equation*} \o\o\o|\o|\o|\o\o \end{equation*} means three cookies go to the first kid; then we switch and give one cookie to the second kid, then switch, one to the third kid, switch, two to the fourth kid. Notice that we need 7 stones and 3 sticks – one stone for each cookie, and one stick for each switch between kids, so one fewer sticks than there are kids (we don’t need to switch after the last kid – we are done). [🔗](#subsec-representing-multisets-with-bit-strings-7) While we are at it, we can also answer a related question: How many ways are there to distribute 7 cookies to 4 kids so that each kid gets at least one cookie? What can you say about the corresponding sticks and stones charts? The charts must start and end with at least one stone (so that kids A and D) get cookies, and also no two sticks can be adjacent (so that kids B and C are not skipped). One way to ensure this is to place sticks only in the spaces *between* the stones. With 7 stones, there are 6 spots between the stones, so we must choose 3 of those 6 spots to fill with bars. Thus there are \({6 \choose 3}\) ways to distribute 7 cookies to 4 kids giving at least one cookie to each kid.[🔗](#subsec-representing-multisets-with-bit-strings-8) Another (and more general) way to approach this modified problem is to first give each kid one cookie. Now the remaining 3 cookies can be distributed to the 4 kids without restrictions. So we have 3 stones and 3 sticks for a total of 6 symbols, 3 of which must be bars. So again we see that there are \({6 \choose 3}\) ways to distribute the cookies.[🔗](#subsec-representing-multisets-with-bit-strings-9) Sticks and stones can be used in counting problems other than kids and cookies. Here are a few examples:[🔗](#subsec-representing-multisets-with-bit-strings-10)
+لنعد الآن إلى مسألة توزيع 7 قطع بسكويت على 4 أطفال الأصلية، ولنعدّ فعلًا عدد النتائج.[🔗](#subsec-representing-multisets-with-bit-strings-2)حين كنا نعدّ المجموعات العادية، رأينا أنّ الأعداد في مثلث باسكال تعطينا أعداد العدّ. وفي الحقيقة، رأينا أنّ هذا صحيح لأنّنا كنا نستطيع تمثيل كلّ مجموعة على صورة سلسلة ثنائية. فكلّما كان العنصر في المجموعة، كنّا نرمز لذلك بالرمز 1، وإذا لم يكن العنصر في المجموعة، كنّا نعلّم غياب ذلك بالرمز 0.[🔗](#subsec-representing-multisets-with-bit-strings-3) وهذا في جوهره ما فعلناه مع المجموعات المتعدّدة، لكنّنا اضطررنا إلى استعمال سلاسل من أعداد غير سالبة تتجاوز 0 و1، إذ يمكن أن يظهر عنصر في المجموعة المتعدّدة أكثر من 0 أو 1 مرّة. لكن إذا استطعنا ترجمة تلك السلاسل العددية إلى نوع آخر من السلاسل الثنائية، لاستطعنا استعمال مثلث باسكال لعدّ عدد المجموعات المتعدّدة.[🔗](#subsec-representing-multisets-with-bit-strings-4) وإليك كيف يمكننا فعل ذلك. فمعطاة مجموعة متعدّدة مثل \begin{equation*} \{A, A, A, B, C, D, D\} \end{equation*} لدينا تمثيل على صورة تتابع أعداد هو \begin{equation*} 3,1,1,2\text{.} \end{equation*} إذن، بدلًا من الأعداد منفردة، نكتب كلّ عدد على صورة تتابع من ذلك العدد من الآحاد. فتصير هذه العبارة \begin{equation*} 111,1,1,11\text{.} \end{equation*} وهذا مُربك بعض الشيء لأنّنا نستعمل الفواصل للفصل بين الأعداد. ولأجل توضيح الأمر أكثر، فلننتقل إلى رمزين مختلفين. سنسمّيهما العصي والحصى، حيث يمثّل الحجر الرقم 1 ويمثّل العصا الفاصلة. فتصير المتتابعة \begin{equation*} 111,1,1,11 \end{equation*} هي \begin{equation*} \o\o\o|\o|\o|\o\o\text{.} \end{equation*} وهذه سلسلة من عشرة رموز، 7 منها حصى و3 منها عصي. [🔗](#subsec-representing-multisets-with-bit-strings-5) هذا رائع! أيًّا كان الرمزان اللذان نستعملهما (قد تراهما أيضًا مسمّيين النجوم والحواجز أو الكرات والصناديق)، يمكننا استعمال مثلث باسكال لعدّ عدد طرق ترتيبها. وعدد السلاسل الثنائية ذات 10 خانات ذات وزن 3 (أو وزن 7) هو \(\binom{10}{3} = 120\text{.}\)[🔗](#subsec-representing-multisets-with-bit-strings-6) وبعبارات البسكويت، يمكننا تفسير مخطط العصي والحصى هذا على أنّه يقول: بعد كم قطعة من البسكويت نتوقّف عن إعطاء الطفل الأوّل ونبدأ بإعطاء الطفل الثاني. ثمّ بعد كم ننتقل إلى الطفل الثالث؟ وبعد كم ننتقل إلى الرابع؟ إذن \begin{equation*} \o\o\o|\o|\o|\o\o \end{equation*} يعني أنّ ثلاث قطع تذهب إلى الطفل الأوّل؛ ثمّ ننتقل ونعطي قطعة واحدة إلى الطفل الثاني، ثمّ ننتقل، وواحدة إلى الطفل الثالث، ثمّ ننتقل، واثنتين إلى الطفل الرابع. ولاحظ أنّنا نحتاج إلى 7 حصى و3 عصي – حجر واحد لكلّ قطعة بسكويت، وعصا واحدة لكلّ انتقال بين الأطفال، ومن ثمّ عدد عصٍ أقلّ بواحد من عدد الأطفال (فلا نحتاج إلى الانتقال بعد الطفل الأخير – فقد انتهينا). [🔗](#subsec-representing-multisets-with-bit-strings-7) وبمناسبة الحديث عن ذلك، يمكننا أيضًا الإجابة عن سؤال ذي صلة: كم عدد الطرق لتوزيع 7 قطع بسكويت على 4 أطفال بحيث يحصل كلّ طفل على قطعة واحدة على الأقلّ؟ وماذا يمكنك القول عن مخططات العصي والحصى المقابلة؟ يجب أن تبدأ المخططات وتنتهي بحجر واحد على الأقلّ (كي يحصل الأطفال A وD على بسكويت)، وكذلك أيضًا لا يمكن أن تكون عصا متجاورتان (كي لا يُتجاوز الأطفال B وC). ومن الطرق لضمان ذلك وضع العصي في الفراغات *بين* الحجارة فقط. ومع 7 حصى، هناك 6 مواضع بين الحجارة، إذن علينا اختيار 3 من تلك المواضع الستة لملئها بحواجز. ومن ثمّ هناك \({6 \choose 3}\) طريقة لتوزيع 7 قطع بسكويت على 4 أطفال يحصل كلّ طفل على قطعة واحدة على الأقلّ.[🔗](#subsec-representing-multisets-with-bit-strings-8) وطريقة أخرى (وأعمّ) للتعامل مع هذه المسألة المعدَّلة هي أن تعطي كلّ طفل قطعة بسكويت أوّلًا. والآن يمكن توزيع قطع البسكويت الثلاث الباقية على الأطفال الأربعة دون قيود. فلدينا 3 حصى و3 عصي، أي ما مجموعه 6 رموز، 3 منها يجب أن تكون حواجز. فمرة أخرى نرى أنّ هناك \({6 \choose 3}\) طرق لتوزيع البسكويت.[🔗](#subsec-representing-multisets-with-bit-strings-9) ويمكن استعمال العصي والحصى في مسائل عدّ غير الأطفال والبسكويت. وإليك بعض الأمثلة:[🔗](#subsec-representing-multisets-with-bit-strings-10)
 
-#### Example 3.5.4.
+#### المثال 3.5.4.
 
-Your favorite mathematical ice cream parlor offers 10 flavors. How many milkshakes could you create using exactly 6, not necessarily distinct scoops? The order you add the flavors does not matter (they will be blended up anyway), but you are allowed repeats. So one possible shake is triple chocolate, double cherry, and mint chocolate chip.[🔗](#subsec-representing-multisets-with-bit-strings-11-2-1) Solution. We get six scoops, each of which could be one of ten possible flavors. Represent each scoop as a star. Think of going down the counter one flavor at a time: You see vanilla first, and skip to the next, chocolate. You say yes to chocolate three times (use three stones), then switch to the next flavor. You keep skipping until you get to cherry, which you say yes to twice. Another switch and you are at mint chocolate chip. You say yes once. Then you keep switching until you get past the last flavor, never saying yes again (since you already have said yes six times). There are ten flavors to choose from, so we must switch from considering one flavor to the next nine times. These are the nine bars.[🔗](#subsec-representing-multisets-with-bit-strings-11-3-1) Now that we are confident that we have the right number of sticks and stones, we answer the question simply: There are 6 stones and 9 bars, so 15 symbols. We need to pick 9 of them to be bars, so the number of milkshakes possible is \begin{equation*} \binom{15}{9}\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-11-3-2) [🔗](#subsec-representing-multisets-with-bit-strings-11-3) [🔗](#subsec-representing-multisets-with-bit-strings-11)
+مقهى المثلجات الرياضي المفضّل لديك يقدّم 10 نكهات. كم عدد المخفوقات التي يمكنك صنعها باستخدام 6 كرات بالضبط، من غير أن تكون بالضرورة متمايزة؟ فالترتيب الذي تضيف به النكهات لا يهمّ (فستُدمج على أيّ حال)، لكن يُسمح لك بالتكرار. فمثلًا، أحد المخفوقات الممكنة هو ثلاث كرات شوكولاتة وكارتان كرز وكرة نعناع بالشوكولاتة.[🔗](#subsec-representing-multisets-with-bit-strings-11-2-1) الحل. نحصل على ستّ كرات، يمكن أن يكون كلٌّ منها إحدى عشر نكهة ممكنة. نمثّل كلّ كرة بنجمة. تخيّل أنّك تمشي على طول المنضدة نكهةً نكهة: ترى الفانيليا أوّلًا فتخطّاها إلى التالية، وهي الشوكولاتة. فتقول نعم للشوكولاتة ثلاث مرّات (تستعمل ثلاث حصات)، ثمّ تنتقل إلى النكهة التالية. تواصل الخطّط حتى تصل إلى الكرز، فتقول نعم له مرّتين. وانتقال آخر فأنت عند النعناع بالشوكولاتة. فتقول نعم مرّة واحدة. ثمّ تواصل الانتقال حتى تتجاوز النكهة الأخيرة، دون أن تقول نعم مجدّدًا (لأنّك قلت نعم ستّ مرّات من قبل). وهناك عشر نكهات للاختيار من بينها، إذن علينا الانتقال من اعتبار نكهة إلى التالية تسع مرّات. وهذه هي الحواجز التسعة.[🔗](#subsec-representing-multisets-with-bit-strings-11-3-1) والآن بعد أن اطمأنّنا إلى أنّ لدينا العدد الصحيح من العصي والحصى، نُجيب عن السؤال ببساطة: هناك 6 حصات و9 حواجز، أي 15 رمزًا. وعلينا اختيار 9 منها لتكون حواجز، إذن عدد المخفوقات الممكنة هو \begin{equation*} \binom{15}{9}\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-11-3-2) [🔗](#subsec-representing-multisets-with-bit-strings-11-3) [🔗](#subsec-representing-multisets-with-bit-strings-11)
 
-#### Example 3.5.5.
+#### المثال 3.5.5.
 
-How many 7 digit phone numbers are there in which the digits are non-increasing? That is, every digit is less than or equal to the previous one.[🔗](#subsec-representing-multisets-with-bit-strings-12-1-1) Solution. We need to decide on 7 digits, so we will use 7 stones. The sticks will represent a switch from each possible single-digit number down to the next smaller one. So the phone number 866-5221 is represented by the sticks and stones chart \begin{equation*} |\o||\o\o|\o|||\o\o|\o|\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-12-2-1) There are 10 choices for each digit (0-9), so we must switch between choices 9 times. We have 7 stones and 9 bars, so the total number of phone numbers is \begin{equation*} {16 \choose 9}\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-12-2-2) [🔗](#subsec-representing-multisets-with-bit-strings-12-2) [🔗](#subsec-representing-multisets-with-bit-strings-12)
+كم عدد أرقام الهواتف المكوّنة من 7 خانات والتي تكون أرقامها غير متزايدة؟ أي أنّ كلّ رقم أصغر أو مساوٍ للذي يسبقه.[🔗](#subsec-representing-multisets-with-bit-strings-12-1-1) الحل. علينا اتّخاذ قرار بشأن 7 أرقام، إذن سنستعمل 7 حصى. وستمثّل العصي انتقالًا من كلّ رقم من رقم واحد ممكن إلى الرقم الأصغر الذي يليه. فرقم الهاتف 866-5221 يمثّله مخطط العصي والحصى التالي \begin{equation*} |\o||\o\o|\o|||\o\o|\o|\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-12-2-1) وهناك 10 خيارات لكلّ رقم (0-9)، إذن علينا الانتقال بين الخيارات تسع مرّات. ولدينا 7 حصى و9 حواجز، إذن العدد الكلي لأرقام الهواتف هو \begin{equation*} {16 \choose 9}\text{.} \end{equation*} [🔗](#subsec-representing-multisets-with-bit-strings-12-2-2) [🔗](#subsec-representing-multisets-with-bit-strings-12-2) [🔗](#subsec-representing-multisets-with-bit-strings-12)
 
-#### Example 3.5.6.
+#### المثال 3.5.6.
 
-How many integer solutions are there to the equation \begin{equation*} x_1 + x_2 + x_3 + x_4 + x_5 = 13\text{.} \end{equation*} [🔗](#example-multisets-int-sol-2-1) (An integer solution to an equation is a solution in which the unknown must have an integer value.)[🔗](#example-multisets-int-sol-2-2)
+كم عدد الحلول الصحيحة للمعادلة \begin{equation*} x_1 + x_2 + x_3 + x_4 + x_5 = 13\text{.} \end{equation*} [🔗](#example-multisets-int-sol-2-1) (الحلّ الصحيح للمعادلة هو حلٌّ يجب أن تكون فيه المجهولات ذات قيم صحيحة.)[🔗](#example-multisets-int-sol-2-2)
 
-1. where \(x_i \ge 0\) for each \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-1-1) [🔗](#example-multisets-int-sol-2-3-1-1)
-2. where \(x_i > 0\) for each \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-2-1) [🔗](#example-multisets-int-sol-2-3-1-2)
-3. where \(x_i \ge 2\) for each \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-3-1) [🔗](#example-multisets-int-sol-2-3-1-3)
+1. حيث \(x_i \ge 0\) لكلّ \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-1-1) [🔗](#example-multisets-int-sol-2-3-1-1)
+2. حيث \(x_i > 0\) لكلّ \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-2-1) [🔗](#example-multisets-int-sol-2-3-1-2)
+3. حيث \(x_i \ge 2\) لكلّ \(x_i\text{?}\)[🔗](#example-multisets-int-sol-2-3-1-3-1) [🔗](#example-multisets-int-sol-2-3-1-3)
 
-[🔗](#example-multisets-int-sol-2-3) Solution. This problem is just like giving 13 cookies to 5 kids. We need to say how many of the 13 units go to each of the 5 variables. In other words, we have 13 stones and 4 bars (the sticks are like the “+” signs in the equation).[🔗](#example-multisets-int-sol-3-1)
+[🔗](#example-multisets-int-sol-2-3) الحل. هذه المسألة مثل تمامًا إعطاء 13 قطعة بسكويت على 5 أطفال. وعلينا أن نقول كم من الوحدات الثلاث عشرة يذهب إلى كلٍّ من المتغيّرات الخمسة. وبعبارات أخرى، لدينا 13 حجرًا و4 حواجز (العصي تشبه علامات «+» في المعادلة).[🔗](#example-multisets-int-sol-3-1)
 
-1. If \(x_i\) can be 0 or greater, we are in the standard case with no restrictions. So 13 stones and 4 sticks can be arranged in \({17 \choose 4}\) ways.[🔗](#example-multisets-int-sol-3-2-1-1-1) [🔗](#example-multisets-int-sol-3-2-1-1)
-2. Now each variable must be at least 1. So give one unit to each variable to satisfy that restriction. Now there are 8 stones left, and still 4 bars, so the number of solutions is \({12 \choose 4}\text{.}\)[🔗](#example-multisets-int-sol-3-2-1-2-1) [🔗](#example-multisets-int-sol-3-2-1-2)
-3. Now each variable must be 2 or greater. So before any counting, give each variable 2 units. We now have 3 remaining stones and 4 bars, so there are \({7 \choose 4}\) solutions.[🔗](#example-multisets-int-sol-3-2-1-3-1) [🔗](#example-multisets-int-sol-3-2-1-3)
+1. إذا كان \(x_i\) يساوي 0 أو أكثر، فإنّنا في الحالة القياسية بلا قيود. ومن ثمّ يمكن ترتيب 13 حجرًا و4 عصي بـ\({17 \choose 4}\) طريقة.[🔗](#example-multisets-int-sol-3-2-1-1-1) [🔗](#example-multisets-int-sol-3-2-1-1)
+2. والآن يجب أن يكون كلّ متغيّر 1 على الأقلّ. إذن أعطِ كلّ متغيّر وحدة واحدة لاستيفاء ذلك القيد. والآن تبقّى 8 حصى، وما زالت هناك 4 حواجز، إذن عدد الحلول هو \({12 \choose 4}\text{.}\)[🔗](#example-multisets-int-sol-3-2-1-2-1) [🔗](#example-multisets-int-sol-3-2-1-2)
+3. والآن يجب أن يكون كلّ متغيّر 2 أو أكثر. إذن قبل أيّ عدّ، أعطِ كلّ متغيّر وحدتين. ولدينا الآن 3 حصى باقية و4 حواجز، إذن هناك \({7 \choose 4}\) حلولًا.[🔗](#example-multisets-int-sol-3-2-1-3-1) [🔗](#example-multisets-int-sol-3-2-1-3)
 
 [🔗](#example-multisets-int-sol-3-2) [🔗](#example-multisets-int-sol-3) [🔗](#example-multisets-int-sol)
 
-#### Counting with Functions.
+#### العدّ باستخدام الدوال.
 
-Many of the counting problems in this section might at first appear to be examples of counting *functions*. After all, when we try to count the number of ways to distribute cookies to kids, we are assigning each cookie to a kid, just like you assign elements of the domain of a function to elements in the codomain. However, the number of ways to assign 7 cookies to 4 kids is \({10 \choose 7} = 120\text{,}\) while the number of functions \(f: \{1,2,3,4,5,6,7\} \to \{a,b,c,d\}\) is \(4^7 = 16384\text{.}\) What is going on here?[🔗](#subsec-representing-multisets-with-bit-strings-14-3) When we count functions, we consider the following two functions, for example, to be different: \begin{equation*} f = \twoline{1 \amp 2 \amp 3 \amp 4\amp 5 \amp 6 \amp 7}{a \amp b \amp c \amp c \amp c \amp c \amp c} \qquad g = \twoline{1 \amp 2 \amp 3 \amp 4\amp 5 \amp 6 \amp 7}{b \amp a \amp c \amp c \amp c \amp c \amp c}\text{.} \end{equation*} But these two functions would correspond to the *same* cookie distribution: Kids \(a\) and \(b\) each get one cookie, and kid \(c\) gets the rest (and none for kid \(d\)). [🔗](#subsec-representing-multisets-with-bit-strings-14-4) The point: Elements of the domain are distinguished, but cookies are indistinguishable. This is analogous to the distinction between permutations (like counting functions) and combinations (not).[🔗](#subsec-representing-multisets-with-bit-strings-14-5) [🔗](#subsec-representing-multisets-with-bit-strings-14)[🔗](#subsec-representing-multisets-with-bit-strings)
+كثير من مسائل العدّ في هذا القسم قد تبدو أوّل الأمر أمثلة على عدّ *الدوال* (functions). فبعد كلّ شيء، عندما نحاول عدّ عدد طرق توزيع البسكويت على الأطفال، فإنّنا نُسند كلّ قطعة بسكويت إلى طفل، تمامًا كما تُسند عناصر نطاق الدالة إلى عناصر مجموعة قيمها. غير أنّ عدد طرق إسناد 7 قطع بسكويت إلى 4 أطفال هو \({10 \choose 7} = 120\text{,}\) في حين أنّ عدد الدوال \(f: \{1,2,3,4,5,6,7\} \to \{a,b,c,d\}\) هو \(4^7 = 16384\text{.}\) فما الذي يحدث هنا؟[🔗](#subsec-representing-multisets-with-bit-strings-14-3) فحين نعدّ الدوال، فإنّنا نعتبر الدالتين التاليتين، على سبيل المثال، مختلفتين: \begin{equation*} f = \twoline{1 \amp 2 \amp 3 \amp 4\amp 5 \amp 6 \amp 7}{a \amp b \amp c \amp c \amp c \amp c \amp c} \qquad g = \twoline{1 \amp 2 \amp 3 \amp 4\amp 5 \amp 6 \amp 7}{b \amp a \amp c \amp c \amp c \amp c \amp c}\text{.} \end{equation*} لكنّ هاتين الدالتين ستقابلان *توزيع* البسكويت *نفسه*: يحصل كلٌّ من الطفلين \(a\) و\(b\) على قطعة بسكويت واحدة، ويحصل الطفل \(c\) على البقيّة (ولا شيء للطفل \(d\)). [🔗](#subsec-representing-multisets-with-bit-strings-14-4) والمقصود: عناصر النطاق متمايزة، أمّا قطع البسكويت فغير متمايزة. وهذا يماثل التمييز بين التبديلات (مثل عدّ الدوال) والتوافيق (لا شيء من ذلك).[🔗](#subsec-representing-multisets-with-bit-strings-14-5) [🔗](#subsec-representing-multisets-with-bit-strings-14)[🔗](#subsec-representing-multisets-with-bit-strings)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-Which of the following counting questions are NOT an example of a question you would use sticks and stones to solve?[🔗](#rq-counting-multisets-nonex-1-1)
+أيّ من أسئلة العدّ التالية ليس مثالًا على سؤال كنت ستستعمل العصي والحصى لحلّه؟[🔗](#rq-counting-multisets-nonex-1-1)
 
-- How many ways can you distribute six unique gifts to three friends?
-- Correct. Because the gifts are distinct, we have three choices for the first gift, three for the second, etc, making the answer \(3^6\text{.}\)
-- How many ways can you distribute six identical gifts to three friends?
-- You can use sticks and stones here: use two sticks to separate your three friends, and use six stones for the gifts.
-- How many different combinations of numbers can you get if you roll three identical 6-side dice?
-- Use five sticks to separate the six values on the dice. Each stone represents one of the identical dice.
-- How many different three-scoop milkshakes can you make when each scoop of ice cream can be one of six different flavors?
-- Use five sticks and three stones!
+- كم عدد الطرق التي يمكنك بها توزيع ستّ هدايا فريدة على ثلاثة أصدقاء؟
+- صحيح. لأنّ الهدايا متمايزة، لدينا ثلاثة خيارات للهدية الأولى، وثلاثة للثانية، وهكذا، فيكون الجواب \(3^6\text{.}\)
+- كم عدد الطرق التي يمكنك بها توزيع ستّ هدايا متطابقة على ثلاثة أصدقاء؟
+- يمكنك هنا استعمال العصي والحصى: استعمل عصين لفصل أصدقائك الثلاثة، وستّ حصات للهدايا.
+- كم عدد التوليفات المختلفة من الأعداد التي يمكنك الحصول عليها إذا رميت ثلاث قطع نرد متطابقة ذات 6 أوجه؟
+- استعمل خمس عصٍّ لفصل القيم الستّ على قطع النرد. ويمثّل كلّ حجر إحدى قطع النرد المتطابقة.
+- كم عدد مخفوقات الثلاث كرات المختلفة التي يمكنك صنعها عندما يمكن أن تكون كلّ كرة آيس كريم إحدى ستّ نكهات مختلفة؟
+- استعمل خمس عصٍّ وثلاث حصات!
 
 [🔗](#rq-counting-multisets-nonex)
 
 #### 2.
 
-When you count outcomes using sticks and stones, does order matter? Do you allow repeats? What do you mean by your answers (the order of what, the repeat of what)?[🔗](#rq-counting-multisets-order-repeats-1-1) [🔗](#rq-counting-multisets-order-repeats)
+حين تعدّ النتائج باستعمال العصي والحصى، هل الترتيب مهمّ؟ هل تسمح بالتكرار؟ وماذا تقصد بإجاباتك (ترتيب ماذا، تكرار ماذا)؟[🔗](#rq-counting-multisets-order-repeats-1-1) [🔗](#rq-counting-multisets-order-repeats)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-counting-multisets-q-1-1) [🔗](#rq-counting-multisets-q)[🔗](#rqs-counting-multisets)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب على الأقلّ سؤالًا واحدًا عن محتوى هذا القسم يثير فضولك.[🔗](#rq-counting-multisets-q-1-1) [🔗](#rq-counting-multisets-q)[🔗](#rqs-counting-multisets)
 
-### Exercises Practice Problems
+### تمارين مسائل تطبيقية
 
 #### 1.
 
-Activate A multiset is a collection of objects, just like a set, but can contain an object more than once (the order of the elements still doesn’t matter). For example, \(\{1,1, 2, 5, 5, 7\}\) is a multiset of size 6.
+Activate المجموعة المتعدّدة (multiset) هي مجموعة من الأشياء، مثل المجموعة تمامًا، لكن يمكن أن تحتوي على الشيء أكثر من مرّة (فترتيب العناصر لا يهمّ بعد). فمثلًا، \(\{1,1, 2, 5, 5, 7\}\) مجموعة متعدّدة ذات حجم 6.
 
-1. How many *sets* of size 5 can be made using the 10 numeric digits 0 through 9?[🔗](#extracted-webwork-128-1-1-1-3-1-1) [🔗](#extracted-webwork-128-1-1-1-3-1)
-2. How many *multi*sets of size 5 can be made using the 10 numeric digits 0 through 9?[🔗](#extracted-webwork-128-1-1-1-3-2-1) [🔗](#extracted-webwork-128-1-1-1-3-2)
+1. كم عدد *المجموعات* ذات الحجم 5 التي يمكن تكوينها باستعمال الأرقام العشرية العشرة من 0 إلى 9؟[🔗](#extracted-webwork-128-1-1-1-3-1-1) [🔗](#extracted-webwork-128-1-1-1-3-1)
+2. كم عدد *المجموعات المتعدّدة* ذات الحجم 5 التي يمكن تكوينها باستعمال الأرقام العشرية العشرة من 0 إلى 9؟[🔗](#extracted-webwork-128-1-1-1-3-2-1) [🔗](#extracted-webwork-128-1-1-1-3-2)
 
 [🔗](#extracted-webwork-128-1-1-1) [🔗](#ww-sb-multisets)
 
 #### 2.
 
-Activate Using the digits 2 through 7, find the number of different 5-digit numbers such that:
+Activate باستعمال الأرقام من 2 إلى 7، جدّ عدد الأرقام المختلفة المكوّنة من 5 خانات بحيث:
 
-1. Digits cannot be repeated and must be written in increasing order. (*Increasing* means *strictly* increasing. For example, the digits of 134 are increasing, but the digits of 133 are not.)[🔗](#extracted-webwork-129-1-1-1-1-1-1) [🔗](#extracted-webwork-129-1-1-1-1-1)
-2. Digits *can* be repeated and must be written in *non-decreasing* order. (Now the digits don’t need to be strictly increasing; 133 has digits non-decreasing.)[🔗](#extracted-webwork-129-1-1-1-1-2-1) [🔗](#extracted-webwork-129-1-1-1-1-2)
+1. لا يمكن تكرار الأرقام ويجب كتابتها بترتيب متزايد. (المتزايد يعني *تمامًا* متزايد. فمثلًا، أرقام 134 متزايدة، أمّا أرقام 133 فليست كذلك.)[🔗](#extracted-webwork-129-1-1-1-1-1-1) [🔗](#extracted-webwork-129-1-1-1-1-1)
+2. *يمكن* تكرار الأرقام ويجب كتابتها بترتيب *غير متناقص*. (والآن لا تحتاج الأرقام أن تكون متزايدة تمامًا؛ فـ 133 لها أرقام غير متناقصة.)[🔗](#extracted-webwork-129-1-1-1-1-2-1) [🔗](#extracted-webwork-129-1-1-1-1-2)
 
 [🔗](#extracted-webwork-129-1-1-1) [🔗](#ww-sb-digits)
 
 #### 3.
 
-Activate After gym class you are tasked with putting the 21 identical dodgeballs away into 10 bins.
+Activate بعد حصّة التربية البدنية، يُكلَّفك بإعادة 21 كرة خدّاعية متطابقة إلى 10 صناديق.
 
-1. How many ways can you do this if there are no restrictions?[🔗](#extracted-webwork-130-1-1-1-1-1-1) [🔗](#extracted-webwork-130-1-1-1-1-1)
-2. How many ways can you do this if each bin must contain at least one dodgeball?[🔗](#extracted-webwork-130-1-1-1-1-2-1) [🔗](#extracted-webwork-130-1-1-1-1-2)
+1. كم عدد الطرق التي يمكنك بها فعل ذلك إذا لم تكن هناك قيود؟[🔗](#extracted-webwork-130-1-1-1-1-1-1) [🔗](#extracted-webwork-130-1-1-1-1-1)
+2. كم عدد الطرق التي يمكنك بها فعل ذلك إذا كان على كلّ صندوق أن يحتوي على كرة خدّاعية واحدة على الأقلّ؟[🔗](#extracted-webwork-130-1-1-1-1-2-1) [🔗](#extracted-webwork-130-1-1-1-1-2)
 
 [🔗](#extracted-webwork-130-1-1-1) [🔗](#ww-sb-balls)
 
 #### 4.
 
-Activate How many integer solutions are there to the equation \(x + y + z = 11\) for which
+Activate كم عدد الحلول الصحيحة للمعادلة \(x + y + z = 11\) التي
 
-1. \(x\text{,}\) \(y\text{,}\) and \(z\) are all positive?[🔗](#extracted-webwork-131-1-1-1-2-1-1) [🔗](#extracted-webwork-131-1-1-1-2-1)
-2. \(x\text{,}\) \(y\text{,}\) and \(z\) are all non-negative?[🔗](#extracted-webwork-131-1-1-1-2-2-1) [🔗](#extracted-webwork-131-1-1-1-2-2)
-3. \(x\text{,}\) \(y\text{,}\) and \(z\) are all greater than or equal to \(-3\text{.}\)[🔗](#extracted-webwork-131-1-1-1-2-3-1) [🔗](#extracted-webwork-131-1-1-1-2-3)
+1. يكون فيها \(x\text{,}\) و\(y\text{,}\) و\(z\) جميعها موجبة؟[🔗](#extracted-webwork-131-1-1-1-2-1-1) [🔗](#extracted-webwork-131-1-1-1-2-1)
+2. يكون فيها \(x\text{,}\) و\(y\text{,}\) و\(z\) جميعها غير سالبة؟[🔗](#extracted-webwork-131-1-1-1-2-2-1) [🔗](#extracted-webwork-131-1-1-1-2-2)
+3. يكون فيها \(x\text{,}\) و\(y\text{,}\) و\(z\) جميعها أكبر من \(-3\text{.}\) أو مساوية له؟[🔗](#extracted-webwork-131-1-1-1-2-3-1) [🔗](#extracted-webwork-131-1-1-1-2-3)
 
 [🔗](#extracted-webwork-131-1-1-1) [🔗](#ww-sb-sums)
 
 #### 5.
 
-Activate When playing Yahtzee, you roll five regular 6-sided dice. How many different outcomes are possible from a single roll? The order of the dice does not matter.[🔗](#extracted-webwork-132-1-1-1) When playing Super-Yahtzee, you roll 6 regular 5-sided dice. Now how any different outcomes are possible from a single roll?[🔗](#extracted-webwork-132-1-1-2) [🔗](#ww-sb-yahtzee)
+Activate عند لعب لعبة ياتزي، ترمي خمس قطع نرد عادية ذات 6 أوجه. كم عدد النتائج المختلفة الممكنة من رمية واحدة؟ فترتيب قطع النرد لا يهمّ.[🔗](#extracted-webwork-132-1-1-1) وعند لعب Super-Yahtzee، ترمي 6 قطع نرد عادية ذات 5 أوجه. فكم الآن عدد النتائج المختلفة الممكنة من رمية واحدة؟[🔗](#extracted-webwork-132-1-1-2) [🔗](#ww-sb-yahtzee)
 
 #### 6.
 
-Activate Your friend tells you she has 11 coins in her hand (just pennies, nickels, dimes, and quarters). If you guess how many of each kind of coin she has, she will give them to you. If you guess randomly, what is the probability that you will be correct?[🔗](#extracted-webwork-133-1-1-1) Hint. The probability will be 1 divided by however many different combinations of 11 coins your friend could have.[🔗](#extracted-webwork-133-1-2-1) [🔗](#extracted-webwork-133-1-2) [🔗](#ww-sb-coins)
+Activate تخبرك صديقت أنّ في يدها 11 عملة معدنية (فقط السنتات والنيكلات والدايمات والأربعات). فإذا خمّنت كم عملة من كلّ نوع لديها، فستعطيك إيّاها. وإذا خمّنت عشوائيًا، فما احتمال أن تكون على صواب؟[🔗](#extracted-webwork-133-1-1-1) تلميح. سيكون الاحتمال 1 مقسومًا على عدد التوليفات المختلفة من 11 عملة معدنية يمكن أن تكون لدى صديقتك.[🔗](#extracted-webwork-133-1-2-1) [🔗](#extracted-webwork-133-1-2) [🔗](#ww-sb-coins)
 
 #### 7.
 
-Activate How many integer solutions to \(x_1 + x_2 + x_3 + x_4 = 38\) are there for which \(x_1 \ge 4\text{,}\) \(x_2 \ge 4\text{,}\) \(x_3 \ge 1\text{,}\) and \(x_4\ge 1\text{?}\)[🔗](#extracted-webwork-134-1-1-1) [🔗](#ww-sb-restricted-sums)
+Activate كم عدد الحلول الصحيحة للمعادلة \(x_1 + x_2 + x_3 + x_4 = 38\) التي تتحقّق فيها الشروط \(x_1 \ge 4\text{,}\) و\(x_2 \ge 4\text{,}\) و\(x_3 \ge 1\text{,}\) و\(x_4\ge 1\text{?}\)[🔗](#extracted-webwork-134-1-1-1) [🔗](#ww-sb-restricted-sums)
 
 #### 8.
 
-Activate Consider functions \(f:{\left\{1,2,3,4,5,6,7\right\}} \to {\left\{0,1,2,3,4,5,6,7,8,9,10\right\}}\text{.}\)
+Activate تأمّل الدوال \(f:{\left\{1,2,3,4,5,6,7\right\}} \to {\left\{0,1,2,3,4,5,6,7,8,9,10\right\}}\text{.}\)
 
-1. How many of these functions are strictly increasing? Explain. (A function is strictly increasing provided if \(\renewcommand{\v}{\vtx{above}{}}a \lt b\text{,}\) then \(\renewcommand{\v}{\vtx{above}{}}f(a) \lt f(b)\text{.}\))[🔗](#extracted-webwork-135-1-1-1-2-1-1) [🔗](#extracted-webwork-135-1-1-1-2-1)
-2. How many of the functions are non-decreasing? Explain. (A function is non-decreasing provided if \(\renewcommand{\v}{\vtx{above}{}}a \lt b\text{,}\) then \(f(a) \le f(b)\text{.}\))[🔗](#extracted-webwork-135-1-1-1-2-2-1) [🔗](#extracted-webwork-135-1-1-1-2-2)
+1. كم عدد هذه الدوال المتزايدة تمامًا؟ اشرح. (الدالة متزايدة تمامًا إذا كان، متى كان \(\renewcommand{\v}{\vtx{above}{}}a \lt b\text{,}\) فإنّ \(\renewcommand{\v}{\vtx{above}{}}f(a) \lt f(b)\text{.}\))[🔗](#extracted-webwork-135-1-1-1-2-1-1) [🔗](#extracted-webwork-135-1-1-1-2-1)
+2. كم عدد الدوال غير المتناقصة؟ اشرح. (الدالة غير متناقصة إذا كان، متى كان \(\renewcommand{\v}{\vtx{above}{}}a \lt b\text{,}\) فإنّ \(f(a) \le f(b)\text{.}\))[🔗](#extracted-webwork-135-1-1-1-2-2-1) [🔗](#extracted-webwork-135-1-1-1-2-2)
 
 [🔗](#extracted-webwork-135-1-1-1) [🔗](#ww-sb-functions)
 
 #### 9.
 
-Activate *Conic*, your favorite math themed fast food drive-in offers 17 flavors which can be added to your soda. You have enough money to buy a large soda with 7 added flavors. How many different soda concoctions can you order if:
+Activate *Conic*، مطعم الوجبات السريعة المفضّل لديك ذو الطابع الرياضي، يقدّم 17 نكهة يمكن إضافتها إلى مشروبك الغازي. ولدينا ما يكفي من المال لشراء مشروب غازي كبير مع 7 نكهات مُضافة. كم عدد المشروبات الغازية المختلفة التي يمكنك طلبها إذا:
 
-1. You refuse to use any of the flavors more than once?[🔗](#extracted-webwork-136-1-1-1-2-1-1) [🔗](#extracted-webwork-136-1-1-1-2-1)
-2. You refuse repeats but care about the order in which the flavors are added?[🔗](#extracted-webwork-136-1-1-1-2-2-1) [🔗](#extracted-webwork-136-1-1-1-2-2)
-3. You allow yourself multiple shots of the same flavor?[🔗](#extracted-webwork-136-1-1-1-2-3-1) [🔗](#extracted-webwork-136-1-1-1-2-3)
-4. You allow yourself multiple shots, and care about the order in which the flavors are added?[🔗](#extracted-webwork-136-1-1-1-2-4-1) [🔗](#extracted-webwork-136-1-1-1-2-4)
+1. رفضت استعمال أيّ من النكهات أكثر من مرّة؟[🔗](#extracted-webwork-136-1-1-1-2-1-1) [🔗](#extracted-webwork-136-1-1-1-2-1)
+2. رفضت التكرار لكنّك تهتمّ بالترتيب الذي تُضاف به النكهات؟[🔗](#extracted-webwork-136-1-1-1-2-2-1) [🔗](#extracted-webwork-136-1-1-1-2-2)
+3. سمحت لنفسك بكميات متعدّدة من النكهة نفسها؟[🔗](#extracted-webwork-136-1-1-1-2-3-1) [🔗](#extracted-webwork-136-1-1-1-2-3)
+4. سمحت لنفسك بكميات متعدّدة، وتهمّك الترتيب الذي تُضاف به النكهات؟[🔗](#extracted-webwork-136-1-1-1-2-4-1) [🔗](#extracted-webwork-136-1-1-1-2-4)
 
 [🔗](#extracted-webwork-136-1-1-1) [🔗](#ww-sb-soda)[🔗](#exercises_stars-and-bars)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-Each of the counting problems below can be solved with sticks and stones. For each, say what outcome the diagram \begin{equation*} \o\o\o|\o||\o\o| \end{equation*} represents, if there are the correct number of sticks and stones for the problem. Otherwise, say why the diagram does not represent any outcome, and what a correct diagram would look like.
+يمكن حلّ كلّ من مسائل العدّ التالية بالعصي والحصى. فلكلّ مسألة، قل ما الناتج الذي يمثّله المخطط \begin{equation*} \o\o\o|\o||\o\o| \end{equation*} إن كان فيه العدد الصحيح من العصي والحصى الخاصّ بالمسألة. وإلّا فقل لماذا لا يمثّل المخطط أيّ ناتج، وكيف يبدو المخطط الصحيح.
 
-1. How many ways are there to select a handful of 6 jellybeans from a jar that contains 5 different flavors?[🔗](#exercises_multisets-2-1-1-2-1-1) [🔗](#exercises_multisets-2-1-1-2-1)
-2. How many ways can you distribute 5 identical lollipops to 6 kids?[🔗](#exercises_multisets-2-1-1-2-2-1) [🔗](#exercises_multisets-2-1-1-2-2)
-3. How many 6-letter words can you make using the 5 vowels in alphabetical order?[🔗](#exercises_multisets-2-1-1-2-3-1) [🔗](#exercises_multisets-2-1-1-2-3)
-4. How many solutions are there to the equation \(x_1 + x_2 + x_3 + x_4 = 6\text{.}\)[🔗](#exercises_multisets-2-1-1-2-4-1) [🔗](#exercises_multisets-2-1-1-2-4)
+1. كم عدد الطرق لاختيار حفنة من 6 حبّات حلوى من وعاء يحتوي على 5 نكهات مختلفة؟[🔗](#exercises_multisets-2-1-1-2-1-1) [🔗](#exercises_multisets-2-1-1-2-1)
+2. كم عدد الطرق التي يمكنك بها توزيع 5 مصاصات متطابقة على 6 أطفال؟[🔗](#exercises_multisets-2-1-1-2-2-1) [🔗](#exercises_multisets-2-1-1-2-2)
+3. كم عدد الكلمات ذات الأحرف الستّ التي يمكنك تكوينها باستعمال حروف المدّ الخمسة بترتيب أبجدي؟[🔗](#exercises_multisets-2-1-1-2-3-1) [🔗](#exercises_multisets-2-1-1-2-3)
+4. كم عدد الحلول للمعادلة \(x_1 + x_2 + x_3 + x_4 = 6\text{.}\)[🔗](#exercises_multisets-2-1-1-2-4-1) [🔗](#exercises_multisets-2-1-1-2-4)
 
 [🔗](#exercises_multisets-2-1-1) [🔗](#exercises_multisets-2)
 
 #### 2.
 
-Solve the three counting problems below. Then say why it makes sense that they all have the same answer. That is, say how you can interpret them as each other.
+حلّ مسائل العدّ الثلاث التالية. ثمّ قل لماذا من المنطقي أن يكون لها جميعًا الجواب نفسه. أي بعبارة أخرى، قل كيف يمكنك تفسير كلٍّ منها في ضوء الأخرى.
 
-1. How many ways are there to distribute 8 cookies to 3 kids?[🔗](#exercises_multisets-3-1-1-1-1-1) [🔗](#exercises_multisets-3-1-1-1-1)
-2. How many solutions in non-negative integers are there to \(x+y+z = 8\text{?}\)[🔗](#exercises_multisets-3-1-1-1-2-1) [🔗](#exercises_multisets-3-1-1-1-2)
-3. How many different packs of 8 crayons can you make using crayons that come in red, blue, and yellow?[🔗](#exercises_multisets-3-1-1-1-3-1) [🔗](#exercises_multisets-3-1-1-1-3)
+1. كم عدد الطرق لتوزيع 8 قطع بسكويت على 3 أطفال؟[🔗](#exercises_multisets-3-1-1-1-1-1) [🔗](#exercises_multisets-3-1-1-1-1)
+2. كم عدد الحلول الصحيحة غير السالبة للمعادلة \(x+y+z = 8\text{?}\)[🔗](#exercises_multisets-3-1-1-1-2-1) [🔗](#exercises_multisets-3-1-1-1-2)
+3. كم عدد العلب المختلفة من 8 قلم تلوين يمكنك صنعها باستعمال أقلام تلouin تأتي بالأحمر والأزرق والأصفر؟[🔗](#exercises_multisets-3-1-1-1-3-1) [🔗](#exercises_multisets-3-1-1-1-3)
 
 [🔗](#exercises_multisets-3-1-1) [🔗](#exercises_multisets-3)
 
 #### 3.
 
-We have represented multisets with sticks and stones diagrams, then counted the number of sticks and stones diagrams to tell us the number of multisets. This is only a valid process if every multiset corresponds to exactly one sticks and stones diagram, and vice versa.[🔗](#exercises_multisets-4-1-1)
+لقد مثّلنا المجموعات المتعدّدة بمخططات العصي والحصى، ثمّ عددنا مخططات العصي والحصى لتخبرنا بعدد المجموعات المتعدّدة. وهذه عملية صحيحة فقط إذا كانت كلّ مجموعة متعدّدة تقابل مخطط عصي وحصى واحدًا بالضبط، والعكس.[🔗](#exercises_multisets-4-1-1)
 
 #### (a)
 
-Clearly write down the rule for how to convert a multiset into a sticks and stones diagram. That is, describe the function \(f\) that takes a multiset as input and outputs a sticks and stones diagram.[🔗](#exercises_multisets-4-2-1-1) [🔗](#exercises_multisets-4-2)
+اكتب بوضوح القاعدة التي تحوّل مجموعة متعدّدة إلى مخطط عصي وحصى. أي بعبارة أخرى، صِف الدالة \(f\) التي تأخذ مجموعة متعدّدة كمدخل وتُخرج مخطط عصي وحصى.[🔗](#exercises_multisets-4-2-1-1) [🔗](#exercises_multisets-4-2)
 
 #### (b)
 
-Prove that the function \(f\) is a bijection. That is, prove that every sticks and stones diagram corresponds to exactly one multiset, and vice versa.[🔗](#exercises_multisets-4-3-1-1) Hint. This really requires proving four facts. That every multiset corresponds to at least one diagram, and that every diagram corresponds to at least one multiset. Then that every multiset corresponds to at most one diagram, and that every diagram corresponds to at most one multiset. In other words, we must prove that the function is well defined, injective, and surjective.[🔗](#exercises_multisets-4-3-2-1) [🔗](#exercises_multisets-4-3-2) [🔗](#exercises_multisets-4-3)[🔗](#exercises_multisets-4)[🔗](#exercises_multisets)[🔗](#sec_counting-multisets) [&#xe5cb;Prev](sec_counting-combperm.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_comb-proofs.html) [Feedback](/cdn-cgi/l/email-protection#4c233f2f2d3e6220293a25220c39222f2362292839)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_counting-multisets-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_counting-multisets-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+برهن أنّ الدالة \(f\) تقابلية (bijection). أي بعبارة أخرى، برهن أنّ كلّ مخطط عصي وحصى يقابل مجموعة متعدّدة واحدة بالضبط، والعكس.[🔗](#exercises_multisets-4-3-1-1) تلميح. يتطلّب هذا في الحقيقة برهان أربع وقائع. Namely أنّ كلّ مجموعة متعدّدة تقابل مخططًا واحدًا على الأقلّ، وأنّ كلّ مخطط يقابل مجموعة متعدّدة واحدة على الأقلّ. ثمّ أنّ كلّ مجموعة متعدّدة تقابل مخططًا واحدًا على الأكثر، وأنّ كلّ مخطط يقابل مجموعة متعدّدة واحدة على الأكثر. وبعبارات أخرى، علينا برهان أنّ الدالة معرَّفة تعريفًا جيدًا (well defined)، وأحادية (injective)، وشاملة (surjective).[🔗](#exercises_multisets-4-3-2-1) [🔗](#exercises_multisets-4-3-2) [🔗](#exercises_multisets-4-3)[🔗](#exercises_multisets-4)[🔗](#exercises_multisets)[🔗](#sec_counting-multisets) [&#xe5cb;Prev](sec_counting-combperm.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_comb-proofs.html) [Feedback](/cdn-cgi/l/email-protection#4c233f2f2d3e6220293a25220c39222f2362292839)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_counting-multisets-RAIcon_cropped.png.webp)](https://runstone.academy)[![MathJax logo](/images/discrete-math/sec_counting-multisets-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

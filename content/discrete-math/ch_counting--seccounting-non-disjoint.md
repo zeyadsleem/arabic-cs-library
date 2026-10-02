@@ -1,248 +1,248 @@
 ---
 title: "Non-Disjoint Outcomes"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_counting-non-disjoint.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 3.3 Non-Disjoint Outcomes
+## القسم 3.3 النتائج غير المتباعدة
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_counting-non-disjoint-2-1-1)
+بعد إتمام هذا القسم، ينبغي أن تكون قادرًا على القيام بما يلي.[🔗](#sec_counting-non-disjoint-2-1-1)
 
-1. Use Venn diagrams to count the number of outcomes in the union of non-disjoint sets.[🔗](#sec_counting-non-disjoint-2-2-1-1) [🔗](#sec_counting-non-disjoint-2-2-1)
-2. Apply the principle of inclusion/exclusion for two and three sets.[🔗](#sec_counting-non-disjoint-2-2-2-1) [🔗](#sec_counting-non-disjoint-2-2-2)
-3. Explain why the principle of inclusion/exclusion works.[🔗](#sec_counting-non-disjoint-2-2-3-1) [🔗](#sec_counting-non-disjoint-2-2-3)
+1. استعمال مخطّطات ڤين (Venn diagrams) لعدّ عدد النتائج في اتحاد المجموعات غير المتباعدة.[🔗](#sec_counting-non-disjoint-2-2-1-1) [🔗](#sec_counting-non-disjoint-2-2-1)
+2. تطبيق مبدأ الاحتواء/الاستبعاد (principle of inclusion/exclusion) على مجموعتين وثلاث مجموعات.[🔗](#sec_counting-non-disjoint-2-2-2-1) [🔗](#sec_counting-non-disjoint-2-2-2)
+3. شرح سبب صحّة مبدأ الاحتواء/الاستبعاد.[🔗](#sec_counting-non-disjoint-2-2-3-1) [🔗](#sec_counting-non-disjoint-2-2-3)
 
 [🔗](#sec_counting-non-disjoint-2)
 
-### Subsection Section Preview
+### القسم الفرعي: معاينة القسم
 
 #### Investigate!
 
-A recent buzz marketing campaign for *The Pie Hole* surveyed patrons on their pie preferences. People were asked whether they enjoyed (A) Apple, (B) Blueberry, or (C) Cherry pie (respondents answered yes or no to each type of pie, and could say yes to more than one type). The following table shows the results of the survey.[🔗](#sec_counting-non-disjoint-3-2-1)
+أجرت حملة تسويق رائجة حديثة لمحلّ *The Pie Hole* استطلاعًا للزبائن حول تفضيلاتهم للفطائر. وسُئل الناس هل يستمتعون بـ (A) فطيرة التفّاح، أم (B) فطيرة التوت الأزرق، أم (C) فطيرة الكرز (أجاب المستجيبون بنعم أو لا عن كلّ نوع من أنواع الفطائر، ويمكنهم أن يقولوا بنعم لأكثر من نوع واحد). ويبيّن الجدول التالي نتائج الاستطلاع.[🔗](#sec_counting-non-disjoint-3-2-1)
 
-| Pies enjoyed: | A | B | C | AB | AC | BC | ABC |
+| أنواع الفطائر المُحبّة: | A | B | C | AB | AC | BC | ABC |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Number of people: | 20 | 13 | 26 | 9 | 15 | 7 | 5 |
+| عدد الأشخاص: | 20 | 13 | 26 | 9 | 15 | 7 | 5 |
 
-How many of those surveyed enjoy at least one of the types of pie? Also, explain why the answer is not 95.[🔗](#sec_counting-non-disjoint-3-2-3) [🔗](#sec_counting-non-disjoint-3-2)In [Section 3.2](sec_counting-combine-outcomes.html) we explored the [sum principle](sec_counting-combine-outcomes.html#principle-sum) as a way of combining two (or more) sets of *disjoint* outcomes. What happens if the outcomes are not disjoint?[🔗](#sec_counting-non-disjoint-3-3) Something different needs to be done. For example, when counting the number of playing cards that are either face cards or red cards, we cannot apply the sum principle to claim there are \(12 + 26 = 38\) cards. The problem is exactly that six cards are both face cards and red cards. There are a few different ways we can handle this that we will explore in this section.[🔗](#sec_counting-non-disjoint-3-4)
+كم عدد المبحوثين الذين يستمتعون بنوعٍ واحد على الأقلّ من أنواع الفطائر؟ واشرح أيضًا لماذا ليس الجواب 95.[🔗](#sec_counting-non-disjoint-3-2-3) [🔗](#sec_counting-non-disjoint-3-2)في [القسم 3.2](sec_counting-combine-outcomes.html) استكشفنا [مبدأ الجمع](sec_counting-combine-outcomes.html#principle-sum) بوصفه طريقةً لدمج مجموعتَي نتائج (أو أكثر) *متباعدة* (disjoint). فماذا يحدث إن لم تكن النتائج متباعدة؟[🔗](#sec_counting-non-disjoint-3-3) يلزم أن نفعل شيئًا مختلفًا. فمثلًا، عند عدّ عدد بطاقات اللعب التي هي إمّا بطاقات وجه وإمّا بطاقات حمراء، لا يمكننا تطبيق مبدأ الجمع لنقل إنّ هناك \(12 + 26 = 38\) بطاقة. فالمشكلة تحديدًا أنّ ستّ بطاقات هي بطاقات وجه وحمراء في الوقت نفسه. وهناك بضع طرق مختلفة يمكننا معالجة هذا بها سنستكشفها في هذا القسم.[🔗](#sec_counting-non-disjoint-3-4)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-counting-non-disjoint)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-counting-non-disjoint)
 
-#### 1. Bit string counting.
+#### 1. عدّ السلاسل الثنائية.
 
-Activate Consider the eight bit strings of length 3. Let’s find the number of strings that start with 1 or have weight 2 (i.e., contain exactly two 1s).[🔗](#extracted-webwork-101-1-1-1)
+Activate فكّر في السلاسل الثنائية الثماني ذات الطول 3. لنجد عدد السلاسل التي تبدأ بـ 1 أو التي وزنها 2 (أي أنّها تحتوي على 1 اثنين بالضبط).[🔗](#extracted-webwork-101-1-1-1)
 
 #### (a)
 
-List all the 3-bit strings that start with 1.[🔗](#extracted-webwork-101-1-2-1-1) [🔗](#extracted-webwork-101-1-2)
+اكتب كلّ السلاسل الثنائية ذات الـ 3 بتات التي تبدأ بـ 1.[🔗](#extracted-webwork-101-1-2-1-1) [🔗](#extracted-webwork-101-1-2)
 
 #### (b)
 
-List all the 3-bit strings that have weight 2.[🔗](#extracted-webwork-101-1-3-1-1) [🔗](#extracted-webwork-101-1-3)
+اكتب كلّ السلاسل الثنائية ذات الـ 3 بتات التي وزنها 2.[🔗](#extracted-webwork-101-1-3-1-1) [🔗](#extracted-webwork-101-1-3)
 
 #### (c)
 
-Now list all the 3-bit strings that start with 1 or have weight 2. But be lazy: Don’t list them from scratch. Use your lists from the two tasks above.[🔗](#extracted-webwork-101-1-4-1-1) [🔗](#extracted-webwork-101-1-4)
+والآن اكتب كلّ السلاسل الثنائية ذات الـ 3 بتات التي تبدأ بـ 1 أو التي وزنها 2. لكنّ لا تتكلّف: لا تكتبها من الصفر. استعمل قائمتيك من المهمّتين أعلاه.[🔗](#extracted-webwork-101-1-4-1-1) [🔗](#extracted-webwork-101-1-4)
 
 #### (d)
 
-How many strings are there in the lists?
+كم عدد السلاسل في القائمتين؟
 
-- Strings that start with 1: [🔗](#extracted-webwork-101-1-5-1-1-1-1-1) [🔗](#extracted-webwork-101-1-5-1-1-1-1)
-- Strings of weight 2: [🔗](#extracted-webwork-101-1-5-1-1-1-2-1) [🔗](#extracted-webwork-101-1-5-1-1-1-2)
-- Strings that start with 1 or have weight 2: [🔗](#extracted-webwork-101-1-5-1-1-1-3-1) [🔗](#extracted-webwork-101-1-5-1-1-1-3)
-- Strings that both start with a 1 *and* have weight 2: [🔗](#extracted-webwork-101-1-5-1-1-1-4-1) [🔗](#extracted-webwork-101-1-5-1-1-1-4)
+- السلاسل التي تبدأ بـ 1: [🔗](#extracted-webwork-101-1-5-1-1-1-1-1) [🔗](#extracted-webwork-101-1-5-1-1-1-1)
+- السلاسل ذات الوزن 2: [🔗](#extracted-webwork-101-1-5-1-1-1-2-1) [🔗](#extracted-webwork-101-1-5-1-1-1-2)
+- السلاسل التي تبدأ بـ 1 أو ذات الوزن 2: [🔗](#extracted-webwork-101-1-5-1-1-1-3-1) [🔗](#extracted-webwork-101-1-5-1-1-1-3)
+- السلاسل التي تبدأ بـ 1 *وتكون* ذات وزن 2 معًا: [🔗](#extracted-webwork-101-1-5-1-1-1-4-1) [🔗](#extracted-webwork-101-1-5-1-1-1-4)
 
 [🔗](#extracted-webwork-101-1-5-1-1) [🔗](#extracted-webwork-101-1-5) [🔗](#pa-counting-non-disjoint-1)
 
-#### 2. Combining lists.
+#### 2. دمج القوائم.
 
-How did you combine your two lists above? Explain how you did it. Then think of another method you could have used, and explain how that would be different.[🔗](#pa-counting-non-disjoint-2-2-1) [🔗](#pa-counting-non-disjoint-2)
+كيف جمعتَ القائمتين أعلاه؟ اشرح كيف فعلتَ ذلك. ثمّ فكّر في طريقة أخرى كان بإمكانك استعمالها، واشرح كيف تختلف عن تلك الطريقة.[🔗](#pa-counting-non-disjoint-2-2-1) [🔗](#pa-counting-non-disjoint-2)
 
-#### 3. Counting favorite mathematicians.
+#### 3. عدّ علماء الرياضيات المفضّلين.
 
-Activate Xiang and Omari are discussing their favorite mathematicians throughout history. Xiang has a list of 7 favorites, while Omari has a list of 5. They discover that they have 3 mathematicians in common. How many mathematicians are on their combined list?[🔗](#extracted-webwork-102-1-1-1) [🔗](#pa-counting-non-disjoint-3)[🔗](#PA-counting-non-disjoint)[🔗](#sec_counting-non-disjoint-3)
+Activate يناقش شيانغ وعُماري علمي الرياضيات المفضّلين إليهما عبر التاريخ. لدى شيانغ قائمة من 7 مفضّلين، بينما لدى عُماري قائمة من 5. ويكتشفان أنّ لديهما 3 علماء رياضيات مشتركين. كم عدد علماء الرياضيات في القائمة المدمجة؟[🔗](#extracted-webwork-102-1-1-1) [🔗](#pa-counting-non-disjoint-3)[🔗](#PA-counting-non-disjoint)[🔗](#sec_counting-non-disjoint-3)
 
-### Subsection Counting with Venn Diagrams
+### القسم الفرعي: العدّ بمخطّطات ڤين
 
-To understand how to deal with combining sets of outcomes that are not disjoint, it will be helpful to use some notation from set theory, which we will briefly review here.[🔗](#subsec_counting-venn-6) Let \(A\) be the set of outcomes for the first event and \(B\) be the set of outcomes for the second event. When we ask for the number of ways either event can happen, the new set of outcomes consists of all outcomes that are in \(A\text{,}\) or \(B\text{,}\) or both. This is nothing more than the union of the set \(A\) and \(B\text{,}\) written \(A \cup B\text{.}\)[🔗](#subsec_counting-venn-7) The sum principle only applies when no outcome belongs to both events. The elements that are common to sets \(A\) and \(B\) are the sets in their intersection, written \(A \cap B\text{.}\) The intersection of two sets is itself a set. If sets \(A\) and \(B\) are disjoint, then there are *no* elements in the intersection, so the intersection is the empty set, written \(\emptyset\text{.}\)[🔗](#subsec_counting-venn-8) We are counting the *number* of outcomes, so what we are really interested in is the size (or cardinality) of the sets. We write the size of a set \(X\) as \(\card{X}\text{.}\)[🔗](#subsec_counting-venn-9) With this notation in hand, we can restate the sum principle as follows.[🔗](#subsec_counting-venn-10)
+لفهم كيفية التعامل مع دمج مجموعات النتائج التي ليست متباعدة، من المفيد استعمال بعض رموز نظرية المجموعات (set theory)، التي سنستعرضها هنا باختصار.[🔗](#subsec_counting-venn-6) لتكن \(A\) مجموعة نتائج الحدث الأوّل، و\(B\) مجموعة نتائج الحدث الثاني. وحين نسأل عن عدد الطرق التي يمكن أن يحدث فيها أيُّ من الحدثين، تتكوّن مجموعة النتائج الجديدة من كلّ النتائج الموجودة في \(A\text{,}\) أو في \(B\text{,}\) أو في كليهما. وليس هذا سوى اتحاد المجموعة \(A\) مع \(B\text{,}\) ويُكتب \(A \cup B\text{.}\)[🔗](#subsec_counting-venn-7) ومبدأ الجمع لا ينطبق إلّا حين لا تنتمي أيّ نتيجة إلى الحدثين معًا. أمّا العناصر المشتركة بين المجموعتين \(A\) و\(B\) فهي عناصر تقاطعهما، ويُكتب التقاطع \(A \cap B\text{.}\) وتقاطع مجموعتين هو بدوره مجموعة. فإذا كانت المجموعتان \(A\) و\(B\) متباعدتين، فإنّ في التقاطع *لا* توجد أيّ عناصر، إذن يكون التقاطع المجموعة الخالية، ويُكتب \(\emptyset\text{.}\)[🔗](#subsec_counting-venn-8) ونحن نعدّ *عدد* النتائج، فما يهمّنا حقًّا هو حجم المجموعات (أي عدد عناصرها). ونكتب حجم المجموعة \(X\) على الصورة \(\card{X}\text{.}\)[🔗](#subsec_counting-venn-9) ومع هذه الرموز في متناول اليد، يمكننا إعادة صياغة مبدأ الجمع على النحو الآتي.[🔗](#subsec_counting-venn-10)
 
-#### Principle 3.3.1. Sum Principle (with sets).
+#### مبدأ 3.3.1. مبدأ الجمع (بالمجموعات).
 
-Given two sets \(A\) and \(B\text{,}\) if \(A \cap B = \emptyset\text{,}\) then \begin{equation*} \card{A \cup B} = \card{A} + \card{B}\text{.} \end{equation*} [🔗](#subsec_counting-venn-11-5-1) [🔗](#subsec_counting-venn-11)Now consider what happens to the sum principle when the sets are NOT disjoint. Suppose we want to find \(\card{A \cup B}\) and know that \(\card{A} = 10\) and \(\card{B} = 8\text{.}\) If we knew that the sets were disjoint, then \(\card{A \cup B}\) would be 18. But if we don’t have that the sets are disjoint, we need more information We must know how many of the 8 elements in \(B\) are also elements of \(A\text{.}\) Suppose we also know that \(\card{A \cap B} = 6\text{.}\) Now we can say exactly how many elements are in \(A\text{,}\) and, of those, how many are in \(B\) and how many are not (6 of the 10 elements are in \(B\text{,}\) so 4 are in \(A\) but not in \(B\)). We could fill in a Venn diagram as follows:[🔗](#subsec_counting-venn-12) ![Intersecting circles labeled A and B. Inside the region enclosed by both circles is the number 6. The number 4 is in the region inside A but outside B. The number 2 is in the region inside B but outside A.](generated/latex-image/subsec_counting-venn-13.svg) This says there are 6 elements in \(A \cap B\text{,}\) 4 elements in \(A\) but not \(B\) (which we can write as \(\card{A \setminus B} = 4\)), and 2 elements in \(B\) but not \(A\) (written \(\card{B \setminus A} = 2\)). Now *these* three sets *are* disjoint, so we can use the sum principle to find the number of elements in \(A \cup B\text{.}\) It is \(6 + 4 + 2 = 12\text{.}\)[🔗](#subsec_counting-venn-14)
+فلنقل إنّ لدينا مجموعتين \(A\) و\(B\text{,}\) فإذا كان \(A \cap B = \emptyset\text{,}\) فإنّ \begin{equation*} \card{A \cup B} = \card{A} + \card{B}\text{.} \end{equation*} [🔗](#subsec_counting-venn-11-5-1) [🔗](#subsec_counting-venn-11)والآن فكّر فيما يحدث لمبدأ الجمع حين لا تكون المجموعات متباعدة. لنفترض أنّنا نريد إيجاد \(\card{A \cup B}\) ونعرف أنّ \(\card{A} = 10\) وأنّ \(\card{B} = 8\text{.}\) فإذا كنا نعرف أنّ المجموعتين متباعدتين، فإنّ \(\card{A \cup B}\) سيكون 18. لكنّنا إن لم نكن نملك معلومة تباعد المجموعتين، فسنحتاج إلى معلومات إضافية: يجب أن نعرف كم عنصرًا من العناصر الثمانية في \(B\) هي أيضًا عناصر في \(A\text{.}\) لنفترض أيضًا أنّنا نعرف أنّ \(\card{A \cap B} = 6\text{.}\) الآن يمكننا أن نذكر بدقّة كم عدد العناصر الموجودة في \(A\text{,}\) ومن بين تلك، كم منها في \(B\) وكم منها ليس فيها (6 من العناصر العشرة موجودة في \(B\text{,}\) إذن 4 منها في \(A\) لكن ليس في \(B\)). ويمكننا ملء مخطّط ڤين على النحو الآتي:[🔗](#subsec_counting-venn-12) ![دائرتان متقاطعتان موسومتان A وB. وداخل المنطقة المحاطة بكلتا الدائرتين يقع العدد 6. والعدد 4 يقع في المنطقة الموجودة داخل A وخارج B. والعدد 2 يقع في المنطقة الموجودة داخل B وخارج A.](generated/latex-image/subsec_counting-venn-13.svg) وهذا يعني أنّ هناك 6 عناصر في \(A \cap B\text{,}\) و4 عناصر في \(A\) لكن ليس في \(B\) (وهذا ما نكتبه \(\card{A \setminus B} = 4\))، وعنصرين في \(B\) لكن ليس في \(A\) (ونكتبه \(\card{B \setminus A} = 2\)). والآن فهذه المجموعات الثلاث *متباعدة*، إذن يمكننا استعمال مبدأ الجمع لإيجاد عدد العناصر في \(A \cup B\text{.}\) وهو \(6 + 4 + 2 = 12\text{.}\)[🔗](#subsec_counting-venn-14)
 
-#### Example 3.3.2.
+#### المثال 3.3.2.
 
-How many \(7\)-bit strings of weight \(4\) start with \(11\) or end with \(00\text{,}\) or both?[🔗](#eg-2-set-bit-string-venn-1-1) Solution. Let \(A\) be the set of \(7\)-bit strings of weight \(4\) that start with \(11\text{.}\) We have \(\card{A} = \binom{5}{2} = 10\text{.}\) Let \(B\) be the set of \(7\)-bit strings of weight \(4\) that end with \(00\text{.}\) We have \(\card{B} = \binom{5}{4} = 5\text{.}\)[🔗](#eg-2-set-bit-string-venn-2-1) But it is not true that \(\card{A \cup B} = 10 + 5 = 15\text{,}\) since strings like 1101100 both start with \(11\) and end with \(00\text{.}\) That is included in the 10 strings starting with \(11\) and the five strings ending with \(00\text{.}\) We must find the number of strings that belong to both \(A\) and \(B\text{.}\) We have \begin{equation*} \card{A \cap B} = \binom{3}{2} = 3 \end{equation*} (and indeed, there are three strings in the intersection: 1111000, 1110100, and 1101100). [🔗](#eg-2-set-bit-string-venn-2-2) We can now fill in a Venn diagram:[🔗](#eg-2-set-bit-string-venn-2-3) ![Intersecting circles labeled A and B. Inside the region enclosed by both circles is the number 3. The number 7 is in the region inside A but outside B. The number 2 is in the region inside B but outside A.](generated/latex-image/eg-2-set-bit-string-venn-2-4.svg) The circle for \(A\) contains a total of 10 elements, the 3 that also belong to \(B\) and 7 more that belong to just \(A\text{.}\) The circle for \(B\) contains a total of 5 elements, the 3 that also belong to \(A\) and 2 more that belong to just \(B\text{.}\) The number of elements in \(A \cup B\) is the sum of the elements in each region \begin{equation*} |\card{A \cup B} = 7+3+2 = 12\text{.} \end{equation*} [🔗](#eg-2-set-bit-string-venn-2-5) [🔗](#eg-2-set-bit-string-venn-2) [🔗](#eg-2-set-bit-string-venn)We can do something similar with three sets.[🔗](#subsec_counting-venn-16)
+كم عدد السلاسل الثنائية ذات الـ \(7\) بتات التي وزنها \(4\) وتبدأ بـ \(11\) أو تنتهي بـ \(00\text{,}\) أو كلتيهما معًا؟[🔗](#eg-2-set-bit-string-venn-1-1) الحل. لتكن \(A\) مجموعة السلاسل الثنائية ذات الـ \(7\) بتات التي وزنها \(4\) وتبدأ بـ \(11\text{.}\) لدينا \(\card{A} = \binom{5}{2} = 10\text{.}\) لتكن \(B\) مجموعة السلاسل الثنائية ذات الـ \(7\) بتات التي وزنها \(4\) وتنتهي بـ \(00\text{.}\) لدينا \(\card{B} = \binom{5}{4} = 5\text{.}\)[🔗](#eg-2-set-bit-string-venn-2-1) لكنّ عبارة \(\card{A \cup B} = 10 + 5 = 15\text{,}\) غير صحيحة، إذ إنّ سلاسل مثل 1101100 تبدأ بـ \(11\) وتنتهي بـ \(00\text{.}\) وهي محسوبة في العشر سلاسل التي تبدأ بـ \(11\) وفي الخمس سلاسل التي تنتهي بـ \(00\text{.}\) ويجب أن نجد عدد السلاسل التي تنتمي إلى \(A\) و\(B\text{.}\) لدينا \begin{equation*} \card{A \cap B} = \binom{3}{2} = 3 \end{equation*} (وفي الواقع، هناك ثلاث سلاسل في التقاطع: 1111000، و1110100، و1101100). [🔗](#eg-2-set-bit-string-venn-2-2) ويمكننا الآن ملء مخطّط ڤين:[🔗](#eg-2-set-bit-string-venn-2-3) ![دائرتان متقاطعتان موسومتان A وB. وداخل المنطقة المحاطة بكلتا الدائرتين يقع العدد 3. والعدد 7 يقع في المنطقة الموجودة داخل A وخارج B. والعدد 2 يقع في المنطقة الموجودة داخل B وخارج A.](generated/latex-image/eg-2-set-bit-string-venn-2-4.svg) وتحتوي دائرة \(A\) على ما مجموعه 10 عناصر، منها 3 عناصر تنتمي أيضًا إلى \(B\) و7 عناصر أخرى تنتمي إلى \(A\text{.}\) وحدها. وتحتوي دائرة \(B\) على ما مجموعه 5 عناصر، منها 3 عناصر تنتمي أيضًا إلى \(A\) وعنصران آخران ينتميان إلى \(B\text{.}\) وحدها. وعدد العناصر في \(A \cup B\) هو مجموع العناصر في كلّ منطقة \begin{equation*} |\card{A \cup B} = 7+3+2 = 12\text{.} \end{equation*} [🔗](#eg-2-set-bit-string-venn-2-5) [🔗](#eg-2-set-bit-string-venn-2) [🔗](#eg-2-set-bit-string-venn)ويمكننا فعل شيءٍ مشابه مع ثلاث مجموعات.[🔗](#subsec_counting-venn-16)
 
-#### Example 3.3.3.
+#### المثال 3.3.3.
 
-An examination in three subjects, Algebra, Biology, and Chemistry, was taken by 41 students. The following table shows how many students failed in each single subject and in their various combinations:[🔗](#eg-3set-venn-1-1)
+أجرى 41 طالبًا اختبارًا في ثلاث مواد: الجبر، والأحياء، والكيمياء. ويبيّن الجدول التالي عدد الطلاب الذين رسبوا في كلّ مادة على حدة وفي مختلف توليفاتها:[🔗](#eg-3set-venn-1-1)
 
-| Subject: | A | B | C | AB | AC | BC | ABC |
+| المادة: | A | B | C | AB | AC | BC | ABC |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Failed: | 12 | 5 | 8 | 2 | 6 | 3 | 1 |
+| رسب: | 12 | 5 | 8 | 2 | 6 | 3 | 1 |
 
-How many students failed at least one subject?[🔗](#eg-3set-venn-1-3) Solution. The answer is not 37, even though the sum of the numbers above is 37. For example, while 12 students failed Algebra, 2 of those students also failed Biology, 6 also failed Chemistry, and 1 of those failed all three subjects. In fact, that 1 student who failed all three subjects is counted a total of 7 times in the total 37. To clarify things, let us think of the students who failed Algebra as the elements of the set \(A\text{,}\) and similarly for sets \(B\) and \(C\text{.}\) The one student who failed all three subjects is the lone element of the set \(A \cap B \cap C\text{.}\) Thus, in Venn diagrams:[🔗](#eg-3set-venn-2-1) ![Three intersecting circles labeled A, B, and C. The center region inside all three circles contains the number 1.](generated/latex-image/eg-3set-venn-2-2-1.svg) Now let’s fill in the other intersections. We know \(A\cap B\) contains 2 elements, but 1 element has already been counted. So we should put a 1 in the region where \(A\) and \(B\) intersect (but \(C\) does not). Similarly, we calculate the cardinality of \((A\cap C) \setminus B\text{,}\) and \((B \cap C) \setminus A\text{:}\)[🔗](#eg-3set-venn-2-3) ![Three intersecting circles labeled A, B, and C. The center region inside all three circles contains the number 1. The region above this, inside both A and B but outside C, contains the number 1. The region inside both A and C but outside B contains the number 5. The region inside B and C but outside A contains the number 2.](generated/latex-image/eg-3set-venn-2-4-1.svg) Next, we determine the numbers that should go in the remaining regions, including outside of all three circles. This last number is the number of students who did not fail any subject:[🔗](#eg-3set-venn-2-5) ![Three intersecting circles labeled A, B, and C. The center region inside all three circles contains the number 1. The region above this, inside both A and B but outside C, contains the number 1. The region inside both A and C but outside B contains the number 5. The region inside B and C but outside A contains the number 2. The region just inside A contains the number 5; the region just inside B contains the number 1; the region just inside C contains the number 0. The number 26 is outside all three circles.](generated/latex-image/eg-3set-venn-2-6-1.svg) We found 5 goes in the “\(A\) only” region because the entire circle for \(A\) needed to have a total of 12, and 7 were already accounted for. Similarly, we calculate the “\(B\) only” region to contain only 1 student and the “\(C\) only” region to contain no students.[🔗](#eg-3set-venn-2-7) Thus the number of students who failed at least one class is 15 (the sum of the numbers in each of the eight disjoint regions). The number of students who passed all three classes is 26: the total number of students, 41, less the 15 who failed at least one class.[🔗](#eg-3set-venn-2-8) Note that we can also answer other questions. For example, how many students failed just Chemistry? None. How many passed Algebra but failed both Biology and Chemistry? This corresponds to the region inside both \(B\) and \(C\) but outside of \(A\text{,}\) containing 2 students.[🔗](#eg-3set-venn-2-9) [🔗](#eg-3set-venn-2) [🔗](#eg-3set-venn) Here is an interesting math fact. \begin{equation*} 12 + 5 + 8 - 2 - 6 - 3 + 1 = 15\text{.} \end{equation*} Is it a coincidence that this way of combining the numbers of students who failed each subject in the example above gives the same number of students who failed at least one subject? This suggests that there might be a simpler way to find the size of a union of non-disjoint sets. [🔗](#subsec_counting-venn-18) [🔗](#subsec_counting-venn)
+كم عدد الطلاب الذين رسبوا في مادةٍ واحدة على الأقلّ؟[🔗](#eg-3set-venn-1-3) الحل. ليس الجواب 37، وإنّما مجموع الأعداد أعلاه هو 37. فمثلًا، بينما رسب 12 طالبًا في الجبر، فإنّ اثنين من هؤلاء الطلاب رسبا أيضًا في الأحياء، و6 رسبوا أيضًا في الكيمياء، وواحدٌ من هؤلاء رسب في المواد الثلاث جميعًا. وفي الواقع، ذلك الطالب الواحد الذي رسب في المواد الثلاث جميعًا يُحسب 7 مرّات في المجموع 37. ولتوضيح الأمر، لنعتبر الطلاب الذين رسبوا في الجبر عناصرَ المجموعة \(A\text{,}\) ومثل ذلك للمجموعتين \(B\) و\(C\text{.}\) والطالب الواحد الذي رسب في المواد الثلاث جميعًا هو العنصر الوحيد في المجموعة \(A \cap B \cap C\text{.}\) وإذن، في مخطّطات ڤين:[🔗](#eg-3set-venn-2-1) ![ثلاث دوائر متقاطعة موسومة A وB وC. والمنطقة الوسطى داخل الدوائر الثلاث تحتوي على العدد 1.](generated/latex-image/eg-3set-venn-2-2-1.svg) والآن فلنملأ التقاطعات الأخرى. نعرف أنّ \(A\cap B\) يحتوي على عنصرين، لكنّ عنصرًا واحدًا قد حُسب بالفعل. إذن ينبغي أن نضع 1 في المنطقة التي يتقاطع فيها \(A\) و\(B\) (لكن ليس \(C\)). ومثلًا، نحسب عدد عناصر \((A\cap C) \setminus B\text{,}\) و\((B \cap C) \setminus A\text{:}\)[🔗](#eg-3set-venn-2-3) ![ثلاث دوائر متقاطعة موسومة A وB وC. والمنطقة الوسطى داخل الدوائر الثلاث تحتوي على العدد 1. والمنطقة فوقها، داخل A وB معًا وخارج C، تحتوي على العدد 1. والمنطقة داخل A وC معًا وخارج B تحتوي على العدد 5. والمنطقة داخل B وC معًا وخارج A تحتوي على العدد 2.](generated/latex-image/eg-3set-venn-2-4-1.svg) ثمّ نحدّد الأعداد التي ينبغي أن توضع في المناطق المتبقّية، بما فيها ما هو خارج الدوائر الثلاث جميعًا. أمّا هذا العدد الأخير فهو عدد الطلاب الذين لم يرسبوا في أيّ مادة:[🔗](#eg-3set-venn-2-5) ![ثلاث دوائر متقاطعة موسومة A وB وC. والمنطقة الوسطى داخل الدوائر الثلاث تحتوي على العدد 1. والمنطقة فوقها، داخل A وB معًا وخارج C، تحتوي على العدد 1. والمنطقة داخل A وC معًا وخارج B تحتوي على العدد 5. والمنطقة داخل B وC معًا وخارج A تحتوي على العدد 2. والمنطقة داخل A مباشرةً تحتوي على العدد 5؛ والمنطقة داخل B مباشرةً تحتوي على العدد 1؛ والمنطقة داخل C مباشرةً تحتوي على العدد 0. والعدد 26 يقع خارج الدوائر الثلاث جميعًا.](generated/latex-image/eg-3set-venn-2-6-1.svg) لقد وجدنا أنّ 5 توضع في منطقة «\(A\) وحدها» لأنّ دائرة \(A\) بأكملها كان ينبغي أن يكون مجموعها 12، وكان 7 منها قد رُسمت بالفعل. ومثلًا، نحسب منطقة «\(B\) وحدها» فتحتوي على طالب واحد فقط، ومنطقة «\(C\) وحدها» فلا تحتوي على أيّ طالب.[🔗](#eg-3set-venn-2-7) ومن ثمّ فإنّ عدد الطلاب الذين رسبوا في صفٍّ واحد على الأقلّ هو 15 (مجموع الأعداد في كلّ واحدٍ من المناطق الثماني المتباعدة). أمّا عدد الطلاب الذين نجحوا في الصفوف الثلاثة جميعًا فهو 26: وهو العدد الكليّ للطلاب، 41، ناقصًا الـ 15 الذين رسبوا في صفٍّ واحد على الأقلّ.[🔗](#eg-3set-venn-2-8) ولاحظ أنّنا نستطيع أيضًا الإجابة عن أسئلة أخرى. فمثلًا، كم عدد الطلاب الذين رسبوا في الكيمياء فقط؟ لا أحد. كم عدد الذين نجحوا في الجبر لكن رسبوا في الأحياء والكيمياء معًا؟ يقابل ذلك المنطقة الموجودة داخل \(B\) و\(C\) معًا وخارج \(A\text{,}\) وفيها طالبان.[🔗](#eg-3set-venn-2-9) [🔗](#eg-3set-venn-2) [🔗](#eg-3set-venn)وهنا حقيقةٌ رياضية مثيرة للاهتمام. \begin{equation*} 12 + 5 + 8 - 2 - 6 - 3 + 1 = 15\text{.} \end{equation*} هل من المصادفة أنّ هذه الطريقة في جمع أعداد الطلاب الذين رسبوا في كلّ مادة في المثال أعلاه تعطي العدد نفسه من الطلاب الذين رسبوا في مادةٍ واحدة على الأقلّ؟ وهذا يوحي بأنّ هناك طريقةً أبسط لإيجاد حجم اتحاد مجموعات غير متباعدة. [🔗](#subsec_counting-venn-18) [🔗](#subsec_counting-venn)
 
-### Subsection The Principle of Inclusion/Exclusion
+### القسم الفرعي: مبدأ الاحتواء/الاستبعاد
 
-It would be nice to write an algebraic formula that captures what we have done in the previous examples. Even better would be for this algebraic formula to be a generalization of the case where the sets *are* disjoint.[🔗](#subsec-pie-2) Consider again the example where \(\card{A} = 10\text{,}\) \(\card{B} = 8\) and \(\card{A \cap B} = 6\text{.}\) We said that \(\card{A \cup B} = 12\text{,}\) found by adding \(4 + 6 + 2\text{.}\)[🔗](#subsec-pie-3) If \(A\) and \(B\) had been disjoint, then \(\card{A \cup B}\) would have been \(\card{A} + \card{B} = 10 + 8 = 18\text{.}\) We see that is off by exactly 6, which just so happens to be \(\card{A \cap B}\text{.}\) So perhaps we guess, \begin{equation*} \card{A \cup B} = \card{A} + \card{B} - \card{A \cap B}\text{.} \end{equation*} This makes sense! When we add the number of elements in \(A\) to the number of elements in \(B\text{,}\) we have counted the six elements that belong to both sets exactly twice. So if we subtract them out, we have counted them exactly once. [🔗](#subsec-pie-4) In other words, we have:[🔗](#subsec-pie-5)
+من الجميل أن نكتب صيغةً جبرية تلتقط ما قمنا به في الأمثلة السابقة. والأجمل لو كانت هذه الصيغة الجبرية تعميمًا للحالة التي تكون فيها المجموعات *متباعدة*.[🔗](#subsec-pie-2) لنعُد إلى المثال الذي فيه \(\card{A} = 10\text{,}\) \(\card{B} = 8\) و\(\card{A \cap B} = 6\text{.}\) قلنا إنّ \(\card{A \cup B} = 12\text{,}\) وجدناه بجمع \(4 + 6 + 2\text{.}\)[🔗](#subsec-pie-3) فإذا كانت \(A\) و\(B\) متباعدتين، فإنّ \(\card{A \cup B}\) سيكون \(\card{A} + \card{B} = 10 + 8 = 18\text{.}\) ونرى أنّ الفارق هو 6 بالضبط، وهو ليس مصادفةً سوى \(\card{A \cap B}\text{.}\) فربّما نخمّن: \begin{equation*} \card{A \cup B} = \card{A} + \card{B} - \card{A \cap B}\text{.} \end{equation*} وهذا منطقي! فحين نضيف عدد عناصر \(A\) إلى عدد عناصر \(B\text{,}\) نكون قد حسبنا العناصر الستّ التي تنتمي إلى المجموعتين معًا مرّتين بالضبط. فإذا طرحناها، نكون قد حسبناها مرّةً واحدة بالضبط. [🔗](#subsec-pie-4) بمعنى آخر، لدينا:[🔗](#subsec-pie-5)
 
-#### Theorem 3.3.4. Cardinality of a Union (2 Sets).
+#### مبرهنة 3.3.4. حجم الاتحاد (لمجموعتين).
 
-For any finite sets \(A\) and \(B\text{,}\) \begin{equation*} \card{A \cup B} = \card{A} + \card{B} - \card{A \cap B}\text{.} \end{equation*} [🔗](#thm-pie-2-4) [🔗](#thm-pie-2)
+لأيّ مجموعتَي \(A\) و\(B\text{,}\) متناهيتين \begin{equation*} \card{A \cup B} = \card{A} + \card{B} - \card{A \cap B}\text{.} \end{equation*} [🔗](#thm-pie-2-4) [🔗](#thm-pie-2)
 
-#### Example 3.3.5.
+#### المثال 3.3.5.
 
-How many \(7\)-bit strings of weight \(4\) start with \(11\) or end with \(00\text{,}\) or both? Use [Theorem 3.3.4](sec_counting-non-disjoint.html#thm-pie-2) and compare to [Example 3.3.2](sec_counting-non-disjoint.html#eg-2-set-bit-string-venn).[🔗](#subsec-pie-7-1-1) Solution. We have \(\card{A} = \binom{5}{2} = 10\text{,}\) \(\card{B} = \binom{5}{4} = 5\text{,}\) and \(\card{A \cap B} = \binom{3}{2} = 3\text{.}\) Therefore: \begin{equation*} \card{A \cup B} = 10 + 5 - 3 = 12\text{.} \end{equation*} This makes sense since the three bit strings that start with \(11\) and end with \(00\) are counted in the 10 strings starting with \(11\) and again among the 5 strings ending with \(00\text{,}\) so we have over-counted these exactly one time before we subtract them out. [🔗](#subsec-pie-7-2-1) [🔗](#subsec-pie-7-2) [🔗](#subsec-pie-7)For three sets, we can also count the elements in the union by carefully removing elements we have counted multiple times. Since there are more ways for the sets to overlap, the formula is more complicated.[🔗](#subsec-pie-8)
+كم عدد السلاسل الثنائية ذات الـ \(7\) بتات التي وزنها \(4\) وتبدأ بـ \(11\) أو تنتهي بـ \(00\text{,}\) أو كلتيهما معًا؟ استعمل [المبرهنة 3.3.4](sec_counting-non-disjoint.html#thm-pie-2) وقارن النتيجة بـ [المثال 3.3.2](sec_counting-non-disjoint.html#eg-2-set-bit-string-venn).[🔗](#subsec-pie-7-1-1) الحل. لدينا \(\card{A} = \binom{5}{2} = 10\text{,}\) و\(\card{B} = \binom{5}{4} = 5\text{,}\) و\(\card{A \cap B} = \binom{3}{2} = 3\text{.}\) إذن: \begin{equation*} \card{A \cup B} = 10 + 5 - 3 = 12\text{.} \end{equation*} وهذا منطقي، إذ إنّ السلاسل الثنائية الثلاث التي تبدأ بـ \(11\) وتنتهي بـ \(00\) محسوبة في العشر سلاسل التي تبدأ بـ \(11\) ومرةً أخرى في الخمس سلاسل التي تنتهي بـ \(00\text{,}\) فقد حسبنا هذه السلاسل زيادةً بمقدار مرّةٍ واحدة بالضبط قبل أن نطرحها. [🔗](#subsec-pie-7-2-1) [🔗](#subsec-pie-7-2) [🔗](#subsec-pie-7)أمّا مع ثلاث مجموعات، فيمكننا أيضًا عدّ عناصر الاتحاد بحذف العناصر التي حسبناها عدّة مرّات بعناية. وبما أنّ هناك طُرقًا أكثر لتداخل المجموعات، فإنّ الصيغة أعقد.[🔗](#subsec-pie-8)
 
-#### Theorem 3.3.6. Cardinality of a Union (3 Sets).
+#### مبرهنة 3.3.6. حجم الاتحاد (لثلاث مجموعات).
 
-For any finite sets \(A\text{,}\) \(B\text{,}\) and \(C\text{,}\) \begin{align*} \card{A \cup B \cup C} = \amp \card{A} + \card{B} + \card{C} \\ - \amp \card{A \cap B} - \card{A \cap C} - \card{B \cap C} \\ + \amp \card{A \cap B \cap C} \text{.} \end{align*} [🔗](#thm-pie-3-4-1) [🔗](#thm-pie-3)To determine how many elements are in at least one of \(A\text{,}\) \(B\text{,}\) or \(C\) we add up all the elements in each of those sets. However, when we do that, any element in both \(A\) and \(B\) is counted twice. Also, each element in both \(A\) and \(C\) is counted twice, as are elements in \(B\) and \(C\text{,}\) so we take each of those out of our sum once. But now what about the elements which are in \(A \cap B \cap C\) (in all three sets)? We added them in three times, but also removed them three times. They have not yet been counted. Thus we add those elements back in at the end.[🔗](#subsec-pie-10)
+لأيّ ثلاث مجموعات \(A\text{,}\) و\(B\text{,}\) و\(C\text{,}\) متناهيتين \begin{align*} \card{A \cup B \cup C} = \amp \card{A} + \card{B} + \card{C} \\ - \amp \card{A \cap B} - \card{A \cap C} - \card{B \cap C} \\ + \amp \card{A \cap B \cap C} \text{.} \end{align*} [🔗](#thm-pie-3-4-1) [🔗](#thm-pie-3)ولتحديد كم عدد العناصر الموجودة في \(A\text{,}\) أو \(B\text{,}\) أو \(C\) واحدٍ على الأقلّ، نجمع كلّ العناصر في كلّ واحدة من تلك المجموعات. لكن حين نفعل ذلك، يُحسب أيّ عنصر في \(A\) و\(B\) مرّتين. وكذلك يُحسب كلّ عنصر في \(A\) و\(C\) مرّتين، وكذلك العناصر الموجودة في \(B\) و\(C\text{,}\) فنطرح كلّ واحدٍ منها من مجموعنا مرّة. لكن ماذا عن العناصر الموجودة في \(A \cap B \cap C\) (في المجموعات الثلاث جميعًا)؟ لقد أضفناها ثلاث مرّات، وطرحناها ثلاث مرّات أيضًا. فهي لم تُحسب بعد. إذن نضيف هذه العناصر من جديد في النهاية.[🔗](#subsec-pie-10)
 
-#### Example 3.3.7.
+#### المثال 3.3.7.
 
-How many of the numbers in \(\{1, 2, \ldots, 50\}\) are multiples of 2, 3, or 5?[🔗](#subsec-pie-11-1-1) Solution. Of the numbers in \(\{1, 2, \ldots, 50\}\text{,}\) let \(A\) be the set of multiples of 2, \(B\) be the set of multiples of 3, and \(C\) be the set of multiples of 5. We have \(\card{A} = 25\text{,}\) \(\card{B} = 16\text{,}\) and \(\card{C} = 10\text{.}\) (These numbers can be found by division; for example, since a third of the numbers are multiples of three, we can compute \(50/3 = 16.66\text{,}\) so there are 16 multiples of 3 in the set.) Some of the numbers in the set are multiples of both 2 and 3, such as \(6, 12, 18,\ldots\) all the multiples of 6. There are \(\card{A \cap B} = 8\) such numbers. Similarly, there are \(\card{A \cap C} = 5\) multiples of both 2 and 5 (multiples of 10), and \(\card{B \cap C} = 3\) multiples of both 3 and 5 (multiples of 15). There is \(\card{A \cap B \cap C} = 1\) multiples of all three (just the number 30).[🔗](#subsec-pie-11-2-1) Using [Theorem 3.3.6](sec_counting-non-disjoint.html#thm-pie-3), we have: \begin{equation*} \card{A \cup B \cup C} = 25 + 16 + 10 - 8 - 5 - 3 + 1 = 36\text{.} \end{equation*} [🔗](#subsec-pie-11-2-2) Let’s use this example to understand the theorem better. Consider the number \(21\text{.}\) In which sets is it counted? It is in \(B\text{,}\) but not \(A\) or \(C\text{,}\) so it is counting among the 16 multiples of \(3\) and not counted in any of the other sets, so it is included exactly once in our complete count. Similarly for all other numbers that are multiples of just one of \(2\text{,}\) \(3\text{,}\) or \(5\text{.}\)[🔗](#subsec-pie-11-2-3) The number \(18\) is in sets \(A\) and \(B\text{,}\) and so also in \(A \cap B\text{.}\) It is counted in the 25 multiples of \(2\text{,}\) the 16 multiples of \(3\text{,}\) and the 8 multiples of \(6\text{.}\) So it is added twice in our total and subtracted once, meaning it is counted exactly one time. The same will be true of all numbers that belong to exactly two of the individual sets.[🔗](#subsec-pie-11-2-4) What about \(30\text{?}\) It belongs to all the sets. It is therefore added to our total three times, when we add the multiples of \(2\text{,}\) \(3\text{,}\) and \(5\text{.}\) But it is also subtracted three times, once for each of the three pairs of sets. So it is not counted at all in our total... until we add it back in in the last step, after which it is counted exactly once.[🔗](#subsec-pie-11-2-5) [🔗](#subsec-pie-11-2) [🔗](#subsec-pie-11) This process of adding in, then subtracting out, then adding back in, and so on is called the Principle of Inclusion/Exclusion, or simply PIE. This principle can be applied to any number of sets, but the formula becomes more and more complicated the more sets you have. For example, this is what PIE looks like for four sets. \begin{align*} \card{A \cup B \cup C \cup D} = \amp \card{A} + \card{B} + \card{C} + \card{D} \\ - \amp \card{A \cap B} - \card{A \cap C} - \card {A \cap D} - \card{B \cap C} - \card{B \cap D} - \card{C \cap D}\\ + \amp \card{A \cap B \cap C} + \card{A \cap B \cap D} + \card{A \cap C \cap D} + \card{B \cap C \cap D}\\ - \amp \card{A \cap B \cap C \cap D} \text{.} \end{align*} Phew! And for five sets it is... just kidding. But even if we don’t write it down, hopefully we all see what you *would* have to write down. In practice, PIE for more than three sets is only used when we can simplify the computation by recognizing that, for example, all the intersections of two sets will have the same size. Some examples of this are explored in [Section 3.8](sec_advPIE.html). [🔗](#subsec-pie-12) [🔗](#subsec-pie)
+كم عدد الأعداد في \(\{1, 2, \ldots, 50\}\) التي هي مضاعفات 2 أو 3 أو 5؟[🔗](#subsec-pie-11-1-1) الحل. من بين الأعداد في \(\{1, 2, \ldots, 50\}\text{,}\) لتكن \(A\) مجموعة مضاعفات 2، و\(B\) مجموعة مضاعفات 3، و\(C\) مجموعة مضاعفات 5. لدينا \(\card{A} = 25\text{,}\) و\(\card{B} = 16\text{,}\) و\(\card{C} = 10\text{.}\) (ويمكن إيجاد هذه الأعداد بالقسمة؛ فمثلًا، بما أنّ ثلث الأعداد مضاعفات للعدد 3، يمكننا حساب \(50/3 = 16.66\text{,}\) إذن هناك 16 مضاعفًا للعدد 3 في المجموعة.) وبعض الأعداد في المجموعة هي مضاعفات لـ 2 و3 معًا، مثل \(6, 12, 18,\ldots\) أي جميع مضاعفات 6. وهناك \(\card{A \cap B} = 8\) من هذه الأعداد. ومثلًا، هناك \(\card{A \cap C} = 5\) مضاعفات لـ 2 و5 معًا (مضاعفات 10)، و\(\card{B \cap C} = 3\) مضاعفات لـ 3 و5 معًا (مضاعفات 15). وهناك \(\card{A \cap B \cap C} = 1\) مضاعفات للثلاثة معًا (العدد 30 فقط).[🔗](#subsec-pie-11-2-1) وباستعمال [المبرهنة 3.3.6](sec_counting-non-disjoint.html#thm-pie-3)، لدينا: \begin{equation*} \card{A \cup B \cup C} = 25 + 16 + 10 - 8 - 5 - 3 + 1 = 36\text{.} \end{equation*} [🔗](#subsec-pie-11-2-2) لنستعمل هذا المثال لفهم المبرهنة على نحو أفضل. خذ العدد \(21\text{.}\) في أيّ المجموعات يُحسب؟ هو في \(B\text{,}\) لكن ليس في \(A\) ولا في \(C\text{,}\) إذن هو محسوب ضمن الـ 16 مضاعفًا للعدد \(3\) وليس محسوبًا في أيّ من المجموعات الأخرى، ومن ثمّ فهو مضمّن مرّةً واحدة بالضبط في عدّنا الكامل. وينطبق الشيء نفسه على جميع الأعداد الأخرى التي هي مضاعفات لأحد \(2\text{,}\) أو \(3\text{,}\) أو \(5\text{.}\) فقط.[🔗](#subsec-pie-11-2-3) والعدد \(18\) موجود في المجموعتين \(A\) و\(B\text{,}\) ومن ثمّ هو أيضًا في \(A \cap B\text{.}\) فهو محسوب ضمن الـ 25 مضاعفًا للعدد \(2\text{,}\) والـ 16 مضاعفًا للعدد \(3\text{,}\) والـ 8 مضاعفات للعدد \(6\text{.}\) إذن هو مضاف مرّتين في مجموعنا ومطروح مرّة، أي محسوب مرّةً واحدة بالضبط. وينطبق الشيء نفسه على جميع الأعداد التي تنتمي إلى إحدى المجموعات الفردية بالضبط.[🔗](#subsec-pie-11-2-4) فماذا عن \(30\text{?}\) هو ينتمي إلى جميع المجموعات. ومن ثمّ هو مضاف إلى مجموعنا ثلاث مرّات، حين نضيف مضاعفات \(2\text{,}\) و\(3\text{,}\) و\(5\text{.}\) لكنّه مطروح أيضًا ثلاث مرّات، مرّةً لكلّ زوجٍ من المجموعات. إذن هو غير محسوب في مجموعنا البتّة... إلى أن نضيفه من جديد في الخطوة الأخيرة، وعندئذٍ يُحسب مرّةً واحدة بالضبط.[🔗](#subsec-pie-11-2-5) [🔗](#subsec-pie-11-2) [🔗](#subsec-pie-11)تسمّى هذه العملية، أي الإضافة ثمّ الطرح ثمّ الإضافة من جديد وهكذا، بمبدأ الاحتواء/الاستبعاد، أو ببساطة PIE. ويمكن تطبيق هذا المبدأ على أيّ عددٍ من المجموعات، لكنّ الصيغة تصبح أكثر تعقيدًا كلّما زاد عدد المجموعات. فمثلًا، هكذا تبدو صيغة PIE لأربع مجموعات. \begin{align*} \card{A \cup B \cup C \cup D} = \amp \card{A} + \card{B} + \card{C} + \card{D} \\ - \amp \card{A \cap B} - \card{A \cap C} - \card {A \cap D} - \card{B \cap C} - \card{B \cap D} - \card{C \cap D}\\ + \amp \card{A \cap B \cap C} + \card{A \cap B \cap D} + \card{A \cap C \cap D} + \card{B \cap C \cap D}\\ - \amp \card{A \cap B \cap C \cap D} \text{.} \end{align*} يا إلهي! أمّا مع خمس مجموعات فالأمر... بل لم أمزح. لكن حتّى إن لم نكتبها، فليأمل كلّنا أن نرى ما كان *سيتعيّن* كتابته. وفي الممارسة، لا يُستعمل PIE مع أكثر من ثلاث مجموعات إلّا حين يمكننا تبسيط الحساب عن طريق إدراك أنّ، مثلًا، تقاطعات كلّ زوجٍ من المجموعات لها الحجم نفسه. وفي [القسم 3.8](sec_advPIE.html) نستعرض بعض أمثلة ذلك. [🔗](#subsec-pie-12) [🔗](#subsec-pie)
 
-### Subsection Overlaps and the Product Principle
+### القسم الفرعي: التداخلات ومبدأ الضرب
 
-Everything we have considered so far in this section has been about how the sum principle applies when the sets of outcomes are not disjoint. Do we need to be similarly worried about overlaps when applying the product principle?[🔗](#subsec-overlaps-and-the-product-principle-2) Not really.[🔗](#subsec-overlaps-and-the-product-principle-3) One use of the product principle is to compute probabilities, and in that context, we do make a distinction between events being independent or dependent. We will explore this more in [Section 3.7](sec-counting-probability.html). Essentially, to find the probability of two events occuring, we can multiply their respective probabilities if and only if the two events are *independent*: if the outcome of one event does not affect the outcome of the other.[🔗](#subsec-overlaps-and-the-product-principle-4) While finding probability is closely related to counting outcomes, the product principle itself does not require that sets of outcomes be disjoint or make a distinction between dependent or independent events. What *does* matter is that the number of outcomes for the second event does not change based on which outcome was the result of the first event.[🔗](#subsec-overlaps-and-the-product-principle-5) A distinction we *do* often make when applying the product principle is whether the outcomes of events can be “repeated.” Consider the following example.[🔗](#subsec-overlaps-and-the-product-principle-6)
+كلّ ما نظرنا فيه حتّى الآن في هذا القسم كان عن كيفية انطباق مبدأ الجمع حين لا تكون مجموعات النتائج متباعدة. فهل علينا أن نقلق على نحوٍ مشابه من التداخل عند تطبيق مبدأ الضرب؟[🔗](#subsec-overlaps-and-the-product-principle-2) ليس حقًّا.[🔗](#subsec-overlaps-and-the-product-principle-3) فأحد استعمالات مبدأ الضرب هو حساب الاحتمالات (probabilities)، وفي ذلك السياق نُميّز فعلًا بين الأحداث المستقلّة والأحداث التي تعتمد إحداها على الأخرى. وسنستكشف هذا أكثر في [القسم 3.7](sec-counting-probability.html). وبالمُجمل، لإيجاد احتمال وقوع حدثين، يمكننا ضرب احتمالَيهما ما دام الحدثان *مستقلّين*: أي أنّ نتيجة أحد الحدثين لا تؤثّر في نتيجة الآخر.[🔗](#subsec-overlaps-and-the-product-principle-4) ولئن كان إيجاد الاحتمال مرتبطًا عن قرب بعدّ النتائج، فإنّ مبدأ الضرب نفسه لا يشترط أن تكون مجموعات النتائج متباعدة، ولا أن يُميّز بين الأحداث التابعة والمستقلّة. وما *يهمّ* فعلًا هو ألّا يتغيّر عدد نتائج الحدث الثاني باختلاف النتيجة التي انتهى إليها الحدث الأوّل.[🔗](#subsec-overlaps-and-the-product-principle-5) ومن التمييزات التي *نُجريها* فعلًا عند تطبيق مبدأ الضرب: هل يمكن أن تتكرّر نتائج الأحداث؟ تأمّل المثال الآتي.[🔗](#subsec-overlaps-and-the-product-principle-6)
 
-#### Example 3.3.8.
+#### المثال 3.3.8.
 
-How many 3-letter words (sequences of three letters) are there when,
+كم عدد الكلمات ذات الأحرف الثلاثة (أي المتواليات الثلاثية من الأحرف) حين،
 
-1. repeats are allowed? [🔗](#subsec-overlaps-and-the-product-principle-7-1-1-1-1)
-2. repeats are not allowed? [🔗](#subsec-overlaps-and-the-product-principle-7-1-1-1-2)
+1. يُسمح بتكرار الأحرف؟[🔗](#subsec-overlaps-and-the-product-principle-7-1-1-1-1)
+2. لا يُسمح بتكرار الأحرف؟[🔗](#subsec-overlaps-and-the-product-principle-7-1-1-1-2)
 
-[🔗](#subsec-overlaps-and-the-product-principle-7-1-1) Solution. Being careful with the product principle, we are combining three events: \(A\) is the event of selecting the first letter, \(B\) is the event of selecting the second letter, and \(C\) is the event of selecting the third letter. If we want to count the number of words when letters in the word can be repeated, then each event contains 26 outcomes. So the number of 3-letter words is \(26^3 = 17,576\) when repeats are allowed.[🔗](#subsec-overlaps-and-the-product-principle-7-2-1) When repeats are not allowed, then the number of outcomes for event \(A\) is still 26, but the number of outcomes for \(B\) is only 25, since no matter what the outcome of event \(A\) is, that letter cannot be selected for the second position in the word. Similarly, no matter what the outcomes of event \(A\) and \(B\) are, the number of outcomes for event \(C\) is always 24: any letter not selected in the first two events. Thus the number of 3-letter words containing no repeated letters is \(26\cdot 25\cdot 24 = 15,600\text{.}\)[🔗](#subsec-overlaps-and-the-product-principle-7-2-2) It’s a little strange that the actual set of outcomes for event \(B\) is different for each possible outcome of event \(A\text{.}\) This doesn’t matter though, as long as the *size* of the outcome set doesn’t change.[🔗](#subsec-overlaps-and-the-product-principle-7-2-3) [🔗](#subsec-overlaps-and-the-product-principle-7-2) [🔗](#subsec-overlaps-and-the-product-principle-7)We will explore problems such as the previous example in much more depth next in [Section 3.4](sec_counting-combperm.html). Before that though, here is a final example of where the product principle does NOT easily work.[🔗](#subsec-overlaps-and-the-product-principle-8)
+[🔗](#subsec-overlaps-and-the-product-principle-7-1-1) الحل.لنكن دقيقين مع مبدأ الضرب، فنحن ندمج ثلاثة أحداث: \(A\) هو حدث انتقاء الحرف الأوّل، و\(B\) هو حدث انتقاء الحرف الثاني، و\(C\) هو حدث انتقاء الحرف الثالث. فإذا أردنا عدّ عدد الكلمات حين يمكن تكرار الأحرف في الكلمة، فإنّ كلّ حدث يحتوي 26 نتيجة. إذن يكون عدد الكلمات ذات الأحرف الثلاثة \(26^3 = 17,576\) حين يُسمح بتكرار الأحرف.[🔗](#subsec-overlaps-and-the-product-principle-7-2-1) أمّا حين لا يُسمح بتكرار الأحرف، فإنّ عدد نتائج الحدث \(A\) يبقى 26، لكنّ عدد نتائج \(B\) هو 25 فقط، إذ إنّ الحرف الذي نتج عن الحدث \(A\) لا يمكن اختياره للمرّة الثانية في الكلمة، مهما كانت نتيجة ذلك الحدث. ومثلًا، مهما كانت نتيجتا الحدثَين \(A\) و\(B\)، فإنّ عدد نتائج الحدث \(C\) هو 24 دائمًا: أي أيّ حرفٍ لم يُختر في الحدثين الأوّلين. ومن ثمّ فإنّ عدد الكلمات ذات الأحرف الثلاثة التي لا تحتوي على أحرفٍ مكرّرة هو \(26\cdot 25\cdot 24 = 15,600\text{.}\)[🔗](#subsec-overlaps-and-the-product-principle-7-2-2) ومن الغريب قليلًا أنّ مجموعة نتائج الحدث \(B\) تختلف لكلّ نتيجةٍ ممكنة للحدث \(A\text{.}\) لكنّ هذا لا يهمّ ما دام *حجم* مجموعة النتائج لا يتغيّر.[🔗](#subsec-overlaps-and-the-product-principle-7-2-3) [🔗](#subsec-overlaps-and-the-product-principle-7-2) [🔗](#subsec-overlaps-and-the-product-principle-7)وسنستكشف مسائل مثل المثال السابق بعمقٍ أكبر بكثير في [القسم 3.4](sec_counting-combperm.html). لكن قبل ذلك، هنا مثال أخير على موضع لا يعمل فيه مبدأ الضرب بسهولة.[🔗](#subsec-overlaps-and-the-product-principle-8)
 
-#### Example 3.3.9.
+#### المثال 3.3.9.
 
-Explain why the product principle does NOT apply to the following counting question: How many 3-letter words have their letters in alphabetical order?[🔗](#subsec-overlaps-and-the-product-principle-9-1-1) Solution. The first thing we might try is to make event \(A\) be selecting the first letter, \(B\) be selecting the second letter, and \(C\) be selecting the third letter. There are 26 outcomes to event \(A\text{.}\) How many outcomes are there for event \(B\text{?}\) If we selected \(w\) as the first letter, then we can select a letter in the set \(\{w, x, y, z\}\) as our second letter, so it appears there are \(4\) outcomes for event \(B\text{.}\) However, if we selected \(a\) as our first letter, then any letter could be used for the second letter, so event \(B\) has \(26\) outcomes. Oh no![🔗](#subsec-overlaps-and-the-product-principle-9-2-1) The problem is that the number of outcomes for the second (and third) letter in the word changes depending on the outcome of the previous event. The events are not independent, but more than that, their *size* is not independent, so the product principle does not apply.[🔗](#subsec-overlaps-and-the-product-principle-9-2-2) [🔗](#subsec-overlaps-and-the-product-principle-9-2) [🔗](#subsec-overlaps-and-the-product-principle-9)We will see how to answer the counting problem above in the case that letters can be repeated in [Section 3.5](sec_counting-multisets.html). If we restricted the question further and required that the letters be distinct (and in alphabetical order), we already know how to answer the question. Since for any *set* of three letters, there is exactly one 3-letter word that has those letters in alphabetical order, we can simply count the number of sets of three letters. This is \(\binom{26}{3}\text{.}\) Then we just look at [Pascal’s triangle](sec_counting-pascal.html#fig-pascal-large) to find the value... oh shoot. Our triangle doesn’t go down that far. I guess we should think of a way to compute the value without the triangle. Read on![🔗](#subsec-overlaps-and-the-product-principle-10) [🔗](#subsec-overlaps-and-the-product-principle)
+اشرح لماذا لا ينطبق مبدأ الضرب على سؤال العدّ الآتي: كم عدد الكلمات ذات الأحرف الثلاثة التي تكون أحرفها بترتيب أبجدي؟[🔗](#subsec-overlaps-and-the-product-principle-9-1-1) الحل. أوّل ما قد نحاوله هو جعل الحدث \(A\) هو انتقاء الحرف الأوّل، و\(B\) انتقاء الحرف الثاني، و\(C\) انتقاء الحرف الثالث. وللحدث \(A\text{.}\) هناك 26 نتيجة. كم عدد النتائج للحدث \(B\text{?}\) فإذا اخترنا \(w\) كحرفٍ أوّل، فيمكننا أن نختار حرفًا من المجموعة \(\{w, x, y, z\}\) كحرفٍ ثانٍ، فيبدو أنّ هناك \(4\) نتائج للحدث \(B\text{.}\) لكنّنا إذا اخترنا \(a\) كحرفٍ أوّل، فيمكن استخدام أيّ حرف للحرف الثاني، ومن ثمّ للحدث \(B\) عدد نتائجٍ هو \(26\). يا إلهي![🔗](#subsec-overlaps-and-the-product-principle-9-2-1) والمشكلة أنّ عدد نتائج الحرف الثاني (الثالث) في الكلمة يتغيّر حسب نتيجة الحدث السابق. والأحداث ليست مستقلّة، بل إنّ *حجمها* ليس مستقلًّا أيضًا، إذن لا ينطبق مبدأ الضرب.[🔗](#subsec-overlaps-and-the-product-principle-9-2-2) [🔗](#subsec-overlaps-and-the-product-principle-9-2) [🔗](#subsec-overlaps-and-the-product-principle-9)وسنرى كيف نُجيب عن سؤال العدّ أعلاه في حالة السماح بتكرار الأحرف في [القسم 3.5](sec_counting-multisets.html). فإذا شُدّدنا السؤال أكثر واشترطنا أن تكون الأحرف متمايزة (وأن تكون بترتيب أبجدي)، فنحن نعرف بالفعل كيف نُجيب عن السؤال. فبالنسبة لأيّ *مجموعة* من ثلاثة أحرف، توجد كلمةٌ واحدة بالضبط ذات ثلاثة أحرف ترتيب أحرفها أبجدي، ومن ثمّ يمكننا مجرّد عدّ عدد المجموعات المكوّنة من ثلاثة أحرف. وهذا هو \(\binom{26}{3}\text{.}\) ثمّ ننظر فقط إلى [مثلث باسكال](sec_counting-pascal.html#fig-pascal-large) لإيجاد القيمة... يا إلهي. فمثلثنا لا يمتدّ إلى هذا الحدّ. وأظنّ أنّ علينا التفكير في طريقةٍ لحساب القيمة من دون المثلث. تابعوا القراءة![🔗](#subsec-overlaps-and-the-product-principle-10) [🔗](#subsec-overlaps-and-the-product-principle)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-Which of the following best describes what the Principle of Inclusion/Exclusion is used for?[🔗](#rq-counting-non-disjoint-pie-1-1)
+أيّ ممّا يلي يصف على أفضل وجه ما يُستعمل مبدأ الاحتواء/الاستبعاد من أجله؟[🔗](#rq-counting-non-disjoint-pie-1-1)
 
-- To count the size of a union of two or more not-necessarily disjoint sets.
-- That is correct. Note that the Principle of Inclusion/Exclusion works just great even if the sets are disjoint; all the intersections just have size 0.
-- To count the size of the union of two or more sets, as long as they are disjoint.
-- If the sets are disjoint, you do not need to use the Principle of Inclusion/Exclusion. You can just add the sizes of the sets.
-- To count the size of the intersection of two or more independent sets of outcomes.
-- The Principle of Inclusion/Exclusion includes intersections of sets, but it is not used to find the size of the intersections.
-- To find the size of the intersection of dependent sets of outcomes.
-- The Principle of Inclusion/Exclusion includes intersections of sets, but it is not used to find the size of the intersections.
+- عدّ حجم اتحاد مجموعتين أو أكثر ليس لازمًا أن تكونا متباعدتين.
+- هذا صحيح. لاحظ أنّ مبدأ الاحتواء/الاستبعاد يعمل جيدًا حتى إذا كانت المجموعات متباعدة؛ فكلّ التقاطعات يكون حجمها 0.
+- عدّ حجم اتحاد مجموعتين أو أكثر، ما دام أنّهما متباعدتان.
+- إذا كانت المجموعات متباعدة، فلا تحتاج إلى استعمال مبدأ الاحتواء/الاستبعاد. يمكنك مجرّد جمع أحجام المجموعات.
+- عدّ حجم تقاطع مجموعتين أو أكثر من مجموعات نتائج مستقلّة.
+- يتضمّن مبدأ الاحتواء/الاستبعاد تقاطعات المجموعات، لكنّه لا يُستعمل لإيجاد حجم التقاطعات.
+- إيجاد حجم تقاطع مجموعات نتائج تابعة.
+- يتضمّن مبدأ الاحتواء/الاستبعاد تقاطعات المجموعات، لكنّه لا يُستعمل لإيجاد حجم التقاطعات.
 
 [🔗](#rq-counting-non-disjoint-pie)
 
 #### 2.
 
-Why does the Principle of Inclusion/Exclusion *add* the size of the intersection of three sets, rather than subtract? Explain in your own words.[🔗](#rq-counting-non-disjoint-3set-1-1) [🔗](#rq-counting-non-disjoint-3set)
+لماذا *يضيف* مبدأ الاحتواء/الاستبعاد حجم تقاطع ثلاث مجموعات بدلًا من أن يطرحه؟ اشرح بكلماتك أنت.[🔗](#rq-counting-non-disjoint-3set-1-1) [🔗](#rq-counting-non-disjoint-3set)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the section you are curious about.[🔗](#rq-counting-non-disjoint-q-1-1) [🔗](#rq-counting-non-disjoint-q)[🔗](#rqs-counting-non-disjoint)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب على الأقلّ سؤالًا واحدًا عن القسم يثير فضولك.[🔗](#rq-counting-non-disjoint-q-1-1) [🔗](#rq-counting-non-disjoint-q)[🔗](#rqs-counting-non-disjoint)
 
-### Exercises Practice Problems
+### تمارين مسائل تطبيقية
 
 #### 1.
 
-Activate Suppose you have sets \(A\) and \(B\) with \(\card{A} = 11\) and \(\card{B} = 19\text{.}\)[🔗](#extracted-webwork-103-1-1-1)
+Activate لنفترض أنّ لديك المجموعتين \(A\) و\(B\) حيث \(\card{A} = 11\) و\(\card{B} = 19\text{.}\)[🔗](#extracted-webwork-103-1-1-1)
 
 #### (a)
 
-What is the largest possible value for \(\card{A \cap B}\text{?}\)[🔗](#extracted-webwork-103-1-2-1-1) [🔗](#extracted-webwork-103-1-2)
+ما أكبر قيمة ممكنة لـ \(\card{A \cap B}\text{?}\)[🔗](#extracted-webwork-103-1-2-1-1) [🔗](#extracted-webwork-103-1-2)
 
 #### (b)
 
-What is the smallest possible value for \(\card{A \cap B}\text{?}\)[🔗](#extracted-webwork-103-1-3-1-1) [🔗](#extracted-webwork-103-1-3)
+ما أصغر قيمة ممكنة لـ \(\card{A \cap B}\text{?}\)[🔗](#extracted-webwork-103-1-3-1-1) [🔗](#extracted-webwork-103-1-3)
 
 #### (c)
 
-What are the possible values for \(\card{A \cup B}\text{?}\)[🔗](#extracted-webwork-103-1-4-1-1) \(\le \card{A \cup B} \le\) [🔗](#extracted-webwork-103-1-4-1-2) [🔗](#extracted-webwork-103-1-4) [🔗](#ww-addmult-pie-possible)
+ما القيم الممكنة لـ \(\card{A \cup B}\text{?}\)[🔗](#extracted-webwork-103-1-4-1-1) \(\le \card{A \cup B} \le\) [🔗](#extracted-webwork-103-1-4-1-2) [🔗](#extracted-webwork-103-1-4) [🔗](#ww-addmult-pie-possible)
 
 #### 2.
 
-Activate If \(\card{A} = 7\) and \(\card{B} = 11\text{,}\) what is \(\card{A \cup B} + \card{A \cap B}\text{?}\)[🔗](#extracted-webwork-104-1-1-1) [🔗](#ww-addmult-union-plus-int)
+Activate إذا كان \(\card{A} = 7\) و\(\card{B} = 11\text{,}\) فما \(\card{A \cup B} + \card{A \cap B}\text{?}\)[🔗](#extracted-webwork-104-1-1-1) [🔗](#ww-addmult-union-plus-int)
 
 #### 3.
 
-Activate A group of college students was asked about their TV watching habits. Of those surveyed, 29 students watch *The Walking Dead*, 24 watch *The Blacklist*, and 27 watch *Game of Thrones*. Additionally, 10 watch *The Walking Dead* and *The Blacklist*, 13 watch *The Walking Dead* and *Game of Thrones*, and 17 watch *The Blacklist* and *Game of Thrones*. There are 8 students who watch all three shows. How many students surveyed watched at least one of the shows?[🔗](#extracted-webwork-105-1-1-1) [🔗](#ww-addmult-pie-tv)
+Activate سُئل مجموعةٌ من طلاب الجامعة عن عاداتهم في مشاهدة التلفاز. من بين المبحوثين، يشاهد 29 طالبًا مسلسل *The Walking Dead*، و24 يشاهدون *The Blacklist*، و27 يشاهدون *Game of Thrones*. وبالإضافة إلى ذلك، يشاهد 10 مسلسل *The Walking Dead* و*The Blacklist*، و13 يشاهدون *The Walking Dead* و*Game of Thrones*، و17 يشاهدون *The Blacklist* و*Game of Thrones*. وهناك 8 طلاب يشاهدون المسلسلات الثلاثة جميعًا. كم عدد الطلاب المبحوثين الذين شاهدوا أحد المسلسلات على الأقلّ؟[🔗](#extracted-webwork-105-1-1-1) [🔗](#ww-addmult-pie-tv)
 
 #### 4.
 
-Activate In a recent survey, 115 students reported whether they liked their potatoes mashed, French-fried, or twice-baked. 53 liked them mashed, 51 liked French fries, and 70 liked twice baked potatoes. Additionally, 22 students liked both mashed and French-fried potatoes, 33 liked French fries and twice baked potatoes, 36 liked mashed and baked, and 16 liked all three styles. How many students *hate* potatoes? Explain why your answer is correct.[🔗](#extracted-webwork-106-1-1-1) [🔗](#ww-addmult-pie-potato)
+Activate في استطلاعٍ حديث، أفاد 115 طالبًا عمّا إن كانوا يحبّون البطاطس مهروسة، أو مقليّة، أو مخبوزة مرّتين. فأحبّ 53 منها المهروسة، و51 أحبّوا المقليّة، و70 أحبّوا المخبوزة مرّتين. وبالإضافة إلى ذلك، أحبّ 22 طالبًا البطاطس المهروسة والمقليّة معًا، و33 أحبّوا المقليّة والمخبوزة مرّتين معًا، و36 أحبّوا المهروسة والمخبوزة، و16 أحبّوا الأنماط الثلاثة جميعًا. كم عدد الطلاب الذين *يكرهون* البطاطس؟ اشرح لماذا إجابتك صحيحة.[🔗](#extracted-webwork-106-1-1-1) [🔗](#ww-addmult-pie-potato)
 
 #### 5.
 
-Activate How many \(14\)-bit strings (that is, bit strings of length 14) are there which:
+Activate كم عدد السلاسل الثنائية ذات الـ \(14\) بت (أي السلاسل الثنائية ذات الطول 14) التي:
 
-1. Start with the sub-string 011?[🔗](#extracted-webwork-107-1-1-1-2-1-1) [🔗](#extracted-webwork-107-1-1-1-2-1)
-2. Have weight 8 (i.e., contain exactly 8 1’s) and start with the sub-string 011?[🔗](#extracted-webwork-107-1-1-1-2-2-1) [🔗](#extracted-webwork-107-1-1-1-2-2)
-3. Either start with \(011\) or end with \(01\) (or both)?[🔗](#extracted-webwork-107-1-1-1-2-3-1) [🔗](#extracted-webwork-107-1-1-1-2-3)
-4. Have weight 8 and either start with \(011\) or end with \(01\) (or both)?[🔗](#extracted-webwork-107-1-1-1-2-4-1) [🔗](#extracted-webwork-107-1-1-1-2-4)
+1. تبدأ بالمقاطع الفرعية 011؟[🔗](#extracted-webwork-107-1-1-1-2-1-1) [🔗](#extracted-webwork-107-1-1-1-2-1)
+2. وزنها 8 (أي أنّها تحتوي على 8 ثُمانيات بالضبط) وتبدأ بالمقاطع الفرعية 011؟[🔗](#extracted-webwork-107-1-1-1-2-2-1) [🔗](#extracted-webwork-107-1-1-1-2-2)
+3. إمّا تبدأ بـ \(011\) أو تنتهي بـ \(01\) (أو كليهما)؟[🔗](#extracted-webwork-107-1-1-1-2-3-1) [🔗](#extracted-webwork-107-1-1-1-2-3)
+4. وزنها 8 وإمّا تبدأ بـ \(011\) أو تنتهي بـ \(01\) (أو كليهما)؟[🔗](#extracted-webwork-107-1-1-1-2-4-1) [🔗](#extracted-webwork-107-1-1-1-2-4)
 
 [🔗](#extracted-webwork-107-1-1-1) [🔗](#ww-binom-bitstrings)
 
 #### 6.
 
-Activate For how many \(n \in \{1,2, \ldots, 790\}\) is \(n\) a multiple of one or more of 8, 5, or 9?[🔗](#extracted-webwork-108-1-1-1) Hint. To find out how many numbers are divisible by 8 and 9, for example, take \(790/(8\cdot9)\) and round down.[🔗](#extracted-webwork-108-1-2-1) [🔗](#extracted-webwork-108-1-2) [🔗](#ww-addmult-pie-multiples1)
+Activate كم عدد قيم \(n \in \{1,2, \ldots, 790\}\) التي يكون فيها \(n\) مضاعفًا لأحد الأعداد 8 أو 5 أو 9 أو أكثر؟[🔗](#extracted-webwork-108-1-1-1) تلميح. لمعرفة عدد الأعداد التي يقبل القسمة على 8 و9 مثلًا، خذ \(790/(8\cdot9)\) وقرّب إلى الأسفل.[🔗](#extracted-webwork-108-1-2-1) [🔗](#extracted-webwork-108-1-2) [🔗](#ww-addmult-pie-multiples1)
 
 #### 7.
 
-Activate How many positive integers less than 850 are multiples of 9, 5, or 2? Use the Principle of Inclusion/Exclusion.[🔗](#extracted-webwork-109-1-1-1) [🔗](#ww-addmult-pie-multiples2)
+Activate كم عدد الأعداد الصحيحة الموجبة الأقلّ من 850 التي هي مضاعفات 9 أو 5 أو 2؟ استعمل مبدأ الاحتواء/الاستبعاد.[🔗](#extracted-webwork-109-1-1-1) [🔗](#ww-addmult-pie-multiples2)
 
 #### 8.
 
-Activate We want to build 12 letter “words” using only the first \(n =7\) letters of the alphabet. For example, if \(n = 5\) we can use the first 5 letters, \(\{a, b, c, d, e \}\) (Recall, words are just strings of letters, not necessarily actual English words.)
+Activate نريد بناء 12 كلمةً «حرفية» باستعمال الحروف \(n =7\) الأولى من الأبجدية فقط. فمثلًا، إذا كان \(n = 5\) فيمكننا استعمال الحروف الخمسة الأولى، \(\{a, b, c, d, e \}\) (وتذكّر، الكلمات مجرّد سلاسل من الأحرف، وليس بالضرورة كلماتٍ إنجليزية حقيقية.)
 
-1. How many of these words are there total?[🔗](#extracted-webwork-110-1-1-1-6-1-1) [🔗](#extracted-webwork-110-1-1-1-6-1)
-2. How many of these words contain no repeated letters?[🔗](#extracted-webwork-110-1-1-1-6-2-1) [🔗](#extracted-webwork-110-1-1-1-6-2)
-3. How many of these words start with the sub-word “ade”?[🔗](#extracted-webwork-110-1-1-1-6-3-1) [🔗](#extracted-webwork-110-1-1-1-6-3)
-4. How many of these words either start with “ade” or end with “be” or both?[🔗](#extracted-webwork-110-1-1-1-6-4-1) [🔗](#extracted-webwork-110-1-1-1-6-4)
-5. How many of the words containing no repeats also do not contain the sub-word “bed”?[🔗](#extracted-webwork-110-1-1-1-6-5-1) [🔗](#extracted-webwork-110-1-1-1-6-5)
+1. كم عدد هذه الكلمات إجمالًا؟[🔗](#extracted-webwork-110-1-1-1-6-1-1) [🔗](#extracted-webwork-110-1-1-1-6-1)
+2. كم عدد هذه الكلمات التي لا تحتوي على أحرفٍ مكرّرة؟[🔗](#extracted-webwork-110-1-1-1-6-2-1) [🔗](#extracted-webwork-110-1-1-1-6-2)
+3. كم عدد هذه الكلمات التي تبدأ بالكلمة الجزئية «ade»؟[🔗](#extracted-webwork-110-1-1-1-6-3-1) [🔗](#extracted-webwork-110-1-1-1-6-3)
+4. كم عدد هذه الكلمات التي إمّا تبدأ بـ «ade» أو تنتهي بـ «be» أو كليهما؟[🔗](#extracted-webwork-110-1-1-1-6-4-1) [🔗](#extracted-webwork-110-1-1-1-6-4)
+5. كم عدد الكلمات التي لا تحتوي على تكرارٍ وتحتوي أيضًا على الكلمة الجزئية «bed»؟[🔗](#extracted-webwork-110-1-1-1-6-5-1) [🔗](#extracted-webwork-110-1-1-1-6-5)
 
 [🔗](#extracted-webwork-110-1-1-1) [🔗](#ww-addmult-words)
 
 #### 9.
 
-Activate Gridtown USA, besides having excellent donut shops, is known for its precisely laid out grid of streets and avenues. Streets run east-west, and avenues north-south, for the entire stretch of the town, never curving and never interrupted by parks or schools or the like.[🔗](#extracted-webwork-111-1-1-1) Suppose you live on the corner of 5th and 5th and work on the corner of 18th and 18th. Thus you must travel 26 blocks to get to work as quickly as possible.
+Activate مدينة غريدتاون الأمريكية، إلى جانب ما تمتلكه من محلاتّ فطائر الدونات الممتازة، معروفة بشبكة شوارعها وجاداتها المرتّبة بدقّة. فالشوارع تمضي شرقًا وغربًا، والجادات شمالًا وجنوبًا، على امتداد المدينة كلّها، لا تتعرّج أبدًا ولا يقطعها متنزّه أو مدرسة أو ما شابه.[🔗](#extracted-webwork-111-1-1-1) افترض أنّك تسكن عند تقاطع الشارع الخامس والجادّة الخامسة، وتعمل عند تقاطع الشارع الثامن عشر والجادّة الثامنة عشرة. ومن ثمّ عليك قطع 26 مربّعًا في المدينة للوصول إلى العمل في أقرب وقت.
 
-1. How many different routes can you take to work, assuming you want to get there as quickly as possible?[🔗](#extracted-webwork-111-1-1-2-1-1-1) [🔗](#extracted-webwork-111-1-1-2-1-1)
+1. كم عدد المسارات المختلفة التي يمكنك سلوكها إلى العمل، على افتراض أنّك تريد الوصول في أقرب وقت ممكن؟[🔗](#extracted-webwork-111-1-1-2-1-1-1) [🔗](#extracted-webwork-111-1-1-2-1-1)
 
 [🔗](#extracted-webwork-111-1-1-2)
 
-1. Now suppose you want to stop and get a donut on the way to work, from your favorite donut shop on the corner of 15th Ave. and 14th St. How many routes to work, stopping at the donut shop, can you take (again, ensuring the shortest possible route)?[🔗](#extracted-webwork-111-1-1-3-1-1-1) [🔗](#extracted-webwork-111-1-1-3-1-1)
+1. الآن افترض أنّك تريد التوقّف لشراء فطيرة دونات في طريقك إلى العمل، من محلك المفضّل للفطائر عند تقاطع الجادّة الخامسة عشرة والشارع الرابع عشر. كم عدد المسارات إلى العمل، مع التوقّف عند محلّ الفطائر، التي يمكنك سلوكها (مع ضمان أقصر طريق ممكن)؟[🔗](#extracted-webwork-111-1-1-3-1-1-1) [🔗](#extracted-webwork-111-1-1-3-1-1)
 
 [🔗](#extracted-webwork-111-1-1-3)
 
-1. Disaster Strikes Gridtown: there is a pothole on 6th Ave. between 7th St. and 8th St. How many routes to work can you take avoiding that unsightly (and dangerous) stretch of road?[🔗](#extracted-webwork-111-1-1-4-1-1-1) [🔗](#extracted-webwork-111-1-1-4-1-1)
+1. الكارثة تضرب غريدتاون: فهناك حفرة في الجادّة السادسة بين الشارع السابع والثامن. كم عدد المسارات إلى العمل التي يمكنك سلوكها بتجنّب ذلك الجزء القبيح (والخطر) من الطريق؟[🔗](#extracted-webwork-111-1-1-4-1-1-1) [🔗](#extracted-webwork-111-1-1-4-1-1)
 
 [🔗](#extracted-webwork-111-1-1-4)
 
-1. The pothole has been repaired (phew!) and a new donut shop has opened on the corner of 6th Ave. and 7th St. How many routes to work drive by one or the other (or both) donut shops? Hint: the donut shops serve PIE.[🔗](#extracted-webwork-111-1-1-5-1-1-1) [🔗](#extracted-webwork-111-1-1-5-1-1)
+1. أُصلحت الحفرة (يا فراغ!) وفُتح محلّ فطائر جديد عند تقاطع الجادّة السادسة والشارع السابع. كم عدد المسارات إلى العمل التي تمرّ بجانب أحد محلّي الفطائر (أو كليهما)؟ تلميح: محلا الفطائر يقدّمان PIE.[🔗](#extracted-webwork-111-1-1-5-1-1-1) [🔗](#extracted-webwork-111-1-1-5-1-1)
 
 [🔗](#extracted-webwork-111-1-1-5) [🔗](#ww-binom-gridtown)[🔗](#practice_counting-repeats)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-Let \(A\text{,}\) \(B\text{,}\) and \(C\) be sets.
+لتكن \(A\text{,}\) و\(B\text{,}\) و\(C\) مجموعات.
 
-1. Find \(\card{(A \cup C)\setminus B}\) provided \(\card{A} = 50\text{,}\) \(\card{B} = 45\text{,}\) \(\card{C} = 40\text{,}\) \(\card{A\cap B} = 20\text{,}\) \(\card{A \cap C} = 15\text{,}\) \(\card{B \cap C} = 23\text{,}\) and \(\card{A \cap B \cap C} = 12\text{.}\) [🔗](#exercises_counting-repeats-2-1-1-4-1)
-2. Describe a set in terms of \(A\text{,}\) \(B\text{,}\) and \(C\) with cardinality 26. [🔗](#exercises_counting-repeats-2-1-1-4-2)
+1. جد \(\card{(A \cup C)\setminus B}\) معطًى أنّ \(\card{A} = 50\text{,}\) و\(\card{B} = 45\text{,}\) و\(\card{C} = 40\text{,}\) و\(\card{A\cap B} = 20\text{,}\) و\(\card{A \cap C} = 15\text{,}\) و\(\card{B \cap C} = 23\text{,}\) و\(\card{A \cap B \cap C} = 12\text{.}\) [🔗](#exercises_counting-repeats-2-1-1-4-1)
+2. صِف مجموعةً بدلالة \(A\text{,}\) و\(B\text{,}\) و\(C\) حجمها 26. [🔗](#exercises_counting-repeats-2-1-1-4-2)
 
-[🔗](#exercises_counting-repeats-2-1-1) Hint. For part (a) you could use the formula for PIE, but for part (b) you might be better off drawing a Venn diagram.[🔗](#exercises_counting-repeats-2-2-1) [🔗](#exercises_counting-repeats-2-2) [🔗](#exercises_counting-repeats-2)
+[🔗](#exercises_counting-repeats-2-1-1) تلميح. في الجزء (a) يمكنك استعمال صيغة PIE، أمّا في الجزء (b) فالأفضل أن ترسم مخطّط ڤين.[🔗](#exercises_counting-repeats-2-2-1) [🔗](#exercises_counting-repeats-2-2) [🔗](#exercises_counting-repeats-2)
 
 #### 2.
 
-For how many three-digit numbers (100 to 999) is the *sum of the digits* even? (For example, \(343\) has an even sum of digits: \(3+4+3 = 10\) which is even.) Find the answer and explain why it is correct in at least two *different* ways.[🔗](#exercises_counting-repeats-3-1-1) Hint. You could consider cases. For example, any number of the form ODD-ODD-EVEN will have an even sum. Alternatively, how many three-digit numbers have the sum of their digits even if the first two digits are 54? What if the first two digits are 19?[🔗](#exercises_counting-repeats-3-2-1) [🔗](#exercises_counting-repeats-3-2) [🔗](#exercises_counting-repeats-3)[🔗](#exercises_counting-repeats)[🔗](#sec_counting-non-disjoint) [&#xe5cb;Prev](sec_counting-combine-outcomes.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_counting-combperm.html) [Feedback](/cdn-cgi/l/email-protection#c7a8b4a4a6b5e9aba2b1aea987b2a9a4a8e9a2a3b2)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_counting-non-disjoint-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_counting-non-disjoint-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+لأيّ عددٍ من الأعداد الثلاثية (100 إلى 999) يكون *مجموع الخانات* زوجيًّا؟ (فمثلًا، \(343\) له مجموع خاناتٍ زوجيّ: \(3+4+3 = 10\) وهو زوجيّ.) جد الجواب واشرح لماذا هو صحيح بطريقتين *مختلفتين* على الأقلّ.[🔗](#exercises_counting-repeats-3-1-1) تلميح. يمكنك النظر في الحالات.فمثلًا، أيّ عددٍ من الشكل «فردي-فردي-زوجيّ» سيكون مجموعه زوجيًّا. وبدلًا من ذلك، كم عدد الأعداد الثلاثية التي يكون مجموع خاناتها زوجيًّا إذا كانت الخانتان الأولى والثانية هما 54؟ وماذا إذا كانت الخانتان الأولى والثانية هما 19؟[🔗](#exercises_counting-repeats-3-2-1) [🔗](#exercises_counting-repeats-3-2) [🔗](#exercises_counting-repeats-3)[🔗](#exercises_counting-repeats)[🔗](#sec_counting-non-disjoint) [&#xe5cb;السابق](sec_counting-combine-outcomes.html)[&#xe5ce;الأعلى](#)[التالي&#xe5cc;](sec_counting-combperm.html) [ملاحظات](/cdn-cgi/l/email-protection#c7a8b4a4a6b5e9aba2b1aea987b2a9a4a8e9a2a3b2)[شعار PreTeXt](https://pretextbook.org)[![شعار Runestone Academy](/images/discrete-math/sec_counting-non-disjoint-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_counting-non-disjoint-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

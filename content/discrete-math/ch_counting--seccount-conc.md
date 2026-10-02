@@ -1,197 +1,197 @@
 ---
 title: "Chapter Summary"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_count-conc.html
 ---
 
-\1. How many animal parades containing 6 crackers can you line up?[🔗](#sec_count-conc-2-1-2-1-1-1) [🔗](#sec_count-conc-2-1-2-1-1)
-2. How many animal parades of 6 crackers can you line up so that the animals appear in alphabetical order?[🔗](#sec_count-conc-2-1-2-1-2-1) [🔗](#sec_count-conc-2-1-2-1-2)
-3. How many ways could you line up 6 different animals in alphabetical order?[🔗](#sec_count-conc-2-1-2-1-3-1) [🔗](#sec_count-conc-2-1-2-1-3)
-4. How many ways could you line up 6 different animals if they can come in any order?[🔗](#sec_count-conc-2-1-2-1-4-1) [🔗](#sec_count-conc-2-1-2-1-4)
-5. How many ways could you give 6 children one animal cracker each?[🔗](#sec_count-conc-2-1-2-1-5-1) [🔗](#sec_count-conc-2-1-2-1-5)
-6. How many ways could you give 6 children one animal cracker each so that no two kids get the same animal?[🔗](#sec_count-conc-2-1-2-1-6-1) [🔗](#sec_count-conc-2-1-2-1-6)
-7. How many ways could you give out 6 giraffes to 10 kids?[🔗](#sec_count-conc-2-1-2-1-7-1) [🔗](#sec_count-conc-2-1-2-1-7)
-8. Write a question about giving animal crackers to kids that has the answer \({10\choose 6}\text{.}\)[🔗](#sec_count-conc-2-1-2-1-8-1) [🔗](#sec_count-conc-2-1-2-1-8)
+\1. كمّ موكبًا من البسكويت على هيئة حيوانات، يحوي 6 قطع، تستطيع أن تصطفّه؟[🔗](#sec_count-conc-2-1-2-1-1-1) [🔗](#sec_count-conc-2-1-2-1-1)
+2. كمّ موكبًا من 6 قطع بسكويت على هيئة حيوانات تستطيع أن تصطفّه بحيث تظهر الحيوانات بترتيب أبجدي؟[🔗](#sec_count-conc-2-1-2-1-2-1) [🔗](#sec_count-conc-2-1-2-1-2)
+3. في كم طريقة تستطيع أن تصطفّ 6 حيوانات مختلفة بترتيب أبجدي؟[🔗](#sec_count-conc-2-1-2-1-3-1) [🔗](#sec_count-conc-2-1-2-1-3)
+4. في كم طريقة تستطيع أن تصطفّ 6 حيوانات مختلفة إن كان ترتيبها كيفما اتّفق؟[🔗](#sec_count-conc-2-1-2-1-4-1) [🔗](#sec_count-conc-2-1-2-1-4)
+5. في كم طريقة تستطيع أن تعطي 6 أطفال قطعةً واحدة من البسكويت على هيئة حيوان لكلٍّ منهم؟[🔗](#sec_count-conc-2-1-2-1-5-1) [🔗](#sec_count-conc-2-1-2-1-5)
+6. في كم طريقة تستطيع أن تعطي 6 أطفال قطعةً واحدة من البسكويت على هيئة حيوان لكلٍّ منهم بحيث لا يحصل طفلان على الحيوان نفسه؟[🔗](#sec_count-conc-2-1-2-1-6-1) [🔗](#sec_count-conc-2-1-2-1-6)
+7. في كم طريقة تستطيع أن توزّع 6 زرافات على 10 أطفال؟[🔗](#sec_count-conc-2-1-2-1-7-1) [🔗](#sec_count-conc-2-1-2-1-7)
+8. اكتب سؤالًا عن إعطاء الأطفال بسكويت على هيئة حيوانات، يكون جوابه \({10\choose 6}\text{.}\)[🔗](#sec_count-conc-2-1-2-1-8-1) [🔗](#sec_count-conc-2-1-2-1-8)
 
-[🔗](#sec_count-conc-2-1-2) [🔗](#sec_count-conc-2-1)With all the different counting techniques we have mastered in this last chapter, it might be difficult to know when to apply which technique. Indeed, it is very easy to get mixed up and use the wrong counting method for a given problem. You get better with practice. As you practice, you start to notice some trends that can help you distinguish between types of counting problems. Here are some suggestions that you might find helpful when deciding how to tackle a counting problem and checking whether your solution is correct.[🔗](#sec_count-conc-2-2)
+[🔗](#sec_count-conc-2-1-2) [🔗](#sec_count-conc-2-1)مع كلّ تقنيات العدّ المختلفة التي أتقنّناها في هذا الفصل الأخير، قد يصعب أن تعرف متى تُطبّق أيّ هذه التقنيات. والحقيقة أنّ من السهل جدًا أن تختلط عليك الأمور فتستعمل طريقة عدّ خاطئة لمشكلة معيّنة. إلّا أنّك تتحسّن بالتدرّب. وبينما تتدرّب، تبدأ في ملاحظة بعض الأنماط التي يمكن أن تساعدك على التمييز بين أنواع مسائل العدّ. وفيما يلي بعض الاقتراحات التي قد تفيدك عند اتخاذ قرار بكيفية معالجة مسألة عدّ، وعند التحقّق ممّا إذا كان حلك صحيحًا.[🔗](#sec_count-conc-2-2)
 
-- Remember that you are counting the number of items in some *list of outcomes*. Write down part of this list. Write down an element in the middle of the list – how are you deciding whether your element really is in the list? Could you get this element more than once using your proposed answer?[🔗](#sec_count-conc-2-3-1-1-1) [🔗](#sec_count-conc-2-3-1-1)
-- If generating an element on the list involves selecting something (for example, picking a letter or picking a position to put a letter, etc.), can the things you select be repeated? Remember, permutations and combinations select objects from a set *without* repeats.[🔗](#sec_count-conc-2-3-1-2-1) [🔗](#sec_count-conc-2-3-1-2)
-- Does order matter? Be careful here, and be sure you know what your answer really means. We usually say that order matters when you get different outcomes when the same objects are selected in different orders. Combinations and “sticks and stones” are used when order *does not* matter.[🔗](#sec_count-conc-2-3-1-3-1) [🔗](#sec_count-conc-2-3-1-3)
-- There are four possibilities when it comes to order and repeats. If order matters and repeats are allowed, the answer will look like \(n^k\text{.}\) If order matters and repeats are not allowed, we have \(P(n,k)\text{.}\) If order doesn’t matter and repeats are allowed, use sticks and stones. If order doesn’t matter and repeats are not allowed, use \({n\choose k}\text{.}\) But be careful: this only applies when you are selecting things, and you should make sure you know exactly what you are selecting before determining which case you are in.[🔗](#sec_count-conc-2-3-1-4-1) [🔗](#sec_count-conc-2-3-1-4)
-- Think about how you would represent your counting problem in terms of sets or functions. We know how to count different sorts of sets and different types of functions.[🔗](#sec_count-conc-2-3-1-5-1) [🔗](#sec_count-conc-2-3-1-5)
-- As we saw with combinatorial proofs, you can often solve a counting problem in more than one way. Do that, and compare your numerical answers. If they don’t match, something is amiss.[🔗](#sec_count-conc-2-3-1-6-1) [🔗](#sec_count-conc-2-3-1-6)
+- تذكّر أنّك تعدّ عدد العناصر في *قائمة نتائج* (list of outcomes). اكتب جزءًا من هذه القائمة. واكتب عنصرًا في منتصف القائمة – فعلى أيّ أساس تقرّر ما إذا كان عنصرك موجودًا في القائمة حقًّا؟ وهل يمكن أن تحصل على هذا العنصر أكثر من مرّة باستخدام إجابتك المقترحة؟[🔗](#sec_count-conc-2-3-1-1-1) [🔗](#sec_count-conc-2-3-1-1)
+- إذا كان توليد عنصر في القائمة يتضمّن انتقاء شيءٍ ما (مثلًا: انتقاء حرف، أو انتقاء موضعٍ لوضع حرف فيه، إلخ)، فهل يمكن تكرار الأشياء التي تنتقيها؟ تذكّر أنّ التبديلات (permutations) والتركيبات (combinations) تنتقي عناصرَ من مجموعة *دون* تكرار.[🔗](#sec_count-conc-2-3-1-2-1) [🔗](#sec_count-conc-2-3-1-2)
+- هل يهمّ الترتيب؟ كن حذرًا هنا، وتأكّد ممّا تعنيه إجابتك حقًّا. فعادةً نقول إنّ الترتيب يهمّ متى حصلت على نتائج مختلفة حين تُنتقى الأشياء نفسها بترتيبات مختلفة. أمّا التركيبات (combinations) و«العصي والحجارة» (sticks and stones) فتُستعمل حين *لا* يهمّ الترتيب.[🔗](#sec_count-conc-2-3-1-3-1) [🔗](#sec_count-conc-2-3-1-3)
+- هناك أربع حالاتٍ محتملة فيما يتعلّق بالترتيب والتكرار. فإن كان الترتيب مهمًّا وكان التكرار مسموحًا، بدا الجواب على صورة \(n^k\text{.}\) وإن كان الترتيب مهمًّا ولم يكن التكرار مسموحًا، يكون لدينا \(P(n,k)\text{.}\) وإن لم يكن الترتيب مهمًّا وكان التكرار مسموحًا، فاستعمل «العصي والحجارة» (sticks and stones). وإن لم يكن الترتيب مهمًّا ولم يكن التكرار مسموحًا، فاستعمل \({n\choose k}\text{.}\) واحذر: إنّ هذا لا ينطبق إلّا حين تنتقي أشياء، وينبغي أن تتأكّد من معرفتك الدقيقة لما تنتقيه قبل تحديد الحالة التي أنت فيها.[🔗](#sec_count-conc-2-3-1-4-1) [🔗](#sec_count-conc-2-3-1-4)
+- فكّر في كيفية تمثيل مسألة العدّ التي تتناولها بدلالة مجموعات (sets) أو دوالّ (functions). فنحن نعرف كيف نعدّ مختلف أنواع المجموعات ومختلف أصناف الدوالّ.[🔗](#sec_count-conc-2-3-1-5-1) [🔗](#sec_count-conc-2-3-1-5)
+- كما رأينا في البراهين التوافقية (combinatorial proofs)، فإنّك تستطيع غالبًا حلّ مسألة عدّ بأكثر من طريقة واحدة. افعل ذلك، وقارن بين إجاباتك العددية. فإن لم تتطابق، فهناك خلل ما.[🔗](#sec_count-conc-2-3-1-6-1) [🔗](#sec_count-conc-2-3-1-6)
 
-[🔗](#sec_count-conc-2-3) While we have covered many counting techniques, we have really only scratched the surface of the large subject of *enumerative combinatorics*. There are mathematicians doing original research in this area even as you read this. Counting can be really hard.[🔗](#sec_count-conc-2-4) In the next chapter, we will approach counting questions from a very different direction, and in doing so, answer infinitely many counting questions at the same time. We will create *sequences* of answers to related questions.[🔗](#sec_count-conc-2-5)
+[🔗](#sec_count-conc-2-3)على الرّغم من أنّنا غطّينا تقنيات عدّ كثيرة، فإنّنا في الحقيقة لم نكُد نخدش سطح الموضوع الكبير، وهو *التوافيق العدّية* (enumerative combinatorics). فهناك علماء رياضيات يُجرون بحوثًا أصليّة في هذا المجال حتى وأنت تقرأ هذا الكلام. ويمكن للعدّ أن يكون صعبًا حقًّا.[🔗](#sec_count-conc-2-4) وفي الفصل القادم، سنتعامل مع أسئلة العدّ من اتجاهٍ مختلفٍ تمامًا، وبذلك نُجيب في الوقت نفسه عن عددٍ لا نهائي من أسئلة العدّ. وسننشئ *تتابعات* (sequences) من الإجابات عن أسئلة متّصلة.[🔗](#sec_count-conc-2-5)
 
-### Exercises Chapter Review
+### تمارين مراجعة الفصل
 
 #### 1.
 
-Activate You have 8 presents to give to your 4 kids. How many ways can this be done if:
+Activate لديك 8 هدايا لتوزّعها على 4 من أطفالك. في كم طريقة يمكن تنفيذ ذلك إذا:
 
-1. The presents are identical, and each kid gets at least one present?[🔗](#extracted-webwork-163-1-1-1-1-1-1) [🔗](#extracted-webwork-163-1-1-1-1-1)
-2. The presents are identical, and some kids might get no presents?[🔗](#extracted-webwork-163-1-1-1-1-2-1) [🔗](#extracted-webwork-163-1-1-1-1-2)
-3. The presents are unique, and some kids might get no presents?[🔗](#extracted-webwork-163-1-1-1-1-3-1) [🔗](#extracted-webwork-163-1-1-1-1-3)
-4. The presents are unique and each kid gets at least one present?[🔗](#extracted-webwork-163-1-1-1-1-4-1) [🔗](#extracted-webwork-163-1-1-1-1-4)
+1. كانت الهدايا متطابقة، وحصل كلُّ طفل على هدية واحدة على الأقلّ؟[🔗](#extracted-webwork-163-1-1-1-1-1-1) [🔗](#extracted-webwork-163-1-1-1-1-1)
+2. كانت الهدايا متطابقة، ولم يحصل بعض الأطفال على أي هدية؟[🔗](#extracted-webwork-163-1-1-1-1-2-1) [🔗](#extracted-webwork-163-1-1-1-1-2)
+3. كانت الهدايا فريدة، ولم يحصل بعض الأطفال على أي هدية؟[🔗](#extracted-webwork-163-1-1-1-1-3-1) [🔗](#extracted-webwork-163-1-1-1-1-3)
+4. كانت الهدايا فريدة وحصل كلُّ طفل على هدية واحدة على الأقلّ؟[🔗](#extracted-webwork-163-1-1-1-1-4-1) [🔗](#extracted-webwork-163-1-1-1-1-4)
 
 [🔗](#extracted-webwork-163-1-1-1) [🔗](#ww-counting-presents)
 
 #### 2.
 
-For each of the following counting problems, say whether the answer is \({10\choose 4}\text{,}\) \(P(10,4)\text{,}\) or neither. If your answer is “neither,” say what the answer should be instead.
+لكلّ من مسائل العدّ التالية، حدّد ما إذا كان الجواب هو \({10\choose 4}\text{,}\) أو \(P(10,4)\text{,}\) أم لا شيء منهما. فإن كان جوابك «لا شيء منهما»، فاذكر ما ينبغي أن يكون عليه الجواب بدلًا من ذلك.
 
-1. How many shortest lattice paths are there from \((0,0)\) to \((10,4)\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-1-1) [🔗](#exercises_count-conc-3-1-4-4-1)
-2. If you have 10 bow ties, and you want to select 4 of them for next week, how many choices do you have?[🔗](#exercises_count-conc-3-1-4-4-2-1) [🔗](#exercises_count-conc-3-1-4-4-2)
-3. Suppose you have 10 bow ties and you will wear a different one on each of the next 4 days. How many choices do you have?[🔗](#exercises_count-conc-3-1-4-4-3-1) [🔗](#exercises_count-conc-3-1-4-4-3)
-4. If you want to wear 4 of your 10 bow ties next week (Monday through Sunday), in how many ways can this be accomplished?[🔗](#exercises_count-conc-3-1-4-4-4-1) [🔗](#exercises_count-conc-3-1-4-4-4)
-5. Out of a group of 10 classmates, how many ways can you rank your top 4 friends?[🔗](#exercises_count-conc-3-1-4-4-5-1) [🔗](#exercises_count-conc-3-1-4-4-5)
-6. If 10 students come to their professor’s office but only 4 can fit at a time, how many different combinations of 4 students can see the prof first?[🔗](#exercises_count-conc-3-1-4-4-6-1) [🔗](#exercises_count-conc-3-1-4-4-6)
-7. How many 4-letter words can be made from the first 10 letters of the alphabet?[🔗](#exercises_count-conc-3-1-4-4-7-1) [🔗](#exercises_count-conc-3-1-4-4-7)
-8. In how many ways can you make the word “cake” from the first 10 letters of the alphabet?[🔗](#exercises_count-conc-3-1-4-4-8-1) [🔗](#exercises_count-conc-3-1-4-4-8)
-9. How many ways are there to distribute 10 identical apples among 4 children?[🔗](#exercises_count-conc-3-1-4-4-9-1) [🔗](#exercises_count-conc-3-1-4-4-9)
-10. If you have 10 kids (and live in a shoe) and 4 types of cereal, in how many ways can your kids eat breakfast?[🔗](#exercises_count-conc-3-1-4-4-10-1) [🔗](#exercises_count-conc-3-1-4-4-10)
-11. In how many ways can you arrange exactly 4 ones in a string of 10 binary digits?[🔗](#exercises_count-conc-3-1-4-4-11-1) [🔗](#exercises_count-conc-3-1-4-4-11)
-12. You want to select 4 distinct, single-digit numbers as your lotto picks. How many choices do you have?[🔗](#exercises_count-conc-3-1-4-4-12-1) [🔗](#exercises_count-conc-3-1-4-4-12)
-13. 10 kids want ice cream. You have 4 varieties. How many ways are there to give the kids as much ice cream as they want?[🔗](#exercises_count-conc-3-1-4-4-13-1) [🔗](#exercises_count-conc-3-1-4-4-13)
-14. How many 1-1 functions are there from \(\{1,2,\ldots, 10\}\) to \(\{a,b,c,d\}\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-14-1) [🔗](#exercises_count-conc-3-1-4-4-14)
-15. How many surjective functions are there from \(\{1,2,\ldots, 10\}\) to \(\{a,b,c,d\}\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-15-1) [🔗](#exercises_count-conc-3-1-4-4-15)
-16. Each of your 10 bow ties matches 4 pairs of suspenders. How many outfits can you make?[🔗](#exercises_count-conc-3-1-4-4-16-1) [🔗](#exercises_count-conc-3-1-4-4-16)
-17. After the party, the 10 kids each choose one of 4 party-favors. How many outcomes are there?[🔗](#exercises_count-conc-3-1-4-4-17-1) [🔗](#exercises_count-conc-3-1-4-4-17)
-18. How many 6-elements subsets are there of the set \(\{1,2,\ldots, 10\}\)[🔗](#exercises_count-conc-3-1-4-4-18-1) [🔗](#exercises_count-conc-3-1-4-4-18)
-19. In how many ways can you split up 11 kids into 5 named teams?[🔗](#exercises_count-conc-3-1-4-4-19-1) [🔗](#exercises_count-conc-3-1-4-4-19)
-20. How many solutions are there to \(x_1 + x_2 + \cdots + x_5 = 6\) where each \(x_i\) is a non-negative integer?[🔗](#exercises_count-conc-3-1-4-4-20-1) [🔗](#exercises_count-conc-3-1-4-4-20)
-21. Your band goes on tour. There are 10 cities within driving distance, but only enough time to play 4 of them. How many choices do you have for the cities on your tour?[🔗](#exercises_count-conc-3-1-4-4-21-1) [🔗](#exercises_count-conc-3-1-4-4-21)
-22. In how many different ways can you play the 4 cities you choose?[🔗](#exercises_count-conc-3-1-4-4-22-1) [🔗](#exercises_count-conc-3-1-4-4-22)
-23. Out of the 10 breakfast cereals available, you want to have 4 bowls. In how many ways can you do this?[🔗](#exercises_count-conc-3-1-4-4-23-1) [🔗](#exercises_count-conc-3-1-4-4-23)
-24. There are 10 types of cookies available. You want to make a 4 cookie stack. How many different stacks can you make?[🔗](#exercises_count-conc-3-1-4-4-24-1) [🔗](#exercises_count-conc-3-1-4-4-24)
-25. From your home at (0,0) you want to go to either the donut shop at (5,4) or the one at (3,6). How many paths could you take?[🔗](#exercises_count-conc-3-1-4-4-25-1) [🔗](#exercises_count-conc-3-1-4-4-25)
-26. How many 10-digit numbers do not contain a sub-string of 4 repeated digits?[🔗](#exercises_count-conc-3-1-4-4-26-1) [🔗](#exercises_count-conc-3-1-4-4-26)
+1. كمّ أقصر مسار شبكي (lattice path) يوجد من \((0,0)\) إلى \((10,4)\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-1-1) [🔗](#exercises_count-conc-3-1-4-4-1)
+2. إن كانت لديك 10 ربطات عنق على شكل فراشة، وأردت انتقاء 4 منها للأسبوع القادم، فكم خيارًا لديك؟[🔗](#exercises_count-conc-3-1-4-4-2-1) [🔗](#exercises_count-conc-3-1-4-4-2)
+3. لنفترض أنّ لديك 10 ربطات عنق على شكل فراشة، وأنّك سترتدي رابطةً مختلفة في كلٍّ من الأيام الأربعة القادمة. فكم خيارًا لديك؟[🔗](#exercises_count-conc-3-1-4-4-3-1) [🔗](#exercises_count-conc-3-1-4-4-3)
+4. إن أردت أن ترتدي 4 من ربطات عنق العشر خاصّتك الأسبوع القادم (من الاثنين إلى الأحد)، في كم طريقة يمكن إنجاز ذلك؟[🔗](#exercises_count-conc-3-1-4-4-4-1) [🔗](#exercises_count-conc-3-1-4-4-4)
+5. من بين مجموعةٍ من 10 زملاء صفّ، في كم طريقة يمكنك أن ترتّب أصدقاءك الأربعة الأوائل؟[🔗](#exercises_count-conc-3-1-4-4-5-1) [🔗](#exercises_count-conc-3-1-4-4-5)
+6. إن جاء 10 طلاب إلى مكتب الأستاذ، ولا يتّسع في الوقت نفسه سوى 4 منهم، فكم تركيبة مختلفة (combination) من 4 طلاب يمكن أن يرى الأستاذ أوّلًا؟[🔗](#exercises_count-conc-3-1-4-4-6-1) [🔗](#exercises_count-conc-3-1-4-4-6)
+7. كم كلمة ذات 4 أحرف يمكن تكوينها من أوّل 10 أحرف من الأبجدية؟[🔗](#exercises_count-conc-3-1-4-4-7-1) [🔗](#exercises_count-conc-3-1-4-4-7)
+8. في كم طريقة يمكنك تكوين الكلمة «cake» من أوّل 10 أحرف من الأبجدية؟[🔗](#exercises_count-conc-3-1-4-4-8-1) [🔗](#exercises_count-conc-3-1-4-4-8)
+9. كم طريقة هناك لتوزيع 10 تفاحات متطابقة على 4 أطفال؟[🔗](#exercises_count-conc-3-1-4-4-9-1) [🔗](#exercises_count-conc-3-1-4-4-9)
+10. إن كان لديك 10 أطفال (وتعيش في حذاء) و4 أنواع من حبوب الإفطار، في كم طريقة يمكن لأطفالك أن يتناولوا وجبة الإفطار؟[🔗](#exercises_count-conc-3-1-4-4-10-1) [🔗](#exercises_count-conc-3-1-4-4-10)
+11. في كم طريقة يمكنك ترتيب أربع خاناتٍ قيمتها 1 بالضبط في سلسلة من 10 خانات ثنائية؟[🔗](#exercises_count-conc-3-1-4-4-11-1) [🔗](#exercises_count-conc-3-1-4-4-11)
+12. تريد انتقاء 4 أعداد متمايزة كلٌّ منها من خانة واحدة لتكون اختياراتك في يانصيب اللوتو. فكم خيارًا لديك؟[🔗](#exercises_count-conc-3-1-4-4-12-1) [🔗](#exercises_count-conc-3-1-4-4-12)
+13. 10 أطفال يريدون المثلجات، ولديك 4 أنواع. فكم طريقة هناك لتوفير للأطفال قدر المثلجات الذي يريدونه؟[🔗](#exercises_count-conc-3-1-4-4-13-1) [🔗](#exercises_count-conc-3-1-4-4-13)
+14. كم دالة 1-1 (أحادية) (injective) من \(\{1,2,\ldots, 10\}\) إلى \(\{a,b,c,d\}\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-14-1) [🔗](#exercises_count-conc-3-1-4-4-14)
+15. كم دالة مغطّية (surjective) من \(\{1,2,\ldots, 10\}\) إلى \(\{a,b,c,d\}\text{?}\)[🔗](#exercises_count-conc-3-1-4-4-15-1) [🔗](#exercises_count-conc-3-1-4-4-15)
+16. كلُّ واحدة من ربطات عنق العشر خاصّتك تتوافق مع 4 أزواج من حمّالات السروال. فكم تنكبة (outfit) يمكنك أن تكوّنها؟[🔗](#exercises_count-conc-3-1-4-4-16-1) [🔗](#exercises_count-conc-3-1-4-4-16)
+17. بعد الحفل، يختار كلُّ واحد من الأطفال العشرة هديةً واحدة من بين 4 هدايا الحفل. فكم نتيجة هناك؟[🔗](#exercises_count-conc-3-1-4-4-17-1) [🔗](#exercises_count-conc-3-1-4-4-17)
+18. كم مجموعة جزئية (subset) مؤلّفة من 6 عناصر لمجموعة \(\{1,2,\ldots, 10\}\)[🔗](#exercises_count-conc-3-1-4-4-18-1) [🔗](#exercises_count-conc-3-1-4-4-18)
+19. في كم طريقة يمكنك تقسيم 11 طفلًا إلى 5 فرقٍ مسمّاة؟[🔗](#exercises_count-conc-3-1-4-4-19-1) [🔗](#exercises_count-conc-3-1-4-4-19)
+20. كم حلًّا هناك للمعادلة \(x_1 + x_2 + \cdots + x_5 = 6\) حيث يكون كلُّ \(x_i\) عددًا صحيحًا غير سالب؟[🔗](#exercises_count-conc-3-1-4-4-20-1) [🔗](#exercises_count-conc-3-1-4-4-20)
+21. فرقة الموسيقى التي تنتمي إليها تخرج في جولة. وهناك 10 مدنٍ تبعد بمسافةٍ يمكن قيادتها، لكنّ الوقت لا يكفي إلاّ للعزف في 4 منها. فكم خيارًا لديك لمدن جولتك؟[🔗](#exercises_count-conc-3-1-4-4-21-1) [🔗](#exercises_count-conc-3-1-4-4-21)
+22. في كم طريقة مختلفة يمكنك أن تعزف في المدن الأربع التي اخترتها؟[🔗](#exercises_count-conc-3-1-4-4-22-1) [🔗](#exercises_count-conc-3-1-4-4-22)
+23. من بين أنواع حبوب الإفطار العشرة المتوفّرة، تريد أن تتناول 4 أطباق. في كم طريقة يمكنك أن تفعل ذلك؟[🔗](#exercises_count-conc-3-1-4-4-23-1) [🔗](#exercises_count-conc-3-1-4-4-23)
+24. هناك 10 أنواع من البسكويت متاحة. تريد أن تصنع كومةً من 4 قطع بسكويت. كم كومة مختلفة يمكنك أن تصنعها؟[🔗](#exercises_count-conc-3-1-4-4-24-1) [🔗](#exercises_count-conc-3-1-4-4-24)
+25. من منزلك عند (0,0) تريد الذهاب إمّا إلى محلّ الكعك المحلّى عند (5,4) أو إلى المحلّ الآخر عند (3,6). كم مسارًا يمكنك أن تسلك؟[🔗](#exercises_count-conc-3-1-4-4-25-1) [🔗](#exercises_count-conc-3-1-4-4-25)
+26. كم عددًا من 10 خانات لا يحتوي على سلسلة فرعية (sub-string) من 4 خاناتٍ متكرّرة؟[🔗](#exercises_count-conc-3-1-4-4-26-1) [🔗](#exercises_count-conc-3-1-4-4-26)
 
 [🔗](#exercises_count-conc-3-1-4) [🔗](#exercises_count-conc-3)
 
 #### 3.
 
-Activate Recall, you own 4 regular ties and 8 bow ties. You realize that it would be okay to wear more than two ties to your clown college interview.
+Activate تذكّر، أنّك تملك 4 ربطات عنق عادية و8 ربطات على شكل فراشة. وتدرك أنّه لا بأس أن ترتدي أكثر من ربطتين في مقابلتك مع كلية المهرّجين.
 
-1. You must select some of your ties to wear. Everything is okay, from no ties up to all ties. How many choices do you have?[🔗](#extracted-webwork-164-1-1-1-1-1-1) [🔗](#extracted-webwork-164-1-1-1-1-1)
-2. If you want to wear at least one regular tie and one bow tie, but are willing to wear up to all your ties, how many choices do you have for which ties to wear?[🔗](#extracted-webwork-164-1-1-1-1-2-1) [🔗](#extracted-webwork-164-1-1-1-1-2)
-3. How many choices of which ties to wear do you have if you wear exactly 3 of the 4 regular ties and 2 of the 8 bow ties?[🔗](#extracted-webwork-164-1-1-1-1-3-1) [🔗](#extracted-webwork-164-1-1-1-1-3)
-4. Once you have selected 3 regular and 2 bow ties, in how many orders could you put the ties on, assuming you must have one of the bow ties on top?[🔗](#extracted-webwork-164-1-1-1-1-4-1) [🔗](#extracted-webwork-164-1-1-1-1-4)
+1. عليك انتقاء بعض ربطات عنق لارتدائها. وكلُّ شيء جائز، من عدم ارتداء أي رابطة إلى ارتداء الربطات كلّها. فكم خيارًا لديك؟[🔗](#extracted-webwork-164-1-1-1-1-1-1) [🔗](#extracted-webwork-164-1-1-1-1-1)
+2. إن أردت ارتداء رابطة عادية واحدة على الأقلّ ورابطة فراشة واحدة على الأقلّ، مع استعدادك لارتداء كلّ ربطاتك، فكم خيارًا لديك في تحديد الربطات التي سترتديها؟[🔗](#extracted-webwork-164-1-1-1-1-2-1) [🔗](#extracted-webwork-164-1-1-1-1-2)
+3. كم خيارًا لديك في تحديد الربطات التي سترتديها إن ارتديت 3 بالضبط من الـ 4 ربطات العادية و2 من الـ 8 ربطات الفراشة؟[🔗](#extracted-webwork-164-1-1-1-1-3-1) [🔗](#extracted-webwork-164-1-1-1-1-3)
+4. بعد أن تنتقي 3 ربطات عادية و2 ربطات فراشة، في كم ترتيب يمكنك أن ترتدي الربطات، على اعتبار أنّ عليك أن تكون إحدى ربطات الفراشة في الأعلى؟[🔗](#extracted-webwork-164-1-1-1-1-4-1) [🔗](#extracted-webwork-164-1-1-1-1-4)
 
 [🔗](#extracted-webwork-164-1-1-1) [🔗](#ww-counting-multiple-ties)
 
 #### 4.
 
-Give a counting question where the answer is \(8\cdot 3 \cdot 3 \cdot 5\text{.}\) Give another question where the answer is \(8 + 3 + 3 + 5\text{.}\)[🔗](#exercises_count-conc-5-1-1) [🔗](#exercises_count-conc-5)
+اطرح مسألة عدّ يكون جوابها \(8\cdot 3 \cdot 3 \cdot 5\text{.}\) ثمّ اطرح مسألة أخرى يكون جوابها \(8 + 3 + 3 + 5\text{.}\)[🔗](#exercises_count-conc-5-1-1) [🔗](#exercises_count-conc-5)
 
 #### 5.
 
-Activate Consider numbers of the form \(\alpha = a_1a_2a_3\dots a_n\text{,}\) with \(n\) digits, each digit from the set \({\left\{1,2,3,4,5,6,7,8\right\}}\text{.}\) For example, if \(n = 4\text{,}\) the number \(\alpha = a_1a_2a_3a_4\) will have 4 digits from the set \({\left\{1,2,3,4,5,6,7,8\right\}}\text{.}\)[🔗](#extracted-webwork-165-1-1-1) Let \(n = 11\text{.}\)[🔗](#extracted-webwork-165-1-1-2)
+Activate Consider أعدادًا على الصورة \(\alpha = a_1a_2a_3\dots a_n\text{,}\) من \(n\) خانة، على نحوٍ تكون فيه كلُّ خانة من المجموعة \({\left\{1,2,3,4,5,6,7,8\right\}}\text{.}\) فمثلًا، إذا كان \(n = 4\text{,}\) فإنّ العدد \(\alpha = a_1a_2a_3a_4\) ذا 4 خانات من المجموعة \({\left\{1,2,3,4,5,6,7,8\right\}}\text{.}\)[🔗](#extracted-webwork-165-1-1-1) ولنفترض \(n = 11\text{.}\)[🔗](#extracted-webwork-165-1-1-2)
 
-1. How many such numbers are there?[🔗](#extracted-webwork-165-1-1-3-1-1-1) [🔗](#extracted-webwork-165-1-1-3-1-1)
-2. How many such numbers are there for which the *sum* of the digits is even?[🔗](#extracted-webwork-165-1-1-3-1-2-1) [🔗](#extracted-webwork-165-1-1-3-1-2)
-3. How many such numbers contain more even digits than odd digits?[🔗](#extracted-webwork-165-1-1-3-1-3-1) [🔗](#extracted-webwork-165-1-1-3-1-3)
+1. كم عددًا من هذا النوع؟[🔗](#extracted-webwork-165-1-1-3-1-1-1) [🔗](#extracted-webwork-165-1-1-3-1-1)
+2. كم عددًا من هذا النوع يكون *مجموع* خاناته زوجيًّا؟[🔗](#extracted-webwork-165-1-1-3-1-2-1) [🔗](#extracted-webwork-165-1-1-3-1-2)
+3. كم عددًا من هذا النوع يحتوي على خاناتٍ زوجية أكثر من الخانات الفردية؟[🔗](#extracted-webwork-165-1-1-3-1-3-1) [🔗](#extracted-webwork-165-1-1-3-1-3)
 
 [🔗](#extracted-webwork-165-1-1-3) [🔗](#ww-counting-digits)
 
 #### 6.
 
-Activate In a recent small survey of airline passengers, 27 said they had flown American in the last year, 22 had flown Jet Blue, and 30 had flown Continental. Of those, 13 reported they had flown on American and Jet Blue, 12 had flown on Jet Blue and Continental, and 11 had flown on American and Continental. 4 passengers had flown on all three airlines.[🔗](#extracted-webwork-166-1-1-1) How many passengers were surveyed? (Assume the results above make up the entire survey.)[🔗](#extracted-webwork-166-1-1-2) [🔗](#ww-counting-pie-airlines)
+Activate في استطلاعٍ صغيرٍ حديثٍ لمسافري الطيران، قال 27 مسافرًا إنّهم سافروا على American خلال العام الماضي، وسافر 22 على Jet Blue، وسافر 30 على Continental. ومن بين هؤلاء، أفاد 13 مسافرًا بأنّهم سافروا على American وJet Blue، و12 بأنّهم سافروا على Jet Blue وContinental، و11 بأنّهم سافروا على American وContinental. وكان 4 مسافرين قد سافروا على الخطوط الجوية الثلاث جميعًا.[🔗](#extracted-webwork-166-1-1-1) كم مسافرًا شملهم الاستطلاع؟ (افترض أنّ النتائج أعلاه تمثّل الاستطلاع بأكمله.)[🔗](#extracted-webwork-166-1-1-2) [🔗](#ww-counting-pie-airlines)
 
 #### 7.
 
-Activate Recall, by \(11\)-bit strings, we mean strings of binary digits, of length 11.
+Activate تذكّر، إنّنا نقصد بـ \(11\)-سلاسل البِت (bit strings) السلاسل المكوّنة من الخانات الثنائية، طولها 11.
 
-1. How many \(11\)-bit strings are there total?[🔗](#extracted-webwork-167-1-1-1-2-1-1) [🔗](#extracted-webwork-167-1-1-1-2-1)
-2. How many \(11\)-bit strings have weight 4?[🔗](#extracted-webwork-167-1-1-1-2-2-1) [🔗](#extracted-webwork-167-1-1-1-2-2)
-3. How many subsets of the set {1,2,3,4,5,6,7,8,9,10,11} contain exactly 4 elements?[🔗](#extracted-webwork-167-1-1-1-2-3-1) [🔗](#extracted-webwork-167-1-1-1-2-3)
+1. كم سلسلةً \(11\)-بت توجد إجمالًا؟[🔗](#extracted-webwork-167-1-1-1-2-1-1) [🔗](#extracted-webwork-167-1-1-1-2-1)
+2. كم سلسلةً \(11\)-بت وزنها (weight) 4؟[🔗](#extracted-webwork-167-1-1-1-2-2-1) [🔗](#extracted-webwork-167-1-1-1-2-2)
+3. كم مجموعة جزئية (subset) من المجموعة {1,2,3,4,5,6,7,8,9,10,11} تحتوي على 4 عناصر بالضبط؟[🔗](#extracted-webwork-167-1-1-1-2-3-1) [🔗](#extracted-webwork-167-1-1-1-2-3)
 
 [🔗](#extracted-webwork-167-1-1-1) [🔗](#ww-counting-bs-vs-sets)
 
 #### 8.
 
-Activate What is the coefficient of \(x^{11}\) in the expansion of \((x+3)^{16} + x^3(x+5)^{20}\text{?}\)[🔗](#extracted-webwork-168-1-1-1) [🔗](#ww-counting-coefs)
+Activate ما معامل \(x^{11}\) في تمدّد (expansion) \((x+3)^{16} + x^3(x+5)^{20}\text{?}\)[🔗](#extracted-webwork-168-1-1-1) [🔗](#ww-counting-coefs)
 
 #### 9.
 
-Activate How many 11-letter words contain exactly 3 vowels? (For example, an 8-letter word with 5 vowels is “aaioobtt”; don’t consider “y” a vowel for this exercise.)[🔗](#extracted-webwork-169-1-1-1) What if repeated letters were not allowed?[🔗](#extracted-webwork-169-1-1-2) [🔗](#ww-counting-words)
+Activate كم كلمة ذات 11 حرفًا تحتوي على 3 حروفٍ مدّية بالضبط؟ (فمثلًا، كلمةٌ ذات 8 أحرف فيها 5 حروف مدّية هي «aaioobtt»؛ ولا تعتبر «y» حرفًا مدّيًا في هذا التمرين.)[🔗](#extracted-webwork-169-1-1-1) وماذا لو لم يُسمح بتكرار الأحرف؟[🔗](#extracted-webwork-169-1-1-2) [🔗](#ww-counting-words)
 
 #### 10.
 
-Activate For each of the following, find the number of shortest lattice paths from \((5,5)\) to \((10,10)\) which:
+Activate لكلٍّ ممّا يأتي، ابحث عن عدد أقصر المسارات الشبكية (lattice paths) من \((5,5)\) إلى \((10,10)\) بحيث:
 
-1. pass through the point \((7,6)\text{.}\)[🔗](#extracted-webwork-170-1-1-1-3-1-1) [🔗](#extracted-webwork-170-1-1-1-3-1)
-2. avoid (do not pass through) the point \((9,9)\text{.}\)[🔗](#extracted-webwork-170-1-1-1-3-2-1) [🔗](#extracted-webwork-170-1-1-1-3-2)
-3. either pass through \((7,6)\) or \((9,9)\) (or both).[🔗](#extracted-webwork-170-1-1-1-3-3-1) [🔗](#extracted-webwork-170-1-1-1-3-3)
+1. تمرّ بالنقطة \((7,6)\text{.}\)[🔗](#extracted-webwork-170-1-1-1-3-1-1) [🔗](#extracted-webwork-170-1-1-1-3-1)
+2. تتجنّب (لا تمرّ) بالنقطة \((9,9)\text{.}\)[🔗](#extracted-webwork-170-1-1-1-3-2-1) [🔗](#extracted-webwork-170-1-1-1-3-2)
+3. تمرّ إمّا بالنقطة \((7,6)\) أو بالنقطة \((9,9)\) (أو كليهما).[🔗](#extracted-webwork-170-1-1-1-3-3-1) [🔗](#extracted-webwork-170-1-1-1-3-3)
 
 [🔗](#extracted-webwork-170-1-1-1) [🔗](#ww-counting-paths)
 
 #### 11.
 
-Activate You live in Grid-Town on the corner of 2nd and 4th, and work in a building on the corner of 20th and 16th. How many routes are there which take you from home to work and then back home, but by a different route?[🔗](#extracted-webwork-171-1-1-1) [🔗](#ww-counting-gridtown)
+Activate تقيم في مدينة الشبكة (Grid-Town) عند تقاطع الشارع الثاني مع الرابع، وتعمل في مبنى واقع عند تقاطع الشارع العشرين مع السادس عشر. فكم مسارًا هناك ينقلك من المنزل إلى العمل ثمّ يعيدك إلى المنزل، لكن عبر مسارٍ مختلف؟[🔗](#extracted-webwork-171-1-1-1) [🔗](#ww-counting-gridtown)
 
 #### 12.
 
-Activate How many 5-bit strings start with \(101\) or end with \(10\) or both?[🔗](#extracted-webwork-172-1-1-1) [🔗](#ww-counting-bs-anyweight)
+Activate كم سلسلةً 5-بت تبدأ بـ \(101\) أو تنتهي بـ \(10\) أو كليهما؟[🔗](#extracted-webwork-172-1-1-1) [🔗](#ww-counting-bs-anyweight)
 
 #### 13.
 
-Activate How many 9-bit strings of weight 7 start with \(101\) or end with \(10\) or both?[🔗](#extracted-webwork-173-1-1-1) [🔗](#ww-counting-bs-weight)
+Activate كم سلسلةً 9-بت وزنها 7 تبدأ بـ \(101\) أو تنتهي بـ \(10\) أو كليهما؟[🔗](#extracted-webwork-173-1-1-1) [🔗](#ww-counting-bs-weight)
 
 #### 14.
 
-Activate We are making 9-letter words from the set of letters \(a,b,c,d,e,f \dots\text{,}\) in such a way that we have exactly the first 9 letters available so that we use all letters.
+Activate نُصنّع كلماتٍ ذات 9 أحرف من مجموعة الحروف \(a,b,c,d,e,f \dots\text{,}\) على نحوٍ لا نملك فيه إلّا أوّل 9 أحرف من الحروف، بحيث نستخدم جميع الأحرف.
 
-1. How many 9-letter words can we make from the letters without repeats that do not contain the sub-word “bad” in consecutive letters?[🔗](#extracted-webwork-174-1-1-1-2-1-1) [🔗](#extracted-webwork-174-1-1-1-2-1)
+1. كم كلمة ذات 9 أحرف يمكننا تكوينها من الحروف دون تكرار، ولا تحتوي على الكلمة الفرعية (sub-word) «bad» في مواضع متتالية من الحروف؟[🔗](#extracted-webwork-174-1-1-1-2-1-1) [🔗](#extracted-webwork-174-1-1-1-2-1)
 
 [🔗](#extracted-webwork-174-1-1-1)
 
-1. How many words don’t contain the subword “bad” in not-necessarily-consecutive letters (but in order)?[🔗](#extracted-webwork-174-1-1-2-1-1-1) [🔗](#extracted-webwork-174-1-1-2-1-1)
+1. كم كلمة لا تحتوي على الكلمة الفرعية «bad» في أحرفٍ ليست بالضرورة متتالية (لكنها بالترتيب)؟[🔗](#extracted-webwork-174-1-1-2-1-1-1) [🔗](#extracted-webwork-174-1-1-2-1-1)
 
 [🔗](#extracted-webwork-174-1-1-2) [🔗](#ww-counting-words2)
 
 #### 15.
 
-Explain using lattice paths why \(\sum_{k=0}^n {n \choose k} = 2^n\text{.}\)[🔗](#exercises_count-conc-16-1-1) [🔗](#exercises_count-conc-16)
+اشرح، باستعمال المسارات الشبكية، لماذا \(\sum_{k=0}^n {n \choose k} = 2^n\text{.}\)[🔗](#exercises_count-conc-16-1-1) [🔗](#exercises_count-conc-16)
 
 #### 16.
 
-Activate Suppose you have 19 one-dollar bills to give out as prizes to your top 6 discrete math students. How many ways can you do this if:
+Activate لنفترض أنّ لديك 19 ورقةً من فئة الدولار لتوزّعها كجوائزٍ لأفضل 6 طلاب في الرياضيات المتقطّعة. في كم طريقة يمكنك أن تفعل ذلك إذا:
 
-1. Each of the 6 students gets at least 1 dollar?[🔗](#extracted-webwork-175-1-1-1-1-1-1) [🔗](#extracted-webwork-175-1-1-1-1-1)
-2. Some students might get nothing?[🔗](#extracted-webwork-175-1-1-1-1-2-1) [🔗](#extracted-webwork-175-1-1-1-1-2)
-3. Each student gets at least 1 dollar but no more than 8 dollars?[🔗](#extracted-webwork-175-1-1-1-1-3-1) [🔗](#extracted-webwork-175-1-1-1-1-3)
+1. حصل كلٌّ من الطلاب الستّة على دولار واحد على الأقلّ؟[🔗](#extracted-webwork-175-1-1-1-1-1-1) [🔗](#extracted-webwork-175-1-1-1-1-1)
+2. لم يحصل بعض الطلاب على شيء؟[🔗](#extracted-webwork-175-1-1-1-1-2-1) [🔗](#extracted-webwork-175-1-1-1-1-2)
+3. حصل كل طالب على دولار واحد على الأقلّ لكن لا يزيد على 8 دولارات؟[🔗](#extracted-webwork-175-1-1-1-1-3-1) [🔗](#extracted-webwork-175-1-1-1-1-3)
 
-[🔗](#extracted-webwork-175-1-1-1) Hint. Use stars and bars.[🔗](#extracted-webwork-175-1-2-1) [🔗](#extracted-webwork-175-1-2) [🔗](#ww-counting-bills)
+[🔗](#extracted-webwork-175-1-1-1) تلميح. استعمل «النجوم والأعمدة» (stars and bars).[🔗](#extracted-webwork-175-1-2-1) [🔗](#extracted-webwork-175-1-2) [🔗](#ww-counting-bills)
 
 #### 17.
 
-Activate How many functions \(f: {\left\{1,2,3,4,5,6\right\}} \to {\left\{1,2,3,4,5,6\right\}}\) are there satisfying:
+Activate كم دالة \(f: {\left\{1,2,3,4,5,6\right\}} \to {\left\{1,2,3,4,5,6\right\}}\) تحقّق الشروط التالية؟
 
-1. \(f(1) = 1\) or \(f(2) = 2\) (or both)?[🔗](#extracted-webwork-176-1-1-1-2-1-1) [🔗](#extracted-webwork-176-1-1-1-2-1)
-2. \(f(1) \ne 1\) or \(f(2) \ne 2\) (or both)?[🔗](#extracted-webwork-176-1-1-1-2-2-1) [🔗](#extracted-webwork-176-1-1-1-2-2)
-3. \(f(1) \ne 1\) *and* \(f(2) \ne 2\text{,}\) and \(f\) is injective?[🔗](#extracted-webwork-176-1-1-1-2-3-1) [🔗](#extracted-webwork-176-1-1-1-2-3)
-4. \(f\) is surjective, but \(\forall x \in \{1,2,\dots, 6 \} \text{, } f(x) \ne x\text{?}\)[🔗](#extracted-webwork-176-1-1-1-2-4-1) [🔗](#extracted-webwork-176-1-1-1-2-4)
+1. \(f(1) = 1\) أو \(f(2) = 2\) (أو كلاهما)؟[🔗](#extracted-webwork-176-1-1-1-2-1-1) [🔗](#extracted-webwork-176-1-1-1-2-1)
+2. \(f(1) \ne 1\) أو \(f(2) \ne 2\) (أو كلاهما)؟[🔗](#extracted-webwork-176-1-1-1-2-2-1) [🔗](#extracted-webwork-176-1-1-1-2-2)
+3. \(f(1) \ne 1\) *و* \(f(2) \ne 2\text{,}\) و \(f\) أحادية (injective)؟[🔗](#extracted-webwork-176-1-1-1-2-3-1) [🔗](#extracted-webwork-176-1-1-1-2-3)
+4. \(f\) مغطّية (surjective)، لكن \(\forall x \in \{1,2,\dots, 6 \} \text{, } f(x) \ne x\text{?}\)[🔗](#extracted-webwork-176-1-1-1-2-4-1) [🔗](#extracted-webwork-176-1-1-1-2-4)
 
 [🔗](#extracted-webwork-176-1-1-1) [🔗](#ww-counting-functions)
 
 #### 18.
 
-Activate How many functions map \({\left\{1,2,3,4,5,6\right\}}\) *onto* \({\left\{1,2,3,4,5\right\}}\) (i.e., how many *surjections* are there)?[🔗](#extracted-webwork-177-1-1-1) [🔗](#ww-counting-surjections)
+Activate كم دالة تصوّر (map) \({\left\{1,2,3,4,5,6\right\}}\) *onto* \({\left\{1,2,3,4,5\right\}}\) (أي، كم دالة *مغطّية* (surjection) توجد)؟[🔗](#extracted-webwork-177-1-1-1) [🔗](#ww-counting-surjections)
 
 #### 19.
 
-Activate To thank your math professor for doing such an amazing job all semester, you decide to bake your professor cookies. You know how to make 15 different types of cookies.
+Activate لشكر أستاذك في الرياضيات على عمله المذهل طوال الفصل الدراسي، قرّرت أن تخبز لأستاذك البسكويت. وأنت تعرف كيف تصنع 15 نوعًا مختلفًا من البسكويت.
 
-1. If you want to give your professor 8 different types of cookies, how many different combinations of cookie type can you select? Explain your answer.[🔗](#extracted-webwork-178-1-1-1-1-1-1) [🔗](#extracted-webwork-178-1-1-1-1-1)
-2. To keep things interesting, you decide to make a different number of each type of cookie. If again you want to select 8 cookie types, how many ways can you select the cookie types and decide for which there will be the most, second most, etc. Explain your answer.[🔗](#extracted-webwork-178-1-1-1-1-2-1) [🔗](#extracted-webwork-178-1-1-1-1-2)
-3. You change your mind again. This time you decide you will make a total of 22 cookies. Each cookie could be any one of the 15 types of cookies you know how to bake (and it’s okay if you leave some types out). How many choices do you have? Explain.[🔗](#extracted-webwork-178-1-1-1-1-3-1) [🔗](#extracted-webwork-178-1-1-1-1-3)
-4. You realize that the previous plan did not account for presentation. This time, you once again want to make 22 cookies, each one could be any one of the 15 types of cookies. However, now you plan to shape the cookies into the numerals 1, 2, ..., 22. How many choices do you have for which types of cookies to bake into which numerals? Explain.[🔗](#extracted-webwork-178-1-1-1-1-4-1) [🔗](#extracted-webwork-178-1-1-1-1-4)
-5. The only flaw with the last plan is that your professor might not get to sample all 15 different varieties of cookies. How many choices do you have for which types of cookies to make into which numerals, given that each type of cookie should be present at least once? Explain.[🔗](#extracted-webwork-178-1-1-1-1-5-1) [🔗](#extracted-webwork-178-1-1-1-1-5)
+1. إن أردت أن تعطي أستاذك 8 أنواعٍ مختلفة من البسكويت، فكم تركيبة مختلفة (combination) من أنواع البسكويت يمكنك أن تنتقي؟ اشرح إجابتك.[🔗](#extracted-webwork-178-1-1-1-1-1-1) [🔗](#extracted-webwork-178-1-1-1-1-1)
+2. وحفاظًا على الأمر شائقًا، قرّرت أن تصنع عددًا مختلفًا من كل نوع من البسكويت. فإن أردت مرّة أخرى انتقاء 8 أنواعٍ من البسكويت، فكم طريقة يمكنك أن تنتقي بها أنواع البسكويت وتقرّر أيّها سيكون الأكثر، ثمّ الثاني الأكثر، إلخ؟ اشرح إجابتك.[🔗](#extracted-webwork-178-1-1-1-1-2-1) [🔗](#extracted-webwork-178-1-1-1-1-2)
+3. لقد غيّرت رأيك مرّة أخرى. وهذه المرّة تقرّر أن تصنع ما مجموعه 22 قطعة بسكويت. ويمكن أن تكون كلُّ قطعة أيًّا من الأنواع الخمسة عشر التي تعرف كيف تخبزها (ويجوز أن تترك بعض الأنواع دون استعمال). فكم خيارًا لديك؟ اشرح.[🔗](#extracted-webwork-178-1-1-1-1-3-1) [🔗](#extracted-webwork-178-1-1-1-1-3)
+4. وتدرك أنّ الخطة السابقة لم تراعِ مسألة العرض (presentation). وهذه المرّة، تريد مرّة أخرى أن تصنع 22 قطعة بسكويت، ويمكن أن تكون كلُّ قطعة أيًّا من أنواع البسكويت الخمسة عشر. لكنّك تخطّط الآن أن تشكّل البسكويت على صورة الأرقام 1، 2، ...، 22. فكم خيارًا لديك في تحديد أيّ أنواع البسكويت تُخبز في أيّ الأرقام؟ اشرح.[🔗](#extracted-webwork-178-1-1-1-1-4-1) [🔗](#extracted-webwork-178-1-1-1-1-4)
+5. والخلل الوحيد في الخطة الأخيرة هو أنّ أستاذك قد لا يتاح له تذوّق الأنواع الخمسة عشر كلّها من البسكويت. فكم خيارًا لديك في تحديد أيّ أنواع البسكويت تُصنع في أيّ الأرقام، على اعتبار أنّ كل نوع من البسكويت ينبغي أن يكون حاضرًا مرّة واحدة على الأقلّ؟ اشرح.[🔗](#extracted-webwork-178-1-1-1-1-5-1) [🔗](#extracted-webwork-178-1-1-1-1-5)
 
 [🔗](#extracted-webwork-178-1-1-1) [🔗](#ww-counting-cookies)
 
 #### 20.
 
-For which of the parts of the previous problem ([Exercise 3.9.19](sec_count-conc.html#ww-counting-cookies)) does it make sense to interpret the counting question as counting some number of functions? Say what the domain and codomain should be, and whether you are counting all functions, injections, surjections, or something else.[🔗](#exercises_count-conc-21-1-1) [🔗](#exercises_count-conc-21)[🔗](#exercises_count-conc)[🔗](#sec_count-conc) [&#xe5cb;Prev](sec_advPIE.html)[&#xe5ce;Top](#)[Next&#xe5cc;](ch_sequences.html) [Feedback](/cdn-cgi/l/email-protection#d3bca0b0b2a1fdbfb6a5babd93a6bdb0bcfdb6b7a6)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_count-conc-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_count-conc-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+في أيّ أجزاء المسألة السابقة ([التمرين 3.9.19](sec_count-conc.html#ww-counting-cookies)) يكون من المعقول تأويل مسألة العدّ على أنّها عدُّ عددٍ ما من الدوالّ؟ اذكر ينبغي أن يكون النطاق (domain) وقيم الدوالّ (codomain)، وبيّن ما إذا كنت تعدّ كلَّ الدوالّ أم الدوالّ الأحادية (injections) أم المغطّية (surjections) أم شيئًا آخر.[🔗](#exercises_count-conc-21-1-1) [🔗](#exercises_count-conc-21)[🔗](#exercises_count-conc)[🔗](#sec_count-conc) [&#xe5cb;السابق](sec_advPIE.html)[&#xe5ce;البداية](#)[التالي&#xe5cc;](ch_sequences.html) [ملاحظات](/cdn-cgi/l/email-protection#d3bca0b0b2a1fdbfb6a5babd93a6bdb0bcfdb6b7a6)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_count-conc-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_count-conc-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

@@ -1,0 +1,954 @@
+MODULE TITLE: More types: structs, slices, and maps.
+MODULE DESCRIPTION: Learn how to define types based on existing ones: this lesson covers structs, arrays, slices, and maps.
+
+PAGE 1 TITLE: Pointers
+
+  <h2>Pointers</h2>
+
+
+  <p>
+    Go has pointers.
+
+
+    A pointer holds the memory address of a value.
+  </p>
+
+
+
+  <p>
+    The type <code>*T</code> is a pointer to a <code>T</code> value. Its zero value is <code>nil</code>.
+  </p>
+
+
+
+  <pre>var p *int</pre>
+
+
+
+  <p>
+    The <code>&amp;</code> operator generates a pointer to its operand.
+  </p>
+
+
+
+  <pre>i := 42
+p = &amp;i</pre>
+
+
+
+  <p>
+    The <code>*</code> operator denotes the pointer&#39;s underlying value.
+  </p>
+
+
+
+  <pre>fmt.Println(*p) // read i through the pointer p
+*p = 21         // set i through the pointer p</pre>
+
+
+
+  <p>
+    This is known as &#34;dereferencing&#34; or &#34;indirecting&#34;.
+  </p>
+
+
+
+  <p>
+    Unlike C, Go has no pointer arithmetic.
+  </p>
+
+
+
+
+
+
+
+END PAGE 1
+
+PAGE 2 TITLE: Structs
+
+  <h2>Structs</h2>
+
+
+  <p>
+    A <code>struct</code> is a collection of fields.
+  </p>
+
+
+
+
+
+
+
+END PAGE 2
+
+PAGE 3 TITLE: Struct Fields
+
+  <h2>Struct Fields</h2>
+
+
+  <p>
+    Struct fields are accessed using a dot.
+  </p>
+
+
+
+
+
+
+
+END PAGE 3
+
+PAGE 4 TITLE: Pointers to structs
+
+  <h2>Pointers to structs</h2>
+
+
+  <p>
+    Struct fields can be accessed through a struct pointer.
+  </p>
+
+
+
+  <p>
+    To access the field <code>X</code> of a struct when we have the struct pointer <code>p</code> we could
+
+
+    write <code>(*p).X</code>.
+
+
+    However, that notation is cumbersome, so the language permits us instead to
+
+
+    write just <code>p.X</code>, without the explicit dereference.
+  </p>
+
+
+
+
+
+
+
+END PAGE 4
+
+PAGE 5 TITLE: Struct Literals
+
+  <h2>Struct Literals</h2>
+
+
+  <p>
+    A struct literal denotes a newly allocated struct value by listing the values of its fields.
+  </p>
+
+
+
+  <p>
+    You can list just a subset of fields by using the <code>Name:</code> syntax. (And the order of named fields is irrelevant.)
+  </p>
+
+
+
+  <p>
+    The special prefix <code>&amp;</code> returns a pointer to the struct value.
+  </p>
+
+
+
+
+
+
+
+END PAGE 5
+
+PAGE 6 TITLE: Arrays
+
+  <h2>Arrays</h2>
+
+
+  <p>
+    The type <code>[n]T</code> is an array of <code>n</code> values of type <code>T</code>.
+  </p>
+
+
+
+  <p>
+    The expression
+  </p>
+
+
+
+  <pre>var a [10]int</pre>
+
+
+
+  <p>
+    declares a variable <code>a</code> as an array of ten integers.
+  </p>
+
+
+
+  <p>
+    An array&#39;s length is part of its type, so arrays cannot be resized.
+
+
+    This seems limiting, but don&#39;t worry;
+
+
+    Go provides a convenient way of working with arrays.
+  </p>
+
+
+
+
+
+
+
+END PAGE 6
+
+PAGE 7 TITLE: Slices
+
+  <h2>Slices</h2>
+
+
+  <p>
+    An array has a fixed size.
+
+
+    A slice, on the other hand, is a dynamically-sized,
+
+
+    flexible view into the elements of an array.
+
+
+    In practice, slices are much more common than arrays.
+  </p>
+
+
+
+  <p>
+    The type <code>[]T</code> is a slice with elements of type <code>T</code>.
+  </p>
+
+
+
+  <p>
+    A slice is formed by specifying two indices, a low and
+
+
+    high bound, separated by a colon:
+  </p>
+
+
+
+  <pre>a[low : high]</pre>
+
+
+
+  <p>
+    This selects a half-open range which includes the first
+
+
+    element, but excludes the last one.
+  </p>
+
+
+
+  <p>
+    The following expression creates a slice which includes
+
+
+    elements 1 through 3 of <code>a</code>:
+  </p>
+
+
+
+  <pre>a[1:4]</pre>
+
+
+
+
+
+
+
+END PAGE 7
+
+PAGE 8 TITLE: Slices are like references to arrays
+
+  <h2>Slices are like references to arrays</h2>
+
+
+  <p>
+    A slice does not store any data,
+
+
+    it just describes a section of an underlying array.
+  </p>
+
+
+
+  <p>
+    Changing the elements of a slice modifies the
+
+
+    corresponding elements of its underlying array.
+  </p>
+
+
+
+  <p>
+    Other slices that share the same underlying array will see those changes.
+  </p>
+
+
+
+
+
+
+
+END PAGE 8
+
+PAGE 9 TITLE: Slice literals
+
+  <h2>Slice literals</h2>
+
+
+  <p>
+    A slice literal is like an array literal without the length.
+  </p>
+
+
+
+  <p>
+    This is an array literal:
+  </p>
+
+
+
+  <pre>[3]bool{true, true, false}</pre>
+
+
+
+  <p>
+    And this creates the same array as above,
+
+
+    then builds a slice that references it:
+  </p>
+
+
+
+  <pre>[]bool{true, true, false}</pre>
+
+
+
+
+
+
+
+END PAGE 9
+
+PAGE 10 TITLE: Slice defaults
+
+  <h2>Slice defaults</h2>
+
+
+  <p>
+    When slicing, you may omit the high or low bounds to use their defaults instead.
+  </p>
+
+
+
+  <p>
+    The default is zero for the low bound and the length of the underlying slice or array for the high bound.
+  </p>
+
+
+
+  <p>
+    For the array
+  </p>
+
+
+
+  <pre>var a [10]int</pre>
+
+
+
+  <p>
+    these slice expressions are equivalent:
+  </p>
+
+
+
+  <pre>a[0:10]
+a[:10]
+a[0:]
+a[:]</pre>
+
+
+
+
+
+
+
+END PAGE 10
+
+PAGE 11 TITLE: Slice length and capacity
+
+  <h2>Slice length and capacity</h2>
+
+
+  <p>
+    A slice has both a <i>length</i> and a <i>capacity</i>.
+  </p>
+
+
+
+  <p>
+    The length of a slice is the number of elements it contains.
+  </p>
+
+
+
+  <p>
+    The capacity of a slice is the number of elements in the underlying array,
+
+
+    counting from the first element in the slice.
+  </p>
+
+
+
+  <p>
+    The length and capacity of a slice <code>s</code> can be obtained using the expressions
+
+
+    <code>len(s)</code> and <code>cap(s)</code>.
+  </p>
+
+
+
+  <p>
+    You can extend a slice&#39;s length by re-slicing it,
+
+
+    provided it has sufficient capacity.
+
+
+    Try changing one of the slice operations in the example program to extend it
+
+
+    beyond its capacity and see what happens.
+  </p>
+
+
+
+
+
+
+
+END PAGE 11
+
+PAGE 12 TITLE: Nil slices
+
+  <h2>Nil slices</h2>
+
+
+  <p>
+    The zero value of a slice is <code>nil</code>.
+  </p>
+
+
+
+  <p>
+    A nil slice has a length and capacity of 0
+
+
+    and has no underlying array.
+  </p>
+
+
+
+
+
+
+
+END PAGE 12
+
+PAGE 13 TITLE: Creating a slice with make
+
+  <h2>Creating a slice with make</h2>
+
+
+  <p>
+    Slices can be created with the built-in <code>make</code> function;
+
+
+    this is how you create dynamically-sized arrays.
+  </p>
+
+
+
+  <p>
+    The <code>make</code> function allocates a zeroed array
+
+
+    and returns a slice that refers to that array:
+  </p>
+
+
+
+  <pre>a := make([]int, 5)  // len(a)=5</pre>
+
+
+
+  <p>
+    To specify a capacity, pass a third argument to <code>make</code>:
+  </p>
+
+
+
+  <pre>b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+b = b[:cap(b)] // len(b)=5, cap(b)=5
+b = b[1:]      // len(b)=4, cap(b)=4</pre>
+
+
+
+
+
+
+
+END PAGE 13
+
+PAGE 14 TITLE: Slices of slices
+
+  <h2>Slices of slices</h2>
+
+
+  <p>
+    Slices can contain any type, including other slices.
+  </p>
+
+
+
+
+
+
+
+END PAGE 14
+
+PAGE 15 TITLE: Appending to a slice
+
+  <h2>Appending to a slice</h2>
+
+
+  <p>
+    It is common to append new elements to a slice, and so Go provides a built-in
+
+
+    <code>append</code> function. The <a href="/pkg/builtin/#append" target="_self">documentation</a>
+
+
+    of the built-in package describes <code>append</code>.
+  </p>
+
+
+
+  <pre>func append(s []T, vs ...T) []T</pre>
+
+
+
+  <p>
+    The first parameter <code>s</code> of <code>append</code> is a slice of type <code>T</code>, and the rest are
+
+
+    <code>T</code> values to append to the slice.
+  </p>
+
+
+
+  <p>
+    The resulting value of <code>append</code> is a slice containing all the elements of the
+
+
+    original slice plus the provided values.
+  </p>
+
+
+
+  <p>
+    If the backing array of <code>s</code> is too small to fit all the given values a bigger
+
+
+    array will be allocated. The returned slice will point to the newly allocated
+
+
+    array.
+  </p>
+
+
+
+  <p>
+    (To learn more about slices, read the <a href="/blog/go-slices-usage-and-internals" target="_self">Slices: usage and internals</a> article.)
+  </p>
+
+
+
+
+
+
+
+END PAGE 15
+
+PAGE 16 TITLE: Range
+
+  <h2>Range</h2>
+
+
+  <p>
+    The <code>range</code> form of the <code>for</code> loop iterates over a slice or map.
+  </p>
+
+
+
+  <p>
+    When ranging over a slice, two values are returned for each iteration.
+
+
+    The first is the index, and the second is a copy of the element at that index.
+  </p>
+
+
+
+
+
+
+
+END PAGE 16
+
+PAGE 17 TITLE: Range continued
+
+  <h2>Range continued</h2>
+
+
+  <p>
+    You can skip the index or value by assigning to <code>_</code>.
+  </p>
+
+
+
+  <pre>for i, _ := range pow
+for _, value := range pow</pre>
+
+
+
+  <p>
+    If you only want the index, you can omit the second variable.
+  </p>
+
+
+
+  <pre>for i := range pow</pre>
+
+
+
+
+
+
+
+END PAGE 17
+
+PAGE 18 TITLE: Exercise: Slices
+
+  <h2>Exercise: Slices</h2>
+
+
+  <p>
+    Implement <code>Pic</code>. It should return a slice of length <code>dy</code>, each element of which is a slice of <code>dx</code> 8-bit unsigned integers. When you run the program, it will display your picture, interpreting the integers as grayscale (well, bluescale) values.
+  </p>
+
+
+
+  <p>
+    The choice of image is up to you. Interesting functions include <code>(x+y)/2</code>, <code>x*y</code>, and <code>x^y</code>.
+  </p>
+
+
+
+  <p>
+    (You need to use a loop to allocate each <code>[]uint8</code> inside the <code>[][]uint8</code>.)
+  </p>
+
+
+
+  <p>
+    (Use <code>uint8(intValue)</code> to convert between types.)
+  </p>
+
+
+
+
+
+
+
+END PAGE 18
+
+PAGE 19 TITLE: Maps
+
+  <h2>Maps</h2>
+
+
+  <p>
+    A map maps keys to values.
+  </p>
+
+
+
+  <p>
+    The zero value of a map is <code>nil</code>.
+
+
+    A <code>nil</code> map has no keys, nor can keys be added.
+  </p>
+
+
+
+  <p>
+    The <code>make</code> function returns a map of the given type,
+
+
+    initialized and ready for use.
+  </p>
+
+
+
+
+
+
+
+END PAGE 19
+
+PAGE 20 TITLE: Map literals
+
+  <h2>Map literals</h2>
+
+
+  <p>
+    Map literals are like struct literals, but the keys are required.
+  </p>
+
+
+
+
+
+
+
+END PAGE 20
+
+PAGE 21 TITLE: Map literals continued
+
+  <h2>Map literals continued</h2>
+
+
+  <p>
+    If the top-level type is just a type name, you can omit it from the elements of the literal.
+  </p>
+
+
+
+
+
+
+
+END PAGE 21
+
+PAGE 22 TITLE: Mutating Maps
+
+  <h2>Mutating Maps</h2>
+
+
+  <p>
+    Insert or update an element in map <code>m</code>:
+  </p>
+
+
+
+  <pre>m[key] = elem</pre>
+
+
+
+  <p>
+    Retrieve an element:
+  </p>
+
+
+
+  <pre>elem = m[key]</pre>
+
+
+
+  <p>
+    Delete an element:
+  </p>
+
+
+
+  <pre>delete(m, key)</pre>
+
+
+
+  <p>
+    Test that a key is present with a two-value assignment:
+  </p>
+
+
+
+  <pre>elem, ok = m[key]</pre>
+
+
+
+  <p>
+    If <code>key</code> is in <code>m</code>, <code>ok</code> is <code>true</code>. If not, <code>ok</code> is <code>false</code>.
+  </p>
+
+
+
+  <p>
+    If <code>key</code> is not in the map, then <code>elem</code> is the zero value for the map&#39;s element type.
+  </p>
+
+
+
+  <p>
+    <b>Note:</b> If <code>elem</code> or <code>ok</code> have not yet been declared you could use a short declaration form:
+  </p>
+
+
+
+  <pre>elem, ok := m[key]</pre>
+
+
+
+
+
+
+
+END PAGE 22
+
+PAGE 23 TITLE: Exercise: Maps
+
+  <h2>Exercise: Maps</h2>
+
+
+  <p>
+    Implement <code>WordCount</code>.  It should return a map of the counts of each “word” in the string <code>s</code>. The <code>wc.Test</code> function runs a test suite against the provided function and prints success or failure.
+  </p>
+
+
+
+  <p>
+    You might find <a href="/pkg/strings/#Fields" target="_self">strings.Fields</a> helpful.
+  </p>
+
+
+
+
+
+
+
+END PAGE 23
+
+PAGE 24 TITLE: Function values
+
+  <h2>Function values</h2>
+
+
+  <p>
+    Functions are values too. They can be passed around just like other values.
+  </p>
+
+
+
+  <p>
+    Function values may be used as function arguments and return values.
+  </p>
+
+
+
+
+
+
+
+END PAGE 24
+
+PAGE 25 TITLE: Function closures
+
+  <h2>Function closures</h2>
+
+
+  <p>
+    Go functions may be closures. A closure is a function value that references variables from outside its body. The function may access and assign to the referenced variables; in this sense the function is &#34;bound&#34; to the variables.
+  </p>
+
+
+
+  <p>
+    For example, the <code>adder</code> function returns a closure. Each closure is bound to its own <code>sum</code> variable.
+  </p>
+
+
+
+
+
+
+
+END PAGE 25
+
+PAGE 26 TITLE: Exercise: Fibonacci closure
+
+  <h2>Exercise: Fibonacci closure</h2>
+
+
+  <p>
+    Let&#39;s have some fun with functions.
+  </p>
+
+
+
+  <p>
+    Implement a <code>fibonacci</code> function that returns a function (a closure) that
+
+
+    returns successive <a href="https://en.wikipedia.org/wiki/Fibonacci_number" target="_blank">fibonacci numbers</a>
+
+
+    (0, 1, 1, 2, 3, 5, ...).
+  </p>
+
+
+
+
+
+
+
+END PAGE 26
+
+PAGE 27 TITLE: Congratulations!
+
+  <h2>Congratulations!</h2>
+
+
+  <p>
+    You finished this lesson!
+  </p>
+
+
+
+  <p>
+    You can go back to the list of <a href="/tour/list" target="_self">modules</a> to find what to learn next, or continue with the <a href="javascript:click(&#39;.next-page&#39;)" target="_self">next lesson</a>.
+  </p>
+
+
+
+END PAGE 27

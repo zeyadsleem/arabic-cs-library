@@ -1,0 +1,110 @@
+{
+  "Title": "Methods and interfaces",
+  "Description": "This lesson covers methods and interfaces, the constructs that define objects and their behavior.",
+  "Pages": [
+    {
+      "Title": "Methods",
+      "Content": "\n  <h2>Methods</h2>\n  \n  \n  <p>\n    Go does not have classes.\n\n\n    However, you can define methods on types.\n  </p>\n  \n\n  \n  <p>\n    A method is a function with a special <i>receiver</i> argument.\n  </p>\n  \n\n  \n  <p>\n    The receiver appears in its own argument list between the <code>func</code> keyword and\n\n\n    the method name.\n  </p>\n  \n\n  \n  <p>\n    In this example, the <code>Abs</code> method has a receiver of type <code>Vertex</code> named <code>v</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Methods are functions",
+      "Content": "\n  <h2>Methods are functions</h2>\n  \n  \n  <p>\n    Remember: a method is just a function with a receiver argument.\n  </p>\n  \n\n  \n  <p>\n    Here&#39;s <code>Abs</code> written as a regular function with no change in functionality.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Methods continued",
+      "Content": "\n  <h2>Methods continued</h2>\n  \n  \n  <p>\n    You can declare a method on non-struct types, too.\n  </p>\n  \n\n  \n  <p>\n    In this example we see a numeric type <code>MyFloat</code> with an <code>Abs</code> method.\n  </p>\n  \n\n  \n  <p>\n    You can only declare a method with a receiver whose type is defined in the same\n\n\n    package as the method.\n\n\n    You cannot declare a method with a receiver whose type is defined in another\n\n\n    package (which includes the built-in types such as <code>int</code>).\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Pointer receivers",
+      "Content": "\n  <h2>Pointer receivers</h2>\n  \n  \n  <p>\n    You can declare methods with pointer receivers.\n  </p>\n  \n\n  \n  <p>\n    This means the receiver type has the literal syntax <code>*T</code> for some type <code>T</code>.\n\n\n    (Also, <code>T</code> cannot itself be a pointer such as <code>*int</code>.)\n  </p>\n  \n\n  \n  <p>\n    For example, the <code>Scale</code> method here is defined on <code>*Vertex</code>.\n  </p>\n  \n\n  \n  <p>\n    Methods with pointer receivers can modify the value to which the receiver\n\n\n    points (as <code>Scale</code> does here).\n\n\n    Since methods often need to modify their receiver, pointer receivers are more\n\n\n    common than value receivers.\n  </p>\n  \n\n  \n  <p>\n    Try removing the <code>*</code> from the declaration of the <code>Scale</code> function on line 16\n\n\n    and observe how the program&#39;s behavior changes.\n  </p>\n  \n\n  \n  <p>\n    With a value receiver, the <code>Scale</code> method operates on a copy of the original\n\n\n    <code>Vertex</code> value.\n\n\n    (This is the same behavior as for any other function argument.)\n\n\n    The <code>Scale</code> method must have a pointer receiver to change the <code>Vertex</code> value\n\n\n    declared in the <code>main</code> function.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Pointers and functions",
+      "Content": "\n  <h2>Pointers and functions</h2>\n  \n  \n  <p>\n    Here we see the <code>Abs</code> and <code>Scale</code> methods rewritten as functions.\n  </p>\n  \n\n  \n  <p>\n    Again, try removing the <code>*</code> from line 16.\n\n\n    Can you see why the behavior changes?\n\n\n    What else did you need to change for the example to compile?\n  </p>\n  \n\n  \n  <p>\n    (If you&#39;re not sure, continue to the next page.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Methods and pointer indirection",
+      "Content": "\n  <h2>Methods and pointer indirection</h2>\n  \n  \n  <p>\n    Comparing the previous two programs, you might notice that\n\n\n    functions with a pointer argument must take a pointer:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nScaleFunc(v, 5)  // Compile error!\nScaleFunc(&amp;v, 5) // OK</pre>\n  \n\n  \n  <p>\n    while methods with pointer receivers take either a value or a pointer as the\n\n\n    receiver when they are called:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nv.Scale(5)  // OK\np := &amp;v\np.Scale(10) // OK</pre>\n  \n\n  \n  <p>\n    For the statement <code>v.Scale(5)</code>, even though <code>v</code> is a value and not a pointer,\n\n\n    the method with the pointer receiver is called automatically.\n\n\n    That is, as a convenience, Go interprets the statement <code>v.Scale(5)</code> as\n\n\n    <code>(&amp;v).Scale(5)</code> since the <code>Scale</code> method has a pointer receiver.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Methods and pointer indirection (2)",
+      "Content": "\n  <h2>Methods and pointer indirection (2)</h2>\n  \n  \n  <p>\n    The equivalent thing happens in the reverse direction.\n  </p>\n  \n\n  \n  <p>\n    Functions that take a value argument must take a value of that specific type:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nfmt.Println(AbsFunc(v))  // OK\nfmt.Println(AbsFunc(&amp;v)) // Compile error!</pre>\n  \n\n  \n  <p>\n    while methods with value receivers take either a value or a pointer as the\n\n\n    receiver when they are called:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nfmt.Println(v.Abs()) // OK\np := &amp;v\nfmt.Println(p.Abs()) // OK</pre>\n  \n\n  \n  <p>\n    In this case, the method call <code>p.Abs()</code> is interpreted as <code>(*p).Abs()</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Choosing a value or pointer receiver",
+      "Content": "\n  <h2>Choosing a value or pointer receiver</h2>\n  \n  \n  <p>\n    There are two reasons to use a pointer receiver.\n  </p>\n  \n\n  \n  <p>\n    The first is so that the method can modify the value that its receiver points to.\n  </p>\n  \n\n  \n  <p>\n    The second is to avoid copying the value on each method call.\n\n\n    This can be more efficient if the receiver is a large struct, for example.\n  </p>\n  \n\n  \n  <p>\n    In this example, both <code>Scale</code> and <code>Abs</code> are methods with receiver type <code>*Vertex</code>,\n\n\n    even though the <code>Abs</code> method needn&#39;t modify its receiver.\n  </p>\n  \n\n  \n  <p>\n    In general, all methods on a given type should have either value or pointer\n\n\n    receivers, but not a mixture of both.\n\n\n    (We&#39;ll see why over the next few pages.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Interfaces",
+      "Content": "\n  <h2>Interfaces</h2>\n  \n  \n  <p>\n    An <i>interface type</i> is defined as a set of method signatures.\n  </p>\n  \n\n  \n  <p>\n    A value of interface type can hold any value that implements those methods.\n  </p>\n  \n\n  \n  <p>\n    <b>Note:</b> There is an error in the example code on line 22.\n\n\n    <code>Vertex</code> (the value type) doesn&#39;t implement <code>Abser</code> because\n\n\n    the <code>Abs</code> method is defined only on <code>*Vertex</code> (the pointer type).\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Interfaces are implemented implicitly",
+      "Content": "\n  <h2>Interfaces are implemented implicitly</h2>\n  \n  \n  <p>\n    A type implements an interface by implementing its methods.\n\n\n    There is no explicit declaration of intent, no &#34;implements&#34; keyword.\n  </p>\n  \n\n  \n  <p>\n    Implicit interfaces decouple the definition of an interface from its\n\n\n    implementation, which could then appear in any package without prearrangement.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Interface values",
+      "Content": "\n  <h2>Interface values</h2>\n  \n  \n  <p>\n    Under the hood, interface values can be thought of as a tuple of a value and a\n\n\n    concrete type:\n  </p>\n  \n\n  \n  <pre>(value, type)</pre>\n  \n\n  \n  <p>\n    An interface value holds a value of a specific underlying concrete type.\n  </p>\n  \n\n  \n  <p>\n    Calling a method on an interface value executes the method of the same name on\n\n\n    its underlying type.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Interface values with nil underlying values",
+      "Content": "\n  <h2>Interface values with nil underlying values</h2>\n  \n  \n  <p>\n    If the concrete value inside the interface itself is nil,\n\n\n    the method will be called with a nil receiver.\n  </p>\n  \n\n  \n  <p>\n    In some languages this would trigger a null pointer exception,\n\n\n    but in Go it is common to write methods that gracefully handle being called\n\n\n    with a nil receiver (as with the method <code>M</code> in this example.)\n  </p>\n  \n\n  \n  <p>\n    Note that an interface value that holds a nil concrete value is itself non-nil.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Nil interface values",
+      "Content": "\n  <h2>Nil interface values</h2>\n  \n  \n  <p>\n    A nil interface value holds neither value nor concrete type.\n  </p>\n  \n\n  \n  <p>\n    Calling a method on a nil interface is a run-time error because there is no\n\n\n    type inside the interface tuple to indicate which <i>concrete</i> method to call.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "The empty interface",
+      "Content": "\n  <h2>The empty interface</h2>\n  \n  \n  <p>\n    The interface type that specifies zero methods is known as the <i>empty interface</i>:\n  </p>\n  \n\n  \n  <pre>interface{}</pre>\n  \n\n  \n  <p>\n    An empty interface may hold values of any type.\n\n\n    (Every type implements at least zero methods.)\n  </p>\n  \n\n  \n  <p>\n    <code>any</code> is an alias for <code>interface{}</code>, and the two are completely\n\n\n    equivalent.\n  </p>\n  \n\n  \n  <p>\n    Empty interfaces are used by code that handles values of unknown type.\n\n\n    For example, <code>fmt.Print</code> takes any number of arguments of type <code>any</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Type assertions",
+      "Content": "\n  <h2>Type assertions</h2>\n  \n  \n  <p>\n    A <i>type assertion</i> provides access to an interface value&#39;s underlying concrete value.\n  </p>\n  \n\n  \n  <pre>t := i.(T)</pre>\n  \n\n  \n  <p>\n    This statement asserts that the interface value <code>i</code> holds the concrete type <code>T</code>\n\n\n    and assigns the underlying <code>T</code> value to the variable <code>t</code>.\n  </p>\n  \n\n  \n  <p>\n    If <code>i</code> does not hold a <code>T</code>, the statement will trigger a panic.\n  </p>\n  \n\n  \n  <p>\n    To <i>test</i> whether an interface value holds a specific type,\n\n\n    a type assertion can return two values: the underlying value\n\n\n    and a boolean value that reports whether the assertion succeeded.\n  </p>\n  \n\n  \n  <pre>t, ok := i.(T)</pre>\n  \n\n  \n  <p>\n    If <code>i</code> holds a <code>T</code>, then <code>t</code> will be the underlying value and <code>ok</code> will be true.\n  </p>\n  \n\n  \n  <p>\n    If not, <code>ok</code> will be false and <code>t</code> will be the zero value of type <code>T</code>,\n\n\n    and no panic occurs.\n  </p>\n  \n\n  \n  <p>\n    Note the similarity between this syntax and that of reading from a map.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Type switches",
+      "Content": "\n  <h2>Type switches</h2>\n  \n  \n  <p>\n    A <i>type switch</i> is a construct that permits several type assertions in series.\n  </p>\n  \n\n  \n  <p>\n    A type switch is like a regular switch statement, but the cases in a type\n\n\n    switch specify types (not values), and those values are compared against\n\n\n    the type of the value held by the given interface value.\n  </p>\n  \n\n  \n  <pre>switch v := i.(type) {\ncase T:\n    // here v has type T\ncase S:\n    // here v has type S\ndefault:\n    // no match; here v has the same type as i\n}</pre>\n  \n\n  \n  <p>\n    The declaration in a type switch has the same syntax as a type assertion <code>i.(T)</code>,\n\n\n    but the specific type <code>T</code> is replaced with the keyword <code>type</code>.\n  </p>\n  \n\n  \n  <p>\n    This switch statement tests whether the interface value <code>i</code>\n\n\n    holds a value of type <code>T</code> or <code>S</code>.\n\n\n    In each of the <code>T</code> and <code>S</code> cases, the variable <code>v</code> will be of type\n\n\n    <code>T</code> or <code>S</code> respectively and hold the value held by <code>i</code>.\n\n\n    In the default case (where there is no match), the variable <code>v</code> is\n\n\n    of the same interface type and value as <code>i</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Stringers",
+      "Content": "\n  <h2>Stringers</h2>\n  \n  \n  <p>\n    One of the most ubiquitous interfaces is <a href=\"/pkg/fmt/#Stringer\" target=\"_self\"><code>Stringer</code></a> defined by the <a href=\"/pkg/fmt/\" target=\"_self\"><code>fmt</code></a> package.\n  </p>\n  \n\n  \n  <pre>type Stringer interface {\n    String() string\n}</pre>\n  \n\n  \n  <p>\n    A <code>Stringer</code> is a type that can describe itself as a string. The <code>fmt</code> package\n\n\n    (and many others) look for this interface to print values.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Stringers",
+      "Content": "\n  <h2>Exercise: Stringers</h2>\n  \n  \n  <p>\n    Make the <code>IPAddr</code> type implement <code>fmt.Stringer</code> to print the address as\n\n\n    a dotted quad.\n  </p>\n  \n\n  \n  <p>\n    For instance, <code>IPAddr{1, 2, 3, 4}</code> should print as <code>&#34;1.2.3.4&#34;</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Errors",
+      "Content": "\n  <h2>Errors</h2>\n  \n  \n  <p>\n    Go programs express error state with <code>error</code> values.\n  </p>\n  \n\n  \n  <p>\n    The <code>error</code> type is a built-in interface similar to <code>fmt.Stringer</code>:\n  </p>\n  \n\n  \n  <pre>type error interface {\n    Error() string\n}</pre>\n  \n\n  \n  <p>\n    (As with <code>fmt.Stringer</code>, the <code>fmt</code> package looks for the <code>error</code> interface when\n\n\n    printing values.)\n  </p>\n  \n\n  \n  <p>\n    Functions often return an <code>error</code> value, and calling code should handle errors\n\n\n    by testing whether the error equals <code>nil</code>.\n  </p>\n  \n\n  \n  <pre>i, err := strconv.Atoi(&#34;42&#34;)\nif err != nil {\n    fmt.Printf(&#34;couldn&#39;t convert number: %v\\n&#34;, err)\n    return\n}\nfmt.Println(&#34;Converted integer:&#34;, i)</pre>\n  \n\n  \n  <p>\n    A nil <code>error</code> denotes success; a non-nil <code>error</code> denotes failure.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Errors",
+      "Content": "\n  <h2>Exercise: Errors</h2>\n  \n  \n  <p>\n    Copy your <code>Sqrt</code> function from the <a href=\"/tour/flowcontrol/8\" target=\"_self\">earlier exercise</a> and modify it to return an <code>error</code> value.\n  </p>\n  \n\n  \n  <p>\n    <code>Sqrt</code> should return a non-nil error value when given a negative number, as it doesn&#39;t support complex numbers.\n  </p>\n  \n\n  \n  <p>\n    Create a new type\n  </p>\n  \n\n  \n  <pre>type ErrNegativeSqrt float64</pre>\n  \n\n  \n  <p>\n    and make it an <code>error</code> by giving it a\n  </p>\n  \n\n  \n  <pre>func (e ErrNegativeSqrt) Error() string</pre>\n  \n\n  \n  <p>\n    method such that <code>ErrNegativeSqrt(-2).Error()</code> returns <code>&#34;cannot Sqrt negative number: -2&#34;</code>.\n  </p>\n  \n\n  \n  <p>\n    <b>Note:</b> A call to <code>fmt.Sprint(e)</code> inside the <code>Error</code> method will send the program into an infinite loop. You can avoid this by converting <code>e</code> first: <code>fmt.Sprint(float64(e))</code>. Why?\n  </p>\n  \n\n  \n  <p>\n    Change your <code>Sqrt</code> function to return an <code>ErrNegativeSqrt</code> value when given a negative number.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Readers",
+      "Content": "\n  <h2>Readers</h2>\n  \n  \n  <p>\n    The <code>io</code> package specifies the <code>io.Reader</code> interface,\n\n\n    which represents the read end of a stream of data.\n  </p>\n  \n\n  \n  <p>\n    The Go standard library contains <a href=\"https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&amp;ss=go%2Fgo\" target=\"_blank\">many implementations</a> of this interface, including files, network connections, compressors, ciphers, and others.\n  </p>\n  \n\n  \n  <p>\n    The <code>io.Reader</code> interface has a <code>Read</code> method:\n  </p>\n  \n\n  \n  <pre>func (T) Read(b []byte) (n int, err error)</pre>\n  \n\n  \n  <p>\n    <code>Read</code> populates the given byte slice with data and returns the number of bytes\n\n\n    populated and an error value. It returns an <code>io.EOF</code> error when the stream\n\n\n    ends.\n  </p>\n  \n\n  \n  <p>\n    The example code creates a\n\n\n    <a href=\"/pkg/strings/#Reader\" target=\"_self\"><code>strings.Reader</code></a>\n\n\n    and consumes its output 8 bytes at a time.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Readers",
+      "Content": "\n  <h2>Exercise: Readers</h2>\n  \n  \n  <p>\n    Implement a <code>Reader</code> type that emits an infinite stream of the ASCII character\n\n\n    <code>&#39;A&#39;</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: rot13Reader",
+      "Content": "\n  <h2>Exercise: rot13Reader</h2>\n  \n  \n  <p>\n    A common pattern is an <a href=\"/pkg/io/#Reader\" target=\"_self\">io.Reader</a> that wraps another <code>io.Reader</code>, modifying the stream in some way.\n  </p>\n  \n\n  \n  <p>\n    For example, the <a href=\"/pkg/compress/gzip/#NewReader\" target=\"_self\">gzip.NewReader</a> function takes an <code>io.Reader</code> (a stream of compressed data) and returns a <code>*gzip.Reader</code> that also implements <code>io.Reader</code> (a stream of the decompressed data).\n  </p>\n  \n\n  \n  <p>\n    Implement a <code>rot13Reader</code> that implements <code>io.Reader</code> and reads from an <code>io.Reader</code>, modifying the stream by applying the <a href=\"https://en.wikipedia.org/wiki/ROT13\" target=\"_blank\">rot13</a> substitution cipher to all alphabetical characters.\n  </p>\n  \n\n  \n  <p>\n    The <code>rot13Reader</code> type is provided for you.\n\n\n    Make it an <code>io.Reader</code> by implementing its <code>Read</code> method.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Images",
+      "Content": "\n  <h2>Images</h2>\n  \n  \n  <p>\n    <a href=\"/pkg/image/#Image\" target=\"_self\">Package image</a> defines the <code>Image</code> interface:\n  </p>\n  \n\n  \n  <pre>package image\n\ntype Image interface {\n    ColorModel() color.Model\n    Bounds() Rectangle\n    At(x, y int) color.Color\n}</pre>\n  \n\n  \n  <p>\n    <b>Note</b>: the <code>Rectangle</code> return value of the <code>Bounds</code> method is actually an\n\n\n    <a href=\"/pkg/image/#Rectangle\" target=\"_self\"><code>image.Rectangle</code></a>, as the\n\n\n    declaration is inside package <code>image</code>.\n  </p>\n  \n\n  \n  <p>\n    (See <a href=\"/pkg/image/#Image\" target=\"_self\">the documentation</a> for all the details.)\n  </p>\n  \n\n  \n  <p>\n    The <code>color.Color</code> and <code>color.Model</code> types are also interfaces, but we&#39;ll ignore that by using the predefined implementations <code>color.RGBA</code> and <code>color.RGBAModel</code>. These interfaces and types are specified by the <a href=\"/pkg/image/color/\" target=\"_self\">image/color package</a>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Images",
+      "Content": "\n  <h2>Exercise: Images</h2>\n  \n  \n  <p>\n    Remember the <a href=\"/tour/moretypes/18\" target=\"_self\">picture generator</a> you wrote earlier? Let&#39;s write another one, but this time it will return an implementation of <code>image.Image</code> instead of a slice of data.\n  </p>\n  \n\n  \n  <p>\n    Define your own <code>Image</code> type, implement <a href=\"/pkg/image/#Image\" target=\"_self\">the necessary methods</a>, and call <code>pic.ShowImage</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>Bounds</code> should return a <code>image.Rectangle</code>, like <code>image.Rect(0, 0, w, h)</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>ColorModel</code> should return <code>color.RGBAModel</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>At</code> should return a color; the value <code>v</code> in the last picture generator corresponds to <code>color.RGBA{v, v, 255, 255}</code> in this one.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Congratulations!",
+      "Content": "\n  <h2>Congratulations!</h2>\n  \n  \n  <p>\n    You finished this lesson!\n  </p>\n  \n\n  \n  <p>\n    You can go back to the list of <a href=\"/tour/list\" target=\"_self\">modules</a> to find what to learn next, or continue with the <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">next lesson</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

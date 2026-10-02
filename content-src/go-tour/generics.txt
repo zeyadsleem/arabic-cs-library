@@ -1,0 +1,110 @@
+MODULE TITLE: Generics
+MODULE DESCRIPTION: Go supports generic programming using type parameters. This lesson shows some examples for employing generics in your code.
+
+PAGE 1 TITLE: Type parameters
+
+  <h2>Type parameters</h2>
+
+
+  <p>
+    Go functions can be written to work on multiple types using type parameters. The
+
+
+    type parameters of a function appear between brackets, before the function&#39;s
+
+
+    arguments.
+  </p>
+
+
+
+  <pre>func Index[T comparable](s []T, x T) int</pre>
+
+
+
+  <p>
+    This declaration means that <code>s</code> is a slice of any type <code>T</code> that fulfills the
+
+
+    built-in constraint <code>comparable</code>. <code>x</code> is also a value of the same type.
+  </p>
+
+
+
+  <p>
+    <code>comparable</code> is a useful constraint that makes it possible to use the <code>==</code> and
+
+
+    <code>!=</code> operators on values of the type. In this example, we use it to compare a
+
+
+    value to all slice elements until a match is found. This <code>Index</code> function works
+
+
+    for any type that supports comparison.
+  </p>
+
+
+
+
+
+
+
+END PAGE 1
+
+PAGE 2 TITLE: Generic types
+
+  <h2>Generic types</h2>
+
+
+  <p>
+    In addition to generic functions, Go also supports generic types. A type can
+
+
+    be parameterized with a type parameter, which could be useful for implementing
+
+
+    generic data structures.
+  </p>
+
+
+
+  <p>
+    This example demonstrates a simple type declaration for a singly-linked list
+
+
+    holding any type of value.
+  </p>
+
+
+
+  <p>
+    As an exercise, add some functionality to this list implementation.
+  </p>
+
+
+
+
+
+
+
+END PAGE 2
+
+PAGE 3 TITLE: Congratulations!
+
+  <h2>Congratulations!</h2>
+
+
+  <p>
+    You finished this lesson!
+  </p>
+
+
+
+  <p>
+    You can go back to the list of <a href="/tour/list" target="_self">modules</a> to find what to learn next, or continue with the <a href="javascript:click(&#39;.next-page&#39;)" target="_self">next lesson</a>.
+  </p>
+
+
+
+END PAGE 3

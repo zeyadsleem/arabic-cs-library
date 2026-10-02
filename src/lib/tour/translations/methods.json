@@ -1,0 +1,110 @@
+{
+  "Title": "التوابع والواجهات",
+  "Description": "يتناول هذا الدرس التوابع والواجهات، وهي البنى التي تعرّف الكائنات وسلوكها.",
+  "Pages": [
+    {
+      "Title": "التوابع",
+      "Content": "\n  <h2>التوابع</h2>\n  \n  \n  <p>\n    لا توجد أصناف في غو.\n\n\n    لكن يمكنك تعريف توابع على الأنواع.\n  </p>\n  \n\n  \n  <p>\n    التابع دالة لها وسيط خاص يُسمّى <i>المستقبِل</i>.\n  </p>\n  \n\n  \n  <p>\n    يظهر المستقبِل في قائمة وسائط خاصة به بين الكلمة المحجوزة <code>func</code> و\n\n\n    اسم التابع.\n  </p>\n  \n\n  \n  <p>\n    في هذا المثال، للتابع <code>Abs</code> مستقبِل من النوع <code>Vertex</code> اسمه <code>v</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "التوابع دوال",
+      "Content": "\n  <h2>التوابع دوال</h2>\n  \n  \n  <p>\n    تذكّر: التابع ليس سوى دالة لها وسيط مستقبِل.\n  </p>\n  \n\n  \n  <p>\n    إليك <code>Abs</code> مكتوبةً بوصفها دالة عادية دون أي تغيير في الوظيفة التي تؤديها.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "التوابع: تتمّة",
+      "Content": "\n  <h2>التوابع: تتمّة</h2>\n  \n  \n  <p>\n    يمكنك أيضًا التصريح بتابع على أنواع ليست بُنى.\n  </p>\n  \n\n  \n  <p>\n    في هذا المثال نرى نوعًا عدديًا <code>MyFloat</code> له تابع <code>Abs</code>.\n  </p>\n  \n\n  \n  <p>\n    لا يمكنك التصريح بتابع إلا إذا كان نوع مستقبِله معرّفًا في الحزمة نفسها\n\n\n    التي يوجد فيها التابع.\n\n\n    لا يمكنك التصريح بتابع يكون نوع مستقبِله معرّفًا في حزمة أخرى\n\n\n    (ويشمل ذلك الأنواع المدمجة مثل <code>int</code>).\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "المستقبِلات المؤشرية",
+      "Content": "\n  <h2>المستقبِلات المؤشرية</h2>\n  \n  \n  <p>\n    يمكنك التصريح بتوابع ذات مستقبِلات مؤشرية.\n  </p>\n  \n\n  \n  <p>\n    يعني هذا أن نوع المستقبِل يُكتب بالصيغة الحرفية <code>*T</code> لنوع ما <code>T</code>.\n\n\n    (كذلك، لا يمكن أن يكون <code>T</code> نفسه مؤشرًا مثل <code>*int</code>.)\n  </p>\n  \n\n  \n  <p>\n    على سبيل المثال، التابع <code>Scale</code> هنا معرّف على <code>*Vertex</code>.\n  </p>\n  \n\n  \n  <p>\n    يمكن للتوابع ذات المستقبِلات المؤشرية تعديل القيمة التي يشير إليها المستقبِل\n\n\n    (كما يفعل <code>Scale</code> هنا).\n\n\n    ولأن التوابع غالبًا ما تحتاج إلى تعديل مستقبِلاتها، فإن المستقبِلات المؤشرية أكثر\n\n\n    شيوعًا من المستقبِلات القيمية.\n  </p>\n  \n\n  \n  <p>\n    جرّب إزالة <code>*</code> من التصريح بالدالة <code>Scale</code> في السطر 16\n\n\n    ولاحظ كيف يتغيّر سلوك البرنامج.\n  </p>\n  \n\n  \n  <p>\n    عند استخدام مستقبِل قيمي، يعمل التابع <code>Scale</code> على نسخة من القيمة الأصلية\n\n\n    من النوع <code>Vertex</code>.\n\n\n    (وهذا هو السلوك نفسه لأي وسيط آخر لدالة.)\n\n\n    يجب أن يكون للتابع <code>Scale</code> مستقبِل مؤشري لتغيير قيمة <code>Vertex</code>\n\n\n    المصرّح بها في الدالة <code>main</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "المؤشرات والدوال",
+      "Content": "\n  <h2>المؤشرات والدوال</h2>\n  \n  \n  <p>\n    نرى هنا التابعين <code>Abs</code> و<code>Scale</code> وقد أُعيدت كتابتهما بوصفهما دالتين.\n  </p>\n  \n\n  \n  <p>\n    جرّب مجددًا إزالة <code>*</code> من السطر 16.\n\n\n    هل يمكنك معرفة سبب تغيّر السلوك؟\n\n\n    ما الذي احتجت أيضًا إلى تغييره كي ينجح تصريف المثال؟\n  </p>\n  \n\n  \n  <p>\n    (إذا لم تكن متأكدًا، فانتقل إلى الصفحة التالية.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "التوابع والوصول غير المباشر عبر المؤشرات",
+      "Content": "\n  <h2>التوابع والوصول غير المباشر عبر المؤشرات</h2>\n  \n  \n  <p>\n    عند مقارنة البرنامجين السابقين، قد تلاحظ أن\n\n\n    الدوال ذات الوسيط المؤشري يجب أن تستقبل مؤشرًا:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nScaleFunc(v, 5)  // Compile error!\nScaleFunc(&amp;v, 5) // OK</pre>\n  \n\n  \n  <p>\n    بينما تستقبل التوابع ذات المستقبِلات المؤشرية إما قيمة أو مؤشرًا بوصفه\n\n\n    المستقبِل عند استدعائها:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nv.Scale(5)  // OK\np := &amp;v\np.Scale(10) // OK</pre>\n  \n\n  \n  <p>\n    في التعليمة <code>v.Scale(5)</code>، رغم أن <code>v</code> قيمة وليست مؤشرًا،\n\n\n    يُستدعى التابع ذو المستقبِل المؤشري تلقائيًا.\n\n\n    أي إن غو، تيسيرًا للاستخدام، تفسّر التعليمة <code>v.Scale(5)</code> على أنها\n\n\n    <code>(&amp;v).Scale(5)</code> لأن التابع <code>Scale</code> له مستقبِل مؤشري.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "التوابع والوصول غير المباشر عبر المؤشرات (2)",
+      "Content": "\n  <h2>التوابع والوصول غير المباشر عبر المؤشرات (2)</h2>\n  \n  \n  <p>\n    يحدث أمر مماثل في الاتجاه المعاكس.\n  </p>\n  \n\n  \n  <p>\n    الدوال التي تستقبل وسيطًا قيميًا يجب أن تستقبل قيمة من ذلك النوع المحدّد:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nfmt.Println(AbsFunc(v))  // OK\nfmt.Println(AbsFunc(&amp;v)) // Compile error!</pre>\n  \n\n  \n  <p>\n    بينما تستقبل التوابع ذات المستقبِلات القيمية إما قيمة أو مؤشرًا بوصفه\n\n\n    المستقبِل عند استدعائها:\n  </p>\n  \n\n  \n  <pre>var v Vertex\nfmt.Println(v.Abs()) // OK\np := &amp;v\nfmt.Println(p.Abs()) // OK</pre>\n  \n\n  \n  <p>\n    في هذه الحالة، يُفسَّر استدعاء التابع <code>p.Abs()</code> على أنه <code>(*p).Abs()</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "اختيار مستقبِل قيمي أو مؤشري",
+      "Content": "\n  <h2>اختيار مستقبِل قيمي أو مؤشري</h2>\n  \n  \n  <p>\n    هناك سببان لاستخدام مستقبِل مؤشري.\n  </p>\n  \n\n  \n  <p>\n    الأول هو تمكين التابع من تعديل القيمة التي يشير إليها مستقبِله.\n  </p>\n  \n\n  \n  <p>\n    والثاني هو تجنّب نسخ القيمة عند كل استدعاء للتابع.\n\n\n    قد يكون هذا أكثر كفاءة إذا كان المستقبِل بنية كبيرة، على سبيل المثال.\n  </p>\n  \n\n  \n  <p>\n    في هذا المثال، كلٌّ من <code>Scale</code> و<code>Abs</code> تابع له مستقبِل من النوع <code>*Vertex</code>،\n\n\n    رغم أن التابع <code>Abs</code> لا يحتاج إلى تعديل مستقبِله.\n  </p>\n  \n\n  \n  <p>\n    عمومًا، ينبغي أن تكون مستقبِلات جميع التوابع على نوع معيّن إما قيمية أو مؤشرية\n\n\n    لا مزيجًا من الاثنين.\n\n\n    (سنرى السبب في الصفحات القليلة التالية.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "الواجهات",
+      "Content": "\n  <h2>الواجهات</h2>\n  \n  \n  <p>\n    يُعرَّف <i>نوع الواجهة</i> بأنه مجموعة من تواقيع التوابع.\n  </p>\n  \n\n  \n  <p>\n    يمكن لقيمة من نوع واجهة أن تحتوي على أي قيمة تنفّذ تلك التوابع.\n  </p>\n  \n\n  \n  <p>\n    <b>ملاحظة:</b> يوجد خطأ في شيفرة المثال في السطر 22.\n\n\n    لا ينفّذ <code>Vertex</code> (النوع القيمي) الواجهة <code>Abser</code> لأن\n\n\n    التابع <code>Abs</code> معرّف فقط على <code>*Vertex</code> (النوع المؤشري).\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تُنفَّذ الواجهات ضمنيًا",
+      "Content": "\n  <h2>تُنفَّذ الواجهات ضمنيًا</h2>\n  \n  \n  <p>\n    ينفّذ النوع واجهةً بتنفيذ توابعها.\n\n\n    لا يوجد تصريح صريح بنيّة التنفيذ، ولا كلمة محجوزة بمعنى &#34;ينفّذ&#34;.\n  </p>\n  \n\n  \n  <p>\n    تفصل الواجهات الضمنية تعريف الواجهة عن\n\n\n    تنفيذها، مما يتيح وجود التنفيذ في أي حزمة دون ترتيب مسبق.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "قيم الواجهات",
+      "Content": "\n  <h2>قيم الواجهات</h2>\n  \n  \n  <p>\n    داخليًا، يمكن تصوّر قيم الواجهات بوصفها زوجًا يتكوّن من قيمة و\n\n\n    نوع فعلي:\n  </p>\n  \n\n  \n  <pre>(value, type)</pre>\n  \n\n  \n  <p>\n    تحتوي قيمة الواجهة على قيمة من نوع فعلي محدّد كامن فيها.\n  </p>\n  \n\n  \n  <p>\n    يؤدي استدعاء تابع على قيمة واجهة إلى تنفيذ التابع الذي يحمل الاسم نفسه على\n\n\n    نوعها الكامن.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "قيم الواجهات ذات القيم الكامنة المعدومة",
+      "Content": "\n  <h2>قيم الواجهات ذات القيم الكامنة المعدومة</h2>\n  \n  \n  <p>\n    إذا كانت القيمة الفعلية داخل الواجهة نفسها معدومة،\n\n\n    فسيُستدعى التابع بمستقبِل معدوم.\n  </p>\n  \n\n  \n  <p>\n    يؤدي هذا في بعض اللغات إلى استثناء مؤشر معدوم،\n\n\n    لكن من الشائع في غو كتابة توابع تتعامل بسلاسة مع استدعائها\n\n\n    بمستقبِل معدوم (كما في التابع <code>M</code> في هذا المثال.)\n  </p>\n  \n\n  \n  <p>\n    لاحظ أن قيمة الواجهة التي تحتوي على قيمة فعلية معدومة ليست هي نفسها معدومة.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "قيم الواجهات المعدومة",
+      "Content": "\n  <h2>قيم الواجهات المعدومة</h2>\n  \n  \n  <p>\n    لا تحتوي قيمة الواجهة المعدومة على قيمة ولا على نوع فعلي.\n  </p>\n  \n\n  \n  <p>\n    يُعدّ استدعاء تابع على واجهة معدومة خطأً وقت التشغيل، لعدم وجود\n\n\n    نوع داخل زوج الواجهة يحدّد أي تابع <i>فعلي</i> ينبغي استدعاؤه.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "الواجهة الفارغة",
+      "Content": "\n  <h2>الواجهة الفارغة</h2>\n  \n  \n  <p>\n    يُعرف نوع الواجهة الذي لا يحدّد أي توابع باسم <i>الواجهة الفارغة</i>:\n  </p>\n  \n\n  \n  <pre>interface{}</pre>\n  \n\n  \n  <p>\n    يمكن للواجهة الفارغة أن تحتوي على قيم من أي نوع.\n\n\n    (كل نوع ينفّذ صفرًا من التوابع على الأقل.)\n  </p>\n  \n\n  \n  <p>\n    <code>any</code> اسم بديل لـ<code>interface{}</code>، وهما متكافئان تمامًا\n\n\n    فيما بينهما.\n  </p>\n  \n\n  \n  <p>\n    تستخدم الشيفرة التي تتعامل مع قيم مجهولة النوع الواجهات الفارغة.\n\n\n    على سبيل المثال، تستقبل <code>fmt.Print</code> أي عدد من الوسائط من النوع <code>any</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تأكيدات النوع",
+      "Content": "\n  <h2>تأكيدات النوع</h2>\n  \n  \n  <p>\n    يتيح <i>تأكيد النوع</i> الوصول إلى القيمة الفعلية الكامنة في قيمة الواجهة.\n  </p>\n  \n\n  \n  <pre>t := i.(T)</pre>\n  \n\n  \n  <p>\n    تؤكّد هذه التعليمة أن قيمة الواجهة <code>i</code> تحتوي على النوع الفعلي <code>T</code>\n\n\n    وتسند القيمة الكامنة من النوع <code>T</code> إلى المتغيّر <code>t</code>.\n  </p>\n  \n\n  \n  <p>\n    إذا لم تكن <code>i</code> تحتوي على قيمة من النوع <code>T</code>، فستؤدي التعليمة إلى حالة ذعر.\n  </p>\n  \n\n  \n  <p>\n    من أجل <i>اختبار</i> ما إذا كانت قيمة واجهة تحتوي على نوع محدّد،\n\n\n    يمكن لتأكيد النوع إرجاع قيمتين: القيمة الكامنة\n\n\n    وقيمة منطقية تبيّن ما إذا كان التأكيد قد نجح.\n  </p>\n  \n\n  \n  <pre>t, ok := i.(T)</pre>\n  \n\n  \n  <p>\n    إذا كانت <code>i</code> تحتوي على قيمة من النوع <code>T</code>، فستكون <code>t</code> القيمة الكامنة وستكون <code>ok</code> صائبة.\n  </p>\n  \n\n  \n  <p>\n    وإلا، فستكون <code>ok</code> خاطئة وستكون <code>t</code> القيمة الصفرية للنوع <code>T</code>،\n\n\n    ولن تحدث حالة ذعر.\n  </p>\n  \n\n  \n  <p>\n    لاحظ التشابه بين هذه الصيغة وصيغة القراءة من خريطة.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "التبديل حسب النوع",
+      "Content": "\n  <h2>التبديل حسب النوع</h2>\n  \n  \n  <p>\n    إن <i>التبديل حسب النوع</i> بنية تتيح إجراء عدة تأكيدات للنوع بالتتابع.\n  </p>\n  \n\n  \n  <p>\n    يشبه التبديل حسب النوع تعليمة التبديل العادية، لكن الحالات في التبديل حسب النوع\n\n\n    تحدّد أنواعًا (لا قيمًا)، وتُقارَن تلك القيم مع\n\n\n    نوع القيمة التي تحتوي عليها قيمة الواجهة المعطاة.\n  </p>\n  \n\n  \n  <pre>switch v := i.(type) {\ncase T:\n    // here v has type T\ncase S:\n    // here v has type S\ndefault:\n    // no match; here v has the same type as i\n}</pre>\n  \n\n  \n  <p>\n    للتصريح في التبديل حسب النوع الصيغة نفسها التي لتأكيد النوع <code>i.(T)</code>،\n\n\n    لكن يُستبدَل النوع المحدّد <code>T</code> بالكلمة المحجوزة <code>type</code>.\n  </p>\n  \n\n  \n  <p>\n    تختبر تعليمة التبديل هذه ما إذا كانت قيمة الواجهة <code>i</code>\n\n\n    تحتوي على قيمة من النوع <code>T</code> أو <code>S</code>.\n\n\n    في كلٍّ من الحالتين <code>T</code> و<code>S</code>، سيكون المتغيّر <code>v</code> من النوع\n\n\n    <code>T</code> أو <code>S</code> على الترتيب، وسيحتوي على القيمة التي تحتوي عليها <code>i</code>.\n\n\n    في الحالة الافتراضية (عندما لا يوجد تطابق)، يكون المتغيّر <code>v</code>\n\n\n    من نوع الواجهة نفسه ويحمل القيمة نفسها التي تحملها <code>i</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "أنواع التمثيل النصي",
+      "Content": "\n  <h2>أنواع التمثيل النصي</h2>\n  \n  \n  <p>\n    من أكثر الواجهات انتشارًا واجهة <a href=\"/pkg/fmt/#Stringer\" target=\"_self\"><code>Stringer</code></a> التي تعرّفها حزمة <a href=\"/pkg/fmt/\" target=\"_self\"><code>fmt</code></a>.\n  </p>\n  \n\n  \n  <pre>type Stringer interface {\n    String() string\n}</pre>\n  \n\n  \n  <p>\n    النوع الذي ينفّذ <code>Stringer</code> هو نوع يمكنه وصف نفسه بسلسلة نصية. تبحث حزمة <code>fmt</code>\n\n\n    (وحزم كثيرة غيرها) عن هذه الواجهة لطباعة القيم.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تمرين: أنواع التمثيل النصي",
+      "Content": "\n  <h2>تمرين: أنواع التمثيل النصي</h2>\n  \n  \n  <p>\n    اجعل النوع <code>IPAddr</code> ينفّذ <code>fmt.Stringer</code> لطباعة العنوان على هيئة\n\n\n    أربعة أعداد تفصل بينها نقاط.\n  </p>\n  \n\n  \n  <p>\n    على سبيل المثال، ينبغي أن تُطبَع <code>IPAddr{1, 2, 3, 4}</code> على هيئة <code>&#34;1.2.3.4&#34;</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "الأخطاء",
+      "Content": "\n  <h2>الأخطاء</h2>\n  \n  \n  <p>\n    تعبّر برامج غو عن حالة الخطأ بقيم من النوع <code>error</code>.\n  </p>\n  \n\n  \n  <p>\n    النوع <code>error</code> واجهة مدمجة تشبه <code>fmt.Stringer</code>:\n  </p>\n  \n\n  \n  <pre>type error interface {\n    Error() string\n}</pre>\n  \n\n  \n  <p>\n    (كما هو الحال مع <code>fmt.Stringer</code>، تبحث حزمة <code>fmt</code> عن واجهة <code>error</code> عند\n\n\n    طباعة القيم.)\n  </p>\n  \n\n  \n  <p>\n    غالبًا ما تُرجع الدوال قيمة من النوع <code>error</code>، وينبغي للشيفرة التي تستدعيها معالجة الأخطاء\n\n\n    باختبار ما إذا كان الخطأ يساوي <code>nil</code>.\n  </p>\n  \n\n  \n  <pre>i, err := strconv.Atoi(&#34;42&#34;)\nif err != nil {\n    fmt.Printf(&#34;couldn&#39;t convert number: %v\\n&#34;, err)\n    return\n}\nfmt.Println(&#34;Converted integer:&#34;, i)</pre>\n  \n\n  \n  <p>\n    تدلّ قيمة <code>error</code> المعدومة على النجاح؛ وتدلّ قيمة <code>error</code> غير المعدومة على الفشل.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تمرين: الأخطاء",
+      "Content": "\n  <h2>تمرين: الأخطاء</h2>\n  \n  \n  <p>\n    انسخ دالتك <code>Sqrt</code> من <a href=\"/tour/flowcontrol/8\" target=\"_self\">التمرين السابق</a> وعدّلها لتُرجع قيمة من النوع <code>error</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>Sqrt</code> ينبغي أن تُرجع قيمة خطأ غير معدومة عند إعطائها عددًا سالبًا، لأنها لا تدعم الأعداد المركّبة.\n  </p>\n  \n\n  \n  <p>\n    أنشئ نوعًا جديدًا\n  </p>\n  \n\n  \n  <pre>type ErrNegativeSqrt float64</pre>\n  \n\n  \n  <p>\n    واجعله ينفّذ <code>error</code> بإعطائه\n  </p>\n  \n\n  \n  <pre>func (e ErrNegativeSqrt) Error() string</pre>\n  \n\n  \n  <p>\n    تابعًا بحيث يُرجع <code>ErrNegativeSqrt(-2).Error()</code> القيمة <code>&#34;cannot Sqrt negative number: -2&#34;</code>.\n  </p>\n  \n\n  \n  <p>\n    <b>ملاحظة:</b> سيؤدي استدعاء <code>fmt.Sprint(e)</code> داخل التابع <code>Error</code> إلى دخول البرنامج في حلقة لا نهائية. يمكنك تجنّب ذلك بتحويل <code>e</code> أولًا: <code>fmt.Sprint(float64(e))</code>. لماذا؟\n  </p>\n  \n\n  \n  <p>\n    غيّر دالتك <code>Sqrt</code> لتُرجع قيمة من النوع <code>ErrNegativeSqrt</code> عند إعطائها عددًا سالبًا.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "القرّاء",
+      "Content": "\n  <h2>القرّاء</h2>\n  \n  \n  <p>\n    تحدّد حزمة <code>io</code> واجهة <code>io.Reader</code>،\n\n\n    التي تمثّل طرف القراءة لتدفّق من البيانات.\n  </p>\n  \n\n  \n  <p>\n    تحتوي مكتبة غو القياسية على <a href=\"https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&amp;ss=go%2Fgo\" target=\"_blank\">تنفيذات كثيرة</a> لهذه الواجهة، منها الملفات، واتصالات الشبكة، وأدوات الضغط، وأدوات التشفير، وغيرها.\n  </p>\n  \n\n  \n  <p>\n    لواجهة <code>io.Reader</code> تابع <code>Read</code>:\n  </p>\n  \n\n  \n  <pre>func (T) Read(b []byte) (n int, err error)</pre>\n  \n\n  \n  <p>\n    <code>Read</code> يملأ شريحة البايتات المعطاة بالبيانات ويُرجع عدد البايتات\n\n\n    التي مُلئت وقيمة خطأ. ويُرجع خطأ <code>io.EOF</code> عندما يصل التدفّق\n\n\n    إلى نهايته.\n  </p>\n  \n\n  \n  <p>\n    تنشئ شيفرة المثال قارئًا من النوع\n\n\n    <a href=\"/pkg/strings/#Reader\" target=\"_self\"><code>strings.Reader</code></a>\n\n\n    وتستهلك خرجه بمقدار 8 بايتات في كل مرة.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تمرين: القرّاء",
+      "Content": "\n  <h2>تمرين: القرّاء</h2>\n  \n  \n  <p>\n    نفّذ نوعًا <code>Reader</code> يُنتج تدفّقًا لا نهائيًا من محرف أسكي\n\n\n    <code>&#39;A&#39;</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تمرين: قارئ روت 13",
+      "Content": "\n  <h2>تمرين: قارئ روت 13</h2>\n  \n  \n  <p>\n    من الأنماط الشائعة <a href=\"/pkg/io/#Reader\" target=\"_self\">قارئ الإدخال والإخراج</a> الذي يغلّف <code>io.Reader</code> آخر، ويعدّل التدفّق بطريقة ما.\n  </p>\n  \n\n  \n  <p>\n    على سبيل المثال، تستقبل دالة <a href=\"/pkg/compress/gzip/#NewReader\" target=\"_self\">إنشاء قارئ جي زيب</a> قارئًا <code>io.Reader</code> (تدفّقًا من البيانات المضغوطة) وتُرجع <code>*gzip.Reader</code> ينفّذ أيضًا <code>io.Reader</code> (تدفّقًا من البيانات بعد فكّ ضغطها).\n  </p>\n  \n\n  \n  <p>\n    نفّذ <code>rot13Reader</code> ينفّذ <code>io.Reader</code> ويقرأ من <code>io.Reader</code>، مع تعديل التدفّق بتطبيق شيفرة الاستبدال <a href=\"https://en.wikipedia.org/wiki/ROT13\" target=\"_blank\">روت 13</a> على جميع المحارف الأبجدية.\n  </p>\n  \n\n  \n  <p>\n    النوع <code>rot13Reader</code> متاح لك.\n\n\n    اجعله ينفّذ <code>io.Reader</code> بتنفيذ تابعه <code>Read</code>.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "الصور",
+      "Content": "\n  <h2>الصور</h2>\n  \n  \n  <p>\n    <a href=\"/pkg/image/#Image\" target=\"_self\">حزمة الصور</a> تعرّف واجهة <code>Image</code>:\n  </p>\n  \n\n  \n  <pre>package image\n\ntype Image interface {\n    ColorModel() color.Model\n    Bounds() Rectangle\n    At(x, y int) color.Color\n}</pre>\n  \n\n  \n  <p>\n    <b>ملاحظة</b>: القيمة المُرجَعة <code>Rectangle</code> من التابع <code>Bounds</code> هي في الواقع من النوع\n\n\n    <a href=\"/pkg/image/#Rectangle\" target=\"_self\"><code>image.Rectangle</code></a>، لأن\n\n\n    التصريح موجود داخل حزمة <code>image</code>.\n  </p>\n  \n\n  \n  <p>\n    (راجع <a href=\"/pkg/image/#Image\" target=\"_self\">التوثيق</a> للاطّلاع على جميع التفاصيل.)\n  </p>\n  \n\n  \n  <p>\n    النوعان <code>color.Color</code> و<code>color.Model</code> هما أيضًا واجهتان، لكننا سنتجاهل ذلك باستخدام التنفيذين المعرّفين مسبقًا <code>color.RGBA</code> و<code>color.RGBAModel</code>. تحدّد <a href=\"/pkg/image/color/\" target=\"_self\">حزمة ألوان الصور</a> هذه الواجهات والأنواع.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تمرين: الصور",
+      "Content": "\n  <h2>تمرين: الصور</h2>\n  \n  \n  <p>\n    أتتذكّر <a href=\"/tour/moretypes/18\" target=\"_self\">مولّد الصور</a> الذي كتبته سابقًا؟ لنكتب واحدًا آخر، لكنه سيُرجع هذه المرة تنفيذًا للواجهة <code>image.Image</code> بدلًا من شريحة بيانات.\n  </p>\n  \n\n  \n  <p>\n    عرّف نوع <code>Image</code> خاصًا بك، ونفّذ <a href=\"/pkg/image/#Image\" target=\"_self\">التوابع اللازمة</a>، واستدعِ <code>pic.ShowImage</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>Bounds</code> ينبغي أن يُرجع قيمة من النوع <code>image.Rectangle</code>، مثل <code>image.Rect(0, 0, w, h)</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>ColorModel</code> ينبغي أن يُرجع القيمة <code>color.RGBAModel</code>.\n  </p>\n  \n\n  \n  <p>\n    <code>At</code> ينبغي أن يُرجع لونًا؛ تقابل القيمة <code>v</code> في مولّد الصور السابق القيمة <code>color.RGBA{v, v, 255, 255}</code> في هذا المولّد.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "تهانينا!",
+      "Content": "\n  <h2>تهانينا!</h2>\n  \n  \n  <p>\n    لقد أنهيت هذا الدرس!\n  </p>\n  \n\n  \n  <p>\n    يمكنك العودة إلى قائمة <a href=\"/tour/list\" target=\"_self\">الوحدات</a> لتجد ما تتعلّمه بعد ذلك، أو المتابعة إلى <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">الدرس التالي</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

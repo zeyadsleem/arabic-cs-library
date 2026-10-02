@@ -1,155 +1,155 @@
 ---
 title: "Polynomial Sequences"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_seq-polynomial.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 4.3 Polynomial Sequences
+## القسم 4.3 المتتاليات متعدّدة الحدود
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_seq-polynomial-3-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_seq-polynomial-3-1-1)
 
-1. Identify a sequence as having a polynomial closed formula based on its sequence of differences, and determine the polynomial’s degree.[🔗](#sec_seq-polynomial-3-2-1-1) [🔗](#sec_seq-polynomial-3-2-1)
-2. Fit an appropriate degree polynomial to a sequence of initial terms.[🔗](#sec_seq-polynomial-3-2-2-1) [🔗](#sec_seq-polynomial-3-2-2)
-3. Explain how recurrence relations for polynomial sequences relate to their closed formulas.[🔗](#sec_seq-polynomial-3-2-3-1) [🔗](#sec_seq-polynomial-3-2-3)
+1. تحدّد متتاليةً بأنّ لها صيغةً مغلقة متعدّدة الحدود انطلاقًا من متتالية فروقها، وتحدّد درجة متعدّد الحدود.[🔗](#sec_seq-polynomial-3-2-1-1) [🔗](#sec_seq-polynomial-3-2-1)
+2. تُلائم متعدّد حدود مناسب الدرجة مع متتالية من الحدود الأوّلية.[🔗](#sec_seq-polynomial-3-2-2-1) [🔗](#sec_seq-polynomial-3-2-2)
+3. تشرح كيف تتّ relatedArminal علاقات المتتاليات متعدّدة الحدود بصيغها المغلقة.[🔗](#sec_seq-polynomial-3-2-3-1) [🔗](#sec_seq-polynomial-3-2-3)
 
 [🔗](#sec_seq-polynomial-3)
 
-### Subsection Section Preview
+### القسم الفرعي: معاينة القسم
 
 #### Investigate!
 
-A standard \(8 \times 8\) chessboard contains 64 squares. Actually, this is just the number of unit squares. How many squares of all sizes are there on a chessboard? Start with smaller boards: \(1\times 1\text{,}\) \(2 \times 2\text{,}\) \(3\times 3\text{,}\) etc. Find a formula for the total number of squares in an \(n\times n\) board.[🔗](#sec_seq-polynomial-4-2-1) [🔗](#sec_seq-polynomial-4-2)We have seen that arithmetic sequences grow at a constant rate, and so their closed formulas are linear functions. What about sequences that grow faster? What if their rate of change (really the differences between terms) is itself growing at a constant rate?[🔗](#sec_seq-polynomial-4-3) In [Section 4.2](sec_seq-growth.html) we claimed that the triangular numbers, the sum of the first \(n\) positive integers, have closed formula \begin{equation*} T_n = \frac{n(n+1)}{2} = \frac{n^2}{2} + \frac{n}{2}\text{.} \end{equation*} So this sequence, whose sequence of differences is arithmetic, is a degree 2 polynomial (a quadratic function). [🔗](#sec_seq-polynomial-4-4) Our goal in this section is to explore this phenomenon. We will verify that this really is the closed formula for the triangular numbers, extend it to other sequences with arithmetic differences, and then explore sequences that grow at even faster rates.[🔗](#sec_seq-polynomial-4-5)
+رقعة شطرنج معيارية بمقاس \(8 \times 8\) تحتوي على 64 مربّعًا. وفي الحقيقة، هذا هو عدد المربّعات وحيدة الضلع فقط. فكم مربّعًا بكل الأحجام يوجد على رقعة الشطرنج؟ ابدأ بالرقع الأصغر: \(1\times 1\text{,}\) \(2 \times 2\text{,}\) \(3\times 3\text{,}\) وهكذا. جد صيغةً لإجمالي عدد المربّعات في رقعة \(n\times n\).[🔗](#sec_seq-polynomial-4-2-1) [🔗](#sec_seq-polynomial-4-2)لقد رأينا أنّ المتتاليات الحسابية (arithmetic sequences) تنمو بمعدّل ثابت، ولذلك فإنّ صيغها المغلقة هي دوالّ خطّية. فماذا عن المتتاليات التي تنمو بمعدّل أسرع؟ وماذا لو كان معدّل تغيّرها (أي الفروق بين حدودها) ينمو هو الآخر بمعدّل ثابت؟[🔗](#sec_seq-polynomial-4-3) وقد ادّعينا في [القسم 4.2](sec_seq-growth.html) أنّ الأعداد المثلّثية (triangular numbers)، أي مجموع الأعداد الصحيحة الموجبة الأولى \(n\)، لها صيغة مغلقة \begin{equation*} T_n = \frac{n(n+1)}{2} = \frac{n^2}{2} + \frac{n}{2}\text{.} \end{equation*}فهذه المتتالية، التي متتالية فروقها حسابية، هي متعدّد حدود من الدرجة 2 (أي دالة تربيعية). [🔗](#sec_seq-polynomial-4-4)هدفنا في هذا القسم هو استكشاف هذه الظاهرة. سنتحقّق أنّ هذه هي فعلًا الصيغة المغلقة للأعداد المثلّثية، ثمّ نعمّمها على متتاليات أخرى ذات فروق حسابية، ثمّ نستكشف متتاليات تنمو بمعدّلات أسرع من ذلك بعد.[🔗](#sec_seq-polynomial-4-5)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-seq-polynomial)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-seq-polynomial)
 
 #### 1.
 
-Activate While wandering the halls of the math department, you find yourself staring at the captivating artwork shown below.[🔗](#extracted-webwork-197-1-1-1) ![A square array of dots with L-shaped lines separating collections of odd numbers of dots.](generated/webwork/images/webwork-197-image-1.svg)
+Activate وفيما تجول في أروقة قسم الرياضيات، وجدت نفسك محدّقًا في العمل الفني الآسر المعروض أدناه.[🔗](#extracted-webwork-197-1-1-1) ![مصفوفة مربّعة من النقاط، تفصل بينها خطوط على شكل حرف L مجموعاتً من النقاط بعدد فردي.](generated/webwork/images/webwork-197-image-1.svg)
 
 #### (a)
 
-How many dots are in the figure?[🔗](#extracted-webwork-197-1-2-1-1) The dots form a by square, for a total of dots.[🔗](#extracted-webwork-197-1-2-1-2) [🔗](#extracted-webwork-197-1-2)
+كم عدد النقاط في الشكل؟[🔗](#extracted-webwork-197-1-2-1-1) تشكّل النقاط مربّعًا × مربّعًا، بإجمالي نقاط.[🔗](#extracted-webwork-197-1-2-1-2) [🔗](#extracted-webwork-197-1-2)
 
 #### (b)
 
-We can also compute the total number of dots by summing each “hook” region, from smallest to largest:[🔗](#extracted-webwork-197-1-3-1-1) + + + + + .[🔗](#extracted-webwork-197-1-3-1-2) [🔗](#extracted-webwork-197-1-3)
+يمكننا كذلك حساب إجمالي عدد النقاط بجمع كلّ منطقة «خطّاف» على حدة، من الأصغر إلى الأكبر:[🔗](#extracted-webwork-197-1-3-1-1) + + + + + .[🔗](#extracted-webwork-197-1-3-1-2) [🔗](#extracted-webwork-197-1-3)
 
 #### (c)
 
-Yet another way to calculate the total number of dots is to group the terms of this sum.[🔗](#extracted-webwork-197-1-4-1-1) \(1+11 =\) ; \(3+9 =\) ; \(5+7 =\) .[🔗](#extracted-webwork-197-1-4-1-2) Since there are three pairs of sums, the total is \(3 \cdot\) = .[🔗](#extracted-webwork-197-1-4-1-3) [🔗](#extracted-webwork-197-1-4)
+وهناك طريقة أخرى بعدُ لحساب إجمالي عدد النقاط، وهي تجميع حدود هذا المجموع في مجموعات.[🔗](#extracted-webwork-197-1-4-1-1) \(1+11 =\) ؛ \(3+9 =\) ؛ \(5+7 =\) .[🔗](#extracted-webwork-197-1-4-1-2) وبما أنّ هناك ثلاثة أزواج من المجاميع، فإنّ الإجمالي هو \(3 \cdot\) = .[🔗](#extracted-webwork-197-1-4-1-3) [🔗](#extracted-webwork-197-1-4)
 
 #### (d)
 
-If we generalize the diagram, so it has \(n\) hooks, how many dots will be in the largest hook?[🔗](#extracted-webwork-197-1-5-1-1) How many dots will be in the second largest hook?[🔗](#extracted-webwork-197-1-5-1-2) [🔗](#extracted-webwork-197-1-5)
+لو عمّمنا الرسم بحيث يحتوي على \(n\) خطّافات، فكم عدد النقاط في الخطّاف الأكبر؟[🔗](#extracted-webwork-197-1-5-1-1) وكم عدد النقاط في الخطّاف الثاني من حيث الكبر؟[🔗](#extracted-webwork-197-1-5-1-2) [🔗](#extracted-webwork-197-1-5)
 
 #### (e)
 
-What will the sum of the smallest and largest hooks be?[🔗](#extracted-webwork-197-1-6-1-1) What will the sum of the second smallest and second largest hooks be?[🔗](#extracted-webwork-197-1-6-1-2) [🔗](#extracted-webwork-197-1-6)
+ما مجموع الخطّاف الأصغر والخطّاف الأكبر؟[🔗](#extracted-webwork-197-1-6-1-1) وما مجموع الخطّاف الثاني من حيث الصغر والخطّاف الثاني من حيث الكبر؟[🔗](#extracted-webwork-197-1-6-1-2) [🔗](#extracted-webwork-197-1-6)
 
 #### (f)
 
-If we continue adding pairs of hooks (next smallest plus next largest), how many pairs will we have?[🔗](#extracted-webwork-197-1-7-1-1) Multiplying then, the total number of dots will be: .[🔗](#extracted-webwork-197-1-7-1-2) Hint. Let’s assume that \(n\) is even. If it wasn’t, then there would be a single “middle” hook that isn’t added to anything, but this is counteracted by the fact that \(n/2\) would count a half hook sum.[🔗](#extracted-webwork-197-1-7-2-1) [🔗](#extracted-webwork-197-1-7-2) [🔗](#extracted-webwork-197-1-7) [🔗](#pa-seq-polynomial)[🔗](#PA-seq-polynomial)[🔗](#sec_seq-polynomial-4)
+لو واصلنا جمع أزواج الخطّافات (الأصغر التالي مع الأكبر التالي)، فكم زوجًا سنحصل عليه؟[🔗](#extracted-webwork-197-1-7-1-1) وبالضرب، يكون إجمالي عدد النقاط هو: .[🔗](#extracted-webwork-197-1-7-1-2) تلميح. لنفترض أنّ \(n\) زوجي. فإن لم يكن كذلك، لكان هناك خطّاف «أوسط» واحد لا يُضاف إلى شيء آخر، غير أنّ هذا يُعوَّض بأنّ \(n/2\) يحسب نصف مجموع خطّاف.[🔗](#extracted-webwork-197-1-7-2-1) [🔗](#extracted-webwork-197-1-7-2) [🔗](#extracted-webwork-197-1-7) [🔗](#pa-seq-polynomial)[🔗](#PA-seq-polynomial)[🔗](#sec_seq-polynomial-4)
 
-### Subsection Summing Arithmetic Sequences: Reverse and Add
+### القسم الفرعي: جمع المتتاليات الحسابية: اعكس وأضِف
 
-Let’s find the sum of the first \(n\) positive integers carefully. Call that sum \(T_n\text{,}\) and write it down twice, once in the usual order and once in reverse order. \begin{equation*} \begin{array}{lccccccccc} & T_n & = & 1 & + & 2 &+ & 3 & + \cdots + & n \\ + & T_n & =& n & + &(n-1)& + & (n-2)& + \cdots + &1 \\\hline & 2T_n & =& n+1 & + & n+1 & + & n+1 &+ \cdots + & n+1 \end{array} \end{equation*} [🔗](#sec_seq-polynomial-5-3) We then added the two equations together. The left-hand side is \(2T_n\text{.}\) On the right-hand side, something great happens: All the terms of the sum are the same! So instead of adding up a bunch of different numbers, we now just add a bunch of the same number. That’s a task that multiplication lives for! There are \(n\) terms in the sum, so we get, \begin{equation*} 2T_n = n(n+1)\text{.} \end{equation*} Solving for \(T_n\) gives us, \begin{equation*} T_n = \frac{n(n+1)}{2}\text{,} \end{equation*} as expected. [🔗](#sec_seq-polynomial-5-4) This technique will work for any arithmetic sum.[🔗](#sec_seq-polynomial-5-5)
+لنجد بعناية مجموع الأعداد الصحيحة الموجبة الأولى \(n\). لنسمّ هذا المجموع \(T_n\text{,}\) ولنكتبه مرّتين، مرّة بالترتيب المعتاد ومرّة بالترتيب المعكوس. \begin{equation*} \begin{array}{lccccccccc} & T_n & = & 1 & + & 2 &+ & 3 & + \cdots + & n \\ + & T_n & =& n & + &(n-1)& + & (n-2)& + \cdots + &1 \\\hline & 2T_n & =& n+1 & + & n+1 & + & n+1 &+ \cdots + & n+1 \end{array} \end{equation*} [🔗](#sec_seq-polynomial-5-3) ثمّ جمعنا المعادلتين معًا._side左边 هو \(2T_n\text{.}\) وفي الجهة اليمنى يحدث شيء رائع: جميع حدود المجموع متساوية! فبدلًا من جمع مجموعة من الأعداد المختلفة، صرنا نجمع عددًا واحدًا مرارًا ومرارًا. وهذه مهمّة وُلدت من أجلها الضرب! يوجد في المجموع \(n\) حدًّا، فنحصل على \begin{equation*} 2T_n = n(n+1)\text{.} \end{equation*}Solving for \(T_n\) يعطينا، \begin{equation*} T_n = \frac{n(n+1)}{2}\text{,} \end{equation*} كما هو متوقّع. [🔗](#sec_seq-polynomial-5-4) وستعمل هذه التقنيّة مع أيّ مجموع حسابي.[🔗](#sec_seq-polynomial-5-5)
 
-#### Example 4.3.1.
+#### المثال 4.3.1.
 
-Find the sum: \(2 + 5 + 8 + 11 + 14 + \cdots + 470\text{.}\)[🔗](#sec_seq-polynomial-5-6-1-1) Solution. The idea is to mimic how we found the formula for triangular numbers. If we add the first and last terms, we get 472. The second term and second-to-last term also add up to 472. To keep track of everything, we might express this as follows. Call the sum \(S\text{.}\) Then,[🔗](#sec_seq-polynomial-5-6-2-1)
+جد المجموع: \(2 + 5 + 8 + 11 + 14 + \cdots + 470\text{.}\)[🔗](#sec_seq-polynomial-5-6-1-1) الحل. الفكرة هي محاكاة الطريقة التي وجدنا بها صيغة الأعداد المثلّثية. فإذا جمعنا الحدّ الأول والحدّ الأخير، نحصل على 472. والحدّ الثاني مع ما قبل الأخير يجمع أيضًا إلى 472. ولمتابعة كلّ شيء، يمكننا التعبير عن ذلك كما يلي. لنسمّ المجموع \(S\text{.}\) إذن،[🔗](#sec_seq-polynomial-5-6-2-1)
 
 | \(S =\) | \(2\) | \(+\) | \(5\) | \(+\) | \(8\) | \(+ \cdots +\) | \(467\) | \(+\) | 470 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | \(+ \quad S =\) | \(470\) | \(+\) | \(467\) | \(+\) | \(464\) | \(+ \cdots +\) | \(5\) | \(+\) | 2 |
 | \(2S =\) | \(472\) | \(+\) | \(472\) | \(+\) | \(472\) | \(+ \cdots +\) | \(472\) | \(+\) | \(472\) |
 
-To find \(2S\) then, we add 472 to itself a number of times. What number? We need to decide how many terms (summands) are in the sum. Since the terms form an arithmetic sequence, the \(n\)th term in the sum (counting \(2\) as the 0th term) can be expressed as \(2 + 3n\text{.}\) If \(2 + 3n = 470\) then \(n = 156\text{.}\) So \(n\) ranges from 0 to 156, giving 157 terms in the sum. This is the number of 472’s in the sum for \(2S\text{.}\) Thus \begin{equation*} 2S = 157\cdot 472 = 74104\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-6-2-3) It is now easy to find \(S\text{:}\) \begin{equation*} S = 74104/2 = 37052\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-6-2-4) [🔗](#sec_seq-polynomial-5-6-2) [🔗](#sec_seq-polynomial-5-6)This will work for the sum of any *arithmetic* sequence. Call the sum \(S\text{.}\) Reverse and add. This produces a single number added to itself many times. Find the number of times. Multiply. Divide by 2. Done.[🔗](#sec_seq-polynomial-5-7)
+إذن، ولإيجاد \(2S\)، نضيف 472 إلى نفسه عددًا من المرّات. أيّ عدد؟ نحتاج إلى تحديد كم عدد الحدود (المsummands) في المجموع. وبما أنّ الحدود تشكّل متتالية حسابية، يمكن التعبير عن الحدّ رقم \(n\) في المجموع (مع اعتبار \(2\) هو الحدّ رقم 0) على الصورة \(2 + 3n\text{.}\) فإذا كان \(2 + 3n = 470\) فإنّ \(n = 156\text{.}\) إذن يتراوح \(n\) من 0 إلى 156، أي 157 حدًّا في المجموع. وهذا هو عدد مرّات ظهور 472 في مجموع \(2S\text{.}\) وبذلك \begin{equation*} 2S = 157\cdot 472 = 74104\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-6-2-3) وبالإمكان الآن بسهولة إيجاد \(S\text{:}\) \begin{equation*} S = 74104/2 = 37052\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-6-2-4) [🔗](#sec_seq-polynomial-5-6-2) [🔗](#sec_seq-polynomial-5-6)وستعمل هذه الطريقة مع مجموع أيّ متتالية *حسابية*. لنسمّ المجموع \(S\text{.}\) اعكس وأضِف. يؤدّي هذا إلى إنتاج عدد واحد يُضاف إلى نفسه عدّة مرّات. جد عدد المرّات. اضرب. اقسم على 2. تمّ.[🔗](#sec_seq-polynomial-5-7)
 
-#### Example 4.3.2.
+#### المثال 4.3.2.
 
-Find a closed formula for \(6 + 10 + 14 + \cdots + (4n - 2)\text{.}\)[🔗](#sec_seq-polynomial-5-8-1-1) Solution. Again, we have a sum of an arithmetic sequence. How many terms are in the sequence? Clearly each term in the sequence has the form \(4k -2\) (as evidenced by the last term). For which values of \(k\) though? To get 6, \(k = 2\text{.}\) To get \(4n-2\) take \(k = n\text{.}\) So to find the number of terms, we must count the number of integers in the range \(2,3,\ldots, n\text{.}\) This is \(n-1\text{.}\) (There are \(n\) numbers from 1 to \(n\text{,}\) so one less if we start with 2.)[🔗](#sec_seq-polynomial-5-8-2-1) Now reverse and add:[🔗](#sec_seq-polynomial-5-8-2-2)
+جد صيغة مغلقة لـ\(6 + 10 + 14 + \cdots + (4n - 2)\text{.}\)[🔗](#sec_seq-polynomial-5-8-1-1) الحل. Koe는 لدينا مرّة أخرى مجموع متتالية حسابية. كم عدد حدود هذه المتتالية؟显然 كلّ حدّ في المتتالية على الصورة \(4k -2\) (كما يدلّ عليه الحدّ الأخير). لكن لأيّ قيم من \(k\)؟ للحصول على 6، لدينا \(k = 2\text{.}\) وللحصول على \(4n-2\) خذ \(k = n\text{.}\) إذن لإيجاد عدد الحدود، علينا عدّ الأعداد الصحيحة في المدى \(2,3,\ldots, n\text{.}\) وهذا هو \(n-1\text{.}\) (يوجد \(n\) عددًا من 1 إلى \(n\text{,}\) فواحد أقلّ إذا بدأنا من 2.)[🔗](#sec_seq-polynomial-5-8-2-1) الآن اعكس وأضِف:[🔗](#sec_seq-polynomial-5-8-2-2)
 
 | \(S =\) | \(6\) | \(+\) | \(10\) | \(+ \cdots +\) | \(4n-6\) | \(+\) | \(4n-2\) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | \(+ \quad S =\) | \(4n-2\) | \(+\) | \(4n-6\) | \(+ \cdots +\) | \(10\) | \(+\) | 6 |
 | \(2S =\) | \(4n+4\) | \(+\) | \(4n+4\) | \(+ \cdots +\) | \(4n+4\) | \(+\) | \(4n+4\) |
 
-Since there are \(n-1\) terms, we get \begin{equation*} 2S = (n-1)(4n+4)\qquad \mbox{ so } \qquad S = \frac{(n-1)(4n+4)}{2}\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-8-2-4) [🔗](#sec_seq-polynomial-5-8-2) [🔗](#sec_seq-polynomial-5-8)Besides finding sums, we can use this technique to find closed formulas for sequences we recognize as sequences of partial sums.[🔗](#sec_seq-polynomial-5-9)
+وبما أنّ هناك \(n-1\) حدًّا، نحصل على \begin{equation*} 2S = (n-1)(4n+4)\qquad \mbox{ so } \qquad S = \frac{(n-1)(4n+4)}{2}\text{.} \end{equation*} [🔗](#sec_seq-polynomial-5-8-2-4) [🔗](#sec_seq-polynomial-5-8-2) [🔗](#sec_seq-polynomial-5-8)وليس限于 إيجاد المجاميع فقط؛ إذ يمكننا استعمال هذه التقنيّة لإيجاد صيغ مغلقة لمتتاليات نعرف أنّها متتاليات مجاميع جزئية.[🔗](#sec_seq-polynomial-5-9)
 
-#### Example 4.3.3.
+#### المثال 4.3.3.
 
-Use partial sums to find a closed formula for \((a_n)_{n\ge 0}\) which starts \(2, 3, 7, 14, 24, 37,\ldots \ldots\text{.}\) Assume a recurrence relation for the sequence is \(a_n = a_{n-1} + 3n-2\text{.}\)[🔗](#eg-sum-of-arithmetic-2-1) Solution. First, if you look at the differences between terms, you get a sequence of differences \((d_n)_{n \ge 1}\text{:}\) \(1,4,7,10,13, \ldots\text{,}\) which is an arithmetic sequence. Indeed, we notice that \(d_n = 3n-2\text{,}\) which agrees with the recurrence relation. Written another way: \begin{align*} a_0 \amp = 2\\ a_1 \amp = 2+1 = 2 + d_1\\ a_2 \amp = 2+1+4 = 2 + d_1 + d_2\\ a_3 \amp = 2+1+4+7 = 2 + d_1 + d_2 + d_3 \end{align*} and so on. We can write the general term of \((a_n)\) in terms of the arithmetic sequence as follows: \begin{equation*} a_n = 2 + 1 + 4 + 7 + 10 + \cdots + 3n-2\text{.} \end{equation*} [🔗](#eg-sum-of-arithmetic-3-1) We can reverse and add, but the initial 2 does not fit our pattern. This just means we need to keep the 2 out of the reverse part:[🔗](#eg-sum-of-arithmetic-3-2)
+استعمل المجاميع الجزئية لإيجاد صيغة مغلقة لـ\((a_n)_{n\ge 0}\) التي تبدأ \(2, 3, 7, 14, 24, 37,\ldots \ldots\text{.}\) افترض أنّ علاقة تكرارية للمتتالية هي \(a_n = a_{n-1} + 3n-2\text{.}\)[🔗](#eg-sum-of-arithmetic-2-1) الحل. أوّلًا، إذا نظرت إلى الفروق بين الحدود، تحصل على متتالية فروق \((d_n)_{n \ge 1}\text{:}\) \(1,4,7,10,13, \ldots\text{,}\) وهي متتالية حسابية. وفعلًا، نلاحظ أنّ \(d_n = 3n-2\text{,}\) وهو ما يتّفق مع العلاقة التكرارية. وبصياغة أخرى: \begin{align*} a_0 \amp = 2\\ a_1 \amp = 2+1 = 2 + d_1\\ a_2 \amp = 2+1+4 = 2 + d_1 + d_2\\ a_3 \amp = 2+1+4+7 = 2 + d_1 + d_2 + d_3 \end{align*} وهكذا. يمكننا كتابة الحدّ العام لـ\((a_n)\) بدلالة المتتالية الحسابية على الصورة التالية: \begin{equation*} a_n = 2 + 1 + 4 + 7 + 10 + \cdots + 3n-2\text{.} \end{equation*} [🔗](#eg-sum-of-arithmetic-3-1) يمكننا أن نعكس ونضيف، لكنّ العدد 2 الأوّلي لا ينطبق على نمطنا. وهذا يعني ببساطة أنّ علينا إبقاء الـ2 خارج الجزء المعكوس:[🔗](#eg-sum-of-arithmetic-3-2)
 
 | \(a_n =\) | \(2\) | \(+\) | \(1\) | \(+\) | \(4\) | \(+ \cdots +\) | \(3n-2\) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | \(+ \quad a_n =\) | \(2\) | \(+\) | \(3n-2\) | \(+\) | \(3(n-1)-2\) | \(+ \cdots +\) | \(1\) |
 | \(2a_n =\) | \(4\) | \(+\) | \(2+3n-3\) | \(+\) | \(2+3n-3\) | \(+ \cdots +\) | \(2+3n-3\) |
 
-Not counting the first term (the 4) there are \(n\) summands of \(2+3n-3 = 3n-1\) so the right-hand side becomes \(4+(3n-1)n\text{.}\)[🔗](#eg-sum-of-arithmetic-3-4) Finally, solving for \(a_n\) we get \begin{equation*} a_n = \d \frac{4+(3n-1)n}{2}\text{.} \end{equation*} Just to be sure, we check \(a_0 = \frac{4}{2} = 2\text{,}\) \(a_1 = \frac{4+2}{2} = 3\text{,}\) etc. We have the correct closed formula. [🔗](#eg-sum-of-arithmetic-3-5) [🔗](#eg-sum-of-arithmetic-3) [🔗](#eg-sum-of-arithmetic)Notice that the closed formula for a sequence that has an arithmetic (i.e., linear) rate of change is a quadratic function. Interesting....[🔗](#sec_seq-polynomial-5-11) [🔗](#sec_seq-polynomial-5)
+عدا الحدّ الأول (وهو 4) يوجد \(n\) حدًّا من \(2+3n-3 = 3n-1\)، فتصبح الجهة اليمنى \(4+(3n-1)n\text{.}\)[🔗](#eg-sum-of-arithmetic-3-4) وأخيرًا، بإيجاد \(a_n\) نحصل على \begin{equation*} a_n = \d \frac{4+(3n-1)n}{2}\text{.} \end{equation*} وللتأكّد فقط، نتحقّق من \(a_0 = \frac{4}{2} = 2\text{,}\) و\(a_1 = \frac{4+2}{2} = 3\text{,}\) وهكذا. لقدgotten الصيغة المغلقة صحيحة. [🔗](#eg-sum-of-arithmetic-3-5) [🔗](#eg-sum-of-arithmetic-3) [🔗](#eg-sum-of-arithmetic)لاحظ أنّ الصيغة المغلقة لمتتالية معدّل تغيّرها حسابي (أي خطّي) هي دالة تربيعية. مثير للاهتمام....[🔗](#sec_seq-polynomial-5-11) [🔗](#sec_seq-polynomial-5)
 
-### Subsection Higher Degree Polynomials
+### القسم الفرعي: متعدّدات الحدود من الدرجات الأعلى
 
-Since we know how to compute the sum of the first \(n\) terms of arithmetic sequences, we can compute the closed formulas for sequences that have an arithmetic sequence of differences between terms. But what if we consider a sequence that is the sum of the first \(n\) terms of a sequence that is itself the sum of an arithmetic sequence?[🔗](#subsec-seq-higher-poly-2) How many squares (of all sizes) are there on a chessboard? A chessboard consists of \(64\) squares, but we also want to consider squares of longer side length. Even though we are only considering an \(8 \times 8\) board, there is already a lot to count. So instead, let us build a sequence: the first term will be the number of squares on a \(1 \times 1\) board, the second term will be the number of squares on a \(2 \times 2\) board, and so on. After a little thought, we arrive at the sequence \begin{equation*} 1,5,14,30, 55,\ldots\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-3) This sequence is not arithmetic (or geometric for that matter), but perhaps its sequence of differences is. For differences we get \begin{equation*} 4, 9, 16, 25, \ldots\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-4) Not a huge surprise: One way to count the number of squares in a \(4 \times 4\) chessboard is to notice that there are \(16\) squares with side length 1, 9 with side length 2, 4 with side length 3 and 1 with side length 4. So the original sequence is just the sum of squares. Now this sequence of differences is not arithmetic since its sequence of differences (the differences of the differences of the original sequence) is not constant. In fact, this sequence of second differences is \begin{equation*} 5, 7, 9, \ldots\text{,} \end{equation*} which *is* an arithmetic sequence (with constant difference 2). Notice that our original sequence had third differences (that is, differences of differences of differences of the original) constant. We will call such a sequence \(\Delta^3\)-constant. The sequence \(1, 4, 9, 16, \ldots\) has second differences constant, so it will be a \(\Delta^2\)-constant sequence. In general, we will say a sequence is a \(\Delta^k\)-constant sequence if the \(k\)th differences are constant. [🔗](#subsec-seq-higher-poly-5)
+بمعرفتنا كيفية حساب مجموع الحدود الأولى \(n\) من المتتاليات الحسابية، يمكننا حساب الصيغ المغلقة للمتتاليات التي الفروق بين حدودها تشكّل متتالية حسابية. لكن ماذا لو نظرنا في متتالية هي مجموع الحدود الأولى \(n\) من متتالية هي بدورها مجموع متتالية حسابية؟[🔗](#subsec-seq-higher-poly-2) كم مربّعًا (بكل أحجامه) يوجد على رقعة الشطرنج؟ تتألف رقعة الشطرنج من \(64\) مربّعًا، لكننا نريد أيضًا要考虑 مربّعات ذات ضلع أطول./fr 虽然 أننا نلاحظ رقعة \(8 \times 8\) فحسب، فهناك الكثير ما يجب عدّه. إذن، لنبنِ متتالية بدلًا من ذلك: الحدّ الأول سيكون عدد المربّعات على رقعة \(1 \times 1\)، والحدّ الثاني سيكون عدد المربّعات على رقعة \(2 \times 2\)، وهكذا. وبعد تفكير قصير، نصل إلى المتتالية \begin{equation*} 1,5,14,30, 55,\ldots\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-3) هذه المتتالية ليست حسابية (ولا هندسية على نحو أعمّ)، لكنّ متتالية فروقها قد تكون كذلك. أمّا الفروق فنحصل على \begin{equation*} 4, 9, 16, 25, \ldots\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-4) وليس هذا مفاجأة كبيرة: إحدى طرق عدّ عدد المربّعات في رقعة شطرنج \(4 \times 4\) هي ملاحظة أنّ هناك \(16\) مربّعًا ضلعه 1، و9 مربّعات ضلعها 2، و4 مربّعات ضلعها 3، ومربّعًا واحدًا ضلعه 4. إذن المتتالية الأصلية هي مجرّد مجموع المربّعات. والآن، متتالية الفروق هذه ليست حسابية لأنّ متتالية فروقها (فروق فروق المتتالية الأصلية) ليست ثابتة. وفعلًا، متتالية الفروق الثانية هذه هي \begin{equation*} 5, 7, 9, \ldots\text{,} \end{equation*} وهي *في الواقع* متتالية حسابية (بفارق ثابت قدره 2). ولاحظ أنّ متتاليتنا الأصلية كانت فروقها الثالثة (أي فروق فروق فروق المتتالية الأصلية) ثابتة. وسنسمي كلّ متتالية من هذا النوع \(\Delta^3\)-ثابتة. أمّا المتتالية \(1, 4, 9, 16, \ldots\) ففروقها الثانية ثابتة، فهي إذن متتالية \(\Delta^2\)-ثابتة. وبوجه عام، نقول إنّ متتالية هي متتالية \(\Delta^k\)-ثابتة إذا كانت الفروق رقم \(k\) فيها ثابتة. [🔗](#subsec-seq-higher-poly-5)
 
-#### Example 4.3.4.
+#### المثال 4.3.4.
 
-Which of the following sequences are \(\Delta^k\)-constant for some value of \(k\text{?}\)
+أيٌّ ممّا يلي من المتتاليات \(\Delta^k\)-ثابتة بالنسبة إلى قيمة ما لـ\(k\text{?}\)
 
 1. \(2, 3, 7, 14, 24, 37,\ldots\text{.}\) [🔗](#example-deltak-1-1-3-1)
 2. \(1, 8, 27, 64, 125, 216, \ldots\text{.}\) [🔗](#example-deltak-1-1-3-2)
 3. \(1,2,4,8,16,32,64,\ldots\text{.}\) [🔗](#example-deltak-1-1-3-3)
 
-[🔗](#example-deltak-1-1) Solution.
+[🔗](#example-deltak-1-1) الحل.
 
-1. This is the sequence from [Example 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic), in which we found a closed formula by recognizing the sequence as the sequence of partial sums of an arithmetic sequence. Indeed, the sequence of first differences is \(1,4,7, 10, 13,\ldots\text{,}\) which itself has differences \(3,3,3,3,\ldots\text{.}\) Thus \(2, 3, 7, 14, 24, 37,\ldots\) is a \(\Delta^2\)-constant sequence. [🔗](#example-deltak-2-1-1-1)
-2. These are the perfect cubes. The sequence of first differences is \(7, 19, 37, 61, 91, \ldots\text{;}\) the sequence of second differences is \(12, 18, 24, 30,\ldots\text{;}\) the sequence of third differences is constant: \(6,6,6,\ldots\text{.}\) Thus the perfect cubes are a \(\Delta^3\)-constant sequence. [🔗](#example-deltak-2-1-1-2)
-3. If we take first differences, we get \(1,2,4,8,16,\ldots\text{.}\) Wait, what? That’s the sequence we started with. So taking second differences will give us the same sequence again. No matter how many times we repeat this we will always have the same sequence, which in particular means no finite number of differences will be constant. Thus this sequence is not \(\Delta^k\)-constant for any \(k\text{.}\) [🔗](#example-deltak-2-1-1-3)
+1. هذه هي المتتالية الواردة في [المثال 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic)،ductor التي وجدنا فيها صيغة مغلقة بالتعرّف على المتتالية على أنّها متتالية مجاميع جزئية لمتتالية حسابية. وفعلًا، متتالية الفروق الأولى هي \(1,4,7, 10, 13,\ldots\text{,}\)|fr وfrOwn frوقها هي \(3,3,3,3,\ldots\text{.}\) إذن \(2, 3, 7, 14, 24, 37,\ldots\) هي متتالية \(\Delta^2\)-ثابتة. [🔗](#example-deltak-2-1-1-1)
+2. هذه هي المكعّبات التامّة. متتالية الفروق الأولى هي \(7, 19, 37, 61, 91, \ldots\text{;}\) ومتتالية الفروق الثانية هي \(12, 18, 24, 30,\ldots\text{;}\) ومتتالية الفروق الثالثة ثابتة: \(6,6,6,\ldots\text{.}\) إذن المكعّبات التامّة هي متتالية \(\Delta^3\)-ثابتة. [🔗](#example-deltak-2-1-1-2)
+3. إذا أخذنا الفروق الأولى، نحصل على \(1,2,4,8,16,\ldots\text{.}\) وماذا؟ هذه هي المتتالية التي بدأنا بها. إذن أخذ الفروق الثانية سيعطينا المتتالية نفسها مرّة أخرى. مهما كرّرنا هذا، سنحصل دومًا على المتتالية نفسها، وهذا يعني بعينه أنّه لا يوجد عدد منتهٍ من الفروق يكون ثابتًا. إذن هذه المتتالية ليست \(\Delta^k\)-ثابتة لأيّ \(k\text{.}\) [🔗](#example-deltak-2-1-1-3)
 
-[🔗](#example-deltak-2-1) [🔗](#example-deltak-2) [🔗](#example-deltak)The \(\Delta^0\)-constant sequences are themselves constant, so a closed formula for them is easy to compute (it’s just the constant). The \(\Delta^1\)-constant sequences are arithmetic, and we have a method for finding closed formulas for them as well. Every \(\Delta^2\)-constant sequence is the sum of an arithmetic sequence, so we can find formulas for these as well. But notice that the format of the closed formula for a \(\Delta^2\)-constant sequence is always quadratic. For example, the square numbers are \(\Delta^2\)-constant with closed formula \(a_n= n^2\text{.}\) The triangular numbers (also \(\Delta^2\)-constant) have closed formula \(a_n = \frac{n(n+1)}{2}\text{,}\) which when multiplied out gives you an \(n^2\) term as well. It appears that every time we increase the complexity of the sequence, that is, increase the number of differences before we get constants, we also increase the degree of the polynomial used for the closed formula. We go from constant to linear to quadratic. The sequence of differences between terms tells us something about the rate of growth of the sequence. If a sequence is growing at a constant rate, then the formula for the sequence will be linear. If the sequence is growing at a rate which itself is growing at a constant rate, then the formula is quadratic. You might have seen this elsewhere: If a function has a constant second derivative (rate of change), then the function must be quadratic.[🔗](#subsec-seq-higher-poly-7) This works in general:[🔗](#subsec-seq-higher-poly-8)
+[🔗](#example-deltak-2-1) [🔗](#example-deltak-2) [🔗](#example-deltak)المتتاليات \(\Delta^0\)-الثابتة ثابتة بذاتها، لذا يسهل حساب صيغة مغلقة لها (إنّها مجرّد الثابت). والمتتاليات \(\Delta^1\)-الثابتة حسابية، ولدينا طريقة لإيجاد صيغها المغلقة أيضًا. وكلّ متتالية \(\Delta^2\)-ثابتة هي مجموع متتالية حسابية، لذا يمكننا إيجاد صيغ لها أيضًا. لكن لاحظ أنّ صيغة المتتالية \(\Delta^2\)-الثابتة تكون دائمًا تربيعية الشكل. مثلًا، الأعداد المربّعة \(\Delta^2\)-ثابتة وصيغتها المغلقة \(a_n= n^2\text{.}\) والأعداد المثلّثية (وهي كذلك \(\Delta^2\)-ثابتة) صيغتها المغلقة \(a_n = \frac{n(n+1)}{2}\text{,}\) وهي عند ضربها تخرج لك حدًّا من نوع \(n^2\) أيضًا. ويبدو أنّنا كلّما زدنا تعقيد المتتالية، أي زدنا عدد الفروق قبل أن نحصل على ثوابت، زدنا أيضًا درجة متعدّد الحدود المستعمل في الصيغة المغلقة. ننتقل من الثابت إلى الخطّي إلى التربيعي. ومت��لية الفروق بين الحدود تخبرنا بشيءٍ عن معدّل نمو المتتالية. إذا كانت متتالية تنمو بمعدّل ثابت، فإنّ صيغتها ستكون خطّية. وإذا كانت المتتالية تنمو بمعدّل ينمو هو الآخر بمعدّل ثابت، فإنّ الصيغة تربيعية. ولعلّك رأيت هذا في مكان آخر: إذا كانت لدالّة مشتقّة ثانية ثابتة (معدّل تغيّر)، فإنّ الدالّة يجب أن تكون تربيعية.[🔗](#subsec-seq-higher-poly-7) وهذا يعمل على وجه العموم:[🔗](#subsec-seq-higher-poly-8)
 
-#### Theorem 4.3.5. Polynomial Fitting.
+#### مبرهنة 4.3.5. الملاءمة متعدّدة الحدود.
 
-The closed formula for a sequence will be a degree \(k\) polynomial if and only if the sequence is \(\Delta^k\)-constant (i.e., the \(k\)th sequence of differences is constant).[🔗](#subsec-seq-higher-poly-9-2-1) [🔗](#subsec-seq-higher-poly-9)This tells us that the sequence of numbers of squares on a chessboard, \(1, 5, 14, 30, 55, \ldots\text{,}\) which we saw to be \(\Delta^3\)-constant, will have a cubic (degree 3 polynomial) for its closed formula.[🔗](#subsec-seq-higher-poly-10) Now once we know what format the closed formula for a sequence will take, it is much easier to actually find the closed formula. In the case that the closed formula is a degree \(k\) polynomial, we just need \(k+1\) data points to “fit” the polynomial to the data.[🔗](#subsec-seq-higher-poly-11)
+الصيغة المغلقة لمتتالية ستكون متعدّد حدود من الدرجة \(k\) إذا كان بين المتتالية أنّها \(\Delta^k\)-ثابتة (أي أنّ متتالية الفروق رقم \(k\) فيها ثابتة) والعكس.[🔗](#subsec-seq-higher-poly-9-2-1) [🔗](#subsec-seq-higher-poly-9)وهذا يخبرنا أنّ متتالية أعداد المربّعات على رقعة الشطرنج \(1, 5, 14, 30, 55, \ldots\text{,}\) التي رأينا أنّها \(\Delta^3\)-ثابتة، سيكون لها صيغة مغلقة من الدرجة الثالثة (متعدّد حدود من الدرجة 3).[🔗](#subsec-seq-higher-poly-10) والآن بعد أن نعرف ما شكل الصيغة المغلقة لأيّ متتالية، стало إيجاد تلك الصيغة أسهل بكثير. وفي الحالة التي تكون فيها الصيغة المغلقة متعدّد حدود من الدرجة \(k\)، لا نحتاج سوى \(k+1\) نقطة بيانات لـ«ملاءمة» متعدّد الحدود مع البيانات.[🔗](#subsec-seq-higher-poly-11)
 
-#### Example 4.3.6.
+#### المثال 4.3.6.
 
-Find a formula for the sequence \(3, 7, 14, 24,\ldots\text{.}\) Assume \(a_1 = 3\text{.}\)[🔗](#subsec-seq-higher-poly-12-1-1) Solution. First, check to see if the formula has constant differences at some level. The sequence of first differences is \(4, 7, 10, \ldots\) which is arithmetic, so the sequence of second differences is constant. The sequence is \(\Delta^2\)-constant, so the formula for \(a_n\) will be a degree 2 polynomial. That is, we know that for some constants \(a\text{,}\) \(b\text{,}\) and \(c\text{,}\) \begin{equation*} a_n = an^2 + bn + c\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-12-2-1) Now to find \(a\text{,}\) \(b\text{,}\) and \(c\text{.}\) First, it would be nice to know what \(a_0\) is, since plugging in \(n = 0\) simplifies the above formula greatly. In this case, \(a_0 = 2\) (work backward from the sequence of constant differences). Thus \begin{equation*} a_0 = 2 = a\cdot 0^2 + b \cdot 0 + c\text{,} \end{equation*} so \(c = 2\text{.}\) Now plug in \(n =1\) and \(n = 2\text{.}\) We get \begin{equation*} a_1 = 3 = a + b + 2 \end{equation*} \begin{equation*} a_2 = 7 = a4 + b 2 + 2\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-12-2-2) At this point, we have two (linear) equations and two unknowns, so we can solve the system for \(a\) and \(b\) (using substitution or elimination or even matrices). We find \(a = \frac{3}{2}\) and \(b = \frac{-1}{2}\text{,}\) so \(a_n = \frac{3}{2} n^2 - \frac{1}{2}n + 2\text{.}\)[🔗](#subsec-seq-higher-poly-12-2-3) [🔗](#subsec-seq-higher-poly-12-2) [🔗](#subsec-seq-higher-poly-12)
+جد صيغةً للمتتالية \(3, 7, 14, 24,\ldots\text{.}\) بافتراض \(a_1 = 3\text{.}\)[🔗](#subsec-seq-higher-poly-12-1-1) الحل. أوّلًا، تحقّق ممّا إذا كانت الصيغة لها فروق ثابتة عند某个 مستوى ما. متتالية الفروق الأولى هي \(4, 7, 10, \ldots\) وهي حسابية، إذن متتالية الفروق الثانية ثابتة. والمتتالية \(\Delta^2\)-ثابتة، لذا ستكون صيغة \(a_n\) متعدّد حدود من الدرجة 2. أي أنّنا نعرف أنّه بالنسبة إلى ثوابت ما \(a\text{,}\) \(b\text{,}\) و\(c\text{,}\) \begin{equation*} a_n = an^2 + bn + c\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-12-2-1) والآن لإيجاد \(a\text{,}\) \(b\text{,}\) و\(c\text{.}\) أوّلًا، سيكون من جيّد أن نعرف ما هو \(a_0\)، لأنّ وضع \(n = 0\) في الصيغة أعلاه يبسّطها كثيرًا. وفي هذه الحالة، \(a_0 = 2\) (نعمل للخلف انطلاقًا من متتالية الفروق الثابتة). إذن \begin{equation*} a_0 = 2 = a\cdot 0^2 + b \cdot 0 + c\text{,} \end{equation*} ومنه \(c = 2\text{.}\) الآن ضع \(n =1\) و\(n = 2\text{.}\) نحصل على \begin{equation*} a_1 = 3 = a + b + 2 \end{equation*} \begin{equation*} a_2 = 7 = a4 + b 2 + 2\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-12-2-2) وفي هذه المرحلة، لدينا معادلتان (خطّيتان) ومجهولان، لذا يمكننا حلّ الجملة لإيجاد \(a\) و\(b\) (باستعمال التعويض أو الحذف أو حتى المصفوفات). نجد \(a = \frac{3}{2}\) و\(b = \frac{-1}{2}\text{,}\) إذن \(a_n = \frac{3}{2} n^2 - \frac{1}{2}n + 2\text{.}\)[🔗](#subsec-seq-higher-poly-12-2-3) [🔗](#subsec-seq-higher-poly-12-2) [🔗](#subsec-seq-higher-poly-12)
 
-#### Example 4.3.7.
+#### المثال 4.3.7.
 
-Find a closed formula for the number of squares on an \(n \times n\) chessboard.[🔗](#subsec-seq-higher-poly-13-1-1) Solution. We have seen that the sequence \(1, 5, 14, 30, 55, \ldots\) is \(\Delta^3\)-constant, so we are looking for a degree 3 polynomial. That is, \begin{equation*} a_n = an^3 + bn^2 + cn + d\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-13-2-1) We can find \(d\) if we know what \(a_0\) is. Working backward from the third differences, we find \(a_0 = 0\) (unsurprisingly, since there are no squares on a \(0\times 0\) chessboard). Thus \(d = 0\text{.}\) Now plug in \(n = 1\text{,}\) \(n =2\text{,}\) and \(n =3\text{:}\) \begin{align*} 1 = \amp a + b + c\\ 5 = \amp 8a + 4b + 2c\\ 14 = \amp 27a + 9b + 3c\text{.} \end{align*} [🔗](#subsec-seq-higher-poly-13-2-2) If we solve this system of equations, we get \(a = \frac{1}{3}\text{,}\) \(b = \frac{1}{2}\) and \(c = \frac{1}{6}\text{.}\) Therefore the number of squares on an \(n \times n\) chessboard is \(a_n = \frac{1}{3}n^3 + \frac{1}{2}n^2 + \frac{1}{6}n = \frac{1}{6}n(n+1)(2n+1)\text{.}\)[🔗](#subsec-seq-higher-poly-13-2-3) [🔗](#subsec-seq-higher-poly-13-2) [🔗](#subsec-seq-higher-poly-13)Note: Since the squares-on-a-chessboard problem is really asking for the sum of squares, we now have a nice formula for \(\d\sum_{k=1}^n k^2\text{.}\)[🔗](#subsec-seq-higher-poly-14)
+جد صيغة مغلقة لعدد المربّعات على رقعة شطرنج \(n \times n\).[🔗](#subsec-seq-higher-poly-13-1-1) الحل. رأينا أنّ المتتالية \(1, 5, 14, 30, 55, \ldots\) هي \(\Delta^3\)-ثابتة، لذا نبحث عن متعدّد حدود من الدرجة 3. أي، \begin{equation*} a_n = an^3 + bn^2 + cn + d\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-13-2-1) يمكننا إيجاد \(d\) إذا عرفنا ما هو \(a_0\). وبالعمل للخلف انطلاقًا من الفروق الثالثة، نجد \(a_0 = 0\) (وهو غير مفاجئ، إذ لا توجد مربّعات على رقعة \(0\times 0\)). إذن \(d = 0\text{.}\) الآن ضع \(n = 1\text{,}\) \(n =2\text{,}\) و\(n =3\text{:}\) \begin{align*} 1 = \amp a + b + c\\ 5 = \amp 8a + 4b + 2c\\ 14 = \amp 27a + 9b + 3c\text{.} \end{align*} [🔗](#subsec-seq-higher-poly-13-2-2) إذا حللنا جملة المعادلات هذه، نحصل على \(a = \frac{1}{3}\text{,}\) \(b = \frac{1}{2}\) و\(c = \frac{1}{6}\text{.}\) إذن عدد المربّعات على رقعة شطرنج \(n \times n\) هو \(a_n = \frac{1}{3}n^3 + \frac{1}{2}n^2 + \frac{1}{6}n = \frac{1}{6}n(n+1)(2n+1)\text{.}\)[🔗](#subsec-seq-higher-poly-13-2-3) [🔗](#subsec-seq-higher-poly-13-2) [🔗](#subsec-seq-higher-poly-13)ملاحظة: مسألة «المربّعات على رقعة الشطرنج» هي في الحقيقة طلب لمجموع المربّعات، Portugم لدينا الآن صيغة جميلة لـ\(\d\sum_{k=1}^n k^2\text{.}\)[🔗](#subsec-seq-higher-poly-14)
 
-#### Example 4.3.8.
+#### المثال 4.3.8.
 
-Find a closed formula for \((a_n)_{n \ge 0}\) which starts \(2, 3, 7, 14, 24, 37,\ldots\text{.}\) Assume a recurrence relation for the sequence is \(a_n = a_{n-1} + 3n-2\)[🔗](#subsec-seq-higher-poly-15-1-1) Solution. Note that we have already done this in [Example 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic), but now we can solve this using polynomial fitting.[🔗](#subsec-seq-higher-poly-15-2-1) The sequence of (first) differences is \(1, 4, 7, 10, 13,\ldots\) (which agrees with what is given in the recurrence relation). The sequence of second differences is \(3, 3, 3, 3, \ldots\) constant! So we expect that the closed formula for \(a_n\) will be a degree 2 polynomial. That is, we guess, \begin{equation*} a_n = an^2 + bn + c\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-15-2-2) Since \(a_0 = 2\text{,}\) we know that \(c = 2\) (as \(a\cdot 0^2 + b\cdot 0^2 + c = 2\)). Then, we can see what happens with \(n = 1\) and \(n = 2\text{:}\) \begin{align*} a_1 = 3 = \amp a\cdot 1^2 + b\cdot 1 + 2\\ a_2 = 7 = \amp a\cdot 2^2 + b\cdot 2 + 2\text{.} \end{align*} Simplifying this, we must find \(a\) and \(b\) which satisfy the equations \begin{align*} 1 =\amp a +b\\ 5 = \amp 4a + 2b\text{.} \end{align*} Using a computer algebra system or substitution or elimination, we find that \(a = \frac{3}{2}\) and \(b = -\frac{1}{2}\text{.}\) Therefore the closed formula is, \begin{equation*} a_n = \frac{3}{2}n^2 - \frac{1}{2}n + 2\text{.} \end{equation*} This is the same as we found in [Example 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic), once you multiply out that solution. [🔗](#subsec-seq-higher-poly-15-2-3) [🔗](#subsec-seq-higher-poly-15-2) [🔗](#subsec-seq-higher-poly-15)Not all sequences will have polynomials as their closed formula. We can use the theory of finite differences to identify these.[🔗](#subsec-seq-higher-poly-16)
+جد صيغة مغلقة لـ\((a_n)_{n \ge 0}\) التي تبدأ \(2, 3, 7, 14, 24, 37,\ldots\text{.}\) افترض أنّ علاقة تكرارية للمتتالية هي \(a_n = a_{n-1} + 3n-2\)[🔗](#subsec-seq-higher-poly-15-1-1) الحل. لاحظ أنّنا سبق أن فعلنا هذا في [المثال 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic)، لكنّنا الآن نستطيع حلّه باستعمال الملاءمة متعدّدة الحدود.[🔗](#subsec-seq-higher-poly-15-2-1) متتالية (الفروق الأولى) هي \(1, 4, 7, 10, 13,\ldots\) (وهو ما يتّفق مع المذكور في العلاقة التكرارية). ومتتالية الفروق الثانية هي \(3, 3, 3, 3, \ldots\) ثابتة! لذا نتوقّع أن تكون الصيغة المغلقة لـ\(a_n\) متعدّد حدود من الدرجة 2. أي، 我们خمّن \begin{equation*} a_n = an^2 + bn + c\text{.} \end{equation*} [🔗](#subsec-seq-higher-poly-15-2-2) وبما أنّ \(a_0 = 2\text{,}\) فنحن نعرف أنّ \(c = 2\) (بما أنّ \(a\cdot 0^2 + b\cdot 0^2 + c = 2\)). ثمّ يمكننا أن نرى ما يحدث مع \(n = 1\) و\(n = 2\text{:}\) \begin{align*} a_1 = 3 = \amp a\cdot 1^2 + b\cdot 1 + 2\\ a_2 = 7 = \amp a\cdot 2^2 + b\cdot 2 + 2\text{.} \end{align*} وبتبسيط هذا، علينا إيجاد \(a\) و\(b\) اللذين يحقّقان المعادلتين \begin{align*} 1 =\amp a +b\\ 5 = \amp 4a + 2b\text{.} \end{align*} باستعمال نظام جبر حاسوبي أو التعويض أو الحذف، نجد أنّ \(a = \frac{3}{2}\) و\(b = -\frac{1}{2}\text{.}\) إذن الصيغة المغلقة هي، \begin{equation*} a_n = \frac{3}{2}n^2 - \frac{1}{2}n + 2\text{.} \end{equation*} وهذا هو نفسه ما وجدناه في [المثال 4.3.3](sec_seq-polynomial.html#eg-sum-of-arithmetic)، بمجرّد ضرب حلّك هناك. [🔗](#subsec-seq-higher-poly-15-2-3) [🔗](#subsec-seq-higher-poly-15-2) [🔗](#subsec-seq-higher-poly-15)ليست كلّ المتتاليات لها متعدّدات حدود بوصفها صيغها المغلقة. يمكننا استعمال نظريّة الفروق المنتهية للتعرّف على تلك المتتاليات.[🔗](#subsec-seq-higher-poly-16)
 
-#### Example 4.3.9.
+#### المثال 4.3.9.
 
-Determine whether the following sequences can be described by a polynomial, and if so, of what degree.
+حدّد ما إذا كان يمكن وصف المتتاليات التالية بمتعدّد حدود، وإن كان كذلك، فبأيّ درجة.
 
 1. \(\displaystyle 1, 2, 4, 8, 16, \ldots\) [🔗](#subsec-seq-higher-poly-17-1-1-1-1)
 2. \(\displaystyle 0, 7, 50, 183, 484, 1055, \ldots\) [🔗](#subsec-seq-higher-poly-17-1-1-1-2)
 3. \(\displaystyle 1,1,2,3,5,8,13,\ldots\) [🔗](#subsec-seq-higher-poly-17-1-1-1-3)
 
-[🔗](#subsec-seq-higher-poly-17-1-1) Solution.
+[🔗](#subsec-seq-higher-poly-17-1-1) الحل.
 
-1. As we saw in [Example 4.3.4](sec_seq-polynomial.html#example-deltak), this sequence is not \(\Delta^k\)-constant for any \(k\text{.}\) Therefore the closed formula for the sequence is not a polynomial. In fact, we know the closed formula is \(a_n = 2^n\text{,}\) which grows faster than any polynomial (so is not a polynomial).[🔗](#subsec-seq-higher-poly-17-2-1-1-1-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-1)
-2. The sequence of first differences is \(7, 43, 133, 301, 571,\ldots\text{.}\) The second differences are: \(36, 90, 168, 270,\ldots\text{.}\) Third differences: \(54, 78, 102,\ldots\text{.}\) Fourth differences: \(24, 24, \ldots\text{.}\) As far as we can tell, this sequence of differences is constant so the sequence is \(\Delta^4\)-constant, and as such the closed formula is a degree 4 polynomial.[🔗](#subsec-seq-higher-poly-17-2-1-1-2-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-2)
-3. This is the Fibonacci sequence. The sequence of first differences is \(0, 1, 1, 2, 3, 5, 8, \ldots\text{,}\) the second differences are \(1, 0, 1, 1, 2, 3, 5\ldots\text{.}\) We notice that after the first few terms, we get the original sequence back. So there will never be constant differences, so the closed formula for the Fibonacci sequence is not a polynomial.[🔗](#subsec-seq-higher-poly-17-2-1-1-3-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-3)
+1. كما رأينا في [المثال 4.3.4](sec_seq-polynomial.html#example-deltak)، هذه المتتالية ليست \(\Delta^k\)-ثابتة لأيّ \(k\text{.}\) إذن الصيغة المغلقة للمتتالية ليست متعدّد حدود. وفعلًا، نعرف أنّ الصيغة المغلقة هي \(a_n = 2^n\text{,}\) وهي تنمو أسرع من أيّ متعدّد حدود (فليست متعدّد حدود إذن).[🔗](#subsec-seq-higher-poly-17-2-1-1-1-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-1)
+2. متتالية الفروق الأولى هي \(7, 43, 133, 301, 571,\ldots\text{.}\) أمّا الفروق الثانية فهي: \(36, 90, 168, 270,\ldots\text{.}\) والفروق الثالثة: \(54, 78, 102,\ldots\text{.}\) والفروق الرابعة: \(24, 24, \ldots\text{.}\) بقدر ما نستطيع أن نرصد، متتالية الفروق هذه ثابتة، إذن المتتالية \(\Delta^4\)-ثابتة، وبالتبعية تكون صيغتها المغلقة متعدّد حدود من الدرجة 4.[🔗](#subsec-seq-higher-poly-17-2-1-1-2-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-2)
+3. هذه هي متتالية فيبوناتشي. متتالية الفروق الأولى هي \(0, 1, 1, 2, 3, 5, 8, \ldots\text{,}\) والفروق الثانية هي \(1, 0, 1, 1, 2, 3, 5\ldots\text{.}\) ونلاحظ أنّنا بعد الحدود الأولى القليلة نحصل على المتتالية الأصلية مرّة أخرى. إذن لن تكون هناك فروق ثابتة أبدًا، لذا ليست الصيغة المغلقة لمتتالية فيبوناتشي متعدّد حدود.[🔗](#subsec-seq-higher-poly-17-2-1-1-3-1) [🔗](#subsec-seq-higher-poly-17-2-1-1-3)
 
 [🔗](#subsec-seq-higher-poly-17-2-1) [🔗](#subsec-seq-higher-poly-17-2) [🔗](#subsec-seq-higher-poly-17)
 
-#### Warning 4.3.10.
+#### تحذير 4.3.10.
 
-A degree \(n\) polynomial is completely determined by its \(n+1\) coefficients (the \(+1\) is because of the constant term). Therefore we can always find a degree \(n\) polynomial when given \(n+1\) terms of a sequence.[🔗](#subsec-seq-higher-poly-18-1) If we take the \(n+1\) terms, we can take differences of differences of differences of... until (after \(n\) steps) we are left with just a single number. As far as we can tell, this \(n\)th difference is constant. This doesn’t mean we have found the closed formula for the *right* sequence. This is why it is so important to work with sequences in a particular context.[🔗](#subsec-seq-higher-poly-18-2) [🔗](#subsec-seq-higher-poly-18)[🔗](#subsec-seq-higher-poly)
+متعدّد حدود من الدرجة \(n\) يتحدّد تمامًا بمعاملاته الـ\(n+1\) (والـ\(+1\) بسبب الحدّ الثابت). لذا يمكننا دائمًا إيجاد متعدّد حدود من الدرجة \(n\) إذا أُعطينا \(n+1\) حدًّا من متتالية.[🔗](#subsec-seq-higher-poly-18-1) إذا أخذنا الحدود الـ\(n+1\)، يمكننا أن نأخذ فروق الفروق الفروق الفروق... حتى (بعد \(n\) خطوة) لا يبقى سوى عدد واحد. بقدر ما نستطيع أن نرصد، الفرق رقم \(n\) ثابت. وهذا لا يعني أنّنا وجدنا الصيغة المغلقة للمتتالية *الصحيحة*. ولهذا فإنّ العمل مع متتاليات ضمن سياقٍ محدّد مسألة بالغة الأهمية.[🔗](#subsec-seq-higher-poly-18-2) [🔗](#subsec-seq-higher-poly-18)[🔗](#subsec-seq-higher-poly)
 
-### Subsection Solving Systems of Equations with Technology
+### القسم الفرعي: حلّ جمل المعادلات بالأدوات الحاسوبية
 
-The point of polynomial fitting is that if we can be sure that a sequence has a polynomial as its closed formula, then we can find that formula. Since we know the degree of the polynomial, all we need is to find its coefficients, and with enough terms of the sequence, we can find a system of enough linear equations whose solution will be those coefficients. However, this requires solving a system of linear equations.[🔗](#sec_seq-polynomial-7-2) For a degree 2 polynomial, we need to find three coefficients (the constant term, the coefficient of \(n\text{,}\) and the coefficient of \(n^2\)). A system of three linear equations will be enough to find these three unknowns. In fact, since \(a_0\) will be the constant term, we can really get away with just two equations and two unknowns, and this is not difficult to solve by hand.[🔗](#sec_seq-polynomial-7-3) For higher degree polynomials, the number of equations is larger, and solving by hand can be tedious. Luckily, it is easy for computers to solve these equations. Below we demonstrate how to use the free computer algebra system SageMath, as well as python, to solve these systems of equations. Besides these two choices, pretty much any computer algebra system (including Wolfram Alpha) can solve these systems of equations.[🔗](#sec_seq-polynomial-7-4) Suppose we have the following system of three equations and three unknowns, as in the chess board example above: \begin{align*} 1 = \amp a + b + c\\ 5 = \amp 8a + 4b + 2c\\ 14 = \amp 27a + 9b + 3c \end{align*} [🔗](#sec_seq-polynomial-7-5) In SageMath, we can use the solve method to solve the system of equations. Here is the code:[🔗](#sec_seq-polynomial-7-6) var('a b c') solve( [ a+b+c==1, 8*a+4*b+2*c==5, 27*a+9*b+3*c==14 ], a,b,c) This is easier than in python, but python might be more readily available. One way you can solve the system in python is to use the numpy library. In this case, you would create a matrix of coefficients and a vector of constants, and then use the solve method. Here is the code:[🔗](#sec_seq-polynomial-7-8)
+الفكرة من الملاءمة متعدّدة الحدود هي أنّنا إذا تمكّنّا من التأكّد من أنّ متتالية لها متعدّد حدود بوصفه صيغتها المغلقة، فسنتمكّن من إيجاد تلك الصيغة. وبمعرفتنا درجة متعدّد الحدود، لا نحتاج سوى إيجاد معاملاته، ومن خلال عدد كافٍ من حدود المتتالية يمكننا تكوين جملة من عدد كافٍ من المعادلات الخطّية يكون حلّها هو تلك المعاملات. لكنّ هذا يتطلّب حلّ جملة معادلات خطّية.[🔗](#sec_seq-polynomial-7-2) ولمتعدّد حدود من الدرجة 2، نحتاج إلى إيجاد ثلاثة معاملات (الحدّ الثابت، ومعامل \(n\text{,}\) ومعامل \(n^2\)). جملة من ثلاث معادلات خطّية تكفي لإيجاد هذه المجاهيل الثلاثة. وفعلًا، بما أنّ \(a_0\) سيكون الحدّ الثابت، يمكننا الاكتفاء بمعادلتين ومجهولين، وليست هذه صعبة الحلّ باليد.[🔗](#sec_seq-polynomial-7-3) أمّا متعدّدات الحدود من الدرجات الأعلى، فعدد المعادلات فيها أكبر، والحلّ باليد قد يكون مملًّا. لحسن الحظّ، من السهل على الحاسوب أن يحلّ هذه المعادلات. وسنعرض أدناه كيف نستعمل نظام الجبر الحاسوبي المجاني SageMath، وكذلك python، لحلّ جمل المعادلات هذه. وإلى جانب هذين الخيارين، فبمنظور ما، يستطيع أيّ نظام جبر حاسوبي (بما في ذلك Wolfram Alpha) أن يحلّ جمل المعادلات هذه.[🔗](#sec_seq-polynomial-7-4) لنفترض لدينا جملة المعادلات التالية من ثلاث معادلات وثلاثة مجاهيل، كما في مثال رقعة الشطرنج أعلاه: \begin{align*} 1 = \amp a + b + c\\ 5 = \amp 8a + 4b + 2c\\ 14 = \amp 27a + 9b + 3c \end{align*} [🔗](#sec_seq-polynomial-7-5) في SageMath، يمكننا استعمال الطريقة solve لحلّ جملة المعادلات. إليك الشيفرة:[🔗](#sec_seq-polynomial-7-6) var('a b c') solve( [ a+b+c==1, 8*a+4*b+2*c==5, 27*a+9*b+3*c==14 ], a,b,c) وهذا أسهل منها في python، لكنّ python قد يكون متاحًا على نحو أسهل. وإحدى طرقك لحلّ الجملة في python هي استعمال مكتبة numpy. وفي هذه الحالة، تنشئ مصفوفة معاملات ومتجّهًا من الثوابت، ثمّ تستعمل طريقة solve. إليك الشيفرة:[🔗](#sec_seq-polynomial-7-8)
 
 ```python
 import numpy as np
@@ -159,182 +159,182 @@ x = np.linalg.solve(A,b)
 print(x)
 ```
 
-An explanation of what is going on here: We create a matrix `A` of coefficients of the system of equations (not the coefficients of the closed formula we are looking for), \begin{equation*} A = \begin{bmatrix} 1 \amp 1 \amp 1 \\ 8 \amp 4 \amp 2 \\ 27 \amp 9 \amp 3 \end{bmatrix} \end{equation*} and a vector `b` for the constants, \begin{equation*} b = \begin{bmatrix} 1 \\ 5 \\ 14 \end{bmatrix}\text{.} \end{equation*} What numpy does is solve the matrix equation \begin{equation*} Ax = b\text{.} \end{equation*} The vector \(x\) that satisfies this matrix equation will be the values of the unknowns in the system (so the vector \([a,b,c]\)). [🔗](#sec_seq-polynomial-7-10) Of course, once you find the coefficients of the polynomial, you should still write out the closed formula using those coefficients. It is always a good idea to check that the formula appears to work by using an \(n\) that you did not use to get your system of equations.[🔗](#sec_seq-polynomial-7-11) [🔗](#sec_seq-polynomial-7)
+وهذا تفسير لما يجري هنا: ننشئ مصفوفة `A` من معاملات جملة المعادلات (لا معاملات الصيغة المغلقة التي نبحث عنها)، \begin{equation*} A = \begin{bmatrix} 1 \amp 1 \amp 1 \\ 8 \amp 4 \amp 2 \\ 27 \amp 9 \amp 3 \end{bmatrix} \end{equation*} ومتجّهًا `b` للثوابت، \begin{equation*} b = \begin{bmatrix} 1 \\ 5 \\ 14 \end{bmatrix}\text{.} \end{equation*} ما يفعله numpy هو حلّ المعادلة المصفوفية \begin{equation*} Ax = b\text{.} \end{equation*} والمتجّه \(x\) الذي يحقّق هذه المعادلة المصفوفية سيكون قيم المجاهيل في الجملة (أي المتجّه \([a,b,c]\)). [🔗](#sec_seq-polynomial-7-10) وبطبيعة الحال، بمجرّد أن تجد معاملات متعدّد الحدود، ينبغي أن تكتب الصيغة المغلقة مستعملة تلك المعاملات. ومن المفيد دائمًا أن تتحقّق من أنّ الصيغة تبدو ويعمل بشكل صحيح باستعمال قيمة \(n\) لم تستعملها للحصول على جملة معادلاتك.[🔗](#sec_seq-polynomial-7-11) [🔗](#sec_seq-polynomial-7)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
 - \(3,7,11,15,19,\ldots\)
-- Linear formula
+- صيغة خطّية
 - \(3,5,8,12,17,\ldots\)
-- Quadratic formula
+- صيغة تربيعية
 - \(3,4,7,13,23,\ldots\)
-- Cubic formula
+- صيغة تكعيبية
 - \(3,4,7,11,18,29,\ldots\)
-- Exponential (not a polynomial)
+- أُسّية (ليست متعدّدة حدود)
 
 [🔗](#rq-seq-polyfit-match)
 
 #### 2.
 
-Suppose \((a_n)\) is a sequence whose sequence of differences has a degree 2 polynomial as its closed formula. What can you say about the sequence of partial sums of \((a_n)\text{?}\) Explain.[🔗](#rq-seq-polyfit-fr-1-1) [🔗](#rq-seq-polyfit-fr)
+افترض أنّ \((a_n)\) متتاليةٌ متتالية فروقها لها صيغة مغلقة من متعدّد حدود من الدرجة 2. فما الذي يمكنك قوله عن متتالية مجاميعها الجزئية لـ\((a_n)\text{?}\) اشرح.[🔗](#rq-seq-polyfit-fr-1-1) [🔗](#rq-seq-polyfit-fr)
 
 #### 3.
 
-What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about after reading this section.[🔗](#rq-seq-polyfit-q-1-1) [🔗](#rq-seq-polyfit-q)[🔗](#rqs-seq-polyfit)
+ما الأسئلة التي تدور في ذهنك؟ اكتب سؤالًا واحدًا على الأقلّ عن محتوى هذا القسم قد يثير اهتمامك أو اهتمام زميل لك بعد قراءة هذا القسم.[🔗](#rq-seq-polyfit-q-1-1) [🔗](#rq-seq-polyfit-q)[🔗](#rqs-seq-polyfit)
 
-### Exercises Practice Problems
+### تمارين مسائل تطبيقية
 
 #### 1.
 
-Activate Consider the sequence \(10, 14, 18, 22, 26, \ldots\) with \(a_1 = 10\text{.}\)[🔗](#extracted-webwork-198-1-1-1)
+ActivateConsider المتتالية \(10, 14, 18, 22, 26, \ldots\) مع \(a_1 = 10\text{.}\)[🔗](#extracted-webwork-198-1-1-1)
 
-1. Which of the following is a recursive definition for the sequence. Select all that apply. \(a_n = 4 \cdot a_{n-1}\); \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-1-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-1)
+1. أيٌّ ممّا يلي هو تعريف تكراري للمتتالية. حدّد كل ما ينطبق. \(a_n = 4 \cdot a_{n-1}\)؛ \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-1-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-1)
 2. \(a_n = 10 \cdot 4^n\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-2-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-2)
-3. \(a_n = a_{n-1} + 4\); \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-3-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-3)
-4. \(a_n = a_{n-1} + a_{n-2}\); \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-4)
-5. Give a closed formula for the \(n\)th term of the sequence.[🔗](#extracted-webwork-198-1-1-2-1-2-1) \(a_n =\) [🔗](#extracted-webwork-198-1-1-2-1-2-2) [🔗](#extracted-webwork-198-1-1-2-1-2)
-6. Is 2030 a term in the sequence? Yes, it is \(a_{2030}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-1-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-1)
-7. Yes, it is \(a_{506}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-2-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-2)
-8. No, it is between 2028 and 2032[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-3-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-3)
-9. No, it is larger than 550[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-4)
-10. Yes, it is \(a_{505}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-5-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-5)
-11. How many terms does the finite sequence \(10, 14, 18, 22, 26, \ldots, {550}\) have?[🔗](#extracted-webwork-198-1-1-2-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-4)
-12. Find the sum: \(10 + 14 + 18 + 22 + 26 + \cdots + {550}\)[🔗](#extracted-webwork-198-1-1-2-1-5-1) [🔗](#extracted-webwork-198-1-1-2-1-5)
-13. Use what you found above to find \(b_n\text{,}\) the \(n\)th term of \(5, {15}, {29}, {47}, {69}, \ldots\) where \(b_0 = 5\text{.}\)[🔗](#extracted-webwork-198-1-1-2-1-6-1) \(b_n =\)[🔗](#extracted-webwork-198-1-1-2-1-6-2) [🔗](#extracted-webwork-198-1-1-2-1-6)
+3. \(a_n = a_{n-1} + 4\)؛ \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-3-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-3)
+4. \(a_n = a_{n-1} + a_{n-2}\)؛ \(a_1 = 10\)[🔗](#extracted-webwork-198-1-1-2-1-1-1-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-1-1-1-4)
+5. أعطِ صيغة مغلقة للحدّ رقم \(n\) في المتتالية.[🔗](#extracted-webwork-198-1-1-2-1-2-1) \(a_n =\) [🔗](#extracted-webwork-198-1-1-2-1-2-2) [🔗](#extracted-webwork-198-1-1-2-1-2)
+6. هل 2030 حدًّا في المتتالية؟ نعم، هو \(a_{2030}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-1-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-1)
+7. نعم، هو \(a_{506}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-2-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-2)
+8. لا، هو بين 2028 و2032[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-3-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-3)
+9. لا، هو أكبر من 550[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-4)
+10. نعم، هو \(a_{505}\)[🔗](#extracted-webwork-198-1-1-2-1-3-1-1-5-1) [🔗](#extracted-webwork-198-1-1-2-1-3-1-1-5)
+11. كم عدد حدود المتتالية المنتهية \(10, 14, 18, 22, 26, \ldots, {550}\)؟[🔗](#extracted-webwork-198-1-1-2-1-4-1) [🔗](#extracted-webwork-198-1-1-2-1-4)
+12. جد المجموع: \(10 + 14 + 18 + 22 + 26 + \cdots + {550}\)[🔗](#extracted-webwork-198-1-1-2-1-5-1) [🔗](#extracted-webwork-198-1-1-2-1-5)
+13. استعمل ما وجدت أعلاه لإيجاد \(b_n\text{,}\) أي الحدّ رقم \(n\) في \(5, {15}, {29}, {47}, {69}, \ldots\) حيث \(b_0 = 5\text{.}\)[🔗](#extracted-webwork-198-1-1-2-1-6-1) \(b_n =\)[🔗](#extracted-webwork-198-1-1-2-1-6-2) [🔗](#extracted-webwork-198-1-1-2-1-6)
 
 [🔗](#extracted-webwork-198-1-1-2) [🔗](#ww-arithgeom-multipart)
 
 #### 2.
 
-Activate Consider the sequence \((a_n)_{n \ge 0}\) which starts \(2, 14, 26, 38, \ldots\text{.}\)[🔗](#extracted-webwork-199-1-1-1)
+ActivateConsider المتتالية \((a_n)_{n \ge 0}\) التي تبدأ \(2, 14, 26, 38, \ldots\text{.}\)[🔗](#extracted-webwork-199-1-1-1)
 
-1. What is the next term in the sequence?[🔗](#extracted-webwork-199-1-1-2-1-1-1) [🔗](#extracted-webwork-199-1-1-2-1-1)
-2. Find a formula for the \(n\)th term of this sequence.[🔗](#extracted-webwork-199-1-1-2-1-2-1) \(a_n =\) [🔗](#extracted-webwork-199-1-1-2-1-2-2) [🔗](#extracted-webwork-199-1-1-2-1-2)
-3. Find the sum of the first 100 terms of the sequence: \(\sum_{k=0}^{99}a_k\text{.}\)[🔗](#extracted-webwork-199-1-1-2-1-3-1) [🔗](#extracted-webwork-199-1-1-2-1-3)
+1. ما الحدّ التالي في المتتالية؟[🔗](#extracted-webwork-199-1-1-2-1-1-1) [🔗](#extracted-webwork-199-1-1-2-1-1)
+2. جد صيغةً للحدّ رقم \(n\) في هذه المتتالية.[🔗](#extracted-webwork-199-1-1-2-1-2-1) \(a_n =\) [🔗](#extracted-webwork-199-1-1-2-1-2-2) [🔗](#extracted-webwork-199-1-1-2-1-2)
+3. جد مجموع الحدود الأولى 100 من المتتالية: \(\sum_{k=0}^{99}a_k\text{.}\)[🔗](#extracted-webwork-199-1-1-2-1-3-1) [🔗](#extracted-webwork-199-1-1-2-1-3)
 
 [🔗](#extracted-webwork-199-1-1-2) [🔗](#ww-arithgeom-arith-w-sum)
 
 #### 3.
 
-Activate Consider the sum \(3 + 12 + 21 + 30 + \cdots + 291\text{.}\)[🔗](#extracted-webwork-200-1-1-1)
+ActivateConsider المجموع \(3 + 12 + 21 + 30 + \cdots + 291\text{.}\)[🔗](#extracted-webwork-200-1-1-1)
 
-1. How many terms (summands) are in the sum?[🔗](#extracted-webwork-200-1-1-2-1-1-1) [🔗](#extracted-webwork-200-1-1-2-1-1)
-2. Compute the sum using a technique discussed in this section.[🔗](#extracted-webwork-200-1-1-2-1-2-1) [🔗](#extracted-webwork-200-1-1-2-1-2)
+1. كم عدد الحدود (المجاميع) في المجموع؟[🔗](#extracted-webwork-200-1-1-2-1-1-1) [🔗](#extracted-webwork-200-1-1-2-1-1)
+2. احسب المجموع باستعمال تقنية نوقشت في هذا القسم.[🔗](#extracted-webwork-200-1-1-2-1-2-1) [🔗](#extracted-webwork-200-1-1-2-1-2)
 
 [🔗](#extracted-webwork-200-1-1-2) [🔗](#ww-arithgeom-arith-sum)
 
 #### 4.
 
-Activate Consider the sequence \(10, 15, 20, 25, \ldots, 5n + 0\text{.}\)[🔗](#extracted-webwork-201-1-1-1)
+ActivateConsider المتتالية \(10, 15, 20, 25, \ldots, 5n + 0\text{.}\)[🔗](#extracted-webwork-201-1-1-1)
 
-1. How many terms are there in the sequence? Your answer will be in terms of \(n\text{.}\)[🔗](#extracted-webwork-201-1-1-2-1-1-1) [🔗](#extracted-webwork-201-1-1-2-1-1)
-2. What is the second-to-last term?[🔗](#extracted-webwork-201-1-1-2-1-2-1) [🔗](#extracted-webwork-201-1-1-2-1-2)
-3. Find the sum of all the terms in the sequence, in terms of \(n\text{.}\)[🔗](#extracted-webwork-201-1-1-2-1-3-1) [🔗](#extracted-webwork-201-1-1-2-1-3)
+1. كم عدد حدود المتتالية؟ ستكون إجابتك بدلالة \(n\text{.}\)[🔗](#extracted-webwork-201-1-1-2-1-1-1) [🔗](#extracted-webwork-201-1-1-2-1-1)
+2. ما الحدّ ما قبل الأخير؟[🔗](#extracted-webwork-201-1-1-2-1-2-1) [🔗](#extracted-webwork-201-1-1-2-1-2)
+3. جد مجموع كلّ حدود المتتالية، بدلالة \(n\text{.}\)[🔗](#extracted-webwork-201-1-1-2-1-3-1) [🔗](#extracted-webwork-201-1-1-2-1-3)
 
 [🔗](#extracted-webwork-201-1-1-2) [🔗](#ww-arithgeom-arith-w-sum2)
 
 #### 5.
 
-Activate Find \(6 + 17 + 28 + 39+ \cdots + 3823\) using a technique from this section.[🔗](#extracted-webwork-202-1-1-1) [🔗](#ww-arithgoem-arith-sum2)
+Activateجد \(6 + 17 + 28 + 39+ \cdots + 3823\) باستعمال تقنية من هذا القسم.[🔗](#extracted-webwork-202-1-1-1) [🔗](#ww-arithgoem-arith-sum2)
 
 #### 6.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 0}\) which starts,[🔗](#extracted-webwork-203-1-1-1) \({0, 5, 14, 27, 44, 65}, \ldots\)[🔗](#extracted-webwork-203-1-1-2) \(a_n =\) [🔗](#extracted-webwork-203-1-1-3) [🔗](#ww-poly-1)
+Activateاستعمل الملاءمة متعدّدة الحدود لإيجاد صيغة الحدّ رقم \(n\) في المتتالية \((a_n)_{n \ge 0}\) التي تبدأ،[🔗](#extracted-webwork-203-1-1-1) \({0, 5, 14, 27, 44, 65}, \ldots\)[🔗](#extracted-webwork-203-1-1-2) \(a_n =\) [🔗](#extracted-webwork-203-1-1-3) [🔗](#ww-poly-1)
 
 #### 7.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 0}\) which starts,[🔗](#extracted-webwork-204-1-1-1) \({-1, 2, 7, 14, 23, 34}, \ldots\)[🔗](#extracted-webwork-204-1-1-2) \(a_n =\) [🔗](#extracted-webwork-204-1-1-3) [🔗](#ww-poly-2)
+Activateاستعمل الملاءمة متعدّدة الحدود لإيجاد صيغة الحدّ رقم \(n\) في المتتالية \((a_n)_{n \ge 0}\) التي تبدأ،[🔗](#extracted-webwork-204-1-1-1) \({-1, 2, 7, 14, 23, 34}, \ldots\)[🔗](#extracted-webwork-204-1-1-2) \(a_n =\) [🔗](#extracted-webwork-204-1-1-3) [🔗](#ww-poly-2)
 
 #### 8.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 0}\) which starts,[🔗](#extracted-webwork-205-1-1-1) \begin{equation*} {-1, 4, 18, 50, 109, 204}, \ldots \end{equation*} [🔗](#extracted-webwork-205-1-1-2) \(a_n =\) [🔗](#extracted-webwork-205-1-1-3) [🔗](#ww-poly-3)
+Activateاستعمل الملاءمة متعدّدة الحدود لإيجاد صيغة الحدّ رقم \(n\) في المتتالية \((a_n)_{n \ge 0}\) التي تبدأ،[🔗](#extracted-webwork-205-1-1-1) \begin{equation*} {-1, 4, 18, 50, 109, 204}, \ldots \end{equation*} [🔗](#extracted-webwork-205-1-1-2) \(a_n =\) [🔗](#extracted-webwork-205-1-1-3) [🔗](#ww-poly-3)
 
 #### 9.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 1}\) which starts,[🔗](#extracted-webwork-206-1-1-1) \({5, 36, 107, 236, 441}, \ldots\) Note the first term above is \(a_1\text{,}\) not \(a_0\text{.}\)[🔗](#extracted-webwork-206-1-1-2) \(a_n =\) [🔗](#extracted-webwork-206-1-1-3) [🔗](#ww-poly-4)
+Activateاستعمل الملاءمة متعدّدة الحدود لإيجاد صيغة الحدّ رقم \(n\) في المتتالية \((a_n)_{n \ge 1}\) التي تبدأ،[🔗](#extracted-webwork-206-1-1-1) \({5, 36, 107, 236, 441}, \ldots\) ولاحظ أنّ الحدّ الأول أعلاه هو \(a_1\text{,}\) لا \(a_0\text{.}\)[🔗](#extracted-webwork-206-1-1-2) \(a_n =\) [🔗](#extracted-webwork-206-1-1-3) [🔗](#ww-poly-4)
 
 #### 10.
 
-Activate Suppose Suppose \(a_n = {3n^{2}-3n-5}\text{.}\) Find a closed formula for the sequence of differences by computing \(a_n - a_{n-1}\text{.}\) Simplify your answer as much as posible.[🔗](#extracted-webwork-207-1-1-1) \(a_n - a_{n-1} =\) [🔗](#extracted-webwork-207-1-1-2) [🔗](#ww-poly-diff)
+Activateلنفترض نفترض \(a_n = {3n^{2}-3n-5}\text{.}\) جد صيغة مغلقة لمتتالية الفروق بحساب \(a_n - a_{n-1}\text{.}\) وبسّط إجابتك قدر الإمكان.[🔗](#extracted-webwork-207-1-1-1) \(a_n - a_{n-1} =\) [🔗](#extracted-webwork-207-1-1-2) [🔗](#ww-poly-diff)
 
 #### 11.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 1}\) which starts,[🔗](#extracted-webwork-208-1-1-1) \({8, 34, 84, 164, 280}, \ldots\) Note the first term above is \(a_1\text{,}\) not \(a_0\text{.}\)[🔗](#extracted-webwork-208-1-1-2) \(a_n =\) [🔗](#extracted-webwork-208-1-1-3) [🔗](#ww-poly-5)[🔗](#practice_seq-polynomial)
+Activateاستعمل الملاءمة متعدّدة الحدود لإيجاد صيغة الحدّ رقم \(n\) في المتتالية \((a_n)_{n \ge 1}\) التي تبدأ،[🔗](#extracted-webwork-208-1-1-1) \({8, 34, 84, 164, 280}, \ldots\) ولاحظ أنّ الحدّ الأول أعلاه هو \(a_1\text{,}\) لا \(a_0\text{.}\)[🔗](#extracted-webwork-208-1-1-2) \(a_n =\) [🔗](#extracted-webwork-208-1-1-3) [🔗](#ww-poly-5)[🔗](#practice_seq-polynomial)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-Your friendly neighborhood bodega has a candy machine that gives 7 Skittles to the first customer who puts in a quarter, 10 to the second, 13 to the third, 16 to the fourth, etc. How many candies has the machine given out in total after 20 quarters are put into the machine? After \(n\) quarters?[🔗](#exercises_seq-polynomial-2-1-1) [🔗](#exercises_seq-polynomial-2)
+متجّرك البقالي المفضّل لديك فيه آلة حلوى تعطي 7 حبات Skittles لأوّل زبون يوضع ربعًا، و10 للثاني، و13 للثالث، و16 للرابع، وهكذا. فكم حلية أعطتها الآلة في المجموع بعد إدخال 20 ربعًا في الآلة؟ وبعد \(n\) ربعًا؟[🔗](#exercises_seq-polynomial-2-1-1) [🔗](#exercises_seq-polynomial-2)
 
 #### 2.
 
-Not to be outdone, the mega-mart across the street has installed a candy machine that gives 4 Skittles to the first customer, 7 to the second, 12 to the third, 19 to the fourth, etc. How many Skittles has the machine given out in total after 20 quarters are put into the machine? After \(n\) quarters?[🔗](#exercises_seq-polynomial-3-1-1) [🔗](#exercises_seq-polynomial-3)
+ولكي لا يُفوَّت حقّه، ركّب المتجر الضخم فيAcross الشارع آلة حلوى تعطي 4 حبات Skittles لأوّل زبون، و7 للثاني، و12 للثالث، و19 للرابع، وهكذا. فكم حلية Skittles أعطتها الآلة في المجموع بعد إدخال 20 ربعًا في الآلة؟ وبعد \(n\) ربعًا؟[🔗](#exercises_seq-polynomial-3-1-1) [🔗](#exercises_seq-polynomial-3)
 
 #### 3.
 
-Make up sequences that have
+اخترع متتاليات لها
 
-1. 3, 3, 3, 3, … as its second differences. [🔗](#exercises_seq-polynomial-4-1-1-1-1)
-2. 1, 2, 3, 4, 5, … as its third differences. [🔗](#exercises_seq-polynomial-4-1-1-1-2)
-3. 1, 2, 4, 8, 16, … as its 100th differences. [🔗](#exercises_seq-polynomial-4-1-1-1-3)
+1. 3, 3, 3, 3, … كفروقها الثانية. [🔗](#exercises_seq-polynomial-4-1-1-1-1)
+2. 1, 2, 3, 4, 5, … كفروقها الثالثة. [🔗](#exercises_seq-polynomial-4-1-1-1-2)
+3. 1, 2, 4, 8, 16, … كفروقها رقم 100. [🔗](#exercises_seq-polynomial-4-1-1-1-3)
 
 [🔗](#exercises_seq-polynomial-4-1-1) [🔗](#exercises_seq-polynomial-4)
 
 #### 4.
 
-Consider the sequence \(1, 3, 7, 13, 21, \ldots\text{.}\) Explain how you know the closed formula for the sequence will be quadratic. Then “guess” the correct formula by comparing this sequence to the squares \(1, 4, 9, 16, \ldots\) (do not use polynomial fitting).[🔗](#exercises_seq-polynomial-5-1-1) [🔗](#exercises_seq-polynomial-5)
+اعتبر المتتالية \(1, 3, 7, 13, 21, \ldots\text{.}\) اشرح كيف عرفت أنّ الصيغة المغلقة لهذه المتتالية ستكون تربيعية. ثمّ «خمّن» الصيغة الصحيحة بمقارنة هذه المتتالية بالمربّعات \(1, 4, 9, 16, \ldots\) (لا تستعمل الملاءمة متعدّدة الحدود).[🔗](#exercises_seq-polynomial-5-1-1) [🔗](#exercises_seq-polynomial-5)
 
 #### 5.
 
-Use a similar technique as in the previous exercise to find a closed formula for the sequence \(2, 11, 34, 77, 146, 247,\ldots\text{.}\)[🔗](#exercises_seq-polynomial-6-1-1) [🔗](#exercises_seq-polynomial-6)
+استعمل تقنية مشابهة لتلك المستعملة في التمرين السابق لإيجاد صيغة مغلقة للمتتالية \(2, 11, 34, 77, 146, 247,\ldots\text{.}\)[🔗](#exercises_seq-polynomial-6-1-1) [🔗](#exercises_seq-polynomial-6)
 
 #### 6.
 
-Consider the sequence \(2, 7, 15, 26, 40, 57, \ldots\) (with \(a_0 = 2\)). By looking at the differences between terms, express the sequence as a sequence of partial sums. Then find a closed formula for the sequence by computing the \(n\)th partial sum.[🔗](#exercises_seq-polynomial-7-1-1) [🔗](#exercises_seq-polynomial-7)
+اعتبر المتتالية \(2, 7, 15, 26, 40, 57, \ldots\) (مع \(a_0 = 2\)). وبالنظر إلى الفروق بين الحدود، عبّر عن المتتالية بوصفها متتالية مجاميع جزئية. ثمّ جد صيغة مغلقة للمتتالية بحساب المجموع الجزئي رقم \(n\).[🔗](#exercises_seq-polynomial-7-1-1) [🔗](#exercises_seq-polynomial-7)
 
 #### 7.
 
-If you have enough toothpicks, you can make a large triangular grid. Below, are the triangular grids of size 1 and of size 2. The size 1 grid requires 3 toothpicks, the size 2 grid requires 9 toothpicks.[🔗](#exercises_seq-polynomial-8-1-1) ![Three toothpicks arranged as the sides of an equilateral triangle.](generated/latex-image/exercises_seq-polynomial-8-1-2-1.svg) ![Nine toothpicks arranged into a triangle with two toothpicks forming each edge, and an upside-down triangle in the center.](generated/latex-image/exercises_seq-polynomial-8-1-2-2.svg)
+إذا توفّرت لديك ما يكفي من أعواد الخشب، يمكنك إنشاء شبكة مثلّثية كبيرة. وفيما يلي، شبكة المثلّثات بحجم 1 وبحجم 2. تتطلّب شبكة الحجم 1 ثلاثة أعواد، وتتطلّب شبكة الحجم 2 تسعة أعواد.[🔗](#exercises_seq-polynomial-8-1-1) ![ثلاثة أعواد خشب مرتّبة形成 أضلاع مثلّث متساوي الأضلاع.](generated/latex-image/exercises_seq-polynomial-8-1-2-1.svg) ![تسعة أعواد خشب مرتّبة في مثلّث، يتكوّن كلّ ضلع منها من عودين، ومثلّث مقلوب في المنتصف.](generated/latex-image/exercises_seq-polynomial-8-1-2-2.svg)
 
-1. Let \(t_n\) be the number of toothpicks required to make a size \(n\) triangular grid. Write out the first 5 terms of the sequence \(t_1, t_2, \ldots\text{.}\)[🔗](#exercises_seq-polynomial-8-1-3-1-1-1) [🔗](#exercises_seq-polynomial-8-1-3-1-1)
-2. Find a recursive definition for the sequence. Explain why you are correct.[🔗](#exercises_seq-polynomial-8-1-3-1-2-1) [🔗](#exercises_seq-polynomial-8-1-3-1-2)
-3. Is the sequence arithmetic or geometric? If not, is it the sequence of partial sums of an arithmetic or geometric sequence? Explain why your answer is correct.[🔗](#exercises_seq-polynomial-8-1-3-1-3-1) [🔗](#exercises_seq-polynomial-8-1-3-1-3)
-4. Use your results from part (c) to find a closed formula for the sequence. Show your work.[🔗](#exercises_seq-polynomial-8-1-3-1-4-1) [🔗](#exercises_seq-polynomial-8-1-3-1-4)
+1. لتكن \(t_n\) عدد أعواد الخشب اللازمة لإنشاء شبكة مثلّثية بحجم \(n\). اكتب الحدود الأولى 5 من المتتالية \(t_1, t_2, \ldots\text{.}\)[🔗](#exercises_seq-polynomial-8-1-3-1-1-1) [🔗](#exercises_seq-polynomial-8-1-3-1-1)
+2. جد تعريفًا تكراريًا للمتتالية. اشرح لماذا أنت محقّ.[🔗](#exercises_seq-polynomial-8-1-3-1-2-1) [🔗](#exercises_seq-polynomial-8-1-3-1-2)
+3. هل المتتالية حسابية أم هندسية؟ وإن لم تكن، فهل هي متتالية المجاميع الجزئية لمتتالية حسابية أو هندسية؟ اشرح لماذا إجابتك صحيحة.[🔗](#exercises_seq-polynomial-8-1-3-1-3-1) [🔗](#exercises_seq-polynomial-8-1-3-1-3)
+4. استعمل نتائجك من الجزء (ج) لإيجاد صيغة مغلقة للمتتالية. اعرض عملك.[🔗](#exercises_seq-polynomial-8-1-3-1-4-1) [🔗](#exercises_seq-polynomial-8-1-3-1-4)
 
 [🔗](#exercises_seq-polynomial-8-1-3) [🔗](#exercises_seq-polynomial-8)
 
 #### 8.
 
-If you were to shade in an \(n\times n\) square on graph paper, you could do it the boring way (with sides parallel to the edge of the paper) or the interesting way, as illustrated below:[🔗](#exercises_seq-polynomial-9-1-1) ![One square.](generated/latex-image/exercises_seq-polynomial-9-1-2-1.svg) ![Five squares arranged as a plus sign. Viewed another way, the squares are arranged in three centered rows of 1, 3, and 1 squares.](generated/latex-image/exercises_seq-polynomial-9-1-2-2.svg) ![13 squares arranged in five centered rows, containing 1, 3, 5, 3, and 1 square each.](generated/latex-image/exercises_seq-polynomial-9-1-2-3.svg) ![25 squares arranged in rows of length 1, 3, 5, 7, 5, 3, and 1.](generated/latex-image/exercises_seq-polynomial-9-1-2-4.svg) The interesting thing here is that a \(3\times 3\) square now has area 13. Our goal is to find a formula for the area of an \(n \times n\) (diagonal) square.
+لو أردت تلوين مربّع \(n\times n\) على ورق رسم بياني، لكان بإمكانك فعل ذلك بالطريقة المملّة (بأضلاع موازية لحافة الورق) أو بالطريقة اللطيفة، كما هو موضّح أدناه:[🔗](#exercises_seq-polynomial-9-1-1) ![مربّع واحد.](generated/latex-image/exercises_seq-polynomial-9-1-2-1.svg) ![خمسة مربّعات مرتّبة على هيئة علامة جمع. وعند النظر إليها بطريقة أخرى، تكون المربّعات مرتّبة في ثلاثة صفوف متمركزة، في كلّ صفّ 1 و3 و1 من المربّعات.](generated/latex-image/exercises_seq-polynomial-9-1-2-2.svg) ![13 مربّعًا مرتّبة في خمسة صفوف متمركزة، تضمّ كلّ صفّ على التوالي 1 و3 و5 و3 و1 من المربّعات.](generated/latex-image/exercises_seq-polynomial-9-1-2-3.svg) ![25 مربّعًا مرتّبة في صفوف أطوالها 1 و3 و5 و7 و5 و3 و1.](generated/latex-image/exercises_seq-polynomial-9-1-2-4.svg) fibrin والأمر اللطيف هنا هو أنّ مربّع \(3\times 3\) بات له مساحة 13. وهدفنا هو إيجاد صيغة لمساحة مربّع \(n \times n\) (القطري).
 
-1. Write out the first few terms of the sequence of areas (assume \(a_1 = 1\text{,}\) \(a_2 = 5\text{,}\) etc). Is the sequence arithmetic or geometric? If not, is it the sequence of partial sums of an arithmetic or geometric sequence? Explain why your answer is correct, referring to the diagonal squares.[🔗](#exercises_seq-polynomial-9-1-3-3-1-1) [🔗](#exercises_seq-polynomial-9-1-3-3-1)
-2. Use your results from part (a) to find a closed formula for the sequence. Show your work. Note that while there are lots of ways to find a closed formula here, you should use partial sums specifically.[🔗](#exercises_seq-polynomial-9-1-3-3-2-1) [🔗](#exercises_seq-polynomial-9-1-3-3-2)
-3. Find the closed formula in as many other interesting ways as you can.[🔗](#exercises_seq-polynomial-9-1-3-3-3-1) [🔗](#exercises_seq-polynomial-9-1-3-3-3)
+1. اكتب الحدود الأولى القليلة من متتالية المساحات (افترض \(a_1 = 1\text{,}\) \(a_2 = 5\text{,}\) وهكذا). هل المتتالية حسابية أم هندسية؟ وإن لم تكن، فهل هي متتالية المجاميع الجزئية لمتتالية حسابية أو هندسية؟ اشرح لماذا إجابتك صحيحة، مع الإشارة إلى المربّعات القطرية.[🔗](#exercises_seq-polynomial-9-1-3-3-1-1) [🔗](#exercises_seq-polynomial-9-1-3-3-1)
+2. استعمل نتائجك من الجزء (أ) لإيجاد صيغة مغلقة للمتتالية. اعرض عملك. ولاحظ أنّه على الرغم من وجود طرق كثيرة لإيجاد صيغة مغلقة هنا، ينبغي أن تستعمل تحديدًا المجاميع الجزئية.[🔗](#exercises_seq-polynomial-9-1-3-3-2-1) [🔗](#exercises_seq-polynomial-9-1-3-3-2)
+3. جد الصيغة المغلقة بأكبر عدد ممكن من الطرق اللطيفة الأخرى.[🔗](#exercises_seq-polynomial-9-1-3-3-3-1) [🔗](#exercises_seq-polynomial-9-1-3-3-3)
 
 [🔗](#exercises_seq-polynomial-9-1-3) [🔗](#exercises_seq-polynomial-9)
 
 #### 9.
 
-Generalize [Practice Problem 5](sec_seq-polynomial.html#ww-poly-diff): Find a closed formula for the sequence of differences of \(a_n = an^2 + bn + c\text{.}\) That is, prove that every quadratic sequence has arithmetic differences.[🔗](#exercises_seq-polynomial-10-1-1) [🔗](#exercises_seq-polynomial-10)
+عمّم [المسألة التطبيقية 5](sec_seq-polynomial.html#ww-poly-diff): جد صيغة مغلقة لمتتالية فروق \(a_n = an^2 + bn + c\text{.}\) أي، اثبت أنّ كلّ متتالية تربيعية لها فروق حسابية.[🔗](#exercises_seq-polynomial-10-1-1) [🔗](#exercises_seq-polynomial-10)
 
 #### 10.
 
-Can you use polynomial fitting to find the formula for the \(n\)th term of the sequence 4, 7, 11, 18, 29, 47, …? Explain why or why not.[🔗](#exercises_seq-polynomial-11-1-1) [🔗](#exercises_seq-polynomial-11)
+هل يمكنك استعمال الملاءمة متعدّدة الحدود لإيجاد الصيغة للحدّ رقم \(n\) في المتتالية 4, 7, 11, 18, 29, 47, …؟ اشرح لماذا أو لماذا لا.[🔗](#exercises_seq-polynomial-11-1-1) [🔗](#exercises_seq-polynomial-11)
 
 #### 11.
 
-Will the \(n\)th sequence of differences of \(2, 6, 18, 54, 162, \ldots\) ever be constant? Explain.[🔗](#exercises_seq-polynomial-12-1-1) [🔗](#exercises_seq-polynomial-12)
+هل سيكون متتالية الفروق رقم \(n\) لـ\(2, 6, 18, 54, 162, \ldots\) ثابتة يومًا ما؟ اشرح.[🔗](#exercises_seq-polynomial-12-1-1) [🔗](#exercises_seq-polynomial-12)
 
 #### 12.
 
-In their down time, ghost pirates enjoy stacking cannonballs in triangular based pyramids (aka, tetrahedrons), like those pictured here:[🔗](#exercises_seq-polynomial-13-2-1) ![A single shaded circle (meant to represent a cannonball)](generated/latex-image/exercises_seq-polynomial-13-2-2-1.svg) ![Four overlapping circles, drawn to represent cannonballs stacked with a layer of three in a triangle with a single cannonball resting on top.](generated/latex-image/exercises_seq-polynomial-13-2-2-2.svg) ![Overlapping circles drawn to represent a three-dimensional tetrahedron of balls consisting of a triangle of 6 balls supporting a triangle of 3, with a single ball balanced on top.](generated/latex-image/exercises_seq-polynomial-13-2-2-3.svg) Note: These are solid tetrahedrons, so there will be some cannonballs obscured from view (the picture on the right has one cannonball in the back not shown in the picture, for example).[🔗](#exercises_seq-polynomial-13-2-3) The pirates wonder how many cannonballs would be required to build a pyramid 15 layers high (thus breaking the world cannonball stacking record). Can you help?
+في أوقات فراغهم، يحبّ قراصنة الأشباح تكديس قذائف المدافع في أهرامات ذات قاعدة مثلّثية (أي ربّيات tetrahedra)، مثلThose المصوّرة هنا:[🔗](#exercises_seq-polynomial-13-2-1) ![دائرة مظلّلة واحدة (يقصد بها تمثيل قذيفة مدفع)](generated/latex-image/exercises_seq-polynomial-13-2-2-1.svg) ![أربع دوائر متداخلة، مرسومة لتمثيل قذائف مدافع مكدّسة wherein طبقة من ثلاث منها في مثلّث وقذيفة واحدة مستقرّة في الأعلى.](generated/latex-image/exercises_seq-polynomial-13-2-2-2.svg) ![دوائر متداخلة مرسومة لتمثيل ربّية ثلاثية الأبعاد من كرات، تتألف من مثلّث من 6 كرات يسند مثلّثًا من 3 كرات، مع كرة واحدة متوازنة في الأعلى.](generated/latex-image/exercises_seq-polynomial-13-2-2-3.svg) لاحظ: هذه ربّيات مجسّمة، لذا ستُحجب بعض قذائف المدافع عن النظر (فالصورة على اليمين مثلًا فيها قذيفة مدفع واحدة في الخلف لا تظهر في الصورة).[🔗](#exercises_seq-polynomial-13-2-3) يتساءل القراصنة عن عدد قذائف المدافع اللازمة لبناء هرم بارتفاع 15 طبقة (وبالتالي تحطيم الرقم العالمي لتكديس قذائف المدافع). هل تستطيع المساعدة؟
 
-1. Let \(P(n)\) denote the number of cannonballs needed to create a pyramid \(n\) layers high. So \(P(1) = 1\text{,}\) \(P(2) = 4\text{,}\) and so on. Calculate \(P(3)\text{,}\) \(P(4)\text{,}\) and \(P(5)\text{.}\)[🔗](#exercises_seq-polynomial-13-2-4-1-1-1) [🔗](#exercises_seq-polynomial-13-2-4-1-1)
-2. Use polynomial fitting to find a closed formula for \(P(n)\text{.}\) Show your work.[🔗](#exercises_seq-polynomial-13-2-4-1-2-1) [🔗](#exercises_seq-polynomial-13-2-4-1-2)
-3. Answer the pirate’s question: How many cannonballs do they need to make a pyramid 15 layers high?[🔗](#exercises_seq-polynomial-13-2-4-1-3-1) [🔗](#exercises_seq-polynomial-13-2-4-1-3)
-4. Bonus: Locate this sequence in Pascal’s triangle. Why does that make sense? [🔗](#exercises_seq-polynomial-13-2-4-1-4-1) [🔗](#exercises_seq-polynomial-13-2-4-1-4)
+1. لتكن \(P(n)\) عدد قذائف المدافع اللازمة لإنشاء هرم بارتفاع \(n\) طبقة. إذن \(P(1) = 1\text{,}\) و\(P(2) = 4\text{,}\) وهكذا. احسب \(P(3)\text{,}\) \(P(4)\text{,}\) و\(P(5)\text{.}\)[🔗](#exercises_seq-polynomial-13-2-4-1-1-1) [🔗](#exercises_seq-polynomial-13-2-4-1-1)
+2. استعمل الملاءمة متعدّدة الحدود لإيجاد صيغة مغلقة لـ\(P(n)\text{.}\) اعرض عملك.[🔗](#exercises_seq-polynomial-13-2-4-1-2-1) [🔗](#exercises_seq-polynomial-13-2-4-1-2)
+3. أجب عن سؤال القراصنة: كم قذيفة مدفع يحتاجون لصنع هرم بارتفاع 15 طبقة؟[🔗](#exercises_seq-polynomial-13-2-4-1-3-1) [🔗](#exercises_seq-polynomial-13-2-4-1-3)
+4. إضافة: حدّد موضع هذه المتتالية في مثلّث باسكال. ولماذا يبدو ذلك منطقيًا؟ [🔗](#exercises_seq-polynomial-13-2-4-1-4-1) [🔗](#exercises_seq-polynomial-13-2-4-1-4)
 
 [🔗](#exercises_seq-polynomial-13-2-4) [🔗](#exercises_seq-polynomial-13)[🔗](#exercises_seq-polynomial)[🔗](#sec_seq-polynomial) [&#xe5cb;Prev](sec_seq-growth.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_seq-exponential.html) [Feedback](/cdn-cgi/l/email-protection#e8879b8b899ac6848d9e8186a89d868b87c68d8c9d)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_seq-polynomial-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_seq-polynomial-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

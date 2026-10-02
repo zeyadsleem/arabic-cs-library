@@ -241,6 +241,26 @@ const run = () => {
   const flatSections = [];
   const chaptersByBook = new Map();
 
+  const emitSection = (book, chapter, slug, title, html) => {
+    const entry = {
+      book: book.id, chapter: chapter.key, chapterTitle: chapter.title,
+      slug, title, headings: extractHeadings(html), html,
+    };
+    fs.writeFileSync(
+      path.join(generatedDir, 'sections', `${book.id}__${chapter.key}--${slug}.json`),
+      JSON.stringify(entry)
+    );
+    chapter.sections.push({ slug, title });
+    searchIndex.push({
+      book: book.id, bookTitle: book.title, chapter: chapter.key,
+      chapterTitle: chapter.title, slug, title,
+      text: normalizeText(stripHtml(html)).slice(0, 3000),
+    });
+    flatSections.push({
+      book: book.id, chapter: chapter.key, chapterTitle: chapter.title, slug, title,
+    });
+  };
+
   const contentBooks = library.books.filter(
     (book) =>
       book.status === 'translated' &&
@@ -288,42 +308,7 @@ const run = () => {
         html = wrapExercises(html);
         html = withBasePath(html);
 
-        const entry = {
-          book: book.id,
-          chapter: chapter.key,
-          chapterTitle: chapterEntry.title,
-          slug,
-          title: data.title || section.title,
-          headings: extractHeadings(html),
-          html,
-        };
-
-        fs.writeFileSync(
-          path.join(
-            generatedDir,
-            'sections',
-            `${book.id}__${chapter.key}--${slug}.json`
-          ),
-          JSON.stringify(entry)
-        );
-
-        chapterEntry.sections.push({ slug, title: entry.title });
-        searchIndex.push({
-          book: book.id,
-          bookTitle: book.title,
-          chapter: chapter.key,
-          chapterTitle: chapterEntry.title,
-          slug,
-          title: entry.title,
-          text: normalizeText(stripHtml(html)).slice(0, 3000),
-        });
-        flatSections.push({
-          book: book.id,
-          chapter: chapter.key,
-          chapterTitle: chapterEntry.title,
-          slug,
-          title: entry.title,
-        });
+        emitSection(book, chapterEntry, slug, data.title || section.title, html);
         count += 1;
       }
 
@@ -334,6 +319,29 @@ const run = () => {
     console.log(
       `Generated ${count} sections for ${book.id} (missing ${missing})`
     );
+  }
+
+  const tour = library.books.find((book) => book.id === 'go-tour' && book.status === 'translated');
+  if (tour) {
+    const lessons = JSON.parse(fs.readFileSync(path.join(root, 'src/lib/tour/lessons.json'), 'utf8'));
+    const chapters = lessons.map((lesson) => {
+      const chapter = { key: lesson.id, title: lesson.title, sections: [] };
+      lesson.pages.forEach((page, index) => {
+        const slug = index === 0 ? 'index' : `p${index + 1}`;
+        emitSection(tour, chapter, slug, page.title, withBasePath(page.translation));
+        // Retain both source prose and runnable examples in the book reader.
+        {
+          const file = path.join(generatedDir, 'sections', `${tour.id}__${chapter.key}--${slug}.json`);
+          const entry = JSON.parse(fs.readFileSync(file, 'utf8'));
+          entry.examples = page.files;
+          entry.original = withBasePath(page.original);
+          fs.writeFileSync(file, JSON.stringify(entry));
+        }
+      });
+      return chapter;
+    });
+    chaptersByBook.set(tour.id, chapters);
+    console.log(`Generated ${chapters.reduce((sum, chapter) => sum + chapter.sections.length, 0)} sections for go-tour (missing 0)`);
   }
 
   const books = library.books.map((book) => {

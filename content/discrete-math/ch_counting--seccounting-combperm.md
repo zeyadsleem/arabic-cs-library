@@ -1,172 +1,172 @@
 ---
 title: "Combinations and Permutations"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_counting-combperm.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 3.4 Combinations and Permutations
+## القسم 3.4 التوافيق والتباديل
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_counting-combperm-4-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_counting-combperm-4-1-1)
 
-1. Correctly decide between using a combination or a permutation when solving a counting problem.[🔗](#sec_counting-combperm-4-2-1-1) [🔗](#sec_counting-combperm-4-2-1)
-2. Apply the correct combination or permutation to solve a counting problem.[🔗](#sec_counting-combperm-4-2-2-1) [🔗](#sec_counting-combperm-4-2-2)
-3. Explain the relationship between combinations and permutations and why their formulas are correct.[🔗](#sec_counting-combperm-4-2-3-1) [🔗](#sec_counting-combperm-4-2-3)
+1. أن تقرّر على الوجه الصحيح متى تستعمل توافيق ومتى تستعمل تباديل في حلّ مسألة عدّ.[🔗](#sec_counting-combperm-4-2-1-1) [🔗](#sec_counting-combperm-4-2-1)
+2. أن تطبّق التوافيق أو التباديل الصحيحة لحلّ مسألة عدّ.[🔗](#sec_counting-combperm-4-2-2-1) [🔗](#sec_counting-combperm-4-2-2)
+3. أن تشرح العلاقة بين التوافيق والتباديل ولماذا كانت صيغها صحيحة.[🔗](#sec_counting-combperm-4-2-3-1) [🔗](#sec_counting-combperm-4-2-3)
 
 [🔗](#sec_counting-combperm-4)
 
-### Subsection Section Preview
+### القسم الفرعي: معاينة القسم
 
 #### Investigate!
 
-You have decided to decorate your magic wand with bands of different colored tape. You have 10 different colors to choose from, and you will use five of them to create five different stripes of color. How many different wand designs are possible?[🔗](#sec_counting-combperm-5-2-1-1) [🔗](#sec_counting-combperm-5-2)The [product principle](sec_counting-combine-outcomes.html#principle-product) gives us a way to count the number of outcomes when each outcome is made by combining smaller pieces. A typical example of this is to count the number of three-letter “words”; each outcome (word) we count is made up of a combination of three smaller pieces (letters). Since there are 26 choices for each smaller piece, there are \(26\cdot 26\cdot 26 = 26^3\) possible outcomes.[🔗](#sec_counting-combperm-5-3) The product principle does not require that each piece that is being combined be chosen from a set of the same size. We will use this observation to create a standard way to count outcomes when the pieces are chosen from a fixed set, but without allowing for any piece to be used more than once. For example, we can ask how many 3-letter words there are that contain distinct letters.[🔗](#sec_counting-combperm-5-4) These arrangements are called permutations. We will also consider another counting technique where we count combinations, which is related but counts something different. We will explore how these two counting techniques are related and how they can be used to solve a wide range of counting problems.[🔗](#sec_counting-combperm-5-5)
+قرّرتَ أن تزيّن عصاك السحرية بشرائط من شريط لاصق ملوّن. لديك 10 ألوان مختلفة تختار من بينها، وستستخدم خمسة منها لتكوين خمسة خطوط ملوّنة مختلفة. كم عدد تصاميم العصا المختلفة الممكنة؟[🔗](#sec_counting-combperm-5-2-1-1) [🔗](#sec_counting-combperm-5-2)ويُعطينا [مبدأ الضرب](sec_counting-combine-outcomes.html#principle-product) طريقةً لعدّ عدد النتائج عندما يتكوّن كلّ ناتج من تجميع قطع أصغر. ومن الأمثلة النموذجية على ذلك عدّ عدد «الكلمات» ذات الأحرف الثلاثة؛ فكلّ ناتج (كلمة) نعدّه يتكوّن من تجميع ثلاث قطع أصغر (أحرف). وبما أنّ هناك 26 خيارًا لكلّ قطعة أصغر، فإنّ هناك \(26\cdot 26\cdot 26 = 26^3\) ناتجًا ممكنًا.[🔗](#sec_counting-combperm-5-3) ولا يشترط مبدأ الضرب أن تكون كلّ قطعة تُدمج مختارة من مجموعة بالحجم نفسه. وسنستخدم هذه الملاحظة لنصنع طريقة معيارية لعدّ النتائج عندما تُختار القطع من مجموعة ثابتة، لكن من دون السماح باستخدام أيّ قطعة أكثر من مرّة. فمثلًا يمكننا أن نسأل: كم عدد الكلمات ذات الأحرف الثلاثة التي تحتوي على أحرف متمايزة؟[🔗](#sec_counting-combperm-5-4) وتُسمّى هذه الترتيبات التباديل (permutations). وسننظر أيضًا في تقنية عدّ أخرى نعدّ فيها التوافيق (combinations)، وهي وثيقة الصلة لكنّها تعدّ شيئًا مختلفًا. وسنستكشف كيف ترتبط هاتان التقنيتان العدّيتان ببعضهما، وكيف يمكن استخدامهما لحلّ طيف واسع من مسائل العدّ.[🔗](#sec_counting-combperm-5-5)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-counting-combperm)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-counting-combperm)
 
-You have a bunch of poker chips that come in five different colors: red, blue, green, purple, and yellow.[🔗](#PA-counting-combperm-2-1)
+لديك كومة من رقائق البوكر تأتي بخمسة ألوان مختلفة: الأحمر، والأزرق، والأخضر، والبنفسجي، والأصفر.[🔗](#PA-counting-combperm-2-1)
 
 #### 1.
 
-Activate How many two-chip stacks are possible where the bottom chip must be red or blue?[🔗](#extracted-webwork-112-1-1-1)
+Activate كم عدد أكوام الرقائق ذات الرقيقتين الممكنة، على أن تكون الرقيقة السفلية حمراء أو زرقاء؟[🔗](#extracted-webwork-112-1-1-1)
 
 #### (a)
 
-List all possible two-chip stacks. For example, the stack with a red chip on bottom and a green chip on top can be listed as “RG”.[🔗](#extracted-webwork-112-1-2-1-1) [🔗](#extracted-webwork-112-1-2)
+اكتب جميع أكوام الرقائق ذات الرقيقتين الممكنة. فمثلًا، الكومة التي تكون فيها رقيقة حمراء في الأسفل ورقيقة خضراء في الأعلى يمكن كتابتها «RG».[🔗](#extracted-webwork-112-1-2-1-1) [🔗](#extracted-webwork-112-1-2)
 
 #### (b)
 
-Using the additive principle, we notice that there are stacks that have blue on the bottom, another stacks that have red on the bottom, so there are a total of possible stacks.[🔗](#extracted-webwork-112-1-3-1-1) [🔗](#extracted-webwork-112-1-3)
+باستخدام مبدأ الجمع، نلاحظ أنّ هناك أكوام قاعها أزرق، وأكوام أخرى قاعها أحمر، فيكون إجمالي عدد الأكوام الممكنة هو .[🔗](#extracted-webwork-112-1-3-1-1) [🔗](#extracted-webwork-112-1-3)
 
 #### (c)
 
-If we use the multiplicative principle, then there are choices for the bottom chip and choices for the top chip, so there are possible stacks.[🔗](#extracted-webwork-112-1-4-1-1) [🔗](#extracted-webwork-112-1-4) [🔗](#pa-counting-combperm-1)
+وإذا استعملنا مبدأ الضرب، فهناك خيارات للرقيقة السفلية وخيارات للرقيقة العليا، فيكون هناك أكوام ممكنة.[🔗](#extracted-webwork-112-1-4-1-1) [🔗](#extracted-webwork-112-1-4) [🔗](#pa-counting-combperm-1)
 
 #### 2.
 
-Activate How many different three-chip stacks are possible if the bottom chip must be red or blue and the top chip must be green, purple, or yellow?[🔗](#extracted-webwork-113-1-1-1) Hint. How does this question relate to the previous question? Is there something we can do to the 10 two-chip stacks to make them into three-chip stacks?[🔗](#extracted-webwork-113-1-2-1) [🔗](#extracted-webwork-113-1-2) [🔗](#pa-counting-combperm-2)
+Activate كم عدد الأكوام المختلفة ذات الرقائق الثلاث الممكنة إذا كانت الرقيقة السفلية حمراء أو زرقاء، والرقيقة العليا خضراء أو بنفسجية أو صفراء؟[🔗](#extracted-webwork-113-1-1-1) تلميح. كيف يرتبط هذا السؤال بالسؤال السابق؟ هل هناك شيء يمكننا فعله بأكوام الرقائق العشر ذات الرقيقتين حتى نحوّلها إلى أكوام ذات ثلاث رقائق؟[🔗](#extracted-webwork-113-1-2-1) [🔗](#extracted-webwork-113-1-2) [🔗](#pa-counting-combperm-2)
 
 #### 3.
 
-Activate How many different three-chip stacks are there in which no color is repeated?[🔗](#extracted-webwork-114-1-1-1)
+Activate كم عدد الأكوام المختلفة ذات الرقائق الثلاث التي لا يتكرّر فيها أيّ لون؟[🔗](#extracted-webwork-114-1-1-1)
 
 #### (a)
 
-First, how many three-chip stacks with no repeated color have blue on the bottom and green in the middle?[🔗](#extracted-webwork-114-1-2-1-1) And how many three-chip stacks with no repeated color have blue on the bottom and yellow in the middle?[🔗](#extracted-webwork-114-1-2-1-2) In fact, for any stack with blue on the bottom and some other color in the middle, there are possible stacks.[🔗](#extracted-webwork-114-1-2-1-3) [🔗](#extracted-webwork-114-1-2)
+أوّلًا، كم عدد الأكوام ذات الرقائق الثلاث التي لا يتكرّر فيها لون، والتي يكون قاعها أزرق ووسطها أخضر؟[🔗](#extracted-webwork-114-1-2-1-1) وكم عدد الأكوام ذات الرقائق الثلاث التي لا يتكرّر فيها لون، والتي يكون قاعها أزرق ووسطها أصفر؟[🔗](#extracted-webwork-114-1-2-1-2) وفي الحقيقة، فإنّ أيّ كومة قاعها أزرق ووسطها لون آخر، تكون لها أكوام ممكنة.[🔗](#extracted-webwork-114-1-2-1-3) [🔗](#extracted-webwork-114-1-2)
 
 #### (b)
 
-If we insist that blue is on the bottom, how many choices do we have for the color of the middle chip?[🔗](#extracted-webwork-114-1-3-1-1) Combining this with the answer from the previous question, how many three-chip stacks with no repeated color have blue on the bottom?[🔗](#extracted-webwork-114-1-3-1-2) [🔗](#extracted-webwork-114-1-3)
+إذا أصررنا على أن يكون الأزرق في الأسفل، فكم عدد الخيارات التي لدينا للون الرققيقة الوسطى؟[🔗](#extracted-webwork-114-1-3-1-1) وبالجمع بين هذا وجواب السؤال السابق، كم عدد الأكوام ذات الرقائق الثلاث التي لا يتكرّر فيها لون والتي قاعها أزرق؟[🔗](#extracted-webwork-114-1-3-1-2) [🔗](#extracted-webwork-114-1-3)
 
 #### (c)
 
-Of course, we didn’t need to start with blue on the bottom. How many choices do we have for the color of the bottom chip?[🔗](#extracted-webwork-114-1-4-1-1) So how many three-chip stacks with no repeated color are there?[🔗](#extracted-webwork-114-1-4-1-2) [🔗](#extracted-webwork-114-1-4)
+بالطبع، لم يكن علينا أن نبدأ بالأزرق في الأسفل. فكم عدد الخيارات التي لدينا للون الرققيقة السفلى؟[🔗](#extracted-webwork-114-1-4-1-1) إذن كم عدد الأكوام المختلفة ذات الرقائق الثلاث التي لا يتكرّر فيها لون؟[🔗](#extracted-webwork-114-1-4-1-2) [🔗](#extracted-webwork-114-1-4)
 
 #### (d)
 
-How many four-chip sticks are there with no repeated color?[🔗](#extracted-webwork-114-1-5-1-1) [🔗](#extracted-webwork-114-1-5) [🔗](#pa-counting-combperm-3)
+كم عدد العصي المكوّنة من أربع رقائق التي لا يتكرّر فيها لون؟[🔗](#extracted-webwork-114-1-5-1-1) [🔗](#extracted-webwork-114-1-5) [🔗](#pa-counting-combperm-3)
 
 #### 4.
 
-Activate Suppose you wanted to take three chips with different colors and put them in your pocket.[🔗](#extracted-webwork-115-1-1-1)
+Activate لنفترض أنّك أردتَ أن تأخذ ثلاث رقائق بألوان مختلفة وتضعها في جيبك.[🔗](#extracted-webwork-115-1-1-1)
 
 #### (a)
 
-One outcome is taking the blue, green, and purple chips. How many of the three-chip stacks of different color chips correspond to this single pocketful?[🔗](#extracted-webwork-115-1-2-1-1) Hint. With these three colors, how many choices do you have for which chip is on the bottom? In the middle? On top?[🔗](#extracted-webwork-115-1-2-2-1) [🔗](#extracted-webwork-115-1-2-2) [🔗](#extracted-webwork-115-1-2)
+إحدى النتائج هي أخذ الرقائق الزرقاء والخضراء والبنفسجية. كم عدد الأكوام ذات الرقائق الثلاث المكوّنة من رقائق بألوان مختلفة التي تقابل هذه الحصة الواحدة من الرقائق في الجيب؟[🔗](#extracted-webwork-115-1-2-1-1) تلميح. مع هذه الألوان الثلاثة، كم عدد الخيارات لديك لأيّ رقيقة تكون في الأسفل؟ وفي الوسط؟ وفي الأعلى؟[🔗](#extracted-webwork-115-1-2-2-1) [🔗](#extracted-webwork-115-1-2-2) [🔗](#extracted-webwork-115-1-2)
 
 #### (b)
 
-How many different stacks of chips would result in picking up the red, yellow, and green chips?[🔗](#extracted-webwork-115-1-3-1-1) [🔗](#extracted-webwork-115-1-3)
+كم عدد الأكوام المختلفة من الرقائق التي ينتج عنها التقاط الرقائق الحمراء والصفراء والخضراء؟[🔗](#extracted-webwork-115-1-3-1-1) [🔗](#extracted-webwork-115-1-3)
 
 #### (c)
 
-So of the possible three-chip stacks, we can group the chips into groups of size , where each group corresponds to the same pocketful of chips. How many different pocketfuls of chips are there?[🔗](#extracted-webwork-115-1-4-1-1) [🔗](#extracted-webwork-115-1-4)
+إذن من بين الأكوام ذات الرقائق الثلاث الممكنة، يمكننا أن نجمّع الرقائق في مجموعات بحجم ، حيث تقابل كلّ مجموعة الحصة نفسها من الرقائق. فكم عدد الحصص المختلفة من الرقائق؟[🔗](#extracted-webwork-115-1-4-1-1) [🔗](#extracted-webwork-115-1-4)
 
 #### (d)
 
-How many different pocketfuls of chips are there if you take four chips?[🔗](#extracted-webwork-115-1-5-1-1) [🔗](#extracted-webwork-115-1-5) [🔗](#pa-counting-combperm-4)[🔗](#PA-counting-combperm)[🔗](#sec_counting-combperm-5)
+كم عدد الحصص المختلفة من الرقائق إذا أخذت أربع رقائق؟[🔗](#extracted-webwork-115-1-5-1-1) [🔗](#extracted-webwork-115-1-5) [🔗](#pa-counting-combperm-4)[🔗](#PA-counting-combperm)[🔗](#sec_counting-combperm-5)
 
-### Subsection Counting Sequences
+### القسم الفرعي: عدّ التتابعات
 
-A permutation is a (possible) rearrangement of objects. For example, there are 6 permutations of the letters *a, b, c*: \begin{equation*} abc, ~~ acb, ~~ bac, ~~bca, ~~ cab, ~~ cba\text{.} \end{equation*} In terms of our discrete structures, each permutation is really a *sequence* or *tuple* of a fixed length. [🔗](#subsec-counting-sequences-2) We know that we have them all listed above —there are 3 choices for which letter we put first, then 2 choices for which letter comes next, which leaves only 1 choice for the last letter. The multiplicative principle says we multiply \(3\cdot 2 \cdot 1\text{.}\)[🔗](#subsec-counting-sequences-3)
+التبادل هو إعادة ترتيب (محتملة) لمجموعة من الأشياء. فمثلًا، هناك 6 تباديل للحروف *a, b, c*: \begin{equation*} abc, ~~ acb, ~~ bac, ~~bca, ~~ cab, ~~ cba\text{.} \end{equation*} وبعبارات بُنى المتقطعة، كلّ تبادل هو في الحقيقة *تتابع* أو *متعدّد* (tuple) بطول ثابت. [🔗](#subsec-counting-sequences-2) ونحن نعرف أنّنا أدرجناها جميعًا أعلاه —فهناك 3 خيارات للحرف الذي نضعه أوّلًا، ثم خياران للحرف الذي يأتي تاليًا، فلم يبقَ إلّا خيار واحد للحرف الأخير. ويقول مبدأ الضرب إنّه علينا أن نضرب \(3\cdot 2 \cdot 1\text{.}\)[🔗](#subsec-counting-sequences-3)
 
-#### Example 3.4.1.
+#### مثال 3.4.1.
 
-How many sequences (permutations) are there of the letters *a, b, c, d, e, f*?[🔗](#subsec-counting-sequences-4-1-1) Solution. We do NOT want to try to list all of the length 6 sequences of these letters. However, if we did, we would need to pick a letter to write down first. There are 6 choices for that letter. For each choice of the first letter, there are 5 choices for the second letter (we cannot repeat the first letter; we are rearranging letters and only have one of each), and for each of those, there are 4 choices for the third, 3 choices for the fourth, 2 choices for the fifth, and finally only 1 choice for the last letter. So there are \(6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 720\) permutations of the 6 letters.[🔗](#subsec-counting-sequences-4-2-1) [🔗](#subsec-counting-sequences-4-2) [🔗](#subsec-counting-sequences-4)A piece of notation is helpful here: \(n!\text{,}\) read “\(n\) factorial”, is the product of all positive integers less than or equal to \(n\) (for reasons of convenience, we also define 0! to be 1). So the number of permutations of 6 letters, as seen in the previous example is \(6! = 6\cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1\text{.}\) This generalizes:[🔗](#subsec-counting-sequences-5)
+كم عدد التتابعات (التباديل) للحروف *a, b, c, d, e, f*؟[🔗](#subsec-counting-sequences-4-1-1) الحل. لا نريد بطبيء الحال أن نحاول إدراج كلّ التتابعات ذات الطول 6 من هذه الأحرف. لكن لو فعلنا ذلك، لكان علينا أن نختار حرفًا نكتبه أوّلًا. وهناك 6 خيارات لذلك الحرف. ولكلّ خيار للحرف الأوّل، هناك 5 خيارات للحرف الثاني (لا يمكننا تكرار الحرف الأوّل؛ فنحن نعيد ترتيب الأحرف ولا نملك سوى واحد من كلّ نوع)، ولكلّ واحد من تلك، هناك 4 خيارات للحرف الثالث، و3 خيارات للرابع، و2 الخامس، وأخيرًا خيار واحد فقط للحرف الأخير. إذن هناك \(6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 720\) تبادلًا للأحرف الستة.[🔗](#subsec-counting-sequences-4-2-1) [🔗](#subsec-counting-sequences-4-2) [🔗](#subsec-counting-sequences-4)وتكون هنا قطعة رمز مفيدة: \(n!\text{,}\) وتُقرأ «مضروب \(n\)»، وهي حاصل ضرب جميع الأعداد الصحيحة الموجبة الأصغر من \(n\) أو المساوية لها (ولأسباب ملائمة، نعرّف أيضًا 0! بأنه 1). إذن عدد تباديل الأحرف الستة، كما رأينا في المثال السابق، هو \(6! = 6\cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1\text{.}\) وهذا يتعمّم:[🔗](#subsec-counting-sequences-5)
 
-#### Theorem 3.4.2. Permutations of \(n\) Elements.
+#### نظرية 3.4.2. تباديل \(n\) عنصرًا.
 
-There are \(n! = n\cdot (n-1)\cdot (n-2)\cdot \cdots \cdot 2\cdot 1\) permutations of \(n\) (distinct) elements.[🔗](#subsec-counting-sequences-6-3) [🔗](#subsec-counting-sequences-6)
+هناك \(n! = n\cdot (n-1)\cdot (n-2)\cdot \cdots \cdot 2\cdot 1\) تبادلًا لـ\(n\) عنصرًا (متميزة).[🔗](#subsec-counting-sequences-6-3) [🔗](#subsec-counting-sequences-6)
 
-#### Example 3.4.3. Counting Bijective Functions.
+#### مثال 3.4.3. عدّ الدوال التقابلية.
 
-How many functions \(f:\{1,2,\ldots,8\} \to \{1,2,\ldots, 8\}\) are *bijective*?[🔗](#example-counting-functions-bijective-4-1) Solution. Remember what it means for a function to be bijective: Each element in the codomain must be the image of exactly one element of the domain. Using two-line notation, we could write one of these bijections as \begin{equation*} f = \twoline{1 \amp 2 \amp 3 \amp 4 \amp 5 \amp 6 \amp 7 \amp 8} {3 \amp 1 \amp 5 \amp 8 \amp 7 \amp 6 \amp 2 \amp 4}\text{.} \end{equation*} What we are really doing is just rearranging the elements of the codomain, so we are creating a permutation of 8 elements. In fact, “permutation” is another term used to describe bijective functions from a finite set to itself. [🔗](#example-counting-functions-bijective-5-1) If you believe this, then you see the answer must be \(8! = 8 \cdot 7 \cdot\cdots\cdot 1 = 40320\text{.}\) You can see this directly as well: For each element of the domain, we must pick a distinct element of the codomain to map to. There are 8 choices for where to send 1, then 7 choices for where to send 2, and so on. We multiply using the multiplicative principle.[🔗](#example-counting-functions-bijective-5-2) [🔗](#example-counting-functions-bijective-5) [🔗](#example-counting-functions-bijective)Sometimes we do not want to permute all of the letters/numbers/elements we are given.[🔗](#subsec-counting-sequences-8)
+كم عدد الدوال \(f:\{1,2,\ldots,8\} \to \{1,2,\ldots, 8\}\) التي تكون *تقابلية* (bijective)؟[🔗](#example-counting-functions-bijective-4-1) الحل. تذكّر ما معنى أن تكون الدالة تقابلية: يجب أن يكون كلّ عنصر في مجموعة القيم هو صورة عنصر واحد بالضبط من النطاق. وباستخدام الرمز ثنائي السطر (two-line notation)، يمكننا كتابة أحد هذه التقابلات على النحو \begin{equation*} f = \twoline{1 \amp 2 \amp 3 \amp 4 \amp 5 \amp 6 \amp 7 \amp 8} {3 \amp 1 \amp 5 \amp 8 \amp 7 \amp 6 \amp 2 \amp 4}\text{.} \end{equation*} وما نفعله في الحقيقة هو مجرّد إعادة ترتيب عناصر مجموعة القيم، فنُنشئ بذلك تبادلًا لثمانية عناصر. وفي الواقع، مصطلح «التبادل» (permutation) مصطلح آخر يُستخدم لوصف الدوال التقابلية من مجموعة منتهية إلى نفسها. [🔗](#example-counting-functions-bijective-5-1) وإن كنت تصدّق هذا، فإنّك ترى أنّ الجواب لا بدّ أن يكون \(8! = 8 \cdot 7 \cdot\cdots\cdot 1 = 40320\text{.}\) ويمكنك أن ترى ذلك مباشرة أيضًا: فلكلّ عنصر من النطاق، علينا أن نختار عنصرًا متمايزًا من مجموعة القيم نُرسِل إليه. وهناك 8 خيارات لأين نُرسِل 1، ثم 7 خيارات لأين نُرسِل 2، وهكذا. ونضرب مستخدمين مبدأ الضرب.[🔗](#example-counting-functions-bijective-5-2) [🔗](#example-counting-functions-bijective-5) [🔗](#example-counting-functions-bijective)وأحيانًا لا نريد أن نبدّل كلّ الأحرف/الأعداد/العناصر المعطاة لنا.[🔗](#subsec-counting-sequences-8)
 
-#### Example 3.4.4.
+#### مثال 3.4.4.
 
-How many four-letter “words” can you make from the letters *a* through *g*, with no repeated letters?[🔗](#subsec-counting-sequences-9-3-1) Solution. This is just like the problem of permuting four letters, only now we have more choices for each letter. For the first letter, there are 7 choices. For each of those, there are 6 choices for the second letter. Then there are 5 choices for the third letter and 4 choices for the last letter. The total number of words is \(7\cdot 6\cdot 5 \cdot 4 = 840\text{.}\)[🔗](#subsec-counting-sequences-9-4-1) This is not \(7!\) because we never multiplied by 3, 2, or 1. We could write it using \(7!\) though, if we cancel the 3, 2, and 1. Thus we could write the answer as \begin{equation*} \frac{7!}{3!} = \frac{7\cdot 6\cdot 5\cdot 4 \cdot \cancel{3} \cdot \cancel{2} \cdot \cancel{1}}{\cancel{3} \cdot \cancel{2} \cdot \cancel{1}} = 7 \cdot 6 \cdot 5 \cdot 4\text{.} \end{equation*} [🔗](#subsec-counting-sequences-9-4-2) [🔗](#subsec-counting-sequences-9-4) [🔗](#subsec-counting-sequences-9) In general, we can ask how many permutations exist of \(k\) objects choosing those objects from a larger collection of \(n\) objects. (In the example above, \(k = 4\text{,}\) and \(n = 7\text{.}\)) We write this number \(P(n,k)\) and sometimes call it a \(k\)-permutation of \(n\) elements.[🔗](#subsec-counting-sequences-10) From the example above, we see that to compute \(P(n,k)\) we must apply the multiplicative principle to \(k\) numbers, starting with \(n\) and counting backwards. For example \begin{equation*} P(10, 4) = 10\cdot 9 \cdot 8 \cdot 7\text{.} \end{equation*} [🔗](#subsec-counting-sequences-11) Notice that \(P(10,4)\) starts out looking like \(10!\text{,}\) but we stop after 7. We can formally account for this “stopping” by dividing away the part of the factorial we do not want: \begin{equation*} P(10,4) = \frac{10\cdot 9 \cdot 8 \cdot 7 \cdot 6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1}{6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1} = \frac{10!}{6!}\text{.} \end{equation*} [🔗](#subsec-counting-sequences-12) Careful: The factorial in the denominator is not \(4!\) but rather \((10-4)!\text{.}\)[🔗](#subsec-counting-sequences-13)
+كم عدد «الكلمات» ذات الأحرف الأربعة التي يمكنك صنعها من الأحرف *a* إلى *g*، من دون أحرف متكرّرة؟[🔗](#subsec-counting-sequences-9-3-1) الحل. هذا مثل مسألة تبديل أربعة أحرف تمامًا، غير أنّ لدينا الآن خيارات أكثر لكلّ حرف. بالنسبة إلى الحرف الأوّل، هناك 7 خيارات. ولكلّ واحد من تلك، هناك 6 خيارات للحرف الثاني. ثم هناك 5 خيارات للحرف الثالث و4 خيارات للحرف الأخير. وإجمالي عدد الكلمات هو \(7\cdot 6\cdot 5 \cdot 4 = 840\text{.}\)[🔗](#subsec-counting-sequences-9-4-1) وهذا ليس \(7!\) لأنّنا لم نضرب قطّ في 3 أو 2 أو 1. لكن يمكننا كتابته باستخدام \(7!\) إن شئنا، إذا ألغينا 3 و2 و1. وبذلك يمكننا كتابة الجواب على النحو \begin{equation*} \frac{7!}{3!} = \frac{7\cdot 6\cdot 5\cdot 4 \cdot \cancel{3} \cdot \cancel{2} \cdot \cancel{1}}{\cancel{3} \cdot \cancel{2} \cdot \cancel{1}} = 7 \cdot 6 \cdot 5 \cdot 4\text{.} \end{equation*} [🔗](#subsec-counting-sequences-9-4-2) [🔗](#subsec-counting-sequences-9-4) [🔗](#subsec-counting-sequences-9) وبوجه عام، يمكننا أن نسأل: كم عدد التباديل الموجودة لـ\(k\) من الأشياء عند اختيار تلك الأشياء من مجموعة أكبر من \(n\) من الأشياء. (في المثال أعلاه، \(k = 4\text{,}\) و\(n = 7\text{.}\)) ونكتب هذا العدد \(P(n,k)\) ونسمّيه أحيانًا تبادل \(k\) من \(n\) عنصرًا.[🔗](#subsec-counting-sequences-10) ومن المثال أعلاه نرى أنّ لحساب \(P(n,k)\) علينا تطبيق مبدأ الضرب على \(k\) عددًا، بدءًا من \(n\) والعدّ إلى الخلف. فمثلًا \begin{equation*} P(10, 4) = 10\cdot 9 \cdot 8 \cdot 7\text{.} \end{equation*} [🔗](#subsec-counting-sequences-11) ولاحظ أنّ \(P(10,4)\) يبدو في البداية مثل \(10!\text{,}\) لكنّنا نتوقّف بعد 7. ويمكننا محاسبة هذا «التوقّف» رسميًا بإلغاء الجزء الذي لا نريده من المضروب (factorial) بالقسمة: \begin{equation*} P(10,4) = \frac{10\cdot 9 \cdot 8 \cdot 7 \cdot 6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1}{6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1} = \frac{10!}{6!}\text{.} \end{equation*} [🔗](#subsec-counting-sequences-12) انتبه: المضروب في المقام ليس \(4!\) بل هو \((10-4)!\text{.}\)[🔗](#subsec-counting-sequences-13)
 
-#### Definition 3.4.5. \(k\)-permutations of \(n\) elements.
+#### تعريف 3.4.5. تباديل \(k\) من \(n\) عنصرًا.
 
-\(P(n,k)\) is the number of \(k\)-permutations of \(n\) elements, the number of ways to *arrange* \(k\) objects chosen from \(n\) distinct objects.[🔗](#subsec-counting-sequences-14-4-1) [🔗](#subsec-counting-sequences-14)
+\(P(n,k)\) هو عدد تباديل \(k\) من \(n\) عنصرًا، أي عدد الطرق إلى *ترتيب* \(k\) من الأشياء المختارة من \(n\) عنصرًا متمايزًا.[🔗](#subsec-counting-sequences-14-4-1) [🔗](#subsec-counting-sequences-14)
 
-#### Theorem 3.4.6.
+#### نظرية 3.4.6.
 
-The number of \(k\)-permutations of \(n\) elements is \begin{equation*} P(n,k) = \frac{n!}{(n-k)!} = n(n-1)(n-2)\cdots (n-(k-1))\text{.} \end{equation*} [🔗](#thm-k-permutation-1-1) [🔗](#thm-k-permutation)Note that when \(n = k\text{,}\) we have \(P(n,n) = \frac{n!}{(n-n)!} = n!\) (since we defined \(0!\) to be 1). This makes sense —we already know \(n!\) gives the number of permutations of all \(n\) objects.[🔗](#subsec-counting-sequences-16)
+عدد تباديل \(k\) من \(n\) عنصرًا هو \begin{equation*} P(n,k) = \frac{n!}{(n-k)!} = n(n-1)(n-2)\cdots (n-(k-1))\text{.} \end{equation*} [🔗](#thm-k-permutation-1-1) [🔗](#thm-k-permutation)ولاحظ أنّه عندما \(n = k\text{,}\) لدينا \(P(n,n) = \frac{n!}{(n-n)!} = n!\) (لأنّنا عرّفنا \(0!\) بأنه 1). وهذا منطقي —فقد سبق أن عرفنا أنّ \(n!\) يعطي عدد تباديل الأشياء الـ\(n\) جميعًا.[🔗](#subsec-counting-sequences-16)
 
-#### Example 3.4.7. Counting injective functions.
+#### مثال 3.4.7. عدّ الدوال الأحادية.
 
-How many functions \(f:\{1,2,3\} \to \{1,2,3,4,5,6,7,8\}\) are *injective*?[🔗](#example-counting-functions-injective-3-1) Solution. Note that it doesn’t make sense to ask for the number of *bijections* here, as there are none (because the codomain is larger than the domain, there are no surjections). But for a function to be injective, we just can’t use an element of the codomain more than once.[🔗](#example-counting-functions-injective-4-1) We need to pick an element from the codomain to be the image of 1. There are 8 choices. Then we need to pick one of the remaining 7 elements to be the image of 2. Finally, one of the remaining 6 elements must be the image of 3. So the total number of functions is \(8\cdot 7 \cdot 6 = P(8,3)\text{.}\)[🔗](#example-counting-functions-injective-4-2) What this demonstrates in general is that the number of injections \(f:A \to B\text{,}\) where \(\card{A} = k\) and \(\card{B} = n\text{,}\) is \(P(n,k)\text{.}\)[🔗](#example-counting-functions-injective-4-3) [🔗](#example-counting-functions-injective-4) [🔗](#example-counting-functions-injective)[🔗](#subsec-counting-sequences)
+كم عدد الدوال \(f:\{1,2,3\} \to \{1,2,3,4,5,6,7,8\}\) التي تكون *أحادية* (injective)؟[🔗](#example-counting-functions-injective-3-1) الحل. لاحظ أنّه لا معنى لسؤالنا عن عدد *التقابلات* (bijections) هنا، إذ لا توجد منها (لأنّ مجموعة القيم أكبر من النطاق، فلا توجد دوال onto (surjections)). لكن كي تكون الدالة أحادية، لا يمكننا إلّا أن نستخدم عنصرًا من مجموعة القيم مرّة واحدة على الأكثر.[🔗](#example-counting-functions-injective-4-1) علينا أن نختار عنصرًا من مجموعة القيم ليكون صورة 1. وهناك 8 خيارات. ثم علينا أن نختار واحدًا من العناصر السبعة الباقية ليكون صورة 2. وأخيرًا، يجب أن يكون واحدٌ من العناصر الستة الباقية هو صورة 3. إذن إجمالي عدد الدوال هو \(8\cdot 7 \cdot 6 = P(8,3)\text{.}\)[🔗](#example-counting-functions-injective-4-2) وما تُظهره هذه الحالة على وجه العموم هو أنّ عدد الدوال الأحادية (injections) \(f:A \to B\text{,}\) حيث \(\card{A} = k\) و\(\card{B} = n\text{,}\) هو \(P(n,k)\text{.}\)[🔗](#example-counting-functions-injective-4-3) [🔗](#example-counting-functions-injective-4) [🔗](#example-counting-functions-injective)[🔗](#subsec-counting-sequences)
 
-### Subsection Counting Sets
+### القسم الفرعي: عدّ المجموعات
 
-Let’s consider another way to count sequences: First count sets, then arrange them.[🔗](#subsec-combinations-2)
+لننظر في طريقة أخرى لعدّ التتابعات: أوّلًا نعدّ المجموعات، ثم نرتّبها.[🔗](#subsec-combinations-2)
 
-#### Example 3.4.8.
+#### مثال 3.4.8.
 
-Your basketball team has 12 players. Assuming everyone can play every position, how many ways can you choose 5 players to be on the court at the same time?[🔗](#subsec-combinations-3-1-1) Solution. This question is actually too vague. Do we mean how many ways can we select five players? Or do we mean how many ways can we pick five players to fill the five positions? 2 I’m told the five positions are called point guard, shooting guard, small forward, power forward, and center. Who knew? Let’s answer both of these questions.[🔗](#subsec-combinations-3-2-1) First, if we just want to select five out of the 12 players, that is just like picking five out of 12 pizza toppings (although less delicious). We know that there are \(\binom{12}{5}\) ways to do this, and from [Pascal’s triangle](sec_counting-pascal.html#fig-pascal-large) we know that this is 792.[🔗](#subsec-combinations-3-2-2) On the other hand, if we wanted to pick five players for the five different positions,... well, we could start by picking one of the 792 different *sets* of five players, and then permute them into the five positions. Of the five players on the court, we pick one of the five to be the point guard, then one of the remaining four to be the shooting guard, and so on. This gives us \(5\cdot 4\cdot 3\cdot 2\cdot 1 = 5!\) ways to arrange the players. So the total number of ways to pick five players for the five positions is \begin{equation*} \binom{12}{5}\cdot 5! = 792\cdot 120 = 95,040\text{.} \end{equation*} [🔗](#subsec-combinations-3-2-3) Wait. We could have found that number directly. Without choosing the five players first, we have 12 choices for the point guard, then 11 choices for the shooting guard, and so on. So the total number of ways to pick five players for the five positions is simply the permutation \begin{equation*} P(12,5) = 12\cdot 11\cdot 10\cdot 9\cdot 8 = 95,040\text{.} \end{equation*} Thank goodness that is the same answer! [🔗](#subsec-combinations-3-2-4) [🔗](#subsec-combinations-3-2) [🔗](#subsec-combinations-3)The example above illustrates a second way to compute the number of \(k\)-permutations of \(n\) elements: First select which \(k\) elements will be in the permutation, then count how many ways there are to arrange them. Once you have selected the set of \(k\) objects, we know there are \(k!\) ways to arrange (permute) them. But how do you select \(k\) objects from the \(n\text{?}\) You have \(n\) objects, and you need to *choose* \(k\) of them. You can do that in \(\binom{n}{k}\) ways.[🔗](#subsec-combinations-4) Using the multiplicative principle to combine the two steps, we get another formula for \(P(n,k)\text{:}\) \begin{equation*} P(n,k) = \binom{n }{ k}\cdot k!\text{.} \end{equation*} [🔗](#subsec-combinations-5) This is HUGE![🔗](#subsec-combinations-6) We have a closed formula for \(P(n,k)\) already. We can substitute that in: \begin{equation*} \frac{n!}{(n-k)!} = \binom{n}{k} \cdot k!\text{.} \end{equation*} [🔗](#subsec-combinations-7) If we then divide both sides by \(k!\text{,}\) we get a closed formula for \(\binom{n}{k}\text{.}\)[🔗](#subsec-combinations-8)
+فريق كرة السلة لديك فيه 12 لاعبًا. وبافتراض أنّه يمكن للجميع اللعب في أيّ مركز، فكم عدد الطرق التي يمكنك بها اختيار 5 لاعبين ليكونوا في الملعب في الوقت نفسه؟[🔗](#subsec-combinations-3-1-1) الحل. هذا السؤال في الواقع مبهم أكثر مما ينبغي. هل نقصد كم عدد الطرق لتحديد خمسة لاعبين؟ أم كم عدد الطرق لاختيار خمسة لاعبين يملؤون المراكز الخمسة؟ 2 قيل لي إنّ المراكز الخمسة تُسمّى نقطة الحماية، وحارس التسديد، والمهاجم الصغير، والمهاجم القوي، والوسط. من كان يعرف! فلنجيب عن هذين السؤالين معًا.[🔗](#subsec-combinations-3-2-1) أوّلًا، إن أردنا فقط تحديد خمسة من الـ12 لاعبًا، فهذا مثل اختيار خمسة من 12 نوعًا من مكوّنات البيتزا (وإن كان أقلّ لذًا). نعرف أنّ عدد طرق ذلك هو \(\binom{12}{5}\)، ومن [مثلث باسكال](sec_counting-pascal.html#fig-pascal-large) نعرف أنّ هذا العدد هو 792.[🔗](#subsec-combinations-3-2-2) ومن جهة أخرى، إن أردنا اختيار خمسة لاعبين للمراكز الخمسة المختلفة، ... حسنًا، يمكننا أن نبدأ باختيار إحدى الـ792 *مجموعة* مختلفة من خمسة لاعبين، ثم نبدّلهم على المراكز الخمسة. فمن بين اللاعبين الخمسة على الملعب، نختار واحدًا ليكون نقطة الحماية، ثم واحدًا من الأربعة الباقين ليكون حارس التسديد، وهكذا. وهذا يعطينا \(5\cdot 4\cdot 3\cdot 2\cdot 1 = 5!\) طريقة لترتيب اللاعبين. إذن فإنّ إجمالي عدد طرق اختيار خمسة لاعبين للمراكز الخمسة هو \begin{equation*} \binom{12}{5}\cdot 5! = 792\cdot 120 = 95,040\text{.} \end{equation*} [🔗](#subsec-combinations-3-2-3) لحظة. كان بإمكاننا إيجاد ذلك العدد مباشرةً. فبدون اختيار اللاعبين الخمسة أوّلًا، لدينا 12 خيارًا لنقطة الحماية، ثم 11 خيارًا لحارس التسديد، وهكذا. إذن فإنّ إجمالي عدد طرق اختيار خمسة لاعبين للمراكز الخمسة هو ببساطة التبادل \begin{equation*} P(12,5) = 12\cdot 11\cdot 10\cdot 9\cdot 8 = 95,040\text{.} \end{equation*} الحمد لله أنّ الجواب هو نفسه! [🔗](#subsec-combinations-3-2-4) [🔗](#subsec-combinations-3-2) [🔗](#subsec-combinations-3)يبيّن المثال أعلاه طريقة ثانية لحساب عدد تبادلات \(k\) عنصرًا من \(n\) عنصرًا: أوّلًا نحدّد أيّ \(k\) عنصرًا ستكون في التبادل، ثم نعدّ كم طريقة لترتيبها. فبعد أن اخترت مجموعة الـ\(k\) عنصرًا، نعرف أنّ هناك \(k!\) طريقة لترتيبها (تبادلها). لكن كيف تختار \(k\) عنصرًا من الـ\(n\text{?}\) لديك \(n\) عنصرًا، وتحتاج إلى *اختيار* \(k\) منها. ويمكنك ذلك بـ\(\binom{n}{k}\) طريقة.[🔗](#subsec-combinations-4) وباستعمال مبدأ الضرب للدمج بين الخطوتين، نحصل على صيغة أخرى لـ\(P(n,k)\text{:}\) \begin{equation*} P(n,k) = \binom{n }{ k}\cdot k!\text{.} \end{equation*} [🔗](#subsec-combinations-5) هذا هائل![🔗](#subsec-combinations-6) ولدينا أصلًا صيغة مغلقة لـ\(P(n,k)\). ويمكننا التعويض بها: \begin{equation*} \frac{n!}{(n-k)!} = \binom{n}{k} \cdot k!\text{.} \end{equation*} [🔗](#subsec-combinations-7) وإذا قسمنا بعد ذلك الطرفين على \(k!\text{,}\) نحصل على صيغة مغلقة لـ\(\binom{n}{k}\text{.}\)[🔗](#subsec-combinations-8)
 
-#### Theorem 3.4.9. Closed Formula for \(\binom{n}{k}\).
+#### نظرية 3.4.9. الصيغة المغلقة لـ\(\binom{n}{k}\).
 
-\begin{equation*} \binom{n}{k} = \frac{n!}{(n-k)!k!} = \frac{n(n-1)(n-2)\cdots(n-(k-1))}{k(k-1)(k-2)\cdots 1}\text{.} \end{equation*} [🔗](#subsec-combinations-9-4) [🔗](#subsec-combinations-9) Another name for the collections of things that \(\binom{n}{k}\) counts is combinations. We say that \(\binom{n}{k}\) counts the number of \(k\)-element combinations of \(n\) elements. Sometimes we even use the notation \(C(n,k)\) instead of \(\binom{n}{k}\text{.}\)[🔗](#subsec-combinations-10) Clearly combinations and permutations are very closely related. The formulas to count each are very similar; there is just an extra \(k!\) in the denominator of \(\binom{n}{k}\text{.}\) That extra \(k!\) accounts for the fact that \(\binom{n}{k}\) does not distinguish between the different orders that the \(k\) objects can appear in. We are just selecting (or choosing) the \(k\) objects, not arranging them.[🔗](#subsec-combinations-11)
+\begin{equation*} \binom{n}{k} = \frac{n!}{(n-k)!k!} = \frac{n(n-1)(n-2)\cdots(n-(k-1))}{k(k-1)(k-2)\cdots 1}\text{.} \end{equation*} [🔗](#subsec-combinations-9-4) [🔗](#subsec-combinations-9) الاسم الآخر لمجموعات الأشياء التي يعدّها \(\binom{n}{k}\) هو التوافيق. نقول إنّ \(\binom{n}{k}\) يعدّ عدد التوافيق المكوّنة من \(k\) عنصرًا من \(n\) عنصرًا. وأحيانًا نستخدم حتى الرمز \(C(n,k)\) بدلًا من \(\binom{n}{k}\text{.}\)[🔗](#subsec-combinations-10) ومن الواضح أنّ التوافيق والتباديل مترابطة إلى حدٍّ كبير. فصيغتا عدّهما متشابهتان جدًا؛ إنّ الفرق هو وجود \(k!\) إضافية في مقام \(\binom{n}{k}\text{.}\) وهذه الـ\(k!\) الإضافية تفسّر أنّ \(\binom{n}{k}\) لا يميّز بين الترتيبات المختلفة التي يمكن أن تظهر بها العناصر الـ\(k\). فنحن نكتفي بتحديد (أو اختيار) الـ\(k\) عنصرًا، لا بترتيبها.[🔗](#subsec-combinations-11)
 
-#### Example 3.4.10.
+#### مثال 3.4.10.
 
-You decide to have a dinner party. Even though you are incredibly popular and have 14 different friends, you only have enough chairs to invite 6 of them.[🔗](#subsec-combinations-12-3-1)
+قرّرتَ تنظيم أمسيّة عشاء. فرغم أنّك شديد المشهورة ولديك 14 صديقًا مختلفًا، فإنّ لديك عددًا من الكراسي يكفي لدعوة 6 منهم فقط.[🔗](#subsec-combinations-12-3-1)
 
-1. How many choices do you have for which 6 friends to invite?[🔗](#subsec-combinations-12-3-2-1-1-1) [🔗](#subsec-combinations-12-3-2-1-1)
-2. What if you need to decide not only which friends to invite but also where to seat them along your long table? How many choices do you have then?[🔗](#subsec-combinations-12-3-2-1-2-1) [🔗](#subsec-combinations-12-3-2-1-2)
+1. كم عدد الخيارات المتاحة لديك لأيّ 6 أصدقاء ستدعوهم؟[🔗](#subsec-combinations-12-3-2-1-1-1) [🔗](#subsec-combinations-12-3-2-1-1)
+2. وماذا لو احتجتَ إلى تحديد ليس فقط أيّ الأصدقاء ستدعوهم بل أيضًا أين تجلسهم على طاولتك الطويلة؟ فكم عدد الخيارات المتاحة لديك عندئذٍ؟[🔗](#subsec-combinations-12-3-2-1-2-1) [🔗](#subsec-combinations-12-3-2-1-2)
 
-[🔗](#subsec-combinations-12-3-2) Solution.
+[🔗](#subsec-combinations-12-3-2) الحل.
 
-1. You must simply choose 6 friends from a group of 14. This can be done in \(\binom{14}{6}\) ways. We can find this number either by using Pascal’s triangle or the closed formula: \(\frac{14!}{8!\cdot 6!} = 3003\text{.}\)[🔗](#subsec-combinations-12-4-1-1-1-1) [🔗](#subsec-combinations-12-4-1-1-1)
-2. Here you must count all the ways you can permute 6 friends chosen from a group of 14. So the answer is \(P(14, 6)\text{,}\) which can be calculated as \(\frac{14!}{8!} = 2162160\text{.}\)[🔗](#subsec-combinations-12-4-1-1-2-1) Notice that we can think of this counting problem as a question about counting functions: How many injective functions are there from your set of 6 chairs to your set of 14 friends (the functions are injective because you can’t have a single chair go to two of your friends).[🔗](#subsec-combinations-12-4-1-1-2-2) [🔗](#subsec-combinations-12-4-1-1-2)
+1. عليك ببساطة اختيار 6 أصدقاء من مجموعة من 14. ويمكن ذلك بـ\(\binom{14}{6}\) طريقة. يمكننا إيجاد هذا العدد إمّا باستعمال مثلث باسكال أو بالصيغة المغلقة: \(\frac{14!}{8!\cdot 6!} = 3003\text{.}\)[🔗](#subsec-combinations-12-4-1-1-1-1) [🔗](#subsec-combinations-12-4-1-1-1)
+2. هنا عليك أن تعدّ جميع الطرق التي يمكنك بها تبديل 6 أصدقاء مختارين من مجموعة من 14. إذن الجواب هو \(P(14, 6)\text{,}\) ويمكن حسابه بـ\(\frac{14!}{8!} = 2162160\text{.}\)[🔗](#subsec-combinations-12-4-1-1-2-1) ولاحظ أنّنا يمكننا رؤية مسألة العدّ هذه كسؤال عن عدّ الدوال: كم عدد الدوال الأحادية من مجموعة كراسيك الستّة إلى مجموعة أصدقائك الأربعة عشر (الدوال أحادية لأنّه لا يمكن أن يكون كرسيّ واحد يخصّ صديقين)؟[🔗](#subsec-combinations-12-4-1-1-2-2) [🔗](#subsec-combinations-12-4-1-1-2)
 
-[🔗](#subsec-combinations-12-4-1) How are these numbers related? Notice that \(P(14,6)\) is *much* larger than \(\binom{14}{6}\text{.}\) This makes sense. \(\binom{14}{6}\) picks 6 friends, but \(P(14,6)\) arranges the 6 friends as well as picks them. In fact, we can say exactly how much larger \(P(14,6)\) is. In both counting problems we choose 6 out of 14 friends. For the first one, we stop there, at 3003 ways. But for the second counting problem, each of those 3003 choices of 6 friends can be arranged in exactly \(6!\) ways. So now we have \(3003\cdot 6!\) choices and that is exactly \(2162160\text{.}\)[🔗](#subsec-combinations-12-4-2) Alternatively, look at the first problem another way. We want to select 6 out of 14 friends, but we do not care about the order they are selected in. To select 6 out of 14 friends, we might try this: \begin{equation*} 14 \cdot 13 \cdot 12 \cdot 11 \cdot 10 \cdot 9 \text{.} \end{equation*} [🔗](#subsec-combinations-12-4-3) This is a reasonable guess, since we have 14 choices for the first guest, then 13 for the second, and so on. But the guess is wrong (in fact, that product is exactly \(2162160 = P(14,6)\)). It distinguishes between the different orders in which we could invite the guests. To correct for this, we could divide by the number of different arrangements of the 6 guests (so that all of these would count as just one outcome). There are precisely \(6!\) ways to arrange 6 guests, so the correct answer to the first question is \begin{equation*} \frac{14 \cdot 13 \cdot 12 \cdot 11\cdot 10 \cdot 9}{6!} \text{.} \end{equation*} [🔗](#subsec-combinations-12-4-4) Note that another way to write this is \begin{equation*} \frac{14!}{8!\cdot 6!}\text{.} \end{equation*} which is what we had originally. [🔗](#subsec-combinations-12-4-5) [🔗](#subsec-combinations-12-4) [🔗](#subsec-combinations-12)Perhaps “combination” is a misleading label. We don’t mean it like a combination lock (where the order would definitely matter). Perhaps a better metaphor is a combination of flavors — you just need to decide which flavors to combine, not the order in which to combine them.[🔗](#subsec-combinations-13) So how do you know when to use a combination and when to use a permutation?[🔗](#subsec-combinations-14)
+[🔗](#subsec-combinations-12-4-1) كيف يرتبط هذان العددان؟ لاحظ أنّ \(P(14,6)\) *أكبر بكثير* من \(\binom{14}{6}\text{.}\) وهذا منطقي. فـ\(\binom{14}{6}\) يختار 6 أصدقاء، لكن \(P(14,6)\) يرتّب الأصدقاء الستّة كما يختارهم. وفي الواقع يمكننا أن نقول بعينه كم يكون \(P(14,6)\) أكبر. في مسألةَي العدّ كليهما نختار 6 من 14 صديقًا. في المسألة الأولى نتوقّف عند ذلك، عند 3003 طريقة. لكن في مسألة العدّ الثانية، كلّ واحد من تلك الخيارات الـ3003 للأصدقاء الستّة يمكن ترتيبه بـ\(6!\) طريقة بالضبط. إذن لدينا الآن \(3003\cdot 6!\) خيارًا، وهذا بالضبط \(2162160\text{.}\)[🔗](#subsec-combinations-12-4-2) وبدلًا من ذلك، فلننظر إلى المسألة الأولى بطريقة أخرى. نريد اختيار 6 من 14 صديقًا، لكنّنا لا نهتمّ بالترتيب الذي اختيروا به. لاختيار 6 من 14 صديقًا، يمكننا أن نجرّب هذا: \begin{equation*} 14 \cdot 13 \cdot 12 \cdot 11 \cdot 10 \cdot 9 \text{.} \end{equation*} [🔗](#subsec-combinations-12-4-3) وهذا تخمين معقول، إذ لدينا 14 خيارًا للضيف الأوّل، ثم 13 للثاني، وهكذا. لكنّ التخمين خطأ (في الواقع، ذلك الحاصل هو بالضبط \(2162160 = P(14,6)\)). فهو يميّز بين الترتيبات المختلفة التي يمكن أن ندعو بها الضيوف. ولتصحيح ذلك، يمكننا القسمة على عدد الترتيبات المختلفة للضيوف الستّة (بحيث لا تُحسب جميع هذه إلّا بوصفها نتيجة واحدة). وهناك بالضبط \(6!\) طريقة لترتيب 6 ضيوف، إذن الجواب الصحيح للسؤال الأوّل هو \begin{equation*} \frac{14 \cdot 13 \cdot 12 \cdot 11\cdot 10 \cdot 9}{6!} \text{.} \end{equation*} [🔗](#subsec-combinations-12-4-4) ولاحظ أنّ طريقة أخرى لكتابة ذلك هي \begin{equation*} \frac{14!}{8!\cdot 6!}\text{.} \end{equation*} وهو ما كنا قد وصلنا إليه أوّلًا. [🔗](#subsec-combinations-12-4-5) [🔗](#subsec-combinations-12-4) [🔗](#subsec-combinations-12)ربما تكون تسمية «توافيق» مضلِّلة. فنحن لا نقصد بها مثل قفل التوافيق (حيث يهمّ الترتيب بالتأكيد). وربما استعارة أفضل هي توليفة من النكهات — إذ لا عليك إلّا أن تقرّر أيّ النكهات ستخلط، لا الترتيب الذي ستخلطها به.[🔗](#subsec-combinations-13) إذن كيف تعرف متى تستعمل توافيق ومتى تستعمل تباديل؟[🔗](#subsec-combinations-14)
 
-#### Does order matter?
+#### هل يهمّ الترتيب؟
 
-Almost every source you look at about combinations and permutations will make some variation of the following claim.[🔗](#subsec-combinations-15-2)
+كلّ مصدر تقريبًا تقرأه عن التوافيق والتباديل سيذكر صورةً ما من الادّعاء التالي.[🔗](#subsec-combinations-15-2)
 
-> Use a permutation when the order matters, and use a combination when the order does not matter.[🔗](#subsec-combinations-15-3-1)
+> استعمل التبادل عندما يهمّ الترتيب، واستعمل التوافيق عندما لا يهمّ الترتيب.[🔗](#subsec-combinations-15-3-1)
 > > [🔗](#subsec-combinations-15-3)
 
-What does this even mean? And why is it an absolutely awful way to distinguish between the two counting techniques? Let’s explore with an example.[🔗](#subsec-combinations-15-4) Suppose you are proposing a new lottery game. In the game, five numbered balls will be randomly shot out of the machine that holds balls numbered 1 to 50. If a player correctly picks the five numbers that come out, they win the jackpot.[🔗](#subsec-combinations-15-5) Of course, we want to know the odds of winning this lottery game, which requires us to know how many different outcomes there are. The balls fly out of the machine randomly, so one result might be to get the balls \begin{equation*} 26, 5, 42, 17, 33\text{.} \end{equation*} If you were holding the ticket that had numbers \(5, 17, 26, 33, 47\text{,}\) do you expect to have won? Most lottery games would say you have, since you have the same numbers, just in a different order. [🔗](#subsec-combinations-15-6) In this sense, the *order* of the numbers does not matter. A better way to say this is that *any* order of the same numbers is considered the same outcome, and is counted only once. So really, we are counting the *sets* of five numbers, not the *sequences* of five numbers. Each outcome is a combination, so the number of outcomes should be \(C(52,5) = \binom{52}{5}\text{.}\)[🔗](#subsec-combinations-15-7) On the other hand, if we must pick the numbers in the same order they come out of the machine, then we are really matching a sequence of numbers to a sequence of numbers. The number of sequences is \(P(52,5)\text{.}\) In this case, we would say that the order matters.[🔗](#subsec-combinations-15-8) Okay, so far so good. But what about the following example?[🔗](#subsec-combinations-15-9)
+وماذا يعني هذا أصلًا؟ ولماذا هو طريقة فظيعة تمامًا للتمييز بين تقنيتي العدّ هاتين؟ لنستكشف ذلك بمثال.[🔗](#subsec-combinations-15-4) لنفترض أنّك تقترح لعبة يانصيب جديدة. في هذه اللعبة، تُطلق خمس كرات مرقّمة عشوائيًا من الآلة التي تحوي كرات مرقّمة من 1 إلى 50. وإذا اختار لاعب الأرقام الخمسة التي تخرج على نحو صحيح، فإنّه يفوز بالجائزة الكبرى.[🔗](#subsec-combinations-15-5) وبطبيء الحال نريد معرفة احتمالات الفوز في هذه اللعبة، وهذا يتطلّب أن نعرف كم عدد النتائج المختلفة الموجودة. فالكرات تطلع من الآلة عشوائيًا، فقد تكون إحدى النتائج أن تطلع الكرات \begin{equation*} 26, 5, 42, 17, 33\text{.} \end{equation*} فإذا كنت تحمل التذكرة التي تحمل الأرقام \(5, 17, 26, 33, 47\text{,}\) فهل تتوقّع أن تكون قد فزت؟ لقول معظم ألعاب اليانصيب إنّك فزت، لأنّ لديك الأرقام نفسها لكن بترتيب مختلف. [🔗](#subsec-combinations-15-6) وبهذا المعنى فإنّ *ترتيب* الأرقام لا يهمّ. وطريقة أفضل لقول ذلك إنّ *أيّ* ترتيب لنفس الأرقام يُعدّ النتيجة نفسها، ولا يُعدّ إلّا مرّة واحدة. إذن نحن في الواقع نعدّ *مجموعات* الأرقام الخمسة، لا *تتابعات* خمسة أرقام. وكلّ نتيجة هي توافيق، إذن ينبغي أن يكون عدد النتائج هو \(C(52,5) = \binom{52}{5}\text{.}\)[🔗](#subsec-combinations-15-7) ومن جهة أخرى، إن كان علينا أن نختار الأرقام بالترتيب نفسه الذي تخرج به من الآلة، فإنّنا في الواقع نطابق تتابع أرقام بتتابع أرقام. وعدد التتابعات هو \(P(52,5)\text{.}\) وفي هذه الحالة نقول إنّ الترتيب يهمّ.[🔗](#subsec-combinations-15-8) حسنًا، إلى الآن كلّ شيء على ما يرام. لكن ماذا عن المثال التالي؟[🔗](#subsec-combinations-15-9)
 
-#### Example 3.4.11.
+#### مثال 3.4.11.
 
-How many three letter “words” are there in which
+كم عدد «الكلمات» ذات الأحرف الثلاثة التي
 
-1. the letters appear in alphabetical order?[🔗](#subsec-combinations-15-10-1-1-2-1-1) [🔗](#subsec-combinations-15-10-1-1-2-1)
-2. the letters in the word can come in any order?[🔗](#subsec-combinations-15-10-1-1-2-2-1) [🔗](#subsec-combinations-15-10-1-1-2-2)
+1. تظهر أحرفها بالترتيب الأبجدي؟[🔗](#subsec-combinations-15-10-1-1-2-1-1) [🔗](#subsec-combinations-15-10-1-1-2-1)
+2. يمكن أن يأتي أحرف الكلمة بأيّ ترتيب؟[🔗](#subsec-combinations-15-10-1-1-2-2-1) [🔗](#subsec-combinations-15-10-1-1-2-2)
 
-[🔗](#subsec-combinations-15-10-1-1) Solution. Does “order matter” for the first question? In some sense, absolutely! We only want to count words where the letters are in the correct order. But from the standard combination/permutation sense of order mattering, it does not.[🔗](#subsec-combinations-15-10-2-1) Much better would be to ask ourselves whether we should represent each outcome as a set of letters or a sequence of letters. It is true that words are a sequence of letters, but are we counting all possible sequences? Nope, just one sequence for each set of letters. Ah, yes, set of letters. Each outcome corresponds exactly to one set of three letters. We are counting sets, so we count combinations. The number of outcomes is \(C(26,3) = \binom{26}{3}\text{.}\)[🔗](#subsec-combinations-15-10-2-2) For the second question, it might look like the order shouldn’t matter. Well, it doesn’t matter to the machine spitting out the letters, but it would matter if we were trying to match the letters. No, let’s think about it like this: Are we counting every possible sequence of letters? Yes! So these are permutations, and the number of outcomes is \(P(26,3)\text{.}\)[🔗](#subsec-combinations-15-10-2-3) [🔗](#subsec-combinations-15-10-2) [🔗](#subsec-combinations-15-10) Another deceptive use of order appears when counting bit strings. Recall that an \(n\)-bit string of weight \(k\) is a string of \(n\) bits (0s and 1s) in which \(k\) of the bits are 1s. For example, the 4-bit strings of weight 2 are \begin{equation*} 1100, ~~ 1010, ~~ 1001, ~~ 0110, ~~ 0101, ~~ 0011\text{.} \end{equation*} Does order matter for bit strings? Of course it does! It is the only thing that matters. All of the strings above contain exactly the same number of 0s and 1s; they are only distinguished by the order of the bits. [🔗](#subsec-combinations-15-11) And yet, the number of \(n\)-bit strings of weight \(k\) is \(\binom{n}{k}\) and NOT a permutation. What is going on here?[🔗](#subsec-combinations-15-12) Nothing is broken; we are just not thinking about the right objects about which to consider the order. When we *choose* \(k\) out of \(n\) things for a bit string, it is the *positions* we are choosing (to fill with 1s, say). It does not matter in what order we choose those positions, just what set of positions we choose. That is, the bit string 1001 is the result of choosing positions 1 and 4 to put 1s into. If we chose positions 4 and then 1, we would get the same bit string.[🔗](#subsec-combinations-15-13) To summarize, the question of whether order matters can lead us astray when deciding between a combination and a permutation. Instead, we should decide whether the outcomes we are counting are sets or sequences. If we are counting sets, think combination. If we are counting sequences, think permutation.[🔗](#subsec-combinations-15-14) [🔗](#subsec-combinations-15)[🔗](#subsec-combinations)
+[🔗](#subsec-combinations-15-10-1-1) الحل. هل «يهمّ الترتيب» في السؤال الأوّل؟ في معنًى ما، بالتأكيد! فنحن لا نريد إلّا عدّ الكلمات التي تكون أحرفها بالترتيب الصحيح. لكن، بالمعنى المعتاد لمقارنة التوافيق بالتباديل، فإنّ الترتيب لا يهمّ.[🔗](#subsec-combinations-15-10-2-1) الأفضل بكثير أن نسأل أنفسنا: هل ينبغي أن نُمثّل كلّ نتيجة كمجموعة من الأحرف أم كتتابع من الأحرف؟ صحيح أنّ الكلمات تتابع من الأحرف، لكن هل نحن نعدّ جميع التتابعات الممكنة؟ لا، بل تتابع واحد فقط لكل مجموعة أحرف. آه، نعم، مجموعة أحرف. كلّ نتيجة تقابل مجموعة واحدة بالضبط من ثلاثة أحرف. نحن نعدّ المجموعات، إذن نعدّ التوافيق. وعدد النتائج هو \(C(26,3) = \binom{26}{3}\text{.}\)[🔗](#subsec-combinations-15-10-2-2) أمّا السؤال الثاني، فقد يبدو أنّ الترتيب لا ينبغي أن يهمّ. حسنًا، فهو لا يهمّ الآلة التي تطلّق الأحرف، لكنّه سيهمّ لو كنا نحاول مطابقة الأحرف. لا، لنفكّر في الأمر هكذا: هل نحن نعدّ كلّ تتابع ممكن من الأحرف؟ نعم! إذن هذه تباديل، وعدد النتائج هو \(P(26,3)\text{.}\)[🔗](#subsec-combinations-15-10-2-3) [🔗](#subsec-combinations-15-10-2) [🔗](#subsec-combinations-15-10) ويظهر استعمال مضلّل آخر للترتيب عند عدّ السلاسل الثنائية. تذكّر أنّ السلسلة الثنائية ذات \(n\) بت وبوزن \(k\) هي سلسلة من \(n\) بت (أصفار ووحدات) يكون فيها \(k\) من البتات تساوي 1. فمثلًا، السلاسل الثنائية ذات 4 بتات وبوزن 2 هي \begin{equation*} 1100, ~~ 1010, ~~ 1001, ~~ 0110, ~~ 0101, ~~ 0011\text{.} \end{equation*} هل يهمّ الترتيب في السلاسل الثنائية؟ بالتأكيد! فهو الشيء الوحيد الذي يهمّ. فكلّ السلاسل أعلاه تحتوي على العدد نفسه تمامًا من الأصفار والواحدات؛ إنّما يميّزها ترتيب البتات. [🔗](#subsec-combinations-15-11) ومع ذلك، فإنّ عدد السلاسل الثنائية ذات \(n\) بت وبوزن \(k\) هو \(\binom{n}{k}\) وليس تبادلًا. فما الذي يجري هنا؟[🔗](#subsec-combinations-15-12) لا شيء معطوب؛ إنّما نحن لا نفكّر في الأشياء الصحيحة التي نبحث عن الترتيب فيها. فعندما *نختار* \(k\) من \(n\) شيئًا من أجل سلسلة ثنائية، فإنّما نختار *المواضع* (لنملأها بالواحدات مثلًا). ولا يهمّنا في أيّ ترتيب نختار تلك المواضع، بل أيّ مجموعة من المواضع نختار. أي أنّ السلسلة الثنائية 1001 هي نتيجة اختيار الموضعين 1 و4 لوضع الواحدات فيهما. ولو اخترنا الموضع 4 ثم الموضع 1، لانتهينا إلى السلسلة الثنائية نفسها.[🔗](#subsec-combinations-15-13) وباختصار، فإنّ سؤال ما إذا كان الترتيب يهمّ يمكن أن يقودنا إلى الزلل عند الاختيار بين توافيق وتبادل. وبدلًا من ذلك، علينا أن نقرّر ما إذا كانت النتائج التي نعدّها مجموعات أم تتابعات. إن كنّا نعدّ مجموعات، ففكّر في التوافيق. وإن كنّا نعدّ تتابعات، ففكّر في التباديل.[🔗](#subsec-combinations-15-14) [🔗](#subsec-combinations-15)[🔗](#subsec-combinations)
 
-### Subsection The Quotient Principle
+### القسم الفرعي: مبدأ القسمة
 
-We have two ways to write the numerical relationship between the numbers of combinations and permutations. Using the product principle, we have, \begin{equation*} P(n,k) = \binom{n}{k} \cdot k! \end{equation*} which can be rewritten as, \begin{equation*} \binom{n}{k} = \frac{P(n,k)}{k!}\text{.} \end{equation*} This second formula suggests that there might be a *quotient principle* that we could use to justify it. [🔗](#subsec-quotient-principle-2) Let’s think about what division means. One way to think of the division problem \(24 \div 6 = 4\text{,}\) for example, is saying that if you have 24 things that you divide into groups of size 6, the number of groups will be 4. 3 The other way to interpret this statement is that if you divide 24 things into six groups, then each group will have size 4, but this is less useful for what we will do.[🔗](#subsec-quotient-principle-3) Now let’s look at all the 3-permutations of a set of size 4: For example, all the ways to make 3-letter words using the letters \(a, b, c, d\text{.}\) We know the number of such words is \(P(4,3) = 4\cdot 3 \cdot 2 = 24\text{.}\) It is helpful to actually list all these out.[🔗](#subsec-quotient-principle-4)
+لدينا طريقتان لكتابة العلاقة العددية بين أعداد التوافيق والتباديل. فباستعمال مبدأ الضرب، لدينا \begin{equation*} P(n,k) = \binom{n}{k} \cdot k! \end{equation*} ويمكن إعادة كتابتها على الصورة \begin{equation*} \binom{n}{k} = \frac{P(n,k)}{k!}\text{.} \end{equation*} وتوحي هذه الصيغة الثانية بأنّه قد يوجد *مبدأ قسمة* يمكننا استعماله لتبريرها. [🔗](#subsec-quotient-principle-2) فلنتأمّل في معنى القسمة. فإحدى طرائق التفكير في مسألة القسمة \(24 \div 6 = 4\text{,}\) مثلًا، هي القول إنّ لديك 24 شيئًا تقسمها إلى مجموعات حجم كلّ منها 6، فسيكون عدد المجموعات 4. 3 أمّا التفسير الآخر لعبارة كهذه، فهو أنّك إذا قسّمت 24 شيئًا إلى ستّ مجموعات، فإنّ كلّ مجموعة يكون حجمها 4، لكنّ هذا أقلّ نفعًا فيما سنفعله.[🔗](#subsec-quotient-principle-3) والآن فلننظر في جميع تبادلات 3 عناصر لمجموعة حجمها 4: أي جميع طرق صنع كلمات ذات ثلاثة أحرف باستخدام الأحرف \(a, b, c, d\text{.}\) ونعرف أنّ عدد هذه الكلمات هو \(P(4,3) = 4\cdot 3 \cdot 2 = 24\text{.}\) ومن المفيد أن نكتبها جميعًا هنا.[🔗](#subsec-quotient-principle-4)
 
 | \(abc\) | \(acb\) | \(bac\) | \(bca\) | \(cab\) | \(cba\) |
 | --- | --- | --- | --- | --- | --- |
@@ -174,126 +174,126 @@ We have two ways to write the numerical relationship between the numbers of comb
 | \(acd\) | \(adc\) | \(cad\) | \(cda\) | \(dac\) | \(dca\) |
 | \(bcd\) | \(bdc\) | \(cbd\) | \(cdb\) | \(dbc\) | \(dcb\) |
 
-Look at the first row. What do all these permutations have in common? These are exactly the permutations that use the letters \(a, b, c\) in different orders. It is not surprising that there are 6 of these, since the number of ways to arrange three elements is \(3! = 6\text{.}\) Similarly, the second row has 6 permutations that use the letters \(a, b, d\) in different orders, and so on.[🔗](#subsec-quotient-principle-6) The point is, if we wanted to just count how many *sets* of three of the four letters we have, each set corresponds exactly to one of the rows in the table. There are 24 elements in the table, and 6 elements in each row, so there must be \(24 \div 6 = 4\) rows. And of course, we are not surprised because \(\binom{4}{3} = 4\text{.}\)[🔗](#subsec-quotient-principle-7) A more mathematically rigorous explanation for this phenomenon is to use the language of equivalence relations and partitions from [Section 2.6](sec_gt-relations.html). We start with permutations, and then we define an *equivalence relation* on the permutations by saying two permutations are equivalent provided they contain exactly the same elements. From the equivalence relation we get a *partition* of our set of permutations into *equivalence classes*. The combinations we want to count are precisely the equivalence classes. Since each equivalence class has the same size, we can find the number of classes by dividing the number of permutations by the size of each class.[🔗](#subsec-quotient-principle-8) This sort of quotient principle is also useful for solving questions where the answer isn’t obviously either a permutation or combination.[🔗](#subsec-quotient-principle-9)
+انظر إلى الصفّ الأوّل. ما الذي يشترك فيه جميع هذه التباديل؟ إنّها هي بالضبط التباديل التي تستخدم الأحرف \(a, b, c\) بتراتيب مختلفة. وليس مفاجئًا وجود 6 منها، لأنّ عدد طرق ترتيب ثلاثة عناصر هو \(3! = 6\text{.}\) وبالمثل، في الصفّ الثاني 6 تباديل تستخدم الأحرف \(a, b, d\) بتراتيب مختلفة، وهكذا.[🔗](#subsec-quotient-principle-6) والأمر المهمّ هو، لو أردنا فقط عدّ كم عدد *مجموعات* من ثلاثة من الأحرف الأربعة التي لدينا، لكانت كلّ مجموعة تقابل بالضبط أحد صفوف الجدول. في الجدول 24 عنصرًا، وفي كلّ صفّ 6 عناصر، إذن لا بدّ من وجود \(24 \div 6 = 4\) صفوف. وبطبيء الحال لا نندهش لأنّ \(\binom{4}{3} = 4\text{.}\)[🔗](#subsec-quotient-principle-7) أمّا التفسير الأكثر رصانةً رياضيًا لهذه الظاهرة فهو استعمال لغة علاقات التكافؤ والتقسيمات من [القسم 2.6](sec_gt-relations.html). فنحن نبدأ بالتباديل، ثم نعرّف *علاقة تكافؤ* على التباديل بأن نقول إنّ تبادلَين متكافئان إذا احتويا على العناصر نفسها تمامًا. ومن علاقة التكافؤ نحصل على *تقسيم* لمجموعة تباديلنا إلى *أصناف تكافؤ*. والتوافيق التي نريد عدّها هي بالضبط أصناف التكافؤ. وبما أنّ كلّ صنف تكافؤ له الحجم نفسه، يمكننا إيجاد عدد الأصناف بقسم عدد التباديل على حجم كلّ صنف.[🔗](#subsec-quotient-principle-8) وهذا النوع من مبدأ القسمة مفيد أيضًا لحلّ الأسئلة التي لا يكون فيها الجواب بوضوح تبادلًا ولا توافيق.[🔗](#subsec-quotient-principle-9)
 
-#### Example 3.4.12.
+#### مثال 3.4.12.
 
-You have decided to decorate your magic wand with bands of different colored tape. You have 10 different colors to choose from, and you will use five of them to create five different stripes of color. How many different wand designs are possible?[🔗](#subsec-quotient-principle-10-1-1) Solution. Our first attempt to solve this problem might be to think of each outcome we are trying to count as a 5-permutation of 10 colors. That would give us an answer of \(P(10,5) = 10\cdot 9\cdot 8\cdot 7\cdot 6 = 30,240\text{.}\) So why is this not correct? Let’s start making a list of the outcomes that are possible.
+قرّرتَ أن تزيّن عصاك السحرية بشرائط من شريط لاصق ملوّن. لديك 10 ألوان مختلفة تختار من بينها، وستستخدم خمسة منها لتكوين خمسة خطوط ملوّنة مختلفة. كم عدد تصاميم العصا المختلفة الممكنة؟[🔗](#subsec-quotient-principle-10-1-1) الحل. قد تكون محاولتنا الأولى لحلّ هذه المسألة أن نفكّر في كلّ نتيجة نحاول عدّها بوصفها تبادلًا لـ5 عناصر من 10 ألوان. وسيعطينا ذلك جوابًا قدره \(P(10,5) = 10\cdot 9\cdot 8\cdot 7\cdot 6 = 30,240\text{.}\) فلماذا هذا ليس صحيحًا؟ لنبدأ بصنع قائمة بالنتائج الممكنة.
 
-1. Red, blue, green, yellow, orange.[🔗](#subsec-quotient-principle-10-2-1-2-1-1) [🔗](#subsec-quotient-principle-10-2-1-2-1)
-2. Red, blue, green, yellow, purple.[🔗](#subsec-quotient-principle-10-2-1-2-2-1) [🔗](#subsec-quotient-principle-10-2-1-2-2)
-3. Blue, green, red, yellow, orange.[🔗](#subsec-quotient-principle-10-2-1-2-3-1) [🔗](#subsec-quotient-principle-10-2-1-2-3)
-4. Orange, yellow, green, blue, red.[🔗](#subsec-quotient-principle-10-2-1-2-4-1) [🔗](#subsec-quotient-principle-10-2-1-2-4)
-5. etc.[🔗](#subsec-quotient-principle-10-2-1-2-5-1) [🔗](#subsec-quotient-principle-10-2-1-2-5)
+1. الأحمر، والأزرق، والأخضر، والأصفر، والبرتقالي.[🔗](#subsec-quotient-principle-10-2-1-2-1-1) [🔗](#subsec-quotient-principle-10-2-1-2-1)
+2. الأحمر، والأزرق، والأخضر، والأصفر، والبنفسجي.[🔗](#subsec-quotient-principle-10-2-1-2-2-1) [🔗](#subsec-quotient-principle-10-2-1-2-2)
+3. الأزرق، والأخضر، والأحمر، والأصفر، والبرتقالي.[🔗](#subsec-quotient-principle-10-2-1-2-3-1) [🔗](#subsec-quotient-principle-10-2-1-2-3)
+4. البرتقالي، والأصفر، والأخضر، والأزرق، والأحمر.[🔗](#subsec-quotient-principle-10-2-1-2-4-1) [🔗](#subsec-quotient-principle-10-2-1-2-4)
+5. وهكذا.[🔗](#subsec-quotient-principle-10-2-1-2-5-1) [🔗](#subsec-quotient-principle-10-2-1-2-5)
 
-While starting this list, perhaps we asked ourselves whether red, red, blue, blue, red should be on the list, and recognized that it shouldn’t. Another thing we might have considered is whether items 1 and 3 are really different. They are, since one wand has red as an outside color while the other one does not. [🔗](#subsec-quotient-principle-10-2-1) But what about items 1 and 4? They have the same five colors, but in a different order. However, if you were to spin the magic wand around, like magicians are apt to do, you could easily end up with wand 4 from wand 1. Aha! We see that each wand is counted exactly twice in our list of permutations: two permutations are equivalent if they are just the *reverse* of each other.[🔗](#subsec-quotient-principle-10-2-2) Since we can group the permutations into groups of size 2, and each group corresponds to a single wand, we see that the correct answer is, \begin{equation*} \frac{P(10,5)}{2} = \frac{10\cdot 9\cdot 8\cdot 7\cdot 6}{2} = 15,120\text{.} \end{equation*} Tada! [🔗](#subsec-quotient-principle-10-2-3) [🔗](#subsec-quotient-principle-10-2) [🔗](#subsec-quotient-principle-10)[🔗](#subsec-quotient-principle)
+وبينما كنّا نبدأ هذه القائمة، ربما سألنا أنفسنا ما إذا كان ينبغي أن يكون في القائمة الأحمر، والأحمر، والأزرق، والأزرق، والأحمر، وتبيّن أنّه لا ينبغي. ومن الأشياء الأخرى التي ربما فكّرنا فيها ما إذا كان البندان 1 و3 مختلفان فعلًا. فهما كذلك، لأنّ إحدى العصاَيْن يكون بها الأحمر لونًا خارجيًا بينما الأخرى لا. [🔗](#subsec-quotient-principle-10-2-1) وماذا عن البندين 1 و4؟ فلهما الألوان الخمسة نفسها، لكن بترتيب مختلف. لكن، إن قمتَ بإدوير العصا السحرية حول نفسها، كما يحبّ السحرة أن يفعلوا، من السهل تمامًا أن تنتقل من العصا 1 إلى العصا 4. آه! نرى أنّ كلّ عصا تُعدّ مرّتين بالضبط في قائمة التباديل لدينا: فتبادلان متكافئان إذا كان أحدهما *معكوس* الآخر.[🔗](#subsec-quotient-principle-10-2-2) وبما أنّ يمكننا تجميع التباديل في مجموعات حجمها 2، وأنّ كلّ مجموعة تقابل عصا واحدة، نرى أنّ الجواب الصحيح هو \begin{equation*} \frac{P(10,5)}{2} = \frac{10\cdot 9\cdot 8\cdot 7\cdot 6}{2} = 15,120\text{.} \end{equation*} أحسنت! [🔗](#subsec-quotient-principle-10-2-3) [🔗](#subsec-quotient-principle-10-2) [🔗](#subsec-quotient-principle-10)[🔗](#subsec-quotient-principle)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-True or false: The number of sequences of two distinct digits from 0-9 is *twice* the number of sets of two distinct digits from 0-9. Briefly explain.[🔗](#rq-counting-combperm-2-1-1) [🔗](#rq-counting-combperm-2)
+صح أم خطأ: عدد التتابعات المكوّنة من رقمين مختلفين من 0-9 هو *ضعف* عدد المجموعات المكوّنة من رقمين مختلفين من 0-9. اشرح بإيجاز.[🔗](#rq-counting-combperm-2-1-1) [🔗](#rq-counting-combperm-2)
 
 #### 2.
 
-True or false: The number of sequences of three distinct digits from 0-9 is *3 times* the number of sets of three distinct digits from 0-9. Briefly explain.[🔗](#rq-counting-combperm-3-1-1) [🔗](#rq-counting-combperm-3)
+صح أم خطأ: عدد التتابعات المكوّنة من ثلاثة أرقام مختلفة من 0-9 هو *3 أضعاف* عدد المجموعات المكوّنة من ثلاثة أرقام مختلفة من 0-9. اشرح بإيجاز.[🔗](#rq-counting-combperm-3-1-1) [🔗](#rq-counting-combperm-3)
 
 #### 3.
 
-What questions do you have after reading this section? Write at least one question about the content of this section that you are curious about.[🔗](#rq-counting-combperm-q-1-1) [🔗](#rq-counting-combperm-q)[🔗](#rqs-counting-combperm)
+ما الأسئلة التي تدور في ذهنك بعد قراءة هذا القسم؟ اكتب سؤالًا واحدًا على الأقل عن محتوى هذا القسم يثير فضولك.[🔗](#rq-counting-combperm-q-1-1) [🔗](#rq-counting-combperm-q)[🔗](#rqs-counting-combperm)
 
-### Exercises Practice Problems
+### تمارين مسائل تدريبية
 
 #### 1.
 
-Activate A pizza parlor offers 8 toppings.
+Activate يقدّم مقهى البيتزا 8 أنواع من الإضافات.
 
-1. How many 4-topping pizzas could they put on their menu? Assume double toppings are not allowed.[🔗](#extracted-webwork-116-1-1-1-1-1-1) [🔗](#extracted-webwork-116-1-1-1-1-1)
-2. How many total pizzas are possible, with between zero and 8 toppings (but not double toppings) allowed?[🔗](#extracted-webwork-116-1-1-1-1-2-1) [🔗](#extracted-webwork-116-1-1-1-1-2)
-3. The pizza parlor will list the 8 toppings in two equal-sized columns on their menu. How many ways can they arrange the toppings in the left column?[🔗](#extracted-webwork-116-1-1-1-1-3-1) [🔗](#extracted-webwork-116-1-1-1-1-3)
+1. كم عدد البيتزاات ذات الإضافات الـ4 التي يمكنهم وضعها في قائمة أسعارهم؟ افترض أنّ الإضافات المكرّرة غير مسموحة.[🔗](#extracted-webwork-116-1-1-1-1-1-1) [🔗](#extracted-webwork-116-1-1-1-1-1)
+2. كم عدد البيتزاات الممكنة إجمالًا، مع السماح بما بين صفر و8 إضافات (لكن دون إضافات مكرّرة)؟[🔗](#extracted-webwork-116-1-1-1-1-2-1) [🔗](#extracted-webwork-116-1-1-1-1-2)
+3. سيعرض مقهى البيتزا الإضافات الثماني في عمودين متساويي الحجم في قائمة أسعاره. فكم عدد الطرق التي يمكنهم ترتيب بها الإضافات في العمود الأيسر؟[🔗](#extracted-webwork-116-1-1-1-1-3-1) [🔗](#extracted-webwork-116-1-1-1-1-3)
 
 [🔗](#extracted-webwork-116-1-1-1) [🔗](#ww-cvp-pizza)
 
 #### 2.
 
-Activate A combination lock consists of a dial with 45 numbers on it. To open the lock, you turn the dial to the right until you reach the first number, then to the left until you get to the second number, then to the right again to the third number. The numbers must be distinct. How many different combinations are possible?[🔗](#extracted-webwork-117-1-1-1) [🔗](#ww-cvp-lock)
+Activate يتكوّن قفل التوليف من قرص عليه 45 رقمًا. ولتشغيل القفل، تُدير القرص إلى اليمين حتى تصل إلى الرقم الأوّل، ثم إلى اليسار حتى تصل إلى الرقم الثاني، ثم إلى اليمين مرّة أخرى حتى تصل إلى الرقم الثالث. ويجب أن تكون الأرقام متمايزة. كم عدد التوافيق المختلفة الممكنة؟[🔗](#extracted-webwork-117-1-1-1) [🔗](#ww-cvp-lock)
 
 #### 3.
 
-Activate Using the digits 2 through 9, find the number of different 3-digit numbers such that:
+Activate باستعمال الأرقام من 2 إلى 9، أوجد عدد الأعداد المختلفة ذات الخانات الثلاث بحيث:
 
-1. Digits can be used more than once.[🔗](#extracted-webwork-118-1-1-1-1-1-1) [🔗](#extracted-webwork-118-1-1-1-1-1)
-2. Digits cannot be repeated, but can come in any order.[🔗](#extracted-webwork-118-1-1-1-1-2-1) [🔗](#extracted-webwork-118-1-1-1-1-2)
-3. Digits cannot be repeated and must be written in increasing order.[🔗](#extracted-webwork-118-1-1-1-1-3-1) [🔗](#extracted-webwork-118-1-1-1-1-3)
+1. يمكن استخدام الأرقام أكثر من مرّة.[🔗](#extracted-webwork-118-1-1-1-1-1-1) [🔗](#extracted-webwork-118-1-1-1-1-1)
+2. لا يمكن تكرار الأرقام، لكن يمكن أن تأتي بأيّ ترتيب.[🔗](#extracted-webwork-118-1-1-1-1-2-1) [🔗](#extracted-webwork-118-1-1-1-1-2)
+3. لا يمكن تكرار الأرقام ويجب كتابتها بترتيب متزايد.[🔗](#extracted-webwork-118-1-1-1-1-3-1) [🔗](#extracted-webwork-118-1-1-1-1-3)
 
 [🔗](#extracted-webwork-118-1-1-1) [🔗](#ww-cvp-digits)
 
 #### 4.
 
-Activate In an attempt to clean up your room, you have purchased a new floating shelf to put some of your 18 books you have stacked in a corner. These books are all by different authors. The new book shelf is large enough to hold 14 of the books. Careful: Before answering the next two questions, ask yourself which answer should be larger.
+Activate في محاولة لتنظيف غرفتك، اشتريتَ رفًّا جديدًا معلّقًا لتضع عليه بعضًا من كتبك الـ18 التي راكمتها في زاوية. وهذه الكتب جميعها من مؤلفين مختلفين. والرف الجديد كبير بما يكفي لاستيعاب 14 من الكتب. تنبّه: قبل الإجابة عن السؤالين التاليين، اسأل نفسك أيّ الإجابتين ينبغي أن تكون أكبر.
 
-1. How many ways can you select and arrange 14 of the 18 books on the shelf? Notice that here we will allow the books to end up in any order.[🔗](#extracted-webwork-119-1-1-1-1-1-1) [🔗](#extracted-webwork-119-1-1-1-1-1)
-2. How many ways can you arrange 14 of the 18 books on the shelf if you insist they must be arranged alphabetically by author?[🔗](#extracted-webwork-119-1-1-1-1-2-1) [🔗](#extracted-webwork-119-1-1-1-1-2)
+1. كم عدد الطرق التي يمكنك بها اختيار 14 من الكتب الـ18 وترتيبها على الرف؟ لاحظ أنّنا سنسمح هنا بأن تنتهي الكتب في أيّ ترتيب.[🔗](#extracted-webwork-119-1-1-1-1-1-1) [🔗](#extracted-webwork-119-1-1-1-1-1)
+2. كم عدد الطرق التي يمكنك بها ترتيب 14 من الكتب الـ18 على الرف إن أصررت على أن تكون مرتّبة أبجديًا حسب المؤلف؟[🔗](#extracted-webwork-119-1-1-1-1-2-1) [🔗](#extracted-webwork-119-1-1-1-1-2)
 
 [🔗](#extracted-webwork-119-1-1-1) [🔗](#ww-cvp-books)
 
 #### 5.
 
-Activate An *anagram* of a word is just a rearrangement of its letters. How many different anagrams of “troublemakings” are there?[🔗](#extracted-webwork-120-1-1-1) [🔗](#ww-cvp-anagrams-unique)
+Activate *التبادل الحرفي* (anagram) لكلمة هو ببساطة إعادة ترتيب لحروفها. كم عدد التبادلات الحرفية المختلفة لكلمة «troublemakings»؟[🔗](#extracted-webwork-120-1-1-1) [🔗](#ww-cvp-anagrams-unique)
 
 #### 6.
 
-Activate How many anagrams are there of the word “voodoo” that start with the letter “v”?[🔗](#extracted-webwork-121-1-1-1) [🔗](#ww-cvp-anagrams-two)
+Activate كم عدد التبادلات الحرفية لكلمة «voodoo» التي تبدأ بالحرف «v»؟[🔗](#extracted-webwork-121-1-1-1) [🔗](#ww-cvp-anagrams-two)
 
 #### 7.
 
-Activate How many anagrams are there of “academia”?[🔗](#extracted-webwork-122-1-1-1) [🔗](#ww-cvp-anagrams-one-rep)
+Activate كم عدد التبادلات الحرفية لـ«academia»؟[🔗](#extracted-webwork-122-1-1-1) [🔗](#ww-cvp-anagrams-one-rep)
 
 #### 8.
 
-Activate On a business retreat, your company of 24 businessmen and businesswomen goes golfing.
+Activate في رحلة عمل، تذهب شركتك المكوّنة من 24 رجلًا وامرأة إلى الغولف.
 
-1. You need to divide up into foursomes (groups of 4 people): a first foursome, a second foursome, and so on. How many ways can you do this?[🔗](#extracted-webwork-123-1-1-1-1-1-1) [🔗](#extracted-webwork-123-1-1-1-1-1)
-2. After all your hard work, you realize that in fact, you want each foursome to include one of the 6 Board members (who are among the 24 golfers already). How many ways can you do this?[🔗](#extracted-webwork-123-1-1-1-1-2-1) [🔗](#extracted-webwork-123-1-1-1-1-2)
+1. عليك أن تقسّم المجموعة إلى مجموعات رباعية (مجموعات من 4 أشخاص): مجموعة رباعية أولى، وثانية، وهكذا. فكم عدد الطرق التي يمكنك فعل ذلك؟[🔗](#extracted-webwork-123-1-1-1-1-1-1) [🔗](#extracted-webwork-123-1-1-1-1-1)
+2. وبعد كلّ هذا العمل الشاقّ، تدرك أنّك في الحقيقة تريد أن تضمّ كلّ مجموعة رباعية أحد أعضاء مجلس الإدارة الستة (والذين هم أصلًا ضمن الـ24 لاعب غولف). فكم عدد الطرق التي يمكنك فعل ذلك؟[🔗](#extracted-webwork-123-1-1-1-1-2-1) [🔗](#extracted-webwork-123-1-1-1-1-2)
 
 [🔗](#extracted-webwork-123-1-1-1) [🔗](#ww-cvp-golf)
 
 #### 9.
 
-Activate How many different seating arrangements are possible for King Arthur and his 16 knights around their round table?[🔗](#extracted-webwork-124-1-1-1) [🔗](#ww-cvp-round-table)
+Activate كم عدد ترتيبات الجلوس المختلفة الممكنة للملك آرثر وفرسانه الستة عشر حول طاولتهم الدائرية؟[🔗](#extracted-webwork-124-1-1-1) [🔗](#ww-cvp-round-table)
 
 #### 10.
 
-Activate Consider sets \(A\) and \(B\) with \(|A| = 14\) and \(|B| = 21\text{.}\)
+Activate لتكن \(A\) و\(B\) مجموعتين بحيث \(|A| = 14\) و\(|B| = 21\text{.}\)
 
-1. How many functions \(f: A \to B\) are there?[🔗](#extracted-webwork-125-1-1-1-5-1-1) [🔗](#extracted-webwork-125-1-1-1-5-1)
-2. How many functions \(f: A \to B\) are injective?[🔗](#extracted-webwork-125-1-1-1-5-2-1) [🔗](#extracted-webwork-125-1-1-1-5-2)
+1. كم عدد الدوال \(f: A \to B\) الموجودة؟[🔗](#extracted-webwork-125-1-1-1-5-1-1) [🔗](#extracted-webwork-125-1-1-1-5-1)
+2. كم عدد الدوال \(f: A \to B\) الأحادية؟[🔗](#extracted-webwork-125-1-1-1-5-2-1) [🔗](#extracted-webwork-125-1-1-1-5-2)
 
 [🔗](#extracted-webwork-125-1-1-1) [🔗](#ww-cvp-functions)
 
 #### 11.
 
-Activate Consider functions \(f: {\left\{1,2,3,4,5,6\right\}}\to {\left\{1,2,3,4,5,6,7\right\}}\text{.}\)
+Activate لتأمّل في الدوال \(f: {\left\{1,2,3,4,5,6\right\}}\to {\left\{1,2,3,4,5,6,7\right\}}\text{.}\)
 
-1. How many functions are there total?[🔗](#extracted-webwork-126-1-1-1-2-1-1) [🔗](#extracted-webwork-126-1-1-1-2-1)
-2. How many functions are injective?[🔗](#extracted-webwork-126-1-1-1-2-2-1) [🔗](#extracted-webwork-126-1-1-1-2-2)
-3. How many of the injective functions are *increasing*? To be increasing means that if \(\renewcommand{\v}{\vtx{above}{}}a \lt b\) then \(\renewcommand{\v}{\vtx{above}{}}f(a) \lt f(b)\text{,}\) or in other words, the outputs get larger as the inputs get larger.[🔗](#extracted-webwork-126-1-1-1-2-3-1) [🔗](#extracted-webwork-126-1-1-1-2-3)
+1. كم عدد الدوال إجمالًا؟[🔗](#extracted-webwork-126-1-1-1-2-1-1) [🔗](#extracted-webwork-126-1-1-1-2-1)
+2. كم عدد الدوال الأحادية؟[🔗](#extracted-webwork-126-1-1-1-2-2-1) [🔗](#extracted-webwork-126-1-1-1-2-2)
+3. كم عدد الدوال الأحادية *المتزايدة*؟ معنى أن تكون متزايدة أنّه إذا كان \(\renewcommand{\v}{\vtx{above}{}}a \lt b\) فإنّ \(\renewcommand{\v}{\vtx{above}{}}f(a) \lt f(b)\text{,}\) أو بكلمات أخرى، إنّ المخرجات تكبر عندما تكبر المدخلات.[🔗](#extracted-webwork-126-1-1-1-2-3-1) [🔗](#extracted-webwork-126-1-1-1-2-3)
 
 [🔗](#extracted-webwork-126-1-1-1) [🔗](#ww-cvp-functions-inc)[🔗](#practice_counting-combperm)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-How many triangles are there with vertices from the points shown below? Note that we are not allowing degenerate triangles – ones with all three vertices on the same line – but we do allow non-right triangles. Explain why your answer is correct.[🔗](#exercises_counting-combperm-2-1-1) ![Five equally spaced dots in a vertical line and six additional equally spaced dots extending to the right in a horizontal line from the lowest dot (forming a right angle).](generated/latex-image/triangle-dots.svg) Hint. If you pick any three points, you can get a triangle, unless those three points are all on the \(x\)-axis or on the \(y\)-axis. There are other ways to start this as well, and any correct method should give the same answer.[🔗](#exercises_counting-combperm-2-2-1) [🔗](#exercises_counting-combperm-2-2) [🔗](#exercises_counting-combperm-2)
+كم عدد المثلثات التي رؤوسها من النقاط المعروضة أدناه؟ لاحظ أنّنا لا نسمح بالمثلثات المختزِلة – أي التي تقع رؤوسها الثلاثة على الخطّ نفسه – لكنّنا نسمح بالمثلثات غير القائمة. اشرح لماذا إجابتك صحيحة.[🔗](#exercises_counting-combperm-2-1-1) ![خمس نقاط متساوية المسافات في خطّ رأسي وست نقاط متساوية المسافات إضافية تمتدّ إلى اليمين في خطّ أفقي من أدنى نقطة (فتُشكّل زاوية قائمة).](generated/latex-image/triangle-dots.svg) تلميح. إذا اخترت أيّ ثلاث نقاط، يمكنك الحصول على مثلث، إلا إذا كانت تلك النقاط الثلاث كلها على محور \(x\) أو على محور \(y\). وهناك طرق أخرى للبدء في هذا أيضًا، وينبغي لأيّ طريقة صحيحة أن تعطي الجواب نفسه.[🔗](#exercises_counting-combperm-2-2-1) [🔗](#exercises_counting-combperm-2-2) [🔗](#exercises_counting-combperm-2)
 
 #### 2.
 
-We have seen that the formula for \(P(n,k)\) is \(\dfrac{n!}{(n-k)!}\text{.}\) Your task here is to explain *why* this is the right formula.
+لقد رأينا أنّ الصيغة لـ\(P(n,k)\) هي \(\dfrac{n!}{(n-k)!}\text{.}\) ومهمّتك هنا هي أن تشرح *لماذا* هذه هي الصيغة الصحيحة.
 
-1. Suppose you have 12 chips, each a different color. How many different stacks of 5 chips can you make? Explain your answer and why it is the same as using the formula for \(P(12,5)\text{.}\)[🔗](#exercises_counting-combperm-3-1-1-4-1-1) [🔗](#exercises_counting-combperm-3-1-1-4-1)
-2. Using the scenario of the 12 chips again, what does \(12!\) count? What does \(7!\) count? Explain.[🔗](#exercises_counting-combperm-3-1-1-4-2-1) [🔗](#exercises_counting-combperm-3-1-1-4-2)
-3. Explain why it makes sense to divide \(12!\) by \(7!\) when computing \(P(12,5)\) (in terms of the chips).[🔗](#exercises_counting-combperm-3-1-1-4-3-1) [🔗](#exercises_counting-combperm-3-1-1-4-3)
-4. Does your explanation work for numbers other than 12 and 5? Explain the formula \(P(n,k) = \frac{n!}{(n-k)!}\) using the variables \(n\) and \(k\text{.}\)[🔗](#exercises_counting-combperm-3-1-1-4-4-1) [🔗](#exercises_counting-combperm-3-1-1-4-4)
+1. لنفترض أنّ لديك 12 رقاقة، كلّ منها بلون مختلف. كم عدد الأكوام المختلفة ذات الـ5 رقائق التي يمكنك تكوينها؟ اشرح جوابك ولماذا هو نفسه المستعمل في الصيغة \(P(12,5)\text{.}\)[🔗](#exercises_counting-combperm-3-1-1-4-1-1) [🔗](#exercises_counting-combperm-3-1-1-4-1)
+2. وباستعمال سيناريو الرقائق الـ12 مرّة أخرى، فما الذي يعدّه \(12!\)؟ وما الذي يعدّه \(7!\)؟ اشرح.[🔗](#exercises_counting-combperm-3-1-1-4-2-1) [🔗](#exercises_counting-combperm-3-1-1-4-2)
+3. اشرح لماذا من المعقول أن نقسم \(12!\) على \(7!\) عند حساب \(P(12,5)\) (بعبارة أخرى، في ما يخصّ الرقائق).[🔗](#exercises_counting-combperm-3-1-1-4-3-1) [🔗](#exercises_counting-combperm-3-1-1-4-3)
+4. هل تنطبق شروحك على أعداد أخرى غير 12 و5؟ اشرح الصيغة \(P(n,k) = \frac{n!}{(n-k)!}\) باستعمال المتغيّرين \(n\) و\(k\text{.}\)[🔗](#exercises_counting-combperm-3-1-1-4-4-1) [🔗](#exercises_counting-combperm-3-1-1-4-4)
 
-[🔗](#exercises_counting-combperm-3-1-1) [🔗](#exercises_counting-combperm-3)[🔗](#exercises_counting-combperm)[🔗](#sec_counting-combperm) [&#xe5cb;Prev](sec_counting-non-disjoint.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_counting-multisets.html) [Feedback](/cdn-cgi/l/email-protection#167965757764387a73607f78566378757938737263)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_counting-combperm-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_counting-combperm-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+[🔗](#exercises_counting-combperm-3-1-1) [🔗](#exercises_counting-combperm-3)[🔗](#exercises_counting-combperm)[🔗](#sec_counting-combperm) [&#xe5cb;السابق](sec_counting-non-disjoint.html)[&#xe5ce;الأعلى](#)[التالي&#xe5cc;](sec_counting-multisets.html) [ملاحظات](/cdn-cgi/l/email-protection#167965757764387a73607f78566378757938737263)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_counting-combperm-RAIcon_cropped.png.webp)](https://runestone.academy)[![شعار MathJax](/images/discrete-math/sec_counting-combperm-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

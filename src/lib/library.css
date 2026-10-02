@@ -436,6 +436,16 @@
   align-items: start;
 }
 
+.book-head__layout > *, .book-body > *, .reader-layout > * {
+  min-width: 0;
+}
+
+.book-head__meta, .book-head__title, .book-head__lead,
+.book-fact__value, .toc-sections a, .aside-card,
+.prev-next__title, .reader-sheet > h1 {
+  overflow-wrap: anywhere;
+}
+
 .book-cover {
   aspect-ratio: 3 / 4;
   border-radius: 6px 12px 12px 6px;
@@ -579,7 +589,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
   gap: 0.1rem 1.2rem;
 }
 
@@ -657,13 +667,15 @@
   gap: 0.6rem;
   padding-block: 0.55rem;
   font-size: 0.9rem;
+  min-width: 0;
 }
 
 .reader-bar__book {
   font-family: var(--display);
   color: var(--rubric);
   text-decoration: none;
-  white-space: nowrap;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .reader-bar__chapter {
@@ -671,6 +683,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
+}
+
+@media (max-width: 620px) {
+  .reader-bar__inner {
+    flex-wrap: wrap;
+    row-gap: 0.35rem;
+  }
+
+  .reader-bar__chapter {
+    order: 3;
+    flex: 1 0 100%;
+  }
 }
 
 .reader-bar__spacer {
@@ -781,6 +806,7 @@
   padding: 0.3rem 0.75rem;
   cursor: pointer;
   text-decoration: none;
+  min-height: 44px;
 }
 
 .reader-tool:hover {
@@ -801,6 +827,56 @@
   font-family: var(--reading);
   font-size: 1.16rem;
   line-height: 2;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.reader-content pre {
+  max-width: 100%;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.reader-content code:not(pre code) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  unicode-bidi: isolate;
+}
+
+.reader-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.reader-content .katex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overflow-wrap: normal;
+  vertical-align: middle;
+  padding-block: .15rem;
+}
+
+.reader-content .katex-display .katex {
+  max-width: none;
+  overflow: visible;
+}
+
+.reader-content .katex-error {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reader-content iframe, .reader-content svg, .reader-content video {
+  max-width: 100%;
+}
+
+.reader-content figure {
+  max-width: 100%;
+  margin-inline: 0;
 }
 
 .reader-content > h2 {
@@ -857,7 +933,7 @@
 
 .prev-next {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   gap: 0.8rem;
   margin-top: 3rem;
   padding-top: 1.4rem;
@@ -1148,13 +1224,16 @@
   padding: 0;
   margin: 1rem 0 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.7rem;
 }
 
 .exercises ol > li {
   counter-increment: exercise;
   position: relative;
-  padding: 0.8rem 2.9rem 0.8rem 0.9rem;
+  padding-block: .8rem;
+  padding-inline: 2.9rem .9rem;
+  min-width: 0;
   border: 1px solid var(--rule);
   border-radius: 10px;
   background: var(--paper);
@@ -1164,7 +1243,7 @@
   content: counter(exercise);
   position: absolute;
   top: 0.75rem;
-  inset-inline-end: 0.8rem;
+  inset-inline-start: 0.8rem;
   width: 1.6rem;
   height: 1.6rem;
   display: grid;
@@ -1196,7 +1275,8 @@
 }
 
 .exercises ol ol > li {
-  padding: 0.25rem 2.3rem 0.25rem 0.6rem;
+  padding-block: .25rem;
+  padding-inline: 2.3rem .6rem;
   background: transparent;
   border: 0;
   border-inline-start: 2px solid var(--rule);
@@ -1351,7 +1431,7 @@
     display: inline-flex;
   }
 
-  .press-nav:not(.theme-toggle):not(.press-menu-toggle) {
+  .press-nav:not(.theme-toggle):not(.press-menu-toggle):not(.press-nav--open) {
     display: none;
   }
 
@@ -1377,7 +1457,7 @@
   }
 
   .book-cover {
-    max-width: 9rem;
+    max-width: 6rem;
     aspect-ratio: 3 / 4;
   }
 
@@ -1402,5 +1482,42 @@
   .stage-book__action {
     align-items: flex-start;
     text-align: start;
+  }
+
+  .reader-layout {
+    padding-block: .75rem 2rem;
+  }
+
+  .reader-sheet > h1 {
+    font-size: 1.6rem;
+    margin-block: .75rem 1rem;
+  }
+
+  .reader-content {
+    margin-top: 1rem;
+    font-size: 1.06rem;
+    line-height: 1.9;
+  }
+
+  .reader-content pre {
+    padding: .8rem;
+    font-size: .8rem;
+  }
+
+  .toc-sections a, .reader-aside a {
+    min-height: 44px;
+    align-items: center;
+    padding-block: .55rem;
+  }
+
+  .book-actions .button {
+    white-space: normal;
+    line-height: 1.5;
+    max-width: 100%;
+    padding: .7rem 1rem;
+  }
+
+  .exercises, .callout {
+    padding: .75rem;
   }
 }

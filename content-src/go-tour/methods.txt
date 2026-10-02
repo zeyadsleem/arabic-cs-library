@@ -1,0 +1,1142 @@
+MODULE TITLE: Methods and interfaces
+MODULE DESCRIPTION: This lesson covers methods and interfaces, the constructs that define objects and their behavior.
+
+PAGE 1 TITLE: Methods
+
+  <h2>Methods</h2>
+
+
+  <p>
+    Go does not have classes.
+
+
+    However, you can define methods on types.
+  </p>
+
+
+
+  <p>
+    A method is a function with a special <i>receiver</i> argument.
+  </p>
+
+
+
+  <p>
+    The receiver appears in its own argument list between the <code>func</code> keyword and
+
+
+    the method name.
+  </p>
+
+
+
+  <p>
+    In this example, the <code>Abs</code> method has a receiver of type <code>Vertex</code> named <code>v</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 1
+
+PAGE 2 TITLE: Methods are functions
+
+  <h2>Methods are functions</h2>
+
+
+  <p>
+    Remember: a method is just a function with a receiver argument.
+  </p>
+
+
+
+  <p>
+    Here&#39;s <code>Abs</code> written as a regular function with no change in functionality.
+  </p>
+
+
+
+
+
+
+
+END PAGE 2
+
+PAGE 3 TITLE: Methods continued
+
+  <h2>Methods continued</h2>
+
+
+  <p>
+    You can declare a method on non-struct types, too.
+  </p>
+
+
+
+  <p>
+    In this example we see a numeric type <code>MyFloat</code> with an <code>Abs</code> method.
+  </p>
+
+
+
+  <p>
+    You can only declare a method with a receiver whose type is defined in the same
+
+
+    package as the method.
+
+
+    You cannot declare a method with a receiver whose type is defined in another
+
+
+    package (which includes the built-in types such as <code>int</code>).
+  </p>
+
+
+
+
+
+
+
+END PAGE 3
+
+PAGE 4 TITLE: Pointer receivers
+
+  <h2>Pointer receivers</h2>
+
+
+  <p>
+    You can declare methods with pointer receivers.
+  </p>
+
+
+
+  <p>
+    This means the receiver type has the literal syntax <code>*T</code> for some type <code>T</code>.
+
+
+    (Also, <code>T</code> cannot itself be a pointer such as <code>*int</code>.)
+  </p>
+
+
+
+  <p>
+    For example, the <code>Scale</code> method here is defined on <code>*Vertex</code>.
+  </p>
+
+
+
+  <p>
+    Methods with pointer receivers can modify the value to which the receiver
+
+
+    points (as <code>Scale</code> does here).
+
+
+    Since methods often need to modify their receiver, pointer receivers are more
+
+
+    common than value receivers.
+  </p>
+
+
+
+  <p>
+    Try removing the <code>*</code> from the declaration of the <code>Scale</code> function on line 16
+
+
+    and observe how the program&#39;s behavior changes.
+  </p>
+
+
+
+  <p>
+    With a value receiver, the <code>Scale</code> method operates on a copy of the original
+
+
+    <code>Vertex</code> value.
+
+
+    (This is the same behavior as for any other function argument.)
+
+
+    The <code>Scale</code> method must have a pointer receiver to change the <code>Vertex</code> value
+
+
+    declared in the <code>main</code> function.
+  </p>
+
+
+
+
+
+
+
+END PAGE 4
+
+PAGE 5 TITLE: Pointers and functions
+
+  <h2>Pointers and functions</h2>
+
+
+  <p>
+    Here we see the <code>Abs</code> and <code>Scale</code> methods rewritten as functions.
+  </p>
+
+
+
+  <p>
+    Again, try removing the <code>*</code> from line 16.
+
+
+    Can you see why the behavior changes?
+
+
+    What else did you need to change for the example to compile?
+  </p>
+
+
+
+  <p>
+    (If you&#39;re not sure, continue to the next page.)
+  </p>
+
+
+
+
+
+
+
+END PAGE 5
+
+PAGE 6 TITLE: Methods and pointer indirection
+
+  <h2>Methods and pointer indirection</h2>
+
+
+  <p>
+    Comparing the previous two programs, you might notice that
+
+
+    functions with a pointer argument must take a pointer:
+  </p>
+
+
+
+  <pre>var v Vertex
+ScaleFunc(v, 5)  // Compile error!
+ScaleFunc(&amp;v, 5) // OK</pre>
+
+
+
+  <p>
+    while methods with pointer receivers take either a value or a pointer as the
+
+
+    receiver when they are called:
+  </p>
+
+
+
+  <pre>var v Vertex
+v.Scale(5)  // OK
+p := &amp;v
+p.Scale(10) // OK</pre>
+
+
+
+  <p>
+    For the statement <code>v.Scale(5)</code>, even though <code>v</code> is a value and not a pointer,
+
+
+    the method with the pointer receiver is called automatically.
+
+
+    That is, as a convenience, Go interprets the statement <code>v.Scale(5)</code> as
+
+
+    <code>(&amp;v).Scale(5)</code> since the <code>Scale</code> method has a pointer receiver.
+  </p>
+
+
+
+
+
+
+
+END PAGE 6
+
+PAGE 7 TITLE: Methods and pointer indirection (2)
+
+  <h2>Methods and pointer indirection (2)</h2>
+
+
+  <p>
+    The equivalent thing happens in the reverse direction.
+  </p>
+
+
+
+  <p>
+    Functions that take a value argument must take a value of that specific type:
+  </p>
+
+
+
+  <pre>var v Vertex
+fmt.Println(AbsFunc(v))  // OK
+fmt.Println(AbsFunc(&amp;v)) // Compile error!</pre>
+
+
+
+  <p>
+    while methods with value receivers take either a value or a pointer as the
+
+
+    receiver when they are called:
+  </p>
+
+
+
+  <pre>var v Vertex
+fmt.Println(v.Abs()) // OK
+p := &amp;v
+fmt.Println(p.Abs()) // OK</pre>
+
+
+
+  <p>
+    In this case, the method call <code>p.Abs()</code> is interpreted as <code>(*p).Abs()</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 7
+
+PAGE 8 TITLE: Choosing a value or pointer receiver
+
+  <h2>Choosing a value or pointer receiver</h2>
+
+
+  <p>
+    There are two reasons to use a pointer receiver.
+  </p>
+
+
+
+  <p>
+    The first is so that the method can modify the value that its receiver points to.
+  </p>
+
+
+
+  <p>
+    The second is to avoid copying the value on each method call.
+
+
+    This can be more efficient if the receiver is a large struct, for example.
+  </p>
+
+
+
+  <p>
+    In this example, both <code>Scale</code> and <code>Abs</code> are methods with receiver type <code>*Vertex</code>,
+
+
+    even though the <code>Abs</code> method needn&#39;t modify its receiver.
+  </p>
+
+
+
+  <p>
+    In general, all methods on a given type should have either value or pointer
+
+
+    receivers, but not a mixture of both.
+
+
+    (We&#39;ll see why over the next few pages.)
+  </p>
+
+
+
+
+
+
+
+END PAGE 8
+
+PAGE 9 TITLE: Interfaces
+
+  <h2>Interfaces</h2>
+
+
+  <p>
+    An <i>interface type</i> is defined as a set of method signatures.
+  </p>
+
+
+
+  <p>
+    A value of interface type can hold any value that implements those methods.
+  </p>
+
+
+
+  <p>
+    <b>Note:</b> There is an error in the example code on line 22.
+
+
+    <code>Vertex</code> (the value type) doesn&#39;t implement <code>Abser</code> because
+
+
+    the <code>Abs</code> method is defined only on <code>*Vertex</code> (the pointer type).
+  </p>
+
+
+
+
+
+
+
+END PAGE 9
+
+PAGE 10 TITLE: Interfaces are implemented implicitly
+
+  <h2>Interfaces are implemented implicitly</h2>
+
+
+  <p>
+    A type implements an interface by implementing its methods.
+
+
+    There is no explicit declaration of intent, no &#34;implements&#34; keyword.
+  </p>
+
+
+
+  <p>
+    Implicit interfaces decouple the definition of an interface from its
+
+
+    implementation, which could then appear in any package without prearrangement.
+  </p>
+
+
+
+
+
+
+
+END PAGE 10
+
+PAGE 11 TITLE: Interface values
+
+  <h2>Interface values</h2>
+
+
+  <p>
+    Under the hood, interface values can be thought of as a tuple of a value and a
+
+
+    concrete type:
+  </p>
+
+
+
+  <pre>(value, type)</pre>
+
+
+
+  <p>
+    An interface value holds a value of a specific underlying concrete type.
+  </p>
+
+
+
+  <p>
+    Calling a method on an interface value executes the method of the same name on
+
+
+    its underlying type.
+  </p>
+
+
+
+
+
+
+
+END PAGE 11
+
+PAGE 12 TITLE: Interface values with nil underlying values
+
+  <h2>Interface values with nil underlying values</h2>
+
+
+  <p>
+    If the concrete value inside the interface itself is nil,
+
+
+    the method will be called with a nil receiver.
+  </p>
+
+
+
+  <p>
+    In some languages this would trigger a null pointer exception,
+
+
+    but in Go it is common to write methods that gracefully handle being called
+
+
+    with a nil receiver (as with the method <code>M</code> in this example.)
+  </p>
+
+
+
+  <p>
+    Note that an interface value that holds a nil concrete value is itself non-nil.
+  </p>
+
+
+
+
+
+
+
+END PAGE 12
+
+PAGE 13 TITLE: Nil interface values
+
+  <h2>Nil interface values</h2>
+
+
+  <p>
+    A nil interface value holds neither value nor concrete type.
+  </p>
+
+
+
+  <p>
+    Calling a method on a nil interface is a run-time error because there is no
+
+
+    type inside the interface tuple to indicate which <i>concrete</i> method to call.
+  </p>
+
+
+
+
+
+
+
+END PAGE 13
+
+PAGE 14 TITLE: The empty interface
+
+  <h2>The empty interface</h2>
+
+
+  <p>
+    The interface type that specifies zero methods is known as the <i>empty interface</i>:
+  </p>
+
+
+
+  <pre>interface{}</pre>
+
+
+
+  <p>
+    An empty interface may hold values of any type.
+
+
+    (Every type implements at least zero methods.)
+  </p>
+
+
+
+  <p>
+    <code>any</code> is an alias for <code>interface{}</code>, and the two are completely
+
+
+    equivalent.
+  </p>
+
+
+
+  <p>
+    Empty interfaces are used by code that handles values of unknown type.
+
+
+    For example, <code>fmt.Print</code> takes any number of arguments of type <code>any</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 14
+
+PAGE 15 TITLE: Type assertions
+
+  <h2>Type assertions</h2>
+
+
+  <p>
+    A <i>type assertion</i> provides access to an interface value&#39;s underlying concrete value.
+  </p>
+
+
+
+  <pre>t := i.(T)</pre>
+
+
+
+  <p>
+    This statement asserts that the interface value <code>i</code> holds the concrete type <code>T</code>
+
+
+    and assigns the underlying <code>T</code> value to the variable <code>t</code>.
+  </p>
+
+
+
+  <p>
+    If <code>i</code> does not hold a <code>T</code>, the statement will trigger a panic.
+  </p>
+
+
+
+  <p>
+    To <i>test</i> whether an interface value holds a specific type,
+
+
+    a type assertion can return two values: the underlying value
+
+
+    and a boolean value that reports whether the assertion succeeded.
+  </p>
+
+
+
+  <pre>t, ok := i.(T)</pre>
+
+
+
+  <p>
+    If <code>i</code> holds a <code>T</code>, then <code>t</code> will be the underlying value and <code>ok</code> will be true.
+  </p>
+
+
+
+  <p>
+    If not, <code>ok</code> will be false and <code>t</code> will be the zero value of type <code>T</code>,
+
+
+    and no panic occurs.
+  </p>
+
+
+
+  <p>
+    Note the similarity between this syntax and that of reading from a map.
+  </p>
+
+
+
+
+
+
+
+END PAGE 15
+
+PAGE 16 TITLE: Type switches
+
+  <h2>Type switches</h2>
+
+
+  <p>
+    A <i>type switch</i> is a construct that permits several type assertions in series.
+  </p>
+
+
+
+  <p>
+    A type switch is like a regular switch statement, but the cases in a type
+
+
+    switch specify types (not values), and those values are compared against
+
+
+    the type of the value held by the given interface value.
+  </p>
+
+
+
+  <pre>switch v := i.(type) {
+case T:
+    // here v has type T
+case S:
+    // here v has type S
+default:
+    // no match; here v has the same type as i
+}</pre>
+
+
+
+  <p>
+    The declaration in a type switch has the same syntax as a type assertion <code>i.(T)</code>,
+
+
+    but the specific type <code>T</code> is replaced with the keyword <code>type</code>.
+  </p>
+
+
+
+  <p>
+    This switch statement tests whether the interface value <code>i</code>
+
+
+    holds a value of type <code>T</code> or <code>S</code>.
+
+
+    In each of the <code>T</code> and <code>S</code> cases, the variable <code>v</code> will be of type
+
+
+    <code>T</code> or <code>S</code> respectively and hold the value held by <code>i</code>.
+
+
+    In the default case (where there is no match), the variable <code>v</code> is
+
+
+    of the same interface type and value as <code>i</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 16
+
+PAGE 17 TITLE: Stringers
+
+  <h2>Stringers</h2>
+
+
+  <p>
+    One of the most ubiquitous interfaces is <a href="/pkg/fmt/#Stringer" target="_self"><code>Stringer</code></a> defined by the <a href="/pkg/fmt/" target="_self"><code>fmt</code></a> package.
+  </p>
+
+
+
+  <pre>type Stringer interface {
+    String() string
+}</pre>
+
+
+
+  <p>
+    A <code>Stringer</code> is a type that can describe itself as a string. The <code>fmt</code> package
+
+
+    (and many others) look for this interface to print values.
+  </p>
+
+
+
+
+
+
+
+END PAGE 17
+
+PAGE 18 TITLE: Exercise: Stringers
+
+  <h2>Exercise: Stringers</h2>
+
+
+  <p>
+    Make the <code>IPAddr</code> type implement <code>fmt.Stringer</code> to print the address as
+
+
+    a dotted quad.
+  </p>
+
+
+
+  <p>
+    For instance, <code>IPAddr{1, 2, 3, 4}</code> should print as <code>&#34;1.2.3.4&#34;</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 18
+
+PAGE 19 TITLE: Errors
+
+  <h2>Errors</h2>
+
+
+  <p>
+    Go programs express error state with <code>error</code> values.
+  </p>
+
+
+
+  <p>
+    The <code>error</code> type is a built-in interface similar to <code>fmt.Stringer</code>:
+  </p>
+
+
+
+  <pre>type error interface {
+    Error() string
+}</pre>
+
+
+
+  <p>
+    (As with <code>fmt.Stringer</code>, the <code>fmt</code> package looks for the <code>error</code> interface when
+
+
+    printing values.)
+  </p>
+
+
+
+  <p>
+    Functions often return an <code>error</code> value, and calling code should handle errors
+
+
+    by testing whether the error equals <code>nil</code>.
+  </p>
+
+
+
+  <pre>i, err := strconv.Atoi(&#34;42&#34;)
+if err != nil {
+    fmt.Printf(&#34;couldn&#39;t convert number: %v\n&#34;, err)
+    return
+}
+fmt.Println(&#34;Converted integer:&#34;, i)</pre>
+
+
+
+  <p>
+    A nil <code>error</code> denotes success; a non-nil <code>error</code> denotes failure.
+  </p>
+
+
+
+
+
+
+
+END PAGE 19
+
+PAGE 20 TITLE: Exercise: Errors
+
+  <h2>Exercise: Errors</h2>
+
+
+  <p>
+    Copy your <code>Sqrt</code> function from the <a href="/tour/flowcontrol/8" target="_self">earlier exercise</a> and modify it to return an <code>error</code> value.
+  </p>
+
+
+
+  <p>
+    <code>Sqrt</code> should return a non-nil error value when given a negative number, as it doesn&#39;t support complex numbers.
+  </p>
+
+
+
+  <p>
+    Create a new type
+  </p>
+
+
+
+  <pre>type ErrNegativeSqrt float64</pre>
+
+
+
+  <p>
+    and make it an <code>error</code> by giving it a
+  </p>
+
+
+
+  <pre>func (e ErrNegativeSqrt) Error() string</pre>
+
+
+
+  <p>
+    method such that <code>ErrNegativeSqrt(-2).Error()</code> returns <code>&#34;cannot Sqrt negative number: -2&#34;</code>.
+  </p>
+
+
+
+  <p>
+    <b>Note:</b> A call to <code>fmt.Sprint(e)</code> inside the <code>Error</code> method will send the program into an infinite loop. You can avoid this by converting <code>e</code> first: <code>fmt.Sprint(float64(e))</code>. Why?
+  </p>
+
+
+
+  <p>
+    Change your <code>Sqrt</code> function to return an <code>ErrNegativeSqrt</code> value when given a negative number.
+  </p>
+
+
+
+
+
+
+
+END PAGE 20
+
+PAGE 21 TITLE: Readers
+
+  <h2>Readers</h2>
+
+
+  <p>
+    The <code>io</code> package specifies the <code>io.Reader</code> interface,
+
+
+    which represents the read end of a stream of data.
+  </p>
+
+
+
+  <p>
+    The Go standard library contains <a href="https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&amp;ss=go%2Fgo" target="_blank">many implementations</a> of this interface, including files, network connections, compressors, ciphers, and others.
+  </p>
+
+
+
+  <p>
+    The <code>io.Reader</code> interface has a <code>Read</code> method:
+  </p>
+
+
+
+  <pre>func (T) Read(b []byte) (n int, err error)</pre>
+
+
+
+  <p>
+    <code>Read</code> populates the given byte slice with data and returns the number of bytes
+
+
+    populated and an error value. It returns an <code>io.EOF</code> error when the stream
+
+
+    ends.
+  </p>
+
+
+
+  <p>
+    The example code creates a
+
+
+    <a href="/pkg/strings/#Reader" target="_self"><code>strings.Reader</code></a>
+
+
+    and consumes its output 8 bytes at a time.
+  </p>
+
+
+
+
+
+
+
+END PAGE 21
+
+PAGE 22 TITLE: Exercise: Readers
+
+  <h2>Exercise: Readers</h2>
+
+
+  <p>
+    Implement a <code>Reader</code> type that emits an infinite stream of the ASCII character
+
+
+    <code>&#39;A&#39;</code>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 22
+
+PAGE 23 TITLE: Exercise: rot13Reader
+
+  <h2>Exercise: rot13Reader</h2>
+
+
+  <p>
+    A common pattern is an <a href="/pkg/io/#Reader" target="_self">io.Reader</a> that wraps another <code>io.Reader</code>, modifying the stream in some way.
+  </p>
+
+
+
+  <p>
+    For example, the <a href="/pkg/compress/gzip/#NewReader" target="_self">gzip.NewReader</a> function takes an <code>io.Reader</code> (a stream of compressed data) and returns a <code>*gzip.Reader</code> that also implements <code>io.Reader</code> (a stream of the decompressed data).
+  </p>
+
+
+
+  <p>
+    Implement a <code>rot13Reader</code> that implements <code>io.Reader</code> and reads from an <code>io.Reader</code>, modifying the stream by applying the <a href="https://en.wikipedia.org/wiki/ROT13" target="_blank">rot13</a> substitution cipher to all alphabetical characters.
+  </p>
+
+
+
+  <p>
+    The <code>rot13Reader</code> type is provided for you.
+
+
+    Make it an <code>io.Reader</code> by implementing its <code>Read</code> method.
+  </p>
+
+
+
+
+
+
+
+END PAGE 23
+
+PAGE 24 TITLE: Images
+
+  <h2>Images</h2>
+
+
+  <p>
+    <a href="/pkg/image/#Image" target="_self">Package image</a> defines the <code>Image</code> interface:
+  </p>
+
+
+
+  <pre>package image
+
+type Image interface {
+    ColorModel() color.Model
+    Bounds() Rectangle
+    At(x, y int) color.Color
+}</pre>
+
+
+
+  <p>
+    <b>Note</b>: the <code>Rectangle</code> return value of the <code>Bounds</code> method is actually an
+
+
+    <a href="/pkg/image/#Rectangle" target="_self"><code>image.Rectangle</code></a>, as the
+
+
+    declaration is inside package <code>image</code>.
+  </p>
+
+
+
+  <p>
+    (See <a href="/pkg/image/#Image" target="_self">the documentation</a> for all the details.)
+  </p>
+
+
+
+  <p>
+    The <code>color.Color</code> and <code>color.Model</code> types are also interfaces, but we&#39;ll ignore that by using the predefined implementations <code>color.RGBA</code> and <code>color.RGBAModel</code>. These interfaces and types are specified by the <a href="/pkg/image/color/" target="_self">image/color package</a>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 24
+
+PAGE 25 TITLE: Exercise: Images
+
+  <h2>Exercise: Images</h2>
+
+
+  <p>
+    Remember the <a href="/tour/moretypes/18" target="_self">picture generator</a> you wrote earlier? Let&#39;s write another one, but this time it will return an implementation of <code>image.Image</code> instead of a slice of data.
+  </p>
+
+
+
+  <p>
+    Define your own <code>Image</code> type, implement <a href="/pkg/image/#Image" target="_self">the necessary methods</a>, and call <code>pic.ShowImage</code>.
+  </p>
+
+
+
+  <p>
+    <code>Bounds</code> should return a <code>image.Rectangle</code>, like <code>image.Rect(0, 0, w, h)</code>.
+  </p>
+
+
+
+  <p>
+    <code>ColorModel</code> should return <code>color.RGBAModel</code>.
+  </p>
+
+
+
+  <p>
+    <code>At</code> should return a color; the value <code>v</code> in the last picture generator corresponds to <code>color.RGBA{v, v, 255, 255}</code> in this one.
+  </p>
+
+
+
+
+
+
+
+END PAGE 25
+
+PAGE 26 TITLE: Congratulations!
+
+  <h2>Congratulations!</h2>
+
+
+  <p>
+    You finished this lesson!
+  </p>
+
+
+
+  <p>
+    You can go back to the list of <a href="/tour/list" target="_self">modules</a> to find what to learn next, or continue with the <a href="javascript:click(&#39;.next-page&#39;)" target="_self">next lesson</a>.
+  </p>
+
+
+
+END PAGE 26

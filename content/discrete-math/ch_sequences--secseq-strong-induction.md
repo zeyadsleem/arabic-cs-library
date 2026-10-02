@@ -1,139 +1,139 @@
 ---
 title: "Strong Induction"
-lang: en
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_seq-strong-induction.html
 ---
 
 \Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
 
-## Section 4.6 Strong Induction
+## القسم 4.6 الاستدلال القوي
 
-### Objectives
+### الأهداف
 
-After completing this section, you should be able to do the following.[🔗](#sec_seq-strong-induction-4-1-1)
+بعد إتمام هذا القسم، ينبغي أن تتمكّن من فعل ما يلي.[🔗](#sec_seq-strong-induction-4-1-1)
 
-1. Explain the difference between proof by induction and proof by strong induction.[🔗](#sec_seq-strong-induction-4-2-1-1) [🔗](#sec_seq-strong-induction-4-2-1)
-2. Use strong induction to prove statements.[🔗](#sec_seq-strong-induction-4-2-2-1) [🔗](#sec_seq-strong-induction-4-2-2)
+1. أن تشرح الفرق بين البرهان بالاستدلال والبرهان بالاستدلال القوي (strong induction).[🔗](#sec_seq-strong-induction-4-2-1-1) [🔗](#sec_seq-strong-induction-4-2-1)
+2. أن تستعمل الاستدلال القوي لإثبات العبارات.[🔗](#sec_seq-strong-induction-4-2-2-1) [🔗](#sec_seq-strong-induction-4-2-2)
 
 [🔗](#sec_seq-strong-induction-4)
 
-### Subsection Section Preview
+### القسم الفرعي: معاينة القسم
 
 #### Investigate!
 
-Start with a square piece of paper. You want to cut this square into smaller squares, leaving no waste (every piece of paper you end up with must be a square). Obviously it is possible to cut the square into 4 squares. You can also cut it into 9 squares. It turns out you can cut the square into 7 squares (although not all the same size). What other numbers of squares could you end up with?[🔗](#subsec-going-farther-back-2-1) [🔗](#subsec-going-farther-back-2)Sometimes, to prove that \(P(k+1)\) is true, it would be helpful to know that \(P(k)\) *and* \(P(k-1)\) *and* \(P(k-2)\) are all true. This is certainly the case when proving something about a recurrence relation that is given as a combination of two previous terms.[🔗](#subsec-going-farther-back-3)
+ابدأ بمربّع من الورق. تريد أن تقطع هذا المربّع إلى مربّعات أصغر، دون أيّ هدر (كلّ قطعةِ ورقٍ تنتهي إليها يجب أن تكون مربّعًا). من البديهي أنّه ممكن تقسيم المربّع إلى 4 مربّعات. ويمكنك أيضًا تقطيعه إلى 9 مربّعات. ويتبيّن أنّه ممكن تقسيم المربّع إلى 7 مربّعات (مع أنّها ليست جميعها بالحجم نفسه). فما الأعداد الأخرى من المربّعات التي يمكن أن تنتهي إليها؟[🔗](#subsec-going-farther-back-2-1) [🔗](#subsec-going-farther-back-2)أحيانًا، لإثبات صحّة \(P(k+1)\)، يكون من المفيد أن نعرف أنّ \(P(k)\) *و* \(P(k-1)\) *و* \(P(k-2)\) جميعها صادقة. وهذا هو الحال بالتأكيد عند إثبات شيءٍ عن علاقةٍ تعاودية معطاة على هيئة مجموعةٍ من حدَّين سابقين.[🔗](#subsec-going-farther-back-3)
 
-#### Example 4.6.1.
+#### المثال 4.6.1.
 
-Prove that \(2^n\) is a solution to the recurrence relation \(a_n = 5a_{n-1} - 6a_{n-2}\) with initial conditions \(a_0 = 1\) and \(a_1 = 2\text{.}\)[🔗](#subsec-going-farther-back-4-1-1) Solution.
+أثبت أنّ \(2^n\) حلٌّ للعلاقة التعاودية \(a_n = 5a_{n-1} - 6a_{n-2}\) مع الشروط الابتدائية \(a_0 = 1\) و\(a_1 = 2\text{.}\)[🔗](#subsec-going-farther-back-4-1-1) الحلّ.
 
-#### Proof.
+#### برهان.
 
-Let \(P(n)\) be the statement, “\(a_n = 2^n\text{.}\)” We will show this is true for all \(n \ge 0\text{.}\)[🔗](#subsec-going-farther-back-4-2-1-1) Base cases: \(a_0 = 2^0 = 1\) and \(a_1 = 2^1 = 2\) both agree with the initial conditions.[🔗](#subsec-going-farther-back-4-2-1-2) Inductive case: Let \(k \ge 2\) be arbitrary. Assume \(P(k)\) and \(P(k-1)\) are both true. That is, assume \(a_k = 2^k\) and \(a_{k-1} = 2^{k-1}\text{.}\) We will show that \(P(k+1)\) is true. Consider \(a_{k+1}\text{.}\) We have \begin{align*} a_{k+1} = \amp 5a_k - 6a_{k-1}\\ = \amp 5\cdot 2^k - 6\cdot 2^{k-1}\\ = \amp 10 \cdot 2^{k-1} - 6 \cdot 2^{k-1}\\ = \amp 4\cdot 2^{k-1}\\ = \amp 2^{k+1}\text{.} \end{align*} Therefore, by the principle of mathematical induction, \(P(n)\) is true for all \(n \ge 0\text{.}\) [🔗](#subsec-going-farther-back-4-2-1-3) [🔗](#subsec-going-farther-back-4-2-1)Well, almost the principle of mathematical induction. Is what we did okay?[🔗](#subsec-going-farther-back-4-2-2) [🔗](#subsec-going-farther-back-4-2) [🔗](#subsec-going-farther-back-4)There are also times when we might want to go even farther back to use an assumption that \(P(j)\) is true for \(j\) much smaller than \(k+1\text{.}\) This is the idea behind strong induction and the topic of this short section.[🔗](#subsec-going-farther-back-5)
+دع \(P(n)\) هي العبارة، «\(a_n = 2^n\text{.}\)» وسنُبيّن أنّ هذه العبارة صادقة لكل \(n \ge 0\text{.}\)[🔗](#subsec-going-farther-back-4-2-1-1) الحالات الأساسية: \(a_0 = 2^0 = 1\) و\(a_1 = 2^1 = 2\) كلتاهما توافق الشروطَ الابتدائية.[🔗](#subsec-going-farther-back-4-2-1-2) الحالة الاستقرائية: لتكن \(k \ge 2\) اعتباطيّة. افترض أنّ \(P(k)\) و\(P(k-1)\) صادقتان معًا. أي، افترض أنّ \(a_k = 2^k\) و\(a_{k-1} = 2^{k-1}\text{.}\) وسنُبيّن أنّ \(P(k+1)\) صادقة. تأمّل \(a_{k+1}\text{.}\) لدينا \begin{align*} a_{k+1} = \amp 5a_k - 6a_{k-1}\\ = \amp 5\cdot 2^k - 6\cdot 2^{k-1}\\ = \amp 10 \cdot 2^{k-1} - 6 \cdot 2^{k-1}\\ = \amp 4\cdot 2^{k-1}\\ = \amp 2^{k+1}\text{.} \end{align*} إذن، بمبدأ الاستدلال الرياضي، تكون العبارة \(P(n)\) صادقة لكل \(n \ge 0\text{.}\) [🔗](#subsec-going-farther-back-4-2-1-3) [🔗](#subsec-going-farther-back-4-2-1)حسنًا، أو بالأحرى مبدأ الاستدلال الرياضي. فهل ما فعلناه جيّد؟[🔗](#subsec-going-farther-back-4-2-2) [🔗](#subsec-going-farther-back-4-2) [🔗](#subsec-going-farther-back-4)وهناك أيضًا أحيانٌ نودّ فيها أن نرجع إلى الوراء أكثر من ذلك، لنستعمل افتراضًا بأنّ \(P(j)\) صادقة عند \(j\) أصغر بكثير من \(k+1\text{.}\) وهذه هي الفكرة التي يقوم عليها الاستدلال القوي، وهي موضوع هذا القسم القصير.[🔗](#subsec-going-farther-back-5)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-strong-indcution)
+#### نشاط ورقة العمل التمهيدي[&#xe8ad;](?printpreview=PA-strong-indcution)
 
 #### 1.
 
-Activate Consider the following puzzle:[🔗](#extracted-webwork-216-1-1-1) You have a rectangular chocolate bar, made up of \(n\) identical squares of chocolate. You can take such a bar and break it along any row or column. How many times will you have to break the bar to reduce it to \(n\) single chocolate squares?[🔗](#extracted-webwork-216-1-1-2) At first, this question might seem impossible. Perhaps we meant to ask for the *smallest* number of breaks needed. Let’s investigate.[🔗](#extracted-webwork-216-1-1-3)
+نشاط فكّر في اللغز التالي:[🔗](#extracted-webwork-216-1-1-1) لديك شريطٌ من الشوكولاتة مستطيل، مكوّن من \(n\) مربّع شوكولاتةٍ متطابقة. يمكنك أن تأخذ هذا الشريط وتكسره على امتداد أيّ صفٍّ أو عمود. كم مرّةً ستحتاج إلى كسر الشريط لتقليله إلى \(n\) مربّع شوكولاتة منفرد؟[🔗](#extracted-webwork-216-1-1-2) أوّلًا، قد يبدو هذا السؤال مستحيلًا. ربّما كنا نقصد السؤال عن *أصغر* عددٍ من الكسرات اللازم. لنبحث في الأمر.[🔗](#extracted-webwork-216-1-1-3)
 
 #### (a)
 
-Suppose you started with a \(1\times 3\) bar. How many breaks would you need to reduce it to single squares?[🔗](#extracted-webwork-216-1-2-1-1) [🔗](#extracted-webwork-216-1-2)
+افترض أنّك بدأت بشريط \(1\times 3\). كم كسرةً ستحتاج إليه لتقليله إلى مربّعات منفردة؟[🔗](#extracted-webwork-216-1-2-1-1) [🔗](#extracted-webwork-216-1-2)
 
 #### (b)
 
-If you had a \(1\times 4\) bar, how many breaks are required?[🔗](#extracted-webwork-216-1-3-1-1) If you had 4 squares arranged in a \(2\times 2\) square, your first break would require you to break the chocolate into two \(1 \times 2\) bars. Then each of these would require more break(s), for a total of breaks to go from the \(2\times 2\) to single squares.[🔗](#extracted-webwork-216-1-3-1-2) [🔗](#extracted-webwork-216-1-3)
+ولو كان لديك شريط \(1\times 4\)، فكم كسرةً مطلوبة؟[🔗](#extracted-webwork-216-1-3-1-1) ولو كانت لديك 4 مربّعات مرتّبة في مربّع \(2\times 2\)، فإنّ كسرتك الأولى ستقتضي أن تكسر الشوكولاتة إلى شريطين \(1 \times 2\). ثمّ سيحتاج كلٌّ من هذين الشريطين إلى مزيدٍ من الكسرات، بمجموعٍ كسراتٍ للانتقال من \(2\times 2\) إلى المربّعات المنفردة.[🔗](#extracted-webwork-216-1-3-1-2) [🔗](#extracted-webwork-216-1-3)
 
 #### (c)
 
-A \(6\)-square bar could either be a \(1 \times 6\) bar, requiring breaks, or a \(2 \times 3\) bar.[🔗](#extracted-webwork-216-1-4-1-1) There are two ways to proceed now.
+يمكن أن يكون شريط \(6\) مربّعاتٍ إمّا شريط \(1 \times 6\)، فيتطلّب كسرات، أو شريط \(2 \times 3\).[🔗](#extracted-webwork-216-1-4-1-1) وهناك طريقتان للمضيّ قدمًا الآن.
 
-1. Break the bar into two \(1 \times 3\) bars, each requiring more breaks, for a total of breaks.[🔗](#extracted-webwork-216-1-4-1-2-1-1-1) [🔗](#extracted-webwork-216-1-4-1-2-1-1)
-2. Break the bar into a \(1\times 2\) bar and a \(2 \times 2\) bar. The \(1 \times 2\) bar takes more break(s) and the \(2 \times 2\) bar takes more break(s), for a total of breaks.[🔗](#extracted-webwork-216-1-4-1-2-1-2-1) [🔗](#extracted-webwork-216-1-4-1-2-1-2)
+1. اكسر الشريط إلى شريطين \(1 \times 3\)، كلٌّ منهما يتطلّب مزيدًا من الكسرات، بمجموعٍ كسرات.[🔗](#extracted-webwork-216-1-4-1-2-1-1-1) [🔗](#extracted-webwork-216-1-4-1-2-1-1)
+2. اكسر الشريط إلى شريط \(1\times 2\) وشريط \(2 \times 2\). يتطلّب الشريط \(1 \times 2\) مزيدًا من الكسرات، ويتطلّب الشريط \(2 \times 2\) مزيدًا من الكسرات، بمجموعٍ كسرات.[🔗](#extracted-webwork-216-1-4-1-2-1-2-1) [🔗](#extracted-webwork-216-1-4-1-2-1-2)
 
 [🔗](#extracted-webwork-216-1-4-1-2) [🔗](#extracted-webwork-216-1-4)
 
 #### (d)
 
-Based on the above data, what should our conjecture be for the number of breaks to reduce an \(n\)-square bar to single squares, in terms of \(n\text{?}\)[🔗](#extracted-webwork-216-1-5-1-1) It will take breaks to reduce an \(n\)-square bar to single squares.[🔗](#extracted-webwork-216-1-5-1-2) [🔗](#extracted-webwork-216-1-5)
+استنادًا إلى البيانات أعلاه، ما الذي ينبغي أن يكون تخميننا لعدد الكسرات اللازم لتقليل شريطٍ من \(n\) مربّعًا إلى مربّعات منفردة، بدلالة \(n\text{?}\)[🔗](#extracted-webwork-216-1-5-1-1) ستستغرق كسراتٍ لتقليل شريطٍ من \(n\) مربّعًا إلى مربّعات منفردة.[🔗](#extracted-webwork-216-1-5-1-2) [🔗](#extracted-webwork-216-1-5)
 
 #### (e)
 
-Do we believe this? Suppose you used one break to reduce the bar into two smaller bars, with \(a\) and \(b\) squares respectively. If the conjecture is correct, how many more breaks will it take to reduce the size \(a\) bar?[🔗](#extracted-webwork-216-1-6-1-1) How many more breaks will it take to reduce the size \(b\) bar?[🔗](#extracted-webwork-216-1-6-1-2) How many breaks is this all together, in terms of \(a\) and \(b\text{,}\) including the initial break?[🔗](#extracted-webwork-216-1-6-1-3) But what is \(a+b\text{?}\) We got \(a\) and \(b\) by breaking the \(n\) squares in two pieces, so \(a+b =\). This gives us a total number of breaks as .[🔗](#extracted-webwork-216-1-6-1-4) [🔗](#extracted-webwork-216-1-6) [🔗](#pa-strong-indcution-1)[🔗](#PA-strong-indcution)[🔗](#subsec-going-farther-back)
+هل نصدّق هذا؟ افترض أنّك استخدمت كسرةً واحدةً لتقليل الشريط إلى شريطين أصغر، 각각ٌ فيهما \(a\) و\(b\) مربّعًا. فإنّ كان التخمين صحيحًا، فكم كسرةً إضافية ستحتاج إليها لتقليل الشريط ذي الحجم \(a\)؟[🔗](#extracted-webwork-216-1-6-1-1) وكم كسرةً إضافية ستحتاج إليها لتقليل الشريط ذي الحجم \(b\)؟[🔗](#extracted-webwork-216-1-6-1-2) وكم كسرةً يكون ذلك كلّه معًا، بدلالة \(a\) و\(b\text{,}\) بما في ذلك الكسرة الأولى؟[🔗](#extracted-webwork-216-1-6-1-3) لكنّ ما هو \(a+b\text{?}\) لقد حصلنا على \(a\) و\(b\) بكسر المربّعات الـ \(n\) إلى قطعتين، إذن \(a+b =\). وهذا يعطينا عددًا إجماليًّا من الكسرات مقداره .[🔗](#extracted-webwork-216-1-6-1-4) [🔗](#extracted-webwork-216-1-6) [🔗](#pa-strong-indcution-1)[🔗](#PA-strong-indcution)[🔗](#subsec-going-farther-back)
 
-### Subsection Divide and Conquer
+### القسم الفرعي: القسمة والتغلب
 
-Think of recursive definitions as instructions for building a ladder. You can build the ladder as tall as you like because you have instructions for building the next rung, as long as you are standing on the rung before it.[🔗](#sec_seq-strong-induction-6-2) Induction is the corresponding proof technique. To prove that you can climb the ladder as high as you like, you prove that you can step onto the ladder (the base case) and then prove that, from any rung, you can get to the next rung (the inductive step).[🔗](#sec_seq-strong-induction-6-3) More specifically, suppose you were trying to prove that you can get to rung 4 on the ladder. You have successfully proved that you can get to rung 1, and that from any rung, you can get to the next. So you can get to rung 1, and from 1 you can get to 2. From 2 you can get to 3, and from 3 you can get to 4. Therefore, you can get to 4.[🔗](#sec_seq-strong-induction-6-4) But notice that along the way, you know you have visited rungs 1 through 3. We might as well assume that we have visited all the rungs below the next one we are trying to reach. This is the idea behind strong induction.[🔗](#sec_seq-strong-induction-6-5) A better ladder metaphor for strong induction is to think of ladders as things we can stack on top of each other. We want to argue that it is possible to climb 20 rungs of a ladder. Let’s divide that into two smaller ladders, say a 12-rung ladder and an 8-rung ladder. We can assume that we can climb both of these since 20 is the least size we are not yet convinced of. Well, put those two ladders together, and you get \(12+8 = 20\) rungs.[🔗](#sec_seq-strong-induction-6-6) We better climb down from our shaky metaphor before we hurt ourselves. Let’s look at a formal definition of strong induction.[🔗](#sec_seq-strong-induction-6-7)
+تخيَّل التعريفات التعاودية بوصفها تعليماتٍ لبناء سُلّم. يمكنك بناء السلم بارتفاعٍ ما شئت، لأنّ لديك تعليمات لبناء العتبة التالية، ما دمت واقفًا على العتبة التي قبلها.[🔗](#sec_seq-strong-induction-6-2) والاستدلال هو تقنية البرهان المقابلة. فإلإثبات أنّك تستطيع تسلّق السلم إلى أيّ ارتفاعٍ شئت، تُثبت أنّك تستطيع الصعود إلى السلم (الحالة الأساسية) ثمّ تُثبت أنّه من أيّ عتبةٍ تستطيع الانتقال إلى العتبة التالية (الخطوة الاستقرائية).[🔗](#sec_seq-strong-induction-6-3) وبعبارةٍ أدقّ، افترض أنّك تحاول إثبات أنّك تستطيع الوصول إلى العتبة 4 من السلم. لقد أثبتَّ بنجاح أنّه بإمكانك الوصول إلى العتبة 1، وأنّه من أيّ عتبةٍ تستطيع الوصول إلى التي تليها. إذن تستطيع الوصول إلى العتبة 1، ومن 1 تستطيع الوصول إلى 2. ومن 2 تستطيع الوصول إلى 3، ومن 3 تستطيع الوصول إلى 4. إذن تستطيع الوصول إلى 4.[🔗](#sec_seq-strong-induction-6-4) لكن لاحظ أنّك على طول الطريق تعرف أنّك مررتَ بالعتبات من 1 إلى 3. ثمّ إنّه لا بأس من أن نفترض أنّنا مررنا بكلّ العتبات التي تحت العتبة التالية التي نحاول الوصول إليها. وهذه هي الفكرة التي يقوم عليها الاستدلال القوي.[🔗](#sec_seq-strong-induction-6-5) واستعارةُ السُلَّم الأفضل للاستدلال القوي هي أن نفكّر في السلاسل بوصفها أشياءً يمكننا تكديسها فوق بعضها بعض. نريد أن نبيّن أنّه من الممكن تسلّق 20 عتبةٍ من سُلَم. فلنقسم ذلك إلى سُلَّمين أصغر، لنقل سُلَمًا بـ 12 عتبةً وسُلَمًا بـ 8 عتبات. يمكننا أن نفترض أنّنا نستطيع تسلّق كليهما، لأنّ 20 أصغرُ حجمٍ لم نتحقّق منه بعد. حسنًا، ضع هذين السلمين معًا، فتحصل على \(12+8 = 20\) عتبة.[🔗](#sec_seq-strong-induction-6-6) من الأفضل ألّا ننزل عن استعارتنا الهشّة قبل أن نؤذي أنفسنا. فلننظر إلى تعريفٍ رسميّ للاستدلال القوي.[🔗](#sec_seq-strong-induction-6-7)
 
-#### Strong Induction Proof Structure.
+#### بنية برهان الاستدلال القوي.
 
-Start by saying what we want to prove: “Let \(P(n)\) be the statement….” Then establish two facts:
+ابدأ بذكر ما نريد إثباته: «دع \(P(n)\) تكون العبارة….» ثمّ أثبت حقيقتين:
 
-1. Base case: Prove that \(P(0)\) is true. (Perhaps also prove other needed base cases.) [🔗](#sec_seq-strong-induction-6-8-3-2-1-1) [🔗](#sec_seq-strong-induction-6-8-3-2-1)
-2. Inductive case: Assume \(P(j)\) is true for all \(j \le k\text{.}\) Prove that \(P(k+1)\) is true. [🔗](#sec_seq-strong-induction-6-8-3-2-2-1) [🔗](#sec_seq-strong-induction-6-8-3-2-2)
+1. الحالة الأساسية: أثبت أنّ \(P(0)\) صادقة. (وربّما أثبت كذلك الحالات الأساسية الأخرى اللازمة.) [🔗](#sec_seq-strong-induction-6-8-3-2-1-1) [🔗](#sec_seq-strong-induction-6-8-3-2-1)
+2. الحالة الاستقرائية: افترض أنّ \(P(j)\) صادقة لكل \(j \le k\text{.}\) أثبت أنّ \(P(k+1)\) صادقة. [🔗](#sec_seq-strong-induction-6-8-3-2-2-1) [🔗](#sec_seq-strong-induction-6-8-3-2-2)
 
-Conclude, “Therefore, by strong induction, \(P(n)\) is true for all \(n \gt 0\text{.}\)” [🔗](#sec_seq-strong-induction-6-8-3) [🔗](#sec_seq-strong-induction-6-8)Of course, it is acceptable to replace 0 with a larger base case if needed. 2 Technically, strong induction does not require you to prove a separate base case. This is because when proving the inductive case, you must show that \(P(0)\) is true, assuming \(P(k)\) is true for all \(k \lt 0\text{.}\) But this is not any help so you end up proving \(P(0)\) anyway. To be on the safe side, we will always include the base case separately.[🔗](#sec_seq-strong-induction-6-9) To illustrate strong induction, let’s return to the chocolate bar problem.[🔗](#sec_seq-strong-induction-6-10)
+اختُتم بقولك: «إذن، بالاستدلال القوي، تكون العبارة \(P(n)\) صادقة لكل \(n \gt 0\text{.}\)» [🔗](#sec_seq-strong-induction-6-8-3) [🔗](#sec_seq-strong-induction-6-8)وبالطبع، من المقبول استبدال 0 بحالةٍ أساسية أكبر عند الحاجة. 2 تقنيًّا، لا يشترط الاستدلال القوي منك إثبات حالةٍ أساسية منفصلة. ذلك لأنّك عند إثبات الحالة الاستقرائية يجب أن تُبيّن أنّ \(P(0)\) صادقة، بافتراض أنّ \(P(k)\) صادقة لكل \(k \lt 0\text{.}\) لكنّ هذا لا يفيدك في شيء، فتنتهي إلى إثبات \(P(0)\) على أيّ حال. ولأجل الاطمئنان، سنُدرج الحالة الأساسية على نحوٍ منفصل دائمًا.[🔗](#sec_seq-strong-induction-6-9) ولتوضيح الاستدلال القوي، فلنعد إلى مسألة شريط الشوكولاتة.[🔗](#sec_seq-strong-induction-6-10)
 
-#### Proposition 4.6.2.
+#### مبرهنة 4.6.2.
 
-Given an \(n\)-square rectangular chocolate bar, it always takes \(n-1\) breaks to reduce the bar to single squares.[🔗](#prop-chocolate-1-1) [🔗](#prop-chocolate)
+معطى شريطِ شوكولاتةٍ مستطيلٍ من \(n\) مربّعًا، فإنّه يستغرق دائمًا \(n-1\) كسرةً لتقليل الشريط إلى مربّعات منفردة.[🔗](#prop-chocolate-1-1) [🔗](#prop-chocolate)
 
-#### Proof.
+#### برهان.
 
-Let \(P(n)\) be the statement, “It takes \(n-1\) breaks to reduce a \(n\)-square chocolate bar to single squares.”[🔗](#sec_seq-strong-induction-6-12-1) Base case: Consider \(P(2)\text{.}\) The squares must be arranged into a \(1\times 2\) rectangle, and we require \(2-1 = 1\) breaks to reduce this to single squares.[🔗](#sec_seq-strong-induction-6-12-2) Inductive case: Fix an arbitrary \(k\ge 2\) and assume \(P(j)\) is true for all \(j \le k\text{.}\) Consider a \((k+1)\)-square rectangular chocolate bar. Break the bar once along any row or column. This results in two chocolate bars, say of sizes \(a\) and \(b\) . That is, we have an \(a\)-square rectangular chocolate bar, a \(b\)-square rectangular chocolate bar, and \(a+b = k+1\text{.}\)[🔗](#sec_seq-strong-induction-6-12-3) We also know that \(a \le k\) and \(b \le k\text{,}\) so by our inductive hypothesis, \(P(a)\) and \(P(b)\) are true. To reduce the \(a\)-square bar to single squares takes \(a-1\) breaks; to reduce the \(b\)-square bar to single squares takes \(b-1\) breaks. Doing this results in our original bar being reduced to single squares. All together it took the initial break, plus the \(a-1\) and \(b-1\) breaks, for a total of \begin{equation*} 1+a-1+b-1 = a+b-1 = k+1 - 1 = k \end{equation*} breaks. Thus \(P(k+1)\) is true. [🔗](#sec_seq-strong-induction-6-12-4) Therefore, by strong induction, \(P(n)\) is true for all \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-12-5) [🔗](#sec_seq-strong-induction-6-12)Here is a more mathematically relevant example:[🔗](#sec_seq-strong-induction-6-13)
+دع \(P(n)\) هي العبارة، «يستغرق شريط شوكولاتةٍ من \(n\) مربّعًا \(n-1\) كسرةً لتقليله إلى مربّعات منفردة.»[🔗](#sec_seq-strong-induction-6-12-1) الحالة الأساسية: تأمّل \(P(2)\text{.}\) ويجب أن تكون المربّعات مرتّبة في مستطيل \(1\times 2\)، ونحتاج \(2-1 = 1\) كسرةً لتقليله إلى مربّعات منفردة.[🔗](#sec_seq-strong-induction-6-12-2) الحالة الاستقرائية: ثبّت عددًا \(k\ge 2\) اعتباطيًّا وافترض أنّ \(P(j)\) صادقة لكل \(j \le k\text{.}\) تأمّل شريط شوكولاتةٍ مستطيلٍ من \(k+1\) مربّعًا. اكسر الشريط مرّةً واحدةً على امتداد أيّ صفٍّ أو عمود. ينتج عن ذلك شريطَي شوكولاتة، لنقل بحجمي \(a\) و\(b\) . أي إنّ لدينا شريط شوكولاتةٍ مستطيلٍ من \(a\) مربّعًا، وشريط شوكولاتةٍ مستطيلٍ من \(b\) مربّعًا، و\(a+b = k+1\text{.}\)[🔗](#sec_seq-strong-induction-6-12-3) ونعرف أيضًا أنّ \(a \le k\) و\(b \le k\text{,}\) إذن بفرضية الاستقراء لدينا، تكون \(P(a)\) و\(P(b)\) صادقتين. لتقليل الشريط ذي الـ \(a\) مربّعًا إلى مربّعات منفردة يلزم \(a-1\) كسرة؛ ولتقليل الشريط ذي الـ \(b\) مربّعًا إلى مربّعات منفردة يلزم \(b-1\) كسرة. وبعمل ذلك ينتج شريطنا الأصليّ مقلَّلًا إلى مربّعات منفردة. ومجتمعةً تتضمّن الكسرةَ الأولى، مع \(a-1\) و\(b-1\) من الكسرات، أي بمجموعٍ قدره \begin{equation*} 1+a-1+b-1 = a+b-1 = k+1 - 1 = k \end{equation*} كسرة. إذن \(P(k+1)\) صادقة. [🔗](#sec_seq-strong-induction-6-12-4) إذن، بالاستدلال القوي، تكون العبارة \(P(n)\) صادقة لكل \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-12-5) [🔗](#sec_seq-strong-induction-6-12)وهنا مثالٌ أكثر صلةً بالرياضيات:[🔗](#sec_seq-strong-induction-6-13)
 
-#### Example 4.6.3.
+#### المثال 4.6.3.
 
-Prove that any natural number greater than 1 is either prime or can be written as the product of primes.[🔗](#sec_seq-strong-induction-6-14-1-1) Solution. First, the idea: If we take some number \(n\text{,}\) maybe it is prime. If so, we are done. If not, then it is composite, so it is the product of two smaller numbers. Each of these factors is smaller than \(n\) (but at least 2), so we can repeat the argument with these numbers. We have reduced to a smaller case.[🔗](#sec_seq-strong-induction-6-14-2-1) Now the formal proof:[🔗](#sec_seq-strong-induction-6-14-2-2)
+أثبت أنّ كلّ عددٍ طبيعيّ أكبر من 1 إمّا أوّليّ أو يمكن كتابته على هيئة جداءِ أعدادٍ أوّليّة.[🔗](#sec_seq-strong-induction-6-14-1-1) الحلّ. أوّلًا، الفكرة: إن أخذنا عددًا ما \(n\text{,}\) فقد يكون أوّليًّا. وإن كان كذلك، فقد فرغنا. وإن لم يكن كذلك، فهو مركّب، أي إنّه جداءُ عددين أصغر منه. وكلُّ عاملٍ من هذين أصغرُ من \(n\) (لكنّه 2 على الأقلّ)، فيمكننا تكرار الحجة مع هذين العددين. لقد انتقلنا إلى حالةٍ أصغر.[🔗](#sec_seq-strong-induction-6-14-2-1) والآن البرهان الرسميّ:[🔗](#sec_seq-strong-induction-6-14-2-2)
 
-#### Proof.
+#### برهان.
 
-Let \(P(n)\) be the statement, “\(n\) is either prime or can be written as the product of primes.” We will prove \(P(n)\) is true for all \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-14-2-3-1) Base case: \(P(2)\) is true because \(2\) is indeed prime.[🔗](#sec_seq-strong-induction-6-14-2-3-2) Inductive case: assume \(P(j)\) is true for all \(j \le k\text{.}\) We want to show that \(P(k+1)\) is true. That is, we want to show that \(k+1\) is either prime or is the product of primes. If \(k+1\) is prime, we are done. If not, then \(k+1\) has more than 2 divisors, so we can write \(k+1 = m_1 \cdot m_2\text{,}\) with \(m_1\) and \(m_2\) less than \(k+1\) (and greater than 1). By the inductive hypothesis, \(m_1\) and \(m_2\) are each either prime or can be written as the product of primes. In either case, we have that \(m_1\cdot m_2 = k+1\) can be written as the product of primes.[🔗](#sec_seq-strong-induction-6-14-2-3-3) Thus by strong induction, \(P(n)\) is true for all \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-14-2-3-4) [🔗](#sec_seq-strong-induction-6-14-2-3)[🔗](#sec_seq-strong-induction-6-14-2) [🔗](#sec_seq-strong-induction-6-14)Whether you use regular induction or strong induction depends on the statement you want to prove. If you wanted to be safe, you could always use strong induction. It really is *stronger*, so can accomplish everything “weak” induction can. That said, using regular induction is often easier since there is only one place you can use the induction hypothesis. There is also something to be said for *elegance* in proofs. If you can prove a statement using simpler tools, it is nice to do so.[🔗](#sec_seq-strong-induction-6-15) [🔗](#sec_seq-strong-induction-6)
+دع \(P(n)\) هي العبارة، «\(n\) إمّا أوّليّ أو يمكن كتابته على هيئة جداءِ أعدادٍ أوّليّة.» وسنُثبت أنّ \(P(n)\) صادقة لكل \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-14-2-3-1) الحالة الأساسية: \(P(2)\) صادقة لأنّ \(2\) أوّليّ بالفعل.[🔗](#sec_seq-strong-induction-6-14-2-3-2) الحالة الاستقرائية: افترض أنّ \(P(j)\) صادقة لكل \(j \le k\text{.}\) نريد أن نُبيّن أنّ \(P(k+1)\) صادقة. أي، نريد أن نُبيّن أنّ \(k+1\) إمّا أوّليّ أو جداءُ أعدادٍ أوّليّة. فإن كان \(k+1\) أوّليًّا، فقد فرغنا. وإن لم يكن كذلك، فإنّ لـ \(k+1\) أكثرَ من قاسمين، ويمكننا كتابة \(k+1 = m_1 \cdot m_2\text{,}\) حيث \(m_1\) و\(m_2\) أصغرُ من \(k+1\) (وأكبرُ من 1). بفرضية الاستقراء، فإنّ \(m_1\) و\(m_2\) كلًّا منهما إمّا أوّليّ أو يمكن كتابته على هيئة جداءِ أعدادٍ أوّليّة. وفي الحالين، لدينا أنّ \(m_1\cdot m_2 = k+1\) يمكن كتابته على هيئة جداءِ أعدادٍ أوّليّة.[🔗](#sec_seq-strong-induction-6-14-2-3-3) إذن، بالاستدلال القوي، تكون العبارة \(P(n)\) صادقة لكل \(n \ge 2\text{.}\)[🔗](#sec_seq-strong-induction-6-14-2-3-4) [🔗](#sec_seq-strong-induction-6-14-2-3)[🔗](#sec_seq-strong-induction-6-14-2) [🔗](#sec_seq-strong-induction-6-14)أمّا استعمالُك الاستدلالَ الاعتياديّ أم الاستدلالَ القوي فيعتمد على العبارة التي تريد إثباتها. فإن أردتَ أن تكون آمنًا، فيمكنك دائمًا استعمال الاستدلال القوي. فهو فعلًا *أقوى*، إذ يستطيع إنجاز كلّ ما يستطيع إنجازه الاستدلال «الضعيف». لكنّ استعمال الاستدلال الاعتياديّ يكون أسهل في أغلب الأحيان، إذ إنّ هناك موضعًا واحدًا فقط يمكنك فيه استعمال فرضية الاستقراء. وهناك أيضًا ما يُقال عن *الأناقة* في البراهين. فإن استطعتَ إثبات عبارةٍ بأدواتٍ أبسط، فكان من جيّد أن تفعل ذلك.[🔗](#sec_seq-strong-induction-6-15) [🔗](#sec_seq-strong-induction-6)
 
-### Reading Questions Reading Questions
+### أسئلة القراءة أسئلة القراءة
 
 #### 1.
 
-- True.
-- This is backwards. You still prove the next case, you just get to assume all previous cases (not just the one previous case).
-- False.
-- This is backwards. You still prove the next case, you just get to assume all previous cases (not just the one previous case).
+- صادق.
+- هذا معكوس. أنت لا تزال تُثبت الحالة التالية، وإنّما الفرق أنّه يجوز لك افتراض كلّ الحالات السابقة (لا الحالة السابقة وحدها).
+- خاطئ.
+- هذا معكوس. أنت لا تزال تُثبت الحالة التالية، وإنّما الفرق أنّه يجوز لك افتراض كلّ الحالات السابقة (لا الحالة السابقة وحدها).
 
 [🔗](#rq-seq-strong-induction-tf)
 
 #### 2.
 
-Which of the following claims about the relationship between proof by induction and proof by strong induction are true?[🔗](#rq-seq-strong-induction-compare-1-1)
+أيٌّ ممّا يلي من الادّعاءات عن العلاقة بين البرهان بالاستدلال والبرهان بالاستدلال القوي صحيح؟[🔗](#rq-seq-strong-induction-compare-1-1)
 
-- Any proof by induction can be written as a proof by strong induction.
-- Any proof by strong induction can be written as a proof by induction.
-- Strong induction is “stronger” because the base case is stronger.
-- Strong induction is “stronger” because the inductive hypothesis is stronger.
+- أيّ برهانٍ بالاستدلال يمكن كتابته على هيئة برهانٍ بالاستدلال القوي.
+- أيّ برهانٍ بالاستدلال القوي يمكن كتابته على هيئة برهانٍ بالاستدلال.
+- الاستدلال القوي «أقوى» لأنّ الحالة الأساسية أقوى.
+- الاستدلال القوي «أقوى» لأنّ فرضية الاستقراء أقوى.
 
 [🔗](#rq-seq-strong-induction-compare)
 
 #### 3.
 
-What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about after reading this section.[🔗](#rq-seq-strong-induction-q-1-1) [🔗](#rq-seq-strong-induction-q)[🔗](#rqs-seq-strong-induction)
+ما الأسئلة التي لديك؟ اكتب سؤالًا واحدًا على الأقلّ عن محتوى هذا القسم قد يثير فضولك أو يثير فضول زميلٍ لك بعد قراءة هذا القسم.[🔗](#rq-seq-strong-induction-q-1-1) [🔗](#rq-seq-strong-induction-q)[🔗](#rqs-seq-strong-induction)
 
-### Exercises Practice Problems
+### تمارين مسائل تطبيقية
 
 #### 1.
 
-Suppose you are trying to prove, by strong induction, that a statement \(P(n)\) is true for all \(n \ge 0\text{.}\) What would you attempt to prove in the *induction step* of the proof? (Select all that apply.)[🔗](#mc-strong-induction-step-1-1)
+افترض أنّك تحاول إثبات، بالاستدلال القوي، أنّ عبارةً \(P(n)\) صادقة لكل \(n \ge 0\text{.}\) فما الذي ستحاول إثباته في *خطوة الاستدلال* من البرهان؟ (حدّد كل ما ينطبق.)[🔗](#mc-strong-induction-step-1-1)
 
-- That assuming \(P(j)\) is true for all \(j \le k\text{,}\) for an arbitrary \(k \ge 0\text{,}\) we can prove that \(P(k+1)\) is true.
-- That \((P(0) \wedge P(1) \wedge \cdots \wedge P(k))\) implies \(P(k+1)\) for all \(k \ge 0\text{.}\)
-- That assuming \(P(k+1)\) is true for an arbitrary \(k \ge 0\text{,}\) we can prove that \(P(j)\) is true for all \(j \le k\text{.}\)
-- That \(P(k+1)\) implies \(P(j)\) for all \(j \le k\text{.}\)
-- That \(P(k-2)\) implies \(P(k+1)\) for at least one \(k \ge 0\text{.}\)
+- أنّه بافتراض أنّ \(P(j)\) صادقة لكل \(j \le k\text{,}\) لـ \(k \ge 0\) اعتباطيّ، يمكننا إثبات أنّ \(P(k+1)\) صادقة.
+- أنّ \((P(0) \wedge P(1) \wedge \cdots \wedge P(k))\) يتفرّ منه \(P(k+1)\) لكل \(k \ge 0\text{.}\)
+- أنّه بافتراض أنّ \(P(k+1)\) صادقة لـ \(k \ge 0\) اعتباطيّ، يمكننا إثبات أنّ \(P(j)\) صادقة لكل \(j \le k\text{.}\)
+- أنّ \(P(k+1)\) يتفرّ منه \(P(j)\) لكل \(j \le k\text{.}\)
+- أنّ \(P(k-2)\) يتفرّ منه \(P(k+1)\) لقيمةٍ واحدةٍ على الأقلّ من \(k \ge 0\text{.}\)
 
 [🔗](#mc-strong-induction-step)
 
 #### 2.
 
-A simpler version of the chocolate bar problem is as follows: Suppose you have a chocolate bar that is \(n\) squares long. You can break the chocolate bar into two pieces by making a single straight break across the bar. No matter where you make the breaks, you will break the chocolate bar into \(n\) pieces by making \(n-1\) breaks.[🔗](#parsons-strong-induction-chocolate-1-1) Arrange some of the following statements in the correct order to form a proof of this claim by strong induction.[🔗](#parsons-strong-induction-chocolate-1-2)
+إليك نسخةً أبسط من مسألة شريط الشوكولاتة: افترض أنّ لديك شريط شوكولاتةٍ طوله \(n\) مربّعًا. يمكنك كسر شريط الشوكولاتة إلى قطعتين بإجراء كسرةٍ مستقيمةٍ واحدةٍ عبر الشريط. ومهما كان موضع الكسرات التي تجريها، فإنّك ستكسر شريط الشوكولاتة إلى \(n\) قطعةٍ بإجراء \(n-1\) كسرة.[🔗](#parsons-strong-induction-chocolate-1-1) رتّب بعض العبارات التالية بالترتيب الصحيح لتشكيل برهانٍ بالاستدلال القوي لهذا الادّعاء.[🔗](#parsons-strong-induction-chocolate-1-2)
 
 ```natural
 Let \(P(n)\) be the statement that a chocolate bar that is \(n\) squares long can be broken into \(n\) pieces by making \(n-1\) breaks.
@@ -159,48 +159,48 @@ Therefore, by the principle of strong induction, \(P(n)\) is true for all \(n \g
 
 [🔗](#parsons-strong-induction-chocolate)[🔗](#practice-sec-strong-induction)
 
-### Exercises Additional Exercises
+### تمارين تمارين إضافية
 
 #### 1.
 
-Suppose a football team only scores 3-point field goals and 7-point touchdowns (ignore the possibilities of safeties, missed extra points, and two-point conversions). Prove, using *strong* induction, that the team can get any number of points, 12 points or greater.[🔗](#exercises_seq-strong-induction-2-2-1) Hint. If you have three base cases, can you always be sure you can get three points more?[🔗](#exercises_seq-strong-induction-2-3-1) [🔗](#exercises_seq-strong-induction-2-3) [🔗](#exercises_seq-strong-induction-2)
+افترض أنّ فريقًا من كرة القدم لا يسجّل سوى الأهداف الميدانية (field goals) البالغة 3 نقاط واللمسات (touchdowns) البالغة 7 نقاط (تجاهل احتمالات الأهداف الآمنة، ونقاط التحويل المفقودة، والتحويلات ذات النقطتين). أثبت، باستعمال الاستدلال *القوي*، أنّ الفريق يستطيع تحقيق أيّ عددٍ من النقاط، 12 نقطةً فأكثر.[🔗](#exercises_seq-strong-induction-2-2-1) تلميح. إن كانت لديك ثلاث حالات أساسية، فهل يمكنك دائمًا أن تتأكّد من قدرتك على الحصول على ثلاث نقاطٍ إضافية؟[🔗](#exercises_seq-strong-induction-2-3-1) [🔗](#exercises_seq-strong-induction-2-3) [🔗](#exercises_seq-strong-induction-2)
 
 #### 2.
 
-Prove using *strong* induction that the sum of the interior angles of a convex \(n\)-gon is \((n-2)\cdot 180^\circ\text{.}\) (A convex \(n\)-gon is a polygon with \(n\) sides for which each interior angle is less than \(180^\circ\text{.}\))[🔗](#exercises_seq-strong-induction-3-2-1) Hint. Start with a \((k+1)\)-gon, and divide it into two smaller polygons.[🔗](#exercises_seq-strong-induction-3-3-1) [🔗](#exercises_seq-strong-induction-3-3) [🔗](#exercises_seq-strong-induction-3)
+أثبت باستعمال الاستدلال *القوي* أنّ مجموع الزوايا الداخلية لمضلّع \(n\) محدّب يساوي \((n-2)\cdot 180^\circ\text{.}\) (مضلّع \(n\) المحدّب هو مضلّع له \(n\) ضلعًا، كلُّ زاويةٍ داخليةٍ فيه أصغرُ من \(180^\circ\text{.}\))[🔗](#exercises_seq-strong-induction-3-2-1) تلميح. ابدأ بمضلّع \((k+1)\)، وقسِّمه إلى مضلّعين أصغر.[🔗](#exercises_seq-strong-induction-3-3-1) [🔗](#exercises_seq-strong-induction-3-3) [🔗](#exercises_seq-strong-induction-3)
 
 #### 3.
 
-Prove that every positive integer is either a power of 2 or can be written as the sum of distinct powers of 2.[🔗](#exercises_seq-strong-induction-4-2-1) [🔗](#exercises_seq-strong-induction-4)
+أثبت أنّ كلّ عددٍ صحيحٍ موجب إمّا قوةٌ لـ 2 أو يمكن كتابته على هيئة مجموعٍ قوى متمايزة لـ 2.[🔗](#exercises_seq-strong-induction-4-2-1) [🔗](#exercises_seq-strong-induction-4)
 
 #### 4.
 
-Prove, using strong induction, that every natural number is either a Fibonacci number or can be written as the *sum* of *distinct* Fibonacci numbers.[🔗](#exercises_seq-strong-induction-5-2-1) Hint. As with the previous question, we will want to subtract something from \(n\) in the inductive step. There we subtracted the largest power of 2 less than \(n\text{.}\) So what should you subtract here?[🔗](#exercises_seq-strong-induction-5-3-1) Note that you will still need to take care here that the sum you get from the inductive hypothesis, together with the number you subtracted, will be a sum of *distinct* Fibonacci numbers. In fact, you could prove that the Fibonacci numbers in the sum are non-consecutive![🔗](#exercises_seq-strong-induction-5-3-2) [🔗](#exercises_seq-strong-induction-5-3) [🔗](#exercises_seq-strong-induction-5)
+أثبت، باستعمال الاستدلال القوي، أنّ كلّ عددٍ طبيعيّ إمّا عددٌ فيبوناتشيّ أو يمكن كتابته على هيئة *مجموع* أعدادٍ فيبوناتشيّة *متباعدة*.[🔗](#exercises_seq-strong-induction-5-2-1) تلميح. كما في السؤال السابق، سنرغب في طرح شيءٍ من \(n\) في الخطوة الاستقرائية. فقد طرحنا هناك أكبرَ قوةٍ لـ 2 أصغرَ من \(n\text{.}\) فما الذي ينبغي أن تطرحه هنا؟[🔗](#exercises_seq-strong-induction-5-3-1) ولاحظ أنّ عليك هنا أن تهتمّ أيضًا بأن يكون المجموع الذي تحصل عليه من فرضية الاستقراء، مع العدد الذي طرحته، مجموعًا لأعدادٍ فيبوناتشيّة *متباعدة*. وفي الحقيقة يمكنك إثبات أنّ الأعداد الفيبوناتشيّة في المجموع غير متتالية![🔗](#exercises_seq-strong-induction-5-3-2) [🔗](#exercises_seq-strong-induction-5-3) [🔗](#exercises_seq-strong-induction-5)
 
 #### 5.
 
-We have previously proved that for any tree, the number of edges is always one less than the number of vertices. That is, a tree with \(v\) vertices and \(e\) edges satisfies \(v = e+1\text{.}\)[🔗](#exercises_seq-strong-induction-6-1-1) Give an alternate proof of this fact using strong induction on the number of vertices. Do so by taking a non-leaf vertex and “splitting” it into two vertices, each belonging to a separate tree.[🔗](#exercises_seq-strong-induction-6-1-2) [🔗](#exercises_seq-strong-induction-6)
+لقد أثبتّا سابقًا أنّه لأيّ شجرة، يكون عددُ الحوافّ دائمًا أقلّ بواحدٍ من عدد الرؤوس. أي إنّ شجرةً ذات \(v\) رأسًا و\(e\) حافةً تحقّق \(v = e+1\text{.}\)[🔗](#exercises_seq-strong-induction-6-1-1) أعطِ برهانًا بديلًا لهذه الحقيقة باستعمال الاستدلال القوي على عدد الرؤوس. وافعل ذلك بأخذ رأسٍ ليس ورقةً و«تقسيمه» إلى رأسين، كلٌّ منهما ينتمي إلى شجرةٍ منفصلة.[🔗](#exercises_seq-strong-induction-6-1-2) [🔗](#exercises_seq-strong-induction-6)
 
 #### 6.
 
-Suppose that a particular real number \(x\) has the property that \(x + \frac{1}{x}\) is an integer. Prove that \(x^n + \frac{1}{x^n}\) is an integer for all natural numbers \(n\text{.}\)[🔗](#exercises_seq-strong-induction-7-1-1) Hint. You will need to use strong induction. For the inductive case, try multiplying \(\left (x^k + \frac{1}{x^{k}}\right)\left(x+\frac{1}{x}\right)\text{,}\) and collect which terms together are integers.[🔗](#exercises_seq-strong-induction-7-2-1) [🔗](#exercises_seq-strong-induction-7-2) [🔗](#exercises_seq-strong-induction-7)
+افترض أنّ عددًا حقيقيًّا بعينه \(x\) له الخاصيّة أنّ \(x + \frac{1}{x}\) عددٌ صحيح. أثبت أنّ \(x^n + \frac{1}{x^n}\) عددٌ صحيح لكل الأعداد الطبيعية \(n\text{.}\)[🔗](#exercises_seq-strong-induction-7-1-1) تلميح. ستحتاج إلى استعمال الاستدلال القوي. وفي الحالة الاستقرائية، حاول أن تضرب \(\left (x^k + \frac{1}{x^{k}}\right)\left(x+\frac{1}{x}\right)\text{,}\) ثمّ اجمع أيّ الحدود يتكوّن منها عددٌ صحيح.[🔗](#exercises_seq-strong-induction-7-2-1) [🔗](#exercises_seq-strong-induction-7-2) [🔗](#exercises_seq-strong-induction-7)
 
 #### 7.
 
-Here is an example of a more complicated induction technique called double induction.[🔗](#exercises_seq-strong-induction-8-4-1) You will prove that the Fibonacci numbers satisfy the identity \(F_n^2 + F_{n+1}^2 = F_{2n+1}\text{.}\) One way to do this is to prove the more general identity, \begin{equation*} F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\text{,} \end{equation*} and realize that when \(m = n\) we get our desired result. [🔗](#exercises_seq-strong-induction-8-4-2) Note that we now have two variables, so we want to prove this for all \(m \ge 0\) *and* all \(n \ge 0\) at the same time. For each such pair \((m,n)\text{,}\) let \(P(m,n)\) be the statement \(F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\)[🔗](#exercises_seq-strong-induction-8-4-3)
+إليك مثالًا لتقنية استدلالٍ أعقد تُدعى الاستدلالَ المزدوج.[🔗](#exercises_seq-strong-induction-8-4-1) ستُثبت أنّ الأعداد الفيبوناتشيّة تحقّق الهوية \(F_n^2 + F_{n+1}^2 = F_{2n+1}\text{.}\) وإحدى طرق ذلك هي إثبات الهوية الأعمّ، \begin{equation*} F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\text{,} \end{equation*} ثمّ إدراك أنّه عند \(m = n\) نحصل على النتيجة المرغوبة. [🔗](#exercises_seq-strong-induction-8-4-2) ولاحظ أنّ لدينا الآن متغيّران، إذ نريد إثبات ذلك لكل \(m \ge 0\) *و* لكل \(n \ge 0\) في الوقت نفسه. ولكلّ زوجٍ من هذه الأزواج \((m,n)\text{,}\) دع \(P(m,n)\) تكون العبارة \(F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\)[🔗](#exercises_seq-strong-induction-8-4-3)
 
 #### (a)
 
-First fix \(m = 0\text{,}\) and give a proof by mathematical induction that \(P(0,n)\) holds for all \(n \ge 0\text{.}\) Note that this proof will be very easy.[🔗](#exercises_seq-strong-induction-8-5-1-1) [🔗](#exercises_seq-strong-induction-8-5)
+أوّلًا ثبّت \(m = 0\text{,}\) وقدّم برهانًا بالاستدلال الرياضي على أنّ \(P(0,n)\) تصدق لكل \(n \ge 0\text{.}\) ولاحظ أنّ هذا البرهان سيكون سهلًا جدًّا.[🔗](#exercises_seq-strong-induction-8-5-1-1) [🔗](#exercises_seq-strong-induction-8-5)
 
 #### (b)
 
-Now fix an arbitrary \(n\text{,}\) and give a proof by *strong* mathematical induction that \(P(m,n)\) holds for all \(m \ge 0\text{.}\)[🔗](#exercises_seq-strong-induction-8-6-1-1) [🔗](#exercises_seq-strong-induction-8-6)
+والآن ثبّت \(n\text{,}\) اعتباطيًّا، وقدّم برهانًا بالاستدلال الرياضي *القوي* على أنّ \(P(m,n)\) تصدق لكل \(m \ge 0\text{.}\)[🔗](#exercises_seq-strong-induction-8-6-1-1) [🔗](#exercises_seq-strong-induction-8-6)
 
 #### (c)
 
-You can now conclude that \(P(m,n)\) holds for all \(m,n\ge 0\text{.}\) Do you believe that? Explain why this sort of induction is valid. For example, why do your proofs above guarantee that \(P(2,3)\) is true?[🔗](#exercises_seq-strong-induction-8-7-1-1) [🔗](#exercises_seq-strong-induction-8-7)[🔗](#exercises_seq-strong-induction-8)
+يمكنك الآن أن تستنتج أنّ \(P(m,n)\) تصدق لكل \(m,n\ge 0\text{.}\) فهل تصدّق ذلك؟ اشرح لماذا هذا النوع من الاستدلال صحيح. مثلًا، لماذا تُضمّن براهينك أعلاه أنّ \(P(2,3)\) صادقة؟[🔗](#exercises_seq-strong-induction-8-7-1-1) [🔗](#exercises_seq-strong-induction-8-7)[🔗](#exercises_seq-strong-induction-8)
 
 #### 8.
 
-Given a square, you can cut the square into smaller squares by cutting along lines parallel to the sides of the original square (these lines do not need to travel the entire side length of the original square). For example, by cutting along the lines below, you will divide a square into 6 smaller squares:[🔗](#exercises_seq-strong-induction-9-2-1) ![One large square with five squares of half the side length wrapping around the top and right side, forming an even larger square.](generated/latex-image/exercises_seq-strong-induction-9-2-2-1.svg) Prove, using strong induction, that it is possible to cut a square into \(n\) smaller squares for any \(n \ge 6\text{.}\)[🔗](#exercises_seq-strong-induction-9-2-3) Hint. You will need three base cases. This is a very good hint actually, as it suggests that to prove \(P(n)\) is true, you would want to use the fact that \(P(n-3)\) is true. So somehow you need to increase the number of squares by 3.[🔗](#exercises_seq-strong-induction-9-3-1) [🔗](#exercises_seq-strong-induction-9-3) [🔗](#exercises_seq-strong-induction-9)[🔗](#exercises_seq-strong-induction)[🔗](#sec_seq-strong-induction) [&#xe5cb;Prev](sec_seq-induction.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_sequences-conc.html) [Feedback](/cdn-cgi/l/email-protection#b1dec2d2d0c39fddd4c7d8dff1c4dfd2de9fd4d5c4)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_seq-strong-induction-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_seq-strong-induction-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+معطى مربّع، يمكنك تقطيع المربّع إلى مربّعاتٍ أصغر بالقطع على امتداد خطوطٍ موازيةٍ لأضلاع المربّع الأصليّ (ولا يلزم أن تمتدّ هذه الخطوط بكامل طول ضلع المربّع الأصليّ). فمثلًا، بالقطع على امتداد الخطوط أدناه، ستقسم مربّعًا إلى 6 مربّعاتٍ أصغر:[🔗](#exercises_seq-strong-induction-9-2-1) ![مربّعٌ كبيرٌ واحدٌ مع خمسة مربّعاتٍ طولُ ضلع كلٍّ منها نصفُ ضلع المربّع، تلتفّ حول الضلع العلوي والضلع الأيمن، مشكلةً بذلك مربّعًا أكبر.](generated/latex-image/exercises_seq-strong-induction-9-2-2-1.svg) أثبت، باستعمال الاستدلال القوي، أنّه من الممكن تقطيع مربّعٍ إلى \(n\) مربّعاتٍ أصغر لأيّ \(n \ge 6\text{.}\)[🔗](#exercises_seq-strong-induction-9-2-3) تلميح. ستحتاج إلى ثلاث حالات أساسية. وهذا في الواقع تلميحٌ جيّد جدًّا، إذ يوحي بأنّك لإثبات صحّة \(P(n)\) ستودّ استعمال حقيقة أنّ \(P(n-3)\) صادقة. إذن لا بدّ من أن تزيد عدد المربّعات بمقدار 3 بطريقةٍ ما.[🔗](#exercises_seq-strong-induction-9-3-1) [🔗](#exercises_seq-strong-induction-9-3) [🔗](#exercises_seq-strong-induction-9)[🔗](#exercises_seq-strong-induction)[🔗](#sec_seq-strong-induction) [&#xe5cb;السابق](sec_seq-induction.html)[&#xe5ce;الأعلى](#)[التالي&#xe5cc;](sec_seq_sequences-conc.html) [ملاحظات](/cdn-cgi/l/email-protection#b1dec2d2d0c39fddd4c7d8dff1c4dfd2de9fd4d5c4)[شعار PreTeXt](https://pretextbook.org)[![شعار Runstone Academy](/images/discrete-math/sec_seq-strong-induction-RAIcon_cropped.png.webp)](https://runstone.academy)[![شعار MathJax](/images/discrete-math/sec_seq-strong-induction-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');

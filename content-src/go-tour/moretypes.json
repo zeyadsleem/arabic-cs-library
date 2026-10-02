@@ -1,0 +1,114 @@
+{
+  "Title": "More types: structs, slices, and maps.",
+  "Description": "Learn how to define types based on existing ones: this lesson covers structs, arrays, slices, and maps.",
+  "Pages": [
+    {
+      "Title": "Pointers",
+      "Content": "\n  <h2>Pointers</h2>\n  \n  \n  <p>\n    Go has pointers.\n\n\n    A pointer holds the memory address of a value.\n  </p>\n  \n\n  \n  <p>\n    The type <code>*T</code> is a pointer to a <code>T</code> value. Its zero value is <code>nil</code>.\n  </p>\n  \n\n  \n  <pre>var p *int</pre>\n  \n\n  \n  <p>\n    The <code>&amp;</code> operator generates a pointer to its operand.\n  </p>\n  \n\n  \n  <pre>i := 42\np = &amp;i</pre>\n  \n\n  \n  <p>\n    The <code>*</code> operator denotes the pointer&#39;s underlying value.\n  </p>\n  \n\n  \n  <pre>fmt.Println(*p) // read i through the pointer p\n*p = 21         // set i through the pointer p</pre>\n  \n\n  \n  <p>\n    This is known as &#34;dereferencing&#34; or &#34;indirecting&#34;.\n  </p>\n  \n\n  \n  <p>\n    Unlike C, Go has no pointer arithmetic.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Structs",
+      "Content": "\n  <h2>Structs</h2>\n  \n  \n  <p>\n    A <code>struct</code> is a collection of fields.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Struct Fields",
+      "Content": "\n  <h2>Struct Fields</h2>\n  \n  \n  <p>\n    Struct fields are accessed using a dot.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Pointers to structs",
+      "Content": "\n  <h2>Pointers to structs</h2>\n  \n  \n  <p>\n    Struct fields can be accessed through a struct pointer.\n  </p>\n  \n\n  \n  <p>\n    To access the field <code>X</code> of a struct when we have the struct pointer <code>p</code> we could\n\n\n    write <code>(*p).X</code>.\n\n\n    However, that notation is cumbersome, so the language permits us instead to\n\n\n    write just <code>p.X</code>, without the explicit dereference.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Struct Literals",
+      "Content": "\n  <h2>Struct Literals</h2>\n  \n  \n  <p>\n    A struct literal denotes a newly allocated struct value by listing the values of its fields.\n  </p>\n  \n\n  \n  <p>\n    You can list just a subset of fields by using the <code>Name:</code> syntax. (And the order of named fields is irrelevant.)\n  </p>\n  \n\n  \n  <p>\n    The special prefix <code>&amp;</code> returns a pointer to the struct value.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Arrays",
+      "Content": "\n  <h2>Arrays</h2>\n  \n  \n  <p>\n    The type <code>[n]T</code> is an array of <code>n</code> values of type <code>T</code>.\n  </p>\n  \n\n  \n  <p>\n    The expression\n  </p>\n  \n\n  \n  <pre>var a [10]int</pre>\n  \n\n  \n  <p>\n    declares a variable <code>a</code> as an array of ten integers.\n  </p>\n  \n\n  \n  <p>\n    An array&#39;s length is part of its type, so arrays cannot be resized.\n\n\n    This seems limiting, but don&#39;t worry;\n\n\n    Go provides a convenient way of working with arrays.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slices",
+      "Content": "\n  <h2>Slices</h2>\n  \n  \n  <p>\n    An array has a fixed size.\n\n\n    A slice, on the other hand, is a dynamically-sized,\n\n\n    flexible view into the elements of an array.\n\n\n    In practice, slices are much more common than arrays.\n  </p>\n  \n\n  \n  <p>\n    The type <code>[]T</code> is a slice with elements of type <code>T</code>.\n  </p>\n  \n\n  \n  <p>\n    A slice is formed by specifying two indices, a low and\n\n\n    high bound, separated by a colon:\n  </p>\n  \n\n  \n  <pre>a[low : high]</pre>\n  \n\n  \n  <p>\n    This selects a half-open range which includes the first\n\n\n    element, but excludes the last one.\n  </p>\n  \n\n  \n  <p>\n    The following expression creates a slice which includes\n\n\n    elements 1 through 3 of <code>a</code>:\n  </p>\n  \n\n  \n  <pre>a[1:4]</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slices are like references to arrays",
+      "Content": "\n  <h2>Slices are like references to arrays</h2>\n  \n  \n  <p>\n    A slice does not store any data,\n\n\n    it just describes a section of an underlying array.\n  </p>\n  \n\n  \n  <p>\n    Changing the elements of a slice modifies the\n\n\n    corresponding elements of its underlying array.\n  </p>\n  \n\n  \n  <p>\n    Other slices that share the same underlying array will see those changes.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slice literals",
+      "Content": "\n  <h2>Slice literals</h2>\n  \n  \n  <p>\n    A slice literal is like an array literal without the length.\n  </p>\n  \n\n  \n  <p>\n    This is an array literal:\n  </p>\n  \n\n  \n  <pre>[3]bool{true, true, false}</pre>\n  \n\n  \n  <p>\n    And this creates the same array as above,\n\n\n    then builds a slice that references it:\n  </p>\n  \n\n  \n  <pre>[]bool{true, true, false}</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slice defaults",
+      "Content": "\n  <h2>Slice defaults</h2>\n  \n  \n  <p>\n    When slicing, you may omit the high or low bounds to use their defaults instead.\n  </p>\n  \n\n  \n  <p>\n    The default is zero for the low bound and the length of the underlying slice or array for the high bound.\n  </p>\n  \n\n  \n  <p>\n    For the array\n  </p>\n  \n\n  \n  <pre>var a [10]int</pre>\n  \n\n  \n  <p>\n    these slice expressions are equivalent:\n  </p>\n  \n\n  \n  <pre>a[0:10]\na[:10]\na[0:]\na[:]</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slice length and capacity",
+      "Content": "\n  <h2>Slice length and capacity</h2>\n  \n  \n  <p>\n    A slice has both a <i>length</i> and a <i>capacity</i>.\n  </p>\n  \n\n  \n  <p>\n    The length of a slice is the number of elements it contains.\n  </p>\n  \n\n  \n  <p>\n    The capacity of a slice is the number of elements in the underlying array,\n\n\n    counting from the first element in the slice.\n  </p>\n  \n\n  \n  <p>\n    The length and capacity of a slice <code>s</code> can be obtained using the expressions\n\n\n    <code>len(s)</code> and <code>cap(s)</code>.\n  </p>\n  \n\n  \n  <p>\n    You can extend a slice&#39;s length by re-slicing it,\n\n\n    provided it has sufficient capacity.\n\n\n    Try changing one of the slice operations in the example program to extend it\n\n\n    beyond its capacity and see what happens.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Nil slices",
+      "Content": "\n  <h2>Nil slices</h2>\n  \n  \n  <p>\n    The zero value of a slice is <code>nil</code>.\n  </p>\n  \n\n  \n  <p>\n    A nil slice has a length and capacity of 0\n\n\n    and has no underlying array.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Creating a slice with make",
+      "Content": "\n  <h2>Creating a slice with make</h2>\n  \n  \n  <p>\n    Slices can be created with the built-in <code>make</code> function;\n\n\n    this is how you create dynamically-sized arrays.\n  </p>\n  \n\n  \n  <p>\n    The <code>make</code> function allocates a zeroed array\n\n\n    and returns a slice that refers to that array:\n  </p>\n  \n\n  \n  <pre>a := make([]int, 5)  // len(a)=5</pre>\n  \n\n  \n  <p>\n    To specify a capacity, pass a third argument to <code>make</code>:\n  </p>\n  \n\n  \n  <pre>b := make([]int, 0, 5) // len(b)=0, cap(b)=5\n\nb = b[:cap(b)] // len(b)=5, cap(b)=5\nb = b[1:]      // len(b)=4, cap(b)=4</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Slices of slices",
+      "Content": "\n  <h2>Slices of slices</h2>\n  \n  \n  <p>\n    Slices can contain any type, including other slices.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Appending to a slice",
+      "Content": "\n  <h2>Appending to a slice</h2>\n  \n  \n  <p>\n    It is common to append new elements to a slice, and so Go provides a built-in\n\n\n    <code>append</code> function. The <a href=\"/pkg/builtin/#append\" target=\"_self\">documentation</a>\n\n\n    of the built-in package describes <code>append</code>.\n  </p>\n  \n\n  \n  <pre>func append(s []T, vs ...T) []T</pre>\n  \n\n  \n  <p>\n    The first parameter <code>s</code> of <code>append</code> is a slice of type <code>T</code>, and the rest are\n\n\n    <code>T</code> values to append to the slice.\n  </p>\n  \n\n  \n  <p>\n    The resulting value of <code>append</code> is a slice containing all the elements of the\n\n\n    original slice plus the provided values.\n  </p>\n  \n\n  \n  <p>\n    If the backing array of <code>s</code> is too small to fit all the given values a bigger\n\n\n    array will be allocated. The returned slice will point to the newly allocated\n\n\n    array.\n  </p>\n  \n\n  \n  <p>\n    (To learn more about slices, read the <a href=\"/blog/go-slices-usage-and-internals\" target=\"_self\">Slices: usage and internals</a> article.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Range",
+      "Content": "\n  <h2>Range</h2>\n  \n  \n  <p>\n    The <code>range</code> form of the <code>for</code> loop iterates over a slice or map.\n  </p>\n  \n\n  \n  <p>\n    When ranging over a slice, two values are returned for each iteration.\n\n\n    The first is the index, and the second is a copy of the element at that index.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Range continued",
+      "Content": "\n  <h2>Range continued</h2>\n  \n  \n  <p>\n    You can skip the index or value by assigning to <code>_</code>.\n  </p>\n  \n\n  \n  <pre>for i, _ := range pow\nfor _, value := range pow</pre>\n  \n\n  \n  <p>\n    If you only want the index, you can omit the second variable.\n  </p>\n  \n\n  \n  <pre>for i := range pow</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Slices",
+      "Content": "\n  <h2>Exercise: Slices</h2>\n  \n  \n  <p>\n    Implement <code>Pic</code>. It should return a slice of length <code>dy</code>, each element of which is a slice of <code>dx</code> 8-bit unsigned integers. When you run the program, it will display your picture, interpreting the integers as grayscale (well, bluescale) values.\n  </p>\n  \n\n  \n  <p>\n    The choice of image is up to you. Interesting functions include <code>(x+y)/2</code>, <code>x*y</code>, and <code>x^y</code>.\n  </p>\n  \n\n  \n  <p>\n    (You need to use a loop to allocate each <code>[]uint8</code> inside the <code>[][]uint8</code>.)\n  </p>\n  \n\n  \n  <p>\n    (Use <code>uint8(intValue)</code> to convert between types.)\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Maps",
+      "Content": "\n  <h2>Maps</h2>\n  \n  \n  <p>\n    A map maps keys to values.\n  </p>\n  \n\n  \n  <p>\n    The zero value of a map is <code>nil</code>.\n\n\n    A <code>nil</code> map has no keys, nor can keys be added.\n  </p>\n  \n\n  \n  <p>\n    The <code>make</code> function returns a map of the given type,\n\n\n    initialized and ready for use.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Map literals",
+      "Content": "\n  <h2>Map literals</h2>\n  \n  \n  <p>\n    Map literals are like struct literals, but the keys are required.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Map literals continued",
+      "Content": "\n  <h2>Map literals continued</h2>\n  \n  \n  <p>\n    If the top-level type is just a type name, you can omit it from the elements of the literal.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Mutating Maps",
+      "Content": "\n  <h2>Mutating Maps</h2>\n  \n  \n  <p>\n    Insert or update an element in map <code>m</code>:\n  </p>\n  \n\n  \n  <pre>m[key] = elem</pre>\n  \n\n  \n  <p>\n    Retrieve an element:\n  </p>\n  \n\n  \n  <pre>elem = m[key]</pre>\n  \n\n  \n  <p>\n    Delete an element:\n  </p>\n  \n\n  \n  <pre>delete(m, key)</pre>\n  \n\n  \n  <p>\n    Test that a key is present with a two-value assignment:\n  </p>\n  \n\n  \n  <pre>elem, ok = m[key]</pre>\n  \n\n  \n  <p>\n    If <code>key</code> is in <code>m</code>, <code>ok</code> is <code>true</code>. If not, <code>ok</code> is <code>false</code>.\n  </p>\n  \n\n  \n  <p>\n    If <code>key</code> is not in the map, then <code>elem</code> is the zero value for the map&#39;s element type.\n  </p>\n  \n\n  \n  <p>\n    <b>Note:</b> If <code>elem</code> or <code>ok</code> have not yet been declared you could use a short declaration form:\n  </p>\n  \n\n  \n  <pre>elem, ok := m[key]</pre>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Maps",
+      "Content": "\n  <h2>Exercise: Maps</h2>\n  \n  \n  <p>\n    Implement <code>WordCount</code>.  It should return a map of the counts of each “word” in the string <code>s</code>. The <code>wc.Test</code> function runs a test suite against the provided function and prints success or failure.\n  </p>\n  \n\n  \n  <p>\n    You might find <a href=\"/pkg/strings/#Fields\" target=\"_self\">strings.Fields</a> helpful.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Function values",
+      "Content": "\n  <h2>Function values</h2>\n  \n  \n  <p>\n    Functions are values too. They can be passed around just like other values.\n  </p>\n  \n\n  \n  <p>\n    Function values may be used as function arguments and return values.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Function closures",
+      "Content": "\n  <h2>Function closures</h2>\n  \n  \n  <p>\n    Go functions may be closures. A closure is a function value that references variables from outside its body. The function may access and assign to the referenced variables; in this sense the function is &#34;bound&#34; to the variables.\n  </p>\n  \n\n  \n  <p>\n    For example, the <code>adder</code> function returns a closure. Each closure is bound to its own <code>sum</code> variable.\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Exercise: Fibonacci closure",
+      "Content": "\n  <h2>Exercise: Fibonacci closure</h2>\n  \n  \n  <p>\n    Let&#39;s have some fun with functions.\n  </p>\n  \n\n  \n  <p>\n    Implement a <code>fibonacci</code> function that returns a function (a closure) that\n\n\n    returns successive <a href=\"https://en.wikipedia.org/wiki/Fibonacci_number\" target=\"_blank\">fibonacci numbers</a>\n\n\n    (0, 1, 1, 2, 3, 5, ...).\n  </p>\n  \n\n\t\n\t\t\n\t\n\n"
+    },
+    {
+      "Title": "Congratulations!",
+      "Content": "\n  <h2>Congratulations!</h2>\n  \n  \n  <p>\n    You finished this lesson!\n  </p>\n  \n\n  \n  <p>\n    You can go back to the list of <a href=\"/tour/list\" target=\"_self\">modules</a> to find what to learn next, or continue with the <a href=\"javascript:click(&#39;.next-page&#39;)\" target=\"_self\">next lesson</a>.\n  </p>\n  \n\n"
+    }
+  ]
+}

@@ -1,0 +1,547 @@
+MODULE TITLE: Concurrency
+MODULE DESCRIPTION: Go provides concurrency constructions as part of the core language. This lesson presents them and gives some examples on how they can be used.
+
+PAGE 1 TITLE: Goroutines
+
+  <h2>Goroutines</h2>
+
+
+  <p>
+    A <i>goroutine</i> is a lightweight thread managed by the Go runtime.
+  </p>
+
+
+
+  <pre>go f(x, y, z)</pre>
+
+
+
+  <p>
+    starts a new goroutine running
+  </p>
+
+
+
+  <pre>f(x, y, z)</pre>
+
+
+
+  <p>
+    The evaluation of <code>f</code>, <code>x</code>, <code>y</code>, and <code>z</code> happens in the current goroutine and the execution of <code>f</code> happens in the new goroutine.
+  </p>
+
+
+
+  <p>
+    Goroutines run in the same address space, so access to shared memory must be synchronized. The <a href="/pkg/sync/" target="_self"><code>sync</code></a> package provides useful primitives, although you won&#39;t need them much in Go as there are other primitives. (See the next slide.)
+  </p>
+
+
+
+
+
+
+
+END PAGE 1
+
+PAGE 2 TITLE: Channels
+
+  <h2>Channels</h2>
+
+
+  <p>
+    Channels are a typed conduit through which you can send and receive values with the channel operator, <code>&lt;-</code>.
+  </p>
+
+
+
+  <pre>ch &lt;- v    // Send v to channel ch.
+v := &lt;-ch  // Receive from ch, and
+           // assign value to v.</pre>
+
+
+
+  <p>
+    (The data flows in the direction of the arrow.)
+  </p>
+
+
+
+  <p>
+    Like maps and slices, channels must be created before use:
+  </p>
+
+
+
+  <pre>ch := make(chan int)</pre>
+
+
+
+  <p>
+    By default, sends and receives block until the other side is ready. This allows goroutines to synchronize without explicit locks or condition variables.
+  </p>
+
+
+
+  <p>
+    The example code sums the numbers in a slice, distributing the work between two goroutines.
+
+
+    Once both goroutines have completed their computation, it calculates the final result.
+  </p>
+
+
+
+
+
+
+
+END PAGE 2
+
+PAGE 3 TITLE: Buffered Channels
+
+  <h2>Buffered Channels</h2>
+
+
+  <p>
+    Channels can be <i>buffered</i>.  Provide the buffer length as the second argument to <code>make</code> to initialize a buffered channel:
+  </p>
+
+
+
+  <pre>ch := make(chan int, 100)</pre>
+
+
+
+  <p>
+    Sends to a buffered channel block only when the buffer is full. Receives block when the buffer is empty.
+  </p>
+
+
+
+  <p>
+    Modify the example to overfill the buffer and see what happens.
+  </p>
+
+
+
+
+
+
+
+END PAGE 3
+
+PAGE 4 TITLE: Range and Close
+
+  <h2>Range and Close</h2>
+
+
+  <p>
+    A sender can <code>close</code> a channel to indicate that no more values will be sent. Receivers can test whether a channel has been closed by assigning a second parameter to the receive expression: after
+  </p>
+
+
+
+  <pre>v, ok := &lt;-ch</pre>
+
+
+
+  <p>
+    <code>ok</code> is <code>false</code> if there are no more values to receive and the channel is closed.
+  </p>
+
+
+
+  <p>
+    The loop <code>for i := range c</code> receives values from the channel repeatedly until it is closed.
+  </p>
+
+
+
+  <p>
+    <b>Note:</b> Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic.
+  </p>
+
+
+
+  <p>
+    <b>Another note:</b> Channels aren&#39;t like files; you don&#39;t usually need to close them. Closing is only necessary when the receiver must be told there are no more values coming, such as to terminate a <code>range</code> loop.
+  </p>
+
+
+
+
+
+
+
+END PAGE 4
+
+PAGE 5 TITLE: Select
+
+  <h2>Select</h2>
+
+
+  <p>
+    The <code>select</code> statement lets a goroutine wait on multiple communication operations.
+  </p>
+
+
+
+  <p>
+    A <code>select</code> blocks until one of its cases can run, then it executes that case.  It chooses one at random if multiple are ready.
+  </p>
+
+
+
+
+
+
+
+END PAGE 5
+
+PAGE 6 TITLE: Default Selection
+
+  <h2>Default Selection</h2>
+
+
+  <p>
+    The <code>default</code> case in a <code>select</code> is run if no other case is ready.
+  </p>
+
+
+
+  <p>
+    Use a <code>default</code> case to try a send or receive without blocking:
+  </p>
+
+
+
+  <pre>select {
+case i := &lt;-c:
+    // use i
+default:
+    // receiving from c would block
+}</pre>
+
+
+
+
+
+
+
+END PAGE 6
+
+PAGE 7 TITLE: Exercise: Equivalent Binary Trees
+
+  <h2>Exercise: Equivalent Binary Trees</h2>
+
+
+  <p>
+    There can be many different binary trees with the same sequence of values stored in it. For example, here are two binary trees storing the sequence 1, 1, 2, 3, 5, 8, 13.
+  </p>
+
+
+  <img src="/tour/static/img/tree.png">
+
+
+  <p>
+    A function to check whether two binary trees store the same sequence is quite complex in most languages. We&#39;ll use Go&#39;s concurrency and channels to write a simple solution.
+  </p>
+
+
+
+  <p>
+    This example uses the <code>tree</code> package, which defines the type:
+  </p>
+
+
+
+  <pre>type Tree struct {
+    Left  *Tree
+    Value int
+    Right *Tree
+}</pre>
+
+
+
+  <p>
+    Continue description on <a href="javascript:click(&#39;.next-page&#39;)" target="_self">next page</a>.
+  </p>
+
+
+
+END PAGE 7
+
+PAGE 8 TITLE: Exercise: Equivalent Binary Trees
+
+  <h2>Exercise: Equivalent Binary Trees</h2>
+
+
+  <p>
+    <b>1.</b> Implement the <code>Walk</code> function.
+  </p>
+
+
+
+  <p>
+    <b>2.</b> Test the <code>Walk</code> function.
+  </p>
+
+
+
+  <p>
+    The function <code>tree.New(k)</code> constructs a randomly-structured (but always sorted) binary tree holding the values <code>k</code>, <code>2k</code>, <code>3k</code>, ..., <code>10k</code>.
+  </p>
+
+
+
+  <p>
+    Create a new channel <code>ch</code> and kick off the walker:
+  </p>
+
+
+
+  <pre>go Walk(tree.New(1), ch)</pre>
+
+
+
+  <p>
+    Then read and print 10 values from the channel. It should be the numbers 1, 2, 3, ..., 10.
+  </p>
+
+
+
+  <p>
+    <b>3.</b> Implement the <code>Same</code> function using <code>Walk</code> to determine whether <code>t1</code> and <code>t2</code> store the same values.
+  </p>
+
+
+
+  <p>
+    <b>4.</b> Test the <code>Same</code> function.
+  </p>
+
+
+
+  <p>
+    <code>Same(tree.New(1), tree.New(1))</code> should return true, and <code>Same(tree.New(1), tree.New(2))</code> should return false.
+  </p>
+
+
+
+  <p>
+    The documentation for <code>Tree</code> can be found <a href="https://godoc.org/golang.org/x/tour/tree#Tree" target="_blank">here</a>.
+  </p>
+
+
+
+
+
+
+
+END PAGE 8
+
+PAGE 9 TITLE: sync.Mutex
+
+  <h2>sync.Mutex</h2>
+
+
+  <p>
+    We&#39;ve seen how channels are great for communication among goroutines.
+  </p>
+
+
+
+  <p>
+    But what if we don&#39;t need communication? What if we just want to make sure only
+
+
+    one goroutine can access a variable at a time to avoid conflicts?
+  </p>
+
+
+
+  <p>
+    This concept is called <i>mutual exclusion</i>, and the conventional name for the data structure that provides it is <i>mutex</i>.
+  </p>
+
+
+
+  <p>
+    Go&#39;s standard library provides mutual exclusion with
+
+
+    <a href="/pkg/sync/#Mutex" target="_self"><code>sync.Mutex</code></a> and its two methods:
+  </p>
+
+
+  <ul>
+
+    <li><code>Lock</code></li>
+
+    <li><code>Unlock</code></li>
+
+  </ul>
+
+
+  <p>
+    We can define a block of code to be executed in mutual exclusion by surrounding it
+
+
+    with a call to <code>Lock</code> and <code>Unlock</code> as shown on the <code>Inc</code> method.
+  </p>
+
+
+
+  <p>
+    We can also use <code>defer</code> to ensure the mutex will be unlocked as in the <code>Value</code> method.
+  </p>
+
+
+
+
+
+
+
+END PAGE 9
+
+PAGE 10 TITLE: Exercise: Web Crawler
+
+  <h2>Exercise: Web Crawler</h2>
+
+
+  <p>
+    In this exercise you&#39;ll use Go&#39;s concurrency features to parallelize a web crawler.
+  </p>
+
+
+
+  <p>
+    Modify the <code>Crawl</code> function to fetch URLs in parallel without fetching the same URL twice.
+  </p>
+
+
+
+  <p>
+    <i>Hint</i>: you can keep a cache of the URLs that have been fetched on a map, but maps alone are not
+
+
+    safe for concurrent use!
+  </p>
+
+
+
+
+
+
+
+END PAGE 10
+
+PAGE 11 TITLE: Where to Go from here...
+
+  <h2>Where to Go from here...</h2>
+
+
+  <p>
+    You can get started by
+
+
+    <a href="/doc/install/" target="_self">installing Go</a>.
+  </p>
+
+
+
+  <p>
+    Once you have Go installed, the
+
+
+    <a href="/doc/" target="_self">Go Documentation</a> is a great place to
+
+
+    continue.
+
+
+    It contains references, tutorials, videos, and more.
+  </p>
+
+
+
+  <p>
+    To learn how to organize and work with Go code, read <a href="/doc/code" target="_self">How to Write Go Code</a>.
+  </p>
+
+
+
+  <p>
+    If you need help with the standard library, see the <a href="/pkg/" target="_self">package reference</a>. For help with the language itself, you might be surprised to find the <a href="/ref/spec" target="_self">Language Spec</a> is quite readable.
+  </p>
+
+
+
+  <p>
+    To further explore Go&#39;s concurrency model, watch
+
+
+    <a href="https://www.youtube.com/watch?v=f6kdp27TYZs" target="_blank">Go Concurrency Patterns</a>
+
+
+    (<a href="/talks/2012/concurrency.slide" target="_self">slides</a>)
+
+
+    and
+
+
+    <a href="https://www.youtube.com/watch?v=QDDwwePbDtw" target="_blank">Advanced Go Concurrency Patterns</a>
+
+
+    (<a href="/talks/2013/advconc.slide" target="_self">slides</a>)
+
+
+    and read the
+
+
+    <a href="/doc/codewalk/sharemem/" target="_self">Share Memory by Communicating</a>
+
+
+    codewalk.
+  </p>
+
+
+
+  <p>
+    To get started writing web applications, watch
+
+
+    <a href="https://vimeo.com/53221558" target="_blank">A simple programming environment</a>
+
+
+    (<a href="/talks/2012/simple.slide" target="_self">slides</a>)
+
+
+    and read the
+
+
+    <a href="/doc/articles/wiki/" target="_self">Writing Web Applications</a> tutorial.
+  </p>
+
+
+
+  <p>
+    The <a href="/doc/codewalk/functions/" target="_self">First Class Functions in Go</a> codewalk gives an interesting perspective on Go&#39;s function types.
+  </p>
+
+
+
+  <p>
+    The <a href="/blog/" target="_self">Go Blog</a> has a large archive of informative Go articles.
+  </p>
+
+
+
+  <p>
+    Visit <a href="/" target="_self">the Go home page</a> for more.
+  </p>
+
+
+
+END PAGE 11

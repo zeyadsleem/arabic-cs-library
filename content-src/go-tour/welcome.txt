@@ -1,0 +1,298 @@
+MODULE TITLE: Welcome!
+MODULE DESCRIPTION: Learn how to use this tour: including how to navigate the different lessons and how to run code.
+
+PAGE 1 TITLE: Hello, 世界
+
+  <h2>Hello, 世界</h2>
+
+
+  <p>
+    Welcome to a tour of the <a href="/" target="_self">Go programming language</a>.
+  </p>
+
+
+
+  <p>
+    The tour is divided into a list of modules that you can
+
+
+    access by clicking on
+
+
+    <a href="javascript:highlight(&#34;.logo&#34;)" target="_self">A Tour of Go</a> on the top left of the page.
+  </p>
+
+
+
+  <p>
+    You can also view the table of contents at any time by clicking on the <a href="javascript:highlightAndClick(&#34;.nav&#34;)" target="_self">menu</a> on the top right of the page.
+  </p>
+
+
+
+  <p>
+    Throughout the tour you will find a series of slides and exercises for you
+
+
+    to complete.
+  </p>
+
+
+
+  <p>
+    You can navigate through them using
+  </p>
+
+
+  <ul>
+
+    <li><a href="javascript:highlight(&#34;.prev-page&#34;)" target="_self">&#34;previous&#34;</a> or <code>PageUp</code> to go to the previous page,</li>
+
+  </ul>
+
+  <ul>
+
+    <li><a href="javascript:highlight(&#34;.next-page&#34;)" target="_self">&#34;next&#34;</a> or <code>PageDown</code> to go to the next page.</li>
+
+  </ul>
+
+
+  <p>
+    The tour is interactive. Click the
+
+
+    <a href="javascript:highlightAndClick(&#34;#run&#34;)" target="_self">Run</a> button now
+
+
+    (or press <code>Shift</code> + <code>Enter</code>) to compile and run the program on
+
+
+    a remote server.
+
+
+    The result is displayed below the code.
+  </p>
+
+
+
+  <p>
+    These example programs demonstrate different aspects of Go. The programs in the tour are meant to be starting points for your own experimentation.
+  </p>
+
+
+
+  <p>
+    Edit the program and run it again.
+  </p>
+
+
+
+  <p>
+    When you click on <a href="javascript:highlightAndClick(&#34;#format&#34;)" target="_self">Format</a>
+
+
+    (shortcut: <code>Ctrl</code> + <code>Enter</code>), the text in the editor is formatted using the
+
+
+    <a href="/cmd/gofmt/" target="_self">gofmt</a> tool. You can switch syntax highlighting on and off
+
+
+    by clicking on the <a href="javascript:highlightAndClick(&#34;.syntax-checkbox&#34;)" target="_self">syntax</a> button.
+  </p>
+
+
+
+  <p>
+    When you&#39;re ready to move on, click the <a href="javascript:highlightAndClick(&#34;.next-page&#34;)" target="_self">right arrow</a> below or type the <code>PageDown</code> key.
+  </p>
+
+
+
+
+
+
+
+END PAGE 1
+
+PAGE 2 TITLE: Go local
+
+  <h2>Go local</h2>
+
+
+  <p>
+    The tour is available in other languages:
+  </p>
+
+
+  <ul>
+
+    <li><a href="https://go-tour-br.appspot.com/" target="_blank">Brazilian Portuguese — Português do Brasil</a></li>
+
+    <li><a href="https://go-tour-ca.appspot.com/" target="_blank">Catalan — Català</a></li>
+
+    <li><a href="https://go-tour-cz.appspot.com/" target="_blank">Czech — Česky</a></li>
+
+    <li><a href="https://fr-go-dev.shuijingwanwq.com/tour" target="_blank">French — Français</a></li>
+
+    <li><a href="https://de-go-dev.shuijingwanwq.com/tour" target="_blank">German — Deutsch</a></li>
+
+    <li><a href="https://go-tour-id2.appspot.com/" target="_blank">Indonesian — Bahasa Indonesia</a></li>
+
+    <li><a href="https://go-tour-jp.appspot.com/" target="_blank">Japanese — 日本語</a></li>
+
+    <li><a href="https://ko-go-dev.shuijingwanwq.com/tour" target="_blank">Korean — 한국어</a></li>
+
+    <li><a href="https://go-tour-pl1.appspot.com/" target="_blank">Polish — Polski</a></li>
+
+    <li><a href="https://go-dev.shuijingwanwq.com/tour" target="_blank">Simplified Chinese — 简体中文</a></li>
+
+    <li><a href="https://go-tour-lat.appspot.com/" target="_blank">Spanish — Español</a></li>
+
+    <li><a href="https://go-tour-th.appspot.com/" target="_blank">Thai — ภาษาไทย</a></li>
+
+    <li><a href="https://go-tour-ua-translation.lm.r.appspot.com/" target="_blank">Ukrainian — Українською</a></li>
+
+  </ul>
+
+
+  <p>
+    Click the <a href="javascript:highlightAndClick(&#34;.next-page&#34;)" target="_self">&#34;next&#34;</a> button or type <code>PageDown</code> to continue.
+  </p>
+
+
+
+END PAGE 2
+
+PAGE 3 TITLE: Go offline (optional)
+
+  <h2>Go offline (optional)</h2>
+
+
+  <p>
+    This tour is also available as a stand-alone program that you can use
+
+
+    without access to the internet. It builds and runs the code samples on
+
+
+    your own machine.
+  </p>
+
+
+
+  <p>
+    To run the tour locally, you&#39;ll need to first
+
+
+    <a href="/doc/install" target="_self">install Go</a> and then run:
+  </p>
+
+
+
+  <pre>go install golang.org/x/website/tour@latest</pre>
+
+
+
+  <p>
+    This will place a <code>tour</code> binary in your
+
+
+    <a href="/cmd/go/#hdr-GOPATH_and_Modules" target="_self">GOPATH</a>&#39;s <code>bin</code> directory.
+
+
+    When you run the tour program, it will open a web browser displaying
+
+
+    your local version of the tour.
+  </p>
+
+
+
+  <p>
+    Of course, you can continue to take the tour through this web site.
+  </p>
+
+
+
+END PAGE 3
+
+PAGE 4 TITLE: The Go Playground
+
+  <h2>The Go Playground</h2>
+
+
+  <p>
+    This tour is built atop the <a href="https://play.golang.org/" target="_blank">Go Playground</a>, a
+
+
+    web service that runs on <a href="/" target="_self">golang.org</a>&#39;s servers.
+  </p>
+
+
+
+  <p>
+    The service receives a Go program, compiles, links, and runs the program inside
+
+
+    a sandbox, then returns the output.
+  </p>
+
+
+
+  <p>
+    There are limitations to the programs that can be run in the playground:
+  </p>
+
+
+  <ul>
+
+    <li>In the playground the time begins at 2009-11-10 23:00:00 UTC (determining the significance of this date is an exercise for the reader). This makes it easier to cache programs by giving them deterministic output.</li>
+
+  </ul>
+
+  <ul>
+
+    <li>There are also limits on execution time and on CPU and memory usage, and the program cannot access external network hosts.</li>
+
+  </ul>
+
+
+  <p>
+    The playground uses the latest stable release of Go.
+  </p>
+
+
+
+  <p>
+    Read &#34;<a href="/blog/playground" target="_self">Inside the Go Playground</a>&#34; to learn more.
+  </p>
+
+
+
+
+
+
+
+END PAGE 4
+
+PAGE 5 TITLE: Congratulations
+
+  <h2>Congratulations</h2>
+
+
+  <p>
+    You&#39;ve finished the first module of the tour!
+  </p>
+
+
+
+  <p>
+    Now click on <a href="javascript:highlightAndClick(&#34;.logo&#34;)" target="_self">A Tour of Go</a> to find out what else
+
+
+    you can learn about Go, or go directly to the <a href="javascript:click(&#39;.next-page&#39;)" target="_self">next lesson</a>.
+  </p>
+
+
+
+END PAGE 5

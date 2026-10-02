@@ -863,6 +863,27 @@
       "note": ". أُدرجت في قائمة الترجمة بمبادرة المستخدم."
     },
     {
+      "id": "go-tour",
+      "title": "جولة Go التفاعلية بالعربي",
+      "titleEn": "A Tour of Go",
+      "author": "The Go Authors",
+      "description": "الجولة الرسمية للغة Go بترجمة عربية كاملة: 103 صفحات في 7 وحدات، مع محرر لتجربة الأمثلة وتشغيل الشيفرة وتنسيقها أثناء القراءة.",
+      "sourceUrl": "https://go.dev/tour/",
+      "repoUrl": "https://github.com/golang/website/tree/master/tour",
+      "license": "BSD-3-Clause",
+      "licenseUrl": "https://go.dev/LICENSE",
+      "languages": [
+        "Go"
+      ],
+      "status": "translated",
+      "stage": "go",
+      "order": 0,
+      "format": "interactive",
+      "pages": 103,
+      "completeCourse": true,
+      "prerequisites": []
+    },
+    {
       "id": "effective-go",
       "title": "Go الفعّالة",
       "titleEn": "Effective Go",
