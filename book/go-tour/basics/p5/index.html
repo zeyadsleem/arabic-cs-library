@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.BHVmUT--.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/9qNRNgbg.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Doa25a2u.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Dm1UZyOq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.0rreRfD_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Db6tQl2T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CWDVYzMX.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CC5DFzju.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.LjKKO7Ht.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aaciiUN8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BTf9Snj5.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الدوال: متابعة — الحزم والمتغيرات والدوال"/><!----><title>الدوال: متابعة | جولة Go التفاعلية بالعربي</title>
+		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.CQasAI59.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/go-tour">جولة Go التفاعلية بالعربي</a> <span class="reader-bar__chapter">› الحزم والمتغيرات والدوال</span> <button class="reader-tool contents-toggle svelte-1s55fxa contents-toggle--tour" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 2 من 7">2 / 7</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/go-tour/basics/p4">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/go-tour/basics/p6">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa reader-layout--interactive" style="--code-width: 34%"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa tour-flyout" hidden="" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa contents-toggle--tour">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مرحبًا!</h3> <ul><!--[--><li><a href="../../../../book/go-tour/welcome/index">مرحبًا، أيها العالم</a></li><li><a href="../../../../book/go-tour/welcome/p2">الجولة بلغتك</a></li><li><a href="../../../../book/go-tour/welcome/p3">الجولة دون اتصال بالإنترنت (اختياري)</a></li><li><a href="../../../../book/go-tour/welcome/p4">ساحة تجارب Go</a></li><li><a href="../../../../book/go-tour/welcome/p5">تهانينا</a></li><!--]--></ul><h3 class="active-chapter">الحزم والمتغيرات والدوال</h3> <ul><!--[--><li><a href="../../../../book/go-tour/basics/index">الحزم</a></li><li><a href="../../../../book/go-tour/basics/p2">الاستيراد</a></li><li><a href="../../../../book/go-tour/basics/p3">الأسماء المصدّرة</a></li><li><a href="../../../../book/go-tour/basics/p4">الدوال</a></li><li><a href="../../../../book/go-tour/basics/p5" class="active">الدوال: متابعة</a></li><li><a href="../../../../book/go-tour/basics/p6">نتائج متعددة</a></li><li><a href="../../../../book/go-tour/basics/p7">قيم الإرجاع المسمّاة</a></li><li><a href="../../../../book/go-tour/basics/p8">المتغيرات</a></li><li><a href="../../../../book/go-tour/basics/p9">المتغيرات مع تعبيرات التهيئة</a></li><li><a href="../../../../book/go-tour/basics/p10">التصريحات المختصرة عن المتغيرات</a></li><li><a href="../../../../book/go-tour/basics/p11">الأنواع الأساسية</a></li><li><a href="../../../../book/go-tour/basics/p12">القيم الصفرية</a></li><li><a href="../../../../book/go-tour/basics/p13">تحويلات الأنواع</a></li><li><a href="../../../../book/go-tour/basics/p14">استنتاج النوع</a></li><li><a href="../../../../book/go-tour/basics/p15">الثوابت</a></li><li><a href="../../../../book/go-tour/basics/p16">الثوابت العددية</a></li><li><a href="../../../../book/go-tour/basics/p17">تهانينا!</a></li><!--]--></ul><h3>تعليمات التحكم في التدفق: for وif وelse وswitch وتأجيل التنفيذ</h3> <ul><!--[--><li><a href="../../../../book/go-tour/flowcontrol/index">حلقة for</a></li><li><a href="../../../../book/go-tour/flowcontrol/p2">حلقة for — متابعة</a></li><li><a href="../../../../book/go-tour/flowcontrol/p3">for هي «while» في Go</a></li><li><a href="../../../../book/go-tour/flowcontrol/p4">إلى الأبد</a></li><li><a href="../../../../book/go-tour/flowcontrol/p5">تعليمة if</a></li><li><a href="../../../../book/go-tour/flowcontrol/p6">if مع تعليمة قصيرة</a></li><li><a href="../../../../book/go-tour/flowcontrol/p7">if وelse</a></li><li><a href="../../../../book/go-tour/flowcontrol/p8">تمرين: الحلقات والدوال</a></li><li><a href="../../../../book/go-tour/flowcontrol/p9">تعليمة switch</a></li><li><a href="../../../../book/go-tour/flowcontrol/p10">ترتيب التقييم في switch</a></li><li><a href="../../../../book/go-tour/flowcontrol/p11">switch بلا شرط</a></li><li><a href="../../../../book/go-tour/flowcontrol/p12">تأجيل التنفيذ</a></li><li><a href="../../../../book/go-tour/flowcontrol/p13">تكديس عمليات تأجيل التنفيذ</a></li><li><a href="../../../../book/go-tour/flowcontrol/p14">تهانينا!</a></li><!--]--></ul><h3>مزيد من الأنواع: البنى والشرائح والخرائط.</h3> <ul><!--[--><li><a href="../../../../book/go-tour/moretypes/index">المؤشرات</a></li><li><a href="../../../../book/go-tour/moretypes/p2">البنى</a></li><li><a href="../../../../book/go-tour/moretypes/p3">حقول البنية</a></li><li><a href="../../../../book/go-tour/moretypes/p4">مؤشرات إلى البنى</a></li><li><a href="../../../../book/go-tour/moretypes/p5">القيم الحرفية للبنى</a></li><li><a href="../../../../book/go-tour/moretypes/p6">المصفوفات</a></li><li><a href="../../../../book/go-tour/moretypes/p7">الشرائح</a></li><li><a href="../../../../book/go-tour/moretypes/p8">الشرائح تشبه المراجع إلى المصفوفات</a></li><li><a href="../../../../book/go-tour/moretypes/p9">القيم الحرفية للشرائح</a></li><li><a href="../../../../book/go-tour/moretypes/p10">القيم الافتراضية للشرائح</a></li><li><a href="../../../../book/go-tour/moretypes/p11">طول الشريحة وسعتها</a></li><li><a href="../../../../book/go-tour/moretypes/p12">الشرائح المعدومة</a></li><li><a href="../../../../book/go-tour/moretypes/p13">إنشاء شريحة باستخدام make</a></li><li><a href="../../../../book/go-tour/moretypes/p14">شرائح من الشرائح</a></li><li><a href="../../../../book/go-tour/moretypes/p15">الإلحاق بشريحة</a></li><li><a href="../../../../book/go-tour/moretypes/p16">التكرار على النطاق</a></li><li><a href="../../../../book/go-tour/moretypes/p17">التكرار على النطاق، تتمّة</a></li><li><a href="../../../../book/go-tour/moretypes/p18">تمرين: الشرائح</a></li><li><a href="../../../../book/go-tour/moretypes/p19">الخرائط</a></li><li><a href="../../../../book/go-tour/moretypes/p20">القيم الحرفية للخرائط</a></li><li><a href="../../../../book/go-tour/moretypes/p21">القيم الحرفية للخرائط، تتمّة</a></li><li><a href="../../../../book/go-tour/moretypes/p22">تعديل الخرائط</a></li><li><a href="../../../../book/go-tour/moretypes/p23">تمرين: الخرائط</a></li><li><a href="../../../../book/go-tour/moretypes/p24">قيم الدوال</a></li><li><a href="../../../../book/go-tour/moretypes/p25">إغلاقات الدوال</a></li><li><a href="../../../../book/go-tour/moretypes/p26">تمرين: إغلاق فيبوناتشي</a></li><li><a href="../../../../book/go-tour/moretypes/p27">تهانينا!</a></li><!--]--></ul><h3>التوابع والواجهات</h3> <ul><!--[--><li><a href="../../../../book/go-tour/methods/index">التوابع</a></li><li><a href="../../../../book/go-tour/methods/p2">التوابع دوال</a></li><li><a href="../../../../book/go-tour/methods/p3">التوابع: تتمّة</a></li><li><a href="../../../../book/go-tour/methods/p4">المستقبِلات المؤشرية</a></li><li><a href="../../../../book/go-tour/methods/p5">المؤشرات والدوال</a></li><li><a href="../../../../book/go-tour/methods/p6">التوابع والوصول غير المباشر عبر المؤشرات</a></li><li><a href="../../../../book/go-tour/methods/p7">التوابع والوصول غير المباشر عبر المؤشرات (2)</a></li><li><a href="../../../../book/go-tour/methods/p8">اختيار مستقبِل قيمي أو مؤشري</a></li><li><a href="../../../../book/go-tour/methods/p9">الواجهات</a></li><li><a href="../../../../book/go-tour/methods/p10">تُنفَّذ الواجهات ضمنيًا</a></li><li><a href="../../../../book/go-tour/methods/p11">قيم الواجهات</a></li><li><a href="../../../../book/go-tour/methods/p12">قيم الواجهات ذات القيم الكامنة المعدومة</a></li><li><a href="../../../../book/go-tour/methods/p13">قيم الواجهات المعدومة</a></li><li><a href="../../../../book/go-tour/methods/p14">الواجهة الفارغة</a></li><li><a href="../../../../book/go-tour/methods/p15">تأكيدات النوع</a></li><li><a href="../../../../book/go-tour/methods/p16">التبديل حسب النوع</a></li><li><a href="../../../../book/go-tour/methods/p17">أنواع التمثيل النصي</a></li><li><a href="../../../../book/go-tour/methods/p18">تمرين: أنواع التمثيل النصي</a></li><li><a href="../../../../book/go-tour/methods/p19">الأخطاء</a></li><li><a href="../../../../book/go-tour/methods/p20">تمرين: الأخطاء</a></li><li><a href="../../../../book/go-tour/methods/p21">القرّاء</a></li><li><a href="../../../../book/go-tour/methods/p22">تمرين: القرّاء</a></li><li><a href="../../../../book/go-tour/methods/p23">تمرين: قارئ روت 13</a></li><li><a href="../../../../book/go-tour/methods/p24">الصور</a></li><li><a href="../../../../book/go-tour/methods/p25">تمرين: الصور</a></li><li><a href="../../../../book/go-tour/methods/p26">تهانينا!</a></li><!--]--></ul><h3>البرمجة العامة</h3> <ul><!--[--><li><a href="../../../../book/go-tour/generics/index">معاملات الأنواع</a></li><li><a href="../../../../book/go-tour/generics/p2">الأنواع العامة</a></li><li><a href="../../../../book/go-tour/generics/p3">تهانينا!</a></li><!--]--></ul><h3>التزامن</h3> <ul><!--[--><li><a href="../../../../book/go-tour/concurrency/index">مسارات التنفيذ الخفيفة (Goroutines)</a></li><li><a href="../../../../book/go-tour/concurrency/p2">القنوات</a></li><li><a href="../../../../book/go-tour/concurrency/p3">القنوات ذات التخزين المؤقت</a></li><li><a href="../../../../book/go-tour/concurrency/p4">التكرار والإغلاق</a></li><li><a href="../../../../book/go-tour/concurrency/p5">الاختيار (select)</a></li><li><a href="../../../../book/go-tour/concurrency/p6">الاختيار الافتراضي</a></li><li><a href="../../../../book/go-tour/concurrency/p7">تمرين: الأشجار الثنائية المتكافئة</a></li><li><a href="../../../../book/go-tour/concurrency/p8">تمرين: الأشجار الثنائية المتكافئة</a></li><li><a href="../../../../book/go-tour/concurrency/p9">التنافي المتبادل (sync.Mutex)</a></li><li><a href="../../../../book/go-tour/concurrency/p10">تمرين: زاحف الويب</a></li><li><a href="../../../../book/go-tour/concurrency/p11">إلى أين تتجه بعد ذلك...</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa reader-sheet--lab"><h1>الدوال: متابعة</h1> <!--[-1--><!--]--> <!--[0--><div class="lesson-split svelte-1s55fxa"><!----><div class="lesson-text reader-content svelte-1s55fxa" aria-label="محتوى الدرس"><!---->
+  <h2 id="lesson-title">الدوال: متابعة</h2>
+  
+  
+  <p>
+    عندما يشترك معاملان مسمّيان متتاليان أو أكثر من معاملات الدالة في النوع نفسه، يمكنك حذف النوع من جميعها باستثناء المعامل الأخير.
+  </p>
+  
+
+  
+  <p>
+    في هذا المثال، اختصرنا
+  </p>
+  
+
+  
+  <pre>x int, y int</pre>
+  
+
+  
+  <p>
+    إلى
+  </p>
+  
+
+  
+  <pre>x, y int</pre>
+  
+
+	
+		
+	
+
+<!----> <!--[0--><details class="original-accordion svelte-1s55fxa"><summary class="svelte-1s55fxa">النص الأصلي بالإنجليزية</summary> <div class="original-content svelte-1s55fxa" lang="en" dir="ltr"><!---->
+  <h2>Functions continued</h2>
+  
+  
+  <p>
+    When two or more consecutive named function parameters share a type, you can omit the type from all but the last.
+  </p>
+  
+
+  
+  <p>
+    In this example, we shortened
+  </p>
+  
+
+  
+  <pre>x int, y int</pre>
+  
+
+  
+  <p>
+    to
+  </p>
+  
+
+  
+  <pre>x, y int</pre>
+  
+
+	
+		
+	
+
+<!----></div></details><!--]--></div><!----> <button type="button" class="pane-divider svelte-1s55fxa" role="slider" tabindex="0" aria-label="تغيير عرض المحرر" aria-orientation="horizontal" aria-controls="lesson-code-pane" aria-valuemin="26" aria-valuemax="56" aria-valuenow="34" title="اسحب لتغيير العرض، أو استخدم السهمين"><span aria-hidden="true">⋮</span></button> <div id="lesson-code-pane" class="lesson-code svelte-1s55fxa"><!----><!--[-1--><p class="lab-empty svelte-kjz7cb">هذا الدرس للقراءة فقط؛ جرّب المثال في الدرس التالي.</p><!--]--><!----></div></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/go-tour/basics/p4"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الدوال</span></a><!--]--> <!--[0--><a href="../../../../book/go-tour/basics/p6"><span class="prev-next__label">التالي</span> <span class="prev-next__title">نتائج متعددة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_lc9zn8 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.BHVmUT--.js"),
+						import("../../../../_app/immutable/entry/app.Dm1UZyOq.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
