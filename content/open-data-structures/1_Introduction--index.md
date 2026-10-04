@@ -144,7 +144,7 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 | $\displaystyle 5n\log n + 8n - 200$ | $\displaystyle \le 5n\log n + 8n$ |  |  |
 | --- | --- | --- | --- |
-|  | $\displaystyle \le 5n\log n + 8n\log n$ | $\displaystyle \mbox{ for $n\ge 2$\ (so that $\log n \ge 1$)}$ |  |
+|  | $\displaystyle \le 5n\log n + 8n\log n$ | $\displaystyle \mbox{ for \(n\ge 2\)\ (so that \(\log n \ge 1\))}$ |  |
 |  | $\displaystyle \le 13n\log n \enspace .$ |  |  |
 
 ويُظهر هذا أن الدالة $ f(n)=5n\log n + 8n - 200$ تنتمي إلى المجموعة $ O(n\log n)$ باستخدام الثابتين $ c=13$ و $ n_0 = 2$ .

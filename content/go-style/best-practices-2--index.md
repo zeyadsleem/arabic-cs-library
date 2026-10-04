@@ -950,7 +950,7 @@ func TestRegression_InvalidUser(t *testing.T) {
 - [Go Tip #71: Reducing Parallel Test Flakiness](https://google.github.io/styleguide/go/index.html#gotip)
 - [Go Tip #80: Dependency Injection Principles](https://google.github.io/styleguide/go/index.html#gotip)
 - معالجة الأخطاء: [Look Before You Leap](https://docs.python.org/3/glossary.html#term-LBYL) مقابل [Easier to Ask for Forgiveness than Permission](https://docs.python.org/3/glossary.html#term-EAFP)
-- [Unit Testing Practices on Public APIs](/book/go-style/index/index#unit-testing-practices)
+- [Unit Testing Practices on Public APIs](/book/go-style/guide/index)
 
 للحالة العامة آثار متتالية على [صحة قاعدة شيفرة Google](/book/go-style/guide/index#maintainability). وينبغي التعامل مع الحالة العامة بـ**تدقيق بالغ**.
 
