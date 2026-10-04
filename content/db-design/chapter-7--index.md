@@ -165,7 +165,7 @@ List the properties of a table.
 
 عدة من المصطلحات المستخدمة في هذا الفصل مترادفة. وبالإضافة إلى المصطلحات المفتاحية أعلاه، يُرجى الرجوع إلى الجدول 7.1 أدناه. والمصطلحات الواردة في عمود «البديل 1» (Alternative 1) هي الأكثر شيوعًا في الاستخدام.
 
-![صورة توضيحية من الكتاب: A database table with words.](/images/db-design/chapter-7-3-Terms.webp)
+![صورة توضيحية من الكتاب: A database table with words.](/images/db-design/chapter-7-3-Terms.webp){#attachment_43}
 
 استخدم الجدول 7.2 للإجابة عن الأسئلة من 1 إلى 4.
 

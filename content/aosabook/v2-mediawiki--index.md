@@ -97,13 +97,13 @@ Sumana Harihareswara و Guillaume Paumier
 
 استخدم MediaWiki خلفية قاعدة بيانات علائقية منذ برمجية المرحلة الثانية. ونظام إدارة قواعد البيانات (DBMS) الافتراضي (والأفضل دعمًا) لـ MediaWiki هو MySQL، وهو النظام الذي تستخدمه جميع مواقع ويكيميديا، لكن لأنظمة DBMS أخرى (مثل PostgreSQL وOracle وSQLite) تطبيقات مدعومة من المجتمع. ويمكن لمدير النظام اختيار DBMS أثناء تثبيت MediaWiki، كما يوفّر MediaWiki كلاً من طبقة تجريد لقاعدة البيانات وطبقة تجريد للاستعلامات تُبسّطان الوصول إلى قاعدة البيانات للمطوّرين.
 
-[![](/images/aosabook/v2-mediawiki-database-schema.webp)](https://aosabook.org/en/v2/static/mediawiki/database-schema.png) الشكل 12.1: مخطط قاعدة البيانات
+[![](/images/aosabook/v2-mediawiki-database-schema.webp){#fig.mediawiki.schema}](https://aosabook.org/en/v2/static/mediawiki/database-schema.png) الشكل 12.1: مخطط قاعدة البيانات
 
 يحتوي التخطيط الحالي على عشرات الجداول. وكثير منها يتعلق بمحتوى الويكي (مثل `page` و`revision` و`category` و`recentchanges`). وتشمل جداول أخرى بيانات عن المستخدمين (`user` و`user_groups`)، وملفات الوسائط (`image` و`filearchive`)، والتخزين المؤقت (`objectcache` و`l10n_cache` و`querycache`)، والأدوات الداخلية (`job` لقائمة المهام)، وغيرها، كما يبيّن [الشكل 12.2](#fig.mediawiki.restructure). (تتوفّر [وثائق كاملة لتخطيط قاعدة البيانات](https://www.mediawiki.org/wiki/Manual:Database_layout) في MediaWiki.) وتُستخدم الفهارس وجداول الملخّص على نطاق واسع في MediaWiki، لأن استعلامات SQL التي تفحص أعدادًا هائلة من الصفوف قد تكون باهظة الثمن، ولا سيما في مواقع ويكيميديا. وعادةً ما يُحذَّر من الاستعلامات غير المفهرَسة.
 
 مرّت قاعدة البيانات بعشرات تغييرات المخطّط عبر السنين، كان أبرزها فصل تخزين النصوص عن تتبّع التنقيحات في MediaWiki 1.5.
 
-![](/images/aosabook/v2-mediawiki-database-restructure.webp) الشكل 12.2: جداول المحتوى الرئيسة في MediaWiki 1.4 و1.5
+![](/images/aosabook/v2-mediawiki-database-restructure.webp){#fig.mediawiki.restructure} الشكل 12.2: جداول المحتوى الرئيسة في MediaWiki 1.4 و1.5
 
 في نموذج 1.4، كان المحتوى يُخزَّن في جدولين مهمّين، `cur` (يحوي نصّ وبيانات تنقيحة الصفحة الحالية الوصفية) و`old` (يحوي التنقيحات السابقة)؛ وكانت الصفحات المحذوفة تُحفظ في `archive`. وعندما يجري تحرير، تُنسَخ التنقيحة السابقة الحالية إلى جدول `old`، ويُحفظ التحرير الجديد في `cur`. وعندما تُعاد تسمية صفحة، كان يتعيّن تحديث عنوان الصفحة في البيانات الوصفية لجميع تنقيحات `old`، وهذه عملية قد تستغرق وقتًا طويلًا. وعندما تُحذف صفحة، كان يتعيّن نسخ مدخلاتها في جدولي `cur` و`old` إلى جدول `archive` قبل حذفها؛ وهذا يعني نقل نصّ جميع التنقيحات، وقد يكون بالغ الكبر ومن ثم يستغرق وقتًا.
 

@@ -69,7 +69,7 @@ CONSTRAINT                     Employee_PK    PRIMARY KEY(EmployeeNo
 CONSTRAINT     EmployeePK      PRIMARY KEY(EmployeeNo)
 ```
 
-![صورة توضيحية من الكتاب: SQLServer](/images/db-design/chapter-sql-0-SQLServer.webp)
+![صورة توضيحية من الكتاب: SQLServer](/images/db-design/chapter-sql-0-SQLServer.webp){#attachment_349}
 
 ```sql
 USE SW

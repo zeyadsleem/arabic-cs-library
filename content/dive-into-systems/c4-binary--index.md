@@ -12,7 +12,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 
 يوضح [الشكل 1](#FigNumberOfBitsValues) نمو عدد القيم القابلة للتمثيل مع زيادة طول تسلسل البتّات. يمكن لبتّة واحدة تمثيل *قيمتين*: 0 و1. ويمكن لبتّتين تمثيل *أربع* قيم: قيمتا البتّة الواحدة مع صفر بادئ (00 و01)، وقيمتا البتّة الواحدة مع واحد بادئ (10 و11). وينطبق النمط نفسه على أي بتّة إضافية توسّع تسلسل بتّات موجوداً: فقد تكون البتّة الجديدة 0 أو 1، وفي كلتا الحالتين تمثّل البتّات المتبقية نطاق القيم نفسه الذي كانت تمثله قبل إضافة البتّة الجديدة. وبذلك، تؤدي إضافة بتّات إضافية إلى زيادة عدد القيم التي يستطيع التسلسل الجديد تمثيلها زيادة أُسّية.
 
-![With one bit, we can represent two values. Two bits gives us four values, and with three bits we can represent eight values. Four bits yields 16 unique values. In general, we can represent 2^N^ values with N bits.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-NumberOfBitsValues.webp) الشكل 1. القيم التي يمكن تمثيلها ببتّة واحدة إلى أربع بتّات. والبتّات المسطّر تحتها تقابل البادئة الآتية من الصف أعلاه.
+![With one bit, we can represent two values. Two bits gives us four values, and with three bits we can represent eight values. Four bits yields 16 unique values. In general, we can represent 2^N^ values with N bits.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-NumberOfBitsValues.webp){#FigNumberOfBitsValues} الشكل 1. القيم التي يمكن تمثيلها ببتّة واحدة إلى أربع بتّات. والبتّات المسطّر تحتها تقابل البادئة الآتية من الصف أعلاه.
 
 ولأن البتّة الواحدة لا تمثّل معلومات كثيرة، تجمع أنظمة التخزين البتّات عادةً في تسلسلات أطول لتخزين قيم أكثر أهمية. والتجميع الأكثر انتشاراً هو **البايت** (byte)، وهو مجموعة من ثماني بتّات. ويمثّل البايت الواحد 28 = 256 قيمة فريدة (0-255) — وهو عدد كافٍ لعدّ حروف اللغة الإنجليزية ورموز الترقيم الشائعة. والبايتات أصغر وحدة ذاكرة قابلة للعنونة في نظام الحاسوب، أي أن البرنامج لا يستطيع طلب أقل من ثماني بتّات لتخزين متغيّر.
 
@@ -31,7 +31,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 
 يمكن ترميز أي معلومات إلى ثنائي، بما في ذلك بيانات غنية مثل الرسومات والصوت. فمثلاً، لنفترض أن مخطط ترميز صورة ما يحدد أن 00 و01 و10 و11 تقابل الألوان الأبيض والبرتقالي والأزرق والأسود. ويوضح [الشكل 2](#FigImageRepresentation) كيف قد نستخدم استراتيجية الترميز البسيطة هذه ذات البتّتين لرسم صورة بدائية لسمكة باستخدام 12 بايتاً فقط. وفي الجزء (a)، تقابل كل خلية من الصورة تسلسلاً من بتّتين. ويعرض الجزءان (b) و(c) الترميز الثنائي المقابل كتسلسلات من بتّتين وبايتات على الترتيب. ورغم أن مخطط الترميز في هذا المثال مبسّط لأغراض التعلّم، فإن الفكرة العامة شبيهة بما تستخدمه أنظمة الرسومات الحقيقية، وإن كانت تستخدم بتّات أكثر بكثير لمجموعة أوسع من الألوان.
 
-![A fish image with a blue (10) background, white (00) eye, black (11) pupil, and orange (01) body.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-ImageRepresentation.webp) الشكل 2. (a) تمثيل الصورة، و(b) تمثيل الخلايا ببتّتين، و(c) تمثيل البايتات لصورة سمكة بسيطة.
+![A fish image with a blue (10) background, white (00) eye, black (11) pupil, and orange (01) body.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-ImageRepresentation.webp){#FigImageRepresentation} الشكل 2. (a) تمثيل الصورة، و(b) تمثيل الخلايا ببتّتين، و(c) تمثيل البايتات لصورة سمكة بسيطة.
 
 وبعد أن قدّمنا مخططي ترميز للتو، قد يعني التسلسل الثنائي نفسه، 01011010، المحرف `'Z'` لمحرّر نصوص، بينما قد يفسّره برنامج رسومات كجزء من زعنفة ذيل سمكة. وأي التفسيرين صحيح يعتمد على السياق. ورغم أن البتّات الأساسية هي نفسها، كثيراً ما يجد البشر بعض التفسيرات أسهل بكثير في الفهم من غيرها (مثلاً إدراك السمكة كخلايا ملوّنة لا كجدول بايتات).
 
@@ -46,7 +46,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 1. يخزّن أي رقم فردي في عدد بالأساس 10 إحدى 10 قيم فريدة (0-9). ولتخزين قيمة أكبر من 9، يجب أن **يُحمَل** (carry) الرقم إلى رقم إضافي إلى اليسار. فمثلاً، إذا بدأ رقم واحد عند قيمته العظمى (9) وأضفنا إليه 1، فتحتاج النتيجة إلى رقمين (9 + 1 = 10). وينطبق النمط نفسه على أي رقم، بصرف النظر عن موضعه في العدد (مثلاً، 50**8**0 + **2**0 = 5**10**0).
 2. يحدد موضع كل رقم في العدد مدى أهمية ذلك الرقم للقيمة الكلية للعدد. فبترقيم الأرقام من *اليمين إلى اليسار* d0 وd1 وd2 إلخ، يسهم كل رقم متتالٍ بعامل *عشرة* أكثر من الذي يليه. فمثلاً، خذ القيمة 8425 ([الشكل 1](#FigBaseTen)).
 
-![For the number 8425, digit 0 is the 5, which is in the "ones place". Digit 1 is the 2, which is in the "tens place". Digit 2 is the 4, in the "hundreds place". Finally, digit 3 is the 8, in the "thousands place".](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-BaseTen.webp) الشكل 1. أهمية كل رقم في عدد بالأساس 10، بالأسماء التي قد تكون أعطيتها لكل رقم في المرحلة الابتدائية.
+![For the number 8425, digit 0 is the 5, which is in the "ones place". Digit 1 is the 2, which is in the "tens place". Digit 2 is the 4, in the "hundreds place". Finally, digit 3 is the 8, in the "thousands place".](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-BaseTen.webp){#FigBaseTen} الشكل 1. أهمية كل رقم في عدد بالأساس 10، بالأسماء التي قد تكون أعطيتها لكل رقم في المرحلة الابتدائية.
 
 في مثال القيمة 8425، يسهم الرقم 5 في خانة «الآحاد» بـ 5 (5 × 100). ويسهم الرقم 2 في خانة «العشرات» بـ 20 (2 × 101). ويسهم الرقم 4 في خانة «المئات» بـ 400 (4 × 102)، وأخيراً يسهم الرقم 8 في خانة «الآلاف» بـ 8000 (8 × 103). وبصيغة أكثر رسمية، يمكن التعبير عن 8425 كما يلي:
 
@@ -145,7 +145,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 
 يحدد عدد البتّات المستخدمة لتخزين عدد صحيح نطاق قيمه القابلة للتمثيل. ويصوّر [الشكل 2](#FigUnsignedLine) كيف قد نتصور فضاءي تخزين الأعداد الصحيحة غير المؤشّرة اللانهائي والمحدود.
 
-![The infinite unsigned number line starts at zero and increases infinitely. The finite unsigned number line starts at 0 and ends at a maximum value. Attempting to move off one end wraps around to the other.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-UnsignedLine.webp) الشكل 2. توضيح (a) خط أعداد غير مؤشّر لانهائي و(b) خط أعداد غير مؤشّر محدود. و«يلتف» الأخير عند كلا الطرفين (تجاوز).
+![The infinite unsigned number line starts at zero and increases infinitely. The finite unsigned number line starts at 0 and ends at a maximum value. Attempting to move off one end wraps around to the other.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-UnsignedLine.webp){#FigUnsignedLine} الشكل 2. توضيح (a) خط أعداد غير مؤشّر لانهائي و(b) خط أعداد غير مؤشّر محدود. و«يلتف» الأخير عند كلا الطرفين (تجاوز).
 
 تُعرف محاولة تخزين قيمة أكبر في متغيّر مما تسمح به مساحته باسم **تجاوز العدد الصحيح** (integer overflow). ويؤجّل هذا الفصل تفاصيل التجاوز إلى [قسم لاحق](https://diveintosystems.org/book/C4-Binary/overflow.html#_integer_overflow). والآن، فكّر فيه كمعدّاد مسافات سيارة «يلتف» عائداً إلى الصفر إذا حاول الزيادة بما يتجاوز قيمته العظمى. وبالمثل، طرح واحد من صفر يعطي القيمة العظمى.
 
@@ -282,7 +282,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 
 يوضح [الشكل 1](#FigSignedMagnitude) كيف تقابل تسلسلات المقدار المؤشّر الرباعية البتّات القيم العشرية. وقد يبدو المقدار المؤشّر للوهلة الأولى جاذباً لبساطته. ولسوء الحظ، فإنه يعاني من عيبين رئيسيين يجعلانه غير جاذب. الأول أنه يقدّم *تمثيلين* للصفر. فمثلاً، بأربع بتّات، يمثّل المقدار المؤشّر *الصفر* (0b0000) و*الصفر السالب* (0b1000) معاً. وبالتالي، فإنه يمثّل تحدياً لمصممي العتاد لأن عليهم مراعاة تسلسلين ثنائيين محتملين متساويين عددياً رغم اختلاف قيم بتّاتهما. ومهمة مصمم العتاد أسهل بكثير بوجود طريقة واحدة فقط لتمثيل عدد بهذه الأهمية.
 
-![A circle with non-negative values on one side ranging from 0b0000 (0) to 0b0111 (7). The other side holds 0b1000 (-0) to 0b1111 (-7).](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-SignedMagnitude.webp) الشكل 1. تخطيط منطقي لقيم المقدار المؤشّر لتسلسلات بتّات بطول أربعة.
+![A circle with non-negative values on one side ranging from 0b0000 (0) to 0b0111 (7). The other side holds 0b1000 (-0) to 0b1111 (-7).](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-SignedMagnitude.webp){#FigSignedMagnitude} الشكل 1. تخطيط منطقي لقيم المقدار المؤشّر لتسلسلات بتّات بطول أربعة.
 
 والعيب الآخر في المقدار المؤشّر أنه يُظهر انقطاعاً غير ملائم بين القيم السالبة والصفر. ورغم أننا سنغطي [التجاوز](https://diveintosystems.org/book/C4-Binary/overflow.html#_integer_overflow) بمزيد من التفصيل لاحقاً، فإن إضافة 1 إلى التسلسل الرباعي 0b1111 «تلتف» عائدةً إلى 0b0000. وفي المقدار المؤشّر، يعني هذا الأثر أن 0b1111 (-7) + 1 قد يُفهم خطأً على أنه 0 بدلاً من -6 المتوقعة. وهذه المشكلة قابلة للحل، لكن الحل يعقّد تصميم العتاد مجدداً، فيحوّل فعلياً أي انتقال بين الأعداد السالبة وغير السالبة إلى حالة خاصة تحتاج إلى عناية إضافية.
 
@@ -300,7 +300,7 @@ source: https://diveintosystems.org/book/C4-Binary/index.html
 
 يوضح [الشكل 2](#FigTwosComplement) تخطيط التسلسلات الرباعية في المتمّم الثنائي. ويشفّر هذا التعريف تمثيلاً واحداً فقط للصفر — تسلسل بتّات كلها 0. وبوجود تسلسل *صفر* واحد فقط، يمثّل المتمّم الثنائي قيمة سالبة واحدة أكثر من الموجبة. وباستخدام تسلسلات أربع بتّات كمثال، يمثّل المتمّم الثنائي قيمة دنيا هي 0b1000 (-8)، لكن قيمة عظمى لا تتجاوز 0b0111 (7). ولحسن الحظ، لا تعيق هذه الشذوذة تصميم العتاد ونادراً ما تسبب مشاكل للتطبيقات.
 
-![A circle with non-negative values on one side ranging from 0b0000 (0) to 0b0111 (7). The other side holds 0b1111 (-1) to 0b1000 (-8).](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-TwosComplement.webp) الشكل 2. تخطيط منطقي لقيم المتمّم الثنائي لتسلسلات بتّات بطول أربعة.
+![A circle with non-negative values on one side ranging from 0b0000 (0) to 0b0111 (7). The other side holds 0b1111 (-1) to 0b1000 (-8).](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-TwosComplement.webp){#FigTwosComplement} الشكل 2. تخطيط منطقي لقيم المتمّم الثنائي لتسلسلات بتّات بطول أربعة.
 
 ومقارنةً بالمقدار المؤشّر، يبسّط المتمّم الثنائي أيضاً الانتقال بين الأعداد السالبة والصفر. فبصرف النظر عن عدد البتّات المستخدمة لتخزينه، سيحمل عدد متمّم ثنائي مكوّن من آحاد كلها القيمة -1 دائماً. وإضافة 1 إلى تسلسل بتّات كلها 1 «تلتف» إلى صفر، ما يجعل المتمّم الثنائي ملائماً، لأن -1 + 1 *ينبغي* أن ينتج صفراً.
 
@@ -565,11 +565,11 @@ x 0011  =  x    1  +  x   10  =  101 + 1010  =  1111 (15)
 
 وللتبسيط، لنواصل تحليل عدّاد مسافات محدود برقم عشري واحد فقط. أي أن العدّاد يمثّل النطاق [0، 9]، فيعود إلى الصفر بعد كل 10 أميال. وبتصوير نطاق العدّاد بصرياً، قد يبدو كما في [الشكل 1](#FigBaseTenWheel).
 
-![A circle with the values 0 to 9 arranged around it.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-BaseTenWheel.webp) الشكل 1. تصوير بصري للقيم المحتملة لعدّاد مسافات برقم واحد
+![A circle with the values 0 to 9 arranged around it.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-BaseTenWheel.webp){#FigBaseTenWheel} الشكل 1. تصوير بصري للقيم المحتملة لعدّاد مسافات برقم واحد
 
 ولأن عدّاد المسافات ذا الرقم الواحد يلتف عند بلوغ 10، فإن رسم شكل دائري يشدّد على الانقطاع عند أعلى الدائرة (و*فقط* عند الأعلى). وتحديداً، بإضافة واحد إلى أي قيمة *غير التسعة*، تهبط النتيجة على القيمة المتوقعة. ومن ناحية أخرى، إضافة واحد إلى تسعة تقفز إلى قيمة لا تتبعها طبيعياً (صفر). وبشكل أعم، عند إجراء *أي* حساب يعبر الانقطاع بين تسعة وصفر، سيتجاوز الحساب. فمثلاً، تأمّل جمع 8 + 4 كما في [الشكل 2](#FigBaseTenWheelAdding).
 
-![A circle with the values 0 to 9 arranged around it. The gap between 0 and 9 is labeled as the location where overflow can occur. Arrows show that adding 4 to 8 causes the arithmetic to jump across the marked overflow location.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-BaseTenWheelAdding.webp) الشكل 2. نتيجة جمع 8 + 4 برقم عشري واحد فقط. وعبور الانقطاع بين 0 و9 يشير إلى حدوث تجاوز.
+![A circle with the values 0 to 9 arranged around it. The gap between 0 and 9 is labeled as the location where overflow can occur. Arrows show that adding 4 to 8 causes the arithmetic to jump across the marked overflow location.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-BaseTenWheelAdding.webp){#FigBaseTenWheelAdding} الشكل 2. نتيجة جمع 8 + 4 برقم عشري واحد فقط. وعبور الانقطاع بين 0 و9 يشير إلى حدوث تجاوز.
 
 هنا يعطي المجموع 2 بدلاً من 12 المتوقعة. ولاحظ أن كثيراً من القيم الأخرى المضافة إلى 8 (مثلاً، 8 + 14) ستهبط أيضاً على اثنين، والفرق الوحيد أن الحسابات ستقطع دورات إضافية حول الدائرة. ونتيجةً لذلك، لا يهم إن قطعت السيارة 2 أم 12 أم 152 ميلاً — ففي النهاية سيقرأ العدّاد 2 في كل الأحوال.
 
@@ -585,7 +585,7 @@ x 0011  =  x    1  +  x   10  =  101 + 1010  =  1111 (15)
 
 تتصرف الأعداد *غير المؤشّرة* بصورة مشابهة لأمثلة عدّاد المسافات العشري بما أنهما يمثّلان قيماً غير سالبة فقط. وتمثّل *N* بتّة قيماً غير مؤشّرة في النطاق [0، 2N - 1]، ما يجعل كل الحساب معيارياً بالنسبة إلى 2N. ويوضح [الشكل 3](#FigUnsignedWheel) ترتيب التفسيرات غير المؤشّرة لتسلسلات أربع بتّات في فضاء معياري.
 
-![The numbers 0 to 15 are arranged in a circle. The gap between 15 and 0 (at the top of the circle) is labeled as the location where overflow can occur.](https://diveintosystems.org/images/dive-into-systems/c4-binary-2-UnsignedWheel.webp) الشكل 3. ترتيب القيم غير المؤشّرة الرباعية في فضاء معياري. كل الحساب معياري بالنسبة إلى 24 (16).
+![The numbers 0 to 15 are arranged in a circle. The gap between 15 and 0 (at the top of the circle) is labeled as the location where overflow can occur.](https://diveintosystems.org/images/dive-into-systems/c4-binary-2-UnsignedWheel.webp){#FigUnsignedWheel} الشكل 3. ترتيب القيم غير المؤشّرة الرباعية في فضاء معياري. كل الحساب معياري بالنسبة إلى 24 (16).
 
 وبما أن التفسيرات غير المؤشّرة لا تستطيع حمل قيم سالبة، فإن الانقطاع يقع مجدداً بين القيمة العظمى والصفر. ولذلك، ينتج التجاوز غير المؤشّر عن أي عملية تعبر الفاصل بين 2N-1 و0. وبعبارة أوضح، إذا أنتج إجراء الجمع (الذي ينبغي أن يجعل النتيجة *أكبر*) نتيجة أصغر، فقد سبّب الجمع تجاوزاً غير مؤشّر. وبالتماثل، إذا أنتج إجراء الطرح (الذي ينبغي أن يجعل النتيجة *أصغر*) نتيجة أكبر، فقد سبّب الطرح تجاوزاً غير مؤشّر.
 
@@ -663,7 +663,7 @@ Carry out:  1
 
 يعرض [الشكل 4](#FigSignedWheel) ترتيب التفسيرات المؤشّرة لتسلسلات أربع بتّات في فضاء معياري. لاحظ أن نصف القيم سالب والنصف الآخر غير سالب، وأن الانقطاع يقع عند الفاصل الأدنى/الأعلى بينهما.
 
-![The numbers 0 to 7 are arranged on the right half of a circle, and the numbers -1 to -8 are arranged on the left half. The gap between 7 and -8 (at the bottom of the circle) is labeled as the location where overflow can occur.](https://diveintosystems.org/images/dive-into-systems/c4-binary-3-SignedWheel.webp) الشكل 4. ترتيب القيم الرباعية المؤشّرة في فضاء معياري. ولأن التفسير المؤشّر يسمح بقيم سالبة، لم يعد الانقطاع يقع عند الصفر.
+![The numbers 0 to 7 are arranged on the right half of a circle, and the numbers -1 to -8 are arranged on the left half. The gap between 7 and -8 (at the bottom of the circle) is labeled as the location where overflow can occur.](https://diveintosystems.org/images/dive-into-systems/c4-binary-3-SignedWheel.webp){#FigSignedWheel} الشكل 4. ترتيب القيم الرباعية المؤشّرة في فضاء معياري. ولأن التفسير المؤشّر يسمح بقيم سالبة، لم يعد الانقطاع يقع عند الصفر.
 
 عند إجراء حساب مؤشّر، من الآمن دائماً توليد نتيجة تتحرك نحو الصفر. أي أن أي عملية تقلّل القيمة المطلقة للنتيجة لا يمكن أن تتجاوز، لأن انقطاع التجاوز يقع حيث تكون مقادير القيم القابلة للتمثيل هي الأكبر.
 
@@ -695,7 +695,7 @@ Carry out:  1
 
 ويظهر مثال آخر غير ضار نسبياً في لعبة الأركيد *Pac-Man* عام 1980. فقد استخدم مطوّرو اللعبة قيمة غير مؤشّرة من ثماني بتّات لتتبع تقدم اللاعب في مستويات اللعبة. ونتيجةً لذلك، إذا تمكن لاعب خبير من تجاوز المستوى 255 (القيمة العظمى لعدد صحيح غير مؤشّر من ثماني بتّات)، فإن نصف اللوحة ينتهي بتعطّل كبير كما في [الشكل 5](#FigPacMan).
 
-![The right half of the game board is completely corrupted with nonsense.](https://diveintosystems.org/images/dive-into-systems/c4-binary-4-Pacman.webp) الشكل 5. لوحة لعبة *Pac-Man* «تختل» عند الوصول إلى المستوى 256
+![The right half of the game board is completely corrupted with nonsense.](https://diveintosystems.org/images/dive-into-systems/c4-binary-4-Pacman.webp){#FigPacMan} الشكل 5. لوحة لعبة *Pac-Man* «تختل» عند الوصول إلى المستوى 256
 
 ويظهر مثال أكثر مأساوية بكثير للتجاوز في تاريخ جهاز العلاج الإشعاعي [Therac-25](https://en.wikipedia.org/wiki/Therac-25) في منتصف الثمانينيات. وقد عانى Therac-25 من عدة مشاكل تصميم، منها واحدة كانت تزيد متغيّر علم منطقي (flag) بمقدار واحد بدلاً من ضبطه على ثابت. وبعد استخدامات كافية، تجاوز العلم قيمته، فالتف خطأً إلى الصفر (خطأ) وتجاوز آليات الأمان. وقد تسبب Therac-25 في النهاية بضرر جسيم لستة مرضى (وقتل بعضهم في حالات).
 
@@ -884,7 +884,7 @@ printf("Result: %d\n", x << 3);  // Prints 104 (0b01101000)
 
 غير أنه بالنسبة للقيم متعددة البايتات (مثل متغيّرات من النوع `short` أو `int`)، يملك العتاد خيارات أكثر لإسناد بايتات القيمة إلى عناوين الذاكرة. فمثلاً، تأمّل متغيّر `short` من بايتين، `s`، بايتاه مسمّيان A (يحتوي البتّات عالية الرتبة من `s`) وB (يحتوي البتّات منخفضة الرتبة من `s`). وعندما يُطلب من نظام تخزين `short` مثل `s` عند العنوان *X* (أي في العنوانين *X* و*X+1*)، يجب أن يحدد أي بايت من المتغيّر (A أم B) ينبغي أن يشغل أي عنوان (*X* أم *X+1*). ويعرض [الشكل 1](#FigShortMemory) الخيارين لتخزين `s` في الذاكرة.
 
-![In the first layout, byte A occupies address X, and byte B occupies address X+1. In the other layout, their positions are reversed.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-ShortMemory.webp) الشكل 1. تخطيطان محتملان للذاكرة لمتغيّر short من بايتين بدءاً من عنوان الذاكرة X
+![In the first layout, byte A occupies address X, and byte B occupies address X+1. In the other layout, their positions are reversed.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-ShortMemory.webp){#FigShortMemory} الشكل 1. تخطيطان محتملان للذاكرة لمتغيّر short من بايتين بدءاً من عنوان الذاكرة X
 
 يحدد **ترتيب البايتات** (byte order أو endianness) في النظام كيفية إسناد عتاده بايتات متغيّر متعدد البايتات إلى عناوين ذاكرة متتالية. ورغم أن ترتيب البايتات نادراً ما يمثّل مشكلة للبرامج التي تعمل على نظام واحد فقط، فقد يبدو مفاجئاً إذا حاول أحد برامجك طباعة البايتات واحداً في كل مرة أو إذا كنت تفحص المتغيّرات بمنقّح.
 
@@ -923,7 +923,7 @@ Address: 0x7ffc0a23492b, Value: AA
 
 تخزّن معالجات x86 الأعداد الصحيحة بصيغة **little-endian** — من البايت الأقل أهمية («الطرف الصغير») إلى البايت الأكثر أهمية في عناوين متتالية. أما معماريات المعالجات **big-endian** الأخرى فتخزّن الأعداد الصحيحة متعددة البايتات بالترتيب المعاكس. ويصوّر [الشكل 2](#FigEndian) عدداً صحيحاً من أربعة بايتات في تخطيطَي (a) big-endian و(b) little-endian.
 
-![In the big-endian format, byte AA occupies position X, and the bytes proceed in alphabetical order in consecutive addresses. In the little-endian format, byte DD occupies position X, and the bytes proceed in reverse alphabetical order.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-Endian.webp) الشكل 2. تخطيط الذاكرة لعدد صحيح من أربعة بايتات بصيغتي (a) big-endian و(b) little-endian
+![In the big-endian format, byte AA occupies position X, and the bytes proceed in alphabetical order in consecutive addresses. In the little-endian format, byte DD occupies position X, and the bytes proceed in reverse alphabetical order.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-Endian.webp){#FigEndian} الشكل 2. تخطيط الذاكرة لعدد صحيح من أربعة بايتات بصيغتي (a) big-endian و(b) little-endian
 
 تعود مصطلحات «endian» الغريبة الظاهر إلى رواية جوناثان سويفت الساخرة *رحلات جوليفر* (1726)1. ففي القصة يجد جوليفر نفسه بين إمبراطوريتين من أناس بطول ست بوصات يخوضون حرباً حول الطريقة الصحيحة لكسر البيض. فإمبراطورية «big-endian» في بلفسكو تكسر الطرف الكبير من بيضها، بينما يكسر الناس في إمبراطورية «little-endian» في ليليبوت الطرف الصغير.
 
@@ -947,7 +947,7 @@ Address: 0x7ffc0a23492b, Value: AA
 
 في **تمثيل الفاصلة الثابتة**، يبقى موضع *الفاصلة الثنائية* (binary point) للقيمة ثابتاً ولا يمكن تغييره. ومثل *الفاصلة العشرية* في العدد العشري، تشير الفاصلة الثنائية إلى المكان الذي يبدأ فيه الجزء الكسري من العدد. وتشبه قواعد ترميز الفاصلة الثابتة [تمثيل الأعداد الصحيحة غير المؤشّرة](https://diveintosystems.org/book/C4-Binary/bases.html#_unsigned_binary_numbers) باستثناء رئيسي واحد: تمثّل الأرقام بعد الفاصلة الثنائية قوى للعدد اثنين مرفوعة إلى قيمة *سالبة*. فمثلاً، تأمّل التسلسل الثماني 0b000101.10 الذي تمثّل بتّاته الست الأولى أعداداً صحيحة وتمثّل بتّتاه المتبقيتان الجزء الكسري. ويسمّي [الشكل 1](#FigFixed) مواضع الأرقام وتفسيراتها الفردية.
 
-![From high-order to low-order, the digits are labeled d5, d4, d3, d2, d1, d0, d-1, d-2. d-1 contributes 0.5, and d-2 contributes 0.25 to the value.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-Fixed.webp) الشكل 1. قيمة كل رقم في عدد من ثماني بتّات ببتّتين بعد الفاصلة الثنائية الثابتة
+![From high-order to low-order, the digits are labeled d5, d4, d3, d2, d1, d0, d-1, d-2. d-1 contributes 0.5, and d-2 contributes 0.25 to the value.](https://diveintosystems.org/images/dive-into-systems/c4-binary-0-Fixed.webp){#FigFixed} الشكل 1. قيمة كل رقم في عدد من ثماني بتّات ببتّتين بعد الفاصلة الثنائية الثابتة
 
 يُظهر تطبيق صيغة تحويل 0b000101.10 إلى عشري ما يلي:
 
@@ -975,7 +975,7 @@ Address: 0x7ffc0a23492b, Value: AA
 
 في **تمثيل الفاصلة العائمة** (floating-point)، *لا* تُثبَّت الفاصلة الثنائية للقيمة في موضع محدد مسبقاً. أي أن تفسير التسلسل الثنائي يجب أن يرمّز كيفية تمثيله التقسيم بين الجزأين الصحيح والكسري للقيمة. ورغم أنه يمكن ترميز موضع الفاصلة الثنائية بطرق محتملة كثيرة، يركّز هذا القسم على طريقة واحدة فقط، هي [معيار معهد مهندسي الكهرباء والإلكترونيات (IEEE) رقم 754](https://en.wikipedia.org/wiki/IEEE_754). ويتبع كل العتاد الحديث تقريباً معيار IEEE 754 لتمثيل قيم الفاصلة العائمة.
 
-![The leftmost digit represents the sign bit. The next eight bits represent the exponent, and the remaining 23 bits represent the significand.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-IEEE754.webp) الشكل 2. معيار IEEE 754 للفاصلة العائمة من 32 بتّة
+![The leftmost digit represents the sign bit. The next eight bits represent the exponent, and the remaining 23 bits represent the significand.](https://diveintosystems.org/images/dive-into-systems/c4-binary-1-IEEE754.webp){#FigIEEE754} الشكل 2. معيار IEEE 754 للفاصلة العائمة من 32 بتّة
 
 يوضح [الشكل 2](#FigIEEE754) تفسير IEEE 754 لعدد فاصلة عائمة من 32 بتّة (نوع `float` في C). ويقسّم المعيار البتّات إلى ثلاث مناطق:
 

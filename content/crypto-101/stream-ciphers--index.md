@@ -63,39 +63,45 @@ fix-encrypted-ecb
 0.48
 
    .. _fig-ECBDemoPlaintext:
-   .. subfigure:: ./Illustrations/ECB/Plaintext.png
+![صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.](/images/crypto-101/stream-ciphers-subfig-0-Plaintext.png)
+
 Plaintext image
 center
 
       صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.
 
    .. _fig-ECBDemo5px:
-   .. subfigure:: ./Illustrations/ECB/Ciphertext5.png
+![نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).](/images/crypto-101/stream-ciphers-subfig-1-Ciphertext5.png)
+
 ECB mode ciphertext, 5 pixel (120 bit) block size.
 center
 
       نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext30.png
+![نصّ مشفَّر بوضع ECB، حجم كتلة 30 بكسلًا (720 بتًّا).](/images/crypto-101/stream-ciphers-subfig-2-Ciphertext30.png)
+
 ECB mode ciphertext, 30 pixel (720 bit) block size.
 center
 
       نصّ مشفَّر بوضع ECB، حجم كتلة 30 بكسلًا (720 بتًّا).
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext100.png
+![نصّ مشفَّر بوضع ECB، حجم كتلة 100 بكسل (2400 بتًّا).](/images/crypto-101/stream-ciphers-subfig-3-Ciphertext100.png)
+
 ECB mode ciphertext, 100 pixel (2400 bit) block size.
 center
 
       نصّ مشفَّر بوضع ECB، حجم كتلة 100 بكسل (2400 بتًّا).
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext400.png
+![نصّ مشفَّر بوضع ECB، حجم كتلة 400 بكسل (9600 بتًّا).](/images/crypto-101/stream-ciphers-subfig-4-Ciphertext400.png)
+
 ECB mode ciphertext, 400 pixel (9600 bit) block size.
 center
 
       نصّ مشفَّر بوضع ECB، حجم كتلة 400 بكسل (9600 بتًّا).
 
    .. _fig-ECBDemoIdealizedCiphertext:
-   .. subfigure:: ./Illustrations/ECB/Random.png
+![النصّ المشفَّر تحت تشفير مثاليّ.](/images/crypto-101/stream-ciphers-subfig-5-Random.png)
+
 Ciphertext under idealized encryption.
 center
 
@@ -172,7 +178,7 @@ C = ECB(E_k, A \| S)
 `s_0`، لكنّه يعرف قيمة الكتلة المشفَّرة الأولى: `E_k(A \| s_0)`. وفي الرسم، هذه
 هي الكتلة `C_{R1}`:
 
-![center](/images/crypto-101/fig-0-RememberFirst.svg)
+![center](/images/crypto-101/stream-ciphers-fig-0-RememberFirst.svg)
 
 center
 
@@ -180,7 +186,7 @@ center
 الأمر يجد قيمة `s_0`؛ إذ يكون التخمين صحيحًا لأنّ الكتلة المشفَّرة الناتجة تطابق
 الكتلة المشفَّرة `C_{R1}` التي حُفظت في وقت سابق.
 
-![center](/images/crypto-101/fig-1-GuessFirst.svg)
+![center](/images/crypto-101/stream-ciphers-fig-1-GuessFirst.svg)
 
 center
 
@@ -188,7 +194,7 @@ center
 `A` أقصر ببايتين من حجم الكتلة. فتشفّر الآلة كتلة أولى تحوي `A` يتبعها البايتان
 الأوّلان من اللاحقة السرّية، أي `s_0s_1`. ويحفظ المهاجم الكتلة.
 
-![center](/images/crypto-101/fig-2-RememberSecond.svg)
+![center](/images/crypto-101/stream-ciphers-fig-2-RememberSecond.svg)
 
 center
 
@@ -196,7 +202,7 @@ center
 بجميع القيم الممكنة لـ`s_1`. وفي نهاية المطاف تصحّ تخمينات المهاجم، فتتطابق كتل
 النصّ المشفَّر:
 
-![center](/images/crypto-101/fig-3-GuessSecond.svg)
+![center](/images/crypto-101/stream-ciphers-fig-3-GuessSecond.svg)
 
 center
 
@@ -262,14 +268,14 @@ oracle` في وضع ECB تتيح للمهاجم فكّ التشفير في `256 
 
 يوضّح المخطّط التالي التشفير في `وضع CBC`:
 
-![center](/images/crypto-101/fig-4-Encryption.svg)
+![center](/images/crypto-101/stream-ciphers-fig-4-Encryption.svg)
 
 center
 
 وفكّ التشفير هو البناء المعكوس. إذ تكون شيفرات الكتل في وضع فكّ التشفير بدلًا من
 وضع التشفير:
 
-![center](/images/crypto-101/fig-5-Decryption.svg)
+![center](/images/crypto-101/stream-ciphers-fig-5-Decryption.svg)
 
 center
 
@@ -416,7 +422,7 @@ attack). وباستعمال هجوم قلب بتّات في وضع CBC، يست�
 `X`. فإذا كان البتّ المقابل في `X` يساوي 1، فإنّ البتّ يُقلَب؛ وإلّا فسيبقى البتّ
 كما هو.
 
-![center](/images/crypto-101/fig-6-BitFlipping.svg)
+![center](/images/crypto-101/stream-ciphers-fig-6-BitFlipping.svg)
 
 center
 
@@ -561,7 +567,7 @@ P^{\prime}_{i + 1}
 الصريح العشوائي حشو صالح: فالاحتمالات في حدود نصف بالمئة. وإذا اتّفق بالصدفة أن
 تكون الرسالة تملك حشوًا صالحًا أصلًا، فيمكن للمهاجم ببساطة تخطّي الخطوة التالية.
 
-![center](/images/crypto-101/fig-7-PaddingAttack.svg)
+![center](/images/crypto-101/stream-ciphers-fig-7-PaddingAttack.svg)
 
 center
 
@@ -569,7 +575,7 @@ center
 البايت الأخير من النصّ الصريح تعديلًا غير مباشر: فسينتهي ذلك البايت إلى أن يساوي
 `01`، وهو حشو صالح دائمًا. ولتعديل البايت الأخير من كتلة النصّ الصريح، يعدّل
 المهاجم البايت الأخير من كتلة النصّ المشفَّر *السابقة*. وهذا يعمل تمامًا كما كان
-يعمل في هجمات قلب البتّات في وضع CBC. تلك الكتلة المشفَّر�� السابقة هي الكتلة `R`،
+يعمل في هجمات قلب البتّات في وضع CBC. تلك الكتلة المشفَّرة السابقة هي الكتلة `R`،
 فالبايت الذي يجري تعديله هو البايت الأخير من `R`، أي `r_b`.
 
 يجرّب المهاجم جميع القيم الممكنة لذلك البايت الأخير. وهناك طرق عديدة للقيام بذلك:
@@ -759,7 +765,7 @@ r_b^{\prime} = r_b \xor \mathtt{01} \xor \mathtt{02}
 فتدفّق المفاتيح يُنتَج من المفتاح، ثمّ يُجرى عليه XOR مع النصّ المشفَّر لإنتاج النصّ
 الصريح.
 
-![center](/images/crypto-101/fig-8-Synchronous.svg)
+![center](/images/crypto-101/stream-ciphers-fig-8-Synchronous.svg)
 
 center
 
@@ -831,7 +837,7 @@ advanced
 تبدأ خوارزمية جدولة المفاتيح بـ*التبديل الهويّ* (identity permutation). أي إنّ كلّ
 بايت يُسقَط على نفسه.
 
-![center](/images/crypto-101/fig-9-IdentityPermutation.svg)
+![center](/images/crypto-101/stream-ciphers-fig-9-IdentityPermutation.svg)
 
 center
 
@@ -839,13 +845,13 @@ center
 من عناصر الحالة. أمّا الفهرس `j` فيُعثر عليه بجمع القيمة الحالية لـ`j` (بدءًا من 0)
 مع البايت التالي من المفتاح ومع عنصر الحالة الحالي:
 
-![center](/images/crypto-101/fig-10-FindIndex.svg)
+![center](/images/crypto-101/stream-ciphers-fig-10-FindIndex.svg)
 
 center
 
 وبعد العثور على `j`، تُبدَّل `S[i]` و`S[j]`:
 
-![center](/images/crypto-101/fig-11-Swap.svg)
+![center](/images/crypto-101/stream-ciphers-fig-11-Swap.svg)
 
 center
 
@@ -877,14 +883,14 @@ def key_schedule(key):
 البايتات تدفّق المفاتيح، ويُجرى عليها XOR مع النصّ الصريح لإنتاج النصّ المشفَّر.
 ولكلّ فهرس `i`، يحسب `j = j + S[i]` (مع بداية `j` من 0). ثمّ تُبدَّل `S[i]` و`S[j]`:
 
-![center](/images/crypto-101/fig-12-Swap.svg)
+![center](/images/crypto-101/stream-ciphers-fig-12-Swap.svg)
 
 center
 
 ولإنتاج بايت الخرج، تُجمع `S[i]` و`S[j]` معًا. ويُستعمل مجموعهما فهرسًا في `S`؛
 فتكون القيمة عند `S[S[i] + S[j]]` هي بايت تدفّق المفاتيح `K_i`:
 
-![center](/images/crypto-101/fig-13-PRNGOutput.svg)
+![center](/images/crypto-101/stream-ciphers-fig-13-PRNGOutput.svg)
 
 center
 
@@ -917,11 +923,11 @@ advanced
 العشوائية. فبعد كلّ هذا، لو كان هذا ما تفعله، لكنّا سنقع في وضع مشابه جدًّا لوسادة
 المرّة الواحدة.
 
-![](/images/crypto-101/fig-14-OTP.svg)
+![](/images/crypto-101/stream-ciphers-fig-14-OTP.svg)
 
    نظام وسادة المرّة الواحدة.
 
-![](/images/crypto-101/fig-15-Synchronous.svg)
+![](/images/crypto-101/stream-ciphers-fig-15-Synchronous.svg)
 
    نظام شيفرة تيار متزامنة. لاحظ التشابه مع نظام وسادة المرّة الواحدة. والفرق
    الحاسم هو أنّ وسادة المرّة الواحدة `k_i` عشوائية حقًّا، في حين أنّ تدفّق المفاتيح
@@ -1131,7 +1137,7 @@ x \leftarrow x \xor (y \madd z) \lll n
 بطول حجم الكتلة. ثمّ تُمرَّر السلسلة الناتجة من الدمج على شيفرة كتلة. وتُستعمل
 مخرجات شيفرة الكتل عندئذٍ كتدفّق مفاتيح.
 
-![center](/images/crypto-101/fig-16-CTR.svg)
+![center](/images/crypto-101/stream-ciphers-fig-16-CTR.svg)
 
 center
 

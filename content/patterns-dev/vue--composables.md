@@ -215,11 +215,11 @@ JavaScript iconApp.vue
 
 عند تشغيل التطبيق، يُعرض العدد الحالي والعرض الداخلي للنافذة في الوقت الفعلي. ويمكن للمستخدم التفاعل مع المكوّن عبر زيادة العدد أو إنقاصه باستخدام الأزرار في مكوّن ``.
 
-![دالة تركيب تُدار العدّاد](/images/patterns-dev/vue-composables-0-composables_count.webp)
+![دالة تركيب تُدار العدّاد](/images/patterns-dev/vue-composables-0-composables_count.gif)
 
 وبالمثل، يُحدَّث العرض تلقائيًا كلما أُعيد تغيير حجم النافذة.
 
-![توسيع وتصغير عرض النافذة](/images/patterns-dev/vue-composables-1-composables_width.webp)
+![توسيع وتصغير عرض النافذة](/images/patterns-dev/vue-composables-1-composables_width.gif)
 
 يمكن تصور بنية مكوّن `App.vue` أحادي الملف على النحو التالي:
 

@@ -20,7 +20,7 @@ source: https://aosabook.org/en/v2/freertos.html
 
 بنهاية هذا الفصل آمل أن تكون قد فهمت البنية الأساسية لـFreeRTOS. فمعظم FreeRTOS مخصّص لتشغيل المهام، لذا ستحصل على نظرة واضحة جدًّا على كيفية إنجاز ذلك بالضبط.
 
-وإذا كانت هذه أول نظرة لك تحت غطاء نظام تشغيل، فآمل أيضًا أن تتعلّم الأساسيات是如何 يعمل أي نظام تشغيل. إنّ FreeRTOS بسيط نسبيًّا، خاصةً مقارنةً بـWindows أو Linux أو OS X، لكن جميع أنظمة التشغيل تشترك في المفاهيم والأهداف الأساسية ذاتها، لذا فإن إلقاء النظر في أي نظام تشغيل يمكن أن يكون مفيدًا ومشوّقًا.
+وإذا كانت هذه أول نظرة لك تحت غطاء نظام تشغيل، فآمل أيضًا أن تتعلّم أساسيات كيفية عمل أي نظام تشغيل. إنّ FreeRTOS بسيط نسبيًّا، خاصةً مقارنةً بـWindows أو Linux أو OS X، لكن جميع أنظمة التشغيل تشترك في المفاهيم والأهداف الأساسية ذاتها، لذا فإن إلقاء النظر في أي نظام تشغيل يمكن أن يكون مفيدًا ومشوّقًا.
 
 ## 3.1. ما المقصود بـ«المدمج» و«الوقت الحقيقي»؟
 
@@ -46,7 +46,7 @@ source: https://aosabook.org/en/v2/freertos.html
 
 تقع طبقة FreeRTOS المستقلة عن العتاد فوق طبقة معتمدة على العتاد. وهذه الطبقة المعتمدة على العتاد تعرف كيف تتحدّث مع أي بنية شرائح تختارها. ويعرض [الشكل 3.1](#fig.freertos.layers) طبقات FreeRTOS.
 
-![](/images/aosabook/v2-freertos-freertos-figures-layers.webp) الشكل 3.1: طبقات برنامج FreeRTOS
+![](/images/aosabook/v2-freertos-freertos-figures-layers.webp){#fig.freertos.layers} الشكل 3.1: طبقات برنامج FreeRTOS
 
 يأتي FreeRTOS مع كامل الشيفرة المستقلة عن العتاد والشيفرة المعتمدة عليه التي ستحتاجها لتشغيل نظام ما. وهو يدعم مترجمين كثيرين (CodeWarrior وGCC وIAR وغيرها) وكذلك بُنى معالجات كثيرة (ARM7 وARM Cortex-M3 ومتنوّع من شرائح PIC وSilicon Labs 8051 وx86 وغيرها). راجع موقع FreeRTOS للاطلاع على قائمة البنى والمترجمين المدعومة.
 
@@ -123,7 +123,7 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &( pxReadyTasksLists[ uxTopReadyPrior
 
 ‏[الشكل 3.2](#fig.freertos.ready) صورة من مستوى عالٍ لما تبدو عليه قائمة الجاهزية. وفي هذا المثال ثلاثة مستويات للأولوية، فيها مهمة واحدة ذات أولوية 0، ولا مهام ذات أولوية 1، وثلاث مهام ذات أولوية 2. وهذه الصورة دقيقة لكنها غير كاملة؛ إذ ينقصها بعض التفاصيل التي سنستكملها لاحقًا.
 
-![](/images/aosabook/v2-freertos-freertos-figures-basic-ready-list.webp) الشكل 3.2: رؤية أساسية لقائمة جاهزية FreeRTOS
+![](/images/aosabook/v2-freertos-freertos-figures-basic-ready-list.webp){#fig.freertos.ready} الشكل 3.2: رؤية أساسية لقائمة جاهزية FreeRTOS
 
 والآن وقد فرغنا من النظرة العامة على مستوى عالٍ، فلنعُق إلى التفاصيل. سننظر إلى بُنى بيانات FreeRTOS الثلاث الرئيسية: المهام، والقوائم، والطوابير.
 
@@ -225,7 +225,7 @@ unsigned int *pxPortInitialiseStack( unsigned int *pxTopOfStack,
 
 بعد المهام، تأتي القائمة (list) بوصفها بنية بيانات FreeRTOS الأكثر استخدامًا. ويستخدم FreeRTOS بنية القائمة لمتابعة المهام لأغراض الجدولة، وكذلك لتنفيذ الطوابير.
 
-![](/images/aosabook/v2-freertos-freertos-figures-full-ready-list.webp) الشكل 3.3: رؤية كاملة لقائمة جاهزية FreeRTOS
+![](/images/aosabook/v2-freertos-freertos-figures-full-ready-list.webp){#fig.freertos.list} الشكل 3.3: رؤية كاملة لقائمة جاهزية FreeRTOS
 
 قائمة FreeRTOS هي قائمة مرتبطة مزدوجة دورية (circular doubly linked list) قياسية مع إضافتين مثيرتين للاهتمام. وإليك عنصرًا في القائمة:
 
@@ -283,7 +283,7 @@ for (listPtr = listStart; listPtr != NULL; listPtr = listPtr->next) {
 
 غالبًا ما يحتاج FreeRTOS إلى الوصول إلى قائمة عبر عدة حلقات for() وwhile() وكذلك عبر نداءات الدوال، ولهذا يستخدم دوال قوائم تُشغِّل المؤشر `pxIndex` ليمشي على القائمة. وتفعل الدالة `listGET_OWNER_OF_NEXT_ENTRY()` ما هو `pxIndex = pxIndex->pxNext;` وتعيد `pxIndex`. (|:- بالطبع أنها تُجري كشف الالتفاف الصحيح حول نهاية القائمة أيضًا.) بهذه الطريقة تتحمّل القائمة نفسها مسؤولية تتبّع «أين أنت» أثناء المرور عليها باستخدام `pxIndex`، مما يتيح لبقية FreeRTOS ألّا تقلق بشأن ذلك.
 
-![](/images/aosabook/v2-freertos-freertos-figures-full-ready-list-2.webp) الشكل 3.4: رؤية كاملة لقائمة جاهزية FreeRTOS بعد نبضة مؤقّت النظام
+![](/images/aosabook/v2-freertos-freertos-figures-full-ready-list-2.webp){#fig.freertos.aftertick} الشكل 3.4: رؤية كاملة لقائمة جاهزية FreeRTOS بعد نبضة مؤقّت النظام
 
 التشغيل الذي يجري على القائمة `pxReadyTasksLists[]` في `vTaskSwitchContext()` مثال جيّد على كيفية استخدام `pxIndex`. لنفترض لدينا مستوى أولوية واحد فقط هو الأولوية 0، وهناك ثلاث مهام عند ذلك المستوى. وهذا يشبه صورة قائمة الجاهزية الأساسية التي نظرنا إليها سابقًا، لكن هذه المرة سنشمل جميع بُنى البيانات والحقول.
 

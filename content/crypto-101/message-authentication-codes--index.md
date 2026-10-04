@@ -251,7 +251,7 @@ HMAC هو معيار لإنتاج MAC باستخدام دالة تجزئة تش�
 وأكبر فرق بين HMAC وبين بادئة-MAC أو تنويعاتها هو أنّ الرسالة تمرّ عبر دالة التجزئة
 مرّتين، وتُدمج مع المفتاح قبل كلّ مرّة. وعلى نحو بصريّ يبدو HMAC هكذا:
 
-![center](/images/crypto-101/fig-0-HMAC.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg)
 
 center
 
@@ -451,7 +451,7 @@ AEAD ميزة في بعض أوضاع التشفير المصادَق. وتُسم
 الوصفية إلى المحتوى المشفَّر، بحيث تُصادق على المحتوى المشفَّر مع البيانات
 الوصفية معًا، لا على القطعتين كلٌّ على حدة:
 
-![center](/images/crypto-101/fig-1-AEAD.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg)
 
 center
 
@@ -464,7 +464,7 @@ advanced
 `وضع OCB` (`OCB mode`) هو `وضع AEAD` (AEAD mode) من أوضاع التشغيل. وهو إحدى أقدم
 `أوضاع AEAD` (AEAD modes) التي تطوّرت.
 
-![center](/images/crypto-101/fig-2-Encryption.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg)
 
 center
 
@@ -478,7 +478,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 بذاته) للنصّ الصريح. وهناك أيضًا وسم منفصل آخر هو `t_a`، الذي يصادق على بيانات AEAD
 الوصفية. ويُحسب وسم البيانات الوصفية `t_a` على النحو التالي:
 
-![center](/images/crypto-101/fig-3-Auth.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-3-Auth.svg)
 
 center
 

@@ -41,15 +41,15 @@ Audrey Tang
 - تسجيل جميع عمليات التحرير في سجل تدقيق (audit trail).
 - الاحتفاظ، على طريقة الويكي، بكل نسخة جديدة من الصفحة مع إمكانية التراجع عنها.
 
-![[واجهة WikiCalc 1.0]](/images/aosabook/v1-socialcalc-wikicalc-screenshot.webp)
+![واجهة WikiCalc 1.0](/images/aosabook/v1-socialcalc-wikicalc-screenshot.webp){#fig.soc.screenshot}
 
 الشكل 19.1: واجهة WikiCalc 1.0
 
-![[مكوّنات WikiCalc]](/images/aosabook/v1-socialcalc-wikicalc-components.webp)
+![مكوّنات WikiCalc](/images/aosabook/v1-socialcalc-wikicalc-components.webp){#fig.soc.comp}
 
 الشكل 19.2: مكوّنات WikiCalc
 
-![[تدفّق WikiCalc]](/images/aosabook/v1-socialcalc-wikicalc-flow.webp)
+![تدفّق WikiCalc](/images/aosabook/v1-socialcalc-wikicalc-flow.webp){#fig.soc.flow}
 
 الشكل 19.3: تدفّق WikiCalc
 
@@ -57,11 +57,11 @@ Audrey Tang
 
 وفي كل مرة يُحدَّث فيها أحد جداول البيانات الفردية، يمكن لجميع جداول البيانات التجميعية أن تعكس ذلك التحديث. وإذا أراد أحدهم تفاصيل أكثر، فليكبّر عبر المستويات لعرض الجدول الكامن خلف الجدول. وتُلغي هذه القدرة التجميعية الجهد المكرر والمعرَّض للخطأ في تحديث الأرقام في أماكن متعددة، وتضمن بقاء جميع وجهات النظر على المعلومات طازجة.
 
-ولضمان بقاء عمليات إعادة الحساب محدَّثة، تبنّى WikiCalc تصميم العميل الرفيع (thin client)، مُبقيًا جميع معلومات الحالة في جانب الخادم. ويُمثَّل كل جدول بيانات في المتصفح على هيئة عنصر ``؛ وتحرير خلية يُرسل نداء `ajaxsetcell` إلى الخادم، ثم ي告诉 الخادم المتصفح ما الخلايا التي تحتاج إلى تحديث.
+ولضمان بقاء عمليات إعادة الحساب محدَّثة، تبنّى WikiCalc تصميم العميل الرفيع (thin client)، مُبقيًا جميع معلومات الحالة في جانب الخادم. ويُمثَّل كل جدول بيانات في المتصفح على هيئة عنصر ``؛ وتحرير خلية يُرسل نداء `ajaxsetcell` إلى الخادم، ثم يخبر الخادم المتصفح ما الخلايا التي تحتاج إلى تحديث.
 
 وليس من المستغرب أن يعتمد هذا التصميم على اتصال سريع بين المتصفح والخادم. فحين يكون زمن الاستجابة (latency) مرتفعًا، يبدأ المستخدمون في ملاحظة تكرار ظهور رسائل «جارٍ التحميل&hellip;» (Loading&hellip;) في الفاصل بين تحديث خلية ورؤية محتواها الجديد، كما يوضّح [الشكل 19.4](#fig.soc.load). وتكون هذه مشكلة بصفة خاصة للمستخدمين الذين يحرّرون الصيغ تفاعليًا بتعديل المدخلات ويتوقّعون رؤية النتائج في الوقت الحقيقي.
 
-![[رسالة التحميل]](/images/aosabook/v1-socialcalc-wikicalc-loading.webp)
+![رسالة التحميل](/images/aosabook/v1-socialcalc-wikicalc-loading.webp){#fig.soc.load}
 
 الشكل 19.4: رسالة التحميل
 
@@ -83,13 +83,13 @@ Audrey Tang
 
 ## 19.2. SocialCalc
 
-![[واجهة SocialCalc]](/images/aosabook/v1-socialcalc-socialcalc-screenshot.webp)
+![واجهة SocialCalc](/images/aosabook/v1-socialcalc-socialcalc-screenshot.webp){#fig.soc.action}
 
 الشكل 19.5: واجهة SocialCalc
 
 يوضّح [الشكل 19.5](#fig.soc.action) و [الشكل 19.6](#fig.soc.class) واجهة SocialCalc وأصنافه على الترتيب. ومقارنةً بـ WikiCalc، فقد تقلّص دور الخادم كثيرًا. فمسؤوليته الوحيدة هي الاستجابة لطلبات HTTP GET بتقديم جداول البيانات كاملةً مُسلسَلةً بصيغة الحفظ؛ وبمجرد أن يستلم المتصفح البيانات، تكون جميع الحسابات وتتبّع التغيّرات وتفاعل المستخدم منفَّذة الآن في Javascript.
 
-![[مخطط أصناف SocialCalc]](/images/aosabook/v1-socialcalc-socialcalc-class-diagram.webp)
+![مخطط أصناف SocialCalc](/images/aosabook/v1-socialcalc-socialcalc-class-diagram.webp){#fig.soc.class}
 
 الشكل 19.6: مخطط أصناف SocialCalc
 
@@ -146,7 +146,7 @@ Audrey Tang
 
 لتحسين الاستجابة، يؤدّي SocialCalc جميع عمليات إعادة الحساب وتحديثات DOM في الخلفية، بحيث يواصل المستخدم إجراء تغييراته على عدة خلايا بينما يلحق المحرّك بالتغييرات الأسبق الموجودة في قائمة الأوامر.
 
-![[حلقة تنفيذ أوامر SocialCalc]](/images/aosabook/v1-socialcalc-socialcalc-command-runloop.webp)
+![حلقة تنفيذ أوامر SocialCalc](/images/aosabook/v1-socialcalc-socialcalc-command-runloop.webp){#fig.soc.loop}
 
 الشكل 19.7: حلقة تنفيذ أوامر SocialCalc
 
@@ -165,7 +165,7 @@ Audrey Tang
 
 لننظر الآن إلى طبقة TableEditor. فهي تحسب الإحداثيات على الشاشة الخاصة بـ `RenderContext`، وتدير أشرطة التمرير الأفقية والرأسية عبر نسختين من `TableControl`.
 
-![[نسختا TableControl تُديران أشرطة التمرير]](/images/aosabook/v1-socialcalc-socialcalc-parts.webp)
+![نسختا TableControl تُديران أشرطة التمرير](/images/aosabook/v1-socialcalc-socialcalc-parts.webp){#fig.soc.parts}
 
 الشكل 19.8: نسختا TableControl تُديران أشرطة التمرير
 
@@ -177,13 +177,13 @@ Audrey Tang
 
 يحتوي `TableEditor` أيضًا على كائن `CellHandles`، الذي ينفّذ قائمة التعبئة/النقل/الانزلاق الدائرية (radial fill/move/slide) المرتبطة بالزاوية السفلية اليمنى من الخلية القابلة للتحرير الحالية، المعروفة باسم ECell، كما يوضّح [الشكل 19.9](#fig.soc.ecell).
 
-![[الخلية القابلة للتحرير الحالية، المعروفة باسم ECell]](/images/aosabook/v1-socialcalc-socialcalc-cell-handles.webp)
+![الخلية القابلة للتحرير الحالية، المعروفة باسم ECell](/images/aosabook/v1-socialcalc-socialcalc-cell-handles.webp){#fig.soc.ecell}
 
 الشكل 19.9: الخلية القابلة للتحرير الحالية، المعروفة باسم ECell
 
 يُدار صندوق الإدخال (input box) بواسطة صنفين: `InputBox` و `InputEcho`. فأولهما يدير صف التحرير الموجود فوق الشبكة، بينما يعرض الثاني طبقة معاينة تُحدَّث أثناء الكتابة، مُتراكِبة فوق محتوى ECell ([الشكل 19.10](#fig.soc.input)).
 
-![[صندوق الإدخال يديره صنفان]](/images/aosabook/v1-socialcalc-socialcalc-input.webp)
+![صندوق الإدخال يديره صنفان](/images/aosabook/v1-socialcalc-socialcalc-input.webp){#fig.soc.input}
 
 الشكل 19.10: صندوق الإدخال يديره صنفان
 
@@ -202,7 +202,7 @@ Audrey Tang
 
 فمثلًا، يوضّح [الشكل 19.11](#fig.soc.save) جدول بيانات من ثلاث خلايا، فيها القيمة `1874` في A1 بوصفها ECell، والصيغة `2^2*43` في A2، والصيغة `SUM(Foo)` في A3 معروضة بخط عريض، وتشير إلى النطاق المُسمّى `Foo` على `A1:A2`.
 
-![[جدول بيانات بثلاث خلايا]](/images/aosabook/v1-socialcalc-socialcalc-2046.webp)
+![جدول بيانات بثلاث خلايا](/images/aosabook/v1-socialcalc-socialcalc-2046.webp){#fig.soc.save}
 
 الشكل 19.11: جدول بيانات بثلاث خلايا
 
@@ -255,7 +255,7 @@ Audrey Tang
 
 المثال الأول الذي سننظر إليه هو تحسين خلايا النص في SocialCalc بترميز الويك، لعرض صيغته المنسَّقة (rich text) داخل محرّر الجدول نفسه ([الشكل 19.12](#fig.soc.rt)).
 
-![[عرض النصوص المنسّقة في محرّر الجدول]](/images/aosabook/v1-socialcalc-richtext-screenshot.webp)
+![عرض النصوص المنسّقة في محرّر الجدول](/images/aosabook/v1-socialcalc-richtext-screenshot.webp){#fig.soc.rt}
 
 الشكل 19.12: عرض النصوص المنسّقة في محرّر الجدول
 
@@ -273,7 +273,7 @@ Audrey Tang
 
 غير أنه إذا لم تكن الخاصية `textvalueformat` أو `nontextvalueformat` للخلية معرَّفةً صراحةً، فيُبحث عن صيغة افتراضية انطلاقًا من `valuetype` الخاص بها، كما يوضّح [الشكل 19.13](#fig.soc.vformat).
 
-![[أنواع القيم]](/images/aosabook/v1-socialcalc-richtext-formats.webp)
+![أنواع القيم](/images/aosabook/v1-socialcalc-richtext-formats.webp){#fig.soc.vformat}
 
 الشكل 19.13: أنواع القيم
 
@@ -316,7 +316,7 @@ spreadsheet.ExecuteCommand('set sheet defaulttextvalueformat text-wiki');
 
 وبتجميع ذلك كله، تعمل خطوة Render الآن كما يوضّح [الشكل 19.14](#fig.soc.render).
 
-![[خطوة Render]](/images/aosabook/v1-socialcalc-richtext-flow.webp)
+![خطوة Render](/images/aosabook/v1-socialcalc-richtext-flow.webp){#fig.soc.render}
 
 الشكل 19.14: خطوة Render
 
@@ -333,7 +333,7 @@ spreadsheet.ExecuteCommand('set sheet defaulttextvalueformat text-wiki');
 
 جرّب إدخال `*bold* _italic_ `monospace`` في A1، وستراه معروضًا كنص منسَّق ([الشكل 19.15](#fig.soc.rtext)).
 
-![[مثال Wikywyg]](/images/aosabook/v1-socialcalc-richtext-example.webp)
+![مثال Wikywyg](/images/aosabook/v1-socialcalc-richtext-example.webp){#fig.soc.rtext}
 
 الشكل 19.15: مثال Wikywyg
 
@@ -358,7 +358,7 @@ SocialCalc.ScheduleSheetCommands = function(sheet, cmdstr, saveundo, isRemote) {
 
 وعندما نُفِّذت هذه الميزة أول مرة من أجل مشروع OLPC (One Laptop Per Child[2](#footnote-2)) على يد مختبرات Sugar التابعة لـ SEETA[3](#footnote-3) عام 2009، بُنيت الدالة `broadcast` باستخدام نداءات XPCOM إلى D-Bus/Telepathy، وهو الناقل المعياري لشبكات OLPC/Sugar (انظر [الشكل 19.16](#fig.soc.olpc)).
 
-![[تنفيذ OLPC]](/images/aosabook/v1-socialcalc-collab-olpc.webp)
+![تنفيذ OLPC](/images/aosabook/v1-socialcalc-collab-olpc.webp){#fig.soc.olpc}
 
 الشكل 19.16: تنفيذ OLPC
 
@@ -370,7 +370,7 @@ SocialCalc.ScheduleSheetCommands = function(sheet, cmdstr, saveundo, isRemote) {
 
 وللمتصفحات التي تتوفّر فيها إضافة Adobe Flash ولا تدعم WebSocket أصليًا، نستخدم محاكاة WebSocket عبر Flash من مشروع `web_socket.js`[6](#footnote-6)، وهي غالبًا أسرع وأكثر موثوقية من MXHR. ويوضّح [الشكل 19.17](#fig.soc.collab) تدفّق العملية.
 
-![[التدفّق عبر المتصفحات]](/images/aosabook/v1-socialcalc-collab-flow.webp)
+![التدفّق عبر المتصفحات](/images/aosabook/v1-socialcalc-collab-flow.webp){#fig.soc.collab}
 
 الشكل 19.17: التدفّق عبر المتصفحات
 
@@ -398,13 +398,13 @@ $(hpipe).bind("message.execute", function (e, d) {
 
 الأولى هي حالة سباق (race condition) في ترتيب الأوامر المنفَّذة: إذا نفّذ المستخدمان A و B في الوقت نفسه عملية تؤثّر في الخلايا نفسها، ثم تسلّما الأمرين المبوَّثين من المستخدم الآخر ونفّذاهما، فسينتهي بهما الحال في حالتين مختلفتين، كما يوضّح [الشكل 19.18](#fig.soc.conflict).
 
-![[تعارض بسبب حالة السباق]](/images/aosabook/v1-socialcalc-collab-conflict.webp)
+![تعارض بسبب حالة السباق](/images/aosabook/v1-socialcalc-collab-conflict.webp){#fig.soc.conflict}
 
 الشكل 19.18: تعارض بسبب حالة السباق
 
 ويمكننا حلّ ذلك بآلية التراجع/الإعادة المدمجة في SocialCalc، كما يوضّح [الشكل 19.19](#fig.soc.resolve).
 
-![[حل تعارض حالة السباق]](/images/aosabook/v1-socialcalc-collab-resolution.webp)
+![حل تعارض حالة السباق](/images/aosabook/v1-socialcalc-collab-resolution.webp){#fig.soc.resolve}
 
 الشكل 19.19: حل تعارض حالة السباق
 
@@ -446,7 +446,7 @@ $(hpipe).bind("message.ecell", function (e, d) {
 box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 ```
 
-يوضّح [الشكل 19.20](#fig.soc.borders) كيف ستبدو الشاشة مع أربعة أشخاص يحرّرون جدول البيانات نفسه. ![[أربعة مستخدمون يحرّرون جدول بيانات واحد]](/images/aosabook/v1-socialcalc-collab-borders.webp)
+يوضّح [الشكل 19.20](#fig.soc.borders) كيف ستبدو الشاشة مع أربعة أشخاص يحرّرون جدول البيانات نفسه. ![أربعة مستخدمون يحرّرون جدول بيانات واحد](/images/aosabook/v1-socialcalc-collab-borders.webp){#fig.soc.borders}
 
 الشكل 19.20: أربعة مستخدمون يحرّرون جدول بيانات واحد
 
@@ -456,7 +456,7 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 
 ### 19.8.1. مصمّم رئيسي برؤية واضحة
 
-في [[Bro10](https://aosabook.org/en/v1/bib1.html#bib:brooks:design)]، يقرّر Fred Brooks أن بناء الأنظمة المعقّدة يصبح فيه الحوار أكثر مباشرة بكثير إن ركّزنا على *مفهوم تصميم* متّسق (coherent design concept) بدلًا من التمثيلات المشتقّة. ووفقًا لما يراه Brooks، فإن صياغة مثل هذا المفهوم المتّسق من التصميم يكون من الأفضل الاحتفاظ بها في ذهن شخص واحد:
+في [Bro10](https://aosabook.org/en/v1/bib1.html#bib:brooks:design)، يقرّر Fred Brooks أن بناء الأنظمة المعقّدة يصبح فيه الحوار أكثر مباشرة بكثير إن ركّزنا على *مفهوم تصميم* متّسق (coherent design concept) بدلًا من التمثيلات المشتقّة. ووفقًا لما يراه Brooks، فإن صياغة مثل هذا المفهوم المتّسق من التصميم يكون من الأفضل الاحتفاظ بها في ذهن شخص واحد:
 
 > 
 > > ولأن السلامة المفاهيمية هي أهمّ سمة من سمات التصميم العظيم، ولأنها تنبع من عقل واحد أو بضعة عقول تعمل *uno animo*، فإن المدير الحكيم يسلّم كل مهمة تصميم، بثقة وجسارة، إلى مصمّم رئيسي موهوب.
@@ -480,7 +480,7 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 
 ### 19.8.4. التحسين من أجل المتعة
 
-في المحاضرة الافتتاحية (keynote) التي ألقيتها عام 2006 في مؤتمر CONISLI ([[Tan06](https://aosabook.org/en/v1/bib1.html#bib:tang:fun)])، لخّصت تجربتي في قيادة فريق موزّع نفّذ لغة Perl 6 في بضع ملاحظات. ومن بينها، هناك عبارات ذات صلة خاصة بالفرق الموزّعة الصغيرة: *احرص دائمًا على خارطة طريق* (Always have a Roadmap)، و *الغفران أفضل من الإذن* (Forgiveness > Permission)، و *أزل الجمود* (Remove deadlocks)، و *اطرح الأفكار ولا تطلب الإجماع* (Seek ideas, not consensus)، و *ارسُم الأفكار بالشيفرة* (Sketch ideas with code).
+في المحاضرة الافتتاحية (keynote) التي ألقيتها عام 2006 في مؤتمر CONISLI ([Tan06](https://aosabook.org/en/v1/bib1.html#bib:tang:fun))، لخّصت تجربتي في قيادة فريق موزّع نفّذ لغة Perl 6 في بضع ملاحظات. ومن بينها، هناك عبارات ذات صلة خاصة بالفرق الموزّعة الصغيرة: *احرص دائمًا على خارطة طريق* (Always have a Roadmap)، و *الغفران أفضل من الإذن* (Forgiveness > Permission)، و *أزل الجمود* (Remove deadlocks)، و *اطرح الأفكار ولا تطلب الإجماع* (Seek ideas, not consensus)، و *ارسُم الأفكار بالشيفرة* (Sketch ideas with code).
 
 وعند تطوير SocialCalc، أخذنا بالكفاية في توزيع المعرفة بين أعضاء الفريق عبر ملكية تعاونية للشيفرة (collaborative code ownership)، حتى لا يصبح أحدهم اختناقًا حرجًا.
 
@@ -492,7 +492,7 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 
 قبل انضمامي إلى Socialtext، كنت قد دعتُ إلى نهج «مزج الاختبارات مع المواصفة» (interleave tests with the specification)، كما يتّضح في مواصفة لغة Perl 6[7](#footnote-7)، حيث نُنشِئ مواصفة اللغة مرفقةً بمجموعة الاختبارات الرسمية. غير أن Ken Pier و Matt Heusser، وهما فريق ضمان الجودة في SocialCalc، هما اللذان فتحا لي عينيّ حقًا على كيف يمكن الارتقاء بهذا المنهج إلى المستوى التالي، بنقل الاختبارات إلى موضع *المواصفة القابلة للتنفيذ* (executable specification).
 
-وفي الفصل 16 من [[GR09](https://aosabook.org/en/v1/bib1.html#bib:goucher:test)]، شرح Matt عملية تطويرنا المبنية على اختبارات القصص (story tests) على النحو التالي:
+وفي الفصل 16 من [GR09](https://aosabook.org/en/v1/bib1.html#bib:goucher:test)، شرح Matt عملية تطويرنا المبنية على اختبارات القصص (story tests) على النحو التالي:
 
 > 
 > > الوحدة الأساسية للعمل هي «قصة»، وهي مستند متطلبات شديد الخفة. وتتضمّن القصة وصفًا موجزًا لميزة، إلى جانب أمثلة لما ينبغي أن يحدث حتى تُعدّ القصة مكتملة؛ ونسمي هذه الأمثلة «اختبارات القبول» (acceptance tests) ونصفها بالإنجليزية المبسّطة.

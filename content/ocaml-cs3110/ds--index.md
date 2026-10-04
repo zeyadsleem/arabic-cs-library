@@ -84,7 +84,7 @@ module type Map =
 
 ### 9.1.2. الخرائط كقوائم ترابطية {#maps-as-association-lists}
 
-أبسط تنفيذ لخريطة في OCaml هو كقائمة ترابطية. وقد رأينا ذلك التمثيل مرتين حتى الآن [[1]](https://cs3110.github.io/textbook/chapters/data/assoc_list.html) [[2]](https://cs3110.github.io/textbook/chapters/modules/functional_data_structures.html). وإليك تنفيذًا للوحدة `Map` باستخدامه:
+أبسط تنفيذ لخريطة في OCaml هو كقائمة ترابطية. وقد رأينا ذلك التمثيل مرتين حتى الآن [1](https://cs3110.github.io/textbook/chapters/data/assoc_list.html) [2](https://cs3110.github.io/textbook/chapters/modules/functional_data_structures.html). وإليك تنفيذًا للوحدة `Map` باستخدامه:
 
 ```ocaml
 module ListMap : Map = struct

@@ -37,7 +37,7 @@ myusername
 
 ونظام ملفات Unix منظّم في بنية شجرية هرمية، بدليل واحد في الأعلى (`/`) يُسمى الدليل الجذر. وتحته بعض الأدلة الرئيسية التي تحمل محتوى النظام. ومن الأمثلة عليها `bin` الذي يخزّن برامج النظام التي يمكن تشغيلها من سطر أوامر Unix، و`lib` الذي يخزّن شيفرة مكتبات النظام، و`home` الذي يخزّن الدليل الرئيسي لكل مستخدم ليخزّن فيه ملفاته الخاصة. ويعرض [الشكل 1](#FigUnixFS) مثالًا على بنية أدلة نظام ملفات Unix، مع دليلي `home` للمستخدمين `sam` و`sarita`.
 
-![The unix file system with root directory at top, with example child directories bin, home, lib, and two example subdirectories under home sam and sarita.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp) الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.
+![The unix file system with root directory at top, with example child directories bin, home, lib, and two example subdirectories under home sam and sarita.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp){#FigUnixFS} الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.
 
 لاحظ أن `/` هو الدليل الأعلى مستوى، وله عدة أدلة فرعية **تابعة**، منها `bin` و`lib` و`home`. ولكل دليل عدا الدليل الجذر دليل **أب** فريد؛ والدليل الجذر هو الوحيد الذي ليس له دليل أب.
 
@@ -139,7 +139,7 @@ $ pwd
 
 ويعرض [الشكل 2](#FigUnixFSSam) شكل نظام الملفات بعد أن يشغّل `sam` جميع أوامر `mkdir`.
 
-![The unix file system after sam creates subdirectories classes, letters, projects, and creates a subdirectory under classes named CS31.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp) الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.
+![The unix file system after sam creates subdirectories classes, letters, projects, and creates a subdirectory under classes named CS31.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp){#FigUnixFSSam} الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.
 
 والآن يمكن لـ`sam` الانتقال إلى دليله CS31 عندما يعمل على دروس مقرر CS31، وإنشاء المزيد من الأدلة الفرعية والملفات في هذا الدليل:
 
@@ -645,7 +645,7 @@ sarita@cs.college.edu's password:
 basics                  100%   78   86.3KB/s   00:00
 ```
 
-وإذا أردت نقل ملفات كثيرة، فمن المفيد أن تحزمها أولًا في ملف أرشيف واحد. ثم تنسخ ملف الأرشيف، وتفكّ ضغطه للحصول على مجموعة الملفات. علاوة على ذلك، سيقلل ضغط الملف قبل النقل من زمن النقل الإجمالي. وأداة `tar` إحدى طرق حزم الملفات وفكّها، و`gzip` و`bzip2` مثالان على أدوات ضغط الملفات. انظر [[targzbz]](#targzbz) لمزيد من المعلومات عن استخدام `tar` وضغط الملفات.
+وإذا أردت نقل ملفات كثيرة، فمن المفيد أن تحزمها أولًا في ملف أرشيف واحد. ثم تنسخ ملف الأرشيف، وتفكّ ضغطه للحصول على مجموعة الملفات. علاوة على ذلك، سيقلل ضغط الملف قبل النقل من زمن النقل الإجمالي. وأداة `tar` إحدى طرق حزم الملفات وفكّها، و`gzip` و`bzip2` مثالان على أدوات ضغط الملفات. انظر [targzbz](#targzbz) لمزيد من المعلومات عن استخدام `tar` وضغط الملفات.
 
 إنشاء مفاتيح SSH
 
@@ -2619,7 +2619,7 @@ next input/ file is: songs
 
 ويعرض [الشكل 1](#FigHOP) لقطة شاشة نموذجية من `htop`.
 
-![Example output form htop showing the current cpu usage of the 12 cores, of memory, and information about the top cpu-using processes.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-0-htop.webp) الشكل 1. لقطة شاشة نموذجية من htop).
+![Example output form htop showing the current cpu usage of the 12 cores, of memory, and information about the top cpu-using processes.](https://diveintosystems.org/images/dive-into-systems/c17-appendix-2-0-htop.webp){#FigHOP} الشكل 1. لقطة شاشة نموذجية من htop).
 
 وفي أعلى الشاشة تمامًا، يعرض `htop` استخدام CPU الحالي لكل نواة من النوى الـ12 في هذا النظام كرسم بياني للاستخدام مُعلَّم بالنسب المئوية، يليه استخدام الذاكرة الحالي (`Mem`)، ومعلومات ملخّصة عن متوسط حِمل CPU (`Load average`)، والعدد الإجمالي للمهام (`Tasks`) والخيوط (`thr`) العاملة في النظام، ومعلومات عن استخدام قسم المبادلة (`Swp`). وتحتها سرد للمهام التي تستخدم أكبر وقت CPU في النظام. لاحظ أن المهام الخمس الأولى المدرجة في [الشكل 1](#FigHOP) عمليات تشغّل برنامج الحلقة اللانهائية `a.out`، لذا فهي تستهلك وقت CPU كثيرًا كما هو متوقع. وفي أسفل الشاشة مفاتيح وظائف لتغيير البيانات المعروضة بطرق مختلفة.
 

@@ -46,7 +46,7 @@ OpenPGP معيار مفتوح يصف طريقةً لتشفير الرسائل و
 
 وثمّة رابط ثقة مباشر بيننا، وبإمكاننا التحدّث بأمان.
 
-![center](/images/crypto-101/fig-0-WebOfTrustDirect.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-0-WebOfTrustDirect.svg)
 
 center
 
@@ -56,7 +56,7 @@ center
 أن يختار أن يستند إلى إقرارك بأنّني أنا بالتّحديد الشخص الحائز على ذلك المفتاح
 الذي وقّعته، ثمّ يستعمل ذلك ليتواصل معي بأمان.
 
-![center](/images/crypto-101/fig-1-WebOfTrustIndirect.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-1-WebOfTrustIndirect.svg)
 
 center
 
@@ -71,7 +71,7 @@ center
 الرئيس في هذا النظام فهو «جزر» الثقة: أفراد أو مجموعات صغيرة لا تصلهم
 بأيّ صلة ببقية الشبكة.
 
-![center](/images/crypto-101/fig-2-WebOfTrustIslands.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-2-WebOfTrustIslands.svg)
 
 center
 

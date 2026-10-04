@@ -8,7 +8,7 @@ source: https://security.systemsapproach.org/tls.html
 
 أدرك مصممو SSL وTLS أن هذه المشكلات ليست خاصة بمعاملات الشبكة (أي تلك التي تستخدم HTTP)، فبنوا بروتوكولًا عام الغرض يقع بين بروتوكول تطبيق مثل HTTP وبروتوكول نقل مثل TCP. وسبب تسمية ذلك بـ«أمن طبقة النقل» هو أن طبقة البروتوكول هذه تبدو، من وجهة نظر التطبيق، كبروتوكول نقل عادي تمامًا، إلا أنها آمنة. أي أن المرسل يستطيع فتح اتصالات وتسليم بايتات للإرسال، وستتولى طبقة النقل الآمنة إيصالها إلى المستقبل مع السرّية والسلامة والمصادقة اللازمة. وبتشغيل طبقة النقل الآمنة فوق TCP، تتوفّر للتطبيق أيضًا جميع مزايا TCP العادية (الموثوقية، والتحكم في التدفق، والتحكم في الازدحام، إلخ). ويصوّر هذا الترتيب لطبقات البروتوكولات في [الشكل 12](#fig-tls-stack).
 
-[![_images/f08-15-9780123850591.png](/images/network-security/tls-0-f08-15-9780123850591.webp)](/images/network-security/tls-0-f08-15-9780123850591.webp)
+[![_images/f08-15-9780123850591.png](/images/network-security/tls-0-f08-15-9780123850591.webp){#id1}](/images/network-security/tls-0-f08-15-9780123850591.webp)
 
 الشكل 12. إدخال طبقة نقل آمنة بين طبقة التطبيق وطبقة TCP.[]](#id1)
 
@@ -50,7 +50,7 @@ source: https://security.systemsapproach.org/tls.html
 
 يعرض [الشكل 13](#fig-tls-hand) بروتوكول المصافحة على مستوى عالٍ. وحين يستقبل كلٌّ من العميل والخادم رسالة «انتهت المصافحة» من نظيره، تكتمل المصافحة ويصبح بإمكان بيانات التطبيق أن تبدأ بالتدفّق.
 
-[![_images/TLS-handshake.png](/images/network-security/tls-1-TLS-handshake.webp)](/images/network-security/tls-1-TLS-handshake.webp)
+[![_images/TLS-handshake.png](/images/network-security/tls-1-TLS-handshake.webp){#id2}](/images/network-security/tls-1-TLS-handshake.webp)
 
 الشكل 13. بروتوكول المصافحة لإقامة جلسة TLS.[][↗](#id2)
 
@@ -120,7 +120,7 @@ source: https://security.systemsapproach.org/tls.html
 
 *بدلًا من التقسيم الطبقي الصارم، يتعاون البروتوكولان معًا: يستخدم QUIC مصافحة TLS؛ ويستخدم TLS الموثوقية والتسليم المرتّب وطبقة السجلات التي يوفّرها QUIC.*
 
-[![_images/QUIC-TLS.png](/images/network-security/tls-2-QUIC-TLS.webp)](/images/network-security/tls-2-QUIC-TLS.webp)
+[![_images/QUIC-TLS.png](/images/network-security/tls-2-QUIC-TLS.webp){#id3}](/images/network-security/tls-2-QUIC-TLS.webp)
 
 الشكل 14. مقارنة بين حزم البروتوكولات. (أ) HTTP فوق TLS فوق TCP. (ب) مصافحة HTTP وTLS فوق QUIC.[↗](#id3)
 

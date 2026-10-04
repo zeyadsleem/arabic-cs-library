@@ -72,7 +72,7 @@ nginx ملائم جدًا لهذا الغرض، لأنه يوفّر الميزا
 
 يُعرض في [الشكل 14.1](#fig.nginx.arch) نظرة عامة عالية المستوى على بنية nginx.
 
-![](/images/aosabook/v2-nginx-architecture.webp) الشكل 14.1: مخطط بنية nginx
+![](/images/aosabook/v2-nginx-architecture.webp){#fig.nginx.arch} الشكل 14.1: مخطط بنية nginx
 
 ### نموذج العُمل
 

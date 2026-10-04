@@ -43,7 +43,7 @@ Provide three examples of a real-world database (e.g., the library contains a da
 
 يمكن أن تحتوي قاعدة البيانات على جداول كثيرة. فعلى سبيل المثال، قد يحتوي نظام العضويات على جدول للعناوين وجدول للأعضاء الأفراد، كما هو مبيّن في الشكل 2.2. وأعضاء Science World هم الأفراد والبيوت الجماعية والشركات والمؤسسات التي تتوفر لها عضوية سارية في Science World. ويمكن شراء العضوية لمدة سنة أو سنتين، ثم تجديدها لمدة سنة أو سنتين أخرى.
 
-![لقطة لنموذج عضوية إلكترونية، وتحته جدول بأسماء وباركودات](/images/db-design/chapter-2-1-MemFormAug2014.webp)
+![لقطة لنموذج عضوية إلكترونية، وتحته جدول بأسماء وباركودات](/images/db-design/chapter-2-1-MemFormAug2014.webp){#attachment_740}
 
 في الشكل 2.2، جددت ميني ماوس عضوية العائلة مع Science World. ويعيش جميع من يحملون رقم العضوية 100755 في 8932 Rodent Lane. أما الأعضاء الأفراد فهم: Mickey Mouse، وMinnie Mouse، وMighty Mouse، وDoor Mouse، وTom Mouse، وKing Rat، وMan Mouse، وMoose Mouse.
 

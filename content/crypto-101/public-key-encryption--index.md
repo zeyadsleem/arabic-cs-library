@@ -162,7 +162,7 @@ OAEP، اختصارًا لعبارة optimal asymmetric encryption padding (حش
 الأمثل)، يمثّل أفضل ما توصّل إليه علم حشو RSA. وقد أدخلاه Mihir Bellare وPhillip
 Rogaway سنة 1995. `bellarerogaway:oaep`. ويبدو بنيته على هذا النحو:
 
-![center](/images/crypto-101/fig-0-Diagram.svg)
+![center](/images/crypto-101/public-key-encryption-fig-0-Diagram.svg)
 
 center
 

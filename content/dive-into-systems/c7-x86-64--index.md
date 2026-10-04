@@ -112,7 +112,7 @@ $ less output
 
 السجلات الثمانية الأولى (`%rax` و`%rbx` و`%rcx` و`%rdx` و`%rdi` و`%rsi` و`%rsp` و`%rbp`) هي امتدادات ذات 64 بت لسجلات 32 بت في x86، ولها آلية مشتركة للوصول إلى بتاتها الـ32 السفلى وبتاتها الـ16 السفلى وبايتها الأقل أهمية. وللوصول إلى البتات الـ32 السفلى من السجلات الثمانية الأولى، ما عليك سوى استبدال حرف `r` في اسم السجل بحرف `e`. وهكذا، فإن السجل المقابل للبتات الـ32 السفلى من السجل `%rax` هو السجل `%eax`. وللوصول إلى البتات الـ16 السفلى من كل سجل من هذه السجلات الثمانية، أشر إلى الحرفين الأخيرين من اسم السجل. لذا، فإن آلية الوصول إلى البايتين السفليين من السجل `%rax` هي `%ax`.
 
-![Register %rax’s names for accessing a subset of the register’s bits. %eax refers to its lower 32 bits, %ax refers to its lower 16 bits, %al refers to the low-order byte (bits 0-7), and %ah refers to the second byte (bits 8-15).](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-register.webp) الشكل 1. الأسماء التي تشير إلى مجموعات فرعية من بتات السجل %rax.
+![Register %rax’s names for accessing a subset of the register’s bits. %eax refers to its lower 32 bits, %ax refers to its lower 16 bits, %al refers to the low-order byte (bits 0-7), and %ah refers to the second byte (bits 8-15).](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-register.webp){#Register} الشكل 1. الأسماء التي تشير إلى مجموعات فرعية من بتات السجل %rax.
 
 توفّر بنية ISA آلية منفصلة للوصول إلى المكوّنات ذات الثماني بتات داخل البتات الـ16 السفلى من السجلات الأربعة الأولى المذكورة. ويوضّح [الشكل 1](#Register) آليات الوصول للسجل `%rax`. ويمكن الوصول إلى البايتين *العلوي* و*السفلي* داخل البتات الـ16 السفلى من السجلات الأربعة الأولى المذكورة بأخذ الحرفين الأخيرين من اسم السجل واستبدال الحرف الأخير إما بحرف `h` (لـ*الأعلى*) أو بحرف `l` (لـ*الأدنى*) حسب البايت المطلوب. فمثلًا، يشير `%al` إلى البتات الثماني السفلى من السجل `%ax`، بينما يشير `%ah` إلى البتات الثماني العليا من السجل `%ax`. وتُستخدم هذه السجلات ذات الثماني بتات عادةً لتخزين قيم بايت واحد لعمليات معينة، مثل الإزاحات على مستوى البتات (فلا يمكن إزاحة سجل 32-بت أكثر من 32 موضعًا، والعدد 32 لا يحتاج إلا إلى بايت واحد للتخزين).
 
@@ -277,7 +277,7 @@ int adder2(int a) {
 
 يوضّح [الشكل 2](#InitialStep) حالة نموذجية لمكدّس الاستدعاء والسجلات قبل تنفيذ الدالة `adder2`.
 
-![frame1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-ex1_1.webp) الشكل 2. مكدّس التنفيذ قبل التنفيذ
+![frame1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-ex1_1.webp){#InitialStep} الشكل 2. مكدّس التنفيذ قبل التنفيذ
 
 لاحظ أن المكدّس ينمو نحو العناوين *الأدنى*. ويحتوي السجل `%eax` على قيمة غير ذات معنى. ويُخزَّن المعامل الوحيد للدالة `adder2` (`a`) في السجل `%rdi` حسب الاصطلاح. وبما أن `a` من نوع `int`، فإنه يُخزَّن في سجل المكوّن `%edi`، كما هو معروض في [الشكل 2](#InitialStep). وبالمثل، بما أن الدالة `adder2` تعيد قيمة من نوع `int`، يُستخدم سجل المكوّن `%eax` لقيمة الإرجاع بدلًا من `%rax`.
 
@@ -1083,7 +1083,7 @@ int sumUp(int n){
 
 يعرض [الشكل 1](#StackFrame) إطاري المكدّس للدالة `main` ودالة تستدعيها اسمها `fname`. وسنشير إلى الدالة `main` باسم الدالة *المستدعية* (caller) وإلى `fname` باسم الدالة *المستدعاة* (callee).
 
-![an illustration of stack frames](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-stackFrame.webp) الشكل 1. إدارة إطار المكدّس
+![an illustration of stack frames](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-stackFrame.webp){#StackFrame} الشكل 1. إدارة إطار المكدّس
 
 في [الشكل 1](#StackFrame)، ينتمي الإطار النشط الحالي إلى الدالة المستدعاة (`fname`). وتُستخدم الذاكرة بين مؤشّر المكدّس ومؤشّر الإطار للمتغيرات المحلية. ويتحرك مؤشّر المكدّس عند دفع القيم المحلية إلى المكدّس وسحبها منه. وفي المقابل، يبقى مؤشّر الإطار ثابتًا نسبيًا، ويشير إلى بداية (قاعدة) إطار المكدّس الحالي. ونتيجة لذلك، تشير المترجمات مثل GCC عادةً إلى القيم الموجودة على المكدّس نسبةً إلى مؤشّر الإطار. وفي [الشكل 1](#StackFrame)، يُحَدّ الإطار النشط من الأسفل بمؤشّر قاعدة الدالة `fname`، وهو عنوان المكدّس 0x418. والقيمة المخزّنة في العنوان 0x418 هي قيمة `%rbp` "المحفوظة" (0x42c)، وهي نفسها عنوان يشير إلى قاعدة إطار التنشيط للدالة `main`. ويحدّ **عنوان الإرجاع** الجزء العلوي من إطار التنشيط للدالة `main`، وهو يشير إلى المكان الذي يستأنف فيه تنفيذ البرنامج في الدالة `main` عند انتهاء تنفيذ الدالة المستدعاة `fname`.
 
@@ -1225,7 +1225,7 @@ int main(void) {
 
 يعرض [الشكل 3](#initialMain) مكدّس التنفيذ مباشرة قبل تنفيذ الدالة `main`.
 
-![slide1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-Slide1.webp) الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main
+![slide1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-Slide1.webp){#initialMain} الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main
 
 تذكّر أن المكدّس ينمو نحو العناوين الأدنى. وفي هذا المثال، يكون `%rbp` في البداية عند عنوان المكدّس 0x830، و`%rsp` في البداية عند عنوان المكدّس 0xd48. وكلا القيمتين مختلقتان لهذا المثال.
 
@@ -1492,7 +1492,7 @@ int sumr(int n) {
 
 وكمثال، تأمّل مصفوفة نموذجية (`array`) فيها 10 عناصر صحيحة ([الشكل 1](#FigArray6)):
 
-![Each integer in the array requires four bytes.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-arrayFig.webp) الشكل 1. تخطيط مصفوفة من 10 أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi أربعة بايتات.
+![Each integer in the array requires four bytes.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-arrayFig.webp){#FigArray6} الشكل 1. تخطيط مصفوفة من 10 أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi أربعة بايتات.
 
 لاحظ أنه بما أن `array` مصفوفة أعداد صحيحة، فإن كل عنصر يشغل أربعة بايتات بالضبط. وهكذا، تستهلك مصفوفة صحيحة من 10 عناصر 40 بايتًا من الذاكرة المتجاورة.
 
@@ -1574,11 +1574,11 @@ for (i = 0; i < 4; i++) {
 
 في حالة المصفوفة المخصّصة ديناميكيًا، تحتوي المصفوفة الرئيسية على مصفوفة متجاورة من مؤشرات `int`. ويشير كل مؤشر صحيح إلى مصفوفة مختلفة في الذاكرة. ويوضّح [الشكل 1](#Matrices6) كيف نتصور عادةً كلًّا من هاتين المصفوفتين.
 
-![matrices](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-matrices.webp) الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4
+![matrices](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-matrices.webp){#Matrices6} الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4
 
 في كلا تعريفي المصفوفة، يمكن الوصول إلى العنصر (*i*،*j*) باستخدام صيغة الفهرسة المزدوجة `M[i][j]`، حيث `M` هي إما `M1` وإما `M2`. غير أن هاتين المصفوفتين منظّمتان بشكل مختلف في الذاكرة. ومع أن كلتيهما تخزّن العناصر في مصفوفتها الأساسية بشكل متجاور في الذاكرة، فإن مصفوفتنا المخصّصة ساكنًا تخزّن أيضًا جميع الصفوف بشكل متجاور في الذاكرة، كما هو معروض في [الشكل 2](#Matrices7).
 
-![matrixArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-matrixArray.webp) الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)
+![matrixArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-matrixArray.webp){#Matrices7} الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)
 
 وهذا الترتيب المتجاور غير مضمون في `M2`. و[تذكّر أن](https://diveintosystems.org/book/C2-C_depth/arrays.html#_two_dimensional_array_memory_layout) تخصيص مصفوفة *n* × *m* بشكل متجاور على الكومة يتطلب استخدام استدعاء واحد لـ`malloc` يحجز *n* × *m* عنصرًا:
 
@@ -1690,7 +1690,7 @@ Dump of assembler code for function sumMat:
 
 تطبيق المصفوفة غير المتجاورة أعقد قليلًا. ويوضّح [الشكل 4](#DynamicMatrix6) كيف قد يكون `M2` مرتّبًا في الذاكرة.
 
-![matrixDynamic](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-dynamicMatrixLayout.webp) الشكل 4. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
+![matrixDynamic](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-dynamicMatrixLayout.webp){#DynamicMatrix6} الشكل 4. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
 
 لاحظ أن مصفوفة المؤشرات متجاورة، وأن كل مصفوفة يشير إليها عنصر من `M2` (مثل `M2[i]`) متجاورة. غير أن المصفوفات الفردية غير متجاورة مع بعضها. وبما أن `M2` مصفوفة مؤشرات، يشغل كل عنصر من `M2` ثمانية بايتات من المساحة. وفي المقابل، بما أن `M2[i]` مصفوفة `int`، يبعد كل عنصر من `M2[i]` أربعة بايتات.
 
@@ -1801,7 +1801,7 @@ struct studentT student;
 
 يعرض [الشكل 1](#structArray6) كيفية ترتيب `student` في الذاكرة. ويشير كل xi إلى عنوان حقل معيّن.
 
-![structArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-structArray.webp) الشكل 1. تخطيط الذاكرة للبنية studentT
+![structArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-structArray.webp){#structArray6} الشكل 1. تخطيط الذاكرة للبنية studentT
 
 تُخزَّن الحقول بشكل متجاور واحدًا بجانب الآخر في الذاكرة بالترتيب الذي عُرِّفت به. وفي [الشكل 1](#structArray6)، يُخصَّص الحقل `age` في موقع الذاكرة الذي يلي حقل `name` مباشرة (عند الإزاحة x64 بالبايت)، ويليه الحقلان `grad_yr` (الإزاحة x68) و`gpa` (الإزاحة x72). ويتيح هذا التنظيم وصولًا موفّرًا للذاكرة إلى الحقول.
 
@@ -1907,11 +1907,11 @@ struct studentTM student2;
 
 عُدّل حجم الحقل `name` ليصبح 63 بايت بدلًا من 64 الأصلية. تأمّل كيف يؤثر ذلك في طريقة ترتيب البنية `struct` في الذاكرة. وقد يغريك تصورها كما في [الشكل 2](#wrongLayout).
 
-![struct2wrong](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-struct2wrong.webp) الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل "name" في البنية تقلّص من 64 إلى 63 بايت.
+![struct2wrong](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-struct2wrong.webp){#wrongLayout} الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل "name" في البنية تقلّص من 64 إلى 63 بايت.
 
 في هذا التصوير، يقع الحقل `age` في البايت الذي يلي حقل `name` مباشرة. لكن هذا غير صحيح. ويعرض [الشكل 3](#correctLayout) التخطيط الفعلي في الذاكرة.
 
-![struct2right](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-struct2right.webp) الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.
+![struct2right](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-struct2right.webp){#correctLayout} الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.
 
 تتطلب سياسة المحاذاة في x64 أن تقع أنواع البيانات ذات البايتين (مثل `short`) عند عنوان محاذى لبايتين، وأن تقع أنواع البيانات ذات الأربعة بايتات (مثل `int` و`float` و`unsigned`) عند عناوين محاذاة لأربعة بايتات، بينما تقع أنواع البيانات الأكبر (`long` و`double` وبيانات المؤشرات) عند عناوين محاذاة لثمانية بايتات. وبالنسبة للبنية `struct`، يضيف المترجم بايتات فارغة كـ**حشو** (padding) بين الحقول لضمان أن كل حقل يلبّي متطلبات محاذاته. فمثلًا، في البنية `struct` المعرّفة في [الشكل 3](#correctLayout)، يضيف المترجم بايت حشو عند البايت x63 لضمان أن يبدأ الحقل `age` عند عنوان من مضاعفات أربعة. ويمكن قراءة القيم المحاذاة بشكل صحيح في الذاكرة أو كتابتها في عملية واحدة، ما يتيح كفاءة أكبر.
 
@@ -2032,13 +2032,13 @@ int main(void) {
 
 يعرض [الشكل 1](#beforescan) المكدّس مباشرة قبل استدعاء `scanf`.
 
-![before](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-beforeScanf.webp) الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf
+![before](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-beforeScanf.webp){#beforescan} الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf
 
 قبل استدعاء `scanf`، يُحمَّل الوسيطان الأولان لـ`scanf` مسبقًا في السجلين `%edi` و`%rsi` على الترتيب. وتنشئ التعليمة `lea` عند الموقع `` المرجع للمصفوفة `buf`.
 
 الآن، لنفترض أن المستخدم أدخل `1234567890` عند المطالبة. ويوضّح [الشكل 2](#afterScanf) شكل المكدّس مباشرة بعد اكتمال استدعاء `scanf`.
 
-![after](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-afterScanf.webp) الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890
+![after](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-afterScanf.webp){#afterScanf} الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890
 
 تذكّر أن القيم السداسية العشرية لترميزات ASCII للأرقام من 0 إلى 9 هي من 0x30 إلى 0x39، وأن كل موقع في ذاكرة المكدّس طوله ثمانية بايتات. ويبعد مؤشّر الإطار 32 بايت عن مؤشّر المكدّس. ويمكن للقراء المتتبعين تأكيد قيمة `%rbp` باستخدام GDB لطباعة قيمته (`p $rbp`). وفي المثال المعروض، قيمة `%rbp` هي 0x7fffffffdd10. ويتيح الأمر التالي للقارئ فحص 48 بايت (بالنظام السداسي العشري) أسفل السجل `%rsp`:
 
@@ -2103,7 +2103,7 @@ $ echo $?
 
 مثير للاهتمام! الآن ينهار البرنامج بخطأ تجزئة، برمز إرجاع 139. ويعرض [الشكل 3](#afterScanf2) شكل مكدّس الاستدعاء للدالة `main` مباشرة بعد استدعاء `scanf` بهذا الإدخال الجديد.
 
-![after2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-afterScanf2.webp) الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234567890123
+![after2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-afterScanf2.webp){#afterScanf2} الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234567890123
 
 السلسلة المُدخَلة طويلة جدًا لدرجة أنها لم تستبدل القيم المخزّنة عند 0xd08 و0xd10 فحسب، بل تجاوزتهما إلى عنوان الإرجاع أسفل إطار المكدّس للدالة `main`. وتذكّر أنه عند عودة دالة، يحاول البرنامج استئناف التنفيذ عند العنوان المحدّد بعنوان الإرجاع. وفي هذا المثال، يحاول البرنامج استئناف التنفيذ عند العنوان 0xf7ff00333231 بعد الخروج من `main`، وهو عنوان لا يبدو أنه موجود. لذا ينهار البرنامج بخطأ تجزئة.
 
@@ -2151,7 +2151,7 @@ End of assembler dump.
 
 لاحظ أن `endGame` تبدأ عند العنوان 0x00000000004006da. ويوضّح [الشكل 4](#finalExploit) استغلالًا نموذجيًا يجبر `secret` على تشغيل الدالة `endGame`.
 
-![exploit](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-finalExploit.webp) الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame
+![exploit](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-finalExploit.webp){#finalExploit} الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame
 
 في جوهر الأمر، هناك 40 بايت من القيم غير ذات المعنى تليها عنوان الإرجاع. ومرة أخرى، بما أن x86-64 نظام [little-endian](https://diveintosystems.org/book/C4-Binary/byte_order.html#_integer_byte_order)، تظهر بايتات عنوان الإرجاع بترتيب معكوس.
 

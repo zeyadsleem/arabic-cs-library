@@ -56,7 +56,7 @@ Predicate Information (identified by operation id):
 
 يرجى ملاحظة أن الأدوات المختلفة تعرض معلومات المُسندات بطرق مختلفة؛ فمثلاً يعرض Oracle SQL Developer معلومات المُسندات أسفل العملية المعنية.
 
-الشكل A.1 مُسندات الوصول والترشيح في Oracle SQL Developer ![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-oracle-filter-predicates-0-sqldeveloper_access_filter_predicates.6GQmGBUE.webp)
+الشكل A.1 مُسندات الوصول والترشيح في Oracle SQL Developer ![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-oracle-filter-predicates-0-sqldeveloper_access_filter_predicates.6GQmGBUE.webp){#scn-sqldeveloper-access-filter}
 
 وبعض الأدوات لا تعرض معلومات المُسندات إطلاقاً. تذكّر أنك تستطيع دائماً العودة إلى `DBMS_XPLAN` كما شُرح في «[الحصول على خطة تنفيذ](/book/use-the-index-luke/sql-explain-plan-oracle-getting-an-execution-plan/index)».
 

@@ -82,7 +82,7 @@ scroll.animateScroll.scrollToTop({
 }
 ```
 
-![تحميل الموارد عند التفاعل، مع أدوات المطوّر تُظهر جلب المورد](/images/patterns-dev/vanilla-import-on-interaction-6-animation.webp)
+![تحميل الموارد عند التفاعل، مع أدوات المطوّر تُظهر جلب المورد](/images/patterns-dev/vanilla-import-on-interaction-6-animation.gif)
 
 ## كيف نستورد عند التفاعل؟
 

@@ -90,7 +90,7 @@ $ less output
 
 ولأن ARMv8-A امتداد لمعمارية ARMv7-A باثنين وثلاثين بتًا، توفّر مجموعة تعليمات A64 آليات للوصول إلى الأجزاء الدنيا البالغة 32 بتًا من كل سجل من السجلات عامة الغرض، أي من `w0` إلى `w30`. ويعرض [الشكل 1](#Registera64) تخطيطًا نموذجيًا للسجل `x0`. وإذا خُزّنت بيانات باثنين وثلاثين بتًا في السجل المكوّن `w0`، فإن الجزء الأعلى البالغ 32 بتًا من السجل يصبح غير قابل للوصول ويُصفَّر.
 
-![32-bit component register w0 and its relation to the 64-bit x0 register](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-register.webp) Figure 1. Component register layout of register %x0. **Warning — The compiler may choose component registers depending on type**
+![32-bit component register w0 and its relation to the 64-bit x0 register](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-register.webp){#Registera64} Figure 1. Component register layout of register %x0. **Warning — The compiler may choose component registers depending on type**
 
 > عند قراءة شيفرة التجميع، تذكّر أن المصرّف يستخدم عادةً السجلات بستة وستين بتًا عند التعامل مع قيم بستة وستين بتًا (مثل المؤشرات أو النوع `long`)، ويستخدم السجلات المكوّنة باثنين وثلاثين بتًا عند التعامل مع أنواع باثنين وثلاثين بتًا (مثل `int`). وفي A64، من الشائع جدًا أن تختلط السجلات المكوّنة باثنين وثلاثين بتًا بالسجلات الكاملة بستة وستين بتًا. فمثلًا، في دالة `adder2` المعروضة سابقًا، يشير المصرّف إلى السجل المكوّن `w0` بدلًا من `x0` لأن النوع `int` يشغل عادةً 32 بتًا (أربعة بايتات) في الأنظمة بستة وستين بتًا. ولو كانت دالة `adder2` تملك مُعامِلًا من النوع `long` بدلًا من `int`، لخزّن المصرّف `a` في السجل `x0` بدلًا من السجل المكوّن `w0`.
 
@@ -224,7 +224,7 @@ int adder2(int a) {
 
 ويعرض [الشكل 2](#InitialStepa64) حالة نموذجية لمكدّس النداء والسجلات قبل تنفيذ دالة `adder2`.
 
-![frame1](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-ex1_1.webp) Figure 2. Execution stack prior to execution
+![frame1](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-ex1_1.webp){#InitialStepa64} Figure 2. Execution stack prior to execution
 
 لاحظ أن المكدّس ينمو نحو عناوين *أدنى*. ويُخزَّن مُعامِل دالة `adder2` (أي `a`) في السجل `x0` بحسب العُرف. ولأن `a` من النوع `int`، فإنه يُخزَّن في السجل المكوّن `w0`، كما يظهر في [الشكل 2](#InitialStepa64). وبالمثل، لأن دالة `adder2` تعيد قيمة من النوع `int`، يُستخدم السجل المكوّن `w0` لقيمة الإرجاع بدلًا من `x0`.
 
@@ -1036,7 +1036,7 @@ int sumUp(int n){
 
 ويعرض [الشكل 1](#StackFramea64) إطاري المكدّس للدالة `main` ودالة تستدعيها تُسمى `fname`. وسنشير إلى الدالة `main` بـ *المستدعية* وإلى `fname` بـ *المستدعاة*.
 
-![an illustration of stack frames](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-stackFrame.webp) Figure 1. Stack frame management
+![an illustration of stack frames](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-stackFrame.webp){#StackFramea64} Figure 1. Stack frame management
 
 في [الشكل 1](#StackFramea64)، ينتمي الإطار النشط الحالي إلى الدالة المستدعاة (`fname`). وتُستخدم المنطقة من مكدّس النداء الواقعة بين مؤشري المكدّس والإطار للمتغيرات المحلية. ويتحرك مؤشر المكدّس عند دفع القيم المحلية إلى المكدّس وسحبها منه. ولا يُستخدم مؤشر الإطار عادةً في الشيفرة المُحسَّنة، ويكون اختياريًا في التشغيل في العادة. ونتيجة لذلك، تشير المصرّفات مثل GCC عادةً إلى القيم على المكدّس نسبةً إلى مؤشر المكدّس. وفي [الشكل 1](#StackFramea64)، يحُدّ الإطار النشط من الأسفل مؤشر قاعدة الدالة `fname`، أي `x29`، الذي يحتوي عنوان المكدّس 0xef30. والقيمة المخزَّنة عند العنوان 0xef30 هي قيمة مؤشر الإطار «المحفوظة» (0xef50)، وهي بدورها تدل على أسفل إطار التنشيط للدالة `main`. وأسفل مؤشر الإطار مباشرة يوجد **عنوان عودة** محفوظ (مخزَّن في `x30`)، يدل على العنوان الذي سيواصل البرنامج التنفيذ عنده بمجرد خروج `main`.
 
@@ -1127,7 +1127,7 @@ int main(void) {
 
 يعرض [الشكل 3](#initialMaina64) مكدّس التنفيذ قبل تنفيذ `main` مباشرة.
 
-![slide1](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-Slide1.webp) Figure 3. Initial state of CPU registers and call stack prior to executing the main function
+![slide1](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-Slide1.webp){#initialMaina64} Figure 3. Initial state of CPU registers and call stack prior to executing the main function
 
 تذكّر أن المكدّس ينمو نحو عناوين أدنى. في هذا المثال، يحتوي مؤشرا الإطار والمكدّس (`x29` و`sp`) كلاهما العنوان 0xef50. وفي البداية، يكون `pc` هو عنوان التعليمة الأولى في دالة `main`، أي 0x750. كما يبرز السجلان `x30` و`w0` في هذا المثال، ويحتوي كلاهما قيم نفايات أولية.
 
@@ -1357,9 +1357,9 @@ int sumr(int n) {
 
 لاحظ أنه للوصول إلى العنصر `arr[5]` (أو `*(arr+5)` باستخدام حساب المؤشرات)، يجري المصرّف بحثًا في الذاكرة عند العنوان `arr+5*4` بدلًا من `arr+5`. ولفهم سبب ضرورة ذلك، تذكّر أن أي عنصر عند الفهرس `i` في مصفوفة مخزَّن عند العنوان `arr + sizeof(Type) * i`. لذلك يجب على المصرّف ضرب الفهرس في حجم نوع البيانات (وهو 4 في هذه الحالة، لأن `sizeof(int) = 4`) لحساب الإزاحة الصحيحة. وتذكّر أيضًا أن الذاكرة معنونة بالبايت؛ فالإزاحة بعدد البايتات الصحيح تكافئ حساب عنوان.
 
-وكمثال، فكّر في مصفوفة نموذجية (`array`) تضم 10 عناصر صحيحة ([[FigArray6]](#FigArray6)).
+وكمثال، فكّر في مصفوفة نموذجية (`array`) تضم 10 عناصر صحيحة ([FigArray6](#FigArray6)).
 
-![Each integer in the array requires four bytes.](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-arrayFig.webp) Figure 1. The layout of a ten-integer array in memory. Each ai-labeled box represents an offset of four bytes, as each integer requires four bytes to store.
+![Each integer in the array requires four bytes.](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-arrayFig.webp){#FigArray6a64} Figure 1. The layout of a ten-integer array in memory. Each ai-labeled box represents an offset of four bytes, as each integer requires four bytes to store.
 
 لاحظ أنه بما أن `array` مصفوفة أعداد صحيحة، فإن كل عنصر يشغل أربعة بايتات بالضبط. وبذلك تستهلك مصفوفة أعداد صحيحة من 10 عناصر 40 بايت من الذاكرة المتتابعة.
 
@@ -1445,11 +1445,11 @@ for (i = 0; i
 
 وفي حالة المصفوفة الرياضية المخصصة ديناميكيًا، تحتوي المصفوفة الرئيسية على مصفوفة متتابعة من مؤشرات `int`. ويشير كل مؤشر صحيح إلى مصفوفة مختلفة في الذاكرة. ويوضح [الشكل 1](#Matrices6a64) كيف نتخيل عادةً كلًا من هذه المصفوفات الرياضية.
 
-![matrices](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-matrices.webp) Figure 1. Illustration of a statically allocated (M1) and dynamically-allocated (M2) 3×4 matrix
+![matrices](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-matrices.webp){#Matrices6a64} Figure 1. Illustration of a statically allocated (M1) and dynamically-allocated (M2) 3×4 matrix
 
 وبالنسبة إلى تعريفي المصفوفتين الرياضيتين هذين، يمكن الوصول إلى العنصر (i,j) باستخدام صيغة الفهرسة المزدوجة `M[i][j]`، حيث `M` إما `M1` وإما `M2`. لكن هاتين المصفوفتين الرياضيتين منظَّمتان بشكل مختلف في الذاكرة. ومع أن كلتيهما تخزّن العناصر في مصفوفتها الأساسية تتابعيًا في الذاكرة، فإن مصفوفتنا الرياضية المخصصة ساكنًا تخزّن أيضًا جميع الصفوف تتابعيًا في الذاكرة:
 
-![matrixArray](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-matrixArray.webp) Figure 2. Matrix M1’s memory layout in row-major order
+![matrixArray](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-matrixArray.webp){#Matrices7a64} Figure 2. Matrix M1’s memory layout in row-major order
 
 وهذا الترتيب المتتابع غير مضمون لـ `M2`. [تذكّر أن](https://diveintosystems.org/book/C2-C_depth/arrays.html#_two_dimensional_array_memory_layout) تخصيص مصفوفة رياضية بحجم *n* × *m* تتابعيًا على الكومة يتطلب استخدام نداء واحد إلى `malloc` يخصص *n* × *m* عنصرًا:
 
@@ -1666,7 +1666,7 @@ Dump of assembler code for function sumMatrix:
 
 ![matrixDynamic](https://diveintosystems.org/images/dive-into-systems/c9-arm64-4-dynamicMatrixLayout.webp)
 
-لاحظ أن `M2` يبدأ عند موقع الذاكرة a0. ويحسب المصرّف أولًا عنوان `M2[1]` بضرب 1 في 8 (`sizeof(int *)`) وإضافته إلى عنوان `M2` (a0)، فينتج العنوان الجديد a8. ويؤدي إلغاء الإشارة عن هذا العنوان إلى العنوان المرتبط بـ `M2[1]`، أي a36. ثم يضرب المصرّف الفهرس 2 في 4 (`sizeof(int)`)، ويضيف الناتج (8) إلى a36، فينتج عنوان نهائي هو a44. ويُلغي إلغاء الإشارة عن العنوان a44 إلى القيمة 5. وبالفعل، فإن العنصر في [[DynamicMatrix6a64repro]](#DynamicMatrix6a64repro) المقابل لـ `M2[1][2]` له القيمة 5.
+لاحظ أن `M2` يبدأ عند موقع الذاكرة a0. ويحسب المصرّف أولًا عنوان `M2[1]` بضرب 1 في 8 (`sizeof(int *)`) وإضافته إلى عنوان `M2` (a0)، فينتج العنوان الجديد a8. ويؤدي إلغاء الإشارة عن هذا العنوان إلى العنوان المرتبط بـ `M2[1]`، أي a36. ثم يضرب المصرّف الفهرس 2 في 4 (`sizeof(int)`)، ويضيف الناتج (8) إلى a36، فينتج عنوان نهائي هو a44. ويُلغي إلغاء الإشارة عن العنوان a44 إلى القيمة 5. وبالفعل، فإن العنصر في [DynamicMatrix6a64repro](#DynamicMatrix6a64repro) المقابل لـ `M2[1][2]` له القيمة 5.
 
 البنية [`struct`](https://diveintosystems.org/book/C2-C_depth/structs.html#_c_structs) طريقة أخرى لإنشاء مجموعة من أنواع البيانات في C. وخلافًا للمصفوفات، تتيح تجميع أنواع بيانات مختلفة معًا. وتخزّن C البنية `struct` مثل مصفوفة أحادية البعد، حيث تُخزَّن عناصر البيانات (الحقول) تتابعيًا.
 
@@ -1685,7 +1685,7 @@ struct studentT student;
 
 ويعرض [الشكل 1](#structArray6a64) كيفية ترتيب `student` في الذاكرة. ويدل كل ai على إزاحة في الذاكرة.
 
-![structArray](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-structArray.webp) Figure 1. The memory layout of a struct studentT.
+![structArray](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-structArray.webp){#structArray6a64} Figure 1. The memory layout of a struct studentT.
 
 ويُخزَّن كل حقل تتابعيًا بجوار الآخر في الذاكرة بالترتيب الذي عُرِّفت به. وفي [الشكل 1](#structArray6a64)، يُخصص الحقل `age` عند موقع الذاكرة التالي مباشرةً للحقل `name` (عند إزاحة البايت a64)، ويتبعه الحقلان `grad_yr` (إزاحة البايت a68) و`gpa` (إزاحة البايت a72). ويتيح هذا التنظيم وصولًا موفّرًا للذاكرة إلى الحقول.
 
@@ -1786,11 +1786,11 @@ struct studentTM student2;
 
 عُدّل حجم الحقل `name` ليكون 63 بايت بدلًا من 64 بايت الأصلية. وفكّر في كيفية تأثير ذلك في ترتيب البنية `struct` في الذاكرة. وقد يغريك تصورها كما في [الشكل 2](#incorrectLayouta64).
 
-![struct2wrong](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-struct2wrong.webp) Figure 2. An incorrect memory layout for the updated struct studentTM. Note that the "name" field is reduced from 64 to 63 bytes.
+![struct2wrong](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-struct2wrong.webp){#incorrectLayouta64} Figure 2. An incorrect memory layout for the updated struct studentTM. Note that the "name" field is reduced from 64 to 63 bytes.
 
 في هذا التصوير، يقع الحقل `age` في البايت التالي مباشرةً للحقل `name`. لكن هذا غير صحيح. ويعرض [الشكل 3](#correctLayouta64) الترتيب الفعلي في الذاكرة.
 
-![struct2right](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-struct2right.webp) Figure 3. The correct memory layout for the updated struct studentTM. Byte a63 is added by the compiler to satisfy memory alignment constraints, but it doesn’t correspond to any of the fields.
+![struct2right](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-struct2right.webp){#correctLayouta64} Figure 3. The correct memory layout for the updated struct studentTM. Byte a63 is added by the compiler to satisfy memory alignment constraints, but it doesn’t correspond to any of the fields.
 
 تقتضي سياسة المحاذاة في A64 أن تقع أنواع البيانات بأربعة بايتات (مثل `int`) عند عناوين من مضاعفات أربعة، بينما تقع أنواع البيانات بستة وستين بتًا (`long` و`double` وبيانات المؤشرات) عند عناوين من مضاعفات ثمانية. وبالنسبة إلى `struct`، يضيف المصرّف بايتات فارغة كـ «حشو» (padding) بين الحقول لضمان استيفاء كل حقل متطلبات محاذاته. فمثلًا، في البنية `struct` المعرّفة في مقطع الشيفرة السابق، يضيف المصرّف بايت حشو عند البايت a63 لضمان أن يبدأ الحقل `age` عند عنوان من مضاعفات أربعة. ويمكن قراءة القيم المحاذاة بشكل صحيح في الذاكرة أو كتابتها في عملية واحدة، ما يتيح كفاءة أعلى.
 
@@ -1902,13 +1902,13 @@ Dump of assembler code for function playGame:
 
 ويعرض [الشكل 1](#beforescana64) المكدّس قبل نداء `scanf` مباشرة.
 
-![before](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-beforeScanf.webp) Figure 1. The call stack immediately before the call to scanf
+![before](https://diveintosystems.org/images/dive-into-systems/c9-arm64-0-beforeScanf.webp){#beforescana64} Figure 1. The call stack immediately before the call to scanf
 
 وقبل نداء `scanf`، يُحمَّل المُعامِلان الأولان لـ `scanf` في السجلين `x0` و`x1` على الترتيب. ويُخزَّن عنوان المصفوفة `buf` في موقع المكدّس `x29+0x18` (انظر ``).
 
 والآن، لنفترض أن المستخدم أدخل `1234567890` عند المطالبة. ويوضح [الشكل 2](#afterScanfa64) كيف يبدو المكدّس بعد اكتمال نداء `scanf` مباشرة.
 
-![after](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-afterScanf.webp) Figure 2. The call stack immediately after the call to scanf with input 1234567890
+![after](https://diveintosystems.org/images/dive-into-systems/c9-arm64-1-afterScanf.webp){#afterScanfa64} Figure 2. The call stack immediately after the call to scanf with input 1234567890
 
 تذكّر أن القيم الست عشرية للترميزات ASCII للأرقام من 0 إلى 9 هي 0x30 إلى 0x39، وأن كل موقع ذاكرة مكدّس بطول ثمانية بايتات. ويبعد مؤشر الإطار لـ `main` عن مؤشر المكدّس 56 بايت. ويمكن للقراء الذين يتتبعون معنا التأكد من قيمة `x29` باستخدام GDB لطباعتها (`p x29`). وفي المثال المعروض، القيمة المحفوظة لـ `x29` هي 0xffffffffeef0. ويتيح الأمر التالي للقارئ فحص البايتات الـ64 (بالست عشرية) أسفل السجل `sp`:
 
@@ -1975,7 +1975,7 @@ $ echo $?
 
 مثير للاهتمام! الآن ينهار البرنامج بخطأ ناقل (bus error، وهو نوع آخر من أخطاء الذاكرة)، برمز إرجاع 139. ويعرض [الشكل 3](#afterScanf2a64) شكل مكدّس النداء لـ `main` بعد نداء `scanf` مباشرة بهذا الإدخال الجديد.
 
-![after2](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-afterScanf2.webp) Figure 3. The call stack immediately after the call to scanf with input 12345678901234567890123456789012345
+![after2](https://diveintosystems.org/images/dive-into-systems/c9-arm64-2-afterScanf2.webp){#afterScanf2a64} Figure 3. The call stack immediately after the call to scanf with input 12345678901234567890123456789012345
 
 سلسلة الإدخال طويلة إلى حد أنها لم تكتب فقط فوق القيمة المحفوظة `x29` المخزَّنة عند العنوان 0xeed8، بل فاضت إلى عنوان العودة أسفل إطار المكدّس لـ `main`. تذكّر أنه عند عودة دالة، يحاول البرنامج استئناف التنفيذ عند العنوان المحدد بعنوان العودة. وفي هذا المثال، يحاول البرنامج استئناف التنفيذ عند العنوان 0xffff00353433 بعد خروج `main`، وهو عنوان لا يبدو موجودًا. فينهار البرنامج بخطأ ناقل.
 
@@ -2029,7 +2029,7 @@ Dump of assembler code for function endGame:
 
 لاحظ أن `endGame` تبدأ عند العنوان 0x0000aaaaaaaaa8ec. ويوضح [الشكل 4](#finalExploita64) استغلالًا نموذجيًا يرغم `secret` على تشغيل دالة `endGame`.
 
-![exploit](https://diveintosystems.org/images/dive-into-systems/c9-arm64-3-finalExploit.webp) Figure 4. A sample string that can force secret to execute the endGame function
+![exploit](https://diveintosystems.org/images/dive-into-systems/c9-arm64-3-finalExploit.webp){#finalExploita64} Figure 4. A sample string that can force secret to execute the endGame function
 
 وفي جوهر الأمر، توجد 32 بايت من قيم النفايات يتبعها عنوان العودة. ومرة أخرى، لأن ARM64 [نظام صغير النهاية](https://diveintosystems.org/book/C4-Binary/byte_order.html#_integer_byte_order) افتراضيًا، تظهر بايتات عنوان العودة بترتيب معكوس.
 

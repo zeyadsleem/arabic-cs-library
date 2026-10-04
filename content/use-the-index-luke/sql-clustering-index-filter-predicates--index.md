@@ -131,7 +131,7 @@ Predicate Information (identified by operation id):
 
 يوضّح الرسم المتحرك التالي الفرق بين خطتي التنفيذ:
 
-الشكل 5.1 مُسندات ترشيح الفهرس المستخدمة عمداً ![](https://use-the-index-luke.com/images/use-the-index-luke/sql-clustering-index-filter-predicates-0-intentional-filter-predicate.en.N5J1kRR3.webp)
+الشكل 5.1 مُسندات ترشيح الفهرس المستخدمة عمداً ![](https://use-the-index-luke.com/images/use-the-index-luke/sql-clustering-index-filter-predicates-0-intentional-filter-predicate.en.N5J1kRR3.webp){#fig-intentional-filter-predicate}
 
 يبدو هذا المثال البسيط مؤكداً للحكمة الشائعة القائلة بفهرسة كل عمود في شرط `where`. لكن هذه «الحكمة» تتجاهل أهمية ترتيب الأعمدة، وهو ما يحدد الشروط التي يمكن استخدامها كمُسندات وصول، وبالتالي له أثر هائل في الأداء. لذلك لا ينبغي أبداً ترك قرار ترتيب الأعمدة للصدفة.
 

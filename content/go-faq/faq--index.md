@@ -1044,4 +1044,4 @@ func main() {
 
 #### تواصل معنا
 
-[![](https://go.dev/images/go-faq/bluesky.webp)](https://bsky.app/profile/golang.org) [![](https://go.dev/images/go-faq/mastodon.webp)](https://hachyderm.io/@golang) [![](https://go.dev/images/go-faq/twitter.webp)](https://twitter.com/golang) [![](https://go.dev/images/go-faq/reddit.webp)](https://www.reddit.com/r/golang/) [![](https://go.dev/images/go-faq/github.webp)](https://github.com/golang) [![](https://go.dev/images/go-faq/slack.webp)](https://gophers.slack.com/)
+[![](https://go.dev/images/go-faq/bluesky.svg){#main-content}](https://bsky.app/profile/golang.org) [![](https://go.dev/images/go-faq/mastodon.svg)](https://hachyderm.io/@golang) [![](https://go.dev/images/go-faq/twitter.svg)](https://twitter.com/golang) [![](https://go.dev/images/go-faq/reddit.svg)](https://www.reddit.com/r/golang/) [![](https://go.dev/images/go-faq/github.svg)](https://github.com/golang) [![](https://go.dev/images/go-faq/slack.svg)](https://gophers.slack.com/)

@@ -48,7 +48,7 @@ cd /tmp && rm -fr project_directory
 
 في [الشكل 9.1](#fig.integration.internal)، تمثّل المستطيلات غير المظلَّلة الأنظمة الفرعية المنفصلة والوظائف داخل النظام. وتُظهر الأسهم تدفّق المعلومات بين المكوّنات المختلفة. أمّا السحابة فتمثّل التنفيذ البعيد المحتمل لعمليات البناء. وتمثّل المستطيلات المظلَّلة الترابط المحتمل بين الأنظمة الفرعية؛ فمثلًا قد يشمل مراقبة البناء مراقبة عملية البناء نفسها وجوانب من صحّة النظام (حِمل المعالج، وحِمل الإدخال/الإخراج، واستهلاك الذاكرة، إلخ)
 
-![[داخل نظام تكامل مستمر]](/images/aosabook/v1-integration-ci-internal.webp)
+![داخل نظام تكامل مستمر](/images/aosabook/v1-integration-ci-internal.webp){#fig.integration.internal}
 
 الشكل 9.1: داخل نظام تكامل مستمر
 
@@ -80,7 +80,7 @@ cd /tmp && rm -fr project_directory
 
 ### 9.2.1. نموذج التنفيذ: Buildbot
 
-![[معمارية Buildbot]](/images/aosabook/v1-integration-buildbot.webp)
+![معمارية Buildbot](/images/aosabook/v1-integration-buildbot.webp){#fig.integration.buildbot}
 
 الشكل 9.2: معمارية Buildbot
 
@@ -100,7 +100,7 @@ cd /tmp && rm -fr project_directory
 
 ### 9.2.2. نموذج التنفيذ: CDash
 
-![[معمارية CDash]](/images/aosabook/v1-integration-cdash.webp)
+![معمارية CDash](/images/aosabook/v1-integration-cdash.webp){#fig.integration.cdash}
 
 الشكل 9.3: معمارية CDash
 
@@ -128,7 +128,7 @@ Jenkins نظام تكامل مستمر مستخدَم على نطاق واسع،
 
 ### 9.2.4. نموذج التنفيذ: Pony-Build
 
-![[معمارية Pony-Build]](/images/aosabook/v1-integration-webhooks.webp)
+![معمارية Pony-Build](/images/aosabook/v1-integration-webhooks.webp){#fig.integration.pb}
 
 الشكل 9.4: معمارية Pony-Build
 

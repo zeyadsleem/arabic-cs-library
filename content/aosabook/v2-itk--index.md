@@ -26,11 +26,11 @@ Luis Ibáñez وBrad King
 
 في مسألة تحليل صور نموذجية، يأخذ باحث أو مهندس صورةً مدخلة، ويحسّن بعض خصائصها، كأن نقول بتقليل الضجيج أو زيادة التباين، ثم ينتقل إلى التعرّف على بعض السمات في الصورة، مثل الزوايا والحوافّ البالغة الوضوح. وهذا النوع من المعالجة يناسب بطبيعته معمارية خط أنابيب البيانات (data pipeline)، كما يبيّن [الشكل 9.1](#fig.itk.pipeline).
 
-![](/images/aosabook/v2-itk-ExampleImageProcessingPipeline.webp) الشكل 9.1: خط أنابيب معالجة الصور
+![](/images/aosabook/v2-itk-ExampleImageProcessingPipeline.webp){#fig.itk.pipeline} الشكل 9.1: خط أنابيب معالجة الصور
 
 ولتوضيح هذه النقطة، يعرض [الشكل 9.2](#fig.itk.brim) صورةً لمخّ من صورة فُصلت بالتصوير بالرنين المغناطيسي (MRI)، ونتيجة معالجتها بمرشّح الوسيط (median filter) لخفض مستوى الضجيج فيها، وكذلك ناتج مرشّح لكشف الحوافّ استُخدم لتحديد حدود البنى التشريحية.
 
-![](/images/aosabook/v2-itk-BrainProtonDensitySlice.webp) ![](/images/aosabook/v2-itk-BrainProtonDensitySliceMedian.webp) ![](/images/aosabook/v2-itk-BrainProtonDensitySliceCanny.webp) الشكل 9.2: صورة مخّ بالرنين المغناطيسي، مرشّح الوسيط، مرشّح كشف الحوافّ
+![](/images/aosabook/v2-itk-BrainProtonDensitySlice.webp){#fig.itk.brim} ![](/images/aosabook/v2-itk-BrainProtonDensitySliceMedian.webp) ![](/images/aosabook/v2-itk-BrainProtonDensitySliceCanny.webp) الشكل 9.2: صورة مخّ بالرنين المغناطيسي، مرشّح الوسيط، مرشّح كشف الحوافّ
 
 طوّر مجتمع تحليل الصور، لكل واحدة من هذه المهام، مجموعةً متنوعة من الخوارزميات، ويستمرّ في تطوير خوارزميات جديدة. وقد تسأل: ولماذا يواصلون ذلك؟ والجواب أنّ معالجة الصور مزيج من العلم والهندسة والفن ومهارات «الطبخ». فادّعاء وجود مزيج خوارزمي يمثّل الإجابة «الصحيحة» لمسألة معالجة صور مضلِّل بقدر ما هو ادّعاء وجود نوع «صحيح» من حلوى الشوكولاتة يُقدَّم على العشاء. وبدلًا من السعي وراء الكمال، يسعى المجتمع إلى إنتاج مجموعة غنية من الأدوات تضمن ألّا تنفد الخيارات عند مواجهة تحدٍّ في معالجة الصور. ولهذا الحال ثمنٌ بطبيعة الحال. وتتمثّل التكلفة في أنّ محلّل الصور يضطلع بمهمة صعبة تتمثّل في الاختيار من بين عشرات الأدوات المختلفة التي يمكن تركيبها بصور متعدّدة لتحقيق نتائج متشابهة.
 
@@ -68,11 +68,11 @@ Luis Ibáñez وBrad King
 2. مجموعة ملفات إعداد تصف كيفية بناء الوحدة وتسرد الاعتماديات بين هذه الوحدة والوحدات الأخرى.
 3. مجموعة اختبارات الوحدات المقابلة لكل مرشّح منها.
 
-[![](/images/aosabook/v2-itk-IllustrationOfModularStructure.webp)](https://aosabook.org/en/v2/static/itk/IllustrationOfModularStructure.png) الشكل 9.3: البنية الهرمية للمجموعات والوحدات والأصناف
+[![](/images/aosabook/v2-itk-IllustrationOfModularStructure.webp){#fig.itk.modulehierarchy}](https://aosabook.org/en/v2/static/itk/IllustrationOfModularStructure.png) الشكل 9.3: البنية الهرمية للمجموعات والوحدات والأصناف
 
 أمّا مستوى المجموعة، فيتمثّل في التقسيم التصوّري الذي رُسم فوق البرمجيات للمساعدة في تحديد مواقع المرشّحات ضمن شجرة المصدر. وترتبط المجموعات بمفاهيم عالية المستوى مثل الترشيح (Filtering) والتقطيع (Segmentation) والتسجيل (Registration) والإدخال/الإخراج (IO). ويوضّح [الشكل 9.3](#fig.itk.modulehierarchy) هذه البنية الهرمية. ويضمّ ITK حاليًا 124 وحدة، تُجمَّع بدورها في 13 مجموعة رئيسية. وتمتلك الوحدات مجموعةً متنوعة من الأحجام المختلفة. ويعرض [الشكل 9.4](#fig.itk.modulesize) توزيع هذه الأحجام بالبايت.
 
-[![](/images/aosabook/v2-itk-moduleSizePlotCombined.webp)](https://aosabook.org/en/v2/static/itk/moduleSizePlotCombined.png) الشكل 9.4: توزيع أحجام أكبر 50 وحدة في ITK بالكيلوبايت
+[![](/images/aosabook/v2-itk-moduleSizePlotCombined.webp){#fig.itk.modulesize}](https://aosabook.org/en/v2/static/itk/moduleSizePlotCombined.png) الشكل 9.4: توزيع أحجام أكبر 50 وحدة في ITK بالكيلوبايت
 
 ينطبق التسييح إلى وحدات في ITK أيضًا على مجموعة من المكتبات الخارجية (third-party) التي ليست جزءًا مباشرًا من مجموعة الأدوات، لكنها تعتمد عليها، وتوزَّع إلى جانب بقية الشيفرة لإتاحة الراحة للمستخدمين. ومن الأمثلة البارزة على هذه المكتبات الخارجية مكتبات صيغ ملفات الصور: HDF5 وPNG وTIFF وJPEG وOpenJPEG وغيرها. وقد أُبرِزت المكتبات الخارجية هنا لأنها تمثّل نحو 56 بالمئة من حجم ITK. وهذا يعكس الطابع المعتاد لتطبيقات المصادر المفتوحة التي تُبنى على منصّات قائمة. ولا يعكس توزيع أحجام المكتبات الخارجية بالضرورة التنظيم المعماري لـ ITK، لأنّنا اعتمدنا هذه المكتبات النافعة كما طوّرها أصحابها الأصليون. ومع ذلك، فإنّ شيفرة الجهات الخارجية تُوزَّع إلى جانب مجموعة الأدوات، وكان تقسيمها إلى وحدات أحد التوجيهات الرئيسية الحاكمة لعملية التسييح إلى وحدات.
 
@@ -115,7 +115,7 @@ Luis Ibáñez وBrad King
 
 تُنتَج كائنات `DataObject` بواسطة كائنات `ProcessObject`. وتبدأ هذه السلسلة عادةً بقراءة كائن `DataObject` من القرص، مثلًا باستخدام `ImageFileReader` وهو نوع من `ProcessObject`. و`ProcessObject` الذي أنشأ كائن `DataObject` بعينه هو الوحيد الذي ينبغي أن يعدّل ذلك `DataObject`. وعادةً ما يُوصَل ناتج `DataObject` هذا كمدخل إلى `ProcessObject` آخر في اتجاه المجرى ضمن خط الأنابيب.
 
-[![](/images/aosabook/v2-itk-ProcessObjectDataObject.webp)](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObject.png) الشكل 9.5: العلاقة بين كائنات `ProcessObject` وكائنات `DataObject`
+[![](/images/aosabook/v2-itk-ProcessObjectDataObject.webp){#fig.itk.processobjectdataobject}](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObject.png) الشكل 9.5: العلاقة بين كائنات `ProcessObject` وكائنات `DataObject`
 
 يوضّح [الشكل 9.5](#fig.itk.processobjectdataobject) هذه التسلسلية. وقد يُمرَّر كائن `DataObject` نفسه كمدخل إلى عدّة كائنات `ProcessObject`، كما يبيّن الشكل، حيث ينتج قارئ الملفات في بداية خط الأنابيب كائن `DataObject`. وفي هذه الحالة بعينها يكون قارئ الملفات مثالًا (instance) من الصنف `ImageFileReader`، ويكون كائن `DataObject` الذي يُنتجه كمخرج مثالًا من الصنف `Image`. ومن الشائع أيضًا أن تطلب بعض المرشّحات كائنَي `DataObject` كمدخلين، كما في حالة مرشّح الطرح المشار إليه في يمين الشكل نفسه.
 
@@ -139,7 +139,7 @@ median->SetInput( reader->GetOutput() );
 
 #### التسلسل الهرمي لأصناف خط الأنابيب
 
-[![](/images/aosabook/v2-itk-ProcessObjectDataObjectHierarchy.webp)](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObjectHierarchy.png) الشكل 9.6: التسلسل الهرمي لكائنات `ProcessObject` وكائنات `DataObject`
+[![](/images/aosabook/v2-itk-ProcessObjectDataObjectHierarchy.webp){#fig.itk.processobjectdataobjecthierarchy}](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObjectHierarchy.png) الشكل 9.6: التسلسل الهرمي لكائنات `ProcessObject` وكائنات `DataObject`
 
 استُمدّ التصميم والتنفيذ الأوّليان لخط أنابيب البيانات في ITK من مجموعة أدوات التصوّر (Visualization Toolkit، VTK)، وهي مشروع ناضج في الوقت الذي انطلق فيه تطوير ITK. (انظر *معمارية تطبيقات المصادر المفتوحة*، المجلد الأول.)
 
@@ -158,7 +158,7 @@ median->SetInput( reader->GetOutput() );
 - تحديث بيانات المخرج (تسلسل استدعاءات في اتجاه المصدر)
 - توليد البيانات (تسلسل استدعاءات في اتجاه المجرى)
 
-[![](/images/aosabook/v2-itk-ProcessObjectDataObjectInteractionUML.webp)](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObjectInteractionUML.png) الشكل 9.7: مخطّط تسلسل UML
+[![](/images/aosabook/v2-itk-ProcessObjectDataObjectInteractionUML.webp){#fig.itk.processobjectdataobjectinteractionuml}](https://aosabook.org/en/v2/static/itk/ProcessObjectDataObjectInteractionUML.png) الشكل 9.7: مخطّط تسلسل UML
 
 تُطلق العمليةُ كلها عندما يستدعي تطبيقٌ الطريقة `Update()` في آخر مرشّح ضمن خط الأنابيب، وفي هذا المثال المحدّد يكون ذلك `ImageFileWriter`. ويبدأ الاستدعاء `Update()` التمريرة الأولى التي تسير في اتجاه المصدر، أي من آخر مرشّح في خط الأنابيب نحو أول مرشّح فيه.
 
@@ -184,7 +184,7 @@ median->SetInput( reader->GetOutput() );
 
 طوّر مجتمع تحليل الصور مجموعةً ضخمة جدًا من صيغ الملفات لتخزين بيانات الصور. وقد صُمِّم كثيرٌ من هذه الصيغ ونُفِّذ بغرضات محدّدة، ولذلك هو مضبوط بدقة لأنواع صور بعينها. ونتيجةً لذلك، تُبتكر صيغ ملفات صور جديدة وتُروَّج لها عبر المجتمع على أساس منتظم. وإدراكًا لهذه الظاهرة، صمّم فريق تطوير ITK معمارية إدخال/إخراج ملائمة لسهولة التوسّع، بحيث يسهل إضافة دعم لعدد أكبر وأكبر من صيغ الملفات على نحو منتظم.
 
-[![](/images/aosabook/v2-itk-ImageIOFactoriesDesignPattern.webp)](https://aosabook.org/en/v2/static/itk/ImageIOFactoriesDesignPattern.png) الشكل 9.8: اعتماديات مصانع الإدخال/الإخراج
+[![](/images/aosabook/v2-itk-ImageIOFactoriesDesignPattern.webp){#fig.itk.io.factoriesregistry}](https://aosabook.org/en/v2/static/itk/ImageIOFactoriesDesignPattern.png) الشكل 9.8: اعتماديات مصانع الإدخال/الإخراج
 
 بُنيت معمارية الإدخال/الإخراج القابلة للتوسّع هذه على آلية المصنع الموصوفة في القسم السابق. والفارق الرئيسي أنّه في حالة الإدخال/الإخراج، تُسجَّل مصانع الإدخال/الإخراج في سجلّ متخصّص تديره الصنف الأساس `ImageIOFactory`، المبيّن في الركن العلوي الأيسر من [الشكل 9.8](#fig.itk.io.factoriesregistry). أمّا الوظيفة الفعلية لقراءة البيانات من صيغ ملفات الصور وكتابتها فهي مُنفَّذة في مجموعة من أصناف `ImageIO`، المبيّنة في يمين [الشكل 9.8](#fig.itk.io.factoriesregistry). ومن المقصود أن تُنشَأ أصناف الخدمة هذه عند الطلب حين يطلب المستخدم قراءة صورة أو كتابتها. ولا تُعرَض أصناف الخدمة هذه لشيفرة التطبيق. بل يُتوقَّع من التطبيقات بدلًا من ذلك أن تتفاعل مع أصناف الواجهة (facade):
 
@@ -250,7 +250,7 @@ writer->Update();
 
 صُوِّرت ITK في الأصل بوصفها مجموعة أدوات لمعالجة الصور التي يوفّرها [مشروع الإنسان المرئي](http://www.nlm.nih.gov/research/visible/visible_human.html) (Visible Human Project).في ذلك الحين كان واضحًا أنّ مجموعة بيانات بهذا الحجم لن تتّسع في الذاكرة العشوائية للحاسوب المتوفّرة عادةً لمجتمع البحث في التصوير الطبي. ولا يزال الأمر كذلك؛ إذ لن تتّسع مجموعة البيانات تلك في حواسيب سطح المكتب المعتادة التي نستعملها اليوم. ومن ثمّ كان أحد متطلّبات تطوير Insight Toolkit هو تمكين بثّ بيانات الصور عبر خط أنابيب البيانات. وبأدقّ العبارات، التمكّن من معالجة الصور الكبيرة عبر دفع الكتل الفرعية من الصورة عبر خط أنابيب البيانات، ثم تجميع الكتل الناتجة في جهة المخرج من خط الأنابيب.
 
-[![](/images/aosabook/v2-itk-StreamingImageDiagram.webp)](https://aosabook.org/en/v2/static/itk/StreamingImageDiagram.png) الشكل 9.9: توضيح عملية البثّ التدفقي للصور
+[![](/images/aosabook/v2-itk-StreamingImageDiagram.webp){#fig.itk.streaming}](https://aosabook.org/en/v2/static/itk/StreamingImageDiagram.png) الشكل 9.9: توضيح عملية البثّ التدفقي للصور
 
 يوضّح [الشكل 9.9](#fig.itk.streaming) هذا التقسيم لمجال الصورة في مثال محدّد هو مرشّح الوسيط. يحسب مرشّح الوسيط قيمة بكسل خرج واحد بوصفها الوسيط الإحصائي لقيم البكسلات في الصورة المدخلة ضمن جوار حول ذلك البكسل. ومقاس ذلك الجوار معاملٌ عددي للمرشّح. وفي حالتنا هذه نضبطه على 2 بكسل، أي أنّنا سنأخذ جوارًا نصف قطره 2 بكسل حول بكسل خرجنا. ويؤدي ذلك إلى جوار بمقاس 5×5 بكسل يقع بكسل الخرج في وسطه، مع حدّ مستطيل عرضه 2 بكسل من حوله. ويشار إلى هذا عادةً بـ«نصف قطر مانهاتن». وحين يُطلب من مرشّح الوسيط حساب منطقة معيّنة مطلوبة من صورة الخرج، فإنّه ينعكس ويعود إلى مرشّحه في اتجاه المصدر ليطلب منطقة أكبر تشكّل المنطقة المطلوبة موسَّعة بحدّ عرضه، في هذه الحالة، 2 بكسل. وفي حالة [الشكل 9.9](#fig.itk.streaming) تحديدًا، عند طلب المنطقة 2 بمقاس 100×25 بكسل، يمرّر مرشّح الوسيط هذا الطلب إلى مرشّحه في اتجاه المصدر ليطلب منطقة بمقاس 100×29 بكسل. ويُحسب مقاس الـ 29 بكسل في الاتجاه العمودي بوصفه 25 بكسلًا زائدًا حدّين نصف قطر كلٍّ منهما 2 بكسل. ولاحظ أنّ البُعد الأفقي لا يُوسَّع في هذه الحالة لأنّه أصلًا عند الحدّ الأقصى الذي يمكن أن توفّره الصورة المدخلة؛ وعليه فإنّ الطلب الموسَّع البالغ 104 بكسلات (100 بكسل زائدًا حدّين عرض كلٍّ منهما 2 بكسل) يُقتطع إلى الحدّ الأقصى لحجم الصورة، وهو 100 بكسل في البُعد الأفقي.
 

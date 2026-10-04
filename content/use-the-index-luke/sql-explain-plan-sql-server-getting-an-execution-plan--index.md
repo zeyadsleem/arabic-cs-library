@@ -18,7 +18,7 @@ source: https://use-the-index-luke.com/sql/explain-plan/sql-server/getting-an-ex
 
 تُنشأ خطة الشرح الرسومية بأحد الزرين المميزين أدناه.
 
-![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-sql-server-getting-an-execution-plan-0-mssql_ssms_explain_button.vqQzQh6C.webp)
+![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-sql-server-getting-an-execution-plan-0-mssql_ssms_explain_button.vqQzQh6C.webp){#article}
 
 يشرح الزر الأيسر العبارة المميزة مباشرةً، أما الأيمن فيلتقط الخطة في المرة التالية التي تُنفَّذ فيها عبارة SQL.
 

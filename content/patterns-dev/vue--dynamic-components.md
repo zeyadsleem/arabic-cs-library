@@ -23,7 +23,7 @@ source: https://www.patterns.dev/vue/dynamic-components/
 
 هدفنا هو بناء واجهة تعرض قائمة من علامات التبويب (tabs) يمكن النقر عليها. وبحسب علامة التبويب التي يتم النقر عليها، نريد عرض مكوّن معيّن ديناميكيًا.
 
-![تبويبات ديناميكية](/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.webp)
+![تبويبات ديناميكية](/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.gif)
 
 عند التنقّل بين علامات التبويب، نريد أن يتم فكّ تركيب المكوّنات وتركيبها ديناميكيًا دون استخدام التوجيه (routing). ورغم أن تأمين شيء كهذا ممكن عبر عرض قوالب فرعية بشكل مشروط بمساعدة توجيهات مثل [`v-if` و`v-else`](https://vuejs.org/guide/essentials/conditional.html)، فإنها حالة مثالية لاستخدام المكوّنات الديناميكية في Vue.
 
@@ -277,7 +277,7 @@ counter.value++;
 
 مع هذه التغييرات، سنلاحظ أن حالة العدّاد لكل مكوّن فرعي تبقى محفوظة حتى مع تبديلنا الديناميكي بين المكوّنات.
 
-![الحفاظ على حالة المكوّنات الديناميكية](/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.webp)
+![الحفاظ على حالة المكوّنات الديناميكية](/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.gif)
 
 وباستخدام مكوّن ``، يمكننا تحسين سلوك المكوّنات الديناميكية بحفظ حالتها وتوفير تجربة مستخدم أكثر سلاسة عند التنقّل بين علامات التبويب.
 

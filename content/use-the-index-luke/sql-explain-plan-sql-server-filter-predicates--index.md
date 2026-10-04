@@ -45,7 +45,7 @@ SELECT count(*)
 
 تخفي خطة التنفيذ الرسومية معلومات المُسندات في تلميح لا يظهر إلا عند تمرير المؤشر فوق عملية `Index Seek`. مرّر المؤشر فوق رمز `Index Seek` لترى معلومات المُسندات — فعلاً، على هذه الصفحة.
 
-![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-sql-server-filter-predicates-0-mssql_ssms_filter.ZrTov2hZ.webp)
+![](https://use-the-index-luke.com/images/use-the-index-luke/sql-explain-plan-sql-server-filter-predicates-0-mssql_ssms_filter.ZrTov2hZ.webp){#article}
 
 وتقابل *Seek Predicates* في SQL Server مُسندات الوصول في Oracle — فهي تضيّق اجتياز العقد الورقية. أما مُسندات الترشيح فتُوسم ببساطة *Predicates* في خطة التنفيذ الرسومية في SQL Server.
 

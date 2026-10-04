@@ -57,13 +57,13 @@ source: https://www.crypto101.io/
 تبليغه. وبعد هذه الخطوة، تتوفّر لدى Alice وBob وإيف المعلومات نفسها: وهي اللون
 الأساسي.
 
-![center](/images/crypto-101/fig-0-alice-bob-eve.svg)
+![center](/images/crypto-101/key-exchange-fig-0-alice-bob-eve.svg)
 
 center
 
 يختار كلٌّ من Alice وBob لونًا عشوائيًّا، ثمّ يمزجه مع اللون الأساسي.
 
-![center](/images/crypto-101/fig-1-alice-bob-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-1-alice-bob-secret.svg)
 
 center
 
@@ -71,7 +71,7 @@ center
 اللون السرّي واللون الأساسي، واللون الأساسي نفسه. ويعرف الجميع، بما فيهم إيف،
 اللون الأساسي.
 
-![center](/images/crypto-101/fig-2-alice-bob-eve-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-2-alice-bob-eve-secret.svg)
 
 center
 
@@ -79,7 +79,7 @@ center
 المزججين، لكنّها لا تستطيع أن تكتشف ما هو اللون *السرّي* لأيٍّ من Alice وBob.
 وبرغم أنّها تعرف اللون الأساسي، فإنّها لا تستطيع «فكّ المزج» عن الألوان المرسلة
 عبر الشبكة.
-![center](/images/crypto-101/fig-3-mixed-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-3-mixed-secret.svg)
 
 center
 
@@ -92,14 +92,14 @@ center
 المزججة الخاصة، وألوان كلٍّ منهما المزججة. أمّا إيف فتعرف اللون الأساسي وكلا
 اللونين المزججين.
 
-![center](/images/crypto-101/fig-4-alice-bob-eve-mixed.svg)
+![center](/images/crypto-101/key-exchange-fig-4-alice-bob-eve-mixed.svg)
 
 center
 
 وبعد أن يستلم كلٌّ من Alice وBob اللون المزجج للآخر، يضيف إليه لونه السرّي الخاص.
 وبما أنّ ترتيب المزج لا يهمّ، فسينتهي كلاهما إلى السرّ نفسه.
 
-![center](/images/crypto-101/fig-5-alice-bob-shared-mixed.svg)
+![center](/images/crypto-101/key-exchange-fig-5-alice-bob-shared-mixed.svg)
 
 center
 
@@ -221,7 +221,7 @@ L\left[1, 1/2\right] = O(\sqrt{n})
 (Mallory) — في الوسط بين Alice وBob، فبإمكانه أن ينفّذ بروتوكول ديفي-هيلمان مرّتين:
 مرّة مع Alice حيث تتظاهر مورّي بأنّها Bob، ومرّة مع Bob حيث تتظاهر مورّي بأنّها Alice.
 
-![center](/images/crypto-101/fig-6-MITM.svg)
+![center](/images/crypto-101/key-exchange-fig-6-MITM.svg)
 
 center
 

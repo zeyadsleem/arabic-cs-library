@@ -235,7 +235,7 @@ NIST صدر في السنة نفسها التي صدر فيها `Dual_EC_DRBG`،
 وسنوضّح ذلك بيانيًّا، اعتمادًا على رسم مبنيّ على عمل Shumow وFerguson، وهما
 مشفّران أبرزا بعضًا من المسائل الكبرى في هذه الخوارزمية:
 
-![center](/images/crypto-101/fig-0-Diagram.svg)
+![center](/images/crypto-101/random-number-generators-fig-0-Diagram.svg)
 
 center
 

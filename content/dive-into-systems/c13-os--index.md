@@ -6,7 +6,7 @@ source: https://diveintosystems.org/book/C13-OS/index.html
 
 **نظام التشغيل** (operating system أو OS) طبقة برمجيات نظامية خاصة تقع بين عتاد الحاسوب وبرامج التطبيقات العاملة عليه (انظر [الشكل 1](#OSfigure)). وتبقى برمجيات نظام التشغيل مقيمة على الحاسوب من لحظة التشغيل إلى لحظة الإطفاء. وغرضه الأساسي هو *إدارة* مكوّنات العتاد الكامنة لتشغيل أحمال البرامج بكفاءة وجعل الحاسوب *سهل الاستخدام*.
 
-![The OS sits between the user and the HW](https://diveintosystems.org/images/dive-into-systems/c13-os-0-os.webp) Figure 1. The OS is special system software between the user and the hardware. It manages the computer’s hardware and implements abstractions to make the hardware easier to use.
+![The OS sits between the user and the HW](https://diveintosystems.org/images/dive-into-systems/c13-os-0-os.webp){#OSfigure} Figure 1. The OS is special system software between the user and the hardware. It manages the computer’s hardware and implements abstractions to make the hardware easier to use.
 
 من أوجه تسهيل نظام التشغيل لاستخدام عتاد الحاسوب دعمه لبدء تشغيل البرامج عليه. فكّر فيما يحدث عندما ينقر مستخدم نقرًا مزدوجًا على أيقونة أو يكتب اسم ملف تنفيذي لبرنامج عند مطالبة الصدفة (مثل `./a.out`) لتشغيل برنامج على النظام الكامن. يتولى نظام التشغيل كل تفاصيل هذه العملية، مثل تحميل البرنامج من القرص إلى RAM وتهيئة المعالج لبدء تنفيذ تعليمات البرنامج؛ فيخفي نظام التشغيل عن المستخدمين هذه الأنواع من الإجراءات منخفضة المستوى اللازمة لتشغيل برنامج المستخدم على الحاسوب.
 
@@ -24,13 +24,13 @@ source: https://diveintosystems.org/book/C13-OS/index.html
 
 وتوفّر النواة أيضًا واجهة للتفاعل مع أجهزة العتاد (**واجهة الأجهزة**، device interface). وعادةً تتفاعل أجهزة الإدخال/الإخراج مثل محركات الأقراص الصلبة (HDD) ولوحات المفاتيح ومحركات الأقراص ذات الحالة الصلبة (SSD) مع النواة عبر هذه الواجهة. وتأتي هذه الأجهزة ببرمجيات مشغّلات أجهزة خاصة تعمل في نظام التشغيل وتتولى نقل البيانات من جهاز معين أو إليه. وتتفاعل برمجيات مشغّل الجهاز مع نظام التشغيل عبر واجهة الأجهزة فيه؛ ويمكن إضافة جهاز جديد إلى نظام حاسوبي بتحميل شيفرة مشغّل جهازه، المكتوبة لتتوافق مع واجهة أجهزة نظام التشغيل، في نظام التشغيل. وتدير النواة مباشرةً أجهزة عتاد أخرى مثل المعالج وRAM. ويعرض [الشكل 2](#oskernel) طبقة نواة نظام التشغيل بين تطبيقات المستخدم وعتاد الحاسوب، بما في ذلك واجهتها البرمجية للمستخدمين وواجهة أجهزة العتاد فيها.
 
-![OS kernel implements an interface to applications and to hardware devices](https://diveintosystems.org/images/dive-into-systems/c13-os-1-osinterfaces.webp) Figure 2. The OS kernel: core OS functionality necessary to use the system and facilitate cooperation between I/O devices and users of the system
+![OS kernel implements an interface to applications and to hardware devices](https://diveintosystems.org/images/dive-into-systems/c13-os-1-osinterfaces.webp){#oskernel} Figure 2. The OS kernel: core OS functionality necessary to use the system and facilitate cooperation between I/O devices and users of the system
 
 وفي بقية هذا الفصل، نفحص الدور الذي يؤديه نظام التشغيل في تشغيل البرامج وإدارة موارد النظام بكفاءة. وتركّز مناقشتنا أساسًا على آلية (أي «كيف») وظائف نظام التشغيل وتنفيذ تجريدين رئيسيين من تجريداته: **العملية** (برنامج عامل) و**الذاكرة الافتراضية** (virtual memory، رؤية لفضاء ذاكرة العملية مجرَّدة عن تخزينها الفيزيائي الكامن في RAM أو التخزين الثانوي).
 
 وجزء من عمل نظام التشغيل دعم البرامج العاملة في النظام. ولبدء تشغيل برنامج على حاسوب، يخصص نظام التشغيل جزءًا من RAM للبرنامج العامل، ويحمّل الملف التنفيذي الثنائي للبرنامج من القرص إلى RAM، وينشئ حالة نظام التشغيل للعملية المرتبطة بهذا البرنامج العامل ويهيّئها، ويهيّئ المعالج لبدء تنفيذ تعليمات العملية (مثلًا، يجب أن يهيّئ نظام التشغيل سجلات المعالج لجلب تعليمات العملية وتنفيذها). ويوضح [الشكل 1](#startingprog) هذه الخطوات.
 
-![The OS runs programs on hardware](https://diveintosystems.org/images/dive-into-systems/c13-os-0-runprog.webp) Figure 1. Steps the OS takes to start a new program running on the underlying hardware
+![The OS runs programs on hardware](https://diveintosystems.org/images/dive-into-systems/c13-os-0-runprog.webp){#startingprog} Figure 1. Steps the OS takes to start a new program running on the underlying hardware
 
 وكما في برامج المستخدم، نظام التشغيل أيضًا برمجية تعمل على عتاد الحاسوب. غير أن نظام التشغيل برمجية نظامية خاصة تدير جميع موارد النظام وتنفّذ الواجهة لمستخدمي النظام الحاسوبي؛ فهو ضروري لاستخدام النظام الحاسوبي. ولأن نظام التشغيل برمجية، فإن شيفرته التنفيذية الثنائية تعمل على العتاد كما يعمل أي برنامج آخر: تُخزَّن بياناته وتعليماته في RAM، ويجلب المعالج تعليماته وينفّذها كما يجلب تعليمات برنامج المستخدم وينفّذها. ونتيجة لذلك، لكي يعمل نظام التشغيل، يجب تحميل ملفه التنفيذي الثنائي في RAM وتهيئة المعالج لبدء تشغيل شيفرة النظام. لكن لأن نظام التشغيل مسؤول عن مهمة تشغيل الشيفرة على العتاد، فهو يحتاج إلى بعض المساعدة ليبدأ عمله.
 
@@ -46,7 +46,7 @@ source: https://diveintosystems.org/book/C13-OS/index.html
 
 كما تأتي الطلبات إلى نظام التشغيل من تطبيقات المستخدم عندما تحتاج إلى الوصول إلى موارد محمية. فمثلًا، عندما يريد تطبيق الكتابة في ملف، يجري **نداء نظام** (system call) إلى نظام التشغيل الذي يستيقظ لتنفيذ الكتابة نيابةً عنه (انظر [الشكل 2](#FigNICinter)). ويعالج نظام التشغيل نداء النظام بكتابة البيانات في ملف مخزَّن على القرص.
 
-![Interrupts to the OS are from the hardware layer and Traps are from the user/program layer](https://diveintosystems.org/images/dive-into-systems/c13-os-1-intersyscall.webp) Figure 2. In an interrupt-driven system, user-level programs make system calls, and hardware devices issue interrupts to initiate OS actions.
+![Interrupts to the OS are from the hardware layer and Traps are from the user/program layer](https://diveintosystems.org/images/dive-into-systems/c13-os-1-intersyscall.webp){#FigNICinter} Figure 2. In an interrupt-driven system, user-level programs make system calls, and hardware devices issue interrupts to initiate OS actions.
 
 أما المقاطعات التي تأتي من طبقة العتاد، مثل تلقّي البطاقة بيانات من الشبكة، فيُشار إليها عادة باسم مقاطعات العتاد، أو **المقاطعات** (interrupts) فقط. وأما المقاطعات التي تأتي من طبقة البرمجيات نتيجة تنفيذ تعليمات، مثل إجراء تطبيق نداء نظام، فيُشار إليها عادة بـ **المصائد** (traps). أي أن نداء النظام «يصطاد داخل نظام التشغيل»، الذي يعالج الطلب نيابةً عن البرنامج على مستوى المستخدم. وقد تقاطع الاستثناءات من أي من الطبقتين نظام التشغيل أيضًا. فمثلًا، قد يقاطع محرك الأقراص الصلبة نظام التشغيل إذا فشلت قراءة بسبب كتلة قرص تالفة، وقد يثير برنامج تطبيقي مصيدة إلى نظام التشغيل إذا نفّذ تعليمة قسمة على صفر.
 
@@ -71,7 +71,7 @@ addl $8, %ebx  # an example instruction after the trap instruction
 
 وخلافًا لنداءات النظام التي تنشأ من تنفيذ تعليمات البرنامج، تُسلَّم مقاطعات العتاد إلى المعالج على ناقل مقاطعات. ويضع الجهاز إشارة، هي عادةً رقم يدل على نوع المقاطعة، على ناقل مقاطعات المعالج (انظر [الشكل 3](#Figinterbus)). وعندما يكتشف المعالج الإشارة على ناقل مقاطعاته، يتوقف عن تنفيذ تعليمات العملية الحالية ويبدأ تنفيذ شيفرة معالج المقاطعة في نظام التشغيل. وبعد عمل شيفرة معالج نظام التشغيل، يواصل النظام تنفيذ العملية عند تعليمة التطبيق التي كانت قيد التنفيذ عند حدوث المقاطعة.
 
-![Interrupt bus](https://diveintosystems.org/images/dive-into-systems/c13-os-2-diskinter.webp) Figure 3. A hardware device (disk) sends a signal to the CPU on the interrupt bus to trigger OS execution on its behalf.
+![Interrupt bus](https://diveintosystems.org/images/dive-into-systems/c13-os-2-diskinter.webp){#Figinterbus} Figure 3. A hardware device (disk) sends a signal to the CPU on the interrupt bus to trigger OS execution on its behalf.
 
 وإذا كان برنامج مستخدم يعمل على المعالج عند حدوث مقاطعة (أو مصيدة)، يشغّل المعالج شيفرة معالج المقاطعة (أو المصيدة) في نظام التشغيل. وعندما ينتهي نظام التشغيل من معالجة مقاطعة، يستأنف تنفيذ برنامج المستخدم المقاطَع عند النقطة التي قوطِع فيها.
 
@@ -82,11 +82,11 @@ addl $8, %ebx  # an example instruction after the trap instruction
 
 وعندما تعمل شيفرة نظام التشغيل على المعالج، يعمل النظام في وضع النواة، وعندما تعمل برامج مستوى المستخدم على المعالج، يعمل النظام في وضع المستخدم. وإذا كان المعالج في وضع المستخدم وتلقّى مقاطعة، ينتقل المعالج إلى وضع النواة، ويجلب روتين معالج المقاطعة، ويبدأ تنفيذ شيفرة معالج نظام التشغيل. وفي وضع النواة، يستطيع نظام التشغيل الوصول إلى عتاد ومواقع ذاكرة غير مسموح بها في وضع المستخدم. وعندما ينتهي نظام التشغيل من معالجة المقاطعة، يعيد حالة المعالج لمواصلة تنفيذ شيفرة مستوى المستخدم عند النقطة التي توقف عندها البرنامج عند المقاطعة، ويعيد المعالج إلى وضع المستخدم (انظر [الشكل 4](#FigCPUInterrupts)).
 
-![OS runs interrupt handler code](https://diveintosystems.org/images/dive-into-systems/c13-os-3-handler.webp) Figure 4. The CPU and interrupts. User code running on the CPU is interrupted (at time X on the time line), and OS interrupt handler code runs. After the OS is done handling the interrupt, user code execution is resumed (at time Y on the time line).
+![OS runs interrupt handler code](https://diveintosystems.org/images/dive-into-systems/c13-os-3-handler.webp){#FigCPUInterrupts} Figure 4. The CPU and interrupts. User code running on the CPU is interrupted (at time X on the time line), and OS interrupt handler code runs. After the OS is done handling the interrupt, user code execution is resumed (at time Y on the time line).
 
 في نظام مدفوع بالمقاطعات، يمكن أن تحدث المقاطعات في أي وقت، ما يعني أن نظام التشغيل قد ينتقل من تشغيل شيفرة المستخدم إلى شيفرة معالج المقاطعة في أي دورة آلة. ومن طرق دعم هذا التبديل في سياق التنفيذ من وضع المستخدم إلى وضع النواة بكفاءة السماح للنواة بالعمل داخل سياق تنفيذ كل عملية في النظام. وعند الإقلاع، يحمّل نظام التشغيل شيفرته في موقع ثابت في RAM يُخطَّط إلى أعلى فضاء العنوان لكل عملية (انظر [الشكل 5](#FigOSMem))، ويهيّئ سجلًا في المعالج بعنوان البداية لدالة معالج نظام التشغيل. وعند حدوث مقاطعة، ينتقل المعالج إلى وضع النواة وينفّذ تعليمات شيفرة معالج المقاطعة في نظام التشغيل المتاحة عند العناوين العليا في فضاء عنوان كل عملية. ولأن كل عملية يكون نظام التشغيل مخطَّطًا فيها إلى الموقع نفسه في أعلى فضاء عنوانها، تستطيع شيفرة معالج المقاطعة في نظام التشغيل التنفيذ بسرعة في سياق أي عملية تعمل على المعالج عند حدوث المقاطعة. ولا يمكن الوصول إلى شيفرة نظام التشغيل هذه إلا في وضع النواة، ما يحمي نظام التشغيل من عمليات الوصول في وضع المستخدم؛ وفي أثناء التنفيذ العادي تعمل العملية في وضع المستخدم ولا تستطيع القراءة من عناوين نظام التشغيل المخطَّطة في أعلى فضاء عنوانها أو الكتابة فيها.
 
-![The OS is mapped into every process address space](https://diveintosystems.org/images/dive-into-systems/c13-os-4-osmem.webp) Figure 5. Process address space: the OS kernel is mapped into the top of every process’s address space.
+![The OS is mapped into every process address space](https://diveintosystems.org/images/dive-into-systems/c13-os-4-osmem.webp){#FigOSMem} Figure 5. Process address space: the OS kernel is mapped into the top of every process’s address space.
 
 ومع أن تخطيط شيفرة نظام التشغيل في فضاء عنوان كل عملية يؤدي إلى تنفيذ سريع لشيفرة النواة عند حدوث مقاطعة، تملك معالجات حديثة كثيرة ميزات تكشف ثغرات في حمايات النواة عندما يُخطَّط نظام التشغيل في كل عملية بهذه الطريقة. فمنذ إعلان يناير 2018 عن ثغرة العتاد Meltdown1، صارت أنظمة التشغيل تفصل ذاكرة النواة عن ذاكرة برامج مستوى المستخدم بطرق تحمي من هذا الاستغلال، لكنها تؤدي أيضًا إلى تبديل أقل كفاءة إلى وضع النواة لمعالجة المقاطعات.
 
@@ -148,7 +148,7 @@ addl $8, %ebx  # an example instruction after the trap instruction
 
 ويعرض [الشكل 1](#FigProcState) عمر العملية في النظام، موضحًا كيف تنتقل بين الحالات المختلفة. لاحظ الانتقالات (الأسهم) من حالة إلى أخرى. فمثلًا، يمكن أن تدخل العملية حالة *الجاهزية* بإحدى ثلاث طرق: أولًا، إذا أنشأها نظام التشغيل حديثًا؛ وثانيًا، إذا كانت محجوبة في انتظار حدث ما وحدث ذلك الحدث؛ وثالثًا، إذا كانت عاملة على المعالج وانتهت شريحتها الزمنية فبدّل نظام التشغيل سياقها لإعطاء عملية *جاهزة* أخرى دورها على المعالج.
 
-![Process State](https://diveintosystems.org/images/dive-into-systems/c13-os-0-procstate.webp) Figure 1. The states of a process during its lifetime Process Runtime
+![Process State](https://diveintosystems.org/images/dive-into-systems/c13-os-0-procstate.webp){#FigProcState} Figure 1. The states of a process during its lifetime Process Runtime
 
 ويستخدم المبرمجون غالبًا زمن إكمال العملية مقياسًا لتقييم أدائها. وبالنسبة إلى البرامج غير التفاعلية، يدل زمن تشغيل أسرع عادةً على تنفيذ أفضل، أو أكثر مثالية. فمثلًا، عند المقارنة بين برنامجين يحسبان العوامل الأولية لعدد كبير، يُفضَّل البرنامج الذي يكمل المهمة بشكل صحيح أسرع.
 
@@ -162,7 +162,7 @@ addl $8, %ebx  # an example instruction after the trap instruction
 
 و**تسلسل هرمي للعمليات** من علاقات الأب-الابن موجود بين مجموعة العمليات النشطة في النظام. فمثلًا، إذا أجريت العملية *A* نداءين إلى `fork`، تُنشأ عمليتا ابن جديدتان، *B* وC_. وإذا استدعت العملية *C* بعد ذلك `fork`، تُنشأ عملية جديدة أخرى، *D*. والعملية *C* ابنة لـ *A* وأمّ لـ *D*. والعمليتان *B* و*C* شقيقتان (تتشاركان عملية أب واحدة، هي العملية *A*). والعملية *A* سلف لـ *B* و*C* و*D*. ويوضح [الشكل 2](#phierarchyex) هذا المثال.
 
-![Process Hierarchy created from the example. A is the top ancestor with two children, B and C below it. C has one child, D, below it.](https://diveintosystems.org/images/dive-into-systems/c13-os-1-prochierarchy.webp) Figure 2. An example process hierarchy created by a parent process (A) calling fork twice to create two child processes (B and C). C’s call to fork creates its child process, D. To list the process hierarchy on Linux systems, run `pstree`, or `ps -Aef --forest`.
+![Process Hierarchy created from the example. A is the top ancestor with two children, B and C below it. C has one child, D, below it.](https://diveintosystems.org/images/dive-into-systems/c13-os-1-prochierarchy.webp){#phierarchyex} Figure 2. An example process hierarchy created by a parent process (A) calling fork twice to create two child processes (B and C). C’s call to fork creates its child process, D. To list the process hierarchy on Linux systems, run `pstree`, or `ps -Aef --forest`.
 
 ولأن العمليات القائمة هي التي تُثير إنشاء العمليات، يحتاج النظام إلى عملية واحدة على الأقل لإنشاء أي عمليات جديدة. وعند الإقلاع، ينشئ نظام التشغيل أول عملية على مستوى المستخدم في النظام. وهذه العملية الخاصة، المسماة `init`، تقع في أعلى التسلسل الهرمي للعمليات كسلف لجميع العمليات الأخرى في النظام.
 
@@ -188,7 +188,7 @@ print("pid = %d\n", pid);  /* both parent and child execute this */
 
 ويعرض [الشكل 3](#justfork) مثالًا على شكل التسلسل الهرمي للعمليات بعد تنفيذ هذه الشيفرة. فتحصل عملية الابن على نسخة مطابقة لسياق تنفيذ العملية الأب عند نقطة الـ fork، لكن القيمة المخزَّنة في متغيرها `pid` تختلف عن قيمة أبيها لأن `fork` يعيد قيمة PID الخاصة بالابن (14 في هذا المثال) إلى العملية الأب، ويعيد 0 إلى الابن.
 
-![forked child process gets copy of parent state, but fork returns a different value to the child and parent process](https://diveintosystems.org/images/dive-into-systems/c13-os-2-fork.webp) Figure 3. A process (PID 12) calls fork to create a new child process. The new child process gets an exact copy of its parent’s address and execution state, but gets its own process identifier (PID 14). fork returns 0 to the child process and the child’s PID value (14) to the parent.
+![forked child process gets copy of parent state, but fork returns a different value to the child and parent process](https://diveintosystems.org/images/dive-into-systems/c13-os-2-fork.webp){#justfork} Figure 3. A process (PID 12) calls fork to create a new child process. The new child process gets an exact copy of its parent’s address and execution state, but gets its own process identifier (PID 14). fork returns 0 to the child process and the child’s PID value (14) to the parent.
 
 وغالبًا ما يريد المبرمج أن تؤدي عمليتا الابن والأب مهمتين مختلفتين بعد نداء `fork`. ويستطيع المبرمج استخدام قيم الإرجاع المختلفة من `fork` لدفع عمليتي الأب والابن إلى تنفيذ فرعي شيفرة مختلفين. فمثلًا، ينشئ مقطع الشيفرة التالي عملية ابن جديدة ويستخدم قيمة الإرجاع من `fork` لجعل عمليتي الابن والأب تنفذان فرعي شيفرة مختلفين بعد النداء:
 
@@ -265,7 +265,7 @@ B:14
 
 ترتيبات المخرجات الستة المختلفة هذه ممكنة لأن عمليتي الأب والابن، بعد عودة نداء النظام `fork`، متزامنتان ويمكن جدولتهما للعمل على المعالج بترتيبات مختلفة كثيرة، ما ينتج أي تشابك ممكن لتسلسلَي تعليماتهما. فكّر في الخط الزمني لتنفيذ هذا البرنامج المعروض في [الشكل 4](#forktime). ويمثّل الخط المنقّط التنفيذ المتزامن للعمليتين. وبحسب وقت جدولة كل منهما للعمل على المعالج، قد تنفّذ إحداهما عبارتي `printf` لديها قبل الأخرى، أو قد يتشابك تنفيذ عبارتي `printf` لديهما، ما ينتج أيًّا من النتائج الممكنة المعروضة في الجدول أعلاه. ولأن عملية واحدة فقط، هي الأب، موجودة قبل نداء `fork`، فإن A تُطبع دائمًا بواسطة الأب قبل أي مخرجات بعد نداء `fork`.
 
-![after the parent calls fork, both processes execute concurrently](https://diveintosystems.org/images/dive-into-systems/c13-os-3-forkprint.webp) Figure 4. The execution time line of the program. Only the parent process exists before the call to `fork`. After `fork` returns, both run concurrently (shown in the dotted lines).
+![after the parent calls fork, both processes execute concurrently](https://diveintosystems.org/images/dive-into-systems/c13-os-3-forkprint.webp){#forktime} Figure 4. The execution time line of the program. Only the parent process exists before the call to `fork`. After `fork` returns, both run concurrently (shown in the dotted lines).
 
 ### 13.2.4. exec {#_exec}
 
@@ -311,7 +311,7 @@ int main(int argc, char *argv) { ...
 
 ويعرض [الشكل 5](#FigExec) شكل التسلسل الهرمي للعمليات بعد تنفيذ هذه الشيفرة:
 
-![after fork child calls exec](https://diveintosystems.org/images/dive-into-systems/c13-os-4-exec.webp) Figure 5. When the child process calls execvp (left), the OS replaces its image with a.out (right) and initializes the child process to start running the a.out program from its beginning.
+![after fork child calls exec](https://diveintosystems.org/images/dive-into-systems/c13-os-4-exec.webp){#FigExec} Figure 5. When the child process calls execvp (left), the OS replaces its image with a.out (right) and initializes the child process to start running the a.out program from its beginning.
 
 ومما ينبغي ملاحظته في مثال الشيفرة المعروض أعلاه رسالة الخطأ التي تبدو غريبة بعد نداء `execvp`: فلماذا تكون العودة من نداء نظام exec خطأً؟ إذا نجح نداء نظام exec، فلن تُنفَّذ شيفرة اكتشاف الأخطاء ومعالجتها التي تليه فورًا أبدًا لأن العملية ستنفّذ الآن شيفرة في برنامج `a.out` بدلًا من هذه الشيفرة (فقد غيّر exec محتويات فضاء عنوان العملية). أي أنه عند نجاح نداء إلى دالة exec، لا تواصل العملية تنفيذها عند عودة نداء exec. ولهذا السلوك، فإن مقطع الشيفرة التالي يكافئ المقطع المعروض أعلاه (لكن المقطع أعلاه أسهل فهمًا عادةً):
 
@@ -349,7 +349,7 @@ if (pid == 0) { /* child process */
 
 ويعرض [الشكل 6](#FigExit) تسلسل الأحداث التي تحدث عند انتهاء عملية.
 
-![child exits](https://diveintosystems.org/images/dive-into-systems/c13-os-5-exit.webp) Figure 6. Process exit. Left: The child process calls the exit system call to clean up most of its execution state. Middle: After running exit, the child process becomes a zombie (it is in the Exited state and cannot run again), and its parent process is sent a SIGCHLD signal, notifying it that its child is exited. Right: The parent calls waitpid to reap its zombie child (cleans up the rest of the child’s state from the system).
+![child exits](https://diveintosystems.org/images/dive-into-systems/c13-os-5-exit.webp){#FigExit} Figure 6. Process exit. Left: The child process calls the exit system call to clean up most of its execution state. Middle: After running exit, the child process becomes a zombie (it is in the Exited state and cannot run again), and its parent process is sent a SIGCHLD signal, notifying it that its child is exited. Right: The parent calls waitpid to reap its zombie child (cleans up the rest of the child’s state from the system).
 
 ولأن عمليتي الأب والابن تنفّذان بالتزامن، قد يستدعي الأب `wait` قبل انتهاء ابنه، أو قد ينتهي الابن قبل استدعاء الأب `wait`. وإذا كان الابن ما زال ينفّذ عندما يستدعي الأب `wait`، يحجب الأب حتى ينتهي الابن (فيدخل الأب الحالة المحجوبة منتظرًا حدوث حدث الإشارة `SIGCHLD`). ويمكن ملاحظة سلوك الحجب لدى الأب إذا شغّلت برنامجًا (`a.out`) في المقدمة في صدفة — فلا تطبع الصدفة مطالبة الصدفة حتى ينتهي `a.out`، ما يدل على أن عملية الصدفة الأب محجوبة في نداء `wait`، منتظرةً تلقّي إشارة `SIGCHLD` من عملية ابنها التي تشغّل `a.out`.
 
@@ -392,7 +392,7 @@ if (pid1 == 0 ) {       /* child 1 */
 
 ويوضح [الشكل 7](#FigForkWait) الخط الزمني لتنفيذ أحداث إنشاء العمليات وتشغيلها وحجبها وانتهائها من تنفيذ المثال أعلاه. وتمثّل الخطوط المنقّطة أوقاتًا يتداخل فيها تنفيذ عملية مع ابنها أو أحفادها: فالعمليات متزامنة ويمكن جدولتها على المعالج بأي ترتيب. وتمثّل الخطوط الصلبة تبعيات على تنفيذ العمليات. فمثلًا، لا يستطيع الابن 1 استدعاء `exit` حتى يحصّد عملية ابنه المنتهية، الابن 2. وعندما تستدعي عملية `wait`، تحجب حتى ينتهي ابنها. وعندما تستدعي عملية `exit`، لا تعمل مرة أخرى أبدًا. وتُدوَّن مخرجات البرنامج على طول الخط الزمني لتنفيذ كل عملية عند نقاط في تنفيذها يمكن أن تحدث فيها عبارة `printf` المقابلة.
 
-![the execution time line for fork-wait example](https://diveintosystems.org/images/dive-into-systems/c13-os-6-forkwait.webp) Figure 7. The execution time line for the example program, showing a possible sequence of fork, exec, wait, and exit calls from the three processes. Solid lines represent dependencies in the order of execution between processes, and dotted line concurrent execution points. Parent is the parent process of Child 1, and Child 1 is the parent of Child 2.
+![the execution time line for fork-wait example](https://diveintosystems.org/images/dive-into-systems/c13-os-6-forkwait.webp){#FigForkWait} Figure 7. The execution time line for the example program, showing a possible sequence of fork, exec, wait, and exit calls from the three processes. Solid lines represent dependencies in the order of execution between processes, and dotted line concurrent execution points. Parent is the parent process of Child 1, and Child 1 is the parent of Child 2.
 
 وبعد إجراء نداءات `fork` في هذا البرنامج، تعمل العملية الأب وعملية الابن الأولى بالتزامن، ولذلك يمكن أن يتشابك نداء `wait` في الأب مع أي تعليمة من تعليمات ابنه. فمثلًا، قد يستدعي الأب `wait` ويحجب قبل أن يستدعي ابنه `fork` لإنشاء عملية ابنه. ويسرد [الجدول 2](#TabOutputs) جميع المخرجات الممكنة لتشغيل البرنامج المثال.
 
@@ -434,7 +434,7 @@ int main(int argc, char* argv[]) {
 
 وإذا نفّذت عمليتان هذا البرنامج في الوقت نفسه، تحصل كل منهما على نسختها الخاصة من ذاكرة المكدّس كجزء من فضاءات عنوانها الافتراضية المنفصلة. ونتيجة لذلك، إذا نفّذت إحدى العمليتين `x = 6`، فلن يؤثر ذلك في قيمة `x` في العملية الأخرى — فلكل عملية نسختها الخاصة من `x` في فضاء عنوانها الافتراضي الخاص، كما يظهر في [الشكل 1](#Figprivatevm).
 
-![virtual address space](https://diveintosystems.org/images/dive-into-systems/c13-os-0-vas.webp) Figure 1. Two executions of a.out results in two processes, each running isolated instances of the a.out program. Each process has its own private virtual address space, containing its copies of program instructions, global variables, and stack and heap memory space. For example, each may have a local variable x in the stack portion of their virtual address spaces.
+![virtual address space](https://diveintosystems.org/images/dive-into-systems/c13-os-0-vas.webp){#Figprivatevm} Figure 1. Two executions of a.out results in two processes, each running isolated instances of the a.out program. Each process has its own private virtual address space, containing its copies of program instructions, global variables, and stack and heap memory space. For example, each may have a local variable x in the stack portion of their virtual address spaces.
 
 وينقسم فضاء العنوان الافتراضي للعملية إلى عدة أقسام، يخزّن كل منها جزءًا مختلفًا من ذاكرة العملية. والجزء الأعلى (عند العناوين الأدنى) محجوز لنظام التشغيل ولا يمكن الوصول إليه إلا في وضع النواة. ويُهيَّأ جزءا النص والبيانات في فضاء العنوان الافتراضي للعملية من ملف البرنامج التنفيذي (`a.out`). ويحتوي قسم النص تعليمات البرنامج، ويحتوي قسم البيانات المتغيرات العامة (وينقسم جزء البيانات فعلًا إلى قسمين، أحدهما للمتغيرات العامة المهيَّأة والآخر للمتغيرات العامة غير المهيَّأة).
 
@@ -458,13 +458,13 @@ int main(int argc, char* argv[]) {
 
 وفي أي لحظة، يخزّن نظام التشغيل في RAM محتويات فضاءات عنوان عمليات كثيرة، بالإضافة إلى شيفرة نظام التشغيل التي قد يخطّطها في فضاء العنوان الافتراضي لكل عملية (تُحمَّل شيفرة نظام التشغيل عادةً بدءًا من العنوان 0x0 في RAM). ويعرض [الشكل 2](#FigRAM) مثالًا على نظام التشغيل وثلاث عمليات (P1 وP2 وP3) محمَّلة في RAM. وتحصل كل عملية على مواقع تخزين فيزيائية منفصلة خاصة بمحتويات فضاء عنوانها (فمثلًا، حتى لو شغّلت P1 وP2 البرنامج نفسه، تحصلان على مواقع تخزين فيزيائية منفصلة لمتغيرهما `x`).
 
-![physical addresses](https://diveintosystems.org/images/dive-into-systems/c13-os-1-pa.webp) Figure 2. Example RAM contents showing OS loaded at address 0x0, and processes loaded at different physical memory addresses in RAM. If P1 and P2 are running the same a.out, P1’s physical address for x is different from P2’s physical address for x.
+![physical addresses](https://diveintosystems.org/images/dive-into-systems/c13-os-1-pa.webp){#FigRAM} Figure 2. Example RAM contents showing OS loaded at address 0x0, and processes loaded at different physical memory addresses in RAM. If P1 and P2 are running the same a.out, P1’s physical address for x is different from P2’s physical address for x.
 
 #### الذاكرة الافتراضية والعناوين الافتراضية {#_virtual_memory_and_virtual_addresses}
 
 الذاكرة الافتراضية هي رؤية كل عملية لفضاء ذاكرتها، و**العناوين الافتراضية** عناوين في رؤية العملية لذاكرتها. وإذا شغّلت عمليتان الملف التنفيذي الثنائي نفسه، فلهما العناوين الافتراضية نفسها بالضبط لشيفرة الدوال وللمتغيرات العامة في فضاءات عنوانهما (قد تختلف العناوين الافتراضية للمساحة المخصصة ديناميكيًا في ذاكرة الكومة وللمتغيرات المحلية على المكدّس اختلافًا طفيفًا بين العمليتين بسبب فروق زمن التشغيل في تنفيذيهما المنفصلين). وبعبارة أخرى، سيكون للعمليتين العنوانان الافتراضيان نفسهما لموقع دالة `main` لديهما، والعنوان الافتراضي نفسه لموقع متغير عام `x` في فضاءات عنوانهما، كما يظهر في [الشكل 3](#FigVA).
 
-![virtual addresses for two processes running the same a.out](https://diveintosystems.org/images/dive-into-systems/c13-os-2-va.webp) Figure 3. Example virtual memory contents for two processes running the same a.out file. P1 and P2 have the same virtual address for global variable x.
+![virtual addresses for two processes running the same a.out](https://diveintosystems.org/images/dive-into-systems/c13-os-2-va.webp){#FigVA} Figure 3. Example virtual memory contents for two processes running the same a.out file. P1 and P2 have the same virtual address for global variable x.
 
 ### 13.3.2. ترجمة العنوان الافتراضي إلى عنوان فيزيائي {#_virtual_address_to_physical_address_translation}
 
@@ -481,7 +481,7 @@ movl $6, (%eax)        # store 6 at memory address 0x24100
 
 و**وحدة إدارة الذاكرة** (memory management unit أو MMU) جزء عتاد الحاسوب الذي ينفّذ ترجمة العنوان. ويترجم عتاد MMU ونظام التشغيل معًا العناوين الافتراضية إلى فيزيائية عندما تصل التطبيقات إلى الذاكرة. وتعتمد قسمة العمل بين العتاد والبرمجيات على المزيج المحدد من العتاد ونظام التشغيل. وفي أكمل صوره، ينفّذ عتاد MMU الترجمة الكاملة: فيأخذ عنوانًا افتراضيًا من المعالج ويترجمه إلى عنوان فيزيائي يُستخدم لعنونة RAM (كما يظهر في [الشكل 4](#FigMMU)). وأيًا كان مدى الدعم العتادي للذاكرة الافتراضية، ستبقى بعض ترجمات العنوان الافتراضي إلى الفيزيائي التي يجب أن يتولاها نظام التشغيل. وفي مناقشتنا للذاكرة الافتراضية، نفترض وجود MMU أكثر اكتمالًا يقلل مقدار مشاركة نظام التشغيل المطلوبة لترجمة العنوان.
 
-![mmu maps virtual addresses to physical addresses](https://diveintosystems.org/images/dive-into-systems/c13-os-3-mmu.webp) Figure 4. The memory management unit (MMU) maps virtual to physical addresses. Virtual addresses are used in instructions executed by the CPU. When the CPU needs to fetch data from physical memory, the virtual address is first translated by the MMU to a physical addresses that is used to address RAM.
+![mmu maps virtual addresses to physical addresses](https://diveintosystems.org/images/dive-into-systems/c13-os-3-mmu.webp){#FigMMU} Figure 4. The memory management unit (MMU) maps virtual to physical addresses. Virtual addresses are used in instructions executed by the CPU. When the CPU needs to fetch data from physical memory, the virtual address is first translated by the MMU to a physical addresses that is used to address RAM.
 
 ويحتفظ نظام التشغيل بتخطيطات الذاكرة الافتراضية لكل عملية لضمان قدرته على ترجمة العناوين الافتراضية إلى فيزيائية بشكل صحيح لأي عملية تعمل على المعالج. وفي أثناء تبديل السياق، يحدّث نظام التشغيل عتاد MMU ليشير إلى تخطيطات الذاكرة الافتراضية إلى الفيزيائية للعملية المبدَّلة إلى المعالج. ويحمي نظام التشغيل العمليات من الوصول إلى فضاءات ذاكرة بعضها بتبديل حالة تخطيط العناوين الخاصة بكل عملية عند تبديل السياق — فضمان تبديل التخطيطات عند تبديل السياق يضمن ألا تخطّط العناوين الافتراضية لعملية إلى عناوين فيزيائية تخزّن فضاء العنوان الافتراضي لعملية أخرى.
 
@@ -499,7 +499,7 @@ movl $6, (%eax)        # store 6 at memory address 0x24100
 
 ويعرض [الشكل 5](#FigPageVM) مثالًا على كيفية تخطيط صفحات من فضاء العنوان الافتراضي لعملية إلى إطارات في RAM الفيزيائية.
 
-![virtual memory pages map into physical RAM frames](https://diveintosystems.org/images/dive-into-systems/c13-os-4-frames.webp) Figure 5. Paged virtual memory. Individual pages of a process’s virtual address space are stored in RAM frames. Any page of virtual address space can be loaded into (stored at) any frame of physical memory. In this example, P1’s virtual page 1000 is stored in physical frame 100, and its page 500 resides in frame 513. P2’s virtual page 1000 is stored in physical frame 880, and its page 230 resides in frame 102.
+![virtual memory pages map into physical RAM frames](https://diveintosystems.org/images/dive-into-systems/c13-os-4-frames.webp){#FigPageVM} Figure 5. Paged virtual memory. Individual pages of a process’s virtual address space are stored in RAM frames. Any page of virtual address space can be loaded into (stored at) any frame of physical memory. In this example, P1’s virtual page 1000 is stored in physical frame 100, and its page 500 resides in frame 513. P2’s virtual page 1000 is stored in physical frame 880, and its page 230 resides in frame 102.
 
 #### العناوين الافتراضية والفيزيائية في الأنظمة المرقَّمة {#_virtual_and_physical_addresses_in_paged_systems}
 
@@ -511,7 +511,7 @@ movl $6, (%eax)        # store 6 at memory address 0x24100
 
 فمثلًا، فكّر في نظام (صغير جدًا) بعناوين افتراضية بطول 16 بتًا، وعناوين فيزيائية بطول 14 بتًا، وصفحات بحجم 8 بايتات. ولأن حجم الصفحة ثمانية بايتات، تحدد البتات الثلاث الدنيا للعنوانين الفيزيائي والافتراضي إزاحة البايت داخل الصفحة أو الإطار — فثلاث بتات تستطيع ترميز ثماني قيم إزاحة بايت متميزة، من 0 إلى 7 (23 = 8). ويتبقى بذلك 13 بتًا عليا من العنوان الافتراضي لتحديد رقم الصفحة، و11 بتًا عليا من العنوان الفيزيائي لتحديد رقم الإطار، كما يظهر في المثال في [الشكل 7](#FigVAPAEX).
 
-![interpreting address bits in example](https://diveintosystems.org/images/dive-into-systems/c13-os-6-expavaaddrbits.webp) Figure 7. Virtual and physical address bit divisions in an example system with 16-bit virtual addresses, 14-bit physical addresses, and a page size of 8 bytes.
+![interpreting address bits in example](https://diveintosystems.org/images/dive-into-systems/c13-os-6-expavaaddrbits.webp){#FigVAPAEX} Figure 7. Virtual and physical address bit divisions in an example system with 16-bit virtual addresses, 14-bit physical addresses, and a page size of 8 bytes.
 
 في المثال في [الشكل 7](#FigVAPAEX)، العنوان الافتراضي 43357 (بالنظام العشري) له إزاحة بايت تساوي 5 (0b101 بالنظام الثنائي)، وهي البتات الثلاث الدنيا من العنوان، ورقم صفحة يساوي 5419 (0b1010100101011)، وهي البتات الـ13 العليا من العنوان. وهذا يعني أن العنوان الافتراضي يقع عند البايت 5 من أعلى الصفحة 5419.
 
@@ -521,7 +521,7 @@ movl $6, (%eax)        # store 6 at memory address 0x24100
 
 ولأن كل صفحة من فضاء الذاكرة الافتراضية لعملية يمكن أن تخطّط إلى إطار مختلف في RAM، يجب أن يحتفظ نظام التشغيل بتخطيطات لكل صفحة افتراضية في فضاء عنوان العملية. ويحتفظ نظام التشغيل بـ**جدول صفحات** (page table) لكل عملية يستخدمه لتخزين تخطيطات أرقام الصفحات الافتراضية إلى أرقام الإطارات الفيزيائية للعملية. وجدول الصفحات بنية بيانات ينفّذها نظام التشغيل وتُخزَّن في RAM. ويعرض [الشكل 8](#FigPTMem) مثالًا على كيفية تخزين نظام التشغيل لجدولَي صفحات عمليتين في RAM. ويخزّن جدول صفحات كل عملية تخطيطات صفحاتها الافتراضية إلى إطاراتها الفيزيائية في RAM بحيث يمكن تخزين أي صفحات من الذاكرة الافتراضية في أي إطار فيزيائي من RAM.
 
-![two process’s page tables stored in RAM](https://diveintosystems.org/images/dive-into-systems/c13-os-7-pagetables.webp) Figure 8. Every process has a page table containing its virtual page to physical frame mappings. Page tables, stored in RAM, are used by the system to translate process’s virtual addresses to physical addresses that are used to address locations in RAM. This example shows the separate page tables stored in RAM for processes P1 and P2, each page table with its own virtual page to physical frame mappings.
+![two process’s page tables stored in RAM](https://diveintosystems.org/images/dive-into-systems/c13-os-7-pagetables.webp){#FigPTMem} Figure 8. Every process has a page table containing its virtual page to physical frame mappings. Page tables, stored in RAM, are used by the system to translate process’s virtual addresses to physical addresses that are used to address locations in RAM. This example shows the separate page tables stored in RAM for processes P1 and P2, each page table with its own virtual page to physical frame mappings.
 
 ولكل صفحة من الذاكرة الافتراضية، يخزّن جدول الصفحات **مدخل جدول صفحات** واحدًا (page table entry أو PTE) يحتوي رقم الإطار في الذاكرة الفيزيائية (RAM) الذي يخزّن الصفحة الافتراضية. وقد يحتوي مدخل جدول الصفحات أيضًا معلومات أخرى عن الصفحة الافتراضية، منها **بت الصلاحية** (valid bit) الذي يُستخدم للدلالة على ما إذا كان المدخل يخزّن تخطيطًا صالحًا. وإذا كان بت الصلاحية لصفحة صفرًا، فالصفحة من فضاء العنوان الافتراضي للعملية غير محمَّلة حاليًا في الذاكرة الفيزيائية.
 
@@ -536,7 +536,7 @@ movl $6, (%eax)        # store 6 at memory address 0x24100
 3. وإذا كان بت الصلاحية في المدخل مضبوطًا (يساوي 1)، فإن رقم الإطار في المدخل يمثل تخطيطًا صالحًا من عنوان افتراضي إلى عنوان فيزيائي. وإذا كان بت الصلاحية 0، يحدث **إخفاق صفحة** (page fault) يُفعّل نظام التشغيل للتعامل مع ترجمة العنوان هذه (سنناقش معالجة إخفاق الصفحة في نظام التشغيل لاحقًا).
 4. وتبني MMU العنوان الفيزيائي مستخدمةً بتات رقم الإطار (f) من مدخل جدول الصفحات كبتات عليا، وبتات إزاحة الصفحة (d) من العنوان الافتراضي كبتات دنيا للعنوان الفيزيائي.
 
-![the steps of address translation using PTE](https://diveintosystems.org/images/dive-into-systems/c13-os-9-pagingxlation.webp) Figure 10. A process’s page table is used to perform virtual to physical address translations. The PTBR stores the base address of the currently running process’s page table.
+![the steps of address translation using PTE](https://diveintosystems.org/images/dive-into-systems/c13-os-9-pagingxlation.webp){#FigPagingXlation} Figure 10. A process’s page table is used to perform virtual to physical address translations. The PTBR stores the base address of the currently running process’s page table.
 
 #### مثال: تخطيط عنوان افتراضي إلى فيزيائي بجدول صفحات {#_an_example_mapping_va_to_pa_with_a_page_table}
 
@@ -662,7 +662,7 @@ P1: 1011001
 
 و**مخزن الترجمة الجانبي** (translation look-aside buffer أو TLB) ذاكرة مؤقتة عتادية تخزّن تخطيطات (رقم الصفحة، رقم الإطار). وهي ذاكرة مؤقتة صغيرة ترابطية كاملة ومحسَّنة لعمليات بحث سريعة في العتاد. وعندما تجد MMU تخطيطًا في TLB (إصابة TLB)، لا حاجة إلى البحث في جدول الصفحات، ولا يلزم إلا وصول واحد إلى RAM لتنفيذ تحميل أو تخزين إلى عنوان ذاكرة افتراضية. وعندما لا يُوجد التخطيط في TLB (إخفاق TLB)، يلزم وصول إضافي إلى RAM لقراءة مدخل جدول الصفحات الخاص بالصفحة لبناء العنوان الفيزيائي للتحميل أو التخزين في RAM أولًا. ويُضاف التخطيط المرتبط بإخفاق TLB إلى TLB. ومع محلية جيدة لمراجع الذاكرة، يكون معدل الإصابة في TLB مرتفعًا جدًا، ما يؤدي إلى وصولات سريعة إلى الذاكرة في الذاكرة الافتراضية المرقَّمة — فمعظم وصولات الذاكرة الافتراضية لا تتطلب إلا وصولًا واحدًا إلى RAM. ويعرض [الشكل 11](#FigTLB) كيفية استخدام TLB في تخطيطات العنوان الافتراضي إلى الفيزيائي.
 
-![TLB lookup for virtual page to physical frame mapping](https://diveintosystems.org/images/dive-into-systems/c13-os-10-tlb.webp) Figure 11. The translation look-aside buffer (TLB) is a small hardware cache of virtual page to physical frame mappings. The TLB is first searched for an entry for page p. If found, no page table lookup is needed to translate the virtual address to its physical address.
+![TLB lookup for virtual page to physical frame mapping](https://diveintosystems.org/images/dive-into-systems/c13-os-10-tlb.webp){#FigTLB} Figure 11. The translation look-aside buffer (TLB) is a small hardware cache of virtual page to physical frame mappings. The TLB is first searched for an entry for page p. If found, no page table lookup is needed to translate the virtual address to its physical address.
 
 العمليات من التجريدات الأساسية التي ينفّذها نظام التشغيل. وفضاءات العنوان الافتراضية الخاصة تجريد مهم في الأنظمة متعددة البرامج، وهي إحدى طرق منع نظام التشغيل للعمليات من التأثير في حالة تنفيذ بعضها. لكن قد يريد المستخدم أو المبرمج أحيانًا أن تتواصل عمليات تطبيقه مع بعضها (أو أن تتشارك جزءًا من حالة تنفيذها) أثناء عملها.
 
@@ -851,11 +851,11 @@ $ cat foo.c | grep factorial
 
 لتنفيذ هذا الأمر، تستدعي عملية صدفة bash نداء النظام `pipe` لتطلب من نظام التشغيل إنشاء تواصل بأنبوب. وسيستخدم الأنبوب عمليتا ابن الصدفة (`cat` و`grep`). ويهيّئ برنامج الصدفة `stdout` لعملية `cat` للكتابة في طرف الكتابة من الأنبوب، و`stdin` لعملية `grep` للقراءة من طرف القراءة منه، بحيث أنه عند إنشاء عمليتي الابن وتشغيلهما، تُرسَل مخرجات `cat` كمدخلات إلى `grep` (انظر [الشكل 1](#figpipes)).
 
-![example of a pipe sending cat’s output to grep’s input](https://diveintosystems.org/images/dive-into-systems/c13-os-0-pipe.webp) Figure 1. Pipes are unidirectional communication channels for processes on the same system. In this example, the cat process sends the grep process information by writing to the write end of the pipe. The grep process receives this information by reading from the read end of the pipe.
+![example of a pipe sending cat’s output to grep’s input](https://diveintosystems.org/images/dive-into-systems/c13-os-0-pipe.webp){#figpipes} Figure 1. Pipes are unidirectional communication channels for processes on the same system. In this example, the cat process sends the grep process information by writing to the write end of the pipe. The grep process receives this information by reading from the read end of the pipe.
 
 ومع أن الأنابيب تنقل البيانات من عملية إلى أخرى في اتجاه واحد فقط، تتيح تجريدات أخرى لتمرير الرسائل للعمليات التواصل في الاتجاهين. و**المقبس** (socket) قناة تواصل ثنائية الاتجاه، أي أن كل طرف من طرفَي المقبس يمكن استخدامه لإرسال الرسائل وتلقّيها معًا. ويمكن استخدام المقابس من عمليات متواصلة تعمل على الحاسوب نفسه أو على حواسيب مختلفة متصلة بشبكة (انظر [الشكل 2](#figsockets)). وقد تكون الحواسيب متصلة بـ**شبكة محلية** (local area network أو LAN) تربط حواسيب في منطقة صغيرة، مثل شبكة في قسم علوم الحاسوب بجامعة. وقد تكون العمليات المتواصلة على شبكتين محليتين مختلفتين متصلتين بالإنترنت. وما دام يوجد مسار ما عبر اتصالات الشبكة بين الآلتين، تستطيع العمليات استخدام المقابس للتواصل.
 
-![sockets enable two processes on different machines to communicate across a network.](https://diveintosystems.org/images/dive-into-systems/c13-os-1-sockets.webp) Figure 2. Sockets are bidirectional communication channels that can be used by communicating processes on different machines connected by a network.
+![sockets enable two processes on different machines to communicate across a network.](https://diveintosystems.org/images/dive-into-systems/c13-os-1-sockets.webp){#figsockets} Figure 2. Sockets are bidirectional communication channels that can be used by communicating processes on different machines connected by a network.
 
 ولأن كل حاسوب فردي نظام خاص به (عتاد ونظام تشغيل)، ولأن نظام التشغيل في نظام لا يعرف موارد النظام الآخر ولا يديرها، فإن تمرير الرسائل هو السبيل الوحيد الذي يمكن لعمليات على حواسيب مختلفة أن تتواصل به. ولدعم هذا النوع من التواصل، تحتاج أنظمة التشغيل إلى تنفيذ بروتوكول تمرير رسائل مشترك لإرسال الرسائل عبر شبكة وتلقّيها. وTCP/IP مثال على بروتوكول رسائل يمكن استخدامه لإرسال الرسائل عبر الإنترنت. وعندما تريد عملية إرسال رسالة إلى أخرى، تجري نداء النظام `send`، فتمرّر إلى نظام التشغيل مقبسًا تريد الإرسال عليه، ومخزن الرسالة، وربما معلومات إضافية عن الرسالة أو مستلمها المقصود. ويتولى نظام التشغيل تغليف الرسالة في مخزن الرسالة وإرسالها عبر الشبكة إلى الآلة الأخرى. وعندما يتلقى نظام التشغيل رسالة من الشبكة، يفكّ تغليفها ويسلّمها إلى العملية في نظامه التي طلبت تلقّي الرسالة. وقد تكون هذه العملية في حالة محجوبة منتظرةً وصول الرسالة. وفي هذه الحالة، يجعل تلقّي الرسالة العملية جاهزة للعمل مرة أخرى.
 
@@ -867,7 +867,7 @@ $ cat foo.c | grep factorial
 
 ومن طرق تنفيذ نظام التشغيل للمشاركة الجزئية لفضاء العنوان ضبط مدخلات في جداول صفحات عمليتين أو أكثر لتخطّط إلى الإطارات الفيزيائية نفسها. ويوضح [الشكل 1](#FigShm) مثالًا على التخطيط. وللتواصل، تكتب إحدى العمليات قيمة عند عنوان على صفحة مشتركة، ثم تقرؤها عملية أخرى لاحقًا.
 
-![ipc through shared memory pages](https://diveintosystems.org/images/dive-into-systems/c13-os-0-shm.webp) Figure 1. The OS can support sharing pages of virtual address space by setting entries in the page tables of sharing processes to the same physical frame number (e.g., frame 100). Note that processes do not need to use the same virtual address to refer to the shared page of physical memory.
+![ipc through shared memory pages](https://diveintosystems.org/images/dive-into-systems/c13-os-0-shm.webp){#FigShm} Figure 1. The OS can support sharing pages of virtual address space by setting entries in the page tables of sharing processes to the same physical frame number (e.g., frame 100). Note that processes do not need to use the same virtual address to refer to the shared page of physical memory.
 
 وإذا كان نظام التشغيل يدعم الذاكرة المشتركة الجزئية، فهو ينفّذ واجهة للمبرمج لإنشاء صفحات (أو مناطق/مقاطع) ذاكرة مشتركة والارتباط بها. وفي أنظمة Unix، ينشئ نداء النظام `shmget` مقطع ذاكرة مشتركة أو يرتبط به. ويقابل كل مقطع ذاكرة مشتركة مجموعة متتابعة من العناوين الافتراضية تُتشارك تخطيطاتها الفيزيائية مع عمليات أخرى ترتبط بمقطع الذاكرة المشتركة نفسه.
 

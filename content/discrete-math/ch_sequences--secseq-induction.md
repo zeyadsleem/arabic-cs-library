@@ -55,7 +55,7 @@ source: https://discrete.openmathbooks.org/dmoi4/sec_seq-induction.html
 
 #### برهان.
 
-نُدّعي أنّه لكل \(n \ge 0\text{,}\) يكون العدد \(a_n\) فرديًّا، حيث \(a_n = 3a_{n-1} - 2\) و\(a_0 = 5\text{.}\)[🔗](#subsec_induction-recursion-8-1) عندما \(n = 0\text{,}\) تكون الدعوى صادقة، إذ \(a_0 = 5\) عددٌ فرديّ.[🔗](#subsec_induction-recursion-8-2) وفضلا��، يمكننا إثبات أنّ كلّ \(n\) أكبر يكون له \(a_n\) فرديًّا، لأنّ ما دام \(a_k\) فرديًّا فإنّ \(a_{k+1}\) فرديّ أيضًا (إذ \(a_{k+1} = 3a_{k} - 2\text{,}\) وثلاثة أمثال عددٍ فرديّ ناقص 2 هو دائمًا عددٌ فرديّ).[🔗](#subsec_induction-recursion-8-3) إذن \(a_n\) فرديّ لكل \(n \ge 0\text{.}\)[🔗](#subsec_induction-recursion-8-4) [🔗](#subsec_induction-recursion)وسنقدّم قريبًا بنيةً أكثر صرامةً لبراهين الاستدلال، لكنّ الفكرة الأساسية هي بالضبط ما أسميناه أعلاه.[🔗](#subsec_induction-recursion-9) [🔗](#subsec_induction-recursion)
+نُدّعي أنّه لكل \(n \ge 0\text{,}\) يكون العدد \(a_n\) فرديًّا، حيث \(a_n = 3a_{n-1} - 2\) و\(a_0 = 5\text{.}\)[🔗](#subsec_induction-recursion-8-1) عندما \(n = 0\text{,}\) تكون الدعوى صادقة، إذ \(a_0 = 5\) عددٌ فرديّ.[🔗](#subsec_induction-recursion-8-2) وفضلاً عن ذلك، يمكننا إثبات أنّ كلّ \(n\) أكبر يكون له \(a_n\) فرديًّا، لأنّ ما دام \(a_k\) فرديًّا فإنّ \(a_{k+1}\) فرديّ أيضًا (إذ \(a_{k+1} = 3a_{k} - 2\text{,}\) وثلاثة أمثال عددٍ فرديّ ناقص 2 هو دائمًا عددٌ فرديّ).[🔗](#subsec_induction-recursion-8-3) إذن \(a_n\) فرديّ لكل \(n \ge 0\text{.}\)[🔗](#subsec_induction-recursion-8-4) [🔗](#subsec_induction-recursion)وسنقدّم قريبًا بنيةً أكثر صرامةً لبراهين الاستدلال، لكنّ الفكرة الأساسية هي بالضبط ما أسميناه أعلاه.[🔗](#subsec_induction-recursion-9) [🔗](#subsec_induction-recursion)
 
 ### القسم الفرعي: صياغة البراهين
 

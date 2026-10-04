@@ -17,7 +17,7 @@ inverter): فبتّ واحد من المدخلين يقرّر هل نعكس بت
 تغيير. وتُسمّى عملية «عكس» البتّات بصورة غير رسمية «قلب» البتّات (flipping bits)، وهو
 مصطلح سنستعمله كثيرًا في هذا الكتاب كلّه.
 
-![a programmable inverter](/images/crypto-101/fig-0-ProgrammableInverter.svg)
+![a programmable inverter](/images/crypto-101/exclusive-or-fig-0-ProgrammableInverter.svg)
 
 مُقلِب قابل للبرمجة
 center
@@ -25,7 +25,7 @@ center
 في الرياضيات وفي أبحاث التشفير، يُمثَّل الاو الحصري عادةً على شكل صليب داخل دائرة:
 `\xor`. وسنستعمل في هذا الكتاب الترميز نفسه:
 
-![center](/images/crypto-101/fig-1-XOR.svg)
+![center](/images/crypto-101/exclusive-or-fig-1-XOR.svg)
 
 center
 XOR
@@ -134,7 +134,7 @@ a \xor b \xor a & = a \xor a \xor b & \; & \text{(second rule)} \\
 البتّات العشوائية يتقاسمها المُرسِل مع المستقبِل (أو المستقبِلين). يمكننا حساب النصّ
 المشفَّر بأخذ XOR على مستوى البتّ بين تسلسلي البتّات.
 
-![center](/images/crypto-101/fig-2-OTP.svg)
+![center](/images/crypto-101/exclusive-or-fig-2-OTP.svg)
 
 center
 OTP
@@ -144,7 +144,7 @@ OTP
 فهم البرهان بطريقة حدسية. تخيّل XOR بوصفه مُقلِبًا قابلًا للبرمجة، وأنظر إلى بتّ
 بعينه اعترضته إيف المستقِعة (eavesdropper).
 
-![center](/images/crypto-101/fig-3-OTPEve.svg)
+![center](/images/crypto-101/exclusive-or-fig-3-OTPEve.svg)
 
 center
 OTP eve
@@ -201,37 +201,43 @@ XOR على نصّين صريحين يحوي نفسه قدرًا لا بأس به
 fig-multitimepad
 0.48
 
-   .. subfigure:: ./Illustrations/KeyReuse/Broken.png
+![النصّ الصريح الأوّل.](/images/crypto-101/exclusive-or-subfig-0-Broken.png)
+
 
 center
 
       النصّ الصريح الأوّل.
 
-   .. subfigure:: ./Illustrations/KeyReuse/Crypto.png
+![النصّ الصريح الثاني.](/images/crypto-101/exclusive-or-subfig-1-Crypto.png)
+
 
 center
 
       النصّ الصريح الثاني.
 
-   .. subfigure:: ./Illustrations/KeyReuse/BrokenEncrypted.png
+![النصّ المشفَّر الأوّل.](/images/crypto-101/exclusive-or-subfig-2-BrokenEncrypted.png)
+
 
 center
 
       النصّ المشفَّر الأوّل.
 
-   .. subfigure:: ./Illustrations/KeyReuse/CryptoEncrypted.png
+![النصّ المشفَّر الثاني.](/images/crypto-101/exclusive-or-subfig-3-CryptoEncrypted.png)
+
 
 center
 
       النصّ المشفَّر الثاني.
 
-   .. subfigure:: ./Illustrations/KeyReuse/Key.png
+![المفتاح المُعاد استعماله.](/images/crypto-101/exclusive-or-subfig-4-Key.png)
+
 
 center
 
       المفتاح المُعاد استعماله.
 
-   .. subfigure:: ./Illustrations/KeyReuse/CiphertextsXOR.png
+![XOR للنصّين المشفَّرين.](/images/crypto-101/exclusive-or-subfig-5-CiphertextsXOR.png)
+
 
 center
 

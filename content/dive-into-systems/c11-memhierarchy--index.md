@@ -18,7 +18,7 @@ source: https://diveintosystems.org/book/C11-MemHierarchy/index.html
 
 وتقايض أجهزة التخزين كذلك بين التكلفة وكثافة التخزين: فالأجهزة الأسرع أكثر تكلفة، سواء من حيث البايتات لكل دولار أم من حيث تكاليف التشغيل (مثل استهلاك الطاقة). فمثلًا، مع أن الذاكرات المؤقتة تقدم أداءً ممتازًا، فإن تكلفة (وتحديات صناعة) بناء معالج بذاكرة مؤقتة كبيرة بما يكفي للاستغناء عن الذاكرة الرئيسية تجعل هذا التصميم غير عملي. ويجب على الأنظمة العملية استخدام مزيج من الأجهزة لتلبية متطلبات الأداء والسعة لدى البرامج، ويضم النظام النموذجي اليوم معظم الأجهزة الموصوفة في [الشكل 1](#FigMemoryHierarchy)، إن لم يكن جميعها.
 
-![In order, from (high performance, high cost, low capacity) to (low performance, low cost, high capacity): registers, cache, main memory, flash disk, traditional disk, and remote secondary storage.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MemoryHierarchy.webp) Figure 1. The memory hierarchy
+![In order, from (high performance, high cost, low capacity) to (low performance, low cost, high capacity): registers, cache, main memory, flash disk, traditional disk, and remote secondary storage.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MemoryHierarchy.webp){#FigMemoryHierarchy} Figure 1. The memory hierarchy
 
 وواقع هرم الذاكرة مؤسف للمبرمجين الذين يفضّلون ألا يقلقوا بشأن آثار الأداء المترتبة على مكان إقامة بياناتهم. فمثلًا، عند تعريف عدد صحيح *في معظم التطبيقات*، لا ينبغي للمبرمج مثاليًا أن يتعذّب من الفروق بين بيانات مخزَّنة في ذاكرة مؤقتة أو في الذاكرة الرئيسية. وستكون مطالبة المبرمج بالإدارة الدقيقة لنوع الذاكرة الذي يشغله كل متغير عبئًا ثقيلًا، مع أنها قد تستحق الجهد أحيانًا في أقسام معينة صغيرة وحساسة للأداء من الشيفرة.
 
@@ -66,7 +66,7 @@ source: https://diveintosystems.org/book/C11-MemHierarchy/index.html
 
 ويوضح [الشكل 1](#FigMemoryBus) مواضع أجهزة التخزين الأساسي نسبةً إلى ناقل الذاكرة. ولاسترجاع قيمة من الذاكرة، يضع المعالج عنوان البيانات التي يريد استرجاعها على ناقل الذاكرة ويشير إلى أنه ينبغي لوحدات الذاكرة تنفيذ قراءة. وبعد تأخير قصير، ترسل وحدة الذاكرة القيمة المخزَّنة عند العنوان المطلوب عبر الناقل إلى المعالج.
 
-![The registers and ALU are nearby one another on the CPU. The CPU connects to main memory via a memory bus, which consists of several collections of wires for exchanging addresses, data, and control signals between the CPU and memory.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MemoryBus.webp) Figure 1. Primary storage and memory bus architecture
+![The registers and ALU are nearby one another on the CPU. The CPU connects to main memory via a memory bus, which consists of several collections of wires for exchanging addresses, data, and control signals between the CPU and memory.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MemoryBus.webp){#FigMemoryBus} Figure 1. Primary storage and memory bus architecture
 
 ومع أن المعالج والذاكرة الرئيسية يفصل بينهما بضع بوصات فقط فيزيائيًا، فإن البيانات يجب أن تمر عبر ناقل الذاكرة عند انتقالها بين المعالج والذاكرة الرئيسية. وتزيد المسافة الإضافية والدوائر بينهما من زمن الوصول وتقلل معدل نقل الذاكرة الرئيسية مقارنةً بالتخزين الموجود على المعالج. ونتيجة لذلك، يُشار إلى ناقل الذاكرة أحيانًا بـ **عنق زجاجة فون نيومان** (von Neumann bottleneck). وبالطبع، على الرغم من أدائها الأدنى، تظل الذاكرة الرئيسية مكوّنًا جوهريًا لأنها تخزّن بيانات تزيد عدة مرات من حيث الرتبة على ما يمكن أن يتسع له المعالج. واتساقًا مع صور التخزين الأخرى، ثمة مقايضة واضحة بين السعة والسرعة.
 
@@ -86,7 +86,7 @@ source: https://diveintosystems.org/book/C11-MemHierarchy/index.html
 
 ويخزّن [محرك الشريط](https://en.wikipedia.org/wiki/Magnetic_tape_data_storage) البيانات على بكرة من شريط مغناطيسي. ومع أنه يقدم عمومًا كثافة تخزين جيدة (معلومات كثيرة في حجم صغير) بتكلفة منخفضة، فإن محركات الأشرطة بطيئة في الوصول لأنها يجب أن تلفّ البكرة إلى الموقع الصحيح. ومع أن معظم مستخدمي الحواسيب لم يعودوا يصادفونها كثيرًا، فإن محركات الأشرطة ما زالت تُستخدم بكثرة لعمليات التخزين الضخمة (مثل النسخ الاحتياطي للبيانات الكبيرة) التي يُتوقع أن تكون إعادة قراءة البيانات فيها نادرة. وتنظّم محركات الأشرطة الحديثة بكرة الشريط المغناطيسي في خراطيش صغيرة لسهولة الاستخدام.
 
-![Photos of classic secondary storage devices.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-StorageDevices.webp) Figure 2. Example photos of (a) a punch card, (b) a magnetic tape spool, and (c) a variety of floppy disk sizes. Images from [Wikipedia](https://www.wikipedia.org).
+![Photos of classic secondary storage devices.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-StorageDevices.webp){#FigStorageDevices} Figure 2. Example photos of (a) a punch card, (b) a magnetic tape spool, and (c) a variety of floppy disk sizes. Images from [Wikipedia](https://www.wikipedia.org).
 
 والوسائط القابلة للإزالة مثل [الأقراص المرنة](https://en.wikipedia.org/wiki/Floppy_disk) و[الأقراص الضوئية](https://en.wikipedia.org/wiki/Optical_disc) شكل شائع آخر من التخزين الثانوي. وتحتوي الأقراص المرنة مغزلًا من وسائط التسجيل المغناطيسية يدور فوق رأس قرص يقرأ محتوياته ويكتب فيها. ويعرض [الشكل 2](#FigStorageDevices) صورًا لبطاقة مثقّبة ومحرك شريط وقرص مرن. وتخزّن الأقراص الضوئية مثل CD وDVD وBlu-ray المعلومات عبر نقرات صغيرة على القرص. ويقرأ المشغّل القرص بتسليط ليزر عليه، ويؤدي وجود النقرات أو غيابها إلى انعكاس الحزمة (أو عدمه)، فيُرمَّز الصفر والواحد.
 
@@ -100,13 +100,13 @@ source: https://diveintosystems.org/book/C11-MemHierarchy/index.html
 
 يوصّف [الجدول 2](#TabSecondaryStorage) أجهزة التخزين الثانوي المتاحة عادةً لمحطات العمل اليوم. ويعرض [الشكل 3](#FigIOBus) كيف يمر المسار من التخزين الثانوي إلى الذاكرة الرئيسية عمومًا عبر عدة أجهزة تحكم وسيطة. فمثلًا، يتصل قرص صلب نموذجي بمتحكم Serial ATA، الذي يتصل بمتحكم الإدخال/الإخراج في النظام، الذي يتصل بدوره بناقل الذاكرة. وتجعل هذه الأجهزة الوسيطة الأقراص أسهل استخدامًا بتجريد تفاصيل اتصال القرص عن نظام التشغيل والمبرمج. غير أنها تدخل أيضًا تأخيرات في النقل عند تدفق البيانات عبر الأجهزة الإضافية.
 
-![The CPU cache is located on the CPU, in between the registers and the CPU’s connection to the memory bus. Also connected to the memory bus is an I/O controller, which in turn connects to several other more specific controllers like SATA, USB, and IDE.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-IOBus.webp) Figure 3. Secondary storage and I/O bus architecture
+![The CPU cache is located on the CPU, in between the registers and the CPU’s connection to the memory bus. Also connected to the memory bus is an I/O controller, which in turn connects to several other more specific controllers like SATA, USB, and IDE.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-IOBus.webp){#FigIOBus} Figure 3. Secondary storage and I/O bus architecture
 
 وأكثر جهازي تخزين ثانوي شيوعًا اليوم هما **محركات الأقراص الصلبة** (HDD) و**محركات الأقراص ذات الحالة الصلبة** (SSD) القائمة على الفلاش. ويتألف القرص الصلب من عدد قليل من الأقراص المسطحة الدائرية المصنوعة من مادة تتيح التسجيل المغناطيسي. وتدور الأقراص بسرعة، عادةً بسرعات تتراوح بين 5,000 و15,000 دورة في الدقيقة. وأثناء دوران الأقراص، يتحرك ذراع ميكانيكي صغير في طرفه رأس قرص عبر القرص لقراءة البيانات أو كتابتها على مسارات متحدة المركز (مناطق من القرص تقع عند القطر نفسه).
 
 ويوضح [الشكل 4](#FigDiskParts) المكوّنات الرئيسية لـ[قرص صلب](https://en.wikipedia.org/wiki/Hard_disk_drive). وقبل الوصول إلى البيانات، يجب أن يحاذي القرص رأس القرص مع المسار الذي يحتوي البيانات المطلوبة. وتتطلب المحاذاة بسط الذراع أو سحبها حتى يستقر الرأس فوق المسار. ويُسمى تحريك ذراع القرص **البحث** (seeking)، ولأنه يتطلب حركة ميكانيكية، فإن البحث يدخل تأخيرًا صغيرًا يُعرف بـ **زمن البحث** (seek time) في الوصول إلى البيانات (بضعة أجزاء من الألف من الثانية). وعندما يكون الذراع في الموضع الصحيح، يجب أن ينتظر القرص دوران القرص حتى يصبح رأس القرص فوق الموقع الذي يخزّن البيانات المطلوبة مباشرةً. ويُدخل ذلك تأخيرًا قصيرًا آخر (بضعة أجزاء أخرى من الألف من الثانية) يُعرف بـ **زمن الوصول الدوراني** (rotational latency). وبالتالي، بسبب خصائصها الميكانيكية، تُظهر الأقراص الصلبة أزمنة وصول أعلى بكثير من أجهزة التخزين الأساسي الموصوفة سابقًا.
 
-![A photo of the internals of a hard disk with its parts labeled.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-DiskParts.webp) Figure 4. The major components of a hard disk drive
+![A photo of the internals of a hard disk with its parts labeled.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-DiskParts.webp){#FigDiskParts} Figure 4. The major components of a hard disk drive
 
 وفي السنوات القليلة الماضية، سرعان ما برزت مكانة أقراص SSD التي لا تحتوي أجزاء متحركة (وبالتالي زمن وصول أدنى). وسُمّيت محركات الأقراص ذات الحالة الصلبة لأنها لا تعتمد على حركة ميكانيكية. ومع وجود عدة تقنيات للحالة الصلبة، فإن [ذاكرة الفلاش](https://en.wikipedia.org/wiki/Flash_memory) تتفوق على غيرها في أجهزة SSD التجارية. وتتجاوز التفاصيل التقنية لذاكرة الفلاش نطاق هذا الكتاب، لكن يكفي القول إن الأجهزة القائمة على الفلاش تتيح قراءة البيانات وكتابتها ومحوها بسرعات أعلى من الأقراص الصلبة التقليدية. ومع أنها لا تخزّن البيانات بكثافة نظيراتها الميكانيكية بعد، فقد حلّت إلى حد كبير محل الأقراص الدوارة في معظم أجهزة المستهلكين مثل الحواسيب المحمولة.
 
@@ -159,7 +159,7 @@ int sum_array(int *array, int len) {
 
 للمساعدة في توضيح كيف يتيح مفهوما المحلية الزمنية والمكانية تصميم الذاكرات المؤقتة، سنتبنى سيناريو مثالًا بأشياء مألوفة من العالم الواقعي: الكتب. لنفترض أن Fiona تؤدي كل واجباتها على مكتب في غرفتها الجامعية، وأن للمكتب مساحة صغيرة لا تتسع إلا لثلاثة كتب. وتحتفظ خارج غرفتها برف كتب فيه مساحة أكبر بكثير من المكتب. وأخيرًا، تملك كليتها عبر الحرم الجامعي مكتبة فيها تنوع هائل من الكتب. وقد يبدو «هرم تخزين الكتب» في هذا المثال شبيهًا بـ[الشكل 1](#FigBookHierarchy). وبالنظر إلى هذا السيناريو، سنستكشف كيف تساعد المحلية في توجيه اختيار موقع التخزين الذي ينبغي أن تستخدمه Fiona لتخزين كتبها.
 
-![In order, from (quick access, low capacity) to (slow access, high capacity): desk, shelf, library.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-BookHierarchy.webp) Figure 1. A hypothetical book storage hierarchy
+![In order, from (quick access, low capacity) to (slow access, high capacity): desk, shelf, library.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-BookHierarchy.webp){#FigBookHierarchy} Figure 1. A hypothetical book storage hierarchy
 
 ### 11.3.3. المحلية الزمنية {#_temporal_locality}
 
@@ -221,13 +221,13 @@ int sum_array(int *array, int len) {
 
 ويعرض [الشكل 1](#FigDirectMapping) كيفية تخطيط عناوين الذاكرة إلى أسطر الذاكرة المؤقتة في ذاكرة مؤقتة صغيرة مُخطَّطة مباشرة لها أربعة أسطر وحجم كتلة 32 بايتًا. تذكّر أن حجم الكتلة في الذاكرة المؤقتة يمثل أصغر وحدة نقل للبيانات بين الذاكرة المؤقتة والذاكرة الرئيسية. وبالتالي، يقع كل عنوان ذاكرة ضمن مجال واحد بطول 32 بايتًا، ويخطّط كل مجال إلى سطر ذاكرة مؤقتة واحد.
 
-![Each 32-byte region of memory maps to one cache line in a repeating striped pattern. That is, memory regions 0, 4, 8, …​ map to line 0, regions 1, 5, 9, …​ map to line 1, regions 2, 6, 10, …​ map to line 2, and regions 3, 7, 11, …​ map to line 3.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-DirectMapping.webp) Figure 1. An example mapping of memory addresses to cache lines in a four-line direct-mapped cache with 32-byte cache blocks
+![Each 32-byte region of memory maps to one cache line in a repeating striped pattern. That is, memory regions 0, 4, 8, …​ map to line 0, regions 1, 5, 9, …​ map to line 1, regions 2, 6, 10, …​ map to line 2, and regions 3, 7, 11, …​ map to line 3.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-DirectMapping.webp){#FigDirectMapping} Figure 1. An example mapping of memory addresses to cache lines in a four-line direct-mapped cache with 32-byte cache blocks
 
 لاحظ أنه مع أن كل منطقة من الذاكرة تخطّط إلى سطر ذاكرة مؤقتة واحد فقط، فكثير من مجالات الذاكرة تخطّط إلى السطر *نفسه*. وتتنافس جميع مناطق الذاكرة التي تخطّط إلى السطر نفسه (أي الأجزاء ذات اللون نفسه في [الشكل 1](#FigDirectMapping)) على المساحة في سطر الذاكرة المؤقتة نفسه، فلا يمكن أن تقيم في الذاكرة المؤقتة في الوقت نفسه إلا منطقة واحدة من كل لون.
 
 وتخطّط الذاكرة المؤقتة عنوان الذاكرة إلى سطر ذاكرة مؤقتة باستخدام جزء من بتات عنوان الذاكرة. ولتوزيع البيانات بشكل أكثر تساويًا بين أسطر الذاكرة المؤقتة، تستخدم الذاكرات المؤقتة بتات مأخوذة من *وسط* عنوان الذاكرة، تُعرف بـ **الفهرس** (index) في العنوان، لتحديد السطر الذي يخطّط إليه العنوان. ويحدد عدد البتات المستخدمة فهرسًا (وهو متغير) عدد الأسطر التي ستحتفظ بها الذاكرة المؤقتة. ويعرض [الشكل 2](#FigAddressIndex) جزء الفهرس من عنوان ذاكرة يشير إلى سطر ذاكرة مؤقتة.
 
-![An address is divided into three regions, and the middle region points to one row (cache line) of a table (direct-mapped cache).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-AddressIndex.webp) Figure 2. The middle *index* portion of a memory address identifies a cache line.
+![An address is divided into three regions, and the middle region points to one row (cache line) of a table (direct-mapped cache).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-AddressIndex.webp){#FigAddressIndex} Figure 2. The middle *index* portion of a memory address identifies a cache line.
 
 ويقلل استخدام وسط العنوان من التنافس على سطر الذاكرة المؤقتة نفسه عندما تتجمع بيانات البرنامج معًا، وهو ما يحدث كثيرًا في البرامج التي تُظهر محلية جيدة. أي أن البرامج تميل إلى تخزين المتغيرات قريبة من بعضها في أحد مواضع قليلة (مثل المكدّس أو الكومة). وتتشارك هذه المتغيرات المتجمعة بتات العنوان العليا نفسها. ولذلك فإن الفهرسة بالبتات العليا ستجعل المتغيرات المتجمعة كلها تخطّط إلى أسطر الذاكرة المؤقتة نفسها، تاركةً بقية الذاكرة المؤقتة دون استخدام. وباستخدام بتات من وسط العنوان، توزّع الذاكرات المؤقتة البيانات بشكل أكثر تساويًا بين أسطر الذاكرة المؤقتة المتاحة.
 
@@ -241,13 +241,13 @@ int sum_array(int *array, int len) {
 
 ولكي ينتج البحث في الذاكرة المؤقتة إصابة، يجب أن يطابق حقل الوسم المخزَّن في السطر جزء الوسم (البتات العليا) من عنوان الذاكرة المطلوب في البرنامج تطابقًا تامًا. ويشير عدم تطابق الوسم إلى أن كتلة بيانات سطر الذاكرة المؤقتة لا تحتوي الذاكرة المطلوبة، حتى لو كان السطر يخزّن بيانات صالحة. ويوضح [الشكل 3](#FigAddressTag) كيف تقسم الذاكرة المؤقتة عنوان ذاكرة إلى وسم وفهرس، وتستخدم بتات الفهرس لاختيار سطر الذاكرة المؤقتة المستهدف، وتتحقق من بت الصلاحية للسطر، وتفحص وسم السطر بحثًا عن تطابق.
 
-![The cache sends the address’s tag to a comparator circuit to check whether it matches the tag stored in the cache line.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-AddressTag.webp) Figure 3. After using the requested memory address’s index bits to locate the proper cache line, the cache simultaneously verifies the line’s valid bit and checks its tag against the requested address’s tag. If the line is valid with a matching tag, the lookup succeeds as a hit.
+![The cache sends the address’s tag to a comparator circuit to check whether it matches the tag stored in the cache line.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-AddressTag.webp){#FigAddressTag} Figure 3. After using the requested memory address’s index bits to locate the proper cache line, the cache simultaneously verifies the line’s valid bit and checks its tag against the requested address’s tag. If the line is valid with a matching tag, the lookup succeeds as a hit.
 
 #### استرجاع البيانات المخزَّنة مؤقتًا {#_retrieving_cached_data}
 
 وأخيرًا، بعد استخدام عنوان الذاكرة المطلوب في البرنامج لإيجاد سطر الذاكرة المؤقتة المناسب، والتحقق من أن السطر يحمل مجموعة جزئية صالحة من الذاكرة تحتوي ذلك العنوان، ترسل الذاكرة المؤقتة البيانات المطلوبة إلى مكوّنات المعالج التي تحتاجها. ولأن حجم كتلة بيانات سطر الذاكرة المؤقتة (مثلًا 64 بايتًا) أكبر عادةً بكثير من مقدار البيانات التي تطلبها البرامج (مثلًا 4 بايتات)، تستخدم الذاكرات المؤقتة البتات الدنيا من العنوان المطلوب كـ**إزاحة** (offset) داخل كتلة البيانات المخزَّنة مؤقتًا. ويوضح [الشكل 4](#FigAddressOffset) كيف يحدد جزء الإزاحة من العنوان أي بايتات من كتلة الذاكرة المؤقتة يتوقع البرنامج استرجاعها.
 
-![A subset of the cache data block’s cells are highlighted to match the color of an address’s offset portion.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-AddressOffset.webp) Figure 4. Given a cache data block, the offset portion of an address identifies which bytes the program wants to retrieve.
+![A subset of the cache data block’s cells are highlighted to match the color of an address’s offset portion.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-AddressOffset.webp){#FigAddressOffset} Figure 4. Given a cache data block, the offset portion of an address identifies which bytes the program wants to retrieve.
 
 #### تقسيم عنوان الذاكرة {#_memory_address_division}
 
@@ -257,7 +257,7 @@ int sum_array(int *array, int len) {
 
 ويبدأ جزء *الفهرس* من العنوان مباشرةً على يسار الإزاحة. ولتحديد عدد بتات الفهرس، فكّر في عدد الأسطر في الذاكرة المؤقتة، بما أن الفهرس يحتاج بتات كافية لتحديد كل سطر تحديدًا فريدًا. وبمنطق مشابه لمنطق الإزاحة، تحتاج ذاكرة مؤقتة فيها 1,024 سطرًا إلى 10 بتات للفهرس (log2 1,024 = 10). وبالمثل، على ذاكرة مؤقتة تستخدم 12 بتًا للفهرس أن تحتوي 4,096 سطرًا (212 = 4,096).
 
-![With i index bits, an address can refer to 2^i^ lines. With f offset bits, an address can refer to 2^f^ bytes in a cache data block.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-4-AddressBits.webp) Figure 5. The index portion of an address uniquely identifies a cache line, and the offset portion uniquely identifies a position in the line’s data block.
+![With i index bits, an address can refer to 2^i^ lines. With f offset bits, an address can refer to 2^f^ bytes in a cache data block.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-4-AddressBits.webp){#FigAddressBits} Figure 5. The index portion of an address uniquely identifies a cache line, and the offset portion uniquely identifies a position in the line’s data block.
 
 وتشكّل بتات العنوان المتبقية الوسم. ولأن الوسم يجب أن يحدد بشكل فريد المجموعة الجزئية من الذاكرة الموجودة داخل سطر الذاكرة المؤقتة، يجب أن يستخدم الوسم *كل* بتات العنوان المتبقية غير المطالب بها. فمثلًا، إذا استخدمت آلة عناوين باثنين وثلاثين بتًا، فإن ذاكرة مؤقتة بخمس بتات إزاحة و10 بتات فهرس تستخدم البتات الـ17 المتبقية من العنوان (32 - 15 = 17) لتمثيل الوسم.
 
@@ -271,7 +271,7 @@ int sum_array(int *array, int len) {
 
 تبدأ الذاكرة المؤقتة فارغة (جميع الأسطر غير صالحة)، كما يظهر في [الشكل 6](#FigDirectExample0).
 
-![A cache with lines marked from 0 to 127. Each line is currently invalid.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-5-DirectExample0.webp) Figure 6. An empty direct-mapped example cache
+![A cache with lines marked from 0 to 127. Each line is currently invalid.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-5-DirectExample0.webp){#FigDirectExample0} Figure 6. An empty direct-mapped example cache
 
 لنفترض أن برنامجًا يعمل على هذا المعالج يصل إلى مواقع الذاكرة التالية:
 
@@ -296,13 +296,13 @@ int sum_array(int *array, int len) {
 - *الفهرس*: ذاكرة مؤقتة فيها 128 سطرًا تعني أن البتات السبعة التالية من العنوان (log2 128 = 7) تشكّل جزء الفهرس. وبسبع بتات، يستطيع الفهرس تحديد كل سطر ذاكرة مؤقتة تحديدًا فريدًا.
 - *الوسم*: يتألف الوسم من أي بتات عنوان متبقية لا تنتمي إلى الإزاحة أو الفهرس. وهنا، تبقى للعنوان أربع بتات تشكّل الوسم (16 - (5 + 7) = 4).
 
-![Result: miss, the line was invalid prior to access.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-6-DirectExample1.webp) Figure 7. Read from address 1010000001100100. Index 0000011 (line 3) is invalid, so the request misses and the cache loads data from main memory.
+![Result: miss, the line was invalid prior to access.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-6-DirectExample1.webp){#FigDirectExample1} Figure 7. Read from address 1010000001100100. Index 0000011 (line 3) is invalid, so the request misses and the cache loads data from main memory.
 
-![Result: hit, the line is valid, and the tag matches.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-7-DirectExample2.webp) Figure 8. Read from address 1010000001100111. Index 0000011 (line 3) is valid, and the tag (1010) matches, so the request hits. The cache yields data beginning at byte 7 (offset 0b00111) of its data block.
+![Result: hit, the line is valid, and the tag matches.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-7-DirectExample2.webp){#FigDirectExample2} Figure 8. Read from address 1010000001100111. Index 0000011 (line 3) is valid, and the tag (1010) matches, so the request hits. The cache yields data beginning at byte 7 (offset 0b00111) of its data block.
 
-![Result: miss, the line was invalid prior to access.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-8-DirectExample3.webp) Figure 9. Read from address 1001000000100000. Index 0000001 (line 1) is invalid, so the request misses and the cache loads data from main memory.
+![Result: miss, the line was invalid prior to access.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-8-DirectExample3.webp){#FigDirectExample3} Figure 9. Read from address 1001000000100000. Index 0000001 (line 1) is invalid, so the request misses and the cache loads data from main memory.
 
-![Result: miss, the line is valid, but the tag doesn’t match.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-9-DirectExample4.webp) Figure 10. Read from address 1111000001100101. Index 0000011 (line 3) is valid, but the tag doesn’t match, so the request misses and the cache loads data from main memory.
+![Result: miss, the line is valid, but the tag doesn’t match.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-9-DirectExample4.webp){#FigDirectExample4} Figure 10. Read from address 1111000001100101. Index 0000011 (line 3) is valid, but the tag doesn’t match, so the request misses and the cache loads data from main memory.
 
 #### الكتابة إلى بيانات مخزَّنة مؤقتًا {#_writing_to_cached_data}
 
@@ -313,7 +313,7 @@ int sum_array(int *array, int len) {
 
 ولتحديد كتل الذاكرة المؤقتة التي تختلف محتوياتها عن نظيراتها في الذاكرة الرئيسية، يخزّن كل سطر في ذاكرة الكتابة المرتجعة بتًا إضافيًا من البيانات الوصفية يُعرف بـ **بت القذارة** (dirty bit). وعند إخلاء كتلة البيانات من سطر قذر، يجب أولًا كتابة بيانات كتلة الذاكرة المؤقتة عودةً إلى الذاكرة الرئيسية لمزامنة محتوياتهما. ويعرض [الشكل 11](#FigCacheDirty) ذاكرة مؤقتة مُخطَّطة مباشرة تتضمن بت قذارة لوسم الأسطر التي يجب كتابتها إلى الذاكرة عند الإخلاء.
 
-![The dirty bit is a one-bit flag that indicates whether the data stored in a cache line has been written. When set, the data in the cache is out of sync with main memory and must be written back to memory before eviction.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-10-CacheDirty.webp) Figure 11. Cache extended with a dirty bit
+![The dirty bit is a one-bit flag that indicates whether the data stored in a cache line has been written. When set, the data in the cache is out of sync with main memory and must be written back to memory before eviction.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-10-CacheDirty.webp){#FigCacheDirty} Figure 11. Cache extended with a dirty bit
 
 وكما هي العادة، يكشف الفرق بين التصميمين عن مقايضة. فالذاكرات المؤقتة بالكتابة المباشرة أقل تعقيدًا من ذاكرات الكتابة المرتجعة، وتتفادى تخزين بيانات وصفية إضافية على شكل بت قذارة لكل سطر. وفي المقابل، تقلل ذاكرات الكتابة المرتجعة كلفة الكتابات المتكررة إلى الموقع نفسه في الذاكرة.
 
@@ -328,9 +328,9 @@ int sum_array(int *array, int len) {
 1. كتابة إلى العنوان: 1111000001100000
 2. كتابة إلى العنوان: 1010000001100100
 
-![Result: hit, the line is valid, and the tag matches. Set dirty bit to 1 on write.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-11-DirectExample5.webp) Figure 12. Write to address 1111000001100000. Index 0000011 (line 3) is valid, and the tag (1111) matches, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1.
+![Result: hit, the line is valid, and the tag matches. Set dirty bit to 1 on write.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-11-DirectExample5.webp){#FigDirectExample5} Figure 12. Write to address 1111000001100000. Index 0000011 (line 3) is valid, and the tag (1111) matches, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1.
 
-![Result: miss, the line is valid, but the tag doesn’t match. Save cache data block to memory before evicting it. Set dirty bit to 1 on write (again).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-12-DirectExample6.webp) Figure 13. Write to address 1010000001100100. Index 0000011 (line 3) is valid, but the tag doesn’t match, so the request misses. Because the target line is both valid and dirty, the cache must save the existing data block to main memory before loading the new one. This access is a write, so the cache sets the newly loaded line’s dirty bit to 1.
+![Result: miss, the line is valid, but the tag doesn’t match. Save cache data block to memory before evicting it. Set dirty bit to 1 on write (again).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-12-DirectExample6.webp){#FigDirectExample6} Figure 13. Write to address 1010000001100100. Index 0000011 (line 3) is valid, but the tag doesn’t match, so the request misses. Because the target line is both valid and dirty, the cache must save the existing data block to main memory before loading the new one. This access is a write, so the cache sets the newly loaded line’s dirty bit to 1.
 
 في عمليتي الوصول الرابعة والسادسة في المثال، تُخلي الذاكرة المؤقتة بيانات لأن منطقتين من الذاكرة تتنافسان على سطر الذاكرة المؤقتة نفسه. وبعد ذلك، سنستكشف تصميمًا آخر للذاكرة المؤقتة يهدف إلى تقليل هذا النوع من التنافس.
 
@@ -358,7 +358,7 @@ int sum_array(int *array, int len) {
 
 وإذا احتوى أي من أسطر المجموعة الصالحة وسمًا يطابق جزء الوسم من العنوان، فإن السطر المطابق يُكمل البحث. وعندما يضيّق البحث النطاق إلى سطر ذاكرة مؤقتة واحد فقط، يتقدم كما في الذاكرة المُخطَّطة مباشرة: تستخدم الذاكرة المؤقتة *إزاحة* العنوان لإرسال البايتات المطلوبة من كتلة الذاكرة المؤقتة في السطر إلى المكوّنات الحسابية في المعالج.
 
-![The cache sends the address’s tag to two comparator circuits in parallel to check whether it matches the tag stored in either cache line of the set.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-13-AssocLookup.webp) Figure 14. Valid bit verification and tag matching in a two-way set associative cache
+![The cache sends the address’s tag to two comparator circuits in parallel to check whether it matches the tag stored in either cache line of the set.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-13-AssocLookup.webp){#FigAssocLookup} Figure 14. Valid bit verification and tag matching in a two-way set associative cache
 
 تقلل المرونة الإضافية المتمثلة في أسطر ذاكرة مؤقتة متعددة في المجموعة من التعارضات، لكنها تدخل أيضًا عقبة جديدة: عند تحميل قيمة في الذاكرة المؤقتة (وعند إخلاء بيانات مقيمة فيها بالفعل)، يجب أن تقرر الذاكرة المؤقتة *أي* خيارات الأسطر ستستخدم.
 
@@ -368,7 +368,7 @@ int sum_array(int *array, int len) {
 
 ويوضح [الشكل 15](#FigCacheLRU) ذاكرة مؤقتة ترابط المجموعات من مسلكين، أي أن كل مجموعة تضم سطرين. وبسطرين فقط، تحتاج كل مجموعة بتًا واحدًا من بيانات LRU الوصفية لتتبّع أي سطر استُخدم قبل أطول مدة. وفي الشكل، تشير قيمة LRU البالغة صفرًا إلى أن السطر الأيسر هو الأقل استخدامًا مؤخرًا، وتشير القيمة واحد إلى أن السطر الأيمن هو الأقل استخدامًا مؤخرًا.
 
-![The LRU bit is a one-bit flag that indicates whether the leftmost line of the set was least recently used (LRU = 0) or the rightmost line of the set was least recently used (LRU = 1).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-14-CacheLRU.webp) Figure 15. A two-way set associative cache in which each set stores one bit of LRU metadata to inform eviction decisions **Warning**
+![The LRU bit is a one-bit flag that indicates whether the leftmost line of the set was least recently used (LRU = 0) or the rightmost line of the set was least recently used (LRU = 1).](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-14-CacheLRU.webp){#FigCacheLRU} Figure 15. A two-way set associative cache in which each set stores one bit of LRU metadata to inform eviction decisions **Warning**
 
 > اختيار [الشكل 15](#FigCacheLRU) أن الصفر يعني «يسار» والواحد يعني «يمين» اختيار اعتباطي. ويختلف تفسير بتات LRU من ذاكرة مؤقتة إلى أخرى. وإذا طُلب منك التعامل مع ذاكرات مؤقتة في واجب دراسي، فلا تفترض أن الواجب يستخدم مخطط ترميز LRU نفسه!
 
@@ -383,7 +383,7 @@ int sum_array(int *array, int len) {
 
 في البداية، تكون الذاكرة المؤقتة فارغة (جميع الأسطر غير صالحة وبتات LRU صفر)، كما يظهر في [الشكل 16](#FigAssocExample0).
 
-![A cache with sets marked from 0 to 63. Each set has two lines that are both invalid. Each set’s LRU bit starts at 0.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-15-AssocExample0.webp) Figure 16. An empty two-way set associative example cache
+![A cache with sets marked from 0 to 63. Each set has two lines that are both invalid. Each set’s LRU bit starts at 0.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-15-AssocExample0.webp){#FigAssocExample0} Figure 16. An empty two-way set associative example cache
 
 لنفترض أن برنامجًا يعمل على هذا المعالج يصل إلى مواقع الذاكرة التالية (مثل مثال المُخطَّطة مباشرة):
 
@@ -402,17 +402,17 @@ int sum_array(int *array, int len) {
 - *الفهرس*: ذاكرة مؤقتة فيها 64 مجموعة تعني أن البتات الست التالية من العنوان (log2 64 = 6) تشكّل جزء الفهرس. وتتيح ست بتات للفهرس تحديد كل مجموعة في الذاكرة المؤقتة تحديدًا فريدًا.
 - *الوسم*: يتألف الوسم من أي بتات متبقية في العنوان لا تنتمي إلى الإزاحة أو الفهرس. وهنا، تبقى للعنوان خمس بتات للوسم (16 - (5 + 6) = 5).
 
-![miss, both lines in set 3 are invalid prior to the access. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-16-AssocExample1.webp) Figure 17. Read from address 1010000001100100. Both lines at index 000011 (set 3) are invalid, so the request misses, and the cache loads data from main memory. The set’s LRU bit is 0, so the cache loads data into the left line and updates the LRU bit to 1.
+![miss, both lines in set 3 are invalid prior to the access. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-16-AssocExample1.webp){#FigAssocExample1} Figure 17. Read from address 1010000001100100. Both lines at index 000011 (set 3) are invalid, so the request misses, and the cache loads data from main memory. The set’s LRU bit is 0, so the cache loads data into the left line and updates the LRU bit to 1.
 
-![hit, one line in the set is valid and holds a matching tag.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-17-AssocExample2.webp) Figure 18. Read from address 1010000001100111. The left line at index 000011 (set 3) holds a matching tag, so the request hits.
+![hit, one line in the set is valid and holds a matching tag.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-17-AssocExample2.webp){#FigAssocExample2} Figure 18. Read from address 1010000001100111. The left line at index 000011 (set 3) holds a matching tag, so the request hits.
 
-![miss, both lines in set 1 are invalid prior to the access. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-18-AssocExample3.webp) Figure 19. Read from address 1001000000100000. Both lines at index 000001 (set 1) are invalid, so the request misses, and the cache loads data from main memory. The set’s LRU bit is 0, so the cache loads data into the left line and updates the LRU bit to 1.
+![miss, both lines in set 1 are invalid prior to the access. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-18-AssocExample3.webp){#FigAssocExample3} Figure 19. Read from address 1001000000100000. Both lines at index 000001 (set 1) are invalid, so the request misses, and the cache loads data from main memory. The set’s LRU bit is 0, so the cache loads data into the left line and updates the LRU bit to 1.
 
-![miss, one line’s tag doesn’t match, and the other is invalid. Update LRU bit to 0.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-19-AssocExample4.webp) Figure 20. Read from address 1111000001100101. At index 000011 (set 3), one line’s tag doesn’t match, and the other line is invalid, so the request misses. The set’s LRU bit is 1, so the cache loads data into the right line and updates the LRU bit to 0.
+![miss, one line’s tag doesn’t match, and the other is invalid. Update LRU bit to 0.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-19-AssocExample4.webp){#FigAssocExample4} Figure 20. Read from address 1111000001100101. At index 000011 (set 3), one line’s tag doesn’t match, and the other line is invalid, so the request misses. The set’s LRU bit is 1, so the cache loads data into the right line and updates the LRU bit to 0.
 
-![hit, one of the valid lines holds a matching tag. Set the line’s dirty bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-20-AssocExample5.webp) Figure 21. Write to address 1111000001100000. The right line at index 000011 (set 3) is valid and holds a matching tag, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1. The LRU bit remains 0 to indicate that the left line remains least recently used.
+![hit, one of the valid lines holds a matching tag. Set the line’s dirty bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-20-AssocExample5.webp){#FigAssocExample5} Figure 21. Write to address 1111000001100000. The right line at index 000011 (set 3) is valid and holds a matching tag, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1. The LRU bit remains 0 to indicate that the left line remains least recently used.
 
-![hit, one of the valid lines holds a matching tag. Set the line’s dirty bit to 1. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-21-AssocExample6.webp) Figure 22. Write to address 1010000001100100. The left line at index 000011 (set 3) is valid and holds a matching tag, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1. After accessing the left line, the cache sets the line’s LRU bit to 1.
+![hit, one of the valid lines holds a matching tag. Set the line’s dirty bit to 1. Update LRU bit to 1.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-21-AssocExample6.webp){#FigAssocExample6} Figure 22. Write to address 1010000001100100. The left line at index 000011 (set 3) is valid and holds a matching tag, so the request hits. Because this access is a write, the cache sets the line’s dirty bit to 1. After accessing the left line, the cache sets the line’s LRU bit to 1.
 
 في هذا المثال، تسلسل الوصول نفسه إلى الذاكرة الذي أنتج إخفاقَي تعارض في ذاكرة مُخطَّطة مباشرة لا يعاني أي تعارض في ذاكرة ترابط المجموعات من مسلكين.
 
@@ -618,7 +618,7 @@ Auto-annotation:  off
 
 ركّزت مناقشتنا للتخزين المؤقت حتى الآن على مستوى واحد من ذاكرة التخزين المؤقت على معالج أحادي النواة. لكن المعالجات الحديثة متعددة الأنوية وفيها عدة مستويات من الذاكرة المؤقتة. وعادةً يحتفظ كل نواة بذاكرة مؤقتة خاصة بها في أعلى مستوى (مستويات) هرم الذاكرة، ويتشارك الجميع ذاكرة مؤقتة واحدة في المستويات الأدنى. ويعرض [الشكل 1](#multicorememhierarchy) مثالًا على هرم الذاكرة في معالج رباعي الأنوية تحتوي فيه كل نواة على ذاكرة L1 مؤقتة خاصة، بينما تتشارك الأنوية الأربع ذاكرة L2 المؤقتة.
 
-![An example four-core processor system where each core has its own L1 cache, and all cores share a single L2 cache, with shared RAM underneath.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MulticoreCache.webp) Figure 1. An example memory hierarchy on a multicore processor. Each of the four cores has its own private L1 cache, and all four cores share a single L2 cache that they access through a shared bus. The multicore processor connects to RAM via the memory bus.
+![An example four-core processor system where each core has its own L1 cache, and all cores share a single L2 cache, with shared RAM underneath.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-0-MulticoreCache.webp){#multicorememhierarchy} Figure 1. An example memory hierarchy on a multicore processor. Each of the four cores has its own private L1 cache, and all four cores share a single L2 cache that they access through a shared bus. The multicore processor connects to RAM via the memory bus.
 
 تذكّر أن المستويات الأعلى في هرم الذاكرة أسرع في الوصول وأصغر سعة من المستويات الأدنى. وبذلك تكون ذاكرة L1 المؤقتة أصغر وأسرع من ذاكرة L2 المؤقتة، التي تكون بدورها أصغر وأسرع من RAM. وتذكّر أيضًا أن الذاكرة المؤقتة تخزّن نسخة من قيمة من مستوى أدنى في هرم الذاكرة؛ فالقيمة المخزَّنة في ذاكرة L1 المؤقتة نسخة من القيمة نفسها المخزَّنة في ذاكرة L2 المؤقتة، التي هي نسخة من القيمة نفسها المخزَّنة في RAM. وبذلك تعمل المستويات الأعلى في هرم الذاكرة كذاكرات مؤقتة للمستويات الأدنى. ونتيجة لذلك، في مثال [الشكل 1](#multicorememhierarchy)، تكون ذاكرة L2 المؤقتة ذاكرة مؤقتة لمحتويات RAM، وتكون ذاكرة L1 المؤقتة في كل نواة ذاكرة مؤقتة لمحتويات ذاكرة L2.
 
@@ -703,17 +703,17 @@ $ cat /sys/devices/system/cpu/cpu0/cache/index*/shared_cpu_list
 
 وتتتبع [الأشكال 2](#mesistart) حتى [4](#mesiread) مثالًا على تطبيق بروتوكول MSI لضمان تماسك عمليات القراءة والكتابة في كتلة ذاكرة مخزَّنة مؤقتًا في ذاكرات L1 الخاصة بنواتين. وفي [الشكل 2](#mesistart)، يبدأ مثالنا بنسخ كتلة البيانات المشتركة في ذاكرة L1 المؤقتة لكلتا النواتين مع ضبط علم S، ما يعني أن النسخ المخزَّنة مؤقتًا في L1 مطابقة لقيمة الكتلة في ذاكرة L2 المؤقتة (جميع النسخ تخزّن القيمة الحالية للكتلة، وهي 6). وعند هذه النقطة، تستطيع النواتان 0 و1 القراءة بأمان من النسخة المخزَّنة في ذاكرتيهما المؤقتتين من L1 من دون تفعيل إجراءات التماسك (فعلم S يدل على أن نسختهما المشتركة محدَّثة).
 
-![An example illustrating a block of memory copied into two core’s L1 caches, both in the S state.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-MSIstart.webp) Figure 2. At the start, both cores have a copy of the block in their private L1 caches with the S flag set (in Shared mode)
+![An example illustrating a block of memory copied into two core’s L1 caches, both in the S state.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-1-MSIstart.webp){#mesistart} Figure 2. At the start, both cores have a copy of the block in their private L1 caches with the S flag set (in Shared mode)
 
 وإذا كتبت النواة 0 بعد ذلك في نسخة الكتلة المخزَّنة في ذاكرتها المؤقتة من L1، يُخطر متحكم ذاكرة L1 المؤقتة لديها ذاكرات L1 المؤقتة الأخرى بأن تُبطل نسختها من الكتلة. فيُلغي متحكم ذاكرة L1 المؤقتة في النواة 1 ضبط علم S ويضبط علم I في نسخته، دلالةً على أن نسخته من الكتلة بائتة. وتكتب النواة 0 في نسختها من الكتلة في ذاكرة L1 المؤقتة لديها (فتغيّر قيمتها إلى 7 في مثالنا)، وتضبط علم M وتُلغي ضبط علم S في سطر الذاكرة المؤقتة دلالةً على أن نسختها عُدِّلت وتخزّن القيمة الحالية للكتلة. وعند هذه النقطة، تكون النسختان في ذاكرة L2 المؤقتة وفي ذاكرة L1 المؤقتة للنواة 1 بائتتين. وتظهر حالة الذاكرة المؤقتة الناتجة في [الشكل 3](#mesiwrite).
 
-![An example illustrating the steps taken by the MSI protocol on a write to a block of memory that is shared by more than one L1 cache.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-MSIwrite.webp) Figure 3. The resulting state of the caches after Core 0 writes to its copy of the block
+![An example illustrating the steps taken by the MSI protocol on a write to a block of memory that is shared by more than one L1 cache.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-2-MSIwrite.webp){#mesiwrite} Figure 3. The resulting state of the caches after Core 0 writes to its copy of the block
 
 وعند هذه النقطة، تستطيع النواة 0 القراءة بأمان من نسختها من الكتلة المخزَّنة مؤقتًا لأن نسختها في الحالة M، أي أنها تخزّن أحدث قيمة مكتوبة للكتلة.
 
 وإذا قرأت النواة 1 بعد ذلك من كتلة الذاكرة، يدل علم I في نسختها المخزَّنة مؤقتًا في L1 على أن نسختها من الكتلة في L1 بائتة ولا يمكن استخدامها لتلبية القراءة. ويجب على متحكم ذاكرة L1 المؤقتة في النواة 1 أولًا تحميل القيمة الجديدة للكتلة في ذاكرة L1 المؤقتة قبل أن يمكن تلبية القراءة. ولتحقيق ذلك، يجب على متحكم ذاكرة L1 المؤقتة في النواة 0 أولًا كتابة قيمتها المعدَّلة للكتلة عودةً إلى ذاكرة L2 المؤقتة، حتى تستطيع ذاكرة L1 المؤقتة في النواة 1 قراءة القيمة الجديدة للكتلة في ذاكرتها المؤقتة. ونتيجة هذه الإجراءات (كما يظهر في [الشكل 4](#mesiread)) أن النسختين المخزَّنتين مؤقتًا في L1 لكل من النواتين 0 و1 صارتا مخزَّنتين في الحالة S، دلالةً على أن نسخة L1 لكل نواة محدَّثة ويمكن استخدامها بأمان لتلبية القراءات اللاحقة في الكتلة.
 
-![An example illustrating the steps taken by the MSI protocol on a read to a block of memory that is cached in the I state.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-MSIread.webp) Figure 4. The resulting state of the caches after Core 1 next reads the block
+![An example illustrating the steps taken by the MSI protocol on a read to a block of memory that is cached in the I state.](https://diveintosystems.org/images/dive-into-systems/c11-memhierarchy-3-MSIread.webp){#mesiread} Figure 4. The resulting state of the caches after Core 1 next reads the block
 
 ### 11.6.3. تنفيذ بروتوكولات تماسك الذاكرة المؤقتة {#_implementing_cache_coherency_protocols}
 

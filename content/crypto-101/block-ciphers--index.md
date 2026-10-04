@@ -37,7 +37,7 @@ P = D(k, C)
 
 أو، بصريًّا، على شكل كتل:
 
-![center](/images/crypto-101/fig-0-BlockCipher.svg)
+![center](/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg)
 
 center
 
@@ -58,7 +58,7 @@ center
 فإنّنا نمثّل الكتل بذلك الرقم. وتوضّح `fig-BlockCipherBlocks` الكتل التي تعمل
 عليها الشيفرة.
 
-![center](/images/crypto-101/fig-1-AllNodes.svg)
+![center](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg)
 
 center
 
@@ -69,7 +69,7 @@ center
 ونوضّح تلك العلاقة بسهم. فذيل السهم يحمل الكتلة قبل تشفيرها بـ`E` تحت المفتاح
 `k`، أمّا رأس السهم فيُسقَط على الكتلة المشفَّرة.
 
-![center](/images/crypto-101/fig-2-Encryption.svg)
+![center](/images/crypto-101/block-ciphers-fig-2-Encryption.svg)
 
 center
 
@@ -84,7 +84,7 @@ center
 (inverse permutation). وفي `fig-BlockCipherDecryption` نحصل على الرسم نفسه. والفرق
 بين الرسمين أنّ رؤوس الأسهم كلّها تشير في الاتجاه المعاكس.
 
-![center](/images/crypto-101/fig-3-Decryption.svg)
+![center](/images/crypto-101/block-ciphers-fig-3-Decryption.svg)
 
 center
 
@@ -94,7 +94,7 @@ center
 يحدّد المفتاح أيّ الكتل تُسقَط على أيّ الكتل. ويؤدي مفتاح مختلف إلى مجموعة أسهم
 مختلفة، كما ترى في `fig-BlockCipherEncryptionDifferentKey`.
 
-![center](/images/crypto-101/fig-4-Encryption2.svg)
+![center](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg)
 
 center
 
@@ -211,7 +211,7 @@ advanced
 يحوّلها صندوق الاستبدال إلى `x` نفسه، أو إلى `x` مع قلب كلّ بتّاتها. ويجعل هذا
 الشيفرة مقاومة للتحليل التشفيري الخطّي، بخلاف خوارزمية DES الأسبق، التي سبّبت
 صندوق استبدالها الخامس مشكلات أمنية خطيرة.
-![center](/images/crypto-101/fig-5-SubBytes.svg)
+![center](/images/crypto-101/block-ciphers-fig-5-SubBytes.svg)
 
 center
 
@@ -224,7 +224,7 @@ center
 بعد تطبيق خطوة استبدال البتّات على البايتات الستّة عشر للكتلة، تُزيح AES الصفوف في
 المصفوفة `4 \times 4`:
 
-![center](/images/crypto-101/fig-6-ShiftRows.svg)
+![center](/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg)
 
 center
 
@@ -235,7 +235,7 @@ center
 
 تمثّل خطوتا إزاحة الصفوف ومزج الأعمدة خصائص الانتشار (diffusion) في AES.
 
-![center](/images/crypto-101/fig-7-MixColumns.svg)
+![center](/images/crypto-101/block-ciphers-fig-7-MixColumns.svg)
 
 center
 
@@ -245,7 +245,7 @@ center
 وكما يوحي الاسم، تضيف خطوة إضافة مفتاح الجولة البايتات من مفتاح الجولة الذي ينتجه
 جدول المفاتيح إلى حالة الشيفرة.
 
-![center](/images/crypto-101/fig-8-AddRoundKey.svg)
+![center](/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg)
 
 center
 

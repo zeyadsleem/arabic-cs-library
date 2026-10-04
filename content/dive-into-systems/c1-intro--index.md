@@ -115,7 +115,7 @@ $ python hello.py
 
 مفسّر Python برنامج في صورة قابلة للتشغيل مباشرةً على النظام الأساسي (وتسمى هذه الصورة **الملف التنفيذي الثنائي** binary executable) ويأخذ كمدخل برنامج Python الذي يشغّله ([الشكل 1](#FigPythonExecution)).
 
-![Interpreted execution of a Python program.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-interpreted.webp) الشكل 1. يُنفَّذ برنامج Python مباشرةً بواسطة مفسّر Python، وهو برنامج تنفيذي ثنائي يعمل على النظام الأساسي (نظام التشغيل والعتاد)
+![Interpreted execution of a Python program.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-interpreted.webp){#FigPythonExecution} الشكل 1. يُنفَّذ برنامج Python مباشرةً بواسطة مفسّر Python، وهو برنامج تنفيذي ثنائي يعمل على النظام الأساسي (نظام التشغيل والعتاد)
 
 لتشغيل برنامج C، يجب أولاً ترجمته إلى صورة يستطيع نظام الحاسوب تنفيذها مباشرةً. و**المصرّف** (compiler) برنامج يترجم شيفرة C المصدرية إلى صورة **ملف تنفيذي ثنائي** يستطيع عتاد الحاسوب تنفيذها مباشرةً. ويتألف الملف التنفيذي الثنائي من سلسلة من الأصفار والآحاد بتنسيق محدد جيداً يستطيع الحاسوب تشغيله.
 
@@ -132,7 +132,7 @@ $ ./a.out
 $ gcc hello.c -lm
 ```
 
-![C program text goes to the C compiler, which converts it into an executable sequence of zeroes and ones. The format of the executable sequence can be run by the underlying system.](https://diveintosystems.org/images/dive-into-systems/c1-intro-1-compile.webp) الشكل 2. يبني مصرّف C (gcc) شيفرة C المصدرية إلى ملف تنفيذي ثنائي (a.out). وينفّذ النظام الأساسي (نظام التشغيل والعتاد) ملف a.out مباشرةً لتشغيل البرنامج.
+![C program text goes to the C compiler, which converts it into an executable sequence of zeroes and ones. The format of the executable sequence can be run by the underlying system.](https://diveintosystems.org/images/dive-into-systems/c1-intro-1-compile.webp){#FigCCompilation} الشكل 2. يبني مصرّف C (gcc) شيفرة C المصدرية إلى ملف تنفيذي ثنائي (a.out). وينفّذ النظام الأساسي (نظام التشغيل والعتاد) ملف a.out مباشرةً لتشغيل البرنامج.
 
 #### الخطوات التفصيلية {#_detailed_steps}
 
@@ -1078,7 +1078,7 @@ The larger value of 13 and 100 is 100
 
 في البرنامج المثال السابق، عند النقطة من تنفيذه قبل تنفيذ `max` للعبارة `return` مباشرة، سيبدو مكدّس التنفيذ كما في [الشكل 1](#FigFunctionSimple). تذكّر أن قيم الوسائط الممرَّرة إلى `max` عبر `main` *تُمرَّر بالقيمة*، أي أن الوسيطين في `max`، وهما `x` و`y`، يُسنَد إليهما قيم الوسائط المقابلة لهما، `a` و`b` من الاستدعاء في `main`. فرغم أن دالة `max` تغيّر قيمة `x`، فإن التغيير لا يؤثر في قيمة `a` في `main`.
 
-![A stack with two frames: main at the bottom, and max on top of it. Main’s stack frame has three variables, a (11), b (7) and res (undefined at this point). Max’s stack frame also has three variables, x (11), y (7), and bigger (11).](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-Function_simple.webp) الشكل 1. محتويات مكدّس التنفيذ قبل العودة من دالة max مباشرة
+![A stack with two frames: main at the bottom, and max on top of it. Main’s stack frame has three variables, a (11), b (7) and res (undefined at this point). Max’s stack frame also has three variables, x (11), y (7), and bigger (11).](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-Function_simple.webp){#FigFunctionSimple} الشكل 1. محتويات مكدّس التنفيذ قبل العودة من دالة max مباشرة
 
 يتضمن البرنامج الكامل التالي دالتين ويعرض أمثلة على استدعائهما من الدالة `main`. وفي هذا البرنامج، نعلن نموذجين أوليين للدالتين `max` و`print_table` فوق الدالة `main` حتى تستطيع `main` الوصول إليهما رغم تعريفهما أولاً. وتحتوي الدالة `main` على الخطوات عالية المستوى للبرنامج الكامل، وتعريفها أولاً يعكس التصميم من أعلى إلى أسفل للبرنامج. ويتضمن هذا المثال تعليقات تصف أجزاء البرنامج المهمة للدوال واستدعاءاتها. ويمكنك أيضاً تنزيل [البرنامج الكامل](https://diveintosystems.org/book/C1-C_intro/_attachments/function.c) وتشغيله.
 
@@ -1361,7 +1361,7 @@ int main(void) {
 
 يُمرَّر إلى الاستدعاء `main` للدالة `test` الوسيط `arr`، الذي قيمته عنوان أساس مصفوفة `arr` في الذاكرة. ويتلقى الوسيط `a` في دالة test نسخة من قيمة عنوان الأساس هذه. وبعبارة أخرى، *يشير الوسيط `a` إلى مواقع التخزين نفسها التي تشير إليها وسيطته* `arr`. ونتيجةً لذلك، عندما تغيّر دالة test قيمة مخزّنة في مصفوفة `a` (`a[3] = 8`)، فإن ذلك يؤثر في الموضع المقابل في مصفوفة الوسيط (أصبح `arr[3]` يساوي 8). والسبب أن قيمة `a` هي عنوان أساس `arr`، وقيمة `arr` هي عنوان أساس `arr`، لذا يشير كل من `a` و`arr` إلى المصفوفة نفسها (مواقع التخزين نفسها في الذاكرة)! ويعرض [الشكل 1](#FigArrayStack) محتويات المكدّس عند النقطة من التنفيذ قبل عودة دالة test مباشرة.
 
-![A stack with two frames: main at the bottom and test on the top. main has two variables, an integer n (5) and an array storing values 0, 1, 2, 8, and 4. Test also has two values, an integer size (2) and an array parameter arr that stores the base memory address of the array in main’s stack frame.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-arraystack.webp) الشكل 1. محتويات المكدّس لدالة لها وسيط مصفوفة
+![A stack with two frames: main at the bottom and test on the top. main has two variables, an integer n (5) and an array storing values 0, 1, 2, 8, and 4. Test also has two values, an integer size (2) and an array parameter arr that stores the base memory address of the array in main’s stack frame.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-arraystack.webp){#FigArrayStack} الشكل 1. محتويات المكدّس لدالة لها وسيط مصفوفة
 
 يُمرَّر إلى الوسيط `a` عنوان أساس مصفوفة الوسيط `arr`، ما يعني أن كليهما يشير إلى مجموعة مواقع التخزين نفسها في الذاكرة. ونشير إلى ذلك بالسهم من `a` إلى `arr`. والقيم التي تعدّلها الدالة `test` مظللة. ولا *يغيّر* تغيير قيمة الوسيط `size` قيمة وسيطته المقابلة `n`، لكن تغيير قيمة أحد العناصر التي يشير إليها `a` (مثلاً `a[3] = 8`) يؤثر في قيمة الموضع المقابل في `arr`.
 
@@ -1500,7 +1500,7 @@ student2.grad_yr = student1.grad_yr;
 
 يوضّح [الشكل 1](#FigStudentStruct) تخطيط متغيّر `student1` في الذاكرة بعد إسنادات الحقول في المثال السابق. ولا تُخزَّن في الذاكرة إلا حقول متغيّر البنية (المناطق داخل الصناديق). وأسماء الحقول مكتوبة على الشكل للتوضيح، لكن بالنسبة لمصرّف C، الحقول مجرد مواقع تخزين أو **إزاحات** (offsets) من بداية ذاكرة متغيّر البنية. فمثلاً، استناداً إلى تعريف `struct studentT`، يعرف المصرّف أنه للوصول إلى الحقل المسمّى `gpa` يجب تجاوز مصفوفة من 64 محرفاً (`name`) وعدد صحيح واحد (`age`). ولاحظ أن حقل `name` في الشكل يصوّر المحارف الستة الأولى فقط من مصفوفة الـ 64 محرفاً.
 
-![The layout of student1’s memory: the name field is a character array containing 'k' 'w' 'a' 'm' 'e' …​ The age field holds 20, the gpa field stores 3.5, and grad_yr contains 2020.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-studentstruct.webp) الشكل 1. ذاكرة المتغيّر student1 بعد إسناد كل حقل من حقوله
+![The layout of student1’s memory: the name field is a character array containing 'k' 'w' 'a' 'm' 'e' …​ The age field holds 20, the gpa field stores 3.5, and grad_yr contains 2020.](https://diveintosystems.org/images/dive-into-systems/c1-intro-0-studentstruct.webp){#FigStudentStruct} الشكل 1. ذاكرة المتغيّر student1 بعد إسناد كل حقل من حقوله
 
 أنواع بنى C هي **قيم يسارية** (lvalues)، أي يمكن أن تظهر في الجانب الأيسر من عبارة إسناد. وهكذا يمكن إسناد قيمة متغيّر بنية إلى متغيّر بنية آخر بعبارة إسناد بسيطة. وتُ*نسخ* قيم حقول البنية في الجانب الأيمن من عبارة الإسناد إلى قيم حقول البنية في الجانب الأيسر. وبعبارة أخرى، يُنسخ محتوى ذاكرة إحدى البنى إلى ذاكرة الأخرى. وفيما يلي مثال على إسناد قيم بنية بهذه الطريقة:
 
@@ -1514,7 +1514,7 @@ strcpy(student2.name, "Frances Allen");  // change one field value
 
 يعرض [الشكل 2](#FigStructAssign) قيم متغيّري الطالب بعد تنفيذ عبارة الإسناد والاستدعاء `strcpy`. ولاحظ أن الشكل يصوّر حقول `name` كقيم السلاسل النصية التي تحتويها، لا كمصفوفة المحارف الكاملة المكوّنة من 64 محرفاً.
 
-![Struct Values and Assignment: the field values of the struct on the right hand side are assigned to corresponding field values of the struct on the left hand side of the assignment statement.](https://diveintosystems.org/images/dive-into-systems/c1-intro-1-structassign.webp) الشكل 2. تخطيط بنيتَي student1 وstudent2 بعد تنفيذ إسناد البنية واستدعاء strcpy
+![Struct Values and Assignment: the field values of the struct on the right hand side are assigned to corresponding field values of the struct on the left hand side of the assignment statement.](https://diveintosystems.org/images/dive-into-systems/c1-intro-1-structassign.webp){#FigStructAssign} الشكل 2. تخطيط بنيتَي student1 وstudent2 بعد تنفيذ إسناد البنية واستدعاء strcpy
 
 توفّر C معامل `sizeof` يأخذ نوعاً ويرجع عدد البايتات التي يستخدمها ذلك النوع. ويمكن استخدام معامل `sizeof` على أي نوع من أنواع C، بما فيها أنواع البنى، لمعرفة مقدار مساحة الذاكرة التي يحتاجها متغيّر من ذلك النوع. فمثلاً، يمكننا طباعة حجم نوع `struct studentT`:
 
@@ -1696,7 +1696,7 @@ Ruth is only 17 years old and cannot vote.
 
 يوضح الناتج أنه عندما تطبع `checkID` الحقل `age`، فإنه يعكس تغيير الدالة لحقل `age` في الوسيط `s`. لكن بعد عودة استدعاء الدالة، تطبع `main` الحقل `age` من `student` بالقيمة نفسها التي كان عليها قبل استدعاء `checkID`. ويوضح [الشكل 3](#FigStructStack) محتويات مكدّس الاستدعاء قبل عودة الدالة `checkID` مباشرة.
 
-![As the student struct is passed to checkID, the parameter gets a copy of its contents. When checkID modifies the age field to 19, the change only applies to its local copy. The student struct’s age field in main remains at 17.](https://diveintosystems.org/images/dive-into-systems/c1-intro-2-structstack.webp) الشكل 3. محتويات مكدّس الاستدعاء قبل العودة من دالة checkID
+![As the student struct is passed to checkID, the parameter gets a copy of its contents. When checkID modifies the age field to 19, the change only applies to its local copy. The student struct’s age field in main remains at 17.](https://diveintosystems.org/images/dive-into-systems/c1-intro-2-structstack.webp){#FigStructStack} الشكل 3. محتويات مكدّس الاستدعاء قبل العودة من دالة checkID
 
 يُعدّ فهم دلالات التمرير بالقيمة لوسائط البنى مهماً بشكل خاص عندما تحتوي بنية على حقل مصفوفة معلَنة ساكنةً (مثل حقل `name` في `struct studentT`). فعند تمرير بنية كهذه إلى دالة، يُنسخ محتوى ذاكرة وسيط البنية كاملاً، بما فيه كل عنصر مصفوفة في حقل المصفوفة، إلى وسيطها. وإذا غيّرت الدالة محتويات مصفوفة وسيط البنية، فلن *تبقى* تلك التغييرات بعد عودة الدالة. وقد يبدو هذا السلوك غريباً بالنظر إلى ما نعرفه عن [كيفية تمرير المصفوفات إلى الدوال](https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_arrays_and_functions)، لكنه متسق مع سلوك نسخ البنى الموصوف سابقاً.
 

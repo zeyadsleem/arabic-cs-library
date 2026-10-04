@@ -11,7 +11,7 @@ source: https://www.patterns.dev/vue/renderless-components/
 
 تخيّل أن لديك عنصر واجهة تبديل (toggle) يحتاج إلى الاستخدام في أجزاء مختلفة من تطبيقك، لكن قد تكون لكل نسخة تمثيل بصري مختلف. فبعض مفاتيح التبديل قد تُعرض كأزرار، بينما قد تكون أخرى مربّعات اختيار أو مفاتيح تحويل.
 
-![مكوّنات بلا عرض بأزرار تبديل](/images/patterns-dev/vue-renderless-components-0-renderless_toggles.webp)
+![مكوّنات بلا عرض بأزرار تبديل](/images/patterns-dev/vue-renderless-components-0-renderless_toggles.gif)
 
 يمكننا ببساطة إنشاء ثلاثة مكوّنات تبديل مختلفة للمثال أعلاه، لكننا نلاحظ أن كل عنصر تبديل يتشارك المنطق والسلوك نفسه. ولكل مفتاح تبديل حالة خاملة وأخرى نشطة تُتابَع عبر خاصية بيانات في المكوّن (مثل `checked`). وعندما يُنقر على مفتاح التبديل، تنتقل حالة المكوّن من الخاملة إلى النشطة والعكس (أي `checked = !checked`).
 
@@ -241,7 +241,7 @@ import ToggleComponent from "./components/ToggleComponent";
 
 عند حفظ تغييراتنا، سيُعرض لنا مفتاح التحويل في تطبيقنا.
 
-![عنصر التبديل النهائي](/images/patterns-dev/vue-renderless-components-2-toggle_element_1.webp)
+![عنصر التبديل النهائي](/images/patterns-dev/vue-renderless-components-2-toggle_element_1.gif)
 
 و يمكننا المضي قدمًا وإنشاء عنصرَي التبديل الآخرين بطريقة متشابهة جدًا. وسيكون عنصر التبديل الثاني زرًّا، وإذا ما النُقر عليه، يتناوب بين النص `Toggle | Yes 😀` والنص `Toggle | No 😔`.
 

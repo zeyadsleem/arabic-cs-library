@@ -75,7 +75,7 @@ L3 cache:              8192K
 
 ويوضح [الشكل 1](#FigConcurrency1) كيف يمكن لخمس عمليات نموذجية أن تنفّذ على معالج أحادي النواة.
 
-![concurrency example with 5 processes](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp) Figure 1. An execution time sequence for five processes as they share a single CPU core
+![concurrency example with 5 processes](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp){#FigConcurrency1} Figure 1. An execution time sequence for five processes as they share a single CPU core
 
 المحور الأفقي هو الزمن، وتستغرق كل شريحة زمنية وحدة زمن واحدة. ويمثّل المربع وقت استخدام العملية للمعالج أحادي النواة. لنفترض أن كل عملية تنفّذ شريحة زمنية كاملة قبل حدوث تبديل السياق. فعملية 1 تستخدم المعالج خلال الخطوتين الزمنيتين T1 وT3.
 
@@ -87,7 +87,7 @@ L3 cache:              8192K
 
 وتتيح وحدة المعالجة المركزية متعددة الأنوية لنظام التشغيل جدولة عملية مختلفة لكل نواة متاحة، ما يتيح للعمليات التنفيذ *في الوقت نفسه*. ويُشار إلى التنفيذ المتزامن لتعليمات من عمليات تعمل على أنوية متعددة بـ**التنفيذ المتوازي** (parallel execution). ويعرض [الشكل 2](#FigConcurrency2) كيف يمكن لعملياتنا المثال أن تنفّذ على نظام ثنائي الأنوية.
 
-![parallel example with 2 cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp) Figure 2. An execution time sequence for five processes, extended to include two CPU cores (one in dark blue, the other in light green).
+![parallel example with 2 cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp){#FigConcurrency2} Figure 2. An execution time sequence for five processes, extended to include two CPU cores (one in dark blue, the other in light green).
 
 في هذا المثال، تُلوَّن نواتا المعالج بلونين مختلفين. لنفترض أن ترتيب تنفيذ العمليات هو مرة أخرى P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ويتيح وجود أنوية متعددة لبعض العمليات التنفيذ *مبكرًا*. فمثلًا، خلال الوحدة الزمنية T1، تنفّذ النواة الأولى العملية 1 بينما تنفّذ النواة الثانية العملية 2. وعند الزمن T2، تنفّذ النواة الأولى العملية 2 بينما تنفّذ الثانية العملية 1. وبذلك تكمل العملية 1 تنفيذها بعد الزمن T2، بينما تكمل العملية 2 تنفيذها عند الزمن T3.
 
@@ -97,7 +97,7 @@ L3 cache:              8192K
 
 من طرق تسريع تنفيذ عملية واحدة تفكيكها إلى تدفقات تنفيذ مستقلة خفيفة تُسمى **الخيوط** (threads). ويعرض [الشكل 3](#FigProcess) كيف يتغير فضاء العنوان الافتراضي للعملية عندما تصبح متعددة الخيوط بخيطين. ومع أن لكل خيط تخصيصه الخاص لمساحة مكدّس النداء، فإن جميع الخيوط *تتشارك* بيانات البرنامج وتعليماته والكومة المخصصة للعملية متعددة الخيوط.
 
-![multithread process with 2 threads](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp) Figure 3. Comparing the virtual address space of a single-threaded and a multithreaded process with two threads
+![multithread process with 2 threads](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp){#FigProcess} Figure 3. Comparing the virtual address space of a single-threaded and a multithreaded process with two threads
 
 ويجدول نظام التشغيل الخيوط بالطريقة نفسها التي يجدول بها العمليات. وعلى معالج متعدد الأنوية، يستطيع نظام التشغيل تسريع تنفيذ برنامج متعدد الخيوط بجدولة خيوطه المختلفة للعمل على أنوية منفصلة. ويساوي الحد الأقصى لعدد الخيوط التي يمكن أن تنفّذ على التوازي عدد الأنوية الفيزيائية في النظام. وإذا تجاوز عدد الخيوط عدد الأنوية الفيزيائية، وجب على الخيوط الباقية انتظار دورها للتنفيذ (على غرار طريقة تنفيذ العمليات على نواة واحدة).
 
@@ -126,15 +126,15 @@ void scalar_multiply(int * array, long length, int s) {
 
 ويعرض [الشكل 4](#singleCPU) ما يحدث عند تشغيل أربعة خيوط على نواة واحدة. وكما سبق، يُترك ترتيب التنفيذ لنظام التشغيل. وفي هذا السيناريو، افترض أن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. وعلى معالج أحادي النواة (تمثله المربعات)، ينفّذ كل خيط تتابعيًا. وبذلك، ستستغرق العملية متعددة الخيوط العاملة على نواة واحدة 60 ثانية أيضًا (وربما أطول قليلًا بسبب كلفة إنشاء الخيوط).
 
-![multithreaded process on one core](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp) Figure 4. Running four threads on a single-core CPU
+![multithreaded process on one core](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp){#singleCPU} Figure 4. Running four threads on a single-core CPU
 
 والآن لنفترض أننا نشغّل عمليتنا متعددة الخيوط على نظام ثنائي الأنوية. ويعرض [الشكل 5](#doubleCPU) النتيجة. ومرة أخرى، افترض *t* = 4 خيوط، وأن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. ونواتانا تمثلهما مربعات مظللة. ولأن النظام ثنائي الأنوية، ينفّذ الخيطان 1 و3 على التوازي خلال الخطوة الزمنية T1. ثم ينفّذ الخيطان 2 و4 على التوازي خلال الخطوة الزمنية T2. وبذلك، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 30 ثانية.
 
-![multithreaded process on two cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp) Figure 5. Running four threads on a dual-core CPU
+![multithreaded process on two cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp){#doubleCPU} Figure 5. Running four threads on a dual-core CPU
 
 وأخيرًا، لنفترض أن العملية متعددة الخيوط (*t* = 4) تُشغَّل على معالج رباعي الأنوية. ويعرض [الشكل 6](#quadCPU) أحد تسلسلات التنفيذ هذه. وتظلَّل كل نواة من الأنوية الأربع في [الشكل 6](#quadCPU) بلون مختلف. وعلى النظام رباعي الأنوية، ينفّذ كل خيط على التوازي خلال الشريحة الزمنية T1. وبذلك، على معالج رباعي الأنوية، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 15 ثانية.
 
-![multithreaded process on four cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp) Figure 6. Running four threads on a quad-core CPU
+![multithreaded process on four cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp){#quadCPU} Figure 6. Running four threads on a quad-core CPU
 
 وبصفة عامة، إذا طابق عدد الخيوط عدد الأنوية (*c*) وجدول نظام التشغيل كل خيط للعمل على نواة منفصلة على التوازي، فمن المفترض أن تعمل العملية متعددة الخيوط في نحو 1/*c* من الزمن. وهذا التسريع الخطي مثالي، لكنه لا يُلاحظ كثيرًا في الواقع العملي. فمثلًا، إذا كانت هناك عمليات أخرى كثيرة (أو عمليات متعددة الخيوط) تنتظر استخدام المعالج، فستتنافس كلها على العدد المحدود من الأنوية، ما يؤدي إلى **تنازع الموارد** (resource contention) بين العمليات. وإذا تجاوز عدد الخيوط المحددة عدد أنوية المعالج، وجب على كل خيط انتظار دوره للعمل. وسنستكشف عوامل أخرى كثيرًا ما تمنع التسريع الخطي [لاحقًا في هذا الفصل](https://diveintosystems.org/book/C14-SharedMemory/performance.html#_measuring_the_performance_of_parallel_programs).
 
@@ -1085,7 +1085,7 @@ void *Transfer(void *args){
 
 وفي مسار التنفيذ المميز في [الشكل 1](#deadlockFig)، ينفّذ الخيطان بالتزامن الدالة `Transfer`. فيحوز الخيط 0 قفل `acctA` بينما يحوز الخيط 1 قفل `acctB`. والآن فكّر في ما يحدث. لمواصلة التنفيذ، يحتاج الخيط 0 إلى حيازة قفل `acctB` الذي يحوزه الخيط 1. وبالمثل، يحتاج الخيط 1 إلى حيازة قفل `acctA` لمواصلة التنفيذ، وهو محجوز للخيط 0. ولأن كلا الخيطين محجوبان على الآخر، فهما في تجمّد.
 
-![Two threads deadlocked with each other](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp) Figure 1. An example of deadlock
+![Two threads deadlocked with each other](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp){#deadlockFig} Figure 1. An example of deadlock
 
 ومع أن نظام التشغيل يوفّر بعض الحماية من التجمّد، ينبغي للمبرمجين الانتباه إلى كتابة شيفرة تزيد احتمال التجمّد. فمثلًا، كان يمكن تجنّب السيناريو السابق بإعادة ترتيب الأقفال بحيث يحيط كل زوج قفل/فتح قفل بعبارة تحديث الرصيد المرتبطة به فقط:
 
@@ -1518,7 +1518,7 @@ Time for Step 1 is 0.107649 s
 
 [تذكّر](https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors) أنه في معماريات الذاكرة المشتركة يمكن أن تملك كل نواة ذاكرتها المؤقتة الخاصة، ويمكن أن تتشارك أنوية متعددة ذاكرة مؤقتة مشتركة. ويعرض [الشكل 1](#FigMulticoreCache) مثالًا على وحدة معالجة مركزية ثنائية الأنوية. ومع أن كل نواة تملك ذاكرتها المؤقتة L1 المحلية، فإن الأنوية تتشارك ذاكرة L2 مؤقتة مشتركة.
 
-![dual core processor with separate L1 caches and shared L2 cache](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp) Figure 1. An example dual-core CPU with separate L1 caches and a shared L2 cache
+![dual core processor with separate L1 caches and shared L2 cache](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp){#FigMulticoreCache} Figure 1. An example dual-core CPU with separate L1 caches and a shared L2 cache
 
 قد تنفّذ خيوط متعددة في ملف تنفيذي واحد دوال منفصلة. ومن دون استراتيجية [**تماسك الذاكرة المؤقتة**](https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_cache_coherency) تضمن أن كل ذاكرة مؤقتة تحافظ على رؤية متسقة للذاكرة المشتركة، يمكن تحديث المتغيرات المشتركة تحديثًا غير متسق. وكمثال، فكّر في المعالج ثنائي الأنوية في [الشكل 1](#FigMulticoreCache)، حيث تكون كل نواة مشغولة بتنفيذ خيوط منفصلة بالتزامن. وللخيط المسند إلى النواة 0 متغير محلي `x`، وللخيط المنفّذ على النواة 1 متغير محلي `y`، ولكلا الخيطين وصول مشترك إلى متغير عام `g`. ويعرض [الجدول 1](#TabCache) مسارًا ممكنًا للتنفيذ.
 
@@ -1530,7 +1530,7 @@ Time for Step 1 is 0.107649 s
 
 لنفترض أن القيمة الأولية لـ `g` هي 10، والقيمتين الأوليتين لـ `x` و`y` كلتاهما 0. ما القيمة النهائية لـ `y` في نهاية هذا التسلسل من العمليات؟ من دون تماسك الذاكرة المؤقتة، يصعب جدًا الإجابة عن هذا السؤال، بما أن هناك ثلاث قيم مخزَّنة لـ `g` على الأقل: واحدة في ذاكرة L1 المؤقتة للنواة 0، وواحدة في ذاكرة L1 المؤقتة للنواة 1، ونسخة منفصلة من `g` مخزَّنة في ذاكرة L2 المشتركة.
 
-![A problematic update to the caches](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp) Figure 2. A problematic update to caches that do not employ cache coherency
+![A problematic update to the caches](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp){#FigMCCacheExample} Figure 2. A problematic update to caches that do not employ cache coherency
 
 ويعرض [الشكل 2](#FigMCCacheExample) نتيجة خاطئة ممكنة بعد اكتمال تسلسل العمليات في [الجدول 1](#TabCache). لنفترض أن ذاكرات L1 المؤقتة تنفّذ سياسة الكتابة المرتجعة. فعندما يكتب الخيط المنفّذ على النواة 0 القيمة 5 في `g`، لا يحدّث إلا قيمة `g` في ذاكرة L1 المؤقتة للنواة 0. وتبقى قيمة `g` في ذاكرة L1 المؤقتة للنواة 1 مساوية 10، وكذلك النسخة في ذاكرة L2 المشتركة. وحتى لو نُفّذت سياسة الكتابة المباشرة، فلا ضمان أن تُحدَّث نسخة `g` المخزَّنة في ذاكرة L1 المؤقتة للنواة 1! وفي هذه الحالة، ستكون القيمة النهائية لـ `y` هي `60`.
 

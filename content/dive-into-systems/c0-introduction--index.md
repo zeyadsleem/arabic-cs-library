@@ -18,7 +18,7 @@ source: https://diveintosystems.org/book/introduction.html
 
 وتعرّف البنود الأربعة الأولى **عتاد الحاسوب** (computer hardware) في نظام الحاسوب. ويمثّل البند الأخير (نظام التشغيل) الجزء البرمجي الرئيسي في نظام الحاسوب. وقد توجد طبقات برمجية إضافية فوق نظام التشغيل توفّر واجهات أخرى لمستخدمي النظام (مثل المكتبات). غير أن نظام التشغيل هو برمجية النظام الجوهرية التي نركّز عليها في هذا الكتاب.
 
-![A computer system with multiple layers. The bottom shows the hardware (CPU, RAM, and Disk). Above it sits the operating system (e.g., Mac OS, Linux, or Windows). User programs execute on top.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-0-computersystem.webp) الشكل 1. المكوّنات الطبقية لنظام الحاسوب
+![A computer system with multiple layers. The bottom shows the hardware (CPU, RAM, and Disk). Above it sits the operating system (e.g., Mac OS, Linux, or Windows). User programs execute on top.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-0-computersystem.webp){#FigLayeredComponents} الشكل 1. المكوّنات الطبقية لنظام الحاسوب
 
 نركّز تحديداً على أنظمة الحاسوب التي تتّصف بالخصائص التالية:
 
@@ -33,7 +33,7 @@ source: https://diveintosystems.org/book/introduction.html
 
 بعد أن رسّخنا ما هو نظام الحاسوب (وما ليس هو)، لنتحدث عن الشكل المعتاد لأنظمة الحاسوب. يوضّح [الشكل 2](#FigDesktopLaptop) نوعين من أنظمة عتاد الحاسوب (باستثناء الأجهزة الطرفية): حاسوب مكتبي (يسار) وحاسوب محمول (يمين). ووجود قطعة ربع دولار أمريكي على كل جهاز يمنح القارئ فكرة عن حجم كل وحدة.
 
-![Photos of the components (e.g., CPU, power supply, disks, etc.) of a desktop and laptop.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-1-desktop_laptop_labeled.webp) الشكل 2. نظامان شائعان للحاسوب: حاسوب مكتبي (يسار) وحاسوب محمول (يمين)
+![Photos of the components (e.g., CPU, power supply, disks, etc.) of a desktop and laptop.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-1-desktop_laptop_labeled.webp){#FigDesktopLaptop} الشكل 2. نظامان شائعان للحاسوب: حاسوب مكتبي (يسار) وحاسوب محمول (يمين)
 
 لاحظ أن كليهما يحتوي على مكوّنات العتاد نفسها، وإن كان بعض المكوّنات أصغر حجماً أو أكثر إحكاماً. وقد نُقلت فتحة أقراص DVD/CD في الحاسوب المكتبي إلى الجانب لإظهار القرص الصلب تحتها — فالوحدتان مكدّستان إحداهما فوق الأخرى. ويساعد مزوّد الطاقة المخصّص في تزويد الحاسوب المكتبي بالطاقة.
 
@@ -43,7 +43,7 @@ source: https://diveintosystems.org/book/introduction.html
 
 يتجه تصميم عتاد الحاسوب نحو أجهزة أصغر وأكثر إحكاماً. ويعرض [الشكل 3](#FigRaspPi) حاسوباً أحادي اللوحة من نوع Raspberry Pi. والحاسوب أحادي اللوحة (SBC) جهاز تُطبع فيه كامل مكوّنات الحاسوب على لوحة دوائر واحدة.
 
-![Photo of a raspberry pi single-board computer.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-2-pi_labeled.webp) الشكل 3. حاسوب أحادي اللوحة Raspberry Pi
+![Photo of a raspberry pi single-board computer.](https://diveintosystems.org/images/dive-into-systems/c0-introduction-2-pi_labeled.webp){#FigRaspPi} الشكل 3. حاسوب أحادي اللوحة Raspberry Pi
 
 يحتوي حاسوب Raspberry Pi أحادي اللوحة على معالج **نظام على شريحة** (SoC) بذاكرة RAM ومعالج مدمجين، ويشمل ذلك كثيراً من عتاد الحاسوب المحمول والمكتبي المعروض في [الشكل 2](#FigDesktopLaptop). وخلافاً لأنظمة الحاسوب المحمول والمكتبي، فإن Raspberry Pi بحجم بطاقة ائتمان تقريباً، ويزن 1.5 أونصة (نحو شريحة من الخبز)، ويستهلك نحو 5 واط من الطاقة. وتوجد تقنية SoC الموجودة في Raspberry Pi شائعةً أيضاً في الهواتف الذكية. بل إن الهاتف الذكي مثال آخر على نظام الحاسوب!
 

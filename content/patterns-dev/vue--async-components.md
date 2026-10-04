@@ -119,11 +119,11 @@ const showModal = ref(false);
 
 عند النقر على الزر `Show Modal`، تظهر النافذة المنبثقة على الصفحة.
 
-![نافذة منبثقة بسيطة](/images/patterns-dev/vue-async-components-0-simple_modal.webp)
+![نافذة منبثقة بسيطة](/images/patterns-dev/vue-async-components-0-simple_modal.gif)
 
 ومن هذا المثال يمكننا أن نرى أن مكوّن النافذة المنبثقة لا يظهر إلّا في ظرف معيّن — عندما ينقر المستخدم على الزر `Show Modal`. ومع ذلك، فإن حزمة JavaScript المرتبطة بالمكوّن **تُحمَّل تلقائيًا عند تحميل صفحة الويب بالكامل** حتى قبل جعل النافذة المنبثقة مرئية. ويمكن رؤية ذلك من سجلّات الشبكة في المتصفّح.
 
-![حزمة النافذة محمّلة عند فتح الصفحة](/images/patterns-dev/vue-async-components-1-modal_bundle_initial_load.webp)
+![حزمة النافذة محمّلة عند فتح الصفحة](/images/patterns-dev/vue-async-components-1-modal_bundle_initial_load.gif)
 
 هذا مقبول في أغلب الحالات. لكن في الظروف التي يكون فيها حجم حزمة النافذة المنبثقة كبيرًا حقًا و/أو يحتوي التطبيق على هذا النوع من المكوّنات بكثرة، فإن ذلك قد يؤدّي إلى تأخّر في زمن التحميل الأوّلي. ومع كل حزمة مضافة، حتى لو كانت berkaitan بمكوّنات نادرًا ما تُستخدم، يزداد الوقت الذي يستغرقه تحميل الصفحة الأوّلي.
 
@@ -201,11 +201,11 @@ const showModal = ref(false);
 
 مع هذا التغيير البسيط، سيصبح مكوّن النافذة المنبثقة لدينا محمَّلًا بشكل غير متزامن! فعند تحميل صفحة التطبيق الأوّلي، سنلاحظ أن حزمة المكوّن `Modal` *لم تعد تُحمَّل تلقائيًا عند تحميل الصفحة*.
 
-![حزمة النافذة غير محمّلة عند فتح الصفحة](/images/patterns-dev/vue-async-components-2-modal_bundle_no_initial_load.webp)
+![حزمة النافذة غير محمّلة عند فتح الصفحة](/images/patterns-dev/vue-async-components-2-modal_bundle_no_initial_load.gif)
 
 وعند نقرنا على الزرّ الذي يشغّل إظهار النافذة المنبثقة، سنلاحظ أن الحزمة تُحمَّل عندئذٍ بشكل غير متزامن أثناء تصيير مكوّن النافذة المنبثقة.
 
-![حزمة النافذة محمّلة بشكل غير متزامن](/images/patterns-dev/vue-async-components-3-modal_async_load.webp)
+![حزمة النافذة محمّلة بشكل غير متزامن](/images/patterns-dev/vue-async-components-3-modal_async_load.gif)
 
 ## واجهة التحميل وواجهة الخطأ
 
@@ -255,7 +255,7 @@ loadingComponent: Loading,
 
 ومع أن يبدأ تحميل مكوّن النافذة المنبثقة بشكل غير متزامن، سيُعرض للمستخدم الآن رسالة `Loading...`. وقد يكون من الصعب رؤيتها على اتصالات الإنترنت السريعة، لذا سنحاكي شبكة `Slow 3G` في سجلّات الشبكة داخل المتصفّح حتى نلاحظ سلوك ظهور رسالة `Loading...` أثناء ما زالت حزمة مكوّن النافذة المنبثقة قيد التحميل.
 
-![مكوّن التحميل أثناء جلب الحزمة](/images/patterns-dev/vue-async-components-4-modal_loading_component.webp)
+![مكوّن التحميل أثناء جلب الحزمة](/images/patterns-dev/vue-async-components-4-modal_loading_component.gif)
 
 ### errorComponent
 
@@ -293,7 +293,7 @@ errorComponent: Error,
 
 ولتصوير هذا عمليًا، يمكننا محاكاة وضع الشبكة `Offline` في أدوات مطوّر المتصفّح ومحاولة تشغيل النافذة المنبثقة. وسنلاحظ أنه عندما يفشل تحميل مكوّن النافذة المنبثقة، سيُعرض قالب المكوّن `Error`.
 
-![مكوّن الخطأ عند فشل جلب الحزمة](/images/patterns-dev/vue-async-components-5-modal_error_component.webp)
+![مكوّن الخطأ عند فشل جلب الحزمة](/images/patterns-dev/vue-async-components-5-modal_error_component.gif)
 
 ومع كل التغييرات التي أجريناها، يمكن رؤية تطبيقنا على النحو التالي.
 

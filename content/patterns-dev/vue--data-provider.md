@@ -205,7 +205,7 @@ import DataProvider from "./components/DataProvider.vue";
 
 عند حفظ تغييراتنا، ستظهر لنا رسالة تحميل قصيرة يتبعها نكتة عشوائية.
 
-![مثال تطبيقي لمزوّد البيانات](/images/patterns-dev/vue-data-provider-1-data_provider_example.webp)
+![مثال تطبيقي لمزوّد البيانات](/images/patterns-dev/vue-data-provider-1-data_provider_example.gif)
 
 وإذا احتجنا عرض نسخة أخرى من مقدّمة النكتة وردّها، ربما حتى بقالب مختلف، يمكننا ببساطة إعادة استخدام مكوّن `` وإنشاء العناصر الفرعية الجديدة التي نرغب في إظهارها.
 
@@ -255,7 +255,7 @@ import DataProvider from "./components/DataProvider.vue";
 
 في واجهة المستخدم التي عرضناها للتو، نضع الآن ردّ النكتة الطريف داخل عنصر كشف (disclosure element) بفضل عنصري HTML `` و``.
 
-![مثال تطبيقي آخر لمزوّد البيانات](/images/patterns-dev/vue-data-provider-2-data_provider_example_2.webp)
+![مثال تطبيقي آخر لمزوّد البيانات](/images/patterns-dev/vue-data-provider-2-data_provider_example_2.gif)
 
 مع نمط مزوّد البيانات، أصبح بإمكاننا إدارة البيانات وتوفيرها لعناصر/مكوّنات مختلفة بطريقة مفكوكة (decoupled) وقابلة لإعادة الاستخدام. وبتجريد منطق جلب الواجهة البرمجية في مكوّن بلا عرض، يمكننا إعادة استخدام طلب بيانات الواجهة البرمجية في سياقات مختلفة دون تكرار الشيفرة.
 

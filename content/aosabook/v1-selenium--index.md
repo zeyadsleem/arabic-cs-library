@@ -185,11 +185,11 @@ public interface Shop extends HasBalance, Stockable {
 
 أجد `UnsupportedOperationExceptions` وما شابهها غير مرضية البتّة، لكن لا بدّ من وجود شيء يتيح كشف الوظائف للمستخدمين الذين قد يحتاجون إليها، من دون أن تُثقل بقية الواجهات بالنسبة لأغلب المستخدمين. ولهذا الغرض، يستخدم WebDriver على نطاق واسع الواجهات القائمة على الأدوار. فمثلًا، هناك واجهة `JavascriptExecutor` التي توفّر القدرة على تنفيذ مقاطع اعتباطية من جافاسكربت في سياق الصفحة الحالية. ونجاح تحويل (cast) نسخة من WebDriver إلى تلك الواجهة يدل على أنه يمكنك توقّع أن تعمل دوالها.
 
-![[المحاسب ومورّد البضاعة يعتمدان على المتجر]](/images/aosabook/v1-selenium-role-based-interfaces-one-interface.webp)
+![المحاسب ومورّد البضاعة يعتمدان على المتجر](/images/aosabook/v1-selenium-role-based-interfaces-one-interface.webp){#fig.sel.int1}
 
 الشكل 16.1: المحاسب ومورّد البضاعة يعتمدان على المتجر
 
-![[المتجر ينفّذ HasBalance وStockable]](/images/aosabook/v1-selenium-role-based-interfaces-two-interfaces.webp)
+![المتجر ينفّذ HasBalance وStockable](/images/aosabook/v1-selenium-role-based-interfaces-two-interfaces.webp){#fig.sel.int2}
 
 الشكل 16.2: المتجر ينفّذ HasBalance وStockable
 
@@ -225,7 +225,7 @@ public interface Shop extends HasBalance, Stockable {
 
 وكما في معظم المشاريع الكبيرة، يستخدم Selenium مجموعة طبقية من المكتبات. وأدنى طبقة هي Closure Library من Google، وهي تقدّم بدائيات (primitives) وآلية للتقسيم إلى وحدات (modularization) تسمح بإبقاء ملفات المصدر مركَّزة وصغيرة قدر الإمكان. وفوق ذلك، توجد مكتبة أدوات تقدّم دوالًا تتدرّج من مهام بسيطة كالحصول على قيمة خاصية ما، إلى تحديد ما إذا كان عنصر ما سيكون ظاهرًا لمستخدم من طرف إلى طرف، وصولًا إلى إجراءات أكثر تعقيدًا بكثير مثل محاكاة نقرة باستخدام أحداث مركَّبة. وداخل المشروع، تُنظر إلى هذه العناصر باعتبارها أصغر وحدات لأتمتة المتصفح، ومن ثمّ تُسمّى ذرّات أتمتة المتصفح (Browser Automation Atoms) أو «الذرات». وأخيرًا، هناك طبقات محوّلات (adapter layers) تركّب الذرات لتستوفي عقود الواجهتين البرمجيتين الخاصتين بـ WebDriver وCore.
 
-![[طبقات مكتبة جافاسكربت في Selenium]](/images/aosabook/v1-selenium-atoms.webp)
+![طبقات مكتبة جافاسكربت في Selenium](/images/aosabook/v1-selenium-atoms.webp){#fig.sel.atoms}
 
 الشكل 16.3: طبقات مكتبة جافاسكربت في Selenium
 
@@ -339,7 +339,7 @@ http://localhost:7055/hub/session/XXX/element/some_opaque_id/attribute/row
 
 ولأن الدالة التي ننفّذها عديمة الأثر (idempotent)[4](#footnote-4)، فإن طريقة HTTP الصحيحة المستعملة هي GET. ونفوّض الأمر إلى مكتبة جافا قادرة على التعامل مع HTTP (وهي Apache HTTP Client) لإجراء النداء إلى الخادم.
 
-![[نظرة عامة على بنية مشغّل Firefox]](/images/aosabook/v1-selenium-firefox-driver-overall-architecture.webp)
+![نظرة عامة على بنية مشغّل Firefox](/images/aosabook/v1-selenium-firefox-driver-overall-architecture.webp){#fig.sel.ffdr}
 
 الشكل 16.4: نظرة عامة على بنية مشغّل Firefox
 
@@ -437,7 +437,7 @@ FirefoxDriver.prototype.getElementAttribute = function(respond, parameters) {
 
 ويبيّن التصميم الأولي لمشغّل IE في [الشكل 16.5](#fig.sel.sie).
 
-![[مشغّل IE الأصلي]](/images/aosabook/v1-selenium-simple-ie-stack.webp)
+![مشغّل IE الأصلي](/images/aosabook/v1-selenium-simple-ie-stack.webp){#fig.sel.sie}
 
 الشكل 16.5: مشغّل IE الأصلي
 
@@ -469,7 +469,7 @@ public String getAttribute(String name) {
 
 وأدى هذا إلى التصميم المبين في [الشكل 16.6](#fig.sel.ient).
 
-![[مشغّل IE المعدَّل]](/images/aosabook/v1-selenium-ie-stack-no-threads.webp)
+![مشغّل IE المعدَّل](/images/aosabook/v1-selenium-ie-stack-no-threads.webp){#fig.sel.ient}
 
 الشكل 16.6: مشغّل IE المعدَّل
 
@@ -477,7 +477,7 @@ public String getAttribute(String name) {
 
 كان أحد الحلول لهذه المشكلة هو تشغيل مشغّل IE في منفّذ أحادي الخيط (single-threaded executor) وتسلسل كل الوصول عبر Futures في خادم التطبيقات، وقد كان هذا هو التصميم الذي اخترناه لفترة. غير أنه بدا من غير الإنصاف أن ندفع هذا التعقيد إلى شيفرة الاستدعاء، ومن السهل جدًّا تخيّل حالات يسيء فيها الناس استعمال مشغّل IE من عدة خيوط عن غير قصد. فقرّرنا غرس هذا التعقيد في داخل المشغّل نفسه. وقد فعلنا ذلك بالإبقاء على نسخة IE في خيط منفصل، واستعمال واجهة `PostThreadMessage` البرمجية في Win32 للتواصل عبر حدود الخيط. وهكذا، عند كتابة هذا الفصل، يبدو تصميم مشغّل IE كما في [الشكل 16.7](#fig.sel.fullie).
 
-![[مشغّل IE في Selenium 2.0 alpha 7]](/images/aosabook/v1-selenium-full-ie-stack.webp)
+![مشغّل IE في Selenium 2.0 alpha 7](/images/aosabook/v1-selenium-full-ie-stack.webp){#fig.sel.fullie}
 
 الشكل 16.7: مشغّل IE في Selenium 2.0 alpha 7
 
@@ -497,7 +497,7 @@ public String getAttribute(String name) {
 
 من المفاهيمي، التصميم المستعمل بسيط إلى حدٍّ كبير، كما ترى في [الشكل 16.8](#fig.sel.arch).
 
-![[مخطط بنية Selenium RC]](/images/aosabook/v1-selenium-selenium-rc.webp)
+![مخطط بنية Selenium RC](/images/aosabook/v1-selenium-selenium-rc.webp){#fig.sel.arch}
 
 الشكل 16.8: مخطط بنية Selenium RC
 

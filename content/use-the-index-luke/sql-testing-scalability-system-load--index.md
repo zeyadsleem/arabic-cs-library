@@ -10,7 +10,7 @@ source: https://use-the-index-luke.com/sql/testing-scalability/system-load
 
 فمثلاً، لا يعرض SQL Server Management Studio معلومات المُسندات إلا كتلميح عند تمرير مؤشر الفأرة فوق عملية الفهرس («hover») — وكذلك على هذه الصفحة. وتستخدم خطة التنفيذ التالية الفهرس `SCALE_SLOW`، ومن ثمّ تعرض الشرط على `ID2` كمُسند ترشيح («Predicate» فقط، دون Seek).
 
-![](https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-system-load-0-mssql_ssms_filter.ZrTov2hZ.webp)
+![](https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-system-load-0-mssql_ssms_filter.ZrTov2hZ.webp){#article}
 
 والحصول على معلومات المُسندات من خطة تنفيذ [MySQL](/book/use-the-index-luke/sql-explain-plan-mysql-access-filter-predicates/index) أو [PostgreSQL](/book/use-the-index-luke/sql-explain-plan-postgresql-filter-predicates/index) أكثر إزعاجاً. وفي [الملحق أ](/book/use-the-index-luke/sql-explain-plan/index) التفاصيل.
 
