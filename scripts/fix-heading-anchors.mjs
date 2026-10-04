@@ -7,14 +7,16 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const content = path.join(root, 'content');
 
-// Translators kept the upstream anchors as links with no visible text on each
-// heading — `[#](#id)` after the title, or `[](#id)` before it. markdown-it
-// renders those as empty hyperlinks whose target exists nowhere, so every
-// cross-reference to the heading is dead. The anchor belongs on the heading
-// itself, which is the form the rest of the pipeline already understands
-// (`{#id}`), so move it there and drop the empty link. Heading prose is left
-// byte-for-byte identical.
-const anchors = () => /\[(?:#)?\]\(#([^)\s]+)\)/g;
+// Translators kept the upstream anchors as links on each heading — `[#](#id)`
+// after the title, `[](#id)` before it, and network-security's `[↗](#id)`
+// permalink glyph after it. markdown-it renders the first two as empty
+// hyperlinks whose target exists nowhere, and the third as a link to a target
+// that exists nowhere, so every cross-reference to the heading is dead. The
+// anchor belongs on the heading itself, which is the form the rest of the
+// pipeline already understands (`{#id}`), so move it there and drop the link.
+// Heading prose is left byte-for-byte identical; the ↗ glyph is Sphinx's own
+// decoration for an anchor that the heading now carries directly.
+const anchors = () => /\[(?:#|↗)?\]\(#([^)\s]+)\)/g;
 const fence = /^ {0,3}(`{3,}|~{3,})(.*)$/;
 
 function moveHeadingAnchors(source) {

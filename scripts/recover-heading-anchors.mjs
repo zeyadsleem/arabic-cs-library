@@ -70,10 +70,20 @@ function collectHeadings(markdown) {
 /**
  * Collects every id that addresses a heading.
  *
- * Sites that rename their anchors leave the old ones behind as empty
- * `<p><a id="error-extra-info"></a></p>` placeholders in front of the new
- * heading, and go-style has 218 of them. The prose keeps linking to the old
- * ids, so all of them have to travel with the heading they now sit in front of.
+ * Three shapes all end up naming a heading, and all three are lost the same way
+ * when the HTML becomes markdown:
+ *
+ * - the id on the heading itself, `<h3 id="error-structure">`;
+ * - the old ids of a renamed anchor, left behind as empty
+ *   `<p><a id="error-extra-info"></a></p>` placeholders in front of the new
+ *   heading — go-style has 218 of those;
+ * - the id on the wrapper a section hangs from, `<section id="security-requirements">`
+ *   around the heading that titles it — Sphinx writes the big parts of
+ *   network-security that way and the AsciiDoc renderer aosabook came through
+ *   writes `sec.*` ids that way.
+ *
+ * The prose keeps linking to all of them, so each has to travel with the
+ * heading it now addresses.
  *
  * @param {string} book @returns {Map<string, string[]>} heading text to the ids that address it
  */
@@ -85,17 +95,28 @@ function htmlHeadingIds(book) {
     if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
     const document = parse(fs.readFileSync(path.join(dir, entry.name), 'utf8'), { lowerCaseTagName: false });
     let placeholders = [];
+    // A wrapper's id names the first heading inside it, so unlike a stray
+    // placeholder it has to survive whatever comes between it and that heading.
+    let wrappers = [];
     for (const element of document.querySelectorAll('*')) {
       const tag = element.tagName.toUpperCase();
       const id = element.getAttribute('id');
       if (/^H[1-6]$/.test(tag)) {
         const text = element.text.trim();
-        if (text) ids.set(text, [...(ids.get(text) ?? []), ...placeholders, id].filter(Boolean));
+        if (text) ids.set(text, [...(ids.get(text) ?? []), ...placeholders, ...wrappers, id].filter(Boolean));
         placeholders = [];
+        wrappers = [];
         continue;
       }
       if (tag === 'A' && id && !element.text.trim()) placeholders.push(id);
       else placeholders = [];
+
+      // Only a wrapper that really holds a heading can be said to name one.
+      // A wrapper holding an image or a table is a figure or a table instead,
+      // and scripts/recover-figure-anchors.mjs already owns those.
+      if (id && !element.querySelector('img, table') && element.querySelector('h1, h2, h3, h4, h5, h6')) {
+        wrappers.push(id);
+      }
     }
   }
   return ids;
