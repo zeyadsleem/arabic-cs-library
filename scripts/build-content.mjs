@@ -8,7 +8,7 @@ import hljs from 'highlight.js';
 import { installContentMath } from './lib/content-math.mjs';
 import { normalizeSourceMarkup, installSourceAttributes, outsideCode, readCallout, readCodeBlockCallout, readHeadingCallout } from './lib/content-markup.mjs';
 import { createImageResolver } from './lib/content-images.mjs';
-import { resolveBookReferences } from './lib/content-references.mjs';
+import { linkAcrossSections, resolveBookReferences } from './lib/content-references.mjs';
 import { resolveBasePath } from './lib/base-path.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -380,6 +380,10 @@ const run = () => {
     return chapters ? { ...book, chapters } : book;
   });
   resolveBookReferences(path.join(generatedDir, 'sections'), 'introtcs', basePath);
+  for (const book of books) {
+    const repointed = linkAcrossSections(path.join(generatedDir, 'sections'), book.id, basePath);
+    if (repointed) console.log(`Repointed ${repointed} cross-section links in ${book.id}`);
+  }
 
   const stageIds = new Set(learningPath.stages.map((stage) => stage.id));
   for (const book of books) {

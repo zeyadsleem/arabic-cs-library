@@ -78,3 +78,48 @@ export function resolveBookReferences(directory, book, base) {
     }
   }
 }
+
+/** Point a same-page fragment at the section of the book that actually holds the anchor.
+ *
+ * A book that the importer had to split into several chapters keeps the prose
+ * links of the original page: go-style's second chapter links to `#package-size`,
+ * which addresses a heading in the first chapter. As written the fragment had
+ * nothing to resolve against on the current page, so the link did nothing at all.
+ * Only the href changes — the link text was translated for this page already and
+ * is never rewritten here.
+ *
+ * @param {string} directory @param {string} book @param {string} base @returns {number} links repointed
+ */
+export function linkAcrossSections(directory, book, base) {
+  const files = fs.readdirSync(directory).filter((name) => name.startsWith(`${book}__`) && name.endsWith('.json'));
+  const pages = files.map((file) => ({ file, content: JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')) }));
+  /** @type {Map<string, typeof pages[number]>} the first section of the book that holds each anchor */
+  const holders = new Map();
+  for (const page of pages) {
+    for (const [, id] of page.content.html.matchAll(/\sid="([^"]+)"/g)) {
+      if (!holders.has(id)) holders.set(id, page);
+    }
+  }
+
+  let repointed = 0;
+  for (const page of pages) {
+    const local = new Set([...page.content.html.matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id));
+    let rewritten = '';
+    let cursor = 0;
+    const fragment = () => /<a\b([^>]*)\shref="#([^"]+)"/g;
+    for (const match of page.content.html.matchAll(fragment())) {
+      const [attributes, id] = match.slice(1);
+      const holder = holders.get(id);
+      if (!holder || holder === page || local.has(id)) continue;
+      const url = `${base}/book/${book}/${holder.content.chapter}/${holder.content.slug}#${id}`;
+      rewritten += page.content.html.slice(cursor, match.index) + `<a${attributes} href="${url}"`;
+      cursor = match.index + match[0].length;
+      repointed += 1;
+    }
+    if (!cursor) continue;
+    rewritten += page.content.html.slice(cursor);
+    page.content.html = rewritten;
+    fs.writeFileSync(path.join(directory, page.file), JSON.stringify(page.content));
+  }
+  return repointed;
+}
