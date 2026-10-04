@@ -10,7 +10,7 @@ source: https://selectstarsql.com/frontmatter.html
 
 وبعد تجاوز بعض العقبات [التقنية](#technicals) البسيطة، أعتقد أن **Select Star SQL** حقق هذا المعيار. وأملي أن يصبح **Select Star SQL**، كما فعل [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/chapters) و[Beautiful Racket](https://beautifulracket.com) مع Haskell وRacket، أفضل مكان على الإنترنت لتعلّم SQL.
 
-## منهجية التعليم
+## منهجية التعليم {#pedagogy}
 
 هذه المبادئ وجّهت تصميم هذا المشروع:
 
@@ -26,7 +26,7 @@ source: https://selectstarsql.com/frontmatter.html
 
 في أحد مستوياتها، ليست البيانات إلا جزءًا من كتاب برمجة عادي. وفي مستوى آخر، يمثّل كل صف (row) معاناة هائلة، وأرواحًا فُقدت، وفي بعض الحالات خلاصًا وتقبّلًا مذهلين. وأثناء إعداد مجموعة البيانات هذه، تأثرت بعمق بعدد من التصريحات، ووجدت نفسي أعيد تقييم موقفي من عقوبة الإعدام. وآمل أن تتأمل أنت أيضًا، ونحن نفحص البيانات، القضايا الأعمق المطروحة.
 
-## الجوانب التقنية
+## الجوانب التقنية {#technicals}
 
 - **قواعد بيانات تعمل في جانب العميل (client-side databases).** كان أحد تحديات جعل هذا الموقع مجانيًا هو تجنّب دفع تكاليف استضافة الويب. لكن لمنح المستخدمين تجربة عملية مع قاعدة بيانات (database) (انظر [منهجية التعليم](#pedagogy))، يلزم استضافة خدمة خلفية (backend) مناسبة ودفع ثمنها. وممّا يبعث على الارتياح وجود قواعد بيانات تعمل في جانب العميل. وهذا يتيح لي استخدام الاستضافة المجانية للصفحات الثابتة من [Github Pages'](https://pages.github.com) وتشغيل قاعدة بيانات SQLite في متصفحك. وقد أتاح ذلك Alon Zakai وآخرون عبر [نقل شيفرة SQLite المكتوبة بلغة C إلى Javascript باستخدام Emscripten](https://github.com/kripken/sql.js).
 - **Matthew Butterick.** تعرفت على Matthew في [Racket Summer School](https://summer-school.racket-lang.org/2018/) وأذهلني العمل الرائع الذي أنجزه في [Beautiful Racket](http://beautifulracket.com) و[Practical Typography](http://practicaltypography.com). وكما يمكنك أن تلاحظ، استعرت منه كثيرًا من أفكار التصميم.

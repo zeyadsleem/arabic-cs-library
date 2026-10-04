@@ -10,7 +10,7 @@ source: https://google.github.io/styleguide/go/best-practices
 
 راجع [النظرة العامة](https://google.github.io/styleguide/go/index#about) للاطلاع على المجموعة الكاملة من وثائق دليل الأسلوب.
 
-## التسمية
+## التسمية {#naming}
 
 ### أسماء الدوال والطرائق
 
@@ -123,7 +123,7 @@ func (c *Config) Marshal() ([]byte, error)
 func (c *Config) MarshalText() (string, error)
 ```
 
-### حزم البدائل الاختبارية والدوال المساعدة
+### حزم البدائل الاختبارية والدوال المساعدة {#naming-doubles}
 
 هناك عدة مناهج يمكنك تطبيقها على [تسمية](/book/go-style/guide/index#naming) الحزم والأنواع التي توفّر دوال اختبار مساعدة، وبخاصة [البدائل الاختبارية](https://abseil.io/resources/swe-book/html/ch13.html#basic_concepts). قد يكون البديل الاختباري بديلًا صوريًا (stub) أو مزيّفًا (fake) أو محاكيًا (mock) أو جاسوسًا (spy).
 
@@ -152,7 +152,7 @@ type Service struct {
 func (s *Service) Charge(c *Card, amount money.Money) error { /* omitted */ }
 ```
 
-#### إنشاء حزم مساعدة للاختبار
+#### إنشاء حزم مساعدة للاختبار {#naming-doubles-helper-package}
 
 افترض أنك تريد إنشاء حزمة تحتوي على بدائل اختبارية لأخرى. سنستخدم `package creditcard` (من الأعلى) في هذا المثال:
 
@@ -425,7 +425,7 @@ _, err := f.Seek(0, common.SeekStart)
 b := helper.Marshal(curve, x, y)
 ```
 
-## حجم الحزمة
+## حجم الحزمة {#package-size}
 
 إذا كنت تتساءل عن الحجم الذي ينبغي أن تكون عليه حزم Go لديك، وعمّا إذا كان ينبغي وضع الأنواع المرتبطة في الحزمة نفسها أم تقسيمها إلى حزم مختلفة، فإن نقطة انطلاق جيدة هي [تدوينة Go حول أسماء الحزم](https://go.dev/blog/package-names). فرغم عنوان التدوينة، فهي ليست عن التسمية وحدها. إذ تحتوي على بعض التلميحات المفيدة وتستشهد بعدة مقالات ومحاضرات نافعة.
 
@@ -523,7 +523,7 @@ import (
 - [GoTip #48: Error Sentinel Values](https://google.github.io/styleguide/go/index.html#gotip)
 - [GoTip #13: Designing Errors for Checking](https://google.github.io/styleguide/go/index.html#gotip)
 
-### بنية الخطأ
+### بنية الخطأ {#error-structure}
 
 إذا كان على المستدعين استجواب الخطأ (مثل التمييز بين حالات خطأ مختلفة)، فامنح قيمة الخطأ بنية تتيح القيام بذلك برمجيًا بدلًا من أن يقوم المستدعي بمطابقة السلاسل النصية. وتنطبق هذه النصيحة على شيفرة الإنتاج وكذلك على الاختبارات التي تهتم بحالات خطأ مختلفة.
 
@@ -596,7 +596,7 @@ func handlePet(...) {
 
 يمكن استخدام بنى أخطاء أخرى حسب الاقتضاء، مثل بنية خاصة بالمشروع تحتوي على رمز خطأ وسلسلة تفاصيل. وتُعدّ [الحزمة `status`](https://pkg.go.dev/google.golang.org/grpc/status) تغليفًا شائعًا؛ وإذا اخترت هذه المقاربة (ولستَ ملزمًا بها)، فاستخدم [رموزًا قياسية](https://pkg.go.dev/google.golang.org/grpc/codes). راجع [Go Tip #89: When to Use Canonical Status Codes as Errors](https://google.github.io/styleguide/go/index.html#gotip) لمعرفة ما إذا كان استخدام رموز الحالة هو الخيار الصحيح.
 
-### إضافة معلومات إلى الأخطاء
+### إضافة معلومات إلى الأخطاء {#error-extra-info}
 
 عند إضافة معلومات إلى الأخطاء، تجنّب المعلومات الزائدة التي يوفّرها الخطأ الأساسي بالفعل. فمثلًا، تتضمّن حزمة `os` بالفعل معلومات المسار في أخطائها.
 
@@ -796,7 +796,7 @@ err2 := fmt.Errorf("couldn't find fortune database: %v: %w", err, ErrInternal)
 - [Go Tip #48: Error Sentinel Values](https://google.github.io/styleguide/go/index.html#gotip)
 - [Go Tip #106: Error Naming Conventions](https://google.github.io/styleguide/go/index.html#gotip)
 
-### تسجيل الأخطاء
+### تسجيل الأخطاء {#error-logging}
 
 تحتاج الدوال أحيانًا إلى إخبار نظام خارجي بخطأ ما دون نشره إلى مستدعيها. ويُعدّ التسجيل خيارًا واضحًا هنا؛ لكن كن واعيًا بما تسجّله من أخطاء وكيفية تسجيلها.
 
@@ -837,7 +837,7 @@ log.V(2).Infof("Handling %v", sql.Explain())
 
 ينبغي نشر أخطاء تهيئة البرنامج (مثل الأعلام والإعدادات غير الصحيحة) إلى الأعلى نحو `main`، التي ينبغي أن تستدعي `log.Exit` مع خطأ يشرح كيفية إصلاح الخطأ. وفي هذه الحالات، لا ينبغي عمومًا استخدام `log.Fatal`، لأن تتبّع المكدّس الذي يشير إلى موضع الفحص ليس مرجّحًا أن يكون مفيدًا مثل رسالة قابلة للتنفيذ من صنع الإنسان.
 
-### فحوص البرنامج وحالات الذعر
+### فحوص البرنامج وحالات الذعر {#checks-and-panics}
 
 كما ورد في [القرار ضد استخدام الذعر](https://google.github.io/styleguide/go/decisions#dont-panic)، ينبغي أن تُبنى معالجة الأخطاء القياسية حول قيم الأخطاء المُعادة. وينبغي أن تفضّل المكتبات إعادة خطأ إلى المستدعي بدلًا من إجهاض البرنامج، وبخاصة في الأخطاء العابرة.
 
@@ -908,9 +908,9 @@ func answer(i int) string {
 - [Defer, Panic, and Recover](https://go.dev/blog/defer-panic-and-recover)
 - [On the uses and misuses of panics in Go](https://eli.thegreenplace.net/2018/on-the-uses-and-misuses-of-panics-in-go/)
 
-## التوثيق
+## التوثيق {#documentation}
 
-### الاصطلاحات
+### الاصطلاحات {#documentation-conventions}
 
 يوسّع هذا القسم قسم [التعليقات](/book/go-style/decisions-2/index#commentary) في وثيقة القرارات.
 
@@ -959,7 +959,7 @@ func Sprintf(format string, data ...any) string
 - [GoTip #41: Identify Function Call Parameters](https://google.github.io/styleguide/go/index.html#gotip)
 - [GoTip #51: Patterns for Configuration](https://google.github.io/styleguide/go/index.html#gotip)
 
-#### السياقات
+#### السياقات {#contexts}
 
 من المفهوم ضمنًا أن إلغاء وسيط السياق يقطع الدالة التي مُرِّر إليها. وإذا كان بإمكان الدالة إعادة خطأ، فمن المتعارف عليه أن يكون `ctx.Err()`.
 
@@ -1135,7 +1135,7 @@ func (c *Client) Get(url string) (resp *Response, err error)
 
 - [GoTip #110: Don’t Mix Exit With Defer](https://google.github.io/styleguide/go/index.html#gotip)
 
-#### الأخطاء
+#### الأخطاء {#documentation-conventions-errors}
 
 وثّق قيم الأخطاء العلامية المهمة أو أنواع الأخطاء التي تُعيدها دوالك إلى المستدعين، حتى يتوقّع المستدعون أنواع الحالات التي يمكنهم معالجتها في شيفرتهم.
 
@@ -1194,7 +1194,7 @@ package os
 
 تتضمّن Go [خادم توثيق](https://pkg.go.dev/golang.org/x/pkgsite/cmd/pkgsite). ويُنصَح بمعاينة التوثيق الذي تنتجه شيفرتك قبل عملية مراجعة الشيفرة وأثناءها. ويساعد ذلك على التحقق من أن [تنسيق godoc](#godoc-formatting) يُعرض عرضًا صحيحًا.
 
-### تنسيق godoc
+### تنسيق godoc {#godoc-formatting}
 
 يوفّر [Godoc](https://pkg.go.dev/) بعض الصيغ المحددة [لتنسيق التوثيق](https://go.dev/doc/comment).
 
@@ -1307,7 +1307,7 @@ i := 42
 var i = 42
 ```
 
-### تصريح المتغيّرات بقيم صفرية
+### تصريح المتغيّرات بقيم صفرية {#vardeclzero}
 
 تستخدم التصريحات التالية [القيمة الصفرية](https://golang.org/ref/spec#The_zero_value):
 
@@ -1388,7 +1388,7 @@ var msg = pb.Bar{}
 > **مهم:** يجب تهيئة أنواع الخرائط تهيئةً صريحة قبل أن يمكن تعديلها. غير أن القراءة من خرائط ذات قيمة صفرية أمر لا بأس به إطلاقًا.
 > > بالنسبة إلى أنواع الخرائط والشرائح، إذا كانت الشيفرة حساسة للأداء بشكل خاص وإذا كنت تعرف الأحجام مسبقًا، فراجع قسم [تلميحات الحجم](#vardeclsize).
 
-### المركّبات الحرفية
+### المركّبات الحرفية {#vardeclcomposite}
 
 التصريحات التالية هي تصريحات [مركّبات حرفية](https://golang.org/ref/spec#Composite_literals):
 
@@ -1416,7 +1416,7 @@ var (
 )
 ```
 
-### تلميحات الحجم
+### تلميحات الحجم {#vardeclsize}
 
 التصريحات التالية تستفيد من تلميحات الحجم لتخصيص السعة مسبقًا:
 

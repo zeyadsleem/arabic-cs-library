@@ -10,7 +10,7 @@ source: https://ahastack.dev/aha/7-ai-agents/
 
 يمكنك قراءته هنا: [https://ahastack.dev/skill.md](https://ahastack.dev/skill.md)
 
-## ثبّتها
+## ثبّتها {#install-it}
 
 [القسم بعنوان «ثبّتها»](#install-it)
 
@@ -35,7 +35,7 @@ curl -o .cursor/skills/aha-stack/SKILL.md https://ahastack.dev/skill.md
 
 بعد تثبيتها، يحمّلها الوكيل عندما تذكر htmx أو Alpine أو حزمة AHA.
 
-## أو أضِفها إلى AGENTS.md
+## أو أضِفها إلى AGENTS.md {#or-add-it-to-agentsmd}
 
 [القسم بعنوان «أو أضِفها إلى AGENTS.md»](#or-add-it-to-agentsmd)
 
@@ -60,7 +60,7 @@ Full rules: https://ahastack.dev/skill.md
 
 يحتوي [مشروع العرض التوضيحي](https://github.com/flaviocopes/ahastack.dev/tree/main/demo) على ملف `AGENTS.md` يمكنك الاطلاع عليه كنموذج.
 
-## لماذا مهارة بدل ملف AGENTS.md أطول
+## لماذا مهارة بدل ملف AGENTS.md أطول {#why-a-skill-and-not-a-longer-agentsmd}
 
 [القسم بعنوان «لماذا مهارة بدل ملف AGENTS.md أطول»](#why-a-skill-and-not-a-longer-agentsmd)
 
@@ -68,13 +68,13 @@ Full rules: https://ahastack.dev/skill.md
 
 المقتطف أعلاه هو الجزء الذي يستحق التحميل في كل مرة. أما المهارة فهي الجزء الذي يستحق التحميل حين يكون الوكيل على وشك كتابة نقطة نهاية (endpoint) بـ htmx.
 
-## وكلاء يتصفّحون الموقع
+## وكلاء يتصفّحون الموقع {#agents-that-browse-the-site}
 
 [القسم بعنوان «وكلاء يتصفّحون الموقع»](#agents-that-browse-the-site)
 
 هناك أيضًا ملف [llms.txt](https://ahastack.dev/llms.txt) في جذر الموقع. وهو خريطة للموقع موجّهة إلى الوكلاء: المهارة أولًا، ثم صفحات التوثيق والعروض التوضيحية مع سطر واحد عن كلٍّ منها. والوكيل الذي يصل إلى ahastack.dev ويعرف هذا العرف يجد المهارة من تلقاء نفسه.
 
-## إبقاؤها محدَّثة
+## إبقاؤها محدَّثة {#keeping-it-current}
 
 [القسم بعنوان «إبقاؤها محدَّثة»](#keeping-it-current)
 

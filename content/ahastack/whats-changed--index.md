@@ -8,7 +8,7 @@ source: https://ahastack.dev/aha/6-whats-changed/
 
 إليك ما تغيّر، وما الذي يعنيه ذلك لك.
 
-## htmx
+## htmx {#htmx}
 
 [قسم بعنوان “htmx”](#htmx)
 
@@ -33,7 +33,7 @@ source: https://ahastack.dev/aha/6-whats-changed/
 npx htmx.org@4.0.0 upgrade-check -- .
 ```
 
-## Alpine.js
+## Alpine.js {#alpinejs}
 
 [قسم بعنوان “Alpine.js”](#alpinejs)
 
@@ -41,7 +41,7 @@ npx htmx.org@4.0.0 upgrade-check -- .
 
 هذه ميزة. تعلّمتها مرة واحدة، وما زالت تعمل.
 
-## Astro
+## Astro {#astro}
 
 [قسم بعنوان “Astro”](#astro)
 
@@ -55,7 +55,7 @@ npx htmx.org@4.0.0 upgrade-check -- .
 
 هناك أمر ينبغي معرفته إن كنت قادمًا من Astro 4: فالصفحات المصيّرة عند الطلب تفحص الآن ترويسة `Origin` في طلبات `POST` افتراضيًا. أما طلبات htmx القادمة من صفحاتك فتُمرَّر. أما `curl -X POST` المجرّد فيُرفض.
 
-## ما الذي كنت سأفعله بشكل مختلف
+## ما الذي كنت سأفعله بشكل مختلف {#what-id-do-differently}
 
 [قسم بعنوان “ما الذي كنت سأفعله بشكل مختلف”](#what-id-do-differently)
 

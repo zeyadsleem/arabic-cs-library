@@ -18,7 +18,7 @@ source: https://google.github.io/styleguide/go/decisions
 - **التنسيق (Formatting)**: راجع [guide#formatting](/book/go-style/guide/index#formatting)
 - **طول السطر (Line Length)**: راجع [guide#line-length](/book/go-style/guide/index#line-length)
 
-## التسمية
+## التسمية {#naming}
 
 راجع قسم التسمية في [دليل الأسلوب الأساسي](/book/go-style/guide/index#naming) للحصول على إرشادات شاملة حول التسمية. وتقدّم الأقسام التالية توضيحات إضافية حول مجالات محدّدة في التسمية.
 
@@ -32,7 +32,7 @@ source: https://google.github.io/styleguide/go/decisions
 
 **ملاحظة:** أسماء ملفات الكود المصدري ليست معرّفات Go ولا يلزم أن تتبع هذه الأعراف. ويجوز أن تحتوي على شرطات سفلية.
 
-### أسماء الحزم (Package names)
+### أسماء الحزم (Package names) {#package-names}
 
 في Go، يجب أن تكون أسماء الحزم موجزة وأن تستخدم الأحرف الصغيرة والأرقام فقط (مثل [`k8s`](https://pkg.go.dev/k8s.io/client-go/kubernetes) و[`oauth2`](https://pkg.go.dev/golang.org/x/oauth2)). وينبغي أن تبقى أسماء الحزم متعدّدة الكلمات موصولة وبأحرف صغيرة بالكامل (مثل [`tabwriter`](https://pkg.go.dev/text/tabwriter) بدلًا من `tabWriter` أو `TabWriter` أو `tab_writer`).
 
@@ -56,7 +56,7 @@ source: https://google.github.io/styleguide/go/decisions
 
 راجع أيضًا: [تدوينة مدونة Go حول أسماء الحزم](https://go.dev/blog/package-names).
 
-### أسماء المستقبِل (Receiver names)
+### أسماء المستقبِل (Receiver names) {#receiver-names}
 
 يجب أن تكون أسماء متغيّرات [المستقبِل](https://golang.org/ref/spec#Method_declarations) كما يلي:
 
@@ -175,7 +175,7 @@ const (
 
 تُعدّ المعرّفات المكوّنة من حرف واحد مقبولة كمتغيّرات حلقات صحيحة، خصوصًا للفهارس (مثل `i`) والإحداثيات (مثل `x` و`y`). ويمكن قبول الاختصارات كمعرّفات حلقات عندما يكون النطاق قصيرًا، مثل `for _, n := range nodes { ... }`.
 
-### التكرار (Repetition)
+### التكرار (Repetition) {#repetition}
 
 ينبغي أن يتجنّب الكود المصدري في Go التكرار غير الضروري. ومن المصادر الشائعة لذلك الأسماء المتكرّرة، التي كثيرًا ما تتضمّن كلمات غير ضرورية أو تكرّر سياقها أو نوعها. وقد يكون الكود نفسه متكرّرًا بلا داعٍ إذا ظهر المقطع نفسه أو مقطع مشابه عدة مرات على مقربة من بعضها.
 
@@ -188,7 +188,7 @@ const (
 > **أمثلة:** اسم متكرّر -> اسم أفضل
 > > `widget.NewWidget` -> `widget.New` `widget.NewWidgetWithName` -> `widget.NewWithName` `db.LoadFromDatabase` -> `db.Load` `goatteleportutil.CountGoatsTeleported` -> `gtutil.CountGoatsTeleported` أو `goatteleport.Count` `myteampb.MyTeamMethodRequest` -> `mtpb.MyTeamMethodRequest` أو `myteampb.MethodRequest`
 
-#### اسم المتغيّر مقابل النوع
+#### اسم المتغيّر مقابل النوع {#repetitive-with-type}
 
 يعرف المترجم دائمًا نوع المتغيّر، وفي معظم الحالات يكون نوع المتغيّر واضحًا أيضًا للقارئ من طريقة استخدامه. ولا يلزم توضيح نوع المتغيّر إلا إذا ظهرت قيمته مرتين في النطاق نفسه.
 
@@ -212,7 +212,7 @@ limitStr := r.FormValue("limit")
 limit, err := strconv.Atoi(limitStr)
 ```
 
-#### السياق الخارجي مقابل الأسماء المحلية
+#### السياق الخارجي مقابل الأسماء المحلية {#repetitive-in-context}
 
 غالبًا ما تُنشئ الأسماء التي تتضمّن معلومات من سياقها المحيط ضوضاء إضافية بلا فائدة. فاسم الحزمة واسم الطريقة واسم النوع واسم الدالة ومسار الاستيراد وحتى اسم الملف يمكن أن توفّر جميعها سياقًا يؤهّل تلقائيًا كل الأسماء داخلها.
 
@@ -327,7 +327,7 @@ func (db *DB) UserCount() (int, error) {
 // https://supercalifragilisticexpialidocious.example.com:8080/Animalia/Chordata/Mammalia/Rodentia/Geomyoidea/Geomyidae/
 ```
 
-### التعليقات التوثيقية (Doc comments)
+### التعليقات التوثيقية (Doc comments) {#doc-comments}
 
 يجب أن تحتوي جميع الأسماء المصدَّرة على المستوى الأعلى على تعليقات توثيقية، وكذلك إعلانات الأنواع أو الدوال غير المصدَّرة ذات السلوك أو المعنى غير الواضح. وينبغي أن تكون هذه التعليقات [جُملًا كاملة](#comment-sentences) تبدأ باسم الكائن الموصوف. ويمكن أن تسبق أداة التعريف ("a" أو "an" أو "the") الاسم ليُقرأ بشكل أكثر طبيعية.
 
@@ -360,7 +360,7 @@ type Options struct {
 
 **أفضل ممارسة:** إذا كانت لديك تعليقات توثيقية لكود غير مصدَّر، فاتبع العرف نفسه كما لو كان مصدَّرًا (أي البدء بالتعليق بالاسم غير المصدَّر). وهذا يسهّل تصديره لاحقًا بمجرد استبدال الاسم غير المصدَّر بالاسم المصدَّر الجديد في التعليقات والكود معًا.
 
-### جُمل التعليقات
+### جُمل التعليقات {#comment-sentences}
 
 التعليقات التي هي جُمل كاملة ينبغي أن تبدأ بحرف كبير وتُضبط بالترقيم مثل جُمل اللغة الإنجليزية القياسية. (وكاستثناء، لا بأس في بدء جملة باسم معرّف يبدأ بحرف صغير إذا كان ذلك واضحًا. ومن الأفضل على الأرجح أن يقتصر ذلك على بداية الفقرة.)
 
@@ -384,7 +384,7 @@ type Server struct {
 }
 ```
 
-### الأمثلة
+### الأمثلة {#examples}
 
 ينبغي أن توثّق الحزم بوضوح الاستخدام المقصود لها. حاول تقديم [مثال قابل للتشغيل](http://blog.golang.org/examples)؛ تظهر الأمثلة في Godoc. وتنتمي الأمثلة القابلة للتشغيل إلى ملف الاختبار، لا إلى ملف المصدر الإنتاجي. راجع هذا المثال ([Godoc](https://pkg.go.dev/time#example-Duration)، [المصدر](https://cs.opensource.google/go/go/+/HEAD:src/time/example_test.go)).
 
@@ -496,7 +496,7 @@ package template
 
 ## الاستيرادات
 
-### إعادة تسمية الاستيرادات
+### إعادة تسمية الاستيرادات {#import-renaming}
 
 لا ينبغي عادةً إعادة تسمية استيرادات الحزم، لكن هناك حالات يجب فيها إعادة تسميتها أو تكون إعادة التسمية فيها تحسينًا للقابلية للقراءة.
 
@@ -594,7 +594,7 @@ import (
 var myThing = foo.Bar()
 ```
 
-## الأخطاء
+## الأخطاء {#documentation-conventions-errors}
 
 ### إرجاع الأخطاء
 
@@ -650,7 +650,7 @@ log.Errorf("Operation aborted: %v", err)
 t.Errorf("Op(%q) failed unexpectedly; err=%v", args, err)
 ```
 
-### التعامل مع الأخطاء
+### التعامل مع الأخطاء {#handle-errors}
 
 ينبغي للكود الذي يواجه خطأً أن يتخذ قرارًا مدروسًا بشأن كيفية التعامل معه. وليس من المناسب عادةً تجاهل الأخطاء باستخدام متغيّرات `_`. وإذا أعادت دالة خطأً، فافعل أحد الأمور التالية:
 
@@ -670,7 +670,7 @@ n, _ := b.Write(p) // never returns a non-nil error
 
 لمزيد من النقاش والأمثلة حول معالجة الأخطاء، راجع [Effective Go](http://golang.org/doc/effective_go.html#errors) و[أفضل الممارسات](/book/go-style/best-practices-2/index#error-handling).
 
-### الأخطاء داخل النطاق (In-band errors)
+### الأخطاء داخل النطاق (In-band errors) {#in-band-errors}
 
 في C واللغات المشابهة، من الشائع أن تُرجع الدوال قيمًا مثل ‎-1 أو null أو السلسلة الفارغة للإشارة إلى أخطاء أو نتائج مفقودة. ويُعرف هذا بمعالجة الأخطاء داخل النطاق (in-band error handling).
 

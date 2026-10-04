@@ -4,13 +4,13 @@ lang: ar
 source: https://ahastack.dev/aha/1-stack-overview/
 ---
 
-## لمن هذا الكتاب؟
+## لمن هذا الكتاب؟ {#who-is-it-for}
 
 [قسم بعنوان “لمن هذا الكتاب؟”](#who-is-it-for)
 
 مناسب تمامًا لمطوّري الواجهة الأمامية (frontend) الذين يعرفون React / JSX ويريدون تجربة تطوير (DX) مماثلة، ويريدون كذلك بلساطة أكبر بكثير في حياتهم، عبر توليد HTML على الخادم وكتابة أقل قدر ممكن من شيفرة JavaScript في جهة العميل (client-side JavaScript).
 
-## ما هي؟
+## ما هي؟ {#what-is-it}
 
 [قسم بعنوان “ما هي؟”](#what-is-it)
 
