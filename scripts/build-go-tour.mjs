@@ -3,10 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'node-html-parser';
 import { validateTranslation } from './lib/validate-tour-translation.mjs';
+import { resolveBasePath } from './lib/base-path.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const source = JSON.parse(await fs.readFile(path.join(root, 'src/lib/tour/source.json'), 'utf8'));
-const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
+const base = resolveBasePath();
 const modules = ['welcome', 'basics', 'flowcontrol', 'moretypes', 'methods', 'generics', 'concurrency'];
 const allowed = new Set(['h2', 'h3', 'p', 'pre', 'code', 'ul', 'ol', 'li', 'a', 'img', 'b', 'i', 'em', 'strong', 'br']);
 const bookSection = (module, number) => `${base}/book/go-tour/${module}/${number === 1 ? 'index' : `p${number}`}/`;

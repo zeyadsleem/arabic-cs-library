@@ -9,6 +9,7 @@ import { installContentMath } from './lib/content-math.mjs';
 import { normalizeSourceMarkup, installSourceAttributes, outsideCode, readCallout, readCodeBlockCallout, readHeadingCallout } from './lib/content-markup.mjs';
 import { createImageResolver } from './lib/content-images.mjs';
 import { resolveBookReferences } from './lib/content-references.mjs';
+import { resolveBasePath } from './lib/base-path.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -18,7 +19,7 @@ const generatedDir = path.join(root, 'src', 'lib', 'generated');
 const library = JSON.parse(
   fs.readFileSync(path.join(contentDir, 'library.json'), 'utf8')
 );
-const basePath = (process.env.BASE_PATH || '').replace(/\/$/, '');
+const basePath = resolveBasePath();
 const resolveImages = createImageResolver(path.join(contentDir, 'image-assets.json'), basePath);
 
 const withBasePath = (html) => {

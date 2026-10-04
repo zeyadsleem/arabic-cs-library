@@ -1,21 +1,11 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { deployedBase } from '../scripts/lib/base-path.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-
-const deployedBase = () => {
-  const remote = execFileSync('git', ['remote', 'get-url', 'origin'], {
-    cwd: root,
-    encoding: 'utf8',
-  }).trim();
-  const match = remote.match(/github\.com[:/]([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
-  assert.ok(match, `تعذّر استخراج اسم المستودع من: ${remote}`);
-  return `/${match[2]}`;
-};
 
 const sectionFiles = () => {
   const dir = path.join(root, 'src/lib/generated/sections');
@@ -30,6 +20,7 @@ const absoluteUrls = (markup) =>
 
 test('committed section JSON carries the deployment base path on every absolute URL', () => {
   const base = deployedBase();
+  assert.ok(base, 'تعذّر استخراج مسار النشر من المستودع');
   const files = sectionFiles();
   assert.ok(files.length > 0, 'لم يُعثر على أي قسم مُولَّد');
 
@@ -49,6 +40,7 @@ test('committed section JSON carries the deployment base path on every absolute 
 
 test('committed go-tour lessons carry the deployment base path on every absolute URL', () => {
   const base = deployedBase();
+  assert.ok(base, 'تعذّر استخراج مسار النشر من المستودع');
   const lessons = JSON.parse(
     fs.readFileSync(path.join(root, 'src/lib/tour/lessons.json'), 'utf8'),
   );
