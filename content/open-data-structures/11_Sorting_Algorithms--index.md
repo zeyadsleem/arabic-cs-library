@@ -57,11 +57,15 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 
 لفهم زمن تشغيل الترتيب بالدمج، أسهل ما يكون النظر إليه في ضوء شجرة تعاوده (recursion tree). لنفترض الآن أن $ \mathtt{n}$ قوة للعدد 2، بحيث يكون $ \ensuremath{\mathtt{n}}=2^{\log \ensuremath{\mathtt{n}}}$ ، وأن $ \log \ensuremath{\mathtt{n}}$ عددًا صحيحًا. راجع الشكل 11.2. يحوّل الترتيب بالدمج مسألة ترتيب $ \mathtt{n}$ عنصرًا إلى مسألتين، كل واحدة منهما ترتيب $ \ensuremath{\mathtt{n}}/2$ عنصرًا. ثم تُحوَّل هاتان المسئلتان الفرعيتان كلٌّ منهما إلى مسألتين، أي إلى أربعة مسائل فرعية في المجمل، حجم كلٍّ منها $ \ensuremath{\mathtt{n}}/4$ . ثم تصير هذه المسائل الفرعية الأربع ثماني مسائل فرعية، حجم كلٍّ منها $ \ensuremath{\mathtt{n}}/8$ ، وهكذا. وفي قاع هذه العملية، تُحوَّل $ \ensuremath{\mathtt{n}}/2$ مسألة فرعية، حجم كلٍّ منها اثنان، إلى $ \mathtt{n}$ مسألة، حجم كلٍّ منها واحد. ولكل مسألة فرعية حجم $ \ensuremath{\mathtt{n}}/2^{i}$ ، فإن الزمن الذي يُستغرق في دمج البيانات ونسخها هو $ O(\ensuremath{\mathtt{n}}/2^i)$ . وبما أنه يوجد $ 2^i$ مسألة فرعية حجم كلٍّ منها $ \ensuremath{\mathtt{n}}/2^i$ ، فإن الزمن الكلي المستغرق في العمل على المسائل ذات الحجم $ 2^i$ ، باستثناء الاستدعاءات التعاودية، هو
 
-![$\displaystyle 2^i\times O(\ensuremath{\mathtt{n}}/2^i) = O(\ensuremath{\mathtt{n}}) \enspace . $](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4096.png.webp)
+$$
+\displaystyle 2^i\times O(\ensuremath{\mathtt{n}}/2^i) = O(\ensuremath{\mathtt{n}}) \enspace .
+$$
 
 وعليه، فإن الزمن الكلي الذي يستغرقه الترتيب بالدمج هو
 
-![$\displaystyle \sum_{i=0}^{\log \ensuremath{\mathtt{n}}} O(\ensuremath{\mathtt{n}}) = O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}}) \enspace . $](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4097.png.webp)
+$$
+\displaystyle \sum_{i=0}^{\log \ensuremath{\mathtt{n}}} O(\ensuremath{\mathtt{n}}) = O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}}) \enspace .
+$$
 
 **الشكل 11.2:** شجرة التعاود في الترتيب بالدمج. ![\includegraphics[width=\textwidth ]{figs/mergesort-recursion}](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4098.png.webp) يقوم برهان المبرهنة التالية على التحليل السابق، لكنه يحتاج إلى قدر من العناية الإضافية للتعامل مع الحالات التي لا يكون فيها $ \mathtt{n}$ قوة للعدد 2. **المبرهنة 11..1** *تعمل خوارزمية $ \mathtt{mergeSort(a,c)}$ في زمن $ O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}})$ وتجري ما لا يزيد على $ \ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}}$ مقارنة.*
 
@@ -92,7 +96,9 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 |  | $\displaystyle = \ensuremath{\mathtt{n}} + \ensuremath{\mathtt{n}}(\log\ensuremath{\mathtt{n}}-1)$ |  |
 |  | $\displaystyle = \ensuremath{\mathtt{n}}\log\ensuremath{\mathtt{n}} \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4103.png.webp)
+$$
+\qedsymbol
+$$
 
 ## 11.1.2 الترتيب السريع
 
@@ -143,7 +149,9 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 |  | $\displaystyle \le 2\sum_{i=1}^{\ensuremath{\mathtt{n}}}H_{\ensuremath{\mathtt{n}}}$ |  |
 |  | ![المعادلة الأصلية: تحليل عدد المقارنات في خوارزميات الترتيب، الصيغة 4](/images/open-data-structures/math-53e4bb8fbd6a3713e1ad.webp) |  |
 
-![$ \qedsymbol$](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4168.png.webp)
+$$
+\qedsymbol
+$$
 
 تصف المبرهنة 11.3 الحالة التي تكون فيها العناصر المرتَّبة كلها متمايزة. أما إذا كانت مصفوفة الإدخال $ \mathtt{a}$ تحوي عناصر مكرَّرة، فإن زمن التشغيل المتوقَّع للترتيب السريع ليس أسوأ، بل قد يكون أفضل؛ فكلما اختير عنصر مكرَّر $ \mathtt{x}$ محورًا، جُمِّعت كل ورودات $ \mathtt{x}$ معًا ولم تشارك في أيٍّ من المسألتين الفرعيتين. **المبرهنة 11..3** *تعمل الطريقة $ \mathtt{quickSort(a,c)}$ في زمن متوقَّع قدره $ O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}})$، وعدد المقارنات المتوقَّع الذي تجريه ما لا يزيد على $ 2\ensuremath{\mathtt{n}}\ln \ensuremath{\mathtt{n}} +O(\ensuremath{\mathtt{n}})$ .*
 
@@ -187,7 +195,7 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 
 ![$\displaystyle \sum_{i=0}^{\ensuremath{\mathtt{n}}-i} 2\log(\ensuremath{\mathtt{... ...ensuremath{\mathtt{n}} = 2\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}} $](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4245.png.webp)
 
-بجمع عدد المقارنات التي تجريها كل واحدة من الخطوات الثلاث يكتمل البرهان. ![$ \qedsymbol$](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4232.png.webp)
+بجمع عدد المقارنات التي تجريها كل واحدة من الخطوات الثلاث يكتمل البرهان. $\qedsymbol$
 
 11.1.4 حدٌّ أدنى (lower bound) للترتيب المبني على المقارنات لقد رأينا الآن ثلاث خوارزميات ترتيب مبنية على المقارنات، كل منها تعمل في زمن $ O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}})$ . وإلى هذا الحد، ينبغي أن نتساءل إن كانت هناك خوارزميات أسرع. والجواب المختصر على هذا السؤال هو لا. فإذا كانت العمليات الوحيدة المسموح بها على عناصر $ \mathtt{a}$ هي المقارنات، فلا يمكن لأي خوارزمية أن تتجنب إجراء نحو $ \ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}}$ مقارنة. وإثبات ذلك ليس صعبًا، لكنه يتطلب قدرًا من الخيال. وفي المحصلة، فإنه ينبع من الحقيقة أن
 
@@ -197,13 +205,15 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 
 وسنبدأ بتركيز انتباهنا على الخوارزميات الحتمية (deterministic) مثل الترتيب بالدمج والترتيب بالكومة، وعلى قيمة ثابتة بعينها لـ $ \mathtt{n}$ . تخيّل خوارزمية من هذا النوع مستعملة لترتيب $ \mathtt{n}$ عنصرًا متمايزًا. ومفتاح إثبات هذا الحد الأدنى هو ملاحظة أن الخوارزمية الحتمية، عند ثبات قيمة $ \mathtt{n}$ ، تقارن أولًا دائمًا الزوج نفسه من العناصر. فمثلًا، في $ \mathtt{heapSort(a,c)}$ ، عندما يكون $ \mathtt{n}$ زوجيًا، يكون أول استدعاء لـ $ \mathtt{trickleDown(i)}$ هو $ \mathtt{i=n/2-1}$ ، وتكون أول مقارنة بين العنصرين $ \mathtt{a[n/2-1]}$ و $ \mathtt{a[n-1]}$ . وبما أن جميع عناصر الإدخال متمايزة، فإن هذه المقارنة الأولى لها نتيجتان محتملتان فقط. وقد تعتمد المقارنة الثانية التي تجريها الخوارزمية على نتيجة المقارنة الأولى. وقد تعتمد المقارنة الثالثة على نتيجتي المقارنتين الأوليين، وهكذا. وبهذه الطريقة، يمكن النظر إلى أي خوارزمية ترتيب حتمية مبنية على المقارنات على أنها شجرة مقارنات ثنائية الجذر. وكل عقدة داخلية، $ \mathtt{u}$ ، في هذه الشجرة موسومة بزوج من الدلالين $ \mathtt{u.i}$ و $ \mathtt{u.j}$ . فإذا كان $ \ensuremath{\mathtt{a[u.i]}}<\ensuremath{\mathtt{a[u.j]}}$ انتقلت الخوارزمية إلى الشجرة الفرعية اليسرى، وإلّا انتقلت إلى الشجرة الفرعية اليمنى. وكل ورقة $ \mathtt{w}$ في هذه الشجرة موسومة بتبادل $ \ensuremath{\mathtt{w.p[0]}},\ldots,\ensuremath{\mathtt{w.p[n-1]}}$ لـ $ 0,\ldots,\ensuremath{\mathtt{n}}-1$ . ويمثّل هذا التبادل التبادلَ المطلوب لترتيب $ \mathtt{a}$ إذا بلغت شجرة المقارنات هذه الورقة. أي أن:
 
-![$\displaystyle \ensuremath{\mathtt{a[w.p[0]]}}<\ensuremath{\mathtt{a[w.p[1]]}}<\cdots<\ensuremath{\mathtt{a[w.p[n-1]]}} \enspace . $](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4267.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{a[w.p[0]]}}<\ensuremath{\mathtt{a[w.p[1]]}}<\cdots<\ensuremath{\mathtt{a[w.p[n-1]]}} \enspace .
+$$
 
 يعرض الشكل 11.5 مثالًا على شجرة مقارنات لمصفوفة حجمها $ \mathtt{n=3}$ .
 
 تخبرنا شجرة المقارنات الخاصة بخوارزمية الترتيب بكل شيء عن تلك الخوارزمية. فهي تخبرنا بدقة بتسلسل المقارنات التي ستُجرى لأي مصفوفة إدخال، $ \mathtt{a}$ ، ذات $ \mathtt{n}$ عنصرًا متمايزًا، وتخبرنا بكيفية إعادة الخوارزمية ترتيب $ \mathtt{a}$ بغية ترتيبه. وعليه، يجب أن تملك شجرة المقارنات ما لا يقل عن $ \ensuremath{\mathtt{n}}!$ ورقة؛ وإلّا فهناك تباديلان مختلفان يقودان إلى الورقة نفسها، وبالتالي لا ترتّب الخوارزمية أحد هذين التباديل ترتيبًا صحيحًا. فمثلًا، لا تملك شجرة المقارنات في الشكل 11.6 سوى $ 4< 3!=6$ ورقة. وبفحص هذه الشجرة نرى أن مصفوفتي الإدخال $ 3,1,2$ و $ 3,2,1$ توصلان كلتاهما إلى الورقة واقفة أقصى اليمين. ففي الإدخال $ 3,1,2$ تُخرج هذه الورقة بصورة صحيحة $ \ensuremath{\mathtt{a[1]}}=1,\ensuremath{\mathtt{a[2]}}=2,\ensuremath{\mathtt{a[0]}}=3$ . غير أن في الإدخال $ 3,2,1$ تُخرج هذه العقدة بصورة خاطئة $ \ensuremath{\mathtt{a[1]}}=2,\ensuremath{\mathtt{a[2]}}=1,\ensuremath{\mathtt{a[0]}}=3$ . ويقودنا هذا النقاش إلى الحد الأدنى الأساسي للخوارزميات المبنية على المقارنات. **الشكل 11.6:** شجرة مقارنات لا ترتّب كل تباديل الإدخال ترتيبًا صحيحًا. ![\includegraphics[width=\textwidth ]{figs/comparison-tree-b}](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4283.png.webp) **المبرهنة 11..5** *لأي خوارزمية ترتيب حتمية مبنية على المقارنات $ \mathcal{A}$ وأي عدد صحيح $ \ensuremath{\mathtt{n}}\ge 1$ ، توجد مصفوفة إدخال $ \mathtt{a}$ طولها $ \mathtt{n}$ بحيث تجري $ \mathcal{A}$ عددًا من المقارنات يبلغ على الأقل $ \log(\ensuremath{\mathtt{n}}!) = \ensuremath{\mathtt{n}}\log\ensuremath{\mathtt{n}}-O(\ensuremath{\mathtt{n}})$ عند ترتيب $ \mathtt{a}$ .*
 
-*البرهان*. ووفق المناقشة السابقة، يجب أن تملك شجرة المقارنات المعرَّفة بواسطة $ \mathcal{A}$ ما لا يقل عن $ \ensuremath{\mathtt{n}}!$ ورقة. ويبيّن برهان استدلالي سهل أن ارتفاع أي شجرة ثنائية ذات $ k$ ورقة هو على الأقل $ \log k$ . وعليه، فإن شجرة المقارنات الخاصة بـ $ \mathcal{A}$ فيها ورقة، $ \mathtt{w}$ ، عمقها على الأقل $ \log(\ensuremath{\mathtt{n}}!)$ ، وهناك مصفوفة إدخال $ \mathtt{a}$ تقود إلى هذه الورقة. ومصفوفة الإدخال $ \mathtt{a}$ هذه هي مدخل تجري فيه $ \mathcal{A}$ عددًا من المقارنات يبلغ على الأقل $ \log(\ensuremath{\mathtt{n}}!)$ . ![$ \qedsymbol$](/images/open-data-structures/11_1_Comparison_Based_Sorti-img4291.png.webp)
+*البرهان*. ووفق المناقشة السابقة، يجب أن تملك شجرة المقارنات المعرَّفة بواسطة $ \mathcal{A}$ ما لا يقل عن $ \ensuremath{\mathtt{n}}!$ ورقة. ويبيّن برهان استدلالي سهل أن ارتفاع أي شجرة ثنائية ذات $ k$ ورقة هو على الأقل $ \log k$ . وعليه، فإن شجرة المقارنات الخاصة بـ $ \mathcal{A}$ فيها ورقة، $ \mathtt{w}$ ، عمقها على الأقل $ \log(\ensuremath{\mathtt{n}}!)$ ، وهناك مصفوفة إدخال $ \mathtt{a}$ تقود إلى هذه الورقة. ومصفوفة الإدخال $ \mathtt{a}$ هذه هي مدخل تجري فيه $ \mathcal{A}$ عددًا من المقارنات يبلغ على الأقل $ \log(\ensuremath{\mathtt{n}}!)$ . $\qedsymbol$
 
 تتناول المبرهنة 11.5 خوارزميات حتمية مثل الترتيب بالدمج والترتيب بالكومة، لكنها لا تخبرنا بشيء عن الخوارزميات العشوائية مثل الترتيب السريع. فهل يمكن لخوارزمية عشوائية أن تتجاوز الحد الأدنى $ \log(\ensuremath{\mathtt{n}}!)$ على عدد المقارنات؟ والجواب، مرة أخرى، هو لا. والطريقة لإثبات ذلك هي التفكير، بطريقة مختلفة، فيما تعنيه الخوارزمية العشوائية. وفي النقاش التالي، سنفترض أن أشجار قرارنا «نُظِّفت» بالطريقة التالية: تُحذف أي عقدة لا يمكن بلوغها بواسطة مصفوفة إدخال ما، هي $ \mathtt{a}$ . وهذه التنظيفية تعني أن الشجرة فيها بالضبط $ \ensuremath{\mathtt{n}}!$ ورقة. وفيها ما لا يقل عن $ \ensuremath{\mathtt{n}}!$ ورقة، لأن ما عدا ذلك لما استطاعت أن ترتّب ترتيبًا صحيحًا. وفيها ما لا يزيد عن $ \ensuremath{\mathtt{n}}!$ ورقة، لأن كل واحد من التباديل $ \ensuremath{\mathtt{n}}!$ المحتملة لعدد $ \mathtt{n}$ من العناصر المتمايزة يسلك مسارًا واحدًا بالضبط من الجذر إلى الورقة في شجرة القرار. ويمكننا النظر إلى خوارزمية ترتيب عشوائية، $ \mathcal{R}$ ، على أنها خوارزمية حتمية تأخذ مدخلين: مصفوفة الإدخال $ \mathtt{a}$ التي يفترض ترتيبها، ومتوالية طويلة $ b=b_1,b_2,b_3,\ldots,b_m$ من أعداد حقيقية عشوائية ضمن المدى $ [0,1]$ . وتوفّر هذه الأعداد العشوائيةَ ما يلزم من عشوائيةٍ في الخوارزمية. وحين تريد الخوارزمية أن ترمي عملة أو تجري اختيارًا عشوائيًا، فإنها تفعل ذلك باستعمال عنصر ما من $ b$ . فمثلًا، ولحساب دليل أول عنصر محوري في الترتيب السريع، يمكن للخوارزمية أن تستعمل الصيغة $ \lfloor n b_1\rfloor$ . والآن، لاحظ أن إذا ثبّتنا $ b$ على متتالية بعينها $ \hat{b}$ ، فإن $ \mathcal{R}$ تصير خوارزمية ترتيب حتمية، $ \mathcal{R}(\hat{b})$ ، لها شجرة مقارنات مقابلة، $ \mathcal{T}(\hat{b})$ . ثم لاحظ أن إذا اخترنا $ \mathtt{a}$ لتكون تبادلًا عشوائيًا لـ $ \{1,\ldots,\ensuremath{\mathtt{n}}\}$ ، فإن هذا يعادل اختيار ورقة عشوائية، $ \mathtt{w}$ ، من $ \ensuremath{\mathtt{n}}!$ ورقة في $ \mathcal{T}(\hat{b})$ . ويطلب منك التمرين 11.13 أن تثبت أن إذا اخترنا ورقة عشوائية من أي شجرة ثنائية ذات $ k$ ورقة، فإن عمق هذه الورقة المتوقَّع هو على الأقل $ \log k$ . وعليه، فإن عدد المقارنات المتوقَّع الذي تجريه الخوارزمية (الحتمية) $ \mathcal{R}(\hat{b})$ حين تُعطى مصفوفة إدخال تحوي تبادلًا عشوائيًا لـ $ \{1,\ldots,n\}$ هو على الأقل $ \log(\ensuremath{\mathtt{n}}!)$ . وأخيرًا، لاحظ أن هذا صحيح لكل اختيار لـ $ \hat{b}$ ، لذا فهو يصح حتى في حالة $ \mathcal{R}$ . وبهذا يكتمل برهان الحد الأدنى للخوارزميات العشوائية. **المبرهنة 11..6** *لأي عدد صحيح $ n\ge 1$ وأي خوارزمية ترتيب مبنية على المقارنات (حتمية كانت أو عشوائية)، $ \mathcal{A}$ ، يكون عدد المقارنات المتوقَّع الذي تجريه $ \mathcal{A}$ عند ترتيب تبادل عشوائي لـ $ \{1,\ldots,n\}$ على الأقل $ \log(\ensuremath{\mathtt{n}}!) = \ensuremath{\mathtt{n}}\log\ensuremath{\mathtt{n}}-O(\ensuremath{\mathtt{n}})$ .*
 
@@ -219,7 +229,9 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 
 ندرس في هذا القسم خوارزميتَي ترتيب ليستا مبنيتين على المقارنات. ومتخصصتان في ترتيب الأعداد الصحيحة الصغيرة، فإن هاتين الخوارزميتين تتجاوزان الحدود الدنيا للمبرهنة 11.5 باستعمال (أجزاء من) عناصر $ \mathtt{a}$ كدلالَين داخل مصفوفة. ولنفترض عبارة من الشكل
 
-![$\displaystyle \ensuremath{\mathtt{c[a[i]]}} = 1 \enspace . $](/images/open-data-structures/11_2_Counting_Sort_Radix_So-img4339.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{c[a[i]]}} = 1 \enspace .
+$$
 
 تُنفَّذ هذه العبارة في زمن ثابت، لكن لها $ \mathtt{c.length}$ نواتج مختلفة محتملة، بحسب قيمة $ \mathtt{a[i]}$ . وهذا يعني أن تنفيذ خوارزمية تجري مثل هذه العبارة لا يمكن نمذجته على شكل شجرة ثنائية. وفي المحصلة، فهذه هي سبب قدرة خوارزميات هذا القسم على الترتيب أسرع من الخوارزميات المبنية على المقارنات.
 
@@ -243,7 +255,9 @@ source: https://opendatastructures.org/ods-java/11_Sorting_Algorithms.html
 
 **الشكل 11.7:** عمل الترتيب العدّي على مصفوفة طولها $ \ensuremath{\mathtt{n}}=20$ تخزّن الأعداد الصحيحة $ 0,\ldots,\ensuremath{\mathtt{k}}-1=9$ . ![\includegraphics[width=\textwidth ]{figs/countingsort}](/images/open-data-structures/11_2_Counting_Sort_Radix_So-img4358.png.webp) تضبط حلقة $ \mathtt{for}$ الأولى في هذه الشيفرة كل عدّاد $ \mathtt{c[i]}$ بحيث يعدّ عدد ورودات $ \mathtt{i}$ في $ \mathtt{a}$ . وباستعمال قيم $ \mathtt{a}$ كدلالَين، يمكن حساب جميع هذه العدادات في زمن $ O(\ensuremath{\mathtt{n}})$ بحلقة for واحدة. وعند هذه النقطة كان بإمكاننا استعمال $ \mathtt{c}$ لملء مصفوفة المخرجات $ \mathtt{b}$ مباشرة. غير أن هذا لن ينجح إذا كانت عناصر $ \mathtt{a}$ مرتبطة ببيانات مرافقة. ولذلك نبذل جهدًا إضافيًا يسيرًا لنسخ عناصر $ \mathtt{a}$ إلى $ \mathtt{b}$ . أمّا حلقة $ \mathtt{for}$ التالية، التي تستغرق زمنًا قدره $ O(\ensuremath{\mathtt{k}})$، فتحسب مجموعًا تراكميًا للعدادات بحيث تصير $ \mathtt{c[i]}$ عدد العناصر في $ \mathtt{a}$ التي تكون أصغر من $ \mathtt{i}$ أو مساوية لها. وبخاصة، فلكل $ \ensuremath{\mathtt{i}}\in\{0,\ldots,\ensuremath{\mathtt{k}}-1\}$ ، سيكون لدى مصفوفة المخرجات، $ \mathtt{b}$ ، ما يلي
 
-![$\displaystyle \ensuremath{\mathtt{b[c[i-1]]}}=\ensuremath{\mathtt{b[c[i-1]+1]=}}\cdots=\ensuremath{\mathtt{b[c[i]-1]}}=\ensuremath{\mathtt{i}} \enspace . $](/images/open-data-structures/11_2_Counting_Sort_Radix_So-img4381.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{b[c[i-1]]}}=\ensuremath{\mathtt{b[c[i-1]+1]=}}\cdots=\ensuremath{\mathtt{b[c[i]-1]}}=\ensuremath{\mathtt{i}} \enspace .
+$$
 
 وأخيرًا، تفحص الخوارزمية $ \mathtt{a}$ في الاتجاه العكسي لتضع عناصرها بالترتيب في مصفوفة مخرجات $ \mathtt{b}$ . وأثناء الفحص، يوضع العنصر $ \mathtt{a[i]=j}$ عند الموضع $ \mathtt{b[c[j]-1]}$ وتُنقص قيمة $ \mathtt{c[j]}$ .
 

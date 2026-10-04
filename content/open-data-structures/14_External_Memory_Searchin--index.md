@@ -29,7 +29,9 @@ source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 
 في هذا القسم نناقش تعميمًا للأشجار الثنائية، تُسمّى أشجار $ B$ (B-trees)، وهو كفؤ في نموذج الذاكرة الخارجية. وبدلًا من ذلك، يمكن النظر إلى أشجار $ B$ على أنها التعميم الطبيعي لأشجار 2-4 الموصوفة في القسم 9.1. (وشجرة 2-4 هي حالة خاصة من شجرة $ B$ نحصل عليها بضبط $ B=2$ .) ولأي عدد صحيح $ B\ge 2$ ، شجرة $ B$ هي شجرة تتساوى فيها أعماق كل الأوراق، ولكل عقدة داخلية غير جذرية، $ \mathtt{u}$، عدد أبناء لا يقل عن $ B$ ولا يزيد عن $ 2B$ . وتُخزَّن أبناء $ \mathtt{u}$ في مصفوفة، $ \mathtt{u.children}$ . أمّا الشرط على عدد الأبناء فيُخفَّف عند الجذر، الذي يمكن أن يملك ما بين 2 و $ 2B$ ابنًا. فإذا كان ارتفاع شجرة $ B$ هو $ h$ ، فإن ذلك يعني أن عدد الأوراق، $ \ell$، في شجرة $ B$ يحقّق
 
-![$\displaystyle 2B^{h-1} \le \ell \le 2(2B)^{h-1} \enspace . $](/images/open-data-structures/14_2_B_Trees-img5323.png.webp)
+$$
+\displaystyle 2B^{h-1} \le \ell \le 2(2B)^{h-1} \enspace .
+$$
 
 بأخذ لوغاريتم المتباينة الأولى وإعادة ترتيب الحدود نحصل على:
 
@@ -42,17 +44,23 @@ source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 
 تخزّن كل عقدة، $ \mathtt{u}$، في شجرة $ B$ مصفوفة مفاتيح $ \ensuremath{\mathtt{u.keys}}[0],\ldots,\ensuremath{\mathtt{u.keys}}[2B-1]$ . فإذا كانت $ \mathtt{u}$ عقدة داخلية لها $ k$ ابنًا، فإن عدد المفاتيح المخزَّنة في $ \mathtt{u}$ هو $ k-1$ بالضبط، وتُخزَّن في $ \ensuremath{\mathtt{u.keys}}[0],\ldots,\ensuremath{\mathtt{u.keys}}[k-2]$ . أمّا مداخل مصفوفة $ \mathtt{u.keys}$ الباقية وعددها $ 2B-k+1$ فتُضبط على $ \mathtt{null}$ . وإذا كانت $ \mathtt{u}$ عقدة ورقة غير جذرية، فإن $ \mathtt{u}$ تحتوي ما بين $ B-1$ و $ 2B-1$ مفتاحًا. وتخضع مفاتيح شجرة $ B$ لترتيب مشابه لترتيب مفاتيح شجرة البحث الثنائية. فلكل عقدة، $ \mathtt{u}$، تخزّن $ k-1$ مفاتيح،
 
-![$\displaystyle \ensuremath{\mathtt{u.keys[0]}} < \ensuremath{\mathtt{u.keys[1]}} < \cdots < \ensuremath{\mathtt{u.keys}}[k-2] \enspace . $](/images/open-data-structures/14_2_B_Trees-img5348.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{u.keys[0]}} < \ensuremath{\mathtt{u.keys[1]}} < \cdots < \ensuremath{\mathtt{u.keys}}[k-2] \enspace .
+$$
 
 فإذا كانت $ \mathtt{u}$ عقدة داخلية، فإن لكل $ \ensuremath{\mathtt{i}}\in\{0,\ldots,k-2\}$ يكون $ \ensuremath{\mathtt{u.keys[i]}}$ أكبر من كل مفتاح مخزَّن في الشجرة الفرعية المجذّرة عند $ \mathtt{u.children[i]}$ وأصغر من كل مفتاح مخزَّن في الشجرة الفرعية المجذّرة عند $ \ensuremath{\mathtt{u.children[i+1]}}$ . وبعبارة غير رسمية،
 
-![$\displaystyle \ensuremath{\mathtt{u.children[i]}} \prec \ensuremath{\mathtt{u.keys[i]}} \prec \ensuremath{\mathtt{u.children[i+1]}} \enspace . $](/images/open-data-structures/14_2_B_Trees-img5354.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{u.children[i]}} \prec \ensuremath{\mathtt{u.keys[i]}} \prec \ensuremath{\mathtt{u.children[i+1]}} \enspace .
+$$
 
 يبيّن الشكل 14.2 مثالًا لشجرة $ B$ مع $ B=2$ .
 
 **الشكل 14.2:** شجرة $ B$ مع $ B=2$ . ![\includegraphics[width=\textwidth ]{figs/btree-1}](/images/open-data-structures/14_2_B_Trees-img5357.png.webp) لاحظ أن البيانات المخزَّنة في عقدة شجرة $ B$ حجمها $ O(B)$ . ولذلك، في سياق الذاكرة الخارجية، تُختار قيمة $ B$ في شجرة $ B$ بحيث تتّسع العقدة في كتلة ذاكرة خارجية واحدة. وبهذه الطريقة، يكون الزمن اللازم لتنفيذ عملية على شجرة $ B$ في نموذج الذاكرة الخارجية متناسبًا مع عدد العقد التي تصل إليها العملية (تقرأها أو تكتبها). فمثلًا، إذا كانت المفاتيح أعدادًا صحيحة ذات 4 بايتات وكانت فهارس العقد كذلك بحجم 4 بايتات، فإن ضبط $ B=256$ يعني أن كل عقدة تخزّن
 
-![$\displaystyle (4+4)\times 2B = 8\times512=4096 $](/images/open-data-structures/14_2_B_Trees-img5368.png.webp)
+$$
+\displaystyle (4+4)\times 2B = 8\times512=4096
+$$
 
 بايتًا من البيانات. وستكون هذه قيمة مثالية لـ $ B$ في حالة القرص الصلب أو قرص الحالة المذكورين في مقدمة هذا الفصل، إذ إن حجم الكتلة عندهما $ 4096$ بايت. أمّا الصنف BTree، الذي ينفّذ شجرة $ B$، فيخزّن BlockStore هو $ \mathtt{bs}$، يخزّن عقد BTree، وكذلك فهرس عقدة الجذر، $ \mathtt{ri}$ . وكالمعتاد، يُستخدَم عدد صحيح، $ \mathtt{n}$، لتتبّع عدد العناصر في بنية البيانات:
 
@@ -107,7 +115,9 @@ source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 
 يمكننا تحليل زمن تنفيذ عملية $ \mathtt{find(x)}$ على شجرة $ B$ في نموذج word-RAM المعتاد (حيث تُحسب كل تعليمة) وفي نموذج الذاكرة الخارجية (حيث نعدّ عدد العقد التي نصل إليها فحسب). ولأن كل ورقة في شجرة $ B$ تخزّن مفتاحًا واحدًا على الأقل، وأن ارتفاع شجرة $ B$ ذات $ \ell$ ورقة هو $ O(\log_B\ell)$ ، فإن ارتفاع شجرة $ B$ تخزّن $ \mathtt{n}$ مفتاحًا هو $ O(\log_B \ensuremath{\mathtt{n}})$ . ولذلك، في نموذج الذاكرة الخارجية، الزمن الذي تستغرقه عملية $ \mathtt{find(x)}$ هو $ O(\log_B \ensuremath{\mathtt{n}})$ . أما لتحديد زمن التنفيذ في نموذج word-RAM فيتعين علينا احتساب كلفة استدعاء $ \mathtt{findIt(a,x)}$ عند كل عقدة نصل إليها، ومن ثمّ فإن زمن تنفيذ $ \mathtt{find(x)}$ في نموذج word-RAM هو
 
-![$\displaystyle O(\log_B \ensuremath{\mathtt{n}})\times O(\log B) = O(\log \ensuremath{\mathtt{n}}) \enspace . $](/images/open-data-structures/14_2_B_Trees-img5435.png.webp)
+$$
+\displaystyle O(\log_B \ensuremath{\mathtt{n}})\times O(\log B) = O(\log \ensuremath{\mathtt{n}}) \enspace .
+$$
 
 ## 14.2.2 الإضافة
 
@@ -248,7 +258,9 @@ source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 
 لعلاج نقص عند العقدة $ \mathtt{w}$، نحتاج إلى مفاتيح إضافية (وربما أبناء أيضًا) لـ $ \mathtt{w}$ . وهناك طريقتان لفعل ذلك: **الاستعارة:** إذا كان للعقدة $ \mathtt{w}$ شقيق، $ \mathtt{v}$، يملك أكثر من $ B-1$ مفتاحًا، فيمكن لـ $ \mathtt{w}$ أن تستعير بعض المفاتيح (وربما أبناء أيضًا) من $ \mathtt{v}$ . وبتحديد أكثر، إذا كان $ \mathtt{v}$ يخزّن $ \mathtt{size(v)}$ مفتاحًا، فإن $ \mathtt{v}$ و $ \mathtt{w}$ معًا يملكان ما مجموعه
 
-![$\displaystyle B-2 + \ensuremath{\mathtt{size(w)}} \ge 2B-2 $](/images/open-data-structures/14_2_B_Trees-img5634.png.webp)
+$$
+\displaystyle B-2 + \ensuremath{\mathtt{size(w)}} \ge 2B-2
+$$
 
 مفتاحًا. ومن ثمّ يمكننا نقل مفاتيح من $ \mathtt{v}$ إلى $ \mathtt{w}$ بحيث يمتلك كلٌّ من $ \mathtt{v}$ و $ \mathtt{w}$ ما لا يقل عن $ B-1$ مفتاحًا. ويبيّن الشكل 14.9 هذه العملية.
 
@@ -301,7 +313,7 @@ source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 
 ولأن ما يُنشأ من أرصدة لا يتجاوز أبدًا $ 3m$ رصيدًا، وأن كل تقسيم ودمج واستعارة يُدفع بأرصدة اثنين، فإن ذلك يعني أن عمليات التقسيم والدمج والاستعارة المنفَّذة لا تتجاوز $ 3m/2$ . وتُصوَّر هذه الأرصدة باستعمال الرمز في الأشكال 14.5 و14.9 و14.10.
 
-ولكي يتتبّع الإثبات هذه الأرصدة، فإنه يحافظ على الثابت التالي للأرصدة: فكل عقدة غير جذرية ذات $ B-1$ مفاتيح تخزّن رصيدًا واحدًا، وكل عقدة ذات $ 2B-1$ مفتاحًا تخزّن ثلاثة أرصدة. أمّا العقدة التي تخزّن ما لا يقل عن $ B$ مفاتيح وعلى الأكثر $ 2B-2$ مفتاحًا فلا يلزم أن تخزّن أي أرصدة. ويبقى أن نبيّن أننا نستطيع الحفاظ على ثابت الأرصدة وتلبية الخاصيتين 1 و2 أعلاه أثناء كل عملية $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ . ![$ \qedsymbol$](/images/open-data-structures/14_2_B_Trees-img5696.png.webp)
+ولكي يتتبّع الإثبات هذه الأرصدة، فإنه يحافظ على الثابت التالي للأرصدة: فكل عقدة غير جذرية ذات $ B-1$ مفاتيح تخزّن رصيدًا واحدًا، وكل عقدة ذات $ 2B-1$ مفتاحًا تخزّن ثلاثة أرصدة. أمّا العقدة التي تخزّن ما لا يقل عن $ B$ مفاتيح وعلى الأكثر $ 2B-2$ مفتاحًا فلا يلزم أن تخزّن أي أرصدة. ويبقى أن نبيّن أننا نستطيع الحفاظ على ثابت الأرصدة وتلبية الخاصيتين 1 و2 أعلاه أثناء كل عملية $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ . $\qedsymbol$
 
 #### 14.2.4.0.1 الإضافة:
 

@@ -25,7 +25,9 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 قيمة تجزئة عنصر البيانات $ \mathtt{x}$، والمشار إليها بـ $ \mathtt{hash(x)}$، هي قيمة ضمن المدى $ \{0,\ldots,\ensuremath{\mathtt{t.length}}-1\}$. وتُخزَّن جميع العناصر ذات قيمة التجزئة $ \mathtt{i}$ في القائمة عند $ \mathtt{t[i]}$. ولمنع أن تصير القوائم طويلة أكثر من اللازم، نُبقي على الشرط الثابت (invariant)
 
-![$\displaystyle \ensuremath{\mathtt{n}} \le \ensuremath{\mathtt{t.length}} $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img1941.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{n}} \le \ensuremath{\mathtt{t.length}}
+$$
 
 بحيث يكون متوسط عدد العناصر المخزَّنة في إحدى هذه القوائم هو $ \ensuremath{\mathtt{n}}/\ensuremath{\mathtt{t.length}} \le 1$. ولإضافة عنصر $ \mathtt{x}$ إلى جدول التجزئة، نتحقّق أولًا مما إذا كان طول $ \mathtt{t}$ يحتاج إلى زيادة، فإن كان ذلك فإننا نُنمّي $ \mathtt{t}$. وبعد أن نُنهي ذلك نجزّئ $ \mathtt{x}$ لنحصل على عدد صحيح، $ \mathtt{i}$، ضمن المدى $ \{0,\ldots,\ensuremath{\mathtt{t.length}}-1\}$، ثم نُلحق $ \mathtt{x}$ بالقائمة $ \mathtt{t[i]}$:
 
@@ -91,15 +93,15 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 ولاحظ أن، بحسب المتراجمة 5.1، $ \mathrm{E}[I_{\ensuremath{\mathtt{y}}}] \le 2/2^{\ensuremath{\mathtt{d}}}=2/\ensuremath{\mathtt{t.length}}$. ويعطى الطول المتوقَّع للقائمة $ \mathtt{t[hash(x)]}$ بـ
 
-| ![$\displaystyle \mathrm{E}\left[\ensuremath{\mathtt{t[hash(x)].size()}}\right]$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2011.png.webp) | ![$\displaystyle =$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2012.png.webp) | ![$\displaystyle \mathrm{E}\left[\ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} I_{\ensuremath{\mathtt{y}}}\right]$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2013.png.webp) |  |
+| $\displaystyle \mathrm{E}\left[\ensuremath{\mathtt{t[hash(x)].size()}}\right]$ | $\displaystyle =$ | $\displaystyle \mathrm{E}\left[\ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} I_{\ensuremath{\mathtt{y}}}\right]$ |  |
 | --- | --- | --- | --- |
-|  | ![$\displaystyle =$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2014.png.webp) | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} \mathrm{E}[I_{\ensuremath{\mathtt{y}}} ]$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2015.png.webp) |  |
-|  | ![$\displaystyle \le$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2016.png.webp) | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{t.length}}$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2017.png.webp) |  |
-|  | ![$\displaystyle \le$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2018.png.webp) | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{n}}$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2019.png.webp) |  |
-|  | ![$\displaystyle \le$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2020.png.webp) | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + (\ensuremath{... ...n}}-\ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}})2/\ensuremath{\mathtt{n}}$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2021.png.webp) |  |
-|  | ![$\displaystyle \le$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2022.png.webp) | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + 2 \enspace ,$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2023.png.webp) |  |
+|  | $\displaystyle =$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} \mathrm{E}[I_{\ensuremath{\mathtt{y}}} ]$ |  |
+|  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{t.length}}$ |  |
+|  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{n}}$ |  |
+|  | $\displaystyle \le$ | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + (\ensuremath{... ...n}}-\ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}})2/\ensuremath{\mathtt{n}}$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2021.png.webp) |  |
+|  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + 2 \enspace ,$ |  |
 
-كما هو مطلوب. ![$ \qedsymbol$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2004.png.webp)
+كما هو مطلوب. $\qedsymbol$
 
 الآن نريد إثبات المتراجمة 5.1، لكننا نحتاج أولًا إلى نتيجة من نظرية الأعداد (number theory). وفي البرهان التالي نستخدم الترميز $ (b_r,\ldots,b_0)_2$ للدلالة على $ \sum_{i=0}^r b_i2^i$، حيث كل $ b_i$ بتّ قيمته 0 أو 1. بمعنى آخر، $ (b_r,\ldots,b_0)_2$ هو العدد الصحيح الذي تمثيله الثنائي هو $ b_r,\ldots,b_0$. ونستخدم $ \star$ للدلالة على بتّ مجهول القيمة. **المتراجمة 5..3** *ليكن $ S$ مجموعة الأعداد الفردية في $ \{1,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$؛ وليكن $ q$ و $ i$ أي عنصرين في $ S$. وعندئذ توجد قيمة واحدة بالضبط $ \ensuremath{\mathtt{z}}\in S$ تحقق $ \ensuremath{\mathtt{z}}q\bmod 2^{\ensuremath{\mathtt{w}}} = i$.*
 
@@ -107,33 +109,45 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 ولنفرض، طلبًا للتناقض، وجود قيمتين من هذا النوع $ \mathtt{z}$ و $ \mathtt{z'}$، بحيث $ \ensuremath{\mathtt{z}}>\ensuremath{\mathtt{z}}'$. عندئذ
 
-![$\displaystyle \ensuremath{\mathtt{z}}q\bmod 2^{\ensuremath{\mathtt{w}}} = \ensuremath{\mathtt{z}}'q \bmod 2^{\ensuremath{\mathtt{w}}} = i $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2045.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{z}}q\bmod 2^{\ensuremath{\mathtt{w}}} = \ensuremath{\mathtt{z}}'q \bmod 2^{\ensuremath{\mathtt{w}}} = i
+$$
 
 إذن
 
-![$\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q\bmod 2^{\ensuremath{\mathtt{w}}} = 0 $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2046.png.webp)
+$$
+\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q\bmod 2^{\ensuremath{\mathtt{w}}} = 0
+$$
 
 لكن هذا يعني أن
 
 لبعض العدد الصحيح $ k$. وبالتفكير في مصطلحات الأعداد الثنائية، لدينا
 
-![$\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q = k\cdot(1,\underbrace{0,\ldots,0}_{\ensuremath{\mathtt{w}}})_2 \enspace , $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2049.png.webp)
+$$
+\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q = k\cdot(1,\underbrace{0,\ldots,0}_{\ensuremath{\mathtt{w}}})_2 \enspace ,
+$$
 
 بحيث تكون البتّات $ \mathtt{w}$ اللاحقة في التمثيل الثنائي لـ $ (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q$ كلها أصفارًا.
 
 وفوق ذلك $ k\neq 0$، لأن $ q\neq 0$ و $ \ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}'\neq 0$. وبما أن $ q$ فردي، فلا توجد عنده أصفار لاحقة في تمثيله الثنائي:
 
-![$\displaystyle q = (\star,\ldots,\star,1)_2 \enspace . $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2056.png.webp)
+$$
+\displaystyle q = (\star,\ldots,\star,1)_2 \enspace .
+$$
 
 ولأن $ \vert\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}'\vert < 2^{\ensuremath{\mathtt{w}}}$، فإن $ \ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}'$ يملك عددًا من الأصفار اللاحقة في تمثيله الثاني أقل من $ \mathtt{w}$:
 
-![$\displaystyle \ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}' = (\star,\ldots,\star,1,\underbrace{0,\ldots,0}_{<\ensuremath{\mathtt{w}}})_2 \enspace . $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2060.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}' = (\star,\ldots,\star,1,\underbrace{0,\ldots,0}_{<\ensuremath{\mathtt{w}}})_2 \enspace .
+$$
 
 لذلك يملك حاصل الضرب $ (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q$ عددًا من الأصفار اللاحقة في تمثيله الثاني أقل من $ \mathtt{w}$:
 
-![$\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q = (\star,\cdots,\star,1,\underbrace{0,\ldots,0}_{<\ensuremath{\mathtt{w}}})_2 \enspace . $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2063.png.webp)
+$$
+\displaystyle (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q = (\star,\cdots,\star,1,\underbrace{0,\ldots,0}_{<\ensuremath{\mathtt{w}}})_2 \enspace .
+$$
 
-لذلك لا يمكن أن يحقّق $ (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q$ الشرط (5.1)، فينشأ تناقض ويكتمل البرهان. ![$ \qedsymbol$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2037.png.webp)
+لذلك لا يمكن أن يحقّق $ (\ensuremath{\mathtt{z}}-\ensuremath{\mathtt{z}}')q$ الشرط (5.1)، فينشأ تناقض ويكتمل البرهان. $\qedsymbol$
 
 تنبع فائدة المتراجمة 5.3 من الملاحظة التالية: إذا اختير $ \mathtt{z}$ عشوائيًا بانتظام من $ S$، فإن $ \mathtt{zt}$ يتوزّع بانتظام على $ S$. وفي البرهان التالي من المفيد التفكير في التمثيل الثنائي لـ $ \mathtt{z}$، وهو يتكوّن من $ \ensuremath{\mathtt{w}}-1$ بتّ عشوائي يليه بتّ بقيمة 1.
 
@@ -151,7 +165,7 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 ![$\displaystyle \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\math... ...ldots,b_{1}}_{\ensuremath{\mathtt{w}}-r-1},1,\underbrace{0,0,\ldots,0}_{r})_2 $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2093.png.webp)
 
-يمكننا الآن إكمال البرهان: إذا كان $ r > \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فالبتّات $ \mathtt{d}$ ذات الرتبة العليا في $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ تحتوي أصفارًا وآحادًا معًا، ومن ثمّ فإن احتمال أن يبدو $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ على هيئة (5.2) أو (5.3) هو 0. وإذا كان $ \ensuremath{\mathtt{r}}=\ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فإن احتمال الظهور على هيئة (5.2) هو 0، لكن احتمال الظهور على هيئة (5.3) هو $ 1/2^{\ensuremath{\mathtt{d}}-1}=2/2^{\ensuremath{\mathtt{d}}}$ (لأننا يجب أن يكون $ b_1,\ldots,b_{d-1}=1,\ldots,1$). وإذا كان $ r < \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فيجب أن يكون $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=0,\ldots,0$ أو $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=1,\ldots,1$. احتمال كلٍّ من هذين الحالتين هو $ 1/2^{\ensuremath{\mathtt{d}}}$ وهما متعارضتان تبادليًا، ومن ثمّ فإن احتمال إحداهما هو $ 2/2^{\ensuremath{\mathtt{d}}}$. وبهذا يكتمل البرهان. ![$ \qedsymbol$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2071.png.webp)
+يمكننا الآن إكمال البرهان: إذا كان $ r > \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فالبتّات $ \mathtt{d}$ ذات الرتبة العليا في $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ تحتوي أصفارًا وآحادًا معًا، ومن ثمّ فإن احتمال أن يبدو $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ على هيئة (5.2) أو (5.3) هو 0. وإذا كان $ \ensuremath{\mathtt{r}}=\ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فإن احتمال الظهور على هيئة (5.2) هو 0، لكن احتمال الظهور على هيئة (5.3) هو $ 1/2^{\ensuremath{\mathtt{d}}-1}=2/2^{\ensuremath{\mathtt{d}}}$ (لأننا يجب أن يكون $ b_1,\ldots,b_{d-1}=1,\ldots,1$). وإذا كان $ r < \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فيجب أن يكون $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=0,\ldots,0$ أو $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=1,\ldots,1$. احتمال كلٍّ من هذين الحالتين هو $ 1/2^{\ensuremath{\mathtt{d}}}$ وهما متعارضتان تبادليًا، ومن ثمّ فإن احتمال إحداهما هو $ 2/2^{\ensuremath{\mathtt{d}}}$. وبهذا يكتمل البرهان. $\qedsymbol$
 
 5.1.2 خلاصة تلخّص النظرية التالية أداء بنية بيانات ChainedHashTable: **نظرية 5..1** *تنفّذ ChainedHashTable واجهة USet. وتجاهلًا لتكلفة استدعاءات $ \mathtt{grow()}$، يدعم ChainedHashTable العمليات $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ و $ \mathtt{find(x)}$ في زمن متوقَّع قدره $ O(1)$ لكل عملية. * *وفضًا عن ذلك، فإن البدء من ChainedHashTable فارغ وأي تسلسل عدده $ m$ من عمليات $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ ينتج عنهما زمن كلي قدره $ O(m)$ مُنفَقًا خلال جميع استدعاءات $ \mathtt{grow()}$.*
 
@@ -269,7 +283,7 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 |  | $\displaystyle = \left(\frac{1}{2}\right)^k \left(1+\frac{k}{2(\ensuremath{\mathtt{q}}-k)}\right)^{\ensuremath{\mathtt{q}}-k}$ |  |  |  |
 |  | $\displaystyle \le \left(\frac{\sqrt{e}}{2}\right)^k \enspace .$ |  |  |  |
 
-(في الخطوة الأخيرة نستخدم المتراجحة $ (1+1/x)^x \le e$، التي تتحقّق لكل $ x>0$.) وبما أن $ \sqrt{e}/{2}< 0.824360636 < 1$، فقد اكتمل البرهان. ![$ \qedsymbol$](/images/open-data-structures/5_2_LinearHashTable_Linear_-img2247.png.webp)
+(في الخطوة الأخيرة نستخدم المتراجحة $ (1+1/x)^x \le e$، التي تتحقّق لكل $ x>0$.) وبما أن $ \sqrt{e}/{2}< 0.824360636 < 1$، فقد اكتمل البرهان. $\qedsymbol$
 
 أصبح استخدام المتراجمة 5.4 لإثبات الحدود العليا لزمن التشغيل المتوقَّع للدوال $ \mathtt{find(x)}$ و $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ سهلًا إلى حدٍّ ما. لنفحص أبسط حالة: أن نُنفّذ $ \mathtt{find(x)}$ لقيمة $ \mathtt{x}$ لم تُخزَّن قط في LinearHashTable. في هذه الحالة تكون $ \ensuremath{\mathtt{i}}=\ensuremath{\mathtt{hash(x)}}$ قيمة عشوائية في $ \{0,\ldots,\ensuremath{\mathtt{t.length}}-1\}$ مستقلة عن محتوى $ \mathtt{t}$. وإذا كان $ \mathtt{i}$ جزءًا من مقطع طوله $ k$، فإن الزمن اللازم لتنفيذ عملية $ \mathtt{find(x)}$ هو $ O(1+k)$ على الأكثر. ومن ثمّ يمكن تحديد حدّ أعلى لزمن التشغيل المتوقَّع بـ
 
@@ -349,7 +363,9 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 **نظرية 5..3** *ليكن $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$ و $ \ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r-1}$ كلٌّ منهما تسلسلًا من الأعداد الصحيحة بطول $ \mathtt{w}$ بت ضمن $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$، ولنفترض أن $ \ensuremath{\mathtt{x}}_i \neq \ensuremath{\mathtt{y}}_i$ لفهرس واحد على الأقل $ i\in\{0,\ldots,r-1\}$. عندئذ*
 
-![$\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...suremath{\mathtt{y}}_{r-1}) \} \le 3/2^{\ensuremath{\mathtt{w}}} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2413.png.webp)
+$$
+\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...suremath{\mathtt{y}}_{r-1}) \} \le 3/2^{\ensuremath{\mathtt{w}}} \enspace .
+$$
 
 *إثبات*. سنتجاهل أولًا خطوة التجزئة الضربية الأخيرة، ونرى لاحقًا كيف تساهم تلك الخطوة. نعرّف:
 
@@ -359,7 +375,9 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 حيث
 
-![$\displaystyle t = \left(\sum_{j=0}^{i-1} \ensuremath{\mathtt{z}}_j(\ensuremath{... ...tt{y}}_j-\ensuremath{\mathtt{x}}_j)\right) \bmod 2^{2\ensuremath{\mathtt{w}}} $](/images/open-data-structures/5_3_Hash_Codes-img2418.png.webp)
+$$
+\displaystyle t = \left(\sum_{j=0}^{i-1} \ensuremath{\mathtt{z}}_j(\ensuremath{... ...tt{y}}_j-\ensuremath{\mathtt{x}}_j)\right) \bmod 2^{2\ensuremath{\mathtt{w}}}
+$$
 
 إذا افترضنا، دون حدّ من العمومية، أن $ \ensuremath{\mathtt{x}}_i> \ensuremath{\mathtt{y}}_i$، فإن (5.4) يصير
 
@@ -372,7 +390,9 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 |  | ![المعادلة الأصلية: تحليل الاحتمالات ودوال التجزئة في جداول التجزئة، الصيغة 10](/images/open-data-structures/math-4fa663a43d2327729d9d.webp) |  |
 |  | $\displaystyle \le 1/2^{\ensuremath{\mathtt{w}}} + 2/2^{\ensuremath{\mathtt{w}}} = 3/2^{\ensuremath{\mathtt{w}}} \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/5_3_Hash_Codes-img2414.png.webp)
+$$
+\qedsymbol
+$$
 
 5.3.3 رموز التجزئة للمصفوفات والنصوص تنجح طريقة القسم السابق جيدًا مع الكائنات التي لها عدد ثابت من المكوّنات. غير أنها تنهار عندما نريد استخدامها مع كائنات ذات عدد متغيّر من المكوّنات، لأنها تتطلّب عددًا صحيحًا عشوائيًا بطول $ \mathtt{w}$ بت هو $ \ensuremath{\mathtt{z}}_i$ لكل مكوّن. يمكننا استخدام تسلسل شبه عشوائي لتوليد أكبر عدد نحتاجه من $ \ensuremath{\mathtt{z}}_i$، لكن عندئذٍ لا تكون $ \ensuremath{\mathtt{z}}_i$ مستقلة متبادلة، ويصعب عندئذٍ إثبات أن الأعداد شبه العشوائية لا تتفاعل بصورة ضارة مع دالة التجزئة التي نستخدمها. وعلى وجه التحديد، لا تعود قيمتا $ t$ و $ \ensuremath{\mathtt{z}}_i$ في برهان النظرية 5.3 مستقلتين. وهناك نهج أدقّ هو بناء رموز التجزئة على متعددات الحدود (polynomials) فوق الحقول الأولية (prime fields)؛ وهذه ليست سوى متعددات حدود عادية تُقَيَّم بمقياس عدد أولي ما، $ \mathtt{p}$. ويقوم هذا النهج على النظرية التالية التي تقول إن متعددات الحدود فوق الحقول الأولية تتصرف إلى حدٍّ كبير كالمتعددات الحدود المعتادة: **نظرية 5..4** *ليكن $ \ensuremath{\mathtt{p}}$ عددًا أوليًا، وليكن ![المعادلة الأصلية: تحليل الاحتمالات ودوال التجزئة في جداول التجزئة، الصيغة 11](/images/open-data-structures/math-9b9d30e7b03760fed4f4.webp) متعدد حدود غير تافه معاملات $ \ensuremath{\mathtt{x}}_i\in\{0,\ldots,\ensuremath{\mathtt{p}}-1\}$. عندئذ تكون للمعادلة $ f(\ensuremath{\mathtt{z}})\bmod \ensuremath{\mathtt{p}} = 0$ حلول عددها $ r-1$ على الأكثر من أجل $ \ensuremath{\mathtt{z}}\in\{0,\ldots,p-1\}$.*
 
@@ -382,25 +402,33 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 لاحظ الحدّ الإضافي $ (\ensuremath{\mathtt{p}}-1)\ensuremath{\mathtt{z}}^r$ في نهاية الصيغة. ومن المفيد التفكير في $ (\ensuremath{\mathtt{p}}-1)$ بوصفه العنصر الأخير، $ \ensuremath{\mathtt{x}}_r$، في التسلسل $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r}$. ولاحظ أن هذا العنصر يختلف عن كل عنصر آخر في التسلسل (وكلٌّ منها يقع في المجموعة $ \{0,\ldots,\ensuremath{\mathtt{p}}-2\}$). ويمكننا أن نرى في $ \ensuremath{\mathtt{p}}-1$ علامة نهاية تسلسل. وتبيّن النظرية التالية، التي تتناول حالة تسلسلين بالطول نفسه، أن دالة التجزئة هذه تحقّق عائدًا جيدًا بالمقابل مع مقدار التوزيع العشوائي المحدود اللازم لاختيار $ \mathtt{z}$: **نظرية 5..5** *ليكن $ \ensuremath{\mathtt{p}}>2^{\ensuremath{\mathtt{w}}}+1$ عددًا أوليًا، وليكن $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$ و $ \ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r-1}$ كلٌّ منهما تسلسلًا من الأعداد الصحيحة بطول $ \mathtt{w}$ بت ضمن $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$، ولنفترض أن $ \ensuremath{\mathtt{x}}_i \neq \ensuremath{\mathtt{y}}_i$ لفهرس واحد على الأقل $ i\in\{0,\ldots,r-1\}$. عندئذ*
 
-![$\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...math{\mathtt{y}}_{r-1}) \} \le (r-1)/\ensuremath{\mathtt{p}} \} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2473.png.webp)
+$$
+\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...math{\mathtt{y}}_{r-1}) \} \le (r-1)/\ensuremath{\mathtt{p}} \} \enspace .
+$$
 
 *إثبات*. يمكن إعادة كتابة المعادلة $ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}) = h(\ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r-1})$ على الصورة
 
-بما أن $ \ensuremath{\mathtt{x}}_\ensuremath{\mathtt{i}}\neq \ensuremath{\mathtt{y}}_\ensuremath{\mathtt{i}}$، فإن هذا المتعدد غير تافه. لذلك، وبالنظرية 5.4، فإن له حلولًا عددها $ r-1$ على الأكثر في $ \mathtt{z}$. ومن ثمّ فإن احتمال أن نختار $ \mathtt{z}$ ليكون أحد هذه الحلول هو $ (r-1)/\ensuremath{\mathtt{p}}$ على الأكثر. ![$ \qedsymbol$](/images/open-data-structures/5_3_Hash_Codes-img2474.png.webp)
+بما أن $ \ensuremath{\mathtt{x}}_\ensuremath{\mathtt{i}}\neq \ensuremath{\mathtt{y}}_\ensuremath{\mathtt{i}}$، فإن هذا المتعدد غير تافه. لذلك، وبالنظرية 5.4، فإن له حلولًا عددها $ r-1$ على الأكثر في $ \mathtt{z}$. ومن ثمّ فإن احتمال أن نختار $ \mathtt{z}$ ليكون أحد هذه الحلول هو $ (r-1)/\ensuremath{\mathtt{p}}$ على الأكثر. $\qedsymbol$
 
 لاحظ أن دالة التجزئة هذه تتعامل أيضًا مع الحالة التي يكون فيها التسلسلان مختلفي الطول، حتى عندما يكون أحد التسلسلين بادئةً (prefix) للآخر. وذلك لأن هذه الدالة تُجزّئ فعليًا التسلسل اللانهائي
 
-![$\displaystyle \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}, \ensuremath{\mathtt{p}}-1,0,0,\ldots \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2482.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}, \ensuremath{\mathtt{p}}-1,0,0,\ldots \enspace .
+$$
 
 وهذا يضمن أنه إذا كان لدينا تسلسلان بطول $ r$ و $ r'$ مع $ r > r'$، فإن هذين التسلسلين يختلفان عند الفهرس $ i=r$. وفي هذه الحالة، تصير (5.6)
 
-![$\displaystyle \left( \sum_{i=0}^{i=r'-1}(\ensuremath{\mathtt{x}}_i-\ensuremath... ...nsuremath{\mathtt{z}}^{r} \right)\bmod \ensuremath{\mathtt{p}} = 0 \enspace , $](/images/open-data-structures/5_3_Hash_Codes-img2487.png.webp)
+$$
+\displaystyle \left( \sum_{i=0}^{i=r'-1}(\ensuremath{\mathtt{x}}_i-\ensuremath... ...nsuremath{\mathtt{z}}^{r} \right)\bmod \ensuremath{\mathtt{p}} = 0 \enspace ,
+$$
 
 والتي، بحسب النظرية 5.4، لها حلول عددها $ r$ على الأكثر في $ \ensuremath{\mathtt{z}}$. وهذا مقترنًا بالنظرية 5.5 يكفي لإثبات النظرية الأكثر عمومية التالية:
 
 **نظرية 5..6** *ليكن $ \ensuremath{\mathtt{p}}>2^{\ensuremath{\mathtt{w}}}+1$ عددًا أوليًا، وليكن $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$ و $ \ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r'-1}$ تسلسلين متمايزين من الأعداد الصحيحة بطول $ \mathtt{w}$ بت ضمن $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$. عندئذ*
 
-![$\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...{\mathtt{y}}_{r-1}) \} \le \max\{r,r'\}/\ensuremath{\mathtt{p}} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2495.png.webp)
+$$
+\displaystyle \Pr\{ h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_... ...{\mathtt{y}}_{r-1}) \} \le \max\{r,r'\}/\ensuremath{\mathtt{p}} \enspace .
+$$
 
 تبيّن شيفرة المثال التالية كيف تُطبَّق دالة التجزئة هذه على كائن يحتوي على مصفوفة، $ \mathtt{x}$، من القيم:
 
@@ -424,7 +452,9 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 تقدّم الشيفرة السابقة بعضًا من احتمال التصادم مقابل سهولة التنفيذ. وعلى وجه التحديد، فهي تطبّق دالة التجزئة الضربية من القسم 5.1.1، مع $ \ensuremath{\mathtt{d}}=31$، لاختصار $ \mathtt{x[i].hashCode()}$ إلى قيمة بطول 31 بت. وذلك حتى يمكن تنفيذ الجمعيات والضربيات التي تُجرى بمقياس العدد الأولي $ \ensuremath{\mathtt{p}}=2^{32}-5$ باستخدام حساب غير موقَّع بدقة 63 بت. ومن ثمّ فإن احتمال تسلسلين مختلفين، أحدهما أطول وطوله $ r$، أن يكون لهما رمز التجزئة نفسه هو
 
-![$\displaystyle 2/2^{31} + r/(2^{32}-5) $](/images/open-data-structures/5_3_Hash_Codes-img2501.png.webp)
+$$
+\displaystyle 2/2^{31} + r/(2^{32}-5)
+$$
 
 بدلًا من $ r/(2^{32}-5)$ المحدَّد في النظرية 5.6. [opendatastructures.org](http://opendatastructures.org/)
 
@@ -476,11 +506,15 @@ source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 
 **تمرين 5..10** ليكن $ p=2^{\ensuremath{\mathtt{w}}}-1$ حيث $ \mathtt{w}$ عدد صحيح موجب. اشرح لماذا، بالنسبة إلى عدد صحيح موجب $ x$
 
-![$\displaystyle (x\bmod 2^{\ensuremath{\mathtt{w}}}) + (x\ddiv 2^{\ensuremath{\mathtt{w}}}) \equiv x \bmod (2^{\ensuremath{\mathtt{w}}}-1) \enspace . $](/images/open-data-structures/5_4_Discussion_Exercises-img2575.png.webp)
+$$
+\displaystyle (x\bmod 2^{\ensuremath{\mathtt{w}}}) + (x\ddiv 2^{\ensuremath{\mathtt{w}}}) \equiv x \bmod (2^{\ensuremath{\mathtt{w}}}-1) \enspace .
+$$
 
 (وهذا يعطي خوارزمية لحساب $ x \bmod (2^{\ensuremath{\mathtt{w}}}-1)$ عبر إعادة الضبط المتكرر لـ
 
-![$\displaystyle \ensuremath{\mathtt{x = x\text{\ttfamily\&}((1\text{\ttfamily <<}w)-1) + x\text{\ttfamily >>>}w}} $](/images/open-data-structures/5_4_Discussion_Exercises-img2577.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{x = x\text{\ttfamily\&}((1\text{\ttfamily <<}w)-1) + x\text{\ttfamily >>>}w}}
+$$
 
 حتى $ \ensuremath{\mathtt{x}} \le 2^{\ensuremath{\mathtt{w}}}-1$.)
 

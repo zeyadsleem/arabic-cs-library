@@ -93,11 +93,15 @@ source: https://opendatastructures.org/ods-java/10_Heaps.html
 
 **الشكل 10.3:** إزالة أصغر قيمة، وهي 4، من BinaryHeap. ![\includegraphics[height=.25\textheight ]{figs/heap-remove-1}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3867.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-2}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3868.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-3}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3869.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-4}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3870.png.webp) ومثل سائر البنى المعتمدة على المصفوفات، سنتجاهل الزمن الذي يُنفق في استدعاءات $ \mathtt{resize()}$ ، إذ يمكن تبريره بحجّة التطفئة (amortization) الواردة في الملمة 2.1. ويفترق زمنا تشغيل $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ على ارتفاع الشجرة الثنائية (الضمنية). ومن حسن الحظ أنّ هذه شجرة ثنائية كاملة؛ فكل مستوى سوى الأخير فيه أكبر عدد ممكن من العقد. وعليه، إذا كان ارتفاع هذه الشجرة $ h$ ، فإنّ فيها ما لا يقلّ عن $ 2^h$ عقدة. وبعبارة أخرى
 
-![$\displaystyle \ensuremath{\mathtt{n}} \ge 2^h \enspace . $](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3876.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{n}} \ge 2^h \enspace .
+$$
 
 وأخذ لوغاريتمات طرفي هذه المعادلة يعطي
 
-![$\displaystyle h \le \log \ensuremath{\mathtt{n}} \enspace . $](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3877.png.webp)
+$$
+\displaystyle h \le \log \ensuremath{\mathtt{n}} \enspace .
+$$
 
 وعليه، فإنّ عمليتَي $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ تعملان في زمن $ O(\log \ensuremath{\mathtt{n}})$ .
 
@@ -163,7 +167,9 @@ source: https://opendatastructures.org/ods-java/10_Heaps.html
 
 ولنجعل $ \ensuremath{\mathtt{n}}_1$ يدلّ على حجم الشجرة الفرعية اليسرى للجذر، بحيث يكون $ \ensuremath{\mathtt{n}}_2=\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{n}}_1-1$ حجم الشجرة الفرعية اليمنى للجذر. ومنطلقًا من الجذر، يأخذ المسير خطوةً واحدة ثمّ يتابع داخل شجرةٍ فرعية حجمها $ \ensuremath{\mathtt{n}}_1$ أو $ \ensuremath{\mathtt{n}}_2$ . وبموجب فرضية الاستدلال لدينا، يكون الطول المتوقَّع للمسير حينئذٍ
 
-![$\displaystyle \mathrm{E}[W] = 1 + \frac{1}{2}\log (\ensuremath{\mathtt{n}}_1+1) + \frac{1}{2}\log (\ensuremath{\mathtt{n}}_2+1) \enspace , $](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3956.png.webp)
+$$
+\displaystyle \mathrm{E}[W] = 1 + \frac{1}{2}\log (\ensuremath{\mathtt{n}}_1+1) + \frac{1}{2}\log (\ensuremath{\mathtt{n}}_2+1) \enspace ,
+$$
 
 إذ إنّ كلٍّ من $ \ensuremath{\mathtt{n}}_1$ و $ \ensuremath{\mathtt{n}}_2$ أصغر من $ \ensuremath{\mathtt{n}}$ . وبما أنّ $ \log$ دالةً محدَّبة (concave)، فإنّ $ \mathrm{E}[W]$ يبلغ قيمته العظمى عندما $ \ensuremath{\mathtt{n}}_1=\ensuremath{\mathtt{n}}_2=(\ensuremath{\mathtt{n}}-1)/2$ . وعليه، فإنّ عدد الخطوات المتوقَّع الذي يأخذه المسير العشوائي هو
 
@@ -173,7 +179,9 @@ source: https://opendatastructures.org/ods-java/10_Heaps.html
 |  | $\displaystyle = 1 + \log ((\ensuremath{\mathtt{n}}+1)/2)$ |  |
 |  | $\displaystyle = \log (\ensuremath{\mathtt{n}}+1) \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3947.png.webp)
+$$
+\qedsymbol
+$$
 
 ونستطرد استطرادًا قصيرًا لنلاحظ أنّه يمكن، لكل قارئٍ يعرف بعض نظرية المعلومات (information theory)، صياغة برهان الملمة 10.1 بدلالةِ إنتروبيا (entropy).
 
@@ -181,15 +189,19 @@ source: https://opendatastructures.org/ods-java/10_Heaps.html
 
 ![$\displaystyle H=\sum_{i=0}^{\ensuremath{\mathtt{n}}} p_id_i =\sum_{i=0}^{\ensu... ...og\left(2^{d_i}\right) = \sum_{i=0}^{\ensuremath{\mathtt{n}}}p_i\log({1/p_i}) $](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3975.png.webp)
 
-أمّا الطرف الأيمن من هذه المعادلة فيُعرف بسهولة على أنّه إنتروبيا (entropy) لتوزيعٍ احتمالي على $ \ensuremath{\mathtt{n}}+1$ عنصرًا. ومن الحقائق الأساسية حول إنتروبيا توزيعٍ على $ \ensuremath{\mathtt{n}}+1$ عنصرًا أنّها لا تتجاوز $ \log(\ensuremath{\mathtt{n}}+1)$ ، ممّا يُثبت الملمة. ![$ \qedsymbol$](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3968.png.webp)
+أمّا الطرف الأيمن من هذه المعادلة فيُعرف بسهولة على أنّه إنتروبيا (entropy) لتوزيعٍ احتمالي على $ \ensuremath{\mathtt{n}}+1$ عنصرًا. ومن الحقائق الأساسية حول إنتروبيا توزيعٍ على $ \ensuremath{\mathtt{n}}+1$ عنصرًا أنّها لا تتجاوز $ \log(\ensuremath{\mathtt{n}}+1)$ ، ممّا يُثبت الملمة. $\qedsymbol$
 
 ومع هذه النتيجة عن المسيرات العشوائية، يمكننا الآن بسهولة إثبات أنّ زمن تشغيل العملية $ \mathtt{merge(h1,h2)}$ هو $ O(\log \ensuremath{\mathtt{n}})$ . **الملمة 10..2** *إذا كانت $ \mathtt{h1}$ و $ \mathtt{h2}$ جذرَي كومتين تضمّان $ \ensuremath{\mathtt{n}}_1$ و $ \ensuremath{\mathtt{n}}_2$ عقدةً على التوالي، فإنّ زمن التشغيل المتوقَّع للعملية $ \mathtt{merge(h1,h2)}$ هو على الأكثر $ O(\log \ensuremath{\mathtt{n}})$ ، حيث $ \ensuremath{\mathtt{n}}=\ensuremath{\mathtt{n}}_1+\ensuremath{\mathtt{n}}_2$ .*
 
 *البرهان*. تأخذ كل خطوةٍ من خطوات خوارزمية الدمج خطوةً واحدة من مسيرٍ عشوائي، إمّا في الكومة المجذَّرة عند $ \mathtt{h1}$ وإمّا في الكومة المجذَّرة عند $ \mathtt{h2}$ . وتنتهي الخوارزمية عندما يسقط أحد هذين المسيرين العشوائيين خارج شجرته المقابلة (عندما $ \ensuremath{\mathtt{h1}}=\ensuremath{\mathtt{null}}$ أو $ \ensuremath{\mathtt{h2}}=\ensuremath{\mathtt{null}}$ ). وعليه، فإنّ عدد الخطوات المتوقَّع الذي تنفّذه خوارزمية الدمج هو على الأكثر
 
-![$\displaystyle \log (\ensuremath{\mathtt{n}}_1+1) + \log (\ensuremath{\mathtt{n}}_2+1) \le 2\log \ensuremath{\mathtt{n}} \enspace . \qedhere $](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3993.png.webp)
+$$
+\displaystyle \log (\ensuremath{\mathtt{n}}_1+1) + \log (\ensuremath{\mathtt{n}}_2+1) \le 2\log \ensuremath{\mathtt{n}} \enspace . \qedhere
+$$
 
-![$ \qedsymbol$](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3988.png.webp)
+$$
+\qedsymbol
+$$
 
 10.2.2 الخلاصة تلخّص المبرهنة التالية أداء بنية البيانات MeldableHeap: **المبرهنة 10..2** *يطبّق MeldableHeap واجهة طابور (الأولوية). ويدعم MeldableHeap العمليتين $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ في زمنٍ متوقَّع قدره $ O(\log \ensuremath{\mathtt{n}})$ لكل عملية.*
 

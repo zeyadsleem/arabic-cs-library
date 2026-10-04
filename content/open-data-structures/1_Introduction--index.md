@@ -56,7 +56,7 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 عند مناقشة بنى البيانات، من المهم فهم الفرق بين واجهة (interface) بنية البيانات وتنفيذها (implementation). فالواجهة تصف ما تفعله بنية البيانات، بينما يصف التنفيذ كيف تفعله بنية البيانات.
 
-الواجهة، وتُسمى أحيانًا أيضًا بنوع بيانات مجرّد (abstract data type)، تعرّف مجموعة العمليات التي تدعمها بنية البيانات ودلالات تلك العمليات، أي معناها. ولا تخبرك الواجهة بشيء عن كيفية تنفيذ بنية البيانات لهذه العمليات؛ فهي تقدّم فقط قائمة بالعمليات المدعومة، إضافة إلى مواصفات تحدد أنواع الوسائط التي تقبلها كل عملية والقيمة التي تعيدها كل عملية. وفي المقابل، يشمل تنفيذ بنية البيانات التمثيل الداخلي لبنية البيانات، وكذلك تعريفات الخوارزميات التي تنفّذ العمليات التي تدعمها بنية البيانات. وبالتالي، يمكن أن توجد تنفيذات كثيرة لواجهة واحدة. فعلى سبيل المثال، سنرى في الفصل 2 تنفيذات لواجهة List باستخدام المصفوفات، وسنرى في الفصل 3 تنفيذات لواجهة List باستخدام بنى بيانات قائمة على المؤشرات. وينفّذ كل منها الواجهة نفسها، List، لكن بطرق مختلفة. 1.2.1 واجهات Queue و Stack و Deque تمثّل واجهة Queue مجموعة عناصر يمكننا إضافة عناصر إليها وإزالة العنصر التالي منها. وبدقة أكبر، فإن العمليات التي تدعمها واجهة Queue هي $ \mathtt{add(x)}$ : أضف القيمة $ \mathtt{x}$ إلى الـ Queue $ \mathtt{remove()}$ : أزل القيمة التالية (المضافة سابقًا)، $ \mathtt{y}$ ، من الـ Queue وأعِد $ \mathtt{y}$ لاحظ أن العملية $ \mathtt{remove()}$ لا تأخذ أي وسيط. ونظام الانتظار الخاص بـ Queue هو ما يقرر أي عنصر ينبغي إزالته. وهناك أنظمة انتظار كثيرة ممكنة، أكثرها شيوعًا يشمل FIFO والأولوية و LIFO. ويزيل طابور FIFO (أول داخل أول خارج)، المبيَّن في الشكل 1.1، العناصر بالترتيب نفسه الذي أُضيفت به، تمامًا كما يعمل الطابور (أو الصف) عند الدفع في صندوق نقدية في متجر بقالة. وهذا هو أكثر أنواع Queue شيوعًا، لذا يُكتفى عادةً بموصفة FIFO. وفي النصوص الأخرى، تُسمّى العمليتان $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ على طابور FIFO غالبًا $ \mathtt{enqueue(x)}$ و $ \mathtt{dequeue()}$ على التوالي. **الشكل 1.1:** طابور FIFO. ![\includegraphics[width=\textwidth ]{figs/queue}](/images/open-data-structures/1_2_Interfaces-img66.png.webp) طابور ذو أولوية (priority Queue)، المبيَّن في الشكل 1.2، يزيل دائمًا أصغر عنصر من الطابور، مع كسر التعادل بشكل عشوائي. وهذا مشابه لطريقة الفرز الثلاثي (triage) للمرضى في غرفة طوارئ المستشفى. فور وصول المرضى يُقيَّمون ثم يوضعون في غرفة الانتظار. وحين يتوفر طبيب، يعالج أولًا المريض الذي يعاني من الحالة الأكثر تهديدًا للحياة. أما عملية $ \mathtt{remove(x)}$ على طابور الأولوية فتُسمّى عادةً $ \mathtt{deleteMin()}$ في النصوص الأخرى. **الشكل 1.2:** طابور ذو أولوية. ![\includegraphics[width=\textwidth ]{figs/prioqueue}](/images/open-data-structures/1_2_Interfaces-img69.png.webp) ومن أنظمة الانتظار الشائعة جدًا نظام LIFO (آخر داخل أول خارج)، المبيَّن في الشكل 1.3. وفي طابور LIFO، يكون العنصر المضاف آخرًا هو العنصر التالي الذي يُزال. ويمكن تصوّر ذلك على أفضل نحو في صورة كومة من الأطباق؛ فالأطباق توضع على قمة الكومة وتُزال أيضًا من قمتها. وهذه البنية شائعة لدرجة أنها تأخذ اسمًا خاصًا بها: Stack. وغالبًا ما، عند مناقشة Stack، تُغيَّر أسماء $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ إلى $ \mathtt{push(x)}$ و $ \mathtt{pop()}$ ؛ وذلك لتفادي الخلط بين نظامي الانتظار LIFO و FIFO. **الشكل 1.3:** مكدس. ![\includegraphics[width=\textwidth ]{figs/stack}](/images/open-data-structures/1_2_Interfaces-img74.png.webp) والـ Deque هو تعميم لكل من طابور FIFO وطابور LIFO (Stack). ويمثّل الـ Deque تسلسلًا من العناصر له مقدمة ومؤخرة. ويمكن إضافة العناصر في مقدمة التسلسل أو في مؤخرته. وأسماء عمليات الـ Deque توضيحية بذاتها: $ \mathtt{addFirst(x)}$ ، $ \mathtt{removeFirst()}$ ، $ \mathtt{addLast(x)}$ ، و $ \mathtt{removeLast()}$ . ومن الجدير بالذكر أن الـ Stack يمكن تنفيذه باستخدام $ \mathtt{addFirst(x)}$ و $ \mathtt{removeFirst()}$ في حين يمكن تنفيذ طابور FIFO باستخدام $ \mathtt{addLast(x)}$ و $ \mathtt{removeFirst()}$ . 1.2.2 واجهة List: تسلسلات خطية لن يتناول هذا الكتاب طويلًا واجهات طابور FIFO أو Stack أو Deque. والسبب في ذلك أن هذه الواجهات مشمولة ضمن واجهة List. ويمثّل الـ List، المبيَّن في الشكل 1.4، تسلسلًا، $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ، من القيم. وتتضمن واجهة List العمليات التالية: $ \mathtt{size()}$ : أعِد $ \mathtt{n}$ ، وهو طول القائمة $ \mathtt{get(i)}$ : أعِد القيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ $ \mathtt{set(i,x)}$ : اجعل قيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ مساوية لـ $ \mathtt{x}$ $ \mathtt{add(i,x)}$ : أضف $ \mathtt{x}$ عند الموضع $ \mathtt{i}$ ، مزاحًا $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}},\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ; اجعل $ \ensuremath{\mathtt{x}}_{j+1}=\ensuremath{\mathtt{x}}_j$ ، لكل $ j\in\{\ensuremath{\mathtt{n}}-1,\ldots,\ensuremath{\mathtt{i}}\}$ ، وزد $ \mathtt{n}$ ، واجعل $ \ensuremath{\mathtt{x}}_i=\ensuremath{\mathtt{x}}$ $ \mathtt{remove(i)}$ أزل القيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ ، مزاحًا $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i+1}}},\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ; اجعل $ \ensuremath{\mathtt{x}}_{j}=\ensuremath{\mathtt{x}}_{j+1}$ ، لكل $ j\in\{\ensuremath{\mathtt{i}},\ldots,\ensuremath{\mathtt{n}}-2\}$ وخصم $ \mathtt{n}$ لاحظ أن هذه العمليات كافية بسهولة لتنفيذ واجهة Deque: ![$\displaystyle \ensuremath{\mathtt{addFirst(x)}}$](/images/open-data-structures/1_2_Interfaces-img105.png.webp) ![$\displaystyle \Rightarrow$](/images/open-data-structures/1_2_Interfaces-img106.png.webp) ![$\displaystyle \ensuremath{\mathtt{add(0,x)}}$](/images/open-data-structures/1_2_Interfaces-img107.png.webp) ![$\displaystyle \ensuremath{\mathtt{removeFirst()}}$](/images/open-data-structures/1_2_Interfaces-img108.png.webp) ![$\displaystyle \Rightarrow$](/images/open-data-structures/1_2_Interfaces-img109.png.webp) ![$\displaystyle \ensuremath{\mathtt{remove(0)}}$](/images/open-data-structures/1_2_Interfaces-img110.png.webp) ![$\displaystyle \ensuremath{\mathtt{addLast(x)}}$](/images/open-data-structures/1_2_Interfaces-img111.png.webp) ![$\displaystyle \Rightarrow$](/images/open-data-structures/1_2_Interfaces-img112.png.webp) ![$\displaystyle \ensuremath{\mathtt{add(size(),x)}}$](/images/open-data-structures/1_2_Interfaces-img113.png.webp) ![$\displaystyle \ensuremath{\mathtt{removeLast()}}$](/images/open-data-structures/1_2_Interfaces-img114.png.webp) ![$\displaystyle \Rightarrow$](/images/open-data-structures/1_2_Interfaces-img115.png.webp) ![$\displaystyle \ensuremath{\mathtt{remove(size()-1)}}$](/images/open-data-structures/1_2_Interfaces-img116.png.webp) **الشكل 1.4:** يمثّل الـ List تسلسلًا مفهرسًا بـ $ 0,1,2,\ldots,\ensuremath{\mathtt{n}}-1$ . وفي هذا الـ List فإن نداء $ \mathtt{get(2)}$ سيُعيد القيمة $ c$ . ![\includegraphics[width=\textwidth ]{figs/list}](/images/open-data-structures/1_2_Interfaces-img117.png.webp) ورغم أننا لن نناقش عادةً واجهات Stack و Deque وطابور FIFO في الفصول اللاحقة، فإن مصطلحي Stack و Deque يُستخدمان أحيانًا في أسماء بنى البيانات التي تنفّذ واجهة List. وعند حدوث ذلك، فإنه يبرز أن هذه البنى يمكن استخدامها لتنفيذ واجهة Stack أو Deque بكفاءة عالية جدًا. فعلى سبيل المثال، صنف ArrayDeque هو تنفيذ لواجهة List ينفّذ جميع عمليات Deque في زمن ثابت لكل عملية. 1.2.3 واجهة USet: مجموعات غير مرتبة تمثّل واجهة USet مجموعة غير مرتبة من عناصر فريدة، تحاكي مجموعة رياضية. ويحتوي الـ USet على $ \mathtt{n}$ عنصرًا متمايزًا؛ فلا يظهر أي عنصر أكثر من مرة؛ والعناصر ليست في أي ترتيب معين. ويدعم الـ USet العمليات التالية: $ \mathtt{size()}$ : أعِد العدد، $ \mathtt{n}$ ، للعناصر في المجموعة $ \mathtt{add(x)}$ : أضف العنصر $ \mathtt{x}$ إلى المجموعة إن لم يكن حاضرًا بالفعل؛ أضف $ \mathtt{x}$ إلى المجموعة شريطة ألّا يوجد عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{x}$ يساوي $ \mathtt{y}$ . أعِد $ \mathtt{true}$ إن أُضيف $ \mathtt{x}$ إلى المجموعة و $ \mathtt{false}$ خلاف ذلك. $ \mathtt{remove(x)}$ : أزل $ \mathtt{x}$ من المجموعة؛ اعثر على عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{x}$ يساوي $ \mathtt{y}$ وأزل $ \mathtt{y}$ . أعِد $ \mathtt{y}$ ، أو $ \mathtt{null}$ إن لم يوجد عنصر كهذا. $ \mathtt{find(x)}$ : اعثر على $ \mathtt{x}$ في المجموعة إن وُجد؛ اعثر على عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{y}$ يساوي $ \mathtt{x}$ . أعِد $ \mathtt{y}$ ، أو $ \mathtt{null}$ إن لم يوجد عنصر كهذا. وهذه التعريفات متحفظة في تمييز $ \mathtt{x}$ ، وهو العنصر الذي نزاله أو نبحث عنه، عن $ \mathtt{y}$ ، وهو العنصر الذي قد نزيله أو نجده. والسبب في ذلك أن $ \mathtt{x}$ و $ \mathtt{y}$ قد يكونان كائنين مختلفين فعليًا إلا أنهما يُعامَلان على أنهما متساويان.1.2وهذا التمييز مفيد لأنه يسمح بإنشاء قواميس (dictionaries) أو خرائط (maps) تربط المفاتيح بالقيم. ولإنشاء قاميس/خريطة، نشكّل كائنات مركّبة تسمى Pairs، كل منها يحتوي على مفتاح وقيمة. ويعامل اثنان من الـ Pairs على أنهما متساويان إذا كان مفتاحاهما متساويين. فإن خزّنّا زوجًا ما $ (\ensuremath{\mathtt{k}},\ensuremath{\mathtt{v}})$ في USet ثم استدعينا لاحقًا الطريقة $ \mathtt{find(x)}$ مستخدمين الزوج $ \ensuremath{\mathtt{x}}=(\ensuremath{\mathtt{k}},\ensuremath{\mathtt{null}})$ ، تكون النتيجة $ \ensuremath{\mathtt{y}}=(\ensuremath{\mathtt{k}},\ensuremath{\mathtt{v}})$ . بمعنى آخر، من الممكن استرجاع القيمة، $ \mathtt{v}$ ، انطلاقًا من المفتاح $ \mathtt{k}$ وحده. 1.2.4 واجهة SSet: مجموعات مرتبة تمثّل واجهة SSet مجموعة مرتبة من العناصر. ويخزّن الـ SSet عناصر من ترتيب كلي (total order)، بحيث يمكن مقارنة أي عنصرين $ \mathtt{x}$ و $ \mathtt{y}$ . وفي أمثلة الشيفرة، سيُجرى ذلك بطريقة اسمها $ \mathtt{compare(x,y)}$ يتم فيها
+الواجهة، وتُسمى أحيانًا أيضًا بنوع بيانات مجرّد (abstract data type)، تعرّف مجموعة العمليات التي تدعمها بنية البيانات ودلالات تلك العمليات، أي معناها. ولا تخبرك الواجهة بشيء عن كيفية تنفيذ بنية البيانات لهذه العمليات؛ فهي تقدّم فقط قائمة بالعمليات المدعومة، إضافة إلى مواصفات تحدد أنواع الوسائط التي تقبلها كل عملية والقيمة التي تعيدها كل عملية. وفي المقابل، يشمل تنفيذ بنية البيانات التمثيل الداخلي لبنية البيانات، وكذلك تعريفات الخوارزميات التي تنفّذ العمليات التي تدعمها بنية البيانات. وبالتالي، يمكن أن توجد تنفيذات كثيرة لواجهة واحدة. فعلى سبيل المثال، سنرى في الفصل 2 تنفيذات لواجهة List باستخدام المصفوفات، وسنرى في الفصل 3 تنفيذات لواجهة List باستخدام بنى بيانات قائمة على المؤشرات. وينفّذ كل منها الواجهة نفسها، List، لكن بطرق مختلفة. 1.2.1 واجهات Queue و Stack و Deque تمثّل واجهة Queue مجموعة عناصر يمكننا إضافة عناصر إليها وإزالة العنصر التالي منها. وبدقة أكبر، فإن العمليات التي تدعمها واجهة Queue هي $ \mathtt{add(x)}$ : أضف القيمة $ \mathtt{x}$ إلى الـ Queue $ \mathtt{remove()}$ : أزل القيمة التالية (المضافة سابقًا)، $ \mathtt{y}$ ، من الـ Queue وأعِد $ \mathtt{y}$ لاحظ أن العملية $ \mathtt{remove()}$ لا تأخذ أي وسيط. ونظام الانتظار الخاص بـ Queue هو ما يقرر أي عنصر ينبغي إزالته. وهناك أنظمة انتظار كثيرة ممكنة، أكثرها شيوعًا يشمل FIFO والأولوية و LIFO. ويزيل طابور FIFO (أول داخل أول خارج)، المبيَّن في الشكل 1.1، العناصر بالترتيب نفسه الذي أُضيفت به، تمامًا كما يعمل الطابور (أو الصف) عند الدفع في صندوق نقدية في متجر بقالة. وهذا هو أكثر أنواع Queue شيوعًا، لذا يُكتفى عادةً بموصفة FIFO. وفي النصوص الأخرى، تُسمّى العمليتان $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ على طابور FIFO غالبًا $ \mathtt{enqueue(x)}$ و $ \mathtt{dequeue()}$ على التوالي. **الشكل 1.1:** طابور FIFO. ![\includegraphics[width=\textwidth ]{figs/queue}](/images/open-data-structures/1_2_Interfaces-img66.png.webp) طابور ذو أولوية (priority Queue)، المبيَّن في الشكل 1.2، يزيل دائمًا أصغر عنصر من الطابور، مع كسر التعادل بشكل عشوائي. وهذا مشابه لطريقة الفرز الثلاثي (triage) للمرضى في غرفة طوارئ المستشفى. فور وصول المرضى يُقيَّمون ثم يوضعون في غرفة الانتظار. وحين يتوفر طبيب، يعالج أولًا المريض الذي يعاني من الحالة الأكثر تهديدًا للحياة. أما عملية $ \mathtt{remove(x)}$ على طابور الأولوية فتُسمّى عادةً $ \mathtt{deleteMin()}$ في النصوص الأخرى. **الشكل 1.2:** طابور ذو أولوية. ![\includegraphics[width=\textwidth ]{figs/prioqueue}](/images/open-data-structures/1_2_Interfaces-img69.png.webp) ومن أنظمة الانتظار الشائعة جدًا نظام LIFO (آخر داخل أول خارج)، المبيَّن في الشكل 1.3. وفي طابور LIFO، يكون العنصر المضاف آخرًا هو العنصر التالي الذي يُزال. ويمكن تصوّر ذلك على أفضل نحو في صورة كومة من الأطباق؛ فالأطباق توضع على قمة الكومة وتُزال أيضًا من قمتها. وهذه البنية شائعة لدرجة أنها تأخذ اسمًا خاصًا بها: Stack. وغالبًا ما، عند مناقشة Stack، تُغيَّر أسماء $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ إلى $ \mathtt{push(x)}$ و $ \mathtt{pop()}$ ؛ وذلك لتفادي الخلط بين نظامي الانتظار LIFO و FIFO. **الشكل 1.3:** مكدس. ![\includegraphics[width=\textwidth ]{figs/stack}](/images/open-data-structures/1_2_Interfaces-img74.png.webp) والـ Deque هو تعميم لكل من طابور FIFO وطابور LIFO (Stack). ويمثّل الـ Deque تسلسلًا من العناصر له مقدمة ومؤخرة. ويمكن إضافة العناصر في مقدمة التسلسل أو في مؤخرته. وأسماء عمليات الـ Deque توضيحية بذاتها: $ \mathtt{addFirst(x)}$ ، $ \mathtt{removeFirst()}$ ، $ \mathtt{addLast(x)}$ ، و $ \mathtt{removeLast()}$ . ومن الجدير بالذكر أن الـ Stack يمكن تنفيذه باستخدام $ \mathtt{addFirst(x)}$ و $ \mathtt{removeFirst()}$ في حين يمكن تنفيذ طابور FIFO باستخدام $ \mathtt{addLast(x)}$ و $ \mathtt{removeFirst()}$ . 1.2.2 واجهة List: تسلسلات خطية لن يتناول هذا الكتاب طويلًا واجهات طابور FIFO أو Stack أو Deque. والسبب في ذلك أن هذه الواجهات مشمولة ضمن واجهة List. ويمثّل الـ List، المبيَّن في الشكل 1.4، تسلسلًا، $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ، من القيم. وتتضمن واجهة List العمليات التالية: $ \mathtt{size()}$ : أعِد $ \mathtt{n}$ ، وهو طول القائمة $ \mathtt{get(i)}$ : أعِد القيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ $ \mathtt{set(i,x)}$ : اجعل قيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ مساوية لـ $ \mathtt{x}$ $ \mathtt{add(i,x)}$ : أضف $ \mathtt{x}$ عند الموضع $ \mathtt{i}$ ، مزاحًا $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}},\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ; اجعل $ \ensuremath{\mathtt{x}}_{j+1}=\ensuremath{\mathtt{x}}_j$ ، لكل $ j\in\{\ensuremath{\mathtt{n}}-1,\ldots,\ensuremath{\mathtt{i}}\}$ ، وزد $ \mathtt{n}$ ، واجعل $ \ensuremath{\mathtt{x}}_i=\ensuremath{\mathtt{x}}$ $ \mathtt{remove(i)}$ أزل القيمة $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i}}}$ ، مزاحًا $ \ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{i+1}}},\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ; اجعل $ \ensuremath{\mathtt{x}}_{j}=\ensuremath{\mathtt{x}}_{j+1}$ ، لكل $ j\in\{\ensuremath{\mathtt{i}},\ldots,\ensuremath{\mathtt{n}}-2\}$ وخصم $ \mathtt{n}$ لاحظ أن هذه العمليات كافية بسهولة لتنفيذ واجهة Deque: $\displaystyle \ensuremath{\mathtt{addFirst(x)}}$ $\displaystyle \Rightarrow$ $\displaystyle \ensuremath{\mathtt{add(0,x)}}$ $\displaystyle \ensuremath{\mathtt{removeFirst()}}$ $\displaystyle \Rightarrow$ $\displaystyle \ensuremath{\mathtt{remove(0)}}$ $\displaystyle \ensuremath{\mathtt{addLast(x)}}$ $\displaystyle \Rightarrow$ $\displaystyle \ensuremath{\mathtt{add(size(),x)}}$ $\displaystyle \ensuremath{\mathtt{removeLast()}}$ $\displaystyle \Rightarrow$ $\displaystyle \ensuremath{\mathtt{remove(size()-1)}}$ **الشكل 1.4:** يمثّل الـ List تسلسلًا مفهرسًا بـ $ 0,1,2,\ldots,\ensuremath{\mathtt{n}}-1$ . وفي هذا الـ List فإن نداء $ \mathtt{get(2)}$ سيُعيد القيمة $ c$ . ![\includegraphics[width=\textwidth ]{figs/list}](/images/open-data-structures/1_2_Interfaces-img117.png.webp) ورغم أننا لن نناقش عادةً واجهات Stack و Deque وطابور FIFO في الفصول اللاحقة، فإن مصطلحي Stack و Deque يُستخدمان أحيانًا في أسماء بنى البيانات التي تنفّذ واجهة List. وعند حدوث ذلك، فإنه يبرز أن هذه البنى يمكن استخدامها لتنفيذ واجهة Stack أو Deque بكفاءة عالية جدًا. فعلى سبيل المثال، صنف ArrayDeque هو تنفيذ لواجهة List ينفّذ جميع عمليات Deque في زمن ثابت لكل عملية. 1.2.3 واجهة USet: مجموعات غير مرتبة تمثّل واجهة USet مجموعة غير مرتبة من عناصر فريدة، تحاكي مجموعة رياضية. ويحتوي الـ USet على $ \mathtt{n}$ عنصرًا متمايزًا؛ فلا يظهر أي عنصر أكثر من مرة؛ والعناصر ليست في أي ترتيب معين. ويدعم الـ USet العمليات التالية: $ \mathtt{size()}$ : أعِد العدد، $ \mathtt{n}$ ، للعناصر في المجموعة $ \mathtt{add(x)}$ : أضف العنصر $ \mathtt{x}$ إلى المجموعة إن لم يكن حاضرًا بالفعل؛ أضف $ \mathtt{x}$ إلى المجموعة شريطة ألّا يوجد عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{x}$ يساوي $ \mathtt{y}$ . أعِد $ \mathtt{true}$ إن أُضيف $ \mathtt{x}$ إلى المجموعة و $ \mathtt{false}$ خلاف ذلك. $ \mathtt{remove(x)}$ : أزل $ \mathtt{x}$ من المجموعة؛ اعثر على عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{x}$ يساوي $ \mathtt{y}$ وأزل $ \mathtt{y}$ . أعِد $ \mathtt{y}$ ، أو $ \mathtt{null}$ إن لم يوجد عنصر كهذا. $ \mathtt{find(x)}$ : اعثر على $ \mathtt{x}$ في المجموعة إن وُجد؛ اعثر على عنصر $ \mathtt{y}$ في المجموعة بحيث $ \mathtt{y}$ يساوي $ \mathtt{x}$ . أعِد $ \mathtt{y}$ ، أو $ \mathtt{null}$ إن لم يوجد عنصر كهذا. وهذه التعريفات متحفظة في تمييز $ \mathtt{x}$ ، وهو العنصر الذي نزاله أو نبحث عنه، عن $ \mathtt{y}$ ، وهو العنصر الذي قد نزيله أو نجده. والسبب في ذلك أن $ \mathtt{x}$ و $ \mathtt{y}$ قد يكونان كائنين مختلفين فعليًا إلا أنهما يُعامَلان على أنهما متساويان.1.2وهذا التمييز مفيد لأنه يسمح بإنشاء قواميس (dictionaries) أو خرائط (maps) تربط المفاتيح بالقيم. ولإنشاء قاميس/خريطة، نشكّل كائنات مركّبة تسمى Pairs، كل منها يحتوي على مفتاح وقيمة. ويعامل اثنان من الـ Pairs على أنهما متساويان إذا كان مفتاحاهما متساويين. فإن خزّنّا زوجًا ما $ (\ensuremath{\mathtt{k}},\ensuremath{\mathtt{v}})$ في USet ثم استدعينا لاحقًا الطريقة $ \mathtt{find(x)}$ مستخدمين الزوج $ \ensuremath{\mathtt{x}}=(\ensuremath{\mathtt{k}},\ensuremath{\mathtt{null}})$ ، تكون النتيجة $ \ensuremath{\mathtt{y}}=(\ensuremath{\mathtt{k}},\ensuremath{\mathtt{v}})$ . بمعنى آخر، من الممكن استرجاع القيمة، $ \mathtt{v}$ ، انطلاقًا من المفتاح $ \mathtt{k}$ وحده. 1.2.4 واجهة SSet: مجموعات مرتبة تمثّل واجهة SSet مجموعة مرتبة من العناصر. ويخزّن الـ SSet عناصر من ترتيب كلي (total order)، بحيث يمكن مقارنة أي عنصرين $ \mathtt{x}$ و $ \mathtt{y}$ . وفي أمثلة الشيفرة، سيُجرى ذلك بطريقة اسمها $ \mathtt{compare(x,y)}$ يتم فيها
 
 ![$\displaystyle \ensuremath{\mathtt{compare(x,y)}} \begin{cases} {}<0 & \text{... ...{}=0 & \text{if $\ensuremath{\mathtt{x}}=\ensuremath{\mathtt{y}}$} \end{cases}$](/images/open-data-structures/1_2_Interfaces-img163.png.webp)
 
@@ -78,59 +78,83 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 في هذا القسم، نراجع بعض الرموز والأدوات الرياضية المستخدمة في هذا الكتاب، بما فيها اللوغاريتمات وترميز big-Oh ونظرية الاحتمال. وستكون هذه المراجعة موجزة ولا يُقصد بها أن تكون مقدمة. ويُشجّع القراء الذين يشعرون بأن هذه الخلفية ناقصة لديهم على قراءة الأقسام المناسبة من الكتاب النصي الجيد جدًا (والمجاني) في الرياضيات لعلوم الحاسوب [50] وعلى حل تمارينه. 1.3.1 الأسّيات واللوغاريتمات يعبّر التعبير $ b^x$ عن العدد $ b$ مرفوعًا إلى الأس $ x$ . فإذا كان $ x$ عددًا صحيحًا موجبًا، فإن هذه هي ببساطة قيمة $ b$ مضروبة في نفسها $ x-1$ مرة:
 
-![$\displaystyle b^x = \underbrace{b\times b\times \cdots \times b}_{x} \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img187.png.webp)
+$$
+\displaystyle b^x = \underbrace{b\times b\times \cdots \times b}_{x} \enspace .
+$$
 
 وعندما يكون $ x$ عددًا صحيحًا سالبًا، فإن $ b^x=1/b^{-x}$ . وعندما $ x=0$ ، فإن $ b^x=1$ . أما عندما لا يكون $ b$ عددًا صحيحًا، فيمكننا مع ذلك تعريف الرفع إلى القوة بدلالة الدالة الأسية $ e^x$ (انظر أدناه)، وهي بدورها معرَّفة بدلالة المتسلسلة الأسية، لكن الأفضل ترك هذا لكتاب حساب تفاضل وتكامل.
 
 في هذا الكتاب، يعبّر التعبير $ \log_b k$ عن اللوغاريتم الأساسي $ b$ للعدد $ k$ . أي أنه القيمة الفريدة $ x$ التي تحقّق
 
-![$\displaystyle b^{x} = k \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img198.png.webp)
+$$
+\displaystyle b^{x} = k \enspace .
+$$
 
 معظم اللوغاريتمات في هذا الكتاب أساسها 2 (لوغاريتمات ثنائية). وللأساس 2 نُهمل الأساس، بحيث يكون $ \log k$ اختصارًا لـ $ \log_2 k$ .
 
 ومن طرائق التفكير غير الرسمية، وإن كانت مفيدة، في اللوغاريتمات: أن نتخيل $ \log_b k$ بوصفه عدد المرات التي يجب أن نقسم فيها $ k$ على $ b$ قبل أن تصبح النتيجة أصغر من 1 أو مساوية لها. فعلى سبيل المثال، عند إجراء بحث ثنائي (binary search)، يخفض كل مقارنة عدد الإجابات المحتملة بمعامل 2. ويُعاد هذا حتى يبقى باقٍ إجابة محتملة واحدة على الأكثر. ولذلك فإن عدد المقارنات التي ينفذها البحث الثنائي عندما يكون عدد الإجابات المحتملة في البداية $ n+1$ على الأكثر يساوي $ \lceil\log_2(n+1)\rceil$ على الأكثر. وهناك لوغاريتم آخر يتكرر ذكره في هذا الكتاب عدة مرات هو اللوغاريتم الطبيعي. وهنا نستخدم الرمز $ \ln k$ للإشارة إلى $ \log_e k$ ، حيث $ e$ -- ثابت أويلر -- معطى بـ
 
-![$\displaystyle e = \lim_{n\rightarrow\infty} \left(1+\frac{1}{n}\right)^n \approx 2.71828 \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img210.png.webp)
+$$
+\displaystyle e = \lim_{n\rightarrow\infty} \left(1+\frac{1}{n}\right)^n \approx 2.71828 \enspace .
+$$
 
 ويتكرر اللوغاريتم الطبيعي كثيرًا لأنه قيمة تكامل شائع إلى حد كبير:
 
-![$\displaystyle \int_{1}^{k} 1/x\,\mathrm{d}x = \ln k \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img211.png.webp)
+$$
+\displaystyle \int_{1}^{k} 1/x\,\mathrm{d}x = \ln k \enspace .
+$$
 
 ومن اثنتين من أكثر المعالجات شيوعًا للوغاريتمات، إخراجه من الأس:
 
-![$\displaystyle b^{\log_b k} = k $](/images/open-data-structures/1_3_Mathematical_Background-img212.png.webp)
+$$
+\displaystyle b^{\log_b k} = k
+$$
 
 وتغيير أساس اللوغاريتم:
 
-![$\displaystyle \log_b k = \frac{\log_a k}{\log_a b} \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img213.png.webp)
+$$
+\displaystyle \log_b k = \frac{\log_a k}{\log_a b} \enspace .
+$$
 
 فعلى سبيل المثال، يمكننا استخدام هاتين العمليتين للمقارنة بين اللوغاريتم الطبيعي واللوغاريتم الثنائي
 
-![$\displaystyle \ln k = \frac{\log k}{\log e} = \frac{\log k}{(\ln e)/(\ln 2)} = (\ln 2)(\log k) \approx 0.693147\log k \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img214.png.webp)
+$$
+\displaystyle \ln k = \frac{\log k}{\log e} = \frac{\log k}{(\ln e)/(\ln 2)} = (\ln 2)(\log k) \approx 0.693147\log k \enspace .
+$$
 
 1.3.2 المُعاملات يُستخدم في موضع أو موضعين من هذا الكتاب دالة المُعامل (factorial). وللعدد الصحيح غير السالب $ n$ ، يُعرَّف الرمز $ n!$ (يُنطق « $ n$ factorial») بأنه
 
-![$\displaystyle n! = 1\cdot2\cdot3\cdot\cdots\cdot n \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img218.png.webp)
+$$
+\displaystyle n! = 1\cdot2\cdot3\cdot\cdots\cdot n \enspace .
+$$
 
 وتظهر المُعاملات لأن $ n!$ يَعُدّ عدد التبديلات المتمايزة، أي ترتيبات $ n$ عنصرًا متمايزًا. وفي الحالة الخاصة $ n=0$ ، يُعرَّف $ 0!$ بأنه 1.
 
 ويمكن تقريب الكمية $ n!$ باستخدام تقريب ستيرلنغ (Stirling's Approximation):
 
-![$\displaystyle n! = \sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}e^{\alpha(n)} \enspace , $](/images/open-data-structures/1_3_Mathematical_Background-img224.png.webp)
+$$
+\displaystyle n! = \sqrt{2\pi n}\left(\frac{n}{e}\right)^{n}e^{\alpha(n)} \enspace ,
+$$
 
 حيث
 
-![$\displaystyle \frac{1}{12n+1} < \alpha(n) < \frac{1}{12n} \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img225.png.webp)
+$$
+\displaystyle \frac{1}{12n+1} < \alpha(n) < \frac{1}{12n} \enspace .
+$$
 
 كما يقرّب تقريب ستيرلنغ قيمة $ \ln(n!)$ :
 
-![$\displaystyle \ln(n!) = n\ln n - n + \frac{1}{2}\ln(2\pi n) + \alpha(n) $](/images/open-data-structures/1_3_Mathematical_Background-img227.png.webp)
+$$
+\displaystyle \ln(n!) = n\ln n - n + \frac{1}{2}\ln(2\pi n) + \alpha(n)
+$$
 
 (وف الواقع، يُثبَت تقريب ستيرلنغ على نحو أسهل تقريبًا باقتراض $ \ln(n!)=\ln 1 + \ln 2 + \cdots + \ln n$ بالتكامل $ \int_1^n \ln n\,\mathrm{d}n = n\ln n - n +1$ .)
 
 وذات صلة بدالة المُعامل هي معاملات ثنائية القطع (binomial coefficients). وللعدد الصحيح غير السالب $ n$ والعدد الصحيح $ k\in\{0,\ldots,n\}$ ، يعبّر الرمز $ \binom{n}{k}$ عن:
 
-![$\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!} \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img233.png.webp)
+$$
+\displaystyle \binom{n}{k} = \frac{n!}{k!(n-k)!} \enspace .
+$$
 
 ومعامل ثنائي القطع $ \binom{n}{k}$ (يُنطق « $ n$ choose $ k$ ») يَعُدّ عدد المجموعات الجزئية في مجموعة من $ n$ عنصرًا ذات الحجم $ k$، أي عدد طرق اختيار $ k$ عددًا صحيحًا متمايزًا من المجموعة $ \{1,\ldots,n\}$ .
 
@@ -151,23 +175,33 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 ويمكن تطبيق عدد من الاختصارات المفيدة عند استخدام الترميز التقريبي. أولًا:
 
-![$\displaystyle O(n^{c_1}) \subset O(n^{c_2}) \enspace ,$](/images/open-data-structures/1_3_Mathematical_Background-img260.png.webp)
+$$
+\displaystyle O(n^{c_1}) \subset O(n^{c_2}) \enspace ,
+$$
 
 لكل $ c_1 < c_2$ . ثانيًا: لأي الثوابت $ a,b,c > 0$ ،
 
-![$\displaystyle O(a) \subset O(\log n) \subset O(n^{b}) \subset O({c}^n) \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img263.png.webp)
+$$
+\displaystyle O(a) \subset O(\log n) \subset O(n^{b}) \subset O({c}^n) \enspace .
+$$
 
 ويمكن ضرب علاقات الاحتواء هذه بأي قيمة موجبة، وتظل قائمة. فمثلًا، الضرب في $ n$ يعطي:
 
-![$\displaystyle O(n) \subset O(n\log n) \subset O(n^{1+b}) \subset O(n{c}^n) \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img265.png.webp)
+$$
+\displaystyle O(n) \subset O(n\log n) \subset O(n^{1+b}) \subset O(n{c}^n) \enspace .
+$$
 
 متابعةً لتقليد عريق ومتميز، سنُسيء استعمال هذا الرمز بكتب أشياء مثل $ f_1(n) = O(f(n))$ بينما ما نقصده حقًا هو $ f_1(n) \in O(f(n))$ . وسنقول أيضًا عبارات مثل «زمن تنفيذ هذه العملية هو $ O(f(n))$ » بينما المقصود هو «زمن تنفيذ هذه العملية عنصر في $ O(f(n))$ .» هذه الاختصارات موجودة أساسًا لتفادي اللغة المربكة ولتسهيل استخدام الترميز التقريبي داخل سلاسل المعادلات. ويحدث مثال غريب بشكل خاص من هذا النوع حين نكتب عبارات مثل
 
-![$\displaystyle T(n) = 2\log n + O(1) \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img270.png.webp)
+$$
+\displaystyle T(n) = 2\log n + O(1) \enspace .
+$$
 
 ومرة أخرى، ينبغي كتابة هذا على نحو أدق هكذا:
 
-![$\displaystyle T(n) \le 2\log n + [$](/images/open-data-structures/1_3_Mathematical_Background-img271.png.webp) ![$\displaystyle \mbox{some member of $O(1)$]}$](/images/open-data-structures/1_3_Mathematical_Background-img272.png.webp) ![$\displaystyle \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img273.png.webp)
+$$
+\displaystyle T(n) \le 2\log n + \mbox{some member of } O(1) \enspace .
+$$
 
 كما يثير التعبير $ O(1)$ مسألة أخرى. فبينما لا يوجد متغيّر في هذا التعبير، قد لا يكون واضحًا أي المتغيّرات هو الذي يصبح كبيرًا بشكل عشوائي. وبدون سياق لا سبيل إلى معرفة ذلك. وفي المثال أعلاه، بما أن المتغيّر الوحيد في بقية المعادلة هو $ n$ ، يمكننا أن نفترض أن هذا يُقرأ على أنه $ T(n) = 2\log n + O(f(n))$ ، حيث $ f(n) = 1$ . وترميز big-Oh ليس جديدًا ولا خاصًا بعلوم الحاسوب. فقد استخدمه عالم نظر الأعداد Paul Bachmann في عام 1894، وهو مفيد للغاية في وصف أزمنة تنفيذ خوارزميات الحاسوب. خُذ الشيفرة التالية في الاعتبار:
 
@@ -192,7 +226,9 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 حيث $ a$ و $ b$ و $ c$ و $ d$ و $ e$ ثوابت تعتمد على الآلة التي تشغّل الشيفرة، وتمثل زمن تنفيذ عمليات الإسناد والمقارنة والزيادة وحساب إزاحة المصفوفة والإسناد غير المباشر على التوالي. لكن إذا كان هذا التعبير يمثّل زمن تنفيذي سطرين من الشيفرة، فمن الواضح أن هذا النوع من التحليل لن يكون ممكنًا مع الشيفرة أو الخوارزميات المعقدة. وباستخدام ترميز big-Oh يمكن تبسيط زمن التنفيذ إلى
 
-![$\displaystyle T(\ensuremath{\mathtt{n}})= O(\ensuremath{\mathtt{n}}) \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img294.png.webp)
+$$
+\displaystyle T(\ensuremath{\mathtt{n}})= O(\ensuremath{\mathtt{n}}) \enspace .
+$$
 
 وليس هذا أكثر اختصارًا فحسب، بل إنه يعطي أيضًا قدرًا تقريبًا مماثلًا من المعلومات. فكون زمن التنفيذ يعتمد على الثوابت $ a$ و $ b$ و $ c$ و $ d$ و $ e$ في المثال أعلاه يعني عمومًا أنه لن يكون بإمكاننا مقارنة زمنَي تنفيذ لمعرفة أيهما أسرع دون معرفة قيم هذه الثوابت. وحتى لو بذلنا جهدًا لتحديد هذه الثوابت (مثلًا عبر اختبارات التوقيت)، فإن استنتاجنا سيكون صالحًا فقط للآلة التي شغّلنا عليها اختباراتنا.
 
@@ -204,17 +240,23 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 1.3.4 العشوائية والاحتمال بعض بنى البيانات المعروضة في هذا الكتاب عشوائية؛ فهي تتخذ خيارات عشوائية مستقلة عن البيانات المخزَّنة فيها أو عن العمليات المنفَّذة عليها. ولهذا السبب، فإن تنفيذ مجموعة العمليات نفسها أكثر من مرة باستخدام هذه البنى قد يؤدي إلى أزمنة تنفيذ مختلفة. وحين نحلّل هذه البنى فإننا مهتمون بأزمنة تنفيذها المتوسطة أو المتوقعة. ورسميًا، فإن زمن تنفيذ عملية على بنية بيانات عشوائية هو متغيّر عشوائي، ونريد دراسة قيمته المتوقعة. وبالنسبة إلى متغيّر عشوائي متقطّع $ X$ يأخذ قيمًا في مجموعة قابلة للعدّ $ U$ ، فإن القيمة المتوقعة لـ $ X$ ، ويُشار إليها بـ $ \mathrm{E}[X]$ ، تُعطى بالصيغة
 
-![$\displaystyle \mathrm{E}[X] = \sum_{x\in U} x\cdot\Pr\{X=x\} \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img326.png.webp)
+$$
+\displaystyle \mathrm{E}[X] = \sum_{x\in U} x\cdot\Pr\{X=x\} \enspace .
+$$
 
 وهنا تشير $ \Pr\{\mathcal{E}\}$ إلى احتمال وقوع الحدث $ \mathcal{E}$ . وفي جميع الأمثلة في هذا الكتاب، ترجع هذه الاحتمالات إلى الخيارات العشوائية التي تتخذها بنية البيانات العشوائية فحسب؛ ولا يوجد افتراض بأن البيانات المخزَّنة في البنية، ولا تسلسل العمليات المنفَّذة عليها، عشوائي.
 
 ومن أهم خصائص القيم المتوقعة الخطية (linearity of expectation). فبالنسبة إلى أي متغيّرَي عشوائي $ X$ و $ Y$ ،
 
-![$\displaystyle \mathrm{E}[X+Y] = \mathrm{E}[X] + \mathrm{E}[Y] \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img331.png.webp)
+$$
+\displaystyle \mathrm{E}[X+Y] = \mathrm{E}[X] + \mathrm{E}[Y] \enspace .
+$$
 
 وبشكل أعم، بالنسبة إلى أي متغيّرات عشوائية $ X_1,\ldots,X_k$ ،
 
-![$\displaystyle \mathrm{E}\left[\sum_{i=1}^k X_k\right] = \sum_{i=1}^k \mathrm{E}[X_i] \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img333.png.webp)
+$$
+\displaystyle \mathrm{E}\left[\sum_{i=1}^k X_k\right] = \sum_{i=1}^k \mathrm{E}[X_i] \enspace .
+$$
 
 تتيح الخطية للتوقع تفكيك المتغيّرات العشوائية المعقدة (مثل الطرف الأيسر للمعادلات أعلاه) إلى مجاميع متغيّرات عشوائية أبسط (الطرف الأيمن).
 
@@ -230,11 +272,15 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 واستخدام متغيّرات المؤشر وخطية التوقع يجعل الأمور أسهل بكثير. فلكل $ i\in\{1,\ldots,k\}$ ، نعرّف متغيّر المؤشر
 
-![$\displaystyle I_i = \begin{cases} 1 & \text{if the $i$th coin toss is heads} \\ 0 & \text{otherwise.} \end{cases}$](/images/open-data-structures/1_3_Mathematical_Background-img345.png.webp)
+$$
+\displaystyle I_i = \begin{cases} 1 & \text{if the $i$th coin toss is heads} \\ 0 & \text{otherwise.} \end{cases}
+$$
 
 ثم
 
-![$\displaystyle \mathrm{E}[I_i] = (1/2)1 + (1/2)0 = 1/2 \enspace . $](/images/open-data-structures/1_3_Mathematical_Background-img346.png.webp)
+$$
+\displaystyle \mathrm{E}[I_i] = (1/2)1 + (1/2)0 = 1/2 \enspace .
+$$
 
 والآن، $ X=\sum_{i=1}^k I_i$ ، لذا
 
@@ -254,7 +300,7 @@ source: https://opendatastructures.org/ods-java/1_Introduction.html
 
 عند دراسة أداء بنية بيانات، هناك ثلاثة أمور هي الأهم: **الصحة:** ينبغي أن تنفّذ بنية البيانات واجهتها على نحو صحيح. **التعقيد الزمني:** ينبغي أن تكون أزمنة تنفيذ العمليات على بنية البيانات أصغر ما يمكن. **التعقيد المكاني:** ينبغي أن تستخدم بنية البيانات أقل قدر ممكن من الذاكرة. وفي هذا النص التمهيدي سنعتبر الصحة أمرًا مفترضًا؛ فلن ننظر في بنى بيانات تعطي إجابات خاطئة على الاستعلامات أو لا تنفّذ التحديثات على الوجه الصحيح. لكننا سنرى مع ذلك بنى بيانات تبذل جهدًا إضافيًا للحد من استهلاك المكان. ولن يؤثر ذلك عادةً في أزمنة التنفيذ (التقريبية) للعمليات، لكنه قد يجعل بنى البيانات أبطأ قليلًا في الممارسة العملية. وعند دراسة أزمنة التنفيذ في سياق بنى البيانات، نميل إلى مواجهة ثلاثة أنواع مختلفة من ضمانات زمن التنفيذ: **أزمنة التنفيذ في أسوأ الحالات:** وهذه أقوى أنواع ضمانات زمن التنفيذ. فإذا كان لعملية ما على بنية بيانات زمن تنفيذ في أسوأ الحالات قدره $ f(\ensuremath{\mathtt{n}})$ ، فإن إحدى هذه العمليات لا تستغرق أبدًا زمنًا يتجاوز $ f(\ensuremath{\mathtt{n}})$ . **أزمنة التنفيذ المُستهلكة (amortized):** فإذا قلنا إن زمن التنفيذ المُستهلك لعملية ما على بنية بيانات هو $ f(\ensuremath{\mathtt{n}})$ ، فإن هذا يعني أن تكلفة العملية المعتادة هي على الأكثر $ f(\ensuremath{\mathtt{n}})$ . وبدقة أكبر، إذا كانت بنية بيانات ذات زمن تنفيذ مستهلك هو $ f(\ensuremath{\mathtt{n}})$ ، فإن سلسلة من $ m$ عمليات تستغرق زمنًا لا يتجاوز $ mf(\ensuremath{\mathtt{n}})$ . وقد تستغرق بعض العمليات الفردية أكثر من $ f(\ensuremath{\mathtt{n}})$ لكن المتوسط، على كامل سلسلة العمليات، هو على الأكثر $ f(\ensuremath{\mathtt{n}})$ . **أزمنة التنفيذ المتوقعة:** فإذا قلنا إن زمن التنفيذ المتوقع لعملية ما على بنية بيانات هو $ f(\ensuremath{\mathtt{n}})$ ، فإن هذا يعني أن زمن التنفيذ الفعلي هو متغيّر عشوائي (انظر القسم 1.3.4) وأن القيمة المتوقعة لهذا المتغيّر العشوائي هي على الأكثر $ f(\ensuremath{\mathtt{n}})$ . والعشوائية هنا تتعلق بالخيارات العشوائية التي تتخذها بنية البيانات. وللفهم الفرق بين أزمنة التنفيذ في أسوأ الحالات والمُستهلكة والمتوقعة، من المفيد النظر في مثال مالي. خُذ تكلفة شراء منزل: 1.5.0.0.1 أسوأ الحالات مقابل التكلفة المُستهلكة: لنفترض أن المنزل يكلف $120000. ولشراء هذا المنزل، قد نأخذ رهنًا عقاريًا لمدة 120 شهرًا (10 سنوات) بدفعات شهرية قدرها $1200 شهريًا. وفي هذه الحالة، فإن تكلفة سداد هذا الرهن في أسوأ الحالات شهريًا هي $1200 شهريًا. وإذا كان لدينا
 
-![$\displaystyle \$120\,000 / 120$](/images/open-data-structures/1_5_Correctness_Time_Comple-img389.png.webp) شهرًا ![$\displaystyle = \$1\,000$](/images/open-data-structures/1_5_Correctness_Time_Comple-img390.png.webp) شهريًا ![$\displaystyle \enspace . $](/images/open-data-structures/1_5_Correctness_Time_Comple-img391.png.webp)
+$\displaystyle \$120\,000 / 120$ شهرًا $\displaystyle = \$1\,000$ شهريًا $\displaystyle \enspace .$
 
 فإن ذلك أقل بكثير من $1200 شهريًا مما كان علينا دفعه لو أخذنا رهنًا عقاريًا.
 

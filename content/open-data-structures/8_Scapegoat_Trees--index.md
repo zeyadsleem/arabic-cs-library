@@ -65,7 +65,9 @@ source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 
 في كل الأوقات، يطيع $ \mathtt{n}$ و$ \mathtt{q}$ المتراجحتَين التاليتين:
 
-![$\displaystyle \ensuremath{\mathtt{q}}/2 \le \ensuremath{\mathtt{n}} \le \ensuremath{\mathtt{q}} \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3223.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{q}}/2 \le \ensuremath{\mathtt{n}} \le \ensuremath{\mathtt{q}} \enspace .
+$$
 
 إضافةً إلى ذلك، فإنّ ارتفاع ScapegoatTree لوغاريتمي؛ وفي كل الأوقات لا يتجاوز ارتفاع شجرة كبش الفداء
 
@@ -110,37 +112,47 @@ source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 
 8.1.1 تحليل صحّة العمليات وزمن تشغيلها في هذا القسم، نحلّل صحّة العمليات على ScapegoatTree وزمن تشغيلها المُلبَّد. ونبرهن أوّلًا على الصحّة بأنّنا نبيّن أنّه، عندما ينتج عن العملية $ \mathtt{add(x)}$ عقدة تنتهك الشرط (8.1)، فإنّنا نستطيع دائمًا العثور على كبش فداء: **الملمّة 8..1** *ليكن $ \mathtt{u}$ عقدة عمقها $ h>\log_{3/2} \ensuremath{\mathtt{q}}$ في ScapegoatTree. عندئذٍ توجد عقدة $ \ensuremath{\mathtt{w}}$ على المسار الممتد من $ \mathtt{u}$ إلى الجذر بحيث *
 
-![$\displaystyle \frac{\ensuremath{\mathtt{size(w)}}}{\ensuremath{\mathtt{size(parent(w))}}} > 2/3 \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3276.png.webp)
+$$
+\displaystyle \frac{\ensuremath{\mathtt{size(w)}}}{\ensuremath{\mathtt{size(parent(w))}}} > 2/3 \enspace .
+$$
 
 *البرهان*. نفترض، طلبًا للتناقض، أنّ الأمر ليس كذلك، وأنّ
 
-![$\displaystyle \frac{\ensuremath{\mathtt{size(w)}}}{\ensuremath{\mathtt{size(parent(w))}}} \le 2/3 \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3278.png.webp)
+$$
+\displaystyle \frac{\ensuremath{\mathtt{size(w)}}}{\ensuremath{\mathtt{size(parent(w))}}} \le 2/3 \enspace .
+$$
 
 يسري ذلك لكل العقد $ \mathtt{w}$ على المسار الممتد من $ \mathtt{u}$ إلى الجذر. لنُسمِّ المسار الممتد من الجذر إلى $ \mathtt{u}$ بالرمز $ \ensuremath{\mathtt{r}}=\ensuremath{\mathtt{u}}_0,\ldots,\ensuremath{\mathtt{u}}_h=\ensuremath{\mathtt{u}}$ . عندئذٍ لدينا $ \ensuremath{\mathtt{size(u}}_0\ensuremath{\mathtt{)}}=\ensuremath{\mathtt{n}}$ ، $ \ensuremath{\mathtt{size(u}}_1\ensuremath{\mathtt{)}}\le\frac{2}{3}\ensuremath{\mathtt{n}}$ ، $ \ensuremath{\mathtt{size(u}}_2\ensuremath{\mathtt{)}}\le\frac{4}{9}\ensuremath{\mathtt{n}}$ وبشكلٍ عامّ
 
-![$\displaystyle \ensuremath{\mathtt{size(u}}_i\ensuremath{\mathtt{)}}\le\left(\frac{2}{3}\right)^i\ensuremath{\mathtt{n}} \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3286.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{size(u}}_i\ensuremath{\mathtt{)}}\le\left(\frac{2}{3}\right)^i\ensuremath{\mathtt{n}} \enspace .
+$$
 
 لكنّ هذا يعطي تناقضًا، إذ إنّ $ \ensuremath{\mathtt{size(u)}}\ge 1$ ، ومن ثمّ
 
 ![$\displaystyle 1 \le \ensuremath{\mathtt{size(u)}} \le \left(\frac{2}{3}\right)^... ...suremath{\mathtt{n}}}\right) \ensuremath{\mathtt{n}} = 1 \enspace . \qedhere $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3288.png.webp)
 
-![$ \qedsymbol$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3277.png.webp)
+$$
+\qedsymbol
+$$
 
 تالًا، نحلّل جزأَي زمن التشغيل اللذين لم نحتسبهما بعد. هناك جزأان: كلفة الاستدعاءات إلى $ \mathtt{size(u)}$ عند البحث عن عقد كبش الفداء، وكلفة الاستدعاءات إلى $ \mathtt{rebuild(w)}$ عند العثور على كبش فداء $ \mathtt{w}$ . ويمكن ربط كلفة الاستدعاءات إلى $ \mathtt{size(u)}$ بكلفة الاستدعاءات إلى $ \mathtt{rebuild(w)}$ على النحو التالي: **الملمّة 8..2** *أثناء استدعاء $ \mathtt{add(x)}$ في ScapegoatTree، تكون كلفة العثور على كبش الفداء $ \mathtt{w}$ وإعادة بناء الشجرة الفرعية ذات الجذر $ \mathtt{w}$ هي $ O(\ensuremath{\mathtt{size(w)}})$ .*
 
 *البرهان*. كلفة إعادة بناء عقدة كبش الفداء $ \mathtt{w}$، بعد العثور عليها، هي $ O(\ensuremath{\mathtt{size(w)}})$ . وعند البحث عن عقدة كبش الفداء، نستدعي $ \mathtt{size(u)}$ على تسلسلٍ من العقد $ \ensuremath{\mathtt{u}}_0,\ldots,\ensuremath{\mathtt{u}}_k$ حتى نجد كبش الفداء $ \ensuremath{\mathtt{u}}_k=\ensuremath{\mathtt{w}}$ . لكنّ $ \ensuremath{\mathtt{u}}_k$ أوّل عقدة في هذا التسلسل تُعدّ كبش فداء، ومن ثمّ نعلم أنّ
 
-![$\displaystyle \ensuremath{\mathtt{size(u}}_{i}\ensuremath{\mathtt{)}} < \frac{2}{3}\ensuremath{\mathtt{size(u}}_{i+1}\ensuremath{\mathtt{)}} $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3305.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{size(u}}_{i}\ensuremath{\mathtt{)}} < \frac{2}{3}\ensuremath{\mathtt{size(u}}_{i+1}\ensuremath{\mathtt{)}}
+$$
 
 يسري ذلك لكل $ i\in\{0,\ldots,k-2\}$ . إذن، كلفة جميع الاستدعاءات إلى $ \mathtt{size(u)}$ هي
 
-| ![$\displaystyle O\left( \sum_{i=0}^k \ensuremath{\mathtt{size(u}}_{k-i}\ensuremath{\mathtt{)}} \right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3308.png.webp) | ![$\displaystyle =$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3309.png.webp) | ![$\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...{i=0}^{k-1} \ensuremath{\mathtt{size(u}}_{k-i-1}\ensuremath{\mathtt{)}} \right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3310.png.webp) |  |
+| $\displaystyle O\left( \sum_{i=0}^k \ensuremath{\mathtt{size(u}}_{k-i}\ensuremath{\mathtt{)}} \right)$ | $\displaystyle =$ | $\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...{i=0}^{k-1} \ensuremath{\mathtt{size(u}}_{k-i-1}\ensuremath{\mathtt{)}} \right)$ |  |
 | --- | --- | --- | --- |
-|  | ![$\displaystyle =$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3311.png.webp) | ![$\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...c{2}{3}\right)^i\ensuremath{\mathtt{size(u}}_{k}\ensuremath{\mathtt{)}} \right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3312.png.webp) |  |
-|  | ![$\displaystyle =$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3313.png.webp) | ![$\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}\left(1+ \sum_{i=0}^{k-1} \left(\frac{2}{3}\right)^i \right)\right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3314.png.webp) |  |
-|  | ![$\displaystyle =$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3315.png.webp) | ![$\displaystyle O(\ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}) = O(\ensuremath{\mathtt{size(w)}}) \enspace ,$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3316.png.webp) |  |
+|  | $\displaystyle =$ | ![$\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...c{2}{3}\right)^i\ensuremath{\mathtt{size(u}}_{k}\ensuremath{\mathtt{)}} \right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3312.png.webp) |  |
+|  | $\displaystyle =$ | $\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}\left(1+ \sum_{i=0}^{k-1} \left(\frac{2}{3}\right)^i \right)\right)$ |  |
+|  | $\displaystyle =$ | $\displaystyle O(\ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}) = O(\ensuremath{\mathtt{size(w)}}) \enspace ,$ |  |
 
-حيث يتبع السطر الأخير من أنّ المجموع متتاليةٌ هابطة هندسيًا. ![$ \qedsymbol$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3298.png.webp)
+حيث يتبع السطر الأخير من أنّ المجموع متتاليةٌ هابطة هندسيًا. $\qedsymbol$
 
 لم يبقَ سوى إثبات حدٍّ أعلى (upper bound) لكلفة جميع الاستدعاءات إلى $ \mathtt{rebuild(u)}$ خلال تسلسلٍ من $ m$ عملية: **الملمّة 8..3** *إذا بدأنا من ScapegoatTree فارغة، فإنّ أي تسلسلٍ من $ m$ عملية من نوعَي $ \mathtt{add(x)}$ و$ \mathtt{remove(x)}$ يستهلك على الأكثر $ O(m\log m)$ من الزمن في عمليات $ \mathtt{rebuild(u)}$ .*
 
@@ -148,15 +160,21 @@ source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 
 أثناء الإدراج أو الحذف، نمنح رصيدًا واحدًا لكل عقدةٍ على المسار المؤدّي إلى العقدة المُدرَجة أو المحذوفة، $ \mathtt{u}$ . وبهذه الطريقة نوزّع على الأكثر $ \log_{3/2}\ensuremath{\mathtt{q}}\le \log_{3/2}m$ رصيدًا لكل عملية. وأثناء الحذف نحتفظ برصيدٍ إضافي ``مُدَّخرًا إلى جانب.'' وعليه، فإنّ ما نوزّعه إجمالًا لا يتجاوز $ O(m\log m)$ من الأرصدة. ولم يبقَ سوى بيان أنّ هذه الأرصدة تكفي لدفع كلفة جميع الاستدعاءات إلى $ \mathtt{rebuild(u)}$ . فإذا استدعينا $ \mathtt{rebuild(u)}$ أثناء إدراج، فإنّ ذلك لأنّ $ \mathtt{u}$ كبش فداء. ولنفترض، دون 잃انٍ من العموم، أنّ
 
-![$\displaystyle \frac{\ensuremath{\mathtt{size(u.left)}}}{\ensuremath{\mathtt{size(u)}}} > \frac{2}{3} \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3335.png.webp)
+$$
+\displaystyle \frac{\ensuremath{\mathtt{size(u.left)}}}{\ensuremath{\mathtt{size(u)}}} > \frac{2}{3} \enspace .
+$$
 
 باستخدام الحقيقة
 
-![$\displaystyle \ensuremath{\mathtt{size(u)}} = 1 + \ensuremath{\mathtt{size(u.left)}} + \ensuremath{\mathtt{size(u.right)}} $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3336.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{size(u)}} = 1 + \ensuremath{\mathtt{size(u.left)}} + \ensuremath{\mathtt{size(u.right)}}
+$$
 
 نستنتج أنّ
 
-![$\displaystyle \frac{1}{2}\ensuremath{\mathtt{size(u.left)}} > \ensuremath{\mathtt{size(u.right)}} \enspace $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3337.png.webp)
+$$
+\displaystyle \frac{1}{2}\ensuremath{\mathtt{size(u.left)}} > \ensuremath{\mathtt{size(u.right)}} \enspace
+$$
 
 وبالتالي
 
@@ -164,15 +182,19 @@ source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 
 والآن، في آخر مرّةٍ أُعيدت فيها بناء شجرةٍ فرعية تحوي $ \mathtt{u}$ (أو حين أُدرجت $ \mathtt{u}$، إن لم تُعَد بناء شجرةٍ فرعية تحوي $ \mathtt{u}$ قطّ)، كان لدينا
 
-![$\displaystyle \ensuremath{\mathtt{size(u.left)}} - \ensuremath{\mathtt{size(u.right)}} \le 1 \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3342.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{size(u.left)}} - \ensuremath{\mathtt{size(u.right)}} \le 1 \enspace .
+$$
 
 لذلك فإنّ عدد عمليات $ \mathtt{add(x)}$ أو $ \mathtt{remove(x)}$ التي أثّرت في $ \mathtt{u.left}$ أو $ \mathtt{u.right}$ منذ ذلك الحين لا يقلّ عن
 
-![$\displaystyle \frac{1}{3}\ensuremath{\mathtt{size(u)}} - 1 \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3347.png.webp)
+$$
+\displaystyle \frac{1}{3}\ensuremath{\mathtt{size(u)}} - 1 \enspace .
+$$
 
 ومن ثمّ فإنّ عددًا من الأرصدة لا يقلّ عن هذا العدد مخزَّنٌ عند $ \mathtt{u}$ ، ومتاح لدفع الزمن $ O(\ensuremath{\mathtt{size(u)}})$ الذي يستغرقه استدعاء $ \mathtt{rebuild(u)}$ .
 
-أمّا إذا استدعينا $ \mathtt{rebuild(u)}$ أثناء حذف، فإنّ ذلك لأنّ $ \ensuremath{\mathtt{q}} > 2\ensuremath{\mathtt{n}}$ . في هذه الحالة لدينا $ \ensuremath{\mathtt{q}}-\ensuremath{\mathtt{n}}> \ensuremath{\mathtt{n}}$ من الأرصدة المخزَّنة ``مُدَّخرة إلى جانب،'' ونستخدمها لدفع الزمن $ O(\ensuremath{\mathtt{n}})$ الذي يلزم لإعادة بناء الجذر. وبهذا يكتمل البرهان. ![$ \qedsymbol$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3324.png.webp)
+أمّا إذا استدعينا $ \mathtt{rebuild(u)}$ أثناء حذف، فإنّ ذلك لأنّ $ \ensuremath{\mathtt{q}} > 2\ensuremath{\mathtt{n}}$ . في هذه الحالة لدينا $ \ensuremath{\mathtt{q}}-\ensuremath{\mathtt{n}}> \ensuremath{\mathtt{n}}$ من الأرصدة المخزَّنة ``مُدَّخرة إلى جانب،'' ونستخدمها لدفع الزمن $ O(\ensuremath{\mathtt{n}})$ الذي يلزم لإعادة بناء الجذر. وبهذا يكتمل البرهان. $\qedsymbol$
 
 8.1.2 الخلاصة تلخّص المبرهنة التالية أداء بنية بيانات ScapegoatTree: **المبرهنة 8..1** *تُنفِّذ ScapegoatTree واجهة SSet. وإذا أهملنا كلفة عمليات $ \mathtt{rebuild(u)}$ ، فإنّ ScapegoatTree تدعم العمليات $ \mathtt{add(x)}$ و$ \mathtt{remove(x)}$ و$ \mathtt{find(x)}$ في زمنٍ قدره $ O(\log \ensuremath{\mathtt{n}})$ لكل عملية. * *وإضافةً إلى ذلك، فإنّ البدء من ScapegoatTree فارغة يُسبّب أي تسلسلٍ من $ m$ عملية من نوعَي $ \mathtt{add(x)}$ و$ \mathtt{remove(x)}$ إنفاقًا إجماليًا قدره $ O(m\log m)$ من الزمن خلال جميع الاستدعاءات إلى $ \mathtt{rebuild(u)}$ .*
 
@@ -182,7 +204,9 @@ source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 
 مصطلح «شجرة كبش الفداء» يعود إلى Galperin وRivest [33] اللذين عرّفا هذه الأشجار وحلّلاها. غير أنّ البنية ذاتها اكتشفها في وقتٍ أسبق Andersson [5,7]، وسمّاها أشجارًا متوازنة عامّة (general balanced trees) لأنّها يمكن أن تأخذ أيّ شكل ما دام ارتفاعها صغيرًا. وستُظهر التجارب مع تنفيذ ScapegoatTree أنّه كثيرًا ما يكون أبطأ بدرجةٍ كبيرة من عمليات SSet الأخرى في هذا الكتاب. وقد يبدو هذا مثيرًا للدهشة إلى حدٍّ ما، لأنّ حدّ الارتفاع
 
-![$\displaystyle \log_{3/2}\ensuremath{\mathtt{q}} \approx 1.709\log \ensuremath{\mathtt{n}} + O(1) $](/images/open-data-structures/8_2_Discussion_Exercises-img3365.png.webp)
+$$
+\displaystyle \log_{3/2}\ensuremath{\mathtt{q}} \approx 1.709\log \ensuremath{\mathtt{n}} + O(1)
+$$
 
 أفضل من الطول المتوقَّع لمسار البحث في Skiplist وليس بعيدًا جدًّا عن نظيره في Treap. ويمكن تحسين التنفيذ إمّا بتخزين أحجام الشجرات الفرعية صراحةً عند كل عقدة، أو بإعادة استخدام أحجام الشجرات الفرعية المحسوبة سلفًا (التمرينان 8.5 و8.6). وحتى مع هذه التحسينات، ستظلّ هناك دائمًا تسلسلاتٌ من عمليات $ \mathtt{add(x)}$ و$ \mathtt{delete(x)}$ التي تستغرق فيها ScapegoatTree زمنًا أطول من عمليات SSet الأخرى.
 

@@ -18,29 +18,41 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 
 تأمّل الشجرتين الثنائيتين للبحث الظاهرتين في الشكل 7.1، ولكلٍّ منهما $ \ensuremath{\mathtt{n}}=15$ عقدة. إنّ الشجرة على اليسار هي قائمة (list)، والأخرى شجرة بحث ثنائية متوازنة تمامًا. أمّا ارتفاع الشجرة على اليسار فهو $ \ensuremath{\mathtt{n}}-1=14$، وارتفاع الشجرة على اليمين ثلاثة. **الشكل 7.1:** شجرتان ثنائيتان للبحث تحتويان على الأعداد الصحيحة $ 0,\ldots,14$ . ![\includegraphics[scale=0.90909,scale=0.95]{figs/bst-path}](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2843.png.webp) ![\includegraphics[scale=0.90909,scale=0.95]{figs/bst-balanced}](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2844.png.webp) تخيّل كيف أمكن بناء هاتين الشجرتين. فالشجرة على اليسار تنتَج إذا ما بدأنا من BinarySearchTree فارغ وأضفنا التسلسل
 
-![$\displaystyle \langle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 \rangle \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2847.png.webp)
+$$
+\displaystyle \langle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 \rangle \enspace .
+$$
 
 لا يوجد أي تسلسل إضافات آخر يولّد هذه الشجرة (ويمكنك إثبات ذلك بالاستدلال على $ \mathtt{n}$ ). وفي المقابل، يمكن توليد الشجرة على اليمين عن طريق التسلسل
 
-![$\displaystyle \langle 7,3,11,1,5,9,13,0,2,4,6,8,10,12,14 \rangle \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2849.png.webp)
+$$
+\displaystyle \langle 7,3,11,1,5,9,13,0,2,4,6,8,10,12,14 \rangle \enspace .
+$$
 
 وتسلسلات أخرى تعمل أيضًا، ومنها
 
-![$\displaystyle \langle 7,3,1,5,0,2,4,6,11,9,13,8,10,12,14 \rangle \enspace , $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2850.png.webp)
+$$
+\displaystyle \langle 7,3,1,5,0,2,4,6,11,9,13,8,10,12,14 \rangle \enspace ,
+$$
 
 و
 
-![$\displaystyle \langle 7,3,1,11,5,0,2,4,6,9,13,8,10,12,14 \rangle \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2851.png.webp)
+$$
+\displaystyle \langle 7,3,1,11,5,0,2,4,6,9,13,8,10,12,14 \rangle \enspace .
+$$
 
 وفي الواقع، هناك $ 21,964,800$ تسلسل إضافات يولّد الشجرة على اليمين، وتسلسل واحد فقط يولّد الشجرة على اليسار.
 
 يقدّم المثال السابق بعض الأدلة التجريبية على أنّه، إن اخترنا تبديلًا عشوائيًا (random permutation) لـ $ 0,\ldots,14$ وأضفناه إلى شجرة بحث ثنائية، فإنّنا أميل إلى الحصول على شجرة متوازنة جدًّا (جانب الشكل 7.1 الأيمن) أكثر من ميلنا إلى الحصول على شجرة غير متوازنة البتّة (جانب الشكل 7.1 الأيسر). ويمكننا ترسيخ هذه الفكرة بدقّة بدراسة الأشجار الثنائية للبحث العشوائية. وتُحصل شجرة البحث الثنائية العشوائية (random binary search tree) ذات الحجم $ \mathtt{n}$ بالطريقة التالية: خُذ تبديلًا عشوائيًا، $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{\ensuremath{\mathtt{n}}-1}$ ، للأعداد الصحيحة $ 0,\ldots,\ensuremath{\mathtt{n}}-1$ وأضف عناصره واحدًا تلو الآخر إلى BinarySearchTree. وبـ«التبديل العشوائي» نعني أنّ كلًّا من التبديلات (الترتيبات) الممكنة وعددها $ \ensuremath{\mathtt{n}}!$ لـ $ 0,\ldots,\ensuremath{\mathtt{n}}-1$ محتمِلة بالقدر نفسه، بحيث يكون احتمال الحصول على أيّ تبديل بعينه هو $ 1/\ensuremath{\mathtt{n}}!$ . ولاحظ أنّ القيم $ 0,\ldots,\ensuremath{\mathtt{n}}-1$ يمكن استبدالها بأي مجموعة مرتَّبة (ordered set) من $ \mathtt{n}$ عنصرًا دون أن يتغيّر أيٌّ من خصائص شجرة البحث الثنائية العشوائية. فالعنصر $ \ensuremath{\mathtt{x}}\in\{0,\ldots,\ensuremath{\mathtt{n}}-1\}$ ما هو إلا تمثيل للعنصر ذي الرتبة (rank) $ \mathtt{x}$ في مجموعة مرتَّبة ذات حجم $ \mathtt{n}$ . وقبل أن نعرض نتيجتنا الرئيسة عن الأشجار الثنائية للبحث العشوائية، لا بدّ من أن نتوقّف قليلًا عند استطراد قصير نتناول فيه نوعًا من الأعداد يتكرّر كثيرًا عند دراسة البنى العشوائية. فبالنسبة إلى عدد صحيح غير سالب، $ k$، يُعرَّف العدد التوافقي (harmonic number) رقم $ k$، ويُرمَز إليه بـ $ H_k$، بالتعريف
 
-![$\displaystyle H_k = 1 + 1/2 + 1/3 + \cdots + 1/k \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2869.png.webp)
+$$
+\displaystyle H_k = 1 + 1/2 + 1/3 + \cdots + 1/k \enspace .
+$$
 
 وليس للعدد التوافقي $ H_k$ صيغة مغلقة بسيطة، لكنه يرتبط ارتباطًا وثيقًا جدًّا باللوغاريتم الطبيعي (natural logarithm) لـ $ k$ . وبخاصة،
 
-![$\displaystyle \ln k < H_k \le \ln k + 1 \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2872.png.webp)
+$$
+\displaystyle \ln k < H_k \le \ln k + 1 \enspace .
+$$
 
 ولعلّ من درس التفاضل والتكامل أن يلاحظ أنّ السبب في ذلك هو التكامل $ \int_1^k\! (1/x)\, \mathrm{d}x= \ln k$ . وإذا تذكّرنا أنّ التكامل يمكن تفسيره كمساحة محصورة بين منحنى ومحور $ x$ ، أمكننا وضع حدٍّ أدنى (lower bound) لقيمة $ H_k$ يساوي التكامل $ \int_1^k\! (1/x)\, \mathrm{d}x$، وحدٍّ أعلى (upper bound) يساوي $ 1+ \int_1^k\! (1/x)\, \mathrm{d}x$ . (راجع الشكل 7.2 لشرحٍ بياني.)
 
@@ -48,13 +60,21 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 
 سنبرهن على الملمة 7.1 في القسم التالي. أمّا الآن، فلننظر فيما تخبرنا به الجزأان من الملمة 7.1. فأمّا الجزء الأول فيخبرنا أنّه إذا بحثنا عن عنصر في شجرة ذات حجم $ \mathtt{n}$ ، فإنّ الطول المتوقَّع لمسار البحث يساوي على الأكثر $ 2\ln n + O(1)$ . وأمّا الجزء الثاني فيخبرنا بالأمر نفسه عند البحث عن قيمة غير مخزَّنة في الشجرة. وعندما نقارن بين جزأَي الملمة، نرى أنّ البحث عن شيءٍ موجود في الشجرة أسرع قليلًا فقط ممّا هو عليه البحث عن شيءٍ ليس فيها. 7.1.1 برهان الملمة 7.1 الملاحظة المفتاحية اللازمة لبرهان الملمة 7.1 هي التالية: يحتوي مسار البحث عن قيمة $ \mathtt{x}$ تقع في الفترة المفتوحة $ (-1,\ensuremath{\mathtt{n}})$ في شجرة بحث ثنائية عشوائية، $ T$ ، على العقدة ذات المفتاح $ i < \ensuremath{\mathtt{x}}$ إذا وفقط إذا، في التبديل العشوائي المستخدَم لإنشاء $ T$، كان $ i$ يظهر قبل أيٍّ من $ \{i+1,i+2,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$ . ولمعرفة ذلك، راجع الشكل 7.3 ولاحظ أنّه إلى أن تُضاف قيمة ما في $ \{i,i+1,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$، تكون مسارات البحث عن كل قيمة في الفترة المفتوحة $ (i-1,\lfloor\ensuremath{\mathtt{x}}\rfloor+1)$ متطابقة. (وتذكّر أنّه كي تختلف مسارات البحث عن قيمتين، لا بدّ من وجود عنصر في الشجرة يُقارَن بهما على نحو مختلف.) وليكن $ j$ أول عنصر في $ \{i,i+1,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$ يظهر في التبديل العشوائي. لاحظ أنّ $ j$ أصبح الآن، وسيظلّ دائمًا، على مسار البحث عن $ \mathtt{x}$ . فإن كان $ j\neq i$ فإنّ العقدة $ \ensuremath{\mathtt{u}}_j$ التي تحوي $ j$ تُنشأ قبل العقدة $ \ensuremath{\mathtt{u}}_i$ التي تحوي $ i$ . وفي وقتٍ لاحق، عند إضافة $ i$ ، ستُضاف إلى الشجرة الفرعية (subtree) التي جذورها هو $ \ensuremath{\mathtt{u}}_j\ensuremath{\mathtt{.left}}$ ، لأنّ $ i<j$ . ومن جهة أخرى، لن يزور مسار البحث عن $ \mathtt{x}$ هذه الشجرة الفرعية أبدًا، لأنّه سينتقل إلى $ \ensuremath{\mathtt{u}}_j\ensuremath{\mathtt{.right}}$ بعد زيارة $ \ensuremath{\mathtt{u}}_j$ . **الشكل 7.3:** القيمة $ i<\ensuremath{\mathtt{x}}$ تكون على مسار البحث عن $ \mathtt{x}$ إذا وفقط إذا كانت $ i$ أول عنصر ضمن $ \{i,i+1,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$ يُضاف إلى الشجرة. ![% latex2html id marker 54970 \includegraphics[width=\textwidth ]{figs/rbst-records}](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2923.png.webp) وبالمثل، فإنّ $ i>\ensuremath{\mathtt{x}}$ تُدرَج $ i$ في مسار البحث عن $ \mathtt{x}$ إذا وفقط إذا ظهرت $ i$ قبل أيٍّ من $ \{\lceil\ensuremath{\mathtt{x}}\rceil, \lceil\ensuremath{\mathtt{x}}\rceil+1,\ldots,i-1\}$ في التبديل العشوائي المستخدَم لإنشاء $ T$ . ولاحظ أنّه إذا بدأنا بتبديل عشوائي لـ $ \{0,\ldots,\ensuremath{\mathtt{n}}\}$ ، فإنّ المتتاليات الجزئية التي لا تحتوي سوى $ \{i,i+1,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$ و $ \{\lceil\ensuremath{\mathtt{x}}\rceil, \lceil\ensuremath{\mathtt{x}}\rceil+1,\ldots,i-1\}$ هي أيضًا تبديلات عشوائية لعناصرها على التوالي. وعليه، فإنّ كل عنصر ضمن المجموعتين $ \{i,i+1,\ldots,\lfloor\ensuremath{\mathtt{x}}\rfloor\}$ و $ \{\lceil\ensuremath{\mathtt{x}}\rceil, \lceil\ensuremath{\mathtt{x}}\rceil+1,\ldots,i-1\}$ محتمَل بالقدر نفسه أن يسبق أيّ عنصر آخر في مجموعته ضمن التبديل العشوائي المستخدَم لإنشاء $ T$ . ومن ثمّ لدينا
 
-![$\displaystyle \Pr\{$](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2940.png.webp) ![$\displaystyle \mbox{$i$\ is on the search path for \ensuremath{\mathtt{x}}}$](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2941.png.webp) ![$\displaystyle \} = \left\{ \begin{array}{ll} 1/(\lfloor\ensuremath{\mathtt{x}... ...+1) & \mbox{if $i > \ensuremath{\mathtt{x}}$} \end{array}\right . \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2942.png.webp)
+$$
+\displaystyle \Pr\{
+$$
+
+![$\displaystyle \mbox{$i$\ is on the search path for \ensuremath{\mathtt{x}}}$](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2941.png.webp)
+
+![$\displaystyle \} = \left\{ \begin{array}{ll} 1/(\lfloor\ensuremath{\mathtt{x}... ...+1) & \mbox{if $i > \ensuremath{\mathtt{x}}$} \end{array}\right . \enspace . $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2942.png.webp)
 
 وبهذه الملاحظة، ينطوي برهان الملمة 7.1 على بعض الحسابات البسيطة بالأعداد التوافقية:
 
 *البرهان*. [برهان الملمة 7.1] وليكن $ I_i$ متغيّرًا عشوائيًا إشاريًا (indicator random variable) يساوي واحدًا عندما يظهر $ i$ على مسار البحث عن $ \mathtt{x}$، وصفرًا في غير ذلك. وعندئذٍ يكون طول مسار البحث معطىً بـ
 
-![$\displaystyle \sum_{i\in\{0,\ldots,\ensuremath{\mathtt{n}}-1\}\setminus\{\ensuremath{\mathtt{x}}\}} I_i $](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2947.png.webp)
+$$
+\displaystyle \sum_{i\in\{0,\ldots,\ensuremath{\mathtt{n}}-1\}\setminus\{\ensuremath{\mathtt{x}}\}} I_i
+$$
 
 فإذا كان $ \ensuremath{\mathtt{x}}\in\{0,\ldots,\ensuremath{\mathtt{n}}-1\}$ ، كان الطول المتوقَّع لمسار البحث معطىً بـ (راجع الشكل 7.4.a)
 
@@ -66,7 +86,7 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 |  | $\displaystyle \quad {} + \frac{1}{2}+\frac{1}{3}+\cdots+\frac{1}{\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{x}}}$ |  |
 |  | $\displaystyle = H_{\ensuremath{\mathtt{x}}+1} + H_{\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{x}}} - 2 \enspace .$ |  |
 
-والحسابات المقابلة لقيمة بحث $ \ensuremath{\mathtt{x}}\in(-1,n)\setminus\{0,\ldots,\ensuremath{\mathtt{n}}-1\}$ تكاد تكون مطابقة (راجع الشكل 7.4.b). ![$ \qedsymbol$](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2943.png.webp)
+والحسابات المقابلة لقيمة بحث $ \ensuremath{\mathtt{x}}\in(-1,n)\setminus\{0,\ldots,\ensuremath{\mathtt{n}}-1\}$ تكاد تكون مطابقة (راجع الشكل 7.4.b). $\qedsymbol$
 
 **الشكل 7.4:** احتمالات وجود عنصر على مسار البحث عن $ \mathtt{x}$ عندما (a) يكون $ \mathtt{x}$ عددًا صحيحًا، و(b) عندما لا يكون $ \mathtt{x}$ عددًا صحيحًا. ![\includegraphics[width=\textwidth ]{figs/rbst-probs-a}](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2957.png.webp) (a) ![\includegraphics[width=\textwidth ]{figs/rbst-probs-b}](/images/open-data-structures/7_1_Random_Binary_Search_Tr-img2958.png.webp) (b) 7.1.2 الخلاصة تلخّص المبرهنة التالية أداء شجرة البحث الثنائية العشوائية: **المبرهنة 7..1** *يمكن إنشاء شجرة بحث ثنائية عشوائية في زمن $ O(\ensuremath{\mathtt{n}}\log \ensuremath{\mathtt{n}})$ . وفي شجرة البحث الثنائية العشوائية، تستغرق العملية $ \mathtt{find(x)}$ زمنًا متوقَّعًا قدره $ O(\log \ensuremath{\mathtt{n}})$ .*
 
@@ -98,13 +118,17 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 
 **الشكل 7.5:** مثال على Treap يحوي الأعداد الصحيحة $ 0,\ldots,9$ . كل عقدة، $ \mathtt{u}$ ، موصوفة بصندوق يحتوي $ \ensuremath{\mathtt{u.x}},\ensuremath{\mathtt{u.p}}$ . ![\includegraphics[width=\textwidth ]{figs/treap}](/images/open-data-structures/7_2_Treap_Randomized_Binary-img2973.png.webp) ويضمن شرطا الكومة وشجرة البحث الثنائية معًا أنّه، بمجرّد تعريف المفتاح ( $ \mathtt{x}$ ) والأولوية ( $ \mathtt{p}$ ) لكل عقدة، يتحدّد شكل الـTreap تمامًا. فخاصية الكومة تخبرنا بأنّ العقدة ذات الأولوية الدنيا لا بدّ أن تكون الجذر، $ \mathtt{r}$ ، للـTreap. أمّا خاصية شجرة البحث الثنائية فتخبرنا بأنّ جميع العقد ذات المفاتيح الأصغر من $ \mathtt{r.x}$ تُخزَّن في الشجرة الفرعية التي جذورها $ \mathtt{r.left}$ ، وأنّ جميع العقد ذات المفاتيح الأكبر من $ \mathtt{r.x}$ تُخزَّن في الشجرة الفرعية التي جذورها $ \mathtt{r.right}$ . والنقطة المهمّة في قيم الأولوية داخل الـTreap هي أنّها فريدة وتُسنَد عشوائيًا. ولهذا فإنّ هناك طريقتين متكافئتين يمكننا التفكير في الـTreap بهما. فكما هو معرَّف أعلاه، يلتزم الـTreap بخاصيتي الكومة وشجرة البحث الثنائية. وعلى نحو بديل، يمكننا النظر إلى الـTreap على أنّه BinarySearchTree أُضيفت عقدُه بترتيب أولويّاتها المتزايد. فمثلًا، يمكن الحصول على الـTreap في الشكل 7.5 بإضافة تسلسل قيم $ (\ensuremath{\mathtt{x}},\ensuremath{\mathtt{p}})$ 
 
-![$\displaystyle \langle (3,1), (1,6), (0,9), (5,11), (4,14), (9,17), (7,22), (6,42), (8,49), (2,99) \rangle $](/images/open-data-structures/7_2_Treap_Randomized_Binary-img2985.png.webp)
+$$
+\displaystyle \langle (3,1), (1,6), (0,9), (5,11), (4,14), (9,17), (7,22), (6,42), (8,49), (2,99) \rangle
+$$
 
 إلى BinarySearchTree.
 
 ولأنّ الأولويات تُختار عشوائيًا، فإنّ هذا يعادل أخذ تبديل عشوائي للمفاتيح--وفي حالتنا هذه يكون التبديل هو
 
-![$\displaystyle \langle 3, 1, 0, 5, 9, 4, 7, 6, 8, 2 \rangle $](/images/open-data-structures/7_2_Treap_Randomized_Binary-img2986.png.webp)
+$$
+\displaystyle \langle 3, 1, 0, 5, 9, 4, 7, 6, 8, 2 \rangle
+$$
 
 --وإضافة هذه المفاتيح إلى BinarySearchTree. لكنّ هذا يعني أنّ شكل الـtreap مطابق لشكل شجرة البحث الثنائية العشوائية. وبخاصة، إذا استبدلنا كل مفتاح $ \mathtt{x}$ برتبته،7.3 فتنطبق الملمة 7.1. ولإعادة صياغة الملمة 7.1 بعبارات Treap، نقول:
 
@@ -224,15 +248,21 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 
 من المفيد مقارنة بنية بيانات Treap ببنية بيانات SkiplistSSet. فالاثنتان تطبّقان عمليات SSet في زمن متوقَّع قدره $ O(\log \ensuremath{\mathtt{n}})$ لكل عملية. وفي كلتا البنيتين، تتضمّن $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ عملية بحث ثمّ عددًا ثابتًا من تغييرات المؤشّرات (راجع التمرين 7.5 أدناه). ومن ثمّ فإنّ الطول المتوقَّع لمسار البحث هو القيمة الحاسمة في تقييم أداء هاتين البنيتين. وفي SkiplistSSet، يكون الطول المتوقَّع لمسار البحث هو
 
-![$\displaystyle 2\log \ensuremath{\mathtt{n}} + O(1) \enspace , $](/images/open-data-structures/7_2_Treap_Randomized_Binary-img3092.png.webp)
+$$
+\displaystyle 2\log \ensuremath{\mathtt{n}} + O(1) \enspace ,
+$$
 
 وفي Treap، يكون الطول المتوقَّع لمسار البحث هو
 
-![$\displaystyle 2\ln \ensuremath{\mathtt{n}} +O(1) \approx 1.386\log \ensuremath{\mathtt{n}} + O(1) \enspace . $](/images/open-data-structures/7_2_Treap_Randomized_Binary-img3093.png.webp)
+$$
+\displaystyle 2\ln \ensuremath{\mathtt{n}} +O(1) \approx 1.386\log \ensuremath{\mathtt{n}} + O(1) \enspace .
+$$
 
 وعليه، فإنّ مسارات البحث في الـTreap أقصر بدرجة كبيرة، وهذا ينعكس عمليًا على عمليات أسرع في Treap مقارنةً بقوائم التخطّي (skiplists). ويُبيّن التمرين 4.7 في الفصل 4 كيف يمكن تقصير الطول المتوقَّع لمسار البحث في قائمة التخطّي ليصبح
 
-![$\displaystyle e\ln \ensuremath{\mathtt{n}} + O(1) \approx 1.884\log \ensuremath{\mathtt{n}} + O(1) $](/images/open-data-structures/7_2_Treap_Randomized_Binary-img3094.png.webp)
+$$
+\displaystyle e\ln \ensuremath{\mathtt{n}} + O(1) \approx 1.884\log \ensuremath{\mathtt{n}} + O(1)
+$$
 
 باستخدام قذفات عملة مُتحيّزة (biased coin tosses). وحتى مع هذا التحسين، يبقى الطول المتوقَّع لمسارات البحث في SkiplistSSet أطول بوضوح ممّا هو عليه في Treap.
 
@@ -244,13 +274,17 @@ source: https://opendatastructures.org/ods-java/7_Random_Binary_Search_Tree.html
 
 جرت دراسة الأشجار الثنائية للبحث العشوائية على نطاق واسع. ويقدّم Devroye [19] برهانًا للملمة 7.1 ولنتائج ذات صلة. وهناك في الأدبيات نتائج أقوى بكثير، وأبرزها ما يعود إلى Reed [64]، الذي يُظهر أنّ الارتفاع المتوقَّع لشجرة بحث ثنائية عشوائية هو
 
-![$\displaystyle \alpha\ln n - \beta\ln\ln n + O(1) $](/images/open-data-structures/7_3_Discussion_Exercises-img3095.png.webp)
+$$
+\displaystyle \alpha\ln n - \beta\ln\ln n + O(1)
+$$
 
 حيث $ \alpha\approx4.31107$ هو الحلّ الوحيد على الفترة $ [2,\infty)$ للمعادلة $ \alpha\ln((2e/\alpha))=1$ ، و $ \beta=\frac{3}{2\ln(\alpha/2)}$ . وإضافةً إلى ذلك، فإنّ تباين الارتفاع ثابت.
 
 ابتكر Seidel و Aragon [67] اسم Treap، وقد ناقشا هياكل Treap وبعض تنويعاتها. غير أنّ بنيتها الأساسية دُرست قبل ذلك بوقتٍ طويل من قِبل Vuillemin [76] الذي أسماها أشجارًا كرتيسية (Cartesian trees). ومن تحسينات المساحة الممكنة لبنية بيانات Treap أن نُغني عن التخزين الصريح للأولوية $ \mathtt{p}$ في كل عقدة. وبدلًا من ذلك، تُحسب أولوية العقدة، $ \mathtt{u}$ ، عبر تجزئة (hashing) عنوان $ \mathtt{u}$ في الذاكرة (وفي Java ذات 32 بت، فإنّ ذلك يعادل تجزئة $ \mathtt{u.hashCode()}$ ). ورغم أنّ عددًا من دوال التجزئة (hash functions) قد تعمل جيدًا لهذا الغرض في الممارسة العملية، إلا أنّه كي تظلّ الأجزاء المهمّة من برهان الملمة 7.1 صحيحة، ينبغي أن تكون دالة التجزئة عشوائية وأن توفّر خاصية الاستقلال التصغيريّ (min-wise independent): فبالنسبة إلى أي قيم متمايزة $ x_1,\ldots,x_k$ ، ينبغي أن تكون قيم التجزئة $ h(x_1),\ldots,h(x_k)$ كلها متمايزة باحتمالٍ عالٍ، وأن من أجل كل $ i\in\{1,\ldots,k\}$ ،
 
-![$\displaystyle \Pr\{h(x_i) = \min\{h(x_1),\ldots,h(x_k)\}\} \le c/k $](/images/open-data-structures/7_3_Discussion_Exercises-img3107.png.webp)
+$$
+\displaystyle \Pr\{h(x_i) = \min\{h(x_1),\ldots,h(x_k)\}\} \le c/k
+$$
 
 حيث $ c$ ثابت ما. ومن أصناف دوال التجزئة التي يسهل تنفيذها وسريعة نسبيًا: تجزئة الجدولة (tabulation hashing) (القسم 5.2.3).
 

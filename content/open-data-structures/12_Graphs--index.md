@@ -275,7 +275,9 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 **الشكل 12.7:** مثالٌ على رسمٍ بياني. ![\includegraphics[scale=0.90909]{figs/graph-example2}](/images/open-data-structures/12_4_Discussion_Exercises-img4780.png.webp) **التمرين 12..2** تمثيل مصفوفة الورودية (incidence matrix) لرسمٍ بياني، $ G$، هو مصفوفة أبعادها $ \ensuremath{\mathtt{n}}\times\ensuremath{\mathtt{m}}$، $ A$، حيث
 
-![$\displaystyle A_{i,j} = \begin{cases} -1 & \text{if vertex $i$\ the source of ... ...if vertex $i$\ the target of edge $j$} \\ 0 & \text{otherwise.} \end{cases} $](/images/open-data-structures/12_4_Discussion_Exercises-img4784.png.webp)
+$$
+\displaystyle A_{i,j} = \begin{cases} -1 & \text{if vertex $i$\ the source of ... ...if vertex $i$\ the target of edge $j$} \\ 0 & \text{otherwise.} \end{cases}
+$$
 
 1. ارسم تمثيل مصفوفة الورودية للرسم البياني في الشكل 12.7.
 2. صمّم وحلّل ونفّذ تمثيلًا بمصفوفة الورودية لرسمٍ بياني. واحرص على تحليل المساحة، وتكلفة $ \mathtt{addEdge(i,j)}$ و $ \mathtt{removeEdge(i,j)}$ و $ \mathtt{hasEdge(i,j)}$ و $ \mathtt{inEdges(i)}$ و $ \mathtt{outEdges(i)}$ .

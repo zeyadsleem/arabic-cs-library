@@ -105,15 +105,21 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 *البرهان*. سنبيِّن أنَّه في كل مرة يُستدعى فيها $ \mathtt{resize()}$ يكون عدد الاستدعاءات لـ $ \mathtt{add}$ أو $ \mathtt{remove}$ منذ آخر استدعاء لـ $ \mathtt{resize()}$ لا يقل عن $ \ensuremath{\mathtt{n}}/2-1$ . وعليه، إذا كانت $ \ensuremath{\mathtt{n}}_i$ تدل على قيمة $ \mathtt{n}$ أثناء الاستدعاء رقم $ i$ لـ $ \mathtt{resize()}$ ، و $ r$ تدل على عدد استدعاءات $ \mathtt{resize()}$ ، فإنَّ العدد الكلي للاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ يكون لا يقل عن
 
-![$\displaystyle \sum_{i=1}^{r} (\ensuremath{\mathtt{n}}_i/2-1) \le m \enspace , $](/images/open-data-structures/2_1_ArrayStack_Fast_Stack_O-img537.png.webp)
+$$
+\displaystyle \sum_{i=1}^{r} (\ensuremath{\mathtt{n}}_i/2-1) \le m \enspace ,
+$$
 
 وهو ما يُعادل
 
-![$\displaystyle \sum_{i=1}^{r} \ensuremath{\mathtt{n}}_i \le 2m + 2r \enspace . $](/images/open-data-structures/2_1_ArrayStack_Fast_Stack_O-img538.png.webp)
+$$
+\displaystyle \sum_{i=1}^{r} \ensuremath{\mathtt{n}}_i \le 2m + 2r \enspace .
+$$
 
 ومن جهة أخرى، فإنَّ الزمن الكلي المستغرق في جميع استدعاءات $ \mathtt{resize()}$ هو
 
-![$\displaystyle \sum_{i=1}^{r} O(\ensuremath{\mathtt{n}}_i) \le O(m+r) = O(m) \enspace , $](/images/open-data-structures/2_1_ArrayStack_Fast_Stack_O-img540.png.webp)
+$$
+\displaystyle \sum_{i=1}^{r} O(\ensuremath{\mathtt{n}}_i) \le O(m+r) = O(m) \enspace ,
+$$
 
 إذ $ r$ لا يزيد عن $ m$ . ولم يتبقَّ سوى أن نبيِّن أنَّ عدد الاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ بين الاستدعاء رقم $ (i-1)$ والاستدعاء رقم $ i$ لـ $ \mathtt{resize()}$ لا يقل عن $ \ensuremath{\mathtt{n}}_i/2$ .
 
@@ -125,7 +131,7 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 |  | $\displaystyle = (\ensuremath{\mathtt{a.length}}/3)/2 - 1$ |  |
 |  | $\displaystyle \ge \ensuremath{\mathtt{n}}_i/2 -1\enspace .$ |  |
 
-في كلتا الحالتين، يكون عدد الاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ التي تقع بين الاستدعاء رقم $ (i-1)$ لـ $ \mathtt{resize()}$ والاستدعاء رقم $ i$ لـ $ \mathtt{resize()}$ لا يقل عن $ \ensuremath{\mathtt{n}}_i/2-1$ ، كما هو مطلوب لإتمام البرهان. ![$ \qedsymbol$](/images/open-data-structures/2_1_ArrayStack_Fast_Stack_O-img523.png.webp)
+في كلتا الحالتين، يكون عدد الاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ التي تقع بين الاستدعاء رقم $ (i-1)$ لـ $ \mathtt{resize()}$ والاستدعاء رقم $ i$ لـ $ \mathtt{resize()}$ لا يقل عن $ \ensuremath{\mathtt{n}}_i/2-1$ ، كما هو مطلوب لإتمام البرهان. $\qedsymbol$
 
 2.1.3 الملخَّص تلخِّص المبرهنة التالية أداء ArrayStack: **المبرهنة 2..1** *يطبِّق ArrayStack واجهة القائمة (List). ومع تجاهل تكلفة الاستدعاءات لـ $ \mathtt{resize()}$ ، يدعم ArrayStack العمليتين * $ \mathtt{get(i)}$ و$ \mathtt{set(i,x)}$ في $ O(1)$ لكل عملية؛ وعمليتَي $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ في $ O(1+\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}})$ لكل عملية. * وعلاوة على ذلك، فإنَّ البدء من ArrayStack فارغ وتنفيذ أي تسلسل من $ m$ عملية من $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ ينتج عن ذلك كليًا $ O(m)$ من الزمن المستغرق في جميع استدعاءات $ \mathtt{resize()}$ .*
 
@@ -172,17 +178,23 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 في هذا القسم، نقدِّم بنية بيانات ArrayQueue التي تنفِّذ طابورًا من نوع FIFO (أول داخل أول خارج)؛ إذ تُزال العناصر من الطابور (باستخدام عملية $ \mathtt{remove()}$ ) بالترتيب نفسه الذي أُضيفت به (باستخدام عملية $ \mathtt{add(x)}$ ). ولاحظ أنَّ ArrayStack خيارٌ سيئ لتنفيذ طابور FIFO. فهو ليس خيارًا جيدًا لأننا سنضطر إلى اختيار أحد طرفي القائمة لإضافة العناصر ثم إزالة العناصر من الطرف الآخر. ويجب أن تعمل إحدى العمليتين على رأس القائمة، ما يستلزم استدعاء $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ بقيمة $ \ensuremath{\mathtt{i}}=0$ . وهذا يعطي زمن تنفيذ يتناسب مع $ \mathtt{n}$ . ولتحقيق تنفيذ فعَّال للطابور قائم على مصفوفة، نلاحظ أولًا أنَّ المشكلة ستكون سهلة لو كانت لدينا مصفوفة لا نهائية $ \mathtt{a}$ . يمكننا أن نحتفظ بفهرس $ \mathtt{j}$ واحد يتتبَّع العنصر التالي الذي ستُزال قيمته، وبعدد صحيح $ \mathtt{n}$ يعدّ عناصر الطابور. وستُخزَّن عناصر الطابور دائمًا في
 
-![$\displaystyle \ensuremath{\mathtt{a[j]}},\ensuremath{\mathtt{a[j+1]}},\ldots,\ensuremath{\mathtt{a[j+n-1]}} \enspace . $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img627.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{a[j]}},\ensuremath{\mathtt{a[j+1]}},\ldots,\ensuremath{\mathtt{a[j+n-1]}} \enspace .
+$$
 
 في البداية، تُضبَط كلٌّ من $ \mathtt{j}$ و$ \mathtt{n}$ على 0. ولإضافة عنصر، نضعه في $ \mathtt{a[j+n]}$ ونزِيد $ \mathtt{n}$ . ولإزالة عنصر، نزيله من $ \mathtt{a[j]}$ ، ونزِيد $ \mathtt{j}$ ، وننقص $ \mathtt{n}$ .
 
 بالطبع، تكمن مشكلة هذا الحل في أنه يحتاج مصفوفة لا نهائية. يحاكي ArrayQueue ذلك باستخدام مصفوفة منتهية $ \mathtt{a}$ والحساب ثنائي الباقي (modular arithmetic). وهذا هو نوع الحساب المستخدم عند الحديث عن وقت اليوم. فمثلًا، الساعة 10:00 مضافًا إليها خمس ساعات تعطي 3:00. وصياغةً رسمية، نقول إنَّ
 
-![$\displaystyle 10 + 5 = 15 \equiv 3 \pmod{12} \enspace . $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img636.png.webp)
+$$
+\displaystyle 10 + 5 = 15 \equiv 3 \pmod{12} \enspace .
+$$
 
 نقرأ الجزء الأخير من هذه المعادلة على أنَّ «‏15 مُتماثلة (congruent) مع 3 modulo 12.» ويمكن أيضًا أن نتعامل مع $ \bmod$ كمعامل ثنائي، بحيث
 
-![$\displaystyle 15 \bmod 12 = 3 \enspace . $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img638.png.webp)
+$$
+\displaystyle 15 \bmod 12 = 3 \enspace .
+$$
 
 بشكل أعمَّ، لعدد صحيح $ a$ و عدد صحيح موجب $ m$ ، يكون $ a \bmod m$ هو العدد الصحيح الوحدي $ r\in\{0,\ldots,m-1\}$ الذي يحقِّق $ a = r + km$ لأجل عدد صحيح ما $ k$ . وبعبارة أقل رسمية، فإن القيمة $ r$ هي الباقي الذي نحصل عليه عند قسمة $ a$ على $ m$ . وفي كثير من لغات البرمجة، ومنها Java، يُمثَّل معامل $ \bmod$ بالرمز $ \mathtt{\text{\ttfamily\%}}$ symbol.2.2. ويكون الحساب ثنائي الباقي مفيدًا لمحاكاة مصفوفة لا نهائية، لأنَّ $ \ensuremath{\mathtt{i}}\bmod \ensuremath{\mathtt{a.length}}$ يعطي دائمًا قيمة في المجال $ 0,\ldots,\ensuremath{\mathtt{a.length-1}}$ . وباستخدام الحساب ثنائي الباقي يمكننا تخزين عناصر الطابور في مواضع المصفوفة
 
@@ -226,7 +238,9 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 إلى
 
-![$\displaystyle \ensuremath{\mathtt{b[0]}},\ensuremath{\mathtt{b[1]}},\ldots,\ensuremath{\mathtt{b[n-1]}} $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img683.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{b[0]}},\ensuremath{\mathtt{b[1]}},\ldots,\ensuremath{\mathtt{b[n-1]}}
+$$
 
 وتضبط $ \ensuremath{\mathtt{j}}=0$ .
 
@@ -432,15 +446,19 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 سنجري تحليلنا باستخدام تقنية تُعرف باسم طريقة الجهد (potential method). نعرِّف جهد DualArrayDeque، $ \Phi$ ، بأنه الفرق في الحجم بين $ \mathtt{front}$ و$ \mathtt{back}$ :
 
-![$\displaystyle \Phi = \vert\ensuremath{\mathtt{front.size()}} - \ensuremath{\mathtt{back.size()}}\vert \enspace . $](/images/open-data-structures/2_5_DualArrayDeque_Building-img834.png.webp)
+$$
+\displaystyle \Phi = \vert\ensuremath{\mathtt{front.size()}} - \ensuremath{\mathtt{back.size()}}\vert \enspace .
+$$
 
 والأمر اللافت للنظر في هذا الجهد أنَّ استدعاء $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ الذي لا يقوم بأي موازنة يمكن أن يزيد الجهد بما لا يزيد عن 1.
 
 ولاحظ أنَّه مباشرة بعد استدعاء $ \mathtt{balance()}$ الذي يزيح العناصر، يكون الجهد $ \Phi_0$ لا يزيد عن 1، لأنَّ
 
-![$\displaystyle \Phi_0 = \left\vert\lfloor\ensuremath{\mathtt{n}}/2\rfloor-\lceil\ensuremath{\mathtt{n}}/2\rceil\right\vert\le 1 \enspace .$](/images/open-data-structures/2_5_DualArrayDeque_Building-img839.png.webp)
+$$
+\displaystyle \Phi_0 = \left\vert\lfloor\ensuremath{\mathtt{n}}/2\rfloor-\lceil\ensuremath{\mathtt{n}}/2\rceil\right\vert\le 1 \enspace .
+$$
 
-تخيَّل الحالة السابقة مباشرة لاستدعاء $ \mathtt{balance()}$ الذي يزيح العناصر، وافترض دون خسارة في العمومية أنَّ $ \mathtt{balance()}$ يزيح العناصر لأنَّ $ 3\ensuremath{\mathtt{front.size()}} < \ensuremath{\mathtt{back.size()}}$ . ولاحظ أنَّه في هذه الحالة، ![$\displaystyle \ensuremath{\mathtt{n}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img843.png.webp) ![$\displaystyle =$](/images/open-data-structures/2_5_DualArrayDeque_Building-img844.png.webp) ![$\displaystyle \ensuremath{\mathtt{front.size()}}+\ensuremath{\mathtt{back.size()}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img845.png.webp) ![$\displaystyle <$](/images/open-data-structures/2_5_DualArrayDeque_Building-img846.png.webp) ![$\displaystyle \ensuremath{\mathtt{back.size()}}/3+\ensuremath{\mathtt{back.size()}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img847.png.webp) ![$\displaystyle =$](/images/open-data-structures/2_5_DualArrayDeque_Building-img848.png.webp) ![$\displaystyle \frac{4}{3}\ensuremath{\mathtt{back.size()}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img849.png.webp) وعلاوة على ذلك، فإنَّ الجهد في هذه اللحظة يساوي ![$\displaystyle \Phi_1$](/images/open-data-structures/2_5_DualArrayDeque_Building-img850.png.webp) ![$\displaystyle =$](/images/open-data-structures/2_5_DualArrayDeque_Building-img851.png.webp) ![$\displaystyle \ensuremath{\mathtt{back.size()}} - \ensuremath{\mathtt{front.size()}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img852.png.webp) ![$\displaystyle >$](/images/open-data-structures/2_5_DualArrayDeque_Building-img853.png.webp) ![$\displaystyle \ensuremath{\mathtt{back.size()}} - \ensuremath{\mathtt{back.size()}}/3$](/images/open-data-structures/2_5_DualArrayDeque_Building-img854.png.webp) ![$\displaystyle =$](/images/open-data-structures/2_5_DualArrayDeque_Building-img855.png.webp) ![$\displaystyle \frac{2}{3}\ensuremath{\mathtt{back.size()}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img856.png.webp) ![$\displaystyle >$](/images/open-data-structures/2_5_DualArrayDeque_Building-img857.png.webp) ![$\displaystyle \frac{2}{3}\times\frac{3}{4}\ensuremath{\mathtt{n}}$](/images/open-data-structures/2_5_DualArrayDeque_Building-img858.png.webp) ![$\displaystyle =$](/images/open-data-structures/2_5_DualArrayDeque_Building-img859.png.webp) ![$\displaystyle \ensuremath{\mathtt{n}}/2$](/images/open-data-structures/2_5_DualArrayDeque_Building-img860.png.webp) وعليه، فإنَّ عدد الاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ منذ آخر مرة أزاحت فيها $ \mathtt{balance()}$ العناصر لا يقل عن $ \Phi_1-\Phi_0 > \ensuremath{\mathtt{n}}/2-1$ . وهذا يُتمِّ البرهان. ![$ \qedsymbol$](/images/open-data-structures/2_5_DualArrayDeque_Building-img823.png.webp)
+تخيَّل الحالة السابقة مباشرة لاستدعاء $ \mathtt{balance()}$ الذي يزيح العناصر، وافترض دون خسارة في العمومية أنَّ $ \mathtt{balance()}$ يزيح العناصر لأنَّ $ 3\ensuremath{\mathtt{front.size()}} < \ensuremath{\mathtt{back.size()}}$ . ولاحظ أنَّه في هذه الحالة، $\displaystyle \ensuremath{\mathtt{n}}$ $\displaystyle =$ $\displaystyle \ensuremath{\mathtt{front.size()}}+\ensuremath{\mathtt{back.size()}}$ $\displaystyle <$ $\displaystyle \ensuremath{\mathtt{back.size()}}/3+\ensuremath{\mathtt{back.size()}}$ $\displaystyle =$ $\displaystyle \frac{4}{3}\ensuremath{\mathtt{back.size()}}$ وعلاوة على ذلك، فإنَّ الجهد في هذه اللحظة يساوي $\displaystyle \Phi_1$ $\displaystyle =$ $\displaystyle \ensuremath{\mathtt{back.size()}} - \ensuremath{\mathtt{front.size()}}$ $\displaystyle >$ $\displaystyle \ensuremath{\mathtt{back.size()}} - \ensuremath{\mathtt{back.size()}}/3$ $\displaystyle =$ $\displaystyle \frac{2}{3}\ensuremath{\mathtt{back.size()}}$ $\displaystyle >$ $\displaystyle \frac{2}{3}\times\frac{3}{4}\ensuremath{\mathtt{n}}$ $\displaystyle =$ $\displaystyle \ensuremath{\mathtt{n}}/2$ وعليه، فإنَّ عدد الاستدعاءات لـ $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$ منذ آخر مرة أزاحت فيها $ \mathtt{balance()}$ العناصر لا يقل عن $ \Phi_1-\Phi_0 > \ensuremath{\mathtt{n}}/2-1$ . وهذا يُتمِّ البرهان. $\qedsymbol$
 
 2.5.2 الملخَّص تلخِّص المبرهنة التالية خصائص DualArrayDeque: **المبرهنة 2..4** *يطبِّق DualArrayDeque واجهة القائمة (List). ومع تجاهل تكلفة الاستدعاءات لـ $ \mathtt{resize()}$ و$ \mathtt{balance()}$ ، يدعم DualArrayDeque العمليتين * $ \mathtt{get(i)}$ و$ \mathtt{set(i,x)}$ في $ O(1)$ لكل عملية؛ وعمليتَي $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ في $ O(1+\min\{\ensuremath{\mathtt{i}},\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}}\})$ لكل عملية. * وعلاوة على ذلك، فإنَّ البدء من DualArrayDeque فارغ وتنفيذ أي تسلسل من $ m$ عملية من $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ ينتج عن ذلك كليًا $ O(m)$ من الزمن المستغرق في جميع استدعاءات $ \mathtt{resize()}$ و$ \mathtt{balance()}$ .*
 
@@ -454,7 +472,9 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 أحد عيوب جميع بنى البيانات السابقة في هذا الفصل أنَّها، لأنها تخزِّن بياناتها في مصفوفة أو مصفوفتين وتتجنَّب تغيير حجم هاتين المصفوفتين كثيرًا، تكون المصفوفات بكثرة غير ممتلئة إلى حدٍّ كبير. فمثلًا، مباشرة بعد عملية $ \mathtt{resize()}$ على ArrayStack، تكون المصفوفة الخلفية $ \mathtt{a}$ ممتلئة بمقدار النصف فقط. والأمر أسوأ، إذ توجد أوقات لا يحمل فيها سوى ثلث $ \mathtt{a}$ بيانات. وفي هذا القسم، نناقش بنية بيانات RootishArrayStack التي تعالج مشكلة المساحة المهدورة. يخزِّن RootishArrayStack عدد $ \mathtt{n}$ من العناصر باستخدام $ O(\sqrt{\ensuremath{\mathtt{n}}})$ مصفوفة. وفي هذه المصفوفات، لا يوجد سوى $ O(\sqrt{\ensuremath{\mathtt{n}}})$ موضع كحدٍّ أقصى غير مستخدَم في أي لحظة. وتُستخدم جميع المواضع المتبقية لتخزين البيانات. وعليه، فإنَّ هذه البنى تهدر $ O(\sqrt{\ensuremath{\mathtt{n}}})$ من المساحة كحدٍّ أقصى عند تخزين $ \mathtt{n}$ عنصرًا. ويخزِّن RootishArrayStack عناصره في قائمة من $ \mathtt{r}$ مصفوفة تُدعى كتلًا (blocks) وتُرقَّم $ 0,1,\ldots,\ensuremath{\mathtt{r}}-1$ . انظر الشكل 2.5. تحتوي الكتلة $ b$ على $ b+1$ عنصرًا. وعليه، فإنَّ الكتل $ \mathtt{r}$ كلها تحتوي إجمالًا على
 
-![$\displaystyle 1+ 2+ 3+\cdots +\ensuremath{\mathtt{r}} = \ensuremath{\mathtt{r}}(\ensuremath{\mathtt{r}}+1)/2 $](/images/open-data-structures/2_6_RootishArrayStack_Space-img892.png.webp)
+$$
+\displaystyle 1+ 2+ 3+\cdots +\ensuremath{\mathtt{r}} = \ensuremath{\mathtt{r}}(\ensuremath{\mathtt{r}}+1)/2
+$$
 
 عنصرًا. ويمكن اشتقاق الصيغة أعلاه على النحو المبيَّن في الشكل 2.6.
 
@@ -465,19 +485,27 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 **الشكل 2.6:** عدد المربعات البيضاء يساوي $ 1+2+3+\cdots+\ensuremath{\mathtt{r}}$ . وعدد المربعات المظلَّلة هو نفسه. ويشكِّل المربعات البيضاء والمظلَّلة معًا مستطيلًا يتكوَّن من $ \ensuremath{\mathtt{r}}(\ensuremath{\mathtt{r}}+1)$ مربعًا. ![\includegraphics[scale=0.90909]{figs/gauss}](/images/open-data-structures/2_6_RootishArrayStack_Space-img896.png.webp) وكما قد نتوقَّع، تُرتَّب عناصر القائمة بالترتيب داخل الكتل. فعنصر القائمة ذو الفهرس 0 مُخزَّن في الكتلة 0، وعناصر القائمة ذات الفهارس 1 و2 مُخزَّنة في الكتلة 1، وعناصر القائمة ذات الفهارس 3 و4 و5 مُخزَّنة في الكتلة 2، وهكذا. المشكلة الرئيسية التي علينا معالجتها هي، عند معرفة الفهرس $ \ensuremath{\mathtt{i}}$ ، تحديد الكتلة التي تحتوي $ \mathtt{i}$ وكذلك الفهرس المقابل لـ $ \mathtt{i}$ داخل تلك الكتلة. ويتبيَّن أنَّ تحديد فهرس $ \mathtt{i}$ داخل كتلته أمرٌ سهل. فإذا كان الفهرس $ \mathtt{i}$ في الكتلة $ \mathtt{b}$ ، فإنَّ عدد العناصر في الكتل $ 0,\ldots,\ensuremath{\mathtt{b}}-1$ هو $ \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2$ . وعليه، فإنَّ $ \mathtt{i}$ مُخزَّن في الموضع
 
-![$\displaystyle \ensuremath{\mathtt{j}} = \ensuremath{\mathtt{i}} - \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2 $](/images/open-data-structures/2_6_RootishArrayStack_Space-img910.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{j}} = \ensuremath{\mathtt{i}} - \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2
+$$
 
 داخل الكتلة $ \mathtt{b}$ . والإطار تحديبي هو تحديد قيمة $ \mathtt{b}$ . فعدد العناصر التي فهارسها أصغر من $ \mathtt{i}$ أو تساويه هو $ \ensuremath{\mathtt{i}}+1$ . ومن جهة أخرى، عدد العناصر في الكتل 0,...,b هو $ (\ensuremath{\mathtt{b}}+1)(\ensuremath{\mathtt{b}}+2)/2$ . وعليه، فإنَّ $ \mathtt{b}$ هو أصغر عدد صحيح بحيث
 
-![$\displaystyle (\ensuremath{\mathtt{b}}+1)(\ensuremath{\mathtt{b}}+2)/2 \ge \ensuremath{\mathtt{i}}+1 \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img917.png.webp)
+$$
+\displaystyle (\ensuremath{\mathtt{b}}+1)(\ensuremath{\mathtt{b}}+2)/2 \ge \ensuremath{\mathtt{i}}+1 \enspace .
+$$
 
 ويمكننا إعادة كتابة هذه المعادلة على النحو
 
-![$\displaystyle \ensuremath{\mathtt{b}}^2 + 3\ensuremath{\mathtt{b}} - 2\ensuremath{\mathtt{i}} \ge 0 \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img918.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{b}}^2 + 3\ensuremath{\mathtt{b}} - 2\ensuremath{\mathtt{i}} \ge 0 \enspace .
+$$
 
 وللمعادلة التربيعية المقابلة $ \ensuremath{\mathtt{b}}^2 + 3\ensuremath{\mathtt{b}} - 2\ensuremath{\mathtt{i}} = 0$ حلّان: $ \ensuremath{\mathtt{b}}=(-3 + \sqrt{9+8\ensuremath{\mathtt{i}}}) / 2$ و $ \ensuremath{\mathtt{b}}=(-3 - \sqrt{9+8\ensuremath{\mathtt{i}}}) / 2$ . والحلّ الثاني لا معنى له في تطبيقنا لأنَّه يعطي دائمًا قيمة سالبة. وعليه، نحصل على الحل $ \ensuremath{\mathtt{b}} = (-3 + \sqrt{9+8i}) / 2$ . وبشكل عام، فإنَّ هذا الحل ليس عددًا صحيحًا، لكن عند العودة إلى المتباينة نريد أصغر عدد صحيح $ \ensuremath{\mathtt{b}}$ بحيث $ \ensuremath{\mathtt{b}} \ge (-3 + \sqrt{9+8i}) / 2$ . وهذا ببساطة هو
 
-![$\displaystyle \ensuremath{\mathtt{b}} = \left\lceil(-3 + \sqrt{9+8i}) / 2\right\rceil \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img925.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{b}} = \left\lceil(-3 + \sqrt{9+8i}) / 2\right\rceil \enspace .
+$$
 
 ```
      int i2b(int i) {
@@ -555,11 +583,15 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 مرةً أخرى، مع تجاهل تكلفة عملية $ \mathtt{shrink()}$ ، تكون تكلفة عملية $ \mathtt{remove(i)}$ مهيمنةً عليها تكلفة الإزاحة، وعليها $ O(\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}})$ . 2.6.1 تحليل النمو والانكماش لا يأخذ التحليل أعلاه لعمليتَي $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ في الحسبان تكلفة $ \mathtt{grow()}$ و$ \mathtt{shrink()}$ . ولاحظ أنَّ عملية $ \mathtt{ArrayStack.resize()}$ لا تنسخ أي بيانات، بخلاف $ \mathtt{grow()}$ و$ \mathtt{shrink()}$ . فهما تخصِّصان أو تحرِّران مصفوفة واحدة فقط بحجم $ \mathtt{r}$ . وفي بعض البيئات يستغرق هذا وقتًا ثابتًا فقط، بينما في بيئات أخرى قد يتطلب وقتًا يتناسب مع $ \mathtt{r}$ . ونلاحظ أنَّ الحالة تكون واضحة مباشرة بعد استدعاء $ \mathtt{grow()}$ أو $ \mathtt{shrink()}$ : فالكتلة الأخيرة فارغة تمامًا، وكل الكتل الأخرى ممتلئة تمامًا. ولن يحدث استدعاء آخر لـ $ \mathtt{grow()}$ أو $ \mathtt{shrink()}$ حتى يتم إضافة أو إزالة ما لا يقل عن $ \ensuremath{\mathtt{r}}-1$ عنصر. وعليه، فحتى لو استغرق $ \mathtt{grow()}$ و$ \mathtt{shrink()}$ $ O(\ensuremath{\mathtt{r}})$ من الوقت، فإنَّ هذه التكلفة يمكن توزيعها (amortize) على ما لا يقل عن $ \ensuremath{\mathtt{r}}-1$ عملية من $ \mathtt{add(i,x)}$ أو $ \mathtt{remove(i)}$، بحيث تصبح التكلفة المُستهلكة لـ $ \mathtt{grow()}$ و$ \mathtt{shrink()}$ هي $ O(1)$ لكل عملية. 2.6.2 استهلاك المساحة نحلِّل بعد ذلك مقدار المساحة الإضافية التي يستخدمها RootishArrayStack. فعلى وجه التحديد، نريد أن نحسب أي مساحة يستخدمها RootishArrayStack وليست عنصرًا في مصفوفة مستخدَمًا حاليًا للاحتفاظ بعنصر قائمة. ونسمِّي كل هذه المساحة «المساحة المهدورة» (wasted space). وتضمن عملية $ \mathtt{remove(i)}$ ألَّا يكون لدى RootishArrayStack أكثر من كتلتين ليستا ممتلئتين تمامًا. وعليه، فإنَّ عدد الكتل $ \mathtt{r}$ المستخدَمة في RootishArrayStack الذي يخزِّن $ \mathtt{n}$ عنصرًا يحقِّق
 
-![$\displaystyle (\ensuremath{\mathtt{r}}-2)(\ensuremath{\mathtt{r}}-1) \le \ensuremath{\mathtt{n}} \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img976.png.webp)
+$$
+\displaystyle (\ensuremath{\mathtt{r}}-2)(\ensuremath{\mathtt{r}}-1) \le \ensuremath{\mathtt{n}} \enspace .
+$$
 
 ومرةً أخرى، فإنَّ تطبيق المعادلة التربيعية على ذلك يعطي
 
-![$\displaystyle \ensuremath{\mathtt{r}} \le (3+\sqrt{1+4\ensuremath{\mathtt{n}}})/2 = O(\sqrt{\ensuremath{\mathtt{n}}}) \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img977.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{r}} \le (3+\sqrt{1+4\ensuremath{\mathtt{n}}})/2 = O(\sqrt{\ensuremath{\mathtt{n}}}) \enspace .
+$$
 
 للكتلتين الأخيرتين الحجمان $ \mathtt{r}$ و $ \mathtt{r-1}$ ، لذا فإنَّ المساحة المهدورة بهاتين الكتلتين لا تتجاوز $ 2\ensuremath{\mathtt{r}}-1 = O(\sqrt{\ensuremath{\mathtt{n}}})$ . وإذا خزَّنَّا الكتل في (مثلًا) ArrayStack، فإنَّ مقدار المساحة المهدورة في القائمة (List) التي تخزِّن تلك الكتل $ \mathtt{r}$ هو أيضًا $ O(\ensuremath{\mathtt{r}})=O(\sqrt{\ensuremath{\mathtt{n}}})$ . أما المساحة الأخرى اللازمة لتخزين $ \mathtt{n}$ والمعلومات المحاسبية الأخرى فهي $ O(1)$ . وعليه، فإنَّ المقدار الكلي للمساحة المهدورة في RootishArrayStack هو $ O(\sqrt{\ensuremath{\mathtt{n}}})$ .
 
@@ -569,25 +601,35 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 *البرهان*. يكفي أن نبيِّن أنَّ
 
-![$\displaystyle \sqrt{\ensuremath{\mathtt{x}}-\sqrt{\ensuremath{\mathtt{x}}}} \ge \sqrt{\ensuremath{\mathtt{x}}}-1 \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1026.png.webp)
+$$
+\displaystyle \sqrt{\ensuremath{\mathtt{x}}-\sqrt{\ensuremath{\mathtt{x}}}} \ge \sqrt{\ensuremath{\mathtt{x}}}-1 \enspace .
+$$
 
 بربيع طرفي هذه المتباينة نحصل على
 
-![$\displaystyle \ensuremath{\mathtt{x}}-\sqrt{\ensuremath{\mathtt{x}}} \ge \ensuremath{\mathtt{x}}-2\sqrt{\ensuremath{\mathtt{x}}}+1 $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1027.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{x}}-\sqrt{\ensuremath{\mathtt{x}}} \ge \ensuremath{\mathtt{x}}-2\sqrt{\ensuremath{\mathtt{x}}}+1
+$$
 
 وجمع الحدود نحصل على
 
-![$\displaystyle \sqrt{\ensuremath{\mathtt{x}}} \ge 1 $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1028.png.webp)
+$$
+\displaystyle \sqrt{\ensuremath{\mathtt{x}}} \ge 1
+$$
 
-وهو واضح تمامًا لأي $ \ensuremath{\mathtt{x}}\ge 1$ . ![$ \qedsymbol$](/images/open-data-structures/2_6_RootishArrayStack_Space-img1025.png.webp)
+وهو واضح تمامًا لأي $ \ensuremath{\mathtt{x}}\ge 1$ . $\qedsymbol$
 
 لنبدأ بتقييد المسألة قليلًا، ونفترض أنَّ $ 2^{\ensuremath{\mathtt{r}}} \le \ensuremath{\mathtt{x}} < 2^{\ensuremath{\mathtt{r}}+1}$ ، بحيث يكون $ \lfloor\log \ensuremath{\mathtt{x}}\rfloor=\ensuremath{\mathtt{r}}$ ، أي أنَّ $ \mathtt{x}$ عدد صحيح له $ \ensuremath{\mathtt{r}}+1$ بت في تمثيله الثنائي. ويمكننا أن نأخذ $ \ensuremath{\mathtt{x'}}=\ensuremath{\mathtt{x}} - (\ensuremath{\mathtt{x}}\bmod 2^{\lfloor r/2\rfloor})$ . والآن، يستوفي $ \mathtt{x'}$ شروط المُلمَّة 2.3، لذا $ \sqrt{\ensuremath{\mathtt{x}}}-\sqrt{\ensuremath{\mathtt{x'}}} \le 1$ . وعلاوة على ذلك، فإنَّ جميع بتات $ \mathtt{x'}$ ذات الرتبة الدنيا $ \lfloor \ensuremath{\mathtt{r}}/2\rfloor$ تساوي 0، لذا لا توجد سوى
 
-![$\displaystyle 2^{\ensuremath{\mathtt{r}}+1-\lfloor \ensuremath{\mathtt{r}}/2\rfloor} \le 4\cdot2^{\ensuremath{\mathtt{r}}/2} \le 4\sqrt{\ensuremath{\mathtt{x}}} $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1039.png.webp)
+$$
+\displaystyle 2^{\ensuremath{\mathtt{r}}+1-\lfloor \ensuremath{\mathtt{r}}/2\rfloor} \le 4\cdot2^{\ensuremath{\mathtt{r}}/2} \le 4\sqrt{\ensuremath{\mathtt{x}}}
+$$
 
 قيمة ممكنة لـ $ \mathtt{x'}$ . وهذا يعني أننا يمكننا استخدام مصفوفة $ \mathtt{sqrttab}$ تخزِّن قيمة $ \lfloor\sqrt{\ensuremath{\mathtt{x'}}}\rfloor$ لكل قيمة ممكنة لـ $ \mathtt{x'}$ . وبشكل أدق قليلًا، لدينا
 
-![$\displaystyle \ensuremath{\mathtt{sqrttab}}[i] = \left\lfloor \sqrt{i 2^{\lfloor \ensuremath{\mathtt{r}}/2\rfloor}} \right\rfloor \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1044.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{sqrttab}}[i] = \left\lfloor \sqrt{i 2^{\lfloor \ensuremath{\mathtt{r}}/2\rfloor}} \right\rfloor \enspace .
+$$
 
 وبهذه الطريقة، يكون $ \ensuremath{\mathtt{sqrttab}}[i]$ ضمن مسافة 2 من $ \sqrt{\ensuremath{\mathtt{x}}}$ لكل $ \ensuremath{\mathtt{x}}\in\{i2^{\lfloor r/2\rfloor},\ldots,(i+1)2^{\lfloor r/2\rfloor}-1\}$ . وبعبارة أخرى، إمَّا أن يساوي مدخل المصفوفة $ \ensuremath{\mathtt{s}}=\ensuremath{\mathtt{sqrttab}}[\ensuremath{\mathtt{x}}\ensuremath{\mathtt{\text{\ttfamily >>}}}\lfloor \ensuremath{\mathtt{r}}/2\rfloor]$ القيمة $ \lfloor\sqrt{\ensuremath{\mathtt{x}}}\rfloor$ أو $ \lfloor\sqrt{\ensuremath{\mathtt{x}}}\rfloor-1$ أو $ \lfloor\sqrt{\ensuremath{\mathtt{x}}}\rfloor-2$ . ومن $ \mathtt{s}$ يمكننا تحديد قيمة $ \lfloor\sqrt{\ensuremath{\mathtt{x}}}\rfloor$ بزيادة $ \mathtt{s}$ حتى تتحقَّق $ (\ensuremath{\mathtt{s}}+1)^2 > \ensuremath{\mathtt{x}}$ .
 
@@ -672,7 +714,9 @@ source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 
 **التمرين 2..8** عدِّل تنفيذ ArrayDeque بحيث لا يستخدم معامل $ \mathtt{\text{\ttfamily\%}}$ (الذي يكون مكلفًا على بعض الأنظمة). وبدلًا من ذلك، ينبغي أن يستفيد من الحقيقة التالية: إذا كان $ \mathtt{a.length}$ قوةً للعدد 2، فإنَّ
 
-![$\displaystyle \ensuremath{\mathtt{k\text{\ttfamily\%}a.length}}=\ensuremath{\mathtt{k\text{\ttfamily\&}(a.length-1)}} \enspace . $](/images/open-data-structures/2_7_Discussion_Exercises-img1155.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{k\text{\ttfamily\%}a.length}}=\ensuremath{\mathtt{k\text{\ttfamily\&}(a.length-1)}} \enspace .
+$$
 
 (هنا، $ \mathtt{\text{\ttfamily\&}}$ هو معامل AND على مستوى البتات (bitwise-and).)
 

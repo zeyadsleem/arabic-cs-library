@@ -199,7 +199,9 @@ source: https://opendatastructures.org/ods-java/13_Data_Structures_Integers.html
 
 تستغرق إضافة $ \mathtt{x}$ إلى $ \mathtt{t}$ زمن $ O(\log \ensuremath{\mathtt{w}})$ . ويبيّن التمرين 7.12 أنّ تقسيم $ \mathtt{t}$ إلى $ \mathtt{t1}$ و $ \mathtt{t'}$ يمكن أن يتمّ أيضًا في زمن $ O(\log \ensuremath{\mathtt{w}})$ متوقَّع. أمّا إضافة الزوج ( $ \mathtt{x}$ ، $ \mathtt{t1}$ ) إلى $ \mathtt{xft}$ فتستغرق زمن $ O(\ensuremath{\mathtt{w}})$ ، لكنها لا تحدث إلّا باحتمال $ 1/\ensuremath{\mathtt{w}}$ . لذلك فإنّ زمن التشغيل المتوقَّع للعملية $ \mathtt{add(x)}$ هو
 
-![$\displaystyle O(\log\ensuremath{\mathtt{w}}) + \frac{1}{\ensuremath{\mathtt{w}}}O(\ensuremath{\mathtt{w}}) = O(\log \ensuremath{\mathtt{w}}) \enspace . $](/images/open-data-structures/13_3_YFastTrie_Doubly_Logar-img5153.png.webp)
+$$
+\displaystyle O(\log\ensuremath{\mathtt{w}}) + \frac{1}{\ensuremath{\mathtt{w}}}O(\ensuremath{\mathtt{w}}) = O(\log \ensuremath{\mathtt{w}}) \enspace .
+$$
 
 تلغي الدالة $ \mathtt{remove(x)}$ العمل الذي أدّته $ \mathtt{add(x)}$ . فنحن نستعمل $ \mathtt{xft}$ للعثور على الورقة، $ \mathtt{u}$ ، في $ \mathtt{xft}$ التي تحوي جواب $ \mathtt{xft.find(x)}$ . ومن $ \mathtt{u}$ ، نحصل على الـTreap، $ \mathtt{t}$ ، التي تحوي $ \mathtt{x}$ ونزيل $ \mathtt{x}$ من $ \mathtt{t}$ . فإذا كان $ \mathtt{x}$ مخزَّنًا أيضًا في $ \mathtt{xft}$ (و $ \mathtt{x}$ لا يساوي $ 2^{\ensuremath{\mathtt{w}}}-1$ )، فإنّنا نزيل $ \mathtt{x}$ من $ \mathtt{xft}$ ونضيف عناصر الـTreap الخاصة بـ $ \mathtt{x}$ إلى الـTreap، $ \mathtt{t2}$ ، التي يخزّنها خَلِفُ $ \mathtt{u}$ في القائمة المترابطة. ويوضّح هذا الشكل 13.9.
 
@@ -230,7 +232,9 @@ $ \ensuremath{\mathtt{n}}_\ensuremath{\mathtt{x}}=j+k$ ، إذًا
 
 ![$\displaystyle \mathrm{E}[\ensuremath{\mathtt{n}}_\ensuremath{\mathtt{x}}] = \ma... ...athrm{E}[j] + \mathrm{E}[k] \le 2\ensuremath{\mathtt{w}}-1 \enspace . \qedhere $](/images/open-data-structures/13_3_YFastTrie_Doubly_Logar-img5217.png.webp)
 
-![$ \qedsymbol$](/images/open-data-structures/13_3_YFastTrie_Doubly_Logar-img5196.png.webp)
+$$
+\qedsymbol
+$$
 
 كانت الملاحظة 13.1 هي القطعة الأخيرة في برهان المبرهنة التالية، التي تلخّص أداء YFastTrie: **المبرهنة 13..3** *يُنفِّذ YFastTrie واجهة SSet للأعداد الصحيحة بطول $ \mathtt{w}$ بت. ويدعم YFastTrie العمليات $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ و $ \mathtt{find(x)}$ في زمن $ O(\log \ensuremath{\mathtt{w}})$ متوقَّع لكل عملية. والمساحة التي يستعملها YFastTrie يخزّن $ \mathtt{n}$ قيمةً هي $ O(\ensuremath{\mathtt{n}}+\ensuremath{\mathtt{w}})$ .*
 

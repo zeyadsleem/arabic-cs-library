@@ -278,7 +278,9 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 |  | $\displaystyle = 1 + 1/2 + 1/4 + 1/8 + \cdots$ |  |
 |  | $\displaystyle = 2 \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/4_4_Analysis_Skiplists-img1788.png.webp)
+$$
+\qedsymbol
+$$
 
 يخبرنا المُلَمان التاليان أن قوائم التخطي ذات حجم خطي: **المُلَم 4..3** *العدد المتوقع للعقد في قائمة تخطٍ تحتوي على $ \ensuremath{\mathtt{n}}$ عنصرًا، لا بما في ذلك ورودات الحارس، هو $ 2\ensuremath{\mathtt{n}}$ .*
 
@@ -286,17 +288,23 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 
 ![$\displaystyle \sum_{\ensuremath{\mathtt{r}}=0}^\infty \ensuremath{\mathtt{n}}/2... ...athtt{n}}(1+1/2+1/4+1/8+\cdots) = 2\ensuremath{\mathtt{n}} \enspace . \qedhere $](/images/open-data-structures/4_4_Analysis_Skiplists-img1809.png.webp)
 
-![$ \qedsymbol$](/images/open-data-structures/4_4_Analysis_Skiplists-img1803.png.webp)
+$$
+\qedsymbol
+$$
 
 **المُلَم 4..4** *الارتفاع المتوقع لقائمة تخطٍ تحتوي على $ \mathtt{n}$ عنصرًا لا يتجاوز $ \log \ensuremath{\mathtt{n}} + 2$ .*
 
 *البرهان*. لكل $ \ensuremath{\mathtt{r}}\in\{1,2,3,\ldots,\infty\}$ ، عرّف متغيرًا عشوائيًا مؤشّرًا
 
-![$\displaystyle I_{\ensuremath{\mathtt{r}}} = \left\{\begin{array}{ll} 0 & \mbox... ...1 & \mbox{if $L_{\ensuremath{\mathtt{r}}}$\ is non-empty} \end{array}\right. $](/images/open-data-structures/4_4_Analysis_Skiplists-img1814.png.webp)
+$$
+\displaystyle I_{\ensuremath{\mathtt{r}}} = \left\{\begin{array}{ll} 0 & \mbox... ...1 & \mbox{if $L_{\ensuremath{\mathtt{r}}}$\ is non-empty} \end{array}\right.
+$$
 
 وعليه فإن ارتفاع قائمة التخطي $ \mathtt{h}$ يُعطى بـ
 
-![$\displaystyle \ensuremath{\mathtt{h}} = \sum_{i=1}^\infty I_{\ensuremath{\mathtt{r}}} \enspace . $](/images/open-data-structures/4_4_Analysis_Skiplists-img1816.png.webp)
+$$
+\displaystyle \ensuremath{\mathtt{h}} = \sum_{i=1}^\infty I_{\ensuremath{\mathtt{r}}} \enspace .
+$$
 
 لاحظ أن $ I_{\ensuremath{\mathtt{r}}}$ لا يتجاوز أبدًا الطول $ \vert L_{\ensuremath{\mathtt{r}}}\vert$ للقائمة $ L_{\ensuremath{\mathtt{r}}}$ ، لذا
 
@@ -312,11 +320,13 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 |  | $\displaystyle \le \log \ensuremath{\mathtt{n}} + \sum_{\ensuremath{\mathtt{r}}=0}^\infty 1/2^{\ensuremath{\mathtt{r}}}$ |  |
 |  | $\displaystyle = \log \ensuremath{\mathtt{n}} + 2 \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/4_4_Analysis_Skiplists-img1812.png.webp)
+$$
+\qedsymbol
+$$
 
 **المُلَم 4..5** *العدد المتوقع للعقد في قائمة تخطٍ تحتوي على $ \ensuremath{\mathtt{n}}$ عنصرًا، بما في ذلك جميع ورودات الحارس، هو $ 2\ensuremath{\mathtt{n}}+O(\log \ensuremath{\mathtt{n}})$ .*
 
-*البرهان*. وبموجب المُلم 4.3، فإن العدد المتوقع للعقد، لا بما في ذلك الحارس، هو $ 2\ensuremath{\mathtt{n}}$ . وعدد ورودات الحارس يساوي ارتفاع قائمة التخطي $ \ensuremath{\mathtt{h}}$ ، لذا فإن بالجُلم 4.4 يكون العدد المتوقع لورودات الحارس لا يتجاوز $ \log \ensuremath{\mathtt{n}}+2 = O(\log \ensuremath{\mathtt{n}})$ . ![$ \qedsymbol$](/images/open-data-structures/4_4_Analysis_Skiplists-img1830.png.webp)
+*البرهان*. وبموجب المُلم 4.3، فإن العدد المتوقع للعقد، لا بما في ذلك الحارس، هو $ 2\ensuremath{\mathtt{n}}$ . وعدد ورودات الحارس يساوي ارتفاع قائمة التخطي $ \ensuremath{\mathtt{h}}$ ، لذا فإن بالجُلم 4.4 يكون العدد المتوقع لورودات الحارس لا يتجاوز $ \log \ensuremath{\mathtt{n}}+2 = O(\log \ensuremath{\mathtt{n}})$ . $\qedsymbol$
 
 **المُلَم 4..6** *الطول المتوقع لمسار البحث في قائمة تخطٍ لا يتجاوز $ 2\log \ensuremath{\mathtt{n}} + O(1)$ .*
 
@@ -338,7 +348,9 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 |  | $\displaystyle \le \mathrm{E}[\ensuremath{\mathtt{h}}] + \log \ensuremath{\mathtt{n}} + 3$ |  |
 |  | $\displaystyle \le 2\log \ensuremath{\mathtt{n}} + 5 \enspace . \qedhere$ |  |
 
-![$ \qedsymbol$](/images/open-data-structures/4_4_Analysis_Skiplists-img1835.png.webp)
+$$
+\qedsymbol
+$$
 
 تلخّص المبرهنة التالية نتائج هذا القسم: **المبرهنة 4..3** *لقائمة تخطٍ تحتوي على $ \ensuremath{\mathtt{n}}$ عنصرًا، الحجم المتوقع هو $ O(\ensuremath{\mathtt{n}})$ ، والطول المتوقع لمسار البحث عن أي عنصر بعينه لا يتجاوز $ 2\log \ensuremath{\mathtt{n}} + O(1)$ .*
 
