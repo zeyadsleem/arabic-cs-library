@@ -12,7 +12,8 @@ import { resolveBasePath } from './lib/base-path.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = path.join(root, 'build');
 const base = resolveBasePath();
-const report = process.argv[2] || '/tmp/opencode/link-report.json';
+// A path is optional: the check reports on stdout and is meant to run anywhere.
+const reportPath = process.argv[2];
 
 if (!fs.existsSync(buildDir)) {
   console.error('build/ is missing. Run the build before checking links.');
@@ -70,12 +71,15 @@ for (const file of htmlFiles(buildDir)) {
   }
 }
 
-fs.writeFileSync(report, JSON.stringify({ base, pages, internal, external: external.length, broken }, null, 2) + '\n');
+const serialized = JSON.stringify({ base, pages, internal, external: external.length, broken }, null, 2) + '\n';
 console.log(`Checked ${pages} pages. Internal references: ${internal}; external references: ${external.length}`);
 console.log(`Unresolved internal references: ${broken.length}`);
+if (reportPath) {
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, serialized);
+}
 if (broken.length) {
   for (const entry of broken.slice(0, 20)) console.log(`  ${entry.page} -> ${entry.href}`);
-  console.error(`\nBroken links: ${broken.length}. Full report: ${report}`);
+  console.error(`\nBroken links: ${broken.length}.${reportPath ? ` Full report: ${reportPath}` : ''}`);
   process.exit(1);
 }
-console.log(`Full report: ${report}`);

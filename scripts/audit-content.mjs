@@ -93,14 +93,19 @@ for (const filename of fs.readdirSync(directory).filter((file) => file.endsWith(
   }
 }
 report.images.uniqueLocalFiles = imageCache.size;
-const output = positional[0] || '/tmp/opencode/content-audit.json';
-fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
+const serialized = JSON.stringify(report, null, 2) + '\n';
 console.log(`Audited ${report.sections} sections across ${Object.keys(report.books).length} books. Images: ${JSON.stringify(report.images)}`);
 console.log(`Missing image references: ${report.missingImages.length}; invalid: ${report.invalidImages.length}; mismatched MIME: ${report.mismatchedImages.length}`);
 for (const [id, book] of Object.entries(report.books)) {
   if (book.issues.length || book.mathErrors) console.log(`${id}: ${book.mathErrors} math errors, ${book.issues.reduce((sum, issue) => sum + issue.count, 0)} text artifacts (${[...new Set(book.issues.map((issue) => issue.kind))].join(', ')})`);
 }
-console.log(`Full report: ${output}`);
+// The report goes to stdout unless a path is given, so the check stays runnable
+// on a machine that has no scratch directory of ours.
+if (positional[0]) {
+  fs.mkdirSync(path.dirname(positional[0]), { recursive: true });
+  fs.writeFileSync(positional[0], serialized);
+  console.log(`Full report: ${positional[0]}`);
+}
 
 if (check) {
   const failures = [];
