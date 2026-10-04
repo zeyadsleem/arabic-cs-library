@@ -1,6 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
+import { resolveBasePath } from './scripts/lib/base-path.mjs';
 
-const base = process.env.BASE_PATH || '';
+const base = resolveBasePath();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

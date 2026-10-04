@@ -424,9 +424,13 @@ const run = () => {
     JSON.stringify({ sections: searchIndex })
   );
 
+  const mathErrorReport = path.join(generatedDir, 'math-errors.json');
   if (mathErrors.length) {
-    fs.writeFileSync(path.join(generatedDir, 'math-errors.json'), JSON.stringify(mathErrors, null, 2));
+    fs.writeFileSync(mathErrorReport, JSON.stringify(mathErrors, null, 2));
     console.log(`math: ${mathErrors.length} source expressions need review (generated/math-errors.json)`);
+  } else if (fs.existsSync(mathErrorReport)) {
+    // A committed report from an earlier build would otherwise outlive its cause.
+    fs.rmSync(mathErrorReport);
   }
 };
 
