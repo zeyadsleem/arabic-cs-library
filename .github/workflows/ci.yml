@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Rebuild the committed content artifacts
+        run: pnpm content
+
+      - name: The committed artifacts must match what the generators produce
+        run: git diff --exit-code -- src/lib/generated src/lib/tour
+
+      - name: Audit the rendered sections
+        run: pnpm audit:content
+
+      - name: Content tests
+        run: pnpm test:content
+
+      - name: Build the site
+        run: pnpm build
+
+      - name: Every internal link in the built site must resolve
+        run: pnpm check:links

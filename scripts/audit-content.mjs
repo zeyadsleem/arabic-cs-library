@@ -3,6 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'node-html-parser';
 
+const argv = process.argv.slice(2);
+const check = argv.includes('--check');
+const positional = argv.filter((argument) => !argument.startsWith('--'));
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const directory = path.join(root, 'src/lib/generated/sections');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'src/lib/generated/manifest.json'), 'utf8'));
@@ -90,7 +93,7 @@ for (const filename of fs.readdirSync(directory).filter((file) => file.endsWith(
   }
 }
 report.images.uniqueLocalFiles = imageCache.size;
-const output = process.argv[2] || '/tmp/opencode/content-audit.json';
+const output = positional[0] || '/tmp/opencode/content-audit.json';
 fs.writeFileSync(output, JSON.stringify(report, null, 2) + '\n');
 console.log(`Audited ${report.sections} sections across ${Object.keys(report.books).length} books. Images: ${JSON.stringify(report.images)}`);
 console.log(`Missing image references: ${report.missingImages.length}; invalid: ${report.invalidImages.length}; mismatched MIME: ${report.mismatchedImages.length}`);
@@ -98,3 +101,23 @@ for (const [id, book] of Object.entries(report.books)) {
   if (book.issues.length || book.mathErrors) console.log(`${id}: ${book.mathErrors} math errors, ${book.issues.reduce((sum, issue) => sum + issue.count, 0)} text artifacts (${[...new Set(book.issues.map((issue) => issue.kind))].join(', ')})`);
 }
 console.log(`Full report: ${output}`);
+
+if (check) {
+  const failures = [];
+  if (report.missingImages.length) failures.push(`${report.missingImages.length} missing image references`);
+  if (report.invalidImages.length) failures.push(`${report.invalidImages.length} invalid image references`);
+  if (report.mismatchedImages.length) failures.push(`${report.mismatchedImages.length} images whose format does not match their extension`);
+  if (report.images.remote) failures.push(`${report.images.remote} images still loaded from a remote host`);
+  for (const [id, book] of Object.entries(report.books)) {
+    if (book.mathErrors) failures.push(`${id}: ${book.mathErrors} unrendered formulas`);
+    for (const kind of new Set(book.issues.map((issue) => issue.kind))) {
+      const count = book.issues.filter((issue) => issue.kind === kind).reduce((sum, issue) => sum + issue.count, 0);
+      failures.push(`${id}: ${count} ${kind} artifacts`);
+    }
+  }
+  if (failures.length) {
+    console.error(`\nContent audit failed:\n  ${failures.join('\n  ')}`);
+    process.exit(1);
+  }
+  console.log('Content audit passed: no missing images, no unrendered formulas, no text artifacts.');
+}
