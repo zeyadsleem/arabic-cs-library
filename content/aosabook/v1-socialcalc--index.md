@@ -292,7 +292,7 @@ if (SocialCalc.Callbacks.expand_wiki && /^text-wiki/.test(valueformat)) {
 
 ### 19.6.2. عرض نصوص الويكي
 
-ثم سنستعين بـ Wikiwyg[1](#footnote-1)، وهي مكتبة Javascript توفّر تحويلات ثنائية الاتجاه بين نصوص الويك و HTML.
+ثم سنستعين بـ Wikiwyg[^1]، وهي مكتبة Javascript توفّر تحويلات ثنائية الاتجاه بين نصوص الويك و HTML.
 
 نعرّف الدالة `expand_wiki` بأن نأخذ نص الخلية ونمرّره على محلّل نصوص الويك في Wikiwyg وعلى باعث HTML الخاص به:
 
@@ -356,7 +356,7 @@ SocialCalc.ScheduleSheetCommands = function(sheet, cmdstr, saveundo, isRemote) {
 
 ولم يعد أمامنا سوى تعريف دالة استدعاء مناسبة وهي `SocialCalc.Callbacks.broadcast`. وبمجرد توفّرها، ستُنفَّذ الأوامر نفسها لدى جميع المستخدمين الموصولين بجدول البيانات نفسه.
 
-وعندما نُفِّذت هذه الميزة أول مرة من أجل مشروع OLPC (One Laptop Per Child[2](#footnote-2)) على يد مختبرات Sugar التابعة لـ SEETA[3](#footnote-3) عام 2009، بُنيت الدالة `broadcast` باستخدام نداءات XPCOM إلى D-Bus/Telepathy، وهو الناقل المعياري لشبكات OLPC/Sugar (انظر [الشكل 19.16](#fig.soc.olpc)).
+وعندما نُفِّذت هذه الميزة أول مرة من أجل مشروع OLPC (One Laptop Per Child[^2]) على يد مختبرات Sugar التابعة لـ SEETA[^3] عام 2009، بُنيت الدالة `broadcast` باستخدام نداءات XPCOM إلى D-Bus/Telepathy، وهو الناقل المعياري لشبكات OLPC/Sugar (انظر [الشكل 19.16](#fig.soc.olpc)).
 
 ![تنفيذ OLPC](/images/aosabook/v1-socialcalc-collab-olpc.webp){#fig.soc.olpc}
 
@@ -366,9 +366,9 @@ SocialCalc.ScheduleSheetCommands = function(sheet, cmdstr, saveundo, isRemote) {
 
 ### 19.7.1. النقل عبر المتصفحات
 
-ولجعل ذلك يعمل عبر المتصفحات وأنظمة التشغيل، نستخدم إطار `Web::Hippie`[4](#footnote-4)، وهو تجريد عالي المستوى لـ JSON-over-WebSocket مع ربط مريح بـ jQuery، مع جعل MXHR (Multipart XML HTTP Request[5](#footnote-5)) آلية النقل الاحتياطية إذا لم يكن WebSocket متاحًا.
+ولجعل ذلك يعمل عبر المتصفحات وأنظمة التشغيل، نستخدم إطار `Web::Hippie`[^4]، وهو تجريد عالي المستوى لـ JSON-over-WebSocket مع ربط مريح بـ jQuery، مع جعل MXHR (Multipart XML HTTP Request[^5]) آلية النقل الاحتياطية إذا لم يكن WebSocket متاحًا.
 
-وللمتصفحات التي تتوفّر فيها إضافة Adobe Flash ولا تدعم WebSocket أصليًا، نستخدم محاكاة WebSocket عبر Flash من مشروع `web_socket.js`[6](#footnote-6)، وهي غالبًا أسرع وأكثر موثوقية من MXHR. ويوضّح [الشكل 19.17](#fig.soc.collab) تدفّق العملية.
+وللمتصفحات التي تتوفّر فيها إضافة Adobe Flash ولا تدعم WebSocket أصليًا، نستخدم محاكاة WebSocket عبر Flash من مشروع `web_socket.js`[^6]، وهي غالبًا أسرع وأكثر موثوقية من MXHR. ويوضّح [الشكل 19.17](#fig.soc.collab) تدفّق العملية.
 
 ![التدفّق عبر المتصفحات](/images/aosabook/v1-socialcalc-collab-flow.webp){#fig.soc.collab}
 
@@ -490,7 +490,7 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 
 ### 19.8.5. قيادة التطوير باختبارات القصص
 
-قبل انضمامي إلى Socialtext، كنت قد دعتُ إلى نهج «مزج الاختبارات مع المواصفة» (interleave tests with the specification)، كما يتّضح في مواصفة لغة Perl 6[7](#footnote-7)، حيث نُنشِئ مواصفة اللغة مرفقةً بمجموعة الاختبارات الرسمية. غير أن Ken Pier و Matt Heusser، وهما فريق ضمان الجودة في SocialCalc، هما اللذان فتحا لي عينيّ حقًا على كيف يمكن الارتقاء بهذا المنهج إلى المستوى التالي، بنقل الاختبارات إلى موضع *المواصفة القابلة للتنفيذ* (executable specification).
+قبل انضمامي إلى Socialtext، كنت قد دعتُ إلى نهج «مزج الاختبارات مع المواصفة» (interleave tests with the specification)، كما يتّضح في مواصفة لغة Perl 6[^7]، حيث نُنشِئ مواصفة اللغة مرفقةً بمجموعة الاختبارات الرسمية. غير أن Ken Pier و Matt Heusser، وهما فريق ضمان الجودة في SocialCalc، هما اللذان فتحا لي عينيّ حقًا على كيف يمكن الارتقاء بهذا المنهج إلى المستوى التالي، بنقل الاختبارات إلى موضع *المواصفة القابلة للتنفيذ* (executable specification).
 
 وفي الفصل 16 من [GR09](https://aosabook.org/en/v1/bib1.html#bib:goucher:test)، شرح Matt عملية تطويرنا المبنية على اختبارات القصص (story tests) على النحو التالي:
 
@@ -499,7 +499,7 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 > > وعند القصّ الأول للقصة، يقوم مالك المنتج بمحاولة أولى بحسن نية لإنشاء اختبارات القبول، ثم يزيد عليها المطوّرون والمختبِرون قبل أن يكتب أي مطوّر سطرًا واحدًا من الشيفرة.
 > > 
 
-ثم تُترجَم اختبارات القصص هذه إلى wikitests، وهي لغة مواصفة قائمة على الجداول مستوحاة من إطار FIT لـ Ward Cunningham[8](#footnote-8)، تقود أطر الاختبارات الآلية مثل `Test::WWW::Mechanize`[9](#footnote-9) و `Test::WWW::Selenium`[10](#footnote-10).
+ثم تُترجَم اختبارات القصص هذه إلى wikitests، وهي لغة مواصفة قائمة على الجداول مستوحاة من إطار FIT لـ Ward Cunningham[^8]، تقود أطر الاختبارات الآلية مثل `Test::WWW::Mechanize`[^9] و `Test::WWW::Selenium`[^10].
 
 ومن الصعب المبالغة في تقدير فائدة وجود اختبارات القصص بوصفها لغة مشتركة للتعبير عن المتطلبات والتحقق منها. فقد كان لها دور محوري في الحدّ من سوء الفهم، وقد أدّت إلى اختفاء الانحدارات (regressions) من إصداراتنا الشهرية عمليًا.
 
@@ -507,9 +507,9 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 
 وأخيرًا وليس آخرًا، فإن نموذج البرمجيات مفتوحة المصدر الذي اخترناه لـ SocialCalc يشكّل بحدّ ذاته درسًا مثيرًا للاهتمام.
 
-أنشأت Socialtext رخصة الإسناد العام (Common Public Attribution License)[11](#footnote-11) من أجل SocialCalc. واستنادًا إلى رخصة Mozilla العامة (Mozilla Public License)، صُمِّمت CPAL لتتيح للمؤلف الأصلي أن يشترط إظهار إسناد في واجهة مستخدم البرمجية، كما تحتوي بندًا للاستخدام عبر الشبكة يُفعّل أحكام المشاركة بالمثل (share-alike) عندما يُستضاف العمل المشتق في خدمة عبر الشبكة.
+أنشأت Socialtext رخصة الإسناد العام (Common Public Attribution License)[^11] من أجل SocialCalc. واستنادًا إلى رخصة Mozilla العامة (Mozilla Public License)، صُمِّمت CPAL لتتيح للمؤلف الأصلي أن يشترط إظهار إسناد في واجهة مستخدم البرمجية، كما تحتوي بندًا للاستخدام عبر الشبكة يُفعّل أحكام المشاركة بالمثل (share-alike) عندما يُستضاف العمل المشتق في خدمة عبر الشبكة.
 
-وبعد موافقتها من قِبل كلٍّ من مؤسسة البرمجيات مفتوحة المصدر (Open Source Initiative)[12](#footnote-12) ومؤسسة البرمجيات الحرة (Free Software Foundation)[13](#footnote-13)، رأينا مواقع بارزة مثل Facebook[14](#footnote-14) و Reddit[15](#footnote-15) تختار إصدار شيفرة منصّتها المصدرية بموجب CPAL، وهو ما يُبشّر كثيرًا.
+وبعد موافقتها من قِبل كلٍّ من مؤسسة البرمجيات مفتوحة المصدر (Open Source Initiative)[^12] ومؤسسة البرمجيات الحرة (Free Software Foundation)[^13]، رأينا مواقع بارزة مثل Facebook[^14] و Reddit[^15] تختار إصدار شيفرة منصّتها المصدرية بموجب CPAL، وهو ما يُبشّر كثيرًا.
 
 ولأن CPAL رخصة «نسخ مفتوح ضعيف» (weak copyleft)، فيمكن للمطوّرين دمجها بحرّية مع برمجيات حرة أو مملوكة، ولا يحتاجون سوى إلى إصدار التعديلات على SocialCalc نفسه. وقد مكّن ذلك مختلف المجتمعات من تبنّي SocialCalc وجعله أكثر روعة.
 
@@ -532,3 +532,19 @@ box-shadow: inset 0 0 0 4px red, inset 0 0 0 2px green;
 13. `http://www.fsf.org`
 14. `https://github.com/facebook/platform`
 15. `https://github.com/reddit/reddit`
+
+[^1]: `https://github.com/audreyt/wikiwyg-js`
+[^2]: `http://one.laptop.org/`
+[^3]: `http://seeta.in/wiki/index.php?title=Collaboration_in_SocialCalc`
+[^4]: `http://search.cpan.org/dist/Web-Hippie/`
+[^5]: `http://about.digg.com/blog/duistream-and-mxhr`
+[^6]: `https://github.com/gimite/web-socket-js`
+[^7]: `http://perlcabal.org/syn/S02.html`
+[^8]: `http://fit.c2.com/`
+[^9]: `http://search.cpan.org/dist/Test-WWW-Mechanize/`
+[^10]: `http://search.cpan.org/dist/Test-WWW-Selenium/`
+[^11]: `https://www.socialtext.net/open/?cpal`
+[^12]: `http://opensource.org/`
+[^13]: `http://www.fsf.org`
+[^14]: `https://github.com/facebook/platform`
+[^15]: `https://github.com/reddit/reddit`

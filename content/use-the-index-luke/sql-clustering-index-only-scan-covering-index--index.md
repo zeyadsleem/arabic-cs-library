@@ -213,10 +213,12 @@ PostgreSQL
 
 SQL Server
 
-[تدعم SQL Server منذ الإصدار 2016 ما يصل إلى 32 عموداً مفتاحياً بحجم أقصى 1700 بايت (900 بايت للفهارس العنقودية).](https://learn.microsoft.com/en-us/sql/sql-server/maximum-capacity-specifications-for-sql-server)[0](#footnote-0) ولا تُحسب الأعمدة غير المفتاحية ضمن هذا الحد.
+[تدعم SQL Server منذ الإصدار 2016 ما يصل إلى 32 عموداً مفتاحياً بحجم أقصى 1700 بايت (900 بايت للفهارس العنقودية).](https://learn.microsoft.com/en-us/sql/sql-server/maximum-capacity-specifications-for-sql-server)[^0] ولا تُحسب الأعمدة غير المفتاحية ضمن هذا الحد.
 
 #### فكّر في الأمر
 
 الاستعلامات التي لا تختار أي أعمدة من الجدول تُنفَّذ غالباً بمسح الفهرس فقط.
 
 هل يمكنك التفكير في مثال ذي معنى؟
+
+[^0]: Before SQL Server 2016: 16 columns and 900 bytes.

@@ -4,7 +4,7 @@ lang: ar
 source: https://use-the-index-luke.com/sql/partial-results/window-functions
 ---
 
-تقدّم دوال النوافذ طريقة أخرى لتنفيذ الترقيم (pagination) في SQL، وهي طريقة مرنة ومتوافقة مع المعيار قبل كل شيء. غير أن SQL Server وقاعدة بيانات Oracle وPostgreSQL 15+ فقط تستطيع استخدامها في استعلام Top-N متدفق، بينما لا توقف MySQL وMariaDB[0](#footnote-0) وDb2 (LUW) مسح الفهرس بعد جلب صفوف كافية، ومن ثمّ تنفّذ هذه الاستعلامات بكفاءة شديدة الانخفاض.
+تقدّم دوال النوافذ طريقة أخرى لتنفيذ الترقيم (pagination) في SQL، وهي طريقة مرنة ومتوافقة مع المعيار قبل كل شيء. غير أن SQL Server وقاعدة بيانات Oracle وPostgreSQL 15+ فقط تستطيع استخدامها في استعلام Top-N متدفق، بينما لا توقف MySQL وMariaDB[^0] وDb2 (LUW) مسح الفهرس بعد جلب صفوف كافية، ومن ثمّ تنفّذ هذه الاستعلامات بكفاءة شديدة الانخفاض.
 
 يستخدم المثال التالي دالة النافذة `ROW_NUMBER` في استعلام ترقيم:
 
@@ -144,3 +144,5 @@ Oracle: [الدوال التحليلية في الإصدار 19](https://docs.or
 PostgreSQL: [دوال النوافذ](https://www.postgresql.org/docs/current/tutorial-window.html)
 
 SQL Server: [جملة OVER في SQL Server](https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver16)
+
+[^0]: MySQL supports window functions since version 8.0, MariaDB since 10.2.
