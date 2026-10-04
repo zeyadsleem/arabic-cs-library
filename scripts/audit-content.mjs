@@ -10,8 +10,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const directory = path.join(root, 'src/lib/generated/sections');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'src/lib/generated/manifest.json'), 'utf8'));
 const books = new Map(manifest.books.map((book) => [book.id, book]));
-const report = { sections: 0, books: {}, images: {}, missingImages: [], invalidImages: [], mismatchedImages: [], remoteImages: [] };
+const report = { sections: 0, books: {}, images: {}, missingImages: [], invalidImages: [], mismatchedImages: [], remoteImages: [], orphanImages: [] };
 const imageCache = new Map();
+const referencedImages = new Set();
 
 function imageKind(buffer) {
   if (buffer.subarray(0, 4).toString() === 'RIFF' && buffer.subarray(8, 12).toString() === 'WEBP') return 'webp';
@@ -90,12 +91,42 @@ for (const filename of fs.readdirSync(directory).filter((file) => file.endsWith(
     if (inspected.kind === 'missing') report.missingImages.push({ ...reference, ...inspected });
     else if (['html', 'unknown'].includes(inspected.kind)) report.invalidImages.push({ ...reference, ...inspected });
     else if (inspected.kind !== path.extname(target).slice(1).toLowerCase().replace('jpeg', 'jpg')) report.mismatchedImages.push({ ...reference, ...inspected });
+    else referencedImages.add(path.relative(root, target));
   }
 }
 report.images.uniqueLocalFiles = imageCache.size;
+
+// Files the site ships but never shows. Every other check here runs from a
+// reference to a file, so a figure whose image line was lost during an import
+// leaves nothing behind to notice it. This is reported and not failed on: the
+// re-scoping of every asset and the LaTeX-in-place work legitimately retired
+// several hundred files, so only a human can tell a retired file from a lost one.
+const staticImages = path.join(root, 'static', 'images');
+const orphans = new Map();
+for (const entry of fs.readdirSync(staticImages, { withFileTypes: true })) {
+  if (!entry.isDirectory()) continue;
+  const stack = [path.join(staticImages, entry.name)];
+  while (stack.length) {
+    const current = stack.pop();
+    for (const child of fs.readdirSync(current, { withFileTypes: true })) {
+      const childPath = path.join(current, child.name);
+      if (child.isDirectory()) stack.push(childPath);
+      else if (!referencedImages.has(path.relative(root, childPath))) {
+        const relative = path.relative(staticImages, childPath).split(path.sep);
+        const book = relative[0];
+        const found = orphans.get(book) || { book, count: 0, files: [] };
+        found.count += 1;
+        found.files.push(relative.slice(1).join('/'));
+        orphans.set(book, found);
+      }
+    }
+  }
+}
+report.orphanImages = [...orphans.values()].sort((a, b) => b.count - a.count);
 const serialized = JSON.stringify(report, null, 2) + '\n';
 console.log(`Audited ${report.sections} sections across ${Object.keys(report.books).length} books. Images: ${JSON.stringify(report.images)}`);
 console.log(`Missing image references: ${report.missingImages.length}; invalid: ${report.invalidImages.length}; mismatched MIME: ${report.mismatchedImages.length}`);
+console.log(`Unreferenced images shipped: ${report.orphanImages.reduce((sum, entry) => sum + entry.count, 0)} (${report.orphanImages.map((entry) => `${entry.book} ${entry.count}`).join(', ') || 'none'})`);
 for (const [id, book] of Object.entries(report.books)) {
   if (book.issues.length || book.mathErrors) console.log(`${id}: ${book.mathErrors} math errors, ${book.issues.reduce((sum, issue) => sum + issue.count, 0)} text artifacts (${[...new Set(book.issues.map((issue) => issue.kind))].join(', ')})`);
 }
