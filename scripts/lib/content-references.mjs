@@ -12,9 +12,36 @@ export function resolveBookReferences(directory, book, base) {
     return { file, content, document: parse(content.html) };
   });
   const anchors = new Map();
+  const mathmlText = (node) => {
+    if (node.nodeType === 3) return node.textContent;
+    const tag = (node.rawTagName || '').toLowerCase();
+    if (tag === 'annotation') return '';
+    const parts = (node.childNodes || [])
+      .map((child) => [mathmlText(child).trim(), (child.rawTagName || '').toLowerCase() === 'mo'])
+      .filter(([text]) => text !== '');
+    let text = '';
+    let operator = true;
+    for (const [part, isOperator] of parts) {
+      if (text !== '' && (operator || isOperator)) text += ' ';
+      text += part;
+      operator = isOperator;
+    }
+    return text;
+  };
+  const privateUse = /[\ue000-\uf8ff]/;
   const plainText = (element) => {
     const copy = element.clone();
-    copy.querySelectorAll('.katex-mathml').forEach((node) => node.remove());
+    for (const rendered of copy.querySelectorAll('.katex')) {
+      const html = rendered.querySelector('.katex-html');
+      const mathml = rendered.querySelector('.katex-mathml');
+      // KaTeX draws a few glyphs with CSS and leaves a private-use placeholder in
+      // the HTML copy, so read the MathML instead whenever that happens.
+      if (html && mathml && privateUse.test(html.textContent)) {
+        rendered.innerHTML = mathmlText(mathml).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        continue;
+      }
+      rendered.querySelectorAll('.katex-mathml').forEach((node) => node.remove());
+    }
     return copy.textContent.trim().replace(/\s+/g, ' ');
   };
   for (const page of pages) {
