@@ -1,0 +1,699 @@
+{
+  "chapters": [
+    {
+      "key": "course",
+      "title": "Syllabus, Calendar, Readings",
+      "titleAr": "نشرة المقرر والجدول والقراءات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "عن المقرر",
+          "order": 0
+        },
+        {
+          "slug": "calendar",
+          "title": "الجدول الدراسي",
+          "order": 1
+        },
+        {
+          "slug": "readings",
+          "title": "القراءات المقررة",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "instructor-insights",
+      "title": "Instructor Insights",
+      "titleAr": "كلمة المدرّسة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "حوار مع المدرّسة آنّا بيل",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "lecture-01",
+      "title": "Lecture 1: مقدمة",
+      "titleAr": "المحاضرة 1: مقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 3
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 3
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 3
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "lecture-02",
+      "title": "Lecture 2: النصوص، والإدخال/الإخراج، والتفرّع",
+      "titleAr": "المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 4
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 4
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "lecture-03",
+      "title": "Lecture 3: التكرار (Iteration)",
+      "titleAr": "المحاضرة 3: التكرار (Iteration)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 5
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 5
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "lecture-04",
+      "title": "Lecture 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية",
+      "titleAr": "المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 6
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 6
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "lecture-05",
+      "title": "Lecture 5: الأعداد العشرية العائمة وطرق التقريب",
+      "titleAr": "المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 7
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 7
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 7
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "lecture-06",
+      "title": "Lecture 6: البحث بالتنصيف (Bisection Search)",
+      "titleAr": "المحاضرة 6: البحث بالتنصيف (Bisection Search)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 8
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 8
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "lecture-07",
+      "title": "Lecture 7: التفكيك والتجريد والدوال",
+      "titleAr": "المحاضرة 7: التفكيك والتجريد والدوال",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 9
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 9
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "lecture-08",
+      "title": "Lecture 8: الدوال ككائنات",
+      "titleAr": "المحاضرة 8: الدوال ككائنات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 10
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 10
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "lecture-09",
+      "title": "Lecture 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)",
+      "titleAr": "المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 11
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 11
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "lecture-10",
+      "title": "Lecture 10: القوائم وقابلية التغيير (Mutability)",
+      "titleAr": "المحاضرة 10: القوائم وقابلية التغيير (Mutability)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 12
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 12
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "lecture-11",
+      "title": "Lecture 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)",
+      "titleAr": "المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 13
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 13
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "lecture-12",
+      "title": "Lecture 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء",
+      "titleAr": "المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 14
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 14
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "lecture-13",
+      "title": "Lecture 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)",
+      "titleAr": "المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 15
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 15
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "lecture-14",
+      "title": "Lecture 14: القواميس (Dictionaries)",
+      "titleAr": "المحاضرة 14: القواميس (Dictionaries)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 16
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 16
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "lecture-15",
+      "title": "Lecture 15: الاستدعاء الذاتي (Recursion)",
+      "titleAr": "المحاضرة 15: الاستدعاء الذاتي (Recursion)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 17
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 17
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "lecture-16",
+      "title": "Lecture 16: الاستدعاء الذاتي على غير الأعداد",
+      "titleAr": "المحاضرة 16: الاستدعاء الذاتي على غير الأعداد",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 18
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 18
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "lecture-17",
+      "title": "Lecture 17: الأصناف في بايثون (Python Classes)",
+      "titleAr": "المحاضرة 17: الأصناف في بايثون (Python Classes)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 19
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 19
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "lecture-18",
+      "title": "Lecture 18: المزيد من طرائق الأصناف في بايثون",
+      "titleAr": "المحاضرة 18: المزيد من طرائق الأصناف في بايثون",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 20
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 20
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "lecture-19",
+      "title": "Lecture 19: الوراثة (Inheritance)",
+      "titleAr": "المحاضرة 19: الوراثة (Inheritance)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 21
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 21
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "key": "lecture-20",
+      "title": "Lecture 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة",
+      "titleAr": "المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 22
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 22
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "lecture-21",
+      "title": "Lecture 21: قياس زمن البرامج وعدّ العمليات",
+      "titleAr": "المحاضرة 21: قياس زمن البرامج وعدّ العمليات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 23
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 23
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "key": "lecture-22",
+      "title": "Lecture 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)",
+      "titleAr": "المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 24
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 24
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 24
+        }
+      ]
+    },
+    {
+      "key": "lecture-23",
+      "title": "Lecture 23: أمثلة على أصناف التعقيد (Complexity Classes)",
+      "titleAr": "المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 25
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 25
+        },
+        {
+          "slug": "exercises",
+          "title": "تمارين الإصبع والحلول",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "key": "lecture-24",
+      "title": "Lecture 24: خوارزميات الترتيب (Sorting Algorithms)",
+      "titleAr": "المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 26
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 26
+        }
+      ]
+    },
+    {
+      "key": "lecture-25",
+      "title": "Lecture 25: الرسم البياني (Plotting)",
+      "titleAr": "المحاضرة 25: الرسم البياني (Plotting)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 27
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 27
+        }
+      ]
+    },
+    {
+      "key": "lecture-26",
+      "title": "Lecture 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام",
+      "titleAr": "المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "محتوى المحاضرة",
+          "order": 28
+        },
+        {
+          "slug": "notes",
+          "title": "ملاحظات المحاضرة",
+          "order": 28
+        }
+      ]
+    },
+    {
+      "key": "problem-sets",
+      "title": "Problem Sets",
+      "titleAr": "مجموعات المسائل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مجموعة المسائل 0: المقدمة والتثبيت",
+          "order": 100
+        },
+        {
+          "slug": "ps1",
+          "title": "مجموعة المسائل 1: الفائدة المركبة",
+          "order": 101
+        },
+        {
+          "slug": "ps2",
+          "title": "مجموعة المسائل 2: لعبة تخمين الكلمة",
+          "order": 102
+        },
+        {
+          "slug": "ps3",
+          "title": "مجموعة المسائل 3: المسافة بين المستندات",
+          "order": 103
+        },
+        {
+          "slug": "ps4",
+          "title": "مجموعة المسائل 4: العودية والتشفير",
+          "order": 104
+        },
+        {
+          "slug": "ps5",
+          "title": "مجموعة المسائل 5: استخدام المكتبات",
+          "order": 105
+        }
+      ]
+    },
+    {
+      "key": "recitations",
+      "title": "Recitations",
+      "titleAr": "الجلسات التطبيقية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجلسة التطبيقية 1: مقدمة إلى بايثون",
+          "order": 200
+        },
+        {
+          "slug": "rec2",
+          "title": "الجلسة التطبيقية 2: النصوص، والتكرار",
+          "order": 201
+        },
+        {
+          "slug": "rec3",
+          "title": "الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال",
+          "order": 202
+        },
+        {
+          "slug": "rec4",
+          "title": "الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda",
+          "order": 203
+        },
+        {
+          "slug": "rec5",
+          "title": "الجلسة التطبيقية 5: القوائم وقابلية التغيير",
+          "order": 204
+        },
+        {
+          "slug": "rec6",
+          "title": "الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم",
+          "order": 205
+        },
+        {
+          "slug": "rec7",
+          "title": "الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس",
+          "order": 206
+        },
+        {
+          "slug": "rec8",
+          "title": "الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)",
+          "order": 207
+        },
+        {
+          "slug": "rec9",
+          "title": "الجلسة التطبيقية 9: البرمجة الكائنية والوراثة",
+          "order": 208
+        },
+        {
+          "slug": "rec10",
+          "title": "الجلسة التطبيقية 10: كفاءة البرامج والتعقيد",
+          "order": 209
+        }
+      ]
+    }
+  ]
+}
