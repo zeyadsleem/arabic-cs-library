@@ -136,8 +136,8 @@ grades = {'Ana':'B', 'Matt':'A', 'John':'B', 'Katy':'A'}
 
 ```python
 grades = {'Ana':'B', 'Matt':'A', 'John':'B', 'Katy':'A'}
-grades['John']   #  يُقوَّم إلى 'B'
-grades['Grace']  #  يعطي KeyError
+grades['John']   # → يُقوَّم إلى 'B'
+grades['Grace']  # → يعطي KeyError
 ```
 
 - يبحث عن **المفتاح (key)**.
@@ -197,9 +197,9 @@ grades = {'Ana':'B', 'Matt':'A', 'John':'B', 'Katy':'A'}
 - **اختبار هل المفتاح موجود في القاموس:**
 
 ```python
-'John' in grades    #  يُعيد True
-'Daniel' in grades  #  يُعيد False
-'B' in grades       #  يُعيد False
+'John' in grades    # → يُعيد True
+'Daniel' in grades  # → يُعيد False
+'B' in grades       # → يُعيد False
 ```
 
 لاحظ أن `'B'` هي **قيمة** لا مفتاح، لذا النتيجة `False`.
@@ -233,18 +233,18 @@ grades = {'Ana':'B', 'Matt':'A', 'John':'B', 'Katy':'A'}
 
 ```python
 grades.keys()
-#  يُعيد dict_keys(['Ana', 'Matt', 'John', 'Katy'])
+# → يُعيد dict_keys(['Ana', 'Matt', 'John', 'Katy'])
 
-list(grades.keys())  #  يُعيد ['Ana', 'Matt', 'John', 'Katy']
+list(grades.keys())  # → يُعيد ['Ana', 'Matt', 'John', 'Katy']
 ```
 
 - **الحصول على كائن قابل للتكرار يشبه مجموعة كل قيم القاموس:**
 
 ```python
 grades.values()
-#  يُعيد dict_values(['B', 'A', 'B', 'A'])
+# → يُعيد dict_values(['B', 'A', 'B', 'A'])
 
-list(grades.values())  #  يُعيد ['B', 'A', 'B', 'A']
+list(grades.values())  # → يُعيد ['B', 'A', 'B', 'A']
 ```
 
 ## الشريحة 15: عمليات القاموس — المرور على المُدخَلات (المفاتيح والقيم معًا)
@@ -261,10 +261,10 @@ grades = {'Ana':'B', 'Matt':'A', 'John':'B', 'Katy':'A'}
 
 ```python
 grades.items()
-#  يُعيد dict_items([('Ana', 'B'), ('Matt', 'A'), ('John', 'B'), ('Katy', 'A')])
+# → يُعيد dict_items([('Ana', 'B'), ('Matt', 'A'), ('John', 'B'), ('Katy', 'A')])
 
 list(grades.items())
-#  يُعيد [('Ana', 'B'), ('Matt', 'A'), ('John', 'B'), ('Katy', 'A')]
+# → يُعيد [('Ana', 'B'), ('Matt', 'A'), ('John', 'B'), ('Katy', 'A')]
 ```
 
 - الاستخدام المعتاد هو المرور على زوج (مفتاح، قيمة):
