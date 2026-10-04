@@ -55,7 +55,7 @@ MMMMMMMMMMMMMMMMMMMDCCCCLVI
 إضافة إلى اختراع نظام القيمة المكانية، اخترع البابلليون أيضًا الخوارزميات «القياسية» التي تعلّمها جميعنا في المدرسة الابتدائية لجمع الأعداد وضربها.
 وقد كانت هذه الخوارزميات أساسية على مرّ العصور لمن يستعمل العدّادات (abaci)، أو البردي، أو القلم والورق، لكن في عصر الحواسيب: هل تظلّ لها فائدة تتجاوز تعذيب تلاميذ الصف الثالث؟
 ولكي نرى لماذا تظلّ هذه الخوارزميات ذات صلةٍ بالغة، دعنا نقارن خوارزمية الضرب البابلونية رقمًا برقم (أي «ضرب المدرسة الابتدائية») بالخوارزمية الساذجة التي تضرب الأعداد عبر الجمع المتكرّر.
-ونبدأ بوصف الخوارزميتين وصفًا رسميًا، انظر [naivemultalg](https://svn.python.org/projects/python/trunk/Objects/longobject.c){.ref} و[gradeschoolalg](/images/introtcs/lec_01_introduction-1.webp){.ref}.
+ونبدأ بوصف الخوارزميتين وصفًا رسميًا، انظر [naivemultalg](#naivemultalg){.ref} و[gradeschoolalg](#gradeschoolalg){.ref}.
 
 
 
@@ -84,13 +84,13 @@ endfor
 return $result$
 ```
 
-كلٌّ من [naivemultalg](/images/introtcs/lec_01_introduction-2.webp){.ref} و[gradeschoolalg](https://goo.gl/zwzpYe){.ref} يفترض أننا نعرف بالفعل كيف نجمع الأعداد، كما يفترض [gradeschoolalg](/images/introtcs/fig-karastubavsgschoolv2.webp){.ref} أيضًا أننا نستطيع ضرب عدد في أُسّ من 10 (وهي بعد كل أمر إزاحة بسيطة).
+كلٌّ من [naivemultalg](#naivemultalg){.ref} و[gradeschoolalg](#gradeschoolalg){.ref} يفترض أننا نعرف بالفعل كيف نجمع الأعداد، كما يفترض [gradeschoolalg](#gradeschoolalg){.ref} أيضًا أننا نستطيع ضرب عدد في أُسّ من 10 (وهي بعد كل أمر إزاحة بسيطة).
 ولنفترض أن $x$ و$y$ عددان صحيحان، كلٌّ منهما $n=20$ رقمًا عشريًا.
 (وهذا يوافق تقريبًا 64 رقمًا ثنائيًا (binary digits)، وهو حجم شائع في كثير من لغات البرمجة.)
-وحساب $x \cdot y$ باستخدام [naivemultalg](https://en.wikipedia.org/wiki/Master_theorem_\(analysis_of_algorithms\){.ref} يعني إضافة $x$ إلى نفسها $y$ مرة، أي (لأن $y$ عدد من $20$ رقمًا) ما لا يقلّ عن $10^{19}$ عملية جمع.
-وبالمقابل، فإن خوارزمية المدرسة الابتدائية (أي [gradeschoolalg](/images/introtcs/lec_01_introduction-4.webp){.ref}) تتضمّن $n^2$ إزاحة وضربًا لأرقام مفردة، وبالتالي تنفّذ $2n^2 = 800$ عملية على أرقام مفردة في أقصى الأحوال.
-ولفهم الفرق، لاحظ أن تلميذًا في المدرسة الابتدائية يستطيع تنفيذ عملية على رقم مفرد في نحو ثانيتين، ولذلك سيحتاج إلى نحو $1,600$ ثانية (أي نحو نصف ساعة) لحساب $x\cdot y$ باستخدام [gradeschoolalg](https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm#Sub-cubic_algorithms){.ref}.
-وبالمقابل، فرغم أن الحاسوب أسرع من الإنسان بمليارات المرّات، لو استخدمنا [naivemultalg](https://en.wikipedia.org/wiki/Group_representation){.ref} لحساب $x\cdot y$ على حاسوب شخصي حديث، لتطلّب الأمر $10^{20}/10^9 = 10^{11}$ ثانية (أي أكثر من ثلاثة آلاف عام!) للوصول إلى النتيجة نفسها.
+وحساب $x \cdot y$ باستخدام [naivemultalg](#naivemultalg){.ref} يعني إضافة $x$ إلى نفسها $y$ مرة، أي (لأن $y$ عدد من $20$ رقمًا) ما لا يقلّ عن $10^{19}$ عملية جمع.
+وبالمقابل، فإن خوارزمية المدرسة الابتدائية (أي [gradeschoolalg](#gradeschoolalg){.ref}) تتضمّن $n^2$ إزاحة وضربًا لأرقام مفردة، وبالتالي تنفّذ $2n^2 = 800$ عملية على أرقام مفردة في أقصى الأحوال.
+ولفهم الفرق، لاحظ أن تلميذًا في المدرسة الابتدائية يستطيع تنفيذ عملية على رقم مفرد في نحو ثانيتين، ولذلك سيحتاج إلى نحو $1,600$ ثانية (أي نحو نصف ساعة) لحساب $x\cdot y$ باستخدام [gradeschoolalg](#gradeschoolalg){.ref}.
+وبالمقابل، فرغم أن الحاسوب أسرع من الإنسان بمليارات المرّات، لو استخدمنا [naivemultalg](#naivemultalg){.ref} لحساب $x\cdot y$ على حاسوب شخصي حديث، لتطلّب الأمر $10^{20}/10^9 = 10^{11}$ ثانية (أي أكثر من ثلاثة آلاف عام!) للوصول إلى النتيجة نفسها.
 
 
 لم تجعل الحواسيب الخوارزميات بالغة.
@@ -106,14 +106,14 @@ return $result$
 ::: {.remark title="المواصفة والتنفيذ وتحليل الخوارزميات." #implspecanarem}
 يتكوّن الوصف الكامل لخوارزمية من ثلاثة مكوّنات:
 
-* __المواصفة__ (specification): __ماذا__ هي المهمة التي تؤدّيها الخوارزمية (مثلًا الضرب في حالة [naivemultalg](http://discreteanalysisjournal.com/article/1245-on-cap-sets-and-the-group-theoretic-approach-to-matrix-multiplication){.ref} و[gradeschoolalg](https://en.wikipedia.org/wiki/AKS_primality_test){.ref}.)
+* __المواصفة__ (specification): __ماذا__ هي المهمة التي تؤدّيها الخوارزمية (مثلًا الضرب في حالة [naivemultalg](#naivemultalg){.ref} و[gradeschoolalg](#gradeschoolalg){.ref}.)
 
-* __التنفيذ__ (implementation): __كيف__ تتحقّق المهمة: ما هو تسلسل التعليمات الذي ينبغي تنفيذه. فرغم أن [naivemultalg](https://en.wikipedia.org/wiki/Non-Euclidean_geometry){.ref} و[gradeschoolalg](https://en.wikipedia.org/wiki/RSA_\(cryptosystem\){.ref} تؤدّيان المهمة الحسابية نفسها (أي لهما _المواصفة_ نفسها)، فإنهما يؤدّيها بطريقتين مختلفتين (أي لهما _تنفيذان_ مختلفان).
+* __التنفيذ__ (implementation): __كيف__ تتحقّق المهمة: ما هو تسلسل التعليمات الذي ينبغي تنفيذه. فرغم أن [naivemultalg](#naivemultalg){.ref} و[gradeschoolalg](#gradeschoolalg){.ref} تؤدّيان المهمة الحسابية نفسها (أي لهما _المواصفة_ نفسها)، فإنهما يؤدّيها بطريقتين مختلفتين (أي لهما _تنفيذان_ مختلفان).
 
-* __التحليل__ (analysis): __لماذا__ يحقّق هذا التسلسل من التعليمات المهمة المطلوبة. سيتضمّن الوصف الكامل لـ[naivemultalg](https://en.wikipedia.org/wiki/Bitcoin){.ref} و[gradeschoolalg](/images/introtcs/lec_01_introduction-5.webp){.ref} _برهانًا_ لكلٍّ من هاتين الخوارزميتين يثبت أن الخوارزمية، على المُدخلَين $x,y$، تُخرج فعلًا $x\cdot y$.
+* __التحليل__ (analysis): __لماذا__ يحقّق هذا التسلسل من التعليمات المهمة المطلوبة. سيتضمّن الوصف الكامل لـ[naivemultalg](#naivemultalg){.ref} و[gradeschoolalg](#gradeschoolalg){.ref} _برهانًا_ لكلٍّ من هاتين الخوارزميتين يثبت أن الخوارزمية، على المُدخلَين $x,y$، تُخرج فعلًا $x\cdot y$.
 
 
-وكثيرًا ما نبيّن، في سياق التحليل، أن الخوارزمية ليست __صحيحة__ فحسب بل __كفؤة__ أيضًا. أي نريد أن نبيّن أنها لا تحسب المهمة المطلوبة فحسب، بل تفعل ذلك في عدد محدَّد من العمليات. فمثلًا تحسب [gradeschoolalg](https://goo.gl/tMsAui){.ref} دالة الضرب على مُدخلات من $n$ رقمًا باستخدام $O(n^2)$ عملية، بينما تحسب [karatsubaalg](https://www.cs.princeton.edu/~chazelle/pubs/algorithm.html){.ref} (المُشرح أدناه) الدالة نفسها باستخدام $O(n^{1.6})$ عملية. (ونُعرِّف هنا رموز $O$ المستخدَمة في [secbigohnotation](http://steiner.math.nthu.edu.tw/disk5/js/computer/1.pdf){.ref}.)
+وكثيرًا ما نبيّن، في سياق التحليل، أن الخوارزمية ليست __صحيحة__ فحسب بل __كفؤة__ أيضًا. أي نريد أن نبيّن أنها لا تحسب المهمة المطلوبة فحسب، بل تفعل ذلك في عدد محدَّد من العمليات. فمثلًا تحسب [gradeschoolalg](#gradeschoolalg){.ref} دالة الضرب على مُدخلات من $n$ رقمًا باستخدام $O(n^2)$ عملية، بينما تحسب [karatsubaalg](#karatsubaalg){.ref} (المُشرح أدناه) الدالة نفسها باستخدام $O(n^{1.6})$ عملية. (ونُعرِّف هنا رموز $O$ المستخدَمة في [secbigohnotation](#secbigohnotation){.ref}.)
 :::
 
 
@@ -123,20 +123,20 @@ return $result$
 ## مثال موسَّع: طريقة أسرع للضرب (اختياري) {#karatsubasec }
 
 ومجرد أن تفكّر في خوارزمية الضرب القياسية رقمًا برقم، تبدو وكأنها «الأفضل بجلاء» طريقةَ ضربِ الأعداد.
-وفي عام 1960 نظَّم الرياضيّ الشهير أندريه كولموغروف ندوةً في جامعة موسكو بطرح توقّعةٍ مفادها أن كل خوارزمية لضرب عددين من $n$ رقمًا تتطلّب عددًا من العمليات الأساسية يتناسب مع $n^2$ (أي $\Omega(n^2)$ عملية، باستخدام ترميز $O$ على النحو المعرَّف في [chapmath](https://www.amazon.com/Exact-Sciences-Antiquity-Neugebauer/dp/0486223329){.ref}).
+وفي عام 1960 نظَّم الرياضيّ الشهير أندريه كولموغروف ندوةً في جامعة موسكو بطرح توقّعةٍ مفادها أن كل خوارزمية لضرب عددين من $n$ رقمًا تتطلّب عددًا من العمليات الأساسية يتناسب مع $n^2$ (أي $\Omega(n^2)$ عملية، باستخدام ترميز $O$ على النحو المعرَّف في [chapmath](#chapmath){.ref}).
 بعبارة أخرى، توقَّع كولموغروف أن مضاعفة عدد الأرقام في أي خوارزمية ضرب ستربّع عدد العمليات الأساسية المطلوبة.
 وكان في الحضور طالبٌ شابّ اسمه أناتولي كاراتسوبا، وفي أقل من أسبوع فكَّد خطأ توقّعة كولموغروف باكتشاف خوارزمية تتطلّب نحو $Cn^{1.6}$ عملية فقط، حيث $C$ ثابت.
 وكلّما ازداد $n$ صار هذا العدد أصغر بكثير من $n^2$، ولذلك تكون خوارزمية كاراتسوبا
 أفضل من خوارزمية المدرسة الابتدائية عندما يكون $n$ كبيرًا. (على سبيل المثال، [لتنفيذ Python](https://svn.python.org/projects/python/trunk/Objects/longobject.c) ينتقل من خوارزمية المدرسة الابتدائية إلى خوارزمية كاراتسوبا للأعداد التي يبلغ طولها 1000 بت أو أكثر.)
-فرغم أن الفرق بين خوارزمية من صنف $O(n^{1.6})$ وأخرى من $O(n^2)$ قد يكون حاسمًا أحيانًا في الممارسة (انظر [algsbeyondarithmetic](https://www.quantamagazine.org/mathematicians-discover-the-perfect-way-to-multiply-20190411/){.ref} أدناه)، فإننا في هذا الكتاب سنُهمل هذه التمييزات في معظمها.
+فرغم أن الفرق بين خوارزمية من صنف $O(n^{1.6})$ وأخرى من $O(n^2)$ قد يكون حاسمًا أحيانًا في الممارسة (انظر [algsbeyondarithmetic](#algsbeyondarithmetic){.ref} أدناه)، فإننا في هذا الكتاب سنُهمل هذه التمييزات في معظمها.
 غير أننا نشرح خوارزمية كاراتسوبا أدناه لأنها مثال جيّد على كيف تكون الخوارزميات مدهشة في كثير من الأحيان، وكذلك أنها عرضٌ لـ_تحليل الخوارزميات_ (analysis of algorithms)، وهو محوريٌّ لهذا الكتاب ولعلم الحاسوب النظري بمجمله.
 
 تستند خوارزمية كاراتسوبا إلى طريقة أسرع في ضرب الأعداد _ذات الرقمين_.
 ولنفترض أن $x,y \in [100]=\{0,\ldots, 99 \}$ زوجًا من الأعداد ذات الرقمين.
 ولنكتب $\overline{x}$ لـ«خانة العشرات» في $x$، و$\underline{x}$ لـ«خانة الآحاد»، بحيث $x = 10\overline{x} + \underline{x}$، ونكتب بالمثل $y = 10\overline{y} + \underline{y}$ حيث $\overline{x},\underline{x},\overline{y},\underline{y} \in [10]$.
-وخوارزمية المدرسة الابتدائية لضرب $x$ و$y$ موضَّحة في [gradeschoolmult](http://jeffe.cs.illinois.edu/teaching/algorithms/){.ref}.
+وخوارزمية المدرسة الابتدائية لضرب $x$ و$y$ موضَّحة في [gradeschoolmult](#gradeschoolmult){.ref}.
 
-![/images/introtcs/lec_01_introduction-1.webp](/images/introtcs/lec_01_introduction-1.webp){#gradeschoolmult .margin  }
+![/images/introtcs/lec_01_introduction-1.webp](/images/introtcs/original-gradeschoolmult.webp){#gradeschoolmult .margin  }
 
 
 ويمكن تصوّر خوارزمية المدرسة الابتدائية على أنها تحوّل مهمة ضرب زوجٍ من الأعداد ذات الرقمين إلى _أربع_ عمليات ضرب لأرقام مفردة، عبر الصيغة
@@ -147,7 +147,7 @@ $$
 
 
 وعامةً، فإن _مضاعفةَ_ عدد الأرقام في المُدخل داخل خوارزمية المدرسة الابتدائية تؤدّي إلى _أربعة أضعاف_ عدد العمليات، أي إلى خوارزمية من رتبة $O(n^2)$.
-وبالمقابل، فإن خوارزمية كاراتسوبا تقوم على الملاحظة أنّ بإمكاننا كتابة [eq:gradeschooltwodigit](http://mathworld.wolfram.com/GeometricProblemsofAntiquity.html){.ref} أيضًا على الصورة
+وبالمقابل، فإن خوارزمية كاراتسوبا تقوم على الملاحظة أنّ بإمكاننا كتابة [eq:gradeschooltwodigit](#eq:gradeschooltwodigit){.ref} أيضًا على الصورة
 
 $$
 (10\overline{x}+\underline{x}) \times (10 \overline{y}+\underline{y}) = (100-10)\overline{x}\overline{y}+10\left[(\overline{x}+\underline{x})(\overline{y}+\underline{y})\right]  -(10-1)\underline{x}\underline{y} \label{eq:karatsubatwodigit}
@@ -155,19 +155,19 @@ $$
 
 
 وهذا يخفّض ضرب العددين $x$ و$y$ كلَّ منهما من رقمين إلى حساب ثلاثة جداءات أبسط: $\overline{x}\overline{y}$، و$\underline{x}\underline{y}$، و$(\overline{x}+\underline{x})(\overline{y}+\underline{y})$.
-وبتكرار الاستراتيجية ذاتها على نحو تكراري (recursive)، يمكننا تخفيض مهمة ضرب عددين من $n$ رقمًا إلى مهمة ضرب _ثلاثة_ أزواج من الأعداد ذات $\floor{n/2}+1$ رقمًا.^[إذا كان $x$ عددًا فإن $\floor{x}$ هي العدد الصحيح الناتج عن تقريبه إلى الأسفل، انظر [notationsec](https://terrytao.wordpress.com/2011/08/10/a-geometric-proof-of-the-impossibility-of-angle-trisection-by-straightedge-and-compass/){.ref}.]
+وبتكرار الاستراتيجية ذاتها على نحو تكراري (recursive)، يمكننا تخفيض مهمة ضرب عددين من $n$ رقمًا إلى مهمة ضرب _ثلاثة_ أزواج من الأعداد ذات $\floor{n/2}+1$ رقمًا.^[إذا كان $x$ عددًا فإن $\floor{x}$ هي العدد الصحيح الناتج عن تقريبه إلى الأسفل، انظر [notationsec](#notationsec){.ref}.]
 ولأننا عند كل مرة نضاعف فيها عدد الأرقام نُضاعف ثلاثيًّا عدد العمليات، فسنتمكّن
 من ضرب أعداد من $n=2^\ell$ رقمًا باستخدام نحو $3^\ell = n^{\log_2 3} \sim n^{1.585}$ عملية.
 
 ما سبق هو الفكرة الحدسية وراء خوارزمية كاراتسوبا، لكنه لا يكفي لتحديدها تحديدًا كاملًا.
 فالوصف الكامل لخوارزمية يتضمّن _مواصفةً دقيقة_ (precise specification) لعملياتها إلى جانب _تحليلها_: أي برهانًا على أن الخوارزمية تفعل بالفعل ما يُفترض أن تفعله.
-وتفصيل عمليات خوارزمية كاراتسوبا معروض في [karatsubaalg](http://www.scottaaronson.com/barbados-2016.pdf){.ref}، بينما تحليلها مقدَّم في [karatsubacorrect](){.ref} و[karatsubaefficient](){.ref}.
+وتفصيل عمليات خوارزمية كاراتسوبا معروض في [karatsubaalg](#karatsubaalg){.ref}، بينما تحليلها مقدَّم في [karatsubacorrect](#karatsubacorrect){.ref} و[karatsubaefficient](#karatsubaefficient){.ref}.
 
 
-![/images/introtcs/lec_01_introduction-2.webp](/images/introtcs/lec_01_introduction-2.webp){#karatsubafig .margin  }
+![/images/introtcs/lec_01_introduction-2.webp](/images/introtcs/original-karatsubatwodigit.webp){#karatsubafig .margin  }
 
 
-![Running time of Karatsuba's algorithm vs. the grade-school algorithm. (Python implementation available [online](https://goo.gl/zwzpYe).) Note the existence of a "cutoff" length, where for sufficiently large inputs Karatsuba becomes more efficient than the grade-school algorithm. The precise cutoff location varies by implementation and platform details, but will always occur eventually.](/images/introtcs/fig-karastubavsgschoolv2.webp){#karatsubaruntimefig .margin  }
+![Running time of Karatsuba's algorithm vs. the grade-school algorithm. (Python implementation available [online](https://goo.gl/zwzpYe).) Note the existence of a "cutoff" length, where for sufficiently large inputs Karatsuba becomes more efficient than the grade-school algorithm. The precise cutoff location varies by implementation and platform details, but will always occur eventually.](/images/introtcs/original-karastubavsgschoolv2.webp){#karatsubaruntimefig .margin  }
 
 
 
@@ -193,11 +193,11 @@ endprocedure
 <iframe src="https://trinket.io/embed/python/9ddd61c11f" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
 
- [karatsubaalg](){.ref} ليس سوى نصف الوصف الكامل لخوارزمية كاراتسوبا.
- والنصف الآخر هو _التحليل_، الذي يتضمّن إثبات أن __(1)__ [karatsubaalg](){.ref} يحسب عملية الضرب فعلًا، و__(2)__ أنه يفعل ذلك باستخدام $O(n^{\log_2 3})$ عملية.
+ [karatsubaalg](#karatsubaalg){.ref} ليس سوى نصف الوصف الكامل لخوارزمية كاراتسوبا.
+ والنصف الآخر هو _التحليل_، الذي يتضمّن إثبات أن __(1)__ [karatsubaalg](#karatsubaalg){.ref} يحسب عملية الضرب فعلًا، و__(2)__ أنه يفعل ذلك باستخدام $O(n^{\log_2 3})$ عملية.
  وقد ننتقل الآن إلى بيان الحقيقتين:
  > ### {.lemma #karatsubacorrect}
- لكل زوجٍ من الأعداد الصحيحة غير السالبة $x,y$، فإن الخوارزمية [karatsubaalg](){.ref}، عند إعطائها المُدخلَين $x,y$، تُخرج $x\cdot y$.
+ لكل زوجٍ من الأعداد الصحيحة غير السالبة $x,y$، فإن الخوارزمية [karatsubaalg](#karatsubaalg){.ref}، عند إعطائها المُدخلَين $x,y$، تُخرج $x\cdot y$.
  
 
 
@@ -221,32 +221,32 @@ x\cdot y =   10^{2m}\overline{x}\overline{y} + 10^{m}\left[ (\overline{x}+\under
  \label{eqkarastubatwo}
 $$
 بما أن الأعداد $\underline{x}$،$\overline{x}$، و$\underline{y}$،$\overline{y}$، و$\overline{x}+\underline{x}$،$\overline{y}+\underline{y}$ جميعها تملك $m+2<n$ رقمًا على الأكثر، فإن فرضية الاستدلال تُرجِع أن القيم $A,B,C$ التي يحسبها الاستدعاءات التكرارية ستحقّق $A=\overline{x}\overline{y}$، و$B=(\overline{x}+\underline{x})(\overline{y}+\underline{y})$، و$C=\underline{x}\underline{y}$.
-وبتعويض هذا في [eqkarastubatwo](){.eqref} نرى أن $x\cdot y$ يساوي القيمة $(10^{2m}-10^m)\cdot A  + 10^m \cdot B +(1-10^m)\cdot C$ التي تحسبها الخوارزمية [karatsubaalg](){.ref}.
+وبتعويض هذا في [eqkarastubatwo](#eqkarastubatwo){.eqref} نرى أن $x\cdot y$ يساوي القيمة $(10^{2m}-10^m)\cdot A  + 10^m \cdot B +(1-10^m)\cdot C$ التي تحسبها الخوارزمية [karatsubaalg](#karatsubaalg){.ref}.
 :::
 
 
 > ### {.lemma #karatsubaefficient}
-إذا كان $x,y$ عددين صحيحين من $n$ رقم على الأكثر، فإن الخوارزمية [karatsubaalg](){.ref} ستأخذ $O(n^{\log_2 3})$ عملية على المُدخلَين $x,y$.
+إذا كان $x,y$ عددين صحيحين من $n$ رقم على الأكثر، فإن الخوارزمية [karatsubaalg](#karatsubaalg){.ref} ستأخذ $O(n^{\log_2 3})$ عملية على المُدخلَين $x,y$.
 
 ::: {.proof data-ref="karatsubaefficient"}
-يوضّح [karatsubafig](){.ref} الفكرة وراء البرهان، وسنكتفي هنا برسم مختصر لها، تاركين استكمال التفاصيل إلى [karatsuba-ex](){.ref}.
-والبرهان أيضًا بالاستدلال. نُعرِّف $T(n)$ لتكون أقصى عدد خطوات التي تأخذها الخوارزمية [karatsubaalg](){.ref} على مُدخلات طولها $n$ على الأكثر.
-ولأنّ الحالة الأساس $n\leq 4$ ينفّذ فيها [karatsuba-ex](){.ref} عددًا ثابتًا من العمليات الحسابية، فنحن نعرف أن $T(4) \leq c$ بالنسبة إلى ثابت $c$ ما، وأنّه من أجل $n>4$ تتحقّق المعادلة التكرارية
+يوضّح [karatsubafig](#karatsubafig){.ref} الفكرة وراء البرهان، وسنكتفي هنا برسم مختصر لها، تاركين استكمال التفاصيل إلى [karatsuba-ex](#karatsuba-ex){.ref}.
+والبرهان أيضًا بالاستدلال. نُعرِّف $T(n)$ لتكون أقصى عدد خطوات التي تأخذها الخوارزمية [karatsubaalg](#karatsubaalg){.ref} على مُدخلات طولها $n$ على الأكثر.
+ولأنّ الحالة الأساس $n\leq 4$ ينفّذ فيها [karatsuba-ex](#karatsuba-ex){.ref} عددًا ثابتًا من العمليات الحسابية، فنحن نعرف أن $T(4) \leq c$ بالنسبة إلى ثابت $c$ ما، وأنّه من أجل $n>4$ تتحقّق المعادلة التكرارية
 $$
 T(n) \leq 3T(\floor{n/2}+1) + c' n \label{eqkaratsubarecursion}
 $$
 بالنسبة إلى ثابت $c'$ ما (باستعمال الحقيقة إن الجمع يمكن إنجازه في $O(n)$ عملية).
  
-تنحلّ المعادلة التكرارية [eqkaratsubarecursion](){.eqref} إلى $O(n^{\log_2 3})$.
-والحدس الكامن وراء ذلك معروض في [karatsubafig](){.ref}، وهذه أيضًا نتيجةٌ لما يسمى بـ[«نظرية المُهيمن»](https://en.wikipedia.org/wiki/Master_theorem_\(analysis_of_algorithms\)) في المعادلات التكرارية.
-وكما ذُكر أعلاه، فإننا نترك إتمام البرهان للقارئ في [karatsuba-ex](){.ref}.
+تنحلّ المعادلة التكرارية [eqkaratsubarecursion](#eqkaratsubarecursion){.eqref} إلى $O(n^{\log_2 3})$.
+والحدس الكامن وراء ذلك معروض في [karatsubafig](#karatsubafig){.ref}، وهذه أيضًا نتيجةٌ لما يسمى بـ[«نظرية المُهيمن»](https://en.wikipedia.org/wiki/Master_theorem_\(analysis_of_algorithms\)) في المعادلات التكرارية.
+وكما ذُكر أعلاه، فإننا نترك إتمام البرهان للقارئ في [karatsuba-ex](#karatsuba-ex){.ref}.
 :::
 
 
 
 
 
-![/images/introtcs/lec_01_introduction-4.webp](/images/introtcs/lec_01_introduction-4.webp){#karatsuba-fig   }
+![/images/introtcs/lec_01_introduction-4.webp](/images/introtcs/original-karatsuba_analysis2.webp){#karatsuba-fig   }
 
 
 
@@ -323,7 +323,7 @@ $$
 وسببٌ آخر لدراسة نتائج الاستحالة أنها تقابل الحدود الأساسية لعالمنا.
 بمعنى آخر، فإن نتائج الاستحالة هي _قوانين طبيعة_.
 
-وهذه بعض أمثلة نتائج الاستحالة خارج علم الحاسوب (انظر [bnotesintrosec](){.ref} للمزيد عنها).
+وهذه بعض أمثلة نتائج الاستحالة خارج علم الحاسوب (انظر [bnotesintrosec](#bnotesintrosec){.ref} للمزيد عنها).
 ففي الفيزياء، تقابل استحالة بناء آلة _الحركة الدائمة_ (perpetual motion machine) _قانون حفظ الطاقة_.
 وتقابل استحالة بناء محرّك حراري يتجاوز حدّ كارنو القانون الثاني للديناميكا الحرارية، بينما تُعدّ استحالة نقل المعلومات بسرعة تفوق سرعة الضوء إحدى ركائز النسبية الخاصة.
 وفي الرياضيات، رغم أننا جميعًا تعلّمنا في المدرسة الثانوية صيغة حلّ المعادلات التربيعية، فإن استحالة تعميم هذه الصيغة على معادلات من الدرجة الخامسة أو أعلى ولدت _نظرية المجموعات_.
@@ -368,7 +368,7 @@ $$
 
 ### الاعتماديات بين الفصول
 
-ينقسم هذا الكتاب إلى الأجزاء التالية، انظر [dependencystructurefig](){.ref}.
+ينقسم هذا الكتاب إلى الأجزاء التالية، انظر [dependencystructurefig](#dependencystructurefig){.ref}.
 
 * __تمهيديات:__ المقدمة، الخلفية الرياضية، وتمثيل الأشياء كنصوص.
 
@@ -382,19 +382,19 @@ $$
 
 * __الجزء الخامس: مواضيع متقدّمة:__ علم التعمية، والبراهين والخوارزميات (البراهين التفاعلية وبراهين المعرفة الصفرية، وتطابق Curry-Howard)، والحوسبة الكمّية.
 
-![/images/introtcs/lec_01_introduction-5.webp](/images/introtcs/lec_01_introduction-5.webp){#dependencystructurefig   }
+![/images/introtcs/lec_01_introduction-5.webp](/images/introtcs/original-dependencystructure.webp){#dependencystructurefig   }
 
 
 ويسير الكتاب إلى حدٍّ كبير بترتيبٍ خطّي، مع بناء كل فصلٍ على ما قبله، مع الاستثناءات التالية:
 
-* موضوعات حساب لامدا ([lambdacalculussec](){.ref} و[lambdacalculussec](){.ref})، ومبرهنة عدم اكتمال غودل ([godelchap](){.ref})، والأوتوماتا والتعبيرات النمطية وقواعد السياق الحر ([restrictedchap](){.ref})، والحوسبة المحدودة المساحة ([spacechap](){.ref})، لا تُستعمل في الفصول التالية. ولذلك يمكنك أن تختار تغطيتها أو تخطّي أيّ مجموعة فرعية منها.
+* موضوعات حساب لامدا ([lambdacalculussec](#lambdacalculussec){.ref} و[lambdacalculussec](#lambdacalculussec){.ref})، ومبرهنة عدم اكتمال غودل ([godelchap](#godelchap){.ref})، والأوتوماتا والتعبيرات النمطية وقواعد السياق الحر ([restrictedchap](#restrictedchap){.ref})، والحوسبة المحدودة المساحة ([spacechap](#spacechap){.ref})، لا تُستعمل في الفصول التالية. ولذلك يمكنك أن تختار تغطيتها أو تخطّي أيّ مجموعة فرعية منها.
 
 * لا يملك الجزء الثاني (الحوسبة المنتظمة / آلات تورينج) اعتمادًا قويًّا على الجزء الأول (الحوسبة المتناهية / الدوائر المنطقية)، ومن الممكن تدريسهما بترتيبٍ معكوس مع تعديل طفيف. إذ تُستعمل الدوائر المنطقية في الجزء الثالث (الحوسبة الكفؤة) في نتائج من قبيل $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ ومبرهنة كوك-ليفن، وكذلك في الجزء الرابع (من أجل $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$ وإزالة العشوائية) والجزء الخامس (وبالذات في علم التعمية والحوسبة الكمّية).
 
-* جميع الفصول في [advancedpart](){.ref} (المواضيع المتقدّمة) مستقلّة عن بعضها ويمكن تغطيتها بأي ترتيب.
+* جميع الفصول في [advancedpart](#advancedpart){.ref} (المواضيع المتقدّمة) مستقلّة عن بعضها ويمكن تغطيتها بأي ترتيب.
 
 
-ويمكن لمقررٍ مبنيٌّ على هذا الكتاب أن يستعمل الأجزاء الأول والثاني والثالث كلّها (مع تجاوز بعضها أو كلّها من حساب لامدا، أو [godelchap](){.ref}، أو [restrictedchap](){.ref}، أو [spacechap](){.ref})، ثمّ أن يغطّي إما الجزء الرابع كلّه (الحوسبة العشوائية) أو بعضه، وأن يضيف «رشةً» من المواضيع المتقدّمة من الجزء الخامس بحسب اهتمام الطالب أو المُدرِّس.
+ويمكن لمقررٍ مبنيٌّ على هذا الكتاب أن يستعمل الأجزاء الأول والثاني والثالث كلّها (مع تجاوز بعضها أو كلّها من حساب لامدا، أو [godelchap](#godelchap){.ref}، أو [restrictedchap](#restrictedchap){.ref}، أو [spacechap](#spacechap){.ref})، ثمّ أن يغطّي إما الجزء الرابع كلّه (الحوسبة العشوائية) أو بعضه، وأن يضيف «رشةً» من المواضيع المتقدّمة من الجزء الخامس بحسب اهتمام الطالب أو المُدرِّس.
 
 
 
@@ -426,7 +426,7 @@ e. $n!$ عملية.
 :::
 
 ::: {.exercise title="فائدة عدم وجود خوارزمية"}
-ذكرنا في هذا الفصل عدة شركات أُسِّست على أساس اكتشاف خوارزميات جديدة. فهل يمكنك أن تعطي مثالًا لشركة أُسِّست على أساس _عدم وجود_ خوارزمية؟ انظر الهامش للحصول على تلميح.^[وكما سنرى في الفصل [chapcryptography](){.ref}، فإن كل شركة تقريبًا تعتمد على علم التعمية تحتاج إلى افتراض _عدم وجود_ خوارزميات بعينها. وعلى وجه التحديد، أُسِّست شركة [RSA Security](https://goo.gl/tMsAui) على أساس أمان نظام RSA المُعمّى، الذي يفترض _عدم وجود_ خوارزمية كفؤة لحساب التحليل الأوّل للأعداد الصحيحة الكبيرة إلى عواملها الأولية.]
+ذكرنا في هذا الفصل عدة شركات أُسِّست على أساس اكتشاف خوارزميات جديدة. فهل يمكنك أن تعطي مثالًا لشركة أُسِّست على أساس _عدم وجود_ خوارزمية؟ انظر الهامش للحصول على تلميح.^[وكما سنرى في الفصل [chapcryptography](#chapcryptography){.ref}، فإن كل شركة تقريبًا تعتمد على علم التعمية تحتاج إلى افتراض _عدم وجود_ خوارزميات بعينها. وعلى وجه التحديد، أُسِّست شركة [RSA Security](https://goo.gl/tMsAui) على أساس أمان نظام RSA المُعمّى، الذي يفترض _عدم وجود_ خوارزمية كفؤة لحساب التحليل الأوّل للأعداد الصحيحة الكبيرة إلى عواملها الأولية.]
 :::
 
 ::: {.exercise title="تحليل خوارزمية كاراتسوبا" #karatsuba-ex}

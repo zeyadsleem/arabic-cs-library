@@ -19,9 +19,9 @@ source: https://introtcs.org/
 
 
 
-كما يقول اقتباس [chapinfinite](/images/introtcs/lec_06_loops-1.webp){.ref}، فإن الخوارزمية هي «جواب متناهٍ على عدد لا نهائي من الأسئلة».
+كما يقول اقتباس [chapinfinite](#chapinfinite){.ref}، فإن الخوارزمية هي «جواب متناهٍ على عدد لا نهائي من الأسئلة».
 ولكي نكتب خوارزمية، نحتاج إلى تدوين مجموعة متناهية من التعليمات التي تتيح لنا الحساب على مداخل بطول اعتباطي.
-ولكي نصف خوارزمية وننفّذها، نحتاج إلى المكوّنات التالية (انظر [algcomponentfig](/images/introtcs/fig-chaploopoverview.webp){.ref}):
+ولكي نصف خوارزمية وننفّذها، نحتاج إلى المكوّنات التالية (انظر [algcomponentfig](#algcomponentfig){.ref}):
 
 * مجموعة التعليمات المتناهية التي يتعيّن تنفيذها.
 
@@ -34,7 +34,7 @@ source: https://introtcs.org/
 * إذا كانت لدينا مجموعة متناهية من التعليمات فحسب، بينما قد يكون مدخلنا بطول اعتباطي، فسنحتاج إلى _تكرار_ (_repeat_) التعليمات (أي، _العودة_ عبر الحلقة). ونحتاج إلى آلية تقرّر متى نكرّر ومتى نتوقّف.
 
 
-![/images/introtcs/lec_06_loops-1.webp](/images/introtcs/lec_06_loops-1.webp){#algcomponentfig .margin}
+![/images/introtcs/lec_06_loops-1.webp](/images/introtcs/original-algcomponents.webp){#algcomponentfig .margin}
 
 
 ::: {.nonmath}
@@ -47,15 +47,15 @@ source: https://introtcs.org/
 
 * توسّع _لغة البرمجة NAND-TM_ (NAND-TM Programming language) لغة NAND-CIRC بمفهوم _الحلقات_ (loops) و_المصفوفات_ (arrays) للحصول على برامج متناهية تستطيع حساب دالة بمدخل بطول اعتباطي.
 
-تبيّن أن هذين النموذجين _متكافئان_ (equivalent). وفي الواقع، إنهما متكافئان مع كثير من نماذج الحوسبة الأخرى، بما فيها لغات البرمجة مثل C وLisp وPython وJavaScript وغيرها. وسنناقش هذه الفكرة، المعروفة بـ_تكافؤ تورينج_ (Turing equivalence) أو _اكتمال تورينج_ (Turing completeness)، في [chapequivalentmodels](https://www.loc.gov/pictures/item/2016838906/){.ref}.
-انظر [chaploopoverviewfig](/images/introtcs/fig-HumanComputers.webp){.ref} لنظرة عامّة على النماذج المقدَّمة في هذا الفصل، و[chapequivalentmodels](https://www.cs.washington.edu/building/art/SPTM){.ref}.
+تبيّن أن هذين النموذجين _متكافئان_ (equivalent). وفي الواقع، إنهما متكافئان مع كثير من نماذج الحوسبة الأخرى، بما فيها لغات البرمجة مثل C وLisp وPython وJavaScript وغيرها. وسنناقش هذه الفكرة، المعروفة بـ_تكافؤ تورينج_ (Turing equivalence) أو _اكتمال تورينج_ (Turing completeness)، في [chapequivalentmodels](#chapequivalentmodels){.ref}.
+انظر [chaploopoverviewfig](#chaploopoverviewfig){.ref} لنظرة عامّة على النماذج المقدَّمة في هذا الفصل، و[chapequivalentmodels](#chapequivalentmodels){.ref}.
 :::
 
 
 
 
 
-![Overview of our models for finite and unbounded computation. In the previous chapters we study the computation of _finite functions_, which are functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ for some fixed $n,m$, and modeled computing these functions using circuits or straight-line programs. In this chapter we study computing _unbounded_ functions of the form $F:\{0,1\}^* \rightarrow \{0,1\}^m$ or $F:\{0,1\}^* \rightarrow \{0,1\}^*$. We model computing these functions using _Turing Machines_ or (equivalently) NAND-TM programs, which add the notion of _loops_ to the NAND-CIRC programming language. In [chapequivalentmodels](/images/introtcs/fig-SPTM.webp){.ref} we will show that these models are equivalent to many other models, including RAM machines, the $\lambda$ calculus, and all the common programming languages including C, Python, Java, JavaScript, etc.](/images/introtcs/fig-turingmachinecomponents.webp){#chaploopoverviewfig  }
+![Overview of our models for finite and unbounded computation. In the previous chapters we study the computation of _finite functions_, which are functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ for some fixed $n,m$, and modeled computing these functions using circuits or straight-line programs. In this chapter we study computing _unbounded_ functions of the form $F:\{0,1\}^* \rightarrow \{0,1\}^m$ or $F:\{0,1\}^* \rightarrow \{0,1\}^*$. We model computing these functions using _Turing Machines_ or (equivalently) NAND-TM programs, which add the notion of _loops_ to the NAND-CIRC programming language. In [chapequivalentmodels](#chapequivalentmodels){.ref} we will show that these models are equivalent to many other models, including RAM machines, the $\lambda$ calculus, and all the common programming languages including C, Python, Java, JavaScript, etc.](/images/introtcs/original-chaploopoverview.webp){#chaploopoverviewfig  }
 
 
 
@@ -71,13 +71,13 @@ source: https://introtcs.org/
 
 
 
-![/images/introtcs/lec_06_loops-2.webp](/images/introtcs/lec_06_loops-2.webp){#turingrunning .margin  }
+![/images/introtcs/lec_06_loops-2.webp](/images/introtcs/original-alan-turing-running.webp){#turingrunning .margin  }
 
 
 «جدّ» كل نماذج الحوسبة هو _آلة تورينج_.
-عُرِّفت آلات تورينج سنة 1936 على يد آلان تورينج، في محاولة لالتقاط رسميّ لكل الدوال التي يمكن أن يحسبها «حاسوبون» (computers) من البشر (انظر [humancomputersfig](https://turingmachinesimulator.com/){.ref}) ويتبعون مجموعة قواعد محدَّدة تمامًا، مثل الخوارزميات القياسية للجمع أو الضرب.
+عُرِّفت آلات تورينج سنة 1936 على يد آلان تورينج، في محاولة لالتقاط رسميّ لكل الدوال التي يمكن أن يحسبها «حاسوبون» (computers) من البشر (انظر [humancomputersfig](#humancomputersfig){.ref}) ويتبعون مجموعة قواعد محدَّدة تمامًا، مثل الخوارزميات القياسية للجمع أو الضرب.
 
-![Until the advent of electronic computers, the word "computer" was used to describe a person that performed calculations. Most of these "human computers" were women, and they were absolutely essential to many achievements, including mapping the stars, breaking the Enigma cipher, and the NASA space mission; see also the bibliographical notes. Photo from [National Photo Company Collection](https://www.loc.gov/pictures/item/2016838906/); see also  [@sobel2017the].](http://rendell-attic.org/gol/TMapplet/index.htm){#humancomputersfig .margin  }
+![Until the advent of electronic computers, the word "computer" was used to describe a person that performed calculations. Most of these "human computers" were women, and they were absolutely essential to many achievements, including mapping the stars, breaking the Enigma cipher, and the NASA space mission; see also the bibliographical notes. Photo from [National Photo Company Collection](https://www.loc.gov/pictures/item/2016838906/); see also  [@sobel2017the].](/images/introtcs/original-HumanComputers.webp){#humancomputersfig .margin  }
 
 تصوّر تورينج هذا الشخص بصفته يملك ما يشاء من «ورق مسودّة» (scratch paper).
 وللبساطة، يمكننا أن نتعامل مع هذه الورقة المسودّة على أنها قطعة ورق مربّعات ببعد واحد (أو _شريط_ (_tape_) كما يُسمّى عادةً).
@@ -85,12 +85,12 @@ source: https://introtcs.org/
 في أي لحظة من الزمن، يمكن للشخص أن يقرأ من خليّة واحدة من الورق ويكتب فيها. واستنادًا إلى محتوى هذه الخلية، يمكن للشخص أن يحدّث حالته الذهنية المتناهية، و/أو ينتقل إلى الخلية المجاورة مباشرةً على اليمين أو اليسار.
 
 
-![Steam-powered Turing machine mural, painted by CSE grad students at the University of Washington on the night before spring qualifying examinations, 1987. Image from [https://www.cs.washington.edu/building/art/SPTM](https://www.cs.washington.edu/building/art/SPTM). ](https://github.com/boazbk/tcscode){#steamturingmachine .margin  }
+![Steam-powered Turing machine mural, painted by CSE grad students at the University of Washington on the night before spring qualifying examinations, 1987. Image from [https://www.cs.washington.edu/building/art/SPTM](https://www.cs.washington.edu/building/art/SPTM). ](/images/introtcs/original-SPTM.webp){#steamturingmachine .margin  }
 
 
 
 نمذج تورينج عملية حسابية كهذه بـ«آلة» تحافظ على إحدى $k$ حالات.
-في كل لحظة من الزمن، تقرأ الآلة من «شريط عملها» رمزًا واحدًا من أبجدية متناهية $\Sigma$، وتستخدمه لتحديث حالتها، وللكتابة على الشريط، وللانتقال ربما إلى خليّة مجاورة (انظر [turing-machine-fig](/images/introtcs/lec_06_loops-6.webp){.ref}).
+في كل لحظة من الزمن، تقرأ الآلة من «شريط عملها» رمزًا واحدًا من أبجدية متناهية $\Sigma$، وتستخدمه لتحديث حالتها، وللكتابة على الشريط، وللانتقال ربما إلى خليّة مجاورة (انظر [turing-machine-fig](#turing-machine-fig){.ref}).
 ولحساب دالة $F$ باستخدام هذه الآلة، نهيّئ الشريط بالمدخل $x\in \{0,1\}^*$، ويكون هدفنا ضمان أن يحتوي الشريط على القيمة $F(x)$ في نهاية الحساب.
 وبالتحديد، فإن حساب آلة تورينج $M$ ذات $k$ حالة والأبجدية $\Sigma$ على المدخل $x\in \{0,1\}^*$ يسير كما يلي:
 
@@ -107,7 +107,7 @@ source: https://introtcs.org/
 
 * عندما تتوقّف الآلة، فإن خرجها هو السلسلة الثنائية التي تُقرأ من الشريط من بدايته حتى أول موضع يحتوي فيه على الرمز $\varnothing$، ثم إخراج كل رموز $0$ و$1$ بالترتيب، مع إسقاط الرمز $\triangleright$ الأولي إن وُجد، وكذلك الرمز $\varnothing\) الأخير.
 
-![The components of a Turing Machine. Note how they correspond to the general components of algorithms as described in [algcomponentfig](https://goo.gl/bnNsjo){.ref}.](/images/introtcs/lec_06_loops-7.webp){#turingmachinecomponentsfig .margin }
+![The components of a Turing Machine. Note how they correspond to the general components of algorithms as described in [algcomponentfig](#algcomponentfig){.ref}.](/images/introtcs/original-turingmachinecomponents.webp){#turingmachinecomponentsfig .margin }
 
 ### مثال موسَّع:  آلة تورينج للكلمات المتناظرة  { #turingmachinepalindrome }
 
@@ -161,7 +161,7 @@ State, Label
 
 
 
-![/images/introtcs/lec_06_loops-5.webp](/images/introtcs/lec_06_loops-5.webp){#turing-machine-fig   }
+![/images/introtcs/lec_06_loops-5.webp](/images/introtcs/original-turingmachine.webp){#turing-machine-fig   }
 
 
 التعريف الرسمي لآلات تورينج هو كما يلي:
@@ -205,7 +205,7 @@ $\delta_M:[k]\times \Sigma \rightarrow [k] \times \Sigma  \times \{\mathsf{L},\m
 وتستخدم نصوص أخرى أعرافًا مختلفة، لذا قد يبدو تعريفها الرياضي لآلة تورينج مختلفًا في ظاهره.
 غير أن هذه التعريفات تصف العملية الحاسوبية نفسها، وتتمتع بالقدرات الحاسوبية نفسها.
 لذلك فهي متكافئة رغم اختلافاتها السطحية.
-انظر [chaploopnotes](https://esolangs.org/wiki/Brainfuck){.ref} لمقارنة بين [TM-def](){.ref} وطريقة تعريف آلات تورينج في نصوص مثل Sipser [@SipserBook].
+انظر [chaploopnotes](#chaploopnotes){.ref} لمقارنة بين [TM-def](#TM-def){.ref} وطريقة تعريف آلات تورينج في نصوص مثل Sipser [@SipserBook].
 
 
 
@@ -220,8 +220,8 @@ $\delta_M:[k]\times \Sigma \rightarrow [k] \times \Sigma  \times \{\mathsf{L},\m
 نقول إن الدالة $F$ _قابلة للحساب_ (_computable_) إذا وُجدت آلة تورينج $M$ تحسبها.
 :::
 
-قد يبدو تعريف الدالة بأنها «قابلة للحساب» إذا وفقط إذا أمكن حسابها بآلة تورينج أمرًا «متهوّرًا»، لكن كما سنرى في [chapequivalentmodels](){.ref}، فإن القابلية للحساب بالمعنى المبيَّن في [computablefuncdef](){.ref} تكافئ القابلية للحساب في أي نموذج معقول للحوسة تقريبًا.
-وتُعرف هذه العبارة بـ_أطروحة تشرتش-تورينج_ (_Church-Turing Thesis_). (وبخلاف _أطروحة تشرتش-تورينج الموسَّعة_ (_extended_) التي ناقشناها في [PECTTsec](){.ref}، فإن أطروحة تشرتش-تورينج نفسها مقبولة على نطاق واسع ولا توجد أجهزة مرشّحة لمهاجمتها.)
+قد يبدو تعريف الدالة بأنها «قابلة للحساب» إذا وفقط إذا أمكن حسابها بآلة تورينج أمرًا «متهوّرًا»، لكن كما سنرى في [chapequivalentmodels](#chapequivalentmodels){.ref}، فإن القابلية للحساب بالمعنى المبيَّن في [computablefuncdef](#computablefuncdef){.ref} تكافئ القابلية للحساب في أي نموذج معقول للحوسة تقريبًا.
+وتُعرف هذه العبارة بـ_أطروحة تشرتش-تورينج_ (_Church-Turing Thesis_). (وبخلاف _أطروحة تشرتش-تورينج الموسَّعة_ (_extended_) التي ناقشناها في [PECTTsec](#PECTTsec){.ref}، فإن أطروحة تشرتش-تورينج نفسها مقبولة على نطاق واسع ولا توجد أجهزة مرشّحة لمهاجمتها.)
 
 ::: {.bigidea #definecompidea }
 يمكننا أن نعرّف بدقّة ما يعنيه أن تكون الدالة قابلة للحساب بواسطة _أي خوارزمية ممكنة_.
@@ -249,11 +249,11 @@ $$ \text{Functions} \;\neq\; \text{Programs} \;.$$
 
 
 ::: {.remark title="الدوال مقابل اللغات" #decidablelanguagesrem}
-كما ناقشنا في [languagessec](){.ref}، تستخدم نصوص كثيرة مصطلح «اللغات» (_languages_) بدلًا من الدوال للإشارة إلى المهام الحاسوبية.
+كما ناقشنا في [languagessec](#languagessec){.ref}، تستخدم نصوص كثيرة مصطلح «اللغات» (_languages_) بدلًا من الدوال للإشارة إلى المهام الحاسوبية.
 نقول إن آلة تورينج $M$ _تقرّر_ (_decides_) لغة $L$ إذا كان لكل مدخل $x\in \{0,1\}^*$ تُخرج $M(x)$ القيمة $1$ إذا وفقط إذا كان $x\in L$.
 وهذا يكافئ حساب الدالة البوليانية  $F:\{0,1\}^* \rightarrow \{0,1\}$ المعرَّفة بأن $F(x)=1$ إذا وفقط إذا كان $x\in L$.
 نقول إن اللغة $L$ _قابلة للقرار_ (_decidable_) إذا وُجدت آلة تورينج $M$ تقرّرها.
-ولأسباب تاريخية، تسمّي بعض النصوص هذه اللغات أيضًا _تعاودية_ (_recursive_)، ولهذا يُستخدم الحرف $\mathbf{R}$ غالبًا للدلالة على مجموعة الدوال البوليانية القابلة للحساب / اللغات القابلة للقرار المعرَّفة في [classRdef](){.ref}.
+ولأسباب تاريخية، تسمّي بعض النصوص هذه اللغات أيضًا _تعاودية_ (_recursive_)، ولهذا يُستخدم الحرف $\mathbf{R}$ غالبًا للدلالة على مجموعة الدوال البوليانية القابلة للحساب / اللغات القابلة للقرار المعرَّفة في [classRdef](#classRdef){.ref}.
 
 في هذا الكتاب سنتمسّك بمصطلح _الدوال_ بدلًا من اللغات، لكن جميع التعريفات والنتائج يمكن ترجمتها بسهولة ذهابًا وإيابًا باستخدام التكافؤ بين الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ واللغة $L = \{ x\in \{0,1\}^* \;|\; F(x) = 1 \}$.
 :::
@@ -270,7 +270,7 @@ $$ \text{Functions} \;\neq\; \text{Programs} \;.$$
 فمثلًا، من السهل جدًا أن نوجد آلة تورينج لا تُخرج أبدًا $\mathsf{H}$ في دالة انتقالها، وبالتالي لا تتوقّف أبدًا.
 
 
-إذا فشلت آلة $M$ في التوقّف وإنتاج خرج على بعض المدخل $x$، فإنها لا تستطيع حساب أي دالة كلية $F$، لأننا بكل وضوح، على المدخل $x$، ستفشل $M$ في إخراج $F(x)$. غير أن $M$ تستطيع مع ذلك حساب _دالة جزئية_ (_partial function_).^[الدالة الجزئية $F$ من مجموعة $A$ إلى مجموعة $B$ هي دالة معرَّفة على _مجموعة جزئية_ من $A$ فقط (انظر [functionsec](){.ref}). يمكننا أيضًا التفكير في مثل هذه الدالة على أنها تُسقط $A$ على $B \cup \{ \bot \}$ حيث $\bot$ رمز «فشل» خاص بحيث $F(a)=\bot$  يدل على أن الدالة $F$ غير معرَّفة على $a$.]
+إذا فشلت آلة $M$ في التوقّف وإنتاج خرج على بعض المدخل $x$، فإنها لا تستطيع حساب أي دالة كلية $F$، لأننا بكل وضوح، على المدخل $x$، ستفشل $M$ في إخراج $F(x)$. غير أن $M$ تستطيع مع ذلك حساب _دالة جزئية_ (_partial function_).^[الدالة الجزئية $F$ من مجموعة $A$ إلى مجموعة $B$ هي دالة معرَّفة على _مجموعة جزئية_ من $A$ فقط (انظر [functionsec](#functionsec){.ref}). يمكننا أيضًا التفكير في مثل هذه الدالة على أنها تُسقط $A$ على $B \cup \{ \bot \}$ حيث $\bot$ رمز «فشل» خاص بحيث $F(a)=\bot$  يدل على أن الدالة $F$ غير معرَّفة على $a$.]
 
 فمثلًا، تأمّل الدالة الجزئية $DIV$ التي على المدخل زوج $(a,b)$ من الأعداد الطبيعية تُخرج $\ceil{a/b}$ إذا كان $b > 0$، وتكون غير معرَّفة في غير ذلك.
  يمكننا تعريف آلة تورينج $M$ تحسب $DIV$ على المدخل $a,b$ بإخراج أول $c=0,1,2,\ldots$ بحيث $cb \geq a$. فإذا كان $a>0$ و$b=0$ فإن الآلة $M$ لن تتوقّف أبدًا، لكن هذا مقبول، لأن $DIV$ غير معرَّفة على هذه المدخلات. وإذا كان $a=0$ و$b=0$، فإن الآلة $M$ ستُخرج $0$، وهذا أيضًا مقبول، لأننا لا نباله بما يُخرجه البرنامج على المدخلات التي تكون $DIV$ فيها غير معرَّفة. رسميًا، نعرّف قابلية حساب الدوال الجزئية كما يلي:
@@ -281,7 +281,7 @@ $$ \text{Functions} \;\neq\; \text{Programs} \;.$$
 نقول إن الدالة $F$ (الجزئية أو الكلية) _قابلة للحساب_ إذا وُجدت آلة تورينج تحسبها.
 :::
 
-لاحظ أنه إذا كانت $F$ دالة كلية، فإنها معرَّفة على كل $x\in \{0,1\}^*$، وبالتالي في هذه الحالة يكون [computablepartialfuncdef](){.ref} مطابقًا لـ[computablefuncdef](){.ref}.
+لاحظ أنه إذا كانت $F$ دالة كلية، فإنها معرَّفة على كل $x\in \{0,1\}^*$، وبالتالي في هذه الحالة يكون [computablepartialfuncdef](#computablepartialfuncdef){.ref} مطابقًا لـ[computablefuncdef](#computablefuncdef){.ref}.
 
 
 ::: {.remark title="رمز بوت" #botsymbol}
@@ -289,7 +289,7 @@ $$ \text{Functions} \;\neq\; \text{Programs} \;.$$
 إذا فشلت آلة تورينج $M$ في التوقّف على بعض المدخل $x\in \{0,1\}^*$، فإننا نرمز لذلك بـ$M(x) = \bot$. وهذا _لا يعني_ أن $M$ تُخرج ترميزًا ما للرمز $\bot$، بل يعني أن $M$ تدخل في حلقة لا نهائية عند إعطائها $x$ كمدخل.
 
 إذا كانت الدالة الجزئية $F$ غير معرَّفة على $x$، يمكننا أيضًا كتابة $F(x) = \bot$.
-لذلك قد يظن المرء أن [computablepartialfuncdef](){.ref} يمكن تبسيطه إلى اشتراط أن $M(x) = F(x)$ لكل $x\in \{0,1\}^*$، وهو ما يعني أن $M$ تتوقّف على $x$ لكل $x$ إذا وفقط إذا كانت $F$ معرَّفة على $x$.
+لذلك قد يظن المرء أن [computablepartialfuncdef](#computablepartialfuncdef){.ref} يمكن تبسيطه إلى اشتراط أن $M(x) = F(x)$ لكل $x\in \{0,1\}^*$، وهو ما يعني أن $M$ تتوقّف على $x$ لكل $x$ إذا وفقط إذا كانت $F$ معرَّفة على $x$.
 لكن ليس هذا هو الحال: لكي تحسب آلة تورينج $M$ دالة جزئية $F$، ليس من _الضروري_ أن تدخل $M$ في حلقة لا نهائية على المدخلات $x$ التي تكون $F$ غير معرَّفة عليها.
 كل ما يلزم هو أن تُخرج $M$ القيمة $F(x)$ على قيم $x$ التي تكون $F$ معرَّفة عليها: أما على المدخلات الأخرى فيجوز أن تُخرج $M$ قيمة اعتباطية مثل $0$ أو $1$ أو أي شيء آخر، أو ألا تتوقّف أصلًا.
 ولنستعير مصطلحًا من لغة البرمجة `C`، فإن ما تفعله $M$ على المدخلات $x$ التي تكون $F$ غير معرَّفة عليها هو «سلوك غير معرّف» (_undefined behavior_).
@@ -300,7 +300,7 @@ $$ \text{Functions} \;\neq\; \text{Programs} \;.$$
 
 اسم «آلة تورينج» وما يرتبط به من «شريط» و«رأس» يستحضر شيئًا ماديًا، في المقابل، فإننا نرى _البرنامج_ (_program_) على أنه نص.
 لكن يمكننا التفكير في آلة تورينج على أنها برنامج أيضًا.
-فمثلًا، تأمّل آلة تورينج $M$ في [turingmachinepalindrome](){.ref} التي تحسب الدالة $PAL$ بحيث $PAL(x)=1$ إذا وفقط إذا كان $x$ متناظرًا.
+فمثلًا، تأمّل آلة تورينج $M$ في [turingmachinepalindrome](#turingmachinepalindrome){.ref} التي تحسب الدالة $PAL$ بحيث $PAL(x)=1$ إذا وفقط إذا كان $x$ متناظرًا.
 ويمكننا أيضًا وصف هذه الآلة على أنها _برنامج_ باستخدام شيفرة زائفة (_pseudocode_) شبيهة بـPython من الشكل التالي
 
 ```python
@@ -368,7 +368,7 @@ def M(Tape):
 
 * _المصفوفات_ (_arrays_): يلمس برنامج NAND-CIRC بطول $s$ سطرًا ما لا يزيد عن $3s$ متغيّرًا. ورغم أننا يمكننا استخدام متغيّرات بأسماء مثل  `Foo_17` أو `Bar[22]` في NAND-CIRC، فإنها ليست مصفوفات حقيقية، لأن الرقم في المُعرِّف هو ثابت «مضمَّن» (_hardwired_) في البرنامج. أما NAND-TM فتحتوي مصفوفات فعلية يمكن أن يكون طولها غير محدود مسبقًا.
 
-![A NAND-TM program has _scalar_ variables that can take a Boolean value, _array_ variables that hold a sequence of Boolean values, and a special _index_ variable `i` that can be used to index the array variables. We refer to the `i`-th value of the array variable `Spam` using `Spam[i]`. At each iteration of the program the index variable can be incremented or decremented by one step using the `MODANDJUMP` operation.](/images/introtcs/fig-nandtmprog.webp){#nandtmfig}
+![A NAND-TM program has _scalar_ variables that can take a Boolean value, _array_ variables that hold a sequence of Boolean values, and a special _index_ variable `i` that can be used to index the array variables. We refer to the `i`-th value of the array variable `Spam` using `Spam[i]`. At each iteration of the program the index variable can be incremented or decremented by one step using the `MODANDJUMP` operation.](/images/introtcs/original-nandtmprog.webp){#nandtmfig}
 
 إذن، فإن طريقة جيدة لتذكّر NAND-TM هي استخدام المعادلة غير الرسمية التالية:
 
@@ -377,11 +377,11 @@ $$
 $$
 
 > ### {.remark title="‏NAND-CIRC + حلقات + مصفوفات = كل شيء." #otherpl}
-كما سنرى، فإن إضافة الحلقات والمصفوفات إلى NAND-CIRC تكفي لالتقاط القدرة الكاملة لكل لغات البرمجة! ولذلك يمكننا استبدال «NAND-TM» بأيٍّ من _Python_ أو _C_ أو _Javascript_ أو _OCaml_ وغيرها في الطرف الأيسر من [eqnandloops](){.eqref}.
-لكننا نتقدّم بأشواط على حالنا: سنناقش هذه المسألة في [chapequivalentmodels](){.ref}.
+كما سنرى، فإن إضافة الحلقات والمصفوفات إلى NAND-CIRC تكفي لالتقاط القدرة الكاملة لكل لغات البرمجة! ولذلك يمكننا استبدال «NAND-TM» بأيٍّ من _Python_ أو _C_ أو _Javascript_ أو _OCaml_ وغيرها في الطرف الأيسر من [eqnandloops](#eqnandloops){.eqref}.
+لكننا نتقدّم بأشواط على حالنا: سنناقش هذه المسألة في [chapequivalentmodels](#chapequivalentmodels){.ref}.
 
 
-عمليًّا، تضيف لغة البرمجة NAND-TM الميزات التالية فوق NAND-CIRC (انظر [nandtmfig](){.ref}):
+عمليًّا، تضيف لغة البرمجة NAND-TM الميزات التالية فوق NAND-CIRC (انظر [nandtmfig](#nandtmfig){.ref}):
 
 * نضيف متغيّرًا خاصًا _ذي قيمة عدد صحيح_ (_integer valued_) اسمه `i`. وجميع المتغيّرات الأخرى في NAND-TM هي _ذات قيمة بوليانية_ (_Boolean valued_) (كما في NAND-CIRC).
 
@@ -546,7 +546,7 @@ MODANDJUMP(X_nonblank[i],X_nonblank[i])
 ::: {.proofidea data-ref="TM-equiv-thm"}
 لإثبات مثل هذه النسخة من التكافؤ، نحتاج إلى بيان اتجاهين. فنحن بحاجة إلى أن نتمكّن من __(1)__ تحويل آلة تورينج $M$ إلى برنامج NAND-TM $P$ يحسب الدالة نفسها التي يحسبها $M$، و__(2)__ تحويل برنامج NAND-TM $P$ إلى آلة تورينج $M$ تحسب الدالة نفسها التي يحسبها $P$.
 
-وتوضَّح فكرة البرهان في [tmvsnandppfig](){.ref}.
+وتوضَّح فكرة البرهان في [tmvsnandppfig](#tmvsnandppfig){.ref}.
 ولإثبات __(1)__، عند إعطائنا آلة تورينج $M$، سننشئ برنامج NAND-TM $P$ يملك مصفوفة `Tape` لشريط $M$، ومتغيّرًا قياسيًا (أي غير مصفوفة) واحدًا أو أكثر اسمه `state` لحالة $M$.
 وبتحديد، بما أن حالة آلة تورينج ليست في $\{0,1\}$ بل في مجموعة أكبر $[k]$، فإننا سنستخدم $\ceil{\log k}$ متغيّرًا `state_`$0$ ، $\ldots$، `state_`$\ceil{\log k}-1$ لتخزين تمثيل الحالة.
 وبالمثل، ولترميز الأبجدية الأكبر $\Sigma$ للشريط، سنستخدم $\ceil{\log |\Sigma|}$ مصفوفة `Tape_`$0$ ، $\ldots$، `Tape_`$\ceil{\log |\Sigma|}-1$، بحيث يرمز الموضع $i^{th}$ في هذه المصفوفات إلى الرمز $i^{th}$ في الشريط.
@@ -555,13 +555,13 @@ MODANDJUMP(X_nonblank[i],X_nonblank[i])
 ونُثبّت __(2)__ باستخدام أفكار مشابهة جدًا. فإذا كان لدينا برنامج $P$ يستخدم $a$ متغيّر مصفوفة و$b$ متغيّرًا قياسيًا، فإننا سننشئ آلة تورينج لها نحو $2^b$ حالة لترميز قيم المتغيّرات القياسية، وأبجدية حجمها نحو $2^a$ حتى نتمكن من ترميز المصفوفات باستخدام شريطنا. (والسبب في أن الأحجام «نحو» $2^a$ و$2^b$ فقط هو أننا نحتاج إلى إضافة بعض الرموز والخطوات لأغراض المساءلة.) وتُحاكي آلة تورينج $M$ كل تكرار من تكرارات البرنامج $P$ بتحديث حالتها وشريطها تبعًا لذلك.
 :::
 
-![/images/introtcs/lec_06_loops-6.webp](/images/introtcs/lec_06_loops-6.webp){#tmvsnandppfig   }
+![/images/introtcs/lec_06_loops-6.webp](/images/introtcs/original-turingmachinevsnandtm.webp){#tmvsnandppfig   }
 
 :::  {.proof data-ref="TM-equiv-thm"}
-نبدأ بإثبات اتجاه «إذا» من [TM-equiv-thm](){.ref}. أي إننا سنبيّن أنه عند إعطائنا آلة تورينج $M$، يمكننا إيجاد برنامج NAND-TM $P_M$ بحيث لكل مدخل $x$، إذا توقّفت $M$ على المدخل $x$ بالخرج $y$ فإن $P_M(x)=y$.
+نبدأ بإثبات اتجاه «إذا» من [TM-equiv-thm](#TM-equiv-thm){.ref}. أي إننا سنبيّن أنه عند إعطائنا آلة تورينج $M$، يمكننا إيجاد برنامج NAND-TM $P_M$ بحيث لكل مدخل $x$، إذا توقّفت $M$ على المدخل $x$ بالخرج $y$ فإن $P_M(x)=y$.
 ولأن هدفنا هو بيان أن مثل هذا البرنامج $P_M$ _يوجد_ فحسب، فلا نحتاج إلى كتابة الشيفرة الكاملة لـ$P_M$ سطرًا بسطر، ويمكننا الاستفادة من مختلف أنواع «السكر النحوي» في وصفه.
 
-والملاحظة المفتاحية هي أنه، بواسطة [NAND-univ-thm](){.ref}، يمكننا حساب _كل_ دالة متناهية باستخدام برنامج NAND-CIRC.
+والملاحظة المفتاحية هي أنه، بواسطة [NAND-univ-thm](#NAND-univ-thm){.ref}، يمكننا حساب _كل_ دالة متناهية باستخدام برنامج NAND-CIRC.
 وبخاصة، تأمّل دالة الانتقال  $\delta_M:[k]\times \Sigma \rightarrow [k] \times \Sigma  \times \{\mathsf{L},\mathsf{R},\mathsf{S},\mathsf{H}\}$ لآلة تورينج لدينا.
 ويمكننا ترميز مكوّناتها كما يلي:
 
@@ -571,7 +571,7 @@ MODANDJUMP(X_nonblank[i],X_nonblank[i])
 
 
 إذن يمكننا مطابقة $\delta_M$ مع دالة $\overline{M}:\{0,1\}^{\ell+\ell'}  \rightarrow \{0,1\}^{\ell+\ell'+2}$، تُسقط السلاسل ذات الطول $\ell+\ell'$ على السلاسل ذات الطول $\ell+\ell'+2$.
-وبموجب [NAND-univ-thm](){.ref}، يوجد برنامج NAND-CIRC `ComputeM` ذو طول متناهٍ يحسب هذه الدالة $\overline{M}$.
+وبموجب [NAND-univ-thm](#NAND-univ-thm){.ref}، يوجد برنامج NAND-CIRC `ComputeM` ذو طول متناهٍ يحسب هذه الدالة $\overline{M}$.
 وتتمثّل فكرة برنامج NAND-TM الذي يحاكي $M$ فيما يلي:
 
 1. استخدام المتغيّرات `state_`$0$ $\ldots$ `state_`$\ell-1$ لترميز حالة $M$.
@@ -587,7 +587,7 @@ MODANDJUMP(X_nonblank[i],X_nonblank[i])
 
 `MODANDJUMP(dir0,dir1)`
 
-كل خطوة من خطوات الحلقة الرئيسية للبرنامج أعلاه تحاكي بدقّة حساب آلة تورينج $M$، وبالتالي فإن البرنامج ينفّذ تمامًا تعريف الحساب بآلة تورينج كما في [TM-def](){.ref}.
+كل خطوة من خطوات الحلقة الرئيسية للبرنامج أعلاه تحاكي بدقّة حساب آلة تورينج $M$، وبالتالي فإن البرنامج ينفّذ تمامًا تعريف الحساب بآلة تورينج كما في [TM-def](#TM-def){.ref}.
 
 وفي الاتجاه الآخر، نفترض أن $P$ برنامج NAND-TM فيه $s$ أسطر، و$\ell$ متغيّرًا قياسيًا، و$\ell'$ متغيّر مصفوفة. وسنبيّن أن وُجدت آلة تورينج $M_P$ لها $2^\ell+C$ حالة وأبجدية $\Sigma$ بحجم $C' + 2^{\ell'}$ تحسب الدوال نفسها التي يحسبها $P$ (حيث $C$ و$C'$ ثابتان سنحدّدهما لاحقًا).
 
@@ -609,19 +609,19 @@ MODANDJUMP(X_nonblank[i],X_nonblank[i])
 
 
 ::: {.remark title="تكافؤ زمن التنفيذ (اختياري)" #polyequivrem}
-وإذا فحصنا برهان [TM-equiv-thm](){.ref}، أمكننا أن نرى أن كل تكرار من تكرارات حلقة برنامج NAND-TM يقابل خطوة واحدة في تنفيذ آلة تورينج.
+وإذا فحصنا برهان [TM-equiv-thm](#TM-equiv-thm){.ref}، أمكننا أن نرى أن كل تكرار من تكرارات حلقة برنامج NAND-TM يقابل خطوة واحدة في تنفيذ آلة تورينج.
 وسنعود إلى مسألة قياس عدد خطوات الحساب لاحقًا في هذه الدورة.
 وأما في الوقت الحالي فالخلاصة الرئيسة هي أن برامج NAND-TM وآلات تورينج متكافئتان في القدرة أساسًا، حتى لو أخذنا زمن التنفيذ في الحسبان.
 :::
 
 ### المواصفة مقابل التنفيذ (مرة أخرى)
 
-ما إن تفهم تعريفات كلٍّ من برامج NAND-TM وآلات تورينج، تصبح [TM-equiv-thm](){.ref} بديهية.
+ما إن تفهم تعريفات كلٍّ من برامج NAND-TM وآلات تورينج، تصبح [TM-equiv-thm](#TM-equiv-thm){.ref} بديهية.
 وفي الواقع، إن برامج NAND-TM ليست نموذجًا مختلفًا عن آلات تورينج بقدر ما هي مجرد إعادة صياغة للنموذج نفسه باستخدام تدوين لغات البرمجة.
 ويمكنك أن تفكّر في الفرق بين آلة تورينج وبرنامج NAND-TM على أنه الفرق بين تمثيل عدد بكتابة عشرية أو كتابة ثنائية.
 على النقيض من ذلك، فإن الفرق بين _دالة_ $F$ وبين آلة تورينج تحسب $F$ أعمق بكثير: إنه أشبه بالفرق بين المعادلة $x^2 + x = 12$، والعدد $3$ الذي حلّ للمعادلة.
 ولهذا السبب، ومع أخذنا عناية خاصة في التمييز بين _الدوال_ وبين _البرامج_ أو _الآلات_، سنُعرّف غالبًا المفهومين الأخيرين على أنهما واحد.
-وسنتنقّل بحرّية بين وصف خوارزمية على أنها آلة تورينج أو أنها برنامج NAND-TM (وكذلك بعض نماذج الحوسبة المكافئة الأخرى التي سنراها في [chapequivalentmodels](){.ref} وما بعدها).
+وسنتنقّل بحرّية بين وصف خوارزمية على أنها آلة تورينج أو أنها برنامج NAND-TM (وكذلك بعض نماذج الحوسبة المكافئة الأخرى التي سنراها في [chapequivalentmodels](#chapequivalentmodels){.ref} وما بعدها).
 
 
 ```table
@@ -639,7 +639,7 @@ _Infinite computation_ ; __Functions__ mapping $\{0,1\}^*$ to $\{0,1\}$ or to $\
 
 ## السكر النحوي في NAND-TM
 
-تمامًا كما فعلنا مع NAND-CIRC في [finiteuniversalchap](){.ref}، يمكننا استخدام «السكر النحوي» لتسهيل كتابة برامج NAND-TM.
+تمامًا كما فعلنا مع NAND-CIRC في [finiteuniversalchap](#finiteuniversalchap){.ref}، يمكننا استخدام «السكر النحوي» لتسهيل كتابة برامج NAND-TM.
 وللبداية، يمكننا استخدام كل السكر النحوي الخاص بـNAND-CIRC، مثل تعريفات الماكروّات والشروط (أي if/then).
 غير أننا يمكننا الذهاب إلى أبعد من ذلك وتحقيق (مثلًا):
 
@@ -734,7 +734,7 @@ do bar
 
 ::: {.remark title="‏`GOTO` في لغات البرمجة" #gotorem}
 كانت تعليمة `GOTO` عنصرًا أساسيًا في معظم لغات البرمجة المبكرة، لكنها فقدت كثيرًا من شعبيتها ولم تعد موجودة في كثير من اللغات الحديثة مثل _Python_ و_Java_ و_Javascript_.
-وفي سنة 1968، كتب إيدسغر دايكسترا (Edsger Dijkstra) رسالة شهيرة بعنوان "[عبارة Go to ضارّة](https://goo.gl/bnNsjo)" (وانظر أيضًا [xkcdgotofig](){.ref}).
+وفي سنة 1968، كتب إيدسغر دايكسترا (Edsger Dijkstra) رسالة شهيرة بعنوان "[عبارة Go to ضارّة](https://goo.gl/bnNsjo)" (وانظر أيضًا [xkcdgotofig](#xkcdgotofig){.ref}).
 والعيب الرئيس في `GOTO` أنه يجعل تحليل البرامج أصعب، إذ يجعل البرهنة على _الثوابت_ (_invariants_) البرنامج أصعب.
 
 عندما يحتوي برنامج على حلقة من الشكل:
@@ -757,7 +757,7 @@ do blah
 والطريقة التي نستخدم بها `GOTO` لتنفيذ وظيفة أعلى مستوى في NAND-TM تذكّرنا بالطريقة التي تُستخدم بها تعليمات القفز المختلفة هذه لتنفيذ بنيات حلقة أعلى مستوى.
 :::
 
-![/images/introtcs/lec_06_loops-7.webp](/images/introtcs/lec_06_loops-7.webp){#xkcdgotofig .margin  }
+![/images/introtcs/lec_06_loops-7.webp](/images/introtcs/original-xkcdgoto.webp){#xkcdgotofig .margin  }
 
 
 
@@ -792,7 +792,7 @@ do blah
 
 * __نماذج الحوسبة الموحّدة:__ من أمثلتها _آلات تورينج_ و_برامج NAND-TM_. هذه نماذج يستطيع فيها برنامج/آلة واحد أن يأخذ مداخل _بطول اعتباطي_ وبالتالي يحسب دالة _لا نهائية_ $F:\{0,1\}^* \rightarrow \{0,1\}^*$.
 عدد الخطوات التي يقطعها البرنامج/الآلة على مدخل ما غير محدّد مسبقًا، وبخاصة أن هناك احتمالًا في أن يدخل في _حلقة لا نهائية_.
-وعلى النقيض من الحالة غير الموحّدة، فإننا _لم نُبَيِّن_ أن كل دالة لا نهائية يمكن حسابها ببرنامج NAND-TM/آلة تورينج ما. وسنعود إلى هذه النقطة في [chapcomputable](){.ref}.
+وعلى النقيض من الحالة غير الموحّدة، فإننا _لم نُبَيِّن_ أن كل دالة لا نهائية يمكن حسابها ببرنامج NAND-TM/آلة تورينج ما. وسنعود إلى هذه النقطة في [chapcomputable](#chapcomputable){.ref}.
 
 
 
@@ -837,7 +837,7 @@ do blah
 :::
 
 ::: {.exercise title="مصفوفات ثنائية البُعد" #twodimnandtmex}
-عرّف NAND-TM" لتكون الصيغة البديلة من NAND-TM التي، تمامًا مثل NAND-TM' المعرَّفة في [twoindexex](){.ref}، فيها متغيّرا فهرسة `i` و`j`، لكن المصفوفات الآن _ثنائية البُعد_ (_two dimensional_)، ولذلك نفهرس المصفوفة `Foo` بـ`Foo[i][j]`.
+عرّف NAND-TM" لتكون الصيغة البديلة من NAND-TM التي، تمامًا مثل NAND-TM' المعرَّفة في [twoindexex](#twoindexex){.ref}، فيها متغيّرا فهرسة `i` و`j`، لكن المصفوفات الآن _ثنائية البُعد_ (_two dimensional_)، ولذلك نفهرس المصفوفة `Foo` بـ`Foo[i][j]`.
 اثبت أن لكل دالة $F:\{0,1\}^* \rightarrow \{0,1\}^*$، تكون $F$ قابلة للحساب ببرنامج NAND-TM إذا وفقط إذا كانت $F$ قابلة للحساب ببرنامج NAND-TM''.
 :::
 
@@ -850,7 +850,7 @@ do blah
 
 
 ::: {.exercise}
-اثبت خصائص الإغلاق التالية للمجموعة $\mathbf{R}$ المعرَّفة في [classRdef](){.ref}:
+اثبت خصائص الإغلاق التالية للمجموعة $\mathbf{R}$ المعرَّفة في [classRdef](#classRdef){.ref}:
 
 1. إذا كان $F \in \mathbf{R}$ فإن الدالة $G(x) = 1 - F(x)$ تكون في $\mathbf{R}$.
 
@@ -867,7 +867,7 @@ $$
 تكون في $\mathbf{R}$.
 :::
 
-::: {.exercise title="آلات تورينج «الغافِلة» (صعبة) #obliviousTMex}
+::: {.exercise title="آلات تورينج «الغافِلة» (صعبة)" #obliviousTMex}
 عرّف آلة تورينج $M$ بأنها _غافِلة_ (_oblivious_) إذا كانت تحركات رأسها مستقلة عن مدخلها.
 أي نقول إن $M$ غافِلة إذا وُجدت متسلسلة لا نهائية  $MOVE \in  \{\mathsf{L},\mathsf{R}, \mathsf{S} \}^\infty$ بحيث لكل $x\in \{0,1\}^*$، تكون تحركات $M$ عند إعطائها المدخل $x$ (حتى النقطة التي تتوقّف عندها، إن وُجدت) هي $MOVE_0,MOVE_1,MOVE_2,\ldots$.
 
@@ -882,15 +882,15 @@ $$
 $G(x,i,\sigma) = \begin{cases} F(x)_i & i < |F(x)|, \sigma =0 \\ 1 & i < |F(x)|, \sigma = 1 \\ 0 & i \geq |F(x)| \end{cases}$
 
 ::: {.exercise title="عدم القابلية للحساب بالعدّ" #uncomputabilityviacountingex}
-تذكّر أن  $\mathbf{R}$ هي مجموعة كل الدوال الكلّية من $\{0,1\}^*$ إلى $\{0,1\}$ القابلة للحساب بآلة تورينج (انظر [classRdef](){.ref}). اثبت أن $\mathbf{R}$ _قابلة للعدّ_ (_countable_).
+تذكّر أن  $\mathbf{R}$ هي مجموعة كل الدوال الكلّية من $\{0,1\}^*$ إلى $\{0,1\}$ القابلة للحساب بآلة تورينج (انظر [classRdef](#classRdef){.ref}). اثبت أن $\mathbf{R}$ _قابلة للعدّ_ (_countable_).
 أي، اثبت أن وُجدت دالة أحادية التطابق $DtN:\mathbf{R} \rightarrow \mathbb{N}$.
 يمكنك استخدام التكافؤ بين آلات تورينج وبرامج NAND-TM.
 :::
 
 
 ::: {.exercise title="ليست كل الدوال قابلة للحساب" #uncountablefuncex}
-اثبت أن مجموعة _كل_ الدوال الكلّية من $\{0,1\}^* \rightarrow \{0,1\}$ ليست _قابلة للعدّ_. يمكنك استخدام نتائج [cantorsec](){.ref}.
-(وسنرى دالة _صريحة_ غير قابلة للحساب في [chapcomputable](){.ref}.)
+اثبت أن مجموعة _كل_ الدوال الكلّية من $\{0,1\}^* \rightarrow \{0,1\}$ ليست _قابلة للعدّ_. يمكنك استخدام نتائج [cantorsec](#cantorsec){.ref}.
+(وسنرى دالة _صريحة_ غير قابلة للحساب في [chapcomputable](#chapcomputable){.ref}.)
 :::
 
 
@@ -902,7 +902,7 @@ $G(x,i,\sigma) = \begin{cases} F(x)_i & i < |F(x)|, \sigma =0 \\ 1 & i < |F(x)|,
 
 أوغستا آدا بايرون، كاونتيسة لوفلايس (1815-1852) عاشت حياة قصيرة لكنها مضطربة، غير أنها معروفة اليوم في الأغلبية العظمى بفضل تعاونها مع تشارلز بابيج
 (انظر [@stein1987ada] لسيرة ذاتية).
-أبدت آدا اهتمامًا هائلًا بمحرك بابيج التحليلي، الذي ذكرناه في [compchap](){.ref}.
+أبدت آدا اهتمامًا هائلًا بمحرك بابيج التحليلي، الذي ذكرناه في [compchap](#compchap){.ref}.
 وفي سنة 1842-3، ترجمت من الإيطالية ورقة لمينابريا عن المحرك، مضيفةً ملاحظات وفيرة (أطول من الورقة نفسها).
 والاقتباس في بداية الفصل مأخوذ من الملاحظة A في هذا النص.
 تحتوي ملاحظات لوفلايس على عدة أمثلة لبرامج للمحرك التحليلي، ولهذا السبب سُمّيت «أول مبرمجة حاسوب في العالم»، وإن كان من غير الواضح ما إذا كانت هذه الأمثلة قد كُتبت من لوفلايس أو من بابيج نفسه [@holt2001ada].
@@ -922,13 +922,13 @@ $G(x,i,\sigma) = \begin{cases} F(x)_i & i < |F(x)|, \sigma =0 \\ 1 & i < |F(x)|,
 
 
 يعرّف نصّ سيبسر [@SipserBook] آلة تورينج على أنها _سباعية_ (_seven tuple_) تتكوّن من فضاء الحالات، وأبجدية المدخل، وأبجدية الشريط، ودالة الانتقال، وحالة البدء، وحالة القبول، وحالة الرفض.
-وفي الظاهر يبدو هذا تعريفًا مختلفًا جدًا عن [TM-def](){.ref}، لكنه ببساطة تمثيل مختلف للمفهوم نفسه، تمامًا كما يمكن تمثيل الرسم البياني إمّا بقائمة تجاور أو بمصفوفة تجاور.
+وفي الظاهر يبدو هذا تعريفًا مختلفًا جدًا عن [TM-def](#TM-def){.ref}، لكنه ببساطة تمثيل مختلف للمفهوم نفسه، تمامًا كما يمكن تمثيل الرسم البياني إمّا بقائمة تجاور أو بمصفوفة تجاور.
 
 أحد الفروق أن سيبسر يتناول مجموعة عامة من الحالات $Q$ ليست بالضرورة من الشكل $Q=\{0,1,2,\ldots, k-1\}$ لبعض عدد طبيعي $k>0$.
 ويقتصر سيبسر أيضًا انتباهه على آلات تورينج التي تُخرج بتًّا واحدًا فقط، ولذلك يسمّي حالتَي توقّف خاصتين: «حالة التوقّف 0» (وهي المعروفة غالبًا بـ_حالة الرفض_) والأخرى «حالة التوقّف 1» (وهي المعروفة غالبًا بـ_حالة القبول_).
 وبذلك، بدلًا من كتابة $0$ أو $1$ على شريط خرج، تدخل الآلة في إحدى هاتين الحالتين وتتوقّف.
 وهذا أيضًا لا يُحدث فرقًا في القدرة الحاسوبية، وإن كنا نفضّل النموذج الأكثر عمومية ذي المخارج متعددة البتّات.
-(يقدّم سيبسر المهمة الأساسية لآلة تورينج على أنها _قرار لغة_ بدلًا من حساب دالة، لكنهما متكافئتان، انظر [decidablelanguagesrem](){.ref}.)
+(يقدّم سيبسر المهمة الأساسية لآلة تورينج على أنها _قرار لغة_ بدلًا من حساب دالة، لكنهما متكافئتان، انظر [decidablelanguagesrem](#decidablelanguagesrem){.ref}.)
 
 
  ويتناول سيبسر أيضًا دوال مدخلها في $\Sigma^*$ لأبجدية اعتباطية $\Sigma$ (وعليه فإنما يميّز بين _أبجدية المدخل_ التي يسمّيها $\Sigma$ و_أبجدية الشريط_ التي يسمّيها $\Gamma$)، في حين أننا نقتصر على الدوال التي مدخلها سلاسل ثنائية.

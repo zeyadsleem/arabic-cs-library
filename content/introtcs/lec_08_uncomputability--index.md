@@ -34,7 +34,7 @@ source: https://introtcs.org/
 فمثلًا، إذا أردنا محاكاة آلة تورينج جديدة $M$، فلا نحتاج إلى بناء آلة فيزيائية جديدة، بل يمكننا تمثيل $M$ كسلسلة (أي باستخدام _شيفرة_ (code)) ثم إدخال $M$ إلى الآلة الشاملة $U$.
 
 إلى جانب التطبيقات العملية، فإن وجود خوارزمية شاملة له أيضًا نتائج نظرية مدهشة، وخصوصًا يمكن استخدامه لإثبات وجود _دوال غير قابلة للحساب_، وهو ما ينقض حدس الرياضيين عبر القرون من أويلر إلى هيلبرت.
-في هذا الفصل سنبرهن على وجود البرنامج الشامل، وسنبيّن أيضًا آثاره على غياب قابلية الحساب، انظر [universalchapoverviewfig](/images/introtcs/lec_08_uncomputability-1.webp){.ref}
+في هذا الفصل سنبرهن على وجود البرنامج الشامل، وسنبيّن أيضًا آثاره على غياب قابلية الحساب، انظر [universalchapoverviewfig](#universalchapoverviewfig){.ref}
 
 
 ::: {.nonmath}
@@ -53,7 +53,7 @@ source: https://introtcs.org/
 :::
 
 
-![/images/introtcs/lec_08_uncomputability-1.webp](/images/introtcs/lec_08_uncomputability-1.webp){#universalchapoverviewfig}
+![/images/introtcs/lec_08_uncomputability-1.webp](/images/introtcs/original-universalchapoverview.webp){#universalchapoverviewfig}
 
 
 
@@ -71,7 +71,7 @@ source: https://introtcs.org/
 بمعنى آخر، إذا توقّفت الآلة $M$ عند $x$ وأخرجت قيمة $y\in \{0,1\}^*$ فإن $U(M,x)=y$، وإذا لم تتوقّف $M$ عند $x$ (أي $M(x)=\bot$) فإن $U(M,x)=\bot$.
 :::
 
-![A _Universal Turing Machine_ is a single Turing Machine $U$ that can evaluate, given input the (description as a string of) arbitrary Turing machine $M$ and input $x$, the output of $M$ on $x$. In contrast to the universal circuit depicted in [universalcircfig](/images/introtcs/fig-lispandselfreplicatingprograms.webp){.ref},  the machine $M$ can be much more complex (e.g., more states or tape alphabet symbols) than $U$. ](https://bellard.org/otcc/){#universaltmfig .margin  }
+![A _Universal Turing Machine_ is a single Turing Machine $U$ that can evaluate, given input the (description as a string of) arbitrary Turing machine $M$ and input $x$, the output of $M$ on $x$. In contrast to the universal circuit depicted in [universalcircfig](#universalcircfig){.ref},  the machine $M$ can be much more complex (e.g., more states or tape alphabet symbols) than $U$. ](/images/introtcs/original-universaltm.webp){#universaltmfig .margin  }
 
 
 ::: { .bigidea #universaltmidea}
@@ -88,8 +88,8 @@ source: https://introtcs.org/
 الآن تستطيع محاكاة $M$ خطوة بخطوة، مُحدِّثًا بنية البيانات أثناء سير العملية.
 سيستمر المفسِّر في المحاكاة حتى تتوقّف الآلة.
 
-ومتى ما فعلت ذلك، يمكن ترجمة هذا المفسِّر من لغتك البرمجية المفضّلة إلى آلة تورينج تمامًا كما رأينا في [chapequivalentmodels](/images/introtcs/lec_08_uncomputability-2.webp){.ref}.
-والنتيجة النهائية هي ما يُعرف بـ«المُقيِّم المنداخي» (meta-circular evaluator): وهو مفسِّر لغة برمجية داخل اللغة نفسها. وهذا مفهوم له تاريخ طويل في علوم الحاسوب يبدأ من آلة تورينج الشاملة الأصلية. وانظر أيضًا [lispinterpreterfig](https://goo.gl/3YvQvL){.ref}.
+ومتى ما فعلت ذلك، يمكن ترجمة هذا المفسِّر من لغتك البرمجية المفضّلة إلى آلة تورينج تمامًا كما رأينا في [chapequivalentmodels](#chapequivalentmodels){.ref}.
+والنتيجة النهائية هي ما يُعرف بـ«المُقيِّم المنداخي» (meta-circular evaluator): وهو مفسِّر لغة برمجية داخل اللغة نفسها. وهذا مفهوم له تاريخ طويل في علوم الحاسوب يبدأ من آلة تورينج الشاملة الأصلية. وانظر أيضًا [lispinterpreterfig](#lispinterpreterfig){.ref}.
 :::
 
 
@@ -99,7 +99,7 @@ source: https://introtcs.org/
 
 ### إثبات وجود آلة تورينج شاملة {#representtmsec }
 
-لكي نبرهن على [universaltmthm](https://goo.gl/Bm4MWK){.ref} (بل وحتى لصياغتها بدقّة)، نحتاج إلى تثبيت تمثيل ما لآلات تورينج بوصفه سلاسل.
+لكي نبرهن على [universaltmthm](#universaltmthm){.ref} (بل وحتى لصياغتها بدقّة)، نحتاج إلى تثبيت تمثيل ما لآلات تورينج بوصفه سلاسل.
 أحد الخيارات الممكنة لهذا التمثيل هو استعمال التكافؤ بين آلات تورينج وبرامج NAND-TM، وبالتالي تمثيل آلة تورينج $M$ باستعمال ترميز ASCII لشيفرة المصدر لبرنامج NAND-TM المقابل $P$.
 غير أننا سنستعمل ترميزًا أكثر مباشرة.
 
@@ -123,14 +123,14 @@ $$T = \left(\delta_M(0,\sigma_0),\delta_M(0,\sigma_1),\ldots,\delta_M(k-1,\sigma
 
 1. يمكننا تمثيل كل آلة تورينج بسلسلة.
 
-2. معطى التمثيل السلاسل لآلة تورينج $M$ ومدخل $x$، يمكننا محاكاة تنفيذ $M$ على المدخل $x$. (وهذا هو محتوى [universaltmthm](https://goo.gl/DX63q5){.ref}.)
+2. معطى التمثيل السلاسل لآلة تورينج $M$ ومدخل $x$، يمكننا محاكاة تنفيذ $M$ على المدخل $x$. (وهذا هو محتوى [universaltmthm](#universaltmthm){.ref}.)
 
 وثمّة مسألة بسيطة إضافية وهي أننا نفترض، من أجل الراحة، أن _كل_ سلسلة تمثّل _بعضَ_ آلة تورينج. ومن السهل جدًا ضمان ذلك بمجرد تعيين السلاسل التي لا تمثّل آلة تورينج إلى آلة تافهة ثابتة.
-ولهذا الافتراض أهمية ضئيلة، لكنه يجعل صياغة بعض النتائج (مثل نظرية رايس: [rice-thm](http://smbc-comics.com/comic/halting){.ref}) أقل إزعاجًا قليلًا.
+ولهذا الافتراض أهمية ضئيلة، لكنه يجعل صياغة بعض النتائج (مثل نظرية رايس: [rice-thm](#rice-thm){.ref}) أقل إزعاجًا قليلًا.
 :::
 
 
-باستعمال هذا التمثيل، يمكننا البرهان رسميًا على [universaltmthm](/images/introtcs/fig-smbchalting.webp){.ref}.
+باستعمال هذا التمثيل، يمكننا البرهان رسميًا على [universaltmthm](#universaltmthm){.ref}.
 
 ::: {.proof data-ref="universaltmthm"}
 سنكتفي بأن نلمّح إلى البرهان، مبرزين الأفكار الرئيسة.
@@ -162,7 +162,7 @@ def EVAL(δ,x):
 ما سبق لا يثبت النظرية كما صيغت، لأننا نحتاج إلى عرض _آلة تورينج_ تحسب $EVAL$ لا برنامج Python.
 وبجهد كافٍ، يمكننا ترجمة شيفرة Python هذه سطرًا بسطر إلى آلة تورينج.
 غير أنه لإثبات النظرية لا نحتاج إلى ذلك، بل يمكننا استعمال نموذج «كُلُّ الكعكة وتأكلها أيضًا» (eat the cake and have it too).
-أي إننا، بينما نحتاج إلى تقييم آلة تورينج، مُسموح لنا في كتابة شيفرة المفسِّر باستعمال نموذج أغنى مثل NAND-RAM، إذ إنه مكافئ في القدرة لآلات تورينج بحسب [RAMTMequivalencethm](/images/introtcs/lec_08_uncomputability-4.webp){.ref}.
+أي إننا، بينما نحتاج إلى تقييم آلة تورينج، مُسموح لنا في كتابة شيفرة المفسِّر باستعمال نموذج أغنى مثل NAND-RAM، إذ إنه مكافئ في القدرة لآلات تورينج بحسب [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}.
 
 
 ترجمة شيفرة Python أعلاه إلى NAND-RAM أمر مباشر فعلًا.
@@ -174,13 +174,13 @@ def EVAL(δ,x):
 
 
 ::: {.remark title="كفاءة المحاكاة"}
-الحجّة في برهان [universaltmthm](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing){.ref} طريقة غير فَعّالة جدًا في تنفيذ بنية بيانات القاموس عمليًا، لكنها تكفي غرض إثبات النظرية.
+الحجّة في برهان [universaltmthm](#universaltmthm){.ref} طريقة غير فَعّالة جدًا في تنفيذ بنية بيانات القاموس عمليًا، لكنها تكفي غرض إثبات النظرية.
 فقراءة قاموس من $m$ قيمة والكتابة فيه في هذا التنفيذ تاخذ $\Omega(m)$ خطوة، غير أنه في الواقع من الممكن فعل ذلك في $O(\log m)$ خطوة باستعمال بنية بيانات _شجرة البحث_ (search tree)، أو حتى في $O(1)$ (للحالات «النموذجية») باستعمال _جدول تجزئة_ (hash table). وتطابق NAND-RAM وآلات RAM بنية الحواسيب الإلكترونية الحديثة، ولذلك يمكننا تنفيذ جداول التجزئة وأشجار البحث في NAND-RAM تمامًا كما تُنفَّذ في لغات البرمجة الأخرى.
 :::
 
 
 يبني الإنشاء السابق آلة تورينج شاملة ذات عدد حالات كبير جدًا.
-غير أنه، وبما أن آلات تورينج الشاملة ذات أهمية فلسفية وتقنية بالغة، فقد حاول الباحثون إيجاد أصغر آلات تورينج شاملة ممكنة، انظر [uncomputablebibnotes](/images/introtcs/fig-haltonzerored.webp){.ref}. 
+غير أنه، وبما أن آلات تورينج الشاملة ذات أهمية فلسفية وتقنية بالغة، فقد حاول الباحثون إيجاد أصغر آلات تورينج شاملة ممكنة، انظر [uncomputablebibnotes](#uncomputablebibnotes){.ref}. 
 
 
 
@@ -189,28 +189,28 @@ def EVAL(δ,x):
 
 
 
-![__a)__ A particularly elegant example of a "meta-circular evaluator" comes from John McCarthy's 1960 paper, where he defined the Lisp programming language and gave a Lisp function that evaluates an arbitrary Lisp program (see above). Lisp was not initially intended as a practical programming language and this example was merely meant as an illustration that the Lisp universal function is more elegant than the universal Turing machine. It was McCarthy's graduate student Steve Russell who suggested that it can be implemented. As McCarthy later recalled, _"I said to him, ho, ho, you're confusing theory with practice, this eval is intended for reading, not for computing. But he went ahead and did it. That is, he compiled the eval in my paper into IBM 704 machine code, fixing a bug, and then advertised this as a Lisp interpreter, which it certainly was"._ __b)__ A self-replicating C program from the classic essay of Thompson  [@thompson1984reflections].](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing){#lispinterpreterfig   }
+![__a)__ A particularly elegant example of a "meta-circular evaluator" comes from John McCarthy's 1960 paper, where he defined the Lisp programming language and gave a Lisp function that evaluates an arbitrary Lisp program (see above). Lisp was not initially intended as a practical programming language and this example was merely meant as an illustration that the Lisp universal function is more elegant than the universal Turing machine. It was McCarthy's graduate student Steve Russell who suggested that it can be implemented. As McCarthy later recalled, _"I said to him, ho, ho, you're confusing theory with practice, this eval is intended for reading, not for computing. But he went ahead and did it. That is, he compiled the eval in my paper into IBM 704 machine code, fixing a bug, and then advertised this as a Lisp interpreter, which it certainly was"._ __b)__ A self-replicating C program from the classic essay of Thompson  [@thompson1984reflections].](/images/introtcs/original-lispandselfreplicatingprograms.webp){#lispinterpreterfig   }
 
 
-هناك أكثر من آلة تورينج واحدة $U$ تستوفي شروط [universaltmthm](/images/introtcs/fig-haltonzeropython.webp){.ref}، لكن وجود آلة واحدة فقط من هذا النوع يكوّن بالفعل أمرًا أساسيًا إلى حد بعيد، لنظرية علوم الحاسوب وتطبيقاتها العملية.
-أثر [universaltmthm](https://goo.gl/4gXoiV){.ref} يتجاوز نموذج آلات تورينج بعينه.
-لأننا نستطيع محاكاة كل آلة تورينج ببرنامج NAND-TM وبالعكس، فإن [universaltmthm](/images/introtcs/fig-inclusion_noncomputable.webp){.ref} يعني فورًا وجود برنامج NAND-TM شامل $P_U$ بحيث $P_U(P,x)=P(x)$ لكل برنامج NAND-TM $P$.
+هناك أكثر من آلة تورينج واحدة $U$ تستوفي شروط [universaltmthm](#universaltmthm){.ref}، لكن وجود آلة واحدة فقط من هذا النوع يكوّن بالفعل أمرًا أساسيًا إلى حد بعيد، لنظرية علوم الحاسوب وتطبيقاتها العملية.
+أثر [universaltmthm](#universaltmthm){.ref} يتجاوز نموذج آلات تورينج بعينه.
+لأننا نستطيع محاكاة كل آلة تورينج ببرنامج NAND-TM وبالعكس، فإن [universaltmthm](#universaltmthm){.ref} يعني فورًا وجود برنامج NAND-TM شامل $P_U$ بحيث $P_U(P,x)=P(x)$ لكل برنامج NAND-TM $P$.
 كما يمكننا أيضًا «المزج والمطابقة» بين النماذج.
-فمثلًا، بما أننا نستطيع محاكاة كل برنامج NAND-RAM بآلة تورينج، وكل آلة تورينج بحساب $\lambda$ (lambda calculus)، فإن [universaltmthm](https://www.scottaaronson.com/writings/bignumbers.html){.ref} يعني وجود تعبير $\lambda$ $e$ بحيث لكل برنامج NAND-RAM $P$ ومدخل $x$ يُحقّق $P(x)=y$، فإن رمزنا $(P,x)$ على صورة تعبير $\lambda$ $f$ (باستعمال ترميز السلاسل في حساب $\lambda$ كقوائم من الأصفار والواحدات) فإن $(e\; f)$ يُقيَّم إلى ترميز لـ $y$.
+فمثلًا، بما أننا نستطيع محاكاة كل برنامج NAND-RAM بآلة تورينج، وكل آلة تورينج بحساب $\lambda$ (lambda calculus)، فإن [universaltmthm](#universaltmthm){.ref} يعني وجود تعبير $\lambda$ $e$ بحيث لكل برنامج NAND-RAM $P$ ومدخل $x$ يُحقّق $P(x)=y$، فإن رمزنا $(P,x)$ على صورة تعبير $\lambda$ $f$ (باستعمال ترميز السلاسل في حساب $\lambda$ كقوائم من الأصفار والواحدات) فإن $(e\; f)$ يُقيَّم إلى ترميز لـ $y$.
 وبشكل أعم، يمكننا القول إن لكل $\mathcal{X}$ و $\mathcal{Y}$ في المجموعة $\{$ آلات تورينج، آلات RAM، NAND-TM، NAND-RAM، حساب $\lambda$، JavaScript، Python، $\ldots$ $\}$ من النماذج المتكافئة تورينجيًا، يوجد برنامج/آلة في $\mathcal{X}$ يحسب الخرائط $(P,x) \mapsto P(x)$ لكل برنامج/آلة $P \in \mathcal{Y}$.
 
 
 فكرة «البرنامج الشامل» ليست بالطبع محصورة في النظرية.
 فمثلًا تُستعمل مترجَمات (compilers) لغات البرمجة في أحيان كثيرة لترجمة _نفسها_، فضلًا عن ترجمة برامج أعقد من المترجم نفسه.
 (ومن الأمثلة المتطرفة لذلك مُترجم C المُموَّه (Obfuscated Tiny C Compiler) لفابريس بيلار، وهو برنامج C بطول 2048 بايت يستطيع ترجمة مجموعة كبيرة من لغة C، وبالذات يستطيع ترجمة نفسه.)
-وهذا أيضًا مرتبط بحقيقة أنه من الممكن كتابة برنامج يطبع شيفرته المصدرية الخاصة، انظر [lispinterpreterfig](https://www.scottaaronson.com/blog/?p=3445){.ref}.
-وهناك آلات تورينج شاملة معروفة تتطلب عددًا صغيرًا جدًا من الحالات أو من رموز الأبجدية، وبالخصوص هناك آلة تورينج شاملة (بالنسبة إلى اختيار معيّن لتمثيل آلات تورينج بوصفها سلاسل) أبجديتها $\{ \triangleright, \varnothing, 0, 1 \}$ ولديها أقل من $25$ حالة (انظر [uncomputablebibnotes](https://terrytao.wordpress.com/2020/10/10/climbing-the-cosmic-distance-ladder-book-announcement/){.ref}).
+وهذا أيضًا مرتبط بحقيقة أنه من الممكن كتابة برنامج يطبع شيفرته المصدرية الخاصة، انظر [lispinterpreterfig](#lispinterpreterfig){.ref}.
+وهناك آلات تورينج شاملة معروفة تتطلب عددًا صغيرًا جدًا من الحالات أو من رموز الأبجدية، وبالخصوص هناك آلة تورينج شاملة (بالنسبة إلى اختيار معيّن لتمثيل آلات تورينج بوصفها سلاسل) أبجديتها $\{ \triangleright, \varnothing, 0, 1 \}$ ولديها أقل من $25$ حالة (انظر [uncomputablebibnotes](#uncomputablebibnotes){.ref}).
 
 
 
 ## هل كل دالة قابلة للحساب؟
 
-في [NAND-univ-thm](https://en.wikipedia.org/wiki/Ackermann_function){.ref} رأينا أن برامج NAND-CIRC تستطيع حساب كل دالة منتهية $f:\{0,1\}^n \rightarrow \{0,1\}$.
+في [NAND-univ-thm](#NAND-univ-thm){.ref} رأينا أن برامج NAND-CIRC تستطيع حساب كل دالة منتهية $f:\{0,1\}^n \rightarrow \{0,1\}$.
 وعليه فإن التخمّن الطبيعي هو أن برامج NAND-TM (أو بما يكافئها، آلات تورينج) تستطيع حساب كل دالة لا نهائية $F:\{0,1\}^* \rightarrow \{0,1\}$.
 غير أن الأمر يتبيّن أنه _غير صحيح_.
 أي إن توجد دالة $F:\{0,1\}^* \rightarrow \{0,1\}$ _غير قابلة للحساب_!
@@ -226,12 +226,12 @@ def EVAL(δ,x):
 توجد دالة $F^*:\{0,1\}^* \rightarrow \{0,1\}$ لا يمكن حسابها بأي آلة تورينج.
 
 > ### {.proofidea data-ref="uncomputable-func"}
-الفكرة وراء البرهان تتبع عن قرب برهان كانتور على أن الأعداد الحقيقية غير عدّية ([cantorthm](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html){.ref})، بل ويمكن في الواقع استخراج هذه النظرية إلى حد كبير من تلك النتيجة مباشرةً (انظر [uncountablefuncex](https://github.com/adamyedidia/parsimony){.ref}).
+الفكرة وراء البرهان تتبع عن قرب برهان كانتور على أن الأعداد الحقيقية غير عدّية ([cantorthm](#cantorthm){.ref})، بل ويمكن في الواقع استخراج هذه النظرية إلى حد كبير من تلك النتيجة مباشرةً (انظر [uncountablefuncex](#uncountablefuncex){.ref}).
 غير أنه مفيد أن نرى البرهان المباشر.
 والفكرة هي إنشاء $F^*$ بطريقة تضمن أن كل آلة ممكنة $M$ ستفشل فعلًا في حساب $F^*$. ونفعل ذلك بتعريف $F^*(x)$ مساويًا للعدد $0$ إذا كان $x$ يصف آلة تورينج $M$ تُحقّق $M(x)=1$، وتعريف $F^*(x)=1$ بغير ذلك. وبالإنشاء، إذا كانت $M$ أي آلة تورينج و $x$ هي السلسلة التي تصفها، فإن $F^*(x) \neq M(x)$ وبالتالي فإن $M$ _لا_ تحسب $F^*$.
 
 ::: {.proof data-ref="uncomputable-func"}
-يتضح البرهان في [diagonal-fig](https://codegolf.stackexchange.com/){.ref}.
+يتضح البرهان في [diagonal-fig](#diagonal-fig){.ref}.
 نبدأ بتعريف الدالة التالية $G:\{0,1\}^* \rightarrow \{0,1\}$:
 
 لكل سلسلة $x\in\{0,1\}^*$، إذا كانت $x$ تُحقِّق __(1)__ $x$ تمثيلًا صالحًا لبعض آلة تورينج $M$ (وفق مخطّط التمثيل أعلاه) و __(2)__ عند تنفيذ البرنامج $M$ على المدخل $x$ يتوقّف وينتج خرجًا، فإننا نعرّف $G(x)$ بأنّها البت الأولى لهذا الخرج. بغير ذلك (أي إذا لم تكن $x$ تمثيلًا صالحًا لآلة تورينج، أو أن الآلة $M_x$ لا تتوقّف أبدًا عند $x$) فإننا نعرّف $G(x)=0$.
@@ -244,7 +244,7 @@ def EVAL(δ,x):
 $F^*(x) = 1 - G(x) = 1 - M(x)$،   مما ينتج تناقضًا.
 :::
 
-![/images/introtcs/lec_08_uncomputability-2.webp](/images/introtcs/lec_08_uncomputability-2.webp){#diagonal-fig   }
+![/images/introtcs/lec_08_uncomputability-2.webp](/images/introtcs/original-diagonal_proof.webp){#diagonal-fig   }
 
 
 ::: { .bigidea #uncomputablefunctions}
@@ -252,21 +252,21 @@ $F^*(x) = 1 - G(x) = 1 - M(x)$،   مما ينتج تناقضًا.
 :::
 
 > ### { .pause }
-برهان [uncomputable-func](http://www.alpha60.de/art/love_letters/){.ref} قصير لكنه دقيق.
+برهان [uncomputable-func](#uncomputable-func){.ref} قصير لكنه دقيق.
 أقترح أن تتوقّف هنا وتعود لقراءته من جديد وتفكّر فيه — فهذا برهان يستحق القراءة مرّتين على الأقل إن لم تكن ثلاثًا أو أربعًا.
 فمن النادر أن تثبت بضعة أسطر من التفكير الرياضي حقيقةً عميقة الخطوات، أي أنّ هناك مسائل لا نستطيع ببساطة _حلّها_.
 
-نوع الحجّة المستخدَمة لإثبات [uncomputable-func](){.ref} يُعرف بـ_الحَجّ القطري_ (diagonalization)، إذ يمكن وصفه بأنه تعريف دالة بالاعتماد على مداخل القطر في جدول كما في [diagonal-fig](){.ref}.
-ويمكن التفكير في البرهان بوصفه نسخة لا نهائية من حجّة _العدّ_ (counting) التي استعملناها لإثبات الحدّ الأدنى لبرامج NAND-CIRC في [counting-lb](){.ref}.
+نوع الحجّة المستخدَمة لإثبات [uncomputable-func](#uncomputable-func){.ref} يُعرف بـ_الحَجّ القطري_ (diagonalization)، إذ يمكن وصفه بأنه تعريف دالة بالاعتماد على مداخل القطر في جدول كما في [diagonal-fig](#diagonal-fig){.ref}.
+ويمكن التفكير في البرهان بوصفه نسخة لا نهائية من حجّة _العدّ_ (counting) التي استعملناها لإثبات الحدّ الأدنى لبرامج NAND-CIRC في [counting-lb](#counting-lb){.ref}.
 أي أننا نبيّن أنه من المستحيل حساب كل الدوال من $\{0,1\}^* \rightarrow \{0,1\}$ بآلات تورينج، لمجرّد أن هناك عددًا من هذه الدوال أكبر من عدد آلات تورينج.
 
 
-وكما ذُكر في [decidablelanguagesrem](){.ref}، فإن كثيرًا من الكتب تستعمل مصطلح «اللغة» (language)، ومن ثمّ فإنها تسمّي مجموعة $L \subseteq \{0,1\}^*$ لغةً [_غير قابلة للقرار_](https://goo.gl/3YvQvL) أو _غير تكرارية_ (non-recursive) إذا كانت الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ التي تحقّق $F(x)=1 \leftrightarrow x\in L$ غير قابلة للحساب.
+وكما ذُكر في [decidablelanguagesrem](#decidablelanguagesrem){.ref}، فإن كثيرًا من الكتب تستعمل مصطلح «اللغة» (language)، ومن ثمّ فإنها تسمّي مجموعة $L \subseteq \{0,1\}^*$ لغةً [_غير قابلة للقرار_](https://goo.gl/3YvQvL) أو _غير تكرارية_ (non-recursive) إذا كانت الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ التي تحقّق $F(x)=1 \leftrightarrow x\in L$ غير قابلة للحساب.
 
 
 ## مشكلة التوقّف {#haltingsec }
 
-تبيّن [uncomputable-func](){.ref} أن هناك _بعضَ_ دالة لا يمكن حسابها.
+تبيّن [uncomputable-func](#uncomputable-func){.ref} أن هناك _بعضَ_ دالة لا يمكن حسابها.
 لكن هل هذه الدالة هي ما يعادل «الشجرة التي تسقط في الغابة دون أن يسمعها أحد»؟
 أي إنها ربما دالة لا _يريد_ أحد فعلًا حسابها.
 ويتبيّن أن هناك دوال غير قابلة للحساب طبيعية:
@@ -275,7 +275,7 @@ $F^*(x) = 1 - G(x) = 1 - M(x)$،   مما ينتج تناقضًا.
 لتكن $HALT:\{0,1\}^* \rightarrow \{0,1\}$ الدالة التي لكل سلسلة $M\in \{0,1\}^*$ يكون $HALT(M,x)=1$ إذا توقّفت آلة تورينج $M$ عند المدخل $x$، و $HALT(M,x)=0$ بغير ذلك.
 إذن $HALT$ غير قابلة للحساب.
 
-قبل أن ننتقل إلى إثبات [halt-thm](){.ref}، نلاحظ أن $HALT$ دالة طبيعية جدًا نرغب في حسابها.
+قبل أن ننتقل إلى إثبات [halt-thm](#halt-thm){.ref}، نلاحظ أن $HALT$ دالة طبيعية جدًا نرغب في حسابها.
 فمثلًا يمكن التفكير في $HALT$ على أنها حالة خاصة من مهمة إدارة «متجر تطبيقات» (App store).
 أي إن، معطى شيفرة بعض التطبيقات، يحتاج حارس المتجر إلى أن يقرّر ما إذا كانت هذه الشيفرة آمنة بما يكفي للسماح بدخولها المتجر أم لا.
 على أقل تقدير، يبدو أنه علينا التحقق من أن الشيفرة لن تدخل في حلقة لا نهائية.
@@ -287,9 +287,9 @@ $F^*(x) = 1 - G(x) = 1 - M(x)$،   مما ينتج تناقضًا.
 $$
 \text{Uncomputability of $F^*$} \;+\; \text{Universality} \;=\; \text{Uncomputability of $HALT$}
 $$
-أي إننا سنستعمل آلة تورينج الشاملة التي تحسب $EVAL$ لاستخراج عدم قابلية حساب $HALT$ من عدم قابلية حساب $F^*$ المبيَّنة في [uncomputable-func](){.ref}.
+أي إننا سنستعمل آلة تورينج الشاملة التي تحسب $EVAL$ لاستخراج عدم قابلية حساب $HALT$ من عدم قابلية حساب $F^*$ المبيَّنة في [uncomputable-func](#uncomputable-func){.ref}.
 وبالتحديد، سيكون البرهان بالبرهان بالتناقض.
-أي إننا سنفرض، طلبًا للتناقض، أن $HALT$ قابلة للحساب، ونستعمل هذا الافتراض مع آلة تورينج الشاملة في [universaltmthm](){.ref} لاستخراج أن $F^*$ قابلة للحساب، مما يناقض [uncomputable-func](){.ref}.
+أي إننا سنفرض، طلبًا للتناقض، أن $HALT$ قابلة للحساب، ونستعمل هذا الافتراض مع آلة تورينج الشاملة في [universaltmthm](#universaltmthm){.ref} لاستخراج أن $F^*$ قابلة للحساب، مما يناقض [uncomputable-func](#uncomputable-func){.ref}.
 :::
 
 ::: { .bigidea #reductionuncomputeidea}
@@ -298,8 +298,8 @@ $$
 
 
 ::: {.proof data-ref="halt-thm"}
-سيستعمل البرهان النتيجة المثبتة سابقًا [uncomputable-func](){.ref}.
-وتذكّر أن [uncomputable-func](){.ref} تُبيّن أن الدالة التالية $F^*: \{0,1\}^* \rightarrow \{0,1\}$ غير قابلة للحساب:
+سيستعمل البرهان النتيجة المثبتة سابقًا [uncomputable-func](#uncomputable-func){.ref}.
+وتذكّر أن [uncomputable-func](#uncomputable-func){.ref} تُبيّن أن الدالة التالية $F^*: \{0,1\}^* \rightarrow \{0,1\}$ غير قابلة للحساب:
 
 $$
 F^*(x) = \begin{cases}0 & x(x)=1 \\ 1 & \text{otherwise} \end{cases}
@@ -311,7 +311,7 @@ $$
 (ويُعرف هذا بالبرهان _بالاختزال_ (reduction)، لأننا نختزل مهمة حساب $F^*$ في مهمة حساب $HALT$. وبالعكس، يعني هذا أن عدم قابلية حساب $F^*$ يعني عدم قابلية حساب $HALT$.)
 
 والحق، لنفرض أن $M$ آلة تورينج تحسب $HALT$.
-يصف [halttof](){.ref} آلة تورينج $M'$ تحسب $F^*$. (ونستعمل وصفًا «عالي المستوى» لآلات تورينج، تمسّكًا بنموذج «كُلُّ الكعكة وتأكلها أيضًا»، انظر [eatandhavecake](){.ref}.)
+يصف [halttof](#halttof){.ref} آلة تورينج $M'$ تحسب $F^*$. (ونستعمل وصفًا «عالي المستوى» لآلات تورينج، تمسّكًا بنموذج «كُلُّ الكعكة وتأكلها أيضًا»، انظر [eatandhavecake](#eatandhavecake){.ref}.)
 
 
 ``` {.algorithm title="$F^*$ to $HALT$ reduction" #halttof}
@@ -330,16 +330,16 @@ endif
 Return $1$
 ```
 
-نطالب بأن [halttof](){.ref} يحسب الدالة $F^*$.
+نطالب بأن [halttof](#halttof){.ref} يحسب الدالة $F^*$.
 والحق، لنفرض أن $x(x)=1$ (وبالتالي $F^*(x)=0$).
-في هذه الحالة، $HALT(x,x)=1$ وبالتالي، وفق افتراضنا $M(x,x)=HALT(x,x)$، ستساوي القيمة $z$ العدد $1$، وبالتالي سيضبط [halttof](){.ref} القيمة $y=x(x)=1$، ويُخرج القيمة الصحيحة $0$.
+في هذه الحالة، $HALT(x,x)=1$ وبالتالي، وفق افتراضنا $M(x,x)=HALT(x,x)$، ستساوي القيمة $z$ العدد $1$، وبالتالي سيضبط [halttof](#halttof){.ref} القيمة $y=x(x)=1$، ويُخرج القيمة الصحيحة $0$.
 
 ولنفرض بغير ذلك أن $x(x) \neq 1$ (وبالتالي $F^*(x)=1$). في هذه الحالة هناك احتمالان:
 
-* __الحالة 1:__ الآلة الموصوفة بـ $x$ لا تتوقّف عند المدخل $x$ (وبالتالي $F^*(x)=1$). في هذه الحالة، $HALT(x,x)=0$. وبما أننا نفترض أن $M$ تحسب $HALT$، فإن ذلك يعني أن الآلة $M$ عند المدخل $x,x$ يجب أن تتوقّف وتُخرج القيمة $0$. وهذا يعني أن [halttof](){.ref} سيضبط $z=0$ ويُخرج $1$.
+* __الحالة 1:__ الآلة الموصوفة بـ $x$ لا تتوقّف عند المدخل $x$ (وبالتالي $F^*(x)=1$). في هذه الحالة، $HALT(x,x)=0$. وبما أننا نفترض أن $M$ تحسب $HALT$، فإن ذلك يعني أن الآلة $M$ عند المدخل $x,x$ يجب أن تتوقّف وتُخرج القيمة $0$. وهذا يعني أن [halttof](#halttof){.ref} سيضبط $z=0$ ويُخرج $1$.
 
 
-* __الحالة 2:__ الآلة الموصوفة بـ $x$ تتوقّف عند المدخل $x$ وتُخرج قيمة ما $y' \neq 1$ (وبالتالي $F^*(x)=0$). في هذه الحالة، بما أن $HALT(x,x)=1$، فإننا وفق افتراضاتنا سيضبط [halttof](){.ref} القيمة $y=y' \neq 1$ وبالتالي يُخرج $1$.
+* __الحالة 2:__ الآلة الموصوفة بـ $x$ تتوقّف عند المدخل $x$ وتُخرج قيمة ما $y' \neq 1$ (وبالتالي $F^*(x)=0$). في هذه الحالة، بما أن $HALT(x,x)=1$، فإننا وفق افتراضاتنا سيضبط [halttof](#halttof){.ref} القيمة $y=y' \neq 1$ وبالتالي يُخرج $1$.
 
 نرى أن في جميع الحالات $M'(x)=F^*(x)$، وهذا يناقض الحقيقة القائلة بأن $F^*$ غير قابلة للحساب.
 وعليه نصل إلى تناقض مع افتراضنا الأصلي بأن $M$ تحسب $HALT$.
@@ -349,13 +349,13 @@ Return $1$
 > ### { .pause }
 مرة أخرى، هذا برهان يستحق القراءة أكثر من مرة.
 عدم قابلية حساب مشكلة التوقّف إحدى النظريات الأساس في علوم الحاسوب، وهي نقطة انطلاق لكثير من الدراسات التي سنراها لاحقًا.
-ومن أفضل الطرق لفهم [halt-thm](){.ref} فهمًا أفضل مراجعة [haltalternativesec](){.ref}، التي تقدّم برهانًا بديلًا للنتيجة نفسها.
+ومن أفضل الطرق لفهم [halt-thm](#halt-thm){.ref} فهمًا أفضل مراجعة [haltalternativesec](#haltalternativesec){.ref}، التي تقدّم برهانًا بديلًا للنتيجة نفسها.
 
 
 
 ### هل مشكلة التوقّف صعبة حقًا؟ (نقاش)
 
-أول ما يخطر بمخالب كثيرين عند رؤية برهان [halt-thm](){.ref} هو ألّا يصدّقوه.
+أول ما يخطر بمخالب كثيرين عند رؤية برهان [halt-thm](#halt-thm){.ref} هو ألّا يصدّقوه.
 أي إن معظم الناس يصدّقون العبارة الرياضية، لكنهم لا يشعرون حدسيًا بأن مشكلة التوقّف صعبة إلى هذا الحد.
 بعد كل شيء، عدم قابلية الحساب لا تعني سوى أن $HALT$ لا يمكن حسابها بآلة تورينج.
 
@@ -393,12 +393,12 @@ while True:
 
 وبما أن حدس غولدباخ مفتوح منذ عام 1742، فإن من غير الواضح أن للبشر أي قدرة سحرية على القول ما إذا كان هذا البرنامج (أو برامج مشابهة له) سيتوقّف أم لا.
 
-![[SMBC](http://smbc-comics.com/comic/halting)'s take on solving the Halting problem.](/images/introtcs/fig-smbchalting.webp){#xkcdhaltingfig .margin  }
+![[SMBC](http://smbc-comics.com/comic/halting)'s take on solving the Halting problem.](/images/introtcs/original-smbchalting.webp){#xkcdhaltingfig .margin  }
 
 
 ### برهان مباشر لعدم قابلية حساب $HALT$ (اختياري) { #haltalternativesec }
 
-يتبيّن أنه يمكننا جمع أفكار برهاني [uncomputable-func](){.ref} و [halt-thm](){.ref} للحصول على برهان قصير للنظرية الأخيرة، لا يلجأ إلى عدم قابلية حساب $F^*$.
+يتبيّن أنه يمكننا جمع أفكار برهاني [uncomputable-func](#uncomputable-func){.ref} و [halt-thm](#halt-thm){.ref} للحصول على برهان قصير للنظرية الأخيرة، لا يلجأ إلى عدم قابلية حساب $F^*$.
 وقد ظهر هذا البرهان القصير مطبوعًا في رسالة عام 1965 إلى محرّر مجلة The Computer Journal:
 
 
@@ -427,7 +427,7 @@ while True:
 >كامبريدج
 
 ::: { .pause }
-حاوِل أن تتوقّف وتستخرج الحجّة التي تثبت [halt-thm](){.ref} من الرسالة أعلاه.
+حاوِل أن تتوقّف وتستخرج الحجّة التي تثبت [halt-thm](#halt-thm){.ref} من الرسالة أعلاه.
 :::
 
 وبما أن CPL لم يعد شائعًا اليوم، فلنُعد عرض هذا البرهان.
@@ -470,17 +470,17 @@ def T(f,x):
 
 ## الاختزال {#reductionsuncompsec }
 
-تبيّن أن مشكلة التوقّف هي محور عدم قابلية الحساب، بمعنى أن [halt-thm](){.ref} استُعمل لإثبات عدم قابلية حساب عدد كبير جدًا من الدوال المثيرة.
-سنرى في هذا الفصل وفي التمارين عدة أمثلة لمثل هذه النتائج، لكن هناك نتائج أخرى كثيرة (انظر [haltreductions](){.ref}).
+تبيّن أن مشكلة التوقّف هي محور عدم قابلية الحساب، بمعنى أن [halt-thm](#halt-thm){.ref} استُعمل لإثبات عدم قابلية حساب عدد كبير جدًا من الدوال المثيرة.
+سنرى في هذا الفصل وفي التمارين عدة أمثلة لمثل هذه النتائج، لكن هناك نتائج أخرى كثيرة (انظر [haltreductions](#haltreductions){.ref}).
 
 
-![/images/introtcs/lec_08_uncomputability-4.webp](/images/introtcs/lec_08_uncomputability-4.webp){#haltreductions   }
+![/images/introtcs/lec_08_uncomputability-4.webp](/images/introtcs/original-reductions_from_halting.webp){#haltreductions   }
 
 
 الفكرة وراء نتائج عدم قابلية الحساب هذه بسيطة من الناحية المفاهيمية، لكنها قد تكون محيِّرة في البداية.
 فإذا كنا نعرف أن $HALT$ غير قابلة للحساب، وأردنا أن نبيّن أن دالة أخرى $BLAH$ غير قابلة للحساب، فيمكننا فعل ذلك بحجّة _عكسية_ (contrapositive) (أي بالبرهان بالتناقض).
 أي إننا نبيّن __أنّ__ __إن__ كانت هناك آلة تورينج تحسب $BLAH$ __فإن__ هناك آلة تورينج تحسب $HALT$.
-(وبالفعل، هكذا بيّنا بالضبط أن $HALT$ نفسها غير قابلة للحساب، إذ استخرجنا هذه الحقيقة من عدم قابلية حساب الدالة $F^*$ في [uncomputable-func](){.ref}.)
+(وبالفعل، هكذا بيّنا بالضبط أن $HALT$ نفسها غير قابلة للحساب، إذ استخرجنا هذه الحقيقة من عدم قابلية حساب الدالة $F^*$ في [uncomputable-func](#uncomputable-func){.ref}.)
 
 فمثلًا، لإثبات أن $BLAH$ غير قابلة للحساب، يمكننا أن نبيّن أنه توجد دالة قابلة للحساب $R:\{0,1\}^* \rightarrow \{0,1\}^*$ بحيث لكل زوج $M$ و $x$، يكون $HALT(M,x)=BLAH(R(M,x))$.
 ووجود دالة $R$ كهذه يعني __أنّ__ __إن__ كانت $BLAH$ قابلة للحساب __فإن__ $HALT$ ستكون قابلة للحساب أيضًا، مما يقود إلى تناقض!
@@ -497,7 +497,7 @@ def T(f,x):
 
 
 ::: {.remark title="الاختزال خوارزميات" #reductionsaralg}
-الاختزال هو _خوارزمية_، وهذا يعني، كما نوقش في [implspecanarem](){.ref}، أن للاختزال ثلاثة مكوّنات:
+الاختزال هو _خوارزمية_، وهذا يعني، كما نوقش في [implspecanarem](#implspecanarem){.ref}، أن للاختزال ثلاثة مكوّنات:
 
 * __المواصفة (ماذا):__ في حالة الاختزال من $HALT$ إلى $BLAH$، تكون المواصفة هي أن الدالة $R:\{0,1\}^* \rightarrow \{0,1\}^*$ يجب أن تحقّق $HALT(M,x)=BLAH(R(M,x))$ لكل آلة تورينج $M$ ومدخل $x$. وعلى وجه العموم، لاختزال دالة $F$ إلى $G$، يجب أن يحقّق الاختزال $F(w)=G(R(w))$ لكل مدخل $w$ لـ $F$.
 
@@ -518,16 +518,16 @@ def T(f,x):
 $HALTONZERO$ غير قابلة للحساب.
 
 > ### { .pause }
-برهان [haltonzero-thm](){.ref} أدناه، لكن قبل قراءته قد ترغب في التوقّف لدقائق وتفكّر في كيفية إثباته بنفسك.
+برهان [haltonzero-thm](#haltonzero-thm){.ref} أدناه، لكن قبل قراءته قد ترغب في التوقّف لدقائق وتفكّر في كيفية إثباته بنفسك.
 وبالخصوص، حاول أن تتخيّل شكل اختزال من $HALT$ إلى $HALTONZERO$.
 فعل ذلك طريقة ممتازة لاكتساب بعض الاطمئنان الأولي تجاه فكرة البراهين بالاختزال، وهي تقنية سنستعملها مرارًا وتكرارًا في هذا الكتاب.
-كما يمكنك أيضًا أن ترى [haltonzeropythonfig](){.ref} و[دفتر Colab](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) التالي لتنفيذ Python لهذا الاختزال.
+كما يمكنك أيضًا أن ترى [haltonzeropythonfig](#haltonzeropythonfig){.ref} و[دفتر Colab](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) التالي لتنفيذ Python لهذا الاختزال.
 
-![To prove [haltonzero-thm](){.ref}, we show that $HALTONZERO$ is uncomputable by giving a _reduction_ from the task of computing $HALT$ to the task of computing $HALTONZERO$. This shows that if there was a hypothetical algorithm $A$ computing $HALTONZERO$, then there would be an algorithm $B$ computing $HALT$, contradicting [halt-thm](){.ref}. Since neither $A$ nor $B$ actually exists, this is an example of an implication of the form "if pigs could whistle then horses could fly".](/images/introtcs/fig-haltonzerored.webp){#haltonzerofig  .figure  }
+![To prove [haltonzero-thm](#haltonzero-thm){.ref}, we show that $HALTONZERO$ is uncomputable by giving a _reduction_ from the task of computing $HALT$ to the task of computing $HALTONZERO$. This shows that if there was a hypothetical algorithm $A$ computing $HALTONZERO$, then there would be an algorithm $B$ computing $HALT$, contradicting [halt-thm](#halt-thm){.ref}. Since neither $A$ nor $B$ actually exists, this is an example of an implication of the form "if pigs could whistle then horses could fly".](/images/introtcs/original-haltonzerored.webp){#haltonzerofig  .figure  }
 
 :::  {.proof #proofofhaltonzero data-ref="haltonzero-thm"}
-البرهان يكون بالاختزال من $HALT$، انظر [haltonzerofig](){.ref}. وسنفرض، طلبًا للتناقض، أن $HALTONZERO$ قابلة للحساب بخوارزمية ما $A$، ونستعمل هذه الخوارزمية الافتراضية $A$ لإنشاء خوارزمية $B$ تحسب $HALT$، فنحصل على تناقض مع [halt-thm](){.ref}.
-(وكما نوقش في [eatandhavecake](){.ref}، فإننا تمسّكًا بنموذج «كُلُّ الكعكة وتأكلها أيضًا» نستعمل الاسم العام «خوارزمية» فقط بدلًا من القلق بشأن ما إذا كنا نمذذجها بآلات تورينج أم برامج NAND-TM أم NAND-RAM وما إلى ذلك؛ وهذا لا يحدث أي فرق لأن كل هذه النماذج متكافئة فيما بينها.)
+البرهان يكون بالاختزال من $HALT$، انظر [haltonzerofig](#haltonzerofig){.ref}. وسنفرض، طلبًا للتناقض، أن $HALTONZERO$ قابلة للحساب بخوارزمية ما $A$، ونستعمل هذه الخوارزمية الافتراضية $A$ لإنشاء خوارزمية $B$ تحسب $HALT$، فنحصل على تناقض مع [halt-thm](#halt-thm){.ref}.
+(وكما نوقش في [eatandhavecake](#eatandhavecake){.ref}، فإننا تمسّكًا بنموذج «كُلُّ الكعكة وتأكلها أيضًا» نستعمل الاسم العام «خوارزمية» فقط بدلًا من القلق بشأن ما إذا كنا نمذذجها بآلات تورينج أم برامج NAND-TM أم NAND-RAM وما إلى ذلك؛ وهذا لا يحدث أي فرق لأن كل هذه النماذج متكافئة فيما بينها.)
 
 وبما أن هذا هو برهاننا الأول بالاختزال انطلاقًا من مشكلة التوقّف، فسنفصّله أكثر من المعتاد. ويتكوّن مثل هذا البرهان بالاختزال من خطوتين:
 
@@ -548,7 +548,7 @@ Endprocedure
 Return $N_{M,x}$ # We do not execute $N_{M,x}$: only return its description
 ```
 
-تعمل خوارزميتنا $B$ كالتالي: عند المدخل $M,x$، تشغّل [halttohaltonzerored](){.ref} للحصول على آلة تورينج $M'$، ثم تُعيد $A(M')$.
+تعمل خوارزميتنا $B$ كالتالي: عند المدخل $M,x$، تشغّل [halttohaltonzerored](#halttohaltonzerored){.ref} للحصول على آلة تورينج $M'$، ثم تُعيد $A(M')$.
 وتتجاهل الآلة $M'$ مدخلها $z$ وتكتفي بتشغيل $M$ على $x$.
 
 وبصيغة الشيفرة الوهمية (pseudocode)، سيبدو البرنامج $N_{M,x}$ بشكل تقريبي كالتالي:
@@ -577,9 +577,9 @@ __برهان الادّعاء:__ بما أن $N_{M,x}$ تتجاهل مدخلها
 وعليه، إذا كانت الخوارزمية الافتراضية $A$ تحقّق $A(M)=HALTONZERO(M)$ لكل $M$، فإن الخوارزمية $B$ التي نبنيها تحقّق $B(M,x)=HALT(M,x)$ لكل $M,x$، مما يناقض عدم قابلية حساب $HALT$.
 :::
 
-![A Python implementation of the reduction showing that $HALTONZERO$ is uncomputable if $HALT$ is. See this [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a full implementation of the reduction.](/images/introtcs/fig-haltonzeropython.webp){#haltonzeropythonfig}
+![A Python implementation of the reduction showing that $HALTONZERO$ is uncomputable if $HALT$ is. See this [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a full implementation of the reduction.](/images/introtcs/original-haltonzeropython.webp){#haltonzeropythonfig}
 > ### {.remark title="تقنية تثبيت المدخلات" #hardwiringrem}
-في برهان [haltonzero-thm](){.ref} استعملنا تقنية «تثبيت» (hardwiring) مدخل $x$ في برنامج/آلة $P$. أي إننا نأخذ برنامجًا يحسب الدالة $x \mapsto f(x)$ ونثبّت بعض المداخل عند قيمة ثابتة ما. فمثلًا، إذا كان لديك برنامج يأخذ كمدخل زوجًا من الأعداد $x,y$ ويُخرج حاصل ضربهما (أي يحسب الدالة $f(x,y) =x\times y$)، فيمكنك أن «تثبّت» المدخل الثاني على القيمة $17$ فتحصل على برنامج يأخذ كمدخل عدد $x$ ويُخرج $x\times 17$ (أي يحسب الدالة $g(x) = x\times 17$).
+في برهان [haltonzero-thm](#haltonzero-thm){.ref} استعملنا تقنية «تثبيت» (hardwiring) مدخل $x$ في برنامج/آلة $P$. أي إننا نأخذ برنامجًا يحسب الدالة $x \mapsto f(x)$ ونثبّت بعض المداخل عند قيمة ثابتة ما. فمثلًا، إذا كان لديك برنامج يأخذ كمدخل زوجًا من الأعداد $x,y$ ويُخرج حاصل ضربهما (أي يحسب الدالة $f(x,y) =x\times y$)، فيمكنك أن «تثبّت» المدخل الثاني على القيمة $17$ فتحصل على برنامج يأخذ كمدخل عدد $x$ ويُخرج $x\times 17$ (أي يحسب الدالة $g(x) = x\times 17$).
 وهذه التقنية شائعة جدًا في الاختزال وفي مواضع أخرى، وسنستعملها مرارًا وتكرارًا في هذا الكتاب.
 
 
@@ -616,7 +616,7 @@ __برهان الادّعاء:__ بما أن $N_{M,x}$ تتجاهل مدخلها
 :::
 
 ::: {.proof data-ref="allzero-thm"}
-البرهان يكون بالاختزال من $HALTONZERO$. لنفرض، طلبًا للتناقض، أنه كانت هناك خوارزمية $A$ بحيث $A(M)=ZEROFUNC(M)$ لكل $M \in \{0,1\}^*$. عندئذ سنبني خوارزمية $B$ تحلّ $HALTONZERO$، مما يناقض [haltonzero-thm](){.ref}.
+البرهان يكون بالاختزال من $HALTONZERO$. لنفرض، طلبًا للتناقض، أنه كانت هناك خوارزمية $A$ بحيث $A(M)=ZEROFUNC(M)$ لكل $M \in \{0,1\}^*$. عندئذ سنبني خوارزمية $B$ تحلّ $HALTONZERO$، مما يناقض [haltonzero-thm](#haltonzero-thm){.ref}.
 
 معطى آلة تورينج $N$ (وهي مدخل $HALTONZERO$)، تفعل خوارزميتنا $B$ ما يلي:
 
@@ -640,14 +640,14 @@ COMPUTES\text{-}PARITY(P) = \begin{cases} 1 & P \text{ computes the parity funct
 $$
 
 ::: { .pause }
-نترك برهان [paritythm](){.ref} تمرينًا ([paritythmex](){.ref}).
+نترك برهان [paritythm](#paritythm){.ref} تمرينًا ([paritythmex](#paritythmex){.ref}).
 وأحثّك بشدّة على أن تتوقّف هنا وتحاول حلّ هذا التمرين.
 :::
 
 
 ### نظرية رايس { #ricethmsec }
 
-يمكن تعميم [paritythm](){.ref} إلى ما هو أبعد بكثير من دالة التكافؤ.
+يمكن تعميم [paritythm](#paritythm){.ref} إلى ما هو أبعد بكثير من دالة التكافؤ.
 وفي الواقع، هذا التعميم يستبعد التحقّق من أي نوع من المواصفات الدلالية على البرامج.
 ونعرّف _المواصفة الدلالية_ (semantic specification) على البرامج بأنها خاصية لا تعتمد على شيفرة البرنامج بل على الدالة التي يحسبها البرنامج فحسب.
 
@@ -686,7 +686,7 @@ int Second(int n) {
 ::: {.definition title="الخصائص الدلالية" #semanticpropdef}
 زوجا آلات تورينج $M$ و $M'$ يكونان _متكافئين وظيفيًا_ (functionally equivalent) إذا كان لكل $x\in \{0,1\}^*$ لدينا $M(x)=M'(x)$. (وبالخصوص، $M(x)=\bot$ إذا وفقط إذا كان $M'(x)=\bot$ لكل $x$.)
 
-وتكون الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ _دلالية_ إذا كان لكل زوج من السلاسل $M,M'$ يمثّلان آلتي تورينج متكافئتين وظيفيًا، لدينا $F(M)=F(M')$. (وتذكّر أننا نفترض أن كل سلسلة تمثّل _بعضَ_ آلة تورينج، انظر [TMrepremark](){.ref})
+وتكون الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ _دلالية_ إذا كان لكل زوج من السلاسل $M,M'$ يمثّلان آلتي تورينج متكافئتين وظيفيًا، لدينا $F(M)=F(M')$. (وتذكّر أننا نفترض أن كل سلسلة تمثّل _بعضَ_ آلة تورينج، انظر [TMrepremark](#TMrepremark){.ref})
 :::
 
 
@@ -714,10 +714,10 @@ int Second(int n) {
 :::
 
 ::: {.proofidea #proofidea-rice-thm data-ref="rice-thm"}
-الفكرة وراء البرهان هي إظهار أن كل دالة دلالية غير تافهة $F$ صعبة الحساب على الأقل بقدر $HALTONZERO$. وهذا سيُتمّ البرهان، لأن $HALTONZERO$ غير قابلة للحساب بحسب [haltonzero-thm](){.ref}.
+الفكرة وراء البرهان هي إظهار أن كل دالة دلالية غير تافهة $F$ صعبة الحساب على الأقل بقدر $HALTONZERO$. وهذا سيُتمّ البرهان، لأن $HALTONZERO$ غير قابلة للحساب بحسب [haltonzero-thm](#haltonzero-thm){.ref}.
 وإذا كانت دالة $F$ غير تافهة، فإن هناك آلتين $M_0$ و $M_1$ بحيث $F(M_0)=0$ و $F(M_1)=1$. فالغرض إذن هو أن نأخذ آلة $N$ ونجد طريقة لتعيينها إلى آلة $M=R(N)$، بحيث __(i)__ إذا كانت $N$ تتوقّف على الصفر فإن $M$ تكون متكافئة وظيفيًا مع $M_1$، و __(ii)__ إذا كانت $N$ _لا_ تتوقّف على الصفر فإن $M$ تكون متكافئة وظيفيًا مع $M_0$.
 
-ولأن $F$ دلالية، فإننا لو حقّقنا ذلك لأوصّنا ضمنًا أن $HALTONZERO(N) = F(R(N))$، وبذلك نبيّن أن إذا كانت $F$ قابلة للحساب فإن $HALTONZERO$ ستكون قابلة للحساب أيضًا، مما يناقض [haltonzero-thm](){.ref}.
+ولأن $F$ دلالية، فإننا لو حقّقنا ذلك لأوصّنا ضمنًا أن $HALTONZERO(N) = F(R(N))$، وبذلك نبيّن أن إذا كانت $F$ قابلة للحساب فإن $HALTONZERO$ ستكون قابلة للحساب أيضًا، مما يناقض [haltonzero-thm](#haltonzero-thm){.ref}.
 :::
 
 ::: {.proof data-ref="rice-thm"}
@@ -791,7 +791,7 @@ Y[0] = NAND(X[0],Harvard[0])
 
 غير أن $HALTNOYALE$ غير قابلة للحساب، لأن كل برنامج $P$ يمكن تحويله إلى برنامج مكافئ $P'$ (بل ومحسَّن في الواقع `:)`) لا يحوي المتغيّر `Yale`. وعليه، لو استطاعنا حساب $HALTNOYALE$ لاستطعنا تحديد التوقّف على الصفر لبرامج NAND-TM (وبالتالي لآلات تورينج أيضًا).
 
-وفضلا عن ذلك، كما سنرى في [godelchap](){.ref}، هناك دوال غير قابلة للحساب مداخلها ليست برامجًا، ولذلك لا ينطبق عليها الصفة «دلالية».
+وفضلا عن ذلك، كما سنرى في [godelchap](#godelchap){.ref}، هناك دوال غير قابلة للحساب مداخلها ليست برامجًا، ولذلك لا ينطبق عليها الصفة «دلالية».
 
 وتُعرف الخصائص مثل «البرنامج يحوي المتغيّر `Yale`» أحيانًا بالخصائص _الصياغية_ (_syntactic_).
 وكلمتا «دلالية» و«صياغية» تُستعملان خارج نطاق لغات البرمجة أيضًا: فمن أشهر الأمثلة على جملة صحيحة صياغيًا لكنها خالية من المعنى الدلالي في الإنجليزية هي جملة تشومسكي الشهيرة ["Colorless green ideas sleep furiously."](https://goo.gl/4gXoiV) لكن تعريف «الخصائص الصياغية» تعريفًا رسميًا أمر دقيق نوعًا ما، ولن نستعمل هذه المصطلحات في هذا الكتاب، ملتزمين بمصطحلَي «دلالية» و«غير دلالية» فقط.
@@ -812,10 +812,10 @@ Y[0] = NAND(X[0],Harvard[0])
 مرة أخرى، هذه نقطة جيدة لتتوقّف وتحاول إثبات النتيجة بنفسك قبل قراءة البرهان أدناه.
 
 :::  {.proof }
-لقد رأينا في [TM-equiv-thm](){.ref} أن لكل آلة تورينج $M$ يوجد برنامج NAND-TM مكافئ $P_M$ بحيث لكل $x$ لدينا $P_M(x)=M(x)$.
+لقد رأينا في [TM-equiv-thm](#TM-equiv-thm){.ref} أن لكل آلة تورينج $M$ يوجد برنامج NAND-TM مكافئ $P_M$ بحيث لكل $x$ لدينا $P_M(x)=M(x)$.
 وبالخصوص، هذا يعني أن $HALT(M)= NANDTMHALT(P_M)$.
 
-والتحويل $M \mapsto P_M$ الناتج عن برهان [TM-equiv-thm](){.ref} هو تحويل _بنّاء_ (_constructive_).
+والتحويل $M \mapsto P_M$ الناتج عن برهان [TM-equiv-thm](#TM-equiv-thm){.ref} هو تحويل _بنّاء_ (_constructive_).
 أي إن البرهان ينتج طريقة _لحساب_ التعيين $M \mapsto P_M$.
 وهذا يعني أن هذا البرهان ينتج _اختزالًا_ من مهمة حساب $HALT$ إلى مهمة حساب $NANDTMHALT$، وهو ما يعني أن بما أن $HALT$ غير قابلة للحساب فإن $NANDTMHALT$ كذلك غير قابلة للحساب.
 :::
@@ -825,7 +825,7 @@ Y[0] = NAND(X[0],Harvard[0])
 وعليه فمثلًا لا توجد خوارزمية لتحديد ما إذا كان تعبير $\lambda$ يُقيَّم إلى دالة الهوية، ولا خوارزمية لتحديد ما إذا كانت configuration ابتدائية في لعبة الحياة ستؤدي في النهاية إلى تلوين الخلية $(0,0)$ بالسواد أم لا.
 
 وبالفعل يمكننا تعميم نظرية رايس على كل هذه النماذج.
-فمثلًا، إذا كانت $F:\{0,1\}^* \rightarrow \{0,1\}$ دالة غير تافهة بحيث $F(P)=F(P')$ لكل برنامجَي NAND-TM متكافئين وظيفيًا $P,P'$، فإن $F$ غير قابلة للحساب، وينطبق الأمر نفسه على برامج NAND-RAM وعلى تعبيرات $\lambda$ وعلى كل نماذج تورينج الكاملة الأخرى (بحسب تعريفها في [turingcompletedef](){.ref})، وانظر أيضًا [ricegeneralex](){.ref}.
+فمثلًا، إذا كانت $F:\{0,1\}^* \rightarrow \{0,1\}$ دالة غير تافهة بحيث $F(P)=F(P')$ لكل برنامجَي NAND-TM متكافئين وظيفيًا $P,P'$، فإن $F$ غير قابلة للحساب، وينطبق الأمر نفسه على برامج NAND-RAM وعلى تعبيرات $\lambda$ وعلى كل نماذج تورينج الكاملة الأخرى (بحسب تعريفها في [turingcompletedef](#turingcompletedef){.ref})، وانظر أيضًا [ricegeneralex](#ricegeneralex){.ref}.
 
 
 
@@ -844,7 +844,7 @@ Y[0] = NAND(X[0],Harvard[0])
 ومع ذلك، يبقى التحقّق — وخاصةً تحقّق البرامج الكبيرة والمعقّدة — مهمّة شديدة الصعوبة عمليًا أيضًا، ولا يزال عدد البرامج التي ثبتت صحتها رسميًا صغيرًا إلى حد بعيد.
 وفضلا عن ذلك، فإن حتى صياغة النظرية الصحيحة لإثباتها (أي المواصفة) غالبًا ما تكون مهمّة غير تافهة إلى حد كبير.
 
-![The set $\mathbf{R}$ of computable Boolean functions ([classRdef](){.ref}) is a proper subset of the set of all functions mapping $\{0,1\}^*$ to $\{0,1\}$. In this chapter we saw a few examples of elements in the latter set that are not in the former.](/images/introtcs/fig-inclusion_noncomputable.webp){#inclusionuncomputablefig .class  }
+![The set $\mathbf{R}$ of computable Boolean functions ([classRdef](#classRdef){.ref}) is a proper subset of the set of all functions mapping $\{0,1\}^*$ to $\{0,1\}$. In this chapter we saw a few examples of elements in the latter set that are not in the former.](/images/introtcs/original-inclusion_noncomputable.webp){#inclusionuncomputablefig .class  }
 
 
 ::: { .recap }
@@ -903,12 +903,12 @@ Y[0] = NAND(X[0],Harvard[0])
 
 
 ::: {.exercise title="حساب التكافؤ" #paritythmex}
-برهن [paritythm](){.ref} دون استعمال نظرية رايس.
+برهن [paritythm](#paritythm){.ref} دون استعمال نظرية رايس.
 :::
 
 
 ::: {.exercise title="تكافؤ آلات تورينج" #TMequivex}
-لتكن $EQ:\{0,1\}^* :\rightarrow \{0,1\}$ الدالة المعرَّفة كالتالي: معطى سلسلة تمثّل زوجًا $(M,M')$ من آلات تورينج، يكون $EQ(M,M')=1$ إذا وفقط إذا كانت $M$ و $M'$ متكافئتين وظيفيًا بحسب [semanticpropdef](){.ref}. برهن أن $EQ$ غير قابلة للحساب.
+لتكن $EQ:\{0,1\}^* :\rightarrow \{0,1\}$ الدالة المعرَّفة كالتالي: معطى سلسلة تمثّل زوجًا $(M,M')$ من آلات تورينج، يكون $EQ(M,M')=1$ إذا وفقط إذا كانت $M$ و $M'$ متكافئتين وظيفيًا بحسب [semanticpropdef](#semanticpropdef){.ref}. برهن أن $EQ$ غير قابلة للحساب.
 
 لاحظ أنك _لا تستطيع_ استعمال نظرية رايس مباشرة، لأن هذه النظرية تتناول فقط الدوال التي تأخذ آلة تورينج واحدة كمدخل، بينما $EQ$ تأخذ آلتين.
 :::
@@ -941,13 +941,13 @@ Y[0] = NAND(X[0],Harvard[0])
 
 لآلة تورينج $M$، عرّف $L(M) \subseteq \{0,1\}^*$ لتكون مجموعة كل $x\in \{0,1\}^*$ بحيث تتوقّف $M$ عند المدخل $x$ وتُخرج $1$. (وتُعرف المجموعة $L(M)$ في الأدبيات باسم _اللغة التي يتعرّفها $M$_. ولاحظ أن $M$ قد تُخرج قيمة غير $1$ أو قد لا تتوقّف البتّة عند مدخلات $x\not\in L(M)$.)
 
-1. برهن أن لكل آلة تورينج $M$، إذا عرّفنا $F_M:\{0,1\}^* \rightarrow \{0,1\}$ لتكون الدالة التي $F_M(x)=1$ إذا وفقط إذا كان $x\in L(M)$، فإن $F_M$ _قابلة للعدّ التكراري_ بحسب التعريف في [recursiveenumerableex](){.ref}.
+1. برهن أن لكل آلة تورينج $M$، إذا عرّفنا $F_M:\{0,1\}^* \rightarrow \{0,1\}$ لتكون الدالة التي $F_M(x)=1$ إذا وفقط إذا كان $x\in L(M)$، فإن $F_M$ _قابلة للعدّ التكراري_ بحسب التعريف في [recursiveenumerableex](#recursiveenumerableex){.ref}.
 
-2. استعمل [rice-thm](){.ref} لبرهان أن لكل $G:\{0,1\}^* \rightarrow \{0,1\}$، إذا __(a)__ لم تكن $G$ دالة الصفر الثابتة ولا دالة الواحد الثابتة، و __(b)__ لكل $M,M'$ بحيث $L(M)=L(M')$ كان $G(M)=G(M')$، فإن $G$ غير قابلة للحساب. انظر الحاشية للتلميح.^[أظهر أن أي $G$ تحقق __(b)__ يجب أن تكون دلالية.]
+2. استعمل [rice-thm](#rice-thm){.ref} لبرهان أن لكل $G:\{0,1\}^* \rightarrow \{0,1\}$، إذا __(a)__ لم تكن $G$ دالة الصفر الثابتة ولا دالة الواحد الثابتة، و __(b)__ لكل $M,M'$ بحيث $L(M)=L(M')$ كان $G(M)=G(M')$، فإن $G$ غير قابلة للحساب. انظر الحاشية للتلميح.^[أظهر أن أي $G$ تحقق __(b)__ يجب أن تكون دلالية.]
 :::
 
 ::: {.exercise title="نظرية رايس للنماذج المتكافئة تورينجيًا العامة (اختياري)" #ricegeneralex}
-ليكن $\mathcal{F}$ مجموعة كل الدوال الجزئية من $\{0,1\}^*$ إلى $\{0,1\}$، وليكن $\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$ نموذجًا متكافئًا تورينجيًا بحسب التعريف في [turingcompletedef](){.ref}.
+ليكن $\mathcal{F}$ مجموعة كل الدوال الجزئية من $\{0,1\}^*$ إلى $\{0,1\}$، وليكن $\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$ نموذجًا متكافئًا تورينجيًا بحسب التعريف في [turingcompletedef](#turingcompletedef){.ref}.
 ونعرّف الدالة $F:\{0,1\}^* \rightarrow \{0,1\}$ بأنها _دلالية بالنسبة إلى $\mathcal{M}$_ إذا كانت هناك دالة ما $\mathcal{G}:\mathcal{F} \rightarrow \{0,1\}$ بحيث $F(P) = \mathcal{G}(\mathcal{M}(P))$ لكل $P\in \{0,1\}^*$.
 
 برهن أن كل $F:\{0,1\}^* \rightarrow \{0,1\}$ دلالية بالنسبة إلى $\mathcal{M}$، وليست دالة الواحد الثابتة ولا دالة الصفر الثابتة، تكون $F$ غير قابلة للحساب.
@@ -968,10 +968,10 @@ Y[0] = NAND(X[0],Harvard[0])
 
 ## ملاحظات مرجعية { #uncomputablebibnotes }
 
-كرتونة مشكلة التوقّف في [universalchapoverviewfig](){.ref} مأخوذة من [موقع تشارلز كوبر](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html)، حقوق النشر 2019 تشارلز ف. كوبر.
+كرتونة مشكلة التوقّف في [universalchapoverviewfig](#universalchapoverviewfig){.ref} مأخوذة من [موقع تشارلز كوبر](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html)، حقوق النشر 2019 تشارلز ف. كوبر.
 
 القسم 7.2 في [@MooreMertens11] يقدّم لمحة عامة موصى بها بشدة عن عدم قابلية الحساب.
-وكتاب غوبل وإشر وباخ [@hofstadter1999] كتاب علمي شهري كلاسيكي يتناول عدم قابلية الحساب وعدم البرهنة، وتحديدًا نظرية غوبل التي سنراها في [godelchap](){.ref}.
+وكتاب غوبل وإشر وباخ [@hofstadter1999] كتاب علمي شهري كلاسيكي يتناول عدم قابلية الحساب وعدم البرهنة، وتحديدًا نظرية غوبل التي سنراها في [godelchap](#godelchap){.ref}.
 وانظر كذلك كتاب هولت الأخير [@Holt2018].
 
 
@@ -983,17 +983,17 @@ Y[0] = NAND(X[0],Harvard[0])
 
 
 وجود آلة تورينج الشاملة، وعدم قابلية حساب $HALT$، برزما لأول مرة عند تورينج في ورقته التأسيسية [@Turing37]، وإن كانت نتائج قريبة جدًا منها قد ظهرت عند تشورش سنة قبل ذلك.
-وتستند هذه الأعمال إلى _نظرية عدم الاكتمال_ (incompleteness theorem) لغوبل عام 1931، وسنناقشها في [godelchap](){.ref}.
+وتستند هذه الأعمال إلى _نظرية عدم الاكتمال_ (incompleteness theorem) لغوبل عام 1931، وسنناقشها في [godelchap](#godelchap){.ref}.
 
 وتُعطى بعض آلات تورينج الشاملة ذات الأبجدية وعدد الحالات الصغيرين في [@rogozhin1996small]، بما فيها آلة تورينج شاملة بشريط واحد وبأبجدية ثنائية لها أقل من $25$ حالة؛ وانظر أيضًا الاستعراض [@woods2009complexity].
 وقد كتب آدم يديديا [برمجية](https://github.com/adamyedidia/parsimony) للمساعدة في إنتاج آلات تورينج بعدد حالات صغير.
 وهذا مرتبط بتسلية تصفية الشيفرة ["Code Golfing"](https://codegolf.stackexchange.com/)، أي حلّ مهمة حوسبة معيّنة بأقصر برنامج ممكن.
-وإيجاد آلة تورينج صغيرة «شديدة التعقيد» مرتبط أيضًا بمشكلة «آلة بَسِي بَافِر»، انظر [beaverex](){.ref} والاستعراض [@aaronson20beaver].
+وإيجاد آلة تورينج صغيرة «شديدة التعقيد» مرتبط أيضًا بمشكلة «آلة بَسِي بَافِر»، انظر [beaverex](#beaverex){.ref} والاستعراض [@aaronson20beaver].
 
 
 
 
-وحجّة الحَجّ القطري المستخدَمة لإثبات عدم قابلية حساب $F^*$ مشتقّة من حجّة كانتور حول عدم عدّية الأعداد الحقيقية التي نوقشت في [chaprepres](){.ref}.
+وحجّة الحَجّ القطري المستخدَمة لإثبات عدم قابلية حساب $F^*$ مشتقّة من حجّة كانتور حول عدم عدّية الأعداد الحقيقية التي نوقشت في [chaprepres](#chaprepres){.ref}.
 
 كان كريستوفر ستراتشي عالم حاسوب إنجليزيًا ومخترع لغة البرمجة CPL. وكان أيضًا من روّاد الذكاء الاصطناعي المبكرين، إذ برمج حاسوبًا ليلعب الداما بل ويكتب رسائل حب في مطلع الخمسينيات من القرن العشرين، انظر [هذا المقال في مجلة The New Yorker](https://www.newyorker.com/tech/elements/christopher-stracheys-nineteen-fifties-love-machine) و[هذا الموقع](http://www.alpha60.de/art/love_letters/).
 
@@ -1001,8 +1001,8 @@ Y[0] = NAND(X[0],Harvard[0])
 
 
 برُهنت نظرية رايس في [@rice1953classes].
-وهي تُصاغ عادةً بصيغة تختلف قليلًا عن التي استعملناها، انظر [ricestandardex](){.ref}.
+وهي تُصاغ عادةً بصيغة تختلف قليلًا عن التي استعملناها، انظر [ricestandardex](#ricestandardex){.ref}.
 
-لا نناقش في الفصل مفهوم اللغات _القابلة للعدّ التكراري_، لكنه مغطّى باختصار في [recursiveenumerableex](){.ref}.
+لا نناقش في الفصل مفهوم اللغات _القابلة للعدّ التكراري_، لكنه مغطّى باختصار في [recursiveenumerableex](#recursiveenumerableex){.ref}.
 وكالمعتاد، نستعمل اصطلاح الدالة لا اصطلاح اللغة.
 

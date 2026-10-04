@@ -13,7 +13,7 @@ source: https://introtcs.org/
 
 
 
-لننظر في بعض المسائل التي صادفناها في [chapefficient](https://colab.research.google.com/github/boazbk/tcscode/blob/master/Chap_13_reductions.ipynb){.ref}:
+لننظر في بعض المسائل التي صادفناها في [chapefficient](#chapefficient){.ref}:
 
 
 1. مسألة _3SAT_: اتخاذ قرار ما إذا كانت لصيغة 3CNF معطاة إسناد مُشبِع.
@@ -36,7 +36,7 @@ source: https://introtcs.org/
 * في الوقت الحالي، فإنّ أفضل خوارزمية معروفة لجميع هذه المسائل ليست أسرع بكثير من الخوارزمية التافهة في الحالة الأسوأ.
 
 
-في هذا الفصل وفي [cooklevinchap](/images/introtcs/lec_12_NP-1.webp){.ref} سنرى أنّه، على رغم اختلافاتها الظاهرية، يمكننا ربط التعقيد الحاسوبي لهذه المسائل ولعشرات غيرها.
+في هذا الفصل وفي [cooklevinchap](#cooklevinchap){.ref} سنرى أنّه، على رغم اختلافاتها الظاهرية، يمكننا ربط التعقيد الحاسوبي لهذه المسائل ولعشرات غيرها.
 وفي الحقيقة، اتّضح أنّ المسائل أعلاه _متكافئة حاسوبيًا_ (_computationally equivalent_)، بمعنى أنّ حلّ أيٍّ منها يعني فورًا حلّ البقية.
 وهذه الظاهرة، المعروفة بـ_اكتمال $\mathbf{NP}$_ (NP completeness)، هي أحد الاكتشافات المفاجئة في نظريّة الحاسوب، وسنرى أنّ لها آثارًا بعيدة المدى.
 
@@ -46,19 +46,19 @@ source: https://introtcs.org/
 الاختزال في زمن متعدد الحدود هو طريقة لـ_اختزال_ (_reduce_) مهمّة حلّ مسألة إلى مسألة أخرى.
 والطريقة التي نستعمل بها الاختزالات في التعقيد هي أن نبرهن على أنّه إذا كانت المسألة الأولى صعبة الحلّ بكفاءة، فإنّ الثانية يجب أن تكون صعبة أيضًا.
 سنرى في هذا الفصل عدة أمثلة على الاختزالات، وستكون الاختزالات أساسًا لنظرية _اكتمال $\mathbf{NP}$_ التي سنطوّرها في
-[cooklevinchap](https://en.wikipedia.org/wiki/Hamiltonian_path_problem){.ref}.
+[cooklevinchap](#cooklevinchap){.ref}.
 
 كل الشيفرة الخاصّة بالاختزالات الموصوفة في هذا الفصل متاحة على [دفتر Jupyter التالي](https://colab.research.google.com/github/boazbk/tcscode/blob/master/Chap_13_reductions.ipynb).
 :::
 
 
 
-![/images/introtcs/lec_12_NP-1.webp](/images/introtcs/lec_12_NP-1.webp){#reductionsoverviewfig}
+![/images/introtcs/lec_12_NP-1.webp](/images/introtcs/original-reductionsoverview.webp){#reductionsoverviewfig}
 
 سنرى في هذا الفصل أنّه لكل واحدة من مسائل إيجاد أطول مسار في رسم بياني، وحلّ المعادلات التربيعية، وإيجاد أكبر قطع، فإنّ وجود خوارزمية زمن متعدد الحدود لهذه المسألة يعني وجود خوارزمية زمن متعدد الحدود لمسألة 3SAT أيضًا.
 بعبارة أخرى، سنقوم بـ_اختزال_ (_reduce_) مهمّة حلّ 3SAT إلى كل واحدة من المهمّات أعلاه.
 ومن طرائق تفسير هذه النتائج أنّه إذا _لم تكن هناك_ خوارزمية زمن متعدد الحدود لـ 3SAT، فإنّه _لا توجد_ خوارزمية زمن متعدد الحدود لهذه المسائل الأخرى أيضًا.
-وسنرى في [cooklevinchap](/images/introtcs/fig-3sat2zoeqreduction.webp){.ref} أدلّة (لكنّه ليس برهانًا!) على أنّ جميع المسائل أعلاه ليس لها خوارزميات زمن متعدد الحدود، وبالتالي فهي _غير قابلة للحلّ الجوهري_ (_inherently intractable_).
+وسنرى في [cooklevinchap](#cooklevinchap){.ref} أدلّة (لكنّه ليس برهانًا!) على أنّ جميع المسائل أعلاه ليس لها خوارزميات زمن متعدد الحدود، وبالتالي فهي _غير قابلة للحلّ الجوهري_ (_inherently intractable_).
 
 
 
@@ -98,7 +98,7 @@ F(x) = G(R(x)) \;. \label{eq:reduction}
 $$
 نقول إنّ لـ $F$ و $G$ _تعقيدًا متكافئًا_ (_equivalent complexity_) إذا كان $F \leq_p G$ و $G \leq_p F$.
 
-![/images/introtcs/lec_12_NP-2.webp](/images/introtcs/lec_12_NP-2.webp){#reductionsfig .margin  }
+![/images/introtcs/lec_12_NP-2.webp](/images/introtcs/original-reductiondescription.webp){#reductionsfig .margin  }
 
 
 التمرين التالي يبرّر حدسنا بأنّ $F \leq_p G$ تعني أنّ «$F$ لا أصعب من $G$».
@@ -109,13 +109,13 @@ $$
 :::
 
 ::: { .pause }
-وكالمعتاد، فإنّ حلّ هذا التمرين بنفسك طريقة ممتازة للتأكّد من فهمك لـ[reduction-def](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3919085/){.ref}.
+وكالمعتاد، فإنّ حلّ هذا التمرين بنفسك طريقة ممتازة للتأكّد من فهمك لـ[reduction-def](#reduction-def){.ref}.
 :::
 
 ::: {.solution data-ref="reductionsandP"}
-لنفترض أنّ هناك خوارزمية $B$ تحسب $G$ في زمن $p(n)$ حيث $n$ هو حجم مدخلها. عندئذٍ يعطي [eq:reduction](/images/introtcs/lec_12_NP-4.webp){.eqref} مباشرةً خوارزمية $A$ لحساب $F$ (انظر [reductionsfig](/images/introtcs/lec_12_NP-5.webp){.ref}).
+لنفترض أنّ هناك خوارزمية $B$ تحسب $G$ في زمن $p(n)$ حيث $n$ هو حجم مدخلها. عندئذٍ يعطي [eq:reduction](#eq:reduction){.eqref} مباشرةً خوارزمية $A$ لحساب $F$ (انظر [reductionsfig](#reductionsfig){.ref}).
 بالفعل، على المدخل $x\in \{0,1\}^*$، تقوم الخوارزمية $A$ بتنفيذ الاختزال في زمن متعدد الحدود $R$ للحصول على $y=R(x)$ ثمّ تُعيد $B(y)$.
-وحسب [eq:reduction](/images/introtcs/lec_12_NP-6.webp){.eqref}، لدينا $G(R(x)) = F(x)$، وبالتالي فإنّ الخوارزمية $A$ تحسب فعلًا $F$.
+وحسب [eq:reduction](#eq:reduction){.eqref}، لدينا $G(R(x)) = F(x)$، وبالتالي فإنّ الخوارزمية $A$ تحسب فعلًا $F$.
 
 سنبيّن الآن أنّ $A$ تعمل في زمن متعدد الحدود.
 حسب الافتراض، يمكن حساب $R$ في زمن $q(n)$ لمتعدد حدود ما $q$.
@@ -132,17 +132,17 @@ _الاختزال_ (_reduction_) $F \leq_p G$ يُظهر أنّ $F$ «لا أص�
 
 يمكن استعمال اختزال من $F$ إلى $G$ لغرضين:
 
-* إذا كنّا نعرف خوارزمية لـ $G$ وكان $F \leq_p G$، فيمكننا استعمال الاختزال للحصول على خوارزمية لـ $F$. وهذه أداة مستعملة على نطاق واسع في تصميم الخوارزميات. فمثلًا في [linerprogsec](https://en.wikipedia.org/wiki/Clique_problem){.ref} رأينا كيف تتيح لنا نظريّة _Min-Cut Max-Flow_ (_القطع الأدنى–التدفّق الأقصى_) اختزال مهمّة حساب أصغر قطع في رسم بياني إلى مهمّة حساب أكبر تدفّق فيه.
+* إذا كنّا نعرف خوارزمية لـ $G$ وكان $F \leq_p G$، فيمكننا استعمال الاختزال للحصول على خوارزمية لـ $F$. وهذه أداة مستعملة على نطاق واسع في تصميم الخوارزميات. فمثلًا في [linerprogsec](#linerprogsec){.ref} رأينا كيف تتيح لنا نظريّة _Min-Cut Max-Flow_ (_القطع الأدنى–التدفّق الأقصى_) اختزال مهمّة حساب أصغر قطع في رسم بياني إلى مهمّة حساب أكبر تدفّق فيه.
 
 
-* إذا برهنّا (أو كانت لدينا أدلّة) على أنّه _لا يوجد خوارزمية زمن متعدد الحدود_ لـ $F$ وكان $F \leq_p G$، فإنّ وجود هذا الاختزال يتيح لنا أن نستنتج أنّه لا يوجد خوارزمية زمن متعدد الحدود لـ $G$. وهذا هو تفسير «لو كانت الخنازير تصفّر لطارت الخيول» (_if pigs could whistle then horses could fly_) الذي رأيناه في [reductionsuncompsec](/images/introtcs/lec_12_NP-7.webp){.ref}. نبيّن أنّه لو كانت هناك خوارزمية كفؤة افتراضية لـ $G$ (أي «خنزيرة صفّارة») فإنّنا بما أنّ $F \leq_p G$ كانت هناك خوارزمية كفؤة لـ $F$ (أي «حصان طائر»). في هذا الكتاب نستعمل الاختزالات كثيرًا لهذا الغرض الثاني، وإن كان الحدّ الفاصل بين الغرضين أحيانًا غير واضح (انظر الملاحظات الببليوغرافية في [reductionsbibnotes](/images/introtcs/lec_12_NP-8.webp){.ref}).
+* إذا برهنّا (أو كانت لدينا أدلّة) على أنّه _لا يوجد خوارزمية زمن متعدد الحدود_ لـ $F$ وكان $F \leq_p G$، فإنّ وجود هذا الاختزال يتيح لنا أن نستنتج أنّه لا يوجد خوارزمية زمن متعدد الحدود لـ $G$. وهذا هو تفسير «لو كانت الخنازير تصفّر لطارت الخيول» (_if pigs could whistle then horses could fly_) الذي رأيناه في [reductionsuncompsec](#reductionsuncompsec){.ref}. نبيّن أنّه لو كانت هناك خوارزمية كفؤة افتراضية لـ $G$ (أي «خنزيرة صفّارة») فإنّنا بما أنّ $F \leq_p G$ كانت هناك خوارزمية كفؤة لـ $F$ (أي «حصان طائر»). في هذا الكتاب نستعمل الاختزالات كثيرًا لهذا الغرض الثاني، وإن كان الحدّ الفاصل بين الغرضين أحيانًا غير واضح (انظر الملاحظات الببليوغرافية في [reductionsbibnotes](#reductionsbibnotes){.ref}).
 
 
-أهمّ فرق بين المفهوم في [reduction-def](/images/introtcs/lec_12_NP-9.webp){.ref} وبين الاختزالات التي رأيناها في سياق _عدم القابلية للحساب_ (_uncomputability_) (مثلًا في [reductionsuncompsec](/images/introtcs/fig-iset2maxcutoverview.webp){.ref}) هو أنّه، من أجل ربط التعقيد الزمني للمسائل، نحتاج أن يكون الاختزال قابلًا للحساب في _زمن متعدد الحدود_، لا أن يكون قابلًا للحساب فحسب. كما أنّ [reduction-def](/images/introtcs/fig-iset2maxcutgadgetanalysis.webp){.ref} يقصر الاختزالات على صيغة محدّدة جدًّا. أي أنّنا لإظهار $F \leq_p G$، بدلًا من السماح بخوارزمية عامّة لـ $F$ تستعمل «صندوقًا سحريًا» يحسب $G$، لا نسمح إلا بخوارزمية تحسب $F(x)$ بإخراج $G(R(x))$. وهذه الصيغة المقيّدة مريحة لنا، لكنّ الناس عرّفوا واستعملوا اختزالات أكثر عمومية أيضًا (انظر [reductionsbibnotes](/images/introtcs/fig-is2maxcut.webp){.ref}).
+أهمّ فرق بين المفهوم في [reduction-def](#reduction-def){.ref} وبين الاختزالات التي رأيناها في سياق _عدم القابلية للحساب_ (_uncomputability_) (مثلًا في [reductionsuncompsec](#reductionsuncompsec){.ref}) هو أنّه، من أجل ربط التعقيد الزمني للمسائل، نحتاج أن يكون الاختزال قابلًا للحساب في _زمن متعدد الحدود_، لا أن يكون قابلًا للحساب فحسب. كما أنّ [reduction-def](#reduction-def){.ref} يقصر الاختزالات على صيغة محدّدة جدًّا. أي أنّنا لإظهار $F \leq_p G$، بدلًا من السماح بخوارزمية عامّة لـ $F$ تستعمل «صندوقًا سحريًا» يحسب $G$، لا نسمح إلا بخوارزمية تحسب $F(x)$ بإخراج $G(R(x))$. وهذه الصيغة المقيّدة مريحة لنا، لكنّ الناس عرّفوا واستعملوا اختزالات أكثر عمومية أيضًا (انظر [reductionsbibnotes](#reductionsbibnotes){.ref}).
 
 
 في هذا الفصل نستعمل الاختزالات لربط التعقيد الحاسوبي للمسائل المذكورة أعلاه: 3SAT، والمعادلات التربيعية، وأكبر قطع، وأطول مسار، إضافة إلى غيرها قليلًا.
-سنختزل 3SAT إلى المسائل الأخيرة، برهنًا على أنّ حلّ أيٍّ منها بكفاءة يؤدّي إلى خوارزمية كفؤة لـ 3SAT. وفي [cooklevinchap](/images/introtcs/lec_12_NP-10.webp){.ref} نبيّن الاتجاه المعاكس: اختزال كل واحدة من هذه المسائل إلى 3SAT دفعةً واحدة.
+سنختزل 3SAT إلى المسائل الأخيرة، برهنًا على أنّ حلّ أيٍّ منها بكفاءة يؤدّي إلى خوارزمية كفؤة لـ 3SAT. وفي [cooklevinchap](#cooklevinchap){.ref} نبيّن الاتجاه المعاكس: اختزال كل واحدة من هذه المسائل إلى 3SAT دفعةً واحدة.
 
 
 __تعدّادية الاختزالات.__
@@ -196,7 +196,7 @@ $$
 
 
 
-![Left: Python code implementing the reduction of $3SAT$ to $01EQ$. Right: Example output of the reduction. Code is in our [repository](https://github.com/boazbk/tcscode).](/images/introtcs/lec_12_NP-12.webp){ #threesat2zoeqreductionfig }
+![Left: Python code implementing the reduction of $3SAT$ to $01EQ$. Right: Example output of the reduction. Code is in our [repository](https://github.com/boazbk/tcscode).](/images/introtcs/original-3sat2zoeqreduction.webp){ #threesat2zoeqreductionfig }
 
 
 ::: {.proof data-ref="tsattozoeqthm"}
@@ -235,12 +235,12 @@ endfor
 return $E$ 
 ```
 
-الاختزال موصوف في [zerooneeqreduction](/images/introtcs/lec_12_NP-13.webp){.ref}، وانظر أيضًا [threesat2zoeqreductionfig](https://people.engr.ncsu.edu/mfms/Teaching/CSC505/wrap/Lectures/week14.pdf){.ref}.
-إذا كانت صيغة المدخل فيها $n$ متغيّرًا و $m$ بندًا (clause)، فإنّ [zerooneeqreduction](https://commons.wikimedia.org/wiki/File:Hamiltonian_path.svg){.ref} ينشئ مجموعة $E$ من $n+m$ معادلة على $2n+2m$ متغيّرًا.
-ويُجري [zerooneeqreduction](){.ref} حلقة أوّلى من $n$ خطوة (كلّ منها تأخذ زمنًا ثابتًا) ثمّ حلقة أخرى من $m$ خطوة (كلّ منها تأخذ زمنًا ثابتًا) لإنشاء المعادلات، وبالتالي فهو
+الاختزال موصوف في [zerooneeqreduction](#zerooneeqreduction){.ref}، وانظر أيضًا [threesat2zoeqreductionfig](#threesat2zoeqreductionfig){.ref}.
+إذا كانت صيغة المدخل فيها $n$ متغيّرًا و $m$ بندًا (clause)، فإنّ [zerooneeqreduction](#zerooneeqreduction){.ref} ينشئ مجموعة $E$ من $n+m$ معادلة على $2n+2m$ متغيّرًا.
+ويُجري [zerooneeqreduction](#zerooneeqreduction){.ref} حلقة أوّلى من $n$ خطوة (كلّ منها تأخذ زمنًا ثابتًا) ثمّ حلقة أخرى من $m$ خطوة (كلّ منها تأخذ زمنًا ثابتًا) لإنشاء المعادلات، وبالتالي فهو
 يعمل في زمن متعدد الحدود.
 
-ولنجعل $R$ هي الدالة التي يحسبها [zerooneeqreduction](){.ref}. وقلب البرهان هو إظهار أنّه لكل 3CNF $\varphi$، لدينا $01EQ(R(\varphi)) = 3SAT(\varphi)$.
+ولنجعل $R$ هي الدالة التي يحسبها [zerooneeqreduction](#zerooneeqreduction){.ref}. وقلب البرهان هو إظهار أنّه لكل 3CNF $\varphi$، لدينا $01EQ(R(\varphi)) = 3SAT(\varphi)$.
 ونقسم البرهان إلى قسمين.
 القسم الأوّل، المعروف تقليديًا بخاصية __اكتمال__ (_completeness_)، هو إظهار أنّه إذا كان $3SAT(\varphi)=1$ فإنّ $01EQ(R(\varphi))=1$.
 القسم الثاني، المعروف تقليديًا بخاصية __سلامة__ (_soundness_)، هو إظهار أنّه إذا كان $01EQ(R(\varphi))=1$ فإنّ $3SAT(\varphi)=1$.
@@ -285,14 +285,14 @@ $$
 
 
 > ### {.proofidea data-ref="quadeq-thm"}
-باستعمال تعدّادية الاختزال ([transitiveex](){.ref})، يكفي أن نُظهر أنّ $01EQ \leq_p QUADEQ$، وهذا يتبع لأنّ بإمكاننا صياغة
+باستعمال تعدّادية الاختزال ([transitiveex](#transitiveex){.ref})، يكفي أن نُظهر أنّ $01EQ \leq_p QUADEQ$، وهذا يتبع لأنّ بإمكاننا صياغة
 المعادلة $x_i \in \{0,1\}$ على هيئة القيد التربيعي $x_i^2 - x_i = 0$. وال__تقنية المستفادة__ من هذا الاختزال هي أنّ بإمكاننا استعمال _عدم الخطّية_ (_non-linearity_) لإجبار المتغيّرات المستمرة (مثل المتغيّرات التي تأخذ قيمًا في $\R$) على أن تكون منفصلة (أي أن تأخذ قيمًا في $\{0,1\}$).
 
 ::: {.proof data-ref="quadeq-thm"}
-حسب [tsattozoeqthm](){.ref} و[transitiveex](){.ref}، يكفي أن نُثبت أنّ $01EQ \leq_p QUADEQ$.
+حسب [tsattozoeqthm](#tsattozoeqthm){.ref} و[transitiveex](#transitiveex){.ref}، يكفي أن نُثبت أنّ $01EQ \leq_p QUADEQ$.
 ولنجعل $E$ مُدخلًا لـ $01EQ$ بالمتغيّرات $x_0,\ldots,x_{n-1}$.
 نربط $E$ بمجموعة المعادلات التربيعية $E'$ التي تُحصّل بالأخذ بالمعادلات الخطّية في $E$ وإضافة إليها $n$ معادلة تربيعية $x_i^2 - x_i = 0$ لكل $i\in [n]$.
-(انظر [zeroonetoquadreductionalg](){.ref}.).
+(انظر [zeroonetoquadreductionalg](#zeroonetoquadreductionalg){.ref}.).
 والإسناد $E \mapsto E'$ يمكن حسابه في زمن متعدد الحدود.
 وندّعي أنّ $01EQ(E)=1$ إذا وفقط إذا كان $QUADEQ(E')=1$.
 وفي الحقيقة، الفرق الوحيد بين المُدخلين هو أنّ:
@@ -405,7 +405,7 @@ return $y_0,\ldots,y_{n-1},T$
 
 
 
-كما ذُكر في [formaldefdecisionexamplessec](){.ref}، فإنّنا ننظر إلى مسألة المجموعة المستقلّة على أنّها الدالة $ISET:\{0,1\}^* \rightarrow \{0,1\}$ التي، على مدخل رسم بياني $G$ وعدد $k$، تُخرج $1$ إذا وفقط إذا كان الرسم البياني $G$ يحوي مجموعة مستقلّة من حجم $k$ على الأقل.
+كما ذُكر في [formaldefdecisionexamplessec](#formaldefdecisionexamplessec){.ref}، فإنّنا ننظر إلى مسألة المجموعة المستقلّة على أنّها الدالة $ISET:\{0,1\}^* \rightarrow \{0,1\}$ التي، على مدخل رسم بياني $G$ وعدد $k$، تُخرج $1$ إذا وفقط إذا كان الرسم البياني $G$ يحوي مجموعة مستقلّة من حجم $k$ على الأقل.
 ونختزل الآن 3SAT إلى المجموعة المستقلّة.
 
 > ### {.theorem title="صعوبة المجموعة المستقلّة" #isetnpc}
@@ -420,7 +420,7 @@ return $y_0,\ldots,y_{n-1},T$
 
 
 
-![/images/introtcs/lec_12_NP-4.webp](/images/introtcs/lec_12_NP-4.webp){#example3sat2isetfig .margin }
+![/images/introtcs/lec_12_NP-4.webp](/images/introtcs/original-example3sat2iset.webp){#example3sat2isetfig .margin }
 
 
 
@@ -450,7 +450,7 @@ return $(G=(V,E), m)$
 
 ::: {.proof data-ref="isetnpc"}
 لنفترض صيغة 3SAT $\varphi$ على $n$ متغيّرًا و $m$ بندًا، سننشئ رسمًا بيانيًا $G$ بـ $3m$ رأسًا كما يلي.
-(انظر [threesattoisetreductionalg](){.ref}، وانظر أيضًا [example3sat2isetfig](){.ref} لمثال و[threesattoisfig](){.ref} للشيفرة البرمجية لـ Python.)
+(انظر [threesattoisetreductionalg](#threesattoisetreductionalg){.ref}، وانظر أيضًا [example3sat2isetfig](#example3sat2isetfig){.ref} لمثال و[threesattoisfig](#threesattoisfig){.ref} للشيفرة البرمجية لـ Python.)
 
 
 
@@ -464,7 +464,7 @@ return $(G=(V,E), m)$
 
 
 الخوارزمية التي تبني $G$ انطلاقًا من $\varphi$ تعمل في زمن متعدد الحدود لأنّها تتضمن حلقتين، الأُولى تأخذ $O(m)$ خطوة والثانية تأخذ $O(m^2 n)$ خطوة
-(انظر [threesattoisetreductionalg](){.ref}).
+(انظر [threesattoisetreductionalg](#threesattoisetreductionalg){.ref}).
 وبذلك، لإثبات النظريّة نحتاج أن نُظهر أنّ $\varphi$ مُشبَعة إذا وفقط إذا كان $G$ يحوي مجموعة مستقلّة من $m$ رأسًا. وسنعرض الآن اتجاهَي هذا التكافؤ:
 
 __القسم الأوّل: الاكتمال.__ اتجاه «الاكتمال» هو إظهار أنّه إذا كان ل $\varphi$ إسناد مُشبِع $x^*$، فإنّ $G$ له مجموعة مستقلّة $S^*$ من $m$ رأسًا. ولنُبيّن ذلك الآن.
@@ -499,11 +499,11 @@ __القسم الثاني: السلامة.__ اتجاه «السلامة» هو 
 وكل بند $C$ من $\varphi$، إذا كان $(C,y)$ هو الرأس في $S^*$ داخل المثلّث المقابل لـ $C$، فإنّه بالطريقة التي عرّفنا بها $x^*$ يجب أن يُقيَّم المُثابِت $y$ إلى _صحيح_، ما يعني أنّ $x^*$ يُشبع هذا البند.
 وبالتالي فإنّ $x^*$ يُشبع كل بنود $\varphi$، وهو تعريف الإسناد المُشبِع.
 
-وهذا يُكمل برهان [isetnpc](){.ref}
+وهذا يُكمل برهان [isetnpc](#isetnpc){.ref}
 :::
 
 
-![/images/introtcs/lec_12_NP-5.webp](/images/introtcs/lec_12_NP-5.webp){#threesattoisfig   }
+![/images/introtcs/lec_12_NP-5.webp](/images/introtcs/original-3sat2ISreduction.webp){#threesattoisfig   }
 
 
 ## بعض التمارين وتشريح اختزال
@@ -512,7 +512,7 @@ __القسم الثاني: السلامة.__ اتجاه «السلامة» هو 
 وهنا مثال على ذلك. وكالمعتاد، فإنّي أنصحك بأن تجرّبه بنفسك قبل النظر إلى الحل.
 
 ::: {.solvedexercise title="غطاء الرؤوس" #vertexcoverex}
-_غطاء الرؤوس_ (_vertex cover_) في رسم بياني $G=(V,E)$ هو مجموعة جزئية $S \subseteq V$ من الرؤوس بحيث تلمس كل حافة رأسًا واحدًا على الأقل من رؤوس $S$ (انظر [smallvertexcoverfig](){.ref}).
+_غطاء الرؤوس_ (_vertex cover_) في رسم بياني $G=(V,E)$ هو مجموعة جزئية $S \subseteq V$ من الرؤوس بحيث تلمس كل حافة رأسًا واحدًا على الأقل من رؤوس $S$ (انظر [smallvertexcoverfig](#smallvertexcoverfig){.ref}).
 ومسألة _غطاء الرؤوس_ (_vertex cover problem_) هي مهمّة تحديد ما إذا كان، على إعطائك رسمًا بيانيًا $G$ وعددًا $k$، وُجد غطاء رؤوس في الرسم البياني بعدد رؤوس لا يتجاوز $k$ أم لا.
 وبشكل رسمي، هذه هي الدالة $VC:\{0,1\}^* \rightarrow \{0,1\}$ بحيث لكل $G=(V,E)$ و $k\in \N$، لدينا $VC(G,k)=1$ إذا وفقط إذا وُجد
 غطاء رؤوس $S \subseteq V$ بحيث $|S| \leq k$.
@@ -520,7 +520,7 @@ _غطاء الرؤوس_ (_vertex cover_) في رسم بياني $G=(V,E)$ هو �
 برهن أنّ $3SAT \leq_p VC$.
 :::
 
-![/images/introtcs/lec_12_NP-6.webp](/images/introtcs/lec_12_NP-6.webp){#smallvertexcoverfig .margin }
+![/images/introtcs/lec_12_NP-6.webp](/images/introtcs/original-vertex_cover.webp){#smallvertexcoverfig .margin }
 
 
 ::: {.solution data-ref="vertexcoverex"}
@@ -555,18 +555,18 @@ _غطاء الرؤوس_ (_vertex cover_) في رسم بياني $G=(V,E)$ هو �
 والتمرين التالي يتطلّب اختزالًا أكثر إثارةً للاهتمام بقليل.
 
 ::: {.solvedexercise title="المجموعة المسيطرة" #dominatingsetex}
-_المجموعة المسيطرة_ (_dominating set_) في رسم بياني $G=(V,E)$ هي مجموعة جزئية $S \subseteq V$ من الرؤوس بحيث إنّ كل $u \in V \setminus S$ يكون جارًا في $G$ لأجل ما $s \in S$ (انظر [dominatingvertexcover](){.ref}).
+_المجموعة المسيطرة_ (_dominating set_) في رسم بياني $G=(V,E)$ هي مجموعة جزئية $S \subseteq V$ من الرؤوس بحيث إنّ كل $u \in V \setminus S$ يكون جارًا في $G$ لأجل ما $s \in S$ (انظر [dominatingvertexcover](#dominatingvertexcover){.ref}).
 ومسألة _المجموعة المسيطرة_ (_dominating set problem_) هي مهمّة تحديد، على إعطائك رسمًا بيانيًا $G=(V,E)$ وعددًا $k$، ما إذا كانت هناك مجموعة مسيطرة $S \subseteq V$ بـ $|S| \leq k$ أم لا.
 وبشكل رسمي، هذه هي الدالة $DS:\{0,1\}^* \rightarrow \{0,1\}$ بحيث إنّ $DS(G,k)=1$ إذا وفقط إذا كانت هناك مجموعة مسيطرة في $G$ بعدد رؤوس لا يتجاوز $k$.
 
 برهن أنّ $ISET \leq_p DS$.
 :::
 
-![/images/introtcs/lec_12_NP-7.webp](/images/introtcs/lec_12_NP-7.webp){#dominatingvertexcover .margin }
+![/images/introtcs/lec_12_NP-7.webp](/images/introtcs/original-dominatingvc.webp){#dominatingvertexcover .margin }
 
 ::: {.solution data-ref="dominatingsetex"}
 بما أنّنا نعرف أنّ $ISET \leq_p VC$، فإنّ استعمال التعدّدية يكفي أن نُظهر أنّ $VC \leq_p DS$.
-وكما يبيّن [dominatingvertexcover](){.ref}، فإنّ المجموعة المسيطرة ليست شيئًا مطابقًا لغطاء الرؤوس.
+وكما يبيّن [dominatingvertexcover](#dominatingvertexcover){.ref}، فإنّ المجموعة المسيطرة ليست شيئًا مطابقًا لغطاء الرؤوس.
 على أيّ حال، يمكننا ربط المسألتَيْن مع ذلك.
 والفكرة هي إسناد رسم بياني $G$ إلى رسم بياني $H$ بحيث يتحوّل غطاء رؤوس في $G$ إلى مجموعة مسيطرة في $H$ وبالعكس.
 ونفعل ذلك بأن نُدرج في $H$ كل رؤوس $G$ وحوافها، لكن لكل حافة $\{u ,v \}$ في $G$ نضيف أيضًا إلى $H$ رأسًا جديدًا $w_{u,v}$ ونصله بكلٍّ من $u$ و $v$.
@@ -576,7 +576,7 @@ _المجموعة المسيطرة_ (_dominating set_) في رسم بياني $G
 وهنا تفاصيل ذلك.
 
 __وصف الخوارزمية.__ على مُدخل $(G,k)$ لمسألة غطاء الرؤوس، سنُسند $G$ إلى مُدخل $(H,k')$ لمسألة المجموعة المسيطرة كما يلي
-(انظر [vctodsreductionfig](){.ref} لتنفيذ Python):
+(انظر [vctodsreductionfig](#vctodsreductionfig){.ref} لتنفيذ Python):
 
 
 
@@ -594,13 +594,13 @@ Let $\ell \leftarrow$ number of isolated vertices in $G$
 return $( H=(V',E') \;,\;  k+\ell)$
 ```
 
-يعمل [independentsettodsredalg](){.ref} في زمن متعدد الحدود، لأنّ الحلقة تأخذ $O(m)$ خطوة حيث $m$ عدد الحواف،
+يعمل [independentsettodsredalg](#independentsettodsredalg){.ref} في زمن متعدد الحدود، لأنّ الحلقة تأخذ $O(m)$ خطوة حيث $m$ عدد الحواف،
 ويمكن تنفيذ كل خطوة في زمن ثابت أو خطّي على الأكثر (حسب تمثيل الرسم البياني $H$).
 وعدّ عدد الرؤوس المعزولة في رسم بياني $G$ من $n$ رأسًا يمكن فعله في زمن $O(n^2)$ إذا كان $G$ ممثَّلًا بمصفوفة التجاور، وفي زمن $O(n)$
 إذا كان ممثَّلًا بقائمة التجاور.
 وعلى أيّ حال فإنّ الخوارزمية تعمل في زمن متعدد الحدود.
 
-ولإكمال البرهان نحتاج أن نُثبت أنّ لكل $G,k$، إذا كان $H,k'$ هو الخرج الذي يعطيه [independentsettodsredalg](){.ref} على المدخل $(G,k)$، فإنّ
+ولإكمال البرهان نحتاج أن نُثبت أنّ لكل $G,k$، إذا كان $H,k'$ هو الخرج الذي يعطيه [independentsettodsredalg](#independentsettodsredalg){.ref} على المدخل $(G,k)$، فإنّ
 $DS(H,k') = VC(G,k)$.
 ونقسم البرهان إلى قسمين. وقسم __الاكتمال__ هو أنّه إذا كان $VC(G,k)=1$ فإنّ $DS(H,k')=1$.
 وقسم __السلامة__ هو أنّه إذا كان $DS(H,k')=1$ فإنّ $VC(G,k)=1$.
@@ -638,11 +638,11 @@ $w_{u,v}$.
 :::
 
 
-نتيجة لازمة لـ [independentsettodsredalg](){.ref} وللاختزال الآخر الذي رأيناه حتى الآن هي أنّه إذا كان $DS \in \mathbf{P}$ (أي أنّ المجموعة المسيطرة لها خوارزمية زمن متعدد الحدود) فإنّ $3SAT \in \mathbf{P}$
+نتيجة لازمة لـ [independentsettodsredalg](#independentsettodsredalg){.ref} وللاختزال الآخر الذي رأيناه حتى الآن هي أنّه إذا كان $DS \in \mathbf{P}$ (أي أنّ المجموعة المسيطرة لها خوارزمية زمن متعدد الحدود) فإنّ $3SAT \in \mathbf{P}$
 (أي أنّ لـ $3SAT$ خوارزمية زمن متعدد الحدود).
 ومن الجهة المعاكسة (contra positive)، إذا لم يكن لـ $3SAT$ خوارزمية زمن متعدد الحدود فإنّ المجموعة المسيطرة أيضًا ليس لها كذلك.
 
-![/images/introtcs/lec_12_NP-8.webp](/images/introtcs/lec_12_NP-8.webp){#vctodsreductionfig}
+![/images/introtcs/lec_12_NP-8.webp](/images/introtcs/original-vctodsreduction.webp){#vctodsreductionfig}
 
 
 ### تشريح الاختزال
@@ -650,26 +650,26 @@ $w_{u,v}$.
 
 
 
-![/images/introtcs/lec_12_NP-9.webp](/images/introtcs/lec_12_NP-9.webp){#reductionanatomyfig}
+![/images/introtcs/lec_12_NP-9.webp](/images/introtcs/original-reductionanatomy.webp){#reductionanatomyfig}
 
-يعطي اختزال [dominatingsetex](){.ref} تصويرًا جيّدًا لتشريح الاختزال.
+يعطي اختزال [dominatingsetex](#dominatingsetex){.ref} تصويرًا جيّدًا لتشريح الاختزال.
 ويتألّف الاختزال من أربعة أجزاء:
 
 
-* __وصف الخوارزمية:__ هذا هو الوصف لـ_كيف_ تُسند الخوارزمية مدخلًا إلى خرج. فمثلًا، في [dominatingsetex](){.ref} هذا هو الوصف لكيفية إسنادنا مُدخل $(G,k)$
+* __وصف الخوارزمية:__ هذا هو الوصف لـ_كيف_ تُسند الخوارزمية مدخلًا إلى خرج. فمثلًا، في [dominatingsetex](#dominatingsetex){.ref} هذا هو الوصف لكيفية إسنادنا مُدخل $(G,k)$
   لمسألة _غطاء الرؤوس_ إلى مُدخل $(H,k')$ لمسألة _المجموعة المسيطرة_.
 
 
 * __تحليل الخوارزمية:__ لا يكفي أن نصف _كيف_ تعمل الخوارزمية، بل علينا أيضًا أن نشرح _لماذا_ تعمل. وبخاصة علينا أن نقدّم _تحليلًا_ (_analysis_) يشرح لماذا الاختزال _كفؤ_ (أي يعمل في زمن متعدد الحدود) و _صحيح_ (يحقّق $G(R(x))=F(x)$ لكل $x$.)، وبخاصة، فإنّ مكوّنات تحليل الاختزال $R$ تتضمّن:
-  * __الكفاءة:__ نحتاج أن نُظهر أنّ $R$ تعمل في زمن متعدد الحدود. وفي معظم الاختزالات التي نصادفها، فهذا الجزء مباشر، إذ إنّ الاختزالات التي نستعملها عادةً تتضمّن عددًا ثابتًا من الحلقات المتداخلة، كلّ منها تتضمّن عددًا ثابتًا من العمليات. فمثلًا، لا يكاد اختزال [dominatingsetex](){.ref} سوى تعداد حواف ورؤوس الرسم البياني المُدخل.
+  * __الكفاءة:__ نحتاج أن نُظهر أنّ $R$ تعمل في زمن متعدد الحدود. وفي معظم الاختزالات التي نصادفها، فهذا الجزء مباشر، إذ إنّ الاختزالات التي نستعملها عادةً تتضمّن عددًا ثابتًا من الحلقات المتداخلة، كلّ منها تتضمّن عددًا ثابتًا من العمليات. فمثلًا، لا يكاد اختزال [dominatingsetex](#dominatingsetex){.ref} سوى تعداد حواف ورؤوس الرسم البياني المُدخل.
 
   * __الاكتمال:__ في اختزال $R$ الذي يثبت $F \leq_p G$، فإنّ شرط _الاكتمال_ هو الشرط القائل بأنّه لكل $x\in \{0,1\}^*$، إذا كان $F(x) = 1$ فإنّ $G(R(x))=1$. وعادةً نبني الاختزال بحيث يتحقّق ذلك، بأن نعطي طريقة لإسناد «شهادة/حلّ» (_certificate/solution_) تُثبت أنّ $F(x)=1$ إلى حلّ يُثبت أنّ $G(R(x))=1$.
-    فمثلًا، في [dominatingsetex](){.ref} بنينا الرسم البياني $H$ بحيث إنّ لكل غطاء رؤوس $S$ في $G$ تكون المجموعة $S \cup I$ (حيث $I$ هي الرؤوس المعزولة) مجموعة مسيطرة في $H$.
+    فمثلًا، في [dominatingsetex](#dominatingsetex){.ref} بنينا الرسم البياني $H$ بحيث إنّ لكل غطاء رؤوس $S$ في $G$ تكون المجموعة $S \cup I$ (حيث $I$ هي الرؤوس المعزولة) مجموعة مسيطرة في $H$.
 
 
 
-  * __السلامة:__ هذا هو الشرط القائل بأنّه إذا كان $F(x)=0$ فإنّ $G(R(x))=0$ أو (بأخذ العكس) إذا كان $G(R(x))=1$ فإنّ $F(x)=1$ وأحيانًا ما يكون هذا مباشرًا، لكنّه غالبًا ما يكون أصعب في الإظهار من شرط الاكتمال، وفي الاختزالات الأكثر تقدّمًا (مثل اختزال $3SAT \leq_p ISET$ في [isetnpc](){.ref}) فإنّ إظهار السلامة هو الجزء الرئيسي من التحليل.
-  فمثلًا، في [dominatingsetex](){.ref}، من أجل إظهار السلامة احتجنا أن نُظهر أنّه لكل _مجموعة مسيطرة_ $D$ في الرسم البياني $H$، وُجد غطاء رؤوس $S$ في الرسم البياني $G$ من حجم لا يتجاوز $|D|-\ell$ (حيث $\ell$ هو عدد الرؤوس المعزولة).
+  * __السلامة:__ هذا هو الشرط القائل بأنّه إذا كان $F(x)=0$ فإنّ $G(R(x))=0$ أو (بأخذ العكس) إذا كان $G(R(x))=1$ فإنّ $F(x)=1$ وأحيانًا ما يكون هذا مباشرًا، لكنّه غالبًا ما يكون أصعب في الإظهار من شرط الاكتمال، وفي الاختزالات الأكثر تقدّمًا (مثل اختزال $3SAT \leq_p ISET$ في [isetnpc](#isetnpc){.ref}) فإنّ إظهار السلامة هو الجزء الرئيسي من التحليل.
+  فمثلًا، في [dominatingsetex](#dominatingsetex){.ref}، من أجل إظهار السلامة احتجنا أن نُظهر أنّه لكل _مجموعة مسيطرة_ $D$ في الرسم البياني $H$، وُجد غطاء رؤوس $S$ في الرسم البياني $G$ من حجم لا يتجاوز $|D|-\ell$ (حيث $\ell$ هو عدد الرؤوس المعزولة).
   وكان هذا صعبًا لأنّ المجموعة المسيطرة $D$ لا توجد بالضرورة أن تكون هي التي «أقصدها» في ذهننا.
  وبخاصة، في البرهان أعلاه احتجنا أن نعدّل $D$ نضمن ألّا تحوي رؤوسًا من الشكل $w_{u,v}$، وكان من المهمّ أن نُظهر أنّ هذا التعديل يُبقي خاصية أنّ $D$ مجموعة مسيطرة، وأيضًا ألّا يجعلها أكبر.
 
@@ -692,28 +692,28 @@ $ISET \leq_p MAXCUT$
 > ### {.proofidea data-ref="isettomaxcut"}
 سنُسند رسمًا بيانيًا $G$ إلى رسم بياني $H$ بحيث تتحوّل مجموعة مستقلّة كبيرة في $G$ إلى تقسيم يقطع حواف كثيرة في $H$. ويمكننا أن نفكّر في قطع في $H$ على أنّه تلوين لكل رأس إمّا «أزرق» أو «أحمر». وسنضيف رأس «مصدر» خاصًّا $s^*$، ونصله بكل الرؤوس الأخرى، ونفترض دون خسارة أنّه ملوَّن بالأزرق. وبذلك، كلّما لوّنّا رؤوسًا أكثر بالأحمر، قطعنا حواف أكثر من $s^*$. والآن، لكل حافة $u,v$ في الرسم البياني الأصلي $G$ سنضيف «آلية» (_gadget_) خاصّة، أي رسمًا بيانيًا فرعيًا صغيرًا يتضمّن $u$ و $v$ والمصدر $s^*$ ورأسين إضافيّين. ونصمّم الآلية بحيث إذا لم تكن الرؤوس الحمراء مجموعة مستقلّة في $G$ فإنّ القطع المقابل في $H$ يكون «مُعاقَبًا» بالمعنى أنّه لن يقطع حواف كثيرة. وبعد أن نضع لأنفسنا هذا الهدف، ليس من الصعب إيجاد آلية تحقّقه — انظر البرهان أدناه. وإلى ذلك، فإنّ __التقنية المستفادة__ (_takeaway technique_) هي استعمال آلية (وهذه المرّة أكثر دقّة قليلًا).
 
-![In the reduction of $ISET$ to $MAXCUT$ we map an $n$-vertex $m$-edge graph $G$ into the $n+2m+1$ vertex and $n+5m$ edge graph $H$ as follows. The graph $H$ contains a special "source" vertex $s^*$,$n$ vertices $v_0,\ldots,v_{n-1}$, and $2m$ vertices $e_0^0,e_0^1,\ldots,e_{m-1}^0,e_{m-1}^1$ with each pair corresponding to an edge of $G$. We put an edge between $s^*$ and $v_i$ for every $i\in [n]$, and if the $t$-th edge of $G$ was $(v_i,v_j)$ then we add the five edges $(s^*,e_t^0),(s^*,e_t^1),(v_i,e_t^0),(v_j,e_t^1),(e_t^0,e_t^1)$. The intent is that if we cut at most one of $v_i,v_j$ from $s^*$ then we'll be able to cut $4$ out of these five edges, while if we cut both $v_i$ and $v_j$ from $s^*$ then we'll be able to cut at most three of them.](/images/introtcs/fig-iset2maxcutoverview.webp){#iset2maxcutoverviewfig}
+![In the reduction of $ISET$ to $MAXCUT$ we map an $n$-vertex $m$-edge graph $G$ into the $n+2m+1$ vertex and $n+5m$ edge graph $H$ as follows. The graph $H$ contains a special "source" vertex $s^*$,$n$ vertices $v_0,\ldots,v_{n-1}$, and $2m$ vertices $e_0^0,e_0^1,\ldots,e_{m-1}^0,e_{m-1}^1$ with each pair corresponding to an edge of $G$. We put an edge between $s^*$ and $v_i$ for every $i\in [n]$, and if the $t$-th edge of $G$ was $(v_i,v_j)$ then we add the five edges $(s^*,e_t^0),(s^*,e_t^1),(v_i,e_t^0),(v_j,e_t^1),(e_t^0,e_t^1)$. The intent is that if we cut at most one of $v_i,v_j$ from $s^*$ then we'll be able to cut $4$ out of these five edges, while if we cut both $v_i$ and $v_j$ from $s^*$ then we'll be able to cut at most three of them.](/images/introtcs/original-iset2maxcutoverview.webp){#iset2maxcutoverviewfig}
 
 ::: {.proof data-ref="isettomaxcut"}
-سنحوّل رسمًا بيانيًا $G$ من $n$ رأسًا و $m$ حافة إلى رسم بياني $H$ من $n+1+2m$ رأسًا و $n+5m$ حافة على النحو التالي (انظر أيضًا [iset2maxcutoverviewfig](){.ref}).
+سنحوّل رسمًا بيانيًا $G$ من $n$ رأسًا و $m$ حافة إلى رسم بياني $H$ من $n+1+2m$ رأسًا و $n+5m$ حافة على النحو التالي (انظر أيضًا [iset2maxcutoverviewfig](#iset2maxcutoverviewfig){.ref}).
 ويحتوي الرسم البياني $H$ على كل رؤوس $G$ (لكن ليس الحواف بينها!) وإلى جانب ذلك فإنّ $H$ يحتوي أيضًا على: \
 * رأس خاصّ $s^*$ متّصل بكل رؤوس $G$ \
 * لكل حافة $e=\{u,v\} \in E(G)$ رأسين $e_0,e_1$ بحيث إنّ $e_0$ متّصل بـ $u$ و $e_1$ متّصل بـ $v$، وإلى جانب ذلك نضيف الحواف $\{e_0,e_1 \},\{ e_0,s^* \},\{e_1,s^*\}$ إلى $H$.
 
-وسيترتّب على [isettomaxcut](){.ref} بإظهار أنّ $G$ يحتوي على مجموعة مستقلّة من حجم $k$ على الأقل إذا وفقط إذا كان $H$ يحوي قطعًا يقطع $k+4m$ حافة على الأقل. وسنبرهن الآن على اتجاهَي هذا التكافؤ:
+وسيترتّب على [isettomaxcut](#isettomaxcut){.ref} بإظهار أنّ $G$ يحتوي على مجموعة مستقلّة من حجم $k$ على الأقل إذا وفقط إذا كان $H$ يحوي قطعًا يقطع $k+4m$ حافة على الأقل. وسنبرهن الآن على اتجاهَي هذا التكافؤ:
 
 
-__القسم الأوّل: الاكتمال.__ إذا كانت $I$ مجموعة مستقلّة من $k$ عنصرًا في $G$، فيمكننا أن نعرّف $S$ لتكون قطعًا في $H$ على الشكل التالي: نُسند إلى $S$ أن تحوي كل رؤوس $I$، ولكل حافة $e=\{u,v \} \in E(G)$، إذا كان $u\in I$ و $v\not\in I$ فإنّنا نضيف $e_1$ إلى $S$؛ وإذا كان $u\not\in I$ و $v\in I$ فإنّنا نضيف $e_0$ إلى $S$؛ وإذا كان $u\not\in I$ و $v\not\in I$ فإنّنا نضيف $e_0$ و $e_1$ كلاهما إلى $S$. (لا نحتاج للقلقّ من الحالة التي يكون فيها $u$ و $v$ كلاهما في $I$ لأنّ $I$ مجموعة مستقلّة.) ويمكننا أن نتحقّق أنّه في جميع الحالات يكون عدد الحواف من $S$ إلى تكملتها في الآلية المقابلة لـ $e$ أربعة (انظر [ISETtoMAXCUTfig](){.ref}). وبما أنّ $s^*$ ليست في $S$، ولدينا أيضًا $k$ حافة من $s^*$ إلى $I$، أي ما مجموعه $k+4m$ حافة.
+__القسم الأوّل: الاكتمال.__ إذا كانت $I$ مجموعة مستقلّة من $k$ عنصرًا في $G$، فيمكننا أن نعرّف $S$ لتكون قطعًا في $H$ على الشكل التالي: نُسند إلى $S$ أن تحوي كل رؤوس $I$، ولكل حافة $e=\{u,v \} \in E(G)$، إذا كان $u\in I$ و $v\not\in I$ فإنّنا نضيف $e_1$ إلى $S$؛ وإذا كان $u\not\in I$ و $v\in I$ فإنّنا نضيف $e_0$ إلى $S$؛ وإذا كان $u\not\in I$ و $v\not\in I$ فإنّنا نضيف $e_0$ و $e_1$ كلاهما إلى $S$. (لا نحتاج للقلقّ من الحالة التي يكون فيها $u$ و $v$ كلاهما في $I$ لأنّ $I$ مجموعة مستقلّة.) ويمكننا أن نتحقّق أنّه في جميع الحالات يكون عدد الحواف من $S$ إلى تكملتها في الآلية المقابلة لـ $e$ أربعة (انظر [ISETtoMAXCUTfig](#ISETtoMAXCUTfig){.ref}). وبما أنّ $s^*$ ليست في $S$، ولدينا أيضًا $k$ حافة من $s^*$ إلى $I$، أي ما مجموعه $k+4m$ حافة.
 
 
 __القسم الثاني: السلامة.__ لنفترض أنّ $S$ قطع في $H$ يقطع $C=k+4m$ حافة على الأقل. يمكننا أن نفترض أنّ $s^*$ ليست في $S$ (وإلّا يمكننا «قلب» $S$ إلى تكملتها $\overline{S}$، إذ لا يغيّر ذلك حجم القطع). والآن لتكن $I$ مجموعة الرؤوس في $S$ التي تقابل رؤوس $G$ الأصلية. فإذا كانت $I$ مجموعة مستقلّة من حجم $k$ لكنّا قد فرغنا من العمل. قد لا يكون هذا هو الحال دائمًا، لكنّنا سنرى أنّه إذا لم تكن $I$ مجموعة مستقلّة فإنّ حجمها أيضًا أكبر من $k$. وبخاصة، نعرّف $m_{in}=|E(I,I)|$ لتكون مجموعة الحواف في $G$ الموجودة في $I$، ولنجعل $m_{out}=m-m_{in}$ (أي أنّه إذا كانت $I$ مجموعة مستقلّة فإنّ $m_{in}=0$ و $m_{out}=m$). وبموجب خصائص آليتنا نعرف أنّه لكل حافة $\{u,v\}$ في $G$، يمكننا قطع $3$ حواف على الأكثر عندما يكون $u$ و $v$ كلاهما في $S$، وأربع حواف على الأكثر في غير ذلك. وبالتالي فإنّ العدد $C$ للحواف المقطوعة بواسطة $S$ يحقّق $C \leq |I| + 3m_{in}+4m_{out} = |I|+ 3m_{in} + 4(m-m_{in})=|I|+4m-m_{in}$. وبما أنّ $C = k +4m$ فإنّنا نحصل على $|I|-m_{in} \geq k$. والآن يمكننا تحويل $I$ إلى مجموعة مستقلّة $I'$ بأن نمرّ على كل واحدة من الحواف $m_{in}$ الموجودة داخل $I$ ونزيل أحد طرفي الحافة منها. فالمجموعة الناتجة $I'$ هي مجموعة مستقلّة في الرسم البياني $G$ من حجم $|I|-m_{in} \geq k$، وبهذا يُكمل البرهان على شرط السلامة.
 :::
 
 
-![In the reduction of independent set to max cut, for every $t\in [m]$, we have a "gadget" corresponding to the $t$-th edge $e= \{ v_i,v_j\}$ in the original graph. If we think of the side of the cut containing the special source vertex $s^*$ as "white" and the other side as "blue", then the leftmost and center figures show that if $v_i$ and $v_j$ are not both blue then we can cut four edges from the gadget. In contrast, by enumerating all possibilities one can verify that if both $u$ and $v$ are blue, then no matter how we color the intermediate vertices $e_t^0,e_t^1$, we will cut at most three edges from the gadget. The figure above contains only the gadget edges and ignores the edges connecting $s^*$ to the vertices $v_0,\ldots,v_{n-1}$.](/images/introtcs/fig-iset2maxcutgadgetanalysis.webp){#ISETtoMAXCUTfig .margin  }
+![In the reduction of independent set to max cut, for every $t\in [m]$, we have a "gadget" corresponding to the $t$-th edge $e= \{ v_i,v_j\}$ in the original graph. If we think of the side of the cut containing the special source vertex $s^*$ as "white" and the other side as "blue", then the leftmost and center figures show that if $v_i$ and $v_j$ are not both blue then we can cut four edges from the gadget. In contrast, by enumerating all possibilities one can verify that if both $u$ and $v$ are blue, then no matter how we color the intermediate vertices $e_t^0,e_t^1$, we will cut at most three edges from the gadget. The figure above contains only the gadget edges and ignores the edges connecting $s^*$ to the vertices $v_0,\ldots,v_{n-1}$.](/images/introtcs/original-iset2maxcutgadgetanalysis.webp){#ISETtoMAXCUTfig .margin  }
 
 
-![The reduction of independent set to max cut. On the right-hand side is Python code implementing the reduction. On the left-hand side is an example output of the reduction where we apply it to the independent set instance that is obtained by running the reduction of [isetnpc](){.ref} on the 3CNF formula $(x_0 \vee \overline{x}_3 \vee x_2) \wedge (\overline{x}_0 \vee x_1 \vee \overline{x}_2) \wedge (\overline{x}_1 \vee x_2 \vee x_3)$.](/images/introtcs/fig-is2maxcut.webp){#isettomaxcutcodefig   }
+![The reduction of independent set to max cut. On the right-hand side is Python code implementing the reduction. On the left-hand side is an example output of the reduction where we apply it to the independent set instance that is obtained by running the reduction of [isetnpc](#isetnpc){.ref} on the 3CNF formula $(x_0 \vee \overline{x}_3 \vee x_2) \wedge (\overline{x}_0 \vee x_1 \vee \overline{x}_2) \wedge (\overline{x}_1 \vee x_2 \vee x_3)$.](/images/introtcs/original-is2maxcut.webp){#isettomaxcutcodefig   }
 
 ## اختزال 3SAT إلى أطول مسار
 
@@ -725,16 +725,16 @@ __ملاحظة:__ لا يزال هذا القسم فوضويًّا بعض الش
 > ### {.theorem title="صعوبة أطول مسار" #longpaththm}
 $$3SAT \leq_p LONGPATH$$
 
-![/images/introtcs/lec_12_NP-10.webp](/images/introtcs/lec_12_NP-10.webp){#longpathfig .margin  }
+![/images/introtcs/lec_12_NP-10.webp](/images/introtcs/original-3sat_longest_path_red_without_path.webp){#longpathfig .margin  }
 
 
 
-![/images/introtcs/lec_12_NP-11.webp](/images/introtcs/lec_12_NP-11.webp){#longpathfigtwo .margin  }
+![/images/introtcs/lec_12_NP-11.webp](/images/introtcs/original-3sat_to_longest_path_reduction.webp){#longpathfigtwo .margin  }
 
 
 > ### {.proofidea data-ref="longpaththm"}
-لإثبات [longpaththm](){.ref} نحتاج أن نُظهر كيفية تحويل صيغة 3CNF $\varphi$ إلى رسم بياني $G$ ورأسين $s,t$ بحيث إنّ $G$ له مسار بطول $k$ على الأقل إذا وفقط إذا كانت $\varphi$ مُشبِعة.
-وتعرض فكرة الاختزال في [longpathfig](){.ref} و[longpathfigtwo](){.ref}.
+لإثبات [longpaththm](#longpaththm){.ref} نحتاج أن نُظهر كيفية تحويل صيغة 3CNF $\varphi$ إلى رسم بياني $G$ ورأسين $s,t$ بحيث إنّ $G$ له مسار بطول $k$ على الأقل إذا وفقط إذا كانت $\varphi$ مُشبِعة.
+وتعرض فكرة الاختزال في [longpathfig](#longpathfig){.ref} و[longpathfigtwo](#longpathfigtwo){.ref}.
 وسنبني رسمًا بيانيًا يحوي مسارًا «متعرّجًا» طويلًا محتملًا يقابل كل المتغيّرات في الصيغة.
 وسنضيف «آلية» (_gadget_) مقابلة لكل بند من بنود $\varphi$ بحيث لا نتمكّن من استعمال هذه الآليات إلا إذا كان لدينا إسناد مُشبِع.
 
@@ -789,15 +789,15 @@ def TSAT2LONGPATH(φ):
 ولكن إذا فعلنا ذلك، فإنّ الطريقة الوحيدة لبلوغ $t$ هي أن تكون المسارات التي أخذناها قد قابلت إسنادًا مُشبِعًا، إذ إنّنا وإلّا سنكون أمام بند $j$ واحد لا نستطيع بلوغ $t_j$ منه $s_j$ دون استعمال رأس استعملناه من قبل.
 :::
 
-![/images/introtcs/lec_12_NP-12.webp](/images/introtcs/lec_12_NP-12.webp){#threesattwolongpathfig .margin }
+![/images/introtcs/lec_12_NP-12.webp](/images/introtcs/original-3sat2longpath.webp){#threesattwolongpathfig .margin }
 
 ### ملخّص العلاقات
 
-لقد بيّنا أنّ هناك عددًا من الدوال $F$ التي يمكننا لها إثبات جملة من الشكل «إذا كان $F\in \mathbf{P}$ فإنّ $3SAT \in \mathbf{P}$». وبذلك فإنّ إيجاد خوارزمية زمن متعدد الحدود لأيٍّ من هذه المسائل—ولو واحدة فقط—يستلزم خوارزمية زمن متعدد الحدود لـ $3SAT$ (انظر مثلًا [reductiondiagramfig](){.ref}).
-وسنبيّن في [cooklevinchap](){.ref} الاتجاه المعاكس («إذا كان $3SAT \in \mathbf{P}$ فإنّ $F\in \mathbf{P}$») لهذه الدوال، مما يتيح لنا أن نستنتج أنّ لها _تعقيدًا متكافئًا_ (_equivalent complexity_) مع $3SAT$.
+لقد بيّنا أنّ هناك عددًا من الدوال $F$ التي يمكننا لها إثبات جملة من الشكل «إذا كان $F\in \mathbf{P}$ فإنّ $3SAT \in \mathbf{P}$». وبذلك فإنّ إيجاد خوارزمية زمن متعدد الحدود لأيٍّ من هذه المسائل—ولو واحدة فقط—يستلزم خوارزمية زمن متعدد الحدود لـ $3SAT$ (انظر مثلًا [reductiondiagramfig](#reductiondiagramfig){.ref}).
+وسنبيّن في [cooklevinchap](#cooklevinchap){.ref} الاتجاه المعاكس («إذا كان $3SAT \in \mathbf{P}$ فإنّ $F\in \mathbf{P}$») لهذه الدوال، مما يتيح لنا أن نستنتج أنّ لها _تعقيدًا متكافئًا_ (_equivalent complexity_) مع $3SAT$.
 
 
-![/images/introtcs/lec_12_NP-13.webp](/images/introtcs/lec_12_NP-13.webp){#reductiondiagramfig }
+![/images/introtcs/lec_12_NP-13.webp](/images/introtcs/original-reduction_inc_diagram.webp){#reductiondiagramfig }
 
 
 
@@ -819,7 +819,7 @@ def TSAT2LONGPATH(φ):
 ## ملاحظات ببليوغرافية {#reductionsbibnotes }
 
 
-يُعرَّف في الأدبيّات عددٌ من مفاهيم الاختزال. والمفهوم المعرَّف في [reduction-def](){.ref} يُعرف غالبًا بـ_اختزال الإسناد_ (_mapping reduction_)، أو _اختزال متعدّد إلى واحد_ (_many to one reduction_)، أو _اختزال كارب_ (_Karp reduction_).
+يُعرَّف في الأدبيّات عددٌ من مفاهيم الاختزال. والمفهوم المعرَّف في [reduction-def](#reduction-def){.ref} يُعرف غالبًا بـ_اختزال الإسناد_ (_mapping reduction_)، أو _اختزال متعدّد إلى واحد_ (_many to one reduction_)، أو _اختزال كارب_ (_Karp reduction_).
 
 أما المجموعة المستقلّة _العظمى_ (_maximal_) (بخلاف _أكبر_) (_maximum_) فهي مهمّة إيجاد «عظمى محلّية» (_local maximum_) لمجموعة مستقلّة: أي مجموعة مستقلّة $S$ لا يمكن إضافة رأس إليها دون فقدان خاصية الاستقلال (وتُعرف هذه المجموعة بـ_غطاء رؤوس_). وبخلاف إيجاد مجموعة مستقلّة _أكبر_، يمكن إيجاد مجموعة مستقلّة _عظمى_ بكفاءة بواسطة خوارزمية جشعة، لكنّ هذه العظمى المحلّية قد تكون أصغر بكثير من العظمى الكلّية.
 

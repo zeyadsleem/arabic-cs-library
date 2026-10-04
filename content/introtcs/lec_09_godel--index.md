@@ -21,7 +21,7 @@ source: https://introtcs.org/
 
 
 
-المسائل التي بيّنا في [chapcomputable](/images/introtcs/fig-godelstructure.webp){.ref} أنها غير قابلة للحساب، وعلى طبيعتها مهمة، فإنها كانت تتضمّن في تعريفاتها برامج NAND-TM أو آليات حوسبة أخرى بشكل وثيق.
+المسائل التي بيّنا في [chapcomputable](#chapcomputable){.ref} أنها غير قابلة للحساب، وعلى طبيعتها مهمة، فإنها كانت تتضمّن في تعريفاتها برامج NAND-TM أو آليات حوسبة أخرى بشكل وثيق.
 ربما يمكننا أن نأمل بأنه ما دمنا نبتعد عن الدوال التي تكون مداخلها برامج بذاتها، فسنستطيع تفادي «لعنة عدم قابلية الحساب».
 لكننا لسنا محظوظين بهذا.
 
@@ -39,7 +39,7 @@ source: https://introtcs.org/
 :::
 
 
-![Outline of the results of this chapter. One version of Gödel's Incompleteness Theorem is an immediate consequence of the uncomputability of the Halting problem. To obtain the theorem as originally stated (for statements about the integers) we first prove that the $QMS$ problem of determining truth of quantified statements involving both integers and strings is uncomputable. We do so using the notion of _Turing Machine configurations_ but there are alternative approaches to do so as well, see [alternativeproofs](https://en.wikipedia.org/wiki/Modus_ponens){.ref}.](https://goo.gl/Lx8HYv){#godelstructurefig }
+![Outline of the results of this chapter. One version of Gödel's Incompleteness Theorem is an immediate consequence of the uncomputability of the Halting problem. To obtain the theorem as originally stated (for statements about the integers) we first prove that the $QMS$ problem of determining truth of quantified statements involving both integers and strings is uncomputable. We do so using the notion of _Turing Machine configurations_ but there are alternative approaches to do so as well, see [alternativeproofs](#alternativeproofs){.ref}.](/images/introtcs/original-godelstructure.webp){#godelstructurefig }
 
 
 
@@ -65,7 +65,7 @@ source: https://introtcs.org/
 
 ### تعريف «أنظمة البرهنة» { #godelproofsystemssec }
 
-قبل إثبات [godethminformal](https://en.wikipedia.org/wiki/Liar_paradox){.ref}، نحتاج إلى تعريف «أنظمة البرهنة»، بل وإلى تعريف رسمي لمفهوم «العبارة الرياضية».
+قبل إثبات [godethminformal](#godethminformal){.ref}، نحتاج إلى تعريف «أنظمة البرهنة»، بل وإلى تعريف رسمي لمفهوم «العبارة الرياضية».
 في الهندسة وفي مجالات رياضية أخرى، تُعرَّف أنظمة البرهنة غالبًا بالبدء من بعض الافتراضات الأساسية أو _البديهيات_ (axioms)، ثم استنتاج مزيد من العبارات باستعمال _قواعد الاستنتاج_ (inference rules) مثل [مذهب المقدمات](https://en.wikipedia.org/wiki/Modus_ponens) الشهير، لكن ما البديهيات التي سنستعملها؟ وما القواعد؟
 سنستعمل مفهومًا شديد العمومية لأنظمة البرهنة، ولا نقتصر حتى على الأنظمة التي تأخذ شكل بديهيات واستنتاج.
 
@@ -127,7 +127,7 @@ _نظام البرهنةِ_ (proof system) لـ $\mathcal{T}$ هو خوارزم�
  
 
 
-صياغتنا الأولى لـ [godethminformal](https://goo.gl/fvkuqj){.ref} تنطوي على عبارات عن آلات تورينج.
+صياغتنا الأولى لـ [godethminformal](#godethminformal){.ref} تنطوي على عبارات عن آلات تورينج.
 ولنضع $\mathcal{H}$ لتكون مجموعة السلاسل $x\in \{0,1\}^*$ التي تأخذ الشكل «آلة تورينج $M$ لا تتوقّف عند المدخل الصفري».
 
 
@@ -141,7 +141,7 @@ _نظام البرهنةِ_ (proof system) لـ $\mathcal{T}$ هو خوارزم�
 
 
 ::: {.proof data-ref="godethmtakeone"}
-نفرض، طلبًا للتناقض، وجود نظام برهنة $V$ كهذا. سنستعمل $V$ لبناء خوارزمية $A$ تحسب $HALTONZERO$، ومن ثمّ تناقض [haltonzero-thm](https://goo.gl/GRiVz3){.ref}.
+نفرض، طلبًا للتناقض، وجود نظام برهنة $V$ كهذا. سنستعمل $V$ لبناء خوارزمية $A$ تحسب $HALTONZERO$، ومن ثمّ تناقض [haltonzero-thm](#haltonzero-thm){.ref}.
 وستعمل خوارزميتنا $A$ كما.
 
 
@@ -172,7 +172,7 @@ endfor
 :::
 
 ::: {.remark title="عبارة غودل (اختياري)" #godelstmtrem}
-يمكن استخراج من برهان [godethmtakeone](https://en.wikipedia.org/wiki/Bakhshali_manuscript){.ref} إجراء يُنتج، لكل نظام برهنة $V$، عبارة صادقة $x^*$ لا يمكن إثباتها في $V$.
+يمكن استخراج من برهان [godethmtakeone](#godethmtakeone){.ref} إجراء يُنتج، لكل نظام برهنة $V$، عبارة صادقة $x^*$ لا يمكن إثباتها في $V$.
 لكن برهان غودل أعطى وصفًا صريحًا جدًا لمثل هذه العبارة $x^*$، وهي وثيقة الصلة بـ[«مفارقة الكذّاب»](https://en.wikipedia.org/wiki/Liar_paradox).
 أي أن عبارة غودل $x^*$ صُمِّمت لتكون صادقة إذا وإلى إذا $\forall_{w\in \{0,1\}^*} V(x,w)=0$.
 بعبارة أخرى، لقد استوفت الخاصية التالية
@@ -182,8 +182,8 @@ x^* \text{ is true} \Leftrightarrow \text{$x^*$ does not have a proof in $V$} \l
 $$
 
 يمكن ملاحظة أن إذا كانت $x^*$ صادقة فلا برهان لها، أما إذا كانت خاطئة (بافتراض أن نظام البرهنة سليم) فلا يمكن أن يكون لها برهان، وبالتالي يجب أن تكون $x^*$ في الوقت نفسه صادقة وغير قابلة للإثبات.
-قد يتساءل المرء كيف يمكن ابتكار $x^*$ تستوفي شرطًا مثل [godeleq](https://en.wikipedia.org/wiki/Gradient_descent){.eqref} حيث تظهر السلسلة نفسها $x^*$ في كلا طرفَي المعادلة.
-الفكرة أن برهان [godethmtakeone](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4){.ref} يعطي طريقة لتحويل كل عبارة $x$ إلى عبارة $F(x)$ صادقة إذا وإلى إذا لم يكن لـ $x$ برهان في $V$.
+قد يتساءل المرء كيف يمكن ابتكار $x^*$ تستوفي شرطًا مثل [godeleq](#godeleq){.eqref} حيث تظهر السلسلة نفسها $x^*$ في كلا طرفَي المعادلة.
+الفكرة أن برهان [godethmtakeone](#godethmtakeone){.ref} يعطي طريقة لتحويل كل عبارة $x$ إلى عبارة $F(x)$ صادقة إذا وإلى إذا لم يكن لـ $x$ برهان في $V$.
 وعليه، يجب أن تكون $x^*$ _نقطة ثابتة_ (fixed point) لـ $F$: أي جملة بحيث $x^* = F(x^*)$.
 ويبيّن الأمر أن [يمكننا دائمًا إيجاد](https://en.wikipedia.org/wiki/Kleene%27s_recursion_theorem) نقطة ثابتة كهذه لـ $F$.
 لقد رأينا هذه الظاهرة من قبل في حساب $\lambda$، حيث يقابل المُشغِّل (combinator) $Y$ كل $F$ بنقطة ثابتة $Y F$ من $F$.
@@ -200,7 +200,7 @@ $$
 
 ## العبارات العددية المُكمَّمة
 
-في [godethmtakeone](https://www.jstor.org/stable/2273588){.ref} شيء غير مُرضٍ.
+في [godethmtakeone](#godethmtakeone){.ref} شيء غير مُرضٍ.
 نعم، فهو يبيّن أن هناك عبارات غير قابلة للإثبات، لكنها لا تبدو كعبارات رياضية «حقيقية».
 فهي تتحدث عن _برامج_ بدل الأعداد أو المصفوفات أو المشتقات، أو أي شيء آخر يُدرَّس في مقرّرات الرياضيات.
 ويبيّن الأمر أننا يمكننا الحصول على نتيجة مماثلة لعبارات مثل «لا يوجد عددان صحيحان موجبان $x$ و $y$ بحيث $x^2 - 2 = y^7$»، أو «يوجد أعداد صحيحة موجبة $x,y,z$ بحيث $x^2 + y^6 = z^{11}$»، وهي عبارات لا تتحدث إلا عن _الأعداد الطبيعية_.
@@ -268,7 +268,7 @@ _أو_
 :::
 
 
-[godelthmqis](https://en.wikipedia.org/wiki/Post_correspondence_problem){.ref} نتيجةٌ مباشرةٌ للاستنتاج التالي، تمامًا كما كان [godethmtakeone](https://www.scottaaronson.com/writings/bignumbers.html){.ref} نتيجةً مباشرةً لعدم قابلية حساب $HALTONZERO$:
+[godelthmqis](#godelthmqis){.ref} نتيجةٌ مباشرةٌ للاستنتاج التالي، تمامًا كما كان [godethmtakeone](#godethmtakeone){.ref} نتيجةً مباشرةً لعدم قابلية حساب $HALTONZERO$:
 
 > ### {.theorem title="عدم قابلية حساب العبارات العددية المُكمَّمة" #QIS-thm}
 ليكن $QIS:\{0,1\}^* \rightarrow \{0,1\}$ الدالة التي، معطى تمثيل (سلسليًا) لعبارة عددية مُكمَّمة، تُخرج $1$ إذا كانت صادقة و $0$ إذا كانت خاطئة.
@@ -278,12 +278,12 @@ _أو_
 ولأن العبارة العددية المُكمَّمة ليست سوى تتابع من الرموز، يمكننا تمثيلها بسهولة في صورة سلسلة. ولأغراض التبسيط، سنفترض أن _كل_ سلسلة تمثّل عبارة عددية مُكمَّمة ما، بأن نُسق السلاسل التي لا تقابل عبارة من هذا النوع إلى عبارة اعتباطية مثل $\exists_{x\in \N} x=1$.
 
 ::: { .pause }
-من فضلك توقّف هنا وتأكّد من أنك تفهم سبب أن عدم قابلية حساب $QIS$ (أي [QIS-thm](https://en.wikipedia.org/wiki/Ackermann_function){.ref}) يعني أنه لا يوجد نظام برهنة سليم وكامل لإثبات العبارات العددية المُكمَّمة (أي [godelthmqis](https://www.scottaaronson.com/blog/?p=3445){.ref}).
-وهذا يتبع بالطريقة نفسها التي تبع بها [godethmtakeone](https://terrytao.wordpress.com/2010/10/10/the-cosmic-distance-ladder-ver-4-1/){.ref} من عدم قابلية حساب $HALTONZERO$، لكن اشتقاق التفاصيل تمرينًا ممتازًا (انظر [godelfromqisex](https://goo.gl/9ieBVq){.ref})
+من فضلك توقّف هنا وتأكّد من أنك تفهم سبب أن عدم قابلية حساب $QIS$ (أي [QIS-thm](#QIS-thm){.ref}) يعني أنه لا يوجد نظام برهنة سليم وكامل لإثبات العبارات العددية المُكمَّمة (أي [godelthmqis](#godelthmqis){.ref}).
+وهذا يتبع بالطريقة نفسها التي تبع بها [godethmtakeone](#godethmtakeone){.ref} من عدم قابلية حساب $HALTONZERO$، لكن اشتقاق التفاصيل تمرينًا ممتازًا (انظر [godelfromqisex](#godelfromqisex){.ref})
 :::
 
 
-في بقية هذا الفصل، سنبيّن برهان [godelthmqis](https://gowers.wordpress.com/2017/09/19/two-infinities-that-are-surprisingly-equal/){.ref}، متبعين المخطط الموضَّح في [godelstructurefig](){.ref}.
+في بقية هذا الفصل، سنبيّن برهان [godelthmqis](#godelthmqis){.ref}، متبعين المخطط الموضَّح في [godelstructurefig](#godelstructurefig){.ref}.
 
 
 
@@ -307,7 +307,7 @@ _أو_
 
 ![Diophantine equations such as finding a positive integer solution to
 the equation $a(a+b)(a+c)+b(b+a)(b+c)+c(c+a)(c+b)=4(a+b)(a+c)(b+c)$ (depicted more compactly and whimsically above) can be surprisingly difficult.
-There are many equations for which we do not know if they have a solution, and there is no algorithm to solve them in general. The smallest solution for this equation has $80$ digits! See this [Quora post](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) for more information, including the credits for this image.](/images/introtcs/fig-elliptic_curve.webp){#ellipticcurvefig .margin }
+There are many equations for which we do not know if they have a solution, and there is no algorithm to solve them in general. The smallest solution for this equation has $80$ digits! See this [Quora post](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) for more information, including the credits for this image.](/images/introtcs/original-elliptic_curve.webp){#ellipticcurvefig .margin }
 
 لكن هناك بعض المعادلات التي لا نعرف ببساطة كيف نحُلّها _بأي وسيلة_.
 مثلًا، استغرق الأمر أكثر من 200 سنة حتى نجح الناس في إثبات أن المعادلة $a^{11} + b^{11} = c^{11}$ لا حلّ لها في الأعداد الصحيحة.^[هذه حالة خاصة مما يُعرف بـ«نظرية فيرما الأخيرة» التي تنص على أن $a^n + b^n = c^n$ لا حلّ لها في الأعداد الصحيحة من أجل $n>2$. وقد افترضها بيير دو فيرما سنة 1637، لكن لم يثبتها أندرو وايلز إلا في سنة 1991. أما الحالة $n=11$ (مع كل ما يُسمى «أسّات الأعداد الأولية المنتظمة») فقد أثبتها كومر سنة 1850.]
@@ -336,8 +336,8 @@ There are many equations for which we do not know if they have a solution, and t
 
 ## صعوبة العبارات العددية المُكمَّمة
 
-لن نبرهن على مبرهنة MRDP ([MRDP-thm](){.ref}).
-غير أنه، كما ذكرنا، سنبرهن على عدم قابلية حساب $QIS$ (أي [QIS-thm](){.ref})، وهي حالة خاصة من مبرهنة MRDP.
+لن نبرهن على مبرهنة MRDP ([MRDP-thm](#MRDP-thm){.ref}).
+غير أنه، كما ذكرنا، سنبرهن على عدم قابلية حساب $QIS$ (أي [QIS-thm](#QIS-thm){.ref})، وهي حالة خاصة من مبرهنة MRDP.
 والسبب أن المعادلة ديوفانطية هي حالة خاصة من عبارة عددية مُكمَّمة لا يتضمّن كمّيتها إلا $\exists$.
 وهذا يعني أن تحديد صدق العبارات العددية المُكمَّمة مسألة _أصعب_ من حلّ المعادلات ديوفانطية، ولذلك قد يكون إثبات عدم قابلية حساب $QIS$ _أسهل_.
 
@@ -347,7 +347,7 @@ There are many equations for which we do not know if they have a solution, and t
 :::
 
 
-سيجري برهاننا لعدم قابلية حساب $QIS$ (أي [QIS-thm](){.ref})، كما هو معتاد، عبر الاختزال من مشكلة التوقّف، ولكننا سنفعل ذلك في خطوتين:
+سيجري برهاننا لعدم قابلية حساب $QIS$ (أي [QIS-thm](#QIS-thm){.ref})، كما هو معتاد، عبر الاختزال من مشكلة التوقّف، ولكننا سنفعل ذلك في خطوتين:
 
 1. سنستعمل أولًا اختزالًا من مشكلة التوقّف لنبيّن أن تحديد صدق _العبارات المُكمَّمة المختلطة_ (quantified mixed statements) غير قابل للحساب. وتتضمّن العبارات المُكمَّمة المختلطة السلاسل والأعداد الصحيحة معًا.
 ولأن العبارات المُكمَّمة المختلطة مفهوم أعمّ من العبارات العددية المُكمَّمة، فإن إثبات عدم قابلية حساب تحديد صدقها هو _أسهل_.
@@ -371,7 +371,7 @@ $$
 \wedge (\forall_{i\in\N} i < |a| \Rightarrow (a_i \Leftrightarrow b_{|a|-i})) \;.
 $$
 
-العبارات المُكمَّمة المختلطة أعمّ من العبارات العددية المُكمَّمة، ولذلك فإن النظرية التالية قد تكون أسهل في البرهان من [QIS-thm](){.ref}:
+العبارات المُكمَّمة المختلطة أعمّ من العبارات العددية المُكمَّمة، ولذلك فإن النظرية التالية قد تكون أسهل في البرهان من [QIS-thm](#QIS-thm){.ref}:
 
 
 
@@ -379,8 +379,8 @@ $$
 ليكن $QMS:\{0,1\}^* \rightarrow \{0,1\}$ الدالة التي، معطى تمثيل (سلسليًا) لعبارة مُكمَّمة مختلطة، تُخرج $1$ إذا كانت صادقة و $0$ إذا كانت خاطئة. إذن $QMS$ غير قابلة للحساب.
 
 > ### {.proofidea data-ref="QMS-thm"}
-الفكرة وراء البرهان تشبه الفكرة المستعملة في إظهار أن الآلات الخلوية أحادية البعد تامة تورينجيًا ([onedimcathm](){.ref})، وكذلك في إظهار أن التكافؤ (بل حتى «الاكتمال») لقواعد النحو الحرّة السياق غير قابل للحساب ([fullnesscfgdef](){.ref}).
-نستعمل مفهوم _التهيّؤ_ (configuration) لبرنامج NAND-TM كما في [configtmdef](){.ref}.
+الفكرة وراء البرهان تشبه الفكرة المستعملة في إظهار أن الآلات الخلوية أحادية البعد تامة تورينجيًا ([onedimcathm](#onedimcathm){.ref})، وكذلك في إظهار أن التكافؤ (بل حتى «الاكتمال») لقواعد النحو الحرّة السياق غير قابل للحساب ([fullnesscfgdef](#fullnesscfgdef){.ref}).
+نستعمل مفهوم _التهيّؤ_ (configuration) لبرنامج NAND-TM كما في [configtmdef](#configtmdef){.ref}.
 يمكن التفكير في هذا التهيّؤ بأنه سلسلة $\alpha$ على أبجدية كبيرة لكنها منتهية $\Sigma$، تصف حالته الحالية، بما في ذلك قيم جميع المصفوفات والقيم المُفردة ومتغيّر الفهرسة `i`.
 ويمكن إظهار أن إذا كان $\alpha$ هو التهيّؤ عند خطوة معيّنة من التنفيذ و $\beta$ هو التهيّؤ عند الخطوة التالية، فإن $\beta_j = \alpha_j$ لكل $j$ خارج $\{i-1,i,i+1\}$ حيث $i$ هي قيمة `i`.
 وبخاصة، فإن كل قيمة $\beta_j$ هي ببساطة دالة لـ $\alpha_{j-1,j,j+1}$.
@@ -391,7 +391,7 @@ $$
 
 ::: {.proof data-ref="QMS-thm"}
 يحصل البرهان عبر اختزال من مشكلة التوقّف.
-وبالتحديد، سنستعمل مفهوم _التهيّؤ_ لآلات تورينج ([configtmdef](){.ref}) الذي رأيناه في سياق البرهان على أن الآلات الخلوية أحادية البعد تامة تورينجيًا.
+وبالتحديد، سنستعمل مفهوم _التهيّؤ_ لآلات تورينج ([configtmdef](#configtmdef){.ref}) الذي رأيناه في سياق البرهان على أن الآلات الخلوية أحادية البعد تامة تورينجيًا.
 نحتاج إلى الحقائق التالية عن التهيّؤات:
 
 * لكل آلة تورينج $M$، هناك أبجدية منتهية $\Sigma$، و_تهيّؤ_ لـ $M$ هو سلسلة $\alpha \in \Sigma^*$.
@@ -419,7 +419,7 @@ $$
 
 
 إذا استطعنا ترميز العبارة $\varphi_M$ في صورة عبارة مُكمَّمة مختلطة، فإن $\varphi_M$ صادقة إذا وإلى إذا كان $HALTONZERO(M)=1$، وهذا يختزل مهمة
-حساب $HALTONZERO$ في مهمة حساب $QMS$، ومن ثمّ يستنتج (باستعمال [haltonzero-thm](){.ref}) أن $QMS$ غير قابلة للحساب، وبذلك يكتمل البرهان.
+حساب $HALTONZERO$ في مهمة حساب $QMS$، ومن ثمّ يستنتج (باستعمال [haltonzero-thm](#haltonzero-thm){.ref}) أن $QMS$ غير قابلة للحساب، وبذلك يكتمل البرهان.
 وفعلًا، يمكن ترميز $\varphi_M$ في صورة عبارة مُكمَّمة مختلطة للأسباب التالية:
 
 1. ليكن $\alpha,\beta \in \{0,1\}^*$ سلسلتين ترمّزان تهيّؤَي $M$. يمكننا تعريف مسند مُكمَّم مختلط $NEXT(\alpha,\beta)$ يصدق إذا وإلى إذا كان $\beta = NEXT_M(\alpha)$ (أي أن $\beta$ يرمّز التهيّؤ الناتج عن الانتقال من $\alpha$ بخطوة حسابية واحدة). وفعلًا، $NEXT(\alpha,\beta)$ تصدق إذا __لكل__ $i \in \{0,\ldots,|\beta|\}$ يقبل القسمة على $\ell$، $\beta_{i,\ldots,i+\ell-1} = MAP_M(\alpha_{i-\ell,\cdots,i+2\ell-1})$ حيث $MAP_M:\{0,1\}^{3\ell} \rightarrow \{0,1\}^\ell$ هي الدالة المنتهية السابقة (مع تطابق عناصر $\Sigma$ مع ترميزاتها في $\{0,1\}^\ell$). ولأن $MAP_M$ دالة منتهية، يمكننا التعبير عنها باستعمال العمليات المنطقية $AND$ و $OR$ و $NOT$ (مثلًا بحساب $MAP_M$ ببوابات $NAND$).
@@ -438,17 +438,17 @@ $$
 هناك طرق أخرى عدّة لإظهار أن $QMS$ غير قابلة للحساب.
 مثلًا، يمكننا التعبير عن الشرط القائل إن كانت آلة خلوية أحادية البعد تكتب في النهاية «$1$» في خلية معيّنة انطلاقًا من تهيّؤ ابتدائي معيّن، في صورة عبارة مُكمَّمة مختلطة
 على سلسلة ترمّز سجلّ جميع التهيّؤات.
-يمكننا بعدها استعمال الحقيقة القائلة إن الآلات الخلوية تستطيع محاكاة آلات تورينج ([onedimcathm](){.ref}) لاختزال مشكلة التوقّف في $QMS$.
+يمكننا بعدها استعمال الحقيقة القائلة إن الآلات الخلوية تستطيع محاكاة آلات تورينج ([onedimcathm](#onedimcathm){.ref}) لاختزال مشكلة التوقّف في $QMS$.
 ويمكننا أيضًا استعمال مسائل غير قابلة للحساب معروفة جيدًا أخرى، مثل مسألة التبليط أو [مسألة مطابقة البريد](https://en.wikipedia.org/wiki/Post_correspondence_problem).
-يستعرض [postcorrespondenceproblemex](){.ref} و [puzzleex](){.ref} برهانين بديلين لـ
-[QMS-thm](){.ref}.
+يستعرض [postcorrespondenceproblemex](#postcorrespondenceproblemex){.ref} و [puzzleex](#puzzleex){.ref} برهانين بديلين لـ
+[QMS-thm](#QMS-thm){.ref}.
 :::
 
 
 
 ### الخطوة 2: اختزال العبارات المختلطة إلى عبارات عددية
 
-سنبيّن الآن كيف نبرهن على [QIS-thm](){.ref} باستعمال [QMS-thm](){.ref}.
+سنبيّن الآن كيف نبرهن على [QIS-thm](#QIS-thm){.ref} باستعمال [QMS-thm](#QMS-thm){.ref}.
 والفكرة أيضًا هي البرهان بالاختزال.
 سنبيّن تحويلًا لكل عبارة مُكمَّمة مختلطة $\varphi$ إلى عبارة _عددية_ مُكمَّمة $\xi$ لا تستعمل متغيّرات تأخذ قيم سلاسل، بحيث $\varphi$ صادقة إذا وإلى إذا كانت $\xi$ صادقة.
 
@@ -462,17 +462,17 @@ $$
 
 وهذا يعني أننا نستطيع استبدال كمّية «لكل» على السلاسل مثل $\forall_{x\in \{0,1\}^*}$ بزوج من الكمّيات على _الأعداد الصحيحة_ من الشكل $\forall_{X\in \N}\forall_{n\in\N}$ (وبالمثل استبدال كمّية وجود من الشكل $\exists_{x\in \{0,1\}^*}$ بزوج من الكمّيات $\exists_{X\in \N}\exists_{n\in\N}$).
 يمكننا بعدها استبدال كل استدعاء لـ $|x|$ بـ $n$ وكل استدعاء لـ $x_i$ بـ $COORD(X,i)$.
-وهذا يعني أن إذا استطعنا تعريف $COORD$ عبر عبارة عددية مُكمَّمة، فإننا سنحصل على برهان لـ [QIS-thm](){.ref}، لأننا نستطيع استعمالها لإسقاط كل عبارة مُكمَّمة مختلطة $\varphi$ على عبارة عددية مُكمَّمة مكافئة $\xi$ بحيث $\xi$ صادقة إذا وإلى إذا كانت $\varphi$ صادقة، ومن ثمّ $QMS(\varphi)=QIS(\xi)$.
+وهذا يعني أن إذا استطعنا تعريف $COORD$ عبر عبارة عددية مُكمَّمة، فإننا سنحصل على برهان لـ [QIS-thm](#QIS-thm){.ref}، لأننا نستطيع استعمالها لإسقاط كل عبارة مُكمَّمة مختلطة $\varphi$ على عبارة عددية مُكمَّمة مكافئة $\xi$ بحيث $\xi$ صادقة إذا وإلى إذا كانت $\varphi$ صادقة، ومن ثمّ $QMS(\varphi)=QIS(\xi)$.
 وهذا الإجراء يعني أن مهمة حساب $QMS$ تختزل في مهمة حساب $QIS$، وهو ما يعني أن عدم قابلية حساب $QMS$ تستلزم عدم قابلية حساب $QIS$.
 
 
-يبيّن ما سبق أن برهان [QIS-thm](){.ref} ينحصر كله في إيجاد الترميز المناسب للسلاسل في صورة أعداد صحيحة، وفي الطريقة الصحيحة لتنفيذ $COORD$ في هيئة عبارة عددية مُكمَّمة.
+يبيّن ما سبق أن برهان [QIS-thm](#QIS-thm){.ref} ينحصر كله في إيجاد الترميز المناسب للسلاسل في صورة أعداد صحيحة، وفي الطريقة الصحيحة لتنفيذ $COORD$ في هيئة عبارة عددية مُكمَّمة.
 ولتحقيق ذلك نستعمل النتيجة الفنية التالية:
 
 > ### {.lemma title="متتالية أولية قابلة للبناء" #primeseq}
 هناك متتالية من الأعداد الأولية $p_0 < p_1 < p_2 < \cdots$ بحيث هناك عبارة عددية مُكمَّمة $PSEQ(p,i)$ تصدق إذا وإلى إذا كان $p=p_i$.
 
-باستعمال [primeseq](){.ref} يمكننا ترميز $x\in\{0,1\}^*$ بالأعداد $(X,n)$ حيث $X = \prod_{x_i=1} p_i$ و $n=|x|$.
+باستعمال [primeseq](#primeseq){.ref} يمكننا ترميز $x\in\{0,1\}^*$ بالأعداد $(X,n)$ حيث $X = \prod_{x_i=1} p_i$ و $n=|x|$.
 يمكننا بعدها تعريف العبارة $COORD(X,i)$ على النحو
 $$
 COORD(X,i) = \exists_{p\in\N}  PSEQ(p,i) \wedge DIVIDES(p,X)
@@ -480,7 +480,7 @@ $$
 حيث $DIVIDES(a,b)$، كما سبق، معرَّفة بأنها $\exists_{c\in\N} a\times c = b$.
 ولاحظ أن فعلًا إذا كان $X,n$ يرمّزان السلسلة $x\in \{0,1\}^*$، فإن لكل $i<n$ نحصل على $COORD(X,i)=x_i$، لأن $p_i$ يقسم $X$ إذا وإلى إذا كان $x_i=1$.
 
-وعليه، لم يبقَ لإتمام برهان [QIS-thm](){.ref} سوى إثبات [primeseq](){.ref}، وهو ما سنقوم به الآن.
+وعليه، لم يبقَ لإتمام برهان [QIS-thm](#QIS-thm){.ref} سوى إثبات [primeseq](#primeseq){.ref}، وهو ما سنقوم به الآن.
 
 ::: {.proof data-ref="primeseq"}
 متتالية الأعداد الأولية التي سننظر فيها هي التالية:
@@ -495,7 +495,7 @@ $$
 :::
 
 ولإيجاز، فقد بيّنا أن لكل عبارة مُكمَّمة مختلطة $\varphi$ يمكننا حساب عبارة عددية مُكمَّمة $\xi$ بحيث $QMS(\varphi)=1$ إذا وإلى إذا كان $QIS(\xi)=1$.
-وعليه، فإن عدم قابلية حساب $QMS$ ([QMS-thm](){.ref}) تستلزم عدم قابلية حساب $QIS$، وبذلك يكتمل برهان [QIS-thm](){.ref}، وكذلك برهان مبرهنة غودل في عدم الاكتمال للعبارات العددية المُكمَّمة ([godelthmqis](){.ref}).
+وعليه، فإن عدم قابلية حساب $QMS$ ([QMS-thm](#QMS-thm){.ref}) تستلزم عدم قابلية حساب $QIS$، وبذلك يكتمل برهان [QIS-thm](#QIS-thm){.ref}، وكذلك برهان مبرهنة غودل في عدم الاكتمال للعبارات العددية المُكمَّمة ([godelthmqis](#godelthmqis){.ref}).
 
 
 > ### { .recap }
@@ -506,7 +506,7 @@ $$
 
 
 ::: {.exercise title="مبرهنة غودل من عدم قابلية حساب $QIS$" #godelfromqisex}
-برهن على [godelthmqis](){.ref} باستعمال [QIS-thm](){.ref}.
+برهن على [godelthmqis](#godelthmqis){.ref} باستعمال [QIS-thm](#QIS-thm){.ref}.
 :::
 
 ::: {.exercise title="أنظمة البرهنة وعدم قابلية الحساب" #proofsanduncomputex  }
@@ -529,7 +529,7 @@ $$
 
 
 ![In the _puzzle problem_, the input can be thought of as a finite collection $\Sigma$ of _types of puzzle pieces_ and the goal is to find out whether or not find a way to arrange pieces from these types in a rectangle. Formally, we model the input as a pair of functions $match_{\leftrightarrow},match_{\updownarrow}:\Sigma^2 \rightarrow \{0,1\}$ that such that 
-$match_{\leftrightarrow}(left,right)=1$ (respectively $match_{\updownarrow}(up,down)=1$ ) if the pair of pieces are compatible when placed  in their respective positions. We assume $\Sigma$ contains a special symbol $\varnothing$ corresponding to having no piece, and an arrangement of puzzle pieces by an $(m-2)\times(n-2)$ rectangle is modeled by a string $x\in \Sigma^{m\cdot n}$ whose ``outer coordinates'' are $\emptyset$ and such that for every $i \in [n-1],j \in [m-1]$, $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ and $match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](/images/introtcs/fig-puzzleprob.webp){#puzzleprobfig  .margin }
+$match_{\leftrightarrow}(left,right)=1$ (respectively $match_{\updownarrow}(up,down)=1$ ) if the pair of pieces are compatible when placed  in their respective positions. We assume $\Sigma$ contains a special symbol $\varnothing$ corresponding to having no piece, and an arrangement of puzzle pieces by an $(m-2)\times(n-2)$ rectangle is modeled by a string $x\in \Sigma^{m\cdot n}$ whose ``outer coordinates'' are $\emptyset$ and such that for every $i \in [n-1],j \in [m-1]$, $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ and $match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](/images/introtcs/original-puzzleprob.webp){#puzzleprobfig  .margin }
 
 
 
@@ -549,8 +549,8 @@ $PCP(S) = QMS(R(S))$ لكل سلسلة $S$ ترمّز نموذجًا من مسأ
 :::
 
 ::: {.exercise title="عدم قابلية حساب مسألة الألغاز" #puzzleex}
-لتكن $PUZZLE:\{0,1\}^* \rightarrow \{0,1\}$ مسألةَ تحديد، معطى مجموعة منتهية من أنواع «قطع الألغاز»، ما إذا كان من الممكن تركيبها معًا في مستطيل، انظر [puzzleprobfig](){.ref}.
-رسميًا، نفترض أن المجموعة من هذا النوع هي مجموعة منتهية $\Sigma$ (انظر [puzzleprobfig](){.ref}). ونمذج معايير «التوافق» بين القطع بزوج من الدوال المنتهية $match_{\updownarrow}, match_{\leftrightarrow}:\Sigma^2 \rightarrow \{0,1\}$ بحيث تناسب قطعة $a$ فوق قطعة $b$ إذا وإلى إذا كان $match_{\updownarrow}(a,b)=1$، وتَناسب قطعة $c$ يسار قطعة $d$ إذا وإلى إذا كان $match_{\leftrightarrow}(c,d)=1$.
+لتكن $PUZZLE:\{0,1\}^* \rightarrow \{0,1\}$ مسألةَ تحديد، معطى مجموعة منتهية من أنواع «قطع الألغاز»، ما إذا كان من الممكن تركيبها معًا في مستطيل، انظر [puzzleprobfig](#puzzleprobfig){.ref}.
+رسميًا، نفترض أن المجموعة من هذا النوع هي مجموعة منتهية $\Sigma$ (انظر [puzzleprobfig](#puzzleprobfig){.ref}). ونمذج معايير «التوافق» بين القطع بزوج من الدوال المنتهية $match_{\updownarrow}, match_{\leftrightarrow}:\Sigma^2 \rightarrow \{0,1\}$ بحيث تناسب قطعة $a$ فوق قطعة $b$ إذا وإلى إذا كان $match_{\updownarrow}(a,b)=1$، وتَناسب قطعة $c$ يسار قطعة $d$ إذا وإلى إذا كان $match_{\leftrightarrow}(c,d)=1$.
 ولنمذجة قطع «الحافة المستقيمة» التي يمكن وضعها بجوار «مكان فارغ»، نفترض أن $\Sigma$ تحتوي الرمز $\varnothing$ وتُعرَّف دوال المطابقة وفقًا لذلك.
 _التبليط المربّع_ (square tiling) لـ $\Sigma$ هو سلسلة $x \in \Sigma^{mn}$ طولها $m\times n$، بحيث لكل $i\in \{1,\ldots,m-2 \}$ و $j\in \{1,\ldots,n-2 \}$، $match(x_{i,j},x_{i-1,j},x_{i+1,j},x_{i,j-1},x_{i,j+1})=1$ (أي أن كل «قطعة داخلية» تناسب القطع المجاورة لها).
 كما نشترط أن تكون كل «القطع الخارجية» (أي $x_{i,j}$ حيث $i\in \{0,m-1\}$ أو $j\in \{0,n-1\}$) «فارغة» أو مساوية لـ $\varnothing$.

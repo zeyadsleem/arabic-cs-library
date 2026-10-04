@@ -21,13 +21,13 @@ source: https://introtcs.org/
 في هذا الفصل نبرر هذا الاختيار بإظهار أن تعريف الدوال القابلة للحساب سيبقى كما هو تحت مجموعة واسعة من نماذج الحوسبة.
 يُعرف هذا المفهوم بـ_اكتمال تورينج_ (Turing completeness) أو _تكافؤ تورينج_ (Turing equivalence)، وهو إحدى أكثر حقائق علم الحاسوب جوهرية.
 في الواقع، هناك دعوى منتشرة الانتشار تُعرف بـ_أطروحة Church-Turing_ تقول إن كل تعريف "معقول" للدالة القابلة للحساب هو مكافئ لقابلية حسابها بآلة تورينج.
-نناقش أطروحة Church-Turing والتعريفات المحتملة لكلمة "معقول" في [churchturingdiscussionsec](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life){.ref}.
+نناقش أطروحة Church-Turing والتعريفات المحتملة لكلمة "معقول" في [churchturingdiscussionsec](#churchturingdiscussionsec){.ref}.
 
 تشمل بعض نماذج الحوسبة الرئيسية التي سنناقشها في هذا الفصل:
 
 * __آلات RAM:__ لا تقابل آلات تورينج البنى المعمارية المعيارية للحاسوب التي تحتوي على _ذاكرة عشوائية الوصول (Random Access Memory, RAM)_. فالنموذج الرياضي لآلات RAM أقرب بكثير إلى الحاسوب الفعلي، لكننا سنرى أنه مكافئ في القوة لآلات تورينج. كما سنناقش أيضًا متغيّرًا من لغات البرمجة لآلات RAM، نسميه NAND-RAM. والتكافؤ بين آلات تورينج وآلات RAM يتيح لنا إثبات _تكافؤ تورينج_ للعديد من لغات البرمجة الشائعة، بما فيها جميع اللغات العامة المستخدمة عمليًا مثل C وPython وJavaScript وغيرها.
 
-* __الآليات الخلوية (cellular automata):__ يمكن نمذجة كثير من الأنظمة الطبيعية والاصطناعية كمجموعات من مكوّنات بسيطة، كل منها يتطور وفق قواعد بسيطة تستند إلى حالته وحالة جيرانه (neighbors) المباشرين. ومن الأمثلة الشهيرة على ذلك [لعبة حياة كونواي](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) (Conway's Game of Life). ولإثبات أن الآليات الخلوية مكافئة لآلات تورينج، نقدّم أداة _التكوينات_ (configurations) الخاصة بآلات تورينج. ولكل هذه الأدوات تطبيقات أخرى، وعلى الأخص تُستخدم في [godelchap](/images/introtcs/lec_07_other_models-2.webp){.ref} لإثبات _نظرية عدم اكتمال غودل_: نتيجة مركزية في الرياضيات.
+* __الآليات الخلوية (cellular automata):__ يمكن نمذجة كثير من الأنظمة الطبيعية والاصطناعية كمجموعات من مكوّنات بسيطة، كل منها يتطور وفق قواعد بسيطة تستند إلى حالته وحالة جيرانه (neighbors) المباشرين. ومن الأمثلة الشهيرة على ذلك [لعبة حياة كونواي](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) (Conway's Game of Life). ولإثبات أن الآليات الخلوية مكافئة لآلات تورينج، نقدّم أداة _التكوينات_ (configurations) الخاصة بآلات تورينج. ولكل هذه الأدوات تطبيقات أخرى، وعلى الأخص تُستخدم في [godelchap](#godelchap){.ref} لإثبات _نظرية عدم اكتمال غودل_: نتيجة مركزية في الرياضيات.
 
 
 * __حساب لامدا (lambda calculus):__ حساب لامدا هو نموذج للتعبير عن الحساب يعود أصله إلى ثلاثينيات القرن الماضي، وإن كان مرتبطًا عن قرب بلغات البرمجة الوظيفية المستخدمة على نطاق واسع اليوم. وإظهار تكافؤ حساب لامدا مع آلات تورينج يتطلب تقنية جميلة للتخلص من التهاكر تُعرف بـ"المُجمِّع Y" (Y Combinator).
@@ -51,10 +51,10 @@ source: https://introtcs.org/
 أخيرًا، سنبيّن أن تكافؤ تورينج يمتد إلى ما هو أبعد بكثير من لغات البرمجة التقليدية. سنرى أن _الآليات الخلوية_، وهي نموذج رياضي لأنظمة طبيعية بالغة البساطة، هي أيضًا مكافئة مع تورينج،
 وسنرى كذلك تكافؤ تورينج لحساب لامدا - وهو نظام منطقي للتعبير عن الدوال يشكّل أساس _لغات البرمجة الوظيفية_ مثل Lisp وOCaml وغيرها.
 
-انظر [turingcompletefig](/images/introtcs/lec_07_other_models-3.webp){.ref} لمحة عامة عن نتائج هذا الفصل.
+انظر [turingcompletefig](#turingcompletefig){.ref} لمحة عامة عن نتائج هذا الفصل.
 :::
 
-![/images/introtcs/lec_07_other_models-1.webp](/images/introtcs/lec_07_other_models-1.webp){#turingcompletefig}
+![/images/introtcs/lec_07_other_models-1.webp](/images/introtcs/original-turingcomplete.webp){#turingcompletefig}
 
 ## آلات RAM وNAND-RAM
 
@@ -65,7 +65,7 @@ source: https://introtcs.org/
 ("الذاكرة العشوائية الوصول" تسمية مضللة إلى حد بعيد إذ لا علاقة لها بالاحتمال، لكن بما أنها مصطلح معتمد في نظريّة الحوسبة وممارستها معًا، سنستخدمها نحن أيضًا.)
 
 
-نموذج الحوسبة الذي يجسّد الوصول إلى ذاكرة من هذا النوع هو _آلة RAM_ (ويُعرف أحيانًا أيضًا بـ_نموذج Word RAM_)، كما هو موضح في [rammachinefig](/images/introtcs/fig-nandramproofoverview.webp){.ref}.
+نموذج الحوسبة الذي يجسّد الوصول إلى ذاكرة من هذا النوع هو _آلة RAM_ (ويُعرف أحيانًا أيضًا بـ_نموذج Word RAM_)، كما هو موضح في [rammachinefig](#rammachinefig){.ref}.
 ذاكرة آلة RAM هي مصفوفة ذات حجم غير محدود، يمكن لكل خلية فيها أن تخزّن _كلمةً_ واحدة، نعتبرها سلسلة في $\{0,1\}^w$، وكذلك (بشكل مكافئ) عددًا في $[2^w]$.
 على سبيل المثال، تستخدم كثير من البنى الحاسوبية الحديثة كلمات بطول $64$ بت، حيث يحمل كل موقع ذاكرة سلسلة في $\{0,1\}^{64}$، ويمكن أيضًا التفكير فيها على أنها عدد بين $0$ و$2^{64}-1= 18,446,744,073,709,551,615$.
 تُعرف المعامل $w$ بـ_حجم الكلمة_ (word size).
@@ -74,7 +74,7 @@ source: https://introtcs.org/
 بالإضافة إلى مصفوفة الذاكرة، تحتوي آلة RAM أيضًا على عدد ثابت من _السجلات_ (registers) $r_0,\ldots,r_{k-1}$، يمكن لكل منها أن يحتوي كلمة واحدة أيضًا.
 
 
-![/images/introtcs/lec_07_other_models-2.webp](/images/introtcs/lec_07_other_models-2.webp){#rammachinefig  .margin }
+![/images/introtcs/lec_07_other_models-2.webp](/images/introtcs/original-rammachine.webp){#rammachinefig  .margin }
 
 
 تشمل العمليات التي تستطيع آلة RAM تنفيذها:
@@ -85,10 +85,10 @@ source: https://introtcs.org/
 
 * __مسار التنفيذ:__ كما في حالة آلات تورينج، يمكن أن يعتمد اختيار أمر التعليمات التالي على حالة آلة RAM، وهي محدَّدة بمحتوى سجلها.
 
-![/images/introtcs/lec_07_other_models-3.webp](/images/introtcs/lec_07_other_models-3.webp){#ramvsturingfig .margin}
+![/images/introtcs/lec_07_other_models-3.webp](/images/introtcs/original-ramvsturing.webp){#ramvsturingfig .margin}
 
 
-لن نقدّم تعريفًا رسميًا لآلات RAM، وإن كان قسم ملاحظات المراجع ([othermodelsbibnotes](https://goo.gl/JweMj){.ref}) يحتوي على مصادر لمثل هذه التعريفات.
+لن نقدّم تعريفًا رسميًا لآلات RAM، وإن كان قسم ملاحظات المراجع ([othermodelsbibnotes](#othermodelsbibnotes){.ref}) يحتوي على مصادر لمثل هذه التعريفات.
 تمامًا كما تُجسّد لغة البرمجة NAND-TM آلات تورينج، يمكننا أيضًا تعريف _لغة برمجة NAND-RAM_ تُجسّد آلات RAM.
 توسّع لغة برمجة NAND-RAM لغة NAND-TM بإضافة الميزات التالية:
 
@@ -113,18 +113,18 @@ source: https://introtcs.org/
 
 
 > ### {.theorem title="آلات تورينج (أي برامج NAND-TM) وآلات RAM (أي برامج NAND-RAM) متكافئة" #RAMTMequivalencethm}
-لكل دالة $F:\{0,1\}^* \rightarrow \{0,1\}^* \، تكون $F$ قابلة للحساب ببرنامج NAND-TM إذا وفقط إذا كانت $F$ قابلة للحساب ببرنامج NAND-RAM.
+لكل دالة $F:\{0,1\}^* \rightarrow \{0,1\}^*$، تكون $F$ قابلة للحساب ببرنامج NAND-TM إذا وفقط إذا كانت $F$ قابلة للحساب ببرنامج NAND-RAM.
 
-لأن برامج NAND-TM مكافئة لآلات تورينج، وبرامج NAND-RAM مكافئة لآلات RAM، فإن [RAMTMequivalencethm](https://javascript.info/recursion){.ref} تُظهر أن هذه النماذج الأربعة كلها متكافئة فيما بينها.
+لأن برامج NAND-TM مكافئة لآلات تورينج، وبرامج NAND-RAM مكافئة لآلات RAM، فإن [RAMTMequivalencethm](#RAMTMequivalencethm){.ref} تُظهر أن هذه النماذج الأربعة كلها متكافئة فيما بينها.
 
-![Overview of the steps in the proof of [RAMTMequivalencethm](https://mitpress.mit.edu/sites/default/files/sicp/full-text/sicp/book/node110.html){.ref} simulating NANDRAM with NANDTM. We first use the inner loop syntactic sugar of [nandtminnerloopssec](/images/introtcs/lec_07_other_models-4.webp){.ref} to enable loading an integer from an array to the index variable `i` of NANDTM. Once we can do that, we can simulate _indexed access_ in NANDTM. We then use an embedding of $\N^2$ in $\N$ to simulate two dimensional bit arrays in NANDTM. Finally, we use the binary representation to encode one-dimensional arrays of integers as two dimensional arrays of bits hence completing the simulation of NANDRAM with NANDTM.](/images/introtcs/lec_07_other_models-5.webp){#nandramoverviewfig .margin}
+![Overview of the steps in the proof of [RAMTMequivalencethm](#RAMTMequivalencethm){.ref} simulating NANDRAM with NANDTM. We first use the inner loop syntactic sugar of [nandtminnerloopssec](#nandtminnerloopssec){.ref} to enable loading an integer from an array to the index variable `i` of NANDTM. Once we can do that, we can simulate _indexed access_ in NANDTM. We then use an embedding of $\N^2$ in $\N$ to simulate two dimensional bit arrays in NANDTM. Finally, we use the binary representation to encode one-dimensional arrays of integers as two dimensional arrays of bits hence completing the simulation of NANDRAM with NANDTM.](/images/introtcs/original-nandramproofoverview.webp){#nandramoverviewfig .margin}
 
 ::: {.proofidea data-ref="RAMTMequivalencethm"}
 من الواضح أن NAND-RAM أقوى من NAND-TM فحسب، لذا إذا كانت دالة $F$ قابلة للحساب ببرنامج NAND-TM، فيمكن حسابها ببرنامج NAND-RAM.
 الاتجاه الصعب هو تحويل برنامج NAND-RAM $P$ إلى برنامج NAND-TM $Q$ مكافئ له.
 ولوصف البرهان بالكامل، سنحتاج إلى تغطية المواصفة الرسمية الكاملة للغة NAND-RAM، وإظهار كيف يمكننا تنفيذ كل واحدة من ميزاتها كسكّر نحوي فوق NAND-TM.
 
-هذا ممكن، لكن المرور على جميع العمليات بالتفصيل ممل إلى حد ما. لذا سنركّز على وصف الأفكار الرئيسية وراء هذا التحويل. (انظر أيضًا [nandramoverviewfig](https://goo.gl/ug7Jaj){.ref}.)
+هذا ممكن، لكن المرور على جميع العمليات بالتفصيل ممل إلى حد ما. لذا سنركّز على وصف الأفكار الرئيسية وراء هذا التحويل. (انظر أيضًا [nandramoverviewfig](#nandramoverviewfig){.ref}.)
 تعمّم NAND-RAM لغة NAND-TM بطريقتين رئيسيتين: __(أ)__ بإضافة _الوصول المفهرس_ إلى المصفوفات (أي صيغة `Foo[bar]`)، و__(ب)__ بالانتقال من متغيرات _ذات قيم بوليانية_ إلى متغيرات _ذات قيم صحيحة_.
 يتكوّن التحويل من خطوتين:
 
@@ -137,7 +137,7 @@ source: https://introtcs.org/
 وبعد أن تتوفر لدينا مصفوفات الأعداد الصحيحة، يمكننا استخدام سكرنا النحوي المعتاد للدوال و`GOTO` إلخ لتنفيذ عمليات الحساب ومسار التنفيذ في NAND-RAM.
 :::
 
-النهج أعلاه ليس الطريقة الوحيدة لإثبات [RAMTMequivalencethm](/images/introtcs/lec_07_other_models-6.webp){.ref}، انظر على سبيل المثال [RAMTMalternativeex](https://goo.gl/rzuNPu){.ref}
+النهج أعلاه ليس الطريقة الوحيدة لإثبات [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}، انظر على سبيل المثال [RAMTMalternativeex](#RAMTMalternativeex){.ref}
 
 ::: {.remark title="آلات RAM / NAND-RAM ولغة التجميع (اختياري)" #NANDRAMassembly}
 تقابل آلات RAM المعالجات الدقيقة الفعلية عن قرب كبير، مثل معالجات سلسلة Intel x86 التي تحتوي أيضًا على _ذاكرة أولية_ (primary memory) كبيرة وعدد ثابت من السجلات الصغيرة.
@@ -157,7 +157,7 @@ source: https://introtcs.org/
 
 ## التفاصيل القبيحة (اختياري)  { #nandtmgorydetailssec  }
 
-لن نعرض البرهان الرسمي الكامل لـ [RAMTMequivalencethm](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/){.ref}، بل نركّز على أهم الأجزاء: تنفيذ الوصول المفهرس، ومحاكاة المصفوفات ثنائية البعد بالمصفوفات أحادية البعد.
+لن نعرض البرهان الرسمي الكامل لـ [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}، بل نركّز على أهم الأجزاء: تنفيذ الوصول المفهرس، ومحاكاة المصفوفات ثنائية البعد بالمصفوفات أحادية البعد.
 حتى هذين الجزءين مملة في وصفها، ولن يكون ذلك مفاجئًا لأي شخص كتب مترجمًا (compiler) من قبل.
 لذا يمكنك أن تتصفح هذا القسم قراءة سريعة دون عناء.
 النقطة المهمة ليست أن تحفظ كل التفاصيل عن ظهر قلب، بل أن تُقنع بأن من الممكن _في المبدأ_ تحويل برنامج NAND-RAM إلى برنامج NAND-TM مكافئ، وأن تُقنع حتى بأنك _أنت_ تستطيع فعل ذلك، لو أردت، مع وقت كافٍ وجهد كافٍ.
@@ -167,7 +167,7 @@ source: https://introtcs.org/
 
 
 في NAND-TM لا يمكننا الوصول إلى مصفوفاتنا إلا في موضع متغير الفهرس `i`، بينما لدى NAND-RAM متغيرات ذات قيم صحيحة يمكن استخدامها لـ_الوصول المفهرس_ إلى المصفوفات، من صيغة `Foo[bar]`.
-لتنفيذ الوصول المفهرس في NAND-TM، سنُرمِّز الأعداد الصحيحة في مصفوفاتنا باستخدام تمثيل ما (خالٍ من البادئة) (انظر [prefixfreesec](/images/introtcs/fig-conwaysgrids.webp){.ref}))، ثم نضع إجراءً `Setindex(Bar)` يضبط `i` على القيمة التي يرمّزها `Bar`.
+لتنفيذ الوصول المفهرس في NAND-TM، سنُرمِّز الأعداد الصحيحة في مصفوفاتنا باستخدام تمثيل ما (خالٍ من البادئة) (انظر [prefixfreesec](#prefixfreesec){.ref}))، ثم نضع إجراءً `Setindex(Bar)` يضبط `i` على القيمة التي يرمّزها `Bar`.
 يمكننا محاكاة أثر `Foo[Bar]` باستخدام `Setindex(Bar)` يتبعه `Foo[i]`.
 
 يمكن تنفيذ `Setindex(Bar)` على النحو التالي:
@@ -223,14 +223,14 @@ MODANDJUMP(dir0,dir1)
 على سبيل المثال، يمكنك أن تطلب من طفل أن يستخدم المقصّ واللصق ليحوّل قطعة ورق بمقاس 10" في 10" إلى شريط بمقاس 1" في 100".
 وهذا في جوهره وقوف واحد إلى واحد من $[10]\times [10]$ إلى $[100]$.
 ويمكننا تعميم ذلك للحصول على وقوف واحد إلى واحد من $[n]\times [n]$ إلى $[n^2]$، وعمومًا من $\N \times \N$ إلى $\N$.
-وبالتحديد، الوقوف $embed$ التالي يكفي (انظر [pairingfuncfig](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life){.ref}):
+وبالتحديد، الوقوف $embed$ التالي يكفي (انظر [pairingfuncfig](#pairingfuncfig){.ref}):
 
 $$embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x\;\;.$$
 
 
-![Illustration of the map $embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x$ for $x,y \in [10]$, one can see that for every distinct pairs $(x,y)$ and $(x',y')$, $embed(x,y) \neq embed(x',y')$. ](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life){#pairingfuncfig .margin  }
+![Illustration of the map $embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x$ for $x,y \in [10]$, one can see that for every distinct pairs $(x,y)$ and $(x',y')$, $embed(x,y) \neq embed(x',y')$. ](/images/introtcs/original-pairing_function.webp){#pairingfuncfig .margin  }
 
-[pair-ex](/images/introtcs/lec_07_other_models-8.webp){.ref} يطلب إليك أن تُثبت أن $embed$ يق فعلًا واحدًا إلى واحد، وكذلك أن حسابه ممكن ببرنامج NAND-TM. (ويمكن للأخير أن يتم ببساطة باتباع خوارزميات المدرسة الابتدائية في الضرب والجمع والقسمة.)
+[pair-ex](#pair-ex){.ref} يطلب إليك أن تُثبت أن $embed$ يق فعلًا واحدًا إلى واحد، وكذلك أن حسابه ممكن ببرنامج NAND-TM. (ويمكن للأخير أن يتم ببساطة باتباع خوارزميات المدرسة الابتدائية في الضرب والجمع والقسمة.)
 وهذا يعني أننا نستطيع استبدال شيفرة من الشكل `Two[Foo][Bar] = something` (أي الوصول إلى المصفوفة ثنائية البعد `Two` عند الأعداد الصحيحة التي ترمّزها المصفوفتان أحاديتا البعد `Foo` و`Bar`) بشيفرة من الشكل:
 
 ```python
@@ -242,7 +242,7 @@ Two[i] = something
 ### كل ما تبقّى
 
 بعد أن تتوفر لدينا المصفوفات ثنائية البعد والوصول المفهرس، لا توجد محاكاة NAND-RAM بواسطة NAND-TM إلا مجرد مسألة تنفيذ الخوارزميات القياسية للعمليات الحسابية والمقارنات في NAND-TM.
-وإن كان هذا مرهقًا، فهو ليس صعبًا، والنتيجة النهائية هي إظهار أن كل برنامج NAND-RAM $P$ يمكن محاكاته ببرنامج NAND-TM $Q$ مكافئ له، وبذلك يكتمل برهان [RAMTMequivalencethm](http://rendell-attic.org/gol/tm.htm){.ref}.
+وإن كان هذا مرهقًا، فهو ليس صعبًا، والنتيجة النهائية هي إظهار أن كل برنامج NAND-RAM $P$ يمكن محاكاته ببرنامج NAND-TM $Q$ مكافئ له، وبذلك يكتمل برهان [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}.
 
 
 
@@ -277,15 +277,15 @@ stackpointer -= one
 ## تكافؤ تورينج (مناقشة)
 
 
-![/images/introtcs/lec_07_other_models-4.webp](/images/introtcs/lec_07_other_models-4.webp){#fortranfig .margin  }
+![/images/introtcs/lec_07_other_models-4.webp](/images/introtcs/original-FortranProg.webp){#fortranfig .margin  }
 
 
 
 أي من لغات البرمجة المعيارية مثل `C` و`Java` و`Python` و`Pascal` و`Fortran` لديها عمليات مشابهة جدًا لتلك في NAND-RAM.
 (وفي الحقيقة، في النهاية يمكن تنفيذها جميعًا بآلات تملك عددًا ثابتًا من السجلات ومصفوفة ذاكرة كبيرة.)
-لذلك، باستخدام [RAMTMequivalencethm](/images/introtcs/fig-Rule110Big.webp){.ref}، يمكننا محاكاة أي برنامج في أي من لغات البرمجة هذه ببرنامج NAND-TM.
+لذلك، باستخدام [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}، يمكننا محاكاة أي برنامج في أي من لغات البرمجة هذه ببرنامج NAND-TM.
 وفي الاتجاه المقابل، فإن كتابة مُفسِّر (interpreter) لـ NAND-TM بأي من لغات البرمجة أعلاه هي تمرين برمجي سهل إلى حد كبير.
-لذلك يمكننا أيضًا محاكاة برامج NAND-TM (وبالتالي آلات تورينج بحسب [TM-equiv-thm](https://goo.gl/B9HwT8){.ref}) باستخدام لغات البرمجة هذه.
+لذلك يمكننا أيضًا محاكاة برامج NAND-TM (وبالتالي آلات تورينج بحسب [TM-equiv-thm](#TM-equiv-thm){.ref}) باستخدام لغات البرمجة هذه.
 تُسمى هذه الخاصية، أي التكافؤ في القوة مع آلات تورينج / NAND-TM، بـ_التكافؤ مع تورينج_ (Turing Equivalent) (وتُسمى أحيانًا _الاكتمال بحسب تورينج_).
 وعليه، فجميع لغات البرمجة التي نعرفها متكافئة مع تورينج.^[بعض لغات البرمجة لها حدود ثابتة (وإن كانت ضخمة جدًا) على حجم الذاكرة التي يمكنها الوصول إليها، وهي حدود تمنعها رسميًا من أن تصلح لحساب دوال لا نهائية، وبالتالي من محاكاة آلات تورينج. نحن نتجاهل مثل هذه القضايا في هذه المناقشة ونفترض إمكانية الوصول إلى جهاز تخزين بلا حد أعلى ثابت لسعته.]
 
@@ -307,7 +307,7 @@ stackpointer -= one
 استخدامنا لآلات تورينج / NAND-TM وآلات RAM / NAND-RAM مشابه جدًا للطريقة التي يستخدم بها الناس في الممارسة لغات البرمجة عالية ومنخفضة المستوى.
 عندما يريد أحدهم إنتاج جهاز ينفّذ البرامج، يكون من الأنسب فعل ذلك بلغة برمجة بسيطة جدًا و"منخفضة المستوى". وعندما يريد أحدهم وصف خوارزمية، يكون من الأنسب استخدام أعلى صيغة رسمية ممكنة.
 
-![/images/introtcs/lec_07_other_models-5.webp](/images/introtcs/lec_07_other_models-5.webp){#cakefig .margin  }
+![/images/introtcs/lec_07_other_models-5.webp](/images/introtcs/original-have_your_cake_and_eat_it_too-img-intro.webp){#cakefig .margin  }
 
 ::: { .bigidea #eatandhavecake }
 باستخدام نتائج التكافؤ مثل التكافؤ بين آلات تورينج وآلات RAM، يمكننا أن «نأكل الكعكة ونحتفظ بها أيضًا».
@@ -326,7 +326,7 @@ stackpointer -= one
 في وقت ما من أي مقرر في نظريّة الحوسبة، يحتاج كلٌّ من المدرّس والطلاب إلى إجراء _هذا الحديث_.
 أي أننا نحتاج إلى مناقشة _مستوى التجريد_ (level of abstraction) في وصف الخوارزميات.
 في مقرّرات الخوارزميات، يُكتب عادةً وصف الخوارزميات بالإنجليزية، مع الافتراض بأن القارئ يستطيع "ملء التفاصيل" وأنه قادر على تحويل تلك الخوارزمية إلى تنفيذ ملموس عند الحاجة.
-على سبيل المثال، [bfsalghighlevel](https://en.wikipedia.org/wiki/Currying){.ref} هو وصف عالي المستوى لخوارزمية [البحث بالعرض أولًا](https://goo.gl/ug7Jaj) (breadth first search).
+على سبيل المثال، [bfsalghighlevel](#bfsalghighlevel){.ref} هو وصف عالي المستوى لخوارزمية [البحث بالعرض أولًا](https://goo.gl/ug7Jaj) (breadth first search).
 
 ``` { .algorithm title="Breadth First Search" #bfsalghighlevel }
 Input: Graph $G$, vertices $u,v$
@@ -349,7 +349,7 @@ Return "disconnected"
 وأخيرًا، إذا أردنا وصف التنفيذ بدقّة، لقَدّمنا الشيفرة الكاملة للبرنامج (أو تمثيلًا دقيقًا آخر تمامًا، مثلًا على شكل قائمة من الثنائيات (tuples)).
 ونسمّي هذا وصفًا _رسميًا_ أو _منخفض المستوى_.
 
-![/images/introtcs/lec_07_other_models-6.webp](/images/introtcs/lec_07_other_models-6.webp){#levelsdescfig   }
+![/images/introtcs/lec_07_other_models-6.webp](/images/introtcs/original-levelsofdescription.webp){#levelsdescfig   }
 
 
 رغم أننا بدأنا بوصف برامج NAND-CIRC وNAND-TM وNAND-RAM على المستوى الرسمي الكامل، فإننا مع تقدّمنا في هذا الكتاب سننتقل إلى التنفيذ والوصف عالي المستوى.
@@ -395,7 +395,7 @@ _النموذج الحوسبي_ هو دالة $\mathcal{M}:\{0,1\}^* \rightarrow
 
 النموذج الحوسبي $\mathcal{M}$ هو _كامل بحسب تورينج_ إذا وُجدت دالة قابلة للحساب $ENCODE_{\mathcal{M}}:\{0,1\}^* \rightarrow \{0,1\}^*$ بحيث إن لكل آلة تورينج $N$ (مُمثَّلة كسلسلة) تكون $\mathcal{M}(ENCODE_{\mathcal{M}}(N))$ مساوية للدالة الجزئية التي تحسبها $N$.
 
-النموذج الحوسبي $\mathcal{M}$ هو _متكافئ مع تورينج_ إذا كان كاملًا بحسب تورينج، ووُجدت دالة قابلة للحساب $DECODE_{\mathcal{M}}:\{0,1\}^* \rightarrow \{0,1\}^*$ بحيث لكل سلسلة $P\in \{0,1\}^* \، تكون $N=DECODE_{\mathcal{M}}(P)$ تمثيلًا سلسلة لآلة تورينج تحسب الدالة $\mathcal{M}(P)$.
+النموذج الحوسبي $\mathcal{M}$ هو _متكافئ مع تورينج_ إذا كان كاملًا بحسب تورينج، ووُجدت دالة قابلة للحساب $DECODE_{\mathcal{M}}:\{0,1\}^* \rightarrow \{0,1\}^*$ بحيث لكل سلسلة $P\in \{0,1\}^*$، تكون $N=DECODE_{\mathcal{M}}(P)$ تمثيلًا سلسلة لآلة تورينج تحسب الدالة $\mathcal{M}(P)$.
 :::
 
 من أمثلة النماذج المتكافئة مع تورينج (بعضها رأيناه بالفعل، وبعضها سنناقشه أدناه):
@@ -418,13 +418,13 @@ _النموذج الحوسبي_ هو دالة $\mathcal{M}:\{0,1\}^* \rightarrow
 لكل خلية عدد ثابت فقط من الحالات الممكنة.
 وفي كل خطوة زمنية، تحدّث الخلية حالتها إلى حالة جديدة بتطبيق قاعدة بسيطة على حالتها وعلى حالة جيرانها.
 
-![Rules for Conway's Game of Life. Image from [this blog post](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/).](https://goo.gl/QZKM9M){#gameofliferulesfig}
+![Rules for Conway's Game of Life. Image from [this blog post](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/).](/images/introtcs/original-conwaysgrids.webp){#gameofliferulesfig}
 
 
 مثال نموذجي على آلية خلوية هو [لعبة حياة كونواي](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) (Conway's Game of Life).
 في هذه الآلية تُرتَّب الخلايا في شبكة ثنائية البعد لا نهائية.
 لكل خلية حالتان فقط: "ميتة" (يمكن ترميزها بـ $0$ والتعرّف عليها مع $\varnothing$) أو "حيّة" (يمكن ترميزها بـ $1$).
-تعتمد الحالة التالية للخلية على حالتها السابقة وعلى حالات جيرانها الثمانية الرأسية والأفقية والقطرية (انظر [gameofliferulesfig](https://en.wikipedia.org/wiki/Fixed-point_combinator#Fixed_point_combinators_in_lambda_calculus){.ref}).
+تعتمد الحالة التالية للخلية على حالتها السابقة وعلى حالات جيرانها الثمانية الرأسية والأفقية والقطرية (انظر [gameofliferulesfig](#gameofliferulesfig){.ref}).
 تصبح الخلية الميتة حيّة فقط إذا كان ثلاثة من جيرانها بالضبط أحياء.
 وتبقى الخلية الحيّة على قيد الحياة إذا كان لديها جيران أحياء عددهما اثنان أو ثلاثة.
 على الرغم من أن عدد الخلايا قد يكون لا نهائيًا، يمكننا ترميز الحالة باستخدام سلسلة ذات طول متناهٍ عبر متابعة الخلايا الحيّة وحدها.
@@ -433,10 +433,10 @@ _النموذج الحوسبي_ هو دالة $\mathcal{M}:\{0,1\}^* \rightarrow
 
 
 
-![/images/introtcs/lec_07_other_models-8.webp](/images/introtcs/lec_07_other_models-8.webp){#onetwodimcellularautomatafig}
+![/images/introtcs/lec_07_other_models-8.webp](/images/introtcs/original-onetwodimensionalca.webp){#onetwodimcellularautomatafig}
 
 نظرًا لأن خلايا لعبة الحياة مرتَّبة في شبكة ثنائية البعد لا نهائية، فإنها مثال على _آلية خلوية ثنائية البعد_.
-ويمكننا أيضًا أن ندرس الحالة الأبسط هي حالة من _آلية خلوية أحادية البعد_، حيث تُرتَّب الخلايا في خط لا نهائي، انظر [onetwodimcellularautomatafig](https://goo.gl/qJqd47){.ref}.
+ويمكننا أيضًا أن ندرس الحالة الأبسط هي حالة من _آلية خلوية أحادية البعد_، حيث تُرتَّب الخلايا في خط لا نهائي، انظر [onetwodimcellularautomatafig](#onetwodimcellularautomatafig){.ref}.
 ويبيّن أن هذا النموذج البسيط جدًا كافٍ أيضًا لتحقيق الاكتمال بحسب تورينج.
 وسنعرّف الآن رسميًا الآليات الخلوية أحادية البعد ثم نبيّن اكتمالها بحسب تورينج.
 
@@ -464,12 +464,12 @@ __التكوين المتناهي.__ نقول إن تكوينًا للآلة $r$
 يمكننا كتابة برنامج (مثلًا باستخدام NAND-RAM) يحاكي تطوّر أي آلية خلوية انطلاقًا من تكوين متناهٍ أولي، بمجرد تخزين قيم الخلايا التي حالتها لا تساوي $\varnothing$ وتطبيق القاعدة $r$ تكرارًا.
 وعليه يمكن محاكاة الآليات الخلوية بآلات تورينج.
 والأمر الأكثر مدهشة هو أن الاتجاه الآخر قائم أيضًا.
-فعلى سبيل المثال، مهما بدت قواعد لعبة الحياة بسيطة، يمكننا محاكاة آلة تورينج باستخدامها (انظر [golfig](https://terrytao.wordpress.com/2014/02/04/finite-time-blowup-for-an-averaged-three-dimensional-navier-stokes-equation/){.ref}).
+فعلى سبيل المثال، مهما بدت قواعد لعبة الحياة بسيطة، يمكننا محاكاة آلة تورينج باستخدامها (انظر [golfig](#golfig){.ref}).
 
 
 
 
-![A Game-of-Life configuration simulating a Turing machine. Figure by [Paul Rendell](http://rendell-attic.org/gol/tm.htm).](/images/introtcs/fig-turing_gol.webp){#golfig .margin  }
+![A Game-of-Life configuration simulating a Turing machine. Figure by [Paul Rendell](http://rendell-attic.org/gol/tm.htm).](/images/introtcs/original-turing_gol.webp){#golfig .margin  }
 
 
 
@@ -481,23 +481,23 @@ __التكوين المتناهي.__ نقول إن تكوينًا للآلة $r$
 :::
 
 لجعل مفهوم "محاكاة آلة تورينج" أكثر دقّة، سنحتاج إلى تعريف _تكوينات_ آلات تورينج.
-وسنقوم بذلك في [turingmachinesconfigsec](){.ref} أدناه، لكن على مستوى عالٍ، _التكوين_ لآلة تورينج هو سلسلة تُرمِّز حالتها الكاملة عند خطوة معيّنة من حسابها.
+وسنقوم بذلك في [turingmachinesconfigsec](#turingmachinesconfigsec){.ref} أدناه، لكن على مستوى عالٍ، _التكوين_ لآلة تورينج هو سلسلة تُرمِّز حالتها الكاملة عند خطوة معيّنة من حسابها.
 أي محتويات جميع خلايا (شريطها) غير الفارغة، وحالتها الحالية، وكذلك موضع الرأس.
 
-الفكرة المفتاحية في برهان [onedimcathm](){.ref} هي أن الموضع الوحيد في شريط آلة تورينج $M$ الذي يمكن أن يتغيّر عند كل نقطة في الحساب هو الموضع الذي توجد فيه الرأس، والقيمة التي تتغيّر إليها هذه الخلية هي دالة لحالتها الحالية والحالة المتناهية لآلة $M$.
+الفكرة المفتاحية في برهان [onedimcathm](#onedimcathm){.ref} هي أن الموضع الوحيد في شريط آلة تورينج $M$ الذي يمكن أن يتغيّر عند كل نقطة في الحساب هو الموضع الذي توجد فيه الرأس، والقيمة التي تتغيّر إليها هذه الخلية هي دالة لحالتها الحالية والحالة المتناهية لآلة $M$.
 تتيح لنا هذه الملاحظة ترميز تكوين آلة تورينج $M$ على هيئة تكوين متناهٍ لآلية خلوية $r$، وضمان أن تطوّر هذا التكوين المرمَّز خطوة واحدة تحت قواعد $r$ يقابل خطوة واحدة في تنفيذ آلة تورينج $M$.
 
 
 
 ### تكوينات آلات تورينج ودالة الخطوة التالية  {#turingmachinesconfigsec }
 
-لتحويل الأفكار أعلاه إلى برهان صارم (بل حتى إلى صياغة صارمة!) لـ [onedimcathm](){.ref}، سنحتاج إلى تعريف دقيق لمفهوم _تكوينات_ آلات تورينج.
+لتحويل الأفكار أعلاه إلى برهان صارم (بل حتى إلى صياغة صارمة!) لـ [onedimcathm](#onedimcathm){.ref}، سنحتاج إلى تعريف دقيق لمفهوم _تكوينات_ آلات تورينج.
 وسيفيدنا هذا المفهوم أيضًا في الفصول اللاحقة.
 
 
 ![A _configuration_ of a Turing machine $M$ with alphabet $\Sigma$ and state space $[k]$ encodes the state of $M$ at a particular step in its execution as a string $\alpha$ over the alphabet $\overline{\Sigma} = \Sigma \times (\{\cdot \} \cup [k])$. The string is of length $t$ where $t$ is such that $M$'s tape contains $\varnothing$ in all positions $t$ and larger and $M$'s head is in a position smaller than $t$.
 If $M$'s head is in the $i$-th position, then for $j \neq i$, $\alpha_j$ encodes the value of the $j$-th cell of $M$'s tape, while $\alpha_i$ encodes both this value as well as the current state of $M$.
-If the machine writes the value $\tau$, changes state to $t$, and moves right, then in the next configuration will contain at position $i$ the value  $(\tau,\cdot)$ and at position $i+1$ the value $(\alpha_{i+1},t)$.](/images/introtcs/fig-turingmachineconf.webp){#turingconfigfig   }
+If the machine writes the value $\tau$, changes state to $t$, and moves right, then in the next configuration will contain at position $i$ the value  $(\tau,\cdot)$ and at position $i+1$ the value $(\alpha_{i+1},t)$.](/images/introtcs/original-turingmachineconf.webp){#turingconfigfig   }
 
 
 ::: {.definition title="تكوين آلة تورينج." #configtmdef}
@@ -514,7 +514,7 @@ If the machine writes the value $\tau$, changes state to $t$, and moves right, t
 
 
 ::: { .pause }
-يحتوي [configtmdef](){.ref} أدناه على بعض التفاصيل التقنية، لكنه ليس عميقًا أو معقّدًا إلى هذا الحد في الواقع.
+يحتوي [configtmdef](#configtmdef){.ref} أدناه على بعض التفاصيل التقنية، لكنه ليس عميقًا أو معقّدًا إلى هذا الحد في الواقع.
 حاول أن تتوقف لحظة وتفكّر في كيفية ترميز _حالة_ آلة تورينج عند نقطة معيّنة من التنفيذ في صورة سلسلة.
 
 فكّر في جميع المكوّنات التي تحتاج إلى معرفتها لتتمكّن من متابعة التنفيذ من هذه النقطة فصاعدًا، وما هي طريقة بسيطة لترميزها باستخدام قائمة من رموز متناهية.
@@ -523,7 +523,7 @@ If the machine writes the value $\tau$, changes state to $t$, and moves right, t
 
 
 
-[configtmdef](){.ref} مُعقَّد بعض الشيء، لكن في النهاية التكوين هو مجرد سلسلة تُرمِّز _لقطة_ (snapshot) لآلة تورينج عند نقطة معيّنة في التنفيذ. (بلغة أنظمة التشغيل، هذه ["نسخة ذاكرة أساسية"](https://goo.gl/AsccXh) (core dump).)
+[configtmdef](#configtmdef){.ref} مُعقَّد بعض الشيء، لكن في النهاية التكوين هو مجرد سلسلة تُرمِّز _لقطة_ (snapshot) لآلة تورينج عند نقطة معيّنة في التنفيذ. (بلغة أنظمة التشغيل، هذه ["نسخة ذاكرة أساسية"](https://goo.gl/AsccXh) (core dump).)
 يحتاج مثل هذه اللقطة أن تُرمِّز المكوّنات التالية:
 
 1. موضع الرأس الحالي.
@@ -539,12 +539,12 @@ If the machine writes the value $\tau$, changes state to $t$, and moves right, t
 
 
 (لتبسيط الرمز، استخدمنا أعلاه الاصطلاح الذي إذا كان $i$ "خارج الحدود"، مثل $i<0$ أو $i>|\alpha|$، فإننا نفترض أن $\alpha_i = (\varnothing,\cdot)$.)
-نترك إثبات [nextstepfunctionlem](){.ref} كتمرين في [nextstepfunctionlemex](){.ref}.
+نترك إثبات [nextstepfunctionlem](#nextstepfunctionlem){.ref} كتمرين في [nextstepfunctionlemex](#nextstepfunctionlemex){.ref}.
 الفكرة وراء البرهان بسيطة: إذا لم تكن الرأس عند الموضع $i$ ولا عند المواضع $i-1$ و$i+1$، فإن تكوين الخطوة التالية عند $i$ سيكون كما كان سابقًا.
 وإلا، يمكننا "قراءة" حالة آلة تورينج وقيمة الشريط عند موضع الرأس من التكوين عند $i$ أو عند أحد جيرانه، واستخدام ذلك لتحديث ما يجب أن تكون عليه الحالة الجديدة عند $i$.
 إكمال البرهان الكامل ليس صعبًا، لكن فعله طريقة ممتازة للتأكد من أنك مرتاح لتعريف التكوينات.
 
-__إكمال برهان [onedimcathm](){.ref}.__ يمكننا الآن إعادة صياغة [onedimcathm](){.ref} بصورة أكثر رسمية، وإكمال برهانه:
+__إكمال برهان [onedimcathm](#onedimcathm){.ref}.__ يمكننا الآن إعادة صياغة [onedimcathm](#onedimcathm){.ref} بصورة أكثر رسمية، وإكمال برهانه:
 
 ::: {.theorem title="الآليات أحادية البعد كاملة بحسب تورينج (الصياغة الرسمية)" #onedimcathmformal}
 لكل آلة تورينج $M$، إذا رمزنا بـ $\overline{\Sigma}$ أبجدية سلاسل تكويناتها، فإن هناك آلية خلوية أحادية البعد $r$ فوق الأبجدية $\overline{\Sigma}^*$ بحيث
@@ -553,22 +553,22 @@ $$ NEXT_M \left( \alpha \right)  = NEXT_r \left( \alpha \right)$$
 :::
 
 ::: {.proof data-ref="onedimcathmformal"}
-نعتبر أن العنصر $(\varnothing,\cdot)$ في $\overline{\Sigma}$ يقابل العنصر $\varnothing$ في الآلية $r$. وفي هذه الحالة، وبحسب [nextstepfunctionlem](){.ref}، فإن الدالة $NEXT_M$ التي تُسقط تكوينًا لـ $M$ على التالي هي في الواقع قاعدة صحيحة لآلية أحادية البعد.
+نعتبر أن العنصر $(\varnothing,\cdot)$ في $\overline{\Sigma}$ يقابل العنصر $\varnothing$ في الآلية $r$. وفي هذه الحالة، وبحسب [nextstepfunctionlem](#nextstepfunctionlem){.ref}، فإن الدالة $NEXT_M$ التي تُسقط تكوينًا لـ $M$ على التالي هي في الواقع قاعدة صحيحة لآلية أحادية البعد.
 :::
 
 
 
-الآلية الناتجة عن برهان [onedimcathmformal](){.ref} لها أبجدية كبيرة، وفوق ذلك حجمها يعتمد على الآلة $M$ التي يجري محاكاتها. ويبيّن أنه يمكن الحصول على آلية بأبجدية ذات حجم ثابت مستقل عن البرنامج الذي يُحاكى، بل يمكن أن تكون أبجدية الآلية هي المجموعة الدنيا $\{0,1\}$! انظر [onedimautfig](){.ref} لمثال على مثل هذه الآلة الكاملة بحسب تورينج.
+الآلية الناتجة عن برهان [onedimcathmformal](#onedimcathmformal){.ref} لها أبجدية كبيرة، وفوق ذلك حجمها يعتمد على الآلة $M$ التي يجري محاكاتها. ويبيّن أنه يمكن الحصول على آلية بأبجدية ذات حجم ثابت مستقل عن البرنامج الذي يُحاكى، بل يمكن أن تكون أبجدية الآلية هي المجموعة الدنيا $\{0,1\}$! انظر [onedimautfig](#onedimautfig){.ref} لمثال على مثل هذه الآلة الكاملة بحسب تورينج.
 
 
-![Evolution of a one dimensional automata. Each row in the figure corresponds to the configuration. The initial configuration corresponds to the top row and contains only a single "live" cell. This figure corresponds to the "Rule 110" automaton of Stephen Wolfram which is Turing Complete. Figure taken from [Wolfram MathWorld](http://mathworld.wolfram.com/Rule110.html).](/images/introtcs/fig-Rule110Big.webp){#onedimautfig .margin  }
+![Evolution of a one dimensional automata. Each row in the figure corresponds to the configuration. The initial configuration corresponds to the top row and contains only a single "live" cell. This figure corresponds to the "Rule 110" automaton of Stephen Wolfram which is Turing Complete. Figure taken from [Wolfram MathWorld](http://mathworld.wolfram.com/Rule110.html).](/images/introtcs/original-Rule110Big.webp){#onedimautfig .margin  }
 
 
 
 
 
 ::: {.remark title="تكوينات برامج NAND-TM" #nandtmprogconfig}
-يمكننا استخدام الأسلوب نفسه في [configtmdef](){.ref} لتعريف تكوينات _برنامج NAND-TM_. وسيحتاج مثل هذا التكوين أن يُرمِّز:
+يمكننا استخدام الأسلوب نفسه في [configtmdef](#configtmdef){.ref} لتعريف تكوينات _برنامج NAND-TM_. وسيحتاج مثل هذا التكوين أن يُرمِّز:
 
 1. القيمة الحالية للمتغير `i`.
 
@@ -620,19 +620,19 @@ _حذف الأقواس._ لتقليل فوضى الرمز، فإننا عند ك
 $$(((\lambda f.(\lambda y.(f \;(f\; y)))) (\lambda x. x\times x))\; 3) \label{lambdaexampleeq}$$
 
 ::: { .pause }
-قد يبدو التعبير [lambdaexampleeq](){.eqref} مرهقًا، لكن قبل أن تنظر إلى الحل أدناه، حاول تفكيكه إلى مكوّناته، وتقييم كل مكوّن على حدة.
+قد يبدو التعبير [lambdaexampleeq](#lambdaexampleeq){.eqref} مرهقًا، لكن قبل أن تنظر إلى الحل أدناه، حاول تفكيكه إلى مكوّناته، وتقييم كل مكوّن على حدة.
 فالحصول على هذا المثال سيفيدك كثيرًا في فهم حساب لامدا.
 :::
 
 
 
 
-لنقيّم [lambdaexampleeq](){.eqref} خطوة في كل مرة.
+لنقيّم [lambdaexampleeq](#lambdaexampleeq){.eqref} خطوة في كل مرة.
 ولئن كان السماح بالدوال المجهولة في حساب لامدا أمرًا لطيفًا، فإن إضافة الأسماء مفيدة جدًا لفهم التعبيرات المعقّدة.
 ولذلك، لنكتب $F = \lambda f.(\lambda y.(f (f y)))$ و
 $g = \lambda x.x\times x$.
 
-وعليه يصبح [lambdaexampleeq](){.eqref}
+وعليه يصبح [lambdaexampleeq](#lambdaexampleeq){.eqref}
 $$
 ((F \; g)\;  3) \;.
 $$
@@ -651,7 +651,7 @@ $$((\lambda x.(\lambda y.x)) \; 2)\; 9 \;. \label{lambdaexptwoeq}$$
 ::: {.solution data-ref="lambdaexptwoex"}
 الدالة $\lambda y.x$ هي الدالة التي على مدخل $y$ تتجاهل مدخلها وتُخرج $x$.
 وعليه فإن $(\lambda x.(\lambda y.x)) 2$ تُنتج الدالة $y \mapsto 2$ (أو، باستخدام رمز $\lambda$، الدالة $\lambda y. 2$).
-وعليه فإن [lambdaexptwoeq](){.eqref}  هو مكافئ لـ $(\lambda y. 2) 9 = 2$.
+وعليه فإن [lambdaexptwoeq](#lambdaexptwoeq){.eqref}  هو مكافئ لـ $(\lambda y. 2) 9 = 2$.
 :::
 
 
@@ -666,8 +666,8 @@ $$
 $$
 تُسقط $x$ على الدالة $y \mapsto x+y$.
 
-وبشكل خاص، إذا استدعينا الدالة [eqlambdaexampleone](){.eqref} على $a$ لنحصل على دالة $f$، ثم استدعينا $f$ على $b$، نحصل على القيمة $a+b$.
-ونرى أن الدالة أحادية الوسيط [eqlambdaexampleone](){.eqref} المقابلة لـ $a \mapsto (b \mapsto a+b)$ يمكن أيضًا التفكير فيها على أنها الدالة ثنائية الوسيط $(a,b) \mapsto a+b$.
+وبشكل خاص، إذا استدعينا الدالة [eqlambdaexampleone](#eqlambdaexampleone){.eqref} على $a$ لنحصل على دالة $f$، ثم استدعينا $f$ على $b$، نحصل على القيمة $a+b$.
+ونرى أن الدالة أحادية الوسيط [eqlambdaexampleone](#eqlambdaexampleone){.eqref} المقابلة لـ $a \mapsto (b \mapsto a+b)$ يمكن أيضًا التفكير فيها على أنها الدالة ثنائية الوسيط $(a,b) \mapsto a+b$.
 وبشكل عام، يمكننا استخدام تعبير $\lambda$ ‏$\lambda x.(\lambda y.f(x,y))$ لمحاكاة أثر دالة ذات وسيطين $(x,y) \mapsto f(x,y)$.
 وتُعرف هذه التقنية بـ[Currying](https://en.wikipedia.org/wiki/Currying) (currying).
 وسنستخدم الاختصار $\lambda x,y. e$ من أجل $\lambda x. (\lambda y. e)$.
@@ -675,7 +675,7 @@ $$
 وبقواعد التجميع التي لدينا، فإن هذا هو نفسه $(f a b)$، وهو ما سنكتبه أحيانًا أيضًا $f(a,b)$.
 
 
-![In the "currying" transformation, we can create the effect of a two parameter function $f(x,y)$ with the λ expression $\lambda x.(\lambda y. f(x,y))$ which on input $x$ outputs a one-parameter function $f_x$ that has $x$ "hardwired" into it and such that $f_x(y)=f(x,y)$. This can be illustrated by a circuit diagram; see [Chelsea Voss's site](https://tromp.github.io/cl/diagrams.html).](/images/introtcs/fig-currying.webp){#currying .margin  }
+![In the "currying" transformation, we can create the effect of a two parameter function $f(x,y)$ with the λ expression $\lambda x.(\lambda y. f(x,y))$ which on input $x$ outputs a one-parameter function $f_x$ that has $x$ "hardwired" into it and such that $f_x(y)=f(x,y)$. This can be illustrated by a circuit diagram; see [Chelsea Voss's site](https://tromp.github.io/cl/diagrams.html).](/images/introtcs/original-currying.webp){#currying .margin  }
 
 
 
@@ -696,22 +696,22 @@ _تعبير $\lambda$_ هو إما مُعرِّف متغير واحد، أو ت�
 * __التجريد:__ $e = \lambda x.(e')$، حيث $e'$ تعبير $\lambda$.
 :::
 
-[lambdaexpdef](){.ref} هو _تعريف تكراري_ (recursive definition) لأننا عرّفنا مفهوم تعبيرات $\lambda$ في مصطلح نفسه.
+[lambdaexpdef](#lambdaexpdef){.ref} هو _تعريف تكراري_ (recursive definition) لأننا عرّفنا مفهوم تعبيرات $\lambda$ في مصطلح نفسه.
 قد يبدو هذا محيّرًا في البداية، لكن في الحقيقة لقد اطلعت على التعريفات التكرارية منذ كنت تلميذًا في المدرسة الابتدائية.
 فكّر في كيفية تعريفنا لتعبير _حسابي_ (arithmetic expression): إنه تعبير إما مجرد رقم، أو يأخذ أحد الأشكال $(e + e')$ أو $(e - e')$ أو $(e \times e')$ أو $(e \div e')$، حيث $e$ و$e'$ تعبيرات حسابية أخرى.
 
-_المتغيرات الحرة والمربوطة._ المتغيرات في تعبير $\lambda$ تكون إما _حرة_ (free) أو _مربوطة_ (bound) بمعامل $\lambda$ (بالمعنى الموضَّح في [boundvarsec](){.ref}). في تعبير $\lambda$ أحادي المتغير $var$، المتغير $var$ حر. ومجموعة المتغيرات الحرة والمربوطة في تعبير تطبيق $e = (e' \; e'')$ هي نفسها مجموعة المتغيرات في التعبيرين $e'$ و$e''$ الأساسيين. أما في تعبير تجريد $e = \lambda var.(e')$، فإن جميع المواضع الحرة لـ $var$ في $e'$ تكون مربوطة بمعامل $\lambda$ في $e$.
+_المتغيرات الحرة والمربوطة._ المتغيرات في تعبير $\lambda$ تكون إما _حرة_ (free) أو _مربوطة_ (bound) بمعامل $\lambda$ (بالمعنى الموضَّح في [boundvarsec](#boundvarsec){.ref}). في تعبير $\lambda$ أحادي المتغير $var$، المتغير $var$ حر. ومجموعة المتغيرات الحرة والمربوطة في تعبير تطبيق $e = (e' \; e'')$ هي نفسها مجموعة المتغيرات في التعبيرين $e'$ و$e''$ الأساسيين. أما في تعبير تجريد $e = \lambda var.(e')$، فإن جميع المواضع الحرة لـ $var$ في $e'$ تكون مربوطة بمعامل $\lambda$ في $e$.
 إن وجدتَ مفهوم المتغيرات الحرة والمربوطة محيّرًا، فيمكنك تفادي كل هذه القضايا باستخدام مُعرِّفات فريدة لكل المتغيرات.
 
 _الأولوية والأقواس._ سنستخدم القواعد التالية التي تتيح لنا إسقاط بعض الأقواس.
 ترتبط تطبيقات الدوال من اليسار إلى اليمين، ومن ثمّ فإن $fgh$ هو نفسه $(fg)h$.
 ولتطبيق الدوال أولوية أعلى من معامل $\lambda$، ومن ثمّ فإن $\lambda x.fgx$ هو نفسه $\lambda x.((fg)x)$.
 وهذا مشابه لاستخدامنا قواعد الأولوية في العمليات الحسابية لنتمكن من استخدام أقواس أقل، ومن ثمّ كتابة التعبير $(7 \times 3) + 2$ على صورة $7\times 3 + 2$.
-وكما ذُكر في [curryingsec](){.ref}، فإننا نستخدم أيضًا الاختصار $\lambda x,y.e$ من أجل $\lambda x.(\lambda y.e)$، والاختصار $f(x,y)$ من أجل $(f\; x)\; y$. وهذا ينسجم جيدًا مع تحويل "Currying" الذي يحاكي الدوال متعددة المداخل بتعبيرات $\lambda$.
+وكما ذُكر في [curryingsec](#curryingsec){.ref}، فإننا نستخدم أيضًا الاختصار $\lambda x,y.e$ من أجل $\lambda x.(\lambda y.e)$، والاختصار $f(x,y)$ من أجل $(f\; x)\; y$. وهذا ينسجم جيدًا مع تحويل "Currying" الذي يحاكي الدوال متعددة المداخل بتعبيرات $\lambda$.
 
 
 
-__تكافؤ تعبيرات $\lambda$.__ كما رأينا في [lambdaexptwoex](){.ref}، فإن القاعدة التي تقول إن $(\lambda x. exp) exp'$ مكافئة لـ $exp[x \rightarrow exp']$ تتيح لنا تعديل تعبيرات $\lambda$ للحصول على _صيغة مكافئة_ أبسط لها.
+__تكافؤ تعبيرات $\lambda$.__ كما رأينا في [lambdaexptwoex](#lambdaexptwoex){.ref}، فإن القاعدة التي تقول إن $(\lambda x. exp) exp'$ مكافئة لـ $exp[x \rightarrow exp']$ تتيح لنا تعديل تعبيرات $\lambda$ للحصول على _صيغة مكافئة_ أبسط لها.
 ومن القواعد الأخرى التي نستطيع استخدامها أن المعامل لا يهم، ومن ثمّ فإن $\lambda y.y$ هو نفسه $\lambda z.z$.
 ومعًا تعرّف هاتان القاعدتان مفهوم _تكافؤ_ تعبيرات $\lambda$:
 
@@ -731,9 +731,9 @@ $$
 $$
 وهناك عُرفان طبيعيان لهذا:
 
-* _الاستدعاء بالاسم_ (أي _"التقييم الكسول"_, lazy evaluation): نقيّم [lambdaexpeq](){.eqref} بأن نُدخل أولًا التعبير $(\lambda y.g\; z)$ في الطرف الأيسر كمدخل، فنحصل على $f[x \rightarrow (\lambda y.g\; z)]$ ثم نكمل من هناك.
+* _الاستدعاء بالاسم_ (أي _"التقييم الكسول"_, lazy evaluation): نقيّم [lambdaexpeq](#lambdaexpeq){.eqref} بأن نُدخل أولًا التعبير $(\lambda y.g\; z)$ في الطرف الأيسر كمدخل، فنحصل على $f[x \rightarrow (\lambda y.g\; z)]$ ثم نكمل من هناك.
 
-* _الاستدعاء بالقيمة_ (أي _"التقييم النشِط"_, eager evaluation): نقيّم [lambdaexpeq](){.eqref} بأن نقيّم أولًا الطرف الأيمن فنحصل على $h=g[y \rightarrow z]$، ثم نُدخل هذا في الطرف الأيسر لنحصل على $f[x \rightarrow h]$.
+* _الاستدعاء بالقيمة_ (أي _"التقييم النشِط"_, eager evaluation): نقيّم [lambdaexpeq](#lambdaexpeq){.eqref} بأن نقيّم أولًا الطرف الأيمن فنحصل على $h=g[y \rightarrow z]$، ثم نُدخل هذا في الطرف الأيسر لنحصل على $f[x \rightarrow h]$.
 
 ولأن حساب لامدا لا يحتوي إلا على دوال _نقيّة_ (pure) لا تملك "آثارًا جانبية" (side effects)، فإن الترتيب لا يهم في كثير من الحالات.
 وفي الواقع، يمكن إظهار أن إن وصلنا إلى تعبير غير قابل للاختصار وحتم (مثلًا عدد) في كلا الاستراتيجيتين، فسيكون التعبير نفسه.
@@ -783,8 +783,8 @@ $$
 $$
 
 
-إذا حاولنا تبسيط [lambdainfloopeq](){.eqref} باستدعاء الدالة الموجودة على اليسار على الموجودة على اليمين، فإننا نحصل على نسخة أخرى من [lambdainfloopeq](){.eqref}، ومن ثمّ فإن هذا لا ينتهي أبدًا.
-وهناك أمثلة قد يهمّ فيها ترتيب التقييم ما إذا كان بإمكان تعبير ما أن يُختزل أم لا، انظر [evalorderlambdaex](){.ref}.
+إذا حاولنا تبسيط [lambdainfloopeq](#lambdainfloopeq){.eqref} باستدعاء الدالة الموجودة على اليسار على الموجودة على اليمين، فإننا نحصل على نسخة أخرى من [lambdainfloopeq](#lambdainfloopeq){.eqref}، ومن ثمّ فإن هذا لا ينتهي أبدًا.
+وهناك أمثلة قد يهمّ فيها ترتيب التقييم ما إذا كان بإمكان تعبير ما أن يُختزل أم لا، انظر [evalorderlambdaex](#evalorderlambdaex){.ref}.
 
 
 
@@ -825,7 +825,7 @@ $$
 وبشكل أكثر عمومية، تأخذ $REDUCE قائمة $L$، وعملية $f$ (نفكّر فيها على أنها تأخذ وسيطين)، وتعبير $\lambda$ هو $z$ (نفكّر فيه على أنه "العنصر المحايد" للعملية $f$، مثل $0$ للجمع و$1$ للضرب).
 ويُعرَّف الناتج بـ
 $$REDUCE\;L\;f\;z = \begin{cases}z & L=NIL \\ f\;(HEAD\; L) \; (REDUCE\;(TAIL\; L)\;f\;z)  & \text{otherwise}\end{cases}\;.$$
-انظر [reduceetalfig](){.ref} لتوضيح عمليات معالجة القوائم الثلاث.
+انظر [reduceetalfig](#reduceetalfig){.ref} لتوضيح عمليات معالجة القوائم الثلاث.
 
 * __التهاكر:__ وأخيرًا، نريد أن نتمكّن من تنفيذ _دوال تهاكرية_. ولأن الدوال في حساب لامدا _مجهولة الاسم_، فلا يمكننا كتابة تعريف من الشكل $f(x) = blah$ حيث يحتوي $blah$ على استدعاءات إلى $f.
 بدلًا من ذلك نستخدم دوال $f تأخذ مدخلًا إضافيًا $me كوسيط.
@@ -857,7 +857,7 @@ $$
 XOR_2 = \lambda a,b. IF(b,NOT(a),a) \label{lambdaxor}
 $$
 
-(نستخدم هنا قدرًا من السكر النحوي لوصف الدوال. وللحصول على تعبير $\lambda$ الخاص بـ XOR، سنكتفي باستبدال التعبير [lambdanot](){.eqref} في [lambdaxor](){.eqref}.)
+(نستخدم هنا قدرًا من السكر النحوي لوصف الدوال. وللحصول على تعبير $\lambda$ الخاص بـ XOR، سنكتفي باستبدال التعبير [lambdanot](#lambdanot){.eqref} في [lambdaxor](#lambdaxor){.eqref}.)
 والآن يمكننا تعريف XOR لقائمة على النحو التكراري التالي:
 
 $$
@@ -878,9 +878,9 @@ $$
 
 
 
-![/images/introtcs/lec_07_other_models-12.webp](/images/introtcs/lec_07_other_models-12.webp){#lambdalistfig   }
+![/images/introtcs/lec_07_other_models-12.webp](/images/introtcs/original-lambdalist.webp){#lambdalistfig   }
 
-![/images/introtcs/lec_07_other_models-13.webp](/images/introtcs/lec_07_other_models-13.webp){#reduceetalfig   }
+![/images/introtcs/lec_07_other_models-13.webp](/images/introtcs/original-reducemapfilter.webp){#reduceetalfig   }
 
 ### حساب دالة في حساب لامدا المعزّز
 
@@ -892,7 +892,7 @@ $$
 
 نقول إن _$exp$ يحسب $F$_ إذا كان لكل $x\in \{0,1\}^*$،
 $$exp \langle x_0,\ldots,x_{n-1},\bot \rangle \cong \langle y_0,\ldots, y_{m-1}, \bot \rangle$$
-حيث $n=|x|$ و$y=F(x)$ و$m=|y|$، ومفهوم التكافؤ مُعرَّف بحسب [simplifylambdadef](){.ref}.
+حيث $n=|x|$ و$y=F(x)$ و$m=|y|$، ومفهوم التكافؤ مُعرَّف بحسب [simplifylambdadef](#simplifylambdadef){.ref}.
 :::
 
 ### حساب لامدا المعزّز كامل بحسب تورينج
@@ -901,7 +901,7 @@ $$exp \langle x_0,\ldots,x_{n-1},\bot \rangle \cong \langle y_0,\ldots, y_{m-1},
 وبناءً على ذلك، ربما لا يكون مفاجئًا أن حساب لامدا المعزّز مكافئ لآلات تورينج:
 
 > ### {.theorem title="حساب لامدا وNAND-TM" #lambdaturing-thm}
-لكل دالة $F:\{0,1\}^* \rightarrow \{0,1\}^* \، تكون $F$ قابلة للحساب في حساب لامدا المعزّز إذا وفقط إذا كانت قابلة للحساب بآلة تورينج.
+لكل دالة $F:\{0,1\}^* \rightarrow \{0,1\}^*$، تكون $F$ قابلة للحساب في حساب لامدا المعزّز إذا وفقط إذا كانت قابلة للحساب بآلة تورينج.
 
 ::: {.proofidea data-ref="lambdaturing-thm"}
 لإثبات المبرهنة، نحتاج إلى إظهار أن __(1)__ إذا كانت $F$ قابلة للحساب بتعبير حساب لامدا فإنها قابلة للحساب بآلة تورينج، و__(2)__ إذا كانت $F$ قابلة للحساب بآلة تورينج فإنها قابلة للحساب بتعبير حساب لامدا معزّز.
@@ -917,13 +917,13 @@ $$exp \langle x_0,\ldots,x_{n-1},\bot \rangle \cong \langle y_0,\ldots, y_{m-1},
 سنكتفي برسم مخطط البرهان. اتجاه "إذا" بسيط. وكما ذُكر أعلاه، فإن تقييم تعبيرات $\lambda$ يعادل في الأساس "ابحث واستبدل". كما أن تنفيذ جميع العمليات الأساسية أعلاه في لغة أمرية مثل Python أو C هو تمرين برمجي مباشر إلى حد كبير، وباستخدام الأفكار نفسها يمكننا فعل ذلك في NAND-RAM أيضًا، ثم نحوّله إلى برنامج NAND-TM.
 
 وبالنسبة لاتجاه "فقط إذا" نحتاج إلى محاكاة آلة تورينج باستخدام تعبير $\lambda`.
-وسنقوم بذلك أولًا بإظهار أنه لكل آلة تورينج $M$ يوجد تعبير $\lambda$ يحسب دالة الخطوة التالية $NEXT_M:\overline{\Sigma}^* \rightarrow \overline{\Sigma}^*$ التي تُسقط تكوينًا لـ $M$ على التالي (انظر [turingmachinesconfigsec](){.ref}).
+وسنقوم بذلك أولًا بإظهار أنه لكل آلة تورينج $M$ يوجد تعبير $\lambda$ يحسب دالة الخطوة التالية $NEXT_M:\overline{\Sigma}^* \rightarrow \overline{\Sigma}^*$ التي تُسقط تكوينًا لـ $M$ على التالي (انظر [turingmachinesconfigsec](#turingmachinesconfigsec){.ref}).
 
 تكوين $M$ هو سلسلة $\alpha \in \overline{\Sigma}^*$ لمجموعة متناهية $\overline{\Sigma}$. يمكننا ترميز كل رمز $\sigma \in \overline{\Sigma}$ بسلسلة متناهية $\{0,1\}^\ell$، وبذلك سنرمّز تكوينًا $\alpha$ في حساب لامدا على هيئة قائمة $\langle \alpha_0, \alpha_1, \ldots, \alpha_{m-1}, \bot \rangle$ حيث $\alpha_i$ سلسلة طولها $\ell$ (أي قائمة طولها $\ell$ من الآصفار والواحدات) ترمّز رمزًا في $\overline{\Sigma}$.
 
-بحسب [nextstepfunctionlem](){.ref}، لكل $\alpha \in \overline{\Sigma}^*$، تكون $NEXT_M(\alpha)_i$ مساوية لـ $r(\alpha_{i-1},\alpha_i,\alpha_{i+1})$ لبعض الدالة المتناهية $r:\overline{\Sigma}^3 \rightarrow \overline{\Sigma}$.
+بحسب [nextstepfunctionlem](#nextstepfunctionlem){.ref}، لكل $\alpha \in \overline{\Sigma}^*$، تكون $NEXT_M(\alpha)_i$ مساوية لـ $r(\alpha_{i-1},\alpha_i,\alpha_{i+1})$ لبعض الدالة المتناهية $r:\overline{\Sigma}^3 \rightarrow \overline{\Sigma}$.
 وباستخدام ترميزنا لـ $\overline{\Sigma}$ على هيئة $\{0,1\}^\ell$، يمكننا أيضًا التفكير في $r$ على أنها تُسقط $\{0,1\}^{3\ell}$ على $\{0,1\}^\ell$.
-وبحسب [NANDlambdaex](){.ref}، يمكننا حساب الدالة $NAND$، وبالتالي _كل_ دالة متناهية، بما فيها $r$، باستخدام حساب لامدا.
+وبحسب [NANDlambdaex](#NANDlambdaex){.ref}، يمكننا حساب الدالة $NAND$، وبالتالي _كل_ دالة متناهية، بما فيها $r$، باستخدام حساب لامدا.
 وباستخدام هذه الفكرة، يمكننا حساب $NEXT_M$ باستخدام حساب لامدا على النحو التالي.
 إذا أعطينا قائمة $L$ ترمّز التكوين $\alpha_0\cdots \alpha_{m-1}$، فإننا نعرّف القائمتين $L_{prev}$ و$L_{next}$ اللتين ترمّزان التكوين $\alpha$ مُزاحًا خطوة واحدة إلى اليمين وإلى اليسار على التوالي.
 ويُعرَّف التكوين التالي $\alpha'$ على أنه $\alpha'_i = r(L_{prev}[i],L[i],L_{next}[i])$ حيث نترك $L'[i]$ تشير إلى العنصر رقم $i$ في $L'$.
@@ -996,9 +996,9 @@ $$
 توجد تعبيرات $\lambda$ تنفذ الدوال $0$ و$1$ و$IF$ و$PAIR$ و$HEAD$ و$TAIL$ و$NIL$ و$ISEMPTY$ و$MAP$ و$REDUCE$ و$RECURSE$.
 
 
-الفكرة الكامنة وراء [enhancedvanillalambdathm](){.ref} هي أننا نرمّز $0$ و$1$ نفسهما على هيئة تعبيرات $\lambda$، ونبني الأشياء انطلاقًا من هناك.
+الفكرة الكامنة وراء [enhancedvanillalambdathm](#enhancedvanillalambdathm){.ref} هي أننا نرمّز $0$ و$1$ نفسهما على هيئة تعبيرات $\lambda$، ونبني الأشياء انطلاقًا من هناك.
 ويُعرف هذا بـ[ترميز Church](https://goo.gl/QZKM9M) (Church encoding)، لأنه نشأ عن Church في محاولته إظهار أن حساب لامدا يمكن أن يكون أساسًا لكل الحوسبة.
-ولن نكتب البرهان الرسمي الكامل لـ [enhancedvanillalambdathm](){.ref}، بل سنعرض مخطط الأفكار المتضمَّنة فيه:
+ولن نكتب البرهان الرسمي الكامل لـ [enhancedvanillalambdathm](#enhancedvanillalambdathm){.ref}، بل سنعرض مخطط الأفكار المتضمَّنة فيه:
 
 * نعرّف $0$ لتكون الدالة التي على مدخلين $x,y$ تُخرج $y$، و$1$ لتكون الدالة التي على مدخلين $x,y$ تُخرج $x$. ونستخدم Curry لتحقيق أثر دوال الإدخال، ومن ثمّ $0 = \lambda x. \lambda y.y$ و$1 = \lambda x.\lambda y.x$. (نظام التمثيل هذا هو العُرف الشائع لتمثيل `false` و`true`، لكن هناك تمثيلات بديلة كثيرة أخرى لـ $0$ و$1$ لكنها كانت ستؤدي الغرض على الأرجح.)
 * التنفيذ أعلاه يجعل الدالة $IF$ تافهة: فـ $IF(cond,a,b)$ هي ببساطة $cond \; a\; b$ لأن $0ab = b$ و$1ab = a$. يمكننا كتابة $IF = \lambda x.x$ للحصول على $IF(cond,a,b) = (((IF cond) a) b) =  cond \; a \; b$.
@@ -1045,12 +1045,12 @@ $$
 ### مُجمِّع Y، أي التهاكر بلا تهاكر { #ycombinatorsec }
 
 
-[myreducereceq](){.ref} تعني أن تنفيذ $MAP$ و$FILTER$ و$REDUCE$   ينحصر في تنفيذ معامل $RECURSE$ في حساب لامدا النقي.
+[myreducereceq](#myreducereceq){.ref} تعني أن تنفيذ $MAP$ و$FILTER$ و$REDUCE$   ينحصر في تنفيذ معامل $RECURSE$ في حساب لامدا النقي.
 وهذا هو ما سنفعله الآن.
 
 كيف يمكننا تنفيذ التهاكر بلا تهاكر؟
 سنوضّح ذلك بمثال بسيط - دالة $XOR$.
-وكما هو مبين في [XORlambdaex](){.ref}، يمكننا كتابة دالة $XOR$ لقائمة تكراريًا على النحو التالي:
+وكما هو مبين في [XORlambdaex](#XORlambdaex){.ref}، يمكننا كتابة دالة $XOR$ لقائمة تكراريًا على النحو التالي:
 $$
 XOR(L) = \begin{cases} 0 & L \text{ is empty} \\ XOR_2(HEAD(L),XOR(TAIL(L))) & \text{otherwise}
 \end{cases}
@@ -1194,7 +1194,7 @@ XOR(PAIR(_1,PAIR(_0,PAIR(_1,NIL)))) # List [1,0,1]
 ويمكن النظر إلى أطروحة Church-Turing على أنها إما أنها دفاع عن اختيار تعريفي، أو أنها تقدّم تنبؤًا ما عن جميع أجهزة الحوسبة المحتملة، أو أنها تقترح قوانينَ طبيعة تقيّد العالم الطبيعي.
 وبعبارات سكوت آرونسون (Scott Aaronson)، "أيًّا كان ما هي، فلا يمكن إلا النظر إلى أطروحة Church-Turing على أنها ناجحة إلى حد بعيد".
 لم يطرح أي جهاز حوسبة مرشَّح (بما في ذلك الحواسيب الكمّية، وكذلك نماذج أقل عقلانية بكثير مثل الحواسيب الافتراضية ذات "منحنيات زمنية مغلقة" التي ذكرناها من قبل) تحديًا جادًّا لأطروحة Church-Turing حتى الآن.
-قد تجعل هذه الأجهزة بعض الحسابات _أكثر كفاءة_، لكنها لا تغيّر الفرق بين ما هو قابل للحساب وما ليس كذلك. (فـ_أطروحة Church-Turing الممتدة_، التي سنناقشها في [ECTTsec](){.ref}، تنص على أن آلات تورينج تلتقط أيضًا الحد لما يمكن حسابه _بكفاءة_. وكما في نسختها الفيزيائية، تُمثّل الحوسبة الكمّية التحدي الرئيسي لهذه الأطروحة.)
+قد تجعل هذه الأجهزة بعض الحسابات _أكثر كفاءة_، لكنها لا تغيّر الفرق بين ما هو قابل للحساب وما ليس كذلك. (فـ_أطروحة Church-Turing الممتدة_، التي سنناقشها في [ECTTsec](#ECTTsec){.ref}، تنص على أن آلات تورينج تلتقط أيضًا الحد لما يمكن حسابه _بكفاءة_. وكما في نسختها الفيزيائية، تُمثّل الحوسبة الكمّية التحدي الرئيسي لهذه الأطروحة.)
 
 
 
@@ -1214,8 +1214,8 @@ XOR(PAIR(_1,PAIR(_0,PAIR(_1,NIL)))) # List [1,0,1]
 الجدول: نماذج مختلفة لحساب الدوال المتناهية والدوال ذات الطول الاعتباري من المدخل.
 
 
-لاحقًا، في [spacechap](){.ref} سندرس الحوسبة _المحدودة بالذاكرة_ (memory bounded).
-ويبيّن أن برامج NAND-TM ذات كمية ثابتة من الذاكرة مكافئة لنموذج _الآلات المتناهية_ (finite automata) (وتُضاف أحيانًا الصفتان "حتمي" أو "غير حتمي"، كما يُعرف هذا النموذج أيضًا بـ_آلات الحالات المنتهية_ (finite state machines))، وهو بدوره يلتقط مفهوم _اللغات المنتظمة_ (regular languages) (التي يمكن وصفها بـ[تعبيرات نمطية](https://en.wikipedia.org/wiki/Regular_expression))، وهو مفهوم سنراه في [restrictedchap](){.ref}.
+لاحقًا، في [spacechap](#spacechap){.ref} سندرس الحوسبة _المحدودة بالذاكرة_ (memory bounded).
+ويبيّن أن برامج NAND-TM ذات كمية ثابتة من الذاكرة مكافئة لنموذج _الآلات المتناهية_ (finite automata) (وتُضاف أحيانًا الصفتان "حتمي" أو "غير حتمي"، كما يُعرف هذا النموذج أيضًا بـ_آلات الحالات المنتهية_ (finite state machines))، وهو بدوره يلتقط مفهوم _اللغات المنتظمة_ (regular languages) (التي يمكن وصفها بـ[تعبيرات نمطية](https://en.wikipedia.org/wiki/Regular_expression))، وهو مفهوم سنراه في [restrictedchap](#restrictedchap){.ref}.
 
 
 
@@ -1269,16 +1269,16 @@ XOR(PAIR(_1,PAIR(_0,PAIR(_1,NIL)))) # List [1,0,1]
 :::
 
 ::: {.exercise title="أطول مسار" #longestpathcomputableex}
-لنفترض أن $LONGPATH:\{0,1\}^* \rightarrow \{0,1\}^*$ هي الدالة التي على مدخل سلسلة ترمّز ثلاثيًا $(G,u,v)$ تُخرج سلسلة ترمّز $\infty$ إذا كان $u$ و$v$ غير متصلين في $G$، أو سلسلة ترمّز الطول $k$ لـ_أطول مسار بسيط_ (longest simple path) من $u$ إلى $v$. أثبِت أن $LONGPATH$ قابلة للحساب بآلة تورينج. انظر الحاشية للتلميح.^[ينطبق نفس التلميح في [longestpathcomputableex](){.ref}. لاحظ أنك لإظهار أن $LONGPATH$ قابلة للحساب لست مضطرًا إلى إعطاء خوارزمية _كفؤة_.]
+لنفترض أن $LONGPATH:\{0,1\}^* \rightarrow \{0,1\}^*$ هي الدالة التي على مدخل سلسلة ترمّز ثلاثيًا $(G,u,v)$ تُخرج سلسلة ترمّز $\infty$ إذا كان $u$ و$v$ غير متصلين في $G$، أو سلسلة ترمّز الطول $k$ لـ_أطول مسار بسيط_ (longest simple path) من $u$ إلى $v$. أثبِت أن $LONGPATH$ قابلة للحساب بآلة تورينج. انظر الحاشية للتلميح.^[ينطبق نفس التلميح في [longestpathcomputableex](#longestpathcomputableex){.ref}. لاحظ أنك لإظهار أن $LONGPATH$ قابلة للحساب لست مضطرًا إلى إعطاء خوارزمية _كفؤة_.]
 :::
 
 ::: {.exercise title="تعبير $\lambda$ لأقصر مسار" #shortestpathlambda}
-لنفترض أن $SHORTPATH$ كما في [shortestpathcomputableex](){.ref}. أثبِت أن يوجد تعبير $\lambda$ يحسب $SHORTPATH$. ويمكنك استخدام [shortestpathcomputableex](){.ref}
+لنفترض أن $SHORTPATH$ كما في [shortestpathcomputableex](#shortestpathcomputableex){.ref}. أثبِت أن يوجد تعبير $\lambda$ يحسب $SHORTPATH$. ويمكنك استخدام [shortestpathcomputableex](#shortestpathcomputableex){.ref}
 :::
 
 
 ::: {.exercise title="دالة الخطوة التالية محلية" #nextstepfunctionlemex}
-أثبِت [nextstepfunctionlem](){.ref} واستخدمه لإكمال برهان [onedimcathm](){.ref}.
+أثبِت [nextstepfunctionlem](#nextstepfunctionlem){.ref} واستخدمه لإكمال برهان [onedimcathm](#onedimcathm){.ref}.
 :::
 
 
@@ -1299,7 +1299,7 @@ XOR(PAIR(_1,PAIR(_0,PAIR(_1,NIL)))) # List [1,0,1]
 :::
 
 ::: {.exercise title="دالة الخطوة التالية بلا $RECURSE$" #exer-lambdaturing-thm}
-لنفترض أن $M$ آلة تورينج. أعطِ تعبيرًا في حساب لامدا المعزّز لحساب دالة الخطوة التالية $NEXT_M$ الخاصة بـ $M$ (كما في برهان [lambdaturing-thm](){.ref}) _دون استخدام $RECURSE$_. انظر الحاشية للتلميح.^[استخدم $MAP$ و$REDUCE$ (وربما $FILTER$). وستجد أن دالة `zip` في [zipfunctionex](){.ref} مفيدة أيضًا.]
+لنفترض أن $M$ آلة تورينج. أعطِ تعبيرًا في حساب لامدا المعزّز لحساب دالة الخطوة التالية $NEXT_M$ الخاصة بـ $M$ (كما في برهان [lambdaturing-thm](#lambdaturing-thm){.ref}) _دون استخدام $RECURSE$_. انظر الحاشية للتلميح.^[استخدم $MAP$ و$REDUCE$ (وربما $FILTER$). وستجد أن دالة `zip` في [zipfunctionex](#zipfunctionex){.ref} مفيدة أيضًا.]
 :::
 
 ::: {.exercise title="مترجم من حساب لامدا إلى NAND-TM (متحدٍّ)" #lambdacompiler }
@@ -1381,7 +1381,7 @@ if search('110011') {
 وجميع الدوال تأخذ مدخلًا واحدًا وتُخرج ناتجًا واحدًا، وإن أعطيتَ دالةً مدخلًا من شكل لم تتوقعه فإنها تظل تُقيّم تعبير $\lambda$ عبر "ابحث واستبدل"، باستبدال جميع مواضع معاملها بنسخ من تعبير المدخل الذي أعطيته لها.
 وتُعدّ الصيغ المُنمَّطة من حساب لامدا موضوع بحث مكثّف، وهي ترتبط ارتباطًا وثيقًا بأنظمة الأنواع الخاصة بلغات البرمجة وبأنظمة البراهين القابلة للتحقق حاسوبيًا، انظر [@pierce2002types].
 وبعض الصيغ المنمَّطة من حساب لامدا لا تملك حلقات لا نهائية، مما يجعلها مفيدة جدًا كطرق لتفعيل التحليل الساكن للبرامج وكذلك للبراهين القابلة للتحقق حاسوبيًا.
-وسنعود إلى هذه النقطة في [restrictedchap](){.ref} و[chapproofs](){.ref}.
+وسنعود إلى هذه النقطة في [restrictedchap](#restrictedchap){.ref} و[chapproofs](#chapproofs){.ref}.
 
 
 

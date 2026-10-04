@@ -26,7 +26,7 @@ source: https://introtcs.org/
 
 
 وفي الحقيقة تمتدّ هذه النتيجة إلى ما هو أبعد بكثير من هذه المسائل بعينها.
-فجميع المسائل التي ناقشناها في [reductionchap](/images/introtcs/fig-cooklevin_overview.webp){.ref}، وعدد كبير جدًا من المسائل الأخرى، تتشارك صفةً مشتركة واحدة:
+فجميع المسائل التي ناقشناها في [reductionchap](#reductionchap){.ref}، وعدد كبير جدًا من المسائل الأخرى، تتشارك صفةً مشتركة واحدة:
 إنّها جميعًا مسائل _بحث_ (search)، أي أنّ الهدف هو أن نقرّر، بالنظر إلى مدخل $x$، ما إذا كان ثمّة _حلّ_ $y$ (solution) يحقّق شرطًا يمكن التحقّق منه في وقت متعدد الحدود.
 على سبيل المثال، في 3SAT يكون المدخل صيغةً والحلّ إسنادًا (assignment) للمتغيّرات؛ وفي Max-Cut يكون المدخل رسمًا بيانيًا (graph) والحلّ قطعًا (cut) في الرسم البياني؛ وهكذا دواليك.
 وي تبيّن أنّ _كلّ مسألة بحث_ من هذا النوع يمكن اختزالها إلى 3SAT.
@@ -35,7 +35,7 @@ source: https://introtcs.org/
 في هذا الفصل سنرى تعريف صنف التعقيد $\mathbf{NP}$ - وهو من أهم التعريفات في هذا الكتاب، ومبرهنة كوك-ليفن - وهي من أهم البرهنات فيه.
 حدسيًا، يقابل الصنف $\mathbf{NP}$ صنف المسائل التي يكون فيها _التحقّق من حلّ سهلًا_ (أي إنّ التحقّق يمكن أن يتمّ بخوارزمية تعمل في وقت متعدد الحدود).
 على سبيل المثال، إيجاد إسناد مُرضٍ (satisfying) لصيغة 2SAT أو 3SAT مسألة من هذا النوع، لأننا إذا أعطِينا إسنادًا لقيم المتغيّرات في صيغة 2SAT أو 3SAT أمكَنّا التحقّق بكفاءة من أنه يحقّق كل القيود.
-وبدقّة أكثر، $\mathbf{NP}$ هو صنف مسائل القرار (أي الدوال المنطقية أو اللغات) الموافقة لتحديد وجود حلّ من هذا النوع، وإنّنا سنرى في [chappvsnp](/images/introtcs/lec_13_Cook_Levin-1.webp){.ref} أنّ مسائل القرار ومسائل البحث مترابطة إلى حدّ كبير.
+وبدقّة أكثر، $\mathbf{NP}$ هو صنف مسائل القرار (أي الدوال المنطقية أو اللغات) الموافقة لتحديد وجود حلّ من هذا النوع، وإنّنا سنرى في [chappvsnp](#chappvsnp){.ref} أنّ مسائل القرار ومسائل البحث مترابطة إلى حدّ كبير.
 
 وكما تبيّن أمثلة 2SAT و3SAT، فإنّ هناك بعض المسائل الحاسوبية (أي الدوال) الموجودة في $\mathbf{NP}$ لدينا لها خوارزمية تعمل في وقت متعدد الحدود، وبعضها الآخر لا نعرف له خوارزمية من هذا النوع.
 ومن الأسئلة المفتوحة الجوهرية ما إذا كانت كلّ الدوال في $\mathbf{NP}$ لها خوارزمية تعمل في وقت متعدد الحدود، أو بمعنى آخر (لنستعمل قدرًا يسيرًا من الرياضيات) ما إذا كان $\mathbf{P}=\mathbf{NP}$.
@@ -48,7 +48,7 @@ source: https://introtcs.org/
 :::
 
 
-![Overview of the results of this chapter. We define $\mathbf{NP}$ to contain all decision problems for which a solution can be efficiently _verified_. The main result of this chapter is the  _Cook Levin Theorem_ ([cook-levin-thm](https://goo.gl/NomnoU){.ref}) which states that $3SAT$ has a polynomial-time algorithm if and only if _every_ problem in $\mathbf{NP}$ has a polynomial-time algorithm. Another way to state this theorem is that $3SAT$ is _$\mathbf{NP}$ complete_. We will prove the Cook-Levin theorem by defining the two intermediate  problems $NANDSAT$ and $3NAND$, proving that $NANDSAT$ is $\mathbf{NP}$ complete, and then proving that $NANDSAT \leq_p 3NAND \leq_p 3SAT$.](https://www.csc.kth.se/tcs/compendium/){#cooklevin_overviewfig }
+![Overview of the results of this chapter. We define $\mathbf{NP}$ to contain all decision problems for which a solution can be efficiently _verified_. The main result of this chapter is the  _Cook Levin Theorem_ ([cook-levin-thm](#cook-levin-thm){.ref}) which states that $3SAT$ has a polynomial-time algorithm if and only if _every_ problem in $\mathbf{NP}$ has a polynomial-time algorithm. Another way to state this theorem is that $3SAT$ is _$\mathbf{NP}$ complete_. We will prove the Cook-Levin theorem by defining the two intermediate  problems $NANDSAT$ and $3NAND$, proving that $NANDSAT$ is $\mathbf{NP}$ complete, and then proving that $NANDSAT \leq_p 3NAND \leq_p 3SAT$.](/images/introtcs/original-cooklevin_overview.webp){#cooklevin_overviewfig }
 
 
 ## صنف $\mathbf{NP}$
@@ -59,7 +59,7 @@ source: https://introtcs.org/
 أي إنّ الدالة المنطقية $F$ تنتمي إلى $\mathbf{NP}$ إذا كان $F$ من الشكل الذي، على مدخل سلسلة $x$، تكون $F(x)=1$ إذا وفقط إذا وُجدت سلسلة «حلّ» $w$ بحيث يحقّق الزوج $(x,w)$ شرطًا يمكن التحقّق منه في وقت متعدد الحدود.
 وبصياغة رسمية، يُعرَّف $\mathbf{NP}$ على النحو التالي:
 
-![/images/introtcs/lec_13_Cook_Levin-1.webp](/images/introtcs/lec_13_Cook_Levin-1.webp){#NPdeffigfig .margin  }
+![/images/introtcs/lec_13_Cook_Levin-1.webp](/images/introtcs/original-NPdefinitionfig.webp){#NPdeffigfig .margin  }
 
 ::: {.definition title="NP" #NP-def}
 نقول إنّ $F:\{0,1\}^* \rightarrow \{0,1\}$ تنتمي إلى $\mathbf{NP}$ إذا وُجد عدد صحيح $a>0$ ودالة $V:\{0,1\}^* \rightarrow \{0,1\}$ بحيث $V\in \mathbf{P}$ ولكلّ $x\in \{0,1\}^n$،
@@ -72,17 +72,17 @@ $$
 بعبارة أخرى، كي تنتمي $F$ إلى $\mathbf{NP}$، يجب أن توجد دالة تحقّق $V$ قابلة للحساب في وقت متعدد الحدود، بحيث إذا كان $F(x)=1$ فيجب أن توجد $w$ (بطول متعدد الحدود في $|x|$) بحيث $V(xw)=1$، وإذا كان $F(x)=0$ فإنّ ذلك يعني أنّ لكلّ $w$ من هذا النوع يكون $V(xw)=0$.
 ولأنّ وجود هذه السلسلة $w$ يشهد بأنّ $F(x)=1$، فإنّ $w$ يُشار إليها غالبًا بأنّها _شهادة_ (certificate) أو _شاهد_ (witness) أو _برهان_ (proof) على أنّ $F(x)=1$.
 
-انظر أيضًا [NPdeffigfig](http://www.claymath.org/millennium-problems/p-vs-np-problem){.ref} لتجد رسمًا توضيحيًّا لـ [NP-def](https://www.amazon.com/dp/B00BKZYGUY){.ref}.
+انظر أيضًا [NPdeffigfig](#NPdeffigfig){.ref} لتجد رسمًا توضيحيًّا لـ [NP-def](#NP-def){.ref}.
 واسم $\mathbf{NP}$ اختصار لعبارة «زمن متعدد الحدود غير الحتميّ (non-deterministic polynomial time)»، وهو اسم استُعمل لأسباب تاريخية؛ انظر الملاحظات الببليوغرافية.
-وأحيانًا ما تُسمّى السلسلة $w$ في [NP-eq](/images/introtcs/lec_13_Cook_Levin-2.webp){.eqref} _حلًّا_ (solution) أو _شهادة_ (certificate) أو _شاهدًا_ (witness) للمدخل $x$.
+وأحيانًا ما تُسمّى السلسلة $w$ في [NP-eq](#NP-eq){.eqref} _حلًّا_ (solution) أو _شهادة_ (certificate) أو _شاهدًا_ (witness) للمدخل $x$.
 
 ::: {.solvedexercise title="تعريف بديل لـ $\mathbf{NP}$" #NPalternativeex}
-بيّن أنّ الشرط $|w|=|x|^a$ في [NP-def](/images/introtcs/lec_13_Cook_Levin-3.webp){.ref} يمكن استبداله بالشرط $|w| \leq p(|x|)$ بالنسبة إلى متعدّدي حدود $p$ ما.
+بيّن أنّ الشرط $|w|=|x|^a$ في [NP-def](#NP-def){.ref} يمكن استبداله بالشرط $|w| \leq p(|x|)$ بالنسبة إلى متعدّدي حدود $p$ ما.
 أي، اثبت أنّه لكلّ $F:\{0,1\}^* \rightarrow \{0,1\}$، لدينا $F \in \mathbf{NP}$ إذا وفقط إذا كانت هناك آلة تورينج (Turing machine) تعمل في وقت متعدد الحدود $V$ ومتعدّد حدود $p:\N \rightarrow \N$ بحيث لكلّ $x\in \{0,1\}^*$ يكون $F(x)=1$ إذا وفقط إذا وُجدت $w\in \{0,1\}^*$ بحيث $|w| \leq p(|x|)$ بحيث $V(x,w)=1$.
 :::
 
 ::: {.solution data-ref="NPalternativeex"}
-اتجاه «فقط إذا» (أي أنّه إذا كان $F\in \mathbf{NP}$ فإنّ هناك خوارزمية $V$ ومتعدّد حدود $p$ كما سبق) يتبع فورًا من [NP-def](/images/introtcs/fig-hardwiring.webp){.ref} بت اختيار $p(n)=n^a$.
+اتجاه «فقط إذا» (أي أنّه إذا كان $F\in \mathbf{NP}$ فإنّ هناك خوارزمية $V$ ومتعدّد حدود $p$ كما سبق) يتبع فورًا من [NP-def](#NP-def){.ref} بت اختيار $p(n)=n^a$.
 أمّا اتجاه «إذا» فالفكرة فيه أنّه إذا كانت سلسلة $w$ بحجم لا يتجاوز $p(n)$ حيث $p$ متعدّد حدود من الدرجة $d$، فإنّ هناك قيمة $n_0$ بحيث لكلّ $n > n_0$ يكون $w| < n^{d+1}$.
 وعليه يمكننا ترميز $w$ بسلسلة طولها بالضبط $n^{d+1}$ عبر حشوها (padding) بالرمز $1$ وبعدد مناسب من الأصفار.
 وعليه إذا كانت هناك خوارزمية $V$ ومتعدّد حدود $p$ كما سبق، فيمكننا تعريف خوارزمية $V'$ تفعل الآتي على المدخل $x,w'$ مع $|x|=n$ و $|w'|=n^a$:
@@ -97,14 +97,14 @@ $$
 
 
 تعريف $\mathbf{NP}$ يعني أنّه لكلّ  $F\in \mathbf{NP}$ وسلسلة $x\in \{0,1\}^*$، يكون $F(x)=1$ إذا وفقط إذا وُجد _برهان قصير وقابل للتحقّق منه بكفاءة_ لهذه الحقيقة.
-أي يمكننا التفكير في الدالة $V$ في [NP-def](/images/introtcs/lec_13_Cook_Levin-4.webp){.ref} على أنّها خوارزمية _مُتحقِّقة_ (_verifier_)، على نحو ما رأينا في [godelproofdef](/images/introtcs/fig-threenandresultreduction.webp){.ref}.
+أي يمكننا التفكير في الدالة $V$ في [NP-def](#NP-def){.ref} على أنّها خوارزمية _مُتحقِّقة_ (_verifier_)، على نحو ما رأينا في [godelproofdef](#godelproofdef){.ref}.
 تتحقّق المُتحقِّقة ممّا إذا كانت سلسلة معطاة $w\in \{0,1\}^*$ برهانًا صالحًا للعبارة «$F(x)=1$».
 وتتضمّن كلّ أنظمة البرهنة التي تُنظر في الرياضيات عمليًا فحوصًا سطرًا بسطر يمكن إنجازها في وقت متعدد الحدود.
 وعليه فإنّ جوهر $\mathbf{NP}$ هو طلب العبارات التي تمتلك براهين _قصيرة_ (أي متعدّدة الحدود في حجم العبارات).
 وفي الحقيقة، كما سنرى في [#chappvsnp](/images/introtcs/fig-3nandto3sat.webp){.ref}، صاغ كورت غودل (Kurt Gödel) السؤال عمّا إذا كان $\mathbf{NP}=\mathbf{P}$ على أنّه السؤال عمّا إذا كان «الجهد الذهني لرياضيّ [في إثبات البرهنات] يمكن استبداله تمامًا بآلة».
 
 ::: {.remark title="$\mathbf{NP}$ ليست (بالضرورة) مغلقة تحت التكامل" #NPassymetric}
-التعريف [NP-def](/images/introtcs/lec_13_Cook_Levin-5.webp){.ref} غير _متماثل_ (_asymmetric_) بالمعنى أنّ هناك فرقًا بين الخرج $1$ والخرج $0$.
+التعريف [NP-def](#NP-def){.ref} غير _متماثل_ (_asymmetric_) بالمعنى أنّ هناك فرقًا بين الخرج $1$ والخرج $0$.
 وينبغي أن تتأكّد من فهمك لماذا لا يضمن هذا التعريف أنّه إذا كان $F \in \mathbf{NP}$ فإنّ الدالة $1-F$ (أي التحويل $x \mapsto 1-F(x)$) تنتمي هي أيضًا إلى $\mathbf{NP}$.
 
 وفي الواقع، يُعتقد بوجود دوال $F$ بحيث $F\in \mathbf{NP}$ ولكن $1-F \not\in \mathbf{NP}$.
@@ -126,7 +126,7 @@ $$
 ولأنّ إثبات انتماء الدوال إلى $\mathbf{NP}$ أمر إلى حدّ كبير مباشر، فلن نستخدم هذا القدر من التفصيل في الحالات القادمة، كما أنّ من حقّ القارئ تخطّي بقيّة هذا المثال.
 
 
-باستعمال [NPalternativeex](/images/introtcs/lec_13_Cook_Levin-6.webp){.ref}، فإنّه من المقبول أن يكون حجم الشاهد متعدّد الحدود في طول المدخل $n$، بدلًا من أن يكون بالضبط $n^a$ بالنسبة إلى عدد صحيح $a>0$.
+باستعمال [NPalternativeex](#NPalternativeex){.ref}، فإنّه من المقبول أن يكون حجم الشاهد متعدّد الحدود في طول المدخل $n$، بدلًا من أن يكون بالضبط $n^a$ بالنسبة إلى عدد صحيح $a>0$.
 وبالتحديد، يمكننا تمثيل صيغة 3CNF $\varphi$ ذات $k$ متغيّرًا و$m$ بندًا (clause) على هيئة سلسلة طولها $n=O(m\log k)$، إذ إنّ كلًّا من البنود $m$ يتضمّن ثلاثة متغيّرات ونفيها، ويمكن تمثيل هوية كلّ متغيّر باستعمال $\lceil \log_2 k \rceil$.
 ونفترض أنّ كلّ متغيّر يشارك في بند ما (وإلّا فيمكن تجاهله) وبالتالي $m \geq k$، وهو ما يعني بالتحديد أنّ طول المدخل $n$ لا يقلّ عن $m$ ولا عن $k$.
 
@@ -146,11 +146,11 @@ Endfor
 Return $1$
 ```
 
-يستغرق [threesatverifieralg](https://goo.gl/bFHsd9){.ref} وقتًا قدره $O(m)$ لِتعداد كلّ البنود، ويعيد $1$ إذا وفقط إذا كانت $y$ تحقّق كلّ البنود.
+يستغرق [threesatverifieralg](#threesatverifieralg){.ref} وقتًا قدره $O(m)$ لِتعداد كلّ البنود، ويعيد $1$ إذا وفقط إذا كانت $y$ تحقّق كلّ البنود.
 :::
 
 
-إليك المزيد من الأمثلة على مسائل في $\mathbf{NP}$. ولكلّ واحدة من هذه المسائل سنكتفي برسم مختصر لكيفية تمثيل الشاهد ولماذا يمكن التحقّق منه بكفاءة، لكنّ اشتقاق التفاصيل قد يكون طريقة جيدة للارتياح أكثر مع [NP-def](https://www.cs.washington.edu/people/faculty/ladner/research){.ref}:
+إليك المزيد من الأمثلة على مسائل في $\mathbf{NP}$. ولكلّ واحدة من هذه المسائل سنكتفي برسم مختصر لكيفية تمثيل الشاهد ولماذا يمكن التحقّق منه بكفاءة، لكنّ اشتقاق التفاصيل قد يكون طريقة جيدة للارتياح أكثر مع [NP-def](#NP-def){.ref}:
 
 * تنتمي $QUADEQ$ إلى $\mathbf{NP}$، لأنّ لكلّ مدخل $E$ من المعادلات التربيعية ذي $\ell$ متغيّرًا، يكون $QUADEQ(E)=1$ إذا وفقط إذا وُجد إسناد $x\in \{0,1\}^\ell$ يحقّق $E$. ويمكننا التحقّق من الشرط بأنّ $x$ يحقّق $E$ في وقت متعدد الحدود بأن نعدّ على كلّ المعادلات في $E$، وأن نُدخل لكلّ معادلة $e$ قيم $x$ ونتحقّق من أنّ $e$ مُحقَّقة.
 
@@ -177,15 +177,15 @@ Return $1$
 
 لنفترض أنّ $x\in \{0,1\}^n$ سلسلة ما.
 إذا كان $F(x)=1$ فإنّ $V(x0^n)=1$. ومن جهة أخرى، إذا كان $F(x)=0$ فإنّ ذلك يعني أنّ لكلّ $w\in \{0,1\}^n$ يكون $V(xw)=0$.
-وعليه، بأخذ $a=1$ (أي $w\in \{0,1\}^{n^1}$)، نرى أنّ $V$ تُحقّق [NP-eq](http://www.sigaccess.org/wp-content/uploads/formidable/sigaccess_newsletter_1102.pdf){.eqref}، ممّا يُثبت أنّ $F \in \mathbf{NP}$.
+وعليه، بأخذ $a=1$ (أي $w\in \{0,1\}^{n^1}$)، نرى أنّ $V$ تُحقّق [NP-eq](#NP-eq){.eqref}، ممّا يُثبت أنّ $F \in \mathbf{NP}$.
 :::
 
 ::: {.remark title="$\mathbf{NP}$ لا تعني «غير متعدّدة الحدود!»" #NPandNOTPolynomial}
 يظنّ الناس أحيانًا أنّ $\mathbf{NP}$ اختصار لعبارة «زمن غير متعدّد الحدود» (non-polynomial time).
-وكما بيّن [PinNP](https://pure.tue.nl/ws/files/1506049/511307.pdf){.ref}، فإنّ هذا بعيد كلّ البعد عن الحقيقة، وفي الواقع كلّ دالة قابلة للحساب في وقت متعدد الحدود تنتمي هي أيضًا إلى $\mathbf{NP}$.
+وكما بيّن [PinNP](#PinNP){.ref}، فإنّ هذا بعيد كلّ البعد عن الحقيقة، وفي الواقع كلّ دالة قابلة للحساب في وقت متعدد الحدود تنتمي هي أيضًا إلى $\mathbf{NP}$.
 
 إذا كانت $F$ تنتمي إلى $\mathbf{NP}$، فإنّ هذا بالتأكيد لا _يعني_ أنّ حساب $F$ صعب (وإنّنا لا نعرف، على قدر ما علمنا، أنّه يعني بالضرورة أنّ حسابها سهل أيضًا).
-بل إنّ معناه أنّ $F$ _سهلة التحقّق_، بالمعنى التقني لـ [NP-def](){.ref}.
+بل إنّ معناه أنّ $F$ _سهلة التحقّق_، بالمعنى التقني لـ [NP-def](#NP-def){.ref}.
 :::
 
 ::: {.solvedexercise title="$\mathbf{NP}$ تنتمي إلى الزمن الأُسّيّ" #NPinEXP}
@@ -193,25 +193,25 @@ Return $1$
 :::
 
 ::: {.solution data-ref="NPinEXP"}
-لنفترض أنّ $F\in \mathbf{NP}$، ولتكن $V$ هي الدالة القابلة للحساب في وقت متعدد الحدود التي تُحقّق [NP-eq](){.eqref}، و$a$ هو الثابت المقابل لها.
+لنفترض أنّ $F\in \mathbf{NP}$، ولتكن $V$ هي الدالة القابلة للحساب في وقت متعدد الحدود التي تُحقّق [NP-eq](#NP-eq){.eqref}، و$a$ هو الثابت المقابل لها.
 إذن لكلّ مدخل $x\in \{0,1\}^n$ يمكننا التحقّق ممّا إذا كان $F(x)=1$ في وقت قدره $poly(n)\cdot 2^{n^a} = o(2^{n^{a+1}})$، بأن نعدّ على كلّ السلاسل $2^{n^a}$ من النوع $w\in \{0,1\}^{n^a}$ وأن نتحقّق ممّا إذا كان $V(xw)=1$، وفي هذه الحالة نُعيد $1$.
 وإذا كان $V(xw)=0$ لكلّ $w$ من هذا النوع فإنّنا نُعيد $0$.
 وبالبناء، ستعمل الخوارزمية أعلاه في وقت لا يتجاوز زمنًا أُسّيًّا في طول مدخلها، وبتعريف $\mathbf{NP}$ فإنّها ستُعيد $F(x)$ لكلّ $x$.
 :::
 
-من [PinNP](){.ref} و[NPinEXP](){.ref} معًا نستنتج أنّ
+من [PinNP](#PinNP){.ref} و[NPinEXP](#NPinEXP){.ref} معًا نستنتج أنّ
 
 $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 
-ويُترتَّب على مبرهنة تسلسل الأوقات ([time-hierarchy-thm](){.ref}) أنّ $\mathbf{P} \subsetneq \mathbf{EXP}$، ومن ثمّ فعلى الأقلّ
+ويُترتَّب على مبرهنة تسلسل الأوقات ([time-hierarchy-thm](#time-hierarchy-thm){.ref}) أنّ $\mathbf{P} \subsetneq \mathbf{EXP}$، ومن ثمّ فعلى الأقلّ
 احتواءً واحدًا من الاحتوائين $\mathbf{P} \subseteq \mathbf{NP}$ أو $\mathbf{NP} \subseteq \mathbf{EXP}$ هو _تأمّ_ أي _محتوى تحتيًّا تامًّا_.
 ويُعتقد أنّ الاحتوائين معًا هما في الواقع احتواءان تامّان.
 أي إنّنا نُعتقد أنّ هناك دوال في $\mathbf{NP}$ لا يمكن حسابها في وقت متعدّد الحدود (وهذه هي حجّة $\mathbf{P} \neq \mathbf{NP}$)، وأنّه هناك دوال $F$ في $\mathbf{EXP}$ لا يمكننا حتى _أن نُثبت بكفاءة_ أنّ $F(x)=1$ لمدخل $x$ معطى.
 ومن الدوال $F$ التي يُعتقد أنّها تنتمي إلى  $\mathbf{EXP} \setminus \mathbf{NP}$ الدالة $\overline{3SAT}$ المعرَّفة بأنّ $\overline{3SAT}(\varphi)= 1 - 3SAT(\varphi)$ لكلّ صيغة 3CNF $\varphi$. وتُعرف حجّة $\overline{3SAT}\not\in \mathbf{NP}$ باسم حجّة «$\mathbf{NP} \neq \mathbf{co-NP}$».
-وهي تستلزم حجّة $\mathbf{P} \neq \mathbf{NP}$ (انظر [npconppnpex](){.ref}).
+وهي تستلزم حجّة $\mathbf{P} \neq \mathbf{NP}$ (انظر [npconppnpex](#npconppnpex){.ref}).
 
 
-لقد سوينا سابقًا، على نحو غير رسمي، بين مفهوم $F \leq_p G$ وبين القول إنّ $F$ «لا أصعب من $G$»، ورأينا بالتحديد في [reductionsandP](){.ref} أنّه إذا كان $G \in \mathbf{P}$ و $F \leq_p G$ فإنّ $F \in \mathbf{P}$ أيضًا.
+لقد سوينا سابقًا، على نحو غير رسمي، بين مفهوم $F \leq_p G$ وبين القول إنّ $F$ «لا أصعب من $G$»، ورأينا بالتحديد في [reductionsandP](#reductionsandP){.ref} أنّه إذا كان $G \in \mathbf{P}$ و $F \leq_p G$ فإنّ $F \in \mathbf{P}$ أيضًا.
 ويبيّن التمرين التالي أنّه إذا كان $F \leq_p G$ فإنّه أيضًا «لا أصعب في التحقّق» من $G$.
 أي بغضّ النظر عمّا إذا كان في $\mathbf{P}$ أم لا، إذا كانت $G$ تمتلك الخاصيّة أنّ الحلول (_solutions_) لها يمكن التحقّق منها بكفاءة، فإنّ $F$ تمتلكها أيضًا.
 
@@ -241,14 +241,14 @@ $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 > ### {.theorem title="مبرهنة كوك-ليفن" #cook-levin-thm}
 لكلّ $F\in \mathbf{NP}$، لدينا $F \leq_p 3SAT$.
 
-سنُثبت قريبًا برهان [cook-levin-thm](){.ref}، لكنّ لاحظ أنّه يستلزم فورًا أنّ $QUADEQ$ و $LONGPATH$ و $MAXCUT$ تختزل جميعها إلى $3SAT$.
-وإذا ما جمعناه مع الاختزالات التي رأيناها في [reductionchap](){.ref}، فإنّه يستلزم أنّ كلّ هذه المسائل _متكافئة!_
-فمثلًا، لاختزال $QUADEQ$ إلى $LONGPATH$، يمكننا أولًا اختزال $QUADEQ$ إلى $3SAT$ باستعمال [cook-levin-thm](){.ref}، ثمّ استعمال الاختزال الذي رأيناه في [longpaththm](){.ref} من $3SAT$ إلى $LONGPATH$.
-أي إنّنا بما أنّ $QUADEQ \in \mathbf{NP}$، فإنّ [cook-levin-thm](){.ref} يستلزم أنّ $QUADEQ \leq_p 3SAT$، و [longpaththm](){.ref} يستلزم أنّ $3SAT \leq_p LONGPATH$، وهو ما يعني، بفضل تعدّادية الاختزال (transitivity of reductions) ([transitiveex](){.ref})، أنّ $QUADEQ \leq_p LONGPATH$.
-وبشكل مشابه، بما أنّ $LONGPATH \in \mathbf{NP}$، يمكننا استعمال [cook-levin-thm](){.ref} و [quadeq-thm](){.ref} لبيّان أنّ $LONGPATH \leq_p 3SAT \leq_p QUADEQ$، ونتّفق على أنّ $LONGPATH$ و $QUADEQ$ متكافئتان حاسوبيًّا.
+سنُثبت قريبًا برهان [cook-levin-thm](#cook-levin-thm){.ref}، لكنّ لاحظ أنّه يستلزم فورًا أنّ $QUADEQ$ و $LONGPATH$ و $MAXCUT$ تختزل جميعها إلى $3SAT$.
+وإذا ما جمعناه مع الاختزالات التي رأيناها في [reductionchap](#reductionchap){.ref}، فإنّه يستلزم أنّ كلّ هذه المسائل _متكافئة!_
+فمثلًا، لاختزال $QUADEQ$ إلى $LONGPATH$، يمكننا أولًا اختزال $QUADEQ$ إلى $3SAT$ باستعمال [cook-levin-thm](#cook-levin-thm){.ref}، ثمّ استعمال الاختزال الذي رأيناه في [longpaththm](#longpaththm){.ref} من $3SAT$ إلى $LONGPATH$.
+أي إنّنا بما أنّ $QUADEQ \in \mathbf{NP}$، فإنّ [cook-levin-thm](#cook-levin-thm){.ref} يستلزم أنّ $QUADEQ \leq_p 3SAT$، و [longpaththm](#longpaththm){.ref} يستلزم أنّ $3SAT \leq_p LONGPATH$، وهو ما يعني، بفضل تعدّادية الاختزال (transitivity of reductions) ([transitiveex](#transitiveex){.ref})، أنّ $QUADEQ \leq_p LONGPATH$.
+وبشكل مشابه، بما أنّ $LONGPATH \in \mathbf{NP}$، يمكننا استعمال [cook-levin-thm](#cook-levin-thm){.ref} و [quadeq-thm](#quadeq-thm){.ref} لبيّان أنّ $LONGPATH \leq_p 3SAT \leq_p QUADEQ$، ونتّفق على أنّ $LONGPATH$ و $QUADEQ$ متكافئتان حاسوبيًّا.
 
 
-وبالطبع لا شيء خاصّ بـ $QUADEQ$ و $LONGPATH$ هنا: فبدمج [cook-levin-thm](){.eqref} مع الاختزالات التي رأيناها، نرى أنّه كما $3SAT$ بالضبط، _كلّ_ $F\in \mathbf{NP}$ يختزل إلى $LONGPATH$، وأنّ الأمر نفسه صحيح بالنسبة إلى $QUADEQ$ و $MAXCUT$.
+وبالطبع لا شيء خاصّ بـ $QUADEQ$ و $LONGPATH$ هنا: فبدمج [cook-levin-thm](#cook-levin-thm){.eqref} مع الاختزالات التي رأيناها، نرى أنّه كما $3SAT$ بالضبط، _كلّ_ $F\in \mathbf{NP}$ يختزل إلى $LONGPATH$، وأنّ الأمر نفسه صحيح بالنسبة إلى $QUADEQ$ و $MAXCUT$.
 وكافة هذه المسائل هي «الأصعب في $\mathbf{NP}$» بالمعنى هذا، إذ إنّ خوارزمية فعّالة لأيّ واحدة منها تستلزم خوارزمية فعّالة _لكلّ_ المسائل في $\mathbf{NP}$.
 وهذا يقودنا إلى التعريف التالي:
 
@@ -261,8 +261,8 @@ $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 :::
 
 
-يمكن إعادة صياغة مبرهنة كوك-ليفن ([cook-levin-thm](){.ref}) على أنّها تقول إنّ $3SAT$ هي $NP$-صعبة، وبما أنّها تنتمي أيضًا إلى $\mathbf{NP}$، فإنّ هذا يعني أنّ $3SAT$ هي $NP$-كاملة.
-ومع الاختزالات في [reductionchap](){.ref}، تُظهر [cook-levin-thm](){.ref} أنّه على الرغم من فروقها الظاهريّة، فإنّ 3SAT، والمعادلات التربيعية، وأطول مسار، والمجموعة المستقلّة، والقطع الأقصى، هي كلّها $NP$-كاملة.
+يمكن إعادة صياغة مبرهنة كوك-ليفن ([cook-levin-thm](#cook-levin-thm){.ref}) على أنّها تقول إنّ $3SAT$ هي $NP$-صعبة، وبما أنّها تنتمي أيضًا إلى $\mathbf{NP}$، فإنّ هذا يعني أنّ $3SAT$ هي $NP$-كاملة.
+ومع الاختزالات في [reductionchap](#reductionchap){.ref}، تُظهر [cook-levin-thm](#cook-levin-thm){.ref} أنّه على الرغم من فروقها الظاهريّة، فإنّ 3SAT، والمعادلات التربيعية، وأطول مسار، والمجموعة المستقلّة، والقطع الأقصى، هي كلّها $NP$-كاملة.
 وقد ثبت أنّ آلاف المسائل الإضافيّة هي أيضًا $NP$-كاملة، آتيةً من جميع العلوم والرياضيات والاقتصاد والهندسة والميادين كثيرة أخرى.
 (ولأمثلة قليلة، انظر [هذه صفحة ويكيبيديا](https://goo.gl/NomnoU) و [هذا الموقع](https://www.csc.kth.se/tcs/compendium/).)
 
@@ -273,7 +273,7 @@ $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 
 ### ماذا يعني هذا؟
 
-وكما رأينا في [PinNP](){.ref}، لدينا $\mathbf{P} \subseteq \mathbf{NP}$.
+وكما رأينا في [PinNP](#PinNP){.ref}، لدينا $\mathbf{P} \subseteq \mathbf{NP}$.
 و_أشهر_ حجّة في علوم الحاسوب هي أنّ هذا الاحتواء _تأمّ_.
 أي إنّ الناس يتفقون على الحجّة بأنّ $\mathbf{P} \neq \mathbf{NP}$.
 وإحدى طرائق دحض حجّة $\mathbf{P} \neq \mathbf{NP}$ هي إعطاء خوارزمية تعمل في وقت متعدد الحدود، ولو لمسألة واحدة فقط من المسائل $NP$-كاملة مثل 3SAT أو «القطع الأقصى» (Max Cut)، أو لآلاف المسائل الأخرى التي دُرست في جميع ميادين نشاط الإنسان.
@@ -283,16 +283,16 @@ $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 والبتّ في ما إذا كان $\mathbf{P}=\mathbf{NP}$ أم لا معروف بـ [مسألة $\mathbf{P}$ مقابل $\mathbf{NP}$](https://en.wikipedia.org/wiki/P_versus_NP_problem).
 وقد [قُدِّمت](http://www.claymath.org/millennium-problems/p-vs-np-problem) جائزة بمليون دولار لحلّ هذه المسألة، وكُتب عنها [كتاب شعبي](https://www.amazon.com/dp/B00BKZYGUY)، ويخرج كلّ عام بحثٌ جديد يدّعي برهان $\mathbf{P}=\mathbf{NP}$ أو $\mathbf{P}\neq\mathbf{NP}$، ليبتلعه الفحص النقدي في النهاية.
 
-![/images/introtcs/lec_13_Cook_Levin-2.webp](/images/introtcs/lec_13_Cook_Levin-2.webp){#PNPscenariosfig .margin  }
+![/images/introtcs/lec_13_Cook_Levin-2.webp](/images/introtcs/original-PNPscenarios.webp){#PNPscenariosfig .margin  }
 
 ومن أغرب الغموضات في الحساب أنّ الناس لاحظوا «قانونًا تجريبيًّا للصفر والواحد» أو «ثنائية» معيّنة في التعقيد الحاسوبي للمسائل الطبيعيّة، بالمعنى أنّ كثيرًا من المسائل الطبيعيّة إمّا تنتمي إلى $\mathbf{P}$ (وكثيرًا ما في $TIME(O(n))$ أو $TIME(O(n^2))$)، وإمّا أنّها $NP$-صعبة.
 وهذا مرتبطٌ بالواقعة أنّه بالنسبة لمعظم المسائل الطبيعيّة، أفضل خوارزمية معروفة هي إمّا أُسّية أو متعدّدة الحدود، مع وجود أمثلة ليست قليلة يكون فيها أفضل زمن تشغيل بعض التعقيد الوسيط الغريب مثل $2^{2^{\sqrt{\log n}}}$.
-غير أنّه يُعتقد بوجود مسائل في $\mathbf{NP}$ لا تنتمي إلى $\mathbf{P}$ ولا هي $NP$-كاملة، وفي الحقيقة فإنّ نتيجة معروفة بـ «مبرهنة لادنر» (Ladner's Theorem) تُبيّن أنّه إذا كان $\mathbf{P} \neq \mathbf{NP}$ فإنّ هذا هو الحال بالفعل (انظر أيضًا [ladner-ex](){.ref} و [PNPscenariosfig](){.ref}).
+غير أنّه يُعتقد بوجود مسائل في $\mathbf{NP}$ لا تنتمي إلى $\mathbf{P}$ ولا هي $NP$-كاملة، وفي الحقيقة فإنّ نتيجة معروفة بـ «مبرهنة لادنر» (Ladner's Theorem) تُبيّن أنّه إذا كان $\mathbf{P} \neq \mathbf{NP}$ فإنّ هذا هو الحال بالفعل (انظر أيضًا [ladner-ex](#ladner-ex){.ref} و [PNPscenariosfig](#PNPscenariosfig){.ref}).
 
 
 
 
-![/images/introtcs/lec_13_Cook_Levin-3.webp](/images/introtcs/lec_13_Cook_Levin-3.webp){#complexitymapfig .margin  }
+![/images/introtcs/lec_13_Cook_Levin-3.webp](/images/introtcs/original-PNPmap.webp){#complexitymapfig .margin  }
 
 
 
@@ -304,17 +304,17 @@ $$\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{EXP}\;.$$
 وتعقيد الحالة الأسوأ لكلّ هذه المسائل مكافئ (حتى عوامل متعدّدة الحدود) لتعقيد 3SAT، ومن خلال مبرهنة كوك-ليفن، لكلّ المسائل في $\mathbf{NP}$.
 
 
-ولإثبات [cook-levin-thm](){.ref} نحتاج أن نبيّن أنّ $F \leq_p 3SAT$ لكلّ $F\in \mathbf{NP}$.
+ولإثبات [cook-levin-thm](#cook-levin-thm){.ref} نحتاج أن نبيّن أنّ $F \leq_p 3SAT$ لكلّ $F\in \mathbf{NP}$.
 وسنقوم بذلك على ثلاث مراحل.
 ونعرّف مسألةً وسيطة اثنتين: $NANDSAT$ و $3NAND$.
 وسنبيّن قريبًا تعريفات هاتين المسألتين، لكنّ
-[cook-levin-thm](){.ref} سيترتّب على دمج النتائج الثلاث التالية:
+[cook-levin-thm](#cook-levin-thm){.ref} سيترتّب على دمج النتائج الثلاث التالية:
 
-1. المسألة $NANDSAT$ هي $NP$-صعبة ([nand-thm](){.ref}).
+1. المسألة $NANDSAT$ هي $NP$-صعبة ([nand-thm](#nand-thm){.ref}).
 
-2. لدينا $NANDSAT \leq_p 3NAND$  ([threenand-thm](){.ref}).
+2. لدينا $NANDSAT \leq_p 3NAND$  ([threenand-thm](#threenand-thm){.ref}).
 
-3. لدينا $3NAND \leq_p 3SAT$   ([threenand-sat-thm](){.ref}).
+3. لدينا $3NAND \leq_p 3SAT$   ([threenand-sat-thm](#threenand-sat-thm){.ref}).
 
 وبتعدّادية الاختزال، سيترتّب أنّه لكلّ $F \in \mathbf{NP}$،
 
@@ -322,10 +322,10 @@ $$
 F \leq_p NANDSAT \leq_p 3NAND \leq_p 3SAT
 $$
 
-وبالتالي نُثبت [cook-levin-thm](){.ref}.
+وبالتالي نُثبت [cook-levin-thm](#cook-levin-thm){.ref}.
 
 
-سنبرهن على هذه النتائج الثلاث [nand-thm](){.ref} و [threenand-thm](){.ref} و [threenand-sat-thm](){.ref} واحدةً واحدة، مع تقديم التعريفات اللازمة في أثناء ذلك.
+سنبرهن على هذه النتائج الثلاث [nand-thm](#nand-thm){.ref} و [threenand-thm](#threenand-thm){.ref} و [threenand-sat-thm](#threenand-sat-thm){.ref} واحدةً واحدة، مع تقديم التعريفات اللازمة في أثناء ذلك.
 
 ## مسألة $NANDSAT$، ولماذا هي $NP$-صعبة
 
@@ -353,7 +353,7 @@ $$
 
 
 > ### {.proofidea data-ref="nand-thm"}
-يتبع البرهان عن قرب برهان $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ ([non-uniform-thm](){.ref}، وانظر أيضًا [unrollloopsec](){.ref}).
+يتبع البرهان عن قرب برهان $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ ([non-uniform-thm](#non-uniform-thm){.ref}، وانظر أيضًا [unrollloopsec](#unrollloopsec){.ref}).
 وبالتحديد، إذا كان $F\in \mathbf{NP}$ فإنّ هناك آلة تورينج تعمل في وقت متعدّد الحدود $M$ وعددًا صحيحًا موجبًا $a$ بحيث لكلّ $x\in \{0,1\}^n$، لدينا $F(x)=1$ إذا وفقط إذا وُجدت $w \in \{0,1\}^{n^a}$ بحيث $M(xw)=1$.
 وقد أعطانا برهان $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ طريقة (عن طريق «فكّ الحلقة») للحصول في وقت متعدد الحدود على رسم منطقي $C$ له $n^a$ مدخلًا يحسب الدالة $w \mapsto M(xw)$.
 ويمكننا عندئذٍ ترجمة $C$ إلى رسم NAND مكافئ (أو برنامج NAND-CIRC) $Q$.
@@ -362,26 +362,26 @@ $$
 
 
 > ### { .pause }
-البرهان قليل من التقنيّة، لكنّه في النهاية يتبع إلى حدّ بعيد تعريف $\mathbf{NP}$ مباشرةً، فضلًا عن القدرة على «فكّ الحلقة» (_unroll the loop_) في برامج NAND-TM كما نُوقش في [unrollloopsec](){.ref}. فإن وجدتَه محيّرًا، فحاوِل أن تتوقّف هنا وتفكّر في كيفية تنفيذك، بلغة البرمجة المفضّلة لديك، للدالة `unroll` التي على مدخل برنامج NAND-TM $P$ وعددين $T,n$ تُخرج برنامج NAND-CIRC $Q$ له $n$ مدخلًا ومن $O(|T|)$ سطرًا، بحيث لكلّ مدخل $z\in \{0,1\}^n$، إذا توقّف $P$ عند $z$ في $T$ خطوة على الأكثر وأخرج $y$، فإنّ $Q(z)=y$.
+البرهان قليل من التقنيّة، لكنّه في النهاية يتبع إلى حدّ بعيد تعريف $\mathbf{NP}$ مباشرةً، فضلًا عن القدرة على «فكّ الحلقة» (_unroll the loop_) في برامج NAND-TM كما نُوقش في [unrollloopsec](#unrollloopsec){.ref}. فإن وجدتَه محيّرًا، فحاوِل أن تتوقّف هنا وتفكّر في كيفية تنفيذك، بلغة البرمجة المفضّلة لديك، للدالة `unroll` التي على مدخل برنامج NAND-TM $P$ وعددين $T,n$ تُخرج برنامج NAND-CIRC $Q$ له $n$ مدخلًا ومن $O(|T|)$ سطرًا، بحيث لكلّ مدخل $z\in \{0,1\}^n$، إذا توقّف $P$ عند $z$ في $T$ خطوة على الأكثر وأخرج $y$، فإنّ $Q(z)=y$.
 
 
 ::: {.proof data-ref="nand-thm"}
 لنفترض $F \in \mathbf{NP}$.
-ولإثبات [nand-thm](){.ref} نحتاج إلى إعطاء دالة قابلة للحساب في وقت متعدد الحدود تُسقط كلّ $x^* \in \{0,1\}^*$ على برنامج NAND-CIRC $Q$ بحيث $F(x^*)=NANDSAT(Q)$.
+ولإثبات [nand-thm](#nand-thm){.ref} نحتاج إلى إعطاء دالة قابلة للحساب في وقت متعدد الحدود تُسقط كلّ $x^* \in \{0,1\}^*$ على برنامج NAND-CIRC $Q$ بحيث $F(x^*)=NANDSAT(Q)$.
 
 لنفترض $x^* \in \{0,1\}^*$ سلسلة من هذا النوع، ولتكن $n=|x^*|$ طولها.
-بحسب [NP-def](){.ref} هناك $V \in \mathbf{P}$ و $a \in \N$ موجب بحيث $F(x^*)=1$  إذا وفقط إذا وُجدت $w\in \{0,1\}^{n^a}$ تحقّق $V(x^*w)=1$.
+بحسب [NP-def](#NP-def){.ref} هناك $V \in \mathbf{P}$ و $a \in \N$ موجب بحيث $F(x^*)=1$  إذا وفقط إذا وُجدت $w\in \{0,1\}^{n^a}$ تحقّق $V(x^*w)=1$.
 
 لنفترض $m=n^a$. وبما أنّ $V\in \mathbf{P}$، فهناك برنامج NAND-TM $P^*$ يحسب $V$ على المداخل من الشكل $xw$ مع $x\in \{0,1\}^n$ و $w\in \{0,1\}^m$ في وقت لا يتجاوز ${(n+m)}^c$ بالنسبة إلى ثابت $c$ ما.
-وباستعمال «مصرّفنا الذي يفكّ حلقة NAND-TM إلى NAND» (_unrolling the loop NAND-TM to NAND compiler_) في [nand-compiler](){.ref}، يمكننا الحصول على برنامج NAND-CIRC $Q'$ له $n+m$ مدخلًا و $O((n+m)^{2c})$ سطرًا على الأكثر، بحيث $Q'(xw)= P^*(xw)$ لكلّ $x\in \{0,1\}^n$ و $w \in \{0,1\}^m$.
+وباستعمال «مصرّفنا الذي يفكّ حلقة NAND-TM إلى NAND» (_unrolling the loop NAND-TM to NAND compiler_) في [nand-compiler](#nand-compiler){.ref}، يمكننا الحصول على برنامج NAND-CIRC $Q'$ له $n+m$ مدخلًا و $O((n+m)^{2c})$ سطرًا على الأكثر، بحيث $Q'(xw)= P^*(xw)$ لكلّ $x\in \{0,1\}^n$ و $w \in \{0,1\}^m$.
 
-ويمكننا عندئذٍ استعمال تقنية بسيطة اسمها «التثبيت» (_hardwiring_)، تُذكّر بـ [hardwiringrem](){.ref}، لإسقاط $Q'$ على رسم/برنامج NAND-CIRC $Q$ له $m$ مدخلًا بحيث $Q(w)= Q'(x^*w)$ لكلّ $w\in \{0,1\}^m$. 
+ويمكننا عندئذٍ استعمال تقنية بسيطة اسمها «التثبيت» (_hardwiring_)، تُذكّر بـ [hardwiringrem](#hardwiringrem){.ref}، لإسقاط $Q'$ على رسم/برنامج NAND-CIRC $Q$ له $m$ مدخلًا بحيث $Q(w)= Q'(x^*w)$ لكلّ $w\in \{0,1\}^m$. 
 
 __الادّعاء:__ هناك خوارزمية تعمل في وقت متعدد الحدود تُخرج، على مدخل برنامج NAND-CIRC $Q'$ له $n+m$ مدخلًا و $x^* \in \{0,1\}^n$، برنامج NAND-CIRC $Q$ بحيث لكلّ $w\in \{0,1\}^n$، لدينا $Q(w)=Q'(x^*w)$.
 
 __برهان الادّعاء:__ يمكننا ذلك بإضافة بضعة أسطر إلى $Q'$ للتأكّد من أنّ المتغيّرات `zero` و `one` تساوي $0$ و $1$ على الترتيب، ثمّ استبدال كلّ إشارة في $Q'$ إلى مدخل $x_i$ مع $i\in [n]$ بالقيمة المقابلة لها حسب $x^*_i$.
 
-انظر [hardwiringfig](){.ref} لتجد تنفيذًا لهذا الاختزال بلغة Python.
+انظر [hardwiringfig](#hardwiringfig){.ref} لتجد تنفيذًا لهذا الاختزال بلغة Python.
 
 
 ويُسقط الاختزال النهائي مدخلًا $x^*$ على برنامج NAND-CIRC $Q$ الذي حصّلناه أعلاه.
@@ -390,7 +390,7 @@ __برهان الادّعاء:__ يمكننا ذلك بإضافة بضعة أس�
 :::
 
 
-![Given an $T$-line NAND-CIRC program $Q$ that has $n+m$ inputs and some $x^*\in \{0,1\}^n$, we can transform $Q$ into a $T+3$ line NAND-CIRC program $Q'$ that computes the map $w \mapsto Q(x^*w)$ for $w\in \{0,1\}^m$ by simply adding code to compute the `zero` and `one` constants,  replacing all references to `X[`$i$`]` with either `zero` or `one` depending on the value of $x^*_i$, and then replacing the remaining references to `X[`$j$`]` with `X[`$j-n$`]`. Above is Python code that implements this transformation, as well as an example of its execution on a simple program.](/images/introtcs/fig-hardwiring.webp){#hardwiringfig }
+![Given an $T$-line NAND-CIRC program $Q$ that has $n+m$ inputs and some $x^*\in \{0,1\}^n$, we can transform $Q$ into a $T+3$ line NAND-CIRC program $Q'$ that computes the map $w \mapsto Q(x^*w)$ for $w\in \{0,1\}^m$ by simply adding code to compute the `zero` and `one` constants,  replacing all references to `X[`$i$`]` with either `zero` or `one` depending on the value of $x^*_i$, and then replacing the remaining references to `X[`$j$`]` with `X[`$j-n$`]`. Above is Python code that implements this transformation, as well as an example of its execution on a simple program.](/images/introtcs/original-hardwiring.webp){#hardwiringfig }
 
 
 
@@ -421,18 +421,18 @@ $$
 
 
 > ### {.proofidea #proofidea-threenand-thm data-ref="threenand-thm"}
-لإثبات [threenand-thm](){.ref} نحتاج إلى إعطاء إسقاط يعمل في وقت متعدد الحدود من كلّ برنامج NAND-CIRC $Q$ إلى صيغة $3NAND$ $\Psi$ بحيث توجد $w$ بحيث $Q(w)=1$ إذا وفقط إذا وُجد $z$ يحقّق $\Psi$.
+لإثبات [threenand-thm](#threenand-thm){.ref} نحتاج إلى إعطاء إسقاط يعمل في وقت متعدد الحدود من كلّ برنامج NAND-CIRC $Q$ إلى صيغة $3NAND$ $\Psi$ بحيث توجد $w$ بحيث $Q(w)=1$ إذا وفقط إذا وُجد $z$ يحقّق $\Psi$.
 ولكلّ سطر $i$ من $Q$ نعرّف متغيّرًا مقابلًا $z_i$ في $\Psi$.
 وإذا كان السطر $i$ على الشكل `foo = NAND(bar,blah)` فإنّنا سنضيف البند $z_i = NAND(z_j,z_k)$ حيث $j$ و $k$ هما آخر سطرين كُتب فيهما `bar` و `blah`. وسنضع كذلك المتغيّرات المقابلة لمتغيّرات المدخل، فضلًا عن إضافة بند يضمن أن يكون الخرج النهائي $1$.
-ويمكن تنفيذ الاختزال الناتج في نحو اثني عشر سطرًا من Python، انظر [nandsattothreenandfig](){.ref}.
+ويمكن تنفيذ الاختزال الناتج في نحو اثني عشر سطرًا من Python، انظر [nandsattothreenandfig](#nandsattothreenandfig){.ref}.
 
 
 
-![/images/introtcs/lec_13_Cook_Levin-4.webp](/images/introtcs/lec_13_Cook_Levin-4.webp){#nandsattothreenandfig  }
+![/images/introtcs/lec_13_Cook_Levin-4.webp](/images/introtcs/original-nandsatto3nandreduction.webp){#nandsattothreenandfig  }
 
 
 ::: {.proof #proof-threenand-thm data-ref="threenand-thm"}
-لإثبات [threenand-thm](){.ref} نحتاج إلى إعطاء اختزال من $NANDSAT$ إلى $3NAND$.
+لإثبات [threenand-thm](#threenand-thm){.ref} نحتاج إلى إعطاء اختزال من $NANDSAT$ إلى $3NAND$.
 لنفترض أنّ $Q$ برنامج NAND-CIRC له $n$ مدخلًا وخرج واحد و $m$ سطرًا.
 ويمكننا دون فقدان من العموم أن نفترض أنّ $Q$ يحتوي على المتغيّرات `one` و `zero` كالمعتاد.
 
@@ -462,25 +462,25 @@ __الجزء الثاني: التسليمية.__ لنفترض أنّ هناك $z
 
 
 
-![A $3NAND$ instance that is obtained by taking a NAND-TM program for computing the $AND$ function, unrolling it to obtain a $NANDSAT$ instance, and then composing it with the reduction of [threenand-thm](){.ref}.](/images/introtcs/fig-threenandresultreduction.webp){#resultreduction .margin  }
+![A $3NAND$ instance that is obtained by taking a NAND-TM program for computing the $AND$ function, unrolling it to obtain a $NANDSAT$ instance, and then composing it with the reduction of [threenand-thm](#threenand-thm){.ref}.](/images/introtcs/original-threenandresultreduction.webp){#resultreduction .margin  }
 
 
 ## من $3NAND$ إلى $3SAT$
 
 
-الخطوة الأخيرة في برهان [cook-levin-thm](){.ref} هي الآتية:
+الخطوة الأخيرة في برهان [cook-levin-thm](#cook-levin-thm){.ref} هي الآتية:
 
 > ### {.lemma  #threenand-sat-thm}
 لدينا $3NAND \leq_p 3SAT$.
 
 
 > ### {.proofidea data-ref="threenand-sat-thm"}
-لإثبات [threenand-sat-thm](){.ref} نحتاج إلى إسقاط صيغة $3NAND$ $\varphi$ على صيغة $3SAT$ $\psi$ بحيث تكون $\varphi$ مرضية (satisfiable) إذا وفقط إذا كانت $\psi$ مرضية. والفكرة أنّه يمكننا تحويل كلّ قيد NAND من الشكل $a=NAND(b,c)$ إلى عطف من عطفات OR تتضمّن المتغيّرات $a,b,c$ ونفيها، بحيث يحتوي كلّ OR على ثلاثة حدود على الأكثر. والبناء إلى حدٍّ كبير مباشر، والتفاصيل معطاة أدناه.
+لإثبات [threenand-sat-thm](#threenand-sat-thm){.ref} نحتاج إلى إسقاط صيغة $3NAND$ $\varphi$ على صيغة $3SAT$ $\psi$ بحيث تكون $\varphi$ مرضية (satisfiable) إذا وفقط إذا كانت $\psi$ مرضية. والفكرة أنّه يمكننا تحويل كلّ قيد NAND من الشكل $a=NAND(b,c)$ إلى عطف من عطفات OR تتضمّن المتغيّرات $a,b,c$ ونفيها، بحيث يحتوي كلّ OR على ثلاثة حدود على الأكثر. والبناء إلى حدٍّ كبير مباشر، والتفاصيل معطاة أدناه.
 
 > ### { .pause }
-إنّ من التمارين الجيدة لك أن تحاول إيجاد صيغة 3CNF $\xi$ على ثلاثة متغيّرات $a,b,c$ بحيث يكون $\xi(a,b,c)$ صادقًا إذا وفقط إذا كان $a = NAND(b,c)$. وعندما تفعل ذلك، حاول أن ترى لماذا يستلزم هذا اختزالًا من $3NAND$ إلى $3SAT$، ومن ثمّ يُكمل برهان [threenand-sat-thm](){.ref}
+إنّ من التمارين الجيدة لك أن تحاول إيجاد صيغة 3CNF $\xi$ على ثلاثة متغيّرات $a,b,c$ بحيث يكون $\xi(a,b,c)$ صادقًا إذا وفقط إذا كان $a = NAND(b,c)$. وعندما تفعل ذلك، حاول أن ترى لماذا يستلزم هذا اختزالًا من $3NAND$ إلى $3SAT$، ومن ثمّ يُكمل برهان [threenand-sat-thm](#threenand-sat-thm){.ref}
 
-![Code and example output for the reduction given in [threenand-sat-thm](){.ref} of $3NAND$ to $3SAT$.](/images/introtcs/fig-3nandto3sat.webp){#threenandtothreesat   }
+![Code and example output for the reduction given in [threenand-sat-thm](#threenand-sat-thm){.ref} of $3NAND$ to $3SAT$.](/images/introtcs/original-3nandto3sat.webp){#threenandtothreesat   }
 
 
 ::: {.proof data-ref="threenand-sat-thm"}
@@ -489,28 +489,28 @@ $$
 z_i = NAND(z_j,z_k) \label{eq:NANDconstraint}
 $$
 مُحقَّق إذا كان $z_i=1$ كلّما كان $(z_j,z_k) \neq (1,1)$.
-وبمرورنا على جميع الحالات، يمكننا التحقّق من أنّ [eq:NANDconstraint](){.eqref} مكافئ للقيد
+وبمرورنا على جميع الحالات، يمكننا التحقّق من أنّ [eq:NANDconstraint](#eq:NANDconstraint){.eqref} مكافئ للقيد
 
 $$
  (\overline{z_i} \vee \overline{z_j} \vee\overline{z_k} ) \wedge          (z_i     \vee z_j )
          \wedge  (z_i     \vee z_k) \;\;. \label{eq:CNFNAND}
 $$
 
-فإنّ $z_j=z_k=1$ فإنّ القيد الأول في [eq:CNFNAND](){.ref} لا يكون صادقًا إلا إذا كان $z_i=0$.
-ومن جهة أخرى، إذا كان أحد $z_j$ أو $z_k$ يساوي $0$ فإنّ القيد الثاني أو الثالث سيفشل ما لم يكن $z_i=1$. وهذا يعني أنّه، معطى أيّ صيغة $3NAND$ $\varphi$ على $n$ متغيّرًا $z_0,\ldots,z_{n-1}$، يمكننا الحصول على صيغة $3SAT$ $\psi$ على المتغيّرات نفسها باستبدال كلّ قيد $3NAND$ في $\varphi$ بثلاثة قيود $3OR$ كما في [eq:CNFNAND](){.ref}.^[ستكون بعض عطفات OR في الصيغة الناتجة متضمّنة متغيّرين فقط. وإذا أصررنا على أن يتضمّن كلّ عطف ثلاثة متغيّرات مختلفة، فيمكننا دائمًا إضافة «متغيّر وهميّ» $z_{n+m}$ وإدراجه في كلّ عطفات OR المتضمّنة متغيّرين فقط، وإضافة قيد يوجب أن تكون قيمة هذا المتغيّر الوهمي صفرًا.]
-وبسبب تكافؤ [eq:NANDconstraint](){.eqref} و [eq:CNFNAND](){.eqref}، فإنّ الصيغة $\psi$ تحقّق أنّ $\psi(z_0,\ldots,z_{n-1})=\varphi(z_0,\ldots,z_{n-1})$ لكلّ إسناد $z_0,\ldots,z_{n-1} \in \{0,1\}^n$ للمتغيّرات.
+فإنّ $z_j=z_k=1$ فإنّ القيد الأول في [eq:CNFNAND](#eq:CNFNAND){.ref} لا يكون صادقًا إلا إذا كان $z_i=0$.
+ومن جهة أخرى، إذا كان أحد $z_j$ أو $z_k$ يساوي $0$ فإنّ القيد الثاني أو الثالث سيفشل ما لم يكن $z_i=1$. وهذا يعني أنّه، معطى أيّ صيغة $3NAND$ $\varphi$ على $n$ متغيّرًا $z_0,\ldots,z_{n-1}$، يمكننا الحصول على صيغة $3SAT$ $\psi$ على المتغيّرات نفسها باستبدال كلّ قيد $3NAND$ في $\varphi$ بثلاثة قيود $3OR$ كما في [eq:CNFNAND](#eq:CNFNAND){.ref}.^[ستكون بعض عطفات OR في الصيغة الناتجة متضمّنة متغيّرين فقط. وإذا أصررنا على أن يتضمّن كلّ عطف ثلاثة متغيّرات مختلفة، فيمكننا دائمًا إضافة «متغيّر وهميّ» $z_{n+m}$ وإدراجه في كلّ عطفات OR المتضمّنة متغيّرين فقط، وإضافة قيد يوجب أن تكون قيمة هذا المتغيّر الوهمي صفرًا.]
+وبسبب تكافؤ [eq:NANDconstraint](#eq:NANDconstraint){.eqref} و [eq:CNFNAND](#eq:CNFNAND){.eqref}، فإنّ الصيغة $\psi$ تحقّق أنّ $\psi(z_0,\ldots,z_{n-1})=\varphi(z_0,\ldots,z_{n-1})$ لكلّ إسناد $z_0,\ldots,z_{n-1} \in \{0,1\}^n$ للمتغيّرات.
 وبشكل خاصّ، $\psi$ مرضية إذا وفقط إذا كانت $\varphi$ مرضية، وعليه يكتمل البرهان.
 :::
 
 
-![/images/introtcs/lec_13_Cook_Levin-5.webp](/images/introtcs/lec_13_Cook_Levin-5.webp){#indsetfromnandsatfig   }
+![/images/introtcs/lec_13_Cook_Levin-5.webp](/images/introtcs/original-indsetfromnandsat.webp){#indsetfromnandsatfig   }
 
 
 
 ## الخلاصة
 
 لقد بيّنا أنّه لكلّ دالة $F$ في $\mathbf{NP}$، لدينا $F \leq_p NANDSAT \leq_p 3NAND \leq_p 3SAT$، ومن ثمّ فإنّ $3SAT$ هي $NP$-صعبة.
-ولأنّنا رأينا في [reductionchap](){.ref} أنّ $3SAT \leq_p QUADEQ$، و $3SAT \leq_p ISET$، و $3SAT \leq_p MAXCUT$ و $3SAT \leq_p LONGPATH$، فإنّ كلّ هذه المسائل $NP$-صعبة أيضًا.
+ولأنّنا رأينا في [reductionchap](#reductionchap){.ref} أنّ $3SAT \leq_p QUADEQ$، و $3SAT \leq_p ISET$، و $3SAT \leq_p MAXCUT$ و $3SAT \leq_p LONGPATH$، فإنّ كلّ هذه المسائل $NP$-صعبة أيضًا.
 وأخيرًا، بما أنّ كلّ المسائل المذكورة أعلاه تنتمي إلى $\mathbf{NP}$، فإنّها كلّها في الواقع $NP$-كاملة ولكلٍّ منها تعقيد مكافئ.
 وهناك لآلاف المسائل الطبيعيّة الأخرى التي هي أيضًا $NP$-كاملة.
 وإيجاد خوارزمية تعمل في وقت متعدد الحدود لأيّ واحدة منها سيستلزم خوارزمية تعمل في وقت متعدد الحدود لكلّها.
@@ -518,7 +518,7 @@ $$
 
 
 
-![/images/introtcs/lec_13_Cook_Levin-6.webp](/images/introtcs/lec_13_Cook_Levin-6.webp){#npcinclusionfig }
+![/images/introtcs/lec_13_Cook_Levin-6.webp](/images/introtcs/original-inclusion_npc.webp){#npcinclusionfig }
 
 > ### { .recap }
 * كثير من المسائل التي لا نعرف لها خوارزميات تعمل في وقت متعدد الحدود هي $NP$-كاملة، وهذا يعني أنّ إيجاد خوارزمية تعمل في وقت متعدد الحدود لأحدها سيستلزم خوارزمية من هذا النوع _لكلّ_ها.

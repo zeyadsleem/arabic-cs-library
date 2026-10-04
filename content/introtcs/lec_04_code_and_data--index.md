@@ -40,38 +40,38 @@ source: https://introtcs.org/
 هذا التطابق بين _الشيفرة_ (_code_) و_البيانات_ (_data_) هو أحد أكثر جوانب الحوسبة جوهرية.
 إنه يقف وراء فكرة الحواسيب _عامة الغرض_ (_general purpose_)، التي لا تكون موصولة سلفاً بحساب مهمةٍ واحدة فحسب، وهو أيضاً أساس أملنا في الحصول على ذكاء اصطناعي _عام_.
 يتّسع استعمال هذا المفهوم في جميع مجالات الحوسبة، من لغات البرمجة النصية إلى التعلّم الآلي، لكن من الإنصاف القول إننا لم نتقنه بعد إتقاناً كاملاً.
-كثير من عمليات الاستغلال الأمني تنطوي على حالات مثل "فيض المخزن المؤقت" (buffer overflows) حين ينجح المهاجمون في حقن شيفرة حيث توقّع النظام بياناتَ "خاملة" (passive) فحسب (انظر [XKCDmomexploitsfig](/images/introtcs/lec_04_code_and_data-1.webp){.ref}).
+كثير من عمليات الاستغلال الأمني تنطوي على حالات مثل "فيض المخزن المؤقت" (buffer overflows) حين ينجح المهاجمون في حقن شيفرة حيث توقّع النظام بياناتَ "خاملة" (passive) فحسب (انظر [XKCDmomexploitsfig](#XKCDmomexploitsfig){.ref}).
 العلاقة بين الشيفرة والبيانات تتجاوز حدود أجهزة الحاسوب الإلكترونية.
 فمثلاً يمكن التفكير في الـ DNA بوصفه برنامجاً وبيانات معاً (بعبارات شرودينغر، الذي كتب قبل اكتشاف بنية الـ DNA كتاباً ألهم واتسون وكريك، فإن الـ DNA هو في آنٍ واحد "مخطّط المهندس وحرفة البنّاء").
 
-![/images/introtcs/lec_04_code_and_data-1.webp](/images/introtcs/lec_04_code_and_data-1.webp){#XKCDmomexploitsfig .margin  }
+![/images/introtcs/lec_04_code_and_data-1.webp](/images/introtcs/original-exploits_of_a_mom.webp){#XKCDmomexploitsfig .margin  }
 
 
 
 
 ::: {.nonmath}
 في هذا الفصل سنبدأ باستكشاف بعض التطبيقات العديدة للتطابق بين الشيفرة والبيانات.
-نبدأ باستعمال تمثيل البرامج/الدوائر كسلاسل من أجل _عدِّ_ (_count_) عدد البرامج/الدوائر حتى حجمٍ معيّن، ونستعمل ذلك للحصول على نظير للنتيجة التي أثبتناها في [finiteuniversalchap](/images/introtcs/lec_04_code_and_data-3.webp){.ref}.
-هناك أثبتنا أن _كلَّ_ دالة يمكن حسابها بدائرة، لكن تلك الدائرة قد تكون بحجم أسّي (انظر [circuit-univ-thm-improved](https://en.wikipedia.org/wiki/ASCII){.ref} للحدّ الدقيق).
+نبدأ باستعمال تمثيل البرامج/الدوائر كسلاسل من أجل _عدِّ_ (_count_) عدد البرامج/الدوائر حتى حجمٍ معيّن، ونستعمل ذلك للحصول على نظير للنتيجة التي أثبتناها في [finiteuniversalchap](#finiteuniversalchap){.ref}.
+هناك أثبتنا أن _كلَّ_ دالة يمكن حسابها بدائرة، لكن تلك الدائرة قد تكون بحجم أسّي (انظر [circuit-univ-thm-improved](#circuit-univ-thm-improved){.ref} للحدّ الدقيق).
 في هذا الفصل سنثبت أن هناك _بعضَ_ الدوال التي لا يمكننا فعل أفضل منها: فالدائرة _الصغرى_ التي تحسبها بحجم أسّي.
 
 سنتكلّم أيضاً في هذا الفصل عن مخطّطي تمثيل البرامج/الدوائر كسلاسل لإثبات وجود "دائرة كونية" (universal circuit) — دائرة تستطيع تقييم دوائر أخرى.
 وفي لغات البرمجة يُعرف هذا بـ "المُقيِّم الدائري الذاتي" (meta circular evaluator) — برنامجٌ بلغة برمجة معيّنة يستطيع تنفيذ برامج أخرى في اللغة نفسها.
 هذه النتائج تخضع لقيدٍ مهم: يتعيّن أن تكون الدائرة الكونية أكبر حجماً من الدوائر التي تقيّمها.
-سنُري لاحقاً في [chaploops](/images/introtcs/fig-hierarchyproof.webp){.ref} كيف نتخلّص من هذا القيد، حيث سنُدخل _الحلقات_ (_loops_) و_آلات تورينغ_ (_Turing machines_).
+سنُري لاحقاً في [chaploops](#chaploops){.ref} كيف نتخلّص من هذا القيد، حيث سنُدخل _الحلقات_ (_loops_) و_آلات تورينغ_ (_Turing machines_).
 
-انظر [codedataoverviewfig](/images/introtcs/fig-sizecomplexity.webp){.ref} لمحةٍ عن نتائج هذا الفصل.
+انظر [codedataoverviewfig](#codedataoverviewfig){.ref} لمحةٍ عن نتائج هذا الفصل.
 :::
 
 
-![/images/introtcs/lec_04_code_and_data-2.webp](/images/introtcs/lec_04_code_and_data-2.webp){#codedataoverviewfig  }
+![/images/introtcs/lec_04_code_and_data-2.webp](/images/introtcs/original-codedataoverview.webp){#codedataoverviewfig  }
 
 
 
 ## تمثيل البرامج كسلاسل {#representprogramsec }
 
 
-![/images/introtcs/lec_04_code_and_data-3.webp](/images/introtcs/lec_04_code_and_data-3.webp){#markonerep .margin  }
+![/images/introtcs/lec_04_code_and_data-3.webp](/images/introtcs/original-tapemarkI.webp){#markonerep .margin  }
 
 يمكننا تمثيل البرامج أو الدوائر كسلاسل بطرق لا حصر لها.
 فمثلاً، بما أن الدوائر المنطقية رسومٌ موجّهة مُعطّلة الحلقات (directed acyclic graphs)، يمكننا استعمال تمثيل _مصفوفة التجاور_ (_adjacency matrix_) أو _قائمة التجاور_ (_adjacency list_) لها.
@@ -106,7 +106,7 @@ $O(1) + O(\log s) = O(\log s)$ رمزاً، كلٌّ منها يمكن تمثي�
 :::
 
 ::: { .pause }
-نُهمل البرهان الصوري لـ[asciirepprogramthm](https://en.wikipedia.org/wiki/CPython){.ref} لكنّرجاءً تأكّد أنك تفهم لماذا ينتج عن السبب أعلاه.
+نُهمل البرهان الصوري لـ[asciirepprogramthm](#asciirepprogramthm){.ref} لكنّرجاءً تأكّد أنك تفهم لماذا ينتج عن السبب أعلاه.
 :::
 
 
@@ -116,13 +116,13 @@ $O(1) + O(\log s) = O(\log s)$ رمزاً، كلٌّ منها يمكن تمثي�
 ## عدِّ البرامج، وحدودٌ دنيا لحجم برامج NAND-CIRC {#countingcircuitsec }
 
 إحدى نتائج تمثيل البرامج كسلاسل هي أن عدد البرامج ذات طولٍ معيّن محدودٌ بعدد السلاسل التي تمثّلها.
-ولهذا الأمر نتائج على المجموعات $SIZE_{n,m}(s)$ التي عرّفناها في [secdefinesizeclasses](https://github.com/frasercrmck/llvm-leg){.ref}.
+ولهذا الأمر نتائج على المجموعات $SIZE_{n,m}(s)$ التي عرّفناها في [secdefinesizeclasses](#secdefinesizeclasses){.ref}.
 
 
 > ### {.theorem title="عدِّ البرامج" #program-count}
 > لكل $s,n,m\in \N$،
 > $$|SIZE_{n,m}(s)| \leq 2^{O(s \log s)}.$$
-> أي إنّ ثَمّ ما لا يتجاوز $2^{O(s\log s)}$ دالةً يحسبها برامج NAND-CIRC التي لا تتجاوز $s$ سطراً.^[الثابت الضمني في رمز $O(\cdot)$ أصغر من $10$. أي إنّ لكل $s$ كبير بما يكفي، $|SIZE_{n,m}(s)|<  2^{10s\log s}$، انظر [efficientrepresentation](http://llvm.org/){.ref}. وكما ناقشنا في [notationsec](https://en.wikipedia.org/wiki/LLVM#Front_ends){.ref}، فإننا نستعمل الحدّ $10$ لمجرّد أنّه عددٌ مستدير.]
+> أي إنّ ثَمّ ما لا يتجاوز $2^{O(s\log s)}$ دالةً يحسبها برامج NAND-CIRC التي لا تتجاوز $s$ سطراً.^[الثابت الضمني في رمز $O(\cdot)$ أصغر من $10$. أي إنّ لكل $s$ كبير بما يكفي، $|SIZE_{n,m}(s)|<  2^{10s\log s}$، انظر [efficientrepresentation](#efficientrepresentation){.ref}. وكما ناقشنا في [notationsec](#notationsec){.ref}، فإننا نستعمل الحدّ $10$ لمجرّد أنّه عددٌ مستدير.]
 
 ::: {.proof data-ref="program-count"}
 لكل $n,m \in \N$، سنُظهر أنّ بالإسناد $E$ من $SIZE_{n,m}(s)$ إلى مجموعة السلاسل ذات الطول $c s \log s$ لأي ثابت $c$.
@@ -130,14 +130,14 @@ $O(1) + O(\log s) = O(\log s)$ رمزاً، كلٌّ منها يمكن تمثي�
 وحجم هذه المجموعة الأخيرة هو $1+2+4+\cdots + 2^\ell = 2^{\ell +1} - 1$ بحسب صيغة مجموع المتتاليات الهندسية.
 
 سنجعل $E$ تُسقط $f$ على تمثيل أصغر برنامج يحسب $f$.
-وبما أنّ $f \in SIZE_{n,m}(s)$، فهناك برنامج $P$ من $s$ سطراً على الأكثر يمكن تمثيله بسلسلة طولها $c s \log s$ على الأكثر بحسب [asciirepprogramthm](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf){.ref}.
+وبما أنّ $f \in SIZE_{n,m}(s)$، فهناك برنامج $P$ من $s$ سطراً على الأكثر يمكن تمثيله بسلسلة طولها $c s \log s$ على الأكثر بحسب [asciirepprogramthm](#asciirepprogramthm){.ref}.
 علاوةً على ذلك، فإنّ الإسقاط $f \mapsto E(f)$ أحاديّ، إذ إنّ لكل $f,f':\{0,1\}^n \rightarrow \{0,1\}$ مختلفتين يجب أن يوجد مدخلٌ ما $x\in \{0,1\}^n$ تكون عنده $f(x) \neq f'(x)$.
 وهذا يعني إنّ البرنامجين اللذين يحسبان $f$ و$f'$ على التوالي لا يمكن أن يكونا متطابقين.
 :::
 
 
 
-[program-count](https://www.ece.umd.edu/~blj/RiSC/){.ref} له نتيجة تالية مهمة. عدد الدوال التي يمكن حسابها بدوائر/برامج صغيرة أصغر بكثير من العدد الكلي للدوال،
+[program-count](#program-count){.ref} له نتيجة تالية مهمة. عدد الدوال التي يمكن حسابها بدوائر/برامج صغيرة أصغر بكثير من العدد الكلي للدوال،
 وعليه توجد دوال تتطلّب دوائر كبيرة جداً (بل _أسّية الحجم_) لحسابها.
 ولرؤية السبب، لاحظ أنّ دالةً تُسقِط $\{0,1\}^2$ إلى $\{0,1\}$ يمكن التعرّف عليها بقائمتها من قيمها الأربع على المدخلات $00,01,10,11$.
 ودالةٌ تُسقِط $\{0,1\}^3$ إلى $\{0,1\}$ يمكن التعرّف عليها بقائمتها من قيمها الثماني على المدخلات $000,001,010,011,100,101,110,111$.
@@ -149,7 +149,7 @@ $O(1) + O(\log s) = O(\log s)$ رمزاً، كلٌّ منها يمكن تمثي�
 > ### {.theorem title="حدٌّ أدنى من عدِّ الدوال" #counting-lb}
 > يوجد ثابت $\delta > 0$ بحيث إنّ لكل $n$ كبيرٍ بما يكفي، هناك دالة $f:\{0,1\}^n\rightarrow \{0,1\}$ بحيث
 > $f \not\in SIZE_n \left(\tfrac{\delta 2^n}{n} \right)$.
-> أي إنّ أقصر برنامج NAND-CIRC يحسب $f$ يتطلّب أكثر من $\delta \cdot 2^n/n$ سطراً.^[الثابت $\delta$ هو $0.1$ على الأقل، وفعلاً يمكن تحسينه ليقترب من $1/2$ إلى حدٍّ لا نهائي، انظر [efficientlbex](http://www.myhdl.org/){.ref}.]
+> أي إنّ أقصر برنامج NAND-CIRC يحسب $f$ يتطلّب أكثر من $\delta \cdot 2^n/n$ سطراً.^[الثابت $\delta$ هو $0.1$ على الأقل، وفعلاً يمكن تحسينه ليقترب من $1/2$ إلى حدٍّ لا نهائي، انظر [efficientlbex](#efficientlbex){.ref}.]
 
 
 
@@ -164,7 +164,7 @@ $$
 
 
 لقد رأينا من قبل أنّ _كلَّ_ دالة تُسقِط $\{0,1\}^n$ إلى $\{0,1\}$ يمكن حسابها ببرنامج من $O(2^n /n)$ سطراً.
-ويُظهر [counting-lb](https://goo.gl/ALgbVS){.ref} أنّ هذا الحدّ مُحكَم، بمعنى أنّ بعض الدوال تتطلّب فعلاً هذا العدد الفلكي من السطور لحسابها.
+ويُظهر [counting-lb](#counting-lb){.ref} أنّ هذا الحدّ مُحكَم، بمعنى أنّ بعض الدوال تتطلّب فعلاً هذا العدد الفلكي من السطور لحسابها.
 
 ::: { .bigidea #countinglb }
 بعض الدوال $f:\{0,1\}^n \rightarrow \{0,1\}$ _لا يمكن_ حسابها بدائرة منطقية (Boolean circuit) تستعمل عدداً من البوابات أقلّ من عدد _أسّي_ (في $n$).
@@ -178,16 +178,16 @@ $$
 > ### {.remark title="تمثيل أكفأ (متقدّم، اختياري)" #efficientrepresentation}
 تمثيل ASCII ليس أقصر تمثيلٍ لبرامج NAND-CIRC.
 برامج NAND-CIRC مكافئة لدوائر ببوابات NAND، ما يعني أنّ برنامج NAND-CIRC من $s$ سطراً و$n$ مدخلاً و$m$ مخرجاً يمكن تمثيله برسم بياني موجّه مُعنوَن من $s+n$ رأساً، منها $n$ ذات درجة داخلية صفرية، والـ $s$ الباقية ذات درجة داخلية لا تتجاوز اثنتين.
-وباستعمال تمثيل _مصفوفة التجاور_ (_adjacency matrix_) لمثل هذه الرسوم البيانية، يمكننا تخفيض الثابت الضمني في [program-count](https://goo.gl/gkpmBF){.ref} ليقترب من $5$ إلى حدٍّ لا نهائي، انظر [efficientrepresentationex](https://en.wikipedia.org/wiki/Fermat%27s_Last_Theorem){.ref}.
+وباستعمال تمثيل _مصفوفة التجاور_ (_adjacency matrix_) لمثل هذه الرسوم البيانية، يمكننا تخفيض الثابت الضمني في [program-count](#program-count){.ref} ليقترب من $5$ إلى حدٍّ لا نهائي، انظر [efficientrepresentationex](#efficientrepresentationex){.ref}.
 
 
 ### مبرهنة تدرّج الحجم (اختياري)
 
-بـ[NAND-univ-thm-improved](https://en.wikipedia.org/wiki/Perpetual_motion){.ref} يحتوي الصنف $SIZE_{n}(10 \cdot 2^n /n)$ على _كل_ الدوال من $\{0,1\}^n$ إلى $\{0,1\}$، بينما بـ[counting-lb](https://en.wikipedia.org/wiki/Angle_trisection){.ref} هناك _بعضُ_ دالة $f:\{0,1\}^n \rightarrow \{0,1\}$ _ليست منتمية_ إلى $SIZE_{n}(0.1 \cdot 2^n / n)$. وبعبارة أخرى، لكل $n$ كبيرٍ بما يكفي،
+بـ[NAND-univ-thm-improved](#NAND-univ-thm-improved){.ref} يحتوي الصنف $SIZE_{n}(10 \cdot 2^n /n)$ على _كل_ الدوال من $\{0,1\}^n$ إلى $\{0,1\}$، بينما بـ[counting-lb](#counting-lb){.ref} هناك _بعضُ_ دالة $f:\{0,1\}^n \rightarrow \{0,1\}$ _ليست منتمية_ إلى $SIZE_{n}(0.1 \cdot 2^n / n)$. وبعبارة أخرى، لكل $n$ كبيرٍ بما يكفي،
 $$
 SIZE_n\left(0.1 \tfrac{2^n}{n} \right) \subsetneq SIZE_n\left(10 \tfrac{2^n}{n} \right) \;.
 $$
-ويبيّن أنّنا يمكننا استعمال [counting-lb](https://en.wikipedia.org/wiki/Bell%27s_theorem){.ref} لإثبات نتيجةٍ أكثر عمومية: كلّما زدنا "ميزانيّتنا" من البوابات، استطعنا حساب دوال جديدة.
+ويبيّن أنّنا يمكننا استعمال [counting-lb](#counting-lb){.ref} لإثبات نتيجةٍ أكثر عمومية: كلّما زدنا "ميزانيّتنا" من البوابات، استطعنا حساب دوال جديدة.
 
 
 > ### {.theorem title="مبرهنة تدرّج الحجم" #sizehiearchythm}
@@ -200,17 +200,17 @@ $$
 > لإثبات المبرهنة نحتاج إلى إيجاد دالة $f:\{0,1\}^n \rightarrow \{0,1\}$ بحيث $f$ _يمكن_ حسابها بدائرة من $s+10n$ بوابة، لكن _لا يمكن_ حسابها بدائرة من $s$ بوابة.
 > وسنقوم بذلك عبر متتالية من الدوال $f_0,f_1,f_2,\ldots,f_N$ لها الخصائص التالية: __(1)__ $f_0$ _يمكن_ حسابها بدائرة من $10n$ بوابة على الأكثر، __(2)__ $f_N$ _لا يمكن_ حسابها بدائرة من $0.1 \cdot 2^n/n$ بوابة، و__(3)__ لكل $i\in \{0,\ldots, N\}$، إذا كان $f_i$ يمكن حسابها بدائرة من الحجم $s$، فإنّ $f_{i+1}$ يمكن حسابها بدائرة من الحجم $s + 10n$ على الأكثر.
 > مجتمعةً، هذه الخصائص تعني أنّه إذا كان $i$ أصغر عددٍ بحيث $f_i \not\in SIZE_n(s)$، فإنّه بما أنّ $f_{i-1} \in SIZE_n(s)$ لا بدّ من أن يكون $f_i \in SIZE_n(s+10n)$، وهذا هو ما نحتاج إلى إثباته.
-> انظر [hierarchyprooffig](http://www.scottaaronson.com/papers/npcomplete.pdf){.ref} لتوضيح.
+> انظر [hierarchyprooffig](#hierarchyprooffig){.ref} لتوضيح.
 
 
 
-![We prove [sizehiearchythm](http://www.scottaaronson.com/blog/?p=266){.ref} by coming up with a list $f_0,\ldots,f_{2^n}$ of functions such that $f_0$ is  the all zero function, $f_{2^n}$ is a function
-(obtained from [counting-lb](/images/introtcs/fig-aaronsonsoapbubble.webp){.ref}) outside of $SIZE_n(0.1\cdot 2^n/n)$ and such that $f_{i-1}$ and $f_i$ differ by one another on at most one input. We can show that for every $i$, the number of gates to compute $f_i$ is at most $10n$ larger than the number of gates to compute $f_{i-1}$ and so if we let $i$ be the smallest number such that $f_i \not\in SIZE_n(s)$, then $f_i \in SIZE_n(s+10n)$.](http://science.sciencemag.org/content/337/6102/1628.full){#hierarchyprooffig .margin }
+![We prove [sizehiearchythm](#sizehiearchythm){.ref} by coming up with a list $f_0,\ldots,f_{2^n}$ of functions such that $f_0$ is  the all zero function, $f_{2^n}$ is a function
+(obtained from [counting-lb](#counting-lb){.ref}) outside of $SIZE_n(0.1\cdot 2^n/n)$ and such that $f_{i-1}$ and $f_i$ differ by one another on at most one input. We can show that for every $i$, the number of gates to compute $f_i$ is at most $10n$ larger than the number of gates to compute $f_{i-1}$ and so if we let $i$ be the smallest number such that $f_i \not\in SIZE_n(s)$, then $f_i \in SIZE_n(s+10n)$.](/images/introtcs/original-hierarchyproof.webp){#hierarchyprooffig .margin }
 
 
 
 ::: {.proof data-ref="sizehiearchythm"}
-لنكن $f^*: \{0,1\}^n \rightarrow \{0,1\}$ هي الدالة (وجودها مضمون لنا بـ[counting-lb](http://www.cs.princeton.edu/~ken/MCS86.pdf){.ref}) بحيث $f^* \not\in SIZE_n(0.1 \cdot 2^n /n)$.
+لنكن $f^*: \{0,1\}^n \rightarrow \{0,1\}$ هي الدالة (وجودها مضمون لنا بـ[counting-lb](#counting-lb){.ref}) بحيث $f^* \not\in SIZE_n(0.1 \cdot 2^n /n)$.
 نُعرّف الدوال $f_0,f_1,\ldots, f_{2^n}$ التي تُسقِط $\{0,1\}^n$ إلى $\{0,1\}$ على النحو التالي. لكل $x\in \{0,1\}^n$، إذا كان $lex(x) \in \{0,1,\ldots, 2^n-1\}$ هو ترتيب $x$ في الترتيب المعجميّ فإنّ
 $$
 f_i(x) = \begin{cases} f^*(x) & lex(x)< i  \\ 0 & \text{otherwise} \end{cases} \;.
@@ -242,8 +242,8 @@ $$
 
 
 
-![An illustration of some of what we know about the size complexity classes (not to scale!). This figure depicts classes of the form $SIZE_{n,n}(s)$ but the state of affairs for other size complexity classes such as $SIZE_{n,1}(s)$ is similar. We know by [NAND-univ-thm](http://www.theverge.com/2016/11/4/13518210/deepmind-starcraft-ai-google-blizzard){.ref} (with the improvement of [tight-upper-bound](https://arxiv.org/pdf/1609.08144.pdf){.ref}) that all functions mapping $n$ bits to $n$ bits can be computed by a circuit of size $c \cdot 2^n$ for $c \leq 10$, while on the other hand the counting lower bound ([counting-lb](http://www.telegraph.co.uk/science/2017/03/14/can-solve-chess-problem-holds-key-human-consciousness/){.ref}, see also [countingmultibitex](https://arxiv.org/abs/1508.05929){.ref}) shows that _some_ such functions will require $0.1 \cdot 2^n$, and the size hierarchy theorem ([sizehiearchythm](/images/introtcs/lec_04_code_and_data-6.webp){.ref}) shows the existence of functions in $SIZE_n(S) \setminus SIZE_n(s)$ whenever $s=o(S)$, see also [sizehiearchyex](http://www.wisdom.weizmann.ac.il/~ranraz/publications/P5nlb.pdf){.ref}.
-We also consider some specific examples: addition of two $n/2$ bit numbers can be done in $O(n)$ lines, while we don't know of such a program for _multiplying_ two $n$ bit numbers, though we do know it can be done in $O(n^2)$ and in fact even better size. In the above,  $FACTOR_n$ corresponds to the inverse problem of multiplying- finding the _prime factorization_ of a given number. At the moment we do not know of any circuit a polynomial (or even sub-exponential) number of lines that can compute $FACTOR_n$. ](http://logic.pdmi.ras.ru/~kulikov/papers/2012_5n_lower_bound_cie.pdf){#sizeclassesfig    }
+![An illustration of some of what we know about the size complexity classes (not to scale!). This figure depicts classes of the form $SIZE_{n,n}(s)$ but the state of affairs for other size complexity classes such as $SIZE_{n,1}(s)$ is similar. We know by [NAND-univ-thm](#NAND-univ-thm){.ref} (with the improvement of [tight-upper-bound](#tight-upper-bound){.ref}) that all functions mapping $n$ bits to $n$ bits can be computed by a circuit of size $c \cdot 2^n$ for $c \leq 10$, while on the other hand the counting lower bound ([counting-lb](#counting-lb){.ref}, see also [countingmultibitex](#countingmultibitex){.ref}) shows that _some_ such functions will require $0.1 \cdot 2^n$, and the size hierarchy theorem ([sizehiearchythm](#sizehiearchythm){.ref}) shows the existence of functions in $SIZE_n(S) \setminus SIZE_n(s)$ whenever $s=o(S)$, see also [sizehiearchyex](#sizehiearchyex){.ref}.
+We also consider some specific examples: addition of two $n/2$ bit numbers can be done in $O(n)$ lines, while we don't know of such a program for _multiplying_ two $n$ bit numbers, though we do know it can be done in $O(n^2)$ and in fact even better size. In the above,  $FACTOR_n$ corresponds to the inverse problem of multiplying- finding the _prime factorization_ of a given number. At the moment we do not know of any circuit a polynomial (or even sub-exponential) number of lines that can compute $FACTOR_n$. ](/images/introtcs/original-sizecomplexity.webp){#sizeclassesfig    }
 
 ::: {.remark title="الدوال الصريحة" #explicitfunc}
 بينما تُضمن مبرهنة تدرّج الحجم وجود _بعضِ_ دالة _يمكن_ حسابها، مثلاً، باستعمال $n^2$ بوابة لكن لا باستعمال $100n$ بوابة، فإنّنا لا نعرف أي مثالٍ صريحٍ لمثل هذه الدالة.
@@ -334,7 +334,7 @@ $$
 $$
 EVAL_{s,n,m}(px) = \begin{cases} P(x) & \text{$p\in \{0,1\}^{|S(s)|}$ represents a size-$s$ program $P$ with $n$ inputs and $m$ outputs}  \\ 0^m & \text{otherwise} \end{cases} \label{evalcirceq}
 $$
-حيث $S(s)$ مُعرَّفة كما في [lengthstringrepreseq](){.eqref}، ونحن نستعمل مخطّط التمثيل التجريدي الموصوف في [representprogramsec](){.ref}.
+حيث $S(s)$ مُعرَّفة كما في [lengthstringrepreseq](#lengthstringrepreseq){.eqref}، ونحن نستعمل مخطّط التمثيل التجريدي الموصوف في [representprogramsec](#representprogramsec){.ref}.
 
 أي أنّ $EVAL_{s,n,m}$ يأخذ كمدخل دمج سلسلتين: سلسلة $p\in \{0,1\}^{|S(s)|}$ وسلسلة $x\in \{0,1\}^n$.
 إذا كانت $p$ سلسلة تمثّل قائمة ثلاثيات $L$ بحيث يكون $(n,m,L)$ تمثيلَ قائمة قوالب لبرنامج NAND-CIRC $P$ من الحجم $s$، فإنّ $EVAL_{s,n,m}(px)$ تساوي التقييم $P(x)$ للبرنامج $P$ على المدخل $x$.
@@ -346,7 +346,7 @@ __ما يجب استخلاصه.__ التفاصيل الدقيقة لتعريف $
 
 * $EVAL_{s,n,m}$ دالةٌ واحدة، بحيث إنّ حساب $EVAL_{s,n,m}$ يتيح تقييم _أيّ_ برامج NAND-CIRC بطولٍ ما على _مدخلات_ _أيّ_ وبالطول المناسب.
 
-* $EVAL_{s,n,m}$ هي _دالة_ لا _برنامج_ (تذكّر النقاش في [specvsimplrem](){.ref}). أي أنّ $EVAL_{s,n,m}$ هي _مواصفة_ (_specification_) لما يقابل كلَّ مدخلٍ من المخرجات. ووجود _برنامج_ يحسب $EVAL_{s,n,m}$ (أي _تنفيذٍ_ (_implementation_) لـ$EVAL_{s,n,m}$) واقعةٌ منفصلة، تحتاج إلى إثبات (وسنقوم بذلك في [bounded-univ](){.ref}، مع برنامج أكفأ معروض في [eff-bounded-univ](){.ref}).
+* $EVAL_{s,n,m}$ هي _دالة_ لا _برنامج_ (تذكّر النقاش في [specvsimplrem](#specvsimplrem){.ref}). أي أنّ $EVAL_{s,n,m}$ هي _مواصفة_ (_specification_) لما يقابل كلَّ مدخلٍ من المخرجات. ووجود _برنامج_ يحسب $EVAL_{s,n,m}$ (أي _تنفيذٍ_ (_implementation_) لـ$EVAL_{s,n,m}$) واقعةٌ منفصلة، تحتاج إلى إثبات (وسنقوم بذلك في [bounded-univ](#bounded-univ){.ref}، مع برنامج أكفأ معروض في [eff-bounded-univ](#eff-bounded-univ){.ref}).
 
 
 
@@ -358,35 +358,35 @@ __ما يجب استخلاصه.__ التفاصيل الدقيقة لتعريف $
 :::
 
 أي أنّ برنامج NAND-CIRC $U_{s,n,m}$ يأخذ وصفَ _أيّ برنامج NAND-CIRC آخر_ $P$ (بالطول والمدخلات/المخرجات الصحيحة) و_أيّ مدخلٍ_ $x$، ويحسب نتيجة تقييم البرنامج $P$ على المدخل $x$.
-وبناءً على التكافؤ بين برامج NAND-CIRC والدوائر المنطقية، يمكننا أيضاً أن نفكّر في $U_{s,n,m}$ كدائرة تأخذ كمدخل وصف دوائر أخرى ومدخلاتها، وتُرجع تقييمها، انظر [universalcircfig](){.ref}.
-نسمّي برنامج NAND-CIRC هذا $U_{s,n,m}$ الذي يحسب $EVAL_{s,n,m}$ _برنامجاً كونيّاً مقيَّداً_ (_bounded universal program_) (أو _دائرة كونية_، انظر [universalcircfig](){.ref}).
+وبناءً على التكافؤ بين برامج NAND-CIRC والدوائر المنطقية، يمكننا أيضاً أن نفكّر في $U_{s,n,m}$ كدائرة تأخذ كمدخل وصف دوائر أخرى ومدخلاتها، وتُرجع تقييمها، انظر [universalcircfig](#universalcircfig){.ref}.
+نسمّي برنامج NAND-CIRC هذا $U_{s,n,m}$ الذي يحسب $EVAL_{s,n,m}$ _برنامجاً كونيّاً مقيَّداً_ (_bounded universal program_) (أو _دائرة كونية_، انظر [universalcircfig](#universalcircfig){.ref}).
 "الكوني" تشير إلى أنّ هذا _برنامجٌ واحد_ يستطيع تقييم _أيّ_ شيفرة، بينما "المقيَّد" تشير إلى أنّ $U_{s,n,m}$ يقيّم برامج ذات حجمٍ مقيَّد فقط.
 طبعاً فإنّ هذا القيد متأصّل في لغة برمجة NAND-CIRC، إذ إنّ برنامجاً من $s$ سطراً (أو، بما يعادل، دائرة من $s$ بوابة) يمكنه أن يأخذ على الأكثر $2s$ مدخلاً.
-ولاحقاً، في [chaploops](){.ref}، سنُقدّم مفهوم _الحلقات_ (_loops_) (ونموذج _آلات تورينغ_ (_Turing machines_))، الذي يتيح التخلّص من هذا القيد.
+ولاحقاً، في [chaploops](#chaploops){.ref}، سنُقدّم مفهوم _الحلقات_ (_loops_) (ونموذج _آلات تورينغ_ (_Turing machines_))، الذي يتيح التخلّص من هذا القيد.
 
 
 ::: {.proof data-ref="bounded-univ"}
-[bounded-univ](){.ref} نتيجةٌ مهمّة، لكنّها في الحقيقة ليست صعبة الإثبات.
-وبشكلٍ محدّد، بما أنّ $EVAL_{s,n,m}$ دالة منتهية، فإنّ [bounded-univ](){.ref} نتيجةٌ فورية من [NAND-univ-thm](){.ref}، التي تنصّ على أنّ _كلّ_ دالة منتهية يمكن حسابها بـ_بعضِ_ برامج NAND-CIRC.
+[bounded-univ](#bounded-univ){.ref} نتيجةٌ مهمّة، لكنّها في الحقيقة ليست صعبة الإثبات.
+وبشكلٍ محدّد، بما أنّ $EVAL_{s,n,m}$ دالة منتهية، فإنّ [bounded-univ](#bounded-univ){.ref} نتيجةٌ فورية من [NAND-univ-thm](#NAND-univ-thm){.ref}، التي تنصّ على أنّ _كلّ_ دالة منتهية يمكن حسابها بـ_بعضِ_ برامج NAND-CIRC.
 :::
 
 
 
 
 > ### { .pause }
-[bounded-univ](){.ref} بسيطة لكنّها مهمّة. تأكّد أنّك تفهم ما تعنيه هذه المبرهنة، ولماذا هي نتيجةٌ لازمة من [NAND-univ-thm](){.ref}.
+[bounded-univ](#bounded-univ){.ref} بسيطة لكنّها مهمّة. تأكّد أنّك تفهم ما تعنيه هذه المبرهنة، ولماذا هي نتيجةٌ لازمة من [NAND-univ-thm](#NAND-univ-thm){.ref}.
 
 
 
 
-![/images/introtcs/lec_04_code_and_data-4.webp](/images/introtcs/lec_04_code_and_data-4.webp){#universalcircfig .margin  }
+![/images/introtcs/lec_04_code_and_data-4.webp](/images/introtcs/original-universalcircuit.webp){#universalcircfig .margin  }
 
 
 
 ### برامج كونية أكفأ
 
-[bounded-univ](){.ref} تُثبت وجود برنامج NAND-CIRC لحساب $EVAL_{s,n,m}$، لكنها لا تقدّم أي حدٍّ صريح على حجم هذا البرنامج.
-و[NAND-univ-thm](){.ref}، التي استعملناها لإثبات [bounded-univ](){.ref}، تضمن وجود برنامج NAND-CIRC قد يبلغ حجمه _أسّياً_ (exponential) في طول مدخله.
+[bounded-univ](#bounded-univ){.ref} تُثبت وجود برنامج NAND-CIRC لحساب $EVAL_{s,n,m}$، لكنها لا تقدّم أي حدٍّ صريح على حجم هذا البرنامج.
+و[NAND-univ-thm](#NAND-univ-thm){.ref}، التي استعملناها لإثبات [bounded-univ](#bounded-univ){.ref}، تضمن وجود برنامج NAND-CIRC قد يبلغ حجمه _أسّياً_ (exponential) في طول مدخله.
 وهذا يعني أنّه حتى لقيم $s,n,m$ المتوسطة الصغر (مثل $n=100,s=300,m=1$)، قد يتطلّب حساب $EVAL_{s,n,m}$ برنامج NAND بعدد من السطور أكبر من عدد الذرّات في الكون المرصود!
 ولحسن الحظّ، يمكننا أن نفعل أفضل بكثير من ذلك.
 وفعلاً، لكل $s,n,m$ يوجد برنامج NAND-CIRC لحساب $EVAL_{s,n,m}$ حجمه _متعدّد الحدود_ (polynomial) في طول مدخله.
@@ -397,12 +397,12 @@ __ما يجب استخلاصه.__ التفاصيل الدقيقة لتعريف $
 $EVAL_{s,n,m}:\{0,1\}^{S+n} \rightarrow \{0,1\}^m$ المعرَّفة أعلاه (حيث $S$ هو عدد البتات اللازمة لتمثيل برامج من $s$ سطراً).
 
 ::: { .pause }
-إن لم تكن قد راجعت ذلك من قبل، فقد يكون هذا وقتاً مناسباً لمراجعة رمز $O$ في [secbigohnotation](){.ref}. وبشكلٍ خاص، فإنّ طريقةً مكافئة لصياغة [eff-bounded-univ](){.ref} هي القول إنّها تنصّ على أنّه _يوجد_ عدد $c>0$ بحيث إنّ _لكل_ $s,n,m \in \N$، يوجد برنامج NAND-CIRC $P$ من $c s^2 \log s$ سطراً على الأكثر يحسب الدالة $EVAL_{s,n,m}$.
+إن لم تكن قد راجعت ذلك من قبل، فقد يكون هذا وقتاً مناسباً لمراجعة رمز $O$ في [secbigohnotation](#secbigohnotation){.ref}. وبشكلٍ خاص، فإنّ طريقةً مكافئة لصياغة [eff-bounded-univ](#eff-bounded-univ){.ref} هي القول إنّها تنصّ على أنّه _يوجد_ عدد $c>0$ بحيث إنّ _لكل_ $s,n,m \in \N$، يوجد برنامج NAND-CIRC $P$ من $c s^2 \log s$ سطراً على الأكثر يحسب الدالة $EVAL_{s,n,m}$.
 :::
 
 
-على خلاف [bounded-univ](){.ref}، فإنّ [eff-bounded-univ](){.ref} ليست نتيجةً لازمة تافهة من حقيقة أنّ كل دالة منتهية يمكن حسابها بدائرة ما.
-فإثبات [eff-bounded-univ](){.ref} يتطلّب منا أن نقدّم برنامج NAND-CIRC تجريدياً لحساب الدالة $EVAL_{s,n,m}$.
+على خلاف [bounded-univ](#bounded-univ){.ref}، فإنّ [eff-bounded-univ](#eff-bounded-univ){.ref} ليست نتيجةً لازمة تافهة من حقيقة أنّ كل دالة منتهية يمكن حسابها بدائرة ما.
+فإثبات [eff-bounded-univ](#eff-bounded-univ){.ref} يتطلّب منا أن نقدّم برنامج NAND-CIRC تجريدياً لحساب الدالة $EVAL_{s,n,m}$.
 وسنقوم بذلك على عدّة مراحل.
 
 1. أوّلاً، سنصف الخوارزمية التي تقيّم $EVAL_{s,n,m}$ في "شيفرةٍ زائفة" (pseudo code).
@@ -412,13 +412,13 @@ $EVAL_{s,n,m}:\{0,1\}^{S+n} \rightarrow \{0,1\}^m$ المعرَّفة أعلاه
 3. أخيراً، سنُظهر كيف يمكننا تحويل برنامج Python هذا إلى برنامج NAND-CIRC.
 
 
-يسفر هذا النهج عن أكثر بكثير من مجرّد إثبات [eff-bounded-univ](){.ref}: سنرى أنّه من الممكن بالفعل دائماً تحويل شيفرةٍ (خالٍة من الحلقات) المكتوبة في لغاتٍ عالية المستوى مثل Python إلى
+يسفر هذا النهج عن أكثر بكثير من مجرّد إثبات [eff-bounded-univ](#eff-bounded-univ){.ref}: سنرى أنّه من الممكن بالفعل دائماً تحويل شيفرةٍ (خالٍة من الحلقات) المكتوبة في لغاتٍ عالية المستوى مثل Python إلى
 برامج NAND-CIRC (وعليه إلى الدوائر المنطقية أيضاً).
 
 
 ### مُفسِّر NAND-CIRC بـ"الشيفرة الزائفة"
 
-لإثبات [eff-bounded-univ](){.ref} يكفي تقديم برنامج NAND-CIRC من $O(s^2 \log s)$ سطراً يستطيع تقييم برامج NAND-CIRC من $s$ سطراً.
+لإثبات [eff-bounded-univ](#eff-bounded-univ){.ref} يكفي تقديم برنامج NAND-CIRC من $O(s^2 \log s)$ سطراً يستطيع تقييم برامج NAND-CIRC من $s$ سطراً.
 لنبدأ إذن بالتفكير في كيفية تقييمنا لمثل هذه البرامج لو كنا مقيدين بتنفيذ عمليات NAND فقط.
 أي لنصف بإيجاز صورةَ _خوارزميةٍ_ تُدخل عليها $n,m,s$، وقائمة ثلاثيات $L$، وسلسلة $x\in \{0,1\}^n$، فتقيم البرنامج الذي تمثّله $(n,m,L)$ على السلسلة $x$.
 
@@ -456,18 +456,18 @@ Endfor
 Return $y_0,\ldots,y_{m-1}$
 ```
 
-[evalnandcircalg](){.ref} يقيّم البرنامج المُعطى له كمدخل سطراً بعد سطر، مُحدِّثاً جدول `Vartable` ليحتوي على قيمة كل متغيّر.
+[evalnandcircalg](#evalnandcircalg){.ref} يقيّم البرنامج المُعطى له كمدخل سطراً بعد سطر، مُحدِّثاً جدول `Vartable` ليحتوي على قيمة كل متغيّر.
 وفي نهاية التنفيذ يُخرج المتغيّرات في المواضع $t-m,t-m+1,\ldots,t-1$، وهي المتغيّرات المقابلة لمدخلات.
 
 
 
 ### مُفسِّر NAND بلغة Python { #nandevalpythonsec }
 
-لنجعل الأمر أكثر تجريداً، ولنرَ كيف نُنفّذ [evalnandcircalg](){.ref} في لغة البرمجة _Python_.
+لنجعل الأمر أكثر تجريداً، ولنرَ كيف نُنفّذ [evalnandcircalg](#evalnandcircalg){.ref} في لغة البرمجة _Python_.
 (لا شيء خاص في Python؛ كان من اليسير أن نقدّم الدالة المقابلة في JavaScript أو C أو OCaml أو أيّ لغة برمجة أخرى.)
 سنبني دالة `NANDEVAL` التي على مدخلات $n,m,L,x$ تُخرج نتيجة تقييم البرنامج الذي تمثّله $(n,m,L)$ على $x$.
 ولتبسيط المسألة، لن نهتمّ بالحالة التي لا تكون فيها $L$ تمثيلاً لبرنامجٍ صحيح من $n$ مدخلاً و$m$ مخرجاً.
-الشيفرة معروضة في [nandevalcode](){.ref}.
+الشيفرة معروضة في [nandevalcode](#nandevalcode){.ref}.
 ``` { .python .full #nandevalcode title="Code for evaluating a NAND-CIRC program given in the list-of-tuples representation" }
 def NANDEVAL(n,m,L,X):
     # Evaluate a NAND-CIRC program from list of tuple representation.
@@ -508,13 +508,13 @@ print(NANDEVAL(2,1,L,(1,1))) # XOR(1,1)
 
 ### بناء مُفسِّر NAND-CIRC بلغة NAND-CIRC
 
-ننتقل الآن إلى وصف برهان [eff-bounded-univ](){.ref}.
+ننتقل الآن إلى وصف برهان [eff-bounded-univ](#eff-bounded-univ){.ref}.
 ولإثبات المبرهنة لا يكفي تقديم برنامج بايثون.
 بل نحتاج إلى إظهار كيف نحسب الدالة $EVAL_{s,n,m}$ باستعمال _برنامج NAND-CIRC_.
 بعبارة أخرى، مهمّتنا هي أن نحوّل، لكل $s,n,m$، شيفرة بايثون الموجودة في [#nandevalpythonsec](){.ref} إلى برنامج NAND-CIRC $U_{s,n,m}$ يحسب الدالة $EVAL_{s,n,m}$.
 
 > ### { .pause }
-قبل أن تقرأ المزيد، حاول أن تفكّر في كيفية تقديمك أنت لـ"برهانٍ بنّاء" لـ[eff-bounded-univ](){.ref}.
+قبل أن تقرأ المزيد، حاول أن تفكّر في كيفية تقديمك أنت لـ"برهانٍ بنّاء" لـ[eff-bounded-univ](#eff-bounded-univ){.ref}.
 أي فكّر في كيف تكتب، بلغة البرمجة التي تختارها، دالة `universal(s,n,m)` تُخرج على المدخلات $s,n,m$ شيفرة برنامج NAND-CIRC $U_{s,n,m}$ بحيث يحسب $U_{s,n,m}$ الدالة $EVAL_{s,n,m}$.
 هناك فرقٌ دقيق لكنّه حاسم بين هذه الدالة وبين برنامج بايثون `NANDEVAL` الموصوف أعلاه.
 فبدلاً من تقييم برنامجٍ معطى $P$ فعلياً على مدخلٍ ما $w$، ينبغي أن تُخرج الدالة `universal` _شيفرةَ_ برنامج NAND-CIRC يحسب الخرائط $(P,x) \mapsto P(x)$.
@@ -524,7 +524,7 @@ print(NANDEVAL(2,1,L,(1,1))) # XOR(1,1)
 غير أنّ NAND لا تملك متغيّرات ذات قيم صحيحة، لذا لا يمكننا كتابة شيفرة مثل
 `Vartable[i]` لمتغيّرٍ ما `i`.
 لكنّنا نستطيع _أن نُنفّذ_ الدالة `GET(Vartable,i)` التي تُخرج البت رقم `i` من المصفوفة `Vartable`.
-وهذا ليس إلا الدالة $LOOKUP_\ell$ التي رأيناها في [lookup-thm](){.ref}!
+وهذا ليس إلا الدالة $LOOKUP_\ell$ التي رأيناها في [lookup-thm](#lookup-thm){.ref}!
 
 > ### { .pause }
 من فضلك تأكّد أنّك تفهم لماذا `GET` و$LOOKUP_\ell$ هما الدالة نفسها.
@@ -539,7 +539,7 @@ $$
 حيث نُعرّف السلسلة $i \in \{0,1\}^\ell$ مع عددٍ في $\{0,\ldots, 2^{\ell}-1 \}$ باستعمال التمثيل الثنائي.
 ويمكننا حساب $UPDATE_\ell$ باستعمال برنامج NAND-CIRC من $O(2^\ell \ell)=(s \log s)$ سطراً على النحو التالي:
 
-1. لكل $j\in [2^\ell]$، يوجد برنامج NAND-CIRC من $O(\ell)$ سطراً لحساب الدالة $EQUALS_j: \{0,1\}^\ell \rightarrow \{0,1\}$ التي على المدخل $i$ تُخرج $1$ إذا وفقط إذا كان $i$ مساوياً لـ(التمثيل الثنائي لـ)$j$. (نترك التحقّق من ذلك كتمارين في [equals](){.ref} و[equalstwo](){.ref}.)
+1. لكل $j\in [2^\ell]$، يوجد برنامج NAND-CIRC من $O(\ell)$ سطراً لحساب الدالة $EQUALS_j: \{0,1\}^\ell \rightarrow \{0,1\}$ التي على المدخل $i$ تُخرج $1$ إذا وفقط إذا كان $i$ مساوياً لـ(التمثيل الثنائي لـ)$j$. (نترك التحقّق من ذلك كتمارين في [equals](#equals){.ref} و[equalstwo](#equalstwo){.ref}.)
 
 2. رأينا أنّنا يمكننا حساب الدالة $IF:\{0,1\}^3 \rightarrow \{0,1\}$ بحيث تساوي $IF(a,b,c)$ القيمة $b$ إذا كان $a=1$ والقيمة $c$ إذا كان $a=0$.
 
@@ -562,7 +562,7 @@ def UPDATE_ell(V,i,b):
 ولأنّ الحلقة على `j` في `UPDATE` تُنفَّذ $2^\ell$ مرّة، ولأنّ حساب `EQUALS_j` يستغرق $O(\ell)$ سطراً، فإنّ العدد الإجمالي للأسطر اللازمة لحساب `UPDATE` هو $O(2^\ell \cdot \ell) = O(s \log s)$.
 ومتى استطعنا حساب `GET` و`UPDATE`، فإنّ بقية التنفيذ تتلخّص في "مسك دفاتر" (book keeping) يجب أن يُنجَز بعناية، لكنّه ليس بحدّ ذاته بالكثير من البصيرة، ولذلك نُغفل التفاصيل الكاملة.
 ولأنّنا نُنفّذ `GET` و`UPDATE` $s$ مرّة، فإنّ العدد الإجمالي للأسطر اللازمة لحساب $EVAL_{s,n,m}$ هو $O(s^2) + O(s^2 \log s) = O(s^2 \log s)$.
-وهذا يُكمل (باستثناء التفاصيل المُغفلة) برهان [eff-bounded-univ](){.ref}.
+وهذا يُكمل (باستثناء التفاصيل المُغفلة) برهان [eff-bounded-univ](#eff-bounded-univ){.ref}.
 
 
 
@@ -570,11 +570,11 @@ def UPDATE_ell(V,i,b):
 ::: {.remark title="التحسين إلى تكلفةٍ شبه خطّية (ملاحظة متقدّمة اختيارية)" #quasilinearevalrem}
 برنامج NAND-CIRC أعلاه أقلّ كفاءةً من نظيره في بايثون، إذ إنّ NAND لا تقدّم مصفوفات ذات وصولٍ عشوائيٍّ كفء. فمثلاً تستغرق عملية `LOOKUP` على مصفوفة من $s$ بتّ $\Omega(s)$ سطراً في NAND، رغم أنّها تستغرق $O(1)$ خطوة (أو ربما $O(\log s)$ خطوة، بحسب طريقة عدّنا) في _Python_.
 
-ويبيّن أنّه من الممكن تحسين حدّ [eff-bounded-univ](){.ref}، وتقييم برامج NAND-CIRC من $s$ سطراً باستعمال برنامج NAND-CIRC من $O(s \log s)$ سطراً.
+ويبيّن أنّه من الممكن تحسين حدّ [eff-bounded-univ](#eff-bounded-univ){.ref}، وتقييم برامج NAND-CIRC من $s$ سطراً باستعمال برنامج NAND-CIRC من $O(s \log s)$ سطراً.
 المفتاح هو النظر في وصف برامج NAND-CIRC كدوائر، وبشكلٍ خاص كرسوم بيانية موجّهةٍ مُعطّلة الحلقات (DAGs) ذات درجة داخلية مقيّدة.
 وسيقابل البرنامج الكوني $U_s$ لبرامج $s$ سطراً _رسمٌ بياني كونيّ_ (_universal graph_) $H_s$ لمثل رسوم DAG ذات $s$ رأساً.
 ويمكننا أن نفكّر في مثل هذا الرسم البياني $U_s$ على أنّه "توصيلٌ ثابت" (_wiring_) لشبكة اتصالات، ينبغي أن تكون قادرة على استيعاب أيّ نمطٍ اعتباطي من الاتصال بين $s$ رأساً (حيث يقابل هذا النمط برنامج NAND-CIRC من $s$ سطراً).
-ويبيّن أنّه توجد [شبكات توجيه] (https://goo.gl/NnkkjM) بكفاءةٍ تتيح تضمين أيّ دائرة من $s$ رأساً داخل رسم بياني كونيّ من الحجم $O(s \log s)$، انظر الملاحظات المرجعية [bibnotescodeasdata](){.ref} للمزيد عن هذه المسألة.
+ويبيّن أنّه توجد [شبكات توجيه] (https://goo.gl/NnkkjM) بكفاءةٍ تتيح تضمين أيّ دائرة من $s$ رأساً داخل رسم بياني كونيّ من الحجم $O(s \log s)$، انظر الملاحظات المرجعية [bibnotescodeasdata](#bibnotescodeasdata){.ref} للمزيد عن هذه المسألة.
 :::
 
 
@@ -582,7 +582,7 @@ def UPDATE_ell(V,i,b):
 
 ## مُفسِّر Python بلغة NAND-CIRC (نقاش)
 
-لإثبات [eff-bounded-univ](){.ref} قمنا بالأساس بترجمة كل سطرٍ في برنامج بايثون لـ`EVAL` إلى مقطع NAND-CIRC مكافئ.
+لإثبات [eff-bounded-univ](#eff-bounded-univ){.ref} قمنا بالأساس بترجمة كل سطرٍ في برنامج بايثون لـ`EVAL` إلى مقطع NAND-CIRC مكافئ.
 لكنّ أيّاً من استدلالاتنا لم يكن خاصّاً بالدالة $EVAL$ بعينها.
 فمن الممكن ترجمة _كلّ_ برنامج بايثون إلى برنامج NAND-CIRC مكافئ بكفاءةٍ مماثلة.
 (وبشكلٍ أكثر تحديداً، إذا كان برنامج بايثون يستغرق $T(n)$ عمليةً على مدخلات طولها $n$ على الأكثر، فإنّ هناك برنامج NAND-CIRC من $O(T(n) \log T(n))$ سطراً يوافق برنامج بايثون على المدخلات ذات الطول $n$.)
@@ -593,7 +593,7 @@ def UPDATE_ell(V,i,b):
 إذن، لتحويل برنامج بايثون إلى برنامج NAND-CIRC مكافئ، يكفي أن نُظهر كيفية تحويل برنامج بلغةِ _آلةٍ ما_ إلى برنامج NAND-CIRC مكافئ.
 ومن عائلات لغات الآلة المُبسَّطة (وبالتالي المريحة) ما يُعرف بـ_معمارية ARM_ (_ARM architecture_) التي تُشغّل الكثير من الأجهزة المحمولة بما فيها كلّ أجهزة Android تقريباً.^[ARM اختصار لعبارة "Advanced RISC Machine"، حيث RISC بدورها اختصار لعبارة "Reduced instruction set computer".]
 وهناك لغات آلةٍ أبسط من ذلك، مثل [معمارية LEG](https://github.com/frasercrmck/llvm-leg) التي نُفّذ لها واجهةٌ خلفية (backend) لـ[مُصرِّف LLVM](http://llvm.org/) (وعليه يمكن أن يكون الهدفَ من ترجمة أيٍّ من [القائمة الكبيرة والمتزايدة](https://en.wikipedia.org/wiki/LLVM#Front_ends) من اللغات التي يدعمها هذا المُصرِّف).
-ومن الأمثلة الأخرى [معمارية TinyRAM](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf) (أُلهمت بأنظمة البرهان التفاعلي التي سنتناولها في [chapproofs](){.ref})، ومعمارية [الحاسوب البسيط بشكلٍ مُضحك](https://www.ece.umd.edu/~blj/RiSC/) (_Ridiculously Simple Computer_) المُوجَّهة للتعليم.
+ومن الأمثلة الأخرى [معمارية TinyRAM](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf) (أُلهمت بأنظمة البرهان التفاعلي التي سنتناولها في [chapproofs](#chapproofs){.ref})، ومعمارية [الحاسوب البسيط بشكلٍ مُضحك](https://www.ece.umd.edu/~blj/RiSC/) (_Ridiculously Simple Computer_) المُوجَّهة للتعليم.
 إنّ المرور واحداً واحداً على مجموعات التعليمات لمثل هذه الحواسيب وترجمتها إلى مقاطع NAND ليس ممتعاً، لكنّه أمرٌ يمكن إنجازه.
 وفعلاً، في نهاية المطاف هذا قريبٌ جداً من التحويل الذي يجري عند تحويل شيفرتنا عالية المستوى إلى بوابات سيليكون حقيقية، وهي ليست مختلفة كثيراً عن عمليات برنامج NAND-CIRC.
 وفعلاً إنّ أدواتً مثل [MyHDL](http://www.myhdl.org/) التي تحوّل "من بايثون إلى السيليكون" أن تُستعمل لتحويل برنامج بايثون إلى برنامج NAND-CIRC.
@@ -619,7 +619,7 @@ def UPDATE_ell(V,i,b):
 
 
 ويمكننا أن نأخذ قفزة إيمان ونقرّر أنّ الدوائر المنطقية (أو بما يعادلها برامج NAND-CIRC) تحتضن فعلاً _كلَّ_ الحساب الذي نستطيع تصوّره.
-وهذه العبارة (في مجال الدوال اللانهائية، وهو ما سنصادفه في [chaploops](){.ref}) تُنسب عادةً إلى ألونزو كيرش وآلان تورينغ، ويُشار إليها في ذلك السياق بـ_أطروحة كيرش-تورينغ_ (_Church-Turing Thesis_).
+وهذه العبارة (في مجال الدوال اللانهائية، وهو ما سنصادفه في [chaploops](#chaploops){.ref}) تُنسب عادةً إلى ألونزو كيرش وآلان تورينغ، ويُشار إليها في ذلك السياق بـ_أطروحة كيرش-تورينغ_ (_Church-Turing Thesis_).
 وكما سنتاقش في المحاضرات القادمة، فإنّ أطروحة كيرش-تورينغ ليست مبرهنةً رياضية ولا حتى حدساً رياضياً.
 بل إنّها، كالنظريات في الفيزياء، تتعلّق بالنمذجة الرياضية للعالم الحقيقي.
 وفي سياق الدوال المنتهية، يمكننا تقديم الفرضية أو التنبّؤ غير الرسمي التالي:
@@ -645,7 +645,7 @@ def UPDATE_ell(V,i,b):
 نقول إنّ النظام $Z$ _يحسب_ الدالة $f:\{0,1\}^n \rightarrow \{0,1\}$ خلال $t$ ثانية إذا، كلّما ضبطنا المنبهات على قيمة $x\in \{0,1\}^n$، وقسنا المخرج بعد $t$ ثانية، حصلنا على $f(x)$.
 
 عندئذٍ يمكننا صياغة PECTT على أنّها تقرّر أنّه إذا وُجد نظامٌ $Z$ من هذا النوع يحسب $F$ خلال $t$ ثانية، فإنّ هناك برنامج NAND-CIRC يحسب $F$ ولا يتجاوز عدد أسطره $\alpha(Vt)^2$، حيث $\alpha$ ثابتُ تطبيع. (ويمكننا أيضاً أن نأخذ في الحسبان صوراً بديلة نستعمل فيها [مساحة السطح] (https://goo.gl/ALgbVS) بدل الحجم، أو نأخذ $(Vt)$ أُسّاً غير $2$. لكنّه لا يوجد أيّ من هذه الاختيارات فرقاً نوعياً في النقاش التالي.)
-وبشكلٍ خاص، لنفترض أنّ $f:\{0,1\}^n \rightarrow \{0,1\}$ دالة تتطلّب $2^n/(100n)>2^{0.8n}$ سطراً لأيّ برنامج NAND-CIRC (وهذه دالة موجودة بحكم [counting-lb](){.ref}).
+وبشكلٍ خاص، لنفترض أنّ $f:\{0,1\}^n \rightarrow \{0,1\}$ دالة تتطلّب $2^n/(100n)>2^{0.8n}$ سطراً لأيّ برنامج NAND-CIRC (وهذه دالة موجودة بحكم [counting-lb](#counting-lb){.ref}).
 عندئذٍ ستنفي PECTT أنّ حجم نظامٍ يحسب $F$ أو زمنه لا بدّ أن يكون $2^{0.2 n}/\sqrt{\alpha}$ على الأقلّ.
 وبما أنّ هذه الكمية تنمو أُسّياً في $n$، فإنّه من السهل ضبط المعاملات بحيث لا يستطيع حتى لقيم $n$ المتوسطة الكبيرة أن يتّسع نظامٌ من هذا النوع داخل كوننا.
 
@@ -674,9 +674,9 @@ def UPDATE_ell(V,i,b):
 ومع ذلك، ادّعى بعض الناس أنّ هناك في الواقع جهازاً فيزيائياً بسيطاً جداً يستطيع حلّ هذه المسألة، وأنّه يمكن بناؤه باستعمال بعض أوتاد الخشب والصابون. والفكرة أنّنا إذا أخذنا لوحين زجاجيين ووضعنا بينهما $m$ وتداً خشبياً في المواضع $(x_1,y_1),\ldots,(x_m,y_m)$، فإنّ فقاعات ستتشكّل تمسّ حوافّها تلك الأوتاد على نحوٍ يُصغّر الطاقة الكلية، وهو ما يبيّن أنّه دالةً في مجموع أطوال المقاطع المستقيمة.
 والمشكلة في هذا الجهاز أنّ الطبيعة، تماماً كالبشر، كثيراً ما تعلق في "المتفارعات المحلية" (local optima).
 أي أنّ التهيئة الناتجة لن تكون هي التهيئة التي تحقّق الحدّ الأدنى المطلق للطاقة الكلية، بل ستكون تهيئةً لا يمكن تحسينها بتغييراتٍ محلية.
-وقد أجرى [آرونسون](http://www.scottaaronson.com/papers/npcomplete.pdf) تجاربً فعلية (انظر [aaronsonsoapfig](){.ref})، فرأى أنّه بينما ينجح هذا الجهاز غالباً مع ثلاثة أو أربعة أوتاد، إلا أنّه يبدأ بإعطاء نتائج دون الأمثلية ما إن يزيد عدد الأوتاد عن ذلك.
+وقد أجرى [آرونسون](http://www.scottaaronson.com/papers/npcomplete.pdf) تجاربً فعلية (انظر [aaronsonsoapfig](#aaronsonsoapfig){.ref})، فرأى أنّه بينما ينجح هذا الجهاز غالباً مع ثلاثة أو أربعة أوتاد، إلا أنّه يبدأ بإعطاء نتائج دون الأمثلية ما إن يزيد عدد الأوتاد عن ذلك.
 
-![Scott Aaronson [tests](http://www.scottaaronson.com/blog/?p=266) a candidate device for computing Steiner trees using soap bubbles.](/images/introtcs/fig-aaronsonsoapbubble.webp){#aaronsonsoapfig .margin  }
+![Scott Aaronson [tests](http://www.scottaaronson.com/blog/?p=266) a candidate device for computing Steiner trees using soap bubbles.](/images/introtcs/original-aaronsonsoapbubble.webp){#aaronsonsoapfig .margin  }
 
 * **حوسبة الـ DNA.** اقترح الناس استعمال خصائص الـ DNA لحلّ مسائل حوسبية صعبة. والمزايا الرئيسية للـ DNA هي القدرة، من حيث المبدأ، على ترميز كثيرٍ من المعلومات في مساحةٍ فيزيائية صغيرة نسبياً، وكذلك إجراء الحساب على هذه المعلومات بطريقة شديدة التوازي. ووقت كتابة هذا النص، كان قد [أُبْرِزَت](http://science.sciencemag.org/content/337/6102/1628.full) إمكانية استعمال الـ DNA لتخزين نحو $10^{16}$ بتّاً من المعلومات في منطقة نصف قطرها نحو مليمتر، مقابل نحو $10^{10}$ بتّاً بأفضل تقنية أقراصٍ صلبة معروفة. وهذا لا يضع تحدّياً حقيقياً أمام PECTT، لكنّه يشير إلى ضرورة التحفّظ في اختيار الثابت وعدم افتراض أنّ تقنيات الأقراص الصلبة + السيليكون الحالية هي الأفضل الممكن على الإطلاق.^[كنا متحفّظين إلى حدٍّ كبير في المعاملات المقترحة لـ PECTT، بافتراضنا أنّه يُمكن تخزين ما يصل إلى $\ell_P^{-2}10^{-6} \sim 10^{61}$ بتّاً في منطقة نصف قطرها مليمتر.]
 
@@ -700,7 +700,7 @@ def UPDATE_ell(V,i,b):
 وقد انطلقت الفكرة من الملاحظة أنّ الأنظمة ذات التأثيرات الكمّية القوية يصعب جداً محاكاتها على حاسوب.
 وبقلب هذه الملاحظة رأساً على عقب، اقترح الناس استعمال مثل هذه الأنظمة لإجراء حسابات لا نعرف كيف نجريها بغير ذلك.
 ووقت كتابة هذا النص، لم تبنَ بعد حواسيب كمّية قابلة للتوسّع، لكنّها إمكانيةٌ مذهلة، ولا تبدو مناقضةً لأيّ قانونٍ من قوانين الطبيعة المعروف.
-وسنتناول الحوسبة الكمّية بمزيدٍ من التفصيل بكثير في [quantumchap](){.ref}.
+وسنتناول الحوسبة الكمّية بمزيدٍ من التفصيل بكثير في [quantumchap](#quantumchap){.ref}.
 وينطوي نمذجة الحوسبة الكمّية على توسيع نموذج الدوائر المنطقية إلى _دوائر كمّية_ (_Quantum circuits_) ذات بوابةٍ واحدةٍ إضافية (خاصة جداً). غير أنّ الخلاصة الرئيسة هي أنّه بينما تُشير الحوسبة الكمّية إلى حاجتنا إلى تعديل PECTT، فإنّها _لا_ تتطلّب مراجعةً كاملة لنظرةنا إلى العالم. وفعلاً، يبقى كلّ محتوى هذا الكتاب تقريباً كما هو سواء أكان نموذج الحوسبة الأساسيّ دوائر منطقية أم دوائر كمّية.
 
 
@@ -711,7 +711,7 @@ def UPDATE_ell(V,i,b):
 وفي التعمية التطبيقية، يُصادف غالباً عباراتٌ مثل "النظام المُعمّى $X$ يوفّر 128 بتّاً من الأمان". وما تعنيه هذه العبارة حقاً هو أنّ __(أ)__ يُفتَرَض أنّه لا توجد دائرة منطقية (أو، بما يعادلها، برنامج NAND-CIRC) من حجم أصغر بكثير من $2^{128}$ يستطيع كسر $X$، و __(ب)__ نفترض أنّه لا توجد آلية فيزيائية أخرى تستطيع أداء أفضل، ومن ثمّ فإنّ كسر $X$ سيتطلّب نحو $2^{128}$ من "الموارد".
 ونقول "يُفتَرَض" لا "مُثبَت" لأنّه، بينما يمكننا صياغة عبارة أنّ كسر النظام لا يمكن إنجازه بدائرة من $s$ بوابة بوصفها حدساً رياضياً دقيقاً، فإنّنا في الوقت الحالي عاجزون عن _إثبات_ عبارةٍ من هذا النوع لأيّ نظام تعميةٍ غير تافه.
 وهذا مرتبطٌ بسؤال $\mathbf{P}$ مقابل $\mathbf{NP}$ الذي سنتناوله في الفصول القادمة.
-وسنستكشف التعمية في [chapcryptography](){.ref}.
+وسنستكشف التعمية في [chapcryptography](#chapcryptography){.ref}.
 :::
 
 
@@ -729,13 +729,13 @@ def UPDATE_ell(V,i,b):
 
 
 
-![/images/introtcs/lec_04_code_and_data-6.webp](/images/introtcs/lec_04_code_and_data-6.webp){#finiterecapfig }
+![/images/introtcs/lec_04_code_and_data-6.webp](/images/introtcs/original-finitecomprecap.webp){#finiterecapfig }
 
 
 ## خلاصة الجزء الأول: الحوسبة المنتهية
 
 يُختم هذا الفصل الجزء الأول من الكتاب الذي يتناول _الحوسبة المنتهية_ (_finite computation_) (أي حساب الدوال التي تُسقِط عدداً ثابتاً من المدخلات المنطقية إلى عددٍ ثابتٍ من المخرجات المنطقية).
-والخلاصات الرئيسة من [compchap](){.ref} و[finiteuniversalchap](){.ref} و[codeanddatachap](){.ref} هي كما يلي (انظر أيضاً [finiterecapfig](){.ref}):
+والخلاصات الرئيسة من [compchap](#compchap){.ref} و[finiteuniversalchap](#finiteuniversalchap){.ref} و[codeanddatachap](#codeanddatachap){.ref} هي كما يلي (انظر أيضاً [finiterecapfig](#finiterecapfig){.ref}):
 
 * يمكننا تعريف رسميّ فكرة أنّ الدالة $f:\{0,1\}^n \rightarrow \{0,1\}^m$ قابلة للحساب باستعمال $s$ عملية أساسية. ولا يهمّ كثيراً ما إذا كانت هذه العمليات هي AND/OR/NOT أو NAND أو أساساً كونيّاً آخر. يمكننا وصف حسابٍ من هذا النوع إمّا باستعمال _دائرة_ (_circuit_) وإمّا باستعمال _برنامج سطريّ_ (_straight-line program_).
 
@@ -745,7 +745,7 @@ def UPDATE_ell(V,i,b):
 
 * يمكننا وصف دائرة/برنامج $P$ كسلسلة. ولكل $s$، هناك دائرة/برنامج _كونيّ_ (_universal_) $U_s$ يستطيع تقييم برامج من الطول $s$ معطى وصفَها كسلاسل. ويمكننا استعمال هذا التمثيل أيضاً _لعدِّ_ عدد الدوائر التي عدد بواباتها $s$ على الأكثر، ومن ثمّ إثبات أنّ بعض الدوال لا يمكن حسابها بدوائر أصغر حجماً من الأسّي.
 
-* إذا كانت هناك دائرة من $s$ بوابة تحسب دالة $f$، فإنّنا نستطيع بناء جهاز فيزيائي لحساب $f$ باستعمال $s$ مكوّناً أساسياً (مثل الترانزستورات). و"أطروحة كيرش-تورينغ الفيزيائية الموسّعة" تقرّر أنّ الاتجاه المعاكس صحيح أيضاً: إذا كانت $f$ دالة يتطلّب _كلّ_ دائرةٍ فيها $s$ بوابة على الأقلّ، فإنّ _كلّ_ جهاز فيزيائي لحساب $f$ سيتطلّب نحو $s$ من "الموارد الفيزيائية". وأبرز تحدٍّ لـ PECTT هو _الحوسبة الكمّية_، وسنتناولها في [quantumchap](){.ref}.
+* إذا كانت هناك دائرة من $s$ بوابة تحسب دالة $f$، فإنّنا نستطيع بناء جهاز فيزيائي لحساب $f$ باستعمال $s$ مكوّناً أساسياً (مثل الترانزستورات). و"أطروحة كيرش-تورينغ الفيزيائية الموسّعة" تقرّر أنّ الاتجاه المعاكس صحيح أيضاً: إذا كانت $f$ دالة يتطلّب _كلّ_ دائرةٍ فيها $s$ بوابة على الأقلّ، فإنّ _كلّ_ جهاز فيزيائي لحساب $f$ سيتطلّب نحو $s$ من "الموارد الفيزيائية". وأبرز تحدٍّ لـ PECTT هو _الحوسبة الكمّية_، وسنتناولها في [quantumchap](#quantumchap){.ref}.
 
 __معاينة سريعة:__ في الجزء التالي سنتناول كيفية نمذجة المهامّ الحوسبية على _مدخلاتٍ غير مقيّدة_ (_unbounded_)، حيث تُصنَّف بدوال $F:\{0,1\}^* \rightarrow \{0,1\}^*$ (أو $F:\{0,1\}^* \rightarrow \{0,1\}$) تستطيع أن تأخذ عدداً غير مقيَّد من المدخلات المنطقية.
 
@@ -778,13 +778,13 @@ c. يوجد برنامج NAND-CIRC من $O(\sqrt{s})$ سطراً، يُعطى ك
 
 ::: {.exercise title="مبرهنة تدرّج الحجم للدوال متعدّدة البتات" #sizehiearchyex}
 برهن أنّه يوجد عدد $C$ بحيث إنّ لكل $n,m$ و$n+m < s < m\cdot 2^n / (Cn)$، توجد دالة $f \in SIZE_{n,m}(C\cdot s) \setminus SIZE_{n,m}(s)$.
-انظر الحاشية للتلميح.^[اتبع برهان [sizehiearchythm](){.ref}، مع استبدال استعمال حجّة العدّ بـ[countingmultibitex](){.ref}.]
+انظر الحاشية للتلميح.^[اتبع برهان [sizehiearchythm](#sizehiearchythm){.ref}، مع استبدال استعمال حجّة العدّ بـ[countingmultibitex](#countingmultibitex){.ref}.]
 :::
 
 ::: {.exercise title="التمثيل الأكفأ للدوائر وحدٌّ أعلى عدٍّّ أدقّ" #efficientrepresentationex}
-استعمل أفكار [efficientrepresentation](){.ref} لإظهار أنّه لكل $\epsilon>0$ ولكل $s,n,m$ كبيرين بما يكفي،
+استعمل أفكار [efficientrepresentation](#efficientrepresentation){.ref} لإظهار أنّه لكل $\epsilon>0$ ولكل $s,n,m$ كبيرين بما يكفي،
 $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
-استنتج أنّ الثابت الضمني في [program-count](){.ref} يمكن جعله يقترب من $5$ إلى حدٍّ لا نهائي.
+استنتج أنّ الثابت الضمني في [program-count](#program-count){.ref} يمكن جعله يقترب من $5$ إلى حدٍّ لا نهائي.
 انظر الحاشية للتلميح.^[باستعمال تمثيل قائمة التجاور، يمكن تمثيل رسمٍ بياني فيه $n$ رأساً ذات درجة داخلية صفرية و$s$ رأساً ذات درجة داخلية اثنتين بنحو $2s\log(s+n) \leq 2s (\log s + O(1))$ بتّاً.
 ويمكن تحديد تسمية رؤوس المدخلات $n$ والمخرجات $m$ بقائمة من $n$ تسمية في $[n]$ ومن $m$ تسمية في $[m]$.
 ]
@@ -792,7 +792,7 @@ $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
 
 ::: {.exercise title="حدٌّ أدنى بالعدّ أدقّ" #efficientlbex}
 برهن أنّه لكل $\delta< 1/2$، إذا كان $n$ كبيراً بما يكفي، فإنّ هناك دالة $f:\{0,1\}^n \rightarrow \{0,1\}$ بحيث $f \not\in SIZE_{n,1}\left( \tfrac{\delta 2^n}{n} \right)$.
-انظر الحاشية للتلميح.^[_تلميح:_ استعمل نتائج [efficientrepresentationex](){.ref} والحقيقة أنّه في هذا النطاق $m=1$ و$n\ll s$.]
+انظر الحاشية للتلميح.^[_تلميح:_ استعمل نتائج [efficientrepresentationex](#efficientrepresentationex){.ref} والحقيقة أنّه في هذا النطاق $m=1$ و$n\ll s$.]
 :::
 
 
@@ -811,12 +811,12 @@ $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
 ::: {.exercise title="EVAL مع XOR" #XOREVAL}
 لكل $n$ كبيرٍ بما يكفي، لتكن $E_n:\{0,1\}^{n^2} \rightarrow \{0,1\}$ الدالة التي تأخذ سلسلةً من الطول $n^2$ ترمّز زوجاً $(P,x)$ حيث $x\in \{0,1\}^n$ و$P$ برنامج NAND من $n$ مدخلاً ومخرجٍ واحد، ومن $n^{1.1}$ سطراً على الأكثر، وتُرجع مخرج $P$ على $x$.^[لاحظ أنّه إذا كان $n$ كبيراً بما يكفي، فإنّ تمثيل مثل هذا الزوج بـ$n^2$ بتّاً سهل، إذ يمكننا تمثيل البرنامج باستعمال $O(n^{1.1}\log n)$ بتّاً، ويمكننا دائماً تبطين تمثيلنا ليصل طوله بالضبط إلى $n^2$.] أي إنّ $E_n(P,x)=P(x)$.
 
-برهن أنّه لكل $n$ كبيرٍ بما يكفي، _لا توجد_ دائرة XOR $C$ تحسب الدالة $E_n$، حيث تملك دائرة XOR البوابة $XOR$ إضافةً إلى الثابتين $0$ و$1$ (انظر [xorex](){.ref}). أي برهن أنّه يوجد ثابث $n_0$ بحيث إنّ لكل $n>n_0$ ولكل دائرة XOR $C$ من $n^2$ مدخلاً ومخرجٍ واحد، يوجد زوج $(P,x)$ بحيث $C(P,x) \neq E_n(P,x)$.
+برهن أنّه لكل $n$ كبيرٍ بما يكفي، _لا توجد_ دائرة XOR $C$ تحسب الدالة $E_n$، حيث تملك دائرة XOR البوابة $XOR$ إضافةً إلى الثابتين $0$ و$1$ (انظر [xorex](#xorex){.ref}). أي برهن أنّه يوجد ثابث $n_0$ بحيث إنّ لكل $n>n_0$ ولكل دائرة XOR $C$ من $n^2$ مدخلاً ومخرجٍ واحد، يوجد زوج $(P,x)$ بحيث $C(P,x) \neq E_n(P,x)$.
 :::
 
 
 ::: {.exercise  title="تعلّم الدوائر (تحدٍّ، اختياري، يفترض خلفيةً أكبر)" #learningcircuitsex}
-(يفترض هذا التمرين خلفيةً في نظرية الاحتمالات و/أو تعلّم الآلة قد لا تكون لديك في هذه المرحلة. لا تتردّد في العودة إليه لاحقاً، وبخاصةٍ بعد خاصّاً بعد أن مررت على [probabilitychap](){.ref}.)
+(يفترض هذا التمرين خلفيةً في نظرية الاحتمالات و/أو تعلّم الآلة قد لا تكون لديك في هذه المرحلة. لا تتردّد في العودة إليه لاحقاً، وبخاصةٍ بعد خاصّاً بعد أن مررت على [probabilitychap](#probabilitychap){.ref}.)
 في هذا التمرين سنستعمل حدّنا على عدد الدوائر من الحجم $s$ لنُظهر أنّه (إذا أهملنا كلفة الحساب) كلّ دائرةٍ من هذا النوع يمكن _تعلّمها_ (_learned_) من عددٍ ليس كبيراً من عينات التدريب.
 وبشكلٍ تحديد، إذا وجدنا دائرةً من الحجم $s$ تُصنِّف مجموعة تدريبٍ من $O(s \log s)$ عيّنةٍ من بعض التوزيع $D$ تصنيفاً صحيحاً، فإنّه مضمونٌ أن تُحسن الأداء على التوزيع $D$ كلّه.
 ولأنّ الدوائر المنطقية تُمثّل عملياتٍ فيزيائية كثيرة جداً (وربّما كلّها، إذا صحّت أطروحة كيرش-تورينغ الفيزيائية الموسّعة [_المتنازعة في المسألة_])، فإنّ هذا يُظهر أنّ كلّ تلك العمليات يمكن تعلّمها أيضاً (مع إهمال كلفة الحساب مرّةً أخرى لإيجاد مُصنِّف يُحسن الأداء على بيانات التدريب).
@@ -824,7 +824,7 @@ $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
 لنكن $D$ أيّ توزيع احتمالي على $\{0,1\}^n$، ولتكن $C$ دائرة NAND من $n$ مدخلاً ومخرجٍ واحد ومن الحجم $s \geq n$.
 برهن أنّه يوجد ثابث $c$ بحيث إنّ الاحتمال $0.999$ على الأقلّ، ينطبق ما يلي: إذا كان $m = c s \log s$ واختيرت $x_0,\ldots,x_{m-1}$ باستقلالٍ من $D$، فإنّ لكل دائرة $C'$ بحيث $C'(x_i)=C(x_i)$ عند كل $i \in [m]$، يكون $\Pr_{x \sim D}[C'(x) \leq C(x)] \leq 0.99$.
 
-بعبارة أخرى، إذا كانت $C'$ هي ما يُعرف بـ"مُقلِّل المخاطرة التجريبي" (_empirical risk minimizer_) التي توافق $C$ على كلّ أمثلة التدريب $x_0,\ldots,x_{n-1}$، فإنّها أيضاً ستوافق $C$ باحتمالٍ كبير على العينات المسحوبة من التوزيع $D$ (أي أنّها "تعمّم"، باستعمال لغة تعلّم الآلة). انظر الحاشية للتلميح.^[_تلميح:_ استعمل حدّنا على عدد البرامج/الدوائر من الحجم $s$ ([program-count](){.ref})، وكذلك حدّ Chernoff ([chernoffthm](){.ref}) وحدّ الاتحاد.]
+بعبارة أخرى، إذا كانت $C'$ هي ما يُعرف بـ"مُقلِّل المخاطرة التجريبي" (_empirical risk minimizer_) التي توافق $C$ على كلّ أمثلة التدريب $x_0,\ldots,x_{n-1}$، فإنّها أيضاً ستوافق $C$ باحتمالٍ كبير على العينات المسحوبة من التوزيع $D$ (أي أنّها "تعمّم"، باستعمال لغة تعلّم الآلة). انظر الحاشية للتلميح.^[_تلميح:_ استعمل حدّنا على عدد البرامج/الدوائر من الحجم $s$ ([program-count](#program-count){.ref})، وكذلك حدّ Chernoff ([chernoffthm](#chernoffthm){.ref}) وحدّ الاتحاد.]
 :::
 
 
@@ -846,8 +846,8 @@ $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
 
 بينما رأينا أنّ "أغلب" الدوال التي تُسقِط $n$ بتّاً إلى بتّ واحد تتطلّب دوائر ذات حجم أسّي $\Omega(2^n/n)$، فإنّنا في الواقع لا نعرف أيّ دالةٍ _صريحة_ (_explicit_) يمكننا أن _نبرهن_ أنّها تتطلّب، مثلاً، حجماً $n^{100}$ أو حتى $100n$. ووقتَ الحاضر، أقوى حدٍّ أدنى من هذا النوع نعرفه هو أنّ هناك دوالاً بدوال $n$ متغيّراً بسيطةً وصريحة إلى حدٍّ كبير تتطلّب $(5-o(1))n$ سطراً على الأقلّ لحسابها، انظر [هذه الورقة لـIwama وزملائه](http://www.wisdom.weizmann.ac.il/~ranraz/publications/P5nlb.pdf) وكذلك [هذا العمل الأحدث لـKulikov وزملائه](http://logic.pdmi.ras.ru/~kulikov/papers/2012_5n_lower_bound_cie.pdf).
 وإثبات الحدود الدنية للنماذج المقيّدة من الدوائر هو مجال بحثٍ مثير للاهتمام للغاية، ويقدّم كتاب Jukna [@Jukna12] (وانظر أيضاً Wegener [@wegener1987complexity]) مدخلاً ومراجعةً ممتازين إلى حدٍّ كبير.
-وتعلّمتُ برهان مبرهنة تدرّج الحجم ([sizehiearchythm](){.ref}) من Sasha Golovnev.
+وتعلّمتُ برهان مبرهنة تدرّج الحجم ([sizehiearchythm](#sizehiearchythm){.ref}) من Sasha Golovnev.
 
 
 منشور مدوّنة Scott Aaronson بعنوان [how information is physical](http://www.scottaaronson.com/blog/?p=3327) نقاشٌ جيّد حول المسائل المتعلقة بالفيزياء كيرش-تورينغ الفيزيائية الموسّعة.
-وتناقش مسحته لـAaronson عن مسائل NP الكاملة والواقع الفيزيائي [@aaronson2005physicalreality] هذه المسائل أيضاً، لكنّه قد يكون أسهل قراءةً بعد أن نصل إلى [cooklevinchap](){.ref} عن $\mathbf{NP}$ و $\mathbf{NP}$-اكتمال.
+وتناقش مسحته لـAaronson عن مسائل NP الكاملة والواقع الفيزيائي [@aaronson2005physicalreality] هذه المسائل أيضاً، لكنّه قد يكون أسهل قراءةً بعد أن نصل إلى [cooklevinchap](#cooklevinchap){.ref} عن $\mathbf{NP}$ و $\mathbf{NP}$-اكتمال.

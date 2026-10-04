@@ -69,20 +69,20 @@ source: https://introtcs.org/
 
 بدلًا من "الصورة" (heads) و"الذيل" (tails)، إذا رمّزنا وجهي كل عملة بـ "صفر" و"واحد"، أمكننا ترميز نتيجة رمي $n$ عملة كسلسلة (string) في $\{0,1\}^n$.
 كل نتيجة معيّنة $x\in \{0,1\}^n$ تحصل باحتمال $2^{-n}$.
-مثلًا، إذا رمينا ثلاث عملات، فإنّنا نحصل على كلٍّ من النتائج الثماني $000,001,010,011,100,101,110,111$ باحتمال $2^{-3}=1/8$ (انظر أيضًا [coinexperimentfig](/images/introtcs/lec_15_probability-1.webp){.ref}).
+مثلًا، إذا رمينا ثلاث عملات، فإنّنا نحصل على كلٍّ من النتائج الثماني $000,001,010,011,100,101,110,111$ باحتمال $2^{-3}=1/8$ (انظر أيضًا [coinexperimentfig](#coinexperimentfig){.ref}).
 ويمكننا وصف تجربة رمي $n$ عملة بأنها اختيار سلسلة $x$ عشوائيًا بالتساوي من $\{0,1\}^n$، ولذلك سنستعمل الاختصار $x\sim \{0,1\}^n$ لكل $x$ مُختار وفق هذه التجربة.
 
-![/images/introtcs/lec_15_probability-1.webp](/images/introtcs/lec_15_probability-1.webp){#coinexperimentfig .margin  }
+![/images/introtcs/lec_15_probability-1.webp](/images/introtcs/original-coinexperiment.webp){#coinexperimentfig .margin  }
 
 _الحدث_ (event) هو ببساطة مجموعة جزئية $A$ من $\{0,1\}^n$.
 _احتمال $A$_، الذي يُرمز إليه بـ $\Pr_{x\sim \{0,1\}^n}[A]$ (أو $\Pr[A]$ اختصارًا، حين يُفهم فضاء العيّنات من السياق)، هو احتمال أن يكون $x$ المختار عشوائيًا بالتساوي مجموعًا في $A$.
 لاحظ أنّ هذا هو نفسه $|A|/2^n$ (حيث يُشير $|A|$ كما جرت العادة إلى عدد عناصر المجموعة $A$).
 مثلًا، احتمال أن يكون في $x$ عدد زوجي من الآحاد هو $\Pr[A]$ حيث $A=\{ x : \sum_{i=0}^{n-1} x_i \;= 0 \mod 2 \}$.
 في حالة $n=3$، $A=\{ 000,011,101,110 \}$، وبالتالي $\Pr[A]=\tfrac{4}{8}=\tfrac{1}{2}$
-(انظر [eventhreecoinsfig](/images/introtcs/lec_15_probability-3.webp){.ref}).
+(انظر [eventhreecoinsfig](#eventhreecoinsfig){.ref}).
 ويبدو أنّ هذا صحيح لكل $n$:
 
-![/images/introtcs/lec_15_probability-2.webp](/images/introtcs/lec_15_probability-2.webp){#eventhreecoinsfig .margin }
+![/images/introtcs/lec_15_probability-2.webp](/images/introtcs/original-even3coins.webp){#eventhreecoinsfig .margin }
 
 > ### {.lemma #evenprob}
 لكل $n>0$، $$\Pr_{x\sim \{0,1\}^n}\left[ \text{$\sum_{i=0}^{n-1} x_i$ is even }\right] = 1/2 \;.$$
@@ -196,7 +196,7 @@ $$
 لكل حدثين $A,B$، $\Pr[ A \cup B] \leq \Pr[A]+\Pr[B]$
 
 > ### { .pause }
-قبل النظر في البرهان، حاول أن ترى لماذا يبدو حدّ الاتحاد بديهيًا. يمكننا أيضًا إثباته مباشرةً من تعريف الاحتمالات ومن حجم المجموعات (_cardinality_)، مع المعادلة $|A \cup B| \leq |A|+|B|$. هل ترى لماذا هذه المعادلة صحيحة؟ (انظر أيضًا [unionboundfig](/images/introtcs/fig-independence.webp){.ref}.)
+قبل النظر في البرهان، حاول أن ترى لماذا يبدو حدّ الاتحاد بديهيًا. يمكننا أيضًا إثباته مباشرةً من تعريف الاحتمالات ومن حجم المجموعات (_cardinality_)، مع المعادلة $|A \cup B| \leq |A|+|B|$. هل ترى لماذا هذه المعادلة صحيحة؟ (انظر أيضًا [unionboundfig](#unionboundfig){.ref}.)
 
 > ### {.proof data-ref="unionbound"}
 لكل $x$، فإنّ المتغيّر $1_{A\cup B}(x) \leq 1_A(x)+1_B(x)$.
@@ -204,7 +204,7 @@ $$
 
 نستعمل هذه النتيجة كثيرًا في نظرية الحاسوب، فنُبرهن مثلًا أنّه إذا كان لدينا قائمة من 100 حدث سيّئ يمكن أن يقع، وكان احتمال وقوع كلٍّ منها على الأكثر $1/10000$، فإنّه باحتمال على الأقل $1-100/10000 = 0.99$ لا يقع أيّ حدث سيّئ.
 
-![/images/introtcs/lec_15_probability-3.webp](/images/introtcs/lec_15_probability-3.webp){#unionboundfig .margin  }
+![/images/introtcs/lec_15_probability-3.webp](/images/introtcs/original-unionbound.webp){#unionboundfig .margin  }
 
 ### التوزيعات على السلاسل
 
@@ -244,11 +244,11 @@ _الحدث_ (event) $A$ هو مجموعة جزئية من $S$، واحتمال 
 ومن الجهة الأخرى، إذا جعلنا $C$ هو الحدث $x_1=1$، فإنّه بما أنّ رمي العملة الثانية لا يتأثّر بنتيجة رمي الأولى، يكون الحدثان $A$ و $C$ مستقلّين.
 
 التعريف الرسمي هو أنّ الحدثين $A$ و $B$ يكونان _مستقلّين_ إذا كان $\Pr[A \cap B]=\Pr[A] \cdot \Pr[B]$.
-إذا كان $\Pr[A \cap B] > \Pr[A]\cdot \Pr[B]$ نقول إنّ $A$ و $B$ _مرتبطان ارتباطًا موجبًا_ (_positively correlated_)، بينما إذا كان $\Pr[ A \cap B] < \Pr[A] \cdot \Pr[B]$ نقول إنّ $A$ و $B$ _مرتبطان ارتباطًا سالبًا_ (_negatively correlated_) (انظر [independencefig](/images/introtcs/lec_15_probability-6.webp){.ref}).
+إذا كان $\Pr[A \cap B] > \Pr[A]\cdot \Pr[B]$ نقول إنّ $A$ و $B$ _مرتبطان ارتباطًا موجبًا_ (_positively correlated_)، بينما إذا كان $\Pr[ A \cap B] < \Pr[A] \cdot \Pr[B]$ نقول إنّ $A$ و $B$ _مرتبطان ارتباطًا سالبًا_ (_negatively correlated_) (انظر [independencefig](#independencefig){.ref}).
 
 
 ![Two events $A$ and $B$ are _independent_ if $\Pr[A \cap B]=\Pr[A]\cdot \Pr[B]$. In the two figures above, the empty $x\times x$ square is the sample space, and $A$ and $B$ are two events in this sample space. In the left figure, $A$ and $B$ are independent, while in the right figure they are negatively correlated, since $B$ is less likely to occur if we condition on $A$ (and vice versa). Mathematically, one can see this by noticing that in the left figure the areas of $A$ and $B$ respectively are $a\cdot x$ and $b\cdot x$, and so their probabilities are $\tfrac{a\cdot x}{x^2}=\tfrac{a}{x}$ and
-$\tfrac{b\cdot x}{x^2}=\tfrac{b}{x}$ respectively, while the area of $A \cap B$ is $a\cdot b$ which corresponds to the probability $\tfrac{a\cdot b}{x^2}$. In the right figure, the area of the triangle $B$ is $\tfrac{b\cdot x}{2}$ which corresponds to a probability of  $\tfrac{b}{2x}$, but the area of $A \cap B$ is $\tfrac{b' \cdot a}{2}$ for some $b'<b$. This means that the probability of $A \cap B$ is $\tfrac{b'\cdot a}{2x^2} < \tfrac{b}{2x} \cdot \tfrac{a}{x}$, or in other words $\Pr[A \cap B ] < \Pr[A] \cdot \Pr[B]$.](/images/introtcs/lec_15_probability-7.webp){#independencefig .margin  }
+$\tfrac{b\cdot x}{x^2}=\tfrac{b}{x}$ respectively, while the area of $A \cap B$ is $a\cdot b$ which corresponds to the probability $\tfrac{a\cdot b}{x^2}$. In the right figure, the area of the triangle $B$ is $\tfrac{b\cdot x}{2}$ which corresponds to a probability of  $\tfrac{b}{2x}$, but the area of $A \cap B$ is $\tfrac{b' \cdot a}{2}$ for some $b'<b$. This means that the probability of $A \cap B$ is $\tfrac{b'\cdot a}{2x^2} < \tfrac{b}{2x} \cdot \tfrac{a}{x}$, or in other words $\Pr[A \cap B ] < \Pr[A] \cdot \Pr[B]$.](/images/introtcs/original-independence.webp){#independencefig .margin  }
 
 
 إذا نظرنا في الأمثلة السابقة على تجربة اختيار $x\in \{0,1\}^3$، فإنّنا نرى أنّ
@@ -287,10 +287,10 @@ $$
 $$
 
 مثلًا، إذا كان $x\sim \{0,1\}^3$، فإنّ الأحداث $\{ x_0=1 \}$ و $\{ x_1 = 1\}$ و $\{x_2 = 1 \}$ مستقلّة متبادلًا.
-ومن الجهة الأخرى، فإنّ الأحداث $\{x_0 = 1 \}$ و $\{x_1 = 1\}$ و $\{ x_0 + x_1 = 0 \mod 2 \}$ _ليست_ مستقلّة متبادلًا، رغم أنّ كل زوجٍ من هذه الأحداث مستقلّ (هل ترى لماذا؟ انظر أيضًا [independencecoinsfig](https://en.wikipedia.org/wiki/Chernoff_bound){.ref}).
+ومن الجهة الأخرى، فإنّ الأحداث $\{x_0 = 1 \}$ و $\{x_1 = 1\}$ و $\{ x_0 + x_1 = 0 \mod 2 \}$ _ليست_ مستقلّة متبادلًا، رغم أنّ كل زوجٍ من هذه الأحداث مستقلّ (هل ترى لماذا؟ انظر أيضًا [independencecoinsfig](#independencecoinsfig){.ref}).
 
 
-![/images/introtcs/lec_15_probability-4.webp](/images/introtcs/lec_15_probability-4.webp){#independencecoinsfig .margin  }
+![/images/introtcs/lec_15_probability-4.webp](/images/introtcs/original-independencecoins.webp){#independencecoinsfig .margin  }
 
 ### المتغيّرات العشوائية المستقلّة
 
@@ -326,7 +326,7 @@ $$
 \end{gathered}
 $$
 حيث إنّ المساواة الأولى ($=^{(1)}$) تنبع عن استقلال $X$ و $Y$، والمساواة الثانية ($=^{(2)}$) تنبع عن «فتح الأقواس» في الطرف الأيمن، والمساواة الثالثة ($=^{(3)}$) تنبع عن تعريف التوقّع.
-(وهذا ليس «إذا وفقط إذا»؛ انظر [noindnocorex](https://projects.iq.harvard.edu/stat110/youtube){.ref}.)
+(وهذا ليس «إذا وفقط إذا»؛ انظر [noindnocorex](#noindnocorex){.ref}.)
 
 ومن الحقائق المفيدة الأخرى أنّه إذا كان $X$ و $Y$ متغيّرين عشوائيين مستقلّين، فإنّ $F(X)$ و $G(Y)$ يكونان مستقلّين أيضًا مهما كانت الدوال $F,G:\R \rightarrow \R$.
 وهذا بديهي، لأنّ معرفتنا بـ $F(X)$ لا يمكن أن تعطينا إلا معلومات أقلّ مما تعطيناه معرفتنا بـ $X$ نفسها.
@@ -361,7 +361,7 @@ $$
 إذا كانت $X_0,\ldots,X_{n-1}$ مستقلّة متبادلًا، وعرّفنا $Y_0,\ldots,Y_{n-1}$ على الصورة $Y_i = F_i(X_i)$ لبعض الدوال $F_0,\ldots,F_{n-1}:\R \rightarrow \R$، فإنّ $Y_0,\ldots,Y_{n-1}$ مستقلّة متبادلًا أيضًا.
 
 > ### { .pause }
-نترك إثبات [expprod](http://probabilitybook.net){.ref} و [indeplem](https://en.wikipedia.org/wiki/Hoeffding%27s_inequality){.ref} كتمرين في [expprodex](){.ref} و [indeplemex](){.ref}.
+نترك إثبات [expprod](#expprod){.ref} و [indeplem](#indeplem){.ref} كتمرين في [expprodex](#expprodex){.ref} و [indeplemex](#indeplemex){.ref}.
 ومن الجيّد أن تتوقّف الآن وتُنجز هذين التمرينين لتتأكّد من مريحتك مع مفهوم الاستقلال، إذ إنّنا سنستعمله كثيرًا لاحقًا في هذا المساق.
 
 
@@ -380,9 +380,9 @@ $$
 بل إنّك في 99.9\% من المرّات ستدفع لي 10 دولارات، وستصيب الجائزة الكبرى في 0.1\% من المرّات.
 
 لكن، إذا أعدنا هذه التجربة مرّة بعد أخرى (بعملات جديدة، وبالتالي _مستقلّة_)، فإنّنا على المدى البعيد نتوقّع أن يكون متوسط دخلك قريبًا من 90 دولارًا، وهذا هو السبب في قدرة الكازينوهات (_casinos_) على تحقيق الأرباح بطريقة يمكن التنبّؤ بها، رغم أنّ كل رهان منفرد عشوائي.
-مثلًا، إذا رمينا $n$ عملة مستقلّة غير مُتحيّزة، فإنّه مع نموّ $n$ يزداد عدد العملات التي تأتي وجهاً واحدًا تركّزًا (_concentrated_) أكثر فأكثر حول $n/2$، وفقًا لـ "منحنى الجرس" الشهير (انظر [bellfig](){.ref}).
+مثلًا، إذا رمينا $n$ عملة مستقلّة غير مُتحيّزة، فإنّه مع نموّ $n$ يزداد عدد العملات التي تأتي وجهاً واحدًا تركّزًا (_concentrated_) أكثر فأكثر حول $n/2$، وفقًا لـ "منحنى الجرس" الشهير (انظر [bellfig](#bellfig){.ref}).
 
-![/images/introtcs/lec_15_probability-5.webp](/images/introtcs/lec_15_probability-5.webp){#bellfig .margin  }
+![/images/introtcs/lec_15_probability-5.webp](/images/introtcs/original-binomial.webp){#bellfig .margin  }
 
 يشغل قدر كبير من نظرية الاحتمالات ما يُسمّى بحدود _التركيز_ (_concentration_) أو حدود _الذيل_ (tail bounds)، وهي حدود أعلى لاحتمال انحراف متغيّر عشوائي $X$ عن توقّعه بمقدار كبير.
 وأوّل هذه الحدود وأبسطها هو عدم مساواة ماركوف (Markov's inequality):
@@ -391,7 +391,7 @@ $$
 إذا كان $X$ متغيّرًا عشوائيًا غير سالب، فإنّ لكل $k>0$، $\Pr[ X \geq k \E[X] ] \leq 1/k$.
 
 > ### { .pause }
-عدم مساواة ماركوف هي في الواقع عبارة طبيعية جدًّا (انظر أيضًا [markovfig](){.ref}). مثلًا، إذا كنت تعرف أنّ متوسط دخل الأسرة (لا الوسيط (_median_)!) في الولايات المتحدة هو 70,000 دولار، فإنّك تستطيع على الخصوص أن تستنتج أنّ 25 بالمئة من الأسر على الأكثر تُدخِل أكثر من 280,000 دولار، لأنّه لولا ذلك، حتى لو كان الدخل في الـ 75 بالمئة الباقية صفرًا، لأوجدت الـ 25 بالمئة الأعلى وحدها متوسط دخل يتجاوز 70,000 دولار. ومن هذا المثال يمكنك أن ترى أصلًا أنّه في كثير من الحالات لن تكون عدم مساواة ماركوف _محكمة_ (_tight_)، وأنّ احتمال الانحراف عن التوقّع سيكون أصغر بكثير: انظر عدم مساواة تشيبسيف (Chebyshev) وعدم مساواة تشرنوف (Chernoff) أدناه.
+عدم مساواة ماركوف هي في الواقع عبارة طبيعية جدًّا (انظر أيضًا [markovfig](#markovfig){.ref}). مثلًا، إذا كنت تعرف أنّ متوسط دخل الأسرة (لا الوسيط (_median_)!) في الولايات المتحدة هو 70,000 دولار، فإنّك تستطيع على الخصوص أن تستنتج أنّ 25 بالمئة من الأسر على الأكثر تُدخِل أكثر من 280,000 دولار، لأنّه لولا ذلك، حتى لو كان الدخل في الـ 75 بالمئة الباقية صفرًا، لأوجدت الـ 25 بالمئة الأعلى وحدها متوسط دخل يتجاوز 70,000 دولار. ومن هذا المثال يمكنك أن ترى أصلًا أنّه في كثير من الحالات لن تكون عدم مساواة ماركوف _محكمة_ (_tight_)، وأنّ احتمال الانحراف عن التوقّع سيكون أصغر بكثير: انظر عدم مساواة تشيبسيف (Chebyshev) وعدم مساواة تشرنوف (Chernoff) أدناه.
 
 > ### {.proof data-ref="markovthm"}
 ليكن $\mu = \E[X]$ ولنعريف $Y=1_{X \geq k \mu}$. أي، $Y(x)=1$ إذا كان $X(x) \geq k \mu$ و $Y(x)=0$ في غير ذلك.
@@ -399,7 +399,7 @@ $$
 علينا أن نُثبت $\E[Y] \leq 1/k$.
 لكنّ ذلك ينبع عن أنّ  $\E[Y] \leq \E[X/k(\mu)] = \E[X]/(k\mu) = \mu/(k\mu)=1/k$.
 
-![/images/introtcs/lec_15_probability-6.webp](/images/introtcs/lec_15_probability-6.webp){#markovfig .margin  }
+![/images/introtcs/lec_15_probability-6.webp](/images/introtcs/original-markovineq.webp){#markovfig .margin  }
 
 __مبدأ المتوسط.__ ومع أنّ توقّع متغيّر عشوائي $X$ ليس «القيمة النموذجية» في كل الأحوال، يمكننا أن نُثبت أنّ $X$ مضمون أن يبلغ قيمة لا تقلّ عن توقّعه، باحتمال موجب.
 مثلًا، إذا كان متوسط علامة في امتحان هو $87$ نقطة، فإنّ طالبًا واحدًا على الأقل حصل على علامة $87$ أو أكثر في الامتحان. تُسمّى هذه النتيجة _مبدأ المتوسط_ (_averaging principle_)، ورغم بساطتها فإنّها مفيدة على نحو مدهش.
@@ -453,23 +453,23 @@ __مبدأ المتوسط.__ ومع أنّ توقّع متغيّر عشوائي 
 $$
 \mathrm{Var}[X_1+\cdots +X_n] = \mathrm{Var}[X_1]+\cdots + \mathrm{Var}[X_n]  \label{varianceeq}\;.
 $$
-(نترك بيان هذا للقارئ في [varianceex](){.ref}.)
+(نترك بيان هذا للقارئ في [varianceex](#varianceex){.ref}.)
 
-بالنسبة إلى كل متغيّر عشوائي $X_i$ في $[0,1]$، لدينا $\mathrm{Var}[X_i] \leq 1$ (فإذا كان المتغيّر دائمًا في $[0,1]$ فلا يمكن أن يبتعد عن توقّعه بأكثر من $1$)، وبالتالي فإنّ [varianceeq](){.eqref} ينتج أنّ $\mathrm{Var}[X]\leq n$ وبالتالي $\sigma[X] \leq \sqrt{n}$.
+بالنسبة إلى كل متغيّر عشوائي $X_i$ في $[0,1]$، لدينا $\mathrm{Var}[X_i] \leq 1$ (فإذا كان المتغيّر دائمًا في $[0,1]$ فلا يمكن أن يبتعد عن توقّعه بأكثر من $1$)، وبالتالي فإنّ [varianceeq](#varianceeq){.eqref} ينتج أنّ $\mathrm{Var}[X]\leq n$ وبالتالي $\sigma[X] \leq \sqrt{n}$.
 بالنسبة إلى $n$ الكبيرة، $\sqrt{n} \ll 0.001n$، وبخاصة إذا كان $\sqrt{n} \leq 0.001n/k$، فيمكننا استعمال عدم مساواة تشيبسيف لتحديد احتمال أنّ $X$ ليس في $[0.499n,0.501n]$ بـ $1/k^2$.
 
 
 ### حدّ تشرنوف
 
 تُظهر عدم مساواة تشيبسيف أصلًا علاقة بين الاستقلال والتركيز، لكن في كثير من الحالات يمكننا أن نأمل في نتيجة أقوى كثيرًا من حيث الكمّ.
-فإذا، كما في المثال أعلاه، كان $X= X_1+\ldots+X_n$ حيث المتغيّرات $X_i$ محدودة ومستقلّة ومتماثلة التوزيع بمتوسّط $1/2$، فإنّه مع نموّ $n$ يصبح توزيع $X$ تقريبًا التوزيع _الطبيعيّ_ أو _الغاوصيّ_ (normal/Gaussian) $-$ أي أنّه يتبع _منحنى الجرس_ (_bell curve_) (انظر [bellfig](){.ref} و [empiricalbellfig](){.ref}).
+فإذا، كما في المثال أعلاه، كان $X= X_1+\ldots+X_n$ حيث المتغيّرات $X_i$ محدودة ومستقلّة ومتماثلة التوزيع بمتوسّط $1/2$، فإنّه مع نموّ $n$ يصبح توزيع $X$ تقريبًا التوزيع _الطبيعيّ_ أو _الغاوصيّ_ (normal/Gaussian) $-$ أي أنّه يتبع _منحنى الجرس_ (_bell curve_) (انظر [bellfig](#bellfig){.ref} و [empiricalbellfig](#empiricalbellfig){.ref}).
 ولهذا التوزيع خاصية أنّه _جدًّا_ مركَّز، بمعنى أنّ احتمال الانحراف بمقدار $k$ انحراف معياري عن المتوسط ليس $1/k^2$ فقط كما تضمنه تشيبسيف، بل هو تقريبًا $e^{-k^2}$.
 وبالتحديد، بالنسبة إلى متغيّر عشوائي طبيعي $X$ توقّعه $\mu$ وانحرافه المعياري $\sigma$، فإنّ احتمال أن يكون $|X-\mu| \geq k\sigma$ هو على الأكثر $2e^{-k^2/2}$.
 أي إنّ لدينا _اضمحلالًا أسّيًّا_ (_exponential decay_) لاحتمال الانحراف.
 
 
 
-![/images/introtcs/lec_15_probability-7.webp](/images/introtcs/lec_15_probability-7.webp){#empiricalbellfig   .margin  }
+![/images/introtcs/lec_15_probability-7.webp](/images/introtcs/original-sixsigma.webp){#empiricalbellfig   .margin  }
 
 
 تبيّن النظرية التالية المفيدة جدًّا أنّ هذا الاضمحلال الأسّي يحدث كلّما كان لدينا مجموع متغيّرات مستقلّة محدودة. وتُسمّى هذه النظرية بأسماء متعدّدة في مختلف المجتمعات، لكنّها تُسمّى غالبًا في أدبيات علوم الحاسوب [حدّ تشرنوف](https://en.wikipedia.org/wiki/Chernoff_bound) (Chernoff bound):
@@ -484,12 +484,12 @@ $$
 $$
 
 نُغفل البرهان، إذ إنّ البرهان يرد في نصوص كثيرة، وهو يستعمل عدم مساواة ماركوف على متغيّرات عشوائية مستقلّة ومتماثلة التوزيع $Y_0,\ldots,Y_n$ من الشكل $Y_i = e^{\lambda X_i}$ لمعامل $\lambda$ مختار بعناية.
-انظر [chernoffstirlingex](){.ref} لإثبات الحالة البسيطة (لكنّها مفيدة إلى حدٍّ كبير وتمثيلية) حيث تأخذ كل $X_i$ القيمة $\{0,1\}$ و $p=1/2$.
-(وانظر أيضًا [poorchernoff](){.ref} لتعميم.)
+انظر [chernoffstirlingex](#chernoffstirlingex){.ref} لإثبات الحالة البسيطة (لكنّها مفيدة إلى حدٍّ كبير وتمثيلية) حيث تأخذ كل $X_i$ القيمة $\{0,1\}$ و $p=1/2$.
+(وانظر أيضًا [poorchernoff](#poorchernoff){.ref} لتعميم.)
 
 ::: {.remark title="تبسيط طفيف لحدّ تشرنوف" #chernoffsimpler}
 بما أنّ  $e$ تساوي تقريبًا $2.7$ (وخاصةً أكبر من $2$)،  
-فإنّ [eqchernoff](){.eqref} ستبقى صحيحة إذا استبدلنا طرفها الأيمن بـ $e^{-2\epsilon^2 n + 1}$.
+فإنّ [eqchernoff](#eqchernoff){.eqref} ستبقى صحيحة إذا استبدلنا طرفها الأيمن بـ $e^{-2\epsilon^2 n + 1}$.
 بالنسبة إلى  $n>1/\epsilon^2$، ستبقى المعادلة صحيحة إذا استبدلنا الطرف الأيمن بالشكل الأبسط $e^{-\epsilon^2 n}$. 
 وبالتالي سنستعمل أحيانًا حدّ تشرنوف بصياغة أنّه بالنسبة إلى $X_0,\ldots,X_{n-1}$ و $p$ كما سبق، و $n> 1/\epsilon^2$، فإنّ 
 $$
@@ -504,13 +504,13 @@ $$
 
 إليك تطبيقًا جيّدًا لحدّ تشرنوف. لننظر في مسألة _التعلّم الخاضع للإشراف_ (_supervised learning_).
 يُعطى لك مجموعة $S$ من $n$ عيّنات من الشكل $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ مسحوبة من توزيع مجهول $D$ على الثنائيات $(x,y)$. وللبساطة سنفترض أنّ $x_i \in \{0,1\}^m$ و $y_i \in \{0,1\}$.
-(ونستعمل هنا مفهوم التوزيع العام على المجموعة المنتهية $\{0,1\}^{m+1}$ كما نُوقش في [generalsamplespaces](){.ref}.)
+(ونستعمل هنا مفهوم التوزيع العام على المجموعة المنتهية $\{0,1\}^{m+1}$ كما نُوقش في [generalsamplespaces](#generalsamplespaces){.ref}.)
 الهدف هو إيجاد _مصنِّف_ (_classifier_) $h:\{0,1\}^m \rightarrow \{0,1\}$ يُقلِّم (_minimize_) _خطأ الاختبار_ (_test error_) وهو الاحتمال $L(h)$ بأن يكون $h(x) \neq y$ حيث $(x,y)$ مسحوب من التوزيع $D$.
 أي إنّ $L(h) = \Pr_{(x,y) \sim D}[ h(x) \neq y]$.
 
 
 إحدى طرائق إيجاد مثل هذا المصنِّف هي التفكير في _مجموعة_ (_collection_) $\mathcal{C}$ من المصنِّفات المحتملة والنظر في المصنِّف $h$ في $\mathcal{C}$ الذي يُحقّق أفضل أداء على _مجموعة التدريب_ (_training set_) $S$.
-ويُسمّى المصنِّف $h$ بـ _مُقلِّل المخاطر التجريبية_ (_empirical risk minimizer_) (انظر أيضًا [convexnotesec](){.ref}) .
+ويُسمّى المصنِّف $h$ بـ _مُقلِّل المخاطر التجريبية_ (_empirical risk minimizer_) (انظر أيضًا [convexnotesec](#convexnotesec){.ref}) .
 ويمكن استعمال حدّ تشرنوف لإظهار أنّه ما دام عدد العيّنات $n$ أكبر بما يكفي بكثير من لوغاريتم $|\mathcal{C}|$، فإنّ خطأ الاختبار $L(h)$ سيكون قريبًا من _خطأ التدريب_ (_training error_) $\hat{L}_S(h)$، الذي يُعرَّف بأنّه نسبة الثنائيات $(x_i,y_i) \in S$ التي أخفق في تصنيفها.
 (وبالمثل، $\hat{L}_S(h) = \tfrac{1}{n}\sum_{i\in [n]} |h(x_i)-y_i|$.)
 
@@ -540,7 +540,7 @@ __الادّعاء:__ لكل $h\in \mathcal{C}$، فإنّ احتمال أن ي�
 
 $$X_i = \begin{cases}1 & h(x_i) \neq y_i \\ 0 & \text{otherwise} \end{cases}.$$
 
-وبما أنّ العيّنات $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ مسحوبة بشكل مستقلّ من التوزيع نفسه $D$، فإنّ المتغيّرات العشوائية $X_0,\ldots,X_{n-1}$ مستقلّة ومتماثلة التوزيع. إضافةً إلى ذلك، لكل $i$، $\E[X_i] = L(h)$. وبالتالي، بحدّ تشرنوف (انظر [eqchernoffsimpler](){.eqref})، فإنّ احتمال أن يكون $| \sum_{i=0}^{n-1} X_i  - n\cdot L(h)| \geq \epsilon n$ هو على الأكثر $e^{-\epsilon^2 n} < e^{-k \log(1/\delta)} < \delta/2^k$ (باستعمال الحقيقة إنّ $e>2$).
+وبما أنّ العيّنات $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ مسحوبة بشكل مستقلّ من التوزيع نفسه $D$، فإنّ المتغيّرات العشوائية $X_0,\ldots,X_{n-1}$ مستقلّة ومتماثلة التوزيع. إضافةً إلى ذلك، لكل $i$، $\E[X_i] = L(h)$. وبالتالي، بحدّ تشرنوف (انظر [eqchernoffsimpler](#eqchernoffsimpler){.eqref})، فإنّ احتمال أن يكون $| \sum_{i=0}^{n-1} X_i  - n\cdot L(h)| \geq \epsilon n$ هو على الأكثر $e^{-\epsilon^2 n} < e^{-k \log(1/\delta)} < \delta/2^k$ (باستعمال الحقيقة إنّ $e>2$).
 وبما أنّ $\hat{L}(h) = \tfrac{1}{n}\sum_{i\in [n]}X_i$، فإنّ هذا يُكمل إثبات الادّعاء.
 
 وبناءً على الادّعاء، تنبع النظرية من حدّ الاتحاد.
@@ -588,10 +588,10 @@ $\E[XY] \neq \E[X]\E[Y]$.
 
 
 > ### {.exercise title="حاصل ضرب التوقّعات" #expprodex}
-برهن [expprod](){.ref}.
+برهن [expprod](#expprod){.ref}.
 
 > ### {.exercise title="التحويلات تحافظ على الاستقلال" #indeplemex}
-برهن [indeplem](){.ref}.
+برهن [indeplem](#indeplem){.ref}.
 
 
 > ### {.exercise title="تباين المتغيّرات العشوائية المستقلّة" #varianceex}
@@ -608,7 +608,7 @@ $\E[XY] \neq \E[X]\E[Y]$.
 حيث يشير $x \sim \mu$ إلى تجارب اختيار $x_0,\ldots,x_{n-1}$ كلٌّ منها بشكل مستقلّ من $S$ باستعمال التوزيع $\mu$.
 
 > ### {.exercise title="تقريب الأنتروبيا لمعامل ثنائي الحدّ" #entropybinomex}
-ليكن $H(p) = p \log(1/p)+(1-p)\log(1/(1-p))$.^[لا تحتاج إلى هذا لحلّ التمرين، لكنّ هذه هي الدالة التي تُسند $p$ إلى الأنتروبيا (كما هو معرَّف في [entropyex](){.ref}) لتوزيع العملات المُتحيّز بقيمة $p$ على $\{0,1\}$، وهي الدالة $\mu:\{0,1\}\rightarrow [0,1]$ بحيث $\mu(0)=1-p$ و $\mu(1)=p$.]
+ليكن $H(p) = p \log(1/p)+(1-p)\log(1/(1-p))$.^[لا تحتاج إلى هذا لحلّ التمرين، لكنّ هذه هي الدالة التي تُسند $p$ إلى الأنتروبيا (كما هو معرَّف في [entropyex](#entropyex){.ref}) لتوزيع العملات المُتحيّز بقيمة $p$ على $\{0,1\}$، وهي الدالة $\mu:\{0,1\}\rightarrow [0,1]$ بحيث $\mu(0)=1-p$ و $\mu(1)=p$.]
 برهن أنّه لكل $p \in (0,1)$ و $\epsilon>0$، إذا كان $n$ كبيرًا بما يكفي، فإنّ^[__تلميح:__ استعمل صيغة ستيرلينغ (Stirling) لتقريب دالة مضروب المعاويات (factorial).]
 $$
 2^{(H(p)-\epsilon)n } \leq \binom{n}{pn} \leq 2^{(H(p)+\epsilon)n},
@@ -619,13 +619,13 @@ $$
 ::: {.exercise title="حدّ تشرنوف باستعمال ستيرلينغ" #chernoffstirlingex}
 1. برهن أنّ $\Pr_{x\sim \{0,1\}^n}[ \sum x_i = k ] = \binom{n}{k}2^{-n}$.\
 
-2. استعمل هذا و [entropybinomex](){.ref} لإثبات (نسخة تقريبية من) حدّ تشرنوف في الحالة التي تكون فيها $X_0,\ldots,X_{n-1}$ متغيّرات عشوائية مستقلّة ومتماثلة التوزيع (i.i.d.) على $\{0,1\}$، كلٌّ منها يساوي $0$ و $1$ باحتمال $1/2$. أي برهن أنّه لكل $\epsilon>0$، و $X_0,\ldots,X_{n-1}$ كما سبق، $\Pr[ |\sum_{i=0}^{n-1} X_i - \tfrac{n}{2}| > \epsilon n] < 2^{0.1 \cdot \epsilon^2 n}$.
+2. استعمل هذا و [entropybinomex](#entropybinomex){.ref} لإثبات (نسخة تقريبية من) حدّ تشرنوف في الحالة التي تكون فيها $X_0,\ldots,X_{n-1}$ متغيّرات عشوائية مستقلّة ومتماثلة التوزيع (i.i.d.) على $\{0,1\}$، كلٌّ منها يساوي $0$ و $1$ باحتمال $1/2$. أي برهن أنّه لكل $\epsilon>0$، و $X_0,\ldots,X_{n-1}$ كما سبق، $\Pr[ |\sum_{i=0}^{n-1} X_i - \tfrac{n}{2}| > \epsilon n] < 2^{0.1 \cdot \epsilon^2 n}$.
 :::
 
 
 
 ::: {.exercise title="حدّ تشرنوف الرجل الفقير" #poorchernoff}
-يثبّت [chernoffstirlingex](){.ref} حدّ تشرنوف في الحالة التي تكون فيها $X_0,\ldots,X_{n-1}$ متغيّرات مستقلّة ومتماثلة التوزيع (i.i.d.) على $\{0,1\}$ بتوقّع $1/2$. 
+يثبّت [chernoffstirlingex](#chernoffstirlingex){.ref} حدّ تشرنوف في الحالة التي تكون فيها $X_0,\ldots,X_{n-1}$ متغيّرات مستقلّة ومتماثلة التوزيع (i.i.d.) على $\{0,1\}$ بتوقّع $1/2$. 
 في هذا التمرين نستعمل طريقة مختلفة قليلًا (تحديد _اللحظات_ (_moments_) للمتغيّرات العشوائية) لإثبات نسخة من حدّ تشرنوف
 تأخذ فيها المتغيّرات العشوائية قيمًا في المدى $[0,1]$ ويكون توقّعها عددًا ما $p \in [0,1]$ قد يختلف عن $1/2$.
 ليكن $X_0,\ldots,X_{n-1}$ متغيّرات عشوائية مستقلّة ومتماثلة التوزيع (i.i.d.) بحيث $\E X_i = p$ و $\Pr [ 0 \leq X_i \leq 1 ]=1$.
@@ -654,10 +654,10 @@ d. 1,000,000
 :::
 
 > ### {.exercise  #exid}
-هل يتغيّر الجواب على [samplingex](){.ref} إذا كان في البلد 300,000,000,000 مواطن؟
+هل يتغيّر الجواب على [samplingex](#samplingex){.ref} إذا كان في البلد 300,000,000,000 مواطن؟
 
 ::: {.exercise title="العَيّنات (2)" #exidtwo}
-تحت الافتراضات نفسها في [samplingex](){.ref}، ما أصغر قيمة $n$ من الخيارات التالية بحيث يكون احتمال أن تجيب أغلبية العيّنة بـ "أخضر" على الأكثر $2^{-100}$؟
+تحت الافتراضات نفسها في [samplingex](#samplingex){.ref}، ما أصغر قيمة $n$ من الخيارات التالية بحيث يكون احتمال أن تجيب أغلبية العيّنة بـ "أخضر" على الأكثر $2^{-100}$؟
 
 a. 1,000
 
@@ -674,7 +674,7 @@ e. يستحيل الحصول على احتمال منخفض إلى هذا الح
 
 ## ملاحظات مرجعية
 
-هناك مصادر كثيرة لمزيد من المعلومات عن الاحتمالات المتقطّعة، منها الكتب المشار إليها في [notesmathchap](){.ref}.
+هناك مصادر كثيرة لمزيد من المعلومات عن الاحتمالات المتقطّعة، منها الكتب المشار إليها في [notesmathchap](#notesmathchap){.ref}.
 ومن المصادر الموصى بها بصفة خاصة في الاحتمالات مساق [STAT 110](https://projects.iq.harvard.edu/stat110/home) في جامعة هارفارد، إذ أنّ محاضراته متاحة على [youtube](https://projects.iq.harvard.edu/stat110/youtube) وكتابه متاح [على الإنترنت](http://probabilitybook.net).
 
-الصيغة التي ذكرناها في [chernoffthm](){.ref} من حدّ تشرنوف تُسمّى أحيانًا [عدم مساواة هويفدينغ](https://en.wikipedia.org/wiki/Hoeffding%27s_inequality) (_Hoeffding's Inequality_). كما أنّ هناك صيغًا أخرى معروفة لحدّ تشرنوف، لكنّ جميعها متساوية في الصلاح لتطبيقات هذا الكتاب.
+الصيغة التي ذكرناها في [chernoffthm](#chernoffthm){.ref} من حدّ تشرنوف تُسمّى أحيانًا [عدم مساواة هويفدينغ](https://en.wikipedia.org/wiki/Hoeffding%27s_inequality) (_Hoeffding's Inequality_). كما أنّ هناك صيغًا أخرى معروفة لحدّ تشرنوف، لكنّ جميعها متساوية في الصلاح لتطبيقات هذا الكتاب.
