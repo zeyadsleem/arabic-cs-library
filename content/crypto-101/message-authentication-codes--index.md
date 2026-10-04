@@ -250,8 +250,6 @@ HMAC هو معيار لإنتاج MAC باستخدام دالة تجزئة تش�
 
 ![center](/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg)
 
-center
-
 ولعلّ الشيء المفاجئ الوحيد هنا هما الثابتان `p_{inner}` (الحشو الداخلي، أي مقدار طول
 كتلة واحدة من دالة التجزئة من بايتات `0x36`) و`p_{outer}` (الحشو الخارجي، أي مقدار
 طول كتلة واحدة من بايتات `0x5c`). وهذان ضروريّان ليعمل برهان أمن HMAC؛ أمّا
@@ -448,8 +446,6 @@ AEAD ميزة في بعض أوضاع التشفير المصادَق. وتُسم
 
 ![center](/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg)
 
-center
-
 #### وضع OCB
 
 advanced
@@ -460,8 +456,6 @@ advanced
 `أوضاع AEAD` (AEAD modes) التي تطوّرت.
 
 ![center](/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg)
-
-center
 
 وكما ترى، يبدو معظم هذا النظام مشابهًا إلى حدٍّ كبير لـ`وضع ECB` (`ECB mode`). واسم
 OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري» (electronic codebook). لكنّ OCB لا
@@ -474,8 +468,6 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 الوصفية. ويُحسب وسم البيانات الوصفية `t_a` على النحو التالي:
 
 ![center](/images/crypto-101/message-authentication-codes-fig-3-Auth.svg)
-
-center
 
 ولهذا التصميم عدد من الخصائص المثيرة. فمثلًا، هو سريع جدًّا: إذ لا يحتاج إلّا نحو
 عملية واحدة لشيفرة الكتل لكلّ كتلة مشفَّرة أو كتلة بيانات وصفية، إضافةً إلى عملية

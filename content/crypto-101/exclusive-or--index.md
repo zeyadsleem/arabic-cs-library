@@ -19,16 +19,10 @@ inverter): فبتّ واحد من المدخلين يقرّر هل نعكس بت
 
 ![a programmable inverter](/images/crypto-101/exclusive-or-fig-0-ProgrammableInverter.svg)
 
-مُقلِب قابل للبرمجة
-center
-
 في الرياضيات وفي أبحاث التشفير، يُمثَّل الاو الحصري عادةً على شكل صليب داخل دائرة:
 `\xor`. وسنستعمل في هذا الكتاب الترميز نفسه:
 
 ![center](/images/crypto-101/exclusive-or-fig-1-XOR.svg)
-
-center
-XOR
 
 المدخلات والمخرج هنا مُسمّاة كأنّنا نستعمل XOR كعملية تشفير. على اليسار لدينا البتّ
 الخاص بالنصّ الصريح (plaintext) وهو `P_i`. أمّا `i` فمجرد فهرس (index)، لأنّنا عادةً
@@ -129,18 +123,12 @@ a \xor b \xor a & = a \xor a \xor b & \; & \text{(second rule)} \\
 
 ![center](/images/crypto-101/exclusive-or-fig-2-OTP.svg)
 
-center
-OTP
-
 إذا رأى المهاجم النصّ المشفَّر، يمكننا إثبات أنّه لا يكتسب أيّ معلومة عن النصّ
 الصريح دون المفتاح. وتُسمَّى هذه الخاصية *السرّية التامّة* (*perfect secrecy*). ويمكن
 فهم البرهان بطريقة حدسية. تخيّل XOR بوصفه مُقلِبًا قابلًا للبرمجة، وأنظر إلى بتّ
 بعينه اعترضته إيف المستقِعة (eavesdropper).
 
 ![center](/images/crypto-101/exclusive-or-fig-3-OTPEve.svg)
-
-center
-OTP eve
 
 لنفترض أنّ إيف ترى أنّ البتّ `c_i` من النصّ المشفَّر يساوي 1. فإنّها لا تعرف هل كان
 البتّ المقابل في النصّ الصريح `p_i` يساوي 0 أم 1، لأنّها لا تعرف هل كان بتّ
@@ -189,44 +177,29 @@ XOR على نصّين صريحين يحوي نفسه قدرًا لا بأس به
 أنفسهما. سنوضّح ذلك بصريًّا عبر بعض الصور من عمليّة وسادة «مرّة واحدة» مكسورة، بدءًا
 من `fig-multitimepad`.
 
-fig-multitimepad
-0.48
-
 ![النصّ الصريح الأوّل.](/images/crypto-101/exclusive-or-subfig-0-Broken.png)
 
-center
-
-      النصّ الصريح الأوّل.
+   النصّ الصريح الأوّل.
 
 ![النصّ الصريح الثاني.](/images/crypto-101/exclusive-or-subfig-1-Crypto.png)
 
-center
-
-      النصّ الصريح الثاني.
+   النصّ الصريح الثاني.
 
 ![النصّ المشفَّر الأوّل.](/images/crypto-101/exclusive-or-subfig-2-BrokenEncrypted.png)
 
-center
-
-      النصّ المشفَّر الأوّل.
+   النصّ المشفَّر الأوّل.
 
 ![النصّ المشفَّر الثاني.](/images/crypto-101/exclusive-or-subfig-3-CryptoEncrypted.png)
 
-center
-
-      النصّ المشفَّر الثاني.
+   النصّ المشفَّر الثاني.
 
 ![المفتاح المُعاد استعماله.](/images/crypto-101/exclusive-or-subfig-4-Key.png)
 
-center
-
-      المفتاح المُعاد استعماله.
+   المفتاح المُعاد استعماله.
 
 ![XOR للنصّين المشفَّرين.](/images/crypto-101/exclusive-or-subfig-5-CiphertextsXOR.png)
 
-center
-
-      XOR للنصّين المشفَّرين.
+   XOR للنصّين المشفَّرين.
 
    نصّان صريحان، والمفتاح المُعاد استعماله، والنصّان المشفَّر الموافق لهما، وXOR
    للنصّين المشفَّرين. ومن واضح أنّ معلومات عن النصّ الصريح تتسرّب عند إجراء XOR

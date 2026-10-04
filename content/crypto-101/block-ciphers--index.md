@@ -39,8 +39,6 @@ P = D(k, C)
 
 ![center](/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg)
 
-center
-
 شيفرة الكتل مثال على نظام تشفير بالمفتاح المتماثل (`symmetric-key encryption`)،
 المعروف أيضًا بنظام تشفير بالمفتاح السرّي (`secret-key encryption`). إذ يُستعمل
 المفتاح السرّي نفسه في التشفير وفي فكّ التشفير معًا. وسنقابل في وقت لاحق من الكتاب
@@ -58,9 +56,7 @@ center
 فإنّنا نمثّل الكتل بذلك الرقم. وتوضّح `fig-BlockCipherBlocks` الكتل التي تعمل
 عليها الشيفرة.
 
-![center](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg)
-
-center
+![center](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg){#fig-BlockCipherBlocks}
 
    العقد الستّة عشرة كلّها التي تعمل عليها شيفرة الكتل. ويُشار إلى كلّ عقدة برقم ست
    عشري.
@@ -69,9 +65,7 @@ center
 ونوضّح تلك العلاقة بسهم. فذيل السهم يحمل الكتلة قبل تشفيرها بـ`E` تحت المفتاح
 `k`، أمّا رأس السهم فيُسقَط على الكتلة المشفَّرة.
 
-![center](/images/crypto-101/block-ciphers-fig-2-Encryption.svg)
-
-center
+![center](/images/crypto-101/block-ciphers-fig-2-Encryption.svg){#fig-BlockCipherEncryption}
 
    تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح معيّن `k`.
 
@@ -84,9 +78,7 @@ center
 (inverse permutation). وفي `fig-BlockCipherDecryption` نحصل على الرسم نفسه. والفرق
 بين الرسمين أنّ رؤوس الأسهم كلّها تشير في الاتجاه المعاكس.
 
-![center](/images/crypto-101/block-ciphers-fig-3-Decryption.svg)
-
-center
+![center](/images/crypto-101/block-ciphers-fig-3-Decryption.svg){#fig-BlockCipherDecryption}
 
    تبديل فكّ التشفير الذي تنتجه شيفرة الكتل تحت المفتاح نفسه `k`. وهو معكوس تبديل
    التشفير، إذ إنّ رؤوس الأسهم كلّها انقلبت.
@@ -94,9 +86,7 @@ center
 يحدّد المفتاح أيّ الكتل تُسقَط على أيّ الكتل. ويؤدي مفتاح مختلف إلى مجموعة أسهم
 مختلفة، كما ترى في `fig-BlockCipherEncryptionDifferentKey`.
 
-![center](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg)
-
-center
+![center](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg){#fig-BlockCipherEncryptionDifferentKey}
 
    تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح مختلف.
 
@@ -210,8 +200,6 @@ advanced
 صندوق استبدالها الخامس مشكلات أمنية خطيرة.
 ![center](/images/crypto-101/block-ciphers-fig-5-SubBytes.svg)
 
-center
-
 ولصالح DES، كانت الهجمات الخطّية غير معروفة علنًا وقت تصميمه.
 إزاحة الصفوف (ShiftRows)
 '''''''''''''''
@@ -220,8 +208,6 @@ center
 المصفوفة `4 \times 4`:
 
 ![center](/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg)
-
-center
 
 مزج الأعمدة (MixColumns)
 '''''''''''''''
@@ -232,8 +218,6 @@ center
 
 ![center](/images/crypto-101/block-ciphers-fig-7-MixColumns.svg)
 
-center
-
 إضافة مفتاح الجولة (AddRoundKey)
 '''''''''''''''
 
@@ -241,8 +225,6 @@ center
 جدول المفاتيح إلى حالة الشيفرة.
 
 ![center](/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg)
-
-center
 
 #### DES و3DES
 

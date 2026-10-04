@@ -57,53 +57,29 @@ encryption`) تشفّر تدفّقًا من البتّات. وفي الحالة 
 
 [^1]: هذا العرض التوضيحي بعينه لا يعمل إلّا على خرائط البتّات غير المضغوطة. أمّا الوسائط الأخرى فالأثر ليس أقلّ ضررًا بكثير: إنّه أقلّ ظهورًا فحسب.
 
-fix-encrypted-ecb
-0.48
+![صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.](/images/crypto-101/stream-ciphers-subfig-0-Plaintext.png){#fig-ECBDemoPlaintext}
 
-   .. _fig-ECBDemoPlaintext:
-![صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.](/images/crypto-101/stream-ciphers-subfig-0-Plaintext.png)
+   صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.
 
-Plaintext image
-center
+![نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).](/images/crypto-101/stream-ciphers-subfig-1-Ciphertext5.png){#fig-ECBDemo5px}
 
-      صورة النصّ الصريح، 2000 × 1400 بكسل، وعمق ألوان 24 بتًّا.
-
-   .. _fig-ECBDemo5px:
-![نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).](/images/crypto-101/stream-ciphers-subfig-1-Ciphertext5.png)
-
-ECB mode ciphertext, 5 pixel (120 bit) block size.
-center
-
-      نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).
+   نصّ مشفَّر بوضع ECB، حجم كتلة 5 بكسلات (120 بتًّا).
 
 ![نصّ مشفَّر بوضع ECB، حجم كتلة 30 بكسلًا (720 بتًّا).](/images/crypto-101/stream-ciphers-subfig-2-Ciphertext30.png)
 
-ECB mode ciphertext, 30 pixel (720 bit) block size.
-center
-
-      نصّ مشفَّر بوضع ECB، حجم كتلة 30 بكسلًا (720 بتًّا).
+   نصّ مشفَّر بوضع ECB، حجم كتلة 30 بكسلًا (720 بتًّا).
 
 ![نصّ مشفَّر بوضع ECB، حجم كتلة 100 بكسل (2400 بتًّا).](/images/crypto-101/stream-ciphers-subfig-3-Ciphertext100.png)
 
-ECB mode ciphertext, 100 pixel (2400 bit) block size.
-center
-
-      نصّ مشفَّر بوضع ECB، حجم كتلة 100 بكسل (2400 بتًّا).
+   نصّ مشفَّر بوضع ECB، حجم كتلة 100 بكسل (2400 بتًّا).
 
 ![نصّ مشفَّر بوضع ECB، حجم كتلة 400 بكسل (9600 بتًّا).](/images/crypto-101/stream-ciphers-subfig-4-Ciphertext400.png)
 
-ECB mode ciphertext, 400 pixel (9600 bit) block size.
-center
+   نصّ مشفَّر بوضع ECB، حجم كتلة 400 بكسل (9600 بتًّا).
 
-      نصّ مشفَّر بوضع ECB، حجم كتلة 400 بكسل (9600 بتًّا).
+![النصّ المشفَّر تحت تشفير مثاليّ.](/images/crypto-101/stream-ciphers-subfig-5-Random.png){#fig-ECBDemoIdealizedCiphertext}
 
-   .. _fig-ECBDemoIdealizedCiphertext:
-![النصّ المشفَّر تحت تشفير مثاليّ.](/images/crypto-101/stream-ciphers-subfig-5-Random.png)
-
-Ciphertext under idealized encryption.
-center
-
-      النصّ المشفَّر تحت تشفير مثاليّ.
+   النصّ المشفَّر تحت تشفير مثاليّ.
 
    صورة النصّ الصريح مع صور النصّ المشفَّر تحت تشفير مثاليّ وتحت تشفير `وضع ECB`
    بأحجام كتل متنوّعة. ومن الواضح أنّ معلومات عن البنية الكبرى للصورة تتسرّب. ويصبح
@@ -178,15 +154,11 @@ C = ECB(E_k, A \| S)
 
 ![center](/images/crypto-101/stream-ciphers-fig-0-RememberFirst.svg)
 
-center
-
 ثمّ يجرّب المهاجم جميع القيم الممكنة للبايت الأخير في كتلة كاملة الحجم. وفي نهاية
 الأمر يجد قيمة `s_0`؛ إذ يكون التخمين صحيحًا لأنّ الكتلة المشفَّرة الناتجة تطابق
 الكتلة المشفَّرة `C_{R1}` التي حُفظت في وقت سابق.
 
 ![center](/images/crypto-101/stream-ciphers-fig-1-GuessFirst.svg)
-
-center
 
 ويمكن للمهاجم أن يكرّر هذه الاستراتيجية مع البايت ما قبل الأخير. فيُرسَل نصّ صريح
 `A` أقصر ببايتين من حجم الكتلة. فتشفّر الآلة كتلة أولى تحوي `A` يتبعها البايتان
@@ -194,15 +166,11 @@ center
 
 ![center](/images/crypto-101/stream-ciphers-fig-2-RememberSecond.svg)
 
-center
-
 وبما أنّ المهاجم يعرف `s_0` أصلًا، فإنّ التخمين يبدأ من :math:`A \| s_0` متبوعًا
 بجميع القيم الممكنة لـ`s_1`. وفي نهاية المطاف تصحّ تخمينات المهاجم، فتتطابق كتل
 النصّ المشفَّر:
 
 ![center](/images/crypto-101/stream-ciphers-fig-3-GuessSecond.svg)
-
-center
 
 وهكذا يكرّر المهاجم الخطوات حتى يفكّ تشفير كتلة كاملة. وتتيح هذه الاستراتيجية تفريغ
 كتلة بالقوة الغاشمة في `p \cdot b` محاولة، حيث `p` هو عدد القيم الممكنة لكلّ بايت
@@ -267,14 +235,10 @@ oracle` في وضع ECB تتيح للمهاجم فكّ التشفير في `256 
 
 ![center](/images/crypto-101/stream-ciphers-fig-4-Encryption.svg)
 
-center
-
 وفكّ التشفير هو البناء المعكوس. إذ تكون شيفرات الكتل في وضع فكّ التشفير بدلًا من
 وضع التشفير:
 
 ![center](/images/crypto-101/stream-ciphers-fig-5-Decryption.svg)
-
-center
 
 وفيما أنّ `وضع CBC` ليس غير آمن بطبيعته (بخلاف `وضع ECB`)، فإنّ استعماله بعينه في
 TLS 1.0 كان غير آمن. وقد أدّى ذلك في النهاية إلى هجوم BEAST، الذي نتناوله بالتفصيل
@@ -418,8 +382,6 @@ attack). وباستعمال هجوم قلب بتّات في وضع CBC، يست�
 
 ![center](/images/crypto-101/stream-ciphers-fig-6-BitFlipping.svg)
 
-center
-
 وعنما نحاول فكّ تشفير كتلة النصّ المشفَّر ذات البتّات المقلوبة، سنحصل على ترميز
 [^4] غير مفهوم. وتذكّر كيف يعمل فكّ التشفير في وضع CBC: فإنّ خرج شيفرة الكتل يُجرى
 عليه XOR مع كتلة النصّ المشفَّر السابقة لإنتاج كتلة النصّ الصريح. وبعد أن عُدِّلت
@@ -559,8 +521,6 @@ P^{\prime}_{i + 1}
 تكون الرسالة تملك حشوًا صالحًا أصلًا، فيمكن للمهاجم ببساطة تخطّي الخطوة التالية.
 
 ![center](/images/crypto-101/stream-ciphers-fig-7-PaddingAttack.svg)
-
-center
 
 ثمّ يحاول المهاجم تعديل الرسالة بحيث تملك حشوًا صالحًا. ويمكنه فعل ذلك بتعديل
 البايت الأخير من النصّ الصريح تعديلًا غير مباشر: فسينتهي ذلك البايت إلى أن يساوي
@@ -758,8 +718,6 @@ r_b^{\prime} = r_b \xor \mathtt{01} \xor \mathtt{02}
 
 ![center](/images/crypto-101/stream-ciphers-fig-8-Synchronous.svg)
 
-center
-
 يمكنك أن ترى كيف يبدو هذا البناء مشابهًا إلى حدٍّ كبير لوسادة المرّة الواحدة، إلّا
 أنّ وسادة المرّة الواحدة العشوائية حقًّا قد استُبدلت بشيفرة تيار شبه عشوائية.
 
@@ -830,21 +788,15 @@ advanced
 
 ![center](/images/crypto-101/stream-ciphers-fig-9-IdentityPermutation.svg)
 
-center
-
 ثمّ يُمزج المفتاح في الحالة. ويتم ذلك بجعل الفهرس `i` يتكرّر على كلّ عنصر
 من عناصر الحالة. أمّا الفهرس `j` فيُعثر عليه بجمع القيمة الحالية لـ`j` (بدءًا من 0)
 مع البايت التالي من المفتاح ومع عنصر الحالة الحالي:
 
 ![center](/images/crypto-101/stream-ciphers-fig-10-FindIndex.svg)
 
-center
-
 وبعد العثور على `j`، تُبدَّل `S[i]` و`S[j]`:
 
 ![center](/images/crypto-101/stream-ciphers-fig-11-Swap.svg)
-
-center
 
 وتتكرّر هذه العملية على جميع عناصر `S`. فإذا نفدت بايتات المفتاح، فإنّك تعيد
 البدء من أوّل المفتاح. وهذا يفسّر لماذا تقبل RC4 مفاتيح يتراوح طولها بين 1 و256
@@ -876,14 +828,10 @@ def key_schedule(key):
 
 ![center](/images/crypto-101/stream-ciphers-fig-12-Swap.svg)
 
-center
-
 ولإنتاج بايت الخرج، تُجمع `S[i]` و`S[j]` معًا. ويُستعمل مجموعهما فهرسًا في `S`؛
 فتكون القيمة عند `S[S[i] + S[j]]` هي بايت تدفّق المفاتيح `K_i`:
 
 ![center](/images/crypto-101/stream-ciphers-fig-13-PRNGOutput.svg)
-
-center
 
 ويمكننا التعبير عن ذلك في Python:
 
@@ -1120,8 +1068,6 @@ x \leftarrow x \xor (y \madd z) \lll n
 مخرجات شيفرة الكتل عندئذٍ كتدفّق مفاتيح.
 
 ![center](/images/crypto-101/stream-ciphers-fig-16-CTR.svg)
-
-center
 
    `CTR mode`: يُشفَّر `رقم فريد` (nonce) واحد `N` مع عدّاد `i` محشو بالأصفار بواسطة
    شيفرة الكتل لإنتاج كتلة تدفّق مفاتيح؛ ثمّ يُجرى على هذه الكتلة XOR مع كتلة النصّ
