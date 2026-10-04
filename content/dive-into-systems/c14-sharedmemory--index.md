@@ -69,7 +69,7 @@ L3 cache:              8192K
 
 أُنشئت معظم اللغات الشائعة التي يعرفها المبرمجون اليوم قبل عصر تعدد الأنوية. ونتيجة لذلك، لا تستطيع لغات كثيرة استخدام المعالجات متعددة الأنوية *ضمنيًا* (أو تلقائيًا) لتسريع تنفيذ البرنامج. بل يجب على المبرمجين كتابة برمجيات تحديدًا للاستفادة من الأنوية المتعددة في النظام.
 
-### [](#_the_impact_of_multicore_systems_on_process_execution)14.1.1. أثر الأنظمة متعددة الأنوية في تنفيذ العمليات
+### 14.1.1. أثر الأنظمة متعددة الأنوية في تنفيذ العمليات {#_the_impact_of_multicore_systems_on_process_execution}
 
 تذكّر أن [**العملية**](https://diveintosystems.org/book/C13-OS/processes.html#_processes) يمكن التفكير فيها كتجريد لبرنامج عامل. وتنفّذ كل عملية في فضاء عنوانها الافتراضي الخاص. ويجدول نظام التشغيل العمليات للتنفيذ على المعالج؛ ويحدث **تبديل السياق** عندما يغيّر المعالج العملية التي ينفّذها حاليًا.
 
@@ -93,7 +93,7 @@ L3 cache:              8192K
 
 لاحظ أن التنفيذ المتوازي لعمليات متعددة يزيد فقط عدد العمليات التي تنفّذ في أي لحظة. وفي [الشكل 2](#FigConcurrency2)، تكمل جميع العمليات التنفيذ بحلول الوحدة الزمنية T7. لكن كل عملية فردية ما زالت تحتاج المقدار نفسه من زمن المعالج لتكتمل كما يظهر في [الشكل 1](#FigConcurrency1). فمثلًا، تحتاج العملية 2 ثلاث وحدات زمن سواء نُفّذت على نظام أحادي النواة أم متعدد الأنوية (أي أن *زمن معالجها* يبقى كما هو). ويزيد المعالج متعدد الأنوية **إنتاجية** تنفيذ العمليات، أي عدد العمليات التي يمكن أن تكتمل في فترة زمنية معينة. وبذلك، بينما يبقى زمن المعالج لعملية فردية دون تغيير، قد ينخفض زمنها الحائطي.
 
-### [](#_expediting_process_execution_with_threads)14.1.2. تعجيل تنفيذ العمليات بالخيوط
+### 14.1.2. تعجيل تنفيذ العمليات بالخيوط {#_expediting_process_execution_with_threads}
 
 من طرق تسريع تنفيذ عملية واحدة تفكيكها إلى تدفقات تنفيذ مستقلة خفيفة تُسمى **الخيوط** (threads). ويعرض [الشكل 3](#FigProcess) كيف يتغير فضاء العنوان الافتراضي للعملية عندما تصبح متعددة الخيوط بخيطين. ومع أن لكل خيط تخصيصه الخاص لمساحة مكدّس النداء، فإن جميع الخيوط *تتشارك* بيانات البرنامج وتعليماته والكومة المخصصة للعملية متعددة الخيوط.
 
@@ -101,7 +101,7 @@ L3 cache:              8192K
 
 ويجدول نظام التشغيل الخيوط بالطريقة نفسها التي يجدول بها العمليات. وعلى معالج متعدد الأنوية، يستطيع نظام التشغيل تسريع تنفيذ برنامج متعدد الخيوط بجدولة خيوطه المختلفة للعمل على أنوية منفصلة. ويساوي الحد الأقصى لعدد الخيوط التي يمكن أن تنفّذ على التوازي عدد الأنوية الفيزيائية في النظام. وإذا تجاوز عدد الخيوط عدد الأنوية الفيزيائية، وجب على الخيوط الباقية انتظار دورها للتنفيذ (على غرار طريقة تنفيذ العمليات على نواة واحدة).
 
-#### [](#_an_example_scalar_multiplication)مثال: الضرب القياسي
+#### مثال: الضرب القياسي {#_an_example_scalar_multiplication}
 
 وكمثال أولي على كيفية استخدام تعدد الخيوط لتسريع تطبيق، فكّر في مسألة إجراء ضرب قياسي لمصفوفة `array` في عدد صحيح ما `s`. وفي الضرب القياسي، يُقاس كل عنصر في المصفوفة بضربه في `s`.
 
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
 - بعد ذلك، تعرّف الدالة `HelloWorld` **دالة الخيط** التي نمرّرها لاحقًا إلى `pthread_create`. ودالة الخيط مماثلة لدالة `main` بالنسبة إلى خيط عامل (منشأ) — فيبدأ الخيط تنفيذه عند بداية دالة خيطه وينتهي عند وصوله إلى نهايتها. وينفّذ كل خيط دالة الخيط باستخدام حالة تنفيذه الخاصة (أي ذاكرة مكدّسه وقيم سجلاته الخاصة). لاحظ أيضًا أن دالة الخيط من النوع `void*`. وتحديد [**مؤشر مجهول**](https://diveintosystems.org/book/C2-C_depth/advanced_voidstar.html#_c_voidstar_recasting_) في هذا السياق يتيح للمبرمجين كتابة دوال خيوط تتعامل مع وسائط وقيم إرجاع من أنواع مختلفة.
 - وأخيرًا، في الدالة `main`، يهيّئ الخيط الرئيسي حالة البرنامج قبل إنشاء خيوط العمل وضمّها.
 
-### [](#_creating_and_joining_threads)14.2.1. إنشاء الخيوط وضمّها
+### 14.2.1. إنشاء الخيوط وضمّها {#_creating_and_joining_threads}
 
 يبدأ البرنامج أولًا كعملية أحادية الخيط. وأثناء تنفيذه الدالة `main`، يقرأ عدد الخيوط المراد إنشاؤها، ويخصص ذاكرة لمصفوفتين: `thread_array` و`thread_ids`. وتحتوي المصفوفة `thread_array` مجموعة عناوين كل خيط مُنشأ. وتخزّن المصفوفة `thread_ids` مجموعة الوسائط التي تُمرَّر إلى كل خيط. وفي هذا المثال، يُمرَّر إلى كل خيط عنوان رتبته (أو معرّفه، الممثَّل بـ `thread_ids[i]`).
 
@@ -269,7 +269,7 @@ for (i = 0; i < nthreads; i++) {
 }
 ```
 
-### [](#_the_thread_function)14.2.2. دالة الخيط
+### 14.2.2. دالة الخيط {#_the_thread_function}
 
 في البرنامج السابق، يطبع كل خيط مُنشأ `Hello world! I am thread n`، حيث `n` معرّف الخيط الفريد. وبعد أن يطبع الخيط رسالته، ينتهي. لنلقِ نظرة أقرب على الدالة `HelloWorld`:
 
@@ -287,7 +287,7 @@ void *HelloWorld(void *id) {
 
 وعلى غرار مُعامِل دالة الخيط، تتجنّب مكتبة Pthreads فرض نوع إرجاع دالة الخيط بتحديد `void *` آخر — فالمبرمج حر في إعادة أي مؤشر من دالة الخيط. وإذا احتاج البرنامج إلى الوصول إلى قيمة إرجاع الخيط، فيمكنه استرجاعها عبر المُعامِل الثاني لـ `pthread_join`. وفي مثالنا، لا حاجة للخيط إلى إعادة قيمة، فيعيد ببساطة مؤشر `NULL`.
 
-### [](#_running_the_code)14.2.3. تشغيل الشيفرة
+### 14.2.3. تشغيل الشيفرة {#_running_the_code}
 
 يوضح الأمر التالي كيفية استخدام GCC لتصريف [hellothreads.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c). ويتطلب بناء تطبيق Pthreads تمرير علم الربط `-pthread` إلى GCC لضمان إتاحة دوال Pthreads وأنواعها:
 
@@ -329,7 +329,7 @@ Hello world! I am thread 3
 
 > ينبغي *ألا* تفترض أبدًا أي شيء عن ترتيب تنفيذ الخيوط. وإذا كانت صحة برنامجك تتطلب عمل الخيوط بترتيب معين، فيجب أن تضيف [**تزامنًا**](https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_synchronizing_threads) إلى برنامجك لمنع الخيوط من العمل عندما لا ينبغي لها ذلك.
 
-### [](#_revisiting_scalar_multiplication)14.2.4. إعادة النظر في الضرب القياسي
+### 14.2.4. إعادة النظر في الضرب القياسي {#_revisiting_scalar_multiplication}
 
 لنستكشف كيفية إنشاء تطبيق متعدد الخيوط لبرنامج [الضرب القياسي](https://diveintosystems.org/book/C14-SharedMemory/multicore.html#_an_example_scalar_multiplication) من القسم السابق. تذكّر أن استراتيجيتنا العامة لجعل `scalar_multiply` متوازية هي:
 
@@ -402,7 +402,7 @@ for (i = start; i < end; i++) {
 }
 ```
 
-### [](#_improving_scalar_multiplication_multiple_arguments)14.2.5. تحسين الضرب القياسي: وسائط متعددة
+### 14.2.5. تحسين الضرب القياسي: وسائط متعددة {#_improving_scalar_multiplication_multiple_arguments}
 
 من أوجه الضعف الرئيسية في التطبيق السابق الاستخدام الواسع للمتغيرات العامة. وقد أظهرت مناقشتنا الأصلية لـ[المتغيرات العامة](https://diveintosystems.org/book/C2-C_depth/scope_memory.html#_parts_of_program_memory_and_scope) أنه مع فائدتها، ينبغي تجنّب المتغيرات العامة عمومًا في C. ولتقليل عدد المتغيرات العامة في البرنامج، يتمثل أحد الحلول في تعريف بنية `t_arg` كما يلي في النطاق العام:
 
@@ -1125,7 +1125,7 @@ void *Transfer(void *args){
 
 وأقفال التبادل المتبادل والسيمافورات ليست المثال الوحيد على عناصر التزامن التي يمكن استخدامها في سياق البرامج متعددة الخيوط. وفي هذا القسم الفرعي سنناقش بإيجاز عنصرَي التزامن الحاجز ومتغير الشرط، وكلاهما جزء من مكتبة Pthreads.
 
-#### [](#_barriers)الحواجز
+#### الحواجز {#_barriers}
 
 **الحاجز** (barrier) نوع من عناصر التزامن يجبر *جميع* الخيوط على الوصول إلى نقطة مشتركة في التنفيذ قبل إطلاق الخيوط لمتابعة التنفيذ بالتزامن. وتوفّر Pthreads عنصر تزامن أولي للحاجز. ولاستخدام حواجز Pthreads، يلزم فعل ما يلي:
 
@@ -1158,7 +1158,7 @@ void *threadEx(void *args){
 
 في هذا المثال، لا يستطيع أي خيط بدء معالجة جزئه المسند من المصفوفة حتى *يُطبع* في *كل* خيط الرسالة الدالة على بدء العمل. ومن دون الحاجز، من الممكن أن يكون خيط قد أنهى عمله قبل أن تطبع الخيوط الأخرى رسالتها عن بدء العمل! لاحظ أنه *ما زال* ممكنًا أن يطبع خيط رسالة انتهائه من العمل قبل أن ينتهي خيط آخر.
 
-#### [](#_condition_variables)متغيرات الشرط
+#### متغيرات الشرط {#_condition_variables}
 
 تجبر متغيرات الشرط خيطًا على الحجب حتى بلوغ شرط معين. ويفيد هذا العنصر في السيناريوهات التي يجب فيها بلوغ شرط قبل أن يؤدّي الخيط عملًا ما. وفي غياب متغيرات الشرط، سيتعين على الخيط فحص بلوغ الشرط مرارًا بتكرار، مستهلكًا المعالج باستمرار. وتُستخدم متغيرات الشرط دائمًا مقترنة بقفل تبادل متبادل. وفي هذا النوع من عناصر التزامن، يفرض القفل الاستبعاد المتبادل، بينما يضمن متغير الشرط بلوغ شروط معينة قبل أن يحوز الخيط القفل.
 
@@ -1282,7 +1282,7 @@ void *farmer(void *args ) {
 
 وبهذه الطريقة، يعمل Chicken وFarmer معًا لوضع/جمع البيض. وتضمن متغيرات الشرط ألا يجمع أي خيط Farmer بيضة حتى تضعها دجاجة.
 
-#### [](#_broadcasting)البث
+#### البث {#_broadcasting}
 
 من الدوال الأخرى المستخدمة مع متغيرات الشرط `pthread_cond_broadcast`، وهي مفيدة عندما تكون خيوط متعددة محجوبة على شرط معين. ويؤدي استدعاء `pthread_cond_broadcast(&cond)` إلى إيقاظ *جميع* الخيوط المحجوبة على الشرط `cond`. وفي المثال التالي، نوضح كيف يمكن لمتغيرات الشرط تنفيذ عنصر الحاجز المناقش سابقًا:
 
@@ -1354,7 +1354,7 @@ void *threadEx_v2(void *args){
 
 وتحديدًا، يعطي قانون Gustafson-Barsis فهمًا أفضل لحدود قانون Amdahl.
 
-#### [](#_speedup)التسريع
+#### التسريع {#_speedup}
 
 لنفترض أن برنامجًا يستغرق زمن T*c* للتنفيذ على *c* من الأنوية. وبذلك تستغرق النسخة التتابعية من البرنامج زمن T1.
 
@@ -1366,7 +1366,7 @@ void *threadEx_v2(void *args){
 
 وإذا كان تسريع برنامج أكبر من 1، فهو يدل على أن التوازي حقق بعض التحسن. وإذا كان التسريع أقل من 1، فالحل المتوازي في الواقع أبطأ من الحل التتابعي. ومن الممكن أن يكون تسريع برنامج أكبر من *n* (مثلًا كأثر جانبي لوجود ذاكرات مؤقتة إضافية تقلل الوصول إلى الذاكرة). وتُشار إلى هذه الحالات بـ**التسريع فوق الخطي** (superlinear speedup).
 
-#### [](#_efficiency)الكفاءة
+#### الكفاءة {#_efficiency}
 
 لا يأخذ التسريع عدد الأنوية في الحسبان — فهو ببساطة نسبة الزمن التتابعي إلى الزمن المتوازي. فمثلًا، إذا استغرق برنامج تتابعي 60 ثانية، لكن برنامجًا متوازيًا استغرق 30 ثانية على أربع أنوية، فسيظل تسريعه 2. غير أن هذا المقياس لا يجسّد حقيقة أنه عمل على أربع أنوية.
 
@@ -1378,7 +1378,7 @@ void *threadEx_v2(void *args){
 
 لنعد إلى المثال السابق الذي يستغرق فيه برنامج تتابعي 60 ثانية. فإذا استغرقت النسخة المتوازية 30 ثانية على نواتين، فكفاءتها 1 (أو 100%). وإذا استغرق البرنامج بدلًا من ذلك 30 ثانية على أربع أنوية، تهبط الكفاءة إلى 0.5 (أو 50%).
 
-#### [](#_parallel_performance_in_the_real_world)الأداء المتوازي في العالم الواقعي
+#### الأداء المتوازي في العالم الواقعي {#_parallel_performance_in_the_real_world}
 
 في عالم مثالي، يكون التسريع خطيًا. فلكل وحدة حساب إضافية، ينبغي أن يحقق البرنامج المتوازي مقدارًا متناسبًا من التسريع. لكن هذا السيناريو نادر الحدوث في العالم الواقعي. فمعظم البرامج تحتوي مكوّنًا تتابعيًا ضروريًا وُجد بسبب تبعيات متأصلة في الشيفرة. وتُشار إلى أطول مجموعة من التبعيات في برنامج بـ**المسار الحرج** (critical path). وتقليل طول المسار الحرج للبرنامج خطوة أولى مهمة في جعله متوازيًا. ونقاط تزامن الخيوط و(بالنسبة إلى البرامج التي تعمل على عقد حسابية متعددة) الكلفة الإضافية للتواصل بين العمليات مكوّنات أخرى في الشيفرة يمكن أن تحدّ من الأداء المتوازي للبرنامج.
 
@@ -1411,7 +1411,7 @@ Time for Step 1 is 0.107649 s
 
 ومع أن لدينا كفاءة 84% بنواتين، تهبط كفاءة الأنوية إلى 39% بثماني أنوية. لاحظ أن التسريع المثالي البالغ 8 لم يتحقق. وأحد أسباب ذلك أن الكلفة الإضافية لإسناد العمل إلى الخيوط والتحديث التتابعي لمصفوفة `counts` تبدأ بالسيطرة على الأداء عند أعداد أكبر من الخيوط. وثانيًا، يقلل تنازع الموارد بين الخيوط الثمانية (تذكّر أن هذا معالج رباعي الأنوية) كفاءة الأنوية.
 
-#### [](#_amdahls_law)قانون Amdahl
+#### قانون Amdahl {#_amdahls_law}
 
 في عام 1967، تنبأ Gene Amdahl، وهو معماري حواسيب بارز في IBM، بأن التسريع الأقصى الذي يمكن أن يحققه برنامج حاسوبي محدود بحجم مكوّنه التتابعي الضروري (المعروف الآن بقانون Amdahl). وبصفة أعم، ينص قانون Amdahl على أنه يوجد في كل برنامج مكوّن يمكن تسريعه (أي الجزء من البرنامج الذي يمكن تحسينه أو جعله متوازيًا، *P*)، ومكوّن *لا* يمكن تسريعه (أي الجزء من البرنامج التتابعي بطبيعته، *S*). وحتى لو انخفض الوقت اللازم لتنفيذ المكوّن القابل للتحسين أو التوازي *P* إلى الصفر، فسيظل المكوّن التتابعي *S* موجودًا، وسيسيطر على الأداء في نهاية الأمر. ولأن *S* و*P* كسران، لاحظ أن *S* + *P* = 1.
 
@@ -1448,11 +1448,11 @@ Time for Step 1 is 0.107649 s
 
 وقد تحدّث أعمال لاحقة عن بعض الافتراضات الرئيسية التي بنى عليها Amdahl. اقرأ عن [قانون Gustafson-Barsis](https://diveintosystems.org/book/C14-SharedMemory/performance_advanced.html#_gustafson_barsis_law) لمناقشة حدود قانون Amdahl وحجة مختلفة حول كيفية التفكير في فوائد التوازي.
 
-#### [](#_references)المراجع
+#### المراجع {#_references}
 
 1. Gene Amdahl. "Validity of the single processor approach to achieving large scale computing capabilities" *Proceedings of the April 18-20, 1967, Spring Joint Computer Conference*. pp. 483—​485. ACM. 1967.
 
-#### [](#_gustafson_barsis_law)قانون Gustafson-Barsis
+#### قانون Gustafson-Barsis {#_gustafson_barsis_law}
 
 في عام 1988، كتب John L. Gustafson، وهو عالم حاسوب وباحث في مختبرات Sandia الوطنية، ورقة بعنوان "Reevaluating Amdahl’s Law1". ويُبرز Gustafson في هذه الورقة افتراضًا جوهريًا كان قد وُضع حول تنفيذ البرنامج المتوازي ولا يصح دائمًا.
 
@@ -1472,7 +1472,7 @@ Time for Step 1 is 0.107649 s
 
 وكما يستنتج Gustafson، «*ينبغي قياس التسريع بقياس المسألة إلى عدد المعالجات، لا بتثبيت حجم المسألة*»1. وتُعدّ نتيجة Gustafson جديرة بالملاحظة لأنها تُظهر إمكانية الحصول على تسريع متزايد بتحديث عدد المعالجات. وكم باحث يعمل في منشأة حوسبة فائقة وطنية، كان اهتمام Gustafson أكبر بأداء *عمل أكثر* في مقدار ثابت من الزمن. وفي عدة مجالات علمية، تؤدي القدرة على تحليل بيانات أكثر إلى دقة أو إتقان أعلى في النتائج عادةً. وقد أظهر عمل Gustafson إمكانية الحصول على تسريعات كبيرة على أعداد كبيرة من المعالجات، وأعاد إحياء الاهتمام بالمعالجة المتوازية2.
 
-#### [](#_scalability)قابلية التوسع
+#### قابلية التوسع {#_scalability}
 
 نصف برنامجًا بـ**قابل للتوسع** (scalable) إذا رأينا أداءً متحسنًا (أو ثابتًا) كلما زدنا عدد الموارد (الأنوية والمعالجات) أو حجم المسألة. وثمة مفهومان مرتبطان هما **التوسع القوي** (strong scaling) و**التوسع الضعيف** (weak scaling). ومن المهم ملاحظة أن «الضعيف» و«القوي» في هذا السياق لا يدلان على *جودة* قابلية توسع البرنامج، بل هما مجرد طريقتين مختلفتين لقياس قابلية التوسع.
 
@@ -1480,7 +1480,7 @@ Time for Step 1 is 0.107649 s
 
 ونقول إن برنامجًا **قابل للتوسع بضعف** إذا أدت زيادة حجم البيانات بالمعدل نفسه الذي يزداد به عدد الأنوية (أي إذا كان هناك حجم بيانات ثابت لكل نواة/معالج) إلى أداء ثابت أو متحسن. ونقول إن برنامجًا يُظهر قابلية توسع ضعيفة خطية إذا رأينا تحسنًا بمقدار *n* عند زيادة العمل لكل نواة بمعامل *n*.
 
-#### [](#_general_advice_regarding_measuring_performance)نصائح عامة بشأن قياس الأداء
+#### نصائح عامة بشأن قياس الأداء {#_general_advice_regarding_measuring_performance}
 
 نختم مناقشتنا للأداء ببعض الملاحظات عن القياس المرجعي والأداء على الأنوية الفائقة الخيوط.
 
@@ -1500,7 +1500,7 @@ Time for Step 1 is 0.107649 s
 
 عند القياس المرجعي، من المهم دائمًا مراعاة العمليات والتطبيقات المتعددة الخيوط *الأخرى* العاملة على النظام. وإذا بدت نتائج أدائك غريبة بعض الشيء، فمن الجدير تشغيل `top` بسرعة لرؤية ما إذا كان هناك مستخدمون آخرون يشغّلون أيضًا مهام كثيفة الموارد على النظام نفسه. وإن كان الأمر كذلك، فحاول استخدام نظام مختلف للقياس المرجعي (أو انتظر حتى لا يكون النظام مستخدمًا بكثافة).
 
-#### [](#_references)المراجع
+#### المراجع {#_references}
 
 1. John Gustafson. "Reevaluating Amdahl’s law". *Communications of the ACM* 31(5), pp. 532—​533. ACM. 1988.
 2. Caroline Connor. "Movers and Shakers in HPC: John Gustafson" *HPC Wire*. [http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html](http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html)
@@ -1514,7 +1514,7 @@ Time for Step 1 is 0.107649 s
 - يدل **بت الصلاحية** على ما إذا كانت الكتلة عند سطر معين في الذاكرة المؤقتة آمنة للاستخدام. وإذا كان بت الصلاحية 0، فلا يمكن استخدام كتلة البيانات عند ذلك السطر (مثلًا، قد تحتوي الكتلة بيانات من عملية منتهية).
 - تُكتب المعلومات في الذاكرة المؤقتة/الذاكرة وفق استراتيجيتين رئيسيتين. في استراتيجية **الكتابة المباشرة**، تُكتب البيانات في الذاكرة المؤقتة والذاكرة الرئيسية في الوقت نفسه. وفي استراتيجية **الكتابة المرتجعة**، تُكتب البيانات في الذاكرة المؤقتة فقط، وتُكتب إلى المستويات الأدنى من الهرم بعد إخلاء الكتلة من الذاكرة المؤقتة.
 
-### [](#_caches_on_multicore_systems)14.5.1. الذاكرات المؤقتة في الأنظمة متعددة الأنوية
+### 14.5.1. الذاكرات المؤقتة في الأنظمة متعددة الأنوية {#_caches_on_multicore_systems}
 
 [تذكّر](https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors) أنه في معماريات الذاكرة المشتركة يمكن أن تملك كل نواة ذاكرتها المؤقتة الخاصة، ويمكن أن تتشارك أنوية متعددة ذاكرة مؤقتة مشتركة. ويعرض [الشكل 1](#FigMulticoreCache) مثالًا على وحدة معالجة مركزية ثنائية الأنوية. ومع أن كل نواة تملك ذاكرتها المؤقتة L1 المحلية، فإن الأنوية تتشارك ذاكرة L2 مؤقتة مشتركة.
 
@@ -1540,7 +1540,7 @@ Time for Step 1 is 0.107649 s
 
 ومن شأن استخدام بروتوكول MSI مع التجسّس أن يعطي الإسناد النهائي الصحيح للقيمة `30` إلى المتغير `y` في المثال السابق.
 
-### [](#_false_sharing)14.5.2. المشاركة الزائفة
+### 14.5.2. المشاركة الزائفة {#_false_sharing}
 
 يضمن تماسك الذاكرة المؤقتة الصحة، لكنه قد يضر بالأداء. تذكّر أنه عندما يحدّث الخيط `g` على النواة 0، تُبطل الذاكرة المؤقتة المتجسّسة ليس `g` فقط، بل *سطر الذاكرة المؤقتة كله* الذي يقع فيه `g`.
 
@@ -1632,7 +1632,7 @@ $ cat /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
 
 وتزيد إضافة مزيد من الأنوية المشكلة سوءًا، بما أن ذاكرات L1 مؤقتة أكثر تُبطل السطر الآن. ونتيجة لذلك، تؤدي إضافة خيوط إضافية إلى إبطاء زمن التشغيل، رغم أن كل خيط يصل إلى عناصر مختلفة من مصفوفة `counts`! وهذا مثال على **المشاركة الزائفة** (false sharing)، أو الوهم بأن عناصر فردية يتشاركها عدة أنوية. وفي المثال السابق، يبدو أن جميع الأنوية تصل إلى العناصر نفسها من `counts`، حتى لو لم يكن الأمر كذلك.
 
-### [](#_fixing_false_sharing)14.5.3. إصلاح المشاركة الزائفة
+### 14.5.3. إصلاح المشاركة الزائفة {#_fixing_false_sharing}
 
 من طرق إصلاح حالة مشاركة زائفة حشو المصفوفة (في حالتنا `counts`) بعناصر إضافية بحيث لا تتسع في سطر ذاكرة مؤقتة واحد. لكن الحشو قد يهدر الذاكرة، وقد لا يزيل المشكلة من جميع المعماريات (فكّر في سيناريو تكون فيه آلتان مختلفتان بأحجام ذاكرة L1 مؤقتة مختلفة). وفي معظم الحالات، لا تستحق كتابة شيفرة تدعم أحجام ذاكرات مؤقتة مختلفة المكسب في الأداء.
 
@@ -1707,7 +1707,7 @@ pthread_mutex_unlock(&mutex); //release the mutex lock
 
 عند كتابة شيفرة متعددة الخيوط، تحقق من أن دوال مكتبة C المستخدمة آمنة للخيوط فعلًا. لحسن الحظ، قائمة دوال مكتبة C غير الآمنة للخيوط صغيرة نسبيًا. وتحتفظ The Open Group مشكورةً بـ[قائمة بالدوال غير الآمنة للخيوط](http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html).
 
-### [](#_fixing_issues_of_thread_safety)14.6.1. إصلاح مشكلات أمان الخيوط
+### 14.6.1. إصلاح مشكلات أمان الخيوط {#_fixing_issues_of_thread_safety}
 
 [عناصر التزامن الأولية](https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_synchronizing_threads) هي الطريقة الأكثر شيوعًا لإصلاح المشكلات المرتبطة بأمان الخيوط. لكن استخدام دوال مكتبة C غير الآمنة للخيوط من دون علم قد يسبب مشكلات دقيقة. لننظر في نسخة معدّلة قليلًا من دالتنا `countsElem` تُسمى `countElemsStr`، تحاول إحصاء تكرار الأرقام في سلسلة نصية معينة، حيث يُفصل بين كل رقم ورقم بمسافات. وقد حُرّر البرنامج التالي للإيجاز؛ والشيفرة الكاملة لهذا البرنامج متاحة في: [countElemsStr.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr.c).
 
@@ -1880,7 +1880,7 @@ The Open Multiprocessing (OpenMP) library implements an *implicit* alternative t
 
 Detailed coverage of OpenMP is outside the scope of this book, but we cover some common pragmas, and show how several can be used in the context of some sample applications.
 
-### [](#_common_pragmas)14.7.1. Common Pragmas
+### 14.7.1. Common Pragmas {#_common_pragmas}
 
 Here are some of the most commonly used pragmas in OpenMP programs:
 
@@ -1925,7 +1925,7 @@ returns the identifier of the calling thread.
 
 > Keep in mind that the `omp parallel for` pragma works *only* with `for` loops. Other types of loops, such as `while` loops and `do`-`while` loops, are not supported.
 
-### [](#_hello_threading_openmp_flavored)14.7.2. Hello Threading: OpenMP flavored
+### 14.7.2. Hello Threading: OpenMP flavored {#_hello_threading_openmp_flavored}
 
 Let’s revisit our "Hello World" ([hellothreads.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c)) program, now using OpenMP instead of Pthreads:
 
@@ -1961,7 +1961,7 @@ Note that the OpenMP program is *much* shorter than the Pthreads version. To acc
 
 OpenMP also abstracts away the need to explicitly manage thread IDs. In the context of `HelloWorld`, the `omp_get_thread_num` function extracts the unique ID associated with the thread that is running it.
 
-#### [](#_compiling_the_code)Compiling the code
+#### Compiling the code {#_compiling_the_code}
 
 Let’s compile and run this program by passing the `-fopenmp` flag to the compiler, which signals that we’re compiling with OpenMP:
 
@@ -1987,7 +1987,7 @@ Hello world! I am thread 0
 
 This behavior is consistent with our [example with Pthreads](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program).
 
-### [](#_a_more_complex_example_countsort_in_openmp)14.7.3. A More Complex Example: CountSort in OpenMP
+### 14.7.3. A More Complex Example: CountSort in OpenMP {#_a_more_complex_example_countsort_in_openmp}
 
 A powerful advantage of OpenMP is that it enables programmers to incrementally parallelize their code. To see this in action, let’s parallelize the more complex CountSort algorithm discussed earlier in this chapter (the serial code is located here: [countSort.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c)). Recall that this algorithm sorts arrays containing a small range of values. The main function of the serial program looks like the following:
 
@@ -2014,7 +2014,7 @@ int main( int argc, char **argv ) {
 
 The `main` function, after doing some command line parsing and generating a random array, calls the `countsElems` function followed by the `writeArray` function.
 
-#### [](#_parallelizing_countelems_using_openmp)Parallelizing CountElems Using OpenMP
+#### Parallelizing CountElems Using OpenMP {#_parallelizing_countelems_using_openmp}
 
 There are several ways to parallelize the preceding program. One way (shown in the example that follows) uses the `omp parallel` pragma in the context of the `countElems` and `writeArray` functions. As a result, no changes need to be made to the `main` function. A full version of the program is available at: [countSort_mp.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort_mp.c).
 
@@ -2063,7 +2063,7 @@ Run Time for Phase 1 is 0.068749
 
 This is excellent performance, with our function getting a speedup of 2 on two threads, and a speedup of 3.63 on four threads. We get even better performance than the Pthreads implementation!
 
-#### [](#_the_writearray_function_in_openmp)The `writeArray` Function in OpenMP
+#### The `writeArray` Function in OpenMP {#_the_writearray_function_in_openmp}
 
 Parallelizing the `writeArray` function is *much* harder. The following code shows one possible solution:
 
@@ -2101,7 +2101,7 @@ Notice how much cleaner the OpenMP code is than the POSIX thread implementation.
 
 However, a necessary trade-off for abstraction is control. The programmer assumes that the compiler is "smart" enough to take care of the particulars of parallelization and thus has an easier time parallelizing their application. However, the programmer no longer makes detailed decisions about the particulars of that parallelization. Without a clear idea of how OpenMP pragmas execute under the hood, it can be difficult to debug an OpenMP application or know which pragma is the most appropriate to use at a given time.
 
-### [](#_learning_more_about_openmp)14.7.4. Learning More about OpenMP
+### 14.7.4. Learning More about OpenMP {#_learning_more_about_openmp}
 
 A deeper discussion of OpenMP is beyond the scope of this book, but there are useful free resources1,2 for learning OpenMP.
 
