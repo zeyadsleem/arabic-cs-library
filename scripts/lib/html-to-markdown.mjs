@@ -189,7 +189,9 @@ const normalizeLegacyHtml = (html) =>
       /<span class="math"[^>]*>([\s\S]*?)<\/span>/gi,
       (match, inner) => {
         const alt = inner.match(/alt="([^"]*)"/i)?.[1];
-        return alt ? ` $${alt.trim()}$ ` : ' ';
+        if (!alt) return ' ';
+        const value = decode(alt.trim());
+        return /^\$|^\\\(|^\\\[/.test(value) ? ` ${value} ` : ` $${value}$ `;
       }
     )
     .replace(/<a\s+name="[^"]*"[^>]*>\s*<\/a>/gi, '')

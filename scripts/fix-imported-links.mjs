@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { outsideCode } from './lib/content-markup.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const books = process.argv.slice(2);
@@ -43,8 +44,8 @@ for (const book of books) {
     const source = raw.match(/^source:\s*(\S+)\s*$/m)?.[1];
     const origin = source ? new URL(source).origin : null;
 
-    const next = raw.replace(
-      /\]\((?!https?:|mailto:|#|\/arabic-cs-library\/)([^)\s]+)\)/g,
+    const next = outsideCode(raw, (text) => text.replace(
+      /\]\((?!https?:|mailto:|#|\/(?:arabic-cs-library|images|book|go-browser)\/)([^)\s]+)\)/g,
       (match, href) => {
         let absolute;
         try {
@@ -64,7 +65,7 @@ for (const book of books) {
         }
         return match;
       }
-    );
+    ));
 
     if (next !== raw) {
       fs.writeFileSync(target, next);

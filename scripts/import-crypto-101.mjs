@@ -46,7 +46,7 @@ const fetchText = (url) => {
 };
 
 const download = (url) =>
-  execFileSync('curl', ['-sL', '--compressed', '-m', '90', url], {
+  execFileSync('curl', ['--fail', '-sL', '--compressed', '-m', '90', url], {
     maxBuffer: 32 * 1024 * 1024,
     stdio: ['ignore', 'pipe', 'ignore'],
   });
