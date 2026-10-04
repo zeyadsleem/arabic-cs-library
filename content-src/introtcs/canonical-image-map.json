@@ -1,0 +1,1067 @@
+{
+  "/images/introtcs/original-alphagozero.webp": {
+    "original": "../figure/alphagozero.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter1/alphagozero.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn (original figures)"
+  },
+  "/images/introtcs/original-zerocash.webp": {
+    "original": "../figure/zerocash.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/zerocash.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-onetoonedef3.webp": {
+    "original": "../figure/onetoonedef3.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter1/onetoonedef3.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-functionsdiagram.webp": {
+    "original": "../figure/functionsdiagram.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/functionsdiagram.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-graphsexampe.webp": {
+    "original": "../figure/graphsexampe.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/graphsexampe.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-shortcutpath.webp": {
+    "original": "../figure/shortcutpath.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/shortcutpath.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-nvsnsquared.webp": {
+    "original": "../figure/nvsnsquared.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/nvsnsquared.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-topologicalsort.webp": {
+    "original": "../figure/topologicalsort.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/topologicalsort.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-topologicalsortexamples.webp": {
+    "original": "../figure/topologicalsortexamples.png",
+    "url": "https://raw.githubusercontent.com/boazbk/panbook/750ba34f685a13d0a76f7788e7b50bd25fc473cb/figure/topologicalsortexamples.png",
+    "source": "boazbk/panbook"
+  },
+  "/images/introtcs/original-gradeschoolmult.webp": {
+    "original": "../figure/gradeschoolmult.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter0/gradeschoolmult.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-karatsubatwodigit.webp": {
+    "original": "../figure/karatsubatwodigit.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter0/karatsubatwodigit.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-karastubavsgschoolv2.webp": {
+    "original": "../figure/karastubavsgschoolv2.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter0/karastubavsgschoolv2.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-karatsuba_analysis2.webp": {
+    "original": "../figure/karatsuba_analysis2.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter0/karatsuba_analysis2.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-dependencystructure.webp": {
+    "original": "../figure/dependencystructure.png",
+    "url": "https://web.archive.org/web/20250907045910id_/https://introtcs.org/figure/dependencystructure.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-input_output.webp": {
+    "original": "../figure/input_output.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/input_output.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-zeroes-ones.webp": {
+    "original": "../figure/zeroes-ones.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/zeroes-ones.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-digitsbitmap.webp": {
+    "original": "../figure/digitsbitmap.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/digitsbitmap.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-twoscomplement.webp": {
+    "original": "../figure/twoscomplement.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter2/twoscomplement.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-floatingpoint.webp": {
+    "original": "../figure/floatingpoint.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter2/floatingpoint.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-e_to_the_pi_minus_pi.webp": {
+    "original": "../figure/e_to_the_pi_minus_pi.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/e_to_the_pi_minus_pi.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-proofofcantor.webp": {
+    "original": "../figure/proofofcantor.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter2/proofofcantor.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-diagonalization.webp": {
+    "original": "../figure/diagonalization.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter2/diagonalization.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-repres_list.webp": {
+    "original": "../figure/repres_list.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/repres_list.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-braille.webp": {
+    "original": "../figure/braille.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/braille.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-representing_graphs.webp": {
+    "original": "../figure/representing_graphs.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/representing_graphs.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-booleanfunc.webp": {
+    "original": "../figure/booleanfunc.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/booleanfunc.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-functionornot.webp": {
+    "original": "../figure/functionornot.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter2/functionornot.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-wheels_babbage.webp": {
+    "original": "../figure/wheels_babbage.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/wheels_babbage.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-PopularMechanics1944smaller.webp": {
+    "original": "../figure/PopularMechanics1944smaller.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/PopularMechanics1944smaller.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-compchapterwhatvshow.webp": {
+    "original": "../figure/compchapterwhatvshow.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/compchapterwhatvshow.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-alKhwarizmi.webp": {
+    "original": "../figure/alKhwarizmi.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/alKhwarizmi.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-addition_regrouping.webp": {
+    "original": "../figure/addition_regrouping.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/addition_regrouping.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-compcharoverview.webp": {
+    "original": "../figure/compcharoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/compcharoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-logicgates.webp": {
+    "original": "../figure/logicgates.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/logicgates.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn (original figures)"
+  },
+  "/images/introtcs/original-xorcircuitschemdraw.webp": {
+    "original": "../figure/xorcircuitschemdraw.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/xorcircuitschemdraw.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-booleancircuit.webp": {
+    "original": "../figure/booleancircuit.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/booleancircuit.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-allequalcirc2.webp": {
+    "original": "../figure/allequalcirc2.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/allequalcirc2.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-generalcircuit.webp": {
+    "original": "../figure/generalcircuit.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/generalcircuit.png",
+    "source": "boazbk/cryptonotes (author)"
+  },
+  "/images/introtcs/original-comparecircuit.webp": {
+    "original": "../figure/comparecircuit.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/comparecircuit.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-aoncircequiv.webp": {
+    "original": "../figure/aoncircequiv.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/aoncircequiv.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-crab-gate.webp": {
+    "original": "../figure/crab-gate.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/crab-gate.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-transistor_water.webp": {
+    "original": "../figure/transistor_water.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/transistor_water.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-gordon_moore.webp": {
+    "original": "../figure/gordon_moore.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/gordon_moore.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-moore_cartoon.webp": {
+    "original": "../figure/moore_cartoon.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/moore_cartoon.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-1200px-Moore's_Law_over_120_Years.webp": {
+    "original": "../figure/1200px-Moore's_Law_over_120_Years.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/1200px-Moore%27s_Law_over_120_Years.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-dtl_logic.webp": {
+    "original": "../figure/dtl_logic.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/dtl_logic.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-nand_transistor.webp": {
+    "original": "../figure/nand_transistor.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/nand_transistor.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-transcriptor.webp": {
+    "original": "../figure/transcriptor.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/transcriptor.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-game_of_life_and.webp": {
+    "original": "../figure/game_of_life_and.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/game_of_life_and.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-activationfuncs.webp": {
+    "original": "../figure/activationfuncs.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/activationfuncs.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-marble.webp": {
+    "original": "../figure/marble.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/marble.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-gadget.webp": {
+    "original": "../figure/gadget.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/gadget.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-turingtumble.webp": {
+    "original": "../figure/turingtumble.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/turingtumble.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-majfromnand.webp": {
+    "original": "../figure/majfromnand.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/majfromnand.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-nandcircxor.webp": {
+    "original": "../figure/nandcircxor.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/nandcircxor.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-incrementfromnand.webp": {
+    "original": "../figure/incrementfromnand.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/incrementfromnand.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-nandcircuitequiv.webp": {
+    "original": "../figure/nandcircuitequiv.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter3/nandcircuitequiv.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-specvsimpl.webp": {
+    "original": "../figure/specvsimpl.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/specvsimpl.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-compute_every_function_overview.webp": {
+    "original": "../figure/compute_every_function_overview.png",
+    "url": "https://web.archive.org/web/20260624022440id_/https://introtcs.org/figure/compute_every_function_overview.png",
+    "source": "archived official introtcs.org"
+  },
+  "/images/introtcs/original-progcircmaj.webp": {
+    "original": "../figure/progcircmaj.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/progcircmaj.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-add2bitnumbers.webp": {
+    "original": "../figure/add2bitnumbers.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/add2bitnumbers.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-addnumberoflines.webp": {
+    "original": "../figure/addnumberoflines.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/addnumberoflines.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-lookupfunc.webp": {
+    "original": "../figure/lookupfunc.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/lookupfunc.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-lookup_numlines.webp": {
+    "original": "../figure/lookup_numlines.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/lookup_numlines.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-efficient_circuit_allfunc.webp": {
+    "original": "../figure/efficient_circuit_allfunc.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/efficient_circuit_allfunc.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-computemanyfunctions.webp": {
+    "original": "../figure/computemanyfunctions.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/computemanyfunctions.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-computeallfunctionalt.webp": {
+    "original": "../figure/computeallfunctionalt.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/computeallfunctionalt.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-deltafunc.webp": {
+    "original": "../figure/deltafunc.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/deltafunc.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-funcvscircs.webp": {
+    "original": "../figure/funcvscircs.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/funcvscircs.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-cucumber.webp": {
+    "original": "../figure/cucumber.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter4/cucumber.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-exploits_of_a_mom.webp": {
+    "original": "../figure/exploits_of_a_mom.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/exploits_of_a_mom.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-codedataoverview.webp": {
+    "original": "../figure/codedataoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter5/codedataoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-tapemarkI.webp": {
+    "original": "../figure/tapemarkI.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/tapemarkI.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-hierarchyproof.webp": {
+    "original": "../figure/hierarchyproof.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter5/hierarchyproof.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-sizecomplexity.webp": {
+    "original": "../figure/sizecomplexity.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/sizecomplexity.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-universalcircuit.webp": {
+    "original": "../figure/universalcircuit.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter5/universalcircuit.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-aaronsonsoapbubble.webp": {
+    "original": "../figure/aaronsonsoapbubble.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter5/aaronsonsoapbubble.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-finitecomprecap.webp": {
+    "original": "../figure/finitecomprecap.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/finitecomprecap.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-multiplicationschool.webp": {
+    "original": "../figure/multiplicationschool.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/multiplicationschool.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-xor5circprog.webp": {
+    "original": "../figure/xor5circprog.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/xor5circprog.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-xorautomaton.webp": {
+    "original": "../figure/xorautomaton.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/xorautomaton.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-DFA010a.webp": {
+    "original": "../figure/DFA010a.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/DFA010a.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-DFA010execution.webp": {
+    "original": "../figure/DFA010execution.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/DFA010execution.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-automaton.webp": {
+    "original": "../figure/automaton.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/automaton.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-dfatoreg1.webp": {
+    "original": "../figure/dfatoreg1.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/dfatoreg1.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-dfatoreginduction.webp": {
+    "original": "../figure/dfatoreginduction.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/dfatoreginduction.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-pumpinglemma.webp": {
+    "original": "../figure/pumpinglemma.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/pumpinglemma.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-pumpinglemmaproof.webp": {
+    "original": "../figure/pumpinglemmaproof.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter6/pumpinglemmaproof.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-algcomponents.webp": {
+    "original": "../figure/algcomponents.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/algcomponents.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-chaploopoverview.webp": {
+    "original": "../figure/chaploopoverview.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/chaploopoverview.png",
+    "source": "boazbk/cryptonotes (author)"
+  },
+  "/images/introtcs/original-alan-turing-running.webp": {
+    "original": "../figure/alan-turing-running.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/alan-turing-running.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-HumanComputers.webp": {
+    "original": "../figure/HumanComputers.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/HumanComputers.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-SPTM.webp": {
+    "original": "../figure/SPTM.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/SPTM.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-turingmachinecomponents.webp": {
+    "original": "../figure/turingmachinecomponents.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/turingmachinecomponents.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-turingmachine.webp": {
+    "original": "../figure/turingmachine.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/turingmachine.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-nandtmprog.webp": {
+    "original": "../figure/nandtmprog.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/nandtmprog.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-turingmachinevsnandtm.webp": {
+    "original": "../figure/turingmachinevsnandtm.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/turingmachinevsnandtm.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-xkcdgoto.webp": {
+    "original": "../figure/xkcdgoto.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter7/xkcdgoto.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-turingcomplete.webp": {
+    "original": "../figure/turingcomplete.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/turingcomplete.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-rammachine.webp": {
+    "original": "../figure/rammachine.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/rammachine.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-ramvsturing.webp": {
+    "original": "../figure/ramvsturing.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/ramvsturing.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-nandramproofoverview.webp": {
+    "original": "../figure/nandramproofoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/nandramproofoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn (original figures)"
+  },
+  "/images/introtcs/original-pairing_function.webp": {
+    "original": "../figure/pairing_function.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/pairing_function.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-FortranProg.webp": {
+    "original": "../figure/FortranProg.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/FortranProg.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-have_your_cake_and_eat_it_too-img-intro.webp": {
+    "original": "../figure/have_your_cake_and_eat_it_too-img-intro.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/have_your_cake_and_eat_it_too-img-intro.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-levelsofdescription.webp": {
+    "original": "../figure/levelsofdescription.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/levelsofdescription.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-conwaysgrids.webp": {
+    "original": "../figure/conwaysgrids.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/conwaysgrids.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-onetwodimensionalca.webp": {
+    "original": "../figure/onetwodimensionalca.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/onetwodimensionalca.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-turing_gol.webp": {
+    "original": "../figure/turing_gol.jpg",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/turing_gol.jpg",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-turingmachineconf.webp": {
+    "original": "../figure/turingmachineconf.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/turingmachineconf.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-Rule110Big.webp": {
+    "original": "../figure/Rule110Big.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/Rule110Big.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-currying.webp": {
+    "original": "../figure/currying.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/currying.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-lambdalist.webp": {
+    "original": "../figure/lambdalist.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter8/lambdalist.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-reducemapfilter.webp": {
+    "original": "../figure/reducemapfilter.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/reducemapfilter.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-universalchapoverview.webp": {
+    "original": "../figure/universalchapoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/universalchapoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-universaltm.webp": {
+    "original": "../figure/universaltm.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/universaltm.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-lispandselfreplicatingprograms.webp": {
+    "original": "../figure/lispandselfreplicatingprograms.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/lispandselfreplicatingprograms.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-diagonal_proof.webp": {
+    "original": "../figure/diagonal_proof.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/diagonal_proof.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-smbchalting.webp": {
+    "original": "../figure/smbchalting.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/smbchalting.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-reductions_from_halting.webp": {
+    "original": "../figure/reductions_from_halting.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/reductions_from_halting.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-haltonzerored.webp": {
+    "original": "../figure/haltonzerored.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/haltonzerored.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-haltonzeropython.webp": {
+    "original": "../figure/haltonzeropython.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/haltonzeropython.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-inclusion_noncomputable.webp": {
+    "original": "../figure/inclusion_noncomputable.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter9/inclusion_noncomputable.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-restrictedoverview.webp": {
+    "original": "../figure/restrictedoverview.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/restrictedoverview.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-godelstructure.webp": {
+    "original": "../figure/godelstructure.png",
+    "url": "https://web.archive.org/web/20260227063833id_/https://introtcs.org/figure/godelstructure.png",
+    "source": "archived official introtcs.org"
+  },
+  "/images/introtcs/original-elliptic_curve.webp": {
+    "original": "../figure/elliptic_curve.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/elliptic_curve.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-puzzleprob.webp": {
+    "original": "../figure/puzzleprob.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/puzzleprob.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-graphs.webp": {
+    "original": "../figure/graphs.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/graphs.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-knights_tour.webp": {
+    "original": "../figure/knights_tour.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/knights_tour.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-cutingraph.webp": {
+    "original": "../figure/cutingraph.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter12/cutingraph.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-convexvsnot.webp": {
+    "original": "../figure/convexvsnot.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/convexvsnot.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-convexandnon.webp": {
+    "original": "../figure/convexandnon.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/convexandnon.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-poly_vs_exp.webp": {
+    "original": "../figure/poly_vs_exp.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/poly_vs_exp.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-runtimeoverview.webp": {
+    "original": "../figure/runtimeoverview.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/runtimeoverview.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-exampletimebounds.webp": {
+    "original": "../figure/exampletimebounds.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/exampletimebounds.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-PvsEXP.webp": {
+    "original": "../figure/PvsEXP.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/PvsEXP.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-RAMTMsimulation.webp": {
+    "original": "../figure/RAMTMsimulation.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/RAMTMsimulation.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-universalrammachine.webp": {
+    "original": "../figure/universalrammachine.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/universalrammachine.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-timeduniversaltm.webp": {
+    "original": "../figure/timeduniversaltm.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/timeduniversaltm.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-timehierarchythm.webp": {
+    "original": "../figure/timehierarchythm.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/timehierarchythm.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-time_complexity_map.webp": {
+    "original": "../figure/time_complexity_map.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/time_complexity_map.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-Ppoly.webp": {
+    "original": "../figure/Ppoly.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/Ppoly.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-unrolled_circuit.webp": {
+    "original": "../figure/unrolled_circuit.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/unrolled_circuit.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-obliviousnandtm.webp": {
+    "original": "../figure/obliviousnandtm.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/obliviousnandtm.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-unrollloop_alg.webp": {
+    "original": "../figure/unrollloop_alg.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/unrollloop_alg.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-unrolldescription.webp": {
+    "original": "../figure/unrolldescription.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter13/unrolldescription.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-PEXPPpolyrelations.webp": {
+    "original": "../figure/PEXPPpolyrelations.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/PEXPPpolyrelations.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-reductionsoverview.webp": {
+    "original": "../figure/reductionsoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/reductionsoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-reductiondescription.webp": {
+    "original": "../figure/reductiondescription.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/reductiondescription.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-3sat2zoeqreduction.webp": {
+    "original": "../figure/3sat2zoeqreduction.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/3sat2zoeqreduction.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn (original figures)"
+  },
+  "/images/introtcs/original-example3sat2iset.webp": {
+    "original": "../figure/example3sat2iset.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/example3sat2iset.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-3sat2ISreduction.webp": {
+    "original": "../figure/3sat2ISreduction.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/3sat2ISreduction.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-vertex_cover.webp": {
+    "original": "../figure/vertex_cover.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/vertex_cover.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-dominatingvc.webp": {
+    "original": "../figure/dominatingvc.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/dominatingvc.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-vctodsreduction.webp": {
+    "original": "../figure/vctodsreduction.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/vctodsreduction.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-reductionanatomy.webp": {
+    "original": "../figure/reductionanatomy.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/reductionanatomy.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-iset2maxcutoverview.webp": {
+    "original": "../figure/iset2maxcutoverview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/iset2maxcutoverview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-iset2maxcutgadgetanalysis.webp": {
+    "original": "../figure/iset2maxcutgadgetanalysis.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/iset2maxcutgadgetanalysis.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-is2maxcut.webp": {
+    "original": "../figure/is2maxcut.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/is2maxcut.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-3sat_longest_path_red_without_path.webp": {
+    "original": "../figure/3sat_longest_path_red_without_path.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/3sat_longest_path_red_without_path.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-3sat_to_longest_path_reduction.webp": {
+    "original": "../figure/3sat_to_longest_path_reduction.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/3sat_to_longest_path_reduction.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-3sat2longpath.webp": {
+    "original": "../figure/3sat2longpath.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/3sat2longpath.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-reduction_inc_diagram.webp": {
+    "original": "../figure/reduction_inc_diagram.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter14/reduction_inc_diagram.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-cooklevin_overview.webp": {
+    "original": "../figure/cooklevin_overview.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter15/cooklevin_overview.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-NPdefinitionfig.webp": {
+    "original": "../figure/NPdefinitionfig.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter15/NPdefinitionfig.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-PNPscenarios.webp": {
+    "original": "../figure/PNPscenarios.png",
+    "url": "https://web.archive.org/web/20250907064600id_/https://introtcs.org/figure/PNPscenarios.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-PNPmap.webp": {
+    "original": "../figure/PNPmap.png",
+    "url": "https://web.archive.org/web/20250907064600id_/https://introtcs.org/figure/PNPmap.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-hardwiring.webp": {
+    "original": "../figure/hardwiring.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/hardwiring.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-nandsatto3nandreduction.webp": {
+    "original": "../figure/nandsatto3nandreduction.png",
+    "url": "https://web.archive.org/web/20250907064600id_/https://introtcs.org/figure/nandsatto3nandreduction.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-threenandresultreduction.webp": {
+    "original": "../figure/threenandresultreduction.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/threenandresultreduction.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-3nandto3sat.webp": {
+    "original": "../figure/3nandto3sat.png",
+    "url": "https://web.archive.org/web/20250907064600id_/https://introtcs.org/figure/3nandto3sat.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-indsetfromnandsat.webp": {
+    "original": "../figure/indsetfromnandsat.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/indsetfromnandsat.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-inclusion_npc.webp": {
+    "original": "../figure/inclusion_npc.png",
+    "url": "https://web.archive.org/web/20250907064611id_/https://introtcs.org/figure/inclusion_npc.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-coinexperiment.webp": {
+    "original": "../figure/coinexperiment.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/coinexperiment.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-even3coins.webp": {
+    "original": "../figure/even3coins.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/even3coins.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-unionbound.webp": {
+    "original": "../figure/unionbound.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/unionbound.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-independence.webp": {
+    "original": "../figure/independence.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/independence.png",
+    "source": "boazbk/cryptonotes (author)"
+  },
+  "/images/introtcs/original-independencecoins.webp": {
+    "original": "../figure/independencecoins.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/independencecoins.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-binomial.webp": {
+    "original": "../figure/binomial.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/binomial.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-markovineq.webp": {
+    "original": "../figure/markovineq.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/markovineq.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-sixsigma.webp": {
+    "original": "../figure/sixsigma.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/sixsigma.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-bug.webp": {
+    "original": "../figure/bug.jpg",
+    "url": "https://web.archive.org/web/20260129010911id_/https://introtcs.org/figure/bug.jpg",
+    "source": "archived official introtcs.org"
+  },
+  "/images/introtcs/original-flipaanalysis.webp": {
+    "original": "../figure/flipaanalysis.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/flipaanalysis.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-matchingfig.webp": {
+    "original": "../figure/matchingfig.png",
+    "url": "https://web.archive.org/web/20240412010540id_/https://introtcs.org/figure/matchingfig.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-curves.webp": {
+    "original": "../figure/curves.png",
+    "url": "https://web.archive.org/web/20240411214204id_/https://introtcs.org/figure/curves.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-coin_tosser.webp": {
+    "original": "../figure/coin_tosser.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/coin_tosser.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-randomalgstwoviews.webp": {
+    "original": "../figure/randomalgstwoviews.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/randomalgstwoviews.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-BPPamplification.webp": {
+    "original": "../figure/BPPamplification.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/BPPamplification.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-BPPscenarios.webp": {
+    "original": "../figure/BPPscenarios.png",
+    "url": "https://web.archive.org/web/20250420184326id_/https://introtcs.org/figure/BPPscenarios.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-randomizedcomp.webp": {
+    "original": "../figure/randomizedcomp.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/randomizedcomp.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-prg_experiment.webp": {
+    "original": "../figure/prg_experiment.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/prg_experiment.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-strongamplification.webp": {
+    "original": "../figure/strongamplification.png",
+    "url": "https://web.archive.org/web/20250420182911id_/https://introtcs.org/figure/strongamplification.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-bppcomplexitypicture.webp": {
+    "original": "../figure/bppcomplexitypicture.png",
+    "url": "https://web.archive.org/web/20250421014837id_/https://introtcs.org/figure/bppcomplexitypicture.png",
+    "source": "archive:introtcs.org"
+  },
+  "/images/introtcs/original-encrypted_letter.webp": {
+    "original": "../figure/encrypted_letter.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/encrypted_letter.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-code_talkers.webp": {
+    "original": "../figure/code_talkers.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/code_talkers.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-confederate_cipher_disk.webp": {
+    "original": "../figure/confederate_cipher_disk.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/confederate_cipher_disk.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-confederate_message.webp": {
+    "original": "../figure/confederate_message.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/confederate_message.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-enigma.webp": {
+    "original": "../figure/enigma.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/enigma.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-encryptionvalid.webp": {
+    "original": "../figure/encryptionvalid.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/encryptionvalid.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-perfectsecrecy.webp": {
+    "original": "../figure/perfectsecrecy.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/perfectsecrecy.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-onetimepadtwobits.webp": {
+    "original": "../figure/onetimepadtwobits.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/onetimepadtwobits.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-onetimepad.webp": {
+    "original": "../figure/onetimepad.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/onetimepad.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-genevenona.webp": {
+    "original": "../figure/genevenona.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/genevenona.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-longkeygraph.webp": {
+    "original": "../figure/longkeygraph.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/longkeygraph.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-derandonetimepad.webp": {
+    "original": "../figure/derandonetimepad.png",
+    "url": "https://raw.githubusercontent.com/sustech-tcs/intro-to-tcs-zh-cn/33dad1d968631418d4b5d399582f83e494ba0cc7/src/images/chapter21/derandonetimepad.png",
+    "source": "sustech-tcs/intro-to-tcs-zh-cn"
+  },
+  "/images/introtcs/original-rsadhmg.webp": {
+    "original": "../figure/rsadhmg.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/rsadhmg.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-publickeyenc.webp": {
+    "original": "../figure/publickeyenc.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/publickeyenc.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-double_baseball2.webp": {
+    "original": "../figure/double_baseball2.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/double_baseball2.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-double-slit-setup.webp": {
+    "original": "../figure/double-slit-setup.PNG",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/double-slit-setup.PNG",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-googlequantum.webp": {
+    "original": "../figure/googlequantum.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/googlequantum.jpg",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-periodic_vs_aperiodic.webp": {
+    "original": "../figure/periodic_vs_aperiodic.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/periodic_vs_aperiodic.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-timefreq.webp": {
+    "original": "../figure/timefreq.png",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/timefreq.png",
+    "source": "boazbk/cryptonotes"
+  },
+  "/images/introtcs/original-quantum_fourier.webp": {
+    "original": "../figure/quantum_fourier.jpg",
+    "url": "https://raw.githubusercontent.com/boazbk/cryptonotes/2567c1b5ead3904fc09ab03148132c309de2b12a/figure/quantum_fourier.jpg",
+    "source": "boazbk/cryptonotes"
+  }
+}

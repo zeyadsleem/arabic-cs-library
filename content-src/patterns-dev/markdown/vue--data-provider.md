@@ -242,7 +242,7 @@ Within the `` component declaration, we can create the UI that would show a load
 
 When saving our changes, we’ll be presented with a brief loading message followed by a random joke.
 
-![Data provider example](/images/patterns-dev/vue-data-provider-1-data_provider_example.webp)
+![Data provider example](/images/patterns-dev/vue-data-provider-1-data_provider_example.gif)
 
 If we need to render another instance of a joke setup and punchline, perhaps even with a different template, we can simply reuse the `` component and create the new child elements we’d like to show.
 
@@ -296,7 +296,7 @@ If we need to render another instance of a joke setup and punchline, perhaps eve
 
 In our newly rendered UI, we’re now placing the punchline of the joke within a disclosure element with the help of the HTML `` and `` elements.
 
-![Data provider example](/images/patterns-dev/vue-data-provider-2-data_provider_example_2.webp)
+![Data provider example](/images/patterns-dev/vue-data-provider-2-data_provider_example_2.gif)
 
 With the data provider pattern, we’re able to manage and provide data to different elements/components in a decoupled and reusable manner. By abstracting the API fetch logic into a renderless component, we can reuse the request of API data in various contexts without duplicating code.
 

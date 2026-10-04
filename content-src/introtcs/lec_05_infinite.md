@@ -19,9 +19,9 @@ chapternum: "6"
 
 The model of Boolean circuits  (or equivalently, the NAND-CIRC programming language) has one very significant drawback: a Boolean circuit can only compute a _finite_ function $f$. In particular, since every gate has two inputs, a size $s$ circuit can compute on an input of length at most $2s$.
 Thus this model does not capture our intuitive notion of an algorithm as a _single recipe_ to compute a potentially infinite function.
-For example, the standard elementary school multiplication algorithm is a _single_ algorithm that multiplies numbers of all lengths. However, we cannot express this algorithm as a single circuit, but rather need a different circuit (or equivalently, a NAND-CIRC program) for every input length (see [multschoolfig](){.ref}).
+For example, the standard elementary school multiplication algorithm is a _single_ algorithm that multiplies numbers of all lengths. However, we cannot express this algorithm as a single circuit, but rather need a different circuit (or equivalently, a NAND-CIRC program) for every input length (see [multschoolfig](#multschoolfig){.ref}).
 
-![Once you know how to multiply multi-digit numbers, you can do so for every number $n$ of digits, but if you had to describe multiplication using Boolean circuits or NAND-CIRC programs, you would need a different program/circuit for every length $n$ of the input.](/images/introtcs/lec_05_infinite-1.webp){#multschoolfig .margin  }
+![Once you know how to multiply multi-digit numbers, you can do so for every number $n$ of digits, but if you had to describe multiplication using Boolean circuits or NAND-CIRC programs, you would need a different program/circuit for every length $n$ of the input.](/images/introtcs/original-multiplicationschool.webp){#multschoolfig .margin  }
 
 
 In this chapter, we extend our definition of computational tasks to consider functions with the _unbounded_ domain of $\{0,1\}^*$. 
@@ -40,7 +40,7 @@ These are still infinite functions since their inputs have unbounded length and 
 In the second half of this chapter, we discuss _finite automata_, a computational model that can compute unbounded length functions.
 Finite automata are not as powerful as Python or other general-purpose programming languages but can serve as an introduction to these more general models.
 We also show a beautiful result - the functions computable by finite automata are precisely the ones that correspond to _regular expressions_.
-However, the reader can also feel free to skip automata and go straight to our discussion of _Turing machines_ in [chaploops](){.ref}.
+However, the reader can also feel free to skip automata and go straight to our discussion of _Turing machines_ in [chaploops](#chaploops){.ref}.
 :::
 
 
@@ -51,7 +51,7 @@ However, in general, computational tasks can involve inputs of _unbounded_ lengt
 For example, the following Python function computes the function $XOR:\{0,1\}^* \rightarrow \{0,1\}$, where $XOR(x)$ equals $1$ iff the number of $1$'s in $x$ is odd.
 (In other words, $XOR(x) = \sum_{i=0}^{|x|-1} x_i \mod 2$ for every $x\in \{0,1\}^*$.)
 As simple as it is, the $XOR$ function cannot be computed by a Boolean circuit.
-Rather, for every $n$, we can compute $XOR_n$ (the restriction of $XOR$ to $\{0,1\}^n$) using a different circuit (e.g., see [XOR5fig](){.ref}). 
+Rather, for every $n$, we can compute $XOR_n$ (the restriction of $XOR$ to $\{0,1\}^n$) using a different circuit (e.g., see [XOR5fig](#XOR5fig){.ref}). 
 
 
 ```python
@@ -64,7 +64,7 @@ def XOR(X):
     return result
 ```
 
-![The NAND circuit and NAND-CIRC program for computing the XOR of $5$ bits. Note how the circuit for $XOR_5$ merely repeats four times the circuit to compute the XOR of $2$ bits.](/images/introtcs/lec_05_infinite-2.webp){#XOR5fig .margin  }
+![The NAND circuit and NAND-CIRC program for computing the XOR of $5$ bits. Note how the circuit for $XOR_5$ merely repeats four times the circuit to compute the XOR of $2$ bits.](/images/introtcs/original-xor5circprog.webp){#XOR5fig .margin  }
 
 
 
@@ -203,11 +203,11 @@ to inputs of length $n$.
 
 ::: {.proof data-ref="computeallinfinitefuncthm"}
 This is an immediate corollary of the universality of Boolean circuits.
-Indeed, since $F_n$ maps $\{0,1\}^n$ to $\{0,1\}$, [NAND-univ-thm-improved](){.ref} implies that there exists a Boolean circuit $C_n$ to compute it.
+Indeed, since $F_n$ maps $\{0,1\}^n$ to $\{0,1\}$, [NAND-univ-thm-improved](#NAND-univ-thm-improved){.ref} implies that there exists a Boolean circuit $C_n$ to compute it.
 In fact, the size of this circuit is at most $c \cdot 2^n / n$ gates for some constant  $c \leq 10$.
 :::
 
-In particular, [computeallinfinitefuncthm](){.ref} implies that there exists such a circuit collection $\{ C_n \}$ even for the $TWINP$ function we described before,
+In particular, [computeallinfinitefuncthm](#computeallinfinitefuncthm){.ref} implies that there exists such a circuit collection $\{ C_n \}$ even for the $TWINP$ function we described before,
 even though we do not know of any program to compute it.
 Indeed, this is not that surprising: for every particular $n\in \N$, $TWINP_n$ is either the constant zero function or the constant one function, both of which can be computed
 by very simple Boolean circuits.
@@ -219,10 +219,10 @@ The difficulty in computing $TWINP$ using Python or any other programming langua
 
 All our computational models so far - Boolean circuits and straight-line programs -  were only applicable for _finite_ functions.
 
-In [chaploops](){.ref}, we will present _Turing machines_, which are the central models of computation for unbounded input length functions.
+In [chaploops](#chaploops){.ref}, we will present _Turing machines_, which are the central models of computation for unbounded input length functions.
 However, in this section we present the more basic model of _deterministic finite automata_ (DFA).
 Automata can serve as a good stepping-stone for Turing machines, though they will not be used much in later parts of this book, and so the
-reader can feel free to skip ahead to [chaploops](){.ref}.
+reader can feel free to skip ahead to [chaploops](#chaploops){.ref}.
 DFAs turn out to be equivalent in power to _regular expressions_: a powerful mechanism to specify patterns, which is widely used in practice.
 Our treatment of automata is relatively brief. There are plenty of resources that help you get more comfortable with DFAs.
 In particular, Chapter 1 of Sipser's book [@SipserBook] contains an excellent exposition of this material.
@@ -278,10 +278,10 @@ the DFA is at state $s$ and reads  $\sigma$ then it transitions to $s'$. (If the
 then the graph will contain two parallel edges.)
 We also label the set $\mathcal{S}$ of states on which the automaton will output $1$ at the end of the computation.
 This set is known as the set of _accepting states_.
-See [xorautomatonfig](){.ref} for the graphical representation of the XOR automaton.
+See [xorautomatonfig](#xorautomatonfig){.ref} for the graphical representation of the XOR automaton.
 
 
-![A deterministic finite automaton that computes the $XOR$ function. It has two states $0$ and $1$, and when it observes $\sigma$ it transitions from $v$ to $v \oplus \sigma$.](/images/introtcs/lec_05_infinite-3.webp){#xorautomatonfig .margin }
+![A deterministic finite automaton that computes the $XOR$ function. It has two states $0$ and $1$, and when it observes $\sigma$ it transitions from $v$ to $v \oplus \sigma$.](/images/introtcs/original-xorautomaton.webp){#xorautomatonfig .margin }
 
 
 
@@ -302,7 +302,7 @@ $$
 :::
 
 ::: { .pause }
-Make sure not to confuse the _transition function_ of an automaton ($T$ in [DFAdef](){.ref}), which is a finite function specifying the table of "rules" which it follows, with the function the automaton _computes_ ($F$ in [DFAdef](){.ref}) which is an infinite function.
+Make sure not to confuse the _transition function_ of an automaton ($T$ in [DFAdef](#DFAdef){.ref}), which is a finite function specifying the table of "rules" which it follows, with the function the automaton _computes_ ($F$ in [DFAdef](#DFAdef){.ref}) which is an infinite function.
 :::
 
 ::: {.remark title="Definitions in other texts" #Sipserautmatadef}
@@ -347,8 +347,8 @@ def F(X):
 Since we keep three Boolean variables, the working memory can be in one of  $2^3 = 8$ configurations, and
 so the program above can be directly translated into an $8$ state DFA.
 While this is not needed to solve the question, by examining the resulting DFA, we can see that we can merge some states and 
-obtain a $4$ state automaton,  described in [dfazeroonefig](){.ref}.
-See also [DFAzerooneexecfig](){.ref}, which depicts the execution of this DFA on a particular input.
+obtain a $4$ state automaton,  described in [dfazeroonefig](#dfazeroonefig){.ref}.
+See also [DFAzerooneexecfig](#DFAzerooneexecfig){.ref}, which depicts the execution of this DFA on a particular input.
 :::
 
 
@@ -356,7 +356,7 @@ See also [DFAzerooneexecfig](){.ref}, which depicts the execution of this DFA on
 
 ![A DFA that outputs $1$ only on inputs $x\in \{0,1\}^*$ that are a concatenation of zero or more copies of $010$.
 The state $0$ is both the starting state and the only accepting state.
-The table denotes the transition function of $T$, which maps the current state and symbol read to the new symbol.](/images/introtcs/lec_05_infinite-4.webp){#dfazeroonefig  .margin }
+The table denotes the transition function of $T$, which maps the current state and symbol read to the new symbol.](/images/introtcs/original-DFA010a.webp){#dfazeroonefig  .margin }
 
 
 ### Anatomy of an automaton (finite vs. unbounded)
@@ -380,14 +380,14 @@ __Components of unbounded size:__ The following quantities relating to a DFA are
 
 * The number of steps that the DFA takes can grow with the length of the input. Indeed, a DFA makes a single pass on the input and so it takes precisely $|x|$ steps on an input $x\in \{0,1\}^*$.
 
-![Execution of the DFA of [dfazeroonefig](){.ref}. The number of states and the transition function size are bounded, but the input can be arbitrarily long.
-If the DFA is at state $s$ and observes the value $\sigma$ then it moves to the state $T(s,\sigma)$. At the end of the execution the DFA accepts iff the final state is in $\mathcal{S}$.](../figure/DFA010execution.png){#DFAzerooneexecfig}
+![Execution of the DFA of [dfazeroonefig](#dfazeroonefig){.ref}. The number of states and the transition function size are bounded, but the input can be arbitrarily long.
+If the DFA is at state $s$ and observes the value $\sigma$ then it moves to the state $T(s,\sigma)$. At the end of the execution the DFA accepts iff the final state is in $\mathcal{S}$.](/images/introtcs/original-DFA010execution.webp){#DFAzerooneexecfig}
 
 
 ### DFA-computable functions
 
 We say that a function $F:\{0,1\}^* \rightarrow \{0,1\}$ is _DFA computable_ if there exists some $DFA$ that computes $F$.
-In [finiteuniversalchap](){.ref} we saw that every finite function is computable by some Boolean circuit.
+In [finiteuniversalchap](#finiteuniversalchap){.ref} we saw that every finite function is computable by some Boolean circuit.
 Thus, at this point, you might expect that every infinite function is computable by _some_ DFA.
 However, this is very much _not_ the case.
 We will soon see some simple examples of infinite functions that are not computable by DFAs, but for starters, let us prove that
@@ -414,7 +414,7 @@ StDC(a) = \begin{cases}
 $$
 where $ONE:\{0,1\}^* \rightarrow \{0,1\}$ is the constant function that outputs $1$ on all inputs (and is a member of $DFACOMP$).
 Since by definition, every function $F$ in $DFACOMP$ is computable by _some_ automaton, $StDC$ is an onto function from $\{0,1\}^*$ to $DFACOMP$,
-which means that $DFACOMP$ is countable (see [equivcountablesec](){.ref}).
+which means that $DFACOMP$ is countable (see [equivcountablesec](#equivcountablesec){.ref}).
 :::
 
 
@@ -426,7 +426,7 @@ There exists a Boolean function $F:\{0,1\}^* \rightarrow \{0,1\}$ that is not co
 
 ::: {.proof data-ref="DFAdontcomputeeverything"}
 If every Boolean function $F$ is computable by some DFA, then $DFACOMP$ equals the set $ALL$ of all Boolean functions, but by 
-[uncountalbefuncthm](){.ref}, the latter set is uncountable, contradicting [DFAcompuncountable](){.ref}.
+[uncountalbefuncthm](#uncountalbefuncthm){.ref}, the latter set is uncountable, contradicting [DFAcompuncountable](#DFAcompuncountable){.ref}.
 :::
 
 ## Regular expressions {  #regexpsec }
@@ -526,7 +526,7 @@ Similarly, for every formal language $L \subseteq \Sigma^*$, we say that $L$ is 
 Let $\Sigma=\{ a,b,c,d,0,1,2,3,4,5,6,7,8,9 \}$ and $F:\Sigma^* \rightarrow \{0,1\}$ be the function such that  $F(x)$ outputs $1$ iff $x$ consists of one or more of the letters $a$-$d$ followed by a sequence of one or more digits (without a leading zero).
 Then $F$ is a regular function, since $F=\Phi_e$ where
 $$e = (a|b|c|d)(a|b|c|d)^*(1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)^*$$
-is the expression we saw in [regexpeq](){.eqref}.
+is the expression we saw in [regexpeq](#regexpeq){.eqref}.
 
 If we wanted to verify, for example, that $\Phi_e(abc12078)=1$, we can do so by noticing that the expression $(a|b|c|d)$ matches the string $a$, $(a|b|c|d)^*$ matches  $bc$,   $(1|2|3|4|5|6|7|8|9)$ matches the string $1$, and the expression $(0|1|2|3|4|5|6|7|8|9)^*$ matches the string $2078$. Each one of those boils down to a simpler expression. For example, the expression $(a|b|c|d)^*$ matches the string $bc$ because both of the one-character strings $b$ and $c$ are matched by the expression $a|b|c|d$.
 :::
@@ -543,7 +543,7 @@ Specifically, there is an algorithm (think "Python program" though later we will
 on input a regular expression $e$ over the alphabet $\{0,1\}$ and a string $x\in \{0,1\}^*$, outputs $1$ iff $e$ matches $x$
 (i.e., outputs $\Phi_e(x)$). 
 
-Indeed, [matchingregexpdef](){.ref} actually specifies a recursive algorithm for _computing_ $\Phi_{e}$.
+Indeed, [matchingregexpdef](#matchingregexpdef){.ref} actually specifies a recursive algorithm for _computing_ $\Phi_{e}$.
 Specifically, each one of our operations -concatenation, OR, and star- can be thought of as reducing the task of testing whether an expression $e$ matches a string $x$ to testing whether some sub-expressions of $e$ match substrings of $x$. Since these sub-expressions are always shorter than the original expression, this yields a recursive algorithm for checking if $e$ matches $x$, which will eventually terminate at the base cases of the expressions that correspond to a single symbol or the empty string.
 
 
@@ -580,8 +580,8 @@ We assume above that we have a procedure $\text{\textsc{MatchEmpty}}$ that on in
 
 The key observation is that in our recursive definition of regular expressions, whenever $e$ is made up of one or two expressions $e',e''$ then these two regular expressions are _smaller_ than $e$.
 Eventually (when they have size $1$) then they must correspond to the non-recursive case of a single alphabet symbol. 
-Correspondingly, the recursive calls made in [regexpmatchalg](){.ref} always correspond to a shorter expression or (in the case of an expression of the form  $(e')^*$) a shorter input string.
-Thus, we can prove the correctness of [regexpmatchalg](){.ref} on inputs of the form $(e,x)$ by induction over $\min \{ |e|, |x| \}$. 
+Correspondingly, the recursive calls made in [regexpmatchalg](#regexpmatchalg){.ref} always correspond to a shorter expression or (in the case of an expression of the form  $(e')^*$) a shorter input string.
+Thus, we can prove the correctness of [regexpmatchalg](#regexpmatchalg){.ref} on inputs of the form $(e,x)$ by induction over $\min \{ |e|, |x| \}$. 
 The base case is when either $x=""$ or $e$ is a single alphabet symbol, $""$ or $\emptyset$.
 In the case the expression is of the form $e=(e'|e'')$ or $e=(e')(e'')$, we make recursive calls with the shorter expressions $e',e''$.
 In the case the expression is of the form $e=(e')^*$, we make recursive calls with either a shorter string $x$ and the same expression,
@@ -625,33 +625,33 @@ endprocedure
 
 ## Efficient matching of regular expressions (optional)
 
-[regexpmatchalg](){.ref} is not very efficient.
+[regexpmatchalg](#regexpmatchalg){.ref} is not very efficient.
 For example, given an expression involving concatenation or the "star" operation and a string of length $n$, it can make $n$ recursive calls,
-and hence it  can be shown that in the worst case [regexpmatchalg](){.ref} can take time _exponential_ in the length of the input string $x$.
+and hence it  can be shown that in the worst case [regexpmatchalg](#regexpmatchalg){.ref} can take time _exponential_ in the length of the input string $x$.
 Fortunately, it turns out that there is a much more efficient algorithm that can match regular expressions in _linear_ (i.e., $O(n)$) time.
 Since we have not yet covered the topics of time and space complexity,  we describe this algorithm in high level terms, without making the computational model precise.  Rather we will use the colloquial notion of $O(n)$ running time as used in introduction to programming courses and whiteboard coding interviews. 
-We will see a formal definition of time complexity in [chapmodelruntime](){.ref}.
+We will see a formal definition of time complexity in [chapmodelruntime](#chapmodelruntime){.ref}.
 
 
 ::: {.theorem title="Matching regular expressions in linear time" #reglintimethm}
 Let $e$ be a regular expression. Then there is an $O(n)$ time algorithm that computes $\Phi_{e}$.
 :::
 
-The implicit constant in the $O(n)$ term of [reglintimethm](){.ref}  depends on the expression $e$.
-Thus, another way to state [reglintimethm](){.ref} is that for every expression $e$, there is some constant $c$ and an algorithm $A$ that computes $\Phi_e$ on $n$-bit inputs using at most $c\cdot n$ steps.
+The implicit constant in the $O(n)$ term of [reglintimethm](#reglintimethm){.ref}  depends on the expression $e$.
+Thus, another way to state [reglintimethm](#reglintimethm){.ref} is that for every expression $e$, there is some constant $c$ and an algorithm $A$ that computes $\Phi_e$ on $n$-bit inputs using at most $c\cdot n$ steps.
 This makes sense since in practice we often want to compute $\Phi_e(x)$ for a small regular expression $e$ and a large document $x$.
-[reglintimethm](){.ref} tells us that we can do so with running time that scales linearly with the size of the document, even if it has (potentially) worse dependence on the size of the regular expression.
+[reglintimethm](#reglintimethm){.ref} tells us that we can do so with running time that scales linearly with the size of the document, even if it has (potentially) worse dependence on the size of the regular expression.
 
 
-We prove [reglintimethm](){.ref} by obtaining more efficient recursive algorithm, that determines whether $e$ matches a string $x\in \{0,1\}^n$  by reducing this task to determining whether a related expression $e'$ matches $x_0,\ldots,x_{n-2}$.
+We prove [reglintimethm](#reglintimethm){.ref} by obtaining more efficient recursive algorithm, that determines whether $e$ matches a string $x\in \{0,1\}^n$  by reducing this task to determining whether a related expression $e'$ matches $x_0,\ldots,x_{n-2}$.
 This will result in an expression for the running time of the form $T(n) = T(n-1) + O(1)$ which solves to $T(n)=O(n)$.
 
-__Restrictions of regular expressions.__  The central definition for the algorithm behind [reglintimethm](){.ref} is the notion of a _restriction_ of a regular expression.
+__Restrictions of regular expressions.__  The central definition for the algorithm behind [reglintimethm](#reglintimethm){.ref} is the notion of a _restriction_ of a regular expression.
 The idea is that for every regular expression $e$ and symbol $\sigma$ in its alphabet, it is possible to define a regular expression $e[\sigma]$ such that $e[\sigma]$ matches a string $x$ if and only if $e$ matches the string $x\sigma$. 
 For example, if $e$ is the regular expression $(01)^*(01)$ (i.e., one or more occurrences of $01$) then $e[1]$ is equal to  $(01)^*0$ and $e[0]$ will be $\emptyset$. (Can you see why?)
 
 
-[regexprestrictionalg](){.ref} computes the restriction $e[\sigma]$ given a regular expression $e$ and an alphabet symbol $\sigma$.
+[regexprestrictionalg](#regexprestrictionalg){.ref} computes the restriction $e[\sigma]$ given a regular expression $e$ and an alphabet symbol $\sigma$.
 It always terminates, since the recursive calls it makes are always on expressions smaller than the input expression.
 Its correctness can be proven by induction on the length of the regular expression $e$, with the base cases being when $e$ is $""$, $\emptyset$,
 or a single alphabet symbol $\tau$.
@@ -692,27 +692,27 @@ endprocedure
 
 
 By the definition of a restriction, for every $\sigma\in \Sigma$ and $x'\in \Sigma^*$, the expression $e$ matches $x'\sigma$ if and only if $e[\sigma]$ matches $x'$.
-Hence for every $e$ and $x\in \Sigma^n$,  $\Phi_{e[x_{n-1}]}(x_0\cdots x_{n-2}) = \Phi_e(x)$ and [regexpmatchlinearalg](){.ref} does return the correct answer.
+Hence for every $e$ and $x\in \Sigma^n$,  $\Phi_{e[x_{n-1}]}(x_0\cdots x_{n-2}) = \Phi_e(x)$ and [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} does return the correct answer.
 The only remaining task is to analyze its _running time_.
-Note that [regexpmatchlinearalg](){.ref} uses the  $\text{\textsc{MatchEmpty}}$  procedure of [emptymatchex](){.ref} in the base case that $x=""$.
+Note that [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} uses the  $\text{\textsc{MatchEmpty}}$  procedure of [emptymatchex](#emptymatchex){.ref} in the base case that $x=""$.
 However, this is OK since this procedure's running time depends only on $e$ and is independent of the length of the original input.
 
 
 For simplicity, let us restrict our attention to the case that the alphabet $\Sigma$ is equal to $\{0,1\}$.
-Define $C(\ell)$ to be the maximum number of operations that [regexprestrictionalg](){.ref} takes when given as input a regular expression
+Define $C(\ell)$ to be the maximum number of operations that [regexprestrictionalg](#regexprestrictionalg){.ref} takes when given as input a regular expression
 $e$ over $\{0,1\}$ of at most $\ell$ symbols.
 The value $C(\ell)$ can be shown to be polynomial in $\ell$, though this is not important for this theorem, since we only care about the dependence of the time to compute $\Phi_e(x)$ on the length of $x$ and not about the dependence of this time on the length of $e$.
 
 
-[regexpmatchlinearalg](){.ref} is a recursive algorithm that input an expression $e$ and a string $x\in \{0,1\}^n$, does computation of at most $C(|e|)$ steps and then calls itself with input some expression $e'$  and a string $x'$ of length $n-1$.
+[regexpmatchlinearalg](#regexpmatchlinearalg){.ref} is a recursive algorithm that input an expression $e$ and a string $x\in \{0,1\}^n$, does computation of at most $C(|e|)$ steps and then calls itself with input some expression $e'$  and a string $x'$ of length $n-1$.
 It will terminate after $n$ steps when it reaches a string of length $0$.
-So, the running time $T(e,n)$ that it takes for [regexpmatchlinearalg](){.ref} to compute $\Phi_e$ for inputs of length $n$ satisfies the recursive equation:
+So, the running time $T(e,n)$ that it takes for [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} to compute $\Phi_e$ for inputs of length $n$ satisfies the recursive equation:
 
 $$T(e,n) = \max \{ T(e[0],n-1) , T(e[1],n-1)  \} + C(|e|)
 \label{matchregexprecursion} $$
 
 (In the base case $n=0$, $T(e,0)$ is equal to some constant depending only on $e$.)
-To get some intuition for the expression [matchregexprecursion](){.ref}, let us open up the recursion for one level, writing $T(e,n)$ as
+To get some intuition for the expression [matchregexprecursion](#matchregexprecursion){.ref}, let us open up the recursion for one level, writing $T(e,n)$ as
 
 $$\begin{aligned}T(e,n) &= \max \{ T(e[0][0],n-2) + C(|e[0]|), \\ &T(e[0][1],n-2) + C(|e[0]|), \\
 &T(e[1][0],n-2) + C(|e[1]|),  \\
@@ -720,7 +720,7 @@ $$\begin{aligned}T(e,n) &= \max \{ T(e[0][0],n-2) + C(|e[0]|), \\ &T(e[0][1],n-2
 
 
 Continuing this way, we can see that $T(e,n) \leq n \cdot C(L) + O(1)$ where $L$ is the largest length of any expression $e'$ that we encounter along the way.
-Therefore, the following claim suffices to show that [regexpmatchlinearalg](){.ref} runs in $O(n)$ time:
+Therefore, the following claim suffices to show that [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} runs in $O(n)$ time:
 
 __Claim:__ Let $e$ be a regular expression over $\{0,1\}$, then there is a number $L(e) \in \N$, such that for every sequence of symbols $\alpha_0,\ldots,\alpha_{n-1}$, if we define $e' = e[\alpha_0][\alpha_1]\cdots [\alpha_{n-1}]$ (i.e., restricting $e$ to $\alpha_0$, and then $\alpha_1$ and so on and so forth), then $|e'| \leq L(e)$. 
 
@@ -737,26 +737,26 @@ Since $e''[\alpha] \in S(e'')$ and $e'[\alpha'] \in S(e')$, the number of the po
 :::
 
 
-The bottom line is that while running [regexpmatchlinearalg](){.ref} on a regular expression $e$, all the expressions we ever encounter are in the finite set $S(e)$, no matter how large the input $x$ is, and so the running time of [regexpmatchlinearalg](){.ref} satisfies the equation $T(n) = T(n-1) + C'$ for some constant $C'$ depending on $e$.
+The bottom line is that while running [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} on a regular expression $e$, all the expressions we ever encounter are in the finite set $S(e)$, no matter how large the input $x$ is, and so the running time of [regexpmatchlinearalg](#regexpmatchlinearalg){.ref} satisfies the equation $T(n) = T(n-1) + C'$ for some constant $C'$ depending on $e$.
 This solves to $O(n)$ where the implicit constant in the O notation can (and will) depend on $e$ but crucially, not on the length of the input $x$.
 
 
 
 ### Matching regular expressions using DFAs
 
-[reglintimethm](){.ref} is already quite impressive, but we can do even better.
+[reglintimethm](#reglintimethm){.ref} is already quite impressive, but we can do even better.
 Specifically, no matter how long the string $x$ is, we can compute $\Phi_e(x)$ by maintaining only a constant amount of memory and moreover making a _single pass_ over $x$.
 That is, the algorithm will scan the input $x$ once from start to finish, and then determine whether or not $x$ is matched by the expression $e$.
 This is important in the common case of trying to match a short regular expression over a huge file or document that might not even fit in our computer's memory.
 Of course, as we have seen before, a single-pass constant-memory algorithm is simply a deterministic finite automaton. 
-As we will see in [dfaregequivthm](){.ref}, a function can be computed by regular expression  _if and only if_ it can be computed by a DFA.
+As we will see in [dfaregequivthm](#dfaregequivthm){.ref}, a function can be computed by regular expression  _if and only if_ it can be computed by a DFA.
 We start with showing the "only if" direction:
 
 > ### {.theorem title="DFA for regular expression matching" #DFAforREGthm}
 Let $e$ be a regular expression. Then there is an algorithm that on input $x\in \{0,1\}^*$ computes $\Phi_e(x)$ while making a single pass over $x$  and maintaining a constant amount of memory.
 
 > ### {.proofidea data-ref="DFAforREGthm"}
-The single-pass constant-memory for checking if a string matches a regular expression is presented in [regexpmatchdfaalg](){.ref}. The idea is to replace the recursive algorithm of [regexpmatchlinearalg](){.ref}  with a [dynamic program](https://goo.gl/kgLdX1), using the technique of [memoization](https://en.wikipedia.org/wiki/Memoization).  If you haven't taken yet an algorithms course, you might not know these techniques. This is OK;  while this more efficient algorithm is crucial for the many practical applications of regular expressions, it is not of great importance for this book.
+The single-pass constant-memory for checking if a string matches a regular expression is presented in [regexpmatchdfaalg](#regexpmatchdfaalg){.ref}. The idea is to replace the recursive algorithm of [regexpmatchlinearalg](#regexpmatchlinearalg){.ref}  with a [dynamic program](https://goo.gl/kgLdX1), using the technique of [memoization](https://en.wikipedia.org/wiki/Memoization).  If you haven't taken yet an algorithms course, you might not know these techniques. This is OK;  while this more efficient algorithm is crucial for the many practical applications of regular expressions, it is not of great importance for this book.
 
 
 ``` { .algorithm title="Regular expression matching by a DFA" #regexpmatchdfaalg }
@@ -780,7 +780,7 @@ endprocedure
 
 
 ::: {.proof data-ref="DFAforREGthm"}
-[regexpmatchdfaalg](){.ref} checks if a given string $x\in \Sigma^*$ is matched by the regular expression $e$.
+[regexpmatchdfaalg](#regexpmatchdfaalg){.ref} checks if a given string $x\in \Sigma^*$ is matched by the regular expression $e$.
 For every regular expression $e$, this algorithm has a constant number of Boolean variables (specifically a variable $v_{e'}$ for every $e' \in S(e)$ and a variable $last_{e'}$ for every $e'$ in $S(e)$, using the fact that $e'[x_i]$ is in $S(e)$ for every $e'\in S(e)$). 
 It makes a single pass over the input string.
 Hence it corresponds to a DFA.
@@ -802,26 +802,26 @@ $e$ matches $x$ iff $x\in L$.) The following theorem is the central result of au
 Let $F:\{0,1\}^* \rightarrow \{0,1\}$. Then $F$ is regular if and only if there exists a DFA $(T,\mathcal{S})$ that computes $F$.
 
 > ### {.proofidea data-ref="dfaregequivthm"}
-One direction follows from [DFAforREGthm](){.ref}, which shows that for every regular expression $e$, the function $\Phi_e$ can be computed by a DFA (see for example [automatonregfig](){.ref}).
+One direction follows from [DFAforREGthm](#DFAforREGthm){.ref}, which shows that for every regular expression $e$, the function $\Phi_e$ can be computed by a DFA (see for example [automatonregfig](#automatonregfig){.ref}).
 For the other direction, we show that given a DFA $(T,\mathcal{S})$ for every $v,w \in [C]$ we can find a regular expression that would match $x\in \{0,1\}^*$ if and only if the DFA starting in state $v$, will end up in state $w$ after reading $x$.
 
-![A deterministic finite automaton that computes the function $\Phi_{(01)^*}$.](/images/introtcs/lec_05_infinite-5.webp){#automatonregfig .margin }
+![A deterministic finite automaton that computes the function $\Phi_{(01)^*}$.](/images/introtcs/original-automaton.webp){#automatonregfig .margin }
 
-![Given a DFA of $C$ states, for every $v,w \in [C]$ and number $t\in \{0,\ldots,C\}$ we define the function $F^t_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$ to output one on input $x\in \{0,1\}^*$ if and only if when the DFA is initialized in the state $v$ and is given the input $x$,  it will reach the state $w$ while going only through the intermediate states $\{0,\ldots,t-1\}$.](../figure/dfatoreg1.png){#dfatoregonefig .margin}
+![Given a DFA of $C$ states, for every $v,w \in [C]$ and number $t\in \{0,\ldots,C\}$ we define the function $F^t_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$ to output one on input $x\in \{0,1\}^*$ if and only if when the DFA is initialized in the state $v$ and is given the input $x$,  it will reach the state $w$ while going only through the intermediate states $\{0,\ldots,t-1\}$.](/images/introtcs/original-dfatoreg1.webp){#dfatoregonefig .margin}
 
 
 ::: {.proof data-ref="dfaregequivthm"}
-Since [DFAforREGthm](){.ref} proves the "only if" direction, we only need to show the "if" direction.
+Since [DFAforREGthm](#DFAforREGthm){.ref} proves the "only if" direction, we only need to show the "if" direction.
 Let $A=(T,\mathcal{S})$ be a DFA with $C$ states that computes the function $F$.
 We need to show that $F$ is regular.
 
 For every $v,w \in [C]$, we let $F_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$ be the function that maps $x\in \{0,1\}^*$ to $1$ if and only if the DFA $A$, starting at the state $v$, will reach the state $w$ if it reads the input $x$.
 We will prove that $F_{v,w}$ is regular for every $v,w$.
-This will prove the theorem, since by [DFAdef](){.ref}, $F(x)$ is equal to the OR of $F_{0,w}(x)$ for every $w\in \mathcal{S}$.
+This will prove the theorem, since by [DFAdef](#DFAdef){.ref}, $F(x)$ is equal to the OR of $F_{0,w}(x)$ for every $w\in \mathcal{S}$.
 Hence if we have a regular expression for every function of the form $F_{v,w}$ then (using the $|$ operation), we can obtain a regular expression for $F$ as well.
 
 
-To give regular expressions for the functions $F_{v,w}$, we start by defining the following functions $F_{v,w}^t$: for every $v,w \in [C]$ and $0 \leq t \leq C$, $F_{v,w}^t(x)=1$ if and only if starting from $v$ and observing $x$, the automata reaches $w$ _with all intermediate states being in the set $[t]=\{0,\ldots, t-1\}$_ (see [dfatoregonefig](){.ref}).
+To give regular expressions for the functions $F_{v,w}$, we start by defining the following functions $F_{v,w}^t$: for every $v,w \in [C]$ and $0 \leq t \leq C$, $F_{v,w}^t(x)=1$ if and only if starting from $v$ and observing $x$, the automata reaches $w$ _with all intermediate states being in the set $[t]=\{0,\ldots, t-1\}$_ (see [dfatoregonefig](#dfatoregonefig){.ref}).
 That is, while $v,w$ themselves might be outside $[t]$, $F_{v,w}^t(x)=1$ if and only if throughout the execution of the automaton on the input $x$ (when initiated at $v$) it never enters any of the  states outside $[t]$ and still ends up at $w$.
 If $t=0$ then $[t]$ is the empty set, and hence $F^0_{v,w}(x)=1$ if and only if the automaton reaches $w$ from $v$ directly on $x$, without any intermediate state.
 If $t=C$ then all states are in $[t]$, and hence $F_{v,w}^t= F_{v,w}$.
@@ -847,7 +847,7 @@ If the path labeled by $x$ causes the automaton to get from $v$ to $w$ while vis
 * Then go from $t$ to $w$ using only intermediate states in $[t-1]$.
 
 Therefore in this case the string $x$ is matched by the regular expression
-$R_{v,t}^t(R_{t,t}^t)^* R_{t,w}^t$. (See also [dfatoreginductivefig](){.ref}.)
+$R_{v,t}^t(R_{t,t}^t)^* R_{t,w}^t$. (See also [dfatoreginductivefig](#dfatoreginductivefig){.ref}.)
 
 Therefore we can compute $F_{v,w}^{t+1}$ using the regular expression
 
@@ -856,7 +856,7 @@ This completes the proof of the inductive step and hence of the theorem.
 :::
 
 
-![If we have regular expressions $R_{v',w'}^{t}$ corresponding to $F_{v',w'}^{t}$ for every $v',w' \in [C]$, we can obtain a regular expression $R_{v,w}^{t+1}$ corresponding to $F_{v,w}^{t+1}$. The key observation is that a path from $v$ to $w$ using $\{0,\ldots, t \}$ either does not touch $t$ at all, in which case it is captured by the expression $R_{v,w}^{t}$, or it goes from $v$ to $t$, comes back to $t$  zero or more times, and then goes from $t$ to $w$, in which case it is captured by the expression $R_{v,t}^{t}(R_{t,t}^{t})^* R_{t,w}^t$.](../figure/dfatoreginduction.png){#dfatoreginductivefig}
+![If we have regular expressions $R_{v',w'}^{t}$ corresponding to $F_{v',w'}^{t}$ for every $v',w' \in [C]$, we can obtain a regular expression $R_{v,w}^{t+1}$ corresponding to $F_{v,w}^{t+1}$. The key observation is that a path from $v$ to $w$ using $\{0,\ldots, t \}$ either does not touch $t$ at all, in which case it is captured by the expression $R_{v,w}^{t}$, or it goes from $v$ to $t$, comes back to $t$  zero or more times, and then goes from $t$ to $w$, in which case it is captured by the expression $R_{v,t}^{t}(R_{t,t}^{t})^* R_{t,w}^t$.](/images/introtcs/original-dfatoreginduction.webp){#dfatoreginductivefig}
 
 ### Closure properties of regular expressions
 
@@ -865,17 +865,17 @@ If $F$  and $G$ are regular functions computed by the expressions $e$ and $f$ re
 $H = F \vee G$ defined as $H(x) = F(x) \vee G(x)$. 
 Another way to say this is that the set of regular functions is _closed under the OR operation_.
 That is, if $F$ and $G$ are regular then so is $F \vee G$.
-An important corollary of [dfaregequivthm](){.ref} is that this set is also closed under the NOT operation:
+An important corollary of [dfaregequivthm](#dfaregequivthm){.ref} is that this set is also closed under the NOT operation:
 
 > ### {.lemma title="Regular expressions closed under complement" #regcomplementlem}
 If $F:\{0,1\}^* \rightarrow \{0,1\}$ is regular then so is the function $\overline{F}$, where $\overline{F}(x) = 1 - F(x)$ for every $x\in \{0,1\}^*$.
 
 ::: {.proof data-ref="regcomplementlem"}
-If $F$ is regular then by [reglintimethm](){.ref} it can be computed by a DFA $A$. But we can then construct a DFA $\overline{A}$  which does the same computation but flips the set of accepted states. The DFA $\overline{A}$ will compute  $\overline{F}$.
-By [dfaregequivthm](){.ref}  this implies that $\overline{F}$ is regular as well.
+If $F$ is regular then by [reglintimethm](#reglintimethm){.ref} it can be computed by a DFA $A$. But we can then construct a DFA $\overline{A}$  which does the same computation but flips the set of accepted states. The DFA $\overline{A}$ will compute  $\overline{F}$.
+By [dfaregequivthm](#dfaregequivthm){.ref}  this implies that $\overline{F}$ is regular as well.
 :::
 
-Since $a \wedge b = \overline{\overline{a} \vee \overline{b}}$, [regcomplementlem](){.ref} implies that the set of  regular functions is closed under the AND operation as well. Moreover, since OR, NOT and AND are a universal basis, this set is also closed under NAND, XOR, and any other finite function.
+Since $a \wedge b = \overline{\overline{a} \vee \overline{b}}$, [regcomplementlem](#regcomplementlem){.ref} implies that the set of  regular functions is closed under the AND operation as well. Moreover, since OR, NOT and AND are a universal basis, this set is also closed under NAND, XOR, and any other finite function.
 That is, we have the following corollary:
 
 > ### {.theorem title="Closure of regular expressions" #closurereg}
@@ -885,7 +885,7 @@ Then the function $G(x) = f(F_0(x),F_1(x),\ldots,F_{k-1}(x))$ is regular.
 
 
 ::: {.proof data-ref="closurereg"}
-This is a direct consequence of the closure of regular functions under OR and NOT (and hence AND), combined with [circuit-univ-thm](){.ref}, that states that every $f$ can be computed by a Boolean circuit (which is simply a combination of the AND, OR, and NOT operations).
+This is a direct consequence of the closure of regular functions under OR and NOT (and hence AND), combined with [circuit-univ-thm](#circuit-univ-thm){.ref}, that states that every $f$ can be computed by a Boolean circuit (which is simply a combination of the AND, OR, and NOT operations).
 :::
 
 
@@ -911,7 +911,7 @@ Here is one example:
 Let $\Sigma = \{\langle ,\rangle \}$ and  $MATCHPAREN:\Sigma^* \rightarrow \{0,1\}$ be the function that given a string of parentheses, outputs $1$ if and only if every opening parenthesis is matched by a corresponding closed one.
 Then there is no regular expression over $\Sigma$ that computes $MATCHPAREN$.
 
-[regexpparn](){.ref} is a consequence of the following result, which is known as the _pumping lemma_:
+[regexpparn](#regexpparn){.ref} is a consequence of the following result, which is known as the _pumping lemma_:
 
 ::: {.theorem title="Pumping Lemma" #pumping}
 Let $e$ be a regular expression over some alphabet $\Sigma$. Then there is some number $n_0$ such that for every $w\in \Sigma^*$ with $|w|>n_0$ and $\Phi_{e}(w)=1$,  we can write $w=xyz$ for strings $x,y,z \in \Sigma^*$  satisfying the following conditions:
@@ -923,10 +923,10 @@ Let $e$ be a regular expression over some alphabet $\Sigma$. Then there is some 
 3. $\Phi_{e}(xy^kz)=1$ for every $k\in \N$.
 :::
 
-![To prove the "pumping lemma" we look at a word $w$ that is much larger than the regular expression $e$ that matches it. In such a case, part of $w$ must be matched by some sub-expression of the form $(e')^*$, since this is the only operator that allows matching words longer than the expression. If we look at the "leftmost" such sub-expression and define $y^k$ to be the string that is matched by it, we obtain the partition needed for the pumping lemma.](/images/introtcs/lec_05_infinite-6.webp){#pumpinglemmafig   }
+![To prove the "pumping lemma" we look at a word $w$ that is much larger than the regular expression $e$ that matches it. In such a case, part of $w$ must be matched by some sub-expression of the form $(e')^*$, since this is the only operator that allows matching words longer than the expression. If we look at the "leftmost" such sub-expression and define $y^k$ to be the string that is matched by it, we obtain the partition needed for the pumping lemma.](/images/introtcs/original-pumpinglemma.webp){#pumpinglemmafig   }
 
 > ### {.proofidea data-ref="pumping"}
-The idea behind the proof is the following.  Let $n_0$ be twice the number of symbols that are used in the expression $e$, then the only way that there is some $w$ with $|w|>n_0$ and $\Phi_{e}(w)=1$ is that $e$ contains the $*$ (i.e. star) operator and that there is a non-empty substring $y$ of $w$ that was matched by $(e')^*$ for some sub-expression $e'$ of $e$.  We can now repeat $y$ any number of times and still get a matching string. See also [pumpinglemmafig](){.ref}.
+The idea behind the proof is the following.  Let $n_0$ be twice the number of symbols that are used in the expression $e$, then the only way that there is some $w$ with $|w|>n_0$ and $\Phi_{e}(w)=1$ is that $e$ contains the $*$ (i.e. star) operator and that there is a non-empty substring $y$ of $w$ that was matched by $(e')^*$ for some sub-expression $e'$ of $e$.  We can now repeat $y$ any number of times and still get a matching string. See also [pumpinglemmafig](#pumpinglemmafig){.ref}.
 
 ::: { .pause }
 The pumping lemma is a bit cumbersome to state, but one way to remember it is that it simply says the following: _"if a string matching a regular expression is long enough, one of its substrings must be matched using the $*$ operator"_.
@@ -968,24 +968,24 @@ When an object is _recursively defined_ (as in the case of regular expressions) 
 That is, if we want to prove that all objects of this type have property $P$, then it is natural to use an inductive step that says that if $o',o'',o'''$ etc have property $P$ then so is an object $o$ that is obtained by composing them.
 
 
-Using the pumping lemma, we can easily prove [regexpparn](){.ref} (i.e., the non-regularity of the "matching parenthesis" function):
+Using the pumping lemma, we can easily prove [regexpparn](#regexpparn){.ref} (i.e., the non-regularity of the "matching parenthesis" function):
 
 ::: {.proof data-ref="regexpparn"}
 Suppose, towards the sake of contradiction, that there is an expression $e$ such that $\Phi_{e}= MATCHPAREN$.
-Let $n_0$ be the number obtained from  [pumping](){.ref} and let
-$w =\langle^{n_0}\rangle^{n_0}$ (i.e., $n_0$ left parenthesis followed by $n_0$ right parenthesis). Then we see that if we write $w=xyz$ as in [pumping](){.ref}, the condition $|xy| \leq n_0$ implies that $y$ consists solely of left parenthesis. Hence the string $xy^2z$ will contain more left parenthesis than right parenthesis.
+Let $n_0$ be the number obtained from  [pumping](#pumping){.ref} and let
+$w =\langle^{n_0}\rangle^{n_0}$ (i.e., $n_0$ left parenthesis followed by $n_0$ right parenthesis). Then we see that if we write $w=xyz$ as in [pumping](#pumping){.ref}, the condition $|xy| \leq n_0$ implies that $y$ consists solely of left parenthesis. Hence the string $xy^2z$ will contain more left parenthesis than right parenthesis.
 Hence $MATCHPAREN(xy^2z)=0$ but by the pumping lemma $\Phi_{e}(xy^2z)=1$, contradicting our assumption that $\Phi_{e}=MATCHPAREN$.
 :::
 
 The pumping lemma is a very useful tool to show that certain functions are _not_ computable by a regular expression.
 However, it is _not_ an "if and only if" condition for regularity: there are non-regular functions that still satisfy the pumping lemma conditions.
-To understand the pumping lemma, it is crucial to follow the order of quantifiers in [pumping](){.ref}.
-In particular, the number $n_0$ in the statement of  [pumping](){.ref} depends on the regular expression (in the proof we chose $n_0$ to be twice the number of symbols in the expression).
+To understand the pumping lemma, it is crucial to follow the order of quantifiers in [pumping](#pumping){.ref}.
+In particular, the number $n_0$ in the statement of  [pumping](#pumping){.ref} depends on the regular expression (in the proof we chose $n_0$ to be twice the number of symbols in the expression).
 So, if we want to use the pumping lemma to rule out the existence of a regular expression $e$ computing some function $F$, we need to be able to choose an appropriate input $w\in \{0,1\}^*$ that can be arbitrarily large and satisfies $F(w)=1$.
 This makes sense if you think about the intuition behind the pumping lemma: we need $w$ to be large enough as to force the use of the star operator.
 
 
-![A cartoon of a proof using the pumping lemma that a function $F$ is not regular. The pumping lemma states that if $F$ is regular then _there exists_ a number $n_0$ such that _for every_ large enough $w$ with $F(w)=1$, _there exists_ a partition of $w$ to $w=xyz$ satisfying certain conditions such that _for every_ $k\in \N$, $F(xy^kz)=1$. You can imagine a pumping-lemma based proof as a game between you and the adversary. Every _there exists_ quantifier corresponds to an object you are free to choose on your own (and base your choice on previously chosen objects). Every _for every_ quantifier corresponds to an object the adversary can choose arbitrarily (and again based on prior choices) as long as it satisfies the conditions. A valid proof corresponds to a strategy by which no matter what the adversary does, you can win the game by obtaining a contradiction which would be a choice of $k$ that would result in $F(xy^kz)=0$, hence violating the conclusion of the pumping lemma.](/images/introtcs/lec_05_infinite-7.webp){#pumpingprooffig  .full  }
+![A cartoon of a proof using the pumping lemma that a function $F$ is not regular. The pumping lemma states that if $F$ is regular then _there exists_ a number $n_0$ such that _for every_ large enough $w$ with $F(w)=1$, _there exists_ a partition of $w$ to $w=xyz$ satisfying certain conditions such that _for every_ $k\in \N$, $F(xy^kz)=1$. You can imagine a pumping-lemma based proof as a game between you and the adversary. Every _there exists_ quantifier corresponds to an object you are free to choose on your own (and base your choice on previously chosen objects). Every _for every_ quantifier corresponds to an object the adversary can choose arbitrarily (and again based on prior choices) as long as it satisfies the conditions. A valid proof corresponds to a strategy by which no matter what the adversary does, you can win the game by obtaining a contradiction which would be a choice of $k$ that would result in $F(xy^kz)=0$, hence violating the conclusion of the pumping lemma.](/images/introtcs/original-pumpinglemmaproof.webp){#pumpingprooffig  .full  }
 
 ::: {.solvedexercise title="Palindromes is not regular" #palindromenotreg}
 Prove that the following function over the alphabet $\{0,1,; \}$ is not regular: $PAL(w)=1$  if and only if $w = u;u^R$ where $u \in \{0,1\}^*$ and $u^R$ denotes $u$ "reversed": the string $u_{|u|-1}\cdots u_0$.
@@ -994,13 +994,13 @@ Prove that the following function over the alphabet $\{0,1,; \}$ is not regular:
 
 ::: {.solution data-ref="stringreversed"}
 We use the pumping lemma.
-Suppose toward the sake of contradiction that there is a regular expression $e$ computing $PAL$, and let $n_0$ be the number obtained by the pumping lemma ([pumping](){.ref}).
+Suppose toward the sake of contradiction that there is a regular expression $e$ computing $PAL$, and let $n_0$ be the number obtained by the pumping lemma ([pumping](#pumping){.ref}).
 Consider the string $w = 0^{n_0};0^{n_0}$.
 Since the reverse of the all zero string is the all zero string, $PAL(w)=1$.
 Now, by the pumping lemma, if $PAL$ is computed by $e$, then we can write $w=xyz$ such that $|xy| \leq n_0$, $|y|\geq 1$ and $PAL(xy^kz)=1$ for every $k\in \N$. In particular, it must hold that $PAL(xz)=1$, but this is a contradiction, since $xz=0^{n_0-|y|};0^{n_0}$ and so its two parts are not of the same length and in particular are not the reverse of one another.
 :::
 
-For yet another example of a pumping-lemma based proof, see [pumpingprooffig](){.ref} which illustrates a cartoon of the proof of the non-regularity of the function $F:\{0,1\}^* \rightarrow \{0,1\}$ which is defined as $F(x)=1$ iff $x=0^n1^n$ for some $n\in \N$ (i.e., $x$ consists of a string of consecutive zeroes, followed by a string of consecutive ones of the same length).
+For yet another example of a pumping-lemma based proof, see [pumpingprooffig](#pumpingprooffig){.ref} which illustrates a cartoon of the proof of the non-regularity of the function $F:\{0,1\}^* \rightarrow \{0,1\}$ which is defined as $F(x)=1$ iff $x=0^n1^n$ for some $n\in \N$ (i.e., $x$ consists of a string of consecutive zeroes, followed by a string of consecutive ones of the same length).
 
 
 
@@ -1043,7 +1043,7 @@ Given a regular expression $e$, we can determine if $e$ is empty using  the foll
 Using these rules, it is straightforward to come up with a recursive algorithm to determine emptiness. 
 :::
 
-Using [regemptynessthm](){.ref}, we can obtain an algorithm that determines whether or not two regular expressions $e$ and $e'$ are _equivalent_, 
+Using [regemptynessthm](#regemptynessthm){.ref}, we can obtain an algorithm that determines whether or not two regular expressions $e$ and $e'$ are _equivalent_, 
 in the sense that they compute the same function.
 
 > ### {.theorem title="Equivalence of regular expressions is computable" #regequivalencethm}
@@ -1056,7 +1056,7 @@ The idea is to show that given a pair of regular expressions $e$ and $e'$ we can
 
 
 ::: {.proof data-ref="regequivalencethm"}
-We will prove  [regequivalencethm](){.ref} from [regemptynessthm](){.ref}. (The two theorems are in fact equivalent: it is easy to prove [regemptynessthm](){.ref} from [regequivalencethm](){.ref}, since checking for emptiness is the same as checking equivalence with the expression $\emptyset$.)
+We will prove  [regequivalencethm](#regequivalencethm){.ref} from [regemptynessthm](#regemptynessthm){.ref}. (The two theorems are in fact equivalent: it is easy to prove [regemptynessthm](#regemptynessthm){.ref} from [regequivalencethm](#regequivalencethm){.ref}, since checking for emptiness is the same as checking equivalence with the expression $\emptyset$.)
 Given two regular expressions $e$ and $e'$, we will compute an expression $e''$ such that $\Phi_{e''}(x) =1$ if and only if $\Phi_e(x) \neq \Phi_{e'}(x)$.
 One can see that $e$ is equivalent to $e'$ if and only if $e''$ is empty.
 
@@ -1074,13 +1074,13 @@ $$
 
 To construct the expression $e''$, we will show how given any pair of expressions $e$ and $e'$, we can construct expressions $e\wedge e'$ and $\overline{e}$ that compute the functions $\Phi_{e} \wedge \Phi_{e'}$ and $\overline{\Phi_{e}}$ respectively. (Computing the expression for $e \vee e'$ is straightforward using the $|$ operation of regular expressions.)
 
-Specifically, by [regcomplementlem](){.ref}, regular functions are closed under negation, which means that for every regular expression $e$, there is an expression $\overline{e}$ such that $\Phi_{\overline{e}}(x) = 1 - \Phi_{e}(x)$ for every $x\in \{0,1\}^*$.
+Specifically, by [regcomplementlem](#regcomplementlem){.ref}, regular functions are closed under negation, which means that for every regular expression $e$, there is an expression $\overline{e}$ such that $\Phi_{\overline{e}}(x) = 1 - \Phi_{e}(x)$ for every $x\in \{0,1\}^*$.
 Now, for every two expressions $e$ and $e'$, the expression
 $$
 e \wedge e' = \overline{(\overline{e} | \overline{e'})}
 $$
 computes the AND of the two expressions.
-Given these two transformations, we see that for every regular expressions $e$ and $e'$ we can find a regular expression $e''$ satisfying [eqemptyequivreg](){.eqref} such that $e''$ is empty if and only if  $e$ and $e'$ are equivalent.
+Given these two transformations, we see that for every regular expressions $e$ and $e'$ we can find a regular expression $e''$ satisfying [eqemptyequivreg](#eqemptyequivreg){.eqref} such that $e''$ is empty if and only if  $e$ and $e'$ are equivalent.
 :::
 
 
@@ -1139,8 +1139,8 @@ The relation of regular expressions with finite automata is a beautiful topic, o
 It is covered more extensively in [@SipserBook, @hopcroft, @kozen1997automata].
 These texts also discuss topics such as _non-deterministic finite automata_ (NFA) and the relation between context-free grammars and pushdown automata.
 
-The automaton of [dfazeroonefig](){.ref} was generated using the [FSM simulator](http://ivanzuzak.info/noam/webapps/fsm_simulator/) of Ivan Zuzak and Vedrana Jankovic.
-Our proof of [reglintimethm](){.ref} is closely related to the [Myhill-Nerode Theorem](https://goo.gl/mnKVMP). One direction of the Myhill-Nerode theorem can be stated as saying that if $e$ is a regular expression then there is at most a finite number of strings $z_0,\ldots,z_{k-1}$ such that $\Phi_{e[z_i]} \neq \Phi_{e[z_j]}$ for every $0 \leq i\neq j < k$.
+The automaton of [dfazeroonefig](#dfazeroonefig){.ref} was generated using the [FSM simulator](http://ivanzuzak.info/noam/webapps/fsm_simulator/) of Ivan Zuzak and Vedrana Jankovic.
+Our proof of [reglintimethm](#reglintimethm){.ref} is closely related to the [Myhill-Nerode Theorem](https://goo.gl/mnKVMP). One direction of the Myhill-Nerode theorem can be stated as saying that if $e$ is a regular expression then there is at most a finite number of strings $z_0,\ldots,z_{k-1}$ such that $\Phi_{e[z_i]} \neq \Phi_{e[z_j]}$ for every $0 \leq i\neq j < k$.
 
 
 

@@ -69,20 +69,20 @@ These can be defined for much more general probabilistic experiments or _sample 
 
 If instead of "heads" and "tails" we encode the sides of each coin by "zero" and "one", we can encode the result of tossing $n$ coins as a string in $\{0,1\}^n$.
 Each particular outcome $x\in \{0,1\}^n$ is obtained with probability $2^{-n}$.
-For example, if we toss three coins, then we obtain each of the 8 outcomes $000,001,010,011,100,101,110,111$ with probability $2^{-3}=1/8$ (see also [coinexperimentfig](){.ref}).
+For example, if we toss three coins, then we obtain each of the 8 outcomes $000,001,010,011,100,101,110,111$ with probability $2^{-3}=1/8$ (see also [coinexperimentfig](#coinexperimentfig){.ref}).
 We can describe the experiment of tossing $n$ coins as choosing a string $x$ uniformly at random from $\{0,1\}^n$, and hence we'll use the shorthand $x\sim \{0,1\}^n$ for $x$ that is chosen according to this experiment.
 
-![The probabilistic experiment of tossing three coins corresponds to making $2\times 2 \times 2 = 8$ choices, each with equal probability. In this example, the blue set corresponds to the event $A = \{ x\in \{0,1\}^3 \;|\; x_0 = 0 \}$ where the first coin toss is equal to $0$,  and the pink set corresponds to the event $B = \{ x\in \{0,1\}^3 \;|\; x_1 = 1 \}$ where the second coin toss is equal to $1$ (with their intersection having a purplish color). As we can see, each of these events contains $4$ elements (out of $8$ total) and so has probability $1/2$. The intersection of $A$ and $B$ contains two elements, and so the probability that both of these events occur is $2/8 = 1/4$.](/images/introtcs/lec_15_probability-1.webp){#coinexperimentfig .margin  }
+![The probabilistic experiment of tossing three coins corresponds to making $2\times 2 \times 2 = 8$ choices, each with equal probability. In this example, the blue set corresponds to the event $A = \{ x\in \{0,1\}^3 \;|\; x_0 = 0 \}$ where the first coin toss is equal to $0$,  and the pink set corresponds to the event $B = \{ x\in \{0,1\}^3 \;|\; x_1 = 1 \}$ where the second coin toss is equal to $1$ (with their intersection having a purplish color). As we can see, each of these events contains $4$ elements (out of $8$ total) and so has probability $1/2$. The intersection of $A$ and $B$ contains two elements, and so the probability that both of these events occur is $2/8 = 1/4$.](/images/introtcs/original-coinexperiment.webp){#coinexperimentfig .margin  }
 
 An _event_ is simply a subset $A$ of $\{0,1\}^n$.
 The _probability of $A$_, denoted by $\Pr_{x\sim \{0,1\}^n}[A]$ (or $\Pr[A]$ for short, when the sample space is understood from the context), is the probability that an $x$ chosen uniformly at random will be contained in $A$.
 Note that this is the same as $|A|/2^n$ (where $|A|$ as usual denotes the number of elements in the set $A$).
 For example, the probability that $x$ has an even number of ones is $\Pr[A]$ where $A=\{ x : \sum_{i=0}^{n-1} x_i \;= 0 \mod 2 \}$.
 In the case $n=3$, $A=\{ 000,011,101,110 \}$, and hence $\Pr[A]=\tfrac{4}{8}=\tfrac{1}{2}$
-(see [eventhreecoinsfig](){.ref}).
+(see [eventhreecoinsfig](#eventhreecoinsfig){.ref}).
 It turns out this is true for every $n$:
 
-![The event that if we toss three coins $x_0,x_1,x_2 \in \{0,1\}$ then  the sum of the $x_i$'s is even has probability $1/2$ since it corresponds to exactly $4$ out of the $8$ possible strings of length $3$.](/images/introtcs/lec_15_probability-2.webp){#eventhreecoinsfig .margin }
+![The event that if we toss three coins $x_0,x_1,x_2 \in \{0,1\}$ then  the sum of the $x_i$'s is even has probability $1/2$ since it corresponds to exactly $4$ out of the $8$ possible strings of length $3$.](/images/introtcs/original-even3coins.webp){#eventhreecoinsfig .margin }
 
 > ### {.lemma #evenprob}
 For every $n>0$, $$\Pr_{x\sim \{0,1\}^n}\left[ \text{$\sum_{i=0}^{n-1} x_i$ is even }\right] = 1/2 \;.$$
@@ -196,7 +196,7 @@ Using this and the linearity of expectation, we can show one of the most useful 
 For every two events $A,B$, $\Pr[ A \cup B] \leq \Pr[A]+\Pr[B]$
 
 > ### { .pause }
-Before looking at the proof, try to see why the union bound makes intuitive sense. We can also prove it directly from the definition of probabilities and the cardinality of sets, together with the equation $|A \cup B| \leq |A|+|B|$. Can you see why the latter equation is true? (See also [unionboundfig](){.ref}.)
+Before looking at the proof, try to see why the union bound makes intuitive sense. We can also prove it directly from the definition of probabilities and the cardinality of sets, together with the equation $|A \cup B| \leq |A|+|B|$. Can you see why the latter equation is true? (See also [unionboundfig](#unionboundfig){.ref}.)
 
 > ### {.proof data-ref="unionbound"}
 For every $x$, the variable $1_{A\cup B}(x) \leq 1_A(x)+1_B(x)$.
@@ -204,7 +204,7 @@ Hence, $\Pr[A\cup B] = \E[ 1_{A \cup B} ] \leq \E[1_A+1_B] = \E[1_A]+\E[1_B] = \
 
 The way we often use this in theoretical computer science is to argue that, for example, if there is a list of 100 bad events that can happen, and each one of them happens with probability at most $1/10000$, then with probability at least $1-100/10000 = 0.99$, no bad event happens.
 
-![The _union bound_ tells us that the probability of $A$ or $B$ happening is at most the sum of the individual probabilities. We can see it by noting that for every two sets $|A\cup B| \leq |A|+|B|$ (with equality only if $A$ and $B$ have no intersection).](/images/introtcs/lec_15_probability-3.webp){#unionboundfig .margin  }
+![The _union bound_ tells us that the probability of $A$ or $B$ happening is at most the sum of the individual probabilities. We can see it by noting that for every two sets $|A\cup B| \leq |A|+|B|$ (with equality only if $A$ and $B$ have no intersection).](/images/introtcs/original-unionbound.webp){#unionboundfig .margin  }
 
 ### Distributions over strings
 
@@ -244,11 +244,11 @@ For example, if we think of the experiment of tossing $3$ random coins $x\in \{0
 On the other hand, if we let $C$ be the event that $x_1=1$, then because the second coin toss is not affected by the result of the first one, the events $A$ and $C$ are independent.
 
 The formal definition is that events $A$ and $B$ are _independent_ if $\Pr[A \cap B]=\Pr[A] \cdot \Pr[B]$.
-If $\Pr[A \cap B] > \Pr[A]\cdot \Pr[B]$ then we say that $A$ and $B$ are _positively correlated_, while if $\Pr[ A \cap B] < \Pr[A] \cdot \Pr[B]$ then we say that $A$ and $B$ are _negatively correlated_ (see [independencefig](){.ref}).
+If $\Pr[A \cap B] > \Pr[A]\cdot \Pr[B]$ then we say that $A$ and $B$ are _positively correlated_, while if $\Pr[ A \cap B] < \Pr[A] \cdot \Pr[B]$ then we say that $A$ and $B$ are _negatively correlated_ (see [independencefig](#independencefig){.ref}).
 
 
 ![Two events $A$ and $B$ are _independent_ if $\Pr[A \cap B]=\Pr[A]\cdot \Pr[B]$. In the two figures above, the empty $x\times x$ square is the sample space, and $A$ and $B$ are two events in this sample space. In the left figure, $A$ and $B$ are independent, while in the right figure they are negatively correlated, since $B$ is less likely to occur if we condition on $A$ (and vice versa). Mathematically, one can see this by noticing that in the left figure the areas of $A$ and $B$ respectively are $a\cdot x$ and $b\cdot x$, and so their probabilities are $\tfrac{a\cdot x}{x^2}=\tfrac{a}{x}$ and
-$\tfrac{b\cdot x}{x^2}=\tfrac{b}{x}$ respectively, while the area of $A \cap B$ is $a\cdot b$ which corresponds to the probability $\tfrac{a\cdot b}{x^2}$. In the right figure, the area of the triangle $B$ is $\tfrac{b\cdot x}{2}$ which corresponds to a probability of  $\tfrac{b}{2x}$, but the area of $A \cap B$ is $\tfrac{b' \cdot a}{2}$ for some $b'<b$. This means that the probability of $A \cap B$ is $\tfrac{b'\cdot a}{2x^2} < \tfrac{b}{2x} \cdot \tfrac{a}{x}$, or in other words $\Pr[A \cap B ] < \Pr[A] \cdot \Pr[B]$.](../figure/independence.png){#independencefig .margin  }
+$\tfrac{b\cdot x}{x^2}=\tfrac{b}{x}$ respectively, while the area of $A \cap B$ is $a\cdot b$ which corresponds to the probability $\tfrac{a\cdot b}{x^2}$. In the right figure, the area of the triangle $B$ is $\tfrac{b\cdot x}{2}$ which corresponds to a probability of  $\tfrac{b}{2x}$, but the area of $A \cap B$ is $\tfrac{b' \cdot a}{2}$ for some $b'<b$. This means that the probability of $A \cap B$ is $\tfrac{b'\cdot a}{2x^2} < \tfrac{b}{2x} \cdot \tfrac{a}{x}$, or in other words $\Pr[A \cap B ] < \Pr[A] \cdot \Pr[B]$.](/images/introtcs/original-independence.webp){#independencefig .margin  }
 
 
 If we consider the above examples on the experiment of choosing $x\in \{0,1\}^3$ then we can see that
@@ -287,10 +287,10 @@ $$
 $$
 
 For example, if $x\sim \{0,1\}^3$, then the events $\{ x_0=1 \}$, $\{ x_1 = 1\}$ and $\{x_2 = 1 \}$ are mutually independent.
-On the other hand, the events $\{x_0 = 1 \}$, $\{x_1 = 1\}$ and $\{ x_0 + x_1 = 0 \mod 2 \}$ are _not_ mutually independent, even though every pair of these events is independent (can you see why? see also [independencecoinsfig](){.ref}).
+On the other hand, the events $\{x_0 = 1 \}$, $\{x_1 = 1\}$ and $\{ x_0 + x_1 = 0 \mod 2 \}$ are _not_ mutually independent, even though every pair of these events is independent (can you see why? see also [independencecoinsfig](#independencecoinsfig){.ref}).
 
 
-![Consider the sample space $\{0,1\}^n$ and the events $A,B,C,D,E$ corresponding to $A$: $x_0=1$, $B$: $x_1=1$, $C$: $x_0+x_1+x_2 \geq 2$, $D$: $x_0+x_1+x_2 = 0 \mod 2$ and $E$: $x_0+x_1 = 0 \mod 2$. We can see that $A$ and $B$ are independent, $C$ is positively correlated with $A$ and positively correlated with $B$, the three events $A,B,D$ are mutually independent, and while every pair out of $A,B,E$ is independent, the three events $A,B,E$ are not mutually independent since their intersection has probability $\tfrac{2}{8}=\tfrac{1}{4}$ instead of $\tfrac{1}{2}\cdot \tfrac{1}{2} \cdot \tfrac{1}{2} = \tfrac{1}{8}$.](/images/introtcs/lec_15_probability-4.webp){#independencecoinsfig .margin  }
+![Consider the sample space $\{0,1\}^n$ and the events $A,B,C,D,E$ corresponding to $A$: $x_0=1$, $B$: $x_1=1$, $C$: $x_0+x_1+x_2 \geq 2$, $D$: $x_0+x_1+x_2 = 0 \mod 2$ and $E$: $x_0+x_1 = 0 \mod 2$. We can see that $A$ and $B$ are independent, $C$ is positively correlated with $A$ and positively correlated with $B$, the three events $A,B,D$ are mutually independent, and while every pair out of $A,B,E$ is independent, the three events $A,B,E$ are not mutually independent since their intersection has probability $\tfrac{2}{8}=\tfrac{1}{4}$ instead of $\tfrac{1}{2}\cdot \tfrac{1}{2} \cdot \tfrac{1}{2} = \tfrac{1}{8}$.](/images/introtcs/original-independencecoins.webp){#independencecoinsfig .margin  }
 
 ### Independent random variables
 
@@ -326,7 +326,7 @@ $$
 \end{gathered}
 $$
 where the first equality  ($=^{(1)}$) follows from the independence of $X$ and $Y$, the second equality ($=^{(2)}$) follows by "opening the parentheses" of the right-hand side, and the third equality ($=^{(3)}$) follows from the definition of expectation.
-(This is not an "if and only if"; see [noindnocorex](){.ref}.)
+(This is not an "if and only if"; see [noindnocorex](#noindnocorex){.ref}.)
 
 Another useful fact is that if $X$ and $Y$ are independent random variables, then so are $F(X)$ and $G(Y)$ for all functions $F,G:\R \rightarrow \R$.
 This is intuitively true since learning $F(X)$ can only provide us with less information than does learning $X$ itself.
@@ -361,7 +361,7 @@ $$
 If $X_0,\ldots,X_{n-1}$ are mutually independent, and $Y_0,\ldots,Y_{n-1}$ are defined as $Y_i = F_i(X_i)$ for some functions $F_0,\ldots,F_{n-1}:\R \rightarrow \R$, then $Y_0,\ldots,Y_{n-1}$ are mutually independent as well.
 
 > ### { .pause }
-We leave proving [expprod](){.ref} and [indeplem](){.ref} as [expprodex](){.ref} and [indeplemex](){.ref}.
+We leave proving [expprod](#expprod){.ref} and [indeplem](#indeplem){.ref} as [expprodex](#expprodex){.ref} and [indeplemex](#indeplemex){.ref}.
 It is a good idea for you stop now and do these exercises to make sure you are comfortable with the notion of independence, as we will use it heavily later on in this course.
 
 
@@ -380,9 +380,9 @@ But we don't really "expect" the result of this experiment to be for you to gain
 Rather, 99.9\% of the time you will pay me 10 dollars, and you will hit the jackpot 0.1\% of the times.
 
 However, if we repeat this experiment again and again (with fresh and hence _independent_ coins), then in the long run we do expect your average earning to be close to 90 dollars, which is the reason why casinos can make money in a predictable way even though every individual bet is random.
-For example, if we toss $n$ independent and unbiased coins, then as $n$ grows, the number of coins that come up ones will be more and more _concentrated_ around $n/2$ according to the famous "bell curve" (see [bellfig](){.ref}).
+For example, if we toss $n$ independent and unbiased coins, then as $n$ grows, the number of coins that come up ones will be more and more _concentrated_ around $n/2$ according to the famous "bell curve" (see [bellfig](#bellfig){.ref}).
 
-![The probabilities that we obtain a particular sum when we toss $n=10,20,100,1000$ coins converge quickly to the Gaussian/normal distribution.](/images/introtcs/lec_15_probability-5.webp){#bellfig .margin  }
+![The probabilities that we obtain a particular sum when we toss $n=10,20,100,1000$ coins converge quickly to the Gaussian/normal distribution.](/images/introtcs/original-binomial.webp){#bellfig .margin  }
 
 Much of probability theory is concerned with so called _concentration_ or _tail_ bounds, which are upper bounds on the probability that a random variable $X$ deviates too much from its expectation.
 The first and simplest one of them is Markov's inequality:
@@ -391,7 +391,7 @@ The first and simplest one of them is Markov's inequality:
 If $X$ is a non-negative random variable then for every $k>0$, $\Pr[ X \geq k \E[X] ] \leq 1/k$.
 
 > ### { .pause }
-Markov's Inequality is actually a very natural statement (see also [markovfig](){.ref}). For example, if you know that the average (not the median!) household income in the US is 70,000 dollars, then in particular you can deduce that at most 25 percent of households make more than 280,000 dollars, since otherwise, even if the remaining 75 percent had zero income, the top 25 percent alone would cause the average income to be larger than 70,000 dollars. From this example you can already see that in many situations, Markov's inequality will not be _tight_ and the probability of deviating from expectation will be much smaller: see the Chebyshev and Chernoff inequalities below.
+Markov's Inequality is actually a very natural statement (see also [markovfig](#markovfig){.ref}). For example, if you know that the average (not the median!) household income in the US is 70,000 dollars, then in particular you can deduce that at most 25 percent of households make more than 280,000 dollars, since otherwise, even if the remaining 75 percent had zero income, the top 25 percent alone would cause the average income to be larger than 70,000 dollars. From this example you can already see that in many situations, Markov's inequality will not be _tight_ and the probability of deviating from expectation will be much smaller: see the Chebyshev and Chernoff inequalities below.
 
 > ### {.proof data-ref="markovthm"}
 Let $\mu = \E[X]$ and define $Y=1_{X \geq k \mu}$. That is, $Y(x)=1$ if $X(x) \geq k \mu$ and $Y(x)=0$ otherwise.
@@ -399,7 +399,7 @@ Note that by definition, for every $x$, $Y(x) \leq X/(k\mu)$.
 We need to show $\E[Y] \leq 1/k$.
 But this follows since  $\E[Y] \leq \E[X/k(\mu)] = \E[X]/(k\mu) = \mu/(k\mu)=1/k$.
 
-![Markov's Inequality tells us that a non-negative random variable $X$ cannot be much larger than its expectation, with high probability. For example, if the expectation of $X$ is $\mu$, then the probability that $X>4\mu$ must be at most $1/4$, as otherwise just the contribution from this part of the sample space will be too large.](/images/introtcs/lec_15_probability-6.webp){#markovfig .margin  }
+![Markov's Inequality tells us that a non-negative random variable $X$ cannot be much larger than its expectation, with high probability. For example, if the expectation of $X$ is $\mu$, then the probability that $X>4\mu$ must be at most $1/4$, as otherwise just the contribution from this part of the sample space will be too large.](/images/introtcs/original-markovineq.webp){#markovfig .margin  }
 
 __The averaging principle.__ While the expectation of a random variable $X$ is hardly always the "typical value", we can show that $X$ is guaranteed to achieve a value that is at least its expectation with positive probability. 
 For example, if the average grade in an exam is $87$ points, at least one student got a grade $87$ or more on the exam. This is known as the _averaging principle_, and despite its simplicity it is surprisingly useful.
@@ -453,23 +453,23 @@ However,  since $X_1,\ldots,X_n$ are independent,
 $$
 \mathrm{Var}[X_1+\cdots +X_n] = \mathrm{Var}[X_1]+\cdots + \mathrm{Var}[X_n]  \label{varianceeq}\;.
 $$
-(We leave showing this to the reader as  [varianceex](){.ref}.)
+(We leave showing this to the reader as  [varianceex](#varianceex){.ref}.)
 
-For every random variable $X_i$ in $[0,1]$, $\mathrm{Var}[X_i] \leq 1$ (if the variable is always in $[0,1]$, it can't be more than $1$ away from its expectation), and hence [varianceeq](){.eqref} implies that $\mathrm{Var}[X]\leq n$ and hence $\sigma[X] \leq \sqrt{n}$.
+For every random variable $X_i$ in $[0,1]$, $\mathrm{Var}[X_i] \leq 1$ (if the variable is always in $[0,1]$, it can't be more than $1$ away from its expectation), and hence [varianceeq](#varianceeq){.eqref} implies that $\mathrm{Var}[X]\leq n$ and hence $\sigma[X] \leq \sqrt{n}$.
 For large $n$, $\sqrt{n} \ll 0.001n$, and in particular if $\sqrt{n} \leq 0.001n/k$,  we can use Chebyshev's inequality to bound the probability that $X$ is not in $[0.499n,0.501n]$ by $1/k^2$.
 
 
 ### The Chernoff bound
 
 Chebyshev's inequality already shows a connection between independence and concentration, but in many cases we can hope for a quantitatively much stronger result.
-If, as in the example above, $X= X_1+\ldots+X_n$ where the $X_i$'s are bounded i.i.d random variables of mean $1/2$, then as $n$ grows, the distribution of $X$ would be roughly the _normal_ or _Gaussian_ distribution$-$ that is, distributed according to the _bell curve_ (see [bellfig](){.ref} and [empiricalbellfig](){.ref}).
+If, as in the example above, $X= X_1+\ldots+X_n$ where the $X_i$'s are bounded i.i.d random variables of mean $1/2$, then as $n$ grows, the distribution of $X$ would be roughly the _normal_ or _Gaussian_ distribution$-$ that is, distributed according to the _bell curve_ (see [bellfig](#bellfig){.ref} and [empiricalbellfig](#empiricalbellfig){.ref}).
 This distribution has the property of being _very_ concentrated in the sense that the probability of deviating $k$ standard deviations from the mean is not merely $1/k^2$ as is guaranteed by Chebyshev, but rather is roughly $e^{-k^2}$.
 Specifically, for a normal random variable $X$ of expectation $\mu$ and standard deviation $\sigma$, the probability that $|X-\mu| \geq k\sigma$ is at most $2e^{-k^2/2}$.
 That is, we have an _exponential decay_ of the probability of deviation.
 
 
 
-![In the _normal distribution_ or the bell curve, the probability of deviating $k$ standard deviations from the expectation shrinks _exponentially_ in $k^2$, and specifically with probability at least $1-2e^{-k^2/2}$,  a random variable $X$ of expectation $\mu$ and standard deviation $\sigma$ satisfies $\mu -k\sigma \leq X \leq \mu+k\sigma$. This figure gives more precise bounds for $k=1,2,3,4,5,6$. (Image credit:Imran Baghirov)](/images/introtcs/lec_15_probability-7.webp){#empiricalbellfig   .margin  }
+![In the _normal distribution_ or the bell curve, the probability of deviating $k$ standard deviations from the expectation shrinks _exponentially_ in $k^2$, and specifically with probability at least $1-2e^{-k^2/2}$,  a random variable $X$ of expectation $\mu$ and standard deviation $\sigma$ satisfies $\mu -k\sigma \leq X \leq \mu+k\sigma$. This figure gives more precise bounds for $k=1,2,3,4,5,6$. (Image credit:Imran Baghirov)](/images/introtcs/original-sixsigma.webp){#empiricalbellfig   .margin  }
 
 
 The following extremely useful theorem shows that such exponential decay occurs every time we have a sum of independent and bounded variables. This theorem is known under many names in different communities, though it is mostly called the [Chernoff bound](https://en.wikipedia.org/wiki/Chernoff_bound) in the computer science literature:
@@ -484,12 +484,12 @@ $$
 $$
 
 We omit the proof, which appears in many texts, and uses Markov's inequality on i.i.d random variables $Y_0,\ldots,Y_n$ that are of the form $Y_i = e^{\lambda X_i}$ for some carefully chosen parameter $\lambda$.
-See [chernoffstirlingex](){.ref}  for a proof of the simple (but highly useful and representative) case where each $X_i$ is $\{0,1\}$ valued and $p=1/2$.
-(See also [poorchernoff](){.ref} for a generalization.)
+See [chernoffstirlingex](#chernoffstirlingex){.ref}  for a proof of the simple (but highly useful and representative) case where each $X_i$ is $\{0,1\}$ valued and $p=1/2$.
+(See also [poorchernoff](#poorchernoff){.ref} for a generalization.)
 
 ::: {.remark title="Slight simplification of Chernoff" #chernoffsimpler}
 Since  $e$ is roughly $2.7$ (and in particular larger than $2$),  
-[eqchernoff](){.eqref} would still be true if we replaced its right-hand side with $e^{-2\epsilon^2 n + 1}$.
+[eqchernoff](#eqchernoff){.eqref} would still be true if we replaced its right-hand side with $e^{-2\epsilon^2 n + 1}$.
 For  $n>1/\epsilon^2$,  the equation will still be true if we replaced the right-hand side with the simpler $e^{-\epsilon^2 n}$. 
 Hence we will sometimes use the Chernoff bound as stating that for $X_0,\ldots,X_{n-1}$ and $p$ as above, $n> 1/\epsilon^2$ then 
 $$
@@ -504,13 +504,13 @@ $$
 
 Here is a nice application of the Chernoff bound. Consider the task of _supervised learning_.
 You are given  a set $S$ of $n$ samples of the form $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ drawn from some unknown distribution $D$ over pairs $(x,y)$. For simplicity we will assume that $x_i \in \{0,1\}^m$ and $y_i \in \{0,1\}$.
-(We use here the concept of  general distribution over the finite set $\{0,1\}^{m+1}$ as discussed in [generalsamplespaces](){.ref}.)
+(We use here the concept of  general distribution over the finite set $\{0,1\}^{m+1}$ as discussed in [generalsamplespaces](#generalsamplespaces){.ref}.)
 The goal is to find a _classifier_ $h:\{0,1\}^m \rightarrow \{0,1\}$ that will minimize the _test error_ which is the probability $L(h)$ that $h(x) \neq y$ where $(x,y)$ is drawn from the distribution $D$.
 That is, $L(h) = \Pr_{(x,y) \sim D}[ h(x) \neq y]$.
 
 
 One way to find such a classifier is to consider a _collection_ $\mathcal{C}$ of potential classifiers and look at the classifier $h$ in $\mathcal{C}$ that does best on the _training set_ $S$.
-The classifier $h$ is known as the _empirical risk minimizer_ (see also [convexnotesec](){.ref}) .
+The classifier $h$ is known as the _empirical risk minimizer_ (see also [convexnotesec](#convexnotesec){.ref}) .
 The Chernoff bound can be used to show that as long as the number $n$ of samples is sufficiently larger than the logarithm of $|\mathcal{C}|$, the test error $L(h)$ will be close to its _training error_  $\hat{L}_S(h)$, which  is defined as the fraction of pairs $(x_i,y_i) \in S$ that it fails to classify.
 (Equivalently, $\hat{L}_S(h) = \tfrac{1}{n}\sum_{i\in [n]} |h(x_i)-y_i|$.)
 
@@ -540,7 +540,7 @@ We prove the claim using the Chernoff bound. Specifically, for every such $h$, l
 
 $$X_i = \begin{cases}1 & h(x_i) \neq y_i \\ 0 & \text{otherwise} \end{cases}.$$
 
-Since the samples $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ are drawn independently from the same distribution $D$, the random variables $X_0,\ldots,X_{n-1}$ are independently and identically distributed. Moreover, for every $i$, $\E[X_i] = L(h)$. Hence by the Chernoff bound (see [eqchernoffsimpler](){.eqref}), the probability that $| \sum_{i=0}^{n-1} X_i  - n\cdot L(h)| \geq \epsilon n$ is at most $e^{-\epsilon^2 n} < e^{-k \log(1/\delta)} < \delta/2^k$ (using the fact that $e>2$).
+Since the samples $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ are drawn independently from the same distribution $D$, the random variables $X_0,\ldots,X_{n-1}$ are independently and identically distributed. Moreover, for every $i$, $\E[X_i] = L(h)$. Hence by the Chernoff bound (see [eqchernoffsimpler](#eqchernoffsimpler){.eqref}), the probability that $| \sum_{i=0}^{n-1} X_i  - n\cdot L(h)| \geq \epsilon n$ is at most $e^{-\epsilon^2 n} < e^{-k \log(1/\delta)} < \delta/2^k$ (using the fact that $e>2$).
 Since $\hat{L}(h) = \tfrac{1}{n}\sum_{i\in [n]}X_i$, this completes the proof of the claim.
 
 Given the claim, the theorem follows from the union bound.
@@ -588,10 +588,10 @@ Prove that $\E[X] = 1/2$.
 
 
 > ### {.exercise title="Product of expectations" #expprodex}
-Prove [expprod](){.ref}.
+Prove [expprod](#expprod){.ref}.
 
 > ### {.exercise title="Transformations preserve independence" #indeplemex}
-Prove [indeplem](){.ref}.
+Prove [indeplem](#indeplem){.ref}.
 
 
 > ### {.exercise title="Variance of independent random variables" #varianceex}
@@ -608,7 +608,7 @@ In this exercise we justify this definition. Let  $\mu$ be such that $H(\mu)=k$.
 where $x \sim \mu$ denotes the experiments of choosing $x_0,\ldots,x_{n-1}$ each independently from $S$ using the distribution $\mu$.
 
 > ### {.exercise title="Entropy approximation to binomial" #entropybinomex}
-Let $H(p) = p \log(1/p)+(1-p)\log(1/(1-p))$.^[While you don't need this to solve this exercise, this is the function that maps $p$ to the entropy (as defined in [entropyex](){.ref}) of the $p$-biased coin distribution over $\{0,1\}$, which is the function $\mu:\{0,1\}\rightarrow [0,1]$ s.t. $\mu(0)=1-p$ and $\mu(1)=p$.]
+Let $H(p) = p \log(1/p)+(1-p)\log(1/(1-p))$.^[While you don't need this to solve this exercise, this is the function that maps $p$ to the entropy (as defined in [entropyex](#entropyex){.ref}) of the $p$-biased coin distribution over $\{0,1\}$, which is the function $\mu:\{0,1\}\rightarrow [0,1]$ s.t. $\mu(0)=1-p$ and $\mu(1)=p$.]
 Prove that for every $p \in (0,1)$ and $\epsilon>0$, if $n$ is large enough then^[__Hint:__ Use Stirling's formula for approximating the factorial function.]
 $$
 2^{(H(p)-\epsilon)n } \leq \binom{n}{pn} \leq 2^{(H(p)+\epsilon)n},
@@ -619,13 +619,13 @@ where $\binom{n}{k}$ is the binomial coefficient $\tfrac{n!}{k!(n-k)!}$ which is
 ::: {.exercise title="Chernoff using Stirling" #chernoffstirlingex}
 1. Prove that $\Pr_{x\sim \{0,1\}^n}[ \sum x_i = k ] = \binom{n}{k}2^{-n}$.\
 
-2. Use this and [entropybinomex](){.ref} to prove (an approximate version of) the Chernoff bound for the case that $X_0,\ldots,X_{n-1}$ are i.i.d. random variables over $\{0,1\}$ each equaling $0$ and $1$ with probability $1/2$. That is, prove that for every $\epsilon>0$, and $X_0,\ldots,X_{n-1}$ as above, $\Pr[ |\sum_{i=0}^{n-1} X_i - \tfrac{n}{2}| > \epsilon n] < 2^{0.1 \cdot \epsilon^2 n}$.
+2. Use this and [entropybinomex](#entropybinomex){.ref} to prove (an approximate version of) the Chernoff bound for the case that $X_0,\ldots,X_{n-1}$ are i.i.d. random variables over $\{0,1\}$ each equaling $0$ and $1$ with probability $1/2$. That is, prove that for every $\epsilon>0$, and $X_0,\ldots,X_{n-1}$ as above, $\Pr[ |\sum_{i=0}^{n-1} X_i - \tfrac{n}{2}| > \epsilon n] < 2^{0.1 \cdot \epsilon^2 n}$.
 :::
 
 
 
 ::: {.exercise title="Poor man's Chernoff" #poorchernoff}
-[chernoffstirlingex](){.ref} establishes the Chernoff bound for the case that  $X_0,\ldots,X_{n-1}$ are i.i.d variables over $\{0,1\}$ with expectation $1/2$. 
+[chernoffstirlingex](#chernoffstirlingex){.ref} establishes the Chernoff bound for the case that  $X_0,\ldots,X_{n-1}$ are i.i.d variables over $\{0,1\}$ with expectation $1/2$. 
 In this exercise we use a slightly different method (bounding the _moments_ of the random variables) to establish a version of Chernoff
 where the random variables range over $[0,1]$ and their expectation is some number $p \in [0,1]$ that may be different than $1/2$.
 Let $X_0,\ldots,X_{n-1}$ be i.i.d random variables with $\E X_i = p$ and $\Pr [ 0 \leq X_i \leq 1 ]=1$.
@@ -654,10 +654,10 @@ d. 1,000,000
 :::
 
 > ### {.exercise  #exid}
-Would the answer to [samplingex](){.ref}  change if the country had 300,000,000,000 citizens?
+Would the answer to [samplingex](#samplingex){.ref}  change if the country had 300,000,000,000 citizens?
 
 ::: {.exercise title="Sampling (2)" #exidtwo}
-Under the same assumptions as [samplingex](){.ref}, what   is the smallest value $n$ among the following choices so that the probability that the majority of the sample answers "green" is at most $2^{-100}$?
+Under the same assumptions as [samplingex](#samplingex){.ref}, what   is the smallest value $n$ among the following choices so that the probability that the majority of the sample answers "green" is at most $2^{-100}$?
 
 a. 1,000
 
@@ -674,7 +674,7 @@ e. It is impossible to get such low probability since there are fewer than $2^{1
 
 ## Bibliographical notes
 
-There are many sources for more information on discrete probability, including the texts referenced in [notesmathchap](){.ref}.
+There are many sources for more information on discrete probability, including the texts referenced in [notesmathchap](#notesmathchap){.ref}.
 One particularly recommended source for probability is Harvard's [STAT 110](https://projects.iq.harvard.edu/stat110/home) class, whose lectures are available on [youtube](https://projects.iq.harvard.edu/stat110/youtube) and whose book is available [online](http://probabilitybook.net).
 
-The version of the Chernoff bound that we stated in [chernoffthm](){.ref} is sometimes known as [Hoeffding's Inequality](https://en.wikipedia.org/wiki/Hoeffding%27s_inequality). Other variants of the Chernoff bound are known as well, but all of them are equally good for the applications of this book.
+The version of the Chernoff bound that we stated in [chernoffthm](#chernoffthm){.ref} is sometimes known as [Hoeffding's Inequality](https://en.wikipedia.org/wiki/Hoeffding%27s_inequality). Other variants of the Chernoff bound are known as well, but all of them are equally good for the applications of this book.

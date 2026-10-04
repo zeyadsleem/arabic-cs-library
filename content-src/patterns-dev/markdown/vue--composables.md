@@ -224,11 +224,11 @@ JavaScript iconApp.vue
 
 When the app is run, the current count and the window’s inner width are displayed in real-time. The user can interact with the component by incrementing and decrementing the count using the buttons in the `` component.
 
-![Incrementing and decrementing count](/images/patterns-dev/vue-composables-0-composables_count.webp)
+![Incrementing and decrementing count](/images/patterns-dev/vue-composables-0-composables_count.gif)
 
 Similarly, the width is automatically updated whenever the window is resized.
 
-![Increasing and decreasing window width](/images/patterns-dev/vue-composables-1-composables_width.webp)
+![Increasing and decreasing window width](/images/patterns-dev/vue-composables-1-composables_width.gif)
 
 The way the `App.vue` single-file component is structured can be visualized as the following:
 

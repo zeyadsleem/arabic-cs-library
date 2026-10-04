@@ -38,7 +38,7 @@ P = D(k, C)
 
 Or, visually represented in blocks:
 
-![center](/images/crypto-101/fig-0-BlockCipher.svg)
+![center](/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg)
 
 center
 
@@ -60,7 +60,7 @@ of the blocks map to a hexadecimal digit, we represent the blocks
 by that digit. `fig-BlockCipherBlocks`
 illustrates blocks that the cipher operates on.
 
-![center](/images/crypto-101/fig-1-AllNodes.svg)
+![center](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg)
 
 center
 
@@ -71,7 +71,7 @@ the encryption of any given block. We illustrate that
 relationship with an arrow. The tail of the arrow has the block
 encrypted with `E` under key `k` and the arrowhead is mapped to the block.
 
-![center](/images/crypto-101/fig-2-Encryption.svg)
+![center](/images/crypto-101/block-ciphers-fig-2-Encryption.svg)
 
 center
 
@@ -90,7 +90,7 @@ computes the inverse permutation. In `fig-BlockCipherDecryption`,
 we get the same illustration. The difference between the illustrations is that all arrowheads point
 in the opposite direction.
 
-![center](/images/crypto-101/fig-3-Decryption.svg)
+![center](/images/crypto-101/block-ciphers-fig-3-Decryption.svg)
 
 center
 
@@ -102,7 +102,7 @@ The key defines which blocks map to which blocks.
 A different key would lead to a different set of
 arrows, as you can see in `fig-BlockCipherEncryptionDifferentKey`.
 
-![center](/images/crypto-101/fig-4-Encryption2.svg)
+![center](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg)
 
 center
 
@@ -242,7 +242,7 @@ To rephrase: there are no values of `x` that the substitution box maps to
 `x` itself, or `x` with all bits flipped. This makes the cipher
 resistant to linear cryptanalysis, unlike the earlier DES algorithm,
 whose fifth S-box caused serious security problems.  
-![center](/images/crypto-101/fig-5-SubBytes.svg)
+![center](/images/crypto-101/block-ciphers-fig-5-SubBytes.svg)
 
 center
 
@@ -256,7 +256,7 @@ ShiftRows
 After having applied the SubBytes step to the 16 bytes of the block, AES
 shifts the rows in the `4 \times 4` array:
 
-![center](/images/crypto-101/fig-6-ShiftRows.svg)
+![center](/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg)
 
 center
 
@@ -267,7 +267,7 @@ MixColumns multiplies each column of the state with a fixed polynomial.
 
 ShiftRows and MixColumns represent the diffusion properties of AES.
 
-![center](/images/crypto-101/fig-7-MixColumns.svg)
+![center](/images/crypto-101/block-ciphers-fig-7-MixColumns.svg)
 
 center
 
@@ -277,7 +277,7 @@ AddRoundKey
 As the name implies, the AddRoundKey step adds the bytes from the round
 key produced by the key schedule to the state of the cipher.
 
-![center](/images/crypto-101/fig-8-AddRoundKey.svg)
+![center](/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg)
 
 center
 

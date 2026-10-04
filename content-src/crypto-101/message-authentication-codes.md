@@ -323,7 +323,7 @@ The biggest difference between HMAC and prefix-MAC or its variants is
 that the message passes through a hash function twice, and is combined
 with the key before each pass. Visually, HMAC looks like this:
 
-![center](/images/crypto-101/fig-0-HMAC.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg)
 
 center
 
@@ -559,7 +559,7 @@ metadata to encrypted content, so that the whole of the encrypted
 content and the metadata is authenticated, and not the two pieces
 separately:
 
-![center](/images/crypto-101/fig-1-AEAD.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg)
 
 center
 
@@ -573,7 +573,7 @@ Usually, you will want to use a much more high level cryptosystem, such as OpenP
 `OCB mode` is an `AEAD mode` of operation. It is one of the earliest
 developed `AEAD mode`\s.
 
-![center](/images/crypto-101/fig-2-Encryption.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg)
 
 center
 
@@ -590,7 +590,7 @@ plaintext. There is also another, separate tag `t_a`, which
 authenticates the AEAD associated data. That associated data tag
 `t_a` is computed as follows:
 
-![center](/images/crypto-101/fig-3-Auth.svg)
+![center](/images/crypto-101/message-authentication-codes-fig-3-Auth.svg)
 
 center
 

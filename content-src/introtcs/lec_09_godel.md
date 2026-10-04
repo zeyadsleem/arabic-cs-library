@@ -22,7 +22,7 @@ chapternum: "11"
 
 
 
-The problems shown uncomputable in  [chapcomputable](){.ref}, while natural and important, still intimately involved NAND-TM programs or other computing mechanisms in their definitions.
+The problems shown uncomputable in  [chapcomputable](#chapcomputable){.ref}, while natural and important, still intimately involved NAND-TM programs or other computing mechanisms in their definitions.
 One could perhaps hope that as long as we steer clear of functions whose inputs are themselves programs, we can avoid the "curse of uncomputability".
 Alas, we have no such luck.
 
@@ -40,7 +40,7 @@ We will then build up the machinery to encode computation using arithmetic that 
 :::
 
 
-![Outline of the results of this chapter. One version of Gödel's Incompleteness Theorem is an immediate consequence of the uncomputability of the Halting problem. To obtain the theorem as originally stated (for statements about the integers) we first prove that the $QMS$ problem of determining truth of quantified statements involving both integers and strings is uncomputable. We do so using the notion of _Turing Machine configurations_ but there are alternative approaches to do so as well, see [alternativeproofs](){.ref}.](../figure/godelstructure.png){#godelstructurefig }
+![Outline of the results of this chapter. One version of Gödel's Incompleteness Theorem is an immediate consequence of the uncomputability of the Halting problem. To obtain the theorem as originally stated (for statements about the integers) we first prove that the $QMS$ problem of determining truth of quantified statements involving both integers and strings is uncomputable. We do so using the notion of _Turing Machine configurations_ but there are alternative approaches to do so as well, see [alternativeproofs](#alternativeproofs){.ref}.](/images/introtcs/original-godelstructure.webp){#godelstructurefig }
 
 
 
@@ -66,7 +66,7 @@ For every sound proof system  $V$ for sufficiently rich mathematical statements,
 
 ### Defining "Proof Systems" { #godelproofsystemssec }
 
-Before proving [godethminformal](){.ref}, we need to define  "proof systems" and even formally define the notion of a "mathematical statement".
+Before proving [godethminformal](#godethminformal){.ref}, we need to define  "proof systems" and even formally define the notion of a "mathematical statement".
 In geometry and other areas of mathematics, proof systems are often defined by starting with some basic assumptions or _axioms_ and then deriving more statements by using _inference rules_ such as the famous [Modus Ponens](https://en.wikipedia.org/wiki/Modus_ponens), but what axioms shall we use? What rules?
 We will use an extremely general notion of proof systems, not even restricting ourselves to ones that have the form of axioms and inference.
 
@@ -128,7 +128,7 @@ A _proof_ is just a string of text whose meaning is given by a _verification alg
  
 
 
-Our first formalization of [godethminformal](){.ref} involves statements about Turing machines.
+Our first formalization of [godethminformal](#godethminformal){.ref} involves statements about Turing machines.
 We let $\mathcal{H}$ be the set of strings $x\in \{0,1\}^*$ that have the form "Turing machine $M$ does not halt on the zero input".
 
 
@@ -142,7 +142,7 @@ If we had such a complete and sound proof system then we could solve the $HALTON
 
 
 ::: {.proof data-ref="godethmtakeone"}
-Assume for the sake of contradiction that there was such a proof system $V$. We will use $V$ to build an algorithm $A$ that computes $HALTONZERO$, hence contradicting [haltonzero-thm](){.ref}.
+Assume for the sake of contradiction that there was such a proof system $V$. We will use $V$ to build an algorithm $A$ that computes $HALTONZERO$, hence contradicting [haltonzero-thm](#haltonzero-thm){.ref}.
 Our algorithm $A$ will work as follows:
 
 
@@ -173,7 +173,7 @@ Hence under the assumption that the proof system is complete and sound, $A(M)$ s
 :::
 
 ::: {.remark title="The Gödel statement (optional)" #godelstmtrem}
-One can extract from the proof of [godethmtakeone](){.ref} a procedure that for every proof system $V$, yields a true statement $x^*$ that cannot be proven in $V$.
+One can extract from the proof of [godethmtakeone](#godethmtakeone){.ref} a procedure that for every proof system $V$, yields a true statement $x^*$ that cannot be proven in $V$.
 But Gödel's proof gave a very explicit description of such a statement $x^*$ which is closely related to the ["Liar's paradox"](https://en.wikipedia.org/wiki/Liar_paradox).
 That is, Gödel's statement $x^*$  was designed to be true if and only if $\forall_{w\in \{0,1\}^*} V(x,w)=0$.
 In other words, it satisfied the following property
@@ -183,8 +183,8 @@ x^* \text{ is true} \Leftrightarrow \text{$x^*$ does not have a proof in $V$} \l
 $$
 
 One can see that if $x^*$ is true, then it does not have a proof, but if it is false then (assuming the proof system is sound) then it cannot have a proof, and hence $x^*$ must be both true and unprovable.
-One might wonder how is it possible to come up with an $x^*$ that satisfies a condition such as [godeleq](){.eqref} where the same string $x^*$ appears on both the right-hand side and the left-hand side of the equation.
-The idea is that the proof of [godethmtakeone](){.ref} yields a way to transform every statement $x$ into a statement $F(x)$ that is true if and only if $x$ does not have a proof in $V$.
+One might wonder how is it possible to come up with an $x^*$ that satisfies a condition such as [godeleq](#godeleq){.eqref} where the same string $x^*$ appears on both the right-hand side and the left-hand side of the equation.
+The idea is that the proof of [godethmtakeone](#godethmtakeone){.ref} yields a way to transform every statement $x$ into a statement $F(x)$ that is true if and only if $x$ does not have a proof in $V$.
 Thus $x^*$ needs to be a _fixed point_ of $F$: a sentence such that $x^* = F(x^*)$.
 It turns out that [we can always find](https://en.wikipedia.org/wiki/Kleene%27s_recursion_theorem) such a fixed point of $F$.
 We've already seen this phenomenon in the $\lambda$ calculus, where the $Y$ combinator maps every $F$ into a fixed point $Y F$ of $F$.
@@ -201,7 +201,7 @@ That is, if we formalize the statement $c^*$ that is true if and only if $V$ is 
 
 ## Quantified integer statements
 
-There is something "unsatisfying" about [godethmtakeone](){.ref}.
+There is something "unsatisfying" about [godethmtakeone](#godethmtakeone){.ref}.
 Sure, it shows there are statements that are unprovable, but they don't feel like "real" statements about math.
 After all, they talk about _programs_ rather than numbers,  matrices, or derivatives, or whatever it is they teach in math courses.
 It turns out that we can get an analogous result for statements such as "there are no positive integers $x$ and $y$ such that $x^2 - 2 = y^7$", or "there are positive integers $x,y,z$ such that $x^2 + y^6 = z^{11}$" that only talk about _natural numbers_.
@@ -269,7 +269,7 @@ _or_
 :::
 
 
-[godelthmqis](){.ref} is a direct corollary of the following result, just as [godethmtakeone](){.ref} was a direct corollary of the uncomputability of $HALTONZERO$:
+[godelthmqis](#godelthmqis){.ref} is a direct corollary of the following result, just as [godethmtakeone](#godethmtakeone){.ref} was a direct corollary of the uncomputability of $HALTONZERO$:
 
 > ### {.theorem title="Uncomputability of quantified integer statements" #QIS-thm}
 Let $QIS:\{0,1\}^* \rightarrow \{0,1\}$ be the function that given a (string representation of) a quantified integer statement outputs $1$ if it is true and $0$ if it is false.
@@ -279,12 +279,12 @@ Then $QIS$ is uncomputable.
 Since a quantified integer statement is simply a sequence of symbols, we can easily represent it as a string. For simplicity we will assume that _every_ string represents some quantified integer statement, by mapping strings that do not correspond to such a statement to an arbitrary statement such as $\exists_{x\in \N} x=1$. 
 
 ::: { .pause }
-Please stop here and make sure you understand why the uncomputability of $QIS$ (i.e., [QIS-thm](){.ref}) means that there is no sound and complete proof system for proving quantified integer statements (i.e., [godelthmqis](){.ref}).
-This follows in the same way that [godethmtakeone](){.ref} followed from the uncomputability of $HALTONZERO$, but working out the details is a great exercise (see [godelfromqisex](){.ref})
+Please stop here and make sure you understand why the uncomputability of $QIS$ (i.e., [QIS-thm](#QIS-thm){.ref}) means that there is no sound and complete proof system for proving quantified integer statements (i.e., [godelthmqis](#godelthmqis){.ref}).
+This follows in the same way that [godethmtakeone](#godethmtakeone){.ref} followed from the uncomputability of $HALTONZERO$, but working out the details is a great exercise (see [godelfromqisex](#godelfromqisex){.ref})
 :::
 
 
-In the rest of this chapter, we will show the proof of [godelthmqis](){.ref}, following the outline illustrated in [godelstructurefig](){.ref}.
+In the rest of this chapter, we will show the proof of [godelthmqis](#godelthmqis){.ref}, following the outline illustrated in [godelstructurefig](#godelstructurefig){.ref}.
 
 
 
@@ -308,7 +308,7 @@ The [gradient descent](https://en.wikipedia.org/wiki/Gradient_descent) method is
 
 ![Diophantine equations such as finding a positive integer solution to
 the equation $a(a+b)(a+c)+b(b+a)(b+c)+c(c+a)(c+b)=4(a+b)(a+c)(b+c)$ (depicted more compactly and whimsically above) can be surprisingly difficult.
-There are many equations for which we do not know if they have a solution, and there is no algorithm to solve them in general. The smallest solution for this equation has $80$ digits! See this [Quora post](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) for more information, including the credits for this image.](../figure/elliptic_curve.png){#ellipticcurvefig .margin }
+There are many equations for which we do not know if they have a solution, and there is no algorithm to solve them in general. The smallest solution for this equation has $80$ digits! See this [Quora post](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) for more information, including the credits for this image.](/images/introtcs/original-elliptic_curve.webp){#ellipticcurvefig .margin }
 
 But there are some equations that we simply do not know how to solve _by any means_.
 For example, it took more than 200 years until people succeeded in proving that the equation  $a^{11} + b^{11} = c^{11}$ has no solution in integers.^[This is a special case of what's known as  "Fermat's Last Theorem" which states that $a^n + b^n = c^n$ has no solution in integers for $n>2$. This was conjectured in 1637 by Pierre de Fermat but only proven by Andrew Wiles in 1991. The case $n=11$ (along with all other so called "regular prime exponents") was established by Kummer in 1850.]
@@ -337,8 +337,8 @@ While a fool-proof solution for distinguishing between the two is inherently imp
 
 ## Hardness of quantified integer statements
 
-We will not prove the MRDP Theorem ([MRDP-thm](){.ref}).
-However, as we mentioned, we will prove the uncomputability of $QIS$ (i.e.,  [QIS-thm](){.ref}), which is a special case of the MRDP Theorem.
+We will not prove the MRDP Theorem ([MRDP-thm](#MRDP-thm){.ref}).
+However, as we mentioned, we will prove the uncomputability of $QIS$ (i.e.,  [QIS-thm](#QIS-thm){.ref}), which is a special case of the MRDP Theorem.
 The reason is that a Diophantine equation is a special case of a quantified integer statement where the only quantifier is $\exists$.
 This means that deciding the truth of quantified integer statements is a potentially harder problem than solving Diophantine equations, and so it is potentially _easier_ to prove that $QIS$ is uncomputable.
 
@@ -348,7 +348,7 @@ We are so accustomed to trying to find _solutions_ for problems that it can some
 :::
 
 
-Our proof of the uncomputability of $QIS$ (i.e. [QIS-thm](){.ref}) will, as usual, go by reduction from the Halting problem, but we will do so in two steps:
+Our proof of the uncomputability of $QIS$ (i.e. [QIS-thm](#QIS-thm){.ref}) will, as usual, go by reduction from the Halting problem, but we will do so in two steps:
 
 1. We will first use a reduction from the Halting problem to show that deciding the truth of _quantified mixed statements_ is uncomputable. Quantified mixed statements involve both strings and integers.
 Since quantified mixed statements are a more general concept than quantified integer statements, it is _easier_ to prove the uncomputability of deciding their truth.
@@ -372,7 +372,7 @@ $$
 \wedge (\forall_{i\in\N} i < |a| \Rightarrow (a_i \Leftrightarrow b_{|a|-i})) \;.
 $$
 
-Quantified mixed statements are more general than quantified integer statements, and so the following theorem is potentially easier to prove than [QIS-thm](){.ref}:
+Quantified mixed statements are more general than quantified integer statements, and so the following theorem is potentially easier to prove than [QIS-thm](#QIS-thm){.ref}:
 
 
 
@@ -380,8 +380,8 @@ Quantified mixed statements are more general than quantified integer statements,
 Let $QMS:\{0,1\}^* \rightarrow \{0,1\}$ be the function that given a (string representation of) a quantified mixed statement outputs $1$ if it is true and $0$ if it is false. Then $QMS$ is uncomputable.
 
 > ### {.proofidea data-ref="QMS-thm"}
-The idea behind the proof is similar to that used in showing that one-dimensional cellular automata are Turing complete ([onedimcathm](){.ref}) as well as showing that equivalence (or even "fullness") of context free grammars is uncomputable  ([fullnesscfgdef](){.ref}).
-We use the notion of a _configuration_ of a NAND-TM program as in [configtmdef](){.ref}.
+The idea behind the proof is similar to that used in showing that one-dimensional cellular automata are Turing complete ([onedimcathm](#onedimcathm){.ref}) as well as showing that equivalence (or even "fullness") of context free grammars is uncomputable  ([fullnesscfgdef](#fullnesscfgdef){.ref}).
+We use the notion of a _configuration_ of a NAND-TM program as in [configtmdef](#configtmdef){.ref}.
 Such a configuration can be thought of as a string $\alpha$ over some large-but-finite alphabet $\Sigma$ describing its current state, including the values of all arrays, scalars, and the index variable `i`.
 It can be shown that if $\alpha$ is the configuration at a certain step of the execution and  $\beta$ is the configuration at the next step, then $\beta_j = \alpha_j$ for all $j$ outside of $\{i-1,i,i+1\}$ where $i$ is the value of `i`.
 In particular, every value $\beta_j$ is simply a function of $\alpha_{j-1,j,j+1}$.
@@ -392,7 +392,7 @@ Since a program $P$ halts on input  $x$ if and only if there is a sequence of co
 
 ::: {.proof data-ref="QMS-thm"}
 The proof is obtained by a reduction from the Halting problem.
-Specifically, we will use the notion of a _configuration_ of a Turing machines ([configtmdef](){.ref}) that we have seen in the context of proving that one dimensional cellular automata are Turing complete.
+Specifically, we will use the notion of a _configuration_ of a Turing machines ([configtmdef](#configtmdef){.ref}) that we have seen in the context of proving that one dimensional cellular automata are Turing complete.
 We need the following facts about configurations:
 
 * For every Turing machine $M$, there is a finite alphabet $\Sigma$, and a _configuration_ of $M$ is a string $\alpha \in \Sigma^*$.
@@ -420,7 +420,7 @@ $$
 
 
 If we can encode the statement $\varphi_M$ as a quantified mixed statement then, since $\varphi_M$ is true if and only if $HALTONZERO(M)=1$, this would reduce the task
-of computing $HALTONZERO$ to computing $QMS$, and hence imply (using [haltonzero-thm](){.ref} ) that $QMS$ is uncomputable, completing the proof.
+of computing $HALTONZERO$ to computing $QMS$, and hence imply (using [haltonzero-thm](#haltonzero-thm){.ref} ) that $QMS$ is uncomputable, completing the proof.
 Indeed, $\varphi_M$ can be encoded as a quantified mixed statement for the following reasons:
 
 1. Let $\alpha,\beta \in \{0,1\}^*$ be two strings that encode configurations of $M$.  We can define a quantified mixed predicate $NEXT(\alpha,\beta)$ that is true if and only if $\beta = NEXT_M(\alpha)$ (i.e., $\beta$ encodes the configuration obtained by proceeding from $\alpha$ in one computational step). Indeed $NEXT(\alpha,\beta)$ is true if __for every__  $i \in \{0,\ldots,|\beta|\}$ which is a multiple of $\ell$, $\beta_{i,\ldots,i+\ell-1} = MAP_M(\alpha_{i-\ell,\cdots,i+2\ell-1})$ where $MAP_M:\{0,1\}^{3\ell} \rightarrow \{0,1\}^\ell$ is the finite function above (identifying elements of $\Sigma$ with their encoding in $\{0,1\}^\ell$). Since $MAP_M$ is a finite function, we can express it using the logical operations $AND$,$OR$, $NOT$ (for example by computing $MAP_M$ with $NAND$'s).
@@ -439,17 +439,17 @@ uncomputability of $HALTONZERO$ implies the uncomputability of $QMS$.
 There are several other ways to show that $QMS$ is uncomputable. 
 For example, we can express the condition that a 1-dimensional cellular automaton eventually writes a "$1$" to a given cell from a given initial configuration as a quantified mixed statement
 over a string encoding the history of all configurations.
-We can then use the fact that cellular automatons can simulate Turing machines ([onedimcathm](){.ref}) to reduce the halting problem to $QMS$.
+We can then use the fact that cellular automatons can simulate Turing machines ([onedimcathm](#onedimcathm){.ref}) to reduce the halting problem to $QMS$.
 We can also use other well known uncomputable problems such as tiling or the [post correspondence problem](https://en.wikipedia.org/wiki/Post_correspondence_problem).
-[postcorrespondenceproblemex](){.ref} and [puzzleex](){.ref} explore two alternative proofs of
-[QMS-thm](){.ref}.
+[postcorrespondenceproblemex](#postcorrespondenceproblemex){.ref} and [puzzleex](#puzzleex){.ref} explore two alternative proofs of
+[QMS-thm](#QMS-thm){.ref}.
 :::
 
 
 
 ### Step 2: Reducing mixed statements to integer statements
 
-We now show how to prove [QIS-thm](){.ref} using [QMS-thm](){.ref}.
+We now show how to prove [QIS-thm](#QIS-thm){.ref} using [QMS-thm](#QMS-thm){.ref}.
 The idea is again a proof by reduction.
 We will show a transformation of every quantified mixed statement $\varphi$ into a quantified _integer_ statement $\xi$ that does not use string-valued variables such that $\varphi$ is true if and only if $\xi$ is true.
 
@@ -463,17 +463,17 @@ We will show that we can encode a string $x\in \{0,1\}^*$ by a pair of numbers $
 
 This will mean that we can replace a "for all" quantifier over strings such as $\forall_{x\in \{0,1\}^*}$ with a pair of quantifiers over _integers_ of the form  $\forall_{X\in \N}\forall_{n\in\N}$  (and similarly replace an existential quantifier of the form $\exists_{x\in \{0,1\}^*}$ with a pair of quantifiers $\exists_{X\in \N}\exists_{n\in\N}$) .
 We can then replace all calls to $|x|$ by $n$ and all calls to $x_i$ by $COORD(X,i)$.
-This means that if we are able to define $COORD$ via a quantified integer statement, then we obtain a proof of [QIS-thm](){.ref}, since we can use it to map every mixed quantified statement $\varphi$ to an equivalent quantified integer statement $\xi$ such that $\xi$ is true if and only if $\varphi$ is true, and hence $QMS(\varphi)=QIS(\xi)$.
+This means that if we are able to define $COORD$ via a quantified integer statement, then we obtain a proof of [QIS-thm](#QIS-thm){.ref}, since we can use it to map every mixed quantified statement $\varphi$ to an equivalent quantified integer statement $\xi$ such that $\xi$ is true if and only if $\varphi$ is true, and hence $QMS(\varphi)=QIS(\xi)$.
 Such a procedure implies that the task of computing $QMS$ reduces to the task of computing $QIS$, which means that the uncomputability of $QMS$ implies the uncomputability of $QIS$.
 
 
-The above shows that proof of [QIS-thm](){.ref} all boils down to finding the right encoding of strings as integers, and the right way to implement $COORD$ as a quantified integer statement.
+The above shows that proof of [QIS-thm](#QIS-thm){.ref} all boils down to finding the right encoding of strings as integers, and the right way to implement $COORD$ as a quantified integer statement.
 To achieve this we use the following technical result :
 
 > ### {.lemma title="Constructible prime sequence" #primeseq}
 There is a sequence of prime numbers $p_0 < p_1 < p_2 < \cdots$ such that there is a quantified integer statement $PSEQ(p,i)$ that is true if and only if $p=p_i$.
 
-Using [primeseq](){.ref} we can encode a $x\in\{0,1\}^*$ by the numbers $(X,n)$ where  $X = \prod_{x_i=1} p_i$ and $n=|x|$.
+Using [primeseq](#primeseq){.ref} we can encode a $x\in\{0,1\}^*$ by the numbers $(X,n)$ where  $X = \prod_{x_i=1} p_i$ and $n=|x|$.
 We can then define the statement $COORD(X,i)$ as 
 $$
 COORD(X,i) = \exists_{p\in\N}  PSEQ(p,i) \wedge DIVIDES(p,X) 
@@ -481,7 +481,7 @@ $$
 where  $DIVIDES(a,b)$, as before, is defined as $\exists_{c\in\N} a\times c = b$.
 Note that indeed if $X,n$ encodes the string $x\in \{0,1\}^*$, then for every $i<n$, $COORD(X,i)=x_i$, since $p_i$ divides $X$ if and only if $x_i=1$.
 
-Thus all that is left to conclude the proof of [QIS-thm](){.ref} is to prove [primeseq](){.ref}, which we now proceed to do.
+Thus all that is left to conclude the proof of [QIS-thm](#QIS-thm){.ref} is to prove [primeseq](#primeseq){.ref}, which we now proceed to do.
 
 ::: {.proof data-ref="primeseq"}
 The sequence of prime numbers we consider is the following:
@@ -496,7 +496,7 @@ We leave it to the reader to verify that $PSEQ(p,i)$ is true iff $p=p_i$.
 :::
 
 To sum up we have shown that for every quantified mixed statement $\varphi$, we can compute a quantified integer statement $\xi$ such that $QMS(\varphi)=1$  if and only if $QIS(\xi)=1$.
-Hence the uncomputability of $QMS$  ([QMS-thm](){.ref}) implies the uncomputability of $QIS$, completing the proof of [QIS-thm](){.ref}, and so also the proof of Gödel's Incompleteness Theorem for quantified integer statements ([godelthmqis](){.ref}).
+Hence the uncomputability of $QMS$  ([QMS-thm](#QMS-thm){.ref}) implies the uncomputability of $QIS$, completing the proof of [QIS-thm](#QIS-thm){.ref}, and so also the proof of Gödel's Incompleteness Theorem for quantified integer statements ([godelthmqis](#godelthmqis){.ref}).
 
 
 > ### { .recap }
@@ -507,7 +507,7 @@ Hence the uncomputability of $QMS$  ([QMS-thm](){.ref}) implies the uncomputabil
 
 
 ::: {.exercise title="Gödel's Theorem from uncomputability of $QIS$" #godelfromqisex}
-Prove [godelthmqis](){.ref} using  [QIS-thm](){.ref}.
+Prove [godelthmqis](#godelthmqis){.ref} using  [QIS-thm](#QIS-thm){.ref}.
 :::
 
 ::: {.exercise title="Proof systems and uncomputability" #proofsanduncomputex  }
@@ -530,7 +530,7 @@ Prove that for every uncomputable function $F:\{0,1\}^* \rightarrow \{0,1\}$ and
 
 
 ![In the _puzzle problem_, the input can be thought of as a finite collection $\Sigma$ of _types of puzzle pieces_ and the goal is to find out whether or not find a way to arrange pieces from these types in a rectangle. Formally, we model the input as a pair of functions $match_{\leftrightarrow},match_{\updownarrow}:\Sigma^2 \rightarrow \{0,1\}$ that such that 
-$match_{\leftrightarrow}(left,right)=1$ (respectively $match_{\updownarrow}(up,down)=1$ ) if the pair of pieces are compatible when placed  in their respective positions. We assume $\Sigma$ contains a special symbol $\varnothing$ corresponding to having no piece, and an arrangement of puzzle pieces by an $(m-2)\times(n-2)$ rectangle is modeled by a string $x\in \Sigma^{m\cdot n}$ whose ``outer coordinates'' are $\emptyset$ and such that for every $i \in [n-1],j \in [m-1]$, $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ and $match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](../figure/puzzleprob.png){#puzzleprobfig  .margin }
+$match_{\leftrightarrow}(left,right)=1$ (respectively $match_{\updownarrow}(up,down)=1$ ) if the pair of pieces are compatible when placed  in their respective positions. We assume $\Sigma$ contains a special symbol $\varnothing$ corresponding to having no piece, and an arrangement of puzzle pieces by an $(m-2)\times(n-2)$ rectangle is modeled by a string $x\in \Sigma^{m\cdot n}$ whose ``outer coordinates'' are $\emptyset$ and such that for every $i \in [n-1],j \in [m-1]$, $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ and $match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](/images/introtcs/original-puzzleprob.webp){#puzzleprobfig  .margin }
 
 
 
@@ -550,8 +550,8 @@ $PCP(S) = QMS(R(S))$ for every string $S$ encoding an instance of the post corre
 :::
 
 ::: {.exercise title="Uncomputability of puzzle" #puzzleex}
-Let $PUZZLE:\{0,1\}^* \rightarrow \{0,1\}$ be  the problem of determining, given a finite collection of types of "puzzle pieces", whether it is possible to put them together in a rectangle, see [puzzleprobfig](){.ref}.
-Formally, we think of such a collection as a finite set $\Sigma$ (see [puzzleprobfig](){.ref}). We model the criteria as to which pieces "fit together" by a pair of finite function $match_{\updownarrow}, match_{\leftrightarrow}:\Sigma^2 \rightarrow \{0,1\}$ such that a piece $a$ fits above a piece $b$ if and only if $match_{\updownarrow}(a,b)=1$ and a piece $c$ fits to the left of a piece $d$ if and only if $match_{\leftrightarrow}(c,d)=1$.
+Let $PUZZLE:\{0,1\}^* \rightarrow \{0,1\}$ be  the problem of determining, given a finite collection of types of "puzzle pieces", whether it is possible to put them together in a rectangle, see [puzzleprobfig](#puzzleprobfig){.ref}.
+Formally, we think of such a collection as a finite set $\Sigma$ (see [puzzleprobfig](#puzzleprobfig){.ref}). We model the criteria as to which pieces "fit together" by a pair of finite function $match_{\updownarrow}, match_{\leftrightarrow}:\Sigma^2 \rightarrow \{0,1\}$ such that a piece $a$ fits above a piece $b$ if and only if $match_{\updownarrow}(a,b)=1$ and a piece $c$ fits to the left of a piece $d$ if and only if $match_{\leftrightarrow}(c,d)=1$.
 To model the "straight edge" pieces that can be placed next to a "blank spot" we assume that $\Sigma$ contains the symbol $\varnothing$ and the matching functions are defined accordingly.
 A _square tiling_ of $\Sigma$ is an $m\times n$ long string $x \in \Sigma^{mn}$, such that for every $i\in \{1,\ldots,m-2 \}$ and $j\in \{1,\ldots,n-2 \}$, $match(x_{i,j},x_{i-1,j},x_{i+1,j},x_{i,j-1},x_{i,j+1})=1$ (i.e., every "internal pieve" fits in with the pieces adjacent to it).
 We also require all of the "outer pieces" (i.e., $x_{i,j}$ where $i\in \{0,m-1\}$ of $j\in \{0,n-1\}$) are "blank" or equal to $\varnothing$.

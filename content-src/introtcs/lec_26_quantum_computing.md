@@ -36,22 +36,22 @@ In computational language, in all these theories the state of a system with $n$ 
 Alas, in the beginning of the 20th century, several experimental results were calling into question this "clockwork" or "billiard ball" theory of the world.
 One such experiment is the famous [double slit experiment](https://en.wikipedia.org/wiki/Double-slit_experiment).
 Here is one way to describe it.
-Suppose that we buy one of those baseball pitching machines, and aim it at a soft plastic wall, but put a _metal barrier with a single slit_ between the machine and the plastic wall (see [doublebaseballfig](){.ref}).
+Suppose that we buy one of those baseball pitching machines, and aim it at a soft plastic wall, but put a _metal barrier with a single slit_ between the machine and the plastic wall (see [doublebaseballfig](#doublebaseballfig){.ref}).
 If we shoot baseballs at the plastic wall, then some of the baseballs would bounce off the metal barrier, while some would make it through the slit and dent the wall.
 If we now carve out an additional slit in the metal barrier then more balls would get through, and so the plastic wall would be _even more dented_.
 
 
-![In the "double baseball experiment" we shoot baseballs from a gun at a soft wall through a hard barrier that has one or two slits open in it. There is only "constructive interference" in the sense that the dent in each position in the wall when both slits are open is the sum of the dents when each slit is open on its own.](/images/introtcs/lec_26_quantum_computing-1.webp){#doublebaseballfig .margin width=300px height=300px}
+![In the "double baseball experiment" we shoot baseballs from a gun at a soft wall through a hard barrier that has one or two slits open in it. There is only "constructive interference" in the sense that the dent in each position in the wall when both slits are open is the sum of the dents when each slit is open on its own.](/images/introtcs/original-double_baseball2.webp){#doublebaseballfig .margin width=300px height=300px}
 
 
 So far this is pure common sense, and it is indeed (to my knowledge) an accurate description of what happens when we shoot baseballs at a plastic wall.
 However, this is not the same when we shoot _photons_.
-Amazingly, if we shoot with a "photon gun" (i.e., a laser) at a wall equipped with photon detectors through some barrier, then (as shown in [doubleslitfig](){.ref}) in some positions of the wall we will see  _fewer_ hits when the two slits are open than when only one of them is.^[A nice illustrated description of the double slit experiment appears in   [this video](https://www.youtube.com/watch?v=DfPeprQ7oGc).]
+Amazingly, if we shoot with a "photon gun" (i.e., a laser) at a wall equipped with photon detectors through some barrier, then (as shown in [doubleslitfig](#doubleslitfig){.ref}) in some positions of the wall we will see  _fewer_ hits when the two slits are open than when only one of them is.^[A nice illustrated description of the double slit experiment appears in   [this video](https://www.youtube.com/watch?v=DfPeprQ7oGc).]
 In particular there are positions in the wall that are hit when the first slit is open, hit when the second slit is open, but are _not hit at all when both slits are open!_
 
 
 
-![The setup of the double slit experiment in the case of photon or electron guns. We see also _destructive_ interference in the sense that there are some positions on the wall that get _fewer_ hits when both slits are open than they get when only one of the slits is open. Image credit: Wikipedia.](/images/introtcs/lec_26_quantum_computing-2.webp){#doubleslitfig .margin width=300px height=300px}
+![The setup of the double slit experiment in the case of photon or electron guns. We see also _destructive_ interference in the sense that there are some positions on the wall that get _fewer_ hits when both slits are open than they get when only one of the slits is open. Image credit: Wikipedia.](/images/introtcs/original-double-slit-setup.webp){#doubleslitfig .margin width=300px height=300px}
 
 
 It seems as if each photon coming out of the gun is aware of the global setup of the experiment, and behaves differently if two slits are open than if only one is.
@@ -158,7 +158,7 @@ In other words, Alice and Bob need to output two bits that _disagree_ if $x=y=1$
 
 Now if Alice and Bob are not telepathic, then they need to agree in advance on some strategy.
 It's not hard for Alice and Bob to succeed with probability $3/4$: just always output the same bit.
-Moreover, by doing some case analysis, we can show that no matter what strategy they use, Alice and Bob cannot succeed with higher probability than that:^[[bellthm](){.ref} below assumes that Alice and Bob use _deterministic_ strategies $f$ and $g$ respectively. More generally, Alice and Bob could use a _randomized_ strategy, or equivalently, each could choose $f$ and $g$ from some  _distributions_ $\mathcal{F}$ and $\mathcal{G}$ respectively.  However the _averaging principle_ ([averagingprinciplerem](){.ref}) implies that if all possible deterministic strategies succeed with probability at most $3/4$, then the same is true for all randomized strategies.]
+Moreover, by doing some case analysis, we can show that no matter what strategy they use, Alice and Bob cannot succeed with higher probability than that:^[[bellthm](#bellthm){.ref} below assumes that Alice and Bob use _deterministic_ strategies $f$ and $g$ respectively. More generally, Alice and Bob could use a _randomized_ strategy, or equivalently, each could choose $f$ and $g$ from some  _distributions_ $\mathcal{F}$ and $\mathcal{G}$ respectively.  However the _averaging principle_ ([averagingprinciplerem](#averagingprinciplerem){.ref}) implies that if all possible deterministic strategies succeed with probability at most $3/4$, then the same is true for all randomized strategies.]
 
 > # {.theorem title="Bell's Inequality" #bellthm}
 For every two functions $f,g:\{0,1\}\rightarrow\{0,1\}$, $\Pr_{x,y \in \{0,1\}}[  f(x) \oplus g(y) = x \wedge y] \leq 3/4$.
@@ -188,7 +188,7 @@ If we XOR together the first and second equalities we get $g(0) \oplus g(1) = 0$
 
 
 An amazing [experimentally verified](http://arxiv.org/abs/1508.05949) fact is that quantum mechanics allows for "telepathy".[^telepathy]
-Specifically, it has been shown that using the weirdness of quantum mechanics, there is in fact a strategy for Alice and Bob to succeed in this game with probability larger than $3/4$  (in fact, they can succeed with probability about $0.85$, see [bellstrategy](){.ref}).
+Specifically, it has been shown that using the weirdness of quantum mechanics, there is in fact a strategy for Alice and Bob to succeed in this game with probability larger than $3/4$  (in fact, they can succeed with probability about $0.85$, see [bellstrategy](#bellstrategy){.ref}).
 
 
 [^telepathy]: More accurately, one either has to give up on a "billiard ball type" theory of the universe or believe in telepathy (believe it or not, some scientists went for the [latter option](https://en.wikipedia.org/wiki/Superdeterminism)).
@@ -242,7 +242,7 @@ Quantum chemistry is important (and in particular understanding it can be a bott
 Hence for a while most researchers (to the extent they were aware of it), thought of quantum computers as a theoretical curiosity that  has little bearing to practice, given that this theoretical "extra power" of quantum computer seemed to offer little advantage in the majority of the  problems people  want to solve in areas such as  combinatorial optimization, machine learning,  data structures, etc..
 
 To some extent this is still true today. As far as we know, quantum computers, if built, will _not_ provide exponential speed ups for 95% of the applications of computing.[^overhead]
-In particular, as far as we know, quantum computers will _not_ help us solve $\mathbf{NP}$ complete problems in polynomial or even sub-exponential time, though  _Grover's algorithm_ ( [quantumnp](){.ref}) does yield a quadratic advantage in many cases.
+In particular, as far as we know, quantum computers will _not_ help us solve $\mathbf{NP}$ complete problems in polynomial or even sub-exponential time, though  _Grover's algorithm_ ( [quantumnp](#quantumnp){.ref}) does yield a quadratic advantage in many cases.
 
 
 
@@ -387,7 +387,7 @@ $$R_{-\pi/8}|0\rangle R_{\pi/8}|0 \rangle + R_{-\pi/8}|1\rangle R_{\pi/8}|1 \ran
 Intuitively, since we rotate one state by 45 degrees and the other state by -45 degrees, they will become orthogonal to each other, and the measurements will behave like independent coin tosses that agree with probability 1/2.
 However, for the sake of completeness, we now show the full calculation.
 
-Opening up the coefficients and using $\cos(-x)=\cos(x)$ and $\sin(-x)=-\sin(x)$, we can see that [quantumbellcasefoureq](){.eqref} is proportional to
+Opening up the coefficients and using $\cos(-x)=\cos(x)$ and $\sin(-x)=-\sin(x)$, we can see that [quantumbellcasefoureq](#quantumbellcasefoureq){.eqref} is proportional to
 
 $$
 \begin{aligned}
@@ -543,7 +543,7 @@ Using this we can define the class $\mathbf{BQP}$ which is the uniform analog of
 Just as in the classical setting it holds that $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$, in the quantum setting it can be shown that  $\mathbf{BQP} \subseteq \mathbf{BQP_{/poly}}$.
 Just like the classical case, we can also use  [Quantum Turing Machines](https://en.wikipedia.org/wiki/Quantum_Turing_machine) instead of QNAND-TM to define $\mathbf{BQP}$.
 
-Yet another way to define $\mathbf{BQP}$ is the following: a function $F:\{0,1\}^* \rightarrow \{0,1\}$ is in $\mathbf{BQP}$ if __(1)__ $F\in \mathbf{BQP_{/poly}}$ and __(2)__ moreover for every $n$, the quantum circuit that verifies this can be generated by a _classical polynomial time NAND-TM program_ (or, equivalently, a polynomial-time Turing machine).^[This is analogous to the alternative characterization of $\mathbf{P}$ that appears in [Palternativeex](){.ref}.]
+Yet another way to define $\mathbf{BQP}$ is the following: a function $F:\{0,1\}^* \rightarrow \{0,1\}$ is in $\mathbf{BQP}$ if __(1)__ $F\in \mathbf{BQP_{/poly}}$ and __(2)__ moreover for every $n$, the quantum circuit that verifies this can be generated by a _classical polynomial time NAND-TM program_ (or, equivalently, a polynomial-time Turing machine).^[This is analogous to the alternative characterization of $\mathbf{P}$ that appears in [Palternativeex](#Palternativeex){.ref}.]
 We use this definition here, though an equivalent one can be made using QNAND-TM or quantum Turing machines:
 
 > # {.definition title="The class $\mathbf{BQP}$" #BQPdef}
@@ -557,9 +557,9 @@ We say that $F\in \mathbf{BQP}$ if there exists a polynomial time NAND-TM progra
 
 
 > # { .pause }
-One way to verify that you've understood these definitions it to see that you can prove __(1)__ $\mathbf{P} \subseteq \mathbf{BQP}$ and in fact the stronger statement $\mathbf{BPP} \subseteq \mathbf{BQP}$, __(2)__  $\mathbf{BQP} \subseteq \mathbf{EXP}$, and __(3)__ For every $\mathbf{NP}$-complete function $F$, if $F\in \mathbf{BQP}$ then $\mathbf{NP} \subseteq \mathbf{BQP}$.  [BQPcontainements](){.ref} asks you to work these out.
+One way to verify that you've understood these definitions it to see that you can prove __(1)__ $\mathbf{P} \subseteq \mathbf{BQP}$ and in fact the stronger statement $\mathbf{BPP} \subseteq \mathbf{BQP}$, __(2)__  $\mathbf{BQP} \subseteq \mathbf{EXP}$, and __(3)__ For every $\mathbf{NP}$-complete function $F$, if $F\in \mathbf{BQP}$ then $\mathbf{NP} \subseteq \mathbf{BQP}$.  [BQPcontainements](#BQPcontainements){.ref} asks you to work these out.
 
-The relation between $\mathbf{NP}$ and $\mathbf{BQP}$ is not known (see also [quantumnp](){.ref}).
+The relation between $\mathbf{NP}$ and $\mathbf{BQP}$ is not known (see also [quantumnp](#quantumnp){.ref}).
 It is widely believed that $\mathbf{NP} \not\subseteq \mathbf{BQP}$, but there is no consensus whether or not $\mathbf{BQP} \subseteq \mathbf{NP}$.
 It is   [quite possible](https://eccc.weizmann.ac.il/report/2018/107/) that these two classes are _incomparable_, in the sense that $\mathbf{NP} \nsubseteq \mathbf{BQP}$ (and in particular no $\mathbf{NP}$-complete function belongs to $\mathbf{BQP}$) but also $\mathbf{BQP} \nsubseteq \mathbf{NP}$ (and there are some interesting candidates for such problems).
 
@@ -605,7 +605,7 @@ See [this article by John Preskil](https://arxiv.org/abs/1801.00862) for some of
 If the number of qubits is increased and the error is decreased by one or two orders of magnitude, we could start seeing more applications.
 
 
-![Superconducting quantum computer prototype at Google. Image credit: Google / MIT Technology Review.](/images/introtcs/lec_26_quantum_computing-3.webp){#googlequantumfig .margin width=300px height=300px}
+![Superconducting quantum computer prototype at Google. Image credit: Google / MIT Technology Review.](/images/introtcs/original-googlequantum.webp){#googlequantumfig .margin width=300px height=300px}
 
 
 
@@ -622,17 +622,17 @@ There is a polynomial-time quantum algorithm that on input an integer $M$ (repre
 :::
 
 
-Another way to state [shorthm](){.ref}  is that if we define $FACTORING:\{0,1\}^* \rightarrow \{0,1\}$ to be the function that on input a pair of numbers $(M,X)$ outputs $1$ if and only if $M$ has a factor $P$ such that $2 \leq P \leq X$, then $FACTORING$ is in $\mathbf{BQP}$.
+Another way to state [shorthm](#shorthm){.ref}  is that if we define $FACTORING:\{0,1\}^* \rightarrow \{0,1\}$ to be the function that on input a pair of numbers $(M,X)$ outputs $1$ if and only if $M$ has a factor $P$ such that $2 \leq P \leq X$, then $FACTORING$ is in $\mathbf{BQP}$.
 This is an exponential improvement over the best known classical algorithms, which take roughly $2^{\tilde{O}(n^{1/3})}$ time, where the $\tilde{O}$ notation hides factors that are polylogarithmic in $n$.
-While we will not prove [shorthm](){.ref} in this chapter, we will  sketch some of the ideas behind the proof.
+While we will not prove [shorthm](#shorthm){.ref} in this chapter, we will  sketch some of the ideas behind the proof.
 
 
 ### Period finding
 
 At the heart of Shor's Theorem  is an efficient quantum algorithm for finding _periods_ of a given function.
-For example, a function $f:\R \rightarrow \R$ is _periodic_ if there is some $h>0$ such that $f(x+h)=f(x)$ for every $x$ (e.g., see [periodicfig](){.ref}).
+For example, a function $f:\R \rightarrow \R$ is _periodic_ if there is some $h>0$ such that $f(x+h)=f(x)$ for every $x$ (e.g., see [periodicfig](#periodicfig){.ref}).
 
-![Top: A periodic function. Bottom: An a-periodic function.](/images/introtcs/lec_26_quantum_computing-4.webp){#periodicfig .margin width=300px height=300px}
+![Top: A periodic function. Bottom: An a-periodic function.](/images/introtcs/original-periodic_vs_aperiodic.webp){#periodicfig .margin width=300px height=300px}
 
 
 _Musical notes_ yield one type of periodic function.
@@ -642,19 +642,19 @@ The length of the period is known as the _wave length_ of the note.
 The _frequency_ is the number of times the function repeats itself within a unit of time.
 For example, the "Middle C" note has a frequency of $261.63$ Hertz, which means its period is $1/(261.63)$ seconds.
 
-If we play a _chord_ by playing several notes at once, we get a more complex periodic function obtained by combining the functions of the individual  notes (see [timefreqfig](){.ref}).
+If we play a _chord_ by playing several notes at once, we get a more complex periodic function obtained by combining the functions of the individual  notes (see [timefreqfig](#timefreqfig){.ref}).
 The human ear contains many small hairs, each of which is sensitive to a narrow band of frequencies.
 Hence when we hear the sound corresponding to a chord, the hairs in our ears actually separate it out to the components corresponding to each frequency.
 
 
-![Left: The air-pressure when playing a "C Major" chord as a function of time. Right: The coefficients of the Fourier transform of the same function, we can see that it is the sum of three freuencies corresponding to the C, E and G notes (261.63, 329.63 and 392 Hertz respectively). Credit: Bjarke Mønsted's [Quora answer](https://www.quora.com/What-is-the-meaning-of-frequency-domain). ](../figure/timefreq.png){#timefreqfig .margin width=300px height=300px}
+![Left: The air-pressure when playing a "C Major" chord as a function of time. Right: The coefficients of the Fourier transform of the same function, we can see that it is the sum of three freuencies corresponding to the C, E and G notes (261.63, 329.63 and 392 Hertz respectively). Credit: Bjarke Mønsted's [Quora answer](https://www.quora.com/What-is-the-meaning-of-frequency-domain). ](/images/introtcs/original-timefreq.webp){#timefreqfig .margin width=300px height=300px}
 
 It turns out that (essentially) _every_ periodic function $f:\R \rightarrow \R$ can be decomposed into a sum of simple _wave_  functions (namely functions of the form $x \mapsto \sin(\theta x)$ or $x \mapsto \cos(\theta x)$).
-This is known as  the [Fourier Transform](https://en.wikipedia.org/wiki/Fourier_transform) (see [qfourierfig](){.ref}).
+This is known as  the [Fourier Transform](https://en.wikipedia.org/wiki/Fourier_transform) (see [qfourierfig](#qfourierfig){.ref}).
 The Fourier transform makes it easy to compute the period of a given function: it will simply be the least common multiple of the periods of the constituent waves.
 
 
-![If $f$ is a periodic function then when we represent it in the Fourier transform, we expect the coefficients corresponding to wavelengths that do not evenly divide the period to be very small, as they would tend to "cancel out".](/images/introtcs/lec_26_quantum_computing-6.webp){#qfourierfig .margin width=300px height=300px}
+![If $f$ is a periodic function then when we represent it in the Fourier transform, we expect the coefficients corresponding to wavelengths that do not evenly divide the period to be very small, as they would tend to "cancel out".](/images/introtcs/original-quantum_fourier.webp){#qfourierfig .margin width=300px height=300px}
 
 ### Shor's Algorithm: A bird's eye view
 
@@ -666,7 +666,7 @@ __Step 1: Reduce to period finding.__ The first step in the algorithm is to pick
 
 Some not-too-hard (though somewhat technical) calculations show that: __(1)__ The function $F_A$ is  _periodic_ (i.e., there is some integer $p_A$ such that $F_A(x+p_A)=F_A(x)$ for almost^[We'll ignore this "almost" qualifier in the  discussion below. It causes some annoying, yet ultimately manageable, technical issues in the full-fledged algorithm.] every $x$) and more importantly __(2)__ If we can recover the period $p_A$ of $F_A$  for several randomly chosen $A$'s, then we can recover the factorization of $M$.
 Hence, factoring $M$ reduces to finding out the period of the function $F_A$.
-[dlogfromorder](){.ref} asks you to work out this for the related task of computing the _discrete logarithm_ (which underlies the security of the Diffie-Hellman key exchange and elliptic curve cryptography).
+[dlogfromorder](#dlogfromorder){.ref} asks you to work out this for the related task of computing the _discrete logarithm_ (which underlies the security of the Diffie-Hellman key exchange and elliptic curve cryptography).
 
 
 
@@ -733,7 +733,7 @@ This is not the same as computing the Fourier transform, but is good enough for 
 The above description of Shor's algorithm skipped over the implementation of the main quantum ingredient: the _Quantum Fourier Transform_ algorithm.
 In this section we  discuss the ideas behind this algorithm.
 We will be rather brief and imprecise.
-[quantumsources](){.ref} and [quantumbibnotessec](){.ref} contain references to sources of more information about this topic.
+[quantumsources](#quantumsources){.ref} and [quantumbibnotessec](#quantumbibnotessec){.ref} contain references to sources of more information about this topic.
 
 To understand the Quantum Fourier Transform, we need to better understand the Fourier Transform itself.
 In particular, we will need to understand how it applies not just to functions whose input is a  real number but  to functions whose domain can be any arbitrary commutative _group_.
@@ -762,12 +762,12 @@ Specifically, for every such group $\mathbb{G}$, if $f$ is a function mapping $\
 
 $$f = \sum_{g \in \mathbb{G}} \hat{f}(g)\chi_g \;\;, \label{fourierexpansion}$$
 
-where  the $\chi_g$'s are functions mapping $\mathbb{G}$ to $\mathbb{C}$ that are analogs of the "wave functions" for the group $\mathbb{G}$ and for every $g\in \mathbb{G}$, $\hat{f}(g)$ is a complex number known as the _Fourier coefficient of $f$ corresponding to $g$_.^[The equation [fourierexpansion](){.eqref} means that if we think of $f$ as a $|\mathbb{G}|$ dimensional vector over the complex numbers, then we can write this vector as a sum (with certain coefficients) of the vectors $\{ \chi_g \}_{g\in \mathbb{G}}$. ]
-The representation [fourierexpansion](){.eqref} is known as the _Fourier expansion_ or _Fourier transform_ of $f$, the numbers $( \hat{f}(g) )_{g\in\mathbb{G}}$ are known as the _Fourier coefficients_ of $f$ and the functions $( \chi_g )_{g\in\mathbb{G}}$
+where  the $\chi_g$'s are functions mapping $\mathbb{G}$ to $\mathbb{C}$ that are analogs of the "wave functions" for the group $\mathbb{G}$ and for every $g\in \mathbb{G}$, $\hat{f}(g)$ is a complex number known as the _Fourier coefficient of $f$ corresponding to $g$_.^[The equation [fourierexpansion](#fourierexpansion){.eqref} means that if we think of $f$ as a $|\mathbb{G}|$ dimensional vector over the complex numbers, then we can write this vector as a sum (with certain coefficients) of the vectors $\{ \chi_g \}_{g\in \mathbb{G}}$. ]
+The representation [fourierexpansion](#fourierexpansion){.eqref} is known as the _Fourier expansion_ or _Fourier transform_ of $f$, the numbers $( \hat{f}(g) )_{g\in\mathbb{G}}$ are known as the _Fourier coefficients_ of $f$ and the functions $( \chi_g )_{g\in\mathbb{G}}$
 are known as the _Fourier characters_.
 The central property of the Fourier characters  is that they are _homomorphisms_ of the group into the complex numbers, in the sense that for every $x,x' \in \mathbb{G}$, $\chi_g(x \star x')=\chi_g(x)\chi_g(x')$, where $\star$ is the group operation.
 One corollary of this property is that if $\chi_g(h)=1$ then $\chi_g$ is _$h$ periodic_ in the sense that $\chi_g(x \star h)=\chi_g(x)$ for every $x$.
-It turns out that if $f$ is periodic with minimal period $h$, then the only Fourier characters that have non zero coefficients in the expression [fourierexpansion](){.eqref} are those that are $h$ periodic as well.
+It turns out that if $f$ is periodic with minimal period $h$, then the only Fourier characters that have non zero coefficients in the expression [fourierexpansion](#fourierexpansion){.eqref} are those that are $h$ periodic as well.
 This can be used to recover the period of $f$ from its Fourier expansion.
 
 ### Quantum Fourier Transform over the Boolean Cube: Simon's Algorithm
@@ -838,15 +838,15 @@ which exactly corresponds to $\hat{\rho}$.
 
 ### From Fourier to Period finding: Simon's Algorithm (advanced, optional)
 
-Using [QFTcube](){.ref} it is not hard to get an algorithm that can recover a string $h^* \in \{0,1\}^n$ given a circuit that computes a function $F:\{0,1\}^n \rightarrow \{0,1\}^*$  that is _$h^*$ periodic_ in the sense that $F(x)=F(x')$ for distinct $x,x'$ if and only if $x' = x \oplus h^*$.
+Using [QFTcube](#QFTcube){.ref} it is not hard to get an algorithm that can recover a string $h^* \in \{0,1\}^n$ given a circuit that computes a function $F:\{0,1\}^n \rightarrow \{0,1\}^*$  that is _$h^*$ periodic_ in the sense that $F(x)=F(x')$ for distinct $x,x'$ if and only if $x' = x \oplus h^*$.
 The key observation is that if we compute the state $\sum_{x\in \{0,1\}^n} |x \rangle |F(x) \rangle$,  and perform the Quantum Fourier transform on the first $n$ qubits, then we would get a state such that the only basis elements with nonzero coefficients would be of the form $|y \rangle$ where
 
 $$
 \sum y_i h^*_i = 0 (\mod 2) \label{eq:periodbooleanqft}
 $$
 
-So, by measuring the state, we can obtain a sample of a random $y$ satisfying [eq:periodbooleanqft](){.eqref}.
-But since [eq:periodbooleanqft](){.eqref} is a _linear_ equation modulo $2$ about the unknown $n$ variables $h^*_0,\ldots,h^*_{n-1}$, if we repeat this procedure to get $n$ such equations, we will have at least as many equations as variables  and (it can be shown that) this will suffice to recover $h^*$.
+So, by measuring the state, we can obtain a sample of a random $y$ satisfying [eq:periodbooleanqft](#eq:periodbooleanqft){.eqref}.
+But since [eq:periodbooleanqft](#eq:periodbooleanqft){.eqref} is a _linear_ equation modulo $2$ about the unknown $n$ variables $h^*_0,\ldots,h^*_{n-1}$, if we repeat this procedure to get $n$ such equations, we will have at least as many equations as variables  and (it can be shown that) this will suffice to recover $h^*$.
 
 This result is known as [Simon's Algorithm](https://en.wikipedia.org/wiki/Simon%27s_problem), and it preceded and inspired Shor's algorithm.
 
@@ -856,7 +856,7 @@ This result is known as [Simon's Algorithm](https://en.wikipedia.org/wiki/Simon%
 
 ### From Simon to Shor (advanced, optional)
 
-[QFTcube](){.ref} seemed to really use the special bit-wise structure of the group $\{0,1\}^n$,
+[QFTcube](#QFTcube){.ref} seemed to really use the special bit-wise structure of the group $\{0,1\}^n$,
 and so one could wonder if it can be extended to other groups.
 However, it turns out that we can in fact achieve such a generalization.
 
@@ -868,7 +868,7 @@ $$\hat{f}(y) = \tfrac{1}{\sqrt{L}}\sum_{x\in \Z_L} f(x)\omega^{xy} \;. \label{fo
 
 The key to implementing the Quantum Fourier Transform  for such groups is to use the same recursive equations that enable the classical [Fast Fourier Transform (FFT)](https://en.wikipedia.org/wiki/Fast_Fourier_transform) algorithm.
 Specifically, consider the case that $L=2^\ell$.
-We can separate the sum over $x$ in [fouriercoeffmodular](){.eqref} to the terms corresponding to even $x$'s (of the form $x=2z$) and odd $x$'s (of the form $x=2z+1$) to obtain
+We can separate the sum over $x$ in [fouriercoeffmodular](#fouriercoeffmodular){.eqref} to the terms corresponding to even $x$'s (of the form $x=2z$) and odd $x$'s (of the form $x=2z+1$) to obtain
 
 $$\hat{f}(y) = \tfrac{1}{\sqrt{L}}\sum_{z \in Z_{L/2}} f(2z)(\omega^2)^{yz} + \tfrac{\omega^y}{\sqrt{L}}\sum_{z\in \Z_{L/2}}f(2z+1)(\omega^2)^{yz} \label{eqfftrecurse}
 $$
@@ -878,7 +878,7 @@ $f_{even}$ and $f_{odd}$ (corresponding to the applying $f$ to only the even and
 
 Specifically, the Fourier characters of the group $\Z_{L/2}$ are the functions $\chi_y(x) = e^{2\pi i/(L/2) yx} = (\omega^2)^{yx}$ for every $x,y \in \Z_{L/2}$.
 Moreover, since $\omega^L = 1$, $(\omega^2)^y = (\omega^2)^{y \mod L/2}$ for every $y\in \N$.
-Thus [eqfftrecurse](){.eqref} translates into
+Thus [eqfftrecurse](#eqfftrecurse){.eqref} translates into
 $$\hat{f}(y) = \hat{f}_{even}(y \mod L/2) + \omega^y \hat{f}_{odd}(y \mod L/2) \;.
 $$
 
@@ -912,7 +912,7 @@ Prove the following relations between quantum complexity classes and classical o
 
 1. $\mathbf{P_{/poly}} \subseteq \mathbf{BQP_{/poly}}$.^[_Hint:_ You can use $U_{NAND}$ to simulate NAND gates.]
 
-2. $\mathbf{P} \subseteq \mathbf{BQP}$.^[_Hint:_ Use the alternative characterization of $\mathbf{P}$ as in [characterizationofp](){.ref}.]
+2. $\mathbf{P} \subseteq \mathbf{BQP}$.^[_Hint:_ Use the alternative characterization of $\mathbf{P}$ as in [characterizationofp](#characterizationofp){.ref}.]
 
 3. $\mathbf{BPP} \subseteq \mathbf{BQP}$.^[_Hint:_ You can use the $HAD$ gate to simulate a coin toss.]
 

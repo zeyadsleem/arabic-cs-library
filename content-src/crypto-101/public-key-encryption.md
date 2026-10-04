@@ -197,7 +197,7 @@ the art in RSA padding. It was introduced by Mihir Bellare and Phillip
 Rogaway in 1995. `bellarerogaway:oaep`. Its structure
 looks like this:
 
-![center](/images/crypto-101/fig-0-Diagram.svg)
+![center](/images/crypto-101/public-key-encryption-fig-0-Diagram.svg)
 
 center
 

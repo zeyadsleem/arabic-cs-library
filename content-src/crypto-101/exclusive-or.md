@@ -17,7 +17,7 @@ inverter”: one input bit decides whether to invert the other input bit,
 or to just pass it through unchanged. “Inverting” bits is colloquially
 called “flipping” bits, a term we'll use often throughout the book.
 
-![a programmable inverter](/images/crypto-101/fig-0-ProgrammableInverter.svg)
+![a programmable inverter](/images/crypto-101/exclusive-or-fig-0-ProgrammableInverter.svg)
 
 a programmable inverter
 center
@@ -26,7 +26,7 @@ In mathematics and cryptography papers, exclusive or is generally
 represented by a cross in a circle: `\xor`. We'll use the same
 notation in this book:
 
-![center](/images/crypto-101/fig-1-XOR.svg)
+![center](/images/crypto-101/exclusive-or-fig-1-XOR.svg)
 
 center
 XOR
@@ -146,7 +146,7 @@ have the pad of random bits, shared between the sender and the (one or
 more) recipients. We can compute the ciphertext by taking the bitwise
 XOR of the two sequences of bits.
 
-![center](/images/crypto-101/fig-2-OTP.svg)
+![center](/images/crypto-101/exclusive-or-fig-2-OTP.svg)
 
 center
 OTP
@@ -157,7 +157,7 @@ called *perfect secrecy*. The proof can be understood intuitively.
 Think of XOR as a programmable inverter, and look at a
 particular bit intercepted by Eve, the eavesdropper.
 
-![center](/images/crypto-101/fig-3-OTPEve.svg)
+![center](/images/crypto-101/exclusive-or-fig-3-OTPEve.svg)
 
 center
 OTP eve
@@ -224,37 +224,43 @@ with `fig-multitimepad`.
 fig-multitimepad
 0.48
 
-   .. subfigure:: ./Illustrations/KeyReuse/Broken.png
+![First plaintext.](/images/crypto-101/exclusive-or-subfig-0-Broken.png)
+
 
 center
 
       First plaintext.
 
-   .. subfigure:: ./Illustrations/KeyReuse/Crypto.png
+![Second plaintext.](/images/crypto-101/exclusive-or-subfig-1-Crypto.png)
+
 
 center
 
       Second plaintext.
 
-   .. subfigure:: ./Illustrations/KeyReuse/BrokenEncrypted.png
+![First ciphertext.](/images/crypto-101/exclusive-or-subfig-2-BrokenEncrypted.png)
+
 
 center
 
       First ciphertext.
 
-   .. subfigure:: ./Illustrations/KeyReuse/CryptoEncrypted.png
+![Second ciphertext.](/images/crypto-101/exclusive-or-subfig-3-CryptoEncrypted.png)
+
 
 center
 
       Second ciphertext.
 
-   .. subfigure:: ./Illustrations/KeyReuse/Key.png
+![Reused key.](/images/crypto-101/exclusive-or-subfig-4-Key.png)
+
 
 center
 
       Reused key.
 
-   .. subfigure:: ./Illustrations/KeyReuse/CiphertextsXOR.png
+![XOR of ciphertexts.](/images/crypto-101/exclusive-or-subfig-5-CiphertextsXOR.png)
+
 
 center
 

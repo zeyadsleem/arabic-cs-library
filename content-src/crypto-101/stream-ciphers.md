@@ -71,39 +71,45 @@ fix-encrypted-ecb
 0.48
 
    .. _fig-ECBDemoPlaintext:
-   .. subfigure:: ./Illustrations/ECB/Plaintext.png
+![Plaintext image, 2000 by 1400 pixels, 24 bit color depth.](/images/crypto-101/stream-ciphers-subfig-0-Plaintext.png)
+
 Plaintext image
 center
 
       Plaintext image, 2000 by 1400 pixels, 24 bit color depth.
 
    .. _fig-ECBDemo5px:
-   .. subfigure:: ./Illustrations/ECB/Ciphertext5.png
+![ECB mode ciphertext, 5 pixel (120 bit) block size.](/images/crypto-101/stream-ciphers-subfig-1-Ciphertext5.png)
+
 ECB mode ciphertext, 5 pixel (120 bit) block size.
 center
 
       ECB mode ciphertext, 5 pixel (120 bit) block size.
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext30.png
+![ECB mode ciphertext, 30 pixel (720 bit) block size.](/images/crypto-101/stream-ciphers-subfig-2-Ciphertext30.png)
+
 ECB mode ciphertext, 30 pixel (720 bit) block size.
 center
 
       ECB mode ciphertext, 30 pixel (720 bit) block size.
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext100.png
+![ECB mode ciphertext, 100 pixel (2400 bit) block size.](/images/crypto-101/stream-ciphers-subfig-3-Ciphertext100.png)
+
 ECB mode ciphertext, 100 pixel (2400 bit) block size.
 center
 
       ECB mode ciphertext, 100 pixel (2400 bit) block size.
 
-   .. subfigure:: ./Illustrations/ECB/Ciphertext400.png
+![ECB mode ciphertext, 400 pixel (9600 bit) block size.](/images/crypto-101/stream-ciphers-subfig-4-Ciphertext400.png)
+
 ECB mode ciphertext, 400 pixel (9600 bit) block size.
 center
 
       ECB mode ciphertext, 400 pixel (9600 bit) block size.
 
    .. _fig-ECBDemoIdealizedCiphertext:
-   .. subfigure:: ./Illustrations/ECB/Random.png
+![Ciphertext under idealized encryption.](/images/crypto-101/stream-ciphers-subfig-5-Random.png)
+
 Ciphertext under idealized encryption.
 center
 
@@ -199,7 +205,7 @@ block. They do not know the value of `s_0`, but they do
 know the value of the first encrypted block: `E_k(A \| s_0)`. In
 the illustration, this is block `C_{R1}`:
 
-![center](/images/crypto-101/fig-0-RememberFirst.svg)
+![center](/images/crypto-101/stream-ciphers-fig-0-RememberFirst.svg)
 
 center
 
@@ -208,7 +214,7 @@ for the final byte of a full-size block. The attacker eventually finds the value
 the guess is correct because the resulting ciphertext block
 matches the ciphertext block `C_{R1}` that was remembered earlier.
 
-![center](/images/crypto-101/fig-1-GuessFirst.svg)
+![center](/images/crypto-101/stream-ciphers-fig-1-GuessFirst.svg)
 
 center
 
@@ -218,7 +224,7 @@ plaintext `A`, two bytes shorter than the block size, is submitted. The
 by the first two bytes of the secret suffix, `s_0s_1`. The
 attacker remembers the block.
 
-![center](/images/crypto-101/fig-2-RememberSecond.svg)
+![center](/images/crypto-101/stream-ciphers-fig-2-RememberSecond.svg)
 
 center
 
@@ -227,7 +233,7 @@ s_0` followed by all possible values of `s_1`. Eventually the attacker's
 guesses are correct, and the ciphertext
 blocks match:
 
-![center](/images/crypto-101/fig-3-GuessSecond.svg)
+![center](/images/crypto-101/stream-ciphers-fig-3-GuessSecond.svg)
 
 center
 
@@ -305,14 +311,14 @@ illustrate this later with an attack on predictable CBC IVs.
 
 The following diagram demonstrates encryption in `CBC mode`:
 
-![center](/images/crypto-101/fig-4-Encryption.svg)
+![center](/images/crypto-101/stream-ciphers-fig-4-Encryption.svg)
 
 center
 
 Decryption is the inverse construction. The block ciphers are in decryption
 mode instead of encryption mode:
 
-![center](/images/crypto-101/fig-5-Decryption.svg)
+![center](/images/crypto-101/stream-ciphers-fig-5-Decryption.svg)
 
 center
 
@@ -475,7 +481,7 @@ When we “flip some bits”, we do that by XORing with a sequence of bits,
 which we'll call `X`. If the corresponding bit in `X` is 1,
 the bit will be flipped; otherwise, the bit will remain the same.
 
-![center](/images/crypto-101/fig-6-BitFlipping.svg)
+![center](/images/crypto-101/stream-ciphers-fig-6-BitFlipping.svg)
 
 center
 
@@ -654,7 +660,7 @@ such a random plaintext probably won't have valid padding: the odds are
 in the half-a-percent ballpark. If by pure chance the message happens to
 already have valid padding, the attacker can simply skip the next step.
 
-![center](/images/crypto-101/fig-7-PaddingAttack.svg)
+![center](/images/crypto-101/stream-ciphers-fig-7-PaddingAttack.svg)
 
 center
 
@@ -897,7 +903,7 @@ identical operation as encryption, just repeated: the keystream is
 produced from the key, and is XORed with the ciphertext to produce the
 plaintext.
 
-![center](/images/crypto-101/fig-8-Synchronous.svg)
+![center](/images/crypto-101/stream-ciphers-fig-8-Synchronous.svg)
 
 center
 
@@ -987,7 +993,7 @@ The key scheduling algorithm
 The key scheduling algorithm starts with the *identity permutation*.
 That means that each byte is mapped to itself.
 
-![center](/images/crypto-101/fig-9-IdentityPermutation.svg)
+![center](/images/crypto-101/stream-ciphers-fig-9-IdentityPermutation.svg)
 
 center
 
@@ -996,14 +1002,14 @@ Then, the key is mixed into the state. This is done by letting index
 is found by adding the current value of `j` (starting at 0) with
 the next byte of the key, and the current state element:
 
-![center](/images/crypto-101/fig-10-FindIndex.svg)
+![center](/images/crypto-101/stream-ciphers-fig-10-FindIndex.svg)
 
 center
 
 Once `j` has been found, `S[i]` and `S[j]` are
 swapped:
 
-![center](/images/crypto-101/fig-11-Swap.svg)
+![center](/images/crypto-101/stream-ciphers-fig-11-Swap.svg)
 
 center
 
@@ -1039,7 +1045,7 @@ XORed with the plaintext to produce the ciphertext. For each index
 `i`, it computes `j = j + S[i]` (`j` starts at 0).
 Then, `S[i]` and `S[j]` are swapped:
 
-![center](/images/crypto-101/fig-12-Swap.svg)
+![center](/images/crypto-101/stream-ciphers-fig-12-Swap.svg)
 
 center
 
@@ -1047,7 +1053,7 @@ To produce the output byte, `S[i]` and `S[j]` are added
 together. Their sum is used as an index into `S`; the value at
 `S[S[i] + S[j]]` is the keystream byte `K_i`:
 
-![center](/images/crypto-101/fig-13-PRNGOutput.svg)
+![center](/images/crypto-101/stream-ciphers-fig-13-PRNGOutput.svg)
 
 center
 
@@ -1081,11 +1087,11 @@ Intuitively, we can understand how an ideal `stream cipher` would produce
 a stream of random bits. After all, if that's what it did, we'd end up
 in a situation quite similar to that of a one-time pad.
 
-![](/images/crypto-101/fig-14-OTP.svg)
+![](/images/crypto-101/stream-ciphers-fig-14-OTP.svg)
 
    A one-time pad scheme.
 
-![](/images/crypto-101/fig-15-Synchronous.svg)
+![](/images/crypto-101/stream-ciphers-fig-15-Synchronous.svg)
 
    A synchronous `stream cipher` scheme. Note similarity to the one-time pad
    scheme. The critical difference is that while the one-time pad `k_i` is
@@ -1343,7 +1349,7 @@ each block, and padded with zeroes so that the whole is as long as the
 block size. The resulting concatenated string is run through a block
 cipher. The outputs of the block cipher are then used as the keystream.
 
-![center](/images/crypto-101/fig-16-CTR.svg)
+![center](/images/crypto-101/stream-ciphers-fig-16-CTR.svg)
 
 center
 

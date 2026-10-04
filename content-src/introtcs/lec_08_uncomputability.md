@@ -34,7 +34,7 @@ Once we build a device that can compute the single universal function, we have t
 For example, if we want to simulate a new Turing machine $M$, we do not need to build a new physical machine, but rather can represent $M$ as a string (i.e., using _code_) and then input $M$ to the universal machine $U$.
 
 Beyond the practical applications, the existence of a universal algorithm also has surprising theoretical ramifications, and in particular can be used to show the existence of _uncomputable functions_, upending the intuitions of mathematicians over the centuries from Euler to Hilbert.
-In this chapter we will prove the existence of the universal program, and also show its implications for uncomputability, see [universalchapoverviewfig](){.ref}
+In this chapter we will prove the existence of the universal program, and also show its implications for uncomputability, see [universalchapoverviewfig](#universalchapoverviewfig){.ref}
 
 
 ::: {.nonmath}
@@ -53,7 +53,7 @@ Don't worry if you find this confusing  - reductions _are_ initially confusing -
 :::
 
 
-![In this chapter we will show the existence of a _universal Turing machine_ and then use this to derive first the existence of _some_ uncomputable function. We then use this to derive the uncomputability of Turing's famous "halting problem" (i.e., the $HALT$ function), from which a host of other uncomputability results follow. We also introduce _reductions_, which allow us to use the uncomputability of a function $F$ to derive the uncomputability of a new function $G$.](/images/introtcs/lec_08_uncomputability-1.webp){#universalchapoverviewfig}
+![In this chapter we will show the existence of a _universal Turing machine_ and then use this to derive first the existence of _some_ uncomputable function. We then use this to derive the uncomputability of Turing's famous "halting problem" (i.e., the $HALT$ function), from which a host of other uncomputability results follow. We also introduce _reductions_, which allow us to use the uncomputability of a function $F$ to derive the uncomputability of a new function $G$.](/images/introtcs/original-universalchapoverview.webp){#universalchapoverviewfig}
 
 
 
@@ -71,7 +71,7 @@ There exists a Turing machine $U$ such that on every string $M$ which represents
 That is, if the machine $M$ halts on $x$ and outputs some $y\in \{0,1\}^*$ then $U(M,x)=y$, and if $M$ does not halt on $x$ (i.e., $M(x)=\bot$) then  $U(M,x)=\bot$.
 :::
 
-![A _Universal Turing Machine_ is a single Turing Machine $U$ that can evaluate, given input the (description as a string of) arbitrary Turing machine $M$ and input $x$, the output of $M$ on $x$. In contrast to the universal circuit depicted in [universalcircfig](){.ref},  the machine $M$ can be much more complex (e.g., more states or tape alphabet symbols) than $U$. ](../figure/universaltm.png){#universaltmfig .margin  }
+![A _Universal Turing Machine_ is a single Turing Machine $U$ that can evaluate, given input the (description as a string of) arbitrary Turing machine $M$ and input $x$, the output of $M$ on $x$. In contrast to the universal circuit depicted in [universalcircfig](#universalcircfig){.ref},  the machine $M$ can be much more complex (e.g., more states or tape alphabet symbols) than $U$. ](/images/introtcs/original-universaltm.webp){#universaltmfig .margin  }
 
 
 ::: { .bigidea #universaltmidea}
@@ -88,8 +88,8 @@ Then you would use some data structure, such as a list, to store the contents of
 Now you can simulate $M$ step by step, updating the data structure as you go along.
 The interpreter will continue the simulation until the machine halts.
 
-Once you do that, translating this interpreter from your favorite programming language to a Turing machine can be done just as we have seen in [chapequivalentmodels](){.ref}.
-The end result is what's known as a "meta-circular evaluator": an interpreter for a programming language in the same one. This is a concept that has a long history in computer science starting from the original universal Turing machine. See also [lispinterpreterfig](){.ref}.
+Once you do that, translating this interpreter from your favorite programming language to a Turing machine can be done just as we have seen in [chapequivalentmodels](#chapequivalentmodels){.ref}.
+The end result is what's known as a "meta-circular evaluator": an interpreter for a programming language in the same one. This is a concept that has a long history in computer science starting from the original universal Turing machine. See also [lispinterpreterfig](#lispinterpreterfig){.ref}.
 :::
 
 
@@ -99,7 +99,7 @@ The end result is what's known as a "meta-circular evaluator": an interpreter fo
 
 ### Proving the existence of a universal Turing Machine  {#representtmsec }
 
-To prove (and even properly state)  [universaltmthm](){.ref}, we need to fix some representation for Turing machines as strings.
+To prove (and even properly state)  [universaltmthm](#universaltmthm){.ref}, we need to fix some representation for Turing machines as strings.
 One potential choice for such a representation is to use the equivalence between Turing machines and NAND-TM programs and hence represent a Turing machine $M$ using the ASCII encoding of the source code of the corresponding NAND-TM program $P$.
 However, we will use a more direct encoding.
 
@@ -124,14 +124,14 @@ What you need to remember are the following points:
 
 1. We can represent every Turing machine as a string.
 
-2. Given the string representation of a Turing machine $M$ and an input $x$, we can simulate $M$'s execution on the input $x$. (This is the content of [universaltmthm](){.ref}.)
+2. Given the string representation of a Turing machine $M$ and an input $x$, we can simulate $M$'s execution on the input $x$. (This is the content of [universaltmthm](#universaltmthm){.ref}.)
 
 An additional minor issue is that for convenience we make the assumption that _every_ string represents _some_ Turing machine. This is very easy to ensure by just mapping strings that would otherwise not represent a Turing machine into some fixed trivial machine.
-This assumption is not very important, but does make a few results (such as Rice's Theorem: [rice-thm](){.ref}) a little less cumbersome to state.
+This assumption is not very important, but does make a few results (such as Rice's Theorem: [rice-thm](#rice-thm){.ref}) a little less cumbersome to state.
 :::
 
 
-Using this representation, we can formally prove [universaltmthm](){.ref}.
+Using this representation, we can formally prove [universaltmthm](#universaltmthm){.ref}.
 
 ::: {.proof data-ref="universaltmthm"}
 We will only sketch the proof, giving the major ideas.
@@ -163,7 +163,7 @@ On input a transition table $\delta$ this program will simulate the correspondin
 The above does not prove the theorem as stated, since we need to show a _Turing machine_ that computes $EVAL$ rather than a Python program.
 With enough effort, we can translate this Python code line by line to a Turing machine.
 However, to prove the theorem we don't need to do this, but can use our "eat the cake and have it too" paradigm.
-That is, while we need to evaluate a Turing machine, in writing the code for the interpreter we are allowed to use a richer model such as NAND-RAM since it is equivalent in power to Turing machines per [RAMTMequivalencethm](){.ref}.
+That is, while we need to evaluate a Turing machine, in writing the code for the interpreter we are allowed to use a richer model such as NAND-RAM since it is equivalent in power to Turing machines per [RAMTMequivalencethm](#RAMTMequivalencethm){.ref}.
 
 
 Translating the above Python code to NAND-RAM is truly straightforward.
@@ -175,13 +175,13 @@ Similarly we scan the list to update the dictionary with a new value, either mod
 
 
 ::: {.remark title="Efficiency of the simulation"}
-The argument in the proof of [universaltmthm](){.ref} is a very inefficient way to implement the dictionary data structure in practice, but it suffices for the purpose of proving the theorem.
+The argument in the proof of [universaltmthm](#universaltmthm){.ref} is a very inefficient way to implement the dictionary data structure in practice, but it suffices for the purpose of proving the theorem.
 Reading and writing to a dictionary of $m$ values in this implementation takes $\Omega(m)$ steps, but it is in fact possible to do this in $O(\log m)$ steps using a _search tree_ data structure or even $O(1)$ (for "typical" instances)  using a _hash table_.   NAND-RAM and RAM machines correspond to the architecture of modern electronic computers, and so we can implement hash tables and search trees in NAND-RAM just as they are implemented in other programming languages.
 :::
 
 
 The construction above yields a universal Turing machine with a very large number of states.
-However, since universal Turing machines have such a philosophical and technical importance, researchers have attempted to find the smallest possible universal Turing machines, see [uncomputablebibnotes](){.ref}. 
+However, since universal Turing machines have such a philosophical and technical importance, researchers have attempted to find the smallest possible universal Turing machines, see [uncomputablebibnotes](#uncomputablebibnotes){.ref}. 
 
 
 
@@ -189,28 +189,28 @@ However, since universal Turing machines have such a philosophical and technical
 
 
 
-![__a)__ A particularly elegant example of a "meta-circular evaluator" comes from John McCarthy's 1960 paper, where he defined the Lisp programming language and gave a Lisp function that evaluates an arbitrary Lisp program (see above). Lisp was not initially intended as a practical programming language and this example was merely meant as an illustration that the Lisp universal function is more elegant than the universal Turing machine. It was McCarthy's graduate student Steve Russell who suggested that it can be implemented. As McCarthy later recalled, _"I said to him, ho, ho, you're confusing theory with practice, this eval is intended for reading, not for computing. But he went ahead and did it. That is, he compiled the eval in my paper into IBM 704 machine code, fixing a bug, and then advertised this as a Lisp interpreter, which it certainly was"._ __b)__ A self-replicating C program from the classic essay of Thompson  [@thompson1984reflections].](../figure/lispandselfreplicatingprograms.png){#lispinterpreterfig   }
+![__a)__ A particularly elegant example of a "meta-circular evaluator" comes from John McCarthy's 1960 paper, where he defined the Lisp programming language and gave a Lisp function that evaluates an arbitrary Lisp program (see above). Lisp was not initially intended as a practical programming language and this example was merely meant as an illustration that the Lisp universal function is more elegant than the universal Turing machine. It was McCarthy's graduate student Steve Russell who suggested that it can be implemented. As McCarthy later recalled, _"I said to him, ho, ho, you're confusing theory with practice, this eval is intended for reading, not for computing. But he went ahead and did it. That is, he compiled the eval in my paper into IBM 704 machine code, fixing a bug, and then advertised this as a Lisp interpreter, which it certainly was"._ __b)__ A self-replicating C program from the classic essay of Thompson  [@thompson1984reflections].](/images/introtcs/original-lispandselfreplicatingprograms.webp){#lispinterpreterfig   }
 
 
-There is more than one Turing machine $U$ that satisfies the conditions of [universaltmthm](){.ref}, but the existence of even a single such machine is already extremely fundamental to both the theory and practice of computer science.
-[universaltmthm](){.ref}'s impact reaches beyond the particular model of Turing machines.
-Because we can simulate every Turing machine by a NAND-TM program and vice versa, [universaltmthm](){.ref} immediately implies there exists a universal NAND-TM program $P_U$ such that $P_U(P,x)=P(x)$ for every NAND-TM program $P$.
+There is more than one Turing machine $U$ that satisfies the conditions of [universaltmthm](#universaltmthm){.ref}, but the existence of even a single such machine is already extremely fundamental to both the theory and practice of computer science.
+[universaltmthm](#universaltmthm){.ref}'s impact reaches beyond the particular model of Turing machines.
+Because we can simulate every Turing machine by a NAND-TM program and vice versa, [universaltmthm](#universaltmthm){.ref} immediately implies there exists a universal NAND-TM program $P_U$ such that $P_U(P,x)=P(x)$ for every NAND-TM program $P$.
 We can also "mix and match" models.
-For example since we can simulate every NAND-RAM program by a Turing machine, and every Turing machine by the $\lambda$ calculus,  [universaltmthm](){.ref} implies that there exists a $\lambda$ expression $e$ such that for every NAND-RAM program $P$ and input $x$ on which $P(x)=y$, if we encode $(P,x)$ as a $\lambda$-expression $f$ (using the $\lambda$-calculus encoding of strings as lists of $0$'s and $1$'s) then $(e\; f)$ evaluates to an encoding of $y$.
+For example since we can simulate every NAND-RAM program by a Turing machine, and every Turing machine by the $\lambda$ calculus,  [universaltmthm](#universaltmthm){.ref} implies that there exists a $\lambda$ expression $e$ such that for every NAND-RAM program $P$ and input $x$ on which $P(x)=y$, if we encode $(P,x)$ as a $\lambda$-expression $f$ (using the $\lambda$-calculus encoding of strings as lists of $0$'s and $1$'s) then $(e\; f)$ evaluates to an encoding of $y$.
 More generally we can say that for every  $\mathcal{X}$ and $\mathcal{Y}$ in the set  $\{$  Turing machines, RAM Machines, NAND-TM, NAND-RAM, $\lambda$-calculus, JavaScript, Python, $\ldots$ $\}$ of Turing equivalent models, there exists a program/machine in $\mathcal{X}$ that computes the map $(P,x) \mapsto P(x)$ for every program/machine  $P \in \mathcal{Y}$.
 
 
 The idea of a "universal program" is of course not limited to theory.
 For example compilers for programming languages are often used to compile _themselves_, as well as  programs more complicated than the compiler.
 (An extreme example of this is Fabrice Bellard's [Obfuscated Tiny C Compiler](https://bellard.org/otcc/) which is a C program of 2048 bytes that can compile a large subset of the C programming language, and in particular can compile itself.)
-This is also related to the fact that it is possible to write a program that can print its own source code, see  [lispinterpreterfig](){.ref}.
-There are universal Turing machines known that require a very small number of states or alphabet symbols, and in particular there is a universal Turing machine (with respect to a particular choice of representing Turing machines as strings) whose tape alphabet is $\{ \triangleright, \varnothing, 0, 1 \}$ and has fewer than $25$ states (see [uncomputablebibnotes](){.ref}).
+This is also related to the fact that it is possible to write a program that can print its own source code, see  [lispinterpreterfig](#lispinterpreterfig){.ref}.
+There are universal Turing machines known that require a very small number of states or alphabet symbols, and in particular there is a universal Turing machine (with respect to a particular choice of representing Turing machines as strings) whose tape alphabet is $\{ \triangleright, \varnothing, 0, 1 \}$ and has fewer than $25$ states (see [uncomputablebibnotes](#uncomputablebibnotes){.ref}).
 
 
 
 ## Is every function computable?
 
-In [NAND-univ-thm](){.ref}, we saw that NAND-CIRC programs can compute every finite function $f:\{0,1\}^n \rightarrow \{0,1\}$.
+In [NAND-univ-thm](#NAND-univ-thm){.ref}, we saw that NAND-CIRC programs can compute every finite function $f:\{0,1\}^n \rightarrow \{0,1\}$.
 Therefore a natural guess is that NAND-TM programs (or equivalently, Turing machines) could compute every infinite function $F:\{0,1\}^* \rightarrow \{0,1\}$.
 However, this turns out to be _false_.
 That is, there exists a function $F:\{0,1\}^* \rightarrow \{0,1\}$ that is _uncomputable_!
@@ -226,12 +226,12 @@ The notion of an "uncomputable function" thus seems to be a contradiction in ter
 There exists a function $F^*:\{0,1\}^* \rightarrow \{0,1\}$ that is not computable by any Turing machine.
 
 > ### {.proofidea data-ref="uncomputable-func"}
-The idea behind the proof follows quite closely Cantor's proof that the reals are uncountable ([cantorthm](){.ref}), and in fact the theorem can also be obtained fairly directly from that result (see [uncountablefuncex](){.ref}).
+The idea behind the proof follows quite closely Cantor's proof that the reals are uncountable ([cantorthm](#cantorthm){.ref}), and in fact the theorem can also be obtained fairly directly from that result (see [uncountablefuncex](#uncountablefuncex){.ref}).
 However, it is instructive to see the direct proof.
 The idea is to construct $F^*$ in a way that will ensure that every possible machine $M$ will in fact fail to compute $F^*$. We do so by defining $F^*(x)$ to equal $0$ if $x$ describes a Turing machine $M$ which satisfies $M(x)=1$ and defining $F^*(x)=1$ otherwise. By construction, if $M$ is any Turing machine and $x$ is the string describing it, then $F^*(x) \neq M(x)$ and therefore $M$ does _not_ compute $F^*$.
 
 ::: {.proof data-ref="uncomputable-func"}
-The proof is illustrated in [diagonal-fig](){.ref}.
+The proof is illustrated in [diagonal-fig](#diagonal-fig){.ref}.
 We start by defining the following function $G:\{0,1\}^* \rightarrow \{0,1\}$:
 
 For every string $x\in\{0,1\}^*$, if $x$ satisfies __(1)__ $x$ is a valid representation of some Turing machine $M$ (per the representation scheme above) and __(2)__ when the program $M$ is executed on the input $x$ it halts and produces an output,  then we define $G(x)$ as the first bit of this output.  Otherwise (i.e., if $x$ is not a valid representation of a Turing machine, or the machine $M_x$  never halts on $x$)  we define $G(x)=0$.
@@ -244,7 +244,7 @@ On the other hand, by the definition of $F^*$, since $x$ is the representation o
 $F^*(x) = 1 - G(x) = 1 - M(x)$,   hence yielding a contradiction.
 :::
 
-![We construct an uncomputable function by defining for every two strings $x,y$ the value $1-M_y(x)$ which equals $0$ if the machine described by $y$ outputs $1$ on $x$, and $1$ otherwise.  We then define $F^*(x)$ to be the "diagonal" of this table, namely $F^*(x)=1-M_x(x)$ for every $x$. The function $F^*$ is uncomputable, because if it was computable by some machine whose string description is $x^*$ then we would get that $M_{x^*}(x^*)=F^*(x^*)=1-M_{x^*}(x^*)$.](/images/introtcs/lec_08_uncomputability-2.webp){#diagonal-fig   }
+![We construct an uncomputable function by defining for every two strings $x,y$ the value $1-M_y(x)$ which equals $0$ if the machine described by $y$ outputs $1$ on $x$, and $1$ otherwise.  We then define $F^*(x)$ to be the "diagonal" of this table, namely $F^*(x)=1-M_x(x)$ for every $x$. The function $F^*$ is uncomputable, because if it was computable by some machine whose string description is $x^*$ then we would get that $M_{x^*}(x^*)=F^*(x^*)=1-M_{x^*}(x^*)$.](/images/introtcs/original-diagonal_proof.webp){#diagonal-fig   }
 
 
 ::: { .bigidea #uncomputablefunctions}
@@ -252,21 +252,21 @@ There are some functions that _can not_ be computed by _any_ algorithm.
 :::
 
 > ### { .pause }
-The proof of [uncomputable-func](){.ref} is short but subtle.
+The proof of [uncomputable-func](#uncomputable-func){.ref} is short but subtle.
 I suggest that you pause here and go back to read it again and think about it - this is a proof that is worth reading at least twice if not three or four times.
 It is not often the case that a few lines of mathematical reasoning establish a deeply profound fact - that there are problems we simply _cannot_ solve.
 
-The type of argument used to prove [uncomputable-func](){.ref} is known as _diagonalization_ since it can be described as defining a function based on the diagonal entries of a table as in [diagonal-fig](){.ref}.
-The proof can be thought of as an infinite version of the _counting_ argument we used for showing lower bound for NAND-CIRC programs in [counting-lb](){.ref}.
+The type of argument used to prove [uncomputable-func](#uncomputable-func){.ref} is known as _diagonalization_ since it can be described as defining a function based on the diagonal entries of a table as in [diagonal-fig](#diagonal-fig){.ref}.
+The proof can be thought of as an infinite version of the _counting_ argument we used for showing lower bound for NAND-CIRC programs in [counting-lb](#counting-lb){.ref}.
 Namely, we show that it's not possible to compute all functions from $\{0,1\}^* \rightarrow \{0,1\}$ by Turing machines simply because there are more functions like that than there are Turing machines.
 
 
-As mentioned in [decidablelanguagesrem](){.ref}, many texts use the "language" terminology and so will call a set $L \subseteq \{0,1\}^*$ an  [_undecidable_](https://goo.gl/3YvQvL)  or _non-recursive_ language if the function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F(x)=1 \leftrightarrow x\in L$ is uncomputable.
+As mentioned in [decidablelanguagesrem](#decidablelanguagesrem){.ref}, many texts use the "language" terminology and so will call a set $L \subseteq \{0,1\}^*$ an  [_undecidable_](https://goo.gl/3YvQvL)  or _non-recursive_ language if the function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F(x)=1 \leftrightarrow x\in L$ is uncomputable.
 
 
 ## The Halting problem {#haltingsec }
 
-[uncomputable-func](){.ref} shows that there is _some_ function that cannot be computed.
+[uncomputable-func](#uncomputable-func){.ref} shows that there is _some_ function that cannot be computed.
 But is this function the equivalent of the "tree that falls in the forest with no one hearing it"?
 That is, perhaps it is a function that no one actually _wants_ to compute.
 It turns out that there are natural uncomputable functions:
@@ -275,7 +275,7 @@ It turns out that there are natural uncomputable functions:
 Let $HALT:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that for every string $M\in \{0,1\}^*$, $HALT(M,x)=1$ if Turing machine $M$ halts on the input $x$ and  $HALT(M,x)=0$ otherwise.
 Then $HALT$ is not computable.
 
-Before turning to prove [halt-thm](){.ref}, we note that $HALT$ is a very natural function to want to compute.
+Before turning to prove [halt-thm](#halt-thm){.ref}, we note that $HALT$ is a very natural function to want to compute.
 For example, one can think of $HALT$ as a special case of the task of managing an "App store".
 That is,  given the code of some application, the gatekeeper for the store needs to decide if this code is safe enough to allow in the store or not.
 At a minimum, it seems that we should verify that the code would not go into an infinite loop.
@@ -287,9 +287,9 @@ One way to think about this proof is as follows:
 $$
 \text{Uncomputability of $F^*$} \;+\; \text{Universality} \;=\; \text{Uncomputability of $HALT$}
 $$
-That is, we will use the universal Turing machine that computes $EVAL$  to derive the uncomputability of $HALT$ from the uncomputability of $F^*$ shown in [uncomputable-func](){.ref}.
+That is, we will use the universal Turing machine that computes $EVAL$  to derive the uncomputability of $HALT$ from the uncomputability of $F^*$ shown in [uncomputable-func](#uncomputable-func){.ref}.
 Specifically, the proof will be by contradiction.
-That is, we will assume towards a contradiction that $HALT$ is computable, and use that assumption, together with the universal Turing machine of [universaltmthm](){.ref}, to derive that $F^*$ is computable, which will contradict  [uncomputable-func](){.ref}.
+That is, we will assume towards a contradiction that $HALT$ is computable, and use that assumption, together with the universal Turing machine of [universaltmthm](#universaltmthm){.ref}, to derive that $F^*$ is computable, which will contradict  [uncomputable-func](#uncomputable-func){.ref}.
 :::
 
 ::: { .bigidea #reductionuncomputeidea}
@@ -298,8 +298,8 @@ If a function $F$ is uncomputable we can show that another function $H$ is uncom
 
 
 ::: {.proof data-ref="halt-thm"}
-The proof will use the previously established result [uncomputable-func](){.ref}.
-Recall that [uncomputable-func](){.ref} shows that the following function $F^*: \{0,1\}^* \rightarrow \{0,1\}$ is uncomputable:
+The proof will use the previously established result [uncomputable-func](#uncomputable-func){.ref}.
+Recall that [uncomputable-func](#uncomputable-func){.ref} shows that the following function $F^*: \{0,1\}^* \rightarrow \{0,1\}$ is uncomputable:
 
 $$
 F^*(x) = \begin{cases}0 & x(x)=1 \\ 1 & \text{otherwise} \end{cases}
@@ -311,7 +311,7 @@ Specifically, we will assume, towards a contradiction, that there exists a Turin
 (This is known as a proof by _reduction_, since we reduce the task of computing $F^*$ to the task of computing $HALT$. By the contrapositive, this means the uncomputability of $F^*$ implies the uncomputability of $HALT$.)
 
 Indeed, suppose that  $M$ is a Turing machine that computes $HALT$.
-[halttof](){.ref} describes a Turing machine  $M'$ that computes $F^*$. (We use "high level" description of Turing machines, appealing to the "have your cake and eat it too" paradigm, see [eatandhavecake](){.ref}.)
+[halttof](#halttof){.ref} describes a Turing machine  $M'$ that computes $F^*$. (We use "high level" description of Turing machines, appealing to the "have your cake and eat it too" paradigm, see [eatandhavecake](#eatandhavecake){.ref}.)
 
 
 ``` {.algorithm title="$F^*$ to $HALT$ reduction" #halttof}
@@ -330,16 +330,16 @@ endif
 Return $1$
 ```
 
-We claim that [halttof](){.ref} computes the function $F^*$.
+We claim that [halttof](#halttof){.ref} computes the function $F^*$.
 Indeed, suppose that $x(x)=1$ (and hence $F^*(x)=0$).
-In this case, $HALT(x,x)=1$ and hence, under our assumption that $M(x,x)=HALT(x,x)$, the value $z$ will equal $1$, and hence [halttof](){.ref} will set $y=x(x)=1$, and output the correct value $0$.
+In this case, $HALT(x,x)=1$ and hence, under our assumption that $M(x,x)=HALT(x,x)$, the value $z$ will equal $1$, and hence [halttof](#halttof){.ref} will set $y=x(x)=1$, and output the correct value $0$.
 
 Suppose otherwise that $x(x) \neq 1$ (and hence $F^*(x)=1$). In this case there are two possibilities:
 
-* __Case 1:__ The machine described by $x$ does not halt on the input $x$ (and hence $F^*(x)=1$). In this case, $HALT(x,x)=0$. Since we assume that $M$ computes $HALT$ it means that on input $x,x$, the machine $M$ must halt and output the value $0$. This means that [halttof](){.ref} will set $z=0$ and output $1$.
+* __Case 1:__ The machine described by $x$ does not halt on the input $x$ (and hence $F^*(x)=1$). In this case, $HALT(x,x)=0$. Since we assume that $M$ computes $HALT$ it means that on input $x,x$, the machine $M$ must halt and output the value $0$. This means that [halttof](#halttof){.ref} will set $z=0$ and output $1$.
 
 
-* __Case 2:__ The machine described by $x$ halts on the input $x$ and outputs some $y' \neq 1$ (and hence $F^*(x)=0$). In this case, since $HALT(x,x)=1$, under our assumptions,  [halttof](){.ref} will set $y=y' \neq 1$ and so output $1$.
+* __Case 2:__ The machine described by $x$ halts on the input $x$ and outputs some $y' \neq 1$ (and hence $F^*(x)=0$). In this case, since $HALT(x,x)=1$, under our assumptions,  [halttof](#halttof){.ref} will set $y=y' \neq 1$ and so output $1$.
 
 We see that in all cases, $M'(x)=F^*(x)$, which contradicts the fact that $F^*$ is uncomputable.
 Hence we reach a contradiction to our original assumption that $M$ computes $HALT$.
@@ -349,13 +349,13 @@ Hence we reach a contradiction to our original assumption that $M$ computes $HAL
 > ### { .pause }
 Once again, this is a proof that's worth reading more than once.
 The uncomputability of the halting problem is one of the fundamental theorems of computer science, and is the starting point for much of the investigations we will see later.
-An excellent way to get a better understanding of [halt-thm](){.ref} is to go over [haltalternativesec](){.ref}, which presents an alternative proof of the same result.
+An excellent way to get a better understanding of [halt-thm](#halt-thm){.ref} is to go over [haltalternativesec](#haltalternativesec){.ref}, which presents an alternative proof of the same result.
 
 
 
 ### Is the Halting problem really hard? (discussion)
 
-Many people's first instinct when they see the proof of [halt-thm](){.ref} is to not believe it.
+Many people's first instinct when they see the proof of [halt-thm](#halt-thm){.ref} is to not believe it.
 That is, most people do believe the mathematical statement, but intuitively it doesn't seem that the Halting problem is really that hard.
 After all, being uncomputable only means that $HALT$ cannot be computed by a Turing machine.
 
@@ -393,12 +393,12 @@ while True:
 
 Given that Goldbach's Conjecture has been open since 1742, it is unclear that humans have any magical ability to say whether this (or other similar programs) will halt or not.
 
-![[SMBC](http://smbc-comics.com/comic/halting)'s take on solving the Halting problem.](../figure/smbchalting.png){#xkcdhaltingfig .margin  }
+![[SMBC](http://smbc-comics.com/comic/halting)'s take on solving the Halting problem.](/images/introtcs/original-smbchalting.webp){#xkcdhaltingfig .margin  }
 
 
 ### A direct proof of the uncomputability of $HALT$ (optional) { #haltalternativesec }
 
-It turns out that we can combine the ideas of the proofs of [uncomputable-func](){.ref}  and [halt-thm](){.ref} to obtain a short proof of the latter theorem, that does not appeal to the uncomputability of $F^*$.
+It turns out that we can combine the ideas of the proofs of [uncomputable-func](#uncomputable-func){.ref}  and [halt-thm](#halt-thm){.ref} to obtain a short proof of the latter theorem, that does not appeal to the uncomputability of $F^*$.
 This short proof appeared in print in a 1965 letter to the editor of Christopher Strachey:
 
 
@@ -427,7 +427,7 @@ This short proof appeared in print in a 1965 letter to the editor of Christopher
 >Cambridge
 
 ::: { .pause }
-Try to stop and extract the argument for proving [halt-thm](){.ref} from the letter above.
+Try to stop and extract the argument for proving [halt-thm](#halt-thm){.ref} from the letter above.
 :::
 
 Since CPL is not as common today, let us reproduce this proof.
@@ -470,17 +470,17 @@ If we now set `(f,x) = CantSolveMe(T)`, then `T(f,x)=False` but `f(x)` does in f
 
 ## Reductions {#reductionsuncompsec }
 
-The Halting problem turns out to be a linchpin of uncomputability, in the sense that [halt-thm](){.ref} has been used to show the uncomputability of a great many interesting functions.
-We will see several examples of such results in this chapter and the exercises, but there are many more such results (see [haltreductions](){.ref}).
+The Halting problem turns out to be a linchpin of uncomputability, in the sense that [halt-thm](#halt-thm){.ref} has been used to show the uncomputability of a great many interesting functions.
+We will see several examples of such results in this chapter and the exercises, but there are many more such results (see [haltreductions](#haltreductions){.ref}).
 
 
-![Some uncomputability results. An arrow from problem X to problem Y means that we use the uncomputability of X to prove the uncomputability of Y by reducing computing X to computing Y.  All of these results except for the MRDP Theorem appear in either the text or exercises. The Halting Problem $HALT$ serves as our starting point for all these uncomputability results as well as many others.](/images/introtcs/lec_08_uncomputability-4.webp){#haltreductions   }
+![Some uncomputability results. An arrow from problem X to problem Y means that we use the uncomputability of X to prove the uncomputability of Y by reducing computing X to computing Y.  All of these results except for the MRDP Theorem appear in either the text or exercises. The Halting Problem $HALT$ serves as our starting point for all these uncomputability results as well as many others.](/images/introtcs/original-reductions_from_halting.webp){#haltreductions   }
 
 
 The idea behind such uncomputability results is conceptually simple but can at first be quite confusing.
 If we know that $HALT$ is uncomputable, and we want to show that some other function $BLAH$ is uncomputable, then we can do so via a _contrapositive_ argument (i.e., proof by contradiction).
 That is, we show that __if__ there exists a Turing machine that computes $BLAH$ __then__ there exists a Turing machine that computes $HALT$.
-(Indeed, this is exactly how we showed that $HALT$ itself is uncomputable, by deriving this fact from the uncomputability of the function $F^*$ of [uncomputable-func](){.ref}.)
+(Indeed, this is exactly how we showed that $HALT$ itself is uncomputable, by deriving this fact from the uncomputability of the function $F^*$ of [uncomputable-func](#uncomputable-func){.ref}.)
 
 For example, to prove that $BLAH$ is uncomputable,  we could show that there is a computable function $R:\{0,1\}^* \rightarrow \{0,1\}^*$ such that for every pair $M$ and $x$, $HALT(M,x)=BLAH(R(M,x))$.
 The existence of such a function $R$ implies that __if__ $BLAH$ was computable __then__ $HALT$ would be computable as well, hence leading to a contradiction!
@@ -497,7 +497,7 @@ The one silver lining is that at the end of the day the notion of reductions is 
 
 
 ::: {.remark title="Reductions are algorithms" #reductionsaralg}
-A reduction is an _algorithm_, which means that, as discussed in [implspecanarem](){.ref},  a reduction has three components:
+A reduction is an _algorithm_, which means that, as discussed in [implspecanarem](#implspecanarem){.ref},  a reduction has three components:
 
 * __Specification (what):__ In the case of a reduction from $HALT$ to $BLAH$, the specification is that function $R:\{0,1\}^* \rightarrow \{0,1\}^*$ should satisfy that $HALT(M,x)=BLAH(R(M,x))$ for every Turing machine $M$ and input $x$. In general, to reduce a function $F$ to $G$, the reduction should satisfy $F(w)=G(R(w))$ for every input $w$ to $F$.
 
@@ -518,16 +518,16 @@ Alas, the following theorem shows that this is not the case:
 $HALTONZERO$ is uncomputable.
 
 > ### { .pause }
-The proof of [haltonzero-thm](){.ref} is below, but before reading it you might want to pause for a couple of minutes and think how you would prove it yourself.
+The proof of [haltonzero-thm](#haltonzero-thm){.ref} is below, but before reading it you might want to pause for a couple of minutes and think how you would prove it yourself.
 In particular, try to think of what a reduction from $HALT$ to $HALTONZERO$ would look like.
 Doing so is an excellent way to get some initial comfort with the notion of proofs by reduction, which a technique we will be using time and again in this book.
-You can also see [haltonzeropythonfig](){.ref} and the following [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a Python implementation of this reduction.
+You can also see [haltonzeropythonfig](#haltonzeropythonfig){.ref} and the following [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a Python implementation of this reduction.
 
-![To prove [haltonzero-thm](){.ref}, we show that $HALTONZERO$ is uncomputable by giving a _reduction_ from the task of computing $HALT$ to the task of computing $HALTONZERO$. This shows that if there was a hypothetical algorithm $A$ computing $HALTONZERO$, then there would be an algorithm $B$ computing $HALT$, contradicting [halt-thm](){.ref}. Since neither $A$ nor $B$ actually exists, this is an example of an implication of the form "if pigs could whistle then horses could fly".](../figure/haltonzerored.png){#haltonzerofig  .figure  }
+![To prove [haltonzero-thm](#haltonzero-thm){.ref}, we show that $HALTONZERO$ is uncomputable by giving a _reduction_ from the task of computing $HALT$ to the task of computing $HALTONZERO$. This shows that if there was a hypothetical algorithm $A$ computing $HALTONZERO$, then there would be an algorithm $B$ computing $HALT$, contradicting [halt-thm](#halt-thm){.ref}. Since neither $A$ nor $B$ actually exists, this is an example of an implication of the form "if pigs could whistle then horses could fly".](/images/introtcs/original-haltonzerored.webp){#haltonzerofig  .figure  }
 
 :::  {.proof #proofofhaltonzero data-ref="haltonzero-thm"}
-The proof is by reduction from $HALT$, see [haltonzerofig](){.ref}. We will assume, towards the sake of contradiction, that  $HALTONZERO$ is computable by some algorithm $A$, and use this hypothetical algorithm $A$ to construct an algorithm $B$ to compute $HALT$, hence obtaining a contradiction to [halt-thm](){.ref}.
-(As discussed in [eatandhavecake](){.ref}, following our "have your cake and eat it too" paradigm, we just use the generic name "algorithm" rather than worrying whether we model them as Turing machines, NAND-TM programs, NAND-RAM, etc.; this makes no difference since all these models are equivalent to one another.)
+The proof is by reduction from $HALT$, see [haltonzerofig](#haltonzerofig){.ref}. We will assume, towards the sake of contradiction, that  $HALTONZERO$ is computable by some algorithm $A$, and use this hypothetical algorithm $A$ to construct an algorithm $B$ to compute $HALT$, hence obtaining a contradiction to [halt-thm](#halt-thm){.ref}.
+(As discussed in [eatandhavecake](#eatandhavecake){.ref}, following our "have your cake and eat it too" paradigm, we just use the generic name "algorithm" rather than worrying whether we model them as Turing machines, NAND-TM programs, NAND-RAM, etc.; this makes no difference since all these models are equivalent to one another.)
 
 Since this is our first proof by reduction from the Halting problem, we will spell it out in more details than usual. Such a proof by reduction consists of two steps:
 
@@ -550,7 +550,7 @@ Endprocedure
 Return $N_{M,x}$ # We do not execute $N_{M,x}$: only return its description
 ```
 
-Our Algorithm $B$ works as follows: on input $M,x$, it runs [halttohaltonzerored](){.ref} to obtain a Turing machine  $M'$, and then returns $A(M')$.
+Our Algorithm $B$ works as follows: on input $M,x$, it runs [halttohaltonzerored](#halttohaltonzerored){.ref} to obtain a Turing machine  $M'$, and then returns $A(M')$.
 The machine $M'$ ignores its input $z$ and simply runs $M$ on $x$.
 
 In pseudocode, the program $N_{M,x}$ will look something like the following:
@@ -579,10 +579,10 @@ In particular if we instantiate this claim with the input $z=0$ to $N_{M,x}$, we
 Thus if the hypothetical algorithm $A$ satisfies $A(M)=HALTONZERO(M)$ for every $M$ then the algorithm $B$ we construct satisfies $B(M,x)=HALT(M,x)$ for every $M,x$, contradicting the uncomputability of $HALT$.
 :::
 
-![A Python implementation of the reduction showing that $HALTONZERO$ is uncomputable if $HALT$ is. See this [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a full implementation of the reduction.](../figure/haltonzeropython.png){#haltonzeropythonfig}
+![A Python implementation of the reduction showing that $HALTONZERO$ is uncomputable if $HALT$ is. See this [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a full implementation of the reduction.](/images/introtcs/original-haltonzeropython.webp){#haltonzeropythonfig}
 
 > ### {.remark title="The hardwiring technique" #hardwiringrem}
-In the proof of [haltonzero-thm](){.ref} we used the technique of  "hardwiring" an input  $x$ to a program/machine $P$. That is, we take a program that computes the function $x \mapsto f(x)$ and "fix" or "hardwire" some of the inputs to some constant value.  For example, if you have a program that takes as input a pair of numbers $x,y$ and outputs their product (i.e., computes the function $f(x,y) =x\times y$), then you can "hardwire" the second input to be $17$  and obtain a program that takes as input a number $x$ and outputs $x\times 17$ (i.e., computes the function $g(x) = x\times 17$). 
+In the proof of [haltonzero-thm](#haltonzero-thm){.ref} we used the technique of  "hardwiring" an input  $x$ to a program/machine $P$. That is, we take a program that computes the function $x \mapsto f(x)$ and "fix" or "hardwire" some of the inputs to some constant value.  For example, if you have a program that takes as input a pair of numbers $x,y$ and outputs their product (i.e., computes the function $f(x,y) =x\times y$), then you can "hardwire" the second input to be $17$  and obtain a program that takes as input a number $x$ and outputs $x\times 17$ (i.e., computes the function $g(x) = x\times 17$). 
 This technique is quite common in reductions and elsewhere, and we will use it time and again in this book.
 
 
@@ -617,7 +617,7 @@ Despite the similarity in their names, $ZEROFUNC$ and $HALTONZERO$ are two diffe
 :::
 
 ::: {.proof data-ref="allzero-thm"}
-The proof is by reduction from $HALTONZERO$. Suppose, towards the sake of contradiction, that there was an algorithm $A$ such that $A(M)=ZEROFUNC(M)$ for every $M \in \{0,1\}^*$. Then we will construct an algorithm $B$ that solves $HALTONZERO$,  contradicting [haltonzero-thm](){.ref}.
+The proof is by reduction from $HALTONZERO$. Suppose, towards the sake of contradiction, that there was an algorithm $A$ such that $A(M)=ZEROFUNC(M)$ for every $M \in \{0,1\}^*$. Then we will construct an algorithm $B$ that solves $HALTONZERO$,  contradicting [haltonzero-thm](#haltonzero-thm){.ref}.
 
 Given a Turing machine $N$ (which is the input to $HALTONZERO$), our Algorithm $B$ does the following:
 
@@ -641,14 +641,14 @@ COMPUTES\text{-}PARITY(P) = \begin{cases} 1 & P \text{ computes the parity funct
 $$
 
 ::: { .pause }
-We leave the proof of [paritythm](){.ref} as an exercise ([paritythmex](){.ref}).
+We leave the proof of [paritythm](#paritythm){.ref} as an exercise ([paritythmex](#paritythmex){.ref}).
 I strongly encourage you to stop here and try to solve this exercise.
 :::
 
 
 ### Rice's Theorem { #ricethmsec }
 
-[paritythm](){.ref} can be generalized far beyond the parity function.
+[paritythm](#paritythm){.ref} can be generalized far beyond the parity function.
 In fact, this generalization rules out verifying any type of semantic specification on programs.
 We define a _semantic specification_ on programs to be some property that does not depend on the code of the program but just on the function that the program computes.
 
@@ -687,7 +687,7 @@ Formally, we define semantic properties as follows:
 ::: {.definition title="Semantic properties" #semanticpropdef}
 A pair of Turing machines $M$ and $M'$ are _functionally equivalent_ if for every $x\in \{0,1\}^*$, $M(x)=M'(x)$. (In particular, $M(x)=\bot$ iff $M'(x)=\bot$ for all $x$.)
 
-A function $F:\{0,1\}^* \rightarrow \{0,1\}$ is _semantic_ if for every pair of strings $M,M'$ that represent functionally equivalent Turing machines, $F(M)=F(M')$. (Recall that we assume that every string represents _some_ Turing machine, see [TMrepremark](){.ref})
+A function $F:\{0,1\}^* \rightarrow \{0,1\}$ is _semantic_ if for every pair of strings $M,M'$ that represent functionally equivalent Turing machines, $F(M)=F(M')$. (Recall that we assume that every string represents _some_ Turing machine, see [TMrepremark](#TMrepremark){.ref})
 :::
 
 
@@ -715,10 +715,10 @@ If $F$ is semantic and non-trivial then it is uncomputable.
 :::
 
 ::: {.proofidea #proofidea-rice-thm data-ref="rice-thm"}
-The idea behind the proof is to show that every semantic non-trivial function $F$ is at least as hard to compute as $HALTONZERO$. This will conclude the proof since by [haltonzero-thm](){.ref}, $HALTONZERO$ is uncomputable.
+The idea behind the proof is to show that every semantic non-trivial function $F$ is at least as hard to compute as $HALTONZERO$. This will conclude the proof since by [haltonzero-thm](#haltonzero-thm){.ref}, $HALTONZERO$ is uncomputable.
 If a function $F$ is non-trivial then there are two machines $M_0$ and $M_1$ such that $F(M_0)=0$ and $F(M_1)=1$. So, the goal would be to take a machine $N$ and find a way to map it into a machine $M=R(N)$, such that __(i)__ if $N$ halts on zero then $M$ is functionally equivalent to $M_1$  and __(ii)__ if $N$ does _not_ halt on zero then $M$ is functionally equivalent to $M_0$.
 
-Because $F$ is semantic, if we achieved this, then we would be guaranteed that  $HALTONZERO(N) = F(R(N))$, and hence would show that if $F$ was computable, then $HALTONZERO$ would be computable as well, contradicting [haltonzero-thm](){.ref}.
+Because $F$ is semantic, if we achieved this, then we would be guaranteed that  $HALTONZERO(N) = F(R(N))$, and hence would show that if $F$ was computable, then $HALTONZERO$ would be computable as well, contradicting [haltonzero-thm](#haltonzero-thm){.ref}.
 :::
 
 ::: {.proof data-ref="rice-thm"}
@@ -792,7 +792,7 @@ Y[0] = NAND(X[0],Harvard[0])
 
 However, $HALTNOYALE$ is uncomputable since every program $P$ can be transformed into an equivalent (and in fact improved `:)`) program $P'$ that does not contain the variable `Yale`. Hence if we could compute $HALTNOYALE$ then determine halting on zero for NAND-TM programs (and hence for Turing machines as well).
 
-Moreover, as we will see in [godelchap](){.ref}, there are uncomputable functions whose inputs are not programs, and hence for which the adjective "semantic" is not applicable.
+Moreover, as we will see in [godelchap](#godelchap){.ref}, there are uncomputable functions whose inputs are not programs, and hence for which the adjective "semantic" is not applicable.
 
 Properties such as "the program contains the variable `Yale`" are sometimes known as _syntactic_ properties.
 The terms "semantic" and "syntactic" are used beyond the realm of programming languages: a famous example of a syntactically correct but semantically meaningless sentence in English is Chomsky's ["Colorless green ideas sleep furiously."](https://goo.gl/4gXoiV) However, formally defining "syntactic properties" is rather subtle and we will not use this terminology in this book, sticking to the terms "semantic" and "non-semantic" only.
@@ -812,10 +812,10 @@ Let $NANDTMHALT:\{0,1\}^* \rightarrow \{0,1\}$ be the function that on input str
 Once again, this is a good point for you to stop and try to prove the result yourself before reading the proof below.
 
 :::  {.proof }
-We have seen in [TM-equiv-thm](){.ref} that for every Turing machine $M$, there is an equivalent NAND-TM program $P_M$  such that for every $x$,  $P_M(x)=M(x)$.
+We have seen in [TM-equiv-thm](#TM-equiv-thm){.ref} that for every Turing machine $M$, there is an equivalent NAND-TM program $P_M$  such that for every $x$,  $P_M(x)=M(x)$.
 In particular this means that $HALT(M)= NANDTMHALT(P_M)$.
 
-The transformation $M \mapsto P_M$  that is obtained from the proof of [TM-equiv-thm](){.ref} is _constructive_.
+The transformation $M \mapsto P_M$  that is obtained from the proof of [TM-equiv-thm](#TM-equiv-thm){.ref} is _constructive_.
 That is, the proof yields a way to _compute_ the map $M \mapsto P_M$.
 This means that this proof yields a _reduction_ from task of computing $HALT$ to the task of computing $NANDTMHALT$, which means that since $HALT$ is uncomputable, neither is $NANDTMHALT$.
 :::
@@ -825,7 +825,7 @@ The same proof carries over to other computational models such as the _$\lambda$
 Hence for example, there is no algorithm to decide if a $\lambda$ expression evaluates the identity function, and no algorithm to decide whether an initial configuration of the game of life will result in eventually coloring the cell $(0,0)$ black or not.
 
 Indeed, we can generalize Rice's Theorem to all these models.
-For example, if $F:\{0,1\}^* \rightarrow \{0,1\}$ is a non-trivial function such that $F(P)=F(P')$ for every functionally equivalent NAND-TM programs $P,P'$ then $F$ is uncomputable, and the same holds for NAND-RAM programs,  $\lambda$-expressions, and all other Turing complete models  (as defined in [turingcompletedef](){.ref}), see also [ricegeneralex](){.ref}.
+For example, if $F:\{0,1\}^* \rightarrow \{0,1\}$ is a non-trivial function such that $F(P)=F(P')$ for every functionally equivalent NAND-TM programs $P,P'$ then $F$ is uncomputable, and the same holds for NAND-RAM programs,  $\lambda$-expressions, and all other Turing complete models  (as defined in [turingcompletedef](#turingcompletedef){.ref}), see also [ricegeneralex](#ricegeneralex){.ref}.
 
 
 
@@ -844,7 +844,7 @@ While the general tasks of verifying this may be uncomputable, researchers have 
 That said, verification, especially of large and complex programs, remains a highly challenging task in practice as well, and the number of programs that have been formally proven correct is still quite small.
 Moreover, even phrasing the right theorem to prove (i.e., the specification) is often a highly non-trivial endeavor.
 
-![The set $\mathbf{R}$ of computable Boolean functions ([classRdef](){.ref}) is a proper subset of the set of all functions mapping $\{0,1\}^*$ to $\{0,1\}$. In this chapter we saw a few examples of elements in the latter set that are not in the former.](../figure/inclusion_noncomputable.png){#inclusionuncomputablefig .class  }
+![The set $\mathbf{R}$ of computable Boolean functions ([classRdef](#classRdef){.ref}) is a proper subset of the set of all functions mapping $\{0,1\}^*$ to $\{0,1\}$. In this chapter we saw a few examples of elements in the latter set that are not in the former.](/images/introtcs/original-inclusion_noncomputable.webp){#inclusionuncomputablefig .class  }
 
 
 ::: { .recap }
@@ -904,12 +904,12 @@ Prove that the following function $FINITE:\{0,1\}^* \rightarrow \{0,1\}$ is unco
 
 
 ::: {.exercise title="Computing parity" #paritythmex}
-Prove [paritythm](){.ref} without using Rice's Theorem.
+Prove [paritythm](#paritythm){.ref} without using Rice's Theorem.
 :::
 
 
 ::: {.exercise title="TM Equivalence" #TMequivex}
-Let $EQ:\{0,1\}^* :\rightarrow \{0,1\}$ be the function defined as follows: given a string representing a pair $(M,M')$ of Turing machines, $EQ(M,M')=1$ iff $M$ and $M'$ are functionally equivalent as per [semanticpropdef](){.ref}. Prove that $EQ$ is uncomputable.
+Let $EQ:\{0,1\}^* :\rightarrow \{0,1\}$ be the function defined as follows: given a string representing a pair $(M,M')$ of Turing machines, $EQ(M,M')=1$ iff $M$ and $M'$ are functionally equivalent as per [semanticpropdef](#semanticpropdef){.ref}. Prove that $EQ$ is uncomputable.
 
 Note that you _cannot_ use Rice's Theorem directly, as this theorem only deals with functions that take a single Turing machine as input, and $EQ$ takes two machines.
 :::
@@ -944,13 +944,13 @@ In this exercise we will prove Rice's Theorem in the form that it is typically s
 
 For a Turing machine $M$, define $L(M) \subseteq \{0,1\}^*$ to be the set of all $x\in \{0,1\}^*$ such that $M$ halts on the input $x$ and outputs $1$. (The set $L(M)$ is known in the literature as the _language recognized by $M$_. Note that $M$ might either output a value other than $1$ or not halt at all on inputs $x\not\in L(M)$. )
 
-1. Prove that for every Turing machine $M$, if we define $F_M:\{0,1\}^* \rightarrow \{0,1\}$ to be the function such that $F_M(x)=1$ iff $x\in L(M)$ then $F_M$ is _recursively enumerable_ as defined in [recursiveenumerableex](){.ref}.
+1. Prove that for every Turing machine $M$, if we define $F_M:\{0,1\}^* \rightarrow \{0,1\}$ to be the function such that $F_M(x)=1$ iff $x\in L(M)$ then $F_M$ is _recursively enumerable_ as defined in [recursiveenumerableex](#recursiveenumerableex){.ref}.
 
-2. Use [rice-thm](){.ref} to prove that for every  $G:\{0,1\}^* \rightarrow \{0,1\}$, if __(a)__ $G$ is neither the constant zero nor the constant one function, and __(b)__ for every $M,M'$ such that $L(M)=L(M')$, $G(M)=G(M')$, then $G$ is uncomputable. See footnote for hint.^[Show that any $G$ satisfying __(b)__ must be semantic.]
+2. Use [rice-thm](#rice-thm){.ref} to prove that for every  $G:\{0,1\}^* \rightarrow \{0,1\}$, if __(a)__ $G$ is neither the constant zero nor the constant one function, and __(b)__ for every $M,M'$ such that $L(M)=L(M')$, $G(M)=G(M')$, then $G$ is uncomputable. See footnote for hint.^[Show that any $G$ satisfying __(b)__ must be semantic.]
 :::
 
 ::: {.exercise title="Rice's Theorem for general Turing-equivalent models (optional)" #ricegeneralex}
-Let $\mathcal{F}$ be the set of all partial functions from $\{0,1\}^*$ to $\{0,1\}$ and $\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$ be a Turing-equivalent model as defined in [turingcompletedef](){.ref}.
+Let $\mathcal{F}$ be the set of all partial functions from $\{0,1\}^*$ to $\{0,1\}$ and $\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$ be a Turing-equivalent model as defined in [turingcompletedef](#turingcompletedef){.ref}.
 We define a function $F:\{0,1\}^* \rightarrow \{0,1\}$ to be _$\mathcal{M}$-semantic_ if there exists some   $\mathcal{G}:\mathcal{F} \rightarrow \{0,1\}$ such that $F(P) = \mathcal{G}(\mathcal{M}(P))$ for every $P\in \{0,1\}^*$.
 
 Prove that for every $\mathcal{M}$-semantic $F:\{0,1\}^* \rightarrow \{0,1\}$ that is neither the constant one nor the constant zero function, $F$ is uncomputable.
@@ -971,10 +971,10 @@ Prove that $NBB$ grows _faster_ than $TOWER$, in the sense that $TOWER(n) = o(NB
 
 ## Bibliographical notes { #uncomputablebibnotes }
 
-The cartoon of the Halting problem in [universalchapoverviewfig](){.ref} and taken from [Charles Cooper's website](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html), Copyright 2019 Charles F. Cooper.
+The cartoon of the Halting problem in [universalchapoverviewfig](#universalchapoverviewfig){.ref} and taken from [Charles Cooper's website](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html), Copyright 2019 Charles F. Cooper.
 
 Section 7.2 in [@MooreMertens11] gives a highly recommended overview of uncomputability.
-Gödel, Escher, Bach [@hofstadter1999] is a classic popular science book that touches on uncomputability, and unprovability, and specifically Gödel's Theorem that we will see in [godelchap](){.ref}.
+Gödel, Escher, Bach [@hofstadter1999] is a classic popular science book that touches on uncomputability, and unprovability, and specifically Gödel's Theorem that we will see in [godelchap](#godelchap){.ref}.
 See also the recent book by Holt [@Holt2018].
 
 
@@ -986,23 +986,23 @@ Some of this fascinating history is discussed in [@grabiner1983gave, @Kleiner91,
 
 
 The existence of a universal Turing machine, and the uncomputability of $HALT$ was first shown by Turing in his seminal paper [@Turing37], though closely related results were shown by Church a year before.
-These works built on Gödel's 1931 _incompleteness theorem_ that we will discuss in [godelchap](){.ref}.
+These works built on Gödel's 1931 _incompleteness theorem_ that we will discuss in [godelchap](#godelchap){.ref}.
 
 Some  universal Turing machines with a small alphabet and number of states are given in [@rogozhin1996small], including a single-tape universal Turing machine with the binary alphabet and with less than $25$ states; see also the survey [@woods2009complexity].
 Adam Yedidia has written [software](https://github.com/adamyedidia/parsimony) to help in producing Turing machines with a small number of states.
 This is related to the recreational pastime of ["Code Golfing"](https://codegolf.stackexchange.com/) which is about solving a certain computational task using the as short as possible program.
-Finding "highly complex" small Turing machine is also related to the  "Busy Beaver" problem, see [beaverex](){.ref} and the survey [@aaronson20beaver].
+Finding "highly complex" small Turing machine is also related to the  "Busy Beaver" problem, see [beaverex](#beaverex){.ref} and the survey [@aaronson20beaver].
 
 
 
-The diagonalization argument used to prove uncomputability of $F^*$ is derived from Cantor's argument for the uncountability of the reals discussed in [chaprepres](){.ref}.
+The diagonalization argument used to prove uncomputability of $F^*$ is derived from Cantor's argument for the uncountability of the reals discussed in [chaprepres](#chaprepres){.ref}.
 
 Christopher Strachey was an English computer scientist and the inventor of the CPL programming language. He was also an early artificial intelligence visionary, programming a computer to play Checkers and even write love letters in the early 1950's, see [this New Yorker article](https://www.newyorker.com/tech/elements/christopher-stracheys-nineteen-fifties-love-machine) and [this website](http://www.alpha60.de/art/love_letters/).
 
 
 
 Rice's Theorem was proven in [@rice1953classes].
-It is typically stated in a form somewhat different than what we used, see [ricestandardex](){.ref}.
+It is typically stated in a form somewhat different than what we used, see [ricestandardex](#ricestandardex){.ref}.
 
-We do not discuss in the chapter the concept of _recursively enumerable_ languages, but it is covered briefly in [recursiveenumerableex](){.ref}.
+We do not discuss in the chapter the concept of _recursively enumerable_ languages, but it is covered briefly in [recursiveenumerableex](#recursiveenumerableex){.ref}.
 As usual, we use function, as opposed to language, notation.

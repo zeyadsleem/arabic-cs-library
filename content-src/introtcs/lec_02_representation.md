@@ -39,7 +39,7 @@ chapternum: "2"
 
 To a first approximation, _computation_ is a process that maps an _input_ to an _output_.
 
-![Our basic notion of _computation_ is some process that maps an input to an output](/images/introtcs/lec_02_representation-1.webp){#computationinputtooutputfig .margin  }
+![Our basic notion of _computation_ is some process that maps an input to an output](/images/introtcs/original-input_output.webp){#computationinputtooutputfig .margin  }
 
 When discussing computation, it is essential to separate the question of __what__ is the task we need to perform (i.e., the _specification_) from the question of __how__ we achieve this task (i.e., the _implementation_).
 For example, as we've seen, there is more than one way to achieve the computational task of computing the product of two integers.
@@ -50,7 +50,7 @@ Capturing all the potential inputs and outputs that we might ever want to comput
 We do not compute merely on numbers, but also on texts, images, videos, connection graphs of social networks, MRI scans, gene data, and even other programs.
 We will represent all these objects as __strings of zeroes and ones__, that is objects such as $0011101$ or $1011$ or any other finite list of $1$'s and $0$'s. (This choice is for convenience: there  is nothing "holy" about zeroes and ones, and we could have used any other finite collection of symbols.)
 
-![We represent numbers, texts, images, networks and many other objects using strings of zeroes and ones. Writing the zeroes and ones themselves in green font over a black background is optional.](/images/introtcs/lec_02_representation-2.webp){#zerosandonesgreenfig .margin  }
+![We represent numbers, texts, images, networks and many other objects using strings of zeroes and ones. Writing the zeroes and ones themselves in green font over a black background is optional.](/images/introtcs/original-zeroes-ones.webp){#zerosandonesgreenfig .margin  }
 
 Today, we are so used to the notion of digital representation that we are not surprised by the existence of such an encoding.
 But it is actually a deep insight with significant implications.
@@ -69,15 +69,15 @@ However, in this chapter we will dwell a bit more on how we can construct such r
 
 The main takeaways from this chapter are:
 
-* We can represent all kinds of objects we want to use as inputs and outputs using _binary strings_. For example, we can use the _binary basis_ to represent integers and rational numbers as binary strings (see [naturalnumsec](){.ref} and [morerepressec](){.ref}).
+* We can represent all kinds of objects we want to use as inputs and outputs using _binary strings_. For example, we can use the _binary basis_ to represent integers and rational numbers as binary strings (see [naturalnumsec](#naturalnumsec){.ref} and [morerepressec](#morerepressec){.ref}).
 
-* We can _compose_ the representations of simple objects to represent more complex objects. In this way, we can represent lists of integers or rational numbers, and use that to represent objects such as matrices, images, and graphs. _Prefix-free encoding_ is one way to achieve such a composition (see [prefixfreesec](){.ref}).
+* We can _compose_ the representations of simple objects to represent more complex objects. In this way, we can represent lists of integers or rational numbers, and use that to represent objects such as matrices, images, and graphs. _Prefix-free encoding_ is one way to achieve such a composition (see [prefixfreesec](#prefixfreesec){.ref}).
 
-* A _computational task_ specifies a map from an input to an output--- a _function_. It is crucially important to distinguish between the "what" and the "how", or the _specification_ and _implementation_ (see [secimplvsspec](){.ref}). A _function_  simply defines which output corresponds to which input. It does not specify _how_ to compute the output from the input, and as we've seen in the context of multiplication, there can be more than one way to compute the same function.
+* A _computational task_ specifies a map from an input to an output--- a _function_. It is crucially important to distinguish between the "what" and the "how", or the _specification_ and _implementation_ (see [secimplvsspec](#secimplvsspec){.ref}). A _function_  simply defines which output corresponds to which input. It does not specify _how_ to compute the output from the input, and as we've seen in the context of multiplication, there can be more than one way to compute the same function.
 
-* While the set of all possible binary strings is infinite, it still cannot represent _everything_. In particular, there is no representation of the _real numbers_ (with absolute accuracy) as binary strings. This result is also known as "Cantor's Theorem" (see [cantorsec](){.ref}) and is typically referred to as the result that the "reals are uncountable." It is also implied that there are _different levels_ of infinity though we will not get into this topic in this book (see [generalizepowerset](){.ref}).
+* While the set of all possible binary strings is infinite, it still cannot represent _everything_. In particular, there is no representation of the _real numbers_ (with absolute accuracy) as binary strings. This result is also known as "Cantor's Theorem" (see [cantorsec](#cantorsec){.ref}) and is typically referred to as the result that the "reals are uncountable." It is also implied that there are _different levels_ of infinity though we will not get into this topic in this book (see [generalizepowerset](#generalizepowerset){.ref}).
 
-The two "big ideas" we discuss are [representtuplesidea](){.ref} - we can compose representations for simple objects to represent more complex objects and [functionprogramidea](){.ref} - it is crucial to distinguish between _functions'_ ("what") and _programs'_ ("how").
+The two "big ideas" we discuss are [representtuplesidea](#representtuplesidea){.ref} - we can compose representations for simple objects to represent more complex objects and [functionprogramidea](#functionprogramidea){.ref} - it is crucial to distinguish between _functions'_ ("what") and _programs'_ ("how").
 The latter will be a theme we will come back to time and again in this book.
 :::
 
@@ -102,13 +102,13 @@ Another way to say this is that we require the encoding function $E$ to be _one 
 
 We now show how we can represent natural numbers as binary strings.
 Over the years people have represented numbers in a variety of ways, including Roman numerals, tally marks, our own Hindu-Arabic decimal system, and many others.
-We can use any one of those as well as many others to represent a number as a string (see [bitmapdigitsfig](){.ref}).
+We can use any one of those as well as many others to represent a number as a string (see [bitmapdigitsfig](#bitmapdigitsfig){.ref}).
 However, for the sake of concreteness,  we use the _binary basis_ as our default representation of natural numbers as strings.
 For example, we represent the number six as the string $110$ since $1\cdot 2^{2} + 1 \cdot 2^1 + 0 \cdot 2^0 = 6$, and similarly we represent the number thirty-five as the string $y = 100011$ which satisfies $\sum_{i=0}^5 y_i \cdot 2^{|y|-i-1} = 35$.
 Some more examples are given in the table below.
 
 
-![Representing each one the digits $0,1,2,\ldots,9$ as a $12\times 8$ bitmap image, which can be thought of as a string in $\{0,1\}^{96}$. Using this scheme we can represent a natural number $x$ of $n$ decimal digits as a string in $\{0,1\}^{96n}$. Image taken from [blog post of A. C. Andersen](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).](../figure/digitsbitmap.png){#bitmapdigitsfig .margin  }
+![Representing each one the digits $0,1,2,\ldots,9$ as a $12\times 8$ bitmap image, which can be thought of as a string in $\{0,1\}^{96}$. Using this scheme we can represent a natural number $x$ of $n$ decimal digits as a string in $\{0,1\}^{96n}$. Image taken from [blog post of A. C. Andersen](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).](/images/introtcs/original-digitsbitmap.webp){#bitmapdigitsfig .margin  }
 
 
 
@@ -137,7 +137,7 @@ $$NtS(n) = \begin{cases}
 \end{cases} \label{ntseq}$$
 where $parity:\N \rightarrow \{0,1\}$  is the function defined as $parity(n)=0$ if $n$ is even and $parity(n)=1$ if $n$ is odd, and as usual, for strings $x,y \in \{0,1\}^*$, $xy$ denotes the concatenation of $x$ and $y$.
 The function $NtS$ is defined _recursively_: for every $n>1$ we define $rep(n)$ in terms of the representation of the smaller number $\floor{n/2}$.
-It is also possible to define $NtS$ non-recursively, see [binaryrepex](){.ref}.
+It is also possible to define $NtS$ non-recursively, see [binaryrepex](#binaryrepex){.ref}.
 
 Throughout most of this book, the particular choices of representation of numbers as binary strings would not matter much: we just need to know that such a representation exists.
 In fact, for many of our purposes we can even use the simpler representation of mapping a natural number $n$ to the length-$n$ all-zero string $0^n$.
@@ -179,11 +179,11 @@ print(StN(NtS(236)))
 
 
 ::: {.remark title="Programming examples" #programmingrem}
-In this book, we sometimes use _code examples_ as in [pythonbinary](){.ref}.
+In this book, we sometimes use _code examples_ as in [pythonbinary](#pythonbinary){.ref}.
 The point is always to emphasize that certain computations can be achieved concretely,
 rather than illustrating the features of Python or any other programming language.
 Indeed, one of the messages of this book is that all programming languages are in a certain precise sense _equivalent_ to one another, and hence we could have just as well used JavaScript, C, COBOL, Visual Basic or even [BrainF*ck](https://goo.gl/LKKNFK).
-This book is _not_ about programming, and it is absolutely OK if you are not familiar with Python or do not follow code examples such as those in [pythonbinary](){.ref}.
+This book is _not_ about programming, and it is absolutely OK if you are not familiar with Python or do not follow code examples such as those in [pythonbinary](#pythonbinary){.ref}.
 :::
 
 
@@ -221,7 +221,7 @@ $$ZtS(m) = \begin{cases}
 0\;NtS(m) & m \geq 0  \\
 1\;NtS(-m) & m < 0
 \end{cases}$$
-where $NtS$ is defined as in [ntseq](){.eqref}.
+where $NtS$ is defined as in [ntseq](#ntseq){.eqref}.
 
 
 While the encoding function of a representation needs to be one to one, it does not have to be _onto_.
@@ -240,7 +240,7 @@ The choice of the particular representation scheme will rarely matter, except th
 
 ### Two's complement representation (optional) {#twoscomplement }
 
-[repnegativeintegerssec](){.ref}'s approach of representing an integer using a specific "sign bit" is known as the _Signed Magnitude Representation_ and was used in some early computers.
+[repnegativeintegerssec](#repnegativeintegerssec){.ref}'s approach of representing an integer using a specific "sign bit" is known as the _Signed Magnitude Representation_ and was used in some early computers.
 However,  the [two's complement representation](https://en.wikipedia.org/wiki/Two%27s%5Fcomplement) is much more common in practice.
 The _two's complement representation_ of an integer $k$ in the set $\{ -2^n , -2^n+1, \ldots, 2^n-1 \}$ is the string $ZtS_n(k)$ of length $n+1$ defined as follows:
 $$
@@ -253,14 +253,14 @@ If $k$ is a  negative number larger than or equal to $-2^n$ then  $2^{n+1}+k$ is
 Hence the two's complement representation of such a number $k$ is a string of length $n+1$  with its first digit equal to $1$.
 
 
-Another way to say this is that  we represent a potentially negative number $k \in \{ -2^n,\ldots, 2^n-1 \}$ as the non-negative number $k \mod 2^{n+1}$ (see also [twoscomplementfig](){.ref}).
+Another way to say this is that  we represent a potentially negative number $k \in \{ -2^n,\ldots, 2^n-1 \}$ as the non-negative number $k \mod 2^{n+1}$ (see also [twoscomplementfig](#twoscomplementfig){.ref}).
 This means that if two (potentially negative) numbers $k$ and $k'$ are not too large (i.e., $ k + k' \in \{ -2^n,\ldots, 2^n-1 \}$), then we can compute the representation of $k+k'$ by adding modulo $2^{n+1}$ the representations of $k$ and $k'$ as if they were non-negative integers.
 This property of the two's complement representation is its main attraction since, depending on their architectures, microprocessors can often perform arithmetic operations modulo $2^w$ very efficiently (for certain values of $w$ such as $32$ and $64$).
 Many systems leave it to the programmer to check that values are not too large and will carry out this modular arithmetic regardless of the size of the numbers involved.
-For this reason, in some systems adding two large positive numbers can result in a _negative_ number (e.g., adding $2^n-100$ and $2^n-200$ might result in $-300$ since $(2^{n+1}-300) \mod 2^{n+1} = -300$, see also [twoscomplementfig](){.ref}).
+For this reason, in some systems adding two large positive numbers can result in a _negative_ number (e.g., adding $2^n-100$ and $2^n-200$ might result in $-300$ since $(2^{n+1}-300) \mod 2^{n+1} = -300$, see also [twoscomplementfig](#twoscomplementfig){.ref}).
 
 
-![In the _two's complement representation_  we represent a potentially negative integer $k \in \{ -2^n ,\ldots, 2^n-1 \}$ as an $n+1$ length string using the binary representation of the integer $k \mod 2^{n+1}$. On the left-hand side: this representation for $n=3$ (the red integers are the numbers being represented by the blue binary strings). If a microprocessor does not check for overflows, adding the two positive numbers $6$ and $5$ might result in the negative number $-5$ (since $-5 \mod 16 = 11$. The right-hand side is a `C` program that will on some $32$ bit architecture print a negative number after adding two positive numbers. (Integer overflow in `C` is considered _undefined behavior_ which means the result of this program, including whether it runs or crashes, could differ depending on the architecture, compiler, and even compiler options and version.)](/images/introtcs/lec_02_representation-4.webp){#twoscomplementfig .margin}
+![In the _two's complement representation_  we represent a potentially negative integer $k \in \{ -2^n ,\ldots, 2^n-1 \}$ as an $n+1$ length string using the binary representation of the integer $k \mod 2^{n+1}$. On the left-hand side: this representation for $n=3$ (the red integers are the numbers being represented by the blue binary strings). If a microprocessor does not check for overflows, adding the two positive numbers $6$ and $5$ might result in the negative number $-5$ (since $-5 \mod 16 = 11$. The right-hand side is a `C` program that will on some $32$ bit architecture print a negative number after adding two positive numbers. (Integer overflow in `C` is considered _undefined behavior_ which means the result of this program, including whether it runs or crashes, could differ depending on the architecture, compiler, and even compiler options and version.)](/images/introtcs/original-twoscomplement.webp){#twoscomplementfig .margin}
 
 
 ### Rational numbers and representing pairs of strings
@@ -309,7 +309,7 @@ If we can represent objects of type $T$ as strings, then we can represent tuples
 :::
 
 Repeating the same idea, once we can represent objects of type $T$, we can also represent _lists of lists_ of such objects, and even lists of lists of lists and so on and so forth.
-We will come back to this point when we discuss _prefix free encoding_ in [prefixfreesec](){.ref}.
+We will come back to this point when we discuss _prefix free encoding_ in [prefixfreesec](#prefixfreesec){.ref}.
 
 
 ## Representing real numbers
@@ -319,19 +319,19 @@ Every real number can be approximated by a rational number, and thus we can repr
 For example, we can represent $\pi$ by $22/7$ within an error of about $10^{-3}$.  If we want a smaller error (e.g., about $10^{-4}$) then we can use $311/99$, and so on and so forth.
 
 
-![The _floating-point representation_ of a real number $x\in \R$ is its approximation as a number of the form $\sigma b \cdot 2^e$ where $\sigma \in \{\pm 1 \}$, $e$ is an (potentially negative) integer, and $b$ is a rational number between $1$ and $2$ expressed as a binary fraction $1.b_1b_2\ldots b_{k}$ for some $b_1,\ldots,b_k \in \{0,1\}$ (that is $b = 1 + b_1/2 + b_2/4 + \ldots + b_k/2^k$). Commonly-used floating-point representations fix the numbers  $\ell$ and $k$  of bits to represent $e$ and $b$ respectively. In the example above, assuming we use two's complement representation for $e$, the number represented is $-1 \times 2^{5} \times ( 1 + 1/2 + 1/4 + 1/64 + 1/512) = -56.5625$.](/images/introtcs/lec_02_representation-5.webp){#floatingpointfig}
+![The _floating-point representation_ of a real number $x\in \R$ is its approximation as a number of the form $\sigma b \cdot 2^e$ where $\sigma \in \{\pm 1 \}$, $e$ is an (potentially negative) integer, and $b$ is a rational number between $1$ and $2$ expressed as a binary fraction $1.b_1b_2\ldots b_{k}$ for some $b_1,\ldots,b_k \in \{0,1\}$ (that is $b = 1 + b_1/2 + b_2/4 + \ldots + b_k/2^k$). Commonly-used floating-point representations fix the numbers  $\ell$ and $k$  of bits to represent $e$ and $b$ respectively. In the example above, assuming we use two's complement representation for $e$, the number represented is $-1 \times 2^{5} \times ( 1 + 1/2 + 1/4 + 1/64 + 1/512) = -56.5625$.](/images/introtcs/original-floatingpoint.webp){#floatingpointfig}
 
 
 
 The above representation of real numbers via rational numbers that approximate them is a fine choice for a representation scheme.
-However, typically in computing applications, it is more common to use the _floating-point representation scheme_   (see [floatingpointfig](){.ref}) to represent real numbers.
+However, typically in computing applications, it is more common to use the _floating-point representation scheme_   (see [floatingpointfig](#floatingpointfig){.ref}) to represent real numbers.
 In the floating-point representation scheme we represent $x\in \R$ by the pair $(b,e)$ of (positive or negative) integers of some prescribed sizes (determined by the desired accuracy) such that $b \times 2^{e}$ is closest to $x$.
 Floating-point representation is the base-two version of  [scientific notation](https://goo.gl/MUJnVE), where one represents a number $y\in R$ as its approximation of the form $b \times 10^e$ for  $b,e$.
 It is called "floating-point"  because we can think of the number $b$ as specifying a sequence of binary digits, and $e$ as describing the location of the "binary point" within this sequence.
 The use of floating representation is the reason why in many programming systems, printing the expression `0.1+0.2` will result in `0.30000000000000004` and not `0.3`, see [here](http://floating-point-gui.de/), [here](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html) and [here](https://randomascii.wordpress.com/2012/04/05/floating-point-complexities/) for more.
 
 
-![XKCD cartoon on floating-point arithmetic.](/images/introtcs/lec_02_representation-6.webp){#xkcdfloatingfig .margin  }
+![XKCD cartoon on floating-point arithmetic.](/images/introtcs/original-e_to_the_pi_minus_pi.webp){#xkcdfloatingfig .margin  }
 
 The reader might be (rightly) worried about the fact that the floating-point representation (or the rational number one) can only _approximately_ represent real numbers.
 In many (though not all) computational applications, one can make the accuracy tight enough so that this does not affect the final result, though sometimes we do need to be careful.
@@ -360,16 +360,16 @@ __Countable sets.__ We say that a set $S$ is _countable_ if there is an onto map
 $C(0),C(1),C(2),\ldots$. 
 Since the binary representation yields an onto map from $\{0,1\}^*$ to $\N$, and the composition of two onto maps is onto,
 a set $S$ is countable iff there is an onto map from $\{0,1\}^*$ to $S$.
-Using the basic properties of functions (see [functionsec](){.ref}), a set is countable if and only if there is a one-to-one function
+Using the basic properties of functions (see [functionsec](#functionsec){.ref}), a set is countable if and only if there is a one-to-one function
 from $S$ to $\{0,1\}^*$.
-Hence, we can rephrase [cantorthm](){.ref} as follows:
+Hence, we can rephrase [cantorthm](#cantorthm){.ref} as follows:
 
 > ### {.theorem title="Cantor's Theorem (equivalent statement)" #cantorthmtwo}
 The reals are uncountable. That is, there does not exist an onto function $NtR:\N \rightarrow \R$. 
 
 
 
-[cantorthmtwo](){.ref} was proven by [Georg Cantor](https://en.wikipedia.org/wiki/Georg_Cantor) in 1874.
+[cantorthmtwo](#cantorthmtwo){.ref} was proven by [Georg Cantor](https://en.wikipedia.org/wiki/Georg_Cantor) in 1874.
 This result (and the theory around it) was quite shocking to mathematicians at the time.
 By showing that there is no one-to-one map from $\R$ to $\{0,1\}^*$ (or $\N$), Cantor showed that these two infinite sets have "different forms of infinity" and that the set of real numbers $\R$ is in some sense "bigger"  than the infinite set $\{0,1\}^*$.
 The notion that there are "[shades of infinity](https://www.youtube.com/watch?v=SrU9YDoXE88)" was deeply disturbing to mathematicians and philosophers at the time.
@@ -380,17 +380,17 @@ The tide eventually turned, and these days Cantor's work is universally accepted
 As David Hilbert said in 1925, _"No one shall expel us from the paradise which Cantor has created for us."_
 As we will see later in this book, Cantor's ideas also play a huge role in the theory of computation.
 
-Now that we have discussed [cantorthm](){.ref}'s importance, let us see the proof.
+Now that we have discussed [cantorthm](#cantorthm){.ref}'s importance, let us see the proof.
 It is achieved in two steps:
 
 1. Define some infinite set $\mathcal{X}$ for which it is easier for us to prove that $\mathcal{X}$ is not countable (namely,  it's easier for us to prove that there is no one-to-one function from  $\mathcal{X}$ to $\{0,1\}^*$).
 
 2. Prove that there _is_ a one-to-one function $G$ mapping $\mathcal{X}$ to $\mathbb{R}$.
 
-We can use a proof by contradiction to show that these two facts together imply [cantorthm](){.ref}.
+We can use a proof by contradiction to show that these two facts together imply [cantorthm](#cantorthm){.ref}.
 Specifically, if we assume (towards the sake of contradiction) that there exists some one-to-one $F$ mapping $\mathbb{R}$ to $\{0,1\}^*$, then the function $x \mapsto F(G(x))$ obtained by composing $F$ with the function $G$ from Step 2 above would be a one-to-one function from $\mathcal{X}$ to $\{0,1\}^*$, which contradicts what we proved in Step 1!
 
-To turn this idea into a full proof of [cantorthm](){.ref} we need to:
+To turn this idea into a full proof of [cantorthm](#cantorthm){.ref} we need to:
 
 * Define the set $\mathcal{X}$.
 
@@ -408,7 +408,7 @@ We denote by $\{0,1\}^\infty$ the set  $\{ f \;|\; f:\N \rightarrow \{0,1\} \}$.
 
 That is, $\{0,1\}^\infty$ is a set of _functions_, and a function $f$ is in $\{0,1\}^\infty$ iff its domain is $\N$ and its codomain is $\{0,1\}$.
 We can also think of $\{0,1\}^\infty$ as the set of all infinite _sequences_ of bits, since a function $f:\N \rightarrow \{0,1\}$ can be identified with the sequence $(f(0),f(1),f(2),\ldots )$.
-The following two lemmas show that $\{0,1\}^\infty$ can play the role of $\mathcal{X}$ to establish [cantorthm](){.ref}.
+The following two lemmas show that $\{0,1\}^\infty$ can play the role of $\mathcal{X}$ to establish [cantorthm](#cantorthm){.ref}.
 
 > ### {.lemma #sequencestostrings}
 There does not exist a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$.^[$FtS$ stands for "functions to strings".]
@@ -416,23 +416,23 @@ There does not exist a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$
 > ### {.lemma #sequencestoreals}
 There _does_ exist a one-to-one map $FtR:\{0,1\}^\infty \rightarrow \R$.^[$FtR$ stands for "functions to reals."]
 
-As we've seen above, [sequencestostrings](){.ref} and [sequencestoreals](){.ref} together imply [cantorthm](){.ref}.
+As we've seen above, [sequencestostrings](#sequencestostrings){.ref} and [sequencestoreals](#sequencestoreals){.ref} together imply [cantorthm](#cantorthm){.ref}.
 To repeat the argument more formally, suppose, for the sake of contradiction, that there did exist a one-to-one function $RtS:\R \rightarrow \{0,1\}^*$.
-By [sequencestoreals](){.ref}, there exists a one-to-one function $FtR:\{0,1\}^\infty \rightarrow \R$.
-Thus, under this assumption, since the composition of two one-to-one functions is one-to-one (see [onetoonecompex](){.ref}), the function $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ defined as $FtS(f)=RtS(FtR(f))$ will be one to one, contradicting [sequencestostrings](){.ref}.
-See [proofofcantorfig](){.ref} for a graphical illustration of this argument.
+By [sequencestoreals](#sequencestoreals){.ref}, there exists a one-to-one function $FtR:\{0,1\}^\infty \rightarrow \R$.
+Thus, under this assumption, since the composition of two one-to-one functions is one-to-one (see [onetoonecompex](#onetoonecompex){.ref}), the function $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ defined as $FtS(f)=RtS(FtR(f))$ will be one to one, contradicting [sequencestostrings](#sequencestostrings){.ref}.
+See [proofofcantorfig](#proofofcantorfig){.ref} for a graphical illustration of this argument.
 
-![We prove [cantorthm](){.ref} by combining [sequencestostrings](){.ref} and [sequencestoreals](){.ref}.  [sequencestoreals](){.ref}, which uses standard calculus tools, shows the existence of a one-to-one map $FtR$ from the set $\{0,1\}^\infty$ to the real numbers. So, if a hypothetical one-to-one map $RtS:\R \rightarrow \{0,1\}^*$ existed, then we could compose them to get a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. Yet this contradicts [sequencestostrings](){.ref}- the heart of the proof- which rules out the existence of such a map.](../figure/proofofcantor.png){#proofofcantorfig }
+![We prove [cantorthm](#cantorthm){.ref} by combining [sequencestostrings](#sequencestostrings){.ref} and [sequencestoreals](#sequencestoreals){.ref}.  [sequencestoreals](#sequencestoreals){.ref}, which uses standard calculus tools, shows the existence of a one-to-one map $FtR$ from the set $\{0,1\}^\infty$ to the real numbers. So, if a hypothetical one-to-one map $RtS:\R \rightarrow \{0,1\}^*$ existed, then we could compose them to get a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. Yet this contradicts [sequencestostrings](#sequencestostrings){.ref}- the heart of the proof- which rules out the existence of such a map.](/images/introtcs/original-proofofcantor.webp){#proofofcantorfig }
 
 Now all that is left is to prove these two lemmas.
-We start by proving  [sequencestostrings](){.ref} which is really the heart of [cantorthm](){.ref}.
+We start by proving  [sequencestostrings](#sequencestostrings){.ref} which is really the heart of [cantorthm](#cantorthm){.ref}.
 
 
 
-![We construct a function $\overline{d}$ such that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$ by ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$ for every $x\in \{0,1\}^*$ with lexicographic order $n(x)$. We can think of this as building a table where the columns correspond to numbers $m\in \N$ and the rows correspond to $x\in \{0,1\}^*$ (sorted according to $n(x)$). If the entry in the $x$-th row and the $m$-th column corresponds to $g(m))$ where $g=StF(x)$ then $\overline{d}$ is obtained by going over the "diagonal" elements in this table (the entries corresponding to the $x$-th row and $n(x)$-th column) and ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$. ](/images/introtcs/lec_02_representation-7.webp){#diagrealsfig   }
+![We construct a function $\overline{d}$ such that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$ by ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$ for every $x\in \{0,1\}^*$ with lexicographic order $n(x)$. We can think of this as building a table where the columns correspond to numbers $m\in \N$ and the rows correspond to $x\in \{0,1\}^*$ (sorted according to $n(x)$). If the entry in the $x$-th row and the $m$-th column corresponds to $g(m))$ where $g=StF(x)$ then $\overline{d}$ is obtained by going over the "diagonal" elements in this table (the entries corresponding to the $x$-th row and $n(x)$-th column) and ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$. ](/images/introtcs/original-diagonalization.webp){#diagrealsfig   }
 
 
-__Warm-up: "Baby Cantor".__ The proof of [sequencestostrings](){.ref} is rather subtle. One way to get intuition for it is to consider the following finite statement "there is no onto function $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". Of course we know it's true since the set $\{0,1\}^{100}$ is bigger than the set $[100]$, but let's see a direct proof. For every $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, we can define the string $\overline{d} \in \{0,1\}^{100}$ as follows: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. If $f$ was onto, then there would exist some $n\in [100]$ such that $f(n) =\overline{d}$, but we claim that no such $n$ exists.  Indeed, if there was such $n$, then the $n$-th coordinate of $\overline{d}$ would equal $f(n)_n$ but by definition this coordinate equals $1-f(n)_n$. See also a ["proof by code"](https://trinket.io/python/4cff7e58f4) of this statement.
+__Warm-up: "Baby Cantor".__ The proof of [sequencestostrings](#sequencestostrings){.ref} is rather subtle. One way to get intuition for it is to consider the following finite statement "there is no onto function $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". Of course we know it's true since the set $\{0,1\}^{100}$ is bigger than the set $[100]$, but let's see a direct proof. For every $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, we can define the string $\overline{d} \in \{0,1\}^{100}$ as follows: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. If $f$ was onto, then there would exist some $n\in [100]$ such that $f(n) =\overline{d}$, but we claim that no such $n$ exists.  Indeed, if there was such $n$, then the $n$-th coordinate of $\overline{d}$ would equal $f(n)_n$ but by definition this coordinate equals $1-f(n)_n$. See also a ["proof by code"](https://trinket.io/python/4cff7e58f4) of this statement.
 
 
 <iframe src="https://trinket.io/embed/python/4cff7e58f4" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
@@ -443,9 +443,9 @@ __Warm-up: "Baby Cantor".__ The proof of [sequencestostrings](){.ref} is rather 
 
 ::: {.proof data-ref="sequencestostrings"}
 We will prove that there does not exist an _onto_ function $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.
-This implies the lemma since for every two sets $A$ and $B$, there exists an onto function from $A$ to $B$ if and only if there exists a one-to-one function from $B$ to $A$  (see [onetooneimpliesonto](){.ref}).
+This implies the lemma since for every two sets $A$ and $B$, there exists an onto function from $A$ to $B$ if and only if there exists a one-to-one function from $B$ to $A$  (see [onetooneimpliesonto](#onetooneimpliesonto){.ref}).
 
-The technique of this proof is known as the "diagonal argument" and is illustrated in [diagrealsfig](){.ref}.
+The technique of this proof is known as the "diagonal argument" and is illustrated in [diagrealsfig](#diagrealsfig){.ref}.
 We assume, towards a contradiction, that there exists such a function $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.
 We will show that $StF$ is not onto by demonstrating a function $\overline{d}\in \{0,1\}^\infty$ such that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$.
 Consider the lexicographic ordering of binary strings (i.e., $""$,$0$,$1$,$00$,$01$,$\ldots$).
@@ -477,12 +477,12 @@ If $n$ is the position of $x$ in the lexicographical order then by construction 
 
 
 ::: {.remark title="Generalizing beyond strings and reals" #generalizepowerset}
-[sequencestostrings](){.ref} doesn't really have much to do with the natural numbers or the strings.
+[sequencestostrings](#sequencestostrings){.ref} doesn't really have much to do with the natural numbers or the strings.
 An examination of the proof shows that it really shows that for _every_ set $S$, there is no one-to-one map $F:\{0,1\}^S \rightarrow S$ where $\{0,1\}^S$ denotes the set $\{ f \;|\; f:S \rightarrow \{0,1\} \}$ of all Boolean functions with domain $S$.
 Since we can identify a subset $V \subseteq S$ with its characteristic function $f=1_V$ (i.e., $1_V(x)=1$ iff $x\in V$), we can think of $\{0,1\}^S$ also as the set of all _subsets_ of $S$.
 This subset is sometimes called the _power set_ of $S$ and denoted by $\mathcal{P}(S)$ or $2^S$.
 
-The proof of [sequencestostrings](){.ref} can be generalized to show that there is no one-to-one map between a set and its power set.
+The proof of [sequencestostrings](#sequencestostrings){.ref} can be generalized to show that there is no one-to-one map between a set and its power set.
 In particular, it means that the set $\{0,1\}^\R$ is "even bigger" than $\R$.
 Cantor used these ideas to construct an infinite hierarchy of shades of infinity.
 The number of such shades turns out to be much larger than $|\N|$ or even $|\R|$.
@@ -497,10 +497,10 @@ We will come back to the fascinating story of this hypothesis later on in this b
 
 
 
-To complete the proof of [cantorthm](){.ref}, we need to show [sequencestoreals](){.ref}.
+To complete the proof of [cantorthm](#cantorthm){.ref}, we need to show [sequencestoreals](#sequencestoreals){.ref}.
 This requires some calculus background but is otherwise straightforward.
 If you have not had much experience with limits of a real series before, then the formal proof below might be a little hard to follow.
-This part is not the core of Cantor's argument, nor are such limits important to the remainder of this book, so you can feel free to take [sequencestoreals](){.ref} on faith and skip the proof.
+This part is not the core of Cantor's argument, nor are such limits important to the remainder of this book, so you can feel free to take [sequencestoreals](#sequencestoreals){.ref} on faith and skip the proof.
 
 
 ::: {.proofidea data-ref="sequencestoreals"}
@@ -518,7 +518,7 @@ Formally,
 $$
 FtR(f) = \sum_{i=0}^\infty f(i) \cdot 10^{-i} \label{eqcantordecimalexpansion}
 $$
-It is a known result in calculus (whose proof we will not repeat here) that the series on the right-hand side of [eqcantordecimalexpansion](){.eqref} converges to a definite limit in $\mathbb{R}$.
+It is a known result in calculus (whose proof we will not repeat here) that the series on the right-hand side of [eqcantordecimalexpansion](#eqcantordecimalexpansion){.eqref} converges to a definite limit in $\mathbb{R}$.
 
 We now prove that $FtR$ is one to one.
 Let $f,g$ be two distinct functions in $\{0,1\}^\infty$.
@@ -539,7 +539,7 @@ In particular we see that for every distinct $f,g \in \{0,1\}^\infty$, $FtR(f) \
 
 
 ::: {.remark title="Using decimal expansion (optional)" #decimal}
-In the proof above we used the fact that $1 + 1/10 + 1/100 + \cdots$ converges to $10/9$, which plugging into [eqcantordecimalexpansion2](){.eqref} yields that the difference between $FtR(g)$ and $FtR(h)$ is at least $10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.
+In the proof above we used the fact that $1 + 1/10 + 1/100 + \cdots$ converges to $10/9$, which plugging into [eqcantordecimalexpansion2](#eqcantordecimalexpansion2){.eqref} yields that the difference between $FtR(g)$ and $FtR(h)$ is at least $10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.
 While the choice of the decimal representation for $FtR$ was arbitrary, we could not have used the binary representation in its place.
 Had we used the _binary_ expansion instead of decimal, the corresponding sequence $1 + 1/2 + 1/4 + \cdots$ converges to $2/1=2$, and since $2^{-k} = 2^{-k-1} \cdot 2$, we could not have deduced that $FtR$ is one to one.
 Indeed there do exist pairs of distinct sequences $f,g\in \{0,1\}^\infty$ such that $\sum_{i=0}^\infty f(i)2^{-i} = \sum_{i=0}^\infty g(i)2^{-i}$.
@@ -556,13 +556,13 @@ Let $ALL$ be the set of all functions $F:\{0,1\}^* \rightarrow \{0,1\}$.
 Then $ALL$ is uncountable. Equivalently, there does not exist an onto map $StALL:\{0,1\}^* \rightarrow ALL$.
 
 > ### {.proofidea data-ref="uncountalbefuncthm"}
-This is a direct consequence of [sequencestostrings](){.ref}, since we can use the binary representation to show a one-to-one map
+This is a direct consequence of [sequencestostrings](#sequencestostrings){.ref}, since we can use the binary representation to show a one-to-one map
 from $\{0,1\}^\infty$ to $ALL$. Hence the uncountability of $\{0,1\}^\infty$ implies the uncountability  of $ALL$.
 
 
 ::: {.proof data-ref="uncountalbefuncthm"}
 Since $\{0,1\}^\infty$ is uncountable, the result will follow by showing a one-to-one map from $\{0,1\}^\infty$ to $ALL$.
-The reason is that the existence of such a map implies that if $ALL$ was countable, and hence there was a one-to-one map from $ALL$ to $\N$, then there would have been a one-to-one map from $\{0,1\}^\infty$ to $\N$, contradicting [sequencestostrings](){.ref}.
+The reason is that the existence of such a map implies that if $ALL$ was countable, and hence there was a one-to-one map from $ALL$ to $\N$, then there would have been a one-to-one map from $\{0,1\}^\infty$ to $\N$, contradicting [sequencestostrings](#sequencestostrings){.ref}.
 
 We now show this one-to-one map. We simply map a function $f \in \{0,1\}^\infty$ to the function $F:\{0,1\}^* \rightarrow \{0,1\}$ as follows.
 We let $F(0)=f(0)$, $F(1)=f(1)$, $F(10)=f(2)$, $F(11)=f(3)$ and so on and so forth.
@@ -623,7 +623,7 @@ We will define $D(x)$ to equal $o_0$ in the first case and this single object $o
 By definition $D(E(o))=o$ for every $o\in \mathcal{O}$.
 
 ::: {.remark title="Total decoding functions" #totaldecoding}
-While the decoding function of a representation scheme can in general be a _partial_ function,  the proof of [decodelem](){.ref} implies that every representation scheme has a _total_ decoding function. This observation can sometimes be useful.
+While the decoding function of a representation scheme can in general be a _partial_ function,  the proof of [decodelem](#decodelem){.ref} implies that every representation scheme has a _total_ decoding function. This observation can sometimes be useful.
 :::
 
 
@@ -663,7 +663,7 @@ The idea is the following: if our representation has the property that no string
 For example, because in English every sentence ends with a punctuation mark such as a period, exclamation, or question mark, no sentence can be a prefix of another and so we can represent a list of sentences by merely concatenating the sentences one after the other. (English has some complications such as periods used for abbreviations (e.g., "e.g.") or sentence quotes containing punctuation, but the high level point of a prefix-free representation for sentences still holds.)
 
 It turns out that we can transform _every_ representation to a prefix-free form.
-This justifies [representtuplesidea](){.ref}, and allows us to transform a representation scheme for objects of a type $T$ to a representation scheme of _lists_ of objects of the type $T$.
+This justifies [representtuplesidea](#representtuplesidea){.ref}, and allows us to transform a representation scheme for objects of a type $T$ to a representation scheme of _lists_ of objects of the type $T$.
 By repeating the same technique, we can also represent lists of lists of objects of type $T$, and so on and so forth.
 But first let us formally define prefix-freeness:
 
@@ -690,19 +690,19 @@ $$
 
 
 > ### { .pause }
-[prefixfreethm](){.ref} is an example of a  theorem that is a little hard to parse, but in fact is fairly straightforward to prove once you understand what it means.
+[prefixfreethm](#prefixfreethm){.ref} is an example of a  theorem that is a little hard to parse, but in fact is fairly straightforward to prove once you understand what it means.
 Therefore, I highly recommend that you pause here to make sure you understand the statement of this theorem. You should also try to prove it on your own before proceeding further.
 
 
 
 
-![If we have a prefix-free representation of each object then we can concatenate the representations of $k$ objects to obtain a representation for the tuple $(o_0,\ldots,o_{k-1})$.](/images/introtcs/lec_02_representation-8.webp){#prefixfreerepconcat .margin  }
+![If we have a prefix-free representation of each object then we can concatenate the representations of $k$ objects to obtain a representation for the tuple $(o_0,\ldots,o_{k-1})$.](/images/introtcs/original-repres_list.webp){#prefixfreerepconcat .margin  }
 
 > ### {.proofidea #proofidea-prefixfreethm data-ref="prefixfreethm"}
 The idea behind the proof is simple.
 Suppose that for example we want to decode a triple $(o_0,o_1,o_2)$ from its representation $x= \overline{E}(o_0,o_1,o_2)=E(o_0)E(o_1)E(o_2)$.
 We will do so by first finding the first prefix $x_0$ of $x$ that is a representation of some object.
-Then we will decode this object, remove $x_0$ from $x$ to obtain a new string $x'$,  and continue onwards to find the first prefix $x_1$ of $x'$ and so on and so forth  (see [prefix-free-tuples-ex](){.ref}).
+Then we will decode this object, remove $x_0$ from $x$ to obtain a new string $x'$,  and continue onwards to find the first prefix $x_1$ of $x'$ and so on and so forth  (see [prefix-free-tuples-ex](#prefix-free-tuples-ex){.ref}).
 The prefix-freeness property of $E$ will ensure that $x_0$ will in fact be $E(o_0)$,  $x_1$ will be $E(o_1)$, etc.
 
 
@@ -750,7 +750,7 @@ which means that $E(o'_k) \cdots E(o'_{k'-1})$ must correspond to the empty stri
 ::: {.remark title="Prefix freeness of list representation" #prefixfreelistsrem}
 Even if the representation $E$ of objects in $\mathcal{O}$ is prefix free, this does not mean that our representation $\overline{E}$ of _lists_ of such objects will be prefix free as well.
 In fact, it won't be: for every three objects $o,o',o''$ the representation of the list $(o,o')$ will be a prefix of the representation of the list $(o,o',o'')$.
-However, as we see in [prefixfreetransformationlem](){.ref} below, we can transform _every_ representation into prefix-free form, and so will be able to use that transformation if needed to represent lists of lists, lists of lists of lists, and so on and so forth.
+However, as we see in [prefixfreetransformationlem](#prefixfreetransformationlem){.ref} below, we can transform _every_ representation into prefix-free form, and so will be able to use that transformation if needed to represent lists of lists, lists of lists of lists, and so on and so forth.
 :::
 
 
@@ -787,12 +787,12 @@ If $|x|>|x'|$ then $|PF(x)|=2|x|+2>|PF(x')|=2|x'|+2$ and hence $PF(x)$ is longer
 In all cases we see that $PF(x)=\overline{E}(o)$ is not a prefix of $PF(x')=\overline{E}(o')$, hence completing the proof.
 :::
 
-The proof of [prefixfreetransformationlem](){.ref} is not the only or even the best way to transform an arbitrary representation into prefix-free form.
-[prefix-free-ex](){.ref} asks you to construct a more efficient prefix-free transformation satisfying $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
+The proof of [prefixfreetransformationlem](#prefixfreetransformationlem){.ref} is not the only or even the best way to transform an arbitrary representation into prefix-free form.
+[prefix-free-ex](#prefix-free-ex){.ref} asks you to construct a more efficient prefix-free transformation satisfying $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
 
 ### "Proof by Python" (optional)
 
-The proofs of [prefixfreethm](){.ref} and [prefixfreetransformationlem](){.ref} are _constructive_ in the sense that they give us:
+The proofs of [prefixfreethm](#prefixfreethm){.ref} and [prefixfreetransformationlem](#prefixfreetransformationlem){.ref} are _constructive_ in the sense that they give us:
 
 * A way to transform the encoding and decoding functions of any representation of an object $O$ to encoding and decoding functions that are prefix-free, and
 
@@ -803,7 +803,7 @@ Specifically, we could transform any pair of Python functions `encode` and `deco
 Similarly, given `pfencode` and `pfdecode` for single objects, we can extend them to encoding of lists.
 Let us show how this works for the case of the `NtS` and `StN` functions we defined above.
 
-We start with the "Python proof" of [prefixfreetransformationlem](){.ref}: a way to transform an arbitrary representation into one that is _prefix free_.
+We start with the "Python proof" of [prefixfreetransformationlem](#prefixfreetransformationlem){.ref}: a way to transform an arbitrary representation into one that is _prefix free_.
 The function `prefixfree` below takes as input a pair of encoding and decoding functions, and returns a triple of functions containing _prefix-free_ encoding and decoding functions, as well as a function that checks whether a string is a valid encoding of an object.
 
 ```python
@@ -841,7 +841,7 @@ pfvalidM(pfNtS(234))
 Note that the Python function `prefixfree` above takes two _Python functions_ as input and outputs three Python functions as output. (When it's not too awkward, we use the term "Python function" or "subroutine" to distinguish between such snippets of Python programs and mathematical functions.)
 You don't have to know Python in this course, but you do need to get comfortable with the idea of functions as mathematical objects in their own right, that can be used as inputs and outputs of other functions.
 
-We now show a "Python proof" of [prefixfreethm](){.ref}. Namely, we show a function `represlists` that takes as input a prefix-free representation scheme (implemented via encoding, decoding, and validity testing functions) and outputs a representation scheme for _lists_ of such objects. If we want to make this representation prefix-free then we could fit it into the function `prefixfree` above.
+We now show a "Python proof" of [prefixfreethm](#prefixfreethm){.ref}. Namely, we show a function `represlists` that takes as input a prefix-free representation scheme (implemented via encoding, decoding, and validity testing functions) and outputs a representation scheme for _lists_ of such objects. If we want to make this representation prefix-free then we could fit it into the function `prefixfree` above.
 
 ```python
 def represlists(pfencode,pfdecode,pfvalid):
@@ -886,11 +886,11 @@ Since the ASCII representation is fixed-length, it is automatically prefix-free 
 There are several types of prefix-free representations of the code points, a popular one being [UTF-8](https://en.wikipedia.org/wiki/UTF-8) that encodes every codepoint into a string of length between $8$ and $32$.
 <!-- (For example, the UTF-8 encoding for the "confused face" emoji 😕 is `11110000100111111001100010010101`) -->
 
-![The word "Binary" in "Grade 1" or "uncontracted" Unified English Braille. This word is encoded using seven symbols since the first one is a modifier indicating that the first letter is capitalized.](/images/introtcs/lec_02_representation-9.webp){#braillefig .class .margin }
+![The word "Binary" in "Grade 1" or "uncontracted" Unified English Braille. This word is encoded using seven symbols since the first one is a modifier indicating that the first letter is capitalized.](/images/introtcs/original-braille.webp){#braillefig .class .margin }
 
 
 ::: {.example title="The Braille representation" #braille}
-The _Braille system_ is another way to encode letters and other symbols as binary strings. Specifically, in Braille, every letter is encoded as a string in $\{0,1\}^6$, which is written using indented dots arranged in two columns and three rows, see [braillefig](){.ref}.
+The _Braille system_ is another way to encode letters and other symbols as binary strings. Specifically, in Braille, every letter is encoded as a string in $\{0,1\}^6$, which is written using indented dots arranged in two columns and three rows, see [braillefig](#braillefig){.ref}.
 (Some symbols require more than one six-bit string to encode, and so Braille uses a more general prefix-free encoding.)
 
 The Braille system was invented in 1821 by [Louis Braille](https://goo.gl/Y2BkEe) when he was just 12 years old (though he continued working on it and improving it throughout his life). Braille was a French boy who lost his eyesight at the age of 5 as the result of an accident.
@@ -943,7 +943,7 @@ We can transform an undirected graph to a directed graph by replacing every edge
 Another representation for graphs is the _adjacency list_ representation. That is, we identify the vertex set $V$ of a graph with the set $[n]$ where $n=|V|$, and represent the graph $G=(V,E)$ as a list of $n$ lists, where the $i$-th list consists of the out-neighbors of vertex $i$.
 The difference between these representations can be significant for some applications, though for us would typically be immaterial.
 
-![Representing the graph $G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})$ in the adjacency matrix and adjacency list representations.](/images/introtcs/lec_02_representation-10.webp){#representinggraphsfig .margin  }
+![Representing the graph $G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})$ in the adjacency matrix and adjacency list representations.](/images/introtcs/original-representing_graphs.webp){#representinggraphsfig .margin  }
 
 
 ### Representing lists and nested lists
@@ -1008,7 +1008,7 @@ Computing such functions corresponds to answering a YES/NO question, and hence t
 Given any function $F:\{0,1\}^* \rightarrow \{0,1\}$ and $x\in \{0,1\}^*$, the task of computing $F(x)$ corresponds to the task of deciding whether or not $x\in L$ where $L = \{ x : F(x)=1 \}$ is known as the _language_ that corresponds to the function $F$. (The language terminology is due to historical connections between the theory of computation and formal linguistics as developed by Noam Chomsky.)
 Hence many texts refer to such a computational task as _deciding a language_.
 
-![A subset $L \subseteq \{0,1\}^*$ can be identified with the function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F(x)=1$ if $x\in L$ and $F(x)=0$ if $x\not\in L$. Functions with a single bit of output are called _Boolean functions_, while subsets of strings are called _languages_. The above shows that the two are essentially the same object, and we can identify the task of deciding membership in $L$ (known as _deciding a language_ in the literature) with the task of computing the function $F$.](/images/introtcs/lec_02_representation-11.webp){#booleanlangfig .margin  }
+![A subset $L \subseteq \{0,1\}^*$ can be identified with the function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F(x)=1$ if $x\in L$ and $F(x)=0$ if $x\not\in L$. Functions with a single bit of output are called _Boolean functions_, while subsets of strings are called _languages_. The above shows that the two are essentially the same object, and we can identify the task of deciding membership in $L$ (known as _deciding a language_ in the literature) with the task of computing the function $F$.](/images/introtcs/original-booleanfunc.webp){#booleanlangfig .margin  }
 
 
 
@@ -1025,7 +1025,7 @@ We will be interested in questions such as:
 
 * Can a function being hard to compute ever be a _good thing_? Can we use it for applications in areas such as cryptography?
 
-In order to do that, we will need to mathematically define the notion of an _algorithm_, which is what we will do in [compchap](){.ref}.
+In order to do that, we will need to mathematically define the notion of an _algorithm_, which is what we will do in [compchap](#compchap){.ref}.
 
 ### Distinguish functions from programs!  { #secimplvsspec }
 
@@ -1063,9 +1063,9 @@ print(mult2(12,7))
 Both `mult1` and `mult2` produce the same output given the same pair of natural number inputs.
 (Though `mult1` will take far longer to do so when the numbers become large.)
 Hence, even though these are two different _programs_, they compute the same _mathematical function_.
-This distinction between a _program_ or _algorithm_ $A$, and the _function_ $F$ that $A$ _computes_ will be absolutely crucial for us in this course (see also [functionornotfig](){.ref}).
+This distinction between a _program_ or _algorithm_ $A$, and the _function_ $F$ that $A$ _computes_ will be absolutely crucial for us in this course (see also [functionornotfig](#functionornotfig){.ref}).
 
-![A _function_ is a mapping of inputs to outputs. A _program_ is a set of instructions on how to obtain an output given an input. A program _computes_ a function, but it is not the same as a function, popular programming language terminology notwithstanding.](/images/introtcs/lec_02_representation-12.webp){#functionornotfig .margin  }
+![A _function_ is a mapping of inputs to outputs. A _program_ is a set of instructions on how to obtain an output given an input. A program _computes_ a function, but it is not the same as a function, popular programming language terminology notwithstanding.](/images/introtcs/original-functionornot.webp){#functionornotfig .margin  }
 
 ::: { .bigidea #functionprogramidea }
 A _function_ is not the same as a _program_. A program _computes_ a function.
@@ -1122,7 +1122,7 @@ d. All of the above.
 
 ::: {.exercise title="Binary representation" #binaryrepex}
 
-a. Prove that the function $NtS:\N \rightarrow \{0,1\}^*$ of the binary representation defined in [ntseq](){.eqref} satisfies that for every $n\in \N$, if $x = NtS(n)$ then $|x| =1+\max(0,\floor{\log_2 n})$ and $x_i = \floor{x/2^{\floor{\log_2 n}-i}} \mod 2$.
+a. Prove that the function $NtS:\N \rightarrow \{0,1\}^*$ of the binary representation defined in [ntseq](#ntseq){.eqref} satisfies that for every $n\in \N$, if $x = NtS(n)$ then $|x| =1+\max(0,\floor{\log_2 n})$ and $x_i = \floor{x/2^{\floor{\log_2 n}-i}} \mod 2$.
 
 b. Prove that $NtS$ is a one to one function by coming up with a function $StN:\{0,1\}^* \rightarrow \N$ such that $StN(NtS(n))=n$ for every $n\in \N$.
 :::
@@ -1152,9 +1152,9 @@ Show that there is a string representation of directed graphs with vertex set $[
 
 
 ::: {.exercise title="Representing graphs: lower bound" #represgraphlbex}
-1. Define $S_n$ to be the set of one-to-one and onto functions mapping $[n]$ to $[n]$. Prove that there is a one-to-one mapping from $S_n$ to $G_{2n}$, where $G_{2n}$ is the set defined in [representinggraphsex](){.ref} above.
+1. Define $S_n$ to be the set of one-to-one and onto functions mapping $[n]$ to $[n]$. Prove that there is a one-to-one mapping from $S_n$ to $G_{2n}$, where $G_{2n}$ is the set defined in [representinggraphsex](#representinggraphsex){.ref} above.
 
-2. In this question you will show that one cannot improve the representation of [representinggraphsex](){.ref} to length $o(n \log n)$. Specifically, prove for every sufficiently large  $n\in \mathbb{N}$ there is _no_ one-to-one function $E:G_n \rightarrow \{0,1\}^{\lfloor 0.001 n \log n \rfloor +1000}$.
+2. In this question you will show that one cannot improve the representation of [representinggraphsex](#representinggraphsex){.ref} to length $o(n \log n)$. Specifically, prove for every sufficiently large  $n\in \mathbb{N}$ there is _no_ one-to-one function $E:G_n \rightarrow \{0,1\}^{\lfloor 0.001 n \log n \rfloor +1000}$.
 :::
 
 
@@ -1228,7 +1228,7 @@ Prove that for every two one-to-one functions $F:S \rightarrow T$ and $G:T \righ
 ::: {.exercise title="Natural numbers and strings" #naturalsstringsmapex}
 1. We have shown that the natural numbers can be represented as strings. Prove that the other direction holds as well: that there is a one-to-one map $StN:\{0,1\}^* \rightarrow \N$. ($StN$ stands for "strings to numbers.")
 
-2. Recall that Cantor proved that there is no one-to-one map $RtN:\R \rightarrow \N$. Show that Cantor's result implies [cantorthm](){.ref}.
+2. Recall that Cantor proved that there is no one-to-one map $RtN:\R \rightarrow \N$. Show that Cantor's result implies [cantorthm](#cantorthm){.ref}.
 :::
 
 ::: {.exercise title="Map lists of integers to a number" #listsinttonumex}
@@ -1252,7 +1252,7 @@ The two's complement representation of signed integers was suggested in von Neum
 
 The idea that we should separate the _definition_ or _specification_ of a function from its _implementation_ or _computation_ might seem "obvious," but it took quite a lot of time for mathematicians to arrive at this viewpoint.
 Historically, a function $F$ was identified by rules or formulas showing how to derive the output from the input.
-As we discuss in greater depth in  [chapcomputable](){.ref}, in the 1800s this somewhat informal notion of a function started "breaking at the seams," and eventually mathematicians arrived at the more rigorous definition of a function as an arbitrary assignment of input to outputs.
+As we discuss in greater depth in  [chapcomputable](#chapcomputable){.ref}, in the 1800s this somewhat informal notion of a function started "breaking at the seams," and eventually mathematicians arrived at the more rigorous definition of a function as an arbitrary assignment of input to outputs.
 While many functions may be described (or computed) by one or more formulas, today we do not consider that to be an essential property of functions, and also allow functions that do not correspond to any "nice" formula.
 
 We have mentioned that all representations of the real numbers are inherently _approximate_. Thus an important endeavor is to understand what guarantees we can offer on the approximation quality of the output of an algorithm, as a function of the approximation quality of the inputs. This question is known as the question of determining the [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) of given equations.

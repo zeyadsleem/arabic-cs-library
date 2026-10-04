@@ -45,7 +45,7 @@ For some of these problems  we know efficient (i.e., $O(n^c)$-time for a small c
 
 We present these examples to get a feel as to the kinds of problems that lie on each side of this divide and also see how sometimes seemingly minor changes in problem formulation can make the (known) complexity of a problem "jump" from polynomial to exponential.
 We do not formally define the notion of running time in this chapter, but use the same "I know it when I see it" notion of an $O(n)$ or $O(n^2)$ time algorithms as the one you've seen in introduction to computer science courses.
-We will see the precise definition of running time (using Turing machines and RAM machines / NAND-RAM) in [chapmodelruntime](){.ref}.
+We will see the precise definition of running time (using Turing machines and RAM machines / NAND-RAM) in [chapmodelruntime](#chapmodelruntime){.ref}.
 :::
 
 
@@ -54,7 +54,7 @@ As we will see, the difference between polynomial versus exponential time is typ
 and similarly an exponential-time algorithm will remain exponential in all of these platforms.
 One of the interesting phenomena of computing is that there is often a kind of a "threshold phenomenon" or "zero-one law" for running time.
 Many natural problems can either be solved in _polynomial_ running time with a _not-too-large exponent_ (e.g., something like $O(n^2)$ or $O(n^3)$), or require _exponential_ (e.g., at least $2^{\Omega(n)}$ or $2^{\Omega(\sqrt{n})}$) time to solve.
-The reasons for this phenomenon are still not fully understood, but some light on it is shed by the concept of _NP completeness_, which we will see in [cooklevinchap](){.ref}.
+The reasons for this phenomenon are still not fully understood, but some light on it is shed by the concept of _NP completeness_, which we will see in [cooklevinchap](#cooklevinchap){.ref}.
 
 This chapter is merely a tiny sample of the landscape of computational problems and efficient algorithms.
 If you  want to explore the field of algorithms and data structures  more deeply (which I very much hope you do!), the bibliographical notes contain references to some excellent texts, some of which are available freely on the web.
@@ -65,8 +65,8 @@ __Part I__ of this book contained a _quantitative study_ of computation of  _fin
 __Part II__ of the book contained a _qualitative study_ of computation of _infinite functions_ (i.e., functions of _unbounded input length_). In that part we asked the _qualitative question_ of whether or  not a function is computable at all, regardless of the number of operations.
 
 __Part III__ of the book, beginning with this chapter, merges the two approaches and contains a _quantitative study_ of computation of _infinite functions_. In this part we ask how do resources for computing a function _scale_ with the length of the input.
-In [chapmodelruntime](){.ref} we define the notion of running time, and the class $\mathbf{P}$ of functions that can be computed using a number of steps that scales _polynomially_ with the input length.
-In [nonuniformcompsec](){.ref} we will relate this class  to the models of Boolean circuits and straightline programs that we studied in Part I. 
+In [chapmodelruntime](#chapmodelruntime){.ref} we define the notion of running time, and the class $\mathbf{P}$ of functions that can be computed using a number of steps that scales _polynomially_ with the input length.
+In [nonuniformcompsec](#nonuniformcompsec){.ref} we will relate this class  to the models of Boolean circuits and straightline programs that we studied in Part I. 
 :::
 
 
@@ -75,7 +75,7 @@ In [nonuniformcompsec](){.ref} we will relate this class  to the models of Boole
 
 In this chapter we discuss several examples of important computational problems.
 Many of the problems will involve _graphs_.
-We have already encountered graphs before (see [graphsec](){.ref })  but now quickly recall the basic notation.
+We have already encountered graphs before (see [graphsec](#graphsec){.ref })  but now quickly recall the basic notation.
 A graph $G$ consists of a set of _vertices_ $V$ and _edges_ $E$ where each edge is a pair of vertices.
 We typically denote by $n$ the number of vertices (and in fact often consider graphs where the set of vertices $V$ equals the set $[n]$ of the integers between $0$ and $n-1$).
 In a _directed_ graph, an edge is an ordered pair $(u,v)$, which we sometimes denote as $\overrightarrow{u\;v}$.
@@ -88,7 +88,7 @@ Graphs are so ubiquitous in computer science and other sciences because they can
 These are not just the "obvious" data such as the road network (which can be thought of as a graph of whose vertices are locations with edges corresponding to road segments), or the web (which can be thought of as a graph whose vertices are web pages with edges corresponding to links), or social networks (which can be thought of as a graph whose vertices are people and the edges correspond to friend relation).
 Graphs can also denote correlations in data (e.g., graph of observations of features with edges corresponding to features that tend to appear together), causal relations (e.g., gene regulatory networks, where a gene is connected to gene products it derives), or the state space of a system (e.g., graph of configurations of a physical system, with edges corresponding to states that can be reached from one another in one step).
 
-![Some examples of graphs found on the Internet.](/images/introtcs/lec_10_efficient_alg-1.webp){#graphsfromwebfig .margin  }
+![Some examples of graphs found on the Internet.](/images/introtcs/original-graphs.webp){#graphsfromwebfig .margin  }
 
 
 
@@ -104,7 +104,7 @@ If each vertex has at least two neighbors then there can be an _exponential_ num
 We can find the shortest path using a [breadth first search (BFS)](https://en.wikipedia.org/wiki/Breadth-first_search), enumerating $s$'s neighbors, and then neighbors' neighbors, etc.. in order.
 If we maintain the neighbors in a list we can perform a BFS in $O(n^2)$ time, while using a _queue_ we can do this in $O(m)$ time, where $m$ is the number of edges.^[A _queue_ is a data structure for storing a list of elements in "First In First Out (FIFO)" order. Each "pop" operation removes an element from the queue in the order that they were "pushed" into it; see the [Wikipedia page](https://goo.gl/HY9BJD).]
 [Dijkstra's algorithm](https://goo.gl/PJyc4D) is a well-known generalization of BFS to _weighted_ graphs.
-More formally, the algorithm for computing the function $MINPATH$ is described in [bfsshortpathalg](){.ref}.
+More formally, the algorithm for computing the function $MINPATH$ is described in [bfsshortpathalg](#bfsshortpathalg){.ref}.
 
 
 ``` {.algorithm title="Shortest path via BFS" #bfsshortpathalg }
@@ -130,7 +130,7 @@ Return $\infty$
 
 Since we only add to the queue vertices $w$ with $D[w]=\infty$ (and then immediately set $D[w]$ to an actual number), we never push to the queue a vertex more than once, and hence the algorithm makes at most $n$ "push" and "pop" operations.
 For each vertex $v$, the number of times we run the inner loop is equal to the _degree_ of $v$ and hence the total running time is proportional to the sum  of all degrees which equals twice the number $m$ of edges.
-[bfsshortpathalg](){.ref} returns the correct answer since  the vertices are added to the queue in the order of their distance from $s$, and hence we will reach $t$ after we have explored all the vertices that are closer to $s$ than $t$.
+[bfsshortpathalg](#bfsshortpathalg){.ref} returns the correct answer since  the vertices are added to the queue in the order of their distance from $s$, and hence we will reach $t$ after we have explored all the vertices that are closer to $s$ than $t$.
 
 
 ::: {.remark title="On data structures" #datastructuresrem}
@@ -155,9 +155,9 @@ TSP is a classical optimization problem, with applications ranging from planning
 
 
 Surprisingly, while we can find the shortest path in $O(m)$ time, there is no known algorithm for the _longest path problem_  that significantly improves on the trivial "exhaustive search" or "brute force" algorithm that enumerates all the exponentially many possibilities for such paths.
-Specifically, the best known algorithms for the longest path problem take $O(c^n)$ time for some constant $c>1$. (At the moment the best record is $c \sim 1.65$ or so; even obtaining an $O(2^n)$ time bound is not that simple, see [longest-path-ex](){.ref}.)
+Specifically, the best known algorithms for the longest path problem take $O(c^n)$ time for some constant $c>1$. (At the moment the best record is $c \sim 1.65$ or so; even obtaining an $O(2^n)$ time bound is not that simple, see [longest-path-ex](#longest-path-ex){.ref}.)
 
-![A _knight's tour_ can be thought of as a maximally long path on the graph corresponding to a chessboard where we put an edge between any two squares that can be reached by one step via a legal knight move.](/images/introtcs/lec_10_efficient_alg-2.webp){#knighttourpath .margin  }
+![A _knight's tour_ can be thought of as a maximally long path on the graph corresponding to a chessboard where we put an edge between any two squares that can be reached by one step via a legal knight move.](/images/introtcs/original-knights_tour.webp){#knighttourpath .margin  }
 
 
 ### Finding the minimum cut in a graph { #mincutsec }
@@ -165,16 +165,16 @@ Specifically, the best known algorithms for the longest path problem take $O(c^n
 Given a graph $G=(V,E)$, a _cut_ of $G$ is a subset $S \subseteq V$  such that $S$ is neither empty nor is it all of $V$.
 The edges cut by $S$ are those edges where one of their endpoints is in $S$ and the other is in $\overline{S} = V \setminus S$.
 We denote this set of edges by $E(S,\overline{S})$.
-If $s,t \in V$ are a pair of vertices then an _$s,t$ cut_ is a cut such that $s\in S$ and $t\in \overline{S}$ (see [cutingraphfig](){.ref}).
+If $s,t \in V$ are a pair of vertices then an _$s,t$ cut_ is a cut such that $s\in S$ and $t\in \overline{S}$ (see [cutingraphfig](#cutingraphfig){.ref}).
 The _minimum $s,t$ cut problem_ is the task of finding, given $s$ and $t$, the minimum number $k$ such that there is an $s,t$ cut cutting $k$ edges (the problem is also sometimes phrased as finding the set that achieves this minimum; it turns out that algorithms to compute the number often yield the set as well).
 Formally, we define $MINCUT:\{0,1\}^* \rightarrow \{0,1\}^*$ to be the function that on input a string representing a triple $(G=(V,E),s,t)$ of a graph and two vertices, outputs the minimum number $k$ such that there exists a set $S \subseteq V$ with $s\in S$, $t\not\in S$ and $|E(S,\overline{S})|=k$.
 
 
-![A _cut_ in a graph $G=(V,E)$ is simply a subset $S$ of its vertices. The edges that are _cut_ by $S$ are all those whose one endpoint is in $S$ and the other one is in $\overline{S} = V \setminus S$. The cut edges are colored red in this figure.](/images/introtcs/lec_10_efficient_alg-3.webp){#cutingraphfig .margin  }
+![A _cut_ in a graph $G=(V,E)$ is simply a subset $S$ of its vertices. The edges that are _cut_ by $S$ are all those whose one endpoint is in $S$ and the other one is in $\overline{S} = V \setminus S$. The cut edges are colored red in this figure.](/images/introtcs/original-cutingraph.webp){#cutingraphfig .margin  }
 
 Computing minimum $s,t$ cuts is useful in many applications since minimum cuts often correspond to _bottlenecks_.
 For example, in a communication  or railroad network the minimum cut between $s$ and $t$ corresponds to the smallest number of edges that, if dropped, will disconnect $s$ from $t$.
-(This was actually the original motivation for this problem; see [effalgnotes](){.ref}.)
+(This was actually the original motivation for this problem; see [effalgnotes](#effalgnotes){.ref}.)
 Similar applications arise in scheduling and planning.
 In the setting of [image segmentation](https://en.wikipedia.org/wiki/Image_segmentation), one can define a graph whose vertices are pixels and whose edges correspond to neighboring pixels of distinct colors.
 If we want to separate the foreground from the background then we can pick (or guess) a foreground pixel $s$ and background pixel $t$ and ask for a minimum cut between them.
@@ -221,7 +221,7 @@ $$
 $$
 where for every vertex $v$,  summing over $e \ni v$ means summing over all the edges that touch $v$.
 
-The maximum flow problem can be thought of as the task of maximizing $\sum_{e \ni s} x_e$ over all the vectors $x\in\R^m$ that satisfy the above conditions [eqlinprogmincut](){.eqref}.
+The maximum flow problem can be thought of as the task of maximizing $\sum_{e \ni s} x_e$ over all the vectors $x\in\R^m$ that satisfy the above conditions [eqlinprogmincut](#eqlinprogmincut){.eqref}.
 Maximizing a linear function $\ell(x)$ over the set of  $x\in \R^m$  that satisfy certain linear equalities and inequalities is known as _linear programming_.
 Luckily, there are [polynomial-time algorithms](https://en.wikipedia.org/wiki/Linear_programming#Algorithms) for solving linear programming, and hence we can solve the maximum flow  (and so, equivalently, minimum cut) problem in polynomial time.
 In fact, there are much better algorithms for maximum-flow/minimum-cut, even for weighted directed graphs, with currently the record standing at $O(\min\{ m^{10/7}, m\sqrt{n}\})$ time.
@@ -259,9 +259,9 @@ Surprisingly, while (as we've seen) there is a polynomial-time algorithm for the
 
 ###  A note on convexity { #convexnotesec }
 
-![In a _convex_ function $f$ (left figure), for every $x$ and $y$ and $p\in [0,1]$ it holds that $f(px+(1-p)y) \leq p\cdot f(x)+(1-p)\cdot f(y)$. In particular this means that every _local minimum_ of $f$ is also a _global minimum_. In contrast in a _non-convex_ function there can be many local minima.](../figure/convexvsnot.png){#convexdeffig .margin  }
+![In a _convex_ function $f$ (left figure), for every $x$ and $y$ and $p\in [0,1]$ it holds that $f(px+(1-p)y) \leq p\cdot f(x)+(1-p)\cdot f(y)$. In particular this means that every _local minimum_ of $f$ is also a _global minimum_. In contrast in a _non-convex_ function there can be many local minima.](/images/introtcs/original-convexvsnot.webp){#convexdeffig .margin  }
 
-![In the high dimensional case, if $f$ is a _convex_ function (left figure) the global minimum is the only local minimum, and we can find it by a local-search algorithm which can be thought of as dropping a marble and letting it "slide down" until it reaches the global minimum. In contrast, a non-convex function (right figure) might have an exponential number of local minima in which any local-search algorithm could get stuck.](/images/introtcs/lec_10_efficient_alg-4.webp){#convexfunctionfig .margin  }
+![In the high dimensional case, if $f$ is a _convex_ function (left figure) the global minimum is the only local minimum, and we can find it by a local-search algorithm which can be thought of as dropping a marble and letting it "slide down" until it reaches the global minimum. In contrast, a non-convex function (right figure) might have an exponential number of local minima in which any local-search algorithm could get stuck.](/images/introtcs/original-convexandnon.webp){#convexfunctionfig .margin  }
 
 There is an underlying reason for the sometimes radical difference between the difficulty of maximizing and minimizing a function over a domain.
 If $D \subseteq \R^n$, then a function $f:D \rightarrow R$ is _convex_ if for every $x,y \in D$ and $p\in [0,1]$
@@ -320,7 +320,7 @@ In particular, the  _2SAT problem_ is to find out, given a $2$-CNF formula $\var
 The trivial, brute-force, algorithm for 2SAT will enumerate all the $2^n$ assignments $x\in \{0,1\}^n$ but fortunately we can do much better.
 The key is that we can think of every constraint of the form $\ell_i \vee \ell_j$ (where $\ell_i,\ell_j$ are _literals_, corresponding to variables or their negations) as an _implication_ $\overline{\ell}_i \Rightarrow \ell_j$, since it corresponds to the constraints that if the literal $\ell'_i = \overline{\ell}_i$ is true then it must be the case that $\ell_j$ is true as well.
 Hence we can think of $\varphi$ as a directed graph between the $2n$ literals, with an edge from $\ell_i$ to $\ell_j$ corresponding to an implication from the former to the latter.
-It can be shown that $\varphi$ is unsatisfiable if and only if there is a variable $x_i$ such that there is a directed path from  $x_i$ to $\overline{x}_i$ as well as a directed path from $\overline{x}_i$ to $x_i$ (see [twosat_ex](){.ref}).
+It can be shown that $\varphi$ is unsatisfiable if and only if there is a variable $x_i$ such that there is a directed path from  $x_i$ to $\overline{x}_i$ as well as a directed path from $\overline{x}_i$ to $x_i$ (see [twosat_ex](#twosat_ex){.ref}).
 This reduces 2SAT to the (efficiently solvable) problem of determining connectivity in directed graphs.
 
 __3SAT.__ The 3SAT problem is the task of determining satisfiability for 3CNFs.
@@ -424,7 +424,7 @@ Given an $n\times n$ matrix $A$, the _permanent_ of $A$ is defined as
 $$
 \mathrm{perm}(A) = \sum_{\pi \in S_n} \prod_{i\in [n]}A_{i,\pi(i)} \;. \label{permanenteq} 
 $$
-That is, $\mathrm{perm}(A)$ is defined analogously to the determinant in [determinanteq](){.eqref} except that we drop the term $\mathrm{sign}(\pi)$.
+That is, $\mathrm{perm}(A)$ is defined analogously to the determinant in [determinanteq](#determinanteq){.eqref} except that we drop the term $\mathrm{sign}(\pi)$.
 The permanent of a matrix is a natural quantity, and has been studied in several contexts including combinatorics and graph theory.
 It also arises in physics where it can be used to describe the quantum state of multiple Boson particles
 (see [here](http://www.cs.huji.ac.il/labs/learning/Papers/perm.pdf) and [here](https://en.wikipedia.org/wiki/Boson_sampling)).
@@ -432,7 +432,7 @@ It also arises in physics where it can be used to describe the quantum state of 
 
 __Permanent modulo 2.__ If the entries of $A$ are integers, then we can define the _Boolean_ function $perm_2$ which  outputs on input a matrix $A$ the result of the permanent of $A$ modulo $2$.
 It turns out that we can compute $perm_2(A)$ in polynomial time.
-The key is that modulo $2$, $-x$ and $+x$ are the same quantity and hence, since the only difference between [determinanteq](){.eqref} and [permanenteq](){.eqref} is that some terms are multiplied by $-1$, $\mathrm{det}(A) \mod 2 = \mathrm{perm}(A) \mod 2$ for every $A$.
+The key is that modulo $2$, $-x$ and $+x$ are the same quantity and hence, since the only difference between [determinanteq](#determinanteq){.eqref} and [permanenteq](#permanenteq){.eqref} is that some terms are multiplied by $-1$, $\mathrm{det}(A) \mod 2 = \mathrm{perm}(A) \mod 2$ for every $A$.
 
 __Permanent modulo 3.__ Emboldened by our good fortune above, we might hope to be able to compute the permanent modulo any prime $p$ and perhaps in full generality.
 Alas, we have no such luck.
@@ -452,7 +452,7 @@ $$
 \max_{p \in \Delta_n} \min_{q\in \Delta_n} p^\top A q =  \min_{q \in \Delta_n} \max_{p\in \Delta_n} p^\top A q \label{eq:minmax}
 $$
 
-The min-max theorem turns out to be a corollary of linear programming duality, and indeed the value of [eq:minmax](){.eqref} can be computed efficiently by a linear program.
+The min-max theorem turns out to be a corollary of linear programming duality, and indeed the value of [eq:minmax](#eq:minmax){.eqref} can be computed efficiently by a linear program.
 
 ### Finding a Nash equilibrium
 
@@ -493,7 +493,7 @@ While the brute force algorithms would require $2^{\Omega(n)}$ time to factor an
 
 ## Our current knowledge
 
-![The current computational status of several interesting problems. For all of them we either know a polynomial-time algorithm or the known algorithms require at least $2^{n^c}$ for some $c>0$. In fact for all except the _factoring_ problem, we either know an $O(n^3)$ time algorithm or the best known algorithm require at least $2^{\Omega(n)}$ time where $n$ is a natural parameter such that there is a brute force algorithm taking roughly $2^n$ or $n!$ time. Whether this "cliff" between the easy and hard problem is a real phenomenon or a reflection of our ignorance is still an open question.](/images/introtcs/lec_10_efficient_alg-5.webp){#current_status .margin  }
+![The current computational status of several interesting problems. For all of them we either know a polynomial-time algorithm or the known algorithms require at least $2^{n^c}$ for some $c>0$. In fact for all except the _factoring_ problem, we either know an $O(n^3)$ time algorithm or the best known algorithm require at least $2^{\Omega(n)}$ time where $n$ is a natural parameter such that there is a brute force algorithm taking roughly $2^n$ or $n!$ time. Whether this "cliff" between the easy and hard problem is a real phenomenon or a reflection of our ignorance is still an open question.](/images/introtcs/original-poly_vs_exp.webp){#current_status .margin  }
 
 The difference between an exponential and polynomial time algorithm might seem merely "quantitative" but it is in fact extremely significant.
 As we've already seen, the brute force exponential time algorithm runs out of steam very very fast, and as Edmonds says, in practice there might not be much difference between a problem where the best algorithm is exponential and a problem that is not solvable at all.

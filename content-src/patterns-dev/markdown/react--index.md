@@ -270,7 +270,7 @@ When designing, Including state is a task that you should save for last. It is m
 
 > **Note (React 18+):** In modern React, many applications manage state with **Context and Hooks (e.g., `useReducer`, `useContext`)** or lightweight libraries (Zustand, Jotai, etc.) for simpler use cases. Redux remains valid for complex global state, but React’s built-in solutions are often sufficient for local/shared state. Automatic batching in React 18 and the React Compiler’s optimizations make it easier to manage state updates efficiently without additional libraries in many scenarios.
 
-![](/images/patterns-dev/react-index-6-redux_details.webp)
+![](/images/patterns-dev/react-index-6-redux_details.svg)
 
 In the example below, the place for the state could be *LoginContainer* itself. Let’s use React Hooks (this will be discussed in the next section) for this:
 

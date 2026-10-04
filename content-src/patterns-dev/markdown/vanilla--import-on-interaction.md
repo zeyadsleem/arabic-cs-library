@@ -83,7 +83,7 @@ handleScrollToTop() {
 }
 ```
 
-![Loading resources on interaction with DevTools showing the resource being fetched](/images/patterns-dev/vanilla-import-on-interaction-6-animation.webp)
+![Loading resources on interaction with DevTools showing the resource being fetched](/images/patterns-dev/vanilla-import-on-interaction-6-animation.gif)
 
 ## How do you import-on-interaction?
 

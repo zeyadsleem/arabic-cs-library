@@ -69,14 +69,14 @@ fixed part of the protocol; Alice and Bob don't need to communicate it.
 After this step, Alice, Bob and Eve all have the same information: the
 base color.
 
-![center](/images/crypto-101/fig-0-alice-bob-eve.svg)
+![center](/images/crypto-101/key-exchange-fig-0-alice-bob-eve.svg)
 
 center
 
 Alice and Bob both pick a random color, and they mix it with the base
 color.
 
-![center](/images/crypto-101/fig-1-alice-bob-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-1-alice-bob-secret.svg)
 
 center
 
@@ -84,7 +84,7 @@ At the end of this step, Alice and Bob know their respective secret
 color, the mix of the secret color and the base color, and the base
 color itself. Everyone, including Eve, knows the base color.
 
-![center](/images/crypto-101/fig-2-alice-bob-eve-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-2-alice-bob-eve-secret.svg)
 
 center
 
@@ -92,7 +92,7 @@ Then, Alice and Bob both send their mixed colors over the network. Eve
 sees both mixed colors, but she can't figure out what either of Alice
 and Bob's *secret* colors are. Even though she knows the base, she can't
 “un-mix” the colors sent over the network. 
-![center](/images/crypto-101/fig-3-mixed-secret.svg)
+![center](/images/crypto-101/key-exchange-fig-3-mixed-secret.svg)
 
 center
 
@@ -105,7 +105,7 @@ At the end of this step, Alice and Bob know the base, their respective
 secrets, their respective mixed colors, and each other's mixed colors.
 Eve knows the base color and both mixed colors.
 
-![center](/images/crypto-101/fig-4-alice-bob-eve-mixed.svg)
+![center](/images/crypto-101/key-exchange-fig-4-alice-bob-eve-mixed.svg)
 
 center
 
@@ -113,7 +113,7 @@ Once Alice and Bob receive each other's mixed color, they add their own
 secret color to it. Since the order of the mixing doesn't matter,
 they'll both end up with the same secret.
 
-![center](/images/crypto-101/fig-5-alice-bob-shared-mixed.svg)
+![center](/images/crypto-101/key-exchange-fig-5-alice-bob-shared-mixed.svg)
 
 center
 
@@ -255,7 +255,7 @@ in between Alice and Bob, she can still perform the Diffie-Hellman
 protocol twice: once with Alice, where Mallory pretends to be Bob, and
 once with Bob, where Mallory pretends to be Alice.
 
-![center](/images/crypto-101/fig-6-MITM.svg)
+![center](/images/crypto-101/key-exchange-fig-6-MITM.svg)
 
 center
 

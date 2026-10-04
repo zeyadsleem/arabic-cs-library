@@ -126,7 +126,7 @@ Reducing the time dedicated to finite automata and context-free languages allows
 This book contains sufficient detail to enable its use for self-study.
 Toward that end, every chapter starts with a list of learning objectives, ends with a recap, and is peppered with "pause boxes" which encourage students to stop and work out an argument or make sure they understand a definition before continuing further.
 
-[roadmapsec](){.ref} contains a "roadmap" for this book, with descriptions of the different chapters, as well as the dependency structure between them.
+[roadmapsec](#roadmapsec){.ref} contains a "roadmap" for this book, with descriptions of the different chapters, as well as the dependency structure between them.
 This can help in planning a course based on this book.
 
 

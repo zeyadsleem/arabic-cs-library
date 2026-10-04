@@ -17,7 +17,7 @@ chapternum: "10"
 
 
 We have seen that  many models of computation are _Turing equivalent_, including Turing machines,  NAND-TM/NAND-RAM programs,  standard programming languages such as C/Python/Javascript, as well as other models such as the $\lambda$ calculus and even the game of life.
-The flip side of this is that for all these models,  Rice's theorem ([rice-thm](){.ref}) holds as well, which means that any semantic property of programs in such a model is _uncomputable_.
+The flip side of this is that for all these models,  Rice's theorem ([rice-thm](#rice-thm){.ref}) holds as well, which means that any semantic property of programs in such a model is _uncomputable_.
 
 The uncomputability of halting and other semantic specification problems for Turing equivalent models motivates __restricted computational models__ that are __(a)__ powerful enough to capture a set of functions useful for certain applications but __(b)__ weak enough that we can still solve semantic specification problems on them.
 In this chapter we discuss several such examples.
@@ -27,7 +27,7 @@ We can use _restricted computational models_ to bypass limitations such as uncom
 :::
 
 
-![Some restricted computational models.  We have already seen two equivalent restricted models of computation: regular expressions and deterministic finite automata. We show a more powerful model: context-free grammars. We also present tools to demonstrate that some functions _can not_ be computed in these models. ](/images/introtcs/lec_08a_restricted_models-1.webp){#restrictedmodelsoverviewfig}
+![Some restricted computational models.  We have already seen two equivalent restricted models of computation: regular expressions and deterministic finite automata. We show a more powerful model: context-free grammars. We also present tools to demonstrate that some functions _can not_ be computed in these models. ](/images/introtcs/original-restrictedoverview.webp){#restrictedmodelsoverviewfig}
 
 
 
@@ -55,7 +55,7 @@ The flagship of Ethereum was an experiment known as The "Decentralized Autonomou
 The idea was to create a smart contract that would create an autonomously run decentralized venture capital fund, without human managers, where shareholders could decide on investment opportunities.
 The DAO was at the time the biggest crowdfunding success in history. At its height the DAO was worth 150 million dollars, which was more than ten percent of the total Ethereum market.
 Investing in the DAO (or entering any other "smart contract") amounts to providing your funds to be run by a computer program. i.e., "code is law", or to use the words the DAO described itself: _"The DAO is borne from immutable, unstoppable, and irrefutable computer code"_.
-Unfortunately, it turns out that (as we saw in [chapcomputable](){.ref}) understanding the behavior of computer programs is quite a hard thing to do.
+Unfortunately, it turns out that (as we saw in [chapcomputable](#chapcomputable){.ref}) understanding the behavior of computer programs is quite a hard thing to do.
 A hacker (or perhaps, some would say, a savvy investor) was able to fashion an input that caused the DAO code to enter into an infinite recursive loop in which it continuously transferred funds into the hacker's account, thereby [cleaning out about 60 million dollars](https://www.bloomberg.com/features/2017-the-ether-thief/) out of the DAO.
 While this transaction was "legal" in the sense that it complied with the code of the smart contract, it was obviously not what the humans who wrote this code had in mind.
 The Ethereum community struggled with the response to this attack.
@@ -144,7 +144,7 @@ One of the most common notations is the  [Backus–Naur form](https://goo.gl/R4q
 In this notation we write a rule of the form $v \Rightarrow a$ (where $v$ is a variable and $a$ is a string) in the form  `<v> := a`.
 If we have several rules of the form $v \mapsto a$, $v \mapsto b$, and $v \mapsto c$ then we can combine them as `<v> := a|b|c`.
 (In words we say that $v$ can derive either $a$, $b$, or $c$.)
-For example, the Backus-Naur description for the context free grammar of [cfgarithmeticex](){.ref} is the following (using ASCII equivalents for operations):
+For example, the Backus-Naur description for the context free grammar of [cfgarithmeticex](#cfgarithmeticex){.ref} is the following (using ASCII equivalents for operations):
 
 ```python
 operation  := +|-|*|/
@@ -160,7 +160,7 @@ match  := ""|match match|(match)
 ```
 
 A string over the alphabet $\{$ `(`,`)` $\}$ can be generated from this grammar (where `match` is the starting expression and `""` corresponds to the empty string) if and only if it consists of a matching set of parentheses.
-In contrast, by [regexpparn](){.ref}  there is no regular expression that matches a string $x$ if and only if $x$ contains a valid sequence of matching parentheses. 
+In contrast, by [regexpparn](#regexpparn){.ref}  there is no regular expression that matches a string $x$ if and only if $x$ contains a valid sequence of matching parentheses. 
 
 
 
@@ -179,7 +179,7 @@ That is, if there are $\alpha_1,\ldots,\alpha_{k-1} \in (\Sigma \cup V)^*$, so t
 
 We say that $x\in \Sigma^*$ is _matched_ by $G=(V,R,s)$ if $x$ can be derived from the starting variable $s$ (i.e., if $s \Rightarrow_G^* x$).
 We define the _function computed by_ $(V,R,s)$ to be the map $\Phi_{V,R,s}:\Sigma^* \rightarrow \{0,1\}$ such that $\Phi_{V,R,s}(x)=1$ iff  $x$ is matched by $(V,R,s)$.
-A function  $F:\Sigma^* \rightarrow \{0,1\}$ is _context free_ if $F = \Phi_{V,R,s}$ for some CFG $(V,R,s)$.^[As in the case of [matchingregexpdef](){.ref} we can also use _language_ rather than _function_ notation and   say that a language $L \subseteq \Sigma^*$ is _context free_ if the function $F$ such that $F(x)=1$ iff $x\in L$ is context free.]
+A function  $F:\Sigma^* \rightarrow \{0,1\}$ is _context free_ if $F = \Phi_{V,R,s}$ for some CFG $(V,R,s)$.^[As in the case of [matchingregexpdef](#matchingregexpdef){.ref} we can also use _language_ rather than _function_ notation and   say that a language $L \subseteq \Sigma^*$ is _context free_ if the function $F$ such that $F(x)=1$ iff $x\in L$ is context free.]
 :::
 
 A priori it might not be clear that the map $\Phi_{V,R,s}$ is computable, but it turns out that this is the case.
@@ -236,11 +236,11 @@ We leave it to the reader as (a very good!) exercise to verify that in all three
 :::
 
 It turns out that CFG's are strictly more powerful than regular expressions.
-In particular, as we've seen,  the "matching parentheses" function   $MATCHPAREN$ can be computed by a context free grammar, whereas, as shown in [regexpparn](){.ref}, it cannot be computed by regular expressions.
+In particular, as we've seen,  the "matching parentheses" function   $MATCHPAREN$ can be computed by a context free grammar, whereas, as shown in [regexpparn](#regexpparn){.ref}, it cannot be computed by regular expressions.
 Here is another example:
 
 ::: {.solvedexercise title="Context free grammar for palindromes" #reversedstringcfg}
-Let $PAL:\{0,1,;\}^* \rightarrow \{0,1\}$ be the function defined in [palindromenotreg](){.ref} where $PAL(w)=1$ iff $w$ has the form $u;u^R$.
+Let $PAL:\{0,1,;\}^* \rightarrow \{0,1\}$ be the function defined in [palindromenotreg](#palindromenotreg){.ref} where $PAL(w)=1$ iff $w$ has the form $u;u^R$.
 Then $PAL$ can be computed by a context-free grammar
 :::
 
@@ -283,7 +283,7 @@ Hence we can generate such a string by first generating a palindrome $u; u^R$ (`
 ### Limitations of context-free grammars (optional)
 
 Even though context-free grammars are more powerful than regular expressions, there are some simple languages that are _not_ captured by context free grammars.
-One tool to show this is the context-free grammar analog of the "pumping lemma" ([pumping](){.ref}):
+One tool to show this is the context-free grammar analog of the "pumping lemma" ([pumping](#pumping){.ref}):
 
 > ### {.theorem title="Context-free pumping lemma" #cfgpumping}
 Let $(V,R,s)$ be a CFG over $\Sigma$, then there is some numbers $n_0,n_1 \in \N$ such that for every $x \in \Sigma^*$ with $|x|>n_0$, if $\Phi_{V,R,s}(x)=1$ then $x=abcde$ such that $|b|+|c|+|d| \leq n_1$, $|b|+|d| \geq 1$, and $\Phi_{V,R,s}(ab^kcd^ke)=1$ for every $k\in \N$.
@@ -300,7 +300,7 @@ That is, there must be some variable $v \in V$ such that we are able to derive f
 Thus by the definition of the grammar, we can repeat the derivation to replace the substring $bcd$ in $x$ with $b^kcd^k$ for every $k\in \N$ while retaining the property that the output of $\Phi_{V,R,s}$ is still one. Since $bcd$ is a substring of $x$, we can write $x=abcde$ and are guaranteed that $ab^kcd^ke$ is matched by the grammar for every $k$.
 :::
 
-Using [cfgpumping](){.ref} one can show that even the simple function $F:\{0,1\}^* \rightarrow \{0,1\}$ defined as follows:
+Using [cfgpumping](#cfgpumping){.ref} one can show that even the simple function $F:\{0,1\}^* \rightarrow \{0,1\}$ defined as follows:
 $$F(x) = \begin{cases}1 & x =ww \text{ for some } w\in \{0,1\}^* \\ 0 & \text{otherwise} \end{cases}$$
 is not context free.
 (In contrast, the function $G:\{0,1\}^* \rightarrow \{0,1\}$ defined as $G(x)=1$ iff $x=w_0w_1\cdots w_{n-1}w_{n-1}w_{n-2}\cdots w_0$ for some  $w\in \{0,1\}^*$ and $n=|w|$ is context free, can you see why?.)
@@ -312,10 +312,10 @@ Then $EQ$ is not context free.
 
 ::: {.solution data-ref="equalisnotcfg"}
 We use the context-free pumping lemma.
-Suppose towards the sake of contradiction that there is a grammar $G$ that computes $EQ$, and let $n_0$ be the constant obtained from [cfgpumping](){.ref}.
+Suppose towards the sake of contradiction that there is a grammar $G$ that computes $EQ$, and let $n_0$ be the constant obtained from [cfgpumping](#cfgpumping){.ref}.
 
-Consider the string $x= 1^{n_0}0^{n_0};1^{n_0}0^{n_0}$, and write it as $x=abcde$ as per [cfgpumping](){.ref}, with $|bcd| \leq n_0$ and with $|b|+|d| \geq 1$.
-By [cfgpumping](){.ref}, it should hold that $EQ(ace)=1$.
+Consider the string $x= 1^{n_0}0^{n_0};1^{n_0}0^{n_0}$, and write it as $x=abcde$ as per [cfgpumping](#cfgpumping){.ref}, with $|bcd| \leq n_0$ and with $|b|+|d| \geq 1$.
+By [cfgpumping](#cfgpumping){.ref}, it should hold that $EQ(ace)=1$.
 However, by case analysis this can be shown to be a contradiction.
 
 Firstly, unless $b$ is on the left side of the $;$ separator and $d$ is on the right side, dropping $b$ and $d$ will definitely make the two parts different.
@@ -335,11 +335,11 @@ For example, emptiness of context free grammars is decidable:
 There is an algorithm that on input a context-free grammar $G$, outputs $1$ if and only if $\Phi_G$ is the constant zero function.
 
 > ### {.proofidea data-ref="cfgemptinessthem"}
-The proof is easier to see if we transform the grammar to Chomsky Normal Form as in [CFGhalt](){.ref}. Given a grammar $G$, we can recursively define a non-terminal variable $v$ to be _non-empty_ if there is either a rule of the form $v \Rightarrow \sigma$, or there is a rule of the form $v \Rightarrow uw$ where both $u$ and $w$ are non-empty.
+The proof is easier to see if we transform the grammar to Chomsky Normal Form as in [CFGhalt](#CFGhalt){.ref}. Given a grammar $G$, we can recursively define a non-terminal variable $v$ to be _non-empty_ if there is either a rule of the form $v \Rightarrow \sigma$, or there is a rule of the form $v \Rightarrow uw$ where both $u$ and $w$ are non-empty.
 Then the grammar is non-empty if and only if the starting variable $s$ is non-empty.
 
 ::: {.proof data-ref="cfgemptinessthem"}
-We assume that the grammar $G$ in Chomsky Normal Form as in [CFGhalt](){.ref}. We consider the following procedure for marking variables as "non-empty":
+We assume that the grammar $G$ in Chomsky Normal Form as in [CFGhalt](#CFGhalt){.ref}. We consider the following procedure for marking variables as "non-empty":
 
 1. We start by marking all variables $v$ that are involved in a rule of the form $v \Rightarrow \sigma$ as non-empty.
 
@@ -362,14 +362,14 @@ This is a direct corollary of the following theorem:
 For every set $\Sigma$, let $CFGFULL_\Sigma$ be the function that on input a context-free grammar $G$ over $\Sigma$, outputs $1$ if and only if $G$ computes the constant $1$ function.
 Then there is some finite  $\Sigma$ such that $CFGFULL_\Sigma$ is uncomputable.
 
-[fullnesscfgdef](){.ref} immediately implies that equivalence for context-free grammars is uncomputable, since computing "fullness" of a grammar $G$ over some alphabet $\Sigma = \{\sigma_0,\ldots,\sigma_{k-1} \}$ corresponds to checking whether $G$ is equivalent to the grammar $s \Rightarrow ""|s\sigma_0|\cdots|s\sigma_{k-1}$.
-Note that [fullnesscfgdef](){.ref} and [cfgemptinessthem](){.ref}  together imply that context-free grammars, unlike regular expressions, are _not_ closed under complement. (Can you see why?)
-Since we can encode every element of $\Sigma$ using $\ceil{\log |\Sigma|}$ bits (and this finite encoding can be easily carried out within a grammar) [fullnesscfgdef](){.ref} implies that fullness is also uncomputable for grammars over the binary alphabet.
+[fullnesscfgdef](#fullnesscfgdef){.ref} immediately implies that equivalence for context-free grammars is uncomputable, since computing "fullness" of a grammar $G$ over some alphabet $\Sigma = \{\sigma_0,\ldots,\sigma_{k-1} \}$ corresponds to checking whether $G$ is equivalent to the grammar $s \Rightarrow ""|s\sigma_0|\cdots|s\sigma_{k-1}$.
+Note that [fullnesscfgdef](#fullnesscfgdef){.ref} and [cfgemptinessthem](#cfgemptinessthem){.ref}  together imply that context-free grammars, unlike regular expressions, are _not_ closed under complement. (Can you see why?)
+Since we can encode every element of $\Sigma$ using $\ceil{\log |\Sigma|}$ bits (and this finite encoding can be easily carried out within a grammar) [fullnesscfgdef](#fullnesscfgdef){.ref} implies that fullness is also uncomputable for grammars over the binary alphabet.
 
 
 ::: {.proofidea data-ref="fullnesscfgdef"}
 We prove the theorem by reducing from the Halting problem.
-To do that we use the notion of _configurations_ of NAND-TM programs, as defined in [configtmdef](){.ref}.
+To do that we use the notion of _configurations_ of NAND-TM programs, as defined in [configtmdef](#configtmdef){.ref}.
 Recall that a _configuration_ of a program $P$ is a binary string $s$  that encodes all the information about the program in the current iteration.
 
 We define $\Sigma$ to be $\{0,1\}$ plus some separator characters and define $INVALID_P:\Sigma^* \rightarrow \{0,1\}$ to be the function that maps every string $L\in \Sigma^*$ to $1$ if and only if $L$ does _not_ encode a sequence of configurations that correspond to a valid halting history of the computation of $P$ on the empty input.
@@ -382,8 +382,8 @@ Specifically we will reverse all the odd-numbered strings.
 
 ::: {.proof data-ref="fullnesscfgdef"}
 We only sketch the proof.
-We will show that if we can compute $CFGFULL$ then we can solve $HALTONZERO$, which has been proven uncomputable in [haltonzero-thm](){.ref}.
-Let $M$ be an input Turing machine for $HALTONZERO$. We will use the notion of _configurations_ of a Turing machine, as defined in [configtmdef](){.ref}.
+We will show that if we can compute $CFGFULL$ then we can solve $HALTONZERO$, which has been proven uncomputable in [haltonzero-thm](#haltonzero-thm){.ref}.
+Let $M$ be an input Turing machine for $HALTONZERO$. We will use the notion of _configurations_ of a Turing machine, as defined in [configtmdef](#configtmdef){.ref}.
 
 Recall that a _configuration_ of Turing machine $M$ and input $x$ captures the full state of $M$ at some point of the computation.
 The particular details of configurations are not so important, but what you need to remember is that:
@@ -428,7 +428,7 @@ Since context-free functions are closed under the OR operation, the claim will f
 For condition 1 this is very simple: checking that $L$ _is_ of the correct format can be done using a regular expression.
 Since regular expressions are closed under negation, this means that checking that $L$ is _not_ of this format can also be done by a regular expression and hence by a context-free grammar.
 
-For conditions 2 and 3, this follows via very similar reasoning to that showing that the function $F$ such that $F(u\#v)=1$ iff $u \neq rev(v)$ is context-free, see   [nonpalindrome](){.ref}.
+For conditions 2 and 3, this follows via very similar reasoning to that showing that the function $F$ such that $F(u\#v)=1$ iff $u \neq rev(v)$ is context-free, see   [nonpalindrome](#nonpalindrome){.ref}.
 After all,  the $NEXT_M$ function only modifies its input in a constant number of places. We leave filling out the details as an exercise to the reader.
 Since $INVALID_M(L)=1$ if and only if $L$ satisfies one of the conditions 1., 2. or 3., and all three conditions can be tested for via a context-free grammar, this completes the proof of the claim and hence the theorem.
 :::
@@ -531,10 +531,10 @@ That is, there is no algorithm $A$ that can determine for every  general grammar
 
 
 
-The [Chomsky Hierarchy](https://en.wikipedia.org/wiki/Chomsky_hierarchy) is a hierarchy of grammars from the least restrictive (most powerful) Type 0 grammars, which correspond to  _recursively enumerable_ languages (see [recursiveenumerableex](){.ref}) to the most restrictive Type 3 grammars, which correspond to regular languages.
+The [Chomsky Hierarchy](https://en.wikipedia.org/wiki/Chomsky_hierarchy) is a hierarchy of grammars from the least restrictive (most powerful) Type 0 grammars, which correspond to  _recursively enumerable_ languages (see [recursiveenumerableex](#recursiveenumerableex){.ref}) to the most restrictive Type 3 grammars, which correspond to regular languages.
 Context-free languages correspond to Type 2 grammars.
 Type 1 grammars are _context sensitive grammars_.
 These are more powerful than context-free grammars but still less powerful than Turing machines.
 In particular functions/languages corresponding to context-sensitive grammars are always computable, and in fact can be computed by a [linear bounded automatons](https://en.wikipedia.org/wiki/Linear_bounded_automaton) which are non-deterministic algorithms that take $O(n)$ space.
-For this reason, the class of functions/languages corresponding to context-sensitive grammars is also known as the complexity class $\mathbf{NSPACE}O(n)$; we discuss space-bounded complexity in [spacechap](){.ref}).
+For this reason, the class of functions/languages corresponding to context-sensitive grammars is also known as the complexity class $\mathbf{NSPACE}O(n)$; we discuss space-bounded complexity in [spacechap](#spacechap){.ref}).
 While Rice's Theorem implies that we cannot compute any non-trivial semantic property of Type 0 grammars, the situation is more complex for other types of grammars: some semantic properties can be determined and some cannot, depending on the grammar's place in the hierarchy.

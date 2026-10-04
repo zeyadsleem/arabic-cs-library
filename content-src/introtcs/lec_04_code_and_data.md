@@ -40,38 +40,38 @@ A _program_ is a piece of text, and so it can be fed as input to other programs.
 This correspondence between _code_ and _data_ is one of the most fundamental aspects of computing.
 It underlies the notion of _general purpose_ computers, that are not pre-wired to compute only one task, and also forms the basis of our hope for obtaining _general_ artificial intelligence.
 This concept finds immense use in all areas of computing, from scripting languages to machine learning, but it is fair to say that we haven't yet fully mastered it.
-Many security exploits involve cases such as "buffer overflows" when attackers manage to inject code where the system expected only "passive" data (see [XKCDmomexploitsfig](){.ref}).
+Many security exploits involve cases such as "buffer overflows" when attackers manage to inject code where the system expected only "passive" data (see [XKCDmomexploitsfig](#XKCDmomexploitsfig){.ref}).
 The relation between code and data reaches beyond the realm of electronic computers.
 For example, DNA can be thought of as both a program and data (in the words of Schrödinger, who wrote before the discovery of DNA's structure a book that inspired Watson and Crick, DNA is both "architect's plan and builder's craft").
 
-![As illustrated in this xkcd cartoon, many exploits, including buffer overflow, SQL injections, and more, utilize the blurry line between "active programs" and "static strings".](/images/introtcs/lec_04_code_and_data-1.webp){#XKCDmomexploitsfig .margin  }
+![As illustrated in this xkcd cartoon, many exploits, including buffer overflow, SQL injections, and more, utilize the blurry line between "active programs" and "static strings".](/images/introtcs/original-exploits_of_a_mom.webp){#XKCDmomexploitsfig .margin  }
 
 
 
 
 ::: {.nonmath}
 In this chapter, we will begin to explore some of the many applications of the correspondence between code and data.
-We start by using the representation of programs/circuits as strings to _count_ the number of programs/circuits up to a certain size, and use that to obtain a counterpart to the result we proved in [finiteuniversalchap](){.ref}.
-There we proved that  _every_ function can be computed by a circuit, but that circuit could be exponentially large  (see [circuit-univ-thm-improved](){.ref} for the precise bound)
+We start by using the representation of programs/circuits as strings to _count_ the number of programs/circuits up to a certain size, and use that to obtain a counterpart to the result we proved in [finiteuniversalchap](#finiteuniversalchap){.ref}.
+There we proved that  _every_ function can be computed by a circuit, but that circuit could be exponentially large  (see [circuit-univ-thm-improved](#circuit-univ-thm-improved){.ref} for the precise bound)
 In this chapter we will prove that there are _some_ functions for which we cannot do better: the _smallest_ circuit that computes them is exponentially large.
 
 We will also use the notion of representing programs/circuits as strings to show the existence of a "universal circuit" - a circuit that can evaluate other circuits.
 In programming languages, this is known as a "meta circular evaluator" - a program in a certain programming language that can evaluate other programs in the same language.
 These results do have an important restriction: the universal circuit will have to be of bigger size than the circuits it evaluates.
-We will show how to get around this restriction in [chaploops](){.ref} where we introduce _loops_ and _Turing machines_.
+We will show how to get around this restriction in [chaploops](#chaploops){.ref} where we introduce _loops_ and _Turing machines_.
 
-See [codedataoverviewfig](){.ref} for an overview of the results of  this chapter.
+See [codedataoverviewfig](#codedataoverviewfig){.ref} for an overview of the results of  this chapter.
 :::
 
 
-![Overview of the results in this chapter. We use the representation of programs/circuits as strings to derive two main results. First we show the existence of a universal program/circuit, and in fact (with more work) the existence of such a program/circuit  whose size is at most polynomial in the size of the program/circuit it evaluates. We then use the string representation to _count_ the number of programs/circuits of a given size, and use that to establish that _some_ functions require an _exponential_ number of lines/gates to compute.](/images/introtcs/lec_04_code_and_data-2.webp){#codedataoverviewfig  }
+![Overview of the results in this chapter. We use the representation of programs/circuits as strings to derive two main results. First we show the existence of a universal program/circuit, and in fact (with more work) the existence of such a program/circuit  whose size is at most polynomial in the size of the program/circuit it evaluates. We then use the string representation to _count_ the number of programs/circuits of a given size, and use that to establish that _some_ functions require an _exponential_ number of lines/gates to compute.](/images/introtcs/original-codedataoverview.webp){#codedataoverviewfig  }
 
 
 
 ## Representing programs as strings {#representprogramsec }
 
 
-![In the Harvard Mark I computer, a program was represented as a list of triples of numbers, which were then encoded by perforating holes in a control card.](/images/introtcs/lec_04_code_and_data-3.webp){#markonerep .margin  }
+![In the Harvard Mark I computer, a program was represented as a list of triples of numbers, which were then encoded by perforating holes in a control card.](/images/introtcs/original-tapemarkI.webp){#markonerep .margin  }
 
 We can represent programs or circuits as strings in a myriad of ways.
 For example, since Boolean circuits are labeled directed acyclic graphs, we can use the _adjacency matrix_ or _adjacency list_ representations for them.
@@ -106,7 +106,7 @@ There is a constant $c$ such that for $f \in SIZE(s)$, there exists a program $P
 :::
 
 ::: { .pause }
-We omit the formal proof of [asciirepprogramthm](){.ref} but please make sure that you understand why it follows from the reasoning above.
+We omit the formal proof of [asciirepprogramthm](#asciirepprogramthm){.ref} but please make sure that you understand why it follows from the reasoning above.
 :::
 
 
@@ -116,13 +116,13 @@ We omit the formal proof of [asciirepprogramthm](){.ref} but please make sure th
 ## Counting programs, and lower bounds on the size of NAND-CIRC programs {#countingcircuitsec }
 
 One consequence of the representation of programs as strings is that the number of programs of certain length is bounded by the number of strings that  represent them.
-This has consequences for the sets $SIZE_{n,m}(s)$ that we defined in [secdefinesizeclasses](){.ref}.
+This has consequences for the sets $SIZE_{n,m}(s)$ that we defined in [secdefinesizeclasses](#secdefinesizeclasses){.ref}.
 
 
 > ### {.theorem title="Counting programs" #program-count}
 For every $s,n,m\in \N$,
 $$|SIZE_{n,m}(s)| \leq 2^{O(s \log s)}.$$
-That is, there are at most $2^{O(s\log s)}$ functions computed by NAND-CIRC programs of at most $s$ lines.^[The implicit constant in the $O(\cdot)$ notation is smaller than $10$. That is, for all sufficiently large $s$, $|SIZE_{n,m}(s)|<  2^{10s\log s}$, see [efficientrepresentation](){.ref}. As discussed in [notationsec](){.ref}, we use the bound $10$ simply because it is a round number.]
+That is, there are at most $2^{O(s\log s)}$ functions computed by NAND-CIRC programs of at most $s$ lines.^[The implicit constant in the $O(\cdot)$ notation is smaller than $10$. That is, for all sufficiently large $s$, $|SIZE_{n,m}(s)|<  2^{10s\log s}$, see [efficientrepresentation](#efficientrepresentation){.ref}. As discussed in [notationsec](#notationsec){.ref}, we use the bound $10$ simply because it is a round number.]
 
 
 ::: {.proof data-ref="program-count"}
@@ -131,14 +131,14 @@ This will conclude the proof, since it implies that $|SIZE_{n,m}(s)|$ is smaller
 The size of the latter set is  $1+2+4+\cdots + 2^\ell = 2^{\ell +1} - 1$ by the formula for sums of geometric progressions.
 
 The map $E$ will simply map $f$ to the representation of the smallest program computing  $f$.
-Since $f \in SIZE_{n,m}(s)$,  there is a program $P$ of at most $s$ lines that can be represented using a string of length at most $c s \log s$ by [asciirepprogramthm](){.ref}.
+Since $f \in SIZE_{n,m}(s)$,  there is a program $P$ of at most $s$ lines that can be represented using a string of length at most $c s \log s$ by [asciirepprogramthm](#asciirepprogramthm){.ref}.
 Moreover, the map $f \mapsto E(f)$ is one to one, since for every distinct $f,f':\{0,1\}^n \rightarrow \{0,1\}^m$ there must exist some input $x\in \{0,1\}^n$ on which $f(x) \neq f'(x)$.
 This means that the programs that compute $f$ and $f'$ respectively cannot be identical.
 :::
 
 
 
-[program-count](){.ref} has an important corollary. The number of functions that can be computed using small circuits/programs is much smaller than the total number of functions,
+[program-count](#program-count){.ref} has an important corollary. The number of functions that can be computed using small circuits/programs is much smaller than the total number of functions,
 and hence there exist functions that require very large (in fact _exponentially large_) circuits to compute.
 To see why this is the case, note that a function mapping $\{0,1\}^2$ to $\{0,1\}$ can be identified with the list of its four values on the inputs $00,01,10,11$.
 A function mapping $\{0,1\}^3$ to $\{0,1\}$ can be identified with the list of its eight values on the inputs $000,001,010,011,100,101,110,111$.
@@ -150,7 +150,7 @@ As mentioned, this yields the following corollary:
 > ### {.theorem title="Counting argument lower bound" #counting-lb}
 There is a constant $\delta > 0$, such that for every sufficiently large $n$, there is a function  $f:\{0,1\}^n\rightarrow \{0,1\}$  such that
 $f \not\in SIZE_n \left(\tfrac{\delta 2^n}{n} \right)$.
-That is, the shortest NAND-CIRC program to compute $f$ requires more than $\delta \cdot 2^n/n$ lines.^[The constant $\delta$ is at least $0.1$ and in fact, can be improved to be arbitrarily close to $1/2$, see [efficientlbex](){.ref}.]
+That is, the shortest NAND-CIRC program to compute $f$ requires more than $\delta \cdot 2^n/n$ lines.^[The constant $\delta$ is at least $0.1$ and in fact, can be improved to be arbitrarily close to $1/2$, see [efficientlbex](#efficientlbex){.ref}.]
 
 
 
@@ -165,7 +165,7 @@ But since $|SIZE_n(s)|$ is smaller than the total number of functions mapping $n
 
 
 We have seen before that _every_ function mapping $\{0,1\}^n$ to $\{0,1\}$ can be computed by an  $O(2^n /n)$ line program.
-[counting-lb](){.ref} shows that this is tight in the sense that some functions do require such an astronomical number of lines to compute.
+[counting-lb](#counting-lb){.ref} shows that this is tight in the sense that some functions do require such an astronomical number of lines to compute.
 
 ::: { .bigidea #countinglb }
 Some functions  $f:\{0,1\}^n \rightarrow \{0,1\}$   _cannot_ be computed by a Boolean circuit using fewer than exponential (in $n$) number of gates.
@@ -178,17 +178,17 @@ Hence functions that can be computed in a small number of lines (such as additio
 > ### {.remark title="More efficient representation (advanced, optional)" #efficientrepresentation}
 The ASCII representation is not the shortest representation for NAND-CIRC programs.
 NAND-CIRC programs are equivalent to circuits with NAND gates, which means that a NAND-CIRC program of $s$ lines, $n$ inputs, and $m$ outputs can be represented by a labeled directed graph of $s+n$ vertices, of which $n$ have in-degree zero, and the $s$ others have in-degree at most two.
-Using the adjacency matrix representation for such graphs, we can reduce the implicit constant in [program-count](){.ref} to be arbitrarily close to $5$, see  [efficientrepresentationex](){.ref}.
+Using the adjacency matrix representation for such graphs, we can reduce the implicit constant in [program-count](#program-count){.ref} to be arbitrarily close to $5$, see  [efficientrepresentationex](#efficientrepresentationex){.ref}.
 
 
 ### Size hierarchy theorem (optional)
 
-By [NAND-univ-thm-improved](){.ref} the class $SIZE_{n}(10 \cdot 2^n /n)$ contains _all_ functions from $\{0,1\}^n$ to $\{0,1\}$, while by [counting-lb](){.ref}, there is _some_
+By [NAND-univ-thm-improved](#NAND-univ-thm-improved){.ref} the class $SIZE_{n}(10 \cdot 2^n /n)$ contains _all_ functions from $\{0,1\}^n$ to $\{0,1\}$, while by [counting-lb](#counting-lb){.ref}, there is _some_
 function $f:\{0,1\}^n \rightarrow \{0,1\}$ that is _not contained_ in $SIZE_{n}(0.1 \cdot 2^n / n)$. In other words, for every sufficiently large $n$,
 $$
 SIZE_n\left(0.1 \tfrac{2^n}{n} \right) \subsetneq SIZE_n\left(10 \tfrac{2^n}{n} \right) \;.
 $$
-It turns out that we can use [counting-lb](){.ref} to show a more general result: whenever we increase our "budget" of gates we can compute new functions.
+It turns out that we can use [counting-lb](#counting-lb){.ref} to show a more general result: whenever we increase our "budget" of gates we can compute new functions.
 
 
 > ### {.theorem title="Size Hierarchy Theorem" #sizehiearchythm}
@@ -201,13 +201,13 @@ $$
 To prove the theorem we need to find a function $f:\{0,1\}^n \rightarrow \{0,1\}$ such that $f$ _can_ be computed by a circuit of $s+10n$ gates but it _cannot_ be computed by a circuit of $s$ gates.
 We will do so by coming up with a sequence of functions $f_0,f_1,f_2,\ldots,f_N$ with the following properties: __(1)__ $f_0$ _can_ be computed by a circuit of at most $10n$ gates, __(2)__ $f_N$ _cannot_ be computed by a circuit of $0.1 \cdot 2^n/n$ gates, and __(3)__ for every  $i\in \{0,\ldots, N\}$, if $f_i$ can be computed by a circuit of size $s$, then $f_{i+1}$ can be computed by a circuit of size at most $s + 10n$.
 Together these properties imply that if we let $i$ be the smallest number such that $f_i \not\in SIZE_n(s)$, then since $f_{i-1} \in SIZE_n(s)$ it must hold that $f_i \in SIZE_n(s+10n)$ which is what we need to prove.
-See [hierarchyprooffig](){.ref} for an illustration.
+See [hierarchyprooffig](#hierarchyprooffig){.ref} for an illustration.
 
-![We prove [sizehiearchythm](){.ref} by coming up with a list $f_0,\ldots,f_{2^n}$ of functions such that $f_0$ is  the all zero function, $f_{2^n}$ is a function
-(obtained from [counting-lb](){.ref}) outside of $SIZE_n(0.1\cdot 2^n/n)$ and such that $f_{i-1}$ and $f_i$ differ by one another on at most one input. We can show that for every $i$, the number of gates to compute $f_i$ is at most $10n$ larger than the number of gates to compute $f_{i-1}$ and so if we let $i$ be the smallest number such that $f_i \not\in SIZE_n(s)$, then $f_i \in SIZE_n(s+10n)$.](../figure/hierarchyproof.png){#hierarchyprooffig .margin }
+![We prove [sizehiearchythm](#sizehiearchythm){.ref} by coming up with a list $f_0,\ldots,f_{2^n}$ of functions such that $f_0$ is  the all zero function, $f_{2^n}$ is a function
+(obtained from [counting-lb](#counting-lb){.ref}) outside of $SIZE_n(0.1\cdot 2^n/n)$ and such that $f_{i-1}$ and $f_i$ differ by one another on at most one input. We can show that for every $i$, the number of gates to compute $f_i$ is at most $10n$ larger than the number of gates to compute $f_{i-1}$ and so if we let $i$ be the smallest number such that $f_i \not\in SIZE_n(s)$, then $f_i \in SIZE_n(s+10n)$.](/images/introtcs/original-hierarchyproof.webp){#hierarchyprooffig .margin }
 
 ::: {.proof data-ref="sizehiearchythm"}
-Let $f^*: \{0,1\}^n \rightarrow \{0,1\}$ be the function (whose existence we are guaranteed by [counting-lb](){.ref}) such that $f^* \not\in SIZE_n(0.1 \cdot 2^n /n)$.
+Let $f^*: \{0,1\}^n \rightarrow \{0,1\}$ be the function (whose existence we are guaranteed by [counting-lb](#counting-lb){.ref}) such that $f^* \not\in SIZE_n(0.1 \cdot 2^n /n)$.
 We define the functions $f_0,f_1,\ldots, f_{2^n}$ mapping $\{0,1\}^n$ to $\{0,1\}$ as follows. For every $x\in \{0,1\}^n$, if $lex(x) \in \{0,1,\ldots, 2^n-1\}$ is $x$'s order
 in the lexicographical order then
 $$
@@ -240,8 +240,8 @@ we can compute $f_i$ using at most $s + 9n +O(1) \leq s +10n$ gates which is wha
 
 
 
-![An illustration of some of what we know about the size complexity classes (not to scale!). This figure depicts classes of the form $SIZE_{n,n}(s)$ but the state of affairs for other size complexity classes such as $SIZE_{n,1}(s)$ is similar. We know by [NAND-univ-thm](){.ref} (with the improvement of [tight-upper-bound](){.ref}) that all functions mapping $n$ bits to $n$ bits can be computed by a circuit of size $c \cdot 2^n$ for $c \leq 10$, while on the other hand the counting lower bound ([counting-lb](){.ref}, see also [countingmultibitex](){.ref}) shows that _some_ such functions will require $0.1 \cdot 2^n$, and the size hierarchy theorem ([sizehiearchythm](){.ref}) shows the existence of functions in $SIZE_n(S) \setminus SIZE_n(s)$ whenever $s=o(S)$, see also [sizehiearchyex](){.ref}.
-We also consider some specific examples: addition of two $n/2$ bit numbers can be done in $O(n)$ lines, while we don't know of such a program for _multiplying_ two $n$ bit numbers, though we do know it can be done in $O(n^2)$ and in fact even better size. In the above,  $FACTOR_n$ corresponds to the inverse problem of multiplying- finding the _prime factorization_ of a given number. At the moment we do not know of any circuit a polynomial (or even sub-exponential) number of lines that can compute $FACTOR_n$. ](../figure/sizecomplexity.png){#sizeclassesfig    }
+![An illustration of some of what we know about the size complexity classes (not to scale!). This figure depicts classes of the form $SIZE_{n,n}(s)$ but the state of affairs for other size complexity classes such as $SIZE_{n,1}(s)$ is similar. We know by [NAND-univ-thm](#NAND-univ-thm){.ref} (with the improvement of [tight-upper-bound](#tight-upper-bound){.ref}) that all functions mapping $n$ bits to $n$ bits can be computed by a circuit of size $c \cdot 2^n$ for $c \leq 10$, while on the other hand the counting lower bound ([counting-lb](#counting-lb){.ref}, see also [countingmultibitex](#countingmultibitex){.ref}) shows that _some_ such functions will require $0.1 \cdot 2^n$, and the size hierarchy theorem ([sizehiearchythm](#sizehiearchythm){.ref}) shows the existence of functions in $SIZE_n(S) \setminus SIZE_n(s)$ whenever $s=o(S)$, see also [sizehiearchyex](#sizehiearchyex){.ref}.
+We also consider some specific examples: addition of two $n/2$ bit numbers can be done in $O(n)$ lines, while we don't know of such a program for _multiplying_ two $n$ bit numbers, though we do know it can be done in $O(n^2)$ and in fact even better size. In the above,  $FACTOR_n$ corresponds to the inverse problem of multiplying- finding the _prime factorization_ of a given number. At the moment we do not know of any circuit a polynomial (or even sub-exponential) number of lines that can compute $FACTOR_n$. ](/images/introtcs/original-sizecomplexity.webp){#sizeclassesfig    }
 
 ::: {.remark title="Explicit functions" #explicitfunc}
 While the size hierarchy theorem guarantees that there exists _some_ function that _can_ be computed using, for example, $n^2$ gates, but not using $100n$ gates, we do not know of any explicit example of such a function.
@@ -339,7 +339,7 @@ In particular, for every natural number $s,n,m>0$ we define the function $EVAL_{
 $$
 EVAL_{s,n,m}(px) = \begin{cases} P(x) & \text{$p\in \{0,1\}^{|S(s)|}$ represents a size-$s$ program $P$ with $n$ inputs and $m$ outputs}  \\ 0^m & \text{otherwise} \end{cases} \label{evalcirceq}
 $$
-where $S(s)$ is defined as in [lengthstringrepreseq](){.eqref} and we use the concrete representation scheme described in [representprogramsec](){.ref}.
+where $S(s)$ is defined as in [lengthstringrepreseq](#lengthstringrepreseq){.eqref} and we use the concrete representation scheme described in [representprogramsec](#representprogramsec){.ref}.
 
 That is, $EVAL_{s,n,m}$ takes as input the concatenation of two strings: a string $p\in \{0,1\}^{|S(s)|}$ and a string $x\in \{0,1\}^n$.
 If $p$ is a string that represents a list of triples $L$ such that $(n,m,L)$ is a list-of-tuples representation of  a size-$s$ NAND-CIRC program $P$, then $EVAL_{s,n,m}(px)$ is equal to the evaluation $P(x)$ of the program $P$ on the input $x$.
@@ -351,7 +351,7 @@ __Take-away points.__ The fine  details of $EVAL_{s,n,m}$'s definition are not v
 
 * $EVAL_{s,n,m}$ is a single function, such that computing $EVAL_{s,n,m}$ allows to evaluate _arbitrary_ NAND-CIRC programs of a certain length on _arbitrary_ inputs of the appropriate length.
 
-* $EVAL_{s,n,m}$ is a _function_, not a _program_ (recall the discussion in [specvsimplrem](){.ref}). That is, $EVAL_{s,n,m}$ is  a _specification_ of what output is associated with what input. The existence of a _program_ that computes $EVAL_{s,n,m}$ (i.e., an _implementation_ for $EVAL_{s,n,m}$) is a separate fact, which needs to be established (and which we will do in [bounded-univ](){.ref}, with a more efficient program shown in [eff-bounded-univ](){.ref}).
+* $EVAL_{s,n,m}$ is a _function_, not a _program_ (recall the discussion in [specvsimplrem](#specvsimplrem){.ref}). That is, $EVAL_{s,n,m}$ is  a _specification_ of what output is associated with what input. The existence of a _program_ that computes $EVAL_{s,n,m}$ (i.e., an _implementation_ for $EVAL_{s,n,m}$) is a separate fact, which needs to be established (and which we will do in [bounded-univ](#bounded-univ){.ref}, with a more efficient program shown in [eff-bounded-univ](#eff-bounded-univ){.ref}).
 
 
 
@@ -362,34 +362,34 @@ For every $s,n,m \in \N$ with $s\geq m$ there is a NAND-CIRC program $U_{s,n,m}$
 :::
 
 That is, the NAND-CIRC program $U_{s,n,m}$ takes the description of _any other NAND-CIRC program_ $P$ (of the right length and inputs/outputs) and _any input_ $x$, and computes the result of evaluating the program $P$ on the input $x$.
-Given the equivalence between NAND-CIRC programs and Boolean circuits, we can also think of $U_{s,n,m}$ as a circuit that takes as input the description of other circuits and their inputs, and returns their evaluation, see [universalcircfig](){.ref}.
-We call this NAND-CIRC program $U_{s,n,m}$ that computes $EVAL_{s,n,m}$ a _bounded universal program_ (or a _universal circuit_, see [universalcircfig](){.ref}).
+Given the equivalence between NAND-CIRC programs and Boolean circuits, we can also think of $U_{s,n,m}$ as a circuit that takes as input the description of other circuits and their inputs, and returns their evaluation, see [universalcircfig](#universalcircfig){.ref}.
+We call this NAND-CIRC program $U_{s,n,m}$ that computes $EVAL_{s,n,m}$ a _bounded universal program_ (or a _universal circuit_, see [universalcircfig](#universalcircfig){.ref}).
 "Universal" stands for the fact that this is a _single program_ that can evaluate _arbitrary_ code,  where "bounded" stands for the fact that  $U_{s,n,m}$ only evaluates programs of bounded size.
 Of course this limitation is inherent for the NAND-CIRC programming language, since a program of $s$ lines (or, equivalently, a circuit of $s$ gates) can take at most $2s$  inputs.
-Later, in [chaploops](){.ref}, we will introduce the concept of _loops_ (and the model of _Turing machines_), that allow to escape this limitation.
+Later, in [chaploops](#chaploops){.ref}, we will introduce the concept of _loops_ (and the model of _Turing machines_), that allow to escape this limitation.
 
 
 ::: {.proof data-ref="bounded-univ"}
-[bounded-univ](){.ref} is an important result, but it is actually not hard to prove.
-Specifically, since $EVAL_{s,n,m}$ is a finite function [bounded-univ](){.ref} is an immediate corollary of [NAND-univ-thm](){.ref}, which states that _every_ finite function can be computed by _some_ NAND-CIRC program.
+[bounded-univ](#bounded-univ){.ref} is an important result, but it is actually not hard to prove.
+Specifically, since $EVAL_{s,n,m}$ is a finite function [bounded-univ](#bounded-univ){.ref} is an immediate corollary of [NAND-univ-thm](#NAND-univ-thm){.ref}, which states that _every_ finite function can be computed by _some_ NAND-CIRC program.
 :::
 
 
 
 
 > ### { .pause }
-[bounded-univ](){.ref}  is simple but important. Make sure you understand what this theorem means, and why it is a corollary of [NAND-univ-thm](){.ref}.
+[bounded-univ](#bounded-univ){.ref}  is simple but important. Make sure you understand what this theorem means, and why it is a corollary of [NAND-univ-thm](#NAND-univ-thm){.ref}.
 
 
 
-![A _universal circuit_ $U$ is a circuit that gets as input the description of an arbitrary (smaller) circuit $P$ as a binary string, and an input $x$, and outputs the string $P(x)$ which is the evaluation of $P$ on $x$. We can also think of $U$ as a straight-line program that gets as input the code of a straight-line program $P$ and an input $x$, and outputs $P(x)$.](/images/introtcs/lec_04_code_and_data-4.webp){#universalcircfig .margin  }
+![A _universal circuit_ $U$ is a circuit that gets as input the description of an arbitrary (smaller) circuit $P$ as a binary string, and an input $x$, and outputs the string $P(x)$ which is the evaluation of $P$ on $x$. We can also think of $U$ as a straight-line program that gets as input the code of a straight-line program $P$ and an input $x$, and outputs $P(x)$.](/images/introtcs/original-universalcircuit.webp){#universalcircfig .margin  }
 
 
 
 ### Efficient universal programs
 
-[bounded-univ](){.ref} establishes the existence of a NAND-CIRC program for computing $EVAL_{s,n,m}$, but it provides no explicit bound on the size of this program.
-[NAND-univ-thm](){.ref}, which we used to prove [bounded-univ](){.ref},   guarantees the existence of a NAND-CIRC program whose size can be as large as  _exponential_ in the length of its input.
+[bounded-univ](#bounded-univ){.ref} establishes the existence of a NAND-CIRC program for computing $EVAL_{s,n,m}$, but it provides no explicit bound on the size of this program.
+[NAND-univ-thm](#NAND-univ-thm){.ref}, which we used to prove [bounded-univ](#bounded-univ){.ref},   guarantees the existence of a NAND-CIRC program whose size can be as large as  _exponential_ in the length of its input.
 This would mean that even for moderately small values of $s,n,m$ (for example $n=100,s=300,m=1$), computing $EVAL_{s,n,m}$ might require a NAND program with more lines than there are atoms in the observable universe!
 Fortunately, we can do much better than that.
 In fact, for every $s,n,m$ there exists a NAND-CIRC program for computing $EVAL_{s,n,m}$ with size that is  _polynomial_ in its input length.
@@ -400,12 +400,12 @@ For every $s,n,m \in \N$ there is a NAND-CIRC program of at most $O(s^2 \log s)$
 $EVAL_{s,n,m}:\{0,1\}^{S+n} \rightarrow \{0,1\}^m$ defined above (where $S$ is the number of bits needed to represent programs of $s$ lines).
 
 ::: { .pause }
-If you haven't done so already, now might be a good time to review $O$ notation in [secbigohnotation](){.ref}. In particular, an equivalent way to state [eff-bounded-univ](){.ref} is that it says that there _exists_ some number $c>0$ such that _for every_ $s,n,m \in \N$, there exists a NAND-CIRC program $P$ of at most $c s^2 \log s$ lines that computes the function $EVAL_{s,n,m}$.
+If you haven't done so already, now might be a good time to review $O$ notation in [secbigohnotation](#secbigohnotation){.ref}. In particular, an equivalent way to state [eff-bounded-univ](#eff-bounded-univ){.ref} is that it says that there _exists_ some number $c>0$ such that _for every_ $s,n,m \in \N$, there exists a NAND-CIRC program $P$ of at most $c s^2 \log s$ lines that computes the function $EVAL_{s,n,m}$.
 :::
 
 
-Unlike [bounded-univ](){.ref}, [eff-bounded-univ](){.ref} is not a trivial corollary of the fact that every finite function can be computed by some circuit.
-Proving [eff-bounded-univ](){.ref} requires us to present a concrete NAND-CIRC program for computing the function $EVAL_{s,n,m}$.
+Unlike [bounded-univ](#bounded-univ){.ref}, [eff-bounded-univ](#eff-bounded-univ){.ref} is not a trivial corollary of the fact that every finite function can be computed by some circuit.
+Proving [eff-bounded-univ](#eff-bounded-univ){.ref} requires us to present a concrete NAND-CIRC program for computing the function $EVAL_{s,n,m}$.
 We will do so in several stages.
 
 1. First, we will describe the algorithm to evaluate $EVAL_{s,n,m}$ in  "pseudo code".
@@ -415,13 +415,13 @@ We will do so in several stages.
 3. Finally, we will show how we can transform this Python program into a NAND-CIRC program.
 
 
-This approach yields much more than just proving [eff-bounded-univ](){.ref}: we will see that it is in fact always  possible to transform (loop free) code in high level languages such as Python to
+This approach yields much more than just proving [eff-bounded-univ](#eff-bounded-univ){.ref}: we will see that it is in fact always  possible to transform (loop free) code in high level languages such as Python to
 NAND-CIRC programs (and hence to Boolean circuits as well).
 
 
 ### A NAND-CIRC interpeter in "pseudocode"
 
-To prove [eff-bounded-univ](){.ref} it suffices to give a NAND-CIRC program of $O(s^2 \log s)$ lines that can evaluate NAND-CIRC programs of $s$ lines.
+To prove [eff-bounded-univ](#eff-bounded-univ){.ref} it suffices to give a NAND-CIRC program of $O(s^2 \log s)$ lines that can evaluate NAND-CIRC programs of $s$ lines.
 Let us start by thinking how we would evaluate such programs if we weren't restricted to only performing NAND operations.
 That is, let us describe informally an _algorithm_ that on input $n,m,s$, a list of triples $L$, and a string $x\in \{0,1\}^n$, evaluates the program represented by $(n,m,L)$ on the string $x$.
 
@@ -459,18 +459,18 @@ Endfor
 Return $y_0,\ldots,y_{m-1}$
 ```
 
-[evalnandcircalg](){.ref} evaluates the program given to it as input one line at a time, updating the `Vartable` table to contain the value of each variable.
+[evalnandcircalg](#evalnandcircalg){.ref} evaluates the program given to it as input one line at a time, updating the `Vartable` table to contain the value of each variable.
 At the end of the execution it outputs the variables at positions $t-m,t-m+1,\ldots,t-1$ which correspond to the input variables.
 
 
 
 ### A NAND interpreter in Python { #nandevalpythonsec }
 
-To make things more concrete, let us see how we implement [evalnandcircalg](){.ref} in the _Python_ programming language.
+To make things more concrete, let us see how we implement [evalnandcircalg](#evalnandcircalg){.ref} in the _Python_ programming language.
 (There is nothing special about Python. We could have easily presented a corresponding function in JavaScript, C, OCaml, or any other programming language.)
 We will construct a function `NANDEVAL` that on input $n,m,L,x$  will output the result of evaluating the program represented by $(n,m,L)$ on $x$.
 To keep things simple, we will not worry about the case that $L$ does not represent a valid program of $n$ inputs and $m$ outputs.
-The code is presented in [nandevalcode](){.ref}.
+The code is presented in [nandevalcode](#nandevalcode){.ref}.
 
 
 ``` { .python .full #nandevalcode title="Code for evaluating a NAND-CIRC program given in the list-of-tuples representation" }
@@ -515,13 +515,13 @@ Hence (since $n,m \leq s$ and $t \leq 3s$),  the program above will use  $O(s)$ 
 
 ### Constructing the NAND-CIRC interpreter in NAND-CIRC
 
-We now turn to describing the proof of  [eff-bounded-univ](){.ref}.
+We now turn to describing the proof of  [eff-bounded-univ](#eff-bounded-univ){.ref}.
 To prove the theorem it is  not enough to give a Python program.
 Rather, we need to show how we compute the function  $EVAL_{s,n,m}$   using a _NAND-CIRC program_.
 In other words, our job is to transform, for every $s,n,m$, the Python code of [#nandevalpythonsec](){.ref} to a NAND-CIRC program $U_{s,n,m}$ that computes the function $EVAL_{s,n,m}$.
 
 > ### { .pause }
-Before reading further, try to think how _you_ could give a "constructive proof" of [eff-bounded-univ](){.ref}.
+Before reading further, try to think how _you_ could give a "constructive proof" of [eff-bounded-univ](#eff-bounded-univ){.ref}.
 That is, think of how you would write, in the programming language of your choice, a function `universal(s,n,m)` that on input $s,n,m$ outputs the code for the NAND-CIRC program $U_{s,n,m}$ such that $U_{s,n,m}$ computes $EVAL_{s,n,m}$.
 There is a subtle but crucial difference between this function and the Python `NANDEVAL` program described above.
 Rather than actually evaluating a given program $P$ on some input $w$, the function `universal` should output the _code_ of a NAND-CIRC program that computes the map $(P,x) \mapsto P(x)$.
@@ -531,7 +531,7 @@ We will use variables `Vartable[`$0$`]`,$\ldots$,`Vartable[`$2^\ell-1$`]`, where
 However, NAND doesn't have integer-valued variables, so we cannot write code such as
 `Vartable[i]` for some variable `i`.
 However, we _can_ implement the function `GET(Vartable,i)` that outputs the `i`-th bit of the array `Vartable`.
-Indeed, this is nothing but the function $LOOKUP_\ell$ that we have seen in [lookup-thm](){.ref}!
+Indeed, this is nothing but the function $LOOKUP_\ell$ that we have seen in [lookup-thm](#lookup-thm){.ref}!
 
 > ### { .pause }
 Please make sure that you understand why `GET` and $LOOKUP_\ell$ are the same function.
@@ -546,7 +546,7 @@ $$
 where we identify the string $i \in \{0,1\}^\ell$ with a number in  $\{0,\ldots, 2^{\ell}-1 \}$ using the binary representation.
 We can compute $UPDATE_\ell$ using an $O(2^\ell \ell)=(s \log s)$ line NAND-CIRC program as follows:
 
-1. For every $j\in [2^\ell]$, there is an $O(\ell)$ line NAND-CIRC program to compute the function $EQUALS_j: \{0,1\}^\ell \rightarrow \{0,1\}$ that on input $i$ outputs $1$ if and only if $i$ is equal to (the binary representation of) $j$. (We leave verifying this as [equals](){.ref} and [equalstwo](){.ref}.)
+1. For every $j\in [2^\ell]$, there is an $O(\ell)$ line NAND-CIRC program to compute the function $EQUALS_j: \{0,1\}^\ell \rightarrow \{0,1\}$ that on input $i$ outputs $1$ if and only if $i$ is equal to (the binary representation of) $j$. (We leave verifying this as [equals](#equals){.ref} and [equalstwo](#equalstwo){.ref}.)
 
 2. We have seen that we can compute the function $IF:\{0,1\}^3 \rightarrow \{0,1\}$ such that $IF(a,b,c)$ equals $b$ if $a=1$ and $c$ if $a=0$.
 
@@ -569,18 +569,18 @@ def UPDATE_ell(V,i,b):
 Since the loop over `j` in `UPDATE` is run $2^\ell$ times, and computing `EQUALS_j` takes $O(\ell)$ lines, the total number of lines to compute `UPDATE` is $O(2^\ell \cdot \ell) = O(s \log s)$.
 Once we can compute `GET` and `UPDATE`, the rest of the implementation amounts to "book keeping" that needs to be done carefully, but is not too insightful, and hence we omit the full details.
 Since we run `GET` and `UPDATE`  $s$ times, the total number of lines for computing $EVAL_{s,n,m}$ is $O(s^2) + O(s^2 \log s) = O(s^2 \log s)$.
-This completes (up to the omitted details) the proof of [eff-bounded-univ](){.ref}.
+This completes (up to the omitted details) the proof of [eff-bounded-univ](#eff-bounded-univ){.ref}.
 
 
 
 ::: {.remark title="Improving to quasilinear overhead (advanced optional note)" #quasilinearevalrem}
 The NAND-CIRC program above is less efficient than its Python counterpart, since NAND does not offer arrays with efficient random access. Hence for example the `LOOKUP` operation on an array of $s$ bits takes $\Omega(s)$ lines in NAND even though it takes $O(1)$ steps (or maybe $O(\log s)$ steps, depending on how we count) in _Python_.
 
-It turns out that it is possible to improve the bound of [eff-bounded-univ](){.ref}, and evaluate $s$ line NAND-CIRC programs using a NAND-CIRC program of  $O(s \log s)$ lines.
+It turns out that it is possible to improve the bound of [eff-bounded-univ](#eff-bounded-univ){.ref}, and evaluate $s$ line NAND-CIRC programs using a NAND-CIRC program of  $O(s \log s)$ lines.
 The key is to consider the description of NAND-CIRC programs as circuits, and in particular as directed acyclic graphs (DAGs) of bounded in-degree.
 A universal NAND-CIRC program $U_s$ for $s$ line programs will correspond to a _universal graph_ $H_s$ for such $s$ vertex DAGs.
 We can think of such a graph $U_s$ as fixed "wiring" for a communication network, that should be able to accommodate any arbitrary pattern of communication between $s$ vertices (where this pattern corresponds to an $s$ line NAND-CIRC program).
-It turns out that such efficient [routing networks](https://goo.gl/NnkkjM) exist that allow embedding any $s$ vertex circuit inside a universal graph of size $O(s \log s)$, see the bibliographical notes [bibnotescodeasdata](){.ref} for more on this issue.
+It turns out that such efficient [routing networks](https://goo.gl/NnkkjM) exist that allow embedding any $s$ vertex circuit inside a universal graph of size $O(s \log s)$, see the bibliographical notes [bibnotescodeasdata](#bibnotescodeasdata){.ref} for more on this issue.
 :::
 
 
@@ -588,7 +588,7 @@ It turns out that such efficient [routing networks](https://goo.gl/NnkkjM) exist
 
 ##  A Python interpreter in NAND-CIRC (discussion)
 
-To prove [eff-bounded-univ](){.ref} we essentially translated every line of the Python program for `EVAL` into an equivalent NAND-CIRC snippet.
+To prove [eff-bounded-univ](#eff-bounded-univ){.ref} we essentially translated every line of the Python program for `EVAL` into an equivalent NAND-CIRC snippet.
 However, none of our reasoning was specific to the particular function $EVAL$.
 It is possible to translate _every_ Python program into an equivalent NAND-CIRC program of comparable efficiency.
 (More concretely, if the Python program takes $T(n)$ operations on inputs of length at most $n$ then there exists NAND-CIRC program of $O(T(n) \log T(n))$ lines that agrees with the Python program on inputs of length $n$.)
@@ -599,7 +599,7 @@ We can combine this with a C compiler to transform a Python program to various f
 So, to transform a Python program into an equivalent NAND-CIRC program, it is enough to show how to transform a _machine language_ program into an equivalent NAND-CIRC program.
 One minimalistic (and hence convenient) family of machine languages is known as the _ARM architecture_ which powers many mobile devices including essentially all Android devices.^[ARM stands for "Advanced RISC Machine" where RISC in turn stands for "Reduced instruction set computer".]
 There are even simpler machine languages, such as the [LEG architecture](https://github.com/frasercrmck/llvm-leg) for which a backend for the [LLVM compiler](http://llvm.org/) was implemented (and hence can be the target of compiling any of the [large and growing list](https://en.wikipedia.org/wiki/LLVM#Front_ends) of languages that this compiler supports).
-Other examples include the  [TinyRAM](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf) architecture (motivated by interactive proof systems that we will discuss in [chapproofs](){.ref}) and the teaching-oriented [Ridiculously Simple Computer](https://www.ece.umd.edu/~blj/RiSC/) architecture.
+Other examples include the  [TinyRAM](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf) architecture (motivated by interactive proof systems that we will discuss in [chapproofs](#chapproofs){.ref}) and the teaching-oriented [Ridiculously Simple Computer](https://www.ece.umd.edu/~blj/RiSC/) architecture.
 Going one by one over the instruction sets of such computers and translating them to NAND snippets is no fun, but it is a feasible thing to do.
 In fact, ultimately this is very similar to the transformation that takes place in converting our high level code to actual silicon gates that are not so different from the operations of a NAND-CIRC program.
 Indeed, tools such as [MyHDL](http://www.myhdl.org/) that transform "Python to Silicon" can be used to convert a Python program to a NAND-CIRC program.
@@ -632,7 +632,7 @@ Can NAND-CIRC programs simulate any physical computer?
 
 
 We can take a leap of faith and stipulate that Boolean circuits (or equivalently NAND-CIRC programs) do actually encapsulate _every_ computation that we can think of.
-Such a statement (in the realm of infinite functions, which we'll encounter in [chaploops](){.ref}) is typically attributed to Alonzo Church and Alan Turing, and in that context is known as the _Church-Turing Thesis_.
+Such a statement (in the realm of infinite functions, which we'll encounter in [chaploops](#chaploops){.ref}) is typically attributed to Alonzo Church and Alan Turing, and in that context is known as the _Church-Turing Thesis_.
 As we will discuss in future lectures, the Church-Turing Thesis is not a mathematical theorem or conjecture.
 Rather, like theories in physics, the Church-Turing Thesis is about mathematically modeling the real world.
 In the context of finite functions, we can make the following informal hypothesis or prediction:
@@ -658,7 +658,7 @@ Suppose that $Z$ is a physical system that accepts $n$ binary stimuli and has a 
 We say that the system $Z$ _computes_ a function $f:\{0,1\}^n \rightarrow \{0,1\}$ within $t$ seconds if whenever we set the stimuli to some value  $x\in \{0,1\}^n$,  if we measure the output after $t$ seconds then we obtain $f(x)$.
 
 One can then phrase the PECTT as stipulating that if there exists such a system $Z$ that computes $F$ within $t$ seconds, then there exists a NAND-CIRC program that computes $F$ and has at most $\alpha(Vt)^2$ lines, where $\alpha$ is some normalization constant. (We can also consider variants where we use [surface area](https://goo.gl/ALgbVS) instead of volume, or take $(Vt)$ to a different power than $2$.  However, none of these choices makes a qualitative difference to the discussion below.)
-In particular, suppose that $f:\{0,1\}^n \rightarrow \{0,1\}$ is a function that requires $2^n/(100n)>2^{0.8n}$ lines for any NAND-CIRC program (such a function exists by [counting-lb](){.ref}).
+In particular, suppose that $f:\{0,1\}^n \rightarrow \{0,1\}$ is a function that requires $2^n/(100n)>2^{0.8n}$ lines for any NAND-CIRC program (such a function exists by [counting-lb](#counting-lb){.ref}).
 Then the PECTT would imply that either the volume or the time of a system that computes $F$ will have to be at least $2^{0.2 n}/\sqrt{\alpha}$.
 Since this quantity grows _exponentially_ in $n$, it is not hard to set parameters so that even for moderately large values of $n$, such a system could not fit in our universe.
 
@@ -689,9 +689,9 @@ Here are some physical devices that have been speculated to achieve computationa
 Yet, some people claimed that there is in fact a very simple physical device that could solve this problem, that can be constructed using some wooden pegs and soap. The idea is that if we take two glass plates, and put $m$ wooden pegs between them in the locations $(x_1,y_1),\ldots,(x_m,y_m)$ then bubbles will form whose edges touch those pegs in a way that will minimize the total energy which turns out to be a function of the total length of the line segments.
 The problem with this device is that nature, just like people, often gets stuck in "local optima".
 That is, the resulting configuration will not be one that achieves the absolute minimum of the total energy but rather one that can't be improved with local changes.
-[Aaronson](http://www.scottaaronson.com/papers/npcomplete.pdf) has carried out actual experiments (see [aaronsonsoapfig](){.ref}), and saw that while this device often is successful for three or four pegs, it starts yielding suboptimal results once the number of pegs grows beyond that.
+[Aaronson](http://www.scottaaronson.com/papers/npcomplete.pdf) has carried out actual experiments (see [aaronsonsoapfig](#aaronsonsoapfig){.ref}), and saw that while this device often is successful for three or four pegs, it starts yielding suboptimal results once the number of pegs grows beyond that.
 
-![Scott Aaronson [tests](http://www.scottaaronson.com/blog/?p=266) a candidate device for computing Steiner trees using soap bubbles.](../figure/aaronsonsoapbubble.jpg){#aaronsonsoapfig .margin  }
+![Scott Aaronson [tests](http://www.scottaaronson.com/blog/?p=266) a candidate device for computing Steiner trees using soap bubbles.](/images/introtcs/original-aaronsonsoapbubble.webp){#aaronsonsoapfig .margin  }
 
 * **DNA computing.** People have suggested using the properties of DNA to do hard computational problems. The main advantage of DNA is the ability to potentially encode a lot of information in a relatively small physical space, as well as compute on this information in a highly parallel manner. At the time of this writing, it was [demonstrated](http://science.sciencemag.org/content/337/6102/1628.full) that one can use DNA to store about $10^{16}$ bits of information in a region of radius about a millimeter, as opposed to about $10^{10}$ bits with the best known hard disk technology. This does not posit a real challenge to the PECTT but does suggest that one should be conservative about the choice of constant and not assume that current hard disk + silicon technologies are the absolute best possible.^[We were extremely conservative in the suggested parameters for the PECTT, having assumed that as many as $\ell_P^{-2}10^{-6} \sim 10^{61}$ bits could potentially be stored in a millimeter radius region.]
 
@@ -714,7 +714,7 @@ Much of the recent efforts in artificial intelligence research is focused on fin
 The idea was initiated by the observation that systems with strong quantum effects are very hard to simulate on a computer.
 Turning this observation on its head, people have proposed using such systems to perform computations that we do not know how to do otherwise.
 At the time of this writing, scalable quantum computers have not yet been built, but it is a fascinating possibility, and one that does not seem to contradict any known law of nature.
-We will discuss quantum computing in much more detail in [quantumchap](){.ref}.
+We will discuss quantum computing in much more detail in [quantumchap](#quantumchap){.ref}.
 Modeling quantum computation    involves extending the model of Boolean circuits into _Quantum circuits_ that have one more (very special) gate.
 However, the main takeaway is that while quantum computing does suggest we need to amend the PECTT, it does _not_ require a complete revision of our worldview. Indeed, almost all of the content of this book remains the same regardless of whether the underlying computational model is Boolean circuits or quantum circuits.
 
@@ -726,7 +726,7 @@ Governments, companies, and individuals currently rely on _cryptography_ to prot
 In applied cryptography, one often encounters statements such  as "cryptosystem $X$ provides 128 bits of security". What such a statement really means is that __(a)__ it is conjectured that there is no Boolean circuit (or, equivalently, a NAND-CIRC program) of size much smaller than $2^{128}$ that can break $X$, and __(b)__ we assume that no other physical mechanism can do better, and hence it would take roughly a $2^{128}$ amount of "resources" to break $X$.
 We say "conjectured" and not "proved" because, while we can phrase the statement that breaking the system cannot be done by an $s$-gate circuit as a precise mathematical conjecture, at the moment we are unable to _prove_ such a statement for any non-trivial cryptosystem.
 This is related to the $\mathbf{P}$ vs $\mathbf{NP}$ question we will discuss in future chapters.
-We will explore Cryptography in [chapcryptography](){.ref}.
+We will explore Cryptography in [chapcryptography](#chapcryptography){.ref}.
 :::
 
 
@@ -744,13 +744,13 @@ We will explore Cryptography in [chapcryptography](){.ref}.
 
 
 
-![A finite computational task is specified by a function $f:\{0,1\}^n \rightarrow \{0,1\}^m$. We can model a computational process using Boolean circuits (of varying gate sets) or straight-line program. Every function can be computed by many programs. We say that $f \in SIZE_{n,m}(s)$ if there exists a NAND circuit of at most $s$ gates (equivalently a NAND-CIRC program of at most $s$ lines) that computes $f$. Every function $f:\{0,1\}^n \rightarrow \{0,1\}^m$ can be computed by a circuit of $O(m \cdot 2^n/n)$ gates. Many functions such as multiplication, addition, solving linear equations, computing the shortest path in a graph, and others, can be computed by circuits of much fewer gates. In particular there is an $O(s^2 \log s)$-size circuit that computes the map $C,x \mapsto C(x)$ where $C$ is a string describing  a circuit of $s$ gates. However, the counting argument shows there do exist some functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ that require $\Omega(m \cdot 2^n /n)$ gates to compute.](/images/introtcs/lec_04_code_and_data-6.webp){#finiterecapfig }
+![A finite computational task is specified by a function $f:\{0,1\}^n \rightarrow \{0,1\}^m$. We can model a computational process using Boolean circuits (of varying gate sets) or straight-line program. Every function can be computed by many programs. We say that $f \in SIZE_{n,m}(s)$ if there exists a NAND circuit of at most $s$ gates (equivalently a NAND-CIRC program of at most $s$ lines) that computes $f$. Every function $f:\{0,1\}^n \rightarrow \{0,1\}^m$ can be computed by a circuit of $O(m \cdot 2^n/n)$ gates. Many functions such as multiplication, addition, solving linear equations, computing the shortest path in a graph, and others, can be computed by circuits of much fewer gates. In particular there is an $O(s^2 \log s)$-size circuit that computes the map $C,x \mapsto C(x)$ where $C$ is a string describing  a circuit of $s$ gates. However, the counting argument shows there do exist some functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ that require $\Omega(m \cdot 2^n /n)$ gates to compute.](/images/introtcs/original-finitecomprecap.webp){#finiterecapfig }
 
 
 ## Recap of Part I: Finite Computation
 
 This chapter concludes the first part of this book that deals with _finite computation_ (computing functions that map a fixed number of Boolean inputs to a fixed number of Boolean outputs).
-The main take-aways from [compchap](){.ref}, [finiteuniversalchap](){.ref}, and [codeanddatachap](){.ref} are as follows (see also [finiterecapfig](){.ref}):
+The main take-aways from [compchap](#compchap){.ref}, [finiteuniversalchap](#finiteuniversalchap){.ref}, and [codeanddatachap](#codeanddatachap){.ref} are as follows (see also [finiterecapfig](#finiterecapfig){.ref}):
 
 * We can formally define the notion of a function $f:\{0,1\}^n \rightarrow \{0,1\}^m$ being computable using $s$ basic operations. Whether these operations are AND/OR/NOT, NAND, or some other universal basis does not make much difference. We can describe such a computation either using a _circuit_ or using a _straight-line program_.
 
@@ -760,7 +760,7 @@ The main take-aways from [compchap](){.ref}, [finiteuniversalchap](){.ref}, and 
 
 * We can describe a circuit/program $P$ as a string. For every $s$, there is a _universal_ circuit/program $U_s$ that can evaluate programs of length $s$ given their description as strings. We can use this representation also to _count_ the number of circuits of at most $s$ gates and hence prove that some functions cannot be computed by circuits of smaller-than-exponential size.
 
-* If there is a circuit of $s$ gates that computes a function $f$, then we can build a physical device to compute $f$ using $s$ basic components (such as transistors). The "Physical Extended Church-Turing Thesis" postulates  that the reverse direction is true as well: if $f$ is a function for which _every_ circuit requires at least $s$ gates then  that _every_ physical device to compute $f$ will require about $s$ "physical resources". The main challenge to the PECTT is _quantum computing_, which we will discuss in [quantumchap](){.ref}.
+* If there is a circuit of $s$ gates that computes a function $f$, then we can build a physical device to compute $f$ using $s$ basic components (such as transistors). The "Physical Extended Church-Turing Thesis" postulates  that the reverse direction is true as well: if $f$ is a function for which _every_ circuit requires at least $s$ gates then  that _every_ physical device to compute $f$ will require about $s$ "physical resources". The main challenge to the PECTT is _quantum computing_, which we will discuss in [quantumchap](#quantumchap){.ref}.
 
 __Sneak preview:__ In the next part we will discuss how to model computational tasks on _unbounded inputs_, which are specified using functions $F:\{0,1\}^* \rightarrow \{0,1\}^*$ (or $F:\{0,1\}^* \rightarrow \{0,1\}$) that can take an unbounded number of Boolean inputs.
 
@@ -793,13 +793,13 @@ Prove that there exists a number $\delta>0$ such that for every sufficiently lar
 
 ::: {.exercise title="Size hierarchy theorem for multibit functions" #sizehiearchyex}
 Prove that there exists a number $C$ such that for every $n,m$ and $n+m < s < m\cdot 2^n / (Cn)$ there exists a function $f \in SIZE_{n,m}(C\cdot s) \setminus SIZE_{n,m}(s)$.
-See footnote for hint.^[Follow the proof of [sizehiearchythm](){.ref}, replacing the use of the counting argument with [countingmultibitex](){.ref}.]
+See footnote for hint.^[Follow the proof of [sizehiearchythm](#sizehiearchythm){.ref}, replacing the use of the counting argument with [countingmultibitex](#countingmultibitex){.ref}.]
 :::
 
 ::: {.exercise title="Efficient representation of circuits and a tighter counting upper bound" #efficientrepresentationex}
-Use the ideas of [efficientrepresentation](){.ref} to show that for every $\epsilon>0$ and sufficiently large $s,n,m$,
+Use the ideas of [efficientrepresentation](#efficientrepresentation){.ref} to show that for every $\epsilon>0$ and sufficiently large $s,n,m$,
 $$|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}\;.$$
-Conclude that the implicit constant in [program-count](){.ref} can be made arbitrarily close to $5$.
+Conclude that the implicit constant in [program-count](#program-count){.ref} can be made arbitrarily close to $5$.
 See footnote for hint.^[Using the adjacency list representation, a graph with $n$ in-degree zero vertices and $s$ in-degree two vertices  can be represented using roughly $2s\log(s+n) \leq 2s (\log s + O(1))$ bits.
 The labeling of the $n$ input and $m$ output vertices can be specified by a list of $n$  labels in $[n]$ and $m$ labels  in $[m]$.
 ]
@@ -807,7 +807,7 @@ The labeling of the $n$ input and $m$ output vertices can be specified by a list
 
 ::: {.exercise title="Tighter counting lower bound" #efficientlbex}
 Prove that for every $\delta< 1/2$, if $n$ is sufficiently large then there exists a function $f:\{0,1\}^n \rightarrow \{0,1\}$ such that $f \not\in SIZE_{n,1}\left( \tfrac{\delta 2^n}{n} \right)$.
-See footnote for hint.^[_Hint:_ Use the results of [efficientrepresentationex](){.ref} and the fact that in this regime $m=1$ and $n\ll s$.]
+See footnote for hint.^[_Hint:_ Use the results of [efficientrepresentationex](#efficientrepresentationex){.ref} and the fact that in this regime $m=1$ and $n\ll s$.]
 :::
 
 
@@ -826,12 +826,12 @@ The following is a tuple representing a NAND program:  $(3, 1, ((3, 2, 2),   (4,
 ::: {.exercise title="EVAL with XOR" #XOREVAL}
 For every sufficiently large $n$, let $E_n:\{0,1\}^{n^2} \rightarrow \{0,1\}$ be the function that takes an $n^2$-length string that encodes a pair $(P,x)$ where $x\in \{0,1\}^n$ and $P$ is a NAND program of $n$ inputs, a single output, and at most $n^{1.1}$ lines, and returns the output of $P$ on $x$.^[Note that if $n$ is big enough, then it is easy to represent such a pair using $n^2$ bits, since we can represent the program using $O(n^{1.1}\log n)$ bits, and we can always pad our representation to have exactly $n^2$ length.] That is, $E_n(P,x)=P(x)$.
 
-Prove that for every sufficiently large $n$, there _does not exist_ an XOR circuit $C$ that computes the function $E_n$, where a XOR circuit has the $XOR$ gate as well as the constants $0$ and $1$ (see [xorex](){.ref}).  That is, prove that there is some constant $n_0$ such that for every $n>n_0$ and XOR circuit $C$ of $n^2$ inputs and a single output, there exists a pair $(P,x)$ such that $C(P,x) \neq E_n(P,x)$.
+Prove that for every sufficiently large $n$, there _does not exist_ an XOR circuit $C$ that computes the function $E_n$, where a XOR circuit has the $XOR$ gate as well as the constants $0$ and $1$ (see [xorex](#xorex){.ref}).  That is, prove that there is some constant $n_0$ such that for every $n>n_0$ and XOR circuit $C$ of $n^2$ inputs and a single output, there exists a pair $(P,x)$ such that $C(P,x) \neq E_n(P,x)$.
 :::
 
 
 ::: {.exercise  title="Learning circuits (challenge, optional, assumes more background)" #learningcircuitsex}
-(This exercise assumes background in probability theory and/or machine learning that you might not have at this point. Feel free to come back to it at a later point and in particular after going over [probabilitychap](){.ref}.)
+(This exercise assumes background in probability theory and/or machine learning that you might not have at this point. Feel free to come back to it at a later point and in particular after going over [probabilitychap](#probabilitychap){.ref}.)
 In this exercise we will use our bound on the number of circuits of size $s$ to show that (if we ignore the cost of computation) every such circuit can be _learned_ from not too many training samples.
 Specifically, if we find a size-$s$ circuit that classifies correctly a training set of $O(s \log s)$ samples from some distribution $D$, then it is guaranteed to do well on the whole distribution $D$.
 Since Boolean circuits model very many physical processes (maybe even all of them, if the (controversial) physical extended Church-Turing thesis is true), this shows that all such processes could be learned as well (again, ignoring the computation cost of finding a classifier that does well on the training data).
@@ -839,7 +839,7 @@ Since Boolean circuits model very many physical processes (maybe even all of the
 Let $D$ be any probability distribution over $\{0,1\}^n$ and let $C$ be a NAND circuit with $n$ inputs, one output, and size $s \geq n$.
 Prove that there is some constant $c$ such that with probability at least $0.999$ the following holds: if $m = c s \log s$ and $x_0,\ldots,x_{m-1}$ are chosen independently from $D$, then for every circuit $C'$ such that $C'(x_i)=C(x_i)$ on every $i \in [m]$, $\Pr_{x \sim D}[C'(x) \leq C(x)] \leq 0.99$.
 
-In other words, if $C'$ is a so called "empirical risk minimizer" that agrees with $C$ on all the training examples $x_0,\ldots,x_{n-1}$, then it will also agree with $C$ with high probability for samples drawn from the distribution $D$ (i.e., it "generalizes", to use Machine-Learning lingo). See footnote for hint.^[_Hint:_ Use our bound on the number of programs/circuits of size $s$ ([program-count](){.ref}), as well as the Chernoff Bound ( [chernoffthm](){.ref}) and the union bound.]
+In other words, if $C'$ is a so called "empirical risk minimizer" that agrees with $C$ on all the training examples $x_0,\ldots,x_{n-1}$, then it will also agree with $C$ with high probability for samples drawn from the distribution $D$ (i.e., it "generalizes", to use Machine-Learning lingo). See footnote for hint.^[_Hint:_ Use our bound on the number of programs/circuits of size $s$ ([program-count](#program-count){.ref}), as well as the Chernoff Bound ( [chernoffthm](#chernoffthm){.ref}) and the union bound.]
 :::
 
 
@@ -860,8 +860,8 @@ Universal circuits have seen in recent years new motivations due to their applic
 
 While we've seen that "most" functions mapping $n$ bits to one bit require circuits of exponential size $\Omega(2^n/n)$, we actually do not know of any _explicit_ function for which we can _prove_ that it requires, say, at least $n^{100}$ or even $100n$ size. At the moment, the strongest such lower bound we know is that there are quite simple and explicit $n$-variable functions that require at least $(5-o(1))n$ lines to compute, see [this paper of Iwama et al](http://www.wisdom.weizmann.ac.il/~ranraz/publications/P5nlb.pdf) as well as this more recent [work of Kulikov et al](http://logic.pdmi.ras.ru/~kulikov/papers/2012_5n_lower_bound_cie.pdf).
 Proving lower bounds for restricted models of circuits is an extremely interesting research area, for which Jukna's book [@Jukna12] (see also Wegener [@wegener1987complexity])  provides a very good introduction and overview.
-I learned of the proof of the size hierarchy theorem ([sizehiearchythm](){.ref}) from Sasha Golovnev. 
+I learned of the proof of the size hierarchy theorem ([sizehiearchythm](#sizehiearchythm){.ref}) from Sasha Golovnev. 
 
 
 Scott Aaronson's blog post on how [information is physical](http://www.scottaaronson.com/blog/?p=3327) is a good discussion on issues related to the physical extended Church-Turing Physics.
-Aaronson's survey on NP complete problems and physical reality    [@aaronson2005physicalreality] discusses these issues as well, though it might be easier to read after we reach [cooklevinchap](){.ref} on $\mathbf{NP}$  and $\mathbf{NP}$-completeness.
+Aaronson's survey on NP complete problems and physical reality    [@aaronson2005physicalreality] discusses these issues as well, though it might be easier to read after we reach [cooklevinchap](#cooklevinchap){.ref} on $\mathbf{NP}$  and $\mathbf{NP}$-completeness.

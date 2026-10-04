@@ -18,10 +18,10 @@ chapternum: "19"
 >_"The salient features of our method are that it is probabilistic ... and with a controllable miniscule probability of error."_, Michael Rabin, 1977
 
 In early computer systems, much effort was taken to drive _out_ randomness and noise.
-Hardware components were prone to non-deterministic behavior from a number of causes, whether it was vacuum tubes overheating or actual physical bugs causing short circuits (see [bugfig](){.ref}).
+Hardware components were prone to non-deterministic behavior from a number of causes, whether it was vacuum tubes overheating or actual physical bugs causing short circuits (see [bugfig](#bugfig){.ref}).
 This motivated John von Neumann, one of the early computing pioneers, to write a paper on how to _error correct_ computation, introducing the notion of _redundancy_.
 
-![A 1947 entry in the [log book](http://americanhistory.si.edu/collections/search/object/nmah_334663) of the Harvard MARK II computer containing an actual bug that caused a hardware malfunction. By Courtesy of the Naval Surface Warfare Center.](../figure/bug.jpg){#bugfig .margin  }
+![A 1947 entry in the [log book](http://americanhistory.si.edu/collections/search/object/nmah_334663) of the Harvard MARK II computer containing an actual bug that caused a hardware malfunction. By Courtesy of the Naval Surface Warfare Center.](/images/introtcs/original-bug.webp){#bugfig .margin  }
 
 So it is quite surprising that randomness turned out not just a hindrance but also a _resource_ for computation, enabling us to achieve tasks much more efficiently than previously known.
 One of the first applications involved the very same John von Neumann.
@@ -32,7 +32,7 @@ The name stuck, and randomized algorithms are known as Monte Carlo algorithms to
 
 In this chapter, we will see some examples of randomized algorithms that use randomness to compute a quantity in a faster or simpler way than was known otherwise.
 We will describe the algorithms in an informal / "pseudo-code" way, rather than as Turing macines or NAND-TM/NAND-RAM programs. 
-In [chapmodelrand](){.ref} we will discuss how to augment the computational models we saw  before to incorporate the ability to "toss coins".
+In [chapmodelrand](#chapmodelrand){.ref} we will discuss how to augment the computational models we saw  before to incorporate the ability to "toss coins".
 
 ::: {.nonmath}
 This chapter gives some examples of randomized algorithms to get a sense of why probability can be useful for computation.
@@ -78,7 +78,7 @@ If we let $X$ be the random variable corresponding to the total number of edges 
 $$\E[X] = \sum_{e\in E} \E[X_e] = m(1/2) = m/2 \;.$$
 :::
 
-__Randomized algorithms work in the worst case.__ It is tempting to think of a randomized algorithm such as the one of [maxcutthm](){.ref} as an algorithm that works for a "random input graph" but it is actually much better than that.
+__Randomized algorithms work in the worst case.__ It is tempting to think of a randomized algorithm such as the one of [maxcutthm](#maxcutthm){.ref} as an algorithm that works for a "random input graph" but it is actually much better than that.
 The expectation in this theorem is _not_ taken over the choice of the graph, but rather only over the _random choices of the algorithm_.
 In particular, _for every graph $G$_, the algorithm is guaranteed to cut half of the edges of the input graph in expectation.
 That is,
@@ -87,7 +87,7 @@ That is,
 A randomized algorithm outputs the correct value with good probability on _every possible input_. 
 :::
 
-We will define more formally what "good probability" means in [chapmodelrand](){.ref} but the crucial point is that this probability is always only taken over the random choices of the algorithm, while the input is _not_ chosen at random.
+We will define more formally what "good probability" means in [chapmodelrand](#chapmodelrand){.ref} but the crucial point is that this probability is always only taken over the random choices of the algorithm, while the input is _not_ chosen at random.
 
 
 
@@ -95,7 +95,7 @@ We will define more formally what "good probability" means in [chapmodelrand](){
 
 ### Amplifying the success of randomized algorithms
 
-[maxcutthm](){.ref} gives us an algorithm that cuts $m/2$ edges in _expectation_.
+[maxcutthm](#maxcutthm){.ref} gives us an algorithm that cuts $m/2$ edges in _expectation_.
 But, as we saw before, expectation does not immediately imply concentration, and so a priori, it may be the case that when we run the algorithm, most of the time we don't get a cut matching the expectation.
 Luckily, we can _amplify_ the probability of success by repeating the process several times and outputting the best cut we find.
 We start by arguing that the probability the algorithm above succeeds in cutting at least $m/2$ edges is not _too_ tiny.
@@ -108,7 +108,7 @@ To see the idea behind the proof, think of the case that $m=1000$.
 In this case one can show that we will cut at least $500$ edges with probability at least $0.001$ (and so in particular larger than $1/(2m)=1/2000$).
 Specifically, if we assume otherwise, then this means that with probability more than $0.999$ the algorithm cuts $499$ or fewer edges.
 But since we can never cut more than the total of  $1000$ edges, given this assumption, the highest value of the expected number of edges cut is if we cut exactly $499$ edges with probability $0.999$ and cut $1000$ edges with probability $0.001$.
-Yet even in this case the expected number of edges will be $0.999 \cdot 499 + 0.001 \cdot 1000 < 500$, which contradicts the fact that we've calculated the expectation to be at least $500$ in [maxcutthm](){.ref}.
+Yet even in this case the expected number of edges will be $0.999 \cdot 499 + 0.001 \cdot 1000 < 500$, which contradicts the fact that we've calculated the expectation to be at least $500$ in [maxcutthm](#maxcutthm){.ref}.
 
 ::: {.proof data-ref="cutprob"}
 Let $p$ be the probability that we cut at least $m/2$  edges and suppose, towards a contradiction, that $p<1/(2m)$.
@@ -118,13 +118,13 @@ Moreover, since we can never cut more than $m$ edges, under our assumption that 
 $$
 pm + (1-p)(m/2-0.5)  \leq pm + m/2-0.5
 $$
-But if $p<1/(2m)$ then $pm<0.5$ and so the right-hand side is smaller than $m/2$, which contradicts the fact that (as proven in [maxcutthm](){.ref}) the expected number of edges cut is at least $m/2$.
+But if $p<1/(2m)$ then $pm<0.5$ and so the right-hand side is smaller than $m/2$, which contradicts the fact that (as proven in [maxcutthm](#maxcutthm){.ref}) the expected number of edges cut is at least $m/2$.
 :::
 
 
 ### Success amplification
 
-[cutprob](){.ref} shows that our algorithm succeeds at least _some_ of the time, but we'd like to succeed almost _all_ of the time. The approach to do that is to simply _repeat_ our algorithm many times, with fresh randomness each time, and output the best cut we get in one of these repetitions.
+[cutprob](#cutprob){.ref} shows that our algorithm succeeds at least _some_ of the time, but we'd like to succeed almost _all_ of the time. The approach to do that is to simply _repeat_ our algorithm many times, with fresh randomness each time, and output the best cut we get in one of these repetitions.
 It turns out that with extremely high probability we will get a cut of size at least $m/2$.
 For example, if we repeat this experiment $2000m$ times, then (using the inequality $(1-1/k)^k \leq 1/e \leq 1/2$) we can show that the probability that we will never cut at least $m/2$ edges, where $k=2m$, is at most
 
@@ -163,7 +163,7 @@ __Operation:__
 
 :::
 
-We leave completing the analysis as an exercise to the reader (see [cutalgorithmamplificationlemex](){.ref}).
+We leave completing the analysis as an exercise to the reader (see [cutalgorithmamplificationlemex](#cutalgorithmamplificationlemex){.ref}).
 :::
 
 
@@ -177,7 +177,7 @@ A randomized algorithm $A$ for computing $F$, given input $x$, might toss coins 
 We say that $A$ has _two sided errors_ if there is positive probability that $A(x)$ outputs $1$ when $F(x)=0$, and positive probability that $A(x)$ outputs $0$ when $F(x)=1$.
 In such a case, to amplify $A$'s success, we cannot simply repeat it $k$ times and output $1$ if a single one of those repetitions resulted in $1$, nor can we output $0$ if a single one of the repetitions resulted in $0$.
 But we can output the _majority value_ of these repetitions.
-By the Chernoff bound ([chernoffthm](){.ref}),  with probability _exponentially close_ to $1$ (i.e., $1-2^{\Omega(k)}$), the fraction of the repetitions where $A$ will output $F(x)$ will be at least, say $0.89$, and in such cases we will of course output the correct answer.
+By the Chernoff bound ([chernoffthm](#chernoffthm){.ref}),  with probability _exponentially close_ to $1$ (i.e., $1-2^{\Omega(k)}$), the fraction of the repetitions where $A$ will output $F(x)$ will be at least, say $0.89$, and in such cases we will of course output the correct answer.
 
 The above translates into the following theorem
 
@@ -193,7 +193,7 @@ $$
 for every $x\in \{0,1\}^*$.
 :::
 
-We omit the proof of [amplifyalg](){.ref}, since we will prove a more general result later on in [amplificationthm](){.ref}.
+We omit the proof of [amplifyalg](#amplifyalg){.ref}, since we will prove a more general result later on in [amplificationthm](#amplificationthm){.ref}.
 
 
 
@@ -217,8 +217,8 @@ It is quite likely that even a deterministic algorithm will fail if this happens
 
 So, in practical terms, a probabilistic algorithm is just as good as a deterministic one.
 But it is still a theoretically fascinating question whether randomized algorithms actually yield more power, or whether is it the case that for any computational problem that can be solved by a probabilistic algorithm, there is a deterministic algorithm with nearly the same performance.^[This question does have some significance to practice, since hardware that generates high quality randomness at speed is non-trivial to construct.]
-For example, we will see in [maxcutex](){.ref} that there is in fact a deterministic algorithm that can cut at least $m/2$ edges in an $m$-edge graph.
-We will discuss this question in generality   in  [chapmodelrand](){.ref}.
+For example, we will see in [maxcutex](#maxcutex){.ref} that there is in fact a deterministic algorithm that can cut at least $m/2$ edges in an $m$-edge graph.
+We will discuss this question in generality   in  [chapmodelrand](#chapmodelrand){.ref}.
 For now, let us see a couple of examples where randomization leads to algorithms that are better in some sense than the known deterministic algorithms.
 
 ## Solving SAT through randomization
@@ -252,7 +252,7 @@ __Operation:__
 
 
 The running time of this algorithm is $S\cdot T \cdot poly(n)$, and so the key question is how small we can make $S$ and $T$ so that the probability that WalkSAT outputs `Unsatisfiable` on a satisfiable formula $\varphi$ is small.
-It is known that we can do so with $ST = \tilde{O}((4/3)^n) = \tilde{O}(1.333\ldots^n)$ (see [walksatex](){.ref} for a weaker result), but we'll show below a simpler analysis yielding $ST= \tilde{O}(\sqrt{3}^n) = \tilde{O}(1.74^n)$, which is still much better than the trivial $2^n$ bound.^[At the time of this writing, the best known [randomized](https://arxiv.org/pdf/1103.2165.pdf) algorithms for 3SAT run in time roughly $O(1.308^n)$, and the best known [deterministic](https://arxiv.org/pdf/1102.3766v1.pdf) algorithms run in time $O(1.3303^n)$ in the worst case.]
+It is known that we can do so with $ST = \tilde{O}((4/3)^n) = \tilde{O}(1.333\ldots^n)$ (see [walksatex](#walksatex){.ref} for a weaker result), but we'll show below a simpler analysis yielding $ST= \tilde{O}(\sqrt{3}^n) = \tilde{O}(1.74^n)$, which is still much better than the trivial $2^n$ bound.^[At the time of this writing, the best known [randomized](https://arxiv.org/pdf/1103.2165.pdf) algorithms for 3SAT run in time roughly $O(1.308^n)$, and the best known [deterministic](https://arxiv.org/pdf/1102.3766v1.pdf) algorithms run in time $O(1.3303^n)$ in the worst case.]
 
 > ### {.theorem title="WalkSAT simple analysis" #walksatthm}
 If we set $T=100\cdot \sqrt{3}^{n}$ and $S= n/2$, then the probability we output `Unsatisfiable` for a satisfiable $\varphi$ is at most $1/2$.
@@ -276,7 +276,7 @@ __Proof of Claim II:__ Consider the map $FLIP:\{0,1\}^n \rightarrow \{0,1\}^n$ t
 Clearly $FLIP$ is one to one. Moreover, if $x$ is of distance $k$ to $x^*$, then $FLIP(x)$ is distance $n-k$ to $x^*$.
 Now let $B$ be the "bad event" in which $x$ is of distance $>n/2$ from $x^*$.
 Then the set $A = FLIP(B) = \{ FLIP(x) \;:\; x\in B \}$ satisfies $|A|=|B|$ and that if $x\in A$ then $x$ is of distance $<n/2$ from $x^*$.
-Since $A$ and $B$ are disjoint events, $\Pr[A] + \Pr[B] \leq 1$. Since they have the same cardinality, they have the same probability and so we get that $2\Pr[B] \leq 1$ or $\Pr[B] \leq 1/2$. (See also [flipaanalysisfig](){.ref}).
+Since $A$ and $B$ are disjoint events, $\Pr[A] + \Pr[B] \leq 1$. Since they have the same cardinality, they have the same probability and so we get that $2\Pr[B] \leq 1$ or $\Pr[B] \leq 1/2$. (See also [flipaanalysisfig](#flipaanalysisfig){.ref}).
 
 
 Claims I and II imply that each of the $T$ iterations of the outer loop succeeds with probability at least $1/2\cdot\sqrt{3}^{-n}$.
@@ -286,7 +286,7 @@ The chance we will be lucky in all $n/2$ steps is hence at least $(1/3)^{n/2} = 
 Since any single iteration of the outer loop succeeds with probability at least $\tfrac{1}{2} \cdot \sqrt{3}^{-n}$, the probability that we never do so in $T=100 \sqrt{3}^{n}$ repetitions is at most $(1-\tfrac{1}{2\sqrt{3}^{n}})^{100\cdot \sqrt{3}^n} \leq (1/e)^{50}$.
 :::
 
-![For every $x^* \in \{0,1\}^n$, we can sort all strings in $\{0,1\}^n$ according to their distance from $x^*$ (top to bottom in the above figure), where we let $A = \{ x\in \{0,1\}^n \;|\; dist(x,x^* \leq n/2 \}$ be the "top half" of strings. If we define $FLIP:\{0,1\}^n \rightarrow \{0,1\}$ to be the map that "flips" the bits of a given string $x$ then it maps every $x\in \overline{A}$ to an output $FLIP(x)\in A$ in a one-to-one way, and so it demonstrates that $|\overline{A}| \leq |A|$ which implies that $\Pr[A] \geq \Pr[\overline{A}]$ and hence $\Pr[A] \geq 1/2$.](../figure/flipaanalysis.png){#flipaanalysisfig .margin  }
+![For every $x^* \in \{0,1\}^n$, we can sort all strings in $\{0,1\}^n$ according to their distance from $x^*$ (top to bottom in the above figure), where we let $A = \{ x\in \{0,1\}^n \;|\; dist(x,x^* \leq n/2 \}$ be the "top half" of strings. If we define $FLIP:\{0,1\}^n \rightarrow \{0,1\}$ to be the map that "flips" the bits of a given string $x$ then it maps every $x\in \overline{A}$ to an output $FLIP(x)\in A$ in a one-to-one way, and so it demonstrates that $|\overline{A}| \leq |A|$ which implies that $\Pr[A] \geq \Pr[\overline{A}]$ and hence $\Pr[A] \geq 1/2$.](/images/introtcs/original-flipaanalysis.webp){#flipaanalysisfig .margin  }
 
 ## Bipartite matching
 
@@ -297,9 +297,9 @@ The goal is to determine whether there is a _perfect matching_, a subset $M \sub
 That is, $M$ matches every vertex in $L$ to a unique vertex in $R$.
 
 
-![The bipartite matching problem in the graph $G=(L\cup R,E)$ can be reduced to the minimum $s,t$ cut problem in the graph $G'$ obtained by adding vertices $s,t$ to $G$, connecting $s$ with $L$ and connecting $t$ with $R$.](/images/introtcs/lec_16_randomized_alg-2.webp){#matchingfig .margin  }
+![The bipartite matching problem in the graph $G=(L\cup R,E)$ can be reduced to the minimum $s,t$ cut problem in the graph $G'$ obtained by adding vertices $s,t$ to $G$, connecting $s$ with $L$ and connecting $t$ with $R$.](/images/introtcs/original-matchingfig.webp){#matchingfig .margin  }
 
-The bipartite matching problem turns out to have a polynomial-time algorithm, since we can reduce finding a matching in $G$ to finding a maximum flow (or equivalently, minimum cut) in a related graph $G'$ (see [matchingfig](){.ref}).
+The bipartite matching problem turns out to have a polynomial-time algorithm, since we can reduce finding a matching in $G$ to finding a maximum flow (or equivalently, minimum cut) in a related graph $G'$ (see [matchingfig](#matchingfig){.ref}).
 However, we will see a different probabilistic algorithm to determine whether a graph contains such a matching.
 
 
@@ -320,7 +320,7 @@ That is, $G$ has a perfect matching if and only if there exists some assignment 
 If $G$ has a perfect matching $M^*$, then let $\pi^*$ be the permutation corresponding to $M$ and let $x^* \in \mathbb{R}^{n^2}$ defined as follows: $x_{i,j}=1$ if $j=\pi^*(i)$ and $x^*_{i,j}=0$ otherwise. (That is, $x^*_{i,j}=1$ iff $\pi^*(i)=j$.) We claim that $P(x^*) = sign(\pi^*)$ which in particular means that $P$ is not identically zero. To see why this is true, write $P(x^*) = \sum_{\pi \in S_n} sign(\pi) P_\pi(x^*)$ where $P_\pi(x^*)=\prod_{i=0}^{n-1} A_{i,\pi(i)} x^*_{i,\pi(i)}$.  But for all $\pi \neq \pi^*$ there will be some $i$ such that $\pi(i) \neq \pi^*(j)$ and so $x^*_{i,\pi(i)}=0$, which means that $\Pi_{\pi}(x^*)=0$. On the other hand, since $\pi^*$ is a matching in $G$, $A_{i,\pi^*(i)}=1$ for all $i$, and hence   $P_{\pi^*}(x^*) = \prod_{i=0}^{n-1} A_{i,\pi^*(i)} x^*_{i,\pi^*(i)}=1$, and so $P(x^*) = sign(\pi^*)$. 
 
 On the other hand, suppose that $P$ is not identically zero.
-By [matchpolyeq](){.eqref}, this means there is some $x \in \{0,1\}^{n^2}$ and some permutation $\pi$ such that $\prod_{i=0}^{n-1}A_{i,\pi(i)}x_{i,\pi(i)} \neq 0$. But for this to happen, it must be that $A_{i,\pi(i)} \neq 0$ for all $i$, which means that for every $i$, the edge $(i,\pi(i))$ exists in the graph, and hence $\pi$ must be a perfect matching in $G$.
+By [matchpolyeq](#matchpolyeq){.eqref}, this means there is some $x \in \{0,1\}^{n^2}$ and some permutation $\pi$ such that $\prod_{i=0}^{n-1}A_{i,\pi(i)}x_{i,\pi(i)} \neq 0$. But for this to happen, it must be that $A_{i,\pi(i)} \neq 0$ for all $i$, which means that for every $i$, the edge $(i,\pi(i))$ exists in the graph, and hence $\pi$ must be a perfect matching in $G$.
 :::
 
 
@@ -331,7 +331,7 @@ The intuition behind our randomized algorithm for zero testing is the following:
 
 >_If a polynomial is not identically zero, then it can't have "too many" roots._
 
-![A degree $d$ curve in one variable can have at most $d$ roots. In higher dimensions, a $n$-variate degree-$d$ polynomial can have an infinite number roots though the set of roots will be an $n-1$ dimensional surface. Over a finite field $\mathbb{F}$, an $n$-variate degree $d$ polynomial has at most $d|\mathbb{F}|^{n-1}$ roots.](/images/introtcs/lec_16_randomized_alg-3.webp){#curvesfig .margin  }
+![A degree $d$ curve in one variable can have at most $d$ roots. In higher dimensions, a $n$-variate degree-$d$ polynomial can have an infinite number roots though the set of roots will be an $n-1$ dimensional surface. Over a finite field $\mathbb{F}$, an $n$-variate degree $d$ polynomial has at most $d|\mathbb{F}|^{n-1}$ roots.](/images/introtcs/original-curves.webp){#curvesfig .margin  }
 
 This intuition sort of makes sense.
 For one variable polynomials, we know that a non-zero linear function has at most one root, a quadratic function (e.g., a parabola) has at most two roots, and generally a degree $d$ equation has at most $d$ roots.
@@ -352,9 +352,9 @@ For every integer $q$, and polynomial $P:\R^n \rightarrow \R$ with integer coeff
 If $P$ has degree at most $d$ and is not identically zero, then it has at most $dq^{n-1}$ roots
 in the set $[q]^n = \{ (x_0,\ldots,x_{n-1}) : x_i \in \{0,\ldots,q-1\} \}$.
 
-We omit the (not too complicated)  proof of [szlem](){.ref}.
+We omit the (not too complicated)  proof of [szlem](#szlem){.ref}.
 We remark that it holds not just over the real numbers but over any field as well.
-Since the matching polynomial $P$  of [matchpolylem](){.ref} has degree at most $n$, [szlem](){.ref} leads directly to a simple algorithm for testing if it is non-zero:
+Since the matching polynomial $P$  of [matchpolylem](#matchpolylem){.ref} has degree at most $n$, [szlem](#szlem){.ref} leads directly to a simple algorithm for testing if it is non-zero:
 
 
 ::: {.quote}
@@ -371,7 +371,7 @@ __Operation:__
 3. Output `no perfect matching`  if this determinant is zero, and output `perfect matching` otherwise.
 :::
 
-This algorithm can be improved further (e.g., see [matchingmodex](){.ref}).
+This algorithm can be improved further (e.g., see [matchingmodex](#matchingmodex){.ref}).
 While it is not necessarily faster than the cut-based algorithms for perfect matching, it does have some advantages. In particular, it is more amenable for parallelization. (However, it also has the significant disadvantage that it does not produce a matching but only states that one exists.)
 The Schwartz–Zippel Lemma, and the associated zero testing algorithm for polynomials, is widely used across computer science, including in several settings where we have no known deterministic algorithm matching their performance.
 
@@ -387,7 +387,7 @@ The Schwartz–Zippel Lemma, and the associated zero testing algorithm for polyn
 
 
 ::: {.exercise title="Amplification for max cut" #cutalgorithmamplificationlemex}
-Prove [cutalgorithmamplificationlem](){.ref}
+Prove [cutalgorithmamplificationlem](#cutalgorithmamplificationlem){.ref}
 :::
 
 > ### {.exercise title="Deterministic max cut algorithm" #maxcutex}
@@ -398,7 +398,7 @@ Our model for probability involves tossing $n$ coins, but sometimes algorithm re
 Fortunately,  we can simulate this with an exponentially small probability of error: prove that for every $M$, if $n>k\lceil \log M \rceil$, then there is a function $F:\{0,1\}^n \rightarrow \{0,\ldots,M-1\} \cup \{ \bot \}$ such that __(1)__ The probability that $F(x)=\bot$ is at most $2^{-k}$ and __(2)__ the distribution of $F(x)$ conditioned on $F(x) \neq \bot$ is equal to the uniform distribution over $\{0,\ldots,M-1\}$.^[__Hint:__ Think of $x\in \{0,1\}^n$ as choosing $k$ numbers $y_1,\ldots,y_k \in \{0,\ldots, 2^{\lceil \log M \rceil}-1 \}$. Output the first such number that is in $\{0,\ldots,M-1\}$. ]
 
 > ### {.exercise title="Better walksat analysis" #walksatex}
-1. Prove that for every $\epsilon>0$, if $n$ is large enough then for every $x^*\in \{0,1\}^n$  $\Pr_{x \sim \{0,1\}^n}[ \Delta(x,x^*) \leq n/3 ] \leq 2^{-(1-H(1/3)-\epsilon)n}$ where $H(p)=p\log(1/p) + (1-p)\log(1/(1-p))$ is the same function as in [entropybinomex](){.ref}. \
+1. Prove that for every $\epsilon>0$, if $n$ is large enough then for every $x^*\in \{0,1\}^n$  $\Pr_{x \sim \{0,1\}^n}[ \Delta(x,x^*) \leq n/3 ] \leq 2^{-(1-H(1/3)-\epsilon)n}$ where $H(p)=p\log(1/p) + (1-p)\log(1/(1-p))$ is the same function as in [entropybinomex](#entropybinomex){.ref}. \
 2. Prove that $2^{1-H(1/4)+(1/4) \log 3}=(3/2)$.
 2. Use the above to prove that for every $\delta>0$ and large enough $n$, if we set $T=1000\cdot (3/2+\delta)^n$ and $S=n/4$  in the WalkSAT algorithm then for every satisfiable 3CNF $\varphi$, the probability that we output `unsatisfiable` is at most $1/2$. \
 

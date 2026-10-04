@@ -54,7 +54,7 @@ on it.
 There's a direct trust link between the two of us, and we can
 communicate securely.
 
-![center](/images/crypto-101/fig-0-WebOfTrustDirect.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-0-WebOfTrustDirect.svg)
 
 center
 
@@ -65,7 +65,7 @@ signed your friend's key, and vice versa. Your friend can choose to
 leverage your assertion that I'm indeed the person in possession of that
 key you signed, and use that to communicate with me securely.
 
-![center](/images/crypto-101/fig-1-WebOfTrustIndirect.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-1-WebOfTrustIndirect.svg)
 
 center
 
@@ -82,7 +82,7 @@ programming conferences, this system is very effective. The main
 weakness in this system are “islands” of trust: individuals or small
 groups with no connections to the rest of the web.
 
-![center](/images/crypto-101/fig-2-WebOfTrustIslands.svg)
+![center](/images/crypto-101/openpgp-and-gpg-fig-2-WebOfTrustIslands.svg)
 
 center
 

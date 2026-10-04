@@ -252,7 +252,7 @@ In the above example, we define a reactive property `count` and initialize it wi
 
 The template also includes two buttons: `"Increment"` and `"Decrement"`, which are bound to the corresponding `increment()` and `decrement()` methods using the `@click` directive. Inside these methods, we access and modify the value of the reactive `count` property. **Vue detects the changes and automatically updates the component’s rendering to reflect the new value.**
 
-![Incrementing and decrementing count](/images/patterns-dev/vue-components-4-components_reactivity.webp)
+![Incrementing and decrementing count](/images/patterns-dev/vue-components-4-components_reactivity.gif)
 
 Reactive state in Vue components provides a seamless way to manage and track data changes, making it easier to build interactive and dynamic user interfaces.
 

@@ -23,7 +23,7 @@ chapternum: "1"
 
 
 In this chapter we review some of the mathematical concepts that we use in this book.
-These concepts are typically covered in courses or textbooks on "mathematics for computer science" or "discrete mathematics"; see the "Bibliographical Notes" section ([notesmathchap](){.ref}) for several excellent resources on these topics that are freely-available online.
+These concepts are typically covered in courses or textbooks on "mathematics for computer science" or "discrete mathematics"; see the "Bibliographical Notes" section ([notesmathchap](#notesmathchap){.ref}) for several excellent resources on these topics that are freely-available online.
 
 
 _A mathematician's apology._  Some students might wonder why this book contains so much math. The reason is that mathematics is simply a language for modeling concepts in a precise and unambiguous way.
@@ -37,11 +37,11 @@ Also, since there is no empirical experiment to prove the _nonexistence_ of an a
 
 Depending on your background, you can approach this chapter in two different ways:
 
-* If you have already taken "discrete mathematics", "mathematics for computer science" or similar courses, you do not need to read the whole chapter. You can just take a quick look at [secmathoverview](){.ref} to see the main tools we will use, [notationsec](){.ref} for our notation and conventions, and then skip ahead to the rest of this book. Alternatively, you can sit back, relax, and read this chapter just to get familiar with our notation, as well as to enjoy (or not) my philosophical musings and attempts at humor. 
+* If you have already taken "discrete mathematics", "mathematics for computer science" or similar courses, you do not need to read the whole chapter. You can just take a quick look at [secmathoverview](#secmathoverview){.ref} to see the main tools we will use, [notationsec](#notationsec){.ref} for our notation and conventions, and then skip ahead to the rest of this book. Alternatively, you can sit back, relax, and read this chapter just to get familiar with our notation, as well as to enjoy (or not) my philosophical musings and attempts at humor. 
 
-* If your background is less extensive, see [notesmathchap](){.ref} for some resources on these topics. This chapter briefly covers the concepts that we need, but you may find it helpful to see a more in-depth treatment. As usual with math, the best way to get comfortable with this material is to work out exercises on your own.
+* If your background is less extensive, see [notesmathchap](#notesmathchap){.ref} for some resources on these topics. This chapter briefly covers the concepts that we need, but you may find it helpful to see a more in-depth treatment. As usual with math, the best way to get comfortable with this material is to work out exercises on your own.
 
-* You might also want to start brushing up on _discrete probability_, which we'll use later in this book (see [probabilitychap](){.ref}).
+* You might also want to start brushing up on _discrete probability_, which we'll use later in this book (see [probabilitychap](#probabilitychap){.ref}).
 
 
 
@@ -49,7 +49,7 @@ Depending on your background, you can approach this chapter in two different way
 ## A quick overview of mathematical prerequisites { #secmathoverview }
 
 
-The main mathematical concepts we will use are the following. We just list these notions below, deferring their definitions to the rest of this chapter. If you are familiar with all of these, then you might want to just skip to [notationsec](){.ref} to see the full list of notation we use.
+The main mathematical concepts we will use are the following. We just list these notions below, deferring their definitions to the rest of this chapter. If you are familiar with all of these, then you might want to just skip to [notationsec](#notationsec){.ref} to see the full list of notation we use.
 
 * __Proofs:__ First and foremost, this book involves a heavy dose of formal mathematical reasoning, which includes mathematical _definitions_, _statements_, and _proofs_.
 
@@ -68,7 +68,7 @@ The main mathematical concepts we will use are the following. We just list these
 
 * __Big-$O$ notation:__ $O,o,\Omega,\omega,\Theta$ notation for analyzing asymptotic growth of functions.
 
-* __Discrete probability:__ We will use _probability theory_, and specifically probability over _finite_ samples spaces such as tossing $n$ coins, including notions such as _random variables_, _expectation_, and _concentration_.  We will only use probability theory in the second half of this text, and will review it beforehand in [probabilitychap](){.ref}. However, probabilistic reasoning is a subtle (and extremely useful!) skill, and it's always good to start early in acquiring it.
+* __Discrete probability:__ We will use _probability theory_, and specifically probability over _finite_ samples spaces such as tossing $n$ coins, including notions such as _random variables_, _expectation_, and _concentration_.  We will only use probability theory in the second half of this text, and will review it beforehand in [probabilitychap](#probabilitychap){.ref}. However, probabilistic reasoning is a subtle (and extremely useful!) skill, and it's always good to start early in acquiring it.
 
 
 In the rest of this chapter we briefly review the above notions.
@@ -85,14 +85,14 @@ Mathematical texts tend to "pack a lot of punch" per sentence, and so the key is
 With time and practice you will see that reading mathematical texts becomes easier and jargon is no longer an issue.
 Moreover, reading mathematical texts is one of the most transferable skills you could take from this book.
 Our world is changing rapidly, not just in the realm of technology, but also in many other human endeavors, whether it is medicine, economics, law or even culture.
-Whatever your future aspirations, it is likely that you will encounter texts that use new concepts that you have not seen before (see [alphagozerofig](){.ref} and [zerocashfig](){.ref} for two recent examples from current "hot areas").
+Whatever your future aspirations, it is likely that you will encounter texts that use new concepts that you have not seen before (see [alphagozerofig](#alphagozerofig){.ref} and [zerocashfig](#zerocashfig){.ref} for two recent examples from current "hot areas").
 Being able to internalize and then apply new definitions can be hugely important.
 It is a skill that's much easier to acquire in the relatively safe and stable context of a mathematical course, where one at least has the guarantee that the concepts are fully specified, and you have access to your teaching staff for questions.
 
 
-![A snippet from the "methods" section of the  ["AlphaGo Zero" paper](https://goo.gl/k8pVpL) by Silver et al, _Nature_, 2017. ](../figure/alphagozero.png){#alphagozerofig .margin  }
+![A snippet from the "methods" section of the  ["AlphaGo Zero" paper](https://goo.gl/k8pVpL) by Silver et al, _Nature_, 2017. ](/images/introtcs/original-alphagozero.webp){#alphagozerofig .margin  }
 
-![A snippet from the ["Zerocash" paper](http://zerocash-project.org/paper) of Ben-Sasson et al, that forms the basis of the cryptocurrency startup Zcash.](../figure/zerocash.png){#zerocashfig .margin  }
+![A snippet from the ["Zerocash" paper](http://zerocash-project.org/paper) of Ben-Sasson et al, that forms the basis of the cryptocurrency startup Zcash.](/images/introtcs/original-zerocash.webp){#zerocashfig .margin  }
 
 
 
@@ -108,8 +108,8 @@ For example, here is a mathematical definition which you may have encountered in
 Let $S,T$ be sets.
 We say that a function $f:S \rightarrow T$ is _one to one_ (also known as _injective_) if for every two elements $x,x' \in S$, if $x \neq x'$ then  $f(x) \neq f(x')$.
 
-[onetoonedef](){.ref} captures a simple concept, but even so it uses quite a bit of notation.
-When reading such a definition, it is often useful to annotate it with a pen as you're going through it (see [onetoonedefannotatedef](){.ref}).
+[onetoonedef](#onetoonedef){.ref} captures a simple concept, but even so it uses quite a bit of notation.
+When reading such a definition, it is often useful to annotate it with a pen as you're going through it (see [onetoonedefannotatedef](#onetoonedefannotatedef){.ref}).
 For example, when you see an identifier such as $f$, $S$ or $x$,  make sure that you realize what sort of object it is: is it a set, a function, an element, a number, a gremlin?
 You might also find it useful to explain the definition in words to a friend (or to yourself).
 
@@ -119,7 +119,7 @@ You might also find it useful to explain the definition in words to a friend (or
 
 
 
-![An annotated form of [onetoonedef](){.ref}, marking which part is being defined and how.](../figure/onetoonedef3.png){#onetoonedefannotatedef .margin  }
+![An annotated form of [onetoonedef](#onetoonedef){.ref}, marking which part is being defined and how.](/images/introtcs/original-onetoonedef3.webp){#onetoonedefannotatedef .margin  }
 
 
 
@@ -137,9 +137,9 @@ A _Claim_ is a "throwaway" statement that we need to use in order to prove some 
 ### Proofs
 
 Mathematical _proofs_ are the arguments we use to demonstrate that our theorems, lemmas, and claims are indeed true.
-We discuss proofs in [proofsbackgroundsec](){.ref} below, but the main point is that the mathematical standard of proof is very high.
+We discuss proofs in [proofsbackgroundsec](#proofsbackgroundsec){.ref} below, but the main point is that the mathematical standard of proof is very high.
 Unlike in some other realms, in mathematics a proof is an  "airtight" argument that demonstrates that the statement is true beyond a shadow of a doubt.
-Some examples in this section for mathematical proofs are given in [simplepathlemex](){.ref} and [topsortsec](){.ref}.
+Some examples in this section for mathematical proofs are given in [simplepathlemex](#simplepathlemex){.ref} and [topsortsec](#topsortsec){.ref}.
 As mentioned in the preface, as a general rule, it is more important you understand the __definitions__ than the __theorems__, and it is more important you understand a __theorem statement__ than its __proof__.
 
 
@@ -156,7 +156,7 @@ For example, when we write $S = \{ 2,4, 7 \}$, we mean that $S$ denotes the set 
 (We use the notation "$2 \in S$" to denote that $2$ is an element of $S$.)
 Note that the set $\{ 2, 4, 7 \}$ and $\{ 7, 4, 2 \}$ are identical, since they contain the same elements.
 Also, a set either contains an element or does not contain it -- there is no notion of containing it  "twice" -- and so we could even write the same set $S$ as  $\{ 2, 2, 4, 7\}$ (though that would be a little weird).
-The _cardinality_ of a finite set $S$, denoted by $|S|$, is the number of elements it contains. (Cardinality can be defined for _infinite_ sets as well; see the sources in [notesmathchap](){.ref}.)
+The _cardinality_ of a finite set $S$, denoted by $|S|$, is the number of elements it contains. (Cardinality can be defined for _infinite_ sets as well; see the sources in [notesmathchap](#notesmathchap){.ref}.)
 So, in the example above, $|S|=3$.
 A set $S$ is a _subset_ of a set $T$, denoted by $S \subseteq T$, if every element of $S$ is also an element of $T$. (We can also describe this by saying that  $T$ is a _superset_ of $S$.)
 For example, $\{2,7\} \subseteq \{ 2,4,7\}$.
@@ -286,7 +286,7 @@ Table: An example of a function.
 
 
 
-If $F:S \rightarrow T$ satisfies that $F(x)\neq F(y)$ for all $x \neq y$ then we say that $F$ is _one-to-one_ ([onetoonedef](){.ref}, also known as an _injective_ function or simply an _injection_).
+If $F:S \rightarrow T$ satisfies that $F(x)\neq F(y)$ for all $x \neq y$ then we say that $F$ is _one-to-one_ ([onetoonedef](#onetoonedef){.ref}, also known as an _injective_ function or simply an _injection_).
 If $F$ satisfies that for every $y\in T$ there is some $x\in S$ such that $F(x)=y$ then we say that $F$ is _onto_ (also known as a _surjective_ function or simply a _surjection_).
 A function that is both one-to-one and onto is known as a _bijective_ function or simply a _bijection_.
 A bijection from a set $S$ to itself is also known as a _permutation_ of $S$.
@@ -323,7 +323,7 @@ Verifying that you can prove the following results is an excellent way to brush 
 
 * If $S$ and $T$ are non-empty finite sets then the following conditions are equivalent to one another: __(a)__ $|S| \leq |T|$, __(b)__ there is a one-to-one function $F:S \rightarrow T$, and __(c)__ there is an onto function $G:T \rightarrow S$. These equivalences are in fact true even for  _infinite_ $S$ and $T$. For infinite sets the condition  __(b)__ (or equivalently, __(c)__) is the commonly accepted _definition_ for $|S| \leq |T|$.
 
-![We can represent finite functions as a directed graph where we put an edge from $x$ to $f(x)$. The _onto_ condition corresponds to requiring that every vertex in the codomain of the function has in-degree _at least_ one. The _one-to-one_ condition corresponds to requiring that every vertex in the codomain of the function has in-degree _at most_ one. In the examples above $F$ is an onto function, $G$ is one to one, and $H$ is neither onto nor one to one.](/images/introtcs/lec_00_1_math_background-3.webp){#functionsdiagrampng .margin  }
+![We can represent finite functions as a directed graph where we put an edge from $x$ to $f(x)$. The _onto_ condition corresponds to requiring that every vertex in the codomain of the function has in-degree _at least_ one. The _one-to-one_ condition corresponds to requiring that every vertex in the codomain of the function has in-degree _at most_ one. In the examples above $F$ is an onto function, $G$ is one to one, and $H$ is neither onto nor one to one.](/images/introtcs/original-functionsdiagram.webp){#functionsdiagrampng .margin  }
 
 > ### { .pause }
 You can find the proofs of these results in many discrete math texts, including for example, Section 4.5 in the [Lehman-Leighton-Meyer notes](https://cs121.boazbarak.org/LLM_data_types.pdf).
@@ -348,11 +348,11 @@ Moreover, this also shows that $G$ is _onto_, since it means that for every $s\i
 
 _Graphs_ are ubiquitous in Computer Science, and many other fields as well.
 They are used to model a variety of data types including social networks, scheduling constraints, road networks, deep neural nets, gene interactions, correlations between observations, and a great many more.
-Formal definitions of several kinds of graphs are given next, but if you have not seen graphs before in a course, I urge you to read up on them in one of the sources mentioned in [notesmathchap](){.ref}.
+Formal definitions of several kinds of graphs are given next, but if you have not seen graphs before in a course, I urge you to read up on them in one of the sources mentioned in [notesmathchap](#notesmathchap){.ref}.
 
 Graphs come in two basic flavors: _undirected_ and _directed_.^[It is possible, and sometimes useful, to think of an undirected graph as the special case of a directed graph that has the special property that for every pair $u,v$ either both the edges $(u,v)$ and $(v,u)$   are present or neither of them is. However, in many settings there is a significant difference between undirected and directed graphs, and so it's typically best to think of them as separate categories.]
 
-![An example of an undirected and a directed graph. The undirected graph has vertex set $\{1,2,3,4\}$ and edge set $\{ \{1,2\},\{2,3\},\{2,4\} \}$. The directed graph has vertex set $\{a,b,c\}$ and the edge set $\{ (a,b),(b,c),(c,a),(a,c) \}$.](/images/introtcs/lec_00_1_math_background-4.webp){#graphsexampefig .margin offset="1.5in"}
+![An example of an undirected and a directed graph. The undirected graph has vertex set $\{1,2,3,4\}$ and edge set $\{ \{1,2\},\{2,3\},\{2,4\} \}$. The directed graph has vertex set $\{a,b,c\}$ and the edge set $\{ (a,b),(b,c),(c,a),(a,c) \}$.](/images/introtcs/original-graphsexampe.webp){#graphsexampefig .margin offset="1.5in"}
 
 
 > ### {.definition title="Undirected graphs" #undirgraph}
@@ -368,35 +368,35 @@ A _cycle_ is a path $(u_0,\ldots,u_k)$ where $u_0=u_{k}$.
 We say that two vertices $u,v\in V$ are _connected_ if either $u=v$ or there is a path from $(u_0,\ldots,u_k)$ where $u_0=u$ and $u_k=v$.
 We say that the graph $G$ is _connected_ if every pair of vertices in it is connected.
 
-Here are some basic facts about undirected graphs. We give some informal arguments below, but leave the full proofs as exercises (the proofs can be found in many of the resources listed in [notesmathchap](){.ref}). 
+Here are some basic facts about undirected graphs. We give some informal arguments below, but leave the full proofs as exercises (the proofs can be found in many of the resources listed in [notesmathchap](#notesmathchap){.ref}). 
 
 
 > ### {.lemma #degreesegeslem}
 In any undirected graph $G=(V,E)$, the sum of the degrees of all vertices is equal to twice the number of edges.
 
-[degreesegeslem](){.ref} can be shown by seeing that every edge $\{ u,v\}$ contributes twice to the sum of the degrees (once for $u$ and the second time for $v$).
+[degreesegeslem](#degreesegeslem){.ref} can be shown by seeing that every edge $\{ u,v\}$ contributes twice to the sum of the degrees (once for $u$ and the second time for $v$).
 
 > ### {.lemma #conntranslem}
 The connectivity relation is _transitive_, in the sense that if $u$ is connected to $v$, and $v$ is connected to $w$, then $u$ is connected to $w$.
 
-[conntranslem](){.ref} can be shown by simply attaching a path of the form $(u,u_1,u_2,\ldots,u_{k-1},v)$ to a path of the form $(v,u'_1,\ldots,u'_{k'-1},w)$ to obtain the path $(u,u_1,\ldots,u_{k-1},v,u'_1,\ldots,u'_{k'-1},w)$ that connects $u$ to $w$.
+[conntranslem](#conntranslem){.ref} can be shown by simply attaching a path of the form $(u,u_1,u_2,\ldots,u_{k-1},v)$ to a path of the form $(v,u'_1,\ldots,u'_{k'-1},w)$ to obtain the path $(u,u_1,\ldots,u_{k-1},v,u'_1,\ldots,u'_{k'-1},w)$ that connects $u$ to $w$.
 
 
 > ### {.lemma #simplepathlem}
 For every undirected graph $G=(V,E)$ and connected pair $u,v$, the shortest path from $u$ to $v$ is simple.
 In particular, for every connected pair there exists a simple path that connects them.
 
-[simplepathlem](){.ref} can be shown by "shortcutting" any non-simple path from $u$ to $v$ where the same vertex $w$ appears twice to remove it (see [shortcutpathfig](){.ref}).
+[simplepathlem](#simplepathlem){.ref} can be shown by "shortcutting" any non-simple path from $u$ to $v$ where the same vertex $w$ appears twice to remove it (see [shortcutpathfig](#shortcutpathfig){.ref}).
 It is a good exercise to transforming this intuitive reasoning to a formal proof:
 
-![If there is a path from $u$ to $v$ in a graph that passes twice through a vertex $w$ then we can "shortcut" it by removing the loop from $w$ to itself to find a path from $u$ to $v$ that only passes once through $w$.](/images/introtcs/lec_00_1_math_background-5.webp){#shortcutpathfig}
+![If there is a path from $u$ to $v$ in a graph that passes twice through a vertex $w$ then we can "shortcut" it by removing the loop from $w$ to itself to find a path from $u$ to $v$ that only passes once through $w$.](/images/introtcs/original-shortcutpath.webp){#shortcutpathfig}
 
 ::: {.solvedexercise title="Connected vertices have simple paths" #simplepathlemex}
-Prove [simplepathlem](){.ref}
+Prove [simplepathlem](#simplepathlem){.ref}
 :::
 
 ::: {.solution data-ref="simplepathlemex"}
-The proof follows the idea illustrated in [shortcutpathfig](){.ref}.
+The proof follows the idea illustrated in [shortcutpathfig](#shortcutpathfig){.ref}.
 One complication is that there can be more than one vertex that is visited twice by a path, and so "shortcutting" might not necessarily result in a simple path; we deal with this by looking at a _shortest_ path between $u$ and $v$.
 Details follow.
 
@@ -411,7 +411,7 @@ The path $P'$ is a valid path between $u$ and $v$ since every consecutive pair o
 :::
 
 ::: {.remark title="Finding proofs" #comingupwithproofs}
-[simplepathlemex](){.ref} is a good example of the process of finding a proof.
+[simplepathlemex](#simplepathlemex){.ref} is a good example of the process of finding a proof.
 You start by ensuring you understand what the statement means, and then come up with 
 an informal argument why it should be true.
 You then transform the informal argument into a rigorous proof.
@@ -504,7 +504,7 @@ $$
 $$
 
 Since summing up over intervals of integers is so common, there is a special notation for it. For every two integers, $a \leq b$,  $\sum_{i=a}^b f(i)$ denotes $\sum_{i\in S} f(i)$ where $S =\{ x\in \Z : a \leq x \leq b \}$.
-Hence, we can write the sum [eqsumsquarehundred](){.eqref} as
+Hence, we can write the sum [eqsumsquarehundred](#eqsumsquarehundred){.eqref} as
 
 $$
 \sum_{i=1}^{100} i^2 \;.
@@ -520,8 +520,8 @@ $$
 \exists_{a,b \in \N} (a \neq 1) \wedge (a \neq n) \wedge (n = a \times b) \label{aboutnstmt}
 $$
 
-Since $n$ is free, it can be set to any value, and the truth of the statement [aboutnstmt](){.eqref} depends on the value of $n$.
-For example, if $n=8$ then [aboutnstmt](){.eqref} is true, but for $n=11$ it is false. (Can you see why?)
+Since $n$ is free, it can be set to any value, and the truth of the statement [aboutnstmt](#aboutnstmt){.eqref} depends on the value of $n$.
+For example, if $n=8$ then [aboutnstmt](#aboutnstmt){.eqref} is true, but for $n=11$ it is false. (Can you see why?)
 
 The same issue appears when parsing code.
 For example, in the following snippet from the C programming language
@@ -541,7 +541,7 @@ $$
 \exists_{x,y \in \N} (x \neq 1) \wedge (x \neq n) \wedge (n = x \times y) \label{aboutnstmttwo}
 $$
 
-is _equivalent_ to [aboutnstmt](){.eqref} in the sense that it is true for exactly the same set of $n$'s.
+is _equivalent_ to [aboutnstmt](#aboutnstmt){.eqref} in the sense that it is true for exactly the same set of $n$'s.
 
 Similarly, the code
 
@@ -565,7 +565,7 @@ Similarly, mathematical notation tends to use quite a lot of "overloading", usin
 
 Both fields have a notion of "types", and in math we often try to reserve certain letters for variables of a particular type.
 For example, variables such as $i,j,k,\ell,m,n$ will often denote integers, and $\epsilon$ will often denote a small positive real number
-(see [notationsec](){.ref} for more on these conventions).
+(see [notationsec](#notationsec){.ref} for more on these conventions).
 When reading or writing mathematical texts, we usually don't have the advantage of a "compiler" that will check type safety for us. Hence it is important to keep track of the type of each variable, and see that the operations that are performed on it "make sense".
 
 Kun's book [@Kun18] contains an extensive discussion on the similarities and differences between the cultures of mathematics and programming.
@@ -599,7 +599,7 @@ We say that _$F =o(G)$_ if for every $\epsilon>0$ there is some $N_0$ such that 
 We say that $F =\omega(G)$ if $G=o(F)$.
 :::
 
-![If $F(n)=o(G(n))$ then for sufficiently large $n$, $F(n)$ will be smaller than $G(n)$. For example, if Algorithm $A$ runs in time $1000\cdot n+10^6$ and Algorithm $B$ runs in time $0.01\cdot n^2$ then even though $B$ might be more efficient for smaller inputs, when the inputs get sufficiently large, $A$ will run _much_ faster than $B$. ](/images/introtcs/lec_00_1_math_background-6.webp){#nvsnsquaredfig .margin  }
+![If $F(n)=o(G(n))$ then for sufficiently large $n$, $F(n)$ will be smaller than $G(n)$. For example, if Algorithm $A$ runs in time $1000\cdot n+10^6$ and Algorithm $B$ runs in time $0.01\cdot n^2$ then even though $B$ might be more efficient for smaller inputs, when the inputs get sufficiently large, $A$ will run _much_ faster than $B$. ](/images/introtcs/original-nvsnsquared.webp){#nvsnsquaredfig .margin  }
 
 
 It's often convenient to use "anonymous functions" in the context of $O$-notation.
@@ -747,7 +747,7 @@ ax^2 + bx + c &= a(-b+s)^2/(4a^2) + b(-b+s)/(2a) + c \\
 \end{aligned}
 $$
 
-Rearranging the terms of [eq:quadeq](){.eqref} we get
+Rearranging the terms of [eq:quadeq](#eq:quadeq){.eqref} we get
 $$
 s^2/(4a)+c- b^2/(4a) = (b^2-4ac)/(4a) + c - b^2/(4a) = 0
 $$
@@ -763,7 +763,7 @@ That is, to prove the statement $X$, we might first prove statements $X_1$,$X_2$
 
 __Proofs by case distinction:__ This is a special case of the above, where to prove a statement $X$ we split into several cases $C_1,\ldots,C_k$, and prove that __(a)__ the cases are _exhaustive_, in the sense that _one_ of the cases $C_i$  must happen and __(b)__ go one by one and prove that each one of the cases $C_i$ implies the result $X$ that we are after.
 
-__Proofs by induction:__ We discuss induction and give an example in [inductionsec](){.ref} below. We can think of such proofs as a variant of the above, where we have an unbounded number of intermediate claims $X_0,X_1,X_2,\ldots,X_k$, and we prove that $X_0$ is true, as well as that $X_0$ implies $X_1$, and that $X_0  \wedge X_1$ implies $X_2$, and so on and so forth.
+__Proofs by induction:__ We discuss induction and give an example in [inductionsec](#inductionsec){.ref} below. We can think of such proofs as a variant of the above, where we have an unbounded number of intermediate claims $X_0,X_1,X_2,\ldots,X_k$, and we prove that $X_0$ is true, as well as that $X_0$ implies $X_1$, and that $X_0  \wedge X_1$ implies $X_2$, and so on and so forth.
 The website for CMU course 15-251 contains a [useful handout](http://www.cs.cmu.edu/~arielpro/15251f17/notes/induction-pitfalls.pdf) on potential pitfalls when making proofs by induction.
 
 
@@ -791,11 +791,11 @@ The disadvantage is that such proofs can be tedious to read and write, with less
 
 ## Extended example: Topological Sorting { #topsortsec }
 
-In this section we will prove the following: every directed acyclic graph (DAG, see [DAGdef](){.ref}) can be arranged in layers so that for all directed edges $u \rightarrow v$, the layer of $v$ is larger than the layer of $u$.
-This result is known as [topological sorting](https://goo.gl/QUskBc) and is used in many applications, including task scheduling, build systems, software package management, spreadsheet cell calculations, and many others (see [topologicalsortfig](){.ref}).
+In this section we will prove the following: every directed acyclic graph (DAG, see [DAGdef](#DAGdef){.ref}) can be arranged in layers so that for all directed edges $u \rightarrow v$, the layer of $v$ is larger than the layer of $u$.
+This result is known as [topological sorting](https://goo.gl/QUskBc) and is used in many applications, including task scheduling, build systems, software package management, spreadsheet cell calculations, and many others (see [topologicalsortfig](#topologicalsortfig){.ref}).
 In fact, we will also use it ourselves later on in this book.
 
-![An example of _topological sorting_. We consider a directed graph corresponding to a prerequisite graph of the courses in some Computer Science program. The edge $u \rightarrow v$ means that the course $u$ is a prerequisite for the course $v$. A _layering_ or "topological sorting" of this graph is the same as mapping the courses to semesters so that if we decide to take the course $v$ in semester $f(v)$, then we have already taken all the prerequisites for $v$ (i.e., its in-neighbors) in prior semesters.](/images/introtcs/lec_00_1_math_background-7.webp){#topologicalsortfig   }
+![An example of _topological sorting_. We consider a directed graph corresponding to a prerequisite graph of the courses in some Computer Science program. The edge $u \rightarrow v$ means that the course $u$ is a prerequisite for the course $v$. A _layering_ or "topological sorting" of this graph is the same as mapping the courses to semesters so that if we decide to take the course $v$ in semester $f(v)$, then we have already taken all the prerequisites for $v$ (i.e., its in-neighbors) in prior semesters.](/images/introtcs/original-topologicalsort.webp){#topologicalsortfig   }
 
 We start with the following definition. A _layering_ of a directed graph is a way to assign for every vertex $v$ a natural number (corresponding to its layer), such that $v$'s in-neighbors are in lower-numbered layers than $v$, and $v$'s out-neighbors are in higher-numbered layers.
 The formal definition is as follows:
@@ -808,7 +808,7 @@ In this section we prove that a directed graph is acyclic if and only if it has 
 > ### {.theorem title="Topological Sort" #topologicalsortthm}
 Let $G$ be a directed graph. Then $G$ is acyclic if and only if there exists a layering $f$ of $G$.
 
-To prove such a theorem, we need to first understand what it means. Since it is an "if and only if" statement, [topologicalsortthm](){.ref} corresponds to two statements:
+To prove such a theorem, we need to first understand what it means. Since it is an "if and only if" statement, [topologicalsortthm](#topologicalsortthm){.ref} corresponds to two statements:
 
 > ### {.lemma #acyclictosortlem}
 For every directed graph $G$, if $G$ is acyclic then it has a layering.
@@ -816,13 +816,13 @@ For every directed graph $G$, if $G$ is acyclic then it has a layering.
 > ### {.lemma #sorttoacycliclem}
 For every directed graph $G$, if $G$ has a layering, then it is acyclic.
 
-To prove [topologicalsortthm](){.ref} we need to prove both [acyclictosortlem](){.ref} and [sorttoacycliclem](){.ref}.
-[sorttoacycliclem](){.ref} is actually not that hard to prove.
+To prove [topologicalsortthm](#topologicalsortthm){.ref} we need to prove both [acyclictosortlem](#acyclictosortlem){.ref} and [sorttoacycliclem](#sorttoacycliclem){.ref}.
+[sorttoacycliclem](#sorttoacycliclem){.ref} is actually not that hard to prove.
 Intuitively, if $G$ contains a _cycle_, then it cannot be the case that all edges on the cycle increase in layer number, since if we travel along the cycle at some point we must come back to the place we started from.
 The formal proof is as follows:
 
 ::: {.proof data-ref="sorttoacycliclem"}
-Let $G=(V,E)$ be a directed graph and let $f:V \rightarrow \N$ be a layering of $G$ as per [layeringdef](){.ref} . Suppose, towards a contradiction, that $G$ is not acyclic, and hence there exists some cycle $u_0,u_1,\ldots,u_k$ such that $u_0=u_k$ and for every $i\in [k]$ the edge $u_i \rightarrow u_{i+1}$ is present in $G$.
+Let $G=(V,E)$ be a directed graph and let $f:V \rightarrow \N$ be a layering of $G$ as per [layeringdef](#layeringdef){.ref} . Suppose, towards a contradiction, that $G$ is not acyclic, and hence there exists some cycle $u_0,u_1,\ldots,u_k$ such that $u_0=u_k$ and for every $i\in [k]$ the edge $u_i \rightarrow u_{i+1}$ is present in $G$.
 Since $f$ is a layering, for every $i \in [k]$, $f(u_i) < f(u_{i+1})$, which means that
 $$
 f(u_0) < f(u_1)  < \cdots  < f(u_k)
@@ -830,7 +830,7 @@ $$
 but this is a contradiction since $u_0=u_k$ and hence $f(u_0)=f(u_k)$.
 :::
 
-[acyclictosortlem](){.ref} corresponds to the more difficult (and useful) direction. To prove it, we need to show how, given an arbitrary DAG $G$, we can come up with a layering of the vertices of $G$ so that all edges "go up".
+[acyclictosortlem](#acyclictosortlem){.ref} corresponds to the more difficult (and useful) direction. To prove it, we need to show how, given an arbitrary DAG $G$, we can come up with a layering of the vertices of $G$ so that all edges "go up".
 
 > ### { .pause }
 If you have not seen the proof of this theorem before (or don't remember it), this would be an excellent point to pause and try to prove it yourself.
@@ -847,13 +847,13 @@ One way to do it would be to describe an _algorithm_ that given as input a direc
 
 ### Mathematical induction  { #inductionsec }
 
-There are several ways to prove [acyclictosortlem](){.ref}.
-One approach to do is to start by proving it for small graphs, such as graphs with 1, 2 or 3 vertices (see [topsortexamplesfig](){.ref}, for which we can check all the cases, and then try to extend the proof for larger graphs).
+There are several ways to prove [acyclictosortlem](#acyclictosortlem){.ref}.
+One approach to do is to start by proving it for small graphs, such as graphs with 1, 2 or 3 vertices (see [topsortexamplesfig](#topsortexamplesfig){.ref}, for which we can check all the cases, and then try to extend the proof for larger graphs).
 The technical term for this proof approach is _proof by induction_.
 
 
 
-![Some examples of DAGs of one, two and three vertices, and valid ways to assign layers to the vertices.](/images/introtcs/lec_00_1_math_background-8.webp){#topsortexamplesfig .margin  }
+![Some examples of DAGs of one, two and three vertices, and valid ways to assign layers to the vertices.](/images/introtcs/original-topologicalsortexamples.webp){#topsortexamplesfig .margin  }
 
 
 _Induction_ is simply an application of the self-evident  [Modus Ponens rule](https://en.wikipedia.org/wiki/Modus_ponens) that says that if
@@ -885,7 +885,7 @@ For more on proofs by induction and recursion, you might find the following [Sta
 
 ### Proving the result by induction
 
-There are several ways to prove  [acyclictosortlem](){.ref} by induction.
+There are several ways to prove  [acyclictosortlem](#acyclictosortlem){.ref} by induction.
 We will use induction on the number $n$ of vertices, and so we will define the statement $Q(n)$ as follows:
 
 >$Q(n)$ is _"For every DAG  $G=(V,E)$ with $n$ vertices, there is a layering of $G$."_
@@ -896,12 +896,12 @@ Thus it will suffice to prove the following: _for every $n>0$, if $Q(n-1)$ is tr
 To do so, we need to somehow find a way, given a graph $G$ of $n$ vertices, to reduce the task of finding a layering for $G$ into the task of finding a layering for some other graph $G'$ of $n-1$ vertices.
 The idea is that we will find a _source_ of $G$: a vertex $v$ that has no in-neighbors. We can then assign to $v$ the layer $0$, and layer the remaining vertices using the inductive hypothesis in layers $1,2,\ldots$.
 
-The above is the intuition behind the proof of [acyclictosortlem](){.ref}, but when writing the formal proof below, we use the benefit of hindsight, and try to streamline what was a messy journey into a linear and easy-to-follow flow of logic that starts with the word __"Proof:"__ and ends with __"QED"__ or the symbol $\blacksquare$.^[QED stands for "quod erat demonstrandum", which is Latin for "what was to be demonstrated" or "the very thing it was required to have shown".]
+The above is the intuition behind the proof of [acyclictosortlem](#acyclictosortlem){.ref}, but when writing the formal proof below, we use the benefit of hindsight, and try to streamline what was a messy journey into a linear and easy-to-follow flow of logic that starts with the word __"Proof:"__ and ends with __"QED"__ or the symbol $\blacksquare$.^[QED stands for "quod erat demonstrandum", which is Latin for "what was to be demonstrated" or "the very thing it was required to have shown".]
 Discussions, examples and digressions can be very insightful, but we keep them outside the space delimited between these two words, where (as described by this [excellent handout](http://web.stanford.edu/class/cs103/handouts/100%20Proofwriting%20Checklist.pdf)) "every sentence must be load-bearing".
 Just like we do in programming, we can break the proof into little "subroutines" or "functions" (known as _lemmas_ or _claims_ in math language), which will be smaller statements that help us prove the main result.
 However, the proof should be structured in a way that ensures that it is always crystal-clear to the reader in what stage we are of the proof.
 The reader should be able to tell what the role of every sentence is in the proof and which part it belongs to.
-We now present the formal proof of [acyclictosortlem](){.ref}.
+We now present the formal proof of [acyclictosortlem](#acyclictosortlem){.ref}.
 
 
 ::: {.proof data-ref="acyclictosortlem"}
@@ -944,7 +944,7 @@ Another good habit is to ask yourself when reading a proof for every variable yo
 
 ### Minimality and uniqueness
 
-[topologicalsortthm](){.ref} guarantees that for every DAG $G=(V,E)$ there exists some layering $f:V \rightarrow \N$ but this layering is not necessarily _unique_.
+[topologicalsortthm](#topologicalsortthm){.ref} guarantees that for every DAG $G=(V,E)$ there exists some layering $f:V \rightarrow \N$ but this layering is not necessarily _unique_.
 For example, if $f:V \rightarrow \N$ is a valid layering of the graph then so is the function $f'$ defined as $f'(v) = 2\cdot f(v)$.
 However, it turns out that the _minimal_ layering is unique.
 A minimal layering is one where every vertex is given the smallest layer number possible.
@@ -956,8 +956,8 @@ Let $G=(V,E)$ be a DAG. We say that a layering $f:V \rightarrow \N$ is _minimal_
 For every layering $f,g:V \rightarrow \N$ of $G$, if both $f$ and $g$ are minimal then $f=g$.
 :::
 
-The definition of minimality in [minimallayeruniquethm](){.ref} implies that for every vertex $v \in V$, we cannot move it to a lower layer without making the layering invalid. If $v$ is a source (i.e., has in-degree zero) then a minimal layering $f$ must put it in layer $0$, and for every other $v$, if $f(v)=i$, then we cannot modify this to set $f(v) \leq i-1$ since there is an-neighbor $u$ of $v$ satisfying $f(u)=i-1$.
-What [minimallayeruniquethm](){.ref} says is that a minimal layering $f$ is _unique_ in the sense that every other minimal layering is equal to $f$.
+The definition of minimality in [minimallayeruniquethm](#minimallayeruniquethm){.ref} implies that for every vertex $v \in V$, we cannot move it to a lower layer without making the layering invalid. If $v$ is a source (i.e., has in-degree zero) then a minimal layering $f$ must put it in layer $0$, and for every other $v$, if $f(v)=i$, then we cannot modify this to set $f(v) \leq i-1$ since there is an-neighbor $u$ of $v$ satisfying $f(u)=i-1$.
+What [minimallayeruniquethm](#minimallayeruniquethm){.ref} says is that a minimal layering $f$ is _unique_ in the sense that every other minimal layering is equal to $f$.
 
 > ### {.proofidea data-ref="minimallayeruniquethm"}
 The idea is to prove the theorem by induction on the layers.
@@ -977,7 +977,7 @@ By the induction hypothesis we get that $g(u) \geq i-1$, and since $g$ is a vali
 :::
 
 ::: { .pause }
-The proof of [minimallayeruniquethm](){.ref} is fully rigorous, but is written in a somewhat terse manner.
+The proof of [minimallayeruniquethm](#minimallayeruniquethm){.ref} is fully rigorous, but is written in a somewhat terse manner.
 Make sure that you read through it and understand _why_ this is indeed an airtight proof of the Theorem's statement.
 :::
 
@@ -1013,7 +1013,7 @@ Because the language notation is so prevalent in other textbooks, we will occasi
 Like programming, mathematics is full of _variables_. 
 Whenever you see a variable, it is always important to keep track of what its _type_ is (e.g., whether the variable is a number, a string, a function, a graph, etc.).
 To make this easier, we try to stick to certain conventions and consistently use certain identifiers for variables of the same type.
-Some of these conventions are listed in [notationtable](){.ref} below.
+Some of these conventions are listed in [notationtable](#notationtable){.ref} below.
 These conventions are not immutable laws and we might occasionally deviate from them.
 Also, such conventions do not replace the need to explicitly declare for each new variable the type of object that it denotes.
 
@@ -1197,7 +1197,7 @@ Solow [@Solow14] is a good introduction to proof reading and writing. Kun [@Kun1
 Stanford's [CS 103 course](https://cs103.stanford.edu)  has a wonderful collection of handouts on mathematical proof techniques and discrete mathematics.
 
 
-The word _graph_ in the sense of [undirgraph](){.ref} was coined by the mathematician Sylvester in 1878 in analogy with the chemical graphs used to visualize molecules.
+The word _graph_ in the sense of [undirgraph](#undirgraph){.ref} was coined by the mathematician Sylvester in 1878 in analogy with the chemical graphs used to visualize molecules.
 There is an unfortunate confusion between this term and the more common usage of the word "graph" as a way to plot data, and in particular a plot of some function $f(x)$ as a function of $x$.
 One way to relate these two notions is to identify every function $f:A \rightarrow B$ with the directed graph $G_f$ over the vertex set $V= A \cup B$ such that $G_f$  contains the edge $x \rightarrow f(x)$ for every $x\in A$. In a graph $G_f$ constructed in this way, every vertex in $A$ has out-degree equal to one. If the function $f$ is _one to one_ then every vertex in $B$ has in-degree at most one.
 If the function $f$ is _onto_ then every vertex in $B$ has in-degree at least one.

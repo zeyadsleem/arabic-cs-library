@@ -28,7 +28,7 @@ We’ll go through an example to best understand how dynamic components work. As
 
 Our goal is to build an interface that surfaces a list of tabs that can be clicked. Depending on what tab is clicked, we want to dynamically render a certain component.
 
-![Dynamic tabs](/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.webp)
+![Dynamic tabs](/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.gif)
 
 When clicking between the tabs, we want components to be dynamically unmounted and mounted without the use of routing. Though something like this could be achieved by conditionally rendering child templates with the help of directives like [`v-if` and `v-else`](https://vuejs.org/guide/essentials/conditional.html), this is a perfect use case of Vue dynamic components.
 
@@ -304,7 +304,7 @@ To see an example of this, we can update each of our child components to contain
 
 With these changes, we’ll notice the counter state for each respective child component is kept preserved even as we dynamically switch between components.
 
-![Preserving state](/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.webp)
+![Preserving state](/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.gif)
 
 By using the `` component, we can enhance the behavior of dynamic components by preserving their state and providing a smoother user experience when switching between tabs.
 

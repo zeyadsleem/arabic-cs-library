@@ -63,7 +63,7 @@ Structures from computer science, such as bits, strings, graphs, and even the no
 In addition to coming up with the place-value system, the Babylonians also invented the "standard algorithms" that we were all taught in elementary school for adding and multiplying numbers.
 These algorithms have been essential throughout the ages for people using abaci, papyrus, or pencil and paper, but in our computer age, do they still serve any purpose beyond torturing third-graders?
 To see why these algorithms are still very much relevant, let us compare the Babylonian digit-by-digit multiplication algorithm ("grade-school multiplication") with the naive algorithm that multiplies numbers through repeated addition.
-We start by formally describing both algorithms, see [naivemultalg](){.ref} and [gradeschoolalg](){.ref}.
+We start by formally describing both algorithms, see [naivemultalg](#naivemultalg){.ref} and [gradeschoolalg](#gradeschoolalg){.ref}.
 
 
 ``` { .algorithm title="Multiplication via repeated addition" #naivemultalg }
@@ -92,13 +92,13 @@ return $result$
 ```
 
 
-Both [naivemultalg](){.ref} and [gradeschoolalg](){.ref}  assume that we already know how to add numbers, and [gradeschoolalg](){.ref} also assumes that we can multiply a number by a power of $10$ (which is, after all, a simple shift).
+Both [naivemultalg](#naivemultalg){.ref} and [gradeschoolalg](#gradeschoolalg){.ref}  assume that we already know how to add numbers, and [gradeschoolalg](#gradeschoolalg){.ref} also assumes that we can multiply a number by a power of $10$ (which is, after all, a simple shift).
 Suppose that $x$ and $y$ are two integers of $n=20$ decimal digits each.
 (This roughly corresponds to 64 binary digits, which is a common size in many programming languages.)
-Computing $x \cdot y$ using [naivemultalg](){.ref} entails adding $x$ to itself $y$ times which entails (since $y$ is a $20$-digit number) at least $10^{19}$ additions.
-In contrast, the grade-school algorithm (i.e., [gradeschoolalg](){.ref}) involves $n^2$ shifts and single-digit products, and so at most $2n^2 = 800$ single-digit operations.
-To understand the difference, consider that a grade-schooler can perform a single-digit operation in about 2 seconds, and so would require about $1,600$ seconds (about half an hour) to compute $x\cdot y$ using [gradeschoolalg](){.ref}.
-In contrast, even though it is more than a billion times faster than a human, if we used [naivemultalg](){.ref} to compute $x\cdot y$ using a modern PC, it would take us $10^{20}/10^9 = 10^{11}$ seconds (which is more than three millennia!) to compute the same result.
+Computing $x \cdot y$ using [naivemultalg](#naivemultalg){.ref} entails adding $x$ to itself $y$ times which entails (since $y$ is a $20$-digit number) at least $10^{19}$ additions.
+In contrast, the grade-school algorithm (i.e., [gradeschoolalg](#gradeschoolalg){.ref}) involves $n^2$ shifts and single-digit products, and so at most $2n^2 = 800$ single-digit operations.
+To understand the difference, consider that a grade-schooler can perform a single-digit operation in about 2 seconds, and so would require about $1,600$ seconds (about half an hour) to compute $x\cdot y$ using [gradeschoolalg](#gradeschoolalg){.ref}.
+In contrast, even though it is more than a billion times faster than a human, if we used [naivemultalg](#naivemultalg){.ref} to compute $x\cdot y$ using a modern PC, it would take us $10^{20}/10^9 = 10^{11}$ seconds (which is more than three millennia!) to compute the same result.
 
 
 Computers have not made algorithms obsolete.
@@ -115,13 +115,13 @@ We ask some questions that were already pondered by the Babylonians, such as "wh
 ::: {.remark title="Specification, implementation, and analysis of algorithms." #implspecanarem}
 A full description of an algorithm has three components:
 
-* __Specification__: __What__ is the task that the algorithm performs (e.g., multiplication in the case of [naivemultalg](){.ref} and [gradeschoolalg](){.ref}.)
+* __Specification__: __What__ is the task that the algorithm performs (e.g., multiplication in the case of [naivemultalg](#naivemultalg){.ref} and [gradeschoolalg](#gradeschoolalg){.ref}.)
 
-* __Implementation__: __How__ is the task accomplished: what is the sequence of instructions to be performed. Even though [naivemultalg](){.ref} and [gradeschoolalg](){.ref} perform the same computational task (i.e., they have the same _specification_), they do it in different ways (i.e., they have different _implementations_).
+* __Implementation__: __How__ is the task accomplished: what is the sequence of instructions to be performed. Even though [naivemultalg](#naivemultalg){.ref} and [gradeschoolalg](#gradeschoolalg){.ref} perform the same computational task (i.e., they have the same _specification_), they do it in different ways (i.e., they have different _implementations_).
 
-* __Analysis:__ __Why__ does this sequence of instructions achieve the desired task. A full description of [naivemultalg](){.ref} and [gradeschoolalg](){.ref} will include a _proof_ for each one of these algorithms that on input $x,y$, the algorithm does indeed output $x\cdot y$.
+* __Analysis:__ __Why__ does this sequence of instructions achieve the desired task. A full description of [naivemultalg](#naivemultalg){.ref} and [gradeschoolalg](#gradeschoolalg){.ref} will include a _proof_ for each one of these algorithms that on input $x,y$, the algorithm does indeed output $x\cdot y$.
 
-Often as part of the analysis we show that the algorithm is not only __correct__ but also __efficient__. That is, we want to show that not only will the algorithm compute the desired task, but will do so in a prescribed number of operations. For example [gradeschoolalg](){.ref} computes the multiplication function on inputs of $n$ digits using $O(n^2)$ operations, while [karatsubaalg](){.ref} (described below) computes the same function using $O(n^{1.6})$ operations. (We define the $O$ notations used here in [secbigohnotation](){.ref}.)
+Often as part of the analysis we show that the algorithm is not only __correct__ but also __efficient__. That is, we want to show that not only will the algorithm compute the desired task, but will do so in a prescribed number of operations. For example [gradeschoolalg](#gradeschoolalg){.ref} computes the multiplication function on inputs of $n$ digits using $O(n^2)$ operations, while [karatsubaalg](#karatsubaalg){.ref} (described below) computes the same function using $O(n^{1.6})$ operations. (We define the $O$ notations used here in [secbigohnotation](#secbigohnotation){.ref}.)
 :::
 
 
@@ -131,20 +131,20 @@ Often as part of the analysis we show that the algorithm is not only __correct__
 ## Extended Example: A faster way to multiply (optional) {#karatsubasec }
 
 Once you think of the standard digit-by-digit multiplication algorithm, it seems like the ``obviously best'' way to multiply numbers.
-In 1960, the famous mathematician Andrey Kolmogorov organized a seminar at Moscow State University in which he conjectured that every algorithm for multiplying two $n$ digit numbers would require a number of basic operations that is proportional to $n^2$ ($\Omega(n^2)$ operations, using $O$-notation as defined in [chapmath](){.ref}).
+In 1960, the famous mathematician Andrey Kolmogorov organized a seminar at Moscow State University in which he conjectured that every algorithm for multiplying two $n$ digit numbers would require a number of basic operations that is proportional to $n^2$ ($\Omega(n^2)$ operations, using $O$-notation as defined in [chapmath](#chapmath){.ref}).
 In other words, Kolmogorov conjectured that in any multiplication algorithm, doubling the number of digits would _quadruple_ the number of basic operations required.
 A young student named Anatoly Karatsuba was in the audience, and within a week he disproved Kolmogorov's conjecture by discovering an algorithm that requires only about $Cn^{1.6}$ operations for some constant $C$.
 Such a number becomes much smaller than $n^2$ as $n$ grows and so for large $n$ Karatsuba's algorithm
 is superior to the grade-school one. (For example,  [Python's implementation](https://svn.python.org/projects/python/trunk/Objects/longobject.c) switches from the grade-school algorithm to Karatsuba's algorithm for numbers that are 1000 bits or larger.)
-While the difference between  an $O(n^{1.6})$ and an $O(n^2)$ algorithm can be sometimes crucial in practice (see [algsbeyondarithmetic](){.ref} below), in this book we will mostly ignore such distinctions.
+While the difference between  an $O(n^{1.6})$ and an $O(n^2)$ algorithm can be sometimes crucial in practice (see [algsbeyondarithmetic](#algsbeyondarithmetic){.ref} below), in this book we will mostly ignore such distinctions.
 However, we describe Karatsuba's algorithm below since it is a good example of how algorithms can often be surprising, as well as a demonstration of the _analysis of algorithms_, which is central to this book and to theoretical computer science at large.
 
 Karatsuba's algorithm is based on a faster way to multiply _two-digit_ numbers.
 Suppose that $x,y \in [100]=\{0,\ldots, 99 \}$ are a pair of two-digit numbers.
 Let's write $\overline{x}$ for the "tens" digit of $x$, and $\underline{x}$ for the "ones" digit, so that $x = 10\overline{x} + \underline{x}$, and write similarly $y = 10\overline{y} + \underline{y}$ for $\overline{x},\underline{x},\overline{y},\underline{y} \in [10]$.
-The grade-school algorithm for multiplying $x$ and $y$ is illustrated in [gradeschoolmult](){.ref}.
+The grade-school algorithm for multiplying $x$ and $y$ is illustrated in [gradeschoolmult](#gradeschoolmult){.ref}.
 
-![The grade-school multiplication algorithm illustrated for multiplying $x=10\overline{x}+\underline{x}$ and $y=10\overline{y}+\underline{y}$. It uses the formula $(10\overline{x}+\underline{x}) \times (10 \overline{y}+\underline{y}) = 100\overline{x}\overline{y}+10(\overline{x}\underline{y} + \underline{x}\overline{y}) + \underline{x}\underline{y}$.](/images/introtcs/lec_01_introduction-1.webp){#gradeschoolmult .margin  }
+![The grade-school multiplication algorithm illustrated for multiplying $x=10\overline{x}+\underline{x}$ and $y=10\overline{y}+\underline{y}$. It uses the formula $(10\overline{x}+\underline{x}) \times (10 \overline{y}+\underline{y}) = 100\overline{x}\overline{y}+10(\overline{x}\underline{y} + \underline{x}\overline{y}) + \underline{x}\underline{y}$.](/images/introtcs/original-gradeschoolmult.webp){#gradeschoolmult .margin  }
 
 The grade-school algorithm can be thought of as transforming the task of multiplying a pair of two-digit numbers into _four_ single-digit multiplications via the formula
 
@@ -153,26 +153,26 @@ $$
 $$
 
 Generally, in the grade-school algorithm _doubling_ the number of digits in the input results in _quadrupling_ the number of operations, leading to an $O(n^2)$ times algorithm.
-In contrast, Karatsuba's algorithm is based on the observation that we can express [eq:gradeschooltwodigit](){.ref} also as
+In contrast, Karatsuba's algorithm is based on the observation that we can express [eq:gradeschooltwodigit](#eq:gradeschooltwodigit){.ref} also as
 
 $$
 (10\overline{x}+\underline{x}) \times (10 \overline{y}+\underline{y}) = (100-10)\overline{x}\overline{y}+10\left[(\overline{x}+\underline{x})(\overline{y}+\underline{y})\right]  -(10-1)\underline{x}\underline{y} \label{eq:karatsubatwodigit}
 $$
 
 which reduces multiplying the two-digit number $x$ and $y$ to computing the following three simpler products:  $\overline{x}\overline{y}$, $\underline{x}\underline{y}$ and $(\overline{x}+\underline{x})(\overline{y}+\underline{y})$.
-By repeating the same strategy recursively, we can reduce the task of multiplying two $n$-digit numbers to the task of multiplying _three_ pairs of $\floor{n/2}+1$ digit numbers.^[If $x$ is a number then $\floor{x}$ is the integer obtained by rounding it down, see [notationsec](){.ref}.]
+By repeating the same strategy recursively, we can reduce the task of multiplying two $n$-digit numbers to the task of multiplying _three_ pairs of $\floor{n/2}+1$ digit numbers.^[If $x$ is a number then $\floor{x}$ is the integer obtained by rounding it down, see [notationsec](#notationsec){.ref}.]
 Since every time we _double_ the number of digits we _triple_ the number of operations, we will be able
 to multiply numbers of $n=2^\ell$ digits using about $3^\ell = n^{\log_2 3} \sim n^{1.585}$ operations.
 
 The above is the intuitive idea behind Karatsuba's algorithm, but is not enough to fully specify it.
 A complete description of an algorithm entails a _precise specification_ of its operations together with its _analysis_: proof that the algorithm does in fact do what it's supposed to do.
-The operations of Karatsuba's algorithm are detailed in [karatsubaalg](){.ref}, while the analysis is given in [karatsubacorrect](){.ref} and [karatsubaefficient](){.ref}.
+The operations of Karatsuba's algorithm are detailed in [karatsubaalg](#karatsubaalg){.ref}, while the analysis is given in [karatsubacorrect](#karatsubacorrect){.ref} and [karatsubaefficient](#karatsubaefficient){.ref}.
 
 
-![Karatsuba's multiplication algorithm illustrated for multiplying $x=10\overline{x}+\underline{x}$ and $y=10\overline{y}+\underline{y}$. We compute the three orange, green and purple products $\underline{x}\underline{y}$, $\overline{x}\overline{y}$ and $(\overline{x}+\underline{x})(\overline{y}+\underline{y})$ and then add and subtract them to obtain the result.](/images/introtcs/lec_01_introduction-2.webp){#karatsubafig .margin  }
+![Karatsuba's multiplication algorithm illustrated for multiplying $x=10\overline{x}+\underline{x}$ and $y=10\overline{y}+\underline{y}$. We compute the three orange, green and purple products $\underline{x}\underline{y}$, $\overline{x}\overline{y}$ and $(\overline{x}+\underline{x})(\overline{y}+\underline{y})$ and then add and subtract them to obtain the result.](/images/introtcs/original-karatsubatwodigit.webp){#karatsubafig .margin  }
 
 
-![Running time of Karatsuba's algorithm vs. the grade-school algorithm. (Python implementation available [online](https://goo.gl/zwzpYe).) Note the existence of a "cutoff" length, where for sufficiently large inputs Karatsuba becomes more efficient than the grade-school algorithm. The precise cutoff location varies by implementation and platform details, but will always occur eventually.](../figure/karastubavsgschoolv2.png){#karatsubaruntimefig .margin  }
+![Running time of Karatsuba's algorithm vs. the grade-school algorithm. (Python implementation available [online](https://goo.gl/zwzpYe).) Note the existence of a "cutoff" length, where for sufficiently large inputs Karatsuba becomes more efficient than the grade-school algorithm. The precise cutoff location varies by implementation and platform details, but will always occur eventually.](/images/introtcs/original-karastubavsgschoolv2.webp){#karatsubaruntimefig .margin  }
 
 
 
@@ -197,12 +197,12 @@ endprocedure
 
 <iframe src="https://trinket.io/embed/python/9ddd61c11f" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
- [karatsubaalg](){.ref} is only half of the full description of Karatsuba's algorithm.
- The other half is the _analysis_, which entails proving that __(1)__ [karatsubaalg](){.ref} indeed computes the multiplication operation and __(2)__ it does so using $O(n^{\log_2 3})$ operations.
+ [karatsubaalg](#karatsubaalg){.ref} is only half of the full description of Karatsuba's algorithm.
+ The other half is the _analysis_, which entails proving that __(1)__ [karatsubaalg](#karatsubaalg){.ref} indeed computes the multiplication operation and __(2)__ it does so using $O(n^{\log_2 3})$ operations.
  We now turn to showing both facts:
 
  > ### {.lemma #karatsubacorrect}
- For every non-negative integers $x,y$, when given input $x,y$ [karatsubaalg](){.ref} will output $x\cdot y$.
+ For every non-negative integers $x,y$, when given input $x,y$ [karatsubaalg](#karatsubaalg){.ref} will output $x\cdot y$.
  
 
 
@@ -226,32 +226,32 @@ x\cdot y =   10^{2m}\overline{x}\overline{y} + 10^{m}\left[ (\overline{x}+\under
  \label{eqkarastubatwo}
 $$
 since the numbers $\underline{x}$,$\overline{x}$, $\underline{y}$,$\overline{y}$,$\overline{x}+\underline{x}$,$\overline{y}+\underline{y}$ all have at most $m+2<n$ digits, the induction hypothesis implies that the values $A,B,C$ computed by the recursive calls will satisfy $A=\overline{x}\overline{y}$, $B=(\overline{x}+\underline{x})(\overline{y}+\underline{y})$ and $C=\underline{x}\underline{y}$.
-Plugging this into  [eqkarastubatwo](){.eqref} we see that $x\cdot y$ equals  the value $(10^{2m}-10^m)\cdot A  + 10^m \cdot B +(1-10^m)\cdot C$ computed by [karatsubaalg](){.ref}.
+Plugging this into  [eqkarastubatwo](#eqkarastubatwo){.eqref} we see that $x\cdot y$ equals  the value $(10^{2m}-10^m)\cdot A  + 10^m \cdot B +(1-10^m)\cdot C$ computed by [karatsubaalg](#karatsubaalg){.ref}.
 :::
 
 
 > ### {.lemma #karatsubaefficient}
-If $x,y$ are integers of at most $n$ digits,  [karatsubaalg](){.ref} will take $O(n^{\log_2 3})$ operations on input $x,y$.
+If $x,y$ are integers of at most $n$ digits,  [karatsubaalg](#karatsubaalg){.ref} will take $O(n^{\log_2 3})$ operations on input $x,y$.
 
 ::: {.proof data-ref="karatsubaefficient"}
-[karatsubafig](){.ref} illustrates the idea behind the proof, which we only sketch here, leaving filling out the details as [karatsuba-ex](){.ref}.
-The proof is again by induction. We define $T(n)$ to be the maximum number of steps that [karatsubaalg](){.ref} takes on inputs of length at most $n$.
-Since in the base case $n\leq 4$, [karatsuba-ex](){.ref} performs a constant number of computation, we know that $T(4) \leq c$ for some constant $c$ and for $n>4$, it satisfies the recursive equation
+[karatsubafig](#karatsubafig){.ref} illustrates the idea behind the proof, which we only sketch here, leaving filling out the details as [karatsuba-ex](#karatsuba-ex){.ref}.
+The proof is again by induction. We define $T(n)$ to be the maximum number of steps that [karatsubaalg](#karatsubaalg){.ref} takes on inputs of length at most $n$.
+Since in the base case $n\leq 4$, [karatsuba-ex](#karatsuba-ex){.ref} performs a constant number of computation, we know that $T(4) \leq c$ for some constant $c$ and for $n>4$, it satisfies the recursive equation
 $$
 T(n) \leq 3T(\floor{n/2}+1) + c' n \label{eqkaratsubarecursion}
 $$
 for some constant $c'$ (using the fact that addition can be done in $O(n)$ operations).
  
-The recursive equation [eqkaratsubarecursion](){.eqref} solves to $O(n^{\log_2 3})$.
-The intuition behind this is presented in [karatsubafig](){.ref}, and this is also a consequence of the so-called ["Master Theorem"](https://en.wikipedia.org/wiki/Master_theorem_\(analysis_of_algorithms\)) on recurrence relations.
-As mentioned above, we leave completing the proof to the reader as [karatsuba-ex](){.ref}.
+The recursive equation [eqkaratsubarecursion](#eqkaratsubarecursion){.eqref} solves to $O(n^{\log_2 3})$.
+The intuition behind this is presented in [karatsubafig](#karatsubafig){.ref}, and this is also a consequence of the so-called ["Master Theorem"](https://en.wikipedia.org/wiki/Master_theorem_\(analysis_of_algorithms\)) on recurrence relations.
+As mentioned above, we leave completing the proof to the reader as [karatsuba-ex](#karatsuba-ex){.ref}.
 :::
 
 
 
 
 
-![Karatsuba's algorithm reduces an $n$-bit multiplication to three $n/2$-bit multiplications, which in turn are reduced to nine $n/4$-bit multiplications and so on. We can represent the computational cost of all these multiplications in a $3$-ary tree of depth $\log_2 n$, where at the root the extra cost is $cn$ operations, at the first level the extra cost is $c(n/2)$ operations, and at each of the $3^i$ nodes of level $i$, the extra cost is $c(n/2^i)$. The total cost is $cn\sum_{i=0}^{\log_2 n} (3/2)^i \leq 10cn^{\log_2 3}$ by the formula for summing a geometric series.](/images/introtcs/lec_01_introduction-4.webp){#karatsuba-fig   }
+![Karatsuba's algorithm reduces an $n$-bit multiplication to three $n/2$-bit multiplications, which in turn are reduced to nine $n/4$-bit multiplications and so on. We can represent the computational cost of all these multiplications in a $3$-ary tree of depth $\log_2 n$, where at the root the extra cost is $cn$ operations, at the first level the extra cost is $c(n/2)$ operations, and at each of the $3^i$ nodes of level $i$, the extra cost is $c(n/2^i)$. The total cost is $cn\sum_{i=0}^{\log_2 n} (3/2)^i \leq 10cn^{\log_2 3}$ by the formula for summing a geometric series.](/images/introtcs/original-karatsuba_analysis2.webp){#karatsuba-fig   }
 
 
 
@@ -328,7 +328,7 @@ One motivation is pure intellectual curiosity.
 Another reason to study impossibility results is that they correspond to the fundamental limits of our world.
 In other words, impossibility results are _laws of nature_.
 
-Here are some examples of impossibility results outside computer science  (see  [bnotesintrosec](){.ref} for more about these).
+Here are some examples of impossibility results outside computer science  (see  [bnotesintrosec](#bnotesintrosec){.ref} for more about these).
 In physics, the impossibility of building a _perpetual motion machine_ corresponds to the _law of conservation of energy_.
 The impossibility of building a heat engine beating Carnot's bound corresponds to the second law of thermodynamics, while the impossibility of faster-than-light information transmission is a cornerstone of special relativity.
 In mathematics, while we all learned the formula for solving quadratic equations in high school, the impossibility of generalizing this formula to equations of degree five or more gave birth to _group theory_.
@@ -373,7 +373,7 @@ More than anything, I hope I will manage to "infect" you with at least some of m
 
 ### Dependencies between chapters
 
-This book is divided into the following parts, see [dependencystructurefig](){.ref}.
+This book is divided into the following parts, see [dependencystructurefig](#dependencystructurefig){.ref}.
 
 * __Preliminaries:__ Introduction, mathematical background, and representing objects as strings.
 
@@ -387,19 +387,19 @@ This book is divided into the following parts, see [dependencystructurefig](){.r
 
 * __Part V: Advanced topics:__ Cryptography, proofs and algorithms (interactive and zero knowledge proofs, Curry-Howard correspondence), quantum computing.
 
-![The dependency structure of the different parts. Part I introduces the model of Boolean circuits to study _finite functions_ with an emphasis on _quantitative_ questions (how many gates to compute a function).  Part II introduces the model of Turing machines to study functions that have _unbounded input lengths_ with an emphasis on _qualitative_ questions (is this function computable or not). Much of Part II does not depend on Part I, as Turing machines can be used as the first computational model. Part III depends on both parts as it introduces a _quantitative_ study of functions with unbounded input length. The more advanced parts IV (randomized computation) and V (advanced topics) rely on the material of Parts I, II and III.](/images/introtcs/lec_01_introduction-5.webp){#dependencystructurefig   }
+![The dependency structure of the different parts. Part I introduces the model of Boolean circuits to study _finite functions_ with an emphasis on _quantitative_ questions (how many gates to compute a function).  Part II introduces the model of Turing machines to study functions that have _unbounded input lengths_ with an emphasis on _qualitative_ questions (is this function computable or not). Much of Part II does not depend on Part I, as Turing machines can be used as the first computational model. Part III depends on both parts as it introduces a _quantitative_ study of functions with unbounded input length. The more advanced parts IV (randomized computation) and V (advanced topics) rely on the material of Parts I, II and III.](/images/introtcs/original-dependencystructure.webp){#dependencystructurefig   }
 
 
 The book largely proceeds in linear order, with each chapter building on the previous ones, with the following exceptions:
 
-* The topics of  $\lambda$ calculus ([lambdacalculussec](){.ref} and [lambdacalculussec](){.ref}), Gödel's incompleteness theorem ([godelchap](){.ref}),  Automata/regular expressions and context-free grammars ([restrictedchap](){.ref}), and space-bounded computation  ([spacechap](){.ref}), are not used in the following chapters. Hence you can choose whether to cover or skip any subset of them.
+* The topics of  $\lambda$ calculus ([lambdacalculussec](#lambdacalculussec){.ref} and [lambdacalculussec](#lambdacalculussec){.ref}), Gödel's incompleteness theorem ([godelchap](#godelchap){.ref}),  Automata/regular expressions and context-free grammars ([restrictedchap](#restrictedchap){.ref}), and space-bounded computation  ([spacechap](#spacechap){.ref}), are not used in the following chapters. Hence you can choose whether to cover or skip any subset of them.
 
 * Part II (Uniform Computation / Turing Machines) does not have a strong dependency on Part I (Finite computation / Boolean circuits) and it should be possible to teach them in the reverse order with minor modification. Boolean circuits are used Part III (efficient computation) for results such as $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ and the Cook-Levin Theorem, as well as in Part IV (for $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$ and derandomization) and Part V (specifically in cryptography and quantum computing).
 
-* All chapters in [advancedpart](){.ref} (Advanced topics) are independent of one another and can be covered in any order.
+* All chapters in [advancedpart](#advancedpart){.ref} (Advanced topics) are independent of one another and can be covered in any order.
 
 
-A course based on this book can use all of Parts I, II, and III  (possibly skipping over some or all of the $\lambda$ calculus, [godelchap](){.ref}, [restrictedchap](){.ref} or [spacechap](){.ref}), and then either cover all or some of Part IV (randomized computation), and add a "sprinkling" of advanced topics from Part V based on student or instructor interest.
+A course based on this book can use all of Parts I, II, and III  (possibly skipping over some or all of the $\lambda$ calculus, [godelchap](#godelchap){.ref}, [restrictedchap](#restrictedchap){.ref} or [spacechap](#spacechap){.ref}), and then either cover all or some of Part IV (randomized computation), and add a "sprinkling" of advanced topics from Part V based on student or instructor interest.
 
 
 
@@ -431,7 +431,7 @@ e. $n!$ operations.
 :::
 
 ::: {.exercise title="Usefulness of algorithmic non-existence"}
-In this chapter we mentioned several companies that were founded based on the discovery of new algorithms. Can you give an example for a company that was founded based on the _non-existence_ of an algorithm? See footnote for hint.^[As we will see in Chapter [chapcryptography](){.ref}, almost any company relying on cryptography needs to assume the _non-existence_ of certain algorithms. In particular,  [RSA Security](https://goo.gl/tMsAui) was founded based on the security of the RSA cryptosystem, which presumes the _non-existence_ of an efficient algorithm to compute the prime factorization of large integers.]
+In this chapter we mentioned several companies that were founded based on the discovery of new algorithms. Can you give an example for a company that was founded based on the _non-existence_ of an algorithm? See footnote for hint.^[As we will see in Chapter [chapcryptography](#chapcryptography){.ref}, almost any company relying on cryptography needs to assume the _non-existence_ of certain algorithms. In particular,  [RSA Security](https://goo.gl/tMsAui) was founded based on the security of the RSA cryptosystem, which presumes the _non-existence_ of an efficient algorithm to compute the prime factorization of large integers.]
 :::
 
 ::: {.exercise title="Analysis of Karatsuba's Algorithm" #karatsuba-ex}

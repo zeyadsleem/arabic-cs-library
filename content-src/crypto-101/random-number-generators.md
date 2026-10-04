@@ -275,7 +275,7 @@ We'll illustrate this graphically, with an illustration based on the
 work by Shumow and Ferguson, two cryptographers who highlighted some of
 the major issues with this algorithm:
 
-![center](/images/crypto-101/fig-0-Diagram.svg)
+![center](/images/crypto-101/random-number-generators-fig-0-Diagram.svg)
 
 center
 

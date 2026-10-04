@@ -12,7 +12,7 @@ Renderless components are particularly useful when we need to create reusable lo
 
 Imagine you have a toggle UI element that needs to be used in different parts of your application, but each instance may have a different visual representation. Some toggles might be displayed as buttons, while others might be checkboxes or switches.
 
-![Different toggles](/images/patterns-dev/vue-renderless-components-0-renderless_toggles.webp)
+![Different toggles](/images/patterns-dev/vue-renderless-components-0-renderless_toggles.gif)
 
 We could just create three different toggle components for the example above, however, we can observe that each toggle element has the same logic and behavior. Each toggle has an inactive and active state that’s being tracked with a component data property (e.g. `checked`). When a toggle is clicked, its component state is switched from inactive to active and vice versa (i.e. `checked = !checked`).
 
@@ -274,7 +274,7 @@ With the relevant slot props available to us, we can now render the first toggle
 
 When saving our changes, we’ll be presented with the switch toggle in our app.
 
-![Switch toggle](/images/patterns-dev/vue-renderless-components-2-toggle_element_1.webp)
+![Switch toggle](/images/patterns-dev/vue-renderless-components-2-toggle_element_1.gif)
 
 We can go ahead and create the other two toggle elements in a very similar fashion. The second toggle element will be a button that when clicked, toggles between the text of `Toggle | Yes 😀` and `Toggle | No 😔`.
 

@@ -26,11 +26,11 @@ We have neglected to address two questions:
 2. What is the mathematical model for randomized computations, and is it more powerful than deterministic computation?
 
 The first question is of both practical and theoretical importance,  but for now let's just say that there are various physical sources of "random" or "unpredictable" data.
-A user's mouse movements and typing pattern, (non-solid state) hard drive and network latency, thermal noise, and radioactive decay have all been used as sources for randomness (see discussion in [modelrandbibnotes](){.ref}).
+A user's mouse movements and typing pattern, (non-solid state) hard drive and network latency, thermal noise, and radioactive decay have all been used as sources for randomness (see discussion in [modelrandbibnotes](#modelrandbibnotes){.ref}).
 For example, many Intel chips come with a random number generator [built in](http://spectrum.ieee.org/computing/hardware/behind-intels-new-randomnumber-generator).
-One can even build mechanical coin tossing machines (see [coinfig](){.ref}).
+One can even build mechanical coin tossing machines (see [coinfig](#coinfig){.ref}).
 
-![A mechanical coin tosser built for Percy Diaconis by Harvard technicians Steve Sansone and Rick Haggerty](/images/introtcs/lec_17_model_rand-1.webp){#coinfig .margin  }
+![A mechanical coin tosser built for Percy Diaconis by Harvard technicians Steve Sansone and Rick Haggerty](/images/introtcs/original-coin_tosser.webp){#coinfig .margin  }
 
 
 
@@ -85,11 +85,11 @@ $$
 where this probability is taken over the result of the RAND operations of $P$.
 :::
 
-Note that the probability in [BPPdefinitioneq](){.eqref} is taken only over the random choices in the execution of $P$ and _not_ over the choice of the input $x$.
-In particular, as discussed in [randomworstcaseidea](){.ref}, $\mathbf{BPP}$ is still a _worst case_ complexity class, in the sense that if $F$ is in $\mathbf{BPP}$ then there is a polynomial-time randomized algorithm that computes $F$ with probability at least $2/3$ _on every  possible_ (and not just random) input.
+Note that the probability in [BPPdefinitioneq](#BPPdefinitioneq){.eqref} is taken only over the random choices in the execution of $P$ and _not_ over the choice of the input $x$.
+In particular, as discussed in [randomworstcaseidea](#randomworstcaseidea){.ref}, $\mathbf{BPP}$ is still a _worst case_ complexity class, in the sense that if $F$ is in $\mathbf{BPP}$ then there is a polynomial-time randomized algorithm that computes $F$ with probability at least $2/3$ _on every  possible_ (and not just random) input.
 
 
-The same polynomial-overhead simulation of NAND-RAM programs by NAND-TM programs we saw in [polyRAMTM-thm](){.ref} extends to _randomized_ programs as well.
+The same polynomial-overhead simulation of NAND-RAM programs by NAND-TM programs we saw in [polyRAMTM-thm](#polyRAMTM-thm){.ref} extends to _randomized_ programs as well.
 Hence the class $\mathbf{BPP}$ is the same regardless of whether it is defined via RNAND-TM or RNAND-RAM programs.
 Similarly, we could have just as well defined $\mathbf{BPP}$ using randomized Turing machines.
 
@@ -130,7 +130,7 @@ Endfor
 Return "fail"
 ```
 
-Conditioned on not failing, the output of [samplefromsetalg](){.ref} is uniformly distributed in $S$. However, since $2^\ell < 2m$, the probability of failure in each iteration is less than $1/2$ and so  the probability of failure in all of them is at most $(1/2)^{n}= 2^{-n}$.
+Conditioned on not failing, the output of [samplefromsetalg](#samplefromsetalg){.ref} is uniformly distributed in $S$. However, since $2^\ell < 2m$, the probability of failure in each iteration is less than $1/2$ and so  the probability of failure in all of them is at most $(1/2)^{n}= 2^{-n}$.
 :::
 
 
@@ -139,10 +139,10 @@ Conditioned on not failing, the output of [samplefromsetalg](){.ref} is uniforml
 ### An alternative view: random coins as an "extra input"
 
 While we presented randomized computation as adding an extra "coin tossing" operation to our programs, we can also model this as being given an additional extra input.
-That is, we can think of a randomized algorithm  $A$ as a _deterministic_ algorithm $A'$ that takes _two inputs_ $x$ and $r$ where the second input $r$ is chosen at random from $\{0,1\}^m$ for some $m\in \N$ (see [randomalgsviewsfig](){.ref}).
-The equivalence to the [BPPdef](){.ref} is shown in the following theorem:
+That is, we can think of a randomized algorithm  $A$ as a _deterministic_ algorithm $A'$ that takes _two inputs_ $x$ and $r$ where the second input $r$ is chosen at random from $\{0,1\}^m$ for some $m\in \N$ (see [randomalgsviewsfig](#randomalgsviewsfig){.ref}).
+The equivalence to the [BPPdef](#BPPdef){.ref} is shown in the following theorem:
 
-![The two equivalent views of randomized algorithms. We can think of such an algorithm as having access to an internal `RAND()` operation that outputs a random independent value in $\{0,1\}$ whenever it is invoked, or we can think of it as a deterministic algorithm that in addition to the standard input $x \in \{0,1\}^n$ obtains an additional auxiliary input $r \in \{0,1\}^m$ that is chosen uniformly at random.](/images/introtcs/lec_17_model_rand-2.webp){#randomalgsviewsfig .margin  }
+![The two equivalent views of randomized algorithms. We can think of such an algorithm as having access to an internal `RAND()` operation that outputs a random independent value in $\{0,1\}$ whenever it is invoked, or we can think of it as a deterministic algorithm that in addition to the standard input $x \in \{0,1\}^n$ obtains an additional auxiliary input $r \in \{0,1\}^m$ that is chosen uniformly at random.](/images/introtcs/original-randomalgstwoviews.webp){#randomalgsviewsfig .margin  }
 
 
 > ### {.theorem title="Alternative characterization of $\mathbf{BPP}$" #randextrainput}
@@ -153,23 +153,23 @@ $$
 
 
 > ### {.proofidea data-ref="randextrainput"}
-The idea behind the proof is that, as illustrated in [randomalgsviewsfig](){.ref}, we can simply replace sampling a random coin with reading a bit from the extra "random input" $r$ and vice versa. To prove this rigorously we need to work through some slightly cumbersome formal notation.  This might be one of those proofs that is easier to work out on your own than to read.
+The idea behind the proof is that, as illustrated in [randomalgsviewsfig](#randomalgsviewsfig){.ref}, we can simply replace sampling a random coin with reading a bit from the extra "random input" $r$ and vice versa. To prove this rigorously we need to work through some slightly cumbersome formal notation.  This might be one of those proofs that is easier to work out on your own than to read.
 
 ::: {.proof data-ref="randextrainput"}
 We start by showing the "only if" direction.
-Let $F\in \mathbf{BPP}$ and let $P$ be an RNAND-TM program that computes $F$ as per [BPPdef](){.ref}, and let $a,b\in \N$ be such that on every input of length $n$, the program $P$ halts within at most $an^b$ steps.
+Let $F\in \mathbf{BPP}$ and let $P$ be an RNAND-TM program that computes $F$ as per [BPPdef](#BPPdef){.ref}, and let $a,b\in \N$ be such that on every input of length $n$, the program $P$ halts within at most $an^b$ steps.
 We will construct a polynomial-time algorithm $P'$  such that for every $x\in \{0,1\}^n$, if we set $m=an^b$, then
 $$
 \Pr_{r \sim \{0,1\}^{m}}[ P'(xr) = 1] = \Pr[ P(x) = 1 ] \;,
 $$
 where the probability in the right-hand side is taken over the `RAND()` operations in $P$.
-In particular this means that if we define $G(xr) = P'(xr)$ then the function $G$ satisfies the conditions of [eqBPPauxiliary](){.eqref}.
+In particular this means that if we define $G(xr) = P'(xr)$ then the function $G$ satisfies the conditions of [eqBPPauxiliary](#eqBPPauxiliary){.eqref}.
 
 The algorithm $P'$ will be very simple: it simulates the program $P$, maintaining a counter $i$ initialized to $0$. Every time that $P$ makes a `RAND()` operation, the program $P'$ will supply the result from $r_i$ and increment $i$ by one. 
 We will never "run out" of bits, since the running time of $P$ is at most $an^b$ and hence it can make at most this number of `RAND()` calls.
 The output of $P'(xr)$ for a random $r\sim \{0,1\}^m$ will be distributed identically to the output of $P(x)$.
 
-For the other direction, given a function $G\in \mathbf{P}$ satisfying the condition [eqBPPauxiliary](){.eqref} and a NAND-TM $P'$ that computes $G$ in polynomial time, we can construct an RNAND-TM program $P$ that computes $F$ in polynomial time.
+For the other direction, given a function $G\in \mathbf{P}$ satisfying the condition [eqBPPauxiliary](#eqBPPauxiliary){.eqref} and a NAND-TM $P'$ that computes $G$ in polynomial time, we can construct an RNAND-TM program $P$ that computes $F$ in polynomial time.
 On input $x\in \{0,1\}^n$, the program $P$ will simply use the `RAND()` instruction $an^b$ times to fill an array `R[`$0$`]` , $\ldots$, `R[`$an^b-1$`]` and then execute the original program $P'$ on input $xr$ where $r_i$ is the $i$-th element of the array `R`.
 Once again, it is clear that if $P'$ runs in polynomial time then so will $P$, and for every input $x$ and $r\in \{0,1\}^{an^b}$, the output of $P$ on input $x$ and where the coin tosses outcome is $r$ is equal to $P'(xr)$.
 :::
@@ -178,24 +178,24 @@ Once again, it is clear that if $P'$ runs in polynomial time then so will $P$, a
 
 
 ::: {.remark title="Definitions of $\mathbf{BPP}$ and $\mathbf{NP}$" #BPPandNP}
-The characterization of $\mathbf{BPP}$ in [randextrainput](){.ref} is reminiscent of the characterization of $\mathbf{NP}$  in [NP-def](){.ref}, with the randomness in the case of $\mathbf{BPP}$ playing the role of the solution in the case of $\mathbf{NP}$. However, there are important differences between the two:
+The characterization of $\mathbf{BPP}$ in [randextrainput](#randextrainput){.ref} is reminiscent of the characterization of $\mathbf{NP}$  in [NP-def](#NP-def){.ref}, with the randomness in the case of $\mathbf{BPP}$ playing the role of the solution in the case of $\mathbf{NP}$. However, there are important differences between the two:
 
 * The definition of $\mathbf{NP}$ is "one sided": $F(x)=1$ if _there exists_ a solution $w$ such that $G(xw)=1$ and $F(x)=0$ if _for every_ string $w$ of the appropriate length, $G(xw)=0$. In contrast, the characterization of $\mathbf{BPP}$ is symmetric with respect to the cases $F(x)=0$ and $F(x)=1$.
 
 
-* The relation between $\mathbf{NP}$ and $\mathbf{BPP}$ is not immediately clear. It is not known whether $\mathbf{BPP} \subseteq \mathbf{NP}$, $\mathbf{NP} \subseteq \mathbf{BPP}$, or these two classes are incomparable. It is however known (with a non-trivial proof) that if $\mathbf{P}=\mathbf{NP}$ then  $\mathbf{BPP}=\mathbf{P}$ (see [BPPvsNP](){.ref}).
+* The relation between $\mathbf{NP}$ and $\mathbf{BPP}$ is not immediately clear. It is not known whether $\mathbf{BPP} \subseteq \mathbf{NP}$, $\mathbf{NP} \subseteq \mathbf{BPP}$, or these two classes are incomparable. It is however known (with a non-trivial proof) that if $\mathbf{P}=\mathbf{NP}$ then  $\mathbf{BPP}=\mathbf{P}$ (see [BPPvsNP](#BPPvsNP){.ref}).
 
 * Most importantly,  the definition of $\mathbf{NP}$ is "ineffective," since it does not yield a way of actually finding whether there exists a solution among the exponentially many possibilities. By contrast, the definition of $\mathbf{BPP}$ gives us a way to compute the function in practice by simply choosing the second input at random.
 :::
 
 
-__"Random tapes".__ [randextrainput](){.ref} motivates sometimes considering the randomness of an RNAND-TM (or RNAND-RAM) program as an extra input. As such, if $A$ is a randomized algorithm that on inputs of length $n$ makes at most $m$ coin tosses, we will often use the notation $A(x;r)$ (where $x\in \{0,1\}^n$ and $r\in \{0,1\}^{m}$) to refer to the result of executing $x$ when the coin tosses of $A$ correspond to the coordinates of $r$. This second, or "auxiliary," input is sometimes referred to as a "random tape." This terminology originates from the model of randomized Turing machines.
+__"Random tapes".__ [randextrainput](#randextrainput){.ref} motivates sometimes considering the randomness of an RNAND-TM (or RNAND-RAM) program as an extra input. As such, if $A$ is a randomized algorithm that on inputs of length $n$ makes at most $m$ coin tosses, we will often use the notation $A(x;r)$ (where $x\in \{0,1\}^n$ and $r\in \{0,1\}^{m}$) to refer to the result of executing $x$ when the coin tosses of $A$ correspond to the coordinates of $r$. This second, or "auxiliary," input is sometimes referred to as a "random tape." This terminology originates from the model of randomized Turing machines.
 
 
 ### Success amplification of two-sided error algorithms { #successamptwosided }
 
 
-The number $2/3$ might seem arbitrary, but as we've seen in [randomizedalgchap](){.ref} it can be amplified to our liking:
+The number $2/3$ might seem arbitrary, but as we've seen in [randomizedalgchap](#randomizedalgchap){.ref} it can be amplified to our liking:
 
 ::: {.theorem title="Amplification" #amplificationthm}
 Let $F:\{0,1\}^* \rightarrow \{0,1\}$ be a Boolean function such that there is a polynomial $p:\N \rightarrow \N$ and a  polynomial-time randomized algorithm $A$ satisfying that for every $x\in \{0,1\}^n$,
@@ -215,19 +215,19 @@ We can _amplify_ the success of randomized algorithms to a value that is arbitra
 > ### {.proofidea data-ref="amplificationthm"}
 The proof is the same as we've seen before in the case of maximum cut and other examples.
 We use the Chernoff bound to argue that if $A$ computes $F$ with probability at least $\tfrac{1}{2} + \epsilon$ and we run it $O(k/\epsilon^2)$ times, each time using fresh and independent random coins, then the probability that the majority of the answers will not be correct will be less than $2^{-k}$.
-Amplification can be thought of as a "polling" of the choices for randomness for the algorithm (see [amplificationfig](){.ref}).
+Amplification can be thought of as a "polling" of the choices for randomness for the algorithm (see [amplificationfig](#amplificationfig){.ref}).
 
 ::: {.proof data-ref="amplificationthm"}
-Let $A$ be an algorithm  satisfying [eqbppampassumption](){.eqref}.
+Let $A$ be an algorithm  satisfying [eqbppampassumption](#eqbppampassumption){.eqref}.
 Set $\epsilon = \tfrac{1}{p(n)}$ and $k = q(n)$ where $p,q$ are the polynomials in the theorem statement.
 We can run $P$ on input $x$ for $t=10k/\epsilon^2$ times, using fresh randomness in each execution, and compute the outputs $y_0,\ldots,y_{t-1}$. We output the value $y$ that appeared the largest number of times.
 Let $X_i$ be the random variable that is equal to $1$ if $y_i = F(x)$ and equal to $0$ otherwise.
 The random variables $X_0,\ldots,X_{t-1}$ are i.i.d.  and satisfy $\E [X_i] = \Pr[ X_i = 1] \geq 1/2 + \epsilon$, and hence by linearity of expectation $\mathbb{E}[\sum_{i=0}^{t-1} X_i] \geq t(1/2 + \epsilon)$.
-For the plurality value to be _incorrect_, it must hold that $\sum_{i=0}^{t-1} X_i \leq t/2$, which means that $\sum_{i=0}^{t-1}X_i$ is at least $\epsilon t$ far from its expectation. Hence by the Chernoff bound ([chernoffthm](){.ref}), the probability that the plurality value is not correct is at most $2e^{-\epsilon^2 t}$, which is smaller than  $2^{-k}$ for our choice of $t$.
+For the plurality value to be _incorrect_, it must hold that $\sum_{i=0}^{t-1} X_i \leq t/2$, which means that $\sum_{i=0}^{t-1}X_i$ is at least $\epsilon t$ far from its expectation. Hence by the Chernoff bound ([chernoffthm](#chernoffthm){.ref}), the probability that the plurality value is not correct is at most $2e^{-\epsilon^2 t}$, which is smaller than  $2^{-k}$ for our choice of $t$.
 :::
 
 
-![If $F\in\mathbf{BPP}$ then there is a randomized polynomial-time algorithm $P$ with the following property: In the case $F(x)=0$ two thirds of the "population" of random choices satisfy $P(x;r)=0$ and in the case $F(x)=1$ two thirds of the population satisfy $P(x;r)=1$.  We can think of amplification as a form of "polling" of the choices of randomness. By the Chernoff   bound, if we poll a sample of $O(\tfrac{\log(1/\delta)}{\epsilon^2})$ random choices $r$, then with probability at least $1-\delta$,  the fraction of $r$'s in the sample satisfying $P(x;r)=1$ will give us an estimate of the fraction of the population within an $\epsilon$ margin of error. This is the same calculation used by pollsters to determine the needed sample size in their polls.](/images/introtcs/lec_17_model_rand-3.webp){#amplificationfig   .margin  }
+![If $F\in\mathbf{BPP}$ then there is a randomized polynomial-time algorithm $P$ with the following property: In the case $F(x)=0$ two thirds of the "population" of random choices satisfy $P(x;r)=0$ and in the case $F(x)=1$ two thirds of the population satisfy $P(x;r)=1$.  We can think of amplification as a form of "polling" of the choices of randomness. By the Chernoff   bound, if we poll a sample of $O(\tfrac{\log(1/\delta)}{\epsilon^2})$ random choices $r$, then with probability at least $1-\delta$,  the fraction of $r$'s in the sample satisfying $P(x;r)=1$ will give us an estimate of the fraction of the population within an $\epsilon$ margin of error. This is the same calculation used by pollsters to determine the needed sample size in their polls.](/images/introtcs/original-BPPamplification.webp){#amplificationfig   .margin  }
 
 
 
@@ -240,7 +240,7 @@ Fortunately, the answer is _Yes_:
 > ### {.theorem title="NP hardness and BPP" #NPCandBPP}
 Suppose that $F$ is $\mathbf{NP}$-hard and $F\in \mathbf{BPP}$. Then $\mathbf{NP} \subseteq \mathbf{BPP}$.
 
-Before seeing the proof, note that [NPCandBPP](){.ref} implies that if there was a randomized polynomial time algorithm for any $\mathbf{NP}$-complete problem such as $3SAT$, $ISET$ etc., then there would be such an algorithm for _every_ problem in $\mathbf{NP}$.
+Before seeing the proof, note that [NPCandBPP](#NPCandBPP){.ref} implies that if there was a randomized polynomial time algorithm for any $\mathbf{NP}$-complete problem such as $3SAT$, $ISET$ etc., then there would be such an algorithm for _every_ problem in $\mathbf{NP}$.
 Thus, regardless of whether our model of computation is deterministic or randomized algorithms, $\mathbf{NP}$ complete problems retain their status as the "hardest problems in $\mathbf{NP}$."
 
 > ### {.proofidea data-ref="NPCandBPP"}
@@ -257,9 +257,9 @@ $$
 $$
 for _every_ $y\in \{0,1\}^*$ (where the probability is taken over the random coin tosses of $P$).
 Hence we can get a polynomial-time RNAND-TM program $P'$ to compute $G$ by setting $P'(x)=P(R(x))$.
-By [FinBPPeq](){.eqref} $\Pr[ P'(x) = F(R(x))] \geq 2/3$ and since $F(R(x))=G(x)$ this implies that $\Pr[ P'(x) = G(x)] \geq 2/3$, which proves that $G \in \mathbf{BPP}$.
+By [FinBPPeq](#FinBPPeq){.eqref} $\Pr[ P'(x) = F(R(x))] \geq 2/3$ and since $F(R(x))=G(x)$ this implies that $\Pr[ P'(x) = G(x)] \geq 2/3$, which proves that $G \in \mathbf{BPP}$.
 
-Most of the results we've seen about $\mathbf{NP}$ hardness, including the search to decision reduction of [search-dec-thm](){.ref}, the decision to optimization reduction of [optimizationnp](){.ref}, and the quantifier elimination result of [PH-collapse-thm](){.ref}, all carry over in the same way if we replace $\mathbf{P}$ with $\mathbf{BPP}$ as our model of efficient computation.
+Most of the results we've seen about $\mathbf{NP}$ hardness, including the search to decision reduction of [search-dec-thm](#search-dec-thm){.ref}, the decision to optimization reduction of [optimizationnp](#optimizationnp){.ref}, and the quantifier elimination result of [PH-collapse-thm](#PH-collapse-thm){.ref}, all carry over in the same way if we replace $\mathbf{P}$ with $\mathbf{BPP}$ as our model of efficient computation.
 Thus if $\mathbf{NP} \subseteq \mathbf{BPP}$ then we get essentially all of the strange and wonderful consequences of $\mathbf{P}=\mathbf{NP}$.
 Unsurprisingly, we cannot rule out this possibility.
 In fact, unlike $\mathbf{P}=\mathbf{EXP}$, which is ruled out by the time hierarchy theorem, we don't even know how to rule out the possibility that $\mathbf{BPP}=\mathbf{EXP}$!
@@ -282,12 +282,12 @@ One would be correct about the former, but wrong about the latter.
 As we will see, we do in fact have reasons to believe that $\mathbf{BPP}=\mathbf{P}$.
 This can be thought of as supporting the _extended Church Turing hypothesis_ that deterministic polynomial-time Turing machines  capture what can be feasibly computed in the physical world.
 
-We now survey some of the relations that are known between $\mathbf{BPP}$ and other complexity classes we have encountered. (See also [BPPscenariosfig](){.ref}.)
+We now survey some of the relations that are known between $\mathbf{BPP}$ and other complexity classes we have encountered. (See also [BPPscenariosfig](#BPPscenariosfig){.ref}.)
 
 ![Some possibilities for the relations between $\mathbf{BPP}$ and other complexity classes. Most researchers believe that $\mathbf{BPP}=\mathbf{P}$ and that these classes are _not_ powerful enough to solve $\mathbf{NP}$-complete problems, let alone all problems in $\mathbf{EXP}$.
 However, we have not even been able yet to rule out the possibility that randomness is a "silver bullet" that allows exponential speedup on all problems, and hence $\mathbf{BPP}=\mathbf{EXP}$.
 As we've already seen, we also can't rule out that $\mathbf{P}=\mathbf{NP}$.
-Interestingly, in the latter case, $\mathbf{P}=\mathbf{BPP}$.](/images/introtcs/lec_17_model_rand-4.webp){#BPPscenariosfig .margin  }
+Interestingly, in the latter case, $\mathbf{P}=\mathbf{BPP}$.](/images/introtcs/original-BPPscenarios.webp){#BPPscenariosfig .margin  }
 
 
 ### Solving $\mathbf{BPP}$ in exponential time
@@ -298,18 +298,18 @@ It is not hard to see that if $F$ is in $\mathbf{BPP}$ then it can be computed i
 $\mathbf{BPP} \subseteq \mathbf{EXP}$
 
 > ### { .pause }
-The proof of [BPPEXP](){.ref} readily follows by enumerating over all the (exponentially many) choices for the random coins.
-We omit the formal proof, as doing it by yourself is an excellent way to get comfortable with [BPPdef](){.ref}.
+The proof of [BPPEXP](#BPPEXP){.ref} readily follows by enumerating over all the (exponentially many) choices for the random coins.
+We omit the formal proof, as doing it by yourself is an excellent way to get comfortable with [BPPdef](#BPPdef){.ref}.
 
 
 
 ### Simulating randomized algorithms by circuits
 
-We have seen in [non-uniform-thm](){.ref} that if  $F$ is in $\mathbf{P}$, then there is a polynomial $p:\N \rightarrow \N$ such that for every $n$, the restriction $F_{\upharpoonright n}$ of $F$ to inputs $\{0,1\}^n$ is in $SIZE(p(n))$. (In other words, that $\mathbf{P} \subseteq \mathbf{P_{/poly}}$.)
+We have seen in [non-uniform-thm](#non-uniform-thm){.ref} that if  $F$ is in $\mathbf{P}$, then there is a polynomial $p:\N \rightarrow \N$ such that for every $n$, the restriction $F_{\upharpoonright n}$ of $F$ to inputs $\{0,1\}^n$ is in $SIZE(p(n))$. (In other words, that $\mathbf{P} \subseteq \mathbf{P_{/poly}}$.)
 A priori it is not at all clear that the same holds for a function in $\mathbf{BPP}$, but this does turn out to be the case.
 
 
-![The possible guarantees for a randomized algorithm $A$ computing some function $F$. In the tables above, the columns correspond to different inputs and the rows to different choices of the random tape. A cell at position $r,x$ is colored green if $A(x;r)=F(x)$ (i.e., the algorithm outputs the correct answer) and red otherwise. The standard $\mathbf{BPP}$ guarantee corresponds to the middle figure, where for every input $x$, at least two thirds of the choices $r$ for a random tape will result in $A$ computing the correct value. That is, every column is colored green in at least two thirds of its coordinates.  In the left figure we have an "average case" guarantee where the algorithm is only guaranteed to output the correct answer with probability two thirds over a _random_ input (i.e., at most one third of the total entries of the table are colored red, but there could be an all red column). The right figure corresponds to the "offline $\mathbf{BPP}$" case, with probability at least two thirds over the random choice $r$, $r$ will be good for _every_ input. That is, at least two thirds of the rows are all green. [rnandthm](){.ref} ($\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$) is proven by amplifying the success of a $\mathbf{BPP}$ algorithm until we have the "offline $\mathbf{BPP}$" guarantee, and then hardwiring the choice of the randomness $r$ to obtain a non-uniform deterministic algorithm.](../figure/randomizedcomp.png){#randomizedcompfig   }
+![The possible guarantees for a randomized algorithm $A$ computing some function $F$. In the tables above, the columns correspond to different inputs and the rows to different choices of the random tape. A cell at position $r,x$ is colored green if $A(x;r)=F(x)$ (i.e., the algorithm outputs the correct answer) and red otherwise. The standard $\mathbf{BPP}$ guarantee corresponds to the middle figure, where for every input $x$, at least two thirds of the choices $r$ for a random tape will result in $A$ computing the correct value. That is, every column is colored green in at least two thirds of its coordinates.  In the left figure we have an "average case" guarantee where the algorithm is only guaranteed to output the correct answer with probability two thirds over a _random_ input (i.e., at most one third of the total entries of the table are colored red, but there could be an all red column). The right figure corresponds to the "offline $\mathbf{BPP}$" case, with probability at least two thirds over the random choice $r$, $r$ will be good for _every_ input. That is, at least two thirds of the rows are all green. [rnandthm](#rnandthm){.ref} ($\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$) is proven by amplifying the success of a $\mathbf{BPP}$ algorithm until we have the "offline $\mathbf{BPP}$" guarantee, and then hardwiring the choice of the randomness $r$ to obtain a non-uniform deterministic algorithm.](/images/introtcs/original-randomizedcomp.webp){#randomizedcompfig   }
 
 > ### {.theorem title="Randomness does not help for non-uniform computation" #rnandthm}
 $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$. 
@@ -323,8 +323,8 @@ This will allow us to show that for every $n\in\N$ there exists a _single fixed 
 We can then use the standard "unravelling the loop" technique to transform an RNAND-TM program to an RNAND-CIRC program, and  "hardwire" the favorable choice of random coins to transform the RNAND-CIRC program into a plain old deterministic NAND-CIRC program.
 
 ::: {.proof data-ref="rnandthm"}
-Suppose that $F\in \mathbf{BPP}$. Let $P$ be a polynomial-time RNAND-TM program that computes $F$ as per [BPPdef](){.ref}.
-Using [amplificationthm](){.ref}, we can _amplify_ the success probability of $P$ to obtain an RNAND-TM program $P'$ that is at most a factor of $O(n)$ slower (and hence still polynomial time)
+Suppose that $F\in \mathbf{BPP}$. Let $P$ be a polynomial-time RNAND-TM program that computes $F$ as per [BPPdef](#BPPdef){.ref}.
+Using [amplificationthm](#amplificationthm){.ref}, we can _amplify_ the success probability of $P$ to obtain an RNAND-TM program $P'$ that is at most a factor of $O(n)$ slower (and hence still polynomial time)
 such that for every $x\in \{0,1\}^n$
 
 $$
@@ -334,7 +334,7 @@ $$
 where $m$ is the number of coin tosses that $P'$ uses on inputs of length $n$. We use the notation $P'(x;r)$ to denote the execution of $P'$ on input $x$ and when the result of the coin tosses corresponds to the string $r$.
 
 For every $x\in \{0,1\}^n$, define the "bad" event $B_x$ to hold if $P'(x) \neq F(x)$, where the sample space for this event consists of the coins of $P'$.
-Then by [ampeq](){.eqref}, $\Pr[B_x] \leq 0.1\cdot 2^{-n}$ for every $x \in \{0,1\}^n$.
+Then by [ampeq](#ampeq){.eqref}, $\Pr[B_x] \leq 0.1\cdot 2^{-n}$ for every $x \in \{0,1\}^n$.
 Since there are $2^n$ many such $x$'s, by the union bound we see that the probability that the _union_ of the events $\{ B_x \}_{x\in \{0,1\}^n}$ is at most $0.1$.
 This means that if we choose $r \sim \{0,1\}^m$, then with probability at least $0.9$ it will be the case that for _every_ $x\in \{0,1\}^n$, $F(x)=P'(x;r)$.
 (Indeed, otherwise the event $B_x$ would hold for some $x$.)
@@ -347,8 +347,8 @@ for every $x\in \{0,1\}^n$.
 
 
 Now let us use the standard "unravelling the loop" technique and transform $P'$ into a NAND-CIRC program $Q$ of polynomial in $n$ size, such that $Q(xr)=P'(x;r)$ for every $x\in \{0,1\}^n$ and $r \in \{0,1\}^m$.
-Then by "hardwiring" the values $r^*_0,\ldots,r^*_{m-1}$ in place of the last $m$ inputs of $Q$, we obtain a new NAND-CIRC program $Q_{r^*}$ that satisfies by [hardwirecorrecteq](){.eqref} that $Q_{r^*}(x)=F(x)$ for every $x\in \{0,1\}^n$.
-This demonstrates that $F_{\upharpoonright n}$ has a polynomial-sized NAND-CIRC program, hence completing the proof of [rnandthm](){.ref}.
+Then by "hardwiring" the values $r^*_0,\ldots,r^*_{m-1}$ in place of the last $m$ inputs of $Q$, we obtain a new NAND-CIRC program $Q_{r^*}$ that satisfies by [hardwirecorrecteq](#hardwirecorrecteq){.eqref} that $Q_{r^*}(x)=F(x)$ for every $x\in \{0,1\}^n$.
+This demonstrates that $F_{\upharpoonright n}$ has a polynomial-sized NAND-CIRC program, hence completing the proof of [rnandthm](#rnandthm){.ref}.
 :::
 
 
@@ -359,7 +359,7 @@ This demonstrates that $F_{\upharpoonright n}$ has a polynomial-sized NAND-CIRC 
 
 ## Derandomization
 
-The proof of [rnandthm](){.ref} can be summarized as follows:  we can replace a $poly(n)$-time algorithm that tosses coins as it runs with an algorithm that uses a single set of coin tosses $r^* \in \{0,1\}^{poly(n)}$ which will be good enough for all inputs of size $n$.
+The proof of [rnandthm](#rnandthm){.ref} can be summarized as follows:  we can replace a $poly(n)$-time algorithm that tosses coins as it runs with an algorithm that uses a single set of coin tosses $r^* \in \{0,1\}^{poly(n)}$ which will be good enough for all inputs of size $n$.
 Another way to say it is that for the purposes of computing functions, we do not need "online" access to random coins and can generate a set of coins "offline" ahead of time, before we see the actual input.
 
 But this does not really help us with answering the question of whether $\mathbf{BPP}$ equals $\mathbf{P}$, since we still need to find a way to generate these "offline" coins in the first place.
@@ -396,7 +396,7 @@ The algorithm $A$ is very simple. On input $x$ of length $n$, it tosses $n$ rand
 Clearly $A$ runs in $O(n)$ steps and for every $x\in \{0,1\}^*$, $\Pr[ A(x)=1] \leq 2^{-10} < 0.1$.
 However, by definition, for every fixed string $r$ of length at least $10$, $A(r;r)=1$.
 
-The proof of [nodet](){.ref} might seem quite silly, but refers to a very serious issue.
+The proof of [nodet](#nodet){.ref} might seem quite silly, but refers to a very serious issue.
 
 --->
 
@@ -419,7 +419,7 @@ $$
 \left| \Pr_{s\sim \{0,1\}^\ell}[C(G(s))=1] - \Pr_{r \sim \{0,1\}^m}[C(r)=1] \right| < \epsilon \label{eq:prg}
 $$
 
-![A pseudorandom generator $G$ maps a short string $s\in \{0,1\}^\ell$ into a long string $r\in \{0,1\}^m$ such that a small program/circuit $P$ cannot distinguish between the case that it is provided a random input $r \sim \{0,1\}^m$ and the case that it is provided a "pseudorandom" input of the form $r=G(s)$ where $s \sim \{0,1\}^\ell$. The short string $s$ is sometimes called the _seed_ of the pseudorandom generator, as it is a small object that can be thought as yielding a large "tree of randomness".](/images/introtcs/lec_17_model_rand-5.webp){#pseudorandomgeneratorfig  .margin  }
+![A pseudorandom generator $G$ maps a short string $s\in \{0,1\}^\ell$ into a long string $r\in \{0,1\}^m$ such that a small program/circuit $P$ cannot distinguish between the case that it is provided a random input $r \sim \{0,1\}^m$ and the case that it is provided a "pseudorandom" input of the form $r=G(s)$ where $s \sim \{0,1\}^\ell$. The short string $s$ is sometimes called the _seed_ of the pseudorandom generator, as it is a small object that can be thought as yielding a large "tree of randomness".](/images/introtcs/original-prg_experiment.webp){#pseudorandomgeneratorfig  .margin  }
 
 ::: { .pause }
 This is a definition that's worth reading more than once, and spending some time to digest it.
@@ -431,7 +431,7 @@ Note that it takes several parameters:
 
 * $\ell$ is the input length and $m$ is the output length. If $\ell \geq m$ then it is trivial to come up with such a generator: on input $s\in \{0,1\}^\ell$, we can output $s_0,\ldots,s_{m-1}$. In this case $\Pr_{s\sim \{0,1\}^\ell}[ P(G(s))=1]$ will simply equal $\Pr_{r\sim \{0,1\}^m}[ P(r)=1]$, no matter how many lines $P$ has. So, the smaller $\ell$ is and the larger $m$ is, the stronger the generator, and to get anything non-trivial, we need $m>\ell$.
 
-Furthermore note that although our eventual goal is to fool probabilistic randomized algorithms that take an unbounded number of inputs,  [prgdef](){.ref} refers to _finite_ and _deterministic_ NAND-CIRC programs.
+Furthermore note that although our eventual goal is to fool probabilistic randomized algorithms that take an unbounded number of inputs,  [prgdef](#prgdef){.ref} refers to _finite_ and _deterministic_ NAND-CIRC programs.
 :::
 
 We can think of a pseudorandom generator as a "randomness amplifier." It takes an input $s$ of $\ell$ bits chosen at random and expands these $\ell$ bits into an output $r$ of $m>\ell$ _pseudorandom_ bits.
@@ -440,15 +440,15 @@ Still, there are two questions we haven't answered:
 
 * _What reason do we have to believe that pseudorandom generators with non-trivial parameters exist?_
 
-* _Even if they do exist, why would such generators be useful to derandomize randomized algorithms?_ After all, [prgdef](){.ref} does not involve RNAND-TM or RNAND-RAM programs, but rather deterministic NAND-CIRC programs with no randomness and no loops.
+* _Even if they do exist, why would such generators be useful to derandomize randomized algorithms?_ After all, [prgdef](#prgdef){.ref} does not involve RNAND-TM or RNAND-RAM programs, but rather deterministic NAND-CIRC programs with no randomness and no loops.
 
 We will now (partially) answer both questions.
 For the first question, let us come clean and confess we do not know how to _prove_ that interesting pseudorandom generators exist.
 By _interesting_ we mean pseudorandom generators that satisfy that $\epsilon$ is some small constant (say $\epsilon<1/3$), $m>\ell$, and the function $G$ itself can be computed in $poly(m)$ time.
-Nevertheless, [prgexist](){.ref} (whose statement and proof is deferred to the end of this chapter) shows that if we only drop the last condition (polynomial-time computability), then there do in fact exist pseudorandom generators where $m$ is _exponentially larger_ than $\ell$.
+Nevertheless, [prgexist](#prgexist){.ref} (whose statement and proof is deferred to the end of this chapter) shows that if we only drop the last condition (polynomial-time computability), then there do in fact exist pseudorandom generators where $m$ is _exponentially larger_ than $\ell$.
 
 > ### { .pause }
-At this point you might want to skip ahead and look at the _statement_ of [prgexist](){.ref}. However, since its _proof_ is somewhat subtle, I recommend you defer reading it until you've finished reading the rest of this chapter.
+At this point you might want to skip ahead and look at the _statement_ of [prgexist](#prgexist){.ref}. However, since its _proof_ is somewhat subtle, I recommend you defer reading it until you've finished reading the rest of this chapter.
 
 ### From existence to constructivity {#optimalprgconj }
 
@@ -534,22 +534,22 @@ The proof is rather subtle. It is much more important that you understand the _s
 :::
 
 ::: {.proofidea data-ref="BPPvsNP"}
-The construction follows the "quantifier elimination" idea which we have seen in [PH-collapse-thm](){.ref}.
+The construction follows the "quantifier elimination" idea which we have seen in [PH-collapse-thm](#PH-collapse-thm){.ref}.
 We will show that for every $F \in \mathbf{BPP}$, we can reduce the question of some input $x$ satisfies $F(x)=1$ to the question of whether a formula of the form $\exists_{u\in \{0,1\}^m} \forall_{v \in \{0,1\}^k} P(u,v)$ is true, where $m,k$ are polynomial in the length of $x$ and $P$ is polynomial-time computable.
-By [PH-collapse-thm](){.ref}, if $\mathbf{P}=\mathbf{NP}$ then we can decide in polynomial time whether such a formula is true or false.
+By [PH-collapse-thm](#PH-collapse-thm){.ref}, if $\mathbf{P}=\mathbf{NP}$ then we can decide in polynomial time whether such a formula is true or false.
 
 The idea behind this construction is that using amplification we can obtain a randomized algorithm $A$ for computing $F$ using $m$ coins such that for every $x\in \{0,1\}^n$, if $F(x)=0$ then the set $S \subseteq \{0,1\}^m$ of coins that make $A$ output $1$ is extremely tiny (i.e., exponentially small relative to $2^m$), and if $F(x)=1$ then $S$ is very large (of size close to $2^m$). We then consider "shifts" of the set $S$: sets of the form $S \oplus s$ where $s\in \{0,1\}^m$ is some string, where $S \oplus s$ is defined as $\{ r \oplus s \;|\; r \in S \}$. Note that for every such shift $s$, the cardinality of $S \oplus s$ is the same as the cardinality of $S$. Hence, if $F(x)=0$, and so $S$ is "tiny", then for every polynomial number of shifts $s_0,\ldots,s_k \in \{0,1\}^m$, the union of the sets $S \oplus s_i$ will not cover $\{0,1\}^m$. On the other hand, we will show that if $S$ is very large, then there exists a polynomial number of such shifts such as $\cup_{i=0}^{k-1} (S \oplus s_i) = \{0,1\}^m$.
  
 We can express the condition that there exists $s_0,\ldots,s_{k-1}$ such that $\cup_{i\in [k]} (S \oplus s_i) = \{0,1\}^m$ as a statement with a constant number of quantifiers. (Specifically, this condition holds if for _every_ $y\in \{0,1\}^m$, there _exists_ $s \in S$ and $i\in \{0,\ldots,k-1\}$ such that $y=s\oplus s_i$.)
 :::
 
-![If $F\in \mathbf{BPP}$ then through amplification we can ensure that there is an algorithm $A$ to compute $F$ on $n$-length inputs and using $m$ coins such that $\Pr_{r\sim \{0,1\}^m}[ A(xr)\neq F(x)] \ll 1/poly(m)$. Hence if $F(x)=1$ then almost all of the $2^m$ choices for $r$ will cause $A(xr)$ to output $1$, while if $F(x)=0$ then $A(xr)=0$ for almost all $r$'s. To prove the Sipser–Gács Theorem we consider several "shifts" of the set $S \subseteq \{0,1\}^m$ of the coins $r$ such that $A(xr)=1$. If $F(x)=1$ then we can find a set of $k$ shifts $s_0,\ldots,s_{k-1}$ for which $\cup_{i\in [k]} (S \oplus s_i) = \{0,1\}^m$. If $F(x)=0$ then for every such set $|\cup_{i\in [k]} S_i| \leq k |S| \ll 2^m$. We can phrase the question of whether there is such a set of shifts using a constant number of quantifiers, and so can solve it in polynomial time if $\mathbf{P}=\mathbf{NP}$.](../figure/strongamplification.png){#strongampbppfig .margin  }
+![If $F\in \mathbf{BPP}$ then through amplification we can ensure that there is an algorithm $A$ to compute $F$ on $n$-length inputs and using $m$ coins such that $\Pr_{r\sim \{0,1\}^m}[ A(xr)\neq F(x)] \ll 1/poly(m)$. Hence if $F(x)=1$ then almost all of the $2^m$ choices for $r$ will cause $A(xr)$ to output $1$, while if $F(x)=0$ then $A(xr)=0$ for almost all $r$'s. To prove the Sipser–Gács Theorem we consider several "shifts" of the set $S \subseteq \{0,1\}^m$ of the coins $r$ such that $A(xr)=1$. If $F(x)=1$ then we can find a set of $k$ shifts $s_0,\ldots,s_{k-1}$ for which $\cup_{i\in [k]} (S \oplus s_i) = \{0,1\}^m$. If $F(x)=0$ then for every such set $|\cup_{i\in [k]} S_i| \leq k |S| \ll 2^m$. We can phrase the question of whether there is such a set of shifts using a constant number of quantifiers, and so can solve it in polynomial time if $\mathbf{P}=\mathbf{NP}$.](/images/introtcs/original-strongamplification.webp){#strongampbppfig .margin  }
 
 
 
 
 ::: {.proof data-ref="BPPvsNP"}
-Let $F \in \mathbf{BPP}$. Using [amplificationthm](){.ref}, there exists a polynomial-time algorithm $A$ such that for every $x\in \{0,1\}^n$, $\Pr_{r \in \{0,1\}^m}[ A(xr)=F(x)] \geq 1 - 2^{-n}$ where $m$ is polynomial in $n$.
+Let $F \in \mathbf{BPP}$. Using [amplificationthm](#amplificationthm){.ref}, there exists a polynomial-time algorithm $A$ such that for every $x\in \{0,1\}^n$, $\Pr_{r \in \{0,1\}^m}[ A(xr)=F(x)] \geq 1 - 2^{-n}$ where $m$ is polynomial in $n$.
 In particular (since an exponential dominates a polynomial, and we can always assume $n$ is sufficiently large), it holds that
 $$
 \Pr_{r \in \{0,1\}^m}[ A(xr)=F(x)] \geq 1 - \tfrac{1}{10m^2}  \;. \label{sipsergacseq}
@@ -588,7 +588,7 @@ $$
 \exists_{s_0,\ldots, s_{100m-1} \in \{0,1\}^m} \forall_{w\in \{0,1\}^m} \Bigl( A(x(w\oplus s_0))=1 \vee A(x(w\oplus s_1))=1 \vee \cdots \vee A(x(w\oplus s_{100m-1}))=1    \Bigr)
 $$
 
-which (since $A$ is computable in polynomial time) is exactly the type of statement shown in  [PH-collapse-thm](){.ref} to be decidable in polynomial time if $\mathbf{P}=\mathbf{NP}$.
+which (since $A$ is computable in polynomial time) is exactly the type of statement shown in  [PH-collapse-thm](#PH-collapse-thm){.ref} to be decidable in polynomial time if $\mathbf{P}=\mathbf{NP}$.
 
 We see that all that is left is to prove __CLAIM I__ and __CLAIM II__. __CLAIM I__ follows immediately from the fact that
 
@@ -596,7 +596,7 @@ $$
 \left| \cup_{i \in [100m-1]} S_x \oplus s_i \right| \leq \sum_{i=0}^{100m-1} |S_x \oplus s_i| = \sum_{i=0}^{100m -1} |S_x| = 100m|S_x| \;.
 $$
 
-To prove __CLAIM II__, we will use a technique known as the _probabilistic method_ (see the proof of [prgexist](){.ref} for a more extensive discussion). Note that this is a completely different use of probability than in the theorem statement, we just use the methods of probability to prove an _existential_ statement.
+To prove __CLAIM II__, we will use a technique known as the _probabilistic method_ (see the proof of [prgexist](#prgexist){.ref} for a more extensive discussion). Note that this is a completely different use of probability than in the theorem statement, we just use the methods of probability to prove an _existential_ statement.
 
 __Proof of CLAIM II:__ Let $S \subseteq \{0,1\}^m$ with $|S| \geq 0.5 \cdot 2^m$ be as in the claim's statement.
 Consider the following probabilistic experiment: we choose $100m$ random shifts $s_0,\ldots,s_{100m-1}$ independently at random in $\{0,1\}^m$, and consider the event $GOOD$ that $\cup_{i\in [100m]}(S \oplus s_i) = \{0,1\}^m$.
@@ -608,13 +608,13 @@ Since every shift $s_i$ is chosen independently, for every fixed $z$ the events 
 
 $$\Pr[ BAD_z ] = \Pr[ \cap_{i\in [100m-1]} BAD_z^i ] = \prod_{i=0}^{100m-1} \Pr[BAD_z^i]  \label{sipsergacsprodboundeq}\;.$$
 
-So this means that the result will follow by showing that $\Pr[ BAD_z^i ] \leq \tfrac{1}{2}$ for every $z\in \{0,1\}^m$ and $i\in [100m]$ (as that would allow to bound the right-hand side of [sipsergacsprodboundeq](){.eqref} by $2^{-100m}$).
+So this means that the result will follow by showing that $\Pr[ BAD_z^i ] \leq \tfrac{1}{2}$ for every $z\in \{0,1\}^m$ and $i\in [100m]$ (as that would allow to bound the right-hand side of [sipsergacsprodboundeq](#sipsergacsprodboundeq){.eqref} by $2^{-100m}$).
 In other words, we need to show that for every $z\in \{0,1\}^m$ and set $S \subseteq \{0,1\}^m$ with $|S| \geq \tfrac{1}{2} 2^m$,
 
 $$\Pr_{s \sim \{0,1\}^m}[ z \in S \oplus s ] \geq \tfrac{1}{2}\; \label{sipsergacsprodboundtwoeq}.$$
 
-To show this, we observe that $z \in S \oplus s$ if and only if $s \in S \oplus z$ (can you see why). Hence we can rewrite the probability on the left-hand side of [sipsergacsprodboundtwoeq](){.eqref} as $\Pr_{s\sim \{0,1\}^m}[ s\in S \oplus z]$ which simply equals $|S \oplus z|/2^m  = |S|/2^m \geq 1/2$!
-This concludes the proof of __CLAIM II__ and hence of [BPPvsNP](){.ref}.
+To show this, we observe that $z \in S \oplus s$ if and only if $s \in S \oplus z$ (can you see why). Hence we can rewrite the probability on the left-hand side of [sipsergacsprodboundtwoeq](#sipsergacsprodboundtwoeq){.eqref} as $\Pr_{s\sim \{0,1\}^m}[ s\in S \oplus z]$ which simply equals $|S \oplus z|/2^m  = |S|/2^m \geq 1/2$!
+This concludes the proof of __CLAIM II__ and hence of [BPPvsNP](#BPPvsNP){.ref}.
 :::
 
 
@@ -639,33 +639,33 @@ The above discussion might be rather abstract at this point, but would become cl
 
 
 ::: {.proof data-ref="prgexist"}
-Let $\epsilon,T,\ell,m$ be as in the lemma's statement. We need to show that there exists a function $G:\{0,1\}^\ell \rightarrow \{0,1\}^m$ that "fools" every $T$ line program $P$ in the sense of [eq:prg](){.eqref}.
+Let $\epsilon,T,\ell,m$ be as in the lemma's statement. We need to show that there exists a function $G:\{0,1\}^\ell \rightarrow \{0,1\}^m$ that "fools" every $T$ line program $P$ in the sense of [eq:prg](#eq:prg){.eqref}.
 We will show that this follows from the following claim:
 
-__Claim I:__ For every fixed NAND-CIRC program $P$, if we pick $G:\{0,1\}^\ell \rightarrow \{0,1\}^m$ _at random_ then the probability that [eq:prg](){.eqref} is violated is at most $2^{-T^2}$.
+__Claim I:__ For every fixed NAND-CIRC program $P$, if we pick $G:\{0,1\}^\ell \rightarrow \{0,1\}^m$ _at random_ then the probability that [eq:prg](#eq:prg){.eqref} is violated is at most $2^{-T^2}$.
 
-Before proving Claim I, let us see why it implies [prgexist](){.ref}.
+Before proving Claim I, let us see why it implies [prgexist](#prgexist){.ref}.
 We can identify a function $G:\{0,1\}^\ell \rightarrow \{0,1\}^m$ with its "truth table" or simply the list of evaluations on all its possible $2^\ell$ inputs. Since each output is an $m$ bit string,
 we can also think of $G$ as a string in $\{0,1\}^{m\cdot 2^\ell}$. We define $\mathcal{F}^m_\ell$ to be the set of all functions from $\{0,1\}^\ell$ to $\{0,1\}^m$. As discussed above we can identify $\mathcal{F}_\ell^m$ with $\{0,1\}^{m\cdot 2^\ell}$ and choosing a random function $G \sim \mathcal{F}_\ell^m$ corresponds to choosing a random $m\cdot 2^\ell$-long bit string.
 
-For every NAND-CIRC program $P$ let $B_P$ be the event that, if we choose $G$ at random from $\mathcal{F}_\ell^m$ then  [eq:prg](){.eqref} is violated with respect to the program $P$.
-It is important to understand what is the sample space that the event $B_P$ is defined over, namely this event depends on the choice of $G$ and so $B_P$ is a subset of $\mathcal{F}_\ell^m$. An equivalent way to define the event $B_P$ is that it is the subset of all functions mapping $\{0,1\}^\ell$ to $\{0,1\}^m$  that violate [eq:prg](){.eqref}, or in other words:
+For every NAND-CIRC program $P$ let $B_P$ be the event that, if we choose $G$ at random from $\mathcal{F}_\ell^m$ then  [eq:prg](#eq:prg){.eqref} is violated with respect to the program $P$.
+It is important to understand what is the sample space that the event $B_P$ is defined over, namely this event depends on the choice of $G$ and so $B_P$ is a subset of $\mathcal{F}_\ell^m$. An equivalent way to define the event $B_P$ is that it is the subset of all functions mapping $\{0,1\}^\ell$ to $\{0,1\}^m$  that violate [eq:prg](#eq:prg){.eqref}, or in other words:
 
 $$
 B_P = \left\{ G \in \mathcal{F}_\ell^m  \; \big| \; \left| \tfrac{1}{2^\ell}\sum_{s\in \{0,1\}^\ell} P(G(s)) - \tfrac{1}{2^m}\sum_{r \in \{0,1\}^m}P(r)  \right| > \epsilon  \right\} \;\; \label{eq:eventdefine}
 $$
-(We've replaced here the probability statements in [eq:prg](){.eqref} with the equivalent sums so as to reduce confusion as to what is the sample space that $B_P$ is defined over.)
+(We've replaced here the probability statements in [eq:prg](#eq:prg){.eqref} with the equivalent sums so as to reduce confusion as to what is the sample space that $B_P$ is defined over.)
 
 
-To understand this proof it is crucial that you pause here and see how the definition of $B_P$ above corresponds to [eq:eventdefine](){.eqref}. This may well take re-reading the above text once or twice, but it is a good exercise at parsing probabilistic statements and learning how to identify the _sample space_ that these statements correspond to.
+To understand this proof it is crucial that you pause here and see how the definition of $B_P$ above corresponds to [eq:eventdefine](#eq:eventdefine){.eqref}. This may well take re-reading the above text once or twice, but it is a good exercise at parsing probabilistic statements and learning how to identify the _sample space_ that these statements correspond to.
 
 
-Now, we've shown in [program-count](){.ref} that up to renaming variables (which makes no difference to program's functionality) there are $2^{O(T\log T)}$ NAND-CIRC programs of at most $T$ lines.
+Now, we've shown in [program-count](#program-count){.ref} that up to renaming variables (which makes no difference to program's functionality) there are $2^{O(T\log T)}$ NAND-CIRC programs of at most $T$ lines.
 Since $T\log T < T^2$ for sufficiently large $T$, this means that if Claim I is true, then by the union bound it holds that the probability of the union of $B_P$ over _all_ NAND-CIRC programs of at most $T$ lines is at most $2^{O(T\log T)}2^{-T^2} < 0.1$ for sufficiently large $T$.
 What is important for us about the number $0.1$ is that it is smaller than $1$.
-In particular this means that there _exists_ a single $G^* \in \mathcal{F}_\ell^m$ such that $G^*$ _does not_ violate [eq:prg](){.eqref} with respect to any NAND-CIRC program of at most $T$ lines, but that precisely means that $G^*$ is a $(T,\epsilon)$ pseudorandom generator.
+In particular this means that there _exists_ a single $G^* \in \mathcal{F}_\ell^m$ such that $G^*$ _does not_ violate [eq:prg](#eq:prg){.eqref} with respect to any NAND-CIRC program of at most $T$ lines, but that precisely means that $G^*$ is a $(T,\epsilon)$ pseudorandom generator.
 
-Hence to conclude the proof of [prgexist](){.ref}, it suffices to prove Claim I.
+Hence to conclude the proof of [prgexist](#prgexist){.ref}, it suffices to prove Claim I.
 Choosing a random $G: \{0,1\}^\ell \rightarrow \{0,1\}^m$ amounts to choosing $L=2^\ell$ random strings $y_0,\ldots,y_{L-1} \in \{0,1\}^m$ and letting $G(x)=y_x$ (identifying $\{0,1\}^\ell$ and $[L]$ via the binary representation).
 This means that proving the claim amounts to showing that for every fixed function $P:\{0,1\}^m \rightarrow \{0,1\}$,
 if $L >  2^{C (\log T + \log \epsilon)}$ (which by setting $C>4$, we can ensure is larger than $10 T^2/\epsilon^2$) then the probability that
@@ -674,11 +674,11 @@ $$
 $$
 is at most $2^{-T^2}$.
 
-[eq:prgchernoff](){.eqref} follows directly from the Chernoff bound.
+[eq:prgchernoff](#eq:prgchernoff){.eqref} follows directly from the Chernoff bound.
 Indeed, if we let for every $i\in  [L]$  the random variable $X_i$ denote $P(y_i)$, then since $y_0,\ldots,y_{L-1}$ is chosen independently at random, these are independently and identically distributed random variables with mean $\E_{y \sim \{0,1\}^m}[P(y)]= \Pr_{y\sim \{0,1\}^m}[ P(y)=1]$ and hence the probability that they deviate from their expectation by $\epsilon$ is at most $2\cdot 2^{-\epsilon^2 L/2}$.
 :::
 
-![The relation between $\mathbf{BPP}$ and the other complexity classes that we have seen. We know that $\mathbf{P} \subseteq \mathbf{BPP} \subseteq \mathbf{EXP}$ and $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$ but we don't know how $\mathbf{BPP}$ compares with  $\mathbf{NP}$ and can't rule out even $\mathbf{BPP} =\mathbf{EXP}$. Most evidence points out to the possibliity that $\mathbf{BPP}=\mathbf{P}$.](/images/introtcs/lec_17_model_rand-6.webp){#bppcomplexitypicturefig }
+![The relation between $\mathbf{BPP}$ and the other complexity classes that we have seen. We know that $\mathbf{P} \subseteq \mathbf{BPP} \subseteq \mathbf{EXP}$ and $\mathbf{BPP} \subseteq \mathbf{P_{/poly}}$ but we don't know how $\mathbf{BPP}$ compares with  $\mathbf{NP}$ and can't rule out even $\mathbf{BPP} =\mathbf{EXP}$. Most evidence points out to the possibliity that $\mathbf{BPP}=\mathbf{P}$.](/images/introtcs/original-bppcomplexitypicture.webp){#bppcomplexitypicturefig }
 
 ::: { .recap }
 * We can model randomized algorithms by either adding a special "coin toss" operation or assuming an extra randomly chosen input.
@@ -715,7 +715,7 @@ Vadhan's book [@vadhan2012pseudorandomness] is an excellent source for more disc
 The name $\mathbf{BPP}$ stands for "bounded probability polynomial time". This is an historical accident: this class probably should have been called $\mathbf{RP}$ or $\mathbf{PP}$ but both names were taken by other classes.
 
 
-The proof of [rnandthm](){.ref} actually yields more than its statement. We can use the same "unrolling the loop" arguments we've used before to show that the restriction to $\{0,1\}^n$ of every function in $\mathbf{BPP}$ is also computable by a polynomial-size RNAND-CIRC program (i.e., NAND-CIRC program with the `RAND` operation). Like in the $\mathbf{P}$ vs $SIZE(poly(n))$ case, there are also functions outside $\mathbf{BPP}$ whose restrictions can be computed by polynomial-size RNAND-CIRC programs.
-Nevertheless the proof of [rnandthm](){.ref} shows that even such functions can be computed by polynomial-sized NAND-CIRC programs without using the `rand` operations.
+The proof of [rnandthm](#rnandthm){.ref} actually yields more than its statement. We can use the same "unrolling the loop" arguments we've used before to show that the restriction to $\{0,1\}^n$ of every function in $\mathbf{BPP}$ is also computable by a polynomial-size RNAND-CIRC program (i.e., NAND-CIRC program with the `RAND` operation). Like in the $\mathbf{P}$ vs $SIZE(poly(n))$ case, there are also functions outside $\mathbf{BPP}$ whose restrictions can be computed by polynomial-size RNAND-CIRC programs.
+Nevertheless the proof of [rnandthm](#rnandthm){.ref} shows that even such functions can be computed by polynomial-sized NAND-CIRC programs without using the `rand` operations.
 This can be phrased as saying   that $BPSIZE(T(n)) \subseteq SIZE(O(n T(n)))$ (where $BPSIZE$ is defined in the natural way using RNAND progams).
-The stronger version of  [rnandthm](){.ref} we mentioned can be phrased as saying that  $\mathbf{BPP_{/poly}} = \mathbf{P_{/poly}}$.
+The stronger version of  [rnandthm](#rnandthm){.ref} we mentioned can be phrased as saying that  $\mathbf{BPP_{/poly}} = \mathbf{P_{/poly}}$.

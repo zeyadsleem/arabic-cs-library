@@ -134,11 +134,11 @@ In the parent `App` component, we can render the modal component and a button th
 
 When we click the `Show Modal` button, the modal is shown on the page.
 
-![Open and close modal](/images/patterns-dev/vue-async-components-0-simple_modal.webp)
+![Open and close modal](/images/patterns-dev/vue-async-components-0-simple_modal.gif)
 
 From this example, we can see that the modal component is shown only under a specific circumstance — when the user clicks the `Show Modal` button. Despite this, the JavaScript bundle associated with the component **is loaded automatically when the entire webpage is loaded** even before the modal is made visible. This can be seen from our browser’s network logs.
 
-![Modal bundle loaded on initial page load](/images/patterns-dev/vue-async-components-1-modal_bundle_initial_load.webp)
+![Modal bundle loaded on initial page load](/images/patterns-dev/vue-async-components-1-modal_bundle_initial_load.gif)
 
 This is fine for the majority of cases. However, under conditions where the bundle size of the modal is really large and/or the application has a multitude of such components, this can lead to a delayed initial load time. With every added bundle, even if it’s related to components that are rarely used, the time it takes for the initial page to load grows.
 
@@ -228,11 +228,11 @@ In our parent `App` component, we’ll now import and use the `AsyncModal` async
 
 With this small change, our modal component will now be asynchronously loaded! When our application webpage initially loads, we’ll recognize that the bundle for the `Modal` component *is no longer loaded automatically upon page load*.
 
-![Modal bundle not initially loaded on initial page load](/images/patterns-dev/vue-async-components-2-modal_bundle_no_initial_load.webp)
+![Modal bundle not initially loaded on initial page load](/images/patterns-dev/vue-async-components-2-modal_bundle_no_initial_load.gif)
 
 When we click the button to trigger the modal to be shown, we’ll notice the bundle is then asynchronously loaded as the modal component is being rendered.
 
-![Modal bundle asynchronously loaded](/images/patterns-dev/vue-async-components-3-modal_async_load.webp)
+![Modal bundle asynchronously loaded](/images/patterns-dev/vue-async-components-3-modal_async_load.gif)
 
 ## Loading and error UI
 
@@ -286,7 +286,7 @@ export const AsyncModal = defineAsyncComponent({
 
 As the modal component becomes asynchronously loaded, the user will now be presented with a `Loading...` message. This may be hard to see in fast internet connections, so we’ll emulate a `Slow 3G` network in our browser network logs to observe the behavior of seeing the `Loading...` message while the modal component bundle is still being loaded.
 
-![loading component](/images/patterns-dev/vue-async-components-4-modal_loading_component.webp)
+![loading component](/images/patterns-dev/vue-async-components-4-modal_loading_component.gif)
 
 ### errorComponent
 
@@ -326,7 +326,7 @@ export const AsyncModal = defineAsyncComponent({
 
 To visualize this in action, we can simulate the `Offline` network mode in our browser devtools and attempt to launch the modal. We’ll notice that when the modal component fails to load, the `Error` component template will be shown.
 
-![error component](/images/patterns-dev/vue-async-components-5-modal_error_component.webp)
+![error component](/images/patterns-dev/vue-async-components-5-modal_error_component.gif)
 
 With all the changes we’ve made, our app can be seen as below.
 

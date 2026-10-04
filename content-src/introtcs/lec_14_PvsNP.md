@@ -79,12 +79,12 @@ It turns out that if we can solve these decision problems, we can solve the corr
 Suppose that $\mathbf{P}=\mathbf{NP}$. Then for every polynomial-time algorithm $V$ and $a,b \in \N$, there is a polynomial-time algorithm $FIND_V$  such that for every  $x\in \{0,1\}^n$, if there exists $y\in \{0,1\}^{an^b}$ satisfying $V(xy)=1$, then $FIND_V(x)$ finds some string $y'$ satisfying this condition.
 
 > ### { .pause }
-To understand what the statement of [search-dec-thm](){.ref} means, let us look at the special case of the $MAXCUT$ problem.
+To understand what the statement of [search-dec-thm](#search-dec-thm){.ref} means, let us look at the special case of the $MAXCUT$ problem.
 It is not hard to see that there is a polynomial-time algorithm $VERIFYCUT$ such that $VERIFYCUT(G,k,S)=1$ if and only if $S$ is a subset of $G$'s vertices that cuts at least $k$ edges.
-[search-dec-thm](){.ref} implies that if $\mathbf{P}=\mathbf{NP}$ then there is a polynomial-time algorithm $FINDCUT$ that on input $G,k$ outputs a set $S$ such that $VERIFYCUT(G,k,S)=1$ if such a set exists. This means that if $\mathbf{P}=\mathbf{NP}$, by trying all values of $k$ we can find in polynomial time a maximum cut in any given graph. We can use a similar argument to show that if $\mathbf{P}=\mathbf{NP}$ then we can find a satisfying assignment for every satisfiable 3CNF formula, find the longest path in a graph, solve integer programming, and so and so forth.
+[search-dec-thm](#search-dec-thm){.ref} implies that if $\mathbf{P}=\mathbf{NP}$ then there is a polynomial-time algorithm $FINDCUT$ that on input $G,k$ outputs a set $S$ such that $VERIFYCUT(G,k,S)=1$ if such a set exists. This means that if $\mathbf{P}=\mathbf{NP}$, by trying all values of $k$ we can find in polynomial time a maximum cut in any given graph. We can use a similar argument to show that if $\mathbf{P}=\mathbf{NP}$ then we can find a satisfying assignment for every satisfiable 3CNF formula, find the longest path in a graph, solve integer programming, and so and so forth.
 
 > ### {.proofidea data-ref="search-dec-thm"}
-The idea behind the proof of [search-dec-thm](){.ref} is simple;
+The idea behind the proof of [search-dec-thm](#search-dec-thm){.ref} is simple;
 let us demonstrate it for the special case of $3SAT$.
 (In fact, this case is not so "special"$-$ since $3SAT$ is $\mathbf{NP}$-complete, we can reduce the task of solving the search problem for $MAXCUT$ or any other problem in $\mathbf{NP}$ to the task of solving it for $3SAT$.)
 Suppose that $\mathbf{P}=\mathbf{NP}$ and we are given a satisfiable 3CNF formula $\varphi$, and we now want to find a satisfying assignment $y$ for $\varphi$.
@@ -133,7 +133,7 @@ Return $z_0,\ldots,z_{an^b-1}$
 ```
 
 
-To analyze [searchtodecisionalg](){.ref}, note that it makes $2an^{b}$ invocations to $STARTSWITH_V$ and hence if the latter is polynomial-time, then so is  [searchtodecisionalg](){.ref}.
+To analyze [searchtodecisionalg](#searchtodecisionalg){.ref}, note that it makes $2an^{b}$ invocations to $STARTSWITH_V$ and hence if the latter is polynomial-time, then so is  [searchtodecisionalg](#searchtodecisionalg){.ref}.
 Now suppose that $x$ is such that there exists _some_ $y$ satisfying $V(xy)=1$.
 We claim that at every step $\ell=0,\ldots,an^b-1$, we maintain the invariant that there exists $y\in \{0,1\}^{an^b}$ whose first $\ell$ bits are $z$ s.t. $V(xy)=1$.
 Note that this claim implies the theorem, since in particular it means that for $\ell = an^b-1$, $z$ satisfies $V(xz)=1$.
@@ -148,7 +148,7 @@ If the call to  $STARTSWITH_V(xz_0\cdots z_{\ell-1}0)$ returns $0$ then it must 
 
 ## Optimization { #optimizationsection }
 
-[search-dec-thm](){.ref} allows us to find solutions for $\mathbf{NP}$ problems if $\mathbf{P}=\mathbf{NP}$, but it is not immediately clear that we can find the _optimal_ solution.
+[search-dec-thm](#search-dec-thm){.ref} allows us to find solutions for $\mathbf{NP}$ problems if $\mathbf{P}=\mathbf{NP}$, but it is not immediately clear that we can find the _optimal_ solution.
 For example, suppose that $\mathbf{P}=\mathbf{NP}$, and you are given a graph $G$. Can you find the _longest_ simple path in $G$ in polynomial time?
 
 > ### { .pause }
@@ -156,7 +156,7 @@ This is actually an excellent question for you to attempt on your own.
 That is, assuming $\mathbf{P}=\mathbf{NP}$, give a polynomial-time algorithm that on input a graph $G$, outputs a maximally long simple path in the graph $G$.
 
 The answer is _Yes_.
-The idea is simple: if $\mathbf{P}=\mathbf{NP}$ then we can find out in polynomial time if an $n$-vertex graph $G$ contains a simple path of length $n$, and moreover, by [search-dec-thm](){.ref}, if $G$ does contain such a path, then we can find it. (Can you see why?)
+The idea is simple: if $\mathbf{P}=\mathbf{NP}$ then we can find out in polynomial time if an $n$-vertex graph $G$ contains a simple path of length $n$, and moreover, by [search-dec-thm](#search-dec-thm){.ref}, if $G$ does contain such a path, then we can find it. (Can you see why?)
 If $G$ does not contain a simple path of length $n$, then we will check if it contains a simple path of length $n-1$, and continue in this way to find the largest $k$ such that $G$ contains a simple path of length $k$.
 
 The above reasoning was not specifically tailored to finding paths in graphs.
@@ -170,7 +170,7 @@ Moreover under the same assumption, there is a polynomial-time algorithm $FINDOP
 :::
 
 > ### { .pause }
-The statement of [optimizationnp](){.ref} is a bit cumbersome.  To understand it, think how it would subsume the example above of a polynomial time algorithm for finding the maximum length path in a graph. In this case the function $f$ would be the map that on input a pair $x,y$ outputs $0$ if the pair $(x,y)$ does not represent some graph and a simple path inside the graph respectively;  otherwise $f(x,y)$ would equal the length of the path $y$ in the graph $x$. Since a path in an $n$ vertex graph can be represented by at most $n \log n$ bits, for every $x$ representing a graph of $n$ vertices, finding $\max_{y\in \{0,1\}^{n \log n}}f(x,y)$   corresponds to finding the length of the maximum simple path in the graph corresponding to $x$, and finding the string $y^*$ that achieves this maximum corresponds to actually finding the path.
+The statement of [optimizationnp](#optimizationnp){.ref} is a bit cumbersome.  To understand it, think how it would subsume the example above of a polynomial time algorithm for finding the maximum length path in a graph. In this case the function $f$ would be the map that on input a pair $x,y$ outputs $0$ if the pair $(x,y)$ does not represent some graph and a simple path inside the graph respectively;  otherwise $f(x,y)$ would equal the length of the path $y$ in the graph $x$. Since a path in an $n$ vertex graph can be represented by at most $n \log n$ bits, for every $x$ representing a graph of $n$ vertices, finding $\max_{y\in \{0,1\}^{n \log n}}f(x,y)$   corresponds to finding the length of the maximum simple path in the graph corresponding to $x$, and finding the string $y^*$ that achieves this maximum corresponds to actually finding the path.
 
 
 > ### {.proofidea data-ref="optimizationnp"}
@@ -203,27 +203,27 @@ Specifically, we will do this as follows:
 4. We then go back to step 3, until $b \leq a+1$.
 
 Since $|b-a|$ shrinks by a factor of $2$, within $\log_2 2^{T(n)}= T(n)$ steps, we will get to the point at which $b\leq a+1$, and then we can simply output $a$.
-Once we find the maximum value of $k$ such that $F(x,1^m,k)=1$, we can use the search to decision reduction of [search-dec-thm](){.ref} to obtain the actual value $y^* \in \{0,1\}^m$ such that $f(x,y^*)=k$.
+Once we find the maximum value of $k$ such that $F(x,1^m,k)=1$, we can use the search to decision reduction of [search-dec-thm](#search-dec-thm){.ref} to obtain the actual value $y^* \in \{0,1\}^m$ such that $f(x,y^*)=k$.
 :::
 
 
 ::: {.example title="Integer programming" #optimizationexample  }
-One application for [optimizationnp](){.ref} is in solving _optimization problems_.
+One application for [optimizationnp](#optimizationnp){.ref} is in solving _optimization problems_.
 For example, the task of _linear programming_ is to find $y \in \R^n$ that maximizes some linear objective $\sum_{i=0}^{n-1}c_i y_i$ subject to the constraint that $y$ satisfies linear inequalities of the form $\sum_{i=0}^{n-1} a_i y_i \leq c$.
-As we discussed in [mincutsec](){.ref}, there is a known polynomial-time algorithm for linear programming.
+As we discussed in [mincutsec](#mincutsec){.ref}, there is a known polynomial-time algorithm for linear programming.
 However, if we want to place additional constraints on $y$, such as requiring the coordinates of $y$ to be _integer_ or _$0/1$ valued_ then the best-known algorithms run in exponential time in the worst case.
-However, if $\mathbf{P}=\mathbf{NP}$ then [optimizationnp](){.ref} tells us that we would be able to solve all problems of this form in polynomial time.
-For every string $x$ that describes a set of constraints and objective, we will define a function $f$ such that if $y$ satisfies the constraints of $x$ then $f(x,y)$ is the value of the objective, and otherwise we set $f(x,y) = -M$ where $M$ is some large number. We can then use [optimizationnp](){.ref} to compute the $y$ that maximizes $f(x,y)$ and that will give us the assignment for the variables that satisfies our constraints and maximizes the objective. (If the computation results in $y$ such that $f(x,y)=-M$ then we can double $M$ and try again; if the true maximum objective is achieved by some string $y^*$, then eventually $M$ will be large enough so that $-M$ would be smaller than the objective achieved by $y^*$, and hence when we run procedure of  [optimizationnp](){.ref} we would get a value larger than $-M$.)
+However, if $\mathbf{P}=\mathbf{NP}$ then [optimizationnp](#optimizationnp){.ref} tells us that we would be able to solve all problems of this form in polynomial time.
+For every string $x$ that describes a set of constraints and objective, we will define a function $f$ such that if $y$ satisfies the constraints of $x$ then $f(x,y)$ is the value of the objective, and otherwise we set $f(x,y) = -M$ where $M$ is some large number. We can then use [optimizationnp](#optimizationnp){.ref} to compute the $y$ that maximizes $f(x,y)$ and that will give us the assignment for the variables that satisfies our constraints and maximizes the objective. (If the computation results in $y$ such that $f(x,y)=-M$ then we can double $M$ and try again; if the true maximum objective is achieved by some string $y^*$, then eventually $M$ will be large enough so that $-M$ would be smaller than the objective achieved by $y^*$, and hence when we run procedure of  [optimizationnp](#optimizationnp){.ref} we would get a value larger than $-M$.)
 :::
 
 
 ::: {.remark title="Need for binary search" #binarysearchrm}
-In many examples, such as the case of finding the longest path, we don't need to use the binary search step in [optimizationnp](){.ref}, and can simply enumerate over all possible values for $k$ until we find the correct one.
+In many examples, such as the case of finding the longest path, we don't need to use the binary search step in [optimizationnp](#optimizationnp){.ref}, and can simply enumerate over all possible values for $k$ until we find the correct one.
 One example where we do need to use this binary search step   is in the case of the problem of finding a maximum length path in a _weighted_ graph.
 This is the problem where  $G$ is a weighted graph, and every edge of $G$ is given a weight which is a number between $0$ and $2^k$.
-[optimizationnp](){.ref} shows that we can find the maximum-weight simple path in $G$ (i.e., simple path maximizing the sum of the weights of its edges) in time polynomial in the number of vertices and in $k$.
+[optimizationnp](#optimizationnp){.ref} shows that we can find the maximum-weight simple path in $G$ (i.e., simple path maximizing the sum of the weights of its edges) in time polynomial in the number of vertices and in $k$.
 
-Beyond just this example there is a vast field of [mathematical optimization](https://en.wikipedia.org/wiki/Mathematical_optimization) that studies problems of the same form as in [optimizationnp](){.ref}.
+Beyond just this example there is a vast field of [mathematical optimization](https://en.wikipedia.org/wiki/Mathematical_optimization) that studies problems of the same form as in [optimizationnp](#optimizationnp){.ref}.
 In the context of optimization, $x$ typically denotes a set of constraints over some variables (that can be Boolean, integer, or real valued), $y$ encodes an assignment to these variables,  and $f(x,y)$ is the value of some _objective function_ that we want to maximize.
 Given that we don't know efficient algorithms for $\mathbf{NP}$ complete problems, researchers in optimization research study special cases of functions $f$ (such as linear programming and semidefinite programming) where it _is_ possible to optimize the value efficiently.
 Optimization is widely used in a great many scientific areas including: machine learning, engineering, economics and operations research.
@@ -242,7 +242,7 @@ We can then phrase the supervised learning problem as finding, given a set of la
 
 In other words, we can define for every set $S$ as above the function $F_S:\{0,1\}^k \rightarrow [m]$ such that $F_S(\theta) = \sum_{(x,y)\in S} |H(\theta,x)-y|$.
 Now, finding the value $\theta$ that minimizes $F_S(\theta)$ is equivalent to solving the supervised learning problem with respect to $H$.
-For every polynomial-time computable $H:\{0,1\}^{k+n} \rightarrow \{0,1\}$, the task of minimizing $F_S(\theta)$ can be "massaged" to fit the form of [optimizationnp](){.ref} and hence if $\mathbf{P}=\mathbf{NP}$, then we can solve the supervised learning problem in great generality.
+For every polynomial-time computable $H:\{0,1\}^{k+n} \rightarrow \{0,1\}$, the task of minimizing $F_S(\theta)$ can be "massaged" to fit the form of [optimizationnp](#optimizationnp){.ref} and hence if $\mathbf{P}=\mathbf{NP}$, then we can solve the supervised learning problem in great generality.
 In fact, this observation extends to essentially any learning model, and allows for finding the optimal predictors given the minimum number of examples.
 (This is in contrast to many current learning algorithms, which often rely on having access to an extremely large number of examples$-$ far beyond the minimum needed, and in particular far beyond the number of examples humans use for the same tasks.)
 
@@ -252,7 +252,7 @@ We will discuss _cryptography_ later in this course, but it turns out that if $\
 One approach is to treat finding an encryption key as an instance of a supervised learning problem.
 If there is an encryption scheme that maps a "plaintext" message $p$ and a key $\theta$ to a "ciphertext" $c$, then given examples of ciphertext/plaintext pairs of the form $(c_0,p_0),\ldots,(c_{m-1},p_{m-1})$, our goal is to find the key $\theta$ such that $E(\theta,p_i)=c_i$ where $E$ is the encryption algorithm.
 While you might think getting such "labeled examples" is unrealistic, it turns out (as many amateur home-brew crypto designers learn the hard way) that this is actually quite common in real-life scenarios, and that it is also possible to relax the assumption to having more minimal prior information about the plaintext (e.g., that it is English text).
-We defer a more formal treatment to [chapcryptography](){.ref}.
+We defer a more formal treatment to [chapcryptography](#chapcryptography){.ref}.
 
 
 
@@ -260,7 +260,7 @@ We defer a more formal treatment to [chapcryptography](){.ref}.
 
 ## Finding mathematical proofs
 
-In the context of Gödel's Theorem, we discussed the notion of a _proof system_ (see [godelproofdef](){.ref}).
+In the context of Gödel's Theorem, we discussed the notion of a _proof system_ (see [godelproofdef](#godelproofdef){.ref}).
 Generally speaking, a _proof system_ can be thought of as an algorithm $V:\{0,1\}^* \rightarrow \{0,1\}$ (known as the _verifier_) such that given a _statement_ $x\in \{0,1\}^*$ and a _candidate proof_ $w\in \{0,1\}^*$, $V(x,w)=1$ if and only if $w$ encodes a valid proof for the statement $x$.
 Any type of proof system that is used in mathematics for geometry, number theory, analysis, etc., is an instance of this form.
 In fact, standard mathematical proof systems have an even simpler form where the proof $w$ encodes a _sequence_ of lines $w^0,\ldots,w^m$ (each of which is itself a binary string) such that each line $w^i$ is either an _axiom_ or follows from some prior lines through an application of some _inference rule_.
@@ -321,8 +321,8 @@ The question of whether there is such a $P'$ that can be described by a string o
 $$
 \exists_{P' \in \{0,1\}^{s}} \forall_{x\in \{0,1\}^n} P(x)=P'(x) \label{circmineq}
 $$
-which has the form [existsforalleq](){.eqref}. (Since NAND-CIRC programs are equivalent to Boolean circuits, the search problem corresponding to [circmineq](){.eqref}  known as the [circuit minimization problem](https://goo.gl/iykqbh)  and is widely studied in Engineering.
-You can skip ahead to [selfimprovingsat](){.ref} to see a particularly compelling application of this.)
+which has the form [existsforalleq](#existsforalleq){.eqref}. (Since NAND-CIRC programs are equivalent to Boolean circuits, the search problem corresponding to [circmineq](#circmineq){.eqref}  known as the [circuit minimization problem](https://goo.gl/iykqbh)  and is widely studied in Engineering.
+You can skip ahead to [selfimprovingsat](#selfimprovingsat){.ref} to see a particularly compelling application of this.)
 
 Another example of a statement involving $a$ levels of quantifiers would be to check, given a chess position $x$, whether there is a strategy that guarantees that White wins within $a$ steps.
 For example is $a=3$ we would want to check if given the board position $x$, _there exists_ a move $y$ for White such that _for every_ move $z$ for Black _there exists_ a move $w$ for White that ends in a a checkmate.
@@ -348,7 +348,7 @@ But for every $x\in \{0,1\}^n$, the question of whether the condition $(*)$  is 
 
 
 ::: {.proof data-ref="PH-collapse-thm"}
-We prove the theorem by induction. We assume that there is a polynomial-time algorithm $SOLVE_{V,a-1}$ that can solve the problem [eq:QBF](){.eqref} for $a-1$ and use that to solve the problem for $a$. For $a=1$, $SOLVE_{V,a-1}(x)=1$ iff $V(x)=1$ which is a polynomial-time computation since $V$ runs in polynomial time.
+We prove the theorem by induction. We assume that there is a polynomial-time algorithm $SOLVE_{V,a-1}$ that can solve the problem [eq:QBF](#eq:QBF){.eqref} for $a-1$ and use that to solve the problem for $a$. For $a=1$, $SOLVE_{V,a-1}(x)=1$ iff $V(x)=1$ which is a polynomial-time computation since $V$ runs in polynomial time.
 For every $x,y_0$, define the statement $\varphi_{x,y_0}$ to be the following:
 
 $$
@@ -368,15 +368,15 @@ where $\overline{\mathcal{Q}}$ is $\exists$ if $\mathcal{Q}$ was $\forall$ and $
 
 The crucial observation is that $\overline{\varphi}_{x,y_0}$ is exactly a statement of the form we consider with $a-1$ quantifiers instead of $a$, and hence by our inductive hypothesis there is some polynomial time algorithm $\overline{S}$ that on input $xy_0$ outputs $1$ if and only if $\overline{\varphi}_{x,y_0}$ is true.
 If we let $S$ be the algorithm that on input $x,y_0$ outputs $1-\overline{S}(xy_0)$ then we see that $S$ outputs $1$ if and only if $\varphi_{x,y_0}$ is true.
-Hence we can rephrase the original statement [eq:QBF](){.eqref} as follows:
+Hence we can rephrase the original statement [eq:QBF](#eq:QBF){.eqref} as follows:
 
 $$\exists_{y_0 \in \{0,1\}^m} S(xy_0)=1 \label{equivalentqbfinducteq} $$
 
-but since  $S$ is a polynomial-time algorithm,  [equivalentqbfinducteq](){.ref} is clearly a statement in $\mathbf{NP}$ and hence under our assumption that $\mathbf{P}=\mathbf{NP}$ there is a polynomial time algorithm that on input $x\in \{0,1\}^n$, will determine if [equivalentqbfinducteq](){.eqref} is true and so also if the original statement [eq:QBF](){.eqref} is true.
+but since  $S$ is a polynomial-time algorithm,  [equivalentqbfinducteq](#equivalentqbfinducteq){.ref} is clearly a statement in $\mathbf{NP}$ and hence under our assumption that $\mathbf{P}=\mathbf{NP}$ there is a polynomial time algorithm that on input $x\in \{0,1\}^n$, will determine if [equivalentqbfinducteq](#equivalentqbfinducteq){.eqref} is true and so also if the original statement [eq:QBF](#eq:QBF){.eqref} is true.
 :::
 
 
-The algorithm of [PH-collapse-thm](){.ref} can also solve the search problem as well: find the value $y_0$ that certifies the truth of [eq:QBF](){.eqref}.
+The algorithm of [PH-collapse-thm](#PH-collapse-thm){.ref} can also solve the search problem as well: find the value $y_0$ that certifies the truth of [eq:QBF](#eq:QBF){.eqref}.
 We note that while this algorithm is in polynomial time, the exponent of this polynomial blows up quite fast.
 If the original NANDSAT algorithm required $\Omega(n^2)$ time, solving $a$ levels of quantifiers would require time $\Omega(n^{2^a})$.^[We do not know whether such loss is inherent. As far as we can tell, it's possible that the _quantified boolean formula_ problem has a linear-time algorithm. We will, however, see later in this course that it satisfies a notion known as $\mathbf{PSPACE}$-hardness that is even stronger than $\mathbf{NP}$-hardness.]
 
@@ -387,9 +387,9 @@ Suppose that we found a polynomial-time algorithm $A$ for $3SAT$ that is "good b
 For example, maybe our algorithm runs in time $cn^2$ for some not too small constant $c$.
 However, it's possible that the _best possible_ SAT algorithm is actually much more efficient than that.
 Perhaps, as we guessed before, there is a circuit $C^*$ of at most $10^6 n$ gates that computes 3SAT on $n$ variables, and we simply haven't discovered it yet.
-We can use [PH-collapse-thm](){.ref} to "bootstrap" our original "good but not great" 3SAT algorithm to discover the optimal one.
+We can use [PH-collapse-thm](#PH-collapse-thm){.ref} to "bootstrap" our original "good but not great" 3SAT algorithm to discover the optimal one.
 The idea is that we can phrase the question of whether there exists a size $s$ circuit that computes 3SAT for all length $n$ inputs as follows: _there exists_ a size $\leq s$ circuit $C$ such that _for every_ formula $\varphi$ described by a string of length at most $n$, if $C(\varphi)=1$ then _there exists_ an assignment $x$ to the variables of $\varphi$ that satisfies it.
-One can see that this is a statement of the form [existsforallexistseq](){.eqref} and hence if $\mathbf{P}=\mathbf{NP}$ we can solve it in polynomial time as well.
+One can see that this is a statement of the form [existsforallexistseq](#existsforallexistseq){.eqref} and hence if $\mathbf{P}=\mathbf{NP}$ we can solve it in polynomial time as well.
 We can therefore imagine investing huge computational resources in running $A$ one time to discover the circuit  $C^*$ and then using $C^*$ for all further computation.
 
 
