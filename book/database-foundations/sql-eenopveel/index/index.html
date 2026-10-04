@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="علاقات واحد إلى متعدد — One-to-many relationships"/><!----><title>علاقات واحد إلى متعدد | أسس قواعد البيانات</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -53,10 +53,10 @@
 <p>في الفصل التالي، نقدّم استعلامات SQL التي تمتد عبر عدة جداول باستخدام <code>JOINS</code>. وللتدريب، ستحتاج إلى مخطط يتكوّن من <em>عدة جداول</em>. ويقدّم لك هذا الفصل مخططًا صغيرًا فيه علاقة واحد إلى متعدد (one-to-many) بين جدولين. وفي أحد <a href="/arabic-cs-library/book/database-foundations/model-logisch/index">دروس النمذجة التالية</a> تُفصَّل النظرية الكامنة وراء هذا الفصل العملي تفصيلًا كاملًا. وهنا لن تجد سوى مقدمة موجزة.</p>
 <h2 id="جدولان">جدولان</h2>
 <p>في الفصول السابقة، جرى تطوير مكوّنات جملة <code>SELECT</code> المختلفة. واستخدمنا أساسًا جدولًا كان ترجمة لهذا النموذج المفاهيمي (conceptual model):</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-0-opo_conceptueel.webp" alt="Conceptual model of course"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-0-opo_conceptueel.webp" alt="Conceptual model of course"></p>
 <h3 id="جدولان-منفصلان">جدولان منفصلان</h3>
 <p>يحتوي هذا المخطط على <em>نوع كيان</em> واحد له عدد من <em>الخواص</em>. وإحدى تلك الخواص رمز المحاضر لمنسّق المقرر. فلكل مقرر منسّق فريد في النهاية. ومن المنطقي إضافة نوع كيان ثانٍ &quot;Lecturer&quot; إلى المخطط. فلدينا في النهاية كثير من المعلومات عن المحاضرين. ويحتوي نوع الكيان هذا معلومات عن جميع المحاضرين، لا عن منسّقي المقررات فقط. والمحاولة الساذجة هي الشكل التالي:</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-1-2_losse_entiteittypes.webp" alt="Two independent entities, a bad idea!"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-1-2_losse_entiteittypes.webp" alt="Two independent entities, a bad idea!"></p>
 <p>وإذا ترجمت هذا إلى PostgreSQL فتحصل على جدولين منفصلين. غير أن هذه البنية <em>مصدر مشكلات</em>. ونذكر خطأين محتملين:</p>
 <ul>
 <li>يضيف شخص صفًا (= مقررًا جديدًا) إلى جدول &quot;Course&quot; بمنسّق غير موجود في جدول &quot;Lecturer&quot;.</li>
@@ -65,13 +65,13 @@
 <p>وسيؤدي كلا العمليتين إلى أن تحتوي قاعدة البيانات أخطاء. فلن تستطيع بعد ذلك البحث عن معلومات بعض المقررات بشأن منسّق المقرر. وهذا ليس حلًا جيدًا. <em>أنت تريد أن يحميك نظام إدارة قواعد البيانات العلائقية (RDBMS) من العمليات التي تُدخل أخطاء إلى المخطط</em>.</p>
 <h3 id="جداول-مترابطة">جداول مترابطة</h3>
 <p>المشكلة، بالطبع، أن الجدولين لا يمكن أن يوجدا منفصلين. <em>فهناك علاقة بينهما</em>. ويجعل النموذج المفاهيمي في الشكل أدناه هذه العلاقة ظاهرة:</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-2-gekoppelde_entiteittypes.webp" alt="2 entities connected by a relationship"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-2-gekoppelde_entiteittypes.webp" alt="2 entities connected by a relationship"></p>
 <p>من اليمين إلى اليسار تقرأ العلاقة &quot;هو منسّق لـ&quot;، ومن اليسار إلى اليمين يمكن أن تصبح شيئًا على غرار &quot;له منسّق&quot;. ولكل مقرر منسّق واحد على الأقل وواحد على الأكثر (أي واحد فقط). وليس كل محاضر منسّقًا لمقرر، لكن قد يكون المحاضر منسّقًا لعدة مقررات. والتعددية على جهة المحاضر هي إذن (0, N). وهذا مثال على علاقة واحد إلى متعدد.</p>
 <p>ولاحظ أن الخاصية &quot;Coordinator&quot; من شكل سابق أُسقطت. فقد استُبدلت فعلًا بعلاقة مع نوع كيان جديد &quot;Lecturer&quot; لأننا نشعر بالحاجة إلى أكثر من مجرد تتبّع رقم المحاضر.</p>
 <h3 id="الترجمة-إلى-النموذج-العلائقي">الترجمة إلى النموذج العلائقي</h3>
 <p>فكيف تترجم الآن علاقة واحد إلى متعدد هذه إلى نموذج <em>علائقي</em>؟ ففي النهاية، PostgreSQL مثال على قاعدة بيانات علائقية. وإذا ترجمنا النموذج <em>المفاهيمي</em> من القسم السابق إلى نموذج <em>منطقي</em>، فسيلزم أن يكون ذلك النموذج المنطقي نموذجًا علائقيًا.</p>
 <p>ويمكنك دراسة كل شيء عن النماذج المنطقية بالتفصيل في فصل <a href="/arabic-cs-library/book/database-foundations/model-logisch/index">&quot;نموذج البيانات المنطقي&quot;</a>. والغرض الوحيد من هذا القسم هو تقديمك بإيجاز إلى هذا الموضوع حتى نمضي إلى الجزء التالي في استكشافنا للغة SQL (<code>JOIN</code>). ويبدو النموذج المنطقي هكذا:</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-3-logisch.webp" alt="Logisch model voor deze relatie"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-3-logisch.webp" alt="Logisch model voor deze relatie"></p>
 <p>وما يكفي الآن أن تستطيع قراءة هذا المخطط، وهو ليس بالصعب:</p>
 <ul>
 <li>يصبح كل نوع كيان <em>جدولًا</em>، يمثله مستطيل بعنوان: &quot;Course&quot; و&quot;Lecturer&quot;.</li>
@@ -83,7 +83,7 @@
 </ul>
 <p>ويُحوَّل هذا النموذج المنطقي أخيرًا إلى نموذج <em>فيزيائي</em>، حيث نحدد معلومات إضافية تعتمد على الخصائص المحددة لنظام إدارة قواعد البيانات العلائقية المختار (في حالتنا PostgreSQL). ومن الأمثلة على ذلك أنواع بيانات الأعمدة.</p>
 <p>ورُسم النموذج الفيزيائي بـ DBSchema. وسنغطّي ذلك بالتفصيل <a href="/arabic-cs-library/book/database-foundations/sql-dbschema/index">لاحقًا</a>. ويقابل هذا النموذج الفيزيائي النموذجَ المنطقي بتدوين مختلف قليلًا (لاحظ السهم الأزرق المنطلق الذي يشير إلى أن هذا الحقل مفتاح أجنبي يشير إلى السهم الأصفر-البنّي الواصل عند lecturer_id). كما أُعطي كل حقل نوع بيانات (<code>char</code> و<code>date</code>...):</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-4-course_lecturer.webp" alt="Physical model of 2 tables with one-to-many relation"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-4-course_lecturer.webp" alt="Physical model of 2 tables with one-to-many relation"></p>
 <p>وتتم إضافة علاقة واحد إلى متعدد هذه في قاعدة البيانات كما يلي:</p>
 <ol>
 <li>أنشئ أولًا جدول &quot;Lecturer&quot;.</li>
@@ -202,7 +202,7 @@ SQL state: 23503
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -210,8 +210,8 @@ SQL state: 23503
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

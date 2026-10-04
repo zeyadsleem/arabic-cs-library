@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المكوّنات الديناميكية — أنماط Vue"/><!----><title>المكوّنات الديناميكية | أنماط تصميم تطبيقات الويب</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -62,7 +62,7 @@
 <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;tab&quot;</span>&gt;</span>History component<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
 </code></pre>
 <p>هدفنا هو بناء واجهة تعرض قائمة من علامات التبويب (tabs) يمكن النقر عليها. وبحسب علامة التبويب التي يتم النقر عليها، نريد عرض مكوّن معيّن ديناميكيًا.</p>
-<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.webp" alt="تبويبات ديناميكية"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-0-dynamic_tabs.gif" alt="تبويبات ديناميكية"></p>
 <p>عند التنقّل بين علامات التبويب، نريد أن يتم فكّ تركيب المكوّنات وتركيبها ديناميكيًا دون استخدام التوجيه (routing). ورغم أن تأمين شيء كهذا ممكن عبر عرض قوالب فرعية بشكل مشروط بمساعدة توجيهات مثل <a href="https://vuejs.org/guide/essentials/conditional.html"><code>v-if</code> و<code>v-else</code></a>، فإنها حالة مثالية لاستخدام المكوّنات الديناميكية في Vue.</p>
 <p>في مكوّن <code>App</code> الأب الخاص بتطبيقنا، يمكننا أولًا استيراد المكوّنات الثلاثة منفردة لتكون متاحة في القالب. وسننشئ أيضًا خاصية تفاعلية باسم <code>currentTab</code> تُسنِد إليها قيمة أولية وهي <code>&quot;Home&quot;</code>.</p>
 <pre><code class="language-javascript">&lt;script setup&gt;
@@ -287,7 +287,7 @@ counter.<span class="hljs-property">value</span>++;
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>مع هذه التغييرات، سنلاحظ أن حالة العدّاد لكل مكوّن فرعي تبقى محفوظة حتى مع تبديلنا الديناميكي بين المكوّنات.</p>
-<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.webp" alt="الحفاظ على حالة المكوّنات الديناميكية"></p>
+<p><img src="/arabic-cs-library/images/patterns-dev/vue-dynamic-components-2-dynamic_components_preserve.gif" alt="الحفاظ على حالة المكوّنات الديناميكية"></p>
 <p>وباستخدام مكوّن ``، يمكننا تحسين سلوك المكوّنات الديناميكية بحفظ حالتها وتوفير تجربة مستخدم أكثر سلاسة عند التنقّل بين علامات التبويب.</p>
 <p>JavaScript iconApp.vue</p>
 <pre><code class="language-javascript">&lt;template&gt;
@@ -332,7 +332,7 @@ counter.<span class="hljs-property">value</span>++;
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -340,8 +340,8 @@ counter.<span class="hljs-property">value</span>++;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

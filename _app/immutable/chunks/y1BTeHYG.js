@@ -1,0 +1,64 @@
+const s="hello-algo",a="chapter_sorting",n="الترتيب",t="heap_sort",p="الترتيب بالكومة",l=[{depth:2,id:"سير-الخوارزمية",text:"سير الخوارزمية"},{depth:2,id:"خصائص-الخوارزمية",text:"خصائص الخوارزمية"}],e=`<div class="note">
+<p>قبل قراءة هذا القسم، يرجى التأكد من إتمام فصل «الكومة».</p>
+</div>
+<p><u>الترتيب بالكومة</u> (heap sort) خوارزمية ترتيب فعّالة قائمة على بنية بيانات الكومة. ويمكننا تنفيذ الترتيب بالكومة باستخدام عمليتي بناء الكومة وإزالة العناصر اللتين قدّمناهما سابقاً.</p>
+<ol>
+<li>أدخل المصفوفة وابنِ كومة صغرى (min-heap)، وعندها يكون أصغر عنصر في قمة الكومة.</li>
+<li>نفّذ عمليات إزالة العناصر باستمرار وسجّل العناصر المُزالة بالترتيب للحصول على تسلسل مرتّب تصاعدياً.</li>
+</ol>
+<p>ورغم أن الطريقة السابقة قابلة للتنفيذ، فإنها تتطلب مصفوفة إضافية لحفظ العناصر المستخرجة، وهو إهدار كبير للمساحة. ومن الناحية العملية، نستخدم عادةً طريقة تنفيذ أكثر أناقة.</p>
+<h2 id="سير-الخوارزمية">سير الخوارزمية</h2>
+<p>لنفترض أن طول المصفوفة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>. يوضح الشكل أدناه سير الترتيب بالكومة.</p>
+<ol>
+<li>أدخل المصفوفة وابنِ كومة عظمى (max-heap). وبعد اكتمال البناء، يكون أكبر عنصر في قمة الكومة.</li>
+<li>بادل عنصر قمة الكومة (العنصر الأول) بعنصر قاعدة الكومة (العنصر الأخير). وبعد اكتمال المبادلة، قلّل طول الكومة بمقدار <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> وزد عدد العناصر المرتّبة بمقدار <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>.</li>
+<li>بدءاً من عنصر قمة الكومة، نفّذ عملية إعادة بناء الكومة من الأعلى إلى الأسفل (sift down). وبعد اكتمالها، تُستعاد خصائص الكومة.</li>
+<li>كرر الخطوتين <code>2.</code> و<code>3.</code>. وبعد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> من الجولات، تكتمل عملية ترتيب المصفوفة.</li>
+</ol>
+<div class="note">
+<p>في الواقع، تتضمن عملية إزالة العناصر أيضاً الخطوتين <code>2.</code> و<code>3.</code>، مع خطوة إضافية هي إزالة العنصر.</p>
+</div>
+<p>في الشيفرة أدناه، نستخدم الدالة <code>sift_down()</code> نفسها لإعادة بناء الكومة من الأعلى إلى الأسفل كما في فصل «الكومة». ومن الجدير بالذكر أنه بما أن طول الكومة يتناقص مع استخراج أكبر عنصر، فإننا نحتاج إلى إضافة معامل طول <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> إلى <code>sift_down()</code> لتحديد الطول الفعلي الحالي للكومة. والشيفرة كما يلي:</p>
+<div class="lang-tab">
+<p class="lang-tab__label">Go</p>
+<pre><code class="language-go"><span class="hljs-comment">/* الترتيب بالكومة */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">heapSort</span><span class="hljs-params">(nums *[]<span class="hljs-type">int</span>)</span></span> {
+	<span class="hljs-comment">// عملية بناء الكومة: أعد بناء جميع العقد عدا الأوراق</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-built_in">len</span>(*nums)/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- {
+		siftDown(nums, <span class="hljs-built_in">len</span>(*nums), i)
+	}
+	<span class="hljs-comment">// استخرج أكبر عنصر من الكومة وكرّر ذلك n-1 مرة</span>
+	<span class="hljs-keyword">for</span> i := <span class="hljs-built_in">len</span>(*nums) - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i-- {
+		<span class="hljs-comment">// حذف العقدة</span>
+		(*nums)[<span class="hljs-number">0</span>], (*nums)[i] = (*nums)[i], (*nums)[<span class="hljs-number">0</span>]
+		<span class="hljs-comment">// ابدأ إعادة بناء الكومة من العقدة الجذرية، من الأعلى إلى الأسفل</span>
+		siftDown(nums, i, <span class="hljs-number">0</span>)
+	}
+}
+</code></pre>
+</div>
+<div class="lang-tab">
+<p class="lang-tab__label">TypeScript</p>
+<pre><code class="language-ts"><span class="hljs-comment">/* الترتيب بالكومة */</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">heapSort</span>(<span class="hljs-params"><span class="hljs-attr">nums</span>: <span class="hljs-built_in">number</span>[]</span>): <span class="hljs-built_in">void</span> {
+    <span class="hljs-comment">// عملية بناء الكومة: أعد بناء جميع العقد عدا الأوراق</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(nums.<span class="hljs-property">length</span> / <span class="hljs-number">2</span>) - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-title function_">siftDown</span>(nums, nums.<span class="hljs-property">length</span>, i);
+    }
+    <span class="hljs-comment">// استخرج أكبر عنصر من الكومة وكرّر ذلك n-1 مرة</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = nums.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-comment">// حذف العقدة</span>
+        [nums[<span class="hljs-number">0</span>], nums[i]] = [nums[i], nums[<span class="hljs-number">0</span>]];
+        <span class="hljs-comment">// ابدأ إعادة بناء الكومة من العقدة الجذرية، من الأعلى إلى الأسفل</span>
+        <span class="hljs-title function_">siftDown</span>(nums, i, <span class="hljs-number">0</span>);
+    }
+}
+</code></pre>
+</div>
+<h2 id="خصائص-الخوارزمية">خصائص الخوارزمية</h2>
+<ul>
+<li><strong>التعقيد الزمني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n \\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>؛ الترتيب بالكومة غير تكيّفي (non-adaptive)</strong>: يستغرق بناء الكومة زمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>. ويستغرق استخراج أكبر عنصر من الكومة زمن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، ويتكرر ذلك <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> من الجولات.</li>
+<li><strong>التعقيد المكاني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>؛ الترتيب بالكومة في المكان (in-place)</strong>: تستهلك بضع متغيرات من نوع المؤشر مساحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>. وتُنفَّذ مبادلة العناصر وإعادة بناء الكومة على المصفوفة الأصلية.</li>
+<li><strong>ترتيب غير مستقر</strong>: عند مبادلة عنصر قمة الكومة بعنصر قاعدة الكومة، قد تتغير المواضع النسبية للعناصر المتساوية.</li>
+</ul>
+`,m={book:s,chapter:a,chapterTitle:n,slug:t,title:p,headings:l,html:e};export{s as book,a as chapter,n as chapterTitle,m as default,l as headings,e as html,t as slug,p as title};

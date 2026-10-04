@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء — المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء"/><!----><title>المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 14 من 30">14 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-12/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-12/exercises">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes" class="active">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3>المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 12: قوائم الفهم (List Comprehensions)، والدوال ككائنات (Functions as Objects)، والاختبار (Testing)، وتصحيح الأخطاء (Debugging)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>هذه ترجمة عربية لمادة مقرّرة من MIT OpenCourseWare:</p>
+<blockquote>
+<p>Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/. License: CC BY-NC-SA 4.0.</p>
+</blockquote>
+<ul>
+<li>صفحة المحاضرة الرسمية على OCW: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-12-list-comprehension-functions-as-objects-testing-debugging/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-12-list-comprehension-functions-as-objects-testing-debugging/</a></li>
+<li>الشرائح (ملف PDF): <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_pdf/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_pdf/</a> — والملف المباشر: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12.pdf">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12.pdf</a></li>
+<li>ملفات الشيفرة للتمرين: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_code_zip/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_code_zip/</a></li>
+<li>النص الكامل (Transcript) للمحاضرة على OCW: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12/</a></li>
+<li>رخصة CC BY-NC-SA 4.0: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a></li>
+<li>شروط الاستخدام في MIT OCW: <a href="https://ocw.mit.edu/terms/">https://ocw.mit.edu/terms/</a></li>
+</ul>
+<p><strong>منهج الترجمة:</strong> عنوان واحد وترجمة عربية لكل شريحة من شرائح الملف الأصلي (47 شريحة)، بما في ذلك الشرائح التي تُبنى فيها الشيفرة خطوةً خطوة. أُبقيت الشيفرة كما هي بالإنجليزية دون تغيير؛ والنصوص التي كانت سطرًا سطرًا (trace) تُنقل إلى جداول قيم. الأشكال (diagrams) والمخططات لم تُضمَّن ولم يُخمَّن مضمونها.</p>
+<h2 id="الشريحة-1-عنوان-المحاضرة">الشريحة 1: عنوان المحاضرة</h2>
+<ul>
+<li>LIST COMPREHENSION, FUNCTIONS AS OBJECTS, TESTING, DEBUGGING</li>
+<li>(download slides and .py files to follow along)</li>
+<li>6.100L Lecture 12 — Ana Bell</li>
+</ul>
+<p>أي: «قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء»، مع تنويه بأن الشرائح وملفات <code>.py</code> متاحة للتنزيل لمتابعة الدرس عمليًا.</p>
+<h2 id="الشريحة-2-عنوان-القسم-قوائم-الفهم-list-comprehensions">الشريحة 2: عنوان القسم — قوائم الفهم (LIST COMPREHENSIONS)</h2>
+<p>شريحة عنوان للقسم الأول من المحاضرة.</p>
+<h2 id="الشريحة-3-قوائم-الفهم-list-comprehensions">الشريحة 3: قوائم الفهم (LIST COMPREHENSIONS)</h2>
+<ul>
+<li>تطبيق دالة (Applying a function) على كل عنصر في تتابع (sequence)، ثم إنشاء قائمة جديدة بهذه القيم، هو مفهوم شائع.</li>
+<li>مثال:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">L</span>):
+    Lnew = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> L:
+        Lnew.append(e**<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> Lnew
+</code></pre>
+<ul>
+<li>توفّر Python طريقة مختصرة من سطر واحد للقيام بذلك، تُسمّى <strong>قائمة الفهم (list comprehension)</strong>:
+<ul>
+<li>تنشئ قائمة جديدة.</li>
+<li>تطبّق دالة على كل عنصر في <strong>كائن قابل للتكرار (iterable)</strong> آخر.</li>
+<li>اختياريًا: تطبَّق فقط على العناصر التي تحقّق اختبارًا (test) معيّنًا.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-text">[expression for elem in iterable if test]
+</code></pre>
+<h2 id="الشريحة-4-قوائم-الفهم-forma-مختصرة-بلا-شرط">الشريحة 4: قوائم الفهم — forma مختصرة بلا شرط</h2>
+<p>نفس المثال السابق:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">L</span>):
+    Lnew = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> L:
+        Lnew.append(e**<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> Lnew
+</code></pre>
+<p>تُختصر في:</p>
+<pre><code class="language-python">Lnew = [e**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> L]
+</code></pre>
+<h2 id="الشريحة-5-قوائم-الفهم-إضافة-الاختبار">الشريحة 5: قوائم الفهم — إضافة الاختبار</h2>
+<p>الصيغة الموسَّعة: إنشاء قائمة جديدة بتطبيق دالة على كل عنصر في كائن قابل للتكرار آخر <strong>يحقّق اختبارًا</strong>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">L</span>):
+    Lnew = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> L:
+        <span class="hljs-keyword">if</span> e%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>:
+            Lnew.append(e**<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> Lnew
+</code></pre>
+<h2 id="الشريحة-6-قوائم-الفهم-صيغة-الاختبار-داخل-الأقواس">الشريحة 6: قوائم الفهم — صيغة الاختبار داخل الأقواس</h2>
+<p>لاحظ أن الاختبار انتقل إلى <strong>داخل الأقواس المربّعة</strong>، في نهاية التعبير:</p>
+<pre><code class="language-python">Lnew = [e**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> L <span class="hljs-keyword">if</span> e%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>]
+</code></pre>
+<h2 id="الشريحة-7-قوائم-الفهم-تذكير-الصيغة">الشريحة 7: قوائم الفهم — تذكير الصيغة</h2>
+<p>تظهر صيغة الاختصار مرة أخرى إلى جانب الطريقتين الطويلتين (بشرط وبدون شرط):</p>
+<ul>
+<li><code>Lnew = [e**2 for e in L]</code></li>
+<li><code>Lnew = [e**2 for e in L if e%2==0]</code></li>
+</ul>
+<h2 id="الشريحة-8-قوائم-الفهم-المعنى-المكافئ-كدالة">الشريحة 8: قوائم الفهم — المعنى المكافئ كدالة</h2>
+<p>هذه الشريحة تعطي <strong>المعنى المكافئ</strong> لقائمة الفهم: أي أنها تعادل استدعاء هذه الدالة، حيث <code>expression</code> هي دالة تحسب ذلك التعبير:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">expr, old_list, test = <span class="hljs-keyword">lambda</span> x: <span class="hljs-literal">True</span></span>):
+    new_list = []
+    <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> old_list:
+        <span class="hljs-keyword">if</span> test(e):
+            new_list.append(expr(e))
+    <span class="hljs-keyword">return</span> new_list
+</code></pre>
+<p>مع أمثلة تنفيذية:</p>
+<pre><code class="language-python">[e**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>)]
+<span class="hljs-comment"># → [0, 1, 4, 9, 16, 25]</span>
+
+[e**<span class="hljs-number">2</span> <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>) <span class="hljs-keyword">if</span> e%<span class="hljs-number">2</span> == <span class="hljs-number">0</span>]
+<span class="hljs-comment"># → [0, 4, 16, 36]</span>
+
+[[e,e**<span class="hljs-number">2</span>] <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">if</span> e%<span class="hljs-number">2</span> != <span class="hljs-number">0</span>]
+<span class="hljs-comment"># → [[1,1], [3,9]]</span>
+</code></pre>
+<h2 id="الشريحة-9-جربها-بنفسك-you-try-it">الشريحة 9: جربها بنفسك! (YOU TRY IT!)</h2>
+<ul>
+<li>ما القيمة التي يُعيدها هذا التعبير؟</li>
+</ul>
+<pre><code class="language-python">[<span class="hljs-built_in">len</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-string">&#x27;xy&#x27;</span>, <span class="hljs-string">&#x27;abcd&#x27;</span>, <span class="hljs-number">7</span>, <span class="hljs-string">&#x27;4.0&#x27;</span>] <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(x) == <span class="hljs-built_in">str</span>]
+</code></pre>
+<ul>
+<li>الخطوات:
+<ol>
+<li>الخطوة 1: ما كل القيم الموجودة في التتابع؟</li>
+<li>الخطوة 2: أي مجموعة جزئية من القيم يستبعدها الشرط؟</li>
+<li>الخطوة 3: طبّق الدالة على تلك القيم.</li>
+</ol>
+</li>
+</ul>
+<h2 id="الشريحة-10-عنوان-القسم-الدوال-المعاملات-الافتراضية-functions-default-parameters">الشريحة 10: عنوان القسم — الدوال: المعاملات الافتراضية (FUNCTIONS: DEFAULT PARAMETERS)</h2>
+<p>شريحة عنوان للقسم التالي.</p>
+<h2 id="الشريحة-11-الجذر-التربيعي-بالبحث-بالتنصيف-square-root-with-bisection">الشريحة 11: الجذر التربيعي بالبحث بالتنصيف (SQUARE ROOT with BISECTION)</h2>
+<p>نعود إلى دالة الجذر التربيعي بالبحث بالتنصيف التي كتبناها في محاضرات سابقة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bisection_root</span>(<span class="hljs-params">x</span>):
+    epsilon = <span class="hljs-number">0.01</span>
+    low = <span class="hljs-number">0</span>
+    high = x
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+        <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x:
+            low = guess
+        <span class="hljs-keyword">else</span>:
+            high = guess
+        guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">return</span> guess
+
+<span class="hljs-built_in">print</span>(bisection_root(<span class="hljs-number">123</span>))
+</code></pre>
+<h2 id="الشريحة-12-معامل-آخر-another-parameter">الشريحة 12: معامل آخر (ANOTHER PARAMETER)</h2>
+<ul>
+<li>الدافع: نريد إجابة أدق (a more accurate answer).</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bisection_root</span>(<span class="hljs-params">x</span>)
+</code></pre>
+<p>يمكن تحسينها.</p>
+<ul>
+<li>
+<p>الخيارات؟</p>
+<ul>
+<li>تغيير <code>epsilon</code> داخل الدالة (سيؤثّر في كل استدعاءات الدالة).</li>
+<li>استخدام <code>epsilon</code> خارج الدالة (المتغيّرات العامة (global variables) سيّئة).</li>
+<li>إضافة <code>epsilon</code> كوسيط (argument) للدالة.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-13-epsilon-كمعامل-epsilon-as-a-parameter">الشريحة 13: epsilon كمعامل (epsilon as a PARAMETER)</h2>
+<p>نُضيف <code>epsilon</code> إلى قائمة المعاملات:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bisection_root</span>(<span class="hljs-params">x, epsilon</span>):
+    low = <span class="hljs-number">0</span>
+    high = x
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+        <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x:
+            low = guess
+        <span class="hljs-keyword">else</span>:
+            high = guess
+        guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">return</span> guess
+
+<span class="hljs-built_in">print</span>(bisection_root(<span class="hljs-number">123</span>, <span class="hljs-number">0.01</span>))
+</code></pre>
+<h2 id="الشريحة-14-المعاملات-المسماة-keyword-parameters-والقيم-الافتراضية-default-values">الشريحة 14: المعاملات المسمّاة (KEYWORD PARAMETERS) والقيم الافتراضية (DEFAULT VALUES)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bisection_root</span>(<span class="hljs-params">x, epsilon</span>)
+</code></pre>
+<p>يمكن تحسينها.</p>
+<ul>
+<li>أضفنا <code>epsilon</code> كوسيط للدالة.</li>
+<li>معظم الوقت نريد قيمة معيارية (standard value) وهي <code>0.01</code>.</li>
+<li>وأحيانًا قد نريد قيمة أخرى.</li>
+</ul>
+<p>الحل: استخدم <strong>معاملًا مسمّى (keyword parameter)</strong> ويُعرف أيضًا بـ<strong>المعامل الافتراضي (default parameter)</strong>.</p>
+<h2 id="الشريحة-15-epsilon-كمعامل-مسمى-epsilon-as-a-keyword-parameter">الشريحة 15: epsilon كمعامل مسمّى (Epsilon as a KEYWORD PARAMETER)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bisection_root</span>(<span class="hljs-params">x, epsilon=<span class="hljs-number">0.01</span></span>):
+    low = <span class="hljs-number">0</span>
+    high = x
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+        <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x:
+            low = guess
+        <span class="hljs-keyword">else</span>:
+            high = guess
+        guess = (high + low)/<span class="hljs-number">2.0</span>
+    <span class="hljs-keyword">return</span> guess
+
+<span class="hljs-built_in">print</span>(bisection_root(<span class="hljs-number">123</span>))
+
+<span class="hljs-built_in">print</span>(bisection_root(<span class="hljs-number">123</span>, <span class="hljs-number">0.5</span>))
+</code></pre>
+<h2 id="الشريحة-16-قواعد-المعاملات-المسماة-rules-for-keyword-parameters">الشريحة 16: قواعد المعاملات المسمّاة (RULES for KEYWORD PARAMETERS)</h2>
+<ul>
+<li>
+<p>في تعريف الدالة:</p>
+<ul>
+<li>يجب أن تأتي المعاملات الافتراضية في النهاية (Default parameters must go at the end).</li>
+</ul>
+</li>
+<li>
+<p>هذه الاستدعاءات صحيحة:</p>
+</li>
+</ul>
+<pre><code class="language-python">bisection_root_new(<span class="hljs-number">123</span>)
+bisection_root_new(<span class="hljs-number">123</span>, <span class="hljs-number">0.001</span>)
+bisection_root_new(<span class="hljs-number">123</span>, epsilon=<span class="hljs-number">0.001</span>)
+bisection_root_new(x=<span class="hljs-number">123</span>, epsilon=<span class="hljs-number">0.1</span>)
+bisection_root_new(epsilon=<span class="hljs-number">0.1</span>, x=<span class="hljs-number">123</span>)
+</code></pre>
+<ul>
+<li>وهذه غير صحيحة:</li>
+</ul>
+<pre><code class="language-python">bisection_root_new(epsilon=<span class="hljs-number">0.001</span>, <span class="hljs-number">123</span>)  <span class="hljs-comment"># خطأ</span>
+bisection_root_new(<span class="hljs-number">0.001</span>, <span class="hljs-number">123</span>)          <span class="hljs-comment"># لا خطأ نحوي، لكنه خاطئ</span>
+</code></pre>
+<p>في الاستدعاء الثاني غير الصحيح، القيمة <code>0.001</code> تذهب إلى المعامل <code>x</code> (because it is given positionally)، و<code>123</code> تذهب إلى <code>epsilon</code>، وهو عكس المقصود تمامًا.</p>
+<h2 id="الشريحة-17-عنوان-القسم-الدوال-التي-تعيد-دوالا-functions-returning-functions">الشريحة 17: عنوان القسم — الدوال التي تُعيد دوالًا (FUNCTIONS RETURNING FUNCTIONS)</h2>
+<p>شريحة عنوان للقسم التالي.</p>
+<h2 id="الشريحة-18-الكائنات-داخل-البرنامج-objects-in-a-program">الشريحة 18: الكائنات داخل البرنامج (OBJECTS IN A PROGRAM)</h2>
+<p>تُظهر الشريحة أن في البرنامج أشياء من أنواع مختلفة: كائن دالة (function object) باسم <code>is_even</code>، وكائن عدد صحيح (int object) بقيمة <code>2</code> مرتبط بالاسم <code>r</code>، وكائن عدد عشري (float object) بقيمة <code>3.14285714</code> مرتبط بالاسم <code>pi</code>، وقيمتان منطقيّتان (boolean) <code>False</code> و<code>True</code> مرتبطتان بالاسمين <code>a</code> و<code>b</code>، وكائن دالة آخر مرتبط بالاسم <code>my_func</code>.</p>
+<p>والشيفرة التي تُنتج ذلك:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_even</span>(<span class="hljs-params">i</span>):
+    <span class="hljs-keyword">return</span> i%<span class="hljs-number">2</span> == <span class="hljs-number">0</span>
+
+r = <span class="hljs-number">2</span>
+pi = <span class="hljs-number">22</span>/<span class="hljs-number">7</span>
+my_func = is_even
+a = is_even(<span class="hljs-number">3</span>)
+b = my_func(<span class="hljs-number">4</span>)
+</code></pre>
+<h2 id="الشريحة-19-الدوال-يمكن-أن-تعيد-دوالا-functions-can-return-functions">الشريحة 19: الدوال يمكن أن تُعيد دوالًا (FUNCTIONS CAN RETURN FUNCTIONS)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_prod</span>(<span class="hljs-params">a</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">b</span>):
+        <span class="hljs-keyword">return</span> a*b
+    <span class="hljs-keyword">return</span> g
+
+val = make_prod(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>)
+
+doubler = make_prod(<span class="hljs-number">2</span>)
+
+<span class="hljs-built_in">print</span>(val)
+
+val = doubler(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>(val)
+</code></pre>
+<p>انتبه إلى الشيفرة <code>make_prod(2)(3)</code>: نستدعي <code>make_prod</code> أولًا فتحصل على <strong>كائن دالة</strong>، ثم نستدعي هذا الكائن فورًا بالمعامل <code>3</code>.</p>
+<h2 id="الشريحة-20-تفاصيل-النطاق-للطريقة-الأولى-scope-details-for-way-1">الشريحة 20: تفاصيل النطاق للطريقة الأولى (SCOPE DETAILS FOR WAY 1)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_prod</span>(<span class="hljs-params">a</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">b</span>):
+        <span class="hljs-keyword">return</span> a*b
+    <span class="hljs-keyword">return</span> g
+
+val = make_prod(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>(val)
+</code></pre>
+<h2 id="الشريحة-21-تفاصيل-النطاق-للطريقة-الأولى-النطاق-العام">الشريحة 21: تفاصيل النطاق للطريقة الأولى — النطاق العام</h2>
+<p>الشريحة نفسها، ومعها الرسم الأول: <strong>النطاق العام (Global scope)</strong> يحتوي على الكائن <code>make_prod</code>، ويحتوي أيضًا على «بعض الشيفرة» (Some code) هي <code>val = make_prod(2)(3)</code> و<code>print(val)</code>.</p>
+<p><strong>ملاحظة المترجم:</strong> الرسم في الشريحة يوضّح عملية استدعاء الدالة وإطار النطاق (stack frame) الذي تنشئه؛ النص المستخرَج من الملف لا يحفظ مواضع الأسهم، فذكرناLambdas الشريحة وصفًا لا شكلًا.</p>
+<h2 id="الشريحة-22-تفاصيل-النطاق-للطريقة-الأولى-نطاق-makeprod">الشريحة 22: تفاصيل النطاق للطريقة الأولى — نطاق make_prod</h2>
+<p>تظهر في الرسم <strong>نطاق make_prod (make_prod scope)</strong> إلى جانب النطاق العام، وهو الإطار الذي أُنشئ عند تنفيذ <code>make_prod(2)</code>.</p>
+<h2 id="الشريحة-23-تفاصيل-النطاق-للطريقة-الأولى-g-مرتبطة-داخل-نطاق-makeprod">الشريحة 23: تفاصيل النطاق للطريقة الأولى — g مرتبطة داخل نطاق make_prod</h2>
+<p>الشريحة نفسها بتفصيل أكثر، وتنصّ على ما يلي:</p>
+<ul>
+<li>تعريف <code>g</code> يتم <strong>داخل نطاق</strong> <code>make_prod</code>، لذا فإن ربط (binding) الاسم <code>g</code> يقع داخل ذلك الإطار/النطاق.</li>
+<li>ولأن <code>g</code> مرتبطة في هذا الإطار، فلا يمكن الوصول إليها بالتقييم داخل الإطار العام.</li>
+<li>يمكن الوصول إلى <code>g</code> فقط <strong>داخل الاستدعاء لـ <code>make_prod</code></strong>، وكل استدعاء يُنشئ نسخة داخلية جديدة من <code>g</code>.</li>
+</ul>
+<h2 id="الشريحة-24-تفاصيل-النطاق-للطريقة-الأولى-استدعاء-makeprod2-يعيد-دالة-مجهولة">الشريحة 24: تفاصيل النطاق للطريقة الأولى — استدعاء make_prod(2) يُعيد دالة مجهولة</h2>
+<p>نصّ الشريحة: تقييم <code>make_prod(2)</code> قد أعاد <strong>procedure مجهولة (anonymous procedure)</strong>، أي مؤشّرًا إلى شيفرة <code>g</code>.</p>
+<h2 id="الشريحة-25-تفاصيل-النطاق-للطريقة-الأولى-المؤشر-إلى-شيفرة-g">الشريحة 25: تفاصيل النطاق للطريقة الأولى — المؤشّر إلى شيفرة g</h2>
+<p>نصّ الشريحة: «يعيد مؤشّرًا إلى شيفرة <code>g</code>» (Returns pointer to g code).</p>
+<h2 id="الشريحة-26-تفاصيل-النطاق-للطريقة-الأولى-نطاق-g">الشريحة 26: تفاصيل النطاق للطريقة الأولى — نطاق g</h2>
+<p>الشريحة نفسها، ومعها <strong>نطاق g (g scope)</strong> الذي تظهر فيه <code>b</code> بقيمة <code>3</code>. وتوجد في الشريحة ملاحظتان مهمّتان:</p>
+<ul>
+<li>كيف تحصل <code>g</code> على قيمة <code>a</code>؟</li>
+<li>يستطيع المُفسِّر (interpreter) أن يصعد في تسلسل الإطارات (hierarchy of frames) ليرى قيمتَي <code>b</code> و<code>a</code> معًا.</li>
+</ul>
+<h2 id="الشريحة-27-تفاصيل-النطاق-للطريقة-الثانية-scope-details-for-way-2">الشريحة 27: تفاصيل النطاق للطريقة الثانية (SCOPE DETAILS FOR WAY 2)</h2>
+<p>نفس الدالة، لكن الاستدعاء مكتوب على خطوتين منفصلتين:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_prod</span>(<span class="hljs-params">a</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">g</span>(<span class="hljs-params">b</span>):
+        <span class="hljs-keyword">return</span> a*b
+    <span class="hljs-keyword">return</span> g
+
+doubler = make_prod(<span class="hljs-number">2</span>)
+val = doubler(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>(val)
+</code></pre>
+<p>الفرق الجوهري: في الشريحة <code>val</code> صارت الآن تشير إلى نتيجة الاستدعاء الثاني (<code>doubler(3)</code>) لا إلى نتيجة الاستدعاء المتسلسل.</p>
+<h2 id="الشريحة-28-تفاصيل-النطاق-للطريقة-الثانية-بعد-doubler-makeprod2">الشريحة 28: تفاصيل النطاق للطريقة الثانية — بعد <code>doubler = make_prod(2)</code></h2>
+<p>الشريحة نفسها، ومعها الرسم الذي فيه:</p>
+<ul>
+<li>النطاق العام (Global scope): فيه <code>make_prod</code> و«بعض الشيفرة» واسم <code>doubler</code>.</li>
+<li>نطاق <code>make_prod</code> (make_prod scope): فيه <code>a</code> بقيمة <code>2</code> وشيفرة <code>g</code>.</li>
+</ul>
+<h2 id="الشريحة-29-تفاصيل-النطاق-للطريقة-الثانية-النطاق-العام-كاملا">الشريحة 29: تفاصيل النطاق للطريقة الثانية — النطاق العام كاملًا</h2>
+<p>الشريحة نفسها مع توضيح شيفرة النطاق العام كاملة:</p>
+<pre><code class="language-python">doubler = make_prod(<span class="hljs-number">2</span>)
+val = doubler(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>(val)
+</code></pre>
+<h2 id="الشريحة-30-تفاصيل-النطاق-للطريقة-الثانية-نطاق-doubler">الشريحة 30: تفاصيل النطاق للطريقة الثانية — نطاق doubler</h2>
+<p>الشريحة نفسها، ومعها <strong>نطاق doubler (doubler scope)</strong> الذي تظهر فيه <code>b</code> بقيمة <code>3</code>، ويظهر فيه أيضًا <code>val</code>، ونصّها: «يعيد قيمة» (Returns value).</p>
+<p><strong>ملاحظة المترجم:</strong> الرسم هنا يُظهر أن نطاق الاستدعاء الثاني هو <strong><code>doubler</code></strong> لا <code>g</code>: أي أن الإطار الذي أنشئه <code>doubler(3)</code> يحمل اسم الكائن الدالة الذي استُدعي، وهذا ما يفسّر لماذا لا يظهر اسم <code>g</code> في الرسم. أما الوصول إلى <code>a</code> فيبقى بالتصعيد في تسلسل الإطارات كما في الشريحة 26.</p>
+<h2 id="الشريحة-31-لماذا-نعيد-الدوال-أصلا-why-bother-returning-functions">الشريحة 31: لماذا نُعيد الدوال أصلًا؟ (WHY BOTHER RETURNING FUNCTIONS?)</h2>
+<ul>
+<li>يمكن إعادة كتابة الشيفرة دون إعادة كائنات دوال.</li>
+<li>تصميم برمجيات جيد (Good software design).</li>
+<li>تبنّي أفكار التفكيك (decomposition) والتجريد (abstraction).</li>
+<li>أداة أخرى لبناء بنية الشيفرة.</li>
+<li>قطع التنفيذ (Interrupting execution):
+<ul>
+<li>مثال على تدفّق التحكم (control flow).</li>
+<li>وسيلة لتحقيق تنفيذ جزئي واستخدام النتيجة في مكان آخر <strong>قبل</strong> إتمام التقييم الكامل.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-32-عنوان-القسم-الاختبار-وتصحيح-الأخطاء-testing-and-debugging">الشريحة 32: عنوان القسم — الاختبار وتصحيح الأخطاء (TESTING and DEBUGGING)</h2>
+<p>شريحة عنوان للقسم الأخير.</p>
+<h2 id="الشريحة-33-ثلاثة-أعمدة-البرمجة-الدفاعية-الاختبارالتحقق-تصحيح-الأخطاء">الشريحة 33: ثلاثة أعمدة: البرمجة الدفاعية، الاختبار/التحقّق، تصحيح الأخطاء</h2>
+<p>العمود الأول — <strong>البرمجة الدفاعية (DEFENSIVE PROGRAMMING)</strong>:</p>
+<ul>
+<li>اكتب مواصفات (specifications) للدوال.</li>
+<li>فكّك البرنامج إلى وحدات (modularize programs).</li>
+<li>افحص شروط المدخلات والمخرجات (تأكيدات — assertions).</li>
+</ul>
+<p>العمود الثاني — <strong>الاختبار/التحقّق (TESTING/VALIDATION)</strong>:</p>
+<ul>
+<li>قارن أزواج المدخلات/المخرجات بالمواصفة.</li>
+<li>«لا يعمل!»</li>
+<li>«كيف أكسر برنامجي؟»</li>
+</ul>
+<p>العمود الثالث — <strong>تصحيح الأخطاء (DEBUGGING)</strong>:</p>
+<ul>
+<li>ادرس الأحداث التي أدّت إلى الخطأ.</li>
+<li>«لماذا لا يعمل؟»</li>
+<li>«كيف أصلح برنامجي؟»</li>
+</ul>
+<h2 id="الشريحة-34-هيئ-نفسك-لتسهيل-الاختبار-وتصحيح-الأخطاء-set-yourself-up-for-easy-testing-and-debugging">الشريحة 34: هيّئ نفسك لتسهيل الاختبار وتصحيح الأخطاء (SET YOURSELF UP FOR EASY TESTING AND DEBUGGING)</h2>
+<ul>
+<li>ابدأ من الأول: صمّم الشيفرة لتسهّل هذه المرحلة.</li>
+<li>قسّم البرنامج إلى وحدات (modules) يمكن اختبارها وتصحيحها كلٌّ على حدة.</li>
+<li>وثّق القيود (constraints) على الوحدات:
+<ul>
+<li>ما المدخل الذي تتوقعه؟</li>
+<li>ما المخرج الذي تتوقعه؟</li>
+</ul>
+</li>
+<li>وثّق الافتراضات (assumptions) الكامنة وراء تصميم الشيفرة.</li>
+</ul>
+<h2 id="الشريحة-35-متى-تكون-جاهزا-للاختبار-when-are-you-ready-to-test">الشريحة 35: متى تكون جاهزًا للاختبار؟ (WHEN ARE YOU READY TO TEST?)</h2>
+<ul>
+<li>تأكّد أن الشيفرة تعمل:
+<ul>
+<li>أزل أخطاء الصياغة (syntax errors).</li>
+<li>أزل أخطاء المعنى الساكنة (static semantic errors).</li>
+<li>يستطيع مُفسِّر Python عادةً أن يجد هذين النوعين نيابةً عنك.</li>
+</ul>
+</li>
+<li>جهّز مجموعة نتائج متوقّعة:
+<ul>
+<li>مجموعة مدخلات.</li>
+<li>لكل مدخل، المخرج المتوقّع.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-36-أصناف-الاختبارات-classes-of-tests">الشريحة 36: أصناف الاختبارات (CLASSES OF TESTS)</h2>
+<ul>
+<li><strong>اختبار الوحدات (Unit testing)</strong>:
+<ul>
+<li>تحقّق من كل قطعة في البرنامج.</li>
+<li>اختبار كل دالة على حدة.</li>
+</ul>
+</li>
+<li><strong>اختبار الانحدار (Regression testing)</strong>:
+<ul>
+<li>أضف اختبارًا لكل خطأ تكتشفه.</li>
+<li>التقط الأخطاء التي أُعيد إدخالها بعد إصلاحها سابقًا.</li>
+</ul>
+</li>
+<li><strong>اختبار التكامل (Integration testing)</strong>:
+<ul>
+<li>هل يعمل البرنامج ككل؟</li>
+<li>عادةً ما نُسرع إلى.package هذا النوع.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-37-أساليب-الاختبار-testing-approaches">الشريحة 37: أساليب الاختبار (TESTING APPROACHES)</h2>
+<ul>
+<li>الحدس بشأن الحدود الطبيعية للمشكلة:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bigger</span>(<span class="hljs-params">x, y</span>):
+    <span class="hljs-string">&quot;&quot;&quot; Assumes x and y are ints
+    Returns True if y is less than x, else False &quot;&quot;&quot;</span>
+</code></pre>
+<ul>
+<li>هل تستطيع أن تأتي ببعض التقسيمات الطبيعية؟</li>
+<li>إن لم توجد تقسيمات طبيعية، يمكن إجراء <strong>اختبار عشوائي (random testing)</strong>:
+<ul>
+<li>احتمال صحة الشيفرة يزداد مع زيادة عدد الاختبارات.</li>
+<li>هناك خيارات أفضل ( فيما يلي).</li>
+</ul>
+</li>
+<li><strong>الاختبار الصندوق الأسود (Black box testing)</strong>:
+<ul>
+<li>استكشف المسارات عبر المواصفة.</li>
+</ul>
+</li>
+<li><strong>الاختبار الصندوق الزجاجي (Glass box testing)</strong>:
+<ul>
+<li>استكشف المسارات عبر الشيفرة.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-38-الاختبار-الصندوق-الأسود-black-box-testing">الشريحة 38: الاختبار الصندوق الأسود (BLACK BOX TESTING)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sqrt</span>(<span class="hljs-params">x, eps</span>):
+    <span class="hljs-string">&quot;&quot;&quot; Assumes x, eps floats, x &gt;= 0, eps &gt; 0
+    Returns res such that x-eps &lt;= res*res &lt;= x+eps &quot;&quot;&quot;</span>
+</code></pre>
+<ul>
+<li>مصمَّم دون النظر في الشيفرة.</li>
+<li>يمكن أن يقوم به شخص غير منفِّذ (implementer) لتجنّب بعض تحيّزات المنفّذ.</li>
+<li>يمكن إعادة استخدام الاختبار إذا تغيّرت النسخة المنفَّذة.</li>
+<li>المسارات عبر المواصفة:
+<ul>
+<li>ابنِ حالات اختبار في تقسيمات المكان الطبيعية المختلفة.</li>
+<li>راعِ أيضًا <strong>حالات الحدّ (boundary conditions)</strong>: قوائم فارغة، قائمة بعنصر واحد، أعداد كبيرة، أعداد صغيرة.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-39-الاختبار-الصندوق-الأسود-جدول-الحالات">الشريحة 39: الاختبار الصندوق الأسود — جدول الحالات</h2>
+<table>
+<thead>
+<tr>
+<th>الحالة</th>
+<th>x</th>
+<th>eps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الحدّ (boundary)</td>
+<td><code>0</code></td>
+<td><code>0.0001</code></td>
+</tr>
+<tr>
+<td>مربع كامل (perfect square)</td>
+<td><code>25</code></td>
+<td><code>0.0001</code></td>
+</tr>
+<tr>
+<td>أصغر من 1 (less than 1)</td>
+<td><code>0.05</code></td>
+<td><code>0.0001</code></td>
+</tr>
+<tr>
+<td>جذر تربيعي غير ناطق (irrational square root)</td>
+<td><code>2</code></td>
+<td><code>0.0001</code></td>
+</tr>
+<tr>
+<td>التطرف (extremes)</td>
+<td><code>2</code></td>
+<td><code>1.0/2.0**64.0</code></td>
+</tr>
+<tr>
+<td>التطرف</td>
+<td><code>1.0/2.0**64.0</code></td>
+<td><code>1.0/2.0**64.0</code></td>
+</tr>
+<tr>
+<td>التطرف</td>
+<td><code>2.0**64.0</code></td>
+<td><code>1.0/2.0**64.0</code></td>
+</tr>
+<tr>
+<td>التطرف</td>
+<td><code>1.0/2.0**64.0</code></td>
+<td><code>2.0**64.0</code></td>
+</tr>
+<tr>
+<td>التطرف</td>
+<td><code>2.0**64.0</code></td>
+<td><code>2.0**64.0</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>ملاحظة المترجم:</strong> أُعيد ترتيب صفوف الجدول لتطابق تسلسل «الحالة» و«x» و«eps»؛ فالنص المستخرَج فصل الأعمدة الثلاثة عن بعضها، وجاء العمود <code>x</code> بعد العمود <code>eps</code> فيبتل الترتيب.</p>
+<h2 id="الشريحة-40-الاختبار-الصندوق-الزجاجي-glass-box-testing">الشريحة 40: الاختبار الصندوق الزجاجي (GLASS BOX TESTING)</h2>
+<ul>
+<li>استخدم الشيفرة نفسها لتوجيه تصميم حالات الاختبار.</li>
+<li>يُسمّى <strong>كامل المسارات (path-complete)</strong> إذا اختُبر كل مسار محتمل عبر الشيفرة مرة واحدة على الأقل.</li>
+<li>ما بعض عيوب هذا النوع من الاختبار؟
+<ul>
+<li>قد يمرّ عبر الحلقات عددًا عشوائيًا من المرات.</li>
+<li>مسارات مفقودة (Missing paths).</li>
+</ul>
+</li>
+<li>إرشادات:
+<ul>
+<li>الفروع (Branches).</li>
+<li>حلقات <code>for</code>.</li>
+<li>حلقات <code>while</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-41-الاختبار-الصندوق-الزجاجي-اختبار-كامل-المسارات-قد-يفوت-خطأ">الشريحة 41: الاختبار الصندوق الزجاجي — اختبار كامل المسارات قد يفوّت خطأً</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">abs</span>(<span class="hljs-params">x</span>):
+    <span class="hljs-string">&quot;&quot;&quot; Assumes x is an int
+    Returns x if x&gt;=0 and –x otherwise &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> x &lt; -<span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> –x
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> x
+</code></pre>
+<ul>
+<li>قد تفوّت مجموعة اختبار كاملة المسارات خطأً.</li>
+<li>مجموعة اختبار كاملة المسارات: <code>2</code> و<code>-2</code>.</li>
+<li>لكن <code>abs(-1)</code> يُعيد خطأً <code>-1</code> بدل <code>1</code>.</li>
+<li>لذلك يجب أن تختبر حالات الحدّ (boundary cases) رغم ذلك.</li>
+</ul>
+<h2 id="الشريحة-42-تصحيح-الأخطاء-debugging">الشريحة 42: تصحيح الأخطاء (DEBUGGING)</h2>
+<ul>
+<li>بمجرّد أن تكتشف أن شيفرتك لا تعمل بشكل صحيح، تريد أن:
+<ul>
+<li>تعزل الأخطاء (Isolate the bug(s)).</li>
+<li>تقضي على الأخطاء (Eradicate the bug(s)).</li>
+<li>تعيد الاختبار حتى تعمل الشيفرة صحيحًا في كل الحالات.</li>
+</ul>
+</li>
+<li>منحنى تعلّم شديد الانحدار (Steep learning curve).</li>
+<li>الهدف: برنامج خالٍ من الأخطاء.</li>
+<li>الأدوات:
+<ul>
+<li>مدمجة في IDLE و Anaconda.</li>
+<li>Python Tutor.</li>
+<li>تعليمة <code>print</code>.</li>
+<li>استخدم عقلك، وكن منهجيًا في مطاردتك للخطأ.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-43-رسائل-الأخطاء-السهلة-error-messages-easy">الشريحة 43: رسائل الأخطاء — السهلة (ERROR MESSAGES – EASY)</h2>
+<ul>
+<li>محاولة الوصول إلى ما وراء حدود قائمة (Trying to access beyond the limits of a list):</li>
+</ul>
+<pre><code class="language-python">test = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+test[<span class="hljs-number">4</span>]
+</code></pre>
+<ul>
+<li>
+<p>← <code>IndexError</code></p>
+</li>
+<li>
+<p>محاولة تحويل نوع غير مناسب (Trying to convert an inappropriate type):</p>
+</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-built_in">int</span>(test)
+</code></pre>
+<ul>
+<li>
+<p>← <code>TypeError</code></p>
+</li>
+<li>
+<p>الإشارة إلى متغيّر غير موجود (Referencing a non-existent variable):</p>
+</li>
+</ul>
+<pre><code class="language-python">a
+</code></pre>
+<ul>
+<li>
+<p>← <code>NameError</code></p>
+</li>
+<li>
+<p>الخلط بين أنواع البيانات دون تحويل مناسب (Mixing data types without appropriate coercion):</p>
+</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-string">&#x27;3&#x27;</span>/<span class="hljs-number">4</span>
+</code></pre>
+<ul>
+<li>
+<p>← <code>TypeError</code></p>
+</li>
+<li>
+<p>نسيان إغلاق قوس أو علامة اقتباس (Forgetting to close parenthesis, quotation, etc.):</p>
+</li>
+</ul>
+<pre><code class="language-python">a = <span class="hljs-built_in">len</span>([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<span class="hljs-built_in">print</span>(a)
+</code></pre>
+<ul>
+<li>← <code>SyntaxError</code></li>
+</ul>
+<p><strong>ملاحظة المترجم:</strong> الشيفرة أعلاه ناقصة القوس بالعمد، وهذا هو مثال الخطأ الذي تعرضه الشريحة نفسها، فلم أُكمله.</p>
+<h2 id="الشريحة-44-الأخطاء-المنطقية-الصعبة-logic-errors-hard">الشريحة 44: الأخطاء المنطقية — الصعبة (LOGIC ERRORS - HARD)</h2>
+<ul>
+<li>فكّر قبل أن تكتب شيفرة جديدة (think before writing new code).</li>
+<li>ارسم صورًا، وخذ استراحة (draw pictures, take a break).</li>
+<li>اشرح الشيفرة:
+<ul>
+<li>لشخص آخر.</li>
+<li>أو لـ«بطة مطاطية» (a rubber ducky).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-45-خطوات-تصحيح-الأخطاء-debugging-steps">الشريحة 45: خطوات تصحيح الأخطاء (DEBUGGING STEPS)</h2>
+<ul>
+<li>ادرس شيفرة البرنامج:
+<ul>
+<li>لا تسأل: ما الخطأ؟</li>
+<li>اسأل: كيف وصلت إلى هذه النتيجة غير المتوقّعة؟</li>
+<li>هل هو جزء من عائلة (family) من الأخطاء؟</li>
+</ul>
+</li>
+<li><strong>المنهج العلمي (The scientific method)</strong>:
+<ul>
+<li>ادرس البيانات المتاحة.</li>
+<li>صُغ فرضية (Form hypothesis).</li>
+<li>نفّذ تجارب قابلة للتكرار (Repeatable experiments).</li>
+<li>اختر أبسط مدخل للاختبار به.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-46-تعليمة-print-print-statements">الشريحة 46: تعليمة print (PRINT STATEMENTS)</h2>
+<ul>
+<li>طريقة جيدة لاختبار الفرضية.</li>
+<li>متى نطبع؟
+<ul>
+<li>عند دخول الدالة.</li>
+<li>المعاملات (Parameters).</li>
+<li>نتائج الدالة.</li>
+</ul>
+</li>
+<li>استخدم <strong>طريقة التنصيف (bisection method)</strong>:
+<ul>
+<li>ضع <code>print</code> في منتصف الشيفرة.</li>
+<li>قرّر أين قد يكون الخطأ بحسب القيم.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-47-mit-opencourseware">الشريحة 47: MIT OpenCourseWare</h2>
+<p>شريحة الختام: شعار MIT OpenCourseWare مع الروابط الرسمية:</p>
+<ul>
+<li><a href="https://ocw.mit.edu">https://ocw.mit.edu</a></li>
+<li>6.100L Introduction to Computer Science and Programming Using Python — Fall 2022</li>
+<li>للاستفسار عن كيفية الاستشهاد بهذه المواد أو عن شروط الاستخدام، زر <a href="https://ocw.mit.edu/terms">https://ocw.mit.edu/terms</a></li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-12/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-12/exercises"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

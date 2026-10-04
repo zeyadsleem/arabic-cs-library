@@ -1,0 +1,471 @@
+const e="mit-6100l",s="problem-sets",n="مجموعات المسائل",o="ps2",a="مجموعة المسائل 2 — لعبة تخمين الكلمة",t=[{depth:2,id:"المقدمة",text:"المقدمة"},{depth:3,id:"الأهداف",text:"الأهداف"},{depth:3,id:"التعاون",text:"التعاون"},{depth:2,id:"البدء-getting-started",text:"البدء (Getting Started)"},{depth:3,id:"a-إعداد-الملفات-file-setup",text:"A) إعداد الملفات (File Setup)"},{depth:3,id:"b-نظرة-عامة-على-اللعبة",text:"B) نظرة عامة على اللعبة"},{depth:2,id:"1-الدوال-المساعدة-الثلاث-helper-functions",text:"1) الدوال المساعدة الثلاث (Helper Functions)"},{depth:3,id:"11-تحديد-فوز-اللاعب",text:"1.1) تحديد فوز اللاعب"},{depth:3,id:"12-كشف-الحروف",text:"1.2) كشف الحروف"},{depth:3,id:"13-الحصول-على-الحروف-المتاحة",text:"1.3) الحصول على الحروف المتاحة"},{depth:2,id:"2-اللعبة-the-game",text:"2) اللعبة (The Game)"},{depth:3,id:"21-إعداد-اللعبة",text:"2.1) إعداد اللعبة"},{depth:3,id:"22-التفاعل-بين-المستخدم-والحاسوب",text:"2.2) التفاعل بين المستخدم والحاسوب"},{depth:3,id:"23-التخمينات-المتبقية",text:"2.3) التخمينات المتبقية"},{depth:3,id:"24-اللعبة-مع-المساعدة",text:"2.4) اللعبة مع المساعدة"},{depth:3,id:"25-إنهاء-اللعبة-game-termination",text:"2.5) إنهاء اللعبة (Game Termination)"},{depth:3,id:"26-اختبار-الكود",text:"2.6) اختبار الكود"},{depth:2,id:"3-إجراءات-التسليم",text:"3) إجراءات التسليم"},{depth:3,id:"31-تسمية-الملفات",text:"3.1) تسمية الملفات"},{depth:3,id:"32-معلومات-الوقت-والتعاون",text:"3.2) معلومات الوقت والتعاون"},{depth:3,id:"33-التسليم-المرحلي",text:"3.3) التسليم المرحلي"},{depth:3,id:"34-التسليم-النهائي",text:"3.4) التسليم النهائي"},{depth:2,id:"4-الملحق-appendix",text:"4) الملحق (Appendix)"},{depth:3,id:"41-مثال-hangman-لعبة-فوز",text:"4.1) مثال Hangman: لعبة فوز"},{depth:3,id:"42-مثال-hangman-لعبة-خسارة",text:"4.2) مثال Hangman: لعبة خسارة"},{depth:3,id:"43-hangman-مع-المساعدة",text:"4.3) Hangman مع المساعدة"},{depth:2,id:"5-نصائح-مفيدة-لتصحيح-الأخطاء-helpful-debugging-tips",text:"5) نصائح مفيدة لتصحيح الأخطاء (Helpful Debugging Tips)"},{depth:2,id:"المصدر-والنسب-والترخيص",text:"المصدر والنَّسب والترخيص"}],l=`<h1>مجموعة المسائل 2: لعبة تخمين الكلمة (Hangman)</h1>
+<p><strong>زميل مجموعة المسائل (Pset Buddy):</strong> لم يُعيَّن لك زميل لهذه المجموعة في النسخة المنشورة.</p>
+<h2 id="المقدمة">المقدمة</h2>
+<h3 id="الأهداف">الأهداف</h3>
+<ul>
+<li>كتابة الدوال (Functions) واستدعاؤها في بايثون.</li>
+<li>استخدام آليات الحلقات (Loops) لتكرار عملية حاسوبية حتى يتحقق شرط.</li>
+</ul>
+<h3 id="التعاون">التعاون</h3>
+<ul>
+<li>يمكن للطلاب العمل معًا، لكن يكتب كل طالب تكليفه ويسلّمه منفصلًا. لا يجوز تسليم الكود نفسه تمامًا.</li>
+<li>لا يُسمح بالنظر إلى كود الآخرين أو بنيته أو نسخهما.</li>
+<li>اذكر أسماء المتعاونين في تعليق في بداية كل ملف.</li>
+<li>راجع سياسة التعاون في معلومات المقرر للتفاصيل.</li>
+</ul>
+<p>رغم طول النشرة، فالمعلومات فيها توفر السياق والأمثلة المفيدة والتلميحات؛ اقرأها بعناية.</p>
+<h2 id="البدء-getting-started">البدء (Getting Started)</h2>
+<p>ستنفذ في هذه المجموعة نسخة مختلفة من لعبة الكلمات التقليدية Hangman.</p>
+<h3 id="a-إعداد-الملفات-file-setup">A) إعداد الملفات (File Setup)</h3>
+<p>حمّل <code>hangman.py</code> و<code>test_ps2_student.py</code> و<code>words.txt</code>، واحفظها في المجلد نفسه. شغّل <code>hangman.py</code> قبل كتابة أي كود للتأكد من صحة حفظ الملفات. يحمّل كود البداية كلمات من <code>words.txt</code>. ينبغي أن ترى في الصدفة:</p>
+<pre><code class="language-text">Loading word list from file...
+  55900 words loaded
+</code></pre>
+<p>أي تحميل قائمة الكلمات من الملف، ثم تحميل 55900 كلمة.</p>
+<p><strong>ملاحظة المترجم — مادة محجوزة:</strong> احصل على ملف الاختبار من <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_ps2_code_zip/">الحزمة الرسمية</a>. يتضمن مساعدات من Stack Overflow تحتاج تحققًا مستقلًا من الترخيص والنَّسب؛ لذلك لا يُنسخ هنا. الإرشادات وأسماء الاختبارات التالية من نشرة MIT، وليست إعادة نشر لكود تلك المساعدات.</p>
+<h3 id="b-نظرة-عامة-على-اللعبة">B) نظرة عامة على اللعبة</h3>
+<p>ستنفذ دالة <code>hangman</code> تسمح للمستخدم باللعب ضد الحاسوب. يختار الحاسوب الكلمة، ويحاول اللاعب تخمين حروفها. السلوك العام المطلوب أدناه، وسنقسمه لاحقًا إلى خطوات ومواصفات تفصيلية:</p>
+<ol>
+<li>يختار الحاسوب كلمة عشوائية من <code>words.txt</code>. يحتوي الملف على كلمات بحروف صغيرة فقط.</li>
+<li>يُمنح المستخدم عددًا معينًا من التخمينات في البداية.</li>
+<li>يدخل تخمينه، فيقوم الحاسوب بأحد الآتي:
+<ul>
+<li>يكشف الحرف إن وُجد في الكلمة السرية.</li>
+<li>يخبر المستخدم أن التخمين غير صالح، إذا كان أطول من محرف واحد، أو ليس حرفًا، أو سبق تخمينه؛ دون عقوبة أو كشف أي شيء.</li>
+<li>يعاقب المستخدم ويحدّث عدد التخمينات المتبقية إذا كان التخمين صالحًا لكن الحرف غير موجود.</li>
+</ul>
+</li>
+<li>تنتهي اللعبة عند تخمين الكلمة أو نفاد التخمينات.</li>
+</ol>
+<p>سنضيف ميزة تجعل اللعبة أسهل: يدخل المستخدم محرف المساعدة الخاص <code>!</code> لكشف حرف لم يُخمَّن، مقابل خسارة تخمينات أكثر.</p>
+<h2 id="1-الدوال-المساعدة-الثلاث-helper-functions">1) الدوال المساعدة الثلاث (Helper Functions)</h2>
+<p>سنقسم المسألة إلى مهام فرعية منطقية بإنشاء ثلاث دوال مساعدة؛ وهو نهج شائع لحل المشكلات حاسوبيًا. يحتوي كود البداية في <code>hangman.py</code> على تنفيذ <code>load_words</code> و<code>choose_word</code>. اقرأ السلاسل التوثيقية (Docstrings) لفهم وظيفتيهما.</p>
+<p><strong>مهم:</strong> لا تغير اسم أي دالة مقدمة أو معاملاتها أو مواصفاتها! يمكنك إضافة دوال مساعدة، لكن تغيير تعريفات الدوال المقدمة يؤدي لفشل اختبارات الوحدات (Unit Tests).</p>
+<h3 id="11-تحديد-فوز-اللاعب">1.1) تحديد فوز اللاعب</h3>
+<p>نفذ <code>has_player_won</code> حسب توثيقها. تساعد في تحديد الفوز، أي تخمين المستخدم جميع حروف الكلمة السرية.</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>secret_word = <span class="hljs-string">&#x27;apple&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>letters_guessed = [<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-string">&#x27;k&#x27;</span>, <span class="hljs-string">&#x27;p&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-string">&#x27;s&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(has_player_won(secret_word, letters_guessed))
+<span class="hljs-literal">False</span>
+</code></pre>
+<p><strong>الاختبار:</strong> افتح <code>test_ps2_student.py</code> وشغّله في Spyder. سيشغل سلسلة اختبارات وحدات على كودك، بما فيها دوال ستنفذها لاحقًا، فلا تتوقع اجتياز الجميع مباشرة. افحص الاختبارات التي تبدأ بـ <code>test_has_player_won</code>. إن كانت الدالة صحيحة سترى:</p>
+<pre><code class="language-text">test_has_player_won (__main__.TestPS2) ... ok
+test_has_player_won_empty_list (__main__.TestPS2) ... ok
+test_has_player_won_empty_string (__main__.TestPS2) ... ok
+test_has_player_won_repeated_letters (__main__.TestPS2) ... ok
+</code></pre>
+<h3 id="12-كشف-الحروف">1.2) كشف الحروف</h3>
+<p>نفذ <code>get_word_progress</code> حسب توثيقها. ينبغي أن تشبه <code>has_player_won</code> كثيرًا.</p>
+<p><strong>تلميح:</strong> فكر هل تحتاج تخزين معلومات أثناء المرور على بنية البيانات، وكيف تضيف المعلومات إلى النتيجة المتراكمة.</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>secret_word = <span class="hljs-string">&#x27;apple&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>letters_guessed = [<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-string">&#x27;k&#x27;</span>, <span class="hljs-string">&#x27;p&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-string">&#x27;s&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(get_word_progress(secret_word, letters_guessed))
+*pp*e
+</code></pre>
+<p><strong>الاختبار:</strong> شغّل الملف وافحص ما يبدأ بـ <code>test_get_word_progress</code>. النتيجة الصحيحة:</p>
+<pre><code class="language-text">test_get_word_progress (__main__.TestPS2) ... ok
+test_get_word_progress_empty_list (__main__.TestPS2) ... ok
+test_get_word_progress_empty_string (__main__.TestPS2) ... ok
+test_get_word_progress_repeated_letters (__main__.TestPS2) ... ok
+</code></pre>
+<h3 id="13-الحصول-على-الحروف-المتاحة">1.3) الحصول على الحروف المتاحة</h3>
+<p>نفذ <code>get_available_letters</code> حسب توثيقها. يجب إرجاع الحروف مرتبة أبجديًا. قد تفيدك <code>string.ascii_lowercase</code>، وهي سلسلة تضم جميع الحروف الصغيرة:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> string
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(string.ascii_lowercase)
+abcdefghijklmnopqrstuvwxyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>letters_guessed = [<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-string">&#x27;k&#x27;</span>, <span class="hljs-string">&#x27;p&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-string">&#x27;s&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(get_available_letters(letters_guessed))
+abcdfghjlmnoqtuvwxyz
+</code></pre>
+<p><strong>الاختبار:</strong> افحص ما يبدأ بـ <code>test_get_available_letters</code>:</p>
+<pre><code class="language-text">test_get_available_letters (__main__.TestPS2) ... ok
+test_get_available_letters_empty_list (__main__.TestPS2) ... ok
+test_get_available_letters_empty_string (__main__.TestPS2) ... ok
+</code></pre>
+<h2 id="2-اللعبة-the-game">2) اللعبة (The Game)</h2>
+<p>بعد كتابة الدوال المساعدة، نفذ <code>hangman</code>، التي تستقبل (1) <code>secret_word</code>، الكلمة المطلوب تخمينها، و(2) <code>with_help</code>، قيمة منطقية تحدد استخدام المساعدة. استدعاؤها يبدأ لعبة تفاعلية بين المستخدم والحاسوب. استفد من الدوال الثلاث السابقة، ويمكنك كتابة مساعدات إضافية.</p>
+<p>اختبرها باستدعائها داخل شرط <code>if __name__ == &quot;__main__&quot;:</code> في أسفل <code>hangman.py</code>. حدد الكلمة يدويًا لتسهيل الاختبار، ثم اختبر أيضًا بكلمة عشوائية. مثال:</p>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    secret_word = <span class="hljs-string">&quot;tact&quot;</span>
+    with_help = <span class="hljs-literal">False</span>
+    hangman(secret_word, with_help)
+</code></pre>
+<p><strong>ملاحظتان مهمتان:</strong> اجعل عبارات الطباعة أقرب ما يمكن إلى أمثلة اللعب؛ يحتوي الملحق أيضًا على أمثلة مفيدة. وراجع نصائح تصحيح الأخطاء إن واجهت صعوبة.</p>
+<h3 id="21-إعداد-اللعبة">2.1) إعداد اللعبة</h3>
+<ol>
+<li>تُمرر <code>secret_word</code> والقيمة المنطقية <code>with_help</code> إلى الدالة كمعاملين.</li>
+<li>اعرض في البداية عدد حروف الكلمة السرية.</li>
+<li>يبدأ المستخدم بعشرة تخمينات.</li>
+</ol>
+<pre><code class="language-text">Loading word list from file...
+  55900 words loaded.
+Welcome to Hangman!
+I am thinking of a word that is 4 letters long.
+</code></pre>
+<h3 id="22-التفاعل-بين-المستخدم-والحاسوب">2.2) التفاعل بين المستخدم والحاسوب</h3>
+<ol>
+<li>قبل كل تخمين اعرض:
+<ul>
+<li>ثلاثة شُرط <code>-</code> على الأقل، مثل <code>--------------</code>، للفصل بين التخمينات. حذف هذا السطر يؤدي لفشل أداة الاختبار.</li>
+<li>عدد التخمينات المتبقية.</li>
+<li>جميع الحروف التي لم تُخمَّن بعد.</li>
+</ul>
+</li>
+<li>اطلب تخمينًا واحدًا في كل مرة:
+<ul>
+<li>يمكن للمستخدم كتابة أرقام أو رموز أو حروف، لكن يجب قبول <strong>الحروف المفردة الكبيرة والصغيرة فقط</strong> كتخمينات صالحة.</li>
+<li>مع المساعدة اقبل أيضًا <code>!</code>.</li>
+</ul>
+</li>
+<li>عقب كل تخمين مباشرة اعرض:
+<ul>
+<li>هل الحرف موجود في الكلمة السرية.</li>
+<li>الكلمة مع الحروف المخمنة مكشوفة، وغير المخمنة ممثلة بنجمات <code>*</code>.</li>
+</ul>
+</li>
+</ol>
+<p>مثال التنفيذ 1:</p>
+<pre><code class="language-text">Loading word list from file...
+   55900 words loaded.
+Welcome to Hangman!
+I am thinking of a word that is 4 letters long.
+--------------
+You have 10 guesses left.
+Available letters: abcdefghijklmnopqrstuvwxyz
+Please guess a letter: a      # This is the user input
+Good guess: *a**
+--------------
+You have 10 guesses left.
+Available letters: bcdefghijklmnopqrstuvwxyz
+Please guess a letter: b      # This is the user input
+Oops! That letter is not in my word: *a**
+--------------
+You have 9 guesses left.
+Available letters: cdefghijklmnopqrstuvwxyz
+Please guess a letter: 2      # This is the user input
+Oops! That is not a valid letter. Please input a letter from
+the alphabet: *a**
+--------------
+You have 9 guesses left.
+Available letters: cdefghijklmnopqrstuvwxyz
+Please guess a letter: foo      # This is the user input
+Oops! That is not a valid letter. Please input a letter from
+the alphabet: *a**
+--------------
+You have 9 guesses left.
+Available letters: cdefghijklmnopqrstuvwxyz
+Please guess a letter: +      # This is the user input
+Oops! That is not a valid letter. Please input a letter from
+the alphabet: *a**
+</code></pre>
+<p><strong>ملاحظة:</strong> <code># This is the user input</code> تعليق، وليس جزءًا من المخرج. <strong>ملاحظة المترجم:</strong> حُفظت نصوص المخرجات الإنجليزية لمطابقة الاختبارات. معانيها: ترحيب، طول الكلمة، التخمينات المتبقية، الحروف المتاحة، طلب حرف، تخمين صحيح، حرف غير موجود، أو إدخال غير صالح.</p>
+<p><strong>تلميحات:</strong></p>
+<ol>
+<li>استخدم <code>input()</code> للحصول على التخمين. تحقق أنه حرف أبجدي، أو محرف المساعدة عند تفعيلها. إن لم يكن صالحًا، أخبر المستخدم أنه يستطيع إدخال حرف أبجدي فقط.</li>
+<li>لأن كلمات <code>words.txt</code> صغيرة الحروف، نقترح تحويل الإدخال إلى حروف صغيرة حتى يتعامل البرنامج معها فقط.</li>
+<li>قد تفيدك <code>str.isalpha()</code> و<code>str.lower()</code>! اكتب <code>help(str.isalpha)</code> أو <code>help(str.lower)</code> في صدفة Spyder لقراءة التوثيق. مثال:</li>
+</ol>
+<pre><code class="language-python">&gt;&gt; my_string = <span class="hljs-string">&quot;HeLLoWoRlD&quot;</span>
+&gt;&gt; my_string.isalpha()
+<span class="hljs-literal">True</span>
+&gt;&gt; my_string.lower()
+<span class="hljs-string">&#x27;helloworld&#x27;</span>
+</code></pre>
+<h3 id="23-التخمينات-المتبقية">2.3) التخمينات المتبقية</h3>
+<p>إذا أدخل المستخدم:</p>
+<ol>
+<li>شيئًا غير حرف، مثل رمز أو رقم، فأخبره أنه يستطيع إدخال حرف أبجدي فقط. لا يخسر تخمينًا. مع المساعدة تكون <code>!</code> صالحة أيضًا.</li>
+<li>حرفًا سبق تخمينه، فاطبع رسالة بذلك. لا يخسر تخمينًا.</li>
+<li>حرفًا جديدًا موجودًا في الكلمة، فلا يخسر تخمينًا.</li>
+<li>حرفًا ساكنًا (Consonant) جديدًا غير موجود، فيخسر تخمينًا واحدًا.</li>
+<li>حرف علة (Vowel) جديدًا غير موجود، فيخسر تخمينين. حروف العلة هي <code>a</code> و<code>e</code> و<code>i</code> و<code>o</code> و<code>u</code>، ولا تُعد <code>y</code> منها. إذا بقي تخمين واحد وأدخل حرف علة خاطئًا جديدًا، يخسر وتنتهي اللعبة.</li>
+</ol>
+<p>متابعة مثال التنفيذ 1:</p>
+<pre><code class="language-text">You have 9 guesses left.
+Available letters: bcdefghijklmnopqrtuvwxyz
+Please guess a letter: t
+Good guess: ta*t
+--------------
+You have 9 guesses left.
+Available letters: bcdefghijklmnopqruvwxyz
+Please guess a letter: e
+Oops! That letter is not in my word: ta*t
+--------------
+You have 7 guesses left.
+Available letters: bcdfghijklmnopqruvwxyz
+Please guess a letter: e
+Oops! You&#x27;ve already guessed that letter: ta*t
+</code></pre>
+<p>الرسالة الأخيرة تعني: سبق أن خمنت هذا الحرف.</p>
+<h3 id="24-اللعبة-مع-المساعدة">2.4) اللعبة مع المساعدة</h3>
+<p>ليس التفوق على الحاسوب سهلًا دائمًا، خصوصًا إذا اختار كلمة نادرة. قد يكون طلب المساعدة مفيدًا. أنشئ ميزة تعمل كالآتي:</p>
+<ul>
+<li>إذا كتبت المحرف الخاص <code>!</code>، يكشف الحاسوب حرفًا مفقودًا في الكلمة مقابل ثلاثة تخمينات. يجب أن يكون المحرف الوحيد غير الحرفي المقبول كتخمين.</li>
+<li>إن لم يبق ثلاثة تخمينات على الأقل، يحذرك الحاسوب ويتيح إعادة المحاولة. لا تخسر تخمينًا.</li>
+<li>تتاح الميزة فقط حين تكون <code>with_help</code> مساوية لـ <code>True</code>.</li>
+</ul>
+<p>نقترح كبداية دالة مساعدة تختار حرفًا لكشفه. تستقبل الكلمة السرية وسلسلة الحروف المتاحة من <code>get_available_letters</code>. أنشئ سلسلة <code>choose_from</code> تضم الحروف الفريدة الموجودة في الكلمة وفي الحروف المتاحة معًا. ثم اختر حرفًا عشوائيًا <code>revealed_letter</code>:</p>
+<pre><code class="language-python">new = random.randint(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(choose_from)-<span class="hljs-number">1</span>)
+revealed_letter = choose_from[new]
+</code></pre>
+<p>ترجع الدالة هذا الحرف. أضف إلى منطق اللعبة شرطًا يلتقط إدخال <code>!</code>: يضيف الحرف إلى <code>letters_guessed</code>، ويعرض تقدم الكلمة الجديد، وينقص المتبقي بمقدار 3، ويواصل اللعب.</p>
+<p>مثال التنفيذ 2:</p>
+<pre><code class="language-text">Welcome to Hangman!
+I am thinking of a word that is 7 letters long.
+--------------
+You currently have 10 guesses left.
+Available letters: abcdefghijklmnopqrstu
+Please guess a letter: !
+Letter revealed: r
+r*****r
+--------------
+You currently have 7 guesses left.
+Available letters: abcdefghijklmnopqrstu
+Please guess a letter: !
+Letter revealed: a
+ra***ar
+--------------
+You currently have 4 guesses left.
+Available letters: abdefghijklmnopqrstu
+Please guess a letter: !
+Letter revealed: e
+ra*e*ar
+--------------
+You currently have 1 guess left.
+Available letters: abdefghijklmnopqstu
+Please guess a letter: !
+Oops! Not enough guesses left: ra*e*ar
+</code></pre>
+<p>تعني الرسائل الجديدة: الحرف المكشوف، أو عدم كفاية التخمينات. راجع الملحق لمثال لعبة كاملة مع المساعدة. <strong>ملاحظة المترجم:</strong> سلاسل الحروف المتاحة في هذا المثال محفوظة كما نشرها المصدر، حتى حين لا تعكس كل تحديث متوقع؛ القواعد النصية أعلاه هي المواصفات.</p>
+<h3 id="25-إنهاء-اللعبة-game-termination">2.5) إنهاء اللعبة (Game Termination)</h3>
+<ol>
+<li>تنتهي عند تخمين جميع حروف <code>secret_word</code> أو بقاء صفر تخمينات.</li>
+<li>عند الفوز اطبع تهنئة وأخبر المستخدم بدرجته:</li>
+</ol>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">_</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi></mrow><mo>=</mo><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">_</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">g</mi></mrow><mo>+</mo><mn>4</mn><mo>×</mo><mtext>عدد الحروف الفريدة في الكلمة السرية</mtext><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><mn>3</mn><mo>×</mo><mtext>طول الكلمة السرية</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
+\\mathrm{total\\_score}=(\\mathrm{guesses\\_remaining}+4\\times\\text{عدد الحروف الفريدة في الكلمة السرية})+(3\\times\\text{طول الكلمة السرية})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord mathrm">total_score</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathrm" style="margin-right:0.0139em;">guesses_remaining</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">عدد الحروف الفريدة في الكلمة السرية</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">طول الكلمة السرية</span></span><span class="mclose">)</span></span></span></span></span>
+<p>مثلًا، مع الكلمة <code>asleep</code> و6 تخمينات متبقية، هناك 5 حروف فريدة: <code>a, s, l, e, p</code>. الدرجة هي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>6</mn><mo>+</mo><mn>4</mn><mo>×</mo><mn>5</mn><mo stretchy="false">)</mo><mo>+</mo><mo stretchy="false">(</mo><mn>3</mn><mo>×</mo><mn>6</mn><mo stretchy="false">)</mo><mo>=</mo><mn>44</mn></mrow><annotation encoding="application/x-tex">(6+4\\times5)+(3\\times6)=44</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">6</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">6</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">44</span></span></span></span>.</p>
+<ol start="3">
+<li>عند نفاد التخمينات قبل إكمال الكلمة، أخبر اللاعب بخسارته واكشف الكلمة في النهاية.</li>
+</ol>
+<p>مثال الفوز:</p>
+<pre><code class="language-text"># ... snip ...
+You have 5 guesses left.
+Available letters: abcgnqrstuvwxyz
+Please guess a letter: n
+Good guess: dolphin
+--------------
+Congratulations, you won!
+Your total score for this game is: 54
+</code></pre>
+<p><code># ...snip...</code> ليست من المخرج، بل تعني أن المثال يعرض جزءًا فقط من التنفيذ.</p>
+<p>مثال الخسارة:</p>
+<pre><code class="language-text"># ... snip ...
+You have 1 guess left.
+Available Letters: ghijklmnopqrstuvwxyz
+Please guess a letter: i
+Oops! That letter is not in my word: e**e
+--------------
+Sorry, you ran out of guesses. The word was else.
+</code></pre>
+<p>ينطبق على علامة الاقتصاص التنبيه نفسه. تعني رسائل النهاية: تهانينا بالفوز ودرجتك الكلية، أو للأسف نفدت التخمينات وكانت الكلمة كذا.</p>
+<h3 id="26-اختبار-الكود">2.6) اختبار الكود</h3>
+<p>اقرأ أمثلة الملحق بعناية، واجعل الطباعة أقرب ما يمكن إليها. إن واجهت مشكلة فراجع تلميحات التصحيح. في أسفل <code>hangman.py</code> ستجد:</p>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    <span class="hljs-comment"># To test your game, uncomment the following three lines.</span>
+
+    <span class="hljs-comment"># secret_word = choose_word(wordlist)</span>
+    <span class="hljs-comment"># with_help = False</span>
+    <span class="hljs-comment"># hangman(secret_word, with_help)</span>
+</code></pre>
+<p>أزل علامة التعليق من الأسطر الثلاثة الأخيرة لاختيار كلمة عشوائية واللعب بها. يمكنك تمرير كلمتك الخاصة أثناء الاختبار.</p>
+<h4>2.6.1) أداة اختبار الطالب</h4>
+<p>شغّل <code>test_ps2_student.py</code> لاختبار عمل اللعبة. ينبغي أن ترى:</p>
+<pre><code class="language-text">test_play_game_short (__main__.TestPS2) ... ok
+test_play_game_short_fail (__main__.TestPS2) ... ok
+test_play_game_with_help (__main__.TestPS2) ... ok
+</code></pre>
+<p>قد تظهر رسائل بين <code>...</code> و<code>ok</code>، مثل:</p>
+<pre><code class="language-text">Problem Set 2 Unit Test Results:
+All correct!
+Points for these tests: 5/5
+(Please note that this is not your final pset score, additional test cases will be run on submissions)
+ok
+</code></pre>
+<p>لا بأس بذلك. معناها: جميع الاختبارات صحيحة، ودرجتها 5/5، لكنها ليست الدرجة النهائية؛ ستُشغّل حالات إضافية على التسليمات.</p>
+<h2 id="3-إجراءات-التسليم">3) إجراءات التسليم</h2>
+<h3 id="31-تسمية-الملفات">3.1) تسمية الملفات</h3>
+<p>احفظ الحل بالاسم الأصلي <code>hangman.py</code>. لا تتجاهل ذلك ولا تحفظه باسم مختلف!</p>
+<h3 id="32-معلومات-الوقت-والتعاون">3.2) معلومات الوقت والتعاون</h3>
+<p>اكتب أسماء المتعاونين في تعليق أول كل ملف، مثل:</p>
+<pre><code class="language-python"><span class="hljs-comment"># Problem Set 2, hangman.py</span>
+<span class="hljs-comment"># Name: Jane Lee</span>
+<span class="hljs-comment"># Collaborators: John Doe</span>
+</code></pre>
+<p>قدّر الساعات التي قضيتها في المجموعة في صندوق السؤال.</p>
+<h3 id="33-التسليم-المرحلي">3.3) التسليم المرحلي</h3>
+<p>على جميع الطلاب تسليم تقدمهم بحلول الموعد المرحلي، قبل النهائي بأسبوع. يساوي نقطة واحدة ولا يُقيَّم للصحة؛ الهدف تقدم ثابت بدل العمل في آخر الأيام. يمكنك رفع إصدارات جديدة من كل ملف حتى <strong>12 أكتوبر، 09:00 مساءً</strong>. لا تمديدات ولا أيام تأخير لهذا التسليم.</p>
+<p>واجهة المصدر: اختيار ملف، لم يُختَر ملف، إرسال. عدد التسليمات المتبقية غير محدود.</p>
+<h3 id="34-التسليم-النهائي">3.4) التسليم النهائي</h3>
+<p>شغّل أداة اختبار الطالب وتأكد من اجتياز الجميع. تحتوي الأداة على جزء فقط من اختبارات الدرجة؛ النجاح فيها لا يضمن الدرجة كاملة.</p>
+<p>يمكنك رفع إصدارات جديدة حتى <strong>19 أكتوبر، 09:00 مساءً</strong>. يُحتسب الرفع المتأخر من رصيد أيام التأخير إن بقي؛ دون رصيد لا تحصل على درجة للتسليم المتأخر. رفع ملف جديد بالاسم نفسه يستبدل القديم.</p>
+<p>حدّث الصفحة قبل تسليم ملف جديد؛ وإلا فلن يُحدَّث آخر تسليم.</p>
+<p>واجهة المصدر: اختيار ملف، لم يُختَر ملف، إرسال. عدد التسليمات المتبقية غير محدود.</p>
+<h2 id="4-الملحق-appendix">4) الملحق (Appendix)</h2>
+<h3 id="41-مثال-hangman-لعبة-فوز">4.1) مثال Hangman: لعبة فوز</h3>
+<pre><code class="language-text">Loading word list from file...
+  55900 words loaded.
+Welcome to Hangman!
+I am thinking of a word that is 4 letters long.
+--------------
+You have 10 guesses left.
+Available letters: abcdefghijklmnopqrstuvwxyz
+Please guess a letter: a
+Good guess: *a**
+--------------
+You have 10 guesses left.
+Available letters: bcdefghijklmnopqrstuvwxyz
+Please guess a letter: a
+Oops! You&#x27;ve already guessed that letter: *a**
+--------------
+You have 10 guesses left.
+Available letters: bcdefghijklmnopqrstuvwxyz
+Please guess a letter: s
+Oops! That letter is not in my word: *a**
+--------------
+You have 9 guesses left.
+Available letters: bcdefghijklmnopqrtuvwxyz
+Please guess a letter: +
+Oops! That is not a valid letter. Please input a letter from the alphabet: *a**
+--------------
+You have 9 guesses left.
+Available letters: bcdefghijklmnopqrtuvwxyz
+Please guess a letter: t
+Good guess: ta*t
+--------------
+You have 9 guesses left.
+Available letters: bcdefghijklmnopqruvwxyz
+Please guess a letter: e
+Oops! That letter is not in my word: ta*t
+--------------
+You have 7 guesses left.
+Available letters: bcdfghijklnopquvwxyz
+Please guess a letter: c
+Good guess: tact
+--------------
+Congratulations, you won!
+Your total score for this game is: 31
+</code></pre>
+<h3 id="42-مثال-hangman-لعبة-خسارة">4.2) مثال Hangman: لعبة خسارة</h3>
+<pre><code class="language-text">Loading word list from file...
+  55900 words loaded.
+Welcome to Hangman!
+I am thinking of a word that is 4 letters long
+--------------
+You have 10 guesses left.
+Available Letters: abcdefghijklmnopqrstuvwxyz
+Please guess a letter: a
+Oops! That letter is not in my word: ****
+--------------
+You have 8 guesses left.
+Available Letters: bcdefghijklmnopqrstuvwxyz
+Please guess a letter: b
+Oops! That letter is not in my word: ****
+--------------
+You have 7 guesses left.
+Available Letters: cdefghijklmnopqrstuvwxyz
+Please guess a letter: c
+Oops! That letter is not in my word: ****
+--------------
+You have 6 guesses left.
+Available Letters: defghijklmnopqrstuvwxyz
+Please guess a letter: 2
+Oops! That is not a valid letter. Please input a letter from the alphabet: ****
+--------------
+You have 6 guesses left.
+Available Letters: defghijklmnopqrstuvwxyz
+Please guess a letter: d
+Oops! That letter is not in my word: ****
+--------------
+You have 5 guesses left.
+Available Letters: efghijklmnopqrstuvwxyz
+Please guess a letter: u
+Oops! That letter is not in my word: ****
+--------------
+You have 3 guesses left.
+Available Letters: efghijklmnopqrstvwxyz
+Please guess a letter: e
+Good guess: e**e
+--------------
+You have 3 guesses left.
+Available Letters: fghijklmnopqrstuvwxyz
+Please guess a letter: f
+Oops! That letter is not in my word: e**e
+--------------
+You have 2 guesses left.
+Available Letters: ghijklmnopqrstuvwxyz
+Please guess a letter: o
+Oops! That letter is not in my word: e**e
+--------------
+Sorry, you ran out of guesses. The word was else.
+</code></pre>
+<h3 id="43-hangman-مع-المساعدة">4.3) Hangman مع المساعدة</h3>
+<pre><code class="language-text">Loading word list from file...
+  55900 words loaded.
+Welcome to Hangman!
+I am thinking of a word that is 7 letters long
+--------------
+You currently have 10 guesses left
+Available letters: abcdefghijklmnopqrstuvwxyz
+Please guess a letter: r
+Good guess: r*****r
+--------------
+You currently have 10 guesses left
+Available letters: abcdefghijklmnopqstuvwxyz
+Please guess a letter: !
+Letter revealed: c
+r*c*c*r
+--------------
+You currently have 7 guesses left
+Available letters: abdeghijklmnopqstuvwxyz
+Please guess a letter: !
+Letter revealed: a
+rac*car
+--------------
+You currently have 4 guesses left
+Available letters: bdeghijklmnopqstuvwxyz
+Please guess a letter: e
+Good guess: racecar
+--------------
+Congratulations, you won!
+Your total score for this game is: 41
+</code></pre>
+<h2 id="5-نصائح-مفيدة-لتصحيح-الأخطاء-helpful-debugging-tips">5) نصائح مفيدة لتصحيح الأخطاء (Helpful Debugging Tips)</h2>
+<ul>
+<li>يقارن المصحح الآلي المخرج المطبوع بالمخرج المتوقع، لذلك صمم اللعبة لتطابقه قدر الإمكان. يحتاج مخرجك مثلًا إلى عدد الأسطر نفسه. أدرج كل ما تطبعه الأمثلة، بما فيه الشُرط <code>--------------</code> في نهاية الدور!</li>
+<li>إذا فشل أي اختبار <code>test_play_game</code>، ينبغي ظهور <code>run_game_test_results.txt</code> في مجلد أداة الاختبار، وفيه المخرج المتوقع والفعلي.
+<ul>
+<li>لا تقلق إذا غابت رسائل طلب الإدخال مثل <code>Please guess a letter:</code> من الملف؛ لا تُعاد توجيهها إلى مخرج الملف، ولا ينبغي أن يؤثر ذلك في الاختبار.</li>
+<li>مرر سلسلة غير فارغة إلى <code>input</code>، مثل <code>input(&quot;Please guess a letter: &quot;)</code>. لا تستطيع الأداة تغذية البرنامج بالإدخال بصورة صحيحة إذا استدعيت <code>input(&quot;&quot;)</code>.</li>
+<li>إذا ظهر <code>NameError: name 'outputstr' is not defined</code> فأعد تشغيل نواة Spyder.</li>
+</ul>
+</li>
+<li>قد تضيف <code>print</code> مسافات دون قصد. المثال التالي يدرج مسافة بين السلسلتين:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>)
+foo bar
+</code></pre>
+<p>يمكن تغيير الفاصل باستخدام المعامل الاختياري <code>sep</code>، وقيمته الافتراضية مسافة واحدة. تضيف بايثون افتراضيًا <code>\\n</code>، محرف السطر الجديد، إلى نهاية السلسلة المطبوعة؛ لذلك ترى كل طباعة في سطر جديد. يمكن تغيير ذلك باستخدام <code>end</code>. لا تحتاجه للمجموعة، لكن من الجيد معرفته:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>, <span class="hljs-string">&#x27;baz&#x27;</span>, sep=<span class="hljs-string">&quot; and &quot;</span>, end=<span class="hljs-string">&#x27;\\n&#x27;</span>)
+foo <span class="hljs-keyword">and</span> bar <span class="hljs-keyword">and</span> baz
+</code></pre>
+<ul>
+<li>قد تُدرج نافذة Spyder سطرًا فارغًا إضافيًا حتى دون كود يطلبه؛ لا ينبغي أن يؤثر في الاختبار.</li>
+<li>هل تحسب الدرجات بصورة صحيحة؟ قد يفيدك كتابة دالة تحسب الدرجة من الكلمة والتخمينات المتبقية. احتسب التخمينات المفقودة بسبب التلميحات أيضًا.</li>
+</ul>
+<p>كالمعتاد، طباعة قيم المتغيرات في مواضع مدروسة طريقة مفيدة للتحقق من تخزين القيم الصحيحة فيها.</p>
+<h2 id="المصدر-والنسب-والترخيص">المصدر والنَّسب والترخيص</h2>
+<p>المصدر: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_ps2_pdf/">تعليمات PS 2 الرسمية</a>، <code>extracted/mit6_100l_f22_ps2.layout.txt</code>. ترجمة عربية لجميع التعليمات مع إبقاء الكود والمخرجات النموذجية دون ترجمة حتى تبقى نافعة للاختبار. المواعيد تاريخية. لم يُنشر ملف الاختبار المحجوز أو الحزمة الأصلية في <code>static/</code>.</p>
+<p>النَّسب: <strong>Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare.</strong> <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/">المقرر الأصلي</a>. المواد المملوكة لـ MIT وهذه الترجمة بموجب <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>: النَّسب، غير تجاري، المشاركة بالمثل. ترجمة غير رسمية لا تعني اعتماد MIT. استثناءات الأطراف الثالثة محفوظة؛ <a href="https://ocw.mit.edu/pages/privacy-and-terms-of-use/">شروط الاستخدام</a>.</p>
+`,p={book:e,chapter:s,chapterTitle:n,slug:"ps2",title:a,headings:t,html:l};export{e as book,s as chapter,n as chapterTitle,p as default,t as headings,l as html,o as slug,a as title};

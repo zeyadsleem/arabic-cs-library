@@ -1,0 +1,547 @@
+const s="mit-6100l",a="lecture-04",n="المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية",l="notes",p="المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة",t=[{depth:2,id:"المصادر-والنسبة-والترخيص",text:"المصادر والنسبة والترخيص"},{depth:2,id:"الشريحة-1-التكرار-على-السلاسل-النصية-والتخمين-والاختبار-والثنائية",text:"الشريحة 1: التكرار على السلاسل النصية، والتخمين والاختبار، والثنائية"},{depth:2,id:"الشريحة-2-في-المرة-الماضية",text:"الشريحة 2: في المرة الماضية"},{depth:2,id:"الشريحة-3-الأمر-break",text:"الشريحة 3: الأمر break"},{depth:2,id:"الشريحة-4-الأمر-break",text:"الشريحة 4: الأمر break"},{depth:2,id:"الشريحة-5-جرب-بنفسك",text:"الشريحة 5: جرّب بنفسك!"},{depth:2,id:"الشريحة-6-السلاسل-النصية-والتكرار",text:"الشريحة 6: السلاسل النصية والتكرار"},{depth:2,id:"الشريحة-7-الفكرة-الكبرى",text:"الشريحة 7: الفكرة الكبرى"},{depth:2,id:"الشريحة-8-cheerleaders-الروبوتات",text:"الشريحة 8: cheerleaders الروبوتات"},{depth:2,id:"الشريحة-9-جرب-بنفسك",text:"الشريحة 9: جرّب بنفسك!"},{depth:2,id:"الشريحة-10-ملخص-ما-مر-حتى-الآن",text:"الشريحة 10: ملخص ما مرّ حتى الآن"},{depth:2,id:"الشريحة-11-هذا-كل-ما-تحتاجه-لتنفيذ-الخوارزميات",text:"الشريحة 11: هذا كل ما تحتاجه لتنفيذ الخوارزميات"},{depth:2,id:"الشريحة-12-التخمين-والاختبار-guess-and-check",text:"الشريحة 12: التخمين والاختبار (GUESS-and-CHECK)"},{depth:2,id:"الشريحة-13-التخمين-والاختبار",text:"الشريحة 13: التخمين والاختبار"},{depth:2,id:"الشريحة-14-التخمين-والاختبار-الجذر-التربيعي-square-root",text:"الشريحة 14: التخمين والاختبار — الجذر التربيعي (Square Root)"},{depth:2,id:"الشريحة-15-التخمين-والاختبار-الجذر-التربيعي",text:"الشريحة 15: التخمين والاختبار — الجذر التربيعي"},{depth:2,id:"الشريحة-16-التخمين-والاختبار-الجذر-التربيعي",text:"الشريحة 16: التخمين والاختبار — الجذر التربيعي"},{depth:2,id:"الشريحة-17-التخمين-والاختبار-الجذر-التربيعي",text:"الشريحة 17: التخمين والاختبار — الجذر التربيعي"},{depth:2,id:"الشريحة-18-التخمين-والاختبار-الجذر-التربيعي-بحلقة-while",text:"الشريحة 18: التخمين والاختبار — الجذر التربيعي بحلقة while"},{depth:2,id:"الشريحة-19-التخمين-والاختبار-الجذر-التربيعي",text:"الشريحة 19: التخمين والاختبار — الجذر التربيعي"},{depth:2,id:"الشريحة-20-التخمين-والاختبار-الجذر-التربيعي-بحلقة-while",text:"الشريحة 20: التخمين والاختبار — الجذر التربيعي بحلقة while"},{depth:2,id:"الشريحة-21-الفكرة-الكبرى",text:"الشريحة 21: الفكرة الكبرى"},{depth:2,id:"الشريحة-22-مقارنة-التخمين-والاختبار",text:"الشريحة 22: مقارنة التخمين والاختبار"},{depth:2,id:"الشريحة-23-جرب-بنفسك",text:"الشريحة 23: جرّب بنفسك!"},{depth:2,id:"الشريحة-24-جرب-بنفسك",text:"الشريحة 24: جرّب بنفسك!"},{depth:2,id:"الشريحة-25-الفكرة-الكبرى",text:"الشريحة 25: الفكرة الكبرى"},{depth:2,id:"الشريحة-26-while-loop-أم-for-loop",text:"الشريحة 26: while loop أم for loop؟"},{depth:2,id:"الشريحة-27-التخمين-والاختبار-الجذر-التكعيبي-مكعبات-موجبة",text:"الشريحة 27: التخمين والاختبار — الجذر التكعيبي: مكعّبات موجبة"},{depth:2,id:"الشريحة-28-التخمين-والاختبار-الجذر-التكعيبي-مكعبات-موجبة-وسالبة",text:"الشريحة 28: التخمين والاختبار — الجذر التكعيبي: مكعّبات موجبة وسالبة"},{depth:2,id:"الشريحة-29-التخمين-والاختبار-الجذر-التكعيبي-أسرع-قليلا",text:"الشريحة 29: التخمين والاختبار — الجذر التكعيبي: أسرع قليلًا"},{depth:2,id:"الشريحة-30-مثال-آخر",text:"الشريحة 30: مثال آخر"},{depth:2,id:"الشريحة-31-التخمين-والاختبار-مع-مسائل-الكلمات",text:"الشريحة 31: التخمين والاختبار مع مسائل الكلمات"},{depth:2,id:"الشريحة-32-مثال-بأعداد-أكبر",text:"الشريحة 32: مثال بأعداد أكبر"},{depth:2,id:"الشريحة-33-حل-أكثر-كفاءة",text:"الشريحة 33: حل أكثر كفاءة"},{depth:2,id:"الشريحة-34-الفكرة-الكبرى",text:"الشريحة 34: الفكرة الكبرى"},{depth:2,id:"الشريحة-35-الأعداد-الثنائية-binary-numbers",text:"الشريحة 35: الأعداد الثنائية (Binary Numbers)"},{depth:2,id:"الشريحة-36-الأعداد-في-بايثون",text:"الشريحة 36: الأعداد في بايثون"},{depth:2,id:"الشريحة-37-دافعنا-احتفظ-بهذا-في-ذهنك-للشرائح-القليلة-التالية",text:"الشريحة 37: دافعنا — احتفظ بهذا في ذهنك للشرائح القليلة التالية"},{depth:2,id:"الشريحة-38-الفكرة-الكبرى",text:"الشريحة 38: الفكرة الكبرى"},{depth:2,id:"الشريحة-39-نظرة-أقرب-على-الأعداد-العشرية",text:"الشريحة 39: نظرة أقرب على الأعداد العشرية"},{depth:2,id:"الشريحة-40-تمثيل-الفاصلة-العائمة",text:"الشريحة 40: تمثيل الفاصلة العائمة"},{depth:2,id:"الشريحة-41-لماذا-الثنائية-التنفيذ-العتادي",text:"الشريحة 41: لماذا الثنائية؟ — التنفيذ العتادي"},{depth:2,id:"الشريحة-42-الأعداد-الثنائية",text:"الشريحة 42: الأعداد الثنائية"},{depth:2,id:"الشريحة-43-تحويل-عدد-صحيح-عشري-إلى-ثنائي",text:"الشريحة 43: تحويل عدد صحيح عشري إلى ثنائي"},{depth:2,id:"الشريحة-44-تنفيذ-ذلك-في-بايثون-للأعداد-الموجبة",text:"الشريحة 44: تنفيذ ذلك في بايثون للأعداد الموجبة"},{depth:2,id:"الشريحة-45-تنفيذ-ذلك-في-بايثون-مع-معالجة-الأعداد-السالبة",text:"الشريحة 45: تنفيذ ذلك في بايثون مع معالجة الأعداد السالبة"},{depth:2,id:"الشريحة-46-ملخص",text:"الشريحة 46: ملخص"},{depth:2,id:"الشريحة-47-بيانات-mit-opencourseware",text:"الشريحة 47: بيانات MIT OpenCourseWare"}],e=`<h1>المحاضرة 4: التكرار على السلاسل النصية والتخمين والاختبار والبحث الثنائي (Loops Over Strings, Guess-and-Check, Binary)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>المادة الأصلية: <strong>آنا بيل (Ana Bell)</strong>، <strong>MIT OpenCourseWare (MIT OCW)</strong>، معهد ماساتشوستس للتكنولوجيا، مقرر <strong>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python</strong>، <strong>خريف 2022 (Fall 2022)</strong>.</p>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-4-loops-over-strings-guess-and-check-binary/">صفحة المحاضرة الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec04_pdf/">صفحة الشرائح الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec04.pdf">ملف الشرائح الأصلي، PDF</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec04_code.py">ملف شيفرة المحاضرة الأصلي</a>.</li>
+</ul>
+<p>هذه ترجمة وتكييف عربي غير رسمي وفق <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">رخصة CC BY-NC-SA 4.0: النسبة–غير التجاري–المشاركة بالمثل</a>، ولا تعني اعتمادًا أو تأييدًا من MIT أو MIT OCW. <a href="https://ocw.mit.edu/terms/">شروط الاستخدام والاستشهاد</a>.</p>
+<p><strong>منهج الترجمة:</strong> لكل صفحة في ملف الشرائح عنوان مستقل ورقم مطابق. نُقلت الأشكال المتكرّرة إلى جداول تحافظ على تسلسلها. الشيفرة محفوظة بالإنجليزية. لم تُضمَّن صور أو صفحات PDF. الصورة في الشريحة 8 مستثناة صراحةً من رخصة المصدر (مصدرها غير معروف) فحُذفت مع الإشارة إلى موضعها.</p>
+<h2 id="الشريحة-1-التكرار-على-السلاسل-النصية-والتخمين-والاختبار-والثنائية">الشريحة 1: التكرار على السلاسل النصية، والتخمين والاختبار، والثنائية</h2>
+<p>(LOOPS OVER STRINGS, GUESS-and-CHECK, BINARY)</p>
+<p>(نزّل الشرائح وملفات <code>.py</code> لمتابعة الشرح).</p>
+<p>6.100L، المحاضرة 4 — آنا بيل (Ana Bell).</p>
+<h2 id="الشريحة-2-في-المرة-الماضية">الشريحة 2: في المرة الماضية</h2>
+<ul>
+<li>آليات التكرار (Looping Mechanisms):
+<ul>
+<li>حلقات <code>while</code> وحلقات <code>for</code>.</li>
+</ul>
+</li>
+<li>حلقات <code>while</code>:
+<ul>
+<li>تكرّر ما دام الشرط صحيحًا.</li>
+<li>يجب التأكد من عدم الدخول في حلقة لانهائية (Infinite Loop).</li>
+</ul>
+</li>
+<li>حلقات <code>for</code>:
+<ul>
+<li>يأخذ متغيّر الحلقة (Loop Variable) القيم في تسلسل واحدًا تلو الآخر.</li>
+<li>يمكنها المرور على نطاقات من الأعداد (Ranges of Numbers).</li>
+<li>ولسوف نرى قريبًا أشياء أخرى كثيرة يسهل المرور عليها بالتكرار.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-3-الأمر-break">الشريحة 3: الأمر <code>break</code></h2>
+<ul>
+<li>يخرج فورًا من أي حلقة هو فيها.</li>
+<li>يتخطّى بقية التعابير في كتلة الشيفرة.</li>
+<li>يخرج من <strong>الحلقة الداخلية فقط</strong> (Innermost Loop)!</li>
+</ul>
+<pre><code class="language-text">while &lt;condition_1&gt;:
+    while &lt;condition_2&gt;:
+        &lt;expression_a&gt;
+        break
+        &lt;expression_b&gt;
+    &lt;expression_c&gt;
+</code></pre>
+<h2 id="الشريحة-4-الأمر-break">الشريحة 4: الأمر <code>break</code></h2>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>, <span class="hljs-number">11</span>, <span class="hljs-number">2</span>):
+    mysum += i
+    <span class="hljs-keyword">if</span> mysum == <span class="hljs-number">5</span>:
+        <span class="hljs-keyword">break</span>
+    mysum += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<ul>
+<li>ماذا يحدث في هذا البرنامج؟</li>
+<li>رابط Python Tutor.</li>
+</ul>
+<h2 id="الشريحة-5-جرب-بنفسك">الشريحة 5: جرّب بنفسك!</h2>
+<ul>
+<li>اكتب شيفرة تمرّر حلقة <code>for</code> على نطاق ما وتطبع كم عددًا زوجيًّا يوجد في ذلك النطاق. جرّب مع:
+<ul>
+<li><code>range(5)</code></li>
+<li><code>range(10)</code></li>
+<li><code>range(2,9,3)</code></li>
+<li><code>range(-4,6,2)</code></li>
+<li><code>range(5,6)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-6-السلاسل-النصية-والتكرار">الشريحة 6: السلاسل النصية والتكرار</h2>
+<ul>
+<li>شيفرة للتحقق من وجود الحرف <code>i</code> أو <code>u</code> في سلسلة نصية.</li>
+<li>الطرق الثلاث تفعل الشيء نفسه:</li>
+</ul>
+<pre><code class="language-python">s = <span class="hljs-string">&quot;demo loops - fruit loops&quot;</span>
+<span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+    <span class="hljs-keyword">if</span> s[index] == <span class="hljs-string">&#x27;i&#x27;</span> <span class="hljs-keyword">or</span> s[index] == <span class="hljs-string">&#x27;u&#x27;</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;There is an i or u&quot;</span>)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> s:
+    <span class="hljs-keyword">if</span> char == <span class="hljs-string">&#x27;i&#x27;</span> <span class="hljs-keyword">or</span> char == <span class="hljs-string">&#x27;u&#x27;</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;There is an i or u&quot;</span>)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> s:
+    <span class="hljs-keyword">if</span> char <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;iu&#x27;</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;There is an i or u&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-7-الفكرة-الكبرى">الشريحة 7: الفكرة الكبرى</h2>
+<p>تسلسل القيم في حلقة <code>for</code> ليس محدودًا بالأعداد.</p>
+<h2 id="الشريحة-8-cheerleaders-الروبوتات">الشريحة 8: cheerleaders الروبوتات</h2>
+<p>(ROBOT CHEERLEADERS)</p>
+<p><strong>ملاحظة المترجم:</strong> محتوى هذه الشريحة صورة مصدرها غير معروف وجميع الحقوق محفوظة، وهي مستثناة من رخصة CC الخاصة بالمصدر؛ لذلك حُذفت الصورة ولم تُستعَض عنها.</p>
+<h2 id="الشريحة-9-جرب-بنفسك">الشريحة 9: جرّب بنفسك!</h2>
+<ul>
+<li>افترض أنك أُعطيت سلسلة نصية من حروف صغيرة في المتغيّر <code>s</code>. عدّ كم حرفًا فريدًا (Unique) يوجد في السلسلة. مثال: إذا كانت <code>s = &quot;abca&quot;</code> فتطبع شيفرتك 3.</li>
+<li><strong>تلميح:</strong>
+<ul>
+<li>مرّ على كل محرف في <code>s</code>.</li>
+<li>تتبَّع المحارف التي رأيتها في متغيّر سلسلة نصية.</li>
+<li>أضف محارف من <code>s</code> إلى متغيّر <code>seen</code> إذا لم تكن موجودة بالفعل في ذلك المتغيّر.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-10-ملخص-ما-مر-حتى-الآن">الشريحة 10: ملخص ما مرّ حتى الآن</h2>
+<ul>
+<li>الكائنات لها أنواع.</li>
+<li>التعابير تُقيَّم إلى قيمة واحدة، وتُربط باسم متغيّر.</li>
+<li>التفريع (Branching): <code>if</code> و<code>else</code> و<code>elif</code>.
+<ul>
+<li>ينفّذ البرنامج مجموعة شيفرة أو مجموعة أخرى.</li>
+</ul>
+</li>
+<li>آليات التكرار (Looping Mechanisms): حلقات <code>while</code> وحلقات <code>for</code>.
+<ul>
+<li>تُنفَّذ الشيفرة تكرارًا ما دام شرط ما صحيحًا.</li>
+<li>تُنفَّذ الشيفرة تكرارًا لكل القيم في تسلسل.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-11-هذا-كل-ما-تحتاجه-لتنفيذ-الخوارزميات">الشريحة 11: هذا كل ما تحتاجه لتنفيذ الخوارزميات</h2>
+<p>(THAT IS ALL YOU NEED TO IMPLEMENT ALGORITHMS)</p>
+<h2 id="الشريحة-12-التخمين-والاختبار-guess-and-check">الشريحة 12: التخمين والاختبار (GUESS-and-CHECK)</h2>
+<p>(GUESS-and-CHECK)</p>
+<h2 id="الشريحة-13-التخمين-والاختبار">الشريحة 13: التخمين والاختبار</h2>
+<ul>
+<li>تُسمَّى العملية بالتعداد الشامل (Exhaustive Enumeration).</li>
+<li>ينطبق على مسألة يكون فيها:
+<ul>
+<li>بإمكانك تخمين قيمة للحل.</li>
+<li>بإمكانك التحقق مما إذا كان الحل صحيحًا.</li>
+<li>ويمكنك المواصلة في التخمين حتى:
+<ul>
+<li>تجد الحل، أو</li>
+<li>تكون قد جرّبت كل القيم.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>مخطّط الانسياب (Flowchart):</p>
+<pre><code class="language-text">        Initial guess
+             ↓
+    Is your guess correct?
+        yes → done
+        no  ↓
+Choose the next guess  (Be systematic)
+             ↓
+      (back to guess)
+</code></pre>
+<h2 id="الشريحة-14-التخمين-والاختبار-الجذر-التربيعي-square-root">الشريحة 14: التخمين والاختبار — الجذر التربيعي (Square Root)</h2>
+<ul>
+<li>الفكرة الأساسية:
+<ul>
+<li>معطى عدد صحيح، لنسمّه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>، نريد أن نعرف إن كان هناك عدد صحيح آخر هو جذره التربيعي.</li>
+<li>ابدأ بتخمين وتحقق إن كان الجواب الصحيح.</li>
+</ul>
+</li>
+<li>القيم المفحوصة في المخطط: 0، 1، 2، 3، 4، 5، 6، 7، 8، 9، 10.</li>
+</ul>
+<h2 id="الشريحة-15-التخمين-والاختبار-الجذر-التربيعي">الشريحة 15: التخمين والاختبار — الجذر التربيعي</h2>
+<ul>
+<li>الفكرة الأساسية نفسها:
+<ul>
+<li>ابدأ بتخمين وتحقق إن كان الجواب الصحيح.</li>
+<li>لكي تكون <strong>منهجيًّا</strong> (Be systematic)، ابدأ بـ <code>guess = 0</code>، ثم 1، ثم 2، وهكذا.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-16-التخمين-والاختبار-الجذر-التربيعي">الشريحة 16: التخمين والاختبار — الجذر التربيعي</h2>
+<ul>
+<li>
+<p>الفكرة الأساسية نفسها.</p>
+</li>
+<li>
+<p>إذا كان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> مربعًا كاملًا (Perfect Square)، فسنجد جذره في النهاية ويمكننا التوقف (انظر مربع التخمين).</p>
+</li>
+<li>
+<p>مثال في المخطط: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">x = 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>، والتخمينات من 0 إلى 10.</p>
+</li>
+</ul>
+<h2 id="الشريحة-17-التخمين-والاختبار-الجذر-التربيعي">الشريحة 17: التخمين والاختبار — الجذر التربيعي</h2>
+<ul>
+<li>
+<p>الفكرة الأساسية نفسها.</p>
+</li>
+<li>
+<p><strong>ولكن ماذا لو لم يكن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> مربعًا كاملًا؟</strong></p>
+<ul>
+<li>نحتاج إلى معرفة متى نتوقف.</li>
+<li>استخدم الجبر (Algebra): إذا كان مربع التخمين أكبر من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>، فيمكننا التوقف.</li>
+</ul>
+</li>
+<li>
+<p>مثال في المخطط: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>517</mn></mrow><annotation encoding="application/x-tex">x = 517</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">517</span></span></span></span>، والتخمينات من 0 إلى 10.</p>
+</li>
+</ul>
+<h2 id="الشريحة-18-التخمين-والاختبار-الجذر-التربيعي-بحلقة-while">الشريحة 18: التخمين والاختبار — الجذر التربيعي بحلقة <code>while</code></h2>
+<pre><code class="language-python">guess = <span class="hljs-number">0</span>
+x = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter an integer: &quot;</span>))
+<span class="hljs-keyword">while</span> guess**<span class="hljs-number">2</span> &lt; x:
+    guess = guess + <span class="hljs-number">1</span>
+<span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> == x:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Square root of&quot;</span>, x, <span class="hljs-string">&quot;is&quot;</span>, guess)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(x, <span class="hljs-string">&quot;is not a perfect square&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-19-التخمين-والاختبار-الجذر-التربيعي">الشريحة 19: التخمين والاختبار — الجذر التربيعي</h2>
+<ul>
+<li>
+<p>هل يعمل هذا مع أي قيمة عددية صحيحة لـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>؟</p>
+</li>
+<li>
+<p>ماذا لو كان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> سالبًا؟</p>
+<ul>
+<li>تنتهي حلقة <code>while</code> فورًا.</li>
+<li>يمكن التحقق من وجود مدخل سالب ومعالجته بطريقة مختلفة.</li>
+</ul>
+</li>
+<li>
+<p>مثال في المخطط: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">x = -2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">2</span></span></span></span>، والتخمينات من -1 إلى 8.</p>
+</li>
+</ul>
+<h2 id="الشريحة-20-التخمين-والاختبار-الجذر-التربيعي-بحلقة-while">الشريحة 20: التخمين والاختبار — الجذر التربيعي بحلقة <code>while</code></h2>
+<pre><code class="language-python">guess = <span class="hljs-number">0</span>
+neg_flag = <span class="hljs-literal">False</span>
+x = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter a positive integer: &quot;</span>))
+<span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span>:
+    neg_flag = <span class="hljs-literal">True</span>
+<span class="hljs-keyword">while</span> guess**<span class="hljs-number">2</span> &lt; x:
+    guess = guess + <span class="hljs-number">1</span>
+<span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> == x:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Square root of&quot;</span>, x, <span class="hljs-string">&quot;is&quot;</span>, guess)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(x, <span class="hljs-string">&quot;is not a perfect square&quot;</span>)
+<span class="hljs-keyword">if</span> neg_flag:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Just checking... did you mean&quot;</span>, -x, <span class="hljs-string">&quot;?&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-21-الفكرة-الكبرى">الشريحة 21: الفكرة الكبرى</h2>
+<p>التخمين والاختبار لا يستطيع اختبار عدد لا نهائي من القيم. <strong>عليك التوقف عند نقطة ما!</strong></p>
+<h2 id="الشريحة-22-مقارنة-التخمين-والاختبار">الشريحة 22: مقارنة التخمين والاختبار</h2>
+<table>
+<thead>
+<tr>
+<th>الخطوة</th>
+<th><code>while</code> loop</th>
+<th><code>for</code> loop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>التخمين الأوّلي</td>
+<td>Initial guess</td>
+<td>— لا شيء هنا</td>
+</tr>
+<tr>
+<td>هل تخمينك صحيح؟</td>
+<td>Is your guess correct?</td>
+<td>Check if the guess is correct</td>
+</tr>
+<tr>
+<td>اختر التخمين التالي (كن منهجيًّا)</td>
+<td>Choose next guess (Be systematic)</td>
+<td>Sequentially go through all possible guesses</td>
+</tr>
+<tr>
+<td>—</td>
+<td>لا</td>
+<td>نعم</td>
+</tr>
+<tr>
+<td>—</td>
+<td>كسر الحلقة، انتهيت (Break the loop, you’re done)</td>
+<td>مررت على كل القيم في التسلسل (Went through all vals in sequence)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+<td>لا يوجد حل (Did not find a solution)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+<td>ما زالت هناك قيم (Still more vals in sequence)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-23-جرب-بنفسك">الشريحة 23: جرّب بنفسك!</h2>
+<ul>
+<li>ضع عددًا كعدد سريّ (Secret Number).</li>
+<li>اكتب برنامجًا يمرّ على كل الأعداد من 1 إلى 10 ويطبع القيمة السريّة إذا كانت في هذا النطاق. إن لم يُعثر عليها فلا يطبع شيئًا.</li>
+<li>كيف يبدو البرنامج إن غيّرت الشرط إلى: إن لم يُعثر عليها، اطبع أنه لم يعثر عليها.</li>
+</ul>
+<h2 id="الشريحة-24-جرب-بنفسك">الشريحة 24: جرّب بنفسك!</h2>
+<ul>
+<li>قارن بين الشيفرتين اللتين:
+<ul>
+<li>تضعان عددًا كعدد سريّ.</li>
+<li>تمرّان على كل الأعداد من 1 إلى 10 وتطبعان القيمة السريّة إذا كانت في هذا النطاق.</li>
+</ul>
+</li>
+<li>الأولى: إن لم يُعثر عليها لا يطبع شيئًا.</li>
+<li>الثانية: إن لم يُعثر عليها، يطبع أنه لم يعثر عليها.</li>
+<li><strong>الجواب:</strong></li>
+</ul>
+<pre><code class="language-python">secret = <span class="hljs-number">7</span>
+found = <span class="hljs-literal">False</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">11</span>):
+    <span class="hljs-keyword">if</span> i == secret:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;yes, it&#x27;s&quot;</span>, i)
+    found = <span class="hljs-literal">True</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> found:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;not found&quot;</span>)
+</code></pre>
+<pre><code class="language-python">secret = <span class="hljs-number">7</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">11</span>):
+    <span class="hljs-keyword">if</span> i == secret:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;yes, it&#x27;s&quot;</span>, i)
+</code></pre>
+<h2 id="الشريحة-25-الفكرة-الكبرى">الشريحة 25: الفكرة الكبرى</h2>
+<p>يمكن استخدام القيم البوليانية كإشارات (Signals) إلى أن شيئًا قد حدث. ونسمّيها أعلامًا بوليانية (Boolean Flags).</p>
+<h2 id="الشريحة-26-while-loop-أم-for-loop">الشريحة 26: <code>while</code> loop أم <code>for</code> loop؟</h2>
+<ul>
+<li>رأينا أن الشيفرة تبدو أنظف عند المرور على تسلسلات من القيم (أي باستخدام حلقة <code>for</code>).
+<ul>
+<li>لا تضبط العنصر المُكرَّر (Iterant) بنفسك كما في حلقة <code>while</code>.</li>
+<li>احتمال إدخال أخطاء أقل.</li>
+</ul>
+</li>
+<li>خذ مثالًا يستخدم حلقة <code>for</code> مع نطاق صريح من القيم.</li>
+</ul>
+<h2 id="الشريحة-27-التخمين-والاختبار-الجذر-التكعيبي-مكعبات-موجبة">الشريحة 27: التخمين والاختبار — الجذر التكعيبي: مكعّبات موجبة</h2>
+<pre><code class="language-python">cube = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter an integer: &quot;</span>))
+<span class="hljs-keyword">for</span> guess <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cube+<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">3</span> == cube:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Cube root of&quot;</span>, cube, <span class="hljs-string">&quot;is&quot;</span>, guess)
+</code></pre>
+<h2 id="الشريحة-28-التخمين-والاختبار-الجذر-التكعيبي-مكعبات-موجبة-وسالبة">الشريحة 28: التخمين والاختبار — الجذر التكعيبي: مكعّبات موجبة وسالبة</h2>
+<pre><code class="language-python">cube = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter an integer: &quot;</span>))
+<span class="hljs-keyword">for</span> guess <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">abs</span>(cube)+<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">3</span> == <span class="hljs-built_in">abs</span>(cube):
+        <span class="hljs-keyword">if</span> cube &lt; <span class="hljs-number">0</span>:
+            guess = -guess
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Cube root of &quot;</span>+<span class="hljs-built_in">str</span>(cube)+<span class="hljs-string">&quot; is &quot;</span>+<span class="hljs-built_in">str</span>(guess))
+</code></pre>
+<h2 id="الشريحة-29-التخمين-والاختبار-الجذر-التكعيبي-أسرع-قليلا">الشريحة 29: التخمين والاختبار — الجذر التكعيبي: أسرع قليلًا</h2>
+<pre><code class="language-python">cube = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter an integer: &quot;</span>))
+<span class="hljs-keyword">for</span> guess <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">abs</span>(cube)+<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">3</span> &gt;= <span class="hljs-built_in">abs</span>(cube):
+        <span class="hljs-keyword">break</span>
+<span class="hljs-keyword">if</span> guess**<span class="hljs-number">3</span> != <span class="hljs-built_in">abs</span>(cube):
+    <span class="hljs-built_in">print</span>(cube, <span class="hljs-string">&quot;is not a perfect cube&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-keyword">if</span> cube &lt; <span class="hljs-number">0</span>:
+        guess = -guess
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Cube root of &quot;</span>+<span class="hljs-built_in">str</span>(cube)+<span class="hljs-string">&quot; is &quot;</span>+<span class="hljs-built_in">str</span>(guess))
+</code></pre>
+<h2 id="الشريحة-30-مثال-آخر">الشريحة 30: مثال آخر</h2>
+<ul>
+<li>تذكّر مسائل الكلمات (Word Problems) من طفولتك؟</li>
+<li>مثال:
+<ul>
+<li>أليزا وبن وسيندي يبيعون تذاكر لجمع تبرّعات.</li>
+<li>بن يبيع عددًا أقل بـ 2 من أليزا.</li>
+<li>سيندي تبيع ضعف ما تبيعه أليزا.</li>
+<li>بيع الثلاثة 10 تذاكر في المجموع.</li>
+<li>كم باعت أليزا؟</li>
+</ul>
+</li>
+<li>يمكن حلّها جبريًّا، لكن يمكننا أيضًا استخدام التخمين والاختبار.</li>
+</ul>
+<h2 id="الشريحة-31-التخمين-والاختبار-مع-مسائل-الكلمات">الشريحة 31: التخمين والاختبار مع مسائل الكلمات</h2>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> alyssa <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">11</span>):
+    <span class="hljs-keyword">for</span> ben <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">11</span>):
+        <span class="hljs-keyword">for</span> cindy <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">11</span>):
+            total = (alyssa + ben + cindy == <span class="hljs-number">10</span>)
+            two_less = (ben == alyssa-<span class="hljs-number">2</span>)
+            twice = (cindy == <span class="hljs-number">2</span>*alyssa)
+            <span class="hljs-keyword">if</span> total <span class="hljs-keyword">and</span> two_less <span class="hljs-keyword">and</span> twice:
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Alyssa sold <span class="hljs-subst">{alyssa}</span> tickets&quot;</span>)
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Ben sold <span class="hljs-subst">{ben}</span> tickets&quot;</span>)
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Cindy sold <span class="hljs-subst">{cindy}</span> tickets&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-32-مثال-بأعداد-أكبر">الشريحة 32: مثال بأعداد أكبر</h2>
+<ul>
+<li>مع أعداد أكبر، يصبح تداخل الحلقات بطيئًا!</li>
+<li>مثال:
+<ul>
+<li>أليزا وبن وسيندي يبيعون تذاكر لجمع تبرّعات.</li>
+<li>بن يبيع عددًا أقل بـ 20 من أليزا.</li>
+<li>سيندي تبيع ضعف ما تبيعه أليزا.</li>
+<li>بيع الثلاثة 1000 تذكرة في المجموع.</li>
+<li>كم باعت أليزا؟</li>
+</ul>
+</li>
+<li>الشيفرة السابقة لن تنتهي في وقت معقول.</li>
+<li>بدلًا من ذلك، مرّ على متغيّر واحد وكتّب المعادلات مباشرة.</li>
+</ul>
+<h2 id="الشريحة-33-حل-أكثر-كفاءة">الشريحة 33: حل أكثر كفاءة</h2>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> alyssa <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1001</span>):
+    ben = <span class="hljs-built_in">max</span>(alyssa - <span class="hljs-number">20</span>, <span class="hljs-number">0</span>)
+    cindy = alyssa * <span class="hljs-number">2</span>
+    <span class="hljs-keyword">if</span> ben + cindy + alyssa == <span class="hljs-number">1000</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Alyssa sold &quot;</span> + <span class="hljs-built_in">str</span>(alyssa) + <span class="hljs-string">&quot; tickets&quot;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Ben sold &quot;</span> + <span class="hljs-built_in">str</span>(ben) + <span class="hljs-string">&quot; tickets&quot;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Cindy sold &quot;</span> + <span class="hljs-built_in">str</span>(cindy) + <span class="hljs-string">&quot; tickets&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-34-الفكرة-الكبرى">الشريحة 34: الفكرة الكبرى</h2>
+<p>يمكنك تطبيق الحوسبة (Computation) على مسائل كثيرة!</p>
+<h2 id="الشريحة-35-الأعداد-الثنائية-binary-numbers">الشريحة 35: الأعداد الثنائية (Binary Numbers)</h2>
+<p>(BINARY NUMBERS)</p>
+<h2 id="الشريحة-36-الأعداد-في-بايثون">الشريحة 36: الأعداد في بايثون</h2>
+<ul>
+<li><code>int</code>: أعداد صحيحة، مثل التي تعلّمتها في المدرسة الابتدائية.</li>
+<li><code>float</code>: أعداد حقيقية، مثل التي تعلّمتها في المرحلة الإعدادية.</li>
+</ul>
+<h2 id="الشريحة-37-دافعنا-احتفظ-بهذا-في-ذهنك-للشرائح-القليلة-التالية">الشريحة 37: دافعنا — احتفظ بهذا في ذهنك للشرائح القليلة التالية</h2>
+<pre><code class="language-python">x = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    x += <span class="hljs-number">0.1</span>
+<span class="hljs-built_in">print</span>(x == <span class="hljs-number">1</span>)
+<span class="hljs-built_in">print</span>(x, <span class="hljs-string">&#x27;==&#x27;</span>, <span class="hljs-number">10</span>*<span class="hljs-number">0.1</span>)
+</code></pre>
+<h2 id="الشريحة-38-الفكرة-الكبرى">الشريحة 38: الفكرة الكبرى</h2>
+<p>العمليات على بعض الأعداد العشرية (floats) تُدخل خطأً صغيرًا جدًّا. والخطأ الصغير قد يكون له أثر كبير إذا أُجريت العمليات مرات عديدة!</p>
+<h2 id="الشريحة-39-نظرة-أقرب-على-الأعداد-العشرية">الشريحة 39: نظرة أقرب على الأعداد العشرية</h2>
+<ul>
+<li>بايثون (وكل لغة برمجة أخرى) تستخدم «الفاصلة العائمة» (Floating Point) لتقريب الأعداد الحقيقية.</li>
+<li>مصطلح «الفاصلة العائمة» يشير إلى الطريقة التي تُخزَّن بها هذه الأعداد في الحاسوب.</li>
+<li>التقريب (Approximation) لا يهم عادةً…</li>
+<li><strong>لكنه يهمّنا نحن!</strong></li>
+<li>لنرَ لماذا…</li>
+</ul>
+<h2 id="الشريحة-40-تمثيل-الفاصلة-العائمة">الشريحة 40: تمثيل الفاصلة العائمة</h2>
+<ul>
+<li>يعتمد على عتاد الحاسوب، لا على تنفيذ لغة البرمجة.</li>
+<li>أشياء أساسية يجب فهمها:
+<ul>
+<li>الأعداد (وكل شيء آخر) تُمثَّل كتسلسل من البتات (Bits) — أي 0 أو 1.</li>
+<li>حين نكتب الأعداد، تستخدم الرموز أساس 10.</li>
+<li>و<code>0.1</code> يمثّل العدد الكسري <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>10</mn></mrow><annotation encoding="application/x-tex">1/10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/10</span></span></span></span>.</li>
+</ul>
+</li>
+<li>هذا يسبّب تنافرًا معرفيًّا (Cognitive Dissonance) — وسيؤثّر في كيفية كتابة شيفرتنا.</li>
+</ul>
+<h2 id="الشريحة-41-لماذا-الثنائية-التنفيذ-العتادي">الشريحة 41: لماذا الثنائية؟ — التنفيذ العتادي</h2>
+<ul>
+<li>سهلة التنفيذ في العتاد: ابنِ مكوّنات يمكن أن تكون في حالة واحدة من حالتين.</li>
+<li>عتاد الحاسوب مبنيّ حول طرق تستطيع تخزين المعلومات بكفاءة كـ 0 أو 1 وإجراء عمليات حسابية بهذا التمثيل.
+<ul>
+<li>الجهد (Voltage) «عالٍ» أو «منخفض».</li>
+<li>الدوران المغناطيسي (Magnetic Spin) «لأعلى» أو «لأسفل».</li>
+</ul>
+</li>
+<li>مناسبة للعمليات الحسابية على الأعداد الصحيحة، لكن ماذا عن الأعداد ذات الأجزاء الكسرية (floats)؟</li>
+</ul>
+<h2 id="الشريحة-42-الأعداد-الثنائية">الشريحة 42: الأعداد الثنائية</h2>
+<ul>
+<li>التمثيل في الأساس 10 لعدد صحيح:
+<ul>
+<li>مجموع لقوى 10، مضروبة في أعداد صحيحة من 0 إلى 9.</li>
+</ul>
+</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>1507</mn><mo>=</mo><mn>1</mn><mo>×</mo><msup><mn>10</mn><mn>3</mn></msup><mo>+</mo><mn>5</mn><mo>×</mo><msup><mn>10</mn><mn>2</mn></msup><mo>+</mo><mn>0</mn><mo>×</mo><msup><mn>10</mn><mn>1</mn></msup><mo>+</mo><mn>7</mn><mo>×</mo><msup><mn>10</mn><mn>0</mn></msup><mo>=</mo><mn>1000</mn><mo>+</mo><mn>500</mn><mo>+</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">1507 = 1\\times10^3 + 5\\times10^2 + 0\\times10^1 + 7\\times10^0 = 1000 + 500 + 7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1507</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">7</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8641em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1000</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">500</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span></span>
+<ul>
+<li>التمثيل الثنائي هو الفكرة نفسها في الأساس 2:
+<ul>
+<li>مجموع لقوى 2، مضروبة في أعداد صحيحة من 0 إلى 1.</li>
+</ul>
+</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mn>1507</mn><mn>10</mn></msub><mo>=</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>10</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>8</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>7</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>6</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>5</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">1507_{10} = 1\\times2^{10} + 1\\times2^8 + 1\\times2^7 + 1\\times2^6 + 1\\times2^5 + 1\\times2^1 + 1\\times2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">150</span><span class="mord"><span class="mord">7</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8641em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><mn>1024</mn><mo>+</mo><mn>256</mn><mo>+</mo><mn>128</mn><mo>+</mo><mn>64</mn><mo>+</mo><mn>32</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">= 1024 + 256 + 128 + 64 + 32 + 2 + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1024</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">256</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">128</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>=</mo><msub><mn>10111100011</mn><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">= 10111100011_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">1011110001</span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>
+<h2 id="الشريحة-43-تحويل-عدد-صحيح-عشري-إلى-ثنائي">الشريحة 43: تحويل عدد صحيح عشري إلى ثنائي</h2>
+<ul>
+<li>ندخل الأعداد بالنظام العشري، والحاسوب يحتاج إلى تحويلها إلى النظام الثنائي.</li>
+<li>خذ مثال <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><msub><mn>19</mn><mn>10</mn></msub><mo>=</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>4</mn></msup><mo>+</mo><mn>0</mn><mo>×</mo><msup><mn>2</mn><mn>3</mn></msup><mo>+</mo><mn>0</mn><mo>×</mo><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><mn>1</mn><mo>×</mo><msup><mn>2</mn><mn>0</mn></msup><mo>=</mo><msub><mn>10011</mn><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x = 19_{10} = 1\\times2^4 + 0\\times2^3 + 0\\times2^2 + 1\\times2^1 + 1\\times2^0 = 10011_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">1</span><span class="mord"><span class="mord">9</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">1001</span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</li>
+<li>إذا أخذنا باقي قسمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> على 2، أي <code>x%2</code>، حصلت على <strong>آخر بت ثنائي</strong>.</li>
+<li>وإذا قسمنا <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> قسمة صحيحة على 2، أي <code>x//2</code>، تحوّلت كل البتات إلى اليمين (Shifted Right) واحدًا.
+<ul>
+<li><code>x//2 = 1001_2</code>.</li>
+</ul>
+</li>
+<li>واصل القسومات المتتالية؛ الآن يعطي الباقي البت التالي، وهكذا.</li>
+<li>لنحوّل إلى الصورة الثنائية.</li>
+</ul>
+<h2 id="الشريحة-44-تنفيذ-ذلك-في-بايثون-للأعداد-الموجبة">الشريحة 44: تنفيذ ذلك في بايثون للأعداد الموجبة</h2>
+<pre><code class="language-python">result = <span class="hljs-string">&#x27;&#x27;</span>
+<span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:
+    result = <span class="hljs-string">&#x27;0&#x27;</span>
+<span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:
+    result = <span class="hljs-built_in">str</span>(num%<span class="hljs-number">2</span>) + result
+    num = num//<span class="hljs-number">2</span>
+</code></pre>
+<ul>
+<li>رابط Python Tutor.</li>
+</ul>
+<h2 id="الشريحة-45-تنفيذ-ذلك-في-بايثون-مع-معالجة-الأعداد-السالبة">الشريحة 45: تنفيذ ذلك في بايثون مع معالجة الأعداد السالبة</h2>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> num &lt; <span class="hljs-number">0</span>:
+    is_neg = <span class="hljs-literal">True</span>
+    num = <span class="hljs-built_in">abs</span>(num)
+<span class="hljs-keyword">else</span>:
+    is_neg = <span class="hljs-literal">False</span>
+
+result = <span class="hljs-string">&#x27;&#x27;</span>
+<span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:
+    result = <span class="hljs-string">&#x27;0&#x27;</span>
+
+<span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:
+    result = <span class="hljs-built_in">str</span>(num%<span class="hljs-number">2</span>) + result
+    num = num//<span class="hljs-number">2</span>
+
+<span class="hljs-keyword">if</span> is_neg:
+    result = <span class="hljs-string">&#x27;-&#x27;</span> + result
+</code></pre>
+<h2 id="الشريحة-46-ملخص">الشريحة 46: ملخص</h2>
+<ul>
+<li>الحلقات يمكنها المرور على أي تسلسل من القيم:
+<ul>
+<li><code>range</code> للأعداد.</li>
+<li>سلسلة نصية (String).</li>
+</ul>
+</li>
+<li>التخمين والاختبار يوفّر خوارزمية بسيطة لحل المسائل:
+<ul>
+<li>عندما تكون مجموعة الحلول المحتملة قابلة للتعداد، فإن التعداد الشامل مضمون أن ينجح (في النهاية).</li>
+</ul>
+</li>
+<li>الأعداد الثنائية تساعدنا على فهم كيف تعمل الآلة:
+<ul>
+<li>التحويل إلى الثنائي سيساعدنا على فهم كيف تُخزَّن الأعداد العشرية.</li>
+<li>وهذا مهم للخوارزمية التالية التي سنراها.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-47-بيانات-mit-opencourseware">الشريحة 47: بيانات MIT OpenCourseWare</h2>
+<p>MIT OpenCourseWare — https://ocw.mit.edu</p>
+<p>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python.</p>
+<p>خريف 2022.</p>
+<p>للحصول على معلومات عن الاستشهاد بهذه المواد أو شروط استخدامها، تفضّل بزيارة https://ocw.mit.edu/terms.</p>
+`,i={book:s,chapter:a,chapterTitle:n,slug:l,title:p,headings:t,html:e};export{s as book,a as chapter,n as chapterTitle,i as default,t as headings,e as html,l as slug,p as title};

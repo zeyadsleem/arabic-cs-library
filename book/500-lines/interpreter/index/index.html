@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="مفسّر بايثون مكتوب بلغة بايثون — A Python Interpreter Written in Python"/><!----><title>مفسّر بايثون مكتوب بلغة بايثون | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -51,10 +51,7 @@
 <p><em>(هذا الفصل متاح أيضًا بـ<a href="http://qingyunha.github.io/taotao/">الصينية المبسّطة</a>)</em>.</p>
 <h2 id="مقدمة">مقدّمة</h2>
 <p>Byterun هو مفسّر (interpreter) لبايثون مُنفَّذ بلغة بايثون. ومن خلال عملي على Byterun، فوجئت وسُررت بأن البنية الأساسية لمفسّر بايثون تتّسع بسهولة ضمن حدّ خمسمئة سطر. سيقود هذا الفصل عبر بنية المفسّر ويمنحك سياقًا كافيًا لتستكشفه أكثر. الهدف ليس شرح كل ما يُعرف عن المفسّرات—فمثل كثير من مجالات البرمجة وعلوم الحاسوب المثيرة للاهتمام، يمكنك تكريس سنوات لبناء فهم عميق لهذا الموضوع.</p>
-<p>كتب Byterun نيد باتشيلدر وأنا، انطلاقًا من أعمال بول سوارتز. بنيته مشابهة للتنفيذ الأساسي لبايثون، وهو CPython، لذا فإن فهم Byterun سيساعدك على فهم المفسّرات على العموم وعلى مفسّر CPython على الخصوص. (وإن كنت لا تعرف أي نسخة من بايثون تستخدمها، فالأرجح أنها CPython.) ورغم قصر طوله، فإن Byterun قادر على تشغيل معظم برامج بايثون البسيطة[^versions].</p>
-<p>[^versions]: يستند هذا الفصل إلى شيفرة بايت (bytecode) أنتجتها Python 3.5 أو
-ما قبلها، إذ طرأت بعض التغييرات على مواصفة شيفرة البايت في Python
-3.6.</p>
+<p>كتب Byterun نيد باتشيلدر وأنا، انطلاقًا من أعمال بول سوارتز. بنيته مشابهة للتنفيذ الأساسي لبايثون، وهو CPython، لذا فإن فهم Byterun سيساعدك على فهم المفسّرات على العموم وعلى مفسّر CPython على الخصوص. (وإن كنت لا تعرف أي نسخة من بايثون تستخدمها، فالأرجح أنها CPython.) ورغم قصر طوله، فإن Byterun قادر على تشغيل معظم برامج بايثون البسيطة<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
 <h3 id="مفسر-بايثون">مفسّر بايثون</h3>
 <p>قبل أن نبدأ، لنضبط ما نعنيه بعبارة «مفسّر بايثون». يمكن أن تُستخدم كلمة «مفسّر» («interpreter») بطرق مختلفة عند الحديث عن بايثون. فحينًا ما تشير «interpreter» إلى واجهة بايثون التفاعلية (REPL)، أي المطوّر التفاعلي الذي تحصل عليه بكتابة <code>python</code> في سطر الأوامر. وأحيانًا يستخدم الناس «مفسّر بايثون» و«بايثون» بشكل شبه متكافئ للإشارة إلى تنفيذ شيفرة بايثون من البداية إلى النهاية. أما في هذا الفصل، فللكلمة «مفسّر» معنى أضيق: إنه الخطوة الأخيرة في عملية تنفيذ برنامج بايثون.</p>
 <p>قبل أن يتسلّم المفسّر زمام الأمر، تنفّذ بايثون ثلاث خطوات أخرى: التحليل المعجمي، والتحليل النحوي، والترجمة (compiling).وتحوّل هذه الخطوات مجتمعةً شيفرة المصدر التي كتبها المبرمج من أسطر نصية إلى كائنات شيفرة (code objects) ذات بنية منظَّمة تحتوي على تعليمات يستطيع المفسّر فهمها. ومهمة المفسّر هي أخذ كائنات الشيفرة هذه واتباع التعليمات.</p>
@@ -336,8 +333,7 @@
 <p><img src="/arabic-cs-library/images/500-lines/interpreter-1-interpreter_callstack.webp" alt="مكدّس الاستدعاءات"></p>
 <p>في هذه اللحظة، يكون المفسّر في منتصف الاستدعاء والدالة <code>bar</code>. وهناك ثلاثة إطارات على مكدّس الاستدعاءات: واحد لمستوى الوحدة، وواحد للدالة <code>foo</code>، وواحد لـ<code>bar</code> (callstack.) ولمّا تعود <code>bar</code>، يُسقط الإطار المرتبط بها من مكدّس الاستدعاءات ويُطرح بعيدًا.</p>
 <p>يُخبر تعليم شيفرة البايت <code>RETURN_VALUE</code> المفسّر بأن يمرّر قيمة بين الإطارات. وهو أولًا يُسقط القيمة العليا من مكدّس البيانات الخاص بالإطار الأعلى على مكدّس الاستدعاءات. ثم يُسقط الإطار بأكمله من مكدّس الاستدعاءات ويتخلّص منه. وأخيرًا تُدفع القيمة على مكدّس البيانات الخاص بالإطار الذي يليه.</p>
-<p>حين كان نيد باتشيلدر وأنا نعمل على Byterun، كان لدينا خطأ جسيم في تنقيذنا لفترة طويلة. وبدلًا من وجود مكدّس بيانات واحد في كل إطار، كان لدينا مكدّس بيانات واحد فقط على الآلة الافتراضية بأكملها. وكنا لدينا عشرات الاختبارات المؤلَّفة من قصاصات صغيرة من شيفرة بايثون، كنّا ننفّذها عبر Byterun وعبر مفسّر بايثون الحقيقي لنتأكّد من حدوث الشيء نفسه في المفسّرين. وكان كل هذه الاختبارات ينجح تقريبًا. ولم يكن الشيء الوحيد الذي تعذّر تشغيله هو المولّدات (generators). وأخيرًا، وبعد قراءة شيفرة CPython بعناية أكبر، أدركنا الخطأ[^thanks]. وكانت نقل مكدّس بيانات إلى كل إطار هي ما حلّ المشكلة.</p>
-<p>[^thanks]: أشكر Michael Arntzenius على رؤيته الثاقبة بخصوص هذا الخطأ.</p>
+<p>حين كان نيد باتشيلدر وأنا نعمل على Byterun، كان لدينا خطأ جسيم في تنقيذنا لفترة طويلة. وبدلًا من وجود مكدّس بيانات واحد في كل إطار، كان لدينا مكدّس بيانات واحد فقط على الآلة الافتراضية بأكملها. وكنا لدينا عشرات الاختبارات المؤلَّفة من قصاصات صغيرة من شيفرة بايثون، كنّا ننفّذها عبر Byterun وعبر مفسّر بايثون الحقيقي لنتأكّد من حدوث الشيء نفسه في المفسّرين. وكان كل هذه الاختبارات ينجح تقريبًا. ولم يكن الشيء الوحيد الذي تعذّر تشغيله هو المولّدات (generators). وأخيرًا، وبعد قراءة شيفرة CPython بعناية أكبر، أدركنا الخطأ<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. وكانت نقل مكدّس بيانات إلى كل إطار هي ما حلّ المشكلة.</p>
 <p>وعند مراجعة هذا الخطأ، أدهشني قِدر ما كان قليلًا من بايثون يعتمد على وجود مكدّس بيانات مختلف لكل إطار. فمعظم عمليات مفسّر بايثون تنظّف مكدّس البيانات بعناية، لذا فإن كون الإطارات تتشارك المكدّس نفسه لم يكن مهمًّا. وفي المثال أعلاه، حين ينتهي <code>bar</code> من التنفيذ، سيترك مكدّس بياناته فارغًا. وحتى لو كان <code>foo</code> يتشارك المكدّس نفسه، لكانت القيم في موضع أخفض. لكن مع المولّدات، تكمن خاصية أساسية في القدرة على إيقاف إطار مؤقتًا، والعودة إلى إطار آخر، ثم العودة لاحقًا إلى إطار المولّد لتجده في الحالة نفسها تمامًا التي تركته فيها.</p>
 <h2 id="byterun">Byterun</h2>
 <p>لدينا الآن سياق كافٍ عن مفسّر بايثون لنبدأ في فحص Byterun.</p>
@@ -877,13 +873,24 @@ bytecode
 <p>أشجّعك على تفكيك برامجك وتشغيلها باستخدام Byterun. فستصطدم سريعًا بتعليمات لا ينفّذها هذا الإصدار الأقصر من Byterun. ويمكن العثور على التنفيذ الكامل في https://github.com/nedbat/byterun—أو، بقراءة شيفرة <code>ceval.c</code> الخاصة بمفسّر CPython الحقيقي قراءةً متأنّية، يمكنك أن تنفّذه بنفسك!</p>
 <h2 id="شكر-وتقدير">شكر وتقدير</h2>
 <p>أشكر نيد باتشيلدر على إطلاق هذا المشروع وتوجيه مساهماتي، وMichael Arntzenius على مساعدته في تنقيح الشيفرة وتحرير النثر، وليتا مونتوبولي على تعديلاتها، وعلى مجتمع مركز Recurse Center بأكمله على دعمه واهتمامه. وأي أخطاء هي أخطائي أنا.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>يستند هذا الفصل إلى شيفرة بايت (bytecode) أنتجتها Python 3.5 أو
+ما قبلها، إذ طرأت بعض التغييرات على مواصفة شيفرة البايت في Python
+3.6. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>أشكر Michael Arntzenius على رؤيته الثاقبة بخصوص هذا الخطأ. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/image-filters/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">صناعة مرشِّحات الصور الخاصة بك</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/modeller/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مصمّم ثلاثي الأبعاد</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -891,8 +898,8 @@ bytecode
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

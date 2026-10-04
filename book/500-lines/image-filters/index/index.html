@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="صناعة مرشِّحات الصور الخاصة بك — Making Your Own Image Filters"/><!----><title>صناعة مرشِّحات الصور الخاصة بك | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -217,14 +217,11 @@ FFF5B7
 إطلاق إجراء ما باستدعاء <code>redraw()</code>. (وكما ورد في
 توثيق Processing، فلا ينبغي استدعاء <code>draw()</code> صراحةً.)</p>
 <p>صُمّمت Processing لتعمل بشكل جيد في إنشاء الرسوم المتحرّكة، لكن في هذه
-الحالة لا نريد حركة[^noanim]، بل نريد الاستجابة لضغطات المفاتيح. ولمنع
+الحالة لا نريد حركة<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>، بل نريد الاستجابة لضغطات المفاتيح. ولمنع
 الحركة (التي كانت ستُثقل الأداء) سنستدعي
 <a href="http://www.processing.org/reference/noLoop_.html"><code>noLoop()</code></a> من setup. وهذا
 يعني أن <code>draw()</code> لن تُستدعى إلا مباشرة بعد <code>setup()</code>، وكلما
 استدعينا <code>redraw()</code>.</p>
-<p>[^noanim]: لو أردنا إنشاء رسم متحرك لما استدعينا
-<code>noLoop()</code> (أو، لو أردنا بدء الحركة لاحقًا، لاستدعينا <code>loop()</code>).
-وتحدّد <code>frameRate()</code> تكرار الإطارات المتحركة.</p>
 <pre><code class="language-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">WIDTH</span> <span class="hljs-operator">=</span> <span class="hljs-number">360</span>;
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">HEIGHT</span> <span class="hljs-operator">=</span> <span class="hljs-number">240</span>;
 
@@ -254,83 +251,46 @@ FFF5B7
 سنستخدمها (\aosatblref{500l.imagefilters.pimagemethods}).</p>
 <table>
   <tr>
-    <td>`pixels[]`</td>
+    <td><code>pixels[]</code></td>
     <td>مصفوفة تحتوي على لون كل بكسل في الصورة</td>
   </tr>
   <tr>
-    <td>`width`</td>
+    <td><code>width</code></td>
     <td>عرض الصورة بالبكسلات</td>
   </tr>
   <tr>
-    <td>`height`</td>
+    <td><code>height</code></td>
     <td>ارتفاع الصورة بالبكسلات</td>
   </tr>
 </table>
-: \label{500l.imagefilters.pimagefields} حقول PImage
-<latex>
-\begin{table}
-\centering
-{\footnotesize
-\rowcolors{2}{TableOdd}{TableEven}
-\begin{tabular}{ll}
-\hline
-pixels[] & Array containing the color of every pixel in the image \\
-width & Image width in pixels \\
-height & Image height in pixels \\
-\hline
-\end{tabular}
-}
-\caption{PImage fields}
-\label{500l.imagefilters.pimagefields}
-\end{table}
-</latex>
+: <span class="content-anchor" id="500l.imagefilters.pimagefields"></span> حقول PImage
 <table>
   <tr>
-    <td>`loadPixels`</td>
-    <td>يُحمّل بيانات بكسلات الصورة في مصفوفة `pixels[]` الخاصة بها</td>
+    <td><code>loadPixels</code></td>
+    <td>يُحمّل بيانات بكسلات الصورة في مصفوفة <code>pixels[]</code> الخاصة بها</td>
   </tr>
   <tr>
-    <td>`updatePixels`</td>
-    <td>يحدّث الصورة بالبيانات الموجودة في مصفوفة `pixels[]`</td>
+    <td><code>updatePixels</code></td>
+    <td>يحدّث الصورة بالبيانات الموجودة في مصفوفة <code>pixels[]</code></td>
   </tr>
   <tr>
-    <td>`resize`</td>
+    <td><code>resize</code></td>
     <td>يغيّر حجم الصورة إلى عرض وارتفاع جديدين</td>
   </tr>
   <tr>
-    <td>`get`</td>
+    <td><code>get</code></td>
     <td>يقرأ لون أي بكسل أو يلتقط مستطيلًا من البكسلات</td>
   </tr>
   <tr>
-    <td>`set`</td>
+    <td><code>set</code></td>
     <td>يكتب لونًا في أي بكسل أو يكتب صورة في أخرى</td>
   </tr>
   <tr>
-    <td>`save`</td>
+    <td><code>save</code></td>
     <td>يحفظ الصورة في ملف بصيغة TIFF أو TARGA أو PNG أو JPEG</td>
   </tr>
 </table>
-: \label{500l.imagefilters.pimagemethods} دوال PImage
-<latex>
-\begin{table}
-\centering
-{\footnotesize
-\rowcolors{2}{TableOdd}{TableEven}
-\begin{tabular}{ll}
-\hline
-loadPixels & Loads the pixel data for the image into its `pixels[]` array \\
-updatePixels & Updates the image with the data in its `pixels[]` array \\
-resize & Changes the size of an image to a new width and height \\
-get & Reads the color of any pixel or grabs a rectangle of pixels \\
-set & Writes a color to any pixel or writes an image into another \\
-save & Saves the image to a TIFF, TARGA, PNG, or JPEG file \\
-\hline
-\end{tabular}
-}
-\caption{PImage methods}
-\label{500l.imagefilters.pimagemethods}
-\end{table}
-</latex>
+: <span class="content-anchor" id="500l.imagefilters.pimagemethods"></span> دوال PImage
 <h3 id="منتقي-الملفات">منتقي الملفات</h3>
 <p>تتولى Processing معظم عملية اختيار الملف؛ كل ما نحتاجه هو استدعاء
 <a href="http://www.processing.org/reference/selectInput_.html"><code>selectInput()</code></a>، و
@@ -438,12 +398,6 @@ frankfurt (التُقطت في رحلة ربيعية إلى فرانكفورت)
 التي تخيلناها في وقت سابق؟) لاحظ كم تصير الشجرة أكثر خضرة
 عند تطبيق المرشِّح الأحمر.</p>
 <p><img src="/arabic-cs-library/images/500-lines/image-filters-4-frankfurt.webp" alt="Four (Simulated) Seasons in Frankfurt"></p>
-<latex>
-By applying different RGB filters to an image we can make it almost seem like
-the seasons are different depending which colors are filtered out 
-and which are emphasized. (Remember the four-seasons paintings
-we imagined earlier?) 
-</latex>
 <p>كيف نفعل ذلك؟</p>
 <ul>
 <li>
@@ -496,25 +450,7 @@ we imagined earlier?)
     <td>15</td>
   </tr>
 </table>
-: \label{500l.imagefilters.pixelindices} فهارس البكسلات في صورة 4×4
-<latex>
-\begin{table}
-\centering
-{\footnotesize
-\rowcolors{2}{TableOdd}{TableOdd}
-\begin{tabular}{cccc}
-\hline
-0 & 1 & 2 & 3 \\
-4 & 5 & 6 & 7 \\
-8 & 9 & 10 & 11 \\
-12 & 13 & 14 & 15 \\
-\hline
-\end{tabular}
-}
-\caption{Pixel indices for a 4x4 image}
-\label{500l.imagefilters.pixelindices}
-\end{table}
-</latex>
+: <span class="content-anchor" id="500l.imagefilters.pixelindices"></span> فهارس البكسلات في صورة 4×4
 <pre><code class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">applyColorFilter</span><span class="hljs-params">(PApplet applet, IFAImage img, <span class="hljs-type">int</span> minRed,
       <span class="hljs-type">int</span> minGreen, <span class="hljs-type">int</span> minBlue, <span class="hljs-type">int</span> colorRange)</span> {  
   img.loadPixels();
@@ -592,7 +528,7 @@ we imagined earlier?)
 فقد جعلنا كشف درجة اللون أقل دقة بمقدار النصف تقريبًا مما لو استخدمنا
 مدى 255. ونعلم أيضًا أن درجات ألواننا ستقع في 120 «دلوًا»، لذا يمكننا
 ببساطة أن نمر على صورتنا، ونأخذ درجة لون البكسل، ونضيف واحدًا إلى
-العدّاد المقابل في مصفوفة. وسيكون هذا <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، حيث <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو
+العدّاد المقابل في مصفوفة. وسيكون هذا <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو
 عدد البكسلات، لأنه يتطلب إجراءً مع كل واحد منها.</p>
 <pre><code class="language-java"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> px in pixels) {
   <span class="hljs-type">int</span> <span class="hljs-variable">hue</span> <span class="hljs-operator">=</span> Math.round(hue(px));
@@ -602,10 +538,6 @@ we imagined earlier?)
 <p>في النهاية يمكننا طباعة درجة اللون هذه على الشاشة، أو عرضها بجوار
 الصورة (hueranges).</p>
 <p><img src="/arabic-cs-library/images/500-lines/image-filters-5-hueranges.webp" alt="Dominant hue versus size of range (number of buckets) used"></p>
-<latex>
-At the end we can print this hue to the screen, or display it next to the
-picture. 
-</latex>
 <p>بمجرد أن استخرجنا درجة اللون «الغالبة»، يمكننا أن نختار إما إظهارها أو
 إخفائها في الصورة. ويمكننا إظهار درجة اللون الغالبة بدرجات تسامح متفاوتة (مجالات
 حولها نقبلها). ويمكن تغيير البكسلات التي لا تقع في هذا المجال إلى
@@ -614,13 +546,6 @@ picture.
 باستخدام مدى 240، وبدرجات تسامح متفاوتة. أما التسامح فهو
 المقدار على جانبي درجة اللون الأكثر شيوعًا الذي يُجمَّع معًا.</p>
 <p><img src="/arabic-cs-library/images/500-lines/image-filters-6-showdominant.webp" alt="Showing dominant hue"></p>
-<latex>
-Once we've extracted the "dominant" hue, we can choose to either show or hide
-it in the image. We can show the dominant hue with varying tolerance (ranges
-around it that we will accept). Pixels that don't fall into this range can be
-changed to grayscale by setting the value based on the brightness.
-Alternatively, we can hide the dominant hue by setting the color for pixels with that hue to greyscale, and leaving other pixels as they are. 
-</latex>
 <p>وبدلًا من ذلك، يمكننا إخفاء درجة اللون الغالبة. في
 hidedominant، تكون الصور جنبًا إلى جنب:
 الأصل في الوسط، وعلى اليسار تُعرض درجة اللون الغالبة (اللون البني الفاتح
@@ -1080,11 +1005,10 @@ Less_</a>.</p>
 <ul>
 <li>نستخدم مُشغِّل <code>MockitoJUnit</code>.</li>
 <li>نُحدث كائنات وهمية لـ<code>PApplet</code> و<code>IFAImage</code> (أُنشئ خصيصًا لهذا الغرض) و<code>ImageColorHelper</code>.</li>
-<li>دوال الاختبار موسومة بالتعليق التوضيحي <code>@Test</code>[^habits]. فإذا أردت تجاهل اختبار (مثلًا أثناء تصحيح الأخطاء) يمكنك إضافة التعليق التوضيحي <code>@Ignore</code>.</li>
+<li>دوال الاختبار موسومة بالتعليق التوضيحي <code>@Test</code><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. فإذا أردت تجاهل اختبار (مثلًا أثناء تصحيح الأخطاء) يمكنك إضافة التعليق التوضيحي <code>@Ignore</code>.</li>
 <li>في <code>setup()</code>، ننشئ مصفوفة البكسلات ونجعل الصورة الوهمية تعيدها دائمًا.</li>
 <li>دوال المساعدة تجعل ضبط التوقعات للمهام المتكررة أسهل (مثل <code>set*ForPixel()</code>).</li>
 </ul>
-<p>[^habits]: لم تعد أسماء الدوال في الاختبارات تحتاج إلى أن تبدأ بـ<code>test</code> منذ JUnit 4، لكن العادات صعبة الكسر.</p>
 <h3 id="حالة-الصورة-والاختبارات-المرتبطة-بها">حالة الصورة والاختبارات المرتبطة بها</h3>
 <p>تحمل <code>ImageState</code> «حالة» الصورة الحالية — الصورة نفسها، والإعدادات
 والمرشِّحات التي ستُطبَّق. وسنُغفل التنفيذ الكامل
@@ -1461,13 +1385,24 @@ Less_</a>.</p>
 صباح اليوم التالي.</p>
 <p>إذن، كيف تجد اللون الغالب في صورة؟ هناك تطبيق
 لذلك: <a href="http://showandhide.com">Show &amp; Hide</a>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>لو أردنا إنشاء رسم متحرك لما استدعينا
+<code>noLoop()</code> (أو، لو أردنا بدء الحركة لاحقًا، لاستدعينا <code>loop()</code>).
+وتحدّد <code>frameRate()</code> تكرار الإطارات المتحركة. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>لم تعد أسماء الدوال في الاختبارات تحتاج إلى أن تبدأ بـ<code>test</code> منذ JUnit 4، لكن العادات صعبة الكسر. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/functionalDB/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">قاعدة بيانات مستوحاة من علم الآثار</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/interpreter/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مفسّر بايثون مكتوب بلغة بايثون</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1475,8 +1410,8 @@ Less_</a>.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

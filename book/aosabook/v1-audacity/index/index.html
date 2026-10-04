@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="Audacity — Audacity"/><!----><title>Audacity | معمارية تطبيقات المصادر المفتوحة</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -102,7 +102,7 @@ S.EndStatic();
 <p>الشكل 2.3: واجهة Audacity مع تحديد عناصر لوحة المسارات</p>
 <p>تعرض لقطة الشاشة في <a href="#fig.aud.3">الشكل 2.3</a> واجهة مستخدم Audacity. وجميع المكوّنات التي وُسمت مخصَّصة لـ Audacity. أما بالنسبة إلى wxWidgets، فهناك مكوّن wxWidget واحد يمثّل TrackPanel. وتتكفّل شيفرة Audacity — لا wxWidgets — بموضعية العناصر داخله وإعادة رسمها.</p>
 <p>الطريقة التي تتجمع بها كل هذه المكوّنات لتشكيل TrackPanel فظيعة حقًا. (الشيفرة هي الفظيعة؛ أما النتيجة النهائية التي يراها المستخدم فتبدو سليمة تمامًا.) فشيفرة الواجهة الرسومية والشيفرة الخاصة بالتطبيق مختلطة كلها معًا، غير منفصلة بنظافة. وفي التصميم الجيد، ينبغي ألا يعرف إلا شيفرتنا الخاصة بالتطبيق أمور قنوات الصوت اليمنى واليسرى والديسيبل (decibels) والكتم (muting) والعزل (soloing). أما عناصر الواجهة الرسومية فيجب أن تكون عناصر محايدة تجاه التطبيق وقابلة لإعادة الاستخدام في تطبيق غير صوتي. وحتى الأجزاء الخاصة بالواجهة الرسومية في TrackPanel هي رقعة من شيفرة الحالات الخاصة بمواضع وأحجام مطلقة، مع قدر غير كافٍ من التجريد. ليكون أجمل بكثير وأنظف وأكثر اتساقًا لو كانت هذه المكوّنات الخاصة عناصر واجهة رسومية قائمة بذاتها، ولو استخدمت منظِّمات أحجام بواجهات من الأنواع ذاتها التي تستخدمها wxWidgets.</p>
-<p>وللوصول إلى مثل هذا TrackPanel، سنحتاج إلى منظِّم أحجام جديد في wxWidgets يمكنه تحريك المسارات وتغيير أحجامها، بل وأي عنصر واجهة آخر. ومنظِّمات wxWidgets ليست مرنة إلى هذا الحد حتى الآن. وكميزة جانبية («من副产品») يمكننا استخدام ذلك المنظِّم في مواضع أخرى. يمكننا استخدامه في أشرطة الأدوات التي تحمل الأزرار، فيصبح تخصيص ترتيب الأزرار داخل الشريط بالسحب أمرًا سهلًا.</p>
+<p>وللوصول إلى مثل هذا TrackPanel، سنحتاج إلى منظِّم أحجام جديد في wxWidgets يمكنه تحريك المسارات وتغيير أحجامها، بل وأي عنصر واجهة آخر. ومنظِّمات wxWidgets ليست مرنة إلى هذا الحد حتى الآن. وكميزة جانبية («ناتج ثانوي») يمكننا استخدام ذلك المنظِّم في مواضع أخرى. يمكننا استخدامه في أشرطة الأدوات التي تحمل الأزرار، فيصبح تخصيص ترتيب الأزرار داخل الشريط بالسحب أمرًا سهلًا.</p>
 <p>أُنجز بعض العمل الاستكشافي في إنشاء هذه المنظِّمات واستخدامها، لكنه ليس كافيًا. وواجهت بعض التجارب التي جعلت عناصر الواجهة الرسومية مكوّنات wxWidgets مكتملة مشكلة: فذلك يقلّل تحكّمنا في إعادة رسم العناصر، ويؤدي إلى وميض (flicker) عند تغيير أحجام المكوّنات وتحريكها. وسنحتاج إلى تعديل wxWidgets على نطاق واسع لتحقيق إعادة رسم بلا وميض، وفصل خطوات تغيير الحجم عن خطوات إعادة الرسم بصورة أفضل.</p>
 <p>وثاني سبب للتحذّر من هذا النهج في TrackPanel هو أننا نعلم بالفعل أن wxWidgets تبدأ بالعمل ببطء شديد عندما تكون أعداد العناصر (widgets) كبيرة. وأغلب هذا خارج عن سيطرة wxWidget. فكل عنصر wxWidget وكل زر وكل مربع إدخال نصي يستهلك موردًا من نظام النوافذ، ولكلٍّ منها مقبض (handle) للوصول إليه. ومعالجة أعداد كبيرة من هذه العناصر تستغرق وقتًا. والمعالجة بطيئة حتى عندما تكون أغلب العناصر مخفية أو خارج الشاشة. ونحن نريد القدرة على استخدام عناصر صغيرة كثيرة على مساراتنا.</p>
 <p>أفضل حل هو استخدام نمط الخفيف (flyweight pattern): عناصر واجهة خفيفة الوزن نرسمها بأنفسنا، لا تمتلك كائنات مقابلة تستهلك موارد نظام النوافذ أو مقابضه. وسنستخدم بنية تشبه بنية منظِّمات wxWidgets وعناصرها المكوِّنة، ونمنح المكوّنات واجهة برمجية مشابهة من دون أن ترث فعلًا من أصناف wxWidgets. وهذا يعني إعادة هيكلة شيفرة TrackPanel الحالية بحيث تصبح بنيتها أوضح بكثير. ولو كان هذا حلًا سهلًا لكان قد نُفِّذ بالفعل، لكن الآراء المتباعدة حول ما نريد الوصول إليه تحديدًا أعاقت محاولة سابقة. أما تعميم نهجنا الحالي المرتجل (ad hoc) فسيتطلب قدرًا كبيرًا من عمل التصميم والبرمجة. وهناك إغراء شديد بترك الشيفرة المعقّدة التي تعمل جيدًا بما يكفي دون المساس بها.</p>
@@ -165,7 +165,7 @@ S.EndStatic();
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -173,8 +173,8 @@ S.EndStatic();
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

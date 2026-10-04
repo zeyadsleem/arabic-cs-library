@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="زاحف ويب بكوروتينات asyncio — A Web Crawler With asyncio Coroutines"/><!----><title>زاحف ويب بكوروتينات asyncio | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -52,7 +52,7 @@
 <h2 id="مقدمة">مقدمة</h2>
 <p>يُركّز علم الحاسوب الكلاسيكي على الخوارزميات (algorithms) الكفؤة التي تُنجز الحسابات في أسرع وقت ممكن. لكن كثيراً من البرامج المتصلة بالشبكة لا تقضي وقتها في الحساب، بل في الإبقاء على اتصالات كثيرة مفتوحة إما بطيئة أو نادرة الأحداث. وتقدّم هذه البرامج تحدياً مختلفاً تماماً: انتظار عدد هائل من أحداث الشبكة بكفاءة. والمقاربة المعاصرة لهذه المشكلة هي الإدخال/الإخراج غير المتزامن (asynchronous I/O)، أو «غير المتزامن» (async).</p>
 <p>يقدّم هذا الفصل زاحف ويب بسيطاً. والزاحف تطبيق غير متزامن نموذجي لأنه ينتظر استجابات كثيرة لكنه يقوم بحساب قليل. وكلما زاد عدد الصفحات التي يستطيع جلبها دفعة واحدة، زاد سرعته في الإنجاز. وإن خصّص خيطاً (thread) لكل طلب جارٍ، فمع ارتفاع عدد الطلبات المتزامنة سينفد من الذاكرة أو من موارد أخرى متعلقة بالخيوط قبل أن ينفد من المقابس (sockets). وهو يتجنّب الحاجة إلى الخيوط باستخدام الإدخال/الإخراج غير المتزامن.</p>
-<p>نقدّم المثال على ثلاث مراحل. أولاً، نعرض حلقة أحداث (event loop) غير متزامنة ونرسم زاحفاً يستخدم الحلقة مع دوال استدعاء (callbacks): وهو فعّال جداً، لكن توسيعه إلى مشكلات أكثر تعقيداً سيؤدي إلى شيفرة متشابكة (spaghetti) غير قابلة للإدارة. ثانياً، بالتالي، نبيّن أن الكوروتينات (coroutines) في Python فعّالة وقابلة للتوسّع معاً. وننفّذ كوروتينات بسيطة في Python باستخدام دوال المولّدات (generators). وفي المرحلة الثالثة، نستخدم الكوروتينات الكاملة المزايا من مكتبة «asyncio» القياسية في Python[^16]، وننسّق بينها باستخدام طابور (queue) غير متزامن.</p>
+<p>نقدّم المثال على ثلاث مراحل. أولاً، نعرض حلقة أحداث (event loop) غير متزامنة ونرسم زاحفاً يستخدم الحلقة مع دوال استدعاء (callbacks): وهو فعّال جداً، لكن توسيعه إلى مشكلات أكثر تعقيداً سيؤدي إلى شيفرة متشابكة (spaghetti) غير قابلة للإدارة. ثانياً، بالتالي، نبيّن أن الكوروتينات (coroutines) في Python فعّالة وقابلة للتوسّع معاً. وننفّذ كوروتينات بسيطة في Python باستخدام دوال المولّدات (generators). وفي المرحلة الثالثة، نستخدم الكوروتينات الكاملة المزايا من مكتبة «asyncio» القياسية في Python<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>، وننسّق بينها باستخدام طابور (queue) غير متزامن.</p>
 <h2 id="المهمة">المهمة</h2>
 <p>يجد زاحف الويب جميع صفحات موقع ما وينزّلها، ربما لأرشفتها أو لفهرستها. ابتداءً من عنوان URL جذر، يجلب كل صفحة، ويحللها بحثاً عن روابط إلى صفحات لم تُرَ من قبل، ويضيف هذه الروابط إلى طابور. ويتوقف حين يجلب صفحة لا تحتوي على روابط جديدة ويصبح الطابور فارغاً.</p>
 <p>ويمكننا تسريع هذه العملية بتنزيل صفحات كثيرة في وقت واحد. فحين يعثر الزاحف على روابط جديدة، يطلق عمليات جلب متزامنة للصفحات الجديدة عبر مقابس منفصلة. ويحلل الاستجابات فور وصولها، مضيفاً الروابط الجديدة إلى الطابور. وقد تأتي نقطة يتناقص عندها العائد فيضرّ الإفراط في التزامن بالأداء، لذلك نحدّ من عدد الطلبات المتزامنة، ونترك بقية الروابط في الطابور حتى تكتمل بعض الطلبات الجارية.</p>
@@ -73,9 +73,9 @@
     links = parse_links(response)
     q.add(links)
 </code></pre>
-<p>افتراضياً، تكون عمليات المقبس <em>حاجبة</em> (blocking): فحين يستدعي الخيط تابعاً مثل <code>connect</code> أو <code>recv</code>، يتوقف حتى تكتمل العملية.[^15] ولكي ننزّل صفحات كثيرة دفعة واحدة، نحتاج إلى خيوط كثيرة. ويقلّل التطبيق المتطوّر تكلفة إنشاء الخيوط بالاحتفاظ بخيوط خاملة في مجموعة خيوط، ثم استئجارها لإعادة استخدامها في المهام اللاحقة؛ وهو يفعل الشيء نفسه مع المقابس في مجموعة اتصالات.</p>
+<p>افتراضياً، تكون عمليات المقبس <em>حاجبة</em> (blocking): فحين يستدعي الخيط تابعاً مثل <code>connect</code> أو <code>recv</code>، يتوقف حتى تكتمل العملية.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> ولكي ننزّل صفحات كثيرة دفعة واحدة، نحتاج إلى خيوط كثيرة. ويقلّل التطبيق المتطوّر تكلفة إنشاء الخيوط بالاحتفاظ بخيوط خاملة في مجموعة خيوط، ثم استئجارها لإعادة استخدامها في المهام اللاحقة؛ وهو يفعل الشيء نفسه مع المقابس في مجموعة اتصالات.</p>
 <p>ومع ذلك، الخيوط باهظة، وأنظمة التشغيل تفرض مجموعة متنوعة من الحدود الصارمة على عدد الخيوط التي قد تكون لعملية أو مستخدم أو آلة. وعلى نظام جيسي، يكلّف خيط Python نحو 50 كيلوبايت من الذاكرة، وإنشاء عشرات الآلاف من الخيوط يسبب أعطالاً. فإذا وسّعنا إلى عشرات الآلاف من العمليات المتزامنة على مقابس متزامنة، نفدنا من الخيوط قبل أن ننفد من المقابس. فالحمل الزائد لكل خيط أو حدود النظام على الخيوط هي عنق الزجاجة.</p>
-<p>وفي مقاله المؤثر «مشكلة C10K»<a href="http://www.kegel.com/c10k.html">^8</a>، يشرح دان كيجل قيود تعدد الخيوط بالنسبة التزامن الإدخال/الإخراج. ويبدأ بقوله:</p>
+<p>وفي مقاله المؤثر «مشكلة C10K»<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>، يشرح دان كيجل قيود تعدد الخيوط بالنسبة التزامن الإدخال/الإخراج. ويبدأ بقوله:</p>
 <blockquote>
 <p>حان وقت لخوادم الويب أن تتعامل مع عشرة آلاف عميل في وقت واحد، أليس كذلك؟ فبعد كل شيء، صار الويب مكاناً كبيراً.</p>
 </blockquote>
@@ -136,8 +136,8 @@ selector.register(sock.fileno(), EVENT_WRITE, connected)
 <p>تُخزَّن دالة الاستدعاء <code>connected</code> في <code>event_key.data</code>، ونسترجعها وننفّذها ما إن يتصل المقبس غير الحاجب.</p>
 <p>على خلاف حلقتنا سريعة الدوران أعلاه، فإن الاستدعاء إلى <code>select</code> هنا يتوقف منتظراً أحداث الإدخال/الإخراج التالية. ثم تشغّل الحلقة دوال الاستدعاء التي تنتظر هذه الأحداث. وتبقى العمليات التي لم تكتمل معلّقة حتى دورات مستقبلية من حلقة الأحداث.</p>
 <p>ماذا أثبتنا حتى الآن؟ بيّنا كيف نبدأ عملية وننفّذ دالة استدعاء عندما تصبح العملية جاهزة. وإطار غير متزامن (async <em>framework</em>) يبني على الخاصيتين اللتين أظهرناهما — المقابس غير الحاجبة وحلقة الأحداث — لتشغيل عمليات متزامنة في خيط واحد.</p>
-<p>لقد بلغنا هنا «التزامن» (concurrency)، لكن ليس ما يُسمى تقليدياً «التوازي» (parallelism). أي أننا بنينا نظاماً صغيراً يقوم بإدخال/إخراج متداخل. وهو قادر على بدء عمليات جديدة بينما عمليات أخرى جارية. لكنه لا يستغل فعلياً عدة أنوية لتنفيذ الحساب بالتوازي. لكن هذا النظام مصمَّم لمشكلات مقيّدة بالإدخال/الإخراج، لا بمشكلات مقيّدة بالمعالج.[^14]</p>
-<p>فحلقة الأحداث لدينا فعّالة في الإدخال/الإخراج المتزامن لأنها لا تكرّس موارد خيوط لكل اتصال. لكن قبل أن ننتقل، من المهم تصحيح سوء فهم شائع بأن غير المتزامن <em>أسرع</em> من تعدد الخيوط. فكثيراً ما لا يكون الأمر كذلك — بل إن حلقة أحداث مثل حلقتنا في Python أبطأ باعتدال من تعدد الخيوط في خدمة عدد قليل من الاتصالات النشطة جداً. وفي بيئة تشغيل بلا قفل تفسير عام، لأداء الخيوط أن تكون أفضل في هذا النوع من الأحمال. أما ما يناسبه الإدخال/الإخراج غير المتزامن فهو التطبيقات التي لها اتصالات كثيرة بطيئة أو خاملة بأحداث نادرة.[^11]<latex>[^bayer]</latex></p>
+<p>لقد بلغنا هنا «التزامن» (concurrency)، لكن ليس ما يُسمى تقليدياً «التوازي» (parallelism). أي أننا بنينا نظاماً صغيراً يقوم بإدخال/إخراج متداخل. وهو قادر على بدء عمليات جديدة بينما عمليات أخرى جارية. لكنه لا يستغل فعلياً عدة أنوية لتنفيذ الحساب بالتوازي. لكن هذا النظام مصمَّم لمشكلات مقيّدة بالإدخال/الإخراج، لا بمشكلات مقيّدة بالمعالج.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>فحلقة الأحداث لدينا فعّالة في الإدخال/الإخراج المتزامن لأنها لا تكرّس موارد خيوط لكل اتصال. لكن قبل أن ننتقل، من المهم تصحيح سوء فهم شائع بأن غير المتزامن <em>أسرع</em> من تعدد الخيوط. فكثيراً ما لا يكون الأمر كذلك — بل إن حلقة أحداث مثل حلقتنا في Python أبطأ باعتدال من تعدد الخيوط في خدمة عدد قليل من الاتصالات النشطة جداً. وفي بيئة تشغيل بلا قفل تفسير عام، لأداء الخيوط أن تكون أفضل في هذا النوع من الأحمال. أما ما يناسبه الإدخال/الإخراج غير المتزامن فهو التطبيقات التي لها اتصالات كثيرة بطيئة أو خاملة بأحداث نادرة.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <h2 id="البرمجة-باستخدام-دوال-الاستدعاء">البرمجة باستخدام دوال الاستدعاء</h2>
 <p>مع إطار العمل غير المتزامن الصغير جداً الذي بنيناه حتى الآن، كيف نبني زاحف ويب؟ فحتى جالب عنوان URL بسيط يكون كتابته مكلفاً.</p>
 <p>نبدأ بمجموعتين عامتين من عناوين URL التي لم نجلبها بعد، والعناوين التي رأيناها:</p>
@@ -261,10 +261,10 @@ fetcher.fetch()
     raise Exception('parse error')
 Exception: parse error
 </code></pre>
-<p>لا يُظهر أثر المكدس سوى أن حلقة الأحداث كانت تشغّل دالة استدعاء. ونحن لا نتذكر ما أدى إلى الخطأ. السلسلة مقطوعة من الطرفين: نسينا إلى أين كنا ذاهبون ومن أين أتينا. وهذه الفقدة للسياق تُسمّى «تمزيق المكدس» (stack ripping)، وفي حالات كثيرة تربك المحقق. كما يمنعنا تمزيق المكدس من تثبيت معالج استثناءات لسلسلة من دوال الاستدعاء، بالطريقة التي يلفّ بها كتلة «try / except» تحيط باستدعاء دالة وشجرة أحفادها.[^7]</p>
+<p>لا يُظهر أثر المكدس سوى أن حلقة الأحداث كانت تشغّل دالة استدعاء. ونحن لا نتذكر ما أدى إلى الخطأ. السلسلة مقطوعة من الطرفين: نسينا إلى أين كنا ذاهبون ومن أين أتينا. وهذه الفقدة للسياق تُسمّى «تمزيق المكدس» (stack ripping)، وفي حالات كثيرة تربك المحقق. كما يمنعنا تمزيق المكدس من تثبيت معالج استثناءات لسلسلة من دوال الاستدعاء، بالطريقة التي يلفّ بها كتلة «try / except» تحيط باستدعاء دالة وشجرة أحفادها.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
 <p>فحتى إلى جانب النقاش الطويل حول الكفاءة النسبية بين تعدد الخيوط وغير المتزامن، هناك نقاش آخر حول أيهما أكثر عرضة للخطأ: فالخيوط عرضة لتسابق البيانات (data races) إن أخطأنا في مزامنتها، أما دوال الاستدعاء فمعطّبة التصحيح بسبب تمزيق المكدس.</p>
 <h2 id="الكوروتينات">الكوروتينات</h2>
-<p>نغريكم بوعد. فمن الممكن كتابة شيفرة غير متزامنة تجمع بين كفاءة دوال الاستدعاء والمظهر الكلاسيكي الجميل للبرمجة متعددة الخيوط. ويُتحقق هذا المزيج بنمط يُسمّى «الكوروتينات» (coroutines). وباستخدام مكتبة asyncio القياسية في Python 3.4 وحزمة اسمها «aiohttp»، يصبح جلب عنوان URL داخل كوروتين أمراً مباشراً جداً[^10]:</p>
+<p>نغريكم بوعد. فمن الممكن كتابة شيفرة غير متزامنة تجمع بين كفاءة دوال الاستدعاء والمظهر الكلاسيكي الجميل للبرمجة متعددة الخيوط. ويُتحقق هذا المزيج بنمط يُسمّى «الكوروتينات» (coroutines). وباستخدام مكتبة asyncio القياسية في Python 3.4 وحزمة اسمها «aiohttp»، يصبح جلب عنوان URL داخل كوروتين أمراً مباشراً جداً<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>:</p>
 <pre><code class="language-python"><span class="hljs-meta">    @asyncio.coroutine</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-params">self, url</span>):
         response = <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> <span class="hljs-variable language_">self</span>.session.get(url)
@@ -272,7 +272,7 @@ Exception: parse error
 </code></pre>
 <p>وهو قابل للتوسّع أيضاً. فمقارنةً بـ 50 كيلوبايت من الذاكرة لكل خيط والحدود الصارمة التي يفرضها نظام التشغيل على الخيوط، لا يستهلك كوروتين Python سوى 3 كيلوبايتات تقريباً من الذاكرة على نظام جيسي. ويستطيع Python بسهولة بدء مئات الآلاف من الكوروتينات.</p>
 <p>ومفهوم الكوروتين، الذي يعود إلى أيام علم الحاسوب الأولى، بسيط: هو روتين فرعي يمكن إيقافه واستئنافه. في حين تُدار الخيوط مهام متعددة استباقياً بواسطة نظام التشغيل، فإن الكوروتينات تُدار مهام متعددة تعاونياً: فهي تختار متى تتوقف، وأي كوروتين يُشغَّل تالياً.</p>
-<p>وهناك تطبيقات كثيرة للكوروتينات؛ حتى في Python هناك عدة منها. فالكوروتينات في مكتبة «asyncio» القياسية في Python 3.4 مبنية على المولّدات (generators) وصنف Future وتعبير «yield from».ابتداءً من Python 3.5، أصبحت الكوروتينات ميزة أصلية في اللغة نفسها[^17]؛ غير أن فهم الكوروتينات كما نُفِّذت أول مرة في Python 3.4 باستخدام تسهيلات اللغة الموجودة مسبقاً هو الأساس لمعالجة كوروتينات Python 3.5 الأصلية.</p>
+<p>وهناك تطبيقات كثيرة للكوروتينات؛ حتى في Python هناك عدة منها. فالكوروتينات في مكتبة «asyncio» القياسية في Python 3.4 مبنية على المولّدات (generators) وصنف Future وتعبير «yield from».ابتداءً من Python 3.5، أصبحت الكوروتينات ميزة أصلية في اللغة نفسها<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>؛ غير أن فهم الكوروتينات كما نُفِّذت أول مرة في Python 3.4 باستخدام تسهيلات اللغة الموجودة مسبقاً هو الأساس لمعالجة كوروتينات Python 3.5 الأصلية.</p>
 <p>ولكي نشرح كوروتينات Python 3.4 القائمة على المولّدات، سنخوض في عرض للمولّدات (generators) وكيفية استخدامها كوروتينات في asyncio، ونثق أنك ستستمتع بقراءتها كما استمتعنا بكتبتها. وبعد أن نشرح الكوروتينات القائمة على المولّدات، سنستخدمها في زاحف الويب غير المتزامن لدينا.</p>
 <h2 id="كيف-تعمل-مولدات-python">كيف تعمل مولّدات Python</h2>
 <p>قبل أن تفهم مولّدات Python، عليك أن تفهم كيف تعمل دوال Python العادية. فعادةً، حين تستدعي دالة Python روتيناً فرعياً، يحتفظ الروتين الفرعي بالتحكم حتى يعود أو يطرح استثناء. ثم يعود التحكم إلى المستدعي:</p>
@@ -389,7 +389,7 @@ StopIteration: done
         <span class="hljs-keyword">for</span> fn <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>._callbacks:
             fn(<span class="hljs-variable language_">self</span>)
 </code></pre>
-<p>يكون المستقبل في البداية «معلَّقاً». ويصبح «محلولاً» باستدعاء <code>set_result</code>.[^12]</p>
+<p>يكون المستقبل في البداية «معلَّقاً». ويصبح «محلولاً» باستدعاء <code>set_result</code>.<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
 <p>ولنكيّف جالبنا ليستخدم الأشياء المستقبلية والكوروتينات. فقد كتبنا <code>fetch</code> بدالة استدعاء:</p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Fetcher</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-params">self</span>):
@@ -514,7 +514,7 @@ Traceback (most recent call last):
   File <span class="hljs-string">&quot;&lt;input&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
 StopIteration
 </code></pre>
-<p>وحين يُنزِل <code>caller</code> من <code>gen</code>، لا يتقدم <code>caller</code>. ولاحظ أن مؤشر تعليماته يبقى عند 15، موضع عبارة <code>yield from</code> فيه، حتى بينما يتقدم المولّد الداخلي <code>gen</code> من عبارة <code>yield</code> إلى التي تليها.[^13] ومن منظورنا خارج <code>caller</code>، لا يمكننا تمييز ما إذا كانت القيم التي يُنزِلها تأتي من <code>caller</code> أم من المولّد الذي يفوّض إليه. ومن داخل <code>gen</code>، لا يمكننا تمييز ما إذا كانت القيم تُرسَل من <code>caller</code> أم من خارجه. وتعبير <code>yield from</code> هو قناة بلا احتكاك، تتدفق عبرها القيم إلى <code>gen</code> وخارجه حتى يكتمل <code>gen</code>.</p>
+<p>وحين يُنزِل <code>caller</code> من <code>gen</code>، لا يتقدم <code>caller</code>. ولاحظ أن مؤشر تعليماته يبقى عند 15، موضع عبارة <code>yield from</code> فيه، حتى بينما يتقدم المولّد الداخلي <code>gen</code> من عبارة <code>yield</code> إلى التي تليها.<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup> ومن منظورنا خارج <code>caller</code>، لا يمكننا تمييز ما إذا كانت القيم التي يُنزِلها تأتي من <code>caller</code> أم من المولّد الذي يفوّض إليه. ومن داخل <code>gen</code>، لا يمكننا تمييز ما إذا كانت القيم تُرسَل من <code>caller</code> أم من خارجه. وتعبير <code>yield from</code> هو قناة بلا احتكاك، تتدفق عبرها القيم إلى <code>gen</code> وخارجه حتى يكتمل <code>gen</code>.</p>
 <p>ويمكن للكوروتين أن يفوّض عملاً إلى كوروتين فرعي بـ <code>yield from</code> ويستقبل نتيجة ذلك العمل. ولاحظ في الأعلى أن <code>caller</code> طبع &quot;return value of yield-from: done&quot;. وحين اكتمل <code>gen</code>، أصبحت قيمته المُرجَعة هي قيمة تعبير <code>yield from</code> في <code>caller</code>:</p>
 <pre><code class="language-python">    rv = <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> gen
 </code></pre>
@@ -612,8 +612,8 @@ loop()
 <h2 id="تنسيق-الكوروتينات">تنسيق الكوروتينات</h2>
 <p>بدأنا بوصف كيف نريد أن يعمل زاحفنا. والآن حان وقت تنفيذه بكوروتينات asyncio.</p>
 <p>سيبدأ زاحفنا بجلب الصفحة الأولى، وتحليل روابطها، وإضافتها إلى طابور. وبعد ذلك ينتشر عبر الموقع فيجلب الصفحات في وقت واحد. لكن — من أجل الحدّ من الحمل على العميل والخادم — نريد أقصى عدد من العمال يعمل، لا أكثر. فمتى أتمّ عامل جلب صفحة، عليه أن يسحب الرابط التالي من الطابور فوراً. وسنمرّ بفترات لا يكفي فيها العمل، فيتعطّل بعض العمال. لكن حين يصطدم عامل بصفحة غنية بروابط جديدة، ينمو الطابور فجأة وينبغي أن يستيقظ أي عمال متوقّفون وينشغلوا بالعمل. وأخيراً، يجب أن ينتهي برنامجنا بمجرد انتهاء عمله.</p>
-<p>وتخيّل لو كان العمال خيوطاً. فكيف نعبّر عن خوارزمية الزاحف؟ يمكننا استخدام طابور متزامن<a href="https://docs.python.org/3/library/queue.html">^5</a> من مكتبة Python القياسية. فمع كل عنصر يوضع في الطابور يزيد الطابور عدّاد «المهام» لديه. وتستدعي خيوط العمال <code>task_done</code> بعد إتمام العمل على عنصر ما. ويتحيّب الخيط الرئيسي على <code>Queue.join</code> حتى يقابل كل عنصر وُضع في الطابور استدعاء <code>task_done</code>، ثم يخرج.</p>
-<p>وتستخدم الكوروتينات النمط نفسه تماماً مع طابور asyncio! أولاً نستورده<a href="https://docs.python.org/3/library/asyncio-sync.html">^6</a>:</p>
+<p>وتخيّل لو كان العمال خيوطاً. فكيف نعبّر عن خوارزمية الزاحف؟ يمكننا استخدام طابور متزامن<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup> من مكتبة Python القياسية. فمع كل عنصر يوضع في الطابور يزيد الطابور عدّاد «المهام» لديه. وتستدعي خيوط العمال <code>task_done</code> بعد إتمام العمل على عنصر ما. ويتحيّب الخيط الرئيسي على <code>Queue.join</code> حتى يقابل كل عنصر وُضع في الطابور استدعاء <code>task_done</code>، ثم يخرج.</p>
+<p>وتستخدم الكوروتينات النمط نفسه تماماً مع طابور asyncio! أولاً نستورده<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup>:</p>
 <pre><code class="language-python"><span class="hljs-keyword">try</span>:
     <span class="hljs-keyword">from</span> asyncio <span class="hljs-keyword">import</span> JoinableQueue <span class="hljs-keyword">as</span> Queue
 <span class="hljs-keyword">except</span> ImportError:
@@ -761,7 +761,7 @@ Exception: error
 <p>ولم نعد بحاجة إلى صنف جالب كما كان لدينا في البرنامج القائم على دوال الاستدعاء. فقد كان ذلك الصنف حلاً مؤقتاً لنقص في دوال الاستدعاء: فهي تحتاج إلى مكان ما لتخزين الحالة أثناء انتظار الإدخال/الإخراج، لأن متغيّراتها المحلية لا تبقى محفوظة بين الاستدعاءات. لكن كوروتين <code>fetch</code> يستطيع تخزين حالته في متغيّرات محلية كما تفعل الدالة العادية، فلا حاجة بعدئذٍ إلى صنف.</p>
 <p>وحين ينتهي <code>fetch</code> من معالجة استجابة الخادم، يعود إلى المستدعي وهو <code>work</code>. ويستدعي تابع <code>work</code> الدالة <code>task_done</code> على الطابور، ثم يأخذ عنوان URL التالي من الطابور ليجلبه.</p>
 <p>وحين يضع <code>fetch</code> روابط جديدة في الطابور، يزيد عدد المهام غير المنتهية ويُبقي الكوروتين الرئيسية، المنتظرة عند <code>q.join</code>، متوقفة. لكن إذا لم تكن هناك روابط لم تُرَ من قبل وكان هذا آخر عنوان URL في الطابور، فإن عدد المهام غير المنتهية يسقط إلى الصفر حين يستدعي <code>work</code> الدالة <code>task_done</code>. وهذا الحدث يُستأنف <code>join</code> وتكتمل الكوروتين الرئيسية.</p>
-<p>وشيفرة الطابور التي تنسّق العمال والكوروتين الرئيسية هي كما يلي[^9]:</p>
+<p>وشيفرة الطابور التي تنسّق العمال والكوروتين الرئيسية هي كما يلي<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup>:</p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>._join_future = Future()
@@ -839,34 +839,50 @@ Exception: error
 <h2 id="الخاتمة">الخاتمة</h2>
 <p>كثيراً مما تكون البرامج الحديثة مقيّدة بالإدخال/الإخراج بدل أن تكون مقيّدة بالمعالج. وبهذه البرامج، تكون خيوط Python أسوأ الخيارات من كل وجه:</p>
 <p>وإن حدّقت العين بحيث تذوب تعبيرات <code>yield from</code>، بدت الكوروتين كخيط يقوم بإدخال/إخراج حاجب تقليدي. بل يمكننا حتى تنسيق الكوروتينات بأنماط كلاسيكية من البرمجة متعددة الخيوط. ولا حاجة لإعادة الاختراع. وعليه، مقارنةً بدوال الاستدعاء، تُعد الكوروتينات أسلوباً جاذباً للمبرمج المعتاد على تعدد الخيوط.</p>
-<p>لكن حين نفتح أعيننا ونركّز على تعبيرات <code>yield from</code>، نرى أنها تحدّد المواضع التي تتنازل فيها الكوروتين عن التحكم وتسمح للآخرين بالعمل. وبخلاف الخيوط، تُظهر الكوروتينات أين يمكن أن تُقاطَع شيفرتنا وأين لا يمكن. وفي مقاله المضيء «Unyielding»<a href="https://glyph.twistedmatrix.com/2014/02/unyielding.html">^4</a>، يكتب غليف ليفكوفيتز: «الخيوط تجعل التفكير المحلي صعباً، والتفكير المحلي ربما أهم شيء في هندسة البرمجيات». أما التنازل الصريح فيجعل من الممكن أن «تفهم سلوك (وعليه، صحة) روتين بفحص الروتين نفسه بدل فحص النظام بأكمله».</p>
+<p>لكن حين نفتح أعيننا ونركّز على تعبيرات <code>yield from</code>، نرى أنها تحدّد المواضع التي تتنازل فيها الكوروتين عن التحكم وتسمح للآخرين بالعمل. وبخلاف الخيوط، تُظهر الكوروتينات أين يمكن أن تُقاطَع شيفرتنا وأين لا يمكن. وفي مقاله المضيء «Unyielding»<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup>، يكتب غليف ليفكوفيتز: «الخيوط تجعل التفكير المحلي صعباً، والتفكير المحلي ربما أهم شيء في هندسة البرمجيات». أما التنازل الصريح فيجعل من الممكن أن «تفهم سلوك (وعليه، صحة) روتين بفحص الروتين نفسه بدل فحص النظام بأكمله».</p>
 <p>كُتب هذا الفصل خلال عصر نهضة في تاريخ Python وغير المتزامن. فقد أُطلقت الكوروتينات القائمة على المولّدات، التي تعلمت للتو اختراعها، في وحدة «asyncio» مع Python 3.4 في مارس 2014. وفي سبتمبر 2015، أُطلق Python 3.5 بكوروتينات مبنية في اللغة نفسها. وتُصرَّح هذه الكوروتينات الأصلية بالصياغة الجديدة «async def»، وبدلاً من «yield from» تستخدم الكلمة المفتاحية الجديدة «await» (انتظار) للتفويض إلى كوروتين أو للانتظار مستقبل.</p>
 <p>ورغم هذه الإنجازات، تبقى الأفكار الجوهرية كما هي. فستكون كوروتينات Python الأصلية الجديدة متميزة نحوياً عن المولّدات لكنها تعمل على نحو متشابه جداً؛ بل إنها ستشارك تنفيماً واحداً داخل مفسّر Python. وستستمر المهمة والمستقبل وحلقة الأحداث في أدوارها في asyncio.</p>
 <p>والآن بعد أن عرفت كيف تعمل كوروتينات asyncio، يمكنك أن تنسى التفاصيل في الغالب. فالآلية مخبّأة خلف واجهة أنيقة. لكن إتقانك للأساسيات يتيح لك البرمجة على نحو صحيح وفعّال في بيئات غير المتزامن الحديثة.</p>
-<p>[^7]: لحلّ معقّد لهذه المشكلة، انظر <a href="http://www.tornadoweb.org/en/stable/stack_context.html">http://www.tornadoweb.org/en/stable/stack_context.html</a></p>
-<p>[^9]: يستخدم تنفيذ <code>asyncio.Queue</code> الفعلي حدث <code>asyncio.Event</code> بدلاً من المستقبل الظاهر هنا. والفرق أن الحدث يمكن إعادة تعيينه، بينما لا يمكن للمستقبل أن ينتقل من المحلول إلى المعلّق.</p>
-<p>[^10]: مزخرف <code>@asyncio.coroutine</code> ليس سحرياً. فإذا زيّن دالة مولّد ولم يُضبط متغيّر البيئة <code>PYTHONASYNCIODEBUG</code>، فإن المزخرف لا يفعل عملياً شيئاً. فهو يكتفي بضبط سمة <code>_is_coroutine</code> لراحة أجزاء أخرى من الإطار. ومن الممكن استعمال asyncio مع مولّدات خالية دون أي زخرفة بـ <code>@asyncio.coroutine</code>.</p>
-<latex>
-[^11]: يورد جيسي دواعي استخدام غير المتزامن وعوارضه في «ما هو Async، وكيف يعمل، ومتى ينبغي أن أستعمله؟»، المتاح على pyvideo.org.
-[^bayer]: قارن مايك باير إنتاجية asyncio وتعدد الخيوط لأحمال عمل مختلفة في «البايثون غير المتزامن وقواعد البيانات»: http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/
-</latex>
-<p>[^11]: يورد جيسي دواعي استخدام غير المتزامن وعوارضه في <a href="http://pyvideo.org/video/2565/what-is-async-how-does-it-work-and-when-should">&quot;ما هو Async، وكيف يعمل، ومتى ينبغي أن أستعمله؟&quot;:</a>. وقارن مايك باير إنتاجية asyncio وتعدد الخيوط لأحمال عمل مختلفة في <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/">&quot;البايثون غير المتزامن وقواعد البيانات&quot;:</a></p>
-<p>[^12]: لهذا المستقبل عيوب كثيرة. فمثلاً، ما إن يُحلّ هذا المستقبل، ينبغي أن تستأنف الكوروتين التي تُنزّله فوراً بدل التوقف، لكن شيفرتنا لا تفعل ذلك. انظر صنف Future في asyncio للحصول على تنفيذ كامل.</p>
-<p>[^13]: وفي الحقيقة هذه هي بالضبط طريقة عمل «yield from» في CPython. فالدالة تزيد مؤشر تعليماتها قبل تنفيذ كل عبارة. لكن بعد أن ينفّذ المولّد الخارجي «yield from»، يطرح واحداً من مؤشر تعليماته ليبقى مثبَّتاً عند عبارة «yield from». ثم يتنازل إلى <em>مستدعيه</em>. وتتكرر الدورة حتى يطرح المولّد الداخلي <code>StopIteration</code>، وعندها يسمح المولّد الخارجي لنفسه أخيراً بأن يتقدم إلى التعليمة التالية.</p>
-<p>[^14]: يمنع قفل التفسير العام في Python تشغيل شيفرة Python بالتوازي داخل عملية واحدة أصلاً. فتوازين الخوارزميات المقيّدة بالمعالج في Python يتطلب عمليات متعددة، أو كتابة الأجزاء المتوازية من الشيفرة بلغة C. لكن هذا موضوع ليوم آخر.</p>
-<p>[^15]: حتى الاستدعاءات إلى <code>send</code> يمكن أن تكون حاجبة، إن كان المتلقّي بطيئاً في الإقرار بالرسائل المعلّقة وامتلأ مخزن.buffer البيانات الصادرة في النظام.</p>
-<p>[^16]: قدّم غيدو مكتبة asyncio القياسية، المسمّاة آنذاك «Tulip»، في <a href="http://pyvideo.org/video/1667/keynote">PyCon 2013</a>.</p>
-<latex>
-[^16]: قدّم غيدو مكتبة asyncio القياسية، المسمّاة آنذاك «Tulip»، في PyCon 2013.
-</latex>
-<p>[^17]: الكوروتينات المدمجة في Python 3.5 موصوفة في <a href="https://www.python.org/dev/peps/pep-0492/">PEP 492</a> «الكوروتينات بصياغة async و await».</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>قدّم غيدو مكتبة asyncio القياسية، المسمّاة آنذاك «Tulip»، في <a href="http://pyvideo.org/video/1667/keynote">PyCon 2013</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>حتى الاستدعاءات إلى <code>send</code> يمكن أن تكون حاجبة، إن كان المتلقّي بطيئاً في الإقرار بالرسائل المعلّقة وامتلأ مخزن.buffer البيانات الصادرة في النظام. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>http://www.kegel.com/c10k.html <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>يمنع قفل التفسير العام في Python تشغيل شيفرة Python بالتوازي داخل عملية واحدة أصلاً. فتوازين الخوارزميات المقيّدة بالمعالج في Python يتطلب عمليات متعددة، أو كتابة الأجزاء المتوازية من الشيفرة بلغة C. لكن هذا موضوع ليوم آخر. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>يورد جيسي دواعي استخدام غير المتزامن وعوارضه في <a href="http://pyvideo.org/video/2565/what-is-async-how-does-it-work-and-when-should">&quot;ما هو Async، وكيف يعمل، ومتى ينبغي أن أستعمله؟&quot;:</a>. وقارن مايك باير إنتاجية asyncio وتعدد الخيوط لأحمال عمل مختلفة في <a href="http://techspot.zzzeek.org/2015/02/15/asynchronous-python-and-databases/">&quot;البايثون غير المتزامن وقواعد البيانات&quot;:</a> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>لحلّ معقّد لهذه المشكلة، انظر <a href="http://www.tornadoweb.org/en/stable/stack_context.html">http://www.tornadoweb.org/en/stable/stack_context.html</a> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>مزخرف <code>@asyncio.coroutine</code> ليس سحرياً. فإذا زيّن دالة مولّد ولم يُضبط متغيّر البيئة <code>PYTHONASYNCIODEBUG</code>، فإن المزخرف لا يفعل عملياً شيئاً. فهو يكتفي بضبط سمة <code>_is_coroutine</code> لراحة أجزاء أخرى من الإطار. ومن الممكن استعمال asyncio مع مولّدات خالية دون أي زخرفة بـ <code>@asyncio.coroutine</code>. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>الكوروتينات المدمجة في Python 3.5 موصوفة في <a href="https://www.python.org/dev/peps/pep-0492/">PEP 492</a> «الكوروتينات بصياغة async و await». <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>لهذا المستقبل عيوب كثيرة. فمثلاً، ما إن يُحلّ هذا المستقبل، ينبغي أن تستأنف الكوروتين التي تُنزّله فوراً بدل التوقف، لكن شيفرتنا لا تفعل ذلك. انظر صنف Future في asyncio للحصول على تنفيذ كامل. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>وفي الحقيقة هذه هي بالضبط طريقة عمل «yield from» في CPython. فالدالة تزيد مؤشر تعليماتها قبل تنفيذ كل عبارة. لكن بعد أن ينفّذ المولّد الخارجي «yield from»، يطرح واحداً من مؤشر تعليماته ليبقى مثبَّتاً عند عبارة «yield from». ثم يتنازل إلى <em>مستدعيه</em>. وتتكرر الدورة حتى يطرح المولّد الداخلي <code>StopIteration</code>، وعندها يسمح المولّد الخارجي لنفسه أخيراً بأن يتقدم إلى التعليمة التالية. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>https://docs.python.org/3/library/queue.html <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>https://docs.python.org/3/library/asyncio-sync.html <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>يستخدم تنفيذ <code>asyncio.Queue</code> الفعلي حدث <code>asyncio.Event</code> بدلاً من المستقبل الظاهر هنا. والفرق أن الحدث يمكن إعادة تعيينه، بينما لا يمكن للمستقبل أن ينتقل من المحلول إلى المعلّق. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>https://glyph.twistedmatrix.com/2014/02/unyielding.html <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/contingent/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">Contingent: نظام بناء ديناميكي بالكامل</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/dagoba/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">داغوبا: قاعدة بيانات رسومية في الذاكرة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -874,8 +890,8 @@ Exception: error
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

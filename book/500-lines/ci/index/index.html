@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="نظام تكامل مستمر — A Continuous Integration System"/><!----><title>نظام تكامل مستمر | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -113,8 +113,7 @@ $ git commit -m ”add tests”
     args = parser.parse_args()
     dispatcher_host, dispatcher_port = args.dispatcher_server.split(<span class="hljs-string">&quot;:&quot;</span>)
 </code></pre>
-<p>وبعد استدعاء ملف مراقب المستودع، يبدأ الدالة <code>poll()</code>. وهذه الدالة تحلّل وسائط سطر الأمر، ثم تشغّل حلقة <code>while</code> لا نهائية. وتُستخدم حلقة <code>while</code> لفحص المستودع دورياً بحثاً عن تغييرات. وأول ما تفعله هو استدعاء سكربت Bash المسمّى <code>update_repo.sh</code> [^bash].</p>
-<p>[^bash]: استُخدم Bash لأننا بحاجة إلى التحقّق من وجود الملفات، وإنشاء الملفات، واستخدام Git، وسكربت الصدفة هو أنسب طريقة وأبسطها لتحقيق ذلك. وبدلاً من ذلك، تتوفّر حزم Python عابرة للمنصات يمكنك استخدامها؛ فمثلاً يمكن استخدام الوحدة المدمجة <code>os</code> في Python للوصول إلى نظام الملفات، ويمكن استخدام GitPython للوصول إلى Git، لكنهما ينفّذان الأفعال بطريقة أكثر استدارة.</p>
+<p>وبعد استدعاء ملف مراقب المستودع، يبدأ الدالة <code>poll()</code>. وهذه الدالة تحلّل وسائط سطر الأمر، ثم تشغّل حلقة <code>while</code> لا نهائية. وتُستخدم حلقة <code>while</code> لفحص المستودع دورياً بحثاً عن تغييرات. وأول ما تفعله هو استدعاء سكربت Bash المسمّى <code>update_repo.sh</code> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
 <pre><code class="language-python">    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
         <span class="hljs-keyword">try</span>:
             <span class="hljs-comment"># call the bash script that will update the repo and check</span>
@@ -474,13 +473,20 @@ $ git commit -m<span class="hljs-string">&quot;new file&quot;</span> new_file
 <p>وباستخدام هذه الاقتراحات، يمكنك جعل نظام التكامل المستمر البسيط هذا أكثر متانة وتسامحاً مع الأعطال، ويمكنك دمجه مع أنظمة أخرى، مثل مُبلِّغ اختبارات مستند إلى الويب.</p>
 <p>وإن رغبت في رؤية المستوى من المرونة الذي يمكن أن تبلغه أنظمة التكامل المستمر، فإنني أنصح بالنظر في <a href="https://github.com/aosabook/500lines/blob/master/%3Chttp://jenkins-ci.org/%3E">Jenkins</a>، وهو نظام تكامل مستمر مفتوح المصدر شديد المتانة مكتوب في Java. فهو يوفّر لك نظام تكامل مستمر أساسياً يمكنك توسيعه باستخدام الإضافات. ويمكنك أيضاً الوصول إلى شيفرته المصدريّة <a href="https://github.com/aosabook/500lines/blob/master/%3Chttps://github.com/jenkinsci/jenkins/%3E">عبر GitHub</a>. ومشروع آخر مُوصى به هو <a href="https://github.com/aosabook/500lines/blob/master/%3Chttps://travis-ci.org/%3E">Travis CI</a>، وهو مكتوب في Ruby وشيفرته المصدريّة متاحة أيضاً <a href="https://github.com/aosabook/500lines/blob/master/%3Chttps://github.com/travis-ci/travis-ci%3E">عبر GitHub</a>.</p>
 <p>كان هذا تمريناً على فهم كيفية عمل أنظمة التكامل المستمر، وكيف تبني واحدة بنفسك. وينبغي أن يكون لديك الآن فهم أكثر رسوخاً لما يلزم لجعل نظام موزّع موثوق، ويمكنك الآن استخدام هذه المعرفة لتطوير حلول أكثر تعقيداً.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>استُخدم Bash لأننا بحاجة إلى التحقّق من وجود الملفات، وإنشاء الملفات، واستخدام Git، وسكربت الصدفة هو أنسب طريقة وأبسطها لتحقيق ذلك. وبدلاً من ذلك، تتوفّر حزم Python عابرة للمنصات يمكنك استخدامها؛ فمثلاً يمكن استخدام الوحدة المدمجة <code>os</code> في Python للوصول إلى نظام الملفات، ويمكن استخدام GitPython للوصول إلى Git، لكنهما ينفّذان الأفعال بطريقة أكثر استدارة. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/blockcode/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">بلوك كود: مجموعة أدوات برمجة بصرية</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/cluster/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التجميع بالتوافق</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -488,8 +494,8 @@ $ git commit -m<span class="hljs-string">&quot;new file&quot;</span> new_file
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

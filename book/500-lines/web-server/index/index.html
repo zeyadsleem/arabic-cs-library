@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="خادم ويب بسيط — A Simple Web Server"/><!----><title>خادم ويب بسيط | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -85,11 +85,11 @@ response = requests.get(<span class="hljs-string">&#x27;http://aosabook.org/en/5
 </code></pre>
 <pre><code>status code: 200
 content length: 61
-&lt;html&gt;
+
   &lt;body&gt;
     &lt;p&gt;Test page.&lt;/p&gt;
   &lt;/body&gt;
-&lt;/html&gt;
+
 </code></pre>
 <p>ويرسل <code>request.get</code> طلب HTTP من نوع GET إلى خادم، ويعيد كائنًا يحتوي على الاستجابة. وعضو <code>status_code</code> في ذلك الكائن هو رمز حالة الاستجابة؛ وعضو <code>content_length</code> هو عدد البايتات في بيانات الاستجابة، و<code>text</code> هي البيانات الفعلية (في هذه الحالة، صفحة HTML).</p>
 <h2 id="مرحبا-يا-ويب">مرحبًا يا ويب</h2>
@@ -110,11 +110,11 @@ content length: 61
 
     <span class="hljs-comment"># Page to send back.</span>
     Page = <span class="hljs-string">&#x27;&#x27;&#x27;\
-&lt;html&gt;
+
 &lt;body&gt;
 &lt;p&gt;Hello, web!&lt;/p&gt;
 &lt;/body&gt;
-&lt;/html&gt;
+
 &#x27;&#x27;&#x27;</span>
 
     <span class="hljs-comment"># Handle a GET request.</span>
@@ -171,7 +171,7 @@ content length: 61
 </code></pre>
 <p>والقالب (template) الخاصّ بالصفحة التي نريد عرضه هو مجرّد سلسلة محارف تحتوي على جدول HTML مع بعض العناصر النائبة للتنسيق:</p>
 <pre><code class="language-python">    Page = <span class="hljs-string">&#x27;&#x27;&#x27;\
-&lt;html&gt;
+
 &lt;body&gt;
 &lt;table&gt;
 &lt;tr&gt;  &lt;td&gt;Header&lt;/td&gt;         &lt;td&gt;Value&lt;/td&gt;          &lt;/tr&gt;
@@ -182,7 +182,7 @@ content length: 61
 &lt;tr&gt;  &lt;td&gt;Path&lt;/td&gt;           &lt;td&gt;{path}&lt;/td&gt;         &lt;/tr&gt;
 &lt;/table&gt;
 &lt;/body&gt;
-&lt;/html&gt;
+
 &#x27;&#x27;&#x27;</span>
 </code></pre>
 <p>والدالة التي تملأ هذا هي:</p>
@@ -243,12 +243,12 @@ content length: 61
 <p>ولاحظ أنّنا نفتح الملفّ في الوضع الثنائي—أي الحرف 'b' في 'rb'—حتى لا تحاول بايثون &quot;مساعدتنا&quot; بتعديل تسلسلات البايتات التي تشبه نهاية سطر في ويندوز. ولاحظ أيضًا أنّ قراءة الملفّ كلّه في الذاكرة عند تقديمه فكرة سيّئة في الواقع، إذ قد يكون الملفّ عدة غيغابايتات من بيانات الفيديو. ومعالجة تلك الحالة خارج نطاق هذا الفصل.</p>
 <p>ولإتمام هذا الصنف، نحتاج إلى كتابة دالة معالجة الأخطاء وقالب صفحة الإبلاغ عن الخطأ:</p>
 <pre><code class="language-python">    Error_Page = <span class="hljs-string">&quot;&quot;&quot;\
-        &lt;html&gt;
+        
         &lt;body&gt;
         &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
         &lt;p&gt;{msg}&lt;/p&gt;
         &lt;/body&gt;
-        &lt;/html&gt;
+        
         &quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_error</span>(<span class="hljs-params">self, msg</span>):
@@ -269,8 +269,7 @@ content length: 61
         <span class="hljs-variable language_">self</span>.end_headers()
         <span class="hljs-variable language_">self</span>.wfile.write(content)
 </code></pre>
-<p>ولاحظ أنّنا لا نرمي <code>ServerException</code> حين لا يُعثر على ملفّ، بل نولّد صفحة خطأ بدلًا من ذلك. فاستثناء <code>ServerException</code> مقصود للإشارة إلى خطأ داخلي في شيفرة الخادم، أي إلى شيء أخطأنا <em>نحن</em> فيه. أمّا صفحة الخطأ التي ينشئها <code>handle_error</code> فتظهر عندما يخطئ <em>المستخدم</em>، أي حين يرسل لنا URL لملف غير موجود. [^handleerror]</p>
-<p>[^handleerror]: سنستخدم <code>handle_error</code> عدّة مرّات في مختلف مواضع هذا الفصل، بما في ذلك حالات عدّة لا يكون فيها رمز الحالة <code>404</code> مناسبًا. حاول وأنت تقرأ أن تفكّر في كيفية توسيع هذا البرنامج بحيث يمكن تمرير رمز استجابة الحالة بسهولة في كلّ حالة.</p>
+<p>ولاحظ أنّنا لا نرمي <code>ServerException</code> حين لا يُعثر على ملفّ، بل نولّد صفحة خطأ بدلًا من ذلك. فاستثناء <code>ServerException</code> مقصود للإشارة إلى خطأ داخلي في شيفرة الخادم، أي إلى شيء أخطأنا <em>نحن</em> فيه. أمّا صفحة الخطأ التي ينشئها <code>handle_error</code> فتظهر عندما يخطئ <em>المستخدم</em>، أي حين يرسل لنا URL لملف غير موجود. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <h2 id="سرد-الدلائل">سرد الدلائل</h2>
 <p>وخطوتنا التالية هي أن نعلّم خادم الويب أن يعرض سردًا لمحتويات دليل عندما يكون المسار في URL دليلًا لا ملفًّا. بل يمكننا أن نذهب خطوة أبعد، فنجعله يبحث في ذلك الدليل عن ملف <code>index.html</code> ليعرضه، ولا يعرض سردًا لمحتويات الدليل إلّا إن لم يكن ذلك الملفّ موجودًا.</p>
 <p>لكنّ بناء هذه القواعد داخل <code>do_GET</code> سيكون خطأً، إذ إنّ الدالة الناتجة ستكون تشابكًا طويلًا من جمل <code>if</code> تتحكّم في سلوكات خاصة. والحلّ الصحيح هو أن نتراجع خطوة ونحلّ المشكلة العامة، وهي تحديد ما ينبغي فعله مع URL. وهذه إعادة كتابة للدالة <code>do_GET</code>:</p>
@@ -383,13 +382,13 @@ content length: 61
 
     <span class="hljs-comment"># How to display a directory listing.</span>
     Listing_Page = <span class="hljs-string">&#x27;&#x27;&#x27;\
-        &lt;html&gt;
+        
         &lt;body&gt;
         &lt;ul&gt;
         {0}
         &lt;/ul&gt;
         &lt;/body&gt;
-        &lt;/html&gt;
+        
         &#x27;&#x27;&#x27;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">list_dir</span>(<span class="hljs-params">self, full_path</span>):
@@ -408,11 +407,11 @@ content length: 61
 <p>فمثلًا، لنفترض أننا نريد للخادم أن يكون قادرًا على عرض الوقت المحلي في صفحة HTML. يمكننا فعل ذلك في برنامج مستقلّ ببضعة أسطر فقط:</p>
 <pre><code class="language-python"><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
 <span class="hljs-built_in">print</span> <span class="hljs-string">&#x27;&#x27;&#x27;\
-&lt;html&gt;
+
 &lt;body&gt;
 &lt;p&gt;Generated {0}&lt;/p&gt;
 &lt;/body&gt;
-&lt;/html&gt;&#x27;&#x27;&#x27;</span>.<span class="hljs-built_in">format</span>(datetime.now())
+&#x27;&#x27;&#x27;</span>.<span class="hljs-built_in">format</span>(datetime.now())
 </code></pre>
 <p>ولكي تجعل خادم الويب يشغّل هذا البرنامج نيابةً عنّا، نضيف معالِج الحالة هذا:</p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">case_cgi_file</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -434,8 +433,7 @@ content length: 61
         child_stdout.close()
         <span class="hljs-variable language_">self</span>.send_content(data)
 </code></pre>
-<p>وهذا غير آمن تمامًا: فإذا عرف أحدهم مسار ملف بايثون على خادمنا، فإنّنا نسمح له فقط بتشغيله دون أن نهتمّ بما تصل إليه بياناته، أو بما إذا كان يحتوي على حلقة لا نهائية، أو أيّ شيء آخر.[^popen]</p>
-<p>[^popen]: تستخدم شيفرتنا أيضًا دالة المكتبة <code>popen2</code>، التي أُهملت لصالح وحدة <code>subprocess</code>. لكنّ <code>popen2</code> كانت الأداة الأقلّ تشتيتًا لاستخدامها في هذا المثال.</p>
+<p>وهذا غير آمن تمامًا: فإذا عرف أحدهم مسار ملف بايثون على خادمنا، فإنّنا نسمح له فقط بتشغيله دون أن نهتمّ بما تصل إليه بياناته، أو بما إذا كان يحتوي على حلقة لا نهائية، أو أيّ شيء آخر.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <p>ونحن نطرح ذلك جانبًا، فالفكرة الأساسية بسيطة:</p>
 <ol>
 <li>تشغيل البرنامج في عملية فرعية.</li>
@@ -456,12 +454,12 @@ content length: 61
 
     <span class="hljs-comment"># How to display an error.</span>
     Error_Page = <span class="hljs-string">&quot;&quot;&quot;\
-        &lt;html&gt;
+        
         &lt;body&gt;
         &lt;h1&gt;Error accessing {path}&lt;/h1&gt;
         &lt;p&gt;{msg}&lt;/p&gt;
         &lt;/body&gt;
-        &lt;/html&gt;
+        
         &quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># Classify and handle request.</span>
@@ -530,13 +528,22 @@ content length: 61
 <p>وتعكس الفروق بين شيفرتنا الأصلية والنسخة المعاد بناؤها فكرتين مهمّتين. والأولى هي أن نرى الصنف على هيئة مجموعة من الخدمات المترابطة. فـ <code>RequestHandler</code> و<code>base_case</code> لا يتّخذان قرارات ولا يتّخذان إجراءات؛ بل يوفّران أدوات يمكن لأصناف أخرى استخدامها للقيام بذلك.</p>
 <p>والفكرة الثانية هي قابلية التوسّع: يستطيع الناس إضافة وظائف جديدة إلى خادم الويب لدينا إمّا بكتابة برنامج CGI خارجي، أو بإضافة صنف معالِج حالة. ويتطلّب الثاني تغييرًا من سطر واحد في <code>RequestHandler</code> (لإدراج معالِج الحالة في قائمة <code>Cases</code>)، لكنّنا يمكننا التخلّص من ذلك بأن يجعل خادم الويب يقرأ ملفّ إعدادات ويحمّل أصناف المعالِجات منه. وفي الحالتين، يمكنهما تجاهل معظم التفاصيل منخفضة المستوى، تمامًا كما سمح لنا مؤلفو صنف <code>BaseHTTPRequestHandler</code> بأن نتجاهل تفاصيل التعامل مع اتصالات المقابس وتحليل طلبات HTTP.</p>
 <p>وهذه الأفكار مفيدة عمومًا؛ فحاول أن تجد طرقًا لاستخدامها في مشاريعك.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>سنستخدم <code>handle_error</code> عدّة مرّات في مختلف مواضع هذا الفصل، بما في ذلك حالات عدّة لا يكون فيها رمز الحالة <code>404</code> مناسبًا. حاول وأنت تقرأ أن تفكّر في كيفية توسيع هذا البرنامج بحيث يمكن تمرير رمز استجابة الحالة بسهولة في كلّ حالة. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>تستخدم شيفرتنا أيضًا دالة المكتبة <code>popen2</code>، التي أُهملت لصالح وحدة <code>subprocess</code>. لكنّ <code>popen2</code> كانت الأداة الأقلّ تشتيتًا لاستخدامها في هذا المثال. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/template-engine/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">محرّك القوالب</span></a><!--]--> <!--[-1--><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -544,8 +551,8 @@ content length: 61
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

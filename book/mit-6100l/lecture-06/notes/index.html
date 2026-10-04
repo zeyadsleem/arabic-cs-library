@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 6: البحث بالتنصيف (Bisection Search) — المحاضرة 6: البحث بالتنصيف (Bisection Search)"/><!----><title>المحاضرة 6: البحث بالتنصيف (Bisection Search) | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 6: البحث بالتنصيف (Bisection Search)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 8 من 30">8 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-06/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-06/exercises">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes" class="active">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3>المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3>المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>المادة الأصلية: <strong>آنا بيل (Ana Bell)</strong>، <strong>MIT OpenCourseWare (MIT OCW)</strong>، معهد ماساتشوستس للتكنولوجيا، مقرر <strong>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python</strong>، <strong>خريف 2022 (Fall 2022)</strong>.</p>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-6-bisection-search/">صفحة المحاضرة الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec06_pdf/">صفحة الشرائح الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec06.pdf">ملف الشرائح الأصلي، PDF</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec06_code.py">ملف شيفرة المحاضرة الأصلي</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec06/">تفريغ المحاضرة على OCW</a> (النسخة الإنجليزية الرسمية).</li>
+</ul>
+<p>هذه ترجمة وتكييف عربي غير رسمي وفق <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">رخصة CC BY-NC-SA 4.0: النسبة–غير التجاري–المشاركة بالمثل</a>، ولا تعني اعتمادًا أو تأييدًا من MIT أو MIT OCW. <a href="https://ocw.mit.edu/terms/">شروط الاستخدام والاستشهاد</a>.</p>
+<p><strong>منهج الترجمة:</strong> لكل صفحة في ملف الشرائح عنوان مستقل ورقم مطابق. نُقلت الأشكال المتكرّرة إلى جداول تحافظ على تسلسلها. الشيفرة والشفرة الوهمية (pseudocode) محفوظة بالإنجليزية. لم تُضمَّن صور أو صفحات PDF.</p>
+<h2 id="الشريحة-1-البحث-بالتنصيف-bisection-search">الشريحة 1: البحث بالتنصيف (Bisection Search)</h2>
+<p>(نزّل الشرائح وملفات <code>.py</code> لمتابعة الشرح).</p>
+<p>6.100L، المحاضرة 6 — آنا بيل (Ana Bell).</p>
+<h2 id="الشريحة-2-المحاضرة-الماضية">الشريحة 2: المحاضرة الماضية</h2>
+<ul>
+<li>
+<p>الأعداد العشرية (floating point numbers) تضيف تحديات جديدة:</p>
+<ul>
+<li>لا يمكن تمثيلها في الذاكرة تمثيلًا تامًّا.</li>
+<li>العمليات على الأعداد العشرية تُدخل أخطاءً ضئيلة.</li>
+<li>عمليات متعدّدة على الأعداد العشرية تُضخّم الأخطاء.</li>
+</ul>
+</li>
+<li>
+<p>التحقق والتخمين (guess-and-check) يعدّ الأعداد الصحيحة واحدًا تلو الآخر بوصفه حلًّا للمشكلة.</p>
+</li>
+<li>
+<p>طرق التقريب (approximation methods) تعدّ باستخدام زيادة عشرية (float increment).</p>
+<ul>
+<li>لا يمكن التحقق من حلّ ما، لكن يمكن التحقق ممّا إذا كان الحلّ يعطي قيمة ضمن إيبسيلون (epsilon).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-3-مراجعة-إيجاد-الجذر-التربيعي-مع-شرط-التوقف-وبزيادة-كبيرة-001">الشريحة 3: مراجعة: إيجاد الجذر التربيعي مع شرط التوقّف وبزيادة كبيرة (0.01)</h2>
+<ul>
+<li>السهم الأزرق هو التخمين (guess).</li>
+<li>السهم الأخضر هو <code>guess**2</code>.</li>
+</ul>
+<p>القيمة <code>x = 54321</code>، ومعها إيبسيلون.</p>
+<div class="callout callout--kind">
+<p><strong>ملاحظة المترجم:</strong> يبيّن الرسم على خطّ الأعداد موضع التخمين وموضع <code>guess**2</code> بالأسهم، وهما متغيّران يتغيّران مع كلّ خطوة في محاضرة 5. أُعيد هنا ذكر المبدأ فقط لأنّ نصّ PDF المستخرَج لا يحفظ مواضع الأسهم على المحور، ولم يُستدلّ على أرقام لم تُذكر في الملف.</p>
+</div>
+<h2 id="الشريحة-4-مراجعة-على-طريقة-التقريب-لإيجاد-جذر-تربيعي-قريب-كفاية">الشريحة 4: مراجعة على طريقة التقريب لإيجاد جذر تربيعي «قريب كفاية»</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+guess = <span class="hljs-number">0.0</span>
+increment = <span class="hljs-number">0.0001</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon <span class="hljs-keyword">and</span> guess**<span class="hljs-number">2</span> &lt;= x:
+    guess += increment
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Failed on square root of&#x27;</span>, x)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-5-البحث-بالتنصيف-bisection-search">الشريحة 5: البحث بالتنصيف (Bisection Search)</h2>
+<p>شريحة عنوان.</p>
+<h2 id="الشريحة-6-فرصة-لربح-مبلغ-كبير">الشريحة 6: فرصة لربح مبلغ كبير</h2>
+<ul>
+<li>لنفرض أنّني ألصقت ورقةً من مئة دولار في صفحة معيّنة من كتاب مدرسي طوله 448 صفحة.</li>
+<li>إن استطعت تخمين الصفحة في 8 محاولات أو أقلّ حصلتَ على مبلغ كبير.</li>
+<li>وإن أخفقتَ حصلتَ على تقدير راسب (F).</li>
+<li>هل ترغب في اللعب؟</li>
+<li>والآن لنفرض أنّني في كلّ محاولة أخبرك إن كنتَ مصيبًا، أم أنها أقلّ من المطلوب، أم أعلى من المطلوب.</li>
+<li>هل ترغب في اللعب في هذه الحالة؟</li>
+</ul>
+<h2 id="الشريحة-7-البحث-بالتنصيف-bisection-search">الشريحة 7: البحث بالتنصيف (Bisection Search)</h2>
+<ul>
+<li>
+<p>يصلح لتطبيقه على المسائل التي تكون فيها إجاباتها الممكنة ذات ترتيب inherent.</p>
+</li>
+<li>
+<p>لنفرض أنّنا نعرف الإجابة تقع داخل مجال (interval) ما.</p>
+<ul>
+<li>خمّن نقطة المنتصف (midpoint) في هذا المجال.</li>
+<li>إن لم تكن الإجابة، فافحص: هل الإجابة أكبر أم أصغر من نقطة المنتصف؟</li>
+<li>غيّر المجال.</li>
+<li>كرّر.</li>
+</ul>
+</li>
+<li>
+<p>يقسم هذا العملية مجموعة الأشياء المطلوب فحصها إلى نصفها في كلّ مرحلة.</p>
+</li>
+<li>
+<p>البحث الشامل (exhaustive search) يقلّصها من N إلى N-1 في كلّ خطوة.</p>
+</li>
+<li>
+<p>البحث بالتنصيف (bisection search) يقلّصها من N إلى N/2.</p>
+</li>
+</ul>
+<h2 id="الشريحة-8-النمو-اللوغاريتمي-logarithmic-growth-أفضل">الشريحة 8: النموّ اللوغاريتمي (Logarithmic Growth) أفضل</h2>
+<ul>
+<li>
+<p>يقسم هذا العملية مجموعة الأشياء المطلوب فحصها إلى نصفها في كلّ مرحلة.</p>
+</li>
+<li>
+<p>هذه هي الخاصية المميِّزة للنموّ اللوغاريتمي.</p>
+</li>
+<li>
+<p>مقارنة بين خوارزميتين: التحقق والتخمين (guess-and-check) مقابل البحث بالتنصيف (bisection search).</p>
+<ul>
+<li>الفحص واحدًا تلو الآخر بشكل تكراري خطّي (linear) في عدد التخمينات الممكنة.</li>
+<li>الفحص بتخمين نقطة المنتصف لوغاريتمي (logarithmic) في عدد التخمينات الممكنة.</li>
+<li>الخوارزمية اللوغاريتميّة أكثر كفاءة بكثير.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-9-تشبيه-an-analogy">الشريحة 9: تشبيه (An Analogy)</h2>
+<ul>
+<li>لنفرض أنّنا أجبرناك على الجلوس في الصفّ مرتّبين أبجديًّا، من الزاوية الأمامية اليسرى إلى الزاوية الخلفية اليمنى.</li>
+<li>للعثور على طالب بعينه، أستطيع أن أسأل الشخص الموجود في منتصف القاعة عن اسمه.</li>
+<li>وبناءً على الإجابة، أستطيع أن أستبعد النصف الخلفي أو النصف الأمامي من القاعة كلها.</li>
+<li>وأكرر هذه العملية حتى أعثر على الشخص الذي أبحث عنه.</li>
+</ul>
+<h2 id="الشريحة-10-البحث-بالتنصيف-للجذر-التربيعي">الشريحة 10: البحث بالتنصيف للجذر التربيعي</h2>
+<ul>
+<li>لنفرض أنّنا نعرف أنّ الإجابة تقع بين 0 و x.</li>
+<li>بدلًا من تجريب الأشياء واحدًا تلو الآخر بدءًا من الصفر، لننتقل بدلًا من ذلك إلى اختيار رقم من منتصف هذا المجال.</li>
+</ul>
+<p>على خطّ الأعداد: من 0 إلى x، وعند g نقطة مختارة.</p>
+<ul>
+<li>إن كنّا محظوظين تكون هذه الإجابة قريبة كفاية.</li>
+</ul>
+<h2 id="الشريحة-11-البحث-بالتنصيف-للجذر-التربيعي">الشريحة 11: البحث بالتنصيف للجذر التربيعي</h2>
+<ul>
+<li>إن لم تكن قريبة كفاية: هل التخمين <code>g</code> كبيرٌ أم صغير؟</li>
+<li>إن كان <code>g**2 &gt; x</code> نعرف أنّ <code>g</code> كبير؛ إذن نبحث الآن في المجال الأصغر.</li>
+</ul>
+<p>على خطّ الأعداد: من 0 إلى x، وعند <code>g</code> و <code>new g</code> نقطتان متتاليتان.</p>
+<h2 id="الشريحة-12-البحث-بالتنصيف-للجذر-التربيعي">الشريحة 12: البحث بالتنصيف للجذر التربيعي</h2>
+<ul>
+<li>وإن كان هذا <code>g</code> الجديد مثلًا بحيث <code>g**2 &lt; x</code>، نعرف أنه صغير؛ إذن نبحث الآن في المجال الأكبر.</li>
+</ul>
+<p>على خطّ الأعداد: من 0 إلى x، وعند <code>g</code> و <code>new g</code> و <code>next g</code>.</p>
+<ul>
+<li>في كلّ مرحلة نُقلّص مجال القيم التي نبحث فيها إلى النصف.</li>
+</ul>
+<h2 id="الشريحة-13-البحث-بالتنصيف-للجذر-التربيعي">الشريحة 13: البحث بالتنصيف للجذر التربيعي</h2>
+<ul>
+<li>وإن كان هذا <code>g</code> التالي مثلًا بحيث <code>g**2 &lt; x</code>، نعرف أنه صغير؛ إذن نبحث الآن في المجال الأكبر.</li>
+</ul>
+<p>على خطّ الأعداد: من 0 إلى x، وعند <code>g</code> و <code>next g</code> و <code>latest g</code>.</p>
+<ul>
+<li>في كلّ مرحلة نُقلّص مجال القيم التي نبحث فيها إلى النصف.</li>
+</ul>
+<h2 id="الشريحة-14-الفكرة-الكبرى-big-idea">الشريحة 14: الفكرة الكبرى (Big Idea)</h2>
+<p>البحث بالتنصيف (bisection search) يستفيد من خصائص المسألة:</p>
+<ol>
+<li>فضاء البحث (search space) له ترتيب.</li>
+<li>يمكننا أن نعرف إن كان التخمين أقلّ من اللازم أو أعلى من اللازم.</li>
+</ol>
+<h2 id="الشريحة-15-جرب-بنفسك">الشريحة 15: جرّب بنفسك!</h2>
+<ul>
+<li>أنت تخمّن رمز دخول من 4 أرقام. كلّ ما يخبرك به الهاتف هو: هل تخمينك صحيح أم لا. هل تستطيع استخدام البحث بالتنصيف لتخمّن الرمز بسرعة وبالصحّة؟</li>
+</ul>
+<p><strong>ملاحظة المترجم:</strong> السؤال يمثّل حالة لا يصلح فيها البحث بالتنصيف، لأنّ لوحة المفاتيح لا تقدّم ترتيبًا أو تغذية راجعة «أعلى/أدنى» — وهذا هو المقصود من التمرين.</p>
+<h2 id="الشريحة-16-جرب-بنفسك">الشريحة 16: جرّب بنفسك!</h2>
+<ul>
+<li>أنت تلعب لعبة تخمين قاسية جدًا: أن تخمّن رقمًا <strong>تمامًا</strong>. صديقٌ في ذهنه رقم عشري بين 0 و 10 (بدقّة غير محدودة). التغذية الراجعة على تخمينك هي: صحيح، أم أعلى، أم أدنى. هل تستطيع استخدام البحث بالتنصيف لتخمّن الرقم بسرعة وبالصحّة؟</li>
+</ul>
+<h2 id="الشريحة-17-الجذر-التربيعي-البطيء-باستخدام-طرق-التقريب">الشريحة 17: الجذر التربيعي البطيء باستخدام طرق التقريب</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+guess = <span class="hljs-number">0.0</span>
+increment = <span class="hljs-number">0.00001</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon <span class="hljs-keyword">and</span> guess**<span class="hljs-number">2</span> &lt;= x:
+    guess += increment
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Failed on square root of&#x27;</span>, x)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-18-الجذر-التربيعي-السريع">الشريحة 18: الجذر التربيعي السريع</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-19-الجذر-التربيعي-السريع">الشريحة 19: الجذر التربيعي السريع</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+low = <span class="hljs-number">0</span>
+high = x
+guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-20-الجذر-التربيعي-السريع">الشريحة 20: الجذر التربيعي السريع</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+low = <span class="hljs-number">0</span>
+high = x
+guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x :
+    <span class="hljs-keyword">else</span>:
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-21-الجذر-التربيعي-السريع">الشريحة 21: الجذر التربيعي السريع</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+low = <span class="hljs-number">0</span>
+high = x
+guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x :
+        low = guess
+    <span class="hljs-keyword">else</span>:
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-22-الجذر-التربيعي-السريع">الشريحة 22: الجذر التربيعي السريع</h2>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+low = <span class="hljs-number">0</span>
+high = x
+guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x :
+        low = guess
+    <span class="hljs-keyword">else</span>:
+        high = guess
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-23-الجذر-التربيعي-السريع">الشريحة 23: الجذر التربيعي السريع</h2>
+<p>(رابط Python Tutor لمتابعة تنفيذ الشيفرة خطوة بخطوة).</p>
+<pre><code class="language-python">x = <span class="hljs-number">54321</span>
+epsilon = <span class="hljs-number">0.01</span>
+num_guesses = <span class="hljs-number">0</span>
+low = <span class="hljs-number">0</span>
+high = x
+guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x :
+        low = guess
+    <span class="hljs-keyword">else</span>:
+        high = guess
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+    num_guesses += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses =&#x27;</span>, num_guesses)
+<span class="hljs-built_in">print</span>(guess, <span class="hljs-string">&#x27;is close to square root of&#x27;</span>, x)
+</code></pre>
+<h2 id="الشريحة-24-النمو-اللوغاريتمي-أفضل">الشريحة 24: النموّ اللوغاريتمي أفضل</h2>
+<ul>
+<li>البحث بالقوة الغاشمة (brute force search) عن جذر 54321 استغرق أكثر من 23 مليون تخمين (23M).</li>
+<li>بالبحث بالتنصيف انخفض العدد إلى 30 تخمينًا فقط!</li>
+<li>سنقضي وقتًا أطول في هذا لاحقًا، لكننا نقول إنّ طريقة القوة الغاشمة <strong>خطّية</strong> في حجم المسألة، لأنّ عدد الخطوات ينمو خطّيًّا كلّما زاد حجم المسألة.</li>
+<li>البحث بالتنصيف <strong>لوغاريتمي</strong> في حجم المسألة، لأنّ عدد الخطوات ينمو لوغاريتميًا مع حجم المسألة.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>فضاء البحث</th>
+<th>التخمين</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>التخمين الأوّل</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">N/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/2</span></span></span></span></td>
+</tr>
+<tr>
+<td>التخمين الثاني</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">N/4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/4</span></span></span></span></td>
+</tr>
+<tr>
+<td>التخمين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>-th</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><msup><mn>2</mn><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">N/2^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>التخمين يتقارب في رتبة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mi>N</mi></mrow><annotation encoding="application/x-tex">\log_2 N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> خطوة.</li>
+</ul>
+<h2 id="الشريحة-25-لماذا">الشريحة 25: لماذا؟</h2>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><msup><mn>2</mn><mi>k</mi></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N/2^k = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.1491em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>N</mi><mo>=</mo><msup><mn>2</mn><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">N = 2^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8991em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>k</mi><mo>=</mo><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">k = \log(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span></span></span></span></span>
+<ul>
+<li>نصل إلى <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><msup><mn>2</mn><mi>k</mi></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N/2^k = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>، أي بعد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> تخمينات يكون متبقٍّ تخمين واحد فقط لفحصه.</li>
+<li>هذا يخبرنا بـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>.</li>
+<li>نحلّ المعادلة لإيجاد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>.</li>
+<li>هذا يخبرنا بـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span>.</li>
+<li>إذن: يستغرق الأمر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> خطوة عند استخدام البحث بالتنصيف.</li>
+<li>أي: يستغرق الأمر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>log</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\log(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span></span></span></span> خطوة عند استخدام البحث بالتنصيف.</li>
+</ul>
+<h2 id="الشريحة-26-هل-ينجح-هذا-دائما">الشريحة 26: هل ينجح هذا دائمًا؟</h2>
+<ul>
+<li>جرّب تشغيل الشيفرة عند قيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> بحيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 &lt; x &lt; 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>.</li>
+<li>إن كان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">x &lt; 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> فنحن نبحث من 0 إلى x.</li>
+<li>لكنّنا نعرف أنّ الجذر التربيعي أكبر من x وأصغر من 1.</li>
+<li>عدّل الشيفرة لتختار فضاء البحث حسب قيمة x.</li>
+</ul>
+<h2 id="الشريحة-27-جرب-بنفسك-البحث-بالتنصيف-الجذر-التربيعي-عند-0-lt-x-lt-1">الشريحة 27: جرّب بنفسك: البحث بالتنصيف — الجذر التربيعي عند 0 &lt; x &lt; 1</h2>
+<pre><code class="language-python">x = <span class="hljs-number">0.5</span>
+epsilon = <span class="hljs-number">0.01</span>
+
+guess = (high + low)/<span class="hljs-number">2</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x:
+        low = guess
+    <span class="hljs-keyword">else</span>:
+        high = guess
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">{<span class="hljs-built_in">str</span>(guess)}</span> is close  to square root of <span class="hljs-subst">{<span class="hljs-built_in">str</span>(x)}</span>&#x27;</span>)
+</code></pre>
+<h2 id="الشريحة-28-البحث-بالتنصيف-الجذر-التربيعي-لكل-قيم-x">الشريحة 28: البحث بالتنصيف — الجذر التربيعي لكل قيم x</h2>
+<pre><code class="language-python">x = <span class="hljs-number">0.5</span>
+epsilon = <span class="hljs-number">0.01</span>
+<span class="hljs-keyword">if</span> x &gt;= <span class="hljs-number">1</span>:
+    low = <span class="hljs-number">1.0</span>
+    high = x
+<span class="hljs-keyword">else</span>:
+    low = x
+    high = <span class="hljs-number">1.0</span>
+guess = (high + low)/<span class="hljs-number">2</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess**<span class="hljs-number">2</span> - x) &gt;= epsilon:
+    <span class="hljs-keyword">if</span> guess**<span class="hljs-number">2</span> &lt; x:
+        low = guess
+    <span class="hljs-keyword">else</span>:
+        high = guess
+    guess = (high + low)/<span class="hljs-number">2.0</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">{<span class="hljs-built_in">str</span>(guess)}</span> is close  to square root of <span class="hljs-subst">{<span class="hljs-built_in">str</span>(x)}</span>&#x27;</span>)
+</code></pre>
+<h2 id="الشريحة-29-بعض-الملاحظات">الشريحة 29: بعض الملاحظات</h2>
+<ul>
+<li>البحث بالتنصيف يخفض زمن الحساب بشكل جذري — التميّز في اختيار طريقة توليد التخمينات مهم.</li>
+<li>فضاء البحث يصغر بسرعة في البداية ثم ببطء (بالمقياس المطلق، لكن ليس كنسبة من فضاء البحث).</li>
+<li>ينجح في المسائل التي تملك خاصية «الترتيب» (ordering).</li>
+</ul>
+<h2 id="الشريحة-30-جرب-بنفسك">الشريحة 30: جرّب بنفسك!</h2>
+<ul>
+<li>اكتب شيفرة تنفّذ البحث بالتنصيف لتجد الجذر التكعيبي لمكعّبات موجبة ضمن إيبسيلون معيّن. ابدأ بـ:</li>
+</ul>
+<pre><code class="language-python">cube = <span class="hljs-number">27</span>
+epsilon = <span class="hljs-number">0.01</span>
+low = <span class="hljs-number">0</span>
+high = cube
+</code></pre>
+<h2 id="الشريحة-31-نيوتنرافسون-newton-raphson">الشريحة 31: نيوتن–رافسون (Newton-Raphson)</h2>
+<ul>
+<li>خوارزمية تقريبية عامّة لإيجاد جذور كثير الحدود (polynomial) في متغيّر واحد:</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">p(x) = a_n x^n + a_{n-1}x^{n-1} + \dots + a_1 x + a_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8644em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.0724em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>
+<ul>
+<li>أثبت نيوتن ورافسون أنّه إذا كان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span> تقريبًا للجذر، فإنّ</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>g</mi><mo>−</mo><mfrac><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow><mrow><msup><mi>p</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">g - \frac{p(g)}{p&#x27;(g)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6779em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>تقريبٌ أفضل؛ حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></mrow><annotation encoding="application/x-tex">p&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.9463em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span> هو مشتقّة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span>.</p>
+<ul>
+<li>جرّب أن تستخدم هذه الفكرة لإيجاد الجذر التربيعي لـ x.</li>
+<li>نريد أن نجد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span></span></span></span> بحيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>r</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p(r) = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>.</li>
+<li>مثلًا: لإيجاد الجذر التربيعي لـ 24، نجد جذر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>24</mn></mrow><annotation encoding="application/x-tex">p(x) = x^2 - 24</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">24</span></span></span></span>.</li>
+</ul>
+<h2 id="الشريحة-32-حدس-رابط-intuition-link">الشريحة 32: حدس — رابط (Intuition - LINK)</h2>
+<p>شريحة تحوي رابطًا ومشاهد متحرّكة لشرح الفكرة بصريًا.</p>
+<h2 id="الشريحة-33-برنامج-إيجاد-الجذر-بنيوتنرافسون">الشريحة 33: برنامج إيجاد الجذر بنيوتن–رافسون</h2>
+<ul>
+<li>حالة بسيطة لكثير الحدود: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">x^2 - k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span></li>
+<li>المشتقّة الأولى: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">2x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal">x</span></span></span></span></li>
+<li>تقول طريقة نيوتن–رافسون: إن كان لدينا تخمين <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span></span> لجذر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>، فإنّ تخمينًا أفضل هو:</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>g</mi><mo>−</mo><mfrac><mrow><msup><mi>g</mi><mn>2</mn></msup><mo>−</mo><mi>k</mi></mrow><mrow><mn>2</mn><mi>g</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">g - \frac{g^2 - k}{2g}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.3715em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<ul>
+<li>وهذا يجد في النهاية تقريبًا للجذر التربيعي لـ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>!</li>
+</ul>
+<h2 id="الشريحة-34-برنامج-إيجاد-الجذر-بنيوتنرافسون">الشريحة 34: برنامج إيجاد الجذر بنيوتن–رافسون</h2>
+<ul>
+<li>طريقة أخرى لتوليد تخمينات يمكننا فحصها؛ وهي <strong>كفؤة جدًّا</strong>.</li>
+</ul>
+<pre><code class="language-python">epsilon = <span class="hljs-number">0.01</span>
+k = <span class="hljs-number">24.0</span>
+guess = k/<span class="hljs-number">2.0</span>
+num_guesses = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> <span class="hljs-built_in">abs</span>(guess*guess - k) &gt;= epsilon:
+    num_guesses += <span class="hljs-number">1</span>
+    guess = guess - (((guess**<span class="hljs-number">2</span>) - k)/(<span class="hljs-number">2</span>*guess))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;num_guesses = &#x27;</span> + <span class="hljs-built_in">str</span>(num_guesses))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Square root of &#x27;</span> + <span class="hljs-built_in">str</span>(k) + <span class="hljs-string">&#x27; is about &#x27;</span> + <span class="hljs-built_in">str</span>(guess))
+</code></pre>
+<h2 id="الشريحة-35-الخوارزميات-التكرارية-iterative-algorithms">الشريحة 35: الخوارزميات التكرارية (Iterative Algorithms)</h2>
+<ul>
+<li>
+<p>طرق «خمّن ثم افحص» (guess and check) تقوم على إعادة استخدام الشيفرة نفسها.</p>
+<ul>
+<li>استخدم بنية تكرار (looping construct).</li>
+<li>ولّد تخمينات (هذا هو الفارق المهم بين الخوارزميات).</li>
+<li>افحص وتابع.</li>
+</ul>
+</li>
+<li>
+<p>توليد التخمينات:</p>
+<ul>
+<li>التعداد الشامل (exhaustive enumeration).</li>
+<li>خوارزمية التقريب (approximation algorithm).</li>
+<li>البحث بالتنصيف (bisection search).</li>
+<li>نيوتن–رافسون (لإيجاد الجذور).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-36-الخلاصة-summary">الشريحة 36: الخلاصة (Summary)</h2>
+<ul>
+<li>
+<p>في مسائل كثيرة لا يمكننا إيجاد الإجابة الدقيقة.</p>
+<ul>
+<li>نحتاج إلى السعي وراء إجابة «جيدة كفاية» باستخدام التقريب.</li>
+</ul>
+</li>
+<li>
+<p>عند اختبار الأعداد العشرية:</p>
+<ul>
+<li>من المهمّ أن نفهم كيف يمثّلها الحاسوب في النظام الثنائي.</li>
+<li>من المهمّ أن نفهم لماذا نستخدم «قريب كفاية» ولا نستخدم <code>==</code>.</li>
+</ul>
+</li>
+<li>
+<p>البحث بالتنصيف (bisection search) سريع، لكنّه يعمل في المسائل التي تملك:</p>
+<ul>
+<li>طرفين.</li>
+<li>ترتيبًا في القيم.</li>
+<li>تغذية راجعة على التخمينات (أدنى، أعلى، صحيح، إلخ).</li>
+</ul>
+</li>
+<li>
+<p>نيوتن–رافسون طريقة ذكية لإيجاد جذور كثير الحدود.</p>
+</li>
+</ul>
+<h2 id="الشرائح-3742-مقدمة-إلى-المحاضرة-التالية-التفكيك-والتجريد">الشرائح 37–42: مقدّمة إلى المحاضرة التالية (التفكيك والتجريد)</h2>
+<p><strong>ملاحظة المترجم:</strong> الشرائح من 37 إلى 42 في ملف PDF هي في الحقيقة مقدّمة للمحاضرة 7 (التفكيك والتجريد)، وقد أدرجها MIT في نهاية ملف المحاضرة 6. نُقلت هنا بترتيبها كما في الملف.</p>
+<h3 id="الشريحة-37-التفكيك-والتجريد-decomposition-and-abstraction">الشريحة 37: التفكيك والتجريد (Decomposition and Abstraction)</h3>
+<p>شريحة عنوان للمقدّمة.</p>
+<h3 id="الشريحة-38-تعلم-إنشاء-الشيفرة-learning-to-create-code">الشريحة 38: تعلّم إنشاء الشيفرة (Learning to Create Code)</h3>
+<ul>
+<li>حتى الآن غطّينا آليات اللغة الأساسية: أوامر أوّلية (primitives)، تعبيرات معقّدة، التفريع (branching)، التكرار (iteration).</li>
+<li>من حيث المبدأ، أنت تعرف كلّ ما تحتاجه لإنجاز أيّ شيء يمكن إنجازه بالحساب.</li>
+<li>لكنّنا في الواقع لم نعلّمك شيئًا عن مفهومين من أهمّ المفاهيم في البرمجة…</li>
+</ul>
+<h3 id="الشريحة-39-التفكيك-والتجريد">الشريحة 39: التفكيك والتجريد</h3>
+<ul>
+<li>التفكيك (Decomposition): كيف نقسم برنامجًا إلى أجزاء مكتفية ذاتيًا يمكن دمجها لحلّ المسألة الحالية.</li>
+</ul>
+<h3 id="الشريحة-40-التفكيك-والتجريد">الشريحة 40: التفكيك والتجريد</h3>
+<ul>
+<li>التجريد (Abstraction): كيف نتجاهل التفصيل غير الضروري.</li>
+</ul>
+<h3 id="الشريحة-41-التفكيك-والتجريد">الشريحة 41: التفكيك والتجريد</h3>
+<ul>
+<li>التفكيك (Decomposition):
+<ul>
+<li>في الحالة المثلى يمكن إعادة استخدام الأجزاء في برامج أخرى.</li>
+<li>«مكتفية ذاتيًا» تعني أنّ الأجزاء ينبغي أن تُنجز الحساب باستخدام المدخلات الممرَّرة إليها والعمليات «الأساسية» فقط.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">a = <span class="hljs-number">3.14</span>*<span class="hljs-number">2.2</span>*<span class="hljs-number">2.2</span>
+
+pi = <span class="hljs-number">3.14</span>
+r = <span class="hljs-number">2.2</span>
+area = pi*r**<span class="hljs-number">2</span>
+</code></pre>
+<ul>
+<li>التجريد (Abstraction):
+<ul>
+<li>يُستخدم لفصل ما يفعله الشيء عن كيفية فعله له فعلًا.</li>
+<li>إنشاء الأجزاء وتجريد التفاصيل يتيح لنا كتابة شيفرة معقّدة مع إخفاء التفاصيل، حتى لا نغمر بذلك التعقيد.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-comment"># calculate the area of a circle</span>
+</code></pre>
+<h2 id="الشريحة-42-الفكرة-الكبرى-big-idea">الشريحة 42: الفكرة الكبرى (Big Idea)</h2>
+<p>اجعل الشيفرة سهلة:</p>
+<ul>
+<li>الإنشاء.</li>
+<li>التعديل.</li>
+<li>الصيانة.</li>
+<li>الفهم.</li>
+</ul>
+<h2 id="الشريحة-43-mit-opencourseware">الشريحة 43: MIT OpenCourseWare</h2>
+<ul>
+<li><a href="https://ocw.mit.edu">MIT OpenCourseWare</a></li>
+<li>6.100L Introduction to Computer Science and Programming Using Python — Fall 2022.</li>
+<li>للاستعلام عن كيفية الاستشهاد بهذه المواد أو عن <a href="https://ocw.mit.edu/terms">شروط الاستخدام</a>، زيارة: https://ocw.mit.edu/terms.</li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-06/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 6: البحث بالتنصيف (Bisection Search)</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-06/exercises"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

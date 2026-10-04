@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists) — المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)"/><!----><title>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists) | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 11 من 30">11 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-09/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-09/exercises">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes" class="active">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3>المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3>المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>المادة الأصلية: <strong>آنا بيل (Ana Bell)</strong>، <strong>MIT OpenCourseWare (MIT OCW)</strong>، معهد ماساتشوستس للتكنولوجيا، مقرر <strong>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python</strong>، <strong>خريف 2022 (Fall 2022)</strong>.</p>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-9-lambda-functions-tuples-and-lists/">صفحة المحاضرة الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec09_pdf/">صفحة الشرائح الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec09.pdf">ملف الشرائح الأصلي، PDF</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec09_code.py">ملف شيفرة المحاضرة الأصلي</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec09/">تفريغ المحاضرة على OCW</a> (النسخة الإنجليزية الرسمية).</li>
+</ul>
+<p>هذه ترجمة وتكييف عربي غير رسمي وفق <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">رخصة CC BY-NC-SA 4.0: النسبة–غير التجاري–المشاركة بالمثل</a>، ولا تعني اعتمادًا أو تأييدًا من MIT أو MIT OCW. <a href="https://ocw.mit.edu/terms/">شروط الاستخدام والاستشهاد</a>.</p>
+<p><strong>منهج الترجمة:</strong> لكل صفحة في ملف الشرائح عنوان مستقل ورقم مطابق. شرائح تتبّع البيئة (Environment) تتكرّر فيها الشيفرة نفسها مع جداول جديدة؛ نُقلت كل شريحة على حدة مع جدولها. الشرائح التي تبني الشيفرة تدريجيًّا نُقلت إلى جداول تحافظ على تسلسلها. الشيفرة والشفرة الوهمية محفوظة بالإنجليزية، ولم تُترجَم أسماء الدوال ولا الكلمات المفتاحية ولا أسماء المتغيّرات.</p>
+<h2 id="الشريحة-1-دوال-lambda-والصفوف-والقوائم-lambda-functions-tuples-and-lists">الشريحة 1: دوال Lambda والصفوف والقوائم (Lambda Functions, Tuples and Lists)</h2>
+<p>نزّل الشرائح وملفات <code>.py</code> لمتابعة الشرح.</p>
+<p>6.100L، المحاضرة 9 — آنا بيل (Ana Bell).</p>
+<h2 id="الشريحة-2-من-المحاضرة-السابقة-from-last-time">الشريحة 2: من المحاضرة السابقة (From last time)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">apply</span>(<span class="hljs-params">criteria,n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    * criteria: function that takes in a number and returns a bool
+    * n: an int
+    Returns how many ints from 0 to n (inclusive) match the
+    criteria (i.e. return True when run with criteria) &quot;&quot;&quot;</span>
+    count = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n+<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> criteria(i):
+            count += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> count
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_even</span>(<span class="hljs-params">x</span>):
+    <span class="hljs-keyword">return</span> x%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>
+
+<span class="hljs-built_in">print</span>(apply(is_even,<span class="hljs-number">10</span>))
+</code></pre>
+<h2 id="الشريحة-3-الدوال-المجهولة-anonymous-functions">الشريحة 3: الدوال المجهولة (Anonymous Functions)</h2>
+<ul>
+<li>أحيانًا لا نريد تسمية الدوال، خصوصًا البسيطة منها. هذه الدالة مثال جيد:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_even</span>(<span class="hljs-params">x</span>):
+    <span class="hljs-keyword">return</span> x%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>
+</code></pre>
+<ul>
+<li>يمكن استعمال إجراء مجهول (Anonymous Procedure) باستخدام <code>lambda</code>:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">lambda</span> x: x%<span class="hljs-number">2</span> == <span class="hljs-number">0</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الجزء</th>
+<th>المقابل في صيغة <code>def</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td>المعامل (Parameter)</td>
+</tr>
+<tr>
+<td><code>x%2 == 0</code></td>
+<td>جسم دالة <code>lambda</code> (Body of Lambda)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>لا توجد الكلمة المفتاحية <code>return</code> (Note no <code>return</code> keyword)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>تنشئ <code>lambda</code> كائن إجراء أو دالة، لكنها ببساطة <strong>لا تربط به اسمًا</strong>.</li>
+</ul>
+<h2 id="الشريحة-4-الدوال-المجهولة-الاستدعاء">الشريحة 4: الدوال المجهولة — الاستدعاء</h2>
+<ul>
+<li>استدعاء دالة باسمها:</li>
+</ul>
+<pre><code class="language-python">apply( is_even , <span class="hljs-number">10</span> )
+</code></pre>
+<ul>
+<li>استدعاء دالة بدالة مجهولة كوسيط:</li>
+</ul>
+<pre><code class="language-python">apply( <span class="hljs-keyword">lambda</span> x: x%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> , <span class="hljs-number">10</span> )
+</code></pre>
+<ul>
+<li>دالة <code>lambda</code> للاستعمال مرة واحدة (One-Time Use). لا يمكن إعادة استعمالها لأنها بلا اسم!</li>
+</ul>
+<h2 id="الشريحة-5-جرب-بنفسك-you-try-it">الشريحة 5: جرّب بنفسك! (YOU TRY IT!)</h2>
+<p>ماذا يطبع هذا؟</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">do_twice</span>(<span class="hljs-params">n, fn</span>):
+    <span class="hljs-keyword">return</span> fn(fn(n))
+
+<span class="hljs-built_in">print</span>(do_twice(<span class="hljs-number">3</span>, <span class="hljs-keyword">lambda</span> x: x**<span class="hljs-number">2</span>))
+</code></pre>
+<h2 id="الشريحة-6-جرب-بنفسك-البيئة-العامة-global-environment">الشريحة 6: جرّب بنفسك! — البيئة العامة (Global environment)</h2>
+<p>الشيفرة نفسها، وجدول البيئة العامة:</p>
+<table>
+<thead>
+<tr>
+<th>الاسم</th>
+<th>ملاحظات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>do_twice</code></td>
+<td>function object</td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-7-جرب-بنفسك-بيئة-dotwice">الشريحة 7: جرّب بنفسك! — بيئة <code>do_twice</code></h2>
+<p>الشيفرة نفسها، وأُنشئت بيئة جديدة اسمها <code>do_twice environment</code> وطابِقت المعاملات الصورية:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global environment</td>
+<td><code>do_twice</code></td>
+<td>function object</td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>n</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>fn</code></td>
+<td><code>lambda x: x**2</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-8-جرب-بنفسك-تنفيذ-الاستدعاء-الداخلي-الأول">الشريحة 8: جرّب بنفسك! — تنفيذ الاستدعاء الداخلي الأول</h2>
+<p>الشيفرة نفسها، وجداول الشريحة 7، وقد ظهر اسم جديد:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>do_twice environment</td>
+<td>—</td>
+<td><code>lambda x: x**2</code> environment — بيئتان جديدتان متطابقتان</td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td>—</td>
+<td><code>x</code> في كلٍّ منهما قيمته <code>???</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-9-جرب-بنفسك-تغير-قيمة-x">الشريحة 9: جرّب بنفسك! — تغيّر قيمة <code>x</code></h2>
+<p>الشيفرة نفسها. صار في كل من بيئتَي <code>lambda x: x**2</code> اسم <code>x</code>، وأحدهما صار <code>9</code> والآخر ما زال <code>???</code>:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global environment</td>
+<td><code>do_twice</code></td>
+<td>function object</td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>n</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>fn</code></td>
+<td><code>lambda x: x**2</code></td>
+</tr>
+<tr>
+<td>lambda x: x**2 environment</td>
+<td><code>x</code></td>
+<td><code>9</code></td>
+</tr>
+<tr>
+<td>lambda x: x**2 environment</td>
+<td><code>x</code></td>
+<td><code>???</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-10-جرب-بنفسك-عودة-النتيجة-الأولى">الشريحة 10: جرّب بنفسك! — عودة النتيجة الأولى</h2>
+<p>الشريحة نفسها. أُرجِع <code>9</code> من البيئة الأولى، وصار في البيئة الثانية <code>x = 10</code>:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global environment</td>
+<td><code>do_twice</code></td>
+<td>function object</td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>n</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td>do_twice environment</td>
+<td><code>fn</code></td>
+<td><code>lambda x: x**2</code></td>
+</tr>
+<tr>
+<td>lambda x: x**2 environment</td>
+<td><code>x</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
+</table>
+<p>مع عبارة <code>Returns 9</code> بجوار البيئة التي أعادت <code>9</code>.</p>
+<h2 id="الشريحة-11-جرب-بنفسك-النتيجة-النهائية">الشريحة 11: جرّب بنفسك! — النتيجة النهائية</h2>
+<p>الشيفرة نفسها. صارت القيمة في بيئتَي <code>lambda</code> هي <code>81</code> و<code>99</code> على التوالي:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lambda x: x**2 environment</td>
+<td><code>x</code></td>
+<td><code>99</code></td>
+</tr>
+</tbody>
+</table>
+<p>مع عبارة <code>Returns 81</code> بجوار البيئة التي أعادت <code>81</code>.</p>
+<h2 id="الشريحة-12-جرب-بنفسك-ما-الذي-يطبع">الشريحة 12: جرّب بنفسك! — ما الذي يُطبع؟</h2>
+<p>الشيفرة نفسها. النطاق العام فيه عبارة <code>PRINTS 81</code> بجوار <code>do_twice</code>:</p>
+<table>
+<thead>
+<tr>
+<th>البيئة</th>
+<th>الاسم</th>
+<th>القيمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global environment</td>
+<td><code>do_twice</code></td>
+<td>function object — بجواره <code>PRINTS 81</code></td>
+</tr>
+</tbody>
+</table>
+<p>مع عبارة <code>Returns 81</code> بجوار بيئة <code>do_twice</code>.</p>
+<p><strong>ملاحظة المترجم:</strong> الشرائح 5 إلى 12 تخطّط لتسلسل البيئة كاملًا. الجداول أعلاه تحفظ التسلسل: <code>n = 3</code>، ثم <code>fn = lambda x: x**2</code>، ثم الاستدعاء الداخلي ينتج <code>9</code>، ثم <code>81</code>، ثم <code>99</code>، ثم الدالة تُرجِع <code>81</code>، ثم <code>print</code> يطبع <code>81</code>.</p>
+<h2 id="الشريحة-13-الصفوف-tuples">الشريحة 13: الصفوف (Tuples)</h2>
+<p>شريحة فاصلة تعلن موضوعًا جديدًا.</p>
+<h2 id="الشريحة-14-نوع-بيانات-جديد-a-new-data-type">الشريحة 14: نوع بيانات جديد (A New Data Type)</h2>
+<ul>
+<li>رأينا الأنواع العددية (Scalar Types): <code>int</code> و<code>float</code> و<code>bool</code>.</li>
+<li>رأينا نوعًا مركّبًا واحدًا: النص (String).</li>
+<li>نريد تقديم أنواع بيانات مركّبة أكثر عمومية:
+<ul>
+<li>تسلسلات مفهرسة (Indexed Sequences) من عناصر، وقد تكون هذه العناصر بدورها بنى مركّبة.</li>
+<li>الصفوف (Tuples) — غير قابلة للتغيير (Immutable).</li>
+<li>القوائم (Lists) — قابلة للتغيير (Mutable).</li>
+</ul>
+</li>
+<li>في المحاضرة القادمة سنستكشف أفكار:
+<ul>
+<li>قابلية التغيير (Mutability).</li>
+<li>الأسماء المستعارة (Aliasing).</li>
+<li>الاستنساخ (Cloning).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-15-الصفوف-tuples">الشريحة 15: الصفوف (Tuples)</h2>
+<ul>
+<li>تسلسل مرتَّب (Ordered) من الكائنات، قابل للفهرسة (Indexable).</li>
+<li>الكائنات يمكن أن تكون من أي نوع: <code>int</code> أو نص أو صف أو صف من صفوف أو ما شابه.</li>
+<li>لا يمكن تغيير قيم العناصر، فهي غير قابلة للتغيير (Immutable).</li>
+</ul>
+<pre><code class="language-python">te = ()
+ts = (<span class="hljs-number">2</span>,)
+
+t = (<span class="hljs-number">2</span>, <span class="hljs-string">&quot;mit&quot;</span>, <span class="hljs-number">3</span>)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>التعبير</th>
+<th>النتيجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>t[0]</code></td>
+<td>يُقيَّم إلى <code>2</code></td>
+</tr>
+<tr>
+<td><code>(2,&quot;mit&quot;,3) + (5,6)</code></td>
+<td>يُقيَّم إلى صف جديد <code>(2,&quot;mit&quot;,3,5,6)</code></td>
+</tr>
+<tr>
+<td><code>t[1:2]</code></td>
+<td>صف مُقطَّع (Slice Tuple)، يُقيَّم إلى <code>(&quot;mit&quot;,)</code></td>
+</tr>
+<tr>
+<td><code>t[1:3]</code></td>
+<td>صف مُقطَّع، يُقيَّم إلى <code>(&quot;mit&quot;,3)</code></td>
+</tr>
+<tr>
+<td><code>len(t)</code></td>
+<td>يُقيَّم إلى <code>3</code></td>
+</tr>
+<tr>
+<td><code>max((3,5,0))</code></td>
+<td>يُقيَّم إلى <code>5</code></td>
+</tr>
+<tr>
+<td><code>t[1] = 4</code></td>
+<td>يعطي خطأ: لا يمكن تعديل الكائن</td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-16-الفهرسة-والتقطيع-indices-and-slicing">الشريحة 16: الفهرسة والتقطيع (Indices and Slicing)</h2>
+<pre><code class="language-python">seq = (<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-number">4</span>,(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>))
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الفهرس</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>العنصر</td>
+<td><code>2</code></td>
+<td><code>'a'</code></td>
+<td><code>4</code></td>
+<td><code>(1,2)</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-built_in">len</span>(seq))
+<span class="hljs-built_in">print</span>(seq[<span class="hljs-number">3</span>])
+<span class="hljs-built_in">print</span>(seq[-<span class="hljs-number">1</span>])
+<span class="hljs-built_in">print</span>(seq[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>])
+<span class="hljs-built_in">print</span>(seq[<span class="hljs-number">4</span>])
+</code></pre>
+<p>المُخرَج بالترتيب: <code>4</code> ثم <code>(1,2)</code> ثم <code>(1,2)</code> ثم <code>1</code> ثم خطأ (Error).</p>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>(seq[<span class="hljs-number">1</span>])
+<span class="hljs-built_in">print</span>(seq[-<span class="hljs-number">2</span>:])
+<span class="hljs-built_in">print</span>(seq[<span class="hljs-number">1</span>:<span class="hljs-number">4</span>:<span class="hljs-number">2</span>])
+<span class="hljs-built_in">print</span>(seq[:-<span class="hljs-number">1</span>])
+<span class="hljs-built_in">print</span>(seq[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>])
+</code></pre>
+<p>المُخرَج بالترتيب:</p>
+<table>
+<thead>
+<tr>
+<th>التعبير</th>
+<th>النتيجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seq[1]</code></td>
+<td><code>'a'</code></td>
+</tr>
+<tr>
+<td><code>seq[-2:]</code></td>
+<td><code>(4,(1,2))</code></td>
+</tr>
+<tr>
+<td><code>seq[1:4:2]</code></td>
+<td><code>('a',(1,2))</code></td>
+</tr>
+<tr>
+<td><code>seq[:-1]</code></td>
+<td><code>(2,'a',4)</code></td>
+</tr>
+<tr>
+<td><code>seq[1:3]</code></td>
+<td><code>('a',4)</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> seq:
+    <span class="hljs-built_in">print</span>(e)
+</code></pre>
+<p>المُخرَج بالترتيب: <code>2</code> ثم <code>a</code> ثم <code>4</code> ثم <code>(1,2)</code>.</p>
+<h2 id="الشريحة-17-الصفوف-تبديل-قيم-متغيرين">الشريحة 17: الصفوف — تبديل قيم متغيّرين</h2>
+<ul>
+<li>تُستخدم الصفوف بسهولة لتبديل قيم المتغيّرات (Swap Variable Values).</li>
+</ul>
+<p>الشرائح تبني هذه الحالة خطوة بخطوة:</p>
+<table>
+<thead>
+<tr>
+<th>الخطوة</th>
+<th>السطر</th>
+<th>الحالة بعد التنفيذ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>x = 1</code></td>
+<td><code>x = 1</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>y = 2</code></td>
+<td><code>x = 1</code> و<code>y = 2</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>temp = x</code></td>
+<td><code>x = 1</code> و<code>y = 2</code> و<code>temp = 1</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>x = y</code></td>
+<td><code>x = 2</code> و<code>y = 2</code> و<code>temp = 1</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>y = temp</code></td>
+<td><code>x = 2</code> و<code>y = 1</code> و<code>temp = 1</code></td>
+</tr>
+</tbody>
+</table>
+<p>وبدلًا من ذلك يمكن كتابة سطر واحد:</p>
+<pre><code class="language-python">x = <span class="hljs-number">1</span>
+y = <span class="hljs-number">2</span>
+(x, y) = (y, x)
+</code></pre>
+<h2 id="الشريحة-18-الصفوف-إرجاع-أكثر-من-قيمة">الشريحة 18: الصفوف — إرجاع أكثر من قيمة</h2>
+<ul>
+<li>تُستخدم لإرجاع أكثر من قيمة من دالة:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quotient_and_remainder</span>(<span class="hljs-params">x, y</span>):
+    q = x // y
+    r = x % y
+    <span class="hljs-keyword">return</span> (q, r)
+
+both = quotient_and_remainder(<span class="hljs-number">10</span>,<span class="hljs-number">3</span>)
+(quot, rem) = quotient_and_remainder(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>)
+</code></pre>
+<h2 id="الشريحة-19-الفكرة-الكبرى-big-idea">الشريحة 19: الفكرة الكبرى (BIG IDEA)</h2>
+<blockquote>
+<p>إرجاع كائن واحد (صف) يتيح لك إرجاع قيم متعددة (عناصر الصف).</p>
+</blockquote>
+<h2 id="الشريحة-20-جرب-بنفسك-you-try-it">الشريحة 20: جرّب بنفسك! (YOU TRY IT!)</h2>
+<ul>
+<li>اكتب دالة تحقّق هذه المواصفات.</li>
+<li>تلميح: تذكّر كيف تتحقّق من وجود محرف داخل نص؟</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">char_counts</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot; s is a string of lowercase chars
+    Return a tuple where the first element is the
+    number of vowels in s and the second element
+    is the number of consonants in s &quot;&quot;&quot;</span>
+</code></pre>
+<h2 id="الشريحة-21-عدد-متغير-من-الوسائط-variable-number-of-arguments">الشريحة 21: عدد متغيّر من الوسائط (Variable Number of Arguments)</h2>
+<ul>
+<li>في بايثون بعض الدوال المدمجة تأخذ عددًا متغيّرًا من الوسائط، مثل <code>min</code>.</li>
+<li>تتيح بايثون للمبرمج الإمكان نفسه باستخدام رمز النجمة <code>*</code>:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mean</span>(<span class="hljs-params">*args</span>):
+    tot = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> args:
+        tot += a
+    <span class="hljs-keyword">return</span> tot/<span class="hljs-built_in">len</span>(args)
+</code></pre>
+<ul>
+<li><code>numbers</code> (باسم المتغيّر الموضَّح في الشريحة) مربوطة بصف من القيم المُعطاة.</li>
+<li>مثال: <code>mean(1,2,3,4,5,6)</code>.</li>
+</ul>
+<h2 id="الشريحة-22-القوائم-lists">الشريحة 22: القوائم (Lists)</h2>
+<p>شريحة فاصلة تعلن موضوعًا جديدًا.</p>
+<h2 id="الشريحة-23-القوائم-lists">الشريحة 23: القوائم (Lists)</h2>
+<ul>
+<li>تسلسل مرتَّب (Ordered) من الكائنات، قابل للفهرسة (Indexable).
+<ul>
+<li>عادةً متجانس (Homogeneous)، أي كل الأعداد الصحيحة أو كل النصوص أو كل القوائم.</li>
+<li>لكنه قد يحتوي أنواعًا مختلطة (Mixed Types)، وإن كان ذلك غير شائع.</li>
+</ul>
+</li>
+<li>يُكتب بين أقواس مربّعة <code>[</code> <code>]</code>.</li>
+<li>قابل للتغيير (Mutable)، أي يمكنك تغيير قيم عناصر محدّدة من القائمة.</li>
+</ul>
+<h2 id="الشريحة-24-الفهرسة-والترتيب-indices-and-ordering">الشريحة 24: الفهرسة والترتيب (Indices and Ordering)</h2>
+<pre><code class="language-python">a_list = []
+L = [<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">4</span>, [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>التعبير</th>
+<th>النتيجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[1,2]+[3,4]</code></td>
+<td>يُقيَّم إلى <code>[1,2,3,4]</code></td>
+</tr>
+<tr>
+<td><code>len(L)</code></td>
+<td>يُقيَّم إلى <code>4</code></td>
+</tr>
+<tr>
+<td><code>L[0]</code></td>
+<td>يُقيَّم إلى <code>2</code></td>
+</tr>
+<tr>
+<td><code>L[2]+1</code></td>
+<td>يُقيَّم إلى <code>5</code></td>
+</tr>
+<tr>
+<td><code>L[3]</code></td>
+<td>يُقيَّم إلى <code>[1,2]</code> — أي قائمة أخرى!</td>
+</tr>
+<tr>
+<td><code>L[4]</code></td>
+<td>يعطي خطأ (Error)</td>
+</tr>
+<tr>
+<td><code>i = 2</code> ثم <code>L[i-1]</code></td>
+<td>يُقيَّم إلى <code>'a'</code> لأن <code>L[1]='a'</code></td>
+</tr>
+<tr>
+<td><code>max([3,5,0])</code></td>
+<td>يُقيَّم إلى <code>5</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-25-المرور-على-عناصر-القائمة-iterating-over-a-list">الشريحة 25: المرور على عناصر القائمة (Iterating Over a List)</h2>
+<ul>
+<li>احسب مجموع عناصر قائمة (List). هذا نمط شائع (Common Pattern).</li>
+</ul>
+<p>الشرائح تعرض طريقتين متكافئتين:</p>
+<table>
+<thead>
+<tr>
+<th>طريقة <code>for i in range(len(L))</code></th>
+<th>طريقة <code>for i in L</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>total = 0</code></td>
+<td><code>total = 0</code></td>
+</tr>
+<tr>
+<td><code>for i in range(len(L)):</code></td>
+<td><code>for i in L:</code></td>
+</tr>
+<tr>
+<td><code>total += L[i]</code></td>
+<td><code>total += i</code></td>
+</tr>
+<tr>
+<td><code>print(total)</code></td>
+<td><code>print(total)</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>لاحظ:
+<ul>
+<li>عناصر القائمة مفهرسة من <code>0</code> إلى <code>len(L)-1</code>، و<code>range(n)</code> يمضي من <code>0</code> إلى <code>n-1</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-26-المرور-على-عناصر-القائمة-داخل-دالة">الشريحة 26: المرور على عناصر القائمة — داخل دالة</h2>
+<ul>
+<li>من الطبيعي (Natural) أن نلتقط التكرار على قائمة داخل دالة:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">list_sum</span>(<span class="hljs-params">L</span>):
+    total = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> L:
+        <span class="hljs-comment"># i is 8 then 3 then 5</span>
+        total += i
+    <span class="hljs-keyword">return</span> total
+</code></pre>
+<ul>
+<li>استدعاء الدالة: <code>list_sum([8,3,5])</code>.</li>
+<li>متغيّر الحلقة <code>i</code> يأخذ قيم القائمة بالترتيب: <code>8</code> ثم <code>3</code> ثم <code>5</code>.</li>
+<li>لمساعدتك على كتابة الشيفرة وتصحيحها، علّق على قيم متغيّر الحلقة حتى لا تلتبس!</li>
+</ul>
+<h2 id="الشريحة-27-القوائم-تدعم-التكرار-lists-support-iteration">الشريحة 27: القوائم تدعم التكرار (Lists Support Iteration)</h2>
+<ul>
+<li>لأن القوائم تسلسلات مرتّبة من العناصر، فهي تتفاعل طبيعيًّا مع الدوال التكرارية (Iterative Functions).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>جمع عناصر قائمة</th>
+<th>جمع أطوال عناصر قائمة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>def list_sum(L):</code></td>
+<td><code>def len_sum(L):</code></td>
+</tr>
+<tr>
+<td><code>total = 0</code></td>
+<td><code>total = 0</code></td>
+</tr>
+<tr>
+<td><code>for e in L:</code></td>
+<td><code>for s in L:</code></td>
+</tr>
+<tr>
+<td><code>total += e</code></td>
+<td><code>total += len(s)</code></td>
+</tr>
+<tr>
+<td><code>return(total)</code></td>
+<td><code>return(total)</code></td>
+</tr>
+<tr>
+<td><code>list_sum([1,3,5])</code> ⟵ <code>9</code></td>
+<td><code>len_sum(['ab', 'def', 'g'])</code> ⟵ <code>6</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-28-جرب-بنفسك-you-try-it">الشريحة 28: جرّب بنفسك! (YOU TRY IT!)</h2>
+<p>اكتب دالة تحقّق هذه المواصفات:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_and_prod</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-string">&quot;&quot;&quot; L is a list of numbers
+    Return a tuple where the first value is the
+    sum of all elements in L and the second value
+    is the product of all elements in L &quot;&quot;&quot;</span>
+</code></pre>
+<h2 id="الشريحة-29-الخلاصة-summary">الشريحة 29: الخلاصة (SUMMARY)</h2>
+<ul>
+<li>دوال <code>Lambda</code> مفيدة حين تحتاج دالة بسيطة مرة واحدة، ويمكن كتابة جسمها في سطر واحد.</li>
+<li>الصفوف (Tuples) تسلسلات قابلة للفهرسة من الكائنات:
+<ul>
+<li>لا يمكنك تغيير عناصرها، مثلًا لا يمكنك إضافة كائنات أخرى إلى صف.</li>
+<li>صياغتها باستخدام <code>()</code>.</li>
+</ul>
+</li>
+<li>القوائم (Lists) تسلسلات قابلة للفهرسة من الكائنات:
+<ul>
+<li>يمكنك تغيير عناصرها. سنرى هذا في المحاضرة القادمة!</li>
+<li>صياغتها باستخدام <code>[]</code>.</li>
+</ul>
+</li>
+<li>القوائم والصفوف متشابهتان جدًا مع النصوص من حيث:
+<ul>
+<li>الفهرسة (Indexing).</li>
+<li>التقطيع (Slicing).</li>
+<li>المرور على العناصر (Looping Over Elements).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-30-mitopencourseware">الشريحة 30: MITOpenCourseWare</h2>
+<p>https://ocw.mit.edu</p>
+<p>مقرر 6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python، خريف 2022.</p>
+<p>للاطّلاع على كيفية الاستشهاد بهذه المواد أو على شروط الاستخدام: https://ocw.mit.edu/terms.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-09/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-09/exercises"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

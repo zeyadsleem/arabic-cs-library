@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="Git — Git"/><!----><title>Git | معمارية تطبيقات المصادر المفتوحة</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -97,7 +97,7 @@
 <p>ويستخدم Git أيضًا رسمًا بيانيًا موجَّهًا خاليًا من الدورات، غير أنّ ذلك هذه المرة لتخزين تاريخه. ويتضمّن كل إصدار بيانات وصفية عن أسلافه؛ ويمكن أن يكون لأحد الإصدارات في Git عددٌ من إصداراته الأبيّة (parent commits) يساوي صفرًا أو كثيرًا (نظريًّا بلا حدّ). فعلى سبيل المثال، يكون للإصدار الأول في مستودع Git عدد أباء يساوي صفرًا، في حين تكون لنتائج الدمج الثلاثي (three-way merge) ثلاثة أباء.</p>
 <p>وهناك فرق أساسي آخر بين Git وبين Subversion وأسلافه ذوي التاريخ الخطّي، وهو قدرته على دعم التفريع (branching) مباشرةً، بحيث يسجّل معظم حالات تاريخ الدمج.</p>
 <p><img src="/arabic-cs-library/images/aosabook/v2-git-dag-example.webp" alt=""> الشكل 6.1: مثال على تمثيل برسم بياني موجَّه خالٍ من الدورات في Git</p>
-<p>يتيح Git قدرةً كاملة على التفريع باستخدام الرسوم البيانية الموجَّهة الخالية من الدورات لتخزين المحتوى. ويرتبط تاريخ الملف一路ًا صعودًا عبر بنيته الدائرية (عبر عقدٍ تمثّل الأدلّة) حتى دليل الجذر، الذي يُربط بدوره بعقدة إصدار. ويمكن بدورها لعقدة الإصدار هذه أن يكون لها واحد أو أكثر من الآباء. وهذا يمنح Git خاصيتين تتيحان لنا استنتاج التاريخ والمحتوى على نحو أكثر تحديدًا مما تفعله عائلة أنظمة التحكّم بالإصدارات المشتقّة من RCS، وهي:</p>
+<p>يتيح Git قدرةً كاملة على التفريع باستخدام الرسوم البيانية الموجَّهة الخالية من الدورات لتخزين المحتوى. ويرتبط تاريخ الملف صعودًا عبر بنيته الدائرية (عبر عقدٍ تمثّل الأدلّة) حتى دليل الجذر، الذي يُربط بدوره بعقدة إصدار. ويمكن بدورها لعقدة الإصدار هذه أن يكون لها واحد أو أكثر من الآباء. وهذا يمنح Git خاصيتين تتيحان لنا استنتاج التاريخ والمحتوى على نحو أكثر تحديدًا مما تفعله عائلة أنظمة التحكّم بالإصدارات المشتقّة من RCS، وهي:</p>
 <ul>
 <li>عندما تمتلك عقدة محتوى (أي ملف أو دليل) في الرسم البياني هوية المرجع نفسها (تجزئة SHA في Git) التي تمتلكها في إصدار آخر، فإنّ العقدتين مضمونَتان على احتوائهما المحتوى نفسه، مما يتيح لـ Git اختصار مقارنة المحتوى بكفاءة.</li>
 <li>عند دمج فرعين فإنّنا ندمج محتوى عقدتين داخل رسم بياني موجَّه خالٍ من الدورات. ويتيح هذا الرسم لـ Git تحديد الأبناء المشتركين «بكفاءة» (مقارنةً بعائلة أنظمة التحكّم بالإصدارات RCS).</li>
@@ -253,7 +253,7 @@
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -261,8 +261,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

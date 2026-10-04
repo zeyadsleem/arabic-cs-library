@@ -1,0 +1,133 @@
+const s="database-foundations",e="sql-outerjoin",a="Combining tables with OUTER JOIN",n="index",o="دمج الجداول بواسطة OUTER JOIN",c=[{depth:2,id:"الحاجة-إلى-outer-join",text:"الحاجة إلى OUTER JOIN"},{depth:2,id:"join-وgroup-by",text:"JOIN وGROUP BY"},{depth:2,id:"تحديد-صفوف-لا-تحقق-شرطا-معينا",text:"تحديد صفوف لا تحقق شرطًا معينًا"},{depth:3,id:"تمرين",text:"تمرين"},{depth:2,id:"full-outer-join",text:"FULL OUTER JOIN"},{depth:2,id:"نظرة-موجزة-عن-join",text:"نظرة موجزة عن JOIN"}],l=`<blockquote>
+<p>لا يمكنك الشكوى من البحر إذا غرقت للمرة الثانية. —مثل آيسلندي</p>
+</blockquote>
+<p>ومرة أخرى نبدأ بفيلم: تكملة الفيلم من الفصل السابق عن INNER JOIN.</p>
+<h2 id="الحاجة-إلى-outer-join">الحاجة إلى OUTER JOIN</h2>
+<p>أنجز التمرين التالي كمقدمة.</p>
+<p>يريد مدير برنامجنا نظرة عامة على جميع المحاضرين مع معرّف المحاضر والاسم الأول والاسم الأخير واسم المقرر الذي يكونون منسّقين له. ورتّب أبجديًا حسب الاسم الأخير. وينبغي أن تحصل على الشكل أدناه.</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-outerjoin-0-outerjoin_1.webp" alt=""></p>
+<h4>الحل</h4>
+<p>ليس بهذه الصعوبة:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> lecturer L <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> course c <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>وهذه هي الخطوات التي يتخذها نظام إدارة قواعد البيانات العلائقية عند تنفيذ هذا الاستعلام:</p>
+<ol>
+<li>أولًا يُنفَّذ <code>FROM</code>. وهذا <code>INNER JOIN</code> لجدولين، وبذلك يُنشأ <em>الضرب الديكارتي</em>: يُدمج كل صف من جدول المحاضرين مع كل صف من جدول المقررات.</li>
+<li>وليس كل التركيبات في هذا الضرب الديكارتي <em>منطقية</em>: تُبقى فقط تلك التي يتطابق فيها معرّف المحاضر (المسمّى في أحد الجدولين &quot;lecturer_id&quot; وفي الآخر &quot;coordinator&quot;)، لأنها تحقق شرط الدمج ON L.lecturer_id = c.coordinator.</li>
+<li>ولا يوجد مكوّن <code>WHERE</code>، لذا لا تُسقط أي صفوف من النتيجة.</li>
+<li>ويغيب أيضًا <code>GROUP BY</code> (و<code>HAVING</code>).</li>
+<li>وأخيرًا تُرتَّب صفوف النتيجة أبجديًا حسب الاسم الأخير عبر مكوّن <code>ORDER BY</code>.</li>
+</ol>
+<p>تعرض القائمة المطلوبة على المدير، لكنه للأسف غير راضٍ تمامًا عن النتيجة. &quot;كنت في الواقع أريد أن يكون <em>جميع</em> المحاضرين في القائمة، بمن فيهم الذين لا ينسّقون أي مقرر&quot; تسمعه يقول. غير أن <code>INNER JOIN</code> في استعلام SQL الخاص بك يُظهر <em>فقط</em> المحاضرين الذين يظهرون في الجدولين معًا، أي فقط منسّقي المقررات.</p>
+<p>وإذا أردت تضمين <em>جميع</em> المحاضرين في القائمة، فيجب <em>إضافة</em> المحاضرين الناقصين إلى نتيجة <code>INNER JOIN</code>. وهذا بالضبط ما يفعله <code>OUTER JOIN</code>. ما عليك سوى استبدال كلمة <code>INNER</code> بـ <code>LEFT OUTER</code> أو <code>RIGHT OUTER</code> (أو ربما <code>FULL OUTER</code>):</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> lecturer L <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> course c <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>لماذا <code>LEFT</code>؟ يحتوي هذا الدمج جدولين: أحدهما <em>يسار</em> كلمة <code>JOIN</code> (أي &quot;lecturer&quot;) والآخر <em>يمين</em> كلمة JOIN (أي &quot;course&quot;). وبعد <code>INNER JOIN</code> العادي لا يزال بعض المحاضرين ناقصين من جدول المحاضرين. وبما أن ذلك الجدول يقع يسار كلمة <code>JOIN</code>، يصبح هذا <code>LEFT OUTER JOIN</code>.</p>
+<p>وهذه الشيفرة مكافئة تمامًا لهذه الصيغة:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>فقد بدّلنا ببساطة ترتيب كتابة الجدولين. ولا يؤثر ذلك في <code>INNER JOIN</code> الذي يحدث أولًا، لكننا استبدلنا كلمة <code>LEFT</code> بـ <code>RIGHT</code> لمراعاة الترتيب المختلف. ويوضح الشكل التالي النتيجة. وبالمقارنة مع الشكل السابق، <em>تُضاف عدد من الصفوف</em>. فمثلًا، هناك المحاضرة Elke Crabbé التي لا تنسّق أي مقرر. وبما أنها لا تظهر في جدول &quot;courses&quot;، فلا توجد أيضًا معلومات عن اسم المقرر. <em>ولهذا يوجد null (لا قيمة) في العمود الأخير</em> (السطر البرتقالي).</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-outerjoin-1-outerjoin_2.webp" alt=""> اشرح لماذا يعيد الاستعلامان التاليان النتيجة نفسها بالضبط:</p>
+<pre><code class="language-sql"><span class="hljs-comment">-- query 1</span>
+<span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+
+<span class="hljs-comment">-- query 2</span>
+<span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<h4>الحل</h4>
+<p>بالنسبة إلى الاستعلام 2 مع <code>INNER JOIN</code> تعرف النتيجة بالفعل. والاستعلام 1 هو <code>LEFT OUTER JOIN</code>. <strong>ويبدأ كل <code>OUTER JOIN</code> أولًا كـ <code>INNER JOIN</code> عادي</strong>. وبمجرد الانتهاء من ذلك، ينظر في الصفوف الناقصة من الجدول الأيسر. ثم تُضاف تلك الصفوف. غير أن الجدول الأيسر هنا هو جدول &quot;courses&quot;. و<em>كل</em> صف من هذا الجدول ممثل بالفعل في <code>INNER JOIN</code> (لماذا؟)، لذا لا تُضاف صفوف أخرى. ولذلك يعيد الاستعلامان النتيجة نفسها.</p>
+<h2 id="join-وgroup-by">JOIN وGROUP BY</h2>
+<p>يمكن دمج <code>JOIN</code> مع مكوّنات أخرى دون أي مشكلة، وكذلك مع <code>GROUP BY</code> و<code>HAVING</code>.</p>
+<p>وسنعمل على المثال التالي. جرّب جميع الخطوات بنفسك. وسترتكب أخطاء — كثيرًا ما نستفزّك إليها — لكن هذه أفضل طريقة للتعلّم.</p>
+<p>اسرد جميع المحاضرين مع عدد المقررات التي ينسّقونها. وينبغي أن تُضمَّن القائمة حتى المحاضرين الذين ليسوا منسّقي أي مقرر. ورتّب القائمة أبجديًا حسب الاسم.</p>
+<p>حلّل المهمة:</p>
+<ul>
+<li>تحتاج إلى دمج معلومات من جدول المحاضرين وجدول المقررات، لذا نحتاج إلى <code>(INNER) JOIN</code>.</li>
+<li>وعبارة &quot;أيضًا المحاضرون الذين ليسوا منسّقي أي مقرر...&quot; تشير إلى <code>OUTER JOIN</code>.</li>
+<li><em>لكل محاضر</em> ينبغي تقديم معلومات ملخّصة، لذا نحتاج إلى <code>GROUP BY</code>.</li>
+<li>وعدّ الأعداد يتم بـ <code>COUNT()</code>.</li>
+</ul>
+<p>وللتوقع ما ينبغي أن نحصل عليه، نبدأ من الشيفرة المعروفة التي ولّدت الشكل في القسم أعلاه:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>انظر إلى القائمة في ذلك الشكل (أعلاه). فالمحاضر &quot;Gerben Adriaens&quot; منسّق لمقرر واحد، و&quot;Goedele Bogers&quot; لمقررين، و&quot;Elke Crabbé&quot; لا شيء، وهكذا.</p>
+<p>وسّع هذه الشيفرة بـ <code>GROUP BY</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> lecturer_id
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>تحصل على رسالة خطأ (فكّر لحظة لماذا):</p>
+<pre><code>ERROR: column &quot;c.name&quot; must appear in the GROUP BY clause or be used
+in an aggregate function
+LINE 2: SELECT lecturer_id, L.first_name, L.last_name, c.name;
+</code></pre>
+<p>لماذا توجد رسالة خطأ عن &quot;c.name&quot;؟ إذا درست <a href="/arabic-cs-library/book/database-foundations/sql-groupby-having/index">فصل GROUP BY</a>، ينبغي أن تكون قادرًا على تقديم الجواب عن هذا السؤال. <em>فتجميع المعلومات في صناديق لكل محاضر يُفقد المعلومة التفصيلية عن المقررات</em>. والشيء الوحيد الذي لا يزال بإمكانك استرجاعه هو المعلومات من &quot;دوال التجميع&quot; <code>MIN()</code> و<code>MAX()</code> و<code>AVG()</code> و<code>COUNT()</code> و<code>SUM()</code>.</p>
+<p>غير أن هناك أمرًا غريبًا. فلماذا لا توجد رسالة خطأ عن L.first_name وL.last_name؟ كنا قد شرحنا أن <code>SELECT</code> لا يمكنه سرد سوى الأعمدة الموجودة في <code>GROUP BY</code> ودوال التجميع. فلماذا إذن لا تحصل على <em>أي</em> رسالة خطأ عن L.first_name وL.last_name؟</p>
+<p>السبب أنك هنا <em>تجمّع حسب المفتاح الأساسي</em> لجدول المحاضرين. لذا أنت متأكد من أن صندوقًا واحدًا سيُنشأ لكل محاضر. وفي ذلك الصندوق يوجد اسم محاضر واحد واسم أول واحد ونحو ذلك، لكن عدة مقررات. لذلك يمكنك استرجاع العمودين L.name وL.first name، لكن ليس c.name.</p>
+<p>لذا عليك استخدام دالة تجميع في الشيفرة. وفي هذه الحالة نحتاج إلى عدّ عدد مرات حدوث شيء ما، لذا تلزم دالة <code>COUNT()</code>. عدّل الشيفرة إلى:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> lecturer_id
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>فتحصل على هذه النتيجة <em>(الخاطئة!)</em>:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-outerjoin-2-outerjoin_3.webp" alt=""></p>
+<p>توجد مشكلة في هذا الشكل (وبالتالي في شيفرتنا). قارن لحظة بالشكل السابق. فـ Gerben لديه مقرر واحد، وGoedele منسّقة لمقررين، <em>لكن Elke Crabbé ليست منسّقة أي مقرر</em>. غير أن نتيجة شيفرتنا أن Elke Crabbé منسّقة لمقرر واحد (انظر السهم البرتقالي في الشكل). فما الذي يسير خطأ؟</p>
+<p>الخطأ في دالة التجميع <code>COUNT(*)</code>. فهذه الدالة (مع <code>*</code>) <em>تعدّ جميع الصفوف، بما فيها التي تحتوي قيمة <code>NULL</code> واحدة أو أكثر</em>. لذا يُعدّ الصف الذي يحتوي معلومات Elke Crabbé. ولحسن الحظ، هذه المشكلة سهلة الحل. فبدلًا من <code>*</code> أدخل <em>العمود الذي يهمك عدّه</em>. وبشكل محدد، نحن نتحدث هنا عن &quot;c.name&quot;. ولن تُعدّ قيمة <code>NULL</code> في هذا الحقل. فتنهي <code>SELECT</code> بـ <code>COUNT(c.name)</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, <span class="hljs-built_in">COUNT</span>(c.name)
+<span class="hljs-keyword">FROM</span> course c <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> lecturer_id
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<h2 id="تحديد-صفوف-لا-تحقق-شرطا-معينا">تحديد صفوف لا تحقق شرطًا معينًا</h2>
+<p>ملاحظة: هذا <strong>موضوع صعب إلى حد بعيد</strong>. والتمارين التي تعتمد على هذا المبدأ صعبة جدًا!</p>
+<p>يأتيك طلب جديد من مديرك: &quot;أريد قائمة بجميع المحاضرين الذين ليسوا منسّقي مقرر واحد أو عدة مقررات.&quot;.</p>
+<p>أمر سهل بالطبع! فمع <code>OUTER JOIN</code> من القسم السابق حصلت على قائمة بجميع المنسّقين، مضافًا إليها المحاضرون الذين لا يظهرون في جدول المقررات وبالتالي ليسوا منسّقين. ويسهل تمييز &quot;هؤلاء المحاضرين المضافين&quot; بغياب قيمة للعمود الذي يحمل اسم المقرر. ويتم ترشيح الصفوف بعد تنفيذ <code>FROM</code> بمكوّن <code>WHERE</code>. وبذلك يصبح الاستعلام:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> lecturer_id, L.first_name, L.last_name, c.name
+<span class="hljs-keyword">FROM</span> lecturer L <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> course c <span class="hljs-keyword">ON</span> L.lecturer_id <span class="hljs-operator">=</span> c.coordinator
+<span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span> <span class="hljs-comment">-- idea is OK, code not! See assignment below</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span>;
+</code></pre>
+<p>لقد وضعنا عن قصد خطأ في مكوّن <code>WHERE</code> في الاستعلام أعلاه. صحّحه بحيث يُنفَّذ الاستعلام تنفيذًا صحيحًا فتحصل على قائمة بأربعة محاضرين: Elke وMaarten وPatrick وLut.</p>
+<h4>الحل</h4>
+<p>لا ينبغي أبدًا إجراء المقارنة مع <code>NULL</code> بـ '=' بل بكلمة 'IS'. ومكوّن <code>WHERE</code> الصحيح هو: <code>WHERE c.name IS NULL</code>.</p>
+<h3 id="تمرين">تمرين</h3>
+<p>اسرد جميع المعلمين الذين ليسوا منسّقي مقرر له 6 نقاط. ورتّب أبجديًا حسب الاسم ثم حسب الاسم الأول. وينبغي أن تحصل على النتيجة في هذا الشكل:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-outerjoin-3-outerjoin_4.webp" alt=""></p>
+<h4>الحل</h4>
+<p>تلميح 1: ابدأ هذا التمرين بعمودين أكثر من الاسم الأول والاسم الأخير (وربما بجميع الأعمدة!).</p>
+<p>تلميح 2: نريد جميع المحاضرين الذين <em>لا</em> ينسّقون مقررًا بـ 6 نقاط. فكيف تختار كل الذين <em>ينسّقون</em> مقررًا بـ 6 نقاط؟ فكّر في كيفية عكس ذلك. وقد يساعدك التمرين السابق، حيث اخترنا المحاضرين الذين لم ينسّقوا مقررًا، في إيجاد حل.</p>
+<p>تلميح 3: إذا كنت لا تزال عالقًا، فحاول تصوّر ما تحاول فعله: ارسم جدولًا بـ &quot;last_name&quot; و&quot;first_name&quot; و&quot;lecturer_id&quot;، واملأ بعض القيم. ثم ارسم جدولًا بـ &quot;coordinator&quot; و&quot;credits&quot; يحتوي المقررات ذات 6 نقاط. فأي السجلات ستندمج إذا دمجت الجدولين؟ وأيّها لن يندمج؟ حاول تنفيذ تلك الخطوة في SQL.</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-outerjoin-4-outerjoin_hint.webp" alt="Hint to outer join exercise"></p>
+<p>الحل:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> L.last_name, l.first_name
+<span class="hljs-keyword">FROM</span> course o <span class="hljs-keyword">RIGHT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> lecturer l <span class="hljs-keyword">ON</span>
+  o.coordinator <span class="hljs-operator">=</span> l.lecturer_id <span class="hljs-keyword">AND</span> o.credits <span class="hljs-operator">=</span> <span class="hljs-number">6</span>
+<span class="hljs-keyword">WHERE</span> o.credits <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>, <span class="hljs-number">2</span>;
+</code></pre>
+<h2 id="full-outer-join">FULL OUTER JOIN</h2>
+<p><code>OUTER JOIN</code> هو <code>INNER JOIN</code> تُضاف إليه جميع العناصر الناقصة من أحد الجدولين (تلك الملحقة بالجانب <code>LEFT</code> أو <code>RIGHT</code>). وهناك أيضًا <code>FULL OUTER JOIN</code> الذي يعني أساسًا <em>إضافة العناصر الناقصة من الجدولين معًا الأيمن والأيسر</em>. وفي مثالنا بجدولين فقط (المحاضرون والمقررات)، لا يمكننا إنشاء <code>FULL OUTER JOIN</code> ذي معنى. وسنغطّي <code>FULL OUTER JOIN</code> لاحقًا في التمارين. أما الفيديو في بداية هذا الفصل فيشرحه بوضوح.</p>
+<h2 id="نظرة-موجزة-عن-join">نظرة موجزة عن JOIN</h2>
+<p>فيما يلي نظرة عامة على جميع أنواع <code>JOIN</code> المختلفة التي رأيناها. ولكل نوع نسرد كيف تُبنى مجموعة الصفوف التي يُنفَّذ بها بقية الاستعلام.</p>
+<ul>
+<li><code>Implicit JOIN A,B</code>: يُدمج كل صف من جدول A مع كل صف من جدول B. وتُبقى جميع الصفوف المدمجة.</li>
+<li><code>A INNER JOIN B</code>: يُدمج كل صف من جدول A مع كل صف من جدول B. وتُبقى فقط الصفوف المدمجة التي تحقق شرط الدمج.</li>
+<li><code>A LEFT OUTER JOIN B</code>: يُدمج كل صف من جدول A مع كل صف من جدول B. وتُبقى فقط الصفوف المدمجة التي تحقق شرط الدمج. وتُضاف جميع صفوف جدول A التي لا تحقق شرط الدمج، مع حشوها بقيم null لجميع أعمدة جدول B.</li>
+<li><code>A RIGHT OUTER JOIN B</code>: يُدمج كل صف من جدول A مع كل صف من جدول B. وتُبقى فقط الصفوف المدمجة التي تحقق شرط الدمج. وتُضاف جميع صفوف جدول B التي لا تحقق شرط الدمج، مع حشوها بقيم null لجميع أعمدة جدول A.</li>
+<li><code>A FULL OUTER JOIN B</code>: يُدمج كل صف من جدول A مع كل صف من جدول B. وتُبقى فقط الصفوف المدمجة التي تحقق شرط الدمج. وتُضاف جميع صفوف جدول A التي لا تحقق شرط الدمج، مع حشوها بقيم null لجميع أعمدة جدول B. وكذلك تُضاف جميع صفوف جدول B التي لا تحقق شرط الدمج، مع حشوها بقيم null لجميع أعمدة جدول A.</li>
+</ul>
+`,p={book:s,chapter:e,chapterTitle:a,slug:n,title:o,headings:c,html:l};export{s as book,e as chapter,a as chapterTitle,p as default,c as headings,l as html,n as slug,o as title};

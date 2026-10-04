@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="آثار حجم البيانات في الأداء — Performance Impacts of Data Volume"/><!----><title>آثار حجم البيانات في الأداء | استخدم الفهرس يا لوقا!</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -112,9 +112,9 @@ ID | Operation           |                        Rows | Cost
 |* 2 |   INDEX RANGE SCAN| SCALE_FAST |  3000 |   13 |
 ------------------------------------------------------
 </code></pre>
-<p>SQL Server <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-0-fig03_mssql_slow.930uegsd.webp" alt=""></p>
+<p>SQL Server <img src="/arabic-cs-library/images/use-the-index-luke/sql-testing-scalability-data-volume-0-fig03_mssql_slow.930uegsd.webp" alt=""></p>
 <p>تستخدم خطة التنفيذ أعلاه الفهرس <code>scale_slow</code>، بينما تستخدم الخطة التالية الفهرس <code>scale_fast</code>. يرجى ملاحظة أن كلتيهما تستخدمان عملية Index Seek — فلا تعطيان أي تلميح إلى سبب كون إحداهما أبطأ من الأخرى.</p>
-<p><img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-1-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/use-the-index-luke/sql-testing-scalability-data-volume-1-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
 <p>غير أننا نرى فرقاً باستخدام <code>STATISTICS PROFILE ON</code>:</p>
 <pre><code>﻿|--Compute Scalar
    |--Stream Aggregate(Count(*))
@@ -200,7 +200,7 @@ Predicate Information (identified by operation id):
 Predicate Information (identified by operation id):
    2 - access(&quot;SECTION&quot;=TO_NUMBER(:A) AND &quot;ID2&quot;=TO_NUMBER(:B))
 </code></pre>
-<p>SQL Server <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-2-fig03_mssql_slow.930uegsd.webp" alt=""> <img src="https://use-the-index-luke.com/images/use-the-index-luke/sql-testing-scalability-data-volume-3-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
+<p>SQL Server <img src="/arabic-cs-library/images/use-the-index-luke/sql-testing-scalability-data-volume-2-fig03_mssql_slow.930uegsd.webp" alt=""> <img src="/arabic-cs-library/images/use-the-index-luke/sql-testing-scalability-data-volume-3-fig03_mssql_fast.9FT2aI9e.webp" alt=""></p>
 <p>لرؤية الفرق في خطة التنفيذ الرسومية، يجب تمرير الفأرة فوق عملية <code>Index Seek</code> وفحص «<em>Predicate</em>» مقابل «<em>Seek Perdicates</em>».</p>
 <pre><code>﻿|--Compute Scalar
    |--Stream Aggregate(Count(*))
@@ -250,7 +250,7 @@ Predicate Information (identified by operation id):
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -258,8 +258,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

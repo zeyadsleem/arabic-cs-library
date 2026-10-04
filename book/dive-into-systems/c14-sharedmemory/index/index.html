@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="14. استغلال الذاكرة المشتركة في عصر تعدد الأنوية — 14. Leveraging Shared Memory in the Multicore Era"/><!----><title>14. استغلال الذاكرة المشتركة في عصر تعدد الأنوية | الغوص في الأنظمة</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -98,18 +98,18 @@ L3 cache:              8192K
 <h3 id="1411-أثر-الأنظمة-متعددة-الأنوية-في-تنفيذ-العمليات"><a href="#_the_impact_of_multicore_systems_on_process_execution"></a>14.1.1. أثر الأنظمة متعددة الأنوية في تنفيذ العمليات</h3>
 <p>تذكّر أن <a href="https://diveintosystems.org/book/C13-OS/processes.html#_processes"><strong>العملية</strong></a> يمكن التفكير فيها كتجريد لبرنامج عامل. وتنفّذ كل عملية في فضاء عنوانها الافتراضي الخاص. ويجدول نظام التشغيل العمليات للتنفيذ على المعالج؛ ويحدث <strong>تبديل السياق</strong> عندما يغيّر المعالج العملية التي ينفّذها حاليًا.</p>
 <p>ويوضح <a href="#FigConcurrency1">الشكل 1</a> كيف يمكن لخمس عمليات نموذجية أن تنفّذ على معالج أحادي النواة.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp" alt="concurrency example with 5 processes"> Figure 1. An execution time sequence for five processes as they share a single CPU core</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp" alt="concurrency example with 5 processes"> Figure 1. An execution time sequence for five processes as they share a single CPU core</p>
 <p>المحور الأفقي هو الزمن، وتستغرق كل شريحة زمنية وحدة زمن واحدة. ويمثّل المربع وقت استخدام العملية للمعالج أحادي النواة. لنفترض أن كل عملية تنفّذ شريحة زمنية كاملة قبل حدوث تبديل السياق. فعملية 1 تستخدم المعالج خلال الخطوتين الزمنيتين T1 وT3.</p>
 <p>في هذا المثال، ترتيب تنفيذ العمليات هو P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ونستغرق لحظة هنا للتمييز بين مقياسين للزمن. فـ<strong>زمن المعالج</strong> (CPU time) يقيس مقدار الوقت الذي تستغرقه العملية في التنفيذ على المعالج. وفي المقابل، يقيس <strong>الزمن الحائطي</strong> (wall-clock time) مقدار الوقت الذي يتصور فيه الإنسان أن العملية استغرقته لتكتمل. وكثيرًا ما يكون الزمن الحائطي أطول بكثير من زمن المعالج بسبب تبديلات السياق. فمثلًا، يحتاج زمن المعالج لعملية 1 إلى وحدتي زمن، بينما زمنها الحائطي ثلاث وحدات زمن.</p>
 <p>وعندما يتداخل زمن التنفيذ الكلي لعملية مع أخرى، تكون العمليات عاملة <strong>بالتزامن</strong> مع بعضها. وقد استخدمت أنظمة التشغيل التزامن في عصر النواة الواحدة لإعطاء وهم بأن الحاسوب يستطيع تنفيذ أشياء كثيرة دفعة واحدة (مثلًا، يمكن أن يكون لديك برنامج آلة حاسبة ومتصفح ويب ومستند معالجة نصوص مفتوحة كلها في الوقت نفسه). وفي الحقيقة، كل عملية تنفّذ تتابعيًا، ويحدد نظام التشغيل <a href="https://diveintosystems.org/book/C13-OS/processes.html#_multiprogramming_and_context_switching">ترتيب تنفيذ العمليات واكتمالها</a> (وهو ترتيب يختلف غالبًا في التشغيلات اللاحقة).</p>
 <p>وبالعودة إلى المثال، لاحظ أن العملية 1 والعملية 2 تعملان بالتزامن مع بعضهما، لأن تنفيذهما يتداخل عند النقاط الزمنية T2-T4. وبالمثل، تعمل العملية 2 بالتزامن مع العملية 4، لأن تنفيذهما يتداخل عند النقاط T4-T6. وفي المقابل، <em>لا</em> تعمل العملية 2 بالتزامن مع العملية 3، لأنه لا تداخل بين تنفيذهما؛ فالعملية 3 تبدأ العمل فقط عند الزمن T7، بينما تكتمل العملية 2 عند الزمن T6.</p>
 <p>وتتيح وحدة المعالجة المركزية متعددة الأنوية لنظام التشغيل جدولة عملية مختلفة لكل نواة متاحة، ما يتيح للعمليات التنفيذ <em>في الوقت نفسه</em>. ويُشار إلى التنفيذ المتزامن لتعليمات من عمليات تعمل على أنوية متعددة بـ<strong>التنفيذ المتوازي</strong> (parallel execution). ويعرض <a href="#FigConcurrency2">الشكل 2</a> كيف يمكن لعملياتنا المثال أن تنفّذ على نظام ثنائي الأنوية.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp" alt="parallel example with 2 cores"> Figure 2. An execution time sequence for five processes, extended to include two CPU cores (one in dark blue, the other in light green).</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp" alt="parallel example with 2 cores"> Figure 2. An execution time sequence for five processes, extended to include two CPU cores (one in dark blue, the other in light green).</p>
 <p>في هذا المثال، تُلوَّن نواتا المعالج بلونين مختلفين. لنفترض أن ترتيب تنفيذ العمليات هو مرة أخرى P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ويتيح وجود أنوية متعددة لبعض العمليات التنفيذ <em>مبكرًا</em>. فمثلًا، خلال الوحدة الزمنية T1، تنفّذ النواة الأولى العملية 1 بينما تنفّذ النواة الثانية العملية 2. وعند الزمن T2، تنفّذ النواة الأولى العملية 2 بينما تنفّذ الثانية العملية 1. وبذلك تكمل العملية 1 تنفيذها بعد الزمن T2، بينما تكمل العملية 2 تنفيذها عند الزمن T3.</p>
 <p>لاحظ أن التنفيذ المتوازي لعمليات متعددة يزيد فقط عدد العمليات التي تنفّذ في أي لحظة. وفي <a href="#FigConcurrency2">الشكل 2</a>، تكمل جميع العمليات التنفيذ بحلول الوحدة الزمنية T7. لكن كل عملية فردية ما زالت تحتاج المقدار نفسه من زمن المعالج لتكتمل كما يظهر في <a href="#FigConcurrency1">الشكل 1</a>. فمثلًا، تحتاج العملية 2 ثلاث وحدات زمن سواء نُفّذت على نظام أحادي النواة أم متعدد الأنوية (أي أن <em>زمن معالجها</em> يبقى كما هو). ويزيد المعالج متعدد الأنوية <strong>إنتاجية</strong> تنفيذ العمليات، أي عدد العمليات التي يمكن أن تكتمل في فترة زمنية معينة. وبذلك، بينما يبقى زمن المعالج لعملية فردية دون تغيير، قد ينخفض زمنها الحائطي.</p>
 <h3 id="1412-تعجيل-تنفيذ-العمليات-بالخيوط"><a href="#_expediting_process_execution_with_threads"></a>14.1.2. تعجيل تنفيذ العمليات بالخيوط</h3>
 <p>من طرق تسريع تنفيذ عملية واحدة تفكيكها إلى تدفقات تنفيذ مستقلة خفيفة تُسمى <strong>الخيوط</strong> (threads). ويعرض <a href="#FigProcess">الشكل 3</a> كيف يتغير فضاء العنوان الافتراضي للعملية عندما تصبح متعددة الخيوط بخيطين. ومع أن لكل خيط تخصيصه الخاص لمساحة مكدّس النداء، فإن جميع الخيوط <em>تتشارك</em> بيانات البرنامج وتعليماته والكومة المخصصة للعملية متعددة الخيوط.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp" alt="multithread process with 2 threads"> Figure 3. Comparing the virtual address space of a single-threaded and a multithreaded process with two threads</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp" alt="multithread process with 2 threads"> Figure 3. Comparing the virtual address space of a single-threaded and a multithreaded process with two threads</p>
 <p>ويجدول نظام التشغيل الخيوط بالطريقة نفسها التي يجدول بها العمليات. وعلى معالج متعدد الأنوية، يستطيع نظام التشغيل تسريع تنفيذ برنامج متعدد الخيوط بجدولة خيوطه المختلفة للعمل على أنوية منفصلة. ويساوي الحد الأقصى لعدد الخيوط التي يمكن أن تنفّذ على التوازي عدد الأنوية الفيزيائية في النظام. وإذا تجاوز عدد الخيوط عدد الأنوية الفيزيائية، وجب على الخيوط الباقية انتظار دورها للتنفيذ (على غرار طريقة تنفيذ العمليات على نواة واحدة).</p>
 <h4><a href="#_an_example_scalar_multiplication"></a>مثال: الضرب القياسي</h4>
 <p>وكمثال أولي على كيفية استخدام تعدد الخيوط لتسريع تطبيق، فكّر في مسألة إجراء ضرب قياسي لمصفوفة <code>array</code> في عدد صحيح ما <code>s</code>. وفي الضرب القياسي، يُقاس كل عنصر في المصفوفة بضربه في <code>s</code>.</p>
@@ -129,11 +129,11 @@ L3 cache:              8192K
 </ol>
 <p>لنفترض أن التطبيق التتابعي لـ <code>scalar_multiply</code> يستغرق 60 ثانية لضرب مصفوفة إدخال من 100 مليون عنصر. ولبناء نسخة تنفّذ بـ<em>t</em>= 4 خيوط، نُسند إلى كل خيط ربع مصفوفة الإدخال الكلية (25 مليون عنصر).</p>
 <p>ويعرض <a href="#singleCPU">الشكل 4</a> ما يحدث عند تشغيل أربعة خيوط على نواة واحدة. وكما سبق، يُترك ترتيب التنفيذ لنظام التشغيل. وفي هذا السيناريو، افترض أن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. وعلى معالج أحادي النواة (تمثله المربعات)، ينفّذ كل خيط تتابعيًا. وبذلك، ستستغرق العملية متعددة الخيوط العاملة على نواة واحدة 60 ثانية أيضًا (وربما أطول قليلًا بسبب كلفة إنشاء الخيوط).</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp" alt="multithreaded process on one core"> Figure 4. Running four threads on a single-core CPU</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp" alt="multithreaded process on one core"> Figure 4. Running four threads on a single-core CPU</p>
 <p>والآن لنفترض أننا نشغّل عمليتنا متعددة الخيوط على نظام ثنائي الأنوية. ويعرض <a href="#doubleCPU">الشكل 5</a> النتيجة. ومرة أخرى، افترض <em>t</em> = 4 خيوط، وأن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. ونواتانا تمثلهما مربعات مظللة. ولأن النظام ثنائي الأنوية، ينفّذ الخيطان 1 و3 على التوازي خلال الخطوة الزمنية T1. ثم ينفّذ الخيطان 2 و4 على التوازي خلال الخطوة الزمنية T2. وبذلك، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 30 ثانية.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp" alt="multithreaded process on two cores"> Figure 5. Running four threads on a dual-core CPU</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp" alt="multithreaded process on two cores"> Figure 5. Running four threads on a dual-core CPU</p>
 <p>وأخيرًا، لنفترض أن العملية متعددة الخيوط (<em>t</em> = 4) تُشغَّل على معالج رباعي الأنوية. ويعرض <a href="#quadCPU">الشكل 6</a> أحد تسلسلات التنفيذ هذه. وتظلَّل كل نواة من الأنوية الأربع في <a href="#quadCPU">الشكل 6</a> بلون مختلف. وعلى النظام رباعي الأنوية، ينفّذ كل خيط على التوازي خلال الشريحة الزمنية T1. وبذلك، على معالج رباعي الأنوية، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 15 ثانية.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp" alt="multithreaded process on four cores"> Figure 6. Running four threads on a quad-core CPU</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp" alt="multithreaded process on four cores"> Figure 6. Running four threads on a quad-core CPU</p>
 <p>وبصفة عامة، إذا طابق عدد الخيوط عدد الأنوية (<em>c</em>) وجدول نظام التشغيل كل خيط للعمل على نواة منفصلة على التوازي، فمن المفترض أن تعمل العملية متعددة الخيوط في نحو 1/<em>c</em> من الزمن. وهذا التسريع الخطي مثالي، لكنه لا يُلاحظ كثيرًا في الواقع العملي. فمثلًا، إذا كانت هناك عمليات أخرى كثيرة (أو عمليات متعددة الخيوط) تنتظر استخدام المعالج، فستتنافس كلها على العدد المحدود من الأنوية، ما يؤدي إلى <strong>تنازع الموارد</strong> (resource contention) بين العمليات. وإذا تجاوز عدد الخيوط المحددة عدد أنوية المعالج، وجب على كل خيط انتظار دوره للعمل. وسنستكشف عوامل أخرى كثيرًا ما تمنع التسريع الخطي <a href="https://diveintosystems.org/book/C14-SharedMemory/performance.html#_measuring_the_performance_of_parallel_programs">لاحقًا في هذا الفصل</a>.</p>
 <p>نفحص في هذا القسم مكتبة الخيوط الشائعة POSIX، أي <strong>Pthreads</strong>. وPOSIX اختصار لـ Portable Operating System Interface. وهو معيار من IEEE يحدد شكل أنظمة UNIX وسلوكها وإحساسها. وتتوافر واجهة برمجة خيوط POSIX على جميع أنظمة التشغيل الشبيهة بـ UNIX تقريبًا، وكل منها يستوفي المعيار بكامله أو بدرجة كبيرة. لذلك، إذا كتبت شيفرة متوازية باستخدام خيوط POSIX على آلة Linux، فستعمل بالتأكيد على آلات Linux أخرى، ويُرجَّح أن تعمل على آلات تشغّل macOS أو متغيرات UNIX أخرى.</p>
 <p>لنبدأ بتحليل برنامج Pthreads نموذجي لـ«Hello World» (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">hellothreads.c</a>). وللإيجاز، استبعدنا معالجة الأخطاء من القائمة، مع أن <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">النسخة القابلة للتنزيل</a> تحتوي معالجة أخطاء نموذجية.</p>
@@ -941,7 +941,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.130745 s
 </code></pre>
 <p>لنفترض أن الخيطين 0 و1 ينفّذان بالتزامن ويمثلان المستخدمين A وB على الترتيب. ولنفكّر الآن في الوضع الذي يريد فيه A وB تحويل مال أحدهما للآخر: يريد A تحويل 20 دولارًا إلى B، بينما يريد B تحويل 40 إلى A.</p>
 <p>وفي مسار التنفيذ المميز في <a href="#deadlockFig">الشكل 1</a>، ينفّذ الخيطان بالتزامن الدالة <code>Transfer</code>. فيحوز الخيط 0 قفل <code>acctA</code> بينما يحوز الخيط 1 قفل <code>acctB</code>. والآن فكّر في ما يحدث. لمواصلة التنفيذ، يحتاج الخيط 0 إلى حيازة قفل <code>acctB</code> الذي يحوزه الخيط 1. وبالمثل، يحتاج الخيط 1 إلى حيازة قفل <code>acctA</code> لمواصلة التنفيذ، وهو محجوز للخيط 0. ولأن كلا الخيطين محجوبان على الآخر، فهما في تجمّد.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp" alt="Two threads deadlocked with each other"> Figure 1. An example of deadlock</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp" alt="Two threads deadlocked with each other"> Figure 1. An example of deadlock</p>
 <p>ومع أن نظام التشغيل يوفّر بعض الحماية من التجمّد، ينبغي للمبرمجين الانتباه إلى كتابة شيفرة تزيد احتمال التجمّد. فمثلًا، كان يمكن تجنّب السيناريو السابق بإعادة ترتيب الأقفال بحيث يحيط كل زوج قفل/فتح قفل بعبارة تحديث الرصيد المرتبطة به فقط:</p>
 <pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">Transfer</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
     <span class="hljs-comment">//argument passing removed to increase readability</span>
@@ -1172,13 +1172,13 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.130745 s
 <h4><a href="#_speedup"></a>التسريع</h4>
 <p>لنفترض أن برنامجًا يستغرق زمن T<em>c</em> للتنفيذ على <em>c</em> من الأنوية. وبذلك تستغرق النسخة التتابعية من البرنامج زمن T1.</p>
 <p>ويعبَّر عن تسريع البرنامج على <em>c</em> من الأنوية بالمعادلة:</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-speedup.webp" alt="speedup"></p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-speedup.webp" alt="speedup"></p>
 <p>إذا استغرق برنامج تتابعي 60 ثانية للتنفيذ، بينما تستغرق نسخته المتوازية 30 ثانية على نواتين، فالتسريع المقابل هو 2. وبالمثل، إذا استغرق ذلك البرنامج 15 ثانية على أربع أنوية، فالتسريع 4. وفي سيناريو مثالي، يكون تسريع برنامج يعمل على <em>n</em> من الأنوية بـ<em>n</em> من الخيوط الإجمالية مساويًا <em>n</em>.</p>
 <p>وإذا كان تسريع برنامج أكبر من 1، فهو يدل على أن التوازي حقق بعض التحسن. وإذا كان التسريع أقل من 1، فالحل المتوازي في الواقع أبطأ من الحل التتابعي. ومن الممكن أن يكون تسريع برنامج أكبر من <em>n</em> (مثلًا كأثر جانبي لوجود ذاكرات مؤقتة إضافية تقلل الوصول إلى الذاكرة). وتُشار إلى هذه الحالات بـ<strong>التسريع فوق الخطي</strong> (superlinear speedup).</p>
 <h4><a href="#_efficiency"></a>الكفاءة</h4>
 <p>لا يأخذ التسريع عدد الأنوية في الحسبان — فهو ببساطة نسبة الزمن التتابعي إلى الزمن المتوازي. فمثلًا، إذا استغرق برنامج تتابعي 60 ثانية، لكن برنامجًا متوازيًا استغرق 30 ثانية على أربع أنوية، فسيظل تسريعه 2. غير أن هذا المقياس لا يجسّد حقيقة أنه عمل على أربع أنوية.</p>
 <p>ولقياس التسريع لكل نواة، استخدم الكفاءة:</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-efficiency.webp" alt="efficiency"></p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-efficiency.webp" alt="efficiency"></p>
 <p>تتفاوت الكفاءة عادةً من 0 إلى 1. وتدل كفاءة 1 على أن الأنوية تُستخدم استخدامًا مثاليًا. وإذا كانت الكفاءة قريبة من 0، فللتوازي فائدة ضئيلة أو معدومة، إذ لا تحسّن الأنوية الإضافية الأداء. وإذا كانت الكفاءة أكبر من 1، فهي تدل على تسريع فوق خطي.</p>
 <p>لنعد إلى المثال السابق الذي يستغرق فيه برنامج تتابعي 60 ثانية. فإذا استغرقت النسخة المتوازية 30 ثانية على نواتين، فكفاءتها 1 (أو 100%). وإذا استغرق البرنامج بدلًا من ذلك 30 ثانية على أربع أنوية، تهبط الكفاءة إلى 0.5 (أو 50%).</p>
 <h4><a href="#_parallel_performance_in_the_real_world"></a>الأداء المتوازي في العالم الواقعي</h4>
@@ -1230,7 +1230,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
 <p>في عام 1967، تنبأ Gene Amdahl، وهو معماري حواسيب بارز في IBM، بأن التسريع الأقصى الذي يمكن أن يحققه برنامج حاسوبي محدود بحجم مكوّنه التتابعي الضروري (المعروف الآن بقانون Amdahl). وبصفة أعم، ينص قانون Amdahl على أنه يوجد في كل برنامج مكوّن يمكن تسريعه (أي الجزء من البرنامج الذي يمكن تحسينه أو جعله متوازيًا، <em>P</em>)، ومكوّن <em>لا</em> يمكن تسريعه (أي الجزء من البرنامج التتابعي بطبيعته، <em>S</em>). وحتى لو انخفض الوقت اللازم لتنفيذ المكوّن القابل للتحسين أو التوازي <em>P</em> إلى الصفر، فسيظل المكوّن التتابعي <em>S</em> موجودًا، وسيسيطر على الأداء في نهاية الأمر. ولأن <em>S</em> و<em>P</em> كسران، لاحظ أن <em>S</em> + <em>P</em> = 1.</p>
 <p>فكّر في برنامج ينفّذ على نواة واحدة في زمن T1. عندئذٍ يستغرق الجزء التتابعي الضروري من تنفيذ البرنامج زمن <em>S</em> × T1 للعمل، ويستغرق الجزء القابل للتوازي من تنفيذ البرنامج (<em>P</em> = 1 - <em>S</em>) زمن <em>P</em> × T1 للعمل.</p>
 <p>وعندما ينفّذ البرنامج على <em>c</em> من الأنوية، ما زال الجزء التتابعي من الشيفرة يستغرق زمن <em>S</em> × T1 للعمل (مع بقاء جميع الشروط الأخرى على حالها)، لكن الجزء القابل للتوازي يمكن تقسيمه على <em>c</em> من الأنوية. وبذلك يكون التحسن الأقصى للمعالج المتوازي بـ<em>c</em> من الأنوية لتنفيذ المهمة نفسها هو:</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-amdahl.webp" alt="amdahl"></p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-2-amdahl.webp" alt="amdahl"></p>
 <p>وكلما زاد <em>c</em>، صار زمن التنفيذ على المعالج المتوازي مسيطرًا عليه بالجزء التتابعي من البرنامج.</p>
 <p>ولفهم أثر قانون Amdahl، فكّر في برنامج 90% منه قابل للتوازي وينفّذ في 10 ثوانٍ على نواة واحدة. وفي معادلتنا، المكوّن القابل للتوازي (<em>P</em>) هو 0.9، بينما المكوّن التتابعي (<em>S</em>) هو 0.1. ويعرض <a href="#TabAmdahl">الجدول 2</a> الزمن الكلي المقابل على <em>c</em> من الأنوية (T<em>c</em>) وفق قانون Amdahl، والتسريع المرتبط به.</p>
 <table>
@@ -1276,7 +1276,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
 </table>
 <p>لاحظ أنه مع مرور الوقت، يبدأ المكوّن التتابعي من البرنامج بالسيطرة، ويبدو أن أثر إضافة مزيد من الأنوية ضئيل أو معدوم.</p>
 <p>وثمة طريقة أكثر رسمية للنظر إلى ذلك تتطلب إدماج حساب Amdahl لـ T<em>c</em> في معادلة التسريع:</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-amdahl_speed.webp" alt="amdahl speed"></p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-3-amdahl_speed.webp" alt="amdahl speed"></p>
 <p>ويُظهر أخذ نهاية هذه المعادلة أنه كلما اقترب عدد الأنوية (<em>c</em>) من اللانهاية، اقترب التسريع من 1/<em>S</em>. وفي المثال المعروض في <a href="#TabAmdahl">الجدول 2</a>، يقترب التسريع من 1/0.1، أي 10.</p>
 <p>وكمثال آخر، فكّر في برنامج حيث <em>P</em> = 0.99. وبعبارة أخرى، 99% من البرنامج قابل للتوازي. وكلما اقترب <em>c</em> من اللانهاية، بدأ الزمن التتابعي بالسيطرة على الأداء (وفي هذا المثال <em>S</em> = 0.01). وبذلك يقترب التسريع من 1/0.01، أي 100. وبعبارة أخرى، حتى بمليون نواة، فإن التسريع الأقصى الذي يمكن أن يحققه هذا البرنامج هو 100 فقط.</p>
 <p>لم يضع كل شيء: حدود قانون Amdahl</p>
@@ -1292,7 +1292,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
 <p>وبالتالي، ووفق Gustafson، فالأدق أن نقول إن «<em>مقدار العمل القابل للتنفيذ على التوازي يتغير خطيًا مع عدد المعالجات</em>»1.</p>
 <p>فكّر في برنامج <em>متوازٍ</em> يستغرق زمن T<em>c</em> للعمل على نظام بـ<em>c</em> من الأنوية. ولتمثّل <em>S</em> الجزء التتابعي الضروري من تنفيذ البرنامج الذي يستغرق زمن <em>S</em> × T<em>c</em> للعمل. وبذلك يستغرق الجزء القابل للتوازي من تنفيذ البرنامج، <em>P</em> = 1 - <em>S</em>، زمن <em>P</em> × T<em>c</em> للعمل على <em>c</em> من الأنوية.</p>
 <p>وعندما يعمل البرنامج نفسه على نواة واحدة فقط، ما زال الجزء التتابعي من الشيفرة يستغرق <em>S</em> x T<em>c</em> (بافتراض بقاء جميع الشروط الأخرى على حالها). لكن الجزء القابل للتوازي (الذي كان مقسومًا على <em>c</em> من الأنوية) يجب الآن أن تنفّذه نواة واحدة فقط ليعمل تتابعيًا، فيستغرق زمن <em>P</em> × T<em>c</em> × <em>c</em>. وبعبارة أخرى، سيستغرق المكوّن المتوازي <em>c</em> ضعف المدة على نظام أحادي النواة. ويترتب على ذلك أن التسريع المعياري سيكون:</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-sspeedup.webp" alt="sspeedup"></p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-sspeedup.webp" alt="sspeedup"></p>
 <p>وهذا يدل على أن التسريع المعياري يزداد خطيًا مع عدد وحدات الحساب.</p>
 <p>فكّر في مثالنا السابق الذي كان 99% منه قابلًا للتوازي (أي <em>P</em> = 0.99). وبتطبيق معادلة التسريع المعياري، سيكون التسريع النظري على 100 معالج 99.01. وعلى 1,000 معالج سيكون 990.01. لاحظ أن الكفاءة تبقى ثابتة عند <em>P</em>.</p>
 <p>وكما يستنتج Gustafson، «<em>ينبغي قياس التسريع بقياس المسألة إلى عدد المعالجات، لا بتثبيت حجم المسألة</em>»1. وتُعدّ نتيجة Gustafson جديرة بالملاحظة لأنها تُظهر إمكانية الحصول على تسريع متزايد بتحديث عدد المعالجات. وكم باحث يعمل في منشأة حوسبة فائقة وطنية، كان اهتمام Gustafson أكبر بأداء <em>عمل أكثر</em> في مقدار ثابت من الزمن. وفي عدة مجالات علمية، تؤدي القدرة على تحليل بيانات أكثر إلى دقة أو إتقان أعلى في النتائج عادةً. وقد أظهر عمل Gustafson إمكانية الحصول على تسريعات كبيرة على أعداد كبيرة من المعالجات، وأعاد إحياء الاهتمام بالمعالجة المتوازية2.</p>
@@ -1326,7 +1326,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
 </ul>
 <h3 id="1451-الذاكرات-المؤقتة-في-الأنظمة-متعددة-الأنوية"><a href="#_caches_on_multicore_systems"></a>14.5.1. الذاكرات المؤقتة في الأنظمة متعددة الأنوية</h3>
 <p><a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors">تذكّر</a> أنه في معماريات الذاكرة المشتركة يمكن أن تملك كل نواة ذاكرتها المؤقتة الخاصة، ويمكن أن تتشارك أنوية متعددة ذاكرة مؤقتة مشتركة. ويعرض <a href="#FigMulticoreCache">الشكل 1</a> مثالًا على وحدة معالجة مركزية ثنائية الأنوية. ومع أن كل نواة تملك ذاكرتها المؤقتة L1 المحلية، فإن الأنوية تتشارك ذاكرة L2 مؤقتة مشتركة.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp" alt="dual core processor with separate L1 caches and shared L2 cache"> Figure 1. An example dual-core CPU with separate L1 caches and a shared L2 cache</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp" alt="dual core processor with separate L1 caches and shared L2 cache"> Figure 1. An example dual-core CPU with separate L1 caches and a shared L2 cache</p>
 <p>قد تنفّذ خيوط متعددة في ملف تنفيذي واحد دوال منفصلة. ومن دون استراتيجية <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_cache_coherency"><strong>تماسك الذاكرة المؤقتة</strong></a> تضمن أن كل ذاكرة مؤقتة تحافظ على رؤية متسقة للذاكرة المشتركة، يمكن تحديث المتغيرات المشتركة تحديثًا غير متسق. وكمثال، فكّر في المعالج ثنائي الأنوية في <a href="#FigMulticoreCache">الشكل 1</a>، حيث تكون كل نواة مشغولة بتنفيذ خيوط منفصلة بالتزامن. وللخيط المسند إلى النواة 0 متغير محلي <code>x</code>، وللخيط المنفّذ على النواة 1 متغير محلي <code>y</code>، ولكلا الخيطين وصول مشترك إلى متغير عام <code>g</code>. ويعرض <a href="#TabCache">الجدول 1</a> مسارًا ممكنًا للتنفيذ.</p>
 <table>
 <thead>
@@ -1355,7 +1355,7 @@ Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
 </tbody>
 </table>
 <p>لنفترض أن القيمة الأولية لـ <code>g</code> هي 10، والقيمتين الأوليتين لـ <code>x</code> و<code>y</code> كلتاهما 0. ما القيمة النهائية لـ <code>y</code> في نهاية هذا التسلسل من العمليات؟ من دون تماسك الذاكرة المؤقتة، يصعب جدًا الإجابة عن هذا السؤال، بما أن هناك ثلاث قيم مخزَّنة لـ <code>g</code> على الأقل: واحدة في ذاكرة L1 المؤقتة للنواة 0، وواحدة في ذاكرة L1 المؤقتة للنواة 1، ونسخة منفصلة من <code>g</code> مخزَّنة في ذاكرة L2 المشتركة.</p>
-<p><img src="https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp" alt="A problematic update to the caches"> Figure 2. A problematic update to caches that do not employ cache coherency</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp" alt="A problematic update to the caches"> Figure 2. A problematic update to caches that do not employ cache coherency</p>
 <p>ويعرض <a href="#FigMCCacheExample">الشكل 2</a> نتيجة خاطئة ممكنة بعد اكتمال تسلسل العمليات في <a href="#TabCache">الجدول 1</a>. لنفترض أن ذاكرات L1 المؤقتة تنفّذ سياسة الكتابة المرتجعة. فعندما يكتب الخيط المنفّذ على النواة 0 القيمة 5 في <code>g</code>، لا يحدّث إلا قيمة <code>g</code> في ذاكرة L1 المؤقتة للنواة 0. وتبقى قيمة <code>g</code> في ذاكرة L1 المؤقتة للنواة 1 مساوية 10، وكذلك النسخة في ذاكرة L2 المشتركة. وحتى لو نُفّذت سياسة الكتابة المباشرة، فلا ضمان أن تُحدَّث نسخة <code>g</code> المخزَّنة في ذاكرة L1 المؤقتة للنواة 1! وفي هذه الحالة، ستكون القيمة النهائية لـ <code>y</code> هي <code>60</code>.</p>
 <p>وتُبطل استراتيجية تماسك الذاكرة المؤقتة النسخ المخزَّنة مؤقتًا للقيم المشتركة في الذاكرات المؤقتة الأخرى أو تحدّثها عندما تُجرى كتابة في القيمة المشتركة في ذاكرة مؤقتة واحدة. وبروتوكول <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_the_msi_protocol">المعدَّلة المشتركة غير الصالحة (MSI)</a> (المناقش بالتفصيل في <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_the_msi_protocol">الفصل 11.6</a>) مثال على بروتوكول تماسك ذاكرة مؤقتة بالإبطال.</p>
 <p>ومن التقنيات الشائعة لتنفيذ MSI التجسّس. وتتجنّس <strong>الذاكرة المؤقتة المتجسّسة</strong> (snoopy cache) كهذه على ناقل الذاكرة بحثًا عن إشارات كتابة محتملة. وإذا اكتشفت الذاكرة المؤقتة المتجسّسة كتابة في كتلة ذاكرة مؤقتة مشتركة، أُبطلت سطرها الحاوي تلك الكتلة. والنتيجة النهائية أن النسخة الصالحة الوحيدة من الكتلة تكون في الذاكرة المؤقتة التي كُتب فيها، بينما تُوسم <em>جميع النسخ الأخرى</em> من الكتلة في الذاكرات المؤقتة الأخرى غير صالحة.</p>
@@ -1875,7 +1875,7 @@ Run Time <span class="hljs-keyword">for</span> Phase 1 is 0.068749
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1883,8 +1883,8 @@ Run Time <span class="hljs-keyword">for</span> Phase 1 is 0.068749
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

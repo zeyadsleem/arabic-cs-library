@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="إطار عمل ويب قائم على الأحداث — An Event-Driven Web Framework"/><!----><title>إطار عمل ويب قائم على الأحداث | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -52,8 +52,7 @@
 <p>تبيّن أن هذه المشكلة أعقد مما تبدو للوهلة الأولى. في هذا الفصل، سنستعرض المشكلات التي تنشأ عن استخدام HTTP لبناء هذا النوع من التفاعل، ثم سنبني <em>إطار عمل ويب</em> (web framework) بلغة Common Lisp يتيح لنا حل مشكلات مماثلة في المستقبل.</p>
 <h2 id="أساسيات-خوادم-http">أساسيات خوادم HTTP</h2>
 <p>في أبسط مستوياته، يتمثّل التبادل عبر HTTP من طلب (request) واحد يليه استجابة (response) واحدة. يُرسل <em>عميل</em> (client) طلباً يتضمن مُعرِّف مورد، ووسم إصدار HTTP، وبعض الترويسات (headers)، وبعض المعاملات (parameters). يحلّل <em>الخادم</em> (server) ذلك الطلب، ويقرّر ما العمل حياله، ثم يرسل استجابة تتضمن وسم إصدار HTTP نفسه، وشيفرة استجابة، وبعض الترويسات، وجسم استجابة.</p>
-<p>لاحظ أن هذا الوصف يجعل الخادم يستجيب لطلب وارد من عميل محدد. أما في حالتنا فنحن نريد لكل لاعب أن يُحدَّث بـ_أي_ خطوات بمجرد حدوثها، لا أن يتلقى إشعارات فقط حين تكون حركته هي التي قُدِّمت. وهذا يعني أننا نحتاج إلى أن <em>يدفع</em> (push) الخادم الرسائل إلى العملاء دون أن يتلقى أولاً طلباً يطلب هذه المعلومات.[^polling]</p>
-<p>[^polling]: أحد الحلول لهذه المشكلة هو إجبار العملاء على <em>الاستطلاع</em> (polling) للخادم. أي أن كل عميل يرسل إلى الخادم طلباً دورياً يسأله فيه هل تغيّر شيء. هذا قد ينجح مع التطبيقات البسيطة، لكن في هذا الفصل سنركّز على الحلول المتاحة أمامك عندما يتوقف هذا النموذج عن العمل.</p>
+<p>لاحظ أن هذا الوصف يجعل الخادم يستجيب لطلب وارد من عميل محدد. أما في حالتنا فنحن نريد لكل لاعب أن يُحدَّث بـ_أي_ خطوات بمجرد حدوثها، لا أن يتلقى إشعارات فقط حين تكون حركته هي التي قُدِّمت. وهذا يعني أننا نحتاج إلى أن <em>يدفع</em> (push) الخادم الرسائل إلى العملاء دون أن يتلقى أولاً طلباً يطلب هذه المعلومات.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>هناك عدة مقاربات قياسية لتفعيل الدفع من الخادم (server push) عبر HTTP.</p>
 <h3 id="cometالاستطلاع-الطويل">Comet/الاستطلاع الطويل</h3>
 <p>تقنية «الاستطلاع الطويل» (long poll) تجعل العميل يرسل إلى الخادم طلباً جديداً بمجرد أن يتلقى استجابة. وبدلاً من الوفاء بذلك الطلب فوراً، ينتظر الخادم حدوثَ حدثٍ لاحق كي يستجيب. وهذا فرقٌ دقيق في المعنى، لأن العميل يظل يبدأ طلبًا جديدًا مع كل تحديث.</p>
@@ -65,21 +64,18 @@
 <p>هذه المقاربات الثلاث تختلف كثيراً عن بعضها، لكنها تشترك جميعها في صفة مهمة: فهي جميعها تعتمد على اتصالات طويلة العمر. فالاستطلاع الطويل يعتمد على إبقاء الخادم الطلبات عالقة حتى تتوفر بيانات جديدة، وSSE يبقي تدفقاً مفتوحاً بين العميل والخادم تُكتب فيه البيانات دورياً، وWebSockets تغيّر البروتوكول الذي تستخدمه إمكانية بعينها ثم تتركها مفتوحة.</p>
 <p>ولكي نرى لماذا قد يسبب هذا مشكلات لخادم HTTP عادي، لننظر في كيفية عمل التنفيذ الأساسي.</p>
 <h3 id="بنية-خادم-http-التقليدية">بنية خادم HTTP التقليدية</h3>
-<p>\label{sec.eventsweb.serverarch}</p>
+<p><span class="content-anchor" id="sec.eventsweb.serverarch"></span></p>
 <p>يعالج خادم HTTP واحد طلبات كثيرة على التوازي. وتاريخياً، استخدمت خوادم HTTP كثيرة بنية <em>خيط لكل طلب</em> (thread-per-request). أي أن الخادم، لكل طلب وارد، ينشئ خيطاً (thread) يقوم بالعمل اللازم للردّ.</p>
 <p>ولأن كل واحد من هذه الاتصالات مقصود به أن يكون قصير العمر، فلا نحتاج إلى خيوط كثيرة تعمل على التوازي للتعامل معها جميعاً. كما أن هذا النموذج يُبسّط <em>التنفيذ</em> (implementation) للخادم، إذ يتيح لمبرمج الخادم أن يكتب الشيفرة وكأنه يعالج اتصالاً واحداً فقط في كل لحظة. وهو أيضاً يمنحنا حرية التنظيف من الاتصالات الفاشلة أو «الزومبية» ومواردها المرتبطة، بقتل الخيط المقابل وترك جامع القمامة يؤدي عمله.</p>
-<p>الملاحظة الجوهرية هي أن خادم HTTP الذي يستضيف تطبيق ويب «تقليدياً» لديه <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مستخدم متزامن قد لا يحتاج سوى معالجة نسبة صغيرة جداً من طلبات <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> <em>على التوازي</em> كي ينجح. أما نوع التطبيق التفاعلي الذي نحاول بناءه، فإن <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> من المستخدمين ستتطلب بالتأكيد أن يحافظ التطبيق على <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> اتصال على الأقل على التوازي، في وقت واحد.</p>
+<p>الملاحظة الجوهرية هي أن خادم HTTP الذي يستضيف تطبيق ويب «تقليدياً» لديه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مستخدم متزامن قد لا يحتاج سوى معالجة نسبة صغيرة جداً من طلبات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> <em>على التوازي</em> كي ينجح. أما نوع التطبيق التفاعلي الذي نحاول بناءه، فإن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> من المستخدمين ستتطلب بالتأكيد أن يحافظ التطبيق على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> اتصال على الأقل على التوازي، في وقت واحد.</p>
 <p>النتيجة للإبقاء على الاتصالات طويلة العمر هي أننا سنحتاج إما إلى:</p>
 <ul>
 <li>منصة تكون فيها الخيوط «رخيصة» بما يكفي ل يمكننا استخدام أعداد كبيرة منها في وقت واحد.</li>
 <li>بنية خادم قادرة على معالجة اتصالات كثيرة بخيط واحد.</li>
 </ul>
 <p>هناك بيئات برمجية مثل <a href="http://racket-lang.org/">Racket</a> و<a href="http://www.erlang.org/">Erlang</a> و<a href="http://hackage.haskell.org/package/base-4.7.0.1/docs/Control-Concurrent.html">Haskell</a> توفّر بِنَى شبيهة بالخيوط «خفيفة» بما يكفي للنظر في الخيار الأول. ويتطلب هذا الأسلوب من المبرمج أن يتعامل صراحةً مع مشكلات التزامن (synchronization)، التي ستكون أكثر انتشاراً بكثير في نظام تبقى فيه الاتصالات مفتوحة وقتاً طويلاً ويحتمل أن يتنافس فيها الجميع على موارد متشابهة. وتحديداً، إذا كان لدينا نوع من البيانات المركزية تتشاركها عدة مستخدمين في وقت واحد، فسنحتاج إلى تنسيق عمليات القراءة والكتابة على تلك البيانات بطريقة ما.</p>
-<p>وإن لم تكن الخيوط الرخيصة متاحة لنا، أو كنا غير مستعدين للعمل مع التزامن الصريح، فعلينا أن نضع في الحسبان أن يتولى خيط واحد معالجة اتصالات كثيرة.[^mn] وفي هذا النموذج، سيكون خيطنا الفردي يتعامل في الوقت نفسه مع «شذرات» (slices) دقيقة من طلبات كثيرة، مبدّلاً بينها بأكبر قدر ممكن من الكفاءة. ويُشار إلى نمط بنية النظام هذا عادةً بأنه <em>قائم على الأحداث</em> (event-driven) أو <em>مبني على الأحداث</em> (event-based).[^eventbased]</p>
-<p>[^mn]: يمكننا أن نضع في الحسبان نظاماً أكثر عمومية يتعامل مع <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مستخدماً متزامناً باستخدام <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> خيطاً بالنسبة لقيمة <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> قابلة للتهيئة؛ في هذا النموذج، يُقال إن اتصالات <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مُوزَّعة تعددياً (multiplexed) على الخيوط <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span>. وفي هذا الفصل، سنركّز على كتابة برنامج تكون فيه <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> ثابتة عند 1؛ غير أن الدروس المستفادة هنا قد تنطبق جزئياً على النموذج الأكثر عمومية.</p>
-<p>[^eventbased]: هذه التسمية مربكة بعض الشيء، ومصدرها أبحاث أنظمة التشغيل المبكرة. فهي تشير إلى كيفية إتمام الاتصال بين العمليات المتزامنة المتعددة. وفي نظام قائم على الخيوط، يتم الاتصال عبر مورد مُزامن مثل الذاكرة المشتركة. أما في نظام قائم على الأحداث، فتتواصل العمليات عموماً عبر طابور (queue) تنشر فيه عناصر تصف ما فعلته أو ما تريد فعله، وهو ما يتولى صيانته خيط التنفيذ الفردي لدينا. وبما أن هذه العناصر تصف عموماً إجراءات مطلوبة أو سابقة،فيُشار إليها بـ«الأحداث» (events).</p>
-<p>وبما أننا لا ندير سوى خيط واحد، فلا نحتاج إلى القدر نفسه من القلق بشأن حماية الموارد المشتركة من الوصول المتزامن. غير أن لدينا مشكلة فريدة خاصة بنا في هذا النموذج. وبما أن خيطنا الفردي يعمل على جميع الطلبات الجاري تنفيذها في وقت واحد، فيجب أن نتأكد من أنه <strong>لا يحجب أبداً</strong> (never blocks). فالحجب على أي اتصال يحجب الخادم بأكمله عن إحراز التقدم في أي طلب آخر. علينا أن نكون قادرين على الانتقال إلى عميل آخر إذا تعذّرت خدمة الحالي، وأن نكون قادرين على ذلك بطريقة لا تُهدِر العمل الذي أُنجز حتى الآن.[^crawler]</p>
-<p>[^crawler]: انظر \aosachapref{s:crawler} لمقاربة أخرى لهذه المشكلة.</p>
+<p>وإن لم تكن الخيوط الرخيصة متاحة لنا، أو كنا غير مستعدين للعمل مع التزامن الصريح، فعلينا أن نضع في الحسبان أن يتولى خيط واحد معالجة اتصالات كثيرة.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> وفي هذا النموذج، سيكون خيطنا الفردي يتعامل في الوقت نفسه مع «شذرات» (slices) دقيقة من طلبات كثيرة، مبدّلاً بينها بأكبر قدر ممكن من الكفاءة. ويُشار إلى نمط بنية النظام هذا عادةً بأنه <em>قائم على الأحداث</em> (event-driven) أو <em>مبني على الأحداث</em> (event-based).<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>وبما أننا لا ندير سوى خيط واحد، فلا نحتاج إلى القدر نفسه من القلق بشأن حماية الموارد المشتركة من الوصول المتزامن. غير أن لدينا مشكلة فريدة خاصة بنا في هذا النموذج. وبما أن خيطنا الفردي يعمل على جميع الطلبات الجاري تنفيذها في وقت واحد، فيجب أن نتأكد من أنه <strong>لا يحجب أبداً</strong> (never blocks). فالحجب على أي اتصال يحجب الخادم بأكمله عن إحراز التقدم في أي طلب آخر. علينا أن نكون قادرين على الانتقال إلى عميل آخر إذا تعذّرت خدمة الحالي، وأن نكون قادرين على ذلك بطريقة لا تُهدِر العمل الذي أُنجز حتى الآن.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
 <p>ورغم أنه من غير المعتاد أن يطلب مبرمج من خيط صراحةً أن يتوقف عن العمل، فإن كثيراً من العمليات الشائعة تحمل خطر الحجب. ولأن الخيوط منتشرة إلى هذا الحد، ولأن التفكير في اللاتزامنية عبء ثقيل على المبرمج، تفترض كثير من اللغات وأطرها أن الحجب على الإدخال/الإخراج (I/O) صفة مرغوبة. وهذا يجعل من السهل جداً أن تحجب في مكان ما <em>عرضاً</em>. لحسن الحظ، توفّر لنا Common Lisp مجموعة دنيا من أوّليات الإدخال/الإخراج اللاتزامني (asynchronous I/O) التي يمكننا البناء فوقها.</p>
 <h3 id="القرارات-المعمارية">القرارات المعمارية</h3>
 <p>الآن وقد درسنا خلفية هذه المشكلة، وصلنا إلى النقطة التي يجب أن نتخذ عندها قرارات مبنية على المعرفة بشأن <em>ماذا</em> نبني.</p>
@@ -113,11 +109,9 @@
 	 do (<span class="hljs-name">loop</span> while (<span class="hljs-name">socket-close</span> c)))
       (<span class="hljs-name">loop</span> while (<span class="hljs-name">socket-close</span> server)))))
 </code></pre>
-<p>إذا لم تكن قد كتبت برنامج Common Lisp من قبل، فإن كتلة الشيفرة هذه تحتاج إلى بعض الشرح. ما كتبناه هنا هو <em>تعريف دالة</em> (method definition). ولئن كانت Lisp معروفة على أنها لغة وظيفية، فإنها تمتلك أيضًا نظامها الخاص للبرمجة كائنية التوجه اسمه «نظام كائنات Common Lisp»، ويختصر عادةً بـ«CLOS».[^CLOSpronounce]</p>
-<p>[^CLOSpronounce]: تُنطق «kloss» أو «see-loss» أو «see-lows»، تبعًا لمن تسأله.</p>
+<p>إذا لم تكن قد كتبت برنامج Common Lisp من قبل، فإن كتلة الشيفرة هذه تحتاج إلى بعض الشرح. ما كتبناه هنا هو <em>تعريف دالة</em> (method definition). ولئن كانت Lisp معروفة على أنها لغة وظيفية، فإنها تمتلك أيضًا نظامها الخاص للبرمجة كائنية التوجه اسمه «نظام كائنات Common Lisp»، ويختصر عادةً بـ«CLOS».<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
 <h3 id="clos-والدوال-العامة">CLOS والدوال العامة</h3>
-<p>في CLOS، بدلاً من التركيز على الأصناف (classes) والدوال، نكتب <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html"><em>دوالاً عامة</em></a> تُنفَّذ كمجموعات من <em>دوال</em> (methods). وفي هذا النموذج، لا <em>تنتمي</em> الدوال إلى الأصناف، بل <em>تتخصص على</em> (specialize on) الأنواع.[^juliachap] ودالة <code>start</code> التي كتبناها للتو هي دالة أحادية (unary method) يكون فيها الوسيط <code>port</code> <em>متخصصاً على</em> النوع <code>integer</code>. وهذا يعني أننا نستطيع أن نمتلك عدة تطبيقات (implementations) لدالة <code>start</code> يختلف فيها نوع <code>port</code>، وسيختار وقت التشغيل أي تطبيق يستخدمه بحسب نوع <code>port</code> عند استدعاء <code>start</code>.</p>
-<p>[^juliachap]: لغة البرمجة Julia تتبنى مقاربة مشابهة للبرمجة كائنية التوجه؛ يمكنك التعلم المزيد عنها في \aosachapref{s:static-analysis}.</p>
+<p>في CLOS، بدلاً من التركيز على الأصناف (classes) والدوال، نكتب <a href="http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html"><em>دوالاً عامة</em></a> تُنفَّذ كمجموعات من <em>دوال</em> (methods). وفي هذا النموذج، لا <em>تنتمي</em> الدوال إلى الأصناف، بل <em>تتخصص على</em> (specialize on) الأنواع.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup> ودالة <code>start</code> التي كتبناها للتو هي دالة أحادية (unary method) يكون فيها الوسيط <code>port</code> <em>متخصصاً على</em> النوع <code>integer</code>. وهذا يعني أننا نستطيع أن نمتلك عدة تطبيقات (implementations) لدالة <code>start</code> يختلف فيها نوع <code>port</code>، وسيختار وقت التشغيل أي تطبيق يستخدمه بحسب نوع <code>port</code> عند استدعاء <code>start</code>.</p>
 <p>وبشكل أعم، يمكن للدوال أن تتخصص على أكثر من وسيط واحد. فعند استدعاء <code>method</code>، يقوم وقت التشغيل بـ:</p>
 <ul>
 <li>التوجيه (dispatch) على نوع وسائطه ليقرّر أي جسم دالة ينبغي تشغيله، و</li>
@@ -224,7 +218,7 @@
 <li><code>expecting</code>، التي ستُظهر كم محرفاً إضافياً نتوقعه (إن وُجد) بعد أن نخزّن ترويسات الطلب</li>
 </ul>
 <h3 id="تفسير-الطلبات">تفسير الطلبات</h3>
-<p>\label{sec.eventsweb.handlerfunc}
+<p><span class="content-anchor" id="sec.eventsweb.handlerfunc"></span>
 الآن وقد رأينا كيف نجمّع الطلبات الكاملة تِباعًا من قطع صغيرة من البيانات (bits) تُجمَّع في مخازننا المؤقتة، فماذا يحدث حين يتوفر لدينا طلب كامل جاهز للمعالجة؟ يحدث هذا في الدالة <code>handle-request</code>.</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> handle-request ((<span class="hljs-name">socket</span> usocket) (<span class="hljs-name">req</span> request))
   (<span class="hljs-name">aif</span> (<span class="hljs-name">lookup</span> (<span class="hljs-name">resource</span> req) <span class="hljs-variable">*handlers*</span>)
@@ -305,14 +299,13 @@
    (<span class="hljs-name">data</span> <span class="hljs-symbol">:reader</span> data <span class="hljs-symbol">:initarg</span> <span class="hljs-symbol">:data</span>)))
 </code></pre>
 <p>سنرسل استجابة HTTP كلما استلمنا طلب HTTP كاملاً؛ غير كيف نعرف متى وأين نرسل رسائل SSE دون وجود طلب أصلي من العميل؟</p>
-<p>أحد الحلول البسيطة هو تسجيل <em>قنوات</em> (channels)[^defparameter]، سنشترك فيها في مقابس <code>socket</code> حسب الحاجة.</p>
+<p>أحد الحلول البسيطة هو تسجيل <em>قنوات</em> (channels)<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>، سنشترك فيها في مقابس <code>socket</code> حسب الحاجة.</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defparameter</span> <span class="hljs-variable">*channels*</span> (<span class="hljs-name">make-hash-table</span>))
 
 (<span class="hljs-name">defmethod</span> subscribe! ((<span class="hljs-name">channel</span> symbol) (<span class="hljs-name">sock</span> usocket))
   (<span class="hljs-name">push</span> sock (<span class="hljs-name">gethash</span> channel <span class="hljs-variable">*channels*</span>))
   <span class="hljs-literal">nil</span>)
 </code></pre>
-<p>[^defparameter]: نحن نقدّم هنا بعض الصياغة الجديدة على سبيل المجاملة. هذه هي طريقتنا في إعلان متغيّر قابل للتعديل. وهي على الصورة <code>(defparameter &lt;name&gt; &lt;value&gt; &lt;optional docstring&gt;)</code>.</p>
 <p>يمكننا عندئذٍ أن ننشر الإشعارات عبر <code>publish!</code> إلى تلك القنوات بمجرد توفرها.</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> publish! ((<span class="hljs-name">channel</span> symbol) (<span class="hljs-name">message</span> string))
   (<span class="hljs-name">awhen</span> (<span class="hljs-name">gethash</span> channel <span class="hljs-variable">*channels*</span>)
@@ -349,8 +342,7 @@
       (<span class="hljs-name">values</span>))))
 </code></pre>
 <p>تأخذ هذه النسخة من <code>write!</code> كائن <code>response</code> و<code>usocket</code> باسم <code>sock</code>، وتكتب المحتوى إلى تدفق يوفّره <code>sock</code>. ونعرّف محليًا الدالة <code>write-ln</code> التي تأخذ عددًا ما من التسلسلات، وتكتبها إلى التدفق متبوعة بـ<code>crlf</code>. وهذا من أجل سهولة القراءة؛ كان بإمكاننا بدلًا من ذلك استدعاء <code>write-sequence</code>/<code>crlf</code> مباشرة.</p>
-<p>لاحظ أننا ننفّذ أمر «يجب ألا يحجب» من جديد. فرغم أن عمليات الكتابة من المرجح أن تكون مخزَّنة مؤقتًا وأن خطرها في الحجب أقل من القراءة، إلا أننا لا نريد أن يتوقف خادمنا عن العمل إذا حدث خطأ ما هنا. فإذا استغرقت الكتابة أكثر من 0.2 ثانية[^timeout]، فإننا نتابع فقط (نرمِي بالمقبس الحالي) بدلًا من الانتظار أكثر.</p>
-<p>[^timeout]: لدى <code>with-timeout</code> تطبيقات مختلفة في بيئات Lisp المختلفة. ففي بعض البيئات قد ينشئ خيطًا أو عملية أخرى لمراقبة الخيط أو العملية التي استدعته. ولرغم أننا لن ننشئ أكثر من واحد من هذه في المرة الواحدة، إلا أن ذلك عملية ثقيلة نسبيًا لتُنفَّذ مع كل كتابة. قد نرغب في التفكير في مقاربة بديلة في تلك البيئات.</p>
+<p>لاحظ أننا ننفّذ أمر «يجب ألا يحجب» من جديد. فرغم أن عمليات الكتابة من المرجح أن تكون مخزَّنة مؤقتًا وأن خطرها في الحجب أقل من القراءة، إلا أننا لا نريد أن يتوقف خادمنا عن العمل إذا حدث خطأ ما هنا. فإذا استغرقت الكتابة أكثر من 0.2 ثانية<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup>، فإننا نتابع فقط (نرمِي بالمقبس الحالي) بدلًا من الانتظار أكثر.</p>
 <p>والكتابة كائن <code>SSE</code> مشابهة، من الناحية المفاهيمية، لكتابة كائن <code>response</code>:</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defmethod</span> write! ((<span class="hljs-name">res</span> sse) (<span class="hljs-name">socket</span> usocket))
   (<span class="hljs-name">let</span> ((<span class="hljs-name">stream</span> (<span class="hljs-name">flex-stream</span> socket)))
@@ -478,8 +470,7 @@
 <li>بعد إعادة الاستجابة، إغلاق القناة.</li>
 </ol>
 <p>ورغم أننا نستطيع كتابة دوال Lisp للقيام بكل هذه الأمور ثم تجميع القطع يدويًا بأنفسنا، إلا أن المقاربة الأكثر شيوعًا هي استخدام وسيلة في Lisp اسمها <code>macros</code> من أجل أن <em>تولّد</em> شيفرة Lisp نيابةً عنا. هذا يتيح لنا التعبير بإيجاز عمّا نريد أن يفعله DSL لدينا، دون اضطرارنا إلى صيانة كثير من الشيفرة للقيام بذلك. ويمكنك أن تتصوّر الماكرو (macro) على أنه «قالب قابل للتنفيذ» يُوسَّع إلى شيفرة Lisp في وقت التشغيل.</p>
-<p>وها هو الماكرو <code>define-handler</code> لدينا[^indentation]:</p>
-<p>[^indentation]: يجدر بي أن أوضح أن كتلة الشيفرة أدناه تستخدم مسافة بادئة غير مألوفة إطلاقًا بالنسبة إلى Common Lisp. فقوائم الوسائط (Arglists) لا تُقسَّم عادةً على عدّة أسطر، وتُبقى غالبًا على السطر نفسه الذي يحمل اسم الماكرو أو الدالة. اضطررت إلى فعل ذلك للالتزام بإرشادات عرض السطر في هذا الكتاب، ولكني كنت سأفضّل بدون ذلك أسطرًا أطول تنكسر طبيعيًا عند المواضع التي يحددها محتوى الشيفرة.</p>
+<p>وها هو الماكرو <code>define-handler</code> لدينا<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup>:</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> define-handler
     ((<span class="hljs-name">name</span> <span class="hljs-symbol">&amp;key</span> (<span class="hljs-name">is-stream</span>? <span class="hljs-literal">t</span>) (<span class="hljs-name">content-type</span> <span class="hljs-string">&quot;text/html&quot;</span>)) (<span class="hljs-name">&amp;rest</span> args)
      <span class="hljs-symbol">&amp;body</span> body)
@@ -639,7 +630,7 @@
 	     :assertion &#x27;,assertion))))
 </code></pre>
 <h3 id="أنواع-http">«أنواع» HTTP</h3>
-<p>\label{sec.eventsweb.types}</p>
+<p><span class="content-anchor" id="sec.eventsweb.types"></span></p>
 <p>في القسم السابق، لمّنا بإيجاز إلى ثلاثة تعبيرات نستخدمها لتنفيذ نظام التحقق من أنواع HTTP لدينا: <code>arg-exp</code> و<code>type-expression</code> و<code>type-assertion</code>. ومتى فهمتَ هذه، لن يبقى في إطار عملنا أي سحر. سنبدأ بالسهل أولًا.</p>
 <h4>arg-exp</h4>
 <p>تأخذ <code>arg-exp</code> رمزًا (symbol) وتنشئ تعبير <code>aif</code> يتحقق من وجود وسيط.</p>
@@ -700,7 +691,7 @@ a particular, necessary type.&quot;</span>))
 (PARSE-INTEGER BLAH :JUNK-ALLOWED T)
 HOUSE&gt;
 </code></pre>
-<p>تُعد <code>define-http-handler</code>[^readable] أحد الرموز المُصدَّرة لإطار عملنا. وهذا يتيح لمبرمجي تطبيقاتنا تعريف أنواعهم الخاصة لتبسيط التحليل فوق عدد قليل من «الأنواع المدمجة» التي نوفّرها لهم (<code>:string</code> و<code>:integer</code> و<code>:keyword</code> و<code>:json</code> و<code>:list-of-keyword</code> و<code>:list-of-integer</code>).</p>
+<p>تُعد <code>define-http-handler</code><sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup> أحد الرموز المُصدَّرة لإطار عملنا. وهذا يتيح لمبرمجي تطبيقاتنا تعريف أنواعهم الخاصة لتبسيط التحليل فوق عدد قليل من «الأنواع المدمجة» التي نوفّرها لهم (<code>:string</code> و<code>:integer</code> و<code>:keyword</code> و<code>:json</code> و<code>:list-of-keyword</code> و<code>:list-of-integer</code>).</p>
 <pre><code class="language-lisp">(<span class="hljs-name">defmacro</span> define-http-type ((<span class="hljs-name">type</span>) <span class="hljs-symbol">&amp;key</span> type-expression type-assertion)
   (<span class="hljs-name">with-gensyms</span> (<span class="hljs-name">tp</span>)
     `(let ((,tp ,type))
@@ -711,7 +702,6 @@ HOUSE&gt;
 	  `((defmethod type-assertion (parameter (type (eql ,tp)))
 	      ,type-assertion))))))
 </code></pre>
-<p>[^readable]: هذا الماكرو صعب القراءة لأنه يحاول بجهد أن يجعل مخرجه قابلًا للقراءة من الإنسان، عبر توسيع <code>NIL</code>s بعيدًا باستخدام <code>,@</code> متى أمكن.</p>
 <p>ويعمل عن طريق إنشاء تعريفات دوال لـ<code>type-expression</code> و<code>type-assertion</code> للنوع الجاري تعريفه. يمكننا أن نترك لمستخدمَي إطار عملنا تنفيذ ذلك يدويًا دون عناء يذكر؛ غير أن إضافة هذا المستوى الإضافي من التوجيه تمنحنا، نحن مبرمجي إطار العمل، حرية تغيير <em>كيف</em> تُنفَّذ الأنواع دون إجبار مستخدمينا على إعادة كتابة مواصفاتهم. وليس هذا اعتبارًا أكاديميًا فحسب؛ فقد أجريتُ بنفسي تغييرات جذرية في هذا الجزء من النظام حين بنيته أول مرة، وسعدت بأن عدد التعديلات التي اضطررت إليها في التطبيقات المعتمدة عليه كان ضئيلًا جدًا.</p>
 <p>فلننظر في توسيع تعريف العدد الصحيح ذلك لنرى كيف يعمل بالتفصيل:</p>
 <pre><code class="language-lisp">(<span class="hljs-name">LET</span> ((<span class="hljs-name">#</span><span class="hljs-symbol">:TP1288</span> <span class="hljs-symbol">:INTEGER</span>))
@@ -777,13 +767,38 @@ HOUSE&gt;
 (<span class="hljs-name">start</span> <span class="hljs-number">4242</span>)
 </code></pre>
 <p>ومتى كتبنا <code>interface.js</code> لتوفير التفاعل في جانب العميل، سيقوم هذا بتشغيل خادم دردشة HTTP على المنفذ <code>4242</code> والاستماع للاتصالات الواردة.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>أحد الحلول لهذه المشكلة هو إجبار العملاء على <em>الاستطلاع</em> (polling) للخادم. أي أن كل عميل يرسل إلى الخادم طلباً دورياً يسأله فيه هل تغيّر شيء. هذا قد ينجح مع التطبيقات البسيطة، لكن في هذا الفصل سنركّز على الحلول المتاحة أمامك عندما يتوقف هذا النموذج عن العمل. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>يمكننا أن نضع في الحسبان نظاماً أكثر عمومية يتعامل مع <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مستخدماً متزامناً باستخدام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> خيطاً بالنسبة لقيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> قابلة للتهيئة؛ في هذا النموذج، يُقال إن اتصالات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> مُوزَّعة تعددياً (multiplexed) على الخيوط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span>. وفي هذا الفصل، سنركّز على كتابة برنامج تكون فيه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> ثابتة عند 1؛ غير أن الدروس المستفادة هنا قد تنطبق جزئياً على النموذج الأكثر عمومية. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>هذه التسمية مربكة بعض الشيء، ومصدرها أبحاث أنظمة التشغيل المبكرة. فهي تشير إلى كيفية إتمام الاتصال بين العمليات المتزامنة المتعددة. وفي نظام قائم على الخيوط، يتم الاتصال عبر مورد مُزامن مثل الذاكرة المشتركة. أما في نظام قائم على الأحداث، فتتواصل العمليات عموماً عبر طابور (queue) تنشر فيه عناصر تصف ما فعلته أو ما تريد فعله، وهو ما يتولى صيانته خيط التنفيذ الفردي لدينا. وبما أن هذه العناصر تصف عموماً إجراءات مطلوبة أو سابقة،فيُشار إليها بـ«الأحداث» (events). <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>انظر \aosachapref{s:crawler} لمقاربة أخرى لهذه المشكلة. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>تُنطق «kloss» أو «see-loss» أو «see-lows»، تبعًا لمن تسأله. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>لغة البرمجة Julia تتبنى مقاربة مشابهة للبرمجة كائنية التوجه؛ يمكنك التعلم المزيد عنها في \aosachapref{s:static-analysis}. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>نحن نقدّم هنا بعض الصياغة الجديدة على سبيل المجاملة. هذه هي طريقتنا في إعلان متغيّر قابل للتعديل. وهي على الصورة <code>(defparameter &lt;name&gt; &lt;value&gt; &lt;optional docstring&gt;)</code>. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>لدى <code>with-timeout</code> تطبيقات مختلفة في بيئات Lisp المختلفة. ففي بعض البيئات قد ينشئ خيطًا أو عملية أخرى لمراقبة الخيط أو العملية التي استدعته. ولرغم أننا لن ننشئ أكثر من واحد من هذه في المرة الواحدة، إلا أن ذلك عملية ثقيلة نسبيًا لتُنفَّذ مع كل كتابة. قد نرغب في التفكير في مقاربة بديلة في تلك البيئات. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>يجدر بي أن أوضح أن كتلة الشيفرة أدناه تستخدم مسافة بادئة غير مألوفة إطلاقًا بالنسبة إلى Common Lisp. فقوائم الوسائط (Arglists) لا تُقسَّم عادةً على عدّة أسطر، وتُبقى غالبًا على السطر نفسه الذي يحمل اسم الماكرو أو الدالة. اضطررت إلى فعل ذلك للالتزام بإرشادات عرض السطر في هذا الكتاب، ولكني كنت سأفضّل بدون ذلك أسطرًا أطول تنكسر طبيعيًا عند المواضع التي يحددها محتوى الشيفرة. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>هذا الماكرو صعب القراءة لأنه يحاول بجهد أن يجعل مخرجه قابلًا للقراءة من الإنسان، عبر توسيع <code>NIL</code>s بعيدًا باستخدام <code>,@</code> متى أمكن. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/data-store/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">DBDB: قاعدة بيانات سرير الكلب</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/flow-shop/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">مجدول ورشة التدفق</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -791,8 +806,8 @@ HOUSE&gt;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

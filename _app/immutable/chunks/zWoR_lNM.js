@@ -1,0 +1,48 @@
+const s="mit-6100l",n="lecture-08",a="المحاضرة 8: الدوال ككائنات",e="exercises",t="المحاضرة 8: التمرين القصير والحل الرسمي",o=[{depth:2,id:"1-السؤال-1-من-1",text:"1) السؤال 1 من 1"},{depth:2,id:"الحل-الرسمي-الكامل",text:"الحل الرسمي الكامل"},{depth:2,id:"تذييل-المصدر",text:"تذييل المصدر"}],p=`<div class="exercises"><h1>التمارين القصيرة للمحاضرة 8</h1>
+<p>المصادر الأصلية الدقيقة:</p>
+<ul>
+<li>نص السؤال على صفحة المحاضرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-8-functions-as-objects/</li>
+<li>صفحة الحل الرسمي: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_ex08_sol_pdf/</li>
+<li>ملف السؤال والحل الرسمي: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_ex08_sol.pdf</li>
+</ul>
+<p>المؤلفة والمحاضِرة: <strong>آنا بيل (Ana Bell)</strong>؛ <strong>MIT OpenCourseWare</strong>، مقرر <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/">6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python، خريف 2022 (Fall 2022)</a>. هذا تكييف عربي غير رسمي وغير تجاري، لا يحظى بتأييد MIT ولا يمثل اعتمادًا منه. الأصل والترجمة تحت <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0: النسبة–غير تجاري–المشاركة بالمثل</a>، وتُنشر التكييفات بالشروط نفسها. شروط الاستشهاد والاستخدام: https://ocw.mit.edu/terms/.</p>
+<p>موعد تسليم السؤال أدناه في الأصل: <strong>الأربعاء 5 أكتوبر 2022، الساعة 03:00:00 مساءً</strong>. هذا موعد تاريخي للمقرر الأصلي، لا موعد جديد لهذه الترجمة.</p>
+<h2 id="1-السؤال-1-من-1">1) السؤال 1 من 1</h2>
+<p>نفّذ الدالة التي تحقق المواصفات أدناه.</p>
+<p><code>s1</code> و<code>s2</code> سلسلتان نصيتان (Strings). تُعيد الدالة القيمة المنطقية (Boolean) <code>True</code> إذا كان كل محرف (Character) في <code>s1</code> موجودًا أيضًا في <code>s2</code>، والعكس صحيح. إذا كان محرف موجودًا في واحدة فقط من <code>s1</code> أو <code>s2</code>، تُعيد <code>False</code>.</p>
+<p>كتلة البداية التالية من صفحة المحاضرة، بما في ذلك التعليقات وسلسلة التوثيق الإنجليزية، دون ترجمة داخل Python:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">same_chars</span>(<span class="hljs-params">s1, s2</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    s1 and s2 are strings
+    Returns boolean True is a character in s1 is also in s2, and vice 
+    versa. If a character only exists in one of s1 or s2, returns False.
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Your code here</span>
+
+<span class="hljs-comment"># Examples:</span>
+<span class="hljs-built_in">print</span>(same_chars(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;cab&quot;</span>))     <span class="hljs-comment"># prints True</span>
+<span class="hljs-built_in">print</span>(same_chars(<span class="hljs-string">&quot;abccc&quot;</span>, <span class="hljs-string">&quot;caaab&quot;</span>)) <span class="hljs-comment"># prints True</span>
+<span class="hljs-built_in">print</span>(same_chars(<span class="hljs-string">&quot;abcd&quot;</span>, <span class="hljs-string">&quot;cabaa&quot;</span>))  <span class="hljs-comment"># prints False</span>
+<span class="hljs-built_in">print</span>(same_chars(<span class="hljs-string">&quot;abcabc&quot;</span>, <span class="hljs-string">&quot;cabz&quot;</span>)) <span class="hljs-comment"># prints False</span>
+</code></pre>
+<p>الأمثلة: المثال الأول يطبع <code>True</code>، والثاني <code>True</code>، والثالث <code>False</code>، والرابع <code>False</code>.</p>
+<p>حقل الإجابة في نسخة السؤال الأصلية يعرض السطر 1:</p>
+<pre><code class="language-python"><span class="hljs-comment"># your function here</span>
+</code></pre>
+<p>رسالة المنصة الأصلية: <strong>ما زال لديك عدد غير محدود من محاولات التسليم</strong>.</p>
+<h2 id="الحل-الرسمي-الكامل">الحل الرسمي الكامل</h2>
+<p>«إليك الحل الذي كتبناه»، كما ورد في ملف الحل الرسمي. حُفظت الشيفرة الإنجليزية؛ المسافات البادئة هنا تمثل مستويات Python الظاهرة في PDF، ولا تُعامل مسافات تموضع النص في الصفحة على أنها جزء من الشيفرة.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">same_chars</span>(<span class="hljs-params">s1, s2</span>):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s1:
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> s2:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s2:
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> s1:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<h2 id="تذييل-المصدر">تذييل المصدر</h2>
+<p>MIT OpenCourseWare — https://ocw.mit.edu</p>
+<p>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python. خريف 2022.</p>
+<p>لمعلومات الاستشهاد بهذه المواد أو شروط استخدامها، زر https://ocw.mit.edu/terms.</p>
+</div>`,l={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:o,html:p};export{s as book,n as chapter,a as chapterTitle,l as default,o as headings,p as html,e as slug,t as title};

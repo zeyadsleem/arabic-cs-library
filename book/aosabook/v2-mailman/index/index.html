@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="GNU Mailman — GNU Mailman"/><!----><title>GNU Mailman | معمارية تطبيقات المصادر المفتوحة</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -99,7 +99,7 @@
 <p>تنتهي كل ملفات pickle باللاحقة <code>.pck</code>، وإن كنت قد ترى أيضًا ملفات <code>.bak</code> و<code>.tmp</code> و<code>.psv</code> في الطابور. وتُستخدم هذه الملفات لضمان الركائز المقدسة (sacro-sanct) الاثنين في Mailman: ألّا يضيع أي ملف أبدًا، وألّا تُسلَّم أي رسالة أكثر من مرة أبدًا. لكن الأمور تعمل بصورة سليمة عادةً، وهذه الملفات نادرة إلى حد كبير.</p>
 <p>وكما أُشير، للمواقع المزدحمة جدًا يدعم Mailman تشغيل أكثر من عملية مشغّل لكل مجلد طابور، بشكل متوازٍ تمامًا، دون أي اتصال بينها أو الحاجة إلى أقفال لمعالجة الملفات. ويقوم ذلك بتسميات ملفات pickle بدالة تجزئة SHA1، ثم السماح لمشغّل طابور واحد بأن يدير شريحة (slice) واحدة فقط من فضاء التجزئة. فإذا أراد موقع تشغيل مشغّلين على طابور <em>الرسائل المرتدّة</em> (bounces)، فإن أحدهما يعالج الملفات من النصف العلوي من فضاء التجزئة، ويعالج الآخر الملفات من النصف السفلي. وتُحسب دوال التجزئة باستخدام محتوى شجرة كائنات الرسالة المُخَلَّلة، واسم القائمة البريدية الموجَّه إليها الرسالة، وختمًا زمنيًا. ودوال تجزئة SHA1 عشوائية على نحو فعلي، ومن ثم يكون لدى مجلد طابور ذي مشغّلَين في المتوسط قدر متقارب من العمل لكل عملية. ولأن فضاء التجزئة يمكن تقسيمه بصورة ساكنة، يمكن لهذه العمليات أن تعمل على مجلد الطابور نفسه دون أي تداخل أو حاجة إلى اتصال.</p>
 <p>لهذه الخوارزمية قيد مثير للاهتمام. وبما أن خوارزمية التقسيم تخصّص بتًا واحدًا أو أكثر من البت لكل شريحة، فإن عدد المشغِّلات لكل مجلد طابور يجب أن يكون قوة للعدد 2. وهذا يعني أنه يمكن وجود 1 أو 2 أو 4 أو 8 عمليات مشغّل لكل طابور، لكن ليس 5 مثلًا. ولم يكن هذا مشكلة في الممارسة قط، إذ نادرًا ما تحتاج أي موقع إلى أكثر من 4 عمليات للتعامل مع حِمله.</p>
-<p>وهناك副作用 آخر لهذه الخوارزمية سبّب مشكلات في التصميم المبكر لهذا النظام. فعلى الرغم من أن تسليم البريد الإلكتروني غير متوقع بطبعه، فإن أفضل تجربة للمستخدم تأتي بمعالجة ملفات الطابور بترتيب أول داخل أول خارج (FIFO)، بحيث تُرسَل الردود على القائمة البريدية بترتيب زمني تقريبي. وأي إهمال في بذل الجهد الأقصى للقيام بذلك قد يربك الأعضاء. لكن استخدام دوال تجزئة SHA1 كأسماء ملفات يمحو كل الأختام الزمنية، ولأسباب الأداء ينبغي تجنّب استدعاءات <code>stat()</code> على ملفات الطابور، أو فكّ تخليل محتواها (مثلًا، لقراءة ختم زمني في البيانات الوصفية).</p>
+<p>وهناك أثر جانبي آخر لهذه الخوارزمية سبّب مشكلات في التصميم المبكر لهذا النظام. فعلى الرغم من أن تسليم البريد الإلكتروني غير متوقع بطبعه، فإن أفضل تجربة للمستخدم تأتي بمعالجة ملفات الطابور بترتيب أول داخل أول خارج (FIFO)، بحيث تُرسَل الردود على القائمة البريدية بترتيب زمني تقريبي. وأي إهمال في بذل الجهد الأقصى للقيام بذلك قد يربك الأعضاء. لكن استخدام دوال تجزئة SHA1 كأسماء ملفات يمحو كل الأختام الزمنية، ولأسباب الأداء ينبغي تجنّب استدعاءات <code>stat()</code> على ملفات الطابور، أو فكّ تخليل محتواها (مثلًا، لقراءة ختم زمني في البيانات الوصفية).</p>
 <p>كان حل Mailman هو توسيع خوارزمية تسمية الملفات لتشمل بادئة ختم زمني، تمثل عدد الثواني منذ حقبة يونكس (مثل <code>+.pck</code>). تبدأ كل دورة عبر مشغّل الطابور باستدعاء <code>os.listdir()</code> الذي يعيد جميع الملفات في مجلد الطابور. ثم يفصل اسم كل ملف ويتجاهل أي أسماء ملفات لا يطابق فيها دالة تجزئة SHA1 شريحة مسؤوليته. ثم يرتّب المشغّل الملفات المتبقية بحسب الجزء الزمني من اسم الملف. ومن الصحيح أن وجود عدة مشغِّلات طوابير، كل منها يدير شريحة مختلفة من فضاء التجزئة، قد يؤدي إلى مشكلات في الترتيب بين المشغِّلات المتوازية، لكن في الممارسة يكفي الترتيب الزمني للحفاظ على تصور المستخدم النهائي بالتسليم التسلسلي بأقصى جهد ممكن.</p>
 <p>في الممارسة، عمل هذا على نحو ممتاز جدًّا لمدة عقد على الأقل، مع إصلاح خلل طفيف أحيانًا أو استكمال للتعامل مع حالات الركن النادرة وأنماط الفشل. وهو أحد أكثر أجزاء Mailman استقرارًا، وقد نُقل إلى حد كبير دون تغيير من Mailman 2 إلى Mailman 3.</p>
 <h2 id="104-المشغل-الرئيسي">10.4. المشغّل الرئيسي</h2>
@@ -187,7 +187,7 @@
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -195,8 +195,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

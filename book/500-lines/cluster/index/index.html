@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="التجميع بالتوافق — Clustering by Consensus"/><!----><title>التجميع بالتوافق | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -77,9 +77,8 @@
 <p>قد يبدو هذا مختلفاً عن آلة الحالة المعتادة التي ستتعلّمها في دورة علوم حاسوب. فبدلاً من مجموعة منتهية من الحالات المسمّاة ذات انتقالات موسومة، تكون حالة هذه الآلة هي مجموعة أرصدة الحسابات، لذا فهناك عدد لا نهائي من الحالات الممكنة. ومع ذلك، تنطبق القواعد المعتادة لآلات الحالة الحتمية: البدء بالحالة نفسها ومعالجة العمليات نفسها سينتج دائماً المخرجات نفسها.</p>
 <p>إذن، تقنية آلة الحالة الموزّعة تضمن أن العمليات نفسها تحدث على كل مضيف. لكن المشكلة تبقى في ضمان أن يتفق كل خادم على مدخلات آلة الحالة. وهذه مسألة <em>توافق</em> (consensus)، وسنعالجها باستخدام اشتقاق من خوارزمية Paxos.</p>
 <h2 id="التوافق-عبر-paxos">التوافق عبر Paxos</h2>
-<p>صَفَ Leslie Lamport خوارزمية Paxos في ورقة خيالية، قُدِّمت أول مرة عام 1990 ونُشرت في النهاية عام 1998، بعنوان «البرلمان بدوام جزئي»[^parttime]. وتتضمّن ورقة Lamport تفصيلاً أكبر بكثير مما سنُغوص فيه هنا، وهي قراءة ممتعة. وتصف المراجع في نهاية الفصل بعض امتدادات الخوارزمية التي تبنّينا عليها في هذا التنفيذ.</p>
+<p>صَفَ Leslie Lamport خوارزمية Paxos في ورقة خيالية، قُدِّمت أول مرة عام 1990 ونُشرت في النهاية عام 1998، بعنوان «البرلمان بدوام جزئي»<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. وتتضمّن ورقة Lamport تفصيلاً أكبر بكثير مما سنُغوص فيه هنا، وهي قراءة ممتعة. وتصف المراجع في نهاية الفصل بعض امتدادات الخوارزمية التي تبنّينا عليها في هذا التنفيذ.</p>
 <p>تقدّم أبسط صيغة لـ Paxos طريقةً لمجموعة من الخوادم للاتفاق على قيمة واحدة، إلى الأبد. وتبني Multi-Paxos على هذه الأساس بالتّفق على تسلسل مرقّم من الوقائع، واحداً تلو الآخر. ولتنفيذ آلة حالة موزّعة، نستخدم Multi-Paxos للاتفاق على كل مُدخَل من مُدخلات آلة الحالة، ثم ننفّذها بالتسلسل.</p>
-<p>[^parttime]: L. Lamport, &quot;The Part-Time Parliament,&quot; ACM Transactions on Computer Systems, 16(2):133–169, May 1998.</p>
 <h3 id="paxos-البسيط">Paxos البسيط</h3>
 <p>لنبدأ إذن بـ «Paxos البسيط»، المعروف أيضاً ببروتوكول Synod، الذي يوفّر طريقة للاتفاق على قيمة واحدة لا يمكن أن تتغيّر أبداً. واسم Paxos يأتي من الجزيرة الخيالية في «البرلمان بدوام جزئي»، حيث يصوّت المشرّعون على التشريعات عبر عملية سماّاها Lamport بروتوكول Synod.</p>
 <p>الخوارزمية لبنة بناء لخوارزميات أعقد، كما سنرى أدناه. والقيمة الوحيدة التي سنتفق عليها في هذا المثال هي أول معاملة يعالجها مصرفنا الافتراضي. فبينما سيعالج المصرف المعاملات كل يوم، فإن أول معاملة ستحدث مرة واحدة فقط ولن تتغيّر أبداً، ولذلك يمكننا استخدام Paxos البسيط للاتفاق على تفاصيلها.</p>
@@ -276,7 +275,7 @@
 
 </code></pre>
 <h4>Replica</h4>
-<p>\label{sec.cluster.replica}</p>
+<p><span class="content-anchor" id="sec.cluster.replica"></span></p>
 <p>الصنف <code>Replica</code> هو أصعب أصناف الأدوار، إذ له مسؤوليات مترابطة عن قرب:</p>
 <ul>
 <li>تقديم مقترحات جديدة؛</li>
@@ -843,12 +842,12 @@
 <p>وCluster، على نحوها مكتوبة الآن، لا تستطيع تغيير مجموعة الأقران في مجموعة خوادم دون إعادة تشغيل المجموعة بأكملها. والأفضل لو تستطيع المجموعة الحفاظ على توافق بشأن عضويتها، تماماً كما تفعل بشأن انتقالات آلة الحالة. وهذا يعني أن مجموعة أعضاء المجموعة (أي <em>المشهد</em> view) يمكن تغييرها بمقترحات خاصة لتغيير المشهد. لكن خوارزمية Paxos تعتمد على اتفاق عام بشأن أعضاء المجموعة، لذا علينا تعريف المشهد لكل خانة.</p>
 <p>وتعالج Lamport هذا التحدّي في الفقرة الأخيرة من «Paxos Made Simple»:</p>
 <blockquote>
-<p>We can allow a leader to get <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> commands ahead by letting the set of servers that execute instance <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> of the consensus algorithm be specified by the state after execution of the <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>th state machine command.  (Lamport, 2001)</p>
+<p>We can allow a leader to get <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> commands ahead by letting the set of servers that execute instance <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>+</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">i+\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> of the consensus algorithm be specified by the state after execution of the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>th state machine command.  (Lamport, 2001)</p>
 </blockquote>
-<p>والفكرة أن كل نسخة من Paxos (خانة) تستخدم المشهد من <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة أسبق. وهذا يتيح للمجموعة أن تعمل على <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة كحد أقصى في أي لحظة، لذا فإن قيمة <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> صغيرة جداً تحدّ من التوازي، بينما قيمة <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> كبيرة جداً تجعل تغييرات المشهد بطيئة الأثر.</p>
-<p>وفي المسودّات المبكرة لهذا التنفيذ (محفوظة بعناية في تاريخ git!)، نفّذت دعماً لتغييرات المشهد (باستخدام <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> بدلاً من 3). وأدت هذه البسيطة ظاهرياً إلى قدر هائل من التعقيد:</p>
+<p>والفكرة أن كل نسخة من Paxos (خانة) تستخدم المشهد من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة أسبق. وهذا يتيح للمجموعة أن تعمل على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة كحد أقصى في أي لحظة، لذا فإن قيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> صغيرة جداً تحدّ من التوازي، بينما قيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> كبيرة جداً تجعل تغييرات المشهد بطيئة الأثر.</p>
+<p>وفي المسودّات المبكرة لهذا التنفيذ (محفوظة بعناية في تاريخ git!)، نفّذت دعماً لتغييرات المشهد (باستخدام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> بدلاً من 3). وأدت هذه البسيطة ظاهرياً إلى قدر هائل من التعقيد:</p>
 <ul>
-<li>تتبّع المشهد لكل واحد من آخر <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة مثبَّتة ومشاركته على نحو صحيح مع العقد الجديدة،</li>
+<li>تتبّع المشهد لكل واحد من آخر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> خانة مثبَّتة ومشاركته على نحو صحيح مع العقد الجديدة،</li>
 <li>تجاهل المقترحات التي لا تتوفّر لها خانة،</li>
 <li>كشف العقد الفاشلة،</li>
 <li>التسلسل الصحيح لعدة تغييرات مشهد متنافسة، و</li>
@@ -856,18 +855,29 @@
 </ul>
 <p>وكانت النتيجة أكبر بكثير من أن تتّسع لهذا الكتاب!</p>
 <h2 id="المراجع">المراجع</h2>
-<p>إلى جانب ورقة Paxos الأصلية وورقة Lamport اللاحقة «Paxos Made Simple»[^simple]، أضاف تنفيذنا امتدادات استلهمناها من عدة مصادر أخرى. وأُخذت أسماء الأدوار من «Paxos Made Moderately Complex»[^complex]. وكان «Paxos Made Live»[^live] مفيداً بقدر ما يخصّ اللقطات تحديداً، بينما وصف <a href="http://www.scs.stanford.edu/~dm/home/papers/paxos.pdf">«Paxos Made Practical»</a> تغييرات المشهد (وإن لم يكن من النوع الموصوف هنا). ووفّرت ورقة Liskov «From Viewstamped Replication to Byzantine Fault Tolerance»[^tolerance] منظوراً آخر لتغييرات المشهد. وأخيراً، كان <a href="http://stackoverflow.com/questions/21353312/in-part-time-parliament-why-does-using-the-membership-from-decree-n-3-work-to">نقاش على Stack Overflow</a> مفيداً في تعلّم كيفية إضافة الأعضاء وإزالتها من النظام.</p>
-<p>[^simple]: L. Lamport, &quot;Paxos Made Simple,&quot; ACM SIGACT News (Distributed Computing Column) 32, 4 (Whole Number 121, December 2001) 51-58.
-[^complex]: R. Van Renese and D. Altinbuken, &quot;Paxos Made Moderately Complex,&quot; ACM Comp. Survey 47, 3, Article 42 (Feb. 2015)
-[^live]: T. Chandra, R. Griesemer, and J. Redstone, &quot;Paxos Made Live - An Engineering Perspective,&quot; Proceedings of the twenty-sixth annual ACM symposium on Principles of distributed computing (PODC '07). ACM, New York, NY, USA, 398-407.
-[^tolerance]: B. Liskov, &quot;From Viewstamped Replication to Byzantine Fault Tolerance,&quot; In <em>Replication</em>, Springer-Verlag, Berlin, Heidelberg 121-149 (2010)</p>
+<p>إلى جانب ورقة Paxos الأصلية وورقة Lamport اللاحقة «Paxos Made Simple»<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>، أضاف تنفيذنا امتدادات استلهمناها من عدة مصادر أخرى. وأُخذت أسماء الأدوار من «Paxos Made Moderately Complex»<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. وكان «Paxos Made Live»<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> مفيداً بقدر ما يخصّ اللقطات تحديداً، بينما وصف <a href="http://www.scs.stanford.edu/~dm/home/papers/paxos.pdf">«Paxos Made Practical»</a> تغييرات المشهد (وإن لم يكن من النوع الموصوف هنا). ووفّرت ورقة Liskov «From Viewstamped Replication to Byzantine Fault Tolerance»<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> منظوراً آخر لتغييرات المشهد. وأخيراً، كان <a href="http://stackoverflow.com/questions/21353312/in-part-time-parliament-why-does-using-the-membership-from-decree-n-3-work-to">نقاش على Stack Overflow</a> مفيداً في تعلّم كيفية إضافة الأعضاء وإزالتها من النظام.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>L. Lamport, &quot;The Part-Time Parliament,&quot; ACM Transactions on Computer Systems, 16(2):133–169, May 1998. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>L. Lamport, &quot;Paxos Made Simple,&quot; ACM SIGACT News (Distributed Computing Column) 32, 4 (Whole Number 121, December 2001) 51-58. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>R. Van Renese and D. Altinbuken, &quot;Paxos Made Moderately Complex,&quot; ACM Comp. Survey 47, 3, Article 42 (Feb. 2015) <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>T. Chandra, R. Griesemer, and J. Redstone, &quot;Paxos Made Live - An Engineering Perspective,&quot; Proceedings of the twenty-sixth annual ACM symposium on Principles of distributed computing (PODC '07). ACM, New York, NY, USA, 398-407. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>B. Liskov, &quot;From Viewstamped Replication to Byzantine Fault Tolerance,&quot; In <em>Replication</em>, Springer-Verlag, Berlin, Heidelberg 121-149 (2010) <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/ci/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">نظام تكامل مستمر</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/contingent/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">Contingent: نظام بناء ديناميكي بالكامل</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -875,8 +885,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

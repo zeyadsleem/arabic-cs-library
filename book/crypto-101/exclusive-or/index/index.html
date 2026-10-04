@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الاو الحصري (XOR) — الاو الحصري (XOR)"/><!----><title>الاو الحصري (XOR) | تشفير 101</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -56,12 +56,12 @@
 inverter): فبتّ واحد من المدخلين يقرّر هل نعكس بتّ المدخل الآخر، أم نمرّره كما هو دون
 تغيير. وتُسمّى عملية «عكس» البتّات بصورة غير رسمية «قلب» البتّات (flipping bits)، وهو
 مصطلح سنستعمله كثيرًا في هذا الكتاب كلّه.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/fig-0-ProgrammableInverter.svg" alt="a programmable inverter"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-fig-0-ProgrammableInverter.svg" alt="a programmable inverter"></p>
 <p>مُقلِب قابل للبرمجة
 center</p>
 <p>في الرياضيات وفي أبحاث التشفير، يُمثَّل الاو الحصري عادةً على شكل صليب داخل دائرة:
 <code>\xor</code>. وسنستعمل في هذا الكتاب الترميز نفسه:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/fig-1-XOR.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-fig-1-XOR.svg" alt="center"></p>
 <p>center
 XOR</p>
 <p>المدخلات والمخرج هنا مُسمّاة كأنّنا نستعمل XOR كعملية تشفير. على اليسار لدينا البتّ
@@ -144,14 +144,14 @@ a \xor b \xor a &amp; = a \xor a \xor b &amp; \; &amp; \text{(second rule)} \\
 <p>لنفترض أنّنا نستطيع ترجمة نصّنا الصريح إلى تسلسل من البتّات. ولدينا أيضًا وسادة من
 البتّات العشوائية يتقاسمها المُرسِل مع المستقبِل (أو المستقبِلين). يمكننا حساب النصّ
 المشفَّر بأخذ XOR على مستوى البتّ بين تسلسلي البتّات.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/fig-2-OTP.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-fig-2-OTP.svg" alt="center"></p>
 <p>center
 OTP</p>
 <p>إذا رأى المهاجم النصّ المشفَّر، يمكننا إثبات أنّه لا يكتسب أيّ معلومة عن النصّ
 الصريح دون المفتاح. وتُسمَّى هذه الخاصية <em>السرّية التامّة</em> (<em>perfect secrecy</em>). ويمكن
 فهم البرهان بطريقة حدسية. تخيّل XOR بوصفه مُقلِبًا قابلًا للبرمجة، وأنظر إلى بتّ
 بعينه اعترضته إيف المستقِعة (eavesdropper).</p>
-<p><img src="/arabic-cs-library/images/crypto-101/fig-3-OTPEve.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-fig-3-OTPEve.svg" alt="center"></p>
 <p>center
 OTP eve</p>
 <p>لنفترض أنّ إيف ترى أنّ البتّ <code>c_i</code> من النصّ المشفَّر يساوي 1. فإنّها لا تعرف هل كان
@@ -194,27 +194,27 @@ XOR على نصّين صريحين يحوي نفسه قدرًا لا بأس به
 من <code>fig-multitimepad</code>.</p>
 <p>fig-multitimepad
 0.48</p>
-<p>.. subfigure:: ./Illustrations/KeyReuse/Broken.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-0-Broken.png" alt="النصّ الصريح الأوّل."></p>
 <p>center</p>
 <pre><code>  النصّ الصريح الأوّل.
 </code></pre>
-<p>.. subfigure:: ./Illustrations/KeyReuse/Crypto.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-1-Crypto.png" alt="النصّ الصريح الثاني."></p>
 <p>center</p>
 <pre><code>  النصّ الصريح الثاني.
 </code></pre>
-<p>.. subfigure:: ./Illustrations/KeyReuse/BrokenEncrypted.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-2-BrokenEncrypted.png" alt="النصّ المشفَّر الأوّل."></p>
 <p>center</p>
 <pre><code>  النصّ المشفَّر الأوّل.
 </code></pre>
-<p>.. subfigure:: ./Illustrations/KeyReuse/CryptoEncrypted.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-3-CryptoEncrypted.png" alt="النصّ المشفَّر الثاني."></p>
 <p>center</p>
 <pre><code>  النصّ المشفَّر الثاني.
 </code></pre>
-<p>.. subfigure:: ./Illustrations/KeyReuse/Key.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-4-Key.png" alt="المفتاح المُعاد استعماله."></p>
 <p>center</p>
 <pre><code>  المفتاح المُعاد استعماله.
 </code></pre>
-<p>.. subfigure:: ./Illustrations/KeyReuse/CiphertextsXOR.png</p>
+<p><img src="/arabic-cs-library/images/crypto-101/exclusive-or-subfig-5-CiphertextsXOR.png" alt="XOR للنصّين المشفَّرين."></p>
 <p>center</p>
 <pre><code>  XOR للنصّين المشفَّرين.
 </code></pre>
@@ -324,7 +324,7 @@ HTML فوق HTTP، فإنّنا نتوقّع أن نرى <code>Content-Type</cod
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -332,8 +332,8 @@ HTML فوق HTTP، فإنّنا نتوقّع أن نرى <code>Content-Type</cod
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

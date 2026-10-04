@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="نموذج كائنات بسيط — A Simple Object Model"/><!----><title>نموذج كائنات بسيط | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -233,9 +233,8 @@ MISSING = <span class="hljs-built_in">object</span>()
 الصنفين الأساسيين <code>TYPE</code> و<code>OBJECT</code>، وكلاهما نسختان من
 <code>Class</code>. وهنا سنبتعد كثيرًا عن نموذج Smalltalk،
 ذو نظام الأصناف الفوقية المعقّد إلى حدٍّ ما. وبدلًا من ذلك سنستخدم النموذج الذي
-استحدثه ObjVlisp[^objvlisp] والذي
-اعتمدته بايثون.
-[^objvlisp]: P. Cointe، «الأصناف الفوقية من الدرجة الأولى: نموذج ObjVlisp»، مجلة SIGPLAN، المجلد 22، العدد 12، الصفحات 156–162، 1987.</p>
+استحدثه ObjVlisp<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> والذي
+اعتمدته بايثون.</p>
 <p>في نموذج ObjVlisp، يتشابك <code>OBJECT</code> و<code>TYPE</code>. فـ<code>OBJECT</code> هو الصنف
 الأساسي لجميع الأصناف، أي أنه لا يملك صنفًا أساسيًا. و<code>TYPE</code> هو صنف فرعي من
 <code>OBJECT</code>.
@@ -456,12 +455,7 @@ result = method(arg1, arg2)
 يُبحث عن الخاصية التي تحمل اسم الدالة على الكائن. ونتيجة
 عملية البحث هذه هي <em>دالة مربوطة</em> (bound method)، وهي كائن يضمّ الكائن
 نفسه فضلًا عن الدالة الموجودة في الصنف. ثم تُستدعى تلك الدالة المربوطة
-بعملية استدعاء[^attributenote].</p>
-<p>[^attributenote]: يبدو أن النموذج القائم على الخصائص أكثر تعقيدًا من الناحية
-المفاهيمية، لأنه يحتاج إلى البحث عن الدالة وإلى استدعائها. ومن الناحية العملية، فإن
-استدعاء شيء ما يُعرَّف بالبحث عن خاصية خاصة
-هي <code>__call__</code> ثم استدعائها، وبذلك تُستعاد البساطة المفاهيمية. لن يُنفَّذ هذا
-غير ذلك في هذا الفصل.)</p>
+بعملية استدعاء<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
 <p>ولتنفيذ هذا السلوك، علينا تغيير تنفيذ <code>Base.read_attr</code>.
 إذا لم يُعثر على الخاصية في القاموس، فيُبحث
 عنها في الصنف. وإذا وُجدت في الصنف وكانت الخاصية قابلة للاستدعاء،
@@ -510,8 +504,7 @@ result = method(arg1, arg2)
 <p>قدَّمت Smalltalk بروتوكولات الكائنات الوسيطة، لكن أنظمة
 Common Lisp المستخدِمة، مثل CLOS، استعملتها أكثر من ذلك. وهناك أيضًا
 صاغ اسم <em>بروتوكول الكائن الوسيط</em>، بالمعنى الذي يشير إلى
-مجموعات الدوال الخاصة[^kiczales].</p>
-<p>[^kiczales]: G. Kiczales وJ. des Rivieres وD. G. Bobrow، <em>فن بروتوكول الكائن الوسيط</em>. كامبريدج، ماساتشوستس: مطبعة MIT، 1991.</p>
+مجموعات الدوال الخاصة<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>.</p>
 <p>سنضيف في هذا الفصل ثلاثة خطّافات وسيطة كهذه إلى نموذج كائناتنا. وهي
 تُستخدم لضبط ما يحدث تمامًا عند قراءة الخصائص وكتابتها. أما
 الدوال الخاصة التي سنضيفها أولًا فهي <code>__getattr__</code> و<code>__setattr__</code>، وهما
@@ -521,8 +514,7 @@ Common Lisp المستخدِمة، مثل CLOS، استعملتها أكثر م�
 التي يجري البحث عنها بالطرق المعتادة؛ أي لا على
 النسخة ولا على الصنف. وهي تتلقّى اسم الخاصية التي يجري البحث عنها كوسيط.
 وكان نظير للدالة الخاصة <code>__getattr__</code> جزءًا من
-أنظمة Smalltalk المبكرة[^smalltalk] باسم <code>doesNotUnderstand:</code>.</p>
-<p>[^smalltalk]: A. Goldberg، <em>Smalltalk-80: اللغة وتنفيذها</em>. Addison-Wesley، 1983، الصفحة 61.</p>
+أنظمة Smalltalk المبكرة<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> باسم <code>doesNotUnderstand:</code>.</p>
 <p>حالة <code>__setattr__</code> مختلفة قليلًا. ولأن ضبط خاصية
 ينشئها دائمًا، \newline فإن <code>__setattr__</code> تُستدعى دائمًا عند ضبط
 خاصية. ولضمان وجود دالة <code>__setattr__</code> دائمًا، فإن
@@ -660,9 +652,7 @@ OBJECT = Class(<span class="hljs-string">&quot;object&quot;</span>, <span class=
 </code></pre>
 <p>تُستدعى الدالة <code>__get__</code> على نسخة <code>FahrenheitGetter</code> بعد أن
 جري البحث عنها في صنف <code>obj</code>. والوسائط الممرَّرة إلى <code>__get__</code> هي
-النسخة التي جرى البحث فيها[^secondarg].</p>
-<p>[^secondarg]: في بايثون، الوسيط الثاني هو الصنف الذي وُجدت فيه الخاصية،
-غير أننا سنتجاهله هنا.</p>
+النسخة التي جرى البحث فيها<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>.</p>
 <p>تنفيذ هذا السلوك سهل. فنحن بحاجة إلى تغيير <code>_is_bindable</code>
 \newline و<code>_make_boundmethod</code> فحسب:</p>
 <pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_bindable</span>(<span class="hljs-params">meth</span>):
@@ -686,13 +676,10 @@ OBJECT = Class(<span class="hljs-string">&quot;object&quot;</span>, <span class=
 <p>بينما كانت الصيغ الثلاث الأولى من نموذج الكائنات تهتمّ
 باختلاف السلوك، سنتناول في هذا القسم الأخير تحسينًا
 لا أثر له على السلوك إطلاقًا. ويُسمّى هذا التحسين <em>الخرائط</em> (maps) وقد
-رُوِّج له في الآلة الافتراضية للغة Self[^self]. وما زال
+رُوِّج له في الآلة الافتراضية للغة Self<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>. وما زال
 أهم تحسينات نموذج الكائنات: فهو مستخدَم في PyPy وفي كل
 الآلات الافتراضية الحديثة لجافاسكربت، مثل V8 (حيث يُسمّى هذا التحسين <em>الأصناف
 الخفية</em>).</p>
-<p>[^self]: C. Chambers وD. Ungar وE. Lee، «تنفيذ فعّال لـ
-SELF، لغة برمجة موجّهة نحو الكائنات ومكتوبة بأنواع ديناميكية قائمة على النماذج الأوّلية»، في
-OOPSLA، 1989، المجلد 24.</p>
 <p>ينطلق هذا التحسين من الملاحظة التالية: في نموذج الكائنات المطبَّق
 حتى الآن، تستخدم كل النسخ قاموسًا كاملًا لتخزين
 خصائصها. ويُنفَّذ القاموس باستخدام خريطة تجزئة، وهو ما يستهلك قدرًا كبيرًا من
@@ -825,16 +812,7 @@ EMPTY_MAP = Map({})
 استهلاك الذاكرة فقط، فإنها في الآلات الافتراضية الحقيقية التي تستخدم مصرّفًا فوريًا (JIT) تحسّن
 أداء البرنامج أيضًا. ولتحقيق ذلك، يستخدم المصرّف الفوري الخرائط
 ليصرّف عمليات البحث عن الخصائص فتصبح عمليات بحث في تخزين الكائنات
-عند إزاحة ثابتة، فتتخلّص تمامًا من كل عمليات البحث في القواميس[^lookups].</p>
-<p>[^lookups]: إن كيفية عمل ذلك خارج نطاق هذا الفصل. وقد حاولت أن
-أعطي عرضًا معقولًا للقراءة عنه في ورقة كتبتها قبل بضع سنوات. وهي تستخدم
-نموذج كائنات جوهرًا ضروبًا من النموذج الوارد في هذا الفصل: C. F.
-Bolz وA. Cuni وM. Fijałkowski وM. Leuschel وS. Pedroni وA. Rigo، «التغذية الراجعة
-في وقت التنفيذ في مصرّف JIT يتتبّع البيانات الوصفية من أجل لغات ديناميكية
-فعّالة»، في وقائع
-الورشة السادسة حول التنفيذ والترجمة وتحسين
-اللغات والبرامج والأنظمة الموجّهة نحو الكائنات، نيويورك، ولاية نيويورك، الولايات المتحدة، 2011، الصفحات
-9:1–9:8.</p>
+عند إزاحة ثابتة، فتتخلّص تمامًا من كل عمليات البحث في القواميس<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup>.</p>
 <h2 id="الامتدادات-الممكنة">الامتدادات الممكنة</h2>
 <p>من سهل توسيع نموذج كائناتنا وتجربة خيارات تصميم لغوية
 متنوّعة. وفيما يلي بعض الاحتمالات:</p>
@@ -871,13 +849,47 @@ Bolz وA. Cuni وM. Fijałkowski وM. Leuschel وS. Pedroni وA. Rigo، «الت
 هذا النهج شائعة: نموذج كائنات GObject المكتوب بلغة C،
 ويُستخدم في GLib ومكتبات Gnome الأخرى؛ أو مختلف تنفيذات
 أنظمة الأصناف في JavaScript.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>P. Cointe، «الأصناف الفوقية من الدرجة الأولى: نموذج ObjVlisp»، مجلة SIGPLAN، المجلد 22، العدد 12، الصفحات 156–162، 1987. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>يبدو أن النموذج القائم على الخصائص أكثر تعقيدًا من الناحية
+المفاهيمية، لأنه يحتاج إلى البحث عن الدالة وإلى استدعائها. ومن الناحية العملية، فإن
+استدعاء شيء ما يُعرَّف بالبحث عن خاصية خاصة
+هي <code>__call__</code> ثم استدعائها، وبذلك تُستعاد البساطة المفاهيمية. لن يُنفَّذ هذا
+غير ذلك في هذا الفصل.) <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>G. Kiczales وJ. des Rivieres وD. G. Bobrow، <em>فن بروتوكول الكائن الوسيط</em>. كامبريدج، ماساتشوستس: مطبعة MIT، 1991. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>A. Goldberg، <em>Smalltalk-80: اللغة وتنفيذها</em>. Addison-Wesley، 1983، الصفحة 61. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>في بايثون، الوسيط الثاني هو الصنف الذي وُجدت فيه الخاصية،
+غير أننا سنتجاهله هنا. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>C. Chambers وD. Ungar وE. Lee، «تنفيذ فعّال لـ
+SELF، لغة برمجة موجّهة نحو الكائنات ومكتوبة بأنواع ديناميكية قائمة على النماذج الأوّلية»، في
+OOPSLA، 1989، المجلد 24. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>إن كيفية عمل ذلك خارج نطاق هذا الفصل. وقد حاولت أن
+أعطي عرضًا معقولًا للقراءة عنه في ورقة كتبتها قبل بضع سنوات. وهي تستخدم
+نموذج كائنات جوهرًا ضروبًا من النموذج الوارد في هذا الفصل: C. F.
+Bolz وA. Cuni وM. Fijałkowski وM. Leuschel وS. Pedroni وA. Rigo، «التغذية الراجعة
+في وقت التنفيذ في مصرّف JIT يتتبّع البيانات الوصفية من أجل لغات ديناميكية
+فعّالة»، في وقائع
+الورشة السادسة حول التنفيذ والترجمة وتحسين
+اللغات والبرامج والأنظمة الموجّهة نحو الكائنات، نيويورك، ولاية نيويورك، الولايات المتحدة، 2011، الصفحات
+9:1–9:8. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/modeller/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مصمّم ثلاثي الأبعاد</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/ocr/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التعرّف الضوئي على الحروف (OCR)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -885,8 +897,8 @@ Bolz وA. Cuni وM. Fijałkowski وM. Leuschel وS. Pedroni وA. Rigo، «الت
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

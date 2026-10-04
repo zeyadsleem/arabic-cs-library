@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="جملة SELECT بالتفصيل — The SELECT clause in detail"/><!----><title>جملة SELECT بالتفصيل | أسس قواعد البيانات</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -53,7 +53,7 @@
 <p>هذا الفصل والفصول الأربعة التالية موضوع واحد كبير في الواقع. ننظر في مكوّنات الاستعلام المختلفة بمزيد من التفصيل. وقد قدّم فصلا SQL الأولان بالفعل <code>SELECT</code> و<code>FROM</code> و<code>WHERE</code> و<code>GROUP BY</code> و<code>HAVING</code> و<code>ORDER BY</code>. وحان الآن وقت التعمق قليلًا في هذه الجمل.</p>
 <p>في هذا الفصل، سننظر في بعض ميزات <code>SELECT</code>. وكمثال، سنستخدم نسخة موسّعة من جدول &quot;course&quot; المستخدم في <a href="/arabic-cs-library/book/database-foundations/sql-intro/index">فصل SQL التمهيدي</a>. <em>هذا نص عملي. القراءة جيدة، والفعل أجود. جرّب الأشياء وأنجز التمارين.</em></p>
 <p>في هذا الفصل نستخدم مخططًا بسيطًا بجدول واحد فقط. ويقابل هذا المخطط النموذج المفاهيمي (conceptual model) التالي:</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-select-0-opo_conceptueel.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-select-0-opo_conceptueel.webp" alt=""></p>
 <p>ولنوع الكيان &quot;Course&quot; ثماني خواص. والخاصية &quot;Code&quot; هي الخاصية المفتاحية.</p>
 <p>يمكنك إيجاد جدول &quot;course&quot; في المخطط &quot;ucllcatalogue&quot; في قاعدة البيانات &quot;df&quot;. ولإعداد هذا الجدول لك، اتخذنا الخطوات التالية (وسنعود إليها لاحقًا). وهذه الخطوات للتوضيح فقط. ولا يمكنك تنفيذها بنفسك لأنك لا تملك صلاحيات الكتابة في قاعدة البيانات &quot;df&quot;.</p>
 <p>أفتح أداة استعلامات في قاعدة البيانات &quot;df&quot; وأنفّذ هذه الشيفرة:</p>
@@ -160,7 +160,7 @@ grant select on all tables in schema ucllcatalogue to lector;
 <p>أبدأ عادةً من صفحة الفهرس <a href="https://www.postgresql.org/docs/current/bookindex.html">https://www.postgresql.org/docs/current/bookindex.html</a>. وعند حرف S في string أجد عددًا من الإحالات إلى <a href="https://www.postgresql.org/docs/current/functions-string.html">https://www.postgresql.org/docs/current/functions-string.html</a>. تصفّح القائمة الطويلة من الميزات. ونعطي أدناه مثالين على دوال السلاسل.</p>
 <h4>التبديل بين الحروف الكبيرة والصغيرة</h4>
 <p>تتيح لك الدالتان <code>lower()</code> و<code>upper()</code> التبديل بين الحروف الصغيرة والكبيرة (انظر الصورة أدناه لمعرفة <a href="https://en.wikipedia.org/wiki/Letter_case">أصل</a> هذين التعيينين). وخصوصًا إذا أردنا البحث في الفصل التالي عن سلاسل (في جملة <code>WHERE</code>)، فغالبًا ما يكون الخيار الآمن تحويل كل شيء إلى حروف صغيرة أولًا لأن <em>السلاسل في SQL حساسة لحالة الأحرف</em>. فالسلسلة 'Van Hee' ليست نفسها 'Van hee'.</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-select-1-letterkast.webp" alt=""> صورة: الحروف الأكثر استخدامًا (أي الحروف الصغيرة) في الدرج السفلي، والأقل استخدامًا (الحروف الكبيرة) في الدرج العلوي. ويعرض الاستعلام التالي جميع أسماء المقررات بحروف صغيرة:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-select-1-letterkast.webp" alt=""> صورة: الحروف الأكثر استخدامًا (أي الحروف الصغيرة) في الدرج السفلي، والأقل استخدامًا (الحروف الكبيرة) في الدرج العلوي. ويعرض الاستعلام التالي جميع أسماء المقررات بحروف صغيرة:</p>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> code, <span class="hljs-built_in">lower</span>(name)
 <span class="hljs-keyword">FROM</span> course;
 </code></pre>
@@ -170,7 +170,7 @@ grant select on all tables in schema ucllcatalogue to lector;
 <span class="hljs-keyword">FROM</span> course;
 </code></pre>
 <p>ربما لاحظت بالفعل أن جميع رموز المقررات تبدأ بـ 'MBI' (في برنامج BCS على أي حال). وجميع المحاضرين لهم رقم يبدأ بـ 'u'. اكتب استعلامًا يعرض رمز المقرر والمنسّق، لكن دون الحرف (أو الحروف) الأولية التي تتكرر دائمًا. وانتبه إلى ترويسات الأعمدة!</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-select-2-zonderbeginletters.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-select-2-zonderbeginletters.webp" alt=""></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">substring</span>(code <span class="hljs-keyword">from</span> <span class="hljs-number">4</span>) <span class="hljs-keyword">AS</span> &quot;short code&quot;,
   <span class="hljs-built_in">substring</span>(coordinator <span class="hljs-keyword">from</span> <span class="hljs-number">2</span>) <span class="hljs-keyword">AS</span> &quot;coordinator(shortened)&quot;
@@ -197,7 +197,7 @@ END
 <p>فأول شرط يتحقق يؤدي إلى إسناد قيمة في العمود. وتُتخطى بقية السطور في <code>CASE</code> حينئذ. ولاحظ أيضًا أننا نستخدم اسمًا مستعارًا (<code>AS</code>) لأنه لولا ذلك لأظهرت ترويسة العمود 'case' فقط.</p>
 <p><em>المسافات البيضاء</em> (الإزاحة بعلامات الجدولة أو المسافات) ليست مهمة لخادم قاعدة البيانات، لكنها <em>مهمة للأشخاص الذين عليهم قراءة شيفرتك</em> (مثل المحاضرين الذين يصححون واجباتك).</p>
 <p>المقررات التي ليس لها تاريخ انتهاء تُسمّى مقررات 'new' في مقابل المقررات 'old' التي لم تعد تُدرَّس ولها تاريخ انتهاء في جدولنا. اكتب الاستعلام الذي يولّد نتيجة الشكل أدناه. هل نحتاج إلى قول المزيد؟ لاحظ ترويسات الأعمدة...</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-select-3-oudnieuw.webp" alt="new column with the text old or new"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-select-3-oudnieuw.webp" alt="new column with the text old or new"></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, code,
   <span class="hljs-keyword">CASE</span>
@@ -277,7 +277,7 @@ END
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -285,8 +285,8 @@ END
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

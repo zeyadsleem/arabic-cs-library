@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="عمليات الربط والاستعلامات الفرعية — Joins and Subqueries"/><!----><title>عمليات الربط والاستعلامات الفرعية | تمارين PostgreSQL التفاعلية</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -175,10 +175,10 @@
 </code></pre>
 <p>أكثر أنواع الربط استخدامًا هو INNER JOIN. وهو يدمج جدولين بناءً على تعبير ربط — في هذه الحالة، لكل معرّف عضو في جدول members، نبحث عن قيم مطابقة في جدول bookings. وحيث نجد تطابقًا، يُعاد صف يجمع قيم الجدولين. ولاحظ أننا أعطينا كل جدول <em>اسمًا مستعارًا</em> (bks وmems). ويُستخدم ذلك لسببين: أولًا لأنه ملائم، وثانيًا لأننا قد نربط الجدول نفسه عدة مرات، فيلزمنا التمييز بين الأعمدة الواردة من كل مرة رُبط فيها الجدول.</p>
 <p>ولنتجاهل الآن عبارتي select وwhere، ونركّز على ما ينتجه بيان FROM. في كل أمثلتنا السابقة، كان FROM مجرد جدول بسيط. فما هو الآن؟ جدول آخر! وهذه المرة، ينتج كتركيب من bookings وmembers. ويمكنك أن ترى مجموعة فرعية من ناتج الربط أدناه:</p>
-<p><img src="https://pgexercises.com/images/pgexercises/joins-simplejoin-0-joinbefore.webp" alt="Output of a from clause of a join"></p>
+<p><img src="/arabic-cs-library/images/pgexercises/joins-simplejoin-0-joinbefore.webp" alt="Output of a from clause of a join"></p>
 <p>لكل عضو في جدول members، وجد الربط كل معرّفات الأعضاء المطابقة في جدول bookings. ولكل تطابق، أنتج صفًا يجمع الصف من جدول members والصف من جدول bookings.</p>
 <p>من الواضح أن هذه معلومات أكثر ممّا يلزم في حد ذاتها، وأي سؤال مفيد سيريد تصفيتها. وفي استعلامنا، نستخدم بداية عبارة SELECT لاختيار الأعمدة، وعبارة WHERE لاختيار الصفوف، كما هو موضح أدناه:</p>
-<p><img src="https://pgexercises.com/images/pgexercises/joins-simplejoin-1-join1.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/pgexercises/joins-simplejoin-1-join1.webp" alt=""></p>
 <p>هذا كل ما نحتاج إليه لإيجاد حجوزات David! وبوجه عام، أشجعك على تذكّر أن ناتج عبارة FROM هو في جوهره جدول كبير واحد تُصفّي منه المعلومات بعد ذلك. وقد يبدو هذا غير فعّال — لكن لا تقلق، فقاعدة البيانات (DB) ستتصرف في الخفاء بذكاء أكبر بكثير :-).</p>
 <p>وملاحظة أخيرة: هناك صيغتان مختلفتان للربط الداخلي. وقد عرضت عليك الصيغة التي أفضّلها، والتي أجدها أكثر اتساقًا مع أنواع الربط الأخرى. وسترى كثيرًا صيغة مختلفة، معروضة أدناه:</p>
 <pre><code class="language-sql"><span class="hljs-keyword">select</span> bks.starttime
@@ -346,7 +346,7 @@
 </code></pre>
 <p>وهنا مفهوم يجد بعض الناس فيه لبسًا: يمكنك ربط جدول بنفسه! وهذا مفيد حقًا إذا كانت لديك أعمدة تشير إلى بيانات في الجدول نفسه، كما هي الحال مع recommendedby في cd.members.</p>
 <p>وإن واجهت صعوبة في تصوّر ذلك، فتذكّر أن هذا يعمل تمامًا كأي ربط داخلي آخر. فيأخذ ربطنا كل صف في members له قيمة recommendedby، ويبحث في members مرة أخرى عن الصف الذي له معرّف عضو مطابق. ثم يولّد صف إخراج يجمع مُدخلَي العضوين. وهذا يشبه المخطط أدناه:</p>
-<p><img src="https://pgexercises.com/images/pgexercises/joins-self-0-innerjoin.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/pgexercises/joins-self-0-innerjoin.webp" alt=""></p>
 <p>لاحظ أنه قد يكون لدينا عمودا 'surname' في مجموعة الإخراج، لكن يمكن تمييزهما بالأسماء المستعارة للجدولين. وبعد أن نختار الأعمدة التي نريدها، نستخدم ببساطة DISTINCT لضمان عدم وجود تكرارات.</p>
 <p><strong>تلميح:</strong> هذا ربط داخلي (INNER JOIN)، تمامًا كما في التمارين السابقة.</p>
 <h2 id="4-إنتاج-قائمة-بكل-الأعضاء-مع-من-أوصى-بهم">4. إنتاج قائمة بكل الأعضاء مع من أوصى بهم</h2>
@@ -1188,7 +1188,7 @@
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1196,8 +1196,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -1,0 +1,53 @@
+const s="mit-6100l",a="lecture-23",n="المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)",t="exercises",p="تمارين المحاضرة 23 وحلولها: فئات التعقيد",e=[{depth:2,id:"1-السؤال-1-من-3",text:"1) السؤال 1 من 3"},{depth:2,id:"2-السؤال-2-من-3",text:"2) السؤال 2 من 3"},{depth:2,id:"3-السؤال-3-من-3",text:"3) السؤال 3 من 3"},{depth:2,id:"صفحة-النسبة-في-الأصل",text:"صفحة النسبة في الأصل"}],l=`<div class="exercises"><h1>التمارين القصيرة للمحاضرة 23 وحلولها</h1>
+<p><strong>المصادر الأصلية:</strong> <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-23-complexity-classes-examples/">أسئلة صفحة المحاضرة</a>، و<a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_ex23_sol.pdf">ملف الأسئلة والحلول الرسمي</a>.</p>
+<p><strong>النسبة والترخيص:</strong> آنا بيل (Ana Bell)، مقرر 6.100L، خريف 2022، معهد ماساتشوستس للتكنولوجيا، MIT OpenCourseWare. هذه ترجمة وتكييف عربي غير رسمي للاستخدام غير التجاري، وليست معتمدة من MIT؛ تخضع المواد الأصلية المشمولة والترجمة لرخصة <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. لا تشمل الرخصة الافتراضية مواد الأطراف الثالثة المستثناة.</p>
+<p>موعد تسليم الأسئلة أدناه في المقرر الأصلي: الاثنين 5 ديسمبر 2022، الساعة 03:00:00 مساءً.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> عولج تشوه حروف استخراج PDF بالرجوع إلى أسئلة الصفحة الرسمية. الكود، بما فيه سلاسل التوثيق (Docstrings)، محفوظ كما نُشر في الصفحة؛ لم تُترجم النصوص داخل كود Python. عبارة «حدًّا علويًّا وحدًّا سفليًّا» تطلب رتبة ثيتا (Theta)، لا مجرد حد أوه الكبرى (Big-Oh).</p>
+</blockquote>
+<h2 id="1-السؤال-1-من-3">1) السؤال 1 من 3</h2>
+<p>اختر رتبة النمو التقاربية (Asymptotic Order of Growth) في أسوأ حالة، حدًّا علويًّا وحدًّا سفليًّا، للدالة التالية. افترض أن <code>n = a</code>.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">running_product</span>(<span class="hljs-params">a</span>):
+    <span class="hljs-string">&quot;&quot;&quot; a is an int &quot;&quot;&quot;</span>
+    product = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>,a+<span class="hljs-number">5</span>):
+        product *= i
+        <span class="hljs-keyword">if</span> product == a:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+</code></pre>
+<p>عدد المحاولات المتبقية لإرسال الإجابة غير محدود.</p>
+<p><strong>الحل المنشور:</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\\Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</p>
+<h2 id="2-السؤال-2-من-3">2) السؤال 2 من 3</h2>
+<p>اختر رتبة النمو التقاربية في أسوأ حالة، حدًّا علويًّا وحدًّا سفليًّا، للدالة التالية. افترض أن <code>n = len(L)</code>.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tricky_f</span>(<span class="hljs-params">L, L2</span>):
+    <span class="hljs-string">&quot;&quot;&quot; L and L2 are lists of equal length &quot;&quot;&quot;</span>
+    inL = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> e1 <span class="hljs-keyword">in</span> L:
+        <span class="hljs-keyword">if</span> e1 <span class="hljs-keyword">in</span> L2:
+            inL = <span class="hljs-literal">True</span>
+    inL2 = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> e2 <span class="hljs-keyword">in</span> L2:
+        <span class="hljs-keyword">if</span> e2 <span class="hljs-keyword">in</span> L:
+            inL2 = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> inL <span class="hljs-keyword">and</span> inL2
+</code></pre>
+<p>عدد المحاولات المتبقية لإرسال الإجابة غير محدود.</p>
+<p><strong>الحل المنشور:</strong> θ(<code>n**2</code>)؛ أي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\\Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>.</p>
+<h2 id="3-السؤال-3-من-3">3) السؤال 3 من 3</h2>
+<p>اختر رتبة النمو التقاربية في أسوأ حالة، حدًّا علويًّا وحدًّا سفليًّا، للدالة التالية.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_f</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-string">&quot;&quot;&quot; n &gt; 0 &quot;&quot;&quot;</span>
+    answer = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span>:
+        answer += n%<span class="hljs-number">10</span>
+        n = <span class="hljs-built_in">int</span>(n/<span class="hljs-number">10</span>)
+    <span class="hljs-keyword">return</span> answer
+</code></pre>
+<p>عدد المحاولات المتبقية لإرسال الإجابة غير محدود.</p>
+<p><strong>الحل المنشور:</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\\Theta(\\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</p>
+<h2 id="صفحة-النسبة-في-الأصل">صفحة النسبة في الأصل</h2>
+<p>MIT OpenCourseWare — <a href="https://ocw.mit.edu">https://ocw.mit.edu</a>.</p>
+<p>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python، خريف 2022.</p>
+<p>للمعلومات المتعلقة بالاستشهاد بهذه المواد أو بشروط الاستخدام: <a href="https://ocw.mit.edu/terms">https://ocw.mit.edu/terms</a>.</p>
+</div>`,o={book:s,chapter:a,chapterTitle:n,slug:t,title:p,headings:e,html:l};export{s as book,a as chapter,n as chapterTitle,o as default,e as headings,l as html,t as slug,p as title};

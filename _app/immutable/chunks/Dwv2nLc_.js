@@ -1,0 +1,69 @@
+const s="mit-6100l",n="lecture-14",a="المحاضرة 14: القواميس (Dictionaries)",e="exercises",t="المحاضرة 14: تمارين الأصابع وحلولها — المعاجم",p=[{depth:2,id:"صفحة-المصدر-1-تمارين-الأصابع-للمحاضرة-14",text:"صفحة المصدر 1: تمارين الأصابع للمحاضرة 14"},{depth:3,id:"1-السؤال-1-من-2",text:"1) السؤال 1 من 2"},{depth:3,id:"2-السؤال-2-من-2",text:"2) السؤال 2 من 2"},{depth:2,id:"صفحة-المصدر-2-الإسناد",text:"صفحة المصدر 2: الإسناد"}],l=`<div class="exercises"><h1>المحاضرة 14: تمارين الأصابع وحلولها — المعاجم (Dictionaries)</h1>
+<p>المصدر: آنا بيل (Ana Bell)، معهد ماساتشوستس للتكنولوجيا، MIT OpenCourseWare، مقرر <strong>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام بايثون</strong>، خريف 2022 (Fall 2022). هذه ترجمة وتكييف عربيان غير رسميان بموجب <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>، ولا تعنيان اعتماد MIT أو تأييده. <a href="https://ocw.mit.edu/terms/">شروط الاستخدام والإسناد</a>.</p>
+<p>المصادر الدقيقة: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-14-dictionaries/">السؤال في صفحة المحاضرة</a>، <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_ex14_sol_pdf/">صفحة مورد الحل</a>، <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_ex14_sol.pdf">PDF الحل الرسمي</a>.</p>
+<h2 id="صفحة-المصدر-1-تمارين-الأصابع-للمحاضرة-14">صفحة المصدر 1: تمارين الأصابع للمحاضرة 14</h2>
+<p>موعد تسليم الأسئلة أدناه: الاثنين 31 أكتوبر 2022، الساعة 03:00:00 مساءً. هذا هو موعد المقرر الأصلي، وليس موعدًا جديدًا لهذه الترجمة.</p>
+<h3 id="1-السؤال-1-من-2">1) السؤال 1 من 2</h3>
+<p>نفّذ الدالة التي تستوفي المواصفة التالية:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">keys_with_value</span>(<span class="hljs-params">aDict, target</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    aDict: a dictionary
+    target: an integer or string
+    Assume that keys and values in aDict are integers or strings.
+    Returns a sorted list of the keys in aDict with the value target.
+    If aDict does not contain the value target, returns an empty list.
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Your code here</span>
+</code></pre>
+<p>أمثلة:</p>
+<pre><code class="language-python">aDict = {<span class="hljs-number">1</span>:<span class="hljs-number">2</span>, <span class="hljs-number">2</span>:<span class="hljs-number">4</span>, <span class="hljs-number">5</span>:<span class="hljs-number">2</span>}
+target = <span class="hljs-number">2</span>
+<span class="hljs-built_in">print</span>(keys_with_value(aDict, target)) <span class="hljs-comment"># prints the list [1,5]</span>
+</code></pre>
+<p>دالتك هنا:</p>
+<pre><code class="language-python"><span class="hljs-comment"># your function here</span>
+</code></pre>
+<p>تبقّى لك عدد لا نهائي من مرات التسليم.</p>
+<p>هذا هو الحل الذي كتبناه:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">keys_with_value</span>(<span class="hljs-params">aDict, target</span>):
+    target_keys = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> aDict.keys():
+        <span class="hljs-keyword">if</span> aDict[i] == target:
+            target_keys.append(i)
+    target_keys.sort()
+    <span class="hljs-keyword">return</span> target_keys
+</code></pre>
+<h3 id="2-السؤال-2-من-2">2) السؤال 2 من 2</h3>
+<p>نفّذ الدالة التي تستوفي المواصفة التالية:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">all_positive</span>(<span class="hljs-params">d</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    d is a dictionary that maps int:list
+    Suppose an element in d is a key k mapping to value v (a non-empty list).
+    Returns the sorted list of all k whose v elements sums up to a
+    positive value.
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Your code here</span>
+</code></pre>
+<p>أمثلة:</p>
+<pre><code class="language-python">d = {<span class="hljs-number">5</span>:[<span class="hljs-number">2</span>,-<span class="hljs-number">4</span>], <span class="hljs-number">2</span>:[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], <span class="hljs-number">1</span>:[<span class="hljs-number">2</span>]}
+<span class="hljs-built_in">print</span>(all_positive(d)) <span class="hljs-comment"># prints the list [1, 2]</span>
+</code></pre>
+<p>دالتك هنا:</p>
+<pre><code class="language-python"><span class="hljs-comment"># your function here</span>
+</code></pre>
+<p>تبقّى لك عدد لا نهائي من مرات التسليم.</p>
+<p>هذا هو الحل الذي كتبناه:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">all_positive</span>(<span class="hljs-params">d</span>):
+    L = []
+    <span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> d.items():
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span>(v) &gt; <span class="hljs-number">0</span>:
+            L.append(k)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(L)
+</code></pre>
+<p>ملاحظة تحريرية: نُسخت الشفرة من ملف PDF الرسمي مع الحفاظ على أسماء المتغيّرات وعلامات الاقتباس والمسافات البادئة.</p>
+<h2 id="صفحة-المصدر-2-الإسناد">صفحة المصدر 2: الإسناد</h2>
+<p>MIT OpenCourseWare — https://ocw.mit.edu</p>
+<p>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام بايثون.</p>
+<p>خريف 2022.</p>
+<p>للمعلومات المتعلقة بالاستشهاد بهذه المواد أو بشروط الاستخدام، زُر: https://ocw.mit.edu/terms</p>
+</div>`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:p,html:l};export{s as book,n as chapter,a as chapterTitle,c as default,p as headings,l as html,e as slug,t as title};

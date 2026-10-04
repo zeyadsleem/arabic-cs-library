@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 25: الرسم البياني (Plotting) — المحاضرة 25: الرسم البياني (Plotting)"/><!----><title>المحاضرة 25: الرسم البياني (Plotting) | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 25: الرسم البياني (Plotting)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 27 من 30">27 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-25/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-26/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3>المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes" class="active">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 25: الرسم البياني (Plotting)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 25: الرسم البياني (Plotting)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<blockquote>
+<p>Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/. License: CC BY-NC-SA 4.0.</p>
+</blockquote>
+<ul>
+<li>صفحة المحاضرة على MIT OpenCourseWare: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-25-plotting/</li>
+<li>ملف الشرائح (صفحة الوصف): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec25_pdf/</li>
+<li>ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec25.pdf</li>
+<li>ملف الشيفرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec25_code_py/</li>
+<li>تفريغ المحاضرة على MIT OpenCourseWare (بالإنجليزية): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec25/</li>
+<li>الترخيص: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/</li>
+<li>شروط الاستخدام في MIT OpenCourseWare: https://ocw.mit.edu/terms/</li>
+</ul>
+<p><strong>منهج الترجمة:</strong> نُقلت هذه المحاضرة ترجمةً عربية كاملة أمينة لمحتوى ملف الشرائح الأصلي في MIT OpenCourseWare، تحت رخصة CC BY-NC-SA 4.0 التي تسمح بإعادة التوزيع مع الإبقاء على الإسناد والتأهيل والإشارة إلى التغيير، وبشرط أن يكون الاستخدام غير تجاري وأن تُوزَّع كل ترجمة مشتقّة تحت الرخصة نفسها. أُبقيت الشيفرة وأسماء دوال matplotlib كما هي بالإنجليزية. هذه المحاضرة <strong>غالبًا مُصوّرة</strong>: الشرائح من 6 إلى 21 و23 إلى 26 و28 إلى 31 و33 إلى 43 و45 و46 و48 و49 و51 إلى 55 و57 و59 و61 إلى 65 و67 إلى 77 تعرض رسومًا بيانية ناتجة أو ملفات بيانات. <strong>لم تُضمَّن هذه الرسوم</strong> لأن Rights الصورة المولّدة ليست من رخصة MIT؛ وقد نُقل النصّ المرافق لكل شريحة كما هو، ووُصفت البيانات بعبارات MIT نفسها. أسماء ملفات البيانات المذكورة في المحاضرة (<code>USPopulation.txt</code>، <code>countryPops.txt</code>، <code>temperatures.csv</code>) متاحة ضمن ملف الشيفرة في MIT OpenCourseWare على الرابط أعلاه.</p>
+<h2 id="الشريحة-1-الرسم-البياني-plotting">الشريحة 1: الرسم البياني (Plotting)</h2>
+<p>هذه المحاضرة عن الرسم البياني. يُرفق ملف الشرائح وملفات <code>.py</code> للمتابعة الجانبيًا.</p>
+<h2 id="الشريحة-2-لماذا-نرسم">الشريحة 2: لماذا نرسم؟</h2>
+<ul>
+<li>عاجلًا أم آجلًا، سيحتاج الجميع إلى إنتاج رسوم بيانية.</li>
+<li>تساعدنا على تصوّر البيانات (visualize data) لرؤية الاتجاهات، وطرح أسئلة حاسوبية نختبرها.</li>
+<li>إن التحقت بمقرر 6.100B فستستخدمها على نطاق واسع.</li>
+<li>أمّا من يغادرنا بعد الأسبوع المقبل فهذه طريقة قيّمة لتصوّر البيانات.</li>
+<li>هذا مثال على الاستفادة من مكتبة موجودة بدل كتابة الإجراءات (procedures) من الصفر.</li>
+<li>تقدّم Python مكتبات من أجل:
+<ul>
+<li>الرسم البياني (Plotting)</li>
+<li>الحساب العددي (Numerical computation)</li>
+<li>الحساب العشوائي (Stochastic computation)</li>
+<li>وغيرها كثير.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-3-مكتبة-matplotlib">الشريحة 3: مكتبة Matplotlib</h2>
+<ul>
+<li>يمكن استيراد المكتبة إلى بيئة الحساب:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+</code></pre>
+<ul>
+<li>يتيح هذا للشيفرة الإشارة إلى إجراءات المكتبة بالشكل <code>plt.&lt;processName&gt;</code>.</li>
+<li>يوفّر الوصول إلى مجموعة موجودة من إجراءات الرسوم البيانية.</li>
+<li>سنعرض اليوم بعض الأمثلة البسيطة فقط، ومعلومات إضافية كثيرة متاحة في التوثيق المرتبط بـ matplotlib.</li>
+<li>سترى أمثلة وتفاصيل أخرى كثيرة لهذه الأفكار إن أخذت مقرر 6.100B.</li>
+</ul>
+<h2 id="الشريحة-4-مثال-بسيط">الشريحة 4: مثال بسيط</h2>
+<p>الفكرة: أنشئ دوالًا مختلفة لمتغيّر <code>n</code>، ثم صوّر الفروق بينها.</p>
+<h2 id="الشريحة-5-رسم-البيانات">الشريحة 5: رسم البيانات</h2>
+<ul>
+<li>لتوليد رسم بياني:</li>
+</ul>
+<pre><code class="language-python">plt.plot(&lt;x values&gt;, &lt;y values&gt;)
+</code></pre>
+<ul>
+<li>الوسائط قوائم (أو تسلسلات) من الأعداد.</li>
+<li>يجب أن تكون القائمتان بالطول نفسه.</li>
+<li>يولّد سلسلة قيم <code>&lt;x, y&gt;</code> على شبكة إحداثيات كارتزية (Cartesian grid).</li>
+<li>تُرسم بالترتيب ثم تُوصَل بخطوط.</li>
+<li>يمكن تغيير سطر أوامر iPython ليولّد الرسوم في نافذة جديدة، عبر Preferences:
+<ul>
+<li>مضمّنة داخل السطر (Inline in the console).</li>
+<li>في نافذة جديدة (In a new window).</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-6-مثال">الشريحة 6: مثال</h2>
+<p>لاحظ كيف يملأ <code>matplotlib</code> الرسمَ الإطارَ (frame) تلقائيًا.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> الشريحة صورة البياني لتوابع <code>quad</code> و<code>cube</code> و<code>lin</code> على المجال <code>[0,10]</code>؛ ولم تُعَد نشر الصورة، وقد نُقل تعليق MIT أسفلها كما هو.</p>
+</blockquote>
+<h2 id="الشريحة-7-ترتيب-النقاط-مهم">الشريحة 7: ترتيب النقاط مهم</h2>
+<ul>
+<li>لنفرض أنني أنشأت مجموعة قيم لـ <code>n</code> و لـ <code>n2</code>، لكن بترتيب عشوائي.</li>
+<li>ترسم Python باستخدام ترتيب النippets وتوصيل النقاط المتتالية.</li>
+</ul>
+<h2 id="الشريحة-8-مثال-غير-مرتب">الشريحة 8: مثال غير مرتّب</h2>
+<p>صورة تُظهر كيف يبدو الرسم حين تكون نقاط <code>n</code> غير مرتّبة.</p>
+<h2 id="الشريحة-9-الرسم-المبعثر-scatter-plot-لا-يوصل-نقاط-البيانات">الشريحة 9: الرسم المبعثر (Scatter Plot) لا يوصّل نقاط البيانات</h2>
+<p>صورة توضّح الفرق: <code>plt.scatter</code> يرسم النقاط فقط بلا خطوط وصل.</p>
+<h2 id="الشريحة-10-إظهار-كل-البيانات-على-رسم-واحد">الشريحة 10: إظهار كل البيانات على رسم واحد</h2>
+<p>صورة تُظهر ما يحدث عند جمع كل البيانات في رسم بياني واحد.</p>
+<h2 id="الشريحة-11-إنتاج-عدة-رسوم-بيانية">الشريحة 11: إنتاج عدّة رسوم بيانية</h2>
+<ul>
+<li>لنرسم كلًّا منها في إطار/نافذة منفصلة. نستدعي:</li>
+</ul>
+<pre><code class="language-python">plt.figure(&lt;arg&gt;)
+</code></pre>
+<ul>
+<li>ينشئ عرضًا جديدًا بهذا الاسم إن لم يكن موجودًا.</li>
+<li>وإذا كان هناك عرض بهذا الاسم، فإعادة فتحه لمعالجة إضافية.</li>
+</ul>
+<h2 id="الشريحة-12-شيفرة-المثال">الشريحة 12: شيفرة المثال</h2>
+<p>الشريحة تعرض شيفرة المثال الكاملة التي تُنتج الرسوم الأربعة التالية.</p>
+<h2 id="الشريحة-13-عرض-quad">الشريحة 13: عرض <code>quad</code></h2>
+<p>صورة الرسم البياني للدالة التربيعية.</p>
+<h2 id="الشريحة-14-عرض-cube">الشريحة 14: عرض <code>cube</code></h2>
+<p>صورة الرسم البياني للدالة التكعيبية.</p>
+<h2 id="الشريحة-15-عرض-lin">الشريحة 15: عرض <code>lin</code></h2>
+<p>صورة الرسم البياني للدالة الخطّية.</p>
+<h2 id="الشريحة-16-عرض-expo">الشريحة 16: عرض <code>expo</code></h2>
+<p>لاحظ كيف يوسّع <code>matplotlib</code> المقياس تلقائيًا ليلائم الرسمين داخل الإطار.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> هذه الشريحة تُظهر ضمّ الرسوم في إطار واحد؛ ولأن الشريحة تعتمد على صورة، لم تُضمَّن، ونُقل تعليق MIT فقط.</p>
+</blockquote>
+<h2 id="الشريحة-17-مثال-واقعي">الشريحة 17: مثال «واقعي»</h2>
+<p><code>matplotlib</code> اخترِت تلقائيًا مقياسَي <code>x</code> و <code>y</code> الأنسب للبيانات.</p>
+<h2 id="الشريحة-18-مثال-واقعي">الشريحة 18: مثال «واقعي»</h2>
+<p>صورة تالية من تسلسل المثال الواقعي.</p>
+<h2 id="الشريحة-19-مثال-واقعي">الشريحة 19: مثال «واقعي»</h2>
+<p>صورة تالية من تسلسل المثال الواقعي.</p>
+<h2 id="الشريحة-20-مثال-واقعي">الشريحة 20: مثال «واقعي»</h2>
+<p>صورة تالية من تسلسل المثال الواقعي.</p>
+<h2 id="الشريحة-21-مثال-واقعي">الشريحة 21: مثال «واقعي»</h2>
+<p>صورة تالية من تسلسل المثال الواقعي.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> الشرائح 17–21 سلسلة صور متتابعة تُظهر إضافة مدن جديدة إلى الرسم واحدًا تلو الآخر. التواريخ والأرقام المعروضة داخل الصور ليست في طبقة النصّ المستخرَجة، لذلك لم أنسب أيًّا منها إلى أيّ شريحة بعينها.</p>
+</blockquote>
+<h2 id="الشريحة-22-إضافة-خطوط-الشبكة">الشريحة 22: إضافة خطوط الشبكة</h2>
+<p>يمكن التبديل بخطوط الشبكة (grid lines) تشغيلًا وإيقافًا عبر:</p>
+<pre><code class="language-python">plt.grid()
+</code></pre>
+<h2 id="الشريحة-23-لنضف-مدينة-أخرى">الشريحة 23: لنضف مدينة أخرى</h2>
+<p>صورة تُظهر إضافة مدينة ثانية إلى الرسم.</p>
+<h2 id="الشريحة-24-لكن-أين-أنا">الشريحة 24: لكن أين أنا؟</h2>
+<p>صورة تُظهر الرسم بعد إضافة المدينة الثانية، مع إبراز غياب indication للموقع.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> نصّ الشريحة المستخرَج يتضمّن قوسين هاربين <code>)</code> و <code>)</code> وهما بقايا محاور أو علامات في الصورة؛ لم يُنسبا إلى أيّ معنى.</p>
+</blockquote>
+<h2 id="الشريحة-25-لنضف-مدينة-أخرى">الشريحة 25: لنضف مدينة أخرى</h2>
+<p>صورة تُظهر إضافة ثالثة مدينة.</p>
+<h2 id="الشريحة-26-رسم-بمنحنيين">الشريحة 26: رسم بمنحنيين</h2>
+<p>لاحظ: اختارت Python ألوانًا مختلفة لكل رسم؛ يمكننا تحديدها إن أردنا.</p>
+<h2 id="الشريحة-27-التحكم-في-المعاملات">الشريحة 27: التحكّم في المعاملات</h2>
+<ul>
+<li>لنفرض أننا نريد التحكّم في تفاصيل العروض. أمثلة:
+<ul>
+<li>تغيير لون مجموعة بيانات أو نمطها.</li>
+<li>تغيير عرض الخطوط أو أبعاد العروض.</li>
+<li>استخدام الأجزاء الفرعية (subplots).</li>
+</ul>
+</li>
+<li>يمكن تمرير وسيط «صيغة» (format) إلى <code>plot</code>:
+<ul>
+<li><code>marker</code>، <code>line</code>، <code>color</code>.</li>
+</ul>
+</li>
+<li>يمكن تخطّي أيّ من هذه الاختيارات، فيأخذ <code>plot</code> القيمة الافتراضية.</li>
+<li>الترتيب لا يهمّ، إذ لا التباس بين الرموز.</li>
+</ul>
+<h2 id="الشريحة-28-التحكم-في-اللون-والنمط">الشريحة 28: التحكّم في اللون والنمط</h2>
+<p>صورة توضّح تغيير اللون والأسلوب.</p>
+<h2 id="الشريحة-29-التحكم-في-اللون-والنمط">الشريحة 29: التحكّم في اللون والنمط</h2>
+<p>صورة أخرى للتحكّم في اللون والأسلوب.</p>
+<h2 id="الشريحة-30-استخدام-الكلمات-المفتاحية">الشريحة 30: استخدام الكلمات المفتاحية</h2>
+<p>صورة تُظهر استخدام وسائط <code>plt.plot</code> بالكلمات المفتاحية.</p>
+<h2 id="الشريحة-31-التحكم-في-اللون-والنمط">الشريحة 31: التحكّم في اللون والنمط</h2>
+<p>صورة أخرى للتحكّم في اللون والنمط.</p>
+<h2 id="الشريحة-32-خيارات-الخط-واللون-والعلامة">الشريحة 32: خيارات الخط واللون والعلامة</h2>
+<p><strong>نمط الخط (Line Style):</strong></p>
+<table>
+<thead>
+<tr>
+<th>الرمز</th>
+<th>المعنى</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-</code></td>
+<td>خط متصل (solid line)</td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td>خط متقطّع (dashed line)</td>
+</tr>
+<tr>
+<td><code>-.</code></td>
+<td>خط منقّط مع شرطة (dash dot line)</td>
+</tr>
+<tr>
+<td><code>:</code></td>
+<td>خط منقّط (dotted line)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>خيارات اللون (Color Options) — وهناك المزيد:</strong></p>
+<table>
+<thead>
+<tr>
+<th>الرمز</th>
+<th>اللون</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>b</code></td>
+<td>أزرق (blue)</td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td>أخضر (green)</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td>أحمر (red)</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>سماوي (cyan)</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td>أرجواني (magenta)</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>أصفر (yellow)</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>أسود (black)</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>أبيض (white)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>خيارات العلامة (Marker Options) — وهناك المزيد:</strong></p>
+<table>
+<thead>
+<tr>
+<th>الرمز</th>
+<th>العلامة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>نقطة (point)</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>دائرة (circle)</td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td>مثلث متجه لأسفل (triangle down)</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>مثلث متجه لأعلى (triangle up)</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>نجمة (star)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> في نسخة النصّ المستخرَجة يظهر اسم اللون <code>white</code> مكرّرًا في آخر القائمة، ولم يستطع النصّ تحديد أيّ رمز يقابله. راجع ملف الشيفرة الأصلي في MIT OpenCourseWare للاطلاع على القائمة الكاملة.</p>
+</blockquote>
+<h2 id="الشريحة-33-التحكم-في-اللون-والنمط">الشريحة 33: التحكّم في اللون والنمط</h2>
+<p>صورة توضّح الخيارات بمعاملات موضعية.</p>
+<h2 id="الشريحة-34-مع-العلامات">الشريحة 34: مع العلامات</h2>
+<p>لاحظ كيف صارت النقاط الفعلية المرسومة مُعلَّمة الآن.</p>
+<h2 id="الشريحة-35-التحكم-في-عرض-الخط">الشريحة 35: التحكّم في عرض الخط</h2>
+<p>صورة تُظهر تغيير <code>linewidth</code>.</p>
+<h2 id="الشريحة-36-خيارات-أخرى-كثيرة">الشريحة 36: خيارات أخرى كثيرة</h2>
+<p>استخدام الكلمة المفتاحية <code>linewidth</code> (بالبكسل).</p>
+<h2 id="الشريحة-37-رسوم-داخل-رسوم">الشريحة 37: رسوم داخل رسوم</h2>
+<p>صورة تُظهر رسماً داخل آخر.</p>
+<h2 id="الشريحة-38-ويتسع-الرسم">الشريحة 38: ويتّسع الرسم</h2>
+<p>لكن هل يمكن أن يكون هذا مضلِّلًا؟ مقاييس <code>Y</code> مختلفة!</p>
+<h2 id="الشريحة-39-رسوم-داخل-رسوم">الشريحة 39: رسوم داخل رسوم</h2>
+<p>صورة أخرى لرسوم داخل رسوم.</p>
+<h2 id="الشريحة-40-ويتسع-الرسم">الشريحة 40: ويتّسع الرسم</h2>
+<p>صورة تُظهر عددًا أكبر من الأجزاء الفرعية.</p>
+<h2 id="الشريحة-41-كثير-من-الأجزاء-الفرعية">الشريحة 41: كثير من الأجزاء الفرعية</h2>
+<p>صورة تُظهر شبكة من الأجزاء الفرعية.</p>
+<h2 id="الشريحة-42-ويتسع-الرسم">الشريحة 42: ويتّسع الرسم</h2>
+<p>صورة تُظهر الشبكة بعد إضافة أجزاء أخرى.</p>
+<h2 id="الشريحة-43-سكان-الولايات-المتحدة-مثال">الشريحة 43: سكان الولايات المتحدة — مثال</h2>
+<p>شريحة فاصلة تعلن مثالًا جديدًا.</p>
+<h2 id="الشريحة-44-مثال-أكثر-إثارة-للاهتمام">الشريحة 44: مثال أكثر إثارة للاهتمام</h2>
+<ul>
+<li>لنجرّب رسم بيانات أكثر تعقيدًا.</li>
+<li>زوّدنا ملفًا فيه عدد سكان الولايات المتحدة مسجَّلًا كل 10 أعوام على مدى أربعة قرون.</li>
+<li>نودّ استخدام الرسم لفحص تلك البيانات.</li>
+<li>نستخدم الرسم للمساعدة على تصوّر الاتجاهات فيها.</li>
+<li>نستخدم الرسم لطرح أسئلة يمكن اختبارها حسابيًا (وسترى المزيد من هذا إن أخذت مقرر 6.100B).</li>
+</ul>
+<h2 id="الشريحة-45-ملف-الإدخال">الشريحة 45: ملف الإدخال</h2>
+<p>اسم الملف <code>USPopulation.txt</code>، ويحتوي على قائمة بأرقام السكان.</p>
+<h2 id="الشريحة-46-رسم-البيانات">الشريحة 46: رسم البيانات</h2>
+<p>صورة تُظهر قراءة الملف ورسم البيانات.</p>
+<h2 id="الشريحة-47-نمو-السكان">الشريحة 47: نمو السكان</h2>
+<ul>
+<li>تصوّر البيانات قد يكشف أمورًا لا تُرى بسهولة في البيانات الخام.</li>
+<li>«ماذا يحدث في السنوات المبكّرة؟»</li>
+<li>«هل يمكنني تصوّر هذا بطريقة مختلفة؟»</li>
+<li>أثر الحرب العالمية الثانية.</li>
+<li>أثر الحرب الأهلية.</li>
+</ul>
+<h2 id="الشريحة-48-تغيير-المقياس">الشريحة 48: تغيير المقياس</h2>
+<p>المقياس اللوغاريتمي (log scale) يعني أن كل زيادة على المحور تقابل زيادة أُسّية في الحجم، بينما في المقياس العادي كل زيادة تقابل زيادة خطّية في الحجم.</p>
+<h2 id="الشريحة-49-نمو-السكان">الشريحة 49: نمو السكان</h2>
+<ul>
+<li>«ماذا يعني النمو الخطّي على مقياس لوغاريتمي؟»</li>
+<li>«يمكننا الآن أن نرى أن نموًّا حدث في وقت مبكّر، وسرعته كانت في الواقع أسرع من السنوات اللاحقة.»</li>
+</ul>
+<h2 id="الشريحة-50-أيهما-وجدته-أكثر-إفادة">الشريحة 50: أيّهما وجدته أكثر إفادة؟</h2>
+<ul>
+<li>تغيير طريقة التصوّر (visualization) قد يكشف اتجاهات في البيانات لا تُرى بالرسم القياسي.</li>
+<li>التصوّر يطرح أسئلة، مثل: بالنظر إلى العين، يبدو أن هناك ثلاث فترات نمو أُسّية مختلفة.</li>
+</ul>
+<h2 id="الشريحة-51-سكان-الدول-مثال">الشريحة 51: سكان الدول — مثال</h2>
+<p>شريحة فاصلة.</p>
+<h2 id="الشريحة-52-ملف-البيانات">الشريحة 52: ملف البيانات</h2>
+<p>اسم الملف <code>countryPops.txt</code>. مهتمّون بتحليل أرقام السكان، ولا نهتمّ بالترتيب أو الدولة أو السنة.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> نصّ هذه الشريحة في نسخة الاستخراج تالف عند هذه العبارة، وأصلحتُه إلى المعنى الصحيح الذي يتضح من بقية الشريحة.</p>
+</blockquote>
+<h2 id="الشريحة-53-تحميل-البيانات-ورسمها">الشريحة 53: تحميل البيانات ورسمها</h2>
+<p>صورة تُظهر الشيفرة التي تقرأ الملف ثم ترسمه.</p>
+<h2 id="الشريحة-54-أحجام-السكان">الشريحة 54: أحجام السكان</h2>
+<p>صورة رسم بياني لأحجام سكان الدول.</p>
+<h2 id="الشريحة-55-تحقيق-غريب-الخانات-الأولى">الشريحة 55: تحقيق غريب: الخانات الأولى</h2>
+<p>صورة تُظهر توزيع الخانات الأولى لأرقام السكان.</p>
+<h2 id="الشريحة-56-تكرار-كل-خانة">الشريحة 56: تكرار كل خانة</h2>
+<p><strong>قانون بنفورد (Benford's Law):</strong></p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mi>d</mi></msub><mo>=</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>10</mn></msub><mrow><mo fence="true">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>d</mi></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_d = \log_{10}\left(1 + \frac{1}{d}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span>
+<p>كثير من مجموعات البيانات تتبع هذا:</p>
+<ul>
+<li>متابعو وسائل التواصل الاجتماعي</li>
+<li>قيم الأسهم</li>
+<li>أسعار المواد الغذائية (groceries)</li>
+<li>إحصاءات الرياضة</li>
+<li>ارتفاعات المباني</li>
+<li>الضرائب المدفوعة</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> قائمة الأمثلة في نسخة النصّ المستخرَجة تحتوي على كلمات تالفة في موضعين (في بند أسعار المواد الغذائية). وقد حذفتُ الكلمات التالفة وأبقيتُ المعنى كما هو: «أسعار المواد الغذائية (groceries)». لم أُضِف أمثلة جديدة.</p>
+</blockquote>
+<h2 id="الشريحة-57-مقارنة-المدن-مثال">الشريحة 57: مقارنة المدن — مثال</h2>
+<p>شريحة فاصلة.</p>
+<h2 id="الشريحة-58-مثال-موسع">الشريحة 58: مثال موسّع</h2>
+<ul>
+<li>لنستخدم مثالًا آخر لنفحص كيف يسمح الرسم باستكشاف البيانات بطرق مختلفة، وكيف يوفّر طريقة قيّمة لتصويرها.</li>
+<li>لن ننظر في الشيفرة بالتفصيل.</li>
+<li>مثال على مجموعة بيانات:
+<ul>
+<li>متوسط درجة الحرارة اليومية لكل يوم على مدى 55 سنة لـ 21 مدينة أمريكية مختلفة.</li>
+</ul>
+</li>
+<li>نودّ استكشاف التغيّرات عبر السنين، وعبر المدن.</li>
+</ul>
+<h2 id="الشريحة-59-ملف-البيانات">الشريحة 59: ملف البيانات</h2>
+<p>اسم الملف <code>temperatures.csv</code>.</p>
+<h2 id="الشريحة-60-temperaturescsv-استخراج-البيانات">الشريحة 60: <code>temperatures.csv</code> — استخراج البيانات</h2>
+<p>سيُعيد هذا قائمة بدرجات الحرارة (بالفهرنهايت) وقائمة موافقة بالتواريخ لمدينة معيّنة.</p>
+<p>أول أربعة أسطر في الملف:</p>
+<pre><code class="language-text">CITY,TEMP,DATE
+SEATTLE,3.1,19610101
+SEATTLE,0.55,19610102
+SEATTLE,0,19610103
+SEATTLE,4.45,19610104
+</code></pre>
+<p>ملاحظتان على الشريحة:</p>
+<ul>
+<li>نريد حرارة <strong>مدينة معيّنة فقط</strong>، فنرشّح على <code>CITY</code>.</li>
+<li>الملف يخزّن البيانات كنصّ (str)، فنحتاج إلى التحويل.</li>
+</ul>
+<h2 id="الشريحة-61-متوسطات-الحرارة">الشريحة 61: متوسطات الحرارة</h2>
+<ul>
+<li>يحسب هذا متوسط الحرارة على كل يوم من السنين الخمس والخمسين، لكل مدينة.</li>
+<li>احصل على قائمة المدن.</li>
+<li>احسب متوسط الحرارة.</li>
+<li>باستخدام أول حرفين كوسم (label).</li>
+<li>ارسم النقاط فقط كـ scatter plot (بلا خطوط وصل).</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> جملة «متوسط الحرارة على كل يوم من … 55 سنة» كانت تالفة في ملف MIT المستخرَج؛ والمقصود «على كل يوم من السنين الخمس والخمسين».</p>
+</blockquote>
+<h2 id="الشريحة-62-ودرجة-الحرارة-هي">الشريحة 62: ودرجة الحرارة هي …</h2>
+<p>صورة تُظهر أسماء المدن على المحور الرأسي، ومنها: San Juan، Miami، Phoenix ثم Detroit، Chicago، Boston.</p>
+<h2 id="الشريحة-63-لكن-الأكثر-إثارة-هو-النظر-في-التغير-عبر-الزمن">الشريحة 63: لكن الأكثر إثارة هو النظر في التغيّر عبر الزمن</h2>
+<ul>
+<li>لمدينة واحدة، احسب متوسط الحرارة في كل سنة.</li>
+<li>تحقّق أن المدخل يخصّ السنة الصحيحة.</li>
+<li>استعمل الشيفرة السابقة.</li>
+<li>احصل على بيانات الحرارة لتلك السنة.</li>
+</ul>
+<h2 id="الشريحة-64-لكن-الأكثر-إثارة-هو-النظر-في-التغير-عبر-الزمن">الشريحة 64: لكن الأكثر إثارة هو النظر في التغيّر عبر الزمن</h2>
+<p>اختر بعض المدن لترسم 55 حرارة (المتوسط السنوي لكل سنة).</p>
+<h2 id="الشريحة-65-الطفل-بارد-في-الخارج">الشريحة 65: «الطفل بارد في الخارج!»</h2>
+<p>صورة تُظهر عدد الأيام التي كانت فيها الحرارة اليومية أقلّ من 30 درجة فهرنهايت عبر الزمن لكل مدينة.</p>
+<h2 id="الشريحة-66-لكن-ما-معنى-التباين-variation">الشريحة 66: لكن ما معنى التباين (Variation)؟</h2>
+<p>الصورة تُظهر أعلى وأدنى ومتوسط الحرارة حسب السنة.</p>
+<h2 id="الشريحة-67-لكن-ما-معنى-التباين">الشريحة 67: لكن ما معنى التباين؟</h2>
+<p>الصورة نفسها مع توضيح مدرّجات أعلى/أدنى/متوسط.</p>
+<h2 id="الشريحة-68-أمثلة-على-بعض-المدن">الشريحة 68: أمثلة على بعض المدن</h2>
+<ul>
+<li>يمكن رؤية المدى (range) لكل مدينة.</li>
+<li>لكنه غير مفيد للمقارنة بين المدن:
+<ul>
+<li>المحور الرأسي في Boston من 0 إلى 80.</li>
+<li>المحور الرأسي في Miami من 40 إلى 90.</li>
+<li>المحور الرأسي في San Diego من 50 إلى 90.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-69-استخدم-المدى-نفسه-على-المحور-الرأسي-لكل-الرسوم">الشريحة 69: استخدم المدى نفسه على المحور الرأسي لكل الرسوم</h2>
+<p>ثبِّت مدى العرض للمحور الرأسي (<code>ylim</code>).</p>
+<h2 id="الشريحة-70-مقارنة-أفضل-بين-المدن">الشريحة 70: مقارنة أفضل بين المدن</h2>
+<ul>
+<li>أحد أسباب الرسم البياني هو تصوّر البيانات.</li>
+<li>يمكن رؤية أن مدى التباين مختلف جدًّا في Boston مقارنةً بـ Miami أو San Diego.</li>
+<li>ويمكن أيضًا رؤية أن المتوسط في Miami أقرب بكثير إلى الحدّ الأقصى منه إلى الحدّ الأدنى، بخلاف Boston و San Diego.</li>
+</ul>
+<h2 id="الشريحة-71-كم-يوما-كانت-حرارته-في-1961">الشريحة 71: كم يومًا كانت حرارته…؟ في 1961؟</h2>
+<ul>
+<li>جهّز قائمة من 100 عنصر، لتبني بنية تشبه المدرّج التكراري (histogram-like).
+<ul>
+<li>العنصر رقم 0 يخزّن عدد الأيام التي كانت حرارتها 0.</li>
+<li>العنصر رقم 1 يخزّن عدد الأيام التي كانت حرارتها 1.</li>
+<li>…</li>
+<li>العنصر رقم 99 يخزّن عدد الأيام التي كانت حرارتها 99.</li>
+</ul>
+</li>
+<li>أنشئ قائمة بدرجات الحرارةلسنة معيّنة.</li>
+<li>عُدّ عدد أيام سنة معيّنة التي كانت فيها حرارة معيّنة هي المتوسط اليومي.</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> نصّ هذه الشريحة في نسخة الاستخراج كان تالفًا عند موضعين. وأصلحتُهما إلى المعنى الصحيح الذي يتضح من بقية الشريحة، وهما: متوسط الحرارة لكل يوم من السنين الخمس والخمسين، وقائمة بدرجات الحرارة لسنة معيّنة.</p>
+</blockquote>
+<h2 id="الشريحة-72-كم-يوما-كانت-حرارته-في-1961">الشريحة 72: كم يومًا كانت حرارته…؟ في 1961؟</h2>
+<p>صورة تُظهر المدرّج التكراري لدرجة الحرارة في سنة 1961.</p>
+<h2 id="الشريحة-73-هل-san-diego-مملة">الشريحة 73: هل San Diego مملّة؟</h2>
+<p>صورة تُظهر توزيع الحرارة لـ San Diego.</p>
+<p>سؤال على الشريحة: هل يمكننا ملاءمة منحنى (curve) لأجزاء من هذه البيانات؟ هل التوزيع منتظم؟ أم هل هو غاوسيّ (aka bell)؟</p>
+<h2 id="الشريحة-74-التغير-عبر-الزمن">الشريحة 74: التغيّر عبر الزمن؟</h2>
+<p>ارسم توزيعين، أحدهما لسنة 1961 والآخر لسنة 2015.</p>
+<h2 id="الشريحة-75-تراكب-الأعمدة-overlay-bar-charts">الشريحة 75: تراكب الأعمدة (Overlay Bar Charts)</h2>
+<p>صورة تُظهر الأعمدة فوق بعضها.</p>
+<h2 id="الشريحة-76-أو-يمكن-الرسم-على-حدة">الشريحة 76: أو يمكن الرسم على حدة</h2>
+<p>صورة تُظهر الرسم المنفصل للتوزيعين.</p>
+<h2 id="الشريحة-77-يمكن-التحكم-في-أشياء-كثيرة-أخرى">الشريحة 77: يمكن التحكّم في أشياء كثيرة أخرى</h2>
+<ul>
+<li>الحجم (Size of)</li>
+<li>العلامات (Markers)</li>
+<li>الخطوط (Lines)</li>
+<li>العنوان (Title)</li>
+<li>التسميات (Labels)</li>
+<li>تدريجات <code>x</code> و <code>y</code> (ticks)</li>
+<li>مقياسا المحورين (Scales of both axes)</li>
+<li>الأجزاء الفرعية (Subplots)</li>
+<li>مربّعات النصّ (Text boxes)</li>
+<li>نوع الرسم (Kind of plot):
+<ul>
+<li>الرسوم المبعثرة (Scatter plots)</li>
+<li>الرسوم الشريطية (Bar plots)</li>
+<li>المدرّجات التكرارية (Histograms)</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p>«لقد كشطنا سطح الموضوع اليوم!»</p>
+<h2 id="الشريحة-78-mit-opencourseware">الشريحة 78: MIT OpenCourseWare</h2>
+<pre><code>MITOpenCourseWare
+https://ocw.mit.edu
+
+6.100L Introduction to Computer Science and Programming Using Python
+Fall 2022
+
+For information about citing these materials or our Terms of Use, visit: https://ocw.mit.edu/terms.
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-25/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 25: الرسم البياني (Plotting)</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-26/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

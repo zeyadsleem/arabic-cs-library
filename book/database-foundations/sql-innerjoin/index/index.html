@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="دمج الجداول بواسطة INNER JOIN — Combining tables with INNER JOIN"/><!----><title>دمج الجداول بواسطة INNER JOIN | أسس قواعد البيانات</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -54,7 +54,7 @@
 <p>ويشرح الفيديو مبادئ <em>الضرب الديكارتي</em> و<em>الدمج (join)</em>. شاهده أولًا، ثم اتبع النص أدناه وأنجز التمارين.</p>
 <h2 id="join-الضمني">JOIN الضمني</h2>
 <p>سنستخدم مثالًا بسيطًا لشرح المبدأ. افترض أنك تريد قائمة بعناوين بريد جميع منسّقي المقررات كما في الشكل أدناه. وبعد <a href="/arabic-cs-library/book/database-foundations/sql-eenopveel/index">الفصل السابق</a> ينبغي أن يكون لديك جدولان مترابطان في مخططك الخاص: &quot;lecturer&quot; و&quot;course&quot;.</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-0-join_vb1.webp" alt="All mailaddresses of all coordinators of all courses"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-0-join_vb1.webp" alt="All mailaddresses of all coordinators of all courses"></p>
 <p>والآن اعمل على المثال التالي بتجربة شيفرة جميع الخطوات في مخططك الخاص. ولا تنسَ تحديد اسم مخططك لكل جدول، أو اضبط <code>search_path</code> بشكل صحيح. وفي أمثلة الشيفرة أدناه اخترنا الحل الأخير.</p>
 <h3 id="الضرب-الديكارتي-لعدة-جداول">الضرب الديكارتي لعدة جداول</h3>
 <p>يحتوي جدول المحاضرين على 18 صفًا، ويمكنك التحقق من ذلك بسهولة بـ <code>COUNT(*)</code>:</p>
@@ -128,7 +128,7 @@ Character: 50
 </code></pre>
 <p>ومن بين 378 صفًا في الضرب الديكارتي، لا يحقق هذا الشرط سوى 21 صفًا. وهذا منطقي: فهناك 21 مقررًا ولكل مقرر منسّق واحد بالضبط. ويوضح <a href="#Implicit-JOIN">الشكل في بداية هذا الفصل</a> النتيجة في pgAdmin.</p>
 <p><em>يغطّي هذا التمرين أمورًا كثيرة من الفصول السابقة.</em> اكتب الاستعلام الذي يعيد، لكل مقرر له أقل من 6 نقاط، ما يلي: اسم المقرر، وعدد النقاط، والاسم الأول والاسم الأخير للمنسّق في عمود واحد، والسنة التي ظهر فيها ذلك المقرر أول مرة في البرنامج. ورتّب حسب عدد النقاط المتزايد. وعند تساوي عدد النقاط، واصل الترتيب حسب السنة (الأحدث أولًا). وينبغي أن تحصل على الشكل التالي بجدول من 13 صفًا.</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-1-join_vb2.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-1-join_vb2.webp" alt=""></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> O.name <span class="hljs-keyword">AS</span> coursename, credits, L.first_name <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> L.last_name <span class="hljs-keyword">AS</span> coordinator,
   <span class="hljs-built_in">EXTRACT</span>(<span class="hljs-keyword">YEAR</span> <span class="hljs-keyword">FROM</span> O.start_date) <span class="hljs-keyword">as</span> starting_year
@@ -170,7 +170,7 @@ Character: 50
 <li>فما سيكون شرط الدمج؟ لا يمكنك تشكيل فريق مع نفسك...</li>
 <li>لاحظ ترويسات الأعمدة في الشكل.</li>
 </ul>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-2-join_vb3.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-2-join_vb3.webp" alt=""></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> L1.first_name <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> L1.last_name <span class="hljs-keyword">AS</span> captain,
   L2.first_name <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; &#x27;</span> <span class="hljs-operator">||</span> L2.last_name <span class="hljs-keyword">AS</span> &quot;team_member 2&quot;
@@ -186,14 +186,14 @@ Character: 50
 </code></pre>
 <div class="exercises"><h2 id="تمارين">تمارين</h2>
 <p>أي المقررات الموجودة حاليًا في البرنامج منسّقها يسكن في بلدية يبدأ رمزها البريدي بـ '3'. اكتب استعلام SQL الذي يولّد الشكل أدناه. ولا يلزم الترتيب.</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-3-join_vb5.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-3-join_vb5.webp" alt=""></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> code, O.name, lecturer_id, first_name, L.last_name, municipality
 <span class="hljs-keyword">FROM</span> course O <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> lecturer L <span class="hljs-keyword">on</span> O.coordinator <span class="hljs-operator">=</span> L.lecturer_id
 <span class="hljs-keyword">WHERE</span> municipality <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;3%&#x27;</span> <span class="hljs-keyword">AND</span> O.end_date <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;
 </code></pre>
 <p>اكتب استعلام SQL الذي يولّد القائمة (انظر الشكل) بجميع المحاضرين الأصغر من Gerben Adriaens. وهذه القائمة مرتبة بحيث يكون أصغر محاضر في الأعلى. ويمكنك أن تفترض وجود Gerben Adriaens واحد فقط. <em>ولا يجوز لك أولًا الاستعلام عن تاريخ ميلاد Gerben Adriaens</em>. ولا يُسمح بالاستعلامات الفرعية أيضًا، لأننا لم ندرسها (بعد). ويمكن فعل ذلك باستعلام واحد باستخدام <code>JOIN</code>. ولاحظ أيضًا ترويسة العمود (كالعادة).</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-4-join_vb4.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-4-join_vb4.webp" alt=""></p>
 <h4>الحل</h4>
 <p>يمكنك دمج جدول &quot;lecturer&quot; مع نفسه. ولاحظ الشرط الخاص في شرط الدمج. وإذا أردت أن ترى ما يحدث بشكل أفضل، فاطلب <code>SELECT *</code> حتى تفحص الصف <em>كاملًا</em>. ويختبر <code>WHERE</code> من هو الأصغر. وأنت أصغر إذا كان تاريخ ميلادك أكبر.</p>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> L1.first_name, L1.last_name, <span class="hljs-built_in">EXTRACT</span>(<span class="hljs-keyword">YEAR</span> <span class="hljs-keyword">FROM</span> L1.birthdate) <span class="hljs-keyword">AS</span> birthyear
@@ -202,7 +202,7 @@ Character: 50
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">3</span> <span class="hljs-keyword">DESC</span>;
 </code></pre>
 <p>لا يزال طالب بحاجة إلى 8 نقاط للتخرج. أنشئ قائمة (انظر الشكل أدناه) بجميع التراكيب الممكنة لمقررين من البرنامج القديم (مقررات لم تعد تُدرَّس الآن) يمثلان معًا 8 نقاط. ومن المرجح أن تحصل على قائمة يظهر فيها كل تركيب مرتين (إذا كان A وB معًا 8 نقاط، فـ B وA أيضًا 8 نقاط، وحينئذ يوجد صفان بالمقررين نفسيهما بترتيب مختلف). وهل يمكنك إيجاد حيلة لتجنّب هذه المكررات؟ لا يلزم الترتيب.</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-5-join_vb6.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-5-join_vb6.webp" alt=""></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> O1.code, O1.name <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; (&#x27;</span> <span class="hljs-operator">||</span> O1.credits <span class="hljs-operator">||</span><span class="hljs-string">&#x27;)&#x27;</span> <span class="hljs-keyword">AS</span> course1,
   O2.code, O2.name <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; (&#x27;</span> <span class="hljs-operator">||</span> O2.credits <span class="hljs-operator">||</span><span class="hljs-string">&#x27;)&#x27;</span> <span class="hljs-keyword">AS</span> course2
@@ -215,7 +215,7 @@ Character: 50
 <h2 id="تمارين-sqlzoo">تمارين SQLzoo</h2>
 <h3 id="المخطط-euro2012">المخطط 'Euro2012'</h3>
 <p>تستخدم سلسلة تمارين مثيرة للاهتمام على SQLzoo بيانات من <a href="https://en.wikipedia.org/wiki/UEFA_Euro_2012">بطولة أوروبا لكرة القدم 2012</a>. والنموذج المنطقي على موقع SQLzoo المصاحب لهذا التمرين له تدوين مختلف قليلًا. لذا أعدنا إنشاءه وفق اصطلاحاتنا:</p>
-<p><img src="https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-6-euro2012.webp" alt=""></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-innerjoin-6-euro2012.webp" alt=""></p>
 <p>وكلمة عن هذا النموذج:</p>
 <ul>
 <li>يحتوي المخطط على ثلاثة جداول: &quot;game&quot; (يحتوي معلومات عن كل مباراة، مثل الوقت والمرحلة وبين أي فريقين)، و&quot;eteam&quot; (اسم كل فريق ومدربه)، وأخيرًا جدول &quot;goal&quot; (من سجّل هدفًا وفي أي دقيقة ولأي فريق).</li>
@@ -233,7 +233,7 @@ Character: 50
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -241,8 +241,8 @@ Character: 50
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

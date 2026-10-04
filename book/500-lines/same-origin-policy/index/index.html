@@ -19,31 +19,31 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.D14iGuqZ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/MPKbvagX.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DI06yVpz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DypbIXL1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.BzelW3wS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BtKYxFJ1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/tmEMqIDQ.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CuL1LgsP.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.t4c5Ewhi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CYL1B3Jn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
 		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="سياسة الأصل نفسه — The Same-Origin Policy"/><!----><title>سياسة الأصل نفسه | 500 سطر أو أقل</title>
-		<link href="../../../../_app/immutable/assets/0.DL8cVAdc.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
 		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -529,7 +529,7 @@ sig JsonpResponse in Resource {
 <p><img src="/arabic-cs-library/images/500-lines/same-origin-policy-13-fig_postmessage_1.webp" alt="مثال مضاد لـ PostMessage عند الزمن 0"></p>
 <p>ثم يوجّه المتصفّح هذه الرسالة إلى المستند (المستندات) ذات الأصل المقابل (في هذه الحالة، <code>InboxPage</code>). ما لم يفحص <code>InboxScript</code> قيمة <code>srcOrigin</code> تحديداً لاستبعاد الرسائل القادمة من أصول غير مرغوب فيها، فإن <code>InboxPage</code> سيقبل البيانات الخبيثة، وقد يقود ذلك إلى هجمات أمنية أخرى. (فمثلاً، قد يضمّن قطعة JavaScript لتنفيذ هجوم XSS.) وهذا مبيّن في fig postmessage 1.</p>
 <p><img src="/arabic-cs-library/images/500-lines/same-origin-policy-14-fig_postmessage_2.webp" alt="مثال مضاد لـ PostMessage عند الزمن 1"></p>
-<p>وكما يوضّح هذا المثال، فإن <code>PostMessage</code> ليست آمنة افتراضياً، ومن مسؤولية المستند المستقبِل <em>إضافةً</em> إلى ذلك أن يفحص الوسيط <code>srcOrigin</code> للتأكّد من أن الرسالة قادمة من مستند موثوق. وللأسف، فإن كثيراً من المواقع تُسقط هذا الفحص في الممارسة العملية، مما يمكّن مستنداً خبيثاً من حقن محتوى سيّئ ضمن <code>PostMessage</code>[^postMessageStudy].</p>
+<p>وكما يوضّح هذا المثال، فإن <code>PostMessage</code> ليست آمنة افتراضياً، ومن مسؤولية المستند المستقبِل <em>إضافةً</em> إلى ذلك أن يفحص الوسيط <code>srcOrigin</code> للتأكّد من أن الرسالة قادمة من مستند موثوق. وللأسف، فإن كثيراً من المواقع تُسقط هذا الفحص في الممارسة العملية، مما يمكّن مستنداً خبيثاً من حقن محتوى سيّئ ضمن <code>PostMessage</code><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
 <p>غير أن إغفال فحص الأصل قد لا يكون نتيجةً لسوء فهم لدى المبرمج فحسب. فإن تطبيق الفحص المناسب على رسالة واردة في PostMessage قد يكون صعباً؛ ففي بعض التطبيقات يصعب تحديد قائمة الأصول الموثوقة التي يُتوقّع أن تصلك الرسائل منها مسبقاً. (وفي بعض التطبيقات قد تتغيّر هذه القائمة حتى ديناميكياً.) وهذا ما يبرز مرة أخرى التوتر بين الأمان والوظيفة: إذ يمكن استخدام PostMessage لإجراء اتصال آمن عبر الأصول، لكن ذلك فقط حين تكون قائمة الأصول الموثوقة معروفة.</p>
 <h3 id="تبادل-الموارد-عبر-المصادر-cors">تبادل الموارد عبر المصادر (CORS)</h3>
 <p>تبادل الموارد عبر المصادر (CORS) آلية مصمّمة للسماح لخادم بأن يشارك موارده مع مواقع من أصول مختلفة. وبوجه مفيد جداً، يمكن استخدام CORS من قِبل سكربت من أصل واحد لإجراء طلبات إلى خادم له أصل مختلف، بما يتجاوز فعلياً قيد سياسة الأصل نفسه على طلبات Ajax عبر المصادر.</p>
@@ -557,15 +557,13 @@ sig JsonpResponse in Resource {
 <p><strong>التحليل:</strong> هل يمكن إساءة استعمال CORS بطريقة تسمح للمهاجم باختراق أمان موقع موثوق؟ وعند سؤاله، يعيد محلّل Alloy مثالاً مضاداً بسيطاً لخاصية <code>Confidentiality</code>.</p>
 <p>وهنا، يقرّر مطوّر تطبيق التقويم أن يشارك بعض موارده مع تطبيقات أخرى باستخدام آلية CORS. وللأسف، ضُبط <code>CalendarServer</code> بحيث يعيد <code>Origin</code> (الذي يمثّل مجموعة قيم الأصول كلها) لترويسة <code>access-control-allow-origin</code> في استجابات CORS. ونتيجةً لذلك، يُسمح لسكربت من أي أصل، بما في ذلك <code>EvilDomain</code>، بإجراء طلب عبر المواقع إلى <code>CalendarServer</code> وقراءة استجابته (fig cors).</p>
 <p><img src="/arabic-cs-library/images/500-lines/same-origin-policy-15-fig_cors.webp" alt="مثال مضاد لـ CORS"></p>
-<p>يُبرز هذا المثال خطأً شائعاً يرتكبه المطوّرون مع CORS: استعمال القيمة &quot;*&quot; القيمة البديلة لترويسة &quot;access-control-allow-origin&quot;، ما يسمح لأي موقع بالوصول إلى مورد على الخادم. وهذا النمط من الوصول مناسب إذا كان المورد يُعدّ عاماً ومتاحاً للجميع. لكن اتضح أن مواقع كثيرة تستعمل &quot;*&quot; القيمة الافتراضية حتى للموارد الخاصة، فتسمح بذلك عَرَضاً للسكربتات الخبيثة بالوصول إليها عبر طلبات CORS[^corsStudy].</p>
+<p>يُبرز هذا المثال خطأً شائعاً يرتكبه المطوّرون مع CORS: استعمال القيمة &quot;*&quot; القيمة البديلة لترويسة &quot;access-control-allow-origin&quot;، ما يسمح لأي موقع بالوصول إلى مورد على الخادم. وهذا النمط من الوصول مناسب إذا كان المورد يُعدّ عاماً ومتاحاً للجميع. لكن اتضح أن مواقع كثيرة تستعمل &quot;*&quot; القيمة الافتراضية حتى للموارد الخاصة، فتسمح بذلك عَرَضاً للسكربتات الخبيثة بالوصول إليها عبر طلبات CORS<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
 <p>ولماذا يستخدم مطوّر القيمة البديلة على الإطلاق؟ تبيّن أن تحديد الأصول المسموح بها قد يكون صعباً، إذ قد لا يتضح وقت التصميم أي الأصول ينبغي منحها الوصول وقت التشغيل (على نحو مشابه لمشكلة PostMessage التي ناقشناها أعلاه). فمثلاً، قد تسمحمعين الخدمة لتطبيقات الأطراف الثالثة بالاشتراك في مواردها ديناميكياً.</p>
 <h2 id="الخلاصة">الخلاصة</h2>
 <p>في هذا الفصل، انطلقنا لبناء وثيقة تقدّم فهماً واضحاً لسياسة الأصل نفسه وآلياتها المرتبطة، عبر بناء <em>نموذج</em> (<em>model</em>) للسياسة في لغة اسمها Alloy. ونموذجنا لسياسة الأصل نفسه ليس تطبيقاً بالمعنى التقليدي، ولا يمكن نشره للاستخدام، بخلاف المخرجات المعروضة في الفصول الأخرى. وبدلاً من ذلك، أردنا أن نُظهر العناصر الرئيسية وراء نهجنا في «النمذجة الرشيقة»: (1) البدء بنموذج صغير ومجرَّد للنظام وإضافة التفاصيل <em>على نحو تزايدي</em> حسب الحاجة، و(2) تحديد <em>خصائص</em> يُتوقّع أن يحققها النظام، و(3) تطبيق <em>تحليل صارم</em> (<em>rigorous analysis</em>) لاستكشاف أي عيوب محتملة في تصميم النظام. وبطبيعة الحال، فقد كُتب هذا الفصل بعد وقت طويل من إدخال سياسة الأصل نفسه، لكننا نعتقد أن هذا النوع من النمذجة قد يكون أكثر فائدة لو أُنجز في مرحلة مبكرة من تصميم النظام.</p>
 <p>وإلى جانب سياسة الأصل نفسه، استُخدم Alloy لنمذجة مجموعة متنوعة من الأنظمة عبر مجالات مختلفة—من بروتوكولات الشبكة، إلى الويب الدلالي، إلى أمن البايت كود، إلى التصويت الإلكتروني والأنظمة الطبية. وقد قاد تحليل Alloy في كثير من هذه الأنظمة إلى اكتشاف عيوب في التصميم وأخطاء كانت قد خفيت عن المطوّرين، في بعض الحالات لسنوات. وندعو قرّاءنا إلى زيارة <a href="http://alloy.mit.edu">صفحة Alloy</a> وتجربة بناء نموذج نظامهم المفضّل!</p>
-<p>[^postMessageStudy]: Sooel Son and Vitaly Shmatikov. <em>The Postman Always Rings Twice: Attacking and Defending postMessage in HTML5 Websites</em>. Network and Distributed System Security Symposium (NDSS), 2013.</p>
-<p>[^corsStudy]: Sebastian Lekies, Martin Johns, and Walter Tighzert. <em>The State of the Cross-Domain Nation</em>. Web 2.0 Security and Privacy (W2SP), 2011.</p>
 <h2 id="ملحق-إعادة-استعمال-الوحدات-في-alloy">ملحق: إعادة استعمال الوحدات في Alloy</h2>
-<p>\label{500l.sop.appendix}
+<p><span class="content-anchor" id="500l.sop.appendix"></span>
 كما ذُكر سابقاً في هذا الفصل، لا يضع Alloy أي افتراضات عن سلوك النظام الذي يجري نمذجته. وغياب أي نمطية (paradigm) مدمجة يتيح للمستخدم ترميز مجموعة واسعة من أنماط النمذجة باستخدام نواة صغيرة من بنيات اللغة الأساسية. يمكننا، على سبيل المثال، أن نحدّد نظاماً كآلة حالات، أو كنموذج بيانات له ثوابت معقّدة (invariants)، أو كنموذج أحداث موزّع بساعة عامة، أو أي نمط آخر يكون أنسب للمسألة المطروحة. ويمكن التقاط الأنماط شائعة الاستخدام في وحدة عامة يُعاد استخدامها عبر أنظمة متعددة.</p>
 <p>وفي نموذجنا لسياسة الأصل نفسه، نمذج النظام كمجموعة من نقاط النهاية تتواصل فيما بينها عبر إجراء استدعاء <em>call</em> واحد أو أكثر. وبما أن مفهوم <em>الاستدعاء</em> (<em>call</em>) مفهوم عام إلى حد كبير، فإننا نغلّف وصفه في وحدة Alloy منفصلة، تُستورد من وحدات أخرى تعتمد عليه -- على نحو يشبه المكتبات القياسية في لغات البرمجة:</p>
 <pre><code class="language-alloy">module call[T] 
@@ -581,13 +579,22 @@ sig Time {}
 <pre><code class="language-alloy">abstract sig Call { start, end: Time, from, to: T } 
 </code></pre>
 <p>وتذكّر أننا في مناقشتنا لطلبات HTTP استوردنا الوحدة <code>call</code> بتمرير <code>Endpoint</code> كوسيط نوع لها. ونتيجةً لذلك، يُنشأ النوع المُعامَل <code>T</code> بنوع <code>Endpoint</code>، فنحصل على مجموعة من عناصر <code>Call</code> المرتبطة بزوج من نقطتَي الإرسال والاستلام. ويمكن استيراد الوحدة عدّة مرّات؛ فمثلاً يمكننا أن نصرّح بتوقيع اسمه <code>UnixProcess</code>، وأن ننشئ الوحدة <code>call</code> للحصول على مجموعة منفصلة من عناصر <code>Call</code> تُرسَل من عملية Unix إلى أخرى.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Sooel Son and Vitaly Shmatikov. <em>The Postman Always Rings Twice: Attacking and Defending postMessage in HTML5 Websites</em>. Network and Distributed System Security Symposium (NDSS), 2013. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Sebastian Lekies, Martin Johns, and Walter Tighzert. <em>The State of the Cross-Domain Nation</em>. Web 2.0 Security and Privacy (W2SP), 2011. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/500-lines/pedometer/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">عدّاد خطوات في العالم الحقيقي</span></a><!--]--> <!--[0--><a href="../../../../book/500-lines/sampler/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">أخذ عيّنات بالارفض</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_14ogm3g = {
+					__sveltekit_17z1u4y = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -595,8 +602,8 @@ sig Time {}
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.D14iGuqZ.js"),
-						import("../../../../_app/immutable/entry/app.DypbIXL1.js")
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

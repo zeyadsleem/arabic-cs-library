@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms) — المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)"/><!----><title>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms) | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 26 من 30">26 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-24/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-25/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3>المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes" class="active">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3>المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<blockquote>
+<p>Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/. License: CC BY-NC-SA 4.0.</p>
+</blockquote>
+<ul>
+<li>صفحة المحاضرة على MIT OpenCourseWare: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-24-sorting-algorithms/</li>
+<li>ملف الشرائح (صفحة الوصف): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec24_pdf/</li>
+<li>ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec24.pdf</li>
+<li>ملف الشيفرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec24_code_py/</li>
+<li>تفريغ المحاضرة على MIT OpenCourseWare (بالإنجليزية): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec24/</li>
+<li>الترخيص: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/</li>
+<li>شروط الاستخدام في MIT OpenCourseWare: https://ocw.mit.edu/terms/</li>
+</ul>
+<p><strong>منهج الترجمة:</strong> نُقلت هذه المحاضرة ترجمةً عربية كاملة أمينة لمحتوى ملف الشرائح الأصلي في MIT OpenCourseWare، تحت رخصة CC BY-NC-SA 4.0 التي تسمح بإعادة التوزيع مع الإبقاء على الإسناد والتأهيل والإشارة إلى التغيير، وبشرط أن يكون الاستخدام غير تجاري وأن تُوزَّع كل ترجمة مشتقّة تحت الرخصة نفسها. أُبقيت الشيفرة الخوارزمية والشيفرة الكاذبة (pseudocode) كما هي بالإنجليزية، ولم تُترجَم الأسماء والمكتبة ولا الكلمات المفتاحية في Python. لكل شريحة من الشرائح السبع والعشرين عنوانها الخاص. <strong>لم تُضمَّن الرسوم التوضيحية</strong> لأن حقوقها مستقلّة عن رخصة MIT؛ وقد أَوردت الشرائحُ 5 و7 و9 إشعار حقوقٍ صريحًا بصيغة «هذا المحتوى مستثنى من رخصة المشتقّ الإبداعي الخاصة بنا»، وقد نُقل نصُّ الإشعار هنا حرفيًّا مع بيان عدم إعادة نشر الصور.</p>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> تحمل تذييل شرائح هذه المحاضرة سطرًا متبقّيًا من عرض أقدم (<code>6.0001 LECTURE 9</code>) استُخدمت الشرائح فيه كقالب. هذا أثرٌ موجود في ملف MIT الأصلي، وليس إشارة إلى مقرر آخر.</p>
+</blockquote>
+<h2 id="الشريحة-1-خوارزميات-الترتيب-sorting-algorithms">الشريحة 1: خوارزميات الترتيب (Sorting Algorithms)</h2>
+<p>هذه المحاضرة عن خوارزميات الترتيب. يُرفق ملف الشرائح وملفات <code>.py</code> للمتابعة الجانبيًا.</p>
+<h2 id="الشريحة-2-البحث-في-قائمة-مرتبة-حيث-n-هو-lenl">الشريحة 2: البحث في قائمة مرتّبة — حيث <code>n</code> هو <code>len(L)</code></h2>
+<ul>
+<li>باستخدام البحث الخطّي، البحث عن عنصر هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>.</li>
+<li>باستخدام البحث الثنائي، يمكننا البحث عن عنصر في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> — بافتراض أن القائمة مرتّبة!</li>
+<li>متى يكون من المعقول أن نرتب أولًا ثم نبحث؟</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>O</mi><mi>R</mi><mi>T</mi><mo>+</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">SORT + \Theta(\log n) &lt; \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo>⇒</mo><mi>S</mi><mi>O</mi><mi>R</mi><mi>T</mi><mo>&lt;</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>−</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Rightarrow SORT &lt; \Theta(n) - \Theta(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>
+<p>«متى يكون الترتيب أصغر من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>؟!؟ هذا لا يحدث أبدًا!»</p>
+<h2 id="الشريحة-3-التكلفة-المطفرة-amortized-cost-حيث-n-هو-lenl">الشريحة 3: التكلفة المُطفَّرة (Amortized Cost) — حيث <code>n</code> هو <code>len(L)</code></h2>
+<ul>
+<li>لماذا نرتّب أولًا إذن؟</li>
+<li>رتّب القائمة مرّة واحدة ثم أجرِ عمليات بحث كثيرة.</li>
+<li>نُطفئ (amortize) كلفة الترتيب على عمليات البحث الكثيرة.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>O</mi><mi>R</mi><mi>T</mi><mo>+</mo><mi>K</mi><mo>∗</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi>K</mi><mo>∗</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">SORT + K * \Theta(\log n) &lt; K * \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، أي إن كان <code>K</code> كبيرًا فإن زمن الترتيب يصبح غير ذي أثر.</li>
+</ul>
+<h2 id="الشريحة-4-خوارزميات-الترتيب">الشريحة 4: خوارزميات الترتيب</h2>
+<p>شريحة فاصلة.</p>
+<h2 id="الشريحة-5-الترتيب-العشوائي-bogo-random-monkey-sort">الشريحة 5: الترتيب العشوائي (Bogo / Random / Monkey Sort)</h2>
+<ul>
+<li>تُعرف أيضًا بـ: bogosort، stupidsort، slowsort، randomsort، shotgunsort.</li>
+<li>لترتيب مجموعة ورق (deck of cards):
+<ul>
+<li>ارمِها في الهواء.</li>
+<li>اجمعها.</li>
+<li>هل هي مرتّبة؟</li>
+<li>كرّر إن لم تكن مرتّبة.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>إشعار حقوق في الشريحة الأصلية (نُقل نصًّا):</strong>
+© Nmnogueira at English Wikipedia. License: CC-BY-SA. All rights reserved. This content is excluded from our Creative Commons license. For more information, see https://ocw.mit.edu/help/faq-fair-use/</p>
+<p><strong>ملاحظة المترجم:</strong> صور Wikimedia هذه مرخّصة بـ CC BY-SA وهي <strong>مستثناة صراحةً</strong> من رخصة MIT OpenCourseWare، لذلك لم تُعَد نشرها هنا. الوصف النصّي أعلاه كافٍ لفهم الخوارزمية.</p>
+</blockquote>
+<h2 id="الشريحة-6-تعقيد-الترتيب-العشوائي-bogo-sort">الشريحة 6: تعقيد الترتيب العشوائي (Bogo Sort)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bogo_sort</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> is_sorted(L):
+        random.shuffle(L)
+</code></pre>
+<ul>
+<li>أفضل حالة: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>، للتحقّق من كون القائمة مرتّبة.</li>
+<li>أسوأ حالة: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mo stretchy="false">?</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(?)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mclose">?)</span></span></span></span> — فهي غير محدودة (unbounded) إن كانت الحظّ سيّئًا جدًّا.</li>
+</ul>
+<h2 id="الشريحة-7-الترتيب-الفقاعي-bubble-sort">الشريحة 7: الترتيب الفقاعي (Bubble Sort)</h2>
+<ul>
+<li>قارن أزواجًا متتالية من العناصر.</li>
+<li>بدّل العنصرين في كل زوج بحيث يكون الأصغر أولًا.</li>
+<li>عند بلوغ نهاية القائمة، ابدأ من جديد.</li>
+<li>توقّف عندما لا تُجرى أي مبادلات (swaps) بعد اليوم.</li>
+</ul>
+<blockquote>
+<p><strong>إشعار حقوق في الشريحة الأصلية (نُقل نصًّا):</strong>
+© Nmnogueira at English Wikipedia. License: CC-BY-SA. All rights reserved. This content is excluded from our Creative Commons license. For more information, see https://ocw.mit.edu/help/faq-fair-use/</p>
+</blockquote>
+<p>quoting Donald Knuth في كتابه «The Art of Computer Programming»:</p>
+<blockquote>
+<p>«يبدو للترتيب الفقاعي (bubble sort) أنه لا شيء يروّج له، إلا اسمًا سهل التلقّي وحقيقة أنه يقود إلى بعض المسائل النظرية المثيرة».</p>
+</blockquote>
+<h2 id="الشريحة-8-تعقيد-الترتيب-الفقاعي">الشريحة 8: تعقيد الترتيب الفقاعي</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bubble_sort</span>(<span class="hljs-params">L</span>):
+    did_swap = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">while</span> did_swap:
+        did_swap = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(L)):
+            <span class="hljs-keyword">if</span> L[j-<span class="hljs-number">1</span>] &gt; L[j]:
+                did_swap = <span class="hljs-literal">True</span>
+                L[j],L[j-<span class="hljs-number">1</span>] = L[j-<span class="hljs-number">1</span>],L[j]
+</code></pre>
+<ul>
+<li>الحلقة <code>for</code> الداخلية تُجري المقارنات.</li>
+<li>الحلقة <code>while</code> الخارجية تُجري عدّة تمريرات (passes) حتى تصير المبادلات معدومة.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>، يلزم <code>len(L)-1</code> مقارنة و <code>len(L)-1</code> تمريرة.</li>
+</ul>
+<h2 id="الشريحة-9-الترتيب-بالاختيار-selection-sort">الشريحة 9: الترتيب بالاختيار (Selection Sort)</h2>
+<p><strong>الخطوة الأولى:</strong></p>
+<ul>
+<li>استخرج العنصر الأصغر (minimum element).</li>
+<li>بدّله مع العنصر الموجود عند الفهرس 0.</li>
+</ul>
+<p><strong>الخطوة الثانية:</strong></p>
+<ul>
+<li>في القائمة الفرعية المتبقّية، استخرج العنصر الأصغر.</li>
+<li>بدّله مع العنصر الموجود عند الفهرس 1.</li>
+</ul>
+<p><strong>احتفظ بالجزء الأيسر من القائمة مرتّبًا:</strong></p>
+<ul>
+<li>عند الخطوة <code>i</code>، تكون أول <code>i</code> عناصر في القائمة مرتّبة، وكل العناصر الأخرى أكبر من هذه العناصر الأولى.</li>
+</ul>
+<blockquote>
+<p><strong>إشعار حقوق في الشريحة الأصلية (نُقل نصًّا):</strong>
+© Nmnogueira at English Wikipedia. License: CC-BY-SA. All rights reserved. This content is excluded from our Creative Commons license. For more information, see https://ocw.mit.edu/help/faq-fair-use/</p>
+</blockquote>
+<h2 id="الشريحة-10-تعقيد-الترتيب-بالاختيار">الشريحة 10: تعقيد الترتيب بالاختيار</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">selection_sort</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(L)):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i, <span class="hljs-built_in">len</span>(L)):
+            <span class="hljs-keyword">if</span> L[j] &lt; L[i]:
+                L[i], L[j] = L[j], L[i]
+</code></pre>
+<ul>
+<li>تعقيد الترتيب بالاختيار هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>.</li>
+<li>الحلقة الخارجية تُنفَّذ <code>len(L)</code> مرّة.</li>
+<li>الحلقة الداخلية تُنفَّذ <code>len(L) – i</code> مرّة، أي <code>len(L)/2</code> في المتوسط.</li>
+<li>ويمكن أيضًا التفكير في عدد مرات المقارنة عبر الحلقتين معًا: لنفرض <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">n = len(L)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">L</span><span class="mclose">)</span></span></span></span>:</li>
+</ul>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mo>⋯</mo><mo>+</mo><mi>n</mi><mo>=</mo><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn><mo>=</mo><msup><mi>n</mi><mn>2</mn></msup><mi mathvariant="normal">/</mi><mn>2</mn><mo>+</mo><mi>n</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">1 + 2 + 3 + \dots + n = (n)(n+1)/2 = n^2/2 + n/2 = \Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord">/2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mord">/2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>
+<h2 id="الشريحة-11-نسخة-مختلفة-من-الترتيب-بالاختيار-لا-تبدل-في-كل-مرة">الشريحة 11: نسخة مختلفة من الترتيب بالاختيار: لا تبدّل في كل مرّة</h2>
+<p>شريحة فاصلة تعرض تغيّرًا بسيطًا في الخوارزمية.</p>
+<h2 id="الشريحة-12-الترتيب-بالدمج-merge-sort">الشريحة 12: الترتيب بالدمج (Merge Sort)</h2>
+<p>استخدِم منهج «اقسم وانتصر» (divide-and-conquer):</p>
+<ul>
+<li>إذا كان طول القائمة 0 أو 1 فهي مرتّبة أصلًا.</li>
+<li>إذا كان في القائمة أكثر من عنصر:
+<ul>
+<li>قسّمها إلى قائمتين، ورتّب كلًّا منهما.</li>
+<li>ادمج القائمتين الفرعيتين المرتّبتين:
+<ul>
+<li>انظر إلى العنصر الأول من كلٍّ منهما، وانقل الأصغر إلى نهاية النتيجة.</li>
+<li>عندما تفرغ إحدى القائمتين، انسخ بقيّة الأخرى.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-13-الترتيب-بالدمج-اقسم-وانتصر">الشريحة 13: الترتيب بالدمج — «اقسم وانتصر»</h2>
+<p>رسم شجري يقسّم القائمة إلى أنصاف متساوية حتى القوائم الفرعية من عنصر واحد فقط:</p>
+<table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>القوائم</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المستوى الأعلى</td>
+<td><code>unsorted</code> واحدة</td>
+</tr>
+<tr>
+<td>التقسيم الأول</td>
+<td><code>unsorted</code>, <code>unsorted</code></td>
+</tr>
+<tr>
+<td>التقسيم التالي</td>
+<td>أربع قوائم <code>unsorted</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>قسّم القائمة إلى نصفين حتى تحصل على قوائم فرعية من عنصر واحد فقط.</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> رسم الشجرة في الأصل يحوي خطوطًا متّصلة وحوافّ لا تحفظها طبقة النصّ المستخرَجة؛ وقد صيغت الشجرة هنا على شكل جدول يبيّن التقسيم فقط.</p>
+</blockquote>
+<h2 id="الشريحة-14-الترتيب-بالدمج-اقسم-وانتصر-بعد-أول-عمليات-الفرز">الشريحة 14: الترتيب بالدمج — «اقسم وانتصر» بعد أول عمليات الفرز</h2>
+<p>نفس الشجرة، وقد صارت أربع من القوائم الفرعية <code>sort</code> (مرتّبة):</p>
+<table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>القوائم</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المستوى الأعلى</td>
+<td><code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثاني</td>
+<td><code>unsorted</code>, <code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثالث</td>
+<td>أربع قوائم، اثنتان منها <code>sort</code> واثنتان <code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الرابع</td>
+<td><code>sort</code> و <code>merge</code> يتناوبان على الجانبين</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ادمج بحيث تصير القوائم الفرعية مرتّبة بعد الدمج.</li>
+</ul>
+<h2 id="الشريحة-15-الترتيب-بالدمج-اقسم-وانتصر-بعد-الدمج-الثاني">الشريحة 15: الترتيب بالدمج — «اقسم وانتصر» بعد الدمج الثاني</h2>
+<table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>القوائم</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المستوى الأعلى</td>
+<td><code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثاني</td>
+<td><code>unsorted</code>, <code>sorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثالث</td>
+<td>ثلاث قوائم <code>sorted</code> و واحدة <code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الرابع</td>
+<td><code>sorted</code> مع <code>merge</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ادمج القوائم الفرعية المرتّبة؛ set صارت القوائم الفرعية مرتّبة بعد الدمج.</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> الرقم التسلسلي الظاهر في نسخة نصّ هذه الشريحة هو بقايا الرسم ولا يمثّل جزءًا من الخوارزمية.</p>
+</blockquote>
+<h2 id="الشريحة-16-الترتيب-بالدمج-اقسم-وانتصر-بعد-الدمج-الثالث">الشريحة 16: الترتيب بالدمج — «اقسم وانتصر» بعد الدمج الثالث</h2>
+<table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>القوائم</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>المستوى الأعلى</td>
+<td><code>unsorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثاني</td>
+<td><code>sorted</code></td>
+</tr>
+<tr>
+<td>المستوى الثالث</td>
+<td><code>sorted</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ادمج القوائم الفرعية المرتّبة؛ set صارت القوائم الفرعية مرتّبة بعد الدمج.</li>
+</ul>
+<h2 id="الشريحة-17-الترتيب-بالدمج-اقسم-وانتصر-انتهى">الشريحة 17: الترتيب بالدمج — «اقسم وانتصر»: انتهى</h2>
+<table>
+<thead>
+<tr>
+<th>المستوى</th>
+<th>الحالة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الجذر</td>
+<td><code>sorted</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-18-عرض-توضيحي-للترتيب-بالدمج">الشريحة 18: عرض توضيحي للترتيب بالدمج</h2>
+<ol>
+<li>قسّم المسألة إلى مشكلات فرعية بالاستدعاء الذاتي.</li>
+<li>رتّب كل مسألة فرعية باستخدام دمج خطّي.</li>
+<li>ادمج المشكلات الفرعية (المرتّبة) في قائمة المُخرج.</li>
+</ol>
+<h2 id="الشريحة-19-نظرة-أوسع-على-خطوة-الدمج-مثال">الشريحة 19: نظرة أوسع على خطوة الدمج (مثال)</h2>
+<table>
+<thead>
+<tr>
+<th>الباقي في القائمة ١</th>
+<th>الباقي في القائمة ٢</th>
+<th>المقارنة</th>
+<th>النتيجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[1,5,12,18,19,20]</code></td>
+<td><code>[2,3,4,17]</code></td>
+<td><code>1, 2</code></td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>[5,12,18,19,20]</code></td>
+<td><code>[2,3,4,17]</code></td>
+<td><code>5, 2</code></td>
+<td><code>[1]</code></td>
+</tr>
+<tr>
+<td><code>[5,12,18,19,20]</code></td>
+<td><code>[3,4,17]</code></td>
+<td><code>5, 3</code></td>
+<td><code>[1,2]</code></td>
+</tr>
+<tr>
+<td><code>[5,12,18,19,20]</code></td>
+<td><code>[4,17]</code></td>
+<td><code>5, 4</code></td>
+<td><code>[1,2,3]</code></td>
+</tr>
+<tr>
+<td><code>[5,12,18,19,20]</code></td>
+<td><code>[17]</code></td>
+<td><code>5, 17</code></td>
+<td><code>[1,2,3,4]</code></td>
+</tr>
+<tr>
+<td><code>[12,18,19,20]</code></td>
+<td><code>[17]</code></td>
+<td><code>12, 17</code></td>
+<td><code>[1,2,3,4,5]</code></td>
+</tr>
+<tr>
+<td><code>[18,19,20]</code></td>
+<td><code>[17]</code></td>
+<td><code>18, 17</code></td>
+<td><code>[1,2,3,4,5,12]</code></td>
+</tr>
+<tr>
+<td><code>[18,19,20]</code></td>
+<td><code>[]</code></td>
+<td><code>18, --</code></td>
+<td><code>[1,2,3,4,5,12,17]</code></td>
+</tr>
+<tr>
+<td><code>[]</code></td>
+<td><code>[]</code></td>
+<td></td>
+<td><code>[1,2,3,4,5,12,17,18]</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td><code>[1,2,3,4,5,12,17,18,19,20]</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-20-خطوة-دمج-القوائم-الفرعية">الشريحة 20: خطوة دمج القوائم الفرعية</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left, right</span>):
+    result = []
+    i,j = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right):
+        <span class="hljs-keyword">if</span> left[i] &lt; right[j]:
+            result.append(left[i])
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            result.append(right[j])
+            j += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-built_in">len</span>(left)):
+        result.append(left[i])
+        i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> (j &lt; <span class="hljs-built_in">len</span>(right)):
+        result.append(right[j])
+        j += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> result
+</code></pre>
+<h2 id="الشريحة-21-تعقيد-خطوة-الدمج">الشريحة 21: تعقيد خطوة الدمج</h2>
+<ul>
+<li>نمرّ على قائمتين في تمريرة واحدة فقط.</li>
+<li>نقارن أصغر عنصر في كل قائمة فرعية فقط.</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mi>e</mi><mi>f</mi><mi>t</mi><mo stretchy="false">)</mo><mo>+</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>r</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(len(left) + len(right))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">h</span><span class="mord mathnormal">t</span><span class="mclose">))</span></span></span></span> عنصرًا يُنسخ.</li>
+<li>أسوأ حالة: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>n</mi><mi>g</mi><mi>e</mi><mi>r</mi><mi>l</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(len(longer list))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mclose">))</span></span></span></span> مقارنة.</li>
+<li>خطّي في طول القوائم.</li>
+</ul>
+<h2 id="الشريحة-22-خوارزمية-الترتيب-بالدمج-كاملة-بالاستدعاء-الذاتي">الشريحة 22: خوارزمية الترتيب بالدمج كاملة — بالاستدعاء الذاتي</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(L) &lt; <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> L[:]
+    <span class="hljs-keyword">else</span>:
+        middle = <span class="hljs-built_in">len</span>(L)//<span class="hljs-number">2</span>
+        left = merge_sort(L[:middle])
+        right = merge_sort(L[middle:])
+        <span class="hljs-keyword">return</span> merge(left, right)
+</code></pre>
+<ul>
+<li>يقسم القائمة تباعًا إلى أنصاف.</li>
+<li>يسير بعمق أولًا (depth-first) بحيث يخضع أصغر القطع في فرع واحد قبل الانتقال إلى قطع أكبر.</li>
+</ul>
+<h2 id="الشريحة-23-شجرة-الاستدعاء-الذاتي-في-الترتيب-بالدمج">الشريحة 23: شجرة الاستدعاء الذاتي في الترتيب بالدمج</h2>
+<p>المدخل <code>84165920</code>، والناتج <code>01245689</code>. الشجرة المقروءة من الجذر إلى الأور:</p>
+<pre><code class="language-text">84165920  (Merge → 01245689)
+├── 8416 (Merge)
+│   ├── 84 (Merge)
+│   │   ├── 8 (base case)
+│   │   └── 4 (base case)
+│   └── 16 (Merge)
+│       ├── 1 (base case)
+│       └── 6 (base case)
+└── 5920 (Merge)
+    ├── 59 (Merge)
+    │   ├── 5 (base case)
+    │   └── 9 (base case)
+    └── 20 (Merge)
+        ├── 2 (base case)
+        └── 0 (base case)
+</code></pre>
+<h2 id="الشريحة-24-تعقيد-الترتيب-بالدمج">الشريحة 24: تعقيد الترتيب بالدمج</h2>
+<p><strong>كل مستوى:</strong></p>
+<ul>
+<li><strong>عند مستوى الاستدعاء الذاتي الأول:</strong>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">n/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mord">/2</span></span></span></span> عنصرًا في كل قائمة، وقائمتان.</li>
+<li>دمج واحد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Rightarrow \Theta(n) + \Theta(n) = \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>.</li>
+</ul>
+</li>
+<li><strong>عند مستوى الاستدعاء الذاتي الثاني:</strong>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi mathvariant="normal">/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">n/4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mord">/4</span></span></span></span> عنصرًا في كل قائمة، وأربع قوائم.</li>
+<li>دمجان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Rightarrow \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>.</li>
+</ul>
+</li>
+<li>وهكذا…</li>
+</ul>
+<p><strong>عدد المستويات:</strong></p>
+<ul>
+<li>تقسيم القائمة إلى نصفين عند كل استدعاء ذاتي يعطينا مستوياتنا:
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>.</li>
+<li>مثل البحث بالتنصيف: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><mi>n</mi><mi mathvariant="normal">/</mi><msup><mn>2</mn><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">1 = n/2^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.0747em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mord">/</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span> تخبرنا بعدد التقسيمات المطلوبة للوصول إلى عنصر واحد.</li>
+</ul>
+</li>
+</ul>
+<p><strong>الإجمالي:</strong> كل مستوى استدعاء ذاتي يؤدّي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> من العمل، وعدد المستويات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>، حيث <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> هو <code>len(L)</code>. إذن التعقيد الإجمالي هو:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo><mtext> حيث </mtext><mi>n</mi><mo>=</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo stretchy="false">(</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n \log n) \text{ حيث } n = len(L)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord text"><span class="mord"> حيث </span></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">L</span><span class="mclose">)</span></span></span></span></span>
+<h2 id="الشريحة-25-خلاصة-خوارزميات-الترتيب-حيث-n-هو-lenl">الشريحة 25: خلاصة خوارزميات الترتيب — حيث <code>n</code> هو <code>len(L)</code></h2>
+<table>
+<thead>
+<tr>
+<th>الخوارزمية</th>
+<th>التعقيد</th>
+<th>ملاحظة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الترتيب العشوائي (Bogo sort)</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mo stretchy="false">?</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(?)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mclose">?)</span></span></span></span> غير محدود</td>
+<td>عشوائية</td>
+</tr>
+<tr>
+<td>الترتيب الفقاعي (Bubble sort)</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>الترتيب بالاختيار (Selection sort)</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td>يضمن أنّ أول <code>i</code> عناصر كانت مرتّبة</td>
+</tr>
+<tr>
+<td>الترتيب بالدمج (Merge sort)</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Theta(n \log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> هو أسرع ما يمكن أن يكون عليه أي ترتيب.</p>
+<h2 id="الشريحة-26-خلاصة-التعقيد">الشريحة 26: خلاصة التعقيد</h2>
+<ul>
+<li><strong>قارن كفاءة الخوارزميات:</strong>
+<ul>
+<li>صِف الرتبة الحتمية (asymptotic order of growth) بالحرف ثيتا الكبير (Big Theta).</li>
+<li>تحليل الحالة الأسوأ (worst case analysis).</li>
+<li>رأينا أصناف تعقيد مختلفة:
+<ul>
+<li>ثابت (Constant)</li>
+<li>لوغاريتمي (Log)</li>
+<li>خطّي (Linear)</li>
+<li>خطّي لوغاريتمي (Log linear)</li>
+<li>متعدّد الحدود (Polynomial)</li>
+<li>أُسّي (Exponential)</li>
+</ul>
+</li>
+<li>التقييم القبلي (a priori evaluation) — قبل كتابة الشيفرة أو تشغيلها:
+<ul>
+<li>يقيّم الخوارزمية بمعزل عن الآلة وعن التنفيذ.</li>
+<li>يمنح رؤيةً مباشرة في تصميم الخوارزميات الفعّالة.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-27-mit-opencourseware">الشريحة 27: MIT OpenCourseWare</h2>
+<pre><code>MITOpenCourseWare
+https://ocw.mit.edu
+
+6.100L Introduction to Computer Science and Programming Using Python
+Fall 2022
+
+For information about citing these materials or our Terms of Use, visit: https://ocw.mit.edu/terms.
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-24/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-25/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة 25: الرسم البياني (Plotting)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

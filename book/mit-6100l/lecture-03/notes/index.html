@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المحاضرة 3: شرائح التكرار كاملة — المحاضرة 3: التكرار (Iteration)"/><!----><title>المحاضرة 3: شرائح التكرار كاملة | مقدمة في علوم الحاسوب والبرمجة باستخدام Python</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mit-6100l">مقدمة في علوم الحاسوب والبرمجة باستخدام Python</a> <span class="reader-bar__chapter">› المحاضرة 3: التكرار (Iteration)</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 5 من 30">5 / 30</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-03/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mit-6100l/lecture-03/exercises">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>نشرة المقرر والجدول والقراءات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/course/index">مقدمة إلى علوم الحاسوب والبرمجة باستخدام بايثون — المنهج</a></li><li><a href="../../../../book/mit-6100l/course/calendar">الجدول الدراسي</a></li><li><a href="../../../../book/mit-6100l/course/readings">القراءات المقررة</a></li><!--]--></ul><h3>كلمة المدرّسة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/instructor-insights/index">حوار مع المدرّسة آنّا بيل (Instructor Insights)</a></li><!--]--></ul><h3>المحاضرة 1: مقدمة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-01/index">المحاضرة 1: مقدمة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/notes">المحاضرة 1: شرائح مدخل إلى علوم الحاسوب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-01/exercises">المحاضرة 1: التمرين القصير والحل والشيفرة الأصلية</a></li><li><a href="../../../../book/mit-6100l/lecture-01/transcript">التفريغ الكامل للمحاضرة 1: مقدمة</a></li><!--]--></ul><h3>المحاضرة 2: النصوص، والإدخال/الإخراج، والتفرّع</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-02/index">المحاضرة 2: النصوص (Strings)، والإدخال/الإخراج، والتفرّع (Branching)</a></li><li><a href="../../../../book/mit-6100l/lecture-02/notes">المحاضرة 2: شرائح السلاسل النصية والإدخال/الإخراج والتفريع كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-02/exercises">المحاضرة ٢: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3 class="active-chapter">المحاضرة 3: التكرار (Iteration)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-03/index">المحاضرة 3: التكرار (Iteration)</a></li><li><a href="../../../../book/mit-6100l/lecture-03/notes" class="active">المحاضرة 3: شرائح التكرار كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-03/exercises">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</a></li><!--]--></ul><h3>المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-04/index">المحاضرة 4: التكرارات على النصوص، والتخمين والتحقّق، والأعداد الثنائية</a></li><li><a href="../../../../book/mit-6100l/lecture-04/notes">المحاضرة 4: شرائح التكرار على السلاسل والتخمين والبحث وشروح الثنائية كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-04/exercises">المحاضرة ٤: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 5: الأعداد العشرية العائمة وطرق التقريب</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-05/index">المحاضرة 5: الأعداد العشرية العائمة (Floats) وطرق التقريب (Approximation)</a></li><li><a href="../../../../book/mit-6100l/lecture-05/notes">المحاضرة 5: شرائح الأعداد العشرية وطرق التقريب كاملة</a></li><li><a href="../../../../book/mit-6100l/lecture-05/exercises">المحاضرة ٥: تمرين الأصابع وحلّه الرسمي</a></li><li><a href="../../../../book/mit-6100l/lecture-05/transcript">التفريغ الكامل للمحاضرة 5: الأعداد العائمة وطرائق التقريب</a></li><!--]--></ul><h3>المحاضرة 6: البحث بالتنصيف (Bisection Search)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-06/index">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/notes">المحاضرة 6: البحث بالتنصيف (Bisection Search)</a></li><li><a href="../../../../book/mit-6100l/lecture-06/exercises">المحاضرة ٦: تمرين الأصابع وحلّه الرسمي</a></li><!--]--></ul><h3>المحاضرة 7: التفكيك والتجريد والدوال</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-07/index">المحاضرة 7: التفكيك (Decomposition) والتجريد (Abstraction) والدوال (Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/notes">المحاضرة 7: التفكيك والتجريد والدوال (Decomposition, Abstraction, Functions)</a></li><li><a href="../../../../book/mit-6100l/lecture-07/exercises">المحاضرة ٧: التمارين القصيرة وحلولها</a></li><!--]--></ul><h3>المحاضرة 8: الدوال ككائنات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-08/index">المحاضرة 8: الدوال ككائنات</a></li><li><a href="../../../../book/mit-6100l/lecture-08/notes">المحاضرة 8: الدوال ككائنات (Functions as Objects)</a></li><li><a href="../../../../book/mit-6100l/lecture-08/exercises">المحاضرة 8: التمرين القصير والحل الرسمي</a></li><!--]--></ul><h3>المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-09/index">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/notes">المحاضرة 9: دوال Lambda، والصفوف (Tuples)، والقوائم (Lists)</a></li><li><a href="../../../../book/mit-6100l/lecture-09/exercises">المحاضرة 9: تمرين الإصبع وحلّه الرسمي — حاصل الضرب النقطي</a></li><!--]--></ul><h3>المحاضرة 10: القوائم وقابلية التغيير (Mutability)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-10/index">المحاضرة 10: القوائم وقابلية التغيير (Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/notes">المحاضرة 10: القوائم وقابلية التغيير (Lists, Mutability)</a></li><li><a href="../../../../book/mit-6100l/lecture-10/exercises">المحاضرة 10: تمرين الإصبع وحلّه الرسمي — هل كلّ الدوال تُعيد True؟</a></li><!--]--></ul><h3>المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-11/index">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/notes">المحاضرة 11: الأسماء المستعارة (Aliasing) والاستنساخ (Cloning)</a></li><li><a href="../../../../book/mit-6100l/lecture-11/exercises">المحاضرة 11: تمرين الإصبع وحلّه الرسمي — الحذف ثم الترتيب</a></li><!--]--></ul><h3>المحاضرة 12: فهم القوائم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-12/index">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/notes">المحاضرة 12: قوائم الفهم، والدوال ككائنات، والاختبار، وتصحيح الأخطاء</a></li><li><a href="../../../../book/mit-6100l/lecture-12/exercises">المحاضرة 12: تمرين الإصبع وحلّه الرسمي — عدّ الجذور التربيعية</a></li><!--]--></ul><h3>المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-13/index">المحاضرة 13: الاستثناءات (Exceptions) والتأكيدات (Assertions)</a></li><li><a href="../../../../book/mit-6100l/lecture-13/notes">المحاضرة 13: الاستثناءات والتأكيدات</a></li><li><a href="../../../../book/mit-6100l/lecture-13/exercises">المحاضرة 13: تمرين أطوال السلاسل النصية وحله</a></li><!--]--></ul><h3>المحاضرة 14: القواميس (Dictionaries)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-14/index">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/notes">المحاضرة 14: القواميس (Dictionaries)</a></li><li><a href="../../../../book/mit-6100l/lecture-14/exercises">المحاضرة 14: تمارين الأصابع وحلولها — المعاجم</a></li><!--]--></ul><h3>المحاضرة 15: الاستدعاء الذاتي (Recursion)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-15/index">المحاضرة 15: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/lecture-15/notes">شرائح المحاضرة 15: الاستدعاء الذاتي</a></li><li><a href="../../../../book/mit-6100l/lecture-15/exercises">تمرين المحاضرة 15 وحلّه: القوة بالاستدعاء الذاتي</a></li><!--]--></ul><h3>المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-16/index">المحاضرة 16: الاستدعاء الذاتي على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/notes">المحاضرة 16: الاستدعاء الذاتي (Recursion) على غير الأعداد</a></li><li><a href="../../../../book/mit-6100l/lecture-16/exercises">تمرين المحاضرة 16 وحلّه: تسطيح قائمة</a></li><!--]--></ul><h3>المحاضرة 17: الأصناف في بايثون (Python Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-17/index">المحاضرة 17: الأصناف في بايثون (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/notes">المحاضرة 17: الأصناف في Python (Python Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-17/exercises">تمرين المحاضرة 17 وحلّه: صنف الدائرة</a></li><!--]--></ul><h3>المحاضرة 18: المزيد من طرائق الأصناف في بايثون</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-18/index">المحاضرة 18: المزيد من طرائق الأصناف في بايثون</a></li><li><a href="../../../../book/mit-6100l/lecture-18/notes">المحاضرة 18: المزيد من دوال الأصناف في Python (More Python Class Methods)</a></li><li><a href="../../../../book/mit-6100l/lecture-18/exercises">تمرين المحاضرة 18 وحلّه: جمع الدوائر وتمثيلها النصي</a></li><!--]--></ul><h3>المحاضرة 19: الوراثة (Inheritance)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-19/index">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/notes">المحاضرة 19: الوراثة (Inheritance)</a></li><li><a href="../../../../book/mit-6100l/lecture-19/exercises">تمرين المحاضرة 19 وحلّه: الحاوية والمكدّس</a></li><!--]--></ul><h3>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-20/index">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/notes">المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</a></li><li><a href="../../../../book/mit-6100l/lecture-20/exercises">تمرين المحاضرة 20 وحلّه: الحاوية والطابور</a></li><!--]--></ul><h3>المحاضرة 21: قياس زمن البرامج وعدّ العمليات</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-21/index">المحاضرة 21: قياس زمن البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/notes">شرائح المحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><li><a href="../../../../book/mit-6100l/lecture-21/transcript">النص الكامل للمحاضرة 21: توقيت البرامج وعدّ العمليات</a></li><!--]--></ul><h3>المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-22/index">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/notes">المحاضرة 22: الصنف O الكبير (Big Oh) والصنف ثيتا (Theta)</a></li><li><a href="../../../../book/mit-6100l/lecture-22/exercises">تمارين المحاضرة 22 وحلولها: أوه الكبرى وثيتا</a></li><!--]--></ul><h3>المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-23/index">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/notes">المحاضرة 23: أمثلة على أصناف التعقيد (Complexity Classes)</a></li><li><a href="../../../../book/mit-6100l/lecture-23/exercises">تمارين المحاضرة 23 وحلولها: فئات التعقيد</a></li><!--]--></ul><h3>المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-24/index">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><li><a href="../../../../book/mit-6100l/lecture-24/notes">المحاضرة 24: خوارزميات الترتيب (Sorting Algorithms)</a></li><!--]--></ul><h3>المحاضرة 25: الرسم البياني (Plotting)</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-25/index">المحاضرة 25: الرسم البياني (Plotting)</a></li><li><a href="../../../../book/mit-6100l/lecture-25/notes">المحاضرة 25: الرسم البياني (Plotting)</a></li><!--]--></ul><h3>المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة، والمحاكاة، والختام</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/lecture-26/index">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><li><a href="../../../../book/mit-6100l/lecture-26/notes">المحاضرة 26: الوصول إلى عناصر القائمة، والتجزئة (Hashing)، والمحاكاة، والختام</a></li><!--]--></ul><h3>مجموعات المسائل</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/problem-sets/index">مجموعات المسائل — المقدمة والتثبيت (PS 0)</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps1">مجموعة المسائل 1 — الفائدة المركبة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps2">مجموعة المسائل 2 — لعبة تخمين الكلمة</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps3">مجموعة المسائل 3 — المسافة بين المستندات</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps4">مجموعة المسائل 4 — العودية والتشفير</a></li><li><a href="../../../../book/mit-6100l/problem-sets/ps5">مجموعة المسائل 5 — استخدام المكتبات</a></li><!--]--></ul><h3>الجلسات التطبيقية</h3> <ul><!--[--><li><a href="../../../../book/mit-6100l/recitations/index">جلسات التمارين — الجلسة الأولى</a></li><li><a href="../../../../book/mit-6100l/recitations/rec2">الجلسة التطبيقية 2: النصوص، والتكرار</a></li><li><a href="../../../../book/mit-6100l/recitations/rec3">الجلسة التطبيقية 3: الأعداد الثنائية، والتقريب، والدوال</a></li><li><a href="../../../../book/mit-6100l/recitations/rec4">الجلسة التطبيقية 4: الدوال والنطاق، ودوال Lambda</a></li><li><a href="../../../../book/mit-6100l/recitations/rec5">الجلسة التطبيقية 5: القوائم وقابلية التغيير</a></li><li><a href="../../../../book/mit-6100l/recitations/rec6">الجلسة التطبيقية 6: التشارك بالاسم والاستنساخ، وقوائم الفهم</a></li><li><a href="../../../../book/mit-6100l/recitations/rec7">الجلسة التطبيقية 7: الاستثناءات والتأكيدات، والقواميس</a></li><li><a href="../../../../book/mit-6100l/recitations/rec8">الجلسة التطبيقية 8: الاستدعاء الذاتي (Recursion)</a></li><li><a href="../../../../book/mit-6100l/recitations/rec9">الجلسة التطبيقية 9: البرمجة الكائنية والوراثة</a></li><li><a href="../../../../book/mit-6100l/recitations/rec10">الجلسة التطبيقية 10: كفاءة البرامج والتعقيد</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المحاضرة 3: شرائح التكرار كاملة</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المحاضرة 3: شرائح التكرار (Iteration)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>المادة الأصلية: <strong>آنا بيل (Ana Bell)</strong>، <strong>MIT OpenCourseWare (MIT OCW)</strong>، معهد ماساتشوستس للتكنولوجيا، مقرر <strong>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python</strong>، <strong>خريف 2022 (Fall 2022)</strong>.</p>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-3-iteration/">صفحة المحاضرة الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec03_pdf/">صفحة الشرائح الرسمية</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec03.pdf">ملف الشرائح الأصلي، PDF</a>.</li>
+<li><a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec03_code.py">ملف شيفرة المحاضرة الأصلي</a>.</li>
+</ul>
+<p>هذه ترجمة وتكييف عربي غير رسمي وفق <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">رخصة CC BY-NC-SA 4.0: النسبة–غير التجاري–المشاركة بالمثل</a>، ولا تعني اعتمادًا أو تأييدًا من MIT أو MIT OCW. <a href="https://ocw.mit.edu/terms/">شروط الاستخدام والاستشهاد</a>.</p>
+<p><strong>منهج الترجمة:</strong> لكل صفحة في ملف الشرائح عنوان مستقل ورقم مطابق، بما في ذلك شرائح البناء التدريجي المتكررة. نُقلت المخططات إلى نصوص وجداول تحافظ على تسلسلها وقيمها، ونُقلت التعليقات التوضيحية المرئية في PDF حتى حين لا تظهر في النص المستخرج. الشيفرة وشبه الشيفرة (Pseudocode) محفوظتان بالإنجليزية. لم تُضمَّن صور أو صفحات PDF. صور Nintendo المستثناة من رخصة المصدر محذوفة صراحة في موضعيها.</p>
+<h2 id="الشريحة-1-التكرار">الشريحة 1: التكرار</h2>
+<p>التكرار (Iteration).</p>
+<p>نزّل الشرائح وملفات <code>.py</code> للمتابعة.</p>
+<p>6.100L، المحاضرة 3 — آنا بيل (Ana Bell).</p>
+<h2 id="الشريحة-2-مراجعة-المحاضرة-السابقة">الشريحة 2: مراجعة المحاضرة السابقة</h2>
+<ul>
+<li>السلاسل النصية (Strings) تقدم نوع بيانات (Data Type) جديدًا.
+<ul>
+<li>هي تسلسلات من المحارف (Characters)، وأول محرف يقع عند الفهرس (Index) <code>0</code>.</li>
+<li>يمكن فهرستها واقتطاع شرائح (Slices) منها.</li>
+</ul>
+</li>
+<li>الإدخال (Input):
+<ul>
+<li>يتم باستخدام الأمر <code>input</code>.</li>
+<li>كل ما يدخله المستخدم يُقرأ بوصفه كائن سلسلة نصية!</li>
+</ul>
+</li>
+<li>الإخراج (Output):
+<ul>
+<li>يتم باستخدام الأمر <code>print</code>.</li>
+<li>لا تظهر في الصدفة (Shell) إلا الكائنات التي تُطبع في ملف شيفرة <code>.py</code>.</li>
+</ul>
+</li>
+<li>التفريع (Branching):
+<ul>
+<li>تنفذ البرامج كتل الشيفرة (Code Blocks) عندما تكون الشروط صحيحة.</li>
+<li>في بنية <code>if-elif-elif…</code>، يُنفَّذ الفرع الخاص بأول شرط قيمته <code>True</code>.</li>
+<li>المسافة البادئة (Indentation) مهمة في Python!</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-3-مراجعة-التفريع">الشريحة 3: مراجعة التفريع</h2>
+<p>الأشكال الأربعة المعروضة:</p>
+<pre><code class="language-text">if &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+</code></pre>
+<pre><code class="language-text">if &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+else:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+</code></pre>
+<pre><code class="language-text">if &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+elif &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+elif &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+</code></pre>
+<pre><code class="language-text">if &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+elif &lt;condition&gt;:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+else:
+    &lt; code &gt;
+    &lt; code &gt;
+    ...
+</code></pre>
+<ul>
+<li>قيمة <code>&lt;condition&gt;</code> إما <code>True</code> أو <code>False</code>.</li>
+<li>قيّم أول كتلة شرطها المقابل <code>&lt;condition&gt;</code> يساوي <code>True</code>.
+<ul>
+<li>تبدأ الكتلة بتعليمة <code>if</code>.</li>
+</ul>
+</li>
+<li><strong>المسافة البادئة مهمة في Python!</strong> تُبرز الشريحة الكلمات المفتاحية والنقطتين <code>:</code> اللتين تبدآن الكتلة.</li>
+</ul>
+<h2 id="الشريحة-4-الغابة-الضائعة-والتفريع-المتداخل">الشريحة 4: الغابة الضائعة والتفريع المتداخل</h2>
+<ul>
+<li>تخدعك الغابة الضائعة (Lost Woods) في Zelda.</li>
+<li>إذا واصلت الذهاب يمينًا، تبقى عالقًا في الموضع نفسه إلى الأبد.</li>
+<li>للخروج، جازف واذهب في الاتجاه المعاكس.</li>
+</ul>
+<p><strong>حذف صريح لمادة طرف ثالث:</strong> حُذفت صورة اللعبة المملوكة لـ Nintendo. يذكر المصدر: «© Nintendo. جميع الحقوق محفوظة. هذا المحتوى مستثنى من رخصة المشاع الإبداعي الخاصة بنا». <a href="https://ocw.mit.edu/help/faq-fair-use/">معلومات الاستخدام العادل في MIT OCW</a>.</p>
+<p><strong>نص توضيحي مكافئ من المترجم:</strong> تخيّل شخصية في ممر بين أشجار. يؤدي اختيار اليمين إلى عرض الممر نفسه مجددًا، بينما يؤدي اختيار اليسار إلى الخروج. تُمثّل الكتل المتداخلة محاولات متتالية، لكن كتابة عدد ثابت منها لا تغطي عددًا غير معلوم من المحاولات.</p>
+<pre><code class="language-text">if &lt;exit right&gt;:
+    &lt;set background to woods_background&gt;
+    if &lt;exit right&gt;:
+        &lt;set background to woods_background&gt;
+        if &lt;exit right&gt;:
+            &lt;set background to woods_background&gt;
+            and so on and on and on...
+        else:
+            &lt;set background to exit_background&gt;
+    else:
+        &lt;set background to exit_background&gt;
+else:
+    &lt;set background to exit_background&gt;
+</code></pre>
+<h2 id="الشريحة-5-الغابة-الضائعة-باستخدام-حلقة">الشريحة 5: الغابة الضائعة باستخدام حلقة</h2>
+<ul>
+<li>تخدعك الغابة الضائعة (Lost Woods) في Zelda.</li>
+<li>إذا واصلت الذهاب يمينًا، تبقى عالقًا في الموضع نفسه إلى الأبد.</li>
+<li>للخروج، جازف واذهب في الاتجاه المعاكس.</li>
+</ul>
+<p><strong>حذف صريح لمادة طرف ثالث:</strong> حُذفت صورة Nintendo المتكررة. © Nintendo، جميع الحقوق محفوظة؛ الصورة مستثناة من رخصة المشاع الإبداعي للمصدر. <a href="https://ocw.mit.edu/help/faq-fair-use/">معلومات الاستخدام العادل</a>.</p>
+<p><strong>نص توضيحي مكافئ من المترجم:</strong> يظهر الممر نفسه ما دام المستخدم يختار اليمين. تسأل الحلقة عن الاتجاه من جديد في كل مرة، ثم تعرض مشهد الخروج حين لا يعود الاختيار يمينًا. بخلاف التفريع المتداخل في الشريحة السابقة، لا تتطلب هذه البنية كتابة كل محاولة منفردة.</p>
+<pre><code class="language-text">while &lt;exit_right&gt;:
+    &lt;set background to woods_background&gt;
+    &lt;ask user which way to go&gt;
+&lt;set background to exit_background&gt;
+</code></pre>
+<h2 id="الشريحة-6-حلقات-while">الشريحة 6: حلقات while</h2>
+<p>حلقات <code>while</code> (While Loops).</p>
+<h2 id="الشريحة-7-مشاهدة-كل-حلقات-مسلسل-واحد-دفعة-واحدة">الشريحة 7: مشاهدة كل حلقات مسلسل واحد دفعة واحدة</h2>
+<p>مخطط التدفق (Flowchart):</p>
+<ol>
+<li>Netflix: ابدأ مشاهدة مسلسل جديد.</li>
+<li>هل توجد حلقات أخرى لمشاهدتها؟
+<ul>
+<li><strong>نعم:</strong> شغّل الحلقة التالية، ثم ارجع إلى السؤال نفسه.</li>
+<li><strong>لا:</strong> اقترح 3 مسلسلات أخرى مشابهة لهذا المسلسل.</li>
+</ul>
+</li>
+</ol>
+<h2 id="الشريحة-8-تدفق-التحكم-حلقات-while">الشريحة 8: تدفق التحكم — حلقات while</h2>
+<pre><code class="language-text">while &lt;condition&gt;:
+    &lt;code&gt;
+    &lt;code&gt;
+    ...
+</code></pre>
+<ul>
+<li>يُقيَّم <code>&lt;condition&gt;</code> إلى قيمة منطقية (Boolean).</li>
+<li>إذا كان <code>&lt;condition&gt;</code> يساوي <code>True</code>، نفّذ جميع الخطوات داخل كتلة شيفرة <code>while</code>.</li>
+<li>افحص <code>&lt;condition&gt;</code> مرة أخرى.</li>
+<li>كرر حتى يصبح <code>&lt;condition&gt;</code> مساويًا لـ <code>False</code>.</li>
+<li>إذا لم يصبح <code>&lt;condition&gt;</code> مساويًا لـ <code>False</code> أبدًا، تستمر الحلقة إلى الأبد!!</li>
+</ul>
+<h2 id="الشريحة-9-مثال-لحلقة-while">الشريحة 9: مثال لحلقة while</h2>
+<p>أنت في الغابة الضائعة. هل تذهب يسارًا أم يمينًا؟ العرض النصي:</p>
+<pre><code class="language-text">You are in the Lost Forest.
+************
+************
+  ☺
+************
+************
+Go left or right?
+</code></pre>
+<p>مخطط الذاكرة: كان <code>where</code> مرتبطًا بـ <code>&quot;right&quot;</code>، ثم قُطع هذا الارتباط وأصبح مرتبطًا بـ <code>&quot;left&quot;</code>.</p>
+<p>البرنامج:</p>
+<pre><code class="language-python">where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;You&#x27;re in the Lost Forest. Go left or right? &quot;</span>)
+<span class="hljs-keyword">while</span> where == <span class="hljs-string">&quot;right&quot;</span>:
+    where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;You&#x27;re in the Lost Forest. Go left or right? &quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;You got out of the Lost Forest!&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-10-جرب-بنفسك">الشريحة 10: جرّب بنفسك!</h2>
+<p>ما الذي يُطبع عندما تكتب <code>&quot;RIGHT&quot;</code>؟</p>
+<pre><code class="language-python">where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Go left or right? &quot;</span>)
+<span class="hljs-keyword">while</span> where == <span class="hljs-string">&quot;right&quot;</span>:
+    where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Go left or right? &quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;You got out!&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-11-مثال-لحلقة-while">الشريحة 11: مثال لحلقة while</h2>
+<pre><code class="language-python">n = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter a non-negative integer: &quot;</span>))
+<span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;x&#x27;</span>)
+    n = n-<span class="hljs-number">1</span>
+</code></pre>
+<p>مخطط الذاكرة: يُزال ارتباط <code>n</code> بالقيمة <code>4</code>، ويُعاد ربطه بالتتابع بالقيم <code>3</code>، ثم <code>2</code>، ثم <code>1</code>، ثم <code>0</code>.</p>
+<h2 id="الشريحة-12-مثال-لحلقة-while">الشريحة 12: مثال لحلقة while</h2>
+<pre><code class="language-python">n = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter a non-negative integer: &quot;</span>))
+<span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;x&#x27;</span>)
+    n = n-<span class="hljs-number">1</span>
+</code></pre>
+<p>التعليق المرئي في الشريحة يشطب السطر الأخير <code>n = n-1</code> ويسأل: <strong>ماذا يحدث من دون هذا السطر الأخير؟ جرّب ذلك!</strong></p>
+<p>للإنهاء:</p>
+<ul>
+<li>اضغط <code>CTRL-c</code> أو <code>CMD-c</code> في الصدفة (Shell).</li>
+<li>انقر المربع الأحمر في الصدفة.</li>
+</ul>
+<h2 id="الشريحة-13-جرب-بنفسك">الشريحة 13: جرّب بنفسك!</h2>
+<p>شغّل هذه الشيفرة وأوقف الحلقة اللانهائية (Infinite Loop) في بيئة التطوير المتكاملة (IDE) لديك.</p>
+<pre><code class="language-python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+     <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;noooooo&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-14-الفكرة-الكبرى">الشريحة 14: الفكرة الكبرى</h2>
+<p><strong>يمكن لحلقات <code>while</code> تكرار الشيفرة داخلها إلى أجل غير مسمّى!</strong></p>
+<p>تحتاج أحيانًا إلى تدخلك لإنهاء البرنامج.</p>
+<h2 id="الشريحة-15-جرب-بنفسك">الشريحة 15: جرّب بنفسك!</h2>
+<ul>
+<li>وسّع هذه الشيفرة لتعرض وجهًا حزينًا عندما يدخل المستخدم حلقة <code>while</code> أكثر من مرتين.</li>
+<li>تلميح: استخدم متغيرًا بوصفه عدّادًا (Counter).</li>
+</ul>
+<pre><code class="language-python">where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Go left or right? &quot;</span>)
+<span class="hljs-keyword">while</span> where == <span class="hljs-string">&quot;right&quot;</span>:
+      where = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Go left or right? &quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;You got out!&quot;</span>)
+</code></pre>
+<h2 id="الشريحة-16-تدفق-التحكم-حلقات-while">الشريحة 16: تدفق التحكم — حلقات while</h2>
+<p>مرّ بالتكرار على الأعداد في تسلسل (Sequence).</p>
+<pre><code class="language-python">n = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> n &lt; <span class="hljs-number">5</span>:
+    <span class="hljs-built_in">print</span>(n)
+    n = n+<span class="hljs-number">1</span>
+</code></pre>
+<p>التعليقات التوضيحية في الشريحة:</p>
+<ul>
+<li>اضبط متغير الحلقة (Loop Variable) خارج حلقة <code>while</code>: <code>n = 0</code>.</li>
+<li>اختبر متغير الحلقة في الشرط: <code>n &lt; 5</code>.</li>
+<li>زِد متغير الحلقة داخل حلقة <code>while</code>: <code>n = n+1</code>.</li>
+<li><code>n = n+1</code> مكافئة لـ <code>n += 1</code>.</li>
+</ul>
+<h2 id="الشريحة-17-نمط-شائع">الشريحة 17: نمط شائع</h2>
+<ul>
+<li>احسب <code>4!</code>، أي مضروب (Factorial) العدد 4.</li>
+<li><code>i</code> هو متغير الحلقة لدينا.</li>
+<li>يتتبع <code>factorial</code> حاصل الضرب.</li>
+</ul>
+<pre><code class="language-python">x = <span class="hljs-number">4</span>
+i = <span class="hljs-number">1</span>
+factorial = <span class="hljs-number">1</span>
+<span class="hljs-keyword">while</span> i &lt;= x:
+    factorial *= i
+    i += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">{x}</span> factorial is <span class="hljs-subst">{factorial}</span>&#x27;</span>)
+</code></pre>
+<p>التعليقات التوضيحية في الشريحة:</p>
+<ul>
+<li>اضبط متغير الحلقة خارج حلقة <code>while</code>.</li>
+<li>هيّئ حاصل ضرب المضروب بالقيمة <code>1</code>.</li>
+<li>اختبر متغير الحلقة في الشرط.</li>
+<li>احتفظ بحاصل ضرب تراكمي (Running Product): <code>factorial *= i</code> مكافئة لـ <code>factorial = factorial*i</code>.</li>
+<li>زِد متغير الحلقة داخل حلقة <code>while</code>: <code>i += 1</code> مكافئة لـ <code>i = i+1</code>.</li>
+<li>رابط Python Tutor (Python Tutor LINK) في الشريحة الأصلية.</li>
+</ul>
+<h2 id="الشريحة-18-حلقات-for">الشريحة 18: حلقات for</h2>
+<p>حلقات <code>for</code> (For Loops).</p>
+<h2 id="الشريحة-19-هل-ما-زلت-تشاهد">الشريحة 19: هل ما زلت تشاهد؟</h2>
+<p>Netflix حين يغلبك النعاس: لا يشغّل سوى 4 حلقات إذا لم تكن منتبهًا.</p>
+<p>مخطط التدفق:</p>
+<ol>
+<li>توجد 4 حلقات في التسلسل.</li>
+<li>إذا <strong>بقيت حلقات أخرى في التسلسل</strong>: شغّل الحلقة التالية، ثم ارجع لفحص التسلسل.</li>
+<li>إذا <strong>مررت بجميع الحلقات في التسلسل</strong>: يوقف المشاهدة.</li>
+</ol>
+<h2 id="الشريحة-20-تدفق-التحكم-حلقات-while-وfor">الشريحة 20: تدفق التحكم — حلقات while وfor</h2>
+<p>مرّ بالتكرار على الأعداد في تسلسل.</p>
+<pre><code class="language-python"><span class="hljs-comment"># very verbose with while loop</span>
+n = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> n &lt; <span class="hljs-number">5</span>:
+    <span class="hljs-built_in">print</span>(n)
+    n = n+<span class="hljs-number">1</span>
+</code></pre>
+<pre><code class="language-python"><span class="hljs-comment"># shortcut with for loop</span>
+<span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    <span class="hljs-built_in">print</span>(n)
+</code></pre>
+<p>معنى التعليقين: الصياغة مطوّلة جدًا بحلقة <code>while</code>، ومختصرة بحلقة <code>for</code>.</p>
+<h2 id="الشريحة-21-بنية-حلقات-for">الشريحة 21: بنية حلقات for</h2>
+<pre><code class="language-text">for &lt;variable&gt; in &lt;sequence of values&gt;:
+    &lt;code&gt;
+    ...
+</code></pre>
+<ul>
+<li>في كل مرور في الحلقة، يأخذ <code>&lt;variable&gt;</code> قيمة.</li>
+<li>في المرة الأولى، يكون <code>&lt;variable&gt;</code> هو أول قيمة في التسلسل.</li>
+<li>في المرة التالية، يحصل <code>&lt;variable&gt;</code> على القيمة الثانية.</li>
+<li>وهكذا، حتى تنفد القيم التي يأخذها <code>&lt;variable&gt;</code>.</li>
+</ul>
+<h2 id="الشريحة-22-تسلسل-شائع-من-القيم">الشريحة 22: تسلسل شائع من القيم</h2>
+<pre><code class="language-text">for &lt;variable&gt; in range(&lt;some_num&gt;):
+    &lt;code&gt;
+    &lt;code&gt;
+    ...
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    <span class="hljs-built_in">print</span>(n)
+</code></pre>
+<p>التعليق التوضيحي في الشريحة: التسلسل هو <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم <code>3</code>، ثم <code>4</code>.</p>
+<ul>
+<li>في كل مرور في الحلقة، يأخذ <code>&lt;variable&gt;</code> قيمة.</li>
+<li>في المرة الأولى، يبدأ <code>&lt;variable&gt;</code> عند <code>0</code>.</li>
+<li>في المرة التالية، يحصل <code>&lt;variable&gt;</code> على القيمة <code>1</code>.</li>
+<li>بعد ذلك، يحصل <code>&lt;variable&gt;</code> على القيمة <code>2</code>.</li>
+<li>…</li>
+<li>وهكذا، حتى يحصل <code>&lt;variable&gt;</code> على <code>some_num -1</code>.</li>
+</ul>
+<h2 id="الشريحة-23-تسلسل-شائع-من-القيم">الشريحة 23: تسلسل شائع من القيم</h2>
+<pre><code class="language-text">for &lt;variable&gt; in range(&lt;some_num&gt;):
+    &lt;code&gt;
+    &lt;code&gt;
+    ...
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    <span class="hljs-built_in">print</span>(n)
+</code></pre>
+<p>مخطط الذاكرة الإضافي: يُقطع ارتباط <code>n</code> بالقيمة السابقة ويُعاد ربطه بالقيم بالترتيب <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم <code>3</code>، ثم <code>4</code>.</p>
+<ul>
+<li>في كل مرور في الحلقة، يأخذ <code>&lt;variable&gt;</code> قيمة.</li>
+<li>في المرة الأولى، يبدأ <code>&lt;variable&gt;</code> عند <code>0</code>.</li>
+<li>في المرة التالية، يحصل <code>&lt;variable&gt;</code> على القيمة <code>1</code>.</li>
+<li>بعد ذلك، يحصل <code>&lt;variable&gt;</code> على القيمة <code>2</code>.</li>
+<li>…</li>
+<li>وهكذا، حتى يحصل <code>&lt;variable&gt;</code> على <code>some_num -1</code>.</li>
+</ul>
+<h2 id="الشريحة-24-range">الشريحة 24: range</h2>
+<ul>
+<li>تولّد تسلسلًا من الأعداد الصحيحة (Ints) وفق نمط.</li>
+<li><code>range(start, stop, step)</code>:
+<ul>
+<li><code>start</code>: أول عدد صحيح يُولَّد.</li>
+<li><code>stop</code>: يتحكم في آخر عدد صحيح يُولَّد؛ نصل إلى هذا العدد <strong>دون تضمينه</strong>.</li>
+<li><code>step</code>: تُستخدم لتوليد العدد الصحيح التالي في التسلسل.</li>
+</ul>
+</li>
+<li>تشبه كثيرًا ما رأيناه في اقتطاع الشرائح (Slicing).</li>
+<li>غالبًا ما نحذف <code>start</code> و<code>step</code>.
+<ul>
+<li>مثلًا، <code>for i in range(4):</code>:
+<ul>
+<li>القيمة الافتراضية لـ <code>start</code> هي <code>0</code>.</li>
+<li>القيمة الافتراضية لـ <code>step</code> هي <code>1</code>.</li>
+</ul>
+</li>
+<li>مثلًا، <code>for i in range(3,5):</code>:
+<ul>
+<li>القيمة الافتراضية لـ <code>step</code> هي <code>1</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-25-جرب-بنفسك">الشريحة 25: جرّب بنفسك!</h2>
+<p>ماذا تطبع هذه المقاطع؟</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>):
+       <span class="hljs-built_in">print</span>(i)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>):
+       <span class="hljs-built_in">print</span>(j*<span class="hljs-number">2</span>)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> me <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>):
+       <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;$&quot;</span>*me)
+</code></pre>
+<h2 id="الشريحة-26-المجموع-التراكمي">الشريحة 26: المجموع التراكمي</h2>
+<ul>
+<li><code>mysum</code> متغير لتخزين المجموع التراكمي (Running Sum).</li>
+<li>تجعل <code>range(10)</code> قيمة <code>i</code> تساوي <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم … ثم <code>9</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الاسم في مخطط الذاكرة</th>
+<th>القيمة المرتبط بها</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>mysum</code></td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-27-المجموع-التراكمي">الشريحة 27: المجموع التراكمي</h2>
+<ul>
+<li><code>mysum</code> متغير لتخزين المجموع التراكمي (Running Sum).</li>
+<li>تجعل <code>range(10)</code> قيمة <code>i</code> تساوي <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم … ثم <code>9</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الاسم في مخطط الذاكرة</th>
+<th>القيم المعروضة</th>
+<th>الارتباط الحالي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td><code>0</code>، <code>1</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>mysum</code></td>
+<td><code>0</code>، <code>1</code></td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-28-المجموع-التراكمي">الشريحة 28: المجموع التراكمي</h2>
+<ul>
+<li><code>mysum</code> متغير لتخزين المجموع التراكمي (Running Sum).</li>
+<li>تجعل <code>range(10)</code> قيمة <code>i</code> تساوي <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم … ثم <code>9</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الاسم في مخطط الذاكرة</th>
+<th>القيم المعروضة</th>
+<th>الارتباط الحالي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td><code>0</code>، <code>1</code>، <code>2</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>mysum</code></td>
+<td><code>1</code>، <code>3</code></td>
+<td><code>3</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-29-المجموع-التراكمي">الشريحة 29: المجموع التراكمي</h2>
+<ul>
+<li><code>mysum</code> متغير لتخزين المجموع التراكمي (Running Sum).</li>
+<li>تجعل <code>range(10)</code> قيمة <code>i</code> تساوي <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم … ثم <code>9</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الاسم في مخطط الذاكرة</th>
+<th>القيم المعروضة</th>
+<th>الارتباط الحالي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td><code>0</code>، <code>1</code>، <code>2</code>، <code>3</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>mysum</code></td>
+<td><code>3</code>، <code>6</code></td>
+<td><code>6</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-30-المجموع-التراكمي">الشريحة 30: المجموع التراكمي</h2>
+<ul>
+<li><code>mysum</code> متغير لتخزين المجموع التراكمي (Running Sum).</li>
+<li>تجعل <code>range(10)</code> قيمة <code>i</code> تساوي <code>0</code>، ثم <code>1</code>، ثم <code>2</code>، ثم … ثم <code>9</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+    mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>الاسم في مخطط الذاكرة</th>
+<th>القيم المعروضة</th>
+<th>الارتباط الحالي</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td><code>0</code>، <code>1</code>، <code>2</code>، <code>3</code>، …، <code>9</code></td>
+<td><code>9</code></td>
+</tr>
+<tr>
+<td><code>mysum</code></td>
+<td><code>36</code>، <code>45</code></td>
+<td><code>45</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="الشريحة-31-جرب-بنفسك">الشريحة 31: جرّب بنفسك!</h2>
+<ul>
+<li>أصلح هذه الشيفرة لتستخدم المتغيرين <code>start</code> و<code>end</code> في النطاق، وتحصل على مجموع القيم بينهما بما يشمل الطرفين.</li>
+<li>مثلًا، إذا كان <code>start=3</code> و<code>end=5</code>، فينبغي أن يكون المجموع <code>12</code>.</li>
+</ul>
+<pre><code class="language-python">mysum = <span class="hljs-number">0</span>
+start = ??
+end = ??
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, end):
+       mysum += i
+<span class="hljs-built_in">print</span>(mysum)
+</code></pre>
+<h2 id="الشريحة-32-حلقات-for-وrange">الشريحة 32: حلقات for وrange</h2>
+<p>حساب المضروب باستخدام حلقة <code>while</code>، وقد رأيناه بالفعل، وباستخدام حلقة <code>for</code>.</p>
+<pre><code class="language-python">x = <span class="hljs-number">4</span>
+i = <span class="hljs-number">1</span>
+factorial = <span class="hljs-number">1</span>
+<span class="hljs-keyword">while</span> i &lt;= x:
+    factorial *= i
+    i += <span class="hljs-number">1</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">{x}</span> factorial is <span class="hljs-subst">{factorial}</span>’)
+</span></code></pre>
+<pre><code class="language-python">x = <span class="hljs-number">4</span>
+factorial = <span class="hljs-number">1</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, x+<span class="hljs-number">1</span>, <span class="hljs-number">1</span>):
+    factorial *= i
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;<span class="hljs-subst">{x}</span> factorial is <span class="hljs-subst">{factorial}</span>&#x27;</span>)
+</code></pre>
+<p><strong>ملاحظة المترجم:</strong> حُفظت علامة الاقتباس المنحنية <code>’</code> في نهاية سلسلة المثال الأول كما تظهر في الشريحة الأصلية؛ ليست علامة إغلاق صحيحة في Python. يستخدم ملف الشيفرة الأصلي علامة اقتباس مستقيمة، كما في النسخة الحرفية المرفقة بصفحة التمارين.</p>
+<h2 id="الشريحة-33-الفكرة-الكبرى">الشريحة 33: الفكرة الكبرى</h2>
+<p><strong>لا تتكرر حلقات <code>for</code> إلا بقدر طول التسلسل.</strong></p>
+<p>يأخذ متغير الحلقة هذه القيم بالترتيب.</p>
+<h2 id="الشريحة-34-ملخص">الشريحة 34: ملخص</h2>
+<ul>
+<li>آليات التكرار (Looping Mechanisms):
+<ul>
+<li>حلقات <code>while</code> و<code>for</code>.</li>
+<li>تناولنا الكثير من قواعد الصياغة (Syntax) اليوم؛ احرص على الكثير من التدريب!</li>
+</ul>
+</li>
+<li>حلقات <code>while</code>:
+<ul>
+<li>تتكرر ما دام الشرط صحيحًا.</li>
+<li>يجب التأكد من عدم الدخول في حلقة لانهائية.</li>
+</ul>
+</li>
+<li>حلقات <code>for</code>:
+<ul>
+<li>يمكنها المرور على نطاقات من الأعداد.</li>
+<li>يمكنها المرور على عناصر سلسلة نصية.</li>
+<li>سنرى قريبًا أشياء أخرى كثيرة يسهل المرور عليها بالتكرار.</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-35-بيانات-mit-opencourseware">الشريحة 35: بيانات MIT OpenCourseWare</h2>
+<p>MIT OpenCourseWare — https://ocw.mit.edu</p>
+<p>6.100L: مقدمة في علوم الحاسوب والبرمجة باستخدام Python.</p>
+<p>خريف 2022.</p>
+<p>للحصول على معلومات عن الاستشهاد بهذه المواد أو شروط استخدامها، تفضل بزيارة https://ocw.mit.edu/terms.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mit-6100l/lecture-03/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المحاضرة 3: التكرار (Iteration)</span></a><!--]--> <!--[0--><a href="../../../../book/mit-6100l/lecture-03/exercises"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المحاضرة 3: التمرين القصير وحلّه والشيفرة الأصلية</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_17z1u4y = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
+						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
