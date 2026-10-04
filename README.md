@@ -126,12 +126,28 @@ WebAssembly، على غرار محرك `go-wasm` في LiveCodes. لكل عملي
 ## الأوامر
 
 ```bash
-pnpm install     # تثبيت الاعتماديات
-pnpm dev         # تشغيل بيئة التطوير
-pnpm build       # توليد المحتوى ثم بناء الموقع في build/
-pnpm preview     # معاينة نسخة الإنتاج
-pnpm deploy      # البناء ثم النشر على فرع gh-pages
+pnpm install        # تثبيت الاعتماديات
+pnpm dev            # تشغيل بيئة التطوير
+pnpm content        # توليد src/lib/generated/ من content/ فقط (بلا بناء واجهة)
+pnpm build          # توليد المحتوى ثم بناء الموقع في build/
+pnpm preview        # معاينة نسخة الإنتاج
+pnpm deploy         # البناء ثم النشر على فرع gh-pages
 ```
+
+### التحقّق
+
+```bash
+pnpm audit:content  # فحص المحتوى: صور مفقودة أو تالفة، صيغ لم تُعرض، آثار نصّ
+pnpm test:content   # اختبارات مسار النشر في المخرجات المولَّدة
+pnpm check:links    # كل رابط داخلي في build/ يجب أن يقابل ملفاً موجوداً
+pnpm test:import    # اختبارات استيراد MIT 6.100L (يحتاج ذاكرة content-src/محلّية)
+```
+
+تُنفَّذ `audit:content` و`test:content` و`check:links` في `CI` مع كل إيداع على
+`main`: بعد `pnpm content` يتحقّق الملف الوظيفي أن المخرجات المولَّدة مطابقة لما في
+المستودع (`git diff --exit-code -- src/lib/generated src/lib/tour`)، حتى لا تُسلَّم
+مخرجات قديمة أو غير قابلة لإعادة الإنتاج. `test:import` ليست منها لأنها تحتاج
+`content-src/mit-6100l/` وهي غير متتبَّعة في git.
 
 ## بنية المشروع
 
@@ -141,15 +157,37 @@ content/
   learning-path.json            المراحل وترتيب الكتب داخل كل مرحلة
   <book>-structure.json         فهرس كل كتاب مُترجم (فصول وأقسام)
   <book>/                       المحتوى العربي المترجم
-content-src/<book>/             النص الإنجليزي الأصلي
+  image-assets.json             ذاكرة روابط الصور البعيدة إلى النسخ المحلّية
+content-src/<book>/             النص الإنجليزي الأصلي (و‏.html حيث يحمل المعرّفات)
 scripts/
-  import-hello-algo.mjs         استيراد Hello Algo وتحويله (مع شيفرة Go/TS)
-  import-missing-semester.mjs   استيراد ترجمة Missing Semester العربية مع الفيديو
-  build-content.mjs             توليد الفهرس والبحث وصفحات المحتوى لكل الكتب
-src/                            تطبيق SvelteKit
+  import-*.mjs                  استيراد كتاب من مصدره (‏.md أو ‏.rst أو ‏.html أو ‏.pdf)
+  build-content.mjs             توليد src/lib/generated/ لكل الكتب
+  audit-content.mjs             فحص المحتوى وإخراج تقرير JSON
+  check-links.mjs               التحقّق من روابط build/ على القرص
+  lib/                          أدوات مشتركة (مسار النشر، الصور، الرموز، المراجع…)
+  fix-*.mjs repair-*.mjs        إصلاحات بنيوية لحالة وارد من الاستيراد
+  convert-*.mjs recover-*.mjs   تحويل صيغ غير مدعومة واسترجاع معرّفات مفقودة
+src/
+  routes/book/[book]/…          صفحات الكتب والفصول والأقسام
+  lib/generated/                مخرجات البناء (مولَّدة، تُراجَع في git)
+  lib/tour/lessons.json         دروس جولة Go (مولَّدة)
 static/images/                  صور الكتب
 TRANSLATION.md                  دليل الترجمة والمصطلحات
 docs/ROADMAP.md                 خطة التنفيذ الكاملة ومصادر كل كتاب وحالة كل مرحلة
+```
+
+### أدوات الإصلاح
+
+كل أداة في `scripts/fix-*` و`repair-*` و`convert-*` و`recover-*` تعالج أثراً
+معيناً تركه استيراد الملفات (روابط `#` بلا مرساة، حواشٍ بصيغة reST، صيغ LaTeX
+داخل أسوار شيفرة، معرّفات `id` ضائعة). كلها تشترك في نفس الواجهة: `--write`
+للتعديل و`--log` لتفصيل كل تغيير، وتقبل اسم كتاب واحداً أو أكثر، وتقف عند أول
+حالة لا تستطيع حسمها بدل التخمين. وبعد أي تعديل على المحتوى:
+
+```bash
+node scripts/<tool>.mjs --write --log <book>
+pnpm content
+pnpm audit:content && pnpm check:links
 ```
 
 ## الترخيص والإسناد
