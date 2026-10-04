@@ -7,3 +7,4 @@ vite.config.js.timestamp-*
 .env.*
 test-results/
 playwright-report/
+.playwright-mcp/
