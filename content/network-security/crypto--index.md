@@ -62,7 +62,7 @@ Sweet32. [هجمات عيد الميلاد على شيفراتٍ كتليّة ب
 
 ## 3.2 شيفرات المفاتيح السرّية {#secret-key-ciphers}
 
-في شيفرة المفاتيح السرّية (secret-key cipher) يتشارك الطرفان في الاتصال المفتاحَ نفسه.[1](#id2) وبعبارةٍ أخرى، إذا شُفِّرت رسالةٌ بمفتاحٍ معيَّن فإنّ المفتاحَ نفسه هو المطلوب لفكّ تشفيرها. ولو كانت الشيفرةُ المبيَّنة في [الشكل 2](#fig-genericcrypto) شيفرةَ مفاتيحٍ سرّية، لكان مفتاحا التشفير وفكّ التشفير متطابقين. وتُعرف شيفراتُ المفاتيح السرّية أيضًا بشيفرات المفاتيح المتماثلة (symmetric-key ciphers) لأنّ السرّ يتشارك فيه الطرفان. وسننظر لاحقًا إلى البديل، وهو شيفراتُ المفاتيح العامة. (وتُعرف شيفراتُ المفاتيح العامة أيضًا بشيفرات المفاتيح غير المتماثلة (asymmetric-key ciphers)، إذ سنرى قريبًا أنّ الطرفين يستعملان مفاتيحَ مختلفة.)
+في شيفرة المفاتيح السرّية (secret-key cipher) يتشارك الطرفان في الاتصال المفتاحَ نفسه.[^1] وبعبارةٍ أخرى، إذا شُفِّرت رسالةٌ بمفتاحٍ معيَّن فإنّ المفتاحَ نفسه هو المطلوب لفكّ تشفيرها. ولو كانت الشيفرةُ المبيَّنة في [الشكل 2](#fig-genericcrypto) شيفرةَ مفاتيحٍ سرّية، لكان مفتاحا التشفير وفكّ التشفير متطابقين. وتُعرف شيفراتُ المفاتيح السرّية أيضًا بشيفرات المفاتيح المتماثلة (symmetric-key ciphers) لأنّ السرّ يتشارك فيه الطرفان. وسننظر لاحقًا إلى البديل، وهو شيفراتُ المفاتيح العامة. (وتُعرف شيفراتُ المفاتيح العامة أيضًا بشيفرات المفاتيح غير المتماثلة (asymmetric-key ciphers)، إذ سنرى قريبًا أنّ الطرفين يستعملان مفاتيحَ مختلفة.)
 
 وقد أصدر المعهدُ الوطنيّ الأمريكيّ للمعايير والتقنية (U.S. National Institute of Standards and Technology, NIST) معاييرَ لسلسلةٍ من شيفرات المفاتيح السرّية. وكان *معيارُ تشفير البيانات* (Data Encryption Standard, DES) أولها، وقد صمد لعقودٍ قليلةٍ قبل أن يُهمَل.
 
@@ -153,3 +153,5 @@ HMAC = H( (K⊕opad) || H((K⊕ipad) || text) )
 A. Menezes وP. van Oorschot وS. Vanstone. [دليل التشفير التطبيقي](https://cacr.uwaterloo.ca/hac/). CRC Press، 1996.
 
 والآن، بعد أن رأينا بعضَ لبنات التشفير والمصادقة، تتوفّر لدينا الأسسُ لبناء بعض حلولِ الأمن الكاملة. غير أنّنا، قبل الانتقال إلى تلك الحلول، نعالج مسألةَ كيفية حصول المشاركين على المفاتيح في المقام الأول.
+
+[^1]: We use *participants* as a generic term for the endpoints of a communication channel. Depending on the layer of the network stack, a participant might correspond to a server, a process, a mailbox, or some other system abstraction. In the context of security, the communicating parties are often called *principals*, which in turn implies *identity*, and ultimately, an association with a human that can be held accountable. We use the term principal in place of participant when this full meaning is central to the discussion.

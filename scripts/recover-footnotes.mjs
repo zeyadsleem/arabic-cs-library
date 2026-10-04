@@ -13,6 +13,9 @@
  *   only `[1](#footnote-1)` in the prose, so aosabook has 108 dead anchors and
  *   use-the-index-luke has 3. The note bodies are still in the upstream HTML
  *   as `<li id="footnote-N">` inside the page's footnote list.
+ * - Sphinx writes `[1](#id2)` in the prose and keeps the body in
+ *   `<aside class="footnote" id="id2">`, which the same conversion dropped, so
+ *   every footnote in network-security was left dangling.
  *
  * Notes are only restored when the upstream page really defines them, and every
  * rewritten note is parsed back with markdown-it to confirm it produces exactly
@@ -41,6 +44,15 @@ const inlineDefinition = () => /^(\s*)(\d+)\.\s+(.+?)&#160;\[[^\]]*\]\(#fnref:(\
 const asciidocReference = () => /\[(\d+)\]\(#fn:(\d+)\)/g;
 /** `text[1](#footnote-1)` — the reference the HTML conversion left behind. */
 const htmlReference = () => /\[(\d+)\]\(#footnote-(\d+)\)/g;
+/**
+ * `text[1](#id2)` — a Sphinx footnote reference.
+ *
+ * The bracketed number is the note's label; the target is Sphinx's chapter-local
+ * id, which is why the note has to be paired by document order rather than by
+ * id. Sphinx's own caption permalinks are `[](#idN)` with an empty label, so
+ * requiring a number here cannot catch one of those.
+ */
+const sphinxReference = () => /\[(\d+)\]\(#id\d+\)/g;
 
 /** @param {string} markdown @param {(line: string) => string} transform @returns {string} */
 function mapProseLines(markdown, transform) {
@@ -171,6 +183,28 @@ function upstreamNotes(book, section, absolute) {
 }
 
 /**
+ * The note bodies a Sphinx page carries, in document order.
+ *
+ * Each is an `<aside class="footnote" id="idN">` whose leading
+ * `<span class="label">` holds the number and the back-link, so that span is
+ * dropped before the body is read. The ids are chapter-local, so the caller
+ * pairs them with the references by position rather than by id.
+ *
+ * @param {string} book @param {string} section @param {Map<string, string>} absolute @returns {string[]}
+ */
+function sphinxNotes(book, section, absolute) {
+  const notes = [];
+  const source = path.join(root, 'content-src', book, `${section.replace(/--index\.md$/, '')}.html`);
+  if (!fs.existsSync(source)) return notes;
+  for (const aside of parse(fs.readFileSync(source, 'utf8')).querySelectorAll('aside.footnote')) {
+    aside.querySelectorAll('span.label').forEach((span) => span.remove());
+    const body = noteToMarkdown(aside, absolute);
+    if (body) notes.push(body);
+  }
+  return notes;
+}
+
+/**
  * A trailing numbered list that stands in for the note collection.
  *
  * Some translations kept the note bodies but lost the reference wiring, so the
@@ -247,7 +281,9 @@ for (const book of books) {
   for (const section of fs.readdirSync(dir).filter((name) => name.endsWith('.md')).sort()) {
     const file = path.join(dir, section);
     const original = fs.readFileSync(file, 'utf8');
-    if (!asciidocReference().test(original) && !htmlReference().test(original)) continue;
+    if (!asciidocReference().test(original)
+      && !htmlReference().test(original)
+      && !sphinxReference().test(original)) continue;
     if (!endsOutsideFence(original)) { counts.skipped += 1; continue; }
     counts.sections += 1;
 
@@ -268,10 +304,31 @@ for (const book of books) {
 
     // References become markdown-it footnote references, and every note they
     // point at has to be defined — either above or by the upstream page.
+    //
+    // A Sphinx reference is paired with the note at the same position in the
+    // upstream page, because its `#idN` targets are numbered per chapter and
+    // mean nothing on their own.
+    const sphinx = sphinxReference().test(body) ? sphinxNotes(book, section, absolute) : [];
+    const fromSphinx = new Map();
+    if (sphinx.length) {
+      let order = 0;
+      body = mapProseLines(body, (line) => {
+        for (const match of line.matchAll(sphinxReference())) {
+          const note = sphinx[order];
+          order += 1;
+          if (!note) continue;
+          if (fromSphinx.has(match[1])) throw new Error(`${file}: note ${match[1]} is referenced twice`);
+          fromSphinx.set(match[1], note);
+        }
+        return line;
+      });
+    }
+
     const referenced = new Map();
     for (const [pattern, labelOf] of [
       [asciidocReference(), (match) => match[2]],
       [htmlReference(), (match) => match[2]],
+      [sphinxReference(), (match) => match[1]],
     ]) {
       body = mapProseLines(body, (line) => {
         for (const match of line.matchAll(pattern)) {
@@ -295,6 +352,12 @@ for (const book of books) {
     }
 
     const appended = new Map(trailing.notes);
+    for (const [label, note] of fromSphinx) {
+      if (appended.has(label) || defined.has(label)) { counts.inPlace += 1; continue; }
+      assertUsableNote(label, note);
+      appended.set(label, note);
+      counts.restored += 1;
+    }
     for (const label of referenced.keys()) {
       if (appended.has(label) || defined.has(label)) { counts.inPlace += 1; continue; }
       const note = upstream.get(label);

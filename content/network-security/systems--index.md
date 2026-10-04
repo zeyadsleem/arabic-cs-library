@@ -118,7 +118,7 @@ source: https://security.systemsapproach.org/systems.html
 
 وهذا هو الحالُ بشكلٍ متزايد مع الأدوات التي تدعم DevOps السحابي، حيث تُعدّ GitHub وDocker وAnsible وJenkins أمثلة شائعة تستعمل خاصية التنفيذ البعيد في SSH.
 
-وتتألف أحدث نسخة مستقرّة من SSH، وهي الإصدار 2، من ثلاثة بروتوكولات:[1](#id2)
+وتتألف أحدث نسخة مستقرّة من SSH، وهي الإصدار 2، من ثلاثة بروتوكولات:[^1]
 
 - SSH-TRANS، وهو بروتوكول طبقة النقل
 
@@ -341,3 +341,4 @@ source: https://security.systemsapproach.org/systems.html
 
 وعليًا، يعني هذا أنّ VPN تُبنى دائمًا تقريبًا بوصفها نوعًا من الطبقات (overlay) فوق بنيةٍ تحتيةٍ مشتركة.
 
+[^1]: Version 3 of SSH (SSH3) has also been proposed, but it is currently an experimental effort that changes the underlying protocols used by SSH. For example, SSH3 runs on top of QUIC (which is UDP-based) instead of TCP. SSH2 remains the widely adopted standard.
