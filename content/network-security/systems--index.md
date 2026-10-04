@@ -194,7 +194,7 @@ source: https://security.systemsapproach.org/systems.html
 
 وملفّات هذه يُشفَّر عادةً بعبارة مرورٍ سرّية (secret passphrase) للحماية من احتمال اختراق المفتاح الخاص على يد مهاجمٍ يحصل على الملف.
 
-[![_images/f08-14-9780123850591.png](/images/network-security/systems-1-f08-14-9780123850591.webp){#id4}](#id2)
+[![_images/f08-14-9780123850591.png](/images/network-security/systems-1-f08-14-9780123850591.webp){#id4 #fig-ssh-tunnel}](#id2)
 
 الشكل 16. استعمال إعادة توجيه منافذ SSH لتأمين تطبيقاتٍ أخرى قائمة على TCP.[↗](#id4)
 
@@ -290,7 +290,7 @@ source: https://security.systemsapproach.org/systems.html
 
 وأخيرًا، يحمل حقل `AuthenticationData` بيانات المُوثِّق.
 
-[![_images/f08-17-9780123850591.png](/images/network-security/systems-2-f08-17-9780123850591.webp){#id5}](#fig-esp)
+[![_images/f08-17-9780123850591.png](/images/network-security/systems-2-f08-17-9780123850591.webp){#id5 #fig-esp}](#fig-esp)
 
 الشكل 17. صيغة ESP في IPsec.[↗](#id5)
 
@@ -318,7 +318,7 @@ source: https://security.systemsapproach.org/systems.html
 
 والموجّه المستقبِل يفكّ تغليف حزمة IP المحمّلة ويعيد توجيهها إلى وجهتها الحقيقيّة.
 
-[![_images/f08-18-9780123850591.png](/images/network-security/systems-3-f08-18-9780123850591.webp){#id6}](#fig-esptunnelpacket)
+[![_images/f08-18-9780123850591.png](/images/network-security/systems-3-f08-18-9780123850591.webp){#id6 #fig-esptunnelpacket}](#fig-esptunnelpacket)
 
 الشكل 18. حزمة IP يتضمّن في داخلها حزمة IP أخرى مغلَّفة باستخدام ESP في وضع النفق. لاحظ أنّ للحزمتين الداخليّة والخارجيّة عناوين مختلفة.[↗](#id6)
 

@@ -9,8 +9,10 @@
  *
  * The upstream image file name survives as a suffix of the local image path -
  * `_images/singleChannel.png` becomes `/images/aosabook/v1-asterisk-singleChannel.webp` -
- * which is what this script matches on. Only unambiguous one-to-one matches are
- * written; anything else is reported and left alone.
+ * which is what this script matches on. A figure may carry a second identity,
+ * the empty label span Sphinx puts in front of the image, so an image receives
+ * `{#wrapper #label}` when both are known. Only unambiguous one-to-one matches
+ * are written; anything else is reported and left alone.
  *
  * Usage: node scripts/recover-figure-anchors.mjs [--write] [book ...]
  */
@@ -92,6 +94,63 @@ function collectFigureIds(files) {
 }
 
 /**
+ * Labels that sit in front of an image inside the same figure, keyed by the
+ * image's file stem. Sphinx renders an explicit figure name as an empty
+ * `<span id="fig-name">` immediately before the image, which is the id the prose
+ * references, while the caption permalink points at the wrapper id. Labels a
+ * single label claimed by two images are dropped as ambiguous.
+ * @param {string[]} files @returns {Map<string, string>}
+ */
+function collectFigureLabels(files) {
+  const found = new Map();
+  const owners = new Map();
+  for (const file of files) {
+    const document = parse(fs.readFileSync(file, 'utf8'));
+    for (const image of document.querySelectorAll('img')) {
+      const stem = fileStem(image.getAttribute('src') ?? '');
+      if (!stem) continue;
+      for (const label of precedingLabels(image)) {
+        if (found.get(stem) === label) continue;
+        found.set(stem, label);
+        owners.set(label, (owners.get(label) ?? new Set()).add(stem));
+      }
+    }
+  }
+  for (const [label, stems] of owners) {
+    if (stems.size < 2) continue;
+    for (const stem of stems) if (found.get(stem) === label) found.delete(stem);
+  }
+  return found;
+}
+
+/**
+ * Empty `[id]` elements standing immediately in front of an image, looking up
+ * through the ancestors of the image. Scanning stops at the first sibling that
+ * carries text or another image, so section labels never leak onto a figure.
+ * @param {import('node-html-parser').HTMLElement} image @returns {string[]}
+ */
+function precedingLabels(image) {
+  const labels = [];
+  let node = image.parentNode;
+  while (node) {
+    let sibling = node.previousSibling;
+    while (sibling) {
+      if (sibling.nodeType === 1) {
+        if (sibling.querySelector('img') || sibling.text.trim()) break;
+        const id = sibling.getAttribute('id');
+        if (id && labelNamePattern.test(id)) labels.unshift(id);
+      }
+      sibling = sibling.previousSibling;
+    }
+    if (labels.length > 0) return labels;
+    node = node.parentNode;
+  }
+  return labels;
+}
+
+const labelNamePattern = /^[A-Za-z][\w:.-]*$/;
+
+/**
  * Markdown image tokens in both the plain `![alt](path)` form and the wikilink
  * form `![[alt](path)]` several translations use. The anchor belongs directly
  * after the image, inside the wikilink brackets when present.
@@ -102,27 +161,28 @@ const imagePattern = () => /(!\[((?:!?\[.*?\]|[^\][]*))\]\(([^)\s]+)\)(\{[^}]*\}
 /**
  * Resolve one markdown image stem against the upstream figure stems. A local
  * path keeps the upstream name as a `-`/`_` delimited suffix.
- * @param {string} local @param {Map<string, string>} byStem @returns {{id: string, stem: string} | null}
+ * @param {string} local @param {Map<string, string>} byStem @param {Map<string, string>} labels
+ * @returns {{id: string, label: string | null, stem: string} | null}
  */
-function resolveFigure(local, byStem) {
+function resolveFigure(local, byStem, labels) {
   for (const stem of byStem.keys()) {
     if (local === stem || local.endsWith(`-${stem}`) || local.endsWith(`_${stem}`)) {
-      return { id: byStem.get(stem), stem };
+      return { id: byStem.get(stem), label: labels.get(stem) ?? null, stem };
     }
   }
   return null;
 }
 
 /**
- * @param {string} markdown @param {Map<string, string>} byStem
- * @returns {{markdown: string, added: {id: string, stem: string}[], skipped: string[]}}
+ * @param {string} markdown @param {Map<string, string>} byStem @param {Map<string, string>} labels
+ * @returns {{markdown: string, added: {id: string, label: string | null, stem: string}[], skipped: string[]}}
  */
-function applyAnchors(markdown, byStem) {
+function applyAnchors(markdown, byStem, labels) {
   const added = [];
   const skipped = [];
   const uses = new Map();
   for (const match of markdown.matchAll(imagePattern())) {
-    const resolved = resolveFigure(fileStem(match[3]), byStem);
+    const resolved = resolveFigure(fileStem(match[3]), byStem, labels);
     if (resolved) uses.set(resolved.stem, (uses.get(resolved.stem) ?? 0) + 1);
   }
   // A repeated figure keeps a single id, on its first occurrence, so every
@@ -132,23 +192,29 @@ function applyAnchors(markdown, byStem) {
     let cursor = 0;
     let result = '';
     for (const match of text.matchAll(imagePattern())) {
-      const resolved = resolveFigure(fileStem(match[3]), byStem);
+      const resolved = resolveFigure(fileStem(match[3]), byStem, labels);
       if (!resolved) continue;
       const count = uses.get(resolved.stem);
       if (count > 1 && placed.has(resolved.stem)) continue;
       if (count > 1) skipped.push(`${resolved.stem} (${count} uses, anchored on the first)`);
       placed.add(resolved.stem);
       const attributes = match[4];
-      if (attributes && /#[\w:.-]+/.test(attributes)) continue;
-      const anchor = attributes
-        ? `{#${resolved.id} ${attributes.slice(1, -1).trim()}}`
-        : `{#${resolved.id}}`;
+      const wanted = [resolved.id, ...(resolved.label ? [resolved.label] : [])];
+      const present = attributes ? (attributes.match(/#[A-Za-z][\w:.-]*/g) ?? []).map((id) => id.slice(1)) : [];
+      const missing = wanted.filter((id) => !present.includes(id));
+      if (missing.length === 0) continue;
+      const classes = attributes ? attributes.slice(1, -1).replace(/#[\w:.-]+/g, ' ').trim() : '';
+      const ids = [...present, ...missing].map((id) => `#${id}`).join(' ');
+      const anchor = classes ? `{${ids} ${classes}}` : `{${ids}}`;
+      // `match[1]` still carries the attribute group the image had, so the new
+      // anchor has to be written in its place rather than appended to it.
       const wikilink = match[1].endsWith(']');
-      const image = match[1].slice(0, wikilink ? -1 : undefined);
+      const token = match[1].slice(0, wikilink ? -1 : undefined);
+      const image = token.slice(0, token.length - (attributes?.length ?? 0));
       const start = match.index;
       result += text.slice(cursor, start) + image + anchor + (wikilink ? ']' : '');
       cursor = start + match[0].length;
-      added.push({ id: resolved.id, stem: resolved.stem });
+      added.push({ id: resolved.id, label: resolved.label, stem: resolved.stem });
     }
     return result + text.slice(cursor);
   });
@@ -177,10 +243,12 @@ for (const book of books) {
     if (sources.length === 0) continue;
     const byStem = collectFigureIds(sources);
     if (byStem.size === 0) continue;
-    const result = applyAnchors(fs.readFileSync(file, 'utf8'), byStem);
+    const labels = collectFigureLabels(sources);
+    const result = applyAnchors(fs.readFileSync(file, 'utf8'), byStem, labels);
     if (result.added.length === 0) continue;
     for (const entry of result.added) {
-      if (!result.markdown.includes(`{#${entry.id}}`) && !result.markdown.includes(`{#${entry.id} `)) {
+      const pattern = new RegExp(`\\{#${entry.id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[ #}]`);
+      if (!pattern.test(result.markdown)) {
         failures.push(`${path.relative(root, file)}: anchor for ${entry.stem} missing after rewrite`);
       }
     }

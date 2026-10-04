@@ -86,7 +86,10 @@ export function installSourceAttributes(markdown) {
     const attributes = tail.match(/^\{((?:\s*[.#][\w:.-]+\s*)+)\}/);
     const match = label || attributes;
     if (!match) return false;
-    const id = label?.[1] || attributes[1].match(/#([\w:.-]+)/)?.[1];
+    // One target may carry several identities: Sphinx figures are reachable both
+    // through the wrapper id of the `<figure>` and through the label span in
+    // front of the image, and prose links use the second one.
+    const ids = label ? [label[1]] : (attributes[1].match(/#([\w:.-]+)/g) ?? []).map((id) => id.slice(1));
     if (!silent && attributes && /\.(?:ref|eqref)\b/.test(attributes[1]) && state.tokens[state.tokens.length - 1]?.type === 'link_close') {
       const opening = state.tokens.findLastIndex((token) => token.type === 'link_open');
       const reference = state.tokens.slice(opening + 1, -1).filter((token) => token.type === 'text').map((token) => token.content).join('');
@@ -94,12 +97,16 @@ export function installSourceAttributes(markdown) {
         state.tokens[opening].attrSet('data-source-reference', reference);
       }
     }
-    if (!silent && id) {
+    if (!silent) {
       const previous = state.tokens[state.tokens.length - 1];
-      if (previous?.type === 'image') previous.attrSet('id', id);
-      else {
+      let index = 0;
+      if (ids.length > 0 && previous?.type === 'image') {
+        previous.attrSet('id', ids[0]);
+        index = 1;
+      }
+      for (; index < ids.length; index += 1) {
         const token = state.push('html_inline', '', 0);
-        token.content = `<span class="content-anchor" id="${markdown.utils.escapeHtml(id)}"></span>`;
+        token.content = `<span class="content-anchor" id="${markdown.utils.escapeHtml(ids[index])}"></span>`;
       }
     }
     state.pos += match[0].length;

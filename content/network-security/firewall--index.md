@@ -20,7 +20,7 @@ source: https://security.systemsapproach.org/firewall.html
 
 ويعتمد الأمنُ القائمُ على جدار الحماية على وجود الجدار في نوعٍ ما من نقاط الاختناق (choke-point). وينبغي ألّا تكون هناك طريقةٌ لتجاوز الجدار عبر بواباتٍ أخرى، أو مساراتٍ بديلة مثل اتصالاتٍ لاسلكيةٍ أو اتصالاتٍ هاتفيّة. ورغم أنّ مهمةَ جدار الحماية هي حجزُ الحركة المحتملةَ الضارّة («النار») وفق تعريفٍ ما للضرر، فإنّ قدرًا كبيرًا من الحركة يمرّ عبر جدار الحماية. ومن الإعدادات الشائعة لجدار الحماية أن يكون «مغلقًا افتراضيًّا» (default closed): فهو يحجب الحركة افتراضيًّا ما لم يُسمح صراحةً لها بالعبور. فمثلًا، قد يرشّح كلَّ الرسائل الواردة إلّا الموجَّهة إلى مجموعةٍ معيّنةٍ من عناوين IP وإلى أرقامِ منافذ TCP معيّنة. ونظرًا لتعقيد البيئات التي تُستعمل فيها جدرانُ الحماية، حيث قد يوجد آلافُ عناوين IP ومئاتُ التطبيقات قيد الاستعمال، فإنّ ضبطَ جدران الحماية يصير هو الآخر معقّدًا في الغالب.
 
-[![_images/f08-20-9780123850591.png](/images/network-security/firewall-0-f08-20-9780123850591.webp){#id1}](/images/network-security/firewall-0-f08-20-9780123850591.webp)
+[![_images/f08-20-9780123850591.png](/images/network-security/firewall-0-f08-20-9780123850591.webp){#id1 #fig-firewall}](/images/network-security/firewall-0-f08-20-9780123850591.webp)
 
 الشكل 33. جدارُ حمايةٍ يرشّح الحزمَ المتدفّقةَ بين موقعٍ وبقيةِ الإنترنت.[](#id1)
 
@@ -125,7 +125,7 @@ source: https://security.systemsapproach.org/firewall.html
 
 وأخيرًا، هناك عبءُ إدارةٍ كبيرٌ في دعم جدار حمايةٍ داخليٍّ كهذا. فلنفترض أنّنا نبدأ ببعض السياسات الافتراضية المعقولة التي ترفض كلَّ تدفّقات الحركة إلّا تلك المسموح بها صراحةً. وكلُّ تطبيقٍ جديدٍ يُنشر سيتطلّب إنشاءَ قاعدةِ جدار حمايةٍ جديدةٍ للسماح بمرور الحركة بين الآلات المكوّنة لذلك التطبيق. وإذا نُقلت آلةٌ افتراضية، فقد نحتاج إلى تحديثِ التوجيه وقواعدِ جدار الحماية لضمان استمرار ترشيح الحركة على الوجه الصحيح. وقد أدّت كلُّ هذه الاعتبارات إلى قلّةِ استعمال جدران الحماية الداخلية.
 
-[![_images/single-firewall.png](/images/network-security/firewall-1-single-firewall.webp){#id2}](/images/network-security/firewall-1-single-firewall.webp)
+[![_images/single-firewall.png](/images/network-security/firewall-1-single-firewall.webp){#id2 #fig-dc-firewall}](/images/network-security/firewall-1-single-firewall.webp)
 
 الشكل 34. جدارُ حمايةٌ واحدٌ في مركز بياناتٍ مجهَّزٍ بالافتراضية.[](#id2)
 
@@ -133,7 +133,7 @@ source: https://security.systemsapproach.org/firewall.html
 
 ومن الآثارِ الجانبية المهمّة لتوزيع خدمةٍ بهذه الطريقة انعدامُ عنقِ الزجاجة المركزي. فكلّما أُضيف خادمٌ آخر إلى مضيفٍ لاستضافة عددٍ من الآلات الافتراضية، وُجد مبدّلٌ افتراضيٌّ جديدٌ له قدرةٌ على إجراء قدرٍ من المعالجة الموزّعة. وهذا يعني أنّ توسيعَ كمّيةِ الترشيح بجدران الحماية على هذا النحو يبقى بسيطًا نسبيًّا.
 
-[![_images/distributed-firewall.png](/images/network-security/firewall-2-distributed-firewall.webp){#id3}](/images/network-security/firewall-2-distributed-firewall.webp)
+[![_images/distributed-firewall.png](/images/network-security/firewall-2-distributed-firewall.webp){#id3 #fig-dist-firewall}](/images/network-security/firewall-2-distributed-firewall.webp)
 
 الشكل 35. يُنفَّذ جدارُ حمايةٍ موزَّعٌ بوصفه جزءًا من المبدّل الافتراضي في كلّ مضيفٍ في مركز البيانات.[](#id3)
 
