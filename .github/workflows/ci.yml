@@ -9,6 +9,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
         run: pnpm content
 
       - name: The committed artifacts must match what the generators produce
-        run: git diff --exit-code -- src/lib/generated src/lib/tour
+        run: git diff --exit-code -- content/frontend-architecture content/frontend-architecture-structure.json src/lib/generated src/lib/tour
 
       - name: Audit the rendered sections
         run: pnpm audit:content
@@ -41,3 +44,12 @@ jobs:
 
       - name: Every internal link in the built site must resolve
         run: pnpm check:links
+
+      - name: Publish the checked production build to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          enable_jekyll: false
