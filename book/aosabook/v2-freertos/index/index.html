@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -71,7 +71,7 @@
 </ul>
 <h3 id="اعتبارات-العتاد">اعتبارات العتاد</h3>
 <p>تقع طبقة FreeRTOS المستقلة عن العتاد فوق طبقة معتمدة على العتاد. وهذه الطبقة المعتمدة على العتاد تعرف كيف تتحدّث مع أي بنية شرائح تختارها. ويعرض <a href="#fig.freertos.layers">الشكل 3.1</a> طبقات FreeRTOS.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-layers.webp" alt=""> الشكل 3.1: طبقات برنامج FreeRTOS</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-layers.webp" alt="" id="fig.freertos.layers"> الشكل 3.1: طبقات برنامج FreeRTOS</p>
 <p>يأتي FreeRTOS مع كامل الشيفرة المستقلة عن العتاد والشيفرة المعتمدة عليه التي ستحتاجها لتشغيل نظام ما. وهو يدعم مترجمين كثيرين (CodeWarrior وGCC وIAR وغيرها) وكذلك بُنى معالجات كثيرة (ARM7 وARM Cortex-M3 ومتنوّع من شرائح PIC وSilicon Labs 8051 وx86 وغيرها). راجع موقع FreeRTOS للاطلاع على قائمة البنى والمترجمين المدعومة.</p>
 <p>صُمّم FreeRTOS ليكون قابلًا للتهيئة بدرجة عالية. إذ يمكن بناؤه كنظام تشغيل وقت حقيقي مجرّد (bare-bones RTOS) على معالج واحد يدعم مهمام قليلة فقط، أو يمكن بناؤه كوحش متعدّد النوى عالي الوظائف مع TCP/IP ونظام ملفات وUSB.</p>
 <p>تُحدَّد خيارات التهيئة في الملف <code>FreeRTOSConfig.h</code> عبر ضبط تعليمات <code>#define</code> المختلفة. فسرعة الساعة وحجم الكومة والأقفال المتبادلة ومجموعات فرعية من واجهة البرمجة كلها قابلة للتهيئة في هذا الملف، إلى جانب خيارات كثيرة أخرى. وفيما يلي أمثلة قليلة تضبط الحدّ الأقصى من مستويات أولوية المهام، وتردد المعالج، وتردد نبض النظام، وأصغر حجم للمكدس، وحجم الكومة الكلّي:</p>
@@ -117,7 +117,7 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyP
 <p>أصبح <code>pxCurrentTCB</code> الآن يشير إلى المهمة الأعلى أولويةً، وعندما تعود <code>vTaskSwitchContext()</code> تبدأ الشيفرة المعتمدة على العتاد في تشغيل تلك المهمة.</p>
 <p>تلك التسعة أسطر من الشيفرة هي قلب FreeRTOS المطلق. أما الأسطر الـ8900 الأخرى فأكثر من موجودة لضمان أن تكون تلك التسعة أسطر كل ما يلزم لإبقاء المهمة الأعلى أولويةً قيد التشغيل.</p>
 <p>‏<a href="#fig.freertos.ready">الشكل 3.2</a> صورة من مستوى عالٍ لما تبدو عليه قائمة الجاهزية. وفي هذا المثال ثلاثة مستويات للأولوية، فيها مهمة واحدة ذات أولوية 0، ولا مهام ذات أولوية 1، وثلاث مهام ذات أولوية 2. وهذه الصورة دقيقة لكنها غير كاملة؛ إذ ينقصها بعض التفاصيل التي سنستكملها لاحقًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-basic-ready-list.webp" alt=""> الشكل 3.2: رؤية أساسية لقائمة جاهزية FreeRTOS</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-basic-ready-list.webp" alt="" id="fig.freertos.ready"> الشكل 3.2: رؤية أساسية لقائمة جاهزية FreeRTOS</p>
 <p>والآن وقد فرغنا من النظرة العامة على مستوى عالٍ، فلنعُق إلى التفاصيل. سننظر إلى بُنى بيانات FreeRTOS الثلاث الرئيسية: المهام، والقوائم، والطوابير.</p>
 <h2 id="34-المهام">3.4. المهام</h2>
 <p>المهمة الأساسية لجميع أنظمة التشغيل هي تشغيل مهام المستخدم وتنسيقها. ومثل كثير من أنظمة التشغيل، فإن وحدة العمل الأساسية في FreeRTOS هي المهمة. ويستخدم FreeRTOS كتلة تحكّم المهمة (Task Control Block, TCB) لتمثيل كل مهمة.</p>
@@ -195,7 +195,7 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyP
 <p>بعد إتمام أي تهيئة لأول مرة، تُضاف المهمة الجديدة إلى قائمة الجاهزية عند مستوى أولويتها المحدَّد. ثم تُعاد المقاطعات إلى التشغيل ويكتمل إنشاء المهمة الجديدة.</p>
 <h2 id="35-القوائم">3.5. القوائم</h2>
 <p>بعد المهام، تأتي القائمة (list) بوصفها بنية بيانات FreeRTOS الأكثر استخدامًا. ويستخدم FreeRTOS بنية القائمة لمتابعة المهام لأغراض الجدولة، وكذلك لتنفيذ الطوابير.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list.webp" alt=""> الشكل 3.3: رؤية كاملة لقائمة جاهزية FreeRTOS</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list.webp" alt="" id="fig.freertos.list"> الشكل 3.3: رؤية كاملة لقائمة جاهزية FreeRTOS</p>
 <p>قائمة FreeRTOS هي قائمة مرتبطة مزدوجة دورية (circular doubly linked list) قياسية مع إضافتين مثيرتين للاهتمام. وإليك عنصرًا في القائمة:</p>
 <pre><code>struct xLIST_ITEM
 {
@@ -238,7 +238,7 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyP
 }
 </code></pre>
 <p>غالبًا ما يحتاج FreeRTOS إلى الوصول إلى قائمة عبر عدة حلقات for() وwhile() وكذلك عبر نداءات الدوال، ولهذا يستخدم دوال قوائم تُشغِّل المؤشر <code>pxIndex</code> ليمشي على القائمة. وتفعل الدالة <code>listGET_OWNER_OF_NEXT_ENTRY()</code> ما هو <code>pxIndex = pxIndex-&gt;pxNext;</code> وتعيد <code>pxIndex</code>. (|:- بالطبع أنها تُجري كشف الالتفاف الصحيح حول نهاية القائمة أيضًا.) بهذه الطريقة تتحمّل القائمة نفسها مسؤولية تتبّع «أين أنت» أثناء المرور عليها باستخدام <code>pxIndex</code>، مما يتيح لبقية FreeRTOS ألّا تقلق بشأن ذلك.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list-2.webp" alt=""> الشكل 3.4: رؤية كاملة لقائمة جاهزية FreeRTOS بعد نبضة مؤقّت النظام</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-freertos-freertos-figures-full-ready-list-2.webp" alt="" id="fig.freertos.aftertick"> الشكل 3.4: رؤية كاملة لقائمة جاهزية FreeRTOS بعد نبضة مؤقّت النظام</p>
 <p>التشغيل الذي يجري على القائمة <code>pxReadyTasksLists[]</code> في <code>vTaskSwitchContext()</code> مثال جيّد على كيفية استخدام <code>pxIndex</code>. لنفترض لدينا مستوى أولوية واحد فقط هو الأولوية 0، وهناك ثلاث مهام عند ذلك المستوى. وهذا يشبه صورة قائمة الجاهزية الأساسية التي نظرنا إليها سابقًا، لكن هذه المرة سنشمل جميع بُنى البيانات والحقول.</p>
 <p>وكما ترى في <a href="#fig.freertos.list">الشكل 3.3</a>، فإن <code>pxCurrentTCB</code> يدلّ على أننا نُشغّل حاليًا المهمة B. وفي المرة التالية التي تعمل فيها <code>vTaskSwitchContext()</code> فإنها تنادي <code>listGET_OWNER_OF_NEXT_ENTRY()</code> للحصول على المهمة التالية المراد تشغيلها. وتستخدم هذه الدالة <code>pxIndex-&gt;pxNext</code> لتحدّد أن المهمة التالية هي المهمة C، وأصبح الآن <code>pxIndex</code> يشير إلى عنصر القائمة الخاص بالمهمة C، ويشير <code>pxCurrentTCB</code> إلى TCB الخاص بالمهمة C، كما هو مبيّن في <a href="#fig.freertos.aftertick">الشكل 3.4</a>.</p>
 <p>لاحظ أن كل كائن من نوع <code>struct xListItem</code> هو في الحقيقة كائن <code>xGenericListItem</code> الخاص بـTCB المرتبط به.</p>
@@ -324,7 +324,7 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyP
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -332,8 +332,8 @@ listGET_OWNER_OF_NEXT_ENTRY( pxCurrentTCB, &amp;( pxReadyTasksLists[ uxTopReadyP
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

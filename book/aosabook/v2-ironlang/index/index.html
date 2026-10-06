@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -99,9 +99,9 @@
 </code></pre>
 <p>لا يملك مصرّف IronPython <em>أي فكرة</em> عمّا قد يفعله هذا حين يصطدم به، لأنه لا يعرف نوعَي <code>x</code> و<code>y</code>، وحتى لو كان يعرفهما لكانت قدرة <code>x</code> و<code>y</code> على الجمع قد تتغيّر في وقت التشغيل على أي حال. (من حيث المبدأ يمكن أن تتغيّر، لكن لا IronPython ولا IronRuby يقومان بالاستدلال على الأنواع). وبدلًا من إصدار شيفرة IL لجمع الأرقام، يُصدر IronPython <em>موقع استدعاء</em> (call site) يُحلّ في وقت التشغيل.</p>
 <p>موقع الاستدعاء هو عنصر نائب لعملية يُقرّر في وقت التشغيل؛ وهي منفَّذة كنسخ من الصنف <code>System.Runtime.CompilerServices.CallSite</code>. وفي لغة ديناميكية مثل Ruby أو Python، لدى كل عملية تقريبًا مكوّن ديناميكي؛ وهذه العمليات الديناميكية ممثَّلة في أشجار التعبيرات كعقد <code>DynamicExpression</code>، ويعرف مصرّف شجرة التعبيرات كيف يحوّلها إلى موقع استدعاء. وحين يُنشأ موقع استدعاء، فإنه لا يعرف بعد كيف يؤدّي العملية المطلوبة؛ غير أنه يُنشأ مع نسخة من <em>مُصنِّف موقع الاستدعاء</em> المناسب، وهو مُخصَّص للغة المستخدَمة، ويحتوي على كل المعلومات الضرورية عن كيفية تنفيذ العملية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-callsiteclass.webp" alt=""> الشكل 8.1: مخطط أصناف CallSite</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-callsiteclass.webp" alt="" id="fig.ironlang.callsite"> الشكل 8.1: مخطط أصناف CallSite</p>
 <p>وستكون لكل لغة مُصنِّف موقع استدعاء مختلف لكل عملية، وغالبًا ما يعرف المُصنِّفات طرقًا كثيرة مختلفة لتنفيذ العملية بحسب الوسائط المُمرَّرة إلى موقع الاستدعاء. غير أن توليد هذه القواعد مكلف (ولا سيما تصريفها إلى مُفوِّض للتنفيذ، وهو ما يستدعي استدعاء ‎.NET JIT)، لذا يملك موقع الاستدعاء <em>ذاكرة مؤقتة لمواقع الاستدعاء (call site cache)</em> متعددة المستويات تخزّن القواعد التي أُنشئت بالفعل لاستخدامها لاحقًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-callsites.webp" alt=""> الشكل 8.2: مخطط انسيابي لمواقع الاستدعاء CallSite</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-callsites.webp" alt="" id="fig.ironlang.flowchart"> الشكل 8.2: مخطط انسيابي لمواقع الاستدعاء CallSite</p>
 <p>المستوى الأول، L0، هو الخاصية <code>CallSite.Target</code> الموجودة على نسخة موقع الاستدعاء نفسها. وهي تخزّن قاعدة الاستخدام الأحدث لموقع الاستدعاء هذا؛ فبالنسبة إلى عدد هائل من مواقع الاستدعاء، لن يحتاج هذا إلى أكثر من ذلك أبدًا، إذ لا تُستدعى إلا بمجموعة واحدة من أنواع الوسائط. ويمتلك موقع الاستدعاء ذاكرة مؤقتة أخرى، L1، تخزّن 10 قواعد إضافية. فإذا لم تكن <code>Target</code> صالحة لهذا الاستدعاء (مثلًا إذا اختلفت أنواع الوسائط)، فإن موقع الاستدعاء يفحص أولًا ذاكرته المؤقتة للقواعد ليرى ما إذا كان قد أنشأ المُفوِّض المناسب من استدعاء سابق، فيعيد استخدام تلك القاعدة بدلًا من إنشاء قاعدة جديدة.</p>
 <p>وتخزين القواعد في الذاكرة المؤقتة تحكمه المدة التي يستغرقها تصريف قاعدة جديدة فعليًا مقارنةً بالمدة التي يستغرقها فحص القواعد الموجودة. وبصورة تقريبية، يستغرق ‎.NET نحو 10 نانوثانية لتنفيذ فحص نوع على متغيّر (وفحص دالة ثنائية يستغرق 20 نانوثانية، إلخ)، وهذا هو أكثر أنواع مسندات القواعد شيوعًا. أما تصريف دالة بسيطة لإضافة الأعداد المزدوجة، من جهة أخرى، فيستغرق نحو 80 µث، أي ثلاثة مراتب طولًا أطول. وحجم الذاكرات المؤقتة محدود لمنع إهدار الذاكرة بتخزين كل قاعدة تُستخدم عند موقع استدعاء؛ فبالنسبة إلى عملية جمع بسيطة، يحتاج كل تنويعة إلى نحو 1 كيلوبايت من الذاكرة. غير أن التنميط أظهر أن عددًا ضئيلًا جدًا من مواقع الاستدعاء تجاوزت 10 تنويعات في أي وقت.</p>
 <p>وأخيرًا، هناك ذاكرة L2 المؤقتة، وهي مخزَّنة على نسخة المُصنِّف نفسها. وقد تحمل نسخة المُصنِّف المرتبطة بموقع استدعاء بعض المعلومات الإضافية التي تجعلها خاصة بهذا الموقع، لكن عددًا كبيرًا من مواقع الاستدعاء لا تتميّز بأي شيء ويمكن أن تتشارك نسخة المُصنِّف نفسها. فعلى سبيل المثال، في بايثون، القواعد الأساسية للجمع واحدة في أنحاء البرنامج كلها؛ فالمتوقف عند نوعَي الطرفين على جانبي <code>+</code>، لا شيء غير ذلك. ويمكن لعمليات الجمع جميعها في البرنامج أن تتشارك المُصنِّف نفسه، وإذا أخفقت الذاكرتان L0 وL1 معًا، فتحتوي الذاكرة L2 على عدد أكبر بكثير من القواعد الحديثة (128) مجموعة من أنحاء البرنامج كلها. وحتى لو كان موقع استدعاء في تنفيذه الأول، فهناك احتمال جيد أن يجد قاعدة مناسبة في الذاكرة L2. ولضمان أن يعمل هذا بأقصى فعالية، يملك IronPython وIronRuby كليهما مجموعة من نسخ المُصنِّفات المعيارية (canonical) المستخدَمة في العمليات الشائعة كـ الجمع.</p>
@@ -128,7 +128,7 @@
 </ul>
 <p>ومعًا، ينبغي أن تكون هذه العمليات كافية لتنفيذ نموذج كائنات أي لغة تقريبًا.</p>
 <p>ولأن CLR مُنمَّط ساكنًا بطبيعته، فلا بدّ من أن تظل كائنات اللغات الديناميكية ممثَّلة بأصناف ساكنة. والتقنية المعتادة هي توفير صنف ساكن مثل <code>PythonObject</code> وجعل كائنات بايثون الفعلية نسخًا من هذا الصنف أو من أصنافه المشتقّة. ولأسباب تتعلق بالتكامل والأداء، فإن آلية DLR أعقد بكثير. فبدلًا من التعامل مع كائنات خاصة بالغة، يتعامل DLR مع <em>الكائنات الوصفية (meta-objects)</em>، وهي أصناف مشتقّة من <code>System.Dynamic.DynamicMetaObject</code> ولها طرق للتعامل مع كل الرسائل السابقة. ولكل لغة أصنافها المشتقّة الخاصة من <code>DynamicMetaObject</code> التي تنفّذ نموذج كائنات تلك اللغة، مثل <code>MetaPythonObject</code> في IronPython. كما أن الأصناف الوصفية لها أصناف خرسانية مقابلة تنفّذ واجهة <code>System.Dynamic.IDynamicMetaObjectProtocol</code>، وهي الطريقة التي يتعرّف بها DLR على الكائنات الديناميكية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-idmop.webp" alt=""> الشكل 8.3: مخطط أصناف IDMOP</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-ironlang-idmop.webp" alt="" id="fig.ironlang.class"> الشكل 8.3: مخطط أصناف IDMOP</p>
 <p>ومن صنف ينفّذ <code>IDynamicMetaObjectProtocol</code>، يستطيع DLR الحصول على <code>DynamicMetaObject</code> عبر استدعاء <code>GetMetaObject()</code>. ويوفّر هذا <code>DynamicMetaObject</code> من اللغة، وينفّذ دوال الربط التي يتطلبها ذلك الكائن. ويحمل كل <code>DynamicMetaObject</code> أيضًا قيمة ونوع الكائن الأساسي، إن كانا متاحَين. وأخيرًا، يخزّن <code>DynamicMetaObject</code> شجرة تعبيرات تمثّل موقع الاستدعاء حتى تلك اللحظة، وأي قيود على ذلك التعبير، على نحو شبيه بالمُصنِّفات لمواقع الاستدعاء.</p>
 <p>وحين يصرّف DLR استدعاءَ دالة على صنف مُعرَّف من المستخدم، فإنه ينشئ أولًا موقع استدعاء (أي نسخة من الصنف <code>CallSite</code>). ويبدأ موقع الاستدعاء عملية الربط على النحو الموصوف أعلاه في قسم «مواقع الاستدعاء الديناميكية»، مما ينتهي به الأمر إلى استدعاء <code>GetMetaObject()</code> على نسخة من <code>OldInstance</code>، وهي تُعيد <code>MetaOldInstance</code>. (ولدى Python أصناف بالنمط القديم وأصناف بالنمط الجديد، لكن ذلك ليس ذا صلة هنا.) بعد ذلك، يُستدعى مُصنِّف (<code>PythonGetMemberBinder.Bind()</code>)، الذي يستدعي بدوره <code>MetaOldInstance.BindGetMember()</code>؛ وهو يُعيد <code>DynamicMetaObject</code> جديدًا يصف كيفية البحث عن اسم الدالة على الكائن. ثم يُستدعى مُصنِّف آخر، وهو <code>PythonInvokeBinder.Bind()</code>، فيستدعي <code>MetaOldInstance.BindInvoke()</code>، ويغلّف <code>DynamicMetaObject</code> الأول بأخر يمثّل كيفية استدعاء الدالة التي جرى البحث عنها. ويشمل ذلك الكائن الأصلي، وشجرة التعبيرات الخاصة بالبحث عن اسم الدالة، و<code>DynamicMetaObject</code>s تمثّل وسائط الدالة.</p>
 <p>وبعد أن يُبنى <code>DynamicMetaObject</code> الأخير في تعبير ما، تُستخدم شجرة تعبيراته وقيوده لبناء مُفوِّض يُعاد بعد ذلك إلى موقع الاستدعاء الذي بدأ عملية الربط. ومن هناك يمكن تخزين الشيفرة في الذاكرات المؤقتة لمواقع الاستدعاء، مما يجعل العمليات على الكائنات في سرعة الاستدعاءات الديناميكية الأخرى، وقريبة جدًا من سرعة الاستدعاءات الساكنة.</p>
@@ -158,7 +158,7 @@
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -166,8 +166,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

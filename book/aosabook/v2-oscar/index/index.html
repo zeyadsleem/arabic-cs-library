@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -120,13 +120,13 @@
 <h3 id="التصميم">التصميم</h3>
 <p>تصل بيانات Integrator من جميع أنظمة EMR المتصلة في أوقات مجدولة، وبمجرد وصولها إلى هناك يستطيع نظام EMR آخر طلب تلك البيانات. ومع ذلك، لا يُخزَّن أيٌّ من بيانات Integrator تخزينًا دائمًا—يمكن محو قاعدة بياناته وإعادة بنائها من بيانات العملاء.</p>
 <p>تُعدّ مجموعة البيانات المُرسَلة مهيّأةً بشكل فردي في كل نسخة OSCAR متصلة بـ Integrator بعينه، باستثناء الحالات التي يجب فيها إرسال قاعدة بيانات المرضى بأكملها إلى خادم Integrator؛ فلا تُرسَل سوى سجلات المرضى التي شوهدت منذ الدفع السابق إلى الخادم. والعملية ليست تمامًا كتحديث الفروق (delta patching)، لكنها قريبة منه.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratoroscar.webp" alt=""> الشكل 16.1: تبادل البيانات بين نسخ OSCAR و Integrator</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratoroscar.webp" alt="" id="fig.oscar.integrator"> الشكل 16.1: تبادل البيانات بين نسخ OSCAR و Integrator</p>
 <p>ولنفصل قليلًا في تفاصيل طريقة عمل Integrator من خلال مثال: عيادة بعيدة معاينة مريضًا من عيادة أخرى. وحين تريد تلك العيادة الوصول إلى سجل المريض، يجب أن تكون العيادتان قد تّصلتا من قبل بخادم Integrator نفسه. ويمكن لموظف الاستقبال أن يبحث في Integrator عن المريض البعيد (بالاسم، وبتاريخ الميلاد أو الجنس اختياريًا) فيجد سجله مخزَّنًا على الخادم. ثم يبدأ في نسخ مجموعة محدودة من المعلومات الديموغرافية للمريض، ثم يتحقّق مع المريض مرتين للتأكّد من موافقته على استرجاع سجله عبر استكمال استمارة موافقة. وبعد إتمامها، سيقدّم خادم Integrator كل ما يعرفه Integrator عن ذلك المريض—الملاحظات والوصفات الطبية والحساسية واللقاحات والمستندات، وهكذا. وتُخزَّن هذه البيانات في ذاكرة التخزين المؤقّت محليًا كي لا يضطر OSCAR المحلي إلى إرسال طلب إلى Integrator في كل مرة يريد فيها رؤية هذه البيانات، غير أن الذاكرة المؤقّتة المحلية تنتهي صلاحيتها كل ساعة.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratorupload.webp" alt=""> الشكل 16.2: تُرسَل المعلومات الديموغرافية وسائر البيانات المرتبطة بها إلى Integrator أثناء دفع بيانات من العيادة الأصلية. قد لا يكون السجل الموجود على Integrator تمثيلًا للسجل الكامل من العيادة الأصلية، إذ يمكن لـ OSCAR أن يختار عدم إرسال كل بيانات المريض.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratorupload.webp" alt="" id="fig.oscar.datatransfer"> الشكل 16.2: تُرسَل المعلومات الديموغرافية وسائر البيانات المرتبطة بها إلى Integrator أثناء دفع بيانات من العيادة الأصلية. قد لا يكون السجل الموجود على Integrator تمثيلًا للسجل الكامل من العيادة الأصلية، إذ يمكن لـ OSCAR أن يختار عدم إرسال كل بيانات المريض.</p>
 <p>بعد التهيئة الأولية لمريض بعيد عبر نسخ بياناته الديموغرافية إلى OSCAR المحلي، يُعدّ ذلك المريض كأي مريض آخر في النظام. وتُوسَم كل البيانات البعيدة المسترجعة من Integrator على هذا النحو (وتُدوَّن العيادة التي جاءت منها)، لكنها لا تُخزَّن إلا مؤقّتًا على OSCAR المحلي. وأي بيانات محلية يُسجَّلها النظام تُسجَّل تمامًا مثل أي بيانات مريض أخرى—تُضاف إلى سجل المريض وتُرسَل إلى Integrator—لكنها لا تُخزَّن بشكل دائم على أي جهاز بعيد.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratordemodownload.webp" alt=""> الشكل 16.3: يطلب OSCAR البعيد البيانات من Integrator بطلب سجل مريض بعينه. ويرسل خادم Integrator المعلومات الديموغرافية فقط، وهي مخزَّنة بشكل دائم على OSCAR البعيد.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratordemodownload.webp" alt="" id="fig.oscar.request"> الشكل 16.3: يطلب OSCAR البعيد البيانات من Integrator بطلب سجل مريض بعينه. ويرسل خادم Integrator المعلومات الديموغرافية فقط، وهي مخزَّنة بشكل دائم على OSCAR البعيد.</p>
 <p>وهذا له دلالة مهمّة إلى حدٍّ كبير، ولا سيما فيما يتعلق بموافقة المريض وكيفية تدخلها في تصميم Integrator. فلنفترض أن مريضًا يزور طبيبًا بعيدًا ويرضى بأن يتيح له ذلك الطبيب الوصول إلى سجله، لكن بشكل مؤقّت فقط. وبعد زيارته، يستطيع سحب موافقته لتلك العيادة من رؤية سجل ذلك المريض، وفي المرة التالية التي تفتح فيها تلك العيادة ملف المريض لن يجدوا هناك أي بيانات (باستثناء أي بيانات سُجّلت محليًا). وهذا يمنح المريض في نهاية المطاف تحكّمًا مباشرًا في كيفية عرض السجل ومتى، وهو مشابه لأن يدخل إلى عيادة حاملًا نسخة من ملفه الورقي. فيستطيع رؤية الملف أثناء تعامله معك، لكنك تأخذه معك إلى المنزل حين تغادر.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratordataretrieval.webp" alt=""> الشكل 16.4: تستطيع عيادة بعيدة رؤية محتوى ملف مريض بطلب البيانات؛ فإذا كانت الموافقة المناسبة موجودة، تُرسَل البيانات. ولا تُخزَّن البيانات بشكل دائم أبدًا على OSCAR البعيد.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-oscar-integratordataretrieval.webp" alt="" id="fig.oscar.reply"> الشكل 16.4: تستطيع عيادة بعيدة رؤية محتوى ملف مريض بطلب البيانات؛ فإذا كانت الموافقة المناسبة موجودة، تُرسَل البيانات. ولا تُخزَّن البيانات بشكل دائم أبدًا على OSCAR البعيد.</p>
 <p>ومن القدرات المهمّة جدًا الأخرى قدرة الأطباء على تحديد أنواع البيانات التي يريدون مشاركتها مع العيادات المتصلة الأخرى عبر خادم Integrator لديهم. فقد تختار عيادة مشاركة سجل ديموغرافي كامل أو أجزاء منه فقط، مثل الملاحظات دون المستندات، أو الحساسية دون الوصفات الطبية، وهكذا. وفي نهاية المطاف، الأمر يعود لمجموعة الأطباء الذين أعدّوا خادم Integrator ليقرّروا أنواع البيانات التي يطمئنّون إلى مشاركتها فيما بينهم.</p>
 <p>وكما ذكرتُ سابقًا، فإنّ Integrator ليس سوى مستودع تخزين مؤقّت، ولا تُخزَّن أي بيانات فيه بشكل دائم أبدًا. وهذا قرار مهمّ جدًا آخر اتُّخذ أثناء التطوير؛ فهو يتيح للعيادات الانسحاب من مشاركة أي بيانات وكل البيانات عبر Integrator بسهولة كبيرة—بل وإن أمكن مسح قاعدة بيانات Integrator بالكامل. وإذا مُسحت قاعدة البيانات، فلن يلاحظ أي مستخدم لعميل ذلك إطلاقًا لأن البيانات ستُعاد بناؤها بدقة من البيانات الأصلية في جميع العملاء المتصلين. ومن ضمن ما ينتج عن ذلك أنّ مزوّد OSCAR يحتاج إلى الثقة بمزوّد Integrator بأنه مسح قاعدة البيانات حين يقول ذلك—لذا من الأفضل نشر Integrator لدى مجموعة أطباء موجودين أصلًا ضمن منظمة قانونية مثل منظمة صحة عائلية (Family Health Organization) أو فريق صحة عائلية (Family Health Team)؛ وسيُستضاف خادم Integrator في إحدى عيادات هؤلاء الأطباء.</p>
 <h3 id="صيغة-البيانات">صيغة البيانات</h3>
@@ -152,7 +152,7 @@
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -160,8 +160,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

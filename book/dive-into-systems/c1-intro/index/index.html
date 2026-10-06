@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -130,12 +130,12 @@ main()
 <li>تحتوي دالة <code>main</code> في C على عبارة <code>return</code> صريحة لإرجاع قيمة <code>int</code> (وبالاصطلاح، ينبغي أن ترجع <code>main</code> القيمة <code>0</code> إذا نُفِّذت الدالة الرئيسية بنجاح دون أخطاء).</li>
 <li>يحتاج برنامج Python إلى تضمين استدعاء صريح لدالته <code>main</code> لتشغيلها عند تنفيذ البرنامج. أما في C، فتُستدعى دالتها <code>main</code> تلقائياً عند تنفيذ برنامج C.</li>
 </ul>
-<h3 id="111-تصريف-برامج-c-وتشغيلها"><a href="#_compiling_and_running_c_programs"></a>1.1.1. تصريف برامج C وتشغيلها</h3>
+<h3 id="111-تصريف-برامج-c-وتشغيلها">1.1.1. تصريف برامج C وتشغيلها <span class="content-anchor" id="_compiling_and_running_c_programs"></span></h3>
 <p>Python لغة برمجة مُفسَّرة (interpreted)، أي أن برنامجاً آخر هو مفسّر Python يشغّل برامج Python: يعمل مفسّر Python كآلة افتراضية تُشغَّل عليها برامج Python. ولتشغيل برنامج Python، تُعطى شيفرة البرنامج المصدرية (<code>hello.py</code>) كمدخل إلى برنامج مفسّر Python الذي يشغّله. وعلى سبيل المثال (حيث <code>$</code> هو موجّه صدفة Linux):</p>
 <pre><code class="language-bash">$ python hello.py
 </code></pre>
 <p>مفسّر Python برنامج في صورة قابلة للتشغيل مباشرةً على النظام الأساسي (وتسمى هذه الصورة <strong>الملف التنفيذي الثنائي</strong> binary executable) ويأخذ كمدخل برنامج Python الذي يشغّله (<a href="#FigPythonExecution">الشكل 1</a>).</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-interpreted.webp" alt="Interpreted execution of a Python program."> الشكل 1. يُنفَّذ برنامج Python مباشرةً بواسطة مفسّر Python، وهو برنامج تنفيذي ثنائي يعمل على النظام الأساسي (نظام التشغيل والعتاد)</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-interpreted.webp" alt="Interpreted execution of a Python program." id="FigPythonExecution"> الشكل 1. يُنفَّذ برنامج Python مباشرةً بواسطة مفسّر Python، وهو برنامج تنفيذي ثنائي يعمل على النظام الأساسي (نظام التشغيل والعتاد)</p>
 <p>لتشغيل برنامج C، يجب أولاً ترجمته إلى صورة يستطيع نظام الحاسوب تنفيذها مباشرةً. و<strong>المصرّف</strong> (compiler) برنامج يترجم شيفرة C المصدرية إلى صورة <strong>ملف تنفيذي ثنائي</strong> يستطيع عتاد الحاسوب تنفيذها مباشرةً. ويتألف الملف التنفيذي الثنائي من سلسلة من الأصفار والآحاد بتنسيق محدد جيداً يستطيع الحاسوب تشغيله.</p>
 <p>فمثلاً، لتشغيل برنامج C هو <code>hello.c</code> على نظام Unix، يجب أولاً تصريف شيفرة C بواسطة مصرّف C (مثل <a href="https://gcc.gnu.org">مصرّف GNU للغة C</a>، GCC) ينتج ملفاً تنفيذياً ثنائياً (يُسمى افتراضياً <code>a.out</code>). ويمكن بعد ذلك تشغيل النسخة التنفيذية الثنائية من البرنامج مباشرةً على النظام (<a href="#FigCCompilation">الشكل 2</a>):</p>
 <pre><code class="language-bash">$ gcc hello.c
@@ -144,8 +144,8 @@ $ ./a.out
 <p>(لاحظ أن بعض مصرّفات C قد تحتاج إلى إخبارها صراحةً بربط مكتبة الرياضيات: <code>-lm</code>):</p>
 <pre><code class="language-bash">$ gcc hello.c -lm
 </code></pre>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-1-compile.webp" alt="C program text goes to the C compiler, which converts it into an executable sequence of zeroes and ones. The format of the executable sequence can be run by the underlying system."> الشكل 2. يبني مصرّف C (gcc) شيفرة C المصدرية إلى ملف تنفيذي ثنائي (a.out). وينفّذ النظام الأساسي (نظام التشغيل والعتاد) ملف a.out مباشرةً لتشغيل البرنامج.</p>
-<h4><a href="#_detailed_steps"></a>الخطوات التفصيلية</h4>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-1-compile.webp" alt="C program text goes to the C compiler, which converts it into an executable sequence of zeroes and ones. The format of the executable sequence can be run by the underlying system." id="FigCCompilation"> الشكل 2. يبني مصرّف C (gcc) شيفرة C المصدرية إلى ملف تنفيذي ثنائي (a.out). وينفّذ النظام الأساسي (نظام التشغيل والعتاد) ملف a.out مباشرةً لتشغيل البرنامج.</p>
+<h4>الخطوات التفصيلية <span class="content-anchor" id="_detailed_steps"></span></h4>
 <p>بشكل عام، تصف السلسلة التالية الخطوات اللازمة لتحرير برنامج C وتصريفه وتشغيله على نظام Unix:</p>
 <p>باستخدام <a href="https://www.cs.swarthmore.edu/help/editors.html">محرّر نصوص</a> (مثلاً <code>vim</code>)، اكتب برنامجك المصدر بلغة C واحفظه في ملف (مثل <code>hello.c</code>):</p>
 <pre><code class="language-bash">$ vim hello.c
@@ -168,7 +168,7 @@ $ ./a.out
 </code></pre>
 <p>ولأن سطر أوامر <code>gcc</code> قد يكون طويلاً، كثيراً ما تُستخدم أداة <code>make</code> لتبسيط تصريف برامج C ولتنظيف الملفات التي ينشئها <code>gcc</code>. ويُعدّ <a href="https://www.cs.swarthmore.edu/~newhall/unixhelp/howto_makefiles.html">استخدام make وكتابة ملفات Makefile</a> من المهارات المهمة التي ستطوّرها مع تراكم خبرتك في البرمجة بلغة C.</p>
 <p>نغطي التصريف والربط مع شيفرة مكتبة C بمزيد من التفصيل في نهاية <a href="https://diveintosystems.org/book/C2-C_depth/advanced_libraries.html#_compilation_steps_">الفصل 2</a>.</p>
-<h3 id="112-المتغيرات-وأنواع-c-العددية"><a href="#_variables_and_c_numeric_types"></a>1.1.2. المتغيّرات وأنواع C العددية</h3>
+<h3 id="112-المتغيرات-وأنواع-c-العددية">1.1.2. المتغيّرات وأنواع C العددية <span class="content-anchor" id="_variables_and_c_numeric_types"></span></h3>
 <p>مثل Python، تستخدم C المتغيّرات كمواقع تخزين مسمّاة لحمل البيانات. ويُعدّ التفكير في <strong>نطاق</strong> (scope) متغيّرات البرنامج و<strong>نوعها</strong> (type) أمراً مهماً لفهم دلالات ما سيفعله برنامجك عند تشغيله. ويحدد <strong>نطاق</strong> المتغيّر متى يكون للمتغيّر معنى (أي أين ومتى يمكن استخدامه في برنامجك) وعمره (أي قد يستمر طوال تشغيل البرنامج أو خلال تنشيط دالة فقط). ويحدد <strong>نوع</strong> المتغيّر نطاق القيم التي يمكنه تمثيلها وكيفية تفسير تلك القيم عند تنفيذ عمليات على بياناته.</p>
 <p>في C، يجب الإعلان عن جميع المتغيّرات قبل استخدامها. وللإعلان عن متغيّر، استخدم الصياغة التالية:</p>
 <pre><code>type_name variable_name;
@@ -207,7 +207,7 @@ $ ./a.out
 }
 </code></pre>
 <p>لاحظ كثرة الفواصل المنقوطة. تذكّر أن عبارات C تُفصل بـ <code>;</code>، لا بفواصل الأسطر — تتوقع C فاصلة منقوطة بعد كل عبارة. وستنسى بعضها، و<code>gcc</code> لا يخبرك تقريباً أبداً بأنك نسيت فاصلة منقوطة، حتى لو كان ذلك الخطأ النحوي الوحيد في برنامجك. بل غالباً ما يشير المصرّف، عند نسيانك فاصلة منقوطة، إلى خطأ نحوي في السطر <em>التالي</em> للسطر الذي ينقصه المنقوطة: والسبب أن <code>gcc</code> يفسّرها كجزء من عبارة السطر السابق. ومع استمرارك في البرمجة بلغة C، ستتعلم ربط أخطاء <code>gcc</code> بأخطاء صياغة C المحددة التي تصفها.</p>
-<h3 id="113-أنواع-c"><a href="#_c_types"></a>1.1.3. أنواع C</h3>
+<h3 id="113-أنواع-c">1.1.3. أنواع C <span class="content-anchor" id="_c_types"></span></h3>
 <p>تدعم C مجموعة صغيرة من أنواع البيانات المدمجة، وتوفّر بضع طرق يمكن للمبرمجين بها إنشاء تجميعات أساسية من الأنواع (المصفوفات والبنى). ومن هذه اللبنات الأساسية، يستطيع مبرمج C بناء بنى بيانات معقّدة.</p>
 <p>تعرّف C مجموعة من الأنواع الأساسية لتخزين القيم العددية. وفيما يلي أمثلة على قيم حرفية (literal) عددية من أنواع C مختلفة:</p>
 <pre><code class="language-c"><span class="hljs-number">8</span>     <span class="hljs-comment">// the int value 8</span>
@@ -223,7 +223,7 @@ $ ./a.out
 <span class="hljs-string">&quot;h&quot;</span>  <span class="hljs-comment">// this is a string literal value (its value is NOT 104, it is not a char)</span>
 </code></pre>
 <p>نناقش سلاسل C ومتغيّرات <code>char</code> بمزيد من التفصيل في <a href="https://diveintosystems.org/book/C2-C_depth/strings.html#_strings_and_the_string_library">قسم السلاسل النصية</a> لاحقاً في هذا الفصل. وهنا سنركّز أساساً على الأنواع العددية في C.</p>
-<h4><a href="#_c_numeric_types"></a>أنواع C العددية</h4>
+<h4>أنواع C العددية <span class="content-anchor" id="_c_numeric_types"></span></h4>
 <p>تدعم C عدة أنواع مختلفة لتخزين القيم العددية. وتختلف الأنواع في صيغة القيم العددية التي تمثّلها. فمثلاً، يمثّل النوعان <code>float</code> و<code>double</code> القيم الحقيقية، ويمثّل <code>int</code> قيماً صحيحة مؤشّرة، ويمثّل <code>unsigned int</code> قيماً صحيحة غير مؤشّرة. والقيم الحقيقية قيم موجبة أو سالبة ذات نقطة عشرية، مثل <code>-1.23</code> أو <code>0.0056</code>. وتخزّن الأعداد الصحيحة المؤشّرة قيماً صحيحة موجبة أو سالبة أو صفراً، مثل <code>-333</code> أو <code>0</code> أو <code>3456</code>. وتخزّن الأعداد الصحيحة غير المؤشّرة قيماً صحيحة غير سالبة حصراً، مثل <code>0</code> أو <code>1234</code>.</p>
 <p>تختلف أنواع C العددية أيضاً في مدى القيم التي يمكنها تمثيلها ودقتها. ويعتمد مدى القيمة أو دقتها على عدد البايتات (bytes) المرتبطة بنوعها. وتستطيع الأنواع ذات البايتات الأكثر تمثيل مدى أوسع من القيم (للأنواع الصحيحة)، أو قيم أعلى دقة (للأنواع الحقيقية)، مقارنةً بالأنواع ذات البايتات الأقل.</p>
 <p>يوضّح <a href="#TabNumericTypes">الجدول 2</a> عدد بايتات التخزين، ونوع القيم العددية المخزّنة، وكيفية الإعلان عن متغيّر لمجموعة متنوعة من أنواع C العددية الشائعة (لاحظ أن هذه أحجام نموذجية — فعدد البايتات الدقيق يعتمد على معمارية العتاد).</p>
@@ -294,7 +294,7 @@ $ ./a.out
 <pre><code>number of bytes in an int: 4
 number of bytes in a short: 2
 </code></pre>
-<h4><a href="#_arithmetic_operators"></a>المعاملات الحسابية</h4>
+<h4>المعاملات الحسابية <span class="content-anchor" id="_arithmetic_operators"></span></h4>
 <p>تجمع المعاملات الحسابية قيم الأنواع العددية. ويعتمد النوع الناتج عن العملية على أنواع المعاملات. فمثلاً، إذا جُمعت قيمتان من النوع <code>int</code> بمعامل حسابي، فسيكون النوع الناتج عدداً صحيحاً أيضاً.</p>
 <p>تُجري C تحويلاً تلقائياً للنوع عندما يجمع معامل بين معاملين من نوعين مختلفين. فمثلاً، إذا جُمع معامل <code>int</code> بمعامل <code>float</code>، يُحوَّل المعامل الصحيح أولاً إلى مكافئه العشري العائم قبل تطبيق المعامل، ويكون نوع ناتج العملية <code>float</code>.</p>
 <p>يمكن استخدام المعاملات الحسابية التالية على معظم معاملات الأنواع العددية:</p>
@@ -340,7 +340,7 @@ y = x + <span class="hljs-number">1</span>;
 </code></pre>
 </blockquote>
 <p>تطبع دالة <code>printf</code> في C القيم إلى الطرفية، وتقرأ الدالة <code>scanf</code> القيم التي يُدخلها المستخدم. وتنتمي دالتا <code>printf</code> و<code>scanf</code> إلى مكتبة الإدخال/الإخراج القياسية في C، والتي يجب تضمينها صراحةً في أعلى أي ملف <code>.c</code> يستخدم هاتين الدالتين باستخدام <code>#include </code>. وفي هذا القسم، نقدّم أساسيات استخدام <code>printf</code> و<code>scanf</code> في برامج C. ويناقش <a href="https://diveintosystems.org/book/C2-C_depth/IO.html#_io_in_c">قسم «الإدخال/الإخراج» في الفصل 2</a> دوال الإدخال والإخراج في C بمزيد من التفصيل.</p>
-<h3 id="121-printf"><a href="#_printf"></a>1.2.1. printf</h3>
+<h3 id="121-printf">1.2.1. printf <span class="content-anchor" id="_printf"></span></h3>
 <p>تشبه دالة <code>printf</code> في C كثيراً الطباعة المنسّقة (formatted print) في Python، حيث يحدد المستدعي سلسلة تنسيق للطباعة. وغالباً ما تحتوي سلسلة التنسيق على محددات تنسيق (formatting specifiers)، مثل محارف خاصة تطبع علامات جدولة (<code>\t</code>) أو أسطراً جديدة (<code>\n</code>)، أو عناصر نائبة للقيم في الإخراج. وتتكون العناصر النائبة من <code>%</code> متبوعاً بحرف محدد النوع (فمثلاً، يمثّل <code>%d</code> عنصراً نائباً لقيمة صحيحة). ولكل عنصر نائب في سلسلة التنسيق، تتوقع <code>printf</code> وسيطاً إضافياً. ويضم <a href="#TabSyntaxPrinting">الجدول 1</a> برنامجاً مثالياً بلغتي Python وC بإخراج منسّق:</p>
 <p><strong>الجدول 1. مقارنة صياغة الطباعة في Python وC</strong></p>
 <p><strong>نسخة Python</strong></p>
@@ -396,7 +396,7 @@ ch = <span class="hljs-number">99</span>;
 <pre><code>ch value is 65 which is the ASCII value of  A
 ch value is 99 which is the ASCII value of  c
 </code></pre>
-<h3 id="122-scanf"><a href="#_scanf"></a>1.2.2. scanf</h3>
+<h3 id="122-scanf">1.2.2. scanf <span class="content-anchor" id="_scanf"></span></h3>
 <p>تمثّل دالة <code>scanf</code> في C طريقة لقراءة القيم التي يُدخلها المستخدم (عبر لوحة المفاتيح) وتخزينها في متغيّرات البرنامج. وقد تكون دالة <code>scanf</code> صارمة بعض الشيء بشأن الصيغة الدقيقة التي يُدخل بها المستخدم البيانات، ما يعني أنها ليست متينة كثيراً أمام إدخال المستخدم السيئ التكوين. وفي <a href="https://diveintosystems.org/book/C2-C_depth/IO.html#_io_in_c">قسم «الإدخال/الإخراج» في الفصل 2</a>، نناقش طرقاً أكثر متانة لقراءة قيم الإدخال من المستخدم. والآن، تذكّر أنه إذا وقع برنامجك في حلقة لا نهائية بسبب إدخال مستخدم سيئ التكوين، فيمكنك دائماً الضغط على <strong>CTRL-C</strong> لإنهائه.</p>
 <p>تُعالَج قراءة الإدخال بصورة مختلفة في Python وC: فتستخدم Python الدالة <code>input</code> لقراءة قيمة كسلسلة نصية، ثم يحوّل البرنامج قيمة السلسلة إلى <code>int</code>؛ بينما تستخدم C الدالة <code>scanf</code> لقراءة قيمة <code>int</code> وتخزينها في موقع في الذاكرة لمتغيّر برنامج من نوع <code>int</code> (مثلاً <code>&amp;num1</code>). ويعرض <a href="#TabInputComparison">الجدول 2</a> برامج مثالية لقراءة قيم إدخال المستخدم في Python وC:</p>
 <p><strong>الجدول 2. مقارنة طرق قراءة قيم الإدخال في Python وC</strong></p>
@@ -533,7 +533,7 @@ main()
         &lt;<span class="hljs-literal">false</span> body&gt;
     }
 </code></pre>
-<h3 id="131-القيم-المنطقية-في-c"><a href="#_boolean_values_in_c"></a>1.3.1. القيم المنطقية في C</h3>
+<h3 id="131-القيم-المنطقية-في-c">1.3.1. القيم المنطقية في C <span class="content-anchor" id="_boolean_values_in_c"></span></h3>
 <p>لا توفّر C نوعاً منطقياً بقيمتي true أو false. وبدلاً من ذلك، تُقيَّم القيم الصحيحة إلى <strong>صواب</strong> أو <strong>خطأ</strong> عند استخدامها في عبارات شرطية. وعند استخدامها في تعبيرات شرطية، فإن أي تعبير صحيح يكون:</p>
 <ul>
 <li><strong>صفراً (0)</strong> يُقيَّم إلى <strong>خطأ</strong></li>
@@ -582,9 +582,9 @@ main()
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;I have no idea what the relationship between x and y is\n&quot;</span>);
 }
 </code></pre>
-<h3 id="132-الحلقات-في-c"><a href="#_loops_in_c"></a>1.3.2. الحلقات في C</h3>
+<h3 id="132-الحلقات-في-c">1.3.2. الحلقات في C <span class="content-anchor" id="_loops_in_c"></span></h3>
 <p>مثل Python، تدعم C حلقات <code>for</code> و<code>while</code>. وبالإضافة إلى ذلك، توفّر C حلقات <code>do</code>-<code>while</code>.</p>
-<h4><a href="#_while_loops"></a>حلقات while</h4>
+<h4>حلقات while <span class="content-anchor" id="_while_loops"></span></h4>
 <p>صياغة حلقة <code>while</code> في C وPython متطابقة تقريباً، والسلوك واحد. ويعرض <a href="#TabWhileComparison">الجدول 2</a> برامج مثالية لحلقات <code>while</code> في C وPython.</p>
 <p><strong>الجدول 2. مقارنة صياغة حلقة while في Python وC</strong></p>
 <p><strong>نسخة Python</strong></p>
@@ -649,7 +649,7 @@ main()
 <li><a href="https://diveintosystems.org/book/C1-C_intro/_attachments/whileLoop1.c">whileLoop1.c</a></li>
 <li><a href="https://diveintosystems.org/book/C1-C_intro/_attachments/whileLoop2.c">whileLoop2.c</a></li>
 </ul>
-<h4><a href="#_for_loops"></a>حلقات for</h4>
+<h4>حلقات for <span class="content-anchor" id="_for_loops"></span></h4>
 <p>تختلف حلقة <code>for</code> في C عنها في Python. ففي Python، حلقات <code>for</code> تكرارات على متتاليات، بينما في C تكون حلقات <code>for</code> تراكيب حلقية أعم. ويعرض <a href="#TabForComparison">الجدول 3</a> برامج مثالية تستخدم حلقات <code>for</code> لطباعة كل القيم بين 0 ورقم إدخال يقدمه المستخدم:</p>
 <p><strong>الجدول 3. مقارنة صياغة حلقة for في Python وC</strong></p>
 <p><strong>نسخة Python</strong></p>
@@ -899,10 +899,10 @@ Enter two <span class="hljs-built_in">integer</span> values: 13  100
 The larger value of 13 and 100 is 100
 </code></pre>
 <p>ولأن الوسائط <em>تُمرَّر بالقيمة</em> إلى الدوال، فإن النسخة السابقة من دالة <code>max</code> التي تغيّر إحدى قيم وسائطها تسلك السلوك نفسه الذي تسلكه النسخة الأصلية من <code>max</code> التي لا تغيّرها.</p>
-<h3 id="141-المكدس"><a href="#_the_stack"></a>1.4.1. المكدّس</h3>
+<h3 id="141-المكدس">1.4.1. المكدّس <span class="content-anchor" id="_the_stack"></span></h3>
 <p>يتتبع <strong>مكدّس التنفيذ</strong> (execution stack) حالة الدوال النشطة في البرنامج. وينشئ كل استدعاء دالة <strong>إطار مكدّس</strong> جديداً (stack frame) (يُسمى أحياناً <strong>إطار التنشيط</strong> أو <strong>سجل التنشيط</strong>) يحتوي على قيم وسائطه ومتغيّراته المحلية. والإطار الموجود في أعلى المكدّس هو الإطار النشط؛ وهو يمثّل تنشيط الدالة الجاري تنفيذه، ولا تكون في النطاق إلا متغيّراته ووسائطه المحلية. وعند استدعاء دالة، يُنشأ لها إطار مكدّس جديد (<em>يُدفع</em> pushed إلى أعلى المكدّس)، وتُخصَّص مساحة لمتغيّراته ووسائطه المحلية في الإطار الجديد. وعندما ترجع دالة، يُزال إطار مكدّسها من المكدّس (<em>يُفرقع</em> popped من أعلى المكدّس)، تاركاً إطار مكدّس المستدعي في أعلى المكدّس.</p>
 <p>في البرنامج المثال السابق، عند النقطة من تنفيذه قبل تنفيذ <code>max</code> للعبارة <code>return</code> مباشرة، سيبدو مكدّس التنفيذ كما في <a href="#FigFunctionSimple">الشكل 1</a>. تذكّر أن قيم الوسائط الممرَّرة إلى <code>max</code> عبر <code>main</code> <em>تُمرَّر بالقيمة</em>، أي أن الوسيطين في <code>max</code>، وهما <code>x</code> و<code>y</code>، يُسنَد إليهما قيم الوسائط المقابلة لهما، <code>a</code> و<code>b</code> من الاستدعاء في <code>main</code>. فرغم أن دالة <code>max</code> تغيّر قيمة <code>x</code>، فإن التغيير لا يؤثر في قيمة <code>a</code> في <code>main</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-Function_simple.webp" alt="A stack with two frames: main at the bottom, and max on top of it. Main’s stack frame has three variables, a (11), b (7) and res (undefined at this point). Max’s stack frame also has three variables, x (11), y (7), and bigger (11)."> الشكل 1. محتويات مكدّس التنفيذ قبل العودة من دالة max مباشرة</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-Function_simple.webp" alt="A stack with two frames: main at the bottom, and max on top of it. Main’s stack frame has three variables, a (11), b (7) and res (undefined at this point). Max’s stack frame also has three variables, x (11), y (7), and bigger (11)." id="FigFunctionSimple"> الشكل 1. محتويات مكدّس التنفيذ قبل العودة من دالة max مباشرة</p>
 <p>يتضمن البرنامج الكامل التالي دالتين ويعرض أمثلة على استدعائهما من الدالة <code>main</code>. وفي هذا البرنامج، نعلن نموذجين أوليين للدالتين <code>max</code> و<code>print_table</code> فوق الدالة <code>main</code> حتى تستطيع <code>main</code> الوصول إليهما رغم تعريفهما أولاً. وتحتوي الدالة <code>main</code> على الخطوات عالية المستوى للبرنامج الكامل، وتعريفها أولاً يعكس التصميم من أعلى إلى أسفل للبرنامج. ويتضمن هذا المثال تعليقات تصف أجزاء البرنامج المهمة للدوال واستدعاءاتها. ويمكنك أيضاً تنزيل <a href="https://diveintosystems.org/book/C1-C_intro/_attachments/function.c">البرنامج الكامل</a> وتشغيله.</p>
 <pre><code class="language-c"><span class="hljs-comment">/* This file shows examples of defining and calling C functions.
  * It also demonstrates using scanf().
@@ -982,7 +982,7 @@ The larger value of 13 and 100 is 100
 }
 </code></pre>
 <p><strong>المصفوفة</strong> (array) تركيب في C ينشئ مجموعة مرتبة من عناصر بيانات من النوع نفسه ويربط هذه المجموعة بمتغيّر برنامج واحد. وتعني <strong>المرتبة</strong> أن كل عنصر في موضع محدد من مجموعة القيم (أي يوجد عنصر في الموضع 0 والموضع 1 وهكذا)، لا أن القيم مرتبة بالضرورة. والمصفوفات إحدى الآليات الأساسية في C لتجميع قيم بيانات متعددة والإشارة إليها باسم واحد. وللمصفوفات عدة أنواع، لكن الشكل الأساسي هو <em>المصفوفة أحادية البعد</em>، وهي مفيدة لتنفيذ بنى بيانات شبيهة بالقوائم والسلاسل النصية في C.</p>
-<h3 id="151-مقدمة-إلى-المصفوفات"><a href="#_introduction_to_arrays"></a>1.5.1. مقدمة إلى المصفوفات</h3>
+<h3 id="151-مقدمة-إلى-المصفوفات">1.5.1. مقدمة إلى المصفوفات <span class="content-anchor" id="_introduction_to_arrays"></span></h3>
 <p>يمكن لمصفوفات C تخزين قيم بيانات متعددة من النوع <em>نفسه</em>. وفي هذا الفصل، نناقش المصفوفات <strong>المعلَنة ساكنةً</strong>، أي أن السعة الكلية (أقصى عدد من العناصر يمكن تخزينه في مصفوفة) ثابتة وتُحدَّد عند الإعلان عن متغيّر المصفوفة. وفي الفصل التالي، نناقش <a href="https://diveintosystems.org/book/C2-C_depth/arrays.html#_dynamically_allocated">المصفوفات المخصَّصة ديناميكياً</a> و<a href="https://diveintosystems.org/book/C2-C_depth/arrays.html#_two_dimensional_arrays">المصفوفات متعددة الأبعاد</a>.
 يعرض <a href="#TabArrayComparison">الجدول 1</a> نسختي Python وC لبرنامج يهيّئ مجموعة من القيم الصحيحة ثم يطبعها. وتستخدم نسخة Python نوع القائمة (list) المدمج فيها لتخزين قائمة القيم، بينما تستخدم نسخة C مصفوفة من نوع <code>int</code> لتخزين مجموعة القيم.</p>
 <p>بشكل عام، توفّر Python للمبرمج واجهة قائمة عالية المستوى تخفي كثيراً من تفاصيل التنفيذ منخفض المستوى. أما C، في المقابل، فتكشف للمبرمج تنفيذاً منخفض المستوى للمصفوفة وتترك له تنفيذ الوظائف عالية المستوى. وبعبارة أخرى، تتيح المصفوفات تخزيناً منخفض المستوى للبيانات دون وظائف القوائم عالية المستوى، مثل <code>len</code> و<code>append</code> و<code>insert</code> وهكذا.</p>
@@ -1063,7 +1063,7 @@ my_arr[<span class="hljs-number">0</span>] = <span class="hljs-number">5</span>;
 <p>تُنشئ التعريفات السابقة متغيّراً باسم <code>arr</code>، هو مصفوفة من قيم <code>int</code> بسعة كلية 10، ومتغيّراً آخر باسم <code>str</code>، هو مصفوفة من قيم <code>char</code> بسعة كلية 20.</p>
 <p>لحساب حجم قائمة (حيث يعني الحجم العدد الكلي للقيم في القائمة)، توفّر Python دالة <code>len</code> ترجع حجم أي قائمة تُمرَّر إليها. أما في C، فعلى المبرمج أن يتتبع صراحةً عدد العناصر في المصفوفة (مثلاً، المتغيّر <code>size</code> في <a href="#TabArrayComparison">الجدول 1</a>).</p>
 <p>وثمة فرق آخر قد لا يظهر من النظر إلى نسختي Python وC من هذا البرنامج، وهو كيفية تخزين قائمة Python ومصفوفة C في الذاكرة. فـ C تفرض تخطيط المصفوفة في ذاكرة البرنامج، بينما تخفي Python كيفية تنفيذ القوائم عن المبرمج. وفي C، تُخصَّص عناصر المصفوفة الفردية في مواقع متتالية في ذاكرة البرنامج. فمثلاً، يقع موضع المصفوفة الثالث في الذاكرة مباشرة بعد موضع المصفوفة الثاني ومباشرة قبل موضع المصفوفة الرابع.</p>
-<h3 id="152-طرق-الوصول-إلى-المصفوفة"><a href="#_array_access_methods"></a>1.5.2. طرق الوصول إلى المصفوفة</h3>
+<h3 id="152-طرق-الوصول-إلى-المصفوفة">1.5.2. طرق الوصول إلى المصفوفة <span class="content-anchor" id="_array_access_methods"></span></h3>
 <p>توفّر Python طرقاً متعددة للوصول إلى العناصر في قوائمها. أما C فلا تدعم إلا الفهرسة، كما وصفنا سابقاً. وتتراوح قيم الفهارس الصالحة من 0 إلى سعة المصفوفة ناقص 1. وفيما يلي بعض الأمثلة:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> i, num;
 <span class="hljs-type">int</span> arr[<span class="hljs-number">10</span>];  <span class="hljs-comment">// declare an array of ints, with a capacity of 10</span>
@@ -1084,7 +1084,7 @@ arr[<span class="hljs-number">5</span>] = <span class="hljs-number">100</span>; 
 <span class="hljs-built_in">array</span>[<span class="hljs-number">10</span>] = <span class="hljs-number">100</span>;  <span class="hljs-comment">// 10 is not a valid index into the array</span>
 </code></pre>
 <p>يسعد مصرّف C بتصريف شيفرة تصل إلى مواضع مصفوفة تتجاوز حدود المصفوفة؛ فلا يوجد فحص للحدود من المصرّف ولا عند التشغيل. ونتيجةً لذلك، قد يؤدي تشغيل هذه الشيفرة إلى سلوك غير متوقّع للبرنامج (وقد يختلف السلوك من تشغيل لآخر). وقد يؤدي إلى انهيار برنامجك، أو قد يغيّر قيمة متغيّر آخر، أو قد لا يكون له أي أثر في سلوك برنامجك. وبعبارة أخرى، يؤدي هذا الوضع إلى خطأ برمجي قد يظهر أو لا يظهر كسلوك غير متوقّع. لذا، بصفتك مبرمج C، عليك أنت ضمان أن تشير وصولاتك إلى المصفوفة إلى مواضع صالحة!</p>
-<h3 id="153-المصفوفات-والدوال"><a href="#_arrays_and_functions"></a>1.5.3. المصفوفات والدوال</h3>
+<h3 id="153-المصفوفات-والدوال">1.5.3. المصفوفات والدوال <span class="content-anchor" id="_arrays_and_functions"></span></h3>
 <p>تتشابه دلالات تمرير المصفوفات إلى الدوال في C مع دلالات تمرير القوائم إلى الدوال في Python: إذ يمكن للدالة تغيير العناصر في المصفوفة أو القائمة الممرَّرة. وفيما يلي مثال على دالة تأخذ وسيطين: وسيط مصفوفة <code>int</code> (<code>arr</code>)، ووسيط <code>int</code> (<code>size</code>):</p>
 <pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">print_array</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> size)</span> {
     <span class="hljs-type">int</span> i;
@@ -1134,9 +1134,9 @@ print_array(more, <span class="hljs-number">8</span>);    <span class="hljs-comm
 }
 </code></pre>
 <p>يُمرَّر إلى الاستدعاء <code>main</code> للدالة <code>test</code> الوسيط <code>arr</code>، الذي قيمته عنوان أساس مصفوفة <code>arr</code> في الذاكرة. ويتلقى الوسيط <code>a</code> في دالة test نسخة من قيمة عنوان الأساس هذه. وبعبارة أخرى، <em>يشير الوسيط <code>a</code> إلى مواقع التخزين نفسها التي تشير إليها وسيطته</em> <code>arr</code>. ونتيجةً لذلك، عندما تغيّر دالة test قيمة مخزّنة في مصفوفة <code>a</code> (<code>a[3] = 8</code>)، فإن ذلك يؤثر في الموضع المقابل في مصفوفة الوسيط (أصبح <code>arr[3]</code> يساوي 8). والسبب أن قيمة <code>a</code> هي عنوان أساس <code>arr</code>، وقيمة <code>arr</code> هي عنوان أساس <code>arr</code>، لذا يشير كل من <code>a</code> و<code>arr</code> إلى المصفوفة نفسها (مواقع التخزين نفسها في الذاكرة)! ويعرض <a href="#FigArrayStack">الشكل 1</a> محتويات المكدّس عند النقطة من التنفيذ قبل عودة دالة test مباشرة.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-arraystack.webp" alt="A stack with two frames: main at the bottom and test on the top. main has two variables, an integer n (5) and an array storing values 0, 1, 2, 8, and 4. Test also has two values, an integer size (2) and an array parameter arr that stores the base memory address of the array in main’s stack frame."> الشكل 1. محتويات المكدّس لدالة لها وسيط مصفوفة</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-arraystack.webp" alt="A stack with two frames: main at the bottom and test on the top. main has two variables, an integer n (5) and an array storing values 0, 1, 2, 8, and 4. Test also has two values, an integer size (2) and an array parameter arr that stores the base memory address of the array in main’s stack frame." id="FigArrayStack"> الشكل 1. محتويات المكدّس لدالة لها وسيط مصفوفة</p>
 <p>يُمرَّر إلى الوسيط <code>a</code> عنوان أساس مصفوفة الوسيط <code>arr</code>، ما يعني أن كليهما يشير إلى مجموعة مواقع التخزين نفسها في الذاكرة. ونشير إلى ذلك بالسهم من <code>a</code> إلى <code>arr</code>. والقيم التي تعدّلها الدالة <code>test</code> مظللة. ولا <em>يغيّر</em> تغيير قيمة الوسيط <code>size</code> قيمة وسيطته المقابلة <code>n</code>، لكن تغيير قيمة أحد العناصر التي يشير إليها <code>a</code> (مثلاً <code>a[3] = 8</code>) يؤثر في قيمة الموضع المقابل في <code>arr</code>.</p>
-<h3 id="154-مقدمة-إلى-السلاسل-النصية-ومكتبة-سلاسل-c"><a href="#_introduction_to_strings_and_the_c_string_library"></a>1.5.4. مقدمة إلى السلاسل النصية ومكتبة سلاسل C</h3>
+<h3 id="154-مقدمة-إلى-السلاسل-النصية-ومكتبة-سلاسل-c">1.5.4. مقدمة إلى السلاسل النصية ومكتبة سلاسل C <span class="content-anchor" id="_introduction_to_strings_and_the_c_string_library"></span></h3>
 <p>تنفّذ Python نوع سلسلة نصية وتوفّر واجهة غنية لاستخدام السلاسل، لكن لا يوجد في C نوع سلسلة نصية مقابل. وبدلاً من ذلك، تُنفَّذ السلاسل النصية كمصفوفات من قيم <code>char</code>. وليست كل مصفوفة محارف تُستخدم كسلسلة C، لكن كل سلسلة C هي مصفوفة محارف.</p>
 <p>تذكّر أن المصفوفات في C قد تُعرَّف بحجم أكبر مما يستخدمه البرنامج فعلاً. فمثلاً، رأينا سابقاً في قسم <a href="#_array_access_methods">«طرق الوصول إلى المصفوفة»</a> أننا قد نعلن مصفوفة بحجم 10 لكن نستخدم المواضع الستة الأولى فقط. ولهذا السلوك دلالات مهمة على السلاسل النصية: فلا يمكننا افتراض أن طول السلسلة النصية يساوي طول المصفوفة التي تخزّنها. ولهذا السبب، يجب أن تنتهي السلاسل النصية في C بقيمة محرف خاص، هي <strong>المحرف الفارغ</strong> (null character) (<code>'\0'</code>)، للدلالة على نهاية السلسلة.</p>
 <p>يُقال إن السلاسل النصية التي تنتهي بمحرف فارغ <strong>منتهية بمحرف فارغ</strong> (null-terminated). ورغم أن جميع السلاسل النصية في C <em>ينبغي</em> أن تكون منتهية بمحرف فارغ، فإن عدم مراعاة المحارف الفارغة بشكل صحيح مصدر شائع للأخطاء لدى مبرمجي C المبتدئين. وعند استخدام السلاسل النصية، من المهم أن تضع في اعتبارك أن مصفوفات المحارف يجب أن تُعلَن بسعة كافية لتخزين كل قيمة محرف في السلسلة إضافة إلى المحرف الفارغ (<code>'\0'</code>). فمثلاً، لتخزين السلسلة النصية <code>&quot;hi&quot;</code>، تحتاج إلى مصفوفة من ثلاثة محارف على الأقل (واحد لتخزين <code>'h'</code>، وواحد لتخزين <code>'i'</code>، وواحد لتخزين <code>'\0'</code>).</p>
@@ -1184,7 +1184,7 @@ print_array(more, <span class="hljs-number">8</span>);    <span class="hljs-comm
 <li>أعلن متغيّرات من النوع <code>struct</code> الجديد.</li>
 <li>استخدم صيغة النقطة (dot) (<code>.</code>) للوصول إلى قيم الحقول الفردية في المتغيّر.</li>
 </ol>
-<h3 id="161-تعريف-نوع-بنية"><a href="#_defining_a_struct_type"></a>1.6.1. تعريف نوع بنية</h3>
+<h3 id="161-تعريف-نوع-بنية">1.6.1. تعريف نوع بنية <span class="content-anchor" id="_defining_a_struct_type"></span></h3>
 <p>ينبغي أن يظهر تعريف نوع البنية <em>خارج أي دالة</em>، عادةً قرب أعلى ملف <code>.c</code> الخاص بالبرنامج. وصياغة تعريف نوع بنية جديد هي التالية (<code>struct</code> كلمة مفتاحية محجوزة):</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> &lt;</span>struct_name&gt; {
     &lt;field <span class="hljs-number">1</span> type&gt; &lt;field <span class="hljs-number">1</span> name&gt;;
@@ -1202,11 +1202,11 @@ print_array(more, <span class="hljs-number">8</span>);    <span class="hljs-comm
 };
 </code></pre>
 <p>يضيف تعريف البنية هذا نوعاً جديداً إلى نظام أنواع C، واسم النوع هو <code>struct studentT</code>. وتعرّف هذه البنية أربعة حقول، ويتضمن كل تعريف حقل نوع الحقل واسمه. ولاحظ في هذا المثال أن نوع الحقل <code>name</code> مصفوفة محارف، <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_strings_and_the_c_string_library">لاستخدامها كسلسلة نصية</a>.</p>
-<h3 id="162-الإعلان-عن-متغيرات-من-أنواع-البنى"><a href="#_declaring_variables_of_struct_types"></a>1.6.2. الإعلان عن متغيّرات من أنواع البنى</h3>
+<h3 id="162-الإعلان-عن-متغيرات-من-أنواع-البنى">1.6.2. الإعلان عن متغيّرات من أنواع البنى <span class="content-anchor" id="_declaring_variables_of_struct_types"></span></h3>
 <p>بعد تعريف النوع، يمكنك الإعلان عن متغيّرات من النوع الجديد <code>struct studentT</code>. ولاحظ أنه خلافاً للأنواع الأخرى التي صادفناها حتى الآن والتي تتألف من كلمة واحدة فقط (مثل <code>int</code> و<code>char</code> و<code>float</code>)، فإن اسم نوع بنيتنا الجديد يتألف من كلمتين، <code>struct studentT</code>.</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentT</span> <span class="hljs-title">student1</span>, <span class="hljs-title">student2</span>;</span> <span class="hljs-comment">// student1, student2 are struct studentT</span>
 </code></pre>
-<h3 id="163-الوصول-إلى-قيم-الحقول"><a href="#_accessing_field_values"></a>1.6.3. الوصول إلى قيم الحقول</h3>
+<h3 id="163-الوصول-إلى-قيم-الحقول">1.6.3. الوصول إلى قيم الحقول <span class="content-anchor" id="_accessing_field_values"></span></h3>
 <p>للوصول إلى قيم الحقول في متغيّر بنية، استخدم <em>صيغة النقطة</em>:</p>
 <pre><code class="language-bash">&lt;variable name&gt;.&lt;field name&gt;
 </code></pre>
@@ -1253,7 +1253,7 @@ student1.grad_yr = <span class="hljs-number">2020</span>;
 student2.grad_yr = student1.grad_yr;
 </code></pre>
 <p>يوضّح <a href="#FigStudentStruct">الشكل 1</a> تخطيط متغيّر <code>student1</code> في الذاكرة بعد إسنادات الحقول في المثال السابق. ولا تُخزَّن في الذاكرة إلا حقول متغيّر البنية (المناطق داخل الصناديق). وأسماء الحقول مكتوبة على الشكل للتوضيح، لكن بالنسبة لمصرّف C، الحقول مجرد مواقع تخزين أو <strong>إزاحات</strong> (offsets) من بداية ذاكرة متغيّر البنية. فمثلاً، استناداً إلى تعريف <code>struct studentT</code>، يعرف المصرّف أنه للوصول إلى الحقل المسمّى <code>gpa</code> يجب تجاوز مصفوفة من 64 محرفاً (<code>name</code>) وعدد صحيح واحد (<code>age</code>). ولاحظ أن حقل <code>name</code> في الشكل يصوّر المحارف الستة الأولى فقط من مصفوفة الـ 64 محرفاً.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-studentstruct.webp" alt="The layout of student1’s memory: the name field is a character array containing 'k' 'w' 'a' 'm' 'e' …​ The age field holds 20, the gpa field stores 3.5, and grad_yr contains 2020."> الشكل 1. ذاكرة المتغيّر student1 بعد إسناد كل حقل من حقوله</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-0-studentstruct.webp" alt="The layout of student1’s memory: the name field is a character array containing 'k' 'w' 'a' 'm' 'e' …​ The age field holds 20, the gpa field stores 3.5, and grad_yr contains 2020." id="FigStudentStruct"> الشكل 1. ذاكرة المتغيّر student1 بعد إسناد كل حقل من حقوله</p>
 <p>أنواع بنى C هي <strong>قيم يسارية</strong> (lvalues)، أي يمكن أن تظهر في الجانب الأيسر من عبارة إسناد. وهكذا يمكن إسناد قيمة متغيّر بنية إلى متغيّر بنية آخر بعبارة إسناد بسيطة. وتُ<em>نسخ</em> قيم حقول البنية في الجانب الأيمن من عبارة الإسناد إلى قيم حقول البنية في الجانب الأيسر. وبعبارة أخرى، يُنسخ محتوى ذاكرة إحدى البنى إلى ذاكرة الأخرى. وفيما يلي مثال على إسناد قيم بنية بهذه الطريقة:</p>
 <pre><code class="language-c">student2 = student1;  <span class="hljs-comment">// student2 gets the value of student1</span>
                       <span class="hljs-comment">// (student1&#x27;s field values are copied to</span>
@@ -1262,7 +1262,7 @@ student2.grad_yr = student1.grad_yr;
 <span class="hljs-built_in">strcpy</span>(student2.name, <span class="hljs-string">&quot;Frances Allen&quot;</span>);  <span class="hljs-comment">// change one field value</span>
 </code></pre>
 <p>يعرض <a href="#FigStructAssign">الشكل 2</a> قيم متغيّري الطالب بعد تنفيذ عبارة الإسناد والاستدعاء <code>strcpy</code>. ولاحظ أن الشكل يصوّر حقول <code>name</code> كقيم السلاسل النصية التي تحتويها، لا كمصفوفة المحارف الكاملة المكوّنة من 64 محرفاً.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-1-structassign.webp" alt="Struct Values and Assignment: the field values of the struct on the right hand side are assigned to corresponding field values of the struct on the left hand side of the assignment statement."> الشكل 2. تخطيط بنيتَي student1 وstudent2 بعد تنفيذ إسناد البنية واستدعاء strcpy</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-1-structassign.webp" alt="Struct Values and Assignment: the field values of the struct on the right hand side are assigned to corresponding field values of the struct on the left hand side of the assignment statement." id="FigStructAssign"> الشكل 2. تخطيط بنيتَي student1 وstudent2 بعد تنفيذ إسناد البنية واستدعاء strcpy</p>
 <p>توفّر C معامل <code>sizeof</code> يأخذ نوعاً ويرجع عدد البايتات التي يستخدمها ذلك النوع. ويمكن استخدام معامل <code>sizeof</code> على أي نوع من أنواع C، بما فيها أنواع البنى، لمعرفة مقدار مساحة الذاكرة التي يحتاجها متغيّر من ذلك النوع. فمثلاً، يمكننا طباعة حجم نوع <code>struct studentT</code>:</p>
 <pre><code class="language-c"><span class="hljs-comment">// Note: the `%lu` format placeholder specifies an unsigned long value.</span>
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;number of bytes in student struct: %lu\n&quot;</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> studentT));
@@ -1347,7 +1347,7 @@ number of bytes in student struct: 76
                                     <span class="hljs-comment">// (the base address of a statically</span>
                                     <span class="hljs-comment">//  declared array cannot be changed)</span>
 </code></pre>
-<h3 id="164-تمرير-البنى-إلى-الدوال"><a href="#_passing_structs_to_functions"></a>1.6.4. تمرير البنى إلى الدوال</h3>
+<h3 id="164-تمرير-البنى-إلى-الدوال">1.6.4. تمرير البنى إلى الدوال <span class="content-anchor" id="_passing_structs_to_functions"></span></h3>
 <p>في C، تُمرَّر وسائط جميع الأنواع <em>بالقيمة</em> إلى الدوال. وبالتالي، إذا كانت لدالة وسيط من نوع بنية، فعند استدعائها بوسيط بنية، تُمرَّر <strong>قيمة</strong> الوسيط إلى وسيطها، أي أن الوسيط يحصل على نسخة من قيمة وسيطته. وقيمة متغيّر البنية هي محتوى ذاكرته، ولهذا يمكننا إسناد حقول بنية لتكون مماثلة لبنية أخرى بعبارة إسناد واحدة كهذه:</p>
 <pre><code class="language-c">student2 = student1;
 </code></pre>
@@ -1416,7 +1416,7 @@ number of bytes in student struct: 76
 Ruth is only 17 years old and cannot vote.
 </code></pre>
 <p>يوضح الناتج أنه عندما تطبع <code>checkID</code> الحقل <code>age</code>، فإنه يعكس تغيير الدالة لحقل <code>age</code> في الوسيط <code>s</code>. لكن بعد عودة استدعاء الدالة، تطبع <code>main</code> الحقل <code>age</code> من <code>student</code> بالقيمة نفسها التي كان عليها قبل استدعاء <code>checkID</code>. ويوضح <a href="#FigStructStack">الشكل 3</a> محتويات مكدّس الاستدعاء قبل عودة الدالة <code>checkID</code> مباشرة.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-2-structstack.webp" alt="As the student struct is passed to checkID, the parameter gets a copy of its contents. When checkID modifies the age field to 19, the change only applies to its local copy. The student struct’s age field in main remains at 17."> الشكل 3. محتويات مكدّس الاستدعاء قبل العودة من دالة checkID</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c1-intro-2-structstack.webp" alt="As the student struct is passed to checkID, the parameter gets a copy of its contents. When checkID modifies the age field to 19, the change only applies to its local copy. The student struct’s age field in main remains at 17." id="FigStructStack"> الشكل 3. محتويات مكدّس الاستدعاء قبل العودة من دالة checkID</p>
 <p>يُعدّ فهم دلالات التمرير بالقيمة لوسائط البنى مهماً بشكل خاص عندما تحتوي بنية على حقل مصفوفة معلَنة ساكنةً (مثل حقل <code>name</code> في <code>struct studentT</code>). فعند تمرير بنية كهذه إلى دالة، يُنسخ محتوى ذاكرة وسيط البنية كاملاً، بما فيه كل عنصر مصفوفة في حقل المصفوفة، إلى وسيطها. وإذا غيّرت الدالة محتويات مصفوفة وسيط البنية، فلن <em>تبقى</em> تلك التغييرات بعد عودة الدالة. وقد يبدو هذا السلوك غريباً بالنظر إلى ما نعرفه عن <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_arrays_and_functions">كيفية تمرير المصفوفات إلى الدوال</a>، لكنه متسق مع سلوك نسخ البنى الموصوف سابقاً.</p>
 <p>قدّمنا في هذا الفصل كثيراً من أجزاء لغة البرمجة C بمقارنتها بتراكيب لغوية مشابهة في Python، وهي لغة قد يعرفها كثير من القرّاء. فـ C تمتلك ميزات لغوية مشابهة لميزات كثير من اللغات عالية المستوى الأمرية والكائنية التوجه الأخرى، منها المتغيّرات والحلقات والعبارات الشرطية والدوال والإدخال/الإخراج. ومن الفروق الجوهرية بين ميزات C وPython التي ناقشناها أن C تشترط الإعلان عن جميع المتغيّرات بنوع محدد قبل استخدامها، وأن مصفوفات C وسلاسلها النصية تجريد أدنى مستوى من قوائم Python وسلاسلها النصية. وتتيح التجريدات الأدنى مستوى لمبرمج C تحكماً أكبر في كيفية وصول برنامجه إلى ذاكرته، وبالتالي تحكماً أكبر في كفاءة برنامجه.</p>
 <p>وفي الفصل التالي، نغطي لغة البرمجة C بالتفصيل. فنعود بعمق أكبر إلى كثير من الميزات اللغوية المعروضة في هذا الفصل، ونقدّم بعض ميزات لغة C الجديدة، وأبرزها متغيّرات المؤشّرات في C ودعم التخصيص الديناميكي للذاكرة.</p>
@@ -1429,7 +1429,7 @@ Ruth is only 17 years old and cannot vote.
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1437,8 +1437,8 @@ Ruth is only 17 years old and cannot vote.
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

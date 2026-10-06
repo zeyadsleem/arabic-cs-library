@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -56,7 +56,7 @@
 <p>يمكن استخدام الأصداف تفاعليًا، من طرفية أو من محاكي طرفية مثل xterm، وغير تفاعليًا بقراءة الأوامر من ملف. وتوفّر معظم الأصداف الحديثة، ومنها bash، تحرير سطر الأوامر، حيث يمكن التلاعب بسطر الأوامر أثناء إدخاله باستخدام أوامر شبيهة بتلك الخاصة بـ emacs أو vi، إضافةً إلى أشكال متنوّعة من محفوظ تاريخ الأوامر.</p>
 <p>تشبه معالجة bash إلى حد كبير خط أنابيب داخل الصدفة: فبعد قراءتها من الطرفية أو من سكربت، تمرّ البيانات عبر مراحل عدّة، فتتحوَّل في كل خطوة، حتى تنفّذ الصدفة في النهاية أمرًا وتجمع حالة عودته.</p>
 <p>سيستعرض هذا الفصل المكوّنات الرئيسية لـ bash: معالجة المدخلات، والتحليل، وتوسيعات الكلمات المختلفة وسائر عمليات معالجة الأوامر، وتنفيذ الأوامر، من منظور خط الأنابيب. وتعمل هذه المكوّنات بوصفها خط أنابيب للبيانات المقروءة من لوحة المفاتيح أو من ملف، تحوّلها إلى أمرٍ يُنفَّذ.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-bash-bash-article-diagram.webp" alt="[معمارية مكوّنات bash]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-bash-bash-article-diagram.webp" alt="معمارية مكوّنات bash" id="fig.bash.fig1"></p>
 <p>الشكل 3.1: معمارية مكوّنات bash</p>
 <h3 id="311-bash">3.1.1. bash</h3>
 <p>bash هي الصدفة التي تظهر في نظام تشغيل GNU، الذي يُبنى عادةً فوق نواة لينكس، وفي عدد من أنظمة التشغيل الشائعة الأخرى، وأبرزها Mac OS X. وهي تقدّم تحسينات وظيفية على الإصدارات التاريخية من sh، سواء في الاستخدام التفاعلي أو في البرمجة.</p>
@@ -149,7 +149,7 @@
 <p>وأخيرًا، هناك التوسيع الحسابي. فـ <code>$((expression))</code> يجعل <code>expression</code> يُقيَّم وفق القواعد نفسها المطبَّقة على تعبيرات لغة C. ويصبح نتيجة التعبير هي نتيجة التوسيع.</p>
 <p>توسيع المتغيّرات هو الموضع الذي يصبح فيه الفرق بين علامتي الاقتباس المفرد والمزدوج أكثر ما يكون وضوحًا. فالاقتباس المفرد يمنع جميع التوسيعات — فتمرّ المحارف المحيطة بالعلامات من خلال التوسيعات بلا مساس — فيما يسمح الاقتباس المزدوج ببعض التوسيعات ويمنع أخرى. فتحدث توسيعات الكلمات واستبدال الأوامر والحساب واستبدال العمليات — إذ لا يؤثر الاقتباس المزدوج إلا في كيفية التعامل مع النتيجة — بينما لا تحدث توسيعات الأقواس المعقوفة وتوسيع الشرطة المائلة العكسية.</p>
 <h3 id="353-تقسيم-الكلمات">3.5.3. تقسيم الكلمات</h3>
-<p>تُقسَّم نتائج توسيع الكلمات باستخدام المحارف الواردة في قيمة متغيّر الصدفة <code>IFS</code> بوصفها محدِّدات. وهكذا تحوّل الصدفة كلمة واحدة إلى أكثر من واحدة. وكلما ظهر أحد المحارف في <code>$IFS</code><a href="#footnote-1">1</a> ضمن النتيجة، يقسّم bash الكلمة إلى اثنتين. ويمنع الاقتباس المفرد والاقتباس المزدوج كلاهما تقسيم الكلمات.</p>
+<p>تُقسَّم نتائج توسيع الكلمات باستخدام المحارف الواردة في قيمة متغيّر الصدفة <code>IFS</code> بوصفها محدِّدات. وهكذا تحوّل الصدفة كلمة واحدة إلى أكثر من واحدة. وكلما ظهر أحد المحارف في <code>$IFS</code><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> ضمن النتيجة، يقسّم bash الكلمة إلى اثنتين. ويمنع الاقتباس المفرد والاقتباس المزدوج كلاهما تقسيم الكلمات.</p>
 <h3 id="354-التوسيع-الشاهي-globbing">3.5.4. التوسيع الشاهي (Globbing)</h3>
 <p>بعد تقسيم النتائج، تفسّر الصدفة كل كلمة ناتجة عن التوسيعات السابقة بوصفها نمطًا محتملًا، وتحاول مطابقته مع اسم ملف قائم، بما في ذلك أي مسار مجلد سابق له.</p>
 <h3 id="355-التنفيذ">3.5.5. التنفيذ</h3>
@@ -163,7 +163,7 @@
 <h3 id="361-إعادة-التوجيه">3.6.1. إعادة التوجيه</h3>
 <p>من مظاهر دور الصدفة بوصفها واجهة لنظام التشغيل القدرة على إعادة توجيه المدخلات والمخرجات من وإلى الأوامر التي تستدعيها. وصيغة إعادة التوجيه إحدى الأمور التي تكشف عن نضج مستخدمي الصدفة الأوائل: فحتى وقت قريب جدًا كانت تتطلّب من المستخدمين تتبّع واصفات الملفات التي يستخدمونها، وتحديد أي واصف آخر غير المدخل والإخراج والخطأ القياسية برقمه صراحةً.</p>
 <p>وقد أضافت صيغة إعادة التوجيه مؤخرًا قدرةً تتيح للمستخدمين توجيه الصدفة لتختار واصف ملفات مناسبًا وتسنده إلى متغيّر محدَّد، بدل أن يختاره المستخدم. فهذا يقلّل العبء الذي يتحمّله المبرمج في تتبّع واصفات الملفات، لكنه يضيف معالجةً إضافية: إذ يتعيّن على الصدفة أن تُكرّر واصفات الملفات في الموضع الصحيح، وأن تتأكد من إسنادها إلى المتغيّر المحدَّد. وهذه مثال آخر على كيفية مرور المعلومات من المحلل اللغوي إلى المحلل النحوي فإلى تنفيذ الأوامر: فالمحلل اللغوي يصنّف الكلمة على أنها إعادة توجيه تتضمّن إسناد متغيّر؛ والمحلل النحوي، في إنتاج القاعدة المناسب، ينشئ كائن إعادة التوجيه مع علم يشير إلى وجوب الإسناد؛ وشيفرة إعادة التوجيه تفسّر ذلك العلم وتحرص على إسناد رقم واصف الملف إلى المتغيّر الصحيح.</p>
-<p>وأصعب جزء في تنفيذ إعادة التوجيه هو تذكّر كيفية التراجع عنها. فالقصد من الصدفة أن تخدش التمييز بين الأوامر المنفَّذة من نظام الملفات، والتي تسبّب إنشاء عملية جديدة، وبين الأوامر التي تنفّذها الصدفة نفسها (الأوامر المدمجة). لكن بغضّ النظر عن كيفية تنفيذ الأمر، فلا ينبغي أن تمتدّ آثار إعادات التوجيه إلى ما بعد اكتمال الأمر<a href="#footnote-2">2</a>. ولهذا يتعيّن على الصدفة تتبّع كيفية التراجع عن آثار كل إعادة توجيه، وإلا فإن إعادة توجيه مخرجات أمر مدمج كانت ستغيّر الإخراج القياسي للصدفة. ويعرف bash كيف يتراجع عن كل نوع من إعادات التوجيه، إما بإغلاق واصف ملف خصّصه له، أو بحفظ واصف الملف الذي يجري تكراره ثم استعادته لاحقًا باستخدام <code>dup2</code>. وهذان يستخدمان كائنات إعادة التوجيه نفسها التي ينشئها المحلل النحوي، ويُعالَجان بالدوال نفسها.</p>
+<p>وأصعب جزء في تنفيذ إعادة التوجيه هو تذكّر كيفية التراجع عنها. فالقصد من الصدفة أن تخدش التمييز بين الأوامر المنفَّذة من نظام الملفات، والتي تسبّب إنشاء عملية جديدة، وبين الأوامر التي تنفّذها الصدفة نفسها (الأوامر المدمجة). لكن بغضّ النظر عن كيفية تنفيذ الأمر، فلا ينبغي أن تمتدّ آثار إعادات التوجيه إلى ما بعد اكتمال الأمر<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>. ولهذا يتعيّن على الصدفة تتبّع كيفية التراجع عن آثار كل إعادة توجيه، وإلا فإن إعادة توجيه مخرجات أمر مدمج كانت ستغيّر الإخراج القياسي للصدفة. ويعرف bash كيف يتراجع عن كل نوع من إعادات التوجيه، إما بإغلاق واصف ملف خصّصه له، أو بحفظ واصف الملف الذي يجري تكراره ثم استعادته لاحقًا باستخدام <code>dup2</code>. وهذان يستخدمان كائنات إعادة التوجيه نفسها التي ينشئها المحلل النحوي، ويُعالَجان بالدوال نفسها.</p>
 <p>ولأن إعادات التوجيه المتعددة منفَّذة بوصفها قوائم بسيطة من الكائنات، فإن إعادات التوجيه المستخدَمة للتراجع عنها تُحفظ في قائمة منفصلة. وتُعالَج هذه القائمة عند اكتمال الأمر، لكن يتعيّن على الصدفة أن تنتبه عندئذ، إذ يجب أن تبقى إعادات التوجيه المرتبطة بدالة من دوال الصدفة أو بالأمر المدمج &quot;<code>.</code>&quot; سارية حتى تكتمل تلك الدالة أو ذلك الأمر المدمج. وحين لا يستدعي الأمر المدمج <code>exec</code> أي أمر، فإن قائمة التراجع تُهمَل ببساطة، لأن إعادات التوجيه المرتبطة بـ <code>exec</code> تبقى سارية في بيئة الصدفة.</p>
 <p>أمّا التعقيد الآخر فقد أحدثه bash على نفسه. فالإصدارات التاريخية من صدفة Bourne سمحت للمستخدم بالتعامل مع واصفات الملفات من 0 إلى 9 فقط، محجزةً الواصفات 10 فما فوق للاستخدام الداخلي للصدفة. وقد خفّف bash هذا القيد، فسماح للمستخدم بالتعامل مع أي واصف حتى حدّ الملفات المفتوحة في العملية. وهذا يعني أن على bash تتبّع واصفات ملفاته الداخلية، بما فيها تلك التي فتحتها مكتبات خارجية لا الصدفة نفسها، وأن يكون مستعدًا لنقلها عند الطلب. وهذا يتطلّب قدرًا كبيرًا من مسك الدفاتر، وبعض القواعد الاستدلالية المتعلّقة بعلم الإغلاق عند التنفيذ (close-on-exec)، وقائمة أخرى من إعادات التوجيه تُصان طوال مدة تنفيذ الأمر ثم تُعالَج أو تُهمَل.</p>
 <h3 id="362-الأوامر-المدمجة">3.6.2. الأوامر المدمجة</h3>
@@ -205,13 +205,22 @@
 <li>في معظم الحالات، تتوالى أحرف من أحد هذه المحارف.</li>
 <li>الأمر المدمج <code>exec</code> استثناء لهذه القاعدة.</li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>In most cases, a sequence of one of the characters. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>The <code>exec</code> builtin is an exception to this rule. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/aosabook/v1-audacity/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">Audacity</span></a><!--]--> <!--[0--><a href="../../../../book/aosabook/v1-bdb/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">Berkeley DB</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -219,8 +228,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

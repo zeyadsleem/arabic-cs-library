@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -144,7 +144,7 @@ Bitmap Heap Scan on employees
 <h4>تحذير</h4>
 <p>تستخدم أدوات ORM أحياناً <code>UPPER</code> و<code>LOWER</code> دون علم المطوّر. فمثلاً، يحقن Hibernate <a href="/arabic-cs-library/book/use-the-index-luke/sql-myth-directory-dynamic-sql-is-slow/index#myth-dynamic-sql-sample">دالة <code>LOWER</code> ضمنية</a> للبحث غير الحساس لحالة الأحرف.</p>
 <p>لا تزال خطة التنفيذ ليست نفسها كما كانت في القسم السابق بدون <code>UPPER</code>؛ فتقدير عدد الصفوف مرتفع جداً. ومن الغريب بشكل خاص أن يتوقع المُحسِّن جلب صفوف من الجدول أكثر مما يقدّمه <code>INDEX RANGE SCAN</code> في المقام الأول. فكيف يجلب 100 صف من الجدول إذا كان مسح الفهرس السابق أعاد 40 صفاً فقط؟ الجواب أنه لا يستطيع. والتقديرات المتناقضة كهذه غالباً ما تدل على مشكلات في الإحصاءات. وفي هذه الحالة بالتحديد يرجع ذلك إلى أن قاعدة بيانات Oracle لا تحدّث إحصاءات الجدول عند إنشاء فهرس جديد (انظر أيضاً <a href="#sb-collecting-statistics">«<em>إحصاءات Oracle للفهارس القائمة على الدوال</em>»</a>).</p>
-<h2 id="إحصاءات-oracle-للفهارس-القائمة-على-الدوال">إحصاءات Oracle للفهارس القائمة على الدوال</h2>
+<h2 id="إحصاءات-oracle-للفهارس-القائمة-على-الدوال">إحصاءات Oracle للفهارس القائمة على الدوال <span class="content-anchor" id="sb-collecting-statistics"></span></h2>
 <p>تحفظ قاعدة بيانات Oracle المعلومات عن عدد قيم العمود المتمايزة ضمن إحصاءات الجدول. وتُعاد استخدام هذه الأرقام إذا كان العمود جزءاً من فهارس متعددة.</p>
 <p>وتُحفظ إحصاءات الفهرس القائم على دالة (FBI) أيضاً على مستوى الجدول كـ<em>أعمدة افتراضية</em> (virtual columns). ورغم أن قاعدة بيانات Oracle تجمع <em>إحصاءات الفهرس</em> للفهارس الجديدة تلقائياً (<a href="https://docs.oracle.com/cd/B14117_01/server.101/b10763/compat.htm#sthref320">منذ الإصدار 10<em>g</em></a>)، فإنها لا تحدّث <em>إحصاءات الجدول</em>. ولهذا السبب يوصي توثيق Oracle بتحديث إحصاءات الجدول بعد إنشاء فهرس قائم على دالة:</p>
 <p>بعد إنشاء فهرس قائم على دالة، اجمع الإحصاءات على الفهرس وجدوله الأساسي معاً باستخدام حزمة <code>DBMS_STATS</code>. وستتيح هذه الإحصاءات لقاعدة بيانات Oracle أن تقرر على نحو صحيح متى تستخدم الفهرس.</p>
@@ -196,7 +196,7 @@ Predicate Information (identified by operation id):
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -204,8 +204,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

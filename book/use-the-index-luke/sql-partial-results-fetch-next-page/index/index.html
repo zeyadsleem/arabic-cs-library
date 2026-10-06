@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -114,9 +114,9 @@
  <span class="hljs-keyword">FETCH</span> <span class="hljs-keyword">FIRST</span> <span class="hljs-number">10</span> <span class="hljs-keyword">ROWS</span> <span class="hljs-keyword">ONLY</span>
 </code></pre>
 <p>تستخدم جملة <code>where</code> صيغة «قيم الصف» قليلة الشهرة (انظر المربع المعنون <a href="#sb-row-values">«<em>قيم الصف في SQL</em>»</a>). وهي تدمج قيماً متعددة في وحدة منطقية واحدة قابلة للتطبيق على معاملات المقارنة العادية. وكما في القيم العددية، يقابل شرط أصغر من «يأتي بعد» عند الفرز بترتيب تنازلي. ويعني ذلك أن الاستعلام ينظر فقط في المبيعات التي تأتي بعد زوج <code>SALE_DATE</code> و<code>SALE_ID</code> المعطى.</p>
-<h2 id="قيم-الصف-في-sql">قيم الصف في SQL</h2>
+<h2 id="قيم-الصف-في-sql">قيم الصف في SQL <span class="content-anchor" id="sb-row-values"></span></h2>
 <p>إلى جانب القيم العددية العادية، يعرّف معيار SQL أيضاً ما يسمى <em>بواني قيم الصف (row value constructors)</em>. وهي «تحدد مجموعة مرتبة من القيم تُبنى في صف أو صف جزئي» [<a href="https://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt">SQL:92</a>، §7.1: <row value constructor>]. ومن الناحية النحوية، قيم الصف قوائم بين قوسين، وهذه الصيغة أشهر ما تكون في عبارة <code>insert</code>.</p>
-<p>غير أن استخدام بواني قيم الصف في جملة <code>where</code> أقل شهرة لكنه سليم تماماً. بل يعرّف معيار SQL جميع معاملات المقارنة لبواني قيم الصف. وتعريف عمليات أصغر من مثلاً كما يلي:<a href="#footnote-0">0</a></p>
+<p>غير أن استخدام بواني قيم الصف في جملة <code>where</code> أقل شهرة لكنه سليم تماماً. بل يعرّف معيار SQL جميع معاملات المقارنة لبواني قيم الصف. وتعريف عمليات أصغر من مثلاً كما يلي:<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <p>X &lt; Y صحيحة إذا وفقط إذا كانت Xi = Yi صحيحة لكل i &lt; n وكانت Xn &lt; Yn لبعض n.</p>
 <p>حيث <em>i</em> و<em>n</em> يعكسان فهارس المواضع في القوائم. ويعني ذلك أن قيمة الصف X أصغر من Y إذا كانت أي قيمة Xn أصغر من Yn المقابلة وكانت جميع أزواج القيم السابقة متساوية (<em>Xi = Yi لـi&lt;n</em>).</p>
 <p>ويجعل هذا التعريف التعبير X &lt; Y مرادفاً لـ«X يُرتَّب قبل Y»، وهو بالضبط المنطق الذي نحتاجه لطريقة البحث بالمفتاح.</p>
@@ -132,7 +132,7 @@
  <span class="hljs-keyword">WHERE</span> rownum <span class="hljs-operator">&lt;=</span> <span class="hljs-number">10</span>
 </code></pre>
 <p>تتألف جملة <code>where</code> من جزأين. ينظر الجزء الأول في <code>SALE_DATE</code> وحده ويستخدم شرط أصغر من أو يساوي (<code>&lt;=</code>) — فهو يختار صفوفاً أكثر من اللازم. وهذا الجزء من جملة <code>where</code> بسيط بما يكفي لتستخدمه جميع قواعد البيانات للوصول إلى الفهرس. أما الجزء الثاني من جملة <code>where</code> فيزيل الصفوف الزائدة المعروضة أصلاً في الصفحة السابقة. ويشرح المربع المعنون <a href="#sb-equivalent-logic">«<em>فهرسة المنطق المكافئ</em>»</a> سبب صياغة جملة <code>where</code> بهذه الطريقة.</p>
-<h2 id="فهرسة-المنطق-المكافئ">فهرسة المنطق المكافئ</h2>
+<h2 id="فهرسة-المنطق-المكافئ">فهرسة المنطق المكافئ <span class="content-anchor" id="sb-equivalent-logic"></span></h2>
 <p>يمكن التعبير عن شرط منطقي دائماً بطرق مختلفة؛ فيمكنك مثلاً تنفيذ منطق التخطي المعروض أعلاه كما يلي:</p>
 <pre><code>WHERE (
          (sale_date &lt; ?)
@@ -173,13 +173,20 @@ Predicate Information (identified by operation id):
 <p>يقارن <a href="#fig07_04">الشكل 7.4</a> خصائص الأداء في طريقتي الإزاحة والبحث بالمفتاح. ودقة القياس غير كافية لرؤية الفرق في الجهة اليسرى من المخطط، لكن الفرق ظاهر بوضوح بدءاً من الصفحة 20 تقريباً.</p>
 <p>الشكل 7.4 قابلية التوسع عند جلب الصفحة التاليةولطريقة البحث بالمفتاح عيوب أيضاً، وأهمها صعوبة التعامل معها؛ إذ لا يجب عليك صياغة جملة <code>where</code> بعناية فحسب، بل لا تستطيع أيضاً جلب صفحات اعتباطية. علاوة على ذلك، تحتاج إلى عكس جميع عمليات المقارنة والفرز لتغيير اتجاه التصفح. وهاتان الوظيفتان تحديداً — تخطي الصفحات والتصفح إلى الخلف — غير مطلوبتين عند استخدام آلية التمرير اللانهائي في واجهة المستخدم.</p>
 <h2 id="الشكل-75-مصفوفة-قواعد-البياناتالميزات">الشكل 7.5 مصفوفة قواعد البيانات/الميزات</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>ISO/IEC 9075-2:2023 §8.2 GR 1bi2 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/use-the-index-luke/sql-partial-results-top-n-queries/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الاستعلام عن صفوف Top-N</span></a><!--]--> <!--[0--><a href="../../../../book/use-the-index-luke/sql-partial-results-window-functions/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">استخدام دوال النوافذ لترقيم فعّال</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -187,8 +194,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

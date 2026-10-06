@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -220,7 +220,7 @@ testdb=# SELECT count(*) FROM tbl;
 ERROR:  canceling statement due to conflict with recovery
 DETAIL:  User was holding a relation lock for too long.
 </code></pre>
-<p>سبب هذا التعارض هو بيانات WAL المتولّدة عن <strong>قفل الوصول الحصري</strong> الذي يحصل عليه أمر DROP TABLE داخليًا على الخادم الأساسي<a href="#fn:1">1</a>. وتتعارض بيانات WAL هذه مع عبارة SELECT على الخادم الاحتياطي. (وكما هو موضّح في القسم 9.5.1، تتضمّن بيانات WAL ليس فقط تغييرات البيانات بل أيضًا معلومات الأقفال.)</p>
+<p>سبب هذا التعارض هو بيانات WAL المتولّدة عن <strong>قفل الوصول الحصري</strong> الذي يحصل عليه أمر DROP TABLE داخليًا على الخادم الأساسي<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. وتتعارض بيانات WAL هذه مع عبارة SELECT على الخادم الاحتياطي. (وكما هو موضّح في القسم 9.5.1، تتضمّن بيانات WAL ليس فقط تغييرات البيانات بل أيضًا معلومات الأقفال.)</p>
 <p>ووفقًا لـ<a href="https://www.postgresql.org/docs/current/hot-standby.html#HOT-STANDBY-CONFLICT">التوثيق الرسمي</a>، تنقسم أسباب التعارضات إلى ثلاثة أنواع:</p>
 <ol>
 <li><strong>أقفال الوصول الحصري على الخادم الأساسي</strong>: تتعارض هذه مع أي قفل على الخادم الاحتياطي. راجع <a href="https://www.postgresql.org/docs/current/explicit-locking.html#LOCKING-TABLES">التوثيق الرسمي</a> للأوامر التي تحصل على هذه الأقفال، مثل LOCK IN ACCESS EXCLUSIVE MODE وDROP TABLE وTRUNCATE وREINDEX وVACUUM FULL.</li>
@@ -285,9 +285,6 @@ confl_active_logicalslot | 0
 <p>حتى الإصدار 15، كانت المعلمة <a href="https://www.postgresql.org/docs/14/runtime-config-replication.html#GUC-VACUUM-DEFER-CLEANUP-AGE">vacuum_defer_cleanup_age</a> تدعم تأخير حذف الصفوف الميتة. وإذا ضُبطت على عدد موجب، أخّرت عمليات vacuum حذف الصفوف الميتة لعدد المعاملات المحدد.</p>
 <p>وأُزيلت هذه المعلمة في الإصدار 16 لأنها لم تكن تزيل التعارضات دائمًا.</p>
 <p>ويؤدي استخدام <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK">hot_standby_feedback</a> وفتحات النسخ (الموصوفة في القسم 11.4) إلى إدارة التعارضات بفعالية أكبر.</p>
-<ol>
-<li>حالة التعارض هذه سمة تصميمية مقصودة لتوفير مهلة سماح تمنع أخطاء الاستعلامات الفورية على الخادم الاحتياطي. فعندما يُسقط الخادم الأساسي كائنات يصل إليها الخادم الاحتياطي حاليًا، يدخل النسخ المتماثل المتدفّق في حالة التعارض هذه. ولإعلام خوادم النسخ الاحتياطي بهذه الحالة، يسجّل PostgreSQL الحصول على أقفال الوصول الحصري في XLOG. ولاحظ أن هذه السجلات تُنشأ خصيصًا من أجل النسخ المتماثل وليس من أجل الاستعادة القياسية. ونتيجة لذلك، لا ينشئها PostgreSQL إذا كان wal_level مضبوطًا على minimal. <a href="#fnref:1">↩︎</a></li>
-</ol>
 <h1>11.3. إدارة خوادم احتياطية متعددة</h1>
 <p>يصف هذا القسم كيفية عمل النسخ المتماثل المتدفّق مع خوادم احتياطية متعددة.</p>
 <p>محتويات القسم</p>
@@ -663,13 +660,20 @@ synced              | f
 </code></pre>
 <p>يحفظ خادم PostgreSQL الأساسي بانتظام معلومات مفصّلة عن فتحات نسخه في ملفات ‘state’ في الدليل pg_replslot.</p>
 <p>وعند إعادة تشغيل الخادم الأساسي، يحمّل هذه المعلومات المحفوظة مرة أخرى إلى الذاكرة لاستعادة حالة فتحات نسخه.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>حالة التعارض هذه سمة تصميمية مقصودة لتوفير مهلة سماح تمنع أخطاء الاستعلامات الفورية على الخادم الاحتياطي. فعندما يُسقط الخادم الأساسي كائنات يصل إليها الخادم الاحتياطي حاليًا، يدخل النسخ المتماثل المتدفّق في حالة التعارض هذه. ولإعلام خوادم النسخ الاحتياطي بهذه الحالة، يسجّل PostgreSQL الحصول على أقفال الوصول الحصري في XLOG. ولاحظ أن هذه السجلات تُنشأ خصيصًا من أجل النسخ المتماثل وليس من أجل الاستعادة القياسية. ونتيجة لذلك، لا ينشئها PostgreSQL إذا كان wal_level مضبوطًا على minimal. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql10/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">النسخ الاحتياطي الأساسي والاستعادة الزمنية</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql12/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">النسخ المتماثل المنطقي</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -677,8 +681,8 @@ synced              | f
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

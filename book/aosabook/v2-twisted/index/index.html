@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -77,7 +77,7 @@
 <p>‏Twisted هو محرّك شبكات مدفوع بالأحداث. والبرمجة المدفوعة بالأحداث جزء جوهري من فلسفة تصميم Twisted إلى حدّ يستحق أن نُخصص لحظة لمراجعة ما تعنيه هذه البرمجة بالضبط.</p>
 <p>البرمجة المدفوعة بالأحداث (event-driven programming) هي نموذج برمجي يحدّد تدفّق البرنامج أحداثٌ خارجية. ويتميز بحلقة أحداث (event loop) وباستعمال دوالّ استدعاء (callbacks) لتشغيل الإجراءات عند وقوع الأحداث. أمّا النموذجان البرمجيان الشائعان الآخران فهما البرمجة المتزامنة (أحادية الخيط) والبرمجة متعددة الخيوط.</p>
 <p>لنقارن نماذج البرمجة أحادية الخيط ومتعددة الخيوط والمدفوعة بالأحداث، ونقابل بينها بمثال واحد. يعرض <a href="#fig.twisted.threadingmodels">الشكل 21.1</a> العمل الذي يؤدّيه برنامج مع مرور الوقت في هذه النماذج الثلاثة. لدى البرنامج ثلاث مهام لإتمامها، تحجز كل منها التنفيذ في انتظار انتهاء المدخلات/المخرجات. وأمّا الوقت الذي تقضيه محجزةً في انتظار المدخلات/المخرجات فهو مشطَّط بمنطقة رمادية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-twisted-threading_models.webp" alt=""> الشكل 21.1: نماذج الخيوط</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-twisted-threading_models.webp" alt="" id="fig.twisted.threadingmodels"> الشكل 21.1: نماذج الخيوط</p>
 <p>في النسخة أحادية الخيط المتزامنة من البرنامج، تُنجَز المهام تسلسليًا. فإذا حجزت إحدى المهام تنفيذها لفترة على المدخلات/المخرجات، وجب على بقية المهام الانتظار حتى تنتهي، ثم تُنفَّذ واحدة تلو الأخرى. هذا الترتيب المحسوم والمعالجة المتسلسلة يسهّلان التبرير المنطقي، لكن البرنامج يصبح بطيئًا على غير الضرورية إذا لم تكن المهام تعتمد على بعضها، ومع ذلك تضطر إلى انتظار بعضها بعضًا.</p>
 <p>في النسخة متعددة الخيوط من البرنامج، تُنفَّذ المهام الثلاث التي تحجز تنفيذها أثناء عملها في خيوط تحكّم منفصلة. ويدير نظام التشغيل هذه الخيوط، وقد تعمل على عدّة معالجات في الوقت نفسه أو بالتناوب على معالج واحد. وهذا يتيح لبعض الخيوط أن تحقق تقدّمًا بينما يحجز غيرها على موارد. وهو غالبًا أكثر كفاءة زمنيًا من البرنامج المتزامن المكافئ، لكن على المبرمج أن يكتب شيفرة تحمي الموارد المشتركة التي يمكن الوصول إليها من عدّة خيوط في الوقت نفسه. وقد يصعب التبرير المنطقي للبرامج متعددة الخيوط، لأن على المبرمج الآن أن ينتبه إلى سلامة الخيوط عبر التسلسل (locking)، أو إعادة الدخول (reentrancy)، أو التخزين المحلي لكل خيط (thread-local storage)، أو آليات أخرى، وكلّها عند تنفيذها على نحو خاطئ قد تؤدّي إلى أخطاء دقيقة ومؤلمة.</p>
 <p>أما النسخة المدفوعة بالأحداث من البرنامج فتتناوب على تنفيذ المهام الثلاث، لكن في خيط تحكّم واحد. وعند إجراء المدخلات/المخرجات أو العمليات المكلفة الأخرى، يُسجَّل استدعاء (callback) مع حلقة الأحداث، ثم يتواصل التنفيذ ريثما تكتمل المدخلات/المخرجات. ويصف الاستدعاء كيفية التعامل مع الحدث بعد اكتماله. وتستطلع حلقة الأحداث بحثًا عن الأحداث وتوزّعها فور ورودها على الاستدعاءات التي تنتظرها. وهذا يتيح للبرنامج أن يحقق تقدّمًا متى أمكن ذلك دون استعمال خيوط إضافية. وقد تكون البرامج المدفوعة بالأحداث أسهل في التبرير المنطقي من البرامج متعددة الخيوط، لأن المبرمج لا يحتاج إلى التفكير في سلامة الخيوط.</p>
@@ -191,7 +191,7 @@ reactor.run()
 </code></pre>
 <p>في هذه النسخة، تُستدعى معالجات الأحداث نفسها، لكنها جميعًا مسجّلة مع كائن <code>Deferred</code> واحد، بدلًا من انتشارها في الشيفرة وتمريرها وسائط إلى <code>getPage</code>.</p>
 <p>يُنشَأ كائن <code>Deferred</code> بمرحلتين من الاستدعاءات. أولًا، تضيف <code>addCallbacks</code> الاستدعاءَ <code>processPage</code> ومعالجَ الأخطاء <code>logError</code> إلى المرحلة الأولى من سلسلتيهما. ثم تضيف <code>addBoth</code> الدالة <code>finishProcessing</code> إلى المرحلة الثانية من السلسلتين معًا. وعلى نحو بياني، تبدو سلاسل الاستدعاءات كما في <a href="#fig.twisted.callback">الشكل 21.2</a>.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-twisted-deferred.webp" alt=""> الشكل 21.2: سلاسل الاستدعاءات</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-twisted-deferred.webp" alt="" id="fig.twisted.callback"> الشكل 21.2: سلاسل الاستدعاءات</p>
 <p>لا يمكن إطلاق الكائن <code>Deferred</code> إلا مرة واحدة؛ ومحاولة إطلاقه مرّة أخرى تُطلق استثناء <code>Exception</code>. وهذا يمنح كائنات <code>Deferred</code> دلالة أقرب إلى دلالة كتل <code>try/except</code> في نظائرها المتزامنة، مما يجعل معالجة الأحداث غير المتزامنة أسهل في التتبّع المنطقي ويتفادى الأخطاء الدقيقة الناتجة عن استدعاء الاستدعاءات أكثر من مرة أو أقل من مرة لحدث واحد.</p>
 <p>فهم كائنات <code>Deferred</code> جزء مهم من فهم تدفّق برامج Twisted. غير أنه عند استعمال التجريدات عالية المستوى التي يوفّرها Twisted لبروتوكولات الشبكات، فكثيرًا ما لا حاجة إلى استعمال كائنات <code>Deferred</code> مباشرةً على الإطلاق.</p>
 <p>تجريد <code>Deferred</code> قوي، وقد اقتبسته منصّات مدفوعة بالأحداث كثيرة أخرى، منها jQuery وDojo وMochikit.</p>
@@ -440,7 +440,7 @@ serviceMaker = EchoServiceMaker()
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -448,8 +448,8 @@ serviceMaker = EchoServiceMaker()
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

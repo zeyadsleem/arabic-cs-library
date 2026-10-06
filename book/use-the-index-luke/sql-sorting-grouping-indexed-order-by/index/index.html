@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -115,7 +115,7 @@ Predicate Information
 <h4>مهم</h4>
 <p>إذا وافق ترتيب الفهرس جملة <code>order by</code>، استطاعت قاعدة البيانات إسقاط عملية الفرز الصريحة.</p>
 <p>ومع أن خطة التنفيذ الجديدة فيها عمليات أقل، فقد ارتفعت قيمة التكلفة ارتفاعاً كبيراً لأن عامل العنقدة في الفهرس الجديد أسوأ (انظر <a href="#sb-order-by-clustering-factor">«<em>عامل العنقدة المُحسَّن تلقائياً</em>»</a>). ويكفي هنا أن نلاحظ أن قيمة التكلفة ليست دائماً مؤشراً جيداً على جهد التنفيذ.</p>
-<h2 id="عامل-العنقدة-المحسن-تلقائيا">عامل العنقدة المُحسَّن تلقائياً</h2>
+<h2 id="عامل-العنقدة-المحسن-تلقائيا">عامل العنقدة المُحسَّن تلقائياً <span class="content-anchor" id="sb-order-by-clustering-factor"></span></h2>
 <p>تبقي قاعدة بيانات Oracle عامل العنقدة في حده الأدنى بمراعاة <code>ROWID</code> في ترتيب الفهرس؛ فكلما كان لمدخلَي فهرس قيمتا مفتاح متماثلتان، حسم <code>ROWID</code> ترتيبهما النهائي. ويكون الفهرس إذن مرتَّباً وفق ترتيب الجدول أيضاً، وله أصغر عامل عنقدة ممكن لأن <code>ROWID</code> يمثّل العنوان الفيزيائي لصف الجدول.</p>
 <p>وبإضافة عمود آخر إلى فهرس، تُدخل معيار فرز جديداً <em>قبل</em> <code>ROWID</code>؛ فتقل حرية قاعدة البيانات في مواءمة مدخلات الفهرس مع ترتيب الجدول، فلا يمكن لعامل العنقدة إلا أن يسوء.</p>
 <p>ومع ذلك، لا يزال ممكناً أن يوافق ترتيب الفهرس ترتيب الجدول إجمالاً؛ فمبيعات اليوم الواحد محتمل أن تبقى متجمّعة في الجدول كما في الفهرس — حتى لو لم يعد تسلسلها متماثلاً تماماً. ويجب على قاعدة البيانات قراءة كتل الجدول مرات عدة عند استخدام فهرس <code>SALE_DT_PR</code> — لكنها الكتل نفسها كما في السابق. وبفضل التخزين المؤقت للبيانات كثيرة الوصول، قد يكون أثر الأداء أقل بكثير مما تدل عليه قيم التكلفة.</p>
@@ -171,7 +171,7 @@ Predicate Information
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -179,8 +179,8 @@ Predicate Information
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

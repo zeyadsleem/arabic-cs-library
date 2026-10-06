@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -73,7 +73,7 @@
 <p>طُوّرت أدوات عديدة لتلبية هذه الاحتياجات. ومن موقعي (عالم البرمجيات مفتوحة المصدر)، فإنّ أبرز ثلاث منها في عام 2011 هي Git وMercurial وBazaar. وقد انطلق كلٌّ من Git وMercurial عام 2005 حين قرّر مطوّرو نواة Linux التوقف عن استخدام نظام BitKeeper المملوك. وقد بدأهما مطوّرو نواة Linux (على الترتيب Linus Torvalds وMatt Mackall) لمعالجة الحاجة إلى نظام تحكّم بالإصدارات قادر على معالجة مئات الآلاف من مجموعات التغييرات في عشرات الآلاف من الملفات (النواة مثلًا). كما تأثّر كلٌّ من Matt وLinus كثيرًا بنظام التحكّم بالإصدارات Monotone. أمّا Bazaar فقد طُوّر بمعزل عنهما، لكنه اكتساب انتشارًا واسعًا في الوقت نفسه حين تبنّته Canonical لاستخدامه في جميع مشاريعها.</p>
 <p>إنّ بناء نظام تحكّم بالإصدارات موزّع يستتبع بطبيعة الحال تحديات، وكثير منها متأصّل في أي نظام موزّع. أولًا، بينما كان خادم التحكّم بالمصادر في الأنظمة المركزية يوفّر دائمًا رؤية معتمدة (canonical) للتاريخ، فإنّ الأمر لا يقابله شيءٌ في نظام التحكّم الموزّع. إذ يمكن إصدار مجموعات التغييرات على التوازي، ممّا يجعل ترتيب المراجعات زمنيًا في أي مستودع بعينه مستحيلًا.</p>
 <p>الحل الذي تبنّته الأنظمة كلها تقريبًا هو استخدام رسم بياني موجَّه خالٍ من الدورات (directed acyclic graph، DAG) لمجموعات التغييرات بدلًا من ترتيب خطّي (<a href="#fig.hg.dag">الشكل 12.1</a>). أي أنّ مجموعة التغييرات المُصدَرة حديثًا هي المراجعة الفرعية للمراجعة التي استُنِدَت إليها، ولا يمكن لأي مراجعة أن تعتمد على نفسها أو على مراجعاتها التفرعية. وفي هذا المخطّط لدينا ثلاثة أنواع خاصة من المراجعات: <em>المراجعات الجذرية</em> (<em>root revisions</em>) التي لا أب لها (ويمكن أن يكون للمستودع جذور متعدّدة)، و<em>مراجعات الدمج</em> (<em>merge revisions</em>) التي لها أكثر من أب، و<em>مراجعات الرؤوس</em> (<em>head revisions</em>) التي لا أبناء لها. يبدأ كل مستودع من مراجعة جذرية فارغة ثم يمضي من هناك على امتداد خطّ مجموعات التغييرات، لينتهي برأس أو أكثر. وحين يكون مستخدمان قد أصدرا تغييراتهما بصورة مستقلة وأراد أحدهما سحب تغييرات الآخر، فإنّه سيضطر إلى دمج تغييرات الآخر صراحةً في مراجعة جديدة، ثم يصدرها لاحقًا كمراجعة دمج.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-dag.webp" alt="[الرسم البياني الموجَّه الخالي من الدورات للمراجعات]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-dag.webp" alt="الرسم البياني الموجَّه الخالي من الدورات للمراجعات" id="fig.hg.dag"></p>
 <p>الشكل 12.1: الرسم البياني الموجَّه الخالي من الدورات للمراجعات</p>
 <p>لاحظ أنّ نموذج DAG يساعد في حلّ بعض المشكلات الصعبة في أنظمة التحكّم المركزي بالإصدارات: إذ تُستخدم مراجعات الدمج لتسجيل معلومات عن الفروع التي دُمجت حديثًا في DAG. ويمكن بالرسم البياني الناتج أن يمثّل بصورة مفيدة مجموعة كبيرة من الفروع المتوازية، تندمج في مجموعات أصغر، ثم تندمج في النهاية في فرع واحد خاص يُعدّ معتمدًا (canonical).</p>
 <p>يتطلّب هذا الأسلوب أن يتابع النظام علاقات النسب (ancestry) بين مجموعات التغييرات؛ ولتسهيل تبادل بيانات مجموعات التغييرات، يُنفَّذ ذلك عادةً بجعل كل مجموعة تغييرات تتابع آباءها. ولهذا تحتاج مجموعات التغييرات بطبيعة الحال إلى نوع من المعرّفات. وبينما تستخدم بعض الأنظمة UUID أو مخطّطًا مشابهًا، فإنّ Git وMercurial قد اختارا استخدام تجزئات SHA1 لمحتويات مجموعات التغييرات. وهذه خاصية مفيدة إضافية: إذ يمكن استخدام معرّف مجموعة التغييرات للتحقّق من محتواها. وفي الواقع، لأنّ الآباء مُدرَجون ضمن البيانات المُجزَّأة، يمكن التحقّق من كامل التاريخ المؤدّي إلى أي مراجعة باستخدام تجزئتها. كما أنّ أسماء المؤلّفين ورسائل الإصدار والطوابع الزمنية وسائر البيانات الوصفية لمجموعة التغييرات تُجزَّأ تمامًا مثل محتويات الملفات الفعلية للمراجعة الجديدة، بحيث يمكن التحقّق منها هي الأخرى. وبما أنّ الطوابع الزمنية تُسجَّل لحظة الإصدار، فإنّها أيضًا لا تتقدّم بالضرورة خطيًا في أي مستودع بعينه.</p>
@@ -83,7 +83,7 @@
 <p>الآن وقد صار مفهوم DAG واضحًا إلى حدٍّ ما، فلنرَ كيف تُخزَّن هذه الرسوم في Mercurial. فنموذج DAG محوري في الآلية الداخلية لـ Mercurial، ونحن فعليًا نستخدم عدة رسوم بيانية مختلفة في تخزين المستودع على القرص (وكذلك في بنية الشيفرة في الذاكرة). ويشرح هذا القسم ما هي وكيف تتكامل معًا.</p>
 <h3 id="1221-التحديات">12.2.1. التحديات</h3>
 <p>قبل أن نغوص في هياكل البيانات الفعلية، أودّ تقديم بعض السياق عن البيئة التي تطوّر فيها Mercurial. ويمكن العثور على أوّل فكرة عن Mercurial في رسالة إلكترونية أرسلها Matt Mackall إلى القائمة البريدية لنواة Linux (Linux Kernel Mailing List) في 20 أبريل 2005. وقد وقع ذلك بعد وقت قصير من القرار بأنّ BitKeeper لم يعد صالحًا لتطوير النواة. وبدأ Matt رسالته بعرض بعض الأهداف: أن يكون بسيطًا وقابلًا للتوسّع وكفؤًا.</p>
-<p>وفي [<a href="https://aosabook.org/en/v1/bib1.html#bib:mackall:better">Mac06</a>]، ادّعى Matt أنّ نظام التحكّم بالإصدارات الحديث يجب أن يتعامل مع أشجار تضمّ ملايين الملفات، وأن يعالج ملايين مجموعات التغييرات، وأن يتوسّع عبر آلاف المستخدمين الذين ينشئون مراجعات جديدة على التوازي على مدى عقود. وبعد أن حدّد الأهداف، استعرض العوامل التقنية المانعة:</p>
+<p>وفي <a href="https://aosabook.org/en/v1/bib1.html#bib:mackall:better">Mac06</a>، ادّعى Matt أنّ نظام التحكّم بالإصدارات الحديث يجب أن يتعامل مع أشجار تضمّ ملايين الملفات، وأن يعالج ملايين مجموعات التغييرات، وأن يتوسّع عبر آلاف المستخدمين الذين ينشئون مراجعات جديدة على التوازي على مدى عقود. وبعد أن حدّد الأهداف، استعرض العوامل التقنية المانعة:</p>
 <ul>
 <li>السرعة: المعالج (CPU)</li>
 <li>السعة: القرص والذاكرة</li>
@@ -148,7 +148,7 @@
 <p>تُستخدم مراجعات الارتباط (link revisions) كي تُشير سجلّات المراجعات التابعة إلى سجلّ المراجعات في أعلى المستويات (وسنعود إلى هذا بعد قليل)، وتُخزَّن المراجعات الآباء باستخدام رقم المراجعة العددي المحلّي. وهذا أيضًا يجعل من السهل العثور على بياناتها في سجلّ المراجعات المعنيّ. أمّا التجزئة (hash) فتُستخدم لحفظ المعرّف الفريد لمجموعة التغييرات هذه. ولدينا 32 بايت بدلًا من الـ 20 بايت التي يتطلّبها SHA1، من أجل السماح بالتوسّع مستقبلًا.</p>
 <h3 id="1223-سجلات-المراجعات-الثلاثة">12.2.3. سجلّات المراجعات الثلاثة</h3>
 <p>ولما كانت سجلّات المراجعات توفّر بنية عامّة للبيانات التاريخية، يمكننا أن نبني نموذج بيانات شجرة الملفات فوق ذلك. ويتكوّن من ثلاثة أنواع من سجلّات المراجعات: <em>سجلّ التغييرات</em> (<em>changelog</em>)، و<em>البيانات الوصفية</em> (<em>manifests</em>، وتُعرف بالرمز man)، و<em>سجلّات الملفات</em> (<em>filelogs</em>). ويحتوي سجلّ التغييرات على البيانات الوصفية لكل مراجعة، مع مؤشّر إلى سجلّ البيانات الوصفية (أي معرّف عقدة لمراجعة واحدة فيه). وفي المقابل، البيانات الوصفية ملف يحوي قائمة بأسماء الملفات إضافةً إلى معرّف العقدة لكل ملف، ويشير إلى مراجعة في سجلّ ملفات ذلك الملف. أمّا في الشيفرة، لدينا أصناف (classes) لسجلّ التغييرات والبيانات الوصفية وسجلّ الملفات، وهي أصناف فرعية من الصنف العام revlog، ما يوفّر طبقة أنظف للمفهومين معًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-revlogs.webp" alt="[بنية السجلّات]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-revlogs.webp" alt="بنية السجلّات" id="fig.hg.revlog"></p>
 <p>الشكل 12.2: بنية السجلّات</p>
 <p>تبدو مراجعة في سجلّ التغييرات هكذا:</p>
 <pre><code>0a773e3480fe58d62dcc67bd9f7380d6403e26fa
@@ -196,7 +196,7 @@ COPYING\x005ac863e17c7035f1d11828d848fb2ca450d89794
 <li>يمكن لـ <code>hg</code> أن يطلب مزيدًا من المدخلات عبر مطالبات في سطر الأوامر</li>
 <li>قد يشغّل <code>hg</code> برنامجًا خارجيًا (مثل محرّر لرسالة الإصدار أو برنامج للمساعدة في دمج تعارضات الشيفرة)</li>
 </ul>
-<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-modules.webp" alt="[رسم بياني للاستيراد]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-mercurial-modules.webp" alt="رسم بياني للاستيراد" id="fig.hg.importgraph"></p>
 <p>الشكل 12.3: رسم بياني للاستيراد</p>
 <p>يمكن ملاحظة بداية هذه العملية بوضوح من رسم الاستيراد في <a href="#fig.hg.importgraph">الشكل 12.3</a>. إذ تُمرَّر جميع وسائط سطر الأوامر إلى دالة في وحدة dispatch. وأول ما يحدث هو إنشاء كائن <code>ui</code>. وسيحاول صنف <code>ui</code> أوّلًا العثور على ملفات الإعداد في عدد من الأماكن المعروفة (مثل مجلّد المنزل الخاص بك)، وحفظ خيارات الإعداد في كائن <code>ui</code>. وقد تحتوي ملفات الإعداد أيضًا على مسارات إلى امتدادات، ويجب تحميلها هي أيضًا في هذه اللحظة. كما تُحفظ أي خيارات عامة ممرَّرة في سطر الأوامر في كائن <code>ui</code> عند هذه اللحظة أيضًا.</p>
 <p>وبعد أن يتمّ ذلك، علينا أن نقرّر ما إذا كنّا سننشئ كائن مستودع. فبينما تتطلّب معظم الأوامر مستودعًا محلّيًا (يمثّله الصنف <code>localrepo</code> من الوحدة <code>localrepo</code>)، قد تعمل بعض الأوامر على مستودعات بعيدة (إما عبر HTTP أو SSH أو شكل آخر مسجَّل)، بينما يمكن لبعض الأوامر أن تنجز عملها دون الإشارة إلى أي مستودع. وتشمل هذه الفئة الأخيرة مثلًا أمر <code>init</code> المستخدَم لتهيئة مستودع جديد.</p>
@@ -234,7 +234,7 @@ COPYING\x005ac863e17c7035f1d11828d848fb2ca450d89794
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -242,8 +242,8 @@ COPYING\x005ac863e17c7035f1d11828d848fb2ca450d89794
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

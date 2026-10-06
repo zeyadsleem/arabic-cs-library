@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -146,14 +146,11 @@
 <p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-03.webp" alt=""></p>
 <h4>الشكل 6.3. بتر الصفحات.</h4>
 <p>أثناء بتر الكومة، تُزال الصفحتان 4 و3 من ملف الجدول، ما يقلّل حجمه بمقدار 16 كيلوبايت (8 كيلوبايت <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> صفحتان).</p>
-<p>ومع أن الصفحة 1 لا تحتوي هي الأخرى على صفوف، فإنها لا تُزال<a href="#fn:1">1</a>.</p>
+<p>ومع أن الصفحة 1 لا تحتوي هي الأخرى على صفوف، فإنها لا تُزال<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
 <h2 id="614-المعالجة-اللاحقة">6.1.4. المعالجة اللاحقة</h2>
 <p>عند اكتمال معالجة التفريغ، يحدّث PostgreSQL جميع الإحصاءات وكتالوجات النظام. كما يزيل الأجزاء غير الضرورية من سجل الالتزام إن أمكن (القسم 6.4).</p>
 <p>** المخزن المؤقت الحلقي</p>
 <p>تستخدم معالجة التفريغ <strong>مخزناً مؤقتاً حلقياً (ring buffer)</strong>، موضّحاً في القسم 8.4.3. لذلك لا تُخزَّن الصفحات المعالَجة في المخازن المؤقتة المشتركة.</p>
-<ol>
-<li>لإزالة مثل هذه الصفحات الداخلية، استخدم الأمر REPACK (VACUUM FULL) كما هو موضّح في القسم 6.6. <a href="#fnref:1">↩︎</a></li>
-</ol>
 <h1>6.2. خريطة الظهور (Visibility Map)</h1>
 <p>معالجة التفريغ مكلفة. لذلك قدّم PostgreSQL خريطة الظهور (Visibility Map, VM) في الإصدار 8.4 لتقليل هذه الكلفة.</p>
 <p>المفهوم الأساسي لخريطة VM بسيط:</p>
@@ -514,13 +511,20 @@ Indexes:
 </ul>
 <p>وبعد ذلك، ينتهي repack_decoding_worker. وعلى غرار REPACK (VACUUM FULL) العادي، يُتبادَل الجدولان/الفهرسان القديم والجديد، وتُزال ملفات الجدول/الفهرس القديمة، وتُحدَّث FSM وVM والإحصاءات.</p>
 <p>وكما هو موضّح في هذا المثال، قد يؤدي تطبيق التغييرات المتزامنة أثناء المرحلتين 2 و3 إلى توليد صفوف ميتة جديدة في ملف الجدول الجديد. لذلك، وعلى خلاف التنفيذ غير المتزامن، لا يمكن لـ REPACK CONCURRENTLY ضمان جدول خالٍ تماماً من الصفوف الميتة.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>لإزالة مثل هذه الصفحات الداخلية، استخدم الأمر REPACK (VACUUM FULL) كما هو موضّح في القسم 6.6. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql05/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التحكّم بالتزامن</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql07/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الصفوف المكتفية بالكومة (HOT)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -528,8 +532,8 @@ Indexes:
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

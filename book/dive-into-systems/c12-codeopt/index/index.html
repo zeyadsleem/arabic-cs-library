@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -353,7 +353,7 @@ sys 0.00
 </tbody>
 </table>
 <p>يشير فحصنا اليدوي للشيفرة إلى أن البرنامج يقضي معظم وقته في الدالة <code>isPrime</code>، وأن الدالة <code>sqrt</code> هي الأكثر تنفيذًا. ولنستخدم بعد ذلك تنميط الشيفرة للتحقق من هذه الفرضية.</p>
-<h3 id="1211-استخدام-callgrind-للتنميط"><a href="#_using_callgrind_to_profile"></a>12.1.1. استخدام Callgrind للتنميط</h3>
+<h3 id="1211-استخدام-callgrind-للتنميط">12.1.1. استخدام Callgrind للتنميط <span class="content-anchor" id="_using_callgrind_to_profile"></span></h3>
 <p>في برنامجنا الصغير، كان من السهل نسبيًا استخدام الفحص اليدوي لتكوين فرضية أن الدالة <code>sqrt</code> تقع في «نقطة سخونة» في الشيفرة. لكن تحديد نقاط السخونة قد يصبح أعقد في البرامج الأكبر. وعلى أي حال، من الجيد استخدام التنميط للتحقق من فرضيتنا. وتوفّر أدوات تنميط الشيفرة مثل <a href="http://valgrind.org/">Valgrind</a> كثيرًا من المعلومات عن تنفيذ البرنامج. ونستخدم في هذا القسم أداة <code>callgrind</code> لفحص مخطط نداءات برنامج <code>OptExample</code>.</p>
 <p>لاستخدام <code>callgrind</code>، لنبدأ بإعادة تصريف برنامج <code>optExample</code> بالعلم <code>-g</code> وتشغيل <code>callgrind</code> على مجال أصغر (من 2 إلى 100,000). وكما في تطبيقات Valgrind الأخرى، يعمل <code>callgrind</code> كغلاف حول برنامج، مضيفًا تعليقات مثل عدد مرات تنفيذ الدوال وإجمالي عدد التعليمات المنفَّذة نتيجةً لذلك. وبالتالي، سيستغرق برنامج <code>optExample</code> وقتًا أطول في التنفيذ عند تشغيله مع <code>callgrind</code>.</p>
 <pre><code class="language-bash">$ gcc -g -o optExample optExample.c -lm
@@ -420,7 +420,7 @@ Profile data file <span class="hljs-string">&#x27;callgrind.out.32393&#x27;</spa
 </code></pre>
 <p>تمثّل الأرقام في العمود الأيسر عدد التعليمات المنفَّذة الإجمالي المرتبط بكل سطر. وتشير الأرقام بين قوسين إلى عدد مرات تشغيل دالة معينة. وباستخدام الأرقام في العمود الأيسر، نستطيع التحقق من نتائج فحصنا اليدوي. ففي الدالة <code>genPrimeSequence</code>، أنتجت الدالة <code>getNextPrime</code> أكبر عدد من التعليمات المنفَّذة، وهو 67.8 مليون تعليمة، مقابل 9,592 نداء دالة (لتوليد الأعداد الأولية بين 2 و100,000). ويكشف فحص <code>getNextPrime</code> أن غالبية تلك التعليمات (67.1 مليون، أي 99%) ناتجة من نداء <code>isPrime</code> الذي يُستدعى 100,001 مرة إجمالًا. وأخيرًا، يكشف فحص <code>isPrime</code> أن 13 مليونًا من إجمالي التعليمات (20.5%) ناتجة من الدالة <code>sqrt</code> التي تُنفَّذ 2.7 مليون مرة إجمالًا.</p>
 <p>وتؤكد هذه النتائج فرضيتنا الأصلية بأن البرنامج يقضي معظم وقته في الدالة <code>isPrime</code>، وأن الدالة <code>sqrt</code> هي الأكثر تنفيذًا بين جميع الدوال. ويؤدي تقليل إجمالي عدد التعليمات المنفَّذة إلى برنامج أسرع؛ ويشير التحليل أعلاه إلى أنه ينبغي أن تركّز جهودنا الأولية على تحسين الدالة <code>isPrime</code>، وربما تقليل عدد مرات تنفيذ <code>sqrt</code>.</p>
-<h3 id="1212-نقل-شيفرة-ثابت-الحلقة"><a href="#_loop_invariant_code_motion"></a>12.1.2. نقل شيفرة ثابت الحلقة</h3>
+<h3 id="1212-نقل-شيفرة-ثابت-الحلقة">12.1.2. نقل شيفرة ثابت الحلقة <span class="content-anchor" id="_loop_invariant_code_motion"></span></h3>
 <p>نقل شيفرة ثابت الحلقة (loop-invariant code motion) تقنية تحسين تنقل الحسابات الساكنة التي تحدث داخل حلقة إلى خارجها من دون التأثير في سلوك الحلقة. وتستطيع المصرّفات المُحسِّنة إجراء معظم تحسينات شيفرة ثابت الحلقة تلقائيًا. وتحديدًا، يحاول علم المصرّف <code>-fmove-loop-invariants</code> في GCC (المفعَّل عند المستوى <code>-O1</code>) تحديد أمثلة نقل شيفرة ثابت الحلقة ونقلها خارج حلقاتها.</p>
 <p>لكن المصرّف لا يستطيع دائمًا تحديد حالات شيفرة ثابت الحلقة، خصوصًا في حالة نداءات الدوال. ولأن نداءات الدوال يمكن أن تسبب <strong>آثارًا جانبية</strong> (side effects) غير مقصودة، تتجنّب معظم المصرّفات محاولة تحديد ما إذا كان نداء دالة يعيد النتيجة نفسها باستمرار. ولذلك، حتى مع معرفة المبرمج أن <code>sqrt(x)</code> تعيد دائمًا الجذر التربيعي لمدخل ما <code>x</code>، لن يفترض GCC ذلك دائمًا. فكّر في حالة تحدّث فيها الدالة <code>sqrt</code> متغيرًا عامًا سريًا <code>g</code>. في هذه الحالة، ليس استدعاء <code>sqrt</code> مرة واحدة خارج الدالة (<em>تحديث واحد</em> لـ <code>g</code>) مماثلًا لاستدعائها في كل تكرار من تكرارات الحلقة (<em>n</em> من التحديثات لـ <code>g</code>). وإذا لم يستطع المصرّف تحديد أن دالة تعيد النتيجة نفسها دائمًا، فلن ينقل الدالة <code>sqrt</code> خارج الحلقة تلقائيًا.</p>
 <p>لكن المبرمج يعرف أن نقل الحساب <code>sqrt(x) + 1</code> خارج حلقة <code>for</code> لا يؤثر في سلوك الحلقة. والدالة المحدَّثة معروضة هنا ومتاحة <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/optExample2.c">في الملف التالي</a>:</p>
@@ -499,7 +499,7 @@ Profile data file <span class="hljs-string">&#x27;callgrind.out.30086&#x27;</spa
 <p>كان تحسين نقل شيفرة ثابت الحلقة الموصوف في القسم السابق تغييرًا بسيطًا أنتج انخفاضًا هائلًا في زمن التنفيذ. غير أن هذه التحسينات تعتمد على الحالة، وقد لا تؤدي دائمًا إلى تحسينات في الأداء. وفي معظم الحالات، يتولى المصرّف نقل شيفرة ثابت الحلقة.</p>
 <p>تُقرأ الشيفرة اليوم أكثر مما تُكتب. وفي معظم الحالات، لا تستحق المكاسب الأدائية الجزئية التضحية بمقروئية الشيفرة. وبصفة عامة، ينبغي للمبرمج أن يدع المصرّف يحسّن كلما أمكن. ونغطي في هذا القسم بعض تقنيات التحسين التي كان المبرمجون ينفّذونها يدويًا سابقًا، لكن المصرّفات تنفّذها اليوم بصفة شائعة.</p>
 <p>ثمة مصادر كثيرة على الإنترنت تدعو إلى التنفيذ اليدوي للتقنيات التي نصفها في الأقسام التالية. لكننا نشجع القراء على التحقق مما إذا كانت مصرّفاتهم تدعم التحسينات التالية قبل محاولة تنفيذها يدويًا في شيفرتهم. وجميع التحسينات الموصوفة في هذا القسم منفَّذة في GCC، لكنها قد لا تكون متاحة في المصرّفات الأقدم.</p>
-<h3 id="1221-تضمين-الدوال"><a href="#_function_inlining"></a>12.2.1. تضمين الدوال</h3>
+<h3 id="1221-تضمين-الدوال">12.2.1. تضمين الدوال <span class="content-anchor" id="_function_inlining"></span></h3>
 <p>من خطوات التحسين التي تحاول المصرّفات تنفيذها <strong>تضمين الدوال</strong> (function inlining)، وهو استبدال نداءات دالة بجسم الدالة. فمثلًا، في الدالة <code>main</code>، سيستبدل مصرّف يضمّن الدالة <code>allocateArray</code> نداء <code>allocateArray</code> بنداء مباشر إلى <code>malloc</code>:</p>
 <p><strong>الجدول 1. مثال على تضمين المصرّف للدالة <code>allocateArray</code>.</strong></p>
 <p><strong>النسخة الأصلية</strong></p>
@@ -535,7 +535,7 @@ Profile data file <span class="hljs-string">&#x27;callgrind.out.30086&#x27;</spa
 <p>قد يؤدي تضمين الدوال إلى بعض التوفير في زمن تشغيل البرنامج. تذكّر أنه في كل مرة يستدعي فيها برنامج دالة، تُولَّد بالضرورة تعليمات كثيرة مرتبطة بإنشاء الدالة وتدميرها. ويتيح تضمين الدوال للمصرّف إزالة هذه النداءات الزائدة، ويسهّل عليه تحديد تحسينات محتملة أخرى، منها انتشار الثوابت وطيّ الثوابت وإزالة الشيفرة الميتة. وفي حالة برنامج <code>optExample</code>، يرجّح أن التضمين يتيح للمصرّف استبدال نداء <code>sqrt</code> بالتعليمة <code>fsqrt</code>، ثم نقلها خارج الحلقة.</p>
 <p>ويشير العلم <code>-finline-functions</code> إلى GCC بضرورة تضمين الدوال. وهذا التحسين مفعَّل عند المستوى 3. ومع أنه يمكن استخدام <code>-finline-functions</code> من دون العلم <code>-O3</code>، فهو <em>اقتراح</em> للمصرّف بالبحث عن دوال لتضمينها. وبالمثل، يمكن استخدام الكلمة المفتاحية <code>static inline</code> لاقتراح على المصرّف تضمين دالة معينة. وتذكّر أن المصرّف لن يضمّن جميع الدوال، وأن تضمين الدوال غير مضمون لجعل الشيفرة أسرع.</p>
 <p>وينبغي للمبرمجين عمومًا تجنّب تضمين الدوال يدويًا. فالتضمين يحمل خطرًا كبيرًا بتقليل مقروئية الشيفرة بدرجة كبيرة، وزيادة احتمال الأخطاء، وجعل تحديث الدوال وصيانتها أصعب. فمثلًا، ستقلل محاولة تضمين الدالة <code>isPrime</code> في الدالة <code>getNextPrime</code> مقروئية <code>getNextPrime</code> بدرجة كبيرة.</p>
-<h3 id="1222-فتح-الحلقات"><a href="#_loop_unrolling"></a>12.2.2. فتح الحلقات</h3>
+<h3 id="1222-فتح-الحلقات">12.2.2. فتح الحلقات <span class="content-anchor" id="_loop_unrolling"></span></h3>
 <p>آخر استراتيجية تحسين للمصرّف نناقشها في هذا القسم هي فتح الحلقات. لنعد إلى الدالة <code>isPrime</code>:</p>
 <pre><code class="language-c"><span class="hljs-comment">// helper function: checks to see if a number is prime</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
@@ -629,7 +629,7 @@ Time to allocate vector: 9.6e-05
 Time to matrix-vector multiply: 1.98402
 </code></pre>
 <p>ولذلك ستركّز مناقشتنا على الدالة <code>matrixVectorMultiply</code>.</p>
-<h3 id="1231-تبديل-الحلقات"><a href="#_loop_interchange"></a>12.3.1. تبديل الحلقات</h3>
+<h3 id="1231-تبديل-الحلقات">12.3.1. تبديل الحلقات <span class="content-anchor" id="_loop_interchange"></span></h3>
 <p>تبدّل تحسينات تبديل الحلقات (loop interchange) ترتيب الحلقتين الداخلية والخارجية في الحلقات المتداخلة لتعظيم محلية الذاكرة المؤقتة. ويصعب على المصرّفات إجراء هذه المهمة تلقائيًا. وفي GCC، يوجد علم المصرّف <code>-floop-interchange</code> لكنه غير متاح افتراضيًا حاليًا. ولذلك من الجيد أن ينتبه المبرمجون إلى كيفية وصول شيفرتهم إلى بنى البيانات المركّبة من الذاكرة مثل المصفوفات والمصفوفات الرياضية. وكمثال، لنلقِ نظرة أقرب على الدالة <code>matrixVectorMultiply</code> في <a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector.c">matrixVector.c</a>:</p>
 <p><strong>الجدول 1. تبديل الحلقات في الدالة <code>matrixVectorMultiply()</code>.</strong></p>
 <p><strong>النسخة الأصلية (<a href="https://diveintosystems.org/book/C12-CodeOpt/_attachments/matrixVector.c">matrixVector.c</a>)</strong></p>
@@ -696,7 +696,7 @@ Time to matrix-vector multiply: 1.98402
 </tbody>
 </table>
 <p>وأداة Valgrind المسماة <code>cachegrind</code> (المناقشة في <a href="https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html#_cache_analysis_and_valgrind">الفصل 11</a>) طريقة ممتازة لتحديد مشكلات محلية البيانات، وهي تكشف الفروق في الوصول إلى الذاكرة المؤقتة بين نسختي الدالة <code>matrixVectorMultiply</code> المعروضتين في المثال السابق.</p>
-<h3 id="1232-تحسينات-أخرى-للمصرف-لتحسين-المحلية-التفكيك-والدمج"><a href="#_some_other_compiler_optimizations_for_improving_locality_fission_and_fusion"></a>12.3.2. تحسينات أخرى للمصرّف لتحسين المحلية: التفكيك والدمج</h3>
+<h3 id="1232-تحسينات-أخرى-للمصرف-لتحسين-المحلية-التفكيك-والدمج">12.3.2. تحسينات أخرى للمصرّف لتحسين المحلية: التفكيك والدمج <span class="content-anchor" id="_some_other_compiler_optimizations_for_improving_locality_fission_and_fusion"></span></h3>
 <p>ينتج عن إعادة تشغيل البرنامج المحسَّن على 10,000 × 10,000 عنصر أرقام زمن التشغيل التالية:</p>
 <pre><code class="language-sh">$ gcc -o matrixVector2 matrixVector2.c
 $ ./matrixVector2 10000 10000
@@ -753,7 +753,7 @@ Time to matrix-vector multiply: 0.271369
     <span class="hljs-comment">//fillArrayZeros(result[i], cols); //no longer needed</span>
 }
 </code></pre>
-<h3 id="1233-تنميط-الذاكرة-باستخدام-massif"><a href="#_memory_profiling_with_massif"></a>12.3.3. تنميط الذاكرة باستخدام Massif</h3>
+<h3 id="1233-تنميط-الذاكرة-باستخدام-massif">12.3.3. تنميط الذاكرة باستخدام Massif <span class="content-anchor" id="_memory_profiling_with_massif"></span></h3>
 <p>لا يؤدي إجراء التغيير السابق إلا إلى انخفاض طفيف في زمن التشغيل. فمع أنه يزيل خطوة ملء جميع عناصر مصفوفة النتائج بالأصفار، ما زال مطلوبًا قدر كبير من الوقت لملء مصفوفة الإدخال بأعداد عشوائية:</p>
 <pre><code class="language-sh">$ gcc -o matrixVector3 matrixVector3.c
 $ ./matrixVector3 10000 10000
@@ -859,7 +859,7 @@ Found 348513 primes (0.122245 s)
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -867,8 +867,8 @@ Found 348513 primes (0.122245 s)
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

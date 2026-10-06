@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -99,7 +99,7 @@
 <p>ورغم أن هناك أوقاتاً قد يلزم فيها أحياناً استخدام متغيّرات عامة في برامج C، فإننا نوصي بشدة بأن <em>تتجنّب البرمجة بالمتغيّرات العامة كلما أمكن</em>. فاستخدام المتغيّرات المحلية والوسائط فقط ينتج شيفرة أكثر وحدات وأكثر عمومية وأسهل في التنقيح. كما أن وسائط الدالة ومتغيّراتها المحلية، لأنها لا تُخصَّص في ذاكرة البرنامج إلا عندما تكون الدالة نشطة، قد تؤدي إلى برامج أكثر كفاءة في استخدام المساحة.</p>
 <p>عند إطلاق برنامج جديد، يخصّص نظام التشغيل فضاء عناوين البرنامج الجديد. ويمثّل <strong>فضاء العناوين</strong> (address space) في البرنامج (أو فضاء الذاكرة) مواقع التخزين لكل ما يحتاجه في تنفيذه، أي تخزين تعليماته وبياناته. ويمكن تصوّر فضاء عناوين البرنامج كمصفوفة من البايتات القابلة للعنونة؛ ويخزّن كل عنوان مستخدم في فضاء عناوين البرنامج كل تعليمة برنامج أو قيمة بيانات أو جزءاً منها (أو بعض الحالة الإضافية اللازمة لتنفيذ البرنامج).</p>
 <p>يُقسَّم فضاء ذاكرة البرنامج إلى عدة أجزاء، يُستخدم كل منها لتخزين نوع مختلف من الكيانات في فضاء عناوين العملية. ويوضّح <a href="#FigMemParts">الشكل 1</a> أجزاء فضاء ذاكرة البرنامج.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-memparts.webp" alt="The parts of program memory arranged into a program’s address space. At the top (addresses closer to 0), we have regions for the OS, code (instructions), data (globals), and the heap (dynamically allocated memory). At the other end of the address space (maximum address), the stack stores local variables and function parameters."> الشكل 1. أجزاء فضاء عناوين البرنامج.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-memparts.webp" alt="The parts of program memory arranged into a program’s address space. At the top (addresses closer to 0), we have regions for the OS, code (instructions), data (globals), and the heap (dynamically allocated memory). At the other end of the address space (maximum address), the stack stores local variables and function parameters." id="FigMemParts"> الشكل 1. أجزاء فضاء عناوين البرنامج.</p>
 <p>يُحجز أعلى ذاكرة البرنامج لاستخدام نظام التشغيل، أما الأجزاء المتبقية فهي قابلة للاستخدام من البرنامج قيد التشغيل. وتُخزَّن تعليمات البرنامج في قسم <em>الشيفرة</em> (code) من الذاكرة. فمثلاً، يخزّن البرنامج المذكور أعلاه تعليمات الدوال <code>main</code> و<code>max</code> و<code>change</code> في هذه المنطقة من الذاكرة.</p>
 <p>تقع المتغيّرات المحلية والوسائط في الجزء المخصص للمكدّس (<em>stack</em>). ولأن مقدار مساحة المكدّس ينمو ويتقلص على مدار تنفيذ البرنامج مع استدعاء الدوال والعودة منها، يُخصَّص جزء المكدّس من الذاكرة عادةً قرب أسفل الذاكرة (عند أعلى عناوين الذاكرة) لإتاحة مساحة له للتغير. ولا توجد مساحة تخزين المكدّس للمتغيّرات المحلية والوسائط إلا عندما تكون الدالة نشطة (ضمن إطار المكدّس الخاص بتنشيط الدالة على المكدّس).</p>
 <p>تُخزَّن المتغيّرات العامة في قسم <em>البيانات</em> (data). وخلافاً للمكدّس، لا تنمو منطقة البيانات ولا تتقلص — إذ تبقى مساحة تخزين المتغيّرات العامة طوال تشغيل البرنامج.</p>
@@ -113,15 +113,15 @@
 <li>يفسّر بايتات ذاكرة البرنامج بطرق مختلفة.</li>
 </ul>
 <p>نقدّم في هذا القسم صياغة ودلالات متغيّرات المؤشّرات في C، ونقدّم أمثلة شائعة على كيفية استخدامها في برامج C.</p>
-<h3 id="221-متغيرات-المؤشرات"><a href="#_pointer_variables"></a>2.2.1. متغيّرات المؤشّرات</h3>
+<h3 id="221-متغيرات-المؤشرات">2.2.1. متغيّرات المؤشّرات <span class="content-anchor" id="_pointer_variables"></span></h3>
 <p>يخزّن <strong>متغيّر المؤشّر</strong> (pointer variable) عنوان موقع ذاكرة يمكن تخزين قيمة من نوع محدد فيه. فمثلاً، يمكن لمتغيّر مؤشّر تخزين قيمة عنوان <code>int</code> تُخزَّن فيه القيمة الصحيحة 12. و<em>يشير</em> متغيّر المؤشّر إلى القيمة (يرتبط بها). ويوفّر المؤشّر <em>مستوى من الإحالة غير المباشرة</em> للوصول إلى القيم المخزّنة في الذاكرة. ويوضّح <a href="#FigPointerMem">الشكل 1</a> مثالاً على ما قد يبدو عليه متغيّر مؤشّر في الذاكرة:</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-ptr.webp" alt="A pointer named &quot;ptr&quot; points to a memory location that stores the integer value 12."> الشكل 1. يخزّن متغيّر المؤشّر عنوان موقع في الذاكرة. وهنا يخزّن المؤشّر عنوان متغيّر صحيح يحمل العدد 12.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-ptr.webp" alt="A pointer named &quot;ptr&quot; points to a memory location that stores the integer value 12." id="FigPointerMem"> الشكل 1. يخزّن متغيّر المؤشّر عنوان موقع في الذاكرة. وهنا يخزّن المؤشّر عنوان متغيّر صحيح يحمل العدد 12.</p>
 <p>من خلال متغيّر المؤشّر <code>ptr</code>، يمكن الوصول بشكل غير مباشر إلى القيمة (<code>12</code>) المخزّنة في موقع الذاكرة الذي يشير إليه. وأكثر ما تستخدم برامج C متغيّرات المؤشّرات فيه:</p>
 <ol>
 <li><strong>وسائط «التمرير بالمؤشّر»</strong> (pass by pointer)، لكتابة دوال تستطيع تعديل قيمة وسيطتها عبر وسيط مؤشّر</li>
 <li><strong>التخصيص الديناميكي للذاكرة</strong>، لكتابة برامج تخصّص (وتحرّر) مساحة أثناء تشغيل البرنامج. ويُستخدم التخصيص الديناميكي للذاكرة عادةً لتخصيص المصفوفات ديناميكياً. وهو مفيد عندما لا يعرف المبرمج حجم بنية البيانات وقت التصريف (مثلاً، يعتمد حجم المصفوفة على إدخال المستخدم وقت التشغيل). كما يتيح تغيير حجم بنى البيانات أثناء تشغيل البرنامج.</li>
 </ol>
-<h4><a href="#_rules_for_using_pointer_variables"></a>قواعد استخدام متغيّرات المؤشّرات</h4>
+<h4>قواعد استخدام متغيّرات المؤشّرات <span class="content-anchor" id="_rules_for_using_pointer_variables"></span></h4>
 <p>تشبه قواعد استخدام متغيّرات المؤشّرات قواعد المتغيّرات العادية، إلا أنك تحتاج إلى التفكير في نوعين: نوع متغيّر المؤشّر، والنوع المخزّن في عنوان الذاكرة الذي يشير إليه متغيّر المؤشّر.</p>
 <p>أولاً، <strong>أعلن عن متغيّر مؤشّر</strong> باستخدام <code>type_name *var_name</code>:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> *ptr;   <span class="hljs-comment">// stores the memory address of an int (ptr &quot;points to&quot; an int)</span>
@@ -142,7 +142,7 @@
 ptr = &amp;x;    <span class="hljs-comment">// ptr gets the address of x, pointer &quot;points to&quot; x</span>
 cptr = &amp;ch;  <span class="hljs-comment">// cptr gets the address of ch, pointer &quot;points to&quot; ch</span>
 </code></pre>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-ptrinit.webp" alt="Initialize ptr to the address of x and cptr to the address of ch (to point to x and ch, respectively)."> الشكل 2. يمكن للبرنامج تهيئة مؤشّر بإسناد عنوان متغيّر موجود من النوع المناسب إليه.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-ptrinit.webp" alt="Initialize ptr to the address of x and cptr to the address of ch (to point to x and ch, respectively)." id="FigPointerInit"> الشكل 2. يمكن للبرنامج تهيئة مؤشّر بإسناد عنوان متغيّر موجود من النوع المناسب إليه.</p>
 <p>وفيما يلي مثال على تهيئة مؤشّر غير صالحة بسبب عدم تطابق الأنواع:</p>
 <pre><code class="language-c">cptr = &amp;x;   <span class="hljs-comment">// ERROR: cptr can hold a char memory location</span>
              <span class="hljs-comment">// (&amp;x is the address of an int)</span>
@@ -152,7 +152,7 @@ cptr = &amp;ch;  <span class="hljs-comment">// cptr gets the address of ch, poin
 <pre><code class="language-c">ptr = <span class="hljs-literal">NULL</span>;
 cptr = <span class="hljs-literal">NULL</span>;
 </code></pre>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-ptrnull.webp" alt="Initialize ptr and cptr to NULL."> الشكل 3. يمكن إعطاء أي مؤشّر القيمة الخاصة NULL، التي تشير إلى أنه لا يشير إلى أي عنوان بعينه. ولا ينبغي أبداً إلغاء الإشارة إلى المؤشّرات الفارغة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-ptrnull.webp" alt="Initialize ptr and cptr to NULL." id="FigPointerNull"> الشكل 3. يمكن إعطاء أي مؤشّر القيمة الخاصة NULL، التي تشير إلى أنه لا يشير إلى أي عنوان بعينه. ولا ينبغي أبداً إلغاء الإشارة إلى المؤشّرات الفارغة.</p>
 <p>وأخيراً، <strong>استخدم متغيّر المؤشّر</strong>: يتبع <strong>معامل إلغاء الإشارة</strong> (dereference operator) (<code>*</code>) متغيّر مؤشّر إلى موقع الذاكرة الذي يشير إليه ويصل إلى القيمة في ذلك الموقع:</p>
 <pre><code class="language-c"><span class="hljs-comment">/* Assuming an integer named x has already been declared, this code sets the
    value of x to 8. */</span>
@@ -160,8 +160,8 @@ cptr = <span class="hljs-literal">NULL</span>;
 ptr = &amp;x;   <span class="hljs-comment">/* initialize ptr to the address of x (ptr points to variable x) */</span>
 *ptr = <span class="hljs-number">8</span>;   <span class="hljs-comment">/* the memory location ptr points to is assigned 8 */</span>
 </code></pre>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-ptrderef.webp" alt="Dereference ptr to access the memory it points to (x, whose value is 8)."> الشكل 4. يؤدي إلغاء الإشارة إلى مؤشّر إلى الوصول إلى القيمة التي يشير إليها المؤشّر.</p>
-<h4><a href="#_pointer_examples"></a>أمثلة على المؤشّرات</h4>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-ptrderef.webp" alt="Dereference ptr to access the memory it points to (x, whose value is 8)." id="FigPointerDeref"> الشكل 4. يؤدي إلغاء الإشارة إلى مؤشّر إلى الوصول إلى القيمة التي يشير إليها المؤشّر.</p>
+<h4>أمثلة على المؤشّرات <span class="content-anchor" id="_pointer_examples"></span></h4>
 <p>وفيما يلي تسلسل مثالي من عبارات C يستخدم متغيّري مؤشّر:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> *ptr1, *ptr2, x, y;
 
@@ -269,7 +269,7 @@ change_value(&amp;x);
 <pre><code>x: 100 y: 30
 </code></pre>
 <p>يعرض <a href="#FigPassPointer">الشكل 1</a> كيف يبدو مكدّس الاستدعاء قبل تنفيذ الإرجاع في <code>change_value</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-passbypointer.webp" alt="The input parameter to change_value stores the address of main’s 'x' variable."> الشكل 1. لقطة لمكدّس الاستدعاء قبل العودة من change_value.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-passbypointer.webp" alt="The input parameter to change_value stores the address of main’s 'x' variable." id="FigPassPointer"> الشكل 1. لقطة لمكدّس الاستدعاء قبل العودة من change_value.</p>
 <p>يحصل وسيط الإدخال على نسخة من قيمة وسيطته (عنوان <code>x</code>). وقيمة <code>x</code> هي 30 عند إجراء استدعاء الدالة. وداخل الدالة <code>change_value</code>، يُلغى الإشارة إلى الوسيط لإسناد القيمة 100 إلى موقع الذاكرة الذي يشير إليه الوسيط (<code>*input = 100;</code>، أي «الموقع الذي يشير إليه <code>input</code> يحصل على القيمة 100»). ولأن الوسيط يخزّن عنوان متغيّر محلي في إطار مكدّس الدالة <code>main</code>، يمكن تغيير القيمة المخزّنة في المتغيّر المحلي للمستدعي من خلال إلغاء الإشارة إلى الوسيط. وعند عودة الدالة، تعكس قيمة الوسيطة التغيير الذي أُجري عليها عبر وسيط المؤشّر (تغيّرت قيمة <code>x</code> في <code>main</code> إلى 100 بفعل الدالة <code>change_value</code> عبر وسيطها <code>input</code>).</p>
 <p>وبالإضافة إلى وسائط التمرير بالمؤشّر، تستخدم البرامج عادةً متغيّرات المؤشّرات لتخصيص الذاكرة ديناميكياً. ويتيح <strong>التخصيص الديناميكي للذاكرة</strong> لبرنامج C طلب مزيد من الذاكرة أثناء تشغيله، ويخزّن متغيّر مؤشّر عنوان المساحة المخصَّصة ديناميكياً. وكثيراً ما تخصّص البرامج الذاكرة ديناميكياً لملاءمة حجم مصفوفة لتشغيل معيّن.</p>
 <p>يمنح التخصيص الديناميكي للذاكرة مرونة للبرامج التي:</p>
@@ -279,13 +279,13 @@ change_value(&amp;x);
 <li>تريد تخصيص الحجم اللازم بالضبط لبنى البيانات في تنفيذ بعينه (دون إهدار السعة)</li>
 <li>تنمو أو تتقلص أحجام الذاكرة المخصَّصة مع تشغيل البرنامج، فتخصّص مساحة أكبر عند الحاجة وتحرّر المساحة عندما لا تعود مطلوبة.</li>
 </ul>
-<h3 id="241-ذاكرة-الكومة"><a href="#_heap_memory"></a>2.4.1. ذاكرة الكومة</h3>
+<h3 id="241-ذاكرة-الكومة">2.4.1. ذاكرة الكومة <span class="content-anchor" id="_heap_memory"></span></h3>
 <p>لكل بايت من الذاكرة في فضاء ذاكرة البرنامج عنوان مرتبط به. وكل ما يحتاجه البرنامج ليعمل موجود في فضاء ذاكرته، وتقيم أنواع مختلفة من الكيانات في أجزاء مختلفة من فضاء ذاكرة البرنامج. فمثلاً، تحتوي منطقة <em>الشيفرة</em> على تعليمات البرنامج، وتقيم المتغيّرات العامة في منطقة <em>البيانات</em>، وتشغل المتغيّرات المحلية والوسائط <em>المكدّس</em>، وتأتي الذاكرة المخصَّصة ديناميكياً من <em>الكومة</em>. ولأن المكدّس والكومة ينموان وقت التشغيل (مع استدعاء الدوال وعودتها ومع تخصيص الذاكرة الديناميكية وتحريرها)، فإنهما يكونان عادةً متباعدين في فضاء عناوين البرنامج لإتاحة مقدار كبير من المساحة لكل منهما لينمو فيه مع تشغيل البرنامج.</p>
 <p>تشغل الذاكرة المخصَّصة ديناميكياً <a href="https://diveintosystems.org/book/C2-C_depth/scope_memory.html#_memoryparts">منطقة ذاكرة <strong>الكومة</strong></a> من فضاء عناوين البرنامج. وعندما يطلب برنامج ذاكرة ديناميكياً وقت التشغيل، توفّر الكومة قطعة ذاكرة يجب إسناد عنوانها إلى متغيّر مؤشّر.</p>
 <p>يوضّح <a href="#FigProgramMemory">الشكل 1</a> أجزاء ذاكرة برنامج قيد التشغيل مع مثال على متغيّر مؤشّر (<code>ptr</code>) على المكدّس يخزّن عنوان ذاكرة كومة مخصَّصة ديناميكياً (أي يشير إلى ذاكرة الكومة).</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-program_memory.webp" alt="The parts of program memory showing a stack variable pointing to dynamically allocated heap memory."> الشكل 1. مؤشّر على المكدّس يشير إلى كتلة ذاكرة خُصِّصت من الكومة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-program_memory.webp" alt="The parts of program memory showing a stack variable pointing to dynamically allocated heap memory." id="FigProgramMemory"> الشكل 1. مؤشّر على المكدّس يشير إلى كتلة ذاكرة خُصِّصت من الكومة.</p>
 <p>من المهم تذكّر أن ذاكرة الكومة ذاكرة مجهولة، حيث تعني «مجهولة» أن العناوين في الكومة ليست مرتبطة بأسماء متغيّرات. فالإعلان عن متغيّر برنامج مسمّى يخصّصه على المكدّس أو في جزء البيانات من ذاكرة البرنامج. ويمكن لمتغيّر مؤشّر محلي أو عام تخزين عنوان موقع ذاكرة كومة مجهول (مثلاً، يمكن لمتغيّر مؤشّر محلي على المكدّس أن يشير إلى ذاكرة الكومة)، ويمكّن إلغاء الإشارة إلى مؤشّر كهذا البرنامج من تخزين بيانات في الكومة.</p>
-<h3 id="242-malloc-وfree"><a href="#_malloc_and_free"></a>2.4.2. malloc وfree</h3>
+<h3 id="242-malloc-وfree">2.4.2. malloc وfree <span class="content-anchor" id="_malloc_and_free"></span></h3>
 <p><strong>malloc</strong> و<strong>free</strong> دالتان في مكتبة C القياسية (<code>stdlib</code>) يمكن للبرنامج استدعاؤهما لتخصيص الذاكرة في <strong>الكومة</strong> وتحريرها. ويجب على برنامج C تخصيص ذاكرة الكومة صراحةً (بـ malloc) وتحريرها (بـ free).</p>
 <p>لتخصيص ذاكرة كومة، استدعِ <code>malloc</code> ومرّر العدد الكلي لبايتات ذاكرة الكومة المتجاورة المطلوب تخصيصها. واستخدم <strong>معامل <code>sizeof</code></strong> لحساب عدد البايتات المطلوب طلبه. فمثلاً، لتخصيص مساحة على الكومة لتخزين عدد صحيح واحد، يمكن للبرنامج استدعاء:</p>
 <pre><code class="language-c"><span class="hljs-comment">// Determine the size of an integer and allocate that much heap space.</span>
@@ -324,7 +324,7 @@ p = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof<
 <pre><code class="language-c"><span class="hljs-built_in">free</span>(p);
 p = <span class="hljs-literal">NULL</span>;
 </code></pre>
-<h3 id="243-المصفوفات-والسلاسل-النصية-المخصصة-ديناميكيا"><a href="#_dynamically_allocated_arrays_and_strings"></a>2.4.3. المصفوفات والسلاسل النصية المخصَّصة ديناميكياً</h3>
+<h3 id="243-المصفوفات-والسلاسل-النصية-المخصصة-ديناميكيا">2.4.3. المصفوفات والسلاسل النصية المخصَّصة ديناميكياً <span class="content-anchor" id="_dynamically_allocated_arrays_and_strings"></span></h3>
 <p>كثيراً ما يخصّص مبرمجو C الذاكرة ديناميكياً لتخزين المصفوفات. ويخصّص الاستدعاء الناجح لـ <code>malloc</code> قطعة واحدة متجاورة من ذاكرة الكومة بالحجم المطلوب. ويرجع عنوان بداية قطعة الذاكرة هذه إلى المستدعي، ما يجعل قيمة العنوان المرجَعة مناسبة كعنوان أساس لمصفوفة مخصَّصة ديناميكياً في ذاكرة الكومة.</p>
 <p>لتخصيص مساحة ديناميكياً لمصفوفة من العناصر، مرّر إلى <code>malloc</code> العدد الكلي للبايتات في المصفوفة المطلوبة. أي ينبغي للبرنامج أن يطلب من <code>malloc</code> العدد الكلي للبايتات في كل عنصر مصفوفة مضروباً في عدد عناصر المصفوفة. ومرّر إلى <code>malloc</code> تعبيراً عن العدد الكلي للبايتات بالصيغة <code>sizeof() * </code>. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> *arr;
@@ -337,7 +337,7 @@ arr = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeo
 c_arr = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">char</span>) * <span class="hljs-number">10</span>);
 </code></pre>
 <p>بعد الاستدعاءين <code>malloc</code> في هذا المثال، يخزّن متغيّر المؤشّر <code>int</code> <code>arr</code> عنوان أساس مصفوفة من 20 موقع تخزين صحيح متجاورة في ذاكرة الكومة، ويخزّن متغيّر مؤشّر المحارف <code>c_arr</code> عنوان أساس مصفوفة من 10 مواقع تخزين محارف متجاورة في ذاكرة الكومة. ويصوّر <a href="#FigHeapArray">الشكل 2</a> كيف قد يبدو ذلك.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-heaparray.webp" alt="Main’s stack holds two pointer variables. The first, arr, contains the address of a block of memory on the heap with enough space for 20 integers. The second, c_arr, contains the address of a different block of memory on the heap with enough space for 10 characters."> الشكل 2. مصفوفة صحيحة من 20 عنصراً ومصفوفة محارف من 10 عناصر مخصَّصتان على الكومة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-heaparray.webp" alt="Main’s stack holds two pointer variables. The first, arr, contains the address of a block of memory on the heap with enough space for 20 integers. The second, c_arr, contains the address of a different block of memory on the heap with enough space for 10 characters." id="FigHeapArray"> الشكل 2. مصفوفة صحيحة من 20 عنصراً ومصفوفة محارف من 10 عناصر مخصَّصتان على الكومة.</p>
 <p>لاحظ أنه رغم أن <code>malloc</code> ترجع مؤشّراً إلى مساحة مخصَّصة ديناميكياً في ذاكرة الكومة، فإن برامج C تخزّن المؤشّر إلى مواقع الكومة على المكدّس. وتحتوي متغيّرات المؤشّرات على <em>عنوان الأساس فقط</em> (عنوان البداية) لمساحة تخزين المصفوفة في الكومة. وكما في المصفوفات المعلَنة ساكنةً، تكون مواقع الذاكرة للمصفوفات المخصَّصة ديناميكياً في مواقع ذاكرة متجاورة. ورغم أن استدعاءً واحداً لـ <code>malloc</code> يؤدي إلى تخصيص قطعة ذاكرة بعدد البايتات المطلوب، فإن استدعاءات متعددة لـ <code>malloc</code> <em>لن</em> تؤدي إلى عناوين كومة متجاورة (على معظم الأنظمة). وفي المثال أعلاه، قد تكون عناصر مصفوفة <code>char</code> وعناصر مصفوفة <code>int</code> عند عناوين متباعدة في الكومة.</p>
 <p>بعد تخصيص مساحة الكومة ديناميكياً لمصفوفة، يمكن للبرنامج الوصول إلى المصفوفة عبر متغيّر المؤشّر. ولأن قيمة متغيّر المؤشّر تمثّل عنوان أساس المصفوفة في الكومة، يمكننا استخدام الصياغة نفسها للوصول إلى عناصر المصفوفات المخصَّصة ديناميكياً كما نستخدمها للوصول إلى عناصر <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_arrays_and_strings">المصفوفات المعلَنة ساكنةً</a>. وفيما يلي مثال:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> i;
@@ -401,7 +401,7 @@ d_array = <span class="hljs-literal">NULL</span>;
 <p>تكون ذاكرة الكومة كلها في البداية فارغة، أي أن القائمة الحرة تحتوي على امتداد واحد يتألف من منطقة الكومة بأكملها. وبعد أن يُجري البرنامج بعض الاستدعاءات لـ <code>malloc</code> و<code>free</code> قد تصبح ذاكرة الكومة <strong>مفتّتة</strong> (fragmented)، أي توجد قطع من مساحة كومة حرة متخللة بين قطع من مساحة كومة مخصَّصة. ويحتفظ مدير ذاكرة الكومة عادةً بقوائم لمجالات مختلفة من أحجام مساحة الكومة لتمكين البحث السريع عن امتداد حر بحجم معيّن. وبالإضافة إلى ذلك، ينفّذ سياسة أو أكثر للاختيار من بين امتدادات حرة متعددة يمكن استخدامها لتلبية طلب.</p>
 <p>قد تبدو الدالة <code>free</code> غريبة لأنها لا تتوقع استلام إلا عنوان مساحة الكومة المطلوب تحريرها دون الحاجة إلى حجم مساحة الكومة المطلوب تحريرها عند ذلك العنوان. والسبب أن <code>malloc</code> لا تخصّص بايتات الذاكرة المطلوبة فحسب، بل تخصّص أيضاً بضع بايتات إضافية قبل القطعة المخصَّصة لتخزين بنية ترويسة (header). وتخزّن الترويسة بيانات وصفية عن قطعة مساحة الكومة المخصَّصة، مثل الحجم. ونتيجةً لذلك، لا يحتاج استدعاء <code>free</code> إلى تمرير إلا عنوان ذاكرة الكومة المطلوب تحريرها. ويستطيع تنفيذ <code>free</code> الحصول على حجم الذاكرة المطلوب تحريرها من معلومات الترويسة الموجودة في الذاكرة قبل العنوان الممرَّر إلى <code>free</code> مباشرة.</p>
 <p>لمزيد من المعلومات عن إدارة ذاكرة الكومة، انظر كتاباً عن أنظمة التشغيل (فمثلاً، الفصل 17 «إدارة المساحة الحرة» في <a href="http://pages.cs.wisc.edu/~remzi/OSTEP/#book-chapters">OS in Three Easy Pieces</a> يغطي هذه التفاصيل).</p>
-<h3 id="244-المؤشرات-إلى-ذاكرة-الكومة-والدوال"><a href="#_pointers_to_heap_memory_and_functions"></a>2.4.4. المؤشّرات إلى ذاكرة الكومة والدوال</h3>
+<h3 id="244-المؤشرات-إلى-ذاكرة-الكومة-والدوال">2.4.4. المؤشّرات إلى ذاكرة الكومة والدوال <span class="content-anchor" id="_pointers_to_heap_memory_and_functions"></span></h3>
 <p>عند تمرير مصفوفة مخصَّصة ديناميكياً إلى دالة، تُمرَّر <em>قيمة</em> وسيطة متغيّر المؤشّر إلى الدالة (أي يُمرَّر عنوان أساس المصفوفة في الكومة إلى الدالة). وهكذا، عند تمرير مصفوفات معلَنة ساكنةً أو مخصَّصة ديناميكياً إلى الدوال، يحصل الوسيط على القيمة نفسها بالضبط — عنوان أساس المصفوفة في الذاكرة. ونتيجةً لذلك، يمكن استخدام الدالة نفسها للمصفوفات المعلَنة ساكنةً والمخصَّصة ديناميكياً من النوع نفسه، ويمكن استخدام الصياغة نفسها داخل الدالة للوصول إلى عناصر المصفوفة. وتعريفتا الوسيط <code>int *arr</code> و<code>int arr[]</code> متكافئتان. غير أنه بالاصطلاح، تُستخدم صياغة المؤشّر عادةً للدوال التي قد تُستدعى بمصفوفات مخصَّصة ديناميكياً:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> {
     <span class="hljs-type">int</span> *arr1;
@@ -425,11 +425,11 @@ d_array = <span class="hljs-literal">NULL</span>;
 }
 </code></pre>
 <p>عند النقطة قبل العودة من الدالة <code>init_array</code> مباشرة، سيبدو محتوى الذاكرة كما في <a href="#FigHeapArrayParam">الشكل 3</a>. لاحظ أنه عندما يمرّر <code>main</code> <code>arr1</code> إلى <code>init_array</code> فإنه يمرّر عنوان أساس المصفوفة فقط. وتبقى الكتلة الكبيرة المتجاورة لذاكرة المصفوفة على الكومة، ويمكن للدالة الوصول إليها بإلغاء الإشارة إلى وسيط المؤشّر <code>arr</code>. كما يمرّر حجم المصفوفة حتى تعرف <code>init_array</code> عدد العناصر المطلوب الوصول إليها.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-heaparrayparam.webp" alt="Main’s arr1 and init_array’s arr variable both store the same base address of a block of heap memory."> الشكل 3. محتويات الذاكرة قبل العودة من init_array. يشير كل من arr1 في main والمتغيّر arr في init_array إلى كتلة ذاكرة الكومة نفسها.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-heaparrayparam.webp" alt="Main’s arr1 and init_array’s arr variable both store the same base address of a block of heap memory." id="FigHeapArrayParam"> الشكل 3. محتويات الذاكرة قبل العودة من init_array. يشير كل من arr1 في main والمتغيّر arr في init_array إلى كتلة ذاكرة الكومة نفسها.</p>
 <p>قدّمنا في <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_arrays">الفصل السابق</a> المصفوفات أحادية البعد المعلَنة ساكنةً في C وناقشنا دلالات تمرير المصفوفات إلى الدوال. وفي <a href="https://diveintosystems.org/book/C2-C_depth/pointers.html#_dynamic_memory_allocation">قسم التخصيص الديناميكي للذاكرة</a> في هذا الفصل، قدّمنا المصفوفات أحادية البعد المخصَّصة ديناميكياً وناقشنا دلالات تمريرها إلى الدوال.</p>
 <p>نأخذ في هذا القسم نظرة أعمق على المصفوفات في C. فنصف المصفوفات المعلَنة ساكنةً والمخصَّصة ديناميكياً بمزيد من التفصيل، ونناقش المصفوفات ثنائية الأبعاد.</p>
-<h3 id="251-المصفوفات-أحادية-البعد"><a href="#_single_dimensional_arrays"></a>2.5.1. المصفوفات أحادية البعد</h3>
-<h4><a href="#_statically_allocated"></a>المخصَّصة ساكنةً</h4>
+<h3 id="251-المصفوفات-أحادية-البعد">2.5.1. المصفوفات أحادية البعد <span class="content-anchor" id="_single_dimensional_arrays"></span></h3>
+<h4>المخصَّصة ساكنةً <span class="content-anchor" id="_statically_allocated"></span></h4>
 <p>قبل الخوض في محتوى جديد، نلخّص المصفوفات الساكنة بإيجاز مع مثال. انظر <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_arrays">الفصل السابق</a> لمزيد من التفصيل عن المصفوفات أحادية البعد المعلَنة ساكنةً.</p>
 <p>تُخصَّص المصفوفات المعلَنة ساكنةً إما على المكدّس (للمتغيّرات المحلية) أو في منطقة البيانات من الذاكرة (للمتغيّرات العامة). ويستطيع المبرمج الإعلان عن متغيّر مصفوفة بتحديد نوعه (النوع المخزّن عند كل فهرس) وسعته الكلية (عدد العناصر).</p>
 <p>عند تمرير مصفوفة إلى دالة، تنسخ C قيمة عنوان الأساس إلى الوسيط. أي أن الوسيط والوسيطة يشيران إلى مواقع الذاكرة نفسها — فمؤشّر الوسيط يشير إلى عناصر مصفوفة الوسيطة في الذاكرة. ونتيجةً لذلك، يؤدي تعديل القيم المخزّنة في المصفوفة عبر وسيط مصفوفة إلى تعديل القيم المخزّنة في مصفوفة الوسيطة.</p>
@@ -452,7 +452,7 @@ name[<span class="hljs-number">10</span>] = <span class="hljs-string">&#x27;\0&#
 <span class="hljs-built_in">strcpy</span>(name, <span class="hljs-string">&quot;Hello&quot;</span>);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, name);  <span class="hljs-comment">// prints: Hello</span>
 </code></pre>
-<h4><a href="#_dynamically_allocated"></a>المخصَّصة ديناميكياً</h4>
+<h4>المخصَّصة ديناميكياً <span class="content-anchor" id="_dynamically_allocated"></span></h4>
 <p>قدّمنا في <a href="https://diveintosystems.org/book/C2-C_depth/pointers.html#_dynamic_memory_allocation">قسم التخصيص الديناميكي للذاكرة</a> في هذا الفصل المصفوفات أحادية البعد المخصَّصة ديناميكياً، بما في ذلك صياغة الوصول إليها وصياغة ودلالات تمرير المصفوفات المخصَّصة ديناميكياً إلى الدوال. ونعرض هنا تذكيراً موجزاً بتلك المعلومات مع مثال.</p>
 <p>يخصّص استدعاء الدالة <code>malloc</code> مصفوفة على الكومة ديناميكياً وقت التشغيل. ويمكن إسناد عنوان مساحة الكومة المخصَّصة إلى متغيّر مؤشّر عام أو محلي، فيشير حينها إلى العنصر الأول في المصفوفة. ولتخصيص المساحة ديناميكياً، مرّر إلى <code>malloc</code> العدد الكلي للبايتات المطلوب تخصيصها للمصفوفة (باستخدام المعامل <code>sizeof</code> للحصول على حجم نوع معيّن). ويخصّص الاستدعاء الواحد لـ <code>malloc</code> قطعة متجاورة من مساحة الكومة بالحجم المطلوب. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-comment">// declare a pointer variable to point to allocated heap space</span>
@@ -483,7 +483,7 @@ p_array = <span class="hljs-literal">NULL</span>;
 <span class="hljs-built_in">free</span>(d_array);
 d_array = <span class="hljs-literal">NULL</span>;
 </code></pre>
-<h4><a href="#_array_memory_layout"></a>تخطيط ذاكرة المصفوفة</h4>
+<h4>تخطيط ذاكرة المصفوفة <span class="content-anchor" id="_array_memory_layout"></span></h4>
 <p>سواء أُعلنت المصفوفة ساكنةً أم خُصِّصت ديناميكياً باستدعاء واحد لـ <code>malloc</code>، فإن عناصر المصفوفة تمثّل مواقع ذاكرة متجاورة (عناوين):</p>
 <pre><code> array [0]:  base address
  array [1]:  next address
@@ -511,9 +511,9 @@ d_array = <span class="hljs-literal">NULL</span>;
  1283:  carray[3]
 </code></pre>
 <p>في هذا المثال، <code>1230</code> هو عنوان أساس <code>iarray</code>، و<code>1280</code> عنوان أساس <code>carray</code>. لاحظ أن العناصر الفردية لكل مصفوفة تُخصَّص على عناوين ذاكرة متجاورة: فكل عنصر في <code>iarray</code> يخزّن قيمة <code>int</code> من 4 بايتات، لذا تختلف عناوين عناصره بمقدار 4، وكل عنصر في <code>carray</code> يخزّن قيمة <code>char</code> من بايت واحد، لذا تختلف عناوينه بمقدار 1. ولا يوجد ضمان بأن تُخصَّص مجموعة المتغيّرات المحلية على مواقع ذاكرة متجاورة على المكدّس (لذا قد توجد فجوة في العناوين بين نهاية <code>iarray</code> وبداية <code>carray</code>، كما هو موضح في هذا المثال.)</p>
-<h3 id="252-المصفوفات-ثنائية-الأبعاد"><a href="#_two_dimensional_arrays"></a>2.5.2. المصفوفات ثنائية الأبعاد</h3>
+<h3 id="252-المصفوفات-ثنائية-الأبعاد">2.5.2. المصفوفات ثنائية الأبعاد <span class="content-anchor" id="_two_dimensional_arrays"></span></h3>
 <p>تدعم C المصفوفات متعددة الأبعاد، لكننا نحصر مناقشتنا للمصفوفات متعددة الأبعاد في المصفوفات ثنائية الأبعاد (2D)، لأن المصفوفات أحادية البعد وثنائية الأبعاد هي الأكثر استخداماً لدى مبرمجي C.</p>
-<h4><a href="#_statically_allocated_2d_arrays"></a>المصفوفات ثنائية الأبعاد المعلَنة ساكنةً</h4>
+<h4>المصفوفات ثنائية الأبعاد المعلَنة ساكنةً <span class="content-anchor" id="_statically_allocated_2d_arrays"></span></h4>
 <p>للإعلان الساكن عن متغيّر مصفوفة متعددة الأبعاد، حدد حجم كل بُعد. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span>   matrix[<span class="hljs-number">50</span>][<span class="hljs-number">100</span>];
 <span class="hljs-type">short</span> little[<span class="hljs-number">10</span>][<span class="hljs-number">10</span>];
@@ -537,7 +537,7 @@ num = little[<span class="hljs-number">8</span>][<span class="hljs-number">4</sp
     }
 }
 </code></pre>
-<h4><a href="#_two_dimensional_array_parameters"></a>وسائط المصفوفات ثنائية الأبعاد</h4>
+<h4>وسائط المصفوفات ثنائية الأبعاد <span class="content-anchor" id="_two_dimensional_array_parameters"></span></h4>
 <p>تنطبق القواعد نفسها لتمرير وسائط المصفوفات أحادية البعد إلى الدوال على تمرير وسائط المصفوفات ثنائية الأبعاد: يحصل الوسيط على قيمة عنوان أساس المصفوفة ثنائية الأبعاد (<code>&amp;arr[0][0]</code>). وبعبارة أخرى، يشير الوسيط إلى عناصر مصفوفة الوسيطة، وبالتالي يمكن للدالة تغيير القيم المخزّنة في المصفوفة الممرَّرة.</p>
 <p>بالنسبة لوسائط المصفوفات متعددة الأبعاد، يجب أن تشير إلى أن الوسيط مصفوفة متعددة الأبعاد، لكن يمكنك ترك حجم البُعد الأول دون تحديد (من أجل تصميم عام جيد). ويجب تحديد أحجام الأبعاد الأخرى بالكامل ليتمكن المصرّف من توليد الإزاحات الصحيحة داخل المصفوفة. وفيما يلي مثال ثنائي الأبعاد:</p>
 <pre><code class="language-c"><span class="hljs-comment">// a C constant definition: COLS is defined to be the value 100</span>
@@ -572,21 +572,21 @@ num = little[<span class="hljs-number">8</span>][<span class="hljs-number">4</sp
 <blockquote>
 <p>يجب تحديد بُعد الأعمدة في تعريف وسيط المصفوفة ثنائية الأبعاد ليتمكن المصرّف من حساب الإزاحة من عنوان أساس المصفوفة ثنائية الأبعاد إلى بداية صف معيّن من العناصر. ويتبع حساب الإزاحة من تخطيط المصفوفات ثنائية الأبعاد في الذاكرة.</p>
 </blockquote>
-<h4><a href="#_two_dimensional_array_memory_layout"></a>تخطيط ذاكرة المصفوفة ثنائية الأبعاد</h4>
+<h4>تخطيط ذاكرة المصفوفة ثنائية الأبعاد <span class="content-anchor" id="_two_dimensional_array_memory_layout"></span></h4>
 <p>تُرتَّب المصفوفات ثنائية الأبعاد المخصَّصة ساكنةً في الذاكرة <strong>بترتيب الصفوف</strong> (row-major order)، أي أن جميع عناصر الصف 0 تأتي أولاً، ثم جميع عناصر الصف 1، وهكذا. فمثلاً، بالنظر إلى الإعلان التالي لمصفوفة ثنائية الأبعاد من الأعداد الصحيحة:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> arr[<span class="hljs-number">3</span>][<span class="hljs-number">4</span>];  <span class="hljs-comment">// int array with 3 rows and 4 columns</span>
 </code></pre>
 <p>قد يبدو تخطيطها في الذاكرة كما في <a href="#Fig2DMem">الشكل 2</a>.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-2Dmem.webp" alt="Declaring an array as &quot;int arr[3][4]&quot; yields three rows, each of which has four elements. Row 0 consists of arr[0][0], arr[0][1], arr[0][2], and arr[0][3]. Row 1 consists of arr[1][0], arr[1][1], etc."> الشكل 2. تخطيط مصفوفة ثنائية الأبعاد بترتيب الصفوف.</p>
 <p>لاحظ أن جميع عناصر المصفوفة تُخصَّص على عناوين ذاكرة متجاورة. أي أن عنوان أساس المصفوفة ثنائية الأبعاد هو عنوان ذاكرة العنصر <code>[0][0]</code> (<code>&amp;arr[0][0]</code>)، وتُخزَّن العناصر التالية بشكل متجاور بترتيب الصفوف (مثلاً، يأتي الصف 1 بأكمله مباشرة بعد الصف 0 بأكمله، وهكذا).</p>
-<h4><a href="#_dynamically_allocated_2d_arrays"></a>المصفوفات ثنائية الأبعاد المخصَّصة ديناميكياً</h4>
+<h4>المصفوفات ثنائية الأبعاد المخصَّصة ديناميكياً <span class="content-anchor" id="_dynamically_allocated_2d_arrays"></span></h4>
 <p>يمكن تخصيص المصفوفات ثنائية الأبعاد ديناميكياً بطريقتين. فلمصفوفة ثنائية الأبعاد بحجم <em>N</em>x<em>M</em>، إما:</p>
 <ol>
 <li>أن تُجري استدعاءً واحداً لـ <code>malloc</code>، فتخصّص كتلة كبيرة واحدة من مساحة الكومة لتخزين جميع عناصر المصفوفة البالغ عددها <em>N</em>x<em>M</em>.</li>
 <li>أن تُجري استدعاءات متعددة لـ <code>malloc</code>، فتخصّص مصفوفة من مصفوفات. أولاً، خصّص مصفوفة أحادية البعد من <em>N</em> مؤشّراً إلى نوع العنصر، بمصفوفة أحادية البعد من المؤشّرات لكل صف في المصفوفة ثنائية الأبعاد. ثم خصّص <em>N</em> مصفوفات أحادية البعد بحجم <em>M</em> لتخزين مجموعة قيم الأعمدة لكل صف في المصفوفة ثنائية الأبعاد. وأسند عناوين كل من هذه المصفوفات الـ <em>N</em> إلى عناصر المصفوفة الأولى المكوّنة من <em>N</em> مؤشّراً.</li>
 </ol>
 <p>تختلف إعلانات المتغيّرات وشيفرة التخصيص وصياغة الوصول إلى عناصر المصفوفة بحسب الطريقة التي يختار المبرمج استخدامها من هاتين الطريقتين.</p>
-<h4><a href="#_method_1_memory_efficient_allocation"></a>الطريقة 1: تخصيص موفّر للذاكرة</h4>
+<h4>الطريقة 1: تخصيص موفّر للذاكرة <span class="content-anchor" id="_method_1_memory_efficient_allocation"></span></h4>
 <p>في هذه الطريقة، يخصّص استدعاء واحد لـ <code>malloc</code> العدد الكلي للبايتات اللازمة لتخزين مصفوفة القيم <em>N</em>x<em>M</em>. ولهذه الطريقة ميزة كونها أكثر كفاءة في استخدام الذاكرة لأن المساحة كلها لجميع عناصر <em>N</em>x<em>M</em> ستُخصَّص دفعة واحدة، في مواقع ذاكرة متجاورة.</p>
 <p>يرجع الاستدعاء <code>malloc</code> عنوان البداية للمساحة المخصَّصة (عنوان أساس المصفوفة)، والذي ينبغي تخزينه (كما في مصفوفة أحادية البعد) في متغيّر مؤشّر. بل لا يوجد في الواقع فرق دلالي بين تخصيص مصفوفة أحادية أو ثنائية الأبعاد بهذه الطريقة: إذ يرجع الاستدعاء <code>malloc</code> عنوان البداية لقطعة متجاورة من ذاكرة الكومة بعدد البايتات المطلوب. ولأن تخصيص مصفوفة ثنائية الأبعاد بهذه الطريقة يبدو تماماً كتخصيص مصفوفة أحادية البعد، فعلى المبرمج أن يُسقط صراحةً فهرسة الصفوف والأعمدة ثنائية الأبعاد على هذه القطعة الواحدة من مساحة ذاكرة الكومة (فليس للمصرّف أي تصور ضمني للصفوف أو الأعمدة، وبالتالي لا يستطيع تفسير صياغة الفهرسة المزدوجة في هذه المساحة المخصَّصة بـ malloc).</p>
 <p>وفيما يلي مقتطف شيفرة C يخصّص مصفوفة ثنائية الأبعاد ديناميكياً بالطريقة 1:</p>
@@ -607,7 +607,7 @@ num = little[<span class="hljs-number">8</span>][<span class="hljs-number">4</sp
     ...
 </code></pre>
 <p>يعرض <a href="#Fig2DOneMalloc">الشكل 3</a> مثالاً على تخصيص مصفوفة ثنائية الأبعاد بهذه الطريقة ويوضح كيف قد تبدو الذاكرة بعد الاستدعاء <code>malloc</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-2Donemalloc.webp" alt="We can allocate an array with malloc(sizeof(int) * (3*4)) and store the base address in a stack pointer variable. Because malloc returns a contiguous chunk of memory, we can treat the memory as a collection of rows and columns in row-major order like a statically allocated array."> الشكل 3. نتائج تخصيص مصفوفة ثنائية الأبعاد باستدعاء واحد لـ malloc.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-2Donemalloc.webp" alt="We can allocate an array with malloc(sizeof(int) * (3*4)) and store the base address in a stack pointer variable. Because malloc returns a contiguous chunk of memory, we can treat the memory as a collection of rows and columns in row-major order like a statically allocated array." id="Fig2DOneMalloc"> الشكل 3. نتائج تخصيص مصفوفة ثنائية الأبعاد باستدعاء واحد لـ malloc.</p>
 <p>وكما في المصفوفات أحادية البعد المخصَّصة ديناميكياً، يُخصَّص متغيّر المؤشّر الخاص بالمصفوفة ثنائية الأبعاد على المكدّس. ثم يُسنَد إلى ذلك المؤشّر القيمة التي يرجعها الاستدعاء <code>malloc</code>، وهي تمثّل عنوان أساس القطعة المتجاورة من مواقع تخزين <em>N</em>x<em>M</em> من النوع <code>int</code> في ذاكرة الكومة.</p>
 <p>ولأن هذه الطريقة تستخدم قطعة واحدة من المساحة المخصَّصة بـ malloc للمصفوفة ثنائية الأبعاد، فإن تخصيص الذاكرة يكون بأكبر كفاءة ممكنة (فهو يحتاج استدعاءً واحداً فقط لـ <code>malloc</code> للمصفوفة ثنائية الأبعاد بأكملها). وهي الطريقة الأكثر كفاءة للوصول إلى الذاكرة لأن جميع العناصر تقع متقاربة في ذاكرة متجاورة، وكل وصول يحتاج مستوى واحداً فقط من الإحالة غير المباشرة من متغيّر المؤشّر.</p>
 <p>غير أن مصرّف C لا يعرف الفرق بين تخصيص مصفوفة ثنائية أو أحادية الأبعاد بهذه الطريقة. ونتيجةً لذلك، <em>لا يمكن</em> استخدام صياغة الفهرسة المزدوجة (<code>[i][j]</code>) الخاصة بالمصفوفات ثنائية الأبعاد المعلَنة ساكنةً عند تخصيص مصفوفة ثنائية الأبعاد بهذه الطريقة. وبدلاً من ذلك، يجب على المبرمج أن يحسب صراحةً الإزاحة في القطعة المتجاورة من ذاكرة الكومة باستخدام دالة في قيمتي فهرس الصف والعمود (<code>[i*M + j]</code>، حيث <code>M</code> هو بُعد الأعمدة).</p>
@@ -623,7 +623,7 @@ num = little[<span class="hljs-number">8</span>][<span class="hljs-number">4</sp
     }
 }
 </code></pre>
-<h4><a href="#_method_1_single_malloc_and_function_parameters"></a>الطريقة 1 (malloc واحد) ووسائط الدوال</h4>
+<h4>الطريقة 1 (malloc واحد) ووسائط الدوال <span class="content-anchor" id="_method_1_single_malloc_and_function_parameters"></span></h4>
 <p>عنوان أساس مصفوفة من نوع <code>int</code> مخصَّصة باستدعاء <code>malloc</code> واحد هو مؤشّر إلى <code>int</code>، لذا يمكن تمريره إلى دالة بوسيط (<code>int *</code>). وبالإضافة إلى ذلك، يجب تمرير بُعدي الصفوف والأعمدة إلى الدالة لتستطيع حساب الإزاحات في المصفوفة ثنائية الأبعاد حساباً صحيحاً. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-comment">/*
  * initialize all elements in a 2D array to 0
@@ -648,7 +648,7 @@ num = little[<span class="hljs-number">8</span>][<span class="hljs-number">4</sp
     }
     ...
 </code></pre>
-<h4><a href="#_method_2_the_programmer_friendly_way"></a>الطريقة 2: الطريقة الملائمة للمبرمج</h4>
+<h4>الطريقة 2: الطريقة الملائمة للمبرمج <span class="content-anchor" id="_method_2_the_programmer_friendly_way"></span></h4>
 <p>تخزّن الطريقة الثانية لتخصيص مصفوفة ثنائية الأبعاد ديناميكياً المصفوفة كمصفوفة من <em>N</em> مصفوفات أحادية البعد (مصفوفة أحادية البعد لكل صف). وتحتاج إلى <em>N+1</em> استدعاءً لـ <code>malloc</code>: استدعاء <code>malloc</code> واحد لمصفوفة مصفوفات الصفوف، واستدعاء <code>malloc</code> واحد لكل مصفوفة أعمدة من مصفوفات الصفوف الـ <em>N</em>. ونتيجةً لذلك، تكون مواقع العناصر <em>داخل الصف الواحد</em> متجاورة، لكن العناصر غير متجاورة عبر صفوف المصفوفة ثنائية الأبعاد. ولا يكون التخصيص والوصول إلى العناصر بكفاءة الطريقة 1، وقد تكون تعريفات أنواع المتغيّرات أكثر إرباكاً بعض الشيء. غير أنه باستخدام هذه الطريقة، يستطيع المبرمج استخدام صياغة الفهرسة المزدوجة للوصول إلى العناصر الفردية في المصفوفة ثنائية الأبعاد (الفهرس الأول فهرس في مصفوفة الصفوف، والفهرس الثاني فهرس في مصفوفة عناصر الأعمدة داخل ذلك الصف).</p>
 <p>وفيما يلي مثال على تخصيص مصفوفة ثنائية الأبعاد بالطريقة 2 (مع حذف شيفرة كشف الأخطاء ومعالجتها للوضوح):</p>
 <pre><code class="language-c"><span class="hljs-comment">// the 2D array variable is declared to be `int **` (a pointer to an int *)</span>
@@ -670,7 +670,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
 </code></pre>
 <p>في هذا المثال، لاحظ أنواع المتغيّرات والأحجام الممرَّرة إلى الاستدعاءات <code>malloc</code>. وللإشارة إلى المصفوفة ثنائية الأبعاد المخصَّصة ديناميكياً، يعلن المبرمج متغيّراً (<code>two_d_array</code>) من النوع <code>int **</code> سيخزّن عنوان مصفوفة مخصَّصة ديناميكياً من قيم العناصر <code>int *</code>. ويخزّن كل عنصر في <code>two_d_array</code> عنوان مصفوفة مخصَّصة ديناميكياً من قيم <code>int</code> (ونوع <code>two_d_array[i]</code> هو <code>int *</code>).</p>
 <p>يعرض <a href="#Fig2DNMallocs">الشكل 4</a> كيف قد تبدو الذاكرة بعد استدعاءات <em>N+1</em> لـ <code>malloc</code> في المثال أعلاه.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-2Dnmallocs.webp" alt="two_d_array is a stack variable that points to a dynamically allocated array of pointers. Each of those pointers points to a 1D array of integers."> الشكل 4. ترتيب الذاكرة بعد تخصيص مصفوفة ثنائية الأبعاد بـ N+1 استدعاءً لـ malloc.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-2Dnmallocs.webp" alt="two_d_array is a stack variable that points to a dynamically allocated array of pointers. Each of those pointers points to a 1D array of integers." id="Fig2DNMallocs"> الشكل 4. ترتيب الذاكرة بعد تخصيص مصفوفة ثنائية الأبعاد بـ N+1 استدعاءً لـ malloc.</p>
 <p>لاحظ أنه عند استخدام هذه الطريقة، لا تكون متجاورة في الذاكرة إلا العناصر المخصَّصة كجزء من استدعاء واحد لـ <code>malloc</code>. أي أن العناصر داخل كل صف متجاورة، لكن العناصر من صفوف مختلفة (حتى الصفوف المتجاورة) ليست كذلك.</p>
 <p>بعد التخصيص، يمكن الوصول إلى العناصر الفردية في المصفوفة ثنائية الأبعاد باستخدام صياغة الفهرسة المزدوجة. ويحدد الفهرس الأول عنصراً في المصفوفة الخارجية من مؤشّرات <code>int *</code> (أي صف)، ويحدد الفهرس الثاني عنصراً في مصفوفة <code>int</code> الداخلية (أي عمود داخل الصف).</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> i, j;
@@ -693,7 +693,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
                  arrays, it stores an int value (the value in row i, column j
                  of the 2D array).  Its type is int.
 </code></pre>
-<h4><a href="#_method_2_an_array_of_arrays_and_function_parameters"></a>الطريقة 2 (مصفوفة من مصفوفات) ووسائط الدوال</h4>
+<h4>الطريقة 2 (مصفوفة من مصفوفات) ووسائط الدوال <span class="content-anchor" id="_method_2_an_array_of_arrays_and_function_parameters"></span></h4>
 <p>نوع وسيطة المصفوفة هو <code>int **</code> (مؤشّر إلى مؤشّر إلى <code>int</code>)، ويطابق وسيط الدالة نوع وسيطته. وبالإضافة إلى ذلك، ينبغي تمرير أحجام الصفوف والأعمدة إلى الدالة. ولأن هذا نوع مختلف عن نوع الطريقة 1، لا يمكن للمصفوفتين استخدام دالة مشتركة (فهما ليستا نوع C نفسه).</p>
 <p>وفيما يلي دالة مثال تأخذ مصفوفة ثنائية الأبعاد من نوع الطريقة 2 (مصفوفة من مصفوفات) كوسيط:</p>
 <pre><code class="language-c"><span class="hljs-comment">/*
@@ -726,7 +726,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
 </code></pre>
 <p>هنا يمكن لتنفيذ الدالة استخدام صياغة الفهرسة المزدوجة. وخلافاً للمصفوفات ثنائية الأبعاد المعلَنة ساكنةً، يجب تمرير بُعدي الصفوف والأعمدة كوسيطين: يحدد الوسيط <code>rows</code> الحدود على المصفوفة الخارجية (مصفوفة مصفوفات الصفوف)، ويحدد الوسيط <code>cols</code> الحدود على المصفوفات الداخلية (قيم أعمدة كل صف).</p>
 <p>قدّمنا في الفصل السابق <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_arrays_and_strings">المصفوفات والسلاسل النصية في C</a>. ونناقش في هذا الفصل سلاسل C المخصَّصة ديناميكياً واستخدامها مع مكتبة سلاسل C. ونقدّم أولاً نظرة موجزة على السلاسل النصية المعلَنة ساكنةً.</p>
-<h3 id="261-دعم-c-للسلاسل-النصية-المخصصة-ساكنة-مصفوفات-char"><a href="#_cs_support_for_statically_allocated_strings_arrays_of_char"></a>2.6.1. دعم C للسلاسل النصية المخصَّصة ساكنةً (مصفوفات char)</h3>
+<h3 id="261-دعم-c-للسلاسل-النصية-المخصصة-ساكنة-مصفوفات-char">2.6.1. دعم C للسلاسل النصية المخصَّصة ساكنةً (مصفوفات char) <span class="content-anchor" id="_cs_support_for_statically_allocated_strings_arrays_of_char"></span></h3>
 <p>لا تدعم C نوعاً منفصلاً للسلاسل النصية، لكن يمكن تنفيذ سلسلة نصية في برامج C باستخدام مصفوفة من قيم <code>char</code> تنتهي بقيمة محرف فارغ خاصة <code>'\0'</code>. ويحدد المحرف الفارغ في النهاية نهاية تسلسل قيم المحارف التي تتكوّن منها السلسلة النصية. وليست كل مصفوفة محارف سلسلة C، لكن كل سلسلة C مصفوفة من قيم <code>char</code>.</p>
 <p>ولأن السلاسل النصية تظهر كثيراً في البرامج، توفّر C مكتبات بها دوال للتلاعب بالسلاسل. ويجب على البرامج التي تستخدم مكتبة سلاسل C تضمين <code>string.h</code>. وتتطلب معظم دوال مكتبة السلاسل أن يخصّص المبرمج مساحة لمصفوفة المحارف التي تتلاعب بها الدوال. وعند طباعة قيمة سلسلة نصية، استخدم العنصر النائب <code>%s</code>.</p>
 <p>وفيما يلي برنامج مثال يستخدم السلاسل النصية وبعض دوال مكتبة السلاسل:</p>
@@ -750,7 +750,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre>
-<h3 id="262-تخصيص-السلاسل-النصية-ديناميكيا"><a href="#_dynamically_allocating_strings"></a>2.6.2. تخصيص السلاسل النصية ديناميكياً</h3>
+<h3 id="262-تخصيص-السلاسل-النصية-ديناميكيا">2.6.2. تخصيص السلاسل النصية ديناميكياً <span class="content-anchor" id="_dynamically_allocating_strings"></span></h3>
 <p>يمكن تخصيص مصفوفات المحارف ديناميكياً (كما نوقش في قسمي <a href="https://diveintosystems.org/book/C2-C_depth/pointers.html#_cs_pointer_variables">المؤشّرات</a> و<a href="https://diveintosystems.org/book/C2-C_depth/arrays.html#_arrays_in_c">المصفوفات</a>). وعند تخصيص مساحة ديناميكياً لتخزين سلسلة نصية، من المهم تذكّر تخصيص مساحة في المصفوفة للمحرف <code>'\0'</code> الذي تنتهي به السلسلة.</p>
 <p>يوضح برنامج المثال التالي سلاسل نصية معلَنة ساكنةً ومخصَّصة ديناميكياً (لاحظ القيمة الممرَّرة إلى <code>malloc</code>):</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
@@ -799,7 +799,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
 <span class="hljs-built_in">strcat</span>(mystr, <span class="hljs-string">&quot;string literals aren&#x27;t writable&quot;</span>);
 </code></pre>
 </blockquote>
-<h3 id="263-مكتبات-التلاعب-بسلاسل-c-والمحارف"><a href="#_libraries_for_manipulating_c_strings_and_characters"></a>2.6.3. مكتبات التلاعب بسلاسل C والمحارف</h3>
+<h3 id="263-مكتبات-التلاعب-بسلاسل-c-والمحارف">2.6.3. مكتبات التلاعب بسلاسل C والمحارف <span class="content-anchor" id="_libraries_for_manipulating_c_strings_and_characters"></span></h3>
 <p>توفّر C عدة مكتبات بها دوال للتلاعب بالسلاسل النصية والمحارف. وتُعدّ مكتبة السلاسل (<code>string.h</code>) مفيدة بوجه خاص عند كتابة برامج تستخدم سلاسل C. وتحتوي مكتبتا <code>stdlib.h</code> و<code>stdio.h</code> أيضاً على دوال للتلاعب بالسلاسل، وتحتوي مكتبة <code>ctype.h</code> على دوال للتلاعب بقيم المحارف الفردية.</p>
 <p>عند استخدام دوال مكتبة سلاسل C، من المهم تذكّر أن معظمها لا يخصّص مساحة للسلاسل التي يتلاعب بها، ولا يتحقق من أنك تمرّر سلاسل صالحة؛ فيجب على برنامجك تخصيص مساحة للسلاسل التي ستستخدمها مكتبة سلاسل C. وزيادةً على ذلك، إذا عدّلت دالة المكتبة السلسلة الممرَّرة، فعلى المستدعي ضمان أن تكون السلسلة منسّقة بشكل صحيح (أي أن يكون لها محرف <code>\0</code> في نهايتها). وكثيراً ما يؤدي استدعاء دوال مكتبة السلاسل بقيم وسائط مصفوفات سيئة إلى انهيار البرنامج. وتحدد وثائق دوال المكتبات المختلفة (مثل صفحات الدليل) ما إذا كانت دالة المكتبة تخصّص مساحة أم أن المستدعي مسؤول عن تمرير مساحة مخصَّصة إلى دالة المكتبة.</p>
 <p><strong>ملاحظة — وسائط <code>char[]</code> و<code>char *</code> ونوع الإرجاع <code>char *</code></strong></p>
@@ -807,7 +807,7 @@ two_d_array = <span class="hljs-built_in">malloc</span>(<span class="hljs-keywor
 <p>يمكن تمرير مصفوفات المحارف المعلَنة ساكنةً والمخصَّصة ديناميكياً معاً إلى وسيط <code>char *</code> لأن اسم أي من نوعي المتغيّرين يُقيَّم إلى عنوان أساس المصفوفة في الذاكرة. وسيعمل الإعلان عن الوسيط بالنوع <code>char []</code> أيضاً مع قيم الوسائط المعلَنة ساكنةً والمخصَّصة ديناميكياً، لكن <code>char *</code> أكثر استخداماً لتحديد نوع وسائط السلاسل النصية (مصفوفة <code>char</code>).</p>
 <p>وإذا أرجع دالة سلسلة نصية (أي كان نوع إرجاعها <code>char *</code>)، فلا يمكن إسناد قيمتها المرجَعة إلا إلى متغيّر نوعه هو أيضاً <code>char *</code>؛ ولا يمكن إسنادها إلى متغيّر مصفوفة معلَن ساكنةً. ويوجد هذا القيد لأن اسم متغيّر مصفوفة معلَن ساكنةً ليس <a href="https://diveintosystems.org/book/C1-C_intro/structs.html#_lvalues">قيمة يسارية</a> صالحة (لا يمكن تغيير عنوان أساسه في الذاكرة)، لذا لا يمكن إسناد قيمة مرجَعة <code>char *</code> إليه.</p>
 </blockquote>
-<h4><a href="#_strlen_strcpy_strncpy"></a>strlen وstrcpy وstrncpy</h4>
+<h4>strlen وstrcpy وstrncpy <span class="content-anchor" id="_strlen_strcpy_strncpy"></span></h4>
 <p>توفّر مكتبة السلاسل دوالاً لنسخ السلاسل النصية وإيجاد طول السلسلة:</p>
 <pre><code class="language-c"><span class="hljs-comment">// returns the number of characters in the string (not including the null character)</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">strlen</span><span class="hljs-params">(<span class="hljs-type">char</span> *s)</span>;
@@ -874,7 +874,7 @@ char *strlcpy(char *dest, char *src, size_t size);
   strlcpy(d_str, <span class="hljs-built_in">str</span>, <span class="hljs-number">6</span>);  // strlcpy always adds <span class="hljs-string">&#x27;\0&#x27;</span> to the end
 </code></pre>
 </blockquote>
-<h4><a href="#_strcmp_strncmp"></a>strcmp وstrncmp</h4>
+<h4>strcmp وstrncmp <span class="content-anchor" id="_strcmp_strncmp"></span></h4>
 <p>توفّر مكتبة السلاسل أيضاً دالة لمقارنة سلسلتين نصيتين. ومقارنة متغيّري سلسلة باستخدام المعامل <code>==</code> <em>لا</em> تقارن المحارف في السلسلتين — بل تقارن عنواني الأساس للسلسلتين فقط. فمثلاً، التعبير:</p>
 <pre><code class="language-c"><span class="hljs-keyword">if</span> (d_str == str) { ...
 </code></pre>
@@ -904,7 +904,7 @@ ret =  <span class="hljs-built_in">strcmp</span>(str,d_str);
 
 ret = <span class="hljs-built_in">strncmp</span>(str, <span class="hljs-string">&quot;all&quot;</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// returns 0: they are equal up to first 3 chars</span>
 </code></pre>
-<h4><a href="#_strcat_strstr_strchr"></a>strcat وstrstr وstrchr</h4>
+<h4>strcat وstrstr وstrchr <span class="content-anchor" id="_strcat_strstr_strchr"></span></h4>
 <p>يمكن لدوال مكتبة السلاسل ربط السلاسل النصية (لاحظ أن على المستدعي ضمان أن سلسلة الوجهة تمتلك مساحة كافية لتخزين النتيجة):</p>
 <pre><code class="language-c"><span class="hljs-comment">// append chars from src to end of dst</span>
 <span class="hljs-comment">// returns ptr to dst and adds &#x27;\0&#x27; to end</span>
@@ -949,7 +949,7 @@ ptr = <span class="hljs-built_in">strchr</span>(str, <span class="hljs-string">&
 }
 </code></pre>
 <p>تُرجع الاستدعاءات <code>strchr</code> و<code>strstr</code> عنوان العنصر الأول في مصفوفة الوسيط بقيمة محرف مطابقة أو بقيمة سلسلة فرعية مطابقة على الترتيب. وعنوان هذا العنصر هو بداية مصفوفة من قيم <code>char</code> تنتهي بمحرف <code>\0</code>. وبعبارة أخرى، يشير <code>ptr</code> إلى بداية سلسلة فرعية داخل سلسلة أخرى. وعند طباعة قيمة <code>ptr</code> كسلسلة نصية بـ <code>printf</code>، تُطبع قيم المحارف بدءاً من الفهرس الذي يشير إليه <code>ptr</code>، ما يعطي النتائج المذكورة أعلاه.</p>
-<h4><a href="#_strtok_strtok_r"></a>strtok وstrtok_r</h4>
+<h4>strtok وstrtok_r <span class="content-anchor" id="_strtok_strtok_r"></span></h4>
 <p>توفّر مكتبة السلاسل أيضاً دوالاً تقسّم سلسلة نصية إلى رموز (tokens). ويشير <strong>الرمز</strong> (token) إلى متتالية فرعية من المحارف في سلسلة تفصل بينها أي عدد من محارف الفصل التي يختارها المبرمج.</p>
 <pre><code class="language-c"><span class="hljs-type">char</span> *<span class="hljs-title function_">strtok</span><span class="hljs-params">(<span class="hljs-type">char</span> *str, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *delim)</span>;
 
@@ -1025,7 +1025,7 @@ ptr = <span class="hljs-built_in">strchr</span>(str, <span class="hljs-string">&
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre>
-<h4><a href="#_sprintf"></a>sprintf</h4>
+<h4>sprintf <span class="content-anchor" id="_sprintf"></span></h4>
 <p>توفّر مكتبة <code>stdio</code> في C أيضاً دوالاً تتلاعب بسلاسل C. وربما يكون أكثرها فائدة الدالة <code>sprintf</code>، التي «تطبع» إلى سلسلة نصية بدلاً من طباعة الإخراج إلى طرفية:</p>
 <pre><code class="language-c"><span class="hljs-comment">// like printf(), the format string allows for placeholders like %d, %f, etc.</span>
 <span class="hljs-comment">// pass parameters after the format string to fill them in</span>
@@ -1044,7 +1044,7 @@ ptr = <span class="hljs-built_in">strchr</span>(str, <span class="hljs-string">&
 <span class="hljs-built_in">sprintf</span>(str, <span class="hljs-string">&quot;The average grade on exam %d is %g&quot;</span>, num, ave);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, str);  <span class="hljs-comment">// prints: The average grade on exam 2 is 76.8</span>
 </code></pre>
-<h4><a href="#_functions_for_individual_character_values"></a>دوال قيم المحارف الفردية</h4>
+<h4>دوال قيم المحارف الفردية <span class="content-anchor" id="_functions_for_individual_character_values"></span></h4>
 <p>تحتوي مكتبة C القياسية (<code>stdlib.h</code>) على مجموعة دوال للتلاعب بقيم <code>char</code> الفردية واختبارها، منها:</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span>   <span class="hljs-comment">// include stdlib and ctypes to use these</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ctype.h&gt;</span></span>
@@ -1079,7 +1079,7 @@ len = <span class="hljs-built_in">strlen</span>(str);
 }
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n&quot;</span>, str);  <span class="hljs-comment">// prints: i see XX zebras, goats, and cows</span>
 </code></pre>
-<h4><a href="#_functions_to_convert_strings_to_other_types"></a>دوال تحويل السلاسل إلى أنواع أخرى</h4>
+<h4>دوال تحويل السلاسل إلى أنواع أخرى <span class="content-anchor" id="_functions_to_convert_strings_to_other_types"></span></h4>
 <p>تحتوي <code>stdlib.h</code> أيضاً على دوال للتحويل بين السلاسل النصية وأنواع C الأخرى. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span>
 
@@ -1094,7 +1094,7 @@ len = <span class="hljs-built_in">strlen</span>(str);
 </code></pre>
 <p>قدّمنا في الفصل السابق <a href="https://diveintosystems.org/book/C1-C_intro/structs.html#_structs">أنواع بنى C</a>. ونغوص في هذا الفصل أعمق في بنى C، ونفحص البنى المخصَّصة ساكنةً وديناميكياً، ونجمع البنى والمؤشّرات لإنشاء أنواع وبنى بيانات أكثر تعقيداً.</p>
 <p>نبدأ بنظرة سريعة على البنى المعلَنة ساكنةً. انظر الفصل السابق لمزيد من التفاصيل.</p>
-<h3 id="271-مراجعة-نوع-البنية-struct-في-c"><a href="#_review_of_the_c_struct_type"></a>2.7.1. مراجعة نوع البنية struct في C</h3>
+<h3 id="271-مراجعة-نوع-البنية-struct-في-c">2.7.1. مراجعة نوع البنية struct في C <span class="content-anchor" id="_review_of_the_c_struct_type"></span></h3>
 <p>يمثّل نوع <strong>البنية</strong> (struct) مجموعة غير متجانسة من البيانات؛ وهو آلية لمعالجة مجموعة من الأنواع المختلفة كوحدة واحدة متماسكة.</p>
 <p>ويتضمّن تعريف أنواع <code>struct</code> واستخدامها في برامج C ثلاث خطوات:</p>
 <ol>
@@ -1175,7 +1175,7 @@ student 2's name is now Kwame
 </code></pre>
 <p>عند التعامل مع البنى، من المهم بشكل خاص التفكير في أنواع <code>struct</code> وحقولها. فمثلاً، عند تمرير <code>struct</code> إلى دالة، يحصل الوسيط على نسخة من قيمة البنية (نسخة من كل بايتات الوسيطة). وبالتالي، فإن التغييرات في قيم حقول الوسيط <em>لا</em> تغيّر قيمة الوسيطة. ويوضح البرنامج السابق هذا السلوك في الاستدعاء <code>checkID</code> الذي يعدّل حقل العمر في الوسيط. ولا أثر للتغييرات في <code>checkID</code> في قيمة حقل العمر المقابل في الوسيطة.</p>
 <p>وعند تمرير حقل من <code>struct</code> إلى دالة، تطابق الدلالات نوع الحقل (نوع وسيط الدالة). فمثلاً، في الاستدعاء <code>changeName</code>، تُنسخ قيمة حقل <code>name</code> (عنوان أساس مصفوفة <code>name</code> داخل بنية <code>student2</code>) إلى الوسيط <code>old</code>، أي أن الوسيط يشير إلى مجموعة عناصر المصفوفة نفسها في الذاكرة التي تشير إليها وسيطته. وهكذا، يؤدي تغيير عنصر من المصفوفة في الدالة إلى تغيير قيمة العنصر في الوسيطة أيضاً؛ فتطابق دلالات تمرير حقل <code>name</code> نوع حقل <code>name</code>.</p>
-<h3 id="272-المؤشرات-والبنى"><a href="#_pointers_and_structs"></a>2.7.2. المؤشّرات والبنى</h3>
+<h3 id="272-المؤشرات-والبنى">2.7.2. المؤشّرات والبنى <span class="content-anchor" id="_pointers_and_structs"></span></h3>
 <p>كما في أنواع C الأخرى، يمكن للمبرمجين الإعلان عن متغيّر كمؤشّر إلى نوع <code>struct</code> معرَّف من المستخدم. وتشبه دلالات استخدام متغيّر مؤشّر <code>struct</code> دلالات أنواع المؤشّرات الأخرى مثل <code>int *</code>.</p>
 <p>تأمّل نوع <code>struct studentT</code> المقدَّم في مثال البرنامج السابق:</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentT</span> {</span>
@@ -1220,8 +1220,8 @@ sptr-&gt;gpa = <span class="hljs-number">3.5</span>;
 <span class="hljs-built_in">strcpy</span>(sptr-&gt;name, <span class="hljs-string">&quot;Lars&quot;</span>);
 </code></pre>
 <p>يرسم <a href="#FigStructPointer">الشكل 1</a> تصوراً لما قد يبدو عليه المتغيّران <code>s</code> و<code>sptr</code> في الذاكرة بعد تنفيذ الشيفرة أعلاه. تذكّر أن <code>malloc</code> تخصّص ذاكرة من الكومة، وتُخصَّص المتغيّرات المحلية على المكدّس.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-structptr.webp" alt="All the fields of struct s (Freya) are stored on the stack. The sptr pointer on the stack stores the heap address of another student struct (Lars)."> الشكل 1. الفروق في تخطيط الذاكرة بين بنية مخصَّصة ساكنةً (بيانات على المكدّس) وبنية مخصَّصة ديناميكياً (بيانات على الكومة).</p>
-<h3 id="273-حقول-المؤشرات-في-البنى"><a href="#_pointer_fields_in_structs"></a>2.7.3. حقول المؤشّرات في البنى</h3>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-structptr.webp" alt="All the fields of struct s (Freya) are stored on the stack. The sptr pointer on the stack stores the heap address of another student struct (Lars)." id="FigStructPointer"> الشكل 1. الفروق في تخطيط الذاكرة بين بنية مخصَّصة ساكنةً (بيانات على المكدّس) وبنية مخصَّصة ديناميكياً (بيانات على الكومة).</p>
+<h3 id="273-حقول-المؤشرات-في-البنى">2.7.3. حقول المؤشّرات في البنى <span class="content-anchor" id="_pointer_fields_in_structs"></span></h3>
 <p>يمكن أيضاً تعريف البنى بحيث تكون لها أنواع مؤشّرات كقيم حقول. فمثلاً:</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">personT</span> {</span>
     <span class="hljs-type">char</span> *name;     <span class="hljs-comment">// for a dynamically allocated string field</span>
@@ -1250,7 +1250,7 @@ sptr-&gt;gpa = <span class="hljs-number">3.5</span>;
 }
 </code></pre>
 <p>في الذاكرة، ستبدو هذه المتغيّرات كما في <a href="#FigStructPointerField">الشكل 2</a> (لاحظ أي الأجزاء مخصَّص على المكدّس وأيها على الكومة).</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-structptrfield.webp" alt="Example struct with a pointer field type"> الشكل 2. تخطيط بنية ذات حقل مؤشّر في الذاكرة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-1-structptrfield.webp" alt="Example struct with a pointer field type" id="FigStructPointerField"> الشكل 2. تخطيط بنية ذات حقل مؤشّر في الذاكرة.</p>
 <p>مع ازدياد تعقيد البنى وأنواع حقولها، كن حذراً في صياغتها. وللوصول إلى قيم الحقول على النحو المناسب، ابدأ من نوع المتغيّر الخارجي واستخدم صياغة نوعه للوصول إلى الأجزاء الفردية. فمثلاً، تحكم أنواع متغيّرات <code>struct</code> المعروضة في <a href="#TabStructFields">الجدول 1</a> كيفية وصول المبرمج إلى حقولها.</p>
 <p><strong>الجدول 1. أمثلة على الوصول إلى حقول البنية</strong></p>
 <p><strong>التعبير</strong></p>
@@ -1328,7 +1328,7 @@ sptr-&gt;gpa = <span class="hljs-number">3.5</span>;
 <pre><code> p2-&gt;name[2] = 'a';
 </code></pre>
 <p>في فحص المثال الأخير، ابدأ بالتفكير في نوع المتغيّر الخارجي (<code>p2</code> مؤشّر إلى <code>struct personT</code>). لذا، للوصول إلى قيمة حقل في البنية، يحتاج المبرمج إلى استخدام صياغة <code>→</code> (<code>p2→name</code>). ثم تأمّل نوع الحقل <code>name</code>، وهو <code>char *</code> يستخدم في هذا البرنامج للإشارة إلى مصفوفة من قيم <code>char</code>. وللوصول إلى موقع تخزين <code>char</code> محدد عبر الحقل <code>name</code>، استخدم صياغة فهرسة المصفوفة: <code>p2→name[2] = 'a'</code>.</p>
-<h3 id="274-مصفوفات-البنى"><a href="#_arrays_of_structs"></a>2.7.4. مصفوفات البنى</h3>
+<h3 id="274-مصفوفات-البنى">2.7.4. مصفوفات البنى <span class="content-anchor" id="_arrays_of_structs"></span></h3>
 <p>يمكن دمج المصفوفات والمؤشّرات والبنى لإنشاء بنى بيانات أكثر تعقيداً. وفيما يلي بعض الأمثلة على الإعلان عن متغيّرات من أنواع مختلفة من مصفوفات البنى:</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentT</span> <span class="hljs-title">classroom1</span>[40];</span>   <span class="hljs-comment">// an array of 40 struct studentT</span>
 
@@ -1379,10 +1379,10 @@ updateAges(classroom2, <span class="hljs-number">15</span>);
 </code></pre>
 <p>تطابق دلالات تمرير <code>classroom1</code> (أو <code>classroom2</code>) إلى <code>updateAges</code> دلالات تمرير مصفوفة معلَنة ساكنةً (أو مخصَّصة ديناميكياً) إلى دالة: إذ يشير الوسيط إلى مجموعة العناصر نفسها التي تشير إليها الوسيطة، وبالتالي تؤثر التغييرات في قيم المصفوفة داخل الدالة في عناصر الوسيطة.</p>
 <p>يعرض <a href="#FigArrayStructFuncs">الشكل 3</a> كيف قد يبدو المكدّس في الاستدعاء الثاني للدالة <code>updateAges</code> (مع إظهار مصفوفة <code>classroom2</code> الممرَّرة بقيم حقول مثالية للبنية في كل عنصر من عناصرها).</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-arraystructfuncs.webp" alt="Main’s classroom2 variable points to an array of studentT structs on the heap. When classroom2 gets passed to updateAges, it makes a copy of the pointer, yielding another pointer that points to the same heap array."> الشكل 3. تخطيط الذاكرة لمصفوفة من بنى studentT مُرِّرت إلى دالة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-2-arraystructfuncs.webp" alt="Main’s classroom2 variable points to an array of studentT structs on the heap. When classroom2 gets passed to updateAges, it makes a copy of the pointer, yielding another pointer that points to the same heap array." id="FigArrayStructFuncs"> الشكل 3. تخطيط الذاكرة لمصفوفة من بنى studentT مُرِّرت إلى دالة.</p>
 <p>وكما هو الحال دائماً، يحصل الوسيط على نسخة من قيمة وسيطته (عنوان ذاكرة المصفوفة في ذاكرة الكومة). وبالتالي، فإن تعديل عناصر المصفوفة في الدالة يبقى في قيم وسيطته (فالوسيط والوسيطة يشيران إلى المصفوفة نفسها في الذاكرة).</p>
 <p>لا يمكن تمرير مصفوفة <code>classroom3</code> إلى الدالة <code>updateAges</code> لأن نوعها ليس نوع وسيط الدالة نفسه: فـ <code>classroom3</code> مصفوفة من <code>struct studentT *</code> لا مصفوفة من <code>struct studentT</code>.</p>
-<h3 id="275-البنى-ذاتية-الإشارة"><a href="#_self_referential_structs"></a>2.7.5. البنى ذاتية الإشارة</h3>
+<h3 id="275-البنى-ذاتية-الإشارة">2.7.5. البنى ذاتية الإشارة <span class="content-anchor" id="_self_referential_structs"></span></h3>
 <p>يمكن تعريف بنية بحقول نوعها مؤشّر إلى نوع <code>struct</code> نفسه. ويمكن استخدام أنواع <code>struct</code> ذاتية الإشارة هذه لبناء تنفيذات مترابطة لبنى البيانات، مثل القوائم المترابطة والأشجار والرسوم البيانية.</p>
 <p>تفاصيل أنواع البيانات هذه وتنفيذاتها المترابطة خارج نطاق هذا الكتاب. غير أننا نعرض بإيجاز مثالاً واحداً على كيفية تعريف نوع <code>struct</code> ذاتي الإشارة واستخدامه لإنشاء قائمة مترابطة في C. راجع كتاباً عن بنى البيانات والخوارزميات لمزيد من المعلومات عن القوائم المترابطة.</p>
 <p><strong>القائمة المترابطة</strong> (linked list) إحدى طرق تنفيذ <strong>نوع البيانات المجرّد «قائمة»</strong>. وتمثّل القائمة تسلسلاً من العناصر مرتبةً بموضعها في القائمة. وفي C، يمكن تنفيذ بنية بيانات القائمة كمصفوفة أو كقائمة مترابطة باستخدام نوع <code>struct</code> ذاتي الإشارة لتخزين العقد الفردية في القائمة.</p>
@@ -1421,9 +1421,9 @@ head-&gt;next = <span class="hljs-literal">NULL</span>;  <span class="hljs-comme
 </code></pre>
 <p>لاحظ أن المتغيّر <code>temp</code> يشير مؤقتاً إلى <code>node</code> مخصَّصة بـ malloc تُهيَّأ ثم تُضاف إلى بداية القائمة بضبط حقلها <code>next</code> ليشير إلى العقدة التي يشير إليها حالياً <code>head</code>، ثم بتغيير <code>head</code> ليشير إلى هذه العقدة الجديدة.</p>
 <p>ستبدو نتيجة تنفيذ هذه الشيفرة في الذاكرة كما في <a href="#FigLinkedList">الشكل 4</a>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-linkedlist.webp" alt="Two stack variables, head and temp, contain the address of the first node on the heap. The first node’s next field points to the second node, whose next field points to the third. The third node’s next pointer is null, indicating the end of the list."> الشكل 4. تخطيط ثلاث عقد مثال لقائمة مترابطة في الذاكرة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-3-linkedlist.webp" alt="Two stack variables, head and temp, contain the address of the first node on the heap. The first node’s next field points to the second node, whose next field points to the third. The third node’s next pointer is null, indicating the end of the list." id="FigLinkedList"> الشكل 4. تخطيط ثلاث عقد مثال لقائمة مترابطة في الذاكرة.</p>
 <p>تدعم C دوالاً كثيرة لتنفيذ الإدخال/الإخراج القياسي وإدخال/إخراج الملفات. ونناقش في هذا القسم بعض الواجهات الأكثر استخداماً للإدخال/الإخراج في C.</p>
-<h3 id="281-الإدخالالإخراج-القياسي"><a href="#_standard_inputoutput"></a>2.8.1. الإدخال/الإخراج القياسي</h3>
+<h3 id="281-الإدخالالإخراج-القياسي">2.8.1. الإدخال/الإخراج القياسي <span class="content-anchor" id="_standard_inputoutput"></span></h3>
 <p>يبدأ كل برنامج قيد التشغيل بثلاثة تدفقات إدخال/إخراج افتراضية: المخرج القياسي (<code>stdout</code>)، والدخل القياسي (<code>stdin</code>)، والخطأ القياسي (<code>stderr</code>). ويمكن للبرنامج كتابة (طباعة) الإخراج إلى <code>stdout</code> و<code>stderr</code>، ويمكنه قراءة قيم الإدخال من <code>stdin</code>. ويُعرَّف <code>stdin</code> عادةً لقراءة الإدخال من لوحة المفاتيح، بينما يُخرج <code>stdout</code> و<code>stderr</code> إلى الطرفية.</p>
 <p>توفّر مكتبة <code>stdio.h</code> في C الدالة <code>printf</code> المستخدمة للطباعة إلى المخرج القياسي والدالة <code>scanf</code> التي يمكن استخدامها لقراءة القيم من الدخل القياسي. وتمتلك C أيضاً دوالاً لقراءة وكتابة محرف واحد في كل مرة (<code>getchar</code> و<code>putchar</code>)، إضافة إلى دوال ومكتبات أخرى لقراءة وكتابة المحارف إلى تدفقات الإدخال/الإخراج القياسية. ويجب على برنامج C تضمين <code>stdio.h</code> صراحةً لاستدعاء هذه الدوال.</p>
 <p>يمكنك تغيير الموقع الذي يقرأ منه <code>stdin</code> و<code>stdout</code> و/أو <code>stderr</code> في برنامج قيد التشغيل أو يكتب إليه. وإحدى طرق فعل ذلك إعادة توجيه واحد منها أو كلها للقراءة من ملف أو الكتابة إليه. وفيما يلي بعض أوامر الصدفة المثالية لإعادة توجيه <code>stdin</code> أو <code>stdout</code> أو <code>stderr</code> في برنامج إلى ملف (حيث <code>$</code> هو موجّه الصدفة):</p>
@@ -1440,7 +1440,7 @@ $ ./a.out &amp;&gt; outfile.txt
 <span class="hljs-comment">#   (&lt; redirects stdin, 1&gt; stdout, and 2&gt; stderr):</span>
 $ ./a.out &lt; infile.txt 1&gt; outfile.txt 2&gt; errorfile.txt
 </code></pre>
-<h4><a href="#_printf"></a>printf</h4>
+<h4>printf <span class="content-anchor" id="_printf"></span></h4>
 <p>تشبه دالة <code>printf</code> في C استدعاءات <code>print</code> المنسّقة في Python، حيث يحدد المستدعي سلسلة تنسيق للطباعة. وغالباً ما تحتوي سلسلة التنسيق على محددات تنسيق خاصة، منها محارف خاصة تطبع علامات جدولة (<code>\t</code>) أو أسطراً جديدة (<code>\n</code>)، أو تحدد عناصر نائبة للقيم في الإخراج (<code>%</code> متبوعاً بمحدد نوع). وعند إضافة عناصر نائبة في سلسلة تنسيق تُمرَّر إلى <code>printf</code>، مرّر قيمها المقابلة كوسائط إضافية بعد سلسلة التنسيق. وفيما يلي بعض الاستدعاءات المثالية لـ <code>printf</code>:</p>
 <p>printf.c</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> x = <span class="hljs-number">5</span>, y = <span class="hljs-number">10</span>;
@@ -1546,7 +1546,7 @@ ch = <span class="hljs-string">&#x27;A&#x27;</span>;
 <pre><code>x is 26 in decimal, 1a in hexadecimal and 32 in octal
 ch value is 65 which is the ASCII value of  A
 </code></pre>
-<h4><a href="#_scanf"></a>scanf</h4>
+<h4>scanf <span class="content-anchor" id="_scanf"></span></h4>
 <p>توفّر الدالة <code>scanf</code> طريقة لقراءة القيم من <code>stdin</code> (عادةً من المستخدم الذي يدخلها عبر لوحة المفاتيح) وتخزينها في متغيّرات البرنامج. والدالة <code>scanf</code> صارمة بعض الشيء بشأن الصيغة الدقيقة التي يدخل بها المستخدم البيانات، ما قد يجعلها حساسة لإدخال المستخدم السيئ التكوين.</p>
 <p>تشبه وسائط الدالة <code>scanf</code> وسائط <code>printf</code>: تأخذ <code>scanf</code> سلسلة تنسيق تحدد عدد قيم الإدخال المراد قراءتها ونوعها، تتبعها <em>مواقع</em> متغيّرات البرنامج التي ينبغي تخزين القيم فيها. وكثيراً ما تجمع البرامج بين معامل <em>عنوان</em> (<code>&amp;</code>) واسم متغيّر لإنتاج موقع المتغيّر في ذاكرة البرنامج — أي عنوان الذاكرة الخاص بالمتغيّر. وفيما يلي استدعاء مثال لـ <code>scanf</code> يقرأ قيمتين (<code>int</code> و<code>float</code>):</p>
 <p>scanf_ex.c</p>
@@ -1565,16 +1565,16 @@ ch value is 65 which is the ASCII value of  A
 <pre><code class="language-c"><span class="hljs-comment">// read in an int and a float separated by at least one white space character</span>
 <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%g&quot;</span>,&amp;x, &amp;pi);
 </code></pre>
-<h4><a href="#_getchar_and_putchar"></a>getchar وputchar</h4>
+<h4>getchar وputchar <span class="content-anchor" id="_getchar_and_putchar"></span></h4>
 <p>تقرأ الدالتان <code>getchar</code> و<code>putchar</code> في C وتكتبان على التوالي قيمة محرف واحد من <code>stdin</code> وإلى <code>stdout</code>. وتُفيد <code>getchar</code> بوجه خاص في برامج C التي تحتاج إلى دعم كشف الأخطاء ومعالجة إدخال المستخدم السيئ التكوين بعناية (فـ <code>scanf</code> ليست متينة بهذه الطريقة).</p>
 <pre><code class="language-c">ch = getchar();  <span class="hljs-comment">// read in the next char value from stdin</span>
 <span class="hljs-built_in">putchar</span>(ch);     <span class="hljs-comment">// write the value of ch to stdout</span>
 </code></pre>
-<h3 id="282-إدخالإخراج-الملفات"><a href="#_file_inputoutput"></a>2.8.2. إدخال/إخراج الملفات</h3>
+<h3 id="282-إدخالإخراج-الملفات">2.8.2. إدخال/إخراج الملفات <span class="content-anchor" id="_file_inputoutput"></span></h3>
 <p>تتضمن مكتبة الإدخال/الإخراج القياسية في C (<code>stdio.h</code>) واجهة تدفق (stream) لإدخال/إخراج الملفات. ويخزّن <strong>الملف</strong> (file) بيانات دائمة: أي بيانات تبقى بعد تنفيذ البرنامج الذي أنشأها. ويمثّل الملف النصي تدفقاً من المحارف، ويتتبع كل ملف مفتوح موضعه الحالي في تدفق المحارف. وعند فتح ملف، يبدأ الموضع الحالي من أول محرف في الملف، ويتحرك نتيجة كل محرف يُقرأ (أو يُكتب) في الملف. ولقراءة المحرف العاشر في ملف، يجب أولاً قراءة المحارف التسعة الأولى (أو نقل الموضع الحالي صراحةً إلى المحرف العاشر باستخدام الدالة <code>fseek</code>).</p>
 <p>ترى واجهة ملفات C الملف كتدفق إدخال أو إخراج، وتقرأ دوال المكتبة من الموضع التالي في تدفق الملف أو تكتب إليه. وتقوم الدالتان <code>fprintf</code> و<code>fscanf</code> مقام نظيرَي إدخال/إخراج الملفات للدالتين <code>printf</code> و<code>scanf</code>. وهما تستخدمان سلسلة تنسيق لتحديد ما يُكتب أو يُقرأ، وتتضمنان وسائط توفّر قيماً أو مساحة تخزين للبيانات التي تُكتب أو تُقرأ. وبالمثل، توفّر المكتبة الدوال <code>fputc</code> و<code>fgetc</code> و<code>fputs</code> و<code>fgets</code> لقراءة وكتابة محارف أو سلاسل نصية فردية إلى تدفقات الملفات. ورغم وجود مكتبات كثيرة تدعم إدخال/إخراج الملفات في C، فإننا نعرض بالتفصيل واجهة تدفق مكتبة <code>stdio.h</code> للملفات النصية فقط.</p>
 <p>قد تحتوي الملفات النصية على محارف خاصة مثل تدفقي <code>stdin</code> و<code>stdout</code>: أسطر جديدة (<code>'\n'</code>) وعلامات جدولة (<code>'\t'</code>) وغيرها. وإضافةً إلى ذلك، عند الوصول إلى نهاية بيانات ملف، تولّد مكتبة الإدخال/الإخراج في C محرف نهاية ملف خاصاً (<code>EOF</code>)، يمثّل نهاية الملف. ويمكن للدوال التي تقرأ من ملف اختبار <code>EOF</code> لتحديد متى وصلت إلى نهاية تدفق الملف.</p>
-<h3 id="283-استخدام-الملفات-النصية-في-c"><a href="#_using_text_files_in_c"></a>2.8.3. استخدام الملفات النصية في C</h3>
+<h3 id="283-استخدام-الملفات-النصية-في-c">2.8.3. استخدام الملفات النصية في C <span class="content-anchor" id="_using_text_files_in_c"></span></h3>
 <p>لقراءة ملف في C أو الكتابة إليه، اتبع هذه الخطوات:</p>
 <p><em>أعلن</em> عن متغيّر <code>FILE *</code>:</p>
 <pre><code class="language-c">FILE *infile;
@@ -1622,7 +1622,7 @@ fseek(f, <span class="hljs-number">0</span>, SEEK_SET);    <span class="hljs-com
 fseek(f, <span class="hljs-number">3</span>, SEEK_CUR);    <span class="hljs-comment">// seek 3 chars forward from the current position</span>
 fseek(f, <span class="hljs-number">-3</span>, SEEK_END);   <span class="hljs-comment">// seek 3 chars back from the end of the file</span>
 </code></pre>
-<h3 id="284-دوال-الإدخالالإخراج-القياسية-وللملفات-في-stdioh"><a href="#_standard_and_file_io_functions_in_stdio_h"></a>2.8.4. دوال الإدخال/الإخراج القياسية وللملفات في <code>stdio.h</code></h3>
+<h3 id="284-دوال-الإدخالالإخراج-القياسية-وللملفات-في-stdioh">2.8.4. دوال الإدخال/الإخراج القياسية وللملفات في <code>stdio.h</code> <span class="content-anchor" id="_standard_and_file_io_functions_in_stdio_h"></span></h3>
 <p>تحتوي مكتبة <code>stdio.h</code> في C على دوال كثيرة للقراءة والكتابة في الملفات وإلى التدفقات القياسية الشبيهة بالملفات (<code>stdin</code> و<code>stdout</code> و<code>stderr</code>). ويمكن تصنيف هذه الدوال إلى دوال إدخال/إخراج محرفية وسلسلية ومنسّقة. وباختصار، فيما يلي بعض التفاصيل الإضافية عن مجموعة فرعية من هذه الدوال:</p>
 <pre><code class="language-python">// ---------------
 // Character Based
@@ -1736,7 +1736,7 @@ fprintf(stderr, <span class="hljs-string">&quot;Error return value: %d\n&quot;</
 <li><a href="https://diveintosystems.org/book/C2-C_depth/advanced_assembly.html#_c_compiling_to_assemb_">تصريف شيفرة C المصدرية إلى لغة التجميع</a>.</li>
 </ul>
 <p>الثوابت وعبارات switch والأنواع المعدودة وtypedef ميزات من لغة C مفيدة لإنشاء شيفرة أكثر قابلية للقراءة وأكثر قابلية للصيانة. وتُستخدم الثوابت والأنواع المعدودة وtypedef لتعريف أسماء بديلة للقيم الحرفية والأنواع في البرامج. ويمكن استخدام عبارات switch بدلاً من بعض سلاسل عبارات <code>if-else if</code> المتتابعة.</p>
-<h4><a href="#_c_constants_"></a>ثوابت C</h4>
+<h4>ثوابت C <span class="content-anchor" id="_c_constants_"></span></h4>
 <p><strong>الثابت</strong> (constant) اسم بديل لقيمة حرفية في C. وتُستخدم الثوابت بدلاً من القيمة الحرفية لجعل الشيفرة أكثر قابلية للقراءة وأسهل في التعديل. وفي C، تُعرَّف الثوابت خارج جسم دالة بالصياغة التالية:</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> const_name (literal_value)</span>
 </code></pre>
@@ -1788,7 +1788,7 @@ fprintf(stderr, <span class="hljs-string">&quot;Error return value: %d\n&quot;</
   ...
   N = <span class="hljs-number">50</span>;  <span class="hljs-comment">// compilation error: `20 = 50` is not valid C</span>
 </code></pre>
-<h4><a href="#_c_switch_"></a>عبارات switch</h4>
+<h4>عبارات switch <span class="content-anchor" id="_c_switch_"></span></h4>
 <p>يمكن استخدام عبارة <code>switch</code> في C بدلاً من بعض تسلسلات شيفرة <code>if</code>-<code>else if</code> المتسلسلة، لا كلها. ورغم أن <code>switch</code> لا توفّر قدرة تعبيرية إضافية للغة البرمجة C، فإنها كثيراً ما تعطي تسلسلات تفرّع شيفرة أكثر إيجازاً. وقد تتيح أيضاً للمصرّف إنتاج شيفرة تفرّع تنفَّذ بكفاءة أعلى من شيفرة <code>if</code>-<code>else if</code> المتسلسلة المكافئة.</p>
 <p>تبدو صياغة عبارة <code>switch</code> في C هكذا:</p>
 <pre><code class="language-c"><span class="hljs-keyword">switch</span> (&lt;expression&gt;) {
@@ -1862,7 +1862,7 @@ enter a number between 6 and 9: 12
 Hey, 12 is not between 6 and 9
 num 12  new_num 0
 </code></pre>
-<h4><a href="#_enumerated_types"></a>الأنواع المعدودة</h4>
+<h4>الأنواع المعدودة <span class="content-anchor" id="_enumerated_types"></span></h4>
 <p><strong>النوع المعدود</strong> (enumerated type) (<code>enum</code>) طريقة لتعريف مجموعة من ثوابت الأعداد الصحيحة المترابطة. وكثيراً ما تُستخدم عبارات switch والأنواع المعدودة معاً.</p>
 <p>وينبغي تعريف النوع المعدود خارج جسم دالة، بالصياغة التالية (<code>enum</code> كلمة مفتاحية في C):</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">type_name</span> {</span>
@@ -1955,7 +1955,7 @@ day = TUES;
      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Error: %d is not a valid day\n&quot;</span>, val);
 };
 </code></pre>
-<h4><a href="#_typedef"></a>typedef</h4>
+<h4>typedef <span class="content-anchor" id="_typedef"></span></h4>
 <p>توفّر C طريقة لتعريف نوع جديد يكون اسماً بديلاً لنوع موجود باستخدام الكلمة المفتاحية <code>typedef</code>. وبعد التعريف، يمكن الإعلان عن متغيّرات باستخدام هذا الاسم البديل الجديد للنوع. وتُستخدم هذه الميزة عادةً لجعل البرنامج أكثر قابلية للقراءة واستخدام أسماء أنواع أقصر، غالباً للبنى والأنواع المعدودة. وفيما يلي صيغة تعريف نوع جديد بـ <code>typedef</code>:</p>
 <pre><code class="language-c"><span class="hljs-keyword">typedef</span> existing_type_name new_type_alias_name;
 </code></pre>
@@ -2019,7 +2019,7 @@ day = TUES;
 </code></pre>
 <p>فسيحمل <code>argc</code> القيمة 4 (يُحتسب <code>a.out</code> كوسيط سطر الأوامر الأول، و<code>10</code> و<code>11</code> و<code>200</code> كالوسائط الثلاثة الأخرى).</p>
 <p>ويخزّن الوسيط الثاني <strong>argv</strong> متجه الوسائط. وهو يحتوي قيمة كل وسيط من وسائط سطر الأوامر. ويُمرَّر كل وسيط سطر أوامر كقيمة سلسلة نصية، لذا فإن نوع <code>argv</code> مصفوفة سلاسل نصية (أو مصفوفة من مصفوفات <code>char</code>). وتحتوي مصفوفة <code>argv</code> العناصر <code>argc + 1</code>. وتخزّن العناصر <code>argc</code> الأولى سلاسل وسائط سطر الأوامر، ويخزّن العنصر الأخير <code>NULL</code> دلالةً على نهاية قائمة وسائط سطر الأوامر. فمثلاً، في سطر الأوامر المدخل أعلاه، ستبدو مصفوفة <code>argv</code> كما في <a href="#Figargv">الشكل 1</a>:</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-argv.webp" alt="an example argv list with 5 elements, one for the 3 input values (10, 11, 200) plus the executable as the first element, and NULL as the last."> الشكل 1. الوسيط argv الممرَّر إلى main مصفوفة سلاسل نصية. ويُمرَّر كل وسيط سطر أوامر كعنصر سلسلة منفصل في المصفوفة. وقيمة العنصر الأخير NULL، دلالةً على نهاية قائمة وسائط سطر الأوامر.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c2-depth-0-argv.webp" alt="an example argv list with 5 elements, one for the 3 input values (10, 11, 200) plus the executable as the first element, and NULL as the last." id="Figargv"> الشكل 1. الوسيط argv الممرَّر إلى main مصفوفة سلاسل نصية. ويُمرَّر كل وسيط سطر أوامر كعنصر سلسلة منفصل في المصفوفة. وقيمة العنصر الأخير NULL، دلالةً على نهاية قائمة وسائط سطر الأوامر.</p>
 <p>كثيراً ما يريد البرنامج تفسير وسيط سطر أوامر ممرَّر إلى <code>main</code> كنوع غير السلسلة النصية. وفي المثال أعلاه، قد يريد البرنامج استخراج القيمة الصحيحة <code>10</code> من قيمة السلسلة <code>&quot;10&quot;</code> في وسيط سطر أوامره الأول. وتوفّر مكتبة C القياسية دوالاً لتحويل السلاسل إلى أنواع أخرى. فمثلاً، الدالة <code>atoi</code> («a to i»، أي «ASCII to integer») تحوّل سلسلة من محارف الأرقام إلى قيمتها الصحيحة المقابلة:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> x;
 x = atoi(argv[<span class="hljs-number">1</span>]);  <span class="hljs-comment">// x gets the int value 10</span>
@@ -2233,7 +2233,7 @@ numbers[9] = 27
 <p>لاحظ أن ربط مكتبة خيوط POSIX حالة خاصة لا تتضمن البادئة <code>-l</code>. غير أن معظم المكتبات تُربط صراحةً في الملف التنفيذي باستخدام صياغة <code>-l</code> في سطر أوامر <code>gcc</code>. ولاحظ أيضاً أنه لا ينبغي تضمين الاسم الكامل لملف المكتبة في وسيطة <code>-l</code> لـ <code>gcc</code>؛ فملفات المكتبات تُسمّى شيئاً مثل <code>libreadline.so</code> أو <code>libreadline.a</code>، لكن البادئة <code>lib</code> واللاحقة <code>.so</code> أو <code>.a</code> في أسماء الملفات لا تُضمَّن. وقد يحتوي اسم ملف المكتبة الفعلي على أرقام إصدار (مثل <code>libreadline.so.8.0</code>) لا تُضمَّن أيضاً في خيار سطر الأوامر <code>-l</code> (<code>-lreadline</code>). وبعدم إجبار المستخدم على تحديد (أو حتى معرفة) الاسم الدقيق لملفات المكتبة المطلوب ربطها وموقعها، يكون <code>gcc</code> حراً في إيجاد أحدث إصدار من مكتبة في مسار مكتبات المستخدم. ويتيح ذلك أيضاً للمصرّف اختيار الربط الديناميكي عندما يتوفر كل من ملف كائن مشترك (<code>.so</code>) وملف أرشيف (<code>.a</code>) لمكتبة ما. وإذا أراد المستخدمون ربط المكتبات ربطاً ساكناً، فيمكنهم تحديد الربط الساكن صراحةً في سطر أوامر <code>gcc</code>. ويوفّر خيار <code>--static</code> طريقة لطلب الربط الساكن:</p>
 <pre><code class="language-bash">$ gcc -o myprog myprog.c --static -pthread -lreadline
 </code></pre>
-<h4><a href="#_compilation_steps_"></a>خطوات التصريف</h4>
+<h4>خطوات التصريف <span class="content-anchor" id="_compilation_steps_"></span></h4>
 <p>سيساعد توصيف خطوات تصريف برنامج C في توضيح كيفية ربط شيفرة المكتبات في ملف تنفيذي ثنائي. نعرض أولاً خطوات التصريف ثم نناقش (مع أمثلة) أنواع الأخطاء المختلفة التي قد تحدث عند تصريف برامج تستخدم مكتبات.</p>
 <p>يحوّل مصرّف C ملف شيفرة C مصدرية (مثل <code>myprog.c</code>) إلى ملف تنفيذي ثنائي (مثل <code>a.out</code>) في أربع خطوات متميزة (إضافة إلى خطوة خامسة تحدث وقت التشغيل).</p>
 <p>تعمل <strong>خطوة ما قبل التصريف</strong> أولاً وتوسّع <strong>توجيهات المعالج الأولي</strong> (preprocessor directives): أي توجيهات <code>#</code> التي تظهر في برنامج C، مثل <code>#define</code> و<code>#include</code>. وتشمل أخطاء التصريف في هذه الخطوة أخطاء صياغة في توجيهات المعالج الأولي أو عدم إيجاد <code>gcc</code> لملفات الترويسة المرتبطة بتوجيهات <code>#include</code>. ولعرض النتائج الوسيطة لخطوة ما قبل التصريف، مرّر العلامة <code>-E</code> إلى <code>gcc</code> (يمكن إعادة توجيه الناتج إلى ملف يمكن عرضه بمحرّر نصوص):</p>
@@ -2267,7 +2267,7 @@ $ objdump -d a.out
 </code></pre>
 <p>يستطيع <strong>منقّح GNU (GDB)</strong> فحص برنامج قيد التشغيل وإظهار شيفرة الكائن المشترك المحمَّلة والمربوطة وقت التشغيل. نغطي GDB في <a href="https://diveintosystems.org/book/C3-C_debug/index.html#_c_debugging_tools">الفصل 3</a>. غير أن تفاصيل فحص جدول البحث عن الإجراءات (PLT)، المستخدم للربط وقت التشغيل لاستدعاءات دوال المكتبات المربوطة ديناميكياً، خارج نطاق هذا الكتاب.</p>
 <p>لمزيد من التفاصيل عن مراحل التصريف وعن أدوات فحص المراحل المختلفة، انظر: <a href="http://www.cs.swarthmore.edu/~newhall/unixhelp/compilecycle.html">مراحل التصريف</a>.</p>
-<h4><a href="#_common_compilation_errors_related_to_compiling_and_linking_libraries"></a>أخطاء التصريف الشائعة المتعلقة بتصريف المكتبات وربطها</h4>
+<h4>أخطاء التصريف الشائعة المتعلقة بتصريف المكتبات وربطها <span class="content-anchor" id="_common_compilation_errors_related_to_compiling_and_linking_libraries"></span></h4>
 <p>قد تحدث عدة أخطاء تصريف وربط لأن المبرمج نسي تضمين ملفات ترويسة المكتبة أو نسي ربط شيفرة المكتبة صراحةً. وسيساعد تحديد خطأ أو تحذير مصرّف <code>gcc</code> المرتبط بكل من هذه الأخطاء في تنقيح الأخطاء المتعلقة باستخدام مكتبات C.</p>
 <p>تأمّل برنامج C التالي الذي يستدعي دالة <code>libraryfunc</code> من مكتبة <code>examplelib</code> المتاحة كملف كائن مشترك، <code>libexamplelib.so</code>:</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
@@ -2287,7 +2287,7 @@ $ objdump -d a.out
 <span class="hljs-keyword">extern</span> <span class="hljs-type">int</span> <span class="hljs-title function_">libraryfunc</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span>;
 </code></pre>
 <p>تعني البادئة <code>extern</code> قبل نموذج الدالة أن تعريف الدالة يأتي من ملف آخر — فهو ليس في ملف <code>examplelib.h</code>، بل توفّره إحدى ملفات <code>.c</code> في تنفيذ المكتبة.</p>
-<h4><a href="#_forgetting_to_include_a_header_file"></a>نسيان تضمين ملف ترويسة</h4>
+<h4>نسيان تضمين ملف ترويسة <span class="content-anchor" id="_forgetting_to_include_a_header_file"></span></h4>
 <p>إذا نسي المبرمج تضمين <code>examplelib.h</code> في برنامجه، أنتج المصرّف تحذيرات وأخطاء بشأن استخدام البرنامج دوال وثوابت مكتبة لا يعرفها. فمثلاً، إذا صرّف المستخدم برنامجه دون <code>#include </code> سينتج <code>gcc</code> الناتج التالي:</p>
 <pre><code class="language-javascript"># <span class="hljs-string">&#x27;-g&#x27;</span>: add debug information, <span class="hljs-string">&#x27;-c&#x27;</span>: compile to .<span class="hljs-property">o</span>
 gcc -g -c myprog.<span class="hljs-property">c</span>
@@ -2303,7 +2303,7 @@ myprog.<span class="hljs-property">c</span>:<span class="hljs-number">8</span>:<
 </code></pre>
 <p>يخبر تحذير المصرّف الأول (<code>implicit declaration of function libraryfunc</code>) المبرمج بأن المصرّف لا يستطيع إيجاد نموذج دالة للدالة <code>libraryfunc</code>. وهذا مجرد تحذير من المصرّف لأن <code>gcc</code> سيفترض أن نوع إرجاع الدالة عدد صحيح وسيواصل تصريف البرنامج. غير أنه لا ينبغي للمبرمجين <em>إغفال</em> تحذيرات كهذه! فهي تشير إلى أن البرنامج لا يضمّن نموذج دالة قبل استخدامها في ملف <code>myprog.c</code>، وهو غالباً بسبب عدم تضمين ملف ترويسة يحتوي نموذج الدالة.</p>
 <p>وينتج خطأ المصرّف الثاني (<code>MAX undeclared (first use in this function)</code>) عن تعريف ثابت مفقود. ولا يستطيع المصرّف تخمين قيمة الثابت المفقود، لذا يفشل هذا التعريف المفقود بخطأ. وكثيراً ما تشير رسالة «غير معلَن» هذه إلى أن ملف ترويسة يعرّف ثابتاً أو متغيّراً عاماً مفقود أو لم يُضمَّن على النحو الصحيح.</p>
-<h4><a href="#_forgetting_to_link_a_library"></a>نسيان ربط مكتبة</h4>
+<h4>نسيان ربط مكتبة <span class="content-anchor" id="_forgetting_to_link_a_library"></span></h4>
 <p>إذا ضمّن المبرمج ملف ترويسة المكتبة (كما في القائمة السابقة)، لكنه نسي ربط المكتبة صراحةً في خطوة تحرير الربط (الخطوة 4) من التصريف، فسيشير <code>gcc</code> إلى ذلك بخطأ <code>undefined reference</code>:</p>
 <pre><code class="language-bash">$ gcc -g myprog.c
 
@@ -2314,7 +2314,7 @@ collect2: error: ld returned 1 <span class="hljs-built_in">exit</span> status
 <p>ينشأ هذا الخطأ من <code>ld</code>، وهو مكوّن الرابط في المصرّف. ويشير إلى أن الرابط لا يستطيع إيجاد تنفيذ دالة المكتبة <code>libraryfunc</code> التي تُستدعى في السطر 9 في <code>myprog.c</code>. ويشير خطأ <code>undefined reference</code> إلى أن مكتبة تحتاج إلى ربط صريح في الملف التنفيذي. وفي هذا المثال، سيصلح تحديد <code>-lexamplelib</code> في سطر أوامر <code>gcc</code> الخطأ:</p>
 <pre><code class="language-bash">$ gcc -g myprog.c  -lexamplelib
 </code></pre>
-<h4><a href="#_gcc_cant_find_header_or_library_files"></a>تعذّر على gcc إيجاد ملفات ترويسة أو مكتبة</h4>
+<h4>تعذّر على gcc إيجاد ملفات ترويسة أو مكتبة <span class="content-anchor" id="_gcc_cant_find_header_or_library_files"></span></h4>
 <p>سيفشل التصريف أيضاً بأخطاء إذا لم تكن ملفات ترويسة مكتبة أو تنفيذها موجودة في المجلدات التي يبحث فيها <code>gcc</code> افتراضياً. فمثلاً، إذا لم يستطع <code>gcc</code> إيجاد ملف <code>examplelib.h</code>، فسينتج رسالة خطأ كهذه:</p>
 <pre><code class="language-bash">$ gcc -c myprog.c -lexamplelib
 myprog.c:1:10: fatal error: examplelib.h: No such file or directory
@@ -2333,7 +2333,7 @@ collect2: error: ld returned 1 <span class="hljs-built_in">exit</span> status
         libexamplelib.so: cannot open shared object file: No such file or directory
 </code></pre>
 <p>لحل هذه الأنواع من الأخطاء، يجب على المبرمجين تحديد خيارات إضافية لـ <code>gcc</code> للإشارة إلى مكان إيجاد ملفات المكتبة. وقد يحتاجون أيضاً إلى تعديل متغيّر البيئة <code>LD_LIBRARY_PATH</code> ليجد الرابط وقت التشغيل ملف <code>.so</code> لمكتبة.</p>
-<h4><a href="#_library_and_include_paths"></a>مسارات المكتبات والتضمين</h4>
+<h4>مسارات المكتبات والتضمين <span class="content-anchor" id="_library_and_include_paths"></span></h4>
 <p>يبحث المصرّف تلقائياً في مواقع المجلدات القياسية عن ملفات الترويسة والمكتبات. فمثلاً، تخزّن الأنظمة عادةً ملفات الترويسة القياسية في <code>/usr/include</code> وملفات المكتبات في <code>/usr/lib</code> ويبحث <code>gcc</code> تلقائياً عن الترويسات والمكتبات في هذه المجلدات؛ كما يبحث <code>gcc</code> تلقائياً عن ملفات الترويسة في مجلد العمل الحالي.</p>
 <p>وإذا لم يستطع <code>gcc</code> إيجاد ملف ترويسة أو مكتبة، فيجب على المستخدم توفير المسارات صراحةً في سطر الأوامر باستخدام <code>-I</code> و<code>-L</code>. فمثلاً، لنفترض وجود مكتبة باسم <code>libexamplelib.so</code> في <code>/home/me/lib</code>، وملف ترويستها <code>examplelib.h</code> في <code>/home/me/include</code>. ولأن <code>gcc</code> لا يعرف شيئاً عن هذين المسارين افتراضياً، يجب إخباره صراحةً بتضمين الملفات هناك لتصريف برنامج يستخدم هذه المكتبة بنجاح:</p>
 <pre><code class="language-bash">$ gcc  -I/home/me/include -o myprog myprog.c -L/home/me/lib -lexamplelib
@@ -2353,7 +2353,7 @@ collect2: error: ld returned 1 <span class="hljs-built_in">exit</span> status
 <p>يمكن بناء الصيغة الثنائية للمكتبة مباشرةً من ملفها أو ملفاتها المصدرية كجزء من تصريف شيفرة التطبيق الذي يستخدم المكتبة. وتصرّف هذه الطريقة ملفات المكتبة إلى ملفات <code>.o</code> وتربطها ربطاً ساكناً في الملف التنفيذي الثنائي. وغالباً ما ينطبق تضمين المكتبات بهذه الطريقة على شيفرة مكتبة تكتبها لاستخدامك الخاص (لأنك تملك ملفاتها المصدرية <code>.c</code>)، وهي أيضاً الطريقة لبناء ملف تنفيذي من وحدات <code>.c</code> متعددة.</p>
 <p>بدلاً من ذلك، يمكن تصريف مكتبة إلى ملف أرشيف ثنائي (<code>.a</code>) أو ملف كائن مشترك (<code>.so</code>) للبرامج التي تريد استخدام المكتبة. وفي هذه الحالات، غالباً لا يملك مستخدمو المكتبة حق الوصول إلى ملفات شيفرة C المصدرية للمكتبة، وبالتالي لا يستطيعون تصريف شيفرة المكتبة مباشرةً مع شيفرة التطبيق الذي يستخدمها. وعندما يستخدم برنامج مكتبة مصرَّفة مسبقاً كهذه (مثل <code>.a</code> أو <code>.so</code>)، يجب ربط شيفرة المكتبة صراحةً في الملف التنفيذي باستخدام خيار سطر الأوامر <code>-l</code> لـ <code>gcc</code>.</p>
 <p>نركّز مناقشتنا التفصيلية لكتابة شيفرة المكتبات وتصريفها وربطها على الحالة التي يملك فيها المبرمج وحدات المكتبة الفردية (سواء ملفات <code>.c</code> أو <code>.o</code>). وينطبق هذا التركيز أيضاً على تصميم برامج C الكبيرة المقسَّمة إلى ملفات <code>.c</code> و<code>.h</code> متعددة وتصريفها. ونعرض بإيجاز أوامر بناء صيغ الأرشيف والكائن المشترك للمكتبات. وتتوفر معلومات إضافية عن بناء هذه الأنواع من ملفات المكتبات في وثائق <code>gcc</code>، بما في ذلك صفحات الدليل لـ <code>gcc</code> و<code>ar</code>.</p>
-<h4><a href="#_library_details_by_example"></a>تفاصيل المكتبات بالأمثلة</h4>
+<h4>تفاصيل المكتبات بالأمثلة <span class="content-anchor" id="_library_details_by_example"></span></h4>
 <p>فيما يلي نعرض بعض الأمثلة على إنشاء مكتباتك الخاصة واستخدامها.</p>
 <p><strong>عرّف واجهة المكتبة:</strong></p>
 <p>ملفات الترويسة (ملف <code>.h</code>) ملفات نصية تحتوي نماذج دوال C وتعريفات أخرى — وتمثّل واجهة المكتبة. ويجب تضمين ملف ترويسة في أي تطبيق ينوي استخدام المكتبة. فمثلاً، تُخزَّن ملفات ترويسة مكتبة C القياسية عادةً في <code>/usr/include/</code> ويمكن عرضها بمحرّر:</p>
@@ -2559,7 +2559,7 @@ main:
         .ident	&quot;GCC: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0&quot;
         .section	.note.GNU-stack,&quot;&quot;,@progbits
 </code></pre>
-<h4><a href="#_writing_and_compiling_assembly_code"></a>كتابة شيفرة لغة التجميع وتصريفها</h4>
+<h4>كتابة شيفرة لغة التجميع وتصريفها <span class="content-anchor" id="_writing_and_compiling_assembly_code"></span></h4>
 <p>يمكن للمبرمجين كتابة شيفرة لغة التجميع الخاصة بهم يدوياً وتصريفها بـ <code>gcc</code> إلى برنامج تنفيذي ثنائي. فمثلاً، لتنفيذ دالة بلغة التجميع، أضف شيفرة إلى ملف <code>.s</code> واستخدم <code>gcc</code> لتصريفها. ويوضح المثال التالي البنية الأساسية لدالة بلغة تجميع IA32. وستُكتب شيفرة كهذه في ملف (مثلاً <code>myfunc.s</code>) لدالة بنموذج <code>int myfunc(int param);</code>. وقد تختلف الدوال ذات الوسائط الأكثر أو التي تحتاج مساحة أكبر للمتغيّرات المحلية قليلاً في شيفرة مقدمتها.</p>
 <pre><code class="language-javascript">        .<span class="hljs-property">text</span>                   # <span class="hljs-variable language_">this</span> file contains instruction code
 .<span class="hljs-property">globl</span> myfunc                   # myfunc is the name <span class="hljs-keyword">of</span> a <span class="hljs-keyword">function</span>
@@ -2610,7 +2610,7 @@ $ gcc -m32 -o myprog myfunc.o main.c
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -2618,8 +2618,8 @@ $ gcc -m32 -o myprog myfunc.o main.c
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

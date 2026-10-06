@@ -1,0 +1,1078 @@
+const e="go-style",n="best-practices-1",s="أفضل ممارسات أسلوب Go (1 من 2)",o="index",r="أفضل ممارسات أسلوب Go (1 من 2)",a=[{depth:2,id:"نبذة",text:"نبذة"},{depth:2,id:"التسمية",text:"التسمية"},{depth:3,id:"أسماء-الدوال-والطرائق",text:"أسماء الدوال والطرائق"},{depth:3,id:"حزم-البدائل-الاختبارية-والدوال-المساعدة",text:"حزم البدائل الاختبارية والدوال المساعدة"},{depth:3,id:"التظليل",text:"التظليل"},{depth:3,id:"حزم-الأدوات-المساعدة",text:"حزم الأدوات المساعدة"},{depth:2,id:"حجم-الحزمة",text:"حجم الحزمة"},{depth:2,id:"الاستيراد",text:"الاستيراد"},{depth:3,id:"رسائل-protocol-buffer-والبدائل-الصورية",text:"رسائل Protocol Buffer والبدائل الصورية"},{depth:3,id:"ترتيب-الاستيراد",text:"ترتيب الاستيراد"},{depth:2,id:"معالجة-الأخطاء",text:"معالجة الأخطاء"},{depth:3,id:"بنية-الخطأ",text:"بنية الخطأ"},{depth:3,id:"إضافة-معلومات-إلى-الأخطاء",text:"إضافة معلومات إلى الأخطاء"},{depth:3,id:"موضع-w-في-الأخطاء",text:"موضع %w في الأخطاء"},{depth:3,id:"تسجيل-الأخطاء",text:"تسجيل الأخطاء"},{depth:3,id:"تهيئة-البرنامج",text:"تهيئة البرنامج"},{depth:3,id:"فحوص-البرنامج-وحالات-الذعر",text:"فحوص البرنامج وحالات الذعر"},{depth:3,id:"متى-نستخدم-الذعر",text:"متى نستخدم الذعر"},{depth:2,id:"التوثيق",text:"التوثيق"},{depth:3,id:"الاصطلاحات",text:"الاصطلاحات"},{depth:3,id:"المعاينة",text:"المعاينة"},{depth:3,id:"تنسيق-godoc",text:"تنسيق godoc"},{depth:3,id:"تعزيز-الإشارة",text:"تعزيز الإشارة"},{depth:2,id:"تصريحات-المتغيرات",text:"تصريحات المتغيّرات"},{depth:3,id:"التهيئة",text:"التهيئة"},{depth:3,id:"تصريح-المتغيرات-بقيم-صفرية",text:"تصريح المتغيّرات بقيم صفرية"},{depth:3,id:"المركبات-الحرفية",text:"المركّبات الحرفية"},{depth:3,id:"تلميحات-الحجم",text:"تلميحات الحجم"},{depth:3,id:"اتجاه-القناة",text:"اتجاه القناة"}],t=`<h2 id="نبذة">نبذة</h2>
+<p>يوثّق هذا الملف <strong>إرشادات حول كيفية تطبيق دليل أسلوب Go على أفضل وجه</strong>. هذه الإرشادات موجّهة إلى المواقف الشائعة التي تتكرّر كثيرًا، لكنها قد لا تنطبق في كل الظروف. وحيثما أمكن، تُناقَش عدة مقاربات بديلة إلى جانب الاعتبارات التي تدخل في قرار متى نطبّقها ومتى لا نطبّقها.</p>
+<p>راجع <a href="https://google.github.io/styleguide/go/index#about">النظرة العامة</a> للاطلاع على المجموعة الكاملة من وثائق دليل الأسلوب.</p>
+<h2 id="التسمية">التسمية <span class="content-anchor" id="naming"></span></h2>
+<h3 id="أسماء-الدوال-والطرائق">أسماء الدوال والطرائق</h3>
+<h4>تجنّب التكرار</h4>
+<p>عند اختيار اسم لدالة أو طريقة، ضع في اعتبارك السياق الذي سيُقرأ فيه الاسم. خذ بعين الاعتبار التوصيات التالية لتجنّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#repetition">التكرار</a> المفرط في موضع الاستدعاء:</p>
+<ul>
+<li>يمكن عمومًا حذف ما يلي من أسماء الدوال والطرائق: أنواع المُدخَلات والمُخرَجات (عند عدم وجود تعارض)</li>
+<li>نوع مستقبِل الطريقة</li>
+<li>ما إذا كان المُدخَل أو المُخرَج مؤشّرًا</li>
+</ul>
+<p>بالنسبة إلى الدوال، لا <a href="/arabic-cs-library/book/go-style/decisions-2/index#repetitive-with-package">تُكرّر اسم الحزمة</a>.</p>
+<pre><code>// Bad:
+package yamlconfig
+func ParseYAMLConfig(input string) (*Config, error)
+</code></pre>
+<pre><code>// Good:
+package yamlconfig
+func Parse(input string) (*Config, error)
+</code></pre>
+<p>بالنسبة إلى الطرائق، لا تُكرّر اسم مستقبِل الطريقة.</p>
+<pre><code>// Bad:
+func (c *Config) WriteConfigTo(w io.Writer) (int64, error)
+</code></pre>
+<pre><code>// Good:
+func (c *Config) WriteTo(w io.Writer) (int64, error)
+</code></pre>
+<p>لا تُكرّر أسماء المتغيّرات التي تُمرَّر كوسائط.</p>
+<pre><code>// Bad:
+func OverrideFirstWithSecond(dest, source *Config) error
+</code></pre>
+<pre><code>// Good:
+func Override(dest, source *Config) error
+</code></pre>
+<p>لا تُكرّر أسماء القيم المُعادة وأنواعها.</p>
+<pre><code>// Bad:
+func TransformToJSON(input *Config) *jsonconfig.Config
+</code></pre>
+<pre><code>// Good:
+func Transform(input *Config) *jsonconfig.Config
+</code></pre>
+<p>عندما يلزم إزالة الالتباس بين دوال متشابهة الاسم، لا بأس في تضمين معلومات إضافية.</p>
+<pre><code>// Good:
+func (c *Config) WriteTextTo(w io.Writer) (int64, error)
+func (c *Config) WriteBinaryTo(w io.Writer) (int64, error)
+</code></pre>
+<h4>اصطلاحات التسمية</h4>
+<p>هناك بعض الاصطلاحات الشائعة الأخرى عند اختيار أسماء الدوال والطرائق:</p>
+<p>تُمنح الدوال التي تُعيد شيئًا أسماء ذات طابع اسمي.</p>
+<pre><code>// Good:
+func (c *Config) JobName(key string) (value string, ok bool)
+</code></pre>
+<p>ويترتّب على ذلك أن أسماء الدوال والطرائق ينبغي أن <a href="/arabic-cs-library/book/go-style/decisions-2/index#getters">تتجنّب البادئة <code>Get</code></a>.</p>
+<pre><code>// Bad:
+func (c *Config) GetJobName(key string) (value string, ok bool)
+</code></pre>
+<p>وتُمنح الدوال التي تقوم بفعل ما أسماء ذات طابع فعلي.</p>
+<pre><code>// Good:
+func (c *Config) WriteDetail(w io.Writer) (int64, error)
+</code></pre>
+<p>الدوال المتماثلة التي تختلف فقط في الأنواع المعنية تُضمّن اسم النوع في نهاية الاسم.</p>
+<pre><code>// Good:
+func ParseInt(input string) (int, error)
+func ParseInt64(input string) (int64, error)
+func AppendInt(buf []byte, value int) []byte
+func AppendInt64(buf []byte, value int64) []byte
+</code></pre>
+<p>إذا وُجدت نسخة «أساسية» واضحة، فيمكن حذف النوع من الاسم لتلك النسخة:</p>
+<pre><code>// Good:
+func (c *Config) Marshal() ([]byte, error)
+func (c *Config) MarshalText() (string, error)
+</code></pre>
+<h3 id="حزم-البدائل-الاختبارية-والدوال-المساعدة">حزم البدائل الاختبارية والدوال المساعدة <span class="content-anchor" id="naming-doubles"></span></h3>
+<p>هناك عدة مناهج يمكنك تطبيقها على <a href="/arabic-cs-library/book/go-style/guide/index#naming">تسمية</a> الحزم والأنواع التي توفّر دوال اختبار مساعدة، وبخاصة <a href="https://abseil.io/resources/swe-book/html/ch13.html#basic_concepts">البدائل الاختبارية</a>. قد يكون البديل الاختباري بديلًا صوريًا (stub) أو مزيّفًا (fake) أو محاكيًا (mock) أو جاسوسًا (spy).</p>
+<p>تستخدم هذه الأمثلة في معظمها بدائل صورية. عدّل أسماءك وفقًا لذلك إذا كانت شيفرتك تستخدم بدائل مزيّفة أو نوعًا آخر من البدائل الاختبارية.</p>
+<p>افترض أن لديك حزمة مركّزة جيدًا توفّر شيفرة إنتاجية مشابهة لما يلي:</p>
+<pre><code class="language-python">package creditcard
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;errors&quot;</span>
+    <span class="hljs-string">&quot;path/to/money&quot;</span>
+)
+// ErrDeclined indicates that the issuer declines the charge.
+var ErrDeclined = errors.New(<span class="hljs-string">&quot;creditcard: declined&quot;</span>)
+// Card contains information about a credit card, such <span class="hljs-keyword">as</span> its issuer,
+// expiration, <span class="hljs-keyword">and</span> limit.
+<span class="hljs-built_in">type</span> Card struct {
+    // omitted
+}
+// Service allows you to perform operations <span class="hljs-keyword">with</span> credit cards against external
+// payment processor vendors like charge, authorize, reimburse, <span class="hljs-keyword">and</span> subscribe.
+<span class="hljs-built_in">type</span> Service struct {
+    // omitted
+}
+func (s *Service) Charge(c *Card, amount money.Money) error { /* omitted */ }
+</code></pre>
+<h4>إنشاء حزم مساعدة للاختبار <span class="content-anchor" id="naming-doubles-helper-package"></span></h4>
+<p>افترض أنك تريد إنشاء حزمة تحتوي على بدائل اختبارية لأخرى. سنستخدم <code>package creditcard</code> (من الأعلى) في هذا المثال:</p>
+<p>أحد الأساليب هو إنشاء حزمة Go جديدة مبنية على الحزمة الإنتاجية لأغراض الاختبار. والخيار الآمن هو إلحاق كلمة <code>test</code> باسم الحزمة الأصلي («creditcard» + «test»):</p>
+<pre><code>// Good:
+package creditcardtest
+</code></pre>
+<p>ما لم يُذكر خلاف ذلك صراحةً، فإن جميع الأمثلة في الأقسام التالية موجودة في <code>package creditcardtest</code>.</p>
+<h4>الحالة البسيطة</h4>
+<p>تريد إضافة مجموعة من البدائل الاختبارية لـ <code>Service</code>. ولأن <code>Card</code> نوع بيانات بسيط فعليًا، شبيه برسالة Protocol Buffer، فلا يحتاج إلى معالجة خاصة في الاختبارات، ومن ثمّ لا حاجة إلى بديل له. وإذا كنت تتوقّع بدائل اختبارية لنوع واحد فقط (مثل <code>Service</code>)، فيمكنك اتباع مقاربة موجزة في تسمية البدائل:</p>
+<pre><code class="language-python">// Good:
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;path/to/creditcard&quot;</span>
+    <span class="hljs-string">&quot;path/to/money&quot;</span>
+)
+// Stub stubs creditcard.Service <span class="hljs-keyword">and</span> provides no behavior of its own.
+<span class="hljs-built_in">type</span> Stub struct{}
+func (Stub) Charge(*creditcard.Card, money.Money) error { <span class="hljs-keyword">return</span> nil }
+</code></pre>
+<p>هذا أفضل بشكل قاطع من اختيار تسمية مثل <code>StubService</code> أو التسمية السيئة جدًا <code>StubCreditCardService</code>، لأن اسم الحزمة الأساسية وأنواع مجالها تدلّان ضمنًا على ماهية <code>creditcardtest.Stub</code>.</p>
+<p>أخيرًا، إذا كانت الحزمة تُبنى باستخدام Bazel، فتأكّد من تعليم قاعدة <code>go_library</code> الجديدة للحزمة بـ <code>testonly</code>:</p>
+<pre><code># Good:
+go_library(
+    name = &quot;creditcardtest&quot;,
+    srcs = [&quot;creditcardtest.go&quot;],
+    deps = [
+        &quot;:creditcard&quot;,
+        &quot;:money&quot;,
+    ],
+    testonly = True,
+)
+</code></pre>
+<p>المقاربة أعلاه تقليدية وسيفهمها المهندسون الآخرون فهمًا جيدًا معقولًا.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #42: Authoring a Stub for Testing</a></li>
+</ul>
+<h4>سلوكيات متعددة للبديل الاختباري</h4>
+<p>عندما لا يكفي نوع واحد من البدائل الصورية (مثلًا، تحتاج أيضًا إلى بديل يفشل دائمًا)، نوصي بتسمية البدائل وفقًا للسلوك الذي تحاكيه. هنا نعيد تسمية <code>Stub</code> إلى <code>AlwaysCharges</code> ونقدّم بديلًا صوريًا جديدًا باسم <code>AlwaysDeclines</code>:</p>
+<pre><code>// Good:
+// AlwaysCharges stubs creditcard.Service and simulates success.
+type AlwaysCharges struct{}
+func (AlwaysCharges) Charge(*creditcard.Card, money.Money) error { return nil }
+// AlwaysDeclines stubs creditcard.Service and simulates declined charges.
+type AlwaysDeclines struct{}
+func (AlwaysDeclines) Charge(*creditcard.Card, money.Money) error {
+    return creditcard.ErrDeclined
+}
+</code></pre>
+<h4>بدائل متعددة لأنواع متعددة</h4>
+<p>لكن افترض الآن أن <code>package creditcard</code> يحتوي على أنواع متعددة يستحق كل منها إنشاء بديل له، كما يظهر أدناه مع <code>Service</code> و<code>StoredValue</code>:</p>
+<pre><code>package creditcard
+type Service struct {
+    // omitted
+}
+type Card struct {
+    // omitted
+}
+// StoredValue manages customer credit balances.  This applies when returned
+// merchandise is credited to a customer's local account instead of processed
+// by the credit issuer.  For this reason, it is implemented as a separate
+// service.
+type StoredValue struct {
+    // omitted
+}
+func (s *StoredValue) Credit(c *Card, amount money.Money) error { /* omitted */ }
+</code></pre>
+<p>في هذه الحالة، تكون التسمية الأكثر وضوحًا للبدائل الاختبارية منطقية:</p>
+<pre><code>// Good:
+type StubService struct{}
+func (StubService) Charge(*creditcard.Card, money.Money) error { return nil }
+type StubStoredValue struct{}
+func (StubStoredValue) Credit(*creditcard.Card, money.Money) error { return nil }
+</code></pre>
+<h4>المتغيّرات المحلية في الاختبارات</h4>
+<p>عندما تشير متغيّرات في اختباراتك إلى بدائل، فاختر اسمًا يميّز البديل تمييزًا واضحًا عن أنواع الإنتاج الأخرى بناءً على السياق. تأمّل بعض الشيفرة الإنتاجية التي تريد اختبارها:</p>
+<pre><code class="language-python">package payment
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;path/to/creditcard&quot;</span>
+    <span class="hljs-string">&quot;path/to/money&quot;</span>
+)
+<span class="hljs-built_in">type</span> CreditCard interface {
+    Charge(*creditcard.Card, money.Money) error
+}
+<span class="hljs-built_in">type</span> Processor struct {
+    CC CreditCard
+}
+var ErrBadInstrument = errors.New(<span class="hljs-string">&quot;payment: instrument is invalid or expired&quot;</span>)
+func (p *Processor) Process(c *creditcard.Card, amount money.Money) error {
+    <span class="hljs-keyword">if</span> c.Expired() {
+        <span class="hljs-keyword">return</span> ErrBadInstrument
+    }
+    <span class="hljs-keyword">return</span> p.CC.Charge(c, amount)
+}
+</code></pre>
+<p>في الاختبارات، يوضع البديل الاختباري المسمّى «جاسوسًا» (spy) لـ <code>CreditCard</code> إلى جانب أنواع الإنتاج، لذا قد تُحسّن بادئة الاسم الوضوح.</p>
+<pre><code class="language-python">// Good:
+package payment
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;path/to/creditcardtest&quot;</span>
+func TestProcessor(t *testing.T) {
+    var spyCC creditcardtest.Spy
+    proc := &amp;Processor{CC: spyCC}
+    // declarations omitted: card <span class="hljs-keyword">and</span> amount
+    <span class="hljs-keyword">if</span> err := proc.Process(card, amount); err != nil {
+        t.Errorf(<span class="hljs-string">&quot;proc.Process(card, amount) = %v, want nil&quot;</span>, err)
+    }
+    charges := []creditcardtest.Charge{
+        {Card: card, Amount: amount},
+    }
+    <span class="hljs-keyword">if</span> got, want := spyCC.Charges, charges; !cmp.Equal(got, want) {
+        t.Errorf(<span class="hljs-string">&quot;spyCC.Charges = %v, want %v&quot;</span>, got, want)
+    }
+}
+</code></pre>
+<p>هذا أوضح مما لو لم تُضَف البادئة إلى الاسم.</p>
+<pre><code class="language-python">// Bad:
+package payment
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;path/to/creditcardtest&quot;</span>
+func TestProcessor(t *testing.T) {
+    var cc creditcardtest.Spy
+    proc := &amp;Processor{CC: cc}
+    // declarations omitted: card <span class="hljs-keyword">and</span> amount
+    <span class="hljs-keyword">if</span> err := proc.Process(card, amount); err != nil {
+        t.Errorf(<span class="hljs-string">&quot;proc.Process(card, amount) = %v, want nil&quot;</span>, err)
+    }
+    charges := []creditcardtest.Charge{
+        {Card: card, Amount: amount},
+    }
+    <span class="hljs-keyword">if</span> got, want := cc.Charges, charges; !cmp.Equal(got, want) {
+        t.Errorf(<span class="hljs-string">&quot;cc.Charges = %v, want %v&quot;</span>, got, want)
+    }
+}
+</code></pre>
+<h3 id="التظليل">التظليل</h3>
+<p><strong>ملاحظة:</strong> يستخدم هذا الشرح مصطلحين غير رسميين هما <em>الدوس</em> (stomping) و<em>التظليل</em> (shadowing). وهما ليسا مفهومين رسميين في مواصفة لغة Go.</p>
+<p>مثل كثير من لغات البرمجة، تمتلك Go متغيّرات قابلة للتغيير: فالإسناد إلى متغيّر يغيّر قيمته.</p>
+<pre><code>// Good:
+func abs(i int) int {
+    if i &lt; 0 {
+        i *= -1
+    }
+    return i
+}
+</code></pre>
+<p>عند استخدام <a href="https://go.dev/ref/spec#Short_variable_declarations">تصريحات المتغيّرات القصيرة</a> مع المعامل <code>:=</code>، لا يُنشَأ متغيّر جديد في بعض الحالات. يمكننا تسمية ذلك <em>الدوس</em> (stomping). ولا بأس بفعله عندما لا تكون القيمة الأصلية مطلوبة بعد الآن.</p>
+<pre><code>// Good:
+// innerHandler is a helper for some request handler, which itself issues
+// requests to other backends.
+func (s *Server) innerHandler(ctx context.Context, req *pb.MyRequest) *pb.MyResponse {
+    // Unconditionally cap the deadline for this part of request handling.
+    ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+    defer cancel()
+    ctxlog.Info(ctx, &quot;Capped deadline in inner request&quot;)
+    // Code here no longer has access to the original context.
+    // This is good style if when first writing this, you anticipate
+    // that even as the code grows, no operation legitimately should
+    // use the (possibly unbounded) original context that the caller provided.
+    // ...
+}
+</code></pre>
+<p>لكن احترس من استخدام تصريحات المتغيّرات القصيرة في نطاق جديد: فذلك يُنشئ متغيّرًا جديدًا. يمكننا تسمية ذلك <em>تظليل</em> المتغيّر الأصلي. والشيفرة بعد نهاية الكتلة تشير إلى المتغيّر الأصلي. وهذه محاولة معطوبة لتقصير الموعد النهائي شرطيًا:</p>
+<pre><code>// Bad:
+func (s *Server) innerHandler(ctx context.Context, req *pb.MyRequest) *pb.MyResponse {
+    // Attempt to conditionally cap the deadline.
+    if *shortenDeadlines {
+        ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+        defer cancel()
+        ctxlog.Info(ctx, &quot;Capped deadline in inner request&quot;)
+    }
+    // BUG: &quot;ctx&quot; here again means the context that the caller provided.
+    // The above buggy code compiled because both ctx and cancel
+    // were used inside the if statement.
+    // ...
+}
+</code></pre>
+<p>قد تكون النسخة الصحيحة من الشيفرة كما يلي:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-title function_">func</span> (s *<span class="hljs-title class_">Server</span>) <span class="hljs-title function_">innerHandler</span>(ctx context.<span class="hljs-property">Context</span>, req *pb.<span class="hljs-property">MyRequest</span>) *pb.<span class="hljs-property">MyResponse</span> {
+    <span class="hljs-keyword">if</span> *shortenDeadlines {
+        <span class="hljs-keyword">var</span> cancel <span class="hljs-title function_">func</span>()
+        <span class="hljs-comment">// Note the use of simple assignment, = and not :=.</span>
+        ctx, cancel = context.<span class="hljs-title class_">WithTimeout</span>(ctx, <span class="hljs-number">3</span>*time.<span class="hljs-property">Second</span>)
+        defer <span class="hljs-title function_">cancel</span>()
+        ctxlog.<span class="hljs-title class_">Info</span>(ctx, <span class="hljs-string">&quot;Capped deadline in inner request&quot;</span>)
+    }
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p>في الحالة التي سمّيناها الدوس، ولأنه لا يوجد متغيّر جديد، يجب أن يطابق النوع المُسنَد نوع المتغيّر الأصلي. أما مع التظليل، فيُدخَل كيان جديد تمامًا، لذا يمكن أن يكون له نوع مختلف. وقد يكون التظليل المتعمّد ممارسة مفيدة، لكن يمكنك دائمًا استخدام اسم جديد إذا كان ذلك يحسّن <a href="/arabic-cs-library/book/go-style/guide/index#clarity">الوضوح</a>.</p>
+<p>ليس من الجيد استخدام متغيّرات تحمل الأسماء نفسها لحزم قياسية خارج نطاقات صغيرة جدًا، لأن ذلك يجعل الدوال والقيم الحرة من تلك الحزمة غير قابلة للوصول. وعلى العكس، عند اختيار اسم لحزمتك، تجنّب الأسماء التي يُرجَّح أن تتطلّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-renaming">إعادة تسمية الاستيراد</a> أو أن تسبّب تظليلًا لأسماء متغيّرات جيدة على جانب العميل.</p>
+<pre><code>// Bad:
+func LongFunction() {
+    url := &quot;https://example.com/&quot;
+    // Oops, now we can't use net/url in code below.
+}
+</code></pre>
+<h3 id="حزم-الأدوات-المساعدة">حزم الأدوات المساعدة</h3>
+<p>تمتلك حزم Go اسمًا محدَّدًا في تصريح <code>package</code>، منفصلًا عن مسار الاستيراد. واسم الحزمة أهمّ للقابلية للقراءة من المسار.</p>
+<p>ينبغي أن تكون أسماء حزم Go <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-names">مرتبطة بما توفّره الحزمة</a>. وتسمية حزمة بـ <code>util</code> أو <code>helper</code> أو <code>common</code> أو ما شابه هي عادةً خيار سيئ (وإن كان يمكن استخدامها كـ<em>جزء</em> من الاسم). فالأسماء غير المفيدة تجعل الشيفرة أصعب قراءةً، وإذا استُخدمت على نطاق واسع جدًا فقد تسبّب <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-renaming">تعارضات استيراد</a> لا داعي لها.</p>
+<p>بدلًا من ذلك، تأمّل كيف سيبدو موضع الاستدعاء.</p>
+<pre><code>// Good:
+db := spannertest.NewDatabaseFromFile(...)
+_, err := f.Seek(0, io.SeekStart)
+b := elliptic.Marshal(curve, x, y)
+</code></pre>
+<p>يمكنك معرفة ما تفعله كل واحدة منها تقريبًا حتى دون معرفة قائمة الاستيرادات (<code>cloud.google.com/go/spanner/spannertest</code> و<code>io</code> و<code>crypto/elliptic</code>). ومع أسماء أقل تركيزًا، قد تُقرأ هكذا:</p>
+<pre><code>// Bad:
+db := test.NewDatabaseFromFile(...)
+_, err := f.Seek(0, common.SeekStart)
+b := helper.Marshal(curve, x, y)
+</code></pre>
+<h2 id="حجم-الحزمة">حجم الحزمة <span class="content-anchor" id="package-size"></span></h2>
+<p>إذا كنت تتساءل عن الحجم الذي ينبغي أن تكون عليه حزم Go لديك، وعمّا إذا كان ينبغي وضع الأنواع المرتبطة في الحزمة نفسها أم تقسيمها إلى حزم مختلفة، فإن نقطة انطلاق جيدة هي <a href="https://go.dev/blog/package-names">تدوينة Go حول أسماء الحزم</a>. فرغم عنوان التدوينة، فهي ليست عن التسمية وحدها. إذ تحتوي على بعض التلميحات المفيدة وتستشهد بعدة مقالات ومحاضرات نافعة.</p>
+<p>وفيما يلي بعض الاعتبارات والملاحظات الأخرى.</p>
+<p>يرى المستخدمون <a href="https://pkg.go.dev/">godoc</a> للحزمة في صفحة واحدة، وتُجمَّع أي طرائق تصدّرها الأنواع التي توفّرها الحزمة حسب نوعها. كما تُجمّع godoc الدوال البانية (constructors) مع الأنواع التي تُعيدها. وإذا كان من المرجّح أن تحتاج <em>شيفرة العميل</em> إلى قيمتين مختلفتي النوع لتفاعل إحداهما مع الأخرى، فقد يكون من المناسب للمستخدم وجودهما في الحزمة نفسها.</p>
+<p>يمكن للشيفرة داخل حزمة الوصول إلى المعرّفات غير المصدَّرة في الحزمة. وإذا كان لديك بضعة أنواع مرتبطة يكون <em>تنفيذها</em> مقترنًا اقترانًا وثيقًا، فإن وضعها في الحزمة نفسها يتيح لك تحقيق هذا الاقتران دون تلويث الواجهة البرمجية العامة بهذه التفاصيل. وهناك اختبار جيد لهذا الاقتران: تخيّل مستخدمًا افتراضيًا لحزمتين تغطّيان موضوعات وثيقة الصلة: إذا كان على المستخدم استيراد كلتا الحزمتين لاستخدام أيٍّ منهما استخدامًا ذا معنى، فجمعُهما معًا هو الصواب عادةً. وتوضّح المكتبة القياسية عمومًا هذا النوع من تحديد النطاق والطبقات توضيحًا جيدًا.</p>
+<p>ومع كل ما قيل، فإن وضع مشروعك بأكمله في حزمة واحدة قد يجعل تلك الحزمة كبيرة جدًا. وعندما يكون شيء ما متمايزًا مفهوميًا، فإن منحه حزمة صغيرة خاصة به قد يسهّل استخدامه. ويعمل الاسم القصير للحزمة كما يعرفه العملاء مع اسم النوع المصدَّر معًا على تكوين معرّف ذي معنى: مثل <code>bytes.Buffer</code> و<code>ring.New</code>. وتحتوي <a href="https://go.dev/blog/package-names">تدوينة أسماء الحزم</a> على مزيد من الأمثلة.</p>
+<p>أسلوب Go مرن بشأن حجم الملف، لأن القائمين على الصيانة يمكنهم نقل الشيفرة داخل الحزمة من ملف إلى آخر دون التأثير على المستدعين. لكن كإرشاد عام: ليس من الجيد عادةً أن يحتوي ملف واحد على آلاف عديدة من الأسطر، أو أن تكون هناك ملفات صغيرة كثيرة. ولا يوجد اصطلاح «نوع واحد، ملف واحد» كما في بعض اللغات الأخرى. وكقاعدة عامة، ينبغي أن تكون الملفات مركّزة بما يكفي ليعرف القائم على الصيانة أي ملف يحتوي على شيء ما، وأن تكون صغيرة بما يكفي ليسهل العثور عليه هناك. وغالبًا ما تقسّم المكتبة القياسية الحزم الكبيرة إلى عدة ملفات مصدرية، وتجمّع الشيفرة المرتبطة حسب الملف. ويُعدّ مصدر <a href="https://go.dev/src/bytes/">الحزمة <code>bytes</code></a> مثالًا جيدًا. وقد تختار الحزم ذات التوثيق الطويل تخصيص ملف واحد باسم <code>doc.go</code> يحتوي على <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-comments">توثيق الحزمة</a> وتصريح حزمة، ولا شيء غير ذلك، لكن هذا ليس مطلوبًا.</p>
+<p>داخل قاعدة شيفرة Google وفي المشاريع التي تستخدم Bazel، يختلف تنظيم المجلدات لشيفرة Go عمّا هو عليه في مشاريع Go مفتوحة المصدر: إذ يمكن أن يكون لديك عدة أهداف <code>go_library</code> في مجلد واحد. ومن الأسباب الجيدة لمنح كل حزمة مجلدًا خاصًا بها أن تتوقّع فتح مشروعك كمصدر مفتوح في المستقبل.</p>
+<p>وفيما يلي بضعة أمثلة مرجعية غير قياسية للمساعدة في إظهار هذه الأفكار عمليًا:</p>
+<ul>
+<li>حزم صغيرة تحتوي على فكرة واحدة متماسكة لا تستدعي إضافة شيء ولا حذف شيء: <a href="https://pkg.go.dev/encoding/csv">الحزمة <code>csv</code></a>: ترميز بيانات CSV وفكّ ترميزها مع تقسيم المسؤولية على التوالي بين <a href="https://go.googlesource.com/go/+/refs/heads/master/src/encoding/csv/reader.go">reader.go</a> و<a href="https://go.googlesource.com/go/+/refs/heads/master/src/encoding/csv/writer.go">writer.go</a>.</li>
+<li><a href="https://pkg.go.dev/expvar">الحزمة <code>expvar</code></a>: قياسات البرنامج من الداخل (whitebox) موجودة كلها في <a href="https://go.googlesource.com/go/+/refs/heads/master/src/expvar/expvar.go">expvar.go</a>.</li>
+</ul>
+<p>حزم متوسطة الحجم تحتوي على مجال كبير واحد ومسؤولياته المتعددة معًا:</p>
+<ul>
+<li><a href="https://pkg.go.dev/flag">الحزمة <code>flag</code></a>: إدارة أعلام سطر الأوامر موجودة كلها في <a href="https://go.googlesource.com/go/+/refs/heads/master/src/flag/flag.go">flag.go</a>.</li>
+</ul>
+<p>حزم كبيرة توزّع عدة مجالات وثيقة الصلة على عدة ملفات:</p>
+<ul>
+<li><a href="https://pkg.go.dev/net/http">الحزمة <code>http</code></a>: جوهر HTTP: <a href="https://go.googlesource.com/go/+/refs/heads/master/src/net/http/client.go">client.go</a>، دعم عملاء HTTP؛ <a href="https://go.googlesource.com/go/+/refs/heads/master/src/net/http/client.go">server.go</a>، دعم خوادم HTTP؛ <a href="https://go.googlesource.com/go/+/refs/heads/master/src/net/http/cookie.go">cookie.go</a>، إدارة ملفات تعريف الارتباط (cookies).</li>
+<li><a href="https://pkg.go.dev/os">الحزمة <code>os</code></a>: تجريدات نظام التشغيل عبر المنصات: <a href="https://go.googlesource.com/go/+/refs/heads/master/src/os/exec.go">exec.go</a>، إدارة العمليات الفرعية؛ <a href="https://go.googlesource.com/go/+/refs/heads/master/src/os/file.go">file.go</a>، إدارة الملفات؛ <a href="https://go.googlesource.com/go/+/refs/heads/master/src/os/tempfile.go">tempfile.go</a>، الملفات المؤقتة.</li>
+</ul>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="#naming-doubles">حزم البدائل الاختبارية</a></li>
+<li><a href="https://go.dev/blog/organizing-go-code">Organizing Go Code (Blog Post)</a></li>
+<li><a href="https://go.dev/talks/2014/organizeio.slide">Organizing Go Code (Presentation)</a></li>
+</ul>
+<h2 id="الاستيراد">الاستيراد</h2>
+<h3 id="رسائل-protocol-buffer-والبدائل-الصورية">رسائل Protocol Buffer والبدائل الصورية</h3>
+<p>تُعامَل استيرادات مكتبة Proto بشكل مختلف عن استيرادات Go القياسية نظرًا لطبيعتها العابرة للغات. ويستند اصطلاح إعادة تسمية استيرادات proto إلى القاعدة التي أنشأت الحزمة:</p>
+<ul>
+<li>تُستخدم اللاحقة <code>pb</code> عمومًا لقواعد <code>go_proto_library</code>.</li>
+<li>وتُستخدم اللاحقة <code>grpc</code> عمومًا لقواعد <code>go_grpc_library</code>.</li>
+</ul>
+<p>وغالبًا ما تُستخدم كلمة واحدة تصف الحزمة:</p>
+<pre><code class="language-python">// Good:
+<span class="hljs-keyword">import</span> (
+    foopb <span class="hljs-string">&quot;path/to/package/foo_service_go_proto&quot;</span>
+    foogrpc <span class="hljs-string">&quot;path/to/package/foo_service_go_grpc&quot;</span>
+)
+</code></pre>
+<p>اتبع إرشادات الأسلوب الخاصة بـ<a href="https://google.github.io/styleguide/go/decisions#package-names">أسماء الحزم</a>. فضّل الكلمات الكاملة. الأسماء القصيرة جيدة، لكن تجنّب الغموض. وعند الشك، استخدم اسم حزمة proto حتى <code>_go</code> مع لاحقة pb:</p>
+<pre><code class="language-python">// Good:
+<span class="hljs-keyword">import</span> (
+    pushqueueservicepb <span class="hljs-string">&quot;path/to/package/push_queue_service_go_proto&quot;</span>
+)
+</code></pre>
+<p><strong>ملاحظة:</strong> شجّعت الإرشادات السابقة على أسماء قصيرة جدًا مثل «xpb» أو حتى «pb» فقط. وينبغي أن تفضّل الشيفرة الجديدة أسماء أكثر وصفًا. أما الشيفرة الموجودة التي تستخدم أسماء قصيرة فلا ينبغي استخدامها كمثال، لكنها لا تحتاج إلى تغيير.</p>
+<h3 id="ترتيب-الاستيراد">ترتيب الاستيراد</h3>
+<p>راجع <a href="/arabic-cs-library/book/go-style/decisions-2/index#import-grouping">قرارات أسلوب Go: تجميع الاستيراد</a>.</p>
+<h2 id="معالجة-الأخطاء">معالجة الأخطاء</h2>
+<p>في Go، <a href="https://go.dev/blog/errors-are-values">الأخطاء قيم</a>؛ تُنشئها الشيفرة وتستهلكها الشيفرة. ويمكن أن تكون الأخطاء:</p>
+<ul>
+<li>محوَّلة إلى معلومات تشخيصية لعرضها على البشر</li>
+<li>مستخدَمة من القائم على الصيانة</li>
+<li>مفسَّرة من مستخدم نهائي</li>
+</ul>
+<p>تظهر رسائل الخطأ أيضًا عبر مجموعة متنوعة من الواجهات المختلفة، بما في ذلك رسائل السجلّ، ومَقالب تفريغ الأخطاء، وواجهات المستخدم المعروضة.</p>
+<p>ينبغي أن تتعامل الشيفرة التي تعالج الأخطاء (تُنتجها أو تستهلكها) معها بوعي وقصد. وقد يكون من المغري تجاهل قيمة خطأ مُعادة أو نشرها بشكل أعمى. ومع ذلك، يجدر دائمًا التفكير فيما إذا كانت الدالة الحالية في إطار الاستدعاء هي الأقدر على معالجة الخطأ على نحو فعّال. وهذا موضوع واسع ويصعب إعطاء نصيحة قاطعة بشأنه. استخدم حكمك، لكن ضع في اعتبارك الاعتبارات التالية:</p>
+<ul>
+<li>عند إنشاء قيمة خطأ، قرّر ما إذا كنت ستمنحها أي <a href="#error-structure">بنية</a>.</li>
+<li>عند معالجة خطأ، فكّر في <a href="#error-extra-info">إضافة معلومات</a> تملكها لكن قد لا يملكها المستدعي و/أو المدعوّ.</li>
+<li>راجع أيضًا الإرشادات حول <a href="#error-logging">تسجيل الأخطاء</a>.</li>
+</ul>
+<p>ورغم أنه ليس مناسبًا عادةً تجاهل خطأ ما، فمن الاستثناءات المعقولة لذلك تنسيق عمليات مرتبطة، حيث لا يكون مفيدًا غالبًا سوى الخطأ الأول. وتوفّر الحزمة <a href="https://pkg.go.dev/golang.org/x/sync/errgroup"><code>errgroup</code></a> تجريدًا ملائمًا لمجموعة عمليات يمكن أن تفشل كلها أو تُلغى كمجموعة.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://go.dev/doc/effective_go#errors">Effective Go on errors</a></li>
+<li><a href="https://go.dev/blog/go1.13-errors">A post by the Go Blog on errors</a></li>
+<li><a href="https://pkg.go.dev/errors">Package <code>errors</code></a></li>
+<li><a href="https://commandcenter.blogspot.com/2017/12/error-handling-in-upspin.html">Package <code>upspin.io/errors</code></a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #89: When to Use Canonical Status Codes as Errors</a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #48: Error Sentinel Values</a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #13: Designing Errors for Checking</a></li>
+</ul>
+<h3 id="بنية-الخطأ">بنية الخطأ <span class="content-anchor" id="error-structure"></span></h3>
+<p>إذا كان على المستدعين استجواب الخطأ (مثل التمييز بين حالات خطأ مختلفة)، فامنح قيمة الخطأ بنية تتيح القيام بذلك برمجيًا بدلًا من أن يقوم المستدعي بمطابقة السلاسل النصية. وتنطبق هذه النصيحة على شيفرة الإنتاج وكذلك على الاختبارات التي تهتم بحالات خطأ مختلفة.</p>
+<p>أبسط الأخطاء المهيكلة هي قيم عامة غير مُعامَلة (unparameterized).</p>
+<pre><code class="language-javascript">type <span class="hljs-title class_">Animal</span> string
+<span class="hljs-title function_">var</span> (
+    <span class="hljs-comment">// ErrDuplicate occurs if this animal has already been seen.</span>
+    <span class="hljs-title class_">ErrDuplicate</span> = errors.<span class="hljs-title class_">New</span>(<span class="hljs-string">&quot;duplicate&quot;</span>)
+    <span class="hljs-comment">// ErrMarsupial occurs because we&#x27;re allergic to marsupials outside Australia.</span>
+    <span class="hljs-comment">// Sorry.</span>
+    <span class="hljs-title class_">ErrMarsupial</span> = errors.<span class="hljs-title class_">New</span>(<span class="hljs-string">&quot;marsupials are not supported&quot;</span>)
+)
+func <span class="hljs-title function_">process</span>(animal <span class="hljs-title class_">Animal</span>) error {
+    <span class="hljs-keyword">switch</span> {
+    <span class="hljs-keyword">case</span> seen[animal]:
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">ErrDuplicate</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-title function_">marsupial</span>(animal):
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">ErrMarsupial</span>
+    }
+    seen[animal] = <span class="hljs-literal">true</span>
+    <span class="hljs-comment">// ...</span>
+    <span class="hljs-keyword">return</span> nil
+}
+</code></pre>
+<p>يمكن للمستدعي ببساطة مقارنة قيمة الخطأ المُعادة من الدالة بإحدى قيم الخطأ المعروفة:</p>
+<pre><code>// Good:
+func handlePet(...) {
+    switch err := process(an); err {
+    case ErrDuplicate:
+        return fmt.Errorf(&quot;feed %q: %v&quot;, an, err)
+    case ErrMarsupial:
+        // Try to recover with a friend instead.
+        alternate = an.BackupAnimal()
+        return handlePet(..., alternate, ...)
+    }
+}
+</code></pre>
+<p>يستخدم ما سبق قيمًا علامية (sentinel values)، حيث يجب أن يكون الخطأ مساويًا (بمعنى <code>==</code>) للقيمة المتوقعة. وهذا كافٍ تمامًا في كثير من الحالات. وإذا أعادت <code>process</code> أخطاء مُغلَّفة (كما سيُبحث أدناه)، فيمكنك استخدام <a href="https://pkg.go.dev/errors#Is"><code>errors.Is</code></a>.</p>
+<pre><code>// Good:
+func handlePet(...) {
+    switch err := process(an); {
+    case errors.Is(err, ErrDuplicate):
+        return fmt.Errorf(&quot;feed %q: %v&quot;, an, err)
+    case errors.Is(err, ErrMarsupial):
+        // ...
+    }
+}
+</code></pre>
+<p>لا تحاول التمييز بين الأخطاء بناءً على شكلها النصّي. (راجع <a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #13: Designing Errors for Checking</a> للمزيد.)</p>
+<pre><code>// Bad:
+func handlePet(...) {
+    err := process(an)
+    if regexp.MatchString(\`duplicate\`, err.Error()) {...}
+    if regexp.MatchString(\`marsupial\`, err.Error()) {...}
+}
+</code></pre>
+<p>إذا كان في الخطأ معلومات إضافية يحتاجها المستدعي برمجيًا، فمن المثالي تقديمها بشكل بنيوي. فمثلًا، يُوثَّق النوع <a href="https://pkg.go.dev/os#PathError"><code>os.PathError</code></a> بأنه يضع اسم مسار العملية الفاشلة في حقل بنية يمكن للمستدعي الوصول إليه بسهولة.</p>
+<p>يمكن استخدام بنى أخطاء أخرى حسب الاقتضاء، مثل بنية خاصة بالمشروع تحتوي على رمز خطأ وسلسلة تفاصيل. وتُعدّ <a href="https://pkg.go.dev/google.golang.org/grpc/status">الحزمة <code>status</code></a> تغليفًا شائعًا؛ وإذا اخترت هذه المقاربة (ولستَ ملزمًا بها)، فاستخدم <a href="https://pkg.go.dev/google.golang.org/grpc/codes">رموزًا قياسية</a>. راجع <a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #89: When to Use Canonical Status Codes as Errors</a> لمعرفة ما إذا كان استخدام رموز الحالة هو الخيار الصحيح.</p>
+<h3 id="إضافة-معلومات-إلى-الأخطاء">إضافة معلومات إلى الأخطاء <span class="content-anchor" id="error-extra-info"></span></h3>
+<p>عند إضافة معلومات إلى الأخطاء، تجنّب المعلومات الزائدة التي يوفّرها الخطأ الأساسي بالفعل. فمثلًا، تتضمّن حزمة <code>os</code> بالفعل معلومات المسار في أخطائها.</p>
+<pre><code>// Good:
+if err := os.Open(&quot;settings.txt&quot;); err != nil {
+  return fmt.Errorf(&quot;launch codes unavailable: %v&quot;, err)
+}
+// Output:
+//
+// launch codes unavailable: open settings.txt: no such file or directory
+</code></pre>
+<p>هنا، تضيف عبارة «launch codes unavailable» معنى محددًا إلى خطأ <code>os.Open</code> ذا صلة بسياق الدالة الحالية، دون تكرار معلومات مسار الملف الأساسية.</p>
+<pre><code>// Bad:
+if err := os.Open(&quot;settings.txt&quot;); err != nil {
+  return fmt.Errorf(&quot;could not open settings.txt: %v&quot;, err)
+}
+// Output:
+//
+// could not open settings.txt: open settings.txt: no such file or directory
+</code></pre>
+<p>لا تُضِف تعليقًا توضيحيًا إذا كان غرضه الوحيد الإشارة إلى فشل دون إضافة معلومات جديدة. فوجود الخطأ ينقل الفشل إلى المستدعي نقلًا كافيًا.</p>
+<pre><code>// Bad:
+return fmt.Errorf(&quot;failed: %v&quot;, err) // just return err instead
+</code></pre>
+<p>يُعدّ <a href="https://go.dev/blog/go1.13-errors#whether-to-wrap">الاختيار بين <code>%v</code> و<code>%w</code> عند تغليف الأخطاء</a> باستخدام <code>fmt.Errorf</code> قرارًا دقيقًا يؤثّر تأثيرًا كبيرًا في كيفية نشر الأخطاء ومعالجتها وفحصها وتوثيقها داخل تطبيقك. والمبدأ الجوهري هو جعل قيم الأخطاء مفيدة لمن يلاحظها، سواء أكانوا بشرًا أم شيفرة.</p>
+<p><strong><code>%v</code> للتعليق البسيط أو لخطأ جديد</strong></p>
+<p>صيغة <code>%v</code> هي أداتك العامة لتنسيق السلاسل النصية لأي قيمة في Go، بما في ذلك الأخطاء. وعند استخدامها مع <code>fmt.Errorf</code>، فإنها تُضمّن التمثيل النصّي للخطأ (ما تُعيده طريقة <code>Error()</code> الخاصة به) في قيمة خطأ جديدة، مع إسقاط أي معلومات بنيوية من الخطأ الأصلي. أمثلة على استخدام <code>%v</code>:</p>
+<p>إضافة سياق مهم غير زائد: كما في المثال أعلاه.</p>
+<p>تسجيل الأخطاء أو عرضها: عندما يكون الهدف الأساسي تقديم رسالة خطأ قابلة للقراءة البشرية في السجلّات أو للمستخدم، ولا تنوي أن يستخدم المستدعي <code>errors.Is</code> أو <code>errors.As</code> برمجيًا مع الخطأ (ملاحظة: لا يُنصَح عمومًا بـ<code>errors.Unwrap</code> هنا لأنه لا يتعامل مع الأخطاء المتعددة).</p>
+<p>إنشاء أخطاء جديدة مستقلة: يلزم أحيانًا تحويل خطأ إلى رسالة خطأ جديدة، وبذلك تُخفى تفاصيل الخطأ الأصلي. وتكون هذه الممارسة مفيدة بشكل خاص عند حدود الأنظمة، بما في ذلك على سبيل المثال لا الحصر RPC وIPC والتخزين، حيث نترجم الأخطاء الخاصة بمجال معيّن إلى فضاء أخطاء قياسي.</p>
+<pre><code>// Good:
+func (*FortuneTeller) SuggestFortune(context.Context, *pb.SuggestionRequest) (*pb.SuggestionResponse, error) {
+  // ...
+  if err != nil {
+    return nil, fmt.Errorf(&quot;couldn't find fortune database: %v&quot;, err)
+  }
+}
+</code></pre>
+<p>ويمكننا أيضًا أن نُعلّق صراحةً على رمز RPC <code>Internal</code> في المثال أعلاه.</p>
+<pre><code class="language-python">// Good:
+<span class="hljs-keyword">import</span> (
+  <span class="hljs-string">&quot;google.golang.org/grpc/codes&quot;</span>
+  <span class="hljs-string">&quot;google.golang.org/grpc/status&quot;</span>
+)
+func (*FortuneTeller) SuggestFortune(context.Context, *pb.SuggestionRequest) (*pb.SuggestionResponse, error) {
+  // ...
+  <span class="hljs-keyword">if</span> err != nil {
+    // Or use fmt.Errorf <span class="hljs-keyword">with</span> the %w verb <span class="hljs-keyword">if</span> deliberately wrapping an
+    // error which the caller <span class="hljs-keyword">is</span> meant to unwrap.
+    <span class="hljs-keyword">return</span> nil, status.Errorf(codes.Internal, <span class="hljs-string">&quot;couldn&#x27;t find fortune database&quot;</span>, status.ErrInternal)
+  }
+}
+</code></pre>
+<p><strong><code>%w</code> (التغليف) للفحص البرمجي وتسلسل الأخطاء</strong></p>
+<p>صيغة <code>%w</code> مصمَّمة خصيصًا لتغليف الأخطاء. فهي تُنشئ خطأً جديدًا يوفّر طريقة <code>Unwrap()</code>، ما يتيح للمستدعين فحص سلسلة الأخطاء برمجيًا باستخدام <code>errors.Is</code> و<code>errors.As</code>. أمثلة على استخدام <code>%w</code>:</p>
+<p>إضافة سياق مع الحفاظ على الخطأ الأصلي لفحصه برمجيًا: هذه هي حالة الاستخدام الأساسية داخل الدوال المساعدة في تطبيقك. إذ تريد إثراء خطأ بسياق إضافي (مثل العملية التي كانت تُنفَّذ عند الفشل) مع السماح للمستدعي بفحص ما إذا كان الخطأ الأساسي خطأً علاميًا أو نوعًا محددًا.</p>
+<pre><code>// Good:
+func (s *Server) internalFunction(ctx context.Context) error {
+  // ...
+  if err != nil {
+    return fmt.Errorf(&quot;couldn't find remote file: %w&quot;, err)
+  }
+}
+</code></pre>
+<p>يتيح ذلك لدالة أعلى مستوى تنفيذ <code>errors.Is(err, fs.ErrNotExist)</code> إذا كان الخطأ الأساسي هو <code>fs.ErrNotExist</code>، حتى وإن كان مُغلَّفًا.</p>
+<p>عند النقاط التي يتفاعل فيها نظامك مع أنظمة خارجية مثل RPC أو IPC أو التخزين، غالبًا ما يكون من الأفضل ترجمة الأخطاء الخاصة بالمجال إلى فضاء أخطاء موحّد (مثل رموز حالة gRPC) بدلًا من مجرد تغليف الخطأ الأساسي الخام بـ<code>%w</code>. فالعميل عادةً لا يهمّه خطأ نظام الملفات الداخلي الدقيق؛ بل يهمّه النتيجة القياسية (مثل <code>Internal</code> و<code>NotFound</code> و<code>PermissionDenied</code>).</p>
+<p>عندما توثّق وتختبر صراحةً الأخطاء الأساسية التي تكشفها: إذا كانت واجهة حزمتك البرمجية تضمن إمكانية فكّ تغليف أخطاء أساسية معيّنة وفحصها من المستدعين (مثل «قد تُعيد هذه الدالة <code>ErrInvalidConfig</code> مُغلَّفًا داخل خطأ أعمّ»)، فإن <code>%w</code> يكون مناسبًا. ويشكّل ذلك جزءًا من عقد حزمتك.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="#documentation-conventions-errors">اصطلاحات توثيق الأخطاء</a></li>
+<li><a href="https://blog.golang.org/go1.13-errors">Blog post on error wrapping</a></li>
+</ul>
+<h3 id="موضع-w-في-الأخطاء">موضع %w في الأخطاء</h3>
+<p>فضّل وضع <code>%w</code> في نهاية سلسلة الخطأ <em>إذا</em> كنت ستستخدم <a href="https://go.dev/blog/go1.13-errors">تغليف الخطأ</a> مع صيغة التنسيق <code>%w</code>.</p>
+<p>يمكن تغليف الأخطاء بصيغة <code>%w</code>، أو بوضعها في <a href="https://google.github.io/styleguide/go/index.html#gotip">خطأ مهيكل</a> يُنفّذ <code>Unwrap() error</code> (مثال: <a href="https://pkg.go.dev/io/fs#PathError"><code>fs.PathError</code></a>).</p>
+<p>تشكّل الأخطاء المُغلَّفة سلاسل أخطاء: فكل طبقة تغليف جديدة تضيف مدخلًا جديدًا إلى مقدمة سلسلة الأخطاء. ويمكن اجتياز سلسلة الأخطاء بطريقة <code>Unwrap() error</code>. على سبيل المثال:</p>
+<pre><code>err1 := fmt.Errorf(&quot;err1&quot;)
+err2 := fmt.Errorf(&quot;err2: %w&quot;, err1)
+err3 := fmt.Errorf(&quot;err3: %w&quot;, err2)
+</code></pre>
+<p>وهذا يشكّل سلسلة أخطاء بالشكل التالي،</p>
+<pre><code>flowchart LR
+  err3 == err3 wraps err2 ==&gt; err2;
+  err2 == err2 wraps err1 ==&gt; err1;
+</code></pre>
+<p>بغضّ النظر عن موضع صيغة <code>%w</code>، فإن الخطأ المُعاد يمثّل دائمًا مقدمة سلسلة الأخطاء، ويكون <code>%w</code> هو الابن التالي. وبالمثل، يجتاز <code>Unwrap() error</code> دائمًا سلسلة الأخطاء من الأحدث إلى الأقدم.</p>
+<p>غير أنّ موضع صيغة <code>%w</code> يؤثّر في ما إذا كانت سلسلة الأخطاء تُطبَع من الأحدث إلى الأقدم، أو من الأقدم إلى الأحدث، أو لا هذا ولا ذاك:</p>
+<pre><code>// Good:
+err1 := fmt.Errorf(&quot;err1&quot;)
+err2 := fmt.Errorf(&quot;err2: %w&quot;, err1)
+err3 := fmt.Errorf(&quot;err3: %w&quot;, err2)
+fmt.Println(err3) // err3: err2: err1
+// err3 is a newest-to-oldest error chain, that prints newest-to-oldest.
+</code></pre>
+<pre><code>// Bad:
+err1 := fmt.Errorf(&quot;err1&quot;)
+err2 := fmt.Errorf(&quot;%w: err2&quot;, err1)
+err3 := fmt.Errorf(&quot;%w: err3&quot;, err2)
+fmt.Println(err3) // err1: err2: err3
+// err3 is a newest-to-oldest error chain, that prints oldest-to-newest.
+</code></pre>
+<pre><code>// Bad:
+err1 := fmt.Errorf(&quot;err1&quot;)
+err2 := fmt.Errorf(&quot;err2-1 %w err2-2&quot;, err1)
+err3 := fmt.Errorf(&quot;err3-1 %w err3-2&quot;, err2)
+fmt.Println(err3) // err3-1 err2-1 err1 err2-2 err3-2
+// err3 is a newest-to-oldest error chain, that neither prints newest-to-oldest
+// nor oldest-to-newest.
+</code></pre>
+<p>لذلك، ولكي يعكس نصّ الخطأ بنية سلسلة الأخطاء، فضّل وضع صيغة <code>%w</code> في النهاية بالشكل <code>[...]: %w</code>.</p>
+<h4>موضع الخطأ العلامي</h4>
+<p>وثمّة استثناء لهذه القاعدة عند تغليف الأخطاء العلامية. فالخطأ العلامي (sentinel error) هو خطأ يعمل كتصنيف أساسي لفشل ما. ويساعد ذلك الملاحظين على فهم طبيعة الفشل بسرعة (مثل «not found» أو «invalid argument») دون الحاجة إلى تحليل رسالة الخطأ بأكملها. ومن المفيد تحديد نوع الخطأ في أقرب موضع ممكن في سلسلة الخطأ.</p>
+<p>تشمل أمثلة الأخطاء العلامية أخطاء os (مثل <a href="https://pkg.go.dev/os#ErrInvalid"><code>os.ErrInvalid</code></a>) والأخطاء على مستوى الحزمة.</p>
+<p>وفي هذه الحالات، يمكن أن يؤدي وضع صيغة <code>%w</code> في بداية سلسلة الخطأ إلى تحسين القابلية للقراءة بتحديد فئة الخطأ فورًا.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+package parser
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ErrParse</span> = fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;parse error&quot;</span>)
+<span class="hljs-comment">// This is another package error that could be returned.</span>
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ErrParseInvalidHeader</span> = fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;%w: invalid header&quot;</span>, <span class="hljs-title class_">ErrParse</span>)
+func <span class="hljs-title function_">parseHeader</span>() error {
+  err := <span class="hljs-title function_">checkHeader</span>()
+  <span class="hljs-keyword">return</span> fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;%w: invalid character in header: %v&quot;</span>, <span class="hljs-title class_">ErrParseInvalidHeader</span>, err)
+}
+err := fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;%w: couldn&#x27;t find fortune database: %v&quot;</span>, <span class="hljs-title class_">ErrInternal</span>, err)
+</code></pre>
+<p>ووضعه للحالة في البداية يضمن أن تكون المعلومات التصنيفية الأكثر صلة هي الأبرز.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
+package parser
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ErrParse</span> = fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;parse error&quot;</span>)
+<span class="hljs-comment">// This is another package error that could be returned.</span>
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ErrParseInvalidHeader</span> = fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;%w: invalid header&quot;</span>, <span class="hljs-title class_">ErrParse</span>)
+func <span class="hljs-title function_">parseHeader</span>() error {
+  err := <span class="hljs-title function_">checkHeader</span>()
+  <span class="hljs-keyword">return</span> fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;invalid character in header: %v: %w&quot;</span>, err, <span class="hljs-title class_">ErrParseInvalidHeader</span>)
+}
+<span class="hljs-keyword">var</span> <span class="hljs-title class_">ErrInternal</span> = status.<span class="hljs-title class_">Error</span>(codes.<span class="hljs-property">Internal</span>, <span class="hljs-string">&quot;internal&quot;</span>)
+err2 := fmt.<span class="hljs-title class_">Errorf</span>(<span class="hljs-string">&quot;couldn&#x27;t find fortune database: %v: %w&quot;</span>, err, <span class="hljs-title class_">ErrInternal</span>)
+</code></pre>
+<p>وعند وضعه في النهاية، يصبح تحديد فئة الخطأ أصعب عند قراءة نصّ الخطأ، لأنه يكون مدفونًا في تفاصيل الخطأ المحددة.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #48: Error Sentinel Values</a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #106: Error Naming Conventions</a></li>
+</ul>
+<h3 id="تسجيل-الأخطاء">تسجيل الأخطاء <span class="content-anchor" id="error-logging"></span></h3>
+<p>تحتاج الدوال أحيانًا إلى إخبار نظام خارجي بخطأ ما دون نشره إلى مستدعيها. ويُعدّ التسجيل خيارًا واضحًا هنا؛ لكن كن واعيًا بما تسجّله من أخطاء وكيفية تسجيلها.</p>
+<ul>
+<li>مثل <a href="https://google.github.io/styleguide/go/decisions#useful-test-failures">رسائل فشل الاختبار الجيدة</a>، ينبغي أن تعبّر رسائل السجلّ بوضوح عمّا ساء، وأن تساعد القائم على الصيانة بتضمين معلومات ذات صلة لتشخيص المشكلة.</li>
+<li>تجنّب التكرار. إذا أعدتَ خطأً، فمن الأفضل عادةً ألّا تسجّله بنفسك بل أن تدع المستدعي يتعامل معه. ويمكن للمستدعي أن يختار تسجيل الخطأ، أو ربما تقييد معدّل التسجيل باستخدام <a href="https://pkg.go.dev/golang.org/x/time/rate#Sometimes"><code>rate.Sometimes</code></a>. وتشمل الخيارات الأخرى محاولة الاستعادة أو حتى <a href="#checks-and-panics">إيقاف البرنامج</a>. وفي كل الأحوال، فإن منح المستدعي التحكّم يساعد على تجنّب إغراق السجلّ. غير أنّ الجانب السلبي لهذه المقاربة هو أن أي تسجيل يُكتب باستخدام إحداثيات أسطر المستدعي.</li>
+<li>احترس من <a href="https://en.wikipedia.org/wiki/Personal_data">المعلومات الشخصية المعرِّفة (PII)</a>. فكثير من وجهات السجلّ ليست أماكن مناسبة لمعلومات المستخدم النهائي الحساسة.</li>
+<li>استخدم <code>log.Error</code> باعتدال. فتسجيل مستوى ERROR يسبّب تفريغًا (flush) وهو أكثر كلفة من مستويات التسجيل الأدنى. وقد يكون لذلك تأثير أداء خطير على شيفرتك. وعند الاختيار بين مستويي error وwarning، ضع في اعتبارك أفضل ممارسة تقول إن الرسائل عند مستوى error ينبغي أن تكون قابلة للتنفيذ وليست «أكثر خطورة» من التحذير فحسب.</li>
+<li>داخل Google، لدينا أنظمة مراقبة يمكن إعدادها لتنبيه أكثر فعالية من الكتابة إلى ملف سجلّ والأمل في أن يلاحظه أحدهم. وهذا مشابه لكنه ليس مطابقًا لـ<a href="https://pkg.go.dev/expvar">الحزمة <code>expvar</code></a> في المكتبة القياسية.</li>
+</ul>
+<h4>مستويات الإسهاب المخصّصة</h4>
+<p>استفد من التسجيل المُسهب (<a href="https://pkg.go.dev/github.com/golang/glog#V"><code>log.V</code></a>). ويمكن أن يكون التسجيل المُسهب مفيدًا في التطوير والتتبّع. وقد يكون وضع اصطلاح لمستويات الإسهاب مفيدًا. على سبيل المثال:</p>
+<ul>
+<li>اكتب قدرًا صغيرًا من المعلومات الإضافية عند <code>V(1)</code></li>
+<li>تتبّع معلومات أكثر في <code>V(2)</code></li>
+<li>افرغ حالات داخلية كبيرة في <code>V(3)</code></li>
+</ul>
+<p>لتقليل كلفة التسجيل المُسهب، ينبغي أن تضمن عدم استدعاء دوال مكلفة عن غير قصد حتى عندما يكون <code>log.V</code> مُطفأً. وتوفّر <code>log.V</code> واجهتين برمجيتين. والأكثر ملاءمة منهما تحمل خطر هذه الكلفة غير المقصودة. وعند الشك، استخدم الأسلوب الأكثر إسهابًا قليلًا.</p>
+<pre><code>// Good:
+for _, sql := range queries {
+  log.V(1).Infof(&quot;Handling %v&quot;, sql)
+  if log.V(2) {
+    log.Infof(&quot;Handling %v&quot;, sql.Explain())
+  }
+  sql.Run(...)
+}
+</code></pre>
+<pre><code>// Bad:
+// sql.Explain called even when this log is not printed.
+log.V(2).Infof(&quot;Handling %v&quot;, sql.Explain())
+</code></pre>
+<h3 id="تهيئة-البرنامج">تهيئة البرنامج</h3>
+<p>ينبغي نشر أخطاء تهيئة البرنامج (مثل الأعلام والإعدادات غير الصحيحة) إلى الأعلى نحو <code>main</code>، التي ينبغي أن تستدعي <code>log.Exit</code> مع خطأ يشرح كيفية إصلاح الخطأ. وفي هذه الحالات، لا ينبغي عمومًا استخدام <code>log.Fatal</code>، لأن تتبّع المكدّس الذي يشير إلى موضع الفحص ليس مرجّحًا أن يكون مفيدًا مثل رسالة قابلة للتنفيذ من صنع الإنسان.</p>
+<h3 id="فحوص-البرنامج-وحالات-الذعر">فحوص البرنامج وحالات الذعر <span class="content-anchor" id="checks-and-panics"></span></h3>
+<p>كما ورد في <a href="https://google.github.io/styleguide/go/decisions#dont-panic">القرار ضد استخدام الذعر</a>، ينبغي أن تُبنى معالجة الأخطاء القياسية حول قيم الأخطاء المُعادة. وينبغي أن تفضّل المكتبات إعادة خطأ إلى المستدعي بدلًا من إجهاض البرنامج، وبخاصة في الأخطاء العابرة.</p>
+<p>يلزم أحيانًا إجراء فحوص اتساق على ثابت (invariant) وإنهاء البرنامج إذا خُورِج. وعمومًا، لا يُفعل ذلك إلا عندما يعني فشل فحص الثابت أن الحالة الداخلية أصبحت غير قابلة للاستعادة. وأكثر الطرق موثوقية للقيام بذلك في قاعدة شيفرة Google هو استدعاء <code>log.Fatal</code>. ولا يُعدّ استخدام <code>panic</code> موثوقًا في هذه الحالات، لأنه من الممكن أن تتسبب الدوال المؤجَّلة في جمود (deadlock) أو في مزيد من إفساد الحالة الداخلية أو الخارجية.</p>
+<p>وبالمثل، قاوم إغراء استعادة حالات الذعر لتجنّب الانهيارات، لأن فعل ذلك قد يؤدّي إلى نشر حالة فاسدة. فكلما بعدتَ عن موضع الذعر، قلّت معرفتك بحالة البرنامج، التي قد تكون ممسكة بأقفال أو موارد أخرى. وقد يطوّر البرنامج بعدها أنماط فشل غير متوقعة أخرى تجعل تشخيص المشكلة أصعب. وبدلًا من محاولة معالجة حالات الذعر غير المتوقعة في الشيفرة، استخدم أدوات المراقبة لإظهار الإخفاقات غير المتوقعة وإصلاح العلل المرتبطة بها بأولوية عالية.</p>
+<p><strong>ملاحظة:</strong> يخالف <a href="https://pkg.go.dev/net/http#Server">خادم <code>net/http</code></a> القياسي هذه النصيحة ويستعيد حالات الذعر من معالِجات الطلبات. ويُجمع المهندسون ذوو الخبرة في Go على أن ذلك كان خطأً تاريخيًا. وإذا أخذت عيّنة من سجلّات الخوادم في تطبيقات مكتوبة بلغات أخرى، فمن الشائع أن تجد تتبّعات مكدّس كبيرة تُركت دون معالجة. تجنّب هذا المطبّ في خوادمك.</p>
+<h3 id="متى-نستخدم-الذعر">متى نستخدم الذعر</h3>
+<p>تُصدر المكتبة القياسية حالات ذعر عند إساءة استخدام الواجهة البرمجية. فمثلًا، يُصدر <a href="https://pkg.go.dev/reflect"><code>reflect</code></a> حالة ذعر في كثير من الحالات التي يُوصَل فيها إلى قيمة بطريقة تدلّ على أنها أُسيء تفسيرها. وهذا مشابه لحالات الذعر الناتجة عن أخطاء جوهرية في اللغة مثل الوصول إلى عنصر في شريحة خارج الحدود. وينبغي أن تكتشف مراجعة الشيفرة والاختبارات مثل هذه العلل، التي لا يُتوقّع ظهورها في شيفرة الإنتاج. وتعمل حالات الذعر هذه كفحوص ثوابت لا تعتمد على مكتبة، لأن المكتبة القياسية لا تملك وصولًا إلى <a href="/arabic-cs-library/book/go-style/decisions-2/index#logging">حزمة <code>log</code> متعددة المستويات</a> التي تستخدمها قاعدة شيفرة Google.</p>
+<p>وثمّة حالة أخرى قد تكون فيها حالات الذعر مفيدة، وإن كانت غير شائعة، وهي استخدامها كتفصيل تنفيذ داخلي لحزمة لديها دائمًا استعادة (recover) مطابقة في سلسلة الاستدعاء. ويمكن أن تستفيد المحلّلات (parsers) ومجموعات الدوال الداخلية المشابهة شديدة التداخل والمترابطة ترابطًا وثيقًا من هذا التصميم، حيث تضيف مدّ إرجاعات الأخطاء تعقيدًا بلا قيمة.</p>
+<p>والسمة الأساسية لهذا التصميم هي أن <strong>حالات الذعر هذه لا يُسمح لها أبدًا بالخروج عبر حدود الحزمة</strong> ولا تشكّل جزءًا من واجهة الحزمة البرمجية. ويتحقق ذلك عادةً بدالة مؤجَّلة على المستوى الأعلى تستخدم <code>recover</code> لتحويل حالة ذعر منتشرة إلى خطأ مُعاد عند حدود الواجهة البرمجية العامة. وهو يتطلّب من الشيفرة التي تُصدر الذعر وتستعيده أن تميّز بين حالات الذعر التي ترفعها الشيفرة نفسها وتلك التي لا ترفعها:</p>
+<pre><code>// Good:
+type syntaxError struct {
+  msg string
+}
+func parseInt(in string) int {
+  n, err := strconv.Atoi(in)
+  if err != nil {
+    panic(&amp;syntaxError{&quot;not a valid integer&quot;})
+  }
+}
+func Parse(in string) (_ *Node, err error) {
+  defer func() {
+    if p := recover(); p != nil {
+      sErr, ok := p.(*syntaxError)
+      if !ok {
+        panic(p) // Propagate the panic since it is outside our code's domain.
+      }
+      err = fmt.Errorf(&quot;syntax error: %v&quot;, sErr.msg)
+    }
+  }()
+  ... // Parse input calling parseInt internally to parse integers
+}
+</code></pre>
+<blockquote>
+<p><strong>تحذير:</strong> يجب على الشيفرة التي تستخدم هذا النمط أن تعتني بإدارة أي موارد مرتبطة بالشيفرة التي تعمل في هذه الأقسام المُدارة بالتأجيل (مثل الإغلاق أو التحرير أو فتح القفل).</p>
+<blockquote>
+<p>راجع: <a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #81: Avoiding Resource Leaks in API Design</a></p>
+</blockquote>
+</blockquote>
+<p>يُستخدم الذعر أيضًا عندما لا يستطيع المترجم تحديد الشيفرة غير القابلة للوصول، مثل عند استخدام دالة مثل <code>log.Fatal</code> لا تعود:</p>
+<pre><code>// Good:
+func answer(i int) string {
+    switch i {
+    case 42:
+        return &quot;yup&quot;
+    case 54:
+        return &quot;base 13, huh&quot;
+    default:
+        log.Fatalf(&quot;Sorry, %d is not the answer.&quot;, i)
+        panic(&quot;unreachable&quot;)
+    }
+}
+</code></pre>
+<p><a href="https://pkg.go.dev/github.com/golang/glog#pkg-overview">لا تستدعِ دوال <code>log</code> قبل تحليل الأعلام.</a> وإذا كان لا بد من إنهاء البرنامج في دالة تهيئة حزمة (وهي <code>init</code> أو <a href="/arabic-cs-library/book/go-style/decisions-2/index#must-functions">دالة «must»</a>)، فيُقبَل استخدام الذعر بدلًا من استدعاء التسجيل القاتل.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://go.dev/ref/spec#Handling_panics">Handling panics</a> و<a href="https://go.dev/ref/spec#Run_time_panics">Run-time Panics</a> في مواصفة اللغة</li>
+<li><a href="https://go.dev/blog/defer-panic-and-recover">Defer, Panic, and Recover</a></li>
+<li><a href="https://eli.thegreenplace.net/2018/on-the-uses-and-misuses-of-panics-in-go/">On the uses and misuses of panics in Go</a></li>
+</ul>
+<h2 id="التوثيق">التوثيق <span class="content-anchor" id="documentation"></span></h2>
+<h3 id="الاصطلاحات">الاصطلاحات <span class="content-anchor" id="documentation-conventions"></span></h3>
+<p>يوسّع هذا القسم قسم <a href="/arabic-cs-library/book/go-style/decisions-2/index#commentary">التعليقات</a> في وثيقة القرارات.</p>
+<p>شيفرة Go الموثّقة بأسلوب مألوف أسهل قراءةً وأقل عرضة لسوء الاستخدام من شيفرة موثّقة توثيقًا خاطئًا أو غير موثّقة على الإطلاق. وتظهر <a href="/arabic-cs-library/book/go-style/decisions-2/index#examples">الأمثلة</a> القابلة للتشغيل في Godoc وCode Search، وهي طريقة ممتازة لشرح كيفية استخدام شيفرتك.</p>
+<h4>المعاملات والإعدادات</h4>
+<p>لا يلزم تعداد كل معامل في التوثيق. وينطبق ذلك على:</p>
+<ul>
+<li>معاملات الدوال والطرائق</li>
+<li>حقول البنى</li>
+<li>الواجهات البرمجية الخاصة بالخيارات</li>
+</ul>
+<p>وثّق الحقول والمعاملات المعرّضة للخطأ أو غير الواضحة ببيان سبب أهميتها.</p>
+<p>في المقتطف التالي، لا يضيف التعليق البارز معلومات مفيدة تُذكر للقارئ:</p>
+<pre><code>// Bad:
+// Sprintf formats according to a format specifier and returns the resulting
+// string.
+//
+// format is the format, and data is the interpolation data.
+func Sprintf(format string, data ...any) string
+</code></pre>
+<p>غير أن هذا المقتطف يعرض سيناريو شيفرة مشابهًا للسابق حيث يذكر التعليق بدلًا من ذلك أمرًا غير واضح أو مفيدًا جوهريًا للقارئ:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-comment">// Sprintf formats according to a format specifier and returns the resulting</span>
+<span class="hljs-comment">// string.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// The provided data is used to interpolate the format string. If the data does</span>
+<span class="hljs-comment">// not match the expected format verbs or the amount of data does not satisfy</span>
+<span class="hljs-comment">// the format specification, the function will inline warnings about formatting</span>
+<span class="hljs-comment">// errors into the output string as described by the Format errors section</span>
+<span class="hljs-comment">// above.</span>
+func <span class="hljs-title class_">Sprintf</span>(format string, data ...any) string
+</code></pre>
+<p>ضع في اعتبارك جمهورك المحتمل عند اختيار ما توثّقه وبأي عمق. فالقائمون على الصيانة، والقادمون الجدد إلى الفريق، والمستخدمون الخارجيون، وحتى أنت نفسك بعد ستة أشهر، قد يقدّرون معلومات تختلف قليلًا عمّا يدور في ذهنك عند بدء كتابة توثيقك.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #41: Identify Function Call Parameters</a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #51: Patterns for Configuration</a></li>
+</ul>
+<h4>السياقات <span class="content-anchor" id="contexts"></span></h4>
+<p>من المفهوم ضمنًا أن إلغاء وسيط السياق يقطع الدالة التي مُرِّر إليها. وإذا كان بإمكان الدالة إعادة خطأ، فمن المتعارف عليه أن يكون <code>ctx.Err()</code>.</p>
+<p>ولا حاجة إلى إعادة ذكر هذه الحقيقة:</p>
+<pre><code>// Bad:
+// Run executes the worker's run loop.
+//
+// The method will process work until the context is cancelled and accordingly
+// returns an error.
+func (Worker) Run(ctx context.Context) error
+</code></pre>
+<p>ولأن ذلك مفهوم ضمنًا، فإن ما يلي أفضل:</p>
+<pre><code>// Good:
+// Run executes the worker's run loop.
+func (Worker) Run(ctx context.Context) error
+</code></pre>
+<p>وحيث يكون سلوك السياق مختلفًا أو غير واضح، ينبغي توثيقه صراحةً إذا تحقّق أي مما يلي.</p>
+<p>تُعيد الدالة خطأً غير <code>ctx.Err()</code> عند إلغاء السياق:</p>
+<pre><code>// Good:
+// Run executes the worker's run loop.
+//
+// If the context is cancelled, Run returns a nil error.
+func (Worker) Run(ctx context.Context) error
+</code></pre>
+<p>لدى الدالة آليات أخرى قد تقطعها أو تؤثّر في عمرها:</p>
+<pre><code class="language-python">// Good:
+// Run executes the worke<span class="hljs-string">r&#x27;s run loop.
+//
+// Run processes work until the context is cancelled or Stop is called.
+// Context cancellation is handled asynchronously internally: run may return
+// before all work has stopped. The Stop method is synchronous and waits
+// until all operations from the run loop finish. Use Stop for graceful
+// shutdown.
+func (Worker) Run(ctx context.Context) error
+func (Worker) Stop()
+</span></code></pre>
+<p>لدى الدالة توقعات خاصة بشأن عمر السياق أو سلالته أو القيم المرفقة به:</p>
+<pre><code class="language-python">// Good:
+// NewReceiver starts receiving messages sent to the specified queue.
+// The context should <span class="hljs-keyword">not</span> have a deadline.
+func NewReceiver(ctx context.Context) *Receiver
+// Principal returns a human-readable name of the party who made the call.
+// The context must have a value attached to it <span class="hljs-keyword">from</span> security.NewContext.
+func Principal(ctx context.Context) (name string, ok <span class="hljs-built_in">bool</span>)
+</code></pre>
+<p><strong>تحذير:</strong> تجنّب تصميم واجهات برمجية تفرض مثل هذه المطالب على مستدعيها (مثل ألّا يكون للسياق موعد نهائي). وما سبق مجرد مثال على كيفية توثيق ذلك إذا لم يمكن تجنّبه، وليس تأييدًا للنمط.</p>
+<h4>التزامن</h4>
+<p>يفترض مستخدمو Go أن العمليات القرائية مفهوميًا آمنة للاستخدام المتزامن ولا تتطلّب مزامنة إضافية.</p>
+<p>يمكن بأمان حذف الملاحظة الإضافية حول التزامن في توثيق godoc هذا:</p>
+<pre><code>// Len returns the number of bytes of the unread portion of the buffer;
+// b.Len() == len(b.Bytes()).
+//
+// It is safe to be called concurrently by multiple goroutines.
+func (*Buffer) Len() int
+</code></pre>
+<p>غير أن العمليات المُغيِّرة لا يُفترض أنها آمنة للاستخدام المتزامن، وهي تتطلّب من المستخدم مراعاة المزامنة.</p>
+<p>وبالمثل، يمكن بأمان حذف الملاحظة الإضافية حول التزامن هنا:</p>
+<pre><code>// Grow grows the buffer's capacity.
+//
+// It is not safe to be called concurrently by multiple goroutines.
+func (*Buffer) Grow(n int)
+</code></pre>
+<p>يُشجَّع بشدة على التوثيق إذا تحقّق أي مما يلي.</p>
+<p>إذا كان غير واضح ما إذا كانت العملية قرائية أم مُغيِّرة:</p>
+<pre><code class="language-python">// Good:
+package lrucache
+// Lookup returns the data associated <span class="hljs-keyword">with</span> the key <span class="hljs-keyword">from</span> the cache.
+//
+// This operation <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> safe <span class="hljs-keyword">for</span> concurrent use.
+func (*Cache) Lookup(key string) (data []byte, ok <span class="hljs-built_in">bool</span>)
+</code></pre>
+<p>لماذا؟ لأن إصابة الذاكرة المؤقتة (cache hit) عند البحث عن المفتاح تُغيّر ذاكرة LRU المؤقتة داخليًا. وقد لا يكون هذا التنفيذ واضحًا لجميع القرّاء.</p>
+<p>توفّر الواجهة البرمجية المزامنة:</p>
+<pre><code>// Good:
+package fortune_go_proto
+// NewFortuneTellerClient returns an *rpc.Client for the FortuneTeller service.
+// It is safe for simultaneous use by multiple goroutines.
+func NewFortuneTellerClient(cc *rpc.ClientConn) *FortuneTellerClient
+</code></pre>
+<p>لماذا؟ لأن Stubby يوفّر المزامنة.</p>
+<p><strong>ملاحظة:</strong> إذا كانت الواجهة البرمجية نوعًا وكانت توفّر المزامنة بالكامل، فمن المتعارف عليه أن يوثّق تعريف النوع وحده الدلالات.</p>
+<p>إذا كانت الواجهة البرمجية تستهلك أنواعًا ينفّذها المستخدم من الواجهات، وكان لمستهلك الواجهة متطلبات تزامن معيّنة:</p>
+<pre><code>// Good:
+package health
+// A Watcher reports the health of some entity (usually a backend service).
+//
+// Watcher methods are safe for simultaneous use by multiple goroutines.
+type Watcher interface {
+    // Watch sends true on the passed-in channel when the Watcher's
+    // status has changed.
+    Watch(changed chan&lt;- bool) (unwatch func())
+    // Health returns nil if the entity being watched is healthy, or a
+    // non-nil error explaining why the entity is not healthy.
+    Health() error
+}
+</code></pre>
+<p>لماذا؟ لأن كون الواجهة البرمجية آمنة للاستخدام من عدة كوروتينات هو جزء من عقدها.</p>
+<h4>التنظيف</h4>
+<p>وثّق أي متطلبات تنظيف صريحة تتضمّنها الواجهة البرمجية. وإلا فلن يستخدم المستدعون الواجهة استخدامًا صحيحًا، ما يؤدي إلى تسرّبات الموارد وعلل أخرى محتملة.</p>
+<p>أبرِز عمليات التنظيف المتروكة للمستدعي:</p>
+<pre><code>// Good:
+// NewTicker returns a new Ticker containing a channel that will send the
+// current time on the channel after each tick.
+//
+// Call Stop to release the Ticker's associated resources when done.
+func NewTicker(d Duration) *Ticker
+func (*Ticker) Stop()
+</code></pre>
+<p>إذا كان من المحتمل ألّا يكون واضحًا كيف تُنظَّف الموارد، فاشرح الكيفية:</p>
+<pre><code class="language-python">// Good:
+// Get issues a GET to the specified URL.
+//
+// When err <span class="hljs-keyword">is</span> nil, resp always contains a non-nil resp.Body.
+// Caller should close resp.Body when done reading <span class="hljs-keyword">from</span> it.
+//
+//    resp, err := http.Get(<span class="hljs-string">&quot;http://example.com/&quot;</span>)
+//    <span class="hljs-keyword">if</span> err != nil {
+//        // handle error
+//    }
+//    defer resp.Body.Close()
+//    body, err := io.ReadAll(resp.Body)
+func (c *Client) Get(url string) (resp *Response, err error)
+</code></pre>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #110: Don’t Mix Exit With Defer</a></li>
+</ul>
+<h4>الأخطاء <span class="content-anchor" id="documentation-conventions-errors"></span></h4>
+<p>وثّق قيم الأخطاء العلامية المهمة أو أنواع الأخطاء التي تُعيدها دوالك إلى المستدعين، حتى يتوقّع المستدعون أنواع الحالات التي يمكنهم معالجتها في شيفرتهم.</p>
+<pre><code class="language-python">// Good:
+package os
+// Read reads up to <span class="hljs-built_in">len</span>(b) <span class="hljs-built_in">bytes</span> <span class="hljs-keyword">from</span> the File <span class="hljs-keyword">and</span> stores them <span class="hljs-keyword">in</span> b. It returns
+// the number of <span class="hljs-built_in">bytes</span> read <span class="hljs-keyword">and</span> <span class="hljs-built_in">any</span> error encountered.
+//
+// At end of file, Read returns <span class="hljs-number">0</span>, io.EOF.
+func (*File) Read(b []byte) (n <span class="hljs-built_in">int</span>, err error) {
+</code></pre>
+<p>عندما تُعيد دالة نوع خطأ محددًا، فبيّن بدقة ما إذا كان الخطأ مستقبِل مؤشّر أم لا:</p>
+<pre><code>// Good:
+package os
+type PathError struct {
+    Op   string
+    Path string
+    Err  error
+}
+// Chdir changes the current working directory to the named directory.
+//
+// If there is an error, it will be of type *PathError.
+func Chdir(dir string) error {
+</code></pre>
+<p>إن توثيق ما إذا كانت القيم المُعادة مستقبِلات مؤشّرات يتيح للمستدعين مقارنة الأخطاء مقارنةً صحيحة باستخدام <a href="https://pkg.go.dev/errors#Is"><code>errors.Is</code></a> و<a href="https://pkg.go.dev/errors#As"><code>errors.As</code></a> و<a href="https://pkg.go.dev/github.com/google/go-cmp/cmp"><code>package cmp</code></a>. وذلك لأن قيمة غير مؤشّرية لا تكون مكافئة لقيمة مؤشّرية.</p>
+<p><strong>ملاحظة:</strong> في مثال <code>Chdir</code>، كُتب نوع الإرجاع <code>error</code> بدلًا من <code>*PathError</code> بسبب <a href="https://go.dev/doc/faq#nil_error">طريقة عمل قيم الواجهة nil</a>.</p>
+<p>وثّق اصطلاحات الأخطاء العامة في <a href="/arabic-cs-library/book/go-style/decisions-2/index#package-comments">توثيق الحزمة</a> عندما ينطبق السلوك على معظم الأخطاء الموجودة في الحزمة:</p>
+<pre><code>// Good:
+// Package os provides a platform-independent interface to operating system
+// functionality.
+//
+// Often, more information is available within the error. For example, if a
+// call that takes a file name fails, such as Open or Stat, the error will
+// include the failing file name when printed and will be of type *PathError,
+// which may be unpacked for more information.
+package os
+</code></pre>
+<p>إن التطبيق المتأنّي لهذه المقاربات يمكن أن يضيف <a href="#error-extra-info">معلومات إضافية إلى الأخطاء</a> دون جهد كبير، ويساعد المستدعين على تجنّب إضافة تعليقات توضيحية زائدة.</p>
+<p>انظر أيضًا:</p>
+<ul>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #106: Error Naming Conventions</a></li>
+<li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #89: When to Use Canonical Status Codes as Errors</a></li>
+</ul>
+<h3 id="المعاينة">المعاينة</h3>
+<p>تتضمّن Go <a href="https://pkg.go.dev/golang.org/x/pkgsite/cmd/pkgsite">خادم توثيق</a>. ويُنصَح بمعاينة التوثيق الذي تنتجه شيفرتك قبل عملية مراجعة الشيفرة وأثناءها. ويساعد ذلك على التحقق من أن <a href="#godoc-formatting">تنسيق godoc</a> يُعرض عرضًا صحيحًا.</p>
+<h3 id="تنسيق-godoc">تنسيق godoc <span class="content-anchor" id="godoc-formatting"></span></h3>
+<p>يوفّر <a href="https://pkg.go.dev/">Godoc</a> بعض الصيغ المحددة <a href="https://go.dev/doc/comment">لتنسيق التوثيق</a>.</p>
+<p>يلزم سطر فارغ للفصل بين الفقرات:</p>
+<pre><code>// Good:
+// LoadConfig reads a configuration out of the named file.
+//
+// See some/shortlink for config file format details.
+</code></pre>
+<p>يمكن أن تحتوي ملفات الاختبار على <a href="/arabic-cs-library/book/go-style/decisions-2/index#examples">أمثلة قابلة للتشغيل</a> تظهر مرتبطة بالتوثيق المقابل في godoc:</p>
+<pre><code>// Good:
+func ExampleConfig_WriteTo() {
+  cfg := &amp;Config{
+    Name: &quot;example&quot;,
+  }
+  if err := cfg.WriteTo(os.Stdout); err != nil {
+    log.Exitf(&quot;Failed to write config: %s&quot;, err)
+  }
+  // Output:
+  // {
+  //   &quot;name&quot;: &quot;example&quot;
+  // }
+}
+</code></pre>
+<p>إضافة مسافتين إضافيتين في بداية الأسطر تنسّقها كما هي حرفيًا:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-comment">// Update runs the function in an atomic transaction.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// This is typically used with an anonymous TransactionFunc:</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//   if err := db.Update(func(state *State) { state.Foo = bar }); err != nil {</span>
+<span class="hljs-comment">//     //...</span>
+<span class="hljs-comment">//   }</span>
+</code></pre>
+<p>لاحظ، مع ذلك، أنه قد يكون من الأنسب غالبًا وضع الشيفرة في مثال قابل للتشغيل بدلًا من تضمينها في تعليق.</p>
+<p>ويمكن الاستفادة من هذا التنسيق الحرفي لتنسيقات ليست أصلية في godoc، مثل القوائم والجداول:</p>
+<pre><code class="language-python">// Good:
+// LoadConfig reads a configuration out of the named file.
+//
+// LoadConfig treats the following keys <span class="hljs-keyword">in</span> special ways:
+//   <span class="hljs-string">&quot;import&quot;</span> will make this configuration inherit <span class="hljs-keyword">from</span> the named file.
+//   <span class="hljs-string">&quot;env&quot;</span> <span class="hljs-keyword">if</span> present will be populated <span class="hljs-keyword">with</span> the system environment.
+</code></pre>
+<p>يُنسَّق كعنوان أي سطر واحد يبدأ بحرف كبير، ولا يحتوي على علامات ترقيم سوى الأقواس والفواصل، ويعقبه سطر آخر:</p>
+<pre><code>// Good:
+// The following line is formatted as a heading.
+//
+// Using headings
+//
+// Headings come with autogenerated anchor tags for easy linking.
+</code></pre>
+<h3 id="تعزيز-الإشارة">تعزيز الإشارة</h3>
+<p>أحيانًا يبدو سطر من الشيفرة كشيء مألوف، لكنه في الحقيقة ليس كذلك. ومن أفضل الأمثلة على ذلك فحص <code>err == nil</code> (لأن <code>err != nil</code> أكثر شيوعًا بكثير). والفحصان الشرطيان التاليان يصعب تمييزهما:</p>
+<pre><code>// Good:
+if err := doSomething(); err != nil {
+    // ...
+}
+</code></pre>
+<pre><code>// Bad:
+if err := doSomething(); err == nil {
+    // ...
+}
+</code></pre>
+<p>ويمكنك بدلًا من ذلك «تعزيز» إشارة الشرط بإضافة تعليق:</p>
+<pre><code>// Good:
+if err := doSomething(); err == nil { // if NO error
+    // ...
+}
+</code></pre>
+<p>فيلفت التعليق الانتباه إلى الفرق في الشرط.</p>
+<h2 id="تصريحات-المتغيرات">تصريحات المتغيّرات</h2>
+<h3 id="التهيئة">التهيئة</h3>
+<p>من أجل الاتساق، فضّل <code>:=</code> على <code>var</code> عند تهيئة متغيّر جديد بقيمة غير صفرية.</p>
+<pre><code>// Good:
+i := 42
+</code></pre>
+<pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
+<span class="hljs-keyword">var</span> i = <span class="hljs-number">42</span>
+</code></pre>
+<h3 id="تصريح-المتغيرات-بقيم-صفرية">تصريح المتغيّرات بقيم صفرية <span class="content-anchor" id="vardeclzero"></span></h3>
+<p>تستخدم التصريحات التالية <a href="https://golang.org/ref/spec#The_zero_value">القيمة الصفرية</a>:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-title function_">var</span> (
+    coords <span class="hljs-title class_">Point</span>
+    magic  [<span class="hljs-number">4</span>]byte
+    primes []int
+)
+</code></pre>
+<p>ينبغي أن تصرّح بالقيم باستخدام القيمة الصفرية عندما تريد التعبير عن قيمة فارغة <strong>جاهزة للاستخدام لاحقًا</strong>. وقد يكون استخدام المركّبات الحرفية مع تهيئة صريحة ثقيلًا:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
+<span class="hljs-title function_">var</span> (
+    coords = <span class="hljs-title class_">Point</span>{<span class="hljs-attr">X</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">Y</span>: <span class="hljs-number">0</span>}
+    magic  = [<span class="hljs-number">4</span>]byte{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>}
+    primes = []<span class="hljs-title function_">int</span>(nil)
+)
+</code></pre>
+<p>من التطبيقات الشائعة لتصريح القيمة الصفرية استخدام متغيّر كمُخرَج عند فكّ التسلسل:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-keyword">var</span> coords <span class="hljs-title class_">Point</span>
+<span class="hljs-keyword">if</span> err := json.<span class="hljs-title class_">Unmarshal</span>(data, &amp;coords); err != nil {
+</code></pre>
+<p>ولا بأس أيضًا في استخدام القيمة الصفرية بالشكل التالي عندما تحتاج إلى متغيّر من نوع مؤشّر:</p>
+<pre><code>// Good:
+msg := new(pb.Bar) // or &quot;&amp;pb.Bar{}&quot;
+if err := proto.Unmarshal(data, msg); err != nil {
+</code></pre>
+<p>إذا كنت تحتاج إلى قفل أو حقل آخر <a href="/arabic-cs-library/book/go-style/decisions-2/index#copying">يجب ألّا يُنسَخ</a> في بنيتك، فيمكنك جعله نوع قيمة للاستفادة من تهيئة القيمة الصفرية. وهذا يعني أن النوع الحاوي يجب الآن أن يُمرَّر عبر مؤشّر لا كقيمة. ويجب أن تتّخذ الطرائق على النوع مستقبِلات مؤشّرات.</p>
+<pre><code>// Good:
+type Counter struct {
+    // This field does not have to be &quot;*sync.Mutex&quot;. However,
+    // users must now pass *Counter objects between themselves, not Counter.
+    mu   sync.Mutex
+    data map[string]int64
+}
+// Note this must be a pointer receiver to prevent copying.
+func (c *Counter) IncrementBy(name string, n int64)
+</code></pre>
+<p>لا بأس في استخدام أنواع القيم لمتغيّرات محلية من مركّبات (مثل البنى والمصفوفات) حتى لو كانت تحتوي على مثل هذه الحقول غير القابلة للنسخ. غير أنه إذا كانت الدالة تُعيد المركّب، أو إذا كانت كل عمليات الوصول إليه ستضطر في النهاية إلى أخذ عنوانه، ففضّل تصريح المتغيّر كنوع مؤشّر من البداية. وبالمثل، ينبغي تصريح رسائل protobuf كنواع مؤشّرات.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+func <span class="hljs-title class_">NewCounter</span>(name string) *<span class="hljs-title class_">Counter</span> {
+    c := <span class="hljs-title function_">new</span>(<span class="hljs-title class_">Counter</span>) <span class="hljs-comment">// &quot;&amp;Counter{}&quot; is also fine.</span>
+    <span class="hljs-title function_">registerCounter</span>(name, c)
+    <span class="hljs-keyword">return</span> c
+}
+<span class="hljs-keyword">var</span> msg = <span class="hljs-title function_">new</span>(pb.<span class="hljs-property">Bar</span>) <span class="hljs-comment">// or &quot;&amp;pb.Bar{}&quot;.</span>
+</code></pre>
+<p>وذلك لأن <code>*pb.Something</code> يحقّق <a href="https://pkg.go.dev/google.golang.org/protobuf/proto#Message"><code>proto.Message</code></a> بينما لا يفعل <code>pb.Something</code> ذلك.</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
+func <span class="hljs-title class_">NewCounter</span>(name string) *<span class="hljs-title class_">Counter</span> {
+    <span class="hljs-keyword">var</span> c <span class="hljs-title class_">Counter</span>
+    <span class="hljs-title function_">registerCounter</span>(name, &amp;c)
+    <span class="hljs-keyword">return</span> &amp;c
+}
+<span class="hljs-keyword">var</span> msg = pb.<span class="hljs-property">Bar</span>{}
+</code></pre>
+<blockquote>
+<p><strong>مهم:</strong> يجب تهيئة أنواع الخرائط تهيئةً صريحة قبل أن يمكن تعديلها. غير أن القراءة من خرائط ذات قيمة صفرية أمر لا بأس به إطلاقًا.</p>
+<blockquote>
+<p>بالنسبة إلى أنواع الخرائط والشرائح، إذا كانت الشيفرة حساسة للأداء بشكل خاص وإذا كنت تعرف الأحجام مسبقًا، فراجع قسم <a href="#vardeclsize">تلميحات الحجم</a>.</p>
+</blockquote>
+</blockquote>
+<h3 id="المركبات-الحرفية">المركّبات الحرفية <span class="content-anchor" id="vardeclcomposite"></span></h3>
+<p>التصريحات التالية هي تصريحات <a href="https://golang.org/ref/spec#Composite_literals">مركّبات حرفية</a>:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-title function_">var</span> (
+    coords   = <span class="hljs-title class_">Point</span>{<span class="hljs-attr">X</span>: x, <span class="hljs-attr">Y</span>: y}
+    magic    = [<span class="hljs-number">4</span>]byte{<span class="hljs-string">&#x27;I&#x27;</span>, <span class="hljs-string">&#x27;W&#x27;</span>, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>}
+    primes   = []int{<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>}
+    captains = map[string]string{<span class="hljs-string">&quot;Kirk&quot;</span>: <span class="hljs-string">&quot;James Tiberius&quot;</span>, <span class="hljs-string">&quot;Picard&quot;</span>: <span class="hljs-string">&quot;Jean-Luc&quot;</span>}
+)
+</code></pre>
+<p>ينبغي أن تصرّح بقيمة باستخدام مركّب حرفي عندما تعرف العناصر أو الأعضاء الأولية.</p>
+<p>وفي المقابل، قد يكون استخدام المركّبات الحرفية للتصريح بقيم فارغة أو بلا أعضاء مُشوِّشًا بصريًا مقارنةً بـ<a href="#vardeclzero">تهيئة القيمة الصفرية</a>.</p>
+<p>عندما تحتاج إلى مؤشّر إلى قيمة صفرية، لديك خياران: المركّبات الحرفية الفارغة و<code>new</code>. وكلاهما جيد، لكن الكلمة المفتاحية <code>new</code> يمكن أن تذكّر القارئ بأنه لو كانت هناك حاجة إلى قيمة غير صفرية، فلن ينجح المركّب الحرفي:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-title function_">var</span> (
+  buf = <span class="hljs-title function_">new</span>(bytes.<span class="hljs-property">Buffer</span>) <span class="hljs-comment">// non-empty Buffers are initialized with constructors.</span>
+  msg = <span class="hljs-title function_">new</span>(pb.<span class="hljs-property">Message</span>) <span class="hljs-comment">// non-empty proto messages are initialized with builders or by setting fields one by one.</span>
+)
+</code></pre>
+<h3 id="تلميحات-الحجم">تلميحات الحجم <span class="content-anchor" id="vardeclsize"></span></h3>
+<p>التصريحات التالية تستفيد من تلميحات الحجم لتخصيص السعة مسبقًا:</p>
+<pre><code class="language-javascript"><span class="hljs-comment">// Good:</span>
+<span class="hljs-title function_">var</span> (
+    <span class="hljs-comment">// Preferred buffer size for target filesystem: st_blksize.</span>
+    buf = <span class="hljs-title function_">make</span>([]byte, <span class="hljs-number">131072</span>)
+    <span class="hljs-comment">// Typically process up to 8-10 elements per run (16 is a safe assumption).</span>
+    q = <span class="hljs-title function_">make</span>([]<span class="hljs-title class_">Node</span>, <span class="hljs-number">0</span>, <span class="hljs-number">16</span>)
+    <span class="hljs-comment">// Each shard processes shardSize (typically 32000+) elements.</span>
+    seen = <span class="hljs-title function_">make</span>(map[string]bool, shardSize)
+)
+</code></pre>
+<p>تُعدّ تلميحات الحجم والتخصيص المسبق خطوات مهمة <strong>عند الجمع بينها وبين تحليل تجريبي للشيفرة وتكاملاتها</strong>، لإنشاء شيفرة حساسة للأداء وفعّالة في استخدام الموارد.</p>
+<p>لا تحتاج معظم الشيفرات إلى تلميح حجم أو تخصيص مسبق، ويمكنها أن تتيح لوقت التشغيل تنمية الشريحة أو الخريطة حسب الحاجة. ولا بأس في التخصيص المسبق عندما يكون الحجم النهائي معروفًا (مثل التحويل بين خريطة وشريحة)، لكن هذا ليس شرطًا للقابلية للقراءة، وقد لا يستحق الفوضى البصرية في الحالات الصغيرة.</p>
+<p><strong>تحذير:</strong> قد يؤدي تخصيص ذاكرة أكثر من حاجتك إلى إهدار الذاكرة في الأسطول (fleet) أو حتى الإضرار بالأداء. وعند الشك، راجع <a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #3: Benchmarking Go Code</a> وارجع افتراضيًا إلى <a href="#vardeclzero">تهيئة صفرية</a> أو <a href="#vardeclcomposite">تصريح بمركّب حرفي</a>.</p>
+<h3 id="اتجاه-القناة">اتجاه القناة</h3>
+<p>حدّد <a href="https://go.dev/ref/spec#Channel_types">اتجاه القناة</a> حيث أمكن.</p>
+<pre><code class="language-python">// Good:
+// <span class="hljs-built_in">sum</span> computes the <span class="hljs-built_in">sum</span> of <span class="hljs-built_in">all</span> of the values. It reads <span class="hljs-keyword">from</span> the channel until
+// the channel <span class="hljs-keyword">is</span> closed.
+func <span class="hljs-built_in">sum</span>(values &lt;-chan <span class="hljs-built_in">int</span>) <span class="hljs-built_in">int</span> {
+    // ...
+}
+</code></pre>
+<p>يمنع ذلك أخطاء برمجية عابرة يمكن حدوثها دون التحديد:</p>
+<pre><code>// Bad:
+func sum(values chan int) (out int) {
+    for v := range values {
+        out += v
+    }
+    // values must already be closed for this code to be reachable, which means
+    // a second close triggers a panic.
+    close(values)
+}
+</code></pre>
+<p>وعند تحديد الاتجاه، يلتقط المترجم أخطاء بسيطة كهذه. كما يساعد ذلك على نقل قدر من الملكية إلى النوع.</p>
+<p>انظر أيضًا محاضرة Bryan Mills «Rethinking Classical Concurrency Patterns»: <a href="https://drive.google.com/file/d/1nPdvhB0PutEJzdCq5ms6UI58dp50fcAN/view?usp=sharing">الشرائح</a> <a href="https://www.youtube.com/watch?v=5zXAHh5tJqQ">الفيديو</a>.</p>
+`,c={book:e,chapter:n,chapterTitle:s,slug:o,title:r,headings:a,html:t};export{e as book,n as chapter,s as chapterTitle,c as default,a as headings,t as html,o as slug,r as title};

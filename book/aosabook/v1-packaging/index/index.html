@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -104,7 +104,7 @@ setup(name=<span class="hljs-string">&#x27;MyProject&#x27;</span>, version=<span
 MyProject
 </code></pre>
 <p>وعليه، فإنَّ تثبيتَ مشروعٍ ما أو الحصولَ على معلوماتٍ عنه يتمّ دائمًا باستدعاء <code>Distutils</code> من خلال هذا الملف. فمثلًا، لمعرفة اسم المشروع:</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-setup-py.webp" alt="[الإعداد]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-setup-py.webp" alt="الإعداد" id="fig.packaging.setup"></p>
 <p>الشكل 14.1: الإعداد</p>
 <p>وبذلك يكون <code>setup.py</code> هو الطريقة التي يتفاعل بها الجميع مع المشروع، سواء لبنائه أو تغليفه أو نشره أو تثبيته. يصف المطوّر محتوى مشروعه عبر الخيارات التي يمرّرها إلى دالة، ويستعمل ذلك الملف في كلِّ مهامِّ التغليف التي يقوم بها. كما تستخدمه أدواتُ التثبيت لتثبيت المشروع على النظام الهدف.</p>
 <pre><code class="language-bash">$ python setup.py --name
@@ -117,7 +117,7 @@ Building against libxml2/libxslt <span class="hljs-keyword">in</span> the follow
 <p>كونُ الوحدةِ الوحيدةِ في بايثون مستعمَلةً لتغليف المشروع وإصداره <em>وتثبيته</em> في آنٍ واحدٍ، يُعدُّ من أبرز عيوب <code>Distutils</code>. فمثلًا، إن أردت الحصولَ على <code>name</code> من مشروع <code>lxml</code>، فسينفّذ <code>setup.py</code> أشياءَ كثيرةً جدًّا غيرَ إعادةِ سلسلةٍ نصيةٍ بسيطةٍ كما هو متوقَّع:</p>
 <p>قد لا ينجح الأمرُ حتى في بعض المشاريع، لأنَّ المطوّرين يفترضون أنَّ <code>setup.py</code> لا يُستعمل إلّا للتثبيت، وأنَّ ميزات <code>Distutils</code> الأخرى لا يستعملونَها إلّا أثناء التطوير. والأدوارُ المتعدّدةُ لسكربت <code>setup.py</code> تسبِّب ارتباكًا شديدًا.</p>
 <h3 id="1432-البيانات-الوصفية-و-pypi">14.3.2. البياناتُ الوصفية و PyPI</h3>
-<p>حين يبني <code>Distutils</code> توزيعًا، ينشئ ملفَّ <code>Metadata</code> يوافق المعيارَ الموصوف في PEP 314<a href="#footnote-1">1</a>. ويحتوي نسخةً ساكنةً من جميع البيانات الوصفية المعتادة، مثل اسم المشروع أو إصدار التوزيع. وحقولُ البيانات الوصفية الرئيسة هي:</p>
+<p>حين يبني <code>Distutils</code> توزيعًا، ينشئ ملفَّ <code>Metadata</code> يوافق المعيارَ الموصوف في PEP 314<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. ويحتوي نسخةً ساكنةً من جميع البيانات الوصفية المعتادة، مثل اسم المشروع أو إصدار التوزيع. وحقولُ البيانات الوصفية الرئيسة هي:</p>
 <ul>
 <li><code>Name</code>: اسمُ المشروع.</li>
 <li><code>Version</code>: إصدارُ التوزيع.</li>
@@ -129,8 +129,8 @@ Building against libxml2/libxslt <span class="hljs-keyword">in</span> the follow
 <li><code>Requires</code> و <code>Provides</code> و <code>Obsoletes</code>: تُستخدَم لتعريف التبعيات مع الوحدات.</li>
 </ul>
 <p>هذه الحقولُ قابلةٌ في معظمها بسهولةٍ لمطابقةِ نظائرها في أنظمة التغليف الأخرى.</p>
-<p>وفهرسُ حزم بايثون (Python Package Index) أي PyPI<a href="#footnote-2">2</a>، وهو مستودعٌ مركزيٌّ للحزم مثل CPAN، يستطيع تسجيلَ المشاريع ونشرَ الإصدارات عبر أوامر <code>register</code> و <code>upload</code> في <code>Distutils</code>. يبني الأمرُ <code>register</code> ملفَّ <code>Metadata</code> ويرسله إلى PyPI، مما يتيح للناس والأدوات—مثل أدوات التثبيت—تصفّحَها عبر صفحات الويب أو عبر خدمات الويب.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-pypi.webp" alt="[مستودع PyPI]"></p>
+<p>وفهرسُ حزم بايثون (Python Package Index) أي PyPI<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>، وهو مستودعٌ مركزيٌّ للحزم مثل CPAN، يستطيع تسجيلَ المشاريع ونشرَ الإصدارات عبر أوامر <code>register</code> و <code>upload</code> في <code>Distutils</code>. يبني الأمرُ <code>register</code> ملفَّ <code>Metadata</code> ويرسله إلى PyPI، مما يتيح للناس والأدوات—مثل أدوات التثبيت—تصفّحَها عبر صفحات الويب أو عبر خدمات الويب.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-pypi.webp" alt="مستودع PyPI" id="fig.packaging.pypi"></p>
 <p>الشكل 14.2: مستودع PyPI</p>
 <p>يمكنك تصفّحَ المشاريع حسب <code>Classifiers</code>، والحصولَ على اسم المؤلِّف وعنوان المشروع. وفي الوقت نفسه، يمكن استعمالُ <code>Requires</code> لتعريف تبعياتٍ على وحدات بايثون. ويُستخدَم الخيارُ <code>requires</code> لإضافة عنصر بياناتٍ وصفيةٍ من نوع <code>Requires</code> إلى المشروع:</p>
 <pre><code class="language-python"><span class="hljs-keyword">from</span> distutils.core <span class="hljs-keyword">import</span> setup
@@ -154,7 +154,7 @@ else:
 </code></pre>
 <p>وهذا يفاقم المشكلةَ فعليًّا. تذكَّر أنَّ السكربت يُستخدَم لبناء أرشيفاتِ المصدر التي تُنشر بعد ذلك للعالم عبر PyPI. وهذا يعني أنَّ ملفَّ <code>Metadata</code> الساكنَ المُرسَل إلى PyPI يعتمد على المنصّة التي صُرِّف عليها. بمعنىً آخر، لا سبيلَ إلى الإشارة في الحقل بياناتٍ وصفية إلى أنَّه خاصٌّ بمنصّة بعينها.</p>
 <h3 id="1433-بنية-pypi">14.3.3. بنيةُ PyPI</h3>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-pypi-workflow.webp" alt="[سير عمل PyPI]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-pypi-workflow.webp" alt="سير عمل PyPI" id="fig.packaging.workflow"></p>
 <p>الشكل 14.3: سير عمل PyPI</p>
 <p>وكما ذُكر سابقًا، فإنَّ PyPI فهرسٌ مركزيٌّ لمشاريع بايثون، يستطيع الناسُ تصفّحَ المشاريع القائمة حسب الفئة أو تسجيلَ أعمالهم الخاصة. ويمكن رفع التوزيعات المصدرية أو الثنائية وإضافتُها إلى مشروعٍ قائم، ثمَّ تنزيلُها للتثبيت أو للدراسة. كما يقدِّم PyPI خدماتِ ويبٍ يمكن أن تستعملَها أدواتٌ مثل أدوات التثبيت.</p>
 <h4>تسجيل المشاريع ورفع التوزيعات</h4>
@@ -394,7 +394,7 @@ cfg = pkgutil.<span class="hljs-built_in">open</span>(<span class="hljs-string">
 <pre><code>config/mopy.cfg {confdir}/{distribution.name}
 </code></pre>
 <p>وهنا يشير المتغيِّر <code>{confdir}</code> إلى دليل إعدادات النظام، ويتضمَّن <code>{distribution.name}</code> اسمَ مشروع بايثون كما يوجد في البيانات الوصفية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-find-file.webp" alt="[العثور على ملف]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-find-file.webp" alt="العثور على ملف" id="fig.packaging.findfile"></p>
 <p>الشكل 14.4: العثور على ملف</p>
 <p>ما دام ملفُّ البيانات الوصفية <code>RESOURCES</code> هذا يُنشأ وقت التثبيت، فإنَّ الواجهةَ البرمجيةَ ستجد للمطوّر موضعَ <code>mopy.cfg</code>. وبما أنَّ <code>config/mopy.cfg</code> هو المسارُ النسبيُّ بالنسبة إلى شجرة المشروع، فهذا يعني أننا نستطيع أيضًا أن نوفِّر وضعَ تطويرٍ تُولَّد فيه بياناتُ المشروع الوصفيةُ في موضعها وتُضاف إلى مسارات البحث في <code>pkgutil</code>.</p>
 <h4>تصريحُ ملفات البيانات</h4>
@@ -405,11 +405,11 @@ resources =
         images<span class="hljs-comment">/*.jpg    {datadir}/{application.name}/
 </span></code></pre>
 <p>وستوفِّر وحدةُ <code>sysconfig</code> وتوثِّق قائمةً محدَّدةً من المتغيّرات التي يمكن استخدامها، مع قيمٍ افتراضيةٍ لكل منصّة. فمثلًا، <code>{confdir}</code> هو <code>/etc</code> على Linux. ويستطيع المُثبِّتاتُ إذن استخدامَ هذا المُوجِّهِ مقترنًا بـ <code>sysconfig</code> وقتَ التثبيت ليعرفوا أين ينبغي وضعُ الملفات. وفي النِّهاية، سيولِّدون ملفَّ <code>RESOURCES</code> المذكورَ سابقًا ضمن البيانات الوصفية المُثبَّتة، ليتمكّن <code>pkgutil</code> من العثور على الملفات مجدَّدًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-installer.webp" alt="[المُثبِّت]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-installer.webp" alt="المُثبِّت" id="fig.packaging.installer"></p>
 <p>الشكل 14.5: المُثبِّت</p>
 <h3 id="1444-تحسينات-pypi">14.4.4. تحسيناتُ PyPI</h3>
 <p>ذكرتُ سابقًا أنَّ PyPI كان نقطةَ فشلٍ وحيدةً فعليًّا. يعالج PEP 380 هذه المشكلةَ بتعريفِ بروتوكولِ نسخٍ متطابق (mirroring) كي يتمكّن المستخدمون من الرجوعِ إلى خوادمَ بديلةٍ حين يتعطَّل PyPI. والهدفُ هو تمكين أعضاء المجتمع من تشغيل مرايا (mirrors) حول العالم.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-mirroring.webp" alt="[النسخ المتطابق]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-packaging-mirroring.webp" alt="النسخ المتطابق" id="fig.packaging.mirroring"></p>
 <p>الشكل 14.6: النسخ المتطابق</p>
 <p>تُتاح قائمةُ المرايا في صورةِ قائمةٍ من أسماءِ المضيفات على الشكل <code>X.pypi.python.org</code>، حيث يقع <code>X</code> في التسلسل <code>a,b,c,&amp;hellip;,aa,ab,&amp;hellip;</code>. إنَّ <code>a.pypi.python.org</code> هو الخادمُ الرئيس (master)، وتبدأ المرايا من b. ويشير سجلُّ CNAME باسم <code>last.pypi.python.org</code> إلى اسمِ المضيف الأخير، فيستطيع العملاءُ الذين يستخدمون PyPI الحصولَ على قائمةِ المرايا بالنظر في سجلّ CNAME.</p>
 <p>فمثلًا، يخبرنا هذا الاستدعاء بأنَّ آخر مرآةٍ هي <code>h.pypi.python.org</code>، ما يعني أنَّ لدى PyPI حاليًّا ستَّ مرايا (من b إلى h):</p>
@@ -432,8 +432,8 @@ resources =
 <li>أو هجومُ رجلٍ في المنتصف (man-in-the-middle) بين الفهرس المركزي والمستخدم النهائي، أو بين مرآةٍ والمستخدم النهائي.</li>
 </ul>
 <p>وللكشف عن الهجوم الأول، يحتاج مؤلِّفو الحزم إلى توقيعِ حزمهم بمفاتيح PGP، ليتمكّن المستخدمونَ من التحقّق من أنَّ الحزمةَ جاءت من المؤلِّف الذي يثقون به. أمَّا بروتوكولُ النسخ المتطابق نفسه فيعالج التهديدَ الثاني فقط، مع أنَّ هناك محاولةٌ ما للكشف عن هجمات رجل في المنتصف.</p>
-<p>ويوفِّر الفهرسُ المركزيُّ مفتاحَ DSA على العنوان <code>/serverkey</code>، بصيغة PEM كما يولِّدها <code>openssl dsa -pubout</code><a href="#footnote-3">3</a>. ولا يجوز نسخُ هذا العنوان، ويجب أن تجلبَ العملاءُ <code>serverkey</code> الرسميَّ من PyPI مباشرةً، أو تستخدموا النسخةَ التي جاءت مع برمجية عميل PyPI. وينبغي للمرايا مع ذلك أن تُنزِّل المفتاحَ كي تتمكّن من كشف تدويرِ المفاتيح (key rollover).</p>
-<p>ولكلِّ حزمةٍ، تُوفَّر نسخةٌ موقَّعةٌ (mirrored signature) على العنوان <code>/serversig/package</code>. وهذه هي توقيعُ DSA الخاصُّ بالعنوان المقابل <code>/simple/package</code>، بصيغة DER، باستخدام SHA-1 مع DSA<a href="#footnote-4">4</a>.</p>
+<p>ويوفِّر الفهرسُ المركزيُّ مفتاحَ DSA على العنوان <code>/serverkey</code>، بصيغة PEM كما يولِّدها <code>openssl dsa -pubout</code><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. ولا يجوز نسخُ هذا العنوان، ويجب أن تجلبَ العملاءُ <code>serverkey</code> الرسميَّ من PyPI مباشرةً، أو تستخدموا النسخةَ التي جاءت مع برمجية عميل PyPI. وينبغي للمرايا مع ذلك أن تُنزِّل المفتاحَ كي تتمكّن من كشف تدويرِ المفاتيح (key rollover).</p>
+<p>ولكلِّ حزمةٍ، تُوفَّر نسخةٌ موقَّعةٌ (mirrored signature) على العنوان <code>/serversig/package</code>. وهذه هي توقيعُ DSA الخاصُّ بالعنوان المقابل <code>/simple/package</code>، بصيغة DER، باستخدام SHA-1 مع DSA<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>.</p>
 <p>ويحتاج العملاءُ الذين يستخدمون مرآةً إلى تنفيذ الخطوات التالية للتحقّق من حزمة:</p>
 <ol>
 <li>نزِّل صفحةَ <code>/simple</code>، واحسب تجزئةَ SHA-1 الخاصة بها.</li>
@@ -527,13 +527,26 @@ resources =
 <li>أي RFC 3280 SubjectPublicKeyInfo، مع الخوارزمية 1.3.14.3.2.12.</li>
 <li>أي بصيغة RFC 3279 Dsa-Sig-Value، التي تنشئها الخوارزمية 1.2.840.10040.4.3.</li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>The Python Enhancement Proposals, or PEPs, that we refer to are summarized at the end of this chapter <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Formerly known as the CheeseShop. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>I.e., RFC 3280 SubjectPublicKeyInfo, with the algorithm 1.3.14.3.2.12. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>I.e., as a RFC 3279 Dsa-Sig-Value, created by algorithm 1.2.840.10040.4.3. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/aosabook/v1-nosql/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">The NoSQL Ecosystem</span></a><!--]--> <!--[0--><a href="../../../../book/aosabook/v1-riak/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">Riak and Erlang/OTP</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -541,8 +554,8 @@ resources =
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

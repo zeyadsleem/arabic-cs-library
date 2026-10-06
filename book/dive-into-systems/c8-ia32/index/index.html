@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -99,12 +99,12 @@ $ less output
 <p>إذا كنت تترجم شيفرتك معنا، فقد تلاحظ أن بعض أمثلة التجميع لديك تبدو مختلفة عما هو معروض في هذا الكتاب. فالتعليمات الدقيقة التي ينتجها أي مترجم تعتمد على إصدار ذلك المترجم ونظام التشغيل الأساسي. وقد أُنشئت معظم أمثلة التجميع في هذا الكتاب على أنظمة تعمل بـ Ubuntu أو Red Hat Enterprise Linux (RHEL).</p>
 <p>في الأمثلة التالية، لا نستخدم أي رايات تحسين. فمثلًا، نترجم أي ملف مثال (<code>example.c</code>) باستخدام الأمر <code>gcc -m32 -o example example.c</code>. وبالتالي، توجد في الأمثلة التالية تعليمات كثيرة تبدو زائدة عن الحاجة. وتذكّر أن المترجم ليس &quot;ذكيًا&quot; — فهو يتبع ببساطة سلسلة من القواعد لترجمة الشيفرة المقروءة بشريًا إلى لغة الآلة. وأثناء عملية الترجمة هذه، ليس غريبًا أن تحدث بعض الزيادة. وتزيل المترجمات المحسِّنة كثيرًا من هذه الزوائد أثناء التحسين، وهو موضوع يُغطّى في <a href="https://diveintosystems.org/book/C12-CodeOpt/index.html#_code_optimization">فصل لاحق</a>.</p>
 </blockquote>
-<h3 id="811-السجلات"><a href="#_registers"></a>8.1.1. السجلات</h3>
+<h3 id="811-السجلات">8.1.1. السجلات <span class="content-anchor" id="_registers"></span></h3>
 <p>تذكّر أن <strong>السجل</strong> (register) وحدة تخزين بحجم كلمة تقع مباشرة على وحدة المعالجة المركزية (CPU). وقد توجد سجلات منفصلة للبيانات والتعليمات والعناوين. فمثلًا، يحتوي معالج Intel على ثمانية سجلات إجمالًا لتخزين بيانات 32 بت:</p>
 <p><code>%eax</code> و<code>%ebx</code> و<code>%ecx</code> و<code>%edx</code> و<code>%edi</code> و<code>%esi</code> و<code>%esp</code> و<code>%ebp</code>.</p>
 <p>يمكن للبرامج القراءة من جميع هذه السجلات الثمانية والكتابة إليها. وتحمل السجلات الستة الأولى بيانات عامة الغرض، بينما تُحجز آخر سجلين عادةً لحمل بيانات العناوين. ومع أن البرنامج قد يفسّر محتوى سجل عام الغرض كأعداد صحيحة أو كعناوين، فإن السجل نفسه لا يميّز بينها. ويُعرف السجلان الأخيران (<code>%esp</code> و<code>%ebp</code>) بـ<strong>مؤشّر المكدّس</strong> (stack pointer) و<strong>مؤشّر الإطار</strong> (frame pointer) على الترتيب. ويحتفظ المترجم بهذين السجلين لعمليات تحافظ على تخطيط مكدّس البرنامج. وعادةً يشير <code>%esp</code> إلى قمة مكدّس البرنامج، بينما يشير <code>%ebp</code> إلى قاعدة إطار المكدّس الحالي. ونناقش إطارات المكدّس وهذين السجلين بمزيد من التفصيل في مناقشتنا لـ<a href="https://diveintosystems.org/book/C8-IA32/functions.html#_functions_in_assembly">الدوال</a>.</p>
 <p>آخر سجل جدير بالذكر هو <code>%eip</code> أو <strong>مؤشّر التعليمات</strong> (instruction pointer)، ويُسمّى أحيانًا <strong>عدّاد البرنامج</strong> (program counter, PC). وهو يشير إلى التعليمة التالية التي ستُنفّذها وحدة المعالجة المركزية. وخلافًا للسجلات الثمانية المذكورة سابقًا، لا يمكن للبرامج الكتابة مباشرة في السجل <code>%eip</code>.</p>
-<h3 id="812-ترميز-السجلات-المتقدم"><a href="#_advanced_register_notation"></a>8.1.2. ترميز السجلات المتقدم</h3>
+<h3 id="812-ترميز-السجلات-المتقدم">8.1.2. ترميز السجلات المتقدم <span class="content-anchor" id="_advanced_register_notation"></span></h3>
 <p>بالنسبة للسجلات الستة الأولى المذكورة، توفّر بنية ISA آلية للوصول إلى البتات الـ16 السفلى من كل سجل. وتوفّر بنية ISA أيضًا آلية منفصلة للوصول إلى المكوّنات ذات الثماني بتات من البتات الـ16 السفلى للسجلات الأربعة الأولى من هذه السجلات. ويسرد <a href="#RegisterList32">الجدول 1</a> كل سجل من السجلات الستة وآليات ISA (إن وُجدت) للوصول إلى مكوّناته من البايتات.</p>
 <table>
 <thead>
@@ -156,7 +156,7 @@ $ less output
 </table>
 <p>يمكن الوصول إلى البتات الـ16 السفلى من أي سجل من السجلات المذكورة آنفًا بالإشارة إلى الحرفين الأخيرين في اسم السجل. فمثلًا، استخدم <code>%ax</code> للوصول إلى البتات الـ16 السفلى من <code>%eax</code>.</p>
 <p>يمكن الوصول إلى البايتين <em>العلوي</em> و<em>السفلي</em> داخل البتات الـ16 السفلى من السجلات الأربعة الأولى المذكورة بأخذ الحرفين الأخيرين من اسم السجل واستبدال الحرف الأخير إما بحرف <code>h</code> (لـ<em>الأعلى</em>) أو بحرف <code>l</code> (لـ<em>الأدنى</em>) حسب البايت المطلوب. فمثلًا، يشير <code>%al</code> إلى البتات الثماني السفلى من السجل <code>%ax</code>، بينما يشير <code>%ah</code> إلى البتات الثماني العليا من السجل <code>%ax</code>. ويستخدم المترجم هذه السجلات ذات الثماني بتات عادةً لتخزين قيم بايت واحد لعمليات معينة، مثل الإزاحات على مستوى البتات (فلا يمكن إزاحة سجل 32-بت أكثر من 32 موضعًا، والعدد 32 لا يحتاج إلا إلى بايت واحد للتخزين). وبشكل عام، سيستخدم المترجم أصغر سجل مكوّن لازم لإكمال العملية.</p>
-<h3 id="813-بنية-التعليمة"><a href="#_instruction_structure"></a>8.1.3. بنية التعليمة</h3>
+<h3 id="813-بنية-التعليمة">8.1.3. بنية التعليمة <span class="content-anchor" id="_instruction_structure"></span></h3>
 <p>تتكوّن كل تعليمة من رمز عملية (operation code أو <strong>opcode</strong>) يحدّد ما تفعله، ومعامل واحد أو أكثر (<strong>operands</strong>) يخبر التعليمة كيف تفعل ذلك. فمثلًا، التعليمة <code>add $0x2, %eax</code> لها رمز العملية <code>add</code> والمعاملان <code>$0x2</code> و<code>%eax</code>.</p>
 <p>يقابل كل معامل موضعًا مصدريًا أو هدفًا لعملية محددة. وتوجد أنواع متعددة من المعاملات:</p>
 <ul>
@@ -164,7 +164,7 @@ $ less output
 <li>تشير صيغ <strong>السجل</strong> إلى سجلات فردية. وتحدّد التعليمة <code>add $0x2, %eax</code> السجل <code>%eax</code> كموقع هدف تُخزَّن فيه نتيجة عملية <code>add</code>.</li>
 <li>صيغ <strong>الذاكرة</strong> تقابل قيمة ما داخل الذاكرة الرئيسية (RAM) وتُستخدم عادةً لعمليات البحث بالعنوان. ويمكن أن تحتوي صيغ عناوين الذاكرة على مزيج من السجلات والقيم الثابتة. فمثلًا، في التعليمة <code>mov 0x8(%ebp),%eax</code>، المعامل <code>0x8(%ebp)</code> مثال على صيغة الذاكرة. وهو يعني تقريبًا &quot;أضف 0x8 إلى القيمة الموجودة في السجل <code>%ebp</code>، ثم نفّذ بحثًا في الذاكرة&quot;. وإذا كان هذا يبدو كإلغاء إشارة مؤشّر، فذلك لأنه كذلك فعلًا!</li>
 </ul>
-<h3 id="814-مثال-باستخدام-المعاملات"><a href="#_an_example_with_operands"></a>8.1.4. مثال باستخدام المعاملات</h3>
+<h3 id="814-مثال-باستخدام-المعاملات">8.1.4. مثال باستخدام المعاملات <span class="content-anchor" id="_an_example_with_operands"></span></h3>
 <p>أفضل طريقة لشرح المعاملات بالتفصيل هي تقديم مثال سريع. لنفترض أن الذاكرة تحتوي على القيم التالية:</p>
 <table>
 <thead>
@@ -295,7 +295,7 @@ $ less output
 <li>في حالات عمليات القياس (انظر المعاملين الأخيرين في <a href="#Operands32">الجدول 2</a>)، يجب أن يكون معامل القياس واحدًا من 1 أو 2 أو 4 أو 8.</li>
 </ul>
 <p>يُقدَّم <a href="#Operands32">الجدول 2</a> كمرجع؛ غير أن فهم صيغ المعاملات الأساسية سيساعد على تحسين سرعة القارئ في تحليل لغة التجميع.</p>
-<h3 id="815-لواحق-التعليمات"><a href="#_instruction_suffixes"></a>8.1.5. لواحق التعليمات</h3>
+<h3 id="815-لواحق-التعليمات">8.1.5. لواحق التعليمات <span class="content-anchor" id="_instruction_suffixes"></span></h3>
 <p>في حالات عدة في الأمثلة القادمة، تحمل التعليمات الشائعة والحسابية لاحقة تشير إلى <em>حجم</em> البيانات التي تُجرى عليها العملية على مستوى الشيفرة (والمرتبط بـ<em>النوع</em>). ويترجم المترجم الشيفرة تلقائيًا إلى تعليمات باللاحقة المناسبة. ويعرض <a href="#Suffixes32">الجدول 3</a> اللواحق الشائعة لتعليمات x86.</p>
 <table>
 <thead>
@@ -374,8 +374,8 @@ mov S, (%esp)
 <pre><code>mov (%esp), D
 add $4, %esp
 </code></pre>
-<p>لاحظ أنه بينما تتطلب التعليمات الثلاث في <a href="#Basic">[Basic]</a> معاملين، فإن التعلميتين <code>push</code> و<code>pop</code> في <a href="#Stack">[Stack]</a> تتطلبان معاملًا واحدًا فقط لكل منهما.</p>
-<h3 id="821-جمع-كل-ذلك-معا-مثال-أكثر-تحديدا"><a href="#_putting_it_all_together_a_more_concrete_example"></a>8.2.1. جمع كل ذلك معًا: مثال أكثر تحديدًا</h3>
+<p>لاحظ أنه بينما تتطلب التعليمات الثلاث في <a href="#Basic">Basic</a> معاملين، فإن التعلميتين <code>push</code> و<code>pop</code> في <a href="#Stack">Stack</a> تتطلبان معاملًا واحدًا فقط لكل منهما.</p>
+<h3 id="821-جمع-كل-ذلك-معا-مثال-أكثر-تحديدا">8.2.1. جمع كل ذلك معًا: مثال أكثر تحديدًا <span class="content-anchor" id="_putting_it_all_together_a_more_concrete_example"></span></h3>
 <p>لنلقِ نظرة أقرب على الدالة <code>adder2</code>:</p>
 <pre><code class="language-c"><span class="hljs-comment">//adds two to an integer and returns the result</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">adder2</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> {
@@ -393,7 +393,7 @@ add $4, %esp
 </code></pre>
 <p>تتكوّن شيفرة التجميع من تعليمة <code>push</code>، تليها تعلميتا <code>mov</code>، وتعليمة <code>add</code>، وتعليمة <code>pop</code>، وأخيرًا تعليمة <code>ret</code>. ولفهم كيفية تنفيذ وحدة المعالجة المركزية لهذه المجموعة من التعليمات، علينا العودة إلى بنية <a href="https://diveintosystems.org/book/C2-C_depth/scope_memory.html#_parts_of_program_memory_and_scope">ذاكرة البرنامج</a>. وتذكّر أنه في كل مرة ينفّذ فيها برنامج ما، يخصّص نظام التشغيل فضاء عنونة البرنامج الجديد (المعروف أيضًا بـ<strong>الذاكرة الظاهرية</strong>). وسنغطي <a href="https://diveintosystems.org/book/C13-OS/vm.html#_virtual_memory">الذاكرة الظاهرية</a> والمفهوم المرتبط بها، أي <a href="https://diveintosystems.org/book/C13-OS/processes.html#_processes">العمليات</a>، بمزيد من التفصيل في الفصل 13؛ ويكفي في الوقت الحالي أن نتصور العملية كتجريد لبرنامج قيد التنفيذ، والذاكرة الظاهرية كالذاكرة المخصّصة لعملية واحدة. ولكل عملية منطقة ذاكرة خاصة بها تُسمى <strong>مكدّس الاستدعاء</strong>. وضع في اعتبارك أن مكدّس الاستدعاء يقع في ذاكرة العملية/الظاهرية، بخلاف السجلات (التي تقع على وحدة المعالجة المركزية).</p>
 <p>يوضّح <a href="#InitialStep32">الشكل 2</a> حالة نموذجية لمكدّس الاستدعاء والسجلات قبل تنفيذ الدالة <code>adder2</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-ex1_1.webp" alt="frame1"> الشكل 2. مكدّس التنفيذ قبل التنفيذ</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-ex1_1.webp" alt="frame1" id="InitialStep32"> الشكل 2. مكدّس التنفيذ قبل التنفيذ</p>
 <p>لاحظ أن المكدّس ينمو نحو العناوين <em>الأدنى</em>. ويحتوي السجلان <code>%eax</code> و<code>%edx</code> حاليًا على قيم غير ذات معنى. وقد اختُصرت العناوين المرتبطة بالتعليمات في مقطع الشيفرة من ذاكرة البرنامج (0x804840b-0x8048415) إلى (0x40b-0x415) لتحسين قابلية قراءة الشكل. وبالمثل، اختُصرت العناوين المرتبطة بمقطع مكدّس الاستدعاء من ذاكرة البرنامج إلى 0x108-0x110 من 0xffffd108-0xffffd110. وفي الحقيقة، تقع عناوين مكدّس الاستدعاء عند عناوين أعلى في ذاكرة البرنامج من عناوين مقطع الشيفرة.</p>
 <p>انتبه جيدًا إلى القيم الأولية (المختلقة) للسجلين <code>%esp</code> و<code>%ebp</code>: فهما <code>0x10c</code> و<code>0x12a</code> على الترتيب. ويحتوي مكدّس الاستدعاء حاليًا على القيمة <code>0x28</code> (أو <code>40</code>) عند عنوان المكدّس <code>0x110</code> (وسيُغطّى سبب وجودها وكيفية وصولها في مناقشتنا لـ<a href="https://diveintosystems.org/book/C8-IA32/functions.html#_functions_in_assembly">الدوال</a>). ويشير السهم في أعلى اليسار في الأشكال التالية بصريًا إلى التعليمة قيد التنفيذ. ويعرض السجل <code>%eip</code> (أو مؤشّر التعليمات) التعليمة التالية المراد تنفيذها. في البداية، يحتوي <code>%eip</code> على العنوان <code>0x40b</code> الذي يقابل التعليمة الأولى في الدالة <code>adder2</code>.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-ex1_2.webp" alt="frame2"></p>
@@ -464,7 +464,7 @@ ret
 </table>
 <p>تقابل التعلميتان <code>add</code> و<code>sub</code> الجمع والطرح، وتأخذ كل منهما معاملين. وتعرض المدخلات الثلاثة التالية التعليمات ذات السجل الواحد لعمليات الزيادة (<code>x++</code>) والإنقاص (<code>x--</code>) والسالب (<code>-x</code>) في C. وتعمل تعليمة الضرب على معاملين وتضع حاصل الضرب في الهدف. وإذا كان حاصل الضرب يحتاج إلى أكثر من 32 بت لتمثيله، فستُقتطع القيمة إلى 32 بت.</p>
 <p>تعمل تعليمة القسمة بطريقة مختلفة قليلًا. فقبل تنفيذ التعليمة <code>idiv</code>، يُفترض أن السجل <code>%eax</code> يحتوي على المقسوم. ويؤدي استدعاء <code>idiv</code> على المعامل S إلى قسمة محتويات <code>%eax</code> على S ووضع خارج القسمة في السجل <code>%eax</code> والباقي في السجل <code>%edx</code>.</p>
-<h3 id="831-تعليمات-إزاحة-البتات"><a href="#_bit_shifting_instructions"></a>8.3.1. تعليمات إزاحة البتات</h3>
+<h3 id="831-تعليمات-إزاحة-البتات">8.3.1. تعليمات إزاحة البتات <span class="content-anchor" id="_bit_shifting_instructions"></span></h3>
 <p>تتيح تعليمات إزاحة البتات للمترجم تنفيذ عمليات إزاحة البتات. وتستغرق تعليمات الضرب والقسمة عادةً وقتًا طويلًا للتنفيذ. وتوفّر إزاحة البتات للمترجم طريقًا مختصرًا للمضاعفات والمقسومات التي تكون من قوى العدد 2. فمثلًا، لحساب <code>77 * 4</code>، سيترجم معظم المترجمات هذه العملية إلى <code>77 &gt; 2</code> لتجنّب استخدام التعليمة <code>idiv</code>.</p>
 <p>ضع في اعتبارك أن إزاحة البتات يسارًا ويمينًا تُترجمان إلى تعليمات مختلفة حسب ما إذا كان الهدف إزاحة حسابية (موقّعة) أم منطقية (غير موقّعة).</p>
 <table>
@@ -503,7 +503,7 @@ ret
 <blockquote>
 <p>على مستوى لغة التجميع، لا يوجد مفهوم للأنواع. غير أن تذكّر أن الإزاحة يمينًا تعمل بشكل مختلف حسب ما إذا كانت القيمة موقّعة أم لا. وعلى مستوى لغة التجميع، يستخدم المترجم تعليمات منفصلة للتمييز بين الإزاحات المنطقية والحسابية!</p>
 </blockquote>
-<h3 id="832-تعليمات-البتات"><a href="#_bitwise_instructions"></a>8.3.2. تعليمات البتات</h3>
+<h3 id="832-تعليمات-البتات">8.3.2. تعليمات البتات <span class="content-anchor" id="_bitwise_instructions"></span></h3>
 <p>تتيح تعليمات البتات للمترجم تنفيذ عمليات على مستوى البتات على البيانات. وإحدى طرق استخدام المترجم لعمليات البتات هي تحقيق تحسينات معينة. فمثلًا، قد يختار المترجم تنفيذ 77 mod 4 بالعملية <code>77 &amp; 3</code> بدلًا من التعليمة <code>idiv</code> الأكثر تكلفة.</p>
 <p>ويسرد <a href="#Tab32Bitwise">الجدول 3</a> تعليمات البتات الشائعة.</p>
 <table>
@@ -537,7 +537,7 @@ ret
 <blockquote>
 <p>بعد قراءة هذا القسم، قد يغريك استبدال العمليات الحسابية الشائعة في شيفرة C الخاصة بك بإزاحات البتات وعمليات أخرى. وهذا <em>غير</em> مُوصى به. فمعظم المترجمات الحديثة ذكية بما يكفي لاستبدال العمليات الحسابية البسيطة بعمليات البتات عندما يكون ذلك منطقيًا، ما يجعل قيام المبرمج بذلك غير ضروري. وكقاعدة عامة، ينبغي للمبرمجين إعطاء الأولوية لقابلية قراءة الشيفرة كلما أمكن وتجنّب التحسين المبكر.</p>
 </blockquote>
-<h3 id="833-تعليمة-تحميل-العنوان-الفعال"><a href="#_the_load_effective_address_instruction"></a>8.3.3. تعليمة تحميل العنوان الفعّال</h3>
+<h3 id="833-تعليمة-تحميل-العنوان-الفعال">8.3.3. تعليمة تحميل العنوان الفعّال <span class="content-anchor" id="_the_load_effective_address_instruction"></span></h3>
 <p><em>ما شأن lea (ما شأنها) بذلك؟</em></p>
 <p><em>ما lea سوى تحميل عنوان فعّال؟</em></p>
 <p>~مع الاعتذار إلى تينا تيرنر</p>
@@ -941,7 +941,7 @@ done:
 }
 </code></pre>
 <p>هذه النسخة مطابقة للدالة <code>getSmallest</code> الأصلية. وضع في اعتبارك أن دالة مكتوبة بطرق مختلفة في لغة C يمكن أن تُترجم إلى المجموعة نفسها من تعليمات التجميع.</p>
-<h4><a href="#_the_cmov_instructions"></a>تعليمات cmov</h4>
+<h4>تعليمات cmov <span class="content-anchor" id="_the_cmov_instructions"></span></h4>
 <p>آخر مجموعة من التعليمات الشرطية نغطيها هي تعليمات <strong>النقل الشرطي</strong> (conditional move) أو <code>cmov</code>. وتنفّذ التعليمات <code>cmp</code> و<code>test</code> و<code>jmp</code> <em>نقلًا شرطيًا للتحكم</em> في البرنامج. وبعبارة أخرى، يتفرع تنفيذ البرنامج في اتجاهات كثيرة. وقد يمثّل ذلك مشكلة كبيرة لتحسين الشيفرة، لأن هذه التفريعات مكلفة جدًا.</p>
 <p>وفي المقابل، تنفّذ التعليمة <code>cmov</code> <em>نقلًا شرطيًا للبيانات</em>. وبعبارة أخرى، يُنفَّذ كلٌّ من <code>then</code>-statement<code> و</code>else<code>-statement</code> في العبارة الشرطية، وتُوضع البيانات في السجل المناسب بناءً على نتيجة الشرط.</p>
 <p>غالبًا ما يؤدي استخدام <strong>التعبير الثلاثي</strong> (ternary expression) في C إلى أن يولّد المترجم تعليمة <code>cmov</code> بدلًا من القفزات. وبالنسبة لعبارة if-then-else القياسية، يكون التعبير الثلاثي بالصيغة:</p>
@@ -1081,7 +1081,7 @@ done:
   <span class="hljs-number">0x8048437</span> &lt;+<span class="hljs-number">44</span>&gt;:  ret
 </code></pre>
 <p>مرة أخرى، لن نرسم المكدّس صراحةً في هذا المثال. غير أننا نشجّع القراء على رسم المكدّس بأنفسهم. لنحلّل مقطع التجميع هذا على أجزاء:</p>
-<h4><a href="#_the_first_five_instructions"></a>التعليمات الخمس الأولى</h4>
+<h4>التعليمات الخمس الأولى <span class="content-anchor" id="_the_first_five_instructions"></span></h4>
 <p>تهيّئ التعليمات الخمس الأولى من هذه الدالة المكدّس لتنفيذ الدالة:</p>
 <pre><code>0x804840b &lt;+0&gt;:   push   %ebp                 # save ebp on stack
 0x804840c &lt;+1&gt;:   mov    %esp,%ebp            # update ebp (new stack frame)
@@ -1090,7 +1090,7 @@ done:
 0x8048418 &lt;+13&gt;:  movl   $0x1,-0x4(%ebp)      # place 1 at ebp-0x4 (i)
 </code></pre>
 <p>تذكّر أن مواقع المكدّس تخزّن <em>متغيرات مؤقتة</em> في الدالة. وللتبسيط، سنشير إلى الموقع المعلَّم بـ<code>%ebp - 0x8</code> باسم <code>total</code> وإلى <code>%ebp - 0x4</code> باسم <code>i</code>. ويقع المعامل المدخل للدالة <code>sumUp</code> عند <code>%ebp 0x8</code>.</p>
-<h4><a href="#_the_heart_of_the_loop"></a>قلب الحلقة</h4>
+<h4>قلب الحلقة <span class="content-anchor" id="_the_heart_of_the_loop"></span></h4>
 <p>تمثّل التعليمات السبع التالية في الدالة <code>sumUp</code> قلب الحلقة:</p>
 <pre><code>0x804841f &lt;+20&gt;:  jmp    0x804842b &lt;sumUp+32&gt;  # goto &lt;sumUp+32&gt;
 0x8048421 &lt;+22&gt;:  mov    -0x4(%ebp),%eax       # copy i to eax
@@ -1158,7 +1158,7 @@ start:
     <span class="hljs-keyword">return</span> total;
 }
 </code></pre>
-<h4><a href="#_for_loops_in_assembly"></a>حلقات for في لغة التجميع</h4>
+<h4>حلقات for في لغة التجميع <span class="content-anchor" id="_for_loops_in_assembly"></span></h4>
 <p>يمكن أيضًا كتابة الحلقة الأساسية في الدالة <code>sumUp</code> كحلقة <code>for</code>:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">sumUp2</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-type">int</span> total = <span class="hljs-number">0</span>;             <span class="hljs-comment">//initialize total to 0</span>
@@ -1224,7 +1224,7 @@ start:
 <p>تتبعنا في القسم السابق دوال بسيطة في لغة التجميع. وفي هذا القسم نناقش التفاعل بين دوال متعددة في لغة التجميع في سياق برنامج أكبر. كما نقدّم بعض التعليمات الجديدة المتعلقة بإدارة الدوال.</p>
 <p>لنبدأ بتذكير عن كيفية إدارة مكدّس الاستدعاء. تذكّر أن <code>%esp</code> هو <strong>مؤشّر المكدّس</strong> ويشير دائمًا إلى قمة المكدّس. ويمثّل السجل <code>%ebp</code> مؤشّر القاعدة (المعروف أيضًا بـ<strong>مؤشّر الإطار</strong>) ويشير إلى قاعدة إطار المكدّس الحالي. ويشير <strong>إطار المكدّس</strong> (المعروف أيضًا بـ<strong>إطار التنشيط</strong> أو <strong>سجل التنشيط</strong>) إلى الجزء من المكدّس المخصّص لاستدعاء دالة واحدة. والدالة قيد التنفيذ دائمًا في قمة المكدّس، ويُشار إلى إطار مكدّسها بـ<strong>الإطار النشط</strong>. ويحُدّ الإطار النشط كلٌّ من مؤشّر المكدّس (عند قمة المكدّس) ومؤشّر الإطار (عند قاعدة الإطار). ويحتوي سجل التنشيط عادةً على المتغيرات المحلية والمعاملات للدالة.</p>
 <p>يعرض <a href="#StackFrame32">الشكل 1</a> إطاري المكدّس للدالة <code>main</code> ودالة تستدعيها اسمها <code>fname</code>. وسنشير إلى الدالة <code>main</code> باسم الدالة <em>المستدعية</em> (caller) وإلى <code>fname</code> باسم الدالة <em>المستدعاة</em> (callee).</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-stackFrame.webp" alt="an illustration of stack frames"> الشكل 1. إدارة إطار المكدّس</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-stackFrame.webp" alt="an illustration of stack frames" id="StackFrame32"> الشكل 1. إدارة إطار المكدّس</p>
 <p>في <a href="#StackFrame32">الشكل 1</a>، ينتمي الإطار النشط الحالي إلى الدالة المستدعاة (<code>fname</code>). وتُستخدم الذاكرة بين مؤشّر المكدّس ومؤشّر الإطار للمتغيرات المحلية. ويتحرك مؤشّر المكدّس عند دفع القيم المحلية إلى المكدّس وسحبها منه. وفي المقابل، يبقى مؤشّر الإطار ثابتًا نسبيًا، ويشير إلى بداية (قاعدة) إطار المكدّس الحالي. ونتيجة لذلك، تشير المترجمات مثل GCC عادةً إلى القيم الموجودة على المكدّس نسبةً إلى مؤشّر الإطار. وفي <a href="#StackFrame32">الشكل 1</a>، يُحَدّ الإطار النشط من الأسفل بمؤشّر قاعدة الدالة <code>fname</code>، الذي يحتوي على عنوان المكدّس 0x418. والقيمة المخزّنة في هذا العنوان هي قيمة <code>%ebp</code> &quot;المحفوظة&quot; (0x42c)، التي تشير هي نفسها إلى قاعدة إطار التنشيط للدالة <code>main</code>. ويحدّ <strong>عنوان الإرجاع</strong> الجزء العلوي من إطار التنشيط للدالة <code>main</code>، وهو يشير إلى عنوان البرنامج الذي يستأنف فيه تنفيذ <code>main</code> عند انتهاء تنفيذ الدالة المستدعاة.</p>
 <p><strong>تحذير — عنوان الإرجاع يشير إلى ذاكرة البرنامج، لا إلى ذاكرة المكدّس</strong></p>
 <blockquote>
@@ -1256,7 +1256,7 @@ mov addr, %eip
 <p>فمثلًا، التعليمة <code>leave</code> اختصار يستخدمه المترجم لاستعادة مؤشّري المكدّس والإطار عند تهيئته لمغادرة دالة. وعندما تنتهي الدالة المستدعاة من التنفيذ، تضمن <code>leave</code> أن مؤشّر الإطار <em>يُستعاد</em> إلى قيمته السابقة.</p>
 <p>تؤدي التعلميتان <code>call</code> و<code>ret</code> دورًا بارزًا في عملية استدعاء دالة لأخرى. وتعدّل كلتا التعلميتين مؤشّر التعليمات (السجل <code>%eip</code>). وعندما تنفّذ الدالة المستدعية التعليمة <code>call</code>، تُحفظ القيمة الحالية لـ<code>%eip</code> على المكدّس لتمثّل عنوان الإرجاع، أي عنوان البرنامج الذي يستأنف عنده المستدعي التنفيذ عند انتهاء الدالة المستدعاة. كما تستبدل التعليمة <code>call</code> قيمة <code>%eip</code> بعنوان الدالة المستدعاة.</p>
 <p>وتعيد التعليمة <code>ret</code> قيمة <code>%eip</code> إلى القيمة المحفوظة على المكدّس، ما يضمن أن يستأنف البرنامج تنفيذه عند عنوان البرنامج المحدّد في الدالة المستدعية. وتُخزَّن أي قيمة تعيدها الدالة المستدعاة في <code>%eax</code>. وعادةً ما تكون التعليمة <code>ret</code> آخر تعليمة تُنفَّذ في أي دالة.</p>
-<h3 id="851-تتبع-مثال"><a href="#_tracing_through_an_example"></a>8.5.1. تتبّع مثال</h3>
+<h3 id="851-تتبع-مثال">8.5.1. تتبّع مثال <span class="content-anchor" id="_tracing_through_an_example"></span></h3>
 <p>باستخدام معرفتنا بإدارة الدوال، لنتبع مثال الشيفرة الذي قدّمناه لأول مرة في بداية هذا الفصل.</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
 
@@ -1313,9 +1313,9 @@ mov addr, %eip
  804845e:       c3                      ret
 </code></pre>
 <p>تبدأ كل دالة بوسم رمزي يقابل اسمها المعلَن في البرنامج. فمثلًا، <code>:</code> هو الوسم الرمزي للدالة <code>main</code>. وعنوان وسم الدالة هو أيضًا عنوان التعليمة الأولى في تلك الدالة. ولتوفير المساحة في الأشكال التالية، نقتطع العناوين إلى البتات الـ12 السفلى. لذا، يُعرض عنوان البرنامج 0x804842d بالشكل 0x42d.</p>
-<h3 id="852-تتبع-الدالة-main"><a href="#_tracing_through_main"></a>8.5.2. تتبّع الدالة main</h3>
+<h3 id="852-تتبع-الدالة-main">8.5.2. تتبّع الدالة main <span class="content-anchor" id="_tracing_through_main"></span></h3>
 <p>يعرض <a href="#initialMain32">الشكل 3</a> مكدّس التنفيذ مباشرة قبل تنفيذ الدالة <code>main</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-Slide1.webp" alt="slide1"> الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-Slide1.webp" alt="slide1" id="initialMain32"> الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main</p>
 <p>تذكّر أن المكدّس ينمو نحو العناوين الأدنى. وفي هذا المثال، <code>%ebp</code> عند العنوان 0x140، و<code>%esp</code> عند العنوان 0x130 (وكلا القيمتين مختلقتان لهذا المثال). ويحتوي السجلان <code>%eax</code> و<code>%edx</code> في البداية على قيم غير ذات معنى. ويشير السهم الأحمر (في أعلى اليسار) إلى التعليمة قيد التنفيذ. في البداية، يحتوي <code>%eip</code> على العنوان 0x42d، وهو عنوان ذاكرة البرنامج للسطر الأول في الدالة <code>main</code>. لنتبع تنفيذ البرنامج معًا.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-3-Slide2.webp" alt="slide2"></p>
 <p>تدفع التعليمة الأولى قيمة <code>ebp</code> إلى المكدّس، فتحفظ العنوان 0x140. وبما أن المكدّس ينمو نحو العناوين الأدنى، يُحدَّث مؤشّر المكدّس <code>%esp</code> إلى 0x12c، وهو أقل من 0x130 بمقدار 4 بايتات. ويتقدم السجل <code>%eip</code> إلى التعليمة التالية في التسلسل.</p>
@@ -1464,7 +1464,7 @@ done:
 }
 </code></pre>
 <p>مع أن هذه الترجمة قد لا تبدو في البداية مطابقة للدالة <code>sumr</code> الأصلية، فإن التدقيق يكشف أن الدالتين متكافئتان فعلًا.</p>
-<h3 id="861-رسوم-متحركة-مراقبة-كيفية-تغير-مكدس-الاستدعاء"><a href="#_animation_observing_how_the_call_stack_changes"></a>8.6.1. رسوم متحركة: مراقبة كيفية تغيّر مكدّس الاستدعاء</h3>
+<h3 id="861-رسوم-متحركة-مراقبة-كيفية-تغير-مكدس-الاستدعاء">8.6.1. رسوم متحركة: مراقبة كيفية تغيّر مكدّس الاستدعاء <span class="content-anchor" id="_animation_observing_how_the_call_stack_changes"></span></h3>
 <p>كتبيين، نشجّعك على رسم المكدّس ورؤية كيفية تغيّر القيم. ويوضّح الرسم المتحرك أدناه كيفية تحديث المكدّس عند تشغيل هذه الدالة بالقيمة 3.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-recursion.webp" alt="recursion"></p>
 <p>تذكّر أن <a href="https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_arrays">المصفوفات</a> مجموعات مرتّبة من عناصر بيانات من النوع نفسه مخزّنة بشكل متجاور في الذاكرة. ويكون الشكل العام لـ<a href="https://diveintosystems.org/book/C2-C_depth/arrays.html#_single_dimensional_arrays">المصفوفات أحادية البعد</a> المخصّصة تخصيصًا ساكنًا <code>Type arr[N]</code>، حيث <code>Type</code> هو نوع البيانات، و<code>arr</code> هو المعرّف المرتبط بالمصفوفة، و<code>N</code> هو عدد عناصر البيانات. وتخصيص مصفوفة تخصيصًا ساكنًا بالشكل <code>Type arr[N]</code> أو ديناميكيًا بالشكل <code>arr = malloc(N*sizeof(Type))</code> يحجز <em>N</em> × sizeof(<em>Type</em>) بايت إجمالًا من الذاكرة، مع إشارة <code>arr</code> إليها.</p>
@@ -1511,12 +1511,12 @@ done:
 </tr>
 </tbody>
 </table>
-<p>انتبه جيدًا إلى <em>نوع</em> كل تعبير في <a href="#ArrayOps">[ArrayOps]</a>. وبشكل عام، يستخدم المترجم تعليمات <code>movl</code> لإلغاء إشارة المؤشرات، وتعليمة <code>leal</code> لحساب العناوين.</p>
+<p>انتبه جيدًا إلى <em>نوع</em> كل تعبير في <a href="#ArrayOps">ArrayOps</a>. وبشكل عام، يستخدم المترجم تعليمات <code>movl</code> لإلغاء إشارة المؤشرات، وتعليمة <code>leal</code> لحساب العناوين.</p>
 <p>لاحظ أنه للوصول إلى العنصر <code>arr[3]</code> (أو <code>*(arr+3)</code> باستخدام حساب المؤشرات)، ينفّذ المترجم بحثًا في الذاكرة عند العنوان <code>arr+3*4</code> بدلًا من <code>arr+3</code>. ولفهم سبب ضرورة ذلك، تذكّر أن أي عنصر عند الفهرس <em>i</em> في مصفوفة مخزّن عند العنوان <code>arr + sizeof(Type) * i</code>. ولذلك يجب على المترجم ضرب الفهرس في حجم نوع البيانات لحساب الإزاحة الصحيحة. وتذكّر أيضًا أن الذاكرة قابلة للعنونة بالبايت؛ فالإزاحة بعدد البايتات الصحيح تعادل حساب عنوان.</p>
 <p>وكمثال، تأمّل مصفوفة نموذجية (<code>array</code>) فيها خمسة عناصر صحيحة (<a href="#FigArray632">الشكل 1</a>):</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-arrayFig.webp" alt="Each integer in the array requires four bytes."> الشكل 1. تخطيط مصفوفة من خمسة أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi بايتًا واحدًا، وكل عدد صحيح أربعة بايتات.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-arrayFig.webp" alt="Each integer in the array requires four bytes." id="FigArray632"> الشكل 1. تخطيط مصفوفة من خمسة أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi بايتًا واحدًا، وكل عدد صحيح أربعة بايتات.</p>
 <p>لاحظ أنه بما أن <code>array</code> مصفوفة أعداد صحيحة، فإن كل عنصر يشغل أربعة بايتات بالضبط. وهكذا، تستهلك مصفوفة صحيحة من خمسة عناصر 20 بايتًا من الذاكرة المتجاورة.</p>
-<p>لحساب عنوان العنصر 3، يضرب المترجم الفهرس 3 في حجم بيانات النوع الصحيح (4) فينتج إزاحة مقدارها 12. وبالفعل، يقع العنصر 3 في <a href="#FigArray6">[FigArray6]</a> عند الإزاحة x12 بالبايت.</p>
+<p>لحساب عنوان العنصر 3، يضرب المترجم الفهرس 3 في حجم بيانات النوع الصحيح (4) فينتج إزاحة مقدارها 12. وبالفعل، يقع العنصر 3 في <a href="/arabic-cs-library/book/dive-into-systems/c7-x86-64/index#FigArray6">FigArray6</a> عند الإزاحة x12 بالبايت.</p>
 <p>لنلقِ نظرة على دالة C بسيطة اسمها <code>sumArray</code> تجمع جميع عناصر مصفوفة:</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">sumArray</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> length)</span> {
     <span class="hljs-type">int</span> i, total = <span class="hljs-number">0</span>;
@@ -1572,9 +1572,9 @@ M2 = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span
 }
 </code></pre>
 <p>في حالة المصفوفة المخصّصة ديناميكيًا، تحتوي المصفوفة الرئيسية على مصفوفة متجاورة من مؤشرات <code>int</code>. ويشير كل مؤشر صحيح إلى مصفوفة مختلفة في الذاكرة. ويوضّح <a href="#Matrices632">الشكل 1</a> كيف نتصور عادةً كلًّا من هاتين المصفوفتين.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-matrices.webp" alt="matrices"> الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-matrices.webp" alt="matrices" id="Matrices632"> الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4</p>
 <p>في كلا تعريفي المصفوفة، يمكن الوصول إلى العنصر (<em>i</em>،<em>j</em>) باستخدام صيغة الفهرسة المزدوجة <code>M[i][j]</code>، حيث <code>M</code> هي إما <code>M1</code> وإما <code>M2</code>. غير أن هاتين المصفوفتين منظّمتان بشكل مختلف في الذاكرة. ومع أن كلتيهما تخزّن العناصر في مصفوفتها الأساسية بشكل متجاور في الذاكرة، فإن مصفوفتنا المخصّصة ساكنًا تخزّن أيضًا جميع الصفوف بشكل متجاور في الذاكرة، كما هو معروض في <a href="#Matrices732">الشكل 2</a>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-matrixArray.webp" alt="matrixArray"> الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-matrixArray.webp" alt="matrixArray" id="Matrices732"> الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)</p>
 <p>وهذا الترتيب المتجاور غير مضمون في <code>M2</code>. و<a href="https://diveintosystems.org/book/C2-C_depth/arrays.html#_two_dimensional_array_memory_layout">تذكّر أن</a> تخصيص مصفوفة <em>n</em> × <em>m</em> بشكل متجاور على الكومة يتطلب استخدام استدعاء واحد لـ<code>malloc</code> يحجز <em>n</em> × <em>m</em> عنصرًا:</p>
 <pre><code class="language-c"><span class="hljs-comment">//dynamic matrix (allocated on heap, memory efficient way)</span>
 <span class="hljs-meta">#<span class="hljs-keyword">define</span> ROWS 4</span>
@@ -1583,7 +1583,7 @@ M2 = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span
 M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
 </code></pre>
 <p>تذكّر أنه مع تعريف <code>M3</code>، <em>لا يمكن</em> الوصول إلى العنصر (<em>i</em>،<em>j</em>) باستخدام الصيغة <code>M[i][j]</code>. وبدلًا من ذلك، يجب فهرسة العنصر بالصيغة <code>M3[i*cols + j]</code>.</p>
-<h3 id="881-المصفوفات-ثنائية-الأبعاد-المتجاورة"><a href="#_contiguous_two_dimensional_arrays"></a>8.8.1. المصفوفات ثنائية الأبعاد المتجاورة</h3>
+<h3 id="881-المصفوفات-ثنائية-الأبعاد-المتجاورة">8.8.1. المصفوفات ثنائية الأبعاد المتجاورة <span class="content-anchor" id="_contiguous_two_dimensional_arrays"></span></h3>
 <p>تأمّل دالة <code>sumMat</code> تأخذ مؤشرًا إلى مصفوفة مخصّصة بشكل متجاور (إما ساكنًا وإما ديناميكيًا بطريقة موفّرة للذاكرة) كمعاملها الأول، مع عددي الصفوف والأعمدة، وتعيد مجموع جميع العناصر داخل المصفوفة.</p>
 <p>نستخدم الفهرسة المُقاسة في مقطع الشيفرة التالي لأنها تنطبق على المصفوفات المتجاورة المخصّصة ساكنًا وديناميكيًا معًا. وتذكّر أن الصيغة <code>m[i][j]</code> لا تعمل مع التخصيص الديناميكي المتجاور الموفّر للذاكرة الذي ناقشناه سابقًا.</p>
 <pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">sumMat</span><span class="hljs-params">(<span class="hljs-type">int</span> *m, <span class="hljs-type">int</span> rows, <span class="hljs-type">int</span> cols)</span> {
@@ -1649,7 +1649,7 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
 <p>لننظر كيف يُوصَل إلى العنصر (1،2) في <a href="#Matrices732">الشكل 2</a>.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-matrixArray.webp" alt="matrixArray"> الشكل 3. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا</p>
 <p>يقع العنصر (1،2) عند العنوان <code>M1 + (1 * COLS) + 2</code>. وبما أن <code>COLS</code> = 3، يقابل العنصر (1،2) الصيغة <code>M1+5</code>. وللوصول إلى العنصر في هذا الموقع، يجب على المترجم ضرب <code>5</code> في حجم نوع البيانات <code>int</code> (أربعة بايتات)، فينتج الإزاحة <code>M1 + 20</code>، التي تقابل البايت x20 في الشكل. وإلغاء الإشارة عند هذا الموقع يعطي العنصر 5، وهو بالفعل العنصر (1،2) في المصفوفة.</p>
-<h3 id="882-المصفوفة-غير-المتجاورة"><a href="#_noncontiguous_matrix"></a>8.8.2. المصفوفة غير المتجاورة</h3>
+<h3 id="882-المصفوفة-غير-المتجاورة">8.8.2. المصفوفة غير المتجاورة <span class="content-anchor" id="_noncontiguous_matrix"></span></h3>
 <p>تطبيق المصفوفة غير المتجاورة أعقد قليلًا. ويوضّح <a href="#DynamicMatrix632">الشكل 4</a> كيف قد يكون <code>M2</code> مرتّبًا في الذاكرة.</p>
 <p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-3-dynamicMatrixLayout.webp" alt="matrixDynamic"> الشكل 4. تخطيط المصفوفة M2 غير المتجاور في الذاكرة</p>
 <p>لاحظ أن مصفوفة المؤشرات متجاورة، وأن كل مصفوفة يشير إليها عنصر من <code>M2</code> (مثل <code>M2[i]</code>) متجاورة. غير أن المصفوفات الفردية غير متجاورة مع بعضها.</p>
@@ -1731,7 +1731,7 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentT</span> <span class="hljs-title">student</span>;</span>
 </code></pre>
 <p>يعرض <a href="#structArray632">الشكل 1</a> كيفية ترتيب <code>student</code> في الذاكرة. ولأجل المثال، لنفترض أن <code>student</code> تبدأ عند العنوان x0. ويشير كل xi إلى عنوان حقل.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-structArray.webp" alt="structArray"> الشكل 1. تخطيط الذاكرة للبنية student</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-structArray.webp" alt="structArray" id="structArray632"> الشكل 1. تخطيط الذاكرة للبنية student</p>
 <p>تُخزَّن الحقول بشكل متجاور واحدًا بجانب الآخر في الذاكرة بالترتيب الذي عُرِّفت به. وفي <a href="#structArray632">الشكل 1</a>، يُخصَّص الحقل <code>age</code> في موقع الذاكرة الذي يلي حقل <code>name</code> مباشرة (عند الإزاحة x64 بالبايت)، ويليه الحقلان <code>grad_yr</code> (الإزاحة x68) و<code>gpa</code> (الإزاحة x72). ويتيح هذا التنظيم وصولًا موفّرًا للذاكرة إلى الحقول.</p>
 <p>لفهم كيفية توليد المترجم شيفرة تجميع للتعامل مع بنية <code>struct</code>، تأمّل الدالة <code>initStudent</code>:</p>
 <pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">initStudent</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> studentT *s, <span class="hljs-type">char</span> *nm, <span class="hljs-type">int</span> ag, <span class="hljs-type">int</span> gr, <span class="hljs-type">float</span> g)</span> {
@@ -1792,7 +1792,7 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
  &lt;+50&gt;:  mov   0x18(%ebp),%eax          # copy g to eax
  &lt;+53&gt;:  mov   %eax,0x48(%edx)          # copy g to offset edx+72 (s-&gt;gpa)
 </code></pre>
-<h3 id="891-محاذاة-البيانات-والبنى"><a href="#_data_alignment_and_structs"></a>8.9.1. محاذاة البيانات والبنى</h3>
+<h3 id="891-محاذاة-البيانات-والبنى">8.9.1. محاذاة البيانات والبنى <span class="content-anchor" id="_data_alignment_and_structs"></span></h3>
 <p>تأمّل التعريف المعدّل التالي لـ<code>struct studentT</code>:</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentTM</span> {</span>
     <span class="hljs-type">char</span> name[<span class="hljs-number">63</span>]; <span class="hljs-comment">//updated to 63 instead of 64</span>
@@ -1804,9 +1804,9 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentTM</span> <span class="hljs-title">student2</span>;</span>
 </code></pre>
 <p>عُدّل حجم الحقل <code>name</code> ليصبح 63 بايت بدلًا من 64 الأصلية. تأمّل كيف يؤثر ذلك في طريقة ترتيب البنية <code>struct</code> في الذاكرة. وقد يغريك تصورها كما في <a href="#wrongLayout32">الشكل 2</a>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-struct2wrong.webp" alt="struct2wrong"> الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل &quot;name&quot; في البنية تقلّص من 64 إلى 63 بايت.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-struct2wrong.webp" alt="struct2wrong" id="wrongLayout32"> الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل &quot;name&quot; في البنية تقلّص من 64 إلى 63 بايت.</p>
 <p>في هذا التصوير، يشغل الحقل <code>age</code> البايت الذي يلي حقل <code>name</code> مباشرة. لكن هذا غير صحيح. ويعرض <a href="#correctLayout32">الشكل 3</a> التخطيط الفعلي في الذاكرة.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-struct2right.webp" alt="struct2right"> الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-struct2right.webp" alt="struct2right" id="correctLayout32"> الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.</p>
 <p>تتطلب سياسة المحاذاة في IA32 أن تقع أنواع البيانات ذات البايتين (مثل <code>short</code>) عند عنوان محاذى لبايتين، بينما تقع أنواع البيانات ذات الأربعة بايتات (<code>int</code> و<code>float</code> و<code>long</code> وأنواع المؤشرات) عند عناوين محاذاة لأربعة بايتات، وتقع أنواع البيانات ذات الثمانية بايتات (<code>double</code> و<code>long long</code>) عند عناوين محاذاة لثمانية بايتات. وبالنسبة للبنية <code>struct</code>، يضيف المترجم بايتات فارغة كـ<strong>حشو</strong> (padding) بين الحقول لضمان أن كل حقل يلبّي متطلبات محاذاته. فمثلًا، في البنية <code>struct</code> المعرّفة في مقطع الشيفرة السابق، يضيف المترجم بايتًا من المساحة الفارغة (أو الحشو) عند البايت x63 لضمان أن يبدأ الحقل <code>age</code> عند عنوان من مضاعفات أربعة. ويمكن قراءة القيم المحاذاة بشكل صحيح في الذاكرة أو كتابتها في عملية واحدة، ما يتيح كفاءة أكبر.</p>
 <p>تأمّل ما يحدث عندما تُعرَّف البنية <code>struct</code> كما يلي:</p>
 <pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">studentTM</span> {</span>
@@ -1821,14 +1821,14 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
 <p>نقل مصفوفة <code>name</code> إلى النهاية ينقل بايت الحشو إلى نهاية البنية، ما يضمن أن <code>age</code> و<code>grad_yr</code> و<code>gpa</code> محاذاة لأربعة بايتات.</p>
 <p>لا تنفّذ لغة C فحصًا تلقائيًا لحدود المصفوفات. والوصول إلى ذاكرة خارج حدود المصفوفة مشكلة كثيرًا ما يؤدي إلى أخطاء مثل أخطاء التجزئة. غير أن مهاجمًا بارعًا يمكنه حقن شيفرة خبيثة تتجاوز حدود مصفوفة (تُعرف أيضًا بـ<strong>المخزن المؤقت</strong>) عمدًا لإجبار البرنامج على التنفيذ بطريقة غير مقصودة. وفي أسوأ الحالات، يمكن للمهاجم تشغيل شيفرة تمكّنه من الحصول على <strong>صلاحية الجذر</strong> (root privilege)، أي الوصول إلى النظام على مستوى نظام التشغيل. ويُعرف البرنامج الذي يستغل وجود خطأ تجاوز مخزن مؤقت معروف في برنامج بأنه <strong>استغلال تجاوز المخزن المؤقت</strong> (buffer overflow exploit).</p>
 <p>نستخدم في هذا القسم GDB ولغة التجميع لتوصيف آليات استغلال تجاوز المخزن المؤقت توصيفًا كاملًا. وقبل قراءة هذا الفصل، نشجّعك على استكشاف الفصل الذي يناقش <a href="https://diveintosystems.org/book/C3-C_debug/gdb_assembly.html#_debugging_assembly_code">استخدام GDB لفحص شيفرة التجميع</a>.</p>
-<h3 id="8101-أمثلة-شهيرة-على-تجاوز-المخزن-المؤقت"><a href="#_famous_examples_of_buffer_overflow"></a>8.10.1. أمثلة شهيرة على تجاوز المخزن المؤقت</h3>
+<h3 id="8101-أمثلة-شهيرة-على-تجاوز-المخزن-المؤقت">8.10.1. أمثلة شهيرة على تجاوز المخزن المؤقت <span class="content-anchor" id="_famous_examples_of_buffer_overflow"></span></h3>
 <p>ظهرت استغلالات تجاوز المخزن المؤقت في ثمانينيات القرن الماضي وظلت بلاءً رئيسيًا لصناعة الحوسبة حتى أوائل الألفينيات. ومع أن كثيرًا من أنظمة التشغيل الحديثة توفّر حمايات ضد أبسط هجمات تجاوز المخزن المؤقت، فإن أخطاء البرمجة الناتجة عن الإهمال لا تزال قادرة على ترك البرامج الحديثة مفتوحة تمامًا للهجوم. وقد اكتُشفت مؤخرًا استغلالات لتجاوز المخزن المؤقت في Skype1 وAndroid2 وGoogle Chrome3 وغيرها.</p>
 <p>وفيما يلي بعض الأمثلة التاريخية البارزة على استغلالات تجاوز المخزن المؤقت.</p>
 <p>دودة موريس</p>
 <p>أُطلقت دودة موريس4 في عام 1988 على ARPANet من معهد MIT (لإخفاء أنها كُتبت بأيدي طالب في جامعة كورنيل)، واستغلت ثغرة تجاوز مخزن مؤقت كانت موجودة في عفريت (daemon) الأمر finger في Unix وهو <code>fingerd</code>. وفي Linux وغيره من الأنظمة الشبيهة بـUnix، يكون <strong>العفريت</strong> (daemon) نوعًا من العمليات التي تُنفَّذ باستمرار في الخلفية، وتؤدي عادةً مهام التنظيف والمراقبة. ويعيد العفريت <code>fingerd</code> تقريرًا ودّيًا عن حاسوب أو شخص. والأهم من ذلك، كانت للدودة آلية تكاثر جعلتها تُرسَل إلى الحاسوب نفسه مرات عدة، مما أرهق النظام حتى أصبح غير صالح للاستخدام. ومع أن مؤلفها ادّعى أنها كانت تمرينًا فكريًا غير ضار، فقد مكّنت آلية التكاثر الدودة من الانتشار بسهولة وجعلت إزالتها صعبة. وفي سنوات لاحقة، استخدمت ديدان أخرى استغلالات تجاوز المخزن المؤقت للوصول غير المصرّح به إلى الأنظمة. ومن الأمثلة البارزة Code Red (2001) وMS-SQLSlammer (2003) وW32/Blaster (2003).</p>
 <p>حروب الدردشة في AOL</p>
 <p>روى ديفيد أورباخ5، وهو مهندس سابق في Microsoft، تجربته مع تجاوز مخزن مؤقت أثناء جهوده لدمج خدمة Messenger Service (MMS) من Microsoft مع AOL Instant Messenger في أواخر تسعينيات القرن الماضي. في ذلك الوقت، كانت AOL Instant Messenger (AIM) <em>الخدمة</em> التي ينبغي استخدامها إذا أردت إرسال رسائل فورية (IM) إلى الأصدقاء والعائلة. وحاولت Microsoft الحصول على موطئ قدم في هذا السوق بتصميم ميزة في MMS تمكّن مستخدمي MMS من التحدث إلى &quot;أصدقائهم&quot; في AIM. وانزعجت AOL، فرقّعت خواديمها بحيث لم يعد MMS قادرًا على الاتصال بها. ووجد مهندسو Microsoft طريقة تجعل عملاء MMS يقلّدون الرسائل التي يرسلها عملاء AIM إلى خواديم AOL، فأصبح من الصعب على AOL التمييز بين الرسائل الواردة من MMS وAIM. وردّت AOL بتغيير طريقة AIM في إرسال الرسائل، فغيّر مهندسو MMS رسائل عميلهم بحسبها لتطابق رسائل AIM مرة أخرى. واستمرت &quot;حرب الدردشة&quot; هذه حتى بدأت AOL في استخدام خطأ تجاوز مخزن مؤقت <em>في عميلها هي</em> للتحقق من أن الرسائل المرسلة تأتي من عملاء AIM. وبما أن عملاء MMS لم يحملوا الثغرة نفسها، انتهت حروب الدردشة بفوز AOL.</p>
-<h3 id="8102-نظرة-أولى-لعبة-التخمين"><a href="#_a_first_look_the_guessing_game"></a>8.10.2. نظرة أولى: لعبة التخمين</h3>
+<h3 id="8102-نظرة-أولى-لعبة-التخمين">8.10.2. نظرة أولى: لعبة التخمين <span class="content-anchor" id="_a_first_look_the_guessing_game"></span></h3>
 <p>لمساعدتك على فهم آلية هجوم تجاوز المخزن المؤقت، نوفّر ملفًا تنفيذيًا ذا 32 بت لبرنامج بسيط يمكّن المستخدم من لعب لعبة تخمين مع البرنامج. نزّل الملف التنفيذي <code>secret</code> من <a href="https://diveintosystems.org/book/C8-IA32/_attachments/secret.tar.gz">هذا الرابط</a> واستخرجه باستخدام الأمر <code>tar</code>:</p>
 <pre><code class="language-bash">$ tar -xzvf secret.tar.gz
 </code></pre>
@@ -1884,7 +1884,7 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
 </code></pre>
 <p>تطلب هذه اللعبة من المستخدم إدخال رقم سري أولًا ثم سلسلة سرية للفوز بلعبة التخمين. ويحتوي ملف الترويسة <code>other.h</code> على تعريف الدالتين <code>getSecretCode</code> و<code>calculateValue</code>، لكنه غير متاح لنا. فكيف يمكن للمستخدم التغلّب على البرنامج إذن؟ سيستغرق الحل بالقوة الغاشمة وقتًا طويلًا جدًا. وإحدى الاستراتيجيات هي تحليل الملف التنفيذي <code>secret</code> في GDB والتقدم عبر شيفرة التجميع للكشف عن الرقم السري والسلسلة السرية. وتُعرف عملية فحص شيفرة التجميع للكشف عن معرفة طريقة عملها عمومًا بـ<strong>الهندسة العكسية</strong>. وينبغي أن يكون القراء المرتاحون لمهاراتهم في GDB وقراءة لغة التجميع قادرين على استخدام GDB لهندسة الرقم السري والسلسلة السرية عكسيًا.</p>
 <p>غير أن هناك طريقة أخرى وأكثر مكرًا للفوز.</p>
-<h3 id="8103-نظرة-أقرب-تحت-السطح"><a href="#_taking_a_closer_look_under_the_c"></a>8.10.3. نظرة أقرب (تحت السطح)</h3>
+<h3 id="8103-نظرة-أقرب-تحت-السطح">8.10.3. نظرة أقرب (تحت السطح) <span class="content-anchor" id="_taking_a_closer_look_under_the_c"></span></h3>
 <p>يحتوي البرنامج على ثغرة تجاوز مخزن مؤقت محتملة عند أول استدعاء لـ<code>scanf</code>. لفهم ما يجري، لنفحص شيفرة التجميع للدالة <code>main</code> باستخدام GDB. ولنضع أيضًا نقطة توقف عند العنوان 0x0804859f، وهو عنوان التعليمة التي تسبق استدعاء <code>scanf</code> مباشرة (فوضع نقطة التوقف عند عنوان <code>scanf</code> يوقف تنفيذ البرنامج <em>داخل</em> استدعاء <code>scanf</code>، لا في <code>main</code>).</p>
 <pre><code>   0x08048582 &lt;+0&gt;:     push   %ebp
    0x08048583 &lt;+1&gt;:     mov    %esp,%ebp
@@ -1897,10 +1897,10 @@ M3  = <span class="hljs-built_in">malloc</span>(ROWS * COLS * <span class="hljs-
    0x080485a6 &lt;+36&gt;:    call   0x80483e0 &lt;scanf@plt&gt;
 </code></pre>
 <p>يعرض <a href="#beforescan32">الشكل 1</a> المكدّس مباشرة قبل استدعاء <code>scanf</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-beforeScanf.webp" alt="before"> الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-0-beforeScanf.webp" alt="before" id="beforescan32"> الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf</p>
 <p>قبل استدعاء <code>scanf</code>، تُحمَّل وسائط <code>scanf</code> مسبقًا على المكدّس، بحيث يكون الوسيط الأول في قمة المكدّس والوسيط الثاني في عنوان واحد أسفلها. وتنشئ التعليمة <code>lea</code> عند الموقع `` المرجع للمصفوفة <code>buf</code>.</p>
-<p>الآن، لنفترض أن المستخدم أدخل <code>12345678</code> عند المطالبة. ويوضّح <a href="#afterScanf">[afterScanf]</a> شكل المكدّس مباشرة بعد اكتمال استدعاء <code>scanf</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-afterScanf.webp" alt="after"> الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 12345678</p>
+<p>الآن، لنفترض أن المستخدم أدخل <code>12345678</code> عند المطالبة. ويوضّح <a href="/arabic-cs-library/book/dive-into-systems/c7-x86-64/index#afterScanf">afterScanf</a> شكل المكدّس مباشرة بعد اكتمال استدعاء <code>scanf</code>.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-1-afterScanf.webp" alt="after" id="afterScanf32"> الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 12345678</p>
 <p>تذكّر أن القيم السداسية العشرية لترميزات ASCII للأرقام من 0 إلى 9 هي من 0x30 إلى 0x39، وأن كل موقع في ذاكرة المكدّس طوله أربعة بايتات. ويبعد مؤشّر الإطار 56 بايت عن مؤشّر المكدّس. ويمكن للقراء المتتبعين تأكيد قيمة <code>%ebp</code> باستخدام GDB لطباعة قيمته (<code>p $ebp</code>). وفي المثال المعروض، قيمة <code>%ebp</code> هي 0xffffd428. ويتيح الأمر التالي للقارئ فحص 64 بايت (بالنظام السداسي العشري) أسفل السجل <code>%esp</code>:</p>
 <pre><code>(gdb) x /64bx $esp
 </code></pre>
@@ -1934,7 +1934,7 @@ $ <span class="hljs-built_in">echo</span> $?
 1
 </code></pre>
 <p>يطبع الأمر <code>echo $?</code> قيمة إرجاع آخر أمر نُفِّذ في الصدفة. وفي هذه الحالة، أعاد البرنامج 1 لأن الرقم السري الذي أدخلناه خاطئ. وتذكّر أنه حسب الاصطلاح، تعيد البرامج 0 عندما لا توجد أخطاء. وهدفنا في ما يلي هو خداع البرنامج ليخرج بقيمة إرجاع 0، ما يدل على أننا فزنا باللعبة.</p>
-<h3 id="8104-تجاوز-المخزن-المؤقت-المحاولة-الأولى"><a href="#_buffer_overflow_first_attempt"></a>8.10.4. تجاوز المخزن المؤقت: المحاولة الأولى</h3>
+<h3 id="8104-تجاوز-المخزن-المؤقت-المحاولة-الأولى">8.10.4. تجاوز المخزن المؤقت: المحاولة الأولى <span class="content-anchor" id="_buffer_overflow_first_attempt"></span></h3>
 <p>بعد ذلك، لنحاول كتابة السلسلة <code>1234567890123456789012345678901234</code>:</p>
 <pre><code class="language-bash">$ ./secret
 Enter secret number:
@@ -1945,7 +1945,7 @@ $ <span class="hljs-built_in">echo</span> $?
 139
 </code></pre>
 <p>مثير للاهتمام! الآن ينهار البرنامج بخطأ تجزئة، برمز إرجاع 139. ويعرض <a href="#afterScanf232">الشكل 3</a> شكل مكدّس الاستدعاء للدالة <code>main</code> مباشرة بعد استدعاء <code>scanf</code> بهذا الإدخال الجديد.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-afterScanf2.webp" alt="after2"> الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-2-afterScanf2.webp" alt="after2" id="afterScanf232"> الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234</p>
 <p>السلسلة المُدخَلة طويلة جدًا لدرجة أنها لم تستبدل القيمة المخزّنة عند العنوان 0x428 فحسب، بل تجاوزتها إلى عنوان الإرجاع أسفل إطار المكدّس للدالة <code>main</code>. وتذكّر أنه عند عودة دالة، يحاول البرنامج استئناف التنفيذ عند العنوان المحدّد بعنوان الإرجاع. وفي هذا المثال، يحاول البرنامج استئناف التنفيذ عند العنوان 0xf7003433 بعد الخروج من <code>main</code>، وهو عنوان غير موجود. لذا ينهار البرنامج بخطأ تجزئة.</p>
 <p>وتشغيل البرنامج مرة أخرى في GDB (يحتوي <code>input.txt</code> على السلسلة المُدخَلة أعلاه) يكشف هذا العمل الشيطاني أثناء حدوثه:</p>
 <pre><code class="language-bash">$ gdb secret
@@ -1963,7 +1963,7 @@ $ <span class="hljs-built_in">echo</span> $?
 0xffffd428:     0x39    0x30    0x31    0x32    0x33    0x34    0x00    0xf7
 </code></pre>
 <p>لاحظ أن السلسلة المُدخَلة تجاوزت الحدود المعلَنة للمصفوفة <code>buf</code>، واستبدلت جميع القيم الأخرى المخزّنة على المكدّس. وبعبارة أخرى، أنشأت سلسلتنا تجاوزًا للمخزن المؤقت وأفسدت مكدّس الاستدعاء، ما تسبب في انهيار البرنامج. وتُعرف هذه العملية أيضًا بـ<strong>تحطيم المكدّس</strong> (smashing the stack).</p>
-<h3 id="8105-تجاوز-مخزن-مؤقت-أذكى-المحاولة-الثانية"><a href="#_a_smarter_buffer_overflow_second_attempt"></a>8.10.5. تجاوز مخزن مؤقت أذكى: المحاولة الثانية</h3>
+<h3 id="8105-تجاوز-مخزن-مؤقت-أذكى-المحاولة-الثانية">8.10.5. تجاوز مخزن مؤقت أذكى: المحاولة الثانية <span class="content-anchor" id="_a_smarter_buffer_overflow_second_attempt"></span></h3>
 <p>حطّم مثالنا الأول المكدّس باستبدال السجل <code>%ebp</code> وعنوان الإرجاع بقيم غير ذات معنى، ما تسبب في انهيار البرنامج. والمهاجم الذي يهدف إلى مجرد إسقاط برنامج ما سيكون راضيًا عند هذه النقطة. غير أن هدفنا هو خداع لعبة التخمين لتعيد 0، ما يدل على أننا فزنا باللعبة. ونحقّق ذلك بملء مكدّس الاستدعاء ببيانات أكثر معنى من القيم غير ذات المعنى. فمثلًا، يمكننا استبدال المكدّس بحيث يُستبدل عنوان الإرجاع بعنوان الدالة <code>endGame</code>. عندئذٍ، عندما يحاول البرنامج العودة من <code>main</code>، سينفّذ <code>endGame</code> بدلًا من الانهيار بخطأ تجزئة.</p>
 <p>لمعرفة عنوان <code>endGame</code>، لنفحص <code>secret</code> مرة أخرى في GDB:</p>
 <pre><code class="language-bash">$ gdb secret
@@ -1979,7 +1979,7 @@ Dump of assembler code <span class="hljs-keyword">for</span> <span class="hljs-k
 End of assembler dump.
 </code></pre>
 <p>لاحظ أن <code>endGame</code> تبدأ عند العنوان 0x08048564. ويوضّح <a href="#finalExploit32">الشكل 4</a> استغلالًا نموذجيًا يجبر <code>secret</code> على تشغيل الدالة <code>endGame</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-3-finalExploit.webp" alt="exploit"> الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c8-ia32-3-finalExploit.webp" alt="exploit" id="finalExploit32"> الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame</p>
 <p>ومرة أخرى، بما أن x86 نظام <a href="https://diveintosystems.org/book/C4-Binary/byte_order.html#_integer_byte_order">little endian</a> ينمو فيه المكدّس نحو العناوين الأدنى، تظهر بايتات عنوان الإرجاع بترتيب معكوس.</p>
 <p>يوضّح البرنامج التالي كيف يمكن لمهاجم إنشاء الاستغلال السابق:</p>
 <pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
@@ -2016,7 +2016,7 @@ You win!
 0
 </code></pre>
 <p>استغلالنا يعمل! لقد فزنا باللعبة!</p>
-<h3 id="8106-الحماية-من-تجاوز-المخزن-المؤقت"><a href="#_protecting_against_buffer_overflow"></a>8.10.6. الحماية من تجاوز المخزن المؤقت</h3>
+<h3 id="8106-الحماية-من-تجاوز-المخزن-المؤقت">8.10.6. الحماية من تجاوز المخزن المؤقت <span class="content-anchor" id="_protecting_against_buffer_overflow"></span></h3>
 <p>غيّر المثال الذي عرضناه مسار التحكم في الملف التنفيذي <code>secret</code>، وأجبره على إعادة قيمة صفرية مرتبطة بالنجاح. غير أن استغلالًا كهذا قد يسبب ضررًا حقيقيًا. علاوة على ذلك، كانت بعض الأنظمة الحاسوبية الأقدم <em>تنفّذ</em> بايتات من ذاكرة المكدّس. فإذا وضع مهاجم بايتات مرتبطة بتعليمات التجميع على مكدّس الاستدعاء، فستفسّر وحدة المعالجة المركزية هذه البايتات كتعليمات <em>حقيقية</em>، ما يمكّن المهاجم من إجبار المعالج على تنفيذ <em>أي شيفرة عشوائية يختارها</em>. ولحسن الحظ، توجد استراتيجيات تستخدمها الأنظمة الحاسوبية الحديثة لجعل تنفيذ استغلالات تجاوز المخزن المؤقت أصعب على المهاجمين:</p>
 <ul>
 <li><strong>عشوائية المكدّس</strong>: يخصّص نظام التشغيل عنوان بداية المكدّس في موقع عشوائي من ذاكرة المكدّس، ما يجعل موضع/حجم مكدّس الاستدعاء يتغير من تشغيل لآخر للبرنامج. فالأجهزة المتعددة التي تشغّل الشيفرة نفسها سيكون لها عناوين مكدّس مختلفة. وتستخدم أنظمة Linux الحديثة عشوائية المكدّس كممارسة قياسية. غير أن مهاجمًا مصمّمًا يمكنه تنفيذ الهجوم بالقوة الغاشمة، بمحاولة تكرار الهجمات بعناوين مختلفة. ومن الحيل الشائعة استخدام <strong>زحلقة NOP</strong> (NOP sled) (أو الانزلاق)، أي عدد كبير من تعليمات <code>nop</code>، قبل شيفرة الاستغلال الفعلية. وتنفيذ التعليمة <code>nop</code> (<code>0x90</code>) لا أثر له سوى زيادة عدّاد البرنامج إلى التعليمة التالية. وطالما تمكن المهاجم من جعل وحدة المعالجة المركزية تنفّذ في مكان ما داخل زحلقة NOP، فستؤدي الزحلقة في النهاية إلى شيفرة الاستغلال التي تتبعها. وتفصّل مقالة Aleph One بعنوان <em>Smashing the Stack for Fun and Profit</em>6 آلية هذا النوع من الهجمات.</li>
@@ -2130,7 +2130,7 @@ $ <span class="hljs-built_in">echo</span> $?
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -2138,8 +2138,8 @@ $ <span class="hljs-built_in">echo</span> $?
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

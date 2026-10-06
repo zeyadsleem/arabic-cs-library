@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -489,7 +489,7 @@ index_path      | base/16384/16412
 <p>فيما يلي عرض موجز لطريقتي وصول نموذجيتين: المسح التسلسلي ومسح فهرس B-tree:</p>
 <ul>
 <li><strong>المسح التسلسلي:</strong> تقرأ هذه الطريقة جميع الصفوف في جميع الصفحات تسلسليًا عبر مسح كل مؤشّر سطر في كل صفحة. انظر الشكل 1.7(أ).</li>
-<li><strong>مسح فهرس B-tree:</strong> تقرأ هذه الطريقة ملف فهرس يحتوي على صفوف فهرس. ويتكوّن كل صف فهرس من مفتاح فهرس ومعرّف TID يشير إلى <em>صف الكومة الهدف</em>. وعند تحديد صف فهرس يطابق مفتاح البحث<a href="#fn:1">1</a>، يسترد PostgreSQL صف الكومة المقابل باستخدام معرّف TID الذي حصل عليه. على سبيل المثال، في الشكل 1.7(ب)، معرّف TID لصف الفهرس المسترد هو «(block = 7, offset = 2)». وهذا يدل على أن صف الكومة الهدف هو الصف الثاني في الصفحة السابعة من الجدول، ما يتيح لـ PostgreSQL الوصول إلى البيانات مباشرة دون مسح صفحات غير ضرورية.</li>
+<li><strong>مسح فهرس B-tree:</strong> تقرأ هذه الطريقة ملف فهرس يحتوي على صفوف فهرس. ويتكوّن كل صف فهرس من مفتاح فهرس ومعرّف TID يشير إلى <em>صف الكومة الهدف</em>. وعند تحديد صف فهرس يطابق مفتاح البحث<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>، يسترد PostgreSQL صف الكومة المقابل باستخدام معرّف TID الذي حصل عليه. على سبيل المثال، في الشكل 1.7(ب)، معرّف TID لصف الفهرس المسترد هو «(block = 7, offset = 2)». وهذا يدل على أن صف الكومة الهدف هو الصف الثاني في الصفحة السابعة من الجدول، ما يتيح لـ PostgreSQL الوصول إلى البيانات مباشرة دون مسح صفحات غير ضرورية.</li>
 </ul>
 <p><img src="/arabic-cs-library/images/postgres-internals/pgsql01-fig-1-07.webp" alt=""></p>
 <h4>الشكل 1.7. المسح التسلسلي ومسح الفهرس.</h4>
@@ -504,16 +504,20 @@ index_path      | base/16384/16412
 (1 row)
 </code></pre>
 <p>وسيُوصف المسح بالفهرس فقط بالتفصيل في القسم 7.2.</p>
-<ol>
-<li>حُذفت هنا إجراءات العثور على صفوف الفهرس داخل فهرس B-tree، لأنها مفهوم موثَّق على نطاق واسع والمساحة محدودة. يُرجى الرجوع إلى التوثيق التقني ذي الصلة لمزيد من التفاصيل. <a href="#fnref:1">↩︎</a></li>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>حُذفت هنا إجراءات العثور على صفوف الفهرس داخل فهرس B-tree، لأنها مفهوم موثَّق على نطاق واسع والمساحة محدودة. يُرجى الرجوع إلى التوثيق التقني ذي الصلة لمزيد من التفاصيل. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
 </ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[-1--><a href="../../../../book/postgres-internals"><span class="prev-next__label">العودة</span> <span class="prev-next__title">فهرس الكتاب</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql02/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">معمارية العمليات والذاكرة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -521,8 +525,8 @@ index_path      | base/16384/16412
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

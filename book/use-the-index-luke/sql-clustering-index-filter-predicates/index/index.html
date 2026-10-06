@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -93,7 +93,7 @@ Predicate Information (identified by operation id):
 <h4>ملاحظة</h4>
 <p>العلاقة بين ترتيب الفهرس وترتيب الجدول معيار للأداء، وهو ما يسمى <a href="#sb-clustering-factor"><em>عامل العنقدة في الفهرس</em></a>.</p>
 <p>بل من الممكن فعلاً تحسين أداء الاستعلام بإعادة ترتيب صفوف الجدول بحيث توافق ترتيب الفهرس. لكن هذه الطريقة نادراً ما تكون قابلة للتطبيق، لأنك تستطيع تخزين صفوف الجدول في تسلسل واحد فقط. ويعني ذلك أنك لا تستطيع تحسين الجدول إلا لفهرس واحد. وحتى إذا استطعت اختيار فهرس واحد تحب تحسين الجدول له، فستبقى المهمة صعبة لأن معظم قواعد البيانات لا تقدم سوى أدوات بدائية لهذه المهمة. وما يسمى <em>تسلسل الصفوف</em> (row sequencing) في نهاية المطاف نهج غير عملي.</p>
-<h2 id="عامل-العنقدة-في-الفهرس">عامل العنقدة في الفهرس</h2>
+<h2 id="عامل-العنقدة-في-الفهرس">عامل العنقدة في الفهرس <span class="content-anchor" id="sb-clustering-factor"></span></h2>
 <p>عامل العنقدة في الفهرس مقياس غير مباشر لاحتمال أن يشير مدخلان متتاليان في الفهرس إلى كتلة الجدول نفسها. ويأخذ المُحسِّن هذا الاحتمال في الحسبان عند حساب قيمة تكلفة عملية <code>TABLE ACCESS BY INDEX ROWID</code>.</p>
 <p>وهنا بالضبط يأتي دور <em>القوة الثانية للفهرسة</em>: عنقدة البيانات. فيمكنك إضافة أعمدة كثيرة إلى فهرس بحيث تُخزَّن تلقائياً بترتيب محدد جيداً، ما يجعل الفهرس أداة قوية وبسيطة في الوقت نفسه لعنقدة البيانات.</p>
 <p>ولتطبيق هذا المفهوم على الاستعلام أعلاه، يجب أن نوسّع الفهرس ليغطي جميع الأعمدة الواردة في شرط <code>where</code>، حتى لو لم تضيّق نطاق الفهرس الممسوح:</p>
@@ -135,7 +135,7 @@ Predicate Information (identified by operation id):
 <h4>تحذير</h4>
 <p>لا تُدخِل فهرساً جديداً لغرض مُسندات الترشيح وحده؛ وسّع فهرساً قائماً بدلاً من ذلك وأبقِ <a href="/arabic-cs-library/book/use-the-index-luke/sql-dml/index">جهد الصيانة</a> منخفضاً. ومع بعض قواعد البيانات، يمكنك حتى إضافة أعمدة إلى فهرس المفتاح الأساسي ليست جزءاً من المفتاح الأساسي.</p>
 <p>يوضّح الرسم المتحرك التالي الفرق بين خطتي التنفيذ:</p>
-<p>الشكل 5.1 مُسندات ترشيح الفهرس المستخدمة عمداً <img src="/arabic-cs-library/images/use-the-index-luke/sql-clustering-index-filter-predicates-0-intentional-filter-predicate.en.N5J1kRR3.webp" alt=""></p>
+<p>الشكل 5.1 مُسندات ترشيح الفهرس المستخدمة عمداً <img src="/arabic-cs-library/images/use-the-index-luke/sql-clustering-index-filter-predicates-0-intentional-filter-predicate.en.N5J1kRR3.webp" alt="" id="fig-intentional-filter-predicate"></p>
 <p>يبدو هذا المثال البسيط مؤكداً للحكمة الشائعة القائلة بفهرسة كل عمود في شرط <code>where</code>. لكن هذه «الحكمة» تتجاهل أهمية ترتيب الأعمدة، وهو ما يحدد الشروط التي يمكن استخدامها كمُسندات وصول، وبالتالي له أثر هائل في الأداء. لذلك لا ينبغي أبداً ترك قرار ترتيب الأعمدة للصدفة.</p>
 <p>يكبر حجم الفهرس أيضاً مع عدد الأعمدة، خصوصاً عند إضافة أعمدة نصية. وبالطبع لا يتحسن الأداء بسبب كبر الفهرس، وإن كانت <a href="/arabic-cs-library/book/use-the-index-luke/sql-anatomy-the-tree/index#sb-log">قابلية التوسع اللوغاريتمية</a> تحدّ من الأثر كثيراً. ولا ينبغي لك بأي حال إضافة كل الأعمدة المذكورة في شرط <code>where</code> إلى الفهرس، بل استخدم مُسندات ترشيح الفهرس عن عمد فقط لتقليل حجم البيانات في خطوة تنفيذ أبكر.</p>
 <h4>نصيحة</h4>
@@ -152,7 +152,7 @@ Predicate Information (identified by operation id):
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -160,8 +160,8 @@ Predicate Information (identified by operation id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -61,8 +61,8 @@
 <p>ومن المكتبات الاختيارية الأخرى التي يستخدمها Audacity: libFLAC وlibogg وlibvorbis. وتوفّر هذه تنسيقات ضغط صوتي متنوعة. أما تنسيق MP3 فيُعتنى به عبر تحميل مكتبة LAME أو FFmpeg ديناميكيًا. وتمنع قيود الترخيص هذه المكتبات الضاغطة شديدة الشهرة من أن تكون مدمجة في البرنامج.</p>
 <p>أيضًا، تقف قيود الترخيص وراء بعض القرارات الأخرى المتعلقة بمكتبات Audacity وبنيته. فمثلًا، دعم إضافات VST غير مدمج بسبب قيود الترخيص. ونودّ كذلك أن نستخدم شيفرة FFTW شديدة الكفاءة الخاصة بتحويل فورييه السريع (fast Fourier transform) في بعض شيفرتنا. غير أننا لا نوفّرها إلا كخيار لمن يصرّفون Audacity بأنفسهم، ونرجع بدلًا منها إلى نسخة أبطأ قليلًا في بناءاتنا المعتادة. وما دام Audacity يقبل الإضافات، فقد قيل — وصحيح — إنه لا يستطيع استخدام FFTW. لا يريد مؤلفو FFTW أن تكون شيفرتهم متاحة كخدمة عامة لأي شيفرة أخرى اعتباطية. وعليه، فإن القرار المعماري بدعم الإضافات يقودنا إلى مقايضة فيما نقدّمه: فهو يجعل إضافات LADSPA ممكنة، لكنه يحرمنا من استخدام FFTW في الملفات التنفيذية الجاهزة التي نبنيها مسبقًا.</p>
 <p>وتتشكل المعمارية أيضًا بحسب الاعتبارات المتعلقة بأفضل طريقة لاستخدام وقت المطوّرين الشحيح لدينا. فمع فريق صغير من المطوّرين، لا تتوفر لدينا الموارد للقيام، مثلًا، بالتحليل المعمّق للثغرات الأمنية كما تفعل الفرق العاملة على Firefox وThunderbird. غير أننا لا نريد أن يوفّر Audacity طريقًا لتجاوز جدار حماية، ولذلك اتّخذنا قاعدة بعدم وجود أي اتصالات TCP/IP من Audacity أو إليه. وتجنّب TCP/IP يُسقط بكثير من المخاوف الأمنية. ووعينا بمحدودية مواردنا يدفعنا إلى تصميم أفضل. فهو يساعدنا على إسقاط الميزات التي ستكلّفنا وقت مطوّرين أكثر مما ينبغي، وعلى التركيز على ما هو جوهري.</p>
-<p>ينطبق اعتبار مماثل بشأن وقت المطوّرين على لغات البرمجة النصية (scripting). نريد البرمجة النصية، لكن شيفرة تنفيذ هذه اللغات لا يلزم أن تكون داخل Audacity. فلا معنى لصرّف نسخ من كل لغة برمجة نصية داخل Audacity لمنح المستخدمين كل الخيارات التي قد يريدونها.<a href="#footnote-1">1</a> وبدلًا من ذلك، نفّذنا البرمجة النصية بوحدة إضافات واحدة وأنبوب (pipe)، وسنغطي ذلك لاحقًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Layers.webp" alt="[طبقات Audacity]"></p>
+<p>ينطبق اعتبار مماثل بشأن وقت المطوّرين على لغات البرمجة النصية (scripting). نريد البرمجة النصية، لكن شيفرة تنفيذ هذه اللغات لا يلزم أن تكون داخل Audacity. فلا معنى لصرّف نسخ من كل لغة برمجة نصية داخل Audacity لمنح المستخدمين كل الخيارات التي قد يريدونها.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> وبدلًا من ذلك، نفّذنا البرمجة النصية بوحدة إضافات واحدة وأنبوب (pipe)، وسنغطي ذلك لاحقًا.</p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Layers.webp" alt="طبقات Audacity" id="fig.aud.1"></p>
 <p>الشكل 2.1: طبقات Audacity</p>
 <p>يعرض <a href="#fig.aud.1">الشكل 2.1</a> بعض الطبقات والوحدات في Audacity. ويُبرز المخطط ثلاث أصناف (classes) مهمة داخل wxWidgets، لكل منها انعكاس في Audacity. فنحن نبني تجريدات (abstractions) من مستوى أعلى انطلاقًا من تجريدات مرتبطة في مستوى أدنى. فمثلًا، نظام BlockFile انعكاس لـ wxWidgets' wxFiles ومبني عليه. وقد يكون من المفيد في مرحلة ما فصل BlockFiles وShuttleGUI ومعالجة الأوامر إلى مكتبة وسطية قائمة بذاتها. وسيشجعنا ذلك على جعلها أكثر عمومية.</p>
 <p>في أسفل المخطط شريط ضيق مخصَّص لـ «طبقات التنفيذ الخاصة بالمنصة» (Platform Specific Implementation Layers). كلتا wxWidgets وPortAudio طبقتا تجريد لنظام التشغيل (OS abstraction layers). وتحتوي كل منهما على شيفرة شرطية تختار بين تنفيذات مختلفة بحسب المنصة المستهدفة.</p>
@@ -91,14 +91,14 @@ S.StartStatic(&quot;Some Title&quot;,&amp;hellip;);
 }
 S.EndStatic();
 </code></pre>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-SomeDialog.webp" alt="مثال حوار"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-SomeDialog.webp" alt="مثال حوار" id="fig.aud.2"></p>
 <p>الشكل 2.2: مثال حوار</p>
 <p>تعرّف هذه الشيفرة صندوقًا ثابتًا (static box) في حوار، ويحتوي هذا الصندوق على زر ومربع اختيار. وينبغي أن يكون التطابق بين الشيفرة والحوار واضحًا. أما <code>StartStatic</code> و<code>EndStatic</code> فاستدعاءان متقابلان. وتُستخدم أزواج مشابهة من نوع <code>StartSomething</code>/<code>EndSomething</code> — ويجب أن تتطابق — للتحكم في جوانب أخرى من تخطيط الحوار. الأقواس المعقوفة والمسافات البادئة المصاحبة لها ليست ضرورية ليكون هذا شيفرة صحيحة. وقد تبنّينا قاعدة إضافتها لتصبح البنية، وخاصة تطابق الاستدعاءات المتقابلة، واضحة. فهي تساعد فعلًا في قابلية القراءة في الأمثلة الأكبر.</p>
 <p>الشيفرة المصدرية المعروضة لا تنشئ الحوار فحسب. فالشيفرة التي تلي التعليق «<code>//GUI Structure</code>» يمكن أن تُستخدم أيضًا لنقل البيانات من الحوار إلى خارج حيث تُخزَّن تفضيلات المستخدم، ولإعادتها إلى الداخل. وكان كثير من الشيفرة المتكررة سابقًا ناتجًا عن الحاجة إلى ذلك. أما اليوم فتلك الشيفرة تُكتب مرة واحدة فقط وتُدفن داخل الصنف <code>ShuttleGui</code>.</p>
 <p>هناك امتدادات أخرى لـ wxWidgets الأساسية في Audacity. فـ Audacity له صنف خاص به لإدارة أشرطة الأدوات. ولماذا لا يستخدم الصنف المدمج لأشرطة الأدوات في wxWidget؟ السبب تاريخي: فقد كُتبت أشرطة أدوات Audacity قبل أن توفّر wxWidgets صنفًا لأشرطة الأدوات.</p>
 <h2 id="24-لوحة-المسارات-trackpanel">2.4. لوحة المسارات (TrackPanel)</h2>
 <p>اللوحة الرئيسية في Audacity التي تعرض الموجات الصوتية هي TrackPanel. وهذا عنصر تحكّم مخصَّص (custom control) يرسمه Audacity. وهو مكوَّن من أجزاء مثل لوحات أصغر تحمل معلومات المسار، ومسطرة للخط الزمني (timebase)، ومساطر للسعة (amplitude)، ومسارات قد تعرض موجات أو أطيافًا أو تسميات نصية. ويمكن تغيير أحجام المسارات وتحريكها بالسحب. أما المسارات التي تحتوي تسميات نصية فتستخدم إعادة تنفيذ خاصة بنا لمربع نص قابل للتحرير بدلًا من مربع النص المدمج. وقد تظن أن هذه اللوحات والمسارات والمساطر ينبغي أن يكون كل منها مكوّنًا من wxWidgets، لكنها ليست كذلك.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-MainPanelAnnotated.webp" alt="[واجهة Audacity مع تحديد عناصر لوحة المسارات]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-MainPanelAnnotated.webp" alt="واجهة Audacity مع تحديد عناصر لوحة المسارات" id="fig.aud.3"></p>
 <p>الشكل 2.3: واجهة Audacity مع تحديد عناصر لوحة المسارات</p>
 <p>تعرض لقطة الشاشة في <a href="#fig.aud.3">الشكل 2.3</a> واجهة مستخدم Audacity. وجميع المكوّنات التي وُسمت مخصَّصة لـ Audacity. أما بالنسبة إلى wxWidgets، فهناك مكوّن wxWidget واحد يمثّل TrackPanel. وتتكفّل شيفرة Audacity — لا wxWidgets — بموضعية العناصر داخله وإعادة رسمها.</p>
 <p>الطريقة التي تتجمع بها كل هذه المكوّنات لتشكيل TrackPanel فظيعة حقًا. (الشيفرة هي الفظيعة؛ أما النتيجة النهائية التي يراها المستخدم فتبدو سليمة تمامًا.) فشيفرة الواجهة الرسومية والشيفرة الخاصة بالتطبيق مختلطة كلها معًا، غير منفصلة بنظافة. وفي التصميم الجيد، ينبغي ألا يعرف إلا شيفرتنا الخاصة بالتطبيق أمور قنوات الصوت اليمنى واليسرى والديسيبل (decibels) والكتم (muting) والعزل (soloing). أما عناصر الواجهة الرسومية فيجب أن تكون عناصر محايدة تجاه التطبيق وقابلة لإعادة الاستخدام في تطبيق غير صوتي. وحتى الأجزاء الخاصة بالواجهة الرسومية في TrackPanel هي رقعة من شيفرة الحالات الخاصة بمواضع وأحجام مطلقة، مع قدر غير كافٍ من التجريد. ليكون أجمل بكثير وأنظف وأكثر اتساقًا لو كانت هذه المكوّنات الخاصة عناصر واجهة رسومية قائمة بذاتها، ولو استخدمت منظِّمات أحجام بواجهات من الأنواع ذاتها التي تستخدمها wxWidgets.</p>
@@ -110,7 +110,7 @@ S.EndStatic();
 <p>‏PortAudio هي المكتبة الصوتية التي تمنح Audacity القدرة على تشغيل الصوت وتسجيله بطريقة عابرة للمنصات. وبدونها لن يستطيع Audacity استخدام بطاقة الصوت في الجهاز الذي يعمل عليه. وتوفّر PortAudio المخازن الدائرية (ring buffers)، وتحويل معدل العيّنات (sample rate conversion) عند التشغيل والتسجيل، والأهم من ذلك، توفّر واجهة برمجية تخفي الفروق بين الصوت على Mac وLinux وWindows. وداخل PortAudio توجد ملفات تنفيذ بديلة تدعم هذه الواجهة لكل منصة.</p>
 <p>لم أحتج يومًا إلى الغوص في PortAudio لمتابعة ما يجري في داخلها. غير أنه من المفيد أن نعرف كيف نتفاعل معها. يقبل Audacity حزم البيانات من PortAudio (التسجيل) ويرسل حزمًا إليها (التشغيل). ومن المفيد النظر في كيفية حدوث الإرسال والاستلام بالضبط، وكيف ينسجم ذلك مع القراءة والكتابة على القرص والتحديثات المعروضة على الشاشة.</p>
 <p>تجري في الوقت نفسه عدة عمليات مختلفة. بعضها يتكرر كثيرًا وينقل كميات صغيرة من البيانات ويجب الاستجابة له بسرعة. وبعضها يتكرر أقل وينقل كميات أكبر، وتوقيت حدوثه الدقيق أقل أهمية. وهذا هو عدم تطابق المعاوقة (impedance mismatch) بين العمليات، وتُستخدم المخازن المؤقتة لاستيعابه. والجزء الثاني من الصورة أننا نتعامل مع أجهزة صوت وأقراص صلبة وشاشة. فنحن لا ننزل إلى مستوى الأسلاك، ولذلك علينا العمل بالواجهات البرمجية المعطاة لنا. ومع أننا نودّ أن تبدو كل عملياتنا متشابهة — مثلًا أن تعمل كل واحدة منها من wxThread — إلا أننا لا نتمتع بهذه الرفاهية (<a href="#fig.aud.4">الشكل 2.4</a>).</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Buffers.webp" alt="[الخيوط والمخازن المؤقتة في التشغيل والتسجيل]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Buffers.webp" alt="الخيوط والمخازن المؤقتة في التشغيل والتسجيل" id="fig.aud.4"></p>
 <p>الشكل 2.4: الخيوط والمخازن المؤقتة في التشغيل والتسجيل</p>
 <p>يبدأ خيط صوتي واحد بواسطة شيفرة PortAudio ويتفاعل مباشرةً مع جهاز الصوت. وهو ما يقود التسجيل أو التشغيل. ويجب أن يكون هذا الخيط سريع الاستجابة وإلا فُقدت الحزم. ويقوم هذا الخيط، تحت سيطرة شيفرة PortAudio، باستدعاء <code>audacityAudioCallback</code> التي، أثناء التسجيل، تضيف الحزم الصغيرة الواردة حديثًا إلى مخزن التقاط أكبر (خمس ثوانٍ). وأثناء التشغيل فإنها تأخذ مقاطع صغيرة من مخزن تشغيل مدته خمس ثوانٍ. ولا تعرف مكتبة PortAudio شيئًا عن wxWidgets، ولذلك فإن هذا الخيط الذي تنشئه PortAudio هو pthread.</p>
 <p>يبدأ خيط ثانٍ بواسطة شيفرة في صنف AudioIO الخاص بـ Audacity. وأثناء التسجيل، يأخذ AudioIO البيانات من مخزن الالتقاط ويلحقها بمسارات Audacity حتى تُعرض في النهاية. وإضافةً إلى ذلك، عندما تُضاف بيانات كافية، يكتب AudioIO البيانات على القرص. ويقوم هذا الخيط نفسه أيضًا بقراءات القرص اللازمة لتشغيل الصوت. والدالة <code>AudioIO::FillBuffers</code> هي الدالة المفتاح هنا، وهي تتولى — بحسب إعدادات بعض المتغيرات المنطقية — التسجيل والتشغيل معًا في الدالة نفسها. ومن المهم أن تتولى الدالة الواحدة كلا الاتجاهين. فجزآ التسجيل والتشغيل يُستخدمان معًا عند إجراء «التشغيل البرمجي» (software play through)، حيث يُعاد تسجيل ما سُجّل سابقًا فوقه. وفي خيط AudioIO نحن رهنًا تامًا لمشيئة إدخال/إخراج القرص في نظام التشغيل. فقد نتوقف عند القراءة من القرص أو الكتابة إليه مدة غير معروفة. ولا يمكننا إجراء تلك القراءات أو الكتابات داخل <code>audacityAudioCallback</code> بسبب الحاجة إلى السرعة في الاستجابة هناك.</p>
@@ -123,7 +123,7 @@ S.EndStatic();
 <p>توازن ملفات الكتل بين قوتين متعارضتين. فنحن نستطيع إدراج الصوت وحذفه من دون نسخ مفرط، وأثناء التشغيل نضمن الحصول على مقاطع صوتية كبيرة بما يكفي مع كل طلب إلى القرص. وكلما صغُرت الكتل زاد عدد طلبات القرص المحتملة لجلب كمية الصوت نفسها؛ وكلما كبرت الكتل زاد النسخ عند الإدراج والحذف.</p>
 <p>لا تحوي ملفات الكتل في Audacity أبدًا على مساحات خالية داخلية، ولا تتجاوز أبدًا الحد الأقصى لحجم الكتلة. ولإبقاء هذا قائمًا عند الإدراج أو الحذف، قد ننتهي إلى نسخ ما يعادل كتلة واحدة من البيانات. وعندما لا نحتاج إلى كتلة ما بعد ذلك نحذفها. أما ملفات الكتل فتُحسب مراجعها، ولذلك فإن حذفنا لجزء من الصوت لا يؤدي إلى اختفاء ملفات الكتل المعنية فورًا، لأنها تبقى موجودة لدعم آلية التراجع (undo) حتى نقوم بالحفظ. ولا نحتاج أبدًا إلى جمع القمامة (garbage collection) للمساحة الخالية داخل ملفات كتل Audacity، وهو ما كان علينا تطبيقه مع نهج تجميع كل شيء في ملف واحد.</p>
 <p>يُعدّ دمج المقاطع الكبيرة من البيانات وتقسيمها من أساسيات أنظمة إدارة البيانات، من أشجار B إلى أجهزة اللوح (tablets) في Google BigTable إلى إدارة القوائم المترابطة المفرودة (unrolled linked lists). ويوضّح <a href="#fig.aud.5">الشكل 2.5</a> ما يحدث في Audacity عند إزالة مقطع صوتي قرب البداية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-BlocksCombined.webp" alt="[قبل الحذف، يحتوي ملف .aup وملفات الكتل على التسلسل ABCDEFGHIJKLMNO. وبعد حذف FGHI، يتم دمج ملفتَي كتل.]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-BlocksCombined.webp" alt="قبل الحذف، يحتوي ملف .aup وملفات الكتل على التسلسل ABCDEFGHIJKLMNO. وبعد حذف FGHI، يتم دمج ملفتَي كتل." id="fig.aud.5"></p>
 <p>الشكل 2.5: قبل الحذف، يحتوي ملف <code>.aup</code> وملفات الكتل على التسلسل ABCDEFGHIJKLMNO. وبعد حذف FGHI، يتم دمج ملفتَي كتل.</p>
 <p>لا تُستخدم ملفات الكتل للصوت نفسه فحسب، بل توجد أيضًا ملفات كتل تخزّن معلومات الملخص (summary). فإذا طُلب من Audacity عرض تسجيل مدته أربع ساعات على الشاشة، فلا يقبل أن يعالج الصوت كاملًا في كل مرة يعيد فيها رسم الشاشة. وبدلًا من ذلك، يستخدم معلومات الملخص التي توفّر أقصى سعة صوتية ودنياها على نطاقات من الزمن. وعند التكبير، يرسم Audacity باستخدام العيّنات الفعلية. وعند التصغير، يرسم Audacity باستخدام معلومات الملخص.</p>
 <p>أحد التحسينات في نظام ملفات الكتل هو أن الكتل لا يلزم أن تكون ملفات أنشأها Audacity. إذ يمكن أن تكون مراجع إلى أجزاء فرعية من ملفات صوتية، مثل امتداد زمني من صوت مخزَّن بتنسيق <code>.wav</code>. ويمكن للمستخدم إنشاء مشروع Audacity واستيراد صوت من ملف <code>.wav</code> وخلط عدد من المسارات مع إنشاء ملفات كتل لمعلومات الملخص فقط. وهذا يوفّر مساحة القرص ووقت نسخ الصوت. وعلى إجمالي الأمر، فهو فكرة سيئة إلى حد كبير. فالعدد الكبير جدًا من مستخدمينا حذف ملف الصوت الأصلي <code>.wav</code> ظنًّا أن هناك نسخة كاملة في مجلد مشروع Audacity. وليس الأمر كذلك، وبدون ملف <code>.wav</code> الأصلي لا يمكن تشغيل المشروع الصوتي بعد ذلك. والإعداد الافتراضي في Audacity اليوم هو نسخ الصوت المستورد دائمًا، مع إنشاء ملفات كتل جديدة في العملية.</p>
@@ -131,7 +131,7 @@ S.EndStatic();
 <p>المشكلة الرئيسية في بنية ملفات الكتل أنها معروضة للمستخدم النهائي. فنسمع كثيرًا من المستخدمين الذين ينقلون ملف <code>.aup</code> ولا يدركون أنهم يحتاجون أيضًا إلى نقل المجلد الذي يحتوي جميع ملفات الكتل. وكان من الأفضل لو كانت مشاريع Audacity ملفًا واحدًا تتولى Audacity فيه مسؤولية كيفية استخدام المساحة داخل الملف. بل إن هذا من شأنه أن يزيد الأداء لا أن ينقصه. وستكون الشيفرة الإضافية الرئيسية المطلوبة لجمع القمامة (garbage collection). وكان نهجًا بسيطًا لذلك هو نسخ الكتل إلى ملف جديد عند الحفظ إذا كانت نسبة غير مستخدمة من الملف تتجاوز حدًا مقررًا.</p>
 <h2 id="27-البرمجة-النصية-scripting">2.7. البرمجة النصية (Scripting)</h2>
 <p>يمتلك Audacity إضافة تجريبية تدعم عدة لغات برمجة نصية. وهي توفّر واجهة برمجة نصية عبر أنبوب مسمّى (named pipe). والأوامر المتاحة عبر البرمجة النصية بصيغة نصية، وكذلك الردود. ما دام بإمكان لغة البرمجة النصية للمستخدم الكتابة إلى أنبوب مسمّى والقراءة منه، فيمكن للغة البرمجة النصية أن تتحكّم في Audacity. ولا تحتاج بيانات الصوت وغيرها من البيانات كثيرة الحجم إلى المرور عبر الأنبوب (<a href="#fig.aud.7">الشكل 2.6</a>).</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Scripting.webp" alt="[إضافة البرمجة النصية توفّر البرمجة النصية عبر أنبوب مسمّى]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-audacity-Scripting.webp" alt="إضافة البرمجة النصية توفّر البرمجة النصية عبر أنبوب مسمّى" id="fig.aud.7"></p>
 <p>الشكل 2.6: إضافة البرمجة النصية توفّر البرمجة النصية عبر أنبوب مسمّى</p>
 <p>لا تعرف الإضافة نفسها شيئًا عن محتوى حركة المرور النصية التي تحملها، وإنما تقتصر على نقله. وواجهة الإضافات (أو نقطة الامتداد البدائية) التي تستخدمها إضافة البرمجة النصية للتوصيل بـ Audacity تكشف بالفعل أوامر Audacity بصيغة نصية. ولذلك فإن إضافة البرمجة النصية صغيرة، ومحتواها الرئيسي شيفرة الأنبوب.</p>
 <p>للأسف، يقدّم الأنبوب مخاطر أمنية مشابهة لما يقدّمه وجود اتصال TCP/IP—We've ruled out اتصالات TCP/IP في Audacity لأسباب أمنية. ولتقليل تلك المخاطر تكون الإضافة اختيارية وتُوزَّع على صورة DLL. عليك أن تتخذ قرارًا متعمَّدًا للحصول عليها واستخدامها، وهي تأتي مصحوبة بتحذير صحي وأمني.</p>
@@ -159,13 +159,20 @@ S.EndStatic();
 <ol>
 <li>الاستثناء الوحيد لذلك هو لغة Nyquist القائمة على Lisp، وهي مدمجة في Audacity منذ أيامه الأولى. ونودّ جعلها وحدة منفصلة مرفقة مع Audacity، لكننا لم نتّسع الوقت بعد لإجراء هذا التغيير.</li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>The one exception to this is the Lisp-based Nyquist language which has been built into Audacity from very early days. We would like to make it a separate module, bundled with Audacity, but we have not yet had the time to make that change. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/aosabook/v1-asterisk/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">Asterisk</span></a><!--]--> <!--[0--><a href="../../../../book/aosabook/v1-bash/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">The Bourne-Again Shell</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -173,8 +180,8 @@ S.EndStatic();
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

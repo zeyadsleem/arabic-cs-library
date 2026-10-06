@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -59,7 +59,7 @@
 <p>يقدّم الجزءُ الأول من هذا الفصل لمحةً عامةً عن برمجة المشروع، متضمّنًا لغتَه وتبعياته ومعماريتَه. وسيركّز الجزءُ الثاني على لغة تخزين البيانات الفريدة الخاصة بويسنوث، المعروفة باسم لغة ترميز ويسنوث (Wesnoth Markup Language، أو WML). وسيشرح الوظائفَ المحدّدة لـ WML، مع تركيزٍ خاصٍّ على آثارها في وحدات اللعب داخل اللعبة. ويغطّي القسمُ التالي تنفيذَ اللعب الجماعي والبرامج الخارجية. ويختم الفصلُ بعضَ الملاحظات الختامية حول بنيتنا وتحدّيات توسيع المشاركة.</p>
 <h2 id="251-لمحة-عامة-عن-المشروع">25.1. لمحةٌ عامةٌ عن المشروع</h2>
 <p>محرّكُ ويسنوث الأساسي مكتوبٌ بـ C++، ويبلغ مجموعُه نحو 200,000 سطر وقت صدور هذا الكتاب. ويمثّل ذلك محرّكَ اللعبة الأساسي، أي نحو نصف قاعدة الشيفرة من دون أيّ محتوى. ويتيح البرنامجُ أيضًا تعريفَ محتوى اللعبة بلغة بياناتٍ فريدةٍ اسمها لغة ترميز ويسنوث (WML). ويأتي اللعبةَ نحو 250,000 سطرٍ آخر من شيفرة WML. وقد تغيّرت هذه النسبة على مدى عمر المشروع. فمع نضج البرنامج، أُعيدت كتابةُ محتوى اللعبة الذي كان مضمَّنًا في شيفرة C++ بشكلٍ متزايد، بحيث صار WML هو ما يعرّف سلوكَه. ويقدّم <a href="#fig.wes.arch">الشكل 25.1</a> صورةً تقريبيةً لمعمارية البرنامج؛ فالمساحاتُ الخضراء يتولّى صيانتها مطوّرو ويسنوث، بينما تمثّل المساحاتُ البيضاء التبعيات الخارجية.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-wesnoth-architecture.webp" alt="[معمارية البرنامج]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-wesnoth-architecture.webp" alt="معمارية البرنامج" id="fig.wes.arch"></p>
 <p>الشكل 25.1: معمارية البرنامج</p>
 <p>عمومًا، يحاول المشروعُ تقليلَ التبعيات في معظم الحالات، وذلك لتعظيم قابلية نقل التطبيق. ولهذا مكسبٌ إضافيٌّ إذ يقلّل من تعقيد البرنامج، ويخفّض حاجةَ المطوّرين إلى تعلّم تفرّقات عددٍ كبيرٍ من واجهات البرمجة للتطبيقات التابعة لجهاتٍ أخرى (third-party APIs). وفي الوقت نفسه، فإنّ الاستخدامَ المتحفّظ لبعض التبعيات يمكن أن يحقّق الأثر نفسه فعلًا. فمثلًا، تستخدم ويسنوث طبقةَ الوسائط المباشرة البسيطة (Simple DirectMedia Layer، أو SDL) في الفيديو وعمليات الإدخال/الإخراج (I/O) ومعالجة الأحداث. وقد اختيرت لأنّها سهلةٌ في الاستخدام وتوفّر واجهةَ إدخال/إخراجٍ مشتركةً عبر منصّاتٍ كثيرة. وهذا يتيح للبرنامج أن يكون قابلًا للنقل إلى مجموعةٍ واسعةٍ من المنصّات، بدلًا من البديل الذي يقتضي البرمجةَ ضدّ واجهاتٍ برمجيةٍ خاصّةٍ مختلفٍ لكل منصّة. غير أنّ لهذا ثمنًا؛ فاستغلالُ بعض المزايا الخاصّة بالمنصّة يصعب أكثر. ويملك SDL أيضًا عائلةً مرافقةً من المكتبات التي تستخدمها ويسنوث لأغراضٍ متنوّعة:</p>
 <ul>
@@ -189,7 +189,7 @@
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -197,8 +197,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

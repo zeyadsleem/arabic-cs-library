@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -64,7 +64,7 @@
 <p>كما توفّر كثير من أنظمة Unix <a href="https://www.gnu.org/software/ddd/">منقّح عرض البيانات (DDD)</a>، وهو غلاف رسومي سهل الاستخدام يحيط ببرنامج تنقيح بسطر الأوامر (GDB مثلاً). ويقبل برنامج DDD الوسائط والأوامر نفسها التي يقبلها GDB، لكنه يوفّر واجهة رسومية بخيارات قائمة التنقيح إضافة إلى واجهة سطر الأوامر الخاصة بـ GDB.</p>
 <p>بعد مناقشة بعض المقدمات عن كيفية <a href="#_getting_started_with_gdb">البدء بـ GDB</a>، نعرض جلستي تنقيح مثاليتين بـ GDB تقدّمان أوامر GDB شائعة الاستخدام في سياق إيجاد أنواع مختلفة من الأخطاء. وتوضح الجلسة الأولى (<a href="#_example_gdb_sessions">GDB على badprog.c</a>) كيفية استخدام أوامر GDB لإيجاد أخطاء منطقية في برنامج C. وتوضح الجلسة الثانية (<a href="#_segfaulter_">GDB على segfaulter.c</a>) مثالاً على استخدام أوامر GDB لفحص حالة تنفيذ البرنامج عند انهياره من أجل اكتشاف سبب الانهيار.</p>
 <p>وفي قسم <a href="https://diveintosystems.org/book/C3-C_debug/gdb_commands.html#_common_gdb_commands">أوامر GDB الشائعة</a>، نصف أوامر GDB شائعة الاستخدام بمزيد من التفصيل، مع عرض مزيد من الأمثلة على بعض الأوامر. وفي أقسام لاحقة، نناقش بعض ميزات GDB المتقدمة.</p>
-<h3 id="311-البدء-بـ-gdb"><a href="#_getting_started_with_gdb"></a>3.1.1. البدء بـ GDB</h3>
+<h3 id="311-البدء-بـ-gdb">3.1.1. البدء بـ GDB <span class="content-anchor" id="_getting_started_with_gdb"></span></h3>
 <p>عند تنقيح برنامج، يساعد تصريفه بخيار <code>-g</code>، الذي يضيف معلومات تنقيح إضافية إلى الملف التنفيذي الثنائي. وتساعد هذه المعلومات الإضافية المنقّح في إيجاد متغيّرات البرنامج ودواله في الملف التنفيذي الثنائي وتمكّنه من ربط تعليمات شيفرة الآلة بأسطر شيفرة C المصدرية (أي الصورة التي يفهمها مبرمج C من البرنامج). كذلك، عند التصريف للتنقيح، تجنّب تحسينات المصرّف (فمثلاً، لا تبنِ باستخدام <code>-O2</code>). فشيفرة المصرّف المحسَّنة كثيراً ما يصعب تنقيحها جداً لأن تسلسلات شيفرة الآلة المحسَّنة لا ترتبط غالباً بوضوح بشيفرة C المصدرية. ورغم أننا نغطي استخدام العلامة <code>-g</code> في الأقسام التالية، فقد يحصل بعض المستخدمين على نتائج أفضل مع العلامة <code>-g3</code>، التي قد تكشف معلومات تنقيح إضافية.</p>
 <p>وفيما يلي أمر <code>gcc</code> مثال يبني ملفاً تنفيذياً مناسباً للتنقيح بـ GDB:</p>
 <pre><code class="language-bash">$ gcc -g myprog.c
@@ -81,7 +81,7 @@
 <pre><code class="language-bash">$ gdb core a.out
 (gdb) <span class="hljs-built_in">where</span>       <span class="hljs-comment"># the where command shows point of crash</span>
 </code></pre>
-<h3 id="312-جلستا-gdb-مثاليتان"><a href="#_example_gdb_sessions"></a>3.1.2. جلستا GDB مثاليتان</h3>
+<h3 id="312-جلستا-gdb-مثاليتان">3.1.2. جلستا GDB مثاليتان <span class="content-anchor" id="_example_gdb_sessions"></span></h3>
 <p>نعرض ميزات GDB الشائعة عبر جلستين مثاليتين لاستخدام GDB في تنقيح البرامج. الأولى مثال على استخدام GDB لإيجاد خطأين في برنامج وإصلاحهما، والثانية مثال على استخدام GDB لتنقيح برنامج ينهار. وتشمل مجموعة أوامر GDB التي نعرضها في هاتين الجلستين المثاليتين:</p>
 <table>
 <thead>
@@ -133,7 +133,7 @@
 </tr>
 </tbody>
 </table>
-<h4><a href="#badprog"></a>مثال على استخدام GDB لتنقيح برنامج (badprog.c)</h4>
+<h4>مثال على استخدام GDB لتنقيح برنامج (badprog.c) <span class="content-anchor" id="badprog"></span></h4>
 <p>تنقّح جلسة GDB المثالية الأولى برنامج <a href="https://diveintosystems.org/book/C3-C_debug/_attachments/badprog.c">badprog.c</a>. من المفترض أن يجد هذا البرنامج أكبر قيمة في مصفوفة من قيم <code>int</code>. غير أنه عند التشغيل، يجد خطأً أن 17 هي أكبر قيمة في المصفوفة بدلاً من القيمة الصحيحة وهي 60. ويوضح هذا المثال كيف يستطيع GDB فحص الحالة وقت تشغيل البرنامج لتحديد سبب عدم حساب البرنامج النتيجة المتوقعة. وبشكل خاص، تكشف جلسة التنقيح المثالية هذه خطأين:</p>
 <ol>
 <li>خطأ في حدود الحلقة يؤدي إلى وصول البرنامج إلى عناصر تتجاوز حدود المصفوفة.</li>
@@ -376,7 +376,7 @@ main (argc=1, argv=0x7fffffffe398) at badprog.c:44
 $4 = 17
 </code></pre>
 <p>وجدنا الخطأ الثاني! تحدد الدالة <code>findAndReturnMax()</code> أكبر قيمة صحيحة في المصفوفة الممرَّرة (60)، لكنها لا ترجع تلك القيمة إلى الدالة <code>main()</code>. ولإصلاح هذا الخطأ، نحتاج إما إلى تغيير <code>findAndReturnMax()</code> لترجع قيمة <code>max</code> أو إلى إضافة وسيط «تمرير بالمؤشّر» تستخدمه الدالة لتعديل قيمة المتغيّر المحلي <code>max</code> في الدالة <code>main()</code>.</p>
-<h4><a href="#_segfaulter_"></a>مثال على استخدام GDB لتنقيح برنامج ينهار (segfaulter.c)</h4>
+<h4>مثال على استخدام GDB لتنقيح برنامج ينهار (segfaulter.c) <span class="content-anchor" id="_segfaulter_"></span></h4>
 <p>توضح جلسة GDB المثالية الثانية (المشغَّلة على برنامج <a href="https://diveintosystems.org/book/C3-C_debug/_attachments/segfaulter.c">segfaulter.c</a>) كيف يتصرف GDB عند انهيار برنامج، وكيف يمكننا استخدام GDB للمساعدة في اكتشاف سبب الانهيار.</p>
 <p>في هذا المثال، نشغّل برنامج <code>segfaulter</code> في GDB فقط ونتركه ينهار:</p>
 <pre><code class="language-bash">$ gcc -g -o segfaulter segfaulter.c
@@ -439,11 +439,11 @@ $4 = (int *) 0x0
 <p>يُظهر الانتقال إلى إطار مكدّس المستدعي وطباعة قيمة الوسائط التي تمرّرها <code>main()</code> إلى <code>initfunc()</code> أن الدالة <code>main()</code> تمرّر مؤشّراً فارغاً إلى الدالة <code>initfunc()</code>. وبعبارة أخرى، نسي المستخدم تخصيص مصفوفة <code>arr</code> قبل الاستدعاء <code>initfunc()</code>. والإصلاح هو استخدام الدالة <code>malloc()</code> لتخصيص بعض المساحة لـ <code>arr</code> عند السطر 34.</p>
 <p>توضح جلسة GDB المثالية هاتان أوامر شائعة الاستخدام لإيجاد الأخطاء في البرامج. وفي القسم التالي، نناقش هذه الأوامر وأوامر GDB أخرى بمزيد من التفصيل.</p>
 <p>نُدرج في هذا القسم أوامر GDB الشائعة ونعرض بعض ميزاتها بأمثلة. نناقش أولاً بعض اختصارات لوحة المفاتيح الشائعة التي تجعل استخدام GDB أسهل.</p>
-<h3 id="321-اختصارات-لوحة-المفاتيح-في-gdb"><a href="#_keyboard_shortcuts_in_gdb"></a>3.2.1. اختصارات لوحة المفاتيح في GDB</h3>
+<h3 id="321-اختصارات-لوحة-المفاتيح-في-gdb">3.2.1. اختصارات لوحة المفاتيح في GDB <span class="content-anchor" id="_keyboard_shortcuts_in_gdb"></span></h3>
 <p>يدعم GDB <strong>إكمال سطر الأوامر</strong>. ويمكن للمستخدم إدخال بادئة فريدة لأمر ما والضغط على مفتاح <code>TAB</code>، وسيحاول GDB إكمال سطر الأمر. كما يمكن استخدام <strong>اختصار قصير</strong> فريد لإصدار كثير من أوامر GDB الشائعة. فمثلاً، بدلاً من إدخال الأمر <code>print x</code>، يمكن للمستخدم إدخال <code>p x</code> فقط لطباعة قيمة <code>x</code>، أو يمكن استخدام <code>l</code> للأمر <code>list</code>، أو <code>n</code> للأمر <code>next</code>.</p>
 <p><em>مفتاحا السهمين لأعلى ولأسفل</em> يتنقلان في أسطر أوامر GDB السابقة، ما يلغي الحاجة إلى إعادة كتابتها في كل مرة.</p>
 <p>الضغط على مفتاح <code>RETURN</code> في موجّه GDB ينفّذ <em>أحدث أمر سابق</em>. وهذا مفيد بوجه خاص عند التقدم خلال التنفيذ بسلسلة من أوامر <code>next</code> أو <code>step</code>؛ اضغط <code>RETURN</code> فقط وسينفّذ GDB التعليمة التالية.</p>
-<h3 id="322-أوامر-gdb-الشائعة"><a href="#_common_gdb_commands"></a>3.2.2. أوامر GDB الشائعة</h3>
+<h3 id="322-أوامر-gdb-الشائعة">3.2.2. أوامر GDB الشائعة <span class="content-anchor" id="_common_gdb_commands"></span></h3>
 <p>نلخّص هنا أوامر GDB الأكثر شيوعاً، مجموعةً بحسب وظائفها المتشابهة: أوامر التحكم في تنفيذ البرنامج؛ وأوامر تقييم نقطة تنفيذ البرنامج؛ وأوامر ضبط نقاط التوقّف والتحكم فيها؛ وأوامر طباعة حالة البرنامج وتقييم التعبيرات. ويوفّر أمر GDB <code>help</code> معلومات عن جميع أوامر GDB:</p>
 <p><strong><code>help</code></strong>: وثائق المساعدة للموضوعات وأوامر GDB.</p>
 <pre><code>help &lt;topic or command&gt;   Shows help available for topic or command
@@ -451,7 +451,7 @@ $4 = (int *) 0x0
 help breakpoints    Shows help information about breakpoints
 help print          Shows help information about print command
 </code></pre>
-<h4><a href="#_commands_for_execution_control_flow"></a>أوامر التحكم في مسار التنفيذ</h4>
+<h4>أوامر التحكم في مسار التنفيذ <span class="content-anchor" id="_commands_for_execution_control_flow"></span></h4>
 <p><strong><code>break</code></strong>: ضبط نقطة توقّف.</p>
 <pre><code class="language-javascript"><span class="hljs-keyword">break</span> &lt;func-name&gt;   <span class="hljs-title class_">Set</span> breakpoint at start <span class="hljs-keyword">of</span> <span class="hljs-keyword">function</span> &lt;func-name&gt;
 <span class="hljs-keyword">break</span> &lt;line&gt;        <span class="hljs-title class_">Set</span> breakpoint at line number &lt;line&gt;
@@ -489,7 +489,7 @@ next &lt;count&gt;    Executes next &lt;count&gt; instructions
 <p><strong><code>quit</code></strong>: الخروج من GDB</p>
 <pre><code>quit
 </code></pre>
-<h4><a href="#_commands_for_examining_the_execution_point_and_listing_program_code"></a>أوامر فحص نقطة التنفيذ وسرد شيفرة البرنامج</h4>
+<h4>أوامر فحص نقطة التنفيذ وسرد شيفرة البرنامج <span class="content-anchor" id="_commands_for_examining_the_execution_point_and_listing_program_code"></span></h4>
 <p><strong><code>list</code></strong>: سرد شيفرة البرنامج المصدرية.</p>
 <pre><code class="language-javascript">list                <span class="hljs-title class_">Lists</span> next few lines <span class="hljs-keyword">of</span> program source code
 list &lt;line&gt;         <span class="hljs-title class_">Lists</span> lines around line number &lt;line&gt; <span class="hljs-keyword">of</span> program
@@ -507,7 +507,7 @@ info frame          Show state about current stack frame
 
 frame 3             Move into stack frame 3's context (0 is top frame)
 </code></pre>
-<h4><a href="#_commands_for_setting_and_manipulating_breakpoints"></a>أوامر ضبط نقاط التوقّف والتلاعب بها</h4>
+<h4>أوامر ضبط نقاط التوقّف والتلاعب بها <span class="content-anchor" id="_commands_for_setting_and_manipulating_breakpoints"></span></h4>
 <p><strong><code>break</code></strong>: ضبط نقطة توقّف (يوجد مزيد من الشرح عن هذا الأمر في <a href="#_commands_for_execution_control_flow">قسم أوامر التحكم في مسار التنفيذ</a> أعلاه.)</p>
 <pre><code>break &lt;func-name&gt;   Set a breakpoint at start of a function
 break &lt;line&gt;        Set a breakpoint at a line number
@@ -544,7 +544,7 @@ info <span class="hljs-keyword">break</span>          <span class="hljs-title cl
 
 condition <span class="hljs-number">1</span> (i &gt; <span class="hljs-number">1000</span>)     <span class="hljs-title class_">Set</span> condition on breakpoint <span class="hljs-number">1</span>
 </code></pre>
-<h4><a href="#_commands_for_examining_and_evaluating_program_state_and_expressions"></a>أوامر فحص حالة البرنامج والتعبيرات وتقييمها</h4>
+<h4>أوامر فحص حالة البرنامج والتعبيرات وتقييمها <span class="content-anchor" id="_commands_for_examining_and_evaluating_program_state_and_expressions"></span></h4>
 <p><strong><code>print</code></strong> (<code>p</code>): عرض قيمة تعبير. ورغم أن مستخدمي GDB يطبعون عادةً قيمة متغيّر برنامج، فإن GDB سيطبع قيمة أي تعبير C (حتى التعبيرات غير الموجودة في شيفرة البرنامج). ويدعم أمر print الطباعة بصيغ مختلفة ويدعم معاملات بتمثيلات عددية مختلفة.</p>
 <pre><code>print &lt;exp&gt;     Display the value of expression &lt;exp&gt;
 
@@ -677,7 +677,7 @@ ptr = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeo
 <p>قد تؤدي تسريبات الذاكرة في النهاية إلى نفاد مساحة ذاكرة الكومة من البرنامج، ما يؤدي إلى فشل استدعاءات لاحقة لـ <code>malloc()</code>. أما أنواع أخطاء الوصول إلى الذاكرة الأخرى، مثل القراءات والكتابات غير الصالحة، فقد تؤدي إلى انهيار البرنامج أو إلى تعديل محتويات ذاكرة البرنامج بطرق تبدو غامضة.</p>
 <p>أخطاء الوصول إلى الذاكرة من أصعب الأخطاء إيجاداً في البرامج. فكثيراً ما لا يؤدي خطأ الوصول إلى الذاكرة فوراً إلى خطأ ملحوظ في تنفيذ البرنامج. بل قد يطلق خطأً يحدث لاحقاً في التنفيذ، غالباً في جزء من البرنامج لا علاقة ظاهرية له بمصدر الخطأ. وفي أوقات أخرى، قد يعمل برنامج به خطأ وصول إلى الذاكرة بصورة صحيحة على بعض المدخلات وينهار على مدخلات أخرى، ما يجعل سبب الخطأ صعب الإيجاد والإصلاح.</p>
 <p>تساعد أداة Valgrind المبرمج على تحديد أخطاء الوصول إلى ذاكرة الكومة الصعبة الإيجاد والإصلاح هذه، موفّرةً قدراً كبيراً من وقت وجهد التنقيح. كما تساعد Valgrind المبرمج في تحديد أي أخطاء كامنة في ذاكرة الكومة لم تُكتشف في اختبار شيفرته وتنقيحها.</p>
-<h3 id="331-برنامج-مثال-به-خطأ-وصول-إلى-ذاكرة-الكومة"><a href="#_an_example_program_with_a_heap_memory_access_error"></a>3.3.1. برنامج مثال به خطأ وصول إلى ذاكرة الكومة</h3>
+<h3 id="331-برنامج-مثال-به-خطأ-وصول-إلى-ذاكرة-الكومة">3.3.1. برنامج مثال به خطأ وصول إلى ذاكرة الكومة <span class="content-anchor" id="_an_example_program_with_a_heap_memory_access_error"></span></h3>
 <p>كمثال على صعوبة اكتشاف برامج بها أخطاء وصول إلى الذاكرة وإصلاحها، تأمّل البرنامج الصغير التالي (<a href="https://diveintosystems.org/book/C3-C_debug/_attachments/bigfish.c">bigfish.c</a>). يعرض هذا البرنامج خطأ «كتابة إلى ذاكرة كومة غير مخصَّصة» في حلقة <code>for</code> الثانية، عندما يسنِد قيماً تتجاوز حدود مصفوفة <code>bigfish</code> (ملاحظة: تتضمن القائمة أرقام أسطر الشيفرة المصدرية، وتعريف الدالة <code>print_array()</code> غير معروض، لكنه يتصرف كما هو موصوف):</p>
 <pre><code class="language-c"> <span class="hljs-number">1</span>  <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
  <span class="hljs-number">2</span>  <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span>
@@ -742,7 +742,7 @@ Segmentation fault (core dumped)
 <p>تقول رسالة خطأ Valgrind هذه إن البرنامج يكتب إلى ذاكرة كومة غير صالحة (غير مخصَّصة) عند السطر 27، وإن هذه الذاكرة غير الصالحة تقع مباشرة بعد كتلة ذاكرة خُصِّصت عند السطر 11، ما يشير إلى أن الحلقة تصل إلى بعض العناصر التي تتجاوز حدود الذاكرة المخصَّصة في مساحة الكومة التي يشير إليها <code>bigfish</code>. ومن الإصلاحات المحتملة لهذا الخطأ زيادة عدد البايتات الممرَّرة إلى <code>malloc()</code> أو تغيير حدود حلقة <code>for</code> الثانية لتجنّب الكتابة بما يتجاوز حدود مساحة ذاكرة الكومة المخصَّصة.</p>
 <p>إضافةً إلى إيجاد أخطاء الوصول إلى ذاكرة الكومة، يستطيع Valgrind أيضاً إيجاد بعض الأخطاء المتعلقة بالوصول إلى ذاكرة المكدّس، مثل استخدام متغيّرات محلية غير مهيّأة أو محاولة الوصول إلى مواقع ذاكرة مكدّس تتجاوز حدود المكدّس الحالي. غير أن Valgrind لا يكشف أخطاء الوصول إلى ذاكرة المكدّس بالتفصيل نفسه الذي يكشف به أخطاء ذاكرة الكومة، ولا يكشف أخطاء الوصول إلى ذاكرة البيانات العامة.</p>
 <p>قد يكون في برنامج أخطاء وصول إلى ذاكرة المكدّس والذاكرة العامة لا يستطيع Valgrind إيجادها. غير أن هذه الأخطاء تؤدي إلى سلوك برنامج خاطئ أو انهيار برنامج شبيه بالسلوك الذي قد يحدث مع أخطاء الوصول إلى ذاكرة الكومة. فمثلاً، قد تؤدي الكتابة فوق مواقع ذاكرة تتجاوز حدود مصفوفة معلَنة ساكنةً على المكدّس إلى تغيير قيم متغيّرات محلية أخرى «بشكل غامض» أو إلى الكتابة فوق حالة محفوظة على المكدّس تُستخدم للعودة من استدعاء دالة، ما يؤدي إلى انهيار عند عودة الدالة. وقد تساعد خبرة استخدام Valgrind لأخطاء ذاكرة الكومة المبرمجَ على تحديد أخطاء مشابهة في الوصول إلى ذاكرة المكدّس والذاكرة العامة وإصلاحها.</p>
-<h3 id="332-كيفية-استخدام-memcheck"><a href="#_how_to_use_memcheck"></a>3.3.2. كيفية استخدام Memcheck</h3>
+<h3 id="332-كيفية-استخدام-memcheck">3.3.2. كيفية استخدام Memcheck <span class="content-anchor" id="_how_to_use_memcheck"></span></h3>
 <p>نوضح بعض الميزات الرئيسية لأداة تحليل الذاكرة Memcheck من Valgrind على برنامج مثال، <a href="https://diveintosystems.org/book/C3-C_debug/_attachments/valgrindbadprog.c">valgrindbadprog.c</a>، يحتوي عدة أخطاء سيئة في الوصول إلى الذاكرة (تصف التعليقات في الشيفرة نوع الخطأ). ويشغّل Valgrind أداة Memcheck افتراضياً؛ ونعتمد على هذا السلوك الافتراضي في مقتطفات الشيفرة التالية. ويمكنك تحديد أداة Memcheck صراحةً باستخدام الخيار <code>--tool=memcheck</code>. وفي أقسام لاحقة، سنستدعي أدوات تحليل أخرى من Valgrind باستدعاء الخيار <code>--tool</code>.</p>
 <p>لتشغيل Memcheck، صرّف برنامج <code>valgrindbadprog.c</code> أولاً بالعلامة <code>-g</code> لإضافة معلومات تنقيح إلى الملف التنفيذي (مثل ملف <code>a.out</code>). ثم شغّل الملف التنفيذي بـ <code>valgrind</code>. ولاحظ أنه في البرامج غير التفاعلية، قد يكون من المفيد إعادة توجيه ناتج Valgrind إلى ملف لعرضه بعد خروج البرنامج:</p>
 <pre><code class="language-bash">$ gcc -g valgrindbadprog.c
@@ -800,13 +800,13 @@ $ vim output.txt
 <p>إذا لم يكن فحص الشيفرة حول خطأ Valgrind كافياً للمبرمج لفهم الخطأ أو إصلاحه، فقد يكون استخدام GDB مفيداً. ويمكن أن يساعد ضبط نقاط توقّف حول النقاط في الشيفرة المرتبطة بأخطاء Valgrind المبرمجَ على تقييم حالة البرنامج وقت التشغيل وفهم سبب خطأ Valgrind. فمثلاً، بوضع نقطة توقّف عند السطر 29 وطباعة قيمتي <code>i</code> و<code>str</code>، يستطيع المبرمج رؤية خطأ تجاوز حدود المصفوفة عندما يكون <code>i</code> مساوياً 5. وفي هذه الحالة، يساعد الجمع بين استخدام Valgrind وGDB المبرمج على تحديد كيفية إصلاح أخطاء الوصول إلى الذاكرة التي يجدها Valgrind.</p>
 <p>ورغم أن هذا الفصل ركّز على أداة Memcheck الافتراضية لـ Valgrind، فإننا نوصّف بعض قدرات Valgrind الأخرى لاحقاً في الكتاب، منها <a href="https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html#_cache_analysis_and_valgrind">أداة تحليل الذاكرة المؤقتة Cachegrind (الفصل 11)</a>، و<a href="https://diveintosystems.org/book/C12-CodeOpt/basic.html#_using_callgrind_to_profile">أداة تحليل الشيفرة Callgrind (الفصل 12)</a>، و<a href="https://diveintosystems.org/book/C12-CodeOpt/memory_considerations.html#_memory_profiling_with_massif">أداة تحليل الذاكرة Massif (الفصل 12)</a>. ولمزيد من المعلومات عن استخدام Valgrind، انظر <a href="http://valgrind.org">الصفحة الرئيسية لـ Valgrind</a> و<a href="http://valgrind.org/docs/manual/">دليلها الإلكتروني</a>.</p>
 <p>يعرض هذا القسم ميزات GDB المتقدمة، وقد لا يكون بعضها مفهوماً إلا بعد قراءة <a href="https://diveintosystems.org/book/C13-OS/index.html#_the_operating_system">فصل أنظمة التشغيل</a>.</p>
-<h3 id="341-gdb-وmake"><a href="#_gdb_and_make"></a>3.4.1. GDB وmake</h3>
+<h3 id="341-gdb-وmake">3.4.1. GDB وmake <span class="content-anchor" id="_gdb_and_make"></span></h3>
 <p>يقبل GDB الأمر <code>make</code> لإعادة بناء ملف تنفيذي أثناء جلسة تنقيح، وإذا نجح البناء فسيشغّل البرنامج المبني حديثاً (عند إصدار الأمر <code>run</code>).</p>
 <pre><code>(gdb) make
 (gdb) run
 </code></pre>
 <p>البناء من داخل GDB ملائم للمستخدم الذي ضبط نقاط توقّف كثيرة وأصلح خطأً واحداً ويريد متابعة جلسة التنقيح. وفي هذه الحالة، بدلاً من الخروج من GDB وإعادة التصريف وإعادة تشغيل GDB بالملف التنفيذي الجديد وإعادة ضبط جميع نقاط التوقّف، يستطيع مستخدم GDB تشغيل <code>make</code> وبدء تنقيح النسخة الجديدة من البرنامج مع بقاء جميع نقاط التوقّف مضبوطة. لكن ضع في اعتبارك أن تعديل شيفرة C المصدرية وإعادة التصريف بتشغيل <code>make</code> من داخل GDB قد يؤدي إلى عدم وقوع نقاط التوقّف عند الموقع المنطقي نفسه في النسخة الجديدة من البرنامج كما في النسخة القديمة إذا أُضيفت أسطر شيفرة مصدرية أو حُذفت. وعند حدوث هذه المشكلة، إما اخرج من GDB وأعد تشغيل جلسة GDB على الملف التنفيذي الجديد، أو استخدم <code>disable</code> أو <code>delete</code> لتعطيل نقاط التوقّف القديمة أو حذفها ثم <code>break</code> لضبط نقاط توقّف جديدة عند المواقع الصحيحة في النسخة المصرَّفة حديثاً من البرنامج.</p>
-<h3 id="342-إرفاق-gdb-بعملية-قيد-التشغيل"><a href="#_attaching_gdb_to_a_running_process"></a>3.4.2. إرفاق GDB بعملية قيد التشغيل</h3>
+<h3 id="342-إرفاق-gdb-بعملية-قيد-التشغيل">3.4.2. إرفاق GDB بعملية قيد التشغيل <span class="content-anchor" id="_attaching_gdb_to_a_running_process"></span></h3>
 <p>يدعم GDB تنقيح برنامج قيد التشغيل بالفعل (بدلاً من بدء برنامج ليعمل من داخل جلسة GDB) بـ<em>إرفاق</em> GDB بعملية قيد التشغيل. وللقيام بذلك، يحتاج المستخدم إلى الحصول على قيمة معرّف العملية (PID):</p>
 <p>احصل على PID العملية باستخدام أمر الصدفة <code>ps</code>:</p>
 <pre><code class="language-bash"><span class="hljs-comment"># ps to get process&#x27;s PID (lists all processes started in current shell):</span>
@@ -831,7 +831,7 @@ $ gdb attach 12345 a.out
 <p>بغض النظر عن كيفية توقف البرنامج، بعد أن يُرفق GDB ويدخل المستخدم بعض أوامر GDB، يستمر تنفيذ البرنامج من نقطة إرفاقه باستخدام <code>cont</code>. وإذا لم ينجح <code>cont</code>، فقد يحتاج GDB إلى إرسال إشارة <code>SIGCONT</code> إلى العملية صراحةً لمتابعة تنفيذها:</p>
 <pre><code>(gdb) signal SIGCONT
 </code></pre>
-<h3 id="343-متابعة-عملية-عند-fork"><a href="#_following_a_process_on_a_fork"></a>3.4.3. متابعة عملية عند fork</h3>
+<h3 id="343-متابعة-عملية-عند-fork">3.4.3. متابعة عملية عند fork <span class="content-anchor" id="_following_a_process_on_a_fork"></span></h3>
 <p>عندما ينقّح GDB برنامجاً يستدعي الدالة <code>fork()</code> لإنشاء عملية فرعية جديدة، يمكن ضبط GDB لمتابعة (تنقيح) العملية الأب أو العملية الفرعية، مع ترك تنفيذ العملية الأخرى دون تأثر بـ GDB. وبشكل افتراضي، يتبع GDB العملية الأب بعد استدعاء <code>fork()</code>. ولضبط GDB ليتبع العملية الفرعية بدلاً من ذلك، استخدم الأمر <code>set follow-fork-mode</code>:</p>
 <pre><code>(gdb) set follow-fork-mode child    # Set gdb to follow child on fork
 
@@ -840,7 +840,7 @@ $ gdb attach 12345 a.out
 </code></pre>
 <p>ضبط نقاط توقّف عند استدعاءات <code>fork()</code> في البرنامج مفيد عندما يريد المستخدم تغيير هذا السلوك أثناء جلسة GDB.</p>
 <p>يوضح مثال <a href="https://diveintosystems.org/book/C3-C_debug/_attachments/attach_example.c">attach_example.c</a> طريقة لإتباع كلتا العمليتين عند fork: يتبع GDB العملية الأب بعد fork، وترسل العملية الفرعية لنفسها إشارة <code>SIGSTOP</code> لتوقف نفسها صراحةً بعد fork، ما يتيح للمبرمج إرفاق عملية GDB ثانية بالعملية الفرعية قبل متابعتها.</p>
-<h3 id="344-التحكم-في-الإشارات"><a href="#_signal_control"></a>3.4.4. التحكم في الإشارات</h3>
+<h3 id="344-التحكم-في-الإشارات">3.4.4. التحكم في الإشارات <span class="content-anchor" id="_signal_control"></span></h3>
 <p>تستطيع عملية GDB إرسال إشارات إلى العملية الهدف التي ينقّحها واستقبال الإشارات التي تستقبلها العملية الهدف.</p>
 <p>يستطيع GDB إرسال إشارات إلى العملية التي ينقّحها باستخدام الأمر <code>signal</code>:</p>
 <pre><code>(gdb) signal SIGCONT
@@ -853,7 +853,7 @@ $ gdb attach 12345 a.out
 (gdb) info signal           # list info on all signals
 (gdb) info SIGALRM          # list info just for the SIGALRM signal
 </code></pre>
-<h3 id="345-إعدادات-ddd-وإصلاح-الأخطاء"><a href="#_ddd_settings_and_bug_fixes"></a>3.4.5. إعدادات DDD وإصلاح الأخطاء</h3>
+<h3 id="345-إعدادات-ddd-وإصلاح-الأخطاء">3.4.5. إعدادات DDD وإصلاح الأخطاء <span class="content-anchor" id="_ddd_settings_and_bug_fixes"></span></h3>
 <p>يؤدي تشغيل DDD إلى إنشاء مجلد <code>.ddd</code> في مجلدك الرئيسي، يستخدمه لتخزين إعداداته حتى لا يحتاج المستخدمون إلى إعادة ضبط جميع تفضيلاتهم من الصفر في كل استدعاء. ومن أمثلة الإعدادات المحفوظة أحجام النوافذ الفرعية وخيارات عرض القوائم وتمكين نوافذ عرض قيم السجلات وشيفرة لغة التجميع.</p>
 <p>أحياناً يتوقف DDD عند بدء التشغيل برسالة «Waiting until GDB ready». ويشير هذا غالباً إلى خطأ في ملفات إعداداته المحفوظة. وأسهل طريقة لإصلاح ذلك إزالة مجلد <code>.ddd</code> (ستفقد كل إعداداتك المحفوظة وتحتاج إلى إعادة ضبطها عند بدء تشغيله مرة أخرى):</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">rm</span> -rf ~/.ddd  <span class="hljs-comment"># Be careful when entering this command!</span>
@@ -879,7 +879,7 @@ $ ddd ./a.out
 <p>ويمكن اختيارياً أن يؤدي التصريف بخيار سطر الأوامر <code>-fno-asynchronous-unwind-tables</code> لـ <code>gcc</code> إلى توليد شيفرة IA32 أسهل قليلاً على المبرمج في القراءة والفهم:</p>
 <pre><code class="language-bash">$ gcc -m32 -fno-asynchronous-unwind-tables -o simpleops simpleops.c
 </code></pre>
-<h3 id="351-استخدام-gdb-لفحص-الشيفرة-الثنائية"><a href="#_using_gdb_to_examine_binary_code"></a>3.5.1. استخدام GDB لفحص الشيفرة الثنائية</h3>
+<h3 id="351-استخدام-gdb-لفحص-الشيفرة-الثنائية">3.5.1. استخدام GDB لفحص الشيفرة الثنائية <span class="content-anchor" id="_using_gdb_to_examine_binary_code"></span></h3>
 <p>نعرض في هذا القسم بعض أوامر GDB المثالية لتنقيح برنامج C القصير على مستوى شيفرة لغة التجميع. ويلخّص الجدول التالي كثيراً من الأوامر التي يعرضها هذا القسم:</p>
 <table>
 <thead>
@@ -958,7 +958,7 @@ $ gdb ./simpleops
 <p>يعرض الأمر <code>info registers</code> جميع القيم المخزّنة في سجلات الآلة:</p>
 <pre><code>(gdb) info registers
 </code></pre>
-<h3 id="352-استخدام-ddd-للتنقيح-على-مستوى-لغة-التجميع"><a href="#_using_ddd_to_debug_at_the_assembly_level"></a>3.5.2. استخدام DDD للتنقيح على مستوى لغة التجميع</h3>
+<h3 id="352-استخدام-ddd-للتنقيح-على-مستوى-لغة-التجميع">3.5.2. استخدام DDD للتنقيح على مستوى لغة التجميع <span class="content-anchor" id="_using_ddd_to_debug_at_the_assembly_level"></span></h3>
 <p>يوفّر منقّح DDD واجهة رسومية فوق منقّح آخر (GDB في هذه الحالة). ويوفّر واجهة جميلة لعرض شيفرة لغة التجميع وعرض السجلات والتقدم خلال تنفيذ تعليمات IA32. ولأن DDD له نوافذ منفصلة لعرض الشيفرة المفككة وقيم السجلات وموجّه أوامر GDB، فكثيراً ما يكون استخدامه أسهل من GDB عند التنقيح على مستوى شيفرة لغة التجميع.</p>
 <p>للتنقيح بـ DDD، استبدل <code>ddd</code> بـ <code>gdb</code>:</p>
 <pre><code class="language-bash">$ ddd ./simpleops
@@ -966,7 +966,7 @@ $ gdb ./simpleops
 <p>يظهر موجّه GDB في النافذة السفلية حيث يقبل أوامر GDB. ورغم أنه يوفّر خيارات قائمة وأزراراً لبعض أوامر GDB، فكثيراً ما يكون موجّه GDB في الأسفل أسهل استخداماً.</p>
 <p>يعرض DDD عرض شيفرة لغة التجميع للبرنامج باختيار خيار القائمة <em>View</em> ← <em>Machine Code Window</em>. وينشئ هذا الخيار نافذة فرعية جديدة بها قائمة شيفرة لغة التجميع للبرنامج (قد ترغب على الأرجح في تغيير حجم هذه النافذة لتكبيرها).</p>
 <p>لعرض جميع قيم سجلات البرنامج في نافذة منفصلة، فعّل خيار القائمة <em>Status</em> ← <em>Registers</em>.</p>
-<h3 id="353-أوامر-وأمثلة-تنقيح-شيفرة-لغة-التجميع-في-gdb"><a href="#_gdb_assembly_code_debugging_commands_and_examples"></a>3.5.3. أوامر وأمثلة تنقيح شيفرة لغة التجميع في GDB</h3>
+<h3 id="353-أوامر-وأمثلة-تنقيح-شيفرة-لغة-التجميع-في-gdb">3.5.3. أوامر وأمثلة تنقيح شيفرة لغة التجميع في GDB <span class="content-anchor" id="_gdb_assembly_code_debugging_commands_and_examples"></span></h3>
 <p>وفيما يلي بعض التفاصيل والأمثلة على أوامر GDB المفيدة للتنقيح على مستوى شيفرة لغة التجميع (انظر <a href="https://diveintosystems.org/book/C3-C_debug/gdb_commands.html#_common_gdb_commands">قسم أوامر GDB الشائعة</a> لمزيد من التفاصيل عن بعض هذه الأوامر، وخصوصاً خيارات التنسيق <code>print</code> و<code>x</code>):</p>
 <p><code>disass</code>: تفكيك شيفرة دالة أو مجال عناوين.</p>
 <pre><code>disass &lt;func_name&gt;   # Lists assembly code for function
@@ -1014,7 +1014,7 @@ set *(int *)0x8ff4bc10 = 44   Store 44 at address 0x8ff4bc10
 <p><code>display</code>: طباعة تعبير في كل مرة تُصادف فيها نقطة توقّف.</p>
 <pre><code>display $eax         Display value of register eax
 </code></pre>
-<h3 id="354-ملخص-سريع-للأوامر-الشائعة-لتنقيح-لغة-التجميع"><a href="#_quick_summary_of_common_commands_for_assembly_debugging"></a>3.5.4. ملخص سريع للأوامر الشائعة لتنقيح لغة التجميع</h3>
+<h3 id="354-ملخص-سريع-للأوامر-الشائعة-لتنقيح-لغة-التجميع">3.5.4. ملخص سريع للأوامر الشائعة لتنقيح لغة التجميع <span class="content-anchor" id="_quick_summary_of_common_commands_for_assembly_debugging"></span></h3>
 <pre><code class="language-bash">$ ddd ./a.out
 (gdb) <span class="hljs-built_in">break</span> main
 (gdb) run
@@ -1045,7 +1045,7 @@ set *(int *)0x8ff4bc10 = 44   Store 44 at address 0x8ff4bc10
     fflush(<span class="hljs-built_in">stdout</span>);
 }
 </code></pre>
-<h3 id="361-gdb-وpthreads"><a href="#_gdb_and_pthreads"></a>3.6.1. GDB وPthreads</h3>
+<h3 id="361-gdb-وpthreads">3.6.1. GDB وPthreads <span class="content-anchor" id="_gdb_and_pthreads"></span></h3>
 <p>يمتلك منقّح GDB دعماً خاصاً لتنقيح البرامج متعددة الخيوط، بما في ذلك ضبط نقاط توقّف لخيوط فردية وفحص مكدّسات خيوط فردية. ومن الأمور التي يجب ملاحظتها عند تنقيح برامج Pthreads في GDB وجود ثلاثة معرّفات على الأقل لكل خيط:</p>
 <ul>
 <li>معرّف مكتبة Pthreads للخيط (قيمة <code>pthread_t</code>).</li>
@@ -1054,7 +1054,7 @@ set *(int *)0x8ff4bc10 = 44   Store 44 at address 0x8ff4bc10
 </ul>
 <p>قد تختلف العلاقة المحددة بين معرّفات الخيوط من نظام تشغيل وتنفيذ مكتبة Pthreads إلى آخر، لكن على معظم الأنظمة توجد مقابلة واحد لواحد لواحد بين معرّف Pthreads ومعرّف LWP ومعرّف خيط GDB.</p>
 <p>نعرض بعض أساسيات GDB لتنقيح البرامج متعددة الخيوط في GDB. انظر ما يلي لمزيد من المعلومات عن <a href="http://www.sourceware.org/gdb/current/onlinedocs/gdb/Threads.html#Threads">تنقيح البرامج متعددة الخيوط في GDB</a>.</p>
-<h3 id="362-أوامر-gdb-الخاصة-بالخيوط"><a href="#_gdb_thread_specific_commands"></a>3.6.2. أوامر GDB الخاصة بالخيوط:</h3>
+<h3 id="362-أوامر-gdb-الخاصة-بالخيوط">3.6.2. أوامر GDB الخاصة بالخيوط: <span class="content-anchor" id="_gdb_thread_specific_commands"></span></h3>
 <p>تمكين طباعة أحداث بدء الخيوط وخروجها:</p>
 <pre><code>set print thread-events
 </code></pre>
@@ -1079,7 +1079,7 @@ where            # Thread 12's stack trace
 <pre><code>break &lt;where&gt; thread &lt;threadno&gt;
 </code></pre>
 <p>عند الوصول إلى نقطة توقّف، يوقف GDB افتراضياً جميع الخيوط حتى يكتب المستخدم <code>cont</code>. ويمكن للمستخدم تغيير السلوك ليطلب من GDB إيقاف الخيوط التي صادفت نقطة التوقّف فقط، مع السماح للخيوط الأخرى بمتابعة التنفيذ.</p>
-<h3 id="363-أمثلة"><a href="#_examples"></a>3.6.3. أمثلة:</h3>
+<h3 id="363-أمثلة">3.6.3. أمثلة: <span class="content-anchor" id="_examples"></span></h3>
 <p>نعرض بعض أوامر GDB وناتجاً من تشغيل GDB على ملف تنفيذي متعدد الخيوط مصرَّف من الملف <a href="https://diveintosystems.org/book/C3-C_debug/_attachments/racecond.c">racecond.c</a>.</p>
 <p>يفتقر هذا البرنامج الخاطئ إلى التزامن حول الوصولات إلى المتغيّر المشترك <code>count</code>. ونتيجةً لذلك، تنتج تشغيلات مختلفة للبرنامج قيماً نهائية مختلفة لـ <code>count</code> دلالةً على حالة سباق (race condition). فمثلاً، فيما يلي تشغيلان للبرنامج بخمسة خيوط ينتجان نتيجتين مختلفتين:</p>
 <pre><code>./a.out 5
@@ -1195,7 +1195,7 @@ $6 = 1
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1203,8 +1203,8 @@ $6 = 1
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -69,7 +69,7 @@
 <h2 id="222-واجهة-تطبيقات-الويب">22.2. واجهة تطبيقات الويب</h2>
 <p>يحتاج تطبيق الويب إلى وسيلة ما للتواصل مع خادم. وأحد النهوج الممكنة هو دمج الخادم مباشرةً داخل الإطار، لكن ذلك يقيّد خياراتك في النشر بالضرورة ويؤدي إلى واجهات رديئة. وقد أنشأت لغات كثيرة واجهات قياسية لمعالجة هذه المسألة: لدى Python واجهة WSGI، ولدى Ruby واجهة Rack. وفي هاسكل لدينا WAI: واجهة تطبيقات الويب (Web Application Interface).</p>
 <p>ليست WAI واجهة عالية المستوى. لها هدفان محدَّدان: العمومية (generality) والأداء. وبفضل بقائها عامّة، تمكّنت WAI من دعم الواجهات الخلفية (backends) لكل شيء، من الخوادم المستقلّة إلى CGI الكلاسيكي القديم، وتعمل حتى مباشرةً مع Webkit لإنتاج تطبيقات سطح مكتب وهمية. أما جانب الأداء فسيقدّم لنا إلى عدد من مزايا هاسكل الرائعة.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-yesod-overview.webp" alt=""> الشكل 22.1: البنية العامة لتطبيق Yesod</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-yesod-overview.webp" alt="" id="fig.yesod.overall"> الشكل 22.1: البنية العامة لتطبيق Yesod</p>
 <h3 id="أنواع-البيانات">أنواع البيانات</h3>
 <p>من أكبر مزايا هاسكل—ومن الأشياء التي نستعين بها أكثر من غيرها في Yesod—هو التنميط الساكن القوي (strong static typing). وقبل أن نبدأ كتابة الشيفرة التي تحلّ مسألة ما، نحتاج أن نفكّر في شكل البيانات. وWAI مثال مثالي على هذا النمط. فالمفهوم الأساسي الذي نريد التعبير عنه هو مفهوم التطبيق. وأبسط تعبير عن تطبيق هو دالة تأخذ طلبًا وتعيد استجابة. بمصطلحات هاسكل:</p>
 <pre><code>type Application = Request -&gt; Response
@@ -96,7 +96,7 @@
 </ul>
 <p>على الأرجح أن يستخدم معظم المطوّرين Warp. فهو خفيف بما يكفي لاستخدامه في الاختبار. ولا يحتاج إلى ملفات إعدادات، ولا إلى تسلسل مجلدات، ولا إلى عملية طويلة الأمد يملكها مدير النظام. إنه مكتبة بسيطة تُدمَج في تطبيقك عند التصريف أو تُشغَّل عبر مُفسِّر هاسكل. وWarp خادم سريع للغاية، مع حماية من جميع مسارات الهجوم، مثل Slowloris والترويسات اللانهائية. ويمكن أن يكون Warp هو خادم الويب الوحيد الذي تحتاجه، رغم أنه مريح أيضًا للعمل خلف وكيل (proxy) عكسي لـHTTP.</p>
 <p>يقيس معيار الأداء PONG عدد الطلبات في الثانية لدى مختلف الخوادم لجسم استجابة من 4 بايت هو «PONG». وفي الرسم البياني المعروض في <a href="#fig.yesod.warp">الشكل 22.2</a>، يُقاس Yesod بوصفه إطارًا فوق Warp. وكما يتبيّن، تتصدّر الخوادم المكتوبة بهاسكل (Warp وHappstack وSnap) المشهد.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-yesod-extra-large.webp" alt=""> الشكل 22.2: معيار أداء PONG لـWarp</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-yesod-extra-large.webp" alt="" id="fig.yesod.warp"> الشكل 22.2: معيار أداء PONG لـWarp</p>
 <p>معظم أسباب سرعة Warp سبق بيانها في الوصف العام لـWAI: العدّادات والبانيات وأنواع البيانات المحزومة. والقطعة الأخيرة في اللغز تأتي من بيئة تشغيل مُصرِّف غلاسكو للغة هاسكل متعدّدة الخيوط (GHC). فـGHC، مُصرِّف هاسكل الرئيسي، يملك خيوطًا خضراء خفيفة الوزن (light-weight green threads). وبخلاف خيوط النظام، من الممكن إطلاق آلاف منها دون عقوبات أداء كبيرة. لذا في Warp يتولّى كل اتصال خيطه الأخضر الخاص.</p>
 <p>الحيلة التالية هي الإدخال/الإخراج اللامتزامن (asynchronous I/O). فأي خادم ويب يطمح في التوسّع إلى عشرات الآلاف من الطلبات في الثانية سيحتاج إلى شكل من أشكال الاتصال اللامتزامن. وفي معظم اللغات ينطوي هذا على برمجة معقّدة تتضمّن دوال نداء (callbacks). أما GHC فيتيح لنا الغشّ: نبرمج وكأننا نستخدم واجهة متزامنة (synchronous API)، ويبدّل GHC تلقائيًا بين الخيوط الخضراء المختلفة التي تنتظر النشاط.</p>
 <p>تحت السطح، يستخدم GHC النظام الذي يوفّره نظام التشغيل المضيف، مثل <code>kqueue</code> و<code>epoll</code> و<code>select</code>. ومنح هذا كل أداء نظام الإدخال/الإخراج القائم على الأحداث (event-based)، دون قلق بشأن مسائل قابلية النقل عبر المنصات أو الكتابة بأسلوب قائم على دوال النداء.</p>
@@ -334,7 +334,7 @@ toWidget [julius|alert(&quot;Some special Javascript to play with my navbar&quot
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -342,8 +342,8 @@ toWidget [julius|alert(&quot;Some special Javascript to play with my navbar&quot
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

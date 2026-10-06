@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -101,7 +101,7 @@ end
 <h3 id="1531-مقدمة">15.3.1. مقدّمة</h3>
 <p>سلوكيات OTP تُقدَّم كوحدات مكتبية في تطبيق <code>stdlib</code> الذي يأتي جزءًا من توزيع Erlang/OTP. أمّا الشيفرة الخاصّة التي يكتبها المطوّر فتوضع في وحدة منفصلة وتُستدعى عبر مجموعة من دوال الاستدعاء الراجعة (callback) المعرَّفة مسبقًا والمعياريّة لكل سلوك. وسيحتوي وحدة الاستدعاء الراجعة هذه على كامل الشيفرة الخاصّة اللازمة لتقديم الوظيفة المطلوبة.</p>
 <p>تتضمّن سلوكيات OTP عمليات العمّال التي تؤدّي المعالجة الفعلية، وكذلك المشرفين مهمّتهم مراقبة العمّال والمشرفين الآخرين. وتشمل سلوكيات العمّال، التي يُشار إليها في المخطّطات عادةً بالدوائر، الخوادم ومعالجات الأحداث وآلات الحالات المنتهية. أمّا المشرفون، فيشار إليهم في الرسوم التوضيحية بالمربّعات، فيراقبون أبنائهم من عمّال ومشرفين آخريين، بما ينشئ ما يُسمّى شجرة إشراف (supervision tree).</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-riak-supervision-tree.webp" alt="[شجرة إشراف Riak في OTP]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-riak-supervision-tree.webp" alt="شجرة إشراف Riak في OTP" id="fig.erlang.supervision"></p>
 <p>الشكل 15.1: شجرة إشراف Riak في OTP</p>
 <p>تُحزَّم أشجار الإشراف داخل سلوك يُسمّى تطبيقًا (application). وتطبيقات OTP ليست لبنات بناء أنظمة Erlang فحسب، بل هي أيضًا وسيلة لتغليف مكوّنات قابلة لإعادة الاستعمال. وتتألّف الأنظمة بمستوى الصناعي مثل Riak من مجموعة تطبيقات مترابطة ربطًا ضعيفًا، وموزّعة على الأرجح. وبعض هذه التطبيقات جزء من توزيع Erlang القياسي، وبعضها الآخر القطع التي تشكّل الوظيفة الخاصّة بـ Riak.</p>
 <p>ومن أمثلة تطبيقات OTP معرّف كائن Corba (Corba ORB) أو وكيل بروتوكول إدارة الشبكة البسيط (Simple Network Management Protocol, SNMP). وتطبيق OTP هو مكوّن قابل لإعادة الاستعمال يحزم وحدات مكتبية معًا مع عمليات مشرف وعمّال. ومن الآن فصاعدًا، حين نشير إلى تطبيق، فإنّنا نعني تطبيق OTP.</p>
@@ -302,7 +302,7 @@ init([]) -&gt;
 <p>يُستعمل سلوك <code>application</code> الذي قدّمناه سابقًا لتغليف وحدات Erlang ومواردها في مكوّنات قابلة لإعادة الاستعمال. وفي OTP، هناك نوعان من التطبيقات. أمّا الشكل الأكثر شيوعًا، ويُسمّى التطبيقات العادية (normal applications)، فيُشغّل شجرة إشراف وجميع العمّال الساكنين ذوي الصلة. أمّا تطبيقات المكتبة مثل المكتبة القياسية، التي تأتي كجزء من توزيع Erlang، فتحتوي وحدات مكتبية لكنّها لا تشغّل شجرة إشراف. وهذا لا يعني أنّ الشيفرة قد لا تحتوي على عمليات أو أشجار إشراف، بل يعني فقط أنّها تُشغَّل كجزء من شجرة إشراف تابعة لتطبيق آخر.</p>
 <p>وسيتألّف نظام Erlang من مجموعة تطبيقات مترابطة ربطًا ضعيفًا. فبعضها مكتوب من قِبل المطوّرين، وبعضه متاح كمصدر مفتوح، وبعضها الآخر جزء من توزيع Erlang/OTP. ويتعامل نظام وقت تشغيل Erlang وأدواته مع جميع التطبيقات بالمثل، بغضّ النظر عمّا إذا كانت جزءًا من توزيع Erlang أم لا.</p>
 <h2 id="156-التكرار-والاتصال-في-riak">15.6. التكرار والاتصال في Riak</h2>
-<p>صُمِّم Riak من أجل موثوقية وتوافرية شديدتين عند نطاق هائل، واستُلهِم من نظام تخزين Dynamo لدى Amazon [<a href="https://aosabook.org/en/v1/bib1.html#bib:amazon:dynamo">DHJ+07</a>]. وتجمّع معماريتا Dynamo وRiak جوانب من كلٍّ من جداول التجزئة الموزّعة (Distributed Hash Tables, DHTs) وقواعد البيانات التقليدية. أمّا التقنيتان الرئيسيتان اللتان تستعملهما Riak وDynamo معًا فهما <em>التجزئة المتّسقة</em> (consistent hashing) لوضع النُسخ، و<em>بروتوكول الثرثرة</em> (gossip protocol) لمشاركة الحالة المشتركة.</p>
+<p>صُمِّم Riak من أجل موثوقية وتوافرية شديدتين عند نطاق هائل، واستُلهِم من نظام تخزين Dynamo لدى Amazon <a href="https://aosabook.org/en/v1/bib1.html#bib:amazon:dynamo">DHJ+07</a>. وتجمّع معماريتا Dynamo وRiak جوانب من كلٍّ من جداول التجزئة الموزّعة (Distributed Hash Tables, DHTs) وقواعد البيانات التقليدية. أمّا التقنيتان الرئيسيتان اللتان تستعملهما Riak وDynamo معًا فهما <em>التجزئة المتّسقة</em> (consistent hashing) لوضع النُسخ، و<em>بروتوكول الثرثرة</em> (gossip protocol) لمشاركة الحالة المشتركة.</p>
 <p>وتتطلّب التجزئة المتّسقة أن تعرف كل عقدة في النظام العقدَ الأخرى، وأن تعرف أي التقسيمات تملكها كل عقدة. ويمكن الاحتفاظ ببيانات هذا الإسناد في ملف إعدادات مُدار مركزيًّا، لكنّ هذا يصبح صعبًا جدًّا في التكوينات الكبيرة. والخيار البديل الآخر هو استعمال خادم إعدادات مركزي، لكنّ هذا يُدخل نقطة فشل وحيدة في النظام. وبدلًا من ذلك، تستعمل Riak بروتوكول ثرثرة لنشر بيانات عضوية العنقود وبيانات ملكية التقسيمات في أرجاء النظام.</p>
 <p>وتعمل بروتوكولات الثرثرة، وتُسمّى أيضًا بروتوكولات الأوبئة (epidemic protocols)، تمامًا كما يوحي اسمها. فحين ترغب عقدة في النظام في تغيير جزء من البيانات المشتركة، فإنّها تُجري التغيير على نسختها المحلية من البيانات وتنشر البيانات المحدَّثة إلى نظير عشوائي. وحين تستقبل تحديثًا، تدمج العقدة التغييرات المستلَمة مع حالتها المحلية وتُنشر مرّة أخرى إلى نظير عشوائي آخر.</p>
 <p>وحين يُشغَّل عنقود Riak، يجب أن تكون جميع العُقد مُهيّأة بعدد التقسيمات نفسه. ثمّ تُقسَّم حلقة التجزئة المتّسقة بعدد التقسيمات ويُخزَّن كلّ مدى محليًّا كزوج <code>{HashRange, Owner}</code>. وتُطالب العقدة الأولى في العنقود ببساطة بجميع التقسيمات. وحين تنضمّ عقدة جديدة إلى العنقود، فإنّها تتّصل بعقدة قائمة للحصول على قائمة أزواج <code>{HashRange, Owner}</code> الخاصة بها. ثمّ تطالب بـ (عدد التقسيمات)/(عدد العُقد) من الأزواج، محدِّثةً حالتها المحلية لتعكس ملكيتها الجديدة. ثمّ تُنشر معلومات الملكية المحدَّثة إلى نظير. وبعد ذلك تنتشر هذه الحالة المحدَّثة في أرجاء العنقود كلّه باستعمال الخوارزمية أعلاه.</p>
@@ -319,7 +319,7 @@ init([]) -&gt;
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -327,8 +327,8 @@ init([]) -&gt;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

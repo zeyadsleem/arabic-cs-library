@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -96,7 +96,7 @@
 </ul>
 <p>ويستخدم Git أيضًا رسمًا بيانيًا موجَّهًا خاليًا من الدورات، غير أنّ ذلك هذه المرة لتخزين تاريخه. ويتضمّن كل إصدار بيانات وصفية عن أسلافه؛ ويمكن أن يكون لأحد الإصدارات في Git عددٌ من إصداراته الأبيّة (parent commits) يساوي صفرًا أو كثيرًا (نظريًّا بلا حدّ). فعلى سبيل المثال، يكون للإصدار الأول في مستودع Git عدد أباء يساوي صفرًا، في حين تكون لنتائج الدمج الثلاثي (three-way merge) ثلاثة أباء.</p>
 <p>وهناك فرق أساسي آخر بين Git وبين Subversion وأسلافه ذوي التاريخ الخطّي، وهو قدرته على دعم التفريع (branching) مباشرةً، بحيث يسجّل معظم حالات تاريخ الدمج.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-git-dag-example.webp" alt=""> الشكل 6.1: مثال على تمثيل برسم بياني موجَّه خالٍ من الدورات في Git</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-git-dag-example.webp" alt="" id="fig.git.dag"> الشكل 6.1: مثال على تمثيل برسم بياني موجَّه خالٍ من الدورات في Git</p>
 <p>يتيح Git قدرةً كاملة على التفريع باستخدام الرسوم البيانية الموجَّهة الخالية من الدورات لتخزين المحتوى. ويرتبط تاريخ الملف صعودًا عبر بنيته الدائرية (عبر عقدٍ تمثّل الأدلّة) حتى دليل الجذر، الذي يُربط بدوره بعقدة إصدار. ويمكن بدورها لعقدة الإصدار هذه أن يكون لها واحد أو أكثر من الآباء. وهذا يمنح Git خاصيتين تتيحان لنا استنتاج التاريخ والمحتوى على نحو أكثر تحديدًا مما تفعله عائلة أنظمة التحكّم بالإصدارات المشتقّة من RCS، وهي:</p>
 <ul>
 <li>عندما تمتلك عقدة محتوى (أي ملف أو دليل) في الرسم البياني هوية المرجع نفسها (تجزئة SHA في Git) التي تمتلكها في إصدار آخر، فإنّ العقدتين مضمونَتان على احتوائهما المحتوى نفسه، مما يتيح لـ Git اختصار مقارنة المحتوى بكفاءة.</li>
@@ -197,7 +197,7 @@
 </code></pre>
 <p>وما نراه هنا في بدايته هو تمثيل المحتوى داخل قاعدة بيانات كائنات Git.</p>
 <h2 id="66-قاعدة-بيانات-الكائنات">6.6. قاعدة بيانات الكائنات</h2>
-<p><img src="/arabic-cs-library/images/aosabook/v2-git-object-hierarchy.webp" alt=""> الشكل 6.2: كائنات Git</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-git-object-hierarchy.webp" alt="" id="fig.git.objects"> الشكل 6.2: كائنات Git</p>
 <p>يمتلك Git أربعة أنواع أساسية من الكائنات البدائية التي يُبنى حولها كل نوع من المحتوى في المستودع المحلّي. ولكل نوع من الكائنات السمات التالية: <em>النوع</em> و<em>الحجم</em> و<em>المحتوى</em>. وأنواع الكائنات البدائية هي:</p>
 <ul>
 <li><em>الشجرة (Tree)</em>: قد يكون عنصر في الشجرة شجرةً أخرى أو كائنًا ثنائيًا (blob) عند تمثيل دليل محتوى.</li>
@@ -215,13 +215,13 @@
 <p>ورغم النتائج المرغوبة للتخزين القائم على الرسوم البيانية الموجَّهة الخالية من الدورات، سواءً لتخزين المحتوى أو لتواريخ الدمج، فإنّ التخزين بالفروق (delta) سيكون أكثر إحكامًا للمساحة من استخدام كائنات DAG <em>منفصلة (loose)</em> في كثير من المستودعات.</p>
 <h2 id="67-تقنيات-التخزين-والضغط">6.7. تقنيات التخزين والضغط</h2>
 <p>يعالج Git مشكلة مساحة التخزين بحزم الكائنات في صيغة مضغوطة، مستخدمًا ملف فهرس يشير إلى إزاحات (offsets) لتحديد مواضع كائنات بعينها في الملف <em>المحزوم (packed)</em> المقابل.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-git-packed-format.webp" alt=""> الشكل 6.3: مخطّط لملف حزمة مع ملف الفهرس المقابل</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-git-packed-format.webp" alt="" id="fig.git.pack"> الشكل 6.3: مخطّط لملف حزمة مع ملف الفهرس المقابل</p>
 <p>يمكننا عدّ الكائنات المنفصلة (أي غير المحزومة) في مستودع Git المحلّي باستخدام <code>git count-objects</code>. ويمكننا الآن أن نطلب من Git حزم الكائنات المنفصلة في قاعدة بيانات الكائنات، وحذف الكائنات المنفصلة المحزومة سلفًا، والبحث عن ملفات حزم مكرّرة باستخدام أوامر Git من نوع plumbing إن رغبنا في ذلك.</p>
 <p>لقد تطوّرت صيغة ملف الحزمة (pack file) في Git، إذ خزّنت الصيغة الأولية مجاميع التحقّق CRC لملف الحزمة وملف الفهرس داخل ملف الفهرس نفسه. غير أنّ هذا ترك احتمالًا لتلف في البيانات المضغوطة لا يمكن اكتشافه، إذ إنّ مرحلة إعادة الحزم (repacking) لم تتضمّن أي فحوص إضافية. وتُغلب النسخة الثانية من صيغة ملف الحزمة هذه المشكلة بإدراج مجاميع تحقّق CRC لكل كائن مضغوط في ملف فهرس الحزمة. كما تسمح النسخة الثانية بملفات حزم تتجاوز 4 غيغابايت، وهو ما لم تدعمه الصيغة الأولية. وللكشف السريع عن تلف ملف الحزمة، يحتوي طرف ملف الحزمة على تجزئة SHA1 بطول 20 بايت تمثّل مجموع القائمة المرتّبة لجميع تجزئات SHA في ذلك الملف. ويصبّ تركيز صيغة ملف الحزمة الأحدث في تلبية هدف Git الثاني في سهولة الاستخدام، وهو الحماية من تلف البيانات.</p>
 <p>أمّا الاتصال البعيد، فإنّ Git يحسب الإصدارات والمحتوى الذي يلزم إرساله عبر الشبكة لمزامنة المستودعات (أو فرع واحد فحسب)، ويولّد صيغة ملف الحزمة أثناء التشغيل (on the fly) ليُرسلها لاحقًا باستخدام البروتوكول الذي يطلبه العميل.</p>
 <h2 id="68-تواريخ-الدمج">6.8. تواريخ الدمج</h2>
 <p>كما ذُكر سابقًا، يختلف Git جوهريًا في نهج تواريخ الدمج عن عائلة أنظمة التحكّم بالإصدارات المشتقّة من RCS. فمثلًا يمثّل Subversion تاريخ الملفات أو الأشجار في تسلسل خطّي؛ فأيّ ما يحمل رقم مراجعة أعلى يحلّ محلّ كلّ ما سبقه. والتفريع (branching) غير مدعوم بشكل مباشر، بل فقط عبر بنية أدلّة غير مفروضة الضوابط داخل المستودع.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-git-merge-history.webp" alt=""> الشكل 6.4: مخطّط يُظهر نَسَب تاريخ الدمج</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-git-merge-history.webp" alt="" id="fig.git.merge"> الشكل 6.4: مخطّط يُظهر نَسَب تاريخ الدمج</p>
 <p>لنستخدم أولًا مثالًا لنبيّن كيف يمكن أن يكون هذا إشكاليًا عند صيانة عدة فروع لعمل ما. ثمّ سننظر في سيناريو لنظهر حدوده.</p>
 <p>عند العمل على «فرع» في Subversion عند الموقع المعتاد <code>branches/branch-name</code>، فإنّنا نعمل في شجرة أدلّة فرعية مجاورة لـ <code>trunk</code> (حيث تقيم عادةً الشيفرة الحيّة أو ما يقابلها من <em>master</em>). ولنفترض أنّ هذا الفرع يمثّل تطويرًا متوازيًا لشجرة <code>trunk</code>.</p>
 <p>فمثلًا، قد نكون نعيد كتابة قاعدة شيفرة لاستخدام قاعدة بيانات مختلفة. وفي منتصف إعادة الكتابة نرغب في دمج تغييرات واردة (upstream) من شجرة فرع أخرى (ليست trunk). ندمج هذه التغييرات، يدويًا عند الضرورة، ثمّ نُكمل إعادة الكتابة. وفي وقت لاحق من اليوم نفسه ننهي تغييرات شيفرة الترحيل إلى مورّد قاعدة بيانات جديد على فرعنا <code>branches/branch-name</code> وندمج تغييراتنا في <code>trunk</code>. والمشكلة في طريقة تعامل أنظمة التحكّم بالإصدارات ذات التاريخ الخطّي مثل Subversion مع هذا الموقف هي عدم وجود أي وسيلة لمعرفة أنّ مجموعات التغييرات من الفرع الآخر صارت مشمولة الآن داخل trunk.</p>
@@ -253,7 +253,7 @@
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -261,8 +261,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

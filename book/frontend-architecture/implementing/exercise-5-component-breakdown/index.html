@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="التمرين 5: تقسيم المكونات — التنفيذ"/><!----><title>التمرين 5: تقسيم المكونات | أساسيات معمارية الواجهات الأمامية</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/frontend-architecture">أساسيات معمارية الواجهات الأمامية</a> <span class="reader-bar__chapter">› التنفيذ</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 4 من 5">4 / 5</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/frontend-architecture/implementing/component-hierarchy-and-breakdown">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/frontend-architecture/implementing/exercise-5-solution">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الأساسيات</h3> <ul><!--[--><li><a href="../../../../book/frontend-architecture/foundations/index">مقدمة</a></li><li><a href="../../../../book/frontend-architecture/foundations/course-overview">نظرة عامة على الكورس</a></li><li><a href="../../../../book/frontend-architecture/foundations/what-is-software-architecture">ما معمارية البرمجيات؟</a></li><li><a href="../../../../book/frontend-architecture/foundations/what-is-frontend-architecture">ما معمارية الواجهات الأمامية؟</a></li><li><a href="../../../../book/frontend-architecture/foundations/software-design-vs-architecture">تصميم البرمجيات مقابل المعمارية</a></li><li><a href="../../../../book/frontend-architecture/foundations/the-frontend-architect-role">دور معماري الواجهات الأمامية</a></li><!--]--></ul><h3>فهم المشكلة</h3> <ul><!--[--><li><a href="../../../../book/frontend-architecture/understanding/index">قبل أن نبدأ</a></li><li><a href="../../../../book/frontend-architecture/understanding/project-introduction">التعريف بالمشروع</a></li><li><a href="../../../../book/frontend-architecture/understanding/the-c4-model">نموذج C4</a></li><li><a href="../../../../book/frontend-architecture/understanding/exercise-1-container-diagram">التمرين 1: مخطط الحاويات</a></li><li><a href="../../../../book/frontend-architecture/understanding/exercise-1-solution">التمرين 1: الحل</a></li><li><a href="../../../../book/frontend-architecture/understanding/architectural-drivers">الدوافع المعمارية</a></li><li><a href="../../../../book/frontend-architecture/understanding/architectural-requirements">المتطلبات المعمارية</a></li><li><a href="../../../../book/frontend-architecture/understanding/exercise-2-architectural-requirements">التمرين 2: المتطلبات المعمارية</a></li><li><a href="../../../../book/frontend-architecture/understanding/exercise-2-solution">التمرين 2: الحل</a></li><li><a href="../../../../book/frontend-architecture/understanding/architectural-decisions">القرارات المعمارية</a></li><!--]--></ul><h3>التصميم</h3> <ul><!--[--><li><a href="../../../../book/frontend-architecture/designing/index">مقدمة وحدة التصميم</a></li><li><a href="../../../../book/frontend-architecture/designing/entities-modules-and-components">الكيانات والوحدات والمكونات</a></li><li><a href="../../../../book/frontend-architecture/designing/domain-modeling">نمذجة المجال</a></li><li><a href="../../../../book/frontend-architecture/designing/exercise-3-domain-modeling">التمرين 3: نمذجة المجال</a></li><li><a href="../../../../book/frontend-architecture/designing/exercise-3-solution">التمرين 3: الحل</a></li><li><a href="../../../../book/frontend-architecture/designing/breaking-things-down">تقسيم التطبيق</a></li><li><a href="../../../../book/frontend-architecture/designing/useful-diagrams">مخططات مفيدة</a></li><li><a href="../../../../book/frontend-architecture/designing/exercise-4-sequence-diagram">التمرين 4: مخطط التسلسل</a></li><li><a href="../../../../book/frontend-architecture/designing/exercise-4-solution">التمرين 4: الحل</a></li><li><a href="../../../../book/frontend-architecture/designing/the-design-document">وثيقة التصميم</a></li><!--]--></ul><h3 class="active-chapter">التنفيذ</h3> <ul><!--[--><li><a href="../../../../book/frontend-architecture/implementing/index">مقدمة وحدة التنفيذ</a></li><li><a href="../../../../book/frontend-architecture/implementing/project-setup">إعداد المشروع</a></li><li><a href="../../../../book/frontend-architecture/implementing/implementing-modules">تنفيذ الوحدات</a></li><li><a href="../../../../book/frontend-architecture/implementing/component-hierarchy-and-breakdown">التسلسل الهرمي للمكونات وتقسيمها</a></li><li><a href="../../../../book/frontend-architecture/implementing/exercise-5-component-breakdown" class="active">التمرين 5: تقسيم المكونات</a></li><li><a href="../../../../book/frontend-architecture/implementing/exercise-5-solution">التمرين 5: الحل</a></li><li><a href="../../../../book/frontend-architecture/implementing/implementing-entities">تنفيذ الكيانات</a></li><li><a href="../../../../book/frontend-architecture/implementing/exercise-6-entities">التمرين 6: الكيانات</a></li><li><a href="../../../../book/frontend-architecture/implementing/exercise-6-solution">التمرين 6: الحل</a></li><li><a href="../../../../book/frontend-architecture/implementing/guardrails-and-constraints">ضوابط الحماية والقيود</a></li><!--]--></ul><h3>الختام</h3> <ul><!--[--><li><a href="../../../../book/frontend-architecture/wrapping-up/index">موارد للتعمّق</a></li><li><a href="../../../../book/frontend-architecture/wrapping-up/goodbye">إلى اللقاء…؟</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>التمرين 5: تقسيم المكونات</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#resources">الموارد</a></li><li><a href="#exercise-instructions">تعليمات التمرين</a></li><li><a href="#example-breakdown">مثال على التقسيم</a></li><li><a href="#transcript">التفريغ النصي</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><p>الدرس 31 من 38 · التنفيذ · 4 دقيقة و20 ثانية</p>
+<div class="lecture-video"><iframe src="https://player.vimeo.com/video/1006844370?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" title="التمرين 5: تقسيم المكونات — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://frontendatscale.com/courses/frontend-architecture/implementing/exercise-5-component-breakdown/" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+   <h2 id="resources">الموارد</h2>
+<ul>
+<li><a href="https://github.com/Charca/fullsnack" target="_blank" rel="noopener noreferrer">مستودع المشروع</a></li>
+<li><a href="https://www.figma.com/design/cKot2kO0cg2PpR3QwgppXm/FullSnack-Spec?node-id=0-1&#x26;t=WZTyl5KhUdk21WtA-0" target="_blank" rel="noopener noreferrer">مواصفات Figma</a></li>
+</ul>
+<h2 id="exercise-instructions">تعليمات التمرين</h2>
+<ul>
+<li>قم بتقسيم وحدة Restaurant من مواصفات Figma إلى مكونات باستخدام التسلسل الهرمي للمكونات الذي رأيناه في الفيديو السابق.</li>
+<li>لا تقلق بشأن المكونات والشاشات المشتركة. التركيز على الميزات والمكونات، وإعطاء كل مكون اسم جيد.</li>
+<li>تنفيذ ال <code>restaurant</code> الوحدة في codebase بعد تقسيم المكون الخاص بك. لا تقلق بشأن التنفيذ الفعلي، يمكنك استخدام محتوى العنصر النائب للمكونات الخاصة بك. نلقي نظرة على <code>delivery</code> الوحدة في قاعدة الشيفرة على سبيل المثال.</li>
+</ul>
+<h3 id="example-breakdown">مثال على التقسيم</h3>
+<p><img src="/arabic-cs-library/images/frontend-architecture/delivery-module-breakdown.webp" alt="تقسيم وحدة التوصيل" loading="lazy"></p><table><thead><tr><th>الاسم في الشيفرة والمخطط</th><th>المعنى بالعربية</th></tr></thead><tbody><tr><td><code>Shared</code></td><td>مشترك بين الوحدات</td></tr><tr><td><code>Screens</code></td><td>الشاشات</td></tr><tr><td><code>Features</code></td><td>الميزات</td></tr><tr><td><code>Components</code></td><td>المكونات</td></tr><tr><td><code>Header</code></td><td>الترويسة</td></tr><tr><td><code>RestaurantFilters</code></td><td>مرشّحات المطاعم</td></tr><tr><td><code>RestaurantCategoryCarousel</code></td><td>عارض فئات المطاعم</td></tr><tr><td><code>RestaurantAttributeFilter</code></td><td>مرشّح خصائص المطعم</td></tr><tr><td><code>FeaturedOffersCarousel</code></td><td>عارض العروض المميّزة</td></tr><tr><td><code>FeaturedOfferCard</code></td><td>بطاقة عرض مميّز</td></tr><tr><td><code>RestaurantCarousel</code></td><td>عارض المطاعم</td></tr><tr><td><code>RestaurantCard</code></td><td>بطاقة مطعم</td></tr><tr><td><code>Carousel</code></td><td>العارض الدوّار</td></tr></tbody></table>
+<h2 id="transcript">التفريغ النصي</h2>
+<p><bdi dir="ltr">[00:03]</bdi> مرحبًا بكم في التمرين الأول في هذه الوحدة، حيث سنرى كيف يمكننا تطبيق التسلسل الهرمي الذي رأيناه في الفيديو السابق حول تقسيم وحدتنا الخاصة. لدي مثال هنا لأريكم على وحدة التسليم، وهي الوحدة التي تم تنفيذها بالفعل في قاعدة الشيفرة. هنا لدي هذه المربعات الملونة المشفرة لجميع الأنواع المختلفة من المكونات التي قد تكون قيد الاستخدام في التسلسل الهرمي الخاص بي. أسود للمكونات المشتركة، أزرق للشاشات، أرجواني للميزات، ثم أخضر للمكونات.</p>
+<p><bdi dir="ltr">[00:36]</bdi> أنا أستخدم رسم TL هنا. أنا فقط أمسك لقطة شاشة لواجهة المستخدم الخاصة بي وأنا أستخدم هذا لرسم الصناديق. يمكنك القيام بذلك باستخدام قلم على الورق إذا كنت ترغب في ذلك. هنا أساسا أنا فقط رسمت صناديق حول المكونات وأعطيت كل واحد اسما. الآن، لدي بعض الصناديق السوداء هنا لمكوناتي المشتركة مثل هذا الرأس الذي هو جزء من التخطيط. هذه المكونات الأخرى ستكون جزءًا من نظام التصميم الخاص بي لأن ما كنت أفعله هذا، اكتشفت أن هذه المكونات ربما سيتم استخدامها في مجموعة من الصفحات المختلفة.</p>
+<p><bdi dir="ltr">[01:09]</bdi> تحققت من مواصفات الشكل ورأيت بطاقات المطعم تظهر في أماكن مختلفة. لذلك سيكون هذا إما جزءًا من نظام التصميم أو مجلد المكونات المشتركة. لذلك ربما لن أذهب إلى هذا الشخص كسوداء. ثم ليس لدي أي شاشات، لذلك ليس لدي أي صناديق زرقاء. إنها شاشة واحدة فقط ولدي بعض الصناديق الأرجوانية لبعض ميزاتي، مثل هذه المرشحات هنا في الأعلى. هذه هي العروض المميزة، كاروسيل هنا ومطعم كاروسيل هنا في الأسفل. ومن ثم ضمن تلك لدي بعض المكونات ملحوظ أيضا. باللون الأخضر، هذه هي المكونات التي تنتمي إلى تلك الميزة الخاصة، مثل هذه الفئة دائري وهلم جرا.</p>
+<p><bdi dir="ltr">[01:53]</bdi> الآن عندما ننظر إلى الشيفرة، إذا نظرنا إلى قاعدة الشيفرة هنا، سنرى أنه داخل وحدة التسليم هذه، أتبع أساسًا نفس التسلسل الهرمي. لدي شاشة واحدة فقط. كما ذكرت سابقًا، لا يحتوي هذا الجهاز على شاشات متعددة، لذلك من الجيد أن يكون لديك شاشة واحدة فقط. إذا كان لديك شاشات متعددة، فمن المحتمل أن يكون من المنطقي إنشاء مجلد شاشة هنا في جذر الوحدة الخاصة بك ثم وضع الشاشات هناك. ولكن في هذه الحالة لدي واحد فقط، لذلك لدي هنا في الجذر.</p>
+<p><bdi dir="ltr">[02:25]</bdi> لا تقلق بشأن ملف data.ts؛ فهو يحتوي فقط على بيانات ثابتة مكتوبة في الشيفرة، لأننا لم نتناول تنفيذ الكيانات بعد. نستخدم هذه البيانات لتشغيل الواجهة مؤقتًا. ثم لدينا مجلد features، الذي يضم الميزات الثلاث التي حدّدتها عند تقسيم الواجهة. وعند فتح هذه الميزات، سترى أن لكل ميزة نقطة دخول رئيسية، ومعها مجلد للمكونات عند الحاجة.</p>
+<p><bdi dir="ltr">[02:51]</bdi> الآن التمرين بالنسبة لك سيكون القيام ببعض الأشياء نفسها، ولكن لوحدة المطعم. لذلك إذا نظرتم إلى المواصفات الشكل سوف تجد وصلة في الوصف أدناه. ستجد هذا مثل لقطة شاشة لوحدة المطعم هذه وسيكون التمرين هو القيام بتقسيم بنفس الطريقة التي فعلتها هنا لوحدة التسليم لاستدعاء المكونات المختلفة التي لديك وأسماءها، وهو أصعب جزء بالمناسبة. ومن ثم ربما تنفيذ بعض نسخة من ذلك في قاعدة الشيفرة.</p>
+<p><bdi dir="ltr">[03:22]</bdi> لا تقلق كثيرا بشأن التنفيذ. ليس عليك في الواقع جعلها تبدو مشابهة للشاشة. ما سأفعله هو أنني سأقوم فقط بإنشاء المجلدات والمكونات التي قمت بتعريفها هنا، ثم سأنفذها كصندوق، مثل مربع فارغ مع اسم مكون في حال كنت تريد إلقاء نظرة على شيء ما في المتصفح، ولكن هذا ليس مطلوبًا حقًا لهذا التمرين. مجرد التركيز على تقسيم وإنشاء في المجلدات في codebase.</p>
+<p><bdi dir="ltr">[03:50]</bdi> للتقسيم. هذا واحد ليس لديه أي شاشات كذلك. هذه شاشة واحدة فقط. ولا تقلق بشأن الأشياء المشتركة لهذا التمرين. لا تقلق بشأن مكون التخطيط أو المكونات الشائعة وما إلى ذلك. التركيز في الغالب على الميزات والمكونات التي تنتمي إلى هذه الوحدة.</p>
+<p><bdi dir="ltr">[04:09]</bdi> إذن هذا هو التمرين. آمل أن تعطي هذا واحد محاولة. إذا كنت تبحث عن الكتابة على الشيفرة، آمل أن تقوم بتنفيذ بسيط للغاية وسأراك في الفيديو التالي. حيث سأشارك حلي.</p>   
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/frontend-architecture/implementing/component-hierarchy-and-breakdown"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التسلسل الهرمي للمكونات وتقسيمها</span></a><!--]--> <!--[0--><a href="../../../../book/frontend-architecture/implementing/exercise-5-solution"><span class="prev-next__label">التالي</span> <span class="prev-next__title">التمرين 5: الحل</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_19splir = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

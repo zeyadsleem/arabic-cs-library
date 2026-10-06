@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -121,7 +121,7 @@
 <p>تتبع Go نهجًا مختلفًا. ففي معالجة الأخطاء (error handling) العادية، تجعل الإرجاعات متعددة القيم في Go من السهل الإبلاغ عن خطأ دون تحميل قيمة الإرجاع أعباء زائدة. ونوع خطأ قانوني، إلى جانب ميزات Go الأخرى، يجعل معالجة الأخطاء ممتعة لكن مختلفة تمامًا عما هي عليه في لغات أخرى.</p>
 <p>كما تمتلك Go دالتين مدمجتين للإشارة إلى الظروف الاستثنائية فعلًا والتعافي منها. ولا تُنفَّذ آلية التعافي إلا كجزء من تفكيك حالة دالة بعد خطأ، وهو ما يكفي لمعالجة الكوارث لكنه لا يتطلب بنى تحكم إضافية، ويمكن أن يؤدي، عند استخدامه جيدًا، إلى شيفرة نظيفة لمعالجة الأخطاء.</p>
 <p>راجع مقالة Defer, Panic, and Recover للتفاصيل. كذلك تصف تدوينة <a href="https://go.dev/blog/errors-are-values">الأخطاء قيم</a> نهجًا لمعالجة الأخطاء بشكل نظيف في Go بإظهار أنه، بما أن الأخطاء مجرد قيم، يمكن تسخير كامل قوة Go في معالجة الأخطاء.</p>
-<h3 id="لماذا-لا-تمتلك-go-التأكيدات">لماذا لا تمتلك Go التأكيدات؟</h3>
+<h3 id="لماذا-لا-تمتلك-go-التأكيدات">لماذا لا تمتلك Go التأكيدات؟ <span class="content-anchor" id="assertions"></span></h3>
 <p>لا توفر Go التأكيدات (assertions). فهي ملائمة بلا شك، لكن تجربتنا كانت أن المبرمجين يستخدمونها عكازًا لتجنب التفكير في معالجة الأخطاء والإبلاغ عنها بشكل صحيح. معالجة الأخطاء الصحيحة تعني أن تستمر الخوادم في العمل بدلًا من الانهيار بعد خطأ غير قاتل. والإبلاغ الصحيح عن الأخطاء يعني أن تكون الأخطاء مباشرة وفي الصميم، ما يوفّر على المبرمج تفسير أثر انهيار كبير. والأخطاء الدقيقة مهمة بشكل خاص عندما لا يكون المبرمج الذي يرى الأخطاء على دراية بالشيفرة.</p>
 <p>نحن نفهم أن هذه نقطة خلاف. فهناك أمور كثيرة في لغة Go ومكتباتها تختلف عن الممارسات الحديثة، ببساطة لأننا نرى أنه يستحق أحيانًا تجربة نهج مختلف.</p>
 <h3 id="لماذا-بني-التزامن-على-أفكار-csp">لماذا بُني التزامن على أفكار CSP؟</h3>
@@ -145,7 +145,7 @@
 <p>كما أن غياب التدرج الهرمي للأنواع يجعل «الكائنات» في Go تبدو أخف بكثير مما هي عليه في لغات مثل C++ أو Java.</p>
 <h3 id="كيف-أحصل-على-إرسال-ديناميكي-للدوال">كيف أحصل على إرسال ديناميكي للدوال؟</h3>
 <p>السبيل الوحيد لامتلاك دوال تُرسَل ديناميكيًا هو عبر واجهة. أما الدوال على بنية أو أي نوع ملموس آخر فتُحلّ دائمًا بشكل ساكن.</p>
-<h3 id="لماذا-لا-توجد-وراثة-الأنواع">لماذا لا توجد وراثة الأنواع؟</h3>
+<h3 id="لماذا-لا-توجد-وراثة-الأنواع">لماذا لا توجد وراثة الأنواع؟ <span class="content-anchor" id="inheritance"></span></h3>
 <p>البرمجة كائنية التوجه، في أشهر اللغات على الأقل، تنطوي على نقاش مفرط حول العلاقات بين الأنواع، وهي علاقات يمكن غالبًا استنتاجها تلقائيًا. وتتبع Go نهجًا مختلفًا.</p>
 <p>بدلًا من مطالبة المبرمج بالإعلان مسبقًا عن أن نوعين مرتبطان، يفي النوع في Go تلقائيًا بأي واجهة تحدد مجموعة فرعية من دواله. وإلى جانب تقليل الأعمال المكتبية، لهذا النهج مزايا حقيقية. فيمكن للأنواع أن تفي بواجهات كثيرة في الوقت نفسه، دون تعقيدات الوراثة المتعددة التقليدية. ويمكن أن تكون الواجهات خفيفة جدًا — فواجهة بدالة واحدة أو حتى بلا دوال يمكن أن تعبّر عن مفهوم مفيد. ويمكن إضافة الواجهات بعد وقوع الأمر إذا ظهرت فكرة جديدة أو لأغراض الاختبار — دون تعليق على الأنواع الأصلية. ولأنه لا توجد علاقات صريحة بين الأنواع والواجهات، فلا يوجد تدرج هرمي للأنواع يحتاج إلى إدارة أو نقاش.</p>
 <p>من الممكن استخدام هذه الأفكار لبناء شيء مماثل لأنابيب Unix الآمنة الأنواع. على سبيل المثال، انظر كيف يتيح <code>fmt.Fprintf</code> الطباعة المنسّقة إلى أي مخرج، وليس إلى ملف فقط، أو كيف يمكن لحزمة <code>bufio</code> أن تكون منفصلة تمامًا عن إدخال/إخراج الملفات، أو كيف تولّد حزم <code>image</code> ملفات صور مضغوطة. كل هذه الأفكار تنبع من واجهة واحدة (<code>io.Writer</code>) تمثل دالة واحدة (<code>Write</code>). وهذا ليس سوى خدش للسطح. فللواجهات Go تأثير عميق على كيفية بناء البرامج.</p>
@@ -396,7 +396,7 @@ func (s MyStruct)  valueMethod()   { } // method on value
 <p>علاوة على ذلك، أظهرت التجربة مع مكتبات مثل تلك الخاصة بأنظمة الرسوميات التي تشترط حدوث كل المعالجة على «الخيط الرئيسي» كم يمكن أن يكون النهج محرجًا ومقيّدًا عند نشره في لغة متزامنة. فمجرد وجود خيط أو كوروتين خاص يدفع المبرمج إلى تشويه البرنامج لتجنب الانهيارات ومشكلات أخرى ناتجة عن العمل عن غير قصد على الخيط الخاطئ.</p>
 <p>وفي الحالات التي يكون فيها كوروتين معين مميزًا حقًا، توفر اللغة ميزات مثل القنوات يمكن استخدامها بطرق مرنة للتفاعل معه.</p>
 <h2 id="الدوال-والدوال-المرتبطة-بالأنواع">الدوال والدوال المرتبطة بالأنواع</h2>
-<h3 id="لماذا-يمتلك-t-وt-مجموعتي-دوال-مختلفتين">لماذا يمتلك T و*T مجموعتي دوال مختلفتين؟</h3>
+<h3 id="لماذا-يمتلك-t-وt-مجموعتي-دوال-مختلفتين">لماذا يمتلك T و*T مجموعتي دوال مختلفتين؟ <span class="content-anchor" id="different_method_sets"></span></h3>
 <p>كما تقول <a href="https://go.dev/ref/spec#Types">مواصفات Go</a>، تتكون مجموعة دوال النوع <code>T</code> من كل الدوال ذات نوع المستقبِل <code>T</code>، بينما تتكون مجموعة دوال نوع المؤشّر المقابل <code>*T</code> من كل الدوال ذات المستقبِل <code>*T</code> أو <code>T</code>. وهذا يعني أن مجموعة دوال <code>*T</code> تتضمن مجموعة دوال <code>T</code>، وليس العكس.</p>
 <p>ينشأ هذا التمييز لأنه إذا كانت قيمة واجهة تحتوي مؤشّرًا <code>*T</code>، فيمكن لنداء دالة الحصول على قيمة بإلغاء مرجعية المؤشّر، لكن إذا كانت قيمة واجهة تحتوي قيمة <code>T</code>، فلا سبيل آمن لنداء دالة للحصول على مؤشّر. (ففعل ذلك سيتيح لدالة تعديل محتويات القيمة داخل الواجهة، وهو ما لا تسمح به مواصفات اللغة.)</p>
 <p>وحتى في الحالات التي يستطيع فيها المُصرِّف أخذ عنوان قيمة لتمريرها إلى الدالة، إذا عدّلت الدالة القيمة فستضيع التغييرات في المستدعي.</p>
@@ -632,14 +632,14 @@ func main() {
 <p>تعرّف على كيفية الإبلاغ عن الأخطاء أو إرسال طلبات السحب أو المساهمة بأي شكل آخر في منظومة Go.</p>
 <p>عرض الدليل</p>
 <h4>تواصل معنا</h4>
-<p><a href="https://bsky.app/profile/golang.org"><img src="/arabic-cs-library/images/go-faq/bluesky.svg" alt=""></a> <a href="https://hachyderm.io/@golang"><img src="/arabic-cs-library/images/go-faq/mastodon.svg" alt=""></a> <a href="https://twitter.com/golang"><img src="/arabic-cs-library/images/go-faq/twitter.svg" alt=""></a> <a href="https://www.reddit.com/r/golang/"><img src="/arabic-cs-library/images/go-faq/reddit.svg" alt=""></a> <a href="https://github.com/golang"><img src="/arabic-cs-library/images/go-faq/github.svg" alt=""></a> <a href="https://gophers.slack.com/"><img src="/arabic-cs-library/images/go-faq/slack.svg" alt=""></a></p>
+<p><a href="https://bsky.app/profile/golang.org"><img src="/arabic-cs-library/images/go-faq/bluesky.svg" alt="" id="main-content"></a> <a href="https://hachyderm.io/@golang"><img src="/arabic-cs-library/images/go-faq/mastodon.svg" alt=""></a> <a href="https://twitter.com/golang"><img src="/arabic-cs-library/images/go-faq/twitter.svg" alt=""></a> <a href="https://www.reddit.com/r/golang/"><img src="/arabic-cs-library/images/go-faq/reddit.svg" alt=""></a> <a href="https://github.com/golang"><img src="/arabic-cs-library/images/go-faq/github.svg" alt=""></a> <a href="https://gophers.slack.com/"><img src="/arabic-cs-library/images/go-faq/slack.svg" alt=""></a></p>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[-1--><a href="../../../../book/go-faq"><span class="prev-next__label">العودة</span> <span class="prev-next__title">فهرس الكتاب</span></a><!--]--> <!--[-1--><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -647,8 +647,8 @@ func main() {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

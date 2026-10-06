@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -63,7 +63,7 @@
 <p>تُمكّن شجرة B قاعدة البيانات من العثور على عقدة ورقة بسرعة.</p>
 <p>اجتياز الشجرة عملية فعّالة جداً—فعّالة لدرجة أنني أسميها <em>القوة الأولى للفهرسة</em>. وهي تعمل فوراً تقريباً—حتى على مجموعة بيانات ضخمة. ويعود ذلك أساساً إلى توازن الشجرة، الذي يتيح الوصول إلى جميع العناصر بالعدد نفسه من الخطوات، وثانياً إلى النمو اللوغاريتمي لعمق الشجرة. وهذا يعني أن عمق الشجرة ينمو ببطء شديد مقارنةً بعدد عقد الأوراق. فالفهارس في العالم الحقيقي التي تضم ملايين السجلات لها عمق شجرة أربعة أو خمسة. ونادراً ما يُرى عمق شجرة ستة. ويصف الصندوق <a href="#sb-log">«<em>قابلية التوسع اللوغاريتمية</em>»</a> ذلك بمزيد من التفصيل.</p>
 <h2 id="قابلية-التوسع-اللوغاريتمية">قابلية التوسع اللوغاريتمية</h2>
-<p>في الرياضيات، لوغاريتم عدد بالنسبة إلى أساس معطى هو القوة أو الأس الذي يجب رفع الأساس إليه لإنتاج ذلك العدد [<a href="https://en.wikipedia.org/wiki/Logarithm">ويكيبيديا</a>].</p>
+<p>في الرياضيات، لوغاريتم عدد بالنسبة إلى أساس معطى هو القوة أو الأس الذي يجب رفع الأساس إليه لإنتاج ذلك العدد <a href="https://en.wikipedia.org/wiki/Logarithm">ويكيبيديا</a>.</p>
 <p>في شجرة بحث، يقابل الأساس عدد المدخلات في كل عقدة فرعية، ويقابل الأس عمق الشجرة. والمثال في <a href="#TreeNodes">الشكل 1.2</a> يتسع لأربعة مدخلات في كل عقدة وعمقه ثلاثة. ويعني ذلك أن الفهرس يمكن أن يحمل حتى 64 (4³) مدخلاً. وإذا نما مستوى واحداً، يمكنه أن يحمل 256 مدخلاً (4⁴). وفي كل مرة يُضاف مستوى، يتضاعف الحد الأقصى لعدد مدخلات الفهرس أربع مرات. ويعكس اللوغاريتم هذه الدالة. لذا فإن عمق الشجرة هو log₄(عدد-مدخلات-الفهرس).</p>
 <table>
 <thead>
@@ -117,7 +117,7 @@
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -125,8 +125,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

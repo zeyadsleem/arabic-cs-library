@@ -1,0 +1,464 @@
+const s="crypto-101",n="random-number-generators",a="مولّدات الأعداد العشوائية",e="index",p="مولّدات الأعداد العشوائية",t=[{depth:2,id:"مولدات-الأعداد-العشوائية",text:"مولّدات الأعداد العشوائية"},{depth:3,id:"الاضمحلال-الإشعاعي",text:"الاضمحلال الإشعاعي"},{depth:3,id:"ضجيج-اللقطات",text:"ضجيج اللقطات"},{depth:3,id:"ضجيج-نايكوست",text:"ضجيج نايكوست"},{depth:3,id:"الخلفية",text:"الخلفية"},{depth:3,id:"لمحة-سريعة-عن-الخوارزمية",text:"لمحة سريعة عن الخوارزمية"},{depth:3,id:"المسائل-ومواضع-الشك",text:"المسائل ومواضع الشك"},{depth:3,id:"ما-بعد-ذلك",text:"ما بعد ذلك"},{depth:3,id:"نظرة-معمقة-على-mersenne-twister",text:"نظرة معمّقة على Mersenne Twister"},{depth:3,id:"دالة-التهيئة",text:"دالة التهيئة"},{depth:3,id:"دالة-إعادة-توليد-الحالة",text:"دالة إعادة توليد الحالة"},{depth:3,id:"دالة-التقويم",text:"دالة التقويم"},{depth:3,id:"الأمن-التشفيري",text:"الأمن التشفيريّ"}],m=`<h2 id="مولدات-الأعداد-العشوائية">مولّدات الأعداد العشوائية</h2>
+<p>توليد الأعداد العشوائيّة مهمٌّ إلى حدٍّ لا يحتمل أن يُترك للصدفة.</p>
+<pre><code>   *Robert R. Coveyou*
+</code></pre>
+<h4>مقدّمة</h4>
+<p>تحتاج كثيرٌ من الأنظمة التشفيريّة إلى أعداد عشوائيّة. وقد افترضنا حتى الآن
+أنّها متاحة. وفي هذا الفصل، سنغوص أكثر في أهمّية الأعداد العشوائيّة
+وآليّاتها في الأنظمة التشفيريّة.</p>
+<p>وتوليد الأعداد العشوائيّة عمليّة معقّدة إلى حدٍّ ما. فمثل كثيرٍ من أمور
+التشفير الأخرى، من السهل جدًا أن تخطئ فيها تمامًا فيما يبدو كلّ شيء <em>سليمًا
+تمامًا</em> في نظر غير المتمرّس.</p>
+<p>وهناك ثلاث فئات من توليد الأعداد العشوائيّة سنناقش كلًّا منها على حدة:</p>
+<ul>
+<li>مولّدات الأعداد العشوائيّة الحقيقيّة</li>
+<li>المولّدات شبه العشوائيّة الآمنة تشفيريًّا</li>
+<li>المولّدات شبه العشوائيّة</li>
+</ul>
+<h4>مولّدات الأعداد العشوائيّة الحقيقيّة</h4>
+<p>بالطبع، فإنّ كلّ من يعتبر الطرق الحسابيّة لتوليد الأرقام العشوائيّة يكون في
+حالة خطيئة.</p>
+<pre><code>   *John von Neumann*
+</code></pre>
+<p>آلَفَ John von Neumann، أبو النموذج الحديثة للحوسبة، ملاحظةً بديهية. فنحن لا
+ننتظر أن ننتج أعدادًا عشوائيّة بحسابٍ حسابيّ حتميّ قابل للتنبّؤ. فنحن بحاجة إلى
+مصدر عشوائيّة لا يكون نتيجة قواعد حتميّة.</p>
+<p>وتحصل مولّدات الأعداد العشوائيّة الحقيقيّة على عشوائيّتها من فيزيائيّة. ولطالما
+استُعملت أنظمة كثيرة لإنتاج مثل هذه الأعداد. ولا تزال أنظمة مثل مكعّبات النرد
+مستعملة على نطاق واسع إلى اليوم. غير أنّها، بالمقدار من العشوائيّة الذي نحتاج
+إليه في خوارزميات التشفير العمليّة، بطيئة عادةً إلى حدٍّ بعيد، وكثيرًا ما تكون
+غير موثوقة إلى حدٍّ كبير.</p>
+<p>ومنذ ذلك الحين، توصّلنا إلى مصادر أسرع وأكثر موثوقية للعشوائيّة. وهناك عدّة
+فئات من العمليات الفيزيائيّة تُستعمل لتوليد الأعداد العشوائيّة في العتاد:</p>
+<ul>
+<li>عمليات كمّيّة</li>
+<li>عمليات حراريّة</li>
+<li>انحراف المذبذب</li>
+<li>أحداث توقيتية</li>
+</ul>
+<p>واحرص على ألّا تكون كلّ هذه الخيارات بالضرورة مولِّدةً لأعداد عشوائيّة عالية
+الجودة وفعليًّا عشوائيّة. وسنُفصّل أكثر كيف يمكن تطبيقها بنجاح على أيّ حال.</p>
+<h3 id="الاضمحلال-الإشعاعي">الاضمحلال الإشعاعي</h3>
+<p>ومن الأمثلة على عمليّة فيزيائيّة كمّيّة تُستعمل لإنتاج الأعداد العشوائيّة
+الاضمحلال الإشعاعي. ونحن نعلم أنّ الموادّ الإشعاعيّة تفقد ثباتها ببطء مع مرور
+الوقت. ولا سبيل إلى معرفة متى سيفقد الذرّة التالية ثباتها؛ فذلك العمليّة عشوائيّة
+تمامًا. غير أنّ كشف حدوث مثل هذا الاضمحلال سهلٌ إلى حدٍّ معقول. فبقياس
+الزمن بين اضمحلالات مفردة، يمكننا إنتاج أعداد عشوائيّة.</p>
+<h3 id="ضجيج-اللقطات">ضجيج اللقطات</h3>
+<p>وضجيج اللقطات عمليّة فيزيائيّة كمّيّة أخرى تُستعمل لإنتاج الأعداد العشوائيّة.
+ويقوم ضجيج اللقطات على الحقيقة أنّ الضوء والكهرباء ينشآن عن حركة حزم صغيرة
+لا تتجزّأ: وهي الفوتونات في حالة الضوء، والإلكترونات في حالة الكهرباء.</p>
+<h3 id="ضجيج-نايكوست">ضجيج نايكوست</h3>
+<p>ومن الأمثلة على عمليّة حراريّة تُستعمل لإنتاج الأعداد العشوائيّة ضجيج نايكوست.
+وضجيج نايكوست هو الضجيج الذي ينشأ عن انتقال حاملات الشحنة (وهي الإلكترونات
+عادةً) عبر وسطٍ ذي مقاومة معيّنة. ويؤدي ذلك إلى تدفّق تيارٍ ضئيل عبر المقاومة
+(أو، بمعنى آخر، يسبّب فرق جهدٍ ضئيل على طرفي المقاومة).</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>i</mi><mo>=</mo><msqrt><mfrac><mrow><mn>4</mn><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi><msub><mi mathvariant="normal">Δ</mi><mi>f</mi></msub></mrow><mi>R</mi></mfrac></msqrt></mrow><annotation encoding="application/x-tex">
+i = \\sqrt{\\frac{4 k_B T \\Delta_f}{R}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.44em;vertical-align:-0.7634em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6766em;"><span class="svg-align" style="top:-4.4em;"><span class="pstrut" style="height:4.4em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord"><span class="mord">Δ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.1076em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span><span style="top:-3.6366em;"><span class="pstrut" style="height:4.4em;"></span><span class="hide-tail" style="min-width:1.02em;height:2.48em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="2.48em" viewBox="0 0 400000 2592" preserveAspectRatio="xMinYMin slice"><path d="M424,2478
+c-1.3,-0.7,-38.5,-172,-111.5,-514c-73,-342,-109.8,-513.3,-110.5,-514
+c0,-2,-10.7,14.3,-32,49c-4.7,7.3,-9.8,15.7,-15.5,25c-5.7,9.3,-9.8,16,-12.5,20
+s-5,7,-5,7c-4,-3.3,-8.3,-7.7,-13,-13s-13,-13,-13,-13s76,-122,76,-122s77,-121,77,-121
+s209,968,209,968c0,-2,84.7,-361.7,254,-1079c169.3,-717.3,254.7,-1077.7,256,-1081
+l0 -0c4,-6.7,10,-10,18,-10 H400000
+v40H1014.6
+s-87.3,378.7,-272.6,1166c-185.3,787.3,-279.3,1182.3,-282,1185
+c-2,6,-10,9,-24,9
+c-8,0,-12,-0.7,-12,-2z M1001 80
+h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7634em;"><span></span></span></span></span></span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>v</mi><mo>=</mo><msqrt><mrow><mn>4</mn><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi><mi>R</mi><msub><mi mathvariant="normal">Δ</mi><mi>f</mi></msub></mrow></msqrt></mrow><annotation encoding="application/x-tex">
+v = \\sqrt{4 k_B T R \\Delta_f }
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.24em;vertical-align:-0.302em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">4</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord"><span class="mord">Δ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.1076em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.898em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.302em;"><span></span></span></span></span></span></span></span></span></span>
+<p>ولعلّ هذه الصيغ تبدو مخيفة قليلًا لمن لم يرَ الفيزياء الكامنة خلفها من قبل،
+لكنّ لا داعي للقلق كثيرًا: ففهمها ليس ضروريًّا في الحقيقة لمتابعة الحجّة. وهذه
+الصيغ خاصّة <em>بالجذر التربيعيّ للمربّع</em>. فإذا كنت لم تسمع هذه العبارة من قبل،
+فيمكنك أن تقارب بينه وبين «المتوسّط». و<code>\\Delta f</code> هو عرض النطاق، و<code>T</code> هو
+حرارة النظام بالكلفن، و<code>k_B</code> هو ثابت بولتزمان.</p>
+<p>وكما ترى من الصيغة، فإنّ ضجيج نايكوست <em>حراريّ</em>، أي إنّما يتعلّق بدرجة الحرارة.
+ولحسن الحظّ، لا يستطيع المهاجم عادةً أن يستعمل تلك الخاصّية لكسر المولّد: فدرجة
+الحرارة التي يصبح عندها المولّد عديم الفعالية منخفضة إلى حدٍّ إنّ النظام
+المستعمل له يكون قد تعطّل عند تلك النقطة على الأرجح.</p>
+<p>وبتقييم الصيغة، نرى أنّ ضجيج نايكوست ضئيل إلى حدٍّ ما. فعند درجة حرارة الغرفة
+مع افتراضات معقولة (عرض نطاق 10 kHz ومقاومة <code>1k</code>\\ <code>\\Omega</code>)، يكون جهد نايكوست
+في مرتبة مئات النانوفولت. وحتّى لو قَرَّبنا بحرّية إلى الميكروفولت (ألف
+نانوفولت)، فإنّ ذلك لا يزال جزءًا من الألف جزء من الألف من الفولت،
+بل إنّ بطاريّة AA صغيرة تنتج 1.5V.</p>
+<p>وإن كانت الصيغ تصف الجذر التربيعيّ للمربّع، فإنّ القيمة القابلة للقياس ستكون
+موزّعة توزيعًا عشوائيًّا. وبقياسها مرارًا، يمكننا إنتاج أعداد عشوائيّة عالية
+الجودة. وللاستعمالات العمليّة الأكثر شيوعًا، فإنّ أعداد ضجيج الحرارة عالية
+الجودة نسبيًّا وخلية من الانحياز إلى حدٍّ معقول.</p>
+<p>TODO: لم نشرح من قبل كلمة إنتروبيا؛ ويحتاج التعريف الجيّد إلى «المقاومة التي
+يدركها المهاجم»</p>
+<p>TODO: اشرح الشيفرات المتزامنة بوصفها مولّدات عشوائيّة آمنة تشفيريًّا</p>
+<p>المولّدات شبه العشوائيّة الآمنة تشفيريًّا</p>
+<h4>المولّدات شبه العشوائيّة الآمنة تشفيريًّا</h4>
+<p>ولئن كنّا سنرى عدّة أمثلة على المولّدات شبه العشوائيّة الآمنة تشفيريًّا في
+الأقسام التالية القليلة، فاحرص على أنّها كلّها مجرّد خوارزميات <em>يمكن</em> استعمالها.
+فأنت كمطوّر تطبيقات، لا ينبغي <em>أبدًا</em> أن تخيّر بين واحدة منها.</p>
+<p>وبدلًا من ذلك، في الحالات القليلة التي تريد فيها حقًّا أن تختار عددًا عشوائيًّا
+يدويًّا، ينبغي أن تستعمل <em>دائمًا</em> مولّد الأعداد العشوائيّة الآمن تشفيريًّا الذي
+يوفّره نظام تشغيلك: <code>/dev/urandom</code> على أنظمة *NIX (Linux وBSD وOS X)، أو
+<code>CryptGenRandom</code> على Windows. وتوفّر بايثون واجهات مريحة للوصول إلى هذين بوصفهما
+<code>os.urandom</code> و<code>random.SystemRandom</code>.</p>
+<p>ورغم أنّه يمكن تنفيذها بأمان، حاول أن تتجنّب استعمال مولّدات الأعداد العشوائيّة
+الآمنة تشفيريًّا الموجودة في مساحة المستخدم، مثل الموجودة في OpenSSL. فالأشياء
+التي يمكن أن تخطئ فيها أكثر بكثير، وهي تتعلّق عادةً بحالتها الداخليّة: إمّا أن
+تبقى غير مهيّأة، أو تكون مهيّأة سيّئةً، أو تنتهي إلى إعادة استعمال الحالة نفسها
+في مواضع مختلفة. وفي كلّ هذه الحالات، يكون نظام التشفير الناتج معطوبًا تمامًا
+وبالكلّية.</p>
+<p>TODO: تحدّث عن التهويم FUD في صفحة man الخاصة بـ urandom في Linux</p>
+<p>متقدّم</p>
+<p>بما أنّ هذه خوارزمية معيّنة لمولّد أرقام عشوائيّة آمن تشفيريًّا، فأنت لا تحتاج
+في الواقع إلى معرفة كيفية عملها كي تكتب برمججيّة جيّدة. فاستعمل
+~urandom~ فحسب.</p>
+<h4>Yarrow</h4>
+<p>متقدّم</p>
+<p>وخوارزمية Yarrow هي مولّد أرقام عشوائيّة شبه عشوائيّ آمن تشفيريًّا.</p>
+<p>TODO: اشرح Yarrow فعلًا</p>
+<p>وتُستعمل هذه الخوارزمية بوصفها المولّد الآمن تشفيريًّا في FreeBSD، وقد ورثتها
+Mac OS X. وعلى هذين نظامَي التشغيل معًا، تُستعمل لتنفيذ <code>/dev/random</code>. وخلافًا
+Linux، فإنّ <code>/dev/urandom</code> ليس سوى اسم بديل لـ <code>/dev/random</code>.</p>
+<h4>Blum Blum Shub</h4>
+<p>TODO: اشرح هذا، ولماذا هو جيّد (قابل للإثبات)، لكن لماذا لا نستعمله (بطيء)</p>
+<p><code>Dual_EC_DRBG</code></p>
+<h4><code>Dual_EC_DRBG</code></h4>
+<p>متقدّم</p>
+<p><code>Dual_EC_DRBG</code> هو معيار NIST لمولّد بتّات شبه عشوائيّ آمن تشفيريًّا. وقد أثار
+كمًّا كبيرًا من الجدل: فعلى الرّغم من أنّه طُرح بوصفه معيارًا تشفيريًّا رسميًّا
+فيدراليًّا، سرعان ما تبيّن أنّه ليس جيّدًا إلى حدٍّ ما.</p>
+<p>وفي وقت لاحق، بيّن التحليل الشفويّ أنّ المعيار يمكن أن يحوي بابًا خلفيًّا مخفيًّا
+في الثوابت التي يحدّدها المعيار، ممّا قد يسمح لمهاجم غير محدَّد بأن يكسر المولّد
+بأكمله.</p>
+<p>وبعد عدّة سنوات، رشّحت وثائق مسرَّبة وجود باب خلفيّ في معيار مجهول الاسم من
+NIST صدر في السنة نفسها التي صدر فيها <code>Dual_EC_DRBG</code>، فعمّقت الشكوك أكثر. وأدى
+هذا إلى توصية رسميّة من الجهة المشرفة على المعايير بوقف استعمال المعيار، وهو
+أمر لم يسبق له مثيل في مثل هذه الظروف.</p>
+<h3 id="الخلفية">الخلفية</h3>
+<p>ولطالما كانت المعايير الرسميّة الصادرة عن NIST تفتقر إلى مولّدات أرقام عشوائيّة
+شبه عشوائيّة آمنة تشفيريًّا وحديثة وجيّدة. كان الخيار ضئيلًا، وكانت الخيارات
+التي وُضعت معايير لها تحمل عدّة عيوب خطيرة.</p>
+<p>وآملت NIST معالجة هذه المسألة بإصدار جديد اسمها SP 800-90، تضمّن عدّة مولّدات
+أرقام عشوائيّة شبه عشوائيّة آمنة تشفيريًّا جديدة. وقد حدّدت هذه الوثيقة عددًا من
+الخوارزميات المبنيّة على أساسيات تشفيريّة مختلفة:</p>
+<p>#. دوالّ التجزئة التشفيريّة
+#. HMAC
+#. شيفرات الكتل
+#. المنحنيات الإهليلجيّة</p>
+<p>ومنذ البداية، لفت الأخير منها الانتباه. فاستعمال المنحنيات الإهليلجيّة في توليد
+الأعداد العشوائيّة كان أمرًا غير معتاد. فمن المتوقّع أن تكون المعايير من هذا
+النوع في مستوى أحدث ما يمكن، مع محافظتها على الطابع المحافظ. وقد نُوقشت
+المنحنيات الإهليلجيّة من قبل في سياق أكاديميّ، لكنّ ذلك يبعد
+كلّ البعد عن اقتراحها معيارًا للاستعمال العام.</p>
+<p>وهناك سبب ثانٍ يجعل المنحنيات الإهليلجيّة تبدو غريبة. فـ HMAC وشيفرات الكتل
+خوارزميات متماثلة بوضوح. أمّا دوالّ التجزئة فلها استعمالاتها في الخوارزميات غير
+المتماثلة مثل التوقيعات الرقمية، لكنّها ليست غير متماثلة بحدّ ذاتها. أمّا
+المنحنيات الإهليلجيّة فتُستعمل حصرًا في الخوارزميات غير المتماثلة: التوقيعات
+وتبادل المفاتيح والتشفير.</p>
+<p>ومع ذلك، لم يكن هذا الاختيار صادرًا عن العدم تمامًا. فالاختيار بين مولّد أرقام
+عشوائيّة شبه عشوائيّ آمن تشفيريًّا له أساس عدديّ نظريّ قويّ ليس شيئًا غير
+مألوف: فـ Blum Blum Shub مثال مثاليّ. وهذه المولّدات أبطأ عادةً بكثير من
+بدائلها. فـ <code>Dual_EC_DRBG</code> مثلًا أبطأ بثلاث رتب مقدارًا من نظائرها المذكورة في
+المعيار نفسه. والفكرة هي أنّ الثقة الإضافية التي يستلهمها المرء من الضمانات
+الرياضيّة الأقوى تستحقّ عقوبة الأداء. فمثلًا، نحن واثقون إلى حدٍّ معقول من
+صعوبة تحليل الأعداد إلى عوامل، لكنّ ثقتنا بدوالّ التجزئة والشيفرات أقلّ كثيرًا.
+فقد ظهرت RSA سنة 1977 وقد اجتازت اختبار الزمن إلى حدٍّ جيّد منذ ذلك الحين.
+أمّا DES فظهرت بعد عامين، وتُعدّ اليوم معطوبة تمامًا. أمّا MD4 وMD5 فظهرا بعد
+أكثر من عقد، وهما معطوبان تمامًا أيضًا.</p>
+<p>لكنّ المشكلة أنّ المعيار لم يقدّم في الواقع إثبات الأمن. فالمعيار يحدّد المولّد
+ثمّ يقتصر على الإشارة إلى أنّ كسره سيكون صعبًا على الأقلّ بقدر حلّ مسألة السجلّ
+على المنحنيات الإهليلجيّة. أمّا Blum Blum Shub، على النقيض، فإنّ له إثباتًا
+يُظهر أنّ كسره صعب على الأقلّ بقدر حلّ مسألة تربيعية البواقي. وأفضل خوارزمية
+لدينا لذلك هي تحليل الأعداد إلى عوامل، ونحن واثقون إلى حدٍّ معقول من صعوبتها
+إلى حدٍّ كبير.</p>
+<p>وإسقاط الإثبات شيئًا سخيفًا إلى حدٍّ ما، لأنّه لا يوجد سبب لاستعمال مولّد أرقام
+عشوائيّة شبه عشوائيّ بطيء إلى حدّ <code>Dual_EC_DRBG</code> ما لم يكن لديك إثبات بأنّك
+تحصل على مقابلٍ لعقوبة الأداء.</p>
+<p>وقام المشفّرون لاحقًا بالواجب الذي كان على NIST تقديمه في المواصفة <code>ecdrbg1</code>
+<code>ecdrbg2</code>. وقد أبرزت تلك التحليلات بسرعة بضع مسائل.</p>
+<h3 id="لمحة-سريعة-عن-الخوارزمية">لمحة سريعة عن الخوارزمية</h3>
+<p>وتتألّف الخوارزمية من جزأين:</p>
+<p>#. توليد نقاط شبه عشوائيّة على المنحنية الإهليلجيّة، تُحوَّل إلى الحالة
+الداخليّة للمولّد
+#. تحويل تلك النقاط إلى بتّات شبه عشوائيّة</p>
+<p>وسنوضّح ذلك بيانيًّا، اعتمادًا على رسم مبنيّ على عمل Shumow وFerguson، وهما
+مشفّران أبرزا بعضًا من المسائل الكبرى في هذه الخوارزمية:</p>
+<p><img src="/arabic-cs-library/images/crypto-101/random-number-generators-fig-0-Diagram.svg" alt="center"></p>
+<p>وفي الخوارزمية كلّها، تكون <code>\\phi</code> دالة تأخذ نقطةً على المنحنية وتحولها إلى عدد
+صحيح. وتحتاج الخوارزمية إلى نقطتين معطاتين على المنحنية: <code>P</code> و<code>Q</code>. وهما
+ثابتتان، ومعرّفتان في المواصفة. وللخوارزمية حالة داخليّة <code>s</code>. وحين تُنتج كتلة
+جديدة من البتّات، تحوّل الخوارزمية <code>s</code> إلى قيمة مختلفة <code>r</code> باستعمال الدالة
+<code>\\phi</code> وبضرب المنحنى الإهليلجيّة في سُلَّم <code>P</code>:</p>
+<pre><code>r = \\phi(sP)
+</code></pre>
+<p>تُستعمل القيمة <code>r</code> تلك، من جهة، في إنتاج بتّات الخرج، ومن جهة أخرى في تحديث
+الحالة الداخليّة للمولّد. ولإنتاج بتّات الخرج، تُستعمل نقطة منحنى إهليلجيّة
+أخرى، وهي <code>Q</code>. وتُنتَج بتّات الخرج بضرب <code>r</code> في <code>Q</code>، ثمّ تمرير النتيجة عبر
+تحويل <code>\\theta</code>:</p>
+<pre><code>o = \\theta(\\phi(rQ))
+</code></pre>
+<p>ولتنفيذ تحديث الحالة، يُضرب <code>r</code> في <code>P</code> من جديد، ثمّ تُحوَّل النتيجة إلى عدد
+صحيح. ويُستعمل ذلك العدد بوصفه الحالة الجديدة <code>s</code>.</p>
+<pre><code>s = \\phi(rP)
+</code></pre>
+<h3 id="المسائل-ومواضع-الشك">المسائل ومواضع الشك</h3>
+<p>أوّلًا من كلّ شيء، إنّ <code>\\phi</code> بسيطة إلى حدٍّ متطرّف: فهي تأخذ مجرّد الإحداثي <code>x</code>
+لنقطة المنحنى وتطرح الإحداثي <code>y</code>. وهذا يعني أنّه من السهل إلى حدٍّ ما على
+مهاجم يرى قيمة خرج <code>\\phi</code> أن يجد نقاطًا كان من الممكن أن تُنتج تلك القيمة. وذاته، لا يمثّل ذلك مشكلة كبيرة بالضرورة؛ لكنّنا سنرى لاحقًا أنّه أحد العوامل التي تسهم في إمكان وجود باب خلفيّ.</p>
+<p>ويُبيَّن عيبٌ آخر في موضع تحويل النقاط إلى بتّات شبه عشوائيّة. فدالة <code>\\theta</code>
+تطرح ببساطة أكثر 16 بتًّا أهميةً. وقد كانت التصاميم السابقة تطرح عددًا أكبر
+بكثير: فمنحنيات 256 بتًّا مثل هذه، كانت تطرح ما بين 120 و175 بتًّا.</p>
+<p>وعدم طرح بتّات كافية منح المولّد انحيازًا صغيرًا. وقد خالفت خاصّية البتّ
+التالي، فمنح ذلك المهاجم فرصة أفضل من 50% في تخمين البتّ التالي صحيحًا. وصحيح
+أنّ تلك الفرصة كانت أفضل من 50% بنحو واحد في الألف فقط؛ لكنّ ذلك يبقى غير
+مقبول فيما ينبغي أن يكون أحدث ما في مولّدات الأعداد العشوائيّة شبه العشوائيّة
+الآمنة تشفيريًّا.</p>
+<p>ولطرح تلك الـ16 بتًّا فقط نتيجة أخرى. فبما أنّه لم يُطرح إلّا 16 بتًّا، لا
+نحتاج إلّا إلى تخمين <code>2^{16}</code> احتمالًا لإيجاد القيم الممكنة لـ <code>\\phi(rQ)</code> التي
+أنتجت الخرج. وهذا عدد صغير جدًا: يمكننا ببساطة أن يعدّدها كلّها. وتلك القيم
+هي مخارج <code>\\phi</code> التي رأينا أنّها مجرّد تُعيد الإحداثي <code>x</code> لنقطة. وبما أنّنا
+نعرف أنّها جاءت من نقطة على المنحنية، فلا بدّ لنا إلّا من التحقّق ممّا إذا كان
+تخميننا حلًّا لمعادلة المنحنى:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>y</mi><mn>2</mn></msup><mo>≡</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mspace></mspace><mspace width="1em"/><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333em"/><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
+y^2 \\equiv x^3 + ax + b \\pmod p
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.0585em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:1em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.3333em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span></span>
+<p>وتحدّد المنحنية الثوابت <code>a, b, p</code>. وقد خمّنا مجرّد قيمة لـ <code>x</code>، فلم يبقَ إلّا
+مجهول واحد، وهو <code>y</code>. ويمكننا حلّ ذلك بكفاءة معقولة. فنحسب الطرف الأيمن ونرى
+إن كان مربّعًا تامًّا: <code>y^2 \\equiv q \\equiv \\sqrt{x^3 + ax + b} \\pmod p</code>. فإذا
+كان كذلك، فإنّ <code>A = (x, \\sqrt{q}) = (x, y)</code> هي نقطة على المنحنية. وهذا يعطينا
+عددًا من النقاط الممكنة <code>A</code>، إحداها هي <code>rQ</code> المستعمَلة لإنتاج الخرج.</p>
+<p>وهذا ليس أمرًا مهمًّا بحدّ ذاته. فليجد مهاجم حالة الخوارزمية، عليه أن يجد <code>r</code>
+كي يحسب <code>s</code>. ولا يزال عليه أن يحلّ مسألة السجلّ على المنحنيات الإهليلجيّة
+ليجد <code>r</code> من <code>rQ</code>، معطى <code>Q</code>. ونحن نفترض أنّ تلك المسألة صعبة.</p>
+<p>واحرص على أنّ المنحنيات الإهليلجيّة أساسيات تُستعمل في التشفير غير المتماثل. ومن
+المتوقّع أن تكون تلك المسألة صعبة الحلّ في العموم، لكن ماذا لو توفّرت لدينا
+معلومات إضافيّة؟ ماذا لو وُجدت قيمة سرّية <code>e</code> بحيث <code>eQ=P</code>؟</p>
+<p>ولنضع أنفسنا في مكان مهاجم يعرف <code>e</code>. فنعيد حساباتنا السابقة. إحدى تلك النقاط
+<code>A</code> التي وجدناها للتوّ هي <code>rQ</code> التي نبحث عنها. ويمكننا أن نحسب:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>ϕ</mi><mo stretchy="false">(</mo><mi>e</mi><mi>A</mi><mo stretchy="false">)</mo><mo>≡</mo><mi>ϕ</mi><mo stretchy="false">(</mo><mi>e</mi><mi>r</mi><mi>Q</mi><mo stretchy="false">)</mo><mo>≡</mo><mi>ϕ</mi><mo stretchy="false">(</mo><mi>r</mi><mi>P</mi><mo stretchy="false">)</mo><mspace></mspace><mspace width="1em"/><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333em"/><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
+\\phi(eA) \\equiv \\phi(erQ) \\equiv \\phi(rP) \\pmod p
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal">Q</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ϕ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mclose">)</span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:1em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.3333em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span></span>
+<p>وتُعدّ تلك الخطوة الأخيرة نتيجةً للعلاقة الخاصّة بين <code>e, P, Q</code>. وذلك مثير
+للاهتمام إلى حدٍّ كبير، لأنّ <code>\\phi(rP)</code> هي بالضبط العملية التي تجريها الخوارزمية
+لحساب <code>s</code>، أي الحالة الجديدة للخوارزمية! ويعني ذلك أنّ مهاجمًا يعرف <code>e</code> يستطيع،
+بكفاءة معقولة، أن يحسب الحالة الجديدة <code>s</code> من أيّ خرج <code>o</code>، فيتمكّن من التنبّؤ
+بكلّ القيم المستقبليّة للمولّد!</p>
+<p>وهذا يفترض أنّ المهاجم يعرف أيّ <code>A</code> هي <code>A</code> <em>الصحيحة</em>. وبما أنّه لم يُطرح إلّا
+16 بتًّا، لم يبقَ إلّا 16 بتًّا لنخمّنها. وهذا يعطينا <code>2^{16}</code> إحداثي <code>x</code>
+مرشَّحًا. ونجد تجريبيًّا أنّ نحو نصف إحداثيات <code>x</code> الممكنة تقابل نقاطًا على
+المنحنية، فتترك لنا <code>2^{15}</code> نقطة منحنى ممكنة <code>A</code>، إحداها هي <code>rQ</code>. وهذا عدد
+صغير إلى حدٍّ ما بالنسبة إلى قدرٍ قليل من الحساب الحاسوبيّ: صغير بما يكفي
+لأن نجرّب كلّ الخيارات. ومن ثمّ يمكننا القول إنّ مهاجمًا يعرف القيمة السرّية <code>e</code>
+يستطيع قطعًا أن يكسر المولّد.</p>
+<p>فقد بيّنا الآن أنّه لو وُجدت <code>e</code> سحرية بحيث <code>eQ=P</code>، واستطعنا اختيار <code>P</code> و<code>Q</code>
+(وليس علينا أن نشرح من أين أتينا بهما)، فسنستطيع كسر المولّد. فكيف تختار قيمًا من هذا النوع؟</p>
+<p>ولإظهار مدى كون ذلك ممكنًا، بدأ الباحثان من قيمتي <code>P</code> و<code>p</code> الخاصّتين بمنحنى
+NIST، لكنّهما توصّلا إلى <code>Q'</code> خاصّة بهما. وقد فعلا ذلك انطلاقًا من <code>P</code>،
+واختارا <code>d</code> عشوائيًّا (مع إبقائها سرّية)، وجعلا <code>Q' = dP</code>. والحيلة أنّ هناك
+خوارزمية كفاءة لحساب <code>e</code> في <code>eQ' = P</code> إذا كنت تعرف <code>d</code> في <code>Q' = dP</code>. وهذه هي
+<code>e</code> التي نحتاجها لهجومنا السابق. وحين جرّبوا ذلك، اكتشفوا أنّه في كلّ الحالات
+(أي في حالات <code>d</code> عشوائيّة كثيرة) كانت رؤية 32 بايتًا من الخرج كافية لتحديد
+الحالة <code>s</code>.</p>
+<p>وكلّ هذا، بالطبع، لا يثبت سوى أنّه من الممكن أن تكون قيمتا <code>P</code> و<code>Q</code> المحدَّدتان قيمتين خاصّتين لهما باب خلفيّ سرّي. وهو لا يقدّم أيّ دليل على أنّ القيم
+<em>الفعليّة</em> تحوي بابًا خلفيًّا. لكنّ المعيار، بما أنّه لم يشرح أصلًا <em>كيف</em> حصلوا
+على القيمة السحرية لـ <code>Q</code>، لا يستلهم كثيرًا من الثقة. فمعايير التشفير تعتمد
+عادةً أرقامًا من نوع «لا أعرف من أين جاءت»، مثل قيمة ثابتٍ ما كـ <code>\\pi</code> أو قاعدة
+اللوغاريتم الطبيعي <code>e</code>.</p>
+<p>وإذا كان أحدهم يعرف الباب الخلفيّ فعلًا، فإنّ العواقب مدمّرة بوضوح. فقد
+حاجبنا من قبل على ضرورة مولّدات الأعداد العشوائيّة شبه العشوائيّة الآمنة
+تشفيريًّا: فامتلاك واحد معطوب يعني عمليًّا أنّ كلّ أنظمة التشفير التي تستعمل هذا
+المولّد قد هُزمت تمامًا وبالكلّية.</p>
+<p>وهناك طريقتان يمكن أن يحاول المرء بهما إصلاح هذه الخوارزمية بعينها:</p>
+<ul>
+<li>جعل دالة <code>\\theta</code> أعقد في العكس، بدل مجرّد طرح 16 بتًّا. وهذا يجعل إيجاد
+النقاط المرشَّحة أصعب، وبالتالي يجعل تنفيذ الهجوم أصعب. ومن الطرق البديهية
+طرح بتّات أكثر. ومن الخيارات الأخرى استعمال دالة تجزئة آمنة تشفيريًّا، أو
+مزيج من الأمرين.</li>
+<li>توليد <code>Q</code> عشوائيّة في كلّ مرّة تبدأ فيها الخوارزمية، ربما باختيار <code>d</code>
+عشوائيّة وجعل <code>Q = dP</code>. ويجب بالطبع أن تكون <code>d</code> كبيرة بما يكفي وعشوائيّة
+حقًّا: فإذا لم تتغيّر <code>\\theta</code> ولم يكن أمام <code>d</code> إلّا بضع قيم، أمكن للمهاجم
+إجراء الهجوم أعلاه على كلّ قيم <code>d</code>.</li>
+</ul>
+<p>وكلتا هاتين ليستا سوى حلول ضماداتية؛ ومن الأفضل بكثير أن نستعمل خوارزمية مختلفة
+بأكملها. فهاتان القائمتان لا تحسمان مسألة كونها بطيئة وغريبة، وأنها أصبحت الآن
+معيارًا مسحوبًا.</p>
+<h3 id="ما-بعد-ذلك">ما بعد ذلك</h3>
+<p>TODO: تحدّث عن تعليقات صاحب RSA + تسريبات Snowden</p>
+<h4>Mersenne Twister</h4>
+<p>وMersenne Twister هو مولّد أرقام عشوائيّة شبه عشوائيّ شائع إلى حدٍّ كبير. ولديه
+خصائص جيّدة كثيرة، مثل أداءٍ عالٍ، ودورةٍ هائلة <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> قدرها
+<code>2^{19937} - 1 \\approx 4 \\cdot 10^{6001}</code>، وهو يجتاز كلّ اختبارات العشوائيّة
+عدا أكثرها تطلّبًا. ومع كلّ هذه الخصائص الرائعة، فهو <em>ليس</em> آمنًا تشفيريًّا.</p>
+<h3 id="نظرة-معمقة-على-mersenne-twister">نظرة معمّقة على Mersenne Twister</h3>
+<p>متقدّم</p>
+<p>ولإظهار سبب عدم كون Mersenne Twister آمنًا تشفيريًّا، سننظر إلى كيفية عمل
+الخوارزمية. ولحسن الحظّ، فهي ليست معقّدة إلى حدٍّ كبير.</p>
+<p>وتعمل خوارزمية Mersenne Twister القياسيّة على مصفوفة حالة داخليّة <code>S</code> مكوَّنة من
+624 عددًا صحيحًا غير سالب بطول 32 بتًّا، وعلى فهرس <code>i</code> يشير إلى العدد الحالي.
+وهي تتألّف من ثلاث خطوات:</p>
+<p>#. دالة تهيئة اختياريّة، تُنتج حالة أوّليّة من قيمة عشوائيّة صغيرة تُسمّى
+<em>البذرة</em> (seed).
+#. دالة توليد حالة، تُنتج حالة جديدة من الحالة القديمة.
+#. دالة استخراج، تُسمّى أيضًا دالة <em>التقويم</em> (tempering)، تُنتج عددًا عشوائيًّا من
+العنصر الحالي للحالة (العنصر الذي يشير إليه الفهرس <code>i</code>).</p>
+<p>وفي كلّ مرّة تُستدعى فيها دالة الاستخراج، يُزاد الفهرس الذي يشير إلى العدد
+الحالي. ومتى استُهلكت كلّ عناصر الحالة الحالية في إنتاج عدد، تُستدعى دالة توليد
+الحالة من جديد. أمّا دالة تهيئة الحالة فتُستدعى قبل استخراج الرقم الأول مباشرةً.</p>
+<p>فإذا رجعنا إلى ما سبق: تُولَّد الحالة من جديد، ثمّ تمرّ دالة الاستخراج على كلّ
+عناصر الحالة واحدًا واحدًا حتى تنفد. وتتكرّر هذه العمليّة إلى ما لا نهاية.</p>
+<p>TODO: ارسم</p>
+<p>وسننظر بنظرة سريعة إلى كلّ جزء من هذه الأجزاء. غير أنّ تفاصيل
+عملها بالضبط خارج نطاق هذا الكتاب، لكنّنا سننظر إليها بالقدر الكافي لنحصل
+على بعض البصيرة في سبب عدم ملاءمة Mersenne Twister بوصفه مولّد أرقام عشوائيّة
+آمنًا تشفيريًّا.</p>
+<h3 id="دالة-التهيئة">دالة التهيئة</h3>
+<p>تنشئ دالة التهيئة نسخةً من مصفوفة حالة Mersenne Twister انطلاقًا من عدد عشوائيّ
+أوّليّ صغير يُسمّى <em>البذرة</em> (seed).</p>
+<p>وتبدأ المصفوفة بالبذرة نفسها. ثمّ يُنتَج كلّ عنصر تالٍ من ثابت، والعنصر
+السابق، وفهرس العنصر الجديد. وتُنتَج العناصر إلى أن يصير عددها 624.</p>
+<p>وهذا هو شيفرة بايثون المصدرية:</p>
+<pre><code>def uint32(n):
+    return 0xFFFFFFFF &amp; n
+
+def initialize_state(seed):
+    state = [seed]
+
+    for i in range(1, 624):
+        prev = state[-1]
+        elem = 0x6c078965 * (prev ^ (prev &gt;&gt; 30)) + i
+        state.append(uint32(elem))
+
+    return state
+</code></pre>
+<p>ولمن لم يعمل مع بايثون أو مع معاملاتها البتّيّة:</p>
+<ul>
+<li><code>&gt;&gt;</code> و<code>&lt;&lt;</code> هما الإزاحة يمينًا والإزاحة يسارًا</li>
+<li><code>&amp;</code> هو AND ثنائي: <code>0 \\&amp; 0 = 0 \\&amp; 1 = 1 \\&amp; 0 = 0</code>، و
+<code>1 \\&amp; 1 = 1</code>.</li>
+<li><code>^</code> هو XOR ثنائي، و<code>^=</code> يُطبّق XOR على الطرفين ويضع النتيجة في الاسم
+الموجود على اليسار، من نوع <code>x ^= k</code> أي <code>x = x ^ k</code>.</li>
+</ul>
+<p>REVIEW: ملحق الحساب البتّيّ؟</p>
+<h3 id="دالة-إعادة-توليد-الحالة">دالة إعادة توليد الحالة</h3>
+<p>تأخذ دالة إعادة توليد الحالة الحالة الحالية وتُنتج حالة جديدة. وتُستدعى قبل
+استخراج الرقم الأول مباشرةً، وفي كلّ مرّة تستهلك فيها عناصر الحالة الـ624 كلّها.</p>
+<p>والشيفرة المصدرية لهذه الدالة في بايثون بسيطة إلى حدٍّ ما. ولاحظ أنّها تعدّل
+مصفوفة الحالة في مكانها، بدل أن تُعيد مصفوفة جديدة.</p>
+<pre><code>def regenerate(s):
+    for i in range(624):
+        y = s[i] &amp; 0x80000000
+        y += s[(i + 1) % 624] &amp; 0x7fffffff
+
+        z = s[(i + 397) % 624]
+        s[i] = z ^ (y &gt;&gt; 1)
+
+        if y % 2:
+            s[i] ^= 0x9908b0df
+</code></pre>
+<p>والمعامل <code>%</code> في تعبير مثل <code>s[(i + n) % 624]</code> يعني النظر في العنصر التالي من
+الحالة، مع الالتفاف إلى بداية مصفوفة الحالة إذا لم يوجد عنصر تالٍ.</p>
+<p>وللقيمتَي <code>0x80000000</code> و<code>0x7fffffff</code> معنًى محدّد عند تفسيرهما متسلسلَتي بتّ
+بطول 32. فـ <code>0x80000000</code> ليس فيها إلّا البتّ الأوّل مضبوطًا؛ بينما <code>0x7fffffff</code>
+فيها كلّ البتّات إلّا البتّ الأوّل. ولأنّهما تُدمجان معًا ب AND البتّيّ (<code>&amp;</code>)،
+فإنّ ذلك يعني بفعالية أنّ <code>y</code> بعد السطرين الأوّلَين في الحلقة يتكوّن من البتّ
+الأوّل من عنصر الحالة الحالي ومن كلّ البتّات التالية لعنصر الحالة التالي.</p>
+<h3 id="دالة-التقويم">دالة التقويم</h3>
+<p>تُطبَّق دالة التقويم على العنصر الحالي من الحالة قبل إعادته بوصفه العدد
+العشوائيّ المُنتَج. ومن الأسهل أن نكتفي بعرض الشيفرة بدل شرح كيفية عملها:</p>
+<pre><code>_TEMPER_MASK_1 = 0x9d2c5680
+_TEMPER_MASK_2 = 0xefc60000
+
+def temper(y):
+    y ^= uint32(y &gt;&gt; 11)
+    y ^= uint32((y &lt;&lt; 7) &amp; _TEMPER_MASK_1)
+    y ^= uint32((y &lt;&lt; 15) &amp; _TEMPER_MASK_2)
+    y ^= uint32(y &gt;&gt; 18)
+    return y
+</code></pre>
+<p>قد لا يكون ذلك واضحًا، خاصّة إن لم تكن معتادًا على الحساب الثنائي، لكنّ هذه
+الدالة <em>متباينة</em> (bijective) أو <em>أحاديّة القيمة</em> (one-to-one): فكلّ دخل من أعداد صحيحة بطول
+32 بتًّا يقابله خرج واحد بالضبط، وبالمثل في الاتجاه المعاكس: لكلّ عدد صحيح بطول
+32 بتًّا نحصل عليه كخرج، كان هناك بالضبط عدد صحيح واحد بطول 32 بتًّا يمكن أن
+يكون مصدره. ولأنّها تستعمل الإزاحتين يمينًا ويسارًا، فقد يبدو للوهلة الأولى
+أنّها تتخلّص من بيانات، ومن ثمّ يستحيل أن تكون قابلة للعكس. وصحيح أنّ تلك
+الإزاحات تطرح بعض البتّات، لكنّ العملية الحرجة هنا هي XOR المضمَّن (<code>^=</code>):
+فالإزاحات تُستعمل فقط لحساب أقنعة يُطبَّق XOR على القيمة المراد تقويمها. أمّا
+عمليات XOR نفسها فقابلة للعكس، ولأنّ كلّ عملية مستقلّة قابلة للعكس، فإنّ
+تركيبها كذلك قابل للعكس.</p>
+<p>ولأنّ دالة التقويم أحاديّة القيمة، فإنّ هناك دالة معاكسة: دالة تعطيك المكافئ
+غير المُقوَّم لعدد. وقد لا يكون واضحًا لك كيف تبني تلك الدالة ما لم تكن
+ساحرًا في الحساب البتّيّ، لكنّ ذلك لا بأس به؛ ففي أسوأ الحالات يمكننا أن نلجأ
+إلى البحث الشامل. فلنفترض أننا نجرّب كلّ عدد صحيح بطول 32 بتًّا، ونتذكّر النتيجة
+في جدول. ثمّ حين نحصل على نتيجة، نبحث عنها في الجدول، فنجد الأصل. وسيكون على
+هذا الجدول أن يكون طوله <code>2^{32} \\cdot 32</code> بتًّا على الأقلّ، أي نحو 17 غيغابايت
+جيّدة؛ وهو كبير، لكنّه ليس مستحيلًا.</p>
+<p>ولحسن الحظّ، هناك طريقة أبسط بكثير لحساب معاكس دالة التقويم. وسنرى لماذا هذا
+مثير للاهتمام عند تقييم الأمن التشفيريّ لـ Mersenne Twister في القسم التالي.
+ولمن يهتمّ بالنتيجة، فإنّ دالة إلغاء التقويم تبدو هكذا:</p>
+<pre><code>def untemper(y):
+    y ^= y &gt;&gt; 18
+    y ^= ((y &lt;&lt; 15) &amp; _TEMPER_MASK_2)
+
+    y = _undo_shift_2(y)
+    y = _undo_shift_1(y)
+
+    return y
+
+def _undo_shift_2(y):
+    t = y
+
+    for _ in range(5):
+        t &lt;&lt;= 7
+        t = y ^ (t &amp; _TEMPER_MASK_1)
+
+    return t
+
+def _undo_shift_1(y):
+    t = y
+
+    for _ in range(2):
+        t &gt;&gt;= 11
+        t ^= y
+
+    return t
+</code></pre>
+<h3 id="الأمن-التشفيري">الأمن التشفيريّ</h3>
+<p>تذكّر أنّ الأمن التشفيريّ يشترط استحالة التنبّؤ بالمخارج المستقبليّة أو استرجاع
+المخارج السابقة انطلاقًا من المخارج الحالية. وMersenne Twister لا تتوفّر فيه هذه
+الخاصّية.</p>
+<p>ومن الواضح أنّ مولّدات الأعداد العشوائيّة شبه العشوائيّة، سواء الآمنة منها
+تشفيريًّا وغير الآمنة، محدَّدة كليًّا بحالتها الداخليّة. فهي بعد كلّ شيء خوارزميات
+حتميّة: إنّما تحاول جاهدّة أن تتظاهر بأنها ليست كذلك. ومن ثمّ يمكنك القول إنّ
+الفرق الرئيس بين المولّدات شبه العشوائيّة الآمنة تشفيريًّا والمولّدات شبه
+العشوائيّة العاديّة هو أنّ الأولى يجب ألّا تتسرّب معلومات عن حالتها الداخليّة،
+بينما لا يهمّ ذلك في العاديّة.</p>
+<p>وتذكّر أنّ Mersenne Twister يُنتج عددًا عشوائيًّا بأخذ العنصر الحالي من الحالة،
+وتطبيق دالة التقويم، وإعادة النتيجة. وقد رأينا أيضًا أنّ لدى دالة التقويم دالة
+معاكسة. ومن ثمّ، إن استطعت رؤية خرج الخوارزمية وتطبيق معاكس دالة التقويم، فقد
+استرجعت عنصرًا واحدًا من عناصر الحالة الـ624.</p>
+<p>ولنفترض أنّني الشخص الوحيد الذي يرى مخارج الخوارزمية، وأنّك تبدأ من أوّل
+الحالة، مثلًا بنسخة جديدة من الخوارزمية، فإنّ ذلك يعني أنّه بإمكانّي أن أستنسخ
+الحالة بمجرّد أن أجعلها تُنتج 624 عددًا عشوائيًّا.
+وحتّى لو لم يرَ المهاجم الأعداد الـ624 كلّها، فإنّه يستطيع غالبًا مع
+ذلك إعادة إنشاء الحالات المستقبليّة، بفضل العلاقات البسيطة بين الحالات السابقة
+والحالات المستقبليّة التي تنتجها دالة إعادة توليد الحالة.</p>
+<p>ومرّة أخرى، هذا ليس ضعفًا في Mersenne Twister. فهو مصمَّم ليكون سريعًا ولديه
+خصائص عشوائيّة قويّة. وهو غير مصمَّم ليكون غير متوقّع، وهذه هي الخاصّية
+المميِّزة لمولّد الأعداد العشوائيّة شبه العشوائيّ الآمن تشفيريًّا.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>دورة مولّد الأعداد العشوائيّة شبه العشوائيّ هي عدد الأعداد العشوائيّة التي يُنتجها قبل أن تتكرّر التسلسلة بأكملها. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:p,headings:t,html:m};export{s as book,n as chapter,a as chapterTitle,c as default,t as headings,m as html,e as slug,p as title};

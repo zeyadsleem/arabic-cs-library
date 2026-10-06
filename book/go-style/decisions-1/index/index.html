@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -57,7 +57,7 @@
 <li><strong>التنسيق (Formatting)</strong>: راجع <a href="/arabic-cs-library/book/go-style/guide/index#formatting">guide#formatting</a></li>
 <li><strong>طول السطر (Line Length)</strong>: راجع <a href="/arabic-cs-library/book/go-style/guide/index#line-length">guide#line-length</a></li>
 </ul>
-<h2 id="التسمية">التسمية</h2>
+<h2 id="التسمية">التسمية <span class="content-anchor" id="naming"></span></h2>
 <p>راجع قسم التسمية في <a href="/arabic-cs-library/book/go-style/guide/index#naming">دليل الأسلوب الأساسي</a> للحصول على إرشادات شاملة حول التسمية. وتقدّم الأقسام التالية توضيحات إضافية حول مجالات محدّدة في التسمية.</p>
 <h3 id="الشرطات-السفلية-underscores">الشرطات السفلية (Underscores)</h3>
 <p>ينبغي عمومًا ألّا تحتوي الأسماء في Go على شرطات سفلية (underscores). وهناك ثلاثة استثناءات لهذا المبدأ:</p>
@@ -67,7 +67,7 @@
 <li>قد تعيد المكتبات منخفضة المستوى التي تتفاعل مع نظام التشغيل أو cgo استخدام معرّفات، كما هو الحال في <a href="https://pkg.go.dev/syscall#pkg-constants"><code>syscall</code></a>. ويُتوقَّع أن يكون هذا نادرًا جدًا في معظم قواعد الكود.</li>
 </ol>
 <p><strong>ملاحظة:</strong> أسماء ملفات الكود المصدري ليست معرّفات Go ولا يلزم أن تتبع هذه الأعراف. ويجوز أن تحتوي على شرطات سفلية.</p>
-<h3 id="أسماء-الحزم-package-names">أسماء الحزم (Package names)</h3>
+<h3 id="أسماء-الحزم-package-names">أسماء الحزم (Package names) <span class="content-anchor" id="package-names"></span></h3>
 <p>في Go، يجب أن تكون أسماء الحزم موجزة وأن تستخدم الأحرف الصغيرة والأرقام فقط (مثل <a href="https://pkg.go.dev/k8s.io/client-go/kubernetes"><code>k8s</code></a> و<a href="https://pkg.go.dev/golang.org/x/oauth2"><code>oauth2</code></a>). وينبغي أن تبقى أسماء الحزم متعدّدة الكلمات موصولة وبأحرف صغيرة بالكامل (مثل <a href="https://pkg.go.dev/text/tabwriter"><code>tabwriter</code></a> بدلًا من <code>tabWriter</code> أو <code>TabWriter</code> أو <code>tab_writer</code>).</p>
 <p>تجنّب اختيار أسماء حزم يُرجَّح أن تُحجب (shadowed) بأسماء متغيّرات محلية شائعة الاستخدام. على سبيل المثال، <code>usercount</code> اسم حزمة أفضل من <code>count</code>، لأن <code>count</code> اسم متغيّر شائع الاستخدام.</p>
 <p>لا ينبغي أن تحتوي أسماء حزم Go على شرطات سفلية. وإذا احتجت إلى استيراد حزمة يحوي اسمها شرطة سفلية (عادةً من كود مولَّد أو من طرف ثالث)، فيجب إعادة تسميتها وقت الاستيراد إلى اسم مناسب للاستخدام في كود Go.</p>
@@ -85,7 +85,7 @@
 </ul>
 <p>عند إعادة تسمية حزمة مستوردة (مثل <code>import foopb &quot;path/to/foo_go_proto&quot;</code>)، يجب أن يتوافق الاسم المحلي للحزمة مع القواعد المذكورة أعلاه، لأن الاسم المحلي يحدّد كيفية الإشارة إلى الرموز في الحزمة داخل الملف. وإذا أُعيدت تسمية استيراد معيّن في عدة ملفات، خصوصًا في الحزم نفسها أو الحزم المجاورة، فينبغي استخدام الاسم المحلي نفسه قدر الإمكان للاتساق.</p>
 <p>راجع أيضًا: <a href="https://go.dev/blog/package-names">تدوينة مدونة Go حول أسماء الحزم</a>.</p>
-<h3 id="أسماء-المستقبل-receiver-names">أسماء المستقبِل (Receiver names)</h3>
+<h3 id="أسماء-المستقبل-receiver-names">أسماء المستقبِل (Receiver names) <span class="content-anchor" id="receiver-names"></span></h3>
 <p>يجب أن تكون أسماء متغيّرات <a href="https://golang.org/ref/spec#Method_declarations">المستقبِل</a> كما يلي:</p>
 <ul>
 <li>قصيرة (عادةً بحرف أو حرفين)</li>
@@ -273,7 +273,7 @@
 <li><code>w</code> لـ<code>io.Writer</code> أو <code>http.ResponseWriter</code></li>
 </ul>
 <p>تُعدّ المعرّفات المكوّنة من حرف واحد مقبولة كمتغيّرات حلقات صحيحة، خصوصًا للفهارس (مثل <code>i</code>) والإحداثيات (مثل <code>x</code> و<code>y</code>). ويمكن قبول الاختصارات كمعرّفات حلقات عندما يكون النطاق قصيرًا، مثل <code>for _, n := range nodes { ... }</code>.</p>
-<h3 id="التكرار-repetition">التكرار (Repetition)</h3>
+<h3 id="التكرار-repetition">التكرار (Repetition) <span class="content-anchor" id="repetition"></span></h3>
 <p>ينبغي أن يتجنّب الكود المصدري في Go التكرار غير الضروري. ومن المصادر الشائعة لذلك الأسماء المتكرّرة، التي كثيرًا ما تتضمّن كلمات غير ضرورية أو تكرّر سياقها أو نوعها. وقد يكون الكود نفسه متكرّرًا بلا داعٍ إذا ظهر المقطع نفسه أو مقطع مشابه عدة مرات على مقربة من بعضها.</p>
 <p>قد تأتي التسمية المتكرّرة في أشكال عديدة، منها:</p>
 <h4>اسم الحزمة مقابل اسم الرمز المصدَّر</h4>
@@ -284,7 +284,7 @@
 <p><code>widget.NewWidget</code> -&gt; <code>widget.New</code> <code>widget.NewWidgetWithName</code> -&gt; <code>widget.NewWithName</code> <code>db.LoadFromDatabase</code> -&gt; <code>db.Load</code> <code>goatteleportutil.CountGoatsTeleported</code> -&gt; <code>gtutil.CountGoatsTeleported</code> أو <code>goatteleport.Count</code> <code>myteampb.MyTeamMethodRequest</code> -&gt; <code>mtpb.MyTeamMethodRequest</code> أو <code>myteampb.MethodRequest</code></p>
 </blockquote>
 </blockquote>
-<h4>اسم المتغيّر مقابل النوع</h4>
+<h4>اسم المتغيّر مقابل النوع <span class="content-anchor" id="repetitive-with-type"></span></h4>
 <p>يعرف المترجم دائمًا نوع المتغيّر، وفي معظم الحالات يكون نوع المتغيّر واضحًا أيضًا للقارئ من طريقة استخدامه. ولا يلزم توضيح نوع المتغيّر إلا إذا ظهرت قيمته مرتين في النطاق نفسه.</p>
 <table>
 <thead>
@@ -317,7 +317,7 @@ limit, err := strconv.Atoi(limitRaw)
 limitStr := r.FormValue(&quot;limit&quot;)
 limit, err := strconv.Atoi(limitStr)
 </code></pre>
-<h4>السياق الخارجي مقابل الأسماء المحلية</h4>
+<h4>السياق الخارجي مقابل الأسماء المحلية <span class="content-anchor" id="repetitive-in-context"></span></h4>
 <p>غالبًا ما تُنشئ الأسماء التي تتضمّن معلومات من سياقها المحيط ضوضاء إضافية بلا فائدة. فاسم الحزمة واسم الطريقة واسم النوع واسم الدالة ومسار الاستيراد وحتى اسم الملف يمكن أن توفّر جميعها سياقًا يؤهّل تلقائيًا كل الأسماء داخلها.</p>
 <pre><code>// Bad:
 // In package &quot;ads/targeting/revenue/reporting&quot;
@@ -398,7 +398,7 @@ func Process(in *pb.FooProto) *Report {
 // Don't worry too much about the long URL:
 // https://supercalifragilisticexpialidocious.example.com:8080/Animalia/Chordata/Mammalia/Rodentia/Geomyoidea/Geomyidae/
 </code></pre>
-<h3 id="التعليقات-التوثيقية-doc-comments">التعليقات التوثيقية (Doc comments)</h3>
+<h3 id="التعليقات-التوثيقية-doc-comments">التعليقات التوثيقية (Doc comments) <span class="content-anchor" id="doc-comments"></span></h3>
 <p>يجب أن تحتوي جميع الأسماء المصدَّرة على المستوى الأعلى على تعليقات توثيقية، وكذلك إعلانات الأنواع أو الدوال غير المصدَّرة ذات السلوك أو المعنى غير الواضح. وينبغي أن تكون هذه التعليقات <a href="#comment-sentences">جُملًا كاملة</a> تبدأ باسم الكائن الموصوف. ويمكن أن تسبق أداة التعريف (&quot;a&quot; أو &quot;an&quot; أو &quot;the&quot;) الاسم ليُقرأ بشكل أكثر طبيعية.</p>
 <pre><code>// Good:
 // A Request represents a request to run a command.
@@ -422,7 +422,7 @@ type Options struct {
 }
 </code></pre>
 <p><strong>أفضل ممارسة:</strong> إذا كانت لديك تعليقات توثيقية لكود غير مصدَّر، فاتبع العرف نفسه كما لو كان مصدَّرًا (أي البدء بالتعليق بالاسم غير المصدَّر). وهذا يسهّل تصديره لاحقًا بمجرد استبدال الاسم غير المصدَّر بالاسم المصدَّر الجديد في التعليقات والكود معًا.</p>
-<h3 id="جمل-التعليقات">جُمل التعليقات</h3>
+<h3 id="جمل-التعليقات">جُمل التعليقات <span class="content-anchor" id="comment-sentences"></span></h3>
 <p>التعليقات التي هي جُمل كاملة ينبغي أن تبدأ بحرف كبير وتُضبط بالترقيم مثل جُمل اللغة الإنجليزية القياسية. (وكاستثناء، لا بأس في بدء جملة باسم معرّف يبدأ بحرف صغير إذا كان ذلك واضحًا. ومن الأفضل على الأرجح أن يقتصر ذلك على بداية الفقرة.)</p>
 <p>أما التعليقات التي هي أجزاء من جُمل فليس لها متطلبات مماثلة فيما يخص الترقيم أو بدء الحرف الكبير.</p>
 <p>ينبغي أن تكون <a href="#doc-comments">تعليقات التوثيق</a> جُملًا كاملة دائمًا، وبالتالي ينبغي دائمًا أن تبدأ بحرف كبير وأن تُضبط بالترقيم. أما التعليقات البسيطة في نهاية السطر (خصوصًا لحقول البنى) فيمكن أن تكون عبارات بسيطة تفترض أن اسم الحقل هو الفاعل.</p>
@@ -440,7 +440,7 @@ type Options struct {
     PageLength      int    // lines per page when printing (optional; default: 20)
 }
 </span></code></pre>
-<h3 id="الأمثلة">الأمثلة</h3>
+<h3 id="الأمثلة">الأمثلة <span class="content-anchor" id="examples"></span></h3>
 <p>ينبغي أن توثّق الحزم بوضوح الاستخدام المقصود لها. حاول تقديم <a href="http://blog.golang.org/examples">مثال قابل للتشغيل</a>؛ تظهر الأمثلة في Godoc. وتنتمي الأمثلة القابلة للتشغيل إلى ملف الاختبار، لا إلى ملف المصدر الإنتاجي. راجع هذا المثال (<a href="https://pkg.go.dev/time#example-Duration">Godoc</a>، <a href="https://cs.opensource.google/go/go/+/HEAD:src/time/example_test.go">المصدر</a>).</p>
 <p>إذا لم يكن تقديم مثال قابل للتشغيل ممكنًا، فيمكن تقديم كود مثال داخل تعليقات الكود. وكما هو الحال مع مقاطع الكود وسطر الأوامر الأخرى في التعليقات، ينبغي أن يتبع أعراف التنسيق القياسية.</p>
 <h3 id="وسائط-النتائج-المسماة">وسائط النتائج المسماة</h3>
@@ -516,7 +516,7 @@ package template
 </code></pre>
 <p>التعليقات الموجّهة إلى المشرفين والتي تنطبق على الملف بأكمله توضع عادةً بعد إعلانات الاستيراد. وهذه لا تظهر في Godoc ولا تخضع للقواعد المذكورة أعلاه بشأن تعليقات الحزم.</p>
 <h2 id="الاستيرادات">الاستيرادات</h2>
-<h3 id="إعادة-تسمية-الاستيرادات">إعادة تسمية الاستيرادات</h3>
+<h3 id="إعادة-تسمية-الاستيرادات">إعادة تسمية الاستيرادات <span class="content-anchor" id="import-renaming"></span></h3>
 <p>لا ينبغي عادةً إعادة تسمية استيرادات الحزم، لكن هناك حالات يجب فيها إعادة تسميتها أو تكون إعادة التسمية فيها تحسينًا للقابلية للقراءة.</p>
 <p>يجب أن تتبع الأسماء المحلية للحزم المستوردة <a href="#package-names">الإرشادات المتعلّقة بتسمية الحزم</a>، بما في ذلك حظر استخدام الشرطات السفلية والأحرف الكبيرة. حاول أن تكون <a href="/arabic-cs-library/book/go-style/guide/index#consistency">متسقًا</a> باستخدام الاسم المحلي نفسه دائمًا للحزمة المستوردة نفسها.</p>
 <p><em>يجب</em> إعادة تسمية الحزمة المستوردة لتجنّب تعارض الاسم مع استيرادات أخرى. (ومن لوازم ذلك أن <a href="#package-names">أسماء الحزم الجيدة</a> ينبغي ألّا تتطلّب إعادة تسمية.) وفي حال حدوث تعارض بالأسماء، فضّل إعادة تسمية الاستيراد الأكثر محلية أو الأكثر ارتباطًا بالمشروع.</p>
@@ -589,7 +589,7 @@ package foo_test
 )
 var myThing = foo.Bar()
 </code></pre>
-<h2 id="الأخطاء">الأخطاء</h2>
+<h2 id="الأخطاء">الأخطاء <span class="content-anchor" id="documentation-conventions-errors"></span></h2>
 <h3 id="إرجاع-الأخطاء">إرجاع الأخطاء</h3>
 <p>استخدم <code>error</code> للإشارة إلى أن دالة قد تفشل. وبحسب العرف، يكون <code>error</code> آخر وسيط في النتائج.</p>
 <pre><code>// Good:
@@ -624,7 +624,7 @@ log.Infof(&quot;Operation aborted: %v&quot;, err)
 log.Errorf(&quot;Operation aborted: %v&quot;, err)
 t.Errorf(&quot;Op(%q) failed unexpectedly; err=%v&quot;, args, err)
 </code></pre>
-<h3 id="التعامل-مع-الأخطاء">التعامل مع الأخطاء</h3>
+<h3 id="التعامل-مع-الأخطاء">التعامل مع الأخطاء <span class="content-anchor" id="handle-errors"></span></h3>
 <p>ينبغي للكود الذي يواجه خطأً أن يتخذ قرارًا مدروسًا بشأن كيفية التعامل معه. وليس من المناسب عادةً تجاهل الأخطاء باستخدام متغيّرات <code>_</code>. وإذا أعادت دالة خطأً، فافعل أحد الأمور التالية:</p>
 <ul>
 <li>تعامل مع الخطأ وعالجه فورًا.</li>
@@ -638,7 +638,7 @@ t.Errorf(&quot;Op(%q) failed unexpectedly; err=%v&quot;, args, err)
 n, _ := b.<span class="hljs-title class_">Write</span>(p) <span class="hljs-comment">// never returns a non-nil error</span>
 </code></pre>
 <p>لمزيد من النقاش والأمثلة حول معالجة الأخطاء، راجع <a href="http://golang.org/doc/effective_go.html#errors">Effective Go</a> و<a href="/arabic-cs-library/book/go-style/best-practices-2/index#error-handling">أفضل الممارسات</a>.</p>
-<h3 id="الأخطاء-داخل-النطاق-in-band-errors">الأخطاء داخل النطاق (In-band errors)</h3>
+<h3 id="الأخطاء-داخل-النطاق-in-band-errors">الأخطاء داخل النطاق (In-band errors) <span class="content-anchor" id="in-band-errors"></span></h3>
 <p>في C واللغات المشابهة، من الشائع أن تُرجع الدوال قيمًا مثل ‎-1 أو null أو السلسلة الفارغة للإشارة إلى أخطاء أو نتائج مفقودة. ويُعرف هذا بمعالجة الأخطاء داخل النطاق (in-band error handling).</p>
 <pre><code>// Bad:
 // Lookup returns the value for key or -1 if there is no mapping for key.
@@ -708,7 +708,7 @@ if x, err := f(); err != nil {
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -716,8 +716,8 @@ if x, err := f(); err != nil {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

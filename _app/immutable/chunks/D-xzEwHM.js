@@ -1,0 +1,2274 @@
+const e="ocaml-cs3110",n="interp",s="Interpreters",t="index",a="المفسّرات",o=[{depth:2,id:"10-المفسرات",text:"10. المفسّرات"},{depth:2,id:"101-مثال-الآلة-الحاسبة",text:"10.1. مثال: الآلة الحاسبة"},{depth:2,id:"102-التحليل-النحوي",text:"10.2. التحليل النحوي"},{depth:3,id:"1021-المحللات-المعجمية",text:"10.2.1. المحلّلات المعجمية"},{depth:3,id:"1022-المحللات-النحوية",text:"10.2.2. المحلّلات النحوية"},{depth:3,id:"1023-صيغة-باكوس-ناور",text:"10.2.3. صيغة باكوس-ناور"},{depth:3,id:"1024-مثال-simpl",text:"10.2.4. مثال: SimPL"},{depth:2,id:"103-نموذج-الاستبدال",text:"10.3. نموذج الاستبدال"},{depth:3,id:"1031-تقييم-simpl-في-نموذج-الاستبدال",text:"10.3.1. تقييم SimPL في نموذج الاستبدال"},{depth:3,id:"1032-تنفيذ-علاقة-الخطوة-الواحدة",text:"10.3.2. تنفيذ علاقة الخطوة الواحدة"},{depth:3,id:"1033-علاقة-الخطوات-المتعددة",text:"10.3.3. علاقة الخطوات المتعددة"},{depth:3,id:"1034-تعريف-علاقة-الخطوة-الكبيرة",text:"10.3.4. تعريف علاقة الخطوة الكبيرة"},{depth:3,id:"1035-تنفيذ-علاقة-الخطوة-الكبيرة",text:"10.3.5. تنفيذ علاقة الخطوة الكبيرة"},{depth:3,id:"1036-الاستبدال-في-simpl",text:"10.3.6. الاستبدال في SimPL"},{depth:3,id:"1037-تنفيذ-الاستبدال",text:"10.3.7. تنفيذ الاستبدال"},{depth:3,id:"1038-اكتمل-مفسر-simpl",text:"10.3.8. اكتمل مفسّر SimPL"},{depth:3,id:"1039-الاستبدال-المانع-للالتقاط",text:"10.3.9. الاستبدال المانع للالتقاط"},{depth:3,id:"10310-core-ocaml",text:"10.3.10. Core OCaml"},{depth:3,id:"10311-تقييم-core-ocaml-في-نموذج-الاستبدال",text:"10.3.11. تقييم Core OCaml في نموذج الاستبدال"},{depth:3,id:"10312-علاقة-الخطوة-الكبيرة",text:"10.3.12. علاقة الخطوة الكبيرة"},{depth:2,id:"104-نموذج-البيئة",text:"10.4. نموذج البيئة"},{depth:3,id:"1041-تقييم-حساب-لامبدا-في-نموذج-البيئة",text:"10.4.1. تقييم حساب لامبدا في نموذج البيئة"},{depth:3,id:"1042-النطاق-المعجمي-مقابل-النطاق-الديناميكي",text:"10.4.2. النطاق المعجمي مقابل النطاق الديناميكي"},{depth:3,id:"1043-محاولة-ثانية-لتقييم-حساب-لامبدا-في-نموذج-البيئة",text:"10.4.3. محاولة ثانية لتقييم حساب لامبدا في نموذج البيئة"},{depth:3,id:"1044-تنفيذ-حساب-لامبدا-في-نموذج-البيئة",text:"10.4.4. تنفيذ حساب لامبدا في نموذج البيئة"},{depth:3,id:"1045-تقييم-core-ocaml-في-نموذج-البيئة",text:"10.4.5. تقييم Core OCaml في نموذج البيئة"},{depth:2,id:"105-فحص-الأنواع",text:"10.5. فحص الأنواع"},{depth:3,id:"1051-نظام-أنواع-لـ-simpl",text:"10.5.1. نظام أنواع لـ SimPL"},{depth:3,id:"1052-فاحص-أنواع-لـ-simpl",text:"10.5.2. فاحص أنواع لـ SimPL"},{depth:3,id:"1053-أمان-الأنواع",text:"10.5.3. أمان الأنواع"},{depth:2,id:"106-استدلال-الأنواع",text:"10.6. استدلال الأنواع"},{depth:3,id:"1061-إعادة-بناء-الأنواع-في-ocaml",text:"10.6.1. إعادة بناء الأنواع في OCaml"},{depth:3,id:"1062-الاستدلال-القائم-على-القيود",text:"10.6.2. الاستدلال القائم على القيود"},{depth:3,id:"1063-حل-القيود",text:"10.6.3. حل القيود"},{depth:3,id:"1064-إتمام-استدلال-الأنواع",text:"10.6.4. إتمام استدلال الأنواع"},{depth:3,id:"1065-تعدد-أشكال-let",text:"10.6.5. تعدّد أشكال let"},{depth:3,id:"1066-تعدد-الأشكال-والقابلية-للتغيير",text:"10.6.6. تعدّد الأشكال والقابلية للتغيير"},{depth:2,id:"107-الملخص",text:"10.7. الملخّص"},{depth:3,id:"1071-المصطلحات-والمفاهيم",text:"10.7.1. المصطلحات والمفاهيم"},{depth:3,id:"1072-قراءات-إضافية",text:"10.7.2. قراءات إضافية"},{depth:3,id:"1073-شكر-وتقدير",text:"10.7.3. شكر وتقدير"},{depth:2,id:"108-التمارين",text:"10.8. التمارين"}],c=`<h2 id="10-المفسرات">10. المفسّرات <span class="content-anchor" id="interpreters"></span></h2>
+<p>على الحرفي الماهر أن يفهم الأدوات التي يعمل بها. فالنّجار يحتاج إلى فهم المناشير والمساحج. والطاهي يحتاج إلى فهم السكاكين والقدور. والمبرمج يحتاج، من بين أدوات أخرى، إلى فهم المصرّفات التي تنفّذ لغات البرمجة التي يستخدمها.</p>
+<p>يتطلب الفهم الكامل للتصريف مقررًا كاملًا أو مقررين. لذا سنلقي هنا نظرة موجزة بالضرورة على كيفية تنفيذ لغات البرمجة. والهدف فهم بعض تقنيات التنفيذ الأساسية، لإزالة الغموض عن الأدوات التي تستخدمها. فرغم أنك قد لا تحتاج أبدًا إلى تنفيذ لغة برمجة عامة الغرض كاملة، فمن المرجح جدًا أنك ستريد في مرحلة ما من مسيرتك تصميم لغة صغيرة خاصة الغرض وتنفيذها. ويُسمى ذلك أحيانًا <em>اللغات الخاصة بمجال (domain-specific languages, DSLs)</em>. وما نغطيه هنا ينبغي أن يساعدك في تلك المهمة.</p>
+<p><em>المصرّف (compiler)</em> برنامج ينفّذ لغة برمجة. وكذلك <em>المفسّر (interpreter)</em>. لكنهما يختلفان في استراتيجية التنفيذ.</p>
+<p>المهمة الأساسية للمصرّف هي <em>الترجمة (translation)</em>. فهو يأخذ كمدخل <em>برنامجًا مصدريًا (source program)</em> وينتج كمخرج <em>برنامجًا هدفًا (target program)</em>. والبرنامج المصدري يُعبَّر عنه عادةً بلغة عالية المستوى، مثل Java أو OCaml. والبرنامج الهدف يُعبَّر عنه عادةً بلغة منخفضة المستوى، مثل لغة تجميع MIPS أو x86. وعندها تنتهي مهمة المصرّف، ولا تبقى حاجة إليه. ويساعد نظام التشغيل لاحقًا في تحميل البرنامج الهدف وتنفيذه. وعادةً ما ينتج عن المصرّف تنفيذات أعلى أداءً.</p>
+<p>أما المهمة الأساسية للمفسّر فهي <em>التنفيذ (execution)</em>. فهو يأخذ كمدخل برنامجًا مصدريًا وينفّذ ذلك البرنامج مباشرةً دون إنتاج أي برنامج هدف. ونظام التشغيل هو الذي يحمّل المفسّر وينفّذه فعلًا، ثم يكون المفسّر مسؤولًا عن تنفيذ البرنامج. وعادةً ما يكون تنفيذ المفسّر أسهل من تنفيذ المصرّف.</p>
+<p>ومن الممكن أيضًا تنفيذ لغة بمزيج من التصريف والتفسير. وأكثر مثال شائع على ذلك <em>الآلات الافتراضية (virtual machines)</em> التي تنفّذ <em>شيفرة البايت (bytecode)</em>، مثل آلة Java الافتراضية (JVM) أو آلة OCaml الافتراضية (التي كانت تُسمى آلة الزنك). وبهذه الاستراتيجية، يترجم المصرّف اللغة المصدرية إلى شيفرة البايت، وتفسّر الآلة الافتراضية شيفرة البايت.</p>
+<p>وتذهب الآلات الافتراضية عالية الأداء، مثل HotSpot في Java، خطوة أبعد وتضمّن مصرّفًا داخل الآلة الافتراضية. فعندما تلاحظ الآلة أن قطعة من شيفرة البايت تُفسَّر كثيرًا، تستخدم المصرّف لترجمة تلك الشيفرة إلى لغة الآلة التي تعمل عليها الآلة (مثل x86). ويُسمى ذلك <em>التصريف في الوقت المناسب (just-in-time compilation, JIT)</em>، لأن الشيفرة تُصرَّف قبيل تنفيذها مباشرةً.</p>
+<p>يمرّ المصرّف بعدة مراحل وهو يترجم برنامجًا:</p>
+<p><strong>التحليل المعجمي (Lexing).</strong> يحوّل المصرّف أثناء التحليل المعجمي شيفرة البرنامج المصدرية الأصلية من متتالية من المحارف إلى متتالية من <em>الوحدات المعجمية (tokens)</em>. والوحدات المعجمية محارف متجاورة يكون لاجتماعها معنى. ويمكنك التفكير فيها على أنها نظير الكلمات في اللغة الطبيعية. بل إن الكلمات المفتاحية مثل <code>if</code> و<code>match</code> وحدات معجمية في OCaml. وكذلك الثوابت مثل <code>42</code> و<code>&quot;hello&quot;</code>، وأسماء المتغيرات مثل <code>x</code> و<code>lst</code>، وعلامات الترقيم مثل <code>(</code> و<code>)</code> و<code>-&gt;</code>. ويزيل التحليل المعجمي عادةً المسافات البيضاء، لأنها لا تلزم بعد تحديد الوحدات المعجمية. (وإن كان يجب الحفاظ عليها في لغة حساسة للمسافات البيضاء مثل Python.)</p>
+<p><strong>التحليل النحوي (Parsing).</strong> يحوّل المصرّف أثناء التحليل النحوي متتالية الوحدات المعجمية إلى شجرة تُسمى <em>شجرة الصياغة المجرّدة (abstract syntax tree, AST)</em>. وكما يوحي الاسم، تجرّد هذه الشجرة من <em>الصياغة الملموسة (concrete syntax)</em> للغة. تذكّر أن التجريد قد يعني «نسيان التفاصيل». وتنسى الشجرة عادةً التفاصيل الملموسة. فمثلًا:</p>
+<p>في <code>1 + (2 + 3)</code> تجمع الأقواس عملية الجمع اليمنى، مما يشير إلى أنه ينبغي تقييمها أولًا. ويمكن لشجرة تمثيل ذلك كما يلي:</p>
+<pre><code class="language-text">   +
+  / \\
+ 1   +
+    / \\
+   2   3
+</code></pre>
+<p>لم تعد الأقواس لازمة، لأن بنية الشجرة تُضمّنها.</p>
+<p>وفي <code>[1; 2; 3]</code>، تحدّد الأقواس المربعة بداية القائمة ونهايتها، وتفصل الفواصل المنقوطة عناصر القائمة. ويمكن لشجرة تمثيل ذلك كعقدة لها عدة أبناء:</p>
+<pre><code class="language-text">   list
+  /  |  \\
+ 1   2   3
+</code></pre>
+<p>لم تعد الأقواس والفواصل المنقوطة لازمة.</p>
+<p>وفي <code>fun x -&gt; 42</code>، تفصل الكلمة المفتاحية <code>fun</code> وعلامة الترقيم <code>-&gt;</code> وسائط الدالة وجسمها عن الشيفرة المحيطة. ويمكن لشجرة تمثيل ذلك كعقدة لها ابنان:</p>
+<pre><code class="language-text">  function
+  /     \\
+ x       42
+</code></pre>
+<p>لم تعد الكلمة المفتاحية وعلامة الترقيم لازمتين.</p>
+<p>وهكذا تمثل شجرة الصياغة المجرّدة بنية البرنامج على مستوى يسهل على كاتب المصرّف التعامل معه.</p>
+<p><strong>التحليل الدلالي (Semantic analysis).</strong> يتحقق المصرّف أثناء التحليل الدلالي مما إذا كان البرنامج ذا معنى وفق قواعد اللغة التي ينفّذها المصرّف. وأكثر أنواع التحليل الدلالي شيوعًا فحص الأنواع (type checking): فيحلل المصرّف أنواع جميع التعبيرات التي تظهر في البرنامج لمعرفة ما إذا كان هناك خطأ نوعي. ويتطلب فحص الأنواع عادةً إنتاج بنية بيانات تُسمى <em>جدول الرموز (symbol table)</em> تربط المعرّفات (مثل أسماء المتغيرات) بأنواعها. وعند الدخول في نطاق جديد، يُمتد جدول الرموز بارتباطات جديدة قد تحجب ارتباطات قديمة؛ وعند الخروج من النطاق، تُزال الارتباطات الجديدة، فتستعاد الارتباطات القديمة. لذا يمزج جدول الرموز سمات القاموس وسمات بنية بيانات المكدس.</p>
+<p>وعلاوة على فحص الأنواع، ثمة أنواع أخرى من التحليل الدلالي. ومن الأمثلة على ذلك:</p>
+<ul>
+<li>التحقق مما إذا كانت فروع مطابقة الأنماط في OCaml شاملة،</li>
+<li>والتحقق مما إذا كانت الكلمة المفتاحية <code>break</code> في C تقع داخل جسم حلقة، و</li>
+<li>والتحقق مما إذا كان حقل في Java موسومًا بـ <code>final</code> قد هُيّئ قبل نهاية مُنشئ.</li>
+</ul>
+<p>ويمكنك التفكير في التحليل النحوي على أنه «التحقق مما إذا كان البرنامج ذا معنى»—وهو تعريفنا للتحليل الدلالي قبل قليل. لذا فالتمييز بين التحليل النحوي والتحليل الدلالي يتعلق بالملاءمة أكثر: فالتحليل النحوي يؤدي عملًا كافيًا لتنفيذ إنتاج شجرة الصياغة المجرّدة، ويتولى التحليل الدلالي بقية العمل.</p>
+<p>بل إن التحليل الدلالي ضروري أحيانًا لتحديد ما ينبغي أن تكون عليه شجرة الصياغة المجرّدة تحديدًا كاملًا! تأمل مثلًا التعبير <code>(foo) - bar</code> في لغة شبيهة بـ C. فقد يكون:</p>
+<ul>
+<li>نفيًا أحاديًا لمتغير <code>bar</code> محوّلًا إلى النوع <code>foo</code>، أو</li>
+<li>عملية طرح ثنائية بمعاملين هما <code>foo</code> و<code>bar</code>، كانت الأقواس حولها زائدة.</li>
+</ul>
+<p>فإلى أن يُجرى من التحليل الدلالي ما يكفي لمعرفة ما إذا كان <code>foo</code> اسم متغير أم اسم نوع، لا يعرف المصرّف أي شجرة صياغة مجرّدة ينبغي أن يولّد. وفي مثل هذه الحالات، ينتج المحلل النحوي عادةً شجرة صياغة مجرّدة تمثل بعض عقدها الصياغة الملتبسة، ثم تُعيد مرحلة التحليل الدلالي كتابة الشجرة لتكون غير ملتبسة.</p>
+<p><strong>الترجمة إلى تمثيل وسيط.</strong> بعد التحليل الدلالي، <em>يمكن</em> للمصرّف أن يترجم شجرة الصياغة المجرّدة (معزّزة بجداول الرموز) فورًا إلى اللغة الهدف. لكن لو أراد المصرّف نفسه إنتاج مخرجات لأهداف متعددة (مثل x86 وARM وMIPS)، فسيقتضي ذلك تعريف ترجمة من الشجرة إلى كل هدف من الأهداف. وعمليًا لا يفعل المصرّفات ذلك عادةً. بل تترجم الشجرة أولًا إلى تمثيل وسيط (IR). فكّر في التمثيل الوسيط كنوع من تجريد كثير من لغات التجميع. فيمكن ترجمة لغات مصدرية كثيرة (مثل C وJava وOCaml) إلى التمثيل الوسيط نفسه، ومن ذلك التمثيل يمكن إنتاج مخرجات لغات هدف كثيرة (مثل x86 وARM وMIPS).</p>
+<p>وتحتوي لغة التمثيل الوسيط عادةً <em>تعليمات آلة مجرّدة (abstract machine instructions)</em> تؤدي مهام بسيطة مفهوميًا: التحميل من الذاكرة أو التخزين فيها، وإجراء عمليات ثنائية، والاستدعاء والعودة، والقفز إلى تعليمات أخرى. وتحتوي الآلة المجرّدة عادةً عددًا غير محدود من السجلات المتاحة للاستخدام، كثيرًا مثل قدرة البرنامج المصدري على امتلاك عدد غير محدود من المتغيرات. أما الآلات الحقيقية فلها عدد منتهٍ من السجلات، وهو أحد أوجه كون التمثيل الوسيط تجريدًا.</p>
+<p><strong>توليد الشيفرة الهدف.</strong> المرحلة الأخيرة في التصريف هي توليد الشيفرة الهدف من التمثيل الوسيط. وتتضمن هذه المرحلة عادةً اختيار تعليمات آلة ملموسة (مثل رموز عمليات x86)، وتحديد المتغيرات التي ستُخزَّن في الذاكرة (وهو وصول بطيء) مقابل سجلات المعالج (وهو وصول سريع لكن عددها محدود). ولهذا يحاول المصرّف، كجزء من توليد الشيفرة، <em>تحسين (optimize)</em> أداء الشيفرة الهدف. ومن أمثلة التحسينات:</p>
+<ul>
+<li>إزالة فحوص حدود المصفوفة، إذا كان من المضمون إثباتيًا نجاحها؛</li>
+<li>وإزالة الحسابات المكررة؛</li>
+<li>واستبدال استدعاء دالة بجسم الدالة نفسه، مجسَّدًا على الوسائط تجسيدًا مناسبًا، لإزالة كلفة الاستدعاء والعودة؛ و</li>
+<li>وإعادة ترتيب تعليمات الآلة بحيث تبدأ مثلًا القراءات البطيئة من الذاكرة قبل الحاجة إلى نتائجها، وتُؤدى في الأثناء تعليمات أخرى لا تحتاج نتيجة القراءة.</li>
+</ul>
+<p><strong>مجموعات المراحل.</strong> يمكن تجميع مراحل التصريف في جزأين أو ثلاثة:</p>
+<ul>
+<li><em>الواجهة الأمامية (front end)</em> للمصرّف تؤدي التحليل المعجمي والنحوي والدلالي. وتنتج شجرة صياغة مجرّدة وجداول رموز مرتبطة بها. وتحوّل الشجرة إلى تمثيل وسيط.</li>
+<li>و<em>الواجهة الوسطى (middle end)</em> للمصرّف (إن وُجدت) تعمل على التمثيل الوسيط. ويتضمن ذلك عادةً إجراء تحسينات مستقلة عن اللغة الهدف.</li>
+<li>و<em>الواجهة الخلفية (back end)</em> للمصرّف تؤدي توليد الشيفرة، بما في ذلك مزيد من التحسين.</li>
+</ul>
+<p><strong>مراحل التفسير.</strong> يعمل المفسّر عمل الواجهة الأمامية (وربما الوسطى) للمصرّف. أي أنه يؤدي التحليل المعجمي والنحوي والدلالي. ثم قد يبدأ فورًا في تنفيذ شجرة الصياغة المجرّدة، أو قد يحوّلها إلى تمثيل وسيط ويبدأ في تنفيذ التمثيل الوسيط.</p>
+<p>وسنركز في بقية هذا الكتاب على المفسّرات. وسنغفل التمثيلات الوسيطة وتوليد الشيفرة، وندرس بدلًا من ذلك كيفية تنفيذ شجرة الصياغة المجرّدة مباشرةً.</p>
+<p>ملاحظة</p>
+<p>بسبب الأدوات الإضافية المطلوبة، لا يمكن تشغيل شيفرة هذا الفصل في متصفح كما في الفصول السابقة. لكننا نوفر شيفرة قابلة للتنزيل لكل مفسّر منفَّذ هنا.</p>
+<h2 id="101-مثال-الآلة-الحاسبة">10.1. مثال: الآلة الحاسبة <span class="content-anchor" id="example-calculator"></span></h2>
+<p>لنبدأ بجولة مصوّرة موجهة لتنفيذ مفسّر للغة صغيرة: آلة حاسبة أساسًا، بالجمع والضرب. والغرض من هذه الجولة ليس الخوض في تفاصيل دقيقة عن أي جزء بمفرده. بل الهدف اكتساب بعض الألفة مع أدوات OCaml وتقنياتها للتحليل المعجمي والنحوي والتقييم. وكلها مترابطة ترابطًا وثيقًا إلى حد ما، مما يجعل فهم جزء واحد بدون فهم عالي المستوى للكل أمرًا صعبًا. وبعد أن نكتسب ذلك الفهم من الجولة، سنبدأ من جديد في القسم التالي (عن التحليل النحوي)، وعندها سنغوص في التفاصيل.</p>
+<h2 id="102-التحليل-النحوي">10.2. التحليل النحوي <span class="content-anchor" id="parsing"></span></h2>
+<p><em>يمكن</em> أن تكتب محلّلك المعجمي ومحلّلك النحوي بنفسك من الصفر. لكن لغات كثيرة تتضمن أدوات لتوليد المحلّلات المعجمية والنحوية تلقائيًا من أوصاف صورية لصياغة اللغة. وأسلاف كثير من تلك الأدوات هما <a href="https://en.wikipedia.org/wiki/Lex_(software)">lex</a> و<a href="https://en.wikipedia.org/wiki/Yacc">yacc</a>، اللذان يولّدان المحلّلات المعجمية والنحوية على الترتيب؛ وقد طوّر lex وyacc في السبعينيات لـ C.</p>
+<p>وتوفر OCaml، كجزء من التوزيع القياسي، مولّدي محلّلات معجمية ونحوية يُسميان <a href="https://ocaml.org/manual/lexyacc.html">ocamllex وocamlyacc</a>. وهناك مولّد محلّلات نحوية أحدث يُسمى <a href="http://gallium.inria.fr/~fpottier/menhir/">menhir</a> متاح عبر opam؛ وهو «متوافق بنسبة 90%» مع ocamlyacc ويوفر دعمًا محسّنًا محسّنًا كثيرًا لتنقيح المحلّلات النحوية المولَّدة.</p>
+<h3 id="1021-المحللات-المعجمية">10.2.1. المحلّلات المعجمية <span class="content-anchor" id="lexers"></span></h3>
+<p>يُبنى مولّدو المحلّلات المعجمية مثل lex وocamllex على نظرية الآلات المحدودة الحتمية، التي تُدرس عادةً في مقرر الرياضيات المتقطعة أو نظرية الحوسبة. وتقبل تلك الآلات <em>اللغات المنتظمة (regular languages)</em>، التي يمكن وصفها بـ<em>التعبيرات النمطية (regular expressions)</em>. لذا فمدخل مولّد المحلّل المعجمي مجموعة من التعبيرات النمطية التي تصف الوحدات المعجمية للغة. ومخرجه آلة منفَّذة بلغة عالية المستوى، مثل C (لـ lex) أو OCaml (لـ ocamllex).</p>
+<p>وتأخذ الآلة نفسها ملفات (أو سلاسل نصية) كمدخل، ويصير كل محرف من الملف مدخلًا للآلة. وفي النهاية إما أن <em>تتعرف</em> الآلة على متتالية المحارف التي تلقتها كوحدة معجمية صالحة في اللغة، وفي هذه الحالة تنتج مخرجًا بتلك الوحدة المعجمية وتعيد ضبط نفسها لتتعرف على الوحدة التالية، وإما أن <em>ترفض</em> متتالية المحارف كوحدة معجمية غير صالحة.</p>
+<h3 id="1022-المحللات-النحوية">10.2.2. المحلّلات النحوية <span class="content-anchor" id="parsers"></span></h3>
+<p>يُبنى مولّدو المحلّلات النحوية مثل yacc وmenhir بالمثل على نظرية الآلات. لكنها تستخدم <em>آلات الدفع السفلي (pushdown automata)</em>، وهي مثل الآلات المحدودة لكنها تحتفظ أيضًا بمكدس يمكنها الدفع إليه بسحب الرموز منه. ويمكّنها المكدس من قبول صنف أكبر من اللغات، تُعرف بـ<em>اللغات الحرة السياق (context-free languages, CFLs)</em>. ومن التحسينات الكبيرة التي أحدثتها اللغات الحرة السياق على اللغات المنتظمة قدرتها على التعبير عن فكرة وجوب توازن الفواصل—فمثلًا أن يكون كل قوس فتح موازنًا بقوس إغلاق.</p>
+<p>وكما يمكن التعبير عن اللغات المنتظمة بترميز خاص (التعبيرات النمطية)، يمكن التعبير عن اللغات الحرة السياق كذلك. وتُستخدم <em>القواعد الحرة السياق (context-free grammars)</em> لوصف اللغات الحرة السياق. والقاعدة الحرة السياق مجموعة من <em>قواعد الإنتاج (production rules)</em> تصف كيف يمكن استبدال رمز برموز أخرى. فمثلًا، لغة الأقواس المتوازنة، التي تتضمن سلاسل مثل <code>(())</code> و<code>()()</code> و<code>(()())</code>، لكن ليس سلاسل مثل <code>)</code> أو <code>(()</code>، تولّدها هذه القواعد:</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>→</mo><mo stretchy="false">(</mo><mi>S</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S \\rightarrow (S)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mclose">)</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>→</mo><mi>S</mi><mi>S</mi></mrow><annotation encoding="application/x-tex">S \\rightarrow SS</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>→</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">S \\rightarrow \\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span></li>
+</ul>
+<p>والرموز الظاهرة في تلك القواعد هي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo></mrow><annotation encoding="application/x-tex">(</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span></span></span></span>. و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> يرمز إلى السلسلة الفارغة. وكل رمز إما <em>غير طرفي (nonterminal)</em> وإما <em>طرفي (terminal)</em>، حسب ما إذا كان وحدة معجمية في اللغة الموصوفة. و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span></span></span></span> غير طرفي في المثال أعلاه، والقوسان ( و) طرفيان.</p>
+<p>وسندرس في القسم التالي <em>صيغة باكوس-ناور (Backus-Naur Form, BNF)</em>، وهي ترميز قياسي للقواعد الحرة السياق. ومدخل مولّد المحلّل النحوي وصف BNF لصياغة اللغة عادةً. ومخرج مولّد المحلّل النحوي برنامج يتعرف على لغة القواعد. ويتوقع ذلك البرنامج، كمدخل، مخرجات المحلّل المعجمي. وينتج، كمخرج، قيمة من نوع شجرة الصياغة المجرّدة تمثل السلسلة التي قُبلت. وهكذا يعتمد البرنامجان اللذان يولّدهما مولّد المحلّل النحوي ومولّد المحلّل المعجمي كل منهما على الآخر وعلى نوع شجرة الصياغة المجرّدة.</p>
+<h3 id="1023-صيغة-باكوس-ناور">10.2.3. صيغة باكوس-ناور <span class="content-anchor" id="backus-naur-form"></span></h3>
+<p>الطريقة القياسية لوصف صياغة لغة هي ترميز رياضي يُسمى <em>صيغة باكوس-ناور (BNF)</em>، منسوبًا إلى مخترعيها John Backus و Peter Naur. وثمة صيغ كثيرة لـ BNF. ولن نكون هنا شديدي التمسك بصيغة بعينها دون أخرى. وهدفنا مجرد امتلاك ترميز جيد بدرجة معقولة لوصف صياغة اللغات.</p>
+<p>يستخدم BNF مجموعة من <em>قواعد الاشتقاق (derivation rules)</em> لوصف صياغة لغة. ولنبدأ بمثال. إليك وصف BNF للغة صغيرة من التعبيرات تتضمن الأعداد الصحيحة والجمع فحسب:</p>
+<pre><code class="language-text">e ::= i | e + e
+i ::= &lt;integers&gt;
+</code></pre>
+<p>تقول هذه القواعد إن التعبير <code>e</code> إما عدد صحيح <code>i</code>، وإما تعبيران يظهر بينهما الرمز <code>+</code>. أما صياغة «الأعداد الصحيحة» فتتركها هذه القواعد غير محددة.</p>
+<p>ولكل قاعدة الشكل</p>
+<pre><code class="language-text">metavariable ::= symbols | ... | symbols
+</code></pre>
+<p>و<em>المتغير الفوقي (metavariable)</em> متغير يُستخدم في قواعد BNF، لا متغير في اللغة الموصوفة. أما <code>::=</code> و<code>|</code> الظاهران في القواعد فهما <em>صياغة فوقية (metasyntax)</em>: صياغة BNF المستخدمة لوصف صياغة اللغة. و<em>الرموز (symbols)</em> متتاليات يمكن أن تتضمن متغيرات فوقية (مثل <code>i</code> و<code>e</code>) ووحدات معجمية في اللغة (مثل <code>+</code>). ولا تلزم المسافات البيضاء في هذه القواعد.</p>
+<p>وقد نريد أحيانًا الإشارة بسهولة إلى ورود فردية للمتغيرات الفوقية. ونفعل ذلك بإلحاق علامة مميزة بالمتغير الفوقي أو المتغيرات. فمثلًا، يمكننا إعادة كتابة القاعدة الأولى أعلاه كما يلي</p>
+<pre><code class="language-text">e ::= i | e1 + e2
+</code></pre>
+<p>أو</p>
+<pre><code class="language-text">e ::= i | e + e&#x27;
+</code></pre>
+<p>الآن يمكننا الحديث عن <code>e2</code> أو <code>e'</code> بدلًا من الاضطرار إلى القول «الـ <code>e</code> في الطرف الأيمن من <code>+</code>».</p>
+<p>وإذا كانت اللغة نفسها تحتوي أيًا من الوحدتين المعجميتين <code>::=</code> أو <code>|</code>—وOCaml تحتوي الثانية—فقد تصير كتابة BNF مربكة قليلًا. وتحاول بعض ترميزات BNF معالجة ذلك باستخدام فواصل إضافية لتمييز الصياغة من الصياغة الفوقية. وسنكون أكثر تسامحًا ونفترض أن القارئ يستطيع تمييزها.</p>
+<h3 id="1024-مثال-simpl">10.2.4. مثال: SimPL <span class="content-anchor" id="example-simpl"></span></h3>
+<p>ولنستعمل كمثال جارٍ لغة برمجة بسيطة جدًا نسميها SimPL. وإليك صياغتها في BNF:</p>
+<pre><code class="language-text">e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+
+bop ::= + | * | &lt;=
+
+x ::= &lt;identifiers&gt;
+
+i ::= &lt;integers&gt;
+
+b ::= true | false
+</code></pre>
+<p>من الواضح أن هذا اللغة ينقصها الكثير، ولا سيما الدوال. لكن فيها ما يكفي لدراسة المفاهيم المهمة للمفسّرات دون أن تشتتنا ميزات لغوية كثيرة. وسننظر لاحقًا في جزء أكبر من OCaml.</p>
+<p>وسنطوّر مفسّرًا كاملًا لـ SimPL. ويمكنك تنزيل المفسّر المكتمل هنا: <a href="https://cs3110.github.io/textbook/code/simpl.zip">simpl.zip</a>. أو تابع معنا ونحن نبني كل جزء منه.</p>
+<h4>10.2.4.1. شجرة الصياغة المجرّدة <span class="content-anchor" id="the-ast"></span></h4>
+<p>بما أن شجرة الصياغة المجرّدة أهم بنية بيانات في المفسّر، فلنصممها أولًا. وسنضع هذه الشيفرة في ملف باسم <code>ast.ml</code>:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">type</span> bop =
+  | <span class="hljs-type">Add</span>
+  | <span class="hljs-type">Mult</span>
+  | <span class="hljs-type">Leq</span>
+<span class="hljs-keyword">type</span> expr =
+  | <span class="hljs-type">Var</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span>
+  | <span class="hljs-type">Int</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span>
+  | <span class="hljs-type">Bool</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">bool</span>
+  | <span class="hljs-type">Binop</span> <span class="hljs-keyword">of</span> bop * expr * expr
+  | <span class="hljs-type">Let</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> * expr * expr
+  | <span class="hljs-type">If</span> <span class="hljs-keyword">of</span> expr * expr * expr
+</code></pre>
+<p>يوجد منشئ واحد لكل شكل من أشكال التعبيرات النحوية في BNF. وللأصناف النحوية الأولية الأساسية، أي المعرّفات والأعداد الصحيحة والقيم المنطقية، نستخدم أنواع OCaml نفسها: <code>string</code> و<code>int</code> و<code>bool</code>.</p>
+<p>وبدلًا من تعريف نوع <code>bop</code> ومنشئ واحد <code>Binop</code>، كان يمكننا تعريف ثلاثة منشئات منفصلة للعوامل الثنائية الثلاثة:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">type</span> expr =
+  ...
+  | <span class="hljs-type">Add</span> <span class="hljs-keyword">of</span> expr * expr
+  | <span class="hljs-type">Mult</span> <span class="hljs-keyword">of</span> expr * expr
+  | <span class="hljs-type">Leq</span> <span class="hljs-keyword">of</span> expr * expr
+  ...
+</code></pre>
+<p>لكن باستخلاص نوع <code>bop</code> سنتمكن من تفادي كثير من تكرار الشيفرة لاحقًا في تنفيذنا.</p>
+<h4>10.2.4.2. محلّل Menhir النحوي <span class="content-anchor" id="the-menhir-parser"></span></h4>
+<p>لنبدأ بالتحليل النحوي، ثم نعود إلى التحليل المعجمي لاحقًا. وسنضع كل شيفرة Menhir التي نكتبها أدناه في ملف باسم <code>parser.mly</code>. وامتداد <code>.mly</code> يشير إلى أن هذا الملف مقصود كمدخل إلى Menhir. (وحرف ‘y’ تلميح إلى yacc.) ويحتوي هذا الملف على <em>تعريف القواعد (grammar definition)</em> للغة التي نريد تحليلها. وسيوصف تركيب تعريفات القواعد بالأمثلة أدناه. وكن على حذر، فهو غريب قليلًا ربما، لكن ذلك لأنه قائم على أدوات (مثل yacc) طُوّرت منذ زمن بعيد. وسيعالج Menhir ذلك الملف وينتج ملفًا باسم <code>parser.ml</code> كمخرج؛ يحتوي برنامج OCaml يحلّل اللغة نحويًا. (ولا شيء مميز في اسم <code>parser</code> هنا؛ إنه وصفي فحسب.)</p>
+<p>ولتعريف القواعد أربعة أجزاء: الترويسة، والإعلانات، والقواعد، والذيل.</p>
+<p><strong>الترويسة (Header).</strong> تظهر <em>الترويسة</em> بين <code>%{</code> و<code>%}</code>. وهي شيفرة ستُنسخ حرفيًا إلى الملف <code>parser.ml</code> المولَّد. ونستخدمها هنا فقط لفتح وحدة <code>Ast</code> بحيث يمكننا، لاحقًا في تعريف القواعد، كتابة تعبيرات مثل <code>Int i</code> بدلًا من <code>Ast.Int i</code>. ولو أردنا، أمكننا أيضًا تعريف بعض دوال OCaml في الترويسة.</p>
+<pre><code class="language-text">%{
+open Ast
+%}
+</code></pre>
+<p><strong>الإعلانات (Declarations).</strong> يبدأ قسم <em>الإعلانات</em> ببيان <em>الوحدات المعجمية</em> للغة. وإليك إعلانات الوحدات المعجمية لـ SimPL:</p>
+<pre><code class="language-text">%token &lt;int&gt; INT
+%token &lt;string&gt; ID
+%token TRUE
+%token FALSE
+%token LEQ
+%token TIMES
+%token PLUS
+%token LPAREN
+%token RPAREN
+%token LET
+%token EQUALS
+%token IN
+%token IF
+%token THEN
+%token ELSE
+%token EOF
+</code></pre>
+<p>كل واحد منها مجرد اسم وصفي للوحدة المعجمية. ولا شيء حتى الآن يقول إن <code>LPAREN</code> يقابل <code>(</code> فعلًا، مثلًا. وسنتولى ذلك عندما نعرّف المحلّل المعجمي.</p>
+<p>ووحدة <code>EOF</code> وحدة معجمية خاصة هي <em>نهاية الملف (end-of-file)</em> يعيدها المحلّل المعجمي عند وصوله إلى نهاية تيار المحارف. وعندها نعرف أن البرنامج كله قد قُرئ.</p>
+<p>والوحدات المعجمية التي يظهر فيها توسيم \`\` تعلن أنها ستحمل معها بعض البيانات الإضافية. وفي حالة <code>INT</code> تكون تلك البيانات <code>int</code> في OCaml. وفي حالة <code>ID</code> تكون <code>string</code> في OCaml.</p>
+<p>وبعد إعلان الوحدات المعجمية، علينا تقديم بعض المعلومات الإضافية عن <em>الأسبقية (precedence)</em> و<em>التجميعية (associativity)</em>. وتقول الإعلانات التالية إن <code>PLUS</code> تجميعي يساري، و<code>IN</code> غير تجميعي، و<code>PLUS</code> له أسبقية أعلى من <code>IN</code> (لأن <code>PLUS</code> يظهر في سطر بعد <code>IN</code>).</p>
+<pre><code class="language-text">%nonassoc IN
+%nonassoc ELSE
+%left LEQ
+%left PLUS
+%left TIMES
+</code></pre>
+<p>ولأن <code>PLUS</code> تجميعي يساري، سيُحلَّل <code>1 + 2 + 3</code> نحويًا كـ <code>(1 + 2) + 3</code> لا كـ <code>1 + (2 + 3)</code>. ولأن <code>PLUS</code> له أسبقية أعلى من <code>IN</code>، سيُحلَّل التعبير <code>let x = 1 in x + 2</code> نحويًا كـ <code>let x = 1 in (x + 2)</code> لا كـ <code>(let x = 1 in x) + 2</code>. وللإعلانات الأخرى تأثيرات مشابهة.</p>
+<p>وإتقان إعلانات الأسبقية والتجميعية من أعقد أجزاء تطوير تعريف القواعد. ومن المفيد تطوير تعريف القواعد تدريجيًا، بإضافة وحدة معجمية أو اثنتين (وقواعدهما المرتبطة، المناقشة أدناه) في كل مرة. وسيخبرك Menhir عندما تضيف وحدة معجمية (وقاعدة) يلتبس عليه فيها ما تقصده من الأسبقية والتجميعية. وحينئذٍ يمكنك إضافة إعلانات واختبارها لتتأكد من صحتها.</p>
+<p>وبعد إعلان التجميعية والأسبقية، علينا إعلان نقطة البداية لتحليل اللغة نحويًا. ويقول الإعلان التالي إن نبدأ بقاعدة (معرَّفة أدناه) اسمها <code>prog</code>. ويقول الإعلان أيضًا إن تحليل <code>prog</code> نحويًا سيعيد قيمة OCaml من النوع <code>Ast.expr</code>.</p>
+<pre><code class="language-text">%start &lt;Ast.expr&gt; prog
+</code></pre>
+<p>وأخيرًا، تُنهي <code>%%</code> قسم الإعلانات.</p>
+<pre><code class="language-text">%%
+</code></pre>
+<p><strong>القواعد (Rules).</strong> يحتوي قسم <em>القواعد</em> قواعد إنتاج تشبه BNF، وإن كانت هذه القواعد تكتب «:» ببساطة حيث نكتب «::=» في BNF. وصيغة القاعدة هي</p>
+<pre><code class="language-text">name:
+  | production1 { action1 }
+  | production2 { action2 }
+  | ...
+  ;
+</code></pre>
+<p>و<em>الإنتاج (production)</em> هو متتالية <em>الرموز</em> التي تطابقها القاعدة. والرمز إما وحدة معجمية وإما اسم قاعدة أخرى. و<em>الإجراء (action)</em> هو قيمة OCaml التي تُعاد إذا وقعت <em>مطابقة</em>. ويمكن لكل إنتاج أن <em>يربط</em> القيمة التي يحملها رمز وأن يستخدمها في إجرائه. ولعل أفضل طريقة لفهم ذلك بالأمثلة، فلنغصّ فيها.</p>
+<p>القاعدة الأولى، المسماة <code>prog</code>، لها إنتاج واحد فقط. وتقول إن <code>prog</code> هو <code>expr</code> يتبعه <code>EOF</code>. والجزء الأول من الإنتاج، <code>e=expr</code>، يقول بمطابقة <code>expr</code> وربط القيمة الناتجة بـ <code>e</code>. ويقول الإجراء ببساطة بإعادة تلك القيمة <code>e</code>.</p>
+<pre><code class="language-text">prog:
+  | e = expr; EOF { e }
+  ;
+</code></pre>
+<p>والقاعدة الثانية والأخيرة، المسماة <code>expr</code>، لها إنتاجات لجميع التعبيرات في SimPL.</p>
+<pre><code class="language-text">expr:
+  | i = INT { Int i }
+  | x = ID { Var x }
+  | TRUE { Bool true }
+  | FALSE { Bool false }
+  | e1 = expr; LEQ; e2 = expr { Binop (Leq, e1, e2) }
+  | e1 = expr; TIMES; e2 = expr { Binop (Mult, e1, e2) }
+  | e1 = expr; PLUS; e2 = expr { Binop (Add, e1, e2) }
+  | LET; x = ID; EQUALS; e1 = expr; IN; e2 = expr { Let (x, e1, e2) }
+  | IF; e1 = expr; THEN; e2 = expr; ELSE; e3 = expr { If (e1, e2, e3) }
+  | LPAREN; e=expr; RPAREN {e}
+  ;
+</code></pre>
+<ul>
+<li>الإنتاج الأول، <code>i = INT</code>، يقول بمطابقة وحدة معجمية <code>INT</code>، وربط قيمة <code>int</code> الناتجة في OCaml بـ <code>i</code>، وإعادة عقدة شجرة الصياغة المجرّدة <code>Int i</code>.</li>
+<li>والإنتاج الثاني، <code>x = ID</code>، يقول بمطابقة وحدة <code>ID</code>، وربط قيمة <code>string</code> الناتجة في OCaml بـ <code>x</code>، وإعادة عقدة شجرة الصياغة المجرّدة <code>Var x</code>.</li>
+<li>ويطابق الإنتاجان الثالث والرابع وحدة <code>TRUE</code> أو <code>FALSE</code> ويعيدان عقدة شجرة الصياغة المجرّدة المقابلة.</li>
+<li>وتعالج الإنتاجات الخامس والسادس والسابع العوامل الثنائية. فمثلًا، <code>e1 = expr; PLUS; e2 = expr</code> يقول بمطابقة <code>expr</code> يتبعه وحدة <code>PLUS</code> يتبعها <code>expr</code> آخر. ويُربط التعبير الأول <code>expr</code> بـ <code>e1</code> والثاني بـ <code>e2</code>. وعقدة شجرة الصياغة المجرّدة المعادة هي <code>Binop (Add, e1, e2)</code>.</li>
+<li>والإنتاج الثامن، <code>LET; x = ID; EQUALS; e1 = expr; IN; e2 = expr</code>، يقول بمطابقة وحدة <code>LET</code> تتبعها وحدة <code>ID</code> تتبعها وحدة <code>EQUALS</code> يتبعها <code>expr</code> تتبعها وحدة <code>IN</code> يتبعها <code>expr</code> آخر. وتُربط السلسلة التي تحملها <code>ID</code> بـ <code>x</code>، ويُربط التعبيران بـ <code>e1</code> و<code>e2</code>. وعقدة شجرة الصياغة المجرّدة المعادة هي <code>Let (x, e1, e2)</code>.</li>
+<li>والإنتاج الأخير، <code>LPAREN; e = expr; RPAREN</code>، يقول بمطابقة وحدة <code>LPAREN</code> يتبعها <code>expr</code> تتبعها <code>RPAREN</code>. ويُربط التعبير بـ <code>e</code> ويُعاد.</li>
+</ul>
+<p>وقد يثير الإنتاج الأخير الدهشة، لأنه لم يكن مدرجًا في BNF التي كتبناها لـ SimPL. فقد كانت تلك BNF مقصودًا بها وصف <em>الصياغة المجرّدة</em> للغة، فلم تتضمن التفاصيل الملموسة لكيفية تجميع التعبيرات بالأقواس. أما تعريف القواعد الذي كنا نكتبه فيجب أن يصف <em>الصياغة الملموسة</em>، بما في ذلك تفاصيل مثل الأقواس.</p>
+<p>وقد يوجد أيضًا قسم <em>ذيل (trailer)</em> بعد القواعد، وهو مثل الترويسة شيفرة OCaml تُنسخ مباشرةً إلى ملف المخرج <code>parser.ml</code>.</p>
+<h4>10.2.4.3. محلّل Ocamllex المعجمي <span class="content-anchor" id="the-ocamllex-lexer"></span></h4>
+<p>ولنرَ الآن كيف يُستخدم مولّد المحلّل المعجمي. سيبدو كثير منه مألوفًا من نقاشنا لمولّد المحلّل النحوي. وسنضع كل شيفرة ocamllex التي نكتبها أدناه في ملف باسم <code>lexer.mll</code>. وامتداد <code>.mll</code> يشير إلى أن هذا الملف مقصود كمدخل إلى ocamllex. (وحرف ‘l’ تلميح إلى التحليل المعجمي.) ويحتوي هذا الملف على <em>تعريف المحلّل المعجمي</em> للغة التي نريد تحليلها معجميًا. وسيعالج Menhir ذلك الملف وينتج ملفًا باسم <code>lexer.ml</code> كمخرج؛ يحتوي برنامج OCaml يحلّل اللغة معجميًا. (ولا شيء مميز في اسم <code>lexer</code> هنا؛ إنه وصفي فحسب.)</p>
+<p>ولتعريف المحلّل المعجمي أربعة أجزاء: الترويسة، والمعرّفات، والقواعد، والذيل.</p>
+<p><strong>الترويسة (Header).</strong> تظهر <em>الترويسة</em> بين <code>{</code> و<code>}</code>. وهي شيفرة ستُنسخ حرفيًا ببساطة إلى الملف <code>lexer.ml</code> المولَّد.</p>
+<pre><code class="language-text">{
+open Parser
+}
+</code></pre>
+<p>هنا فتحنا وحدة <code>Parser</code>، وهي الشيفرة في <code>parser.ml</code> التي أنتجها Menhir من <code>parser.mly</code>. وسبب فتحها أن نتمكن من استخدام أسماء الوحدات المعجمية المعلنة فيها، مثل <code>TRUE</code> و<code>LET</code> و<code>INT</code>، داخل تعريف محلّلنا المعجمي. وإلا لاضطررنا إلى كتابة <code>Parser.TRUE</code> وما إلى ذلك.</p>
+<p><strong>المعرّفات (Identifiers).</strong> يحتوي القسم التالي من تعريف المحلّل المعجمي على <em>معرّفات (identifiers)</em>، وهي تعبيرات نمطية مسماة. وستُستخدم في قسم القواعد بعد ذلك.</p>
+<p>وإليك المعرّفات التي سنستخدمها مع SimPL:</p>
+<pre><code class="language-text">let white = [&#x27; &#x27; &#x27;\\t&#x27;]+
+let digit = [&#x27;0&#x27;-&#x27;9&#x27;]
+let int = &#x27;-&#x27;? digit+
+let letter = [&#x27;a&#x27;-&#x27;z&#x27; &#x27;A&#x27;-&#x27;Z&#x27;]
+let id = letter+
+</code></pre>
+<p>التعبيرات النمطية أعلاه للمسافات البيضاء (المسافات وأحرف الجدولة)، والأرقام (0 حتى 9)، والأعداد الصحيحة (متتاليات غير فارغة من الأرقام، تسبقها اختياريًا إشارة ناقص)، والأحرف (a حتى z، و A حتى Z)، وأسماء متغيرات SimPL (متتاليات غير فارغة من الأحرف)، أي ما يُعرف بالمعرّفات أو «identifiers»—وإننا نستخدم الكلمة الآن بمعنيين مختلفين.</p>
+<p>ولعلمك، هذه ليست مطابقة تمامًا لتعريفات OCaml للأعداد الصحيحة والمعرّفات.</p>
+<p>وقسم المعرّفات غير مطلوب فعلًا؛ فبدلًا من كتابة <code>white</code> في القواعد، كان يمكننا كتابة التعبير النمطي لها مباشرةً. لكن المعرّفات تساعد في جعل تعريف المحلّل المعجمي أكثر توثيقًا لذاته.</p>
+<p><strong>القواعد (Rules).</strong> يُكتب قسم القواعد في تعريف المحلّل المعجمي بترميز يشبه BNF أيضًا. وللقاعدة الشكل</p>
+<pre><code class="language-text">rule name =
+  parse
+  | regexp1 { action1 }
+  | regexp2 { action2 }
+  | ...
+</code></pre>
+<p>هنا، <code>rule</code> و<code>parse</code> كلمتان مفتاحيتان. وسيحاول المحلّل المعجمي المولَّد المطابقة مع التعبيرات النمطية بالترتيب المذكورة فيه. وعندما يطابق تعبير نمطي، ينتج المحلّل الوحدة المعجمية التي يحددها <code>action</code> الخاص بها.</p>
+<p>وإليك القاعدة (الوحيدة) لمحلّل SimPL المعجمي:</p>
+<pre><code class="language-text">rule read =
+  parse
+  | white { read lexbuf }
+  | &quot;true&quot; { TRUE }
+  | &quot;false&quot; { FALSE }
+  | &quot;&lt;=&quot; { LEQ }
+  | &quot;*&quot; { TIMES }
+  | &quot;+&quot; { PLUS }
+  | &quot;(&quot; { LPAREN }
+  | &quot;)&quot; { RPAREN }
+  | &quot;let&quot; { LET }
+  | &quot;=&quot; { EQUALS }
+  | &quot;in&quot; { IN }
+  | &quot;if&quot; { IF }
+  | &quot;then&quot; { THEN }
+  | &quot;else&quot; { ELSE }
+  | id { ID (Lexing.lexeme lexbuf) }
+  | int { INT (int_of_string (Lexing.lexeme lexbuf)) }
+  | eof { EOF }
+</code></pre>
+<p>معظم التعبيرات النمطية والإجراءات بديهية، لكن اثنين منها ليسا كذلك:</p>
+<ul>
+<li>الأول، <code>white { read lexbuf }</code>، يعني أنه إذا طوبقت مسافة بيضاء، فعلى المحلّل المعجمي، بدلًا من إعادة وحدة معجمية، أن يستدعي قاعدة <code>read</code> مرة أخرى ويعيد أي وحدة معجمية تنتج. وبعبارة أخرى، ستُتجاهل المسافات البيضاء.</li>
+<li>والاثنان الخاصان بالمعرّفات والأعداد الصحيحة يستخدمان التعبير <code>Lexing.lexeme lexbuf</code>. وهذا يستدعي دالة <code>lexeme</code> المعرَّفة في وحدة <code>Lexing</code>، ويعيد السلسلة التي طابقها التعبير النمطي. فمثلًا، في قاعدة <code>id</code> سيعيد متتالية الأحرف الكبيرة والصغيرة التي تشكّل اسم المتغير.</li>
+<li>والتعبير النمطي <code>eof</code> تعبير خاص يطابق نهاية الملف (أو السلسلة) التي تُحلَّل معجميًا.</li>
+</ul>
+<p>ولاحظ أنه من المهم أن يقع التعبير النمطي <code>id</code> قبل الأخير تقريبًا في القائمة. وإلا لحُلّلت كلمات مفتاحية مثل <code>true</code> و<code>if</code> معجميًا كأسماء متغيرات لا كوحدتي <code>TRUE</code> و<code>IF</code>.</p>
+<h4>10.2.4.4. توليد المحلّل النحوي والمحلّل المعجمي <span class="content-anchor" id="generating-the-parser-and-lexer"></span></h4>
+<p>والآن بعد أن أكملنا تعريفي المحلّل النحوي والمعجمي في <code>parser.mly</code> و<code>lexer.mll</code>، يمكننا تشغيل Menhir وocamllex لتوليد المحلّل النحوي والمعجمي منهما. ولننظّم شيفرتنا هكذا:</p>
+<pre><code class="language-text">- &lt;some root folder&gt;
+  - dune-project
+  - src
+    - ast.ml
+    - dune
+    - lexer.mll
+    - parser.mly
+</code></pre>
+<p>وفي <code>src/dune</code> اكتب ما يلي:</p>
+<pre><code class="language-text">(library
+ (name interp))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
+</code></pre>
+<p>فينظّم ذلك مجلد <code>src</code> كله في <em>مكتبة</em> اسمها <code>Interp</code>. وسيكون المحلّل النحوي والمعجمي وحدتين <code>Interp.Parser</code> و<code>Interp.Lexer</code> في تلك المكتبة.</p>
+<p>ونفّذ <code>dune build</code> لتصريف الشيفرة، فتُولَّد بذلك المحلّل النحوي والمعجمي. وإذا أردت رؤية الشيفرة المولَّدة، فابحث في <code>_build/default/src/</code> عن <code>parser.ml</code> و<code>lexer.ml</code>.</p>
+<h4>10.2.4.5. برنامج التشغيل <span class="content-anchor" id="the-driver"></span></h4>
+<p>وأخيرًا يمكننا جمع المحلّل المعجمي والنحوي معًا لتحويل سلسلة نصية إلى شجرة صياغة مجرّدة. وضع هذه الشيفرة في ملف باسم <code>src/main.ml</code>:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">open</span> <span class="hljs-type">Ast</span>
+<span class="hljs-keyword">let</span> parse (s : <span class="hljs-built_in">string</span>) : expr =
+  <span class="hljs-keyword">let</span> lexbuf = <span class="hljs-type">Lexing</span>.from_string s <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> ast = <span class="hljs-type">Parser</span>.prog <span class="hljs-type">Lexer</span>.read lexbuf <span class="hljs-keyword">in</span>
+  ast
+</code></pre>
+<p>تأخذ هذه الدالة سلسلة <code>s</code> وتستخدم وحدة <code>Lexing</code> في المكتبة القياسية لإنشاء <em>مخزن محلّل معجمي (lexer buffer)</em> منها. فكّر في ذلك المخزن كتيار الوحدات المعجمية. ثم تحلّل الدالة السلسلة معجميًا ونحويًا إلى شجرة صياغة مجرّدة، باستخدام <code>Lexer.read</code> و<code>Parser.prog</code>. وتقابل الدالة <code>Lexer.read</code> القاعدة المسماة <code>read</code> في تعريف محلّلنا المعجمي، وتقابل الدالة <code>Parser.prog</code> القاعدة المسماة <code>prog</code> في تعريف محلّلنا النحوي.</p>
+<p>ولاحظ كيف تشغّل هذه الشيفرة المحلّل المعجمي على سلسلة نصية؛ وهناك دالة مقابلة هي <code>from_channel</code> للقراءة من ملف.</p>
+<p>ويمكننا الآن استخدام <code>parse</code> تفاعليًا لتحليل بعض السلاسل. ابدأ utop وحمّل المكتبة المعلنة في <code>src</code> بهذا الأمر:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">dune utop src</span>
+</code></pre>
+<p>الآن صار <code>Interp.Main.parse</code> متاحًا للاستخدام:</p>
+<pre><code class="language-ocaml"># <span class="hljs-type">Interp</span>.<span class="hljs-type">Main</span>.parse <span class="hljs-string">&quot;let x = 3110 in x + x&quot;</span>;;
+- : <span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.expr =
+<span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Let</span> (<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Int</span> <span class="hljs-number">3110</span>,
+ <span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Binop</span> (<span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Add</span>, <span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Var</span> <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-type">Interp</span>.<span class="hljs-type">Ast</span>.<span class="hljs-type">Var</span> <span class="hljs-string">&quot;x&quot;</span>))
+</code></pre>
+<p>وبذلك يكتمل التحليل المعجمي والنحوي لـ SimPL.</p>
+<h2 id="103-نموذج-الاستبدال">10.3. نموذج الاستبدال <span class="content-anchor" id="substitution-model"></span></h2>
+<p>بعد التحليل المعجمي والنحوي، تأتي مرحلة فحص الأنواع (وغيرها من التحليل الدلالي). وسنتخطى تلك المرحلة الآن ونعود إليها في نهاية هذا الفصل.</p>
+<p>بل لنوجّه انتباهنا بدلًا من ذلك إلى التقييم. ففي المصرّف تكون المرحلة التالية بعد التحليل الدلالي إعادة كتابة شجرة الصياغة المجرّدة إلى تمثيل وسيط (IR)، استعدادًا لترجمة البرنامج إلى شيفرة الآلة. وقد يعيد المفسّر أيضًا كتابة الشجرة إلى تمثيل وسيط، أو قد يبدأ في تقييم الشجرة مباشرةً. ومن أسباب إعادة كتابة الشجرة تبسيطها: فأحيانًا يمكن تنفيذ ميزات لغوية معينة بدلالة ميزات أخرى، ويكون من المنطقي اختزال اللغة إلى نواة صغيرة لإبقاء تنفيذ المفسّر أقصر. والسكر النحوي (syntactic sugar) مثال رائع على تلك الفكرة.</p>
+<p>ويُسمى إزالة السكر النحوي <em>إزالة السكر (desugaring)</em>. فمثلًا، نعلم أن <code>let x = e1 in e2</code> و<code>(fun x -&gt; e2) e1</code> متكافئان. لذا يمكننا اعتبار تعبيرات let سكرًا نحويًا.</p>
+<p>لنفترض أن لدينا لغة تقابل شجرة صياغتها المجرّدة هذه BNF:</p>
+<pre><code class="language-text">e ::= x | fun x -&gt; e | e1 e2
+    | let x = e1 in e2
+</code></pre>
+<p>حينئذٍ يمكن للمفسّر أن يزيل السكر من تلك الشجرة إلى شجرة أبسط—وهي تمثيل وسيط بمعنى ما—بتحويل جميع ورود <code>let x = e1 in e2</code> إلى <code>(fun x -&gt; e2) e1</code>. ثم لا يحتاج المفسّر إلى تقييم إلا هذه اللغة الأصغر:</p>
+<pre><code class="language-text">e ::= x | fun x -&gt; e | e1 e2
+</code></pre>
+<p>وبعد تبسيط شجرة الصياغة المجرّدة، يحين وقت تقييمها. و<em>التقييم (Evaluation)</em> عملية مواصلة تبسيط الشجرة حتى تصير قيمة فحسب. وبعبارة أخرى، التقييم تنفيذ للدلالات الديناميكية للغة. تذكّر أن <em>القيمة (value)</em> تعبير لم يبقَ فيه أي حساب يجب إجراؤه. ونفكر عادةً في القيم كمجموعة جزئية نحوية صارمة من التعبيرات، وإن كنا سنرى لاحقًا بعض الاستثناءات على ذلك.</p>
+<p><strong>التقييم بالخطوة الكبيرة مقابل الخطوة الصغيرة.</strong> سنعرّف التقييم بعلاقة رياضية، كما فعلنا مع فحص الأنواع. بل سنعرّف ثلاث علاقات للتقييم:</p>
+<ul>
+<li>الأولى، <code>--&gt;</code>، ستمثل كيفية أخذ البرنامج خطوة تنفيذ واحدة.</li>
+<li>والثانية، <code>--&gt;*</code>، هي الإغلاق الانعكاسي التعدي لـ <code>--&gt;</code>، وتمثل كيفية أخذ البرنامج خطوات تنفيذ متعددة.</li>
+<li>والثالثة، <code>==&gt;</code>، تجرّد من كل تفاصيل الخطوات المفردة وتمثل كيفية اختزال البرنامج مباشرةً إلى قيمة.</li>
+</ul>
+<p>والأسلوب الذي نعرّف به التقييم بهذه العلاقات يُعرف بـ <em>الدلالات التشغيلية (operational semantics)</em>، لأننا نستخدم العلاقات لتحديد كيفية «تشغيل» الآلة وهي تقيّم البرامج. وهناك أسلوبان رئيسيان آخران، يُعرفان بـ <em>الدلالات الإشارية (denotational semantics)</em> و<em>الدلالات المسلّمية (axiomatic semantics)</em>، لكننا لن نغطيهما هنا.</p>
+<p>ويمكننا تقسيم الدلالات التشغيلية كذلك إلى أسلوبين فرعيين لتعريف التقييم: دلالات <em>الخطوة الصغيرة (small step)</em> مقابل <em>الخطوة الكبيرة (big step)</em>. فالعلاقة الأولى، <code>--&gt;</code>، بأسلوب الخطوة الصغيرة، لأنها تمثل التنفيذ بدلالة خطوات صغيرة فردية. والثالثة، <code>==&gt;</code>، بأسلوب الخطوة الكبيرة، لأنها تمثل التنفيذ بدلالة خطوة كبيرة من تعبير مباشرةً إلى قيمة. أما العلاقة الثانية، <code>--&gt;*</code>، فتمزج الاثنين. بل إن رغبتنا أن تردم الفجوة بالمعنى التالي:</p>
+<p><strong>الربط بين الخطوات الكبيرة والصغيرة:</strong> لجميع التعبيرات <code>e</code> والقيم <code>v</code>، تصح <code>e --&gt;* v</code> إذا وفقط إذا صحت <code>e ==&gt; v</code>.</p>
+<p>وبعبارة أخرى، إذا أخذ تعبير خطوات صغيرة كثيرة ووصل في النهاية إلى قيمة، مثل <code>e --&gt; e1 --&gt; .... --&gt; en --&gt; v</code>، فينبغي أن تصح <code>e ==&gt; v</code>. فعلاقة الخطوة الكبيرة تجريد أمين لعلاقة الخطوة الصغيرة: فهي تنسى كل الخطوات الوسيطة فحسب.</p>
+<p>ولماذا أسلوبان مختلفان، كبير وصغير؟ كل منهما أسهل قليلًا في الاستخدام من الآخر في ظروف معينة، لذا يفيد امتلاك الاثنين في عدّة أدواتنا. وتميل دلالات الخطوة الصغيرة إلى سهولة العمل بها عند نمذجة ميزات لغوية معقدة، لكن دلالات الخطوة الكبيرة تميل إلى الشبه أكثر بكيفية تنفيذ المفسّر فعلًا.</p>
+<p><strong>نموذج الاستبدال مقابل نموذج البيئة.</strong> ثمة خيار آخر علينا اتخاذه، وهو متعامد مع اختيار الخطوة الصغيرة مقابل الكبيرة. فهناك طريقتان مختلفتان للتفكير في تنفيذ المتغيرات:</p>
+<ul>
+<li>يمكننا أن نستبدل متلهفين قيمة المتغير باسمه في كل نطاق ذلك الاسم، بمجرد أن نجد ارتباطًا للمتغير.</li>
+<li>ويمكننا أن نسجل الاستبدال كسولًا في قاموس، يُسمى عادةً <em>بيئة (environment)</em> عند استخدامه لهذا الغرض، وأن نبحث عن قيمة المتغير في تلك البيئة كلما وجدنا اسمه مذكورًا في نطاق.</li>
+</ul>
+<p>وتؤدي هاتان الفكرتان إلى <em>نموذج الاستبدال (substitution model)</em> للتقييم و<em>نموذج البيئة (environment model)</em> للتقييم. وكما في الخطوة الصغيرة مقابل الكبيرة، يميل نموذج الاستبدال إلى الأناقة الرياضية، بينما يميل نموذج البيئة إلى الشبه أكثر بكيفية تنفيذ المفسّر.</p>
+<p>وستساعد أمثلة في استيعاب كل هذا. ولننظر بعد ذلك في كيفية تعريف العلاقات لـ SimPL.</p>
+<h3 id="1031-تقييم-simpl-في-نموذج-الاستبدال">10.3.1. تقييم SimPL في نموذج الاستبدال <span class="content-anchor" id="evaluating-simpl-in-the-substitution-model"></span></h3>
+<p>لنبدأ بتعريف دلالات نموذج استبدال بالخطوة الصغيرة لـ SimPL. أي أننا سنعرّف علاقة <code>--&gt;</code> تمثل كيفية أخذ التعبير خطوة واحدة في كل مرة، وسننفّذ المتغيرات باستبدال القيم بالأسماء.</p>
+<p>تذكّر صياغة SimPL:</p>
+<pre><code class="language-text">e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+
+bop ::= + | * | &lt;=
+</code></pre>
+<p>سنحتاج إلى معرفة متى ينتهي تقييم التعبيرات، أي متى تُعتبر قيمًا. وبالنسبة إلى SimPL، سنعرّف القيم كما يلي:</p>
+<pre><code class="language-text">v ::= i | b
+</code></pre>
+<p>أي أن القيمة إما ثابت صحيح وإما ثابت منطقي.</p>
+<p>وسنعرّف الآن، لكل شكل نحوي يمكن أن يكون عليه تعبير SimPL، بعض <em>قواعد التقييم (evaluation rules)</em> التي تشكّل تعريفًا استقرائيًا لعلاقة <code>--&gt;</code>. وسيكون لكل قاعدة الشكل <code>e --&gt; e'</code>، بمعنى أن <code>e</code> يأخذ خطوة واحدة إلى <code>e'</code>.</p>
+<p>ورغم أن المتغيرات ترد أولًا في BNF، فلنتجاوزها الآن ونعد إليها بعد جميع الأشكال الأخرى.</p>
+<p><strong>الثوابت.</strong> الثوابت الصحيحة والمنطقية قيم بالفعل، فلا يمكنها أخذ خطوة. وقد يبدو ذلك مفاجئًا في البداية، لكن تذكّر أننا نعتزم تعريف علاقة <code>--&gt;*</code> أيضًا تسمح بصفر خطوة أو أكثر؛ أما علاقة <code>--&gt;</code> فتمثل <em>خطوة واحدة بالضبط</em>.</p>
+<p>وتقنيًا، كل ما علينا فعله لتحقيق ذلك ألا نكتب أي قواعد بالشكل <code>i --&gt; e</code> أو <code>b --&gt; e</code> لأي <code>e</code>. لذا فقد انتهينا بالفعل في الواقع: فلم نعرّف أي قواعد بعد.</p>
+<p>ولنستحدث ترميزًا آخر يُكتب <code>e -/-&gt;</code>، مقصودًا به أن يبدو كسهم يقطعه خط مائل، ليعني «لا يوجد <code>e'</code> بحيث <code>e --&gt; e'</code>». وباستخدامه يمكننا كتابة:</p>
+<ul>
+<li><code>i -/-&gt;</code></li>
+<li><code>b -/-&gt;</code></li>
+</ul>
+<p>ورغم أنهما ليسا جزءًا من تعريف <code>--&gt;</code> بالمعنى الدقيق، فالقضيتان تساعداننا على تذكر أن الثوابت لا تأخذ خطوات. بل يمكننا بوجه أعم أن نكتب: «لكل <code>v</code>، تصح <code>v -/-&gt;</code>».</p>
+<p><strong>العوامل الثنائية.</strong> لتطبيق عامل ثنائي <code>e1 bop e2</code> تعبيران فرعيان: <code>e1</code> و<code>e2</code>. ويؤدي ذلك إلى بعض الخيارات حول كيفية تقييم التعبير:</p>
+<ul>
+<li>يمكننا تقييم الطرف الأيسر <code>e1</code> أولًا، ثم الطرف الأيمن <code>e2</code>، ثم تطبيق العامل.</li>
+<li>أو يمكننا البدء بالطرف الأيمن ثم الأيسر.</li>
+<li>أو يمكننا تداخل التقييم، بأخذ خطوة في <code>e1</code>، ثم خطوة في <code>e2</code>، ثم خطوة في <code>e1</code>، ثم في <code>e2</code>، وهكذا.</li>
+<li>أو ربما كان العامل <em>قاصرًا (short-circuit)</em>، وفي هذه الحالة قد لا يُقيَّم أحد التعبيرين الفرعيين أبدًا.</li>
+</ul>
+<p>وثمة استراتيجيات أخرى كثيرة قد تستطيع اختراعها.</p>
+<p>ويتبين أن تعريف لغة OCaml يقول إنه (بالنسبة إلى العوامل غير القاصرة) لا يُحدَّد أي الطرفين يُقيَّم أولًا. ويصادف أن التنفيذ الحالي يقيّم الطرف الأيمن أولًا، لكن ليس ذلك ما ينبغي لأي مبرمج أن يعتمد عليه.</p>
+<p>وسيتوقع كثيرون التقييم من اليسار إلى اليمين، فلنعرّف علاقة <code>--&gt;</code> وفق ذلك. نبدأ بالقول إن الطرف الأيسر يمكنه أخذ خطوة:</p>
+<pre><code class="language-text">e1 bop e2 --&gt; e1&#x27; bop e2
+  if e1 --&gt; e1&#x27;
+</code></pre>
+<p>ومثل نظام الأنواع لـ SimPL، تقول هذه القاعدة إن تعبيرين في علاقة <code>--&gt;</code> إذا كان تعبيران فرعيان آخران (أبسط) في علاقة <code>--&gt;</code> أيضًا. وهذا ما يجعلها تعريفًا استقرائيًا.</p>
+<p>وإذا انتهى تقييم الطرف الأيسر، جاز للطرف الأيمن أن يبدأ أخذ الخطوات:</p>
+<pre><code class="language-text">v1 bop e2 --&gt; v1 bop e2&#x27;
+  if e2 --&gt; e2&#x27;
+</code></pre>
+<p>وأخيرًا، عندما يصل الطرفان إلى قيمة، يمكن تطبيق العامل الثنائي:</p>
+<pre><code class="language-text">v1 bop v2 --&gt; v
+  if v is the result of primitive operation v1 bop v2
+</code></pre>
+<p>ونعني بـ<em>العملية الأولية (primitive operation)</em> وجود تصور أساسي لما يعنيه <code>bop</code> فعلًا. فمثلًا، المحرف <code>+</code> مجرد قطعة صياغة، لكننا معتادون على فهم معناه كعملية جمع حسابية. والعملية الأولية عادةً شيء ينفّذه العتاد (مثل رمز عملية <code>ADD</code>)، أو مكتبة وقت التشغيل (مثل دالة <code>pow</code>).</p>
+<p>وبالنسبة إلى SimPL، لنوكل جميع العمليات الأولية إلى OCaml. أي أن عامل <code>+</code> في SimPL سيكون هو نفسه عامل <code>+</code> في OCaml، وكذلك <code>*</code> و<code>&lt;=</code>.</p>
+<p>وإليك مثالًا على استخدام قاعدة العامل الثنائي:</p>
+<pre><code class="language-text">    (3*1000) + ((1*100) + ((1*10) + 0))
+--&gt; 3000 + ((1*100) + ((1*10) + 0))
+--&gt; 3000 + (100 + ((1*10) + 0))
+--&gt; 3000 + (100 + (10 + 0))
+--&gt; 3000 + (100 + 10)
+--&gt; 3000 + 110
+--&gt; 3110
+</code></pre>
+<p><strong>تعبيرات if.</strong> كما في العوامل الثنائية، ثمة خيارات كثيرة لكيفية تقييم تعبيرات if الفرعية. ومع ذلك، سيتوقع معظم المبرمجين تقييم الشرط أولًا، ثم تقييم فرع واحد فقط، لأن معظم اللغات تعمل هكذا. فلنكتب قواعد التقييم لتلك الدلالات.</p>
+<p>أولًا، يُقيَّم الشرط إلى قيمة:</p>
+<pre><code class="language-text">if e1 then e2 else e3 --&gt; if e1&#x27; then e2 else e3
+  if e1 --&gt; e1&#x27;
+</code></pre>
+<p>ثم، بناءً على الشرط، يُبسَّط تعبير if إلى أحد الفرعين فحسب:</p>
+<pre><code class="language-text">if true then e2 else e3 --&gt; e2
+
+if false then e2 else e3 --&gt; e3
+</code></pre>
+<p><strong>تعبيرات let.</strong> لنجعل تعبيرات let في SimPL تُقيَّم بالطريقة نفسها التي تُقيَّم بها تعبيرات let في OCaml: تعبير الارتباط أولًا، ثم الجسم.</p>
+<p>والقاعدة التي تأخذ خطوة في تعبير الارتباط هي:</p>
+<pre><code class="language-text">let x = e1 in e2 --&gt; let x = e1&#x27; in e2
+  if e1 --&gt; e1&#x27;
+</code></pre>
+<p>ثم، إذا وصل تعبير الارتباط إلى قيمة، نريد استبدال تلك القيمة باسم المتغير في تعبير الجسم:</p>
+<pre><code class="language-text">let x = v1 in e2 --&gt; e2 with v1 substituted for x
+</code></pre>
+<p>فمثلًا، ينبغي أن يأخذ <code>let x = 42 in x + 1</code> خطوة إلى <code>42 + 1</code>، لأن استبدال <code>42</code> بـ <code>x</code> في <code>x + 1</code> يعطي <code>42 + 1</code>.</p>
+<p>وبالطبع، الطرف الأيمن من تلك القاعدة ليس تعبيرًا حقًا. إنه يعطي حدسًا فحسب عن التعبير الذي نريده فعلًا. ونحتاج إلى تعريف صوري لمعنى «الاستبدال». ويتبين أنه دقيق إلى حد ما. لذا، بدلًا من الانحراف به الآن، لنفترض ترميزًا جديدًا: <code>e'{e/x}</code>، ويعني «التعبير <code>e'</code> مع استبدال <code>e</code> بـ <code>x</code>». وسنعود إلى ذلك الترميز في القسم التالي ونعطيه تعريفًا دقيقًا.</p>
+<p>وإلى ذلك الحين، يمكننا إضافة هذه القاعدة:</p>
+<pre><code class="language-text">let x = v1 in e2 --&gt; e2{v1/x}
+</code></pre>
+<p><strong>المتغيرات.</strong> لاحظ كيف تزيل قاعدة تعبير let ظهور متغير في تعبير الجسم: فيُستبدل اسم المتغير بالقيمة التي ينبغي أن تكون له. لذا ينبغي <em>ألا</em> نصل أبدًا إلى محاولة أخذ خطوة في اسم متغير—بافتراض أن البرنامج كان جيد الأنواع.</p>
+<p>تأمل OCaml: إذا حاولنا تقييم تعبير فيه متغير غير مرتبط، فماذا يحدث؟ لنتحقق في utop:</p>
+<pre><code class="language-text"># x;;
+Error: Unbound value x
+
+# let y = x in y;;
+Error: Unbound value x
+</code></pre>
+<p>من الخطأ—وهو خطأ في فحص الأنواع—أن يحتوي تعبير على متغير غير مرتبط. وعليه فلن يصل أي تعبير جيد الأنواع <code>e</code> أبدًا إلى محاولة أخذ خطوة في اسم متغير.</p>
+<p>ولذا لا نحتاج، كما في الثوابت، إلى إضافة أي قواعد للمتغيرات. لكن للوضوح يمكننا أن نقرر أن <code>x -/-&gt;</code>.</p>
+<h3 id="1032-تنفيذ-علاقة-الخطوة-الواحدة">10.3.2. تنفيذ علاقة الخطوة الواحدة <span class="content-anchor" id="implementing-the-single-step-relation"></span></h3>
+<p>من السهل تحويل التعريفات أعلاه لـ <code>--&gt;</code> إلى دالة OCaml تطابق الأنماط على عقد شجرة الصياغة المجرّدة. وفي الشيفرة أدناه، تذكّر أننا لم ننتهِ بعد من تعريف الاستبدال (أي <code>subst</code>)؛ وسنعود إلى ذلك في القسم التالي.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(** [is_value e] is whether [e] is a value. *)</span>
+<span class="hljs-keyword">let</span> is_value : expr -&gt; <span class="hljs-built_in">bool</span> = <span class="hljs-keyword">function</span>
+  | <span class="hljs-type">Int</span> _ | <span class="hljs-type">Bool</span> _ -&gt; <span class="hljs-literal">true</span>
+  | <span class="hljs-type">Var</span> _ | <span class="hljs-type">Let</span> _ | <span class="hljs-type">Binop</span> _ | <span class="hljs-type">If</span> _ -&gt; <span class="hljs-literal">false</span>
+<span class="hljs-comment">(** [subst e v x] is [e{v/x}]. *)</span>
+<span class="hljs-keyword">let</span> subst _ _ _ =
+  failwith <span class="hljs-string">&quot;See next section&quot;</span>
+<span class="hljs-comment">(** [step] is the [--&gt;] relation, that is, a single step of
+    evaluation. *)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> step : expr -&gt; expr = <span class="hljs-keyword">function</span>
+  | <span class="hljs-type">Int</span> _ | <span class="hljs-type">Bool</span> _ -&gt; failwith <span class="hljs-string">&quot;Does not step&quot;</span>
+  | <span class="hljs-type">Var</span> _ -&gt; failwith <span class="hljs-string">&quot;Unbound variable&quot;</span>
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) <span class="hljs-keyword">when</span> is_value e1 &amp;&amp; is_value e2 -&gt;
+    step_bop bop e1 e2
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) <span class="hljs-keyword">when</span> is_value e1 -&gt;
+    <span class="hljs-type">Binop</span> (bop, e1, step e2)
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) -&gt; <span class="hljs-type">Binop</span> (bop, step e1, e2)
+  | <span class="hljs-type">Let</span> (x, e1, e2) <span class="hljs-keyword">when</span> is_value e1 -&gt; subst e2 e1 x
+  | <span class="hljs-type">Let</span> (x, e1, e2) -&gt; <span class="hljs-type">Let</span> (x, step e1, e2)
+  | <span class="hljs-type">If</span> (<span class="hljs-type">Bool</span> <span class="hljs-literal">true</span>, e2, _) -&gt; e2
+  | <span class="hljs-type">If</span> (<span class="hljs-type">Bool</span> <span class="hljs-literal">false</span>, _, e3) -&gt; e3
+  | <span class="hljs-type">If</span> (<span class="hljs-type">Int</span> _, _, _) -&gt; failwith <span class="hljs-string">&quot;Guard of if must have type bool&quot;</span>
+  | <span class="hljs-type">If</span> (e1, e2, e3) -&gt; <span class="hljs-type">If</span> (step e1, e2, e3)
+<span class="hljs-comment">(** [step_bop bop v1 v2] implements the primitive operation
+    [v1 bop v2].  Requires: [v1] and [v2] are both values. *)</span>
+<span class="hljs-keyword">and</span> step_bop bop e1 e2 = <span class="hljs-keyword">match</span> bop, e1, e2 <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Add</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Int</span> (a + b)
+  | <span class="hljs-type">Mult</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Int</span> (a * b)
+  | <span class="hljs-type">Leq</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Bool</span> (a &lt;= b)
+  | _ -&gt; failwith <span class="hljs-string">&quot;Operator and operand type mismatch&quot;</span>
+</code></pre>
+<p>لم يكن في ذلك التنفيذ جديد علينا إلا الموضعان اللذان يُكتشف فيهما خطأ نوعي في وقت التشغيل، وهما تقييم <code>If (Int _, _, _)</code> والسطر الأخير الذي نكتشف فيه أن عاملًا ثنائيًا يُطبَّق على وسائط من النوع الخطأ. وسيضمن فحص الأنواع ألا يُرفع استثناء هنا قط، لكن تحليل OCaml لشمولية مطابقة الأنماط يجبرنا على كتابة فرع مع ذلك. علاوة على ذلك، لو تبيّن يومًا أن في فاحص الأنواع لدينا خطأ يجعل تطبيقات عوامل ثنائية سيئة الأنواع تُقيَّم، لساعدنا هذا الاستثناء على اكتشاف ما يسير على غير ما يرام.</p>
+<h3 id="1033-علاقة-الخطوات-المتعددة">10.3.3. علاقة الخطوات المتعددة <span class="content-anchor" id="the-multistep-relation"></span></h3>
+<p>والآن بعد أن عرّفنا <code>--&gt;</code>، لم يبقَ في الحقيقة ما نفعله لتعريف <code>--&gt;*</code>. فهي مجرد الإغلاق الانعكاسي التعدي لـ <code>--&gt;</code>. وبعبارة أخرى، يمكن تعريفها بهاتين القاعدتين فحسب:</p>
+<pre><code class="language-text">e --&gt;* e
+
+e --&gt;* e&#x27;&#x27;
+  if e --&gt; e&#x27; and e&#x27; --&gt;* e&#x27;&#x27;
+</code></pre>
+<p>وبالطبع، ما نريده فعلًا عند تنفيذ مفسّر هو أخذ أكبر عدد ممكن من الخطوات حتى يصل التعبير إلى قيمة. أي أننا مهتمون بالعلاقة الجزئية <code>e --&gt;* v</code> التي يكون طرفها الأيمن ليس مجرد تعبير، بل قيمة. ويسهل تنفيذ ذلك:</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(** [eval_small e] is the [e --&gt;* v] relation.  That is,
+    keep applying [step] until a value is produced.  *)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval_small (e : expr) : expr =
+  <span class="hljs-keyword">if</span> is_value e <span class="hljs-keyword">then</span> e
+  <span class="hljs-keyword">else</span> e |&gt; step |&gt; eval_small
+</code></pre>
+<h3 id="1034-تعريف-علاقة-الخطوة-الكبيرة">10.3.4. تعريف علاقة الخطوة الكبيرة <span class="content-anchor" id="defining-the-big-step-relation"></span></h3>
+<p>تذكّر أن هدفنا من تعريف علاقة الخطوة الكبيرة <code>==&gt;</code> هو التأكد من توافقها مع علاقة الخطوات المتعددة <code>--&gt;*</code>.</p>
+<p>الثوابت سهلة، لأنها تصل بالخطوة الكبيرة إلى نفسها:</p>
+<pre><code class="language-text">i ==&gt; i
+
+b ==&gt; b
+</code></pre>
+<p>أما العوامل الثنائية فتصل بالخطوة الكبيرة عبر تعبيريها الفرعيين، ثم تطبّق العملية الأولية أيًا كانت:</p>
+<pre><code class="language-text">e1 bop e2 ==&gt; v
+  if e1 ==&gt; v1
+  and e2 ==&gt; v2
+  and v is the result of primitive operation v1 bop v2
+</code></pre>
+<p>وتصل تعبيرات if بالخطوة الكبيرة عبر الشرط، ثم عبر أحد الفرعين:</p>
+<pre><code class="language-text">if e1 then e2 else e3 ==&gt; v2
+  if e1 ==&gt; true
+  and e2 ==&gt; v2
+
+if e1 then e2 else e3 ==&gt; v3
+  if e1 ==&gt; false
+  and e3 ==&gt; v3
+</code></pre>
+<p>وتصل تعبيرات let بالخطوة الكبيرة عبر تعبير الارتباط، وتجري استبدالًا، ثم تصل بالخطوة الكبيرة عبر نتيجة الاستبدال:</p>
+<pre><code class="language-text">let x = e1 in e2 ==&gt; v2
+  if e1 ==&gt; v1
+  and e2{v1/x} ==&gt; v2
+</code></pre>
+<p>وأخيرًا، لا تأخذ المتغيرات خطوة كبيرة، للسبب نفسه الذي في دلالات الخطوة الصغيرة—فلن يصل برنامج جيد الأنواع أبدًا إلى محاولة تقييم اسم متغير:</p>
+<pre><code class="language-text">x =/=&gt;
+</code></pre>
+<h3 id="1035-تنفيذ-علاقة-الخطوة-الكبيرة">10.3.5. تنفيذ علاقة الخطوة الكبيرة <span class="content-anchor" id="implementing-the-big-step-relation"></span></h3>
+<p>علاقة التقييم بالخطوة الكبيرة أسهل في التنفيذ من علاقة الخطوة الصغيرة، إن كان ثمة فرق. فهي تُجري تعاودًا على الشجرة فحسب، وتقيّم التعبيرات الفرعية كما يقتضي تعريف <code>==&gt;</code>:</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(** [eval_big e] is the [e ==&gt; v] relation. *)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval_big (e : expr) : expr = <span class="hljs-keyword">match</span> e <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Int</span> _ | <span class="hljs-type">Bool</span> _ -&gt; e
+  | <span class="hljs-type">Var</span> _ -&gt; failwith <span class="hljs-string">&quot;Unbound variable&quot;</span>
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) -&gt; eval_bop bop e1 e2
+  | <span class="hljs-type">Let</span> (x, e1, e2) -&gt; subst e2 (eval_big e1) x |&gt; eval_big
+  | <span class="hljs-type">If</span> (e1, e2, e3) -&gt; eval_if e1 e2 e3
+<span class="hljs-comment">(** [eval_bop bop e1 e2] is the [e] such that [e1 bop e2 ==&gt; e]. *)</span>
+<span class="hljs-keyword">and</span> eval_bop bop e1 e2 = <span class="hljs-keyword">match</span> bop, eval_big e1, eval_big e2 <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Add</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Int</span> (a + b)
+  | <span class="hljs-type">Mult</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Int</span> (a * b)
+  | <span class="hljs-type">Leq</span>, <span class="hljs-type">Int</span> a, <span class="hljs-type">Int</span> b -&gt; <span class="hljs-type">Bool</span> (a &lt;= b)
+  | _ -&gt; failwith <span class="hljs-string">&quot;Operator and operand type mismatch&quot;</span>
+<span class="hljs-comment">(** [eval_if e1 e2 e3] is the [e] such that [if e1 then e2 else e3 ==&gt; e]. *)</span>
+<span class="hljs-keyword">and</span> eval_if e1 e2 e3 = <span class="hljs-keyword">match</span> eval_big e1 <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Bool</span> <span class="hljs-literal">true</span> -&gt; eval_big e2
+  | <span class="hljs-type">Bool</span> <span class="hljs-literal">false</span> -&gt; eval_big e3
+  | _ -&gt; failwith <span class="hljs-string">&quot;Guard of if must have type bool&quot;</span>
+</code></pre>
+<p>ومن الممارسات الهندسية الجيدة استخلاص دوال لكل قطعة من قطع الصياغة، كما فعلنا أعلاه، إلا إذا كان التنفيذ يمكن أن يتسع في سطر واحد فقط في مطابقة الأنماط الرئيسية داخل <code>eval_big</code>.</p>
+<h3 id="1036-الاستبدال-في-simpl">10.3.6. الاستبدال في SimPL <span class="content-anchor" id="substitution-in-simpl"></span></h3>
+<p>افترضنا في القسم السابق ترميزًا جديدًا هو <code>e'{e/x}</code>، بمعنى «التعبير <code>e'</code> مع استبدال <code>e</code> بـ <code>x</code>». والحدس أنه في أي موضع يظهر فيه <code>x</code> في <code>e'</code>، ينبغي أن نستبدل <code>x</code> بـ <code>e</code>.</p>
+<p>ولنعطِ تعريفًا دقيقًا للاستبدال في SimPL. وهو ليس بالغ الصعوبة في معظمه.</p>
+<p><strong>الثوابت</strong> لا تظهر فيها متغيرات (فمثلًا لا يمكن أن يوجد <code>x</code> نحويًا في <code>42</code>)، لذا يتركها الاستبدال دون تغيير:</p>
+<pre><code class="language-text">i{e/x} = i
+b{e/x} = b
+</code></pre>
+<p>وبالنسبة إلى <strong>العوامل الثنائية وتعبيرات if</strong>، كل ما يحتاج الاستبدال إلى فعله هو التعاود داخل التعبيرات الفرعية:</p>
+<pre><code class="language-text">(e1 bop e2){e/x} = e1{e/x} bop e2{e/x}
+(if e1 then e2 else e3){e/x} = if e1{e/x} then e2{e/x} else e3{e/x}
+</code></pre>
+<p>أما <strong>المتغيرات</strong> فتبدأ في أن تصير أدق قليلًا. وثمة احتمالان: إما أن نصادف المتغير <code>x</code>، وهو ما يعني أننا ينبغي أن نجري الاستبدال، وإما أن نصادف متغيرًا آخر باسم مختلف، لنقل <code>y</code>، وفي هذه الحالة ينبغي ألا نجري الاستبدال:</p>
+<pre><code class="language-text">x{e/x} = e
+y{e/x} = y
+</code></pre>
+<p>ومن المهم ملاحظة الحالة الأولى من هاتين، <code>x{e/x} = e</code>: فهي موضع إجراء عملية الاستبدال أخيرًا. فمثلًا، لنفترض أننا نحاول معرفة نتيجة <code>(x + 42){1/x}</code>. وباستخدام التعريفات أعلاه،</p>
+<pre><code class="language-text">  (x + 42){1/x}
+= x{1/x} + 42{1/x}   by the bop case
+= 1 + 42{1/x}        by the first variable case
+= 1 + 42             by the integer case
+</code></pre>
+<p>لاحظ أننا لا نعرّف علاقة <code>--&gt;</code> الآن. أي أن أيا من هذه التساويات لا يمثل خطوة تقييم. ولتجسيد ذلك، لنفترض أننا نقيّم <code>let x = 1 in x + 42</code>:</p>
+<pre><code class="language-text">    let x = 1 in x + 42
+--&gt; (x + 42){1/x}
+  = 1 + 42
+--&gt; 43
+</code></pre>
+<p>ثمة خطوتان مفردتان هنا، واحدة لـ <code>let</code> والأخرى لـ <code>+</code>. لكننا نعتبر الاستبدال يحدث دفعة واحدة، كجزء من الخطوة التي تأخذها <code>let</code>. ولهذا نكتب <code>(x + 42){1/x} = 1 + 42</code>، لا <code>(x + 42){1/x} --&gt; 1 + 42</code>.</p>
+<p>وأخيرًا، لـ<strong>تعبيرات let</strong> حالتان أيضًا، حسب اسم المتغير المرتبط:</p>
+<pre><code class="language-text">(let x = e1 in e2){e/x}  =  let x = e1{e/x} in e2
+(let y = e1 in e2){e/x}  =  let y = e1{e/x} in e2{e/x}
+</code></pre>
+<p>تستبدل الحالتان معًا <code>e</code> بـ <code>x</code> داخل تعبير الارتباط <code>e1</code>. وذلك لضمان تقييم تعبيرات مثل <code>let x = 42 in let y = x in y</code> تقييمًا صحيحًا: إذ يجب أن يكون <code>x</code> في النطاق داخل الارتباط <code>y = x</code>، لذا علينا إجراء استبدال هناك بصرف النظر عن الاسم المرتبط.</p>
+<p>لكن الحالة الأولى لا تجري استبدالًا داخل <code>e2</code>، بينما الحالة الثانية تجريه. وذلك لكي <em>نتوقف</em> عن الاستبدال عندما نصل إلى اسم محجوب. تأمل <code>let x = 5 in let x = 6 in x</code>. نعلم أنه سيُقيَّم إلى <code>6</code> في OCaml بسبب الحجب. وإليك كيف سيُقيَّم بتعريفات SimPL لدينا:</p>
+<pre><code class="language-text">    let x = 5 in let x = 6 in x
+--&gt; (let x = 6 in x){5/x}
+  = let x = 6{5/x} in x      ***
+  = let x = 6 in x
+--&gt; x{6/x}
+  = 6
+</code></pre>
+<p>في السطر الموسوم بـ <code>***</code> أعلاه، توقفنا عن الاستبدال داخل تعبير الجسم، لأننا وصلنا إلى اسم متغير محجوب. ولو واصلنا داخل الجسم بدلًا من ذلك، لحصلنا على نتيجة مختلفة:</p>
+<pre><code class="language-text">    let x = 5 in let x = 6 in x
+--&gt; (let x = 6 in x){5/x}
+  = let x = 6{5/x} in x{5/x}      ***WRONG***
+  = let x = 6 in 5
+--&gt; 5{6/x}
+  = 5
+</code></pre>
+<p><strong>المثال 1:</strong></p>
+<pre><code class="language-text">let x = 2 in x + 1
+--&gt; (x + 1){2/x}
+  = 2 + 1
+--&gt; 3
+</code></pre>
+<p><strong>المثال 2:</strong></p>
+<pre><code class="language-text">    let x = 0 in (let x = 1 in x)
+--&gt; (let x = 1 in x){0/x}
+  = (let x = 1{0/x} in x)
+  = (let x = 1 in x)
+--&gt; x{1/x}
+  = 1
+</code></pre>
+<p><strong>المثال 3:</strong></p>
+<pre><code class="language-text">    let x = 0 in x + (let x = 1 in x)
+--&gt; (x + (let x = 1 in x)){0/x}
+  = x{0/x} + (let x = 1 in x){0/x}
+  = 0 + (let x = 1{0/x} in x)
+  = 0 + (let x = 1 in x)
+--&gt; 0 + x{1/x}
+  = 0 + 1
+--&gt; 1
+</code></pre>
+<h3 id="1037-تنفيذ-الاستبدال">10.3.7. تنفيذ الاستبدال <span class="content-anchor" id="implementing-substitution"></span></h3>
+<p>يسهل تحويل التعريفات أعلاه إلى شيفرة OCaml. ولاحظ أنه، رغم أننا نكتب <code>v</code> أدناه، فالدالة قادرة فعلًا على استبدال أي تعبير بمتغير، لا قيمة فقط. لكن المفسّر لن يستدعي هذه الدالة إلا على قيمة.</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(** [subst e v x] is [e] with [v] substituted for [x], that
+    is, [e{v/x}]. *)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> subst e v x = <span class="hljs-keyword">match</span> e <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Var</span> y -&gt; <span class="hljs-keyword">if</span> x = y <span class="hljs-keyword">then</span> v <span class="hljs-keyword">else</span> e
+  | <span class="hljs-type">Bool</span> _ -&gt; e
+  | <span class="hljs-type">Int</span> _ -&gt; e
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) -&gt; <span class="hljs-type">Binop</span> (bop, subst e1 v x, subst e2 v x)
+  | <span class="hljs-type">Let</span> (y, e1, e2) -&gt;
+    <span class="hljs-keyword">let</span> e1&#x27; = subst e1 v x <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> x = y
+    <span class="hljs-keyword">then</span> <span class="hljs-type">Let</span> (y, e1&#x27;, e2)
+    <span class="hljs-keyword">else</span> <span class="hljs-type">Let</span> (y, e1&#x27;, subst e2 v x)
+  | <span class="hljs-type">If</span> (e1, e2, e3) -&gt;
+    <span class="hljs-type">If</span> (subst e1 v x, subst e2 v x, subst e3 v x)
+</code></pre>
+<h3 id="1038-اكتمل-مفسر-simpl">10.3.8. اكتمل مفسّر SimPL <span class="content-anchor" id="the-simpl-interpreter-is-done"></span></h3>
+<p>أكملنا تطوير مفسّر SimPL. تذكّر أنه يمكن تنزيل المفسّر المكتمل هنا: <a href="https://cs3110.github.io/textbook/code/simpl.zip">simpl.zip</a>. وهو يتضمن بعض حالات الاختبار البدائية، وكذلك أهداف makefile ستجدها مفيدة.</p>
+<h3 id="1039-الاستبدال-المانع-للالتقاط">10.3.9. الاستبدال المانع للالتقاط <span class="content-anchor" id="capture-avoiding-substitution"></span></h3>
+<p>كان تعريف الاستبدال في SimPL دقيقًا قليلًا لكنه ليس معقدًا كثيرًا. غير أنه يتبين أن التعريف يصير أعقد عمومًا.</p>
+<p>لننظر في هذه اللغة الصغيرة:</p>
+<pre><code class="language-text">e ::= x | e1 e2 | fun x -&gt; e
+v ::= fun x -&gt; e
+x ::= &lt;identifiers&gt;
+</code></pre>
+<p>تُعرف هذه الصياغة أيضًا بـ <em>حساب لامبدا (lambda calculus)</em>. ولا يوجد فيها إلا ثلاثة أنواع من التعبيرات: المتغيرات، وتطبيق الدوال، والدوال المجهولة. والقيم الوحيدة فيها هي الدوال المجهولة. واللغة غير مصنّفة أنواع حتى. ومع ذلك، من أبرز خواصها أنها <em>شاملة حسابيًا (computationally universal)</em>: فهي قادرة على التعبير عن أي دالة قابلة للحساب. (ولمعرفة المزيد عن ذلك، اقرأ عن <em>فرضية تشيرش-تورينغ</em>.)</p>
+<p>وثمة طرق عدة لتعريف دلالات تقييم لحساب لامبدا. ولعل أبسط طريقة—وهي الأقرب إلى OCaml أيضًا—تستخدم القاعدة التالية:</p>
+<pre><code class="language-text">e1 e2 ==&gt; v
+  if e1 ==&gt; fun x -&gt; e
+  and e2 ==&gt; v2
+  and e{v2/x} ==&gt; v
+</code></pre>
+<p>هذه القاعدة هي القاعدة <em>الوحيدة</em> التي نحتاجها: فلا تلزم أي قواعد أخرى. وتُعرف هذه القاعدة أيضًا بدلالات <em>النداء بالقيمة (call by value)</em>، لأنها تشترط اختزال الوسائط إلى <em>قيم</em> قبل تطبيق الدالة. وإن بدا ذلك واضحًا، فذلك لأنك اعتدته من OCaml.</p>
+<p>لكن دلالات أخرى ممكنة بالتأكيد. فمثلًا، تستخدم Haskell صيغة تُسمى <em>النداء بالاسم (call by name)</em>، بقاعدة واحدة:</p>
+<pre><code class="language-text">e1 e2 ==&gt; v
+  if e1 ==&gt; fun x -&gt; e
+  and e{e2/x} ==&gt; v
+</code></pre>
+<p>وفي النداء بالاسم، لا يلزم اختزال <code>e2</code> إلى قيمة؛ وقد يؤدي ذلك إلى كفاءة أكبر إذا لم تكن هناك حاجة إلى قيمة <code>e2</code> أبدًا.</p>
+<p>والآن نحتاج إلى تعريف عملية الاستبدال لحساب لامبدا. ونريد تعريفًا يعمل مع النداء بالاسم أو النداء بالقيمة معًا. ومستلهمين تعريفنا لـ SimPL، إليك بداية تعريف:</p>
+<pre><code class="language-text">x{e/x} = e
+y{e/x} = y
+(e1 e2){e/x} = e1{e/x} e2{e/x}
+</code></pre>
+<p>السطران الأولان هما بالضبط كيفية تعريفنا استبدال المتغيرات في SimPL. أما السطر التالي فيشبه كيفية تعريفنا استبدال العوامل الثنائية؛ فنحن نتعاود داخل التعبيرات الفرعية فحسب.</p>
+<p>وماذا عن الاستبدال داخل دالة؟ في SimPL توقفنا عن الاستبدال عندما وصلنا إلى متغير مرتبط بالاسم نفسه؛ وإلا واصلنا. وفي حساب لامبدا تُصاغ تلك الفكرة كما يلي:</p>
+<pre><code class="language-text">(fun x -&gt; e&#x27;){e/x} = fun x -&gt; e&#x27;
+(fun y -&gt; e&#x27;){e/x} = fun y -&gt; e&#x27;{e/x}
+</code></pre>
+<p>لعلها مفاجأة أن ذلك التعريف غير صحيح. والسبب: أنه يخالف مبدأ عدم اكتراث الأسماء (Principle of Name Irrelevance). لنفترض أننا نحاول هذا الاستبدال:</p>
+<pre><code class="language-text">(fun z -&gt; x){z/x}
+</code></pre>
+<p>ستكون النتيجة:</p>
+<pre><code class="language-text">  fun z -&gt; x{z/x}
+= fun z -&gt; z
+</code></pre>
+<p>وإذا بدالة <em>لم تكن</em> دالة الهوية تصير فجأة دالة الهوية. بينما لو حاولنا هذا الاستبدال:</p>
+<pre><code class="language-text">(fun y -&gt; x){z/x}
+</code></pre>
+<p>ستكون النتيجة:</p>
+<pre><code class="language-text">  fun y -&gt; x{z/x}
+= fun y -&gt; z
+</code></pre>
+<p>وهي ليست دالة الهوية. فتعريفنا للاستبدال داخل الدوال المجهولة غير صحيح، لأنه <em>يلتقط (captures)</em> المتغيرات. فقد يُلتقط اسم متغير يُستبدل داخل دالة مجهولة بالخطأ باسم وسيطة الدالة.</p>
+<p>لاحظ أننا لم نواجه هذه المشكلة قط في SimPL، جزئيًا لأنها كانت مصنّفة الأنواع. فالدالة <code>fun y -&gt; z</code> إذا طُبّقت على أي وسيطة فلن تعيد إلا <code>z</code>، وهو متغير غير مرتبط. لكن حساب لامبدا غير مصنّف الأنواع، فلا يمكننا الاعتماد على الأنواع هنا لاستبعاد ذلك الاحتمال.</p>
+<p>فيصير السؤال: كيف نعرّف الاستبدال بحيث يعطي الجواب الصحيح دون التقاط المتغيرات؟ ويُسمى الجواب <em>الاستبدال المانع للالتقاط (capture-avoiding substitution)</em>، وقد أفلت تعريفه الصحيح من الرياضيين قرونًا.</p>
+<p>والتعريف الصحيح كما يلي:</p>
+<pre><code class="language-text">(fun x -&gt; e&#x27;){e/x} = fun x -&gt; e&#x27;
+(fun y -&gt; e&#x27;){e/x} = fun y -&gt; e&#x27;{e/x}  if y is not in FV(e)
+</code></pre>
+<p>حيث <code>FV(e)</code> تعني «المتغيرات الحرة (free variables)» في <code>e</code>، أي المتغيرات غير المرتبطة فيه، وهي معرَّفة كما يلي:</p>
+<pre><code class="language-text">FV(x) = {x}
+FV(e1 e2) = FV(e1) + FV(e2)
+FV(fun x -&gt; e) = FV(e) - {x}
+</code></pre>
+<p>و<code>+</code> تعني اتحاد المجموعات، و<code>-</code> تعني فرق المجموعات.</p>
+<p>ويمنع ذلك التعريف حدوث الاستبدال <code>(fun z -&gt; x){z/x}</code>، لأن <code>z</code> في <code>FV(z)</code>.</p>
+<p>وللأسف، بسبب الشرط الجانبي <code>y is not in FV(e)</code>، صارت عملية الاستبدال <em>جزئية</em> الآن: فهناك أوقات، مثل المثال الذي قدمناه للتو، لا يمكن تطبيقها فيها.</p>
+<p>ويمكن حل تلك المشكلة بتغيير أسماء المتغيرات: فإذا اكتشفنا أننا واجهنا حالة جزئية، أمكننا تغيير اسم وسيطة الدالة. فمثلًا، عند مصادفة <code>(fun z -&gt; x){z/x}</code>، يمكن استبدال وسيطة الدالة باسم جديد <code>w</code> لا يظهر في أي موضع آخر، فنحصل على <code>(fun w -&gt; x){z/x}</code>. (وإذا ظهر <code>z</code> في أي موضع من الجسم، فسيُستبدل بـ <code>w</code> أيضًا.) وهذا <em>إحلال (replacement)</em>، لا استبدال: ففي كل موضع نرى فيه <code>z</code> على الإطلاق، نستبدله بـ <code>w</code>. ثم يمكن للاستبدال أن يمضي ويعطي <code>fun w -&gt; z</code> على نحو صحيح.</p>
+<p>والجزء الدقيق في ذلك هو كيفية اختيار اسم جديد لا يظهر في أي موضع آخر، أي كيفية اختيار اسم <em>طازج (fresh)</em>. وإليك ثلاث استراتيجيات:</p>
+<p>اختر اسم متغير جديدًا، وتحقّق مما إذا كان طازجًا أم لا، وإن لم يكن، أعد المحاولة حتى تنجح. فمثلًا، إذا كنت تحاول استبدال <code>z</code>، فقد تجرب أولًا <code>z'</code>، ثم <code>z''</code>، وهكذا.</p>
+<p>عزّز علاقة التقييم بالاحتفاظ بتيار (أي قائمة لا نهائية) من أسماء المتغيرات غير المستخدمة. وفي كل مرة تحتاج اسمًا جديدًا، خذ رأس التيار. لكن عليك الحذر واستخدام ذيل التيار في كل مرة بعد ذلك. ولضمان أنها غير مستخدمة، خصّص بعض أسماء المتغيرات لاستخدام المفسّر وحده، واجعلها غير مشروعة كأسماء متغيرات يختارها المبرمج. فمثلًا، قد تقرر ألا تبدأ أسماء متغيرات المبرمج أبدًا بالمحرف <code>$</code>، ثم يكون لديك تيار \`\` من الأسماء الطازجة.</p>
+<p>استخدم عدّادًا أمريًا لمحاكاة التيار من الاستراتيجية السابقة. فمثلًا، الدالة التالية مضمونة بإعادة اسم متغير طازج في كل مرة تُستدعى فيها:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> gensym =
+  <span class="hljs-keyword">let</span> counter = <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">fun</span> <span class="hljs-literal">()</span> -&gt; incr counter; <span class="hljs-string">&quot;$x&quot;</span> ^ string_of_int !counter
+</code></pre>
+<p>والاسم <code>gensym</code> تقليدي لهذا النوع من الدوال. وهو يأتي من LISP، ويظهر في جميع تنفيذات المصرّفات. ويعني توليد رمز طازج.</p>
+<p>وهناك تنفيذ كامل لمفسّر حساب لامبدا، بما في ذلك الاستبدال المانع للالتقاط، يمكنك تنزيله: <a href="https://cs3110.github.io/textbook/code/lambda-subst.zip">lambda-subst.zip</a>. ويستخدم استراتيجية <code>gensym</code> أعلاه لتوليد أسماء طازجة. وفيه تعريف باسم <code>strategy</code> في <code>main.ml</code> يمكنك استخدامه للتنقل بين النداء بالقيمة والنداء بالاسم.</p>
+<h3 id="10310-core-ocaml">10.3.10. Core OCaml <span class="content-anchor" id="core-ocaml"></span></h3>
+<p>ولنرتقي الآن من SimPL وحساب لامبدا إلى لغة أكبر نسميها <em>Core OCaml</em>. وإليك صياغتها في BNF:</p>
+<pre><code class="language-text">e ::= x | e1 e2 | fun x -&gt; e
+    | i | b | e1 bop e2
+    | (e1, e2) | fst e | snd e
+    | Left e | Right e
+    | match e with Left x1 -&gt; e1 | Right x2 -&gt; e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+
+bop ::= + | - | * | &lt;=
+
+x ::= &lt;identifiers&gt;
+
+i ::= &lt;integers&gt;
+
+b ::= true | false
+
+v ::= fun x -&gt; e | i | b | (v1, v2) | Left v | Right v
+</code></pre>
+<p>العوامل الثنائية التي حددناها في <code>bop</code> مقصود بها أن تكون تمثيلية لا شاملة. ويمكننا إضافة <code>&lt;</code> و<code>=</code> وغيرهما.</p>
+<p>ولإبقاء الأزواج بسيطة في هذا النموذج النووي، نمثلها بمكوّنين اثنين فقط (أي أنها أزواج). ويمكن برمجة زوج أطول بأزواج متداخلة. فمثلًا، يمكن أن يكون <code>(1, 2, 3)</code> في OCaml هو <code>(1, (2, 3))</code> في هذه اللغة النووية.</p>
+<p>وكذلك، لإبقاء الأنواع المتغايرة بسيطة في هذا النموذج النووي، نمثلها بمنشئين اثنين فقط نسميهما <code>Left</code> و<code>Right</code>. ويمكن برمجة نوع متغاير بمنشئات أكثر بتطبيقات متداخلة لذلك المنشئين. وبما أنه لدينا منشئان فقط، فتحتاج تعبيرات match إلى فرعين فقط. ومن الاحتياطات عند قراءة BNF أعلاه أن ورود <code>|</code> في تعبير match قبيل المنشئ <code>Right</code> مباشرةً يدل على صياغة، لا على صياغة فوقية.</p>
+<p>وثمة بعض البنى المهمة في OCaml محذوفة من هذه اللغة النووية، منها الدوال التعاودية والاستثناءات والقابلية للتغيير والوحدات. والأنواع مفقودة أيضًا؛ فـ Core OCaml ليس فيها أي فحص للأنواع. ومع ذلك، فيها ما يكفي لإبقائنا مستمتعين.</p>
+<h3 id="10311-تقييم-core-ocaml-في-نموذج-الاستبدال">10.3.11. تقييم Core OCaml في نموذج الاستبدال <span class="content-anchor" id="evaluating-core-ocaml-in-the-substitution-model"></span></h3>
+<p>لنعرّف علاقتي الخطوة الصغيرة والخطوة الكبيرة لـ Core OCaml. ولنكن صادقين: لن يكون هناك كثير مما يفاجئ في هذه المرحلة؛ فقد رأينا كل شيء تقريبًا في SimPL وفي حساب لامبدا.</p>
+<p><strong>علاقة الخطوة الصغيرة.</strong> إليك جزء Core OCaml الذي نعرفه بالفعل من SimPL:</p>
+<pre><code class="language-text">e1 bop e2 --&gt; e1&#x27; bop e2
+	if e1 --&gt; e1&#x27;
+
+v1 bop e2 --&gt; v1 bop e2&#x27;
+	if e2 --&gt; e2&#x27;
+
+v1 bop v2 --&gt; v3
+	where v3 is the result of applying primitive operation bop
+	to v1 and v2
+
+if e1 then e2 else e3 --&gt; if e1&#x27; then e2 else e3
+	if e1 --&gt; e1&#x27;
+
+if true then e2 else e3 --&gt; e2
+
+if false then e2 else e3 --&gt; e3
+
+let x = e1 in e2 --&gt; let x = e1&#x27; in e2
+	if e1 --&gt; e1&#x27;
+
+let x = v in e2 --&gt; e2{v/x}
+</code></pre>
+<p>وإليك جزء Core OCaml الذي يقابل حساب لامبدا:</p>
+<pre><code class="language-text">e1 e2 --&gt; e1&#x27; e2
+	if e1 --&gt; e1&#x27;
+
+v1 e2 --&gt; v1 e2&#x27;
+	if e2 --&gt; e2&#x27;
+
+(fun x -&gt; e) v2 --&gt; e{v2/x}
+</code></pre>
+<p>وإليك الأجزاء الجديدة في Core OCaml. أولًا، تقيّم <strong>الأزواج</strong> مكوّنها الأول، ثم مكوّنها الثاني:</p>
+<pre><code class="language-text">(e1, e2) --&gt; (e1&#x27;, e2)
+	if e1 --&gt; e1&#x27;
+
+(v1, e2) --&gt; (v1, e2&#x27;)
+	if e2 --&gt; e2&#x27;
+
+fst e --&gt; fst e&#x27;
+  if e --&gt; e&#x27;
+
+snd e --&gt; snd e&#x27;
+  if e --&gt; e&#x27;
+
+fst (v1, v2) --&gt; v1
+
+snd (v1, v2) --&gt; v2
+</code></pre>
+<p>وتقيّم <strong>المنشئات</strong> التعبير الذي تحمله:</p>
+<pre><code class="language-text">Left e --&gt; Left e&#x27;
+	if e --&gt; e&#x27;
+
+Right e --&gt; Right e&#x27;
+	if e --&gt; e&#x27;
+</code></pre>
+<p>وتقيّم <strong>مطابقة الأنماط</strong> التعبير المُطابَق عليه، ثم تختزل إلى أحد الفرعين:</p>
+<pre><code class="language-text">match e with Left x1 -&gt; e1 | Right x2 -&gt; e2
+--&gt; match e&#x27; with Left x1 -&gt; e1 | Right x2 -&gt; e2
+	if e --&gt; e&#x27;
+
+match Left v with Left x1 -&gt; e1 | Right x2 -&gt; e2
+--&gt; e1{v/x1}
+
+match Right v with Left x1 -&gt; e1 | Right x2 -&gt; e2
+--&gt; e2{v/x2}
+</code></pre>
+<p><strong>الاستبدال.</strong> نحتاج أيضًا إلى تعريف عملية الاستبدال لـ Core OCaml. وإليك ما نعرفه بالفعل من SimPL وحساب لامبدا:</p>
+<pre><code class="language-text">i{v/x} = i
+
+b{v/x} = b
+
+(e1 bop e2) {v/x} = e1{v/x} bop e2{v/x}
+
+(if e1 then e2 else e3){v/x}
+ = if e1{v/x} then e2{v/x} else e3{v/x}
+
+(let x = e1 in e2){v/x} = let x = e1{v/x} in e2
+
+(let y = e1 in e2){v/x} = let y = e1{v/x} in e2{v/x}
+  if y not in FV(v)
+
+x{v/x} = v
+
+y{v/x} = y
+
+(e1 e2){v/x} = e1{v/x} e2{v/x}
+
+(fun x -&gt; e&#x27;){v/x} = (fun x -&gt; e&#x27;)
+
+(fun y -&gt; e&#x27;){v/x} = (fun y -&gt; e&#x27;{v/x})
+  if y not in FV(v)
+</code></pre>
+<p>لاحظ أننا أضفنا الآن شرط الاستبدال المانع للالتقاط إلى تعريفَي <code>let</code> و<code>fun</code>: فكلاهما يشترط ألا يكون <code>y</code> في المتغيرات الحرة لـ <code>v</code>. ولذا نحتاج إلى تعريف المتغيرات الحرة لتعبير:</p>
+<pre><code class="language-text">FV(x) = {x}
+FV(e1 e2) = FV(e1) + FV(e2)
+FV(fun x -&gt; e) = FV(e) - {x}
+FV(i) = {}
+FV(b) = {}
+FV(e1 bop e2) = FV(e1) + FV(e2)
+FV((e1,e2)) = FV(e1) + FV(e2)
+FV(fst e1) = FV(e1)
+FV(snd e2) = FV(e2)
+FV(Left e) = FV(e)
+FV(Right e) = FV(e)
+FV(match e with Left x1 -&gt; e1 | Right x2 -&gt; e2)
+ = FV(e) + (FV(e1) - {x1}) + (FV(e2) - {x2})
+FV(if e1 then e2 else e3) = FV(e1) + FV(e2) + FV(e3)
+FV(let x = e1 in e2) = FV(e1) + (FV(e2) - {x})
+</code></pre>
+<p>وأخيرًا، نعرّف الاستبدال للأشكال النحوية الجديدة في Core OCaml. والتعبيرات التي لا تربط متغيرات يسهل التعامل معها:</p>
+<pre><code class="language-text">(e1,e2){v/x} = (e1{v/x}, e2{v/x})
+
+(fst e){v/x} = fst (e{v/x})
+
+(snd e){v/x} = snd (e{v/x})
+
+(Left e){v/x} = Left (e{v/x})
+
+(Right e){v/x} = Right (e{v/x})
+</code></pre>
+<p>وتتطلب تعبيرات match عملًا أكثر قليلًا، مثل تعبيرات let والدوال المجهولة، للتأكد من صحة منع الالتقاط:</p>
+<pre><code class="language-text">(match e with Left x1 -&gt; e1 | Right x2 -&gt; e2){v/x}
+ = match e{v/x} with Left x1 -&gt; e1{v/x} | Right x2 -&gt; e2{v/x}
+     if ({x1,x2} intersect FV(v)) = {}
+
+(match e with Left x -&gt; e1 | Right x2 -&gt; e2){v/x}
+ = match e{v/x} with Left x -&gt; e1 | Right x2 -&gt; e2{v/x}
+     if ({x2} intersect FV(v)) = {}
+
+(match e with Left x1 -&gt; e1 | Right x -&gt; e2){v/x}
+ = match e{v/x} with Left x1 -&gt; e1{v/x} | Right x -&gt; e2
+      if ({x1} intersect FV(v)) = {}
+
+(match e with Left x -&gt; e1 | Right x -&gt; e2){v/x}
+ = match e{v/x} with Left x -&gt; e1 | Right x -&gt; e2
+</code></pre>
+<p>في التنفيذات المعتادة للغات البرمجة، لا يلزمنا القلق بشأن الاستبدال المانع للالتقاط لأننا لا نقيّم إلا تعبيرات جيدة الأنواع، وهي بلا متغيرات حرة. لكن في لغات برمجة أكثر غرابة، قد يلزم تقييم تعبيرات مفتوحة. وفي هذه الحالات نحتاج إلى كل الشروط الإضافية عن المتغيرات الحرة التي قدمناها أعلاه.</p>
+<h3 id="10312-علاقة-الخطوة-الكبيرة">10.3.12. علاقة الخطوة الكبيرة <span class="content-anchor" id="big-step-relation"></span></h3>
+<p>في هذه المرحلة لم تبقَ أي مفاهيم جديدة علينا تقديمها. يمكننا ببساطة أن نعطي القواعد:</p>
+<pre><code class="language-text">e1 e2 ==&gt; v
+  if e1 ==&gt; fun x -&gt; e
+  and e2 ==&gt; v2
+  and e{v2/x} ==&gt; v
+fun x -&gt; e ==&gt; fun x -&gt; e
+i ==&gt; i
+b ==&gt; b
+e1 bop e2 ==&gt; v
+  if e1 ==&gt; v1
+  and e2 ==&gt; v2
+  and v is the result of primitive operation v1 bop v2
+(e1, e2) ==&gt; (v1, v2)
+  if e1 ==&gt; v1
+  and e2 ==&gt; v2
+fst e ==&gt; v1
+  if e ==&gt; (v1, v2)
+snd e ==&gt; v2
+  if e ==&gt; (v1, v2)
+Left e ==&gt; Left v
+  if e ==&gt; v
+Right e ==&gt; Right v
+  if e ==&gt; v
+match e with Left x1 -&gt; e1 | Right x2 -&gt; e2 ==&gt; v
+  if e ==&gt; Left v1
+  and e1{v1/x1} ==&gt; v
+match e with Left x1 -&gt; e1 | Right x2 -&gt; e2 ==&gt; v
+  if e ==&gt; Right v2
+  and e2{v2/x2} ==&gt; v
+if e1 then e2 else e3 ==&gt; v
+  if e1 ==&gt; true
+  and e2 ==&gt; v
+if e1 then e2 else e3 ==&gt; v
+  if e1 ==&gt; false
+  and e3 ==&gt; v
+let x = e1 in e2 ==&gt; v
+  if e1 ==&gt; v1
+  and e2{v1/x} ==&gt; v
+</code></pre>
+<h2 id="104-نموذج-البيئة">10.4. نموذج البيئة <span class="content-anchor" id="environment-model"></span></h2>
+<p>كنا حتى الآن نستخدم نموذج الاستبدال لتقييم البرامج. وهو نموذج ذهني رائع للتقييم، ويُستخدم كثيرًا في نظرية لغات البرمجة.</p>
+<p>لكنه ليس الخيار الأفضل عند التنفيذ. فهو <em>متلهف</em> أكثر مما ينبغي: إذ يستبدل كل ورود لمتغير، حتى لو لم تكن هناك حاجة إلى ذلك الورود أبدًا. فمثلًا، سيتطلب <code>let x = 42 in e</code> الزحف على كل <code>e</code>، وقد يكون تعبيرًا كبيرًا جدًا، حتى لو لم يظهر <code>x</code> في <code>e</code> أبدًا، أو حتى لو ظهر <code>x</code> فقط داخل فرع من تعبير if لا يُقيَّم أبدًا.</p>
+<p>ومن أجل الكفاءة، سيكون أفضل أن نستبدل <em>كسولًا</em>: فلا يجري المفسّر الاستبدال إلا عند الحاجة إلى قيمة المتغير. وهذه هي الفكرة الجوهرية وراء <em>نموذج البيئة (environment model)</em>. وفي هذا النموذج توجد بنية بيانات تُسمى <em>البيئة الديناميكية (dynamic environment)</em>، أو «البيئة» للاختصار، وهي قاموس يربط أسماء المتغيرات بالقيم. وكلما لزمت قيمة متغير، بُحث عنها في ذلك القاموس.</p>
+<p>ولأخذ البيئة في الحساب، تحتاج علاقة التقييم إلى التغير. فبدلًا من <code>e --&gt; e'</code> أو <code>e ==&gt; v</code>، وكلتاهما علاقة ثنائية، نحتاج الآن إلى علاقة ثلاثية، هي إما</p>
+<ul>
+<li><code> --&gt; e'</code>، أو</li>
+<li><code> ==&gt; v</code>،</li>
+</ul>
+<p>حيث تشير <code>env</code> إلى البيئة، وتُسمى \`\` <em>تهيئة الآلة (machine configuration)</em>. وتمثل تلك التهيئة حالة الحاسوب وهو يقيّم برنامجًا: فـ <code>env</code> تمثل جزءًا من ذاكرة الحاسوب (ارتباط المتغيرات بالقيم)، و<code>e</code> يمثل البرنامج.</p>
+<p>وكتدوين، لنكن:</p>
+<ul>
+<li><code>{}</code> يمثل البيئة الفارغة،</li>
+<li><code>{x1:v1, x2:v2, ...}</code> يمثل البيئة التي تربط <code>x1</code> بـ <code>v1</code>، وهكذا،</li>
+<li><code>env[x -&gt; v]</code> يمثل البيئة <code>env</code> مع ربط المتغير <code>x</code> إضافةً بالقيمة <code>v</code>، و</li>
+<li><code>env(x)</code> يمثل ارتباط <code>x</code> في <code>env</code>.</li>
+</ul>
+<p>ولو أردنا ترميزًا رياضيًا أكثر لكتبنا <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↦</mo></mrow><annotation encoding="application/x-tex">\\mapsto</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.522em;vertical-align:-0.011em;"></span><span class="mrel">↦</span></span></span></span> بدلًا من <code>-&gt;</code> في <code>env[x -&gt; v]</code>، لكننا نستهدف ترميزًا يسهل كتابته على لوحة مفاتيح قياسية.</p>
+<p>وسنركز في بقية هذا الفصل على نسخة الخطوة الكبيرة من نموذج البيئة. وسيكون من الممكن بالطبع تعريف نسخة بالخطوة الصغيرة أيضًا.</p>
+<h3 id="1041-تقييم-حساب-لامبدا-في-نموذج-البيئة">10.4.1. تقييم حساب لامبدا في نموذج البيئة <span class="content-anchor" id="evaluating-the-lambda-calculus-in-the-environment-model"></span></h3>
+<p>تذكّر أن حساب لامبدا هو الجزء من لغة وظيفية المتعلق بالدوال والتطبيق:</p>
+<pre><code class="language-text">e ::= x | e1 e2 | fun x -&gt; e
+
+v ::= fun x -&gt; e
+</code></pre>
+<p>ولنستكشف كيفية تعريف علاقة تقييم بالخطوة الكبيرة لحساب لامبدا في نموذج البيئة. والقاعدة الخاصة بالمتغيرات تقول ببساطة بالبحث عن اسم المتغير في البيئة:</p>
+<pre><code class="language-text">&lt;env, x&gt; ==&gt; env(x)
+</code></pre>
+<p>وتقول هذه القاعدة الخاصة بالدوال إن الدالة المجهولة تُقيَّم إلى نفسها فحسب. فالدوال قيم بعد كل شيء:</p>
+<pre><code class="language-text">&lt;env, fun x -&gt; e&gt; ==&gt; fun x -&gt; e
+</code></pre>
+<p>وأخيرًا، تقول هذه القاعدة الخاصة بالتطبيق بتقييم الطرف الأيسر <code>e1</code> إلى دالة <code>fun x -&gt; e</code>، والطرف الأيمن إلى قيمة <code>v2</code>، ثم تقييم جسم الدالة <code>e</code> في بيئة ممتدة تربط وسيطة الدالة <code>x</code> بـ <code>v2</code>:</p>
+<pre><code class="language-text">&lt;env, e1 e2&gt; ==&gt; v
+  if &lt;env, e1&gt; ==&gt; fun x -&gt; e
+  and &lt;env, e2&gt; ==&gt; v2
+  and &lt;env[x -&gt; v2], e&gt; ==&gt; v
+</code></pre>
+<p>يبدو معقولًا، أليس كذلك؟ المشكلة أنه <strong>خاطئ.</strong> أو على الأقل خاطئ إذا أردت أن يسلك التقييم سلوك OCaml نفسه. أو، لنكن صادقين، سلوك أي لغة حديثة تقريبًا.</p>
+<p>وسيكون من الأسهل شرح سبب خطئه إذا أضفنا ميزتين لغويتين أخريين: تعبيرات let والثوابت الصحيحة. أما الثوابت الصحيحة فستُقيَّم إلى نفسها:</p>
+<pre><code class="language-text">&lt;env, i&gt; ==&gt; i
+</code></pre>
+<p>وأما تعبيرات let، فتذكّر أننا لا <em>نحتاج</em> إليها فعلًا، لأن <code>let x = e1 in e2</code> يمكن إعادة كتابته كـ <code>(fun x -&gt; e2) e1</code>. ومع ذلك، ستكون دلالاتها:</p>
+<pre><code class="language-text">&lt;env, let x = e1 in e2&gt; ==&gt; v
+  if &lt;env, e1&gt; ==&gt; v1
+  and &lt;env[x -&gt; v1], e2&gt; ==&gt; v
+</code></pre>
+<p>وهي قاعدة تتبع في الحقيقة من القواعد الأخرى أعلاه فحسب، باستخدام إعادة الكتابة تلك.</p>
+<p>فإلى ماذا سيُقيَّم هذا التعبير؟</p>
+<pre><code class="language-text">let x = 1 in
+let f = fun y -&gt; x in
+let x = 2 in
+f 0
+</code></pre>
+<p>وفق دلالاتنا حتى الآن، سيُقيَّم كما يلي:</p>
+<p>سينتج <code>let x = 1</code> البيئة <code>{x:1}</code>.</p>
+<p>وسينتج <code>let f = fun y -&gt; x</code> البيئة <code>{x:1, f:(fun y -&gt; x)}</code>.</p>
+<p>وسينتج <code>let x = 2</code> البيئة <code>{x:2, f:(fun y -&gt; x)}</code>. لاحظ كيف يحجب الارتباط الجديد ارتباط <code>x</code> بـ <code>1</code>.</p>
+<p>والآن سنقيّم <code> x)}, f 0&gt;</code>:</p>
+<pre><code class="language-text">&lt;{x:2, f:(fun y -&gt; x)}, f 0&gt; ==&gt; 2
+  because &lt;{x:2, f:(fun y -&gt; x)}, f&gt; ==&gt; fun y -&gt; x
+  and &lt;{x:2, f:(fun y -&gt; x)}, 0&gt; ==&gt; 0
+  and &lt;{x:2, f:(fun y -&gt; x)}[y -&gt; 0], x&gt; ==&gt; 2
+    because &lt;{x:2, f:(fun y -&gt; x), y:0}, x&gt; ==&gt; 2
+</code></pre>
+<p>فالنتيجة إذن <code>2</code>.</p>
+<p>لكن وفق utop (ونموذج الاستبدال)، يُقيَّم كما يلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> y -&gt; x <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> x = <span class="hljs-number">2</span> <span class="hljs-keyword">in</span>
+  f <span class="hljs-number">0</span>;;
+- : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+</code></pre>
+<p>والنتيجة إذن <code>1</code>. ومن الواضح أن <code>1</code> و<code>2</code> جوابان مختلفان!</p>
+<p>فماذا سار على غير ما يرام؟؟ الأمر يتعلق بالنطاق.</p>
+<h3 id="1042-النطاق-المعجمي-مقابل-النطاق-الديناميكي">10.4.2. النطاق المعجمي مقابل النطاق الديناميكي <span class="content-anchor" id="lexical-vs-dynamic-scope"></span></h3>
+<p>ثمة طريقتان مختلفتان لفهم نطاق المتغير: فقد يكون للمتغيرات نطاق <em>ديناميكي</em> أو نطاق <em>معجمي</em>. والأمر كله يعود إلى البيئة المستخدمة عند تقييم جسم دالة:</p>
+<ul>
+<li>وفق <strong>قاعدة النطاق الديناميكي (dynamic scope)</strong>، يُقيَّم جسم الدالة في البيئة الديناميكية الحالية وقت تطبيق الدالة، لا في البيئة الديناميكية القديمة التي كانت موجودة وقت تعريف الدالة.</li>
+<li>ووفق <strong>قاعدة النطاق المعجمي (lexical scope)</strong>، يُقيَّم جسم الدالة في البيئة الديناميكية القديمة التي كانت موجودة وقت تعريف الدالة، لا في البيئة الحالية وقت تطبيق الدالة.</li>
+</ul>
+<p>وقاعدة النطاق الديناميكي هي ما نفّذته دلالاتنا أعلاه. ولنعد إلى دلالات تطبيق الدوال:</p>
+<pre><code class="language-text">&lt;env, e1 e2&gt; ==&gt; v
+  if &lt;env, e1&gt; ==&gt; fun x -&gt; e
+  and &lt;env, e2&gt; ==&gt; v2
+  and &lt;env[x -&gt; v2], e&gt; ==&gt; v
+</code></pre>
+<p>لاحظ كيف يُقيَّم الجسم <code>e</code> في البيئة <code>env</code> نفسها التي كانت عند تطبيق الدالة. وفي البرنامج المثال</p>
+<pre><code class="language-text">let x = 1 in
+let f = fun y -&gt; x in
+let x = 2 in
+f 0
+</code></pre>
+<p>فذلك يعني أن <code>f</code> تُقيَّم في بيئة يكون فيها <code>x</code> مرتبطًا بـ <code>2</code>، لأن ذلك أحدث ارتباط لـ <code>x</code>.</p>
+<p>لكن OCaml تنفّذ قاعدة النطاق المعجمي، التي تتوافق مع نموذج الاستبدال. وبهذه القاعدة يكون <code>x</code> مرتبطًا بـ <code>1</code> في جسم <code>f</code> عند تعريف <code>f</code>، ولا يغيّر الارتباط اللاحق لـ <code>x</code> بـ <code>2</code> تلك الحقيقة.</p>
+<p>والإجماع، بعد عقود من الخبرة في تصميم لغات البرمجة، أن النطاق المعجمي هو الخيار الصحيح. ولعل السبب الرئيسي في ذلك أن النطاق المعجمي يدعم مبدأ عدم اكتراث الأسماء. تذكّر أن ذلك المبدأ يقول إن اسم المتغير لا ينبغي أن يهم في معنى البرنامج، ما دام الاسم مستخدمًا استخدامًا متسقًا.</p>
+<p>ومع ذلك، النطاق الديناميكي مفيد في بعض الحالات. فبعض اللغات تستخدمه كالقاعدة (مثل Emacs LISP وLaTeX)، وبعض اللغات لها طرق خاصة لفعله (مثل Perl وRacket). لكن معظم اللغات اليوم لا تملكه ببساطة.</p>
+<p>وثمة ميزة لغوية واحدة <em>تمتلكها</em> اللغات الحديثة وتشبه النطاق الديناميكي، وهي الاستثناءات. فمعالجة الاستثناءات تشبه النطاق الديناميكي، من حيث أن رفع استثناء ينقل التحكم إلى «أحدث» مُعالِج استثناء، تمامًا كما يستخدم النطاق الديناميكي «أحدث» ارتباط للمتغير.</p>
+<h3 id="1043-محاولة-ثانية-لتقييم-حساب-لامبدا-في-نموذج-البيئة">10.4.3. محاولة ثانية لتقييم حساب لامبدا في نموذج البيئة <span class="content-anchor" id="a-second-attempt-at-evaluating-the-lambda-calculus-in-the-environment-model"></span></h3>
+<p>فيصير السؤال: كيف ننفّذ النطاق المعجمي؟ يبدو أنه يتطلب السفر في الزمن، لأن أجسام الدوال يجب أن تُقيَّم في بيئات ديناميكية قديمة اختفت منذ زمن طويل.</p>
+<p>والجواب أن تنفيذ اللغة يجب أن يرتب الاحتفاظ بالبيئات القديمة. وذلك فعلًا ما يجب أن تفعله OCaml وغيرها من اللغات. وهي تستخدم بنية بيانات تُسمى <em>إغلاقًا (closure)</em> لهذا الغرض.</p>
+<p>وللإغلاق جزءان:</p>
+<ul>
+<li>جزء <em>الشيفرة (code)</em>، ويحتوي دالة <code>fun x -&gt; e</code>، و</li>
+<li>جزء <em>البيئة (environment)</em>، ويحتوي البيئة <code>env</code> وقت تعريف تلك الدالة.</li>
+</ul>
+<p>ويمكنك التفكير في الإغلاق كأنه زوج، إلا أنه لا سبيل إلى كتابة إغلاق مباشرةً في شيفرة OCaml المصدرية، ولا سبيل إلى تفكيك الزوج إلى مكوّناته في شيفرة OCaml المصدرية. فالزوج مخفي عنك تمامًا بواسطة تنفيذ اللغة.</p>
+<p>ولنرمز للإغلاق بـ <code>(| fun x -&gt; e, env |)</code>. والفاصلتان <code>(| ... |)</code> مقصود بهما استحضار زوج OCaml، لكنهما بالطبع ليستا صياغة OCaml مشروعة.</p>
+<p>وباستخدام ذلك الترميز، يمكننا إعادة تعريف علاقة التقييم كما يلي:</p>
+<p>تقول قاعدة الدوال الآن إن الدالة المجهولة تُقيَّم إلى إغلاق:</p>
+<pre><code class="language-text">&lt;env, fun x -&gt; e&gt; ==&gt; (| fun x -&gt; e, env |)
+</code></pre>
+<p>تحفظ تلك القاعدة بيئة التعريف كجزء من الإغلاق، بحيث يمكن استخدامها في وقت لاحق.</p>
+<p>وتقول قاعدة التطبيق باستخدام ذلك الإغلاق:</p>
+<pre><code class="language-text">&lt;env, e1 e2&gt; ==&gt; v
+  if &lt;env, e1&gt; ==&gt; (| fun x -&gt; e, defenv |)
+  and &lt;env, e2&gt; ==&gt; v2
+  and &lt;defenv[x -&gt; v2], e&gt; ==&gt; v
+</code></pre>
+<p>تستخدم تلك القاعدة بيئة الإغلاق <code>defenv</code> (واسمها مقصود به الإيحاء بـ«بيئة التعريف») لتقييم جسم الدالة <code>e</code>.</p>
+<p>وتبقى القاعدة المشتقة لتعبيرات let دون تغيير:</p>
+<pre><code class="language-text">&lt;env, let x = e1 in e2&gt; ==&gt; v
+  if &lt;env, e1&gt; ==&gt; v1
+  and &lt;env[x -&gt; v1], e2&gt; ==&gt; v
+</code></pre>
+<p>وذلك لأن بيئة تعريف الجسم <code>e2</code> هي البيئة الحالية <code>env</code> نفسها عند تقييم تعبير let.</p>
+<h3 id="1044-تنفيذ-حساب-لامبدا-في-نموذج-البيئة">10.4.4. تنفيذ حساب لامبدا في نموذج البيئة <span class="content-anchor" id="an-implementation-of-the-lambda-calculus-in-the-environment-model"></span></h3>
+<p>يمكنك تنزيل تنفيذ كامل لدلالات حساب لامبدا المذكورتين أعلاه: <a href="https://cs3110.github.io/textbook/code/lambda-env.zip">lambda-env.zip</a>. وفي <code>main.ml</code> تعريف باسم <code>scope</code> يمكنك استخدامه للتنقل بين النطاق المعجمي والديناميكي.</p>
+<h3 id="1045-تقييم-core-ocaml-في-نموذج-البيئة">10.4.5. تقييم Core OCaml في نموذج البيئة <span class="content-anchor" id="evaluating-core-ocaml-in-the-environment-model"></span></h3>
+<p>لا جديد في دلالات نموذج البيئة (بالخطوة الكبيرة) لـ Core OCaml، بعد أن صرنا نعرف الإغلاقات، لكن لأجل الكمال لنصغها على أي حال.</p>
+<p><strong>الصياغة.</strong></p>
+<pre><code class="language-text">e ::= x | e1 e2 | fun x -&gt; e
+    | i | b | e1 bop e2
+    | (e1,e2) | fst e1 | snd e2
+    | Left e | Right e
+    | match e with Left x1 -&gt; e1 | Right x2 -&gt; e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+</code></pre>
+<p><strong>الدلالات.</strong></p>
+<p>رأينا بالفعل دلالات جزء حساب لامبدا من Core OCaml:</p>
+<pre><code class="language-text">&lt;env, x&gt; ==&gt; v
+  if env(x) = v
+
+&lt;env, e1 e2&gt; ==&gt; v
+  if  &lt;env, e1&gt; ==&gt; (| fun x -&gt; e, defenv |)
+  and &lt;env, e2&gt; ==&gt; v2
+  and &lt;defenv[x -&gt; v2], e&gt; ==&gt; v
+
+&lt;env, fun x -&gt; e&gt; ==&gt; (|fun x -&gt; e, env|)
+</code></pre>
+<p>ويتجاهل تقييم الثوابت البيئة:</p>
+<pre><code class="language-text">&lt;env, i&gt; ==&gt; i
+
+&lt;env, b&gt; ==&gt; b
+</code></pre>
+<p>ويستخدم تقييم معظم الميزات اللغوية الأخرى البيئة دون تغييرها فحسب:</p>
+<pre><code class="language-text">&lt;env, e1 bop e2&gt; ==&gt; v
+  if  &lt;env, e1&gt; ==&gt; v1
+  and &lt;env, e2&gt; ==&gt; v2
+  and v is the result of applying the primitive operation bop to v1 and v2
+
+&lt;env, (e1, e2)&gt; ==&gt; (v1, v2)
+  if  &lt;env, e1&gt; ==&gt; v1
+  and &lt;env, e2&gt; ==&gt; v2
+
+&lt;env, fst e&gt; ==&gt; v1
+  if &lt;env, e&gt; ==&gt; (v1, v2)
+
+&lt;env, snd e&gt; ==&gt; v2
+  if &lt;env, e&gt; ==&gt; (v1, v2)
+
+&lt;env, Left e&gt; ==&gt; Left v
+  if &lt;env, e&gt; ==&gt; v
+
+&lt;env, Right e&gt; ==&gt; Right v
+  if &lt;env, e&gt; ==&gt; v
+
+&lt;env, if e1 then e2 else e3&gt; ==&gt; v2
+  if &lt;env, e1&gt; ==&gt; true
+  and &lt;env, e2&gt; ==&gt; v2
+
+&lt;env, if e1 then e2 else e3&gt; ==&gt; v3
+  if &lt;env, e1&gt; ==&gt; false
+  and &lt;env, e3&gt; ==&gt; v3
+</code></pre>
+<p>وأخيرًا، يمدّ تقييم بنى الارتباط (أي تعبيري match وlet) البيئة بارتباط جديد:</p>
+<pre><code class="language-text">&lt;env, match e with Left x1 -&gt; e1 | Right x2 -&gt; e2&gt; ==&gt; v1
+  if  &lt;env, e&gt; ==&gt; Left v
+  and &lt;env[x1 -&gt; v], e1&gt; ==&gt; v1
+
+&lt;env, match e with Left x1 -&gt; e1 | Right x2 -&gt; e2&gt; ==&gt; v2
+  if  &lt;env, e&gt; ==&gt; Right v
+  and &lt;env[x2 -&gt; v], e2&gt; ==&gt; v2
+
+&lt;env, let x = e1 in e2&gt; ==&gt; v2
+  if  &lt;env, e1&gt; ==&gt; v1
+  and &lt;env[x -&gt; v1], e2&gt; ==&gt; v2
+</code></pre>
+<h2 id="105-فحص-الأنواع">10.5. فحص الأنواع <span class="content-anchor" id="type-checking"></span></h2>
+<p>تخطينا مرحلة فحص الأنواع سابقًا. ولنعد إليها الآن. فبعد التحليل المعجمي والنحوي، تكون المرحلة التالية في التصريف هي التحليل الدلالي، ومهمته الأساسية فحص الأنواع.</p>
+<p><em>نظام الأنواع (type system)</em> وصف رياضي لكيفية تحديد ما إذا كان التعبير <em>سيئ الأنواع</em> أم <em>جيد الأنواع</em>، وفي الحالة الأخيرة ما نوع التعبير. و<em>فاحص الأنواع (type checker)</em> برنامج ينفّذ نظام أنواع، أي ينفّذ الدلالات الساكنة للغة.</p>
+<p>وتُصاغ أنظمة الأنواع عادةً كعلاقة ثلاثية <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>H</mi><mi>a</mi><mi>s</mi><mi>T</mi><mi>y</mi><mi>p</mi><mi>e</mi></mrow><mo stretchy="false">(</mo><mi mathvariant="normal">Γ</mi><mo separator="true">,</mo><mi>e</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\\mathit{HasType}(\\Gamma, e, t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathit">HasType</span></span><span class="mopen">(</span><span class="mord">Γ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">e</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span>، بمعنى أن التعبير <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span> نوعه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> في البيئة الساكنة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi></mrow><annotation encoding="application/x-tex">\\Gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">Γ</span></span></span></span>. و<em>البيئة الساكنة (static environment)</em>، أو <em>سياق الأنواع (typing context)</em>، تطبيق من المعرّفات إلى الأنواع. وتُستخدم البيئة الساكنة لتسجيل المتغيرات التي في النطاق وأنواعها. واستخدام الحرف اليوناني <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi></mrow><annotation encoding="application/x-tex">\\Gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">Γ</span></span></span></span> للبيئات الساكنة أمر تقليدي.</p>
+<p>غير أن تلك العلاقة الثلاثية <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>a</mi><mi>s</mi><mi>T</mi><mi>y</mi><mi>p</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">\\mathit{HasType}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathit">HasType</span></span></span></span></span> تُكتب عادةً بترميز بيني بالشكل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi><mo>⊢</mo><mi>e</mi><mo>:</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">\\Gamma \\vdash e : t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord">Γ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊢</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>. ويمكنك قراءة رمز البوابة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊢</mo></mrow><annotation encoding="application/x-tex">\\vdash</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mrel">⊢</span></span></span></span> على أنه «يبرهن» أو «يبين»، أي أن البيئة الساكنة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Γ</mi></mrow><annotation encoding="application/x-tex">\\Gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">Γ</span></span></span></span> تبين أن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi></mrow><annotation encoding="application/x-tex">e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span> نوعه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>.</p>
+<p>ولنجعل ذلك الترميز أوْد شيئًا بإزالة اليونانية والتنضيد الرياضي. سنكتب ببساطة <code>env |- e : t</code> لنعني أن البيئة الساكنة <code>env</code> تبين أن <code>e</code> نوعه <code>t</code>. وقد استخدمنا <code>env</code> سابقًا لنعني بيئة ديناميكية في علاقة الخطوة الكبيرة <code>==&gt;</code>. وبما أنه يمكن دائمًا رؤية ما إذا كنا نستخدم علاقة <code>==&gt;</code> أو <code>|-</code>، فمعنى <code>env</code> كبيئة ديناميكية أو ساكنة قابل للتمييز دائمًا.</p>
+<p>ولنكتب <code>{}</code> للبيئة الساكنة الفارغة، و<code>x:t</code> لنعني أن <code>x</code> مرتبط بـ <code>t</code>. فمثلًا، ستكون <code>{foo:int, bar:bool}</code> هي البيئة الساكنة التي فيها <code>foo</code> نوعه <code>int</code> و<code>bar</code> نوعه <code>bool</code>. ويجوز للبيئة الساكنة أن تربط معرّفًا مرة واحدة على الأكثر. وسنكتب <code>env[x -&gt; t]</code> لنعني بيئة ساكنة تحتوي جميع ارتباطات <code>env</code>، وتربط <code>x</code> بـ <code>t</code> أيضًا. وإذا كان <code>x</code> مرتبطًا بالفعل في <code>env</code>، يُستبدل ذلك الارتباط القديم بالارتباط الجديد بـ <code>t</code> في <code>env[x -&gt; t]</code>. وكما في البيئات الديناميكية، لو أردنا ترميزًا رياضيًا أكثر لكتبنا <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↦</mo></mrow><annotation encoding="application/x-tex">\\mapsto</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.522em;vertical-align:-0.011em;"></span><span class="mrel">↦</span></span></span></span> بدلًا من <code>-&gt;</code> في <code>env[x -&gt; v]</code>، لكننا نستهدف ترميزًا يسهل كتابته على لوحة مفاتيح قياسية.</p>
+<p>وبهذه الآلة كلها يمكننا أخيرًا تعريف معنى أن يكون التعبير جيد الأنواع: يكون التعبير <code>e</code> <strong>جيد الأنواع (well-typed)</strong> في البيئة الساكنة <code>env</code> إذا وُجد نوع <code>t</code> بحيث <code>env |- e : t</code>. فهدف فاحص الأنواع إذن إيجاد ذلك النوع <code>t</code>، انطلاقًا من بيئة ساكنة أولية ما.</p>
+<p>ومن المريح التظاهر بأن البيئة الساكنة الأولية فارغة. لكن من النادر عمليًا أن تستخدم لغة البيئة الساكنة الفارغة فعلًا لتحديد ما إذا كان برنامج جيد الأنواع. ففي OCaml مثلًا، ثمة معرّفات مدمجة كثيرة تكون في النطاق دائمًا، مثل كل ما في وحدة <code>Stdlib</code>.</p>
+<h3 id="1051-نظام-أنواع-لـ-simpl">10.5.1. نظام أنواع لـ SimPL <span class="content-anchor" id="a-type-system-for-simpl"></span></h3>
+<p>تذكّر صياغة SimPL:</p>
+<pre><code class="language-text">e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | let x = e1 in e2
+
+bop ::= + | * | &lt;=
+</code></pre>
+<p>ولنعرّف نظام أنواع <code>env |- e : t</code> لـ SimPL. والأنواع الوحيدة في SimPL هي الأعداد الصحيحة والقيم المنطقية:</p>
+<pre><code class="language-text">t ::= int | bool
+</code></pre>
+<p>ولتعريف <code>|-</code> سنخترع مجموعة من <em>قواعد الأنواع (typing rules)</em> تحدد نوع التعبير بناءً على أنواع تعبيراته الفرعية. وبعبارة أخرى، <code>|-</code> <em>علاقة معرَّفة استقرائيًا</em>، كما يمكن التعلم في مقرر الرياضيات المتقطعة. فلديها إذن بعض الحالات الأساسية وبعض الحالات الاستقرائية.</p>
+<p>وفي الحالات الأساسية، نوع الثابت الصحيح <code>int</code> في أي بيئة ساكنة كانت، وكذلك الثابت المنطقي نوعه دائمًا <code>bool</code>، والمتغير نوعه ما تقول البيئة الساكنة إنه ينبغي أن يكون. وإليك قواعد الأنواع التي تعبّر عن تلك الأفكار:</p>
+<pre><code class="language-text">env |- i : int
+env |- b : bool
+{x : t, ...} |- x : t
+</code></pre>
+<p>أما الأشكال النحوية المتبقية فحالات استقرائية.</p>
+<p><strong>Let.</strong> كما نعرف بالفعل من OCaml، نفحص أنواع جسم تعبير let باستخدام نطاق ممتد بارتباط جديد.</p>
+<pre><code class="language-text">env |- let x = e1 in e2 : t2
+  if env |- e1 : t1
+  and env[x -&gt; t1] |- e2 : t2
+</code></pre>
+<p>تقول القاعدة إن <code>let x = e1 in e2</code> نوعه <code>t2</code> في البيئة الساكنة <code>env</code>، لكن فقط إذا صحت شروط معينة. الشرط الأول أن يكون نوع <code>e1</code> هو <code>t1</code> في <code>env</code>. والثاني أن يكون نوع <code>e2</code> هو <code>t2</code> في بيئة ساكنة جديدة، هي <code>env</code> ممتدة لتربط <code>x</code> بـ <code>t1</code>.</p>
+<p><strong>العوامل الثنائية.</strong> سنحتاج إلى قاعدتين مختلفتين للعوامل الثنائية.</p>
+<pre><code class="language-text">env |- e1 bop e2 : int
+  if bop is + or *
+  and env |- e1 : int
+  and env |- e2 : int
+
+env |- e1 &lt;= e2 : bool
+  if env |- e1 : int
+  and env |- e2 : int
+</code></pre>
+<p><strong>If.</strong> كما في OCaml، يجب أن يكون لتعير if شرط منطقي، ويجب أن يكون لفرعيه النوع نفسه.</p>
+<pre><code class="language-text">env |- if e1 then e2 else e3 : t
+  if env |- e1 : bool
+  and env |- e2 : t
+  and env |- e3 : t
+</code></pre>
+<h3 id="1052-فاحص-أنواع-لـ-simpl">10.5.2. فاحص أنواع لـ SimPL <span class="content-anchor" id="a-type-checker-for-simpl"></span></h3>
+<p>لننفّذ فاحص أنواع لـ SimPL، بناءً على نظام الأنواع الذي عرّفناه في القسم السابق. ويمكنك تنزيل فاحص الأنواع المكتمل كجزء من مفسّر SimPL: <a href="https://cs3110.github.io/textbook/code/simpl.zip">simpl.zip</a></p>
+<p>نحتاج إلى نوع متغاير لتمثيل الأنواع:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">type</span> typ =
+  | <span class="hljs-type">TInt</span>
+  | <span class="hljs-type">TBool</span>
+</code></pre>
+<p>كان الاسم الطبيعي لذلك النوع المتغاير سيكون «type» لا «typ» بالطبع، لكن الأول كلمة مفتاحية في OCaml بالفعل. وعلينا تسبيق المنشئات بـ«T» لتمييزها عن منشئات نوع <code>expr</code>، التي تشمل <code>Int</code> و<code>Bool</code>.</p>
+<p>ولنستحدث توقيعًا صغيرًا للبيئات الساكنة، بناءً على التجريدات التي قدمناها حتى الآن: البيئة الساكنة الفارغة، والبحث عن متغير، وتمديد بيئة ساكنة.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">StaticEnvironment</span> = <span class="hljs-keyword">sig</span>
+  <span class="hljs-comment">(** [t] is the type of a static environment. *)</span>
+  <span class="hljs-keyword">type</span> t
+  <span class="hljs-comment">(** [empty] is the empty static environment. *)</span>
+  <span class="hljs-keyword">val</span> empty : t
+  <span class="hljs-comment">(** [lookup env x] gets the binding of [x] in [env].
+      Raises: [Failure] if [x] is not bound in [env]. *)</span>
+  <span class="hljs-keyword">val</span> lookup : t -&gt; <span class="hljs-built_in">string</span> -&gt; typ
+  <span class="hljs-comment">(** [extend env x ty] is [env] extended with a binding
+      of [x] to [ty]. *)</span>
+  <span class="hljs-keyword">val</span> extend : t -&gt; <span class="hljs-built_in">string</span> -&gt; typ -&gt; t
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>ويسهل تنفيذ ذلك التوقيع بقائمة ترابطية.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">StaticEnvironment</span> : <span class="hljs-type">StaticEnvironment</span> = <span class="hljs-keyword">struct</span>
+  <span class="hljs-keyword">type</span> t = (<span class="hljs-built_in">string</span> * typ) <span class="hljs-built_in">list</span>
+  <span class="hljs-keyword">let</span> empty = <span class="hljs-literal">[]</span>
+  <span class="hljs-keyword">let</span> lookup env x =
+    <span class="hljs-keyword">try</span> <span class="hljs-type">List</span>.assoc x env
+    <span class="hljs-keyword">with</span> <span class="hljs-type">Not_found</span> -&gt; failwith <span class="hljs-string">&quot;Unbound variable&quot;</span>
+  <span class="hljs-keyword">let</span> extend env x ty =
+    (x, ty) :: env
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>والآن يمكننا تنفيذ علاقة الأنواع <code>|-</code>. وسنفعل ذلك بكتابة دالة <code>typeof : StaticEnvironment.t -&gt; expr -&gt; typ</code>، بحيث <code>typeof env e = t</code> إذا وفقط إذا <code>env |- e : t</code>. لاحظ أن دالة <code>typeof</code> تنتج النوع كمخرج، فهي تستنتج النوع فعليًا! وهذا الاستنتاج سهل في SimPL؛ وسيكون أعقد بكثير في لغات أكبر.</p>
+<p>ولنبدأ بالحالات الأساسية:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">open</span> <span class="hljs-type">StaticEnvironment</span>
+<span class="hljs-comment">(** [typeof env e] is the type of [e] in static environment [env].
+    Raises: [Failure] if [e] is not well-typed in [env]. *)</span>
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> typeof env = <span class="hljs-keyword">function</span>
+  | <span class="hljs-type">Int</span> _ -&gt; <span class="hljs-type">TInt</span>
+  | <span class="hljs-type">Bool</span> _ -&gt; <span class="hljs-type">TBool</span>
+  | <span class="hljs-type">Var</span> x -&gt; lookup env x
+  ...
+</code></pre>
+<p>لاحظ كيف يستند تنفيذ <code>typeof</code> حتى الآن إلى القواعد التي عرّفناها سابقًا لـ <code>|-</code>. وبوجه خاص:</p>
+<ul>
+<li><code>typeof</code> دالة تعاودية، كما أن <code>|-</code> علاقة استقرائية.</li>
+<li>والحالات الأساسية للتعاود في <code>typeof</code> هي نفسها الحالات الأساسية لـ <code>|-</code>.</li>
+</ul>
+<p>ولاحظ أيضًا كيف يختلف تنفيذ <code>typeof</code> عن تعريف <code>|-</code> اختلافًا كبيرًا في نقطة واحدة: معالجة الأخطاء. فنظام الأنواع لم يقل ما نفعل بالأخطاء؛ بل عرّف فحسب معنى أن يكون التعبير جيد الأنواع. أما فاحص الأنواع فيحتاج إلى التصرف والإبلاغ عن البرامج سيئة الأنواع. وتفعل دالتنا <code>typeof</code> ذلك برفع استثناءات. ودالة <code>lookup</code> بوجه خاص سترفع استثناءً إذا حاولنا البحث عن متغير غير مرتبط في البيئة الساكنة.</p>
+<p>ولنواصل الحالات التعاودية:</p>
+<pre><code class="language-ocaml">  ...
+  | <span class="hljs-type">Let</span> (x, e1, e2) -&gt; typeof_let env x e1 e2
+  | <span class="hljs-type">Binop</span> (bop, e1, e2) -&gt; typeof_bop env bop e1 e2
+  | <span class="hljs-type">If</span> (e1, e2, e3) -&gt; typeof_if env e1 e2 e3
+</code></pre>
+<p>نستخلص دالة مساعدة لكل فرع لأجل إبقاء مطابقة الأنماط قابلة للقراءة. وتضمّن كل دالة مساعدة أفكار قواعد <code>|-</code> مباشرةً، مع إضافة معالجة الأخطاء.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">and</span> typeof_let env x e1 e2 =
+  <span class="hljs-keyword">let</span> t1 = typeof env e1 <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">let</span> env&#x27; = extend env x t1 <span class="hljs-keyword">in</span>
+  typeof env&#x27; e2
+<span class="hljs-keyword">and</span> typeof_bop env bop e1 e2 =
+  <span class="hljs-keyword">let</span> t1, t2 = typeof env e1, typeof env e2 <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">match</span> bop, t1, t2 <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">Add</span>, <span class="hljs-type">TInt</span>, <span class="hljs-type">TInt</span>
+  | <span class="hljs-type">Mult</span>, <span class="hljs-type">TInt</span>, <span class="hljs-type">TInt</span> -&gt; <span class="hljs-type">TInt</span>
+  | <span class="hljs-type">Leq</span>, <span class="hljs-type">TInt</span>, <span class="hljs-type">TInt</span> -&gt; <span class="hljs-type">TBool</span>
+  | _ -&gt; failwith <span class="hljs-string">&quot;Operator and operand type mismatch&quot;</span>
+<span class="hljs-keyword">and</span> typeof_if env e1 e2 e3 =
+  <span class="hljs-keyword">if</span> typeof env e1 = <span class="hljs-type">TBool</span>
+  <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+    <span class="hljs-keyword">let</span> t2 = typeof env e2 <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> t2 = typeof env e3 <span class="hljs-keyword">then</span> t2
+    <span class="hljs-keyword">else</span> failwith <span class="hljs-string">&quot;Branches of if must have same type&quot;</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">else</span> failwith <span class="hljs-string">&quot;Guard of if must have type bool&quot;</span>
+</code></pre>
+<p>لاحظ كيف تقع الاستدعاءات التعاودية في تنفيذ <code>typeof</code> في المواضع نفسها بالضبط التي يكون فيها تعريف <code>|-</code> استقرائيًا.</p>
+<p>وأخيرًا، يمكننا تنفيذ دالة للتحقق مما إذا كان تعبير جيد الأنواع:</p>
+<pre><code class="language-ocaml"><span class="hljs-comment">(** [typecheck e] checks whether [e] is well-typed in
+    the empty static environment. Raises: [Failure] if not. *)</span>
+<span class="hljs-keyword">let</span> typecheck e =
+  ignore (typeof empty e)
+</code></pre>
+<h3 id="1053-أمان-الأنواع">10.5.3. أمان الأنواع <span class="content-anchor" id="type-safety"></span></h3>
+<p>ما الغرض من نظام الأنواع؟ قد تكون له أغراض كثيرة، لكن أحد الأغراض الأساسية ضمان عدم وقوع أخطاء معينة في وقت التشغيل. والآن بعد أن عرفنا كيفية صوغ أنظمة الأنواع صوريًا بعلاقة <code>|-</code> والتقييم بعلاقة <code>--&gt;</code>، يمكننا جعل تلك الفكرة دقيقة.</p>
+<p>وتشمل أهداف مصمم اللغة عادةً ضمان تحقق هاتين الخاصيتين، اللتين تقيمان علاقة بين <code>|-</code> و<code>--&gt;</code>:</p>
+<ul>
+<li><strong>التقدم (Progress):</strong> إذا كان التعبير جيد الأنواع، فهو إما قيمة بالفعل، وإما قادر على أخذ خطوة واحدة على الأقل. ويمكننا صوغ ذلك صوريًا بـ: «لكل <code>e</code>، إذا وُجد <code>t</code> بحيث <code>{} |- e : t</code>، فإن <code>e</code> قيمة، أو يوجد <code>e'</code> بحيث <code>e --&gt; e'</code>.»</li>
+<li><strong>الحفظ (Preservation):</strong> إذا كان التعبير جيد الأنواع، فإذا أخذ التعبير خطوة، يكون للتعير الجديد النوع نفسه الذي للتعير القديم. وصوريًا: «لكل <code>e</code> و<code>t</code> بحيث <code>{} |- e : t</code>، إذا وُجد <code>e'</code> بحيث <code>e --&gt; e'</code>، فإن <code>{} |- e' : t</code>.»</li>
+</ul>
+<p>ومعًا، يستلزم التقدم والحفظ أن تقييم تعبير جيد الأنواع لا يمكن أن <em>يعلق (get stuck)</em> أبدًا، بمعنى أنه يصل إلى غير قيمة لا تستطيع أخذ خطوة. وتُعرف هذه الخاصية بـ <em>أمان الأنواع (type safety)</em>.</p>
+<p>فمثلًا، سيتعلق <code>5 + true</code> باستخدام علاقة تقييم SimPL، لأن العملية الأولية <code>+</code> لا يمكنها قبول قيمة منطقية كمعامل. لكن نظام أنواع SimPL لن يقبل ذلك البرنامج، فينجينا من الوصول إلى تلك الحالة أبدًا.</p>
+<p>وبالعودة إلى SimPL التي كتبناها، كان كل موضع في تنفيذ <code>step</code> رفعنا فيه استثناءً موضعًا يعلق فيه التقييم. لكن نظام الأنواع يضمن عدم وقوع تلك الاستثناءات أبدًا.</p>
+<h2 id="106-استدلال-الأنواع">10.6. استدلال الأنواع <span class="content-anchor" id="type-inference"></span></h2>
+<p>OCaml وJava لغتان <em>مصنّفتان الأنواع ساكنًا (statically typed)</em>، بمعنى أن لكل ارتباط نوعًا يتحدد في <em>وقت التصريف</em>—أي قبل تنفيذ أي جزء من البرنامج. وفاحص الأنواع إجراء وقت تصريف يقبل البرنامج أو يرفضه. وفي المقابل، JavaScript وRuby لغتان مصنّفتان الأنواع ديناميكيًا؛ فلا يتحدد نوع الارتباط مسبقًا. ولذا فإن حسابات مثل ربط 42 بـ <code>x</code> ثم معاملة <code>x</code> كسلسلة نصية تؤدي إما إلى أخطاء وقت التشغيل، وإما إلى تحويل بين الأنواع في وقت التشغيل.</p>
+<p>وخلافًا لـ Java، فإن OCaml <em>مصنّفة الأنواع ضمنًا (implicitly typed)</em>، بمعنى أن المبرمجين قلما يحتاجون إلى كتابة أنواع الارتباطات. وهذا مريح غالبًا، ولا سيما مع الدوال عالية الرتبة. (وإن اختلف بعضهم في ما إذا كان ذلك يجعل الشيفرة أسهل قراءة أم أصعب). لكن التصنيف الضمني لا يغيّر أبدًا حقيقة أن OCaml مصنّفة الأنواع ساكنًا. بل على العكس، يجب أن يكون فاحص الأنواع أكثر تطورًا لأنه يجب أن يستنتج ما «كانت ستكون عليه» <em>تعليقات الأنواع</em> لو كتبها المبرمجون كلها. ومن حيث المبدأ، يمكن أن يكون استدلال الأنواع وفحص الأنواع إجراءين منفصلين (فيستنتج المستنتِج الأنواع ثم يحدد الفاحص ما إذا كان البرنامج جيد الأنواع)، لكنهما يُدمجان عمليًا غالبًا في إجراء واحد يسمى <em>إعادة بناء الأنواع (type reconstruction)</em>.</p>
+<h3 id="1061-إعادة-بناء-الأنواع-في-ocaml">10.6.1. إعادة بناء الأنواع في OCaml <span class="content-anchor" id="ocaml-type-reconstruction"></span></h3>
+<p>على مستوى عالٍ جدًا، تعمل خوارزمية إعادة بناء الأنواع في OCaml كما يلي:</p>
+<ul>
+<li>حدّد أنواع التعريفات بالترتيب، مستخدمًا أنواع التعريفات السابقة لاستنتاج أنواع التعريفات اللاحقة. (وهذا أحد أسباب عدم جواز استخدام اسم قبل أن يُربط في برنامج OCaml.)</li>
+<li>ولكل تعريف <code>let</code>، حلّل التعريف لتحديد <em>قيود (constraints)</em> على نوعه. فمثلًا، إذا رأى المستنتِج <code>x + 1</code>، استنتج أن نوع <code>x</code> يجب أن يكون <code>int</code>. ويجمع قيودًا مشابهة لتطبيقات الدوال ومطابقات الأنماط وما إلى ذلك. فكّر في هذه القيود كجملة معادلات كما تكون في الجبر.</li>
+<li>واستخدم جملة المعادلات تلك لحل نوع الاسم المراد تعريفه.</li>
+</ul>
+<p>وتحاول خوارزمية إعادة بناء الأنواع في OCaml ألا ترفض أبدًا برنامجًا كان يمكن أن يُصرَّف لو كتب المبرمج الأنواع. كما تحاول ألا تقبل أبدًا برنامجًا لا يمكن أن يُصرَّف بحال. وقد تجعل بعض أجزاء اللغة الأكثر غموضًا تعليقات الأنواع ضرورية أحيانًا أو مفيدة على الأقل (انظر <em>Real World OCaml</em>، الفصل 22، «Type inference»، للأمثلة). لكن بالنسبة إلى معظم الشيفرة التي تكتبها، فتعليقات الأنواع اختيارية تمامًا حقًا.</p>
+<p>وبما أنه سيكون مسهبًا مواصلة كتابة «خوارزمية إعادة بناء الأنواع المستخدمة في OCaml وغيرها من اللغات الوظيفية»، فسنسمي الخوارزمية HM. ويُستخدم ذلك الاسم في أدبيات لغات البرمجة كلها، لأن الخوارزمية اخترعها كل من Roger Hindley و Robin Milner مستقلًا.</p>
+<p>وقد أُعيد اكتشاف HM مرات كثيرة من أناس كثيرين. استخدمها Curry استخدامًا غير صوري في الخمسينيات (وربما حتى الثلاثينيات). وكتبها صوريًا في 1967 (ونُشرت 1969). واكتشفها Hindley مستقلًا في 1969؛ و Morris في 1968؛ و Milner في 1978. وفي عالم المنطق، تعود أفكار مشابهة إلى عهد Tarski في العشرينيات ربما. وقد علّق Hindley على هذا التاريخ فقال،</p>
+<blockquote>
+<p>لا بد أن يكون في قصة إعادة الاكتشاف المتواصل هذه عبرة؛ فربما كان ينبغي لأحدهم في الطريق أن يتعلم القراءة. أو لآخر أن يتعلم الكتابة.</p>
+</blockquote>
+<p>ورغم أننا لم نر خوارزمية HM بعد، فلن تفاجئك على الأرجح معرفة أنها فعالة جدًا عادةً—فأنت لم تضطر ربما قط إلى انتظار المستوى الأعلى ليطبع الأنواع المستنتجة لبرامجك. وهي عمليًا تعمل في زمن خطي تقريبًا. لكن نظريًا توجد بعض البرامج الغريبة جدًا التي يمكن أن تفجّر زمن تشغيلها. (وتقنيًا، هو زمن أسي.) وللمتعة، جرّب كتابة الشيفرة التالية في utop:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> b = <span class="hljs-literal">true</span>;;
+# <span class="hljs-keyword">let</span> f0 = <span class="hljs-keyword">fun</span> x -&gt; x + <span class="hljs-number">1</span>;;
+# <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> f0 <span class="hljs-keyword">else</span> <span class="hljs-keyword">fun</span> y -&gt; x y;;
+# <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> f <span class="hljs-keyword">else</span> <span class="hljs-keyword">fun</span> y -&gt; x y;;
+# <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> f <span class="hljs-keyword">else</span> <span class="hljs-keyword">fun</span> y -&gt; x y;;
+<span class="hljs-comment">(* keep repeating that last line *)</span>
+</code></pre>
+<p>وسترى الأنواع تطول وتطول، وفي النهاية (عند نحو 20 تكرارًا) سيسبب استدلال الأنواع تأخيرًا كبيرًا.</p>
+<h3 id="1062-الاستدلال-القائم-على-القيود">10.6.2. الاستدلال القائم على القيود <span class="content-anchor" id="constraint-based-inference"></span></h3>
+<p>ولنمهّد لخوارزمية HM لاستدلال الأنواع بالبدء بهذه اللغة الصغيرة:</p>
+<pre><code class="language-text">e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | fun x -&gt; e
+    | e1 e2
+
+bop ::= + | * | &lt;=
+
+t ::= int | bool | t1 -&gt; t2
+</code></pre>
+<p>تلك اللغة هي SimPL زائد حساب لامبدا ناقص تعبيرات <code>let</code>. ويتبين أن تعبيرات <code>let</code> تضيف طبقة إضافية من التعقيد، لذا سنعود إليها لاحقًا.</p>
+<p>وبما أن الدوال المجهولة في هذه اللغة بلا تعليقات أنواع، علينا استنتاج نوع الوسيطة <code>x</code>. فمثلًا،</p>
+<ul>
+<li>في <code>fun x -&gt; x + 1</code>، يجب أن يكون نوع الوسيطة <code>x</code> هو <code>int</code>، ومن ثمّ نوع الدالة <code>int -&gt; int</code>.</li>
+<li>وفي <code>fun x -&gt; if x then 1 else 0</code>، يجب أن يكون نوع الوسيطة <code>x</code> هو <code>bool</code>، ومن ثمّ نوع الدالة <code>bool -&gt; int</code>.</li>
+<li>والدالة <code>fun x -&gt; if x then x else 0</code> غير قابلة للتصنيف نوعيًا، لأنها ستتطلب أن يكون لـ <code>x</code> النوعان <code>int</code> و<code>bool</code> معًا، وذلك غير مسموح.</li>
+</ul>
+<p><strong>تبسيط نحوي.</strong> يمكننا معاملة <code>e1 bop e2</code> كسكر نحوي لـ <code>( bop ) e1 e2</code>. أي أننا نعامل العوامل البينية كتطبيق دوال سابق. ولنستحدث صنفًا نحويًا جديدًا <code>n</code> لـ<em>الأسماء (names)</em>، يعمّم المعرّفات والعوامل. ويغيّر ذلك الصياغة إلى:</p>
+<pre><code class="language-text">e ::= n | i | b
+    | if e1 then e2 else e3
+    | fun x -&gt; e
+    | e1 e2
+
+n ::= x | bop
+
+bop ::= ( + ) | ( * ) | ( &lt;= )
+
+t ::= int | bool | t1 -&gt; t2
+</code></pre>
+<p>نعرف بالفعل أنواع تلك العوامل المدمجة:</p>
+<pre><code class="language-text">( + ) : int -&gt; int -&gt; int
+( * ) : int -&gt; int -&gt; int
+( &lt;= ) : int -&gt; int -&gt; bool
+</code></pre>
+<p>تلك الأنواع معطاة؛ فلا يلزمنا استنتاجها. وهي جزء من البيئة الساكنة الأولية. وفي OCaml يمكن لاحقًا أن تحجب أسماء تلك العوامل قيم ذات أنواع مختلفة، لكن لا يلزمنا القلق بشأن ذلك هنا لأننا لا نملك <code>let</code> بعد.</p>
+<p>فكيف <em>تستنتج أنت</em> ذهنيًا نوع <code>fun x -&gt; 1 + x</code>، أو بالأحرى <code>fun x -&gt; ( + ) 1 x</code>؟ الأمر صار تلقائيًا الآن، لكن يمكننا تفكيكه إلى قطع:</p>
+<ul>
+<li>ابدأ بأن نوع <code>x</code> نوع مجهول <code>t</code>.</li>
+<li>لاحظ أن <code>( + )</code> معروف أن نوعه <code>int -&gt; (int -&gt; int)</code>.</li>
+<li>لذا يجب أن يكون نوع وسيطه الأول <code>int</code>. وهو ما ينطبق على <code>1</code>.</li>
+<li>ويجب أن يكون نوع وسيطه الثاني <code>int</code> أيضًا. إذن <code>t = int</code>. وهذا <em>قيد</em> على <code>t</code>.</li>
+<li>وأخيرًا، يجب أن يكون نوع جسم الدالة <code>int</code> أيضًا، لأن ذلك نوع إعادة <code>( + )</code>.</li>
+<li>لذا يجب أن يكون نوع الدالة كلها <code>t -&gt; int</code>.</li>
+<li>وبما أن <code>t = int</code>، فذلك النوع <code>int -&gt; int</code>.</li>
+</ul>
+<p>وتتبع خوارزمية استدلال الأنواع الفكرة نفسها: توليد أنواع مجهولة، وجمع قيود عليها، واستخدام القيود لحل نوع التعبير.</p>
+<p>ولنستحدث علاقة رباعية جديدة <code>env |- e : t -| C</code>، تُقرأ كما يلي: «في البيئة <code>env</code>، يُستنتج أن نوع التعبير <code>e</code> هو <code>t</code> وتُولَّد مجموعة القيود <code>C</code>.» والقيد معادلة بالشكل <code>t1 = t2</code> لأي نوعين <code>t1</code> و<code>t2</code>.</p>
+<p>وإذا فكرنا في العلاقة كدالة لاستدلال الأنواع، فالنقطتان في المنتصف تفصلان المدخل عن المخرج. والمدخلان هما <code>env</code> و<code>e</code>: نريد معرفة نوع <code>e</code> في البيئة <code>env</code>. وتعيد الدالة كمخرج نوعًا <code>t</code> وقيودًا <code>C</code>.</p>
+<p>والجزء <code>e : t</code> في منتصف العلاقة هو تقريبًا ما تراه في المستوى الأعلى: تدخل تعبيرًا، فيخبرك بالنوع. لكن حول ذلك بيئة ومجموعة قيود <code>env |- ... -| C</code> غير مرئية لك. فالرمزان المحيطان يظهران أجزاء استدلال الأنواع التي لا يظهرها المستوى الأعلى.</p>
+<p>وأسهل أجزاء الاستدلال هي الثوابت:</p>
+<pre><code class="language-text">env |- i : int -| {}
+
+env |- b : bool -| {}
+</code></pre>
+<p>أي ثابت صحيح <code>i</code>، مثل <code>42</code>، معروف أن نوعه <code>int</code>، ولا تُولَّد قيود. وكذلك الثوابت المنطقية.</p>
+<p>ويقتضي استدلال نوع اسم البحث عنه في البيئة:</p>
+<pre><code class="language-text">env |- n : env(n) -| {}
+</code></pre>
+<p>ولا تُولَّد قيود.</p>
+<p>وإذا لم يكن الاسم مرتبطًا في البيئة، فلا يمكن تصنيف التعبير نوعيًا. إنه خطأ اسم غير مرتبط.</p>
+<p>والقواعد المتبقية هي في جوهرها القواعد نفسها التي رأيناها في فحص الأنواع، لكن كلًا منها يولّد <em>متغير نوع (type variable)</em> وربما بعض القيود على ذلك المتغير.</p>
+<p><strong>If.</strong></p>
+<p>وإليك قاعدة تعبيرات <code>if</code>:</p>
+<pre><code class="language-text">env |- if e1 then e2 else e3 : &#x27;t -| C1, C2, C3, t1 = bool, &#x27;t = t2, &#x27;t = t3
+  if fresh &#x27;t
+  and env |- e1 : t1 -| C1
+  and env |- e2 : t2 -| C2
+  and env |- e3 : t3 -| C3
+</code></pre>
+<p>لاستدلال نوع <code>if</code>، نستنتج الأنواع <code>t1</code> و<code>t2</code> و<code>t3</code> لكل من تعبيراته الفرعية، مع أي قيود عليها. ولا سيطرة لنا على ما قد تكون عليه تلك الأنواع؛ فذلك يعتمد على ما كتبه المبرمج. لكننا نعلم أن نوع الشرط يجب أن يكون <code>bool</code>. لذا نولّد قيدًا بأن <code>t1 = bool</code>.</p>
+<p>وعلاوة على ذلك، نعلم أن كلا الفرعين يجب أن يكون له النوع نفسه—وإن كنا لا نعرف مسبقًا ما قد يكون ذلك النوع. لذا نخترع متغير نوع <em>طازجًا (fresh)</em> <code>'t</code> ليمثل ذلك النوع. ومتغير النوع طازج إذا لم يُستخدم في أي موضع آخر أثناء استدلال الأنواع. فاختيار متغير نوع طازج يعني ببساطة اختيار اسم جديد لا يمكن الخلط بينه وبين أي أسماء أخرى في البرنامج. ونعيد <code>'t</code> كنوع <code>if</code>، ونسجّل قيدين <code>'t = t2</code> و<code>'t = t3</code> لنقول إن كلا الفرعين يجب أن يكون له ذلك النوع.</p>
+<p>ولذا نحتاج إلى إضافة متغيرات الأنواع إلى صياغة الأنواع:</p>
+<pre><code class="language-text">t ::= &#x27;x | int | bool | t1 -&gt; t2
+</code></pre>
+<p>ومن أمثلة متغيرات الأنواع <code>'a</code> و<code>'foobar</code> و<code>'t</code>. وفي الأخير، <code>t</code> معرّف، لا متغير فوقي.</p>
+<p>وإليك مثالًا:</p>
+<pre><code class="language-text">{} |- if true then 1 else 0 : &#x27;t -| bool = bool, &#x27;t = int
+  {} |- true : bool -| {}
+  {} |- 1 : int -| {}
+  {} |- 0 : int -| {}
+</code></pre>
+<p>ومجموعة القيود الكاملة المولَّدة هي <code>{}, {}, {}, bool = bool, 't = int, 't = int</code>، لكن ذلك يبسّط بالطبع إلى <code>bool = bool, 't = int</code> فحسب. ومن مجموعة القيود تلك نرى أن نوع <code>if true then 1 else 0</code> يجب أن يكون <code>int</code>.</p>
+<p><strong>الدوال المجهولة.</strong></p>
+<p>بما أنه لا يوجد تعليق نوع على <code>x</code>، فيجب استنتاج نوعه:</p>
+<pre><code class="language-text">env |- fun x -&gt; e : &#x27;t1 -&gt; t2 -| C
+  if fresh &#x27;t1
+  and env, x : &#x27;t1 |- e : t2 -| C
+</code></pre>
+<p>نستحدث متغير نوع طازجًا <code>'t1</code> ليمثل نوع <code>x</code>، ونستنتج نوع الجسم <code>e</code> في البيئة التي فيها <code>x : 't1</code>. وأينما استُخدم <code>x</code> في <code>e</code>، فقد يؤدي ذلك إلى توليد قيود تتضمن <code>'t1</code>. وستصير تلك القيود جزءًا من <code>C</code>.</p>
+<p>وإليك دالة نرى فيها فورًا أن <code>x : bool</code>، لكن لنعمل على الاستدلال خطوة خطوة:</p>
+<pre><code class="language-text">{} |- fun x -&gt; if x then 1 else 0 : &#x27;t1 -&gt; &#x27;t -| &#x27;t1 = bool, &#x27;t = int
+  {}, x : &#x27;t1 |- if x then 1 else 0 : &#x27;t -| &#x27;t1 = bool, &#x27;t = int
+    {}, x : &#x27;t1 |- x : &#x27;t1 -| {}
+    {}, x : &#x27;t1 |- 1 : int -| {}
+    {}, x : &#x27;t1 |- 0 : int -| {}
+</code></pre>
+<p>النوع المستنتج للدالة هو <code>'t1 -&gt; 't</code>، مع القيدين <code>'t1 = bool</code> و<code>'t = int</code>. وبتبسيط ذلك، نوع الدالة <code>bool -&gt; int</code>.</p>
+<p><strong>تطبيق الدوال.</strong></p>
+<p>يجب استنتاج نوع التطبيق كله، لأننا لا نعرف بعد أي شيء عن نوعي أي من التعبيرين الفرعيين:</p>
+<pre><code class="language-text">env |- e1 e2 : &#x27;t -| C1, C2, t1 = t2 -&gt; &#x27;t
+  if fresh &#x27;t
+  and env |- e1 : t1 -| C1
+  and env |- e2 : t2 -| C2
+</code></pre>
+<p>نستحدث متغير نوع طازجًا <code>'t</code> لنوع تعبير التطبيق. ونستخدم الاستدلال لتحديد أنواع التعبيرات الفرعية وأي قيود تولّدها. ونضيف قيدًا جديدًا واحدًا، <code>t1 = t2 -&gt; 't</code>، يعبّر عن أن نوع الطرف الأيسر <code>e1</code> يجب أن يكون دالة تأخذ وسيطة من النوع <code>t2</code> وتعيد قيمة من النوع <code>'t</code>.</p>
+<p>ولنكن <code>I</code> هي <em>البيئة الأولية</em> التي تربط العوامل المنطقية. ولنستنتج نوع تطبيق جزئي لـ <code>( + )</code>:</p>
+<pre><code class="language-text">I |- ( + ) 1 : &#x27;t -| int -&gt; int -&gt; int = int -&gt; &#x27;t
+  I |- ( + ) : int -&gt; int -&gt; int -| {}
+  I |- 1 : int -| {}
+</code></pre>
+<p>من القيد الناتج نرى أن</p>
+<pre><code class="language-text">int -&gt; int -&gt; int
+=
+int -&gt; &#x27;t
+</code></pre>
+<p>وبإزالة <code>int -&gt;</code> من الطرف الأيسر لكل من نوعي الدالة هذين، يتبقى لدينا</p>
+<pre><code class="language-text">int -&gt; int
+=
+&#x27;t
+</code></pre>
+<p>ومن ثمّ فنوع <code>( + ) 1</code> هو <code>int -&gt; int</code>.</p>
+<h3 id="1063-حل-القيود">10.6.3. حل القيود <span class="content-anchor" id="solving-constraints"></span></h3>
+<p>ماذا يعني حل مجموعة من القيود؟ بما أن القيود معادلات على الأنواع، فالأمر كثيرًا مثل حل جملة معادلات في الجبر. نريد الحل لإيجاد قيم المتغيرات الظاهرة في تلك المعادلات. وباستبدال تلك القيم بالمتغيرات، ينبغي أن نحصل على معادلات متطابقة الطرفين. فمثلًا، في الجبر قد يكون لدينا:</p>
+<pre><code class="language-text">5x + 2y =  9
+ x -  y = -1
+</code></pre>
+<p>وبحل تلك الجملة نحصل على <code>x = 1</code> و<code>y = 2</code>. وإذا استبدلنا <code>1</code> بـ <code>x</code> و<code>2</code> بـ <code>y</code>، نحصل على:</p>
+<pre><code class="language-text">5(1) + 2(2) =  9
+  1  -   2  = -1
+</code></pre>
+<p>وهي تختزل إلى</p>
+<pre><code class="language-text"> 9 =  9
+-1 = -1
+</code></pre>
+<p>وفي مصطلحات لغات البرمجة (وإن لم يكن في جبر المدرسة الثانوية ربما)، نقول إن الاستبدالين <code>{1 / x}</code> و<code>{2 / y}</code> معًا <em>يوحّدان (unify)</em> مجموعة المعادلات تلك، لأنهما يجعلان كل معادلة «تتوحد» بحيث يتطابق طرفها الأيسر مع طرفها الأيمن.</p>
+<p>وحل جمل المعادلات على الأنواع مشابه. فكما وجدنا أعدادًا نستبدلها بالمتغيرات أعلاه، نريد الآن إيجاد أنواع نستبدلها بمتغيرات الأنواع، فنوحّد بذلك جملة المعادلات.</p>
+<p>وكثيرًا مثل الاستبدالات التي عرّفناها سابقًا لنموذج الاستبدال في التقييم، سنكتب <code>{t / 'x}</code> لـ<em>استبدال النوع (type substitution)</em> الذي يربط متغير النوع <code>'x</code> بالنوع <code>t</code>. فمثلًا، <code>t1 {t2/'x}</code> يعني النوع <code>t1</code> مع استبدال <code>t2</code> بـ <code>'x</code>.</p>
+<p>ويمكننا تعريف الاستبدال على الأنواع كما يلي:</p>
+<pre><code class="language-text">int {t / &#x27;x} = int
+bool {t / &#x27;x} = bool
+&#x27;x {t / &#x27;x} = t
+&#x27;y {t / &#x27;x} = &#x27;y
+(t1 -&gt; t2) {t / &#x27;x} =  (t1 {t / &#x27;x} ) -&gt; (t2 {t / &#x27;x} )
+</code></pre>
+<p>وبالنظر إلى استبدالين <code>S1</code> و<code>S2</code>، نكتب <code>S1; S2</code> لنعني الاستبدال الذي هو <em>تركيبهما التسلسلي (sequential composition)</em>، المعرَّف كما يلي:</p>
+<pre><code class="language-text">t (S1; S2) = (t S1) S2
+</code></pre>
+<p>والترتيب مهم. فمثلًا، <code>'x ({('y -&gt; 'y) / 'x}; {bool / 'y}) </code> هو <code>bool -&gt; bool</code>، لا <code>'y -&gt; 'y</code>. ويمكننا بناء استبدالات أكبر وأكبر بهذه الطريقة.</p>
+<p>ويمكن تطبيق استبدال <code>S</code> على قيد <code>t = t'</code>. والنتيجة <code>(t = t') S</code> معرَّفة بأنها <code>t S = t' S</code>. أي أننا نطبّق الاستبدال على طرفي القيد فحسب.</p>
+<p>وأخيرًا، يمكن تطبيق استبدال على مجموعة <code>C</code> من القيود؛ والنتيجة <code>C S</code> هي نتيجة تطبيق <code>S</code> على كل قيد من القيود الفردية في <code>C</code>.</p>
+<p>و<em>يوحّد</em> استبدال <code>S</code> قيدًا <code>t_1 = t_2</code> إذا أعطى <code>t_1 S</code> النوع نفسه الذي يعطيه <code>t_2 S</code>. فمثلًا، الاستبدال <code>S = {int -&gt; int / 'y}; {int / 'x}</code> يوحّد القيد <code>'x -&gt; ('x -&gt; int) = int -&gt; 'y</code>، لأن</p>
+<pre><code class="language-text">(&#x27;x -&gt; (&#x27;x -&gt; int)) S
+=
+int -&gt; (int -&gt; int)
+</code></pre>
+<p>و</p>
+<pre><code class="language-text">(int -&gt; &#x27;y) S
+=
+int -&gt; (int -&gt; int)
+</code></pre>
+<p>ويوحّد استبدال <code>S</code> مجموعة <code>C</code> من القيود إذا وحّد <code>S</code> كل قيد في <code>C</code>.</p>
+<p>وأخيرًا يمكننا أن نقول بدقة ما يعنيه حل مجموعة من القيود: يجب إيجاد استبدال يوحّد المجموعة. أي أننا نحتاج إلى إيجاد متتالية من التطبيقات من متغيرات الأنواع إلى الأنواع، بحيث تجعل المتتالية كل معادلة في مجموعة القيود «تتوحد»، أي يتطابق طرفاها الأيمن والأيسر.</p>
+<p>ولإيجاد استبدال يوحّد مجموعة القيود <code>C</code>، نستخدم خوارزمية <code>unify</code>، المعرَّفة كما يلي:</p>
+<ul>
+<li>إذا كانت <code>C</code> المجموعة الفارغة، فإن <code>unify(C)</code> هو الاستبدال الفارغ.</li>
+<li>وإذا احتوت <code>C</code> قيدًا واحدًا على الأقل <code>t1 = t2</code> وربما بعض القيود الأخرى <code>C'</code>، فتُعرَّف <code>unify(C)</code> كما يلي: إذا كان <code>t1</code> و<code>t2</code> كلاهما النوع البسيط نفسه—أي كلاهما متغير النوع نفسه <code>'x</code>، أو كلاهما <code>int</code>، أو كلاهما <code>bool</code>—فأعد <code>unify(C')</code>. <em>وفي هذه الحالة لم يحتوِ القيد على معلومات مفيدة، فنطرحه ونواصل.</em></li>
+<li>وإذا كان <code>t1</code> متغير نوع <code>'x</code> ولا يظهر <code>'x</code> في <code>t2</code>، فلنكن <code>S = {t2 / 'x}</code>، وأعد <code>S; unify(C' S)</code>. <em>وفي هذه الحالة نُزيل المتغير <code>'x</code> من جملة المعادلات، كثيرًا مثل الحذف الغاوسي في حل المعادلات الجبرية.</em></li>
+<li>وإذا كان <code>t2</code> متغير نوع <code>'x</code> ولا يظهر <code>'x</code> في <code>t1</code>، فلنكن <code>S = {t1 / 'x}</code>، وأعد <code>S; unify(C' S)</code>. <em>وهذا إزالة مثل الحالة السابقة.</em></li>
+<li>وإذا كان <code>t1 = i1 -&gt; o1</code> و<code>t2 = i2 -&gt; o2</code>، حيث <code>i1</code> و<code>i2</code> و<code>o1</code> و<code>o2</code> أنواع، فإن <code>unify(i1 = i2, o1 = o2, C')</code>. <em>وفي هذه الحالة نفكك قيدًا واحدًا إلى قيدين أصغر ونعيد إضافة هذين القيدين ليوحَّدا كذلك.</em></li>
+<li>وإلا، فافشل. فلا يوجد موحِّد ممكن.</li>
+</ul>
+<p>وفي الحالتين الفرعيتين الثانية والثالثة، يضمن التحقق من وجوب ألا يظهر <code>'x</code> في النوع أن الخوارزمية تُزيل المتغير فعلًا. وإلا فقد تنتهي الخوارزمية إلى إعادة إدخال المتغير بدلًا من إزالته.</p>
+<p>ومن الممكن إثبات أن خوارزمية التوحيد تنتهي دائمًا، وأنها تنتج نتيجة إذا وفقط إذا وُجد موحِّد فعلًا—أي إذا وفقط إذا كانت لمجموعة القيود حل. علاوة على ذلك، الحل الذي تنتجه الخوارزمية هو <em>الموحِّد الأعم (most general unifier)</em>، بمعنى أنه إذا كان <code>S = unify(C)</code> ووحّد <code>S'</code> المجموعة <code>C</code> أيضًا، فلا بد من وجود <code>S''</code> بحيث <code>S' = S; S''</code>. ومثل ذلك <code>S'</code> أقل عمومية من <code>S</code> لأنه يحتوي الاستبدالات الإضافية في <code>S''</code>.</p>
+<h3 id="1064-إتمام-استدلال-الأنواع">10.6.4. إتمام استدلال الأنواع <span class="content-anchor" id="finishing-type-inference"></span></h3>
+<p>ولنراجع ما فعلناه حتى الآن. بدأنا بهذه اللغة:</p>
+<pre><code class="language-text">e ::= n | i | b
+    | if e1 then e2 else e3
+    | fun x -&gt; e
+    | e1 e2
+
+n ::= x | bop
+
+bop ::= ( + ) | ( * ) | ( &lt;= )
+
+t ::= int | bool | t1 -&gt; t2
+</code></pre>
+<p>ثم قدّمنا خوارزمية لاستدلال نوع تعبير. ويأتي ذلك النوع مع مجموعة من القيود. وعُبّر عن الخوارزمية بصيغة علاقة <code>env |- e : t -| C</code>.</p>
+<p>وبعد ذلك قدّمنا خوارزمية التوحيد لحل مجموعات القيود. وتلك الخوارزمية تنتج كمخرج متتالية <code>S</code> من الاستبدالات، أو تفشل. وإن فشلت، فالتعبير <code>e</code> غير قابل للتصنيف نوعيًا.</p>
+<p>ولإتمام استدلال الأنواع وإعادة بناء نوع <code>e</code>، نحسب <code>t S</code> فحسب. أي أننا نطبّق حل القيود على النوع <code>t</code> الناتج من توليد القيود.</p>
+<p>ولنكن <code>p</code> ذلك النوع. أي <code>p = t S</code>. ومن الممكن إثبات أن <code>p</code> هو النوع <em>الرئيسي (principal)</em> للتعبير، بمعنى أنه إذا كان لـ <code>e</code> النوع <code>t</code> لأي <code>t</code> آخر، فيوجد استبدال <code>S</code> بحيث <code>t = p S</code>.</p>
+<p>فمثلًا، النوع الرئيسي لدالة الهوية <code>fun x -&gt; x</code> سيكون <code>'a -&gt; 'a</code>. لكن يمكنك أيضًا إعطاء تلك الدالة النوع الأقل نفعًا <code>int -&gt; int</code>. وما نقوله إن HM ستنتج <code>'a -&gt; 'a</code>، لا <code>int -&gt; int</code>. فـ HM، بمعنى ما، تستنتج النوع الأكثر «تسامحًا» الممكن لتعبير.</p>
+<p><strong>مثال محلول.</strong> لنستنتج نوع التعبير التالي:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">fun</span> f -&gt; <span class="hljs-keyword">fun</span> x -&gt; f (( + ) x <span class="hljs-number">1</span>)
+</code></pre>
+<p>ليس كثيرًا من الشيفرة، لكن هذا سيتشعب كثيرًا!</p>
+<p>نبدأ في البيئة الأولية <code>I</code> التي تربط، من بين أشياء أخرى، <code>( + )</code> بـ <code>int -&gt; int -&gt; int</code>.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+</code></pre>
+<p>نترك الآن <code>: t -| C</code>، لأن ذلك مخرج توليد القيود. ولم نكتشف المخرج بعد! وبما أن لدينا دالة، نستخدم قاعدة الدوال للاستدلال فنمضي بتقديم متغير نوع طازج للوسيطة:</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)  &lt;-- Here
+</code></pre>
+<p>ومرة أخرى لدينا دالة، ومن ثمّ متغير نوع طازج:</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)  &lt;-- Here
+</code></pre>
+<p>الآن لدينا تعبير تطبيق. وقبل التعامل معه، علينا النزول إلى تعبيريه الفرعيين. الأول سهل. إنه مجرد متغير. لذا يمكننا أخيرًا إنهاء حكم بنوع المتغير من البيئة، ومجموعة قيود فارغة.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}  &lt;-- Here
+</code></pre>
+<p>وبعد ذلك التعبير الفرعي الثاني.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1  &lt;-- Here
+</code></pre>
+<p>ذلك تطبيق آخر، لذا علينا معالجة تعبيريه الفرعيين. تذكّر أن <code>( + ) x 1</code> يُحلَّل نحويًا كـ <code>(( + ) x) 1</code>. فالتعبير الفرعي الأول هو المعقد الذي يجب معالجته.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x  &lt;-- Here
+</code></pre>
+<p>وتطبيق آخر بعد.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}  &lt;-- Here
+</code></pre>
+<p>كان ذلك سهلًا، لأننا لم نحتج إلا إلى البحث عن الاسم <code>( + )</code> في البيئة. والتالي سهل أيضًا، لأننا نبحث عن <code>x</code> فحسب.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}  &lt;-- Here
+</code></pre>
+<p>وأخيرًا صرنا جاهزين لحل تطبيق دالة! نستحدث متغير نوع طازجًا ونضيف قيدًا. والقيد أن النوع المستنتج <code>int -&gt; int -&gt; int</code> للتعبير الفرعي الأيسر يجب أن يساوي النوع المستنتج <code>'b</code> للتعبير الفرعي الأيمن مع سهم ومتغير النوع الطازج <code>'c</code>، أي <code>'b -&gt; 'c</code>.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c  &lt;-- Here
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+</code></pre>
+<p>الآن صرنا جاهزين للوسيطة التي تُمرَّر إلى تلك الدالة.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+        I, f : &#x27;a, x : &#x27;b |- 1 : int -| {}  &lt;-- Here
+</code></pre>
+<p>ومرة أخرى يمكننا حل تطبيق دالة بمتغير نوع جديد وقيد جديد.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1)
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1 : &#x27;d -| &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c  &lt;-- Here
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+        I, f : &#x27;a, x : &#x27;b |- 1 : int -| {}
+</code></pre>
+<p>ومرة أخرى، تطبيق دالة، فمتغير نوع جديد وقيد جديد.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1)
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1) : &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c   &lt;-- Here
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1 : &#x27;d -| &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+        I, f : &#x27;a, x : &#x27;b |- 1 : int -| {}
+</code></pre>
+<p>والآن نصل أخيرًا إلى إتمام دالة مجهولة. ونوعها المستنتج هو متغير النوع الطازج <code>'b</code> لوسيطتها <code>x</code>، يليه سهم ثم النوع المستنتج <code>e</code> لجسمها.</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1)
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1) : &#x27;b -&gt; &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c   &lt;-- Here
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1) : &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+      I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+      I, f : &#x27;a, x : &#x27;b |- ( + ) x 1 : &#x27;d -| &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+        I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+          I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+          I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+        I, f : &#x27;a, x : &#x27;b |- 1 : int -| {}
+</code></pre>
+<p>ويمكن الآن إتمام الدالة المجهولة الأخيرة بالطريقة نفسها:</p>
+<pre><code class="language-text">I |- fun f -&gt; fun x -&gt; f (( + ) x 1) : &#x27;a -&gt; &#x27;b -&gt; &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c  &lt;-- Here
+  I, f : &#x27;a |- fun x -&gt; f (( + ) x 1) : &#x27;b -&gt; &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+    I, f : &#x27;a, x : &#x27;b |- f (( + ) x 1) : &#x27;e -| &#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+       I, f : &#x27;a, x : &#x27;b |- f : &#x27;a -| {}
+       I, f : &#x27;a, x : &#x27;b |- ( + ) x 1 : &#x27;d -| &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+         I, f : &#x27;a, x : &#x27;b |- ( + ) x : &#x27;c -| int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+           I, f : &#x27;a, x : &#x27;b |- ( + ) : int -&gt; int -&gt; int -| {}
+           I, f : &#x27;a, x : &#x27;b |- x : &#x27;b -| {}
+         I, f : &#x27;a, x : &#x27;b |- 1 : int -| {}
+</code></pre>
+<p>نتيجةً لتوليد القيود، نعلم أن نوع التعبير هو <code>'a -&gt; 'b -&gt; 'e</code>، حيث</p>
+<pre><code class="language-text">&#x27;a = &#x27;d -&gt; &#x27;e
+&#x27;c = int -&gt; &#x27;d
+int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c
+</code></pre>
+<p>لحلّ ذلك النظام من المعادلات، نستخدم خوارزمية التوحيد (unification):</p>
+<pre><code class="language-text">unify(&#x27;a = &#x27;d -&gt; &#x27;e, &#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c)
+</code></pre>
+<p>يعطي القيد الأول استبدالًا <code>{('d -&gt; 'e) / 'a}</code>، نسجّله كجزء من الحل، ونطبّقه أيضًا على القيود المتبقية:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; unify((&#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c) {(&#x27;d -&gt; &#x27;e) / &#x27;a})
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; unify(&#x27;c = int -&gt; &#x27;d, int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c)
+</code></pre>
+<p>يتصرّف القيد الثاني تصرّفًا مشابهًا للأول:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; unify((int -&gt; int -&gt; int = &#x27;b -&gt; &#x27;c) {(int -&gt; &#x27;d) / &#x27;c})
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; unify(int -&gt; int -&gt; int = &#x27;b -&gt; int -&gt; &#x27;d)
+</code></pre>
+<p>يتفكّك قيد الدالة إلى قيدين أصغر:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; unify(int = &#x27;b, int -&gt; int = int -&gt; &#x27;d)
+</code></pre>
+<p>نحصل على استبدال آخر:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; unify((int -&gt; int = int -&gt; &#x27;d) {int / &#x27;b})
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; unify(int -&gt; int = int -&gt; &#x27;d)
+</code></pre>
+<p>ثم نصل إلى تفكيك قيد دالة آخر:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; unify(int = int, int = &#x27;d)
+</code></pre>
+<p>القيد الأول من القيود الجديدة الناتجة بديهي ويُطرح ببساطة:</p>
+<pre><code class="language-text">...
+=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; unify(int = &#x27;d)
+</code></pre>
+<p>يعطينا القيد الأخير تمامًا استبدالًا آخر:</p>
+<pre><code class="language-text">=
+{(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; {int / &#x27;d}
+</code></pre>
+<p>وللإنهاء، نطبّق الاستبدال الذي أخرجه التوحيد على النوع المستنتَج بتوليد القيود:</p>
+<pre><code class="language-text">(&#x27;a -&gt; &#x27;b -&gt; &#x27;e) {(&#x27;d -&gt; &#x27;e) / &#x27;a}; {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; {int / &#x27;d}
+=
+((&#x27;d -&gt; &#x27;e) -&gt; &#x27;b -&gt; &#x27;e) {(int -&gt; &#x27;d) / &#x27;c}; {int / &#x27;b}; {int / &#x27;d}
+=
+((&#x27;d -&gt; &#x27;e) -&gt; &#x27;b -&gt; &#x27;e) {int / &#x27;b}; {int / &#x27;d}
+=
+((&#x27;d -&gt; &#x27;e) -&gt; int -&gt; &#x27;e) {int / &#x27;d}
+=
+(int -&gt; &#x27;e) -&gt; int -&gt; &#x27;e
+</code></pre>
+<p>وهذا فعلًا النوع نفسه الذي سيستنتجه OCaml للتعبير الأصلي:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">fun</span> f -&gt; <span class="hljs-keyword">fun</span> x -&gt; f (( + ) x <span class="hljs-number">1</span>);;
+- : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>إلا أن OCaml يستخدم معرّف متغيّر نوع مختلفًا. فـ OCaml لطيف معنا و«يُنزل» متغيّرات النوع إلى أحرف أبجدية أصغر. ويمكننا فعل ذلك أيضًا بقليل من العمل الإضافي.</p>
+<p><strong>أخطاء الأنواع.</strong> في الواقع ثمة جزء آخر من استدلال الأنواع. فإذا فشل التوحيد، احتاج المصرّف أو المفسّر إلى إنتاج رسالة خطأ مفيدة. وهذا تحدٍّ هندسي مهم لن نتناوله هنا. فهو يتطلب تتبّع أكثر من القيود فحسب: نحتاج إلى معرفة سبب إدخال القيد، وتبعات انتهاكه. ونحتاج أيضًا إلى تتبّع القيد رجوعًا إلى الجزء النصي من الشيفرة الذي أنتجه، حتى يرى المبرمجون موضع المشكلة. ولأنه من الممكن معالجة القيود بترتيبات مختلفة كثيرة، فهناك رسائل خطأ ممكنة كثيرة يمكن إنتاجها. وتحديد أيّها سيقود المبرمج إلى السبب الجذري للخطأ، بدلًا من إحدى نتيجته التابعة، مجال بحث جارٍ.</p>
+<h3 id="1065-تعدد-أشكال-let">10.6.5. تعدّد أشكال let <span class="content-anchor" id="let-polymorphism"></span></h3>
+<p>الآن سنضيف تعبيرات <code>let</code> إلى لغتنا الصغيرة:</p>
+<pre><code class="language-text">e ::= x | i | b | e1 bop e2
+    | if e1 then e2 else e3
+    | fun x -&gt; e
+    | e1 e2
+    | let x = e1 in e2   (* new *)
+</code></pre>
+<p>يتّضح أن استدلال الأنواع لها أعقد بكثير مما قد يُتوقع. والنهج الساذج سيكون إضافة قاعدة توليد القيود هذه:</p>
+<pre><code class="language-text">env |- let x = e1 in e2 : t2 -| C1, C2
+  if env |- e1 : t1 -| C1
+  and env, x : t1 |- e2 : t2 -| C2
+</code></pre>
+<p>من منظور فحص الأنواع، هذه هي القاعدة نفسها التي استخدمناها دائمًا. وهي تعمل جيدًا مع كثير من تعبيرات <code>let</code>. على سبيل المثال:</p>
+<pre><code class="language-text">{} |- let x = 42 in x : int -| {}
+  {} |- 42 : int -| {}
+  x : int |- x : int -| {}
+</code></pre>
+<p>المشكلة أنه عندما تكون القيمة المربوطة دالة متعدّدة الأشكال، تولّد تلك القاعدة قيودًا مقيِّدة أكثر من اللازم. فمثلًا، تأمّل دالة الهوية:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> id = <span class="hljs-keyword">fun</span> x -&gt; x <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> a = id <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+id <span class="hljs-literal">true</span>
+</code></pre>
+<p>لا يجد OCaml أي صعوبة في استنتاج نوع <code>id</code> بأنه <code>'a -&gt; 'a</code> والسماح بتطبيقه على <code>int</code> و<code>bool</code> معًا. لكن القاعدة أعلاه ليست بهذا التسامح بشأن التطبيق على النوعين معًا. فعندما نستخدمها، نولّد الأنواع والقيود التالية:</p>
+<pre><code class="language-text">{} |- let id = fun x -&gt; x in (let a = id 0 in id true) : &#x27;c -| &#x27;a -&gt; &#x27;a = int -&gt; &#x27;b, &#x27;a -&gt; &#x27;a = bool -&gt; &#x27;c
+  {} |- fun x -&gt; x : &#x27;a -| {}
+    x : &#x27;a |- x : &#x27;a -| {}
+  id : &#x27;a -&gt; &#x27;a |- let a = id 0 in id true : &#x27;c -| &#x27;a -&gt; &#x27;a = int -&gt; &#x27;b, &#x27;a -&gt; &#x27;a = bool -&gt; &#x27;c   &lt;--- POINT 1
+    id : &#x27;a -&gt; &#x27;a |- id 0 : &#x27;b -| &#x27;a -&gt; &#x27;a = int -&gt; &#x27;b
+      id : &#x27;a -&gt; &#x27;a |- id : &#x27;a -&gt; &#x27;a -| {}
+      id : &#x27;a -&gt; &#x27;a |- 0 : int -| {}
+    id : &#x27;a -&gt; &#x27;a, a : &#x27;b |- id true : &#x27;c -| &#x27;a -&gt; &#x27;a = bool -&gt; &#x27;c   &lt;--- POINT 2
+      id : &#x27;a -&gt; &#x27;a, a : &#x27;b |- id : &#x27;a -&gt; &#x27;a -| {}
+      id : &#x27;a -&gt; &#x27;a, a : &#x27;b |- true : bool -| {}
+</code></pre>
+<p>لاحظ أننا نستنتج فعلًا نوع <code>'a -&gt; 'a</code> لـ <code>id</code>، وهو ما تراه في البيئة في الأسطر اللاحقة من المثال. لكننا في النقطة 1 نستنتج القيد <code>'a -&gt; 'a = int -&gt; 'b</code>، وفي النقطة 2 نستنتج <code>'a -&gt; 'a = bool -&gt; 'c</code>. وعندما تصادف خوارزمية التوحيد هذين القيدين، ستفكّكهما إلى <code>'a = int</code> و<code>'a = 'b</code> و<code>'a = bool</code> و<code>'a = 'c</code>. والقيدان الأول والثالث متناقضان، لأنه لا يمكن أن يكون <code>'a = int</code> و<code>'a = bool</code> معًا. وسيُستبدل أحدهما أثناء التوحيد، فيبقى قيد غير قابل للإرضاء هو <code>int = bool</code>. وعند تلك النقطة سيفشل التوحيد، معلنًا أن البرنامج سيّئ الأنواع.</p>
+<p>المشكلة أن متغيّر النوع <code>'a</code> في النوع المستنتَج لـ <code>id</code> يمثّل نوعًا مجهولًا لكنه <strong>ثابت</strong>. وعند كل تطبيق لـ <code>id</code>، نريد أن ندع <code>'a</code> يصبح نوعًا <strong>مختلفًا</strong>، بدلًا من إجباره على أن يكون النوع نفسه دائمًا.</p>
+<p>حلّ مشكلة تعدّد الأشكال في تعبيرات <code>let</code> ليس بسيطًا. فهو يتطلب إدخال نوع جديد من الأنواع: <em>مخطط النوع</em> (type scheme). تشبه مخططات الأنواع <em>التكميم الكلي</em> (universal quantification) في المنطق الرياضي. فمثلًا، قد تكتب في المنطق: «لكل عدد طبيعي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>، يتحقق أن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>⋅</mo><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0 \\cdot x = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>». وعبارة «لكل» هي التكميم الكلي: فهي تجرّد من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> بعينه وتصرّح بخاصية صحيحة لكل الأعداد الطبيعية.</p>
+<p>يُكتب مخطط النوع <code>'a . t</code>، حيث <code>'a</code> متغيّر نوع و<code>t</code> نوع قد يظهر فيه <code>'a</code>. فمثلًا، <code>'a . 'a -&gt; 'a</code> مخطط نوع. وهو نوع دالة تأخذ قيمة من النوع <code>'a</code> وتعيد قيمة من النوع <code>'a</code>، لكل <code>'a</code>. ومن ثم فهو نوع دالة الهوية متعدّدة الأشكال.</p>
+<p>يمكن أن يكون لدينا أيضًا متغيّرات نوع كثيرة على يسار النقطة في مخطط النوع. فمثلًا، <code>'a 'b . 'a -&gt; 'b -&gt; 'a</code> هو نوع دالة تأخذ وسيطين وتعيد الأول. وفي OCaml، يمكننا كتابة ذلك بالشكل <code>fun x y -&gt; x</code>. لاحظ أن utop يستنتج نوعه كما نتوقع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x y -&gt; x;;
+<span class="hljs-keyword">val</span> f : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>لكن يمكننا في الواقع كتابة تعليق نوعي يدويًا مع مخطط نوع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> f : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span> . <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = <span class="hljs-keyword">fun</span> x y -&gt; x;;
+<span class="hljs-keyword">val</span> f : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;b</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>لاحظ أن OCaml يقبل تعليقنا النوعي اليدوي لكنه لا يدرج الجزء <code>'a 'b .</code> منه في ناتجه. <strong>لكنه موجود ضمنًا، وكان كذلك دائمًا.</strong> وبوجه عام، كلما استنتج OCaml نوعًا <code>t</code> وكان في ذلك النوع متغيّرات نوع، فهو في الحقيقة مخطط نوع. فمثلًا، نوع <code>List.length</code> هو في الحقيقة مخطط نوع:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> mylen : <span class="hljs-symbol">&#x27;a</span> . <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">int</span> = <span class="hljs-type">List</span>.length;;
+<span class="hljs-keyword">val</span> mylen : <span class="hljs-symbol">&#x27;a</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>كل ما في الأمر أن OCaml لا يتكلف عناء إخراج قائمة متغيّرات النوع الواقعة على يسار النقطة في مخطط النوع. فهي في الحقيقة ستكدّر الناتج فحسب، وكثير من المبرمجين لا يحتاجون أبدًا إلى معرفتها. لكن بما أنك تتعلم الآن استدلال الأنواع، فقد حان وقت أن تعرفها.</p>
+<p>الآن بعد أن أصبحت لدينا مخططات أنواع، سيكون لدينا بيئات ساكنة تربط الأسماء بمخططات أنواع. ويمكننا اعتبار الأنواع حالات خاصة من مخططات الأنواع تكون فيها قائمة متغيّرات النوع فارغة. ومع مخططات الأنواع، تتغيّر قاعدة <code>let</code> من القاعدة الساذجة أعلاه في أمر واحد فقط، هو <code>generalize</code> في السطر الأخير:</p>
+<pre><code class="language-text">env |- let x = e1 in e2 : t2 -| C1, C2
+  if env |- e1 : t1 -| C1
+  and generalize(C1, env, x : t1) |- e2 : t2 -| C2
+</code></pre>
+<p>مهمة <code>generalize</code> هي أخذ نوع كـ <code>'a -&gt; 'a</code> و<em>تعميمه</em> إلى مخطط نوع كـ <code>'a . 'a -&gt; 'a</code> في بيئة <code>env</code> في مواجهة القيود <code>C1</code>. وسنعود إلى كيفية عملها بعد قليل. وقبل ذلك، ثمة قاعدة أخرى تحتاج إلى تغيير، هي قاعدة الاسم:</p>
+<pre><code class="language-text">env |- n : instantiate(env(n)) -| {}
+</code></pre>
+<p>الشيء الوحيد الذي يتغيّر هناك هو استخدام <code>instantiate</code>. فمهمته أخذ مخطط نوع كـ <code>'a . 'a -&gt; 'a</code> و<em>تجسيده</em> في نوع جديد (ونعني هنا نوعًا بالضبط، لا مخطط نوع) بمتغيّرات نوع طازجة. فمثلًا، يمكن تجسيد <code>'a . 'a -&gt; 'a</code> ليصبح <code>'b -&gt; 'b</code>، إن لم يكن <code>'b</code> قيد الاستخدام بعد في مكان آخر بوصفه متغيّر نوع.</p>
+<p>وإليك كيف تعمل هاتان القاعدتان المنقّحتان معًا لإنجاز مثالنا السابق مع دالة الهوية على نحو صحيح:</p>
+<pre><code class="language-text">{} |- let id = fun x -&gt; x in (let a = id 0 in id true)
+  {} |- fun x -&gt; x : &#x27;a -&gt; &#x27;a -| {}
+    x : &#x27;a |- x : &#x27;a -| {}
+  id : &#x27;a . &#x27;a -&gt; &#x27;a |- let a = id 0 in id true   &lt;--- POINT 1
+</code></pre>
+<p>لنتوقف هناك عند النقطة 1. عندما تُوضع <code>id</code> في البيئة بقاعدة <code>let</code>، يُعمَّم نوعها من <code>'a -&gt; 'a</code> إلى <code>'a . 'a -&gt; 'a</code>؛ أي من نوع إلى مخطط نوع. ويسجّل ذلك حقيقة أن كل تطبيق لـ <code>id</code> ينبغي أن يستخدم قيمته الخاصة لـ <code>'a</code>. ونواصل:</p>
+<pre><code class="language-text">{} |- let id = fun x -&gt; x in (let a = id 0 in id true)
+  {} |- fun x -&gt; x : &#x27;a -&gt; &#x27;a -| {}
+    x : &#x27;a |- x : &#x27;a -| {}
+  id : &#x27;a . &#x27;a -&gt; &#x27;a |- let a = id 0 in id true   &lt;--- POINT 1
+    id : &#x27;a . &#x27;a -&gt; &#x27;a |- id 0
+      id : &#x27;a . &#x27;a -&gt; &#x27;a |- id : &#x27;b -&gt; &#x27;b -| {}   &lt;--- POINT 3
+</code></pre>
+<p>نتوقف هنا عند النقطة 3. عندما يُطبَّق <code>id</code> على <code>0</code>، نجسّد متغيّر نوعه <code>'a</code> بمتغيّر نوع طازج <code>'b</code>. لنُكمل:</p>
+<pre><code class="language-text">{} |- let id = fun x -&gt; x in (let a = id 0 in id true) : &#x27;e -| &#x27;b -&gt; &#x27;b = int -&gt; &#x27;c, &#x27;d -&gt; &#x27;d = bool -&gt; &#x27;e
+  {} |- fun x -&gt; x : &#x27;a -&gt; &#x27;a -| {}
+    x : &#x27;a |- x : &#x27;a -| {}
+  id : &#x27;a . &#x27;a -&gt; &#x27;a |- let a = id 0 in id true : &#x27;e -| &#x27;b -&gt; &#x27;b = int -&gt; &#x27;c, &#x27;d -&gt; &#x27;d = bool -&gt; &#x27;e   &lt;--- POINT 1
+    id : &#x27;a . &#x27;a -&gt; &#x27;a |- id 0 : &#x27;c -| &#x27;b -&gt; &#x27;b = int -&gt; &#x27;c
+      id : &#x27;a . &#x27;a -&gt; &#x27;a |- id : &#x27;b -&gt; &#x27;b -| {}   &lt;--- POINT 3
+      id : &#x27;a . &#x27;a -&gt; &#x27;a |- 0 : int -| {}
+    id : &#x27;a . &#x27;a -&gt; &#x27;a, a : &#x27;b |- id true : &#x27;e -| &#x27;d -&gt; &#x27;d = bool -&gt; &#x27;e   &lt;--- POINT 2
+      id : &#x27;a . &#x27;a -&gt; &#x27;a, a : &#x27;b |- id : &#x27;d -&gt; &#x27;d -| {}   &lt;--- POINT 4
+      id : &#x27;a . &#x27;a -&gt; &#x27;a, a : &#x27;b |- true : bool -| {}
+</code></pre>
+<p>عند النقطة 4، عندما يُطبَّق <code>id</code> على <code>true</code>، نجسّد متغيّر نوعه <code>'a</code> مرة أخرى بمتغيّر نوع طازج، هو <code>'d</code> هذه المرة. لذا لم تعد القيود المجموعة عند النقطتين 1 و2 متناقضة، لأنها تتحدث عن متغيّري نوع مختلفين. وتلك القيود هي:</p>
+<pre><code class="language-text">&#x27;b -&gt; &#x27;b = int -&gt; &#x27;c
+&#x27;d -&gt; &#x27;d = bool -&gt; &#x27;e
+</code></pre>
+<p>ولذلك ستستنتج خوارزمية التوحيد:</p>
+<pre><code class="language-text">&#x27;b = int
+&#x27;c = int
+&#x27;d = bool
+&#x27;e = bool
+</code></pre>
+<p>وهكذا يُستنتَج بنجاح أن نوع التعبير كله هو <code>bool</code>.</p>
+<p><strong>التجسيد والتعميم.</strong> استخدمنا دالتين جديدتين، <code>instantiate</code> و<code>generalize</code>، لتعريف استدلال الأنواع في تعبيرات <code>let</code>. وعلينا تعريف هاتين الدالتين.</p>
+<p>الأسهل هي <code>instantiate</code>. فبالنظر إلى مخطط نوع <code>'a1 'a2 ... 'an . t</code>، نجسّده عبر:</p>
+<ul>
+<li>اختيار <code>n</code> من متغيّرات النوع الطازجة، و</li>
+<li>استبدال كل منها بـ <code>'a1</code> حتى <code>'an</code> في <code>t</code>.</li>
+</ul>
+<p>الاستبدال هنا غير معقّد، مقارنةً بما كان عليه في التقييم ضمن نموذج الاستبدال، لأنه لا يوجد في النوع ما يمكنه ربط أسماء المتغيّرات.</p>
+<p>لكن <code>generalize</code> تتطلب عملًا أكثر. وإليك قاعدة <code>let</code> مرة أخرى:</p>
+<pre><code class="language-text">env |- let x = e1 in e2 : t2 -| C1, C2
+  if env |- e1 : t1 -| C1
+  and generalize (C1, env, x : t1) |- e2 : t2 -| C2
+</code></pre>
+<p>لتعميم <code>t1</code>، نفعل ما يلي.</p>
+<p>أولًا، نتظاهر بأن <code>e1</code> هي كل ما يهم، وبأن بقية تعبير <code>let</code> غير موجودة. فلو كانت <code>e1</code> البرنامج كله، فكيف ننهي استدلال الأنواع؟ كنا سنشغّل خوارزمية التوحيد على <code>C1</code>، فنحصل على استبدال <code>S</code>، ونعيد <code>t1 S</code> بوصفه النوع المستنتَج لـ <code>e1</code>. فلنفعل ذلك الآن. ولنسمِّ ذلك النوع المستنتَج <code>u1</code>. ولنطبّق أيضًا <code>S</code> على <code>env</code> للحصول على بيئة جديدة <code>env1</code>، تعكس الآن كل معلومات الأنواع التي جمعناها من <code>e1</code>.</p>
+<p>ثانيًا، نحدّد أي متغيّرات نوع في <code>u1</code> ينبغي تعميمها. ولِمَ لا نعمّمها كلها؟ لأن بعض متغيّرات النوع قد تكون أدخلتها شيفرة تحيط بتعبير <code>let</code>، مثل:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">fun</span> x -&gt;
+  (<span class="hljs-keyword">let</span> y = e1 <span class="hljs-keyword">in</span> e2) (<span class="hljs-keyword">let</span> z = e3 <span class="hljs-keyword">in</span> e4)
+</code></pre>
+<p>لا ينبغي تعميم متغيّر النوع الخاص بـ <code>x</code> عند استنتاج نوع <code>y</code> أو <code>z</code>، لأن <code>x</code> يجب أن يكون له النوع نفسه في التعبيرات الفرعية الأربعة كلها، من <code>e1</code> إلى <code>e4</code>. فالتعميم قد يسمح خطأً بأن يكون لـ <code>x</code> نوع في <code>e1</code> و<code>e2</code>، ونوع مختلف في <code>e3</code> و<code>e4</code>.</p>
+<p>لذا نعمّم فقط المتغيّرات الموجودة <strong>فعلًا</strong> في <code>u1</code> و<strong>غير</strong> الموجودة في <code>env1</code>. وبهذه الطريقة نعمّم فقط متغيّرات النوع الآتية من <code>e1</code>، لا المتغيّرات التي كانت أصلاً في البيئة عندما بدأنا استنتاج نوع تعبير <code>let</code>. ولنفترض أن تلك المتغيّرات هي <code>'a1 ... 'an</code>. عندئذ يكون مخطط النوع الذي نعطيه لـ <code>x</code> هو <code>'a1 ... 'an . u1</code>.</p>
+<p>وبجمع ذلك كله، ننتهي إلى:</p>
+<pre><code class="language-text">generalize(C1, env, x : t1) =
+  env1, x : &#x27;a1 ... &#x27;an . u1
+</code></pre>
+<p>عودة إلى مثالنا مع دالة الهوية من قبل، كان لدينا <code>generalize({}, {}, x : 'a -&gt; 'a)</code>. وفي تلك الحالة البسيطة نوعًا ما، لا يكتشف <code>unify</code> أي مساويات جديدة من البيئة، لذا <code>u1 = 'a -&gt; 'a</code> و<code>env1 = {}</code>. ومتغيّر النوع الوحيد في <code>u1</code> هو <code>'a</code>، وهو لا يظهر في <code>env1</code>. لذا يُعمَّم <code>'a</code>، فينتج <code>'a . 'a -&gt; 'a</code> بوصفه مخطط النوع لـ <code>id</code>.</p>
+<h3 id="1066-تعدد-الأشكال-والقابلية-للتغيير">10.6.6. تعدّد الأشكال والقابلية للتغيير <span class="content-anchor" id="polymorphism-and-mutability"></span></h3>
+<p>ثمة تعقيد آخر في استدلال الأنواع لتعبيرات <code>let</code>. وهو يظهر عندما نضيف مراجع قابلة للتغيير إلى اللغة. تأمّل هذه الشيفرة المثالية، التي لا تجتاز فحص الأنواع في OCaml:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> succ = <span class="hljs-keyword">fun</span> x -&gt; ( + ) <span class="hljs-number">1</span> x;;
+<span class="hljs-keyword">let</span> id = <span class="hljs-keyword">fun</span> x -&gt; x;;
+<span class="hljs-keyword">let</span> r = <span class="hljs-built_in">ref</span> id;;
+r := succ;;
+!r <span class="hljs-literal">true</span>;;  <span class="hljs-comment">(* error *)</span>
+</code></pre>
+<p>من الواضح أنه ينبغي أن نستنتج <code>succ : int -&gt; int</code> و<code>id : 'a . 'a -&gt; 'a</code>. لكن ماذا ينبغي أن يكون نوع <code>r</code>؟ من المغري أن نقول إننا ينبغي أن نستنتج <code>r : 'a . ('a -&gt; 'a) ref</code>. فهذا سيتيح لنا تجسيد نوع <code>r</code> ليكون <code>(int -&gt; int) ref</code> في السطر 4 وتخزين <code>succ</code> في <code>r</code>. لكنه سيتيح لنا أيضًا تجسيد نوع <code>r</code> ليكون <code>(bool -&gt; bool) ref</code> في السطر 5. وهذه كارثة: فهي تسبب تطبيق <code>succ</code> على <code>true</code>، وهو ما لا يضمن سلامة الأنواع.</p>
+<p>الحل الذي تبنّته OCaml واللغات المشابهة يسمى <em>قيد القيم</em> (value restriction): إذ صُمّم نظام الأنواع لمنع قيمة متغيّرة متعدّدة الأشكال من أن تحمل أكثر من نوع واحد أبدًا. ولنعد إجراء جزء من ذلك المثال مرة أخرى، مع التوقف للنظر في ناتج الواجهة التفاعلية:</p>
+<pre><code class="language-ocaml"># <span class="hljs-keyword">let</span> id = <span class="hljs-keyword">fun</span> x -&gt; x;;
+<span class="hljs-keyword">val</span> id : <span class="hljs-symbol">&#x27;a</span> -&gt; <span class="hljs-symbol">&#x27;a</span> = &lt;<span class="hljs-keyword">fun</span>&gt;   <span class="hljs-comment">(* as expected *)</span>
+# <span class="hljs-keyword">let</span> r = <span class="hljs-built_in">ref</span> id;;
+<span class="hljs-keyword">val</span> r : (<span class="hljs-symbol">&#x27;_weak1</span> -&gt; <span class="hljs-symbol">&#x27;_weak1</span>) <span class="hljs-built_in">ref</span> = { ... }   <span class="hljs-comment">(* what is _weak? *)</span>
+# r;;
+- : (<span class="hljs-symbol">&#x27;_weak1</span> -&gt; <span class="hljs-symbol">&#x27;_weak1</span>) <span class="hljs-built_in">ref</span> = { ... }   <span class="hljs-comment">(* it&#x27;s consistent at least *)</span>
+# r := succ;;
+- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+# r;;
+- : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>) <span class="hljs-built_in">ref</span> = { ... }   <span class="hljs-comment">(* did r just change type ?! *)</span>
+</code></pre>
+<p>عندما يُستنتَج نوع <code>r</code>، يعطيه OCaml نوعًا يشمل متغيّر نوع <em>ضعيفًا</em>. وكل تلك المتغيّرات أسماؤها تبدأ بـ <code>'_weak</code>. ومتغيّر النوع الضعيف هو متغيّر لم يُعمَّم، ومن ثم لا يمكن تجسيده على أنواع متعددة. بل هو يدلّ على نوع واحد غير معروف بعد. فكّر فيه كما لو أن استدلال الأنواع لذلك المتغيّر لم ينتهِ بعد: فـ OCaml ينتظر مزيدًا من المعلومات ليحدّد بدقة ما هو. وعندما يُنفَّذ <code>r := succ</code>، تصبح تلك المعلومات متاحة أخيرًا. فيستنتج OCaml أن <code>'_weak1 = int</code> من نوع <code>succ</code>. ثم يستبدل OCaml <code>'_weak1</code> بـ <code>int</code> في كل مكان. وهذا ما ينتج خطأً في السطر الأخير:</p>
+<pre><code class="language-text"># !r true;;
+Error: This expression has type bool but an expression was expected of type int
+</code></pre>
+<p>وبما أن <code>r : (int -&gt; int) ref</code>، فلا يمكننا تطبيق <code>!r</code> على <code>bool</code>.</p>
+<p>لن نتناول هنا تنفيذ متغيّرات النوع الضعيفة.</p>
+<p>لكن دعنا لا نترك بعد موضوع التفاعل بين الأنواع متعدّدة الأشكال والقابلية للتغيير. قد يغريك أن تظن أنه ظاهرة تصيب OCaml وحدها. لكن Java نفسها تعاني منها فعلًا.</p>
+<p>تأمّل التسلسل الهرمي للأصناف التالي:</p>
+<pre><code class="language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> { }
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Elephant</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Animal</span> { }
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Rabbit</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Animal</span> { }
+</code></pre>
+<p>افترض الآن أننا ننشئ مصفوفة من الحيوانات:</p>
+<pre><code class="language-java"><span class="hljs-type">Animal</span>[] <span class="hljs-variable">a</span><span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Rabbit</span>[<span class="hljs-number">2</span>]
+</code></pre>
+<p>نحن هنا نستخدم <em>تعدّد أشكال الأنماط الفرعية</em> (subtype polymorphism) لإسناد مصفوفة من كائنات <code>Rabbit</code> إلى مرجع <code>Animal[]</code>. وهذا ليس مثل <em>تعدّد الأشكال المُعامَلي</em> (parametric polymorphism) الذي استخدمناه في OCaml، لكنه مع ذلك تعدّد أشكال.</p>
+<p>ماذا لو جرّبنا هذا؟</p>
+<pre><code class="language-java">a[<span class="hljs-number">0</span>]= <span class="hljs-keyword">new</span> <span class="hljs-title class_">Elephant</span>()
+</code></pre>
+<p>بما أن <code>a</code> منمّط كمصفوفة <code>Animal</code>، فمن المنطقي أن نستطيع إسناد كائن فيل إليها، تمامًا كما نستطيع إسناد كائن أرنب. وفي الواقع، هذه الشيفرة سليمة وفق مصرّف Java. لكن Java تعطينا خطأ وقت تشغيل إذا شغّلنا تلك الشيفرة!</p>
+<pre><code class="language-java">Exception java.lang.ArrayStoreException
+</code></pre>
+<p>المشكلة أن تغيير العنصر الأول في المصفوفة ليكون أرنبًا سيتركنا بمصفوفة <code>Rabbit</code> أحد عناصرها <code>Elephant</code>. (آخ! سيجلس فيل على أرنب. مسكين الأرنوب.) لكن في Java، يُفترض أن يكون نوع كل كائن في مصفوفة خاصيةً للمصفوفة ككل. لذا يجب أن يكون كل عنصر في المصفوفة المنشأة بـ <code>new Rabbit[2]</code> من نوع <code>Rabbit</code>. لذلك تمنع Java الإسناد أعلاه باكتشاف الخطأ وقت التشغيل وإطلاق استثناء.</p>
+<p>هذا في الحقيقة قيد القيم في ثوب آخر! فنوع القيمة المخزّنة في موضع قابل للتغيير لا يجوز أن يتغيّر، وفق قيد القيم. ومع المصفوفات، تنفّذ Java ذلك بفحص وقت التشغيل، بدلًا من رفض البرنامج وقت التصريف. ويحقّق ذلك توازنًا بين السلامة (منع وقوع الأخطاء) والتعبيرية (السماح لمزيد من البرامج الخالية من الأخطاء باجتياز فحص الأنواع).</p>
+<h2 id="107-الملخص">10.7. الملخّص <span class="content-anchor" id="summary"></span></h2>
+<p>قد يبدو في البداية غامضًا كيف يمكن تنفيذ لغة برمجة. لكن بعد هذا الفصل، نأمل أن يكون بعض ذلك الغموض قد انكشف. فتنفيذ لغة برمجة ليس إلا مسألة تطبيق دؤوب للصياغة والدلالات الديناميكية والدلالات الساكنة نفسها التي درسناها في هذا الكتاب. وهو يعتمد أيضًا اعتمادًا كبيرًا على نظرية علوم الحاسوب من النوع الذي يُدرَس في مقررات الرياضيات المتقطعة أو نظرية الحوسبة.</p>
+<h3 id="1071-المصطلحات-والمفاهيم">10.7.1. المصطلحات والمفاهيم <span class="content-anchor" id="terms-and-concepts"></span></h3>
+<ul>
+<li>الصياغة المجرّدة (abstract syntax)</li>
+<li>شجرة الصياغة المجرّدة (abstract syntax tree)</li>
+<li>الترابطية (associativity)</li>
+<li>الواجهة الخلفية (back end)</li>
+<li>صيغة باكوس-ناور (BNF)</li>
+<li>الخطوة الكبيرة (big step)</li>
+<li>الشيفرة البايتية (bytecode)</li>
+<li>النداء بالاسم (call by name)</li>
+<li>النداء بالقيمة (call by value)</li>
+<li>الاستبدال المانع للالتقاط (capture-avoiding substitution)</li>
+<li>الإغلاق (closure)</li>
+<li>المصرّف (compiler)</li>
+<li>الصياغة الملموسة (concrete syntax)</li>
+<li>القيد (constraint)</li>
+<li>القواعد غير السياقية (context-free grammar)</li>
+<li>اللغة غير السياقية (context-free language)</li>
+<li>إزالة السكر النحوي (desugaring)</li>
+<li>البيئة الديناميكية (dynamic environment)</li>
+<li>النطاق الديناميكي (dynamic scope)</li>
+<li>نموذج البيئة (environment model)</li>
+<li>التقييم (evaluation)</li>
+<li>طازج (fresh)</li>
+<li>الواجهة الأمامية (front end)</li>
+<li>التعميم (generalization)</li>
+<li>خوارزمية استدلال الأنواع لهيندلي–ميلنر (Hindley–Milner (HM))</li>
+<li>التنميط الضمني (implicit typing)</li>
+<li>التجسيد (instantiation)</li>
+<li>التمثيل الوسيط (intermediate representation)</li>
+<li>المفسّر (interpreter)</li>
+<li>حساب لامبدا (lambda calculus)</li>
+<li>تعدّد أشكال let (let polymorphism)</li>
+<li>المحلّل المعجمي (lexer)</li>
+<li>تهيئة الآلة (machine configuration)</li>
+<li>المتغيّر الفوقي (metavariable)</li>
+<li>الرمز غير الطرفي (nonterminal)</li>
+<li>الدلالات التشغيلية (operational semantics)</li>
+<li>المصرّف المُحسِّن (optimizing compiler)</li>
+<li>المحلّل النحوي (parser)</li>
+<li>الأولوية (precedence)</li>
+<li>متغيّر نوع أوّلي (preliminary type variable)</li>
+<li>الحفظ (preservation)</li>
+<li>عملية أولية (primitive operation)</li>
+<li>التقدّم (progress)</li>
+<li>الآلات ذات المكدّس (pushdown automata)</li>
+<li>التعبير النمطي (regular expression)</li>
+<li>اللغة النمطية (regular language)</li>
+<li>العلاقة (relation)</li>
+<li>التحليل الدلالي (semantic analysis)</li>
+<li>الدارات القصيرة (short circuit)</li>
+<li>الخطوة الصغيرة (small step)</li>
+<li>البرنامج المصدر (source program)</li>
+<li>النطاق الساكن (static scope)</li>
+<li>التنميط الساكن (static typing)</li>
+<li>عالق (stuck)</li>
+<li>الاستبدال (substitution)</li>
+<li>نموذج الاستبدال (substitution model)</li>
+<li>تعدّد أشكال الأنماط الفرعية (subtype polymorphism)</li>
+<li>الرمز (symbol)</li>
+<li>جدول الرموز (symbol table)</li>
+<li>البرنامج الهدف (target program)</li>
+<li>الرمز الطرفي (terminal)</li>
+<li>الوحدة المعجمية (token)</li>
+<li>التعليق النوعي (type annotation)</li>
+<li>فحص الأنواع (type checking)</li>
+<li>استدلال الأنواع (type inference)</li>
+<li>إعادة بناء الأنواع (type reconstruction)</li>
+<li>سلامة الأنواع (type safety)</li>
+<li>مخطط النوع (type scheme)</li>
+<li>نظام الأنواع (type system)</li>
+<li>متغيّر النوع (type variable)</li>
+<li>سياق التنميط (typing context)</li>
+<li>التوحيد (unification)</li>
+<li>الموحِّد (unifier)</li>
+<li>القيمة (value)</li>
+<li>قيد القيم (value restriction)</li>
+<li>الآلة الافتراضية (virtual machine)</li>
+<li>متغيّر النوع الضعيف (weak type variable)</li>
+<li>سليم الأنواع (well-typed)</li>
+</ul>
+<h3 id="1072-قراءات-إضافية">10.7.2. قراءات إضافية <span class="content-anchor" id="further-reading"></span></h3>
+<ul>
+<li><em>Types and Programming Languages</em> بقلم Benjamin C. Pierce، الفصول 1-14، 22.</li>
+<li><em>Modern Compiler Implementation</em> (بلغة Java أو ML) بقلم Andrew W. Appel، الفصول 1-5.</li>
+<li><em>Automata and Computability</em> بقلم Dexter C. Kozen، الفصول 1-27.</li>
+<li>يتضمن <em>Real World OCaml</em> <a href="https://dev.realworldocaml.org/compiler-frontend.html">فصلًا عن واجهة OCaml الأمامية</a>.</li>
+<li>توثّق هذه <a href="http://okmij.org/ftp/ML/generalization.html">الصفحة</a> بعض التفاصيل الداخلية لفاحص الأنواع ومستنتج الأنواع في OCaml.</li>
+<li>تُوصَف آلة OCaml الافتراضية المعروفة بآلة Zinc في هاتين الورقتين: <a href="http://cadmium.x9c.fr/distrib/caml-instructions.pdf">1</a>، <a href="https://hal.inria.fr/inria-00070049/document">2</a>.</li>
+</ul>
+<h3 id="1073-شكر-وتقدير">10.7.3. شكر وتقدير <span class="content-anchor" id="acknowledgment"></span></h3>
+<p>معالجتنا لاستدلال الأنواع مبنية على Pierce.</p>
+<div class="exercises"><h2 id="108-التمارين">10.8. التمارين <span class="content-anchor" id="exercises"></span></h2>
+<p>تتوفر <a href="https://github.com/cs3110/textbook-solutions">حلول</a> لمعظم التمارين. ويسعدنا إضافة الحلول أو تصحيحها. يرجى تقديم المساهمات عبر GitHub.</p>
+<p>تعتمد كثير من هذه التمارين على مفسّر SimPL كشيفرة بداية. ويمكنك تنزيلها من هنا: <a href="https://cs3110.github.io/textbook/code/simpl.zip">simpl.zip</a>.</p>
+<p><strong>تمرين: التحليل النحوي [★]</strong></p>
+<p>شغّل <code>make utop</code> في تنفيذ مفسّر SimPL. سيصرّف المفسّر ويشغّل utop. ثم اكتب <code>open Interp.Main</code> وقيّم التعبيرات التالية. ولاحظ ما تعيده كل واحدة.</p>
+<ul>
+<li><code>parse &quot;22&quot;</code></li>
+<li><code>parse &quot;1 + 2 + 3&quot;</code></li>
+<li><code>parse &quot;let x = 2 in 20 + x&quot;</code></li>
+</ul>
+<p>قيّم أيضًا هذين التعبيرين، اللذين سيطلقان استثناءات. واشرح لماذا يعدّ كل منهما خطأً، وما إذا كان الخطأ يقع أثناء التحليل النحوي أم التحليل المعجمي.</p>
+<ul>
+<li><code>parse &quot;3.14&quot;</code></li>
+<li><code>parse &quot;3+&quot;</code></li>
+</ul>
+<p><strong>تمرين: معرّفات simpl [★★]</strong></p>
+<p>افحص تعريف التعبير النمطي <code>id</code> في محلّل SimPL المعجمي. وحدّد طريقة واحدة على الأقل يختلف بها عن تعريف معرّفات OCaml.</p>
+<p><strong>تمرين: تحليل TIMES [★★]</strong></p>
+<p>في محلّل SimPL النحوي، تُعلَن الوحدة المعجمية <code>TIMES</code> ذات أولوية أعلى من <code>PLUS</code>، وأنها يسارية الترابط. ولنجرّب خيارات أخرى.</p>
+<ul>
+<li>قيّم <code>parse &quot;1*2*3&quot;</code>. لاحظ شجرة الصياغة المجرّدة. غيّر الآن إعلان ترابطية <code>TIMES</code> في <code>parser.mly</code> ليكون <code>%right</code> بدلًا من <code>%left</code>. أعد التصريف وأعد تقييم <code>parse &quot;1*2*3&quot;</code>. كيف تغيّرت شجرة الصياغة المجرّدة؟ قبل المتابعة، أعد الإعلان ليكون <code>%left</code>.</li>
+<li>قيّم <code>parse &quot;1+2*3&quot;</code>. لاحظ شجرة الصياغة المجرّدة. بدّل الآن الإعلان <code>%left TIMES</code> في <code>parser.mly</code> بالإعلان <code>%left PLUS</code>. أعد التصريف وأعد تقييم <code>parse &quot;1+2*3&quot;</code>. كيف تغيّرت شجرة الصياغة المجرّدة؟ قبل المتابعة، أعد ترتيب الإعلانات الأصلي.</li>
+</ul>
+<p><strong>تمرين: infer [★★]</strong></p>
+<p>يمكن إجراء استدلال الأنواع لـ SimPL بطريقة أبسط بكثير من اللغة الأكبر (ذات الدوال المجهولة وتعبيرات let) التي تناولناها في قسم استدلال الأنواع.</p>
+<p>شغّل <code>make utop</code> في تنفيذ مفسّر SimPL. سيصرّف المفسّر ويشغّل utop. والآن عرّف دالة <code>infer : string -&gt; typ</code> بحيث يحلّل <code>infer s</code> السلسلة <code>s</code> إلى تعبير ويستنتج نوع <code>s</code> في السياق الفارغ. وسيستفيد حلك من الدالة <code>typeof</code>. ولا تحتاج إلى جمع القيود أو التوحيد.</p>
+<p>جرّب دالة <code>infer</code> التي كتبتها على حالات الاختبار التالية:</p>
+<ul>
+<li><code>&quot;3110&quot;</code></li>
+<li>\`&quot;1</li>
+<li><code>&quot;let x = 2 in 20 + x&quot;</code></li>
+</ul>
+<p><strong>تمرين: أنواع التعبيرات الفرعية [★★]</strong></p>
+<p>افترض أن تعبير SimPL سليم الأنواع في سياق <code>ctx</code>. فهل كل تعبيراته الفرعية سليمة الأنواع أيضًا في <code>ctx</code>؟ وهل يوجد لكل تعبير فرعي سياق يكون فيه سليم الأنواع؟ ولماذا؟</p>
+<p><strong>تمرين: التنميط [★★]</strong></p>
+<p>استخدم نظام أنواع SimPL لبيان أن <code>{} |- let x = 0 in if x &lt;= 1 then 22 else 42 : int</code>.</p>
+<p><strong>تمرين: الاستبدال [★★]</strong></p>
+<p>ما ناتج الاستبدالات التالية؟</p>
+<ul>
+<li><code>(x + 1){2/x}</code></li>
+<li><code>(x + y){2/x}{3/y}</code></li>
+<li><code>(x + y){1/z}</code></li>
+<li><code>(let x = 1 in x + 1){2/x}</code></li>
+<li><code>(x + (let x=1 in x+1)){2/x}</code></li>
+<li><code>((let x=1 in x+1) + x){2/x}</code></li>
+<li><code>(let x=y in x+1){2/y}</code></li>
+<li><code>(let x=x in x+1){2/x}</code></li>
+</ul>
+<p><strong>تمرين: خطوات التعبيرات [★]</strong></p>
+<p>إليك مثالًا على تقييم تعبير:</p>
+<pre><code class="language-text">  7+5*2
+--&gt;  (step * operation)
+  7+10
+--&gt;  (step + operation)
+  17
+</code></pre>
+<p>في ذلك المثال خطوتان، وقد علّقنا على كل خطوة بتعليق بين قوسين للإشارة إلى قاعدة التقييم التي استخدمناها. وقد توقفنا عن التقييم عندما وصلنا إلى قيمة.</p>
+<p>قيّم التعبيرات التالية باستخدام نموذج الاستبدال ذي الخطوة الصغيرة. واستخدم «الصيغة الطويلة» للتقييم التي عرضناها أعلاه، والتي تقدّم فيها تلميحًا إلى القاعدة المطبَّقة في كل خطوة.</p>
+<ul>
+<li><code>(3 + 5) * 2</code> (خطوتان)</li>
+<li>\`if 2 + 3</li>
+</ul>
+<p><strong>تمرين: خطوات تعبيرات let [★★]</strong></p>
+<p>قيّم هذه التعبيرات، باستخدام «الصيغة الطويلة» من التمرين السابق مرة أخرى.</p>
+<ul>
+<li><code>let x = 2 + 2 in x + x</code> (3 خطوات)</li>
+<li><code>let x = 5 in ((let x = 6 in x) + x)</code> (3 خطوات)</li>
+<li><code>let x = 1 in (let x = x + x in x + x)</code> (4 خطوات)</li>
+</ul>
+<p><strong>تمرين: الأنواع المتغايرة [★]</strong></p>
+<p>قيّم تعبيرات Core OCaml التالية باستخدام نموذج الاستبدال ذي الخطوة الصغيرة:</p>
+<ul>
+<li><code>Left (1+2)</code> (خطوة واحدة)</li>
+<li><code>match Left 42 with Left x -&gt; x+1 | Right y -&gt; y-1</code> (خطوتان)</li>
+</ul>
+<p><strong>تمرين: التطبيق [★★]</strong></p>
+<p>قيّم تعبيرات Core OCaml التالية باستخدام نموذج الاستبدال ذي الخطوة الصغيرة:</p>
+<ul>
+<li><code>(fun x -&gt; 3 + x) 2</code> (خطوتان)</li>
+<li><code>let f = (fun x -&gt; x + x) in (f 3) + (f 3)</code> (6 خطوات)</li>
+<li><code>let f = fun x -&gt; x + x in let x = 1 in let g = fun y -&gt; x + f y in g 3</code> (7 خطوات)</li>
+<li><code>let f = (fun x -&gt; fun y -&gt; x + y) in let g = f 3 in (g 1) + (f 2 3)</code> (9 خطوات)</li>
+</ul>
+<p><strong>تمرين: أوميغا [★★★]</strong></p>
+<p>جرّب تقييم <code>(fun x -&gt; x x) (fun x -&gt; x x)</code>. هذا التعبير، الذي يسمى عادةً <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">Ω</span></span></span></span>، لا يجتاز فحص الأنواع في OCaml الحقيقية، لكن يمكننا مع ذلك تطبيق دلالات الخطوة الصغيرة لـ Core OCaml عليه.</p>
+<p><strong>تمرين: التحليل النحوي للأزواج [★★★]</strong></p>
+<p>أضف الأزواج (أي الصفوف ذات المكوّنين بالضبط) إلى SimPL. ونفّذ التحليل المعجمي والتحليل النحوي للأزواج. وافترض أن الأقواس حول الزوج مطلوبة (ليست اختيارية كما تكون أحيانًا في OCaml). واتّبع هذه الاستراتيجية:</p>
+<ul>
+<li>أضف بانيًا (constructor) للأزواج إلى النوع <code>expr</code>.</li>
+<li>أضف وحدة معجمية للفاصلة إلى المحلّل النحوي.</li>
+<li>نفّذ التحليل المعجمي لوحدة الفاصلة.</li>
+<li>نفّذ التحليل النحوي للأزواج.</li>
+</ul>
+<p>عندما تصرّف، ستحصل على بعض تحذيرات مطابقة الأنماط غير الشاملة، لأنك لم تنفّذ بعد فحص الأنواع ولا تفسير الأزواج. لكن يمكنك مع ذلك تجربة تحليلها نحويًا في utop بالدالة <code>parse</code>.</p>
+<p><strong>تمرين: فحص أنواع الأزواج [★★★]</strong></p>
+<p>نفّذ فحص أنواع الأزواج. واتّبع هذه الاستراتيجية:</p>
+<ul>
+<li>اكتب قاعدة أنواع جديدة قبل تنفيذ أي شيفرة.</li>
+<li>أضف بانيًا جديدًا للأزواج إلى النوع <code>typ</code>.</li>
+<li>أضف فرعًا جديدًا إلى <code>typeof</code>.</li>
+</ul>
+<p><strong>تمرين: تقييم الأزواج [★★★]</strong></p>
+<p>نفّذ تقييم الأزواج. واتّبع هذه الاستراتيجية:</p>
+<p>نفّذ <code>is_value</code> للأزواج. فالزوج المكوّن من قيمتين (مثل <code>(0,1)</code>) هو نفسه قيمة، لذا ستحتاج الدالة إلى أن تصبح تعاودية.</p>
+<p>نفّذ <code>subst</code> للأزواج: <code>(e1, e2){v/x} = (e1{v/x}, e2{v/x})</code>.</p>
+<p>نفّذ تقييم الأزواج بالخطوة الصغيرة والخطوة الكبيرة، باستخدام القواعد التالية:</p>
+<pre><code class="language-text">(e1, e2) --&gt; (e1&#x27;, e2)
+  if e1 --&gt; e1&#x27;
+
+(v1, e2) --&gt; (v1, e2&#x27;)
+  if e2 --&gt; e2&#x27;
+
+(e1, e2) ==&gt; (v1, v2)
+  if e1 ==&gt; v1
+  and e2 ==&gt; v2
+</code></pre>
+<p><strong>تمرين: إزالة السكر النحوي عن القوائم [★]</strong></p>
+<p>افترض أننا نعامل تعبيرات القوائم كسكر نحوي بالطريقة التالية:</p>
+<ul>
+<li><code>[]</code> سكر نحوي لـ <code>Left 0</code>.</li>
+<li><code>e1 :: e2</code> سكر نحوي لـ <code>Right (e1, e2)</code>.</li>
+</ul>
+<p>إلى أي تعبير Core OCaml تتحوّل <code>[1; 2; 3]</code> بعد إزالة السكر النحوي؟</p>
+<p><strong>تمرين: القائمة غير الفارغة [★★]</strong></p>
+<p>اكتب دالة Core OCaml باسم <code>not_empty</code> تعيد <code>1</code> إذا كانت القائمة غير فارغة و<code>0</code> إذا كانت فارغة. واستخدم نموذج الاستبدال للتحقق من أن دالتك تتصرف بشكل صحيح في حالات الاختبار التالية:</p>
+<ul>
+<li><code>not_empty []</code></li>
+<li><code>not_empty [1]</code></li>
+</ul>
+<p><strong>تمرين: تعميم الأنماط [★★★★]</strong></p>
+<p>في Core OCaml، لا يوجد إلا نمطان: <code>Left x</code> و<code>Right x</code>، حيث <code>x</code> اسم متغيّر. لكن في OCaml الكاملة، الأنماط أعمّ بكثير. ولنرَ إلى أي حدّ يمكننا تعميم الأنماط في Core OCaml.</p>
+<p><strong>الخطوة 1:</strong> إليك قواعد BNF للأنماط، وقواعد BNF منقّحة قليلًا للتعبيرات:</p>
+<pre><code class="language-text">p ::= i | (p1, p2) | Left p | Right p | x | _
+
+e ::= ...
+    | match e with | p1 -&gt; e1 | p2 -&gt; e2 | ... | pn -&gt; en
+</code></pre>
+<p>في الصياغة المنقّحة لـ <code>match</code>، تكون أول <code>|</code> فقط في السطر، التي تسبق الكلمة المفتاحية <code>match</code> مباشرة، صياغة فوقية. أما علامات <code>|</code> الأربع الباقية في السطر فهي صياغة. ولاحظ أننا نشترط <code>|</code> قبل النمط الأول.</p>
+<p><strong>الخطوة 2:</strong> تطابق القيمة <code>v</code> النمط <code>p</code> إذا أمكننا، باستبدال أي متغيّرات أو محارف بديلة في <code>p</code> بقيم، الحصول على <code>v</code> بالضبط. على سبيل المثال:</p>
+<ul>
+<li><code>2</code> تطابق <code>x</code> لأن <code>x{2/x}</code> هي <code>2</code>.</li>
+<li><code>Right(0,Left 0)</code> تطابق <code>Right(x,_)</code> لأن <code>Right(x,_){0/x}{Left 0/_}</code> هي <code>Right(0,Left 0)</code>.</li>
+</ul>
+<p>ولنعرّف علاقة ثلاثية جديدة تسمى <code>matches</code>، مسترشدين بتلك الأمثلة:</p>
+<pre><code class="language-text">v =~ p // s
+</code></pre>
+<p>انطق هذه العلاقة كالتالي: «<code>v</code> تطابق <code>p</code> منتجةً الاستبدالات <code>s</code>».</p>
+<p>هنا <code>s</code> متتالية من الاستبدالات، مثل <code>{0/x}{Left 3/y}{(1,2)/z}</code>. ولهذه العلاقة قاعدة واحدة فقط:</p>
+<pre><code class="language-text">v =~ p // s
+  if v = p s
+</code></pre>
+<p>على سبيل المثال،</p>
+<pre><code class="language-text">2 =~ x // {2/x}
+  because 2 = x{2/x}
+</code></pre>
+<p><strong>الخطوة 3:</strong> لتقييم تعبير match:</p>
+<ul>
+<li>قيّم التعبير المطلوب مطابقته إلى قيمة.</li>
+<li>إذا طابق ذلك التعبير النمط الأول، فقيّم التعبير المقابل لذلك النمط.</li>
+<li>وإلا، طابقه مع النمط الثاني، ثم الثالث، وهكذا.</li>
+<li>إذا لم يطابقه أي نمط، كان التقييم <em>عالقًا</em>: فلا يمكنه اتخاذ خطوات أخرى.</li>
+</ul>
+<p>بالاستناد إلى تلك الاستنتاجات، أكمل قواعد التقييم التالية بملء المواضع المعلّمة بـ <code>???</code>:</p>
+<pre><code class="language-text">(* This rule should implement evaluation of e. *)
+match e with | p1 -&gt; e1 | p2 -&gt; e2 | ... | pn -&gt; en
+--&gt; ???
+  if ???
+
+(* This rule implements moving past p1 to the next pattern. *)
+match v with | p1 -&gt; e1 | p2 -&gt; e2 | ... | pn -&gt; en
+--&gt; match v with | p2 -&gt; e2 | ... | pn -&gt; en
+  if there does not exist an s such that ???
+
+(* This rule implements matching v with p1 then proceeding to evaluate e1. *)
+match v with | p1 -&gt; e1 | p2 -&gt; e2 | ... | pn -&gt; en
+--&gt; ??? (* something involving e1 *)
+  if ???
+</code></pre>
+<p>لاحظ أننا لا نحتاج إلى كتابة القاعدة التالية صراحةً:</p>
+<pre><code class="language-text">match v with |  -/-&gt;
+</code></pre>
+<p>سيعلق التقييم عند تلك النقطة لأن أياً من القواعد الثلاث الأخرى أعلاه لن ينطبق.</p>
+<p><strong>الخطوة 4:</strong> تحقّق من قواعدك مرة أخرى بتقييم التعبير التالي:</p>
+<p><code>match (1 + 2, 3) with | (1,0) -&gt; 4 | (1,x) -&gt; x | (x,y) -&gt; x + y</code></p>
+<p><strong>تمرين: let rec [★★★★]</strong></p>
+<p>إحدى قواعد التقييم لـ <code>let</code> هي</p>
+<pre><code class="language-text">let x = v in e --&gt; e{v/x}
+</code></pre>
+<p>يمكننا أن نحاول تكييف ذلك مع <code>let rec</code>:</p>
+<pre><code class="language-text">let rec x = v in e --&gt; e{v/x}   (* broken *)
+</code></pre>
+<p>لكن تلك القاعدة لا تعمل بشكل صحيح، كما نرى في المثال التالي:</p>
+<pre><code class="language-text">  let rec fact = fun x -&gt;
+    if x &lt;= 1 then 1 else x * (fact (x - 1)) in
+  fact 3
+
+--&gt;
+
+  (fun x -&gt; if x &lt;= 1 then 1 else x * (fact (x - 1)) 3
+
+--&gt;
+
+  if 3 &lt;= 1 then 1 else 3 * (fact (3 - 1))
+
+--&gt;
+
+  3 * (fact (3 - 1))
+
+--&gt;
+
+  3 * (fact 2)
+
+-/-&gt;
+</code></pre>
+<p>نحن الآن عالقون، لأننا نحتاج إلى تقييم <code>fact</code>، لكنه لا يتخذ خطوة. وجوهر الأمر أن القاعدة الدلالية التي استخدمناها «نسيت» قيمة الدالة التي كان ينبغي ربطها بـ <code>fact</code>.</p>
+<p>من الطرق الجيدة لإصلاح هذه المشكلة إدخال بنية لغوية جديدة للتعاود تسمى ببساطة <code>rec</code>. (لاحظ أن OCaml ليس فيها أي بنية تقابل <code>rec</code> مباشرة.) وصوريًا، نوسّع صياغة التعبيرات كما يلي:</p>
+<pre><code class="language-text">e ::= ...
+    | rec f -&gt; e
+</code></pre>
+<p>ونضيف قاعدة التقييم التالية:</p>
+<pre><code class="language-text">rec f -&gt; e  --&gt;  e{(rec f -&gt; e)/f}
+</code></pre>
+<p>القراءة الحدسية لهذه القاعدة هي أننا عند تقييم <code>rec f -&gt; e</code> «نفرد» (unfold) <code>f</code> في جسم <code>e</code>. على سبيل المثال، إليك حلقة لا نهائية مكتوبة بـ <code>rec</code>:</p>
+<pre><code class="language-text">  rec f -&gt; f
+
+--&gt;  (* step rec *)
+
+  f{(rec f -&gt; f)/f}
+
+= (* substitute *)
+
+  rec f -&gt; f
+
+--&gt; (* step rec *)
+
+  f{(rec f -&gt; f)/f}
+
+...
+</code></pre>
+<p>الآن يمكننا استخدام <code>rec</code> لتنفيذ <code>let rec</code>. فأينما ظهر <code>let rec</code> في برنامج:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> f = e1 <span class="hljs-keyword">in</span> e2
+</code></pre>
+<p><em>نزيل السكر النحوي</em> عنه (أي نعيد كتابته) إلى</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> f = <span class="hljs-keyword">rec</span> f -&gt; e1 <span class="hljs-keyword">in</span> e2
+</code></pre>
+<p>لاحظ أن الظهور الثاني لـ <code>f</code> (داخل <code>rec</code>) يحجب الأول. وبالعودة إلى مثال <code>fact</code>، فإن نسخته بعد إزالة السكر النحوي هي</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> fact = <span class="hljs-keyword">rec</span> fact -&gt; <span class="hljs-keyword">fun</span> x -&gt;
+  <span class="hljs-keyword">if</span> x &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> x * (fact (x - <span class="hljs-number">1</span>)) <span class="hljs-keyword">in</span>
+fact <span class="hljs-number">3</span>
+</code></pre>
+<p>قيّم التعبير التالي (17 خطوة كما نظن، وإن كان الأمر يصبح مملًا جدًا). وقد تريد تبسيط حياتك بكتابة «F» بدلًا من <code>(rec fact -&gt; fun x -&gt; if x &lt;= 1 then 1 else x * (fact (x-1)))</code></p>
+<pre><code class="language-text">let rec fact = fun x -&gt;
+  if x &lt;= 1 then 1 else x * (fact (x - 1)) in
+fact 3
+</code></pre>
+<p>استخدم قواعد الاستبدال التالية (المانعة للالتقاط)، وهي مشابهة لقواعد <code>let</code> و<code>fun</code>:</p>
+<pre><code class="language-text">(rec f -&gt; e){v/x} = rec f -&gt; e{v/x}
+  if x &lt;&gt; f
+  and f not in FV(v)
+
+(rec f -&gt; e){v/f} = rec f -&gt; e
+</code></pre>
+<p><strong>تمرين: التعبيرات البسيطة [★]</strong></p>
+<p>في نموذج الاستبدال ذي الخطوة الصغيرة، كان تقييم التعبير <em>أشبه بقائمة</em>: إذ يمكننا كتابة التقييم بصيغة خطية مثل <code>e --&gt; e1 --&gt; e2 --&gt; ... --&gt; en --&gt; v</code>. أما في نموذج البيئة ذي الخطوة الكبيرة، فالتقييم <em>أشبه بشجرة</em>: فعمليات التقييم ذات بنية متداخلة تعاودية. وإليك مثالًا:</p>
+<pre><code class="language-text">&lt;{}, (3 + 5) * 2&gt; ==&gt; 16          (op rule)
+    because &lt;{}, (3 + 5)&gt; ==&gt; 8   (op rule)
+        because &lt;{}, 3&gt; ==&gt; 3     (int const rule)
+        and     &lt;{}, 5&gt; ==&gt; 5     (int const rule)
+        and 3+5 is 8
+    and &lt;{}, 2&gt; ==&gt; 2             (int const rule)
+    and 8*2 is 16
+</code></pre>
+<p>استخدمنا الإزاحة هنا لإظهار شكل الشجرة، ووسمنا كل استخدام لإحدى القواعد الدلالية.</p>
+<p>قيّم التعبيرات التالية باستخدام نموذج البيئة ذي الخطوة الكبيرة. واستخدم ترميز التقييم الذي عرضناه أعلاه، والذي تقدّم فيه تلميحًا إلى القاعدة المطبَّقة عند كل عقدة في الشجرة.</p>
+<ul>
+<li><code>110 + 3*1000</code> <em>تلميح: ثلاث استخدامات لقاعدة الثابت، واستخدامان لقاعدة العملية</em></li>
+<li>\`if 2 + 3</li>
+</ul>
+<p><strong>تمرين: تعبيرات let وmatch [★★]</strong></p>
+<p>قيّم هذه التعبيرات، مع الاستمرار في استخدام ترميز الشجرة، والاستمرار في وسم كل استخدام لقاعدة.</p>
+<ul>
+<li><code>let x=0 in 1</code> <em>تلميح: استخدام واحد لـ let، واستخدامان لقاعدة الثابت</em></li>
+<li><code>let x=2 in x+1</code> <em>تلميح: استخدام واحد لـ let، واستخدامان لقاعدة الثابت، واستخدام واحد لقاعدة العملية، واستخدام واحد لقاعدة المتغيّر</em></li>
+<li><code>match Left 2 with Left x -&gt; x+1 | Right x -&gt; x-1</code> <em>تلميح: استخدام واحد لـ match(left)، واستخدامان لقاعدة الثابت، واستخدام واحد لقاعدة العملية، واستخدام واحد لقاعدة المتغيّر</em></li>
+</ul>
+<p><strong>تمرين: الإغلاقات [★★]</strong></p>
+<p>قيّم هذه التعبيرات:</p>
+<ul>
+<li><code>(fun x -&gt; x+1) 2</code> <em>تلميح: استخدام واحد لقاعدة التطبيق، واستخدام واحد لقاعدة الدالة المجهولة، واستخدامان لقاعدة الثابت، واستخدام واحد لقاعدة العملية، واستخدام واحد لقاعدة المتغيّر</em></li>
+<li><code>let f = fun x -&gt; x+1 in f 2</code> <em>تلميح: استخدام واحد لـ let، واستخدام واحد لقاعدة الدالة المجهولة، واستخدام واحد لقاعدة التطبيق، واستخدامان لقاعدة المتغيّر، واستخدام واحد لقاعدة العملية، واستخدامان لقاعدة الثابت</em></li>
+</ul>
+<p><strong>تمرين: النطاق المعجمي والحجب [★★]</strong></p>
+<p>قيّم هذه التعبيرات:</p>
+<ul>
+<li><code>let x=0 in x + (let x=1 in x)</code> <em>تلميح: استخدامان لـ let، واستخدامان لقاعدة المتغيّر، واستخدام واحد لقاعدة العملية، واستخدامان لقاعدة الثابت</em></li>
+<li><code>let x=1 in let f=fun y -&gt; x in let x=2 in f 0</code> <em>تلميح: ثلاثة استخدامات لـ let، واستخدام واحد لقاعدة الدالة المجهولة، واستخدام واحد لقاعدة التطبيق، واستخدامان لقاعدة المتغيّر، وثلاثة استخدامات لقاعدة الثابت</em></li>
+</ul>
+<p><strong>تمرين: مزيد من التقييم [★★]</strong></p>
+<p>قيّم هذه:</p>
+<ul>
+<li><code>let x = 2 + 2 in x + x</code></li>
+<li><code>let x = 1 in let x = x + x in x + x</code></li>
+<li><code>let f = fun x -&gt; fun y -&gt; x + y in let g = f 3 in g 2</code></li>
+<li><code>let f = fst ((let x = 3 in fun y -&gt; x), 2) in f 0</code></li>
+</ul>
+<p><strong>تمرين: النطاق الديناميكي [★★★]</strong></p>
+<p>استخدم النطاق الديناميكي لتقييم التعبير التالي. ولست بحاجة إلى تدوين كل خطوات التقييم إلا إن وجدت ذلك مفيدًا. وقارن إجابتك بالإجابة التي تتوقعها من لغة ذات نطاق معجمي.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span> <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> f y = x + y <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> x = <span class="hljs-number">4</span> <span class="hljs-keyword">in</span>
+f <span class="hljs-number">3</span>
+</code></pre>
+<p><strong>تمرين: مزيد من النطاق الديناميكي [★★★]</strong></p>
+<p>استخدم النطاق الديناميكي لتقييم التعبيرات التالية. وقارن إجاباتك بالإجابات التي تتوقعها من لغة ذات نطاق معجمي.</p>
+<p>التعبير 1:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span> <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> f y = x + y <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> g x = f x <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> x = <span class="hljs-number">4</span> <span class="hljs-keyword">in</span>
+g <span class="hljs-number">3</span>
+</code></pre>
+<p>التعبير 2:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> f y = x + y <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> x = <span class="hljs-number">3</span> <span class="hljs-keyword">in</span>
+<span class="hljs-keyword">let</span> y = <span class="hljs-number">4</span> <span class="hljs-keyword">in</span>
+f <span class="hljs-number">2</span>
+</code></pre>
+<p><strong>تمرين: القيود [★★]</strong></p>
+<p>بيّن اشتقاق العلاقة <code>env |- e : t -| C</code> لهذه التعبيرات:</p>
+<pre><code class="language-text">1. fun x -&gt; ( + ) 1 x
+2. fun b -&gt; if b then false else true
+3. fun x -&gt; fun y -&gt; if x &lt;= y then y else x
+</code></pre>
+<p><strong>تمرين: وحّد [★★]</strong></p>
+<p>استخدم خوارزمية التوحيد لحلّ نظام القيود التالي. وينبغي أن يكون جوابك <em>استبدالًا</em>، بالمعنى الذي تعرّفه خوارزمية التوحيد لهذا المصطلح.</p>
+<pre><code class="language-text">X = int
+Y = X -&gt; X
+</code></pre>
+<p><strong>تمرين: مزيد من التوحيد [★★★]</strong></p>
+<p>استخدم خوارزمية التوحيد لحلّ نظام القيود التالي. وينبغي أن يكون جوابك <em>استبدالًا</em>، بالمعنى الذي تعرّفه خوارزمية التوحيد لهذا المصطلح.</p>
+<pre><code class="language-text">X -&gt; Y = Y -&gt; Z
+     Z = U -&gt; W
+</code></pre>
+<p><strong>تمرين: استنتاج apply [★★★]</strong></p>
+<p>باستخدام خوارزمية استدلال الأنواع HM، استنتج نوع التعريف التالي:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> apply f x = f x
+</code></pre>
+<p>تذكّر أن تمرّ بهذه الخطوات:</p>
+<ul>
+<li>أزل السكر النحوي عن التعريف بالكامل (أي ابنِ شجرة صياغة مجرّدة)</li>
+<li>اجمع القيود</li>
+<li>حلّ القيود بالتوحيد</li>
+</ul>
+<p><strong>تمرين: استنتاج double [★★★]</strong></p>
+<p>باستخدام خوارزمية استدلال الأنواع HM، استنتج نوع التعريف التالي:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> double f x = f (f x)
+</code></pre>
+<p><strong>تمرين: استنتاج S [★★★★]</strong></p>
+<p>باستخدام خوارزمية استدلال الأنواع HM، استنتج نوع التعريف التالي:</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> s x y z = (x z) (y z)
+</code></pre>
+</div>`,p={book:e,chapter:n,chapterTitle:s,slug:t,title:a,headings:o,html:c};export{e as book,n as chapter,s as chapterTitle,p as default,o as headings,c as html,t as slug,a as title};

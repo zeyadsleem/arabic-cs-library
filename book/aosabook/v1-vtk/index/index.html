@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -73,7 +73,7 @@ virtual double GetTolerance();
 </code></pre>
 <p>هناك أسباب كثيرة لاستخدام هذه الماكروهات تتجاوز وضوح الشيفرة فحسب. ففي VTK هناك أعضاء بيانات مهمّون يتحكّمون في التنقيح (debugging)، وفي تحديث زمن تعديل الكائن (MTime)، وفي إدارة العدّ بالمراجع على النحو السليم. وتُحَرّك هذه الماكروهات هذه البيانات على النحو الصحيح، ويُنصح بشدّة باستخدامها. فمثلًا، يقع في VTK خطأ خبيث على وجه الخصوص عندما لا يُدار MTime الخاص بالكائن على النحو السليم. وعندئذٍ قد لا تُنفَّذ الشيفرة عندما ينبغي لها التنفيذ، أو قد تُنفَّذ أكثر من اللازم.</p>
 <p>ومن نقاط قوّة VTK قدرته على تمثيل البيانات وإدارتها بطريقة مبسّطة نسبيًا. فعادةً تُستخدَم مصفوفات بيانات متنوّعة من أنواع محدّدة (مثل <code>vtkFloatArray</code>) لتمثيل مقاطع متّصلة من المعلومات. فمثلًا، تُمثَّل قائمة من ثلاث نقاط XYZ بمصفوفة <code>vtkFloatArray</code> من تسعة مدخلات (x,y,z, x,y,z، إلخ). وهناك مفهوم الـ tuple في هذه المصفوفات، فالنقطة ثلاثية الأبعاد ثلاثية (3-tuple)، في حين تُمثَّل مصفوفة موتّر متماثلة 3×3 بستّية (6-tuple) (حيث يمكن تحقيق وفر في المساحة بفضل التناظر). وقد أُخذ هذا التصميم عن قصد، لأنّه في الحوسبة العلمية من الشائع التفاعل مع أنظمة تعالج المصفوفات (مثل Fortran)، وتخصيص الذاكرة وتحريرها على شكل كتل متّصلة كبيرة أكثر كفاءة بكثير. وإضافةً إلى ذلك، فإنّ الاتصال وعمليات التسلسل (serialization) وأداء الإدخال/الإخراج (IO) تكون عمومًا أكثر كفاءة بكثير مع البيانات المتّصلة. وتمثّل مصفوفات البيانات الأساسية هذه (من الأنواع المختلفة) الجزء الأكبر من بيانات VTK، ولديها مجموعة متنوّعة من طرق الراحة لإدراج المعلومات والوصول إليها، بما في ذلك طرق للوصول السريع، وطرق تخصّص الذاكرة تلقائيًا عند الحاجة إليها عند إضافة المزيد من البيانات. ومصفوفات البيانات هي مشتقّات من الصنف المجرّد <code>vtkDataArray</code>، ما يعني إمكان استخدام طرق افتراضية عامة (generic virtual methods) لتبسيط البرمجة. غير أنّه، سعيًا وراء بلوغ أداء أعلى، تُستخدَم دوال ساكنة معمَّمة على قوالب (templated) تتبدّل بحسب النوع، مع وصول لاحق ومباشر إلى مصفوفات البيانات المتّصلة.</p>
-<p>وعلى العموم، فإنّ قوالب C++ غير ظاهرة في واجهة الصنف العامة (public class API)؛ وإن كانت تُستخدَم على نطاق واسع لأسباب الأداء. وينطبق الأمر نفسه على STL: فنحن نستخدم عادةً نمط تصميم PIMPL<a href="#footnote-1">1</a> لإخفاء تعقيدات تنفيذ قالب عن المستخدم أو مطوّر التطبيق. وقد أفادنا هذا الأمر بصورة خاصة حين يأتي تغليف الكود داخل شيفرة مُفسَّرة كما وُصفت سابقًا. وتجنّب تعقيدات القوالب في الواجهة العامة يعني أنّ تنفيذ VTK، من منظور مطوّر التطبيق، خالٍ في معظمه من تعقيدات اختيار أنواع البيانات. وبالطبع، في الداخل يقود تنفيذ الشيفرة نوع البيانات، الذي يُحدَّد عادةً وقت التشغيل عند الوصول إلى البيانات.</p>
+<p>وعلى العموم، فإنّ قوالب C++ غير ظاهرة في واجهة الصنف العامة (public class API)؛ وإن كانت تُستخدَم على نطاق واسع لأسباب الأداء. وينطبق الأمر نفسه على STL: فنحن نستخدم عادةً نمط تصميم PIMPL<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> لإخفاء تعقيدات تنفيذ قالب عن المستخدم أو مطوّر التطبيق. وقد أفادنا هذا الأمر بصورة خاصة حين يأتي تغليف الكود داخل شيفرة مُفسَّرة كما وُصفت سابقًا. وتجنّب تعقيدات القوالب في الواجهة العامة يعني أنّ تنفيذ VTK، من منظور مطوّر التطبيق، خالٍ في معظمه من تعقيدات اختيار أنواع البيانات. وبالطبع، في الداخل يقود تنفيذ الشيفرة نوع البيانات، الذي يُحدَّد عادةً وقت التشغيل عند الوصول إلى البيانات.</p>
 <p>ويتساءل بعض المستخدمين لماذا يستخدم VTK العدّ بالمراجع (reference counting) لإدارة الذاكرة بدلًا من نهج أكثر ملاءمة للمستخدم مثل جمع القمامة (garbage collection). والإجابة الأساسية أنّ VTK يحتاج إلى تحكّم كامل في متى تُحذف البيانات، لأنّ أحجام البيانات قد تكون هائلة. فمثلًا، حجم وحدة من بيانات البايتات بحجم 1000×1000×1000 يعادل غيغابايت واحد. وليس من الفكرة الجيدة ترك هذه البيانات متناثرة بينما يقرّر جامع القمامة ما إذا كان وقت تحريرها قد حان أم لا. وفي VTK تمتلك معظم الأصناف (مشتقّات <code>vtkObject</code>) القدرة المدمجة على العدّ بالمراجع. ويحتوي كل كائن على عدّاد مراجع يُهيَّأ إلى واحد لحظة إنشاء الكائن. ومع كل تسجيل لاستخدام الكائن، يزداد عدّاد المراجع بمقدار واحد. وعلى نحو مماثل، عند إلغاء تسجيل استخدام الكائن (أو ما يعادله، حذف الكائن)، ينقص عدّاد المراجع بمقدار واحد. وفي النهاية ينخفض عدّاد مراجع الكائن إلى الصفر، وعندئذٍ يفني الكائن ذاتيًّا. ويبدو المثال النموذجي على النحو التالي:</p>
 <pre><code>vtkCamera *camera = vtkCamera::New();   //reference count is 1
 camera-&gt;Register(this);                 //reference count is 2
@@ -90,14 +90,14 @@ camera-&gt;Delete();                       //camera self destructs
 <p>والأهمّ هنا أن نلاحظ أنّ ما يُنشَأ فعليًا قد لا يكون <code>vtkLight</code>، وقد يكون مشتقًّا من <code>vtkLight</code> (مثل <code>vtkOpenGLLight</code>). وهناك مجموعة متنوّعة من الدوافع وراء مصنع الكائنات، أهمّها قابلية نقل التطبيقات (portability) واستقلالية الأجهزة (device independence). فمثلًا، في المثال السابق ننشئ مصدر ضوء (light) في مشهد معروض. في تطبيق معيّن على منصّة معيّنة، قد تُنتج <code>vtkLight::New</code> ضوء OpenGL، لكنّ على منصّات أخرى يحتمل وجود مكتبات عرض أخرى أو طرائق أخرى لإنشاء ضوء في نظام الرسوميات. وأيُّ صنف مشتقّ يجب إنشاؤه بالضبط هو دالّة لمعلومات النظام وقت التشغيل. وفي الأيام الأولى لـ VTK كان هناك كمٌّ هائل من الخيارات بما فيها gl وPHIGS وStarbase وXGL وOpenGL. وبعد أن أختفت معظمها، ظهرت مناهج جديدة منها DirectX والمقاربات المعتمدة على وحدات معالجة الرسوميات (GPU). ومع مرور الوقت، لم تحتج التطبيقات المكتوبة بـ VTK إلى تغيير إذ اشتقّ المطوّرون مشتقّات جديدة خاصة بالأجهزة من <code>vtkLight</code> ومن أصناف العرض الأخرى لدعم التقنيات المتطوّرة. ومن الاستخدامات المهمّة الأخرى لمصنع الكائنات تمكين الاستبدال وقت التشغيل بنسخ محسَّنة أداءً. فمثلًا، قد يُستبدل <code>vtkImageFFT</code> بصنف يتعامل مع عتاد مخصَّص لغرض معيّن أو مع مكتبة عدديّة.</p>
 <h3 id="2422-تمثيل-البيانات">24.2.2. تمثيل البيانات</h3>
 <p>ومن نقاط قوّة VTK قدرته على تمثيل صيغ معقّدة من البيانات. وتمتدّ هذه الصيغ من الجداول البسيطة إلى البنى المعقّدة مثل شبكات العناصر المحدودة (finite element meshes). وجميع صيغ البيانات هذه هي مشتقّات من <code>vtkDataObject</code> كما هو مبيّن في <a href="#fig.vtk.dataclass">الشكل 24.1</a> (لاحظ أنّه مخطّط وراثة جزئي للأصناف الكثيرة لكائنات البيانات).</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-dataclasses.webp" alt="[أصناف كائنات البيانات]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-dataclasses.webp" alt="أصناف كائنات البيانات" id="fig.vtk.dataclass"></p>
 <p>الشكل 24.1: أصناف كائنات البيانات</p>
 <p>ومن أهمّ خصائص <code>vtkDataObject</code> أنّه قابل للمعالجة داخل خط أنابيب التصوير (القسم الفرعي التالي). ومن بين الأصناف الكثيرة المعروضة، هناك عدد قليل فقط يُستخدم عادةً في معظم تطبيقات العالم الحقيقي. وتُستخدم <code>vtkDataSet</code> ومشتقّاتها للتصوير العلمي (<a href="#fig.vtk.dataset">الشكل 24.2</a>). فمثلًا، تُستخدم <code>vtkPolyData</code> لتمثيل الشبكات المضلّعية، و<code>vtkUnstructuredGrid</code> لتمثيل الشبكات، و<code>vtkImageData</code> لتمثيل بيانات البكسلات والفوكسلات ثنائية وثلاثية الأبعاد.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-dataset.webp" alt="[أصناف مجموعات البيانات]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-dataset.webp" alt="أصناف مجموعات البيانات" id="fig.vtk.dataset"></p>
 <p>الشكل 24.2: أصناف مجموعات البيانات</p>
 <h3 id="2423-معمارية-خط-الأنابيب">24.2.3. معمارية خط الأنابيب</h3>
 <p>يتكوّن VTK من عدّة نظم فرعية رئيسية. ومن المرجّح أن يكون النظام الفرعي الأكثر ارتباطًا بحزم التصوير هو معمارية تدفّق البيانات/خط الأنابيب (data flow/pipeline architecture). ومفهوميًا، تتكوّن معمارية خط الأنابيب من ثلاث أصناف أساسية من الكائنات: كائنات لتمثيل البيانات (وهي <code>vtkDataObject</code> التي ناقشناها أعلاه)، وكائنات لمعالجة كائنات البيانات أو تحويلها أو ترشيحها أو تخطيطها من صيغة إلى أخرى (<code>vtkAlgorithm</code>)؛ وكائنات لتنفيذ خط الأنابيب (<code>vtkExecutive</code>) تتحكّم في رسم بياني متّصل من كائنات بيانات وكائنات معالجة متناوبة (أي خط الأنابيب). ويوضّح <a href="#fig.vtk.pipeline">الشكل 24.3</a> خط أنابيب نموذجيًا.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-pipeline.webp" alt="[خط أنابيب نموذجي]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-pipeline.webp" alt="خط أنابيب نموذجي" id="fig.vtk.pipeline"></p>
 <p>الشكل 24.3: خط أنابيب نموذجي</p>
 <p>وفيما يبدو الأمر بسيطًا مفهوميًا، فإنّ تنفيذ معمارية خط الأنابيب فعليًا تحدٍّ. وأحد الأسباب أنّ تمثيل البيانات قد يكون معقّدًا. فمثلًا، تتكوّن بعض مجموعات البيانات من تسلسلات هرمية أو تجميعات للبيانات، لذا فإنّ التنفيذ عبر البيانات يتطلّب تكرارًا أو تعاودًا غير تافه. ولزيادة الأمور تعقيدًا، يتطلّب المعالجة المتوازية (سواءً بالذاكرة المشتركة أو بالمقاربات القابلة للتوسّع والموزّعة) تقسيم البيانات إلى قطع، حيث قد يتعيّب تداخل هذه القطع بعضها في بعض من أجل حساب معلومات الحدود على نحو متّسق، مثل المشتقّات.</p>
 <p>كما تُدخل كائنات الخوارزميات تعقيدها الخاص. فبعض الخوارزميات قد تأخذ عدة مُدخَلات و/أو تنتج عدة مُخرجات من أنواع مختلفة. ويمكن لبعضها العمل محليًا على البيانات (مثل حساب مركز خلية)، بينما يحتاج بعضها الآخر إلى معلومات عامّة، مثلًا لحساب مدرّج تكراري (histogram). وفي جميع الحالات، تتعامل الخوارزميات مع مُدخَلاتها بوصفها غير قابلة للتغيير؛ فالخوارزميات تقرأ مُدخلاتها فحسب لإنتاج مُخرجاتها. والسبب في ذلك أنّ البيانات قد تكون متاحة كمدخل لعدّة خوارزميات، وليس من الفكرة الجيدة أن تدهس خوارزمية واحدة على مُدخل خوارزمية أخرى.</p>
@@ -184,7 +184,7 @@ renWin-&gt;Render();
 <p>هنا أُنشئ ممثّل واحد ومُصيِّر (renderer) ونافذة عرض واحدة، مع إضافة مُخطِّط يصل خط الأنابيب بنظام العرض. ولاحظ أيضًا إضافة <code>vtkRenderWindowInteractor</code>، التي تلتقط نسخه منها أحداث الفأرة ولوحة المفاتيح وتترجمها إلى تحكّم بالكاميرا أو إلى إجراءات أخرى. وتُعرَّف عملية الترجمة هذه عبر <code>vtkInteractorStyle</code> (وسنعود إلى هذا أدناه). وبشكل افتراضي، تُضبط قيم ونسخ كثيرة في الكواليس. فمثلًا، يُنشأ تحويل هوية (identity transform)، فضلًا عن مصدر ضوء افتراضي واحد (في موضع الرأس) وخاصية افتراضية.</p>
 <p>ومع مرور الوقت، أصبح نموذج الكائنات هذا أكثر تطوّرًا. وقد جاء قدر كبير من التعقيد من تطوير أصناف مشتقّة تتخصّص في جانب من جوانب عملية العرض. وأصبحت <code>vtkActor</code>s الآن تخصّصات من <code>vtkProp</code> (كما تمامًا مجسَّمٌ يُعثر عليه على خشبة المسرح)، وهناك مجموعة كاملة من هذه الأدوات (props) لعرض الرسوميات والنصوص الطبقة العلوية ثنائية الأبعاد، والأجسام ثلاثية الأبعاد المتخصّصة، وحتى لدعم تقنيات العرض المتقدّمة مثل عرض الحجم (volume rendering) أو تطبيقات وحدات معالجة الرسوميات (انظر <a href="#fig.vtk.painter">الشكل 24.4</a>).</p>
 <p>وبالمثل، مع نموّ نموذج البيانات الذي يدعمه VTK، نمت أيضًا المُخطِّطات المختلفة التي تربط البيانات بنظام العرض. والمجال الآخر ذو التوسّع الكبير هو التسلسل الهرمي للتحويلات. فما كان في الأصل مصفوفة تحويل خطّية بسيطة 4×4، أصبح تسلسلًا هرميًّا قويًّا يدعم التحويلات غير الخطّية بما في ذلك تحويل الشريحة الرفيعة الصفيحية (thin-plate spline). فمثلًا، كان <code>vtkPolyDataMapper</code> الأصلي له مشتقّات خاصة بالأجهزة (مثل <code>vtkOpenGLPolyDataMapper</code>). وفي السنوات الأخيرة استُبدل بخط رسوميات متطوّر يُشار إليه بـ«خط الرسّام» (the &quot;painter&quot; pipeline) المبيّن في <a href="#fig.vtk.painter">الشكل 24.4</a>.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-painter.webp" alt="[أصناف العرض]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-vtk-painter.webp" alt="أصناف العرض" id="fig.vtk.painter"></p>
 <p>الشكل 24.4: أصناف العرض</p>
 <p>ويدعم تصميم الرسّام مجموعة متنوّعة من تقنيات عرض البيانات التي يمكن دمجها لتوفير مؤثّرات عرض خاصة. وهذه القدرة تتفوق بكثير على <code>vtkPolyDataMapper</code> البسيط الذي نُفِّذ أوّلًا عام 1994.</p>
 <p>ومن الجوانب المهمّة الأخرى في نظام التصوير نظام الاختيار. ففي VTK هناك تسلسل هرمي من المنتقيات (pickers)، تُصنَّف تقريبًا إلى كائنات تختار <code>vtkProp</code>s بالاعتماد على طرائق قائمة على العتاد مقارنةً بالطرائق البرمجية (مثل صبّ الأشعة ray-casting)؛ فضلًا عن كائنات تقدّم مستويات مختلفة من المعلومات بعد عملية الانتقاء. فمثلًا، تقدّم بعض المنتقيات موقعًا فقط في فضاء العالم XYZ دون تحديد أيّ <code>vtkProp</code> اختارته؛ بينما تقدّم أخرى، إضافةً إلى <code>vtkProp</code> المختار، نقطةً أو خلية بعينها تشكّل الشبكة التي تعرّف هندسة الأداة.</p>
@@ -287,7 +287,7 @@ vtkLineWidget2 *lineWidget = vtkLineWidget2::New();
 </table>
 <p>الجدول 24.1: الأدلة الفرعية في VTK</p>
 <h2 id="243-نظرة-إلى-الوراء-وإلى-الأمام">24.3. نظرة إلى الوراء وإلى الأمام</h2>
-<p>كان VTK نظامًا ناجحًا إلى حدٍّ هائل. ومع أنّ أول سطر من الشيفرة كُتب عام 1993، فإنّ VTK ما زال في وقت كتابة هذا الكتاب ينمو بقوة، بل إنّ وتيرة التطوير تتزايد إن أمكن.<a href="#footnote-2">2</a> وفي هذا القسم نتناول بعض الدروس المستفادة والتحدّيات المستقبلية.</p>
+<p>كان VTK نظامًا ناجحًا إلى حدٍّ هائل. ومع أنّ أول سطر من الشيفرة كُتب عام 1993، فإنّ VTK ما زال في وقت كتابة هذا الكتاب ينمو بقوة، بل إنّ وتيرة التطوير تتزايد إن أمكن.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> وفي هذا القسم نتناول بعض الدروس المستفادة والتحدّيات المستقبلية.</p>
 <h3 id="2431-إدارة-النمو">24.3.1. إدارة النموّ</h3>
 <p>ومن أكثر جوانب مغامرة VTK إثارةً للدهشة طول عمر المشروع. وتعود وتيرة التطوير إلى عدّة أسباب رئيسية:</p>
 <ul>
@@ -309,7 +309,7 @@ vtkLineWidget2 *lineWidget = vtkLineWidget2::New();
 <li>وأخيرًا، تظهر باستمرار أشكال جديدة من البيانات. فمثلًا، في المجال الطبي مجموعات بيانات حجمية هرمية بدقّة متفاوتة (مثل المجهر متطابق البؤر (confocal) مع تكبير موضعي).</li>
 </ul>
 <h3 id="2433-العلم-المفتوح">24.3.3. العلم المفتوح</h3>
-<p>وأخيرًا، تلتزم Kitware، وكذلك مجتمع VTK على نحو أعمّ، بالعلم المفتوح (Open Science). ومن الناحية العملية، هذه طريقة لقول إنّنا سنروّج للبيانات المفتوحة، والنشر المفتوح، والمصادر المفتوحة—وهي الميزات الضرورية لضمان أنّنا ننشئ أنظمة علمية قابلة لإعادة الإنتاج. وفيما وُزّع VTK لفترة طويلة بوصفه نظامًا مفتوح المصدر ومفتوح البيانات، إلّا أنّ عملية التوثيق كانت ناقصة. وفيما توجد كتب لائقة [<a href="https://aosabook.org/en/v1/bib1.html#bib:vtk:userguide">Kit10</a>,<a href="https://aosabook.org/en/v1/bib1.html#bib:vtk:toolkit">SML06</a>]، فقد تنوّعت الطرق الارتجالية (ad hoc) لجمع المنشورات التقنية، بما في ذلك المساهمات الجديدة في الشيفرة المصدرية. ونحن نحسّن الوضع من خلال تطوير آليات نشر جديدة مثل <em>مجلة VTK</em> (VTK Journal)<a href="#footnote-3">3</a> التي تتيح نشر مقالات تتكوّن من التوثيق والشيفرة المصدرية والبيانات وصور اختبار صالحة. كما تتيح المجلة مراجعات آلية للشيفرة (باستخدام عملية اختبار جودة البرمجيات في VTK)، فضلًا عن المراجعات البشرية للإرسال.</p>
+<p>وأخيرًا، تلتزم Kitware، وكذلك مجتمع VTK على نحو أعمّ، بالعلم المفتوح (Open Science). ومن الناحية العملية، هذه طريقة لقول إنّنا سنروّج للبيانات المفتوحة، والنشر المفتوح، والمصادر المفتوحة—وهي الميزات الضرورية لضمان أنّنا ننشئ أنظمة علمية قابلة لإعادة الإنتاج. وفيما وُزّع VTK لفترة طويلة بوصفه نظامًا مفتوح المصدر ومفتوح البيانات، إلّا أنّ عملية التوثيق كانت ناقصة. وفيما توجد كتب لائقة [<a href="https://aosabook.org/en/v1/bib1.html#bib:vtk:userguide">Kit10</a>,<a href="https://aosabook.org/en/v1/bib1.html#bib:vtk:toolkit">SML06</a>]، فقد تنوّعت الطرق الارتجالية (ad hoc) لجمع المنشورات التقنية، بما في ذلك المساهمات الجديدة في الشيفرة المصدرية. ونحن نحسّن الوضع من خلال تطوير آليات نشر جديدة مثل <em>مجلة VTK</em> (VTK Journal)<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> التي تتيح نشر مقالات تتكوّن من التوثيق والشيفرة المصدرية والبيانات وصور اختبار صالحة. كما تتيح المجلة مراجعات آلية للشيفرة (باستخدام عملية اختبار جودة البرمجيات في VTK)، فضلًا عن المراجعات البشرية للإرسال.</p>
 <h3 id="2434-الدروس-المستفادة">24.3.4. الدروس المستفادة</h3>
 <p>وفيما كان VTK ناجحًا، هناك أشياء كثيرة لم نفعلها على النحو الصحيح:</p>
 <ul>
@@ -324,13 +324,24 @@ vtkLineWidget2 *lineWidget = vtkLineWidget2::New();
 <li>راجع أحدث تحليل لشيفرة VTK على <code>http://www.ohloh.net/p/vtk/analyses/latest</code>.</li>
 <li><code>http://www.midasjournal.org/?journal=35</code></li>
 </ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><code>http://en.wikipedia.org/wiki/Opaque_pointer</code>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>See the latest VTK code analysis at <code>http://www.ohloh.net/p/vtk/analyses/latest</code>. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><code>http://www.midasjournal.org/?journal=35</code> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/aosabook/v1-vistrails/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">VisTrails</span></a><!--]--> <!--[0--><a href="../../../../book/aosabook/v1-wesnoth/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">Battle for Wesnoth</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -338,8 +349,8 @@ vtkLineWidget2 *lineWidget = vtkLineWidget2::New();
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

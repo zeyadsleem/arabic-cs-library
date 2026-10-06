@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -72,7 +72,7 @@ python setup.py <span class="hljs-built_in">test</span> || \
 <span class="hljs-built_in">cd</span> /tmp &amp;&amp; <span class="hljs-built_in">rm</span> -fr project_directory
 </code></pre>
 <p>في <a href="#fig.integration.internal">الشكل 9.1</a>، تمثّل المستطيلات غير المظلَّلة الأنظمة الفرعية المنفصلة والوظائف داخل النظام. وتُظهر الأسهم تدفّق المعلومات بين المكوّنات المختلفة. أمّا السحابة فتمثّل التنفيذ البعيد المحتمل لعمليات البناء. وتمثّل المستطيلات المظلَّلة الترابط المحتمل بين الأنظمة الفرعية؛ فمثلًا قد يشمل مراقبة البناء مراقبة عملية البناء نفسها وجوانب من صحّة النظام (حِمل المعالج، وحِمل الإدخال/الإخراج، واستهلاك الذاكرة، إلخ)</p>
-<p><img src="/arabic-cs-library/images/aosabook/v1-integration-ci-internal.webp" alt="[داخل نظام تكامل مستمر]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-integration-ci-internal.webp" alt="داخل نظام تكامل مستمر" id="fig.integration.internal"></p>
 <p>الشكل 9.1: داخل نظام تكامل مستمر</p>
 <p>غير أن هذه البساطة مضلِّلة. فأنظمة التكامل المستمر في العالم الحقيقي تفعل الكثير أكثر من ذلك. وإلى جانب بدء عمليات البناء البعيدة أو تلقّي نتائجها، قد تدعم برمجيات التكامل المستمر أيًّا من المزايا الإضافية التالية:</p>
 <ul>
@@ -97,7 +97,7 @@ python setup.py <span class="hljs-built_in">test</span> || \
 <h2 id="92-البنى-المعمارية">9.2. البنى المعمارية</h2>
 <p>اختار Buildbot وCDash معماريتين متقابلتين، ونفّذا مجموعتي مزايا متداخلة لكن متمايزة. وفي ما يلي نفحص مجموعتي المزايا هاتين، ونناقش كيف تكون المزايا أسهل أو أصعب في التنفيذ بحسب اختيار البنية.</p>
 <h3 id="921-نموذج-التنفيذ-buildbot">9.2.1. نموذج التنفيذ: Buildbot</h3>
-<p><img src="/arabic-cs-library/images/aosabook/v1-integration-buildbot.webp" alt="[معمارية Buildbot]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-integration-buildbot.webp" alt="معمارية Buildbot" id="fig.integration.buildbot"></p>
 <p>الشكل 9.2: معمارية Buildbot</p>
 <p>يستخدم Buildbot معمارية رئيسي/تابع، بخادم مركزي واحد وعدة خوادم بناء تابعة. والتنفيذ البعيد مُبرمَج بالكامل من الخادم الرئيسي في الزمن الحقيقي: إذ يحدّد إعداد الخادم الرئيسي الأمر الذي ينبغي تنفيذه على كل نظام بعيد، وينفّذه عند انتهاء كل أمر سابق. والتنسيق وطلبات البناء لا تُنسَّق عبر الخادم الرئيسي فحسب بل تُوجَّه بالكامل <em>بواسطة</em> الخادم الرئيسي. ولا يوجد أي تجريد مدمج للوصفات، باستثناء التكامل الأساسي مع أنظمة التحكّم بالإصدارات («شيفرتنا موجودة في هذا المستودع») والتمييز بين الأوامر التي تعمل على مجلد البناء وتلك التي تعمل داخله. أمّا الأوامر الخاصة بنظام التشغيل فتُحدَّد مباشرةً في الإعداد عادةً.</p>
 <p>يحافظ Buildbot على اتصال دائم مع كل خادم بناء تابع، ويدير تنفيذ المهام بينها وينسّقه. وإدارة الآلات البعيدة عبر اتصال دائم يضيف تعقيدًا عمليًّا كبيرًا إلى التنفيذ، وكان منذ زمن طويل مصدرًا للأخطاء. فالحفاظ على اتصالات شبكية متينة طويلة الأمد ليس بالأمر البسيط، واختبار التطبيقات التي تتفاعل مع واجهة رسومية محلّية عبر اتصال شبكي مسألة شاقة. أمّا نوافذ التنبيه الخاصة بنظام التشغيل فهي أصعب ما يمكن التعامل معه. غير أن هذا الاتصال الدائم يجعل تنسيق الموارد والجدولة في غاية البساطة، لأن الخوادم التابعة تعود بالكامل إلى تصرّف الخادم الرئيسي في تنفيذ المهام.</p>
@@ -107,7 +107,7 @@ python setup.py <span class="hljs-built_in">test</span> || \
 <p>ومن النتائج الأخرى لنموذج الخادم الرئيسي/التابع ولقناة الاتصال المحدودة هذه أن خوادم البناء التابعة لا تُبلّغ عن استهلاك النظام، ولا يمكن إعداد الخادم الرئيسي ليكون على عِلم بالحمول العالية على الخوادم التابعة.</p>
 <p>تُدار الإشعارات الخارجية عن نتائج البناءات بالكامل من جهة الخادم الرئيسي، ويلزم تنفيذ خدمات الإشعار الجديدة داخل الخادم الرئيسي نفسه. وعلى النحو نفسه، يجب تمرير طلبات البناء الجديدة مباشرةً إلى الخادم الرئيسي.</p>
 <h3 id="922-نموذج-التنفيذ-cdash">9.2.2. نموذج التنفيذ: CDash</h3>
-<p><img src="/arabic-cs-library/images/aosabook/v1-integration-cdash.webp" alt="[معمارية CDash]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-integration-cdash.webp" alt="معمارية CDash" id="fig.integration.cdash"></p>
 <p>الشكل 9.3: معمارية CDash</p>
 <p>على عكس Buildbot، ينفّذ CDash نموذج خادم التقارير. وفي هذا النموذج، يعمل خادم CDash بوصفه مستودعًا مركزيًا للمعلومات عن البناءات المنفَّذة عن بُعد، مع تقارير مرافقة عن إخفاقات البناء والاختبار، وتحليل تغطية الشيفرة، واستهلاك الذاكرة. وتُشغَّل البناءات على عملاء بعيدين وفق جداولها الخاصة، وتُرسل تقارير البناء بصيغة XML. ويمكن إرسال البناءات من عملاء البناء «الرسميين»، ومن مطوّرين أو مستخدمين غير أساسيين يشغّلون عملية البناء المنشورة على أجهزتهم الخاصة.</p>
 <p>يصبح هذا النموذج البسيط ممكنًا بفضل التكامل المفاهيمي المحكم بين CDash وبقية عناصر بنية البناء التابعة لـ Kitware: CMake وهو نظام ضبط للبناء، وCTest وهو مُشغّل اختبارات، وCPack وهو نظام تعبئة. وتوفّر هذه البرمجيات آلية تُتيح تنفيذ وصفات البناء والاختبار والتعبئة عند مستوى تجريد مرتفع إلى حدٍّ ما، وبطريقة لا تعتمد على نظام التشغيل.</p>
@@ -121,7 +121,7 @@ python setup.py <span class="hljs-built_in">test</span> || \
 <p>يمتلك Jenkins بنية إضافات (plugins) متينة تجرّد تفاصيل هذا الاتصال، وهو ما أتاح تطوير كثير من إضافات الطرف الثالث لدعم إرجاع البناءات الثنائية وبيانات نتائج أكبر حجمًا.</p>
 <p>أمّا المهام التي يتحكّم بها خادم مركزي، فلدى Jenkins إضافة «locks» تثبّط المهام عن العمل على التوازي، وإن كانت، كما في يناير 2011، لم تكتمل تطويرًا بعد.</p>
 <h3 id="924-نموذج-التنفيذ-pony-build">9.2.4. نموذج التنفيذ: Pony-Build</h3>
-<p><img src="/arabic-cs-library/images/aosabook/v1-integration-webhooks.webp" alt="[معمارية Pony-Build]"></p>
+<p><img src="/arabic-cs-library/images/aosabook/v1-integration-webhooks.webp" alt="معمارية Pony-Build" id="fig.integration.pb"></p>
 <p>الشكل 9.4: معمارية Pony-Build</p>
 <p>Pony-Build نظام تكامل مستمر لامركزي مكتوبٌ بلغة بايثون أُنجز لإثبات جدوى الفكرة. وهو يتكوّن من ثلاثة مكوّنات جوهرية يوضّحها <a href="#fig.integration.pb">الشكل 9.4</a>. ويعمل خادم النتائج بوصفه قاعدة بيانات مركزية تضمّ نتائج البناءات الواردة من العملاء الفرديين. أمّا العملاء فيحتوي كلٌّ منهم بصورة مستقلة على كامل معلومات الإعداد وسياق البناء، مدعومًا بمكتبة خفيفة في جهة العميل تساعد على الوصول إلى مستودعات التحكّم بالإصدارات، وإدارة عملية البناء، وتوصيل النتائج إلى الخادم. وخادم التقارير اختياري، ويحتوي واجهة ويب بسيطة، تخدم للإبلاغ عن نتائج البناءات، وقد تخدم أيضًا لطلب بناءات جديدة. وفي تنفيذنا، يعمل خادم التقارير وخادم النتائج في عملية واحدة متعددة الخيوط، لكنهما مترابطان ارتباطًا ضعيفًا على مستوى واجهة البرمجة، ويمكن تعديلهما بسهولة ليعملا بصورة مستقلة.</p>
 <p>يُزيَّن هذا النموذج الأساسي بمجموعة متنوّعة من خطّافات الويب (webhooks) وآليات RPC لتسهيل إشعار البناء والتغييرات واستبطان البناء. فمثلًا، بدلًا من ربط إشعار تغيّرات التحكّم بالإصدارات من مستودع الشيفرة مباشرةً بنظام البناء، تُوجَّه طلبات البناء البعيدة إلى نظام التقارير، الذي يوصلها إلى خادم النتائج. وعلى النحو نفسه، بدلًا من بناء الإشعار الفوري بالبناءات الجديدة نحو البريد الإلكتروني والمراسلة الفورية والخدمات الأخرى مباشرةً داخل خادم التقارير، يُدار الإشعار باستخدام بروتوكول الإشعار النشط PubSubHubbub (PuSH). ويتيح ذلك لمجموعة واسعة من التطبيقات المستهلكة تلقي إشعارات الأحداث «المثيرة للاهتمام» (وهي محدودة حاليًا بالبناءات الجديدة والبناءات الفاشلة) عبر خطّاف PuSH.</p>
@@ -176,7 +176,7 @@ python setup.py <span class="hljs-built_in">test</span> || \
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -184,8 +184,8 @@ python setup.py <span class="hljs-built_in">test</span> || \
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

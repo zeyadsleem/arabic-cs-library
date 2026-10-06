@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -58,7 +58,7 @@
 <p>نظام البناء Poky هو قلب مشروع Yocto. وفي الإعداد الافتراضي لـ Poky، يمكنه توفير نواة صورة (image footprint) مبدئية تمتد من صورة دنيا يمكن الوصول إليها عبر الصدفة (shell) وصولًا إلى صورة متوافقة مع Linux Standard Base (LSB) ذات واجهة مستخدم مرجعية قائمة على GNOME Mobile and Embedded (GMAE) تسمّى Sato. ومن هذه الأنواع الأساسية من الصور، يمكن إضافة طبقات من بيانات الوصف (metadata layers) لتوسيع الوظائف؛ إذ يمكن للطبقة توفير حزمة برمجية إضافية لنوع صورة معيّن، أو إضافة حزمة دعم لوحة (board support package, BSP) لعتادٍ إضافي، أو حتى أن تمثّل نوع صورة جديد. وسنستخدم إصدار 1.1 من Poky، المسمّى «edison»، لنُظهر كيف يستخدم BitBake هذه الوصفات وملفات الإعداد لتوليد صورة مدمجة.</p>
 <p>على مستوى عالٍ جدًا، تبدأ عملية البناء بإعداد بيئة الصدفة (shell environment) لجلسة البناء. ويُنجَز ذلك عبر تحميل ملف <code>oe-init-build-env</code> الموجود في جذر شجرة مصدر Poky. وهذا يُعِدّ بيئة الصدفة، وينشئ مجموعة أوّلية قابلة للتخصيص من ملفات الإعداد، ويغلّف بيئة تشغيل BitBake بسكربت صدفة تستخدمه Poky لتحديد ما إذا كانت الحد الأدنى من متطلبات النظام قد تحقّقت.</p>
 <p>على سبيل المثال، أحد ما سيبحث عنه هو وجود Pseudo، وهو بديلٌ عن <code>fakeroot</code> تبرّع به لمشروع Yocto نظام Wind River. وفي هذه المرحلة، ينبغي أن يكون <code>bitbake core-image-minimal</code>، على سبيل المثال، قادرًا على إنشاء بيئة تصريف متقاطع (cross-compilation environment) عاملة بكامل طاقتها، ثم إنشاء صورة لينكس اعتمادًا على تعريف الصورة الخاص بـ <code>core-image-minimal</code> من المصدر، كما هو معرّف في طبقة بيانات الوصف الخاصة بمشروع Yocto.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa1.webp" alt=""> الشكل 23.1: نظرة عامة على مستوى عالٍ لتنفيذ مهام Poky</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa1.webp" alt="" id="fig.yocto.execution"> الشكل 23.1: نظرة عامة على مستوى عالٍ لتنفيذ مهام Poky</p>
 <p>أثناء إنشاء صورتنا، سيقوم BitBake بتحليل إعداداته، وإدراج أي طبقات أو أصناف (classes) أو مهام أو وصفات إضافية مُعرَّفة، ثم يبدأ بإنشاء سلسلة تبعيات موزونة (weighted dependency chain). وتوفّر هذه العملية خريطةً مرتّبة وموزونة لأولويات المهام. ثم يستخدم BitBake هذه الخريطة لتحديد الحزم التي يجب بناؤها وبأي ترتيب، بحيث تُلبّى تبعيات التصريف بكفاءة قصوى. وتُوزن المهام التي تحتاجها أكبرُ عدد من المهام الأخرى وزنًا أعلى، وبالتالي تُنفَّذ في وقتٍ أسبق خلال عملية البناء. ثم يُنشأ طابور تنفيذ المهام (task execution queue) الخاص ببنائنا. كما يخزّن BitBake ملخّصات بيانات الوصف المُحلَّلة، وإذا تبيّن له في التشغيلات اللاحقة أن بيانات الوصف قد تغيّرت، فإنه يستطيع إعادة تحليل ما تغيّر فقط. إن مجدول BitBake (scheduler) ومحلّله (parser) من أكثر التصاميم المعمارية إثارة للاهتمام في BitBake، وستُناقَش لاحقًا بعض القرارات المحيطة بهما وبتنفيذهما على يد المساهمين في BitBake.</p>
 <p>ثم يمرّ BitBake عبر طابور المهام الموزون الخاص به، مُنشئًا خيوطًا (حتى العدد المعرّف في <code>BB_NUMBER_THREADS</code> داخل <code>conf/local.conf</code>) تبدأ بتنفيذ تلك المهام بالترتيب المحدد مسبقًا. وقد تُعدَّل المهام المنفَّذة أثناء بناء حزمة ما، أو يُضاف في بدايتها أو في نهايتها شيء ما، عبر وصفتها. ويبدأ الترتيب الأساسي الافتراضي لمهام تنفيذ الحزمة بجلب مصدر الحزمة وفكّ حزمته، ثم بإعداد المصدر المفكوك وتصريفه تصريفًا متقاطعًا. ثم تُقسَّم الشيفرة المصرَّفة إلى حزم، وتُجرى حسابات مختلفة على ناتج التصريف، مثل إنشاء معلومات حزم التصحيح (debug package information). ثم تُغلَّف الحزم الناتجة في صيغة حزم مدعومة؛ منها RPM وipk وdeb، ثم يستخدم BitBake هذه الحزم لبناء نظام الملفات الجذري (root file system).</p>
 <h3 id="مفاهيم-نظام-البناء-poky">مفاهيم نظام البناء Poky</h3>
@@ -82,7 +82,7 @@ BBLAYERS = &quot; \
 &quot;
 </code></pre>
 <p>ملف طبقات BitBake، <code>bblayers</code>، يعرّف المتغير <code>BBLAYERS</code> الذي يستخدمه BitBake للبحث عن طبقات BitBake. ولفهم هذا الأمر فهمًا كاملًا، ينبغي أيضًا أن ننظر في كيفية بناء طبقاتنا فعليًا. وباستخدام <code>meta-baryon</code> (<a href="https://aosabook.org/en/v2/git://git.yoctoproject.org/meta-baryon">git://git.yoctoproject.org/meta-baryon</a>) طبقةً مثالًا، نريد فحص ملف إعداد الطبقة. وهذا الملف، <code>conf/layer.conf</code>، هو ما يحلّله BitBake بعد تحليله الأولي لـ <code>bblayers.conf</code>. ومن هنا يضيف وصفات وأصنافًا وإعدادات إضافية إلى البناء.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa2.webp" alt=""> الشكل 23.2: مثال على تنقيح BitBake بالطبقات (layering)</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa2.webp" alt="" id="fig.yocto.layering"> الشكل 23.2: مثال على تنقيح BitBake بالطبقات (layering)</p>
 <p>إليك <code>layer.conf</code> الخاص بـ <code>meta-baryon</code>:</p>
 <pre><code># Layer configuration for meta-baryon layer
 # Copyright 2011 Intel Corporation
@@ -158,7 +158,7 @@ pkg_prerm_${PN}() {
 <p>ويكشف الفارق السريع (diff) بين إصدار BitBake الحالي المستخدم في Poky «edison» 1.13.3 وإصدار 1.0 تنفيذ بنية العميل/الخادم (client-server) في BitBake، وذاكرة التخزين المؤقت الدائمة للبيانات، ومخزن بياناته، وتحسين الكتابة عند النسخ (copy-on-write) لمخزن بياناته، وتنفيذ الحالة المشتركة، وتحسينات جذرية في كيفية تحديده لسلاسل تبعيات المهام والحزم. وقد جعل هذا التطوّر BitBake أكثر موثوقية وكفاءة وديناميكية. وقُدر كبير من هذه الوظيفة نشأ من الحاجة إلى عمليات بناء أسرع وأكثر موثوقية، تستخدم موارد أقل. وثلاثة تحسينات في BitBake سنفحصها هي: تنفيذ بنية عميل/خادم، والتحسينات المتعلقة بتخزين بيانات BitBake، والعمل الذي أُنجز على كيفية تحديد BitBake لسلسلة تبعيات البناء والمهام.</p>
 <h3 id="الاتصال-بين-العمليات-في-bitbake-ipc">الاتصال بين العمليات في BitBake (IPC)</h3>
 <p>بما أننا نعرف الآن الكثير عن كيفية استخدام نظام البناء Poky للإعدادات والوصفات والطبقات لإنشاء صور مدمجة، فنحن مستعدون للنظر تحت غطاء BitBake وفحص كيفية تجميع كل ذلك معًا. وبالبدء من الملف التنفيذي الأساسي لـ BitBake، <code>bitbake/bin/bake</code>، يمكننا أن نبدأ في رؤية العملية التي يتبعها BitBake وهو يبدأ بإعداد البنية التحتية اللازمة لبدء البناء. وأول ما يستحق الاهتمام هو الاتصال بين العمليات (Interprocess Communications, IPC) في BitBake. وفي البداية، لم يكن لدى BitBake أي مفهوم للعميل/الخادم. وقد أُدرجت هذه الوظيفة في تصميم BitBake على مدى فترة من الزمن، للسماح لـ BitBake بتشغيل عمليات متعددة أثناء البناء، إذ كان أحادي الخيط (single-threaded) في بادئ الأمر، ولتوفير تجارب مستخدم مختلفة.</p>
-<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa3.webp" alt=""> الشكل 23.3: نظرة عامة على الاتصال بين العمليات في BitBake</p>
+<p><img src="/arabic-cs-library/images/aosabook/v2-yocto-aosa3.webp" alt="" id="fig.yocto.ipc"> الشكل 23.3: نظرة عامة على الاتصال بين العمليات في BitBake</p>
 <p>تبدأ جميع عمليات بناء Poky بتشغيل نسخة واجهة مستخدم. وتوفّر واجهة المستخدم آليةً لتسجيل مخرجات البناء وحالة البناء وتقدّمه، وكذلك لاستقبال الأحداث من مهام البناء عبر وحدة أحداث BitBake. وواجهة المستخدم الافتراضية المستخدَمة هي <em>knotty</em>، وهي واجهة سطر الأوامر في BitBake. وتُسمّى knotty، أي «(لا) tty»، لأنها تتعامل مع كل من ttys وnon-ttys، وهي إحدى بضع واجهات مدعومة. ومن بين واجهات المستخدم الإضافية هذه واجهة Hob. وHob هي الواجهة الرسومية لـ BitBake، أي نوعٌ من «قائد BitBake». وإلى جانب الوظائف المعتادة التي تراها في واجهة knotty، تضيف Hob (وكتبها Joshua Lock) القدرةَ على تعديل ملفات الإعداد، وإضافة طبقات وحزم إضافية، وتخصيص البناء تخصيصًا كاملًا.</p>
 <p>وتتمتع واجهات مستخدم BitBake بالقدرة على إرسال الأوامر إلى الوحدة التالية التي يُشغّلها الملف التنفيذي لـ BitBake، وهي خادم BitBake. وكما في واجهة المستخدم، يدعم BitBake أيضًا أنواعًا مختلفة متعددة من الخوادم، مثل XMLRPC. والخادم الافتراضي الذي يستخدمه معظم المستخدمين عند تنفيذ BitBake من واجهة knotty هو خادم العمليات (process server) في BitBake. وبعد تشغيل الخادم، يُشغّل الملف التنفيذي لـ BitBake الـ cooker.</p>
 <p>الـ cooker جزءٌ أساسي من BitBake، وهو الموضع الذي تُستدعى منه معظم الأشياء اللافتة للنظر والتي تحدث أثناء بناء Poky. فالـ cooker هو ما يدير تحليل بيانات الوصف، ويبادر بتوليد شجرتي التبعيات والمهام، ويدير البناء. ومن وظائف بنية خادم BitBake السماح بطرق متعددة لتمرير واجهة أوامر الأوامر (command API)، بشكل غير مباشر، إلى واجهة المستخدم. ووحدة command هي العامل في BitBake؛ فهي تشغّل أوامر البناء وتستدعي أحداثًا تُمرَّر إلى واجهة المستخدم عبر معالج أحداث BitBake. وبعد تشغيل الـ cooker من الملف التنفيذي لـ BitBake، يهيّئ مخزن بيانات BitBake ثم يبدأ في تحليل جميع ملفات إعداد Poky. ثم ينشئ كائن runqueue، ويطلق البناء.</p>
@@ -214,7 +214,7 @@ initscripts \
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -222,8 +222,8 @@ initscripts \
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

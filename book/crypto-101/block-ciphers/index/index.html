@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -70,7 +70,6 @@
 </code></pre>
 <p>أو، بصريًّا، على شكل كتل:</p>
 <p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg" alt="center"></p>
-<p>center</p>
 <p>شيفرة الكتل مثال على نظام تشفير بالمفتاح المتماثل (<code>symmetric-key encryption</code>)،
 المعروف أيضًا بنظام تشفير بالمفتاح السرّي (<code>secret-key encryption</code>). إذ يُستعمل
 المفتاح السرّي نفسه في التشفير وفي فكّ التشفير معًا. وسنقابل في وقت لاحق من الكتاب
@@ -85,15 +84,13 @@
 <code>2^4 = 16</code> كتلة ممكنة. وبما أنّ كلّ كتلة تُسقَط على رقم ست عشري (hexadecimal digit)،
 فإنّنا نمثّل الكتل بذلك الرقم. وتوضّح <code>fig-BlockCipherBlocks</code> الكتل التي تعمل
 عليها الشيفرة.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-1-AllNodes.svg" alt="center"></p>
-<p>center</p>
+<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-1-AllNodes.svg" alt="center" id="fig-BlockCipherBlocks"></p>
 <p>العقد الستّة عشرة كلّها التي تعمل عليها شيفرة الكتل. ويُشار إلى كلّ عقدة برقم ست
 عشري.</p>
 <p>وبعد أن نختار مفتاحًا سرّيًا، تستعمله شيفرة الكتل لتحديد تشفير أيّ كتلة بعينها.
 ونوضّح تلك العلاقة بسهم. فذيل السهم يحمل الكتلة قبل تشفيرها بـ<code>E</code> تحت المفتاح
 <code>k</code>، أمّا رأس السهم فيُسقَط على الكتلة المشفَّرة.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-2-Encryption.svg" alt="center"></p>
-<p>center</p>
+<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-2-Encryption.svg" alt="center" id="fig-BlockCipherEncryption"></p>
 <p>تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح معيّن <code>k</code>.</p>
 <p>لاحظ في <code>fig-BlockCipherEncryption</code> أنّ التبديل ليس دورة واحدة كبيرة فحسب، بل يحوي
 دورة كبيرة من 7 عناصر، وعدّة دورات أصغر من 4 و3 وعنصرين لكلٍّ منها. ومن الممكن
@@ -102,31 +99,27 @@
 <p>وعنما تفكّ التشفير بدلًا من التشفير، فإنّ شيفرة الكتل تحسب التبديل المعكوس
 (inverse permutation). وفي <code>fig-BlockCipherDecryption</code> نحصل على الرسم نفسه. والفرق
 بين الرسمين أنّ رؤوس الأسهم كلّها تشير في الاتجاه المعاكس.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-3-Decryption.svg" alt="center"></p>
-<p>center</p>
+<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-3-Decryption.svg" alt="center" id="fig-BlockCipherDecryption"></p>
 <p>تبديل فكّ التشفير الذي تنتجه شيفرة الكتل تحت المفتاح نفسه <code>k</code>. وهو معكوس تبديل
 التشفير، إذ إنّ رؤوس الأسهم كلّها انقلبت.</p>
 <p>يحدّد المفتاح أيّ الكتل تُسقَط على أيّ الكتل. ويؤدي مفتاح مختلف إلى مجموعة أسهم
 مختلفة، كما ترى في <code>fig-BlockCipherEncryptionDifferentKey</code>.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-4-Encryption2.svg" alt="center"></p>
-<p>center</p>
+<p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-4-Encryption2.svg" alt="center" id="fig-BlockCipherEncryptionDifferentKey"></p>
 <p>تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح مختلف.</p>
 <p>في هذا الرسم، ستلاحظ حتى أنّ هناك تبديلين بطول 1: عنصر يُسقَط على نفسه. وهذا أيضًا
 شيء متوقَّع عند اختيار تبديلات عشوائية.</p>
 <p>معرفة عدد من أزواج (المدخل، المخرج) تحت مفتاح معيّن لا ينبغي أن تمنحك أيّ معلومة
-عن أيّ أزواج (مدخل، مخرج) أخرى تحت ذلك المفتاح [#]_. وطالما أننا نتحدّث عن شيفرة
+عن أيّ أزواج (مدخل، مخرج) أخرى تحت ذلك المفتاح <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. وطالما أننا نتحدّث عن شيفرة
 كتل مثالية افتراضية، فلا توجد طريقة أسهل لفكّ تشفير كتلة من «تفريغ المفتاح بالقوة
 الغاشمة» (brute-force): أي أن تُجرّب كلّ مفتاح على حدة حتى تجد المفتاح الصحيح.</p>
-<p>.. [#]
-لعلّ القارئ المنتبه قد لاحظ أنّ هذا ينكسر في الحالات المتطرّفة: فإذا عرفت
-جميع الأزواج إلّا واحدًا، فإنّك تعرف الأخير بالاستبعاد.</p>
 <p>شيفرة الكتل التجريبية التي نستخدمها للعرض تحوي كتلًا بطول 4 بتّات، أي <code>2^4 = 16</code>
 احتمالًا. أمّا شيفرات الكتل الحديثة الحقيقية فأحجام كتلها أكبر بكثير، مثل 128
 بتًّا، أي <code>2^{128}</code> (أي أكثر قليلًا من <code>10^{38.5}</code>) كتلة ممكنة. وتخبرنا الرياضيات
 بأنّ هناك <code>n!</code> (تُنطق «مضروب n») تبديلًا مختلفًا لمجموعة من <code>n</code> عنصرًا. ويُعرَّف
 بأنه حاصل ضرب كلّ الأعداد من 1 حتى <code>n</code> ضمنًا:</p>
-<pre><code>n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n - 1) \cdot n
-</code></pre>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo><mo>=</mo><mn>1</mn><mo>⋅</mo><mn>2</mn><mo>⋅</mo><mn>3</mn><mo>⋅</mo><mo>…</mo><mo>⋅</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">
+n! = 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n - 1) \cdot n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4445em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></span>
 <p>تنمو المضروبات بوتيرة مذهلة. فمثلًا، <code>5! = 120</code> و<code>10! = 3628800</code>، وتستمرّ النسبة
 في التزايد. وعدد تبديلات مجموعة كتل شيفرة ذات حجم كتلة 128 بتًّا هو <code>(2^{128})!</code>.
 و<code>2^{128}</code> وحدها كبيرة أصلًا (تحتاج 39 رقمًا لكتابتها)، لذا فإنّ <code>(2^{128})!</code> عددٌ
@@ -155,9 +148,8 @@ FIPS، قُيّدت معاملاتها بحجم كتلة قدره 128 بتًّا
 <p>لا توجد هجمات عملية معروفة على AES. ورغم أنّه قدطرأ بعض التطوّر في السنوات
 الأخيرة، فإنّ معظمه يتضمّن هجمات على مفاتيح ذات صلة (related-key attacks)
 <code>cryptoeprint:2009:317</code>، وبعضها فقط على نسخ AES مخفَّضة الجولات (reduced-round)
-<code>cryptoeprint:2009:374</code>.
-.. [#]
-تعتمد الخوارزميات المتماثلة عادةً على دالة جولة (round function) تُكرَّر عددًا
+<code>cryptoeprint:2009:374</code>.</p>
+<p>تعتمد الخوارزميات المتماثلة عادةً على دالة جولة (round function) تُكرَّر عددًا
 من المرّات. ويتضمّن كلّ استدعاء عادةً «مفتاح جولة» (round key) مشتقًّا من
 المفتاح الرئيسي. والنسخة المخفَّضة الجولات أسهل في الهجوم عمدًا. ويمكن أن
 تمنح هذه الهجمات بصيرةً حول مدى صمود الشيفرة الكاملة.</p>
@@ -199,27 +191,22 @@ FIPS، قُيّدت معاملاتها بحجم كتلة قدره 128 بتًّا
 الشيفرة مقاومة للتحليل التشفيري الخطّي، بخلاف خوارزمية DES الأسبق، التي سبّبت
 صندوق استبدالها الخامس مشكلات أمنية خطيرة.
 <img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-5-SubBytes.svg" alt="center"></p>
-<p>center</p>
-<p>.. [#]
-ولصالح DES، كانت الهجمات الخطّية غير معروفة علنًا وقت تصميمه.</p>
-<p>إزاحة الصفوف (ShiftRows)
+<p>ولصالح DES، كانت الهجمات الخطّية غير معروفة علنًا وقت تصميمه.
+إزاحة الصفوف (ShiftRows)
 '''''''''''''''</p>
 <p>بعد تطبيق خطوة استبدال البتّات على البايتات الستّة عشر للكتلة، تُزيح AES الصفوف في
 المصفوفة <code>4 \times 4</code>:</p>
 <p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg" alt="center"></p>
-<p>center</p>
 <p>مزج الأعمدة (MixColumns)
 '''''''''''''''</p>
 <p>تضرب خطوة مزج الأعمدة (MixColumns) كلّ عمود في الحالة في مضروب ثابت.</p>
 <p>تمثّل خطوتا إزاحة الصفوف ومزج الأعمدة خصائص الانتشار (diffusion) في AES.</p>
 <p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-7-MixColumns.svg" alt="center"></p>
-<p>center</p>
 <p>إضافة مفتاح الجولة (AddRoundKey)
 '''''''''''''''</p>
 <p>وكما يوحي الاسم، تضيف خطوة إضافة مفتاح الجولة البايتات من مفتاح الجولة الذي ينتجه
 جدول المفاتيح إلى حالة الشيفرة.</p>
 <p><img src="/arabic-cs-library/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg" alt="center"></p>
-<p>center</p>
 <h4>DES و3DES</h4>
 <p>DES إحدى أقدم شيفرات الكتل التي لقيت استعمالًا واسعًا. وقد نُشرت بوصفها معيارًا
 رسميًّا من معايير FIPS سنة 1977. ولم تعد تُعدّ آمنة اليوم، وذلك أساسًا بسبب صغر حجم
@@ -282,13 +269,20 @@ DES المجرّد القديمة (بمفتاح 56 بتًّا). وفي خيار 
 زلنا بحاجة إلى معالجة مسألة الاتفاق على بايتات المفتاح تلك القليلة، لا سيّما عبر
 قناة غير آمنة. وسنتصدّى لهذه المسألة في فصل لاحق عبر
 <code>key exchange protocol &lt;key-exchange&gt;</code>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>لعلّ القارئ المنتبه قد لاحظ أنّ هذا ينكسر في الحالات المتطرّفة: فإذا عرفت جميع الأزواج إلّا واحدًا، فإنّك تعرف الأخير بالاستبعاد. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/crypto-101/exclusive-or/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">الاو الحصري (XOR)</span></a><!--]--> <!--[0--><a href="../../../../book/crypto-101/stream-ciphers/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">شيفرات التيار</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -296,8 +290,8 @@ DES المجرّد القديمة (بمفتاح 56 بتًّا). وفي خيار 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

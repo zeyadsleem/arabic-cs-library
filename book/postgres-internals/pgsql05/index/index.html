@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -263,13 +263,10 @@ testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">SELECT</s
 <p>مع تقدّم معرّف المعاملة الحالي، يُضيف PostgreSQL صفحة جديدة متى امتلأت الصفحة الحالية.</p>
 <p>لتنفيذ التحكّم بالتزامن، تسترجع دوال داخلية حالة المعاملة من سجل الالتزام. ثم تُعيد هذه الدوال حالة المعاملة المطلوبة. (راجع «بتّات التلميح (Hint Bits)» في القسم 5.7.1.1 لمزيد من التفاصيل.)</p>
 <h2 id="543-صيانة-سجل-الالتزام">5.4.3. صيانة سجل الالتزام</h2>
-<p>يكتب PostgreSQL بيانات سجل الالتزام إلى ملفات في الدليل الفرعي pg_xact<a href="#fn:1">1</a> عند الإيقاف أو كلما عملت عملية نقطة تحقق (checkpoint). وتُسمّى هذه الملفات تسمية تسلسلية، مثل ‘0000’ و‘0001’.</p>
+<p>يكتب PostgreSQL بيانات سجل الالتزام إلى ملفات في الدليل الفرعي pg_xact<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> عند الإيقاف أو كلما عملت عملية نقطة تحقق (checkpoint). وتُسمّى هذه الملفات تسمية تسلسلية، مثل ‘0000’ و‘0001’.</p>
 <p>الحد الأقصى لحجم كل ملف 256 كيلوبايت. فمثلاً، إذا شغل سجل الالتزام ثماني صفحات (بإجمالي 64 كيلوبايت)، تُكتب البيانات كلها في الملف 0000. وإذا شغل 37 صفحة (بإجمالي 296 كيلوبايت)، تُوزَّع البيانات بين الملفين 0000 (256 كيلوبايت) و0001 (40 كيلوبايت).</p>
 <p>أثناء بدء التشغيل، يحمّل PostgreSQL البيانات من ملفات pg_xact لتهيئة سجل الالتزام في الذاكرة المشتركة.</p>
 <p>يزداد الحجم الإجمالي لسجل الالتزام باستمرار مع إضافة صفحات جديدة. غير أن البيانات القديمة تصبح في النهاية غير ضرورية. وتزيل عملية التفريغ (VACUUM)، الموضّحة في <a href="/arabic-cs-library/book/postgres-internals/pgsql06/index">الفصل 6</a>، صفحات وملفات سجل الالتزام القديمة بانتظام. وتُقدَّم تفاصيل إزالة بيانات سجل الالتزام في القسم 6.4.</p>
-<ol>
-<li>ملاحظة: كان “pg_xact” يُسمّى “pg_clog” في الإصدار 9.6 وما قبله. <a href="#fnref:1">↩︎</a></li>
-</ol>
 <h1>5.5. لقطة المعاملة (Transaction Snapshot)</h1>
 <p><strong>لقطة المعاملة (transaction snapshot)</strong> مجموعة بيانات تخزّن معلومات عن نشاط جميع المعاملات عند لحظة زمنية محدّدة، وذلك بالنسبة إلى معاملة فردية. وفي هذا السياق، تكون المعاملة <strong>نشطة</strong> إذا كانت قيد التنفيذ أو لم تبدأ بعد.</p>
 <p>يعرّف PostgreSQL التمثيل النصي الداخلي للقطة المعاملة بالصيغة <code>xmin:xmax:xip_list</code>. فمثلاً، في تمثيل مبسّط مثل ‘100:100:’، يدل ذلك على أن معرّفات المعاملات الأقل من 100 ليست نشطة، بينما المعرّفات المساوية لـ100 أو الأكبر منها نشطة.</p>
@@ -835,13 +832,20 @@ testdb=# ANALYZE tbl;
 <p>في الإصدار 9.4 (2014) وما بعده، يضبط PostgreSQL بتّة XMIN_FROZEN في الحقل t_infomask الخاص بالصف بدلاً من إعادة كتابة قيمة t_xmin (الشكل 5.22 ب).</p>
 <p><img src="/arabic-cs-library/images/postgres-internals/pgsql05-fig-5-22.webp" alt=""></p>
 <h4>الشكل 5.22. عملية التجميد.</h4>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>ملاحظة: كان “pg_xact” يُسمّى “pg_clog” في الإصدار 9.6 وما قبله. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql04/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">مغلّف البيانات الخارجية</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsql06/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">معالجة التفريغ (Vacuum)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -849,8 +853,8 @@ testdb=# ANALYZE tbl;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

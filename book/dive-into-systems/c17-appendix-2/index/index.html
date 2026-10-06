@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -69,10 +69,10 @@ myusername
 </code></pre>
 <p>يخزّن نظام ملفات Unix البرامج والملفات الأخرى. ويكتب المستخدمون أوامر عند مطالبة الصدفة لتشغيل البرامج والتنقل في نظام ملفات Unix ومعالجة الملفات.</p>
 <p>ولكثير من الأوامر <strong>خيارات سطر أوامر</strong> (command line options) تحدّد خيارات مختلفة أو سلوكيات معيّنة للأمر. كما تأخذ أوامر كثيرة <strong>وسائط سطر أوامر</strong> (command line arguments) تُستخدم لتحديد هدف العملية. فمثلًا، <code>cp</code> هو أمر النسخ الذي ينسخ ملفًا إلى آخر. ويأخذ وسيطي سطر أوامر، هما اسم الملف المصدر المراد نسخه واسم الملف الهدف الذي سيحتوي النسخة.</p>
-<h3 id="1711-نظام-ملفات-unix"><a href="#_unix_file_system"></a>17.1.1. نظام ملفات Unix</h3>
+<h3 id="1711-نظام-ملفات-unix">17.1.1. نظام ملفات Unix <span class="content-anchor" id="_unix_file_system"></span></h3>
 <p>يتكوّن نظام ملفات Unix من ملفات وأدلة. ويخزّن الملف بيانات مثل شيفرة البرامج المصدرية وبيانات إدخال البرامج وملاحظات المحاضرات وشيفرة الملفات التنفيذية الثنائية. وتخزّن الأدلة الملفات والأدلة الفرعية وتُستخدم لتنظيم مجموعة الملفات المخزّنة في نظام الملفات.</p>
 <p>ونظام ملفات Unix منظّم في بنية شجرية هرمية، بدليل واحد في الأعلى (<code>/</code>) يُسمى الدليل الجذر. وتحته بعض الأدلة الرئيسية التي تحمل محتوى النظام. ومن الأمثلة عليها <code>bin</code> الذي يخزّن برامج النظام التي يمكن تشغيلها من سطر أوامر Unix، و<code>lib</code> الذي يخزّن شيفرة مكتبات النظام، و<code>home</code> الذي يخزّن الدليل الرئيسي لكل مستخدم ليخزّن فيه ملفاته الخاصة. ويعرض <a href="#FigUnixFS">الشكل 1</a> مثالًا على بنية أدلة نظام ملفات Unix، مع دليلي <code>home</code> للمستخدمين <code>sam</code> و<code>sarita</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp" alt="The unix file system with root directory at top, with example child directories bin, home, lib, and two example subdirectories under home sam and sarita."> الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp" alt="The unix file system with root directory at top, with example child directories bin, home, lib, and two example subdirectories under home sam and sarita." id="FigUnixFS"> الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.</p>
 <p>لاحظ أن <code>/</code> هو الدليل الأعلى مستوى، وله عدة أدلة فرعية <strong>تابعة</strong>، منها <code>bin</code> و<code>lib</code> و<code>home</code>. ولكل دليل عدا الدليل الجذر دليل <strong>أب</strong> فريد؛ والدليل الجذر هو الوحيد الذي ليس له دليل أب.</p>
 <p>ولكل مستخدم في النظام دليله الرئيسي الخاص، وهو دليل فرعي في <code>/home</code>. ويحمل الدليل الرئيسي لكل مستخدم الاسم نفسه الذي يحمله اسم المستخدم. وفي الشكل نعرض بعض الأدلة الرئيسية كمثال. ولكل دليل عدا <code>/</code> دليل أب واحد بالضبط. فمثلًا، <code>home</code> هو الدليل الأب لـ<code>sarita</code>، و<code>/</code> هو الدليل الأب لـ<code>home</code>. ويُعرَّف كل دليل بـ<strong>اسم مسار</strong> (pathname) فريد يبدأ من الدليل الجذر. فمثلًا، <code>/home/sarita</code> هو اسم مسار الدليل الرئيسي للمستخدم <code>sarita</code>: يبدأ اسم المسار من الدليل الجذر <code>/</code>، ثم يتبع الدليل الفرعي <code>home</code> في <code>/</code>، وأخيرًا الدليل الفرعي <code>sarita</code> في <code>home</code>.</p>
 <p>وعند تسجيلك الدخول إلى نظام Unix لأول مرة أو بدء برنامج صدفة جديد، تبدأ في دليلك الرئيسي. ويطبع الأمر <code>pwd</code> (طباعة دليل العمل) الدليل الذي أنت فيه حاليًا، مع عرض اسم مساره الكامل بدءًا من الدليل الجذر <code>/</code>. فمثلًا، هذه هي المخرجات عندما يسجّل المستخدم <code>sarita</code> الدخول ويكتب <code>pwd</code>:</p>
@@ -83,7 +83,7 @@ myusername
 <pre><code class="language-bash">$ <span class="hljs-built_in">pwd</span>
 /home/sam
 </code></pre>
-<h3 id="1712-أوامر-نظام-الملفات"><a href="#_file_system_commands"></a>17.1.2. أوامر نظام الملفات</h3>
+<h3 id="1712-أوامر-نظام-الملفات">17.1.2. أوامر نظام الملفات <span class="content-anchor" id="_file_system_commands"></span></h3>
 <p>تتيح أوامر Unix للمستخدمين التنقل في بنية أدلتها، وإنشاء الملفات والأدلة وحذفها، وسرد محتويات دليل، ومعرفة الدليل الذي هم فيه حاليًا. وجميع الإجراءات نسبية إلى دليل العمل الحالي. فمثلًا، إذا أنشأ مستخدم ملفًا جديدًا، يُنشأ الملف في دليل العمل الحالي للمستخدم.</p>
 <p>ويغيّر الأمر <code>cd</code> (تغيير الدليل) دليل العمل الحالي (أو ينتقل إلى دليل مختلف). ويسرد الأمر <code>ls</code> (سرد) محتويات الدليل الحالي. ويُستخدم الأمر <code>mkdir</code> لإنشاء دليل جديد.</p>
 <p>فمثلًا، لإنشاء دليل فرعي اسمه <code>unix_notes</code> في دليلها الرئيسي، وللانتقال إلى ذلك الدليل، ستكتب <code>sarita</code> ما يلي:</p>
@@ -139,13 +139,13 @@ $ <span class="hljs-built_in">pwd</span>
 /home/sam/classes/CS31
 </code></pre>
 <p>ويعرض <a href="#FigUnixFSSam">الشكل 2</a> شكل نظام الملفات بعد أن يشغّل <code>sam</code> جميع أوامر <code>mkdir</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp" alt="The unix file system after sam creates subdirectories classes, letters, projects, and creates a subdirectory under classes named CS31."> الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp" alt="The unix file system after sam creates subdirectories classes, letters, projects, and creates a subdirectory under classes named CS31." id="FigUnixFSSam"> الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.</p>
 <p>والآن يمكن لـ<code>sam</code> الانتقال إلى دليله CS31 عندما يعمل على دروس مقرر CS31، وإنشاء المزيد من الأدلة الفرعية والملفات في هذا الدليل:</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">cd</span> CS31
 $ <span class="hljs-built_in">pwd</span>
 /home/sam/classes/CS31
 </code></pre>
-<h4><a href="#_file_pathnames_and_navigating_the_file_system"></a>أسماء مسارات الملفات والتنقل في نظام الملفات</h4>
+<h4>أسماء مسارات الملفات والتنقل في نظام الملفات <span class="content-anchor" id="_file_pathnames_and_navigating_the_file_system"></span></h4>
 <p>كما رأينا، يُستخدم الأمر <code>cd</code> للتنقل في نظام الملفات، ويسرد <code>ls</code> محتويات دليل.</p>
 <p>ويأخذ كلٌّ من <code>cd</code> و<code>ls</code> وسيط سطر أوامر واحدًا يحدّد الدليل المراد الانتقال إليه أو سرد محتوياته على الترتيب. وهناك طريقتان لتسمية موقع دليل لينتقل إليه <code>cd</code>. إحداهما سرد الدليل بـ<strong>اسم مساره المطلق</strong>، أي اسمه بدءًا من الدليل الجذر (<code>/</code>)، والأخرى سرده بـ<strong>اسم مساره النسبي</strong>، أي اسمه من دليل العمل الحالي.</p>
 <p>ويمكنك أيضًا تشغيل <code>cd</code> و<code>ls</code> دون وسيط اسم مسار. فتشغيل <code>cd</code> وحده سيعيدك إلى بيتك (دليلك الرئيسي)، وتشغيل <code>ls</code> وحده يسرد محتويات دليل العمل الحالي. وفيما يلي بعض الأمثلة التي جرّبها المستخدم <code>sam</code>:</p>
@@ -213,7 +213,7 @@ $ <span class="hljs-built_in">pwd</span>
 <blockquote>
 <p>في كثير من الأحيان يضبط مدير النظام صلاحيات افتراضية للملفات والأدلة في <code>home/</code> تمنع المستخدمين من رؤية الأدلة الرئيسية والملفات الخاصة ببعضهم. وفي نظام كهذا، قد لا يتسنى لـSam الانتقال بـ<code>cd</code> إلى الدليل الرئيسي لـSarita، أو سرد ملفاتها بـ<code>ls</code> كما يفعل في هذا المثال.</p>
 </blockquote>
-<h4><a href="#_copying_and_moving_files"></a>نسخ الملفات ونقلها</h4>
+<h4>نسخ الملفات ونقلها <span class="content-anchor" id="_copying_and_moving_files"></span></h4>
 <p>ينسخ الأمر <code>cp</code> ملفًا (أو دليلًا) إلى آخر، وينقل الأمر <code>mv</code> ملفًا (أو دليلًا) من دليل إلى آخر، أو يعيد تسمية ملف. ويأخذ هذان الأمران وسيطي سطر أوامر، هما المصدر والهدف.</p>
 <p>وفيما يلي بعض الأمثلة؛</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">cd</span> unix_notes
@@ -245,7 +245,7 @@ $ <span class="hljs-built_in">pwd</span>
 $ <span class="hljs-built_in">ls</span>
 basics unix_notes
 </code></pre>
-<h4><a href="#_removing_files_and_directories"></a>إزالة الملفات والأدلة</h4>
+<h4>إزالة الملفات والأدلة <span class="content-anchor" id="_removing_files_and_directories"></span></h4>
 <p>أحيانًا تريد إزالة ملفات وأدلة. ويُستخدم الأمر <code>rm</code> لإزالة ملف، ويُستخدم <code>rmdir</code> لإزالة دليل. ويأخذ كلاهما اسم الملف أو الدليل المراد إزالته. ولكل منهما خيارات سطر أوامر تحدّد سلوك الإزالة.</p>
 <p><strong>تحذير — إزالة الملفات دون خيار سطر الأوامر <code>-i</code></strong></p>
 <blockquote>
@@ -279,7 +279,7 @@ classes/    projects/
 <blockquote>
 <p>ينبغي توخي الحذر الشديد عند استخدام <code>-f</code> مع <code>rm</code>، لأن سلوك المطالبة في <code>rm -i</code> غالبًا ما يمنع الإزالة العرضية للملفات؛ فإذا شغّلت <code>rm -rf</code> فقد تُزيل دليلًا كاملًا من الملفات إزالة تعاودية عن غير قصد. ولهذا، من الأفضل تجنّب استخدام خياري سطر الأوامر هذين. غير أنهما مفيدان عند حذف عدد كبير من الملفات والأدلة الفرعية. وفي الحالات التي تريد فيها استخدام هذين الخيارين، من الممارسات الجيدة أن تتأكد أولًا من أنك في الدليل الصحيح (بتشغيل <code>ls</code> و<code>pwd</code>) قبل تشغيل <code>rm -rf</code>.</p>
 </blockquote>
-<h3 id="1713-ملخص-الأوامر-الأساسية"><a href="#_basic_commands_summary"></a>17.1.3. ملخص الأوامر الأساسية</h3>
+<h3 id="1713-ملخص-الأوامر-الأساسية">17.1.3. ملخص الأوامر الأساسية <span class="content-anchor" id="_basic_commands_summary"></span></h3>
 <p>وفيما يلي ملخص لبعض أوامر UNIX التي نوقشت في هذا القسم، مع أمثلة:</p>
 <p><code>pwd</code> — طباعة دليل العمل: يطبع اسم المسار الكامل للدليل الحالي (cwd).</p>
 <p><code>cd </code> — تغيير الدليل: يغيّر الدليل الحالي ليكون الدليل المحدّد بـ``. ويمكن أن يكون اسم المسار نسبيًا إلى دليل العمل الحالي أو مسارًا مطلقًا من <code>/</code>.</p>
@@ -346,7 +346,7 @@ classes/    projects/
 <pre><code>less basics
 </code></pre>
 <p><code>more </code> — مبرّد صفحات آخر (مثل <code>less</code>) لعرض الملفات صفحة واحدة في المرة.</p>
-<h3 id="1714-المراجع"><a href="#_references"></a>17.1.4. المراجع</h3>
+<h3 id="1714-المراجع">17.1.4. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li><a href="https://www.cheat-sheets.org/project/tldr/command/special-most-used-linux-commands/">أكثر أوامر Unix استخدامًا</a> من cheat-sheets.org</li>
@@ -369,7 +369,7 @@ classes/    projects/
 <p>ويمكنك أيضًا قراءة صفحة دليل <code>man</code> لمعرفة المزيد عنه:</p>
 <pre><code class="language-bash">$ man man
 </code></pre>
-<h3 id="1721-قراءة-صفحات-man"><a href="#_reading_man_pages"></a>17.2.1. قراءة صفحات man</h3>
+<h3 id="1721-قراءة-صفحات-man">17.2.1. قراءة صفحات man <span class="content-anchor" id="_reading_man_pages"></span></h3>
 <p>قد لا يكون من الواضح تمامًا كيفية قراءة صفحة دليل، فلننظر إلى مثال على صفحة دليل <code>toupper</code>:</p>
 <pre><code class="language-bash">$ man toupper
 </code></pre>
@@ -438,7 +438,7 @@ RETURN VALUE
        isalpha(3), setlocale(3), locale(7)
 </code></pre>
 <p>وتتضمّن صفحات الدليل أحيانًا أمثلة على كيفية استدعاء الدالة.</p>
-<h3 id="1722-apropos"><a href="#_apropos"></a>17.2.2. apropos</h3>
+<h3 id="1722-apropos">17.2.2. apropos <span class="content-anchor" id="_apropos"></span></h3>
 <p>أحيانًا لا تعرف اسم دالة أو أمر تريد استخدامه. ويبحث الأمر <code>apropos</code> في أوصاف صفحات دليل Unix عن كلمات مفتاحية تطابق نمط البحث الذي تسرده كخيار سطر أوامر، ويسرد الأوامر/الدوال التي يرى أنها مطابقات مناسبة. فمثلًا، إذا أردت معرفة اسم دالة للحصول على دليل العمل الحالي، لكنك لا تتذكر اسم الدالة، يمكنك سؤال apropos:</p>
 <pre><code class="language-bash">$ apropos <span class="hljs-string">&quot;current working directory&quot;</span>
 get_current_dir_name (3) - Get current working directory
@@ -448,14 +448,14 @@ getwd (3)                - Get current working directory
 <p>ثم يمكنك قراءة بعض صفحات الدليل الخاصة بالنتائج لمعرفة أيّها تريد:</p>
 <pre><code class="language-bash">$ man 3 getcwd
 </code></pre>
-<h3 id="1723-المراجع"><a href="#_references"></a>17.2.3. المراجع</h3>
+<h3 id="1723-المراجع">17.2.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل: <code>man man</code> و<code>man apropos</code></li>
 <li><a href="https://www.kernel.org/doc/man-pages/">kernel.org</a> النسخة على الإنترنت من صفحات دليل Linux.</li>
 </ul>
 <p>غالبًا ما يريد المستخدمون تسجيل الدخول عن بُعد إلى أجهزة Unix أو نسخ الملفات من جهاز إلى آخر. وSecure Shell (SSH) مفيد لتسجيل الدخول عن بُعد إلى جهاز Unix من جهاز آخر يعمل بـUnix أو بنظام تشغيل آخر مثل Windows وMacOS. وSecure Copy (SCP) مفيد لنسخ الملفات من نظام إلى آخر.</p>
-<h3 id="1731-تسجيل-الدخول-عن-بعد"><a href="#_remote_login"></a>17.3.1. تسجيل الدخول عن بُعد</h3>
+<h3 id="1731-تسجيل-الدخول-عن-بعد">17.3.1. تسجيل الدخول عن بُعد <span class="content-anchor" id="_remote_login"></span></h3>
 <p>يمكنك تسجيل الدخول إلى جهاز Unix بعيد باستخدام الأمر <code>ssh</code>. ويوفّر <code>ssh</code> تواصلًا مشفّرًا بين الجهاز المضيف الذي تشغّل منه <code>ssh</code> والجهاز البعيد الذي اتصلت به.</p>
 <p>وللدخول عبر SSH إلى جهاز بعيد، اسرد اسم المستخدم على الجهاز البعيد متبوعًا باسم المضيف على الإنترنت للجهاز. فمثلًا، إذا أرادت Sarita تسجيل الدخول عن بُعد إلى حسابها <code>sarita</code> على الجهاز <code>cs87</code> في شبكة <code>cs.college.edu</code> من حاسوبها المحمول، فستُدخل الأمر التالي (لتوضيح أي جهاز ينفّذ كلًّا من هذه الأوامر، فإن المطالبة <code>laptop$</code> هي مطالبة الصدفة على حاسوب Sarita المحمول، والمطالبة <code>cs87$</code> هي مطالبة الصدفة على الجهاز البعيد).</p>
 <pre><code>laptop$ ssh sarita@cs87.cs.college.edu
@@ -465,9 +465,9 @@ getwd (3)                - Get current working directory
 sarita@cs.college.edu's password:
 cs87$
 </code></pre>
-<h4><a href="#_remotely_connecting_with_ssh_from_non_unix_oss"></a>الاتصال عن بُعد بـSSH من أنظمة تشغيل غير Unix</h4>
+<h4>الاتصال عن بُعد بـSSH من أنظمة تشغيل غير Unix <span class="content-anchor" id="_remotely_connecting_with_ssh_from_non_unix_oss"></span></h4>
 <p>للدخول بـ<code>ssh</code> إلى نظام Unix من نظام غير Unix قد تحتاج أولًا إلى تثبيت عميل SSH على جهازك، لكنه مرجّح أن يكون مثبّتًا بالفعل. ثم تحتاج إلى نافذة طرفية لتشغيل <code>ssh</code>. وعلى MacOS، افتح تطبيق الطرفية واستخدمه. وعلى أجهزة Windows، يمكنك إما استخدام PowerShell وإما تثبيت <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">Putty</a> واستخدامه.</p>
-<h3 id="1732-نسخ-الملفات-عن-بعد"><a href="#_remote_file_copy"></a>17.3.2. نسخ الملفات عن بُعد</h3>
+<h3 id="1732-نسخ-الملفات-عن-بعد">17.3.2. نسخ الملفات عن بُعد <span class="content-anchor" id="_remote_file_copy"></span></h3>
 <p>إذا أردت نقل الملفات إلى جهاز على نظام بعيد أو منه، يمكنك استخدام <code>scp</code> (النسخ الآمن). ويبدو الأمر <code>scp</code> شبيهًا جدًا بالأمر <code>cp</code> إلا أن أحد الطرفين، المصدر أو الهدف، يُحدَّد كاسم مسار على جهاز بعيد. ومثل <code>ssh</code>، يتطلب <code>scp</code> من المستخدم كتابة كلمة مرور المستخدم على الجهاز البعيد للسماح بالوصول إلى الملفات المنسوخة إليه أو منه على النظام البعيد. وإذا نجح <code>scp</code>، فإنه يعرض بعض الإحصاءات عن الملف المنسوخ، منها حجم الملف بالبايتات ومتوسط معدل النقل وزمن النقل الإجمالي.</p>
 <p>فمثلًا، لنسخ الملف المسمّى <code>prog.c</code> من جهازك الرئيسي إلى المستخدم <code>sam</code> على الجهاز <code>cs87.cs.college.edu</code>، ستكتب:</p>
 <pre><code># scp prog.c into home directory on cs87.cs.college.edu
@@ -485,7 +485,7 @@ prog.c                  100%  282    56.4KB/s   00:00
 sarita@cs.college.edu's password:
 basics                  100%   78   86.3KB/s   00:00
 </code></pre>
-<p>وإذا أردت نقل ملفات كثيرة، فمن المفيد أن تحزمها أولًا في ملف أرشيف واحد. ثم تنسخ ملف الأرشيف، وتفكّ ضغطه للحصول على مجموعة الملفات. علاوة على ذلك، سيقلل ضغط الملف قبل النقل من زمن النقل الإجمالي. وأداة <code>tar</code> إحدى طرق حزم الملفات وفكّها، و<code>gzip</code> و<code>bzip2</code> مثالان على أدوات ضغط الملفات. انظر <a href="#targzbz">[targzbz]</a> لمزيد من المعلومات عن استخدام <code>tar</code> وضغط الملفات.</p>
+<p>وإذا أردت نقل ملفات كثيرة، فمن المفيد أن تحزمها أولًا في ملف أرشيف واحد. ثم تنسخ ملف الأرشيف، وتفكّ ضغطه للحصول على مجموعة الملفات. علاوة على ذلك، سيقلل ضغط الملف قبل النقل من زمن النقل الإجمالي. وأداة <code>tar</code> إحدى طرق حزم الملفات وفكّها، و<code>gzip</code> و<code>bzip2</code> مثالان على أدوات ضغط الملفات. انظر <a href="#targzbz">targzbz</a> لمزيد من المعلومات عن استخدام <code>tar</code> وضغط الملفات.</p>
 <p>إنشاء مفاتيح SSH</p>
 <p>للاتصال عن بُعد بجهاز Linux، لا تحتاج إلى إنشاء مفاتيح ssh؛ فـssh يستخدم افتراضيًا اسم المستخدم وكلمة المرور لديك على النظام البعيد الذي تتصل به للمصادقة. غير أن بعض المواقع، مثل GitHub، قد تتطلب منك رفع مفتاح ssh العام الخاص بك إلى خادم الويب الخاص بها للوصول إلى بعض مواردها. ويستخدم <code>ssh</code> تشفير المفتاح العام-الخاص لتشفير البيانات المراد إرسالها بأمان عبر اتصال شبكي. ويُعرف نوع التشفير الذي يستخدمه ssh بالتشفير غير المتماثل، حيث يُستخدم مفتاحك الخاص على جهازك المضيف (العميل) لتشفير البيانات الصادرة المرسلة عبر الشبكة إلى خادم، ويستخدم الخادم مفتاحك العام لفكّ تشفير رسالتك. ويشفّر الخادم ردّه باستخدام مفتاحك العام قبل إرساله إليك عبر الشبكة، وعندما يستقبل عميل ssh الرسالة، تُفكّ شفرتها باستخدام مفتاحك الخاص. وللحصول على ذلك، تحتاج أولًا إلى إنشاء زوج مفاتيح ssh العام والخاص، ثم رفع مفتاحك العام إلى الخادم (وإبقاء مفتاحك الخاص سريًا على جهاز العميل لديك).</p>
 <p>ولإنشاء مفتاح ssh، شغّل <code>ssh-keygen -t rsa</code>. وسيطالبك بموقع المفتاح، وهو افتراضيًا في دليلك <code>~/.ssh</code>، ويطلب منك إدخال عبارة المرور لمفتاح ssh الذي تُنشئه:</p>
@@ -500,7 +500,7 @@ Generating public/private rsa key pair.
 </ul>
 <p>ويمكنك بعد ذلك نسخ محتويات ملفك <code>id_rsa.pub</code> ولصقها في خادم الويب الذي يتطلبها.</p>
 <p>ويمكنك أيضًا استخدام هذه الطريقة لرفع مفتاحك العام إلى مضيفات بعيدة للاتصال باستخدام عبارة مرور مفتاحك بدلًا من كلمة مرورك.</p>
-<h3 id="1733-المراجع"><a href="#_references"></a>17.3.3. المراجع</h3>
+<h3 id="1733-المراجع">17.3.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل (مثل <code>man ssh</code>)</li>
@@ -512,7 +512,7 @@ Generating public/private rsa key pair.
 <p>ومع أنه ليس مهمًا تعلّم كل برنامج محرر، ينبغي للمستخدمين تعلّم واحد على الأقل لإنشاء الملفات وتحريرها على أنظمة Unix.</p>
 <p>ويُعدّ Vim (vi improved) وEmacs مثالين على المحررات المتاحة على معظم الأنظمة، ويكون vim (أو vi) متاحًا دائمًا على كل نظام Unix. ولهذين المحررين واجهة نصية لا واجهة رسومية (وإن كان لكل منهما نسخ بواجهة رسومية أيضًا). وبشكل عام، تتطلب المحررات النصية جهدًا أكبر قليلًا في تعلّم استخدامها مقارنة بالمحررات الرسومية التي تستخدم القوائم وواجهات التأشير والنقر. غير أن المحررات النصية تستهلك عادةً موارد حاسوبية أقل للتشغيل، وهي مفيدة بشكل خاص عند الاتصال عن بُعد بأنظمة تريد تحرير ملفات عليها.</p>
 <p>وتوجد موارد على الإنترنت كثيرة لتعلّم Vim وEmacs معًا. وليس مهمًا تعلّم كليهما، وتوجد آراء قوية حول أيّهما أفضل (<a href="https://en.wikipedia.org/wiki/Editor_war">https://en.wikipedia.org/wiki/Editor_war</a>). غير أنه بما أن Vim (أو vi) متاح على كل نظام Unix، فإننا نعرض تفاصيل أكثر قليلًا عن أساسيات محرر vim وكيفية تعلّم استخدام Vim (وvi). كما نضمّن بعض المعلومات عن أساسيات Emacs وNano، مع مزيد من المراجع للثلاثة جميعًا.</p>
-<h3 id="1741-محرر-vim"><a href="#_the_vim_editor"></a>17.4.1. محرر Vim</h3>
+<h3 id="1741-محرر-vim">17.4.1. محرر Vim <span class="content-anchor" id="_the_vim_editor"></span></h3>
 <p>محرر <code>vim</code> (و<code>vi</code>) هو المحرر الأوسع توفرًا على أنظمة Unix. وهو محرر نصوص فعّال وخفيف وقوي، ويسهل استخدامه بعد تعلّم بعض الأوامر الأساسية التي يمكنك تعلّمها بخوض الدرس التعليمي <code>vimtutor</code>. ويكون <code>vim</code> مفيدًا بشكل خاص عند العمل عن بُعد عبر اتصال ssh. كما أن له ميزات متقدمة كثيرة وهو قابل للتهيئة بدرجة كبيرة عبر إعدادات في ملف التهيئة <code>.vimrc</code>.</p>
 <p>وليس ضروريًا تعلّم كل ميزات vim؛ فبعض الأوامر الأساسية ستُطلقك مع <code>vim</code> وتتيح لك أداء معظم مهام التحرير.</p>
 <p>ويعمل Vim في نمطين:</p>
@@ -522,7 +522,7 @@ Generating public/private rsa key pair.
 </ol>
 <p>وللتبديل من نمط <em>الإدراج</em> إلى نمط <em>الأوامر</em>، اضغط المفتاح <code>ESC</code>.</p>
 <p>وتوجد طرق كثيرة للتبديل من نمط <em>الأوامر</em> إلى نمط <em>الإدراج</em>. وإحدى الطرق ضغط المفتاح <code>i</code>. ومن أفضل طرق تعلّم <code>vim</code> استخدام <code>vimtutor</code>، وهو الدرس التعليمي لـVim.</p>
-<h4><a href="#_vimtutor"></a>vimtutor</h4>
+<h4>vimtutor <span class="content-anchor" id="_vimtutor"></span></h4>
 <p>أفضل طريقة لتعلّم محرر vim هي تشغيل <code>vimtutor</code>:</p>
 <pre><code class="language-bash">$  vimtutor
 </code></pre>
@@ -535,7 +535,7 @@ Generating public/private rsa key pair.
 <li>الدرس 4.1 (G) والدرس 4.2 (البحث)</li>
 <li>الدرس 6.2 (a) والدرس 6.3 ( R ) والدرس 6.4 (y وp)</li>
 </ul>
-<h4><a href="#_vim_command_reference"></a>مرجع أوامر Vim</h4>
+<h4>مرجع أوامر Vim <span class="content-anchor" id="_vim_command_reference"></span></h4>
 <p>وفيما يلي قائمة بأوامر vim الشائعة. وقد يفيدك الرجوع إليها أثناء تعلّم <code>vim</code>.</p>
 <ul>
 <li>التبديل بين الأنماط: <code>i</code> التبديل إلى نمط الإدراج: ما تكتبه يظهر في الملف عند المؤشر. <code>ESC</code> التبديل إلى نمط الأوامر: ما تكتبه يُفسَّر كأوامر vim</li>
@@ -547,7 +547,7 @@ Generating public/private rsa key pair.
 <li>أوامر التحديد المرئي: <code>SHIFT-v</code> تحديد السطر مرئيًا (استخدم مفاتيح الأسهم لتحديد أسطر أكثر). <code>=</code> إعادة تنسيق النص المحدّد مرئيًا (إزاحة تلقائية لشيفرة C!). <code>gq</code> إعادة تنسيق النص المحدّد مرئيًا بحد أقصى 80 محرفًا لطول السطر</li>
 <li>أوامر متنوعة: <code>:set number</code> إظهار أرقام الأسطر. <code>:set nonumber</code> عدم إظهار أرقام الأسطر. <code>J</code> ضم السطر أسفل المؤشر بالسطر الذي عليه المؤشر. <code>:help </code> توثيق مساعدة عن أمر vim محدّد، و<code>:q</code> للخروج من توثيق المساعدة (مثل <code>help v_</code>) معلومات مساعدة التحديد المرئي. استخدم <tab> (<code>: help v_</code>) للتنقل بين مساعدات أوامر التحديد المرئي المختلفة</li>
 </ul>
-<h4><a href="#_configuring_vim"></a>تهيئة vim</h4>
+<h4>تهيئة vim <span class="content-anchor" id="_configuring_vim"></span></h4>
 <p>واختياريًا، يمكنك تهيئة vim بكل الطرق. ومع أنك غير ملزم بتهيئة vim لاستخدامه، فقد يفيدك تخصيص نظام الألوان أو ضبط بعض الإعدادات الأخرى.</p>
 <p>أضف في دليلك الرئيسي ملف تهيئة لـvim اسمه <code>.vimrc</code>. وعند البدء، يفحص <code>vim</code> هذا الملف لضبط خيارات تهيئة مختلفة لجلسة vim، بما فيها ضبط نظام ألوان وحجم نافذة افتراضي.</p>
 <p>شغّل <code>ls -a</code> في دليلك الرئيسي لسرد جميع ملفات النقطة لديك ولمعرفة ما إذا كان ملف <code>.vimrc</code> موجودًا بالفعل:</p>
@@ -563,14 +563,14 @@ $ <span class="hljs-built_in">ls</span> -a ~/       <span class="hljs-comment">#
 $ vim  .vimrc
 </code></pre>
 <p>وتوجد موارد على الإنترنت كثيرة بمعلومات عن تهيئة إعدادات vim.</p>
-<h3 id="1742-محرر-emacs"><a href="#_the_emacs_editor"></a>17.4.2. محرر Emacs</h3>
+<h3 id="1742-محرر-emacs">17.4.2. محرر Emacs <span class="content-anchor" id="_the_emacs_editor"></span></h3>
 <p>Emacs محرر آخر متاح دائمًا تقريبًا على أنظمة Unix. وليس ضروريًا تعلّم واستخدام كلٍّ من Vim وEmacs، لكن من المفيد معرفة أحدهما، وربما معرفة أساسيات قليلة عن الآخر (على الأقل كيفية الخروج من كل منهما).</p>
 <p>وخلافًا لـVim، فإن Emacs محرر أحادي النمط، أي أنه يعمل في نمط إدراج واحد تُصدر فيه الأوامر، مثل حفظ الملف، عبر تركيبات مفاتيح خاصة مع المفاتيح <code>CTRL</code> و<code>ALT</code> و<code>SHIFT</code>. والمقايضة الرئيسية بين Vim وEmacs أن لـEmacs تسلسلات مفاتيح أكثر تعقيدًا من Vim للأوامر، لكنه لا يملك النمطين الذين يحتاج المستخدم إلى التبديل بينهما كما في Vim. وEmacs مثل سكين الجيش السويسري في أنه يملك تشكيلة غنية من وحدات الماكرو والأوامر التي يمكن استخدامها لمجموعة واسعة من المهام (بما فيها ميزات لا تُستخدم شائعةً). ولهذا السبب، لا يُثبَّت Emacs عادةً على الأنظمة محدودة الذاكرة لأنه يتطلب ذاكرة أكثر من تطبيق مثل Vim عادةً.</p>
 <p>ولبدء emacs، شغّله من سطر الأوامر على الملف الذي تريد تحريره. فمثلًا، لتحرير <code>myprog.c</code> في emacs:</p>
 <pre><code class="language-bash">$ emacs myprog.c
 </code></pre>
 <p>وعندما يكتب المستخدم ضغطات مفاتيح عادية، تُضاف المحارف المُدخَلة إلى الملف بعد المؤشر.</p>
-<h4><a href="#_emacs_command_reference"></a>مرجع أوامر Emacs</h4>
+<h4>مرجع أوامر Emacs <span class="content-anchor" id="_emacs_command_reference"></span></h4>
 <p>وفيما يلي قائمة بأوامر Emacs الشائعة. وقد يفيدك الرجوع إليها أثناء تعلّم Emacs.</p>
 <ul>
 <li>التحكم في الملفات (وهي تتضمن تسلسلات متعددة): <code>CTRL-x CTRL-s</code> أي استمر في الضغط على المفتاح <code>CTRL</code> واكتب <code>x</code> ثم <code>s</code>. <code>CTRL-x CTRL-s</code> حفظ تعديلات الملف. <code>CTRL-x CTRL-c</code> الخروج من Emacs</li>
@@ -581,13 +581,13 @@ $ vim  .vimrc
 <li>أوامر متنوعة: <code>CTRL-g</code> الخروج من تسلسل أوامر emacs (مفيد إذا كتبت شيئًا خاطئًا). <code>CTRL-x-0</code> إغلاق نافذة المخزن الحالية. <code>CTRL-x-1</code> إغلاق كل المخازن الأخرى عدا الحالي. <code>CTRL-x-2</code> فتح نافذة مخزن أسفل. <code>CTRL-x-3</code> فتح نافذة مخزن إلى اليمين. <code>CTRL-x-o</code> التبديل إلى مخزن آخر. <code>ESC-x</code> الدخول إلى النمط الفوقي (في توثيق Emacs وفي هذا الجدول لاحقًا يُرمز إليه بـ<code>M-x</code>). <code>M-x goto-line n</code> الانتقال إلى السطر n في الملف. <code>M-x linum-mode</code> تشغيل ترقيم الأسطر. <code>M-x ansi-term</code> فتح صدفة bash في المخزن الحالي</li>
 </ul>
 <p>ومثل Vim، يملك Emacs مجموعة غنية من الأوامر التي تدعم مهام التحرير المعقّدة. وهو أيضًا قابل للتهيئة عبر ملف تهيئة، <code>~/.emacsrc</code>، يمكنك فيه تخصيص وظائف emacs ومظهره.</p>
-<h3 id="1743-محرر-nano"><a href="#_the_nano_editor"></a>17.4.3. محرر Nano</h3>
+<h3 id="1743-محرر-nano">17.4.3. محرر Nano <span class="content-anchor" id="_the_nano_editor"></span></h3>
 <p>Nano محرر نصوص آخر مفيد لإجراء تعديلات أصغر على الملفات---فهو سهل الاستخدام، لكنه يفتقر إلى بعض ميزات Emacs وVim التي تجعلهما مفيدين لمهام تحرير أكبر وأكثر تعقيدًا. كما أن Nano محرر أحادي النمط مثل Emacs يستخدم تركيبات مفاتيح خاصة لأوامر مثل تحريك المؤشر أو حفظ الملف.</p>
 <p>ويُشغَّل Nano على نحو مشابه لـVim وEmacs؛ لفتح ملف للتحرير اكتب <code>nano</code> والملف المراد تحريره على سطر الأوامر:</p>
 <pre><code class="language-bash">$ nano myprog.c
 </code></pre>
 <p>وعند تشغيلك <code>nano</code>، يسرد بعض أوامره الأكثر شيوعًا في الأسفل. وفي سرده، تعني <code>M-</code> عادةً مفتاح <code>ALT</code> (الفوقي) زائد مفتاح آخر، و<code>C-</code> هو المفتاح <code>CTRL</code>. وبشكل عام، تسلسلات التحكم بالأوامر في nano أبسط من نظيراتها في emacs. فمثلًا، يُستخدم <code>CTRL-x</code> للخروج من nano.</p>
-<h3 id="1744-ضبط-المحرر-الافتراضي"><a href="#_setting_your_default_editor"></a>17.4.4. ضبط المحرر الافتراضي</h3>
+<h3 id="1744-ضبط-المحرر-الافتراضي">17.4.4. ضبط المحرر الافتراضي <span class="content-anchor" id="_setting_your_default_editor"></span></h3>
 <p>برنامج المحرر الافتراضي لديك هو الذي تفتحه تلقائيًا برامج أخرى تبدأ جلسة تحرير لبعض وظائفها. فمثلًا، تبدأ برمجيات التحكم في الإصدارات مثل Git محررًا لإضافة تعليقات إلى إيداع (commit). ويمكنك رؤية محرر النصوص الافتراضي لديك على أنظمة Linux بطباعة متغيري البيئة <code>EDITOR</code> و<code>VISUAL</code>:</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">echo</span> <span class="hljs-variable">$EDITOR</span>
 nano
@@ -607,7 +607,7 @@ $ <span class="hljs-built_in">echo</span> <span class="hljs-variable">$VISUAL</s
 vim
 </code></pre>
 <p>وفي <a href="https://diveintosystems.org/book/Appendix2/dotfiles.html#DotFiles">قسم ملفات النقطة</a> نتحدث عن متغيرات البيئة و<code>.bashrc</code> بمزيد من التفصيل.</p>
-<h3 id="1745-المراجع"><a href="#_references"></a>17.4.5. المراجع</h3>
+<h3 id="1745-المراجع">17.4.5. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>توجد موارد كثيرة على الويب لتعلّم Vim أو Emacs أو Nano، منها عدة مقاطع فيديو تعليمية. وهذه مجرد بعض الروابط إلى مراجع ودروس تعليمية:</p>
 <ul>
 <li><a href="https://www.cs.cmu.edu/~15131/f17/topics/vim/vim-cheatsheet.pdf">ورقة مرجعية سريعة لـVim</a> من CMU</li>
@@ -616,7 +616,7 @@ vim
 <li><a href="https://www.nano-editor.org/docs.php">توثيق محرر Nano</a> من nano-editor.org</li>
 </ul>
 <p>نناقش في هذا القسم الأمر <code>make</code> وملفات Makefile. ونعرض بعض الأمثلة بدءًا من ملف Makefile بسيط وصولًا إلى ملف Makefile أكثر تعقيدًا وأكثر عمومية (<a href="#SampleMakefile">القسم 17.5.10</a>) يُعدّ نقطة بداية جيدة لمعظم الاستخدامات. ولمزيد من المعلومات عن كتابة ملفات Makefile انظر <a href="https://www.gnu.org/software/make/manual/">دليل GNU Make</a>.</p>
-<h3 id="1751-عن-make"><a href="#_about_make"></a>17.5.1. عن make</h3>
+<h3 id="1751-عن-make">17.5.1. عن make <span class="content-anchor" id="_about_make"></span></h3>
 <p>تُبسّط أداة Unix المسمّاة <code>make</code> ترجمة البرامج. ويكتب المستخدم (أو برنامج) ملف Makefile بالقواعد المراد تنفيذها. ويشغّل المستخدم <code>make</code> فحسب، فيقرأ برنامج <code>make</code> القواعد من ملف <code>Makefile</code> التي تخبره كيف يترجم برنامجًا.</p>
 <p>ومن فوائد <code>make</code> أنه يستطيع تنفيذ أوامر معقّدة لبناء الملفات التنفيذية بمجرد كتابة <code>make</code> بدلًا من اضطرار المستخدم إلى كتابة أوامر <code>gcc</code> طويلة للبناء في كل مرة. وغالبًا ما تُقسَّم البرامج الأكبر إلى وحدات منفصلة تتكوّن من ملفات <code>.c</code> و<code>.h</code> متعددة. وقد تربط أيضًا مكتبات متعددة، أو تخزّن ملفات الترويسة والمكتبات في مواقع غير قياسية. وكل هذا يجعل الترجمة أكثر تعقيدًا، وأسطر أوامر <code>gcc</code> أطول وأكثر تعقيدًا. وفي هذه الحالات، تكون كتابة سطر أمر <code>gcc</code> الكامل يدويًا عند مطالبة الصدفة مستهلكة للوقت وعرضة للخطأ معًا. فمثلًا، هذا سطر أمر <code>gcc</code> طويل سيكون مملًا لكتابته يدويًا:</p>
 <pre><code>gcc -Wall -g  -I../includes -I. -o mycc emitter.c init.c lexer.c symbol.c parser.c ast.c error.c symbol_table.c codegen.c emitcode.c main.c -L../libs -lmylib -lpthread
@@ -624,7 +624,7 @@ vim
 <p>وباستخدام <code>make</code>، يكتب المستخدم <code>make</code> ببساطة لتنفيذ الأوامر المدرجة في ملف Makefile.</p>
 <p>وثمة فائدة أخرى لـ<code>make</code> هي أنه يعيد بناء ما يحتاج إلى إعادة بناء فقط --- أي ملفات الكائنات والملفات التنفيذية التي تعتمد على ملفات عُدِّلت منذ آخر مرة بُنيت فيها فقط. وبالنسبة للبرامج الكبيرة، قد تستغرق ترجمة كل شيء من الصفر وقتًا طويلًا جدًا، لذا يمكن أن يوفّر <code>make</code> وقت ترجمة كبيرًا بإعادة بناء ما يحتاج إلى إعادة بناء فقط.</p>
 <p>ويكتب المستخدم عادةً ملف Makefile بالقواعد التي ينفّذها <code>make</code>. وتوجد أيضًا برامج، مثل CMake وGNU Autotools، تولّد ملفات Makefile. وتُستخدم هذه عادةً لبناء البرمجيات الكبيرة ولدعم الترجمة بسهولة عبر أنظمة مختلفة، بما في ذلك العثور على المترجمات والبرمجيات الأخرى والمكتبات وملفات الترويسة اللازمة على نظام معيّن.</p>
-<h3 id="1752-استخدام-make"><a href="#_using_make"></a>17.5.2. استخدام make</h3>
+<h3 id="1752-استخدام-make">17.5.2. استخدام make <span class="content-anchor" id="_using_make"></span></h3>
 <p>وخطوات استخدام <code>make</code> هي:</p>
 <p>أنشئ ملف Makefile يسرد قواعد بناء الملف التنفيذي. وينبغي أن يُسمّى الملف افتراضيًا 'Makefile'. ولا يلزم فعل ذلك إلا مرة واحدة، إلا عند إضافة وحدات جديدة (ملفات .c أو .h) إلى البرنامج، فحينئذٍ يجب تحديث ملف Makefile لإضافة تبعيات الوحدات الجديدة إلى القواعد القائمة أو لإضافة قواعد جديدة تشملها في الترجمة.</p>
 <p>بعد تحرير ملف/ملفات البرنامج، أعد بناء الملف التنفيذي بكتابة make:</p>
@@ -636,7 +636,7 @@ vim
 <p>فمثلًا، لتنفيذ الأمر <code>rm</code> لإزالة جميع الملفات المبنية في ملف Makefile المثال المدرج أدناه، اكتب:</p>
 <pre><code class="language-bash">$ make clean
 </code></pre>
-<h3 id="1753-إنشاء-makefile"><a href="#_creating_a_makefile"></a>17.5.3. إنشاء Makefile</h3>
+<h3 id="1753-إنشاء-makefile">17.5.3. إنشاء Makefile <span class="content-anchor" id="_creating_a_makefile"></span></h3>
 <p>يبدأ ملف Makefile عادةً ببعض تعريفات المتغيرات التي تتبعها مجموعة من القواعد (أو مدخلات الأهداف) لبناء أهداف محدّدة (عادةً لبناء ملفات ‎.o والملفات التنفيذية). وتتكوّن كل قاعدة من وسم هدف ومجموعة من الأوامر المرتبطة به (تُسمى أحيانًا وصفات recipes) التي تُشغَّل للهدف. وفيما يلي الصيغة العامة للقاعدة:</p>
 <pre><code># comment
 # (note: the &lt;tab&gt; in the command line is necessary for make to work)
@@ -654,7 +654,7 @@ program: program.o util.o
 <blockquote>
 <p><code>make</code> دقيق جدًا بشأن محارف المسافات البيضاء. فمثلًا، علامة <tab> في السطر الذي يسبق جزء الأمر في مدخل هدف Makefile مهمة جدًا ليفسّر <code>make</code> مدخل الهدف تفسيرًا صحيحًا وينفّذ جزء الأمر. فإذا استخدمت مثلًا محارف مسافة بدلًا من <tab>، فلن يفسّر <code>make</code> مدخل الهدف تفسيرًا صحيحًا ولن يشغّل أمره المرتبط.</p>
 </blockquote>
-<h3 id="1754-ملف-makefile-بسيط"><a href="#simplemakefile"></a>17.5.4. ملف Makefile بسيط</h3>
+<h3 id="1754-ملف-makefile-بسيط">17.5.4. ملف Makefile بسيط <span class="content-anchor" id="simplemakefile"></span></h3>
 <p>وهذا مثال على ملف Makefile بسيط يبني ملفًا تنفيذيًا من ملف .c واحد اسمه <code>myprog.c</code>:</p>
 <pre><code class="language-python"><span class="hljs-comment"># build an executable named myprog from myprog.c</span>
 <span class="hljs-built_in">all</span>: myprog.c
@@ -665,7 +665,7 @@ clean:
 </code></pre>
 <p>تؤدي كتابة <code>make</code> إلى تشغيل الأمر المرتبط بوسم الهدف <code>all</code> لتنفيذ <code>gcc -g -Wall -o myprog myprog.c</code> إذا كان تاريخ تعديل الملف <code>myprog.c</code> أحدث من تاريخ تعديل الملف <code>myprog</code> أو إذا لم يكن <code>myprog</code> موجودًا. لاحظ أن الاسم <code>all</code> ليس خاصًا، فـ<code>make</code> يختار افتراضيًا أول وسم هدف في ملف Makefile لتنفيذه. ولتنفيذ قاعدة محدّدة غير الأولى المدرجة في ملف Makefile، اسرد اسم الهدف على سطر أمر <code>make</code>. فمثلًا، يشغّل <code>make clean</code> الأمر <code>rm myprog</code> لإزالة الملف التنفيذي المبني سابقًا <code>myprog</code>.</p>
 <p>وفي <a href="#genericsimple">القسم 17.5.8</a> نوضّح كيفية استخدام متغيرات Makefile لكتابة نسخ أكثر عمومية من ملف Makefile هذا---نسخة يمكن نسخها وتعديلها تعديلًا بسيطًا لإنشاء ملف Makefile جديد لبناء برنامج مختلف.</p>
-<h3 id="1755-ملف-makefile-لملفات-مصدر-متعددة"><a href="#simplemulti"></a>17.5.5. ملف Makefile لملفات مصدر متعددة</h3>
+<h3 id="1755-ملف-makefile-لملفات-مصدر-متعددة">17.5.5. ملف Makefile لملفات مصدر متعددة <span class="content-anchor" id="simplemulti"></span></h3>
 <p>وفيما يلي مثال على ملف Makefile لبناء ملف تنفيذي من عدة ملفات <code>.c</code> و<code>.h</code>. وهو يترجم أولًا كل <code>.c</code> إلى ملف <code>.o</code>، ثم يربط ملفات <code>.o</code> والمكتبات معًا لبناء الملف التنفيذي. ولأنه يسرد التبعيات لكل ملف <code>.o</code>، فإذا عُدّل ملف <code>.c</code> واحد فلن يلزم إعادة بناء سوى ملف <code>.o</code> واحد (الذي يعتمد على ملف <code>.c</code> المعدّل)، ولا يعيد بناء جميع ملفات <code>.o</code>. وهذه ميزة جيدة بشكل خاص تسرّع زمن الترجمة للبرامج الأكبر المكوّنة من ملفات <code>.c</code> كثيرة.</p>
 <pre><code class="language-python"><span class="hljs-comment"># Example Makefile for a program with many .c modules</span>
 <span class="hljs-comment"># make: build count executable program</span>
@@ -707,7 +707,7 @@ count: countwords.o counter.o scanner.o
 	gcc -g -Wall -o count countwords.o counter.o scanner.o
 </code></pre>
 <p>وفي <a href="#genericmulti">القسم 17.5.9</a> و<a href="#SampleMakefile">القسم 17.5.10</a> نوضّح كيفية استخدام متغيرات Makefile وقواعد Makefile الضمنية وتوليد التبعيات التلقائي لكتابة نسخ أكثر عمومية من ملف Makefile. وملف Makefile في <a href="#SampleMakefile">القسم 17.5.10</a> ملف عام جيد للتطبيقات المبنية من ملفات <code>.c</code> و<code>.h</code> كثيرة، والتي قد تُبنى بملفات ترويسة أو مكتبات مخزّنة في مواقع غير قياسية.</p>
-<h3 id="1756-أخطاء-make"><a href="#_make_errors"></a>17.5.6. أخطاء make</h3>
+<h3 id="1756-أخطاء-make">17.5.6. أخطاء make <span class="content-anchor" id="_make_errors"></span></h3>
 <p>تنبع أخطاء <code>make</code> عمومًا من أحد سببين. الأول أخطاء في صياغة ملف Makefile نفسه، والثاني أخطاء ترجمة إما بسبب قواعد مفقودة في ملف Makefile وإما بسبب أخطاء في البرنامج نفسه. وقد يكون من الصعب أحيانًا عند استخدام <code>make</code> تحديد ما إذا كنت تحتاج إلى إصلاح ملف Makefile أم برنامجك.</p>
 <p>وستُبلَّغ أخطاء صياغة Makefile مع رقم السطر في ملف Makefile الذي وقع فيه الخطأ لمساعدتك على تتبّع مشكلة الصياغة. غير أن هناك بعض الأخطاء الشائعة التي يصعب رؤيتها لأنها متعلقة بأخطاء في استخدام محارف المسافات البيضاء. ومن أمثلة هذا النوع مثالان:</p>
 <p>استخدام محارف مسافة بدلًا من <code>في بداية جزء الأمر في مدخل هدف. فمثلًا، إذا كانت هناك محارف مسافة في بداية السطر الثاني من مدخل الهدف هذا بدلًا من محرف</code>، فلا يستطيع <code>make</code> تفسير هذه القاعدة تفسيرًا صحيحًا:</p>
@@ -728,13 +728,13 @@ SRC = $(TARGET).c
 <li>وبالمثل، إذا وقعت أخطاء بأن المترجم لا يستطيع العثور على المكتبات (وهي تظهر كأخطاء غير معرّفة أثناء مرحلة الترجمة النهائية، أي الربط)، فتحتاج إلى تحديث تعريفات <code>LIBDIR</code> أو <code>LIBS</code> لتشمل مسارات المكتبات (<code>-L</code>) أو إلى إضافة أي مكتبات مفقودة تحتاج إلى الربط (<code>-l</code>) إلى سطر الأوامر.</li>
 <li>وفي بعض الحالات التي يكون فيها الخطأ في ملف مصدري بلغة C، مثل <code>#include</code> مفقودة، قد يلزم تحديث ملف المصدر C وملف Makefile معًا لإصلاح الخطأ. فمثلًا، إضافة <code>#include</code> إلى ملف مصدري بلغة C قد تتطلب أيضًا تحديث مسار التضمين (<code>-I</code>)، وفي بعض الحالات أيضًا مسار مكتبة (<code>-L</code>) وربطًا صريحًا لمكتبة (<code>-l</code>) في ملف Makefile.</li>
 </ul>
-<h3 id="1757-make-المتوازي"><a href="#_parallel_make"></a>17.5.7. make المتوازي</h3>
+<h3 id="1757-make-المتوازي">17.5.7. make المتوازي <span class="content-anchor" id="_parallel_make"></span></h3>
 <p>بالنسبة للبرامج الكبيرة المكوّنة من ملفات <code>.c</code> و<code>.h</code> كثيرة، قد تستغرق الترجمة وقتًا طويلًا. وقد يكون كثير من الوقت ناتجًا عن ترجمة ملف <code>.o</code> من كل ملف <code>.c</code>. وترجمة كل <code>.o</code> مستقلة عن ترجمة ملفات <code>.o</code> الأخرى، لذا يُعدّ ذلك هدفًا جيدًا للتوازي حيث يمكن لخيوط أو عمليات متعددة أن تترجم في الوقت نفسه ملف <code>.c</code> مختلفًا بالتوازي. واستخدام خيار سطر الأوامر <code>-j[num]</code> مع <code>make</code> يخبره بتشغيل ما يصل إلى <code>num</code> من المهام في المرة، أو تنفيذ <code>num</code> من الوصفات المختلفة بالتوازي في الوقت نفسه.</p>
 <p>فمثلًا، لجعل <code>make</code> متوازيًا بحيث ينفّذ 12 وصفة في المرة اكتب:</p>
 <pre><code>make -j12
 </code></pre>
 <p>وعلى جهاز فيه 12 نواة أو أكثر، سيعمل هذا أسرع بنحو اثنتي عشرة مرة من <code>make</code>.</p>
-<h3 id="1758-متقدم-ملف-makefile-بسيط-عام"><a href="#genericsimple"></a>17.5.8. متقدم: ملف Makefile بسيط عام</h3>
+<h3 id="1758-متقدم-ملف-makefile-بسيط-عام">17.5.8. متقدم: ملف Makefile بسيط عام <span class="content-anchor" id="genericsimple"></span></h3>
 <p>يمكننا إعادة كتابة ملف Makefile البسيط من <a href="#simplemakefile">القسم 17.5.4</a> لجعله أكثر عمومية. وملف Makefile العام هو ملف يسهل تحريره لاستخدامه في برنامج آخر (فالمستخدمون عادةً يبدؤون ملف Makefile جديدًا بنسخة من ملف موجود ثم يعدّلونها، بدلًا من كتابة ملف من الصفر في كل مرة). ويستبدل ملف Makefile الأكثر عمومية هذا أسماء ملفات التطبيق المحدّدة في القواعد بمتغيرات Makefile، فيصبح القاعدة عامة لأي برنامج. وصياغة تعريف متغيرات Makefile هي <code>=</code>. فمثلًا:</p>
 <pre><code># define CC to be the name of the compiler
 CC = gcc
@@ -773,7 +773,7 @@ clean:
 <pre><code>SRCS = myprog.c util.c
 </code></pre>
 <p>ومن الأمور الجديرة بالملاحظة في ملف Makefile هذا أنه يعيد دائمًا ترجمة الملف التنفيذي من جميع ملفات المصدر المدرجة في <code>SRCS</code> إذا عُدّل أي منها (بسبب هذه التبعية: <code>$(TARGET): $(SRCS)</code>). وبالنسبة للبرامج الصغيرة، التي قد تتكوّن من ملف <code>.c</code> واحد أو بضعة ملفات فقط، قد يكون ذلك مقبولًا. غير أننا نستطيع تعديل ملف Makefile ليعيد بناء الأجزاء التي تحتاج إلى إعادة بناء فقط عند تعديل ملف مصدر. ونفعل ذلك بإضافة قواعد لترجمة ملفات الكائنات (<code>.o</code>) من كل ملف <code>.c</code>، ثم لبناء الملف التنفيذي بربط ملفات <code>.o</code> (وأي مكتبات) في الملف التنفيذي.</p>
-<h3 id="1759-متقدم-ملف-makefile-عام-لملفات-متعددة"><a href="#genericmulti"></a>17.5.9. متقدم: ملف Makefile عام لملفات متعددة</h3>
+<h3 id="1759-متقدم-ملف-makefile-عام-لملفات-متعددة">17.5.9. متقدم: ملف Makefile عام لملفات متعددة <span class="content-anchor" id="genericmulti"></span></h3>
 <p>يمكننا إعادة كتابة ملف Makefile من <a href="#simplemulti">القسم 17.5.5</a> الذي ترجم ملفًا تنفيذيًا من ملفات مصدر متعددة كملف Makefile أكثر عمومية بالاستفادة من متغيرات Makefile وقواعد استبدال الأنماط.</p>
 <p>لاحظ أن قواعد بناء ملفات <code>.o</code> من <code>.c</code> في ملف Makefile الأصلي (في <a href="#simplemulti">القسم 17.5.5</a>) متشابهة كلها عدا أسماء الملفات المحدّدة. وسيكون جميلًا لو أمكن تبسيط ذلك بقاعدة أكثر عمومية لبناء <code>.o</code> من ملفات <code>.c</code>.</p>
 <p>وإحدى طرق فعل ذلك استخدام قاعدة استبدال نمط تُفعَّل لأي ملف <code>.o</code> يُبنى من ملف <code>.c</code>. وفيما يلي مثال على قاعدة كهذه. وهي تستخدم المتغيرين التلقائيين في Makefile: <code>$&lt;</code> لاسم تبعية القاعدة (ملف مصدر <code>.c</code>) و<code>$@</code> للملف الهدف (ملف الكائن <code>.o</code>). انظر دليل gnu make لمزيد من المعلومات عن المتغيرات التلقائية.</p>
@@ -896,7 +896,7 @@ countwords.o: countwords.c scanner.h counter.h
 </code></pre>
 <p>وإضافة هذه التبعيات المحدّدة تجعل ملف Makefile أقل عمومية، لكنها تتجنّب الترجمة غير الضرورية التي يسببها الحل الأكثر عمومية <code>$(OBJS): $(HDRS) $(SRCS)</code>. وبالنسبة للبرامج الصغيرة قد يكون الحل الأكثر عمومية مقبولًا، لكن بالنسبة للبرامج الأكبر فإن تعداد التبعيات بعناية لكل ملف .o مهم لتجنّب كثير من إعادة الترجمة غير الضرورية، وكذلك لضمان إعادة بناء ملف .o عند تعديل ملف يعتمد عليه.</p>
 <p>ولهذا السبب، توجد طرق لتوليد مجموعة كاملة من التبعيات تلقائيًا لكل ملف .o (ولكل ملف تنفيذي). ويكاد يكون استخدام أدوات توليد التبعيات التلقائي ضروريًا لملفات Makefile الخاصة ببناء برامج من ملفات مصدر وترويسة كثيرة، لضمان الترجمة الصحيحة عند تعديل ملف. ومن هذه الأدوات <code>makedepend</code>، الذي يفحص ملفات .c و.h ويضيف التبعيات إلى نهاية ملف Makefile. وهناك طريقة أخرى هي استخدام راية المعالج الأولي <code>-MD</code> (توليد التبعيات) في gcc لتوليد ملفات التبعية (<code>.d</code>) وتضمين هذه الملفات في ملف Makefile.</p>
-<h3 id="17510-متقدم-ملف-makefile-عام-غني-بالميزات"><a href="#SampleMakefile"></a>17.5.10. متقدم: ملف Makefile عام غني بالميزات</h3>
+<h3 id="17510-متقدم-ملف-makefile-عام-غني-بالميزات">17.5.10. متقدم: ملف Makefile عام غني بالميزات <span class="content-anchor" id="SampleMakefile"></span></h3>
 <p>آخر مثال على ملف makefile لدينا هو ملف makefile عام متعدد الأغراض يتضمّن مجموعة أكثر اكتمالًا من متغيرات Makefile الشائعة الاستخدام لترجمة برامج C، كما يوضّح بعض الصياغة والميزات الأكثر تقدمًا، وتحديدًا:</p>
 <ul>
 <li>الربط بالمكتبات (<code>-l</code>)</li>
@@ -1000,9 +1000,9 @@ CPPFLAGS = -MD -MP
 .c.o:
         $(CC) $(CPPFLAGS) $(CFLAGS) $(INCLUDES) -c $&lt;  -o $@
 </code></pre>
-<h3 id="17511-متقدم-مولدات-makefile"><a href="#_advanced_makefile_generators"></a>17.5.11. متقدم: مولّدات Makefile</h3>
+<h3 id="17511-متقدم-مولدات-makefile">17.5.11. متقدم: مولّدات Makefile <span class="content-anchor" id="_advanced_makefile_generators"></span></h3>
 <p>بالنسبة للبرامج الضخمة جدًا، وخصوصًا للبرمجيات التي قد تُثبَّت على أنظمة مختلفة، فإن استخدام برنامج يولّد ملف Makefile لنظام معيّن يجعل إدارة أهداف البناء المختلفة أسهل بكثير. ويُعدّ GNU Automake (جزء من مكتبة GNU Autotools) وCMake مثالين على برامج توليد ملفات makefile. وكلاهما يأخذ مواصفات المستخدم في ملف تهيئة للعثور على المكتبات وإنشاء التبعيات على أنظمة محدّدة، ويولّد ملفات Makefile تلقائيًا لذلك النظام. ولا نناقش أيًّا منهما هنا، لكن قسم المراجع لدينا يحتوي روابط لمزيد من المعلومات عن كليهما.</p>
-<h3 id="17512-المراجع"><a href="#_references"></a>17.5.12. المراجع</h3>
+<h3 id="17512-المراجع">17.5.12. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>وفيما يلي بعض المراجع لاستخدام make وكتابة ملفات makefile:</p>
 <ul>
 <li>
@@ -1022,14 +1022,14 @@ CPPFLAGS = -MD -MP
 </li>
 </ul>
 <p>من المهام الشائعة البحث عن ملفات محدّدة أو عن محتوى محدّد داخل ملفات. والأمر <code>find</code> مفيد للعثور على ملف أو دليل يحمل اسمه نمطًا معيّنًا، بينما الأمر <code>grep</code> مفيد للبحث عن نمط معيّن داخل ملف أو مجموعة ملفات.</p>
-<h3 id="1761-الأمر-find"><a href="#_the_find_command"></a>17.6.1. الأمر find</h3>
+<h3 id="1761-الأمر-find">17.6.1. الأمر find <span class="content-anchor" id="_the_find_command"></span></h3>
 <p>ينفّذ الأمر <code>find</code> بحثًا تعاوديًا في نظام ملفات (من نقطة بداية معيّنة في بنية الأدلة) للعثور على أي ملفات. وعند تشغيله بخيار سطر الأوامر <code>-name </code>، يبحث <code>find</code> عن جميع الملفات (والأدلة) التي يطابق اسمها نمط البحث المعطى. ونمط البحث تعبير نمطي (regular expression) يشمل محارف حرفية ومحارف خاصة أو أنماطًا فرعية تحدّد أنماطًا عامة. ومن المحارف الخاصة الشائعة في التعبيرات النمطية <code>*</code>. وتعني &quot;طابق مع صفر أو أكثر من أي محرف&quot;. لذا في نمط البحث <code>&quot;hello*&quot;</code>، تطابق <code>hello1</code> و<code>hellothere</code> و<code>hello_123_XYZ</code> النمط جميعًا. وفيما يلي بعض الأمثلة على الأمر <code>find</code> للعثور على الملفات:</p>
 <pre><code class="language-bash">$ find ./ -name dog.c    <span class="hljs-comment"># from current directory (./) find all files named dog.c</span>
 $ find ./ -name <span class="hljs-string">&quot;*.c&quot;</span>    <span class="hljs-comment"># from ./ find all files that end with .c</span>
 $ find ./ -name <span class="hljs-string">&quot;temp*&quot;</span>  <span class="hljs-comment"># from ./ find all files that that start with temp</span>
 </code></pre>
 <p>وتوجد خيارات سطر أوامر أخرى كثيرة للأمر <code>find</code> تتيح للمستخدمين ضبط سلوك بحثه بطرق مختلفة. انظر صفحة دليله لمزيد من المعلومات.</p>
-<h3 id="1762-الأمر-grep"><a href="#_the_grep_command"></a>17.6.2. الأمر grep</h3>
+<h3 id="1762-الأمر-grep">17.6.2. الأمر grep <span class="content-anchor" id="_the_grep_command"></span></h3>
 <p>يعثر الأمر <code>grep</code> على أنماط داخل ملف أو داخل مجموعة ملفات. ويمكنه ترشيح البيانات من مصدر إلى هدف بناءً على مطابقة الأنماط. ويأخذ الأمر <code>grep</code> وسيطي سطر أوامر، هما تعبير نمطي لنمط البحث، وملف (أو مجموعة ملفات) للبحث فيه عن الأنماط المطابقة. ويُخرج كل سطر في الملف (أو مجموعة الملفات) فيه ظهور مطابق للنمط. ومثل <code>find</code>، يملك <code>grep</code> أيضًا خيارات سطر أوامر كثيرة لتخصيص بحثه. وفيما يلي بعض الأمثلة على الأمر <code>grep</code> للعثور على أنماط في ملف (أو ملفات). ومن الملفات المستخدمة في هذه الأمثلة ملف <code>temp</code> الذي محتواه التالي:</p>
 <pre><code>hello
 Hello
@@ -1100,7 +1100,7 @@ types_scanf.c:13:int main(void) {
 <pre><code class="language-bash">$ grep -r hello  ~/cs31
 </code></pre>
 <p>وتوجد خيارات سطر أوامر كثيرة لـ<code>grep</code> لضبط بحثه بطرق مختلفة.</p>
-<h3 id="1763-المراجع"><a href="#_references"></a>17.6.3. المراجع</h3>
+<h3 id="1763-المراجع">17.6.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل لهذه الأوامر (مثل <code>man grep</code>)</li>
@@ -1130,7 +1130,7 @@ drwx------ 2 sam <span class="hljs-built_in">users</span> 4096 Mar 26 12:48 proj
 </code></pre>
 <p>يكون <code>type</code> مساويًا <code>d</code> للأدلة و<code>-</code> للملفات العادية. وتأتي قوائم صلاحيات الملف في ثلاث مجموعات من <code>rwx</code> تحدّد صلاحيات مستخدم/مالك الملف (<code>u</code>) والمجموعة (<code>g</code>) والآخرين (<code>o</code>). فمثلًا، تعني <code>-rw-r-----</code> المرتبطة بملف <code>notes</code> أن مالك الملف <code>sam</code> يملك صلاحيتي القراءة والكتابة على الملف (<code>rw-</code>)، وأن مجموعة الملف <code>pals</code> تملك صلاحية القراءة فقط (<code>r--</code>)، وأن الآخرين لا يملكون أي صلاحيات للوصول إلى الملف (<code>---</code>). وتُظهر الحقول الأخرى في السرد اسم مستخدم مالك الملف (<code>sam</code>)، واسم مجموعة الملف (<code>pals</code>)، وحجم الملف بالبايتات (<code>78</code>)، وآخر وقت عُدّل فيه الملف (<code>Mar 26 12:51</code>)، واسم الملف (<code>notes</code>). كما يُسرد عدد الروابط الصلبة إلى الملف (<code>1</code>)، وهو عدد الأسماء في بنية الأدلة التي تشير إلى هذا الملف نفسه.</p>
 <p>وسرد <code>classes</code> هو <code>drwx------</code>، ما يعني أن <code>classes</code> دليل، وأن مالك الملف <code>sam</code> يملك صلاحيات القراءة والكتابة والتنفيذ (<code>rwx</code>)، وأن مجموعة الدليل (<code>users</code>) والآخرين لا يملكون أي صلاحيات وصول (<code>---</code>). وبعبارة أخرى، هذا دليل خاص بالمستخدم <code>sam</code>؛ فلا يمكن لأي أحد آخر الوصول إليه. ونلاحظ أن الدليل يجب أن تكون صلاحية التنفيذ (<code>x</code>) مضبوطة فيه للانتقال إليه بـ<code>cd</code>. وللأدلة أحجام روابط أكبر من <code>1</code> لأن اسم الدليل (مثل <code>classes</code>) والاسم <code>./</code> داخل الدليل (والاسم <code>../</code> في أي من أدلته الفرعية) يشيران إلى الدليل نفسه. ولأن <code>classes</code> فيه دليل فرعي واحد هو <code>CS31</code>، فإن قيمة رابطه <code>3</code>.</p>
-<h3 id="1771-chmod"><a href="#_chmod"></a>17.7.1. chmod</h3>
+<h3 id="1771-chmod">17.7.1. chmod <span class="content-anchor" id="_chmod"></span></h3>
 <p>يغيّر الأمر <code>chmod</code> صلاحيات ملف أو دليل. ويأخذ وسائط سطر أوامر تحدّد كيفية تغيير الصلاحيات لمجموعات المستخدمين الثلاث المرتبطة بكل ملف: المستخدم/المالك، والمجموعة، والآخرون.</p>
 <p>وإحدى طرق تشغيل <code>chmod</code> إعطاء رقم من ثلاثة أرقام كوسيط سطر أوامر يرمّز كيفية ضبط الصلاحيات. ويحدّد الرقم الأول صلاحيات مستخدم/مالك الملف، ويحدّد الرقم الثاني صلاحيات مجموعة الملف، والثالث جميع المستخدمين الآخرين. فمثلًا، يجعل <code>chmod 700 letters</code> الدليل <code>letters</code> خاصًا؛ فـ<code>7</code> تضبط صلاحيات المستخدم على <code>rwx</code>، و<code>0</code> تضبط الصلاحيات على <code>---</code> للمجموعة والآخرين.</p>
 <p>ولفهم معنى الأرقام، تأمّل كل رقم ممثّلًا كعدد ثنائي من ثلاث بتات، حيث تعني <code>1</code> منح الصلاحية وتعني <code>0</code> عدم منحها للمجموعة <code>rwx</code>. ويعرض <a href="#TabPermEncodings">الجدول 1</a> بعض الأمثلة.</p>
@@ -1195,7 +1195,7 @@ drwx------ 2 sam <span class="hljs-built_in">users</span>  4096 Mar 26 12:48 pro
 </code></pre>
 <p>وللأمر <code>chmod</code> خيارات سطر أوامر أخرى، منها راية تعاودية لتغيير الصلاحيات تعاوديًا على محتويات دليل فرعي كامل. انظر صفحة الدليل لمزيد من التفاصيل.</p>
 <p>كما يدعم Linux <strong>قوائم التحكم في الوصول</strong> (access control lists, ACLs)، التي تتيح ربط مجموعة أغنى بكثير من الصلاحيات بالملفات والأدلة. وتحتوي صفحة دليل <code>getfacl</code> و<code>setfacl</code> على معلومات عن قوائم ACL، لكن تفاصيلها تتجاوز نطاق تغطيتنا.</p>
-<h3 id="1772-chgrp"><a href="#_chgrp"></a>17.7.2. chgrp</h3>
+<h3 id="1772-chgrp">17.7.2. chgrp <span class="content-anchor" id="_chgrp"></span></h3>
 <p>يمكن استخدام الأمر <code>chgrp</code> لتغيير المجموعة المرتبطة بملف أو دليل. وغالبًا ما تحتاج مجموعات Unix إلى إنشاء من مدير نظام يملك صلاحية الجذر على النظام (فمستخدم الجذر هو حساب المستخدم الفائق في Unix الذي يملك حقوق وصول إلى نظام الملفات لا يملكها المستخدم العادي).</p>
 <p>وإذا كان المستخدم <code>sam</code> جزءًا من مجموعة اسمها <code>proj3</code> مع مستخدمين آخرين، فيمكن لـ<code>sam</code> تغيير المجموعة وضبط الصلاحيات على دليلهم <code>projects</code> لمنح هذه المجموعة فقط حقوقًا مرتفعة على الدليل. فمثلًا:</p>
 <pre><code class="language-sh">$ <span class="hljs-built_in">chgrp</span> proj3 projects  <span class="hljs-comment"># change the projects directory&#x27;s group to proj3</span>
@@ -1226,7 +1226,7 @@ GROUP=<span class="hljs-built_in">users</span>
 </code></pre>
 <p>و<code>umask</code> بقيمة <code>77</code> (أو <code>077</code>) تجعل جميع ملفاتي وأدلتي خاصة (فهي تضبط صلاحيات المجموعة والآخرين على 00 أو <code>------</code>). ويمكنك اعتبار ترميز umask شبيهًا نوعًا ما بعكس ترميز chmod (فمثلًا <code>7</code> تزيل جميع الصلاحيات (<code>rwx</code>) في <code>umask</code> لكنها تمنحها كلها في chmod).</p>
 </blockquote>
-<h3 id="1773-المراجع"><a href="#_references"></a>17.7.3. المراجع</h3>
+<h3 id="1773-المراجع">17.7.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل لهذه الأوامر (مثل <code>man chmod</code>)</li>
@@ -1288,7 +1288,7 @@ $ tar cvf mytarfile.tar mytardir
 <p>ولاستخراج الملفات من ملف tar، استخدم خيار سطر الأوامر <code>-x</code>:</p>
 <pre><code class="language-bash">$ tar xvf mytarfile.tar
 </code></pre>
-<h3 id="1781-ضغط-الملفات"><a href="#_file_compression"></a>17.8.1. ضغط الملفات</h3>
+<h3 id="1781-ضغط-الملفات">17.8.1. ضغط الملفات <span class="content-anchor" id="_file_compression"></span></h3>
 <p>كثيرًا ما يُستخدم ضغط الملفات مع <code>tar</code> لتقليل حجم ملف tar. وهذا مفيد لتقليل مساحة التخزين المطلوبة لملف tar، وكذلك لتقليل كمية البيانات المرسلة عبر الشبكة عند نسخ ملف tar إلى جهاز بعيد باستخدام <code>scp</code>. ويُستخدم <code>gzip</code> و<code>gunzip</code> لضغط ملف وفكّ ضغطه بضغط gzip، ويُستخدم <code>bzip2</code> و<code>bunzip2</code> لضغط ملف وفكّ ضغطه بضغط bzip. وفيما يلي بعض الاستدعاءات النموذجية:</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">ls</span> -l
 -rw-r--r-- 1 sarita <span class="hljs-built_in">users</span> 40840 Apr 12 16:55 file
@@ -1309,7 +1309,7 @@ $ bunzip2 file.bz2   <span class="hljs-comment"># uncompress a bzip2ed file</spa
 $ <span class="hljs-built_in">ls</span> -l
 -rw-r--r-- 1 sarita <span class="hljs-built_in">users</span> 40840 Apr 12 16:55 file
 </code></pre>
-<h4><a href="#_tar_and_file_compression"></a>tar وضغط الملفات</h4>
+<h4>tar وضغط الملفات <span class="content-anchor" id="_tar_and_file_compression"></span></h4>
 <p>غالبًا ما يُستخدم ضغط الملفات على ملفات tar. ويمكن للمستخدم تشغيل أدوات ضغط الملفات على ملف tar بعد أن ينشئه <code>tar</code>، وتشغيل أدوات فكّ الضغط على ملف tar قبل تشغيل <code>tar</code> لاستخراج الملفات منه. غير أنه بما أن ضغط الملفات يُستخدم كثيرًا مع ملفات tar، فإن لـ<code>tar</code> خيارات سطر أوامر لإنشاء ملفات tar مضغوطة (واستخراج الملفات من ملفات tar مضغوطة) باستخدام خوارزميات ضغط مختلفة (فمثلًا <code>-j</code> يستخدم <code>bzip2</code>، و<code>-z</code> يستخدم gzip).</p>
 <p>وفيما يلي بعض الأمثلة على ضغط ملف tar في خطوة واحدة باستخدام الخيار <code>-z</code> لـgzip أو الخيار <code>-j</code> لـbzip مع <code>tar</code>:</p>
 <pre><code class="language-bash"><span class="hljs-comment"># use -z option to compress tar file using gzip:</span>
@@ -1361,7 +1361,7 @@ $ tar -xvf myproj.tar
 $ <span class="hljs-built_in">ls</span>
   myproj/ myproj.tar
 </code></pre>
-<h3 id="1782-جمع-كل-ذلك-معا"><a href="#_putting_it_all_together"></a>17.8.2. جمع كل ذلك معًا</h3>
+<h3 id="1782-جمع-كل-ذلك-معا">17.8.2. جمع كل ذلك معًا <span class="content-anchor" id="_putting_it_all_together"></span></h3>
 <p>وفيما يلي مثال على استخدام <code>tar</code> لنقل محتويات دليل من جهاز (<code>laptop</code>) إلى جهاز بعيد (<code>ada.cs.college.edu</code>). ويستخدم الأمر <code>scp</code> لنسخ الملف عن بُعد بين الجهازين (انظر <a href="https://diveintosystems.org/book/Appendix2/ssh_scp.html#_remote_access">القسم 17.3</a> لمزيد من المعلومات عن <code>scp</code>).</p>
 <p>أولًا، ينشئ المستخدم ملف tar المضغوط على <code>laptop</code> (ملاحظة: نعرض الطريقة ثنائية الخطوة لإنشاء ملف tar وضغطه لنُظهر سرد الملفات في ملف tar، لكن يمكن أيضًا إنشاء ملف tar المضغوط في خطوة واحدة باستخدام خيارات سطر الأوامر <code>-cjvf</code>):</p>
 <pre><code class="language-python">laptop$  ls myproj/
@@ -1412,7 +1412,7 @@ ada$ ls
 <pre><code>rm myproj.tar
 ls
 </code></pre>
-<h3 id="1783-المراجع"><a href="#_references"></a>17.8.3. المراجع</h3>
+<h3 id="1783-المراجع">17.8.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل لهذه الأوامر (مثل <code>man tar</code> و<code>man gunzip</code>)</li>
@@ -1421,7 +1421,7 @@ ls
 </ul>
 <p>عندما تشغّل برنامجًا أو أمرًا عند مطالبة الصدفة، تنشئ الصدفة عادةً عملية جديدة ستشغّل البرنامج أو الأمر (والعملية هي تجريد نظام التشغيل لبرنامج قيد التنفيذ). وهناك بعض <strong>أوامر الصدفة المدمجة</strong> التي تنفّذها عملية الصدفة نفسها (مثل <code>cd</code>)، لكن معظمها يعمل كعمليات منفصلة. انظر <a href="https://diveintosystems.org/book/C13-OS/index.html#_the_operating_system">الفصل 13: نظام التشغيل</a> لمزيد من المعلومات عن العمليات.</p>
 <p>وتدعم صدفة Unix ميزات <strong>التحكم في العمليات</strong>، وهي طرق لتحديد كيفية تشغيل الصدفة لبرنامج، وطرق للتفاعل مع العملية أثناء تشغيلها.</p>
-<h3 id="1791-التشغيل-في-المقدمة-والخلفية"><a href="#_running_in_the_foreground_and_background"></a>17.9.1. التشغيل في المقدمة والخلفية</h3>
+<h3 id="1791-التشغيل-في-المقدمة-والخلفية">17.9.1. التشغيل في المقدمة والخلفية <span class="content-anchor" id="_running_in_the_foreground_and_background"></span></h3>
 <p>عند تشغيل برنامج عند مطالبة الصدفة، فإنه <strong>يعمل في المقدمة</strong> افتراضيًا، أي أن البرنامج يعمل حتى الاكتمال قبل أن يعمل برنامج الصدفة مرة أخرى ويطبع المطالبة التالية. غير أنه يمكن أيضًا <strong>تشغيل البرامج في الخلفية</strong>، أي أن الصدفة تبدأ تشغيل البرنامج لكنها لا تنتظر اكتماله قبل طباعة المطالبة التالية؛ وهذا يتيح للمستخدم إدخال أمر آخر بينما لا يزال البرنامج قيد التشغيل. ولإخبار الصدفة بتشغيل برنامج في الخلفية، يضيف المستخدم <code>&amp;</code> في نهاية سطر الأمر. فمثلًا، هكذا تخبر الصدفة بتشغيل برنامج <code>a.out</code> في الخلفية:</p>
 <pre><code class="language-bash">$ ./a.out &amp;
 $
@@ -1469,7 +1469,7 @@ $ ps
 
 $ <span class="hljs-built_in">fg</span>        <span class="hljs-comment"># run backgrounded process in the foreground</span>
 </code></pre>
-<h3 id="1792-إنهاء-العمليات-قيد-التشغيل"><a href="#_killing_a_running_processes"></a>17.9.2. إنهاء العمليات قيد التشغيل</h3>
+<h3 id="1792-إنهاء-العمليات-قيد-التشغيل">17.9.2. إنهاء العمليات قيد التشغيل <span class="content-anchor" id="_killing_a_running_processes"></span></h3>
 <p>يُستخدم الأمران <code>kill</code> و<code>pkill</code> لإرسال إشارة من عملية الصدفة إلى عمليات أخرى. والإشارات طريقة يمكن لعملية أن تُخطر بها عملية أخرى بفعل شيء ما. وتُفعِّل كل إشارة سلوكًا افتراضيًا، والخروج أو التجاهل خياران افتراضيان شائعان (انظر <a href="https://diveintosystems.org/book/C13-OS/index.html#_the_operating_system">الفصل 13: نظام التشغيل</a> لمزيد من المعلومات عن الإشارات).</p>
 <p>ويأخذ الأمر <code>kill</code> معرّف العملية (PID) للعملية المراد إرسال الإشارة إليها، ويأخذ الأمر <code>pkill</code> اسم الأمر أو الملف التنفيذي المراد إرسال الإشارة إليه (<code>pkill</code> يرسل الإشارة إلى جميع العمليات العاملة بالاسم المحدّد التي يملكها المستخدم الذي يشغّل <code>pkill</code>). ويأخذ كلٌّ من <code>kill</code> و<code>pkill</code> وسيط سطر أوامر اختياريًا يحدّد الإشارة المعيّنة المراد إرسالها إلى العملية. وبدون تحديد الإشارة المعيّنة، يُرسل كلاهما افتراضيًا إشارة إنهاء (<code>SIGTERM</code>) إلى العملية أو العمليات المحدّدة.</p>
 <p>ومن الاستخدامات الشائعة لهذين الأمرين إرسال إشارة إلى عملية تخبرها بالخروج (ومن هنا جاء اسم <code>kill</code> غير المحظوظ). لاحظ أن عملية تعمل في المقدمة يمكن إنهاؤها أيضًا بكتابة <code>CTRL-C</code>، ما يرسل إلى العملية العاملة في المقدمة إشارة <code>SIGINT</code> التي تخبر العملية افتراضيًا بالخروج.</p>
@@ -1521,7 +1521,7 @@ $ <span class="hljs-built_in">kill</span> -9 3033883
 </code></pre>
 <p>وإذا لم يكن للعملية معالج إشارة لإشارة <code>SIGALRM</code>، فالسلوك الافتراضي هو تجاهل إشارة <code>SIGALRM</code> فحسب.</p>
 <p>وتسرد صفحة دليل <code>signal</code> الحد الأدنى من الإشارات (وأرقامها) المعرّفة في النظام: <code>man 7 signal</code>.</p>
-<h3 id="1793-المراجع"><a href="#_references"></a>17.9.3. المراجع</h3>
+<h3 id="1793-المراجع">17.9.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل لهذه الأوامر (مثل <code>man ps</code> و<code>man pkill</code> و<code>man 7 signal</code>)</li>
@@ -1537,7 +1537,7 @@ sys	0m0.016s
 <p>وتُعطى مخرجات التوقيت كثلاث قيم زمنية مختلفة: <code>real</code> هو زمن التنفيذ الإجمالي، ويُشار إليه أحيانًا بالزمن الجداري لأنه يقابل الزمن من البداية إلى الاكتمال كما لو كان المرء يقيس زمن التشغيل بساعة؛ و<code>user</code> هو الجزء من الزمن الإجمالي الذي قضته العملية في التنفيذ في نمط المستخدم؛ و<code>sys</code> هو الجزء من الزمن الذي قضته العملية في التنفيذ في نمط النظام (انظر <a href="https://diveintosystems.org/book/C13-OS/index.html#_the_operating_system">الفصل 13: نظام التشغيل</a> لمزيد من المعلومات عن نمطي المستخدم والنظام). لاحظ أن زمن <code>user</code> زائد زمن <code>sys</code> لا يساوي زمن <code>real</code>. والسبب أن العملية تكون أثناء جزء من زمن تنفيذها الإجمالي محجوبة في انتظار أحداث معيّنة مثل الإدخال/الإخراج أو انتظار دورها لتُجدولها نظام التشغيل لتسير على نواة CPU. وعندما تكون العملية محجوبة، فإنها لا تجمع زمن <code>user</code> ولا <code>sys</code>، لكنها تجمع زمن <code>real</code> فعلًا.</p>
 <p>وفي هذا المثال، تقضي عملية <code>gol</code> الموقوتة معظم وقتها في العمل على نواة CPU (فزمن <code>user + sys</code> لديها يكاد يكون كل زمن <code>real</code>). وبالنسبة للتطبيقات التي تنفّذ إدخال/إخراج كثيرًا، قد يكون زمن <code>user + sys</code> أقل بكثير من زمن <code>real</code>.</p>
 <p>وغالبًا ما يُستخدم الخيار <code>-p</code> مع الأمر <code>time</code>. فهو يعرض مخرجات التوقيت بصيغة متوافقة مع معيار POSIX، بحيث يعرض كل نظام نتائج التوقيت بالصيغة نفسها عند تشغيل <code>time</code> بالخيار <code>-p</code>. وهذا مفيد بشكل خاص لكتابة برامج تنفّذ معالجة لاحقة لمخرجات <code>time</code> (مثل حساب المتوسط على مجموعة تشغيلات موقوتة للبرنامج) وتعمل بشكل مطابق عبر الأنظمة.</p>
-<h3 id="17101-المراجع"><a href="#_references"></a>17.10.1. المراجع</h3>
+<h3 id="17101-المراجع">17.10.1. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحة دليل <code>time</code>: <code>man 1 time</code></li>
@@ -1574,7 +1574,7 @@ $ <span class="hljs-built_in">history</span>
     45	8:20	<span class="hljs-built_in">history</span>
 </code></pre>
 <p>لاحظ أن <code>!37</code> لا يظهر في السجل، لكن رقم الأمر <code>44</code> من السجل يسرد سطر الأمر نفسه الذي يسرده سطر الأمر <code>37</code>، وهو الذي أُعيد تشغيله بإدخال <code>37!</code>.</p>
-<h3 id="17111-المراجع"><a href="#_references"></a>17.11.1. المراجع</h3>
+<h3 id="17111-المراجع">17.11.1. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحة دليل history: <code>man history</code></li>
@@ -1666,7 +1666,7 @@ The <span class="hljs-keyword">function</span> of education is to teach one
 $ <span class="hljs-built_in">cat</span> grep_err
 $
 </code></pre>
-<h3 id="17121-المراجع"><a href="#_references"></a>17.12.1. المراجع</h3>
+<h3 id="17121-المراجع">17.12.1. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات:</p>
 <ul>
 <li><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html">إعادة التوجيه</a> من <a href="https://www.gnu.org/software/bash/manual/html_node/index.html">دليل Bash المرجعي</a> من gnu.org.</li>
@@ -1720,7 +1720,7 @@ $ <span class="hljs-built_in">ls</span> | xargs <span class="hljs-built_in">wc</
   4  26 160 quote
  13  79 487 total
 </code></pre>
-<h3 id="17131-المراجع"><a href="#_references"></a>17.13.1. المراجع</h3>
+<h3 id="17131-المراجع">17.13.1. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li><a href="https://www.gnu.org/software/bash/manual/html_node/Pipelines.html">خطوط الأنابيب</a> من <a href="https://www.gnu.org/software/bash/manual/html_node/index.html">دليل Bash المرجعي</a> من gnu.org.</li>
@@ -1745,7 +1745,7 @@ $ <span class="hljs-built_in">ls</span> -a
 <li><code>.vimrc</code>: تهيئة لمحرر vim، لتعريف نظام الألوان والإبراز والترميز…​</li>
 <li><code>.xsession</code>: # ملف تهيئة لمديري X Windows الذين يبدأ تشغيلهم بعد تسجيل الدخول في طرفية. لضبط لون الخلفية وتعريف بعض السلوك الافتراضي وبدء بعض التطبيقات وبدء مدير نوافذ معيّن (وله ملفات تهيئة نقطية خاصة به)</li>
 </ul>
-<h3 id="17141-ملف-bashrc"><a href="#bashrc"></a>17.14.1. ملف .bashrc</h3>
+<h3 id="17141-ملف-bashrc">17.14.1. ملف .bashrc <span class="content-anchor" id="bashrc"></span></h3>
 <p>تحتوي ملفات تهيئة صدفة Unix (مثل <code>.bashrc</code> لصدفة Bash) مدخلات تغيّر سلوك الصدفة. وعادةً يعدّ مدير النظام ملف <code>.bashrc</code> افتراضيًا للنظام. غير أن المستخدمين الأفراد غالبًا ما يريدون تخصيص صدفة لهم أكثر، ويمكنهم فعل ذلك بتحرير <code>.bashrc</code> في دليلهم الرئيسي.</p>
 <p><strong>ملاحظة</strong></p>
 <blockquote>
@@ -1795,7 +1795,7 @@ $ gt31
 $ <span class="hljs-built_in">pwd</span>
 /home/sam/classes/CS31
 </code></pre>
-<h3 id="17142-المراجع"><a href="#_references"></a>17.14.2. المراجع</h3>
+<h3 id="17142-المراجع">17.14.2. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li><a href="https://www.gnu.org/software/bash/manual/html_node/index.html">دليل Bash المرجعي</a> من gnu.org.</li>
@@ -2015,7 +2015,7 @@ next input/ file is: bands
 next input/ file is: songs
 </code></pre>
 <p>وبشكل عام، فإن دمج أوامر Unix مع تراكيب لغة صدفة Bash مثل الحلقات والتعبيرات الشرطية وأسطر الأوامر والمتغيرات يتيح للمستخدم كتابة سكربتات صدفة قوية لتنفيذ إجراءات معقّدة. وقد عرضنا أمثلة قليلة فقط في هذا القسم. انظر دليل برمجة صدفة Bash لمزيد من المعلومات.</p>
-<h3 id="17151-المراجع"><a href="#_references"></a>17.15.1. المراجع</h3>
+<h3 id="17151-المراجع">17.15.1. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li><a href="https://www.gnu.org/software/bash/manual/html_node/index.html">دليل Bash المرجعي</a> من gnu.org.</li>
@@ -2024,14 +2024,14 @@ next input/ file is: songs
 <li><a href="https://www.cheat-sheets.org/project/tldr/command/special-most-used-linux-commands/">أكثر أوامر Unix استخدامًا</a> من cheat-sheets.org</li>
 </ul>
 <p>توجد أدوات كثيرة للحصول على معلومات عن حالة النظام: يوفّر <code>top</code> و<code>htop</code> معلومات ملخّصة ديناميكية عن موارد النظام واستخدامها، مثل استخدام CPU والذاكرة؛ ويحتوي نظاما الملفات الزائفان <code>/proc</code> و<code>/sys</code> معلومات مفصّلة عن الحالة الحالية للنظام (وتوجد أيضًا أوامر مثل <code>lscpu</code> و<code>lsmem</code> و<code>lsgpu</code> تعرض بعض المعلومات من <code>/proc</code> و<code>/sys</code> بصيغة أسهل قراءة).</p>
-<h3 id="17161-top-وhtop"><a href="#_top_and_htop"></a>17.16.1. top وhtop</h3>
+<h3 id="17161-top-وhtop">17.16.1. top وhtop <span class="content-anchor" id="_top_and_htop"></span></h3>
 <p>يوفر تشغيل <code>top</code> أو <code>htop</code> على سطر الأوامر معلومات ملخّصة ديناميكية عن حالة النظام. وكتابة <code>q</code> تخرج من <code>top</code> و<code>htop</code>. ويعرض كلاهما معلومات استخدام الذاكرة وCPU، لكن <code>htop</code> يعرض بعض إحصاءات الاستخدام بشكل أكثر رسمية من <code>top</code>، وخصوصًا عرض استخدام الذاكرة واستخدام CPU لكل نواة كرسم بياني. كما يسرد كلاهما افتراضيًا معلومات عن المهام التي تستخدم أكبر وقت CPU حاليًا. والمهمة (task) هو المصطلح العام في Linux لعملية أو خيط. وتُحدَّث هذه الأدوات كل ثانية أثناء عملها، فتعرض التغييرات في بيانات استخدام النظام الملخّصة. لاحظ أنه مع تحديث العرض كل ثانية، سيتغير ترتيب العمليات أثناء تنفيذها حسب مقدار وقت CPU الذي تستخدمه. وكلا الأداتين قابل للتهيئة بدرجة كبيرة لعرض معلومات مختلفة عن العمليات وحالة النظام.</p>
 <p>ويعرض <a href="#FigHOP">الشكل 1</a> لقطة شاشة نموذجية من <code>htop</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-htop.webp" alt="Example output form htop showing the current cpu usage of the 12 cores, of memory, and information about the top cpu-using processes."> الشكل 1. لقطة شاشة نموذجية من htop).</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-htop.webp" alt="Example output form htop showing the current cpu usage of the 12 cores, of memory, and information about the top cpu-using processes." id="FigHOP"> الشكل 1. لقطة شاشة نموذجية من htop).</p>
 <p>وفي أعلى الشاشة تمامًا، يعرض <code>htop</code> استخدام CPU الحالي لكل نواة من النوى الـ12 في هذا النظام كرسم بياني للاستخدام مُعلَّم بالنسب المئوية، يليه استخدام الذاكرة الحالي (<code>Mem</code>)، ومعلومات ملخّصة عن متوسط حِمل CPU (<code>Load average</code>)، والعدد الإجمالي للمهام (<code>Tasks</code>) والخيوط (<code>thr</code>) العاملة في النظام، ومعلومات عن استخدام قسم المبادلة (<code>Swp</code>). وتحتها سرد للمهام التي تستخدم أكبر وقت CPU في النظام. لاحظ أن المهام الخمس الأولى المدرجة في <a href="#FigHOP">الشكل 1</a> عمليات تشغّل برنامج الحلقة اللانهائية <code>a.out</code>، لذا فهي تستهلك وقت CPU كثيرًا كما هو متوقع. وفي أسفل الشاشة مفاتيح وظائف لتغيير البيانات المعروضة بطرق مختلفة.</p>
 <p>ويعرض برنامج <code>top</code> بيانات شبيهة جدًا بـ<code>htop</code> (لكن دون العروض الرسومية في الأعلى)، ويوفّر بالمثل واجهة لتغيير البيانات المعروضة بطرق مختلفة أثناء عمله. فمثلًا، يمكن للمستخدمين رؤية استخدام CPU لكل نواة في <code>top</code> بضغط مفتاح &quot;1&quot;.</p>
 <p>وإلى جانب كونهما قابلين للتهيئة بدرجة كبيرة عند التشغيل، فإن لـ<code>top</code> و<code>htop</code> عددًا كبيرًا من خيارات سطر الأوامر لتهيئة ما يعرضانه وكيفية عرضه. فمثلًا، لا يعرض <code>top</code> افتراضيًا إحصاءات لكل خيط (بل لكل عملية فقط)، لكنه سيفعل ذلك عند تشغيله بخيار سطر الأوامر <code>-H</code>.</p>
-<h3 id="17162-proc-وsys"><a href="#_proc_and_sys"></a>17.16.2. ‏/proc و/sys</h3>
+<h3 id="17162-proc-وsys">17.16.2. ‏/proc و/sys <span class="content-anchor" id="_proc_and_sys"></span></h3>
 <p><code>/proc</code> و<code>/sys</code> نظاما ملفات زائفان يوفّران الوصول إلى معلومات نظام التشغيل عن العمليات العاملة في النظام وإلى معلومات عن حالة النظام وموارده (مثل الأجهزة والنواقل والذاكرة والمعالج). و<strong>نظام الملفات الزائف</strong> يشبه نظام ملفات ويمكن التفاعل معه عبر واجهة نظام الملفات، لكنه لا يخزّن بيانات ملفات فعلًا. وبدلًا من ذلك، يمكن للمستخدم عبر ملفات زائفة في <code>/proc</code> و<code>/sys</code> التفاعل مع نظام التشغيل؛ فالقراءة من ملفات زائفة في <code>/proc</code> و<code>/sys</code> (مثل <code>cat /proc/filename</code>) طريقة للحصول على معلومات عن حالة النظام من نظام التشغيل. ويمكن أيضًا الكتابة في بعض الملفات في <code>/proc</code> و<code>/sys</code>، وقد يحفّز ذلك نظام التشغيل على تغيير سياسة أو تغيير الحالة المرتبطة بعملية أو مورد معيّن في النظام. فمثلًا، قد يكتب مصحّح أخطاء مثل GDB في ملف <code>/proc</code> مرتبط بالعملية التي يصحّحها لضبط نقطة توقف، أو قد يقرأ من ملف <code>/proc</code> لفحص المحتوى الحالي لذاكرة مكدّسها.</p>
 <p>وفيما يلي بعض الأمثلة على نوع المعلومات التي يمكن الحصول عليها بالقراءة من ملفات في <code>/proc</code>. وفي قسمنا عن <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors">التخزين المؤقت على المعالجات متعددة الأنوية</a> نعرض بعض الأمثلة على كيفية الحصول على معلومات عن ذاكرات CPU المؤقتة من ملفات في <code>/sys</code>.</p>
 <p>ولكل عملية عاملة في النظام دليل فرعي في <code>/proc</code> يحمل اسمه معرّف عمليتها ويحتوي كثيرًا من الملفات الزائفة التي هي واجهات لحالة العملية ووضعها. فمثلًا، لنفترض أننا نريد الحصول على بعض المعلومات من <code>/proc</code> عن عملية <code>a.out</code> العاملة في الخلفية هكذا:</p>
@@ -2071,7 +2071,7 @@ Core(s) per socket:              8
 Socket(s):                       2
 </code></pre>
 <p>وتُظهر المخرجات أن في الجهاز 16 نواة فيزيائية إجمالًا (مقبسان/شريحتان، و8 أنوية لكل مقبس/شريحة). كما تُظهر أن كل نواة ثنائية الخيوط الفائقة (2 <code>Thread(s) per core</code>)، لجعل الجهاز ذي 16 نواة يبدو لنظام التشغيل جهازًا ذا 32 نواة. ويرجى ملاحظة أن معماريات Intel الأحدث تُدخل أنوية P وأنوية E. وفي هذه المعماريات، قد يكون العدد الإجمالي لـCPU المسرودة أعلى من عدد الأنوية الفيزيائية مضروبًا في عدد المقابس والخيوط العتادية. انظر <a href="https://diveintosystems.org/book/C14-SharedMemory/index.html#_leveraging_shared_memory_in_the_multicore_era">الفصل 14</a> لمزيد من المعلومات.</p>
-<h3 id="17163-المراجع"><a href="#_references"></a>17.16.3. المراجع</h3>
+<h3 id="17163-المراجع">17.16.3. المراجع <span class="content-anchor" id="_references"></span></h3>
 <p>لمزيد من المعلومات انظر:</p>
 <ul>
 <li>صفحات الدليل: <code>man 5 proc</code> و<code>man 5 sysfs</code> و<code>man lscpu</code> وman <code>lsmem</code></li>
@@ -2085,7 +2085,7 @@ Socket(s):                       2
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -2093,8 +2093,8 @@ Socket(s):                       2
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

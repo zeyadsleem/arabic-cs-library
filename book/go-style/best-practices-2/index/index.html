@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -53,7 +53,7 @@
 <p>وحيث تتطلّب دالة مُدخَلات كثيرة، فكّر في إدخال <a href="#option-structure">بنية خيارات</a> لبعض الوسائط أو في استخدام تقنية <a href="#variadic-options">الخيارات المتغيّرة العدد</a> الأكثر تقدّمًا. وينبغي أن يكون الاعتبار الأساسي لاختيار الاستراتيجية هو شكل استدعاء الدالة في جميع حالات الاستخدام المتوقعة.</p>
 <p>تنطبق التوصيات أدناه أساسًا على الواجهات البرمجية المصدَّرة، التي تُقاس بمعيار أعلى من غير المصدَّرة. وقد لا تكون هذه التقنيات ضرورية لحالة استخدامك. استخدم حكمك، ووازن بين مبدأي <a href="/arabic-cs-library/book/go-style/guide/index#clarity">الوضوح</a> و<a href="/arabic-cs-library/book/go-style/guide/index#least-mechanism">أقل آلية ممكنة</a>.</p>
 <p>انظر أيضًا: <a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #24: Use Case-Specific Constructions</a></p>
-<h3 id="بنية-الخيارات">بنية الخيارات</h3>
+<h3 id="بنية-الخيارات">بنية الخيارات <span class="content-anchor" id="option-structure"></span></h3>
 <p>بنية الخيارات هي نوع بنية يجمع بعض وسائط دالة أو طريقة أو كلها، ثم يُمرَّر كوسيط أخير إلى الدالة أو الطريقة. (وينبغي ألّا تُصدَّر البنية إلا إذا استُخدمت في دالة مصدَّرة.)</p>
 <p>لاستخدام بنية الخيارات فوائد عديدة:</p>
 <ul>
@@ -112,7 +112,7 @@ func foo(ctx context.Context) {
 <li>يحتاج عدد كبير من المستدعين إلى تقديم خيارات كثيرة.</li>
 <li>تُشارَك الخيارات بين عدة دوال سيستدعيها المستخدم.</li>
 </ul>
-<h3 id="الخيارات-المتغيرة-العدد">الخيارات المتغيّرة العدد</h3>
+<h3 id="الخيارات-المتغيرة-العدد">الخيارات المتغيّرة العدد <span class="content-anchor" id="variadic-options"></span></h3>
 <p>باستخدام الخيارات المتغيّرة العدد، تُنشأ دوال مصدَّرة تُعيد دوال مغلقة (closures) يمكن تمريرها إلى <a href="https://golang.org/ref/spec#Passing_arguments_to_..._parameters">الوسيط المتغيّر العدد (<code>...</code>)</a> لدالة. وتأخذ الدالة كمعاملات لها قيم الخيار (إن وُجدت)، وتقبل الدالة المغلقة المُعادة مرجعًا قابلًا للتغيير (عادةً مؤشّر إلى نوع بنية) سيُحدَّث بناءً على المُدخَلات.</p>
 <p>قد يوفّر استخدام الخيارات المتغيّرة العدد فوائد عديدة:</p>
 <ul>
@@ -297,7 +297,7 @@ func FuzzFencepost(f *testing.F) {
 <p>ورغم وجود تطبيقات معروفة لـ<code>fs.FS</code>، فقد يُتوقّع من مطوّر Go أن يؤلّف واحدًا. وللمساعدة في التحقق من صحة <code>fs.FS</code> الذي ينفّذه المستخدم، وُفِّرت مكتبة عامة في <a href="https://pkg.go.dev/testing/fstest"><code>testing/fstest</code></a> تُسمّى <a href="https://pkg.go.dev/testing/fstest#TestFS"><code>fstest.TestFS</code></a>. وتتعامل هذه الواجهة البرمجية مع التطبيق كصندوق أسود للتأكد من أنه يحافظ على أبسط أجزاء عقد <code>io/fs</code>.</p>
 <h4>كتابة اختبار قبول</h4>
 <p>بعد أن عرفنا ما هو اختبار القبول ولماذا قد تستخدم واحدًا، لنستكشف بناء اختبار قبول لـ<code>package chess</code>، وهي حزمة تُستخدم لمحاكاة مباريات الشطرنج. ويُتوقّع من مستخدمي <code>chess</code> تنفيذ واجهة <code>chess.Player</code>. وهذه التطبيقات هي الشيء الأساسي الذي سنتحقق منه. ويهتم اختبار القبول لدينا بما إذا كان تطبيق اللاعب يقوم بنقلات قانونية، لا بما إذا كانت النقلات ذكية.</p>
-<p>أنشئ حزمة جديدة لسلوك التحقق، <a href="#naming-doubles-helper-package">تُسمّى عادةً</a> بإلحاق كلمة <code>test</code> باسم الحزمة (على سبيل المثال، <code>chesstest</code>).</p>
+<p>أنشئ حزمة جديدة لسلوك التحقق، <a href="/arabic-cs-library/book/go-style/best-practices-1/index#naming-doubles-helper-package">تُسمّى عادةً</a> بإلحاق كلمة <code>test</code> باسم الحزمة (على سبيل المثال، <code>chesstest</code>).</p>
 <p>أنشئ الدالة التي تُجري التحقق بأن تقبل التطبيق قيد الاختبار كوسيط وتمتحنه:</p>
 <pre><code>// ExercisePlayer tests a Player implementation in a single turn on a board.
 // The board itself is spot checked for sensibility and correctness.
@@ -362,7 +362,7 @@ func TestAcceptance(t *testing.T) {
     }
 }
 </code></pre>
-<h3 id="استخدم-النواقل-الحقيقية-real-transports">استخدم النواقل الحقيقية (real transports)</h3>
+<h3 id="استخدم-النواقل-الحقيقية-real-transports">استخدم النواقل الحقيقية (real transports) <span class="content-anchor" id="use-real-transports"></span></h3>
 <p>عند اختبار تكامل المكوّنات، وبخاصة حيث يُستخدم HTTP أو RPC ناقلًا أساسيًا (transport) بين المكوّنات، فضّل استخدام الناقل الأساسي الحقيقي للاتصال بنسخة الاختبار من الواجهة الخلفية (backend).</p>
 <p>فمثلًا، افترض أن الشيفرة التي تريد اختبارها (يُشار إليها أحيانًا بـ«النظام تحت الاختبار» أو SUT) تتفاعل مع واجهة خلفية تنفّذ واجهة <a href="https://pkg.go.dev/google.golang.org/genproto/googleapis/longrunning">العمليات الطويلة الأمد (long running operations)</a> البرمجية. لاختبار نظامك تحت الاختبار، استخدم <a href="https://pkg.go.dev/google.golang.org/genproto/googleapis/longrunning#OperationsClient">OperationsClient</a> حقيقيًا متصلًا بـ<a href="https://abseil.io/resources/swe-book/html/ch13.html#basic_concepts">بديل اختباري</a> (test double) (مثل محاكٍ أو بديل صوري أو مزيّف) لـ<a href="https://pkg.go.dev/google.golang.org/genproto/googleapis/longrunning#OperationsServer">OperationsServer</a>.</p>
 <p>يُوصى بهذا بدلًا من تنفيذ العميل يدويًا، بسبب تعقيد محاكاة سلوك العميل محاكاةً صحيحة. وباستخدام عميل الإنتاج مع خادم خاص بالاختبار، تضمن أن اختبارك يستخدم أكبر قدر ممكن من الشيفرة الحقيقية.</p>
@@ -375,7 +375,7 @@ func TestAcceptance(t *testing.T) {
 <li>وإذا كنت تستخدم اختبارات فرعية (وكنت داخل استدعاء لـ<code>t.Run</code>)، فاستخدم <code>t.Fatal</code>، الذي ينهي الاختبار الفرعي الحالي ويتيح لحالة اختبارك الانتقال إلى الاختبار الفرعي التالي.</li>
 </ul>
 <p><strong>تحذير:</strong> ليس من الآمن دائمًا استدعاء <code>t.Fatal</code> والدوال المشابهة. <a href="#t-fatal-goroutine">مزيد من التفاصيل هنا</a>.</p>
-<h3 id="معالجة-الأخطاء-في-دوال-الاختبار-المساعدة">معالجة الأخطاء في دوال الاختبار المساعدة</h3>
+<h3 id="معالجة-الأخطاء-في-دوال-الاختبار-المساعدة">معالجة الأخطاء في دوال الاختبار المساعدة <span class="content-anchor" id="test-helper-error-handling"></span></h3>
 <p><strong>ملاحظة:</strong> يناقش هذا القسم <a href="/arabic-cs-library/book/go-style/decisions-2/index#mark-test-helpers">دوال الاختبار المساعدة</a> بالمعنى الذي تستخدمه Go للمصطلح: دوال تؤدّي تهيئة الاختبار وتنظيفه، لا أدوات التأكيد الشائعة. راجع قسم <a href="#test-functions">دوال الاختبار</a> لمزيد من النقاش.</p>
 <p>قد تفشل العمليات التي تؤدّيها دالة اختبار مساعدة. فمثلًا، يتضمّن إعداد مجلد بملفات عمليات إدخال/إخراج (I/O)، وقد تفشل. وعندما تفشل دوال الاختبار المساعدة، فغالبًا ما يعني فشلها أن الاختبار لا يمكن أن يستمر، لأن شرطًا مسبقًا من شروط التهيئة قد فشل. وعندما يحدث ذلك، فضّل استدعاء إحدى دوال <code>Fatal</code> في الدالة المساعدة:</p>
 <pre><code>// Good:
@@ -515,7 +515,7 @@ func TestStrJoin(t *testing.T) {
     // ...
 }
 </code></pre>
-<h3 id="احصر-شيفرة-التهيئة-في-اختبارات-محددة">احصر شيفرة التهيئة في اختبارات محدّدة</h3>
+<h3 id="احصر-شيفرة-التهيئة-في-اختبارات-محددة">احصر شيفرة التهيئة في اختبارات محدّدة <span class="content-anchor" id="t-common-setup-scope"></span></h3>
 <p>حيث أمكن، ينبغي أن تكون تهيئة الموارد والاعتماديات محصورة بأقرب ما يمكن بحالات اختبار محدّدة. فمثلًا، بالنظر إلى دالة تهيئة:</p>
 <pre><code>// mustLoadDataSet loads a data set for the tests.
 //
@@ -621,7 +621,7 @@ func <span class="hljs-title class_">TestMain</span>(m *testing.<span class="hlj
 </code></pre>
 <p>من المثالي أن تكون حالة الاختبار محكمة العزل بين استدعاءاتها المتكرّرة وبين حالات الاختبار الأخرى.</p>
 <p>وعلى الأقل، تأكّد من أن حالات الاختبار الفردية تعيد ضبط أي حالة عامة عدّلتها إن كانت قد فعلت ذلك (مثلًا، إذا كانت الاختبارات تتعامل مع قاعدة بيانات خارجية).</p>
-<h4>توزيع كلفة التهيئة المشتركة للاختبارات</h4>
+<h4>توزيع كلفة التهيئة المشتركة للاختبارات <span class="content-anchor" id="t-setup-amortization"></span></h4>
 <p>قد يكون استخدام <code>sync.Once</code> مناسبًا، وإن لم يكن مطلوبًا، إذا صحّت كل الحالات التالية بشأن التهيئة المشتركة:</p>
 <ul>
 <li>أن تكون مكلفة.</li>
@@ -713,7 +713,7 @@ usage := &quot;&quot; +
   &quot;\n&quot; +
   &quot;custom_tool [args]&quot;
 </code></pre>
-<h2 id="الحالة-العامة">الحالة العامة</h2>
+<h2 id="الحالة-العامة">الحالة العامة <span class="content-anchor" id="globals"></span></h2>
 <p>ينبغي ألّا تُجبر المكتبات عملاءها على استخدام واجهات برمجية تعتمد على <a href="https://en.wikipedia.org/wiki/Global_variable">حالة عامة (global state)</a>. ويُنصَح بعدم كشف واجهات برمجية أو تصدير متغيّرات <a href="https://go.dev/ref/spec#TopLevelDecl">على مستوى الحزمة</a> تتحكّم في سلوك جميع العملاء كأجزاء من واجهتها البرمجية. ويستخدم باقي هذا القسم تعبيرَي «العامة» و«حالة مستوى الحزمة» بالمعنى نفسه.</p>
 <p>بدلًا من ذلك، إذا حافظت وظيفتك على حالة، فأتح لعملائك إنشاء قيم نسخ (instance values) واستخدامها.</p>
 <p><strong>مهم:</strong> بينما ينطبق هذا الإرشاد على جميع المطورين، فهو الأكثر أهمية لمزوّدي البنية التحتية الذين يقدّمون مكتبات وتكاملات وخدمات لفرق أخرى.</p>
@@ -802,11 +802,11 @@ func TestRegression_InvalidUser(t *testing.T) {
 <li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #71: Reducing Parallel Test Flakiness</a></li>
 <li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #80: Dependency Injection Principles</a></li>
 <li>معالجة الأخطاء: <a href="https://docs.python.org/3/glossary.html#term-LBYL">Look Before You Leap</a> مقابل <a href="https://docs.python.org/3/glossary.html#term-EAFP">Easier to Ask for Forgiveness than Permission</a></li>
-<li><a href="/arabic-cs-library/book/go-style/index/index#unit-testing-practices">Unit Testing Practices on Public APIs</a></li>
+<li><a href="/arabic-cs-library/book/go-style/guide/index">Unit Testing Practices on Public APIs</a></li>
 </ul>
 <p>للحالة العامة آثار متتالية على <a href="/arabic-cs-library/book/go-style/guide/index#maintainability">صحة قاعدة شيفرة Google</a>. وينبغي التعامل مع الحالة العامة بـ<strong>تدقيق بالغ</strong>.</p>
 <p><a href="#globals-forms">تأتي الحالة العامة بأشكال عدة</a>، ويمكنك استخدام بعض <a href="#globals-litmus-tests">اختبارات عباد الشمس (litmus tests) لتحديد متى تكون آمنة</a>.</p>
-<h3 id="الأشكال-الرئيسية-لواجهات-حالة-الحزمة-البرمجية">الأشكال الرئيسية لواجهات حالة الحزمة البرمجية</h3>
+<h3 id="الأشكال-الرئيسية-لواجهات-حالة-الحزمة-البرمجية">الأشكال الرئيسية لواجهات حالة الحزمة البرمجية <span class="content-anchor" id="globals-forms"></span></h3>
 <p>عدّدنا أدناه عدة صور من أكثر صور الواجهات البرمجية الشائعة إشكالًا:</p>
 <p>المتغيّرات على المستوى الأعلى، بصرف النظر عمّا إذا كانت مصدَّرة.</p>
 <pre><code class="language-javascript"><span class="hljs-comment">// Bad:</span>
@@ -842,7 +842,7 @@ func <span class="hljs-title class_">Client</span>() *pb.<span class="hljs-prope
 <p>من الأفضل الاستثمار في تصميم واجهة برمجية سليم اليوم من دفع كلفة إعادة تصميمها لاحقًا.</p>
 </blockquote>
 </blockquote>
-<h3 id="اختبارات-عباد-الشمس">اختبارات عباد الشمس</h3>
+<h3 id="اختبارات-عباد-الشمس">اختبارات عباد الشمس <span class="content-anchor" id="globals-litmus-tests"></span></h3>
 <p><a href="#globals-forms">الواجهات البرمجية التي تستخدم الأنماط أعلاه</a> غير آمنة عندما:</p>
 <ul>
 <li>تتفاعل دوال متعددة عبر حالة عامة عند تنفيذها في البرنامج نفسه، رغم كونها مستقلة فيما عدا ذلك (مثلًا، مكتوبة من مؤلفين مختلفين في مجلدات شديدة الاختلاف).</li>
@@ -883,7 +883,7 @@ func Register(r *sidecar.Registry, l *Logger) {
   r.Register(&quot;Cloud Logging&quot;, l)
 }
 </code></pre>
-<p>ويجب أن <a href="#documentation-conventions">توثّق</a> هذه الواجهة البرمجية على مستوى الحزمة ثوابتها وتفرضها (مثلًا، في أي مرحلة من عمر البرنامج يمكن استدعاؤها، وما إذا كان يمكن استخدامها بالتزامن). علاوةً على ذلك، يجب أن توفّر واجهة برمجية لإعادة ضبط الحالة العامة إلى قيمة افتراضية سليمة معروفة (مثلًا، لتسهيل الاختبار).</p>
+<p>ويجب أن <a href="/arabic-cs-library/book/go-style/best-practices-1/index#documentation-conventions">توثّق</a> هذه الواجهة البرمجية على مستوى الحزمة ثوابتها وتفرضها (مثلًا، في أي مرحلة من عمر البرنامج يمكن استدعاؤها، وما إذا كان يمكن استخدامها بالتزامن). علاوةً على ذلك، يجب أن توفّر واجهة برمجية لإعادة ضبط الحالة العامة إلى قيمة افتراضية سليمة معروفة (مثلًا، لتسهيل الاختبار).</p>
 <p>انظر أيضًا:</p>
 <ul>
 <li><a href="https://google.github.io/styleguide/go/index.html#gotip">Go Tip #36: Enclosing Package-Level State</a></li>
@@ -902,13 +902,13 @@ func Register(r *sidecar.Registry, l *Logger) {
 <p>وعندما يكون من المنطقي فعلًا إنشاء واجهة:</p>
 <ol>
 <li><strong>تطبيقات متعددة:</strong> عندما يكون هناك نوعان ملموسان أو أكثر يجب التعامل معهما بالمنطق نفسه (مثل شيء يعمل مع كل من <a href="https://pkg.go.dev/encoding/json#Encoder">json.Encoder</a> و<a href="https://pkg.go.dev/encoding/gob#GobEncoder">gob.GobEncoder</a>)، فيمكن لمستهلك الواجهة البرمجية تعريف واجهة.</li>
-<li><strong>فصل الحزم:</strong> لكسر الاعتماديات الدائرية بين حزمتين (راجع <a href="#avoiding-circular-dependencies">مثالًا</a>)، يمكن لمنتج الواجهة البرمجية تعريف واجهة. <strong>تحذير:</strong> راقب بعناية الإرشادات المتعلقة بـ<a href="#package-size">حجم الحزمة</a>. فإدخال واجهات لكسر دورات الاعتماديات غالبًا ما يكون إشارة إلى حزم غير منظمة تنظيمًا سليمًا.</li>
+<li><strong>فصل الحزم:</strong> لكسر الاعتماديات الدائرية بين حزمتين (راجع <a href="#avoiding-circular-dependencies">مثالًا</a>)، يمكن لمنتج الواجهة البرمجية تعريف واجهة. <strong>تحذير:</strong> راقب بعناية الإرشادات المتعلقة بـ<a href="/arabic-cs-library/book/go-style/best-practices-1/index#package-size">حجم الحزمة</a>. فإدخال واجهات لكسر دورات الاعتماديات غالبًا ما يكون إشارة إلى حزم غير منظمة تنظيمًا سليمًا.</li>
 <li><strong>إخفاء التعقيد:</strong> عندما يكون لنوع ملموس سطح واجهة برمجية ضخم، لكن دالة محدّدة لا تحتاج إلا إلى طريقة أو طريقتين، فقد يعرّف مستهلك الواجهة البرمجية واجهة.</li>
 </ol>
 <h3 id="ملكية-الواجهة-وظهورها">ملكية الواجهة وظهورها</h3>
 <ol>
 <li><strong>لا تصدّر أنواع الواجهات دون داعٍ:</strong> إذا كانت واجهة تُستخدم داخليًا فقط ضمن حزمة لتلبية مسار منطقي محدّد، فأبقِ الواجهة غير مصدَّرة. فتصدير واجهة يُلزمك بصيانة تلك الواجهة البرمجية للمستدعين الخارجيين.</li>
-<li><strong>المستهلك هو من يعرّف الواجهة:</strong> في Go، تنتمي الواجهات عمومًا إلى الحزمة التي تستخدمها، لا الحزمة التي تنفّذها. وينبغي أن يعرّف المستهلك الطرائق التي يستخدمها فعليًا فقط <a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #78: Minimal Viable Interfaces</a>، التزامًا بفكرة أن <a href="https://go-proverbs.github.io/">كلما كبرت الواجهة، ضعف التجريد</a>. وهناك سيناريوهات شائعة يكون من المنطقي فيها غالبًا أن يصدّر المنتج (الحزمة التي توفّر المنطق) الواجهة: <strong>الواجهة هي المنتج:</strong> عندما يكون الغرض الأساسي لحزمة توفير بروتوكول مشترك يجب أن تتبعه تطبيقات مختلفة كثيرة، يعرّف المنتج الواجهة. مثل <a href="https://pkg.go.dev/io#Writer">io.Writer</a> و<a href="https://pkg.go.dev/hash#Hash">hash.Hash</a>. ويشمل مفهوم «البروتوكول» جوانب مثل <a href="#documentation">التوثيق</a> حول السلوكيات الحرجة (مثل حالة الاستخدام المتوقعة والحالات الحدّية والتزامن) التي تحتاج إلى شرح مركزي وقانوني. ومن الأمثلة البارزة الأخرى على ذلك الواجهات المولّدة من protobuf. فهي لا تجرّد سلوكًا محدّدًا، بل تعرّف حدًّا. وغرضها ضمان أن يطابق تطبيق خادمك المخطط التعريفي المحدَّد في ملف <code>.proto</code> مطابقة تامة. وهنا تعمل الواجهة كعقد قانوني صارم بين الخدمة وعملائها. وفي الأنظمة الكبيرة، إذا كانت الواجهة تعيش داخل حزمة تطبيق ضخمة، فكل عميل يُجبَر على استيراد العالم كله لمجرد الإشارة إلى الواجهة. ويمكنك تعريف الواجهة في حزمة مستقلة خالية من التطبيق، متجنّبًا الرموز غير الضرورية والاعتماديات الدائرية المحتملة. وهذه هي الفلسفة نفسها التي تتبعها الشيفرة المولّدة من protobuf.</li>
+<li><strong>المستهلك هو من يعرّف الواجهة:</strong> في Go، تنتمي الواجهات عمومًا إلى الحزمة التي تستخدمها، لا الحزمة التي تنفّذها. وينبغي أن يعرّف المستهلك الطرائق التي يستخدمها فعليًا فقط <a href="https://google.github.io/styleguide/go/index.html#gotip">GoTip #78: Minimal Viable Interfaces</a>، التزامًا بفكرة أن <a href="https://go-proverbs.github.io/">كلما كبرت الواجهة، ضعف التجريد</a>. وهناك سيناريوهات شائعة يكون من المنطقي فيها غالبًا أن يصدّر المنتج (الحزمة التي توفّر المنطق) الواجهة: <strong>الواجهة هي المنتج:</strong> عندما يكون الغرض الأساسي لحزمة توفير بروتوكول مشترك يجب أن تتبعه تطبيقات مختلفة كثيرة، يعرّف المنتج الواجهة. مثل <a href="https://pkg.go.dev/io#Writer">io.Writer</a> و<a href="https://pkg.go.dev/hash#Hash">hash.Hash</a>. ويشمل مفهوم «البروتوكول» جوانب مثل <a href="/arabic-cs-library/book/go-style/best-practices-1/index#documentation">التوثيق</a> حول السلوكيات الحرجة (مثل حالة الاستخدام المتوقعة والحالات الحدّية والتزامن) التي تحتاج إلى شرح مركزي وقانوني. ومن الأمثلة البارزة الأخرى على ذلك الواجهات المولّدة من protobuf. فهي لا تجرّد سلوكًا محدّدًا، بل تعرّف حدًّا. وغرضها ضمان أن يطابق تطبيق خادمك المخطط التعريفي المحدَّد في ملف <code>.proto</code> مطابقة تامة. وهنا تعمل الواجهة كعقد قانوني صارم بين الخدمة وعملائها. وفي الأنظمة الكبيرة، إذا كانت الواجهة تعيش داخل حزمة تطبيق ضخمة، فكل عميل يُجبَر على استيراد العالم كله لمجرد الإشارة إلى الواجهة. ويمكنك تعريف الواجهة في حزمة مستقلة خالية من التطبيق، متجنّبًا الرموز غير الضرورية والاعتماديات الدائرية المحتملة. وهذه هي الفلسفة نفسها التي تتبعها الشيفرة المولّدة من protobuf.</li>
 <li><strong>امنع تضخّم الواجهة:</strong> في قواعد الشيفرة الكبيرة، تصبح الصيانة صعبة إذا استخدمت حزم كثيرة <code>AuthService</code> نفسه بينما تعرّف كل منها <code>type Authorizer interface</code> مطابقًا. وبينما تفضّل Go غالبًا <a href="https://go-proverbs.github.io/">قليلًا من النسخ على قليل من الاعتماديات</a>، فتذكّر أن صيانة واجهات متطابقة تمامًا (راجع النقطة أعلاه) عبر حزم كثيرة قد يخلق عبئًا لا داعي له.</li>
 <li><strong>حلّ الاعتمادية الدائرية:</strong> راجع <a href="#avoiding-circular-dependencies">مثالًا</a> أدناه.</li>
 </ol>
@@ -1011,7 +1011,7 @@ func Start() {
     fmt.Println(conf.APIKey())
 }
 </code></pre>
-<p><strong>تحذير:</strong> راقب بعناية الإرشادات المتعلقة بـ<a href="#package-size">حجم الحزمة</a>. فإدخال واجهات لكسر دورات الاعتماديات غالبًا ما يكون إشارة إلى حزم غير منظمة تنظيمًا سليمًا. وغالبًا ما تُفضَّل الحزم الموحّدة على حزم كثيرة صغيرة جدًا تفشل في الوقوف على قدميها.</p>
+<p><strong>تحذير:</strong> راقب بعناية الإرشادات المتعلقة بـ<a href="/arabic-cs-library/book/go-style/best-practices-1/index#package-size">حجم الحزمة</a>. فإدخال واجهات لكسر دورات الاعتماديات غالبًا ما يكون إشارة إلى حزم غير منظمة تنظيمًا سليمًا. وغالبًا ما تُفضَّل الحزم الموحّدة على حزم كثيرة صغيرة جدًا تفشل في الوقوف على قدميها.</p>
 <p>هذا الموقع مفتوح المصدر. <a href="https://github.com/google/styleguide/edit/gh-pages/go/best-practices.md">حسّن هذه الصفحة</a>.</p>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/go-style/best-practices-1/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">أفضل ممارسات أسلوب Go (1 من 2)</span></a><!--]--> <!--[-1--><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
@@ -1019,7 +1019,7 @@ func Start() {
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1027,8 +1027,8 @@ func Start() {
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

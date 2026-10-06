@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -254,7 +254,7 @@ testdb=# SELECT relname, relreplident FROM pg_class WHERE relname = 'tbl_ri_full
 <h4>الآلية الداخلية وتسلسل الترشيح</h4>
 <p>ينسّق المشترك والناشر لتحديد الأصول وترشيحها:</p>
 <ol>
-<li><strong>ختم الأصل</strong>: عندما يلتزم عامل التطبيق على المشترك بمعاملة، يُلحق <em>origin_id</em> بسجل WAL الخاص بالالتزام (أو الإلغاء)<a href="#fn:1">1</a>. ويعيّن التنفيذ الحالي عددًا صحيحًا غير صفري للتغييرات الواردة من عقد خارجية.</li>
+<li><strong>ختم الأصل</strong>: عندما يلتزم عامل التطبيق على المشترك بمعاملة، يُلحق <em>origin_id</em> بسجل WAL الخاص بالالتزام (أو الإلغاء)<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. ويعيّن التنفيذ الحالي عددًا صحيحًا غير صفري للتغييرات الواردة من عقد خارجية.</li>
 <li><strong>التقييم بواسطة walsender</strong>: أثناء فكّ ترميز معاملة في ReorderBuffer، يفحص walsender معلومات الأصل داخل سجل WAL الخاص بالالتزام على الناشر.</li>
 <li><strong>تنفيذ الترشيح</strong>: إذا ضُبط origin = “none” وكان origin_id موجودًا، يتخطّى walsender إرسال تلك المعاملة بأكملها ويتجاهل البيانات.</li>
 </ol>
@@ -286,9 +286,6 @@ testdb=# SELECT relname, relreplident FROM pg_class WHERE relname = 'tbl_ri_full
 <p>لا ينسخ النسخ المتماثل المنطقي عمليات DDL ولا يتأثر بعمليات VACUUM على الناشر، خلافًا للنسخ المتماثل المتدفّق الفيزيائي. ونتيجة لذلك، لا تحدث أنواع التعارضات المرتبطة بالنسخ المتماثل المتدفّق.</p>
 <p>ومع ذلك، تنشأ التعارضات أساسًا بسبب تعديلات بيانات متزامنة على مستوى التطبيق على المشترك. فمثلًا، إذا حُذف صف مباشرةً على المشترك ثم حاول الناشر تحديث الصف نفسه لاحقًا، يحدث تعارض <strong>“update_missing”</strong>.</p>
 <p>وتتوفر قائمة شاملة بالتعارضات التي يكتشفها PostgreSQL في التوثيق الرسمي: <a href="https://www.postgresql.org/docs/current/logical-replication-conflicts.html">النسخ المتماثل المنطقي: التعارضات</a>.</p>
-<ol>
-<li>في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في الترويسة، بينما يُضاف “origin_commit_lsn” و“origin_commit_timestamp” إلى القسم الموسَّع. <a href="#fnref:1">↩︎</a></li>
-</ol>
 <h1>12.2. بدء النسخ المتماثل المنطقي</h1>
 <h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
 <p>قبل إعداد النسخ المتماثل المنطقي، يُفترض توافر الشروط التالية:</p>
@@ -1847,13 +1844,20 @@ COMMIT 841
 <h4>[2] استعادة حالة الأصل</h4>
 <p>بعد اكتمال الاستعادة، يستعيد النظام أحدث <em>origin_lsn</em> (نقطة الالتزام على الناشر) وLSN الالتزام المقابل له على المشترك إلى الذاكرة كـ<em>remote_lsn</em> و<em>local_lsn</em> على الترتيب. ويُستعاد ملف “replorigin_checkpoint” أيضًا.</p>
 <p>ومن هذه النقطة، يواصل النظام تسلسل إعادة التشغيل القياسي لإعادة الاتصال بالناشر.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في الترويسة، بينما يُضاف “origin_commit_lsn” و“origin_commit_timestamp” إلى القسم الموسَّع. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/postgres-internals/pgsql11/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">النسخ المتماثل المتدفّق</span></a><!--]--> <!--[0--><a href="../../../../book/postgres-internals/pgsqlappendix/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الملحق: اشتقاق صيغ حساب التباين</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1861,8 +1865,8 @@ COMMIT 841
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.Qej-_FIF.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DGpcdTH1.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.flmbkOhr.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BWUeFQUD.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/Dk5jM8nM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFwHbvSA.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.DDE5wugJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.RoCFkoJF.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.S_zrT0hv.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DUJf15Of.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DVJ0Dz1f.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BU-6reTV.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/B8olbQsM.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/BJx0-WX9.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1A2k5zH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/aK6v7dH-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C20Wnmwe.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BUye4_0F.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.C862rHzh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRDQZgp1.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -235,14 +235,10 @@ hashlib.sha3_512(b&quot;crypto101&quot;).hexdigest()
 <p>كان سبب الفعالية البالغة لجداول قوس قزح هو أنّ الجميع كان يستعمل إحدى بضع دوالّ
 تجزئة. فكلمة المرور نفسها كانت تُنتج التجزئة نفسها في كلّ مكان.</p>
 <p>وتُحلّت هذه المشكلة عمومًا باستعمال <code>الأملاح</code> (salts). فبمزج كلمة المرور مع قيمة
-عشوائية (بإلحاقها أو إلحاق القيمة بها مقدّمًا [#]_) قبل تجزئتها، تستطيع إنتاج قيم
+عشوائية (بإلحاقها أو إلحاق القيمة بها مقدّمًا <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>) قبل تجزئتها، تستطيع إنتاج قيم
 تجزئة مختلفة تمامًا من دالة التجزئة نفسها. فهو يحوّل دالة التجزئة عمليًّا إلى عائلة
 كاملة من دوالّ التجزئة المتّصلة، ذات خصائص أمن وأداء متطابقة تقريبًا، لكنّ بمخرجات
 مختلفة تمامًا.</p>
-<p>.. [#]
-في حين يمكنك استعمال XOR أيضًا لهذا الأمر، فإنّه أكثر عرضة للخطأ بلا داعٍ ولا
-حاجة، ولا ينتج نتائج أفضل. فإذا لم تُصفَّر بَعدَي كلمة المرور والملح بالأصفار، فقد
-تقطع أحدهما.</p>
 <p>تُخزَّن قيمة <code>salt</code> بجوار تجزئة كلمة المرور في قاعدة البيانات. وحين يُصادِق المستخدم بكلمة المرور، فأنت تجمع <code>salt</code> مع كلمة المرور وتُجزّئها، وتقارن النتيجة بالتجزئة المخزَّنة.</p>
 <p>وإن اخترت <code>salt</code> عشوائيًّا تشفيريًا وحجمه كافيًا (ولنفرض 160 بتًّا/32 بايتًا)، فإنّك تُفشل تمامًا الهجمات المسبقة مثل جداول قوس قزح. ولأن ينجح مهاجم في تنفيذ هجوم بجدول قوس قزح، فعليه أن يملك جدولًا منفصلًا لكلّ قيمة من تلك قيم <code>salt</code>. وبما أنّ الجدول الواحد كان عادةً كبيرًا إلى حدٍّ كبير، فإنّ تخزين عدد كبير منها مستحيل. وحتى لو تمكّن المهاجم من تخزين كلّ تلك البيانات، لكان عليه أوّلًا حسابها. فحساب جدول واحد يستغرق وقتًا لا بأس به، بينما حساب <code>2^{160}</code> جدولًا مختلفًا مستحيل.</p>
 <p>استعملت أنظمة كثيرة <code>salt</code> واحدة لجميع المستخدمين. وبينما كان ذلك يمنع هجوم جدول قوس قزح المسبق، فإنّه سمح للمهاجمين بمهاجمة جميع كلمات المرور دفعة واحدة، بمجرّد معرفتهم قيمة <code>salt</code>. إذ يكفي أن يحسب المهاجم جدول قوس قزح واحدًا لتلك <code>salt</code>، ويقارن النتائج بكلمات المرور المُجزَّأة في قاعدة البيانات. وبينما كان ذلك يمكن منعه باستعمال <code>salt</code> مختلفة لكلّ مستخدم، فإنّ الأنظمة التي تستعمل تجزئة تشفيرية مع <code>salt</code> خاصة بكلّ مستخدم ما تزال تُعدّ مكسورة على نحو جوهريّ اليوم؛ فهي <em>أصعب</em> في الكسر فحسب، وليست آمنة البتّة.</p>
@@ -308,17 +304,13 @@ padding)، ويُسمّى كذلك لأنّه <em>يلصق</em> الرسالتي
 ولا ضير في أن نخفّف من أثرها حيث نستطيع.</p>
 <p>TODO: اشرح لماذا يمنع هذا هجمات اللقاء في المنتصف</p>
 <h4>شجرات التجزئة</h4>
-<p>شجرات التجزئة (hash trees) هي أشجار [#]_ تُعرَّف كلّ عقدة فيها بقيمة تجزئة، تتكوّن من
+<p>شجرات التجزئة (hash trees) هي أشجار <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> تُعرَّف كلّ عقدة فيها بقيمة تجزئة، تتكوّن من
 محتواها وقيمة تجزئة سلفها. أمّا العقدة الجذر، وليس لها سلف، فإنّها تجزّئ محتواها
 الخاصّ فحسب.</p>
-<p>.. [#]
-رسوم بيانية موجّهة، يكون فيها لكلّ عقدة غير الجذر سلف واحد بالضبط.</p>
 <p>هذا التعريف واسع جدًّا: فشجرات التجزئة العملية أعقد إلى حدٍّ كبير. فقد تكون أشجارًا
-ثنائية [#]_، أو ربّما تحمل العقد الورقية وحدها بيانات خاصة بها، فيما تحمل العقد
+ثنائية <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>، أو ربّما تحمل العقد الورقية وحدها بيانات خاصة بها، فيما تحمل العقد
 الأصلية بيانات مشتقّة فحسب. وتُسمَّى هذه الأنواع المحدّدة بصفة خاصة أشجار ميركل
 (Merkle trees).</p>
-<p>.. [#]
-لا تملك كلّ عقدة غير ورقية أكثر من ابنتين</p>
 <p>تُستعمل أنظمة من هذا النوع أو تنويعاتها في أنظمة كثيرة، ولا سيما الأنظمة الموزّعة.
 ومن الأمثلة أنظمة إدارة الإصدارات الموزّعة مثل Git، والعملات الرقمية مثل Bitcoin،
 وشبكات الند للند الموزّعة مثل Bittorrent، وقواعد البيانات الموزّعة مثل Cassandra.</p>
@@ -329,13 +321,24 @@ padding)، ويُسمّى كذلك لأنّه <em>يلصق</em> الرسالتي
 <p>وفيما ركّز هذا الفصل كثيرًا على ما لا تستطيع دوالّ التجزئة فعله، فإنّ من المفيد تكرار
 القول إنّها لا تزال بناءات تشفيرية بالغة الأهمية. فهي مجرّد بناءات تشفيرية يُساء
 استعمالها عادةً.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>في حين يمكنك استعمال XOR أيضًا لهذا الأمر، فإنّه أكثر عرضة للخطأ بلا داعٍ ولا حاجة، ولا ينتج نتائج أفضل. فإذا لم تُصفَّر بَعدَي كلمة المرور والملح بالأصفار، فقد تقطع أحدهما. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>رسوم بيانية موجّهة، يكون فيها لكلّ عقدة غير الجذر سلف واحد بالضبط. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>لا تملك كلّ عقدة غير ورقية أكثر من ابنتين <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 <!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/crypto-101/public-key-encryption/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التشفير بالمفتاح العام</span></a><!--]--> <!--[0--><a href="../../../../book/crypto-101/message-authentication-codes/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">رموز التحقق من الرسالة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
         الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
         صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
 			
 			<script>
 				{
-					__sveltekit_17z1u4y = {
+					__sveltekit_19splir = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -343,8 +346,8 @@ padding)، ويُسمّى كذلك لأنّه <em>يلصق</em> الرسالتي
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.Qej-_FIF.js"),
-						import("../../../../_app/immutable/entry/app.DDE5wugJ.js")
+						import("../../../../_app/immutable/entry/start.flmbkOhr.js"),
+						import("../../../../_app/immutable/entry/app.RoCFkoJF.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
