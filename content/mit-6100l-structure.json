@@ -80,6 +80,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 4
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 4
         }
       ]
     },
@@ -102,6 +107,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 5
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 5
         }
       ]
     },
@@ -123,6 +133,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 6
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 6
         }
       ]
@@ -173,6 +188,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 8
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 8
         }
       ]
     },
@@ -194,6 +214,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 9
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 9
         }
       ]
@@ -217,6 +242,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 10
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 10
         }
       ]
     },
@@ -238,6 +268,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 11
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 11
         }
       ]
@@ -261,6 +296,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 12
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 12
         }
       ]
     },
@@ -282,6 +322,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 13
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 13
         }
       ]
@@ -305,6 +350,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 14
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 14
         }
       ]
     },
@@ -326,6 +376,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 15
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 15
         }
       ]
@@ -349,6 +404,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 16
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 16
         }
       ]
     },
@@ -370,6 +430,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 17
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 17
         }
       ]
@@ -393,6 +458,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 18
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 18
         }
       ]
     },
@@ -414,6 +484,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 19
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 19
         }
       ]
@@ -437,6 +512,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 20
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 20
         }
       ]
     },
@@ -459,6 +539,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 21
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 21
         }
       ]
     },
@@ -480,6 +565,11 @@
         {
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
+          "order": 22
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 22
         }
       ]
@@ -525,6 +615,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 24
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 24
         }
       ]
     },
@@ -547,6 +642,11 @@
           "slug": "exercises",
           "title": "تمارين الإصبع والحلول",
           "order": 25
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 25
         }
       ]
     },
@@ -563,6 +663,11 @@
         {
           "slug": "notes",
           "title": "ملاحظات المحاضرة",
+          "order": 26
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 26
         }
       ]
@@ -581,6 +686,11 @@
           "slug": "notes",
           "title": "ملاحظات المحاضرة",
           "order": 27
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
+          "order": 27
         }
       ]
     },
@@ -597,6 +707,11 @@
         {
           "slug": "notes",
           "title": "ملاحظات المحاضرة",
+          "order": 28
+        },
+        {
+          "slug": "transcript",
+          "title": "تفريغ المحاضرة",
           "order": 28
         }
       ]

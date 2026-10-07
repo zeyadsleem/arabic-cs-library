@@ -40,12 +40,15 @@ test('Plotting retains every original slide as a local licensed visual', async (
   assert.doesNotMatch(text, /Rights/u);
 });
 
-test('Translation metadata acknowledges the missing transcripts while keeping the reader available', async () => {
+test('Every lecture ships its translated transcript before the course is labelled fully translated', async () => {
   const library = JSON.parse(await readFile(new URL('content/library.json', root), 'utf8'));
   const course = library.books.find(({ id }) => id === 'mit-6100l');
-  const transcripts = files.filter((file) => file.endsWith('--transcript.md'));
-  assert.equal(transcripts.length, 3);
+  for (let lecture = 1; lecture <= 26; lecture += 1) {
+    const name = `lecture-${String(lecture).padStart(2, '0')}--transcript.md`;
+    const entry = texts.find(({ file }) => file === name);
+    assert.ok(entry, name);
+    assert.match(entry.text, /^## صفحة المصدر 1$/mu, name);
+  }
   assert.equal(course.status, 'translated');
-  assert.ok(course.statusText.includes('قيد الإكمال'));
-  assert.ok(course.note.includes('ثلاثة وعشرون قيد الترجمة'));
+  assert.equal(course.statusText, undefined);
 });
