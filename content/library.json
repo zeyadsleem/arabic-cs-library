@@ -988,6 +988,28 @@
       "prerequisites": [
         "effective-go"
       ]
+    },
+    {
+      "id": "frontend-architecture",
+      "title": "أساسيات معمارية الواجهات الأمامية",
+      "titleEn": "Fundamentals of Frontend Architecture",
+      "author": "Maxi Ferreira — Frontend at Scale؛ الترجمة العربية: المكتبة العربية لعلوم الحاسوب",
+      "description": "الكورس كاملًا بالعربية: 38 درسًا في 5 وحدات عن أساسيات المعمارية، وفهم المتطلبات والدوافع والقرارات المعمارية ونموذج C4، ونمذجة المجال وتقسيم التطبيق، وتنفيذ الوحدات والمكونات والكيانات وضوابط الحماية. يتضمن التفريغات الزمنية الكاملة والتمارين الستة وحلولها وروابط الفيديوهات والموارد الأصلية.",
+      "sourceUrl": "https://frontendatscale.com/courses/frontend-architecture/foundations/course-overview/",
+      "repoUrl": "https://github.com/Charca/frontend-architecture-workshop",
+      "license": "ترجمة ونشر بإذن المؤلف لهذه المكتبة؛ حقوق الأصل محفوظة",
+      "licenseUrl": "https://frontendatscale.com/courses/frontend-architecture/",
+      "status": "translated",
+      "stage": "web",
+      "order": 4,
+      "format": "video",
+      "pages": 38,
+      "completeCourse": true,
+      "prerequisites": [
+        "eloquent-javascript-ar",
+        "fullstack-open-ar"
+      ],
+      "note": "ترجمة عربية غير رسمية، بإذن المؤلف كما أكّده زياد سليم بتاريخ 5 أكتوبر 2026. نصوص الدروس وتعليمات التمارين مترجمة بالكامل؛ الفيديوهات الأصلية باللغة الإنجليزية وتظل مستضافة لدى المؤلف. الاشتراك المجاني في نشرة Frontend at Scale مطلوب عند مشاهدة الكورس كاملًا على المصدر الأصلي."
     }
   ]
 }

@@ -1,0 +1,229 @@
+{
+  "chapters": [
+    {
+      "key": "foundations",
+      "title": "الأساسيات",
+      "titleAr": "الأساسيات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة",
+          "order": 0
+        },
+        {
+          "slug": "course-overview",
+          "title": "نظرة عامة على الكورس",
+          "order": 1
+        },
+        {
+          "slug": "what-is-software-architecture",
+          "title": "ما معمارية البرمجيات؟",
+          "order": 2
+        },
+        {
+          "slug": "what-is-frontend-architecture",
+          "title": "ما معمارية الواجهات الأمامية؟",
+          "order": 3
+        },
+        {
+          "slug": "software-design-vs-architecture",
+          "title": "تصميم البرمجيات مقابل المعمارية",
+          "order": 4
+        },
+        {
+          "slug": "the-frontend-architect-role",
+          "title": "دور معماري الواجهات الأمامية",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "understanding",
+      "title": "فهم المشكلة",
+      "titleAr": "فهم المشكلة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "قبل أن نبدأ",
+          "order": 6
+        },
+        {
+          "slug": "project-introduction",
+          "title": "التعريف بالمشروع",
+          "order": 7
+        },
+        {
+          "slug": "the-c4-model",
+          "title": "نموذج C4",
+          "order": 8
+        },
+        {
+          "slug": "exercise-1-container-diagram",
+          "title": "التمرين 1: مخطط الحاويات",
+          "order": 9
+        },
+        {
+          "slug": "exercise-1-solution",
+          "title": "التمرين 1: الحل",
+          "order": 10
+        },
+        {
+          "slug": "architectural-drivers",
+          "title": "الدوافع المعمارية",
+          "order": 11
+        },
+        {
+          "slug": "architectural-requirements",
+          "title": "المتطلبات المعمارية",
+          "order": 12
+        },
+        {
+          "slug": "exercise-2-architectural-requirements",
+          "title": "التمرين 2: المتطلبات المعمارية",
+          "order": 13
+        },
+        {
+          "slug": "exercise-2-solution",
+          "title": "التمرين 2: الحل",
+          "order": 14
+        },
+        {
+          "slug": "architectural-decisions",
+          "title": "القرارات المعمارية",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "designing",
+      "title": "التصميم",
+      "titleAr": "التصميم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة وحدة التصميم",
+          "order": 16
+        },
+        {
+          "slug": "entities-modules-and-components",
+          "title": "الكيانات والوحدات والمكونات",
+          "order": 17
+        },
+        {
+          "slug": "domain-modeling",
+          "title": "نمذجة المجال",
+          "order": 18
+        },
+        {
+          "slug": "exercise-3-domain-modeling",
+          "title": "التمرين 3: نمذجة المجال",
+          "order": 19
+        },
+        {
+          "slug": "exercise-3-solution",
+          "title": "التمرين 3: الحل",
+          "order": 20
+        },
+        {
+          "slug": "breaking-things-down",
+          "title": "تقسيم التطبيق",
+          "order": 21
+        },
+        {
+          "slug": "useful-diagrams",
+          "title": "مخططات مفيدة",
+          "order": 22
+        },
+        {
+          "slug": "exercise-4-sequence-diagram",
+          "title": "التمرين 4: مخطط التسلسل",
+          "order": 23
+        },
+        {
+          "slug": "exercise-4-solution",
+          "title": "التمرين 4: الحل",
+          "order": 24
+        },
+        {
+          "slug": "the-design-document",
+          "title": "وثيقة التصميم",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "key": "implementing",
+      "title": "التنفيذ",
+      "titleAr": "التنفيذ",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة وحدة التنفيذ",
+          "order": 26
+        },
+        {
+          "slug": "project-setup",
+          "title": "إعداد المشروع",
+          "order": 27
+        },
+        {
+          "slug": "implementing-modules",
+          "title": "تنفيذ الوحدات",
+          "order": 28
+        },
+        {
+          "slug": "component-hierarchy-and-breakdown",
+          "title": "التسلسل الهرمي للمكونات وتقسيمها",
+          "order": 29
+        },
+        {
+          "slug": "exercise-5-component-breakdown",
+          "title": "التمرين 5: تقسيم المكونات",
+          "order": 30
+        },
+        {
+          "slug": "exercise-5-solution",
+          "title": "التمرين 5: الحل",
+          "order": 31
+        },
+        {
+          "slug": "implementing-entities",
+          "title": "تنفيذ الكيانات",
+          "order": 32
+        },
+        {
+          "slug": "exercise-6-entities",
+          "title": "التمرين 6: الكيانات",
+          "order": 33
+        },
+        {
+          "slug": "exercise-6-solution",
+          "title": "التمرين 6: الحل",
+          "order": 34
+        },
+        {
+          "slug": "guardrails-and-constraints",
+          "title": "ضوابط الحماية والقيود",
+          "order": 35
+        }
+      ]
+    },
+    {
+      "key": "wrapping-up",
+      "title": "الختام",
+      "titleAr": "الختام",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "موارد للتعمّق",
+          "order": 36
+        },
+        {
+          "slug": "goodbye",
+          "title": "إلى اللقاء…؟",
+          "order": 37
+        }
+      ]
+    }
+  ]
+}
