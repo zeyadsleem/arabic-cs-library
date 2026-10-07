@@ -14,7 +14,7 @@ title: "المحاضرة 23: أمثلة على أصناف التعقيد (Comple
 
 - صفحة المحاضرة على MIT OpenCourseWare: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-23-complexity-classes-examples/
 - ملف الشرائح (صفحة الوصف): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec23_pdf/
-- ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec23.pdf
+- ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec23.pdf
 - ملف الشيفرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec23_code_py/
 - تفريغ المحاضرة على MIT OpenCourseWare (بالإنجليزية): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec23/
 - الترخيص: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -834,7 +834,7 @@ $$SORT + \Theta(\log n) < \Theta(n) \Rightarrow SORT < \Theta(n) - \Theta(\log n
 - نُطفئ (amortize) كلفة الترتيب على عمليات البحث الكثيرة.
 - $SORT + K * \Theta(\log n) < K * \Theta(n)$، أي إن كان `K` كبيرًا فإن زمن الترتيب يصبح غير ذي أثر.
 
-> **ملاحظة المترجم:** الكلمة الإنجليزية `Mig` في جملة «رتّب القائمة مرّة واحدة ثمMig كم مرة…» هي خطأ في استخراج نصّ PDF الأصلي (للتجزئة `many`)، وأصلحتها هنا إلى «كثير من المرّات».
+> **ملاحظة المترجم:** ظهرت حروف دخيلة عند استخراج جملة «رتّب القائمة مرّة واحدة ثم …» من ملف PDF الأصلي، وأصلحتها هنا إلى «كثير من المرّات».
 
 ## الشريحة 68: خلاصة أصناف التعقيد
 

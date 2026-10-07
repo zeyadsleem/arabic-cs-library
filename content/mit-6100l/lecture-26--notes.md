@@ -14,8 +14,8 @@ title: "المحاضرة 26: الوصول إلى عناصر القائمة، و�
 
 - صفحة المحاضرة على MIT OpenCourseWare: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-26-list-access-hashing-simulations-and-wrap-up/
 - ملف الشرائح (صفحة الوصف): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec26_pdf/
-- ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec26.pdf
-- ملف الشيفرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec26_code_zip/
+- ملف الشرائح (PDF مباشر): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec26.pdf
+- ملف الشيفرة: https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec26_code_py/
 - تفريغ المحاضرة على MIT OpenCourseWare (بالإنجليزية): https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec26/
 - الترخيص: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/
 - شروط الاستخدام في MIT OpenCourseWare: https://ocw.mit.edu/terms/
@@ -378,7 +378,7 @@ prob_dice('::')
 - سهل تغيير الشيفرة.
 - سريع في التشغيل.
 
-> **ملاحظة المترجم:** جملة «فلمَ… الشيفرة؟» كانت تالفة في نصّ الاستخراج (ظهرت كـ«fلمَ…ida»)، وأصلحتُها إلى: «فلمَ نكتب الشيفرة؟». المعنى واضح من السياق.
+> **ملاحظة المترجم:** ظهرت حروف دخيلة عند استخراج جملة «فلمَ… الشيفرة؟»، وأصلحتُها إلى: «فلمَ نكتب الشيفرة؟». المعنى واضح من السياق.
 
 ## الشريحة 25: سؤال جديد ليس سهلًا حسابيًا
 
@@ -465,8 +465,8 @@ fill_pool(600)
 
 ## الشريحة 31: النتائج
 
-- `avg flow_rate:` ‎= ‎1.992586945871106 ≈ 2 غالون/دقيقة (المتوسّط للقيم العشوائية بين 1 و3).
-- `avg fill_time` ‎= ‎330.6879477596955 ≈ 331 دقيقة (ليس ما توقّعناه!).
+- `avg flow_rate:` = 1.992586945871106 ≈ 2 غالون/دقيقة (المتوسّط للقيم العشوائية بين 1 و3).
+- `avg fill_time` = 330.6879477596955 ≈ 331 دقيقة (ليس ما توقّعناه!).
 
 - ليس 300 وليس 400.
 - هناك علاقة عكسية (inverse relationship) بين زمن الملء ومعدل الجريان.

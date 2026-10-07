@@ -92,7 +92,7 @@
       <div class="book-facts">
         <div>
           <span class="book-fact__label">الحالة</span>
-          <span class="book-fact__value">{statusLabel(book.status)}</span>
+          <span class="book-fact__value">{book.statusText || statusLabel(book.status)}</span>
         </div>
         {#if book.pages}
           <div>

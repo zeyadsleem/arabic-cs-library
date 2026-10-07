@@ -26,6 +26,7 @@
       .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
 
   const statusLabel = (book) =>
+    book.statusText ||
     ({
       translated: 'مترجم',
       blocked: 'غير قابل للترجمة',

@@ -15,7 +15,7 @@ title: "المحاضرة 12: قوائم الفهم، والدوال ككائنا
 > Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/. License: CC BY-NC-SA 4.0.
 
 - صفحة المحاضرة الرسمية على OCW: <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-12-list-comprehension-functions-as-objects-testing-debugging/>
-- الشرائح (ملف PDF): <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_pdf/> — والملف المباشر: <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12.pdf>
+- الشرائح (ملف PDF): <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_pdf/> — والملف المباشر: <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec12.pdf>
 - ملفات الشيفرة للتمرين: <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12_code_zip/>
 - النص الكامل (Transcript) للمحاضرة على OCW: <https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec12/>
 - رخصة CC BY-NC-SA 4.0: <https://creativecommons.org/licenses/by-nc-sa/4.0/>
@@ -318,7 +318,7 @@ print(val)
 
 الشريحة نفسها، ومعها الرسم الأول: **النطاق العام (Global scope)** يحتوي على الكائن `make_prod`، ويحتوي أيضًا على «بعض الشيفرة» (Some code) هي `val = make_prod(2)(3)` و`print(val)`.
 
-**ملاحظة المترجم:** الرسم في الشريحة يوضّح عملية استدعاء الدالة وإطار النطاق (stack frame) الذي تنشئه؛ النص المستخرَج من الملف لا يحفظ مواضع الأسهم، فذكرناLambdas الشريحة وصفًا لا شكلًا.
+**ملاحظة المترجم:** الرسم في الشريحة يوضّح عملية استدعاء الدالة وإطار النطاق (stack frame) الذي تنشئه؛ النص المستخرَج من الملف لا يحفظ مواضع الأسهم، فوصفنا الشريحة وصفًا لا شكلًا.
 
 ## الشريحة 22: تفاصيل النطاق للطريقة الأولى — نطاق make_prod
 

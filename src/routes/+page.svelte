@@ -52,6 +52,7 @@
   });
 
   const statusLabel = (book) =>
+    book.statusText ||
     ({
       translated: 'مترجم',
       planned: 'قيد الترجمة',
