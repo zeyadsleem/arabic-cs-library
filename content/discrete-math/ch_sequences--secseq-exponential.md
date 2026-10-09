@@ -1,246 +1,444 @@
 ---
-title: "Exponential Sequences"
-lang: en
+title: "المتتاليات الأسية"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_seq-exponential.html
 ---
 
-\Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
+## القسم 4.4 المتتاليات الأسية (Exponential Sequences)
 
-## Section 4.4 Exponential Sequences
+### الأهداف
 
-### Objectives
+بعد إكمال هذا القسم، ينبغي أن تكون قادرًا على ما يلي.
 
-After completing this section, you should be able to do the following.[🔗](#sec_seq-exponential-3-1-1)
+1. تحديد ما إذا كانت متتالية ما أسية بناءً على علاقتها التعاودية (recurrence relation).
+2. تطبيق تقنية الجذور المميزة (characteristic root technique) لحل العلاقات التعاودية المناسبة.
 
-1. Identify a sequence as exponential based on its recurrence relation.[🔗](#sec_seq-exponential-3-2-1-1) [🔗](#sec_seq-exponential-3-2-1)
-2. Apply the characteristic root technique to solve appropriate recurrence relations.[🔗](#sec_seq-exponential-3-2-2-1) [🔗](#sec_seq-exponential-3-2-2)
+#### معاينة القسم
 
-[🔗](#sec_seq-exponential-3)
+#### استكشف!
 
-### Subsection Section Preview
+لديك مجموعة كبيرة من المربعات \(1\times 1\) وقطع الدومينو \(1\times 2\). وتريد ترتيبها لتشكيل شريط \(1 \times 15\). بكم طريقة يمكنك فعل ذلك؟
 
-#### Investigate!
+ماذا لو كانت المربعات متاحة بثلاثة ألوان مختلفة، وقطع الدومينو بأربعة ألوان مختلفة؟ ولماذا هذا السؤال الثاني أسهل من الأول؟
 
-You have a large collection of \(1\times 1\) squares and \(1\times 2\) dominoes. You want to arrange these to make a \(1 \times 15\) strip. How many ways can you do this?[🔗](#sec_seq-exponential-4-2-2-1) What if the squares come in three different colors and the dominos come in four different colors? And why is this second question easier than the first?[🔗](#sec_seq-exponential-4-2-2-2) Hint. Start by creating a recurrence relation. How are the different \(1\times 3\) strips and \(1 \times 4\) strips related to the \(1 \times 5\) strips?[🔗](#sec_seq-exponential-4-2-3-1) [🔗](#sec_seq-exponential-4-2-3) [🔗](#sec_seq-exponential-4-2)In [Section 4.3](sec_seq-polynomial.html) we saw that if a sequence has some sequence of differences that is constant, then the sequence has a polynomial closed formula. Are there sequences that never have constant differences? And what would their closed formulas look like?[🔗](#sec_seq-exponential-4-3) Consider the Fibonacci sequence: \begin{equation*} 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, \ldots\text{.} \end{equation*} If we look at the first differences, we get this sequence: \begin{equation*} 1, 1, 2, 3, 5, 8, 13, 21, 34, \ldots\text{,} \end{equation*} which is the Fibonacci sequence itself. This is not surprising, since the Fibonacci sequence is defined by the recurrence relation \(F_n = F_{n-1} + F_{n-2}\text{.}\) That is saying precisely that to get the next turn of the sequence, we take the current term and add... a term in the sequence! [🔗](#sec_seq-exponential-4-4) Of course, if we take another difference, we will get the same sequence back, and again and again, so no \(n\)th differences will be constant.[🔗](#sec_seq-exponential-4-5) Another sequence that has this behavior is the powers of 2: \begin{equation*} 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, \ldots \end{equation*} which has differences \begin{equation*} 1, 2, 4, 8, 16, 32, 64, 128, 256, \ldots\text{.} \end{equation*} We can also see this from the recurrence relation, since \begin{equation*} a_n = 2a_{n-1} = a_{n-1} + a_{n-1}\text{.} \end{equation*} The rate of growth for this, and in fact any geometric sequence, is the sequence itself. [🔗](#sec_seq-exponential-4-6) If you have studied calculus, you may recall that the functions that have themselves (or close) as their rate of change (derivative, in the calculus context) are exactly the exponential functions. Here too, geometric sequences, which have exponential closed formulas, have themselves as their rate of change.[🔗](#sec_seq-exponential-4-7) In this section, we will explore sequences that are changing at a rate proportional to the sequence itself, and see how these all have an exponential closed formula, or some variation of that.[🔗](#sec_seq-exponential-4-8)
+تلميح. ابدأ بإنشاء علاقة تعاودية. كيف ترتبط الأشرطة المختلفة \(1\times 3\) و\(1 \times 4\) بالأشرطة \(1 \times 5\)؟
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-seq-exponential)
+رأينا في [القسم 4.3](/book/discrete-math/ch_sequences/secseq-polynomial) أنه إذا كانت لمتتالية ما متتالية فروق ثابتة عند مستوى ما، فإن للمتتالية صيغة مغلقة (closed formula) كثيرة الحدود (polynomial). هل توجد متتاليات لا تصبح فروقها ثابتة أبدًا؟ وكيف ستكون صيغها المغلقة؟
 
+تأمل متتالية فيبوناتشي (Fibonacci sequence):
+
+\begin{equation*}
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, \ldots\text{.}
+\end{equation*}
+
+إذا نظرنا إلى الفروق الأولى، نحصل على المتتالية الآتية:
+
+\begin{equation*}
+1, 1, 2, 3, 5, 8, 13, 21, 34, \ldots\text{,}
+\end{equation*}
+
+وهي متتالية فيبوناتشي نفسها. وليس هذا مفاجئًا، لأن متتالية فيبوناتشي معرّفة بالعلاقة التعاودية \(F_n = F_{n-1} + F_{n-2}\text{.}\) وهذا يعني بالضبط أننا للحصول على الحد التالي في المتتالية، نأخذ الحد الحالي ونضيف... حدًا من المتتالية!
+
+بالطبع، إذا أخذنا فروقًا مرة أخرى، فسنحصل على المتتالية نفسها مجددًا، وهكذا مرارًا وتكرارًا، لذا لن تكون الفروق من الرتبة \(n\) ثابتة.
+
+متتالية أخرى لها هذا السلوك هي قوى العدد 2:
+
+\begin{equation*}
+1, 2, 4, 8, 16, 32, 64, 128, 256, 512, \ldots
+\end{equation*}
+
+وفروقها هي
+
+\begin{equation*}
+1, 2, 4, 8, 16, 32, 64, 128, 256, \ldots\text{.}
+\end{equation*}
+
+يمكننا أيضًا رؤية ذلك من العلاقة التعاودية، لأن
+
+\begin{equation*}
+a_n = 2a_{n-1} = a_{n-1} + a_{n-1}\text{.}
+\end{equation*}
+
+معدل النمو (rate of growth) لهذه المتتالية، بل لأي متتالية هندسية (geometric sequence)، هو المتتالية نفسها.
+
+إذا درست التفاضل والتكامل، فقد تتذكر أن الدوال التي يكون معدل تغيرها هو الدالة نفسها (أو قريبًا منها)، أي مشتقتها (derivative) في سياق التفاضل والتكامل، هي بالضبط الدوال الأسية. وهنا أيضًا، يكون معدل تغير المتتاليات الهندسية، التي لها صيغ مغلقة أسية، هو المتتاليات نفسها.
+
+سنستكشف في هذا القسم متتاليات تتغير بمعدل يتناسب مع المتتالية نفسها، ونرى كيف تكون لها جميعًا صيغة مغلقة أسية، أو صورة معدّلة منها.
+
+#### ورقة عمل: نشاط تمهيدي
 #### 1.
 
-Activate Consider the recurrence relation[🔗](#extracted-webwork-209-1-1-1) \begin{equation*} a_n = 5a_{n-1} - 6a_{n-2} \text{.} \end{equation*} [🔗](#extracted-webwork-209-1-1-2) Since the \(n\)th term is given as a combination of the two previous terms, we will need two initial terms to determine the sequence. Different initial terms will give different sequences.[🔗](#extracted-webwork-209-1-1-3)
+تفعيل. تأمل العلاقة التعاودية
+
+\begin{equation*}
+a_n = 5a_{n-1} - 6a_{n-2} \text{.}
+\end{equation*}
+
+بما أن الحد ذا الرتبة \(n\) يُعطى بوصفه تركيبًا من الحدين السابقين، فسنحتاج إلى حدين ابتدائيين لتحديد المتتالية. وستعطي الحدود الابتدائية المختلفة متتاليات مختلفة.
 
 #### (a)
 
-What sequence do you get if the initial conditions are \(a_0 = 1\text{,}\) \(a_1 = 2\text{?}\) Give the first five terms (including 1 and 2).[🔗](#extracted-webwork-209-1-2-1-1) [🔗](#extracted-webwork-209-1-2)
+ما المتتالية التي تحصل عليها إذا كانت الشروط الابتدائية (initial conditions) هي \(a_0 = 1\text{,}\) و\(a_1 = 2\text{?}\) أعطِ الحدود الخمسة الأولى (بما فيها 1 و2).
 
 #### (b)
 
-Based on the first few terms, what is a closed formula for this sequence?[🔗](#extracted-webwork-209-1-3-1-1) \(a_n =\)[🔗](#extracted-webwork-209-1-3-1-2) [🔗](#extracted-webwork-209-1-3)
+بناءً على الحدود الأولى، ما الصيغة المغلقة لهذه المتتالية؟
+
+\(a_n =\) ____
 
 #### (c)
 
-What sequence do you get if the initial conditions are \(a_0 = 1\text{,}\) \(a_1 = 3\text{?}\) Give the first five terms.[🔗](#extracted-webwork-209-1-4-1-1) [🔗](#extracted-webwork-209-1-4)
+ما المتتالية التي تحصل عليها إذا كانت الشروط الابتدائية هي \(a_0 = 1\text{,}\) و\(a_1 = 3\text{?}\) أعطِ الحدود الخمسة الأولى.
 
 #### (d)
 
-Based on the first few terms, what is a closed formula for this sequence?[🔗](#extracted-webwork-209-1-5-1-1) \(a_n =\)[🔗](#extracted-webwork-209-1-5-1-2) [🔗](#extracted-webwork-209-1-5)
+بناءً على الحدود الأولى، ما الصيغة المغلقة لهذه المتتالية؟
+
+\(a_n =\) ____
 
 #### (e)
 
-What sequence do you get if the initial conditions are \(a_0 = 2\text{,}\) \(a_1 = 5\text{?}\) Give the first five terms.[🔗](#extracted-webwork-209-1-6-1-1) [🔗](#extracted-webwork-209-1-6)
+ما المتتالية التي تحصل عليها إذا كانت الشروط الابتدائية هي \(a_0 = 2\text{,}\) و\(a_1 = 5\text{?}\) أعطِ الحدود الخمسة الأولى.
 
 #### (f)
 
-Based on the first few terms, what is a closed formula for this sequence?[🔗](#extracted-webwork-209-1-7-1-1) \(a_n =\)[🔗](#extracted-webwork-209-1-7-1-2) Hint. How do the terms in this sequence relate to the terms in the previous two sequences?[🔗](#extracted-webwork-209-1-7-2-1) [🔗](#extracted-webwork-209-1-7-2) [🔗](#extracted-webwork-209-1-7) [🔗](#pa-seq-exponential)[🔗](#PA-seq-exponential)[🔗](#sec_seq-exponential-4)
+بناءً على الحدود الأولى، ما الصيغة المغلقة لهذه المتتالية؟
 
-### Subsection Summing Geometric Sequences: Multiply, Shift, and Subtract
+\(a_n =\) ____
 
-Suppose a candy machine dispenses candy in a geometric sequence by first giving 1 candy, then 2 candies, then 4, then 8, and so on. How many candies will you have received in total after 10 turns of the machine?[🔗](#subsec-sum-geometric-3) We can create the sequence of partials sum as \(1, 1+2, 1+2+4, 1+2+4+8, \ldots\) that gives \begin{equation*} 1, 3, 7, 15, 31, 63, \ldots \end{equation*} This is not a geometric sequence, but is almost. In fact, if we add 1 to each term, we get what sure looks like the geometric sequence \(2, 4, 8, 16, 32, 64,\ldots\text{,}\) so we might guess that the closed formula for the sequence of sums is \(2^{n+1} - 1\text{.}\) If this is correct, then the answer to the candy question would be \(2^{11} - 1 = 2047\text{.}\) [🔗](#subsec-sum-geometric-4) More intriguing though is the observation that the sequence of partial sums of a geometric sequence is again geometric-ish. Let’s consider how to find the sum of a geometric sequence in general.[🔗](#subsec-sum-geometric-5) We cannot just reverse and add as we did for the sum of an arithmetic sequence. Do you see why? The reason we got the same term added to itself many times is because there was a constant difference. So as we added that difference in one direction, we subtracted the difference going the other way, leaving a constant total. For geometric sums; we have a different technique.[🔗](#subsec-sum-geometric-6)
+تلميح. كيف ترتبط حدود هذه المتتالية بحدود المتتاليتين السابقتين؟
 
-#### Example 4.4.1.
+### قسم فرعي: جمع المتتاليات الهندسية: الضرب والإزاحة والطرح
 
-What is \(3 + 6 + 12 + 24 + \cdots + 12288\text{?}\)[🔗](#subsec-sum-geometric-7-1-1) Solution. Multiply each term by 2, the common ratio. We get \(2S = 6 + 12 + 24 + \cdots + 24576\text{.}\) Now subtract: \(2S - S = -3 + 24576 = 24573\text{.}\) Since \(2S - S = S\text{,}\) we have our answer.[🔗](#subsec-sum-geometric-7-2-1) [🔗](#subsec-sum-geometric-7-2) [🔗](#subsec-sum-geometric-7)To better see what happened in the above example, we can write it this way:[🔗](#subsec-sum-geometric-8)
+افترض أن آلة حلوى توزّع الحلوى وفق متتالية هندسية، فتُعطي أولًا حبة واحدة، ثم حبتين، ثم 4، ثم 8، وهكذا. كم حبة حلوى ستكون قد حصلت عليها إجمالًا بعد تشغيل الآلة 10 مرات؟
+
+يمكننا إنشاء متتالية المجاميع الجزئية (partial sums) على الصورة \(1, 1+2, 1+2+4, 1+2+4+8, \ldots\)، فنحصل على
+
+\begin{equation*}
+1, 3, 7, 15, 31, 63, \ldots
+\end{equation*}
+
+هذه ليست متتالية هندسية، لكنها تكاد تكون كذلك. في الواقع، إذا أضفنا 1 إلى كل حد، نحصل على ما يبدو بوضوح أنه المتتالية الهندسية \(2, 4, 8, 16, 32, 64,\ldots\text{,}\) لذا قد نخمّن أن الصيغة المغلقة لمتتالية المجاميع هي \(2^{n+1} - 1\text{.}\) إذا كان هذا صحيحًا، فإن إجابة سؤال الحلوى ستكون \(2^{11} - 1 = 2047\text{.}\)
+
+لكن الأكثر إثارة للاهتمام هو ملاحظة أن متتالية المجاميع الجزئية لمتتالية هندسية تكون بدورها شبه هندسية. لنفكر في كيفية إيجاد مجموع متتالية هندسية عمومًا.
+
+لا يمكننا الاكتفاء بعكس الترتيب والجمع كما فعلنا مع مجموع متتالية حسابية (arithmetic sequence). هل ترى السبب؟ إن سبب حصولنا على الحد نفسه مضافًا إلى نفسه مرات عديدة هو وجود فرق ثابت. فحين أضفنا ذلك الفرق في اتجاه، طرحناه في الاتجاه الآخر، فبقي مجموع ثابت. أما للمجاميع الهندسية فلدينا تقنية مختلفة.
+
+#### مثال 4.4.1.
+
+ما قيمة \(3 + 6 + 12 + 24 + \cdots + 12288\text{?}\)
+
+الحل. اضرب كل حد في 2، وهو النسبة المشتركة (common ratio). نحصل على \(2S = 6 + 12 + 24 + \cdots + 24576\text{.}\) اطرح الآن: \(2S - S = -3 + 24576 = 24573\text{.}\) وبما أن \(2S - S = S\text{,}\) فقد حصلنا على الإجابة.
+
+لنرى ما حدث في المثال السابق بصورة أوضح، يمكننا كتابته بهذه الطريقة:
 
 | \(S=\) | \(3 \, +\) | \(6 + 12 + 24 + \cdots + 12288\) |  |
 | --- | --- | --- | --- |
 | \(- \qquad 2S=\) |  | \(6 + 12 + 24 + \cdots + 12288\) | \(+ 24576\) |
 | \(-S = \) | \(3 \, +\) | \(0 + 0 + 0 + \cdots + 0 \) | \(-24576\) |
 
-Then divide both sides by \(-1\) and we have the same result for \(S\text{.}\) The idea is, by multiplying the sum by the common ratio, each term becomes the next term. We shift over the sum to get the subtraction to mostly cancel out, leaving just the first term and the new last term.[🔗](#subsec-sum-geometric-10)
+ثم نقسم الطرفين على \(-1\)، فنحصل على النتيجة نفسها لـ \(S\text{.}\) الفكرة هي أنه بضرب المجموع في النسبة المشتركة، يصبح كل حد هو الحد التالي. نُزيح المجموع بحيث يؤدي الطرح إلى إلغاء معظم الحدود، فلا يبقى سوى الحد الأول والحد الأخير الجديد.
 
-#### Example 4.4.2.
+#### مثال 4.4.2.
 
-Find a closed formula for \(S(n) = 2 + 10 + 50 + \cdots + 2\cdot 5^n\text{.}\)[🔗](#subsec-sum-geometric-11-1-1) Solution. The common ratio is 5. So we have[🔗](#subsec-sum-geometric-11-2-1)
+أوجد صيغة مغلقة لـ \(S(n) = 2 + 10 + 50 + \cdots + 2\cdot 5^n\text{.}\)
+
+الحل. النسبة المشتركة هي 5. لذلك لدينا
 
 | \(S\) | \(= 2 + 10 + 50 + \cdots + 2\cdot 5^n\) |
 | --- | --- |
 | \(- \qquad 5S\) | \(= ~~~~~~10 + 50 + \cdots + 2\cdot 5^n + 2\cdot5^{n+1}\) |
 | \(-4S\) | \(= 2 - 2\cdot5^{n+1}\) |
 
-Thus \(S = \dfrac{2-2\cdot 5^{n+1}}{-4}\)[🔗](#subsec-sum-geometric-11-2-3) [🔗](#subsec-sum-geometric-11-2) [🔗](#subsec-sum-geometric-11)Even though this might seem like a new technique, you have probably used it before.[🔗](#subsec-sum-geometric-12)
+ومن ثم \(S = \dfrac{2-2\cdot 5^{n+1}}{-4}\)
 
-#### Example 4.4.3.
+مع أن هذه قد تبدو تقنية جديدة، فمن المرجح أنك استخدمتها من قبل.
 
-Express \(0.464646\ldots\) as a fraction.[🔗](#subsec-sum-geometric-13-1-1) Solution. Let \(N = 0.46464646\ldots\text{.}\) Consider \(0.01N\text{.}\) We get:[🔗](#subsec-sum-geometric-13-2-1)
+#### مثال 4.4.3.
+
+عبّر عن \(0.464646\ldots\) في صورة كسر.
+
+الحل. ليكن \(N = 0.46464646\ldots\text{.}\) تأمل \(0.01N\text{.}\) نحصل على:
 
 | \(N =\) | \(0.4646464\ldots\) |
 | --- | --- |
 | \(- \qquad 0.01N =\) | \(0.00464646\ldots\) |
 | \(0.99N =\) | \(0.46\) |
 
-So \(N = \frac{46}{99}\text{.}\) What have we done? We viewed the repeating decimal \(0.464646\ldots\) as a sum of the geometric sequence \(0.46, 0.0046, 0.000046, \ldots\) The common ratio is \(0.01\text{.}\) The only real difference is that we are now computing an *infinite* geometric sum, we do not have the extra “last” term to consider. Really, this is the result of taking a limit as we would in calculus when we compute *infinite* geometric sums.[🔗](#subsec-sum-geometric-13-2-3) [🔗](#subsec-sum-geometric-13-2) [🔗](#subsec-sum-geometric-13)To summarize, we now can find a closed formula for a sequence \(a_n\) that has a rate of growth that is an exponential function: \(a_n - a_{n-1} = b_n\text{,}\) where \(b_n\) is a geometric sequence (i.e., an exponential function). What sort of closed formula do we get here? It’s *another* exponential function![🔗](#subsec-sum-geometric-14) [🔗](#subsec-sum-geometric)
+إذن \(N = \frac{46}{99}\text{.}\) ماذا فعلنا؟ نظرنا إلى العدد العشري الدوري (repeating decimal) \(0.464646\ldots\) على أنه مجموع المتتالية الهندسية \(0.46, 0.0046, 0.000046, \ldots\). النسبة المشتركة هي \(0.01\text{.}\) والفرق الحقيقي الوحيد هو أننا نحسب الآن مجموعًا هندسيًا *لا نهائيًا*، وليس لدينا حد «أخير» إضافي نأخذه في الحسبان. وهذا في الواقع نتيجة أخذ نهاية (limit)، كما نفعل في التفاضل والتكامل حين نحسب المجاميع الهندسية *اللا نهائية*.
 
-### Subsection The Characteristic Root Technique
+خلاصة القول، نستطيع الآن إيجاد صيغة مغلقة لمتتالية \(a_n\) يكون معدل نموها دالة أسية: \(a_n - a_{n-1} = b_n\text{,}\) حيث \(b_n\) متتالية هندسية (أي دالة أسية). ما نوع الصيغة المغلقة التي نحصل عليها هنا؟ إنها دالة أسية *أخرى*!
 
-Suppose we want to solve a recurrence relation expressed as a combination of the two previous terms, such as \(a_n = a_{n-1} + 6a_{n-2}\text{.}\) In other words, we want to find a function of \(n\) which satisfies \(a_n - a_{n-1} - 6a_{n-2} = 0\text{.}\) Think about how we build up this sequence iteratively. \begin{align*} a_2 \amp = a_1 + 6a_0 \\ a_3 \amp = a_2 + 6a_1 = a_1 + 6a_0 + 6a_1\\ a_4 \amp = a_3 + 6a_2 = a_1 + 6a_0 + 6a_1 + 6^2a_0 +6a_1 \end{align*} Let’s stop there and agree this is getting very complicated. However, we do notice that in each step, we would, among other things, multiply a previous iteration by 6. So our closed formula would include \(6\) multiplied some number of times. Thus it is reasonable to guess the solution will contain parts that look geometric. Perhaps the solution will take the form \(r^n\) for some constant \(r\text{.}\) [🔗](#sec_seq-exponential-6-3) The nice thing is, we know how to check whether a formula is actually a solution to a recurrence relation: plug it in. What happens if we plug in \(r^n\) into the recursion above? We get \begin{equation*} r^n - r^{n-1} - 6r^{n-2} = 0\text{.} \end{equation*} [🔗](#sec_seq-exponential-6-4) Now solve for \(r\text{:}\) \begin{equation*} r^{n-2}(r^2 - r - 6) = 0\text{,} \end{equation*} so by factoring, \(r = -2\) or \(r = 3\) (or \(r = 0\text{,}\) although this does not help us). This tells us that \(a_n = (-2)^n\) is a solution to the recurrence relation, as is \(a_n = 3^n\text{.}\) Which one is correct? They both are, unless we specify initial conditions. Notice we could also have \(a_n = (-2)^n + 3^n\text{.}\) Or \(a_n = 7(-2)^n + 4\cdot 3^n\text{.}\) In fact, for any \(a\) and \(b\text{,}\) \(a_n = a(-2)^n + b 3^n\) is a solution (try plugging this into the recurrence relation). To find the values of \(a\) and \(b\text{,}\) use the initial conditions. [🔗](#sec_seq-exponential-6-5) This points us in the direction of a more general technique for solving recurrence relations. Notice we will always be able to factor out the \(r^{n-2}\) as we did above. So we really only care about the other part. We call this other part the characteristic equation for the recurrence relation. We are interested in finding the roots of the characteristic equation, which are called (surprise) the characteristic roots.[🔗](#sec_seq-exponential-6-6)
+### قسم فرعي: تقنية الجذور المميزة
 
-#### Characteristic Roots.
+افترض أننا نريد حل علاقة تعاودية يُعبّر عنها بتركيب من الحدين السابقين، مثل \(a_n = a_{n-1} + 6a_{n-2}\text{.}\) بعبارة أخرى، نريد إيجاد دالة في \(n\) تحقق \(a_n - a_{n-1} - 6a_{n-2} = 0\text{.}\) فكّر في كيفية بناء هذه المتتالية بالتكرار:
 
-Given a recurrence relation \(a_n + \alpha a_{n-1} + \beta a_{n-2} = 0\text{,}\) the characteristic polynomial is \begin{equation*} x^2 + \alpha x + \beta \end{equation*} giving the characteristic equation: \begin{equation*} x^2 + \alpha x + \beta = 0\text{.} \end{equation*} [🔗](#sec_seq-exponential-6-7-2) If \(r_1\) and \(r_2\) are two distinct roots of the characteristic polynomial (i.e., solutions to the characteristic equation), then the solution to the recurrence relation is \begin{equation*} a_n = ar_1^n + br_2^n\text{,} \end{equation*} where \(a\) and \(b\) are constants determined by the initial conditions. [🔗](#sec_seq-exponential-6-7-3) [🔗](#sec_seq-exponential-6-7)
+\begin{align*}
+a_2 \amp = a_1 + 6a_0 \\
+a_3 \amp = a_2 + 6a_1 = a_1 + 6a_0 + 6a_1\\
+a_4 \amp = a_3 + 6a_2 = a_1 + 6a_0 + 6a_1 + 6^2a_0 +6a_1
+\end{align*}
 
-#### Example 4.4.4.
+لنتوقف هنا ونتفق على أن الأمر يزداد تعقيدًا كثيرًا. لكننا نلاحظ أنه في كل خطوة، نضرب، من بين أمور أخرى، تعبيرًا من تكرار سابق في 6. لذا ستتضمن صيغتنا المغلقة \(6\) مضروبًا في نفسه عددًا من المرات. ومن المعقول إذن أن نخمن أن الحل سيحتوي على أجزاء تبدو هندسية. ربما يأخذ الحل الصورة \(r^n\) لثابت ما \(r\text{.}\)
 
-Solve the recurrence relation \(a_n = 7a_{n-1} - 10 a_{n-2}\) with \(a_0 = 2\) and \(a_1 = 3\text{.}\)[🔗](#sec_seq-exponential-6-8-1-1) Solution. Rewrite the recurrence relation \(a_n - 7a_{n-1} + 10a_{n-2} = 0\text{.}\) Now form the characteristic equation: \begin{equation*} x^2 - 7x + 10 = 0 \end{equation*} and solve for \(x\text{:}\) \begin{equation*} (x - 2) (x - 5) = 0\text{,} \end{equation*} so \(x = 2\) and \(x = 5\) are the characteristic roots. We therefore know that the solution to the recurrence relation will have the form \begin{equation*} a_n = a 2^n + b 5^n\text{.} \end{equation*} [🔗](#sec_seq-exponential-6-8-2-1) To find \(a\) and \(b\text{,}\) plug in \(n =0\) and \(n = 1\) to get a system of two equations with two unknowns: \begin{align*} 2 \amp = a 2^0 + b 5^0 = a + b\\ 3 \amp = a 2^1 + b 5^1 = 2a + 5b\text{.} \end{align*} [🔗](#sec_seq-exponential-6-8-2-2) Solving this system gives \(a = \frac{7}{3}\) and \(b = -\frac{1}{3}\text{,}\) so the solution to the recurrence relation is \begin{equation*} a_n = \frac{7}{3}2^n - \frac{1}{3} 5^n\text{.} \end{equation*} [🔗](#sec_seq-exponential-6-8-2-3) [🔗](#sec_seq-exponential-6-8-2) [🔗](#sec_seq-exponential-6-8)Perhaps the most famous recurrence relation is \(F_n = F_{n-1} + F_{n-2}\text{,}\) which together with the initial conditions \(F_0 = 0\) and \(F_1= 1\) defines the Fibonacci sequence. But notice that this is precisely the type of recurrence relation on which we can use the characteristic root technique. When we do, the only thing that changes is that the characteristic equation does not factor, so we must use the quadratic formula to find the characteristic roots. In fact, doing so gives the third most famous irrational number, \(\varphi\text{,}\) the golden ratio. [🔗](#sec_seq-exponential-6-9) Before leaving the characteristic root technique, we should think about what might happen when solving the characteristic equation. We have an example above in which the characteristic polynomial has two distinct roots. These roots can be integers, or perhaps irrational numbers (requiring the quadratic formula to find them). In these cases, we know what the solution to the recurrence relation looks like.[🔗](#sec_seq-exponential-6-10) However, it is possible for the characteristic polynomial to have only one root. This can happen if the characteristic polynomial factors as \((x - r)^2\text{.}\) It is still the case that \(r^n\) would be a solution to the recurrence relation, but we won’t be able to find solutions for all initial conditions using the general form \(a_n = ar_1^n + br_2^n\text{,}\) since we can’t distinguish between \(r_1^n\) and \(r_2^n\text{.}\) We are in luck though:[🔗](#sec_seq-exponential-6-11)
+الجميل أننا نعرف كيف نتحقق مما إذا كانت صيغة ما حلًا بالفعل لعلاقة تعاودية: نعوّض بها. ماذا يحدث إذا عوّضنا بـ \(r^n\) في العلاقة التعاودية أعلاه؟ نحصل على
 
-#### Characteristic Root Technique for Repeated Roots.
+\begin{equation*}
+r^n - r^{n-1} - 6r^{n-2} = 0\text{.}
+\end{equation*}
 
-Suppose the recurrence relation \(a_n = \alpha a_{n-1} + \beta a_{n-2}\) has a characteristic polynomial with only one root \(r\text{.}\) Then the solution to the recurrence relation is \begin{equation*} a_n = ar^n + bnr^n \end{equation*} where \(a\) and \(b\) are constants determined by the initial conditions. [🔗](#asmb-char-rep-roots-4) [🔗](#asmb-char-rep-roots)Notice the extra \(n\) in \(bnr^n\text{.}\) This allows us to solve for the constants \(a\) and \(b\) from the initial conditions.[🔗](#sec_seq-exponential-6-13)
+حل الآن لإيجاد \(r\text{:}\)
 
-#### Example 4.4.5.
+\begin{equation*}
+r^{n-2}(r^2 - r - 6) = 0\text{,}
+\end{equation*}
 
-Solve the recurrence relation \(a_n = 6a_{n-1} - 9a_{n-2}\) with initial conditions \(a_0 = 1\) and \(a_1 = 4\text{.}\)[🔗](#sec_seq-exponential-6-14-1-1) Solution. The characteristic polynomial is \(x^2 - 6x + 9\text{.}\) We solve the characteristic equation \begin{equation*} x^2 - 6x + 9 = 0 \end{equation*} by factoring: \begin{equation*} (x - 3)^2 = 0, \end{equation*} so \(x =3\) is the only characteristic root. Therefore we know that the solution to the recurrence relation has the form \begin{equation*} a_n = a 3^n + bn3^n \end{equation*} for some constants \(a\) and \(b\text{.}\) Now use the initial conditions: \begin{align*} a_0 = 1 \amp = a 3^0 + b\cdot 0 \cdot 3^0 = a\\ a_1 = 4 \amp = a\cdot 3 + b\cdot 1 \cdot3 = 3a + 3b\text{.} \end{align*} Since \(a = 1\text{,}\) we find that \(b = \frac{1}{3}\text{.}\) Therefore the solution to the recurrence relation is \begin{equation*} a_n = 3^n + \frac{1}{3}n3^n\text{.} \end{equation*} [🔗](#sec_seq-exponential-6-14-2-1) [🔗](#sec_seq-exponential-6-14-2) [🔗](#sec_seq-exponential-6-14)Although we will not consider examples more complicated than these, this characteristic root technique can be applied to much more complicated recurrence relations. For example, \(a_n = 2a_{n-1} + a_{n-2} - 3a_{n-3}\) has characteristic polynomial \(x^3 - 2 x^2 - x + 3\text{.}\) Assuming we see how to factor such a degree 3 (or more) polynomial, we can easily find the characteristic roots and as such solve the recurrence relation (the solution would look like \(a_n = ar_1^n + br_2^n + cr_3^n\) if there were 3 distinct roots). It is also possible that the characteristic roots are complex numbers. [🔗](#sec_seq-exponential-6-15) However, the characteristic root technique is only useful for solving recurrence relations in a particular form: \(a_n\) is given as a linear combination of some number of previous terms. These recurrence relations are called linear homogeneous recurrence relations with constant coefficients. The “homogeneous” refers to the fact that there is no additional term in the recurrence relation other than a multiple of \(a_j\) terms. For example, \(a_n = 2a_{n-1} + 1\) is *non-homogeneous* because of the additional constant 1. There are general methods of solving such things, but we will not consider them here, other than through the use of telescoping or iteration described above.[🔗](#sec_seq-exponential-6-16) [🔗](#sec_seq-exponential-6)
+وبالتحليل إلى عوامل، نجد \(r = -2\) أو \(r = 3\) (أو \(r = 0\text{,}\) وإن كان ذلك لا يساعدنا). يخبرنا هذا أن \(a_n = (-2)^n\) حل للعلاقة التعاودية، وكذلك \(a_n = 3^n\text{.}\) أيهما الصحيح؟ كلاهما، ما لم نحدد شروطًا ابتدائية. لاحظ أنه يمكننا أيضًا أن نأخذ \(a_n = (-2)^n + 3^n\text{.}\) أو \(a_n = 7(-2)^n + 4\cdot 3^n\text{.}\) في الواقع، لأي \(a\) و\(b\text{,}\) يكون \(a_n = a(-2)^n + b 3^n\) حلًا (جرّب التعويض بذلك في العلاقة التعاودية). ولإيجاد قيمتي \(a\) و\(b\text{,}\) استخدم الشروط الابتدائية.
 
-### Reading Questions Reading Questions
+يوجهنا هذا نحو تقنية أعم لحل العلاقات التعاودية. لاحظ أننا سنستطيع دائمًا إخراج \(r^{n-2}\) عاملًا مشتركًا كما فعلنا أعلاه. لذا فإن ما يهمنا حقًا هو الجزء الآخر فقط. نسمي هذا الجزء الآخر المعادلة المميزة (characteristic equation) للعلاقة التعاودية. ونريد إيجاد جذور المعادلة المميزة، التي تسمى (يا للمفاجأة) الجذور المميزة (characteristic roots).
 
+#### الجذور المميزة.
+
+إذا كانت لدينا العلاقة التعاودية \(a_n + \alpha a_{n-1} + \beta a_{n-2} = 0\text{,}\) فإن كثيرة الحدود المميزة (characteristic polynomial) هي
+
+\begin{equation*}
+x^2 + \alpha x + \beta
+\end{equation*}
+
+وهذا يعطينا المعادلة المميزة:
+
+\begin{equation*}
+x^2 + \alpha x + \beta = 0\text{.}
+\end{equation*}
+
+إذا كان \(r_1\) و\(r_2\) جذرين مختلفين لكثيرة الحدود المميزة (أي حلين للمعادلة المميزة)، فإن حل العلاقة التعاودية هو
+
+\begin{equation*}
+a_n = ar_1^n + br_2^n\text{,}
+\end{equation*}
+
+حيث \(a\) و\(b\) ثابتان تحددهما الشروط الابتدائية.
+
+#### مثال 4.4.4.
+
+حل العلاقة التعاودية \(a_n = 7a_{n-1} - 10 a_{n-2}\) مع \(a_0 = 2\) و\(a_1 = 3\text{.}\)
+
+الحل. أعد كتابة العلاقة التعاودية على الصورة \(a_n - 7a_{n-1} + 10a_{n-2} = 0\text{.}\) كوّن الآن المعادلة المميزة:
+
+\begin{equation*}
+x^2 - 7x + 10 = 0
+\end{equation*}
+
+وحل لإيجاد \(x\text{:}\)
+
+\begin{equation*}
+(x - 2) (x - 5) = 0\text{,}
+\end{equation*}
+
+إذن \(x = 2\) و\(x = 5\) هما الجذران المميزان. ونعرف بالتالي أن حل العلاقة التعاودية سيأخذ الصورة
+
+\begin{equation*}
+a_n = a 2^n + b 5^n\text{.}
+\end{equation*}
+
+لإيجاد \(a\) و\(b\text{,}\) عوّض بـ \(n =0\) و\(n = 1\) للحصول على نظام من معادلتين بمجهولين:
+
+\begin{align*}
+2 \amp = a 2^0 + b 5^0 = a + b\\
+3 \amp = a 2^1 + b 5^1 = 2a + 5b\text{.}
+\end{align*}
+
+بحل هذا النظام نحصل على \(a = \frac{7}{3}\) و\(b = -\frac{1}{3}\text{,}\) لذا يكون حل العلاقة التعاودية
+
+\begin{equation*}
+a_n = \frac{7}{3}2^n - \frac{1}{3} 5^n\text{.}
+\end{equation*}
+
+لعل أشهر علاقة تعاودية هي \(F_n = F_{n-1} + F_{n-2}\text{,}\) وهي، مع الشرطين الابتدائيين \(F_0 = 0\) و\(F_1= 1\)، تعرّف متتالية فيبوناتشي. لكن لاحظ أن هذه بالضبط من نوع العلاقات التعاودية التي يمكننا استخدام تقنية الجذور المميزة معها. وحين نفعل ذلك، لا يتغير سوى أن المعادلة المميزة لا تتحلل إلى عوامل، لذا علينا استخدام الصيغة العامة للمعادلة التربيعية (quadratic formula) لإيجاد الجذور المميزة. وفي الواقع، يعطينا ذلك ثالث أشهر عدد غير نسبي، \(\varphi\text{,}\) وهو النسبة الذهبية (golden ratio).
+
+قبل أن نترك تقنية الجذور المميزة، ينبغي أن نفكر فيما قد يحدث عند حل المعادلة المميزة. لدينا أعلاه مثال تكون فيه لكثيرة الحدود المميزة جذور مختلفة عددها اثنان. وقد تكون هذه الجذور أعدادًا صحيحة، أو ربما أعدادًا غير نسبية (يتطلب إيجادها الصيغة العامة للمعادلة التربيعية). وفي هذه الحالات، نعرف صورة حل العلاقة التعاودية.
+
+لكن من الممكن أن يكون لكثيرة الحدود المميزة جذر واحد فقط. قد يحدث هذا إذا تحللت كثيرة الحدود المميزة إلى \((x - r)^2\text{.}\) ويظل \(r^n\) حلًا للعلاقة التعاودية، لكننا لن نستطيع إيجاد حلول لجميع الشروط الابتدائية باستخدام الصورة العامة \(a_n = ar_1^n + br_2^n\text{,}\) لأننا لا نستطيع التمييز بين \(r_1^n\) و\(r_2^n\text{.}\) لكن الحظ يحالفنا:
+
+#### تقنية الجذور المميزة للجذور المكررة (Repeated Roots).
+
+افترض أن العلاقة التعاودية \(a_n = \alpha a_{n-1} + \beta a_{n-2}\) لها كثيرة حدود مميزة ذات جذر واحد فقط \(r\text{.}\) عندئذ يكون حل العلاقة التعاودية
+
+\begin{equation*}
+a_n = ar^n + bnr^n
+\end{equation*}
+
+حيث \(a\) و\(b\) ثابتان تحددهما الشروط الابتدائية.
+
+لاحظ \(n\) الإضافية في \(bnr^n\text{.}\) يتيح لنا هذا إيجاد الثابتين \(a\) و\(b\) من الشروط الابتدائية.
+
+#### مثال 4.4.5.
+
+حل العلاقة التعاودية \(a_n = 6a_{n-1} - 9a_{n-2}\) مع الشرطين الابتدائيين \(a_0 = 1\) و\(a_1 = 4\text{.}\)
+
+الحل. كثيرة الحدود المميزة هي \(x^2 - 6x + 9\text{.}\) نحل المعادلة المميزة
+
+\begin{equation*}
+x^2 - 6x + 9 = 0
+\end{equation*}
+
+بالتحليل إلى عوامل:
+
+\begin{equation*}
+(x - 3)^2 = 0,
+\end{equation*}
+
+إذن \(x =3\) هو الجذر المميز الوحيد. ولذلك نعرف أن حل العلاقة التعاودية يأخذ الصورة
+
+\begin{equation*}
+a_n = a 3^n + bn3^n
+\end{equation*}
+
+لثابتين ما \(a\) و\(b\text{.}\) استخدم الآن الشروط الابتدائية:
+
+\begin{align*}
+a_0 = 1 \amp = a 3^0 + b\cdot 0 \cdot 3^0 = a\\
+a_1 = 4 \amp = a\cdot 3 + b\cdot 1 \cdot3 = 3a + 3b\text{.}
+\end{align*}
+
+بما أن \(a = 1\text{,}\) نجد أن \(b = \frac{1}{3}\text{.}\) لذلك يكون حل العلاقة التعاودية
+
+\begin{equation*}
+a_n = 3^n + \frac{1}{3}n3^n\text{.}
+\end{equation*}
+
+مع أننا لن نتناول أمثلة أعقد من هذه، يمكن تطبيق تقنية الجذور المميزة على علاقات تعاودية أعقد بكثير. مثلًا، للعلاقة \(a_n = 2a_{n-1} + a_{n-2} - 3a_{n-3}\) كثيرة الحدود المميزة \(x^3 - 2 x^2 - x + 3\text{.}\) وإذا عرفنا كيف نحلل كثيرة حدود كهذه من الدرجة 3 (أو أعلى) إلى عوامل، فيمكننا بسهولة إيجاد الجذور المميزة، ومن ثم حل العلاقة التعاودية (سيأخذ الحل صورة \(a_n = ar_1^n + br_2^n + cr_3^n\) إذا كانت هناك 3 جذور مختلفة). ومن الممكن أيضًا أن تكون الجذور المميزة أعدادًا مركبة (complex numbers).
+
+لكن تقنية الجذور المميزة لا تفيد إلا في حل العلاقات التعاودية ذات صورة معينة: يُعطى \(a_n\) بوصفه تركيبًا خطيًا (linear combination) من عدد من الحدود السابقة. تسمى هذه العلاقات علاقات تعاودية خطية متجانسة ذات معاملات ثابتة (linear homogeneous recurrence relations with constant coefficients). وتشير كلمة «متجانسة» إلى عدم وجود حد إضافي في العلاقة التعاودية سوى مضاعفات حدود \(a_j\). مثلًا، العلاقة \(a_n = 2a_{n-1} + 1\) غير متجانسة بسبب الثابت الإضافي 1. توجد طرق عامة لحل مثل هذه العلاقات، لكننا لن نتناولها هنا إلا باستخدام الاختزال التلسكوبي (telescoping) أو التكرار (iteration) الموصوفين أعلاه.
+
+### أسئلة القراءة
 #### 1.
 
-Which of the following recurrence relations would be good candidates to try the characteristic root technique on? Select all that apply[🔗](#rq-seq-recurrence-mc-1-1)
+أي من العلاقات التعاودية التالية مناسبة لتجربة تقنية الجذور المميزة عليها؟ اختر جميع ما ينطبق.
 
 - \(a_n = 3a_{n-1} + a_{n-2}\)
-- Correct: \(a_n\) is written in terms of only multiple of previous terms.
+- صحيح: يُكتب \(a_n\) بدلالة مضاعفات الحدود السابقة فقط.
 - \(a_n = a_{n-1}+2a_{n-2} + 3a_{n-3}\)
-- This works too, although the characteristic polynomial will have degree 3, so finding characteristic roots will be difficult.
+- تصلح هذه أيضًا، لكن كثيرة الحدود المميزة ستكون من الدرجة 3، لذا سيكون إيجاد الجذور المميزة صعبًا.
 - \(a_{n} = \frac{1}{3}\cdot 2^n + \frac{2}{3}(-1)^n\)
-- This looks like it is the closed formula that would result from a characteristic root technique application, but isn’t a recursive formula.
+- يبدو أن هذه هي الصيغة المغلقة التي قد تنتج عن تطبيق تقنية الجذور المميزة، لكنها ليست صيغة تعاودية.
 - \(a_n = a_{n-1} + 3a_{n-2} + 5\)
-- The addition of the constant makes it so we cannot use the characteristic root technique directly. While there are methods for dealing with this, we have not considered them in this section.
+- تمنعنا إضافة الثابت من استخدام تقنية الجذور المميزة مباشرة. ومع أن هناك طرقًا للتعامل مع ذلك، فإننا لم نتناولها في هذا القسم.
 - \(x^2 -3x - 1 = 0\)
-- This might be a characteristic polynomial (in fact, it is for the sequence given by \(a_n = 3a_{n-1} + a_n\)), but it is not a recursive definition itself.
-
-[🔗](#rq-seq-recurrence-mc)
+- قد تكون هذه كثيرة حدود مميزة (وهي في الواقع كذلك للمتتالية المعطاة بالعلاقة \(a_n = 3a_{n-1} + a_n\))، لكنها ليست في حد ذاتها تعريفًا تعاوديًا.
 
 #### 2.
 
-At what step do you need to refer to the initial conditions when completing the characteristic root technique? What would happen if you didn’t use these? Explain.[🔗](#rq-seq-recurrence-fr-1-1) [🔗](#rq-seq-recurrence-fr)
+في أي خطوة تحتاج إلى الرجوع إلى الشروط الابتدائية عند تطبيق تقنية الجذور المميزة؟ ماذا سيحدث إن لم تستخدم هذه الشروط؟ وضّح.
 
 #### 3.
 
-What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about.[🔗](#rq-seq-recurrence-q-1-1) [🔗](#rq-seq-recurrence-q)[🔗](#rqs-seq-recurrence)
+ما الأسئلة التي لديك؟ اكتب سؤالًا واحدًا على الأقل عن محتوى هذا القسم قد يثير فضولك أو فضول أحد زملائك.
 
-### Exercises Practice Problems
+### تمارين: مسائل تدريبية
 
 #### 1.
 
-Activate Find \(3 + 6 + 12 + \cdots + 3\cdot 2^{18}\text{.}\)[🔗](#extracted-webwork-210-1-1-1) [🔗](#ww-arithgeom-geom-sm)
+تفعيل. أوجد \(3 + 6 + 12 + \cdots + 3\cdot 2^{18}\text{.}\)
 
 #### 2.
 
-Activate Find \(1 - \frac{3}{5} + \frac{9}{25} - \cdots +(-1)^{27} \frac{3^{27}}{5^{27}}\text{.}\)[🔗](#extracted-webwork-211-1-1-1) [🔗](#ww-arithgeom-goem-fraction-sum)
+تفعيل. أوجد \(1 - \frac{3}{5} + \frac{9}{25} - \cdots +(-1)^{27} \frac{3^{27}}{5^{27}}\text{.}\)
 
 #### 3.
 
-Activate Solve the recurrence relation \(a_n = a_{n-1} + 2^n\) with \(a_0 = 3\text{.}\)[🔗](#extracted-webwork-212-1-1-1) \(a_n =\)[🔗](#extracted-webwork-212-1-1-2) Hint. Use telescoping or iteration.[🔗](#extracted-webwork-212-1-2-1) [🔗](#extracted-webwork-212-1-2) [🔗](#ww-rec-tel-itr)
+تفعيل. حل العلاقة التعاودية \(a_n = a_{n-1} + 2^n\) مع \(a_0 = 3\text{.}\)
+
+\(a_n =\) ____
+
+تلميح. استخدم الاختزال التلسكوبي أو التكرار.
 
 #### 4.
 
-Activate Find the solution to the recurrence relation \(a_n = -3a_{n-1} + 10a_{n-2}\) with initial terms \(a_0 = {2}\) and \(a_1 = {-3}\text{.}\)[🔗](#extracted-webwork-213-1-1-1) \(a_n =\) [🔗](#extracted-webwork-213-1-1-2) [🔗](#ww-rec-croots1)
+تفعيل. أوجد حل العلاقة التعاودية \(a_n = -3a_{n-1} + 10a_{n-2}\) مع الحدين الابتدائيين \(a_0 = {2}\) و\(a_1 = {-3}\text{.}\)
+
+\(a_n =\) ____
 
 #### 5.
 
-Activate Find the solution to the recurrence relation \(a_n = a_{n-1} + 12a_{n-2}\) with initial terms \(a_0 = {2}\) and \(a_1 = {1}\text{.}\)[🔗](#extracted-webwork-214-1-1-1) \(a_n =\) [🔗](#extracted-webwork-214-1-1-2) Find the solution to the recurrence relation \(b_n = b_{n-1} + 12b_{n-2}\) with initial terms \(b_0 = 5\) and \(b_1 = {10}\text{.}\)[🔗](#extracted-webwork-214-1-1-3) \(b_n =\) [🔗](#extracted-webwork-214-1-1-4) [🔗](#ww-rec-croots-diff-inits)
+تفعيل. أوجد حل العلاقة التعاودية \(a_n = a_{n-1} + 12a_{n-2}\) مع الحدين الابتدائيين \(a_0 = {2}\) و\(a_1 = {1}\text{.}\)
+
+\(a_n =\) ____
+
+أوجد حل العلاقة التعاودية \(b_n = b_{n-1} + 12b_{n-2}\) مع الحدين الابتدائيين \(b_0 = 5\) و\(b_1 = {10}\text{.}\)
+
+\(b_n =\) ____
 
 #### 6.
 
-Activate Find the solution to the recurrence relation \(a_n = a_{n-1} + 6a_{n-2}\) with initial terms \(a_0 = 1\) and \(a_1 = 16\text{.}\)[🔗](#extracted-webwork-215-1-1-1) \(a_n =\) [🔗](#extracted-webwork-215-1-1-2) [🔗](#ww-rec-croots2)[🔗](#practice-sec-recurrence)
+تفعيل. أوجد حل العلاقة التعاودية \(a_n = a_{n-1} + 6a_{n-2}\) مع الحدين الابتدائيين \(a_0 = 1\) و\(a_1 = 16\text{.}\)
 
-### Exercises Additional Exercises
+\(a_n =\) ____
+
+### تمارين: تمارين إضافية
 
 #### 1.
 
-Find the next two terms in \((a_n)_{n\ge 0}\) beginning \(3, 5, 11, 21, 43, 85\ldots\text{.}\) Then give a recursive definition for the sequence. Finally, use the characteristic root technique to find a closed formula for the sequence.[🔗](#exercises-sec-recurrence-2-1-1) [🔗](#exercises-sec-recurrence-2)
+أوجد الحدين التاليين في \((a_n)_{n\ge 0}\) التي تبدأ بـ \(3, 5, 11, 21, 43, 85\ldots\text{.}\) ثم أعطِ تعريفًا تعاوديًا (recursive definition) للمتتالية. وأخيرًا، استخدم تقنية الجذور المميزة لإيجاد صيغة مغلقة للمتتالية.
 
 #### 2.
 
-Consider the sequences \(2, 5, 12, 29, 70, 169, 408,\ldots\) (with \(a_0 = 2\)).
+تأمل المتتالية \(2, 5, 12, 29, 70, 169, 408,\ldots\) (مع \(a_0 = 2\)).
 
-1. Describe the rate of growth of this sequence.[🔗](#exercises-sec-recurrence-3-1-1-3-1-1) [🔗](#exercises-sec-recurrence-3-1-1-3-1)
-2. Find a recursive definition for the sequence.[🔗](#exercises-sec-recurrence-3-1-1-3-2-1) [🔗](#exercises-sec-recurrence-3-1-1-3-2)
-3. Find a closed formula for the sequence.[🔗](#exercises-sec-recurrence-3-1-1-3-3-1) [🔗](#exercises-sec-recurrence-3-1-1-3-3)
-4. If you look at the sequence of differences between terms, and then the sequence of second differences, the sequence of third differences, and so on, will you ever get a constant sequence? Explain how you know.[🔗](#exercises-sec-recurrence-3-1-1-3-4-1) [🔗](#exercises-sec-recurrence-3-1-1-3-4)
-
-[🔗](#exercises-sec-recurrence-3-1-1) [🔗](#exercises-sec-recurrence-3)
+1. صِف معدل نمو هذه المتتالية.
+2. أوجد تعريفًا تعاوديًا للمتتالية.
+3. أوجد صيغة مغلقة للمتتالية.
+4. إذا نظرت إلى متتالية الفروق بين الحدود، ثم متتالية الفروق الثانية، ومتتالية الفروق الثالثة، وهكذا، فهل ستحصل في أي وقت على متتالية ثابتة؟ اشرح كيف تعرف ذلك.
 
 #### 3.
 
-Show that \(4^n\) is a solution to the recurrence relation \(a_n = 3a_{n-1} + 4a_{n-2}\text{.}\)[🔗](#exercises-sec-recurrence-4-1-1) [🔗](#exercises-sec-recurrence-4)
+بيّن أن \(4^n\) حل للعلاقة التعاودية \(a_n = 3a_{n-1} + 4a_{n-2}\text{.}\)
 
 #### 4.
 
-Suppose that \(r^n\) and \(q^n\) are both solutions to a recurrence relation of the form \(a_n = \alpha a_{n-1} + \beta a_{n-2}\text{.}\) Prove that \(c\cdot r^n + d \cdot q^n\) is also a solution to the recurrence relation, for any constants \(c, d\text{.}\)[🔗](#exercises-sec-recurrence-5-1-1) [🔗](#exercises-sec-recurrence-5)
+افترض أن \(r^n\) و\(q^n\) كلاهما حل لعلاقة تعاودية من الصورة \(a_n = \alpha a_{n-1} + \beta a_{n-2}\text{.}\) أثبت أن \(c\cdot r^n + d \cdot q^n\) حل للعلاقة التعاودية أيضًا، لأي ثابتين \(c, d\text{.}\)
 
 #### 5.
 
-Think back to the magical candy machine at your neighborhood grocery store. Suppose that the first time a quarter is put into the machine 1 Skittle comes out. The second time, 4 Skittles, the third time 16 Skittles, the fourth time 64 Skittles, etc.
+تذكّر آلة الحلوى السحرية في متجر البقالة في حيّك. افترض أن إدخال قطعة نقدية من فئة ربع دولار في الآلة للمرة الأولى يُخرج حبة سكيتلز (Skittles) واحدة. وفي المرة الثانية تخرج 4 حبات سكيتلز، وفي الثالثة 16 حبة، وفي الرابعة 64 حبة، وهكذا.
 
-1. Find both a recursive and closed formula for how many Skittles the *n*th customer gets.[🔗](#exercises-sec-recurrence-6-1-1-1-1-1) [🔗](#exercises-sec-recurrence-6-1-1-1-1)
-2. Check your solution for the closed formula by solving the recurrence relation using the characteristic root technique.[🔗](#exercises-sec-recurrence-6-1-1-1-2-1) [🔗](#exercises-sec-recurrence-6-1-1-1-2)
-
-[🔗](#exercises-sec-recurrence-6-1-1) [🔗](#exercises-sec-recurrence-6)
+1. أوجد صيغة تعاودية وصيغة مغلقة لعدد حبات سكيتلز التي يحصل عليها الزبون ذو الرتبة *n*.
+2. تحقق من حلك للصيغة المغلقة بحل العلاقة التعاودية باستخدام تقنية الجذور المميزة.
 
 #### 6.
 
-Let \(a_n\) be the number of \(1 \times n\) tile designs you can make using \(1 \times 1\) squares available in 4 colors and \(1 \times 2\) dominoes available in 5 colors.
+ليكن \(a_n\) عدد تصاميم التبليط \(1 \times n\) التي يمكنك صنعها باستخدام مربعات \(1 \times 1\) متاحة بأربعة ألوان، وقطع دومينو \(1 \times 2\) متاحة بخمسة ألوان.
 
-1. First, find a recurrence relation to describe the problem. Explain why the recurrence relation is correct (in the context of the problem).[🔗](#exercises-sec-recurrence-7-1-1-5-1-1) [🔗](#exercises-sec-recurrence-7-1-1-5-1)
-2. Write out the first 6 terms of the sequence \(a_1, a_2, \ldots\text{.}\)[🔗](#exercises-sec-recurrence-7-1-1-5-2-1) [🔗](#exercises-sec-recurrence-7-1-1-5-2)
-3. Solve the recurrence relation. That is, find a closed formula for \(a_n\text{.}\)[🔗](#exercises-sec-recurrence-7-1-1-5-3-1) [🔗](#exercises-sec-recurrence-7-1-1-5-3)
-
-[🔗](#exercises-sec-recurrence-7-1-1) [🔗](#exercises-sec-recurrence-7)
+1. أوجد أولًا علاقة تعاودية تصف المسألة. اشرح لماذا العلاقة التعاودية صحيحة (في سياق المسألة).
+2. اكتب الحدود الستة الأولى للمتتالية \(a_1, a_2, \ldots\text{.}\)
+3. حل العلاقة التعاودية. أي أوجد صيغة مغلقة لـ \(a_n\text{.}\)
 
 #### 7.
 
-You have access to \(1 \times 1\) tiles which come in 2 different colors and \(1\times 2\) tiles which come in 3 different colors. We want to figure out how many different \(1 \times n\) path designs we can make out of these tiles.
+لديك بلاطات \(1 \times 1\) متاحة بلونين مختلفين، وبلاطات \(1\times 2\) متاحة بثلاثة ألوان مختلفة. نريد معرفة عدد تصاميم المسارات المختلفة \(1 \times n\) التي يمكننا صنعها من هذه البلاطات.
 
-1. Find a recursive definition for the sequence \(a_n\) of paths of length \(n\text{.}\)[🔗](#exercises-sec-recurrence-8-1-1-4-1-1) [🔗](#exercises-sec-recurrence-8-1-1-4-1)
-2. Solve the recurrence relation using the characteristic root technique.[🔗](#exercises-sec-recurrence-8-1-1-4-2-1) [🔗](#exercises-sec-recurrence-8-1-1-4-2)
-
-[🔗](#exercises-sec-recurrence-8-1-1) [🔗](#exercises-sec-recurrence-8)
+1. أوجد تعريفًا تعاوديًا للمتتالية \(a_n\) للمسارات ذات الطول \(n\text{.}\)
+2. حل العلاقة التعاودية باستخدام تقنية الجذور المميزة.
 
 #### 8.
 
-Solve the recurrence relation \(a_n = 2a_{n-1} - a_{n-2}\text{.}\)
+حل العلاقة التعاودية \(a_n = 2a_{n-1} - a_{n-2}\text{.}\)
 
-1. What is the solution if the initial terms are \(a_0 = 1\) and \(a_1 = 2\text{?}\)[🔗](#exercises-sec-recurrence-9-1-1-2-1-1) [🔗](#exercises-sec-recurrence-9-1-1-2-1)
-2. What do the initial terms need to be in order for \(a_9 = 30\text{?}\)[🔗](#exercises-sec-recurrence-9-1-1-2-2-1) [🔗](#exercises-sec-recurrence-9-1-1-2-2)
-3. For which \(x\) are there initial terms which make \(a_9 = x\text{?}\)[🔗](#exercises-sec-recurrence-9-1-1-2-3-1) [🔗](#exercises-sec-recurrence-9-1-1-2-3)
-
-[🔗](#exercises-sec-recurrence-9-1-1) [🔗](#exercises-sec-recurrence-9)
+1. ما الحل إذا كان الحدان الابتدائيان \(a_0 = 1\) و\(a_1 = 2\text{?}\)
+2. ما القيم المطلوبة للحدين الابتدائيين لكي يكون \(a_9 = 30\text{?}\)
+3. لأي قيم \(x\) توجد حدود ابتدائية تجعل \(a_9 = x\text{?}\)
 
 #### 9.
 
-Consider the recurrence relation \(a_n = 4a_{n-1} - 4a_{n-2}\text{.}\)
+تأمل العلاقة التعاودية \(a_n = 4a_{n-1} - 4a_{n-2}\text{.}\)
 
-1. Find the general solution to the recurrence relation (beware the repeated root).[🔗](#exercises-sec-recurrence-10-1-1-2-1-1) [🔗](#exercises-sec-recurrence-10-1-1-2-1)
-2. Find the solution when \(a_0 = 1\) and \(a_1 = 2\text{.}\)[🔗](#exercises-sec-recurrence-10-1-1-2-2-1) [🔗](#exercises-sec-recurrence-10-1-1-2-2)
-3. Find the solution when \(a_0 = 1\) and \(a_1 = 8\text{.}\)[🔗](#exercises-sec-recurrence-10-1-1-2-3-1) [🔗](#exercises-sec-recurrence-10-1-1-2-3)
-
-[🔗](#exercises-sec-recurrence-10-1-1) [🔗](#exercises-sec-recurrence-10)
+1. أوجد الحل العام للعلاقة التعاودية (انتبه إلى الجذر المكرر).
+2. أوجد الحل عندما يكون \(a_0 = 1\) و\(a_1 = 2\text{.}\)
+3. أوجد الحل عندما يكون \(a_0 = 1\) و\(a_1 = 8\text{.}\)
 
 #### 10.
 
-Here is a surprising use of sequences to answer a counting question: How many license plates consist of 6 symbols, using only the three numerals 1, 2, and 3 and the four letters a, b, c, and d, so that no numeral appears after any letter? For example, “31ddac”, “123321”, and “ababab” are each acceptable license plates, but “13ba2c” is not.
+إليك استخدامًا مفاجئًا للمتتاليات للإجابة عن سؤال في العدّ: كم لوحة ترخيص تتكوّن من 6 رموز باستخدام الأرقام الثلاثة 1 و2 و3 فقط، والحروف الأربعة a وb وc وd، بحيث لا يظهر أي رقم بعد أي حرف؟ مثلًا، «31ddac» و«123321» و«ababab» كلها لوحات ترخيص مقبولة، لكن «13ba2c» ليست كذلك.
 
-1. First answer this question by considering different cases: how many of the license plates contain no numerals? How many contain one numeral, etc.[🔗](#exercises-sec-recurrence-11-1-1-5-1-1) [🔗](#exercises-sec-recurrence-11-1-1-5-1)
-2. Now use the techniques of this section to show why the answer is \(4^7 - 3^7\text{.}\)[🔗](#exercises-sec-recurrence-11-1-1-5-2-1) [🔗](#exercises-sec-recurrence-11-1-1-5-2)
-
-[🔗](#exercises-sec-recurrence-11-1-1) [🔗](#exercises-sec-recurrence-11)[🔗](#exercises-sec-recurrence)[🔗](#sec_seq-exponential) [&#xe5cb;Prev](sec_seq-polynomial.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_seq-induction.html) [Feedback](/cdn-cgi/l/email-protection#a0cfd3c3c1d28eccc5d6c9cee0d5cec3cf8ec5c4d5)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_seq-exponential-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_seq-exponential-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+1. أجب أولًا عن هذا السؤال بالنظر في حالات مختلفة: كم لوحة ترخيص لا تحتوي على أرقام؟ وكم منها تحتوي على رقم واحد، وهكذا؟
+2. استخدم الآن تقنيات هذا القسم لتبيّن لماذا الإجابة هي \(4^7 - 3^7\text{.}\)

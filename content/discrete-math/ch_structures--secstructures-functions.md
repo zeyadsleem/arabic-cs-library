@@ -1,424 +1,606 @@
 ---
-title: "Functions"
-lang: en
+title: "الدوال"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_structures-functions.html
 ---
 
-\A function is a rule that assigns each input exactly one output. We call the output the image of the input. The set of all inputs for a function is called the domain. The set of all allowable outputs is called the codomain. We would write \(f:X \to Y\) to describe a function with name \(f\text{,}\) domain \(X\text{,}\) and codomain \(Y\text{.}\) This does not tell us *which* function \(f\) is though. To define the function, we must describe the rule. This is often done by giving a formula to compute the output for any input (although this is certainly not the only way to describe the rule).[🔗](#sec_structures-functions-2-2) For example, consider the function \(f:\N \to \N\) defined by \(f(x) = x^2 + 3\text{.}\) Here the domain and codomain are the same set (the natural numbers). The rule: Take your input, multiply it by itself, and add 3. This works because we can apply this rule to every natural number (every element of the domain) and the result is always a natural number (an element of the codomain). Notice though that not every natural number is actually an output (there is no way to get 0, 1, 2, 5, etc.). The set of natural numbers that *are* outputs is called the range of the function (in this case, the range is \(\{3, 4, 7, 12, 19, 28, \ldots\}\text{,}\) all the natural numbers that are 3 more than a perfect square).[🔗](#sec_structures-functions-2-3) The key thing that makes a rule a *function* is that there is *exactly one* output for each input. That is, it is important that the rule be a good rule. What output do we assign to the input 7? There can only be one answer for any particular function.[🔗](#sec_structures-functions-2-4)
+يتضمن هذا القسم تفاصيل كثيرة عن الدوال (functions)، يُفترض أن يكون كثير منها مألوفًا لك من سياقات غير متقطعة. أثناء القراءة، تأمل كيف قد تختلف طريقة حديثنا عن الدوال هنا عما تعرفه من مجالات الرياضيات الأخرى.
 
-### Example 5.2.1.
+الدالة (function) قاعدة تُسنِد إلى كل مُدخل مخرجًا واحدًا بالضبط. نسمي المخرج صورة (image) المُدخل. وتُسمّى مجموعة جميع مدخلات الدالة المجال (domain)، وتُسمّى مجموعة جميع المخرجات المسموح بها المجال المقابل (codomain). نكتب \(f:X \to Y\) لوصف دالة اسمها \(f\text{،}\) ومجالها \(X\text{،}\) ومجالها المقابل \(Y\text{.}\) لكن هذا لا يخبرنا *أيّ* دالة هي \(f\). لتعريف الدالة، يجب أن نصف القاعدة. وغالبًا ما نفعل ذلك بإعطاء صيغة لحساب المخرج لأي مُدخل (مع أن هذه ليست الطريقة الوحيدة لوصف القاعدة بالتأكيد).
 
-The following are all examples of functions:
+مثلًا، تأمل الدالة \(f:\N \to \N\) المعرّفة بـ\(f(x) = x^2 + 3\text{.}\) المجال والمجال المقابل هنا هما المجموعة نفسها (الأعداد الطبيعية). والقاعدة هي: خذ مُدخلك، واضربه في نفسه، ثم أضف 3. تنجح هذه القاعدة لأننا نستطيع تطبيقها على كل عدد طبيعي (كل عنصر في المجال)، وتكون النتيجة دائمًا عددًا طبيعيًا (عنصرًا في المجال المقابل). لكن لاحظ أنه ليس كل عدد طبيعي مخرجًا فعلًا (فلا توجد طريقة للحصول على 0 أو 1 أو 2 أو 5، وهكذا). تُسمّى مجموعة الأعداد الطبيعية التي *تكون* مخرجات مدى (range) الدالة. وفي هذه الحالة، المدى هو \(\{3, 4, 7, 12, 19, 28, \ldots\}\text{،}\) أي جميع الأعداد الطبيعية التي تزيد بمقدار 3 على مربع كامل.
 
-1. \(f:\Z \to \Z\) defined by \(f(n) = 3n\text{.}\) The domain and codomain are both the set of integers. However, the range is only the set of integer multiples of 3.[🔗](#sec_structures-functions-2-5-1-1-1-1-1) [🔗](#sec_structures-functions-2-5-1-1-1-1)
-2. \(g: \{1,2,3\} \to \{a,b,c\}\) defined by \(g(1) = c\text{,}\) \(g(2) = a\text{,}\) and \(g(3) = a\text{.}\) The domain is the set \(\{1,2,3\}\text{,}\) the codomain is the set \(\{a,b,c\}\) and the range is the set \(\{a,c\}\text{.}\) Note that \(g(2)\) and \(g(3)\) are the same element of the codomain. This is okay since each element in the domain still has only one output.[🔗](#sec_structures-functions-2-5-1-1-1-2-1) [🔗](#sec_structures-functions-2-5-1-1-1-2)
-3. \(h:\{1,2,3,4\} \to \N\) defined by the table:[🔗](#sec_structures-functions-2-5-1-1-1-3-1) \(x\) 1 2 3 4 \(h(x)\) 3 6 9 12 Here the domain is the finite set \(\{1,2,3,4\}\text{,}\) and the codomain is the set of natural numbers, \(\N\text{.}\) At first you might think this function is the same as \(f\) defined above. It absolutely is not. Even though the rule is the same, the domain and codomain are different, so these are two different functions.[🔗](#sec_structures-functions-2-5-1-1-1-3-3) [🔗](#sec_structures-functions-2-5-1-1-1-3)
+الشرط الأساسي الذي يجعل القاعدة *دالة* هو وجود مخرج *واحد بالضبط* لكل مُدخل. أي من المهم أن تكون القاعدة محددة جيدًا. ما المخرج الذي نُسنِده إلى المُدخل 7؟ لا يمكن أن تكون هناك إلا إجابة واحدة لأي دالة معينة.
 
-[🔗](#sec_structures-functions-2-5-1-1) [🔗](#sec_structures-functions-2-5)
+#### مثال 5.2.1.
 
-### Example 5.2.2.
+كل ما يلي أمثلة على دوال:
 
-Just because you can describe a rule in the same way you would write a function does not mean that the rule is a function. The following are NOT functions.
+1. الدالة \(f:\Z \to \Z\) المعرّفة بـ\(f(n) = 3n\text{.}\) المجال والمجال المقابل كلاهما مجموعة الأعداد الصحيحة. لكن المدى يقتصر على مجموعة المضاعفات الصحيحة للعدد 3.
+2. الدالة \(g: \{1,2,3\} \to \{a,b,c\}\) المعرّفة بـ\(g(1) = c\text{،}\) و\(g(2) = a\text{،}\) و\(g(3) = a\text{.}\) المجال هو المجموعة \(\{1,2,3\}\text{،}\) والمجال المقابل هو المجموعة \(\{a,b,c\}\)، والمدى هو المجموعة \(\{a,c\}\text{.}\) لاحظ أن \(g(2)\) و\(g(3)\) هما العنصر نفسه من المجال المقابل. هذا مقبول، لأن كل عنصر في المجال لا يزال له مخرج واحد فقط.
+3. الدالة \(h:\{1,2,3,4\} \to \N\) المعرّفة بالجدول:
 
-1. \(f:\N \to \N\) defined by \(f(n) = \frac{n}{2}\text{.}\) The reason this is not a function is because not every input has an output. Where does \(f\) send 3? The rule says that \(f(3) = \frac{3}{2}\text{,}\) but \(\frac{3}{2}\) is not an element of the codomain.[🔗](#sec_structures-functions-2-6-1-1-1-1-1) [🔗](#sec_structures-functions-2-6-1-1-1-1)
-2. Consider the rule that matches each person to their phone number. If you think of the set of people as the domain and the set of phone numbers as the codomain, then this is not a function, since some people have two phone numbers. Switching the domain and codomain sets doesn’t help either, since some phone numbers belong to multiple people (assuming some households still have landlines when you are reading this).[🔗](#sec_structures-functions-2-6-1-1-1-2-1) [🔗](#sec_structures-functions-2-6-1-1-1-2)
+   | \(x\) | 1 | 2 | 3 | 4 |
+   | --- | --- | --- | --- | --- |
+   | \(h(x)\) | 3 | 6 | 9 | 12 |
 
-[🔗](#sec_structures-functions-2-6-1-1) [🔗](#sec_structures-functions-2-6)
+المجال هنا هو المجموعة المنتهية \(\{1,2,3,4\}\text{،}\) والمجال المقابل هو مجموعة الأعداد الطبيعية \(\N\text{.}\) قد تظن أولًا أن هذه الدالة هي نفسها \(f\) المعرّفة أعلاه، لكنها ليست كذلك إطلاقًا. مع أن القاعدة واحدة، فإن المجال والمجال المقابل مختلفان؛ لذلك فهما دالتان مختلفتان.
 
-### Subsection Describing Functions
+#### مثال 5.2.2.
 
-It is worth making a distinction between a function and its description. The function is the abstract mathematical object that in some way exists whether or not anyone ever talks about it. But when we *do* want to talk about the function, we need a way to describe it. A particular function can be described in multiple ways.[🔗](#sec_structures-functions-3-3) Some calculus textbooks talk about the *Rule of Four*, that every function can be described in four ways: algebraically (a formula), numerically (a table), graphically, or in words. In discrete math, we can still use any of these to describe functions, but we can also be more specific since we are primarily concerned with functions that have \(\N\) or a finite subset of \(\N\) as their domain.[🔗](#sec_structures-functions-3-4) Describing a function graphically usually means drawing the graph of the function: plotting the points on the plane. We can do this and might get a graph like the following for a function \(f:\{1,2,3\} \to \{1,2,3\}\text{.}\)[🔗](#sec_structures-functions-3-5) ![Graph of the first quadrant, including axes and a rectangular grid. Points on grid at (1,2), (2, 1) and (3,3).](generated/latex-image/discrete-function-graph.svg) It would be absolutely WRONG to connect the dots or try to fit them to some curve. There are only three elements in the domain. A curve would mean that the domain contains an entire interval of real numbers.[🔗](#sec_structures-functions-3-7) Here is another way to represent that same function:[🔗](#sec_structures-functions-3-8) ![Two rows containing the numbers 1, 2, and 3, from left to right. Arrows from the top 1 to bottom 2, from the top 2 to bottom 1, and top 3 straight down to bottom 3.](generated/latex-image/arrow-function-example.svg) This shows that the function \(f\) sends 1 to 2, 2 to 1, and 3 to 3: Just follow the arrows.[🔗](#sec_structures-functions-3-10) The arrow diagram used to define the function above can be very helpful in visualizing functions. We will often be working with functions with *finite* domains, so this kind of picture is often more useful than a traditional graph of a function.[🔗](#sec_structures-functions-3-11) Note that for finite domains, finding an algebraic formula that gives the output for any input is often impossible. Of course we could use a piecewise-defined function, like \begin{equation*} f(x) = \begin{cases} x+1 \amp \text{ if } x = 1 \\ x-1 \amp \text{ if } x = 2 \\ x \amp \text{ if } x = 3\text{.}\end{cases} \end{equation*} This describes exactly the same function as above, but we can all agree is a ridiculous way of doing so. [🔗](#sec_structures-functions-3-12) Since we will so often use functions with small domains and codomains, let’s adopt some notation to describe them. All we need is some clear way of denoting the image of each element in the domain. In fact, writing a table of values would work perfectly:[🔗](#sec_structures-functions-3-13)
+مجرد إمكان وصف قاعدة بالطريقة التي تكتب بها دالة لا يعني أن القاعدة دالة. ما يلي **ليس** دوالًا:
+
+1. \(f:\N \to \N\) المعرّفة بـ\(f(n) = \frac{n}{2}\text{.}\) ليست هذه دالة لأن بعض المدخلات ليس لها مخرج. إلى أين ترسل \(f\) العدد 3؟ تقول القاعدة إن \(f(3) = \frac{3}{2}\text{،}\) لكن \(\frac{3}{2}\) ليس عنصرًا في المجال المقابل.
+2. تأمل القاعدة التي تربط كل شخص برقم هاتفه. إذا اعتبرت مجموعة الأشخاص مجالًا ومجموعة أرقام الهواتف مجالًا مقابلًا، فهذه ليست دالة، لأن بعض الأشخاص لديهم رقما هاتف. ولا يفيد تبديل مجموعتي المجال والمجال المقابل أيضًا، لأن بعض أرقام الهواتف تخص أكثر من شخص (بافتراض أن بعض المنازل لا تزال تستخدم الهواتف الأرضية عند قراءتك هذا النص).
+
+### قسم فرعي: وصف الدوال
+
+من المفيد التمييز بين الدالة ووصفها. الدالة كائن رياضي مجرد يوجد، بمعنى ما، سواء تحدث عنه أحد أم لم يتحدث. لكن عندما *نريد* الحديث عن الدالة، نحتاج إلى طريقة لوصفها. ويمكن وصف الدالة الواحدة بطرائق متعددة.
+
+تتحدث بعض كتب التفاضل والتكامل عن *قاعدة الأربع (Rule of Four)*: يمكن وصف كل دالة بأربع طرائق، جبريًا (بصيغة)، أو عدديًا (بجدول)، أو بيانيًا، أو بالكلمات. في الرياضيات المتقطعة، يمكننا أيضًا استخدام أي من هذه الطرائق لوصف الدوال، لكن يمكننا أن نكون أكثر تحديدًا، لأننا نهتم أساسًا بالدوال التي يكون مجالها \(\N\) أو مجموعة جزئية منتهية من \(\N\).
+
+عادةً ما يعني وصف الدالة بيانيًا رسم منحناها البياني: تمثيل النقاط في المستوى. ويمكننا فعل ذلك، فنحصل على رسم مثل التالي للدالة \(f:\{1,2,3\} \to \{1,2,3\}\text{.}\)
+
+![رسم للربع الأول، يتضمن محورين وشبكة مستطيلة. تقع النقاط على الشبكة عند (1,2) و(2,1) و(3,3).](/images/discrete-math/sec_structures-functions-discrete-function-graph.svg)
+
+سيكون وصل النقاط أو محاولة ملاءمتها بمنحنى **خطأً تمامًا**. ليس في المجال إلا ثلاثة عناصر، بينما وجود منحنى يعني أن المجال يحتوي على فترة كاملة من الأعداد الحقيقية.
+
+إليك طريقة أخرى لتمثيل الدالة نفسها:
+
+![صفّان يحتوي كل منهما على الأعداد 1 و2 و3، من اليسار إلى اليمين. تتجه الأسهم من 1 العلوي إلى 2 السفلي، ومن 2 العلوي إلى 1 السفلي، ومن 3 العلوي مباشرة إلى 3 السفلي.](/images/discrete-math/sec_structures-functions-arrow-function-example.svg)
+
+يبيّن هذا أن الدالة \(f\) ترسل 1 إلى 2، و2 إلى 1، و3 إلى 3: ما عليك إلا اتباع الأسهم.
+
+قد يكون مخطط الأسهم (arrow diagram) المستخدم أعلاه لتعريف الدالة مفيدًا جدًا في تصوّر الدوال. سنعمل كثيرًا مع دوال مجالاتها *منتهية*؛ لذلك يكون هذا النوع من الصور غالبًا أنفع من الرسم البياني التقليدي للدالة.
+
+لاحظ أنه، في حالة المجالات المنتهية، يكون إيجاد صيغة جبرية تعطي المخرج لأي مُدخل مستحيلًا في كثير من الأحيان. يمكننا بالطبع استخدام دالة معرّفة على أجزاء (piecewise-defined function)، مثل
+
+\begin{equation*}
+f(x) = \begin{cases} x+1 \amp \text{ إذا كان } x = 1 \\ x-1 \amp \text{ إذا كان } x = 2 \\ x \amp \text{ إذا كان } x = 3\text{.}\end{cases}
+\end{equation*}
+
+يصف هذا الدالة نفسها أعلاه بالضبط، لكن يمكننا جميعًا الاتفاق على أنها طريقة سخيفة لوصفها.
+
+لأننا سنستخدم كثيرًا دوالًا ذات مجالات ومجالات مقابلة صغيرة، فلنتبنَّ ترميزًا لوصفها. كل ما نحتاج إليه طريقة واضحة للدلالة على صورة كل عنصر في المجال. وفي الواقع، كتابة جدول للقيم تفي بالغرض تمامًا:
 
 | \(x\) | 0 | 1 | 2 | 3 | 4 |
 | --- | --- | --- | --- | --- | --- |
 | \(f(x)\) | 3 | 3 | 2 | 4 | 1 |
 
-We simplify this further by writing this as a “matrix” with each input directly over its output: \begin{equation*} f = \twoline{0 \amp 1 \amp 2\amp 3 \amp 4}{3 \amp 3 \amp 2 \amp 4 \amp 1}\text{.} \end{equation*} Note this is just notation and not the same sort of matrix you would find in a linear algebra class (it does not make sense to do operations with these matrices, or row reduce them, for example). [🔗](#sec_structures-functions-3-15) One advantage of the two-line notation over the arrow diagrams is that it is harder to accidentally define a rule that is not a function using two-line notation.[🔗](#sec_structures-functions-3-16)
+نبسّط هذا أكثر بكتابته على هيئة «مصفوفة» يكون فيها كل مُدخل فوق مخرجه مباشرة:
 
-#### Example 5.2.3.
+\begin{equation*}
+f = \twoline{0 \amp 1 \amp 2\amp 3 \amp 4}{3 \amp 3 \amp 2 \amp 4 \amp 1}\text{.}
+\end{equation*}
 
-Which of the following diagrams represent a function? Let \(X = \{1,2,3,4\}\) and \(Y = \{a,b,c,d\}\text{.}\)[🔗](#sec_structures-functions-3-17-1-1) ![Picture labeled f:X to Y with two rows of numbers and letters and arrows between the rows. Top row contains the numbers 1, 2, 3, and 4. Bottom row contains letters a, b, c, and d. Arrows point from 1 to d, 2 to a, 3 to c, and 4 to d.](generated/latex-image/f-arrows.svg) ![Picture labeled g:X to Y with two rows of numbers and letters and arrows between the rows. Top row contains the numbers 1, 2, 3, and 4. Bottom row contains letters a, b, c, and d. Arrows point from 1 to d, 2 to a, 3 to a, and 4 to b.](generated/latex-image/g-arrows.svg) ![Picture labeled f:X to Y with two rows of numbers and letters and arrows between the rows. Top row contains the numbers 1, 2, 3, and 4. Bottom row contains letters a, b, c, and d. Arrows point from 2 to a and also 2 to c, 3 to d, and 4 to b.](generated/latex-image/h-arrows.svg) Solution. \(f\) is a function. So is \(g\text{.}\) There is no problem with an element of the codomain not being the image of any input, and there is no problem with \(a\) from the codomain being the image of both 2 and 3 from the domain. We could use our two-line notation to write these as \begin{equation*} f= \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \\ d \amp a \amp c \amp b \end{pmatrix} \qquad g = \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \\ d \amp a \amp a \amp b \end{pmatrix} \end{equation*} . [🔗](#sec_structures-functions-3-17-2-1) However, \(h\) is NOT a function. In fact, it fails for two reasons. First, the element 1 from the domain has not been mapped to any element from the codomain. Second, the element 2 from the domain has been mapped to more than one element from the codomain (\(a\) and \(c\)). Note that either one of these problems is enough to make a rule not a function. In general, neither of the following mappings are functions:[🔗](#sec_structures-functions-3-17-2-2) ![Three black dots in a row above and two white dots in a row below. An arrow points from the left black dot to the left white dot and from the right black dot to the right white dot.](generated/latex-image/not-function-a.svg) ![Three black dots in a row above and four white dots in a row below. Two arrows point from the left black dot to each of the two left-most white dots. Each of the other black dots have an arrow pointing down to the white dots below and slightly to the right of them.](generated/latex-image/not-function-b.svg) It might also be helpful to think about how you would write the two-line notation for \(h\text{.}\) We would have something like: \begin{equation*} h=\twoline{1 \amp 2 \amp 3 \amp 4}{\amp a,c? \amp d \amp b}\text{.} \end{equation*} There is nothing under 1 (bad), and we needed to put more than one thing under 2 (very bad). With a rule that is actually a function, the two-line notation will always “work.” [🔗](#sec_structures-functions-3-17-2-4) [🔗](#sec_structures-functions-3-17-2) [🔗](#sec_structures-functions-3-17)We will also be interested in functions with domain \(\N\text{.}\) Here two-line notation is no good, but describing the function algebraically is often possible. Even tables are a little awkward since they do not describe the function completely. For example, consider the function \(f:\N \to \N\) given by the table below.[🔗](#sec_structures-functions-3-18)
+لاحظ أن هذا مجرد ترميز، وليس من نوع المصفوفات التي تجدها في مقرر الجبر الخطي (فلا معنى، مثلًا، لإجراء عمليات على هذه المصفوفات أو اختزال صفوفها).
+
+من مزايا الترميز ذي السطرين (two-line notation) مقارنة بمخططات الأسهم أنه يجعل تعريف قاعدة ليست دالة عن طريق الخطأ أصعب.
+
+#### مثال 5.2.3.
+
+أي المخططات التالية يمثل دالة؟ لتكن \(X = \{1,2,3,4\}\) و\(Y = \{a,b,c,d\}\text{.}\)
+
+![صورة موسومة f:X إلى Y، تضم صفّين من الأعداد والحروف وأسهمًا بينهما. يحتوي الصف العلوي على 1 و2 و3 و4، والسفلي على a وb وc وd. تتجه الأسهم من 1 إلى d، ومن 2 إلى a، ومن 3 إلى c، ومن 4 إلى d.](/images/discrete-math/sec_structures-functions-f-arrows.svg)
+
+![صورة موسومة g:X إلى Y، تضم صفّين من الأعداد والحروف وأسهمًا بينهما. يحتوي الصف العلوي على 1 و2 و3 و4، والسفلي على a وb وc وd. تتجه الأسهم من 1 إلى d، ومن 2 إلى a، ومن 3 إلى a، ومن 4 إلى b.](/images/discrete-math/sec_structures-functions-g-arrows.svg)
+
+![صورة موسومة f:X إلى Y، تضم صفّين من الأعداد والحروف وأسهمًا بينهما. يحتوي الصف العلوي على 1 و2 و3 و4، والسفلي على a وb وc وd. تتجه الأسهم من 2 إلى a ومن 2 أيضًا إلى c، ومن 3 إلى d، ومن 4 إلى b.](/images/discrete-math/sec_structures-functions-h-arrows.svg)
+
+**الحل.** \(f\) دالة، وكذلك \(g\text{.}\) لا مشكلة في ألا يكون عنصر من المجال المقابل صورة لأي مُدخل، ولا مشكلة في أن يكون \(a\) من المجال المقابل صورة لكل من 2 و3 من المجال. يمكننا استخدام الترميز ذي السطرين لكتابتهما كما يلي:
+
+\begin{equation*}
+f= \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \\ d \amp a \amp c \amp b \end{pmatrix} \qquad g = \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \\ d \amp a \amp a \amp b \end{pmatrix}
+\end{equation*}
+
+> **ملاحظة المترجم:** نُقل الرسم والنص البديل والمصفوفة كما وردت في المصدر. يذكر النص البديل للرسم الأول أن صورة 4 هي d، بينما تذكر مصفوفة الحل أن صورتها b؛ وهذا اختلاف في المصدر لا يغيّر كون القاعدة دالة. كما يوسم المصدر النص البديل للرسم الثالث بـf، مع أن مناقشة الحل تسمي القاعدة h.
+
+لكن \(h\) **ليست** دالة. فهي تخالف التعريف لسببين: أولًا، لم يُربط العنصر 1 من المجال بأي عنصر من المجال المقابل. وثانيًا، رُبط العنصر 2 من المجال بأكثر من عنصر في المجال المقابل (\(a\) و\(c\)). لاحظ أن أيًا من هاتين المشكلتين يكفي لجعل القاعدة ليست دالة. وبوجه عام، لا يمثل أي من الربطين التاليين دالة:
+
+![ثلاث نقاط سوداء في صف علوي ونقطتان بيضاوان في صف سفلي. يتجه سهم من النقطة السوداء اليسرى إلى النقطة البيضاء اليسرى، ومن السوداء اليمنى إلى البيضاء اليمنى.](/images/discrete-math/sec_structures-functions-not-function-a.svg)
+
+![ثلاث نقاط سوداء في صف علوي وأربع نقاط بيضاء في صف سفلي. يتجه سهمان من النقطة السوداء اليسرى إلى النقطتين البيضاوين الأبعد يسارًا. ومن كل نقطة سوداء أخرى سهم إلى النقطة البيضاء الواقعة أسفلها وإلى يمينها قليلًا.](/images/discrete-math/sec_structures-functions-not-function-b.svg)
+
+قد يفيد أيضًا التفكير في كيفية كتابة الترميز ذي السطرين لـ\(h\text{.}\) سنحصل على شيء من قبيل:
+
+\begin{equation*}
+h=\twoline{1 \amp 2 \amp 3 \amp 4}{\amp a,c? \amp d \amp b}\text{.}
+\end{equation*}
+
+لا شيء تحت 1 (وهذا سيئ)، واضطررنا إلى وضع أكثر من شيء تحت 2 (وهذا سيئ جدًا). أما إذا كانت القاعدة دالة فعلًا، فسوف «ينجح» الترميز ذو السطرين دائمًا.
+
+سنُعنى أيضًا بالدوال التي مجالها \(\N\text{.}\) لا يصلح الترميز ذو السطرين هنا، لكن وصف الدالة جبريًا ممكن غالبًا. وحتى الجداول تكون غير ملائمة بعض الشيء لأنها لا تصف الدالة وصفًا كاملًا. مثلًا، تأمل الدالة \(f:\N \to \N\) المعطاة بالجدول التالي.
 
 | \(x\) | 0 | 1 | 2 | 3 | 4 | 5 | \(\ldots\) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | \(f(x)\) | 0 | 1 | 4 | 9 | 16 | 25 | \(\ldots\) |
 
-Have I given you enough entries for you to be able to determine \(f(6)\text{?}\) You might guess that \(f(6) = 36\text{,}\) but there is no way for you to *know* this for sure. Maybe I am being a jerk and intended \(f(6) = 42\text{.}\) In fact, for every natural number \(n\text{,}\) there is a function that agrees with the table above, but for which \(f(6) = n\text{.}\)[🔗](#sec_structures-functions-3-20) Okay, suppose I really did mean for \(f(6) = 36\text{,}\) and in fact, for the rule that you think is governing the function to actually be the rule. Then I should say what that rule is. \(f(n) = n^2\text{.}\) Now there is no confusion possible.[🔗](#sec_structures-functions-3-21) Giving an explicit formula that calculates the image of any element in the domain is a great way to describe a function. We will say that these explicit rules are closed formulas for the function. [🔗](#sec_structures-functions-3-22) There is another very useful way to describe functions whose domain is \(\N\text{,}\) that rely specifically on the structure of the natural numbers. We can define a function *recursively*![🔗](#sec_structures-functions-3-23)
+هل أعطيتك قيمًا كافية لتحديد \(f(6)\text{؟}\) قد تخمّن أن \(f(6) = 36\text{،}\) لكن لا سبيل إلى أن *تعرف* ذلك يقينًا. ربما أتعمد إزعاجك وأقصد أن \(f(6) = 42\text{.}\) في الواقع، لكل عدد طبيعي \(n\text{،}\) توجد دالة تتفق مع الجدول أعلاه، ولكن تحقق \(f(6) = n\text{.}\)
 
-#### Example 5.2.4.
+حسنًا، افترض أنني قصدت فعلًا أن \(f(6) = 36\text{،}\) وأن القاعدة التي تظن أنها تحكم الدالة هي القاعدة فعلًا. عندئذ ينبغي أن أصرّح بالقاعدة: \(f(n) = n^2\text{.}\) الآن لا يبقى مجال للالتباس.
 
-Consider the function \(f:\N \to \N\) given by \(f(0) = 0\) and \(f(n+1) = f(n) + 2n+1\text{.}\) Find \(f(6)\text{.}\)[🔗](#sec_structures-functions-3-24-1-1) Solution. The rule says that \(f(6) = f(5) + 11\) (we are using \(6 = n+1\) so \(n = 5\)). We don’t know what \(f(5)\) is though. Well, we know that \(f(5) = f(4) + 9\text{.}\) So we need to compute \(f(4)\text{,}\) which will require knowing \(f(3)\text{,}\) which will require knowing\(f(2)\text{,}\)… will it ever end?[🔗](#sec_structures-functions-3-24-2-1) Yes! This process will always end because we have \(\N\) as our domain, so there is a least element. And we gave the value of \(f(0)\) explicitly, so we are good. We might decide to work up to \(f(6)\) instead of working down from \(f(6)\text{:}\) \begin{align*} f(1) = \amp f(0) + 1 = \amp 0 + 1 = 1\\ f(2) = \amp f(1) + 3 = \amp 1 + 3 = 4\\ f(3) = \amp f(2) + 5 = \amp 4 + 5 = 9\\ f(4) = \amp f(3) + 7 = \amp 9 + 7 = 16\\ f(5) = \amp f(4) + 9 = \amp 16 + 9 = 25\\ f(6) = \amp f(5) + 11 = \amp 25 + 11 = 36 \end{align*} [🔗](#sec_structures-functions-3-24-2-2) It looks like this recursively defined function is the same as the explicitly defined function \(f(n) = n^2\text{.}\) Is it? Later we will prove that it is.[🔗](#sec_structures-functions-3-24-2-3) [🔗](#sec_structures-functions-3-24-2) [🔗](#sec_structures-functions-3-24)Recursively defined functions are often easier to create from a “real-world” problem, because they describe how the values of the functions are changing. However, this comes with a price. It is harder to calculate the image of a single input, since you need to know the images of other (previous) elements in the domain.[🔗](#sec_structures-functions-3-25)
+إعطاء صيغة صريحة تحسب صورة أي عنصر في المجال طريقة ممتازة لوصف الدالة. سنسمّي هذه القواعد الصريحة صيغًا مغلقة (closed formulas) للدالة.
 
-#### Recursively Defined Functions.
+هناك طريقة أخرى مفيدة جدًا لوصف الدوال التي مجالها \(\N\text{،}\) تعتمد تحديدًا على بنية الأعداد الطبيعية: يمكننا تعريف الدالة *تعاوديًا (recursively)*!
 
-For a function \(f:\N \to \N\text{,}\) a recursive definition consists of an initial condition together with a recurrence relation. The initial condition is the explicitly given value of \(f(0)\text{.}\) The recurrence relation is a formula for \(f(n+1)\) in terms of \(f(n)\) (and possibly \(n\) itself).[🔗](#sec_structures-functions-3-26-3) [🔗](#sec_structures-functions-3-26)
+#### مثال 5.2.4.
 
-#### Example 5.2.5.
+تأمل الدالة \(f:\N \to \N\) المعطاة بـ\(f(0) = 0\) و\(f(n+1) = f(n) + 2n+1\text{.}\) أوجد \(f(6)\text{.}\)
 
-Give recursive definitions for the functions described below.
+**الحل.** تقول القاعدة إن \(f(6) = f(5) + 11\) (نستخدم \(6 = n+1\)، ومن ثم \(n = 5\)). لكننا لا نعرف قيمة \(f(5)\). نعرف أن \(f(5) = f(4) + 9\text{.}\) لذلك نحتاج إلى حساب \(f(4)\text{،}\) وهذا يتطلب معرفة \(f(3)\text{،}\) التي تتطلب معرفة \(f(2)\text{،}\) … فهل ينتهي هذا يومًا؟
 
-1. \(f:\N \to \N\) gives the number of snails in your terrarium \(n\) years after you built it, assuming you started with 3 snails and the number of snails doubles each year.[🔗](#sec_structures-functions-3-27-1-1-1-1-1) [🔗](#sec_structures-functions-3-27-1-1-1-1)
-2. \(g:\N \to \N\) gives the number of push-ups you do \(n\) days after you started your push-ups challenge, assuming you could do 7 push-ups on day 0 and you can do 2 more push-ups each day.[🔗](#sec_structures-functions-3-27-1-1-1-2-1) [🔗](#sec_structures-functions-3-27-1-1-1-2)
-3. \(h:\N \to \N\) defined by \(h(n) = n!\text{.}\) Recall that \(n! = 1 \cdot 2 \cdot 3 \cdot \cdots \cdot (n-1)\cdot n\) is the product of all numbers from \(1\) through \(n\text{.}\) We also define \(0! = 1\text{.}\)[🔗](#sec_structures-functions-3-27-1-1-1-3-1) [🔗](#sec_structures-functions-3-27-1-1-1-3)
+نعم! تنتهي هذه العملية دائمًا لأن مجالنا هو \(\N\)، وفيه عنصر أصغر. وقد أعطينا قيمة \(f(0)\) صراحةً، لذا لا مشكلة. وقد نقرر التدرج صعودًا إلى \(f(6)\) بدلًا من الرجوع نزولًا انطلاقًا من \(f(6)\text{:}\)
 
-[🔗](#sec_structures-functions-3-27-1-1) Solution.
+\begin{align*}
+f(1) = \amp f(0) + 1 = \amp 0 + 1 = 1\\
+f(2) = \amp f(1) + 3 = \amp 1 + 3 = 4\\
+f(3) = \amp f(2) + 5 = \amp 4 + 5 = 9\\
+f(4) = \amp f(3) + 7 = \amp 9 + 7 = 16\\
+f(5) = \amp f(4) + 9 = \amp 16 + 9 = 25\\
+f(6) = \amp f(5) + 11 = \amp 25 + 11 = 36
+\end{align*}
 
-1. The initial condition is \(f(0) = 3\text{.}\) To get \(f(n+1)\text{,}\) we would double the number of snails in the terrarium the previous year, which is given by \(f(n)\text{.}\) Thus \(f(n+1) = 2f(n)\text{.}\) The full recursive definition contains both of these and would be written, \begin{equation*} f(0) = 3;~ f(n+1) = 2f(n)\text{.} \end{equation*} [🔗](#sec_structures-functions-3-27-2-1-1-1-1) [🔗](#sec_structures-functions-3-27-2-1-1-1)
-2. We are told that on day 0 you can do 7 push-ups, so \(g(0) = 7\text{.}\) The number of push-ups you can do on day \(n+1\) is 2 more than the number you can do on day \(n\text{,}\) which is given by \(g(n)\text{.}\) Thus \begin{equation*} g(0) = 7;~ g(n+1) = g(n) + 2\text{.} \end{equation*} [🔗](#sec_structures-functions-3-27-2-1-1-2-1) [🔗](#sec_structures-functions-3-27-2-1-1-2)
-3. Here \(h(0) = 1\text{.}\) To get the recurrence relation, think about how you can get \(h(n+1) = (n+1)!\) from \(h(n) = n!\text{.}\) If you write out both of these as products, you see that \((n+1)!\) is just like \(n!\) except that you have one more term in the product, an extra \(n+1\text{.}\) So we have, \begin{equation*} h(0) = 1;~ h(n+1) = (n+1)\cdot h(n)\text{.} \end{equation*} [🔗](#sec_structures-functions-3-27-2-1-1-3-1) [🔗](#sec_structures-functions-3-27-2-1-1-3)
+يبدو أن هذه الدالة المعرّفة تعاوديًا هي نفسها الدالة المعرّفة صراحةً بـ\(f(n) = n^2\text{.}\) هل هي كذلك؟ سنثبت لاحقًا أنها كذلك.
 
-[🔗](#sec_structures-functions-3-27-2-1) [🔗](#sec_structures-functions-3-27-2) [🔗](#sec_structures-functions-3-27)[🔗](#sec_structures-functions-3)
+غالبًا ما يسهل إنشاء دوال معرّفة تعاوديًا انطلاقًا من مسألة من «العالم الحقيقي»، لأنها تصف كيفية تغيّر قيم الدوال. لكن لهذا ثمنًا: حساب صورة مُدخل واحد أصعب، لأنك تحتاج إلى معرفة صور عناصر أخرى (سابقة) في المجال.
 
-### Subsection Surjections, Injections, and Bijections
+#### الدوال المعرّفة تعاوديًا.
 
-We now turn to investigating special properties functions might or might not possess.[🔗](#subsec_surj-inj-bij-5) In the examples above, you may have noticed that sometimes there are elements of the codomain that are not in the range. When this sort of thing *does not* happen (that is, when everything in the codomain is in the range), we say the function is onto or that the function maps the domain *onto* the codomain. This terminology should make sense: The function puts the domain (entirely) on top of the codomain. The fancy math term for an onto function is a surjection, and we say that an onto function is a surjective function.[🔗](#subsec_surj-inj-bij-6) In pictures:[🔗](#subsec_surj-inj-bij-7) ! !
+لدالة \(f:\N \to \N\text{،}\) يتألف التعريف التعاودي (recursive definition) من شرط ابتدائي (initial condition) وعلاقة تعاود (recurrence relation). الشرط الابتدائي هو قيمة \(f(0)\) المعطاة صراحةً. وعلاقة التعاود صيغة لـ\(f(n+1)\) بدلالة \(f(n)\) (وربما \(n\) نفسها).
 
-#### Example 5.2.6.
+#### مثال 5.2.5.
 
-Which functions are surjective (i.e., onto)?
+أعطِ تعريفات تعاودية للدوال الموصوفة أدناه.
 
-1. \(f:\Z \to \Z\) defined by \(f(n) = 3n\text{.}\) [🔗](#subsec_surj-inj-bij-9-1-1-1-1)
-2. \(g: \{1,2,3\} \to \{a,b,c\}\) defined by \(g = \begin{pmatrix}1 \amp 2 \amp 3 \\ c \amp a \amp a \end{pmatrix}\text{.}\) [🔗](#subsec_surj-inj-bij-9-1-1-1-2)
-3. \(h:\{1,2,3\} \to \{1,2,3\}\) defined as follows:[🔗](#subsec_surj-inj-bij-9-1-1-1-3-1) ![Two rows containing the numbers 1, 2, and 3, from left to right. Arrows from the top 1 to bottom 2, from the top 2 to bottom 1, and top 3 straight down to bottom 3.](generated/latex-image/ex-surj-q.svg) [🔗](#subsec_surj-inj-bij-9-1-1-1-3)
+1. تعطي \(f:\N \to \N\) عدد الحلزونات في حوضك الأرضي بعد \(n\) سنوات من إنشائه، بافتراض أنك بدأت بثلاثة حلزونات وأن عددها يتضاعف كل سنة.
+2. تعطي \(g:\N \to \N\) عدد تمارين الضغط التي تؤديها بعد \(n\) أيام من بدء تحدي تمارين الضغط، بافتراض أنك استطعت أداء 7 تمارين في اليوم 0، وأنك تستطيع أداء تمرينين إضافيين كل يوم.
+3. الدالة \(h:\N \to \N\) المعرّفة بـ\(h(n) = n!\text{.}\) تذكّر أن مضروب (factorial) العدد \(n\)، أي \(n! = 1 \cdot 2 \cdot 3 \cdot \cdots \cdot (n-1)\cdot n\)، هو حاصل ضرب جميع الأعداد من \(1\) إلى \(n\text{.}\) ونعرّف أيضًا \(0! = 1\text{.}\)
 
-[🔗](#subsec_surj-inj-bij-9-1-1) Solution.
+**الحل.**
 
-1. \(f\) is not surjective. There are elements in the codomain that are not in the range. For example, no \(n \in \Z\) gets mapped to the number 1 (the rule would say that \(\frac{1}{3}\) would be sent to 1, but \(\frac{1}{3}\) is not in the domain). In fact, the range of the function is \(3\Z\) (the integer multiples of 3), which is not equal to \(\Z\text{.}\) [🔗](#subsec_surj-inj-bij-9-2-1-1-1)
-2. \(g\) is not surjective. There is no \(x \in \{1,2,3\}\) (the domain) for which \(g(x) = b\text{,}\) so \(b\text{,}\) which is in the codomain, is not in the range. Notice that there is an element from the codomain “missing” from the bottom row of the matrix. [🔗](#subsec_surj-inj-bij-9-2-1-1-2)
-3. \(h\) is surjective. Every element of the codomain is also in the range. Nothing in the codomain is missed. [🔗](#subsec_surj-inj-bij-9-2-1-1-3)
+1. الشرط الابتدائي هو \(f(0) = 3\text{.}\) للحصول على \(f(n+1)\text{،}\) نضاعف عدد الحلزونات في الحوض في السنة السابقة، الذي تعطيه \(f(n)\text{.}\) إذن \(f(n+1) = 2f(n)\text{.}\) يحتوي التعريف التعاودي الكامل على كليهما، ويُكتب:
 
-[🔗](#subsec_surj-inj-bij-9-2-1) [🔗](#subsec_surj-inj-bij-9-2) [🔗](#subsec_surj-inj-bij-9)To be a function, a rule cannot assign a single element of the domain to two or more different elements of the codomain. However, we have seen that the reverse *is* permissible: A function might assign the same element of the codomain to two or more different elements of the domain. When this *does not* occur (that is, when each element of the codomain is the image of at most one element of the domain), then we say the function is one-to-one. Again, this terminology makes sense: We are sending at most one element from the domain to one element from the codomain. One input to one output. The fancy math term for a one-to-one function is an injection. We call one-to-one functions injective functions.[🔗](#subsec_surj-inj-bij-10) In pictures:[🔗](#subsec_surj-inj-bij-11) ! !
+   \begin{equation*}
+   f(0) = 3;~ f(n+1) = 2f(n)\text{.}
+   \end{equation*}
 
-#### Example 5.2.7.
+2. قيل لنا إنك تستطيع أداء 7 تمارين ضغط في اليوم 0، لذا \(g(0) = 7\text{.}\) عدد تمارين الضغط التي تستطيع أداءها في اليوم \(n+1\) يزيد بمقدار 2 على عددها في اليوم \(n\text{،}\) الذي تعطيه \(g(n)\text{.}\) ومن ثم:
 
-Which functions are injective (i.e., one-to-one)?
+   \begin{equation*}
+   g(0) = 7;~ g(n+1) = g(n) + 2\text{.}
+   \end{equation*}
 
-1. \(f:\Z \to \Z\) defined by \(f(n) = 3n\text{.}\) [🔗](#subsec_surj-inj-bij-13-1-1-1-1)
-2. \(g: \{1,2,3\} \to \{a,b,c\}\) defined by \(g = \begin{pmatrix}1 \amp 2 \amp 3 \\ c \amp a \amp a \end{pmatrix}\text{.}\) [🔗](#subsec_surj-inj-bij-13-1-1-1-2)
-3. \(h:\{1,2,3\} \to \{1,2,3\}\) defined as follows:[🔗](#subsec_surj-inj-bij-13-1-1-1-3-1) ![Two rows containing the numbers 1, 2, and 3, from left to right. Arrows from the top 1 to bottom 2, from the top 2 to bottom 1, and top 3 straight down to bottom 3.](generated/latex-image/img-function-eg.svg) [🔗](#subsec_surj-inj-bij-13-1-1-1-3)
+3. هنا \(h(0) = 1\text{.}\) للحصول على علاقة التعاود، فكّر في كيفية الحصول على \(h(n+1) = (n+1)!\) من \(h(n) = n!\text{.}\) إذا كتبت كليهما على هيئة حاصل ضرب، رأيت أن \((n+1)!\) يشبه \(n!\)، لكن فيه عاملًا إضافيًا واحدًا هو \(n+1\text{.}\) لذلك لدينا:
 
-[🔗](#subsec_surj-inj-bij-13-1-1) Solution.
+   \begin{equation*}
+   h(0) = 1;~ h(n+1) = (n+1)\cdot h(n)\text{.}
+   \end{equation*}
 
-1. \(f\) is injective. Each element in the codomain is assigned to at *most* one element from the domain. If \(x\) is a multiple of three, then only \(x/3\) is mapped to \(x\text{.}\) If \(x\) is not a multiple of 3, then there is no input corresponding to the output \(x\text{.}\) [🔗](#subsec_surj-inj-bij-13-2-1-1-1)
-2. \(g\) is not injective. Both inputs \(2\) and \(3\) are assigned the output \(a\text{.}\) Notice that there is an element from the codomain that appears more than once on the bottom row of the matrix. [🔗](#subsec_surj-inj-bij-13-2-1-1-2)
-3. \(h\) is injective. Each output is only an output once. [🔗](#subsec_surj-inj-bij-13-2-1-1-3)
+### قسم فرعي: الدوال الشاملة والمتباينة والتقابلية
 
-[🔗](#subsec_surj-inj-bij-13-2-1) [🔗](#subsec_surj-inj-bij-13-2) [🔗](#subsec_surj-inj-bij-13)Be careful: “surjective” and “injective” are NOT opposites. You can see in the two examples above that there are functions that are surjective but not injective, injective but not surjective, both, or neither. In the case when a function is both one-to-one and onto (an injection and surjection), we say the function is a bijection, or that the function is a bijective function.[🔗](#subsec_surj-inj-bij-14) To illustrate the contrast between these two properties, consider a more formal definition of each, side by side.[🔗](#subsec_surj-inj-bij-15)
+ننتقل الآن إلى استكشاف خصائص خاصة قد تمتلكها الدوال أو لا تمتلكها.
 
-#### Injective vs. Surjective.
+ربما لاحظت في الأمثلة السابقة وجود عناصر أحيانًا في المجال المقابل لا تنتمي إلى المدى. عندما *لا* يحدث ذلك (أي عندما يكون كل ما في المجال المقابل موجودًا في المدى)، نقول إن الدالة شاملة (onto)، أو إنها تربط المجال *بالمجال المقابل كله*. هذا المصطلح منطقي: فالدالة تغطي بالمجال كاملَ المجال المقابل. والاسم الرياضي الاصطلاحي لهذا هو شمول (surjection)، ونقول إن الدالة الشاملة دالة شاملة (surjective).
 
-A function is injective provided every element of the codomain is the image of *at most* one element from the domain.[🔗](#subsec_surj-inj-bij-16-2) A function is surjective provided every element of the codomain is the image of *at least* one element from the domain.[🔗](#subsec_surj-inj-bij-16-3) [🔗](#subsec_surj-inj-bij-16)Notice both properties are determined by what happens to elements of the codomain: They could be repeated as images, or they could be “missed” (not be images). Injective functions do not have repeats but might or might not miss elements. Surjective functions do not miss elements, but might or might not have repeats. The bijective functions are those that do not have repeats and do not miss elements.[🔗](#subsec_surj-inj-bij-17) [🔗](#subsec_surj-inj-bij)
+بالصور:
 
-### Subsection Image and Inverse Image
+![أربع نقاط سوداء في صف علوي وثلاث نقاط بيضاء في صف سفلي. تتجه الأسهم من النقاط العليا إلى السفلى: إلى كل من النقطتين البيضاوين اليسريين سهم واحد، وإلى النقطة البيضاء الأبعد يمينًا سهمان من نقطتين سوداويين مختلفتين. الصورة موسومة «شاملة».](/images/discrete-math/sec_structures-functions-surjective-ex.svg)
 
-When discussing functions, we have notation for talking about an element of the domain (say \(x\)) and its corresponding element in the codomain (we write \(f(x)\text{,}\) which *is* the image of \(x\)). Sometimes we will want to talk about all the elements that are images of some subset of the domain. It would also be nice to start with some element of the codomain (say \(y\)) and talk about which element or elements (if any) from the domain it is the image of. We could write “those \(x\) in the domain such that \(f(x) = y\text{,}\)” but this is a lot of writing. Here is some notation to make our lives easier.[🔗](#sec_structures-functions-5-4) To address the first situation, what we are after is a way to describe the *set* of images of elements in some subset of the domain. Suppose \(f:X \to Y\) is a function and that \(A \subseteq X\) is some subset of the domain (possibly all of it). We will use the notation \(f(A)\) to denote the image of \(A\) under \(f\), namely the set of elements in \(Y\) that are the image of elements from \(A\text{.}\) That is, \(f(A) = \{f(a) \in Y \st a \in A\}\text{.}\) [🔗](#sec_structures-functions-5-5) We can do this in the other direction as well. We might ask which elements of the domain get mapped to a particular set in the codomain. Let \(f:X \to Y\) be a function and suppose \(B \subseteq Y\) is a subset of the codomain. Then we will write \(f\inv(B)\) for the inverse image of \(B\) under \(f\), namely the set of elements in \(X\) whose image are elements in \(B\text{.}\) In other words, \(f\inv(B) = \{x \in X \st f(x) \in B\}\) . [🔗](#sec_structures-functions-5-6) Often we are interested in the element(s) whose image is a particular element \(y\) of in the codomain. The notation above works: \(f\inv(\{y\})\) is the set of all elements in the domain that \(f\) sends to \(y\text{.}\) It makes sense to think of this as a set: there might not be anything sent to \(y\) (if \(y\) is not in the range), in which case \(f\inv(\{y\}) = \emptyset\text{.}\) Or \(f\) might send multiple elements to \(y\) (if \(f\) is not injective). As a notational convenience, we usually drop the set braces around the \(y\) and write \(f\inv(y)\) instead for this set.[🔗](#sec_structures-functions-5-7) WARNING: \(f\inv(y)\) is not an inverse function! Inverse functions only exist for bijections, but \(f\inv(y)\) is defined for any function \(f\text{.}\) The point: \(f\inv(y)\) is a *set*, not an *element* of the domain. This is just sloppy notation for \(f\inv(\{y\})\text{.}\) To help make this distinction, we would call \(f\inv(y)\) the complete inverse image of \(y\) under \(f\). It is not the image of \(y\) under \(f\inv\) (since the function \(f\inv\) might not exist).[🔗](#sec_structures-functions-5-8)
+![أربع نقاط سوداء في صف علوي وثلاث نقاط بيضاء في صف سفلي. تتجه الأسهم من النقاط العليا إلى السفلى: إلى كل من النقطتين البيضاوين اليسرى واليمنى سهمان، ولا يتجه أي سهم إلى النقطة البيضاء الوسطى. الصورة موسومة «غير شاملة».](/images/discrete-math/sec_structures-functions-non-surjective-ex.svg)
 
-#### Example 5.2.8.
+#### مثال 5.2.6.
 
-Consider the function \(f:\{1,2,3,4,5,6\} \to \{a,b,c,d\}\) given by \begin{equation*} f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \amp 6 \\ a \amp a \amp b \amp b \amp b \amp c\end{pmatrix}\text{.} \end{equation*} Find \(f(\{1,2,3\})\text{,}\) \(f\inv(\{a,b\})\text{,}\) and \(f\inv(d)\text{.}\) [🔗](#sec_structures-functions-5-9-1-1) Solution. \(f(\{1,2,3\}) = \{a,b\}\) since \(a\) and \(b\) are the elements in the codomain to which \(f\) sends \(1\text{,}\) \(2\text{,}\) and \(3\text{.}\)[🔗](#sec_structures-functions-5-9-2-1) \(f\inv(\{a,b\}) = \{1,2,3,4,5\}\) since these are exactly the elements that \(f\) sends to \(a\) and \(b\text{.}\)[🔗](#sec_structures-functions-5-9-2-2) \(f\inv(d) = \emptyset\) since \(d\) is not in the range of \(f\text{.}\)[🔗](#sec_structures-functions-5-9-2-3) [🔗](#sec_structures-functions-5-9-2) [🔗](#sec_structures-functions-5-9)
+أي الدوال شاملة (أي تغطي المجال المقابل كله)؟
 
-#### Example 5.2.9.
+1. \(f:\Z \to \Z\) المعرّفة بـ\(f(n) = 3n\text{.}\)
+2. \(g: \{1,2,3\} \to \{a,b,c\}\) المعرّفة بـ\(g = \begin{pmatrix}1 \amp 2 \amp 3 \\ c \amp a \amp a \end{pmatrix}\text{.}\)
+3. \(h:\{1,2,3\} \to \{1,2,3\}\) المعرّفة كما يلي:
 
-Consider the function \(g:\Z \to \Z\) defined by \(g(n) = n^2 + 1\text{.}\) Find \(g(1)\) and \(g(\{1\})\text{.}\) Then find \(g\inv(1)\text{,}\) \(g\inv(2)\text{,}\) and \(g\inv(3)\text{.}\)[🔗](#sec_structures-functions-5-10-1-1) Solution. Note that \(g(1) \ne g(\{1\})\text{.}\) The first is an element: \(g(1) = 2\text{.}\) The second is a set: \(g(\{1\}) = \{2\}\) .[🔗](#sec_structures-functions-5-10-2-1) To find \(g\inv(1)\text{,}\) we need to find all integers \(n\) such that \(n^2 + 1 = 1\text{.}\) Clearly only 0 works, so \(g\inv(1) = \{0\}\) (note that even though there is only one element, we still write it as a set with one element in it).[🔗](#sec_structures-functions-5-10-2-2) To find \(g\inv(2)\text{,}\) we need to find all \(n\) such that \(n^2 + 1 = 2\text{.}\) We see \(g\inv(2) = \{-1,1\}\text{.}\)[🔗](#sec_structures-functions-5-10-2-3) Finally, if \(n^2 + 1 = 3\text{,}\) then we are looking for an \(n\) such that \(n^2 = 2\text{.}\) There are no such integers so \(g\inv(3) = \emptyset\text{.}\)[🔗](#sec_structures-functions-5-10-2-4) [🔗](#sec_structures-functions-5-10-2) [🔗](#sec_structures-functions-5-10)Since \(f\inv(y)\) is a set, it makes sense to ask for \(\card{f\inv(y)}\text{,}\) the number of elements in the domain that map to \(y\text{.}\)[🔗](#sec_structures-functions-5-11)
+   ![صفّان يحتوي كل منهما على الأعداد 1 و2 و3، من اليسار إلى اليمين. تتجه الأسهم من 1 العلوي إلى 2 السفلي، ومن 2 العلوي إلى 1 السفلي، ومن 3 العلوي مباشرة إلى 3 السفلي.](/images/discrete-math/sec_structures-functions-ex-surj-q.svg)
 
-#### Example 5.2.10.
+**الحل.**
 
-Find a function \(f:\{1,2,3,4,5\} \to \N\) such that \(\card{f\inv(7)} = 5\text{.}\)[🔗](#sec_structures-functions-5-12-1-1) Solution. There is only one such function. We need five elements of the domain to map to the number \(7 \in \N\text{.}\) Since there are only five elements in the domain, all of them must map to 7. So \begin{equation*} f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 7 \amp 7 \amp 7 \amp 7 \amp 7\end{pmatrix} \end{equation*} . [🔗](#sec_structures-functions-5-12-2-1) [🔗](#sec_structures-functions-5-12-2) [🔗](#sec_structures-functions-5-12)
+1. \(f\) ليست شاملة. توجد عناصر في المجال المقابل لا تنتمي إلى المدى. مثلًا، لا يوجد \(n \in \Z\) يُربط بالعدد 1 (تقتضي القاعدة إرسال \(\frac{1}{3}\) إلى 1، لكن \(\frac{1}{3}\) ليس في المجال). في الواقع، مدى الدالة هو \(3\Z\) (المضاعفات الصحيحة للعدد 3)، وهو لا يساوي \(\Z\text{.}\)
+2. \(g\) ليست شاملة. لا يوجد \(x \in \{1,2,3\}\) (المجال) يحقق \(g(x) = b\text{،}\) لذلك فإن \(b\text{،}\) الذي ينتمي إلى المجال المقابل، لا ينتمي إلى المدى. لاحظ أن عنصرًا من المجال المقابل «مفقود» من السطر السفلي للمصفوفة.
+3. \(h\) شاملة. كل عنصر من المجال المقابل ينتمي أيضًا إلى المدى. لا يفوتها أي عنصر في المجال المقابل.
 
-#### Function Definitions.
+لكي تكون القاعدة دالة، لا يجوز أن تُسنِد إلى عنصر واحد من المجال عنصرين مختلفين أو أكثر من المجال المقابل. لكننا رأينا أن العكس *مسموح*: قد تُسنِد الدالة العنصر نفسه من المجال المقابل إلى عنصرين مختلفين أو أكثر من المجال. عندما *لا* يحدث ذلك (أي عندما يكون كل عنصر من المجال المقابل صورة لعنصر واحد على الأكثر من المجال)، نقول إن الدالة واحد لواحد (one-to-one). وهذا المصطلح منطقي أيضًا: نرسل عنصرًا واحدًا على الأكثر من المجال إلى عنصر واحد من المجال المقابل، مُدخلًا واحدًا إلى مخرج واحد. والاسم الرياضي الاصطلاحي لهذا هو تباين (injection). ونسمي دوال الواحد لواحد دوال متباينة (injective).
 
-Here is a summary of all the main concepts and definitions we use when working with functions.
+بالصور:
 
-- A function is a rule that assigns each element of a set, called the domain, to exactly one element of a second set, called the codomain.[🔗](#sec_structures-functions-5-13-2-1-1-1) [🔗](#sec_structures-functions-5-13-2-1-1)
-- Notation: \(f:X \to Y\) is our way of saying that the function is called \(f\text{,}\) the domain is the set \(X\text{,}\) and the codomain is the set \(Y\text{.}\)[🔗](#sec_structures-functions-5-13-2-1-2-1) [🔗](#sec_structures-functions-5-13-2-1-2)
-- To specify the rule for a function with small domain, use two-line notation by writing a matrix with each output directly below its corresponding input, as in: \begin{equation*} f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 1 \amp 3 \amp 1 \end{pmatrix} \end{equation*} . [🔗](#sec_structures-functions-5-13-2-1-3-1) [🔗](#sec_structures-functions-5-13-2-1-3)
-- \(f(x) = y\) means the element \(x\) of the domain (input) is assigned to the element \(y\) of the codomain. We say \(y\) is an output. Alternatively, we call \(y\) the image of \(x\) under \(f\) .[🔗](#sec_structures-functions-5-13-2-1-4-1) [🔗](#sec_structures-functions-5-13-2-1-4)
-- The range is a subset of the codomain. It is the set of all elements that are assigned to at least one element of the domain by the function. That is, the range is the set of all outputs.[🔗](#sec_structures-functions-5-13-2-1-5-1) [🔗](#sec_structures-functions-5-13-2-1-5)
-- A function is injective (an injection or one-to-one) if every element of the codomain is the image of at most one element from the domain.[🔗](#sec_structures-functions-5-13-2-1-6-1) [🔗](#sec_structures-functions-5-13-2-1-6)
-- A function is surjective (a surjection or onto) if every element of the codomain is the image of at least one element from the domain.[🔗](#sec_structures-functions-5-13-2-1-7-1) [🔗](#sec_structures-functions-5-13-2-1-7)
-- A bijection is a function that is both an injection and surjection. In other words, if every element of the codomain is the image of exactly one element from the domain.[🔗](#sec_structures-functions-5-13-2-1-8-1) [🔗](#sec_structures-functions-5-13-2-1-8)
-- The image of an element \(x\) in the domain is the element \(y\) in the codomain that \(x\) is mapped to. That is, the image of \(x\) under \(f\) is \(f(x)\text{.}\)[🔗](#sec_structures-functions-5-13-2-1-9-1) [🔗](#sec_structures-functions-5-13-2-1-9)
-- The complete inverse image of an element \(y\) in the codomain, written \(f\inv(y)\text{,}\) is the *set* of all elements in the domain that are assigned to \(y\) by the function.[🔗](#sec_structures-functions-5-13-2-1-10-1) [🔗](#sec_structures-functions-5-13-2-1-10)
-- The image of a subset \(A\) of the domain is the set \(f(A) = \{f(a) \in Y \st a \in A\}\text{.}\)[🔗](#sec_structures-functions-5-13-2-1-11-1) [🔗](#sec_structures-functions-5-13-2-1-11)
-- The inverse image of a subset \(B\) of the codomain is the set \(f\inv(B) = \{x \in X \st f(x) \in B\}\text{.}\)[🔗](#sec_structures-functions-5-13-2-1-12-1) [🔗](#sec_structures-functions-5-13-2-1-12)
+![أربع نقاط سوداء في صف علوي وخمس نقاط بيضاء في صف سفلي. تتجه الأسهم من النقاط العليا إلى السفلى. من كل نقطة سوداء سهم إلى نقطة بيضاء مختلفة. لا يتجه أي سهم إلى النقطة البيضاء الوسطى. الصورة موسومة «متباينة».](/images/discrete-math/sec_structures-functions-injective-ex.svg)
 
-[🔗](#sec_structures-functions-5-13-2) [🔗](#sec_structures-functions-5-13)
+![أربع نقاط سوداء في صف علوي وخمس نقاط بيضاء في صف سفلي. تتجه الأسهم من النقاط العليا إلى السفلى. من نقطتين سوداويين سهمان إلى نقطتين بيضاوين مختلفتين، ومن النقطتين السوداوين الأخريين سهمان إلى النقطة البيضاء نفسها. لا تتلقى نقطتان بيضاوان أي سهم. الصورة موسومة «غير متباينة».](/images/discrete-math/sec_structures-functions-non-injective-ex.svg)
 
-#### Reading Questions Reading Questions
+#### مثال 5.2.7.
+
+أي الدوال متباينة (أي واحد لواحد)؟
+
+1. \(f:\Z \to \Z\) المعرّفة بـ\(f(n) = 3n\text{.}\)
+2. \(g: \{1,2,3\} \to \{a,b,c\}\) المعرّفة بـ\(g = \begin{pmatrix}1 \amp 2 \amp 3 \\ c \amp a \amp a \end{pmatrix}\text{.}\)
+3. \(h:\{1,2,3\} \to \{1,2,3\}\) المعرّفة كما يلي:
+
+   ![صفّان يحتوي كل منهما على الأعداد 1 و2 و3، من اليسار إلى اليمين. تتجه الأسهم من 1 العلوي إلى 2 السفلي، ومن 2 العلوي إلى 1 السفلي، ومن 3 العلوي مباشرة إلى 3 السفلي.](/images/discrete-math/sec_structures-functions-img-function-eg.svg)
+
+**الحل.**
+
+1. \(f\) متباينة. كل عنصر من المجال المقابل يُسنَد إلى عنصر واحد *على الأكثر* من المجال. إذا كان \(x\) من مضاعفات 3، فلا يُربط بـ\(x\) إلا \(x/3\). وإذا لم يكن \(x\) من مضاعفات 3، فلا يوجد مُدخل يقابل المخرج \(x\text{.}\)
+2. \(g\) ليست متباينة. يُسنَد المخرج \(a\) إلى كلا المدخلين \(2\) و\(3\). لاحظ وجود عنصر من المجال المقابل يظهر أكثر من مرة في السطر السفلي للمصفوفة.
+3. \(h\) متباينة. لا يظهر كل مخرج بوصفه مخرجًا إلا مرة واحدة.
+
+انتبه: «شاملة» و«متباينة» **ليستا** صفتين متضادتين. ترى في المثالين السابقين دوالًا شاملة غير متباينة، ودوالًا متباينة غير شاملة، ودوالًا تمتلك الصفتين، وأخرى لا تمتلك أيًا منهما. عندما تكون الدالة واحدًا لواحد وشاملة معًا (متباينة وشاملة)، نقول إنها تقابل (bijection)، أو دالة تقابلية (bijective).
+
+لتوضيح الفرق بين هاتين الخاصيتين، تأمل تعريفًا أكثر رسمية لكل منهما جنبًا إلى جنب.
+
+#### التباين مقابل الشمول.
+
+تكون الدالة متباينة إذا كان كل عنصر من المجال المقابل صورة لعنصر واحد *على الأكثر* من المجال.
+
+تكون الدالة شاملة إذا كان كل عنصر من المجال المقابل صورة لعنصر واحد *على الأقل* من المجال.
+
+لاحظ أن كلتا الخاصيتين تتحددان بما يحدث لعناصر المجال المقابل: فقد تتكرر بوصفها صورًا، أو قد «تفوت» الدالةَ (فلا تكون صورًا). الدوال المتباينة لا تكرر الصور، لكنها قد تفوّت عناصر أو لا تفوّتها. والدوال الشاملة لا تفوّت عناصر، لكنها قد تكرر الصور أو لا تكررها. أما الدوال التقابلية فهي التي لا تكرر الصور ولا تفوّت عناصر.
+
+### قسم فرعي: الصورة والصورة العكسية
+
+عند مناقشة الدوال، لدينا ترميز للحديث عن عنصر من المجال (لنقل \(x\)) وعن العنصر المقابل له في المجال المقابل (نكتب \(f(x)\text{،}\) وهو *صورة* \(x\)). أحيانًا نريد الحديث عن جميع العناصر التي تكون صورًا لمجموعة جزئية من المجال. وقد يكون من المفيد أيضًا أن نبدأ بعنصر من المجال المقابل (لنقل \(y\))، ونتحدث عن العنصر أو العناصر من المجال التي يكون صورة لها، إن وجدت. يمكننا كتابة «عناصر \(x\) في المجال التي تحقق \(f(x) = y\text{،}\)» لكن هذا يتطلب كتابة كثيرة. إليك ترميزًا يسهّل الأمر.
+
+لمعالجة الحالة الأولى، نريد طريقة لوصف *مجموعة* صور عناصر مجموعة جزئية من المجال. افترض أن \(f:X \to Y\) دالة، وأن \(A \subseteq X\) مجموعة جزئية من المجال (وربما تكون المجال كله). سنستخدم الترميز \(f(A)\) للدلالة على صورة \(A\) تحت \(f\)، أي مجموعة العناصر في \(Y\) التي تكون صورًا لعناصر من \(A\text{.}\) أي إن \(f(A) = \{f(a) \in Y \st a \in A\}\text{.}\)
+
+يمكننا فعل هذا في الاتجاه الآخر أيضًا. فقد نسأل عن عناصر المجال التي تُربط بمجموعة معينة في المجال المقابل. لتكن \(f:X \to Y\) دالة، وافترض أن \(B \subseteq Y\) مجموعة جزئية من المجال المقابل. نكتب \(f\inv(B)\) للدلالة على الصورة العكسية (inverse image) لـ\(B\) تحت \(f\)، أي مجموعة العناصر في \(X\) التي تنتمي صورها إلى \(B\text{.}\) بعبارة أخرى، \(f\inv(B) = \{x \in X \st f(x) \in B\}\).
+
+غالبًا ما نهتم بالعنصر أو العناصر التي تكون صورتها عنصرًا معينًا \(y\) من المجال المقابل. يصلح الترميز السابق: \(f\inv(\{y\})\) هي مجموعة جميع عناصر المجال التي ترسلها \(f\) إلى \(y\text{.}\) ومن المنطقي اعتبارها مجموعة: فقد لا يُرسَل أي شيء إلى \(y\) (إذا لم يكن \(y\) في المدى)، وعندئذ \(f\inv(\{y\}) = \emptyset\text{.}\) أو قد ترسل \(f\) عناصر متعددة إلى \(y\) (إذا لم تكن \(f\) متباينة). ولتسهيل الترميز، نحذف عادةً قوسي المجموعة حول \(y\) ونكتب بدلًا منهما \(f\inv(y)\) للدلالة على هذه المجموعة.
+
+**تحذير:** \(f\inv(y)\) ليست دالة عكسية (inverse function)! لا توجد الدوال العكسية إلا للدوال التقابلية، لكن \(f\inv(y)\) معرّفة لأي دالة \(f\text{.}\) الفكرة هي أن \(f\inv(y)\) *مجموعة*، لا *عنصر* من المجال. إنها مجرد ترميز غير دقيق لـ\(f\inv(\{y\})\text{.}\) وللمساعدة على إبراز هذا الفرق، نسمي \(f\inv(y)\) الصورة العكسية الكاملة (complete inverse image) لـ\(y\) تحت \(f\). وليست صورة \(y\) تحت \(f\inv\) (لأن الدالة \(f\inv\) قد لا توجد).
+
+#### مثال 5.2.8.
+
+تأمل الدالة \(f:\{1,2,3,4,5,6\} \to \{a,b,c,d\}\) المعطاة بـ
+
+\begin{equation*}
+f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \amp 6 \\ a \amp a \amp b \amp b \amp b \amp c\end{pmatrix}\text{.}
+\end{equation*}
+
+أوجد \(f(\{1,2,3\})\text{،}\) و\(f\inv(\{a,b\})\text{،}\) و\(f\inv(d)\text{.}\)
+
+**الحل.** \(f(\{1,2,3\}) = \{a,b\}\)، لأن \(a\) و\(b\) هما عنصرا المجال المقابل اللذان ترسل إليهما \(f\) الأعداد \(1\text{،}\) و\(2\text{،}\) و\(3\text{.}\)
+
+\(f\inv(\{a,b\}) = \{1,2,3,4,5\}\)، لأن هذه بالضبط هي العناصر التي ترسلها \(f\) إلى \(a\) و\(b\text{.}\)
+
+\(f\inv(d) = \emptyset\)، لأن \(d\) لا ينتمي إلى مدى \(f\text{.}\)
+
+#### مثال 5.2.9.
+
+تأمل الدالة \(g:\Z \to \Z\) المعرّفة بـ\(g(n) = n^2 + 1\text{.}\) أوجد \(g(1)\) و\(g(\{1\})\text{.}\) ثم أوجد \(g\inv(1)\text{،}\) و\(g\inv(2)\text{،}\) و\(g\inv(3)\text{.}\)
+
+**الحل.** لاحظ أن \(g(1) \ne g(\{1\})\text{.}\) الأولى عنصر: \(g(1) = 2\text{.}\) والثانية مجموعة: \(g(\{1\}) = \{2\}\).
+
+لإيجاد \(g\inv(1)\text{،}\) نحتاج إلى إيجاد جميع الأعداد الصحيحة \(n\) التي تحقق \(n^2 + 1 = 1\text{.}\) من الواضح أن 0 وحده يصلح، لذا \(g\inv(1) = \{0\}\) (لاحظ أنه، مع وجود عنصر واحد فقط، لا نزال نكتبها مجموعة تحتوي على عنصر واحد).
+
+لإيجاد \(g\inv(2)\text{،}\) نحتاج إلى إيجاد جميع قيم \(n\) التي تحقق \(n^2 + 1 = 2\text{.}\) فنرى أن \(g\inv(2) = \{-1,1\}\text{.}\)
+
+أخيرًا، إذا كان \(n^2 + 1 = 3\text{،}\) فإننا نبحث عن \(n\) يحقق \(n^2 = 2\text{.}\) لا توجد أعداد صحيحة كهذه، لذا \(g\inv(3) = \emptyset\text{.}\)
+
+لأن \(f\inv(y)\) مجموعة، فمن المنطقي السؤال عن \(\card{f\inv(y)}\text{،}\) أي عدد العناصر (cardinality) في المجال التي تُربط بـ\(y\text{.}\)
+
+#### مثال 5.2.10.
+
+أوجد دالة \(f:\{1,2,3,4,5\} \to \N\) تحقق \(\card{f\inv(7)} = 5\text{.}\)
+
+**الحل.** توجد دالة واحدة فقط بهذه الصفة. نحتاج إلى ربط خمسة عناصر من المجال بالعدد \(7 \in \N\text{.}\) ولأن المجال لا يحتوي إلا على خمسة عناصر، يجب أن تُربط جميعها بالعدد 7. لذلك:
+
+\begin{equation*}
+f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 7 \amp 7 \amp 7 \amp 7 \amp 7\end{pmatrix}
+\end{equation*}
+
+#### تعريفات الدوال.
+
+إليك ملخصًا لجميع المفاهيم والتعريفات الرئيسية التي نستخدمها عند العمل مع الدوال.
+
+- الدالة قاعدة تُسنِد إلى كل عنصر من مجموعة تُسمّى المجال عنصرًا واحدًا بالضبط من مجموعة ثانية تُسمّى المجال المقابل.
+- الترميز: \(f:X \to Y\) طريقتنا للقول إن اسم الدالة \(f\text{،}\) ومجالها المجموعة \(X\text{،}\) ومجالها المقابل المجموعة \(Y\text{.}\)
+- لتحديد قاعدة دالة ذات مجال صغير، استخدم الترميز ذا السطرين بكتابة مصفوفة يكون كل مخرج فيها أسفل مُدخله المقابل مباشرة، كما في:
+
+  \begin{equation*}
+  f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 1 \amp 3 \amp 1 \end{pmatrix}
+  \end{equation*}
+
+- تعني \(f(x) = y\) أن العنصر \(x\) من المجال (المُدخل) يُربط بالعنصر \(y\) من المجال المقابل. نقول إن \(y\) مخرج، أو نسمي \(y\) صورة \(x\) تحت \(f\).
+- المدى مجموعة جزئية من المجال المقابل. وهو مجموعة جميع العناصر التي تُسنَد، بواسطة الدالة، إلى عنصر واحد على الأقل من المجال. أي إن المدى مجموعة جميع المخرجات.
+- تكون الدالة متباينة (تباينًا أو واحدًا لواحد) إذا كان كل عنصر من المجال المقابل صورة لعنصر واحد على الأكثر من المجال.
+- تكون الدالة شاملة (شمولًا أو تغطية للمجال المقابل كله) إذا كان كل عنصر من المجال المقابل صورة لعنصر واحد على الأقل من المجال.
+- التقابل دالة متباينة وشاملة معًا. بعبارة أخرى، يكون كل عنصر من المجال المقابل صورة لعنصر واحد بالضبط من المجال.
+- صورة عنصر \(x\) في المجال هي العنصر \(y\) في المجال المقابل الذي يُربط به \(x\). أي إن صورة \(x\) تحت \(f\) هي \(f(x)\text{.}\)
+- الصورة العكسية الكاملة لعنصر \(y\) في المجال المقابل، التي تُكتب \(f\inv(y)\text{،}\) هي *مجموعة* جميع عناصر المجال التي تُسنِد إليها الدالة \(y\).
+- صورة مجموعة جزئية \(A\) من المجال هي المجموعة \(f(A) = \{f(a) \in Y \st a \in A\}\text{.}\)
+- الصورة العكسية لمجموعة جزئية \(B\) من المجال المقابل هي المجموعة \(f\inv(B) = \{x \in X \st f(x) \in B\}\text{.}\)
+
+#### أسئلة القراءة
 
 #### 1.
 
-Explain, in your own words, the relationship between the codomain of a function and the range of a function.[🔗](#rq-intro-functions-codom-range-1-1) [🔗](#rq-intro-functions-codom-range)
+اشرح بأسلوبك العلاقة بين المجال المقابل للدالة ومداها.
 
 #### 2.
 
-If a function has domain and codomain of equal sizes, must the function be *surjective*? Must it be *injective*? Could it be only one of these? Briefly explain your thinking.[🔗](#rq-intro-functions-equal-sizes-1-1) [🔗](#rq-intro-functions-equal-sizes)
+إذا كان مجال الدالة ومجالها المقابل متساويين في عدد العناصر، فهل يجب أن تكون الدالة *شاملة*؟ وهل يجب أن تكون *متباينة*؟ وهل يمكن أن تمتلك إحدى هاتين الصفتين فقط؟ اشرح تفكيرك بإيجاز.
 
 #### 3.
 
-What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about after reading this section.[🔗](#rq-intro-functions-q-1-1) [🔗](#rq-intro-functions-q)[🔗](#rqs-intro-functions)[🔗](#sec_structures-functions-5)
+ما الأسئلة التي لديك؟ اكتب سؤالًا واحدًا على الأقل عن محتوى هذا القسم قد يثير فضولك أو فضول أحد زملائك بعد قراءته.
 
-### Exercises Exercises
+### تمارين
 
 #### 1.
 
-Activate Consider the function \(f:\{1,2,3,4,5\} \to \{1,2,3,4,5\}\) given by[🔗](#extracted-webwork-235-1-1-1) \(\displaystyle{f = \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 5 \amp 3 \amp 3 \amp 4 \amp 2 \end{pmatrix}.}\)[🔗](#extracted-webwork-235-1-1-2)
+تفعيل. تأمل الدالة \(f:\{1,2,3,4,5\} \to \{1,2,3,4,5\}\) المعطاة بـ
 
-1. Find \(f(5)\text{.}\) [🔗](#extracted-webwork-235-1-1-3-1-1-1) [🔗](#extracted-webwork-235-1-1-3-1-1)
-2. Find a \(n\) in the domain such that \(f(n) = 5\text{.}\) [🔗](#extracted-webwork-235-1-1-3-1-2-1) [🔗](#extracted-webwork-235-1-1-3-1-2)
-3. Find an element \(n\) of the domain such that \(f(n) = n\text{.}\) [🔗](#extracted-webwork-235-1-1-3-1-3-1) [🔗](#extracted-webwork-235-1-1-3-1-3)
-4. Find an element of the codomain that is not in the range. [🔗](#extracted-webwork-235-1-1-3-1-4-1) [🔗](#extracted-webwork-235-1-1-3-1-4)
+\(\displaystyle{f = \begin{pmatrix} 1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 5 \amp 3 \amp 3 \amp 4 \amp 2 \end{pmatrix}.}\)
 
-[🔗](#extracted-webwork-235-1-1-3) [🔗](#ww-functions-two-line)
+1. أوجد \(f(5)\text{.}\)
+2. أوجد \(n\) في المجال يحقق \(f(n) = 5\text{.}\)
+3. أوجد عنصرًا \(n\) من المجال يحقق \(f(n) = n\text{.}\)
+4. أوجد عنصرًا من المجال المقابل لا ينتمي إلى المدى.
 
 #### 2.
 
-Activate The following functions all have \(\lbrace 1,2,3,4,5\rbrace\) as both their domain and codomain. For each, determine whether it is (only) injective, (only) surjective, bijective, or neither injective nor surjective.[🔗](#extracted-webwork-236-1-1-1)
+تفعيل. جميع الدوال التالية لها \(\lbrace 1,2,3,4,5\rbrace\) مجالًا ومجالًا مقابلًا معًا. حدد لكل منها هل هي متباينة (فقط)، أم شاملة (فقط)، أم تقابلية، أم لا متباينة ولا شاملة.
 
-1. \(\displaystyle f(x) = \begin{cases} x + 2 \amp \text{ if } x \lt 4 \\ x \amp \text{ if } x \ge 4 \end{cases}\)[🔗](#extracted-webwork-236-1-1-2-1-1-1) [🔗](#extracted-webwork-236-1-1-2-1-1)
-2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 3 \amp 3 \amp 1 \amp 3 \amp 1\end{pmatrix}\)[🔗](#extracted-webwork-236-1-1-2-1-2-1) [🔗](#extracted-webwork-236-1-1-2-1-2)
-3. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 3 \amp 4 \amp 5 \amp 1\end{pmatrix}\)[🔗](#extracted-webwork-236-1-1-2-1-3-1) [🔗](#extracted-webwork-236-1-1-2-1-3)
-4. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 5 \amp 4 \amp 3 \amp 2 \amp 1\end{pmatrix}\)[🔗](#extracted-webwork-236-1-1-2-1-4-1) [🔗](#extracted-webwork-236-1-1-2-1-4)
+1. \(\displaystyle f(x) = \begin{cases} x + 2 \amp \text{ إذا كان } x \lt 4 \\ x \amp \text{ إذا كان } x \ge 4 \end{cases}\)
+2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 3 \amp 3 \amp 1 \amp 3 \amp 1\end{pmatrix}\)
+3. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 3 \amp 4 \amp 5 \amp 1\end{pmatrix}\)
+4. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 5 \amp 4 \amp 3 \amp 2 \amp 1\end{pmatrix}\)
 
-[🔗](#extracted-webwork-236-1-1-2) Hint. Since the domain and codomain are the same size, is it possible for a function to be injective but not surjective, or surjective but not injective?[🔗](#extracted-webwork-236-1-2-1) [🔗](#extracted-webwork-236-1-2) [🔗](#ww-functions-inj-surj1)
+**تلميح.** بما أن المجال والمجال المقابل لهما العدد نفسه من العناصر، فهل يمكن أن تكون الدالة متباينة وغير شاملة، أو شاملة وغير متباينة؟
 
 #### 3.
 
-Activate Consider the following functions \(f: \lbrace 1,2,3,4,5\rbrace \to \lbrace 1,2,3\rbrace\text{.}\) For each, determine whether it is (only) injective, (only) surjective, bijective, or neither injective nor surjective.[🔗](#extracted-webwork-237-1-1-1)
+تفعيل. تأمل الدوال التالية \(f: \lbrace 1,2,3,4,5\rbrace \to \lbrace 1,2,3\rbrace\text{.}\) حدد لكل منها هل هي متباينة (فقط)، أم شاملة (فقط)، أم تقابلية، أم لا متباينة ولا شاملة.
 
-1. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 2 \amp 3 \amp 3 \amp 2\end{pmatrix}\)[🔗](#extracted-webwork-237-1-1-2-1-1-1) [🔗](#extracted-webwork-237-1-1-2-1-1)
-2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 1 \amp 2 \amp 1 \amp 2\end{pmatrix}\)[🔗](#extracted-webwork-237-1-1-2-1-2-1) [🔗](#extracted-webwork-237-1-1-2-1-2)
-3. \(\displaystyle f(x) = \begin{cases} 4-x \amp \text{ if } x \le 3 \\ x-3 \amp \text{ if } x > 3 \end{cases}\)[🔗](#extracted-webwork-237-1-1-2-1-3-1) [🔗](#extracted-webwork-237-1-1-2-1-3)
-
-[🔗](#extracted-webwork-237-1-1-2) [🔗](#ww-functions-inj-surj2)
+1. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 2 \amp 3 \amp 3 \amp 2\end{pmatrix}\)
+2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \amp 5 \\ 2 \amp 1 \amp 2 \amp 1 \amp 2\end{pmatrix}\)
+3. \(\displaystyle f(x) = \begin{cases} 4-x \amp \text{ إذا كان } x \le 3 \\ x-3 \amp \text{ إذا كان } x > 3 \end{cases}\)
 
 #### 4.
 
-Activate Consider the following functions \(f: \lbrace 1,2,3,4\rbrace \to \lbrace 1,2,3,4,5\rbrace\text{.}\) For each, determine whether it is (only) injective, (only) surjective, bijective, or neither injective nor surjective.[🔗](#extracted-webwork-238-1-1-1)
+تفعيل. تأمل الدوال التالية \(f: \lbrace 1,2,3,4\rbrace \to \lbrace 1,2,3,4,5\rbrace\text{.}\) حدد لكل منها هل هي متباينة (فقط)، أم شاملة (فقط)، أم تقابلية، أم لا متباينة ولا شاملة.
 
-1. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 2 \amp 1 \amp 4\end{pmatrix}\)[🔗](#extracted-webwork-238-1-1-2-1-1-1) [🔗](#extracted-webwork-238-1-1-2-1-1)
-2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 4 \amp 3 \amp 2 \amp 1\end{pmatrix}\)[🔗](#extracted-webwork-238-1-1-2-1-2-1) [🔗](#extracted-webwork-238-1-1-2-1-2)
-3. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 3 \amp 4 \amp 5\end{pmatrix}\)[🔗](#extracted-webwork-238-1-1-2-1-3-1) [🔗](#extracted-webwork-238-1-1-2-1-3)
-
-[🔗](#extracted-webwork-238-1-1-2) [🔗](#ww-functions-inj-surj3)
+1. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 2 \amp 1 \amp 4\end{pmatrix}\)
+2. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 4 \amp 3 \amp 2 \amp 1\end{pmatrix}\)
+3. \(\displaystyle f = \begin{pmatrix}1 \amp 2 \amp 3 \amp 4 \\ 2 \amp 3 \amp 4 \amp 5\end{pmatrix}\)
 
 #### 5.
 
-Activate Write out all functions \(f: \{1,2,3,4\} \to \{a,b\}\) (using two-line notation).[🔗](#extracted-webwork-239-1-1-1) How many functions are there?[🔗](#extracted-webwork-239-1-1-2) How many are surjective?[🔗](#extracted-webwork-239-1-1-3) How many are injective?[🔗](#extracted-webwork-239-1-1-4) How many are bijective?[🔗](#extracted-webwork-239-1-1-5) [🔗](#ww-functions-count-inj-surj1)
+تفعيل. اكتب جميع الدوال \(f: \{1,2,3,4\} \to \{a,b\}\) (باستخدام الترميز ذي السطرين).
+
+كم دالة توجد؟
+
+كم منها شاملة؟
+
+كم منها متباينة؟
+
+كم منها تقابلية؟
 
 #### 6.
 
-Activate Write out all function \(f: \{1,2\} \to \{a,b,c,d\}\) (in two-line notation).[🔗](#extracted-webwork-240-1-1-1) How many functions are there?[🔗](#extracted-webwork-240-1-1-2) How many are surjective?[🔗](#extracted-webwork-240-1-1-3) How many are injective?[🔗](#extracted-webwork-240-1-1-4) How many are bijective?[🔗](#extracted-webwork-240-1-1-5) [🔗](#ww-functions-count-inj-surj2)
+تفعيل. اكتب جميع الدوال \(f: \{1,2\} \to \{a,b,c,d\}\) (بالترميز ذي السطرين).
+
+كم دالة توجد؟
+
+كم منها شاملة؟
+
+كم منها متباينة؟
+
+كم منها تقابلية؟
 
 #### 7.
 
-Consider the function \(f:\{1,2,3,4,5\} \to \{1,2,3,4\}\) given by the table below:[🔗](#exercises_intro-functions-7-1-1)
+تأمل الدالة \(f:\{1,2,3,4,5\} \to \{1,2,3,4\}\) المعطاة بالجدول التالي:
 
 | \(x\) | 1 | 2 | 3 | 4 | 5 |
 | --- | --- | --- | --- | --- | --- |
 | \(f(x)\) | 3 | 2 | 4 | 1 | 2 |
 
-1. Is \(f\) injective? Explain.[🔗](#exercises_intro-functions-7-1-3-1-1-1) [🔗](#exercises_intro-functions-7-1-3-1-1)
-2. Is \(f\) surjective? Explain.[🔗](#exercises_intro-functions-7-1-3-1-2-1) [🔗](#exercises_intro-functions-7-1-3-1-2)
-3. Write the function using two-line notation.[🔗](#exercises_intro-functions-7-1-3-1-3-1) [🔗](#exercises_intro-functions-7-1-3-1-3)
-
-[🔗](#exercises_intro-functions-7-1-3) [🔗](#exercises_intro-functions-7)
+1. هل \(f\) متباينة؟ اشرح.
+2. هل \(f\) شاملة؟ اشرح.
+3. اكتب الدالة بالترميز ذي السطرين.
 
 #### 8.
 
-Consider the function \(f:\{1,2,3,4\} \to \{1,2,3,4\}\) given by the graph below.[🔗](#exercises_intro-functions-8-1-1) !
+تأمل الدالة \(f:\{1,2,3,4\} \to \{1,2,3,4\}\) المعطاة بالرسم البياني التالي.
 
-1. Is \(f\) injective? Explain.[🔗](#exercises_intro-functions-8-1-3-1-1-1) [🔗](#exercises_intro-functions-8-1-3-1-1)
-2. Is \(f\) surjective? Explain.[🔗](#exercises_intro-functions-8-1-3-1-2-1) [🔗](#exercises_intro-functions-8-1-3-1-2)
-3. Write the function using two-line notation.[🔗](#exercises_intro-functions-8-1-3-1-3-1) [🔗](#exercises_intro-functions-8-1-3-1-3)
+![الربع الأول من مستوى إحداثي. المحور الأفقي موسوم x، والرأسي موسوم f(x). على كلا المحورين الأعداد من 1 إلى 4، مع شبكة عند القيم الصحيحة. تقع النقاط عند (1,3) و(2,4) و(3,1) و(4,3).](/images/discrete-math/sec_structures-functions-graph-function-ques.svg)
 
-[🔗](#exercises_intro-functions-8-1-3) [🔗](#exercises_intro-functions-8)
+1. هل \(f\) متباينة؟ اشرح.
+2. هل \(f\) شاملة؟ اشرح.
+3. اكتب الدالة بالترميز ذي السطرين.
 
 #### 9.
 
-Activate Consider the function \(f:\N \to \N\) given *recursively* by[🔗](#extracted-webwork-241-1-1-1) \begin{equation*} f(0) = 1 \text{ and } f(n+1) = 4 \cdot f(n) \text{.} \end{equation*} [🔗](#extracted-webwork-241-1-1-2) Find \(f(14)\text{.}\)[🔗](#extracted-webwork-241-1-1-3) [🔗](#ww-functions-rec-quick)
+تفعيل. تأمل الدالة \(f:\N \to \N\) المعطاة *تعاوديًا* بـ
+
+\begin{equation*}
+f(0) = 1 \text{ و } f(n+1) = 4 \cdot f(n) \text{.}
+\end{equation*}
+
+أوجد \(f(14)\text{.}\)
 
 #### 10.
 
-Activate Suppose \(f:\N \to \N\) satisfies the recurrence[🔗](#extracted-webwork-242-1-1-1) \begin{equation*} f(n+1) = f(n) + 8\text{.} \end{equation*} [🔗](#extracted-webwork-242-1-1-2) Note that this is not enough information to define the function, since we don’t have an initial condition. For each of the initial conditions below, find the value of \(f(8)\text{.}\)
+تفعيل. افترض أن \(f:\N \to \N\) تحقق علاقة التعاود
 
-1. If \(f(0) = 1\text{.}\)[🔗](#extracted-webwork-242-1-1-3-3-1-1) [🔗](#extracted-webwork-242-1-1-3-3-1)
-2. \(\displaystyle f(0) = 7\text{.}\)[🔗](#extracted-webwork-242-1-1-3-3-2-1) [🔗](#extracted-webwork-242-1-1-3-3-2)
-3. \(\displaystyle f(0) = 11\text{.}\)[🔗](#extracted-webwork-242-1-1-3-3-3-1) [🔗](#extracted-webwork-242-1-1-3-3-3)
-4. \(\displaystyle f(0) = 226\text{.}\)[🔗](#extracted-webwork-242-1-1-3-3-4-1) [🔗](#extracted-webwork-242-1-1-3-3-4)
+\begin{equation*}
+f(n+1) = f(n) + 8\text{.}
+\end{equation*}
 
-[🔗](#extracted-webwork-242-1-1-3) [🔗](#ww-functions-rec-ic)
+لاحظ أن هذه المعلومات لا تكفي لتعريف الدالة، إذ ليس لدينا شرط ابتدائي. أوجد قيمة \(f(8)\) لكل شرط ابتدائي مما يلي.
+
+1. إذا كان \(f(0) = 1\text{.}\)
+2. \(\displaystyle f(0) = 7\text{.}\)
+3. \(\displaystyle f(0) = 11\text{.}\)
+4. \(\displaystyle f(0) = 226\text{.}\)
 
 #### 11.
 
-Suppose \(f:\N \to \N\) satisfies the recurrence relation \begin{equation*} f(n+1) = \begin{cases} \frac{f(n)}{2} \amp \text{ if } f(n) \text{ is even} \\ 3f(n) + 1 \amp \text{ if } f(n) \text{ is odd}\text{.}\end{cases} \end{equation*} Note that with the initial condition \(f(0) = 1\text{,}\) the values of the function are: \(f(1) = 4\) , \(f(2) = 2\text{,}\) \(f(3) = 1\text{,}\) \(f(4) = 4\text{,}\) and so on, the images cycling through those three numbers. Thus \(f\) is NOT injective (and also certainly not surjective). Might it be under other initial conditions? 1 It turns out this is a *really* hard question to answer in general. The *Collatz conjecture* is that no matter what the initial condition is, the function will eventually produce 1 as an output. This is an open problem in mathematics: nobody knows the answer.
+افترض أن \(f:\N \to \N\) تحقق علاقة التعاود
 
-1. If \(f\) satisfies the initial condition \(f(0) = 5\text{,}\) is \(f\) injective? Explain why or give a specific example of two elements from the domain with the same image.[🔗](#exercises_intro-functions-11-1-1-10-1-1) [🔗](#exercises_intro-functions-11-1-1-10-1)
-2. If \(f\) satisfies the initial condition \(f(0) = 3\text{,}\) is \(f\) injective? Explain why or give a specific example of two elements from the domain with the same image.[🔗](#exercises_intro-functions-11-1-1-10-2-1) [🔗](#exercises_intro-functions-11-1-1-10-2)
-3. If \(f\) satisfies the initial condition \(f(0) = 27\text{,}\) then it turns out that \(f(105) = 10\) and no two numbers less than 105 have the same image. Could \(f\) be injective? Explain.[🔗](#exercises_intro-functions-11-1-1-10-3-1) [🔗](#exercises_intro-functions-11-1-1-10-3)
-4. Prove that no matter what initial condition you choose, the function cannot be surjective.[🔗](#exercises_intro-functions-11-1-1-10-4-1) [🔗](#exercises_intro-functions-11-1-1-10-4)
+\begin{equation*}
+f(n+1) = \begin{cases} \frac{f(n)}{2} \amp \text{ إذا كان } f(n) \text{ زوجيًا} \\ 3f(n) + 1 \amp \text{ إذا كان } f(n) \text{ فرديًا}\text{.}\end{cases}
+\end{equation*}
 
-[🔗](#exercises_intro-functions-11-1-1) [🔗](#exercises_intro-functions-11)
+لاحظ أنه، مع الشرط الابتدائي \(f(0) = 1\text{،}\) تكون قيم الدالة: \(f(1) = 4\)، و\(f(2) = 2\text{،}\) و\(f(3) = 1\text{،}\) و\(f(4) = 4\text{،}\) وهكذا، وتتكرر الصور دوريًا بين هذه الأعداد الثلاثة. إذن \(f\) **ليست** متباينة (وليست شاملة بالتأكيد أيضًا). هل يمكن أن تكون كذلك مع شروط ابتدائية أخرى؟[^collatz]
+
+[^collatz]: يتبين أن الإجابة عن هذا السؤال بوجه عام صعبة *جدًا*. تقول *حدسية كولاتز (Collatz conjecture)* إنه، مهما كان الشرط الابتدائي، ستنتج الدالة في نهاية المطاف العدد 1 بوصفه مخرجًا. هذه مسألة مفتوحة في الرياضيات: لا أحد يعرف الإجابة.
+
+1. إذا حققت \(f\) الشرط الابتدائي \(f(0) = 5\text{،}\) فهل \(f\) متباينة؟ اشرح السبب، أو أعطِ مثالًا محددًا لعنصرين من المجال لهما الصورة نفسها.
+2. إذا حققت \(f\) الشرط الابتدائي \(f(0) = 3\text{،}\) فهل \(f\) متباينة؟ اشرح السبب، أو أعطِ مثالًا محددًا لعنصرين من المجال لهما الصورة نفسها.
+3. إذا حققت \(f\) الشرط الابتدائي \(f(0) = 27\text{،}\) فإن \(f(105) = 10\)، ولا يوجد عددان أصغر من 105 لهما الصورة نفسها. هل يمكن أن تكون \(f\) متباينة؟ اشرح.
+4. أثبت أنه، مهما اخترت من شرط ابتدائي، لا يمكن أن تكون الدالة شاملة.
 
 #### 12.
 
-For each function given below, determine whether or not the function is injective and whether or not the function is surjective.
+حدد لكل دالة مما يلي هل هي متباينة أم لا، وهل هي شاملة أم لا.
 
-1. \(f:\N \to \N\) given by \(f(n) = n+4\text{.}\) [🔗](#exercises_intro-functions-12-1-1-1-1)
-2. \(f:\Z \to \Z\) given by \(f(n) = n+4\text{.}\) [🔗](#exercises_intro-functions-12-1-1-1-2)
-3. \(f:\Z \to \Z\) given by \(f(n) = 5n - 8\text{.}\) [🔗](#exercises_intro-functions-12-1-1-1-3)
-4. \(f:\Z \to \Z\) given by \(f(n) = \begin{cases}n/2 \amp \text{ if } n \text{ is even} \\ (n+1)/2 \amp \text{ if } n \text{ is odd} . \end{cases}\) [🔗](#exercises_intro-functions-12-1-1-1-4)
-
-[🔗](#exercises_intro-functions-12-1-1) [🔗](#exercises_intro-functions-12)
+1. \(f:\N \to \N\) المعطاة بـ\(f(n) = n+4\text{.}\)
+2. \(f:\Z \to \Z\) المعطاة بـ\(f(n) = n+4\text{.}\)
+3. \(f:\Z \to \Z\) المعطاة بـ\(f(n) = 5n - 8\text{.}\)
+4. \(f:\Z \to \Z\) المعطاة بـ\(f(n) = \begin{cases}n/2 \amp \text{ إذا كان } n \text{ زوجيًا} \\ (n+1)/2 \amp \text{ إذا كان } n \text{ فرديًا} . \end{cases}\)
 
 #### 13.
 
-Let \(A = \{1,2,3,\ldots,10\}\text{.}\) Consider the function \(f:\pow(A) \to \N\) given by \(f(B) = |B|\text{.}\) That is, \(f\) takes a subset of \(A\) as an input and outputs the cardinality of that set.
+لتكن \(A = \{1,2,3,\ldots,10\}\text{.}\) تأمل الدالة \(f:\pow(A) \to \N\) المعطاة بـ\(f(B) = |B|\text{.}\) أي إن \(f\) تأخذ مجموعة جزئية من \(A\) مُدخلًا، وتُخرج عدد عناصر تلك المجموعة.
 
-1. Is \(f\) injective? Prove your answer.[🔗](#exercises_intro-functions-13-1-1-6-1-1) [🔗](#exercises_intro-functions-13-1-1-6-1)
-2. Is \(f\) surjective? Prove your answer.[🔗](#exercises_intro-functions-13-1-1-6-2-1) [🔗](#exercises_intro-functions-13-1-1-6-2)
-3. Find \(f\inv(1)\text{.}\)[🔗](#exercises_intro-functions-13-1-1-6-3-1) [🔗](#exercises_intro-functions-13-1-1-6-3)
-4. Find \(f\inv(0)\text{.}\)[🔗](#exercises_intro-functions-13-1-1-6-4-1) [🔗](#exercises_intro-functions-13-1-1-6-4)
-5. Find \(f\inv(12)\text{.}\)[🔗](#exercises_intro-functions-13-1-1-6-5-1) [🔗](#exercises_intro-functions-13-1-1-6-5)
-
-[🔗](#exercises_intro-functions-13-1-1) [🔗](#exercises_intro-functions-13)
+1. هل \(f\) متباينة؟ أثبت إجابتك.
+2. هل \(f\) شاملة؟ أثبت إجابتك.
+3. أوجد \(f\inv(1)\text{.}\)
+4. أوجد \(f\inv(0)\text{.}\)
+5. أوجد \(f\inv(12)\text{.}\)
 
 #### 14.
 
-Activate Let \(X = \{n \in \N \st 0 \le n \le 999\}\) be the set of all numbers with three or fewer digits. Define the function \(f:X \to \N\) by \(f(abc) = a+b+c\text{,}\) where \(a\text{,}\) \(b\text{,}\) and \(c\) are the digits of the number in \(X\) (write numbers less than 100 with leading 0’s to make them three digits). In other words, \(f\) returns the sum of the digits of its input. For example, \(f(253) = 2 + 5 + 3 = 10\text{.}\)[🔗](#extracted-webwork-243-1-1-1)
+تفعيل. لتكن \(X = \{n \in \N \st 0 \le n \le 999\}\) مجموعة جميع الأعداد ذات ثلاثة أرقام أو أقل. عرّف الدالة \(f:X \to \N\) بـ\(f(abc) = a+b+c\text{،}\) حيث \(a\text{،}\) و\(b\text{،}\) و\(c\) أرقام العدد من \(X\) (اكتب الأعداد الأصغر من 100 بأصفار بادئة لتجعلها من ثلاثة أرقام). بعبارة أخرى، تعيد \(f\) مجموع أرقام مُدخلها. مثلًا، \(f(253) = 2 + 5 + 3 = 10\text{.}\)
 
 #### (a)
 
-Let \(A = \{n \in X \st 309 \le x \le 326\}\text{.}\) Find \(f(A)\text{.}\)[🔗](#extracted-webwork-243-1-2-1-1) [🔗](#extracted-webwork-243-1-2)
+لتكن \(A = \{n \in X \st 309 \le x \le 326\}\text{.}\) أوجد \(f(A)\text{.}\)
+
+> **ملاحظة المترجم:** يستخدم المصدر n في بداية تعريف المجموعة وx في شرطها. نُقلت الصيغة كما هي؛ والمقصود توحيد المتغير في التعريف والشرط.
 
 #### (b)
 
-Find \(f\inv(\{1,3\})\text{.}\)[🔗](#extracted-webwork-243-1-3-1-1) [🔗](#extracted-webwork-243-1-3)
+أوجد \(f\inv(\{1,3\})\text{.}\)
 
 #### (c)
 
-Find \(f\inv(2)\text{.}\)[🔗](#extracted-webwork-243-1-4-1-1) [🔗](#extracted-webwork-243-1-4)
+أوجد \(f\inv(2)\text{.}\)
 
 #### (d)
 
-Find \(f\inv(200)\text{.}\)[🔗](#extracted-webwork-243-1-5-1-1) [🔗](#extracted-webwork-243-1-5) [🔗](#ww-functions-sum-of-digits)
+أوجد \(f\inv(200)\text{.}\)
 
 #### 15.
 
-Consider the set \(\N^2 = \N \times \N\text{,}\) the set of all ordered pairs \((a,b)\) where \(a\) and \(b\) are natural numbers. Consider a function \(f: \N^2 \to \N\) given by \(f((a,b)) =a+b\) .
+تأمل المجموعة \(\N^2 = \N \times \N\text{،}\) أي مجموعة جميع الأزواج المرتبة (ordered pairs) \((a,b)\)، حيث \(a\) و\(b\) عددان طبيعيان. وتأمل الدالة \(f: \N^2 \to \N\) المعطاة بـ\(f((a,b)) =a+b\).
 
-1. Let \(A = \{(a,b) \in \N^2 \st a, b \le 10\}\text{.}\) Find \(f(A)\text{.}\)[🔗](#exercises_intro-functions-15-1-1-7-1-1) [🔗](#exercises_intro-functions-15-1-1-7-1)
-2. Find \(f\inv(3)\) and \(f\inv(\{0,1,2,3\})\text{.}\)[🔗](#exercises_intro-functions-15-1-1-7-2-1) [🔗](#exercises_intro-functions-15-1-1-7-2)
-3. Give geometric descriptions of \(f\inv(n)\) and \(f\inv(\{0, 1, \ldots, n\})\) for any \(n \ge 1\text{.}\)[🔗](#exercises_intro-functions-15-1-1-7-3-1) [🔗](#exercises_intro-functions-15-1-1-7-3)
-4. Find \(\card{f\inv(8)}\) and \(\card{f\inv(\{0,1, \ldots, 8\})}\text{.}\)[🔗](#exercises_intro-functions-15-1-1-7-4-1) [🔗](#exercises_intro-functions-15-1-1-7-4)
-
-[🔗](#exercises_intro-functions-15-1-1) [🔗](#exercises_intro-functions-15)
+1. لتكن \(A = \{(a,b) \in \N^2 \st a, b \le 10\}\text{.}\) أوجد \(f(A)\text{.}\)
+2. أوجد \(f\inv(3)\) و\(f\inv(\{0,1,2,3\})\text{.}\)
+3. أعطِ وصفين هندسيين لـ\(f\inv(n)\) و\(f\inv(\{0, 1, \ldots, n\})\)، لأي \(n \ge 1\text{.}\)
+4. أوجد \(\card{f\inv(8)}\) و\(\card{f\inv(\{0,1, \ldots, 8\})}\text{.}\)
 
 #### 16.
 
-Let \(f:X \to Y\) be some function. Suppose \(3 \in Y\text{.}\) What can you say about \(f\inv(3)\) if you know,
+لتكن \(f:X \to Y\) دالة. افترض أن \(3 \in Y\text{.}\) ماذا يمكنك أن تقول عن \(f\inv(3)\) إذا علمت أن:
 
-1. \(f\) is injective? Explain.[🔗](#exercises_intro-functions-16-1-1-4-1-1) [🔗](#exercises_intro-functions-16-1-1-4-1)
-2. \(f\) is surjective? Explain.[🔗](#exercises_intro-functions-16-1-1-4-2-1) [🔗](#exercises_intro-functions-16-1-1-4-2)
-3. \(f\) is bijective? Explain.[🔗](#exercises_intro-functions-16-1-1-4-3-1) [🔗](#exercises_intro-functions-16-1-1-4-3)
-
-[🔗](#exercises_intro-functions-16-1-1) [🔗](#exercises_intro-functions-16)
+1. \(f\) متباينة؟ اشرح.
+2. \(f\) شاملة؟ اشرح.
+3. \(f\) تقابلية؟ اشرح.
 
 #### 17.
 
-Find a set \(X\) and a function \(f:X \to \N\) so that \(f\inv(0) \cup f\inv(1) = X\text{.}\)[🔗](#exercises_intro-functions-17-1-1) [🔗](#exercises_intro-functions-17)
+أوجد مجموعة \(X\) ودالة \(f:X \to \N\) تحقق \(f\inv(0) \cup f\inv(1) = X\text{.}\)
 
 #### 18.
 
-What can you deduce about the sets \(X\) and \(Y\) if you know,
+ماذا يمكنك أن تستنتج عن المجموعتين \(X\) و\(Y\) إذا علمت أنه:
 
-1. there is an injective function \(f:X \to Y\text{?}\) Explain.[🔗](#exercises_intro-functions-18-1-1-3-1-1) [🔗](#exercises_intro-functions-18-1-1-3-1)
-2. there is a surjective function \(f:X \to Y\text{?}\) Explain.[🔗](#exercises_intro-functions-18-1-1-3-2-1) [🔗](#exercises_intro-functions-18-1-1-3-2)
-3. there is a bijective function \(f:X \to Y\text{?}\) Explain.[🔗](#exercises_intro-functions-18-1-1-3-3-1) [🔗](#exercises_intro-functions-18-1-1-3-3)
-
-[🔗](#exercises_intro-functions-18-1-1) [🔗](#exercises_intro-functions-18)
+1. توجد دالة متباينة \(f:X \to Y\text{؟}\) اشرح.
+2. توجد دالة شاملة \(f:X \to Y\text{؟}\) اشرح.
+3. توجد دالة تقابلية \(f:X \to Y\text{؟}\) اشرح.
 
 #### 19.
 
-Suppose \(f:X \to Y\) is a function. Which of the following are possible? Explain.
+افترض أن \(f:X \to Y\) دالة. أي الحالات التالية ممكنة؟ اشرح.
 
-1. \(f\) is injective but not surjective. [🔗](#exercises_intro-functions-19-1-1-2-1)
-2. \(f\) is surjective but not injective. [🔗](#exercises_intro-functions-19-1-1-2-2)
-3. \(|X| = |Y|\) and \(f\) is injective but not surjective. [🔗](#exercises_intro-functions-19-1-1-2-3)
-4. \(|X| = |Y|\) and \(f\) is surjective but not injective. [🔗](#exercises_intro-functions-19-1-1-2-4)
-5. \(|X| = |Y|\text{,}\) \(X\) and \(Y\) are finite, and \(f\) is injective but not surjective. [🔗](#exercises_intro-functions-19-1-1-2-5)
-6. \(|X| = |Y|\text{,}\) \(X\) and \(Y\) are finite, and \(f\) is surjective but not injective. [🔗](#exercises_intro-functions-19-1-1-2-6)
-
-[🔗](#exercises_intro-functions-19-1-1) [🔗](#exercises_intro-functions-19)
+1. \(f\) متباينة لكنها ليست شاملة.
+2. \(f\) شاملة لكنها ليست متباينة.
+3. \(|X| = |Y|\)، و\(f\) متباينة لكنها ليست شاملة.
+4. \(|X| = |Y|\)، و\(f\) شاملة لكنها ليست متباينة.
+5. \(|X| = |Y|\text{،}\) و\(X\) و\(Y\) منتهيتان، و\(f\) متباينة لكنها ليست شاملة.
+6. \(|X| = |Y|\text{،}\) و\(X\) و\(Y\) منتهيتان، و\(f\) شاملة لكنها ليست متباينة.
 
 #### 20.
 
-Let \(f:X \to Y\) and \(g:Y \to Z\) be functions. We can define the composition of \(f\) and \(g\) to be the function \(g\circ f:X \to Z\) for which the image of each \(x \in X\) is \(g(f(x))\text{.}\) That is, plug \(x\) into \(f\text{,}\) then plug the result into \(g\) (just like composition in algebra and calculus).
+لتكن \(f:X \to Y\) و\(g:Y \to Z\) دالتين. يمكننا تعريف تركيب (composition) \(f\) و\(g\) بأنه الدالة \(g\circ f:X \to Z\) التي تكون فيها صورة كل \(x \in X\) هي \(g(f(x))\text{.}\) أي عوّض بـ\(x\) في \(f\text{،}\) ثم عوّض بالنتيجة في \(g\) (تمامًا مثل التركيب في الجبر والتفاضل والتكامل).
 
-1. If \(f\) and \(g\) are both injective, must \(g\circ f\) be injective? Explain.[🔗](#exercises_intro-functions-20-1-1-13-1-1) [🔗](#exercises_intro-functions-20-1-1-13-1)
-2. If \(f\) and \(g\) are both surjective, must \(g\circ f\) be surjective? Explain.[🔗](#exercises_intro-functions-20-1-1-13-2-1) [🔗](#exercises_intro-functions-20-1-1-13-2)
-3. Suppose \(g\circ f\) is injective. What, if anything, can you say about \(f\) and \(g\text{?}\) Explain.[🔗](#exercises_intro-functions-20-1-1-13-3-1) [🔗](#exercises_intro-functions-20-1-1-13-3)
-4. Suppose \(g\circ f\) is surjective. What, if anything, can you say about \(f\) and \(g\text{?}\) Explain.[🔗](#exercises_intro-functions-20-1-1-13-4-1) [🔗](#exercises_intro-functions-20-1-1-13-4)
+1. إذا كانت \(f\) و\(g\) متباينتين، فهل يجب أن تكون \(g\circ f\) متباينة؟ اشرح.
+2. إذا كانت \(f\) و\(g\) شاملتين، فهل يجب أن تكون \(g\circ f\) شاملة؟ اشرح.
+3. افترض أن \(g\circ f\) متباينة. ماذا يمكنك أن تقول عن \(f\) و\(g\text{،}\) إن أمكن قول شيء؟ اشرح.
+4. افترض أن \(g\circ f\) شاملة. ماذا يمكنك أن تقول عن \(f\) و\(g\text{،}\) إن أمكن قول شيء؟ اشرح.
 
-[🔗](#exercises_intro-functions-20-1-1) Hint. Work with some examples. What if \(f = \twoline{1\amp 2 \amp 3}{a \amp a \amp b}\) and \(g = \twoline{a\amp b \amp c}{5 \amp 6 \amp 7}\text{?}\)[🔗](#exercises_intro-functions-20-2-1) [🔗](#exercises_intro-functions-20-2) [🔗](#exercises_intro-functions-20)
+**تلميح.** جرّب بعض الأمثلة. ماذا لو كانت \(f = \twoline{1\amp 2 \amp 3}{a \amp a \amp b}\) و\(g = \twoline{a\amp b \amp c}{5 \amp 6 \amp 7}\text{؟}\)
 
 #### 21.
 
-Consider the function \(f:\Z \to \Z\) given by \(f(n) = \begin{cases}n+1 \amp \text{ if }n\text{ is even} \\ n-3 \amp \text{ if }n\text{ is odd} . \end{cases}\)
+تأمل الدالة \(f:\Z \to \Z\) المعطاة بـ\(f(n) = \begin{cases}n+1 \amp \text{ إذا كان }n\text{ زوجيًا} \\ n-3 \amp \text{ إذا كان }n\text{ فرديًا} . \end{cases}\)
 
-1. Is \(f\) injective? Prove your answer.[🔗](#exercises_intro-functions-21-1-1-3-1-1) [🔗](#exercises_intro-functions-21-1-1-3-1)
-2. Is \(f\) surjective? Prove your answer.[🔗](#exercises_intro-functions-21-1-1-3-2-1) [🔗](#exercises_intro-functions-21-1-1-3-2)
-
-[🔗](#exercises_intro-functions-21-1-1) [🔗](#exercises_intro-functions-21)
+1. هل \(f\) متباينة؟ أثبت إجابتك.
+2. هل \(f\) شاملة؟ أثبت إجابتك.
 
 #### 22.
 
-At the end of the semester a teacher assigns letter grades to each of her students. Is this a function? If so, what sets make up the domain and codomain, and is the function injective, surjective, bijective, or neither?[🔗](#exercises_intro-functions-22-1-1) [🔗](#exercises_intro-functions-22)
+في نهاية الفصل الدراسي، تُسنِد معلمة تقديرًا حرفيًا إلى كل طالب من طلابها. هل هذه دالة؟ إذا كانت كذلك، فما المجموعتان اللتان تشكلان المجال والمجال المقابل؟ وهل الدالة متباينة أم شاملة أم تقابلية أم لا هذه ولا تلك؟
 
 #### 23.
 
-In the game of *Hearts*, four players are each dealt 13 cards from a deck of 52. Is this a function? If so, what sets make up the domain and codomain, and is the function injective, surjective, bijective, or neither?[🔗](#exercises_intro-functions-23-1-1) [🔗](#exercises_intro-functions-23)
+في لعبة *القلوب (Hearts)*، يُوزَّع على كل واحد من أربعة لاعبين 13 ورقة من رزمة تضم 52 ورقة. هل هذه دالة؟ إذا كانت كذلك، فما المجموعتان اللتان تشكلان المجال والمجال المقابل؟ وهل الدالة متباينة أم شاملة أم تقابلية أم لا هذه ولا تلك؟
 
 #### 24.
 
-Seven players are playing 5-card stud. Each player initially receives 5 cards from a deck of 52. Is this a function? If so, what sets make up the domain and codomain, and is the function injective, surjective, bijective, or neither?[🔗](#exercises_intro-functions-24-1-1) [🔗](#exercises_intro-functions-24)
+يلعب سبعة لاعبين لعبة ستَد ذات الأوراق الخمس (5-card stud). يتلقى كل لاعب في البداية 5 أوراق من رزمة تضم 52 ورقة. هل هذه دالة؟ إذا كانت كذلك، فما المجموعتان اللتان تشكلان المجال والمجال المقابل؟ وهل الدالة متباينة أم شاملة أم تقابلية أم لا هذه ولا تلك؟
 
 #### 25.
 
-Consider the function \(f:\N \to \N\) that gives the number of handshakes that take place in a room of \(n\) people assuming everyone shakes hands with everyone else. Give a recursive definition for this function.[🔗](#exercises_intro-functions-25-1-1) Hint. To find the recurrence relation, consider how many *new* handshakes occur when person \(n+1\) enters the room.[🔗](#exercises_intro-functions-25-2-1) [🔗](#exercises_intro-functions-25-2) [🔗](#exercises_intro-functions-25)
+تأمل الدالة \(f:\N \to \N\) التي تعطي عدد المصافحات في غرفة فيها \(n\) أشخاص، بافتراض أن كل شخص يصافح جميع الآخرين. أعطِ تعريفًا تعاوديًا لهذه الدالة.
+
+**تلميح.** لإيجاد علاقة التعاود، تأمل عدد المصافحات *الجديدة* التي تحدث عندما يدخل الشخص ذو الرقم \(n+1\) الغرفة.
 
 #### 26.
 
-Let \(f:X \to Y\) be a function and \(A \subseteq X\) be a finite subset of the domain. What can you say about the relationship between \(\card{A}\) and \(\card{f(A)}\text{?}\) Consider both the general case and what happens when you know \(f\) is injective, surjective, or bijective.[🔗](#exercises_intro-functions-26-1-1) [🔗](#exercises_intro-functions-26)
+لتكن \(f:X \to Y\) دالة، ولتكن \(A \subseteq X\) مجموعة جزئية منتهية من المجال. ماذا يمكنك أن تقول عن العلاقة بين \(\card{A}\) و\(\card{f(A)}\text{؟}\) تأمل الحالة العامة، وما يحدث عندما تعلم أن \(f\) متباينة أو شاملة أو تقابلية.
 
 #### 27.
 
-Let \(f:X \to Y\) be a function and \(B \subseteq Y\) be a finite subset of the codomain. What can you say about the relationship between \(\card{B}\) and \(\card{f\inv(B)}\text{?}\) Consider both the general case and what happens when you know \(f\) is injective, surjective, or bijective.[🔗](#exercises_intro-functions-27-1-1) [🔗](#exercises_intro-functions-27)
+لتكن \(f:X \to Y\) دالة، ولتكن \(B \subseteq Y\) مجموعة جزئية منتهية من المجال المقابل. ماذا يمكنك أن تقول عن العلاقة بين \(\card{B}\) و\(\card{f\inv(B)}\text{؟}\) تأمل الحالة العامة، وما يحدث عندما تعلم أن \(f\) متباينة أو شاملة أو تقابلية.
 
 #### 28.
 
-Let \(f:X \to Y\) be a function, \(A \subseteq X\) and \(B \subseteq Y\text{.}\)
+لتكن \(f:X \to Y\) دالة، و\(A \subseteq X\) و\(B \subseteq Y\text{.}\)
 
-1. Is \(f\inv\left(f(A)\right) = A\text{?}\) Always, sometimes, never? Explain.[🔗](#exercises_intro-functions-28-1-1-4-1-1) [🔗](#exercises_intro-functions-28-1-1-4-1)
-2. Is \(f\left(f\inv(B)\right) = B\text{?}\) Always, sometimes, never? Explain.[🔗](#exercises_intro-functions-28-1-1-4-2-1) [🔗](#exercises_intro-functions-28-1-1-4-2)
-3. If one or both of the above do not always hold, is there something else you can say? Will equality always hold for particular types of functions? Is there some other relationship other than equality that would always hold? Explore.[🔗](#exercises_intro-functions-28-1-1-4-3-1) [🔗](#exercises_intro-functions-28-1-1-4-3)
-
-[🔗](#exercises_intro-functions-28-1-1) [🔗](#exercises_intro-functions-28)
+1. هل \(f\inv\left(f(A)\right) = A\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.
+2. هل \(f\left(f\inv(B)\right) = B\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.
+3. إذا لم تتحقق إحدى العلاقتين السابقتين أو كلتاهما دائمًا، فهل يمكنك قول شيء آخر؟ هل تتحقق المساواة دائمًا لأنواع معينة من الدوال؟ وهل توجد علاقة أخرى غير المساواة تتحقق دائمًا؟ استكشف.
 
 #### 29.
 
-Let \(f:X \to Y\) be a function and \(A, B \subseteq X\) be subsets of the domain.
+لتكن \(f:X \to Y\) دالة، ولتكن \(A, B \subseteq X\) مجموعتين جزئيتين من المجال.
 
-1. Is \(f(A \cup B) = f(A) \cup f(B)\text{?}\) Always, sometimes, or never? Explain.[🔗](#exercises_intro-functions-29-1-1-3-1-1) [🔗](#exercises_intro-functions-29-1-1-3-1)
-2. Is \(f(A \cap B) = f(A) \cap f(B)\text{?}\) Always, sometimes, or never? Explain.[🔗](#exercises_intro-functions-29-1-1-3-2-1) [🔗](#exercises_intro-functions-29-1-1-3-2)
+1. هل \(f(A \cup B) = f(A) \cup f(B)\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.
+2. هل \(f(A \cap B) = f(A) \cap f(B)\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.
 
-[🔗](#exercises_intro-functions-29-1-1) Hint. One of these is not always true. Try some examples![🔗](#exercises_intro-functions-29-2-1) [🔗](#exercises_intro-functions-29-2) [🔗](#exercises_intro-functions-29)
+**تلميح.** إحدى هاتين العلاقتين ليست صحيحة دائمًا. جرّب بعض الأمثلة!
 
 #### 30.
 
-Let \(f:X \to Y\) be a function and \(A, B \subseteq Y\) be subsets of the codomain.
+لتكن \(f:X \to Y\) دالة، ولتكن \(A, B \subseteq Y\) مجموعتين جزئيتين من المجال المقابل.
 
-1. Is \(f\inv(A \cup B) = f\inv(A) \cup f\inv(B)\text{?}\) Always, sometimes, or never? Explain.[🔗](#exercises_intro-functions-30-1-1-3-1-1) [🔗](#exercises_intro-functions-30-1-1-3-1)
-2. Is \(f\inv(A \cap B) = f\inv(A) \cap f\inv(B)\text{?}\) Always, sometimes, or never? Explain.[🔗](#exercises_intro-functions-30-1-1-3-2-1) [🔗](#exercises_intro-functions-30-1-1-3-2)
-
-[🔗](#exercises_intro-functions-30-1-1) [🔗](#exercises_intro-functions-30)[🔗](#exercises_intro-functions)[🔗](#sec_structures-functions) [&#xe5cb;Prev](sec_structures-sets.html)[&#xe5ce;Top](#)[Next&#xe5cc;](ch_additionalTopics.html) [Feedback](/cdn-cgi/l/email-protection#650a160604174b0900130c0b25100b060a4b000110)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_structures-functions-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_structures-functions-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+1. هل \(f\inv(A \cup B) = f\inv(A) \cup f\inv(B)\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.
+2. هل \(f\inv(A \cap B) = f\inv(A) \cap f\inv(B)\text{؟}\) دائمًا أم أحيانًا أم أبدًا؟ اشرح.

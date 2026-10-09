@@ -3,11 +3,11 @@
     {
       "key": "frontmatter",
       "title": "Front Matter",
-      "titleAr": "Front Matter",
+      "titleAr": "مقدّمة الكتاب",
       "sections": [
         {
           "slug": "index",
-          "title": "Discrete Mathematics An Open Introduction, 4th Edition",
+          "title": "الرياضيات المتقطعة: مقدمة مفتوحة",
           "order": 0
         }
       ]
@@ -15,11 +15,11 @@
     {
       "key": "preface",
       "title": "Preface",
-      "titleAr": "Preface",
+      "titleAr": "تصدير",
       "sections": [
         {
           "slug": "index",
-          "title": "Discrete Mathematics An Open Introduction, 4th Edition",
+          "title": "تصدير",
           "order": 0
         }
       ]
@@ -27,224 +27,259 @@
     {
       "key": "ch_intro",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "sections": [
         {
-          "slug": "secintro-intro",
-          "title": "What is Discrete Mathematics?",
+          "slug": "index",
+          "title": "مقدّمة",
           "order": 0
         },
         {
-          "slug": "secintro-structures",
-          "title": "Discrete Structures",
+          "slug": "secintro-intro",
+          "title": "ما هي الرياضيات المتقطعة؟",
           "order": 1
+        },
+        {
+          "slug": "secintro-structures",
+          "title": "البنى المنفصلة",
+          "order": 2
         }
       ]
     },
     {
       "key": "ch_logic",
       "title": "Logic and Proofs",
-      "titleAr": "Logic and Proofs",
+      "titleAr": "المنطق والبراهين",
       "sections": [
         {
-          "slug": "seclogic-statements",
-          "title": "Mathematical Statements",
+          "slug": "index",
+          "title": "المنطق والبراهين",
           "order": 0
         },
         {
-          "slug": "seclogic-implications",
-          "title": "Implications",
+          "slug": "seclogic-statements",
+          "title": "العبارات الرياضية",
           "order": 1
         },
         {
-          "slug": "seclogic-rules",
-          "title": "Rules of Logic",
+          "slug": "seclogic-implications",
+          "title": "الاستلزامات",
           "order": 2
         },
         {
-          "slug": "seclogic-proofs",
-          "title": "Proofs",
+          "slug": "seclogic-rules",
+          "title": "قواعد المنطق",
           "order": 3
         },
         {
-          "slug": "seclogic-structures",
-          "title": "Proofs about Discrete Structures",
+          "slug": "seclogic-proofs",
+          "title": "البراهين",
           "order": 4
         },
         {
-          "slug": "seclogic-conc",
-          "title": "Chapter Summary",
+          "slug": "seclogic-structures",
+          "title": "البراهين حول البنى المنفصلة",
           "order": 5
+        },
+        {
+          "slug": "seclogic-conc",
+          "title": "خلاصة الفصل",
+          "order": 6
         }
       ]
     },
     {
       "key": "ch_graphtheory",
       "title": "Graph Theory",
-      "titleAr": "Graph Theory",
+      "titleAr": "نظرية الرسوم البيانية",
       "sections": [
         {
-          "slug": "secgt-intro",
-          "title": "Problems and Definitions",
+          "slug": "index",
+          "title": "نظرية الرسوم البيانية",
           "order": 0
         },
         {
-          "slug": "sectrees",
-          "title": "Trees",
+          "slug": "secgt-intro",
+          "title": "المسائل والتعريفات",
           "order": 1
         },
         {
-          "slug": "secgt-planar",
-          "title": "Planar Graphs",
+          "slug": "sectrees",
+          "title": "الأشجار",
           "order": 2
         },
         {
-          "slug": "secgt-paths",
-          "title": "Euler Trails and Circuits",
+          "slug": "secgt-planar",
+          "title": "الرسوم البيانية المستوية",
           "order": 3
         },
         {
-          "slug": "seccoloring",
-          "title": "Coloring",
+          "slug": "secgt-paths",
+          "title": "مسارات ودوائر أويلر",
           "order": 4
         },
         {
-          "slug": "secgt-relations",
-          "title": "Relations and Graphs",
+          "slug": "seccoloring",
+          "title": "التلوين",
           "order": 5
         },
         {
-          "slug": "secmatchings",
-          "title": "Matching in Bipartite Graphs",
+          "slug": "secgt-relations",
+          "title": "العلاقات والرسوم البيانية",
           "order": 6
         },
         {
-          "slug": "secgt-conc",
-          "title": "Chapter Summary",
+          "slug": "secmatchings",
+          "title": "التطابق في الرسوم البيانية ثنائية الأجزاء",
           "order": 7
+        },
+        {
+          "slug": "secgt-conc",
+          "title": "خلاصة الفصل",
+          "order": 8
         }
       ]
     },
     {
       "key": "ch_counting",
       "title": "Counting",
-      "titleAr": "Counting",
+      "titleAr": "العدّ",
       "sections": [
         {
-          "slug": "seccounting-pascal",
-          "title": "Pascal’s Arithmetical Triangle",
+          "slug": "index",
+          "title": "العدّ",
           "order": 0
         },
         {
-          "slug": "seccounting-combine-outcomes",
-          "title": "Combining Outcomes",
+          "slug": "seccounting-pascal",
+          "title": "مثلث باسكال الحسابي",
           "order": 1
         },
         {
-          "slug": "seccounting-non-disjoint",
-          "title": "Non-Disjoint Outcomes",
+          "slug": "seccounting-combine-outcomes",
+          "title": "دمج النتائج",
           "order": 2
         },
         {
-          "slug": "seccounting-combperm",
-          "title": "Combinations and Permutations",
+          "slug": "seccounting-non-disjoint",
+          "title": "النتائج غير المتباعدة",
           "order": 3
         },
         {
-          "slug": "seccounting-multisets",
-          "title": "Counting Multisets",
+          "slug": "seccounting-combperm",
+          "title": "التوافيق والتباديل",
           "order": 4
         },
         {
-          "slug": "seccomb-proofs",
-          "title": "Combinatorial Proofs",
+          "slug": "seccounting-multisets",
+          "title": "عدّ المجموعات المتعدّدة",
           "order": 5
         },
         {
-          "slug": "secadvpie",
-          "title": "Advanced Counting Using PIE",
+          "slug": "seccomb-proofs",
+          "title": "البراهين التركيبيّة",
           "order": 6
         },
         {
-          "slug": "seccount-conc",
-          "title": "Chapter Summary",
+          "slug": "secadvpie",
+          "title": "العدّ المتقدّم باستخدام مبدأ الاحتواء والاستبعاد",
           "order": 7
+        },
+        {
+          "slug": "seccount-conc",
+          "title": "خلاصة الفصل",
+          "order": 8
         }
       ]
     },
     {
       "key": "ch_sequences",
       "title": "Sequences",
-      "titleAr": "Sequences",
+      "titleAr": "المتتاليات",
       "sections": [
         {
-          "slug": "secseqintro",
-          "title": "Describing Sequences",
+          "slug": "index",
+          "title": "المتتاليات",
           "order": 0
         },
         {
-          "slug": "secseq-growth",
-          "title": "Rate of Growth",
+          "slug": "secseqintro",
+          "title": "وصف المتتاليات",
           "order": 1
         },
         {
-          "slug": "secseq-polynomial",
-          "title": "Polynomial Sequences",
+          "slug": "secseq-growth",
+          "title": "معدل النمو",
           "order": 2
         },
         {
-          "slug": "secseq-exponential",
-          "title": "Exponential Sequences",
+          "slug": "secseq-polynomial",
+          "title": "المتتاليات متعدّدة الحدود",
           "order": 3
         },
         {
-          "slug": "secseq-induction",
-          "title": "Proof by Induction",
+          "slug": "secseq-exponential",
+          "title": "المتتاليات الأسية",
           "order": 4
         },
         {
-          "slug": "secseq-strong-induction",
-          "title": "Strong Induction",
+          "slug": "secseq-induction",
+          "title": "البرهان بالاستدلال",
           "order": 5
         },
         {
-          "slug": "secsequences-conc",
-          "title": "Chapter Summary",
+          "slug": "secseq-strong-induction",
+          "title": "الاستدلال القوي",
           "order": 6
+        },
+        {
+          "slug": "secsequences-conc",
+          "title": "خلاصة الفصل",
+          "order": 7
         }
       ]
     },
     {
       "key": "ch_structures",
       "title": "Algebraic Structures",
-      "titleAr": "Algebraic Structures",
+      "titleAr": "البنى الجبرية",
       "sections": [
         {
-          "slug": "secstructures-sets",
-          "title": "Sets",
+          "slug": "index",
+          "title": "البنى الجبرية",
           "order": 0
         },
         {
-          "slug": "secstructures-functions",
-          "title": "Functions",
+          "slug": "secstructures-sets",
+          "title": "المجموعات",
           "order": 1
+        },
+        {
+          "slug": "secstructures-functions",
+          "title": "الدوال",
+          "order": 2
         }
       ]
     },
     {
       "key": "backmatter",
       "title": "Backmatter",
-      "titleAr": "Backmatter",
+      "titleAr": "ملاحق",
       "sections": [
         {
-          "slug": "secaddtops-genfun",
-          "title": "Generating Functions",
+          "slug": "index",
+          "title": "ملاحق",
           "order": 0
         },
         {
-          "slug": "secaddtops-numbth",
-          "title": "Introduction to Number Theory",
+          "slug": "secaddtops-genfun",
+          "title": "الدوال المولِّدة",
           "order": 1
+        },
+        {
+          "slug": "secaddtops-numbth",
+          "title": "مقدمة في نظرية الأعداد",
+          "order": 2
         }
       ]
     }

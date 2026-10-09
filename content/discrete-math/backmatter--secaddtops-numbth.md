@@ -1,276 +1,726 @@
 ---
-title: "Introduction to Number Theory"
-lang: en
+title: "مقدمة في نظرية الأعداد"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_addtops-numbth.html
 ---
 
-\This is the main question of number theory: a huge, ancient, complex, and above all, beautiful branch of mathematics. Historically, number theory was known as the Queen of Mathematics and was very much a branch of *pure* mathematics, studied for its own sake instead of as a means to understanding real-world applications. This has changed in recent years however, as applications of number theory have been unearthed. Probably the most well-known example of this is RSA cryptography, one of the methods used to encrypt data on the internet. It is number theory that makes this possible.[🔗](#sec_addtops-numbth-3-2) What sorts of questions belong to the realm of number theory? Here is a motivating example. Recall in our study of induction, we asked:[🔗](#sec_addtops-numbth-3-3)
+استخدمنا الأعداد الطبيعية (Natural Numbers) لحل المسائل. وكانت هذه هي مجموعة الأعداد المناسبة للعمل بها في الرياضيات المتقطعة (Discrete Mathematics)، لأننا تعاملنا دائمًا مع عدد صحيح من الأشياء. لقد كانت الأعداد الطبيعية أداة. فلنتوقف الآن قليلًا لتفحّص هذه الأداة. ما الاكتشافات الرياضية التي يمكننا التوصل إليها *عن* الأعداد الطبيعية نفسها؟
 
-> Which amounts of postage can be made exactly using just 5-cent and 8-cent stamps?[🔗](#sec_addtops-numbth-3-4-1)
-> > [🔗](#sec_addtops-numbth-3-4)
+هذا هو السؤال الرئيسي لنظرية الأعداد (Number Theory): فرع ضخم وعريق ومعقّد، وقبل كل شيء جميل، من فروع الرياضيات. تاريخيًا، عُرفت نظرية الأعداد بأنها ملكة الرياضيات، وكانت إلى حد كبير فرعًا من الرياضيات *البحتة (Pure Mathematics)*، تُدرَس لذاتها لا بوصفها وسيلة لفهم تطبيقات العالم الحقيقي. لكن هذا تغيّر في السنوات الأخيرة، مع اكتشاف تطبيقات لنظرية الأعداد. ولعل أشهر مثال على ذلك هو التشفير باستخدام RSA، إحدى الطرق المستخدمة لتشفير البيانات على الإنترنت. ونظرية الأعداد هي ما يجعل هذا ممكنًا.
 
-We were able to prove that *any* amount greater than 27 cents could be made. You might wonder what would happen if we changed the denomination of the stamps. What if we instead had 4- and 9-cent stamps? Would there be some amount after which all amounts would be possible? Well, again, we could replace two 4-cent stamps with a 9-cent stamp, or three 9-cent stamps with seven 4-cent stamps. In each case we can create one more cent of postage. Using this as the inductive case would allow us to prove that any amount of postage greater than 23 cents can be made.[🔗](#sec_addtops-numbth-3-5) What if we had 2-cent and 4-cent stamps. Here it looks less promising. If we take some number of 2-cent stamps and some number of 4-cent stamps, what can we say about the total? Could it ever be odd? Doesn’t look like it.[🔗](#sec_addtops-numbth-3-6) *Why* does 5 and 8 work, 4 and 9 work, but 2 and 4 not work? What is it about these numbers? If I gave you a pair of numbers, could you tell me right away if they would work or not? We will answer these questions, and more, after first investigating some simpler properties of numbers themselves.[🔗](#sec_addtops-numbth-3-7)
+ما أنواع الأسئلة التي تنتمي إلى مجال نظرية الأعداد؟ إليك مثالًا محفِّزًا. تذكّر أننا سألنا في دراستنا للاستقراء (Induction):
 
-### Subsection Divisibility
+> ما قيم الرسوم البريدية التي يمكن تكوينها بالضبط باستخدام طوابع من فئتي 5 سنتات و8 سنتات فقط؟
+>
+>
 
-It is easy to add and multiply natural numbers. If we extend our focus to all integers, then subtraction is also easy (we need the negative numbers, so we can subtract any number from any other number, even larger from smaller). Division is the first operation that presents a challenge. If we wanted to extend our set of numbers so any division would be possible (maybe excluding division by 0), we would need to look at the rational numbers (the set of all numbers that can be written as fractions). This would be going too far, so we will refuse this option.[🔗](#sec_addtops-numbth-4-3) In fact, it is a good thing that not every number can be divided by other numbers. This helps us understand the structure of the natural numbers and opens the door to many interesting questions and applications.[🔗](#sec_addtops-numbth-4-4) If given numbers \(a\) and \(b\text{,}\) it is possible that \(a \div b\) gives a whole number. In this case, we say that \(b\) *divides* \(a\text{;}\) in symbols, we write \(b \mid a\text{.}\) If this holds, then \(b\) is a divisor or factor of \(a\text{,}\) and \(a\) is a multiple of \(b\text{.}\) In other words, if \(b \mid a\text{,}\) then \(a = bk\) for some integer \(k\) (this is saying \(a\) is some multiple of \(b\)).[🔗](#sec_addtops-numbth-4-5)
+استطعنا إثبات إمكان تكوين *أي* مبلغ أكبر من 27 سنتًا. وقد تتساءل عما سيحدث إذا غيّرنا فئات الطوابع. ماذا لو كانت لدينا بدلًا منها طوابع من فئتي 4 سنتات و9 سنتات؟ هل يوجد مبلغ تصبح بعده جميع المبالغ ممكنة؟ حسنًا، يمكننا مرة أخرى استبدال طابعين من فئة 4 سنتات بطابع من فئة 9 سنتات، أو ثلاثة طوابع من فئة 9 سنتات بسبعة طوابع من فئة 4 سنتات. وفي كل حالة، يمكننا زيادة الرسوم البريدية سنتًا واحدًا. واستخدام هذا بوصفه حالة الاستقراء سيسمح لنا بإثبات إمكان تكوين أي مبلغ من الرسوم البريدية أكبر من 23 سنتًا.
 
-#### The Divisibility Relation.
+ماذا لو كانت لدينا طوابع من فئتي سنتين و4 سنتات؟ يبدو الأمر هنا أقل تبشيرًا. إذا أخذنا عددًا من الطوابع ذات السنتين وعددًا من الطوابع ذات الـ4 سنتات، فماذا يمكننا أن نقول عن المجموع؟ هل يمكن أن يكون فرديًا في أي وقت؟ لا يبدو ذلك.
 
-Given integers \(m\) and \(n\text{,}\) we say “\(m\) divides \(n\)” and write \begin{equation*} m \mid n \end{equation*} provided \(n \div m\) is an integer. Thus the following assertions mean the same thing:
+*لماذا* ينجح العددان 5 و8، وينجح العددان 4 و9، ولا ينجح العددان 2 و4؟ ما الخاصية التي تتميّز بها هذه الأعداد؟ إذا أعطيتك زوجًا من الأعداد، فهل يمكنك أن تخبرني فورًا إن كانا سينجحان أم لا؟ سنجيب عن هذه الأسئلة وعن غيرها، بعد أن نستقصي أولًا بعض الخصائص الأبسط للأعداد نفسها.
 
-1. \(m \mid n\text{.}\) [🔗](#sec_addtops-numbth-4-6-2-8-1)
-2. \(n = mk\) for some integer \(k\text{.}\) [🔗](#sec_addtops-numbth-4-6-2-8-2)
-3. \(m\) is a factor (or divisor) of \(n\text{.}\) [🔗](#sec_addtops-numbth-4-6-2-8-3)
-4. \(n\) is a multiple of \(m\text{.}\) [🔗](#sec_addtops-numbth-4-6-2-8-4)
+### قسم فرعي: قابلية القسمة (Divisibility)
 
-[🔗](#sec_addtops-numbth-4-6-2) [🔗](#sec_addtops-numbth-4-6)Notice that \(m \mid n\) is a statement. It is either true or false. On the other hand, \(n \div m\) or \(n/m\) is some number. If we want to claim that \(n/m\) is not an integer, so \(m\) does not divide \(n\text{,}\) then we can write \(m \nmid n\text{.}\)[🔗](#sec_addtops-numbth-4-7)
+من السهل جمع الأعداد الطبيعية وضربها. وإذا وسّعنا اهتمامنا ليشمل جميع الأعداد الصحيحة (Integers)، يصبح الطرح سهلًا أيضًا (نحتاج إلى الأعداد السالبة حتى نستطيع طرح أي عدد من أي عدد آخر، حتى الأكبر من الأصغر). القسمة هي أول عملية تطرح تحديًا. إذا أردنا توسيع مجموعة أعدادنا بحيث تكون أي قسمة ممكنة (ربما باستثناء القسمة على 0)، فسنحتاج إلى النظر في الأعداد النسبية (Rational Numbers)، أي مجموعة جميع الأعداد التي يمكن كتابتها على هيئة كسور. لكن هذا سيذهب بنا بعيدًا جدًا، لذا سنرفض هذا الخيار.
 
-#### Example 6.2.1.
+في الواقع، من الجيد ألا يكون كل عدد قابلًا للقسمة على الأعداد الأخرى. فهذا يساعدنا على فهم بنية الأعداد الطبيعية، ويفتح الباب أمام كثير من الأسئلة والتطبيقات المثيرة للاهتمام.
 
-Decide whether each of the statements below are true or false.
+إذا أُعطي العددان \(a\) و\(b\)، فقد يكون ناتج \(a \div b\) عددًا صحيحًا. في هذه الحالة، نقول إن \(b\) *يقسم* \(a\)؛ وبالرموز نكتب \(b \mid a\text{.}\) إذا صح ذلك، فإن \(b\) قاسم (Divisor) أو عامل (Factor) للعدد \(a\)، و\(a\) مضاعف (Multiple) للعدد \(b\text{.}\) بعبارة أخرى، إذا كان \(b \mid a\)، فإن \(a = bk\) لعدد صحيح ما \(k\) (أي إن \(a\) مضاعف ما للعدد \(b\)).
 
-1. \(\displaystyle 4 \mid 20\) [🔗](#sec_addtops-numbth-4-8-1-1-1-1)
-2. \(\displaystyle 20 \mid 4\) [🔗](#sec_addtops-numbth-4-8-1-1-1-2)
-3. \(\displaystyle 0 \mid 5\) [🔗](#sec_addtops-numbth-4-8-1-1-1-3)
-4. \(\displaystyle 5 \mid 0\) [🔗](#sec_addtops-numbth-4-8-1-1-1-4)
-5. \(\displaystyle 7 \mid 7\) [🔗](#sec_addtops-numbth-4-8-1-1-1-5)
-6. \(\displaystyle 1 \mid 37\) [🔗](#sec_addtops-numbth-4-8-1-1-1-6)
-7. \(\displaystyle -3 \mid 12\) [🔗](#sec_addtops-numbth-4-8-1-1-1-7)
-8. \(\displaystyle 8 \mid 12\) [🔗](#sec_addtops-numbth-4-8-1-1-1-8)
-9. \(\displaystyle 1642 \mid 136299\) [🔗](#sec_addtops-numbth-4-8-1-1-1-9)
+#### علاقة قابلية القسمة (Divisibility Relation).
 
-[🔗](#sec_addtops-numbth-4-8-1-1) Solution.
+إذا أُعطي العددان الصحيحان \(m\) و\(n\)، نقول «\(m\) يقسم \(n\)»، ونكتب:
 
-1. True. 4 “goes into” 20 five times without remainder. In other words, \(20 \div 4 = 5\text{,}\) an integer. We could also justify this by saying that \(20\) is a multiple of 4: \(20 = 4\cdot 5\text{.}\)[🔗](#sec_addtops-numbth-4-8-2-1-1-1-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-1)
-2. False. While 20 is a multiple of 4, it is false that \(4\) is a multiple of 20.[🔗](#sec_addtops-numbth-4-8-2-1-1-2-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-2)
-3. False. \(5 \div 0\) is not even defined, let alone an integer.[🔗](#sec_addtops-numbth-4-8-2-1-1-3-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-3)
-4. True. In fact, \(x \mid 0\) is true for all \(x\text{.}\) This is because 0 is a multiple of every number: \(0 = x\cdot 0\text{.}\)[🔗](#sec_addtops-numbth-4-8-2-1-1-4-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-4)
-5. True. In fact, \(x \mid x\) is true for all \(x\text{.}\)[🔗](#sec_addtops-numbth-4-8-2-1-1-5-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-5)
-6. True. 1 divides every number (other than 0).[🔗](#sec_addtops-numbth-4-8-2-1-1-6-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-6)
-7. True. Negative numbers work just fine for the divisibility relation. Here \(12 = -3 \cdot 4\text{.}\) It is also true that \(3 \mid -12\) and that \(-3 \mid -12\text{.}\)[🔗](#sec_addtops-numbth-4-8-2-1-1-7-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-7)
-8. False. Both 8 and 12 are divisible by 4, but this does not mean that \(12\) is divisible by \(8\text{.}\)[🔗](#sec_addtops-numbth-4-8-2-1-1-8-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-8)
-9. False. See below.[🔗](#sec_addtops-numbth-4-8-2-1-1-9-1) [🔗](#sec_addtops-numbth-4-8-2-1-1-9)
+\begin{equation*}
+m \mid n
+\end{equation*}
 
-[🔗](#sec_addtops-numbth-4-8-2-1) [🔗](#sec_addtops-numbth-4-8-2) [🔗](#sec_addtops-numbth-4-8)This last example raises a question: How might one decide whether \(m \mid n\text{?}\) Of course, if you had a trusted calculator, you could ask it for the value of \(n \div m\text{.}\) If it spits out anything other than an integer, you know \(m \nmid n\text{.}\) This seems a little like cheating though: We don’t have division, so should we really use division to check divisibility?[🔗](#sec_addtops-numbth-4-9) While we don’t really know how to divide, we do know how to multiply. We might try multiplying \(m\) by larger and larger numbers until we get close to \(n\text{.}\) How close? Well, we want to be sure that if we multiply \(m\) by the next larger integer, we go over \(n\text{.}\)[🔗](#sec_addtops-numbth-4-10) For example, let’s try this to decide whether \(1642 \mid 136299\text{.}\) Start finding multiples of 1642: \begin{equation*} 1642 \cdot 2 = 3284 \qquad 1642 \cdot 3 = 4926 \qquad 1642\cdot 4 = 6568 \qquad \cdots\text{.} \end{equation*} [🔗](#sec_addtops-numbth-4-11) All of these are well less than 136299. I suppose we can jump ahead a bit: \begin{equation*} 1642 \cdot 50 = 82100 \qquad 1642 \cdot 80 = 131360 \qquad 1642 \cdot 85 = 139570\text{.} \end{equation*} [🔗](#sec_addtops-numbth-4-12) Ah, so we need to look somewhere between 80 and 85. Try 83: \begin{equation*} 1642 \cdot 83 = 136286\text{.} \end{equation*} [🔗](#sec_addtops-numbth-4-13) Is this the best we can do? How far are we from our desired 136299? If we subtract, we get \(136299 - 136286 = 13\text{.}\) So we know we cannot go up to 84; that will be too much. In other words, we have found that \begin{equation*} 136299 = 83 \cdot 1642 + 13\text{.} \end{equation*} [🔗](#sec_addtops-numbth-4-14) Since \(13 \lt 1642\text{,}\) we can now safely say that \(1642 \nmid 136299\text{.}\)[🔗](#sec_addtops-numbth-4-15) It turns out that the process we went through above can be repeated for any pair of numbers. We can always write the number \(a\) as some multiple of the number \(b\) plus some remainder. We know this because we know about division with remainder from elementary school. This is just a way of saying it using multiplication. Due to the procedural nature that can be used to find the remainder, this fact is usually called the division algorithm:[🔗](#sec_addtops-numbth-4-16)
+بشرط أن يكون \(n \div m\) عددًا صحيحًا. ومن ثم فإن العبارات الآتية تعني الشيء نفسه:
 
-#### The Division Algorithm.
+1. \(m \mid n\text{.}\)
+2. \(n = mk\) لعدد صحيح ما \(k\text{.}\)
+3. \(m\) عامل (أو قاسم) للعدد \(n\text{.}\)
+4. \(n\) مضاعف للعدد \(m\text{.}\)
 
-Given any two integers \(a\) and \(b\text{,}\) we can always find an integer \(q\) such that \begin{equation*} a = qb + r \end{equation*} where \(r\) is an integer satisfying \(0 \le r \lt |b|\) [🔗](#sec_addtops-numbth-4-17-2) [🔗](#sec_addtops-numbth-4-17)The idea is that we can always take a large enough multiple of \(b\) so that the remainder \(r\) is as small as possible. We do allow the possibility of \(r = 0\text{,}\) in which case we have \(b \mid a\text{.}\)[🔗](#sec_addtops-numbth-4-18) [🔗](#sec_addtops-numbth-4)
+لاحظ أن \(m \mid n\) عبارة، فهي إما صحيحة وإما خاطئة. أما \(n \div m\) أو \(n/m\)، فهو عدد ما. إذا أردنا القول إن \(n/m\) ليس عددًا صحيحًا، ومن ثم فإن \(m\) لا يقسم \(n\)، فيمكننا كتابة \(m \nmid n\text{.}\)
 
-### Subsection Remainder Classes
+#### مثال 6.2.1.
 
-The division algorithm tells us that there are only \(b\) possible remainders when dividing by \(b\text{.}\) If we fix this divisor, we can group integers by the remainder. Each group is called a remainder class modulo \(b\) (or sometimes residue class).[🔗](#sec_addtops-numbth-5-4)
+حدّد ما إذا كانت كل عبارة من العبارات الآتية صحيحة أم خاطئة.
 
-#### Example 6.2.2.
+1. \(\displaystyle 4 \mid 20\)
+2. \(\displaystyle 20 \mid 4\)
+3. \(\displaystyle 0 \mid 5\)
+4. \(\displaystyle 5 \mid 0\)
+5. \(\displaystyle 7 \mid 7\)
+6. \(\displaystyle 1 \mid 37\)
+7. \(\displaystyle -3 \mid 12\)
+8. \(\displaystyle 8 \mid 12\)
+9. \(\displaystyle 1642 \mid 136299\)
 
-Describe the remainder classes modulo \(5\text{.}\)[🔗](#sec_addtops-numbth-5-5-1-1) Solution. We want to classify numbers by what their remainder would be when divided by \(5\text{.}\) From the division algorithm, we know there will be exactly 5 remainder classes, because there are only 5 choices for what \(r\) could be (\(0 \le r \lt 5\)).[🔗](#sec_addtops-numbth-5-5-2-1) First consider \(r = 0\text{.}\) Here we are looking for all the numbers divisible by \(5\) since \(a = 5q+0\text{.}\) In other words, the multiples of 5. We get the infinite set \begin{equation*} \{\ldots, -15, -10, -5, 0, 5, 10, 15, 20, \ldots\}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-5-2-2) Notice we also include negative integers.[🔗](#sec_addtops-numbth-5-5-2-3) Next consider \(r = 1\text{.}\) Which integers, when divided by 5, have remainder 1? Well, certainly 1 does, as does 6, and 11. Negatives? Here we must be careful: \(-6\) does NOT have remainder 1. We can write \(-6 = -2\cdot 5 + 4\) or \(-6 = -1 \cdot 5 - 1\text{,}\) but only one of these is a “correct” instance of the division algorithm: \(r = 4\) since we need \(r\) to be non-negative. So in fact, to get \(r = 1\text{,}\) we would have \(-4\text{,}\) or \(-9\text{,}\) etc. Thus we get the remainder class \begin{equation*} \{\ldots, -14, -9, -4, 1, 6, 11, 16, 21, \ldots\}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-5-2-4) There are three more to go. The remainder classes for \(2\text{,}\) \(3\text{,}\) and \(4\) are, respectively \begin{equation*} \{\ldots, -13, -8, -3, 2, 7, 12, 17, 22,\ldots\} \end{equation*} \begin{equation*} \{\ldots, -12, -7, -2, 3, 8, 13, 18, 23, \ldots\} \end{equation*} \begin{equation*} \{\ldots, -11, -6, -1, 4, 9, 14, 19, 24, \ldots\}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-5-2-5) [🔗](#sec_addtops-numbth-5-5-2) [🔗](#sec_addtops-numbth-5-5) Note that in the example above, *every* integer is in exactly one remainder class. The technical way to say this is that the remainder classes modulo \(b\) form a partition of the integers. 1 It is possible to develop a mathematical theory of partitions, prove statements about all partitions in general, and then apply those observations to our case here. The most important fact about partitions is that it is possible to define an equivalence relation from a partition: This is a relationship between pairs of numbers which acts in all the important ways like the “equals” relationship. 2 Again, there is a mathematical theory of equivalence relations which applies in many more instances than the one we look at here. See [Subsection](sec_gt-relations.html#subsec_equivalence-relations).[🔗](#sec_addtops-numbth-5-6) All fun technical language aside, the idea is really simple. If two numbers belong to the same remainder class, then in some way, they are the same. That is, they are the same *up to division by \(b\)*. In the case where \(b = 5\) above, the numbers \(8\) and \(23\text{,}\) while not the same number, are the same when it comes to dividing by 5, because both have remainder \(3\text{.}\)[🔗](#sec_addtops-numbth-5-7) It matters what the divisor is: \(8\) and \(23\) are the same up to division by \(5\text{,}\) but not up to division by \(7\text{,}\) since \(8\) has a remainder of 1 when divided by 7 while 23 has a remainder of 2.[🔗](#sec_addtops-numbth-5-8) With all this in mind, let’s introduce some notation. We want to say that \(8\) and 23 are basically the same, even though they are not equal. It would be wrong to say \(8 = 23\text{.}\) Instead, we write \(8 \equiv 23\text{.}\) But this is not always true. It works if we are thinking division by 5, so we need to denote that somehow. What we will actually write is this: \begin{equation*} 8 \equiv 23 \pmod{5} \end{equation*} which is read, “8 is congruent to 23 modulo 5” (or just “mod 5”). Of course then we could observe that \begin{equation*} 8 \not\equiv 23 \pmod{7}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-9)
+**الحل.**
 
-#### Congruence Modulo \(n\).
+1. صحيحة. العدد 4 «يدخل في» 20 خمس مرات دون باقٍ. بعبارة أخرى، \(20 \div 4 = 5\text{,}\) وهو عدد صحيح. ويمكننا أيضًا تبرير ذلك بالقول إن \(20\) مضاعف للعدد 4: \(20 = 4\cdot 5\text{.}\)
+2. خاطئة. مع أن 20 مضاعف للعدد 4، فليس صحيحًا أن \(4\) مضاعف للعدد 20.
+3. خاطئة. \(5 \div 0\) غير معرّف أصلًا، فضلًا عن أن يكون عددًا صحيحًا.
+4. صحيحة. في الواقع، \(x \mid 0\) صحيحة لكل \(x\text{.}\) وذلك لأن 0 مضاعف لكل عدد: \(0 = x\cdot 0\text{.}\)
+5. صحيحة. في الواقع، \(x \mid x\) صحيحة لكل \(x\text{.}\)
+6. صحيحة. العدد 1 يقسم كل عدد (عدا 0).
+7. صحيحة. تعمل الأعداد السالبة دون أي مشكلة في علاقة قابلية القسمة. هنا \(12 = -3 \cdot 4\text{.}\) وصحيح أيضًا أن \(3 \mid -12\)، وأن \(-3 \mid -12\text{.}\)
+8. خاطئة. كل من 8 و12 يقبل القسمة على 4، لكن هذا لا يعني أن \(12\) يقبل القسمة على \(8\text{.}\)
+9. خاطئة. انظر أدناه.
 
-We say \(a\) is congruent to \(b\) modulo \(n\), and write, \begin{equation*} a \equiv b \pmod{n} \end{equation*} provided \(a\) and \(b\) have the same remainder when divided by \(n\text{.}\) In other words, provided \(a\) and \(b\) belong to the same remainder class modulo \(n\text{.}\) [🔗](#sec_addtops-numbth-5-10-4) [🔗](#sec_addtops-numbth-5-10)Many books define congruence modulo \(n\) slightly differently. They say that \(a \equiv b \pmod{n}\) if and only if \(n \mid a-b\text{.}\) In other words, two numbers are congruent modulo \(n\text{,}\) if their difference is a multiple of \(n\text{.}\) So which definition is correct? It turns out that it doesn’t matter; they are equivalent.[🔗](#sec_addtops-numbth-5-11) To see why, consider two numbers \(a\) and \(b\) that are congruent modulo \(n\text{.}\) Then \(a\) and \(b\) have the same remainder when divided by \(n\text{.}\) We have \begin{equation*} a = q_1 n + r \qquad\qquad b = q_2 n + r\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-12) Here the two \(r\)’s really are the same. Consider what we get when we take the difference of \(a\) and \(b\text{:}\) \begin{equation*} a-b = q_1n + r - (q_2n + r) = q_1n - q_2 n = (q_1-q_2)n\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-13) So \(a-b\) is a multiple of \(n\text{,}\) or equivalently, \(n \mid a-b\text{.}\)[🔗](#sec_addtops-numbth-5-14) On the other hand, if we assume first that \(n \mid a-b\text{,}\) so \(a-b = kn\text{,}\) then consider what happens if we divide each term by \(n\text{.}\) Dividing \(a\) by \(n\) will leave some remainder, as will dividing \(b\) by \(n\text{.}\) However, dividing \(kn\) by \(n\) will leave 0 remainder. So the remainders on the left-hand side must cancel out. That is, the remainders must be the same.[🔗](#sec_addtops-numbth-5-15) Thus we have:[🔗](#sec_addtops-numbth-5-16)
+يثير هذا المثال الأخير سؤالًا: كيف يمكن أن نقرّر ما إذا كان \(m \mid n\text{?}\) بالطبع، إذا كانت لديك آلة حاسبة موثوقة، يمكنك أن تطلب منها قيمة \(n \div m\text{.}\) وإذا أعطتك أي شيء غير عدد صحيح، فتعرف أن \(m \nmid n\text{.}\) لكن هذا يبدو أشبه بالغش بعض الشيء: ليست لدينا القسمة، فهل ينبغي حقًا أن نستخدم القسمة للتحقّق من قابلية القسمة؟
 
-#### Congruence and Divisibility.
+مع أننا لا نعرف حقًا كيف نقسم، فإننا نعرف كيف نضرب. يمكننا محاولة ضرب \(m\) في أعداد تتزايد تباعًا حتى نقترب من \(n\text{.}\) إلى أي حد نقترب؟ نريد أن نتأكد من أننا إذا ضربنا \(m\) في العدد الصحيح الأكبر التالي، تجاوزنا \(n\text{.}\)
 
-For any integers \(a\text{,}\) \(b\text{,}\) and \(n\text{,}\) we have \begin{equation*} a \equiv b \pmod{n} \qquad \text{ if and only if } \qquad n \mid (a-b)\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-17-4) [🔗](#sec_addtops-numbth-5-17)It will also be useful to switch back and forth between congruences and regular equations. The above fact helps with this. We know that \(a \equiv b \pmod{n}\) if and only if \(n \mid a-b\text{,}\) if and only if \(a-b = kn\) for some integer \(k\text{.}\) Rearranging that equation, we get \(a = b + kn\text{.}\) In other words, if \(a\) and \(b\) are congruent modulo \(n\text{,}\) then \(a\) is \(b\) more than some multiple of \(n\text{.}\) This conforms with our earlier observation that all the numbers in a particular remainder class are the same amount larger than the multiples of \(n\text{.}\)[🔗](#sec_addtops-numbth-5-18)
+مثلًا، لنجرب هذه الطريقة لنقرّر ما إذا كان \(1642 \mid 136299\text{.}\) ابدأ بإيجاد مضاعفات العدد 1642:
 
-#### Congruence and Equality.
+\begin{equation*}
+1642 \cdot 2 = 3284 \qquad 1642 \cdot 3 = 4926 \qquad 1642\cdot 4 = 6568 \qquad \cdots\text{.}
+\end{equation*}
 
-For any integers \(a\text{,}\) \(b\text{,}\) and \(n\text{,}\) we have \begin{equation*} a \equiv b \pmod{n} \qquad \text{ if and only if } \qquad a = b + kn \mbox{ for some integer } k\text{.} \end{equation*} [🔗](#sec_addtops-numbth-5-19-3) [🔗](#sec_addtops-numbth-5-19)[🔗](#sec_addtops-numbth-5)
+جميع هذه القيم أصغر بكثير من 136299. أظن أن بإمكاننا القفز إلى الأمام قليلًا:
 
-### Subsection Properties of Congruence
+\begin{equation*}
+1642 \cdot 50 = 82100 \qquad 1642 \cdot 80 = 131360 \qquad 1642 \cdot 85 = 139570\text{.}
+\end{equation*}
 
-We said earlier that congruence modulo \(n\) behaves, in many important ways, the same way equality does. Specifically, we could prove that congruence modulo \(n\) is an equivalence relation, which would require checking the following three facts:[🔗](#sec_addtops-numbth-6-2)
+آه، إذن علينا البحث في موضع ما بين 80 و85. جرّب 83:
 
-#### Congruence Modulo \(n\) is an Equivalence Relation.
+\begin{equation*}
+1642 \cdot 83 = 136286\text{.}
+\end{equation*}
 
-Given any integers \(a\text{,}\) \(b\text{,}\) and \(c\text{,}\) and any positive integer \(n\text{,}\) the following hold:[🔗](#sec_addtops-numbth-6-3-4)
+هل هذا أفضل ما يمكننا فعله؟ كم نبتعد عن القيمة المطلوبة، 136299؟ إذا طرحنا، نحصل على \(136299 - 136286 = 13\text{.}\) لذا نعرف أننا لا نستطيع الانتقال إلى 84؛ إذ سيكون ذلك أكبر من المطلوب. بعبارة أخرى، وجدنا أن:
 
-1. \(a \equiv a \pmod{n}\text{.}\) [🔗](#sec_addtops-numbth-6-3-5-1-1)
-2. If \(a \equiv b \pmod{n}\) then \(b \equiv a \pmod{n}\text{.}\)[🔗](#sec_addtops-numbth-6-3-5-1-2-1) [🔗](#sec_addtops-numbth-6-3-5-1-2)
-3. If \(a \equiv b \pmod{n}\) and \(b \equiv c \pmod{n}\text{,}\) then \(a \equiv c \pmod{n}\text{.}\)[🔗](#sec_addtops-numbth-6-3-5-1-3-1) [🔗](#sec_addtops-numbth-6-3-5-1-3)
+\begin{equation*}
+136299 = 83 \cdot 1642 + 13\text{.}
+\end{equation*}
 
-[🔗](#sec_addtops-numbth-6-3-5) In other words, congruence modulo \(n\) is reflexive, symmetric, and transitive, and so is an equivalence relation.[🔗](#sec_addtops-numbth-6-3-6) [🔗](#sec_addtops-numbth-6-3)You should take a minute to convince yourself that each of the properties above actually holds for congruence. Try explaining each using both the remainder and divisibility definitions.[🔗](#sec_addtops-numbth-6-4) Next, consider how congruence behaves when doing basic arithmetic. We already know that if you subtract two congruent numbers, the result will be congruent to 0 (be a multiple of \(n\)). What if we add something congruent to 1 to something congruent to 2? Will we get something congruent to 3?[🔗](#sec_addtops-numbth-6-5)
+بما أن \(13 \lt 1642\text{,}\) يمكننا الآن القول بثقة إن \(1642 \nmid 136299\text{.}\)
 
-#### Congruence and Arithmetic.
+يتبيّن أن العملية التي اتّبعناها أعلاه يمكن تكرارها لأي زوج من الأعداد. يمكننا دائمًا كتابة العدد \(a\) بوصفه مضاعفًا ما للعدد \(b\)، مضافًا إليه باقٍ ما. نعرف ذلك لأننا نعرف القسمة مع الباقي من المدرسة الابتدائية. وهذه ليست سوى طريقة للتعبير عنها باستخدام الضرب. وبسبب الطبيعة الإجرائية التي يمكن استخدامها لإيجاد الباقي، تُسمّى هذه الحقيقة عادةً خوارزمية القسمة (Division Algorithm):
 
-Suppose \(a \equiv b \pmod{n}\) and \(c \equiv d \pmod{n}\text{.}\) Then the following hold:[🔗](#sec_addtops-numbth-6-6-3)
+#### خوارزمية القسمة.
 
-1. \(a+c \equiv b+d \pmod{n}\text{.}\) [🔗](#sec_addtops-numbth-6-6-4-1-1)
-2. \(a-c \equiv b-d \pmod{n}\text{.}\) [🔗](#sec_addtops-numbth-6-6-4-1-2)
-3. \(ac \equiv bd \pmod{n}\text{.}\) [🔗](#sec_addtops-numbth-6-6-4-1-3)
+إذا أُعطي أي عددين صحيحين \(a\) و\(b\)، يمكننا دائمًا إيجاد عدد صحيح \(q\) بحيث:
 
-[🔗](#sec_addtops-numbth-6-6-4) [🔗](#sec_addtops-numbth-6-6)The above facts might be written a little strangely, but the idea is simple. If we have a true congruence, and we add the same thing to both sides, the result is still a true congruence. This sounds like we are saying:[🔗](#sec_addtops-numbth-6-7)
+\begin{equation*}
+a = qb + r
+\end{equation*}
 
-> If \(a \equiv b \pmod{n}\) then \(a+c \equiv b+c \pmod{n}\text{.}\)[🔗](#sec_addtops-numbth-6-8-1)
-> > [🔗](#sec_addtops-numbth-6-8)
+حيث \(r\) عدد صحيح يحقّق \(0 \le r \lt |b|\).
 
-Of course this is true as well; it is the special case where \(c = d\text{.}\) But what we have works in more generality. Think of congruence as being “basically equal.” If we have two numbers that are basically equal, and we add basically the same thing to both sides, the result will be basically equal.[🔗](#sec_addtops-numbth-6-9) This seems reasonable. Is it really true? Let’s prove the first fact:[🔗](#sec_addtops-numbth-6-10)
+الفكرة هي أننا نستطيع دائمًا أخذ مضاعف كبير بما يكفي للعدد \(b\)، بحيث يكون الباقي \(r\) أصغر ما يمكن. ونسمح بإمكان أن يكون \(r = 0\)، وفي هذه الحالة يكون لدينا \(b \mid a\text{.}\)
 
-#### Proof.
+### قسم فرعي: فئات البواقي (Remainder Classes)
 
-Suppose \(a \equiv b \pmod{n}\) and \(c \equiv d \pmod{n}\text{.}\) That means \(a = b + kn\) and \(c = d + jn\) for integers \(k\) and \(j\text{.}\) Add these equations: \begin{equation*} a+c = b+d + kn + jn\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-11-1) But \(kn + jn = (k+j)n\text{,}\) which is just a multiple of \(n\text{.}\) So \(a+c = b+d + (j+k)n\text{,}\) or in other words, \(a+c \equiv b+d \pmod{n}\text{.}\)[🔗](#sec_addtops-numbth-6-11-2) [🔗](#sec_addtops-numbth-6-11)The other two facts can be proved in a similar way. [🔗](#sec_addtops-numbth-6-12) One of the important consequences of these facts about congruences is that we can basically replace any number in a congruence with any other number it is congruent to. Here are some examples to see how (and why) that works:[🔗](#sec_addtops-numbth-6-13)
+تخبرنا خوارزمية القسمة بأن هناك \(b\) بواقي ممكنة فقط عند القسمة على \(b\text{.}\) إذا ثبّتنا هذا القاسم، يمكننا تجميع الأعداد الصحيحة بحسب الباقي. وتُسمّى كل مجموعة فئة بواقٍ بترديد \(b\) (Remainder Class)، أو تُسمّى أحيانًا فئة بواقي (Residue Class).
 
-#### Example 6.2.3.
+#### مثال 6.2.2.
 
-Find the remainder of \(3491\) divided by \(9\text{.}\)[🔗](#sec_addtops-numbth-6-14-1-1) Solution. We could do long division, but there is another way. We want to find \(x\) such that \(x \equiv 3491 \pmod{9}\text{.}\) Now \(3491 = 3000 + 400 + 90 + 1\text{.}\) Of course \(90 \equiv 0 \pmod 9\text{,}\) so we can replace the 90 in the sum with 0. Why is this okay? We are actually subtracting the “same” thing from both sides: \begin{equation*} \begin{aligned}x \amp \equiv 3000 + 400 + 90 + 1 \pmod 9 \\ - ~~ 0 \amp \equiv 90 \pmod 9 \\ x \amp \equiv 3000 + 400 + 0 + 1\pmod 9. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-6-14-2-1) Next, note that \(400 = 4 \cdot 100\text{,}\) and \(100 \equiv 1 \pmod 9\) (since \(9 \mid 99\)). So we can in fact replace the 400 with simply a 4. Again, we are appealing to our claim that we can replace congruent elements, but we are really appealing to property 3 about the arithmetic of congruence: We know \(100 \equiv 1 \pmod{9}\text{,}\) so if we multiply both sides by \(4\text{,}\) we get \(400 \equiv 4 \pmod 9\text{.}\)[🔗](#sec_addtops-numbth-6-14-2-2) Similarly, we can replace 3000 with 3, since \(1000 = 1 + 999 \equiv 1 \pmod 9\text{.}\) So our original congruence becomes \begin{equation*} x \equiv 3 + 4 + 0 + 1 \pmod 9 \end{equation*} \begin{equation*} x \equiv 8 \pmod 9\text{.} \end{equation*} Therefore \(3491\) divided by 9 has remainder 8. [🔗](#sec_addtops-numbth-6-14-2-3) [🔗](#sec_addtops-numbth-6-14-2) [🔗](#sec_addtops-numbth-6-14)The above example should convince you that the well-known divisibility test for 9 is true: The sum of the digits of a number is divisible by 9 if and only if the original number is divisible by 9. In fact, we now know something more: Any number is congruent to the sum of its digits, modulo 9. 3 This works for 3 as well, but definitely not for any modulus in general.[🔗](#sec_addtops-numbth-6-15) Let’s try another.[🔗](#sec_addtops-numbth-6-16)
+صف فئات البواقي بترديد \(5\text{.}\)
 
-#### Example 6.2.4.
+**الحل.** نريد تصنيف الأعداد بحسب ما سيكون باقي قسمتها على \(5\text{.}\) نعرف من خوارزمية القسمة أن هناك 5 فئات بواقٍ بالضبط، لأن هناك 5 اختيارات فقط لما يمكن أن يكون عليه \(r\) (\(0 \le r \lt 5\)).
 
-Find the remainder when \(3^{123}\) is divided by 7.[🔗](#sec_addtops-numbth-6-17-1-1) Solution. Of course, we are working with congruence because we want to find the smallest positive \(x\) such that \(x \equiv 3^{123} \pmod 7\text{.}\) Now first write \(3^{123} = (3^3)^{41}\text{.}\) We have: \begin{equation*} 3^{123} = 27^{41} \equiv 6^{41} \pmod 7\text{,} \end{equation*} since \(27 \equiv 6 \pmod 7\text{.}\) Notice further that \(6^2 = 36\) is congruent to 1 modulo 7. Thus we can simplify further: \begin{equation*} 6^{41} = 6\cdot (6^2)^{20} \equiv 6 \cdot 1^{20} \pmod 7\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-17-2-1) But \(1^{20} = 1\text{,}\) so we are done: \begin{equation*} 3^{123} \equiv 6 \pmod 7\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-17-2-2) [🔗](#sec_addtops-numbth-6-17-2) [🔗](#sec_addtops-numbth-6-17)In the above example, we are using the fact that if \(a \equiv b \pmod n\text{,}\) then \(a^p \equiv b^p \pmod n\text{.}\) This is just applying property 3 a bunch of times.[🔗](#sec_addtops-numbth-6-18) So far we have seen how to add, subtract, and multiply with congruences. What about division? There is a reason we have waited to discuss it. It turns out that we cannot simply divide. In other words, even if \(ad \equiv bd \pmod n\text{,}\) we do not know that \(a \equiv b \pmod n\text{.}\) Consider, for example, \begin{equation*} 18 \equiv 42 \pmod 8\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-19) This is true. Now \(18\) and \(42\) are both divisible by 6. However, \begin{equation*} 3 \not\equiv 7 \pmod 8\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-20) While this doesn’t work, note that \(3 \equiv 7 \pmod 4\text{.}\) We cannot divide \(8\) by 6, but we can divide 8 by the greatest common factor of \(8\) and \(6\text{.}\) Will this always happen?[🔗](#sec_addtops-numbth-6-21) Suppose \(ad \equiv bd \pmod n\text{.}\) In other words, we have \(ad = bd + kn\) for some integer \(k\text{.}\) Of course \(ad\) is divisible by \(d\text{,}\) as is \(bd\text{.}\) So \(kn\) must also be divisible by \(d\text{.}\) Now if \(n\) and \(d\) have no common factors (other than 1), then we must have \(d \mid k\text{.}\) But in general, if we try to divide \(kn\) by \(d\text{,}\) we don’t know that we will get an integer multiple of \(n\text{.}\) Some of the \(n\) might get divided as well. To be safe, let’s divide as much of \(n\) as we can. Take the largest factor of both \(d\) and \(n\text{,}\) and cancel that out from \(n\text{.}\) The rest of the factors of \(d\) will come from \(k\text{,}\) no problem.[🔗](#sec_addtops-numbth-6-22) We will call the largest factor of both \(d\) and \(n\) the \(\gcd(d,n)\text{,}\) for *greatest common divisor*. In our example above, \(\gcd(6,8) = 2\) since the greatest divisor common to 6 and 8 is 2.[🔗](#sec_addtops-numbth-6-23)
+انظر أولًا إلى \(r = 0\text{.}\) نبحث هنا عن جميع الأعداد القابلة للقسمة على \(5\)، لأن \(a = 5q+0\text{.}\) أي مضاعفات العدد 5. نحصل على المجموعة اللانهائية:
 
-#### Congruence and Division.
+\begin{equation*}
+\{\ldots, -15, -10, -5, 0, 5, 10, 15, 20, \ldots\}\text{.}
+\end{equation*}
 
-Suppose \(ad \equiv bd \pmod n\text{.}\) Then \(a \equiv b \pmod{\frac{n}{\gcd(d,n)}}\text{.}\)[🔗](#sec_addtops-numbth-6-24-3) If \(d\) and \(n\) have no common factors, then \(\gcd(d,n) = 1\text{,}\) so \(a \equiv b \pmod n\text{.}\)[🔗](#sec_addtops-numbth-6-24-4) [🔗](#sec_addtops-numbth-6-24)
+لاحظ أننا نُدرج الأعداد الصحيحة السالبة أيضًا.
 
-#### Example 6.2.5.
+انظر بعد ذلك إلى \(r = 1\text{.}\) ما الأعداد الصحيحة التي يكون باقي قسمتها على 5 هو 1؟ من المؤكد أن 1 كذلك، وكذلك 6 و11. وماذا عن الأعداد السالبة؟ علينا الحذر هنا: **ليس** باقي قسمة \(-6\) هو 1. يمكننا كتابة \(-6 = -2\cdot 5 + 4\) أو \(-6 = -1 \cdot 5 - 1\text{,}\) لكن واحدة فقط من هاتين الصيغتين حالة «صحيحة» لخوارزمية القسمة: \(r = 4\)، لأننا نحتاج إلى أن يكون \(r\) غير سالب. لذا، للحصول على \(r = 1\)، نأخذ في الواقع \(-4\)، أو \(-9\)، وهكذا. ومن ثم نحصل على فئة البواقي:
 
-Simplify the following congruences using division: (a) \(24 \equiv 39 \pmod 5\) and (b) \(24 \equiv 39 \pmod{15}\text{.}\)[🔗](#sec_addtops-numbth-6-25-1-1) Solution. (a) Both \(24\) and \(39\) are divisible by \(3\text{,}\) and \(3\) and \(5\) have no common factors, so we get \begin{equation*} 8 \equiv 13 \pmod 5\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-25-2-1) (b) Again, we can divide by 3. However, doing so blindly gives us \(8 \equiv 13 \pmod{15}\) which is no longer true. Instead, we must also divide the modulus 15 by the greatest common factor of \(3\) and \(15\text{,}\) which is \(3\text{.}\) Again we get \begin{equation*} 8 \equiv 13 \pmod 5\text{.} \end{equation*} [🔗](#sec_addtops-numbth-6-25-2-2) [🔗](#sec_addtops-numbth-6-25-2) [🔗](#sec_addtops-numbth-6-25)[🔗](#sec_addtops-numbth-6)
+\begin{equation*}
+\{\ldots, -14, -9, -4, 1, 6, 11, 16, 21, \ldots\}\text{.}
+\end{equation*}
 
-### Subsection Solving Congruences
+بقيت ثلاث فئات أخرى. فئات البواقي للأعداد \(2\) و\(3\) و\(4\) هي، على الترتيب:
 
-Now that we have some algebraic rules to govern congruence relations, we can attempt to solve for an unknown in a congruence. For example, is there a value of \(x\) that satisfies, \begin{equation*} 3x + 2 \equiv 4 \pmod{5}\text{,} \end{equation*} and if so, what is it? [🔗](#sec_addtops-numbth-7-3) In this example, since the modulus is small, we could simply try every possible value for \(x\text{.}\) There are really only 5 to consider, since any integer that satisfied the congruence could be replaced with any other integer it was congruent to modulo 5. Here, when \(x = 4\) we get \(3x + 2 = 14\text{,}\) which is indeed congruent to 4 modulo 5. This means that \(x = 9\) and \(x = 14\) and \(x = 19\) and so on will each also be a solution because, as we saw above, replacing any number in a congruence with a congruent number does not change the truth of the congruence.[🔗](#sec_addtops-numbth-7-4) So in this example, simply compute \(3x + 2\) for values of \(x \in \{0,1,2,3,4\}\text{.}\) This gives 2, 5, 8, 11, and 14 respectively, for which only 14 is congruent to 4.[🔗](#sec_addtops-numbth-7-5) Let’s also see how you could solve this using our rules for the algebra of congruences. Such an approach would be much simpler than the trial and error tactic if the modulus was larger. First, we know we can subtract 2 from both sides: \begin{equation*} 3x \equiv 2 \pmod{5}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-7-6) Then to divide both sides by 3, we first add 0 to both sides. Of course, on the right-hand side, we want that 0 to be a 10 (yes, \(10\) really is 0 since they are congruent modulo 5). This gives, \begin{equation*} 3x \equiv 12 \pmod{5}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-7-7) Now divide both sides by 3. Since \(\gcd(3,5) = 1\text{,}\) we do not need to change the modulus: \begin{equation*} x \equiv 4 \pmod{5}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-7-8) Notice that this in fact gives the *general solution*: Not only can \(x = 4\text{,}\) but \(x\) can be any number which is congruent to 4. We can leave it like this, or write “\(x = 4 + 5k\) for any integer \(k\text{.}\)”[🔗](#sec_addtops-numbth-7-9)
+\begin{equation*}
+\{\ldots, -13, -8, -3, 2, 7, 12, 17, 22,\ldots\}
+\end{equation*}
 
-#### Example 6.2.6.
+\begin{equation*}
+\{\ldots, -12, -7, -2, 3, 8, 13, 18, 23, \ldots\}
+\end{equation*}
 
-Solve the following congruences for \(x\text{.}\)[🔗](#sec_addtops-numbth-7-10-1-1)
+\begin{equation*}
+\{\ldots, -11, -6, -1, 4, 9, 14, 19, 24, \ldots\}\text{.}
+\end{equation*}
 
-1. \(7x \equiv 12 \pmod{13}\text{.}\) [🔗](#sec_addtops-numbth-7-10-1-2-1-1)
-2. \(84x - 38 \equiv 79 \pmod{15}\text{.}\) [🔗](#sec_addtops-numbth-7-10-1-2-1-2)
-3. \(20x \equiv 23 \pmod{14}\text{.}\) [🔗](#sec_addtops-numbth-7-10-1-2-1-3)
+لاحظ في المثال السابق أن *كل* عدد صحيح ينتمي إلى فئة بواقٍ واحدة بالضبط. والصياغة الاصطلاحية لهذا هي أن فئات البواقي بترديد \(b\) تشكّل *تقسيمًا (Partition)* للأعداد الصحيحة.
 
-[🔗](#sec_addtops-numbth-7-10-1-2) Solution.
+<details class="ptx-footnote" aria-live="polite" id="sec_addtops-numbth-5-6-6"><summary class="ptx-footnote__number" title="الحاشية 6.1"><sup>1</sup></summary><div class="ptx-footnote__contents" id="sec_addtops-numbth-5-6-6">يمكن تطوير نظرية رياضية للتقسيمات، وإثبات عبارات عن جميع التقسيمات عمومًا، ثم تطبيق تلك الملاحظات على حالتنا هنا.</div></details>
 
-1. All we need to do here is divide both sides by 7. We add 13 to the right-hand side repeatedly until we get a multiple of 7 (adding 13 is the same as adding 0, so this is legal). We get \(25\text{,}\) \(38\text{,}\) \(51\text{,}\) \(64\text{,}\) \(77\) – got it. So we have: \begin{equation*} \begin{aligned}7x \amp \equiv 12 \pmod{13} \\ 7x \amp \equiv 77 \pmod{13} \\ x \amp \equiv 11 \pmod{13}. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-7-10-2-1-1-1-1) [🔗](#sec_addtops-numbth-7-10-2-1-1-1)
-2. Here, since we have numbers larger than the modulus, we can reduce them prior to applying any algebra. We have \(84 \equiv 9\text{,}\) \(38 \equiv 8\) and \(79 \equiv 4\text{.}\) Thus, \begin{equation*} \begin{aligned}84x - 38 \amp \equiv 79 \pmod{15} \\ 9x - 8 \amp \equiv 4 \pmod{15} \\ 9x \amp \equiv 12 \pmod{15} \\ 9x \amp \equiv 72 \pmod{15}. \end{aligned} \end{equation*} We got the 72 by adding \(0 \equiv 60 \pmod{15}\) to both sides of the congruence. Now divide both sides by 9. However, since \(\gcd(9, 15) = 3\text{,}\) we must divide the modulus by 3 as well: \begin{equation*} x \equiv 8 \pmod 5\text{.} \end{equation*} So the solutions are those values that are congruent to 8, or equivalently 3, modulo 5. This means that in some sense there are 3 solutions modulo 15: 3, 8, and 13. We can write the solution: \begin{equation*} x \equiv 3 \pmod{15}; ~~ x \equiv 8 \pmod{15}; ~~x \equiv 13 \pmod{15}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-7-10-2-1-1-2-1) [🔗](#sec_addtops-numbth-7-10-2-1-1-2)
-3. First, reduce modulo 14: \begin{equation*} 20x \equiv 23 \pmod{14} \end{equation*} \begin{equation*} 6x \equiv 9 \pmod{14}\text{.} \end{equation*} We could now divide both sides by 3 or try to increase 9 by a multiple of 14 to get a multiple of 6. If we divide by 3, we get, \begin{equation*} 2x \equiv 3 \pmod{14}\text{.} \end{equation*} Now try adding multiples of 14 to 3, in hopes of getting a number we can divide by 2. This will not work! Every time we add 14 to the right side, the result will still be odd. We will never get an even number, so we will never be able to divide by 2. Thus there are no solutions to the congruence. [🔗](#sec_addtops-numbth-7-10-2-1-1-3-1) [🔗](#sec_addtops-numbth-7-10-2-1-1-3)
+أهم حقيقة عن التقسيمات هي أنه يمكن تعريف *علاقة تكافؤ (Equivalence Relation)* انطلاقًا من تقسيم: وهي علاقة بين أزواج من الأعداد تتصرف، في جميع الجوانب المهمة، مثل علاقة «يساوي».
 
-[🔗](#sec_addtops-numbth-7-10-2-1) [🔗](#sec_addtops-numbth-7-10-2) [🔗](#sec_addtops-numbth-7-10) The last congruence above illustrates the way in which congruences might not have solutions. We could have seen this immediately in fact. Look at the original congruence: \begin{equation*} 20x \equiv 23 \pmod{14}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-7-11) If we write this as an equation, we get \begin{equation*} 20x = 23 + 14k\text{,} \end{equation*} or equivalently \(20x - 14k = 23\text{.}\) We can easily see there will be no solution to this equation in integers. The left-hand side will always be even, but the right-hand side is odd. A similar problem would occur if the right-hand side was divisible by *any* number that the left-hand side was not. [🔗](#sec_addtops-numbth-7-12) So in general, given the congruence \begin{equation*} ax \equiv b \pmod{n}\text{,} \end{equation*} if \(a\) and \(n\) are divisible by a number by which \(b\) is not divisible, then there will be no solutions. In fact, we really only need to check one divisor of \(a\) and \(n\text{:}\) the greatest common divisor. Thus, a more compact way to say this is: [🔗](#sec_addtops-numbth-7-13)
+<details class="ptx-footnote" aria-live="polite" id="sec_addtops-numbth-5-6-9"><summary class="ptx-footnote__number" title="الحاشية 6.2"><sup>2</sup></summary><div class="ptx-footnote__contents" id="sec_addtops-numbth-5-6-9">مرة أخرى، توجد نظرية رياضية لعلاقات التكافؤ تنطبق على حالات أكثر بكثير من الحالة التي ننظر إليها هنا. انظر <a href="/book/discrete-math/ch_graphtheory/secgt-relations#subsec_equivalence-relations" class="internal" title="قسم فرعي: علاقات التكافؤ">القسم الفرعي</a>.</div></details>
 
-#### Congruences with No Solutions.
+إذا وضعنا جانبًا كل هذه اللغة الاصطلاحية الممتعة، فالفكرة بسيطة حقًا. إذا انتمى عددان إلى فئة البواقي نفسها، فهما متماثلان على نحو ما. أي إنهما متماثلان من حيث القسمة على \(b\). في الحالة السابقة التي فيها \(b = 5\)، فإن العددين \(8\) و\(23\)، مع أنهما ليسا العدد نفسه، متماثلان عندما يتعلق الأمر بالقسمة على 5، لأن باقي كليهما \(3\text{.}\)
 
-If \(\gcd(a,n) \nmid b\text{,}\) then \(ax \equiv b \pmod{n}\) has no solutions.[🔗](#sec_addtops-numbth-7-14-3) [🔗](#sec_addtops-numbth-7-14)[🔗](#sec_addtops-numbth-7)
+اختيار القاسم مهم: العددان \(8\) و\(23\) متماثلان من حيث القسمة على \(5\)، لكنهما ليسا متماثلين من حيث القسمة على \(7\)، لأن باقي قسمة \(8\) على 7 هو 1، بينما باقي قسمة 23 هو 2.
 
-### Subsection Solving Linear Diophantine Equations
+مع وضع كل هذا في الاعتبار، لنقدّم بعض الرموز. نريد أن نقول إن \(8\) و23 متماثلان في الأساس، رغم أنهما غير متساويين. وسيكون من الخطأ القول إن \(8 = 23\text{.}\) بدلًا من ذلك، نكتب \(8 \equiv 23\text{.}\) لكن هذا ليس صحيحًا دائمًا. إنه يصح إذا كنا نفكّر في القسمة على 5، لذا نحتاج إلى التعبير عن ذلك برمز ما. وما سنكتبه بالفعل هو:
 
-Discrete math deals with whole numbers of things. So when we want to solve equations, we usually are looking for *integer* solutions. Equations that are intended to only have integer solutions were first studied by in the third century by the Greek mathematician Diophantus of Alexandria, and as such are called *Diophantine equations*. Probably the most famous example of a Diophantine equation is \(a^2 + b^2 = c^2\text{.}\) The integer solutions to this equation are called Pythagorean triples. In general, solving Diophantine equations is hard (in fact, there is provably no general algorithm for deciding whether a Diophantine equation has a solution, a result known as Matiyasevich’s Theorem). We will restrict our focus to *linear* Diophantine equations, which are considerably easier to work with.[🔗](#sec_addtops-numbth-8-3)
+\begin{equation*}
+8 \equiv 23 \pmod{5}
+\end{equation*}
 
-#### Diophantine Equations.
+وتُقرأ «8 يطابق 23 بترديد 5» (Congruent Modulo 5)، أو باختصار «بترديد 5». ويمكننا عندئذ، بالطبع، ملاحظة أن:
 
-An equation in two or more variables is called a Diophantine equation if only integer solutions are of interest. A linear Diophantine equation takes the form \(a_1x_1 + a_2x_2 + \cdots + a_nx_n = b\) for constants \(a_1,\ldots, a_n, b\text{.}\)[🔗](#sec_addtops-numbth-8-4-4) A solution to a Diophantine equation is a solution to the equation consisting only of integers.[🔗](#sec_addtops-numbth-8-4-5) [🔗](#sec_addtops-numbth-8-4) We have the tools we need to solve linear Diophantine equations. We will consider, as a main example, the equation \begin{equation*} 51x + 87y = 123\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-5) The general strategy will be to convert the equation to a congruence, and then solve that congruence. 4 This is certainly not the only way to proceed. A more common technique would be to apply the Euclidean algorithm. Our way can be a little faster, and is presented here primarily for variety. Let’s work through this particular example to see how this might go.[🔗](#sec_addtops-numbth-8-6) First, check if perhaps there are no solutions because a divisor of \(51\) and \(87\) is not a divisor of \(123\text{.}\) Really, we just need to check whether \(\gcd(51, 87) \mid 123\text{.}\) This greatest common divisor is 3, and yes \(3 \mid 123\text{.}\) At this point, we might as well factor out this greatest common divisor. So instead, we will solve: \begin{equation*} 17x + 29y = 41\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-7) Now observe that if there are going to be solutions, then for those values of \(x\) and \(y\text{,}\) the two sides of the equation must have the same remainder as each other, no matter what we divide by. In particular, if we divide both sides by 17, we must get the same remainder. Thus we can safely write \begin{equation*} 17x + 29y \equiv 41 \pmod{17}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-8) We choose 17 because \(17x\) will have remainder 0. This will allow us to reduce the congruence to just one variable. We could have also moved to a congruence modulo 29, although there is usually a good reason to select the smaller choice, as this will allow us to reduce the other coefficient. In our case, we reduce the congruence as follows: \begin{equation*} \begin{aligned}17x + 29y \amp \equiv 41 \pmod{17} \\ 0x + 12y \amp \equiv 7 \pmod{17} \\ 12 y \amp \equiv 24 \pmod{17} \\ y \amp \equiv 2 \pmod{17}. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-8-9) Now at this point we know \(y = 2 + 17k\) will work for any integer \(k\text{.}\) If we haven’t made a mistake, we should be able to plug this back into our original Diophantine equation to find \(x\text{:}\) \begin{equation*} \begin{aligned}17x + 29(2 + 17k) \amp = 41\\ 17x \amp = -17 - 29\cdot 17k\\ x \amp = -1-29k. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-8-10) We have now found all solutions to the Diophantine equation. For each \(k\text{,}\) \(x = -1-29k\) and \(y = 2 + 17k\) will satisfy the equation. We could check this for a few cases. If \(k = 0\text{,}\) the solution is \((-1,2)\text{,}\) and yes, \(-17 + 2\cdot 29 = 41\text{.}\) If \(k = 3\text{,}\) the solution is \((-88, 53)\text{.}\) If \(k = -2\text{,}\) we get \((57, -32)\text{.}\)[🔗](#sec_addtops-numbth-8-11) To summarize this process, to solve \(ax + by = c\text{,}\) we,[🔗](#sec_addtops-numbth-8-12)
+\begin{equation*}
+8 \not\equiv 23 \pmod{7}\text{.}
+\end{equation*}
 
-1. Divide both sides of the equation by \(\gcd(a,b)\) (if this does not leave the right-hand side as an integer, there are no solutions). Let’s assume that \(ax + by = c\) has already been reduced in this way.[🔗](#sec_addtops-numbth-8-13-1-1-1) [🔗](#sec_addtops-numbth-8-13-1-1)
-2. Pick the smaller of \(a\) and \(b\) (here, assume it is \(b\)), and convert to a congruence modulo \(b\text{:}\) \begin{equation*} ax + by \equiv c \pmod{b}\text{.} \end{equation*} This will reduce to a congruence with one variable, \(x\text{:}\) \begin{equation*} ax \equiv c \pmod{b}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-13-1-2-1) [🔗](#sec_addtops-numbth-8-13-1-2)
-3. Solve the congruence as we did in the previous section. Write your solution as an equation, such as, \begin{equation*} x = n + kb\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-13-1-3-1) [🔗](#sec_addtops-numbth-8-13-1-3)
-4. Plug this into the original Diophantine equation, and solve for \(y\text{.}\)[🔗](#sec_addtops-numbth-8-13-1-4-1) [🔗](#sec_addtops-numbth-8-13-1-4)
-5. If we want to know solutions in a particular range (for example, \(0 \le x, y \le 20\)), pick different values of \(k\) until you have all required solutions.[🔗](#sec_addtops-numbth-8-13-1-5-1) [🔗](#sec_addtops-numbth-8-13-1-5)
+#### التطابق بترديد \(n\) (Congruence Modulo n).
 
-[🔗](#sec_addtops-numbth-8-13) Here is another example:[🔗](#sec_addtops-numbth-8-14)
+نقول إن \(a\) يطابق \(b\) بترديد \(n\)، ونكتب:
 
-#### Example 6.2.7.
+\begin{equation*}
+a \equiv b \pmod{n}
+\end{equation*}
 
-How can you make $6.37 using just 5-cent and 8-cent stamps? What is the smallest and largest number of stamps you could use?[🔗](#sec_addtops-numbth-8-15-1-1) Solution. First, we need a Diophantine equation. We will work in numbers of cents. Let \(x\) be the number of \(5\)-cent stamps, and \(y\) be the number of 8-cent stamps. We have: \begin{equation*} 5x + 8y = 637\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-15-2-1) Convert to a congruence and solve: \begin{equation*} \begin{aligned}8y \amp \equiv 637 \pmod{5}\\ 3y \amp \equiv 2 \pmod 5\\ 3y \amp \equiv 12 \pmod 5\\ y \amp \equiv 4 \pmod 5. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-8-15-2-2) Thus \(y = 4 + 5k\text{.}\) Then \(5x + 8(4+5k) = 637\text{,}\) so \(x = 121 - 8k\text{.}\)[🔗](#sec_addtops-numbth-8-15-2-3) This says that one way to make $6.37 is to take 121 of the 5-cent stamps and 4 of the 8-cent stamps. To find the smallest and largest number of stamps, try different values of \(k\text{.}\)[🔗](#sec_addtops-numbth-8-15-2-4)
+بشرط أن يكون للعددين \(a\) و\(b\) الباقي نفسه عند القسمة على \(n\text{.}\) بعبارة أخرى، بشرط أن ينتمي \(a\) و\(b\) إلى فئة البواقي نفسها بترديد \(n\text{.}\)
 
-| \(k\) | \((x,y)\) | Stamps |
+تعرّف كتب كثيرة التطابق بترديد \(n\) بطريقة مختلفة قليلًا. فهي تقول إن \(a \equiv b \pmod{n}\) إذا وفقط إذا كان \(n \mid a-b\text{.}\) بعبارة أخرى، يطابق عددان أحدهما الآخر بترديد \(n\) إذا كان الفرق بينهما مضاعفًا للعدد \(n\text{.}\) فأي التعريفين صحيح؟ يتبيّن أن الأمر لا يهم؛ فهما متكافئان.
+
+لمعرفة السبب، انظر إلى عددين \(a\) و\(b\) يطابق أحدهما الآخر بترديد \(n\text{.}\) عندئذ يكون للعددين \(a\) و\(b\) الباقي نفسه عند القسمة على \(n\text{.}\) لدينا:
+
+\begin{equation*}
+a = q_1 n + r \qquad\qquad b = q_2 n + r\text{.}
+\end{equation*}
+
+قيمتا \(r\) هنا متساويتان بالفعل. انظر إلى ما نحصل عليه عندما نأخذ الفرق بين \(a\) و\(b\):
+
+\begin{equation*}
+a-b = q_1n + r - (q_2n + r) = q_1n - q_2 n = (q_1-q_2)n\text{.}
+\end{equation*}
+
+إذن \(a-b\) مضاعف للعدد \(n\)، أو على نحو مكافئ، \(n \mid a-b\text{.}\)
+
+من جهة أخرى، إذا افترضنا أولًا أن \(n \mid a-b\)، ومن ثم \(a-b = kn\)، فانظر إلى ما يحدث إذا قسمنا كل حد على \(n\text{.}\) ستترك قسمة \(a\) على \(n\) باقيًا ما، وكذلك قسمة \(b\) على \(n\text{.}\) لكن قسمة \(kn\) على \(n\) ستترك باقيًا مقداره 0. لذا يجب أن يلغي الباقيان في الطرف الأيسر أحدهما الآخر. أي إن الباقيين يجب أن يكونا متساويين.
+
+وعليه لدينا:
+
+#### التطابق وقابلية القسمة.
+
+لأي أعداد صحيحة \(a\) و\(b\) و\(n\)، لدينا:
+
+\begin{equation*}
+a \equiv b \pmod{n} \qquad \text{ إذا وفقط إذا } \qquad n \mid (a-b)\text{.}
+\end{equation*}
+
+سيكون من المفيد أيضًا الانتقال ذهابًا وإيابًا بين التطابقات والمعادلات المعتادة. والحقيقة السابقة تساعد في ذلك. نعرف أن \(a \equiv b \pmod{n}\) إذا وفقط إذا كان \(n \mid a-b\)، وإذا وفقط إذا كان \(a-b = kn\) لعدد صحيح ما \(k\text{.}\) بإعادة ترتيب تلك المعادلة، نحصل على \(a = b + kn\text{.}\) بعبارة أخرى، إذا طابق \(a\) و\(b\) أحدهما الآخر بترديد \(n\)، فإن \(a\) يزيد بمقدار \(b\) على مضاعف ما للعدد \(n\text{.}\) وهذا يتوافق مع ملاحظتنا السابقة بأن جميع الأعداد في فئة بواقٍ معيّنة تزيد بالمقدار نفسه على مضاعفات \(n\text{.}\)
+
+#### التطابق والمساواة.
+
+لأي أعداد صحيحة \(a\) و\(b\) و\(n\)، لدينا:
+
+\begin{equation*}
+a \equiv b \pmod{n} \qquad \text{ إذا وفقط إذا } \qquad a = b + kn \mbox{ لعدد صحيح ما } k\text{.}
+\end{equation*}
+
+### قسم فرعي: خصائص التطابق
+
+قلنا سابقًا إن التطابق بترديد \(n\) يتصرف، في جوانب مهمة كثيرة، بالطريقة نفسها التي تتصرف بها المساواة. وتحديدًا، يمكننا إثبات أن التطابق بترديد \(n\) علاقة تكافؤ، وهذا يتطلب التحقّق من الحقائق الثلاث الآتية:
+
+#### التطابق بترديد \(n\) علاقة تكافؤ.
+
+إذا أُعطيت أي أعداد صحيحة \(a\) و\(b\) و\(c\)، وأي عدد صحيح موجب \(n\)، فإن الآتي يصح:
+
+1. \(a \equiv a \pmod{n}\text{.}\)
+2. إذا كان \(a \equiv b \pmod{n}\)، فإن \(b \equiv a \pmod{n}\text{.}\)
+3. إذا كان \(a \equiv b \pmod{n}\) و\(b \equiv c \pmod{n}\)، فإن \(a \equiv c \pmod{n}\text{.}\)
+
+بعبارة أخرى، التطابق بترديد \(n\) انعكاسي (Reflexive)، ومتناظر (Symmetric)، ومتعدٍّ (Transitive)، ولذلك فهو علاقة تكافؤ.
+
+ينبغي أن تتوقف دقيقة لتقنع نفسك بأن كل خاصية من الخصائص السابقة تصح بالفعل للتطابق. حاول شرح كل منها باستخدام تعريف الباقي وتعريف قابلية القسمة كليهما.
+
+انظر بعد ذلك إلى كيفية تصرّف التطابق عند إجراء العمليات الحسابية الأساسية. نعرف بالفعل أنك إذا طرحت عددين متطابقين، ستكون النتيجة مطابقة للعدد 0 (أي مضاعفًا للعدد \(n\)). ماذا لو جمعنا شيئًا يطابق 1 مع شيء يطابق 2؟ هل سنحصل على شيء يطابق 3؟
+
+#### التطابق والحساب.
+
+افترض أن \(a \equiv b \pmod{n}\) و\(c \equiv d \pmod{n}\text{.}\) عندئذ يصح الآتي:
+
+1. \(a+c \equiv b+d \pmod{n}\text{.}\)
+2. \(a-c \equiv b-d \pmod{n}\text{.}\)
+3. \(ac \equiv bd \pmod{n}\text{.}\)
+
+قد تكون الحقائق السابقة مكتوبة بطريقة غريبة بعض الشيء، لكن الفكرة بسيطة. إذا كان لدينا تطابق صحيح، وأضفنا الشيء نفسه إلى الطرفين، تظل النتيجة تطابقًا صحيحًا. يبدو هذا كما لو كنا نقول:
+
+> إذا كان \(a \equiv b \pmod{n}\)، فإن \(a+c \equiv b+c \pmod{n}\text{.}\)
+>
+>
+
+وهذا صحيح أيضًا بالطبع؛ فهو الحالة الخاصة التي فيها \(c = d\text{.}\) لكن ما لدينا يعمل بصورة أعم. فكّر في التطابق على أنه «مساواة في الأساس». إذا كان لدينا عددان متساويان في الأساس، وأضفنا إلى الطرفين شيئًا متماثلًا في الأساس، فستكون النتيجة متساوية في الأساس.
+
+يبدو هذا معقولًا. هل هو صحيح حقًا؟ لنثبت الحقيقة الأولى:
+
+#### البرهان.
+
+افترض أن \(a \equiv b \pmod{n}\) و\(c \equiv d \pmod{n}\text{.}\) هذا يعني أن \(a = b + kn\) و\(c = d + jn\)، لعددين صحيحين \(k\) و\(j\text{.}\) اجمع هاتين المعادلتين:
+
+\begin{equation*}
+a+c = b+d + kn + jn\text{.}
+\end{equation*}
+
+لكن \(kn + jn = (k+j)n\)، وهو مجرد مضاعف للعدد \(n\text{.}\) لذا فإن \(a+c = b+d + (j+k)n\)، أو بعبارة أخرى، \(a+c \equiv b+d \pmod{n}\text{.}\)
+
+يمكن إثبات الحقيقتين الأخريين بطريقة مشابهة.
+
+إحدى النتائج المهمة لهذه الحقائق عن التطابقات هي أننا نستطيع، في الأساس، استبدال أي عدد في تطابق بأي عدد آخر يطابقه. إليك بعض الأمثلة لترى كيف يعمل ذلك (ولماذا):
+
+#### مثال 6.2.3.
+
+أوجد باقي قسمة \(3491\) على \(9\text{.}\)
+
+**الحل.** يمكننا إجراء القسمة المطوّلة، لكن هناك طريقة أخرى. نريد إيجاد \(x\) بحيث \(x \equiv 3491 \pmod{9}\text{.}\) الآن \(3491 = 3000 + 400 + 90 + 1\text{.}\) وبالطبع \(90 \equiv 0 \pmod 9\)، لذا يمكننا استبدال 90 في المجموع بـ0. لماذا يجوز ذلك؟ نحن نطرح في الواقع الشيء «نفسه» من الطرفين:
+
+\begin{equation*}
+\begin{aligned}x \amp \equiv 3000 + 400 + 90 + 1 \pmod 9 \\ - ~~ 0 \amp \equiv 90 \pmod 9 \\ x \amp \equiv 3000 + 400 + 0 + 1\pmod 9.
+\end{aligned}
+\end{equation*}
+
+لاحظ بعد ذلك أن \(400 = 4 \cdot 100\)، وأن \(100 \equiv 1 \pmod 9\) (لأن \(9 \mid 99\)). لذا يمكننا في الواقع استبدال 400 بالعدد 4 ببساطة. مرة أخرى، نحتكم إلى قولنا إننا نستطيع استبدال العناصر المتطابقة، لكننا نحتكم حقًا إلى الخاصية 3 المتعلقة بحساب التطابقات: نعرف أن \(100 \equiv 1 \pmod{9}\)، لذا إذا ضربنا الطرفين في \(4\)، نحصل على \(400 \equiv 4 \pmod 9\text{.}\)
+
+وبالمثل، يمكننا استبدال 3000 بالعدد 3، لأن \(1000 = 1 + 999 \equiv 1 \pmod 9\text{.}\) لذا يصبح تطابقنا الأصلي:
+
+\begin{equation*}
+x \equiv 3 + 4 + 0 + 1 \pmod 9
+\end{equation*}
+
+\begin{equation*}
+x \equiv 8 \pmod 9\text{.}
+\end{equation*}
+
+إذن باقي قسمة \(3491\) على 9 هو 8.
+
+ينبغي أن يقنعك المثال السابق بصحة اختبار قابلية القسمة المعروف للعدد 9: يقبل مجموع أرقام عددٍ القسمة على 9 إذا وفقط إذا كان العدد الأصلي يقبل القسمة على 9. بل نعرف الآن أكثر من ذلك: أي عدد يطابق مجموع أرقامه بترديد 9.
+
+<details class="ptx-footnote" aria-live="polite" id="sec_addtops-numbth-6-15-1"><summary class="ptx-footnote__number" title="الحاشية 6.3"><sup>3</sup></summary><div class="ptx-footnote__contents" id="sec_addtops-numbth-6-15-1">يصح هذا للعدد 3 أيضًا، لكنه بالتأكيد لا يصح لأي ترديد (Modulus) عمومًا.</div></details>
+
+لنجرّب مثالًا آخر.
+
+#### مثال 6.2.4.
+
+أوجد الباقي عند قسمة \(3^{123}\) على 7.
+
+**الحل.** بالطبع، نعمل بالتطابق لأننا نريد إيجاد أصغر \(x\) موجب بحيث \(x \equiv 3^{123} \pmod 7\text{.}\) اكتب أولًا \(3^{123} = (3^3)^{41}\text{.}\) لدينا:
+
+\begin{equation*}
+3^{123} = 27^{41} \equiv 6^{41} \pmod 7\text{,}
+\end{equation*}
+
+لأن \(27 \equiv 6 \pmod 7\text{.}\) ولاحظ أيضًا أن \(6^2 = 36\) يطابق 1 بترديد 7. ومن ثم يمكننا التبسيط أكثر:
+
+\begin{equation*}
+6^{41} = 6\cdot (6^2)^{20} \equiv 6 \cdot 1^{20} \pmod 7\text{.}
+\end{equation*}
+
+لكن \(1^{20} = 1\)، لذا انتهينا:
+
+\begin{equation*}
+3^{123} \equiv 6 \pmod 7\text{.}
+\end{equation*}
+
+في المثال السابق، نستخدم حقيقة أنه إذا كان \(a \equiv b \pmod n\)، فإن \(a^p \equiv b^p \pmod n\text{.}\) وهذا ليس سوى تطبيق الخاصية 3 مرات عديدة.
+
+رأينا حتى الآن كيف نجمع ونطرح ونضرب باستخدام التطابقات. فماذا عن القسمة؟ هناك سبب لانتظارنا قبل مناقشتها. يتبيّن أننا لا نستطيع القسمة ببساطة. بعبارة أخرى، حتى لو كان \(ad \equiv bd \pmod n\)، فإننا لا نعرف أن \(a \equiv b \pmod n\text{.}\) انظر مثلًا إلى:
+
+\begin{equation*}
+18 \equiv 42 \pmod 8\text{.}
+\end{equation*}
+
+هذا صحيح. والآن يقبل كل من \(18\) و\(42\) القسمة على 6. لكن:
+
+\begin{equation*}
+3 \not\equiv 7 \pmod 8\text{.}
+\end{equation*}
+
+مع أن هذا لا ينجح، لاحظ أن \(3 \equiv 7 \pmod 4\text{.}\) لا نستطيع قسمة \(8\) على 6، لكننا نستطيع قسمة 8 على أكبر عامل مشترك للعددين \(8\) و\(6\text{.}\) هل يحدث هذا دائمًا؟
+
+افترض أن \(ad \equiv bd \pmod n\text{.}\) بعبارة أخرى، لدينا \(ad = bd + kn\) لعدد صحيح ما \(k\text{.}\) بالطبع، يقبل \(ad\) القسمة على \(d\)، وكذلك \(bd\text{.}\) لذا يجب أن يقبل \(kn\) القسمة على \(d\) أيضًا. وإذا لم يكن للعددين \(n\) و\(d\) عوامل مشتركة (عدا 1)، فلا بد أن يكون \(d \mid k\text{.}\) لكن عمومًا، إذا حاولنا قسمة \(kn\) على \(d\)، فلا نعرف أننا سنحصل على مضاعف صحيح للعدد \(n\text{.}\) فقد يُقسَم جزء من \(n\) أيضًا. ولضمان ذلك، لنقسم من \(n\) أكبر قدر نستطيعه. خذ أكبر عامل لكل من \(d\) و\(n\)، واختزله من \(n\text{.}\) وستأتي بقية عوامل \(d\) من \(k\)، دون مشكلة.
+
+سنسمّي أكبر عامل لكل من \(d\) و\(n\) بالرمز \(\gcd(d,n)\)، وهو القاسم المشترك الأكبر (Greatest Common Divisor). في مثالنا السابق، \(\gcd(6,8) = 2\)، لأن أكبر قاسم مشترك للعددين 6 و8 هو 2.
+
+#### التطابق والقسمة.
+
+افترض أن \(ad \equiv bd \pmod n\text{.}\) عندئذ \(a \equiv b \pmod{\frac{n}{\gcd(d,n)}}\text{.}\)
+
+إذا لم يكن للعددين \(d\) و\(n\) عوامل مشتركة، فإن \(\gcd(d,n) = 1\)، ومن ثم \(a \equiv b \pmod n\text{.}\)
+
+#### مثال 6.2.5.
+
+بسّط التطابقين الآتيين باستخدام القسمة: (أ) \(24 \equiv 39 \pmod 5\)، و(ب) \(24 \equiv 39 \pmod{15}\text{.}\)
+
+**الحل.** (أ) يقبل كل من \(24\) و\(39\) القسمة على \(3\)، وليس للعددين \(3\) و\(5\) عوامل مشتركة، لذا نحصل على:
+
+\begin{equation*}
+8 \equiv 13 \pmod 5\text{.}
+\end{equation*}
+
+(ب) يمكننا مرة أخرى القسمة على 3. لكن إجراء ذلك دون تمحيص يعطينا \(8 \equiv 13 \pmod{15}\)، الذي لم يعد صحيحًا. بدلًا من ذلك، علينا أيضًا قسمة الترديد 15 على أكبر عامل مشترك للعددين \(3\) و\(15\)، وهو \(3\text{.}\) نحصل مرة أخرى على:
+
+\begin{equation*}
+8 \equiv 13 \pmod 5\text{.}
+\end{equation*}
+
+### قسم فرعي: حل التطابقات
+
+الآن، بعد أن أصبحت لدينا بعض القواعد الجبرية التي تحكم علاقات التطابق، يمكننا محاولة إيجاد مجهول في تطابق. مثلًا، هل توجد قيمة لـ\(x\) تحقّق:
+
+\begin{equation*}
+3x + 2 \equiv 4 \pmod{5}\text{,}
+\end{equation*}
+
+وإذا وُجدت، فما هي؟
+
+في هذا المثال، بما أن الترديد صغير، يمكننا ببساطة تجربة كل قيمة ممكنة لـ\(x\text{.}\) هناك في الحقيقة 5 قيم فقط ينبغي النظر فيها، لأن أي عدد صحيح يحقّق التطابق يمكن استبداله بأي عدد صحيح آخر يطابقه بترديد 5. هنا، عندما يكون \(x = 4\)، نحصل على \(3x + 2 = 14\)، وهو بالفعل يطابق 4 بترديد 5. وهذا يعني أن كلًا من \(x = 9\) و\(x = 14\) و\(x = 19\)، وهكذا، سيكون حلًا أيضًا، لأن استبدال أي عدد في تطابق بعدد يطابقه لا يغيّر صحة التطابق، كما رأينا سابقًا.
+
+لذا، في هذا المثال، احسب ببساطة \(3x + 2\) لقيم \(x \in \{0,1,2,3,4\}\text{.}\) يعطي هذا 2 و5 و8 و11 و14، على الترتيب، ولا يطابق 4 من بينها إلا 14.
+
+لنرَ أيضًا كيف يمكنك حل هذا باستخدام قواعدنا لجبر التطابقات. ستكون طريقة كهذه أبسط بكثير من أسلوب التجربة والخطأ إذا كان الترديد أكبر. أولًا، نعرف أننا نستطيع طرح 2 من الطرفين:
+
+\begin{equation*}
+3x \equiv 2 \pmod{5}\text{.}
+\end{equation*}
+
+ثم، لقسمة الطرفين على 3، نضيف أولًا 0 إلى الطرفين. بالطبع، في الطرف الأيمن، نريد أن يكون ذلك الصفر هو 10 (نعم، \(10\) هو بالفعل 0، لأنهما متطابقان بترديد 5). وهذا يعطي:
+
+\begin{equation*}
+3x \equiv 12 \pmod{5}\text{.}
+\end{equation*}
+
+اقسم الآن الطرفين على 3. بما أن \(\gcd(3,5) = 1\)، لا نحتاج إلى تغيير الترديد:
+
+\begin{equation*}
+x \equiv 4 \pmod{5}\text{.}
+\end{equation*}
+
+لاحظ أن هذا يعطي في الواقع *الحل العام (General Solution)*: لا يقتصر الأمر على إمكان أن يكون \(x = 4\)، بل يمكن أن يكون \(x\) أي عدد يطابق 4. يمكننا ترك الحل هكذا، أو كتابة «\(x = 4 + 5k\) لأي عدد صحيح \(k\)».
+
+#### مثال 6.2.6.
+
+حل التطابقات الآتية لإيجاد \(x\text{.}\)
+
+1. \(7x \equiv 12 \pmod{13}\text{.}\)
+2. \(84x - 38 \equiv 79 \pmod{15}\text{.}\)
+3. \(20x \equiv 23 \pmod{14}\text{.}\)
+
+**الحل.**
+
+1. كل ما نحتاج إلى فعله هنا هو قسمة الطرفين على 7. نضيف 13 إلى الطرف الأيمن مرارًا حتى نحصل على مضاعف للعدد 7 (إضافة 13 مثل إضافة 0، لذا فهذا جائز). نحصل على \(25\) و\(38\) و\(51\) و\(64\) و\(77\) — وجدناه. إذن لدينا:
+
+   \begin{equation*}
+   \begin{aligned}7x \amp \equiv 12 \pmod{13} \\ 7x \amp \equiv 77 \pmod{13} \\ x \amp \equiv 11 \pmod{13}.
+   \end{aligned}
+   \end{equation*}
+
+2. هنا، بما أن لدينا أعدادًا أكبر من الترديد، يمكننا اختزالها قبل تطبيق أي عمليات جبرية. لدينا \(84 \equiv 9\) و\(38 \equiv 8\) و\(79 \equiv 4\text{.}\) ومن ثم:
+
+   \begin{equation*}
+   \begin{aligned}84x - 38 \amp \equiv 79 \pmod{15} \\ 9x - 8 \amp \equiv 4 \pmod{15} \\ 9x \amp \equiv 12 \pmod{15} \\ 9x \amp \equiv 72 \pmod{15}.
+   \end{aligned}
+   \end{equation*}
+
+   حصلنا على 72 بإضافة \(0 \equiv 60 \pmod{15}\) إلى طرفي التطابق. اقسم الآن الطرفين على 9. لكن بما أن \(\gcd(9, 15) = 3\)، يجب أن نقسم الترديد على 3 أيضًا:
+
+   \begin{equation*}
+   x \equiv 8 \pmod 5\text{.}
+   \end{equation*}
+
+   إذن الحلول هي القيم التي تطابق 8، أو على نحو مكافئ 3، بترديد 5. وهذا يعني أن هناك، بمعنى ما، 3 حلول بترديد 15: وهي 3 و8 و13. يمكننا كتابة الحل:
+
+   \begin{equation*}
+   x \equiv 3 \pmod{15}; ~~ x \equiv 8 \pmod{15}; ~~x \equiv 13 \pmod{15}\text{.}
+   \end{equation*}
+
+3. اختزل أولًا بترديد 14:
+
+   \begin{equation*}
+   20x \equiv 23 \pmod{14}
+   \end{equation*}
+
+   \begin{equation*}
+   6x \equiv 9 \pmod{14}\text{.}
+   \end{equation*}
+
+   يمكننا الآن قسمة الطرفين على 3، أو محاولة زيادة 9 بمضاعف للعدد 14 للحصول على مضاعف للعدد 6. إذا قسمنا على 3، نحصل على:
+
+   \begin{equation*}
+   2x \equiv 3 \pmod{14}\text{.}
+   \end{equation*}
+
+جرّب الآن إضافة مضاعفات 14 إلى 3، أملًا في الحصول على عدد نستطيع قسمته على 2. لن ينجح ذلك! في كل مرة نضيف فيها 14 إلى الطرف الأيمن، تظل النتيجة فردية. لن نحصل أبدًا على عدد زوجي، لذا لن نتمكن أبدًا من القسمة على 2. ومن ثم لا توجد حلول للتطابق.
+
+يوضّح التطابق الأخير أعلاه كيف قد لا تكون للتطابقات حلول. وكان بإمكاننا في الواقع ملاحظة ذلك فورًا. انظر إلى التطابق الأصلي:
+
+\begin{equation*}
+20x \equiv 23 \pmod{14}\text{.}
+\end{equation*}
+
+إذا كتبناه على هيئة معادلة، نحصل على:
+
+\begin{equation*}
+20x = 23 + 14k\text{,}
+\end{equation*}
+
+أو على نحو مكافئ \(20x - 14k = 23\text{.}\) يمكننا أن نرى بسهولة أنه لن يكون لهذه المعادلة حل في الأعداد الصحيحة. فالطرف الأيسر سيكون زوجيًا دائمًا، لكن الطرف الأيمن فردي. وستحدث مشكلة مشابهة إذا كان الطرف الأيمن يقبل القسمة على *أي* عدد لا يقبل الطرف الأيسر القسمة عليه.
+
+لذا، عمومًا، إذا أُعطي التطابق:
+
+\begin{equation*}
+ax \equiv b \pmod{n}\text{,}
+\end{equation*}
+
+وكان \(a\) و\(n\) يقبلان القسمة على عدد لا يقبل \(b\) القسمة عليه، فلن توجد حلول. وفي الواقع، لا نحتاج إلا إلى التحقّق من قاسم واحد للعددين \(a\) و\(n\): القاسم المشترك الأكبر. ومن ثم يمكن التعبير عن هذا بإيجاز أكبر كما يأتي:
+
+#### تطابقات لا حلول لها.
+
+إذا كان \(\gcd(a,n) \nmid b\)، فإن \(ax \equiv b \pmod{n}\) لا حلول له.
+
+### قسم فرعي: حل المعادلات الديوفانتية الخطية (Linear Diophantine Equations)
+
+تتعامل الرياضيات المتقطعة مع أعداد صحيحة من الأشياء. لذا، عندما نريد حل المعادلات، فإننا نبحث عادةً عن حلول *صحيحة*. وأول من درس المعادلات التي لا يُراد منها إلا حلول صحيحة هو الرياضي اليوناني ديوفانتوس الإسكندري في القرن الثالث، ولذلك تُسمّى *المعادلات الديوفانتية (Diophantine Equations)*. ولعل أشهر مثال على معادلة ديوفانتية هو \(a^2 + b^2 = c^2\text{.}\) وتُسمّى الحلول الصحيحة لهذه المعادلة ثلاثيات فيثاغورس (Pythagorean Triples). عمومًا، حل المعادلات الديوفانتية صعب (بل ثبت أنه لا توجد خوارزمية عامة لتقرير ما إذا كان لمعادلة ديوفانتية حل، وهي نتيجة تُعرف باسم مبرهنة ماتياسيفيتش (Matiyasevich’s Theorem)). سنحصر اهتمامنا في المعادلات الديوفانتية *الخطية*، التي يسهل التعامل معها بدرجة كبيرة.
+
+#### المعادلات الديوفانتية.
+
+تُسمّى المعادلة في متغيّرين أو أكثر معادلة ديوفانتية إذا كانت الحلول الصحيحة وحدها موضع الاهتمام. وتأخذ المعادلة الديوفانتية الخطية الصورة \(a_1x_1 + a_2x_2 + \cdots + a_nx_n = b\)، لثوابت \(a_1,\ldots, a_n, b\text{.}\)
+
+حل المعادلة الديوفانتية هو حل للمعادلة يتكوّن من أعداد صحيحة فقط.
+
+لدينا الأدوات التي نحتاج إليها لحل المعادلات الديوفانتية الخطية. وسنأخذ، بوصفها مثالًا رئيسيًا، المعادلة:
+
+\begin{equation*}
+51x + 87y = 123\text{.}
+\end{equation*}
+
+ستكون الاستراتيجية العامة تحويل المعادلة إلى تطابق، ثم حل ذلك التطابق.
+
+<details class="ptx-footnote" aria-live="polite" id="sec_addtops-numbth-8-6-2"><summary class="ptx-footnote__number" title="الحاشية 6.4"><sup>4</sup></summary><div class="ptx-footnote__contents" id="sec_addtops-numbth-8-6-2">ليست هذه بالتأكيد الطريقة الوحيدة للعمل. من التقنيات الأكثر شيوعًا تطبيق <dfn class="terminology">الخوارزمية الإقليدية (Euclidean Algorithm)</dfn>. قد تكون طريقتنا أسرع قليلًا، وهي معروضة هنا أساسًا من أجل التنويع.</div></details>
+
+لنعمل على هذا المثال بالتحديد لنرى كيف يمكن أن تسير الأمور.
+
+تحقّق أولًا مما إذا كان من المحتمل ألا توجد حلول لأن قاسمًا للعددين \(51\) و\(87\) ليس قاسمًا للعدد \(123\text{.}\) في الحقيقة، لا نحتاج إلا إلى التحقّق مما إذا كان \(\gcd(51, 87) \mid 123\text{.}\) هذا القاسم المشترك الأكبر هو 3، ونعم، \(3 \mid 123\text{.}\) عند هذه النقطة، يمكننا إخراج هذا القاسم المشترك الأكبر عاملًا مشتركًا. لذا سنحل بدلًا من ذلك:
+
+\begin{equation*}
+17x + 29y = 41\text{.}
+\end{equation*}
+
+لاحظ الآن أنه إذا كانت هناك حلول، فلا بد أن يكون لطرفي المعادلة الباقي نفسه عند تلك القيم لـ\(x\) و\(y\)، أيًا كان العدد الذي نقسم عليه. وتحديدًا، إذا قسمنا الطرفين على 17، يجب أن نحصل على الباقي نفسه. لذا يمكننا أن نكتب بثقة:
+
+\begin{equation*}
+17x + 29y \equiv 41 \pmod{17}\text{.}
+\end{equation*}
+
+نختار 17 لأن باقي \(17x\) سيكون 0. وهذا سيسمح لنا باختزال التطابق إلى متغيّر واحد فقط. وكان بإمكاننا أيضًا الانتقال إلى تطابق بترديد 29، مع أن هناك عادةً سببًا وجيهًا لاختيار العدد الأصغر، لأن ذلك سيسمح لنا باختزال المعامل الآخر. في حالتنا، نختزل التطابق كما يأتي:
+
+\begin{equation*}
+\begin{aligned}17x + 29y \amp \equiv 41 \pmod{17} \\ 0x + 12y \amp \equiv 7 \pmod{17} \\ 12 y \amp \equiv 24 \pmod{17} \\ y \amp \equiv 2 \pmod{17}.
+\end{aligned}
+\end{equation*}
+
+عند هذه النقطة، نعرف أن \(y = 2 + 17k\) يصلح لأي عدد صحيح \(k\text{.}\) إذا لم نرتكب خطأ، فينبغي أن نستطيع التعويض بهذا في معادلتنا الديوفانتية الأصلية لإيجاد \(x\):
+
+\begin{equation*}
+\begin{aligned}17x + 29(2 + 17k) \amp = 41\\ 17x \amp = -17 - 29\cdot 17k\\ x \amp = -1-29k.
+\end{aligned}
+\end{equation*}
+
+وجدنا الآن جميع حلول المعادلة الديوفانتية. لكل \(k\)، سيحقّق \(x = -1-29k\) و\(y = 2 + 17k\) المعادلة. ويمكننا التحقّق من هذا في بعض الحالات. إذا كان \(k = 0\)، فالحل هو \((-1,2)\)، ونعم، \(-17 + 2\cdot 29 = 41\text{.}\) وإذا كان \(k = 3\)، فالحل هو \((-88, 53)\text{.}\) وإذا كان \(k = -2\)، نحصل على \((57, -32)\text{.}\)
+
+لتلخيص هذه العملية، لحل \(ax + by = c\)، نقوم بالآتي:
+
+1. نقسم طرفي المعادلة على \(\gcd(a,b)\) (إذا لم يترك هذا الطرف الأيمن عددًا صحيحًا، فلا توجد حلول). لنفترض أن \(ax + by = c\) قد اختُزلت بالفعل بهذه الطريقة.
+2. نختار الأصغر بين \(a\) و\(b\) (هنا، افترض أنه \(b\))، ونحوّل إلى تطابق بترديد \(b\):
+
+   \begin{equation*}
+   ax + by \equiv c \pmod{b}\text{.}
+   \end{equation*}
+
+   سيُختزل هذا إلى تطابق في متغيّر واحد، هو \(x\):
+
+   \begin{equation*}
+   ax \equiv c \pmod{b}\text{.}
+   \end{equation*}
+
+3. نحل التطابق كما فعلنا في القسم السابق. اكتب حلك على هيئة معادلة، مثل:
+
+   \begin{equation*}
+   x = n + kb\text{.}
+   \end{equation*}
+
+4. نعوّض بهذا في المعادلة الديوفانتية الأصلية، ونحل لإيجاد \(y\text{.}\)
+5. إذا أردنا معرفة الحلول في نطاق معيّن (مثلًا، \(0 \le x, y \le 20\))، نختار قيمًا مختلفة لـ\(k\) حتى نحصل على جميع الحلول المطلوبة.
+
+إليك مثالًا آخر:
+
+#### مثال 6.2.7.
+
+كيف يمكنك تكوين مبلغ 6.37 دولارات باستخدام طوابع من فئتي 5 سنتات و8 سنتات فقط؟ ما أصغر عدد من الطوابع وأكبر عدد منها يمكن أن تستخدمه؟
+
+**الحل.** نحتاج أولًا إلى معادلة ديوفانتية. سنعمل بأعداد السنتات. ليكن \(x\) عدد الطوابع من فئة \(5\) سنتات، وليكن \(y\) عدد الطوابع من فئة 8 سنتات. لدينا:
+
+\begin{equation*}
+5x + 8y = 637\text{.}
+\end{equation*}
+
+حوّل إلى تطابق وحلّه:
+
+\begin{equation*}
+\begin{aligned}8y \amp \equiv 637 \pmod{5}\\ 3y \amp \equiv 2 \pmod 5\\ 3y \amp \equiv 12 \pmod 5\\ y \amp \equiv 4 \pmod 5.
+\end{aligned}
+\end{equation*}
+
+إذن \(y = 4 + 5k\text{.}\) وعندئذ \(5x + 8(4+5k) = 637\)، ومن ثم \(x = 121 - 8k\text{.}\)
+
+هذا يعني أن إحدى طرق تكوين مبلغ 6.37 دولارات هي أخذ 121 طابعًا من فئة 5 سنتات و4 طوابع من فئة 8 سنتات. لإيجاد أصغر عدد من الطوابع وأكبر عدد منها، جرّب قيمًا مختلفة لـ\(k\text{.}\)
+
+| \(k\) | \((x,y)\) | الطوابع |
 | --- | --- | --- |
 |  |  |  |
-| -1 | (129, -1) | not possible |
+| -1 | (129, -1) | غير ممكن |
 | 0 | (121, 4) | 125 |
 | 1 | (113, 9) | 122 |
 | 2 | (105, 13) | 119 |
 | \(\vdots\) | \(\vdots\) | \(\vdots\) |
 
-This is no surprise. Having the most stamps means we have as many 5-cent stamps as possible, and to get the smallest number of stamps would require having the least number of 5-cent stamps. To minimize the number of 5-cent stamps, we want to pick \(k\) so that \(121-8k\) is as small as possible (but still positive). When \(k = 15\text{,}\) we have \(x = 1\) and \(y = 79\text{.}\)[🔗](#sec_addtops-numbth-8-15-2-6) Therefore, to make $6.37, you can use as few as 80 stamps (1 5-cent stamp and 79 8-cent stamps) or as many as 125 stamps (121 5-cent stamps and 4 8-cent stamps).[🔗](#sec_addtops-numbth-8-15-2-7) [🔗](#sec_addtops-numbth-8-15-2) [🔗](#sec_addtops-numbth-8-15) Using this method, as long as you can solve linear congruences in one variable, you can solve linear Diophantine equations of two variables. There are times, though, that solving the linear congruence is a lot of work. For example, suppose you need to solve, \begin{equation*} 13x \equiv 6 \pmod{51}\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-16) You *could* keep adding 51 to the right side until you get a multiple of 13: You would get 57, 108, 159, 210, 261, 312, and 312 is the first of these that is divisible by 13. This works but is really too much work. Instead we could convert *back* to a Diophantine equation: \begin{equation*} 13x = 6 + 51k\text{.} \end{equation*} [🔗](#sec_addtops-numbth-8-17) Now solve *this* like we have in this section. Write it as a congruence modulo 13: \begin{equation*} \begin{aligned}0 \amp \equiv 6 + 51k \pmod{13}\\ -12k \amp \equiv 6 \pmod{13}\\ 2k \amp \equiv -1 \pmod{13}\\ 2k \amp \equiv 12 \pmod{13}\\ k \amp \equiv 6 \pmod{13}. \end{aligned} \end{equation*} so \(k = 6 + 13j\text{.}\) Now go back and figure out \(x\text{:}\) \begin{equation*} \begin{aligned}13x \amp = 6 + 51(6+13j)\\ x \amp = 24 + 51j. \end{aligned} \end{equation*} [🔗](#sec_addtops-numbth-8-18) Of course you could do this switching back and forth between congruences and Diophantine equations as many times as you like. If you *only* used this technique, you would essentially replicate the Euclidean algorithm, a more standard way to solve Diophantine equations.[🔗](#sec_addtops-numbth-8-19) [🔗](#sec_addtops-numbth-8)
+هذا ليس مفاجئًا. فالحصول على أكبر عدد من الطوابع يعني أن لدينا أكبر عدد ممكن من الطوابع ذات الـ5 سنتات، والحصول على أصغر عدد من الطوابع يتطلب أقل عدد من الطوابع ذات الـ5 سنتات. ولتقليل عدد الطوابع ذات الـ5 سنتات، نريد اختيار \(k\) بحيث يكون \(121-8k\) أصغر ما يمكن (مع بقائه موجبًا). عندما يكون \(k = 15\)، يكون لدينا \(x = 1\) و\(y = 79\text{.}\)
 
-### Exercises Exercises
+إذن، لتكوين مبلغ 6.37 دولارات، يمكنك استخدام عدد من الطوابع لا يقل عن 80 طابعًا (طابع واحد من فئة 5 سنتات و79 طابعًا من فئة 8 سنتات)، ولا يزيد على 125 طابعًا (121 طابعًا من فئة 5 سنتات و4 طوابع من فئة 8 سنتات).
+
+باستخدام هذه الطريقة، ما دمت تستطيع حل التطابقات الخطية في متغيّر واحد، يمكنك حل المعادلات الديوفانتية الخطية في متغيّرين. لكن هناك أوقاتًا يتطلب فيها حل التطابق الخطي عملًا كثيرًا. مثلًا، افترض أنك تحتاج إلى حل:
+
+\begin{equation*}
+13x \equiv 6 \pmod{51}\text{.}
+\end{equation*}
+
+*يمكنك* الاستمرار في إضافة 51 إلى الطرف الأيمن حتى تحصل على مضاعف للعدد 13: ستحصل على 57 و108 و159 و210 و261 و312، والعدد 312 هو أول هذه الأعداد الذي يقبل القسمة على 13. تنجح هذه الطريقة، لكنها تتطلب حقًا عملًا أكثر من اللازم. بدلًا من ذلك، يمكننا التحويل *مرة أخرى* إلى معادلة ديوفانتية:
+
+\begin{equation*}
+13x = 6 + 51k\text{.}
+\end{equation*}
+
+حل الآن *هذه* كما فعلنا في هذا القسم. اكتبها على هيئة تطابق بترديد 13:
+
+\begin{equation*}
+\begin{aligned}0 \amp \equiv 6 + 51k \pmod{13}\\ -12k \amp \equiv 6 \pmod{13}\\ 2k \amp \equiv -1 \pmod{13}\\ 2k \amp \equiv 12 \pmod{13}\\ k \amp \equiv 6 \pmod{13}.
+\end{aligned}
+\end{equation*}
+
+ومن ثم \(k = 6 + 13j\text{.}\) ارجع الآن وأوجد \(x\):
+
+\begin{equation*}
+\begin{aligned}13x \amp = 6 + 51(6+13j)\\ x \amp = 24 + 51j.
+\end{aligned}
+\end{equation*}
+
+بالطبع، يمكنك إجراء هذا الانتقال ذهابًا وإيابًا بين التطابقات والمعادلات الديوفانتية بقدر ما تشاء. وإذا استخدمت هذه التقنية وحدها، فستعيد في الأساس تنفيذ الخوارزمية الإقليدية، وهي طريقة أكثر شيوعًا لحل المعادلات الديوفانتية.
+
+### تمارين
 
 #### 1.
 
-Suppose \(a\text{,}\) \(b\text{,}\) and \(c\) are integers. Prove that if \(a \mid b\text{,}\) then \(a \mid bc\text{.}\)[🔗](#exercises_addtops-numbth-1-1-1) [🔗](#exercises_addtops-numbth-1)
+افترض أن \(a\) و\(b\) و\(c\) أعداد صحيحة. أثبت أنه إذا كان \(a \mid b\)، فإن \(a \mid bc\text{.}\)
 
 #### 2.
 
-Suppose \(a\text{,}\) \(b\text{,}\) and \(c\) are integers. Prove that if \(a \mid b\) and \(a \mid c\) then \(a \mid b+c\) and \(a \mid b-c\text{.}\)[🔗](#exercises_addtops-numbth-2-1-1) [🔗](#exercises_addtops-numbth-2)
+افترض أن \(a\) و\(b\) و\(c\) أعداد صحيحة. أثبت أنه إذا كان \(a \mid b\) و\(a \mid c\)، فإن \(a \mid b+c\) و\(a \mid b-c\text{.}\)
 
 #### 3.
 
-Write out the remainder classes for \(n = 4\text{.}\)[🔗](#exercises_addtops-numbth-3-1-1) [🔗](#exercises_addtops-numbth-3)
+اكتب فئات البواقي عندما يكون \(n = 4\text{.}\)
 
 #### 4.
 
-What is the largest \(n\) such that \(16\) and \(25\) are in the same remainder class modulo \(n\text{?}\) Write out the remainder class they both belong to and give an example of a number more than 100 in that class.[🔗](#exercises_addtops-numbth-4-1-1) [🔗](#exercises_addtops-numbth-4)
+ما أكبر \(n\) بحيث ينتمي \(16\) و\(25\) إلى فئة البواقي نفسها بترديد \(n\text{?}\) اكتب فئة البواقي التي ينتميان إليها كلاهما، وأعط مثالًا على عدد أكبر من 100 في تلك الفئة.
 
 #### 5.
 
-Let \(a\text{,}\) \(b\text{,}\) \(c\text{,}\) and \(n\) be integers. Prove that if \(a \equiv b \pmod{n}\) and \(c \equiv d \pmod{n}\text{,}\) then \(a-c \equiv b-d \pmod{n}\text{.}\)[🔗](#exercises_addtops-numbth-5-1-1) [🔗](#exercises_addtops-numbth-5)
+لتكن \(a\) و\(b\) و\(c\) و\(n\) أعدادًا صحيحة. أثبت أنه إذا كان \(a \equiv b \pmod{n}\) و\(c \equiv d \pmod{n}\)، فإن \(a-c \equiv b-d \pmod{n}\text{.}\)
 
 #### 6.
 
-Find the remainder of \(3^{456}\) when divided by
+أوجد باقي قسمة \(3^{456}\) على:
 
-1. 2.[🔗](#exercises_addtops-numbth-6-1-1-2-1-1) [🔗](#exercises_addtops-numbth-6-1-1-2-1)
-2. 5.[🔗](#exercises_addtops-numbth-6-1-1-2-2-1) [🔗](#exercises_addtops-numbth-6-1-1-2-2)
-3. 7.[🔗](#exercises_addtops-numbth-6-1-1-2-3-1) [🔗](#exercises_addtops-numbth-6-1-1-2-3)
-4. 9.[🔗](#exercises_addtops-numbth-6-1-1-2-4-1) [🔗](#exercises_addtops-numbth-6-1-1-2-4)
-
-[🔗](#exercises_addtops-numbth-6-1-1) [🔗](#exercises_addtops-numbth-6)
+1. 2.
+2. 5.
+3. 7.
+4. 9.
 
 #### 7.
 
-Repeat the previous exercise, this time dividing \(2^{2019}\text{.}\)[🔗](#exercises_addtops-numbth-7-1-1) [🔗](#exercises_addtops-numbth-7)
+كرّر التمرين السابق، لكن بقسمة \(2^{2019}\) هذه المرة.
 
 #### 8.
 
-Determine which of the following congruences have solutions, and find any solutions (between 0 and the modulus) by trial and error.
+حدّد أي التطابقات الآتية له حلول، وأوجد أي حلول (بين 0 والترديد) بالتجربة والخطأ.
 
-1. \(4x \equiv 5 \pmod 6\text{.}\) [🔗](#exercises_addtops-numbth-8-1-1-1-1)
-2. \(6x \equiv 3 \pmod 9\text{.}\) [🔗](#exercises_addtops-numbth-8-1-1-1-2)
-3. \(x^2 \equiv 2 \pmod 4\text{.}\) [🔗](#exercises_addtops-numbth-8-1-1-1-3)
-
-[🔗](#exercises_addtops-numbth-8-1-1) [🔗](#exercises_addtops-numbth-8)
+1. \(4x \equiv 5 \pmod 6\text{.}\)
+2. \(6x \equiv 3 \pmod 9\text{.}\)
+3. \(x^2 \equiv 2 \pmod 4\text{.}\)
 
 #### 9.
 
-Determine which of the following congruences have solutions, and find any solutions (between 0 and the modulus) by trial and error.
+حدّد أي التطابقات الآتية له حلول، وأوجد أي حلول (بين 0 والترديد) بالتجربة والخطأ.
 
-1. \(4x \equiv 5 \pmod 7\text{.}\) [🔗](#exercises_addtops-numbth-9-1-1-1-1)
-2. \(6x \equiv 4 \pmod 9\text{.}\) [🔗](#exercises_addtops-numbth-9-1-1-1-2)
-3. \(x^2 \equiv 2 \pmod 7\text{.}\) [🔗](#exercises_addtops-numbth-9-1-1-1-3)
-
-[🔗](#exercises_addtops-numbth-9-1-1) [🔗](#exercises_addtops-numbth-9)
+1. \(4x \equiv 5 \pmod 7\text{.}\)
+2. \(6x \equiv 4 \pmod 9\text{.}\)
+3. \(x^2 \equiv 2 \pmod 7\text{.}\)
 
 #### 10.
 
-Solve the congruence: \(5x + 8 \equiv 11 \pmod{22}\text{.}\) That is, describe the general solution.[🔗](#exercises_addtops-numbth-10-1-1) [🔗](#exercises_addtops-numbth-10)
+حل التطابق: \(5x + 8 \equiv 11 \pmod{22}\text{.}\) أي صف الحل العام.
 
 #### 11.
 
-Solve the congruence: \(6x \equiv 4 \pmod{10}\text{.}\)[🔗](#exercises_addtops-numbth-11-1-1) [🔗](#exercises_addtops-numbth-11)
+حل التطابق: \(6x \equiv 4 \pmod{10}\text{.}\)
 
 #### 12.
 
-Solve the congruence: \(4x \equiv 24 \pmod{30}\text{.}\)[🔗](#exercises_addtops-numbth-12-1-1) [🔗](#exercises_addtops-numbth-12)
+حل التطابق: \(4x \equiv 24 \pmod{30}\text{.}\)
 
 #### 13.
 
-Solve the congruence: \(341x \equiv 2941 \pmod{9}\text{.}\)[🔗](#exercises_addtops-numbth-13-1-1) Hint. First reduce each number modulo 9, which can be done by adding up the digits of the numbers.[🔗](#exercises_addtops-numbth-13-2-1) [🔗](#exercises_addtops-numbth-13-2) [🔗](#exercises_addtops-numbth-13)
+حل التطابق: \(341x \equiv 2941 \pmod{9}\text{.}\)
+
+**تلميح.** اختزل أولًا كل عدد بترديد 9، ويمكن فعل ذلك بجمع أرقام الأعداد.
 
 #### 14.
 
-I’m thinking of a number. If you multiply my number by 7, add 5, and divide the result by 11, you will be left with a remainder of 2. What remainder would you get if you divided my original number by 11?[🔗](#exercises_addtops-numbth-14-1-1) [🔗](#exercises_addtops-numbth-14)
+أفكّر في عدد. إذا ضربت عددي في 7، وأضفت 5، ثم قسمت النتيجة على 11، فسيبقى لديك باقٍ مقداره 2. ما الباقي الذي ستحصل عليه إذا قسمت عددي الأصلي على 11؟
 
 #### 15.
 
-Solve the following linear Diophantine equation, using modular arithmetic (describe the general solutions). \begin{equation*} 6x + 10y = 32\text{.} \end{equation*} [🔗](#exercises_addtops-numbth-15-1-1) [🔗](#exercises_addtops-numbth-15)
+حل المعادلة الديوفانتية الخطية الآتية باستخدام الحساب بترديد (Modular Arithmetic)، وصف الحلول العامة.
+
+\begin{equation*}
+6x + 10y = 32\text{.}
+\end{equation*}
 
 #### 16.
 
-Solve the following linear Diophantine equation, using modular arithmetic (describe the general solutions). \begin{equation*} 17x + 8y = 31\text{.} \end{equation*} [🔗](#exercises_addtops-numbth-16-1-1) [🔗](#exercises_addtops-numbth-16)
+حل المعادلة الديوفانتية الخطية الآتية باستخدام الحساب بترديد، وصف الحلول العامة.
+
+\begin{equation*}
+17x + 8y = 31\text{.}
+\end{equation*}
 
 #### 17.
 
-Solve the following linear Diophantine equation, using modular arithmetic (describe the general solutions). \begin{equation*} 35x + 47y = 1\text{.} \end{equation*} [🔗](#exercises_addtops-numbth-17-1-1) [🔗](#exercises_addtops-numbth-17)
+حل المعادلة الديوفانتية الخطية الآتية باستخدام الحساب بترديد، وصف الحلول العامة.
+
+\begin{equation*}
+35x + 47y = 1\text{.}
+\end{equation*}
 
 #### 18.
 
-You have a 13 oz. bottle and a 20 oz. bottle, with which you wish to measure exactly 2 oz. However, you have a limited supply of water. If any water enters either bottle and then gets dumped out, it is gone forever. What is the least amount of water you can start with and still complete the task?[🔗](#exercises_addtops-numbth-18-1-1) Hint. Solve the Diophantine equation \(13x + 20 y = 2\) (why?). Then consider which value of \(k\) (the parameter in the solution) is optimal.[🔗](#exercises_addtops-numbth-18-2-1) [🔗](#exercises_addtops-numbth-18-2) [🔗](#exercises_addtops-numbth-18)[🔗](#exercises_addtops-numbth)[🔗](#sec_addtops-numbth) [&#xe5cb;Prev](sec_addtops-genfun.html)[&#xe5ce;Top](#)[Next&#xe5cc;](backmatter.html) [Feedback](/cdn-cgi/l/email-protection#452a362624376b2920332c2b05302b262a6b202130)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_addtops-numbth-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_addtops-numbth-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+لديك زجاجة سعتها 13 أونصة (oz.) وزجاجة سعتها 20 أونصة، وتريد استخدامهما لقياس أونصتين بالضبط. لكن لديك كمية محدودة من الماء. إذا دخل أي ماء إلى إحدى الزجاجتين ثم سُكب خارجًا، فإنه يضيع إلى الأبد. ما أقل كمية من الماء يمكنك البدء بها مع بقائك قادرًا على إتمام المهمة؟
+
+**تلميح.** حل المعادلة الديوفانتية \(13x + 20 y = 2\) (لماذا؟). ثم انظر إلى أي قيمة لـ\(k\) (المَعْلمة (Parameter) في الحل) هي المثلى.

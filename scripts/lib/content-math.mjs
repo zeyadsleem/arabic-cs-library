@@ -16,7 +16,8 @@ const macros = {
   '\\twoline': '\\begin{pmatrix}#1\\\\#2\\end{pmatrix}',
   '\\ensuremath': '#1', '\\mbox': '\\text{#1}', '\\ttfamily': '\\tt', '\\xor': '\\oplus',
   '\\qedhere': '\\square', '\\qedsymbol': '\\blacksquare',
-  '\\textsc': '\\text{#1}', '\\ddiv': '\\mathbin{\\mathrm{div}}'
+  '\\textsc': '\\text{#1}', '\\ddiv': '\\mathbin{\\mathrm{div}}',
+  '\\o': '\\circ'
 };
 const environments = /^(equation\*?|align\*?|aligned|gather\*?|gathered|multline\*?|split|displaymath)$/;
 

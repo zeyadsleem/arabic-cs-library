@@ -1,324 +1,549 @@
 ---
-title: "Rate of Growth"
-lang: en
+title: "معدل النمو"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_seq-growth.html
 ---
 
-\Print headersFirst pageRunning Print footersFirst pageRunning Highlight workspace &#xe8ad;Print
+## القسم 4.2 معدل النمو (Rate of Growth)
 
-## Section 4.2 Rate of Growth
+### الأهداف
 
-### Objectives
+بعد إكمال هذا القسم، ينبغي أن تكون قادرًا على ما يلي.
 
-After completing this section, you should be able to do the following.[🔗](#sec_seq-growth-2-1-1)
+1. تحديد ما إذا كانت المتتالية حسابية (arithmetic) أم هندسية (geometric) بناءً على معدل نموها.
+2. إعطاء تعريفات تعاودية (recursive definitions) وصيغ مغلقة (closed formulas) للمتتاليات الحسابية والهندسية.
 
-1. Identify a sequence as arithmetic or geometric based on its rate of growth.[🔗](#sec_seq-growth-2-2-1-1) [🔗](#sec_seq-growth-2-2-1)
-2. Give recursive definitions and closed formulas for arithmetic and geometric sequences.[🔗](#sec_seq-growth-2-2-2-1) [🔗](#sec_seq-growth-2-2-2)
+#### معاينة القسم
 
-[🔗](#sec_seq-growth-2)
+#### استكشف!
 
-### Subsection Section Preview
+لكل نمط من أنماط النقاط أدناه، ارسم النمط التالي في المتتالية. صِف معدل نمو عدد النقاط في الأنماط. ثم خمّن تعريفًا تعاوديًا وصيغة مغلقة لعدد النقاط في النمط ذي الرتبة \(n\).
 
-#### Investigate!
+![متتالية من ثلاثة أنماط من النقاط، تبدأ بنقطة واحدة موسومة بـ n = 0، ثم النقطة نفسها مع أربع نقاط جديدة تمتد لتكوّن شكل X، موسومًا بـ n = 1، وأخيرًا النمط نفسه مع أربع نقاط جديدة تمتد على أذرع X، موسومًا بـ n = 2.](/images/discrete-math/sec_seq-growth-inv_dots-seq1.svg)
 
-For each of the patterns of dots below, draw the next pattern in the sequence. Describe the rate of growth of the number of dots in the patterns. Then guess a recursive definition and a closed formula for the number of dots in the \(n\)th pattern.[🔗](#investigation-seqdots-1-1) ![A sequence of three dot patterns, starting with a single dot (labeled n = 0), then the same dot with four new dots extending into an X (labeled n = 1) and finally the same pattern but with four new dots extending onto the limbs of the X (labeled n = 2).](generated/latex-image/inv_dots-seq1.svg) ![A sequence of three dot patterns, labeled n = 0, n = 1, and n = 2, from left to right. The first pattern contains two dots, on above the other. The second pattern can be viewed as each of the dots from the first pattern splitting into 3, forming two triangles (so six dots total). The third patter again takes each dot from the second pattern and splits them into three, arranged as triangles (so 18 dots in total).](generated/latex-image/inv_dots-seq2.svg) ![A sequence of four dot patters, labeled n = 1 through n = 4. The first pattern is a single dot. The second adds a row of two dots below the single dot (so three dots in a triangle). The third pattern adds a row of three dots, creating six dots arranged in a triangle. Finally we add four dots below the previous six, still forming a triangle, this time of 10 dots.](generated/latex-image/inv_dots-seq3.svg) [🔗](#investigation-seqdots)Our goal is to find closed formulas for sequences. Our primary strategy will be to first determine how the sequence is changing from term to term. This will lead to a recurrence relation for the sequence, and from that recurrence relation, we will find a closed formula. We start with two types of sequences that are particularly common and useful: arithmetic and geometric sequences. Along the way, we will explore some techniques for solving recurrence relations.[🔗](#sec_seq-growth-3-3)
+![متتالية من ثلاثة أنماط من النقاط، موسومة بـ n = 0 وn = 1 وn = 2، من اليسار إلى اليمين. يحتوي النمط الأول على نقطتين إحداهما فوق الأخرى. ويمكن النظر إلى النمط الثاني على أن كل نقطة من النمط الأول تنقسم إلى ثلاث نقاط، فتكوّنان مثلثين، أي ست نقاط إجمالًا. ويأخذ النمط الثالث كل نقطة من النمط الثاني ويقسمها مجددًا إلى ثلاث نقاط مرتبة في مثلثات، أي 18 نقطة إجمالًا.](/images/discrete-math/sec_seq-growth-inv_dots-seq2.svg)
 
-#### Worksheet Preview Activity[&#xe8ad;](?printpreview=PA-seq-growth)
+![متتالية من أربعة أنماط من النقاط، موسومة من n = 1 إلى n = 4. النمط الأول نقطة واحدة. ويضيف الثاني صفًا من نقطتين أسفل النقطة الواحدة، فتكون ثلاث نقاط في مثلث. ويضيف الثالث صفًا من ثلاث نقاط، فتتكوّن ست نقاط مرتبة في مثلث. وأخيرًا نضيف أربع نقاط أسفل النقاط الست السابقة، ليظل الشكل مثلثًا، لكنه يتكوّن هذه المرة من 10 نقاط.](/images/discrete-math/sec_seq-growth-inv_dots-seq3.svg)
 
-#### 1. Dots.
+هدفنا هو إيجاد صيغ مغلقة للمتتاليات. وستكون استراتيجيتنا الأساسية أن نحدد أولًا كيف تتغير المتتالية من حد إلى آخر. وسيقودنا ذلك إلى علاقة تعاودية (recurrence relation) للمتتالية، ومنها سنجد صيغة مغلقة. نبدأ بنوعين من المتتاليات شائعين ومفيدين على نحو خاص: المتتاليات الحسابية والهندسية. وسنستكشف أثناء ذلك بعض تقنيات حل العلاقات التعاودية.
 
-Activate Explore the first sequence of dots from the *Investigate!* activity. We will let \(a_n\) represent the number of dots in figure \(n\text{.}\) The sequence starts \(1, 5, 9,\ldots\)[🔗](#extracted-webwork-185-1-1-1)
+#### ورقة عمل: نشاط تمهيدي
+#### 1. نقاط.
+
+تفعيل. استكشف متتالية النقاط الأولى من نشاط *استقصِ!*. سنجعل \(a_n\) يمثل عدد النقاط في الشكل \(n\text{.}\) تبدأ المتتالية بـ \(1, 5, 9,\ldots\)
 
 #### (a)
 
-How many dots would you expect in the next two figures in the sequence?[🔗](#extracted-webwork-185-1-2-1-1) Dots in \(n = 3\) figure: \(a_3 =\).[🔗](#extracted-webwork-185-1-2-1-2) Dots in \(n = 4\) figure: \(a_4 =\).[🔗](#extracted-webwork-185-1-2-1-3) [🔗](#extracted-webwork-185-1-2)
+كم نقطة تتوقع في الشكلين التاليين في المتتالية؟
+
+عدد النقاط في الشكل \(n = 3\): \(a_3 =\) ____.
+
+عدد النقاط في الشكل \(n = 4\): \(a_4 =\) ____.
 
 #### (b)
 
-How is the sequence growing? To get the next figure, take the current figure and
+كيف تنمو المتتالية؟ للحصول على الشكل التالي، خذ الشكل الحالي ثم
 
-- add[🔗](#extracted-webwork-185-1-3-1-1-1-1-1) [🔗](#extracted-webwork-185-1-3-1-1-1-1)
-- multiply by[🔗](#extracted-webwork-185-1-3-1-1-1-2-1) [🔗](#extracted-webwork-185-1-3-1-1-1-2)
+- أضف
+- اضرب في
 
-the constant dots. [🔗](#extracted-webwork-185-1-3-1-1) [🔗](#extracted-webwork-185-1-3)
+العدد الثابت ____ من النقاط.
 
 #### (c)
 
-Let \(a_n\) be the number of dots in figure \(n\text{.}\) Write a recursive definition for \(a_n\text{.}\)[🔗](#extracted-webwork-185-1-4-1-1) \(a_n =\) ; with \(a_0 =\) .[🔗](#extracted-webwork-185-1-4-1-2) [🔗](#extracted-webwork-185-1-4)
+ليكن \(a_n\) عدد النقاط في الشكل \(n\text{.}\) اكتب تعريفًا تعاوديًا لـ \(a_n\text{.}\)
+
+\(a_n =\) ____؛ مع \(a_0 =\) ____.
 
 #### (d)
 
-Guess a closed formula for the number of dots in the \(n\)th figure.[🔗](#extracted-webwork-185-1-5-1-1) \(a_n =\) .[🔗](#extracted-webwork-185-1-5-1-2) [🔗](#extracted-webwork-185-1-5) [🔗](#pa-sec-growth-1)
+خمّن صيغة مغلقة لعدد النقاط في الشكل ذي الرتبة \(n\).
 
-#### 2. More dots.
+\(a_n =\) ____.
 
-Activate Now look at the second sequence of dots from the *Investigate!* activity. We will let \(a_n\) represent the number of dots in figure \(n\text{.}\) The sequence starts \(2, 6, 18,\ldots\)[🔗](#extracted-webwork-186-1-1-1)
+#### 2. مزيد من النقاط.
+
+تفعيل. انظر الآن إلى متتالية النقاط الثانية من نشاط *استقصِ!*. سنجعل \(a_n\) يمثل عدد النقاط في الشكل \(n\text{.}\) تبدأ المتتالية بـ \(2, 6, 18,\ldots\)
 
 #### (a)
 
-How many dots would you expect in the next two figures in the sequence?[🔗](#extracted-webwork-186-1-2-1-1) Dots in \(n = 3\) figure: \(a_3 =\).[🔗](#extracted-webwork-186-1-2-1-2) Dots in \(n = 4\) figure: \(a_4 =\).[🔗](#extracted-webwork-186-1-2-1-3) [🔗](#extracted-webwork-186-1-2)
+كم نقطة تتوقع في الشكلين التاليين في المتتالية؟
+
+عدد النقاط في الشكل \(n = 3\): \(a_3 =\) ____.
+
+عدد النقاط في الشكل \(n = 4\): \(a_4 =\) ____.
 
 #### (b)
 
-How is the sequence growing? To get the next figure, take the current figure and
+كيف تنمو المتتالية؟ للحصول على الشكل التالي، خذ الشكل الحالي ثم
 
-- add[🔗](#extracted-webwork-186-1-3-1-1-1-1-1) [🔗](#extracted-webwork-186-1-3-1-1-1-1)
-- multiply by[🔗](#extracted-webwork-186-1-3-1-1-1-2-1) [🔗](#extracted-webwork-186-1-3-1-1-1-2)
+- أضف
+- اضرب في
 
-the constant . [🔗](#extracted-webwork-186-1-3-1-1) [🔗](#extracted-webwork-186-1-3)
+العدد الثابت ____.
 
 #### (c)
 
-Let \(a_n\) be the number of dots in figure \(n\text{.}\) Write a recursive definition for \(a_n\text{.}\)[🔗](#extracted-webwork-186-1-4-1-1) \(a_n =\) ; with \(a_0 =\) .[🔗](#extracted-webwork-186-1-4-1-2) [🔗](#extracted-webwork-186-1-4)
+ليكن \(a_n\) عدد النقاط في الشكل \(n\text{.}\) اكتب تعريفًا تعاوديًا لـ \(a_n\text{.}\)
+
+\(a_n =\) ____؛ مع \(a_0 =\) ____.
 
 #### (d)
 
-Guess a closed formula for the number of dots in the \(n\)th figure.[🔗](#extracted-webwork-186-1-5-1-1) \(a_n =\) .[🔗](#extracted-webwork-186-1-5-1-2) [🔗](#extracted-webwork-186-1-5) [🔗](#pa-sec-growth-2)
+خمّن صيغة مغلقة لعدد النقاط في الشكل ذي الرتبة \(n\).
 
-#### 3. Even more dots.
+\(a_n =\) ____.
 
-Activate Now look at the third sequence of dots from the *Investigate!* activity. We will let \(a_n\) represent the number of dots in figure \(n\text{.}\) The sequence starts \(1, 3, 6, 10,\ldots\)[🔗](#extracted-webwork-187-1-1-1)
+#### 3. مزيد آخر من النقاط.
+
+تفعيل. انظر الآن إلى متتالية النقاط الثالثة من نشاط *استقصِ!*. سنجعل \(a_n\) يمثل عدد النقاط في الشكل \(n\text{.}\) تبدأ المتتالية بـ \(1, 3, 6, 10,\ldots\)
 
 #### (a)
 
-How many dots would you expect in the next two figures in the sequence?[🔗](#extracted-webwork-187-1-2-1-1) Dots in \(n = 5\) figure: \(a_5 =\).[🔗](#extracted-webwork-187-1-2-1-2) Dots in \(n = 6\) figure: \(a_6 =\).[🔗](#extracted-webwork-187-1-2-1-3) [🔗](#extracted-webwork-187-1-2)
+كم نقطة تتوقع في الشكلين التاليين في المتتالية؟
+
+عدد النقاط في الشكل \(n = 5\): \(a_5 =\) ____.
+
+عدد النقاط في الشكل \(n = 6\): \(a_6 =\) ____.
 
 #### (b)
 
-Let \(a_n\) be the number of dots in figure \(n\text{.}\) Write a recursive definition for \(a_n\text{.}\)[🔗](#extracted-webwork-187-1-3-1-1) \(a_n =\) ; with \(a_1 =\) .[🔗](#extracted-webwork-187-1-3-1-2) [🔗](#extracted-webwork-187-1-3)
+ليكن \(a_n\) عدد النقاط في الشكل \(n\text{.}\) اكتب تعريفًا تعاوديًا لـ \(a_n\text{.}\)
+
+\(a_n =\) ____؛ مع \(a_1 =\) ____.
 
 #### (c)
 
-Guess a closed formula for the number of dots in the \(n\)th figure.[🔗](#extracted-webwork-187-1-4-1-1) \(a_n =\) .[🔗](#extracted-webwork-187-1-4-1-2) [🔗](#extracted-webwork-187-1-4) [🔗](#pa-sec-growth-3)[🔗](#PA-seq-growth)[🔗](#sec_seq-growth-3)
+خمّن صيغة مغلقة لعدد النقاط في الشكل ذي الرتبة \(n\).
 
-### Subsection Arithmetic Sequences
+\(a_n =\) ____.
 
-Suppose you start a business selling prints of mathematical art. In week zero, you sell two prints. Each week after that, you sell four more prints than you did the previous week. How many prints will you sell in the \(n\)th week?[🔗](#subsec-arithmetic-2) We can easily compute the first few terms of the sequence: \(2, 6, 10, 14,\ldots\text{.}\) How do I know this is correct? From the problem, we see that to get from one term to the next, we must add 4. It is clear then that the recurrence relation for the sequence is \begin{equation*} a_n = a_{n-1} + 4\text{.} \end{equation*} The *rate of growth* for the sequence is the constant \(4\) since the *difference* between any two terms is 4 (note, we could write the recurrence relation as \(a_n - a_{n-1} = 4\)). [🔗](#subsec-arithmetic-3) We call sequences with a *constant rate of change* arithmetic sequences.[🔗](#subsec-arithmetic-4) Now let’s find a closed formula for our sequence. The first term is \(a_0 = 2\text{.}\) To get \(a_1\text{,}\) we add \(4\text{.}\) The next term requires us to add \(4\) again, which means we have added \(4\) to our initial term twice. Then we add \(4\) again, for a total of three times for \(a_3\text{.}\) In fact, to get \(a_n\text{,}\) we will have added \(4\) to \(a_0\) a total of \(n\) times. Thus, the closed formula for the sequence is \begin{equation*} a_n = 2 + 4n\text{.} \end{equation*} [🔗](#subsec-arithmetic-5) This works for any arithmetic sequence. That is, any sequence with a constant difference will have a *linear* closed formula, where the “slope” of the linear function is the common difference.[🔗](#subsec-arithmetic-6)
+### قسم فرعي: المتتاليات الحسابية
 
-#### Arithmetic Sequences.
+افترض أنك تبدأ مشروعًا لبيع مطبوعات من أعمال فنية رياضية. في الأسبوع صفر، تبيع مطبوعتين. وفي كل أسبوع بعد ذلك، تبيع أربع مطبوعات أكثر مما بعت في الأسبوع السابق. كم مطبوعة ستبيع في الأسبوع ذي الرتبة \(n\)؟
 
-If the terms of a sequence differ by a constant, we say the sequence is arithmetic. If the initial term (\(a_0\)) of the sequence is \(a\) and the common difference is \(d\text{,}\) then we have,[🔗](#subsec-arithmetic-7-6) Recursive definition: \(a_n = a_{n-1} + d\) with \(a_0 = a\text{.}\)[🔗](#subsec-arithmetic-7-7) Closed formula: \(a_n = a + dn\text{.}\)[🔗](#subsec-arithmetic-7-8) [🔗](#subsec-arithmetic-7) As we did for our example above, for the recursive definition, we need to specify \(a_0\text{.}\) Then we need to express \(a_n\) in terms of \(a_{n-1}\text{.}\) If we call the first term \(a\text{,}\) then \(a_0 = a\text{.}\) For the recurrence relation, by the definition of an arithmetic sequence, the difference between successive terms is some constant, say \(d\text{.}\) So \(a_n - a_{n-1} = d\text{,}\) or in other words, \begin{equation*} a_0 = a \qquad a_n = a_{n-1} + d\text{.} \end{equation*} [🔗](#subsec-arithmetic-8) Let’s now argue why the closed formula is correct. One way we could do this is by using a technique sometimes called telescoping (a name which hopefully we become meaningful momentarily).[🔗](#subsec-arithmetic-9) We write the recurrence relation in its *difference* form, \(a_n - a_{n-1} = d\) for all terms starting with \(a_1\) and going up to \(a_n\text{.}\) This gives the following: \begin{align*} a_1 - a_0 = \amp d\\ a_2 - a_1 = \amp d\\ a_3 - a_2 = \amp d\\ \vdots \amp \\ a_{n-1} - a_{n-2} = \amp d\\ a_n - a_{n-1} = \amp d\text{.} \end{align*} Now we add all \(n\) equations together. [🔗](#subsec-arithmetic-10) On the right-hand side, we have added \(d\) to itself \(n\) times, so the sum is \(d\cdot n\text{.}\)[🔗](#subsec-arithmetic-11) On the left-hand side, we get the sum: \begin{equation*} (a_1 - a_0) + (a_2 - a_1) + (a_3 - a_2) + \cdots + (a_{n-1} - a_{n-2}) + (a_n - a_{n-1})\text{.} \end{equation*} But look what happens when we regroup and cancel like terms: \begin{equation*} \cancel{a_1} - a_0 + \cancel{a_2} - \cancel{a_1} + \cancel{a_3} - \cancel{a_2} + \cdots + \cancel{a_{n-1}} - \cancel{a_{n-2}} + a_n - \cancel{a_{n-1}} = a_n - a_0\text{.} \end{equation*} The sum *telescopes* down to be nice and compact for easy storage. [🔗](#subsec-arithmetic-12) Putting the two sides together gives us \begin{equation*} a_n - a_0 = d \cdot n \end{equation*} which becomes \begin{equation*} a_n = a_0 + d \cdot n \end{equation*} as we claimed. [🔗](#subsec-arithmetic-13) The telescoping we did above is useful in other contexts (see [Exercise 6](sec_seq-growth.html#ex-telescoping-sum)), but now that we have established a general form of the closed formula, we can apply it to any arithmetic sequence.[🔗](#subsec-arithmetic-14)
+يمكننا بسهولة حساب الحدود الأولى من المتتالية: \(2, 6, 10, 14,\ldots\text{.}\) كيف أعرف أن هذا صحيح؟ نرى من المسألة أنه للانتقال من حد إلى الحد التالي، علينا إضافة 4. ومن الواضح إذن أن العلاقة التعاودية للمتتالية هي
 
-#### Example 4.2.1.
+\begin{equation*}
+a_n = a_{n-1} + 4\text{.}
+\end{equation*}
 
-Find recursive definitions and closed formulas for the arithmetic sequences below. Assume the first term listed is \(a_0\text{.}\)[🔗](#subsec-arithmetic-15-1-1)
+*معدل النمو* للمتتالية هو الثابت \(4\)، لأن *الفرق* بين أي حدين هو 4 (لاحظ أننا نستطيع كتابة العلاقة التعاودية على الصورة \(a_n - a_{n-1} = 4\)).
 
-1. \(2, 5, 8, 11, 14, \ldots\text{.}\) [🔗](#subsec-arithmetic-15-1-2-1-1)
-2. \(50, 43, 36, 29, \ldots\text{.}\) [🔗](#subsec-arithmetic-15-1-2-1-2)
+نسمي المتتاليات ذات *معدل التغير الثابت* متتاليات حسابية.
 
-[🔗](#subsec-arithmetic-15-1-2) Solution. First we should check that these sequences really are arithmetic by taking differences of successive terms. Doing so will reveal the common difference \(d\text{.}\)[🔗](#subsec-arithmetic-15-2-1)
+لنجد الآن صيغة مغلقة لمتتاليتنا. الحد الأول هو \(a_0 = 2\text{.}\) وللحصول على \(a_1\text{,}\) نضيف \(4\text{.}\) ويتطلب الحد التالي أن نضيف \(4\) مجددًا، مما يعني أننا أضفنا \(4\) إلى حدنا الابتدائي مرتين. ثم نضيف \(4\) مرة أخرى، ليصبح مجموع مرات الإضافة ثلاثًا عند \(a_3\text{.}\) في الواقع، للحصول على \(a_n\text{,}\) نكون قد أضفنا \(4\) إلى \(a_0\) ما مجموعه \(n\) مرات. لذلك تكون الصيغة المغلقة للمتتالية
 
-1. \(5-2 = 3\text{,}\) \(8-5 = 3\text{,}\) etc. To get from each term to the next, we add three, so \(d = 3\text{.}\) The recursive definition is therefore \(a_n = a_{n-1} + 3\) with \(a_0 = 2\text{.}\) The closed formula is \(a_n = 2 + 3n\text{.}\) [🔗](#subsec-arithmetic-15-2-2-1-1)
-2. Here the common difference is \(-7\text{,}\) since we add \(-7\) to 50 to get 43, and so on. Thus we have a recursive definition of \(a_n = a_{n-1} - 7\) with \(a_0 = 50\text{.}\) The closed formula is \(a_n = 50 - 7n\text{.}\)[🔗](#subsec-arithmetic-15-2-2-1-2-1) [🔗](#subsec-arithmetic-15-2-2-1-2)
+\begin{equation*}
+a_n = 2 + 4n\text{.}
+\end{equation*}
 
-[🔗](#subsec-arithmetic-15-2-2) [🔗](#subsec-arithmetic-15-2) [🔗](#subsec-arithmetic-15)[🔗](#subsec-arithmetic)
+ينطبق هذا على أي متتالية حسابية. أي إن أي متتالية ذات فرق ثابت ستكون لها صيغة مغلقة *خطية* (linear)، حيث يكون «ميل» الدالة الخطية هو الفرق المشترك (common difference).
 
-### Subsection Geometric Sequences
+#### المتتاليات الحسابية.
 
-What about sequences like \(3, 6, 12, 24, 48, \ldots\text{?}\) This is not arithmetic because the difference between terms is not constant. However, the *ratio* between successive terms is constant: \(\frac{6}{3} = \frac{12}{6} = \frac{24}{12} = \cdots = 2\) We call such sequences geometric.[🔗](#subsec-geometric-sequences-2) Recognizing that the sequence is geometric lets us easily write down a recursive definition. \(a_n = 2 a_{n-1}\text{,}\) with \(a_0 = 3\text{.}\)[🔗](#subsec-geometric-sequences-3) A closed formula is also not difficult to reason out. How do we get the term \(a_3\) for example? We start with \(3\text{,}\) then multiply by 2 to get \(a_1\text{,}\) multiply by \(2\) again to get \(a_2\text{,}\) and multiply by \(2\) a third time to get \(a_3\text{.}\) So we multiplied \(3\) by \(2\) a total of three times, or \(a_3 = 3\cdot 2^3\text{.}\) It looks like \(a_n = 3\cdot 2^n\text{.}\)[🔗](#subsec-geometric-sequences-4) In general, the recursive definition for the geometric sequence with initial term \(a\) and common ratio \(r\) will be \begin{equation*} a_n = a_{n-1}\cdot r; a_0 = a\text{.} \end{equation*} To get the next term we multiply the previous term by \(r\text{.}\) [🔗](#subsec-geometric-sequences-5) For the general closed formula, we could try something like telescoping again, although we would need to cancel fractions. Instead, let’s illustrate another technique for solving recurrence relations called iteration. The idea here is that we work our way up to \(a_n\) and notice the pattern. Write \begin{align*} a_0 \amp = a\\ a_1 \amp = a_0\cdot r\\ a_2 \amp = a_1 \cdot r = a_0\cdot r\cdot r = a_0\cdot r^2\\ a_3 \amp = a_2 \cdot r = a_0 \cdot r^2 \cdot r = a_0 \cdot r^3\\ \amp \vdots\\ a_n \amp = a_{n-1} \cdot r = a_0 \cdot r^{n-1}\cdot r = a_0 r^n\text{.} \end{align*} We must multiply the first term \(a\) by \(r\) a number of times, \(n\) times to be precise. We get \(a_n = a\cdot r^{n}\text{.}\) [🔗](#subsec-geometric-sequences-6)
+إذا اختلفت حدود متتالية بمقدار ثابت، نقول إن المتتالية حسابية. وإذا كان حدها الابتدائي (\(a_0\)) هو \(a\)، وكان الفرق المشترك هو \(d\text{,}\) فلدينا:
 
-#### Geometric Sequences.
+التعريف التعاودي: \(a_n = a_{n-1} + d\) مع \(a_0 = a\text{.}\)
 
-A sequence is called geometric if the ratio between successive terms is constant. Suppose the initial term \(a_0\) is \(a\) and the common ratio is \(r\text{.}\) Then we have,[🔗](#subsec-geometric-sequences-7-6) Recursive definition: \(a_n = ra_{n-1}\) with \(a_0 = a\text{.}\)[🔗](#subsec-geometric-sequences-7-7) Closed formula: \(a_n = a\cdot r^{n}\text{.}\)[🔗](#subsec-geometric-sequences-7-8) [🔗](#subsec-geometric-sequences-7)
+الصيغة المغلقة: \(a_n = a + dn\text{.}\)
 
-#### Example 4.2.2.
+كما فعلنا في المثال أعلاه، نحتاج في التعريف التعاودي إلى تحديد \(a_0\text{.}\) ثم نحتاج إلى التعبير عن \(a_n\) بدلالة \(a_{n-1}\text{.}\) فإذا سمّينا الحد الأول \(a\text{,}\) كان \(a_0 = a\text{.}\) وبحسب تعريف المتتالية الحسابية، يكون الفرق بين الحدود المتتالية ثابتًا ما، ولنسمّه \(d\text{.}\) إذن \(a_n - a_{n-1} = d\text{,}\) أو بعبارة أخرى:
 
-Find the recursive and closed formula for the geometric sequences below. Again, the first term listed is \(a_0\text{.}\)
+\begin{equation*}
+a_0 = a \qquad a_n = a_{n-1} + d\text{.}
+\end{equation*}
 
-1. \(\displaystyle 3, 6, 12, 24, 48, \ldots\) [🔗](#subsec-geometric-sequences-8-1-1-2-1)
-2. \(\displaystyle 27, 9, 3, 1, 1/3, \ldots\) [🔗](#subsec-geometric-sequences-8-1-1-2-2)
+لنوضح الآن لماذا الصيغة المغلقة صحيحة. إحدى الطرق لذلك هي استخدام تقنية تسمى أحيانًا الاختزال التلسكوبي (telescoping)، وهو اسم نأمل أن يتضح معناه بعد قليل.
 
-[🔗](#subsec-geometric-sequences-8-1-1) Solution. Start by checking that these sequences really are geometric by dividing each term by its previous term. If this ratio really is constant, we will have found \(r\text{.}\)
+نكتب العلاقة التعاودية في صورة *الفرق*، \(a_n - a_{n-1} = d\)، لجميع الحدود بدءًا من \(a_1\) وصولًا إلى \(a_n\text{.}\) فنحصل على ما يلي:
 
-1. \(6/3 = 2\text{,}\) \(12/6 = 2\text{,}\) \(24/12 = 2\text{,}\) etc. Yes, to get from any term to the next, we multiply by \(r = 2\text{.}\) So the recursive definition is \(a_n = 2a_{n-1}\) with \(a_0 = 3\text{.}\) The closed formula is \(a_n = 3\cdot 2^{n}\text{.}\) [🔗](#subsec-geometric-sequences-8-2-1-2-1)
-2. The common ratio is \(r = 1/3\text{.}\) So the sequence has recursive definition \(a_n = \frac{1}{3}a_{n-1}\) with \(a_0 = 27\) and closed formula \(a_n = 27\cdot \frac{1}{3}^{n}\text{.}\)[🔗](#subsec-geometric-sequences-8-2-1-2-2-1) [🔗](#subsec-geometric-sequences-8-2-1-2-2)
+\begin{align*}
+a_1 - a_0 = \amp d\\
+a_2 - a_1 = \amp d\\
+a_3 - a_2 = \amp d\\
+\vdots \amp \\
+a_{n-1} - a_{n-2} = \amp d\\
+a_n - a_{n-1} = \amp d\text{.}
+\end{align*}
 
-[🔗](#subsec-geometric-sequences-8-2-1) [🔗](#subsec-geometric-sequences-8-2) [🔗](#subsec-geometric-sequences-8)Geometric sequences are those which have a growth rate that is *proportional* to the sequence itself. Just like you might have seen in calculus, it is exactly the exponential functions that have this property.[🔗](#subsec-geometric-sequences-9) In the examples and formulas above, we assumed that the *initial* term was \(a_0\text{.}\) If your sequence starts with \(a_1\text{,}\) you can easily find the term that would have been \(a_0\) and use that in the formula. For example, if we want a formula for the sequence \(2, 5, 8,\ldots\) and insist that \(2= a_1\text{,}\) then we can find \(a_0 = -1\) (since the sequence is arithmetic with common difference 3, we have \(a_0 + 3 = a_1\)). Then the closed formula will be \(a_n = -1 + 3n\text{.}\)[🔗](#subsec-geometric-sequences-10)
+نجمع الآن المعادلات الـ \(n\) جميعها.
 
-#### Remark 4.2.3.
+في الطرف الأيمن، أضفنا \(d\) إلى نفسه \(n\) مرات، فيكون المجموع \(d\cdot n\text{.}\)
 
-If you look at other sources, you might find that their closed formulas for arithmetic and geometric sequences differ from ours. Specifically, you might find the formulas \(a_n = a +(n-1)d\) (arithmetic) and \(a_n = a\cdot r^{n-1}\) (geometric). Which is correct? Both! In our case, we take \(a\) to be \(a_0\text{.}\) If instead we had \(a_1\) as our initial term, we would get the (slightly more complicated) formulas you find elsewhere.[🔗](#subsec-geometric-sequences-11-1) [🔗](#subsec-geometric-sequences-11)[🔗](#subsec-geometric-sequences)
+وفي الطرف الأيسر، نحصل على المجموع:
 
-### Subsection Beyond Arithmetic and Geometric Sequences
+\begin{equation*}
+(a_1 - a_0) + (a_2 - a_1) + (a_3 - a_2) + \cdots + (a_{n-1} - a_{n-2}) + (a_n - a_{n-1})\text{.}
+\end{equation*}
 
-Look at the sequence \((T_n)_{n\ge 1}\) which starts \(1, 3, 6, 10, 15,\ldots\text{.}\) These are called the triangular numbers since they represent the number of dots in an equilateral triangle (think of how you arrange 10 bowling pins: a row of 4 plus a row of 3 plus a row of 2 and a row of 1).[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-2) ![A sequence of four dot patters, showing the first four triangular numbers: the patterns contain 1, 3, 6, and 10 dots, arranged in triangles with base 1, 2, 3, and 4, respectively.](generated/latex-image/subsec-beyond-arithmetic-and-geometric-sequences-3-1.svg) Is this sequence arithmetic? No, since \(3-1 = 2\) and \(6-3 = 3 \ne 2\text{,}\) so there is no common difference. Is the sequence geometric? No. \(3/1 = 3\) but \(6/3 = 2\text{,}\) so there is no common ratio. What to do?[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-4) Notice that the *differences* between terms *do* form an arithmetic sequence: \(2, 3, 4, 5, 6,\ldots\text{.}\) In other words, the rate of change of this sequence is arithmetic: \(T_n - T_{n-1} = n\text{,}\) which immediately gives us the recurrence relation \(T_n = T_{n-1} + n\text{.}\)[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-5) Another way to think of this is that the \(n\)th term of the sequence \((T_n)\) is the *sum* of the first \(n\) terms in the sequence \(1,2,3,4,5,\ldots\text{.}\) Thus \((T_n)\) is the sequence of partial sums of the sequence \(1,2,3,\ldots\) (*partial* sums because we are not taking the sum of all infinitely many terms).[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-6) This should become clearer if we expand the recurrence relation to write the triangular numbers like this: \begin{align*} T_1 = 1 \amp = 1\\ T_2 = 3 \amp = 1+2\\ T_3 = 6 \amp = 1 + 2 + 3\\ T_4 = 10 \amp = 1+ 2 + 3+ 4\\ \vdots \amp \qquad \vdots\\ T_n \amp = 1 + 2 + 3 + \cdots + n\text{.} \end{align*} We are really using *iteration* here. We could also have seen this by using telescoping, taking \(T_0 = 0\text{:}\) \begin{align*} T_1-T_0 = \amp 1\\ T_2 - T_1 = \amp 2\\ T_3 - T_2 = \amp 3\\ \vdots \amp \\ T_n - T_{n-1} = \amp n\text{.} \end{align*} Summing these equations, the right-hand side becomes \(1+2+3+\cdots + n\text{;}\) the left-hand side cancels to leave just \(T_n - T_0 = T_n\text{.}\) [🔗](#subsec-beyond-arithmetic-and-geometric-sequences-7) If we know how to add up the terms of an arithmetic sequence, we can find a closed formula for a sequence whose differences are the terms of that arithmetic sequence. Consider how we could find the sum of the first 100 positive integers (that is, \(T_{100}\)). Instead of adding them in order, we regroup and add \(1+100 = 101\text{.}\) The next pair to combine is \(2+99 = 101\text{.}\) Then \(3+98 = 101\text{.}\) Keep going. This gives 50 pairs which each add up to \(101\text{,}\) so \(T_{100} = 101\cdot 50 = 5050\text{.}\) 1 This insight is usually attributed to Carl Friedrich Gauss, one of the greatest mathematicians of all time, who discovered it as a child when his unpleasant elementary teacher thought he would keep the class busy by requiring them to compute the lengthy sum.[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-8) In general, using this same sort of regrouping, we find that \(T_n = \frac{n(n+1)}{2}\text{.}\) Incidentally, this is exactly the same as \({n+1 \choose 2}\text{,}\) which makes sense if you think of the triangular numbers as counting the number of handshakes that take place at a party with \(n+1\) people: the first person shakes \(n\) hands, the next shakes an additional \(n-1\) hands and so on.[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-9) The point of all of this is that some sequences, while not arithmetic or geometric, can be interpreted as the sequence of partial sums of arithmetic and geometric sequences. Luckily there are methods we can use to compute these sums quickly, which we will explore in the next two sections.[🔗](#subsec-beyond-arithmetic-and-geometric-sequences-10) [🔗](#subsec-beyond-arithmetic-and-geometric-sequences)
+لكن انظر إلى ما يحدث عندما نعيد التجميع ونلغي الحدود المتشابهة:
 
-### Reading Questions Reading Questions
+\begin{equation*}
+\cancel{a_1} - a_0 + \cancel{a_2} - \cancel{a_1} + \cancel{a_3} - \cancel{a_2} + \cdots + \cancel{a_{n-1}} - \cancel{a_{n-2}} + a_n - \cancel{a_{n-1}} = a_n - a_0\text{.}
+\end{equation*}
 
+*ينكمش المجموع تلسكوبيًا* إلى صورة لطيفة ومضغوطة يسهل تخزينها.
+
+بوضع الطرفين معًا نحصل على
+
+\begin{equation*}
+a_n - a_0 = d \cdot n
+\end{equation*}
+
+والتي تصبح
+
+\begin{equation*}
+a_n = a_0 + d \cdot n
+\end{equation*}
+
+كما قلنا.
+
+الاختزال التلسكوبي الذي أجريناه أعلاه مفيد في سياقات أخرى (انظر [التمرين 6](#ex-telescoping-sum){.ref})، لكن بعد أن أثبتنا صورة عامة للصيغة المغلقة، يمكننا تطبيقها على أي متتالية حسابية. {#ex-telescoping-sum} {#ex-telescoping-sum}
+
+#### مثال 4.2.1.
+
+أوجد تعريفات تعاودية وصيغًا مغلقة للمتتاليات الحسابية أدناه. افترض أن أول حد مدرج هو \(a_0\text{.}\)
+
+1. \(2, 5, 8, 11, 14, \ldots\text{.}\)
+2. \(50, 43, 36, 29, \ldots\text{.}\)
+
+الحل. ينبغي أولًا أن نتحقق من أن هذه المتتاليات حسابية بالفعل بأخذ فروق الحدود المتتالية. وسيكشف ذلك عن الفرق المشترك \(d\text{.}\)
+
+1. \(5-2 = 3\text{,}\) و\(8-5 = 3\text{,}\) وهكذا. للانتقال من كل حد إلى التالي نضيف ثلاثة، إذن \(d = 3\text{.}\) لذلك يكون التعريف التعاودي \(a_n = a_{n-1} + 3\) مع \(a_0 = 2\text{.}\) والصيغة المغلقة هي \(a_n = 2 + 3n\text{.}\)
+2. الفرق المشترك هنا هو \(-7\text{,}\) لأننا نضيف \(-7\) إلى 50 لنحصل على 43، وهكذا. ومن ثم لدينا التعريف التعاودي \(a_n = a_{n-1} - 7\) مع \(a_0 = 50\text{.}\) والصيغة المغلقة هي \(a_n = 50 - 7n\text{.}\)
+
+### قسم فرعي: المتتاليات الهندسية
+
+ماذا عن متتاليات مثل \(3, 6, 12, 24, 48, \ldots\text{?}\) هذه ليست حسابية لأن الفرق بين الحدود ليس ثابتًا. لكن *النسبة* بين الحدود المتتالية ثابتة: \(\frac{6}{3} = \frac{12}{6} = \frac{24}{12} = \cdots = 2\). نسمي هذه المتتاليات هندسية.
+
+إدراك أن المتتالية هندسية يتيح لنا كتابة تعريف تعاودي بسهولة: \(a_n = 2 a_{n-1}\text{,}\) مع \(a_0 = 3\text{.}\)
+
+ليس من الصعب أيضًا استنتاج صيغة مغلقة. كيف نحصل على الحد \(a_3\) مثلًا؟ نبدأ بـ \(3\text{,}\) ثم نضرب في 2 للحصول على \(a_1\text{,}\) ونضرب في \(2\) مرة أخرى للحصول على \(a_2\text{,}\) ونضرب في \(2\) مرة ثالثة للحصول على \(a_3\text{.}\) إذن ضربنا \(3\) في \(2\) ما مجموعه ثلاث مرات، أي \(a_3 = 3\cdot 2^3\text{.}\) يبدو أن \(a_n = 3\cdot 2^n\text{.}\)
+
+عمومًا، سيكون التعريف التعاودي للمتتالية الهندسية ذات الحد الابتدائي \(a\) والنسبة المشتركة (common ratio) \(r\) هو
+
+\begin{equation*}
+a_n = a_{n-1}\cdot r; a_0 = a\text{.}
+\end{equation*}
+
+للحصول على الحد التالي، نضرب الحد السابق في \(r\text{.}\)
+
+لإيجاد الصيغة المغلقة العامة، يمكننا تجربة شيء يشبه الاختزال التلسكوبي مرة أخرى، لكننا سنحتاج إلى اختزال كسور. بدلًا من ذلك، لنوضح تقنية أخرى لحل العلاقات التعاودية تسمى التكرار (iteration). الفكرة هنا هي أن نتدرج وصولًا إلى \(a_n\) ونلاحظ النمط. نكتب
+
+\begin{align*}
+a_0 \amp = a\\
+a_1 \amp = a_0\cdot r\\
+a_2 \amp = a_1 \cdot r = a_0\cdot r\cdot r = a_0\cdot r^2\\
+a_3 \amp = a_2 \cdot r = a_0 \cdot r^2 \cdot r = a_0 \cdot r^3\\
+\amp \vdots\\
+a_n \amp = a_{n-1} \cdot r = a_0 \cdot r^{n-1}\cdot r = a_0 r^n\text{.}
+\end{align*}
+
+علينا أن نضرب الحد الأول \(a\) في \(r\) عددًا من المرات، وتحديدًا \(n\) مرات. نحصل على \(a_n = a\cdot r^{n}\text{.}\)
+
+#### المتتاليات الهندسية.
+
+تسمى المتتالية هندسية إذا كانت النسبة بين الحدود المتتالية ثابتة. افترض أن الحد الابتدائي \(a_0\) هو \(a\)، وأن النسبة المشتركة هي \(r\text{.}\) عندئذ لدينا:
+
+التعريف التعاودي: \(a_n = ra_{n-1}\) مع \(a_0 = a\text{.}\)
+
+الصيغة المغلقة: \(a_n = a\cdot r^{n}\text{.}\)
+
+#### مثال 4.2.2.
+
+أوجد الصيغة التعاودية والصيغة المغلقة للمتتاليات الهندسية أدناه. مرة أخرى، أول حد مدرج هو \(a_0\text{.}\)
+
+1. \(\displaystyle 3, 6, 12, 24, 48, \ldots\)
+2. \(\displaystyle 27, 9, 3, 1, 1/3, \ldots\)
+
+الحل. ابدأ بالتحقق من أن هذه المتتاليات هندسية بالفعل بقسمة كل حد على الحد السابق له. إذا كانت هذه النسبة ثابتة بالفعل، نكون قد وجدنا \(r\text{.}\)
+
+1. \(6/3 = 2\text{,}\) و\(12/6 = 2\text{,}\) و\(24/12 = 2\text{,}\) وهكذا. نعم، للانتقال من أي حد إلى التالي، نضرب في \(r = 2\text{.}\) إذن التعريف التعاودي هو \(a_n = 2a_{n-1}\) مع \(a_0 = 3\text{.}\) والصيغة المغلقة هي \(a_n = 3\cdot 2^{n}\text{.}\)
+2. النسبة المشتركة هي \(r = 1/3\text{.}\) لذلك يكون للمتتالية التعريف التعاودي \(a_n = \frac{1}{3}a_{n-1}\) مع \(a_0 = 27\)، والصيغة المغلقة \(a_n = 27\cdot \frac{1}{3}^{n}\text{.}\)
+
+المتتاليات الهندسية هي التي يكون معدل نموها *متناسبًا* مع المتتالية نفسها. وكما ربما رأيت في التفاضل والتكامل، فإن الدوال الأسية (exponential functions) هي بالضبط الدوال التي تتمتع بهذه الخاصية.
+
+في الأمثلة والصيغ أعلاه، افترضنا أن الحد *الابتدائي* هو \(a_0\text{.}\) إذا بدأت متتاليتك بـ \(a_1\text{,}\) فيمكنك بسهولة إيجاد الحد الذي كان سيشكل \(a_0\) واستخدامه في الصيغة. مثلًا، إذا أردنا صيغة للمتتالية \(2, 5, 8,\ldots\) وأصررنا على أن \(2= a_1\text{,}\) فيمكننا إيجاد \(a_0 = -1\) (بما أن المتتالية حسابية وفرقها المشترك 3، فإن \(a_0 + 3 = a_1\)). عندئذ تكون الصيغة المغلقة \(a_n = -1 + 3n\text{.}\)
+
+#### ملاحظة 4.2.3.
+
+إذا نظرت في مصادر أخرى، فقد تجد أن صيغها المغلقة للمتتاليات الحسابية والهندسية تختلف عن صيغنا. تحديدًا، قد تجد الصيغتين \(a_n = a +(n-1)d\) (للحسابية) و\(a_n = a\cdot r^{n-1}\) (للهندسية). أيهما صحيح؟ كلاهما! في حالتنا، نأخذ \(a\) ليكون \(a_0\text{.}\) أما لو جعلنا \(a_1\) حدنا الابتدائي، لحصلنا على الصيغ التي تجدها في المصادر الأخرى، وهي أعقد قليلًا.
+
+### قسم فرعي: ما وراء المتتاليات الحسابية والهندسية
+
+انظر إلى المتتالية \((T_n)_{n\ge 1}\) التي تبدأ بـ \(1, 3, 6, 10, 15,\ldots\text{.}\) تسمى هذه الأعداد الأعداد المثلثية (triangular numbers)، لأنها تمثل عدد النقاط في مثلث متساوي الأضلاع (فكّر في ترتيب 10 قوارير بولينغ: صف من 4، بالإضافة إلى صف من 3، وصف من 2، وصف من 1).
+
+![متتالية من أربعة أنماط من النقاط تعرض الأعداد المثلثية الأربعة الأولى: تحتوي الأنماط على 1 و3 و6 و10 نقاط، مرتبة في مثلثات قواعدها 1 و2 و3 و4 على الترتيب.](/images/discrete-math/sec_seq-growth-subsec-beyond-arithmetic-and-geometric-sequences-3-1.svg)
+
+هل هذه المتتالية حسابية؟ لا، لأن \(3-1 = 2\) و\(6-3 = 3 \ne 2\text{,}\) فلا يوجد فرق مشترك. هل المتتالية هندسية؟ لا. \(3/1 = 3\)، لكن \(6/3 = 2\text{,}\) فلا توجد نسبة مشتركة. ماذا نفعل؟
+
+لاحظ أن *الفروق* بين الحدود *تشكل بالفعل* متتالية حسابية: \(2, 3, 4, 5, 6,\ldots\text{.}\) بعبارة أخرى، معدل تغير هذه المتتالية حسابي: \(T_n - T_{n-1} = n\text{,}\) وهذا يعطينا مباشرة العلاقة التعاودية \(T_n = T_{n-1} + n\text{.}\)
+
+طريقة أخرى للتفكير في ذلك هي أن الحد ذا الرتبة \(n\) من المتتالية \((T_n)\) هو *مجموع* الحدود الـ \(n\) الأولى من المتتالية \(1,2,3,4,5,\ldots\text{.}\) إذن \((T_n)\) هي متتالية المجاميع الجزئية (partial sums) للمتتالية \(1,2,3,\ldots\) (مجاميع *جزئية* لأننا لا نجمع جميع الحدود، وعددها لا نهائي).
+
+ينبغي أن يصبح هذا أوضح إذا وسّعنا العلاقة التعاودية لكتابة الأعداد المثلثية على النحو الآتي:
+
+\begin{align*}
+T_1 = 1 \amp = 1\\
+T_2 = 3 \amp = 1+2\\
+T_3 = 6 \amp = 1 + 2 + 3\\
+T_4 = 10 \amp = 1+ 2 + 3+ 4\\
+\vdots \amp \qquad \vdots\\
+T_n \amp = 1 + 2 + 3 + \cdots + n\text{.}
+\end{align*}
+
+نحن نستخدم *التكرار* هنا في الواقع. وكان بإمكاننا أيضًا رؤية ذلك باستخدام الاختزال التلسكوبي، مع أخذ \(T_0 = 0\text{:}\)
+
+\begin{align*}
+T_1-T_0 = \amp 1\\
+T_2 - T_1 = \amp 2\\
+T_3 - T_2 = \amp 3\\
+\vdots \amp \\
+T_n - T_{n-1} = \amp n\text{.}
+\end{align*}
+
+بجمع هذه المعادلات، يصبح الطرف الأيمن \(1+2+3+\cdots + n\text{;}\) وتُلغى حدود الطرف الأيسر ليبقى فقط \(T_n - T_0 = T_n\text{.}\)
+
+إذا عرفنا كيف نجمع حدود متتالية حسابية، فيمكننا إيجاد صيغة مغلقة لمتتالية تكون فروقها هي حدود تلك المتتالية الحسابية. فكّر في كيفية إيجاد مجموع الأعداد الصحيحة الموجبة المئة الأولى (أي \(T_{100}\)). بدلًا من جمعها بالترتيب، نعيد تجميعها ونجمع \(1+100 = 101\text{.}\) والزوج التالي الذي نجمعه هو \(2+99 = 101\text{.}\) ثم \(3+98 = 101\text{.}\) تابع هكذا. يعطينا ذلك 50 زوجًا، مجموع كل منها \(101\text{,}\) ولذلك \(T_{100} = 101\cdot 50 = 5050\text{.}\)[^gauss]
+
+[^gauss]: تُنسب هذه الفكرة عادة إلى كارل فريدريش غاوس (Carl Friedrich Gauss)، أحد أعظم الرياضيين على مر العصور، الذي اكتشفها في طفولته حين ظن معلمه المزعج في المرحلة الابتدائية أنه سيشغل الصف بإلزامهم بحساب ذلك المجموع الطويل.
+
+عمومًا، باستخدام النوع نفسه من إعادة التجميع، نجد أن \(T_n = \frac{n(n+1)}{2}\text{.}\) وبالمناسبة، هذا يساوي بالضبط \({n+1 \choose 2}\text{,}\) وهو أمر منطقي إذا فكرت في الأعداد المثلثية على أنها تعدّ المصافحات التي تحدث في حفلة يحضرها \(n+1\) شخصًا: يصافح الشخص الأول \(n\) أشخاص، ويضيف التالي \(n-1\) مصافحة، وهكذا.
+
+خلاصة كل هذا أن بعض المتتاليات، وإن لم تكن حسابية أو هندسية، يمكن تفسيرها على أنها متتاليات المجاميع الجزئية لمتتاليات حسابية وهندسية. ولحسن الحظ، توجد طرق يمكننا استخدامها لحساب هذه المجاميع بسرعة، وسنستكشفها في القسمين التاليين.
+
+### أسئلة القراءة
 #### 1.
+
+طابق كل صيغة على اليسار مع نوع الصيغة الموصوف على اليمين.
 
 - \(a_n = 2n+3\)
-- Arithmetic; closed
+- حسابية؛ مغلقة
 - \(a_n = a_{n-1} + 3\)
-- Arithmetic; recursive
+- حسابية؛ تعاودية
 - \(a_n = 3\cdot 2^n\)
-- Geometric; closed
+- هندسية؛ مغلقة
 - \(a_n = 3a_{n-1}\)
-- Geometric; recursive
-
-[🔗](#rq-seq-arithgeom-match)
+- هندسية؛ تعاودية
 
 #### 2.
 
-How can you decide whether a sequence is the sequence of partial sums of an arithmetic or geometric sequence? Describe what you would do to check, using an example.[🔗](#rq-seq-arithgeom-fr-difference-1-1) [🔗](#rq-seq-arithgeom-fr-difference)
+كيف يمكنك أن تقرر ما إذا كانت متتالية ما هي متتالية المجاميع الجزئية لمتتالية حسابية أو هندسية؟ صِف ما ستفعله للتحقق، مستخدمًا مثالًا.
 
 #### 3.
 
-What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about after reading this section.[🔗](#rq-seq-arithgeom-q-1-1) [🔗](#rq-seq-arithgeom-q)[🔗](#rqs-seq-arithgeom)
+ما الأسئلة التي لديك؟ اكتب سؤالًا واحدًا على الأقل عن محتوى هذا القسم قد يثير فضولك أو فضول أحد زملائك بعد قراءة القسم.
 
-### Exercises Practice Problems
+### تمارين: مسائل تدريبية
 
 #### 1.
 
-Activate Consider the recurrence relation \(a_n = a_{n-1} + 9\text{.}\)[🔗](#extracted-webwork-188-1-1-1)
+تفعيل. تأمل العلاقة التعاودية \(a_n = a_{n-1} + 9\text{.}\)
 
 #### (a)
 
-Find the first five terms of the sequence defined by the recurrence relation and initial condition \(a_0 = 16\text{.}\)[🔗](#extracted-webwork-188-1-2-1-1) [🔗](#extracted-webwork-188-1-2)
+أوجد الحدود الخمسة الأولى للمتتالية المعرّفة بالعلاقة التعاودية والشرط الابتدائي (initial condition) \(a_0 = 16\text{.}\)
 
 #### (b)
 
-Find the closed formula for the sequence defined by the recurrence relation and initial condition \(a_0 = 16\text{.}\)[🔗](#extracted-webwork-188-1-3-1-1) \(a_n =\)[🔗](#extracted-webwork-188-1-3-1-2) [🔗](#extracted-webwork-188-1-3)
+أوجد الصيغة المغلقة للمتتالية المعرّفة بالعلاقة التعاودية والشرط الابتدائي \(a_0 = 16\text{.}\)
+
+\(a_n =\) ____
 
 #### (c)
 
-Find the first five terms of another sequence, also defined by the same recurrence relation but this time with initial condition \(a_0 = 3\text{.}\)[🔗](#extracted-webwork-188-1-4-1-1) [🔗](#extracted-webwork-188-1-4)
+أوجد الحدود الخمسة الأولى لمتتالية أخرى معرّفة أيضًا بالعلاقة التعاودية نفسها، لكن هذه المرة بالشرط الابتدائي \(a_0 = 3\text{.}\)
 
 #### (d)
 
-Find the closed formula for this second sequence.[🔗](#extracted-webwork-188-1-5-1-1) \(a_n =\)[🔗](#extracted-webwork-188-1-5-1-2) [🔗](#extracted-webwork-188-1-5) [🔗](#ww-arithgeom-solve-recurrence-arith)
+أوجد الصيغة المغلقة لهذه المتتالية الثانية.
+
+\(a_n =\) ____
 
 #### 2.
 
-Activate Consider the recurrence relation \(a_n = 9a_{n-1}\text{.}\)[🔗](#extracted-webwork-189-1-1-1)
+تفعيل. تأمل العلاقة التعاودية \(a_n = 9a_{n-1}\text{.}\)
 
 #### (a)
 
-Find the first five terms of the sequence defined by the recurrence relation and initial condition \(a_0 = 9\text{.}\)[🔗](#extracted-webwork-189-1-2-1-1) [🔗](#extracted-webwork-189-1-2)
+أوجد الحدود الخمسة الأولى للمتتالية المعرّفة بالعلاقة التعاودية والشرط الابتدائي \(a_0 = 9\text{.}\)
 
 #### (b)
 
-Find the closed formula for the sequence defined by the recurrence relation and initial condition \(a_0 = 9\text{.}\)[🔗](#extracted-webwork-189-1-3-1-1) \(a_n =\)[🔗](#extracted-webwork-189-1-3-1-2) [🔗](#extracted-webwork-189-1-3)
+أوجد الصيغة المغلقة للمتتالية المعرّفة بالعلاقة التعاودية والشرط الابتدائي \(a_0 = 9\text{.}\)
+
+\(a_n =\) ____
 
 #### (c)
 
-Find the first five terms of another sequence, also defined by the same recurrence relation but this time with initial condition \(a_0 = 12\text{.}\)[🔗](#extracted-webwork-189-1-4-1-1) [🔗](#extracted-webwork-189-1-4)
+أوجد الحدود الخمسة الأولى لمتتالية أخرى معرّفة أيضًا بالعلاقة التعاودية نفسها، لكن هذه المرة بالشرط الابتدائي \(a_0 = 12\text{.}\)
 
 #### (d)
 
-Find the closed formula for this second sequence.[🔗](#extracted-webwork-189-1-5-1-1) \(a_n =\)[🔗](#extracted-webwork-189-1-5-1-2) [🔗](#extracted-webwork-189-1-5) [🔗](#ww-arithgeom-solve-recurrence-geom)
+أوجد الصيغة المغلقة لهذه المتتالية الثانية.
+
+\(a_n =\) ____
 
 #### 3.
 
-Activate Find a closed formula for the sequence that starts \(2, {4}, {8}, {16}, {32},\ldots\text{.}\) Assume \(a_0 = 2\text{.}\)[🔗](#extracted-webwork-190-1-1-1) \(a_n =\)[🔗](#extracted-webwork-190-1-1-2) [🔗](#ww-arithgeom-seq-to-formula-1)
+تفعيل. أوجد صيغة مغلقة للمتتالية التي تبدأ بـ \(2, {4}, {8}, {16}, {32},\ldots\text{.}\) افترض أن \(a_0 = 2\text{.}\)
+
+\(a_n =\) ____
 
 #### 4.
 
-Activate Find a closed formula for the sequence that starts \(15, {18}, {21}, {24}, {27},\ldots\text{.}\) Assume \(a_0 = 15\text{.}\)[🔗](#extracted-webwork-191-1-1-1) \(a_n =\)[🔗](#extracted-webwork-191-1-1-2) [🔗](#ww-arithgeom-seq-to-formula-2)
+تفعيل. أوجد صيغة مغلقة للمتتالية التي تبدأ بـ \(15, {18}, {21}, {24}, {27},\ldots\text{.}\) افترض أن \(a_0 = 15\text{.}\)
+
+\(a_n =\) ____
 
 #### 5.
 
-Activate Consider the sequence that starts \(3, 8, 13, 18, 23,\ldots\) where \(a_0 = 3\text{.}\)[🔗](#extracted-webwork-192-1-1-1)
+تفعيل. تأمل المتتالية التي تبدأ بـ \(3, 8, 13, 18, 23,\ldots\)، حيث \(a_0 = 3\text{.}\)
 
 #### (a)
 
-Which of the following could be a recursive definition for the sequence?[🔗](#extracted-webwork-192-1-2-1-1)
+أي مما يلي يمكن أن يكون تعريفًا تعاوديًا للمتتالية؟
 
-- \(a_n = a_{n-1} + a_{n-2}\text{;}\) \(a_0 = 3\)[🔗](#extracted-webwork-192-1-2-1-2-1-1-1) [🔗](#extracted-webwork-192-1-2-1-2-1-1)
-- \(a_n = 5 \cdot a_{n-1}\text{;}\) \(a_0 = 3\)[🔗](#extracted-webwork-192-1-2-1-2-1-2-1) [🔗](#extracted-webwork-192-1-2-1-2-1-2)
-- \(a_n = a_{n-1} + 5\text{;}\) \(a_0 = 3\)[🔗](#extracted-webwork-192-1-2-1-2-1-3-1) [🔗](#extracted-webwork-192-1-2-1-2-1-3)
-- \(\displaystyle a_n = 3 \cdot 5^n\)[🔗](#extracted-webwork-192-1-2-1-2-1-4-1) [🔗](#extracted-webwork-192-1-2-1-2-1-4)
-- None of the above[🔗](#extracted-webwork-192-1-2-1-2-1-5-1) [🔗](#extracted-webwork-192-1-2-1-2-1-5)
-
-[🔗](#extracted-webwork-192-1-2-1-2) [🔗](#extracted-webwork-192-1-2)
+- \(a_n = a_{n-1} + a_{n-2}\text{;}\) \(a_0 = 3\)
+- \(a_n = 5 \cdot a_{n-1}\text{;}\) \(a_0 = 3\)
+- \(a_n = a_{n-1} + 5\text{;}\) \(a_0 = 3\)
+- \(\displaystyle a_n = 3 \cdot 5^n\)
+- لا شيء مما سبق
 
 #### (b)
 
-Find the closed formula for the sequence.[🔗](#extracted-webwork-192-1-3-1-1) [🔗](#extracted-webwork-192-1-3)
+أوجد الصيغة المغلقة للمتتالية.
 
 #### (c)
 
-Is 2598 a term of the sequence?[🔗](#extracted-webwork-192-1-4-1-1)
+هل 2598 حد من حدود المتتالية؟
 
-- Yes, it is \(a_{518}\)[🔗](#extracted-webwork-192-1-4-1-2-1-1-1) [🔗](#extracted-webwork-192-1-4-1-2-1-1)
-- Yes, it is \(a_{2598}\)[🔗](#extracted-webwork-192-1-4-1-2-1-2-1) [🔗](#extracted-webwork-192-1-4-1-2-1-2)
-- No, it is larger than 733[🔗](#extracted-webwork-192-1-4-1-2-1-3-1) [🔗](#extracted-webwork-192-1-4-1-2-1-3)
-- No, it is between 2596 and 2601[🔗](#extracted-webwork-192-1-4-1-2-1-4-1) [🔗](#extracted-webwork-192-1-4-1-2-1-4)
-- Yes, it is \(a_{519}\)[🔗](#extracted-webwork-192-1-4-1-2-1-5-1) [🔗](#extracted-webwork-192-1-4-1-2-1-5)
-- None of the above[🔗](#extracted-webwork-192-1-4-1-2-1-6-1) [🔗](#extracted-webwork-192-1-4-1-2-1-6)
-
-[🔗](#extracted-webwork-192-1-4-1-2) [🔗](#extracted-webwork-192-1-4) [🔗](#ww-arithgeom-seq-info)
+- نعم، إنه \(a_{518}\)
+- نعم، إنه \(a_{2598}\)
+- لا، إنه أكبر من 733
+- لا، إنه بين 2596 و2601
+- نعم، إنه \(a_{519}\)
+- لا شيء مما سبق
 
 #### 6.
 
-Activate Your summer job pays you $1000 per week, with a raise of $50 per week as a bonus for not being a quitter. How much will you make in the 10th week?[🔗](#extracted-webwork-193-1-1-1) [🔗](#ww-arithgeom-arith-application)
+تفعيل. تدفع لك وظيفتك الصيفية 1000 دولار أسبوعيًا، مع زيادة قدرها 50 دولارًا كل أسبوع مكافأةً على عدم ترك العمل. كم ستكسب في الأسبوع العاشر؟
 
 #### 7.
 
-Activate Your sister’s summer job pays her $1000 per week, with a raise of 5% per week as a bonus for not being a quitter. How much will she make in the 10th week?[🔗](#extracted-webwork-194-1-1-1) [🔗](#ww-arithgeom-geom-application)
+تفعيل. تدفع الوظيفة الصيفية لأختك 1000 دولار أسبوعيًا، مع زيادة قدرها 5% كل أسبوع مكافأةً على عدم ترك العمل. كم ستكسب في الأسبوع العاشر؟
 
 #### 8.
 
-Activate Find \(x\) and \(y\) such that \(125, x, y, 1\) is part of an arithmetic sequence.[🔗](#extracted-webwork-195-1-1-1) \(x =\) , \(y =\) [🔗](#extracted-webwork-195-1-1-2) Then find \(x\) and \(y\) so that the sequence is part of a geometric sequence.[🔗](#extracted-webwork-195-1-1-3) \(x =\) , \(y =\) [🔗](#extracted-webwork-195-1-1-4) (Warning: \(x\) and \(y\) might not be integers.)[🔗](#extracted-webwork-195-1-1-5) [🔗](#ww-arithgeom-middle-terms1)
+تفعيل. أوجد \(x\) و\(y\) بحيث تكون \(125, x, y, 1\) جزءًا من متتالية حسابية.
+
+\(x =\) ____، \(y =\) ____
+
+ثم أوجد \(x\) و\(y\) بحيث تكون المتتالية جزءًا من متتالية هندسية.
+
+\(x =\) ____، \(y =\) ____
+
+(تنبيه: قد لا يكون \(x\) و\(y\) عددين صحيحين.)
 
 #### 9.
 
-Activate Find \(x\) and \(y\) such that \(5, x, y, 44\) is part of an arithmetic sequence.[🔗](#extracted-webwork-196-1-1-1) \(x =\) , \(y =\) [🔗](#extracted-webwork-196-1-1-2) Then find \(x\) and \(y\) so that the sequence is part of a geometric sequence.[🔗](#extracted-webwork-196-1-1-3) \(x =\) , \(y =\) [🔗](#extracted-webwork-196-1-1-4) (Warning: \(x\) and \(y\) might not be integers.)[🔗](#extracted-webwork-196-1-1-5) [🔗](#ww-arithgoem-middle-terms2)[🔗](#practice_seq-growth)
+تفعيل. أوجد \(x\) و\(y\) بحيث تكون \(5, x, y, 44\) جزءًا من متتالية حسابية.
 
-### Exercises Additional Exercises
+\(x =\) ____، \(y =\) ____
+
+ثم أوجد \(x\) و\(y\) بحيث تكون المتتالية جزءًا من متتالية هندسية.
+
+\(x =\) ____، \(y =\) ____
+
+(تنبيه: قد لا يكون \(x\) و\(y\) عددين صحيحين.)
+
+### تمارين: تمارين إضافية
 
 #### 1.
 
-Suppose that the candy machine currently holds exactly 650 Skittles, and every time someone inserts a quarter, exactly 7 Skittles come out of the machine.
+افترض أن آلة الحلوى تحتوي حاليًا على 650 حبة سكيتلز (Skittles) بالضبط، وفي كل مرة يُدخل فيها شخص قطعة نقدية من فئة ربع دولار، تخرج من الآلة 7 حبات سكيتلز بالضبط.
 
-1. How many Skittles will be left in the machine after 20 quarters have been inserted?[🔗](#exercises_seq-growth-2-1-1-1-1-1) [🔗](#exercises_seq-growth-2-1-1-1-1)
-2. Will there ever be exactly zero Skittles left in the machine? Explain.[🔗](#exercises_seq-growth-2-1-1-1-2-1) [🔗](#exercises_seq-growth-2-1-1-1-2)
-
-[🔗](#exercises_seq-growth-2-1-1) [🔗](#exercises_seq-growth-2)
+1. كم حبة سكيتلز ستبقى في الآلة بعد إدخال 20 قطعة من فئة ربع دولار؟
+2. هل سيأتي وقت يكون فيه عدد حبات سكيتلز المتبقية في الآلة صفرًا بالضبط؟ وضّح.
 
 #### 2.
 
-Is there a pair of integers \((a,b)\) such that \(a, x_1, y_1, b\) is part of an arithmetic sequence and \(a, x_2, y_2, b\) is part of a geometric sequence with \(x_1, x_2, y_1, y_2\) all integers?[🔗](#exercises_seq-growth-3-1-1) [🔗](#exercises_seq-growth-3)
+هل يوجد زوج من الأعداد الصحيحة \((a,b)\) بحيث تكون \(a, x_1, y_1, b\) جزءًا من متتالية حسابية، وتكون \(a, x_2, y_2, b\) جزءًا من متتالية هندسية، مع كون \(x_1, x_2, y_1, y_2\) جميعها أعدادًا صحيحة؟
 
 #### 3.
 
-Are there any sequences that are both arithmetic and geometric? If so, how many can you find? If not, explain why not.[🔗](#exercises_seq-growth-4-1-1) [🔗](#exercises_seq-growth-4)
+هل توجد متتاليات حسابية وهندسية في آن واحد؟ إن وجدت، فكم منها يمكنك إيجادها؟ وإن لم توجد، فاشرح السبب.
 
 #### 4.
 
-Starting with any rectangle, we can create a new, larger rectangle by attaching a square to the longer side. For example, if we start with a \(2\times 5\) rectangle, we would glue on a \(5\times 5\) square, forming a \(5 \times 7\) rectangle:[🔗](#exercises_seq-growth-5-1-1) ![On the left, a 5x5 square to the right of a rectangle with base 2 and height 5, separated by a small gap. An arrow points to the right, where a rectangle of base 7 and height 5 is shown, including a dotted line representing where the square and triangle on the left were glued together.](generated/latex-image/exercises_seq-growth-5-1-2-1.svg) The next rectangle would be formed by attaching a \(7 \times 7\) square to the top or bottom of the \(5\times 7\) rectangle.
+بدءًا بأي مستطيل، يمكننا إنشاء مستطيل جديد أكبر بإلحاق مربع بالضلع الأطول. مثلًا، إذا بدأنا بمستطيل \(2\times 5\)، فإننا نلصق به مربعًا \(5\times 5\)، فيتكوّن مستطيل \(5 \times 7\):
 
-1. Create a sequence of rectangles using this rule starting with a \(1\times 2\) rectangle. Then write out the sequence of *perimeters* for the rectangles (the first term of the sequence would be 6, since the perimeter of a \(1\times 2\) rectangle is 6; the next term would be 10).[🔗](#exercises_seq-growth-5-1-3-3-1-1) [🔗](#exercises_seq-growth-5-1-3-3-1)
-2. Repeat the above part, this time starting with a \(1 \times 3\) rectangle.[🔗](#exercises_seq-growth-5-1-3-3-2-1) [🔗](#exercises_seq-growth-5-1-3-3-2)
-3. Find recursive formulas for each of the sequences of perimeters you found in parts (a) and (b). Don’t forget to give the initial conditions as well.[🔗](#exercises_seq-growth-5-1-3-3-3-1) [🔗](#exercises_seq-growth-5-1-3-3-3)
-4. Are the sequences arithmetic? Geometric? If not, are they *close* to being either of these (i.e., are the differences or ratios *almost* constant)? Explain.[🔗](#exercises_seq-growth-5-1-3-3-4-1) [🔗](#exercises_seq-growth-5-1-3-3-4)
+![على اليسار، مربع أبعاده 5×5 يقع إلى يمين مستطيل قاعدته 2 وارتفاعه 5، وتفصل بينهما فجوة صغيرة. يشير سهم إلى اليمين، حيث يظهر مستطيل قاعدته 7 وارتفاعه 5، وفيه خط منقّط يمثل الموضع الذي أُلصق عنده المربع والمثلث على اليسار معًا.](/images/discrete-math/sec_seq-growth-exercises_seq-growth-5-1-2-1.svg)
 
-[🔗](#exercises_seq-growth-5-1-3) [🔗](#exercises_seq-growth-5)
+سيتكوّن المستطيل التالي بإلحاق مربع \(7 \times 7\) بأعلى المستطيل \(5\times 7\) أو بأسفله.
+
+1. أنشئ متتالية من المستطيلات باستخدام هذه القاعدة، بدءًا بمستطيل \(1\times 2\). ثم اكتب متتالية *محيطات* المستطيلات (سيكون الحد الأول في المتتالية 6، لأن محيط مستطيل \(1\times 2\) هو 6؛ وسيكون الحد التالي 10).
+2. كرر الجزء السابق، لكن ابدأ هذه المرة بمستطيل \(1 \times 3\).
+3. أوجد صيغًا تعاودية لكل من متتاليتي المحيطات اللتين وجدتهما في الجزأين (a) و(b). لا تنسَ إعطاء الشروط الابتدائية أيضًا.
+4. هل المتتاليات حسابية؟ هندسية؟ إن لم تكن كذلك، فهل هي *قريبة* من أن تكون أحد هذين النوعين (أي هل الفروق أو النسب ثابتة *تقريبًا*)؟ وضّح.
 
 #### 5.
 
-Prove that the closed formula for a geometric sequence with initial term \(a \ne 0\) and common ratio \(r\) is \(a_n = a r^n\text{,}\) using *telescoping*.[🔗](#exercises_seq-growth-6-1-1) Hint. We can write the recurrence relation as \(\frac{a_n}{a_{n-1}} = r\text{.}\) What happens when you multiply all the different versions of this recurrence relation (for different values of \(n\)) together?[🔗](#exercises_seq-growth-6-2-1) [🔗](#exercises_seq-growth-6-2) [🔗](#exercises_seq-growth-6)
+أثبت، باستخدام *الاختزال التلسكوبي*، أن الصيغة المغلقة لمتتالية هندسية ذات حد ابتدائي \(a \ne 0\) ونسبة مشتركة \(r\) هي \(a_n = a r^n\text{,}\).
 
-#### 6. Telescoping to find a sum.
+تلميح. يمكننا كتابة العلاقة التعاودية على الصورة \(\frac{a_n}{a_{n-1}} = r\text{.}\) ماذا يحدث عندما تضرب جميع الصيغ المختلفة لهذه العلاقة التعاودية (لقيم مختلفة لـ \(n\)) معًا؟
 
-Another context in which sequences arise is calculus when you study sequences and series (which is the word in calculus for what we call a sequence of partial sums). Some of the techniques we have developed here can be applied there as well. This is an example of a telescoping sum, similar to the telescoping technique we used.[🔗](#ex-telescoping-sum-2-1) Consider the sequence \((a_n)_{n \ge 1}\) that starts \begin{equation*} \frac{1}{1}, \frac{1}{3}, \frac{1}{6}, \frac{1}{10}, \frac{1}{15}, \ldots\text{.} \end{equation*} That is, each term is the reciprocal of the \(n\)th triangular number. Find the sum of the first \(n\) terms of this sequence: \begin{equation*} \sum_{k=1}^n \frac{1}{T_k} = \frac{1}{1} + \frac{1}{3} + \frac{1}{6} + \frac{1}{10} + \cdots + \frac{1}{T_n}\text{.} \end{equation*} [🔗](#ex-telescoping-sum-2-2) Hint. Using the fact that \(T_n = \frac{n(n+1)}{2}\text{,}\) each term in the sequence is \(\frac{2}{n(n+1)}\text{.}\)[🔗](#ex-telescoping-sum-3-1) What is the result of the following fraction subtraction: \(\frac{2}{3}- \frac{2}{4}\text{,}\) or \(\frac{2}{4}-\frac{2}{5}\text{?}\) What is happening in general?[🔗](#ex-telescoping-sum-3-2) [🔗](#ex-telescoping-sum-3) [🔗](#ex-telescoping-sum)
+#### 6. الاختزال التلسكوبي لإيجاد مجموع.
+
+سياق آخر تظهر فيه المتتاليات هو التفاضل والتكامل، حين تدرس المتتاليات والمتسلسلات (series)، وهي التسمية المستخدمة في التفاضل والتكامل لما نسميه متتالية المجاميع الجزئية. ويمكن تطبيق بعض التقنيات التي طوّرناها هنا في ذلك السياق أيضًا. هذا مثال على مجموع تلسكوبي، شبيه بتقنية الاختزال التلسكوبي التي استخدمناها.
+
+تأمل المتتالية \((a_n)_{n \ge 1}\) التي تبدأ بـ
+
+\begin{equation*}
+\frac{1}{1}, \frac{1}{3}, \frac{1}{6}, \frac{1}{10}, \frac{1}{15}, \ldots\text{.}
+\end{equation*}
+
+أي إن كل حد هو مقلوب العدد المثلثي ذي الرتبة \(n\). أوجد مجموع الحدود الـ \(n\) الأولى من هذه المتتالية:
+
+\begin{equation*}
+\sum_{k=1}^n \frac{1}{T_k} = \frac{1}{1} + \frac{1}{3} + \frac{1}{6} + \frac{1}{10} + \cdots + \frac{1}{T_n}\text{.}
+\end{equation*}
+
+تلميح. باستخدام حقيقة أن \(T_n = \frac{n(n+1)}{2}\text{,}\) يكون كل حد في المتتالية \(\frac{2}{n(n+1)}\text{.}\)
+
+ما نتيجة طرح الكسور الآتية: \(\frac{2}{3}- \frac{2}{4}\text{,}\) أو \(\frac{2}{4}-\frac{2}{5}\text{?}\) ماذا يحدث عمومًا؟
 
 #### 7.
 
-A geometric sequence has a constant rate of growth in the sense that the ratio of consecutive terms is always the same. But what can we say about the *difference* of consecutive terms in an geometric sequence?[🔗](#exercises_seq-growth-8-1-1)
+للمتتالية الهندسية معدل نمو ثابت بمعنى أن النسبة بين الحدود المتتالية هي نفسها دائمًا. لكن ماذا يمكننا أن نقول عن *الفرق* بين الحدود المتتالية في متتالية هندسية؟
 
 #### (a)
 
-Consider the geometric sequence \(1, 2, 4, 8, 16, \ldots\text{.}\) Find the differences between consecutive terms. That is, find its sequence of differences.[🔗](#exercises_seq-growth-8-2-1-1) [🔗](#exercises_seq-growth-8-2)
+تأمل المتتالية الهندسية \(1, 2, 4, 8, 16, \ldots\text{.}\) أوجد الفروق بين الحدود المتتالية. أي أوجد متتالية فروقها.
 
 #### (b)
 
-Find a closed formula for the sequence of differences. Then use this closed formula to find a different recurrence relation for the original sequence (other than \(a_n = 2a_{n-1}\)).[🔗](#exercises_seq-growth-8-3-1-1) [🔗](#exercises_seq-growth-8-3)
+أوجد صيغة مغلقة لمتتالية الفروق. ثم استخدم هذه الصيغة المغلقة لإيجاد علاقة تعاودية مختلفة للمتتالية الأصلية (غير \(a_n = 2a_{n-1}\)).
 
 #### (c)
 
-Repeat the two parts above for a different geometric sequence of your choice. Then explain what you found in general.[🔗](#exercises_seq-growth-8-4-1-1) [🔗](#exercises_seq-growth-8-4)[🔗](#exercises_seq-growth-8)
+كرر الجزأين السابقين لمتتالية هندسية أخرى من اختيارك. ثم اشرح ما توصلت إليه عمومًا.
 
 #### 8.
 
-None of the following sequences are arithmetic or geometric: \begin{equation*} 1, 3, 6, 10, 15, \ldots \end{equation*} \begin{equation*} 3, 5, 8, 12, 17, \ldots \end{equation*} \begin{equation*} 0, 2, 5, 9, 14, \ldots \end{equation*} Explain what these sequences have in common with each other and then use that to find a closed formula for each of them. How do their closed formulas relate to each other? What can you say in general? [🔗](#exercises_seq-growth-9-1-1) [🔗](#exercises_seq-growth-9)[🔗](#exercises_seq-growth)[🔗](#sec_seq-growth) [&#xe5cb;Prev](sec_seq_intro.html)[&#xe5ce;Top](#)[Next&#xe5cc;](sec_seq-polynomial.html) [Feedback](/cdn-cgi/l/email-protection#771804141605591b12011e19370219141859121302)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_seq-growth-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_seq-growth-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+ليست أي من المتتاليات التالية حسابية أو هندسية:
+
+\begin{equation*}
+1, 3, 6, 10, 15, \ldots
+\end{equation*}
+
+\begin{equation*}
+3, 5, 8, 12, 17, \ldots
+\end{equation*}
+
+\begin{equation*}
+0, 2, 5, 9, 14, \ldots
+\end{equation*}
+
+اشرح ما تشترك فيه هذه المتتاليات، ثم استخدم ذلك لإيجاد صيغة مغلقة لكل منها. كيف ترتبط صيغها المغلقة بعضها ببعض؟ ماذا يمكنك أن تقول عمومًا؟

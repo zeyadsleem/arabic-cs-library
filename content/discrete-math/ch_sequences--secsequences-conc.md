@@ -1,151 +1,180 @@
 ---
-title: "Chapter Summary"
-lang: en
+title: "خلاصة الفصل"
+lang: ar
 source: https://discrete.openmathbooks.org/dmoi4/sec_sequences-conc.html
 ---
 
-\[🔗](#sec_sequences-conc-2-1-1-1-1) Prove, using induction, that the last digit of the number of beans you have on the \(n\)th day is always a 5 for all \(n \ge 1\text{.}\)[🔗](#sec_sequences-conc-2-1-1-1-2-1) [🔗](#sec_sequences-conc-2-1-1-1-2) Find a closed formula for the \(n\)th term of the sequence, and prove it is correct by induction.[🔗](#sec_sequences-conc-2-1-1-1-3-1) [🔗](#sec_sequences-conc-2-1-1-1-3) [🔗](#sec_sequences-conc-2-1-1) [🔗](#sec_sequences-conc-2-1)In this chapter, we explored sequences and mathematical induction. At first, these might not seem entirely related, but there is a link: recursive reasoning. When we have many cases (maybe infinitely many), it is often easier to describe a particular case by saying how it relates to other cases, instead of describing it from scratch. For sequences, we can describe the \(n\)th term in the sequence by saying how it is related to the *previous* term. When showing a statement involving the variable \(n\) is true for all values of \(n\text{,}\) we can describe why the case for \(n = k\) is true based on why the case for \(n = k-1\) is true.[🔗](#sec_sequences-conc-2-2) While thinking of problems recursively is often easier than thinking of them absolutely (at least after you get used to thinking in this way), our ultimate goal is to move beyond this recursive description. For sequences, we want to find *closed formulas* for the \(n\)th term of the sequence. For proofs, we want to know that the statement is true for a particular \(n\) (not only under the assumption that the statement is true for the previous value of \(n\)). In this chapter, we saw some methods for moving from recursive descriptions to absolute descriptions.[🔗](#sec_sequences-conc-2-3)
+#### استكشف!
 
-- If the terms of a sequence increase by a constant difference or constant ratio (these are both recursive descriptions), then the sequence is arithmetic or geometric, respectively, and we have closed formulas for each of these based on the initial terms and common difference or ratio.[🔗](#sec_sequences-conc-2-4-1-1-1) [🔗](#sec_sequences-conc-2-4-1-1)
-- If the terms of a sequence increase at a polynomial rate (that is, if the differences between terms form a sequence with a polynomial closed formula), then the sequence is given by a polynomial closed formula (of degree one more than the sequence of differences).[🔗](#sec_sequences-conc-2-4-1-2-1) [🔗](#sec_sequences-conc-2-4-1-2)
-- If the terms of a sequence increase at an exponential rate, then we expect the closed formula for the sequence to be exponential. These sequences often have relatively nice recursive formulas, and the *characteristic root technique* allows us to find the closed formula for these sequences.[🔗](#sec_sequences-conc-2-4-1-3-1) [🔗](#sec_sequences-conc-2-4-1-3)
-- If we want to prove that a statement is true for all values of \(n\) (greater than some first small value), and we can describe why the statement for \(n = k\) implies the statement for \(n = k+1\text{,}\) then the *principle of mathematical induction* gives us that the statement is true for all values of \(n\) (greater than the base case).[🔗](#sec_sequences-conc-2-4-1-4-1) [🔗](#sec_sequences-conc-2-4-1-4)
+يتضاعف كل يوم مخزونك من حبوب الإسبريسو السحرية المغطاة بالشوكولاتة (تنقسم كل حبة إلى نصفين)، ثم تأكل 5 حبات منها. لديك 10 حبات في بداية اليوم 0.
 
-[🔗](#sec_sequences-conc-2-4) Throughout the chapter we tried to understand *why* these facts listed above are true. In part, that is what proofs, by induction or not, attempt to accomplish: They explain why mathematical truths are, in fact, truths. As we develop our ability to reason about mathematics, it is a good idea to make sure that the methods of our reasoning are sound. The branch of mathematics that deals with deciding whether reasoning is good or not is *mathematical logic*, the subject of the next chapter.[🔗](#sec_sequences-conc-2-5)
+1. اكتب الحدود الأولى من المتتالية (sequence). ثم أعطِ تعريفًا تعاوديًا (recursive definition) للمتتالية، واشرح كيف تعرف أنه صحيح.
+2. أثبت، باستخدام الاستقراء الرياضي (mathematical induction)، أن الرقم الأخير في عدد الحبوب التي لديك في اليوم ذي الرقم \(n\) هو دائمًا 5، لكل \(n \ge 1\text{.}\)
+3. أوجد صيغة مغلقة (closed formula) للحد ذي الرتبة \(n\) في المتتالية، وأثبت صحتها بالاستقراء.
 
-### Exercises Chapter Review
+استكشفنا في هذا الفصل المتتاليات والاستقراء الرياضي. قد لا يبدو للوهلة الأولى أن بينهما ارتباطًا وثيقًا، لكن ثمة رابطًا: الاستدلال التعاودي (recursive reasoning). عندما تكون لدينا حالات كثيرة (وربما عدد لا نهائي منها)، يكون وصف حالة معينة من خلال علاقتها بالحالات الأخرى أسهل غالبًا من وصفها من الصفر. ففي المتتاليات، يمكننا وصف الحد ذي الرتبة \(n\) ببيان علاقته بالحد *السابق*. وعند إثبات صحة عبارة تتضمن المتغير \(n\) لجميع قيم \(n\text{،}\) يمكننا بيان سبب صحة الحالة \(n = k\) استنادًا إلى سبب صحة الحالة \(n = k-1\text{.}\)
+
+مع أن التفكير في المسائل تعاوديًا أسهل غالبًا من التفكير فيها على نحو مباشر مستقل عن الحالات السابقة (على الأقل بعد أن تعتاد هذا النمط من التفكير)، فإن هدفنا النهائي هو تجاوز هذا الوصف التعاودي. ففي المتتاليات، نريد إيجاد *صيغ مغلقة* للحد ذي الرتبة \(n\). وفي البراهين، نريد أن نعرف أن العبارة صحيحة لقيمة معينة من \(n\) (لا أن تكون صحيحة فقط بافتراض صحتها للقيمة السابقة من \(n\)). رأينا في هذا الفصل بعض طرائق الانتقال من الأوصاف التعاودية إلى الأوصاف المباشرة المستقلة عن الحالات السابقة.
+
+- إذا كانت حدود متتالية تزداد بفرق ثابت أو بنسبة ثابتة (وكلاهما وصف تعاودي)، فإن المتتالية تكون حسابية (arithmetic) أو هندسية (geometric)، على الترتيب. ولدينا صيغ مغلقة لكل منهما تعتمد على الحدود الأولى والفرق المشترك أو النسبة المشتركة.
+- إذا كانت حدود متتالية تزداد بمعدل كثير حدود (polynomial)، أي إذا كانت الفروق بين الحدود تشكل متتالية صيغتها المغلقة كثيرة حدود، فإن المتتالية تُعطى بصيغة مغلقة كثيرة حدود (درجتها تزيد بواحد على درجة متتالية الفروق).
+- إذا كانت حدود متتالية تزداد بمعدل أُسّي (exponential)، فإننا نتوقع أن تكون صيغتها المغلقة أُسّية. وغالبًا ما تكون لهذه المتتاليات صيغ تعاودية بسيطة نسبيًا، وتتيح لنا *تقنية الجذر المميِّز (characteristic root technique)* إيجاد صيغها المغلقة.
+- إذا أردنا إثبات صحة عبارة لجميع قيم \(n\) (الأكبر من قيمة ابتدائية صغيرة)، واستطعنا بيان سبب استلزام صحة العبارة عند \(n = k\) صحتها عند \(n = k+1\text{،}\) فإن *مبدأ الاستقراء الرياضي* يضمن صحة العبارة لجميع قيم \(n\) (الأكبر من قيمة الحالة الأساسية (base case)).
+
+حاولنا طوال الفصل أن نفهم *لماذا* تصح الحقائق المذكورة أعلاه. وهذا، جزئيًا، ما تسعى البراهين، بالاستقراء أو بغيره، إلى تحقيقه: فهي تشرح لماذا تكون الحقائق الرياضية حقائق فعلًا. وبينما نطوّر قدرتنا على الاستدلال الرياضي، من الجيد أن نتأكد من سلامة طرائق استدلالنا. والفرع الرياضي الذي يهتم بتحديد ما إذا كان الاستدلال سليمًا هو *المنطق الرياضي (mathematical logic)*، وهو موضوع الفصل التالي.
+
+### تمارين: مراجعة الفصل
 
 #### 1.
 
-Activate Find \(2 + 10 + 18+ \cdots + 1026\text{.}\)[🔗](#extracted-webwork-217-1-1-1) [🔗](#ww-seq-sum)
+تفعيل. أوجد \(2 + 10 + 18+ \cdots + 1026\text{.}\)
 
 #### 2.
 
-Activate Consider the sequence \(13, 17, 21, 25, \ldots, 4n + 1\text{.}\)[🔗](#extracted-webwork-218-1-1-1)
+تفعيل. تأمل المتتالية \(13, 17, 21, 25, \ldots, 4n + 1\text{.}\)
 
-1. How many terms are there in the sequence?[🔗](#extracted-webwork-218-1-1-2-1-1-1) [🔗](#extracted-webwork-218-1-1-2-1-1)
-2. What is the second-to-last term?[🔗](#extracted-webwork-218-1-1-2-1-2-1) [🔗](#extracted-webwork-218-1-1-2-1-2)
-3. Find the sum of all the terms in the sequence.[🔗](#extracted-webwork-218-1-1-2-1-3-1) [🔗](#extracted-webwork-218-1-1-2-1-3)
-
-[🔗](#extracted-webwork-218-1-1-2) [🔗](#ww-seq-arith)
+1. كم حدًا في المتتالية؟
+2. ما الحد قبل الأخير؟
+3. أوجد مجموع جميع حدود المتتالية.
 
 #### 3.
 
-Activate Consider the sequence given by \(a_n = 3\cdot 5^{n-1}\text{.}\)[🔗](#extracted-webwork-219-1-1-1)
+تفعيل. تأمل المتتالية المعطاة بالصيغة \(a_n = 3\cdot 5^{n-1}\text{.}\)
 
-1. Find the first 4 terms of the sequence.[🔗](#extracted-webwork-219-1-1-2-1-1-1) \(a_1 =\) , \(a_2 =\) , \(a_3 =\) , \(a_4 =\) ,...[🔗](#extracted-webwork-219-1-1-2-1-1-2) What sort of sequence is this?[🔗](#extracted-webwork-219-1-1-2-1-1-3) arithmetic[🔗](#extracted-webwork-219-1-1-2-1-1-4-1-1-1) [🔗](#extracted-webwork-219-1-1-2-1-1-4-1-1)
-2. geometric[🔗](#extracted-webwork-219-1-1-2-1-1-4-1-2-1) [🔗](#extracted-webwork-219-1-1-2-1-1-4-1-2)
-3. neither[🔗](#extracted-webwork-219-1-1-2-1-1-4-1-3-1) [🔗](#extracted-webwork-219-1-1-2-1-1-4-1-3)
-4. Find the *sum* of the first 21 terms. That is, compute \(\sum_{k=1}^{21}a_k\text{.}\)[🔗](#extracted-webwork-219-1-1-2-1-2-1) [🔗](#extracted-webwork-219-1-1-2-1-2)
+1. أوجد الحدود الأربعة الأولى للمتتالية.
 
-[🔗](#extracted-webwork-219-1-1-2) [🔗](#ww-seq-geom)
+\(a_1 =\) ، \(a_2 =\) ، \(a_3 =\) ، \(a_4 =\) ، …
+
+ما نوع هذه المتتالية؟
+- حسابية.
+- هندسية.
+- لا هذه ولا تلك.
+2. أوجد *مجموع* الحدود الـ21 الأولى. أي احسب \(\sum_{k=1}^{21}a_k\text{.}\)
 
 #### 4.
 
-Consider the sequence \(5, 11, 19, 29, 41, 55,\ldots\text{.}\) Assume \(a_1 = 5\text{.}\)
+تأمل المتتالية \(5, 11, 19, 29, 41, 55,\ldots\text{.}\) افترض أن \(a_1 = 5\text{.}\)
 
-1. Find a closed formula for \(a_n\text{,}\) the \(n\)th term of the sequence, by writing each term as a sum of a sequence. Hint: first find \(a_0\text{,}\) but ignore it when collapsing the sum.[🔗](#exercises_seq-conc-5-1-1-3-1-1) [🔗](#exercises_seq-conc-5-1-1-3-1)
-2. Find a closed formula again, this time using either polynomial fitting or the characteristic root technique (whichever is appropriate). Show your work.[🔗](#exercises_seq-conc-5-1-1-3-2-1) [🔗](#exercises_seq-conc-5-1-1-3-2)
-3. Find a closed formula once again, this time by recognizing the sequence as a modification of some well-known sequence(s). Explain.[🔗](#exercises_seq-conc-5-1-1-3-3-1) [🔗](#exercises_seq-conc-5-1-1-3-3)
-
-[🔗](#exercises_seq-conc-5-1-1) [🔗](#exercises_seq-conc-5)
+1. أوجد صيغة مغلقة لـ\(a_n\text{،}\) الحد ذي الرتبة \(n\) في المتتالية، بكتابة كل حد على هيئة مجموع متتالية. تلميح: أوجد أولًا \(a_0\text{،}\) لكن تجاهله عند اختزال المجموع.
+2. أوجد صيغة مغلقة مرة أخرى، مستخدمًا هذه المرة إما ملاءمة كثيرات الحدود (polynomial fitting) أو تقنية الجذر المميِّز (بحسب ما يلائم المسألة). بيّن خطوات عملك.
+3. أوجد صيغة مغلقة مرة ثالثة، بالتعرف على المتتالية بوصفها تعديلًا لمتتالية معروفة أو لمتتاليات معروفة. اشرح.
 
 #### 5.
 
-Activate Use polynomial fitting to find the formula for the \(n\)th term of the sequence \((a_n)_{n \ge 1}\) which starts,[🔗](#extracted-webwork-220-1-1-1) \begin{equation*} {3, 5, 9, 15, 23}, \ldots \end{equation*} Note the first term above is \(a_1\text{,}\) not \(a_0\text{.}\) [🔗](#extracted-webwork-220-1-1-2) \(a_n =\) [🔗](#extracted-webwork-220-1-1-3) [🔗](#ww-seq-poly)
+تفعيل. استخدم ملاءمة كثيرات الحدود لإيجاد صيغة الحد ذي الرتبة \(n\) للمتتالية \((a_n)_{n \ge 1}\) التي تبدأ كما يلي:
+
+\begin{equation*}
+{3, 5, 9, 15, 23}, \ldots
+\end{equation*}
+
+لاحظ أن الحد الأول أعلاه هو \(a_1\text{،}\) وليس \(a_0\text{.}\)
+
+\(a_n =\)
 
 #### 6.
 
-Suppose the closed formula for a particular sequence is a degree 3 polynomial. What can you say about the closed formula for:
+افترض أن الصيغة المغلقة لمتتالية معينة كثيرة حدود من الدرجة 3. ماذا يمكنك أن تقول عن الصيغة المغلقة لكل مما يلي؟
 
-1. The sequence of partial sums?[🔗](#exercises_seq-conc-7-1-1-1-1-1) [🔗](#exercises_seq-conc-7-1-1-1-1)
-2. The sequence of second differences?[🔗](#exercises_seq-conc-7-1-1-1-2-1) [🔗](#exercises_seq-conc-7-1-1-1-2)
-
-[🔗](#exercises_seq-conc-7-1-1) [🔗](#exercises_seq-conc-7)
+1. متتالية المجاميع الجزئية (partial sums)؟
+2. متتالية الفروق الثانية (second differences)؟
 
 #### 7.
 
-Consider the sequence given recursively by \(a_1 = 4\text{,}\) \(a_2 = 6\text{,}\) and \(a_n = a_{n-1} + a_{n-2}\text{.}\)
+تأمل المتتالية المعطاة تعاوديًا بـ\(a_1 = 4\text{،}\) و\(a_2 = 6\text{،}\) و\(a_n = a_{n-1} + a_{n-2}\text{.}\)
 
-1. Write out the first 6 terms of the sequence.[🔗](#exercises_seq-conc-8-1-1-4-1-1) [🔗](#exercises_seq-conc-8-1-1-4-1)
-2. Could the closed formula for \(a_n\) be a polynomial? Explain.[🔗](#exercises_seq-conc-8-1-1-4-2-1) [🔗](#exercises_seq-conc-8-1-1-4-2)
-
-[🔗](#exercises_seq-conc-8-1-1) [🔗](#exercises_seq-conc-8)
+1. اكتب الحدود الستة الأولى للمتتالية.
+2. هل يمكن أن تكون الصيغة المغلقة لـ\(a_n\) كثيرة حدود؟ اشرح.
 
 #### 8.
 
-Activate The sequence \((a_n)_{n \ge 1}\) starts \(-1, 0, 2, 5, 9, 14\ldots\) and has closed formula[🔗](#extracted-webwork-221-1-1-1) \begin{equation*} a_n = \dfrac{(n+1)(n-2)}{2}\text{.} \end{equation*} [🔗](#extracted-webwork-221-1-1-2) Use this fact to find a closed formula for the sequence \((b_n)_{n \ge 1}\) which starts \(4, 10, 18, 28, 40, \ldots\text{.}\)[🔗](#extracted-webwork-221-1-1-3) [🔗](#ww-seq-relate)
+تفعيل. تبدأ المتتالية \((a_n)_{n \ge 1}\) بالحدود \(-1, 0, 2, 5, 9, 14\ldots\)، ولها الصيغة المغلقة
+
+\begin{equation*}
+a_n = \dfrac{(n+1)(n-2)}{2}\text{.}
+\end{equation*}
+
+استخدم هذه الحقيقة لإيجاد صيغة مغلقة للمتتالية \((b_n)_{n \ge 1}\) التي تبدأ بالحدود \(4, 10, 18, 28, 40, \ldots\text{.}\)
 
 #### 9.
 
-In the song *The Twelve Days of Christmas*, my true love gave to me first 1 gift; then 2 gifts and 1 gift; then 3 gifts, 2 gifts, and 1 gift; and so on. How many gifts did my true love give me all together during the twelve days?[🔗](#exercises_seq-conc-10-3-1) [🔗](#exercises_seq-conc-10)
+في أغنية *أيام عيد الميلاد الاثنا عشر (The Twelve Days of Christmas)*، أعطاني حبيبي أولًا هدية واحدة؛ ثم هديتين وهدية واحدة؛ ثم ثلاث هدايا وهديتين وهدية واحدة؛ وهكذا. كم هدية أعطاني حبيبي إجمالًا خلال الأيام الاثني عشر؟
 
 #### 10.
 
-Activate Consider the recurrence relation \(a_n = -3a_{n-1} + 10a_{n-2}\) with first two terms \(a_0 = 3\) and \(a_1 = 6\text{.}\)
+تفعيل. تأمل علاقة التعاود (recurrence relation) \(a_n = -3a_{n-1} + 10a_{n-2}\)، حيث الحدّان الأولان هما \(a_0 = 3\) و\(a_1 = 6\text{.}\)
 
-1. Write out the first 5 terms of the sequence defined by this recurrence relation.[🔗](#extracted-webwork-222-1-1-1-4-1-1) \(a_2 =\) , \(a_3 =\) , \(a_4 =\) , ...[🔗](#extracted-webwork-222-1-1-1-4-1-2) [🔗](#extracted-webwork-222-1-1-1-4-1)
-2. Solve the recurrence relation. That is, find a closed formula for \(a_n\text{.}\)[🔗](#extracted-webwork-222-1-1-1-4-2-1) [🔗](#extracted-webwork-222-1-1-1-4-2)
+1. اكتب الحدود الخمسة الأولى للمتتالية التي تعرّفها علاقة التعاود هذه.
 
-[🔗](#extracted-webwork-222-1-1-1) \(a_n =\) [🔗](#extracted-webwork-222-1-1-2) [🔗](#ww-seq-croots1)
+\(a_2 =\) ، \(a_3 =\) ، \(a_4 =\) ، …
+2. حل علاقة التعاود، أي أوجد صيغة مغلقة لـ\(a_n\text{.}\)
+
+\(a_n =\)
 
 #### 11.
 
-Activate Consider the recurrence relation \(a_n = a_{n-1} + 6a_{n-2}\) with first two terms \(a_0 = 5\) and \(a_1 = 9\text{.}\)
+تفعيل. تأمل علاقة التعاود \(a_n = a_{n-1} + 6a_{n-2}\)، حيث الحدّان الأولان هما \(a_0 = 5\) و\(a_1 = 9\text{.}\)
 
-1. Find the next two terms of the sequence (\(a_2\) and \(a_3\)):[🔗](#extracted-webwork-223-1-1-1-4-1-1) \(a_2 =\) [🔗](#extracted-webwork-223-1-1-1-4-1-2) \(a_3 =\) [🔗](#extracted-webwork-223-1-1-1-4-1-3) [🔗](#extracted-webwork-223-1-1-1-4-1)
-2. Solve the recurrence relation. That is, find a closed formula for \(a_n\text{.}\)[🔗](#extracted-webwork-223-1-1-1-4-2-1) \(a_n =\) [🔗](#extracted-webwork-223-1-1-1-4-2-2) [🔗](#extracted-webwork-223-1-1-1-4-2)
+1. أوجد الحدّين التاليين للمتتالية (\(a_2\) و\(a_3\)):
 
-[🔗](#extracted-webwork-223-1-1-1) [🔗](#ww-seq-croots2)
+\(a_2 =\)
+
+\(a_3 =\)
+2. حل علاقة التعاود، أي أوجد صيغة مغلقة لـ\(a_n\text{.}\)
+
+\(a_n =\)
 
 #### 12.
 
-Your magic chocolate bunnies reproduce like rabbits: every large bunny produces 2 new mini bunnies each day, and each day every mini bunny born the previous day grows into a large bunny. Assume you start with 2 mini bunnies and no bunny ever dies (or gets eaten).
+تتكاثر أرانب الشوكولاتة السحرية لديك كالأرانب: ينتج كل أرنب كبير أرنبين صغيرين جديدين كل يوم، وفي كل يوم ينمو كل أرنب صغير وُلد في اليوم السابق ليصبح أرنبًا كبيرًا. افترض أنك تبدأ بأرنبين صغيرين، وأن أي أرنب لا يموت أبدًا (ولا يؤكل).
 
-1. Write out the first few terms of the sequence.[🔗](#exercises_seq-conc-13-1-1-2-1-1) [🔗](#exercises_seq-conc-13-1-1-2-1)
-2. Give a recursive definition of the sequence, and explain why it is correct.[🔗](#exercises_seq-conc-13-1-1-2-2-1) [🔗](#exercises_seq-conc-13-1-1-2-2)
-3. Find a closed formula for the \(n\)th term of the sequence.[🔗](#exercises_seq-conc-13-1-1-2-3-1) [🔗](#exercises_seq-conc-13-1-1-2-3)
-
-[🔗](#exercises_seq-conc-13-1-1) [🔗](#exercises_seq-conc-13)
+1. اكتب الحدود الأولى للمتتالية.
+2. أعطِ تعريفًا تعاوديًا للمتتالية، واشرح سبب صحته.
+3. أوجد صيغة مغلقة للحد ذي الرتبة \(n\) في المتتالية.
 
 #### 13.
 
-Consider the sequence of partial sums of *squares* of Fibonacci numbers: \(F_1^2\text{,}\) \(F_1^2 + F_2^2\text{,}\) \(F_1^2 + F_2^2 + F_3^2, \ldots\text{.}\) The sequence starts \(1, 2, 6, 15, 40,\ldots\)
+تأمل متتالية المجاميع الجزئية لـ*مربعات* أعداد فيبوناتشي (Fibonacci numbers): \(F_1^2\text{،}\) و\(F_1^2 + F_2^2\text{،}\) و\(F_1^2 + F_2^2 + F_3^2, \ldots\text{.}\) تبدأ المتتالية بالحدود \(1, 2, 6, 15, 40,\ldots\)
 
-1. Guess a formula for the \(n\)th partial sum, in terms of Fibonacci numbers. Hint: Write each term as a product.[🔗](#exercises_seq-conc-14-3-1-6-1-1) [🔗](#exercises_seq-conc-14-3-1-6-1)
-2. Prove your formula is correct by mathematical induction.[🔗](#exercises_seq-conc-14-3-1-6-2-1) [🔗](#exercises_seq-conc-14-3-1-6-2)
-3. Explain what this problem has to do with the following picture:[🔗](#exercises_seq-conc-14-3-1-6-3-1) ![A rectangle repeatedly divided into a square and a divided rectangle.](generated/latex-image/goldenrectangles.svg) &#xe88e;A rectangle, divided into a square (left) and similar rectangle (right). The similar rectangle is divided into a square (bottom) and similar rectangle (top). This top rectangle is divided into a sqaure (right) and rectangle (left). The left rectangle is divided into a sqaure (top) and rectangle (bottom). The bottom rectangle is divided into two equal squares.[🔗](#goldenrectangles-2-1) [🔗](#exercises_seq-conc-14-3-1-6-3)
+1. خمّن صيغة للمجموع الجزئي ذي الرتبة \(n\)، بدلالة أعداد فيبوناتشي. تلميح: اكتب كل حد على هيئة حاصل ضرب.
+2. أثبت صحة صيغتك بالاستقراء الرياضي.
+3. اشرح علاقة هذه المسألة بالصورة التالية:
 
-[🔗](#exercises_seq-conc-14-3-1) [🔗](#exercises_seq-conc-14)
+   ![مستطيل يُقسَّم مرارًا إلى مربع ومستطيل مقسَّم.](/images/discrete-math/sec_sequences-conc-goldenrectangles.svg)
+
+مستطيل مقسَّم إلى مربع (على اليسار) ومستطيل مشابه (على اليمين). يُقسَّم المستطيل المشابه إلى مربع (في الأسفل) ومستطيل مشابه (في الأعلى). يُقسَّم هذا المستطيل العلوي إلى مربع (على اليمين) ومستطيل (على اليسار). يُقسَّم المستطيل الأيسر إلى مربع (في الأعلى) ومستطيل (في الأسفل). ويُقسَّم المستطيل السفلي إلى مربعين متساويين.
 
 #### 14.
 
-Prove the following statements by mathematical induction:
+أثبت العبارات التالية بالاستقراء الرياضي:
 
-1. \(n! \lt n^n\) for \(n \ge 2\) [🔗](#exercises_seq-conc-15-1-1-1-1)
-2. \(\d\frac{1}{1\cdot 2} + \frac{1}{2\cdot 3} +\frac{1}{3\cdot 4}+\cdots + \frac{1}{n\cdot(n+1)} = \d\frac{n}{n+1}\) for all \(n \in \Z^+\text{.}\) [🔗](#exercises_seq-conc-15-1-1-1-2)
-3. \(4^n - 1\) is a multiple of 3 for all \(n \in \N\text{.}\) [🔗](#exercises_seq-conc-15-1-1-1-3)
-4. The *greatest* amount of postage you *cannot* make exactly using 4 and 9 cent stamps is 23 cents.[🔗](#exercises_seq-conc-15-1-1-1-4-1) [🔗](#exercises_seq-conc-15-1-1-1-4)
-5. Every even number squared is divisible by 4.[🔗](#exercises_seq-conc-15-1-1-1-5-1) [🔗](#exercises_seq-conc-15-1-1-1-5)
+1. \(n! \lt n^n\) عندما \(n \ge 2\).
+2. \(\d\frac{1}{1\cdot 2} + \frac{1}{2\cdot 3} +\frac{1}{3\cdot 4}+\cdots + \frac{1}{n\cdot(n+1)} = \d\frac{n}{n+1}\) لكل \(n \in \Z^+\text{.}\)
+3. \(4^n - 1\) من مضاعفات 3 لكل \(n \in \N\text{.}\)
+4. *أكبر* قيمة رسوم بريدية *لا يمكنك* تكوينها بالضبط باستخدام طوابع بقيمتي 4 و9 سنتات هي 23 سنتًا.
+5. مربع كل عدد زوجي يقبل القسمة على 4.
 
-[🔗](#exercises_seq-conc-15-1-1) Hint.
+**تلميح.**
 
-1. \((n+1)^{n+1} > (n+1) \cdot n^{n}\text{.}\)[🔗](#exercises_seq-conc-15-2-1-1-1-1) [🔗](#exercises_seq-conc-15-2-1-1-1)
-2. This should be similar to the other sum proofs. The last bit comes down to adding fractions.[🔗](#exercises_seq-conc-15-2-1-1-2-1) [🔗](#exercises_seq-conc-15-2-1-1-2)
-3. Write \(4^{k+1} - 1 = 4\cdot 4^k - 4 + 3\text{.}\)[🔗](#exercises_seq-conc-15-2-1-1-3-1) [🔗](#exercises_seq-conc-15-2-1-1-3)
-4. One 9-cent stamp is 1 more than two 4-cent stamps, and seven 4-cent stamps is 1 more than three 9-cent stamps.[🔗](#exercises_seq-conc-15-2-1-1-4-1) [🔗](#exercises_seq-conc-15-2-1-1-4)
-5. Be careful to actually use induction here. The base case: \(2^2 = 4\text{.}\) The inductive case: Assume \((2n)^2\) is divisible by 4, and consider \((2n+2)^2 = (2n)^2 + 4n + 4\text{.}\) This is divisible by 4 because \(4n +4\) clearly is, and by our inductive hypothesis, so is \((2n)^2\text{.}\)[🔗](#exercises_seq-conc-15-2-1-1-5-1) [🔗](#exercises_seq-conc-15-2-1-1-5)
+1. \((n+1)^{n+1} > (n+1) \cdot n^{n}\text{.}\)
+2. ينبغي أن يشبه هذا براهين المجاميع الأخرى. وتتلخص الخطوة الأخيرة في جمع الكسور.
+3. اكتب \(4^{k+1} - 1 = 4\cdot 4^k - 4 + 3\text{.}\)
+4. تزيد قيمة طابع واحد من فئة 9 سنتات بسنت واحد على قيمة طابعين من فئة 4 سنتات، وتزيد قيمة سبعة طوابع من فئة 4 سنتات بسنت واحد على قيمة ثلاثة طوابع من فئة 9 سنتات.
+5. احرص على استخدام الاستقراء فعلًا هنا. الحالة الأساسية: \(2^2 = 4\text{.}\) الحالة الاستقرائية (inductive case): افترض أن \((2n)^2\) يقبل القسمة على 4، وتأمل \((2n+2)^2 = (2n)^2 + 4n + 4\text{.}\) يقبل هذا القسمة على 4 لأن \(4n +4\) يقبلها بوضوح، ولأن \((2n)^2\) يقبلها أيضًا بحسب فرضية الاستقراء (inductive hypothesis).
 
-[🔗](#exercises_seq-conc-15-2-1) [🔗](#exercises_seq-conc-15-2) [🔗](#exercises_seq-conc-15)
+> **ملاحظة المترجم:** نُقلت المساواة في التلميح الخامس كما وردت في المصدر؛ والتوسيع الصحيح هو \((2n+2)^2 = (2n)^2 + 8n + 4\). ويظل الاستدلال بالقابلية للقسمة على 4 صحيحًا مع هذا التصحيح.
 
 #### 15.
 
-Prove \(1^3 + 2^3 + 3^3 + \cdots + n^3 = \left(\frac{n(n+1)}{2}\right)^2\) holds for all \(n \ge 1\text{,}\) by mathematical induction.[🔗](#exercises_seq-conc-16-1-1) Hint. This is a straight-forward induction proof. Note that you will need to simplify \(\left(\frac{n(n+1)}{2}\right)^2 + (n+1)^3\) and get \(\left(\frac{(n+1)(n+2)}{2}\right)^2\text{.}\)[🔗](#exercises_seq-conc-16-2-1) [🔗](#exercises_seq-conc-16-2) [🔗](#exercises_seq-conc-16)
+أثبت بالاستقراء الرياضي أن \(1^3 + 2^3 + 3^3 + \cdots + n^3 = \left(\frac{n(n+1)}{2}\right)^2\) تصح لكل \(n \ge 1\text{.}\)
+
+**تلميح.** هذا برهان مباشر بالاستقراء. لاحظ أنك ستحتاج إلى تبسيط \(\left(\frac{n(n+1)}{2}\right)^2 + (n+1)^3\) للحصول على \(\left(\frac{(n+1)(n+2)}{2}\right)^2\text{.}\)
 
 #### 16.
 
-Suppose \(a_0 = 1\text{,}\) \(a_1 = 1\) and \(a_n = 3a_{n-1} - 2a_{n-2}\text{.}\) Prove, using strong induction, that \(a_n = 1\) for all \(n\text{.}\)[🔗](#exercises_seq-conc-17-1-1) Hint. There are two base cases \(P(0)\) and \(P(1)\text{.}\) Then, for the inductive case, assume \(P(k)\) is true for all \(k \lt n\text{.}\) This allows you to assume \(a_{n-1} = 1\) and \(a_{n-2} = 1\text{.}\) Apply the recurrence relation.[🔗](#exercises_seq-conc-17-2-1) [🔗](#exercises_seq-conc-17-2) [🔗](#exercises_seq-conc-17)
+افترض أن \(a_0 = 1\text{،}\) و\(a_1 = 1\)، و\(a_n = 3a_{n-1} - 2a_{n-2}\text{.}\) أثبت، باستخدام الاستقراء القوي (strong induction)، أن \(a_n = 1\) لكل \(n\text{.}\)
+
+**تلميح.** هناك حالتان أساسيتان: \(P(0)\) و\(P(1)\text{.}\) ثم، في الحالة الاستقرائية، افترض أن \(P(k)\) صحيحة لكل \(k \lt n\text{.}\) يتيح لك هذا افتراض أن \(a_{n-1} = 1\) و\(a_{n-2} = 1\text{.}\) طبّق علاقة التعاود.
 
 #### 17.
 
-Prove using induction that every set containing \(n\) elements has \(2^n\) different subsets for any \(n \ge 1\text{.}\)[🔗](#exercises_seq-conc-18-3-1) [🔗](#exercises_seq-conc-18)[🔗](#exercises_seq-conc)[🔗](#sec_sequences-conc) [&#xe5cb;Prev](sec_seq-strong-induction.html)[&#xe5ce;Top](#)[Next&#xe5cc;](ch_structures.html) [Feedback](/cdn-cgi/l/email-protection#abc4d8c8cad985c7ceddc2c5ebdec5c8c485cecfde)[PreTeXt logo](https://pretextbook.org)[![Runstone Academy logo](/images/discrete-math/sec_sequences-conc-RAIcon_cropped.png.webp)](https://runestone.academy)[![MathJax logo](/images/discrete-math/sec_sequences-conc-badge-square-2.png.webp)](https://www.mathjax.org) window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-66485406-1');
+أثبت بالاستقراء أن لكل مجموعة تحتوي على \(n\) عنصرًا \(2^n\) مجموعة جزئية مختلفة، لأي \(n \ge 1\text{.}\)
